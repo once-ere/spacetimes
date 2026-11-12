@@ -1,0 +1,448 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+\AtBeginEnvironment{longtable}{\footnotesize
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\RenewDocumentCommand \texttt { m }
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P0 --- Why this project is not pushed by the assistant, and how it reaches GitHub},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P0 --- Why this project is not pushed by the assistant, and how
+it reaches GitHub}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance required by Hard Rule 7 for a deviation from Hard
+Rule 2 (PROJECT spacetimes)}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is-for}{%
+\section{1. What this document is for}\label{what-this-document-is-for}}
+
+Hard Rule 2 of the task specification says: \emph{push immediately to
+the repository as soon as any object is updated}. Hard Rule 7 says that
+an instruction which cannot be followed exactly must be explained in a
+provenance. This document is that explanation. It records (i) what was
+tried, with the exact error messages; (ii) why the pushes fail; (iii)
+what the author decided; and (iv) the procedure by which every commit
+nevertheless reaches \texttt{https://github.com/once-ere/spacetimes}
+within about a minute of being made.
+
+Nothing in this document concerns physics. It is the only document of
+the project in which an instruction of the task specification is not
+carried out literally by the assistant; the reason is a missing
+permission, not a shortcut.
+
+\hypertarget{the-three-places-where-git-can-run}{%
+\section{2. The three places where git can
+run}\label{the-three-places-where-git-can-run}}
+
+Three different computers (or sandboxes) take part in this project. The
+table fixes their names, because the rest of this document refers to
+them.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3529}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4706}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Name
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it is
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it can do
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{W}, the \emph{workspace} & A Linux machine (x86\_64) in the
+cloud in which the assistant compiles and runs all code and builds all
+documents. The repository clone is \texttt{/home/claude/spacetimes}. &
+Clone and fetch from GitHub. \textbf{Cannot push} (Sec. 3). \\
+\textbf{S}, the \emph{sandbox} & A Linux virtual machine (aarch64) on
+the author's Mac. It sees the project folder
+\texttt{/Users/nsh/Developer/github/spacetimes} and nothing else of the
+Mac. & Run git inside the project folder. \textbf{Cannot push}: it holds
+no GitHub credentials (Sec. 3). \\
+\textbf{M}, the \emph{Mac} & The author's own macOS session (Terminal).
+& \textbf{Can push}: it holds the author's GitHub credentials. \\
+\end{longtable}
+
+\hypertarget{what-was-tried-and-what-happened}{%
+\section{3. What was tried, and what
+happened}\label{what-was-tried-and-what-happened}}
+
+All times are Pacific Standard Time on November 12, 2026, to within
+about one minute.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1463}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1707}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2195}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4634}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Command
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Result (verbatim)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+07:27 & S & \texttt{git\ push\ -\/-dry-run\ origin\ main} &
+\texttt{fatal:\ could\ not\ read\ Username\ for\ \textquotesingle{}https://github.com\textquotesingle{}:\ terminal\ prompts\ disabled} \\
+07:27 & W & attach repository with push access &
+\texttt{pushes\ from\ this\ session\ will\ be\ refused:\ Claude\ doesn\textquotesingle{}t\ have\ GitHub\ access\ to\ once-ere/spacetimes\ for\ your\ organization} \\
+07:35 & W & \texttt{git\ push\ -\/-dry-run\ origin\ HEAD:main} &
+\texttt{remote:\ Claude\ doesn\textquotesingle{}t\ have\ GitHub\ access\ to\ once-ere/spacetimes\ for\ your\ organization.}
+\ldots{}
+\texttt{fatal:\ unable\ to\ access\ \textquotesingle{}https://github.com/once-ere/spacetimes/\textquotesingle{}:\ The\ requested\ URL\ returned\ error:\ 403} \\
+07:41 & W & \texttt{git\ push\ -\/-dry-run\ origin\ HEAD:main} (after
+the author tried to connect GitHub) & the same 403 refusal \\
+07:41 & W & \texttt{gh\ auth\ status} &
+\texttt{The\ token\ in\ GH\_TOKEN\ is\ invalid.} \\
+07:41 & S & \texttt{git\ push\ -\/-dry-run\ origin\ main} &
+\texttt{fatal:\ could\ not\ read\ Username\ for\ \textquotesingle{}https://github.com\textquotesingle{}:\ terminal\ prompts\ disabled} \\
+\end{longtable}
+
+\emph{Why W fails.} Pushes from the workspace go through the GitHub App
+of the assistant's vendor. That App has not been granted access to
+\texttt{once-ere/spacetimes}, and only the owner of the GitHub account
+can grant it. Reading the repository works because the repository is
+public.
+
+\emph{Why S fails.} The sandbox is deliberately isolated from the rest
+of the Mac. It has no access to the Mac's keychain, so git inside it has
+no user name and no token.
+
+\emph{Why M works.} The Mac's own git has working credentials for
+\texttt{github.com/once-ere}: the remote-tracking log of another
+repository of the author on the same machine records successful pushes
+on November 9 and 10, 2026.
+
+\hypertarget{the-authors-decisions}{%
+\section{4. The author's decisions}\label{the-authors-decisions}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3846}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3846}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Time
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Decision
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+07:36 & Pushes are refused; pause, or commit now and push later? &
+``Commit now, push later.'' \\
+07:41 & --- & ``I cannot get GitHub connected; try push.'' (Tried again;
+refused again; Sec. 3.) \\
+07:44 & --- & ``I will push from terminal; give me the exact
+syntax.'' \\
+\end{longtable}
+
+\hypertarget{the-procedure-that-replaces-the-direct-push}{%
+\section{5. The procedure that replaces the direct
+push}\label{the-procedure-that-replaces-the-direct-push}}
+
+Every update is committed at once in W. The commit is then carried to
+the author's folder, where it becomes part of the local repository, and
+M pushes it.
+
+\textbf{Step 1 (W): commit.} Each update is committed in
+\texttt{/home/claude/spacetimes} as soon as it is complete.
+
+\textbf{Step 2 (W): bundle.} The new commits are written into one file,
+a \emph{git bundle}, which is a complete and self-checking package of
+commits:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ bundle create spacetimes\_update.bundle }\OperatorTok{\textless{}}\NormalTok{last{-}synchronized{-}commit}\OperatorTok{\textgreater{}}\NormalTok{..main}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Step 3 (W to the Mac): copy.} The bundle is copied to
+\texttt{/Users/nsh/Developer/github/spacetimes/.git-transfer/spacetimes\_update.bundle}.
+The folder \texttt{.git-transfer/} is excluded from version control by
+the local file \texttt{.git/info/exclude}.
+
+\textbf{Step 4 (S): fast-forward.} Inside the project folder the sandbox
+verifies the bundle and advances the local branch to it. A
+\emph{fast-forward} only adds commits; it never rewrites or discards
+anything:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{git}\NormalTok{ bundle verify .git{-}transfer/spacetimes\_update.bundle}
+\FunctionTok{git}\NormalTok{ fetch .git{-}transfer/spacetimes\_update.bundle main}
+\FunctionTok{git}\NormalTok{ merge }\AttributeTok{{-}{-}ff{-}only}\NormalTok{ FETCH\_HEAD}
+\end{Highlighting}
+\end{Shaded}
+
+After this step the files in the author's folder are exactly the files
+of the commit, and \texttt{git\ rev-parse\ main} gives the same 40-digit
+commit name in W and in the folder. This equality is checked after every
+synchronization.
+
+\textbf{Step 5 (M): push.} The author pushes from Terminal. Either once,
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes"}
+\FunctionTok{git}\NormalTok{ push origin main}
+\end{Highlighting}
+\end{Shaded}
+
+or continuously, with a loop that tries a push every 60 seconds and is
+silent unless there is an error (stop it with Control-C):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes"}
+\ControlFlowTok{while} \FunctionTok{true}\KeywordTok{;} \ControlFlowTok{do} \FunctionTok{git}\NormalTok{ push }\AttributeTok{{-}q}\NormalTok{ origin main}\KeywordTok{;} \FunctionTok{sleep}\NormalTok{ 60}\KeywordTok{;} \ControlFlowTok{done}
+\end{Highlighting}
+\end{Shaded}
+
+With the loop running, every commit reaches GitHub within about one
+minute of Step 4, which is as close to ``push immediately'' as the
+missing permission allows.
+
+\hypertarget{how-to-check-that-nothing-is-waiting}{%
+\section{6. How to check that nothing is
+waiting}\label{how-to-check-that-nothing-is-waiting}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes"}
+\FunctionTok{git}\NormalTok{ status }\AttributeTok{{-}sb}
+\end{Highlighting}
+\end{Shaded}
+
+The first line of the answer is \texttt{\#\#\ main...origin/main} when
+everything has been pushed, and
+\texttt{\#\#\ main...origin/main\ {[}ahead\ N{]}} when \texttt{N}
+commits are still waiting.
+
+\hypertarget{what-is-deliberately-not-in-the-repository}{%
+\section{7. What is deliberately not in the
+repository}\label{what-is-deliberately-not-in-the-repository}}
+
+The files that were already in the folder when the project started are
+not committed:
+
+\begin{itemize}
+\tightlist
+\item
+  the author's Mathematica notebooks (\texttt{4+4.nb}, \texttt{7+1.nb}
+  and the others);
+\item
+  the nine PDF files of published journal articles, which are not
+  redistributed here because the right to republish them rests with
+  their publishers;
+\item
+  the author's task specification and working notes
+  (\texttt{prompt*.txt}, \texttt{notes\_for\_prompt*.txt}), which the
+  author's \texttt{.gitignore} declares private.
+\end{itemize}
+
+They remain in the folder as untracked files. Wherever the project
+depends on one of them, the provenance documents identify it by its
+SHA-256 checksum, so that the exact input can be recognized without
+being published. If the author wants the notebooks in the repository,
+one command adds them: \texttt{git\ add\ 4+4.nb\ 7+1.nb}, followed by a
+commit.
+
+\hypertarget{if-the-permission-is-granted-later}{%
+\section{8. If the permission is granted
+later}\label{if-the-permission-is-granted-later}}
+
+If the GitHub App is given access to \texttt{once-ere/spacetimes}, the
+workspace W can push directly. Steps 2 to 5 then become unnecessary; the
+local folder is brought up to date with \texttt{git\ pull\ -\/-ff-only},
+and this document will be amended to say so.
+
+\end{document}
