@@ -613,10 +613,22 @@ $$\gamma_{1671}^4=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\qquad
 
 **Built from the 4+4 matrices** (check `71-B3`): `Γ17[0]` $=\gamma_{1644}^0$,
 `Γ17[i]` $=\gamma_{1644}^0\gamma_{1644}^i$ for $i=1,2,3$, and
-`Γ17[k]` $=\gamma_{1644}^0\gamma_{1644}^kC_{1644}^{+}$ for $k=4,\dots,7$. Both sets
-therefore live in the same algebra of real 16×16 matrices, but the 7+1 matrices are
-*not* linear combinations of the 4+4 matrices: they are products of two and of six of
-them.
+`Γ17[k]` $=\gamma_{1644}^0\gamma_{1644}^kC_{1644}^{+}$ for $k=4,\dots,7$. In the labels
+of this project, and with every product reduced to distinct factors (check `71-B4`):
+$$\begin{aligned}
+\gamma_{1671}^4&=\gamma_{1644}^0,\qquad\gamma_{1671}^j=-\gamma_{1644}^0\gamma_{1644}^j\quad(j=1,2,3),\\
+\gamma_{1671}^0&=+\gamma_{1644}^0\gamma_{1644}^5\gamma_{1644}^6\gamma_{1644}^7,\qquad
+\gamma_{1671}^5=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^6\gamma_{1644}^7,\\
+\gamma_{1671}^6&=+\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^7,\qquad
+\gamma_{1671}^7=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^6 .
+\end{aligned}\tag{2.2a}$$
+Both sets therefore live in the same algebra of real 16×16 matrices. **The time-like
+matrix of 7+1 is the matrix of the hidden axis of 4+4**; the three matrices of
+ordinary space are products of two, and the four matrices of the extra axes are
+products of four, of the 4+4 matrices, and these seven are *not* linear combinations
+of the 4+4 matrices. (An earlier version of this paragraph said that all eight are
+products of two and of six of the 4+4 matrices and that none is a linear combination
+of them; that was imprecise, and wrong for $\gamma_{1671}^4$. Error log, E36.)
 
 ## 2.2 The eight matrices
 

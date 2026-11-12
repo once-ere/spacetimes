@@ -242,7 +242,7 @@ entries \(0\), \(+1\), \(-1\) (or, for two projectors, \(0\),
 \(\pm\tfrac12\), \(\pm\tfrac i2\)). An identity between such matrices
 can be verified with exact integer arithmetic, and a verification of
 that kind is a proof. The Rust program \texttt{spacetimes} (directory
-\texttt{code/spacetimes-rs}) performs 106 such verifications. Each has
+\texttt{code/spacetimes-rs}) performs 107 such verifications. Each has
 an identifier, such as \texttt{44-C1} (the prefix \texttt{44-} refers to
 the 4+4 set, \texttt{71-} to the 7+1 set), which is quoted below at the
 place where the statement is used; the complete output of the program is
@@ -509,7 +509,7 @@ Step 2 writes \texttt{data/gamma1644.txt}, \texttt{data/gamma1671.txt},
 \texttt{data/pair\_classification.csv},
 \texttt{data/pair\_classification.txt} and the matrix displays of this
 document (\texttt{provenance/generated/matrices.md}). The program ends
-with the line ``106 of 106 checks passed'' and returns a non-zero exit
+with the line ``107 of 107 checks passed'' and returns a non-zero exit
 status if any check fails. Step 3 writes
 \texttt{data/matrix\_checks\_independent.txt}.
 
@@ -1347,9 +1347,22 @@ by \texttt{I71-D2}).
 \texttt{Γ17{[}0{]}} \(=\gamma_{1644}^0\), \texttt{Γ17{[}i{]}}
 \(=\gamma_{1644}^0\gamma_{1644}^i\) for \(i=1,2,3\), and
 \texttt{Γ17{[}k{]}} \(=\gamma_{1644}^0\gamma_{1644}^kC_{1644}^{+}\) for
-\(k=4,\dots,7\). Both sets therefore live in the same algebra of real
-16×16 matrices, but the 7+1 matrices are \emph{not} linear combinations
-of the 4+4 matrices: they are products of two and of six of them.
+\(k=4,\dots,7\). In the labels of this project, and with every product
+reduced to distinct factors (check \texttt{71-B4}): \[\begin{aligned}
+\gamma_{1671}^4&=\gamma_{1644}^0,\qquad\gamma_{1671}^j=-\gamma_{1644}^0\gamma_{1644}^j\quad(j=1,2,3),\\
+\gamma_{1671}^0&=+\gamma_{1644}^0\gamma_{1644}^5\gamma_{1644}^6\gamma_{1644}^7,\qquad
+\gamma_{1671}^5=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^6\gamma_{1644}^7,\\
+\gamma_{1671}^6&=+\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^7,\qquad
+\gamma_{1671}^7=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^6 .
+\end{aligned}\tag{2.2a}\] Both sets therefore live in the same algebra
+of real 16×16 matrices. \textbf{The time-like matrix of 7+1 is the
+matrix of the hidden axis of 4+4}; the three matrices of ordinary space
+are products of two, and the four matrices of the extra axes are
+products of four, of the 4+4 matrices, and these seven are \emph{not}
+linear combinations of the 4+4 matrices. (An earlier version of this
+paragraph said that all eight are products of two and of six of the 4+4
+matrices and that none is a linear combination of them; that was
+imprecise, and wrong for \(\gamma_{1671}^4\). Error log, E36.)
 
 \hypertarget{the-eight-matrices-1}{%
 \subsection{2.2 The eight matrices}\label{the-eight-matrices-1}}
@@ -2190,7 +2203,7 @@ found in this way proves linear independence over the rational numbers.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] = T16[A] of 4+4.nb; 7+1: gamma1671[A] = Gamma17up[swap04(A)] of 7+1.nb, swap04 = (0 4)); identifiers 44{-}.. refer to the 4+4 set, 71{-}.. to the 7+1 set}
-\NormalTok{106 of 106 checks passed}
+\NormalTok{107 of 107 checks passed}
 
 \NormalTok{[PASS] 44{-}R1  (exact) every entry of gamma1644[A], A = 0..7, is one of the integers {-}1, 0, +1; hence the eight matrices are real}
 \NormalTok{[PASS] 44{-}R2  (exact) every gamma1644[A] is a signed permutation matrix (one entry +1 or {-}1 in each row and in each column)}
@@ -2247,6 +2260,7 @@ found in this way proves linear independence over the rational numbers.
 \NormalTok{[PASS] 71{-}B1  (exact) tauO[A] = tau[A] (A = 1, 2, 3), tauO[A] = tau[A].sigma (A = 4..7): real, antisymmetric, tauO[A].tauO[A] = {-}1, mutually anticommuting, tauO[1]...tauO[7] = 1 (7+1.nb section 3.1)}
 \NormalTok{[PASS] 71{-}B2  (exact) block form: Gamma17[0] = [[0, 1], [1, 0]] and Gamma17[i] = [[tauO[i], 0], [0, tauObar[i]]] with tauObar[i] = transpose(tauO[i]) = {-}tauO[i], i = 1..7 (7+1.nb Out[175])}
 \NormalTok{[PASS] 71{-}B3  (exact) built from the 4+4 matrices only: Gamma17[0] = T16[0], Gamma17[i] = T16[0].T16[i] (i = 1, 2, 3), Gamma17[k] = T16[0].T16[k].S44 (k = 4..7) (7+1.nb Out[176])}
+\NormalTok{[PASS] 71{-}B4  (exact) in the labels of this project: gamma1671[4] = gamma1644[0]; gamma1671[j] = {-}gamma1644[0].gamma1644[j] (j = 1, 2, 3); gamma1671[0] = +gamma1644[0].gamma1644[5].gamma1644[6].gamma1644[7]; gamma1671[5] = {-}gamma1644[0].gamma1644[4].gamma1644[6].gamma1644[7]; gamma1671[6] = +gamma1644[0].gamma1644[4].gamma1644[5].gamma1644[7]; gamma1671[7] = {-}gamma1644[0].gamma1644[4].gamma1644[5].gamma1644[6].  The time{-}like matrix of 7+1 IS the matrix of the hidden axis of 4+4; the other seven are products of two or of four of the 4+4 matrices and therefore not linear combinations of them}
 \NormalTok{[PASS] 71{-}V1  (exact) omega1671 := gamma1671[0]...gamma1671[7] = Gamma17[8] = [[0, {-}1], [1, 0]] in 8x8 blocks (the omega17 of 7+1.nb: the seven sign changes of Gamma17up and the odd permutation swap04 compensate): real, antisymmetric, with square {-}1}
 \NormalTok{[PASS] 71{-}V2  (exact) omega1671 anticommutes with every gamma1671[A] and commutes with every Sigma1671\^{}(AB)}
 \NormalTok{[PASS] 71{-}V3  (exact) the linear system X.gamma1671[A] + gamma1671[A].X = 0 (A = 0..7) for a real 16x16 matrix X has rank 255, and omega1671 solves it (71{-}V2): the real matrices that anticommute with all eight gamma1671[A] are exactly the multiples of omega1671; since omega1671.omega1671 = {-}1, no real matrix with square +1 anticommutes with all of them: there is NO real chirality matrix in 7+1}

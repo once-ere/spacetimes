@@ -34,7 +34,7 @@ as two coupled 8-component equations.
 (or, for two projectors, $0$, $\pm\tfrac12$, $\pm\tfrac i2$). An identity between such
 matrices can be verified with exact integer arithmetic, and a verification of that kind
 is a proof. The Rust program `spacetimes` (directory `code/spacetimes-rs`) performs
-106 such verifications. Each has an identifier, such as `44-C1` (the prefix
+107 such verifications. Each has an identifier, such as `44-C1` (the prefix
 `44-` refers to the 4+4 set, `71-` to the 7+1 set), which is quoted below at the place
 where the statement is used; the complete output of the program is reproduced verbatim
 in Appendix A. Where a human-readable argument is short, it is given as well, so that
@@ -167,7 +167,7 @@ bash code/scripts/build_docs.sh "dirac matrices.md"
 Step 2 writes `data/gamma1644.txt`, `data/gamma1671.txt`, `data/matrix_checks.txt`,
 `data/matrix_checks.csv`, `data/pair_classification.csv`, `data/pair_classification.txt`
 and the matrix displays of this document (`provenance/generated/matrices.md`). The
-program ends with the line "106 of 106 checks passed"
+program ends with the line "107 of 107 checks passed"
 and returns a non-zero exit status if any check fails. Step 3 writes
 `data/matrix_checks_independent.txt`.
 
@@ -872,10 +872,22 @@ $$\gamma_{1671}^4=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\qquad
 
 **Built from the 4+4 matrices** (check `71-B3`): `Γ17[0]` $=\gamma_{1644}^0$,
 `Γ17[i]` $=\gamma_{1644}^0\gamma_{1644}^i$ for $i=1,2,3$, and
-`Γ17[k]` $=\gamma_{1644}^0\gamma_{1644}^kC_{1644}^{+}$ for $k=4,\dots,7$. Both sets
-therefore live in the same algebra of real 16×16 matrices, but the 7+1 matrices are
-*not* linear combinations of the 4+4 matrices: they are products of two and of six of
-them.
+`Γ17[k]` $=\gamma_{1644}^0\gamma_{1644}^kC_{1644}^{+}$ for $k=4,\dots,7$. In the labels
+of this project, and with every product reduced to distinct factors (check `71-B4`):
+$$\begin{aligned}
+\gamma_{1671}^4&=\gamma_{1644}^0,\qquad\gamma_{1671}^j=-\gamma_{1644}^0\gamma_{1644}^j\quad(j=1,2,3),\\
+\gamma_{1671}^0&=+\gamma_{1644}^0\gamma_{1644}^5\gamma_{1644}^6\gamma_{1644}^7,\qquad
+\gamma_{1671}^5=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^6\gamma_{1644}^7,\\
+\gamma_{1671}^6&=+\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^7,\qquad
+\gamma_{1671}^7=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^6 .
+\end{aligned}\tag{2.2a}$$
+Both sets therefore live in the same algebra of real 16×16 matrices. **The time-like
+matrix of 7+1 is the matrix of the hidden axis of 4+4**; the three matrices of
+ordinary space are products of two, and the four matrices of the extra axes are
+products of four, of the 4+4 matrices, and these seven are *not* linear combinations
+of the 4+4 matrices. (An earlier version of this paragraph said that all eight are
+products of two and of six of the 4+4 matrices and that none is a linear combination
+of them; that was imprecise, and wrong for $\gamma_{1671}^4$. Error log, E36.)
 
 ## 2.2 The eight matrices
 
@@ -1549,7 +1561,7 @@ linear independence over the rational numbers.
 
 ```text
 PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] = T16[A] of 4+4.nb; 7+1: gamma1671[A] = Gamma17up[swap04(A)] of 7+1.nb, swap04 = (0 4)); identifiers 44-.. refer to the 4+4 set, 71-.. to the 7+1 set
-106 of 106 checks passed
+107 of 107 checks passed
 
 [PASS] 44-R1  (exact) every entry of gamma1644[A], A = 0..7, is one of the integers -1, 0, +1; hence the eight matrices are real
 [PASS] 44-R2  (exact) every gamma1644[A] is a signed permutation matrix (one entry +1 or -1 in each row and in each column)
@@ -1606,6 +1618,7 @@ PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] =
 [PASS] 71-B1  (exact) tauO[A] = tau[A] (A = 1, 2, 3), tauO[A] = tau[A].sigma (A = 4..7): real, antisymmetric, tauO[A].tauO[A] = -1, mutually anticommuting, tauO[1]...tauO[7] = 1 (7+1.nb section 3.1)
 [PASS] 71-B2  (exact) block form: Gamma17[0] = [[0, 1], [1, 0]] and Gamma17[i] = [[tauO[i], 0], [0, tauObar[i]]] with tauObar[i] = transpose(tauO[i]) = -tauO[i], i = 1..7 (7+1.nb Out[175])
 [PASS] 71-B3  (exact) built from the 4+4 matrices only: Gamma17[0] = T16[0], Gamma17[i] = T16[0].T16[i] (i = 1, 2, 3), Gamma17[k] = T16[0].T16[k].S44 (k = 4..7) (7+1.nb Out[176])
+[PASS] 71-B4  (exact) in the labels of this project: gamma1671[4] = gamma1644[0]; gamma1671[j] = -gamma1644[0].gamma1644[j] (j = 1, 2, 3); gamma1671[0] = +gamma1644[0].gamma1644[5].gamma1644[6].gamma1644[7]; gamma1671[5] = -gamma1644[0].gamma1644[4].gamma1644[6].gamma1644[7]; gamma1671[6] = +gamma1644[0].gamma1644[4].gamma1644[5].gamma1644[7]; gamma1671[7] = -gamma1644[0].gamma1644[4].gamma1644[5].gamma1644[6].  The time-like matrix of 7+1 IS the matrix of the hidden axis of 4+4; the other seven are products of two or of four of the 4+4 matrices and therefore not linear combinations of them
 [PASS] 71-V1  (exact) omega1671 := gamma1671[0]...gamma1671[7] = Gamma17[8] = [[0, -1], [1, 0]] in 8x8 blocks (the omega17 of 7+1.nb: the seven sign changes of Gamma17up and the odd permutation swap04 compensate): real, antisymmetric, with square -1
 [PASS] 71-V2  (exact) omega1671 anticommutes with every gamma1671[A] and commutes with every Sigma1671^(AB)
 [PASS] 71-V3  (exact) the linear system X.gamma1671[A] + gamma1671[A].X = 0 (A = 0..7) for a real 16x16 matrix X has rank 255, and omega1671 solves it (71-V2): the real matrices that anticommute with all eight gamma1671[A] are exactly the multiples of omega1671; since omega1671.omega1671 = -1, no real matrix with square +1 anticommutes with all of them: there is NO real chirality matrix in 7+1

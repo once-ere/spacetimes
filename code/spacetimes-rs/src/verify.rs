@@ -421,6 +421,12 @@ pub fn verify_71(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
         gnb[0] == IMat::block2(&z8, &id8, &id8, &z8) && (1..8).all(|i| gnb[i] == IMat::block2(&gm.tau_o[i], &z8, &z8, &gm.tau_obar[i])));
     rep.add("71-B3", "exact", "built from the 4+4 matrices only: Gamma17[0] = T16[0], Gamma17[i] = T16[0].T16[i] (i = 1, 2, 3), Gamma17[k] = T16[0].T16[k].S44 (k = 4..7) (7+1.nb Out[176])",
         gnb[0] == t16[0] && (1..=3).all(|i| gnb[i] == t16[0].mul(&t16[i])) && (4..8).all(|k| gnb[k] == t16[0].mul(&t16[k]).mul(s44)));
+    // The same relation in the labels of this project (gamma1644[A] = T16[A]; gamma1671[A]
+    // as in check 71-N2), with every product reduced to distinct factors.
+    let p4 = |i: [usize; 4]| t16[i[0]].mul(&t16[i[1]]).mul(&t16[i[2]]).mul(&t16[i[3]]);
+    rep.add("71-B4", "exact", "in the labels of this project: gamma1671[4] = gamma1644[0]; gamma1671[j] = -gamma1644[0].gamma1644[j] (j = 1, 2, 3); gamma1671[0] = +gamma1644[0].gamma1644[5].gamma1644[6].gamma1644[7]; gamma1671[5] = -gamma1644[0].gamma1644[4].gamma1644[6].gamma1644[7]; gamma1671[6] = +gamma1644[0].gamma1644[4].gamma1644[5].gamma1644[7]; gamma1671[7] = -gamma1644[0].gamma1644[4].gamma1644[5].gamma1644[6].  The time-like matrix of 7+1 IS the matrix of the hidden axis of 4+4; the other seven are products of two or of four of the 4+4 matrices and therefore not linear combinations of them",
+        g[4] == t16[0] && (1..=3).all(|j| g[j] == t16[0].mul(&t16[j]).neg()) && g[0] == p4([0, 5, 6, 7]) && g[5] == p4([0, 4, 6, 7]).neg()
+            && g[6] == p4([0, 4, 5, 7]) && g[7] == p4([0, 4, 5, 6]).neg());
 
     // ---- V: volume element; no real chirality -----------------------------------------
     let refs: Vec<&IMat> = g.iter().collect();

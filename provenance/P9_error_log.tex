@@ -645,6 +645,19 @@ separate columns \texttt{dim\_X}, \texttt{dim\_Y}); ``dirac matrices'',
 Sec. 3.2 and Appendix A, says so. & \texttt{pairs.rs}; P1 (MASTER
 provenance), list of the project's own symbols; the two data files of
 the pair classification \\
+E36 & ``dirac matrices'', Sec. 2.1, said of the relation between the two
+sets of matrices: ``the 7+1 matrices are not linear combinations of the
+4+4 matrices: they are products of two and of six of them.'' In fact
+\(\gamma_{1671}^4\) \emph{equals} \(\gamma_{1644}^0\); the three
+matrices of ordinary space are products of two of the 4+4 matrices; and
+the four matrices of the extra axes are products of four distinct ones
+(six factors only before \((\gamma^k)^2=-1\) is used). In commits up to
+\texttt{23a7857}; no later result used the sentence. & Writing the
+corresponding paragraph of the manuscript, the products were computed
+explicitly. & The paragraph states the eight relations explicitly, Eq.
+(2.2a), and a new exact check, \texttt{71-B4}, verifies them (107 checks
+in all). & ``dirac matrices'', Sec. 2.1; \texttt{verify.rs}, check
+\texttt{71-B4} \\
 \end{longtable}
 
 \end{document}

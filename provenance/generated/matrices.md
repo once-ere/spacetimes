@@ -987,8 +987,8 @@ $$
 
 <!-- END pair_symmetry_table -->
 <!-- BEGIN n_checks -->
-106
+107
 <!-- END n_checks -->
 <!-- BEGIN n_checks_passed -->
-106
+107
 <!-- END n_checks_passed -->
