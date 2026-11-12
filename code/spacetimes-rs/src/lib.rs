@@ -15,6 +15,10 @@
 //! * `pairs`   which s-wave pairs of two identical particles exist (Pauli principle);
 //! * `kernel`  pairing kernels of the Vorton-Scalar exchange, channel by channel;
 //! * `gap`     the gap equation of the hidden-axis singlet superfluid;
+//! * `symmetry`  internal symmetries of the zero-mode sector (commutant of the dynamics), for both signatures;
+//! * `cjt_toy`, `cjt_pairing`, `cjt_normal`, `cjt_vacuum`  the effective action of Cornwall, Jackiw and Tomboulis:
+//!   zero-dimensional test of the method; potential of the paired state; mean field in a medium and at
+//!   finite temperature; ladder equation in the vacuum (supplement S4);
 //! * `dimer`   bound state and scattering length of two particles in the Yukawa potential;
 //! * `cosmo`   expansion history, stepped dark radiation, recombination;
 //! * `boltzmann`, `bessel`, `spectra`  Einstein-Boltzmann solver, spherical Bessel functions, power spectra;
@@ -29,6 +33,10 @@ pub mod bessel;
 pub mod boltzmann;
 pub mod complex;
 pub mod cosmo;
+pub mod cjt_normal;
+pub mod cjt_pairing;
+pub mod cjt_toy;
+pub mod cjt_vacuum;
 pub mod dimer;
 pub mod dirac;
 pub mod export;
@@ -44,4 +52,5 @@ pub mod pairs;
 pub mod quad;
 pub mod roots;
 pub mod spectra;
+pub mod symmetry;
 pub mod verify;

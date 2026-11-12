@@ -55,7 +55,7 @@ pub struct Pairing {
 /// (1/2) Int_{-1}^{1} dmu (a + b mu) / (c - d mu), with c > d >= 0.
 /// For c - d -> 0 the logarithm diverges; the callers guarantee that a + b -> 0
 /// there at least as fast as (c - d), so that the product vanishes.
-fn angular_average(a: f64, b: f64, c: f64, d: f64) -> f64 {
+pub fn angular_average(a: f64, b: f64, c: f64, d: f64) -> f64 {
     if d < 1e-5 * c {
         // series in d/c
         return a / c + (a * d * d + b * c * d) / (3.0 * c * c * c);

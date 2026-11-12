@@ -16,6 +16,8 @@ use spacetimes::gamma::{swap04, ETA1644, ETA1671};
 use spacetimes::imat::{GMat, IMat};
 use spacetimes::verify;
 
+mod cjt_cmd;
+
 fn cmd_matrices() -> std::io::Result<bool> {
     let nb44 = "data/notebook_matrices_4+4.txt";
     let nb71 = "data/notebook_matrices_7+1.txt";
@@ -893,6 +895,62 @@ fn cmd_halos() -> std::io::Result<bool> {
     Ok(true)
 }
 
+/// `symmetry`: internal symmetries of the zero-mode sector of both models
+/// (symmetry.rs).  Writes data/reduced_symmetry.csv.
+fn cmd_symmetry() -> std::io::Result<bool> {
+    use spacetimes::kernel::OneParticle;
+    use spacetimes::symmetry::analyse;
+    let gm = spacetimes::gamma::Gammas::build();
+    let reps = [analyse(&OneParticle::new_1671(&gm)), analyse(&OneParticle::new_1644(&gm))];
+    let mut rows: Vec<Vec<String>> = Vec::new();
+    let mut ok = true;
+    let mut push = |item: &str, a: String, b: String, expected: &str, good: bool| {
+        println!("  {:<78} 7+1: {:<24} 4+4: {:<24} expected: {}{}", item, a, b, expected, if good { "" } else { "   <-- FAILS" });
+        rows.push(vec![item.to_string(), a, b, expected.to_string(), if good { "1".into() } else { "0".into() }]);
+        good
+    };
+    let e = |x: f64| format!("{:.2e}", x);
+    let (a, b) = (&reps[0], &reps[1]);
+    ok &= push("dimension of the commutant, momenta along x1 x2 x3", a.dim_zero_mode.to_string(), b.dim_zero_mode.to_string(), "8", a.dim_zero_mode == 8 && b.dim_zero_mode == 8);
+    ok &= push("dimension of the commutant, momenta along x0 x1 x2 x3", a.dim_with_x0.to_string(), b.dim_with_x0.to_string(), "4", a.dim_with_x0 == 4 && b.dim_with_x0 == 4);
+    ok &= push("dimension of the commutant, momenta along every space coordinate of the model", a.dim_all.to_string(), b.dim_all.to_string(), "1 (7+1); 4 (4+4)", a.dim_all == 1 && b.dim_all == 4);
+    ok &= push("dimension of the centre of the zero-mode commutant", a.dim_centre.to_string(), b.dim_centre.to_string(), "2", a.dim_centre == 2 && b.dim_centre == 2);
+    ok &= push("|P^2 - 1| for the traceless central generator P", e(a.p_square_dev), e(b.p_square_dev), "0", a.p_square_dev < 1e-9 && b.p_square_dev < 1e-9);
+    ok &= push("dimensions of the two ideals", format!("{:?}", a.dim_ideals), format!("{:?}", b.dim_ideals), "[3, 3]", a.dim_ideals == [3, 3] && b.dim_ideals == [3, 3]);
+    ok &= push("structure constants |f_123| of the ideals (generators with Tr T_i T_j = 2 delta_ij)", format!("{:.12} {:.12}", a.f123[0], a.f123[1]), format!("{:.12} {:.12}", b.f123[0], b.f123[1]), "1 1 (su(2))",
+        a.f123.iter().chain(b.f123.iter()).all(|x| (x - 1.0).abs() < 1e-9));
+    ok &= push("|sum_i T_i^2 - (3/4) projector| of the ideals", format!("{} {}", e(a.casimir_dev[0]), e(a.casimir_dev[1])), format!("{} {}", e(b.casimir_dev[0]), e(b.casimir_dev[1])), "0 0 (doublets)",
+        a.casimir_dev.iter().chain(b.casimir_dev.iter()).all(|x| *x < 1e-9));
+    ok &= push("positive-energy states with P = +1 and P = -1 at a test momentum", format!("{:.6} {:.6}", a.particles[0], a.particles[1]), format!("{:.6} {:.6}", b.particles[0], b.particles[1]), "4 4: (2,1) + (1,2)",
+        a.particles.iter().chain(b.particles.iter()).all(|x| (x - 4.0).abs() < 1e-9));
+    ok &= push("closure of the four vector pair operators C^- gamma^a, a in {0,5,6,7}", e(a.pair_closure), e(b.pair_closure), "0", a.pair_closure < 1e-9 && b.pair_closure < 1e-9);
+    ok &= push("|Casimir - 3/4| of the two ideals on the four pair operators", format!("{} {}", e(a.pair_casimir_dev[0]), e(a.pair_casimir_dev[1])), format!("{} {}", e(b.pair_casimir_dev[0]), e(b.pair_casimir_dev[1])), "0 0: the (2,2)",
+        a.pair_casimir_dev.iter().chain(b.pair_casimir_dev.iter()).all(|x| *x < 1e-9));
+    ok &= push("fermion number of the pair operators", format!("{:.6}", a.pair_f_charge), format!("{:.6}", b.pair_f_charge), "2", (a.pair_f_charge - 2.0).abs() < 1e-12 && (b.pair_f_charge - 2.0).abs() < 1e-12);
+    ok &= push("charge of the pair operators under the central generator P", e(a.pair_p_charge), e(b.pair_p_charge), "0", a.pair_p_charge < 1e-9 && b.pair_p_charge < 1e-9);
+    ok &= push("number of invariant quadratic forms on the four pair operators", a.quadratic_count.to_string(), b.quadratic_count.to_string(), "1", a.quadratic_count == 1 && b.quadratic_count == 1);
+    let f = |q: &[f64; 4]| format!("{:+.6} {:+.6} {:+.6} {:+.6}", q[0], q[1], q[2], q[3]);
+    let fa = a.quadratic_form.iter().all(|x| (x - 1.0).abs() < 1e-9);
+    let fb = (b.quadratic_form[0] - 1.0).abs() < 1e-9 && b.quadratic_form[1..].iter().all(|x| (x + 1.0).abs() < 1e-9);
+    ok &= push("the invariant form (diagonal; axes 0 5 6 7; first entry 1)", f(&a.quadratic_form), f(&b.quadratic_form), "+1 +1 +1 +1 (7+1); +1 -1 -1 -1 (4+4): the metric of the extra axes up to sign", fa && fb);
+    ok &= push("largest off-diagonal entry of the invariant form", e(a.quadratic_offdiag), e(b.quadratic_offdiag), "0", a.quadratic_offdiag < 1e-9 && b.quadratic_offdiag < 1e-9);
+    ok &= push("complex dimension of the particle-antiparticle mixing generators, mu = 0", a.dim_mixing.to_string(), b.dim_mixing.to_string(), "2 (symmetry O(4) x O(4), dimension 12)", a.dim_mixing == 2 && b.dim_mixing == 2);
+    ok &= push("the same with a chemical potential", a.dim_mixing_mu.to_string(), b.dim_mixing_mu.to_string(), "0 (symmetry U(2) x U(2), dimension 8)", a.dim_mixing_mu == 0 && b.dim_mixing_mu == 0);
+    for k in 0..6 {
+        let (pa, pb) = (&a.products[k], &b.products[k]);
+        let d = |p: &(usize, usize, bool, f64)| format!("{}; |[.,dynamics]| = {}", if p.2 { "Hermitian" } else { "antihermitian" }, e(p.3));
+        let exp = if pa.0 == 0 { "antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes" } else { "antihermitian (rotation) in both; commutes" };
+        let good = pa.3 < 1e-12 && pb.3 < 1e-12 && !pa.2 && (pb.2 == (pb.0 == 0));
+        ok &= push(&format!("gamma^{} gamma^{}", pa.0, pa.1), d(pa), d(pb), exp, good);
+    }
+    spacetimes::io::write_csv_str("reduced_symmetry.csv",
+        &[("content", "internal symmetries of the two models in the sector of fields that do not depend on the extra coordinates x0 x5 x6 x7 (zero-mode sector): commutant of alpha^1 alpha^2 alpha^3 beta and i beta chi".to_string()),
+          ("columns", "item; value for 7+1 (matrices gamma1671); value for 4+4 (matrices gamma1644, quantized sector); expected value; ok = 1 if the computed values agree with the expectation".to_string()),
+          ("command", "spacetimes symmetry".to_string())],
+        &["item", "value_1671", "value_1644", "expected", "ok"], &rows)?;
+    Ok(ok)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
@@ -906,8 +964,10 @@ fn main() {
         "superfluid" => cmd_superfluid().expect("i/o error"),
         "dimer" => cmd_dimer().expect("i/o error"),
         "halos" => cmd_halos().expect("i/o error"),
+        "symmetry" => cmd_symmetry().expect("i/o error"),
+        "cjt" => cjt_cmd::run().expect("i/o error"),
         _ => {
-            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (step_thermo.csv)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about 40 minutes\n  superfluid  growth of structure if the dark matter is a superfluid with first sound (sfdm_*.csv); about 10 minutes\n  dimer       bound state and scattering length of two particles in the Yukawa potential (dimer.csv)\n  halos       degeneracy, condensation and self-interaction of the particles in observed halos (dm_*.csv)");
+            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (step_thermo.csv)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about one hour\n  superfluid  growth of structure if the dark matter is a superfluid with first sound (sfdm_*.csv); about 10 minutes\n  dimer       bound state and scattering length of two particles in the Yukawa potential (dimer.csv)\n  halos       degeneracy, condensation and self-interaction of the particles in observed halos (dm_*.csv)\n  symmetry    internal symmetries of the sector of fields independent of the extra coordinates (reduced_symmetry.csv)\n  cjt         effective action of Cornwall, Jackiw and Tomboulis: checks and further predictions (cjt_*.csv); about 10 minutes\n              (cjt <part> runs one part: toy pairing thermo threshold landscape normal thermal vacuum)");
             true
         }
     };
