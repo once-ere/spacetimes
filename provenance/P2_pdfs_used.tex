@@ -1,0 +1,398 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P2 --- The PDF files of the project folder: which were used, and how},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P2 --- The PDF files of the project folder: which were used, and
+how}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance required by the task specification (PROJECT
+spacetimes)}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is-for}{%
+\section{1. What this document is for}\label{what-this-document-is-for}}
+
+The task specification asks for a provenance that lists every PDF file
+that was used and says how it was used. The project folder contains nine
+PDF files, all of them published papers. This document lists them, says
+how each was read, what the project took from it, where the project
+cites it, and what it did \emph{not} take. The symbols of these papers,
+and the places where they collide with the symbols of the notebooks, are
+the subject of the MASTER provenance
+(\texttt{provenance/P1\_master\_symbols}, Sec. 5.2).
+
+The result in one sentence: \textbf{no formula, no matrix and no number
+of the project is copied from any of the nine papers}; the papers are
+used for the origin and the conventions of the author's matrices, for
+the mathematical background of the two spacetimes, and as references.
+Everything that the project asserts about its matrices is proved by its
+own programs (provenance ``dirac matrices'').
+
+The nine files are not part of the repository, because they are
+copyrighted publications. They are identified by their SHA-256 checksums
+(Sec. 5), so that a reader who has the files can verify that he has the
+same copies.
+
+\hypertarget{the-nine-files}{%
+\section{2. The nine files}\label{the-nine-files}}
+
+``Pages'' is the number of pages of the file. ``Text'' says how the text
+was obtained: \emph{digital} means that the file is the publisher's
+digital original; \emph{layer} that it is a scan with a text layer made
+by character recognition before the project (of mixed quality: words are
+reliable, Greek letters and formulas often are not); \emph{OCR} that it
+is a scan without text, which was read by optical character recognition
+during this project (program tesseract 5.3.4) with the same limits.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0460}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3218}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.4828}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0690}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0805}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Paper
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Pages
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Text
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+D01 & \texttt{6dim\ dirac.pdf} & E. A. Lord, ``The Dirac spinor in six
+dimensions'', Proc. Camb. Phil. Soc. 64, 765 (1968) & 14 & OCR \\
+D02 & \texttt{A\ Remarkable\ Representation.pdf} & P. A. M. Dirac, ``A
+remarkable representation of the 3 + 2 de Sitter group'', J. Math. Phys.
+4, 901 (1963) & 10 & OCR \\
+D03 & \texttt{A\ new\ spin-half.pdf} & P. L. Nash, ``A new spin-1/2 wave
+equation'', J. Math. Phys. 26, 1363 (1985) & 5 & OCR \\
+D04 & \texttt{Bryant-octon-17-2-185-txt.pdf} & R. L. Bryant,
+``Submanifolds and special structures on the octonians'', J.
+Differential Geom. 17, 185 (1982) & 48 & layer \\
+D05 & \texttt{Calibrated\ geometries.pdf} & R. Harvey and H. B. Lawson,
+Jr., ``Calibrated geometries'', Acta Math. 148, 47 (1982) & 111 &
+layer \\
+D06 & \texttt{Identities\ satisfied.pdf} & P. L. Nash, ``Identities
+satisfied by the generators of the Dirac algebra'', J. Math. Phys. 25,
+204 (1984) & 6 & OCR \\
+D07 & \texttt{On\ the\ structure\ of\ the\ split\ octonion\ algebra.pdf}
+& P. L. Nash, ``On the structure of the split octonion algebra'', Nuovo
+Cimento B 105, 31 (1990) & 11 & layer \\
+D08 & \texttt{Second\ gravity.pdf} & P. L. Nash, ``Second gravity'', J.
+Math. Phys. 51, 042501 (2010) & 27 & digital \\
+D09 & \texttt{Vector\ cross\ products.pdf} & R. B. Brown and A. Gray,
+``Vector cross products'', Comment. Math. Helv. 42, 222 (1967) & 15 &
+layer \\
+\end{longtable}
+
+Because of the limits of the recognized text, the project relies only on
+statements of these papers that are legible \emph{in words} (for example
+``the tilde denotes transpose'', or the ranges of the indices). Where a
+formula could not be read with certainty, this is said (Sec. 3, D07).
+
+\hypertarget{how-each-paper-was-used}{%
+\section{3. How each paper was used}\label{how-each-paper-was-used}}
+
+\textbf{D08, ``Second gravity'' (Nash 2010).} \emph{Read:} the passages
+that define the space \(R^{4,4}\) and the matrices (its Sec. II), and
+the list of references. \emph{Used for:} (i) the origin of the matrices
+of \texttt{4+4.nb}: the paper defines real \(8\times8\) matrices
+\(\tau^A\), \(\bar\tau^A\) with
+\(\tau^A\bar\tau^B+\tau^B\bar\tau^A=2G_{AB}\) and the \(16\times16\)
+matrices \(t^A\) with the blocks \((0,\bar\tau^A;\tau^A,0)\), which is
+the construction of the notebook; (ii) the conventions that differ from
+the notebook: the index runs from 1 to 8 with \(\tau^8=\bar\tau^8=1\),
+the metric has the diagonal \((1,1,1,-1,-1,-1,-1,1)\), a tilde denotes
+the transpose; (iii) the statement that the construction follows a
+procedure of Lord (D01). \emph{Not used:} its matrices themselves (the
+project takes the matrices from the notebook and did not compare them
+entry by entry with the paper), and its physics (a theory of gravity).
+\emph{Cited:} both manuscripts, Secs. I and II; P1, Secs. 5.2 and 6.
+
+\textbf{D07, ``On the structure of the split octonion algebra'' (Nash
+1990).} \emph{Read:} the passages that define the matrices (its Sec. 2).
+\emph{Used for:} the same definitions as D08, in the same conventions;
+its remark that, relative to an earlier paper of the author, ``tau bar''
+and ``tau'' are exchanged and the sign of \(\tau^7\) is changed, which
+is a warning for anyone who compares the papers with one another; its
+condition that a product of the seven matrices with \(A=1,\dots,7\) be
+\(+1\). In the scanned copy the formula of that product is not legible
+enough to say which factors carry a bar; the project therefore states
+its own result, \(\tau_{1644}^1\cdots\tau_{1644}^7=1\) (check
+\texttt{44-B1}), and does not claim that this is the convention of the
+paper. \emph{Not used:} the relation to the split octonion algebra and
+to triality; the manuscripts refer to the paper for it and say so (``not
+established here''). \emph{Cited:} both manuscripts, Secs. I and II; P1.
+
+\textbf{D06, ``Identities satisfied by the generators of the Dirac
+algebra'' (Nash 1984).} \emph{Read:} the passages that define its
+matrices (its Sec. 2). \emph{Used for:} the origin of the six
+antisymmetric \(4\times4\) matrices \(s_h\), \(t_h\) from which the
+construction starts: the paper calls the six antisymmetric ones among
+its real \(4\times4\) matrices \(s^h\) (self-dual) and \(t^h\)
+(anti-self-dual), and the notebooks keep these letters
+(\texttt{s4by4{[}h{]}}, \texttt{t4by4{[}h{]}}). \emph{Not used:} its
+identities, which concern four-dimensional matrices. \emph{Cited:}
+manuscripts, Sec. I and (4+4) Sec. II A; P1.
+
+\textbf{D01, ``The Dirac spinor in six dimensions'' (Lord 1968).}
+\emph{Read:} its introduction and the passages on the generators.
+\emph{Used for:} one statement only: D08 says that its construction
+follows the procedure of this paper, which builds spinor representations
+of orthogonal groups from the generators of a Dirac algebra of lower
+dimension. \emph{Cited:} manuscripts, Sec. I.
+
+\textbf{D02, ``A remarkable representation of the 3 + 2 de Sitter
+group'' (Dirac 1963).} \emph{Read:} introduction. \emph{Used for:} the
+lineage of the real representations. The notebook
+\texttt{Dirac\_Einstein-Lovelock\_4+4\_Nash.nb} says that the
+calculation ``has its roots'' in this paper, in which Dirac defines a
+real representation of the covering group of \(SO(3,2)\), and that the
+author extended it to \(SO(3,3)\), to \(SO(4,4)\) and to real
+\(16\times16\) matrices. The Introduction of the manuscripts repeats
+this lineage in one sentence. \emph{Cited:} manuscripts, Sec. I.
+
+\textbf{D03, ``A new spin-1/2 wave equation'' (Nash 1985).} \emph{Read:}
+abstract and introduction. \emph{Used for:} the same lineage (the stage
+of \(SO(3,3)\)), together with D06. \emph{Not used:} its wave equation.
+\emph{Cited:} manuscripts, Sec. I.
+
+\textbf{D04 (Bryant 1982), D05 (Harvey and Lawson 1982), D09 (Brown and
+Gray 1967).} \emph{Read:} their introductions. \emph{Used for:} the
+statement that the signature 7+1 is the case of the octonions, and as
+references for the algebra of the octonions, the groups \(G_2\) and
+\(Spin(7)\) and the vector cross products of seven and eight dimensions,
+to which the 7+1 matrices are related. \emph{Not used:} any formula; the
+octonionic matrices of the project come from \texttt{7+1.nb} and are
+verified by machine (checks \texttt{71-B1}, \texttt{71-D6}). The
+manuscripts say that the relation of the 7+1 matrices to this
+mathematics is not established in them. \emph{Cited:} manuscripts, Secs.
+I and II.
+
+\hypertarget{statements-of-the-project-that-rest-on-these-papers}{%
+\section{4. Statements of the project that rest on these
+papers}\label{statements-of-the-project-that-rest-on-these-papers}}
+
+So that a reader can check them against the papers, these are all the
+statements of the project documents whose only support is one of the
+nine files:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6667}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2361}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0972}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Statement
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Paper
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+The author's papers define matrices \(\tau^A\), \(\bar\tau^A\), \(t^A\)
+of the kind used here, with the index values 1 to 8, the value 8
+corresponding to the value 0 here & M II A; P1 5.2, 6.2 & D07, D08 \\
+A tilde denotes the transpose in those papers & P1 5.2 & D07, D08 \\
+D07 exchanges ``tau'' and ``tau bar'' and changes the sign of \(\tau^7\)
+relative to an earlier paper & P1 5.2 & D07 \\
+The construction follows a procedure of Lord & M I & D08, D01 \\
+The letters \(s\), \(t\) of the \(4\times4\) matrices, self-dual and
+anti-self-dual, are those of the 1984 paper & M II A (4+4); P1 5.2 &
+D06 \\
+The real representations descend from Dirac's representation of the
+covering group of \(SO(3,2)\), through \(SO(3,3)\) & M I & D02, D03, D06
+(and the text of the notebook N04) \\
+The signature 7+1 is the case of the octonions & M I, II & D04, D05,
+D09 \\
+\end{longtable}
+
+M denotes the two manuscripts (the section numbers are the same in both
+unless a spacetime is named).
+
+The manuscripts cite about seventy further works. These were not
+supplied as files; they are cited from the published record, and their
+bibliographic data are in \texttt{manuscript/spacetimes\_refs.bib}.
+
+\hypertarget{checksums}{%
+\section{5. Checksums}\label{checksums}}
+
+The following lines of \texttt{provenance/inputs\_sha256.txt} identify
+the nine copies (SHA-256; verify with
+\texttt{shasum\ -a\ 256\ \textless{}file\textgreater{}} on macOS):
+
+\begin{verbatim}
+8d2a2c77c7d0fa0a864e9254d465771b6164355b863f969e561eb0677cfcdc90  6dim dirac.pdf
+56e95fadec54e9b72e63f9beb0ddf6e424796622a64e7039a21b7ec98fc8fb3f  A Remarkable Representation.pdf
+8eddd3a6a63d38531d881e12be56e350cd3f14846c112b53c59f7099ee6a86f1  A new spin-half.pdf
+85a8fe5049e60b5b8a65bc531110bc371f96749360c120716b00c0daaebcc0cf  Bryant-octon-17-2-185-txt.pdf
+af0befdd8949c78ca55f3c4aac8fb4f741083df9f23415cbd48c875160df64e3  Calibrated geometries.pdf
+197d18bfe18917375b11703bbf0b2fe022d97afb41278024841cd0d0ead64d22  Identities satisfied.pdf
+27fbbfb90522fecb4f23ec77a23ea621a87b0c9a3ad5d8b29f97dff2cd18d0bc  On the structure of the split octonion algebra.pdf
+7be828aad7e05b1753f9b81fdb57f65983a8b38536b49f3bdafeaa16242fc36a  Second gravity.pdf
+a436b29fd6b0e0d8ee9819398389619f4427b5384207bd404565ea569dde36c6  Vector cross products.pdf
+\end{verbatim}
+
+\end{document}

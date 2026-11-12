@@ -18,7 +18,7 @@ Fermions that attract one another pair, and the pairs condense. This is the orig
 
 An earlier study ([Patrick Lee Nash 2026b](#ref-NashNCSS)) asked whether the known neutrinos, in ordinary spacetime with three space dimensions and one time, can form such a spin-singlet superfluid, and whether that state could account for the dark matter or relieve the Hubble tension. The answer was negative on both counts. The present paper and its companion ([Patrick Lee Nash 2026a](#ref-Companion1671)) take up the same questions for a fermion field of a different kind: a field with sixteen components on a flat spacetime of eight dimensions.
 
-Eight dimensions are distinguished by an algebraic fact. The Dirac matrices of a spacetime are, by definition, matrices $\gamma^A$ whose anticommutators reproduce the metric. In eight dimensions the smallest such matrices have sixteen rows and columns, and for certain signatures of the metric they can be chosen *real*. Two such signatures are the subject of this work. The first has four space-like and four time-like dimensions, the signature $4{+}4$; it is the case of the split octonion algebra and of the triality of the group $SO(4,4)$, which the author has used before ([P. L. Nash 1990](#ref-Nash1990); [Patrick L. Nash 2010](#ref-Nash2010)). The second has seven space-like dimensions and one time-like dimension, the signature $7{+}1$; it is the case of the octonions ([Bryant 1982](#ref-Bryant1982); [Harvey and Lawson 1982](#ref-HarveyLawson1982); [Brown and Gray 1967](#ref-BrownGray1967)). (Real matrices of this size also exist for the Euclidean signature and for five dimensions of one kind and three of the other ([Atiyah, Bott, and Shapiro 1964](#ref-AtiyahBottShapiro1964); [Lawson and Michelsohn 1989](#ref-LawsonMichelsohn1989)).) A real set of Dirac matrices is the natural starting point for a theory in which the sixteen components of the fermion field have a geometrical meaning, and it is the starting point here.
+Eight dimensions are distinguished by an algebraic fact. The Dirac matrices of a spacetime are, by definition, matrices $\gamma^A$ whose anticommutators reproduce the metric. In eight dimensions the smallest such matrices have sixteen rows and columns, and for certain signatures of the metric they can be chosen *real*. Two such signatures are the subject of this work. The first has four space-like and four time-like dimensions, the signature $4{+}4$; it is the case of the split octonion algebra and of the triality of the group $SO(4,4)$, which the author has used before ([P. L. Nash 1990](#ref-Nash1990); [Patrick L. Nash 2010](#ref-Nash2010)). (That work descends from Dirac’s real representation of the covering group of $SO(3,2)$ ([Dirac 1963](#ref-Dirac1963)): real four-dimensional representations for $SO(3,3)$ ([Patrick L. Nash 1984](#ref-Nash1984), [1985](#ref-Nash1985)) and, with a procedure of Lord ([Lord 1968](#ref-Lord1968)), real eight-dimensional representations for $SO(4,4)$.) The second has seven space-like dimensions and one time-like dimension, the signature $7{+}1$; it is the case of the octonions ([Bryant 1982](#ref-Bryant1982); [Harvey and Lawson 1982](#ref-HarveyLawson1982); [Brown and Gray 1967](#ref-BrownGray1967)). (Real matrices of this size also exist for the Euclidean signature and for five dimensions of one kind and three of the other ([Atiyah, Bott, and Shapiro 1964](#ref-AtiyahBottShapiro1964); [Lawson and Michelsohn 1989](#ref-LawsonMichelsohn1989)).) A real set of Dirac matrices is the natural starting point for a theory in which the sixteen components of the fermion field have a geometrical meaning, and it is the starting point here.
 
 This paper treats the signature $4{+}4$. A spacetime with four times is not a small modification of ordinary spacetime: its wave equation is not hyperbolic, and a field theory on it has no reason to be stable ([Tegmark 1997](#ref-Tegmark1997); [Craig and Weinstein 2009](#ref-CraigWeinstein2009); [Bars 2001](#ref-Bars2001)). Part of our task is therefore to find out which part of the theory makes sense as a quantum theory, and to say so plainly. The companion paper ([Patrick Lee Nash 2026a](#ref-Companion1671)) treats the signature $7{+}1$, which has one time and none of these difficulties. The two papers follow the same plan, use the same methods and the same programs, and share the sections that do not depend on the signature; where the two spacetimes lead to different conclusions, the difference is stated.
 
@@ -93,13 +93,13 @@ This section meets objective O1. It defines the eight matrices, proves that they
 
 ### A. Definition
 
-The matrices are built in four steps, from $4\times4$ to $16\times16$ matrices. The $8\times8$ matrices of the second and third steps are the reduced generators that the author has used for the split octonion algebra and for the spinors of $SO(4,4)$ ([P. L. Nash 1990](#ref-Nash1990); [Patrick L. Nash 2010](#ref-Nash2010)).
+The matrices are built in four steps, from $4\times4$ to $16\times16$ matrices. The $8\times8$ matrices of the second and third steps are reduced generators of the kind that the author has used for the split octonion algebra and for the spinors of $SO(4,4)$ ([P. L. Nash 1990](#ref-Nash1990); [Patrick L. Nash 2010](#ref-Nash2010)); in those papers the index takes the values $1,\dots,8$, and the value 8 there corresponds to the value 0 here.
 
 *Step 1: six antisymmetric $4\times4$ matrices.* Let $\epsilon_{hpq4}$ be the sign of the permutation $(h,p,q,4)$ of $(1,2,3,4)$, and zero if two of the indices coincide. For $h=1,2,3$ and $p,q=1,\dots,4$, $$\begin{aligned}
 (s_h)_{pq}&=\epsilon_{hpq4}-\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big),\\
 (t_h)_{pq}&=\epsilon_{hpq4}+\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big).
 \tag{2}
-\end{aligned}$$ The three $s_h$ are self-dual and the three $t_h$ anti-self-dual antisymmetric matrices.
+\end{aligned}$$ The three $s_h$ are self-dual and the three $t_h$ anti-self-dual antisymmetric matrices; the letters are those of Ref. ([Patrick L. Nash 1984](#ref-Nash1984)), where six matrices of this kind generate the rotations in a real four-dimensional representation of the covering group of $SO(3,3)$.
 
 *Step 2: seven $8\times8$ matrices.* With $4\times4$ blocks, $$\begin{aligned}
 \tau^h&=\begin{pmatrix}0&s_h\\ s_h&0\end{pmatrix},\qquad
@@ -1879,6 +1879,12 @@ Davis, R. L., and E. P. S. Shellard. 1989. “Cosmic Vortons.” *Nucl. Phys. B*
 
 </div>
 
+<div id="ref-Dirac1963" class="csl-entry">
+
+Dirac, P. A. M. 1963. “A Remarkable Representation of the 3 + 2 de Sitter Group.” *J. Math. Phys.* 4: 901.
+
+</div>
+
 <div id="ref-DolanJackiw1974" class="csl-entry">
 
 Dolan, L., and R. Jackiw. 1974. “Symmetry Behavior at Finite Temperature.” *Phys. Rev. D* 9: 3320.
@@ -1999,6 +2005,12 @@ Li, Bohua, Tanja Rindler-Daller, and Paul R. Shapiro. 2014. “Cosmological Cons
 
 </div>
 
+<div id="ref-Lord1968" class="csl-entry">
+
+Lord, E. A. 1968. “The Dirac Spinor in Six Dimensions.” *Proc. Camb. Phil. Soc.* 64: 765.
+
+</div>
+
 <div id="ref-LuttingerWard1960" class="csl-entry">
 
 Luttinger, J. M., and J. C. Ward. 1960. “Ground-State Energy of a Many-Fermion System. II.” *Phys. Rev.* 118: 1417.
@@ -2047,9 +2059,21 @@ Nash, P. L. 1990. “On the Structure of the Split Octonion Algebra.” *Nuovo C
 
 </div>
 
+<div id="ref-Nash1984" class="csl-entry">
+
+Nash, Patrick L. 1984. “Identities Satisfied by the Generators of the Dirac Algebra.” *J. Math. Phys.* 25: 204.
+
+</div>
+
+<div id="ref-Nash1985" class="csl-entry">
+
+———. 1985. “A New Spin-$\frac{1}{2}$ Wave Equation.” *J. Math. Phys.* 26: 1363.
+
+</div>
+
 <div id="ref-Nash2010" class="csl-entry">
 
-Nash, Patrick L. 2010. “Second Gravity.” *J. Math. Phys.* 51: 042501.
+———. 2010. “Second Gravity.” *J. Math. Phys.* 51: 042501.
 
 </div>
 

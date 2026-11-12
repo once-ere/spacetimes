@@ -1,0 +1,346 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={PROJECT spacetimes --- README},
+  pdfauthor={Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{PROJECT spacetimes --- README}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{A singlet superfluid of a 16-component Dirac field on 4+4 and
+on 7+1 Minkowski spacetime: where everything is, and how to check it}
+\author{Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-project-is}{%
+\section{1. What this project is}\label{what-this-project-is}}
+
+The project asks one question for two flat eight-dimensional spacetimes,
+one with four space-like and four time-like dimensions (4+4) and one
+with seven space-like dimensions and one time-like dimension (7+1). Can
+a 16-component Dirac field form a spin-singlet superfluid whose pairing
+is mediated by a new scalar boson, the \emph{Vorton-Scalar}? And can
+that superfluid be the Higgs field, the dark matter, or the remedy of
+the Hubble tension?
+
+The coordinates are \(x0,\dots,x7\) in both spacetimes: \(x0\) is a
+hidden space-like coordinate, \(x1,x2,x3\) are ordinary space, \(x4\) is
+ordinary time, and \(x5,x6,x7\) are additional coordinates (time-like in
+4+4, space-like in 7+1).
+
+\hypertarget{the-answers-in-brief}{%
+\section{2. The answers in brief}\label{the-answers-in-brief}}
+
+The complete statements, with their proofs, their numbers and their
+limits, are in the two manuscripts; each section of the manuscripts ends
+with a subsection ``What has been established, and what has not''.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{The matrices.} Each spacetime has eight \emph{real}
+  \(16\times16\) Dirac matrices. Their anticommutation relations, and
+  the fact that their scaled commutators generate the spin groups (with
+  the matrices themselves: \(\mathrm{Pin}(4,4)\) and
+  \(\mathrm{Pin}(7,1)\)), are proved and verified by 106 machine checks
+  and by an independent second program.
+\item
+  \textbf{The superfluid.} Established within stated approximations: the
+  field has a pair of spin 0 that is a scalar of ordinary spacetime; a
+  complex scalar field, the Vorton-Scalar, binds this pair, and its
+  neutral current selects it; at any finite density the paired state
+  lies below the unpaired one. The singlet along the hidden coordinate
+  is a ground state, but one of a degenerate family.
+\item
+  \textbf{The Higgs hypothesis.} Not established. On 4+4 it has no
+  geometric basis. On 7+1 one structural condition is met (the order
+  parameter is a multiplet of the rotations of the four extra axes, and
+  its vacuum value breaks \(SO(4)\) to \(SO(3)\), the pattern of the
+  Higgs vacuum), but the dynamical conditions are not met where the
+  model can be solved. In both spacetimes a condensate in empty space
+  was found only at couplings at which the methods used are a guide and
+  not a proof.
+\item
+  \textbf{The Hubble tension.} Not explained: simulations with a
+  purpose-built Einstein-Boltzmann solver show that the dark radiation
+  of the model raises the Hubble constant only at a price that the data
+  do not allow.
+\item
+  \textbf{Dark matter.} A superfluid that could act on galactic scales
+  erases the observed small-scale structure. Heavy bound pairs as cold
+  dark matter are neither supported nor excluded, and make no use of the
+  superfluid.
+\end{itemize}
+
+\hypertarget{where-to-start-reading}{%
+\section{3. Where to start reading}\label{where-to-start-reading}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4239}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5761}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+If you want
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Read
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+the whole argument for one spacetime &
+\texttt{manuscript/16\ Component\ Dirac\ Fermion\ Condensate\ Singlet\ Superfluid\ on\ 4+4\ Spacetime.pdf},
+or \texttt{...\ on\ 7+1\ Spacetime.pdf} \\
+the proofs about the matrices & \texttt{dirac\ matrices.pdf} \\
+the Vorton-Scalar and the superfluid in detail &
+\texttt{supplement/S1\_vorton\_scalar\_and\_superfluid.pdf} \\
+the Higgs hypothesis & \texttt{supplement/S2\_higgs\_hypothesis.pdf} \\
+the cosmological simulations & \texttt{supplement/S3\_cosmology.pdf} \\
+the effective action of Cornwall, Jackiw and Tomboulis &
+\texttt{supplement/S4\_cjt\_effective\_action.pdf} \\
+what every symbol means, and how it differs from the symbols of the
+original files & \texttt{provenance/P1\_master\_symbols.pdf} \\
+how to compile and run the code & \texttt{provenance/P8\_code.pdf} \\
+\end{longtable}
+
+Every document exists in three versions with the same name: Markdown
+(\texttt{.md}), LaTeX (\texttt{.tex}) and PDF (\texttt{.pdf}).
+
+\hypertarget{what-is-in-the-repository}{%
+\section{4. What is in the repository}\label{what-is-in-the-repository}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3068}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6932}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Path
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Content
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{manuscript/} & the two manuscripts (REVTeX, PDF, Markdown) and
+their bibliography \\
+\texttt{dirac\ matrices.*} & provenance ``dirac matrices'': definitions,
+theorems, proofs and worked examples for both sets of matrices \\
+\texttt{supplement/} & Supplements S1 to S4 \\
+\texttt{provenance/} & P0 (how commits reach GitHub), P1 (MASTER
+provenance of the symbols), P2 (the PDF files used), P3 (the notebooks
+used), P8 (the code), P9 (the error log); \texttt{symbols.csv};
+\texttt{inputs\_sha256.txt}; \texttt{generated/} (fragments made by the
+programs) \\
+\texttt{code/spacetimes-rs/} & the Rust program that computes everything
+(no external libraries; 63 unit tests) \\
+\texttt{code/scripts/} & Python scripts: independent verification,
+tables, figures, building of the documents, checks of the symbols \\
+\texttt{tools/} & reading the Mathematica notebooks without
+Mathematica \\
+\texttt{data/} & every data file that a program wrote, each with a
+header that states the program, the command, the content and the
+units \\
+\texttt{figures/} & every figure, as PDF and PNG \\
+\texttt{docs\_src/} & the sources of the documents, with placeholders
+for the generated numbers \\
+\end{longtable}
+
+Not in the repository: the author's Mathematica notebooks, the nine
+published papers of the project folder, and the task specification. The
+provenances identify these files by their checksums
+(\texttt{provenance/inputs\_sha256.txt}).
+
+\hypertarget{how-to-check-the-results}{%
+\section{5. How to check the results}\label{how-to-check-the-results}}
+
+The short form (details and explanations: \texttt{provenance/P8\_code}):
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes/code/spacetimes-rs"
+cargo test --release                          # 63 unit tests
+cd "/Users/nsh/Developer/github/spacetimes"
+code/spacetimes-rs/target/release/spacetimes matrices           # the 106 machine checks
+python3 code/scripts/verify_matrices_independent.py             # the independent program
+python3 code/scripts/check_symbols.py                           # the checks of the symbols
+\end{verbatim}
+
+The first command needs the Rust compiler; \texttt{provenance/P8\_code}
+says how to install it and how to recompute every data file, table and
+figure.
+
+\hypertarget{rules-that-the-project-follows}{%
+\section{6. Rules that the project
+follows}\label{rules-that-the-project-follows}}
+
+\begin{itemize}
+\tightlist
+\item
+  Every object has one symbol; symbols of the 4+4 spacetime carry the
+  tag 1644, those of the 7+1 spacetime the tag 1671, and those of the
+  Vorton-Scalar the suffix VS (\texttt{provenance/P1\_master\_symbols}).
+\item
+  No number in a document is typed by hand: programs write data files,
+  and scripts insert the numbers into the documents.
+\item
+  Every error that was found is recorded, with the way it was found and
+  its correction (\texttt{provenance/P9\_error\_log}).
+\item
+  What is not established is said, in every section.
+\end{itemize}
+
+\hypertarget{licence}{%
+\section{7. Licence}\label{licence}}
+
+The source code is distributed under the GNU General Public License,
+version 3 or later (file \texttt{LICENSE}).
+
+\end{document}

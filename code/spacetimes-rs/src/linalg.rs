@@ -11,6 +11,10 @@
 //! Jacobi method is both the simplest and - because it is backward stable and
 //! computes small eigenvector components to high RELATIVE accuracy - the
 //! most accurate choice.  No external crate is used.
+//!
+//! [spacetimes] The modules named above belong to NCSS.  In PROJECT spacetimes this
+//! module serves `kernel`, `pairs` and `cjt_pairing`, whose Hermitian matrices have
+//! 8 or 16 rows; the code is unchanged.
 
 use crate::complex::C64;
 

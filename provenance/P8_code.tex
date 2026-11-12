@@ -1,0 +1,641 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P8 --- The source code: what computes what, and how to compile and run it},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P8 --- The source code: what computes what, and how to compile
+and run it}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance required by Hard Rule 6 of the task specification
+(PROJECT spacetimes)}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is-for}{%
+\section{1. What this document is for}\label{what-this-document-is-for}}
+
+Hard Rule 6 of the task specification demands commented source code for
+every equation, result, figure, graph and prediction, instructions for
+using the code, a provenance for every computed value, and that the code
+be executed. This document is the map: it says which program computes
+which file, which file feeds which figure and which number of the
+documents, how the programs are tested, and how to compile and run
+everything.
+
+The rules that the code follows:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Rust for every computation.} The task specification prefers
+  Rust. All physics is computed by one Rust program, \texttt{spacetimes}
+  (\texttt{code/spacetimes-rs}, 28 source files, about 11 400 lines, 63
+  unit tests). It uses no external library, so it builds with nothing
+  but a Rust compiler.
+\item
+  \textbf{Python for an independent verification, and for tables,
+  figures and documents.} A program can be wrong in the same way twice;
+  the Dirac matrices are therefore verified a second time by a Python
+  program that shares no code with the Rust program. Python scripts also
+  turn the data files into tables and figures and build the documents.
+\item
+  \textbf{Mathematica is not used.} The matrices are read from what
+  Mathematica printed in the author's notebooks (provenance P3) and
+  rebuilt by the programs.
+\item
+  \textbf{No number is typed by hand.} Every number in a document is
+  inserted by a script from a data file that a program wrote (Sec. 6).
+\end{itemize}
+
+\textbf{Where the code was executed.} All data files, figures and
+documents of the repository were produced by running the code on a Linux
+computer (x86-64) with rustc 1.97.0, Python 3.13.18 (numpy 2.5.3, scipy
+1.18.1, matplotlib 3.11.2), pandoc 3.1.3 and XeLaTeX (TeX Live 2023).
+The assistant could not run the Rust program on the author's Mac,
+because no Rust compiler is reachable from its sandbox there; since the
+program has no dependencies, it should build and run on macOS unchanged
+(Sec. 2). Results of floating-point arithmetic may then differ in the
+last digits; the exact checks of the matrices use integer arithmetic and
+must agree exactly.
+
+\hypertarget{how-to-compile-and-run-everything-on-a-mac}{%
+\section{2. How to compile and run everything on a
+Mac}\label{how-to-compile-and-run-everything-on-a-mac}}
+
+Each block can be pasted into the Terminal as it is. Lines that begin
+with \texttt{\#} are explanations.
+
+\textbf{Step 1, once: the Rust compiler.} If the command
+\texttt{cargo\ -\/-version} prints a version number, skip this step.
+
+\begin{verbatim}
+# install the Rust compiler and its build tool "cargo" (official installer; accept the defaults)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# make the new commands known to this Terminal window
+source "$HOME/.cargo/env"
+cargo --version
+\end{verbatim}
+
+\textbf{Step 2, once: the Python packages} (needed for the tables, the
+figures and the comparison with the reference spectra, not for the Rust
+program).
+
+\begin{verbatim}
+python3 -m pip install --user numpy scipy matplotlib
+\end{verbatim}
+
+\textbf{Step 3: compile and test.} This compiles the program (about one
+minute) and runs its 63 unit tests; the last line must say
+\texttt{test\ result:\ ok.\ 63\ passed}.
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes/code/spacetimes-rs"
+cargo build --release
+cargo test --release
+\end{verbatim}
+
+\textbf{Step 4: recompute every data file.} Each command writes its
+files into \texttt{data/} and prints what it did. The commands
+\texttt{forecast} (about one hour) and \texttt{superfluid} (about ten
+minutes) are the long ones; the whole block takes about an hour and a
+half on a computer with two processor cores.
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes"
+B=code/spacetimes-rs/target/release/spacetimes
+for c in matrices channels gap dimer symmetry cjt background spectrum forecast superfluid halos
+do
+  $B $c
+done
+\end{verbatim}
+
+\textbf{Step 5: the independent verification and the comparison with
+CLASS.}
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes"
+python3 code/scripts/verify_matrices_independent.py
+python3 code/scripts/validate_cmb_against_class.py
+python3 code/scripts/check_symbols.py
+\end{verbatim}
+
+\textbf{Step 6: tables and figures.}
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes"
+python3 code/scripts/make_tables.py
+python3 code/scripts/make_figures.py
+\end{verbatim}
+
+\textbf{Step 7, optional: the documents.} This needs pandoc and a TeX
+installation with XeLaTeX and latexmk (for example MacTeX), and the
+DejaVu and Latin Modern Math fonts.
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes"
+for f in docs_src/*.src.md; do python3 code/scripts/assemble_docs.py "$f"; done
+bash code/scripts/build_docs.sh
+python3 code/scripts/build_manuscripts.py
+\end{verbatim}
+
+To run a single command of the program and see the list of all commands:
+
+\begin{verbatim}
+cd "/Users/nsh/Developer/github/spacetimes"
+code/spacetimes-rs/target/release/spacetimes help
+\end{verbatim}
+
+\hypertarget{the-commands-of-the-rust-program-and-the-files-they-write}{%
+\section{3. The commands of the Rust program, and the files they
+write}\label{the-commands-of-the-rust-program-and-the-files-they-write}}
+
+Every data file begins with lines that start with \texttt{\#} and state
+the program, the command, the content, the units and the parameters; the
+table can be checked against these headers.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1188}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4257}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3168}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1386}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Command
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it computes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Files in \texttt{data/}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Documented in
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{matrices} & builds the two sets of eight real \(16\times16\)
+Dirac matrices and runs the 106 machine checks; classifies the fermion
+pairs & \texttt{gamma1644.txt}, \texttt{gamma1671.txt},
+\texttt{matrix\_checks.txt}, \texttt{matrix\_checks.csv},
+\texttt{pair\_classification.txt}, \texttt{pair\_classification.csv};
+also \texttt{provenance/generated/matrices.md} & ``dirac matrices''; M
+II to IV \\
+\texttt{channels} & exchange amplitudes of the Vorton-Scalar in the pair
+channels; quartic invariant of the order parameter &
+\texttt{pair\_channel\_kernel.csv}, \texttt{gl\_quartic\_check.csv} & S1
+Secs. 4, 6; M VI, VIII \\
+\texttt{gap} & gap equation of the hidden-axis singlet &
+\texttt{gap\_scan.csv}, \texttt{gap\_profile.csv} & S1 Sec. 5; M VII \\
+\texttt{dimer} & two fermions in the Yukawa potential: scattering
+length, binding energy, critical coupling & \texttt{dimer.csv} & S1 Sec.
+5.3; M VII \\
+\texttt{symmetry} & internal symmetry of the zero-mode sector, from the
+matrices & \texttt{reduced\_symmetry.csv} & S1 Sec. 2.1; S4 Sec. 2.4; M
+V \\
+\texttt{cjt} & everything computed with the effective action of
+Cornwall, Jackiw and Tomboulis: test model, paired state,
+thermodynamics, order-parameter landscape, matter, temperature, vacuum &
+the sixteen files \texttt{cjt\_*.csv} & S4; M VII to IX, App. B \\
+\texttt{background} & expansion history and recombination with the dark
+radiation of the model & \texttt{step\_thermo.csv} & S3 Sec. 1; M XI \\
+\texttt{spectrum} & spectra of the microwave background and of matter
+for the fiducial model; convergence & \texttt{cmb\_fiducial\_cl.csv},
+\texttt{cmb\_fiducial\_pk.csv}, \texttt{cmb\_convergence.csv} & S3 Sec.
+2; M XI, App. D \\
+\texttt{forecast} & fits of seven families of dark-radiation models to
+mock data & \texttt{dr\_fisher.csv}, \texttt{dr\_profiles.csv},
+\texttt{dr\_residuals.csv}, \texttt{dr\_zt\_scan.csv},
+\texttt{dr\_chord\_check.csv} & S3 Sec. 3; M XI \\
+\texttt{superfluid} & growth of structure if the dark matter is a
+superfluid & \texttt{sfdm\_transfer.csv}, \texttt{sfdm\_summary.csv},
+\texttt{sfdm\_bounds.csv} & S3 Sec. 4; M XII \\
+\texttt{halos} & conditions for degeneracy and condensation in halos;
+self-interaction of bound pairs & \texttt{dm\_halo\_estimates.csv},
+\texttt{dm\_selfinteraction.csv} & S3 Sec. 4; M XII \\
+\end{longtable}
+
+Files in \texttt{data/} that other programs write:
+\texttt{matrix\_checks\_independent.txt}
+(\texttt{verify\_matrices\_independent.py});
+\texttt{cmb\_validation.csv}, \texttt{pk\_validation.csv}
+(\texttt{validate\_cmb\_against\_class.py});
+\texttt{notebook\_matrices\_4+4.txt},
+\texttt{notebook\_matrices\_7+1.txt}
+(\texttt{tools/extract\_nb\_matrices.py}, provenance P3);
+\texttt{symbol\_checks.txt}, \texttt{symbol\_concordance.csv}
+(provenance P1); and the two reference spectra in
+\texttt{data/reference/}, which are copies from the author's project
+NCSS with their checksums in the headers.
+
+\hypertarget{the-source-files-of-the-rust-program}{%
+\section{4. The source files of the Rust
+program}\label{the-source-files-of-the-rust-program}}
+
+Each file begins with a comment that states its purpose, its equations
+and its tests. Four small files are taken unchanged from the author's
+project NCSS and say so in their first lines.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2000}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0750}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.7250}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Lines
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Purpose
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{gamma.rs} & 270 & construction of the two sets of Dirac matrices
+from their definitions \\
+\texttt{imat.rs} & 316 & exact matrix arithmetic over the integers and
+the Gaussian integers; exact rank \\
+\texttt{verify.rs} & 582 & the machine checks of the matrices
+(anticommutators, Lie algebra, group, notebooks, chirality) \\
+\texttt{dirac.rs} & 272 & the Dirac equations of the two fields, checked
+in momentum space \\
+\texttt{pairs.rs} & 556 & which pairs of two identical particles exist;
+their quantum numbers \\
+\texttt{symmetry.rs} & 551 & internal symmetries of the zero-mode
+sector \\
+\texttt{kernel.rs} & 463 & exchange amplitudes of the Vorton-Scalar,
+channel by channel \\
+\texttt{gap.rs} & 414 & the gap equation of the hidden-axis singlet \\
+\texttt{dimer.rs} & 171 & two particles in the Yukawa potential \\
+\texttt{cjt\_toy.rs} & 201 & the method of Cornwall, Jackiw and
+Tomboulis on a solvable model \\
+\texttt{cjt\_pairing.rs} & 778 & effective potential of the paired
+state; thermodynamics; landscape \\
+\texttt{cjt\_normal.rs} & 807 & effective potential for the expectation
+value of the Vorton-Scalar: matter, temperature \\
+\texttt{cjt\_vacuum.rs} & 163 & the gap equation in the vacuum \\
+\texttt{cjt\_cmd.rs} & 612 & the command \texttt{cjt} \\
+\texttt{cosmo.rs} & 1108 & expansion history, the dark radiation of the
+model, recombination \\
+\texttt{boltzmann.rs} & 727 & linear perturbations: the
+Einstein-Boltzmann equations \\
+\texttt{spectra.rs} & 358 & angular power spectra and matter power
+spectrum \\
+\texttt{bessel.rs} & 222 & spherical Bessel functions for the
+line-of-sight integrals \\
+\texttt{forecast.rs} & 535 & mock likelihood, Fisher matrices, profile
+fits \\
+\texttt{fmat.rs} & 187 & small real matrices in double precision \\
+\texttt{quad.rs} & 146 & Gauss-Legendre quadrature \\
+\texttt{export.rs} & 136 & writing matrices and check reports \\
+\texttt{main.rs} & 978 & the commands \\
+\texttt{lib.rs} & 56 & list of the modules \\
+\texttt{complex.rs}, \texttt{linalg.rs}, \texttt{roots.rs},
+\texttt{io.rs} & 745 & complex numbers, small Hermitian eigenproblems,
+root finding, CSV output (from NCSS) \\
+\end{longtable}
+
+\hypertarget{the-python-scripts-and-tools}{%
+\section{5. The Python scripts and
+tools}\label{the-python-scripts-and-tools}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4432}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5568}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Script
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Purpose
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{code/scripts/verify\_matrices\_independent.py} & independent
+verification of the matrices: rebuilds them from the definitions with
+exact rational arithmetic and repeats the essential checks (36 checks);
+writes \texttt{data/matrix\_checks\_independent.txt} \\
+\texttt{code/scripts/validate\_cmb\_against\_class.py} & compares the
+spectra of the Rust program with reference spectra of the code CLASS;
+writes \texttt{cmb\_validation.csv}, \texttt{pk\_validation.csv} \\
+\texttt{code/scripts/make\_tables.py}, \texttt{make\_tables\_cosmo.py},
+\texttt{make\_tables\_cjt.py} & turn the data files into the numbers and
+tables of the documents (\texttt{provenance/generated/tables.md}) \\
+\texttt{code/scripts/make\_figures.py} & draws all figures from the data
+files (Sec. 7) \\
+\texttt{code/scripts/assemble\_docs.py} & inserts the generated numbers,
+tables and files into the document sources
+\texttt{docs\_src/*.src.md} \\
+\texttt{code/scripts/build\_docs.sh}, \texttt{check\_layout.py},
+\texttt{doc\_header.tex} & Markdown to LaTeX to PDF for the supplements
+and provenances, with a check of the layout \\
+\texttt{code/scripts/build\_manuscripts.py}, \texttt{tex2md.py} & build
+the two manuscripts from the common REVTeX source in
+\texttt{docs\_src/manuscript/}; Markdown versions \\
+\texttt{code/scripts/write\_symbol\_registry.py},
+\texttt{check\_symbols.py}, \texttt{symbol\_concordance.py} & the
+registry of symbols and its checks (provenance P1) \\
+\texttt{tools/nb2txt.py}, \texttt{tools/extract\_nb\_matrices.py},
+\texttt{tools/scan\_notebook\_symbols.py} & reading the notebooks
+without Mathematica (provenance P3) \\
+\end{longtable}
+
+\hypertarget{from-a-data-file-to-a-number-in-a-document}{%
+\section{6. From a data file to a number in a
+document}\label{from-a-data-file-to-a-number-in-a-document}}
+
+No number in the supplements, in ``dirac matrices'' or in the
+manuscripts is typed by hand. The chain is
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  a command of the Rust program writes a data file (Sec. 3);
+\item
+  \texttt{make\_tables.py} reads the data files and writes named
+  fragments (a number, a table) into
+  \texttt{provenance/generated/tables.md}; \texttt{spacetimes\ matrices}
+  writes the displayed matrices into
+  \texttt{provenance/generated/matrices.md};
+\item
+  the document sources contain placeholders (the name of a fragment in
+  double curly braces, preceded by \texttt{GEN:}, \texttt{GENM:} or
+  \texttt{ROWS:}); \texttt{assemble\_docs.py} and
+  \texttt{build\_manuscripts.py} replace them.
+\end{enumerate}
+
+To find the origin of a number, search for it in
+\texttt{provenance/generated/tables.md}; the name of the fragment leads
+to the function of \texttt{make\_tables*.py} that made it, and that
+function names the data file and the column. To change a number, the
+program must be changed and run again; editing a document does not
+survive the next build.
+
+\hypertarget{from-a-data-file-to-a-figure}{%
+\section{7. From a data file to a
+figure}\label{from-a-data-file-to-a-figure}}
+
+All figures are drawn by \texttt{code/scripts/make\_figures.py}, one
+function per figure; each figure exists as PDF (for the documents) and
+PNG.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2553}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3404}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4043}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Figure (\texttt{figures/})
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Data files
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Shows
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{fig\_kernels} & \texttt{pair\_channel\_kernel.csv} & exchange
+amplitudes in the pair channels \\
+\texttt{fig\_gap} & \texttt{gap\_scan.csv} & the gap and the critical
+temperature \\
+\texttt{fig\_dimer} & \texttt{dimer.csv} & scattering length and binding
+energy of two fermions \\
+\texttt{fig\_cjt\_toy} & \texttt{cjt\_toy.csv} & the effective action on
+a solvable model \\
+\texttt{fig\_cjt\_thermo} & \texttt{cjt\_thermo.csv} & gap, entropy and
+heat capacity against temperature \\
+\texttt{fig\_cjt\_landscape} & \texttt{cjt\_landscape\_scan.csv} &
+energy as a function of the order parameter \\
+\texttt{fig\_cjt\_normal} & \texttt{cjt\_normal.csv} & fermion mass in
+matter; self-bound matter \\
+\texttt{fig\_cjt\_thermal} & \texttt{cjt\_thermal\_profile.csv} & the
+fermion mass at finite temperature \\
+\texttt{fig\_cjt\_vacuum} & \texttt{cjt\_vacuum.csv} & the critical
+coupling for a condensate in the vacuum \\
+\texttt{fig\_cjt\_vacpot} & \texttt{cjt\_vacuum\_potential.csv} & the
+potential of the Vorton-Scalar in the vacuum \\
+\texttt{fig\_cmb\_validation} & \texttt{cmb\_validation.csv} & spectra
+of this work against CLASS \\
+\texttt{fig\_step\_thermo} & \texttt{step\_thermo.csv} & the dark
+radiation of the model through its transition \\
+\texttt{fig\_dr\_profiles\_planck}, \texttt{fig\_dr\_profiles\_deep} &
+\texttt{dr\_profiles.csv} & fits of the dark-radiation families to the
+two mock data sets \\
+\texttt{fig\_dr\_residuals} & \texttt{dr\_residuals.csv} & residual
+spectra \\
+\texttt{fig\_dr\_zt} & \texttt{dr\_zt\_scan.csv} & dependence on the
+transition redshift \\
+\texttt{fig\_sfdm\_transfer} & \texttt{sfdm\_transfer.csv},
+\texttt{sfdm\_summary.csv}, \texttt{sfdm\_bounds.csv} & suppression of
+the matter power spectrum by the sound of a superfluid \\
+\texttt{fig\_dm\_windows} & \texttt{dm\_halo\_estimates.csv},
+\texttt{dm\_selfinteraction.csv}, \texttt{sfdm\_bounds.csv} & the
+fermion masses that a galactic superfluid needs and those that
+observations allow \\
+\end{longtable}
+
+\hypertarget{how-the-code-is-tested}{%
+\section{8. How the code is tested}\label{how-the-code-is-tested}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2621}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4466}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1165}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1748}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Test
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it establishes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Result
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+106 machine checks of \texttt{spacetimes\ matrices} (96 exact, 10
+numerical) & the properties of the two sets of Dirac matrices, including
+identity with the matrices printed in the notebooks & all pass &
+\texttt{data/matrix\_checks.txt} \\
+36 checks of the independent Python program & the same essential
+properties by other methods & all pass &
+\texttt{data/matrix\_checks\_independent.txt} \\
+63 unit tests (\texttt{cargo\ test\ -\/-release}) & each numerical
+routine against a closed result or an independent method & all pass &
+the \texttt{tests} modules of the source files \\
+comparison with CLASS & the Einstein-Boltzmann solver against reference
+spectra & differences in the tables of S3 Sec. 2 and of M App. D &
+\texttt{data/cmb\_validation.csv}, \texttt{data/pk\_validation.csv} \\
+consistency checks through the effective action & the gap equation, the
+bound-state threshold and the Ginzburg-Landau coefficients by a second
+route & agreement stated in S4 Sec. 3 &
+\texttt{data/cjt\_pairing\_check.csv}, \texttt{cjt\_threshold.csv},
+\texttt{cjt\_gl\_summary.csv} \\
+9 checks of the symbols & uniqueness of the symbols of the project & all
+pass & \texttt{data/symbol\_checks.txt} \\
+layout checks & no line, table or formula wider than its box; no
+undefined reference & reported at every build & output of
+\texttt{build\_docs.sh}, \texttt{build\_manuscripts.py} \\
+\end{longtable}
+
+The code CLASS itself was not run in this project: the reference spectra
+are those of the author's project NCSS, computed there with CLASS
+v3.4.2. Every error that the tests found is recorded in the error log
+(\texttt{provenance/P9\_error\_log}).
+
+\end{document}

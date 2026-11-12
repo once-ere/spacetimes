@@ -1,0 +1,557 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P3 --- The Mathematica notebooks of the project folder: which were used, and how},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P3 --- The Mathematica notebooks of the project folder: which
+were used, and how}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance required by the task specification (PROJECT
+spacetimes)}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is-for}{%
+\section{1. What this document is for}\label{what-this-document-is-for}}
+
+The task specification asks for a provenance that lists every
+Mathematica notebook that was used and says how it was used. The project
+folder contains fourteen notebooks. This document lists them, describes
+the tools with which they were read, and states, cell by cell where it
+matters, what the project took from each. The \emph{symbols} of the
+notebooks, and the many places where two notebooks use the same symbol
+for different objects, are the subject of the MASTER provenance
+(\texttt{provenance/P1\_master\_symbols}).
+
+The result in short:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{4+4.nb} is the source of the eight real \(16\times16\) Dirac
+  matrices of the 4+4 spacetime, as the task specification prescribes.
+\item
+  \texttt{7+1.nb} is the source of the eight real \(16\times16\) Dirac
+  matrices of the 7+1 spacetime, as the task specification prescribes,
+  and is quoted in a few places for context.
+\item
+  The meaning of the eight coordinates is taken from the head of
+  \texttt{4+4.nb} and from
+  \texttt{Dirac\_Einstein-Lovelock\_4+4\_Nash.nb}.
+\item
+  The other eleven notebooks were read for their conventions and for the
+  survey of symbols. Nothing is taken from them; most belong to the
+  second stage of the author's programme (gravity), which the task
+  specification says is not to be implemented.
+\item
+  \textbf{Mathematica was not run.} The project reads what Mathematica
+  \emph{printed} in the notebooks, rebuilds every matrix from its
+  definition with its own program (Rust), compares the two entry by
+  entry, and repeats the essential checks with an independent program
+  (Python). Nothing in the project depends on evaluating a notebook
+  again.
+\end{itemize}
+
+The notebooks are not part of the repository (they are the author's
+unpublished work); \texttt{provenance/inputs\_sha256.txt} identifies the
+copies that were read.
+
+\hypertarget{how-the-notebooks-were-read}{%
+\section{2. How the notebooks were
+read}\label{how-the-notebooks-were-read}}
+
+A notebook file (\texttt{.nb}) is a text file that contains one large
+expression: a list of cells, each holding typeset ``boxes''. Three small
+programs, all in the repository, read these files without Mathematica.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2842}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4421}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2737}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Program
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it does
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Used for
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{tools/nb2txt.py} & converts a notebook to plain text, cell by
+cell, with a running cell number and the style of each cell (Input,
+Output, Text, \ldots); typeset input appears in linear form & reading;
+every citation ``cell \emph{n}'' in the project refers to its
+numbering \\
+\texttt{tools/extract\_nb\_matrices.py} & reads the integer matrices
+that Mathematica printed in given output cells &
+\texttt{data/notebook\_matrices\_4+4.txt},
+\texttt{data/notebook\_matrices\_7+1.txt}, against which the programs
+compare their matrices \\
+\texttt{tools/scan\_notebook\_symbols.py} & lists the symbols that each
+notebook defines & the survey of symbols of P1 \\
+\end{longtable}
+
+To repeat the reading (from the root of the repository, with the
+notebooks in that folder):
+
+\begin{verbatim}
+python3 tools/nb2txt.py "4+4.nb" /tmp/4+4.txt 300          # text of a notebook; outputs cut after 300 characters
+python3 tools/extract_nb_matrices.py "4+4.nb" 13 136 163 165 314 > data/notebook_matrices_4+4.txt
+python3 tools/extract_nb_matrices.py "7+1.nb" 204 > data/notebook_matrices_7+1.txt
+python3 tools/scan_notebook_symbols.py                     # symbols of all notebooks
+\end{verbatim}
+
+\hypertarget{the-fourteen-notebooks}{%
+\section{3. The fourteen notebooks}\label{the-fourteen-notebooks}}
+
+``Cells'' is the number of cells, with the number of input cells in
+parentheses.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0617}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.7901}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1481}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+File
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cells
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+N01 & \texttt{4+4.nb} & 806 (366) \\
+N02 & \texttt{7+1.nb} & 1402 (189) \\
+N03 & \texttt{Bessel\ product.nb} & 184 (88) \\
+N04 & \texttt{Dirac\_Einstein-Lovelock\_4+4\_Nash.nb} & 403 (112) \\
+N05 & \texttt{Dirac\_Nash\_Identity.nb} & 400 (192) \\
+N06 & \texttt{Einstein-Lovelock-4+4-Nash.nb} & 343 (82) \\
+N07 & \texttt{Einstein-Lovelock-7+1-Nash.nb} & 342 (82) \\
+N08 & \texttt{Einstein-Lovelock-Eternal.nb} & 316 (64) \\
+N09 & \texttt{Generalized\ \_Kronecker\_Delta\_4+4.nb} & 218 (57) \\
+N10 &
+\texttt{Pair\_Creation\_of\_Universes\_WaveFunctionOfUniverse-4+4-Einstein-Lovelock-Nash.nb}
+& 2098 (991) \\
+N11 & \texttt{WaveFunctionUniverse-4+4-Einstein-Lovelock-Nash.nb} & 929
+(452) \\
+N12 & \texttt{WaveFunctionUniverse-4+4-Einstein-Lovelock.nb} & 1317
+(615) \\
+N13 & \texttt{det-g.nb} & 20 (8) \\
+N14 & \texttt{field\_equations.nb} & 271 (69) \\
+\end{longtable}
+
+What the notebooks contain, and what the project did with them:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0641}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5128}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4231}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Id
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it contains
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Use
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+N01 & the real Dirac matrices of 4+4 and their \(8\times8\) and
+\(4\times4\) building blocks; split octonions; complex structures &
+\textbf{source of the 4+4 matrices} (Sec. 4) \\
+N02 & octonions; real Dirac matrices of 7+1; Dirac equation of a
+16-component field; in 27 sections also gravity, a brane picture,
+cosmology & \textbf{source of the 7+1 matrices}; quoted for context
+(Sec. 5) \\
+N03 & identities for products of Bessel functions & not used \\
+N04 & Einstein--Lovelock field equations on 4+4 with the package xAct; a
+text on the origin of the work & \textbf{meaning of the coordinates}
+\(x0,\dots,x7\); the lineage quoted in the Introduction of the
+manuscripts \\
+N05 & identities of real \(4\times4\) matrices & read; not used \\
+N06 & field equations on 4+4 (xAct) & read; not used \\
+N07 & field equations on 7+1 (xAct) & read; not used \\
+N08 & a solution with inflating and deflating dimensions & read for the
+picture of Stage 2 that the task specification describes; not used \\
+N09 & generalized Kronecker delta, Lovelock tensors & read; not used \\
+N10 & a wave function of the universe on 4+4; repeats the construction
+of N01 & read; not used \\
+N11 & as N10 & read; not used \\
+N12 & as N10 & read; not used \\
+N13 & determinant of a diagonal metric & read; not used \\
+N14 & field equations on 4+4 (xAct) & read; not used \\
+\end{longtable}
+
+``Read'' means: the notebook was converted completely to text, its
+headings and text cells were read, and every cell entered the survey of
+symbols. Only for N01, N02 and N04 does a statement of the project rest
+on the content of a notebook; the following sections list these
+statements.
+
+\hypertarget{what-was-taken-from-44.nb-n01}{%
+\section{\texorpdfstring{4. What was taken from \texttt{4+4.nb}
+(N01)}{4. What was taken from 4+4.nb (N01)}}\label{what-was-taken-from-44.nb-n01}}
+
+The project rebuilds the matrices from the definitions in the input
+cells of the notebook and compares the result with the matrices that
+Mathematica printed.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3803}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2394}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2394}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1408}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Object of the notebook
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Symbol of the project
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Printed in
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Compared by check
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{s4by4{[}h{]}}, \texttt{t4by4{[}h{]}}, \texttt{ζ{[}A{]}},
+\texttt{τ{[}A{]}}, \texttt{τ} with an overbar, \texttt{σ} \(=\)
+\texttt{σ88} & \(s_h\), \(t_h\), \(\tau_{1644}^A\),
+\(\bar\tau_{1644}^A\), \(\sigma_{88}\) & Out{[}76{]}, Out{[}77{]}
+(relations) & \texttt{44-B1} to \texttt{44-B4} \\
+\texttt{T16\^{}A{[}0{]}} to \texttt{T16\^{}A{[}7{]}} &
+\(\gamma_{1644}^A\) & cell 314, Out{[}211{]} & \texttt{44-N1} \\
+\texttt{T16\^{}A{[}8{]}} & \(\omega_{1644}\) & cell 136, Out{[}99{]} &
+\texttt{44-N2} \\
+\texttt{η4488} & \(\eta_{1644}\) & cell 13, Out{[}9{]} &
+\texttt{44-N3} \\
+\texttt{P\_L}, \texttt{P\_R} & \(P_{1644}^{L}\), \(P_{1644}^{R}\) &
+cells 163 and 165, Out{[}112{]}, Out{[}113{]}; Out{[}114{]} (relations)
+& \texttt{44-P3}, \texttt{44-P2} \\
+\texttt{σ16} & \(C_{1644}^{-}\) & Out{[}105{]}, Out{[}106{]} (relations)
+& \texttt{44-S1}, \texttt{44-S4} \\
+\texttt{JT4} \(=\) \texttt{T16\^{}A{[}4{]}} & \(\gamma_{1644}^4\) as a
+complex structure & --- & \texttt{44-S5} \\
+\end{longtable}
+
+The meaning of the coordinates (\(x0\) hidden space, \(x1,x2,x3\) space,
+\(x4\) time, \(x5,x6,x7\) additional times) is stated in a text cell at
+the head of the notebook.
+
+Not taken from N01: its multiplication table of the split octonions, its
+frames (\texttt{E\^{}A\_a}), and its search for complex structures. The
+Dirac \emph{equation} of the field dirac1644, its current, its
+Lagrangian and everything that follows are not in the notebook; they are
+derived in ``dirac matrices'', Part 1.
+
+\hypertarget{what-was-taken-from-71.nb-n02}{%
+\section{\texorpdfstring{5. What was taken from \texttt{7+1.nb}
+(N02)}{5. What was taken from 7+1.nb (N02)}}\label{what-was-taken-from-71.nb-n02}}
+
+The notebook labels the time by the index 0; the project labels it by 4,
+as the task specification demands, and relates the two labellings by the
+exchange \(\mathrm{swap}_{04}\) of the index values 0 and 4.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3803}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2394}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2394}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1408}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Object of the notebook
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Symbol of the project
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where in the notebook
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Compared by check
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{Γ17{[}0{]}} to \texttt{Γ17{[}7{]}} (real set) & --- & cell 204,
+Out{[}178{]}; Out{[}173{]} (relations) & \texttt{71-N1},
+\texttt{71-N3} \\
+\texttt{Γ17up{[}A{]}} \(=\) \texttt{η17}\(^{AA}\) \texttt{Γ17{[}A{]}} &
+\(\gamma_{1671}^{\mathrm{swap}_{04}(A)}\) & its Sec. 5.3 &
+\texttt{71-N2} \\
+\texttt{τO{[}A{]}} (octonionic \(8\times8\) matrices) &
+\(\tau_{1671}^{\mathrm{swap}_{04}(A)}\) & its Sec. 3.1; Out{[}175{]}
+(block form) & \texttt{71-B1}, \texttt{71-B2}, \texttt{71-D6} \\
+the construction of \texttt{Γ17} from \texttt{T16} and \texttt{S44} &
+relation between the two sets of the project & Out{[}176{]} &
+\texttt{71-B3}, \texttt{71-B4} \\
+\texttt{Γ17{[}8{]}} \(=\) \texttt{ω17}, \texttt{χ17}, \texttt{PL17},
+\texttt{PR17} & \(\omega_{1671}\), \(\chi_{1671}\), \(P_{1671}^{L,R}\) &
+its Secs. 4.6 and 7.10 & \texttt{71-V1}, \texttt{71-P1},
+\texttt{71-P4} \\
+\texttt{βD}, \texttt{αD{[}i{]}} & \(\beta_{1671}\), \(\alpha_{1671}^j\)
+& its Sec. 7.1 & \texttt{71-D6} \\
+\texttt{dirac16complex} and its Dirac equation & \(\psi_{1671}\)
+(dirac1671), Eq. (2.9) of ``dirac matrices'' & its Sec. 7.2 &
+\texttt{71-D1} and following \\
+\texttt{S44} & \(C_{1644}^{+}\) & its Sec. 4.1 & \texttt{44-S2} \\
+\end{longtable}
+
+Statements of the notebook that the project quotes without using them in
+a calculation:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6528}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.0972}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Statement
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Section of \texttt{7+1.nb}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Quoted in
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+With the signs of N01 (space-like \(=+1\)) no real \(16\times16\)
+matrices exist for 7+1; with the opposite signs they do & 4.4 & ``dirac
+matrices'', Sec. 2.4 (the project proves the positive part itself,
+checks \texttt{71-R1}, \texttt{71-C1}, \texttt{71-C3}) \\
+Plane waves, spin sums and quantization of the field were derived
+symbolically & 7.4 to 7.7 & ``dirac matrices'', Sec. 2.8.2 (tested
+numerically there) \\
+The two coupled 8-component equations & 7.11 & ``dirac matrices'', Sec.
+2.8.3 \\
+A brane picture with the Standard Model on a brane & 17, 18 & Supplement
+S2, as an alternative to the hypothesis examined there \\
+A 4-torus and a 4-sphere as extra spaces & 25, 26 & Supplement S2, for
+the isometries of possible extra spaces \\
+A mass window for the unpaired field as dark matter & 24 & Supplement
+S3, Sec. 4.3, for comparison \\
+\end{longtable}
+
+Not taken from N02: its complex set \texttt{Γ71}, its \(32\times32\)
+set, its Kohn--Sham theory of a self-coupled field (its Secs. 8, 9, 15,
+16), its gravity (Secs. 11 to 14, 20 to 23) and its cosmology. The
+interaction of this project is a different one: it is mediated by the
+Vorton-Scalar, which the notebook does not contain.
+
+The notebook says of itself that it was generated by a script and
+evaluated in Mathematica, and that each of its claims is tested by a
+cell of the notebook. The project does not rely on those tests: every
+statement about the matrices that it uses is tested again by its own
+programs.
+
+\hypertarget{what-was-taken-from-the-other-notebooks}{%
+\section{6. What was taken from the other
+notebooks}\label{what-was-taken-from-the-other-notebooks}}
+
+\textbf{N04.} Its text cells state the meaning of the coordinates in the
+same words as N01, and describe the origin of the real representations
+(Dirac's representation of the covering group of \(SO(3,2)\), extended
+by the author to \(SO(3,3)\), \(SO(4,4)\) and real \(16\times16\)
+matrices); the Introduction of the manuscripts repeats this in one
+sentence, with the references that P2 lists. Its field equations are not
+used.
+
+\textbf{N06 to N09, N13, N14 (gravity).} The task specification
+describes Stage 2 of the author's programme (three space dimensions
+inflate, three time dimensions deflate, the hidden dimension curls up
+into a ring) and says: be aware of this, but do not implement it. These
+notebooks are that stage. The project uses the description only where it
+discusses what Stage 2 might change (Supplement S1, Secs. 6.3 and 8;
+Supplement S2; the discussion sections of the manuscripts), and takes no
+equation from them.
+
+\textbf{N10 to N12.} They repeat the matrices of N01 with identical
+statements (the survey of symbols shows this) and add a wave function of
+the universe, which is not part of this project.
+
+\textbf{N03, N05.} Unrelated to the task, or concerned with
+four-dimensional matrices.
+
+\hypertarget{checksums}{%
+\section{7. Checksums}\label{checksums}}
+
+The following lines of \texttt{provenance/inputs\_sha256.txt} identify
+the fourteen copies (SHA-256; verify with
+\texttt{shasum\ -a\ 256\ \textless{}file\textgreater{}} on macOS):
+
+\begin{verbatim}
+740023233eaa0cd24ca0e2e7010094671b1d314b698114c08db94050d3e0aed5  4+4.nb
+41d252f9852f210c228f45e1ac956d2d7ef26faeb0062a5880280e1aae0effc7  7+1.nb
+5e3d97c18050178f74068925c540d6ac5ca0eaa8f9416cc53b96f6a961959b81  Bessel product.nb
+cdbb6a2c0b31ffd6a4fd951746a1e1c3ea5748afd371edc5095cea7e34cf79c0  Dirac_Einstein-Lovelock_4+4_Nash.nb
+66267b2bf43dc711c6228822948db4da8f4b26b1a74d5839c049a35c5314e842  Dirac_Nash_Identity.nb
+e749997952af0ba64e347864cab209d140cc361cd059effaadf3d68410f1f96b  Einstein-Lovelock-4+4-Nash.nb
+af47a11d9a5d9f56a46a81b0613626ed3b5b7fd13111ed21bd4d3feee763acdc  Einstein-Lovelock-7+1-Nash.nb
+a0e01b0101bcad8ee252591065b3999b0efe816b5eb306af2c4e0abd19c888cb  Einstein-Lovelock-Eternal.nb
+23bb4e0c70943e766d9b081a3a399ef29664889aad088041329ce2e065b80afb  Generalized _Kronecker_Delta_4+4.nb
+5ee5cb2a95146136ee65636a4aef174f303b6c41da130d2c57e4684f9c8ff69f  Pair_Creation_of_Universes_WaveFunctionOfUniverse-4+4-Einstein-Lovelock-Nash.nb
+d06875b70d0926bd12fbb3d24cc14f2b425be7feaa9956b581319ff54004fa97  WaveFunctionUniverse-4+4-Einstein-Lovelock-Nash.nb
+3e0ef380cc36198cbc05da72de26a4218c0a64ab0711fa179a1701c77ca0fb8b  WaveFunctionUniverse-4+4-Einstein-Lovelock.nb
+afca8dcfd94394eb3acb0ba60444968a062ba7c86bbf8a09e6037a6f87c74e9d  det-g.nb
+3bd90c1b93aa29c53e1388a4f73f6ec0645227124dbc8ee217c21fdde6d9a3f9  field_equations.nb
+\end{verbatim}
+
+\end{document}
