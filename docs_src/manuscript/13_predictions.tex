@@ -1,0 +1,115 @@
+
+% =====================================================================
+\section{Predictions}
+\label{sec:predictions}
+% =====================================================================
+
+The model has three parameters, the vacuum value $\vVS$, the Yukawa coupling $\yVS$ and the
+self-coupling $\lamVS$ of the Vorton-Scalar or, equivalently, the fermion mass $m$, the mass $m_s$
+of the radial mode and the coupling $\gVS=m/\vVS$. Everything else is derived. This section collects
+the quantitative consequences that the preceding sections derived, so that a reader who wants to
+test the model, or to extend it, finds them in one place. Table~\ref{tab:predictions} lists them
+with the figure or table that displays each. They are of three kinds: predictions for the matter
+that the model describes, cosmological predictions, and predictions that distinguish the two
+spacetimes.
+
+\begin{table*}
+\caption{\label{tab:predictions}Quantitative predictions of the model. Unless a spacetime is named, a
+prediction holds for both. $C=\gVS^2m^2/m_s^2$ and $\DVS=\aVS m/m_s$.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.035\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}}
+ & Quantity & Prediction & Displayed in \\
+\hline
+\multicolumn{4}{l}{\emph{Matter}}\\
+1 & masses and couplings & $m=\yVS\vVS/\sqrt2$, $m_s=\sqrt{2\lamVS}\,\vVS$, massless phase mode, $\gVS=m/\vVS$, $\GVS/\sqrt2=1/2\vVS^2$ & Eqs.~(\ref{eq:masses}), (\ref{eq:LNC}) \\
+2 & force of the neutral current between two fermions & contact attraction $-(\GVS/2\sqrt2)\,m^2/E^2$ in the vector channels along the extra axes; repulsion of the same strength in the two-form channels & Fig.~\ref{fig:kernels}, Table~\ref{tab:kernels} \\
+3 & channel of the largest gap & the vector channel; at weak coupling its gap exceeds that of the two-form channel by a factor {{GEN:gap_ratio_lo}} to {{GEN:gap_ratio_hi}} & Fig.~\ref{fig:gap}, Table~\ref{tab:gap} \\
+4 & bound pair of two fermions & exists if and only if $\DVS>{{GENM:dimer_dc}}$ & Fig.~\ref{fig:dimer}, Table~\ref{tab:threshold} \\
+5 & thermodynamics of the paired state & $\Delta(0)/T_c={{GENM:cjt_gap0_over_tc}}$; jump of the heat capacity ${{GENM:cjt_c_jump}}\,C_n$ & Fig.~\ref{fig:thermo}, Table~\ref{tab:thermo} \\
+6 & gaps of a general state & two fourfold gaps, Eq.~(\ref{eq:twogaps}); ground states with one eightfold gap; a stationary state with four gapless internal states and half the condensation energy & Fig.~\ref{fig:landscape}, Table~\ref{tab:landscape} \\
+7 & collective modes & four gapless modes: the sound, with $c_s^2=v_F^2/3$ at weak pairing, and three rotations of the order parameter & Table~\ref{tab:landscape}, Eq.~(\ref{eq:sound}) \\
+8 & fermion mass in matter & $m^*=m(1-Cn/m^3)$ at low density; $m^*=0$ above $\kF=\pi m/2\sqrt C$ (weak coupling) & Fig.~\ref{fig:normal}, Table~\ref{tab:normal} \\
+9 & self-bound matter & if $C>3\pi^2/8={{GENM:cjt_c_crit}}$, or $3\pi^2/5={{GENM:cjt_c_crit_sea}}$ with the negative-energy states & Fig.~\ref{fig:normal}, Table~\ref{tab:normal} \\
+10 & stability of the vacuum at one loop & lost for $C\ge3.7$: the potential falls below its vacuum value beyond {{GEN:cjt_vacstab_lo}} to {{GEN:cjt_vacstab_hi}} $\vVS$ & Fig.~\ref{fig:vacpot}, Table~\ref{tab:vacstab} \\
+11 & melting of the fermion mass & at $T_{1/2}$ between {{GEN:cjt_thermal_thalf_m_lo}} and {{GEN:cjt_thermal_thalf_m_hi}} $m$; estimates (\ref{eq:Tc}) & Fig.~\ref{fig:thermal}, Table~\ref{tab:thermal} \\
+12 & pair condensate in the vacuum & only if $\aVS>\alpha_c$, with $\alpha_c$ between {{GEN:cjt_alpha_c_min}} and {{GEN:cjt_alpha_c_max}}, and $\pi/2$ for an infinite cutoff & Fig.~\ref{fig:vacuum}, Table~\ref{tab:vacuum} \\
+\multicolumn{4}{l}{\emph{Cosmology}}\\
+13 & step of the dark radiation & factor $15^{1/3}=2.466$ in the density when the fermions annihilate & Fig.~\ref{fig:step}, Eq.~(\ref{eq:rstep}) \\
+14 & cost of the local Hubble constant & $\sqrt{\Delta\chi^2}\ge$ {{GEN:dr_sig_local_min_all}}; {{GEN:dr_sig_local_min_model}} to {{GEN:dr_sig_local_max_model}} for a step in the epochs probed; gain at $\Delta\chi^2=4$ at most {{GEN:dr_gain_2sigma_best}} $\kmsMpc$ & Figs.~\ref{fig:dr}, \ref{fig:zt}, Table~\ref{tab:dr} \\
+15 & helium with an early step & mass fraction {{GEN:dr_yhe_early}} instead of {{GEN:dr_yhe_nostep}} at $N=0.5$ & Sec.~\ref{sec:hubble} \\
+16 & radiation of the phase mode & $\Delta N_{\rm eff}$ between {{GEN:dr_weinberg_lo}} and {{GEN:dr_weinberg_hi}}, by the epoch of decoupling & Eq.~(\ref{eq:weinberg}) \\
+17 & small-scale structure with superfluid dark matter & suppressed; requires $m>{{GENM:sfdm_mmin_5p3}}$ keV, or a condensate with $R_{TF}<{{GENM:sfdm_rtf_pc_5p3}}$ pc & Fig.~\ref{fig:sfdm}, Tables~\ref{tab:sfdm}, \ref{tab:sfdmbounds} \\
+18 & superfluidity in halos & absent: degeneracy needs $m<{{GENM:dm_mdeg_dwarf}}$ keV, condensation of pairs $2m<{{GENM:dm_mbmax_dwarf}}$ eV, in a dwarf galaxy & Fig.~\ref{fig:dmwindows}, Table~\ref{tab:halos} \\
+19 & bound pairs as dark matter & $m>{{GENM:dm_mmin_alpha1}}$ MeV for $\aVS=1$, from the limit on the self-interaction & Table~\ref{tab:selfint} \\
+\multicolumn{4}{l}{\emph{The two spacetimes}}\\
+%%<1644>
+20 & dependence on the additional times ($4+4$) & modes with $\lvert\kappa\rvert^2>m^2+\lvert k\rvert^2$ grow as $\exp\big(\sqrt{\lvert\kappa\rvert^2-m^2-\lvert k\rvert^2}\;x4\big)$ & Eq.~(\ref{eq:K2}) \\
+21 & relative phase of the components of the order parameter & $\pm90^\circ$ between the hidden axis and a time-like axis ($4+4$); $0$ ($7+1$) & Fig.~\ref{fig:landscape} \\
+22 & the three rotational gapless modes & massive as soon as the fields depend on $x0$ ($4+4$); exact Goldstone modes ($7+1$) & Sec.~\ref{sec:ground} \\
+23 & electroweak pattern & singlet of the rotations of the additional times; $(2,2)$ only under a hidden symmetry ($4+4$) & Table~\ref{tab:verdict} \\
+%%</1644>
+%%<1671>
+20 & dependence on the extra coordinates ($7+1$) & a momentum $\vec p_\perp$ along them adds to the mass, $E^2=m^2+\lvert\vec p\rvert^2+\lvert\vec p_\perp\rvert^2$; on the $4+4$ spacetime a dependence on the additional times produces growing modes & Eq.~(\ref{eq:hamiltonian}) \\
+21 & relative phase of the components of the order parameter & $0$ ($7+1$); $\pm90^\circ$ between the hidden axis and a time-like axis ($4+4$) & Fig.~\ref{fig:landscape} \\
+22 & the three rotational gapless modes & exact Goldstone modes ($7+1$); massive as soon as the fields depend on $x0$ ($4+4$) & Sec.~\ref{sec:ground} \\
+23 & electroweak pattern & a $(2,2)$ of the rotations of the extra axes with the charges $(+1,0,0,-1)$, and the content of two Higgs doublets ($7+1$) & Table~\ref{tab:verdict} \\
+%%</1671>
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{Predictions for matter}
+
+Rows 1 to 12 describe a kind of matter: fermions with eight internal states whose mass comes from a
+scalar field. Their status differs. Rows 1, 2, 4 and 6 are exact consequences of the Lagrangian
+within the stated order: the relations between masses and couplings, the amplitudes of one-boson
+exchange, the threshold of the two-body problem, and the algebra of the gap matrix. Rows 3 and 5 hold
+in the weak-coupling regime, in which the gap is small compared with the Fermi energy; row 5 is the
+universal behavior of any weakly coupled superfluid with a single gap, and it tests the pairing
+mechanism only through the statement that the gap \emph{is} single, that is, that the ground state is
+unitary. The characteristic predictions are rows 2, 3 and 6: a neutral current that attracts in the
+vector channels and repels in the two-form channels, so that the order parameter is a four-vector
+and not an antisymmetric tensor; and a spectrum with two fourfold gaps away from the ground state.
+An experiment on such matter that could resolve the eight internal states would see the half-paired
+state as a state in which four of them remain gapless.
+
+Rows 8 to 12 concern the scalar field in a medium, at finite temperature and in the vacuum. They are
+mean-field results. Rows 8 and 9 depend on one number, $C$, and they imply a qualitative prediction
+that does not depend on details: dense matter of these fermions is in the abnormal state, in which
+they are massless, and for strong coupling it is bound without gravity. Row 10 limits the range in
+which rows 9 and 12 can be trusted.
+
+Two further consequences are taken from the literature and were not computed here
+(Sec.~\ref{sec:vortons}): the vortices of the superfluid carry the circulation $\pi/m$ per unit of
+winding, and the vortex lines of the Vorton-Scalar bind fermions of zero mass that can carry a
+persistent current.
+
+\subsection{Cosmological predictions}
+
+Rows 13 to 19 were obtained by simulation and are compared with observation in
+Secs.~\ref{sec:hubble} and \ref{sec:dm}. They are the predictions on which hypothesis H3 fails. Row
+13 is a prediction in the strict sense, a pure number that follows from the count of the degrees of
+freedom, sixteen fermionic and one bosonic. It distinguishes the model from the stepped fluid of
+Ref.~\cite{Aloni2022}, whose step is $(15/7)^{1/3}$, and it is the reason why the model fares worse
+than that fluid when the step falls into the epochs that the microwave background probes. Row 15 is
+a prediction that could be tested independently of the microwave background, by the primordial
+helium abundance, if the dark radiation had the density needed; the difference is
+{{GEN:dr_yhe_diff}} in the mass fraction at $N=0.5$, which is comparable to the uncertainty of about
+0.003 of present determinations \cite{PDG2024}. Rows 17 to 19 state, in
+numbers, why the superfluid cannot act on galactic scales.
+
+\subsection{Predictions that distinguish the two spacetimes}
+
+Rows 20 to 23 are the places where the signature of the eight-dimensional metric reaches observable
+physics. In the sector of fields that depend on ordinary space and time only, the two models have
+the same internal symmetry algebra (Table~\ref{tab:symmetry}), the same exchange amplitudes
+(Table~\ref{tab:kernels}) and the same thermodynamics; a measurement within that sector that is
+insensitive to the relative phases of the components of the order parameter cannot tell them
+apart. They differ in three respects. The metric on the four extra axes enters the energy of the
+superfluid through the quadratic form $\eta_{ab}\Delta^a\Delta^b$ of Eq.~(\ref{eq:quartic}), which
+fixes the relative phase of the components in the ground state (row 21). The symmetry that rotates
+the hidden axis into the other three is a symmetry of the spacetime on $7+1$ and a property of the
+zero-mode sector on $4+4$, which decides whether the three rotational modes are exact Goldstone
+modes (row 22) and whether the electroweak pattern can have a geometric origin (row 23). And the
+dependence of the fields on the three additional coordinates is harmless on $7+1$, where it adds to
+the mass, and destroys the quantum theory on $4+4$, where it produces growing modes (row 20).

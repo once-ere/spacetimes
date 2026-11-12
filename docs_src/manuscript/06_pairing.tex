@@ -1,0 +1,144 @@
+
+% =====================================================================
+\section{The pairing interaction}
+\label{sec:pairing}
+% =====================================================================
+
+The Vorton-Scalar couples to the fermions through the two vertices (\ref{eq:vertices}). This section
+computes the force that the exchange of one boson produces between two fermions in each of the pair
+channels of Sec.~\ref{sec:pairs}. It is the first step of objective O4, and it decides which pair
+condenses.
+
+\subsection{The exchange amplitude in a pair channel}
+
+A superfluid forms in a medium of fermions. Its rest frame is the frame of the medium, and the momenta
+of the fermions lie in ordinary space, $\vec p=(p^1,p^2,p^3)$, because the fields do not depend on the
+extra coordinates. Let $U(\vec p)$ be the $16\times8$ matrix whose columns are orthonormal
+positive-energy spinors, $\hh(\vec p)\,U=E\,U$ with $E=\sqrt{m^2+p^2}$, so that the particle part of the
+field is $\sum_{\vec p}U(\vec p)\,b(\vec p)\,e^{i\vec p\cdot\vec x}$ with a column $b(\vec p)$ of eight
+annihilation operators.
+
+A pair operator $\psi^TX\psi$ contains the product $b_r(\vec p)\,b_s(-\vec p)$ with the coefficient
+\begin{equation}
+\Phi_X(\vec p)=U(\vec p)^T\,X\,U(-\vec p),
+\label{eq:content}
+\end{equation}
+an $8\times8$ matrix that we call the \emph{two-particle content} of the pair operator. One boson
+exchanged between the two fermions scatters the pair $(\vec p,-\vec p)$ into
+$(\vec p\,',-\vec p\,')$. For a boson of mass $M$ that couples through $\psi^\dagger\Gamma\psi$ the
+amplitude, projected on the pair channel $X$ and normalized, is $-\gVS^2F_X/(q^2+M^2)$ with the
+momentum transfer $\vec q=\vec p\,'-\vec p$ and
+\begin{align}
+F_X(\vec p\,',\vec p)&=\frac{\Tr\big[\Phi_X(\vec p\,')^{T}\,V_1\,\Phi_X(\vec p)^{*}\,V_2^{T}\big]}{\sqrt{N_X(\vec p\,')\,N_X(\vec p)}},\nonumber\\
+V_1&=U(\vec p\,')^\dagger\Gamma\,U(\vec p),\quad V_2=U(-\vec p\,')^\dagger\Gamma\,U(-\vec p),
+\label{eq:FX}
+\end{align}
+where $N_X=\Tr[\Phi_X\Phi_X^\dagger]$. A positive $F_X$ means attraction. The expression does not
+depend on the choice of the basis $U$. The energy transfer is neglected in the propagator of the
+boson; this \emph{static approximation} is the one used in the theory of superconductivity at weak
+coupling. For the radial mode $\Gamma=\beta$, and the amplitude is called $F_S$; for the phase mode
+$\Gamma=i\beta\chi$, and it is called $F_P$.
+
+\subsection{Results}
+
+The program evaluates Eq.~(\ref{eq:FX}) from the Dirac matrices of both spacetimes, for the eight
+vector pair operators $\Cm\gamma^A$ and for representative two-form pair operators
+$\Cp\gamma^A\gamma^B$, at three momenta and thirteen scattering angles
+({{GEN:kernel_n_rows}} values in all). Figure~\ref{fig:kernels} shows the amplitudes for
+$|\vec p|=|\vec p\,'|=m$, and Table~\ref{tab:kernels} gives three angles. Five results follow.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_kernels}
+\caption{\label{fig:kernels}Exchange amplitudes of the two modes of the Vorton-Scalar in three pair
+channels, for momenta of magnitude $m$ in the plane $(x1,x2)$, as functions of the scattering angle.
+Lines: $7+1$ spacetime; open symbols: $4+4$ spacetime. (a) The radial mode attracts in all channels.
+(b) The phase mode, which carries the neutral current, attracts in the vector channel along the hidden
+axis, repels in the two-form channel, and has both signs for a vector pair polarized in the plane of
+the momenta.}
+\end{figure*}
+
+\begin{table*}
+\caption{\label{tab:kernels}Exchange amplitudes $F_S$ (radial mode) and $F_P$ (phase mode) in five
+pair channels, for momenta of magnitude $m$ in the plane $(x1,x2)$ and three scattering angles. The
+values are those of the $7+1$ spacetime; the values of the $4+4$ spacetime differ from them by at most
+{{GEN:kernel_max_diff}} over all {{GEN:kernel_n_entries}} entries computed.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccc}
+pair channel & $F_S$, $60^\circ$ & $F_S$, $120^\circ$ & $F_S$, $180^\circ$ & $F_P$, $60^\circ$ & $F_P$, $120^\circ$ & $F_P$, $180^\circ$ \\
+\hline
+{{ROWS:kernel_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\emph{(i) The two spacetimes give the same amplitudes.} Although the matrices $\beta$, $\alpha^j$ and
+$\chi$ of the two spacetimes are different, every amplitude computed agrees between them to the
+accuracy of the arithmetic (Table~\ref{tab:kernels}). The reason is the common internal symmetry of
+the zero-mode sector (Sec.~\ref{sec:internal}). From here on the pairing calculation is one
+calculation for both.
+
+\emph{(ii) Closed forms for the pair along the hidden axis.} For $X=\Cm\gamma^0$, with
+$E=\sqrt{m^2+p^2}$ and $E'=\sqrt{m^2+p'^2}$,
+\begin{align}
+F_S&=\frac{m^2(E+E')^2+E^2p'^2+E'^2p^2}{4E^2E'^2}-\frac{\vec p\cdot\vec p\,'}{2EE'},\nonumber\\
+F_P&=\frac{(m^2-EE')^2+m^2q^2+p^2p'^2}{4E^2E'^2}+\frac{(m^2-EE')\,\vec p\cdot\vec p\,'}{2E^2E'^2}.
+\label{eq:FSFP}
+\end{align}
+For equal energies these reduce to
+\begin{equation}
+F_S=\frac{4m^2+q^2}{4E^2},\qquad F_P=\frac{q^2}{4E^2}.
+\label{eq:FSFPequal}
+\end{equation}
+A unit test of the program compares Eq.~(\ref{eq:FSFP}) with the matrices for 200 random momenta, on
+and off the energy shell.
+
+\emph{(iii) The radial mode does not distinguish the pair channels} in which the pair has no
+component along the momenta: $F_S$ is the same for the vector pairs along the four extra axes and for
+the two-form pairs.
+
+\emph{(iv) The phase mode does.} For the vector pairs along the four extra axes the amplitude is
+$F_P=+q^2/4E^2$ at equal energies: attraction at all angles. For the two-form pairs of the extra axes
+it is $F_P=-q^2/4E^2$: \emph{repulsion} at all angles. For a vector pair polarized along an axis of
+ordinary space the amplitude depends on the directions of the momenta relative to that axis and takes
+both signs; such a pair has ordinary spin 1 and is not a candidate for the state sought here.
+
+\emph{(v) A contact attraction of the Fermi type.} The phase mode is massless, so that its
+contribution to the pairing interaction of the hidden-axis pair is $-\gVS^2F_P/q^2=-\gVS^2/4E^2$,
+independent of the momentum transfer:
+\begin{equation}
+V_{\rm NC}=-\frac{\gVS^2}{4E^2}=-\frac{1}{4\vVS^2}\,\frac{m^2}{E^2}=-\frac{\GVS}{2\sqrt2}\,\frac{m^2}{E^2}.
+\label{eq:VNC}
+\end{equation}
+The neutral current (\ref{eq:LNC}) thus produces, between two fermions in the hidden-axis channel, a
+point-like attraction whose strength is set by $\GVS$ alone, the direct analog of Fermi's contact
+interaction, and an equally strong repulsion in the two-form channels.
+
+For momenta small compared with $m$ the amplitude of the radial mode tends to 1, and that mode gives
+the attractive Yukawa potential
+\begin{equation}
+V_s(r)=-\aVS\,\frac{e^{-m_sr}}{r}
+\label{eq:yukawa}
+\end{equation}
+between any two fermions, whatever their internal states.
+
+\subsection{Discussion}
+
+Results (iii) to (v) are the dynamical reason for the state proposed in hypothesis H1. The radial mode
+binds. The neutral current then selects, among the 28 possible $s$-wave pairs, the four vector pairs
+along the extra axes, which are exactly the pairs of ordinary spin 0 that form a four-vector of the
+internal $SO(4)$, and it penalizes the six two-form pairs of spin 0. The neutral current alone would
+not suffice: its contact attraction (\ref{eq:VNC}) is weak at low density, as Sec.~\ref{sec:cjt}
+shows. What the hypothesis calls pairing ``mediated by neutral currents'' is thus realized in the
+following precise sense: the attraction that binds comes from the radial mode of the same scalar
+field, and the neutral current of that field decides the channel.
+
+\subsection{What has been established, and what has not}
+
+Established, by numerical evaluation from the matrices of both spacetimes and by the closed forms
+(\ref{eq:FSFP}): one-boson exchange is attractive in the hidden-axis vector channel for both modes;
+the neutral current gives the contact attraction (\ref{eq:VNC}) in that channel and a repulsion in the
+two-form channels.
+
+Not established: anything beyond the exchange of a single boson in the static approximation. The
+phase mode is massless, and its exchange is not instantaneous; the dependence of the interaction on
+the energy transfer is neglected here.

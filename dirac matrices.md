@@ -34,7 +34,7 @@ as two coupled 8-component equations.
 (or, for two projectors, $0$, $\pm\tfrac12$, $\pm\tfrac i2$). An identity between such
 matrices can be verified with exact integer arithmetic, and a verification of that kind
 is a proof. The Rust program `spacetimes` (directory `code/spacetimes-rs`) performs
-107 such verifications. Each has an identifier, such as `44-C1` (the prefix
+106 such verifications. Each has an identifier, such as `44-C1` (the prefix
 `44-` refers to the 4+4 set, `71-` to the 7+1 set), which is quoted below at the place
 where the statement is used; the complete output of the program is reproduced verbatim
 in Appendix A. Where a human-readable argument is short, it is given as well, so that
@@ -167,7 +167,7 @@ bash code/scripts/build_docs.sh "dirac matrices.md"
 Step 2 writes `data/gamma1644.txt`, `data/gamma1671.txt`, `data/matrix_checks.txt`,
 `data/matrix_checks.csv`, `data/pair_classification.csv`, `data/pair_classification.txt`
 and the matrix displays of this document (`provenance/generated/matrices.md`). The
-program ends with the line "107 of 107 checks passed"
+program ends with the line "106 of 106 checks passed"
 and returns a non-zero exit status if any check fails. Step 3 writes
 `data/matrix_checks_independent.txt`.
 
@@ -1561,7 +1561,7 @@ linear independence over the rational numbers.
 
 ```text
 PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] = T16[A] of 4+4.nb; 7+1: gamma1671[A] = Gamma17up[swap04(A)] of 7+1.nb, swap04 = (0 4)); identifiers 44-.. refer to the 4+4 set, 71-.. to the 7+1 set
-107 of 107 checks passed
+106 of 106 checks passed
 
 [PASS] 44-R1  (exact) every entry of gamma1644[A], A = 0..7, is one of the integers -1, 0, +1; hence the eight matrices are real
 [PASS] 44-R2  (exact) every gamma1644[A] is a signed permutation matrix (one entry +1 or -1 in each row and in each column)

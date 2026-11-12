@@ -1,0 +1,259 @@
+
+% =====================================================================
+\section{The order parameter and the ground state}
+\label{sec:order}
+% =====================================================================
+
+Section~\ref{sec:cjt} showed that the four vector pairs along the extra axes have the strongest
+pairing. This section determines how they combine: the structure of the order parameter, the energy
+as a function of it, the ground state, and the place of the hidden-axis singlet in it. It completes
+objective O4.
+
+\subsection{The gap matrix}
+
+The condensate is described by the expectation values of the four vector pair operators along the
+extra axes,
+\begin{equation}
+\Delta^a\propto\big\langle\psi^T\Cm\gamma^a\psi\big\rangle,\qquad a\in\{0,5,6,7\},
+\label{eq:Deltaa}
+\end{equation}
+four complex numbers. On the eight internal states of the pair $(\vec p,-\vec p)$ they define the
+\emph{gap matrix}
+\begin{equation}
+\MM(\vec p)=\sum_{a}\Delta^a\,\frac{\Phi_a(\vec p)}{\sqrt{N_a/8}},\qquad\Phi_a=U(\vec p)^T\Cm\gamma^aU(-\vec p),
+\label{eq:gapmatrix}
+\end{equation}
+with the two-particle contents $\Phi_a$ of Eq.~(\ref{eq:content}) and their norms $N_a$. The energies
+of the quasiparticles are $\sqrt{\xi^2+d_r^2}$, where $d_r^2$, $r=1,\dots,8$, are the eigenvalues of
+$\MM\MM^\dagger$. A state is called \emph{unitary} if $\MM\MM^\dagger$ is a multiple of the unit
+matrix, so that all eight internal states have the same gap \cite{Leggett1975}.
+
+\subsection{The energy as a function of the order parameter}
+\label{sec:GL}
+
+Near the critical temperature the free energy can be expanded in the order parameter. At weak
+coupling the expansion of Ginzburg and Landau, as derived from the microscopic theory by Gor'kov
+\cite{Gorkov1959}, is
+\begin{align}
+\mathcal F={}&a(T)\,\Tr\big[\MM\MM^\dagger\big]+\frac b2\,\Tr\big[(\MM\MM^\dagger)^2\big]\nonumber\\
+&+K\,\Tr\big[\nabla\MM\cdot\nabla\MM^\dagger\big]+\dots,\nonumber\\
+a(T)={}&\frac{N(0)}2\ln\frac{T}{T_c},\qquad b=\frac{7\zeta(3)}{16\pi^2T_c^2}N(0),\nonumber\\
+K={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
+\label{eq:GL}
+\end{align}
+with the Fermi velocity $v_F$ and the density of states $N(0)$ of Eq.~(\ref{eq:lambda_coupling}). For
+a unitary state this is the textbook energy of four independent copies of a spin-$\tfrac12$
+superconductor. Section~\ref{sec:checks} confirmed the three coefficients from the CJT potential.
+
+The form of the quartic term is decided by one matrix identity. The program verifies it from the
+matrices of both spacetimes, with a largest deviation of {{GEN:gl_dev_@SIG@}} for the present one:
+\begin{align}
+\frac18\Tr\big[\MM\MM^\dagger\big]&=\sum_a|\Delta^a|^2\equiv\mathcal S,\nonumber\\
+\frac18\Tr\big[(\MM\MM^\dagger)^2\big]&=2\,\mathcal S^2-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
+\label{eq:quartic}
+\end{align}
+where $\eta_{ab}$ is the metric of the spacetime restricted to the four extra axes,
+\begin{equation}
+\eta_{ab}=\SIG{\mathrm{diag}(+1,-1,-1,-1)}{\mathrm{diag}(-1,-1,-1,-1)}\qquad(a,b\in\{0,5,6,7\})
+\label{eq:etaab}
+\end{equation}
+for the \SIG{$4+4$}{$7+1$} spacetime: \SIG{the hidden axis is space-like and the other three are
+time-like. On the $7+1$ spacetime all four are space-like, and $\eta_{ab}$ is proportional to the
+unit matrix.}{all four extra axes are space-like. On the $4+4$ spacetime the hidden axis is
+space-like and the other three are time-like, and $\eta_{ab}=\mathrm{diag}(+1,-1,-1,-1)$.} \emph{The
+signature of the spacetime thus enters the energy of the superfluid through the quadratic form
+$\eta_{ab}\Delta^a\Delta^b$.} It is the invariant form (\ref{eq:invform}) of the internal symmetry.
+
+Equation (\ref{eq:quartic}) is a statement about the sum of the fourth powers of the gaps. The
+complete statement, which the program also verifies, is that the eight eigenvalues of
+$\MM\MM^\dagger$ form two fourfold sets,
+\begin{equation}
+d_\pm^2=\mathcal S\pm\sqrt{\mathcal S^2-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
+\label{eq:twogaps}
+\end{equation}
+A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=\mathcal S$.
+
+\subsection{The ground state, and the hidden-axis singlet}
+\label{sec:ground}
+
+At fixed $\mathcal S$ the quartic term (\ref{eq:quartic}) is smallest when
+$|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $\mathcal S$. The ground states are
+therefore the unitary states: all eight quasiparticle branches have the same gap, and the
+condensation energy is the largest possible. The minimizing configurations are
+\begin{equation}
+\SIG{\Delta^0=|\Delta|\,e^{i\varphi}\,n^0,\qquad\Delta^t=\pm i\,|\Delta|\,e^{i\varphi}\,n^t\quad(t=5,6,7)}{\Delta^a=|\Delta|\,e^{i\varphi}\,n^a}
+\label{eq:groundstates}
+\end{equation}
+with a phase $\varphi$ and a \emph{real} unit vector
+\SIG{$(n^0,n^5,n^6,n^7)$: the components along the time-like axes carry a relative phase $\pm i$.}{$n^a$
+in the space of the four extra axes.} The \emph{hidden-axis singlet} of hypothesis H1,
+\begin{equation}
+\Delta^a=\Delta\,\delta^{a0},\qquad\big\langle\psi_{\tg}^T\,\Cm_{\tg}\gamma_{\tg}^0\,\psi_{\tg}\big\rangle\neq0,
+\label{eq:singlet}
+\end{equation}
+is a member of this family. Its properties were proved in Sec.~\ref{sec:hiddenpair}: the pair has
+ordinary spin 0; it is invariant under the rotations of ordinary space and of the coordinates
+$x5,x6,x7$; and it is a scalar under the Lorentz group of the seven coordinates other than $x0$.
+
+\emph{How the hidden axis is singled out.} By Sec.~\ref{sec:internal} the order parameter is a
+four-vector of the internal $SO(4)$ of the zero-mode sector, and all directions of this four-vector
+have exactly the same energy.
+%%<1671>
+On the $7+1$ spacetime the direction $n^a$ is chosen spontaneously, and calling the chosen one ``the
+hidden axis'' is a choice of coordinates. The symmetry breaking is $SO(4)\to SO(3)$ together with
+$U(1)_F\to Z_2$. Besides the sound mode of the superfluid, the Goldstone mode of the fermion number,
+there are three Goldstone modes, the rotations of $n^a$. Because the $SO(4)$ is a symmetry of the full
+theory, nothing within the flat $7+1$ model prefers one direction. In the second stage of the program
+the hidden coordinate is curled up and the three others are treated differently; this would break the
+$SO(4)$ explicitly and decide the direction. It is not implemented here.
+%%</1671>
+%%<1644>
+On the $4+4$ spacetime the components that form the real four-vector are
+$(\Delta^0,i\Delta^5,i\Delta^6,i\Delta^7)$, which is why the relative phase $\pm i$ appears in
+Eq.~(\ref{eq:groundstates}). Within the zero-mode sector the singlet $\Delta^0$ of the rotations
+$SO(3)_T$ of the additional times and their triplet $\Delta^t$ are degenerate \emph{exactly}, to all
+orders, because the hidden $SO(4)$ rotates one into the other. The symmetry breaking is
+$SO(4)\to SO(3)_T$ together with $U(1)_F\to Z_2$, and there are four gapless modes. But the hidden
+symmetry is a property of the zero-mode sector only. Every effect that involves a dependence of the
+fields on $x0$, in the second stage of the program the excitations that travel around the hidden
+ring, with energies of at least the inverse radius, breaks it down to $SO(3)_T$, under which the
+hidden axis \emph{is} distinguished. Such effects lift the degeneracy between singlet and triplet and
+give the three additional modes a mass. Which of the two then lies lower has not been determined;
+that it is the singlet (\ref{eq:singlet}) is the content of hypothesis H1.
+%%</1644>
+
+\subsection{The space of the order parameter}
+\label{sec:landscape}
+
+The statements of Sec.~\ref{sec:ground} rest on the expansion (\ref{eq:GL}) near $T_c$. The CJT
+potential allows them to be tested at zero temperature and away from small amplitudes. The program
+builds the gap matrix (\ref{eq:gapmatrix}) from the Dirac matrices of each spacetime and evaluates the
+potential for a constant attraction in each of the four channels, in units in which the gap of the
+unitary state is $\Delta_0=1$ and $N(0)=1$. Table~\ref{tab:landscape} lists six configurations for
+each spacetime, and Fig.~\ref{fig:landscape} shows a section through the space of the order
+parameter.
+
+\begin{table*}
+\caption{\label{tab:landscape}The CJT potential at zero temperature on the eight-dimensional space of
+the order parameter, from the Dirac matrices of both spacetimes; units $\Delta_0=N(0)=1$. For each
+configuration: the two fourfold eigenvalues of $\MM\MM^\dagger$, the potential, the numbers of
+vanishing and of positive eigenvalues of its matrix of second derivatives (with the largest
+eigenvalue), and the real coordinates that span the flat directions.}
+\begin{ruledtabular}
+\footnotesize
+\begin{tabular}{llcccl}
+ & configuration & gaps$^2$ & $V$ & second derivatives & flat directions \\
+\hline
+{{ROWS:cjt_landscape_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_cjt_landscape}
+\caption{\label{fig:landscape}A section through the space of the order parameter: directions
+$(\cos\theta,\,e^{i\varphi}\sin\theta,\,0,\,0)$ on the extra axes $(x0,x5)$. (a), (b) The potential at
+the amplitude that minimizes it in each direction, for the two spacetimes. The unitary states form
+the flat valley at $-2$, which is the line of relative phase $\varphi=0$ on the $7+1$ spacetime and
+$\varphi=90^\circ$ on the $4+4$ spacetime; the half-paired state is the saddle at $-1$. The two panels
+differ only by the exchange $\varphi\leftrightarrow90^\circ-\varphi$. (c) The two fourfold gaps along
+the section that contains the half-paired state.}
+\end{figure*}
+
+\emph{The unitary states are the minima}, with $V=-2$, that is, $-\nu N(0)\Delta_0^2/4$, whatever
+their direction: the hidden-axis singlet, a state along $x5$ and rotated states have the same energy
+to the accuracy of the calculation, on both spacetimes.
+
+\emph{Four flat directions and four massive ones.} Around every unitary state four of the eight real
+directions cost no energy: the phase, which belongs to the fermion number, and three rotations of the
+direction. They are the directions of the four gapless collective modes. At the hidden-axis singlet
+they are, on the $7+1$ spacetime, the imaginary part of $\Delta^0$ and the \emph{real} parts of
+$\Delta^5,\Delta^6,\Delta^7$; on the $4+4$ spacetime, the imaginary part of $\Delta^0$ and the
+\emph{imaginary} parts of the other three, because the hidden symmetry rotates $\Delta^0$ into
+$i\Delta^t$. The other four directions, the amplitude and three that make the state non-unitary, have
+equal curvature, {{GEN:cjt_massive_curvature}} $N(0)$.
+
+\emph{A half-paired stationary state.} If $\eta_{ab}\Delta^a\Delta^b=0$, four of the eight internal
+states are paired with the full gap and four are not paired at all, by Eq.~(\ref{eq:twogaps}). This
+state is stationary and has half the condensation energy. It is unstable against opening the second
+gap: the potential rises by {{GEN:cjt_half_up}} when the order parameter is multiplied by 1.02 or by
+0.98, and falls by {{GEN:cjt_half_open}} when 0.05 is added to $\Delta^0$. It is the analog of the
+non-unitary phases of superfluid $^3$He, which a magnetic field stabilizes \cite{Leggett1975}; here
+the corresponding field would be a chemical potential for one of the generators of $SO(4)$.
+
+\emph{The two spacetimes are mirror images.} In the direction
+$(\cos\theta,e^{i\varphi}\sin\theta,0,0)$ the two gaps are, by Eq.~(\ref{eq:twogaps}), proportional to
+$\sqrt{1\mp\sin2\theta\,|\sin\varphi|}$ on the $7+1$ spacetime and to
+$\sqrt{1\mp\sin2\theta\,|\cos\varphi|}$ on the $4+4$ spacetime; the program compares these forms with
+the eigenvalues computed from the matrices at every point of Fig.~\ref{fig:landscape}. A rotation of
+the order parameter from the hidden axis towards $x5$ costs nothing if the two components have the
+relative phase 0 on the $7+1$ spacetime, or $90^\circ$ on the $4+4$ spacetime. With any other
+relative phase it costs energy, and with the opposite phase the path leads over the half-paired
+state. The configuration that is unitary on one spacetime is far from unitary on the other (last row
+of each block of Table~\ref{tab:landscape}).
+
+The curvatures of the potential in the massive directions depend on how propagators away from the
+stationary point are parametrized; they are not frequencies of collective modes. The number of flat
+directions and the energies of stationary states do not depend on that choice.
+
+\subsection{Collective modes and the sound of the superfluid}
+\label{sec:sound}
+
+The phase $\varphi$ of the order parameter is the Goldstone field of the broken fermion number. Its
+excitation is a density wave, the first sound of the superfluid
+\cite{Bogoliubov1947,Anderson1958}, with the velocity given by the compressibility,
+$c_s^2=dP/d\rho$. In the weak-coupling regime the pressure is the degeneracy pressure of the fermions,
+and in a dilute gas of bound pairs it is that of a weakly interacting Bose gas:
+\begin{equation}
+c_s^2=\frac{\kF^2}{3\,(m^2+\kF^2)}=\frac{v_F^2}{3},\qquad\text{or}\qquad c_s^2=\frac{4\pi a_{BB}\,n_B}{m_B^2},
+\label{eq:sound}
+\end{equation}
+where $m_B$, $n_B$ and $a_{BB}>0$ are the mass, the density and the mutual scattering length of the
+bound pairs. Equation (\ref{eq:sound}) is the input of the cosmological simulations of
+Sec.~\ref{sec:dm}, in which the superfluid appears as a fluid with this sound speed. Besides the
+sound mode both models have three gapless modes in which the direction of the order parameter in the
+space of the extra axes oscillates. \SIG{On the $4+4$ spacetime they are protected by the hidden
+symmetry only, and any dependence of the fields on $x0$ gives them a mass.}{On the $7+1$ spacetime
+they are exact Goldstone modes of the flat model.}
+
+\subsection{The field equations of the superfluid}
+\label{sec:sfeqs}
+
+For the reader who wants the complete set of equations in one place: in the unpaired phase the fields
+obey Eqs.~(\ref{eq:fieldeqs}). In the paired phase, in the mean-field approximation of
+Sec.~\ref{sec:gapeq}, the fermion field obeys the Bogoliubov-de Gennes equations
+\begin{align}
+i\partial_4\psi&=(\hh-\mu)\,\psi+\hat\Delta\,\psi^{\dagger T},\nonumber\\
+\hat\Delta(\vec p)&=U(\vec p)^{*}\,\MM(\vec p)\,U(-\vec p)^{\dagger},
+\label{eq:BdG}
+\end{align}
+in which $\hat\Delta$ is the $16\times16$ pair potential built from the gap matrix
+(\ref{eq:gapmatrix}), and the gap obeys the self-consistency equation (\ref{eq:gap}). Near $T_c$ the
+order parameter varies slowly and obeys the Ginzburg-Landau equation that follows from
+Eqs.~(\ref{eq:GL}) and (\ref{eq:quartic}) by variation with respect to $\Delta^{a*}$,
+\begin{align}
+-K\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\nonumber\\
+&-\big(\eta_{cd}\Delta^c\Delta^d\big)\,\eta_{ab}\,\Delta^{b*}\Big]=0 .
+\label{eq:GLeq}
+\end{align}
+For a uniform unitary state it gives $a+b|\Delta|^2=0$, that is,
+$|\Delta|^2=\frac{8\pi^2}{7\zeta(3)}T_c^2(1-T/T_c)$ near $T_c$.
+
+\subsection{What has been established, and what has not}
+
+Established, from the matrices of both spacetimes: the quartic invariant (\ref{eq:quartic}) with the
+metric of the spacetime on the extra axes; the spectrum of gaps (\ref{eq:twogaps}) of a general
+state; that the unitary states are the ground states and that the hidden-axis singlet is one of them;
+four flat directions around every ground state; the half-paired stationary state.
+
+%%<1671>
+Not established: that the hidden axis is \emph{preferred}. On the flat $7+1$ spacetime the direction
+of the order parameter is spontaneous. Also not determined are the frequencies and dampings of the
+collective modes; only their number and the static energies were computed.
+%%</1671>
+%%<1644>
+Not established: that the hidden axis is \emph{preferred}. In the zero-mode sector singlet and
+triplet are exactly degenerate, and which is lower once the fields depend on $x0$ has not been
+computed. Also not determined are the frequencies and dampings of the collective modes, and the
+masses that the three additional gapless modes acquire when the fields depend on $x0$.
+%%</1644>

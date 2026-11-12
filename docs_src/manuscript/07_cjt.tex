@@ -1,0 +1,440 @@
+
+% =====================================================================
+\section{The paired state from the effective action of Cornwall, Jackiw and Tomboulis}
+\label{sec:cjt}
+% =====================================================================
+
+At a finite density of fermions the attraction of Sec.~\ref{sec:pairing} makes the Fermi sea unstable
+against the formation of pairs. This section constructs the paired state. It first explains the
+method, the effective action for composite operators of Cornwall, Jackiw and Tomboulis (CJT)
+\cite{CJT1974}; then states the action of the present model; and then derives from it the gap
+equation, its solutions, the two-body bound state, and the thermodynamics of the paired state. The
+paired state is obtained twice, from the gap equation and from the minimum of the effective potential,
+by different algorithms, and the two results are compared.
+
+\subsection{The method}
+\label{sec:method}
+
+The usual effective action of a quantum field theory is a functional of the expectation value
+$\phi(x)$ of a field. Its stationary points are the possible states, and for constant $\phi$ it
+reduces to the effective potential, whose minimum is the vacuum. It is the right tool when the
+quantity that acquires an expectation value is a \emph{field}. In a superfluid of fermions it is not.
+A fermion field has no expectation value; what becomes non-zero is the expectation value of a
+\emph{product of two fields}, a composite operator. CJT constructed the effective action for this
+situation: a functional $\Gamma[\phi,G]$ of two variables, the expectation value $\phi(x)$ and the full
+propagator $G(x,y)$, the connected expectation value of the product of two fields. An expectation
+value $\langle\psi\psi\rangle$ is one component of the propagator of the fermions.
+
+We use the Euclidean form, with imaginary time, because all applications below are to equilibrium.
+For one real scalar field $\Phi$ with the Euclidean action $S[\Phi]$, add a source $J(x)$ for the
+field and a second source $K(x,y)$ for the product of two fields,
+\begin{align}
+e^{W[J,K]}=\int\!\mathcal D\Phi\;\exp\Big\{&-S[\Phi]+\int_x J\Phi\nonumber\\
+&+\frac12\int_x\!\int_y\Phi(x)K(x,y)\Phi(y)\Big\}.
+\label{eq:WJK}
+\end{align}
+The derivatives of $W$ with respect to $J$ and $K$ define $\phi$ and $G$, and the CJT action is the
+Legendre transform of $W$ with respect to both sources. The physical theory has no sources, and
+therefore \emph{the physical $\phi$ and $G$ are the stationary point of $\Gamma$ in both variables.}
+The result of CJT is that $\Gamma$ has a simple structure,
+\begin{align}
+\Gamma[\phi,G]={}&S[\phi]+\frac12\Tr\ln G^{-1}+\frac12\Tr\big[D^{-1}(\phi)\,G-1\big]\nonumber\\
+&+\Gamma_2[\phi,G].
+\label{eq:CJT}
+\end{align}
+The first term is the classical action. $D^{-1}(\phi)=\delta^2S/\delta\phi\,\delta\phi$ is the inverse
+propagator of small fluctuations around the classical field. The traces run over the space-time
+arguments and over internal indices. The last term is minus the sum of all vacuum diagrams that are
+\emph{two-particle irreducible}, that is, that do not fall into two pieces when any two of their lines
+are cut; it is computed with the vertices of the shifted action and, which is the essential point,
+with the \emph{full propagator $G$ on every line}. Diagrams that do fall apart would count twice what
+the full propagator on the lines already contains.
+
+Varying Eq.~(\ref{eq:CJT}) with respect to $G$ gives
+\begin{equation}
+G^{-1}=D^{-1}(\phi)+\Sigma[\phi,G],\qquad\Sigma\equiv2\,\frac{\delta\Gamma_2}{\delta G}.
+\label{eq:SD}
+\end{equation}
+This is the exact Schwinger-Dyson equation for the propagator, in which the self-energy $\Sigma$ is
+expressed through the full propagator itself. It is called the \emph{gap equation}, because in a
+superconductor its off-diagonal part determines the energy gap. For fields that are constant in space
+and time, $\Gamma$ divided by the volume of space-time is the \emph{effective potential for composite
+operators}, $V(\phi,G)$. At temperature $T$ the imaginary time has the period $1/T$, and the value of
+$V$ at its stationary point is the thermodynamic potential per unit volume.
+
+For a fermion field the same construction applies with two changes that follow from the
+anticommuting variables: the two trace terms change sign, and the factors $\tfrac12$ are absent
+because $\psi$ and $\bar\psi$ are independent. To allow pair correlations $\langle\psi\psi\rangle$,
+one combines the field and its conjugate into one doubled field $\Psi=(\psi,\psi^{\dagger T})$
+\cite{Nambu1960,Gorkov1958}. Its propagator $\mathcal S$ has four blocks, and the off-diagonal blocks
+are the pair correlations. The components of $\Psi$ are not independent, which restores the factors
+$\tfrac12$:
+\begin{equation}
+\Gamma[\mathcal S]=-\frac12\Tr\ln\mathcal S^{-1}-\frac12\Tr\big[\mathcal S_0^{-1}\mathcal S-1\big]+\Gamma_2[\mathcal S].
+\label{eq:CJTfermion}
+\end{equation}
+
+$\Gamma_2$ is an infinite sum, and an approximation keeps some of its diagrams. The natural ordering
+is by the number of loops. The diagrams with two loops give the approximations known by older names:
+the Hartree approximation for a self-interacting boson, the Hartree-Fock approximation for fermions
+that exchange a boson and, with pair correlations, the theory of Bardeen, Cooper and Schrieffer
+\cite{BCS1957}. Even this truncation is not perturbation theory: because the lines carry the full
+propagator, the gap equation sums an infinite class of perturbative diagrams self-consistently. Any
+truncation of $\Gamma_2$ guarantees that the thermodynamic quantities derived from the stationary
+value of $V$ are consistent with one another, and that the conservation laws of the symmetries that
+the truncation respects hold \cite{LuttingerWard1960,Baym1962}. It does not guarantee that the
+propagator satisfies every identity of the exact theory; Sec.~\ref{sec:thermal} meets an example.
+Appendix~\ref{app:toy} tests all of this on a model that can be solved exactly, and shows that the
+two-loop truncation remains accurate to {{GEN:cjt_toy_hartree_err}} per cent at couplings where
+perturbation theory is useless. All applications below use the two-loop truncation.
+
+\subsection{The action of the model}
+\label{sec:action}
+
+The fields are the fermion field and the complex Vorton-Scalar. The variables of the CJT action are
+the expectation value $\phi$ of the Vorton-Scalar, defined by $\langle\PhiVS\rangle=\phi/\sqrt2$ and
+real by a choice of phase, so that the fermion mass is $\gVS\phi$; the propagators $D_s$ and
+$D_\vartheta$ of the radial and of the phase mode; and the propagator $\mathcal S$ of the doubled
+fermion field. The action is the sum of Eq.~(\ref{eq:CJT}) for the two boson modes and of
+Eq.~(\ref{eq:CJTfermion}) for the fermions,
+\begin{align}
+\Gamma={}&S_{\rm cl}[\phi]
++\frac12\sum_{i=s,\vartheta}\Big\{\Tr\ln D_i^{-1}+\Tr\big[D_{0i}^{-1}(\phi)D_i-1\big]\Big\}\nonumber\\
+&-\frac12\Tr\ln\mathcal S^{-1}-\frac12\Tr\big[\mathcal S_0^{-1}(\phi)\,\mathcal S-1\big]\nonumber\\
+&+\Gamma_2[\phi,D_s,D_\vartheta,\mathcal S].
+\label{eq:action}
+\end{align}
+With the vertices of Eq.~(\ref{eq:Lbroken}) there are three kinds of two-particle-irreducible diagram
+with two loops. \emph{Diagram (a)} is a closed fermion line with one boson line across it, for each of
+the two modes. Its derivative with respect to the fermion propagator is the self-energy of a fermion
+that emits and reabsorbs a boson: the normal blocks give the exchange energy of
+Sec.~\ref{sec:exchange}, the pair blocks give the pairing interaction of this section and, without a
+medium, the ladder equation of Sec.~\ref{sec:vacuum}. \emph{Diagram (b)} consists of two boson loops
+that touch at a four-boson vertex; it gives the bosons masses that depend on the temperature
+(Sec.~\ref{sec:thermal}). \emph{Diagram (c)}, two three-boson vertices joined by three boson lines, is
+omitted, as in the Hartree approximation. No diagram is needed for the mean field of the Vorton-Scalar
+acting on the fermions: that effect is contained in the dependence of $S_{\rm cl}$ and of
+$\mathcal S_0^{-1}(\phi)$ on $\phi$, and it appears when $\Gamma$ is varied with respect to $\phi$
+(Sec.~\ref{sec:matter}). Table~\ref{tab:parts} states which variables are kept, and which further
+approximations are made, in each application.
+
+\begin{table}
+\caption{\label{tab:parts}The parts of the CJT action (\ref{eq:action}) that are used in each
+application, and the further approximations made there.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.13\columnwidth}>{\raggedright\arraybackslash}p{0.22\columnwidth}>{\raggedright\arraybackslash}p{0.22\columnwidth}>{\raggedright\arraybackslash}p{0.31\columnwidth}}
+Section & State & Variables kept & Further approximations \\
+\hline
+\ref{sec:cjt}, \ref{sec:order} & paired state in a medium & pair blocks of $\mathcal S$ & static exchange; particles only; normal state unchanged \\
+\ref{sec:normal} & unpaired state in a medium, $T=0$ & $\phi$; normal blocks of $\mathcal S$ & exchange energy to first order; bosons at tree level \\
+\ref{sec:thermal} & no medium, temperature $T$ & $\phi$, $D_s$, $D_\vartheta$ & fermions at one loop; diagram (b) only \\
+\ref{sec:vacuum} & vacuum & pair blocks of $\mathcal S$ & linearized; normal blocks unchanged \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{The effective potential of the paired state, and the gap equation}
+\label{sec:gapeq}
+
+Keep in Eq.~(\ref{eq:action}) the pair blocks of the fermion propagator and diagram (a), with three
+further approximations, each of them standard and each stated because the results depend on them.
+\emph{Static exchange:} the boson propagators are evaluated at zero energy transfer. \emph{No change of
+the normal state:} the diagonal part of the self-energy is absorbed into the mass $m$ and the chemical
+potential $\mu$. \emph{Particles only:} the pairing of antiparticle states is neglected, which is valid
+when the gap and the temperature are small compared with $m$.
+
+A propagator with pair blocks is then specified by a gap function $\Delta(k)$. The quasiparticles
+have the energies
+\begin{equation}
+E_k=\sqrt{\xi_k^2+\Delta(k)^2},\qquad\xi_k=\sqrt{m^2+k^2}-\mu,
+\label{eq:quasi}
+\end{equation}
+and the pair correlation is
+\begin{equation}
+\kappa(k)=\big\langle b(-\vec k)\,b(\vec k)\big\rangle=\frac{\Delta(k)}{2E_k}\tanh\frac{E_k}{2T}.
+\label{eq:kappa}
+\end{equation}
+The chemical potential is kept at its value without pairing, $\mu=\sqrt{m^2+\kF^2}$, where the Fermi
+momentum $\kF$ is related to the density by $n=\nu\kF^3/6\pi^2$ with $\nu=8$ internal states. This is
+correct as long as the gap is small compared with the Fermi kinetic energy
+\begin{equation}
+\EF=\sqrt{m^2+\kF^2}-m,
+\end{equation}
+the \emph{weak-coupling} regime. The sums over the Matsubara frequencies in Eq.~(\ref{eq:action}) can
+be done in closed form. For a state in which all eight internal states have the same gap, which
+Sec.~\ref{sec:order} calls a unitary state, and measured from the unpaired state at the same $T$ and
+$\mu$, the effective potential is
+\begin{align}
+V[\Delta]={}&\nu\!\int\!\!\frac{d^3k}{(2\pi)^3}\Big\{\frac{|\xi_k|-E_k}{2}-T\ln\frac{1+e^{-E_k/T}}{1+e^{-|\xi_k|/T}}\nonumber\\
+&\qquad\qquad\qquad+\Delta(k)\,\kappa(k)\Big\}\nonumber\\
+&-\frac\nu2\int\!\!\frac{d^3k}{(2\pi)^3}\!\int\!\!\frac{d^3k'}{(2\pi)^3}\;\kappa(k)\,W(k,k')\,\kappa(k').
+\label{eq:Vpair}
+\end{align}
+The first two lines come from the trace terms of Eq.~(\ref{eq:CJTfermion}): the energy and the
+entropy of the quasiparticles, and the term $\Delta\kappa$ that the trace of
+$\mathcal S_0^{-1}\mathcal S$ contributes. The last line is $\Gamma_2$, one boson exchanged between
+two pairs, with the kernel
+\begin{equation}
+W(k,k')=\frac12\int_{-1}^{1}\!d\cos\theta\;\gVS^2\left[\frac{F_S}{q^2+m_s^2}+\sigma_X\,\frac{F_P}{q^2}\right],
+\label{eq:W}
+\end{equation}
+where $q^2=k^2+k'^2-2kk'\cos\theta$, the amplitudes $F_S$ and $F_P$ are those of
+Eq.~(\ref{eq:FSFP}), and $\sigma_X=+1$ for the vector pairs along the extra axes and $\sigma_X=-1$ for
+their two-form pairs. The angular integral is done in closed form.
+
+Because the derivative of the first two terms in the braces with respect to $\Delta$ is $-\kappa$,
+\begin{equation}
+\frac{\delta V}{\delta\Delta(k)}=\nu\,\frac{\partial\kappa}{\partial\Delta}\,\Big[\Delta(k)-\int\!\!\frac{d^3k'}{(2\pi)^3}W(k,k')\,\kappa(k')\Big],
+\label{eq:dV}
+\end{equation}
+and $\partial\kappa/\partial\Delta>0$. The potential is therefore stationary exactly where the
+\emph{gap equation}
+\begin{equation}
+\Delta(k)=\frac{1}{4\pi^2}\int_0^\infty\!dk'\,k'^2\;W(k,k')\;\frac{\Delta(k')}{E_{k'}}\,\tanh\frac{E_{k'}}{2T}
+\label{eq:gap}
+\end{equation}
+holds. A unit test of the program checks Eq.~(\ref{eq:dV}) against numerical derivatives of
+Eq.~(\ref{eq:Vpair}).
+
+\subsection{Solutions of the gap equation}
+\label{sec:gapsol}
+
+The gap equation was solved by iteration on a momentum grid that is refined logarithmically around
+$\kF$, for {{GEN:gap_n_points}} combinations of the coupling $\gVS$, the mass ratio $m_s/m$ and the
+Fermi momentum $\kF/m$, and for three kernels: the vector channel ($\sigma_X=+1$), the radial mode
+alone, and the two-form channel ($\sigma_X=-1$). The critical temperature $T_c$ is the temperature at
+which the linearized equation has the eigenvalue 1. The strength of each mode is measured by the
+dimensionless coupling
+\begin{equation}
+\lambda=N(0)\,W(\kF,\kF),\qquad N(0)=\frac{\kF\sqrt{m^2+\kF^2}}{2\pi^2},
+\label{eq:lambda_coupling}
+\end{equation}
+where $N(0)$ is the density of states at the Fermi surface per internal state; $\lambda_S$ and
+$\lambda_P$ denote the contributions of the radial and of the phase mode. Two validations precede the
+results. For a kernel that is constant in a shell around the Fermi surface the program reproduces the
+textbook results $\Delta=2\omega_c\,e^{-1/\lambda}$ and $T_c=0.567\,\Delta$. And in the scan the
+ratio of $T_c$ to the gap at the Fermi momentum lies between {{GEN:gap_tc_lo}} and {{GEN:gap_tc_hi}}
+wherever the coupling is weak.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_gap}
+\caption{\label{fig:gap}Gap at the Fermi surface in units of the Fermi kinetic energy, as a function
+of the Fermi momentum, for two sets of couplings. In every case the vector pair along an extra axis,
+to which the radial mode and the phase mode both contribute attraction, has the largest gap; the
+two-form pair, in which the phase mode repels, has the smallest. Open symbols mark points above the
+dashed line, where the gap is no longer small compared with the Fermi energy and the gap equation with
+a fixed chemical potential is not quantitative.}
+\end{figure*}
+
+\begin{table*}
+\caption{\label{tab:gap}Solutions of the gap equation (\ref{eq:gap}) at zero temperature for nine of
+the {{GEN:gap_n_points}} parameter sets: the dimensionless couplings $\lambda_S$ and $\lambda_P$ of
+the radial and of the phase mode, the gap at the Fermi momentum in units of the Fermi kinetic energy
+for the three kernels, and the ratio of the critical temperature to the gap for the vector channel.
+An entry ``$<10^{-7}$'' is below the resolution of the calculation.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccccc}
+$\gVS$ & $m_s/m$ & $\kF/m$ & $\lambda_S$ & $\lambda_P$ & vector: $\Delta/\EF$ & radial only & two-form & $T_c/\Delta$ (vector) \\
+\hline
+{{ROWS:gap_table|cols=0-8}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Figure~\ref{fig:gap} and Table~\ref{tab:gap} show the result that matters for hypothesis H1. \emph{The
+gap of the vector channel is the largest} in all {{GEN:gap_n_vector_largest}} parameter sets, and it
+exceeds that of the two-form channel by a factor that grows with the density and with the mass of the
+radial mode, from {{GEN:gap_ratio_lo}} to {{GEN:gap_ratio_hi}} in the weak-coupling part of the scan.
+The phase mode alone, that is, the neutral current without the radial mode, gives a gap that is
+negligible at low density, because its coupling $\lambda_P=N(0)\,\gVS^2/4(m^2+\kF^2)$ vanishes with
+$\kF$; it becomes comparable to the contribution of the radial mode when $\kF\sim m$.
+
+\subsection{Two fermions: the bound pair}
+\label{sec:dimer}
+
+At low density the attraction (\ref{eq:yukawa}) is felt by two fermions alone. Whether they bind is
+decided by one number,
+\begin{equation}
+\DVS\equiv\frac{\aVS\,m}{m_s}.
+\label{eq:DVS}
+\end{equation}
+The radial Schr\"odinger equation of the relative motion, with the reduced mass $m/2$, is
+$u''+\DVS\,e^{-\rho}u/\rho=\varepsilon u$ in the variables $\rho=m_sr$ and $\varepsilon=mE_b/m_s^2$,
+where $E_b$ is the binding energy. Its numerical integration gives a bound state if and only if
+\begin{equation}
+\DVS>D_c={{GENM:dimer_dc}},
+\label{eq:Dc}
+\end{equation}
+which is the critical value known for the Yukawa potential \cite{RogersGraboskeHarwood1970}. The
+scattering length has the Born limit $a=-\DVS/m_s$ for weak coupling and diverges at $D_c$
+(Fig.~\ref{fig:dimer}).
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_dimer}
+\caption{\label{fig:dimer}Two fermions in the Yukawa potential of the radial mode. (a) Scattering
+length in units of $1/m_s$; it diverges at the critical coupling $D_c$, where the bound state appears.
+(b) Binding energy of the pair.}
+\end{figure*}
+
+For $\DVS<D_c$ the superfluid is of the kind described by Bardeen, Cooper and Schrieffer at all
+densities: large, overlapping pairs, described by Eq.~(\ref{eq:gap}). For $\DVS>D_c$ a dilute gas
+consists of bound pairs, bosons of spin 0, that condense; as the density rises the pairs overlap, and
+the state crosses over continuously to the first kind \cite{NozieresSchmittRink1985}. In the scan of
+Sec.~\ref{sec:gapsol} the {{GEN:gap_n_beyond}} points marked by open symbols are on the way to this
+regime. There the \emph{existence} of the paired state is not in doubt, since two fermions already
+bind, but the numbers obtained from Eq.~(\ref{eq:gap}) are not quantitative.
+
+The bound state and the instability of the vacuum against pairing are the same thing. Without a Fermi
+sea, at $T=0$ and $\mu<m$, the linearized gap equation becomes, for momenta small compared with $m$ and
+with $\mu=m-E_b/2$, the Schr\"odinger equation of the relative motion in momentum space. A bound
+state appears when the largest eigenvalue of the kernel at $\mu=m$ reaches 1. Solving this condition
+with the relativistic kernel (\ref{eq:W}) gives Table~\ref{tab:threshold}: for a force of long range
+compared with the Compton wavelength of the fermions the threshold is
+{{GEN:cjt_threshold_best}}, against {{GEN:cjt_threshold_ode}} from the Schr\"odinger equation in
+coordinate space. The two programs share no code. For $m_s$ comparable to $m$, relativistic effects
+raise the threshold by a few per cent.
+
+\begin{table}
+\caption{\label{tab:threshold}Critical value of $\DVS=\aVS m/m_s$ for a bound pair, obtained from the
+gap equation in vacuum with the relativistic kernel, and its relative difference from the value
+{{GEN:cjt_threshold_ode}} of the non-relativistic Schr\"odinger equation.}
+\begin{ruledtabular}
+\begin{tabular}{ccc}
+$m_s/m$ & $D_c$ from the gap equation & relative difference \\
+\hline
+{{ROWS:cjt_threshold_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Independent checks through the effective potential}
+\label{sec:checks}
+
+The potential (\ref{eq:Vpair}) was evaluated on the momentum grid for twelve of the parameter sets,
+eight in the vector channel and two each in the two-form channel and with the radial mode alone.
+Table~\ref{tab:cjtchecks} gives four checks.
+
+\emph{An independent solution.} The gap equation is solved by Newton's method with the exact
+Jacobian, starting from a function of different height and shape, where the scan of
+Sec.~\ref{sec:gapsol} used iteration. The two gap functions agree at every grid point within
+{{GEN:cjt_pair_worst_newton}} of the gap, and with the stored results of the scan within
+{{GEN:cjt_pair_worst_scan}}.
+
+\emph{The solution is a minimum.} Along the family $s\,\Delta(k)$ of rescaled gap functions the
+potential has its minimum at $s=1$, within {{GEN:cjt_pair_worst_smin}}. All second variations are
+positive: the matrix of second derivatives is positive definite, and its smallest eigenvalue, in
+suitable units, is given in the table.
+
+\emph{The value at the minimum} is the condensation energy. In weak coupling it must approach
+$V_{\rm BCS}=-\nu N(0)\Delta_F^2/4$, where $\Delta_F$ is the gap at the Fermi momentum. The ratio lies
+between {{GEN:cjt_pair_v_lo}} and {{GEN:cjt_pair_v_hi}}, closest to 1 for the smallest gaps.
+
+\emph{The critical temperature.} Below $T_c$ the unpaired state $\Delta=0$ is unstable: the second
+variation of $V$ there has a negative direction. The temperature at which its determinant changes
+sign agrees with the $T_c$ of the linearized gap equation within {{GEN:cjt_pair_worst_tc}}, the
+resolution of the bisection.
+
+\begin{table*}
+\caption{\label{tab:cjtchecks}Checks of the paired state through the CJT potential (\ref{eq:Vpair}).
+$m_s$ and $\kF$ are in units of $m$. ``Newton'' and ``scan'' are the largest relative differences
+between the gap function found by Newton's method on the potential and, respectively, the gap function
+found by iteration and the gap stored by the scan of Sec.~\ref{sec:gapsol}. $V/V_{\rm BCS}$ is the
+condensation energy relative to its weak-coupling value. The last column is the relative difference
+between the two determinations of $T_c$.}
+\begin{ruledtabular}
+\begin{tabular}{ccclccccccc}
+$\gVS$ & $m_s$ & $\kF$ & pair & $\Delta/\EF$ & Newton & scan & $V/V_{\rm BCS}$ & smallest curvature & $T_c/\Delta$ & $T_c$: two methods \\
+\hline
+{{ROWS:cjt_pairing_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\emph{The Ginzburg-Landau coefficients.} Near $T_c$ the potential can be expanded along a gap function
+of fixed shape, $\Delta(k)=s\,\varphi(k)$, where $\varphi$ is the solution of the linearized gap
+equation normalized to 1 at the Fermi momentum: $V=\alpha(T)\,s^2+\tfrac12\beta\,s^4+\dots$ Expanding
+Eq.~(\ref{eq:Vpair}) gives
+\begin{align}
+\alpha(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\nonumber\\
+\frac\beta2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
+\label{eq:GLcjt}
+\end{align}
+where $\eta(T)$ is the largest eigenvalue of the linearized gap equation, with $\eta(T_c)=1$, and
+$\kappa'$, $\kappa'''$ are the first and third derivatives of Eq.~(\ref{eq:kappa}) with respect to
+$\Delta$ at $\Delta=0$. With a constant density of states these expressions reduce at $T_c$ to the
+weak-coupling coefficients $a$ and $b$ of Eq.~(\ref{eq:GL}) below, with $\alpha=8a$ and
+$\beta=8b$. The gradient coefficient $K$ is obtained independently, from the dependence of the pair
+susceptibility on the momentum of the pair. Table~\ref{tab:gl} compares the three coefficients,
+extracted numerically at $T_c$, with the weak-coupling formulas: they agree within
+{{GEN:cjt_gl_worst}} per cent, and the deviations decrease with the coupling.
+
+\begin{table}
+\caption{\label{tab:gl}The Ginzburg-Landau coefficients extracted from the CJT potential at $T_c$,
+divided by the weak-coupling formulas of Eq.~(\ref{eq:GL}): $a$ and $b$ from the expansion of the
+potential, $K$ from the pair susceptibility.}
+\begin{ruledtabular}
+\begin{tabular}{cccccc}
+$\gVS$ & $m_s/m$ & $\kF/m$ & $a$ & $b$ & $K$ \\
+\hline
+{{ROWS:cjt_gl_table|cols=0,1,2,5,6,7}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Thermodynamics of the paired state}
+\label{sec:thermo}
+
+At the solution of the gap equation the potential (\ref{eq:Vpair}) is the difference of the
+thermodynamic potentials of the paired and of the unpaired state. Figure~\ref{fig:thermo} and
+Table~\ref{tab:thermo} show it, together with the gap, the entropy $S$ and the heat capacity
+$C=T\,dS/dT$, for $\gVS=3$, $m_s=m$ and $\kF=0.5\,m$ in the vector channel.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_cjt_thermo}
+\caption{\label{fig:thermo}The paired state as a function of temperature, for $\gVS=3$, $m_s=m$,
+$\kF=0.5\,m$. (a) Gap at the Fermi momentum. (b) Condensation energy, that is, minus the CJT
+potential, in units of its value at $T=0$. (c) Heat capacity in units of that of the unpaired state
+at the same temperature; it jumps at $T_c$.}
+\end{figure*}
+
+\begin{table}
+\caption{\label{tab:thermo}The paired state as a function of temperature (parameters of
+Fig.~\ref{fig:thermo}): gap, condensation energy, and entropy and heat capacity relative to the
+unpaired state (subscripts $s$ and $n$).}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+$T/T_c$ & $\Delta(T)/\Delta(0)$ & $-V(T)/\lvert V(0)\rvert$ & $S_s/S_n$ & $C_s/C_n$ \\
+\hline
+{{ROWS:cjt_thermo_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The universal numbers of weak coupling are reproduced, with corrections of the size expected for a
+gap of a few per cent of the Fermi energy:
+\begin{align}
+\frac{\Delta(0)}{T_c}&={{GENM:cjt_gap0_over_tc}}\quad(1.764),\nonumber\\
+\frac{C_s-C_n}{C_n}\Big|_{T_c}&={{GENM:cjt_c_jump}}\quad(1.426),
+\label{eq:universal}
+\end{align}
+where the values in parentheses are those of the weak-coupling limit. They hold for both spacetimes
+and for any unitary state. Two consequences are used in Sec.~\ref{sec:dm}. The entropy of the paired
+state is exponentially small below about $T_c/4$, so that the paired fluid is cold in the strict
+sense. And the condensation energy per fermion, $\tfrac38\Delta^2/\EF$ in the non-relativistic limit,
+is a small fraction of the Fermi energy, so that pairing changes the pressure only by terms of
+relative order $(\Delta/\EF)^2$.
+
+\subsection{What has been established, and what has not}
+
+Established: within the approximations of Sec.~\ref{sec:gapeq} the gap equation has solutions; the
+vector channel has the largest gap; the numerical method reproduces the textbook limits; two fermions
+bind when $\DVS>D_c$; the solution of the gap equation is the minimum of the CJT potential, and a
+different formulation with different algorithms reproduces the gap functions, the critical
+temperatures, the condensation energy, the critical coupling of the bound pair and the three
+Ginzburg-Landau coefficients, to the accuracies of Tables~\ref{tab:threshold} to \ref{tab:gl}.
+
+Not established: anything beyond the two-loop truncation of $\Gamma_2$ and the three approximations
+of Sec.~\ref{sec:gapeq}. In particular the dependence of the pairing interaction on the energy
+transfer, which is known to change the prefactor of the gap in comparable systems; the
+renormalization of the normal state; fluctuations of the order parameter; and the strong-coupling
+regime beyond the open symbols of Fig.~\ref{fig:gap}.

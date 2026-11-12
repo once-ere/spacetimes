@@ -1,0 +1,576 @@
+
+% =====================================================================
+\section{The real Dirac matrices of the \SIG{4+4}{7+1} spacetime}
+\label{sec:matrices}
+% =====================================================================
+
+This section meets objective O1. It defines the eight matrices, proves that they are real and that
+they satisfy the anticommutation relations of the metric, determines the group that their scaled
+commutators generate, and derives the chiral projection operators. Throughout, $1_n$ denotes the
+$n\times n$ unit matrix, a superscript $T$ the transpose, and a dagger the Hermitian conjugate. An
+identifier such as \SIG{\texttt{44-C1}}{\texttt{71-C1}} names the machine check that verifies the
+statement next to which it stands (Appendix~\ref{app:checks}).
+
+%%<1644>
+\subsection{Definition}
+\label{sec:def}
+
+The matrices are built in four steps, from $4\times4$ to $16\times16$ matrices. The $8\times8$ matrices
+of the second and third steps are the reduced generators that the author has used for the split
+octonion algebra and for the spinors of $SO(4,4)$ \cite{Nash1990,Nash2010}.
+
+\emph{Step 1: six antisymmetric $4\times4$ matrices.} Let $\epsilon_{hpq4}$ be the sign of the
+permutation $(h,p,q,4)$ of $(1,2,3,4)$, and zero if two of the indices coincide. For $h=1,2,3$ and
+$p,q=1,\dots,4$,
+\begin{align}
+(s_h)_{pq}&=\epsilon_{hpq4}-\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big),\nonumber\\
+(t_h)_{pq}&=\epsilon_{hpq4}+\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big).
+\label{eq:st}
+\end{align}
+The three $s_h$ are self-dual and the three $t_h$ anti-self-dual antisymmetric matrices.
+
+\emph{Step 2: seven $8\times8$ matrices.} With $4\times4$ blocks,
+\begin{align}
+\tau^h&=\begin{pmatrix}0&s_h\\ s_h&0\end{pmatrix},\qquad
+\tau^{7-h}=\begin{pmatrix}0&t_h\\ -t_h&0\end{pmatrix}\quad(h=1,2,3),\nonumber\\
+\tau^7&=\tau^1\tau^2\tau^3\tau^4\tau^5\tau^6,\qquad\tau^0=1_8 .
+\label{eq:tau}
+\end{align}
+One finds $\tau^7=\mathrm{diag}(-1_4,1_4)$ and
+\begin{equation}
+\tau^1\tau^2\tau^3=\tau^4\tau^5\tau^6\tau^7=\sigma_{88},\qquad
+\sigma_{88}\equiv\begin{pmatrix}0&1_4\\ 1_4&0\end{pmatrix}
+\label{eq:sigma88}
+\end{equation}
+(check \texttt{44-B1}).
+
+\emph{Step 3: the barred matrices.} $\bar\tau^0=1_8$ and
+$\bar\tau^A=\sigma_{88}\,(\tau^A)^{T}\sigma_{88}$ for $A=1,\dots,7$. The two sets satisfy
+(check \texttt{44-B2})
+\begin{equation}
+\tau^A\bar\tau^B+\tau^B\bar\tau^A=2\,\eta^{AB}\,1_8=\bar\tau^A\tau^B+\bar\tau^B\tau^A,
+\label{eq:taubar}
+\end{equation}
+where $\eta^{AB}$ is the metric defined in Eq.~(\ref{eq:clifford}) below.
+
+\emph{Step 4: the eight $16\times16$ matrices.} In $8\times8$ blocks,
+\begin{equation}
+\gamma_{1644}^A=\begin{pmatrix}0&\bar\tau_{1644}^A\\ \tau_{1644}^A&0\end{pmatrix},\qquad A=0,1,\dots,7 .
+\label{eq:gamma}
+\end{equation}
+The index $A$ is a contravariant index: these are the matrices that multiply $\partial_A$ in the Dirac
+operator. Table~\ref{tab:gammas} of Appendix~\ref{app:matrices} displays all eight.
+
+\subsection{Reality and the anticommutation relations}
+
+\emph{Theorem 1.} (i) The eight matrices $\gamma_{1644}^A$ are real. Every entry is $0$, $+1$ or $-1$,
+and every row and every column contains exactly one non-zero entry: each is a signed permutation
+matrix. (ii) They satisfy
+\begin{equation}
+\gamma_{1644}^A\gamma_{1644}^B+\gamma_{1644}^B\gamma_{1644}^A=2\,\eta_{1644}^{AB}\,1_{16},
+\label{eq:clifford}
+\end{equation}
+with the metric
+\begin{equation}
+\eta_{1644}=\mathrm{diag}(+1,+1,+1,+1,-1,-1,-1,-1).
+\label{eq:eta}
+\end{equation}
+
+\emph{Proof.} (i) The matrices $s_h$ and $t_h$ are built from the integers $\epsilon_{hpq4}$ and
+Kronecker deltas; $\tau^A$, $\bar\tau^A$ and $\gamma^A$ are built from them by forming blocks,
+transposes and products. No complex number enters at any step (checks \texttt{44-R1},
+\texttt{44-R2}). (ii) From the block form (\ref{eq:gamma}),
+\begin{equation*}
+\gamma^A\gamma^B+\gamma^B\gamma^A=\begin{pmatrix}\bar\tau^A\tau^B+\bar\tau^B\tau^A&0\\
+0&\tau^A\bar\tau^B+\tau^B\bar\tau^A\end{pmatrix},
+\end{equation*}
+and both blocks equal $2\eta^{AB}1_8$ by Eq.~(\ref{eq:taubar}), an identity between integer matrices
+that is verified for all 64 pairs of indices (checks \texttt{44-B2}, \texttt{44-C1}). $\blacksquare$
+
+Thus $\gamma^0,\gamma^1,\gamma^2,\gamma^3$, which belong to the space-like coordinates, square to $+1$;
+$\gamma^4,\gamma^5,\gamma^6,\gamma^7$, which belong to the time-like coordinates, square to $-1$; and
+different matrices anticommute. Three consequences are used below (checks \texttt{44-C2} to
+\texttt{44-C4}). First, $(\gamma^A)^T=\eta^{AA}\gamma^A$ (no sum): the space-like matrices are
+symmetric and the time-like ones antisymmetric, and every $\gamma^A$ is an orthogonal matrix. Second,
+the 256 ordered products $\gamma^{A_1}\cdots\gamma^{A_r}$ with $A_1<\dots<A_r$ and $r=0,\dots,8$ are
+linearly independent. They therefore span all real $16\times16$ matrices: the Clifford algebra of the
+metric (\ref{eq:eta}) is the full matrix algebra, $\Cl(4,4)\cong\mathbb{R}(16)$
+\cite{AtiyahBottShapiro1964,LawsonMichelsohn1989}. Third, the 16-dimensional representation is
+therefore irreducible over the real numbers.
+
+\subsection{The scaled commutators and the group they generate}
+\label{sec:pin}
+
+The \emph{scaled commutators} are
+\begin{equation}
+\Sigma_{1644}^{AB}\equiv\tfrac14\big[\gamma_{1644}^A,\gamma_{1644}^B\big]
+=\tfrac12\gamma_{1644}^A\gamma_{1644}^B\quad(A\neq B),
+\label{eq:Sigma}
+\end{equation}
+where the second form follows from Eq.~(\ref{eq:clifford}). They are antisymmetric in their indices;
+the 28 of them with $A<B$ are linearly independent (checks \texttt{44-L1}, \texttt{44-L2}).
+
+\emph{Theorem 2.} (i) \emph{Lie algebra.} The scaled commutators satisfy
+\begin{align}
+[\Sigma^{AB},\Sigma^{CD}]={}&\eta^{BC}\Sigma^{AD}-\eta^{AC}\Sigma^{BD}\nonumber\\
+&-\eta^{BD}\Sigma^{AC}+\eta^{AD}\Sigma^{BC},\label{eq:so44}\\
+[\Sigma^{AB},\gamma^{C}]={}&\eta^{BC}\gamma^{A}-\eta^{AC}\gamma^{B}.\label{eq:vector}
+\end{align}
+Their real span is a Lie algebra isomorphic to $\so(4,4)$. (ii) \emph{Identity component.} The
+matrices $S=\exp\big(\sum_{A<B}\theta_{AB}\Sigma^{AB}\big)$ with real parameters $\theta_{AB}$ generate
+a connected group, $\Spin_0(4,4)$. Every such $S$ satisfies
+\begin{equation}
+S\gamma^AS^{-1}=\Lambda^A{}_B\gamma^B,\qquad\Lambda\,\eta\,\Lambda^T=\eta,\qquad\det\Lambda=+1,
+\label{eq:lambda}
+\end{equation}
+with a real $8\times8$ matrix $\Lambda$. The map $S\mapsto\Lambda$ sends $\Spin_0(4,4)$ onto the
+identity component of the pseudo-orthogonal group, and $S$ and $-S$ have the same image. (iii)
+\emph{The whole group.} Each $\gamma^A$ is invertible, and the map
+$\gamma^B\mapsto-\gamma^A\gamma^B(\gamma^A)^{-1}$ reverses $\gamma^A$ and leaves the other seven
+matrices unchanged: it is the reflection of the axis $xA$. The group generated by $\Spin_0(4,4)$
+together with the eight matrices is $\Pin(4,4)$. It has four connected components,
+\begin{align}
+\Pin(4,4)={}&\Spin_0(4,4)\,\cup\,\gamma^0\,\Spin_0(4,4)\nonumber\\
+&\cup\,\gamma^4\,\Spin_0(4,4)\,\cup\,\gamma^0\gamma^4\,\Spin_0(4,4).
+\label{eq:pin44}
+\end{align}
+
+In words: the scaled commutators span the Lie algebra of $\Pin(4,4)$ and generate, by exponentiation,
+its identity component; the three other components are reached by multiplying with one space-like
+matrix, with one time-like matrix, or with both. Exponentials alone can never leave the identity
+component, because $\exp(sY)$, $0\le s\le1$, is a continuous path from the unit matrix to $\exp(Y)$.
+This is why part (iii) is needed, and it is the precise sense in which the scaled commutators generate
+$\Pin(4,4)$.
+
+\emph{Proof.} (i) Equation (\ref{eq:vector}) follows from Eq.~(\ref{eq:clifford}):
+$[\gamma^A\gamma^B,\gamma^C]=\gamma^A\{\gamma^B,\gamma^C\}-\{\gamma^A,\gamma^C\}\gamma^B
+=2\eta^{BC}\gamma^A-2\eta^{AC}\gamma^B$. Applying it twice to $\Sigma^{CD}=\tfrac12\gamma^C\gamma^D$
+gives Eq.~(\ref{eq:so44}); both are also verified for all index combinations (checks
+\texttt{44-L3}, \texttt{44-L4}). Relations (\ref{eq:so44}) are the defining relations of the Lie
+algebra of the pseudo-orthogonal group of the metric $\eta$. To identify the real form without appeal
+to the literature, the program computes the Killing form
+$B(X,Y)=\Tr(\mathrm{ad}_X\mathrm{ad}_Y)$ from the structure constants. It is diagonal in the basis
+$\Sigma^{AB}$,
+\begin{equation}
+B(\Sigma^{AB},\Sigma^{AB})=-12\,\eta^{AA}\eta^{BB},
+\label{eq:killing}
+\end{equation}
+and so has 12 negative and 16 positive eigenvalues (check \texttt{44-L5}). Equivalently, 12
+generators are antisymmetric matrices, which exponentiate to rotations, and 16 are symmetric matrices,
+which exponentiate to boosts (check \texttt{44-L6}). The numbers of compact and non-compact generators
+of the real forms $\so(p,q)$ with $p+q=8$ are $(28,0)$ for $\so(8)$, $(21,7)$ for $\so(7,1)$,
+$(16,12)$ for $\so(6,2)$, $(13,15)$ for $\so(5,3)$ and $(12,16)$ for $\so(4,4)$. The algebra is
+$\so(4,4)$.
+
+(ii) For a single plane the exponential is elementary, because
+$(\gamma^A\gamma^B)^2=-\eta^{AA}\eta^{BB}$:
+\begin{equation}
+e^{\theta\Sigma^{AB}}=\begin{cases}\cos\frac\theta2+\gamma^A\gamma^B\sin\frac\theta2,&\eta^{AA}\eta^{BB}=+1,\\[3pt]
+\cosh\frac\theta2+\gamma^A\gamma^B\sinh\frac\theta2,&\eta^{AA}\eta^{BB}=-1,\end{cases}
+\label{eq:exp}
+\end{equation}
+a rotation in the first case and a boost in the second (check \texttt{44-G2}). By
+Eq.~(\ref{eq:vector}) the derivative of $e^{sY}\gamma^Ce^{-sY}$ with respect to $s$ is again a linear
+combination of the $\gamma$'s when $Y$ is a combination of the $\Sigma^{AB}$, so that
+$S\gamma^CS^{-1}=\Lambda^C{}_D\gamma^D$; applying $S(\cdot)S^{-1}$ to Eq.~(\ref{eq:clifford}) shows
+$\Lambda\eta\Lambda^T=\eta$. Check \texttt{44-G3} confirms both statements and $\det\Lambda=1$
+numerically for random elements. A rotation by $\theta=2\pi$ in Eq.~(\ref{eq:exp}) gives $S=-1$ while
+$\Lambda=1$: the map is two-to-one, and $-1$ is connected to $+1$ inside $\Spin_0(4,4)$.
+
+(iii) $(\gamma^A)^{-1}=\eta^{AA}\gamma^A$ and the reflection property are check \texttt{44-G1}. By
+definition $\Pin(4,4)$ is the group generated, inside the Clifford algebra, by the vectors
+$v=v_A\gamma^A$ with $v^2=\pm1$ \cite{AtiyahBottShapiro1964,LawsonMichelsohn1989}. Every such $v$ is
+obtained from $\gamma^0$ (if $v^2=+1$) or from $\gamma^4$ (if $v^2=-1$) by conjugation with an element
+of $\Spin_0(4,4)$, so the group generated by $\Spin_0(4,4)$ and the $\gamma^A$ is $\Pin(4,4)$. A
+product of two different matrices of the same kind is $\exp(\pi\Sigma^{AB})$ by Eq.~(\ref{eq:exp})
+and lies in $\Spin_0(4,4)$; a product of a space-like and a time-like matrix reverses one space axis
+and one time axis and does not. Hence the four components (\ref{eq:pin44}). $\blacksquare$
+
+\subsection{Chirality: the real projection operators}
+\label{sec:chirality}
+
+Multiply the eight matrices in the order of their indices:
+\begin{equation}
+\omega_{1644}\equiv\gamma_{1644}^0\gamma_{1644}^1\cdots\gamma_{1644}^7=\begin{pmatrix}-1_8&0\\0&1_8\end{pmatrix}.
+\label{eq:omega}
+\end{equation}
+Two properties of this \emph{volume element} follow from Eq.~(\ref{eq:clifford}) alone. First,
+$\omega$ anticommutes with every $\gamma^A$: moving $\gamma^A$ through the product costs seven changes
+of sign, one for each of the other matrices. Second,
+$\omega^2=(-1)^{28}\prod_A(\gamma^A)^2=(+1)^4(-1)^4=+1$, where $(-1)^{28}$ is the sign of reversing the
+order of eight anticommuting factors (checks \texttt{44-V1}, \texttt{44-V2}). Because $\omega$ is real
+with $\omega^2=+1$, the matrices
+\begin{align}
+P_{1644}^{L}&=\tfrac12\big(1-\omega_{1644}\big)=\begin{pmatrix}1_8&0\\0&0\end{pmatrix},\nonumber\\
+P_{1644}^{R}&=\tfrac12\big(1+\omega_{1644}\big)=\begin{pmatrix}0&0\\0&1_8\end{pmatrix}
+\label{eq:PLPR}
+\end{align}
+are \emph{real} projectors. They satisfy $P^{L}+P^{R}=1$, $P^{L}P^{L}=P^{L}$, $P^{R}P^{R}=P^{R}$,
+$P^{L}P^{R}=P^{R}P^{L}=0$ and $\Tr P^{L}=\Tr P^{R}=8$ (checks \texttt{44-P1}, \texttt{44-P2}). Two
+further properties make them \emph{chiral} projectors. Every Dirac matrix turns a left-handed spinor
+into a right-handed one and conversely, $\gamma^AP^{L}=P^{R}\gamma^A$ (check \texttt{44-P4}). And the
+projectors commute with every $\Sigma^{AB}$ (check \texttt{44-P5}), so that the splitting
+$\psi=P^{L}\psi+P^{R}\psi$ is the same in every Lorentz frame. In the present basis the splitting is
+simply ``upper eight components, lower eight components.'' A real chirality is a property of the
+$4+4$ signature; the companion paper shows that the $7+1$ signature has none.
+
+\subsection{Other matrices that the theory needs}
+\label{sec:other}
+
+\emph{The two transposition matrices.} Let
+\begin{align}
+\Cm_{1644}&\equiv\gamma^0\gamma^1\gamma^2\gamma^3=\begin{pmatrix}-\sigma_{88}&0\\0&\sigma_{88}\end{pmatrix},\nonumber\\
+\Cp_{1644}&\equiv\gamma^4\gamma^5\gamma^6\gamma^7=\begin{pmatrix}\sigma_{88}&0\\0&\sigma_{88}\end{pmatrix},
+\label{eq:C}
+\end{align}
+so that $\omega=\Cm\Cp$ (checks \texttt{44-S1}, \texttt{44-S2}). Both are real, symmetric and square
+to $1$, and
+\begin{equation}
+\Cm\gamma^A(\Cm)^{-1}=-(\gamma^A)^T,\qquad\Cp\gamma^A(\Cp)^{-1}=+(\gamma^A)^T
+\label{eq:Ctranspose}
+\end{equation}
+(check \texttt{44-S3}). They play two roles: $\Cm$ defines the adjoint spinor of
+Sec.~\ref{sec:dirac}, and both define the bilinear forms $\psi^TC^{\mp}\cdots\psi$ from which fermion
+pairs are built (Sec.~\ref{sec:pairs}).
+
+\emph{The complex structure.} The matrix $\gamma^4$ is real, squares to $-1$, and satisfies
+$(\gamma^4)^T\Cm\gamma^4=\Cm$ (check \texttt{44-S5}). It will reappear as the generator of the
+evolution of a particle at rest in the time $x4$.
+
+\emph{The grading.} $W_{1644}\equiv i\,\Cm\gamma^4$ is Hermitian with $W^2=1$ and trace zero (checks
+\texttt{44-D10}, \texttt{44-D11}). It appears in Sec.~\ref{sec:quantized}.
+
+\emph{Relation to the matrices of the companion paper.} The eight real Dirac matrices
+$\gamma_{1671}^A$ of the $7+1$ spacetime \cite{Companion1671} generate the same algebra of real
+$16\times16$ matrices. They are related to the present ones by (check \texttt{71-B4})
+\begin{align}
+\gamma_{1671}^4&=\gamma_{1644}^0,\qquad\gamma_{1671}^j=-\gamma_{1644}^0\gamma_{1644}^j\quad(j=1,2,3),\nonumber\\
+\gamma_{1671}^0&=+\gamma_{1644}^0\gamma_{1644}^5\gamma_{1644}^6\gamma_{1644}^7,\nonumber\\
+\gamma_{1671}^5&=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^6\gamma_{1644}^7,\nonumber\\
+\gamma_{1671}^6&=+\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^7,\nonumber\\
+\gamma_{1671}^7&=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^6 .
+\label{eq:relation}
+\end{align}
+The matrix that the $4+4$ spacetime attaches to its hidden space-like axis is the time-like matrix of
+the $7+1$ spacetime. The other seven matrices of $7+1$ are products of two or of four of the present
+ones and are not linear combinations of them: the two sets are different sets of generators of the
+same algebra.
+
+\subsection{What has been established, and what has not}
+
+Established, by exact arithmetic: the eight matrices are real; they satisfy the anticommutation
+relations (\ref{eq:clifford}) of the $4+4$ metric; they generate the algebra of all real
+$16\times16$ matrices; their scaled commutators span $\so(4,4)$, with 12 compact and 16 non-compact
+generators, and generate, together with the matrices themselves, the four components of $\Pin(4,4)$;
+the chirality matrix and the chiral projectors are real. The matrices rebuilt by the program are
+identical, entry by entry, to those of the notebooks from which they were taken, and an independent
+second program confirms the essential statements by other methods (Appendix~\ref{app:checks}).
+
+Not established here, because it is not needed: the relation of these matrices to the triality of
+$SO(4,4)$ and to the split octonions, for which we refer to Refs.~\cite{Nash1990,Nash2010}.
+%%</1644>
+%%<1671>
+\subsection{Definition}
+\label{sec:def}
+
+The matrices are built in three steps. The first uses the real $8\times8$ matrices
+$\tau_{1644}^A$ of the companion paper \cite{Companion1644}, which are the reduced generators that the
+author has used for the split octonion algebra \cite{Nash1990,Nash2010}; Appendix~\ref{app:matrices}
+defines them, so that the present paper can be read by itself.
+
+\emph{Step 1: seven octonionic $8\times8$ matrices.} Let
+$\sigma_{88}$ be the $8\times8$ matrix with the $4\times4$ blocks $(0,1_4;1_4,0)$, and define, with
+the labels of the present paper,
+\begin{align}
+\tau_{1671}^4&=1_8,\qquad\tau_{1671}^j=\tau_{1644}^j\quad(j=1,2,3),\nonumber\\
+\tau_{1671}^0&=\tau_{1644}^4\,\sigma_{88},\qquad\tau_{1671}^k=\tau_{1644}^k\,\sigma_{88}\quad(k=5,6,7).
+\label{eq:tau}
+\end{align}
+The seven matrices $\tau_{1671}^j$ with $j\in\{0,1,2,3,5,6,7\}$ are real and antisymmetric, they
+anticommute with one another, and each squares to $-1_8$ (checks \texttt{71-B1}, \texttt{71-D6}):
+\begin{equation}
+\tau^i\tau^j+\tau^j\tau^i=-2\,\delta^{ij}\,1_8 .
+\label{eq:tauclifford}
+\end{equation}
+They represent the multiplication by the seven imaginary units of the octonions
+\cite{Bryant1982,HarveyLawson1982}.
+
+\emph{Step 2: the time-like matrix.} In $8\times8$ blocks,
+\begin{equation}
+\gamma_{1671}^4=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix}.
+\label{eq:gamma4}
+\end{equation}
+
+\emph{Step 3: the seven space-like matrices.}
+\begin{equation}
+\gamma_{1671}^j=\begin{pmatrix}-\tau_{1671}^j&0\\0&\tau_{1671}^j\end{pmatrix},\qquad j\in\{0,1,2,3,5,6,7\}
+\label{eq:gamma}
+\end{equation}
+(check \texttt{71-B2}). The index $A$ of $\gamma_{1671}^A$ is a contravariant index: these are the
+matrices that multiply $\partial_A$ in the Dirac operator. Table~\ref{tab:gammas} of
+Appendix~\ref{app:matrices} displays all eight.
+
+\emph{Relation to the matrices of the companion paper.} Both sets consist of real $16\times16$
+matrices, and each generates the algebra of all such matrices. They are related by
+(check \texttt{71-B4})
+\begin{align}
+\gamma_{1671}^4&=\gamma_{1644}^0,\qquad\gamma_{1671}^j=-\gamma_{1644}^0\gamma_{1644}^j\quad(j=1,2,3),\nonumber\\
+\gamma_{1671}^0&=+\gamma_{1644}^0\gamma_{1644}^5\gamma_{1644}^6\gamma_{1644}^7,\nonumber\\
+\gamma_{1671}^5&=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^6\gamma_{1644}^7,\nonumber\\
+\gamma_{1671}^6&=+\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^7,\nonumber\\
+\gamma_{1671}^7&=-\gamma_{1644}^0\gamma_{1644}^4\gamma_{1644}^5\gamma_{1644}^6 .
+\label{eq:relation}
+\end{align}
+The time-like matrix of the $7+1$ spacetime is the matrix that the $4+4$ spacetime attaches to its
+hidden space-like axis. The other seven are products of two or of four of the $4+4$ matrices and are
+not linear combinations of them: the two sets are different sets of generators of the same algebra.
+
+\subsection{Reality and the anticommutation relations}
+
+\emph{Theorem 1.} (i) The eight matrices $\gamma_{1671}^A$ are real. Every entry is $0$, $+1$ or $-1$,
+and every row and every column contains exactly one non-zero entry: each is a signed permutation
+matrix. (ii) They satisfy
+\begin{equation}
+\gamma_{1671}^A\gamma_{1671}^B+\gamma_{1671}^B\gamma_{1671}^A=2\,\eta_{1671}^{AB}\,1_{16},
+\label{eq:clifford}
+\end{equation}
+with the metric
+\begin{equation}
+\eta_{1671}=\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1).
+\label{eq:eta}
+\end{equation}
+
+\emph{Proof.} (i) The matrices are products and blocks of integer matrices; no complex number enters
+(checks \texttt{71-R1}, \texttt{71-R2}). (ii) From the block forms (\ref{eq:gamma4}) and
+(\ref{eq:gamma}): $(\gamma^4)^2=1$; $(\gamma^j)^2=\mathrm{diag}((\tau^j)^2,(\tau^j)^2)=-1$; for
+$i\neq j$ the anticommutator of $\gamma^i$ and $\gamma^j$ is
+$\mathrm{diag}(\tau^i\tau^j+\tau^j\tau^i,\ \tau^i\tau^j+\tau^j\tau^i)=0$ by
+Eq.~(\ref{eq:tauclifford}); and
+\begin{equation*}
+\gamma^4\gamma^j+\gamma^j\gamma^4=\begin{pmatrix}0&\tau^j\\-\tau^j&0\end{pmatrix}+\begin{pmatrix}0&-\tau^j\\ \tau^j&0\end{pmatrix}=0 .
+\end{equation*}
+Equation (\ref{eq:clifford}) is also verified directly for all 64 pairs of indices (check
+\texttt{71-C1}). $\blacksquare$
+
+Thus the time-like matrix $\gamma^4$ squares to $+1$ and the seven space-like matrices square to
+$-1$.
+
+\emph{Why this sign convention is forced.} In the companion paper the space-like matrices square to
+$+1$. Here that convention is impossible. Eight real $16\times16$ matrices with seven squares $+1$
+and one square $-1$ do not exist, because the Clifford algebra with those signs is
+$\Cl(7,1)\cong\mathbb{H}(8)$, the algebra of $8\times8$ matrices over the quaternions, whose smallest
+real representation has 32 dimensions; whereas with one square $+1$ and seven squares $-1$ the algebra
+is $\Cl(1,7)\cong\mathbb{R}(16)$ \cite{AtiyahBottShapiro1964,LawsonMichelsohn1989}. For the signature
+$4+4$ the two conventions are equivalent. The consequence for the Dirac equation is the factor $i$ in
+Eq.~(\ref{eq:dirac}) below, which is absent in the $4+4$ case.
+
+Three consequences of Theorem 1 are used below (checks \texttt{71-C2} to \texttt{71-C4}). First,
+$(\gamma^A)^T=\eta^{AA}\gamma^A$ (no sum): $\gamma^4$ is symmetric and the seven $\gamma^j$ are
+antisymmetric, and every $\gamma^A$ is an orthogonal matrix. Second, the 256 ordered products
+$\gamma^{A_1}\cdots\gamma^{A_r}$ with $A_1<\dots<A_r$ and $r=0,\dots,8$ are linearly independent, so
+that the matrices generate all real $16\times16$ matrices. Third, the 16-dimensional representation is
+therefore irreducible over the real numbers.
+
+\subsection{The scaled commutators and the group they generate}
+\label{sec:pin}
+
+The \emph{scaled commutators} are
+\begin{equation}
+\Sigma_{1671}^{AB}\equiv\tfrac14\big[\gamma_{1671}^A,\gamma_{1671}^B\big]
+=\tfrac12\gamma_{1671}^A\gamma_{1671}^B\quad(A\neq B),
+\label{eq:Sigma}
+\end{equation}
+where the second form follows from Eq.~(\ref{eq:clifford}). They are antisymmetric in their indices;
+the 28 of them with $A<B$ are linearly independent (checks \texttt{71-L1}, \texttt{71-L2}).
+
+\emph{Theorem 2.} (i) \emph{Lie algebra.} The scaled commutators satisfy
+\begin{align}
+[\Sigma^{AB},\Sigma^{CD}]={}&\eta^{BC}\Sigma^{AD}-\eta^{AC}\Sigma^{BD}\nonumber\\
+&-\eta^{BD}\Sigma^{AC}+\eta^{AD}\Sigma^{BC},\label{eq:so44}\\
+[\Sigma^{AB},\gamma^{C}]={}&\eta^{BC}\gamma^{A}-\eta^{AC}\gamma^{B}.\label{eq:vector}
+\end{align}
+Their real span is a Lie algebra isomorphic to $\so(7,1)$. (ii) \emph{Identity component.} The
+matrices $S=\exp\big(\sum_{A<B}\theta_{AB}\Sigma^{AB}\big)$ with real parameters $\theta_{AB}$ generate
+a connected group, $\Spin_0(7,1)$. Every such $S$ satisfies
+\begin{equation}
+S\gamma^AS^{-1}=\Lambda^A{}_B\gamma^B,\qquad\Lambda\,\eta\,\Lambda^T=\eta,\qquad\det\Lambda=+1,
+\label{eq:lambda}
+\end{equation}
+with a real $8\times8$ matrix $\Lambda$. The map $S\mapsto\Lambda$ sends $\Spin_0(7,1)$ onto the
+proper orthochronous Lorentz group $SO_0(7,1)$, and $S$ and $-S$ have the same image. (iii)
+\emph{The whole group.} Each $\gamma^A$ is invertible, and the map
+$\gamma^B\mapsto-\gamma^A\gamma^B(\gamma^A)^{-1}$ reverses $\gamma^A$ and leaves the other seven
+matrices unchanged: it is the reflection of the axis $xA$. The group generated by $\Spin_0(7,1)$
+together with the eight matrices is the pin group of the $7+1$ spacetime. It has four connected
+components,
+\begin{align}
+\Pin(7,1)={}&\Spin_0(7,1)\,\cup\,\gamma^1\,\Spin_0(7,1)\nonumber\\
+&\cup\,\gamma^4\,\Spin_0(7,1)\,\cup\,\gamma^1\gamma^4\,\Spin_0(7,1).
+\label{eq:pin44}
+\end{align}
+
+In words: the scaled commutators span the Lie algebra of $\Pin(7,1)$ and generate, by exponentiation,
+its identity component; the three other components are reached by multiplying with one space-like
+matrix, with the time-like matrix, or with both. Exponentials alone can never leave the identity
+component, because $\exp(sY)$, $0\le s\le1$, is a continuous path from the unit matrix to $\exp(Y)$.
+This is why part (iii) is needed, and it is the precise sense in which the scaled commutators generate
+$\Pin(7,1)$.
+
+\emph{Proof.} (i) Equation (\ref{eq:vector}) follows from Eq.~(\ref{eq:clifford}):
+$[\gamma^A\gamma^B,\gamma^C]=\gamma^A\{\gamma^B,\gamma^C\}-\{\gamma^A,\gamma^C\}\gamma^B
+=2\eta^{BC}\gamma^A-2\eta^{AC}\gamma^B$. Applying it twice to $\Sigma^{CD}=\tfrac12\gamma^C\gamma^D$
+gives Eq.~(\ref{eq:so44}); both are also verified for all index combinations (checks
+\texttt{71-L3}, \texttt{71-L4}). Relations (\ref{eq:so44}) are the defining relations of the Lie
+algebra of the pseudo-orthogonal group of the metric $\eta$. To identify the real form without appeal
+to the literature, the program computes the Killing form
+$B(X,Y)=\Tr(\mathrm{ad}_X\mathrm{ad}_Y)$ from the structure constants. It is diagonal in the basis
+$\Sigma^{AB}$,
+\begin{equation}
+B(\Sigma^{AB},\Sigma^{AB})=-12\,\eta^{AA}\eta^{BB},
+\label{eq:killing}
+\end{equation}
+and so has 21 negative and 7 positive eigenvalues (check \texttt{71-L5}). Equivalently, 21 generators
+are antisymmetric matrices, the rotations among the seven space coordinates, and 7 are symmetric
+matrices, the boosts $\Sigma^{4j}$ (check \texttt{71-L6}). The numbers of compact and non-compact
+generators of the real forms $\so(p,q)$ with $p+q=8$ are $(28,0)$ for $\so(8)$, $(21,7)$ for
+$\so(7,1)$, $(16,12)$ for $\so(6,2)$, $(13,15)$ for $\so(5,3)$ and $(12,16)$ for $\so(4,4)$. The
+algebra is $\so(7,1)$.
+
+(ii) For a single plane the exponential is elementary, because
+$(\gamma^A\gamma^B)^2=-\eta^{AA}\eta^{BB}$:
+\begin{equation}
+e^{\theta\Sigma^{AB}}=\begin{cases}\cos\frac\theta2+\gamma^A\gamma^B\sin\frac\theta2,&\eta^{AA}\eta^{BB}=+1,\\[3pt]
+\cosh\frac\theta2+\gamma^A\gamma^B\sinh\frac\theta2,&\eta^{AA}\eta^{BB}=-1,\end{cases}
+\label{eq:exp}
+\end{equation}
+a rotation in the first case and a boost in the second (check \texttt{71-G2}). By
+Eq.~(\ref{eq:vector}) the derivative of $e^{sY}\gamma^Ce^{-sY}$ with respect to $s$ is again a linear
+combination of the $\gamma$'s when $Y$ is a combination of the $\Sigma^{AB}$, so that
+$S\gamma^CS^{-1}=\Lambda^C{}_D\gamma^D$; applying $S(\cdot)S^{-1}$ to Eq.~(\ref{eq:clifford}) shows
+$\Lambda\eta\Lambda^T=\eta$. Check \texttt{71-G3} confirms both statements and $\det\Lambda=1$
+numerically for random elements. A rotation by $\theta=2\pi$ in Eq.~(\ref{eq:exp}) gives $S=-1$ while
+$\Lambda=1$: the map is two-to-one, and $-1$ is connected to $+1$ inside $\Spin_0(7,1)$.
+
+(iii) $(\gamma^A)^{-1}=\eta^{AA}\gamma^A$ and the reflection property are check \texttt{71-G1}. By
+definition the pin group is the group generated, inside the Clifford algebra, by the vectors
+$v=v_A\gamma^A$ with $v^2=\pm1$ \cite{AtiyahBottShapiro1964,LawsonMichelsohn1989}. Every such $v$ is
+obtained from $\gamma^4$ (if $v^2=+1$) or from $\gamma^1$ (if $v^2=-1$) by conjugation with an element
+of $\Spin_0(7,1)$, so the group generated by $\Spin_0(7,1)$ and the $\gamma^A$ is the pin group. A
+product of two different space-like matrices is $\exp(\pi\Sigma^{ij})$ by Eq.~(\ref{eq:exp}) and lies
+in $\Spin_0(7,1)$; a product of a space-like matrix and the time-like one reverses one space axis and
+the time axis and does not. Hence the four components (\ref{eq:pin44}). $\blacksquare$
+
+\emph{What the name $\Pin(7,1)$ means.} We use it for the pin group of the spacetime with seven
+space-like dimensions and one time-like dimension, realized by the real matrices $\gamma_{1671}^A$.
+Two remarks make this precise. First, the matrices generate the Clifford algebra $\Cl(1,7)$, in which
+the time-like generator squares to $+1$; in the notation that records these signs the group of
+Theorem 2 is written $\Pin(1,7)$. The full Lorentz group $O(7,1)$ has a second double cover, the pin
+group of the algebra $\Cl(7,1)$ with the opposite signs, in which a reflection of a space axis squares
+to $+1$ instead of $-1$. Its generators would be eight real $16\times16$ matrices with seven squares
+$+1$ and one square $-1$, and such matrices do not exist. The two groups have the same identity
+component and the same Lie algebra and differ only in the components that contain reflections. With
+purely real $16\times16$ Dirac matrices the group of Theorem 2 is the only possibility. Second, it is
+not the group of the companion paper: $\so(7,1)$ has 21 compact and 7 non-compact generators,
+$\so(4,4)$ has 12 and 16, and the signature of the Killing form (\ref{eq:killing}) is an invariant
+that distinguishes them, although both sets of matrices live in the same algebra of real
+$16\times16$ matrices.
+
+\subsection{Chirality: no real projector, and the complex projectors}
+\label{sec:chirality}
+
+Multiply the eight matrices in the order of their indices:
+\begin{equation}
+\omega_{1671}\equiv\gamma_{1671}^0\gamma_{1671}^1\cdots\gamma_{1671}^7=\begin{pmatrix}0&-1_8\\1_8&0\end{pmatrix}.
+\label{eq:omega}
+\end{equation}
+This \emph{volume element} anticommutes with every $\gamma^A$, because moving $\gamma^A$ through the
+product costs seven changes of sign; but now
+$\omega^2=(-1)^{28}\,(+1)(-1)^7=-1$ (checks \texttt{71-V1}, \texttt{71-V2}). A chirality matrix must
+square to $+1$.
+
+\emph{Theorem 3 (no real chirality in $7+1$).} A real $16\times16$ matrix that anticommutes with all
+eight $\gamma_{1671}^A$ is a real multiple of $\omega_{1671}$. Since $\omega_{1671}^2=-1$, no real
+matrix with square $+1$ anticommutes with all of them, and no real chiral projector exists.
+
+\emph{Proof.} Expand a real matrix $X$ in the 256 products $\gamma^{A_1}\cdots\gamma^{A_r}$. A product
+of rank $r$ anticommutes with $\gamma^A$ if $A$ is among its indices and $r$ is even, or if $A$ is not
+among them and $r$ is odd; it commutes otherwise. A product therefore anticommutes with all eight
+matrices only if every index occurs and $r$ is even, that is, only for $r=8$. Moreover the map
+$X\mapsto X\gamma^A+\gamma^AX$ sends each product either to zero or to $\pm2$ times another product,
+and different products to different products, so that the terms of a general $X$ cannot cancel one
+another. Hence $X$ anticommutes with all eight matrices only if it is a multiple of the product of
+rank 8, which is $\omega$, and the square of $c\,\omega$ is $-c^2\le0$. The program confirms the
+statement in a second way: the linear system $X\gamma^A+\gamma^AX=0$ for the 256 entries of $X$ has
+rank 255 (check \texttt{71-V3}). $\blacksquare$
+
+With complex numbers a chirality matrix exists,
+\begin{equation}
+\chi_{1671}\equiv i\,\omega_{1671}=\begin{pmatrix}0&-i\,1_8\\ i\,1_8&0\end{pmatrix},\quad\chi^\dagger=\chi,\quad\chi^2=1,
+\label{eq:chi}
+\end{equation}
+which anticommutes with every $\gamma^A$ (check \texttt{71-P1}). The chiral projectors are
+\begin{align}
+P_{1671}^{L}&=\tfrac12\big(1-\chi_{1671}\big)=\tfrac12\begin{pmatrix}1_8&i\,1_8\\-i\,1_8&1_8\end{pmatrix},\nonumber\\
+P_{1671}^{R}&=\tfrac12\big(1+\chi_{1671}\big)=\tfrac12\begin{pmatrix}1_8&-i\,1_8\\ i\,1_8&1_8\end{pmatrix}.
+\label{eq:PLPR}
+\end{align}
+They are Hermitian and satisfy $P^{L}+P^{R}=1$, $P^{L}P^{L}=P^{L}$, $P^{R}P^{R}=P^{R}$,
+$P^{L}P^{R}=0$ and $\Tr P^{L}=\Tr P^{R}=8$; every Dirac matrix turns a left-handed spinor into a
+right-handed one, $\gamma^AP^{L}=P^{R}\gamma^A$; and they commute with every $\Sigma^{AB}$, so that the
+splitting $\psi=P^{L}\psi+P^{R}\psi$ is the same in every Lorentz frame (checks \texttt{71-P2} to
+\texttt{71-P4}). The Dirac matrices remain real; only the projectors are complex.
+
+The real projectors of the $4+4$ spacetime, $P_{1644}^{L}=\mathrm{diag}(1_8,0)$ and
+$P_{1644}^{R}=\mathrm{diag}(0,1_8)$, are not chiral projectors for the present matrices, by
+Theorem 3. They are, however, unitarily equivalent to the complex ones: with the unitary matrix
+$U_{1671}^{c}=(1-i\,\gamma_{1671}^4)/\sqrt2$,
+\begin{equation}
+U^{c}P_{1671}^{L}(U^{c})^{-1}=P_{1644}^{R},\qquad U^{c}P_{1671}^{R}(U^{c})^{-1}=P_{1644}^{L}
+\label{eq:Uc}
+\end{equation}
+(check \texttt{71-P5}); which of the two is called left-handed is a convention.
+
+\subsection{Other matrices that the theory needs}
+\label{sec:other}
+
+\emph{The adjoint matrix} is the time-like matrix itself: $\gamma_{1671}^4$ is real, symmetric, squares
+to $1$, and satisfies $(\gamma^A)^T=\gamma^4\gamma^A\gamma^4$ (check \texttt{71-S1}). The adjoint
+spinor is $\bar\psi\equiv\psi^\dagger\gamma^4$.
+
+\emph{The two transposition matrices} (check \texttt{71-K0}),
+\begin{equation}
+\Cp_{1671}\equiv\gamma_{1671}^4,\qquad\Cm_{1671}\equiv\gamma_{1671}^4\,\omega_{1671}=\begin{pmatrix}1_8&0\\0&-1_8\end{pmatrix},
+\label{eq:C}
+\end{equation}
+are real and symmetric and satisfy
+\begin{equation}
+C^{\pm}\gamma^A(C^{\pm})^{-1}=\pm(\gamma^A)^T .
+\label{eq:Ctranspose}
+\end{equation}
+They define the bilinear forms $\psi^TC^{\mp}\cdots\psi$ from which fermion pairs are built
+(Sec.~\ref{sec:pairs}).
+
+\emph{The Hamiltonian matrices.} $\beta_{1671}\equiv\gamma^4$ and $\alpha_{1671}^j\equiv\gamma^4\gamma^j$
+for the seven space indices $j$ are real and symmetric, with
+$\alpha^i\alpha^j+\alpha^j\alpha^i=2\delta^{ij}$, $\alpha^j\beta+\beta\alpha^j=0$ and $\beta^2=1$
+(check \texttt{71-D4}). In blocks,
+\begin{equation}
+\beta_{1671}=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\qquad\alpha_{1671}^j=\begin{pmatrix}0&\tau_{1671}^j\\-\tau_{1671}^j&0\end{pmatrix}.
+\label{eq:alphabeta}
+\end{equation}
+
+\subsection{What has been established, and what has not}
+
+Established, by exact arithmetic: the eight matrices are real; they satisfy the anticommutation
+relations (\ref{eq:clifford}) of the $7+1$ metric, in the only sign convention that real matrices
+allow; they generate the algebra of all real $16\times16$ matrices; their scaled commutators span
+$\so(7,1)$, with 21 compact and 7 non-compact generators, and generate, together with the matrices
+themselves, the four components of $\Pin(7,1)$; no real chirality matrix exists, and the chiral
+projectors are the complex matrices (\ref{eq:PLPR}). The matrices rebuilt by the program are
+identical, entry by entry, to those of the notebooks from which they were taken, and an independent
+second program confirms the essential statements by other methods (Appendix~\ref{app:checks}).
+
+Not established here, because it is not needed: the relation of these matrices to the octonions and
+to the exceptional geometries of seven and eight dimensions, for which we refer to
+Refs.~\cite{Bryant1982,HarveyLawson1982,BrownGray1967}.
+%%</1671>

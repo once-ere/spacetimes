@@ -1,5 +1,5 @@
 PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] = T16[A] of 4+4.nb; 7+1: gamma1671[A] = Gamma17up[swap04(A)] of 7+1.nb, swap04 = (0 4)); identifiers 44-.. refer to the 4+4 set, 71-.. to the 7+1 set
-107 of 107 checks passed
+106 of 106 checks passed
 
 [PASS] 44-R1  (exact) every entry of gamma1644[A], A = 0..7, is one of the integers -1, 0, +1; hence the eight matrices are real
 [PASS] 44-R2  (exact) every gamma1644[A] is a signed permutation matrix (one entry +1 or -1 in each row and in each column)

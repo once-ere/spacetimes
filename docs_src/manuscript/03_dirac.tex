@@ -1,0 +1,345 @@
+
+% =====================================================================
+\section{The field and its Dirac equation}
+\label{sec:dirac}
+% =====================================================================
+
+This section meets objective O2. The field is the column
+\begin{equation}
+\psi_{\tg}(x)=\big(\psi_1(x),\dots,\psi_{16}(x)\big)^T,\qquad x=(x0,\dots,x7),
+\end{equation}
+whose sixteen components are complex-valued Grassmann operators: they anticommute, and they are not
+Hermitian, $\psi_a^\dagger\neq\psi_a$. We call it the field \texttt{dirac\tg}.
+
+%%<1644>
+\subsection{The equation}
+
+The Dirac equation of the field is
+\begin{equation}
+\big(\gamma_{1644}^A\,\partial_A-m_{1644}\big)\,\psi_{1644}=0,
+\label{eq:dirac}
+\end{equation}
+with a real mass $m_{1644}>0$ and the real matrices of Sec.~\ref{sec:matrices}. It contains no
+factor $i$, and the reason is the sign convention of the metric (\ref{eq:eta}). The Dirac operator
+must be a square root of the wave operator. By Eq.~(\ref{eq:clifford}),
+\begin{align}
+(\gamma^A\partial_A)^2&=\eta^{AB}\partial_A\partial_B\equiv\Box_{1644}\nonumber\\
+&=\partial_0^2+\partial_1^2+\partial_2^2+\partial_3^2-\partial_4^2-\partial_5^2-\partial_6^2-\partial_7^2,
+\end{align}
+so that
+\begin{equation}
+\big(\gamma^A\partial_A+m\big)\big(\gamma^B\partial_B-m\big)=\Box_{1644}-m^2 .
+\label{eq:kg}
+\end{equation}
+Every component of a solution of Eq.~(\ref{eq:dirac}) therefore satisfies the Klein-Gordon equation
+$(\Box_{1644}-m^2)\psi_a=0$. For a plane wave $\psi\propto e^{ik_Ax^A}$ this reads
+\begin{equation}
+k_4^2+k_5^2+k_6^2+k_7^2=k_0^2+k_1^2+k_2^2+k_3^2+m^2,
+\label{eq:shell}
+\end{equation}
+which is the mass shell of a particle of mass $m$ when $x4,\dots,x7$ are the time-like coordinates.
+An operator $i\gamma^A\partial_A-m$ would give $\Box_{1644}+m^2$, that is, Eq.~(\ref{eq:shell}) with
+space and time exchanged. The operator in Eq.~(\ref{eq:dirac}) is real; the field is complex because a
+Lagrangian with a mass term requires it, as shown below.
+
+In momentum space these statements are identities between matrices with Gaussian-integer entries
+(checks \texttt{44-D1}, \texttt{44-D2}). A worked example (check \texttt{44-D3}): for
+$k=(0,2,2,4;\,5,0,0,0)$ and $m=1$, which satisfies Eq.~(\ref{eq:shell}) because $25=24+1$, the matrix
+$\Pi=(i\gamma^Ak_A+m)/2m$ is a projector of trace 8 with $(i\gamma^Ak_A-m)\Pi=0$. The plane-wave
+solutions form a space of eight dimensions.
+
+\subsection{Covariance, conserved current and Lagrangian}
+
+\emph{Covariance.} Let $S\in\Spin_0(4,4)$ with $S\gamma^AS^{-1}=\Lambda^A{}_B\gamma^B$
+(Theorem 2). If $\psi(x)$ solves Eq.~(\ref{eq:dirac}), then so does
+$\psi'(x)=S\,\psi(\Lambda x)$, where $(\Lambda x)^A=\Lambda^A{}_Bx^B$. Indeed
+$\partial_A\psi'(x)=\Lambda^B{}_A\,S\,(\partial_B\psi)(\Lambda x)$, and with
+$S^{-1}\gamma^AS=(\Lambda^{-1})^A{}_B\gamma^B$,
+\begin{equation}
+\gamma^A\partial_A\psi'(x)=S\,\gamma^B(\partial_B\psi)(\Lambda x)=m\,\psi'(x).
+\end{equation}
+The relation $\Lambda\eta\Lambda^T=\eta$ states that $x\mapsto\Lambda x$ preserves the interval
+$\eta_{AB}x^Ax^B$, that is, that it is a symmetry of the $4+4$ spacetime.
+
+\emph{Adjoint and current.} Define the adjoint spinor $\tilde\psi\equiv\psi^\dagger\Cm$. From
+Eq.~(\ref{eq:Ctranspose}) and the reality of the matrices, $(\gamma^A)^\dagger\Cm=-\Cm\gamma^A$, so
+that the conjugate transpose of Eq.~(\ref{eq:dirac}), multiplied by $\Cm$ from the right, is
+$-\partial_A\tilde\psi\,\gamma^A=m\tilde\psi$. Adding the two equations gives
+$\partial_A(\tilde\psi\gamma^A\psi)=0$. Since $\Cm\gamma^A$ is a real antisymmetric matrix (check
+\texttt{44-S4}), $\tilde\psi\gamma^A\psi$ is anti-Hermitian, and the Hermitian conserved current is
+\begin{equation}
+j_{1644}^A=i\,\tilde\psi\,\gamma^A\psi=\psi^\dagger\big(i\,\Cm\gamma^A\big)\psi,\qquad\partial_Aj_{1644}^A=0 .
+\label{eq:current}
+\end{equation}
+It is the Noether current of the phase symmetry $\psi\to e^{i\epsilon}\psi$, the \emph{fermion
+number}.
+
+\emph{Lagrangian.}
+\begin{equation}
+\mathcal{L}_{1644}=\tilde\psi\big(\gamma^A\partial_A-m\big)\psi,\qquad\tilde\psi=\psi^\dagger\Cm .
+\label{eq:lagrangian}
+\end{equation}
+It is invariant under $\Spin_0(4,4)$, because $S^T\Cm S=\Cm$ for the real matrices $S$ of Theorem 2;
+it is Hermitian up to a total derivative; and varying $\tilde\psi$ gives Eq.~(\ref{eq:dirac}).
+
+\emph{Why the components must be complex.} For a real anticommuting field the mass term would have to
+be $\psi^TC\psi$ with an invariant matrix $C$. The invariant matrices are the combinations of $\Cm$ and
+$\Cp$, and both are symmetric. For anticommuting components
+$\psi^TC\psi=-\psi^TC^T\psi$, so that $\psi^TC^{\mp}\psi=0$: a real 16-component Grassmann field on
+the $4+4$ spacetime is necessarily massless. The complex field avoids this, because
+$\psi^\dagger\Cm\psi$ does not vanish.
+
+\subsection{Evolution in the ordinary time, and what ``quantized'' can mean}
+\label{sec:quantized}
+
+Here the four time-like dimensions show their consequences, and they must be stated without
+embellishment. Solve Eq.~(\ref{eq:dirac}) for $\partial_4\psi$, using $(\gamma^4)^{-1}=-\gamma^4$. For
+a field proportional to $\exp\big(i\sum_{a=0}^3k_ax^a+i\sum_{t=5}^7\kappa_tx^t\big)$,
+\begin{align}
+\partial_4\psi&=K\psi,\nonumber\\
+K&=-m\gamma^4+i\sum_{a=0}^{3}k_a\,\gamma^4\gamma^a+i\sum_{t=5}^{7}\kappa_t\,\gamma^4\gamma^t .
+\label{eq:K}
+\end{align}
+Here $k_a$ are the four momenta along the space-like coordinates and $\kappa_t$ the three frequencies
+along the additional times. The matrices $\gamma^4\gamma^a$ are real and symmetric, while
+$\gamma^4\gamma^t$ and $\gamma^4$ are real and antisymmetric (check \texttt{44-D6}). Two exact results
+follow (checks \texttt{44-D7}, \texttt{44-D8}):
+\begin{align}
+K^2&=-\big(m^2+|k|^2-|\kappa|^2\big)\,1,\nonumber\\
+K+K^\dagger&=2i\sum_{t=5}^{7}\kappa_t\,\gamma^4\gamma^t .
+\label{eq:K2}
+\end{align}
+They have three consequences.
+
+(i) \emph{If the field does not depend on $x5,x6,x7$}, that is, if $\kappa=0$, then $K$ is
+anti-Hermitian. The evolution in $x4$ is unitary, the positive quantity $\psi^\dagger\psi$ is
+conserved, and the energies are $\pm E$ with $E=\sqrt{m^2+|k|^2}$, each eight times.
+
+(ii) \emph{If the field depends on the additional times}, $K$ is not anti-Hermitian and
+$\psi^\dagger\psi$ is not conserved. For $|\kappa|^2>m^2+|k|^2$ the frequencies in $x4$ are imaginary:
+the modes grow exponentially. Check \texttt{44-D9} exhibits one: $m=3$, $k=0$ and $\kappa=(5,0,0)$
+give $K^2=+16$, so that eight solutions grow as $e^{+4\,x4}$.
+
+(iii) \emph{The covariant charge is not positive.} The density of the conserved current
+(\ref{eq:current}) is $j_{1644}^4=\psi^\dagger W\psi$ with the grading $W=i\,\Cm\gamma^4$ of
+Sec.~\ref{sec:other}, a Hermitian matrix with eigenvalues $+1$ and $-1$, eight times each.
+
+These are not defects of the matrices. They are the known price of more than one time dimension: the
+wave operator is ultra-hyperbolic, the initial-value problem is not well posed in the usual sense
+\cite{Tegmark1997,CraigWeinstein2009}, and no positive conserved density is invariant under the whole
+group $\Spin(4,4)$.
+
+\emph{Definition of the quantized field.} The hypothesis of the program to which this paper belongs
+is that the three additional times deflate away (Sec.~\ref{sec:notation}). In flat spacetime we
+implement that hypothesis as a restriction: \emph{the field \texttt{dirac1644} does not depend on
+$x5$, $x6$, $x7$.} On such fields $W$ commutes with $K$, the Lagrangian (\ref{eq:lagrangian}) equals
+$-\psi^\dagger W(i\partial_4-\hh)\psi$, and we quantize with the positive Lagrangian
+\begin{equation}
+\mathcal{L}^{\rm red}_{1644}=\psi^\dagger\big(i\partial_4-\hh_{1644}\big)\psi,
+\label{eq:Lred}
+\end{equation}
+in which the Hamiltonian matrix has the familiar form
+\begin{align}
+\hh_{1644}&=-i\,\alpha_{1644}^j\partial_j+\beta_{1644}\,m,\nonumber\\
+\beta_{1644}&\equiv-i\gamma_{1644}^4,\qquad\alpha_{1644}^j\equiv-\gamma_{1644}^4\gamma_{1644}^j,
+\label{eq:hamiltonian}
+\end{align}
+with summation over the four space indices $j=0,1,2,3$. The matrices $\beta$ and $\alpha^j$ are
+Hermitian, they anticommute with one another, and $\beta^2=(\alpha^j)^2=1$, so that
+$\hh(\vec p)^2=(|\vec p|^2+m^2)\,1$. The field equation is the Schr\"odinger-like equation
+\begin{equation}
+i\,\partial_4\psi=\hh\,\psi,
+\label{eq:schroedinger}
+\end{equation}
+and the canonical anticommutators are
+\begin{align}
+\{\psi_a(x4,\vec x),\psi_b^\dagger(x4,\vec y)\}&=\delta_{ab}\,\delta^4(\vec x-\vec y),\nonumber\\
+\{\psi_a,\psi_b\}&=0,\qquad\vec x=(x0,x1,x2,x3).
+\label{eq:car}
+\end{align}
+At each momentum there are eight states of energy $+E$, the particles, and eight of energy $-E$, whose
+holes are the antiparticles. $\mathcal{L}^{\rm red}_{1644}$ agrees with the covariant Lagrangian
+(\ref{eq:lagrangian}) on the half of the components with $W=-1$ and has the opposite sign on the
+half with $W=+1$. It is invariant under the rotations of the four space coordinates, under boosts
+between them and $x4$, and under rotations of the three additional times, that is, under
+$\Spin(4,1)\times\Spin(3)$, because $W$ commutes with the generators of these transformations. It is
+not invariant under boosts into the additional times, with whose generators $W$ anticommutes.
+
+The model defined by Eq.~(\ref{eq:Lred}) is a consistent quantum theory of a 16-component field in
+four space dimensions and one time. Whether it is the low-energy form of a theory on the full $4+4$
+spacetime with gravity is a question for the second stage of the program. In this paper the
+restriction is an assumption, and it is recorded as such wherever it is used.
+
+\subsection{The two coupled 8-component equations}
+
+Write $\psi_{1644}=(\psi^{L},\psi^{R})$, where $\psi^{L}$ consists of the upper and $\psi^{R}$ of the
+lower eight components; by Eq.~(\ref{eq:PLPR}), $P^{L}\psi=(\psi^{L},0)$ and $P^{R}\psi=(0,\psi^{R})$.
+Inserting the block form (\ref{eq:gamma}) into Eq.~(\ref{eq:dirac}) gives (check \texttt{44-D4})
+\begin{align}
+\bar\tau_{1644}^A\,\partial_A\,\psi_{1644}^{R}&=m_{1644}\,\psi_{1644}^{L},\nonumber\\
+\tau_{1644}^A\,\partial_A\,\psi_{1644}^{L}&=m_{1644}\,\psi_{1644}^{R},
+\label{eq:chiral}
+\end{align}
+with the real $8\times8$ matrices of Sec.~\ref{sec:def}. Since $\tau^0=\bar\tau^0=1_8$, the first
+terms are $\partial_0\psi^{R}$ and $\partial_0\psi^{L}$. The mass couples the two 8-component fields;
+for $m=0$ they decouple into $\bar\tau^A\partial_A\psi^{R}=0$ and $\tau^A\partial_A\psi^{L}=0$. Each
+field obeys the Klein-Gordon equation: applying $\tau^B\partial_B$ to the first equation and using the
+second and Eq.~(\ref{eq:taubar}), $\Box_{1644}\psi^{R}=m\,\tau^B\partial_B\psi^{L}=m^2\psi^{R}$ (check
+\texttt{44-D5}). Because the projectors and all matrices are real, Eqs.~(\ref{eq:chiral}) are a pair of
+real equations: the Hermitian and the anti-Hermitian parts of $\psi^{L}$ and $\psi^{R}$ do not mix.
+In the quantized sector the derivatives $\partial_5,\partial_6,\partial_7$ vanish, and the sums in
+Eqs.~(\ref{eq:chiral}) run over $A=0,\dots,4$.
+
+\subsection{What has been established, and what has not}
+
+Established: Eq.~(\ref{eq:dirac}) is a valid Dirac equation on the $4+4$ spacetime with purely real
+matrices; it is covariant under $\Spin_0(4,4)$ and has a conserved current; it is equivalent to the
+two coupled real 8-component equations (\ref{eq:chiral}). The evolution in the ordinary time is
+unitary, with a positive conserved density, exactly for the fields that do not depend on the
+additional times.
+
+Not established: that the restriction to such fields follows from a dynamical principle. In flat
+spacetime it is imposed. Fields that depend on the additional times contain exponentially growing
+modes, and no quantization of the full $4+4$ theory with a positive Hilbert space is proposed here.
+%%</1644>
+%%<1671>
+\subsection{The equation}
+
+The Dirac equation of the field is
+\begin{equation}
+\big(i\,\gamma_{1671}^A\,\partial_A-m_{1671}\big)\,\psi_{1671}=0,
+\label{eq:dirac}
+\end{equation}
+with a real mass $m_{1671}>0$ and the real matrices of Sec.~\ref{sec:matrices}. With
+Eq.~(\ref{eq:clifford}),
+$(\gamma^A\partial_A)^2=\eta^{AB}\partial_A\partial_B=\partial_4^2-\nabla^2$, where
+$\nabla^2=\partial_0^2+\partial_1^2+\partial_2^2+\partial_3^2+\partial_5^2+\partial_6^2+\partial_7^2$
+is the Laplace operator of the seven space dimensions, so that
+\begin{equation}
+\big(i\gamma^A\partial_A+m\big)\big(i\gamma^B\partial_B-m\big)=-\big(\partial_4^2-\nabla^2+m^2\big).
+\label{eq:kg}
+\end{equation}
+Every component of a solution obeys the Klein-Gordon equation of the $7+1$ spacetime. For a plane
+wave $\psi=u\,e^{-ik_Ax^A}$ the operator becomes $\gamma^Ak_A-m$, and the mass shell is
+\begin{equation}
+k_4^2=k_0^2+k_1^2+k_2^2+k_3^2+k_5^2+k_6^2+k_7^2+m^2
+\label{eq:shell}
+\end{equation}
+(checks \texttt{71-D1}, \texttt{71-D2}).
+
+\emph{The factor $i$ is unavoidable.} A real first-order operator $\gamma^A\partial_A-m$ squares to
+$\partial_4^2-\nabla^2-m^2$, which has the wrong sign of the mass term. A real equation with the
+correct mass term would require eight real $16\times16$ matrices with seven squares $+1$ and one
+square $-1$, and by Sec.~\ref{sec:matrices} no such matrices exist. The matrices in
+Eq.~(\ref{eq:dirac}) are real; only the number $i$ in front of them is not. This is the counterpart of
+the Dirac equation of the $4+4$ spacetime, $(\gamma_{1644}^A\partial_A-m)\psi=0$, which is entirely
+real \cite{Companion1644}.
+
+A worked example (check \texttt{71-D3}): energy $E=5$, momentum $(p^1,p^2,p^3)=(2,2,4)$ and $m=1$. Then
+$\Pi=(\gamma^Ak_A+m)/2m$ is a projector of trace 8 with $(\gamma^Ak_A-m)\Pi=0$: there are eight
+independent plane waves of positive energy.
+
+\subsection{Hamiltonian form, plane waves and quantization}
+
+Multiplying Eq.~(\ref{eq:dirac}) by $\gamma^4$ gives the Schr\"odinger-like equation
+\begin{equation}
+i\,\partial_4\psi=\hh\,\psi,
+\label{eq:schroedinger}
+\end{equation}
+with the Hamiltonian matrix
+\begin{equation}
+\hh_{1671}=-i\,\alpha_{1671}^j\partial_j+\beta_{1671}\,m_{1671},
+\label{eq:hamiltonian}
+\end{equation}
+the real symmetric matrices of Eq.~(\ref{eq:alphabeta}), and summation over the seven space indices
+$j$. In momentum space $\hh(\vec p)=p^j\alpha^j+m\beta$ is a real symmetric matrix with
+$\hh(\vec p)^2=(|\vec p|^2+m^2)\,1$ (check \texttt{71-D5}). The evolution in $x4$ is unitary for
+every momentum, and the energies are $\pm E$ with $E=\sqrt{|\vec p|^2+m^2}$, eight times each. There
+is one time, and none of the difficulties that the companion paper meets with four times arises.
+
+\emph{Real spinors.} With the real $8\times8$ matrix $M(\vec p)=m+p^j\tau^j$, which satisfies
+$MM^T=E^2$, the eigenvectors of $\hh$ are real:
+\begin{align}
+u_s(\vec p)&=\frac1{\sqrt E}\begin{pmatrix}E\,e_s\\M^Te_s\end{pmatrix},\qquad\hh(\vec p)\,u_s=+E\,u_s,\nonumber\\
+v_s(\vec p)&=\frac1{\sqrt E}\begin{pmatrix}E\,e_s\\-M\,e_s\end{pmatrix},\qquad\hh(-\vec p)\,v_s=-E\,v_s,
+\label{eq:spinors}
+\end{align}
+where $e_s$, $s=1,\dots,8$, are the unit vectors of $\mathbb{R}^8$. They are normalized to
+$u_s^Tu_r=v_s^Tv_r=2E\,\delta_{sr}$ (check \texttt{71-D8}).
+
+\emph{Lagrangian and current.} With the adjoint spinor $\bar\psi=\psi^\dagger\gamma^4$,
+\begin{align}
+\mathcal{L}_{1671}&=\bar\psi\big(i\gamma^A\partial_A-m\big)\psi,\nonumber\\
+j_{1671}^A&=\bar\psi\gamma^A\psi,\qquad\partial_Aj^A_{1671}=0 .
+\label{eq:lagrangian}
+\end{align}
+The current is the Noether current of the phase symmetry $\psi\to e^{i\epsilon}\psi$, the
+\emph{fermion number}, and its density $j_{1671}^4=\psi^\dagger\psi$ is positive. The Lagrangian is
+invariant under $\Spin_0(7,1)$: if $\psi(x)$ solves Eq.~(\ref{eq:dirac}), so does
+$\psi'(x)=S\,\psi(\Lambda x)$ with $S$ and $\Lambda$ related by Eq.~(\ref{eq:lambda}).
+
+\emph{Quantization.} In a box of volume $V$ the quantized field is
+\begin{align}
+\psi(x4,\vec x)=\sum_{\vec p}\sum_{s=1}^{8}\frac{1}{\sqrt{2EV}}\Big[&b_s(\vec p)\,u_s(\vec p)\,e^{-i(E\,x4-\vec p\cdot\vec x)}\nonumber\\
+&+d_s^\dagger(\vec p)\,v_s(\vec p)\,e^{+i(E\,x4-\vec p\cdot\vec x)}\Big],
+\label{eq:modes}
+\end{align}
+with $\{b_s(\vec p),b_r^\dagger(\vec q)\}=\{d_s(\vec p),d_r^\dagger(\vec q)\}=\delta_{sr}\delta_{\vec p\vec q}$
+and all other anticommutators zero, which is equivalent to
+\begin{equation}
+\{\psi_a(x4,\vec x),\psi_b^\dagger(x4,\vec y)\}=\delta_{ab}\,\delta^7(\vec x-\vec y),\qquad\{\psi_a,\psi_b\}=0 .
+\label{eq:car}
+\end{equation}
+A particle has eight internal states, and so has its antiparticle.
+
+\emph{Charge conjugation.} $\psi_c=\omega\,\psi^*$, where $\psi^*$ is the column of the Hermitian
+conjugates of the components, solves Eq.~(\ref{eq:dirac}) whenever $\psi$ does, and
+$(\psi_c)_c=-\psi$ (check \texttt{71-D9}). A Majorana condition $\psi_c=\psi$ therefore has no
+non-zero solution: the sixteen complex components cannot be halved by a reality condition.
+
+\subsection{The two coupled 8-component equations}
+
+The eigenvectors of the chirality matrix $\chi$ of Eq.~(\ref{eq:chi}) form two $16\times8$ matrices
+with orthonormal columns,
+\begin{equation}
+E^{L}=\frac1{\sqrt2}\begin{pmatrix}1_8\\-i\,1_8\end{pmatrix},\qquad
+E^{R}=\frac1{\sqrt2}\begin{pmatrix}-i\,1_8\\1_8\end{pmatrix},
+\label{eq:frames}
+\end{equation}
+with $\chi E^{L}=-E^{L}$, $\chi E^{R}=+E^{R}$, $E^{L}(E^{L})^\dagger=P^{L}$ and
+$E^{R}(E^{R})^\dagger=P^{R}$. The chiral parts of the field are the 8-component fields
+\begin{align}
+\phi_{1671}^{L}&=(E^{L})^\dagger\psi=\frac{\psi_{\rm up}+i\,\psi_{\rm down}}{\sqrt2},\nonumber\\
+\phi_{1671}^{R}&=(E^{R})^\dagger\psi=\frac{i\,\psi_{\rm up}+\psi_{\rm down}}{\sqrt2},
+\label{eq:phiLR}
+\end{align}
+where $\psi_{\rm up}$ and $\psi_{\rm down}$ are the upper and the lower eight components, so that
+$P^{L}\psi=E^{L}\phi^{L}$ and $P^{R}\psi=E^{R}\phi^{R}$. In this basis
+$(E^{L})^\dagger\hh E^{L}=-ip^j\tau^j$, $(E^{R})^\dagger\hh E^{R}=+ip^j\tau^j$ and
+$(E^{L})^\dagger\hh E^{R}=(E^{R})^\dagger\hh E^{L}=m$ (check \texttt{71-D7}), and
+Eq.~(\ref{eq:schroedinger}) becomes
+\begin{align}
+\big(i\,\partial_4+\tau_{1671}^j\partial_j\big)\phi_{1671}^{L}&=m_{1671}\,\phi_{1671}^{R},\nonumber\\
+\big(i\,\partial_4-\tau_{1671}^j\partial_j\big)\phi_{1671}^{R}&=m_{1671}\,\phi_{1671}^{L},
+\label{eq:chiral}
+\end{align}
+with summation over the seven space indices and the real antisymmetric $8\times8$ matrices of
+Eq.~(\ref{eq:tau}). The mass couples the two 8-component fields; for $m=0$ they decouple into two
+equations of the Weyl type. Each field obeys the Klein-Gordon equation, because
+$(\tau^j\partial_j)^2=-\nabla^2$:
+\begin{equation}
+\big(i\partial_4-\tau^i\partial_i\big)\big(i\partial_4+\tau^j\partial_j\big)=-\big(\partial_4^2-\nabla^2\big).
+\end{equation}
+
+\subsection{What has been established, and what has not}
+
+Established: Eq.~(\ref{eq:dirac}) is a valid Dirac equation on the $7+1$ spacetime with purely real
+matrices and an unavoidable factor $i$; it is covariant under $\Spin_0(7,1)$, has a conserved current
+with positive density, a real symmetric Hamiltonian and a conventional quantization with eight
+internal states for the particle and eight for the antiparticle; it is equivalent to the two coupled
+8-component equations (\ref{eq:chiral}).
+
+Not established: nothing in this section is conditional. What the flat $7+1$ theory does not explain
+is why four of its seven space dimensions are not observed; that is the business of the second stage
+of the program (Sec.~\ref{sec:notation}).
+%%</1671>

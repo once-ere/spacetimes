@@ -1,0 +1,254 @@
+
+% =====================================================================
+\section{Cosmology II: can the superfluid be the dark matter?}
+\label{sec:dm}
+% =====================================================================
+
+The second part of hypothesis H3 concerns the dark matter. Here the fermions are taken to be heavy
+enough to be non-relativistic matter today, and the question is whether the paired state of
+Secs.~\ref{sec:cjt} and \ref{sec:order} can account for what is observed. The observations used are
+of three kinds: the amount of small-scale structure in the universe, measured by the absorption
+lines of intergalactic hydrogen, the Lyman-$\alpha$ forest; the densities and velocities of the dark
+matter in galaxies and clusters; and the limit on the scattering of dark matter by dark matter from
+colliding clusters of galaxies.
+
+\subsection{The superfluid as a cosmological fluid}
+\label{sec:sffluid}
+
+Suppose that the dark matter consists of the fermions of the model: an excess of particles over
+antiparticles, whose size is a free number that is chosen to give the observed density. At zero
+temperature they are in the paired state. Its response to slow perturbations of long wavelength is
+that of a fluid with a pressure $P(\rho)$ that depends on the mass density $\rho$ only: perturbations
+of the density propagate as first sound, with the speed $c_s$ given by $c_s^2=dP/d\rho$
+(Sec.~\ref{sec:sound}). Two limits bracket the possibilities.
+
+\emph{Weak pairing}, pairs that overlap. The pressure is the degeneracy pressure of the fermions,
+which pairing lowers only by terms of the relative order $(\Delta/\EF)^2$. With $\nu=8$ internal
+states the Fermi momentum at the number density $n$ is $\kF=(6\pi^2n/\nu)^{1/3}$, and with
+$x=\kF/m$ the sound speed is
+\begin{equation}
+c_s^2=\frac{x^2}{3\,(1+x^2)},
+\label{eq:csdeg}
+\end{equation}
+which is $v_F^2/3$ for non-relativistic fermions with the Fermi velocity $v_F=\kF/m$. At the mean
+cosmic density of dark matter the Fermi velocity today is fixed by the mass alone. It grows as $1/a$
+towards the past, where $a$ is the scale factor of the universe, and the gas was relativistic at
+early times, which the program includes exactly.
+
+\emph{Bound pairs}, or larger bound clusters, that have condensed. If their mutual interaction is
+repulsive, the condensate has the equation of state of a self-interacting scalar field
+\cite{ColpiShapiroWasserman1986,LiRindlerDallerShapiro2014},
+\begin{equation}
+P=\frac{\rho_0}{3}\Big[\sqrt{1+\rho/\rho_0}-1\Big]^2,
+\label{eq:csw}
+\end{equation}
+with one constant $\rho_0$ that measures the strength of the repulsion. At low density this is
+$P=\rho^2/12\rho_0$, the equation of state of a condensate with the sound speed of Bogoliubov
+\cite{Bogoliubov1947}, $c_s^2=\rho/6\rho_0$; at high density it is that of radiation, $P=\rho/3$.
+The condensate is characterized by one number, the sound speed $c_{s0}$ today at the mean density.
+A self-gravitating core that is supported by this pressure has the \emph{Thomas-Fermi radius}
+\begin{equation}
+R_{TF}=\frac{\pi\,c_s}{\sqrt{4\pi G\rho}},
+\label{eq:RTF}
+\end{equation}
+which does not depend on the density, because $c_s^2\propto\rho$; $G$ is the constant of
+gravitation. Cores of this kind, with radii of the order of a kiloparsec, are the motivation of the
+proposals of superfluid dark matter \cite{BerezhianiKhoury2015}.
+
+In both limits the pressure is the \emph{smallest} that the constituents can have; a thermal
+population of the same particles has more. The bounds derived below are therefore lower limits on
+what any state of these particles must satisfy.
+
+\subsection{Simulation}
+
+The cold dark matter of the Einstein-Boltzmann solver of Sec.~\ref{sec:solver} was replaced by a
+fluid with the equation of state and the sound speed of either limit. Tests of the program verify
+the conservation of energy, the relation $c_s^2=dP/d\rho$ and the limits of both equations of state,
+and that a fluid with a negligible sound speed reproduces cold dark matter to $2\times10^{-4}$. The
+linear power spectrum of the matter today was computed for wavenumbers up to 250 Mpc$^{-1}$ and
+divided by that of cold dark matter (Fig.~\ref{fig:sfdm}). The \emph{half mode} is the wavenumber at
+which this ratio first falls to $1/4$. It is compared with the half mode of \emph{thermal warm dark
+matter}, particles that were once in thermal equilibrium and whose residual velocities erase
+small-scale structure, at the lower limits on their mass from the Lyman-$\alpha$ forest: 5.3 keV
+\cite{Irsic2017} and, more conservatively, 3.5 keV; the relation between that mass and the half mode
+is the fitting formula of Ref.~\cite{Viel2005}. Table~\ref{tab:sfdm} lists the results and
+Table~\ref{tab:sfdmbounds} the bounds that follow. A more recent analysis of the Lyman-$\alpha$
+forest gives 5.7 keV \cite{Irsic2024}, which would strengthen the bounds slightly.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_sfdm_transfer}
+\caption{\label{fig:sfdm}Linear power spectrum of the matter, relative to cold dark matter, if the
+dark matter is the superfluid. (a) Weak pairing, for several fermion masses. (b) Condensate of bound
+bosons, for several sound speeds $c_{s0}$ today at the mean density; the largest corresponds to a
+Thomas-Fermi radius of 1 kpc. The vertical lines mark the half modes of thermal relics of 3.5 and
+5.3 keV. The oscillations are sound waves of the dark fluid.}
+\end{figure*}
+
+\begin{table*}
+\caption{\label{tab:sfdm}Superfluid dark matter in the two limits of Sec.~\ref{sec:sffluid}. $c_{s0}$:
+sound speed today at the mean cosmic density, in units of the speed of light. Half mode: wavenumber,
+in $h$ Mpc$^{-1}$, at which the power falls to $1/4$ of that of cold dark matter. Relic: mass of the
+thermal warm-dark-matter particle with the same half mode. $R_{TF}$: Thomas-Fermi radius,
+Eq.~(\ref{eq:RTF}).}
+\begin{ruledtabular}
+\begin{tabular}{lcccc}
+model & $c_{s0}/c$ & half mode ($h$ Mpc$^{-1}$) & relic (keV) & $R_{TF}$ \\
+\hline
+{{ROWS:sfdm_table|cols=0,1,3-5}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:sfdmbounds}Bounds on superfluid dark matter from the requirement that its half mode
+is not smaller than that of thermal warm dark matter at the limits from the Lyman-$\alpha$ forest.
+$v_{F0}$: Fermi velocity today at the mean density.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+relic (keV) & its half mode ($h$ Mpc$^{-1}$) & fermion mass $>$ (keV) & $v_{F0}<$ (m/s) &
+condensate: $c_{s0}/c<$ & $c_{s0}<$ (mm/s) & $R_{TF}<$ (pc) \\
+\hline
+{{ROWS:sfdm_bounds_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{What the bounds imply}
+
+\emph{Weak pairing.} The fermion mass must exceed {{GEN:sfdm_mmin_5p3}} keV, or
+{{GEN:sfdm_mmin_3p5}} keV for the conservative benchmark. A paired state requires a degenerate gas,
+because its critical temperature is a fraction of the Fermi energy (Sec.~\ref{sec:thermo}). A gas of
+the mass density $\rho$ whose particles move with the velocity dispersion $\sigma$ is degenerate if
+its Fermi velocity is at least $\sigma$, which is the case only for fermions lighter than
+\begin{equation}
+m_{\rm deg}=\Big[\frac{6\pi^2\hbar^3\rho}{\nu\,\sigma^3}\Big]^{1/4}.
+\label{eq:mdeg}
+\end{equation}
+This is the bound of Tremaine and Gunn \cite{TremaineGunn1979} for this model. Table~\ref{tab:halos}
+evaluates it for three observed systems.
+
+\begin{table*}
+\caption{\label{tab:halos}Could the particles of the model be degenerate, or their bound pairs
+condensed, in observed systems of dark matter? $\rho$: density; $\sigma$: velocity dispersion;
+$m_{\rm deg}$: Eq.~(\ref{eq:mdeg}); $m_{B,\max}$: Eq.~(\ref{eq:mbmax}). The last two columns give,
+for fermions of 1.5 keV, the Fermi velocity at the density $\rho$ and the factor by which the density
+would have to be larger for them to be degenerate.}
+\begin{ruledtabular}
+\begin{tabular}{lccccccc}
+system & $\rho$ ($M_\odot$ pc$^{-3}$) & $\rho$ (GeV cm$^{-3}$) & $\sigma$ (km/s) & $m_{\rm deg}$ (keV) &
+$m_{B,\max}$ (eV) & $v_F$ (km/s) & $\rho_{\rm deg}/\rho$ \\
+\hline
+{{ROWS:dm_halo_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+In the densest systems of dark matter that are observed, the cores of dwarf spheroidal galaxies,
+fermions with eight internal states are degenerate only below {{GEN:dm_mdeg_dwarf}} keV, whereas
+the formation of structure demands more than {{GEN:sfdm_mmin_5p3}} keV. \emph{In the regime of weak
+pairing the dark matter in galaxies is a classical gas, not a superfluid.}
+
+\emph{Bound pairs.} The sound speed of the condensate today must be below
+{{GEN:sfdm_csmax_5p3}} of the speed of light, and the Thomas-Fermi radius below
+{{GEN:sfdm_rtf_pc_5p3}} pc. The reason for so strong a bound is visible in Fig.~\ref{fig:sfdm}(b):
+such a condensate is like radiation in the early universe, and all perturbations that enter the
+horizon during that phase are erased. \emph{The pressure of the condensate cannot produce the cores of
+kiloparsec size that motivate superfluid dark matter;} for a core of 1 kpc the half mode would be at
+{{GEN:sfdm_khalf_1kpc}} $h$ Mpc$^{-1}$, more than a hundred times too small. There is a second,
+independent obstacle. Bosons of the mass $m_B$ are condensed at the density $\rho$ and the
+temperature that corresponds to the velocity dispersion $\sigma$, $k_BT=m_B\sigma^2$, only if the
+number of particles in a cube with the edge of the thermal wavelength $\lambda$ satisfies
+$n\lambda^3\ge2.612$, that is, only if they are lighter than
+\begin{equation}
+m_{B,\max}=\Big[\frac{(2\pi)^{3/2}\hbar^3\rho}{2.612\,\sigma^3}\Big]^{1/4},
+\label{eq:mbmax}
+\end{equation}
+which is {{GEN:dm_mbmax_dwarf}} eV in a dwarf galaxy (Table~\ref{tab:halos}). The limit on their
+self-interaction demands the opposite, as shown next.
+
+\emph{Self-interaction.} Colliding clusters of galaxies limit the cross section per unit mass of
+dark matter to about 1 cm$^2$/g \cite{Markevitch2004,Randall2008}. A pair that is bound by the
+Yukawa potential of the radial mode has a size, and a scattering length, of at least the range
+$1/m_s$ of that potential, and binding requires $\DVS>D_c$ (Sec.~\ref{sec:dimer}). Identical
+bosons with the scattering length $a_s$ scatter at low energy with the cross section $8\pi a_s^2$;
+with $a_s=1/m_s$ and the mass $2m$ of a pair, the two conditions together give a smallest fermion
+mass, $m\ge[4\pi D_c^2/(\aVS^2\kappa)]^{1/3}$ with $\kappa=1$ cm$^2$/g, listed in
+Table~\ref{tab:selfint} for several couplings.
+
+\begin{table}
+\caption{\label{tab:selfint}Smallest fermion mass for which a gas of bound pairs satisfies the limit of
+1 cm$^2$/g on the self-interaction of dark matter, the corresponding mass and range of the radial
+mode, and the phase-space density $n\lambda^3$ of the pairs in the core of a dwarf spheroidal galaxy;
+condensation would need $n\lambda^3\ge2.612$.}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+$\aVS$ & $m$ (MeV) & $m_s$ (MeV) & $1/m_s$ (fm) & $n\lambda^3$ \\
+\hline
+{{ROWS:dm_selfint_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Bound pairs are acceptable dark matter only if the fermions are heavier than about
+{{GEN:dm_mmin_alpha1}} MeV, for $\aVS=1$, with a radial mode of nuclear range. At such masses the
+phase-space density in halos is smaller than the value needed for condensation by more than twenty
+orders of magnitude.
+
+\emph{Bound clusters.} With eight internal states and an attraction between all of them, up to eight
+fermions can occupy the same orbital, and bound states of more than two fermions are expected, as
+nuclei are bound states of nucleons. Such ``nuggets'' of fermions bound by a scalar field have been
+studied as dark matter \cite{WiseZhang2014,GreshamLouZurek2017}. Their interior is degenerate and,
+by Sec.~\ref{sec:cjt}, paired: the superfluid would exist \emph{inside} the particles of dark matter,
+as it does inside nuclei and neutron stars, without any effect on galactic scales.
+Section~\ref{sec:normal} gave the limit of large clusters: matter is bound by itself if
+$C=\gVS^2m^2/m_s^2$ exceeds {{GEN:cjt_c_crit}}, or {{GEN:cjt_c_crit_sea}} if the energy of the
+negative-energy states is included, and it is then in a state in which the Vorton-Scalar has no
+expectation value and the fermions are massless. For the example of Table~\ref{tab:selfint} with
+$\aVS=1$ the coupling is $C=35.5$, and a fermion inside bulk matter weighs {{GEN:cjt_ebind_355}} per
+cent less than a free one, or {{GEN:cjt_ebind_355_sea}} per cent with the negative-energy states.
+Whether such clusters form, and with what abundance, is outside this work.
+
+\subsection{Verdict on dark matter}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_dm_windows}
+\caption{\label{fig:dmwindows}The fermion masses that a superfluid on galactic scales needs and those
+that the observations allow. For weak pairing the fermions must be degenerate in halos, which requires
+a mass below the value of Eq.~(\ref{eq:mdeg}), while the Lyman-$\alpha$ forest requires a larger one.
+For bound pairs, condensation in a halo requires light pairs, while the limit on the self-interaction
+requires heavy ones (ticks: other values of the coupling). In neither case do the ranges overlap.}
+\end{figure*}
+
+The hypothesis has two readings, and they have different answers. Figure~\ref{fig:dmwindows}
+summarizes the numbers on which the first answer rests.
+
+\emph{The superfluid state explains the observed properties of dark matter,} as in the proposals in
+which a condensate of galactic size shapes rotation curves or cores. \emph{No.} The simulations
+exclude both ways in which the condensate could act on galactic scales: degenerate fermions that are
+light enough to be superfluid in halos erase the small-scale structure, and a condensate of bound
+pairs with enough pressure to support cores does so even more strongly.
+
+\emph{The dark matter is made of the particles whose condensate is the superfluid.} \emph{Possible,
+and untested by these observations.} Heavy bound pairs or larger clusters, with an abundance that is
+set by an unexplained excess of particles over antiparticles, behave as cold dark matter with a
+self-interaction of nuclear size. Nothing in the present data distinguishes them from other cold dark
+matter, and the model does not predict their abundance.
+
+\subsection{What has been established, and what has not}
+
+Established: the suppression of structure by superfluid dark matter in both limits and the resulting
+bounds; and the elementary conditions for degeneracy, for condensation and for an acceptable
+self-interaction in halos, which the masses allowed by those bounds violate by large factors.
+
+Not established, or assumed: the translation of the limits from the Lyman-$\alpha$ forest into a
+half mode uses a fitting formula for thermal relics, whereas the spectrum of a fluid with sound
+waves has a different shape beyond the half mode; a dedicated analysis of those data could shift the
+bounds by a factor of order one, not by the orders of magnitude that separate them from the
+interesting values. For bound pairs a repulsive interaction between the pairs was assumed; with
+eight internal states it may be attractive, in which case the condensate is unstable to the
+formation of larger clusters. The sound speed of the degenerate gas was that of free fermions; the
+correction from the mean field of the Vorton-Scalar is of the relative order $\kF|a_s|$, with $a_s$
+the scattering length, which the limit on the self-interaction keeps below {{GEN:cjt_kfa_dwarf}} in
+a dwarf galaxy for fermions of 1 keV. The abundance of the dark matter, the origin of the excess of
+particles, the thermal history of the dark sector and the formation of bound states were not
+addressed.

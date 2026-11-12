@@ -184,9 +184,25 @@ def run(frag_outer, read_csv, sci, table, DATA):
                 if m.any():
                     frag("dr_yhe_" + name, "%.4f" % p[m][0]["Y_He"])
                     frag("dr_chi2_half_" + name, "%.1f" % p[m][0]["chi2"])
+            yhe = {}
+            for fam, name in ((1, "nostep"), (MODEL_EARLY, "early")):
+                m = (p["config"] == 0) & (p["family"] == fam) & (np.abs(p["N"] - 0.5) < 1e-9)
+                if m.any():
+                    yhe[name] = float(p[m][0]["Y_He"])
+            if len(yhe) == 2:
+                frag("dr_yhe_diff", "%.4f" % (yhe["nostep"] - yhe["early"]))
             slope_free = val("dr_slope_c0_f0")
             slope_fluid = val("dr_slope_c0_f1")
-            frag("dr_weinberg_gain", "%.1f" % (0.39 * slope_free))
+            # a massless boson that decoupled when the plasma had g_* degrees of freedom:
+            # Delta N_eff = (4/7) (43/(4 g_*))^(4/3)   (Weinberg 2013)
+            weinberg = lambda gstar: 4.0 / 7.0 * (43.0 / (4.0 * gstar)) ** (4.0 / 3.0)
+            frag("dr_weinberg_lo", "%.3f" % weinberg(106.75))
+            frag("dr_weinberg_hi", "%.2f" % weinberg(57.0 / 4.0))
+            frag("dr_weinberg_gain", "%.1f" % (float("%.2f" % weinberg(57.0 / 4.0)) * slope_free))
+            # the mock is tighter than the real Planck data (sigma(N_eff) = 0.19): factor for Delta chi^2
+            sig_free = val("dr_sigmaN_c0_f0")
+            if math.isfinite(sig_free):
+                frag("dr_mock_factor", "%.1f" % ((sig_free / 0.19) ** 2))
             frag("dr_act_gain", "%.1f" % (0.134 * slope_fluid))
             frag("dr_act_fraction", "%.0f" % (100 * 0.134 * slope_fluid / (H0_LOCAL - H0_FID)))
         hdr = ["family", "$\\sigma(N)$", "$dH_0/dN$", "$N$ at $\\Delta\\chi^2\\!=\\!4$", "$H_0$ there", "$H_0$ at $\\Delta\\chi^2\\!=\\!9$", "$N_{73.5}$", "its $\\Delta\\chi^2$", "$\\sqrt{\\Delta\\chi^2}$"]
@@ -244,6 +260,7 @@ def run(frag_outer, read_csv, sci, table, DATA):
         frag("dr_zt_best", "%.2f" % z["log10_z_t"][i])
         frag("dr_zt_best_chi2", "%.1f" % z["chi2"][i])
         frag("dr_zt_worst", "%.2f" % z["log10_z_t"][j])
+        frag("dr_zt_worst_g", "%g" % z["log10_z_t"][j])
         frag("dr_zt_worst_chi2", "%.1f" % z["chi2"][j])
 
     # ---------------------------------------------------------- superfluid dark matter
@@ -251,16 +268,23 @@ def run(frag_outer, read_csv, sci, table, DATA):
     b = read_csv("sfdm_bounds.csv")
     if s is not None:
         rows = []
+
+        def sig3(x):
+            """Three significant figures, trailing zeros kept, no exponent (85.0, 0.420, 138)."""
+            if not np.isfinite(x) or x == 0.0:
+                return "%g" % x
+            return "%.*f" % (max(2 - int(np.floor(np.log10(abs(x)))), 0), x)
+
         for r in s:
             if r["family"] == 0:
                 rows.append(["degenerate fermions, $m=%g$ keV" % r["parameter"], sci(float(r["cs0"])), "%.3g" % r["cs0_m_per_s"],
-                             "%.1f" % r["k_half_h_Mpc"] if np.isfinite(r["k_half_h_Mpc"]) else "$>370$", "%.1f" % r["m_thermal_keV"] if np.isfinite(r["m_thermal_keV"]) else "—", "—",
+                             sig3(r["k_half_h_Mpc"]) if np.isfinite(r["k_half_h_Mpc"]) else "$>370$", sig3(r["m_thermal_keV"]) if np.isfinite(r["m_thermal_keV"]) else "—", "—",
                              sci(float(r["dN_bbn"]))])
         for r in s:
             if r["family"] == 1:
                 rtf = r["R_TF_kpc"]
                 rows.append(["condensate, $c_{s0}=$ %s $c$" % sci(float(r["parameter"])).strip("$").join(["$", "$"]), sci(float(r["cs0"])), "%.3g" % r["cs0_m_per_s"],
-                             "%.2f" % r["k_half_h_Mpc"] if np.isfinite(r["k_half_h_Mpc"]) else "$>370$", "%.2f" % r["m_thermal_keV"] if np.isfinite(r["m_thermal_keV"]) else "—",
+                             sig3(r["k_half_h_Mpc"]) if np.isfinite(r["k_half_h_Mpc"]) else "$>370$", sig3(r["m_thermal_keV"]) if np.isfinite(r["m_thermal_keV"]) else "—",
                              ("%.2g kpc" % rtf) if rtf >= 0.1 else ("%.2g pc" % (1e3 * rtf)), sci(float(r["dN_bbn"]))])
         hdr = ["model", "$c_{s0}/c$", "$c_{s0}$ (m/s)", "half mode ($h$/Mpc)", "thermal relic (keV)", "$R_{TF}$", "$\\Delta N$ at $a=10^{-9}$"]
         text = table(hdr, [":------------------------", "---------:", "-------:", "--------:", "--------:", "-------:", "---------:"], rows)
@@ -304,7 +328,9 @@ def run(frag_outer, read_csv, sci, table, DATA):
         frag("dm_mbmax_dwarf", "%.0f" % h[0]["mB_max_eV"])
     si = read_csv("dm_selfinteraction.csv")
     if si is not None:
-        rows = [["%g" % r["alpha"], "%.3g" % r["m_min_MeV"], "%.3g" % r["m_s_MeV"], "%.2f" % r["range_fm"], sci(float(r["phase_space_density_dwarf"]))] for r in si]
+        # three significant figures, written without an exponent (4260, not 4.26e+03)
+        sig3 = lambda x: ("%.3g" % x) if abs(x) < 1000 else "%.0f" % float("%.3g" % x)
+        rows = [["%g" % r["alpha"], sig3(r["m_min_MeV"]), sig3(r["m_s_MeV"]), "%.2f" % r["range_fm"], sci(float(r["phase_space_density_dwarf"]))] for r in si]
         hdr = ["$\\alpha_{VS}$", "smallest fermion mass (MeV)", "$m_s$ (MeV)", "range $1/m_s$ (fm)", "$n\\lambda^3$ of the pairs in a dwarf core"]
         text = table(hdr, ["------:", "-----------:", "--------:", "---------:", "--------------:"], rows)
         text += "\n\nSource: `data/dm_selfinteraction.csv` (program: `spacetimes halos`). Condensation would need $n\\lambda^3\\ge2.612$."

@@ -1,0 +1,286 @@
+
+\appendix
+
+% =====================================================================
+\section{The matrices displayed}
+\label{app:matrices}
+% =====================================================================
+
+This appendix displays the matrices of Sec.~\ref{sec:matrices} entry by entry, so that a reader can
+check any statement about them by hand or with a few lines of code. In the displays a plus sign
+stands for $+1$, a minus sign for $-1$ and a dot for $0$; the lines separate the $8\times8$ blocks.
+The same matrices are available in machine-readable form \cite{SpacetimesRepo}.
+
+%%<1671>
+\emph{The $8\times8$ matrices $\tau_{1644}^A$ used in Eq.~(\ref{eq:tau}).} Let $\epsilon_{hpq4}$ be
+the sign of the permutation $(h,p,q,4)$ of $(1,2,3,4)$, and zero if two of the indices coincide. For
+$h=1,2,3$ and $p,q=1,\dots,4$ define the antisymmetric $4\times4$ matrices
+\begin{align}
+(s_h)_{pq}&=\epsilon_{hpq4}-\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big),\nonumber\\
+(t_h)_{pq}&=\epsilon_{hpq4}+\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big),
+\label{eq:st}
+\end{align}
+and, in $4\times4$ blocks,
+\begin{align}
+\tau_{1644}^h&=\begin{pmatrix}0&s_h\\ s_h&0\end{pmatrix},\qquad
+\tau_{1644}^{7-h}=\begin{pmatrix}0&t_h\\ -t_h&0\end{pmatrix}\quad(h=1,2,3),\nonumber\\
+\tau_{1644}^7&=\tau_{1644}^1\tau_{1644}^2\tau_{1644}^3\tau_{1644}^4\tau_{1644}^5\tau_{1644}^6=\mathrm{diag}(-1_4,1_4).
+\label{eq:tau44}
+\end{align}
+These seven matrices satisfy $\tau_{1644}^1\tau_{1644}^2\tau_{1644}^3=\sigma_{88}$ (check
+\texttt{44-B1}). Equation (\ref{eq:tau}) builds the seven octonionic matrices $\tau_{1671}^j$ from
+them, and Eqs.~(\ref{eq:gamma4}) and (\ref{eq:gamma}) the eight Dirac matrices of
+Table~\ref{tab:gammas}.
+%%</1671>
+
+\begin{table*}
+\caption{\label{tab:gammas}The real matrices of the \SIG{$4+4$}{$7+1$} spacetime. First and second
+row: the eight Dirac matrices $\gamma_{\tg}^A$; each is a signed permutation matrix. \SIG{The first
+four, which belong to the space-like coordinates $x0,\dots,x3$, are symmetric and square to $+1$; the
+last four, which belong to the time-like coordinates $x4,\dots,x7$, are antisymmetric and square to
+$-1$.}{The matrix $\gamma^4$ of the time-like coordinate is symmetric and squares to $+1$; the other
+seven, which belong to the space-like coordinates, are antisymmetric and square to $-1$.} Third row:
+the product $\omega_{\tg}$ of the eight Dirac matrices, and the matrices $\Cm_{\tg}$ and $\Cp_{\tg}$
+of Sec.~\ref{sec:other}. \SIG{$\omega_{1644}$ is the chirality matrix; it is diagonal, so that the
+chiral projectors $P^{L,R}=\tfrac12(1\mp\omega_{1644})$ select the upper and the lower eight
+components.}{$\omega_{1671}$ squares to $-1$; the chirality matrix is $\chi_{1671}=i\,\omega_{1671}$,
+and the chiral projectors $P^{L,R}=\tfrac12(1\mp\chi_{1671})$ are complex.}}
+\setlength{\tabcolsep}{1pt}
+\begin{ruledtabular}
+\begin{tabular}{cccc}
+$\gamma_{\tg}^0$ & $\gamma_{\tg}^1$ & $\gamma_{\tg}^2$ & $\gamma_{\tg}^3$ \\[2pt]
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[0]}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[1]}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[2]}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[3]}}$} \\[14pt]
+$\gamma_{\tg}^4$ & $\gamma_{\tg}^5$ & $\gamma_{\tg}^6$ & $\gamma_{\tg}^7$ \\[2pt]
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[4]}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[5]}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[6]}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:gamma@SIG@[7]}}$} \\[14pt]
+$\omega_{\tg}$ & $\Cm_{\tg}$ & $\Cp_{\tg}$ & \\[2pt]
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:omega@SIG@}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:Cm@SIG@}}$} &
+{\fontsize{6}{7.2}\selectfont$\displaystyle{{MATRIX:Cp@SIG@}}$} & \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Table~\ref{tab:gammas} shows the eight Dirac matrices and three further matrices. In $8\times8$
+blocks the chiral projectors of Eq.~(\ref{eq:PLPR}) are
+%%<1644>
+\begin{equation}
+P_{1644}^{L}=\begin{pmatrix}1_8&0\\0&0\end{pmatrix},\qquad
+P_{1644}^{R}=\begin{pmatrix}0&0\\0&1_8\end{pmatrix}.
+\end{equation}
+The Hermitian matrices of the quantized theory, $\beta_{1644}=-i\gamma_{1644}^4$ and
+$\alpha_{1644}^j=-\gamma_{1644}^4\gamma_{1644}^j$ of Eq.~(\ref{eq:hamiltonian}), and the grading
+$W_{1644}=i\,\Cm_{1644}\gamma_{1644}^4$ follow from the matrices displayed by one multiplication.
+%%</1644>
+%%<1671>
+\begin{equation}
+P_{1671}^{L}=\frac12\begin{pmatrix}1_8&i\,1_8\\-i\,1_8&1_8\end{pmatrix},\qquad
+P_{1671}^{R}=\frac12\begin{pmatrix}1_8&-i\,1_8\\i\,1_8&1_8\end{pmatrix}.
+\end{equation}
+The real symmetric matrices of the Hamiltonian, $\beta_{1671}=\gamma_{1671}^4$ and
+$\alpha_{1671}^j=\gamma_{1671}^4\gamma_{1671}^j$ of Eq.~(\ref{eq:alphabeta}), follow from the matrices
+displayed by one multiplication.
+%%</1671>
+
+% =====================================================================
+\section{The method of Cornwall, Jackiw and Tomboulis on a solvable model}
+\label{app:toy}
+% =====================================================================
+
+The statements of Sec.~\ref{sec:method} about truncations of $\Gamma_2$ can be tested on a model in
+which nothing is approximated: a ``field theory'' of a single real variable $\varphi$ with the action
+\begin{equation}
+S(\varphi)=\frac12\varphi^2+\frac{\lambda}{24}\varphi^4 .
+\end{equation}
+Its partition function $Z=\int d\varphi\,e^{-S}/\sqrt{2\pi}$ and its ``propagator''
+$G=\langle\varphi^2\rangle$ are ordinary integrals. The CJT action (\ref{eq:CJT}) is a function of
+one number,
+\begin{align}
+\Gamma(G)&=\frac12\ln\frac1G+\frac12(G-1)+\Gamma_2(G),\nonumber\\
+\Gamma_2&=\frac{\lambda G^2}{8}-\frac{\lambda^2G^4}{48}+\frac{\lambda^3G^6}{48}-\frac{5\lambda^4G^8}{128}+\dots,
+\label{eq:toy}
+\end{align}
+whose terms are the two-particle-irreducible diagrams with two, three, four and five loops. The gap
+equation (\ref{eq:SD}) is $1/G=1+\Sigma$ with
+$\Sigma=\lambda G/2-\lambda^2G^3/6+\lambda^3G^5/4-5\lambda^4G^7/8+\dots$, and the value of $\Gamma$
+at its solution should equal $-\ln Z$. The coefficients follow from the Gaussian moments
+$\langle\varphi^{2k}\rangle_0=(2k-1)!!$: the perturbation series of the exact propagator is
+$G=1-\lambda/2+2\lambda^2/3-11\lambda^3/8+34\lambda^4/9-\dots$, and inverting it and expressing
+$1/G-1$ through $G$ itself gives the series for $\Sigma$. A unit test of the program verifies the
+four coefficients against the exact integral.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_cjt_toy}
+\caption{\label{fig:toy}The CJT method in zero dimensions. (a) The exact propagator, the solutions of
+the gap equation with $\Gamma_2$ truncated at two, three and four loops, and ordinary perturbation
+theory. (b) Difference between the effective action at the stationary point and the exact $-\ln Z$.}
+\end{figure*}
+
+\begin{table}
+\caption{\label{tab:toy}The propagator $G=\langle\varphi^2\rangle$ of the zero-dimensional model: exact
+value, and solutions of the gap equation with $\Gamma_2$ truncated at two to five loops. A dash means
+that the truncated gap equation has no acceptable solution. The values of perturbation theory are
+shown in Fig.~\ref{fig:toy}.}
+\begin{ruledtabular}
+\begin{tabular}{cccccc}
+$\lambda$ & exact & 2 loops & 3 loops & 4 loops & 5 loops \\
+\hline
+{{ROWS:cjt_toy_table|cols=0-5}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Figure~\ref{fig:toy} and Table~\ref{tab:toy} teach three lessons, which carry over to field theory.
+\emph{The two-loop truncation is uniformly good.} It stays within {{GEN:cjt_toy_hartree_err}} per
+cent of the exact propagator for all couplings from 0.01 to 30, where the perturbation series is
+useless beyond $\lambda\approx0.5$; its solution, $G=(\sqrt{1+2\lambda}-1)/\lambda$, has the correct
+qualitative behavior for $\lambda\to\infty$. \emph{More loops help only at weak coupling.} The
+series (\ref{eq:toy}) is asymptotic, like the perturbation series. At $\lambda=1$ the error of the
+effective action falls from {{GEN:cjt_toy_gamma_err_2}} with two loops to
+{{GEN:cjt_toy_gamma_err_4}} with four. The truncations at three and at five loops, whose last term
+in $\Sigma$ is negative, have no acceptable solution for $\lambda\ge5$ and for $\lambda\ge2$,
+respectively; the entry 1.0000 at $\lambda=3$ is a solution, but a poor one. \emph{The stationary
+value is more accurate than the propagator,} because an error of first order in the propagator
+changes the value of a stationary functional only in second order.
+
+% =====================================================================
+\section{Machine checks, tests and reproduction}
+\label{app:checks}
+% =====================================================================
+
+\begin{table}
+\caption{\label{tab:checks}The machine checks by group, with the number of checks for each spacetime.}
+\begin{ruledtabular}
+\begin{tabular}{c>{\raggedright\arraybackslash}p{0.66\columnwidth}cc}
+group & what the checks verify & $4+4$ & $7+1$ \\
+\hline
+{{ROWS:checks_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\emph{Machine checks.} The statements of Secs.~\ref{sec:matrices} to \ref{sec:pairs} about matrices
+are verified by {{CHECKS}} checks, {{GEN:n_checks_@SIG@}} of them for the spacetime of this paper.
+An identifier has the form \texttt{44-C1} or \texttt{71-C1}: the signature, a letter for the group
+of Table~\ref{tab:checks}, and a number. {{GEN:n_checks_exact}} checks are exact: they are
+identities between integers and are proofs. The other {{GEN:n_checks_numerical}} involve
+exponentials of matrices or eigenvalues and are verified in floating-point arithmetic, to tolerances
+stated in the program. All checks pass. The log of the program lists every check with its complete
+statement \cite{SpacetimesRepo}.
+
+
+\emph{An independent second program.} A program can be wrong in the same way twice. A second
+program, in another language and sharing no code with the first, therefore rebuilds the matrices
+from their definitions and repeats the essential checks by different methods: linear independence
+is proved with exact Gram matrices instead of ranks modulo a prime; the question which matrices
+anticommute with all eight Dirac matrices is settled by enumerating the 256 products instead of
+solving a linear system; and the classification of the pairs is redone in exact rational
+arithmetic. It also compares the matrices, entry by entry, with those of the first program and with
+the matrices printed in the notebooks from which the definitions were taken.
+
+\emph{Tests.} The {{GEN:n_unit_tests}} unit tests of the main program compare each numerical
+routine with a closed result or with an independent method: the exchange amplitudes with the closed
+forms (\ref{eq:FSFP}), the gap equation with the textbook limits, the gradient of the CJT potential
+with numerical derivatives, the two-particle-irreducible coefficients of Appendix~\ref{app:toy} with
+the exact integral, the equations of state of the dark fluids with the conservation of energy, and
+the Einstein-Boltzmann solver with stored reference values.
+
+\emph{Reproduction.} From the root of the repository, the commands
+\begin{verbatim}
+cd code/spacetimes-rs
+cargo build --release
+cargo test --release
+cd ../..
+B=code/spacetimes-rs/target/release/spacetimes
+for c in matrices channels gap dimer \
+    symmetry cjt background spectrum \
+    forecast superfluid halos
+do $B $c; done
+python3 code/scripts/\
+verify_matrices_independent.py
+python3 code/scripts/\
+validate_cmb_against_class.py
+python3 code/scripts/make_tables.py
+python3 code/scripts/make_figures.py
+python3 code/scripts/build_manuscripts.py
+\end{verbatim}
+compile and test the program, recompute every data file, repeat the independent verification and
+the comparison with \textsc{class}, and rebuild the tables, the figures and both manuscripts. The complete run takes about an hour and a
+half on a computer with two processor cores, most of it for the fits to the mock data.
+
+% =====================================================================
+\section{Numerical methods}
+\label{app:num}
+% =====================================================================
+
+\begin{table}
+\caption{\label{tab:cmbval}Differences, in per cent, between the spectra of this work, lensed with the
+lensing potential of the reference, and those of \textsc{class}: largest and root-mean-square values
+of $D_\ell/D_\ell^{\rm ref}-1$ for TT and EE and of
+$(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE. Below $\ell=30$ the
+polarization depends on the description of reionization; above $\ell=2000$ the lensed result depends
+on the continuation of the spectra beyond $\ell=2500$.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccc}
+ & \multicolumn{2}{c}{TT} & \multicolumn{2}{c}{TE} & \multicolumn{2}{c}{EE} \\
+multipoles & max & rms & max & rms & max & rms \\
+\hline
+{{ROWS:cmb_validation_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+All calculations are performed by one program, written in the language Rust, with
+{{GEN:n_unit_tests}} unit tests; the figures and tables are produced from its output files by
+scripts. This appendix summarizes the methods; the source code is commented, and the repository
+\cite{SpacetimesRepo} documents, for every number of this paper, the command that produces it.
+
+\emph{Exact algebra.} Matrices with integer entries are multiplied in 64-bit integer arithmetic.
+Ranks are computed by elimination modulo a prime; since a rank modulo a prime cannot exceed the rank
+over the rational numbers, a full rank found in this way proves linear independence. Complex
+matrices are stored as pairs of integer matrices.
+
+\emph{Symmetry and pairs.} The commutant of a set of matrices is the null space of a linear system,
+found by Gaussian elimination with pivoting; the quantum numbers of particles and pairs are
+eigenvalues of Casimir operators, computed in floating-point arithmetic with the Jacobi method and,
+in the second program, in exact rational arithmetic.
+
+\emph{The paired state.} The gap equation (\ref{eq:gap}) is discretized on a radial momentum grid of
+Gauss-Legendre panels that are refined geometrically towards the Fermi momentum, and solved by
+iteration; the critical temperature is found by bisection on the largest eigenvalue of the linearized
+kernel. The CJT potential (\ref{eq:Vpair}) is evaluated on the same grid; its stationary point is
+found by Newton's method with the analytic Jacobian. The radial Schr\"odinger equation of the bound
+pair is integrated with the fourth-order Runge-Kutta method on a grid that is uniform in
+$\ln(1+\rho/\rho_0)$, which resolves the singularity of the potential at the origin.
+
+\emph{Matter, temperature and vacuum.} The Fermi integrals of Sec.~\ref{sec:normal} are closed
+expressions. The thermal integrals of Sec.~\ref{sec:thermal} are tabulated and interpolated with
+cubic polynomials. The ladder equation (\ref{eq:ladder}), linearized, is an eigenvalue problem on a
+logarithmic momentum grid, solved by power iteration.
+
+\emph{Cosmology.} The background is integrated by Gauss-Legendre quadrature. Recombination follows
+Saha equilibrium at early times and then the rate equations of the effective three-level atoms
+\cite{SeagerSasselovScott1999,SeagerSasselovScott2000,WongMossScott2008}; reionization is a step
+whose redshift is fitted to the optical depth. The perturbations obey 50 coupled equations per
+wavenumber, integrated with an adaptive Runge-Kutta method of Dormand and Prince, with the
+tight-coupling approximation of first order at early times. The spectra are obtained by integration
+along the line of sight with tabulated spherical Bessel functions. Table~\ref{tab:cmbval} gives the
+comparison with \textsc{class} by ranges of the multipole.
+
+
+\emph{Mock likelihood.} For Gaussian fields observed on a fraction $f_{\rm sky}$ of the sky,
+\begin{align}
+\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\Tr\big(D_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det D_\ell}-n\Big]\nonumber\\
+&+\Big(\frac{\tau-\tau_0}{\sigma_\tau}\Big)^2,
+\label{eq:likelihood}
+\end{align}
+where $C_\ell$ is the $n\times n$ matrix of the model spectra plus noise, for temperature and
+polarization, $D_\ell$ the same matrix for the data, and the last term the prior on the optical
+depth. A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise
+and range of multipoles, and their $\chi^2$ add.
+

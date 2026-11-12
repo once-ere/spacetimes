@@ -33,8 +33,11 @@ impl Report {
     pub fn all_pass(&self) -> bool {
         self.checks.iter().all(|c| c.pass)
     }
+    /// (number of checks passed, number of checks).  The entry "ALL", which the command
+    /// `matrices` appends to the log as a summary, is not a check and is not counted.
     pub fn count(&self) -> (usize, usize) {
-        (self.checks.iter().filter(|c| c.pass).count(), self.checks.len())
+        let checks = self.checks.iter().filter(|c| c.id != "ALL");
+        (checks.clone().filter(|c| c.pass).count(), checks.count())
     }
 }
 

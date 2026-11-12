@@ -526,21 +526,21 @@ more conservatively, 3.5 keV, using the fitting formula of Viel et al.
 
 | model | $c_{s0}/c$ | $c_{s0}$ (m/s) | half mode ($h$/Mpc) | thermal relic (keV) | $R_{TF}$ | $\Delta N$ at $a=10^{-9}$ |
 |:------------------------|---------:|-------:|--------:|--------:|-------:|---------:|
-| degenerate fermions, $m=0.3$ keV | $1.2\times10^{-7}$ | 35.8 | 9.2 | 1.0 | — | $3.3\times10^{-3}$ |
-| degenerate fermions, $m=0.5$ keV | $6.0\times10^{-8}$ | 18.1 | 16.7 | 1.6 | — | $1.7\times10^{-3}$ |
-| degenerate fermions, $m=0.75$ keV | $3.5\times10^{-8}$ | 10.6 | 26.7 | 2.5 | — | $9.8\times10^{-4}$ |
-| degenerate fermions, $m=1$ keV | $2.4\times10^{-8}$ | 7.2 | 37.4 | 3.4 | — | $6.7\times10^{-4}$ |
-| degenerate fermions, $m=1.5$ keV | $1.4\times10^{-8}$ | 4.19 | 60.4 | 5.2 | — | $3.9\times10^{-4}$ |
-| degenerate fermions, $m=2$ keV | $9.5\times10^{-9}$ | 2.86 | 85.0 | 7.1 | — | $2.7\times10^{-4}$ |
-| degenerate fermions, $m=3$ keV | $5.5\times10^{-9}$ | 1.66 | 137.7 | 11.0 | — | $1.6\times10^{-4}$ |
-| degenerate fermions, $m=4.5$ keV | $3.2\times10^{-9}$ | 0.969 | 223.6 | 17.1 | — | $9.2\times10^{-5}$ |
-| condensate, $c_{s0}=$ $3.0\times10^{-12}$ $c$ | $3.0\times10^{-12}$ | 0.000899 | 185.64 | 14.44 | 0.067 pc | $4.2\times10^{-4}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-11}$ $c$ | $1.0\times10^{-11}$ | 0.003 | 84.43 | 7.10 | 0.22 pc | $9.4\times10^{-4}$ |
-| condensate, $c_{s0}=$ $3.0\times10^{-11}$ $c$ | $3.0\times10^{-11}$ | 0.00899 | 41.24 | 3.72 | 0.67 pc | $1.9\times10^{-3}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-10}$ $c$ | $1.0\times10^{-10}$ | 0.03 | 18.90 | 1.84 | 2.2 pc | $4.3\times10^{-3}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-9}$ $c$ | $1.0\times10^{-9}$ | 0.3 | 4.32 | 0.49 | 22 pc | $2.0\times10^{-2}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-8}$ $c$ | $1.0\times10^{-8}$ | 3 | 1.03 | 0.13 | 0.22 kpc | $9.4\times10^{-2}$ |
-| condensate, $c_{s0}=$ $4.5\times10^{-8}$ $c$ | $4.5\times10^{-8}$ | 13.5 | 0.42 | 0.06 | 1 kpc | $2.6\times10^{-1}$ |
+| degenerate fermions, $m=0.3$ keV | $1.2\times10^{-7}$ | 35.8 | 9.23 | 0.966 | — | $3.3\times10^{-3}$ |
+| degenerate fermions, $m=0.5$ keV | $6.0\times10^{-8}$ | 18.1 | 16.7 | 1.65 | — | $1.7\times10^{-3}$ |
+| degenerate fermions, $m=0.75$ keV | $3.5\times10^{-8}$ | 10.6 | 26.7 | 2.52 | — | $9.8\times10^{-4}$ |
+| degenerate fermions, $m=1$ keV | $2.4\times10^{-8}$ | 7.2 | 37.4 | 3.41 | — | $6.7\times10^{-4}$ |
+| degenerate fermions, $m=1.5$ keV | $1.4\times10^{-8}$ | 4.19 | 60.4 | 5.25 | — | $3.9\times10^{-4}$ |
+| degenerate fermions, $m=2$ keV | $9.5\times10^{-9}$ | 2.86 | 85.0 | 7.14 | — | $2.7\times10^{-4}$ |
+| degenerate fermions, $m=3$ keV | $5.5\times10^{-9}$ | 1.66 | 138 | 11.0 | — | $1.6\times10^{-4}$ |
+| degenerate fermions, $m=4.5$ keV | $3.2\times10^{-9}$ | 0.969 | 224 | 17.1 | — | $9.2\times10^{-5}$ |
+| condensate, $c_{s0}=$ $3.0\times10^{-12}$ $c$ | $3.0\times10^{-12}$ | 0.000899 | 186 | 14.4 | 0.067 pc | $4.2\times10^{-4}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-11}$ $c$ | $1.0\times10^{-11}$ | 0.003 | 84.4 | 7.10 | 0.22 pc | $9.4\times10^{-4}$ |
+| condensate, $c_{s0}=$ $3.0\times10^{-11}$ $c$ | $3.0\times10^{-11}$ | 0.00899 | 41.2 | 3.72 | 0.67 pc | $1.9\times10^{-3}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-10}$ $c$ | $1.0\times10^{-10}$ | 0.03 | 18.9 | 1.84 | 2.2 pc | $4.3\times10^{-3}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-9}$ $c$ | $1.0\times10^{-9}$ | 0.3 | 4.32 | 0.488 | 22 pc | $2.0\times10^{-2}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-8}$ $c$ | $1.0\times10^{-8}$ | 3 | 1.03 | 0.134 | 0.22 kpc | $9.4\times10^{-2}$ |
+| condensate, $c_{s0}=$ $4.5\times10^{-8}$ $c$ | $4.5\times10^{-8}$ | 13.5 | 0.416 | 0.0593 | 1 kpc | $2.6\times10^{-1}$ |
 
 $c_{s0}$: sound speed today at the mean cosmic density. Half mode: wavenumber at which $P/P_{\rm CDM}$ first falls to 1/4. Thermal relic: mass of the thermal warm-dark-matter particle with the same half mode. $R_{TF}$: Thomas–Fermi radius of the condensate. Last column: density of the fluid during nucleosynthesis in units of one neutrino species. Source: `data/sfdm_summary.csv`.
 
@@ -583,7 +583,7 @@ such a condensate is radiation-like in the early universe, and all perturbations
 enter the horizon during that phase are erased. **The pressure of the condensate
 cannot produce the kiloparsec-sized cores that motivate superfluid dark matter.** For
 a core of 1 kpc the half mode would be at $k\approx$ 0.42
-$h$ Mpc$^{-1}$, hundreds of times too small. A second, independent obstacle: the
+$h$ Mpc$^{-1}$, more than a hundred times too small. A second, independent obstacle: the
 pairs can be condensed in a halo only if they are lighter than
 262 eV in a dwarf galaxy (table above, column $m_{B,\max}$), while
 their self-interaction demands the opposite, as shown next.
@@ -596,7 +596,7 @@ Together:
 
 | $\alpha_{VS}$ | smallest fermion mass (MeV) | $m_s$ (MeV) | range $1/m_s$ (fm) | $n\lambda^3$ of the pairs in a dwarf core |
 |------:|-----------:|--------:|---------:|--------------:|
-| 0.01 | 4.26e+03 | 25.4 | 7.78 | $2.3\times10^{-30}$ |
+| 0.01 | 4260 | 25.4 | 7.78 | $2.3\times10^{-30}$ |
 | 0.1 | 918 | 54.7 | 3.61 | $1.1\times10^{-27}$ |
 | 1 | 198 | 118 | 1.68 | $5.0\times10^{-25}$ |
 | 4 | 78.5 | 187 | 1.06 | $2.0\times10^{-23}$ |

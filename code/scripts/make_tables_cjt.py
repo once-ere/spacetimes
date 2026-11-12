@@ -39,16 +39,28 @@ def _text(DATA, name):
 # For the documents they are typeset here.  A vertical bar must not appear in a cell
 # of a Markdown table (it separates the cells), so norms are written with \lVert.
 _SYMMETRY_ITEMS = {
+    "dimension of the commutant, momenta along x1 x2 x3":
+        r"dimension of the commutant, momenta along $x1,x2,x3$",
+    "dimension of the commutant, momenta along x0 x1 x2 x3":
+        r"dimension of the commutant, momenta along $x0,x1,x2,x3$",
+    "dimension of the centre of the zero-mode commutant":
+        r"dimension of the center of the zero-mode commutant",
     "|P^2 - 1| for the traceless central generator P":
         r"$\lVert P^2-1\rVert$ for the traceless central generator $P$",
     "structure constants |f_123| of the ideals (generators with Tr T_i T_j = 2 delta_ij)":
         r"structure constant $\lvert f_{123}\rvert$ of each ideal (generators with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$)",
     "|sum_i T_i^2 - (3/4) projector| of the ideals":
         r"$\lVert\sum_iT_i^2-\tfrac34\,(\text{projector})\rVert$ for each ideal",
+    "positive-energy states with P = +1 and P = -1 at a test momentum":
+        r"number of positive-energy states with $P=+1$ and with $P=-1$ at a test momentum",
     "closure of the four vector pair operators C^- gamma^a, a in {0,5,6,7}":
         r"the four vector pair operators $C^-\gamma^a$, $a\in\{0,5,6,7\}$, transform among themselves: residual",
     "|Casimir - 3/4| of the two ideals on the four pair operators":
         r"$\lvert\text{Casimir}-\tfrac34\rvert$ of each ideal on the four pair operators",
+    "charge of the pair operators under the central generator P":
+        r"charge of the pair operators under the central generator $P$",
+    "the invariant form (diagonal; axes 0 5 6 7; first entry 1)":
+        r"the invariant form: its diagonal entries for the axes $x0,x5,x6,x7$, the first normalized to 1",
     "complex dimension of the particle-antiparticle mixing generators, mu = 0":
         r"complex dimension of the generators that mix particles with antiparticles, $\mu=0$",
 }
@@ -61,25 +73,50 @@ def _symmetry_item(item):
     parts = item.split()
     if len(parts) == 2 and all(q.startswith("gamma^") for q in parts):   # e.g. "gamma^0 gamma^5"
         return "$\\gamma^%s\\gamma^%s$" % (parts[0][6:], parts[1][6:])
-    assert "|" not in item and "^" not in item and "_" not in item, "untreated item: %r" % item
+    assert "|" not in item and "^" not in item and "_" not in item and " = " not in item, "untreated item: %r" % item
     return item
 
 
 def _symmetry_value(value, sci):
-    """Typeset one value: residuals in scientific notation, no vertical bars."""
-    value = value.replace("|[.,dynamics]| =", "commutator with the dynamics")
+    """Typeset one value of data/reduced_symmetry.csv.
+
+    * A residual printed in exponent form becomes 0 (if it is exactly zero) or a number
+      in scientific notation.
+    * A number printed with six or more decimals that agrees with an integer in all of
+      them is shown as that integer (with its sign if the program printed one); the
+      table says so.
+    * A list of numbers is separated by commas; "[3, 3]" becomes "3, 3".
+    * "antihermitian; |[.,dynamics]| = 0.00e0" becomes "anti-Hermitian; commutes with
+      the dynamics" (the norm of the commutator is exactly zero: integer matrices).
+    No vertical bar may remain: it would split the cell of the Markdown table."""
+    if "|[.,dynamics]| =" in value:
+        kind, norm = [t.strip() for t in value.split(";")]
+        norm = norm.split("=")[1].strip()
+        kind = {"antihermitian": "anti-Hermitian", "Hermitian": "Hermitian"}[kind]
+        if float(norm) == 0.0:
+            return kind + "; commutes with the dynamics"
+        return kind + "; commutator with the dynamics " + sci(float(norm))
 
     def number(tok):
-        if tok in ("0.00e0", "0.00e+0"):
-            return "0"
         try:
-            if "e" in tok:
-                return sci(float(tok))
+            x = float(tok)
         except ValueError:
-            pass
+            return None
+        if "e" in tok.lower():                       # a residual
+            return "0" if x == 0.0 else sci(x)
+        if "." in tok:
+            decimals = len(tok.split(".")[1])
+            assert decimals >= 6 and abs(x - round(x)) < 0.5 * 10.0 ** (-decimals), "not an integer to the printed precision: %r" % tok
+            return ("%+d" if tok[0] in "+-" else "%d") % round(x)
         return tok
 
-    out = " ".join(number(t) for t in value.split())
+    toks = value.replace("[", " ").replace("]", " ").replace(",", " ").split()
+    nums = [number(t) for t in toks]
+    assert all(n is not None for n in nums), "untreated value: %r" % value
+    signed = any(n[0] in "+-" for n in nums)
+    out = ", ".join(n.strip("$") if signed else n for n in nums)
+    if signed:                                       # e.g. the invariant form: set the signs in mathematics
+        out = "$" + out.replace(", ", ",") + "$"
     assert "|" not in out, "vertical bar left in %r" % out
     return out
 
@@ -91,7 +128,9 @@ def run(frag, read_csv, sci, table, DATA):
         body = [[_symmetry_item(r["item"]), _symmetry_value(r["value_1671"], sci), _symmetry_value(r["value_1644"], sci)] for r in rows]
         text = table(["item (computed from the matrices)", "7+1", "4+4"], [":------------------------------------------", ":-----------------", ":-----------------"], body)
         n_ok = sum(1 for r in rows if r["ok"] == "1")
-        text += "\n\nAll %d items have the expected values (`data/reduced_symmetry.csv`, column `expected`; %d of %d flagged as correct by the program)." % (len(rows), n_ok, len(rows))
+        text += ("\n\nAll %d items have the expected values (`data/reduced_symmetry.csv`, column `expected`; %d of %d flagged as correct by the program). "
+                 "A number that the program prints with six or more decimals and that agrees with an integer in all of them is shown as that integer; "
+                 "the residuals are norms of matrices that should vanish." % (len(rows), n_ok, len(rows)))
         frag("cjt_symmetry_table", text)
 
     # ---------------------------------------------------------------- zero-dimensional test
@@ -154,7 +193,7 @@ def run(frag, read_csv, sci, table, DATA):
     # ---------------------------------------------------------------- threshold
     t = read_csv("cjt_threshold.csv")
     if t is not None:
-        body = [["%g" % r["m_s_over_m"], "%.5f" % r["D_c_gap_equation"], "%+.2e" % r["relative_difference"]] for r in t]
+        body = [["%g" % r["m_s_over_m"], "%.5f" % r["D_c_gap_equation"], sci(float(r["relative_difference"]))] for r in t]
         text = table(["$m_s/m$", "$D_c$ from the gap equation", "relative difference from `dimer.rs`"], ["------:", "-----------:", "-----------:"], body)
         frag("cjt_threshold_table", text)
         frag("cjt_threshold_best", "%.5f" % t[-1]["D_c_gap_equation"])
@@ -238,6 +277,7 @@ def run(frag, read_csv, sci, table, DATA):
         body = [["%g" % r["C"], "%g" % r["m_s"], "%.2f" % r["g2"], "%g" % r["kF"], "%.3f" % r["x"], "%+.1f" % (100 * r["fock_radial_over_hartree"]), "%+.1f" % (100 * r["fock_phase_over_hartree"])] for r in t]
         frag("cjt_fock_table", table(["$C$", "$m_s/m$", "$g_{VS}^2$", "$k_F/m$", "$m^*/m$", "radial mode (%)", "phase mode (%)"], ["---:", "----:", "-----:", "----:", "-----:", "--------:", "--------:"], body))
         frag("cjt_fock_contact", "%.1f" % (100 * max(r["fock_radial_over_hartree"] for r in t)))
+        frag("cjt_fock_n", "%d" % len(t))
 
     # k_F |a| in a dwarf galaxy for particles at the self-interaction limit.
     # sigma/m <= 1 cm^2/g = 4.5782e-24 eV^-3 (hbar c = 1.973269804e-7 eV m, 1 g = 5.609588603e32 eV);
@@ -255,6 +295,9 @@ def run(frag, read_csv, sci, table, DATA):
                  "%.3f" % r["T_zero_over_v"], "%.2f" % r["phi_before_zero"], "%.2f" % r["T_half_over_m"]] for r in t]
         frag("cjt_thermal_table", table(["$g_{VS}$", "$m_s/m$", "$C$", "$T_{\\rm high}/v$", "$T_{N}/v$", "$T_{1/2}/v$", "$T_0/v$", "$\\phi/v$ before $T_0$", "$T_{1/2}/m$"],
                                         ["----:", "----:", "-----:", "------:", "------:", "------:", "------:", "---------:", "------:"], body))
+        # range of the melting temperature in units of the fermion mass (one significant digit)
+        frag("cjt_thermal_thalf_m_lo", "%.1f" % min(r["T_half_over_m"] for r in t))
+        frag("cjt_thermal_thalf_m_hi", "%.0f" % max(r["T_half_over_m"] for r in t))
         frag("cjt_thermal_jumps", ", ".join("(%g, %g)" % (r["g"], r["m_s_over_m"]) for r in t if r["phi_before_zero"] > 0.25))
         frag("cjt_thermal_jump_size", "%.1f" % max(r["phi_before_zero"] for r in t))
         cont = [r["phi_before_zero"] for r in t if r["phi_before_zero"] <= 0.25]
@@ -269,6 +312,10 @@ def run(frag, read_csv, sci, table, DATA):
     t = read_csv("cjt_vacuum_stability.csv")
     if t is not None:
         body = [["%g" % r["C"], ("%.3g" % r["x_max"]) if r["x_max"] < 1e4 else sci(r["x_max"]), ("%.3g" % r["x_zero"]) if r["x_zero"] < 1e4 else sci(r["x_zero"])] for r in t]
+        # for the couplings at which matter is self-bound (C >= 3.7): where the potential falls below the vacuum
+        bound = [r["x_zero"] for r in t if r["C"] >= 3.7]
+        frag("cjt_vacstab_lo", "%.1f" % min(bound))
+        frag("cjt_vacstab_hi", "%.1f" % max(bound))
         frag("cjt_vacstab_table", table(["$C$", "maximum of the potential at $\\phi/v_{VS}=$", "below the vacuum beyond $\\phi/v_{VS}=$"], ["------:", "---------------:", "---------------:"], body))
 
     # ---------------------------------------------------------------- vacuum
@@ -282,3 +329,6 @@ def run(frag, read_csv, sci, table, DATA):
         frag("cjt_vacuum_table", table(hdr, ["-----:"] + ["------:"] * len(cuts), body))
         for c, name in ((10.0, "10"), (100.0, "100"), (1e6, "1e6")):
             frag("cjt_alpha_c_" + name, "%.2f" % [r for r in t if r["m_s_over_m"] == 1.0 and r["cutoff_over_m"] == c][0]["alpha_c"])
+        # the whole range of the table
+        frag("cjt_alpha_c_min", "%.2f" % min(r["alpha_c"] for r in t))
+        frag("cjt_alpha_c_max", "%.1f" % max(r["alpha_c"] for r in t))

@@ -1,0 +1,415 @@
+
+% =====================================================================
+\section{The Vorton-Scalar}
+\label{sec:vs}
+% =====================================================================
+
+This section meets objective O3. It invents the boson that mediates the pairing, defines it by a
+Lagrangian, and derives its neutral current, its coupling to the fermions and its field equations.
+
+\subsection{What is wanted}
+
+Pairing needs an attraction between two fermions. Hypothesis H1 prescribes its origin: a \emph{scalar}
+boson field, and an interaction of the kind known from the weak force, in which a \emph{neutral
+current}, a current that does not change the kind of fermion on which it acts, couples to a current of
+the fermions. The neutral current is to be built from the scalar alone.
+
+A real scalar field has no current. The simplest field that has one is a \emph{complex} scalar
+$\PhiVS$, whose phase rotations $\PhiVS\to e^{i\epsilon}\PhiVS$ are a symmetry; the conserved current
+of that symmetry is bilinear in $\PhiVS$, and it is the neutral current sought. For it to act on the
+fermions, the fermions must carry the same symmetry. A fermion field with a mass term has only one
+phase symmetry, the fermion number. The massless field has a second one, the chiral rotation, and the
+mass term breaks it. This suggests the construction: \emph{let the mass of the fermion field come
+from the scalar}, so that the chiral rotation of the fermions, accompanied by a phase rotation of the
+scalar, is an exact symmetry.
+
+%%<1671>
+\subsection{Definition}
+\label{sec:vsdef}
+
+The Vorton-Scalar is a complex scalar field $\PhiVS(x)$ on the $7+1$ spacetime. Together with the
+fermion field it is governed by the Lagrangian
+\begin{align}
+\mathcal L_{1671}^{\rm VS}={}&\bar\psi\,i\gamma^A\partial_A\psi
++\eta^{AB}\,\partial_A\PhiVS^{*}\,\partial_B\PhiVS\nonumber\\
+&-\lamVS\Big(|\PhiVS|^2-\frac{\vVS^2}{2}\Big)^{2}\nonumber\\
+&-\yVS\,\bar\psi\big(\PhiVS\,P^{R}+\PhiVS^{*}\,P^{L}\big)\psi .
+\label{eq:LVS}
+\end{align}
+Here $\psi=\psi_{1671}$, $\gamma^A=\gamma_{1671}^A$, $\eta=\eta_{1671}$, $\bar\psi=\psi^\dagger\beta$
+with $\beta=\gamma^4$, and $P^{L,R}=\tfrac12(1\mp\chi)$ are the complex chiral projectors
+(\ref{eq:PLPR}) with the chirality matrix $\chi=\chi_{1671}$. The three constants are real and
+positive: the self-coupling $\lamVS$, the vacuum value $\vVS$, and the Yukawa coupling $\yVS$. The last
+term is Hermitian, because $(\bar\psi P^{R}\psi)^\dagger=\psi^\dagger P^{R}\beta\psi=\bar\psi P^{L}\psi$:
+the matrix $\chi$ anticommutes with $\beta$.
+
+\emph{Symmetries.} Besides the Lorentz group of the $7+1$ spacetime, the Lagrangian (\ref{eq:LVS}) has
+two phase symmetries,
+\begin{align}
+U(1)_F:&\quad\psi\to e^{i\epsilon}\psi;\nonumber\\
+\UVS:&\quad\psi\to e^{i\epsilon\chi}\psi,\quad\PhiVS\to e^{-2i\epsilon}\PhiVS .
+\label{eq:U1}
+\end{align}
+The first is the fermion number. The second is the symmetry wanted. To verify it, note that $\chi$ is
+Hermitian and anticommutes with every $\gamma^A$, so that $\bar\psi\to\bar\psi e^{i\epsilon\chi}$ and
+$\bar\psi\gamma^A\partial_A\psi\to\bar\psi e^{i\epsilon\chi}\gamma^Ae^{i\epsilon\chi}\partial_A\psi
+=\bar\psi\gamma^A\partial_A\psi$; and
+$\bar\psi P^{R}\psi\to\bar\psi e^{2i\epsilon\chi}P^{R}\psi=e^{2i\epsilon}\bar\psi P^{R}\psi$, which
+the phase of $\PhiVS$ compensates. A bare mass term $m\bar\psi\psi$ is not invariant, and it is
+therefore absent from Eq.~(\ref{eq:LVS}).
+%%</1671>
+%%<1644>
+\subsection{The covariant theory has no chiral phase symmetry}
+\label{sec:nogo}
+
+The construction just described fails for the Lagrangian (\ref{eq:lagrangian}) that is invariant
+under the whole group $\Spin_0(4,4)$. On the $4+4$ spacetime the chirality matrix $\omega$ is real,
+and $\Cm$, a product of four Dirac matrices, \emph{commutes} with it. Under the chiral phase rotation
+$\psi\to e^{i\epsilon\omega}\psi$ one finds, with $\tilde\psi=\psi^\dagger\Cm$,
+\begin{equation}
+\tilde\psi\psi\to\tilde\psi\psi,\qquad
+\tilde\psi\gamma^A\partial_A\psi\to\tilde\psi\,e^{-2i\epsilon\omega}\gamma^A\partial_A\psi .
+\end{equation}
+The \emph{mass term} is invariant and the \emph{kinetic term} is not, the opposite of the situation in
+ordinary four-dimensional theory and on the $7+1$ spacetime. The kinetic term is invariant instead
+under the real, non-compact rescaling $\psi\to e^{\epsilon\omega}\psi$, which multiplies the two
+8-component chiral parts by $e^{-\epsilon}$ and $e^{+\epsilon}$ and mixes $\tilde\psi\psi$ with
+$\tilde\psi\omega\psi$ by a hyperbolic rotation. A scalar that compensated this rotation would have
+the invariant $(\mathrm{Re}\,\PhiVS)^2-(\mathrm{Im}\,\PhiVS)^2$, of indefinite sign: one of its two
+components would have negative kinetic energy.
+
+\emph{In the fully covariant $4+4$ theory the construction does not exist.} This is a consequence of
+the real chirality of the $4+4$ signature, and it is recorded here as a result.
+
+\subsection{Definition in the quantized sector}
+\label{sec:vsdef}
+
+Section~\ref{sec:quantized} defined the quantized field by the restriction to fields that do not
+depend on the additional times, with the Lagrangian (\ref{eq:Lred}). That Lagrangian differs from the
+covariant one by the grading $W$, and $W$, which contains an odd number of Dirac matrices,
+\emph{anticommutes} with $\omega$. In $\mathcal L^{\rm red}$ the roles are therefore the familiar
+ones: the term $\psi^\dagger(i\partial_4+i\alpha^j\partial_j)\psi$ is invariant under
+$\psi\to e^{i\epsilon\omega}\psi$, because $\omega$ commutes with the $\alpha^j$, and the mass term
+$m\,\psi^\dagger\beta\psi$ is not, because $\omega$ anticommutes with $\beta$.
+
+In the formulas that this paper shares with its companion the chirality matrix is denoted by $\chi$
+and the adjoint spinor of the quantized theory by $\bar\psi$. For the present spacetime
+\begin{equation}
+\chi\equiv\omega_{1644},\qquad\bar\psi\equiv\psi^\dagger\beta_{1644},\qquad P^{L,R}=\tfrac12(1\mp\chi).
+\label{eq:chi}
+\end{equation}
+The matrix $\chi$ is real, and $\bar\psi$ must not be confused with the covariant adjoint
+$\tilde\psi=\psi^\dagger\Cm$ of Sec.~\ref{sec:dirac}.
+
+The Vorton-Scalar of the $4+4$ model is a complex scalar field $\PhiVS$ that, like the fermion field,
+does not depend on $x5,x6,x7$. It is governed by the Lagrangian
+\begin{align}
+\mathcal L_{1644}^{\rm VS}={}&\psi^\dagger\big(i\partial_4+i\alpha^j\partial_j\big)\psi
++|\partial_4\PhiVS|^2-\sum_{j=0}^{3}|\partial_j\PhiVS|^2\nonumber\\
+&-\lamVS\Big(|\PhiVS|^2-\frac{\vVS^2}{2}\Big)^{2}\nonumber\\
+&-\yVS\,\bar\psi\big(\PhiVS\,P^{R}+\PhiVS^{*}\,P^{L}\big)\psi ,
+\label{eq:LVS}
+\end{align}
+with $\psi=\psi_{1644}$, $\alpha^j=\alpha_{1644}^j$ and $j$ running over the four space coordinates.
+The three constants are real and positive: the self-coupling $\lamVS$, the vacuum value $\vVS$, and
+the Yukawa coupling $\yVS$. The Lagrangian is invariant under $\Spin(4,1)\times\Spin(3)$, the
+rotations and boosts of $(x0,x1,x2,x3;x4)$ and the rotations of the three additional times, and under
+two phase symmetries,
+\begin{align}
+U(1)_F:&\quad\psi\to e^{i\epsilon}\psi;\nonumber\\
+\UVS:&\quad\psi\to e^{i\epsilon\chi}\psi,\quad\PhiVS\to e^{-2i\epsilon}\PhiVS .
+\label{eq:U1}
+\end{align}
+The first is the fermion number. The second is the symmetry wanted:
+$\bar\psi P^{R}\psi\to e^{2i\epsilon}\bar\psi P^{R}\psi$, which the phase of $\PhiVS$ compensates. A
+bare mass term is not invariant and is therefore absent.
+%%</1644>
+
+\emph{The name.} In the earlier study \cite{NashNCSS} the name Vorton-Scalar denoted the scalar that
+mediates the pairing and that every quantized vortex of the superfluid carries along with it. That
+meaning is kept (Sec.~\ref{sec:vortons}). The field invented here is in addition \emph{complex}, with
+a broken phase symmetry. Such a field has line-like defects of its own, on which the fermions are
+massless and can carry a persistent current, and closed loops stabilized by such a current are what
+the literature on cosmic strings calls \emph{vortons} \cite{DavisShellard1989}.
+
+\subsection{Dimensions of the couplings, and the reduction to four dimensions}
+\label{sec:reduction}
+
+In natural units the action is dimensionless. In eight dimensions the kinetic terms then give the
+fields the dimensions $[\psi]=\text{mass}^{7/2}$ and $[\PhiVS]=\text{mass}^{3}$, hence
+\begin{equation}
+[\vVS]=\text{mass}^{3},\qquad[\yVS]=\text{mass}^{-2},\qquad[\lamVS]=\text{mass}^{-4}.
+\end{equation}
+Couplings of negative mass dimension mean that the model is an \emph{effective} theory, valid below
+some scale. This is unavoidable for interacting fields in eight dimensions and is not specific to the
+present model.
+
+In the first stage of the program the fields that matter do not depend on the four extra coordinates:
+the hidden coordinate is curled up, and the three others are assumed to play no dynamical role
+\SIG{(for the additional times this is the restriction of Sec.~\ref{sec:quantized})}{}. If the extra
+coordinates span a volume $V_4$, a field that is constant along them is
+$\psi=\psi^{(4)}/\sqrt{V_4}$, $\PhiVS=\PhiVS^{(4)}/\sqrt{V_4}$, and the action becomes a
+four-dimensional one with the dimensionless couplings and the scale
+\begin{equation}
+\yVS^{(4)}=\frac{\yVS}{\sqrt{V_4}},\qquad\lamVS^{(4)}=\frac{\lamVS}{V_4},\qquad\vVS^{(4)}=\vVS\sqrt{V_4},
+\end{equation}
+where $\vVS^{(4)}$ is a mass. From here on all couplings are these four-dimensional ones, and the
+superscript is dropped. We call the fields that do not depend on the four extra coordinates the
+\emph{zero-mode sector}.
+
+\subsection{Symmetry breaking: the mass of the fermions and the two modes}
+\label{sec:ssb}
+
+The potential in Eq.~(\ref{eq:LVS}) is minimal at $|\PhiVS|=\vVS/\sqrt2$. Write
+\begin{equation}
+\PhiVS(x)=\frac{\vVS+\sVS(x)}{\sqrt2}\,e^{i\thVS(x)/\vVS}
+\label{eq:polar}
+\end{equation}
+with two real fields, the \emph{radial mode} $\sVS$ and the \emph{phase mode} $\thVS$. Because
+$\PhiVS P^{R}+\PhiVS^*P^{L}=|\PhiVS|\,e^{i\chi\arg\PhiVS}$, the Yukawa term becomes
+$-m\,(1+\sVS/\vVS)\,\bar\psi\,e^{i\chi\thVS/\vVS}\psi$, and to first order in the boson fields
+\begin{align}
+\mathcal L_{\tg}^{\rm VS}={}&\mathcal L_{\psi}(m)+\tfrac12(\partial\sVS)^2-\tfrac12m_s^2\sVS^2+\tfrac12(\partial\thVS)^2\nonumber\\
+&-\gVS\,\sVS\,\bar\psi\psi-\gVS\,\thVS\,\bar\psi\,i\chi\,\psi+\dots,
+\label{eq:Lbroken}
+\end{align}
+where $\mathcal L_{\psi}(m)$ is the free Lagrangian of the fermion field with the mass $m$,
+\SIG{Eq.~(\ref{eq:Lred})}{Eq.~(\ref{eq:lagrangian})}, the dots stand for terms with three or more boson
+fields, and
+\begin{align}
+m_{\tg}&=\frac{\yVS\,\vVS}{\sqrt2},\qquad m_s=\sqrt{2\lamVS}\;\vVS,\nonumber\\
+\gVS&=\frac{m_{\tg}}{\vVS}=\frac{\yVS}{\sqrt2}.
+\label{eq:masses}
+\end{align}
+Three facts follow. First, the fermion mass is no longer a free parameter put in by hand: it is the
+Yukawa coupling times the vacuum value of the Vorton-Scalar. Second, the radial mode is a scalar of
+mass $m_s$ that couples to the scalar density $\bar\psi\psi$. Third, the phase mode is massless, being
+the Goldstone boson \cite{Goldstone1961} of the broken symmetry $\UVS$, and it couples to the
+pseudoscalar density $\bar\psi\,i\chi\,\psi$. Both couplings have the same strength
+$\gVS=m/\vVS$: heavier fermions couple more strongly, a relation of the Goldberger-Treiman type
+\cite{GoldbergerTreiman1958}. We also use
+\begin{equation}
+\aVS\equiv\frac{\gVS^2}{4\pi}.
+\label{eq:alphaVS}
+\end{equation}
+
+In the Hamiltonian form of the theory, Eq.~(\ref{eq:schroedinger}), the two vertices read
+\begin{align}
+\text{radial mode:}&\quad-\gVS\,\sVS\,\psi^\dagger\beta\,\psi,\nonumber\\
+\text{phase mode:}&\quad-\gVS\,\thVS\,\psi^\dagger(i\beta\chi)\psi .
+\label{eq:vertices}
+\end{align}
+The matrices $\beta$ and $i\beta\chi$ are Hermitian. Equations (\ref{eq:schroedinger}),
+(\ref{eq:hamiltonian}) and (\ref{eq:vertices}) have the same form for both spacetimes; all that
+differs is which matrices $\beta$, $\alpha^j$ and $\chi$ stand in them. Everything from
+Sec.~\ref{sec:pairing} on is derived from these three equations.
+
+\subsection{The neutral current}
+\label{sec:nc}
+
+The conserved current of the symmetry $\UVS$ follows from Eq.~(\ref{eq:U1}) by Noether's theorem. It
+is the sum of a current of the fermions and a current of the scalar. With the components along the
+time $x4$ and along the space coordinates $xj$ of the model
+\SIG{($j=0,1,2,3$)}{(the seven values $j\neq4$)},
+\begin{align}
+\JVS^4&=i\big(\PhiVS^{*}\,\partial_4\PhiVS-\PhiVS\,\partial_4\PhiVS^{*}\big),\nonumber\\
+\JVS^j&=-i\big(\PhiVS^{*}\,\partial_j\PhiVS-\PhiVS\,\partial_j\PhiVS^{*}\big),\nonumber\\
+J_5^4&=\psi^\dagger\chi\,\psi,\qquad J_5^j=\psi^\dagger\alpha^j\chi\,\psi,
+\label{eq:currents}
+\end{align}
+the conservation law is
+\begin{equation}
+\partial_4\big(J_5^4-2\JVS^4\big)+\partial_j\big(J_5^j-2\JVS^j\big)=0 .
+\label{eq:conservation}
+\end{equation}
+$\JVS$ is \emph{the neutral current of the Vorton-Scalar}: it is built from $\PhiVS$ alone, and it is
+neutral in the sense of the weak interaction, since it leaves the fermion on which it acts unchanged.
+$J_5$ is the axial current of the fermions. Neither is conserved separately: the current of the
+Vorton-Scalar supplies the divergence of the axial current.
+%%<1671>
+In covariant form $\JVS^A=i(\PhiVS^{*}\partial^A\PhiVS-\PhiVS\partial^A\PhiVS^{*})$ and
+$J_5^A=\bar\psi\gamma^A\chi\psi$, with the index raised by $\eta_{1671}$.
+%%</1671>
+
+The coupling of the phase mode in Eq.~(\ref{eq:Lbroken}) can be written with these currents. Redefine
+the fermion field by a local chiral rotation, $\psi\to e^{-i\chi\thVS/2\vVS}\psi$. This removes
+$\thVS$ from the Yukawa term, and the kinetic term of the fermions produces instead
+$(1/2\vVS)(\partial_4\thVS\,J_5^4+\partial_j\thVS\,J_5^j)$. With Eq.~(\ref{eq:polar}),
+$\JVS^4=-(\vVS+\sVS)^2\partial_4\thVS/\vVS$ and $\JVS^j=+(\vVS+\sVS)^2\partial_j\thVS/\vVS$, so that to
+lowest order in the fields
+\begin{equation}
+\mathcal L_{\rm NC}=-\frac{\GVS}{\sqrt2}\,\big(\JVS^4J_5^4-\JVS^jJ_5^j\big),\qquad\frac{\GVS}{\sqrt2}=\frac{1}{2\,\vVS^{2}}.
+\label{eq:LNC}
+\end{equation}
+This is a \emph{current-current interaction of the weak type}, with a constant $\GVS$ of the Fermi type
+that is fixed by the vacuum value alone, just as the Fermi constant of the weak interaction is
+$G_F/\sqrt2=1/(2v_{\rm EW}^2)$ in terms of the electroweak vacuum value $v_{\rm EW}$
+\cite{Weinberg1967}. Equations (\ref{eq:Lbroken}) and (\ref{eq:LNC}) describe the same physics in two
+sets of field variables. Equation (\ref{eq:Lbroken}) is used for the calculations below;
+Eq.~(\ref{eq:LNC}) shows that the exchange of the phase mode \emph{is} the neutral-current interaction
+that hypothesis H1 asks for.
+
+\subsection{Field equations}
+
+Varying Eq.~(\ref{eq:LVS}) with respect to $\bar\psi$ and $\PhiVS^*$ gives the coupled field equations
+of the model,
+%%<1671>
+\begin{align}
+&\big[i\gamma_{1671}^A\partial_A-\yVS\big(\PhiVS P_{1671}^{R}+\PhiVS^{*}P_{1671}^{L}\big)\big]\psi_{1671}=0,\nonumber\\
+&\eta_{1671}^{AB}\partial_A\partial_B\PhiVS+2\lamVS\Big(|\PhiVS|^2-\frac{\vVS^2}{2}\Big)\PhiVS\nonumber\\
+&\qquad\qquad+\yVS\,\bar\psi_{1671}P_{1671}^{L}\psi_{1671}=0 .
+\label{eq:fieldeqs}
+\end{align}
+%%</1671>
+%%<1644>
+\begin{align}
+&\big(i\partial_4+i\alpha_{1644}^j\partial_j\big)\psi_{1644}\nonumber\\
+&\qquad-\yVS\,\beta_{1644}\big(\PhiVS P_{1644}^{R}+\PhiVS^{*}P_{1644}^{L}\big)\psi_{1644}=0,\nonumber\\
+&\Big(\partial_4^2-\sum_{j=0}^{3}\partial_j^2\Big)\PhiVS+2\lamVS\Big(|\PhiVS|^2-\frac{\vVS^2}{2}\Big)\PhiVS\nonumber\\
+&\qquad\qquad+\yVS\,\psi_{1644}^\dagger\beta_{1644}P_{1644}^{L}\psi_{1644}=0 .
+\label{eq:fieldeqs}
+\end{align}
+%%</1644>
+For $\PhiVS=\vVS/\sqrt2$ the first equation is the Dirac equation of Sec.~\ref{sec:dirac} with the
+mass (\ref{eq:masses}). The second shows that the fermions act as a source of the Vorton-Scalar: a
+medium of fermions, with $\langle\bar\psi P^{L}\psi\rangle\neq0$, displaces the scalar field from its
+vacuum value. This is what makes the fermion mass depend on the density (Sec.~\ref{sec:matter}).
+
+\subsection{The internal symmetry of the zero-mode sector}
+\label{sec:internal}
+
+The pairing calculation of the following sections uses fields that do not depend on the four extra
+coordinates: all momenta lie in ordinary space. In this zero-mode sector the dynamics is fixed by five
+Hermitian matrices only, $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$, and an \emph{internal
+symmetry} is a unitary transformation $\psi\to e^{i\theta a}\psi$ of the sixteen components whose
+generator $a$ commutes with all five. The set of all such generators was computed from the matrices of
+each spacetime, by solving the linear equations that express the commutation.
+Table~\ref{tab:symmetry} gives the result.
+
+\begin{table*}
+\caption{\label{tab:symmetry}The internal symmetry of the models in the sector of fields that do not
+depend on the extra coordinates, computed from the Dirac matrices of the two spacetimes. The
+\emph{commutant} is the set of all matrices that commute with the matrices that fix the dynamics;
+its dimension is the number of independent symmetry generators. $P$ is the traceless central
+generator. All entries have the values required by the structure
+$su(2)_A\oplus su(2)_B\oplus u(1)_F\oplus u(1)_E$ described in the text. A number that the program
+prints as a decimal fraction and that agrees with an integer in all printed digits is shown as that
+integer.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.56\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}}
+Quantity computed from the matrices & $7+1$ & $4+4$ \\
+\hline
+{{ROWS:cjt_symmetry_table|rows=0-3,5,8,11,13,14,16-23}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+The result is \emph{the same for both spacetimes}. There are eight independent generators, and they
+form the Lie algebra $su(2)_A\oplus su(2)_B\oplus u(1)_F\oplus u(1)_E$. Here $u(1)_F$ is the fermion
+number, and $u(1)_E$ is generated by a matrix $P$ with $P^2=1$ that distinguishes the doublets of
+$SU(2)_A$, which have $P=+1$, from those of $SU(2)_B$, which have $P=-1$. The eight states of a
+particle of given momentum form the representation $(2,1)\oplus(1,2)$. The group
+$[SU(2)_A\times SU(2)_B]/Z_2$ is $SO(4)$, and the four vector pair operators $\Cm\gamma^a$ with
+$a\in\{0,5,6,7\}$ form its four-vector, the representation $(2,2)$, with fermion number 2. There is
+exactly one invariant quadratic form on these four operators. It is
+\begin{equation}
+\mathrm{diag}(+,+,+,+)\ \ \text{in }7+1,\qquad\mathrm{diag}(+,-,-,-)\ \ \text{in }4+4,
+\label{eq:invform}
+\end{equation}
+which is the metric of each spacetime on the four extra axes, up to an overall sign. It reappears in
+the energy of the superfluid, Eq.~(\ref{eq:quartic}).
+
+The two spacetimes differ in \emph{what the six generators of $SO(4)$ are}.
+%%<1671>
+On the $7+1$ spacetime they are the matrices $i\gamma^a\gamma^b$ with $a,b\in\{0,5,6,7\}$: the
+rotations of the four extra space axes. They are a symmetry of the full theory, in which they rotate
+the coordinates as well. If the fields may depend on $x0$, the rotations that involve the hidden axis
+are no longer internal, and four generators remain, those of the rotations of $x5,x6,x7$ and the
+fermion number; if the fields depend on all seven space coordinates only the fermion number remains
+(Table~\ref{tab:symmetry}). On the $4+4$ spacetime of the companion paper the same algebra appears,
+but three of its generators are not transformations of the spacetime at all \cite{Companion1644}.
+%%</1671>
+%%<1644>
+Three of them are the rotations $i\gamma^s\gamma^t$ of the three additional times, $s,t\in\{5,6,7\}$.
+The other three are the matrices $\gamma^0\gamma^t$. On the $4+4$ spacetime these matrices are
+\emph{Hermitian} (last rows of Table~\ref{tab:symmetry}), so that $e^{i\theta\gamma^0\gamma^t}$ is
+unitary. It is \emph{not} the Lorentz boost $e^{\theta\gamma^0\gamma^t/2}$ that mixes $x0$ with a time
+coordinate, for a boost is not unitary: the algebra of the boosts and the algebra found here are two
+different real forms, $\so(1,3)$ and $\so(4)$, of the same complex algebra. The $SO(4)$ of the $4+4$
+model is therefore a \emph{hidden symmetry}. It acts on the components of the field, has no
+counterpart among the transformations of the coordinates, and exists only as long as the fields do not
+depend on $x0$: with such a dependence four generators remain, those of the rotations of the
+additional times and the fermion number (second row of Table~\ref{tab:symmetry}). On the $7+1$
+spacetime of the companion paper the same $SO(4)$ is the rotation group of four extra space axes, a
+symmetry of the spacetime itself \cite{Companion1671}. This difference decides the fate of the Higgs
+hypothesis (Sec.~\ref{sec:higgs}).
+%%</1644>
+
+When the chemical potential vanishes, the zero-mode sector has still more symmetry: further
+generators exist that mix the field with its conjugate, and the full group is $O(4)\times O(4)$, of
+dimension 12 (Table~\ref{tab:symmetry}). The reason is that the sixteen components are equivalent to
+four ordinary Dirac fields of equal mass. A chemical potential for the fermion number removes these
+generators. This matters for the vacuum (Sec.~\ref{sec:vacuum}).
+
+\subsection{Vortices and vortons}
+\label{sec:vortons}
+
+This subsection collects known results that apply to the Vorton-Scalar. None of them is computed in
+this paper, and each is attributed. Two kinds of vortex must be kept apart.
+
+\emph{Vortices of the superfluid.} The order parameter of the superfluid has a phase, the Goldstone
+field of the fermion number. A line around which this phase winds by $2\pi$ is a quantized vortex of
+the superfluid, with circulation $2\pi/(2m)$ per unit of winding, since the pair has the mass $2m$
+\cite{Onsager1949,Feynman1955}. In its core the condensate vanishes, and the scalar density of the
+fermions differs from its value in the bulk; by the second of Eqs.~(\ref{eq:fieldeqs}) so does the
+Vorton-Scalar. Every such vortex therefore carries a tube of displaced Vorton-Scalar field along with
+it. This is the sense in which the scalar was named.
+
+\emph{Vortices of the Vorton-Scalar itself.} A complex scalar with the potential of
+Eq.~(\ref{eq:LVS}) has static solutions in which the phase winds by $2\pi n$ around a line and
+$|\PhiVS|$ vanishes on the line \cite{NielsenOlesen1973}. For a global symmetry such as $\UVS$ the
+energy per length grows logarithmically with the distance from the line. A fermion that obtains its
+mass from the scalar through a Yukawa coupling is massless on the line, and the Dirac equation in the
+background of the vortex has $|n|$ normalizable solutions of zero energy that move along the line at
+the speed of light \cite{JackiwRossi1981}; the first of Eqs.~(\ref{eq:fieldeqs}) is of exactly this
+type. Such zero modes make the line a perfect conductor of the corresponding charge, here the fermion
+number \cite{Witten1985}. A closed loop that carries such a current has a conserved number of charge
+carriers and a conserved winding of the current, and the resulting angular momentum can balance the
+tension of the loop and prevent its collapse. Such stationary loops are \emph{vortons}
+\cite{DavisShellard1989}. Whether they are stable, and with what abundance they would be produced,
+depends on details that have been studied for other models and are open here.
+
+\emph{The hidden ring.} In the second stage of the program the coordinate $x0$ curls up into a ring of
+radius $R$. A Vorton-Scalar whose phase winds around that ring, $\PhiVS\propto e^{i\,n\,x0/R}$, is a
+configuration with a constant neutral current along the hidden axis, of magnitude $n\vVS^2/R$. By
+Eq.~(\ref{eq:LNC}) it acts on the fermions as a constant axial potential along $x0$. This is a natural
+object of study for the second stage; nothing about it is claimed here.
+
+\subsection{What has been established, and what has not}
+
+%%<1671>
+Established: a field with the required properties exists and is defined by the Lagrangian
+(\ref{eq:LVS}). It is a complex scalar whose neutral current couples to the axial current of the
+fermions with a constant of the Fermi type, Eq.~(\ref{eq:LNC}), and from which the mass of the
+fermions originates, Eq.~(\ref{eq:masses}). The internal symmetry of the zero-mode sector is
+$SU(2)_A\times SU(2)_B\times U(1)_F\times U(1)_E$, the rotations of the four extra space axes together
+with two phases (Table~\ref{tab:symmetry}).
+
+Not established: the completion of the theory at high energy, since the couplings have negative mass
+dimension in eight dimensions; the stability and abundance of vortons; and whether nature contains
+this field.
+%%</1671>
+%%<1644>
+Established: in the fully covariant $4+4$ theory the construction is impossible
+(Sec.~\ref{sec:nogo}); in the quantized sector it exists and is defined by the Lagrangian
+(\ref{eq:LVS}). There the Vorton-Scalar is a complex scalar whose neutral current couples to the
+axial current of the fermions with a constant of the Fermi type, Eq.~(\ref{eq:LNC}), and from which
+the mass of the fermions originates, Eq.~(\ref{eq:masses}). The internal symmetry of the zero-mode
+sector is $SU(2)_A\times SU(2)_B\times U(1)_F\times U(1)_E$, of which the $SO(4)$ is a hidden symmetry
+(Table~\ref{tab:symmetry}).
+
+Not established: the consistency of the model with the full $4+4$ spacetime, since the restriction to
+fields independent of the additional times is an assumption; the completion of the theory at high
+energy, since the couplings have negative mass dimension in eight dimensions; the stability and
+abundance of vortons; and whether nature contains this field.
+%%</1644>

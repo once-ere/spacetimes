@@ -601,7 +601,7 @@ For $C\ll1$, the regime of the weakly coupled superfluid, the instability lies a
 exponentially large fields and is irrelevant. But **the region of $C$ in which
 matter is self-bound is a region in which the model, taken at one loop, has no
 stable vacuum**: for $C\ge3.7$ the potential falls below its vacuum value at fields
-only 1.2 to 3.4 times the vacuum value (last column). There the model needs a
+only {{GEN:cjt_vacstab_lo}} to {{GEN:cjt_vacstab_hi}} times the vacuum value (last column). There the model needs a
 completion (a larger self-coupling, or new physics at that scale). This is
 the analogue of the instability that a heavy fermion induces in the potential of
 the Higgs field.
@@ -681,7 +681,8 @@ resolution of the scan); $\phi/v$ at $0.998\,T_0$.
 
 1. **The fermion mass melts** at a temperature of order $v_{VS}$: $T_{1/2}$ agrees
    with the two estimates (6.1) within {{GEN:cjt_thermal_spread}} per cent. In units
-   of the fermion mass it ranges from 0.4 (strong Yukawa coupling) to 7 (weak).
+   of the fermion mass it ranges from {{GEN:cjt_thermal_thalf_m_lo}} (strong Yukawa coupling) to
+   {{GEN:cjt_thermal_thalf_m_hi}} (weak).
 2. **The order of the transition is not reliably predicted.** For the sets
    $(g_{VS},m_s/m)=$ {{GEN:cjt_thermal_jumps}} the expectation value jumps to zero
    from about {{GEN:cjt_thermal_jump_size}} $v_{VS}$; for the others it falls

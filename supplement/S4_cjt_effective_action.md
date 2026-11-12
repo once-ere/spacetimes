@@ -305,32 +305,32 @@ matrices (S1, Sec. 2.1). The complete output of the program:
 
 | item (computed from the matrices) | 7+1 | 4+4 |
 |:------------------------------------------|:-----------------|:-----------------|
-| dimension of the commutant, momenta along x1 x2 x3 | 8 | 8 |
-| dimension of the commutant, momenta along x0 x1 x2 x3 | 4 | 4 |
+| dimension of the commutant, momenta along $x1,x2,x3$ | 8 | 8 |
+| dimension of the commutant, momenta along $x0,x1,x2,x3$ | 4 | 4 |
 | dimension of the commutant, momenta along every space coordinate of the model | 1 | 4 |
-| dimension of the centre of the zero-mode commutant | 2 | 2 |
+| dimension of the center of the zero-mode commutant | 2 | 2 |
 | $\lVert P^2-1\rVert$ for the traceless central generator $P$ | 0 | 0 |
-| dimensions of the two ideals | [3, 3] | [3, 3] |
-| structure constant $\lvert f_{123}\rvert$ of each ideal (generators with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$) | 1.000000000000 1.000000000000 | 1.000000000000 1.000000000000 |
-| $\lVert\sum_iT_i^2-\tfrac34\,(\text{projector})\rVert$ for each ideal | 0 0 | $2.2\times10^{-16}$ $2.2\times10^{-16}$ |
-| positive-energy states with P = +1 and P = -1 at a test momentum | 4.000000 4.000000 | 4.000000 4.000000 |
+| dimensions of the two ideals | 3, 3 | 3, 3 |
+| structure constant $\lvert f_{123}\rvert$ of each ideal (generators with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$) | 1, 1 | 1, 1 |
+| $\lVert\sum_iT_i^2-\tfrac34\,(\text{projector})\rVert$ for each ideal | 0, 0 | $2.2\times10^{-16}$, $2.2\times10^{-16}$ |
+| number of positive-energy states with $P=+1$ and with $P=-1$ at a test momentum | 4, 4 | 4, 4 |
 | the four vector pair operators $C^-\gamma^a$, $a\in\{0,5,6,7\}$, transform among themselves: residual | 0 | $3.1\times10^{-16}$ |
-| $\lvert\text{Casimir}-\tfrac34\rvert$ of each ideal on the four pair operators | 0 0 | $5.5\times10^{-17}$ $5.5\times10^{-17}$ |
-| fermion number of the pair operators | 2.000000 | 2.000000 |
-| charge of the pair operators under the central generator P | 0 | 0 |
+| $\lvert\text{Casimir}-\tfrac34\rvert$ of each ideal on the four pair operators | 0, 0 | $5.5\times10^{-17}$, $5.5\times10^{-17}$ |
+| fermion number of the pair operators | 2 | 2 |
+| charge of the pair operators under the central generator $P$ | 0 | 0 |
 | number of invariant quadratic forms on the four pair operators | 1 | 1 |
-| the invariant form (diagonal; axes 0 5 6 7; first entry 1) | +1.000000 +1.000000 +1.000000 +1.000000 | +1.000000 -1.000000 -1.000000 -1.000000 |
+| the invariant form: its diagonal entries for the axes $x0,x5,x6,x7$, the first normalized to 1 | $+1,+1,+1,+1$ | $+1,-1,-1,-1$ |
 | largest off-diagonal entry of the invariant form | 0 | $2.2\times10^{-16}$ |
 | complex dimension of the generators that mix particles with antiparticles, $\mu=0$ | 2 | 2 |
 | the same with a chemical potential | 0 | 0 |
-| $\gamma^0\gamma^5$ | antihermitian; commutator with the dynamics 0 | Hermitian; commutator with the dynamics 0 |
-| $\gamma^0\gamma^6$ | antihermitian; commutator with the dynamics 0 | Hermitian; commutator with the dynamics 0 |
-| $\gamma^0\gamma^7$ | antihermitian; commutator with the dynamics 0 | Hermitian; commutator with the dynamics 0 |
-| $\gamma^5\gamma^6$ | antihermitian; commutator with the dynamics 0 | antihermitian; commutator with the dynamics 0 |
-| $\gamma^5\gamma^7$ | antihermitian; commutator with the dynamics 0 | antihermitian; commutator with the dynamics 0 |
-| $\gamma^6\gamma^7$ | antihermitian; commutator with the dynamics 0 | antihermitian; commutator with the dynamics 0 |
+| $\gamma^0\gamma^5$ | anti-Hermitian; commutes with the dynamics | Hermitian; commutes with the dynamics |
+| $\gamma^0\gamma^6$ | anti-Hermitian; commutes with the dynamics | Hermitian; commutes with the dynamics |
+| $\gamma^0\gamma^7$ | anti-Hermitian; commutes with the dynamics | Hermitian; commutes with the dynamics |
+| $\gamma^5\gamma^6$ | anti-Hermitian; commutes with the dynamics | anti-Hermitian; commutes with the dynamics |
+| $\gamma^5\gamma^7$ | anti-Hermitian; commutes with the dynamics | anti-Hermitian; commutes with the dynamics |
+| $\gamma^6\gamma^7$ | anti-Hermitian; commutes with the dynamics | anti-Hermitian; commutes with the dynamics |
 
-All 24 items have the expected values (`data/reduced_symmetry.csv`, column `expected`; 24 of 24 flagged as correct by the program).
+All 24 items have the expected values (`data/reduced_symmetry.csv`, column `expected`; 24 of 24 flagged as correct by the program). A number that the program prints with six or more decimals and that agrees with an integer in all of them is shown as that integer; the residuals are norms of matrices that should vanish.
 
 In words: the symmetry is $SU(2)_A\times SU(2)_B\times U(1)_F\times U(1)_E$ in both
 spacetimes; the four vector pair operators form a 4-vector of
@@ -435,11 +435,11 @@ corresponding $D_{VS}=\alpha_{VS}m/m_s$ with the relativistic kernel:
 
 | $m_s/m$ | $D_c$ from the gap equation | relative difference from `dimer.rs` |
 |------:|-----------:|-----------:|
-| 0.3 | 1.73473 | +3.27e-02 |
-| 0.1 | 1.69016 | +6.16e-03 |
-| 0.03 | 1.68096 | +6.88e-04 |
-| 0.01 | 1.67994 | +8.13e-05 |
-| 0.003 | 1.67982 | +7.47e-06 |
+| 0.3 | 1.73473 | $3.3\times10^{-2}$ |
+| 0.1 | 1.69016 | $6.2\times10^{-3}$ |
+| 0.03 | 1.68096 | $6.9\times10^{-4}$ |
+| 0.01 | 1.67994 | $8.1\times10^{-5}$ |
+| 0.003 | 1.67982 | $7.5\times10^{-6}$ |
 
 For a force of long range compared with the Compton wavelength of the fermions the
 result is 1.67982; the program `dimer.rs`, which integrates the
@@ -819,7 +819,8 @@ resolution of the scan); $\phi/v$ at $0.998\,T_0$.
 
 1. **The fermion mass melts** at a temperature of order $v_{VS}$: $T_{1/2}$ agrees
    with the two estimates (6.1) within 17 per cent. In units
-   of the fermion mass it ranges from 0.4 (strong Yukawa coupling) to 7 (weak).
+   of the fermion mass it ranges from 0.4 (strong Yukawa coupling) to
+   7 (weak).
 2. **The order of the transition is not reliably predicted.** For the sets
    $(g_{VS},m_s/m)=$ (1, 3), (2, 1) the expectation value jumps to zero
    from about 0.4 $v_{VS}$; for the others it falls

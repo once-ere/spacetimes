@@ -467,7 +467,7 @@ such a condensate is radiation-like in the early universe, and all perturbations
 enter the horizon during that phase are erased. **The pressure of the condensate
 cannot produce the kiloparsec-sized cores that motivate superfluid dark matter.** For
 a core of 1 kpc the half mode would be at $k\approx$ {{GEN:sfdm_khalf_1kpc}}
-$h$ Mpc$^{-1}$, hundreds of times too small. A second, independent obstacle: the
+$h$ Mpc$^{-1}$, more than a hundred times too small. A second, independent obstacle: the
 pairs can be condensed in a halo only if they are lighter than
 {{GEN:dm_mbmax_dwarf}} eV in a dwarf galaxy (table above, column $m_{B,\max}$), while
 their self-interaction demands the opposite, as shown next.

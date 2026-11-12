@@ -98,6 +98,10 @@ def s1_kernels():
     text = table(hdr, [":----------------"] + ["------:"] * 6, body)
     text += "\n\nMomenta of magnitude $m$ in the plane $(x1,x2)$. The same quantities for 4+4 (fields independent of $x5,x6,x7$) differ from those for 7+1 by at most %s over all %d entries of `data/pair_channel_kernel.csv`." % (sci(mx), len(d))
     frag("kernel_table", text)
+    # single numbers for the manuscripts
+    frag("kernel_max_diff", sci(mx))
+    frag("kernel_n_entries", "%d" % len(d))
+    frag("kernel_n_rows", "%d" % len(rows))
 
 
 def s1_gap():
@@ -120,6 +124,17 @@ def s1_gap():
     text += ("\n\n$\\lambda_S$ and $\\lambda_P$ are the dimensionless couplings $N(0)W(k_F,k_F)$ of the radial and of the phase mode. "
              "\"$<10^{-7}$\" means below the resolution of the calculation. Source: `data/gap_scan.csv` (all 120 combinations).")
     frag("gap_table", text)
+    # summary of the whole scan, for the manuscripts
+    weak = a[(a["bcs_regime"] == 1) & (a["gap_V_over_EF"] > 1e-6)]
+    both = a[(a["bcs_regime"] == 1) & (a["gap_V_over_EF"] > 1e-7) & (a["gap_T_over_EF"] > 1e-7)]
+    ratio = both["gap_V_over_EF"] / both["gap_T_over_EF"]
+    frag("gap_n_points", "%d" % len(a))
+    frag("gap_n_beyond", "%d" % int((a["bcs_regime"] == 0).sum()))
+    frag("gap_n_vector_largest", "%d" % int(((a["gap_V_over_EF"] >= a["gap_T_over_EF"]) & (a["gap_V_over_EF"] >= a["gap_S_over_EF"])).sum()))
+    frag("gap_tc_lo", "%.3f" % weak["Tc_over_gap_V"].min())
+    frag("gap_tc_hi", "%.3f" % weak["Tc_over_gap_V"].max())
+    frag("gap_ratio_lo", "%.2f" % ratio.min())
+    frag("gap_ratio_hi", sci(float(ratio.max())))
 
 
 def s1_dimer_and_gl():
@@ -148,8 +163,58 @@ def code_counts():
     frag("n_unit_tests_s4", "%d" % sum(v for k, v in counts.items() if k.startswith("cjt_") or k == "symmetry.rs"))
 
 
+def checks_summary():
+    """The machine checks of `spacetimes matrices` (data/matrix_checks.csv), counted by
+    group.  The identifier of a check is <signature>-<group letter><number>; the row
+    "ALL" is the summary of the checks and is not counted."""
+    import csv
+    import re
+    groups = [
+        ("R", "the matrices are real signed permutation matrices"),
+        ("B", "the $8\\times8$ building blocks and the block form"),
+        ("C", "anticommutation relations; the 256 products span all real $16\\times16$ matrices"),
+        ("L", "the scaled commutators: Lie algebra, Killing form, compact and non-compact generators"),
+        ("G", "reflections, exponentials and Lorentz transformations: the group"),
+        ("N", "identity, entry by entry, with the matrices of the author's notebooks"),
+        ("V", "the product of the eight matrices and the chirality"),
+        ("P", "the chiral projectors"),
+        ("S", "the matrices $C^{-}$, $C^{+}$ and the adjoint"),
+        ("D", "the Dirac equation: mass shell, examples, evolution, 8-component equations"),
+        ("K", "symmetry of the pair matrices; the Lorentz-invariant pair vanishes; the hidden-axis pair"),
+        ("Q", "quantum numbers of one particle and of the 28 $s$-wave pairs"),
+    ]
+    path = os.path.join(DATA, "matrix_checks.csv")
+    if not os.path.exists(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        rows = [r for r in csv.reader(line for line in f if not line.startswith("#"))][1:]
+    count = {}
+    kinds = {"exact": 0, "numerical": 0}
+    failed = 0
+    for r in rows:
+        if r[0] == "ALL":
+            continue
+        m = re.fullmatch(r"(44|71)-([A-Z])(\d+)", r[0])
+        assert m, "unexpected identifier of a check: %r" % r[0]
+        count[(m.group(1), m.group(2))] = count.get((m.group(1), m.group(2)), 0) + 1
+        kinds[r[1]] += 1
+        failed += r[2] != "PASS"
+    assert set(g for _, g in count) == set(g for g, _ in groups), "a group of checks has no description"
+    body = [["`%s`" % g, text, "%d" % count.get(("44", g), 0), "%d" % count.get(("71", g), 0)] for g, text in groups]
+    n44 = sum(v for (s_, _), v in count.items() if s_ == "44")
+    n71 = sum(v for (s_, _), v in count.items() if s_ == "71")
+    body.append(["", "all groups", "%d" % n44, "%d" % n71])
+    frag("checks_table", table(["group", "what the checks of the group verify", "$4+4$", "$7+1$"], [":--", ":--------------------------------", "--:", "--:"], body))
+    frag("n_checks_exact", "%d" % kinds["exact"])
+    frag("n_checks_numerical", "%d" % kinds["numerical"])
+    frag("n_checks_1644", "%d" % n44)
+    frag("n_checks_1671", "%d" % n71)
+    frag("n_checks_failed", "%d" % failed)
+
+
 if __name__ == "__main__":
     code_counts()
+    checks_summary()
     s1_kernels()
     s1_gap()
     s1_dimer_and_gl()

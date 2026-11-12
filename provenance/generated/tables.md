@@ -5,6 +5,38 @@
 <!-- BEGIN n_unit_tests_s4 -->
 23
 <!-- END n_unit_tests_s4 -->
+<!-- BEGIN checks_table -->
+| group | what the checks of the group verify | $4+4$ | $7+1$ |
+|:--|:--------------------------------|--:|--:|
+| `R` | the matrices are real signed permutation matrices | 2 | 2 |
+| `B` | the $8\times8$ building blocks and the block form | 4 | 4 |
+| `C` | anticommutation relations; the 256 products span all real $16\times16$ matrices | 4 | 4 |
+| `L` | the scaled commutators: Lie algebra, Killing form, compact and non-compact generators | 6 | 6 |
+| `G` | reflections, exponentials and Lorentz transformations: the group | 3 | 3 |
+| `N` | identity, entry by entry, with the matrices of the author's notebooks | 3 | 3 |
+| `V` | the product of the eight matrices and the chirality | 2 | 3 |
+| `P` | the chiral projectors | 5 | 5 |
+| `S` | the matrices $C^{-}$, $C^{+}$ and the adjoint | 5 | 1 |
+| `D` | the Dirac equation: mass shell, examples, evolution, 8-component equations | 11 | 9 |
+| `K` | symmetry of the pair matrices; the Lorentz-invariant pair vanishes; the hidden-axis pair | 3 | 4 |
+| `Q` | quantum numbers of one particle and of the 28 $s$-wave pairs | 4 | 10 |
+|  | all groups | 52 | 54 |
+<!-- END checks_table -->
+<!-- BEGIN n_checks_exact -->
+96
+<!-- END n_checks_exact -->
+<!-- BEGIN n_checks_numerical -->
+10
+<!-- END n_checks_numerical -->
+<!-- BEGIN n_checks_1644 -->
+52
+<!-- END n_checks_1644 -->
+<!-- BEGIN n_checks_1671 -->
+54
+<!-- END n_checks_1671 -->
+<!-- BEGIN n_checks_failed -->
+0
+<!-- END n_checks_failed -->
 <!-- BEGIN kernel_table -->
 | pair channel (7+1) | $F_S$, 60° | $F_S$, 120° | $F_S$, 180° | $F_P$, 60° | $F_P$, 120° | $F_P$, 180° |
 |:----------------|------:|------:|------:|------:|------:|------:|
@@ -16,6 +48,15 @@
 
 Momenta of magnitude $m$ in the plane $(x1,x2)$. The same quantities for 4+4 (fields independent of $x5,x6,x7$) differ from those for 7+1 by at most $3.0\times10^{-16}$ over all 585 entries of `data/pair_channel_kernel.csv`.
 <!-- END kernel_table -->
+<!-- BEGIN kernel_max_diff -->
+$3.0\times10^{-16}$
+<!-- END kernel_max_diff -->
+<!-- BEGIN kernel_n_entries -->
+585
+<!-- END kernel_n_entries -->
+<!-- BEGIN kernel_n_rows -->
+1170
+<!-- END kernel_n_rows -->
 <!-- BEGIN gap_table -->
 | $g_{VS}$ | $m_s/m$ | $k_F/m$ | $\lambda_S$ | $\lambda_P$ | vector: $\Delta/E_F$ | radial only | two-form | $T_c/\Delta$ (vector) | coupling |
 |----:|-----:|-----:|------:|-------:|----------:|----------:|----------:|--------:|:---------|
@@ -31,6 +72,27 @@ Momenta of magnitude $m$ in the plane $(x1,x2)$. The same quantities for 4+4 (fi
 
 $\lambda_S$ and $\lambda_P$ are the dimensionless couplings $N(0)W(k_F,k_F)$ of the radial and of the phase mode. "$<10^{-7}$" means below the resolution of the calculation. Source: `data/gap_scan.csv` (all 120 combinations).
 <!-- END gap_table -->
+<!-- BEGIN gap_n_points -->
+120
+<!-- END gap_n_points -->
+<!-- BEGIN gap_n_beyond -->
+35
+<!-- END gap_n_beyond -->
+<!-- BEGIN gap_n_vector_largest -->
+120
+<!-- END gap_n_vector_largest -->
+<!-- BEGIN gap_tc_lo -->
+0.540
+<!-- END gap_tc_lo -->
+<!-- BEGIN gap_tc_hi -->
+0.567
+<!-- END gap_tc_hi -->
+<!-- BEGIN gap_ratio_lo -->
+1.03
+<!-- END gap_ratio_lo -->
+<!-- BEGIN gap_ratio_hi -->
+$2.6\times10^{4}$
+<!-- END gap_ratio_hi -->
 <!-- BEGIN dimer_dc -->
 1.67981
 <!-- END dimer_dc -->
@@ -428,9 +490,21 @@ One-standard-deviation errors of the six ΛCDM parameters from the Fisher matrix
 <!-- BEGIN dr_chi2_half_early -->
 10.8
 <!-- END dr_chi2_half_early -->
+<!-- BEGIN dr_yhe_diff -->
+0.0039
+<!-- END dr_yhe_diff -->
+<!-- BEGIN dr_weinberg_lo -->
+0.027
+<!-- END dr_weinberg_lo -->
+<!-- BEGIN dr_weinberg_hi -->
+0.39
+<!-- END dr_weinberg_hi -->
 <!-- BEGIN dr_weinberg_gain -->
 3.2
 <!-- END dr_weinberg_gain -->
+<!-- BEGIN dr_mock_factor -->
+0.6
+<!-- END dr_mock_factor -->
 <!-- BEGIN dr_act_gain -->
 1.4
 <!-- END dr_act_gain -->
@@ -545,27 +619,30 @@ Model fluid with $N=0.4$ after the step, Planck-like mock data. Source: `data/dr
 <!-- BEGIN dr_zt_worst -->
 5.00
 <!-- END dr_zt_worst -->
+<!-- BEGIN dr_zt_worst_g -->
+5
+<!-- END dr_zt_worst_g -->
 <!-- BEGIN dr_zt_worst_chi2 -->
 57.6
 <!-- END dr_zt_worst_chi2 -->
 <!-- BEGIN sfdm_table -->
 | model | $c_{s0}/c$ | $c_{s0}$ (m/s) | half mode ($h$/Mpc) | thermal relic (keV) | $R_{TF}$ | $\Delta N$ at $a=10^{-9}$ |
 |:------------------------|---------:|-------:|--------:|--------:|-------:|---------:|
-| degenerate fermions, $m=0.3$ keV | $1.2\times10^{-7}$ | 35.8 | 9.2 | 1.0 | — | $3.3\times10^{-3}$ |
-| degenerate fermions, $m=0.5$ keV | $6.0\times10^{-8}$ | 18.1 | 16.7 | 1.6 | — | $1.7\times10^{-3}$ |
-| degenerate fermions, $m=0.75$ keV | $3.5\times10^{-8}$ | 10.6 | 26.7 | 2.5 | — | $9.8\times10^{-4}$ |
-| degenerate fermions, $m=1$ keV | $2.4\times10^{-8}$ | 7.2 | 37.4 | 3.4 | — | $6.7\times10^{-4}$ |
-| degenerate fermions, $m=1.5$ keV | $1.4\times10^{-8}$ | 4.19 | 60.4 | 5.2 | — | $3.9\times10^{-4}$ |
-| degenerate fermions, $m=2$ keV | $9.5\times10^{-9}$ | 2.86 | 85.0 | 7.1 | — | $2.7\times10^{-4}$ |
-| degenerate fermions, $m=3$ keV | $5.5\times10^{-9}$ | 1.66 | 137.7 | 11.0 | — | $1.6\times10^{-4}$ |
-| degenerate fermions, $m=4.5$ keV | $3.2\times10^{-9}$ | 0.969 | 223.6 | 17.1 | — | $9.2\times10^{-5}$ |
-| condensate, $c_{s0}=$ $3.0\times10^{-12}$ $c$ | $3.0\times10^{-12}$ | 0.000899 | 185.64 | 14.44 | 0.067 pc | $4.2\times10^{-4}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-11}$ $c$ | $1.0\times10^{-11}$ | 0.003 | 84.43 | 7.10 | 0.22 pc | $9.4\times10^{-4}$ |
-| condensate, $c_{s0}=$ $3.0\times10^{-11}$ $c$ | $3.0\times10^{-11}$ | 0.00899 | 41.24 | 3.72 | 0.67 pc | $1.9\times10^{-3}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-10}$ $c$ | $1.0\times10^{-10}$ | 0.03 | 18.90 | 1.84 | 2.2 pc | $4.3\times10^{-3}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-9}$ $c$ | $1.0\times10^{-9}$ | 0.3 | 4.32 | 0.49 | 22 pc | $2.0\times10^{-2}$ |
-| condensate, $c_{s0}=$ $1.0\times10^{-8}$ $c$ | $1.0\times10^{-8}$ | 3 | 1.03 | 0.13 | 0.22 kpc | $9.4\times10^{-2}$ |
-| condensate, $c_{s0}=$ $4.5\times10^{-8}$ $c$ | $4.5\times10^{-8}$ | 13.5 | 0.42 | 0.06 | 1 kpc | $2.6\times10^{-1}$ |
+| degenerate fermions, $m=0.3$ keV | $1.2\times10^{-7}$ | 35.8 | 9.23 | 0.966 | — | $3.3\times10^{-3}$ |
+| degenerate fermions, $m=0.5$ keV | $6.0\times10^{-8}$ | 18.1 | 16.7 | 1.65 | — | $1.7\times10^{-3}$ |
+| degenerate fermions, $m=0.75$ keV | $3.5\times10^{-8}$ | 10.6 | 26.7 | 2.52 | — | $9.8\times10^{-4}$ |
+| degenerate fermions, $m=1$ keV | $2.4\times10^{-8}$ | 7.2 | 37.4 | 3.41 | — | $6.7\times10^{-4}$ |
+| degenerate fermions, $m=1.5$ keV | $1.4\times10^{-8}$ | 4.19 | 60.4 | 5.25 | — | $3.9\times10^{-4}$ |
+| degenerate fermions, $m=2$ keV | $9.5\times10^{-9}$ | 2.86 | 85.0 | 7.14 | — | $2.7\times10^{-4}$ |
+| degenerate fermions, $m=3$ keV | $5.5\times10^{-9}$ | 1.66 | 138 | 11.0 | — | $1.6\times10^{-4}$ |
+| degenerate fermions, $m=4.5$ keV | $3.2\times10^{-9}$ | 0.969 | 224 | 17.1 | — | $9.2\times10^{-5}$ |
+| condensate, $c_{s0}=$ $3.0\times10^{-12}$ $c$ | $3.0\times10^{-12}$ | 0.000899 | 186 | 14.4 | 0.067 pc | $4.2\times10^{-4}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-11}$ $c$ | $1.0\times10^{-11}$ | 0.003 | 84.4 | 7.10 | 0.22 pc | $9.4\times10^{-4}$ |
+| condensate, $c_{s0}=$ $3.0\times10^{-11}$ $c$ | $3.0\times10^{-11}$ | 0.00899 | 41.2 | 3.72 | 0.67 pc | $1.9\times10^{-3}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-10}$ $c$ | $1.0\times10^{-10}$ | 0.03 | 18.9 | 1.84 | 2.2 pc | $4.3\times10^{-3}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-9}$ $c$ | $1.0\times10^{-9}$ | 0.3 | 4.32 | 0.488 | 22 pc | $2.0\times10^{-2}$ |
+| condensate, $c_{s0}=$ $1.0\times10^{-8}$ $c$ | $1.0\times10^{-8}$ | 3 | 1.03 | 0.134 | 0.22 kpc | $9.4\times10^{-2}$ |
+| condensate, $c_{s0}=$ $4.5\times10^{-8}$ $c$ | $4.5\times10^{-8}$ | 13.5 | 0.416 | 0.0593 | 1 kpc | $2.6\times10^{-1}$ |
 
 $c_{s0}$: sound speed today at the mean cosmic density. Half mode: wavenumber at which $P/P_{\rm CDM}$ first falls to 1/4. Thermal relic: mass of the thermal warm-dark-matter particle with the same half mode. $R_{TF}$: Thomas–Fermi radius of the condensate. Last column: density of the fluid during nucleosynthesis in units of one neutrino species. Source: `data/sfdm_summary.csv`.
 <!-- END sfdm_table -->
@@ -622,7 +699,7 @@ $m_{\rm deg}$: fermions with eight internal states are degenerate at the density
 <!-- BEGIN dm_selfint_table -->
 | $\alpha_{VS}$ | smallest fermion mass (MeV) | $m_s$ (MeV) | range $1/m_s$ (fm) | $n\lambda^3$ of the pairs in a dwarf core |
 |------:|-----------:|--------:|---------:|--------------:|
-| 0.01 | 4.26e+03 | 25.4 | 7.78 | $2.3\times10^{-30}$ |
+| 0.01 | 4260 | 25.4 | 7.78 | $2.3\times10^{-30}$ |
 | 0.1 | 918 | 54.7 | 3.61 | $1.1\times10^{-27}$ |
 | 1 | 198 | 118 | 1.68 | $5.0\times10^{-25}$ |
 | 4 | 78.5 | 187 | 1.06 | $2.0\times10^{-23}$ |
@@ -635,32 +712,32 @@ Source: `data/dm_selfinteraction.csv` (program: `spacetimes halos`). Condensatio
 <!-- BEGIN cjt_symmetry_table -->
 | item (computed from the matrices) | 7+1 | 4+4 |
 |:------------------------------------------|:-----------------|:-----------------|
-| dimension of the commutant, momenta along x1 x2 x3 | 8 | 8 |
-| dimension of the commutant, momenta along x0 x1 x2 x3 | 4 | 4 |
+| dimension of the commutant, momenta along $x1,x2,x3$ | 8 | 8 |
+| dimension of the commutant, momenta along $x0,x1,x2,x3$ | 4 | 4 |
 | dimension of the commutant, momenta along every space coordinate of the model | 1 | 4 |
-| dimension of the centre of the zero-mode commutant | 2 | 2 |
+| dimension of the center of the zero-mode commutant | 2 | 2 |
 | $\lVert P^2-1\rVert$ for the traceless central generator $P$ | 0 | 0 |
-| dimensions of the two ideals | [3, 3] | [3, 3] |
-| structure constant $\lvert f_{123}\rvert$ of each ideal (generators with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$) | 1.000000000000 1.000000000000 | 1.000000000000 1.000000000000 |
-| $\lVert\sum_iT_i^2-\tfrac34\,(\text{projector})\rVert$ for each ideal | 0 0 | $2.2\times10^{-16}$ $2.2\times10^{-16}$ |
-| positive-energy states with P = +1 and P = -1 at a test momentum | 4.000000 4.000000 | 4.000000 4.000000 |
+| dimensions of the two ideals | 3, 3 | 3, 3 |
+| structure constant $\lvert f_{123}\rvert$ of each ideal (generators with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$) | 1, 1 | 1, 1 |
+| $\lVert\sum_iT_i^2-\tfrac34\,(\text{projector})\rVert$ for each ideal | 0, 0 | $2.2\times10^{-16}$, $2.2\times10^{-16}$ |
+| number of positive-energy states with $P=+1$ and with $P=-1$ at a test momentum | 4, 4 | 4, 4 |
 | the four vector pair operators $C^-\gamma^a$, $a\in\{0,5,6,7\}$, transform among themselves: residual | 0 | $3.1\times10^{-16}$ |
-| $\lvert\text{Casimir}-\tfrac34\rvert$ of each ideal on the four pair operators | 0 0 | $5.5\times10^{-17}$ $5.5\times10^{-17}$ |
-| fermion number of the pair operators | 2.000000 | 2.000000 |
-| charge of the pair operators under the central generator P | 0 | 0 |
+| $\lvert\text{Casimir}-\tfrac34\rvert$ of each ideal on the four pair operators | 0, 0 | $5.5\times10^{-17}$, $5.5\times10^{-17}$ |
+| fermion number of the pair operators | 2 | 2 |
+| charge of the pair operators under the central generator $P$ | 0 | 0 |
 | number of invariant quadratic forms on the four pair operators | 1 | 1 |
-| the invariant form (diagonal; axes 0 5 6 7; first entry 1) | +1.000000 +1.000000 +1.000000 +1.000000 | +1.000000 -1.000000 -1.000000 -1.000000 |
+| the invariant form: its diagonal entries for the axes $x0,x5,x6,x7$, the first normalized to 1 | $+1,+1,+1,+1$ | $+1,-1,-1,-1$ |
 | largest off-diagonal entry of the invariant form | 0 | $2.2\times10^{-16}$ |
 | complex dimension of the generators that mix particles with antiparticles, $\mu=0$ | 2 | 2 |
 | the same with a chemical potential | 0 | 0 |
-| $\gamma^0\gamma^5$ | antihermitian; commutator with the dynamics 0 | Hermitian; commutator with the dynamics 0 |
-| $\gamma^0\gamma^6$ | antihermitian; commutator with the dynamics 0 | Hermitian; commutator with the dynamics 0 |
-| $\gamma^0\gamma^7$ | antihermitian; commutator with the dynamics 0 | Hermitian; commutator with the dynamics 0 |
-| $\gamma^5\gamma^6$ | antihermitian; commutator with the dynamics 0 | antihermitian; commutator with the dynamics 0 |
-| $\gamma^5\gamma^7$ | antihermitian; commutator with the dynamics 0 | antihermitian; commutator with the dynamics 0 |
-| $\gamma^6\gamma^7$ | antihermitian; commutator with the dynamics 0 | antihermitian; commutator with the dynamics 0 |
+| $\gamma^0\gamma^5$ | anti-Hermitian; commutes with the dynamics | Hermitian; commutes with the dynamics |
+| $\gamma^0\gamma^6$ | anti-Hermitian; commutes with the dynamics | Hermitian; commutes with the dynamics |
+| $\gamma^0\gamma^7$ | anti-Hermitian; commutes with the dynamics | Hermitian; commutes with the dynamics |
+| $\gamma^5\gamma^6$ | anti-Hermitian; commutes with the dynamics | anti-Hermitian; commutes with the dynamics |
+| $\gamma^5\gamma^7$ | anti-Hermitian; commutes with the dynamics | anti-Hermitian; commutes with the dynamics |
+| $\gamma^6\gamma^7$ | anti-Hermitian; commutes with the dynamics | anti-Hermitian; commutes with the dynamics |
 
-All 24 items have the expected values (`data/reduced_symmetry.csv`, column `expected`; 24 of 24 flagged as correct by the program).
+All 24 items have the expected values (`data/reduced_symmetry.csv`, column `expected`; 24 of 24 flagged as correct by the program). A number that the program prints with six or more decimals and that agrees with an integer in all of them is shown as that integer; the residuals are norms of matrices that should vanish.
 <!-- END cjt_symmetry_table -->
 <!-- BEGIN cjt_toy_table -->
 | $\lambda$ | exact | 2 loops | 3 loops | 4 loops | 5 loops | pert. $O(\lambda)$ | $O(\lambda^2)$ | $O(\lambda^3)$ |
@@ -720,11 +797,11 @@ $5.1\times10^{-7}$
 <!-- BEGIN cjt_threshold_table -->
 | $m_s/m$ | $D_c$ from the gap equation | relative difference from `dimer.rs` |
 |------:|-----------:|-----------:|
-| 0.3 | 1.73473 | +3.27e-02 |
-| 0.1 | 1.69016 | +6.16e-03 |
-| 0.03 | 1.68096 | +6.88e-04 |
-| 0.01 | 1.67994 | +8.13e-05 |
-| 0.003 | 1.67982 | +7.47e-06 |
+| 0.3 | 1.73473 | $3.3\times10^{-2}$ |
+| 0.1 | 1.69016 | $6.2\times10^{-3}$ |
+| 0.03 | 1.68096 | $6.9\times10^{-4}$ |
+| 0.01 | 1.67994 | $8.1\times10^{-5}$ |
+| 0.003 | 1.67982 | $7.5\times10^{-6}$ |
 <!-- END cjt_threshold_table -->
 <!-- BEGIN cjt_threshold_best -->
 1.67982
@@ -861,6 +938,9 @@ $2.1\times10^{-2}$
 <!-- BEGIN cjt_fock_contact -->
 12.6
 <!-- END cjt_fock_contact -->
+<!-- BEGIN cjt_fock_n -->
+16
+<!-- END cjt_fock_n -->
 <!-- BEGIN cjt_kfa_dwarf -->
 $6.4\times10^{-13}$
 <!-- END cjt_kfa_dwarf -->
@@ -875,6 +955,12 @@ $6.4\times10^{-13}$
 | 2 | 1 | 4 | 1.042 | 1.099 | 1.014 | 1.042 | 0.37 | 0.51 |
 | 3 | 1 | 9 | 1.302 | 1.372 | 1.238 | 1.302 | 0.14 | 0.41 |
 <!-- END cjt_thermal_table -->
+<!-- BEGIN cjt_thermal_thalf_m_lo -->
+0.4
+<!-- END cjt_thermal_thalf_m_lo -->
+<!-- BEGIN cjt_thermal_thalf_m_hi -->
+7
+<!-- END cjt_thermal_thalf_m_hi -->
 <!-- BEGIN cjt_thermal_jumps -->
 (1, 3), (2, 1)
 <!-- END cjt_thermal_jumps -->
@@ -893,6 +979,12 @@ $6.4\times10^{-13}$
 <!-- BEGIN cjt_goldstone_defect -->
 0.25
 <!-- END cjt_goldstone_defect -->
+<!-- BEGIN cjt_vacstab_lo -->
+1.2
+<!-- END cjt_vacstab_lo -->
+<!-- BEGIN cjt_vacstab_hi -->
+3.4
+<!-- END cjt_vacstab_hi -->
 <!-- BEGIN cjt_vacstab_table -->
 | $C$ | maximum of the potential at $\phi/v_{VS}=$ | below the vacuum beyond $\phi/v_{VS}=$ |
 |------:|---------------:|---------------:|
@@ -922,3 +1014,9 @@ $6.4\times10^{-13}$
 <!-- BEGIN cjt_alpha_c_1e6 -->
 1.64
 <!-- END cjt_alpha_c_1e6 -->
+<!-- BEGIN cjt_alpha_c_min -->
+1.64
+<!-- END cjt_alpha_c_min -->
+<!-- BEGIN cjt_alpha_c_max -->
+4.2
+<!-- END cjt_alpha_c_max -->

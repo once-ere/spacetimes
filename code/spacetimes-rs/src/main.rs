@@ -110,10 +110,11 @@ fn cmd_matrices() -> std::io::Result<bool> {
         tab.push_str(&format!("| {} | {} | {} | {} | {} | {} |\n", r, binom[r], sign(sm44[r]), sign(sp44[r]), sign(sm71[r]), sign(sp71[r])));
     }
     fr.add("pair_symmetry_table", tab);
+    // the number of checks; the line "ALL" that is appended to the log below is a
+    // summary of these checks and is not counted as one of them
     let (ok, n) = rep.count();
-    // the log gets one more line ("ALL") below
-    fr.add("n_checks", format!("{}", n + 1));
-    fr.add("n_checks_passed", format!("{}", if rep.all_pass() { ok + 1 } else { ok }));
+    fr.add("n_checks", format!("{}", n));
+    fr.add("n_checks_passed", format!("{}", ok));
     std::fs::create_dir_all("provenance/generated")?;
     fr.write("provenance/generated/matrices.md")?;
 
@@ -126,7 +127,7 @@ fn cmd_matrices() -> std::io::Result<bool> {
     for c in &rep.checks {
         println!("[{}] {:<6} ({}) {}", if c.pass { "PASS" } else { "FAIL" }, c.id, c.kind, c.statement);
     }
-    let (ok, n) = rep.count();
+    // `ok` and `n` were counted before the summary line "ALL" was appended
     println!("\n{} of {} checks passed", ok, n);
     Ok(rep.all_pass())
 }

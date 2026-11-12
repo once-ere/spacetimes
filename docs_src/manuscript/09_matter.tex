@@ -1,0 +1,301 @@
+
+% =====================================================================
+\section{The Vorton-Scalar in matter, at finite temperature and in the vacuum}
+\label{sec:matter}
+% =====================================================================
+
+The CJT action (\ref{eq:action}) describes more than the paired state. Varied with respect to the
+expectation value $\phi$ of the Vorton-Scalar and to the boson propagators, it predicts what the
+scalar does to the fermion mass in dense matter and at finite temperature; and its pair blocks,
+without a medium, decide whether a condensate can form in empty space. This section derives these
+predictions. They hold for both spacetimes, because they depend only on the common structure of
+Eqs.~(\ref{eq:schroedinger}), (\ref{eq:hamiltonian}) and (\ref{eq:vertices}). The last of them is
+needed for the Higgs hypothesis, the others for the cosmology.
+
+\subsection{The fermion mass in matter: the abnormal state and self-bound matter}
+\label{sec:normal}
+
+Vary Eq.~(\ref{eq:action}) with respect to $\phi$ for a Fermi sea without pairing at $T=0$. The
+fermion mass in the medium is $m^*=\gVS\phi$; write $x=m^*/m$. With the tree-level potential of the
+Vorton-Scalar and the energy of fermions of mass $m^*$ filled up to the Fermi momentum $\kF$, the
+energy density in units of $m^4$ is
+\begin{equation}
+\varepsilon(\kF,x)=\frac{(x^2-1)^2}{8C}+\nu\!\int_0^{\kF}\!\frac{k^2dk}{2\pi^2}\sqrt{k^2+x^2}\;\big[+V_{\rm sea}(x)\big],
+\label{eq:eps}
+\end{equation}
+with momenta in units of $m$ and
+\begin{equation}
+C\equiv\frac{\gVS^2m^2}{m_s^2}=\frac{\gVS^4}{2\lamVS}=4\pi\DVS\,\frac{m}{m_s}.
+\label{eq:Ccoupling}
+\end{equation}
+Stationarity in $x$ is the field equation of the Vorton-Scalar, the second of
+Eqs.~(\ref{eq:fieldeqs}), with the scalar density of the fermions as source:
+\begin{equation}
+x^2=1-2C\,\nu\!\int_0^{\kF}\!\frac{k^2dk}{2\pi^2}\frac{1}{\sqrt{k^2+x^2}}\qquad\text{or}\qquad x=0 .
+\label{eq:xeq}
+\end{equation}
+\emph{Everything depends on the single number $C$.} At low density Eq.~(\ref{eq:xeq}) gives
+$m^*=m\,(1-C\,n/m^3)$: the mass falls linearly with the density. The term in square brackets in
+Eq.~(\ref{eq:eps}) is the energy of the filled negative-energy states, which changes when the mass
+changes. It is divergent and must be renormalized. The symmetry $\UVS$ allows two counterterms, which
+are fixed by requiring that the vacuum value and the mass of the radial mode keep their tree-level
+values:
+\begin{equation}
+V_{\rm sea}(x)=-\frac{\nu}{32\pi^2}\Big[x^4\ln x^2-\frac32x^4+2x^2-\frac12\Big],
+\label{eq:Vsea}
+\end{equation}
+which vanishes at $x=1$ together with its first two derivatives. Results are given without and with
+this term; the difference measures how much depends on the quantum fluctuations of the fermions.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_cjt_normal}
+\caption{\label{fig:normal}The unpaired state at zero temperature, for several values of
+$C=\gVS^2m^2/m_s^2$. (a), (b) Fermion mass in the medium as a function of the Fermi momentum, without
+and with the energy of the negative-energy states. (c) Energy per particle relative to the mass of a
+free fermion; a minimum below zero means that matter is self-bound.}
+\end{figure*}
+
+\begin{table*}
+\caption{\label{tab:normal}The unpaired state at zero temperature. $E/N-m$: lowest energy per particle
+of matter at any density, in units of $m$ (``not bound'' if it is not below zero). $\kF^{\rm sat}$:
+Fermi momentum of that state. $\kF^{\rm abn}$: Fermi momentum above which the stable state has
+$m^*=0$, and $m^*/m$ just below it. $\kF^{\rm inst}$: Fermi momentum above which the pressure falls
+with increasing density. The last three columns repeat three of these quantities with the energy of
+the negative-energy states included. Momenta in units of $m$.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccccc}
+$C$ & $E/N-m$ & $\kF^{\rm sat}$ & $\kF^{\rm abn}$ & $m^*/m$ before & $\kF^{\rm inst}$ & with sea: $E/N-m$ & $\kF^{\rm abn}$ & $\kF^{\rm inst}$ \\
+\hline
+{{ROWS:cjt_normal_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Figure~\ref{fig:normal} and Table~\ref{tab:normal} show three results.
+
+\emph{Above a critical density the Vorton-Scalar has no expectation value, and the fermions are
+massless.} This is the ``abnormal state'' of matter that Lee and Wick predicted for any theory in
+which fermions obtain their mass from a scalar field \cite{LeeWick1974}; the mean-field treatment is
+that of Walecka \cite{Walecka1974,Chin1977}. Without the term (\ref{eq:Vsea}) the mass jumps to zero,
+by an amount that is small for small $C$; with it the mass falls continuously, to the resolution of
+the calculation. For weak coupling the transition is at $\kF=\pi m/(2\sqrt C)$.
+
+\emph{Matter is self-bound if $C$ exceeds a critical value,}
+\begin{align}
+C&>\frac{3\pi^2}{8}\quad\text{(without the sea term)},\nonumber\\
+C&>\frac{3\pi^2}{5}\quad\text{(with the sea term)}.
+\label{eq:Ccrit}
+\end{align}
+The program finds {{GEN:cjt_c_crit}} and {{GEN:cjt_c_crit_sea}}. The closed values follow from the
+energy of the abnormal state: massless fermions with a pressure equal to the energy density $B$ of
+the state without expectation value, as in the bag model of hadrons \cite{Chodos1974}, have the
+energy per particle $(24\pi^2B/\nu)^{1/4}$, and $B=m^4/8C$ at tree level,
+$B=m^4/8C+\nu m^4/64\pi^2$ with the sea term. The bound state is always the abnormal one. For large
+$C$ a fermion in bulk matter has much less energy than a free one: {{GEN:cjt_ebind_355}} per cent
+less for $C=35.5$ without the sea term, {{GEN:cjt_ebind_355_sea}} per cent with it.
+
+\emph{The dilute gas is mechanically unstable above a low density.} At low density the criterion is
+$\kF>\pi^2m/4C$, or, in terms of the scattering length $a=-\gVS^2m/4\pi m_s^2$ of the mean-field
+interaction, $\kF|a|>\pi/16$.
+
+\subsection{A warning about strong coupling}
+\label{sec:warning}
+
+The same function (\ref{eq:Vsea}) shows that for field values \emph{larger} than the vacuum value the
+potential of the Vorton-Scalar with the fermion loop, $(x^2-1)^2/8C+V_{\rm sea}(x)$, eventually
+decreases without bound: the negative term $x^4\ln x^2$ wins, for weak coupling when
+$\ln x^2>\tfrac32+4\pi^2/\nu C$. Figure~\ref{fig:vacpot} shows the potential and
+Table~\ref{tab:vacstab} the fields at which it turns over.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{fig_cjt_vacpot}
+\caption{\label{fig:vacpot}The potential of the Vorton-Scalar in the vacuum, in units of the height
+$m^4/8C$ of its tree-level barrier, without (dashed) and with the renormalized loop of the fermions.
+The vacuum is at $\phi=\vVS$. For $C\gtrsim3.7$, where matter is self-bound, the potential falls below
+its vacuum value at a field a few times $\vVS$.}
+\end{figure}
+
+\begin{table}
+\caption{\label{tab:vacstab}The potential of the Vorton-Scalar in the vacuum with the fermion loop:
+the field, in units of the vacuum value, at which it has its maximum, and the field beyond which it
+lies below its vacuum value.}
+\begin{ruledtabular}
+\begin{tabular}{ccc}
+$C$ & maximum at & below the vacuum beyond \\
+\hline
+{{ROWS:cjt_vacstab_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+For $C\ll1$, the regime of the weakly coupled superfluid, the instability lies at exponentially large
+fields and is irrelevant. But \emph{the region of $C$ in which matter is self-bound is a region in
+which the model, taken at one loop, has no stable vacuum}: for $C\ge3.7$ the potential falls below its
+vacuum value at fields only {{GEN:cjt_vacstab_lo}} to {{GEN:cjt_vacstab_hi}} times the vacuum value. There the model needs a completion, a
+larger self-coupling or new physics at that scale. This is the analog of the instability that a heavy
+fermion induces in the potential of the Higgs field \cite{ColemanWeinberg1973}.
+
+\subsection{The exchange energy}
+\label{sec:exchange}
+
+The normal blocks of diagram (a) add the exchange energy to the mean-field energy of
+Eq.~(\ref{eq:eps}). To first order, and with static exchange, it is
+\begin{align}
+E_x={}&\frac{\gVS^2}{2}\,\frac\nu2\!\int\!\!\int_{k,k'<\kF}\!\frac{d^3k\,d^3k'}{(2\pi)^6}\;
+\frac{EE'\pm m^{*2}-\vec k\cdot\vec k'}{EE'}\nonumber\\
+&\times\frac{1}{|\vec k-\vec k'|^2+M^2},
+\label{eq:fock}
+\end{align}
+with the upper sign and $M=m_s$ for the radial mode and the lower sign and $M=0$ for the phase mode.
+Both contributions are positive. Evaluated for {{GEN:cjt_fock_n}} combinations of $C$, $m_s/m$ and $\kF/m$, the
+exchange of the radial mode reduces the mean-field attraction by at most {{GEN:cjt_fock_contact}}
+per cent, the factor $1/\nu$ expected for $\nu=8$ internal states, and by less when the range of the
+force exceeds the distance between the particles. The exchange of the phase mode is of relative size
+$2m_s^2/\nu^2m^2$ at low density: negligible for a light radial mode, but larger than the
+contribution of the radial mode for $m_s=3m$. The thresholds of Sec.~\ref{sec:normal} are therefore
+accurate to about ten per cent for $m_s\lesssim m$, and the criterion for the instability becomes
+$\kF|a|>\pi/14$ when the exchange is included.
+
+\subsection{Finite temperature: the fermion mass melts}
+\label{sec:thermal}
+
+Without a medium of fermions, but at a temperature $T$, vary Eq.~(\ref{eq:action}) with respect to
+$\phi$ and to the two boson propagators, with diagram (b) and the fermions at one loop. The potential
+is
+\begin{align}
+V={}&U_{\rm eff}(\phi)+\sum_{i=s,\vartheta}\Big[Q(M_i)+\frac12\big(a_i(\phi)-M_i^2\big)P(M_i)\Big]\nonumber\\
+&+\frac{\lamVS}{4}\big[3P_s^2+3P_\vartheta^2+2P_sP_\vartheta\big],
+\label{eq:Vthermal}
+\end{align}
+where $U_{\rm eff}$ is the tree-level potential plus the fermion loop, both its vacuum part
+(\ref{eq:Vsea}) and its thermal part; $a_s=U_{\rm eff}''$ and $a_\vartheta=U_{\rm eff}'/\phi$; $P(M)$
+is the thermal part of the boson loop and $Q(M)$ the thermal part of $\tfrac12\Tr\ln$; and the last
+term is diagram (b). Stationarity in the masses $M_s$ and $M_\vartheta$ of the two boson propagators
+gives their gap equations,
+\begin{align}
+M_s^2&=a_s+3\lamVS P_s+\lamVS P_\vartheta,\nonumber\\
+M_\vartheta^2&=a_\vartheta+\lamVS P_s+3\lamVS P_\vartheta .
+\label{eq:hartree}
+\end{align}
+This is the Hartree approximation for the bosons
+\cite{DolanJackiw1974,AmelinoCameliaPi1993,LenaghanRischke2000}. Two closed estimates of the
+temperature at which the expectation value vanishes follow from the curvature of the potential at
+$\phi=0$:
+\begin{align}
+T_{\rm high}^2&=\frac{12\,[\lamVS\vVS^2+\nu\gVS^2m^2/8\pi^2]}{4\lamVS+\nu\gVS^2},\nonumber\\
+T_N^2&=\frac{12\,[\lamVS\vVS^2+\nu\gVS^2m^2/8\pi^2]}{2\lamVS+\nu\gVS^2}.
+\label{eq:Tc}
+\end{align}
+The first is the one-loop result at high temperature; the second replaces the boson loops by their
+form for a large number of components, in which the phase mode stays massless. The program follows
+the state of lowest potential and determines the temperature $T_{1/2}$ at which the expectation value
+has fallen to half its vacuum value, and the temperature $T_0$ at which it has fallen to zero.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_cjt_thermal}
+\caption{\label{fig:thermal}Finite temperature. (a) The expectation value of the Vorton-Scalar, that
+is, the fermion mass in units of its vacuum value, in the state of lowest potential, as a function of
+the temperature in units of $T_{\rm high}$ of Eq.~(\ref{eq:Tc}). (b) The mass that the Hartree
+approximation gives to the phase mode below the transition; in the exact theory it vanishes.}
+\end{figure*}
+
+\begin{table*}
+\caption{\label{tab:thermal}Melting of the vacuum value of the Vorton-Scalar. $T_{\rm high}$ and
+$T_N$: the closed estimates (\ref{eq:Tc}). $T_{1/2}$: temperature at which the expectation value has
+fallen to half. $T_0$: temperature at which it has fallen to zero (below 2 per cent of $\vVS$, the
+resolution of the calculation). Next column: the expectation value at $0.998\,T_0$. Temperatures in
+units of $\vVS$, and in the last column in units of the fermion mass.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccccc}
+$\gVS$ & $m_s/m$ & $C$ & $T_{\rm high}/\vVS$ & $T_{N}/\vVS$ & $T_{1/2}/\vVS$ & $T_0/\vVS$ & $\phi/\vVS$ before $T_0$ & $T_{1/2}/m$ \\
+\hline
+{{ROWS:cjt_thermal_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Figure~\ref{fig:thermal} and Table~\ref{tab:thermal} give three results. \emph{The fermion mass
+melts} at a temperature of the order of $\vVS$: $T_{1/2}$ agrees with the two estimates
+(\ref{eq:Tc}) within {{GEN:cjt_thermal_spread}} per cent. In units of the fermion mass it ranges from
+{{GEN:cjt_thermal_thalf_m_lo}} for a strong Yukawa coupling to {{GEN:cjt_thermal_thalf_m_hi}} for a
+weak one. \emph{The order of the transition is not
+reliably predicted.} For the parameter sets $(\gVS,m_s/m)=$ {{GEN:cjt_thermal_jumps}} the expectation
+value jumps to zero from about {{GEN:cjt_thermal_jump_size}} $\vVS$; for the others it falls steeply
+but, as far as the calculation can tell, continuously. The Hartree approximation is known to give a
+discontinuous transition for a pure scalar theory, where the true transition is continuous, so that a
+jump found here is not evidence that the transition of the model is discontinuous. \emph{The defect
+of the approximation is visible} in Fig.~\ref{fig:thermal}(b): below the transition the phase mode
+has a mass of up to {{GEN:cjt_goldstone_defect}} $m_s$, where Goldstone's theorem requires zero. This
+is the example, announced in Sec.~\ref{sec:method}, of an exact identity that a truncation of
+$\Gamma_2$ does not preserve.
+
+\subsection{The vacuum: can the pair condense without a medium?}
+\label{sec:vacuum}
+
+The superfluid of Sec.~\ref{sec:cjt} forms in a medium: the gap equation has a solution for an
+arbitrarily weak attraction only because there is a Fermi surface. Whether a pair condensate can
+exist in empty space is a different question, and the Higgs hypothesis depends on it.
+
+Without a chemical potential the zero-mode sector has the larger symmetry $O(4)\times O(4)$ of
+Sec.~\ref{sec:internal}. The pair condensate of fermion number 2 is then one orientation of a
+16-component real multiplet that also contains condensates of a particle and an antiparticle; a
+chemical potential singles out the pairs. Whatever its orientation, the condensate does the same thing
+to the spectrum: it splits the masses of two combinations of fields into $m+\sigma$ and $m-\sigma$.
+Without a Fermi surface the negative-energy states cannot be neglected, and the gap equation
+(\ref{eq:gap}) does not apply. The appropriate equation is the stationarity condition of
+Eq.~(\ref{eq:action}) for the fermion propagator with diagram (a) in four-dimensional Euclidean
+momentum space,
+\begin{align}
+2\sigma(p)={}&\gVS^2\!\int\!\!\frac{d^4k}{(2\pi)^4}\big[f(m+\sigma)-f(m-\sigma)\big]\nonumber\\
+&\times\Big[\frac{1}{(p-k)^2+m_s^2}+\frac{1}{(p-k)^2}\Big],
+\label{eq:ladder}
+\end{align}
+with $f(M)=M/(k^2+M^2)$. Both modes contribute with the same sign in this channel, as in the medium.
+This is the ``ladder'' approximation that CJT themselves used for dynamical symmetry breaking
+\cite{CJT1974}. Linearized in $\sigma$ and integrated over the angles, it is an eigenvalue problem
+with a cutoff $\Lambda$ at the momentum where the four-dimensional description ends; a condensate
+forms when the largest eigenvalue exceeds 1. For massless fermions and one massless boson the
+linearized equation is solved by $\sigma\propto p^{-1}\cos(\rho\ln p^2+\delta)$, with the critical
+coupling $\gVS^2/16\pi^2=\tfrac14+\rho^2$ of the theory of dynamical chiral-symmetry breaking
+\cite{MaskawaNakajima1974,Miransky1985}; the program reproduces this within 0.2 per cent. With two
+massless bosons and $\Lambda\to\infty$ the critical coupling is $\gVS^2/8\pi^2=\tfrac14$, that is,
+$\aVS=\pi/2$.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{fig_cjt_vacuum}
+\caption{\label{fig:vacuum}Critical coupling $\alpha_c$ for a pair condensate in the vacuum, in the
+ladder approximation, as a function of the cutoff $\Lambda$, for three masses of the radial mode.}
+\end{figure}
+
+\begin{table}
+\caption{\label{tab:vacuum}Critical coupling $\alpha_c=\gVS^2/4\pi$ for a pair condensate in the
+vacuum, in the ladder approximation, for cutoffs $\Lambda/m=10$, $30$, $10^2$, $10^3$, $10^4$ and
+$10^6$.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+$m_s/m$ & $10$ & $30$ & $10^2$ & $10^3$ & $10^4$ & $10^6$ \\
+\hline
+{{ROWS:cjt_vacuum_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Figure~\ref{fig:vacuum} and Table~\ref{tab:vacuum} give the result: \emph{a pair condensate in the
+vacuum requires $\aVS>\alpha_c$, between {{GEN:cjt_alpha_c_min}} and {{GEN:cjt_alpha_c_max}} for the
+cutoffs and masses of the table, and $\pi/2$ in the limit of an infinite cutoff.}
+At such couplings two fermions already form a bound state unless $m_s\gtrsim m$, by
+Eq.~(\ref{eq:Dc}); and by Sec.~\ref{sec:warning} the potential of the Vorton-Scalar is then unstable
+unless its self-coupling is equally strong. The ladder approximation neglects the corrections to the
+vertices and to the boson propagators, which are not small at these couplings. The result is a
+statement about where to look, not a proof that a condensate forms.
+
+\subsection{What has been established, and what has not}
+
+Established, within the mean-field treatment: the fermion mass in matter; the abnormal state; the
+thresholds $3\pi^2/8$ and $3\pi^2/5$ for self-bound matter; the size of the exchange corrections.
+Within the Hartree approximation: the melting temperature of the fermion mass, to about twenty per
+cent. Within the ladder approximation: the critical coupling for a condensate in the vacuum.
+
+Not established: the order of the thermal transition; all properties of the strong-coupling regime,
+in which the one-loop potential of the Vorton-Scalar is unstable and the ladder approximation is only
+a guide; paired states in the abnormal phase, and the pairing of massless fermions.

@@ -1,0 +1,322 @@
+
+% =====================================================================
+\section{Cosmology I: can the model resolve the Hubble tension?}
+\label{sec:hubble}
+% =====================================================================
+
+Hypothesis H3 has two parts. This section examines the first, the Hubble tension, and
+Sec.~\ref{sec:dm} the second, the dark matter. Together they meet objective O6. Everything was
+computed with a program written for this project, an Einstein-Boltzmann solver that follows the
+expansion of the universe, recombination and the linear perturbations of all species; the physics of
+the model enters through two additions to it, a dark fluid of radiation with a step (this section)
+and dark matter that is a superfluid (Sec.~\ref{sec:dm}).
+
+\subsection{What the model contains, cosmologically}
+\label{sec:darksector}
+
+The four-dimensional model of Sec.~\ref{sec:vs} has, besides the Standard Model, a \emph{dark
+sector}: the fermions $\psi$, with 16 degrees of freedom, eight internal states each of particles and
+antiparticles, and the mass $m$; the radial mode, with one degree of freedom and the mass $m_s$; and
+the massless phase mode, with one. They interact with one another with the strength $\gVS$, and with
+ordinary matter only through gravity; any further coupling would be an addition to the model. A dark
+sector that was populated in the early universe has a temperature of its own, $T_d$. Its history
+depends on the fermion mass, and two regimes must be distinguished.
+
+\emph{Light fermions}, with $m$ between about 1 and 100 eV, are relativistic until late. As long as
+$T_d\gg m$ the sector is a tightly coupled gas of radiation: the Yukawa interaction keeps it in
+equilibrium, and it does not stream freely. When $T_d$ falls below $m$ the fermions and antifermions
+annihilate into phase quanta. Entropy is conserved, so that the phase quanta are heated, and the
+energy density of the dark radiation rises relative to that of radiation that simply redshifts. This
+\emph{step} is the mechanism of the ``stepped dark radiation'' that Aloni \emph{et al.} proposed for
+the Hubble tension \cite{Aloni2022}. If the radial mode is heavier than the fermions, the gas has one
+bosonic and sixteen fermionic degrees of freedom before the step and one bosonic after it, and the
+step factor is
+\begin{equation}
+r_{\rm step}=\Big[\frac{1+\tfrac78\cdot16}{1}\Big]^{1/3}=15^{1/3}=2.466,
+\label{eq:rstep}
+\end{equation}
+much larger than the $(15/7)^{1/3}=1.289$ of the Wess-Zumino model of those authors.
+
+\emph{Heavy fermions}, with $m$ above about a keV, annihilate long before the epochs that the
+microwave background probes. What remains is the phase quanta, a small amount of radiation, and, if
+there is an excess of fermions over antifermions, the excess fermions, which are non-relativistic
+matter and pair up as described in Secs.~\ref{sec:cjt} and \ref{sec:order}: a candidate for dark
+matter.
+
+A single field has a single mass, so that \emph{the model cannot be in both regimes at once}. With
+fermions of an eV it has interesting dark radiation and no dark matter; with heavy fermions it has a
+candidate for dark matter and almost no dark radiation. The two parts of hypothesis H3 are therefore
+tested separately.
+
+\subsection{The Einstein-Boltzmann solver and its validation}
+\label{sec:solver}
+
+The program follows the standard treatment of linear cosmological perturbations in the synchronous
+gauge \cite{MaBertschinger1995}: photons with polarization, massless neutrinos, baryons, cold dark
+matter, a cosmological constant and the dark fluid. Recombination is computed with the rate equations
+of the effective three-level atoms of hydrogen and helium
+\cite{SeagerSasselovScott1999,SeagerSasselovScott2000,WongMossScott2008}, the helium abundance from
+standard nucleosynthesis including the effect of extra radiation \cite{Planck2015XIII}, and the spectra by integration
+along the line of sight \cite{SeljakZaldarriaga1996}: the temperature (TT), polarization (EE) and
+cross (TE) spectra of the microwave background to multipole 2500, and the matter power spectrum.
+Appendix~\ref{app:num} gives the details. The \emph{fiducial model} throughout is the standard
+\LCDM{} model with the densities $\omega_b=0.02237$ and $\omega_c=0.1200$ of baryons and of cold dark
+matter, the Hubble constant $H_0=67.36~\kmsMpc$, the amplitude $A_s=2.1\times10^{-9}$ and tilt
+$n_s=0.9649$ of the primordial spectrum, the optical depth $\tau=0.0544$, and massless neutrinos with
+the standard effective number of species, 3.044.
+
+The solver was validated against spectra of the fiducial model computed with the established code
+\textsc{class} \cite{BlasLesgourguesTram2011}. Those spectra include gravitational lensing, which
+the solver does not compute; to compare like with like, its spectra were lensed with the lensing
+potential of the reference by the correlation-function method \cite{LewisChallinor2006}.
+Figure~\ref{fig:cmbval} shows the differences, and Table~\ref{tab:derived} compares derived
+quantities. For multipoles between 100 and 2000 the two codes agree within {{GEN:cmb_max_tt}} per
+cent in TT, within {{GEN:cmb_max_te}} per cent of $\sqrt{D^{TT}D^{EE}}$ in TE, and within
+{{GEN:cmb_max_ee}} per cent in EE; the matter power spectrum agrees within {{GEN:pk_max}} per cent
+for wavenumbers between $10^{-4}$ and 3 Mpc$^{-1}$. Halving all tolerances and all steps in
+wavenumber changes the spectra by less than {{GEN:cmb_conv_max}} for multipoles above 100. This
+agreement was not obtained at once: the comparison exposed five errors of the first version of the
+program, which are recorded, with the tests that now guard against them, in the error log of the
+project \cite{SpacetimesRepo}.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_cmb_validation}
+\caption{\label{fig:cmbval}Differences between the solver of this project and \textsc{class} for the
+fiducial model. Dashed: spectra without lensing; the oscillating difference is the smoothing of the
+acoustic peaks by lensing, which \textsc{class} includes. Solid: spectra lensed with the lensing
+potential of the reference.}
+\end{figure*}
+
+\begin{table}
+\caption{\label{tab:derived}Derived quantities of the fiducial model: the angular size $\theta_s$ of
+the sound horizon, the sound horizon $r_{\rm drag}$ at the end of the baryon drag epoch, the amplitude
+$\sigma_8$ of the matter fluctuations, and the redshifts of last scattering, of the drag epoch and of
+reionization.}
+\begin{ruledtabular}
+\begin{tabular}{lcc}
+quantity & this work & \textsc{class} \\
+\hline
+{{ROWS:cmb_derived_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{The mechanism, and the measure of success}
+
+The microwave background measures the angle $\theta_s=r_s/D_A$ under which the sound horizon $r_s$ at
+recombination is seen at the distance $D_A$. In the \LCDM{} model, $\theta_s$ and the densities fix
+$H_0=67.4~\kmsMpc$ \cite{Planck2018VI}; the local distance network gives $73.50\pm0.81$
+\cite{H0DN2026}. Extra radiation before recombination speeds up the expansion and shrinks $r_s$; to
+keep $\theta_s$, $D_A$ must shrink too, which means a larger $H_0$. The difficulty is that extra
+radiation also changes the damping of the small-scale anisotropies and the phases of the acoustic
+peaks, which the data constrain. The measure of success used here is therefore: \emph{how much does
+the fit to the microwave background worsen when the model is forced to give a certain $H_0$?}
+
+\subsection{The dark radiation of the model}
+
+The dark fluid is described by its density today, $N$, in units of the density of one massless
+neutrino species, and by the transition redshift $z_t$, defined by $m=T_{d0}(1+z_t)$, where $T_{d0}$
+is the temperature of the dark radiation today. Its equation of state and sound speed follow from the
+thermodynamics of the mixture of one massless boson and sixteen fermionic degrees of freedom of mass
+$m$ at constant entropy (Fig.~\ref{fig:step}). The fluid is tightly coupled: it has perturbations of
+density and velocity but no anisotropic stress, in contrast to free-streaming neutrinos.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_step_thermo}
+\caption{\label{fig:step}The stepped dark fluid of the model (solid) and, for comparison, the
+Wess-Zumino fluid of Ref.~\cite{Aloni2022} (dashed). (a) Energy density relative to radiation that
+only redshifts, normalized to late times: before the step the density is lower by the factor
+$1/r_{\rm step}$. (b), (c) During the step the pressure and the sound speed drop below the value
+$1/3$ of pure radiation.}
+\end{figure*}
+
+Seven one-parameter families of models are compared; in each, the density $N$ is varied. Family 0 is
+free-streaming radiation, additional massless neutrinos. Family 1 is a fluid without step, the limit
+$z_t\to\infty$: the phase quanta of a model with heavy fermions, if they interact enough to be a
+fluid. Families 2, 3 and 4 are the fluid of the model with its step in the epochs that the microwave
+background probes, $z_t=10^4$, $2\times10^4$ and $5\times10^4$. Family 5 is the Wess-Zumino fluid
+with $r_{\rm step}=(15/7)^{1/3}$ and $z_t=2\times10^4$, the best-fit region of Ref.~\cite{Aloni2022}.
+Family 6 is the fluid of the model with an early step, $z_t=10^6$: after nucleosynthesis, and before
+the scales of the microwave background enter the horizon. For $N=0.4$ the transition redshifts
+$10^4$, $10^{5.5}$ and $10^6$ correspond to the fermion masses {{GEN:dr_mass_zt_4}},
+{{GEN:dr_mass_zt_5p5}} and {{GEN:dr_mass_zt_6}} eV.
+
+\subsection{Mock data and method}
+
+The ``observed'' spectra are those of the fiducial \LCDM{} model, without a noise realization, so
+that \LCDM{} itself fits with $\chi^2=0$ and every $\chi^2$ below is a difference $\Delta\chi^2$
+relative to \LCDM. Two data sets are simulated. The first, \emph{Planck-like}, covers 60 per cent of
+the sky with the noise and the beams of the three channels of the Planck satellite at 100, 143 and
+217 GHz, multipoles from 30 to 2500 in temperature and to 2000 in polarization, and a prior on the
+optical depth in place of the large-scale polarization. The second adds a \emph{deep survey}: 25 per
+cent of the sky observed with a beam of 1.4 arcminutes and a noise of 10 $\mu$K arcmin, the
+sensitivity of the sixth data release of the Atacama Cosmology Telescope. The likelihood is the exact
+likelihood of Gaussian fields on a fraction of the sky. For each family and each $N$ the six
+parameters of the \LCDM{} model are refitted; a fit alternates exact computations of the spectra with
+Newton minimizations of the exact likelihood of spectra linearized with stored derivatives, and the
+reported $\chi^2$ is always that of an exact computation. A test with derivatives recomputed at the
+end point of a fit bounds the error of this procedure by {{GEN:dr_chord_max}} in $\chi^2$ and by
+{{GEN:dr_chord_max_h0}} $\kmsMpc$ in $H_0$.
+
+\begin{table}
+\caption{\label{tab:fisher}One-standard-deviation errors of the six parameters of the \LCDM{} model
+from the Fisher matrix of the two sets of mock data, the Planck-like one (P) and the one with the
+deep survey (P+D), compared with the published errors of the Planck collaboration
+\cite{Planck2018VI} (for $h$: the error of $H_0$ divided by 100).}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+parameter & mock P & Planck 2018 & mock P+D \\
+\hline
+{{ROWS:lcdm_fisher_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Does the mock resemble the real experiment? Table~\ref{tab:fisher} compares the errors of the
+\LCDM{} parameters predicted for the Planck-like mock with those published by the Planck
+collaboration; they agree within 25 per cent for every parameter. For free-streaming radiation the
+mock gives an error of {{GEN:sigmaN_free_planck}} on $N$, where the Planck collaboration found
+$N_{\rm eff}=2.92\pm0.19$ \cite{Planck2018VI}: the mock is more constraining by a quarter, mainly
+because it contains no lensing. All values of $\Delta\chi^2$ below should be read with this in mind;
+for the real Planck data they would be smaller by a factor of about {{GEN:dr_mock_factor}}, the
+square of the ratio of the two errors.
+
+\subsection{Results}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_dr_profiles_planck}
+\caption{\label{fig:dr}Planck-like mock data, six of the seven families (the family with
+$z_t=5\times10^4$ is omitted for clarity; it is in Table~\ref{tab:dr}). (a) Worsening of the best
+fit, relative to \LCDM, as a function of the density $N$ of the extra radiation. (b) The Hubble
+constant of the best fit; the band is the local measurement. (c) The same information combined: the
+cost of a given Hubble constant.}
+\end{figure*}
+
+\begin{table*}
+\caption{\label{tab:dr}Results for the Planck-like mock data. $\sigma(N)$ and $dH_0/dN$ (in
+$\kmsMpc$ per unit of $N$) are from the Fisher matrix at the fiducial point; the other columns are
+from the exact fits: the density $N$ and the Hubble constant at $\Delta\chi^2=4$, the Hubble constant
+at $\Delta\chi^2=9$, the density $N_{73.5}$ at which the best-fit $H_0$ equals the local value 73.5,
+and its cost. An asterisk marks a linear extrapolation beyond the largest fitted $N$.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccccc}
+family & $\sigma(N)$ & $dH_0/dN$ & $N$ at $\Delta\chi^2=4$ & $H_0$ there & $H_0$ at $\Delta\chi^2=9$ & $N_{73.5}$ & its $\Delta\chi^2$ & $\sqrt{\Delta\chi^2}$ \\
+\hline
+{{ROWS:dr_summary_table_c0}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Figure~\ref{fig:dr} and Table~\ref{tab:dr} give the results for the Planck-like mock data.
+
+\emph{Every family can reach the local $H_0$, and every one at a prohibitive price.} The cheapest is
+the fluid of the model with an early step, at $\sqrt{\Delta\chi^2}=$ {{GEN:dr_sig_local_c0_f6}}; the
+fluid without step and the Wess-Zumino fluid need {{GEN:dr_sig_local_c0_f1}} and
+{{GEN:dr_sig_local_c0_f5}}, and free-streaming radiation {{GEN:dr_sig_local_c0_f0}}.
+
+\emph{A step of the model that falls into the epochs probed is the most expensive case.} Its large
+step leaves a strong imprint: modes that enter the horizon before the step see less radiation than
+modes that enter after it, which changes the spectrum as a function of the multipole in a way that
+the other parameters cannot absorb. For $z_t$ between $10^4$ and $5\times10^4$ the local value costs
+$\sqrt{\Delta\chi^2}=$ {{GEN:dr_sig_local_min_model}} to {{GEN:dr_sig_local_max_model}}.
+
+\emph{An early step is slightly cheaper than no step, because of helium.} If the step is complete
+before the scales of the microwave background enter the horizon, these scales see a fluid of constant
+density $N$; but during nucleosynthesis the fluid had only the density $N/r_{\rm step}$, and less
+helium was made. At $N=0.5$ the helium mass fraction is {{GEN:dr_yhe_early}} instead of
+{{GEN:dr_yhe_nostep}}. Less helium means more free electrons and less damping of the small-scale
+anisotropies, which offsets part of the additional damping caused by the radiation; $\Delta\chi^2$
+falls from {{GEN:dr_chi2_half_nostep}} to {{GEN:dr_chi2_half_early}}.
+
+\emph{At a cost of $\Delta\chi^2=4$ the gain is small:} $H_0=$ {{GEN:dr_h0_2sigma_c0_f6}} for the
+early step, {{GEN:dr_h0_2sigma_c0_f1}} for the fluid without step, {{GEN:dr_h0_2sigma_c0_f0}} for
+free-streaming radiation, and between {{GEN:dr_h0_2sigma_min_model}} and
+{{GEN:dr_h0_2sigma_max_model}} for a step in the epochs probed. At best this is
+{{GEN:dr_gain_2sigma_best}} $\kmsMpc$ of the 6.1 that are needed.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_dr_zt}
+\caption{\label{fig:zt}The fluid of the model with $N=0.4$ after the step: cost and Hubble constant
+as functions of the transition redshift. A step long before the epochs probed by the microwave
+background acts like a fluid without step that was less dense during nucleosynthesis; a step after
+recombination means that only $N/r_{\rm step}$ was present before recombination, so that both the
+cost and the gain are small; in between, the step is seen by the data and is expensive.}
+\end{figure*}
+
+Figure~\ref{fig:zt} shows the dependence on the transition redshift for $N=0.4$. An early step,
+$z_t\gtrsim10^{5.5}$, costs $\Delta\chi^2=$ {{GEN:dr_zt_early_chi2}} and gives $H_0=$
+{{GEN:dr_zt_early_h0}}; a step after recombination, $z_t\lesssim10^3$, costs
+{{GEN:dr_zt_late_chi2}} and gives {{GEN:dr_zt_late_h0}}; the most expensive case, at
+$z_t=10^{{{GENM:dr_zt_worst_g}}}$, costs {{GEN:dr_zt_worst_chi2}}. With the deep survey everything
+tightens: the local value of $H_0$ then costs $\sqrt{\Delta\chi^2}=$ {{GEN:dr_sig_local_c1_f6}} for
+the early step, {{GEN:dr_sig_local_c1_f1}} for the fluid without step and
+{{GEN:dr_sig_local_c1_f0}} for free-streaming radiation.
+
+\subsection{The phase mode as a fractional neutrino, and published analyses of real data}
+
+Even with heavy fermions the model has one unavoidable piece of dark radiation, the massless phase
+mode. If the dark sector was once in thermal contact with ordinary matter and decoupled when the
+plasma had $g_*$ effective degrees of freedom, a massless boson contributes today
+\cite{Weinberg2013}
+\begin{equation}
+\Delta N_{\rm eff}=\frac47\Big(\frac{43}{4\,g_*}\Big)^{4/3},
+\label{eq:weinberg}
+\end{equation}
+which is {{GEN:dr_weinberg_lo}} for a decoupling above the electroweak scale, $g_*=106.75$, and
+{{GEN:dr_weinberg_hi}} for a decoupling just before the muons annihilate, $g_*=57/4$. With the slope
+$dH_0/dN$ of free-streaming radiation in Table~\ref{tab:dr} such an amount raises $H_0$ by at most
+{{GEN:dr_weinberg_gain}} $\kmsMpc$: a welcome but insufficient shift, and the largest value is itself
+disfavored by the data quoted next.
+
+The simulation assumes that the sky is like the \LCDM{} model and asks what the model then costs.
+Whether the real data prefer extra radiation is an empirical question that others have answered. The
+Planck collaboration found $N_{\rm eff}=2.92\pm0.19$ for free-streaming radiation, with no preference
+for more \cite{Planck2018VI}. The Atacama Cosmology Telescope, combined with Planck, found
+$N_{\rm eff}=2.86\pm0.13$ and, for self-interacting dark radiation, the family 1 of this paper,
+$N_{\rm idr}<0.134$ at 95 per cent confidence \cite{Calabrese2025}. With the slope of
+Table~\ref{tab:dr} that limit allows a gain of {{GEN:dr_act_gain}} $\kmsMpc$. For the stepped fluid of
+Ref.~\cite{Aloni2022} and a second interacting model, the data of that telescope restrict the density
+about as strongly as for simple models \cite{CvetkoJosephMarquesTavares2025}. The limits loosen to
+$\Delta N_{\rm eff}<0.58$ if the primordial spectrum is allowed a running tilt and a running of the
+running \cite{GarnyNiedermannSloth2026}, a caveat that applies equally to the fixed power-law
+spectrum used here. Our mock results agree with this picture: for the fluid without step the forecast
+limits at $\Delta\chi^2=4$ are $N<$ {{GEN:dr_n_2sigma_c0_f1}} from the Planck-like mock and $N<$
+{{GEN:dr_n_2sigma_c1_f1}} from the mock with the deep survey, to be compared with the published
+limit of 0.134 from the real data of both experiments.
+
+\subsection{Verdict on the Hubble tension}
+
+The dark radiation of the model raises $H_0$, and its stepped form is exactly the kind of fluid that
+was proposed for this purpose. But, first, for data consistent with the \LCDM{} model the density
+needed for the local value of $H_0$ is excluded at $\sqrt{\Delta\chi^2}\ge$
+{{GEN:dr_sig_local_min_all}} in every family simulated, and at $\sqrt{\Delta\chi^2}\ge$
+{{GEN:dr_sig_local_min_model}} if the step of the model falls into the epochs probed. Second, the
+published analyses of the real data find no preference for such radiation, and limits near
+$N\approx0.13$. Third, the step of the model, $15^{1/3}$, is larger than that of the Wess-Zumino
+model and is \emph{more} visible to the data, not less, unless it is complete before the scales of
+the microwave background enter the horizon; and then the model is the fluid of family 6, which still
+fails by {{GEN:dr_sig_local_c0_f6}} standard deviations. \emph{Hypothesis H3 is not supported for the
+Hubble tension: with the amount of fluid dark radiation that the published limit allows, the model
+removes about {{GEN:dr_act_fraction}} per cent of the discrepancy.} This agrees with the conclusion
+of the earlier study for bound neutrino fields \cite{NashNCSS}, now reached for a different dark
+sector with an independent code.
+
+\subsection{What has been established, and what has not}
+
+Established: the solver agrees with \textsc{class} to the precision stated, and its results are
+converged. For data of the quality of the Planck satellite that follow the \LCDM{} model, the cost of
+raising $H_0$ with each of seven kinds of dark radiation, including the stepped fluid that the model
+predicts, and its dependence on the transition redshift.
+
+Not established, or assumed: the mock analysis is not an analysis of the real data. It has no
+lensing, no foregrounds, an idealized likelihood and a power-law primordial spectrum, and its limits
+on $N$ are tighter than those of Planck by about a quarter; the conclusions about the real sky rest
+on the published analyses cited, with which the mock results are consistent. The step was simulated
+for a radial mode much heavier than the fermions; if it is lighter there are two smaller steps
+instead of one. The dark radiation was assumed to be a perfect fluid at all times, whereas after the
+step the phase quanta interact only through derivative couplings and may begin to stream freely;
+families 0 and 1 bracket this. Finally, the fermion mass was taken to be constant through the step.
+By Sec.~\ref{sec:thermal} the mass melts at a temperature $T_{1/2}$ between
+{{GEN:cjt_thermal_thalf_m_lo}} and {{GEN:cjt_thermal_thalf_m_hi}} fermion masses, and the assumption
+holds only if $T_{1/2}\gg m/3$, which requires $\gVS\lesssim0.3$; for a stronger coupling the step
+would coincide with that transition, which was not simulated.

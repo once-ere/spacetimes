@@ -655,9 +655,60 @@ the four matrices of the extra axes are products of four distinct ones
 \texttt{23a7857}; no later result used the sentence. & Writing the
 corresponding paragraph of the manuscript, the products were computed
 explicitly. & The paragraph states the eight relations explicitly, Eq.
-(2.2a), and a new exact check, \texttt{71-B4}, verifies them (107 checks
-in all). & ``dirac matrices'', Sec. 2.1; \texttt{verify.rs}, check
-\texttt{71-B4} \\
+(2.2a), and a new exact check, \texttt{71-B4}, verifies them (106 checks
+in all; see E37). & ``dirac matrices'', Sec. 2.1; \texttt{verify.rs},
+check \texttt{71-B4} \\
+E37 & The number of machine checks was reported as one too many. The
+program appends a summary line \texttt{ALL} (``every check above
+passed'') to its log, and it counted that line as a check: it printed
+``107 of 107 checks passed'', and ``dirac matrices'' spoke of 107
+verifications. The number of checks is 106: 52 for the 4+4 matrices and
+54 for the 7+1 matrices. In commits up to \texttt{8663f08}. & Counting
+the checks by group for an appendix of the manuscripts: the groups add
+up to 106. & \texttt{Report::count} (\texttt{verify.rs}) no longer
+counts the summary line; the fragments \texttt{n\_checks} and
+\texttt{n\_checks\_passed}, the log \texttt{data/matrix\_checks.txt} and
+``dirac matrices'' were regenerated. A new generated table lists the
+checks by group. & last line of the output of
+\texttt{spacetimes\ matrices}; \texttt{data/matrix\_checks.txt}, line 2;
+fragment \texttt{checks\_table} \\
+E38 & The draft of the Introduction of the manuscripts said that in
+eight dimensions real \(16\times16\) Dirac matrices exist ``for two
+signatures of the metric'', 4+4 and 7+1. They exist for five
+combinations of signs (numbers of matrices with square \(+1\) and
+\(-1\): 8 and 0, 4 and 4, 0 and 8, 5 and 3, 1 and 7), that is, also for
+the Euclidean signature and for five dimensions of one kind and three of
+the other. & Reading the first page of the typeset manuscript against
+the classification of the real Clifford algebras. & The sentence now
+says that the two signatures are the two treated, and names the others.
+Never committed in the faulty form. & manuscripts, Sec. I A \\
+E39 & The draft of Sec. XII of the manuscripts explained the bound on
+the self-interaction of bound pairs with the cross section
+\(4\pi/m_s^2\) and the pair mass \(2m\). The program evaluates
+\(m\ge[4\pi D_c^2/(\alpha_{VS}^2\kappa)]^{1/3}\), which follows from the
+cross section \(8\pi a^2\) of identical bosons with \(a=1/m_s\) and the
+mass \(2m\); the sentence did not reproduce the formula. The draft of
+Sec. XI also described the fiducial model as having ``three massless
+neutrino species''; the program uses the standard effective number
+3.044. & Comparing each sentence of the draft with the source code that
+produces the numbers it quotes. & Both sentences corrected. Never
+committed in the faulty form. & manuscripts, Secs. XI B and XII C;
+\texttt{main.rs}, \texttt{cmd\_halos}; \texttt{cosmo.rs},
+\texttt{Params::fiducial} \\
+E40 & In intermediate builds of the manuscripts the last lines of a
+listing of commands ran off the bottom of a page, a table of an appendix
+was placed among the references, and two references to the \emph{Journal
+of Cosmology and Astroparticle Physics} were printed without their year.
+The check of the LaTeX log looked only for boxes that are too wide and
+reported nothing. & Looking at every page of the typeset manuscripts. &
+The appendices were reordered and their tables moved to the start of
+each appendix; float parameters are set in the preamble; the two entries
+of the bibliography were given the form that the style of the journal
+expects; \texttt{build\_manuscripts.py} now also reports boxes that are
+too tall and lists the places where floats were collected on a page of
+their own. Never committed in the faulty form. &
+\texttt{code/scripts/build\_manuscripts.py} (\texttt{log\_problems},
+\texttt{log\_notes}); \texttt{manuscript/spacetimes\_refs.bib} \\
 \end{longtable}
 
 \end{document}

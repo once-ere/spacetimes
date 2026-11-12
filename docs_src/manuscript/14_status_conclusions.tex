@@ -1,0 +1,207 @@
+
+% =====================================================================
+\section{Discussion: the status of the principal statements}
+\label{sec:status}
+% =====================================================================
+
+A paper that contains theorems, numerical results, hypotheses and assumptions side by side owes the
+reader a clear account of which is which. Table~\ref{tab:status} lists the principal statements of
+this paper with their nature and the basis on which each rests. Four kinds of statement are
+distinguished. A \emph{theorem} is proved, by an argument given in the text and by exact machine
+arithmetic. A \emph{computed result} follows from the model by a numerical calculation whose
+approximations are named. A \emph{hypothesis} is a statement that was examined, with the outcome
+given. An \emph{assumption} is a statement on which other statements rest and which was not derived.
+
+\begin{table*}
+\caption{\label{tab:status}The principal statements of this paper, their nature and their basis.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.07\textwidth}}
+Statement & Nature & Basis & Sec. \\
+\hline
+%%<1644>
+The eight Dirac matrices are real and satisfy the anticommutation relations of the $4+4$ metric & theorem & exact arithmetic & \ref{sec:matrices} \\
+Their scaled commutators span $\so(4,4)$ and generate, with the matrices, $\Pin(4,4)$ with four components & theorem & exact arithmetic; structure of the Clifford group & \ref{sec:pin} \\
+The chirality matrix and the chiral projectors are real & theorem & exact arithmetic & \ref{sec:chirality} \\
+The Dirac equation $(\gamma^A\partial_A-m)\psi=0$ is covariant, has a conserved current and splits into two coupled real 8-component equations & theorem & derivation; exact arithmetic & \ref{sec:dirac} \\
+The evolution in $x4$ is unitary exactly for fields that do not depend on $x5,x6,x7$; otherwise growing modes exist & theorem & exact arithmetic & \ref{sec:quantized} \\
+The physical fields do not depend on the additional times & assumption & the second stage of the program would have to justify it & \ref{sec:quantized} \\
+A single field has no Lorentz-invariant pair; the pair along $x0$ is a scalar of ordinary spacetime & theorem & exact arithmetic & \ref{sec:pairs} \\
+In the covariant $4+4$ theory no Vorton-Scalar with a chiral phase symmetry exists & theorem & derivation & \ref{sec:nogo} \\
+In the quantized sector the Vorton-Scalar exists; its neutral current couples to the axial current with $\GVS/\sqrt2=1/2\vVS^2$ & definition and derivation & Lagrangian (\ref{eq:LVS}) & \ref{sec:vs} \\
+The zero-mode sector has the internal symmetry $su(2)_A\oplus su(2)_B\oplus u(1)_F\oplus u(1)_E$, of which the $SO(4)$ is hidden & computed result & linear algebra on the matrices & \ref{sec:internal} \\
+%%</1644>
+%%<1671>
+The eight Dirac matrices are real and satisfy the anticommutation relations of the $7+1$ metric; real matrices force the convention in which the time-like matrix squares to $+1$ & theorem & exact arithmetic; structure of the Clifford algebras & \ref{sec:matrices} \\
+Their scaled commutators span $\so(7,1)$ and generate, with the matrices, $\Pin(7,1)$ with four components & theorem & exact arithmetic; structure of the Clifford group & \ref{sec:pin} \\
+No real chirality matrix exists; the chiral projectors are complex & theorem & exact arithmetic & \ref{sec:chirality} \\
+The Dirac equation $(i\gamma^A\partial_A-m)\psi=0$ is covariant, has a conserved positive density and splits into two coupled 8-component equations & theorem & derivation; exact arithmetic & \ref{sec:dirac} \\
+A single field has no Lorentz-invariant pair; the pair along $x0$ is a scalar of ordinary spacetime & theorem & exact arithmetic & \ref{sec:pairs} \\
+The Vorton-Scalar exists; its neutral current couples to the axial current with $\GVS/\sqrt2=1/2\vVS^2$ & definition and derivation & Lagrangian (\ref{eq:LVS}) & \ref{sec:vs} \\
+The zero-mode sector has the internal symmetry $su(2)_A\oplus su(2)_B\oplus u(1)_F\oplus u(1)_E$, the rotations of the four extra space axes and two phases & computed result & linear algebra on the matrices & \ref{sec:internal} \\
+The fields that matter do not depend on the four extra coordinates & assumption & the second stage of the program would have to justify it & \ref{sec:reduction} \\
+%%</1671>
+One-boson exchange attracts in the vector channels along the extra axes; the neutral current repels in the two-form channels & computed result & closed forms and matrices; static, single exchange & \ref{sec:pairing} \\
+A paired state exists at any density; the vector channel has the largest gap & computed result & gap equation; two-loop truncation of the CJT action & \ref{sec:cjt} \\
+The CJT potential reproduces gap, critical temperature, bound-state threshold and Ginzburg-Landau coefficients & computed result & independent algorithms & \ref{sec:checks} \\
+The ground states are unitary; the hidden-axis singlet is one of a degenerate family & theorem and computed result & matrix identity (\ref{eq:quartic}); CJT potential & \ref{sec:order} \\
+The hidden axis is the preferred direction (H1 in its strict form) & hypothesis; open & would need the second stage & \ref{sec:ground} \\
+Dense matter is in the abnormal state; it is self-bound for $C>3\pi^2/8$ & computed result & mean field & \ref{sec:normal} \\
+The fermion mass melts at a temperature of the order of $\vVS$ & computed result & Hartree approximation & \ref{sec:thermal} \\
+A pair condensate in the vacuum needs $\aVS>\alpha_c\ge\pi/2$ & computed result & ladder approximation & \ref{sec:vacuum} \\
+The singlet superfluid is the Higgs field (H2) & hypothesis; \SIG{no geometric basis}{unproven} & seven conditions & \ref{sec:higgs} \\
+The model resolves the Hubble tension (H3) & hypothesis; not supported & simulation; published analyses & \ref{sec:hubble} \\
+The superfluid explains the galactic phenomenology of dark matter (H3) & hypothesis; excluded & simulation; elementary estimates & \ref{sec:dm} \\
+The dark matter consists of bound pairs or clusters of the fermions & possibility; untested & --- & \ref{sec:dm} \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{The three hypotheses}
+
+\emph{H1, the superfluid.} The affirmative part of the hypothesis is established within the
+approximations stated. The fermion field has a pair of ordinary spin 0 that is a scalar of ordinary
+spacetime; a scalar boson exists whose exchange binds that pair and whose neutral current selects
+it; and at any finite density the paired state has a lower thermodynamic potential than the unpaired
+one. Two parts of the hypothesis hold in a weaker form than its wording suggests. The pairing is
+``mediated by neutral currents'' in the sense that the neutral current decides the channel; the
+attraction that binds at low density comes from the radial mode of the same field
+(Sec.~\ref{sec:pairing}). And the singlet along the hidden axis is a ground state, but one of a
+degenerate family: \SIG{in the sector of fields that do not depend on $x0$ a hidden symmetry rotates
+it into the triplet along the additional times, and which of the two lies lower once that symmetry is
+broken has not been computed.}{on the flat $7+1$ spacetime the direction of the order parameter in
+the space of the four extra axes is chosen spontaneously, and only the second stage of the program,
+which treats $x0$ differently from the other three, could prefer the hidden axis.}
+
+\emph{H2, the Higgs field.} \SIG{On the $4+4$ spacetime the hypothesis has no geometric basis. The
+algebraic pattern of the Higgs vacuum, a $(2,2)$ multiplet whose vacuum value breaks $SO(4)$ to
+$SO(3)$, is present for the zero modes, but under a symmetry that is not a transformation of the
+spacetime and that no known mechanism turns into a gauge symmetry. Under the rotations of the
+additional times the condensate is a singlet.}{On the $7+1$ spacetime the hypothesis is unproven.
+One structural condition is met in a non-trivial way: the order parameter is a $(2,2)$ multiplet of
+the rotations of the four extra space axes, and its vacuum value breaks $SO(4)$ to $SO(3)$, the
+pattern of the Higgs vacuum. The dynamical conditions are not met where the model can be solved, and
+two estimates, of the mass of the constituents and of the additional particles, speak against it.}
+In both spacetimes a condensate in empty space, which the hypothesis needs, was found only at
+couplings at which the present methods are a guide and not a proof.
+
+\emph{H3, dark matter and the Hubble tension.} Both parts were tested by simulation, and both
+answers are negative in the sense that matters. The dark radiation of the model raises the Hubble
+constant, but for data that agree with the standard model the price is at least
+{{GEN:dr_sig_local_min_all}} standard deviations, and the published analyses of the real data leave
+room for about {{GEN:dr_act_fraction}} per cent of the discrepancy. A superfluid that could act on
+galactic scales erases the small-scale structure that is observed. What remains is the possibility
+that heavy bound states of the fermions are cold dark matter, which the present observations neither
+support nor exclude and which makes no use of the superfluid.
+
+\subsection{What the two spacetimes share, and where they differ}
+
+The two papers were written from one source, and their common sections are identical. This is
+possible because of a fact that was not obvious at the outset: \emph{in the sector of fields that
+depend on ordinary space and time only, the two models have the same structure.} Their Hamiltonians
+have the same form, with different matrices; their internal symmetry algebras are isomorphic; their
+exchange amplitudes agree to the accuracy of the arithmetic; and the paired state, its
+thermodynamics, the behavior of the Vorton-Scalar in matter and at finite temperature, and the
+cosmology are the same. The two sets of Dirac matrices are different sets of generators of the same
+algebra of real $16\times16$ matrices, related by Eq.~(\ref{eq:relation}).
+
+They differ in everything that involves the four extra axes as directions of the spacetime.
+\SIG{Here, on the $4+4$ spacetime, three of them are times. The quantum theory exists only for fields
+that do not depend on them. The chirality is real, and the fully covariant theory admits no
+Vorton-Scalar. The invariant form on the order parameter is indefinite, the components along the
+time-like axes carry a relative phase of $90^\circ$, and the $SO(4)$ that mixes the hidden axis with
+the other three is a hidden symmetry of the zero modes.}{Here, on the $7+1$ spacetime, all four are
+space-like. The quantum theory is conventional. The chirality is complex, and the Vorton-Scalar
+exists in the fully covariant theory. The invariant form on the order parameter is positive
+definite, and the $SO(4)$ that mixes the hidden axis with the other three is the rotation group of
+the extra space, a symmetry of the spacetime.} The companion paper
+\SIG{\cite{Companion1671}}{\cite{Companion1644}} states the corresponding results for the other
+signature. For the hypotheses the difference matters in one place, the Higgs hypothesis, where the
+$7+1$ spacetime offers a geometric origin of the custodial pattern and the $4+4$ spacetime does not.
+
+\subsection{Limits of the treatment}
+
+Five limits apply to the paper as a whole; the limits of particular calculations were stated in the
+sections concerned.
+
+\emph{An effective theory.} The couplings of the model have negative mass dimension in eight
+dimensions. The model is an effective description below some scale, and nothing here depends on its
+completion; but nothing here constrains that completion either.
+
+\emph{Flat spacetime.} Gravity is absent. The roles of the coordinates, that $x0$ is hidden and that
+$x5,x6,x7$ are not observed, are put in by the restriction to fields that do not depend on them. The
+second stage of the program, a dynamical metric in which three dimensions inflate, three deflate and
+one curls up, is what would have to justify this restriction, decide the direction of the order
+parameter, and determine whether any rotation of the extra dimensions survives as a gauge symmetry.
+
+\emph{Truncations.} The paired state was obtained at two loops of the CJT action with a static
+interaction; the behavior in matter in the mean-field approximation; the thermal transition in the
+Hartree approximation; the vacuum condensate in the ladder approximation. Each is the standard first
+approximation of its problem, and each is known to fail quantitatively at strong coupling.
+Appendix~\ref{app:toy} shows on a solvable example how the two-loop truncation behaves.
+
+\emph{Mock data.} The cosmological conclusions about the Hubble tension rest on simulated data of the
+quality of the Planck satellite and on published analyses of the real data, not on a new analysis of
+the real data.
+
+\emph{One field.} The three hypotheses were examined for one fermion field with one mass. They need
+three different mass scales (Sec.~\ref{sec:higgs}); a model with several such fields would escape
+this particular objection at the price of more parameters.
+
+\subsection{What should be done next}
+
+Three calculations would settle questions that this paper leaves open. \SIG{First, the splitting
+between the singlet along the hidden axis and the triplet along the additional times when the fields
+depend on $x0$, for example on a ring of radius $R$: this decides whether the singlet of hypothesis
+H1 is the ground state.}{First, the energy of the order parameter when the hidden axis is curled up
+into a ring of radius $R$ and the other three extra dimensions are not: this decides whether the
+singlet of hypothesis H1 is the ground state.} Second, the pair condensate in the vacuum beyond the
+ladder approximation, with the corrections to the vertices and to the boson propagators and with the
+full 16-component multiplet of Sec.~\ref{sec:vacuum}: this decides condition C2 of the Higgs
+hypothesis. Third, the formation and the abundance of bound clusters of the fermions in the early
+universe: this decides whether the one surviving possibility for the dark matter is viable.
+
+% =====================================================================
+\section{Conclusions}
+\label{sec:concl}
+% =====================================================================
+
+We asked whether a 16-component Dirac field on a flat eight-dimensional spacetime of signature
+\SIG{$4+4$}{$7+1$} forms a spin-singlet superfluid, and whether that state can be the Higgs field,
+the dark matter, or the remedy of the Hubble tension.
+
+The mathematical foundation is secure. The eight Dirac matrices are real signed permutation
+matrices; they satisfy the anticommutation relations of the metric; their scaled commutators span
+\SIG{$\so(4,4)$}{$\so(7,1)$} and generate, together with the matrices, the four components of
+\SIG{$\Pin(4,4)$}{$\Pin(7,1)$}. \SIG{The chirality is real, the Dirac equation is real, and it
+defines a quantum theory exactly for fields that do not depend on the three additional
+times.}{No real chirality exists, the Dirac equation necessarily contains a factor $i$, and the
+field is quantized in the conventional way.} Every one of these statements is verified by exact
+arithmetic.
+
+The superfluid exists. We invented the Vorton-Scalar, a complex scalar field whose vacuum value is
+the origin of the fermion mass and whose neutral current couples to the axial current of the
+fermions with a constant of the Fermi type. Its radial mode binds two fermions, its neutral current
+selects the pairs that form a four-vector along the four extra axes, and the component of that
+four-vector along the hidden coordinate $x0$ is a spin-singlet scalar of ordinary spacetime. Two
+independent formulations of the many-body problem, the gap equation and the effective potential of
+Cornwall, Jackiw and Tomboulis, agree on the paired state. The singlet is a ground state, one of a
+degenerate family.
+
+The three applications fare differently, and none succeeds. \SIG{The Higgs hypothesis has no
+geometric basis on this spacetime.}{The Higgs hypothesis is unproven: the order parameter has the
+representation and the breaking pattern of the Higgs field, but no dynamical condition is met where
+the model can be solved.} The dark radiation of the model cannot raise the Hubble constant to the
+locally measured value without spoiling the fit to the microwave background. A superfluid of these
+fermions cannot be the dark matter of galaxies, although heavy bound states of them could be cold
+dark matter of an ordinary kind.
+
+These negative results are results. They are quantitative, they come with the programs that
+produced them, and they mark the places where the program to which this paper belongs must supply
+something new: a dynamical metric that distinguishes the hidden coordinate, and a mechanism that
+operates at strong coupling.
+
+\section*{Data availability}
+
+The source code of all programs, the data files from which every figure and every computed number of
+this paper is generated, the instructions for compiling and running the programs, and the documents
+that record the provenance of each result are openly available \cite{SpacetimesRepo}.

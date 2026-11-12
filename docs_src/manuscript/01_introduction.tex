@@ -1,0 +1,261 @@
+
+% =====================================================================
+\section{Introduction}
+\label{sec:intro}
+% =====================================================================
+
+\subsection{The question}
+
+Fermions that attract one another pair, and the pairs condense. This is the origin of superconductivity
+in metals \cite{BCS1957}, of the superfluid phases of liquid $^3$He \cite{Leggett1975}, and of the
+superfluidity of nuclear matter. A condensate of pairs is described by a boson field, the expectation
+value of a product of two fermion field operators. If the pair has no spin, the condensate is a scalar,
+and scalar fields that fill space are what several open problems of physics call for: the Higgs field
+of the Standard Model is one, and many proposals for the dark matter and for the discrepancy between
+the measured values of the Hubble constant, the \emph{Hubble tension}, involve another.
+
+An earlier study \cite{NashNCSS} asked whether the known neutrinos, in ordinary spacetime with three
+space dimensions and one time, can form such a spin-singlet superfluid, and whether that state could
+account for the dark matter or relieve the Hubble tension. The answer was negative on both counts. The
+present paper and its companion \SIG{\cite{Companion1671}}{\cite{Companion1644}} take up the same
+questions for a fermion field of a different kind: a field with sixteen components on a flat spacetime
+of eight dimensions.
+
+Eight dimensions are distinguished by an algebraic fact. The Dirac matrices of a spacetime are, by
+definition, matrices $\gamma^A$ whose anticommutators reproduce the metric. In eight dimensions the
+smallest such matrices have sixteen rows and columns, and for certain signatures of the metric they
+can be chosen \emph{real}. Two such signatures are the subject of this work. The first has four
+space-like and four time-like dimensions, the signature $4+4$; it is the case of the split octonion
+algebra and of the triality of the group $SO(4,4)$, which the author has used before
+\cite{Nash1990,Nash2010}. The second has seven space-like dimensions and one time-like dimension,
+the signature $7+1$; it is the case of the octonions
+\cite{Bryant1982,HarveyLawson1982,BrownGray1967}. (Real matrices of this size also exist for the
+Euclidean signature and for five dimensions of one kind and three of the other
+\cite{AtiyahBottShapiro1964,LawsonMichelsohn1989}.) A real set of Dirac matrices is the natural starting
+point for a theory in which the sixteen components of the fermion field have a geometrical meaning,
+and it is the starting point here.
+
+%%<1644>
+This paper treats the signature $4+4$. A spacetime with four times is not a small modification of
+ordinary spacetime: its wave equation is not hyperbolic, and a field theory on it has no reason to be
+stable \cite{Tegmark1997,CraigWeinstein2009,Bars2001}. Part of our task is therefore to find out which
+part of the theory makes sense as a quantum theory, and to say so plainly. The companion paper
+\cite{Companion1671} treats the signature $7+1$, which has one time and none of these difficulties.
+The two papers follow the same plan, use the same methods and the same programs, and share the
+sections that do not depend on the signature; where the two spacetimes lead to different conclusions,
+the difference is stated.
+%%</1644>
+%%<1671>
+This paper treats the signature $7+1$. It has one time, and its quantum field theory is conventional;
+what is unconventional is that the four extra dimensions are space-like, and that the real Dirac
+matrices force a particular sign convention on the metric and leave no real chirality. The companion
+paper \cite{Companion1644} treats the signature $4+4$, in which four dimensions are time-like and the
+theory makes sense as a quantum theory only in a restricted sector. The two papers follow the same
+plan, use the same methods and the same programs, and share the sections that do not depend on the
+signature; where the two spacetimes lead to different conclusions, the difference is stated.
+%%</1671>
+
+Three hypotheses are examined. They are stated here as hypotheses, and the paper reports what was found
+for each, favorable or not.
+\begin{itemize}
+\item[H1.] A 16-component fermion field on this spacetime forms a superfluid state of spin 0 in which
+the fermions are paired by the exchange of a new scalar boson, through a neutral current of the kind
+known from the weak interaction.
+\item[H2.] This superfluid state is the Higgs field.
+\item[H3.] This superfluid state explains the observations of dark matter, or the Hubble tension, or
+both.
+\end{itemize}
+
+\subsection{Objectives}
+\label{sec:objectives}
+
+The work has six objectives.
+\begin{itemize}
+\item[O1.] To fix the eight real $16\times16$ Dirac matrices of the spacetime without ambiguity, and to
+prove their properties: that they are real, that they satisfy the anticommutation relations of the
+metric, which group their scaled commutators generate, and what chirality means for them.
+\item[O2.] To write down a valid Dirac equation for a 16-component field whose components are
+complex-valued Grassmann operators, to determine in what sense it can be quantized, and to write it as
+two coupled equations for 8-component fields by means of the chiral projections.
+\item[O3.] To invent the scalar boson that mediates the pairing. We name it the \emph{Vorton-Scalar}.
+The task is to define it by a Lagrangian, to construct its neutral current, and to derive its field
+equations and its coupling to the fermions.
+\item[O4.] To construct the superfluid state of spin 0: the pairing interaction, the gap equation, the
+order parameter, the ground state, its thermodynamics and its collective modes; and to do this with the
+effective action for composite operators of Cornwall, Jackiw and Tomboulis \cite{CJT1974}, which also
+yields predictions for the unpaired state, for finite temperature and for the vacuum.
+\item[O5.] To test hypothesis H2 against the conditions that a Higgs field must meet.
+\item[O6.] To test hypothesis H3 by numerical simulation of the cosmological consequences of the
+model.
+\end{itemize}
+
+\subsection{Strategy}
+
+Four principles govern the work.
+
+\emph{Exact algebra by machine.} Every matrix of this paper has the entries $0$, $+1$ and $-1$. An
+identity between such matrices can be verified with integer arithmetic, and such a verification is a
+proof. A program written for this project performs {{CHECKS}} verifications of this kind; each has an
+identifier, and the statements of Secs.~\ref{sec:matrices} to \ref{sec:pairs} quote the identifiers on
+which they rest. A second program, written independently in another language, repeats the essential
+ones by different methods. Where an argument is short it is given in the text as well, so that the
+reader can follow the logic without the computer.
+
+\emph{One model, stated completely.} The Vorton-Scalar is defined by a Lagrangian with three
+parameters. Everything else, including the mass of the fermions, the strength of the pairing force and
+the cosmological behavior, is derived from it. Each approximation is named where it is made.
+
+\emph{Two formulations of the many-body problem.} The paired state is first obtained from the gap
+equation and then, independently, from the minimum of the effective potential of Cornwall, Jackiw and
+Tomboulis, with different algorithms. The two agree to the accuracy of the arithmetic
+(Sec.~\ref{sec:cjt}).
+
+\emph{Simulation with validated tools.} The cosmological tests use an Einstein-Boltzmann solver that was
+written for this project and validated against the established code \textsc{class}
+\cite{BlasLesgourguesTram2011} (Sec.~\ref{sec:hubble}).
+
+All programs, all data and the documents that record the provenance of every number are public
+\cite{SpacetimesRepo}. No computed result in this paper was copied by hand: the text is assembled by
+a program that inserts each such number from the data file in which the computation stored it. Values
+quoted from the literature and the parameter values of the examples are written in the text.
+
+\subsection{Summary of results}
+
+%%<1644>
+\emph{The matrices and the field (O1, O2).} The eight Dirac matrices are signed permutation matrices
+built from the multiplication table of the split octonions. Their scaled commutators span the Lie
+algebra $\so(4,4)$ and, together with the matrices themselves, generate the group $\Pin(4,4)$, which
+has four connected components. The chirality matrix is real, and the chiral projectors select the
+upper and the lower eight components. The Dirac equation contains no factor $i$. Its evolution in the
+ordinary time is unitary, and a positive conserved density exists, if and only if the field does not
+depend on the three additional times; fields that do depend on them include exponentially growing
+modes. We define the quantized theory by that restriction and state it as an assumption wherever it is
+used.
+
+\emph{The pair (O4).} A single 16-component field has no Lorentz-invariant pair. It has a vector of
+pairs, and the component of that vector along the hidden space-like coordinate $x0$ is a scalar under
+the Lorentz group of ordinary spacetime. It is the only $s$-wave pair that is invariant both under
+ordinary rotations and under the rotations of the three additional times.
+
+\emph{The Vorton-Scalar (O3).} In the fully covariant theory on $4+4$ spacetime the construction is
+impossible: the chiral phase rotation is a symmetry of the mass term and not of the kinetic term, the
+reverse of the familiar situation. In the quantized sector it exists. The Vorton-Scalar is a complex
+scalar field whose vacuum value gives the fermions their mass. Its phase mode is massless, and its
+exchange is a current-current interaction between the neutral current of the scalar and the axial
+current of the fermions, with a Fermi constant fixed by the vacuum value.
+
+\emph{The superfluid (O4).} The radial mode of the Vorton-Scalar attracts two fermions in every pair
+channel; the neutral current attracts in the four vector channels along the extra coordinates and
+repels in the others. The gap of the vector channel is the largest. In the sector of fields that
+depend on ordinary space only, the order parameter is a four-vector of a hidden $SO(4)$ symmetry, which
+is not a symmetry of the spacetime. The hidden-axis singlet is one of a family of degenerate ground
+states; the degeneracy is exact in that sector and is lifted only by a dependence of the fields on
+$x0$. The effective action of Cornwall, Jackiw and Tomboulis reproduces the gap, the critical
+temperature, the critical coupling of the two-body bound state and the Ginzburg-Landau coefficients,
+and it predicts that the fermion mass vanishes in dense matter, that matter is self-bound for strong
+coupling, that the mass melts at a temperature of the order of the vacuum value, and that a condensate
+in empty space requires a strong coupling.
+
+\emph{The Higgs hypothesis (O5).} The pair is a scalar of ordinary spacetime. The breaking pattern of
+the Higgs vacuum, $SO(4)\to SO(3)$, is present only as the hidden symmetry, which the geometry cannot
+turn into a gauge symmetry; under the rotations of the additional times, the only non-Abelian internal
+symmetry that the geometry of $4+4$ provides, the condensate is a singlet and cannot break the
+electroweak symmetry. The hypothesis has no geometric basis in this spacetime.
+%%</1644>
+%%<1671>
+\emph{The matrices and the field (O1, O2).} The eight Dirac matrices are signed permutation matrices
+built from the multiplication table of the octonions. Real matrices exist only if the time-like matrix
+squares to $+1$ and the seven space-like ones to $-1$. Their scaled commutators span the Lie algebra
+$\so(7,1)$ and, together with the matrices themselves, generate the group $\Pin(7,1)$, which has four
+connected components. No real chirality matrix exists; the chiral projectors are complex. The Dirac
+equation necessarily contains a factor $i$ in front of its real matrices. Its Hamiltonian is real and
+symmetric, the evolution is unitary, and the field is quantized in the conventional way. A particle
+has eight internal states.
+
+\emph{The pair (O4).} A single 16-component field has no Lorentz-invariant pair, and no $s$-wave pair
+that is invariant under all rotations of the seven space dimensions. It has a vector of pairs, and the
+component of that vector along the hidden space-like coordinate $x0$ is a scalar under the Lorentz
+group of ordinary spacetime. It is the only $s$-wave pair that is invariant both under ordinary
+rotations and under the rotations of the three other extra coordinates.
+
+\emph{The Vorton-Scalar (O3).} It is a complex scalar field whose vacuum value gives the fermions
+their mass, so that the chiral rotation of the fermions, accompanied by a phase rotation of the scalar,
+is an exact symmetry. Its phase mode is massless, and its exchange is a current-current interaction
+between the neutral current of the scalar and the axial current of the fermions, with a Fermi constant
+fixed by the vacuum value.
+
+\emph{The superfluid (O4).} The radial mode of the Vorton-Scalar attracts two fermions in every pair
+channel; the neutral current attracts in the four vector channels along the extra coordinates and
+repels in the others. The gap of the vector channel is the largest. The order parameter is a
+four-vector of the rotation group $SO(4)$ of the four extra space dimensions, and its direction is
+chosen spontaneously: the hidden-axis singlet is one of a family of degenerate ground states. The
+effective action of Cornwall, Jackiw and Tomboulis reproduces the gap, the critical temperature, the
+critical coupling of the two-body bound state and the Ginzburg-Landau coefficients, and it predicts
+that the fermion mass vanishes in dense matter, that matter is self-bound for strong coupling, that the
+mass melts at a temperature of the order of the vacuum value, and that a condensate in empty space
+requires a strong coupling.
+
+\emph{The Higgs hypothesis (O5).} The pair is a scalar of ordinary spacetime, it belongs to the
+representation $(2,2)$ of $SU(2)\times SU(2)$, and its condensate breaks $SO(4)$ to $SO(3)$: the
+representation and the breaking pattern of the Higgs field and of its custodial symmetry. This is a
+necessary condition, and it is met. None of the dynamical conditions has been shown, and the simplest
+estimates of two of them are unfavorable.
+%%</1671>
+
+\emph{Cosmology (O6).} The model contains dark radiation of exactly the kind that has been proposed as
+a remedy of the Hubble tension, with a step in its density when the fermions annihilate. For
+microwave-background data of the quality of the Planck satellite that agree with the standard model,
+raising the Hubble constant to the locally measured value costs at least {{GEN:dr_sig_local_min_all}}
+standard deviations, and {{GEN:dr_sig_local_min_model}} or more if the step of the model falls into the
+epochs that the data probe. Treated as dark matter, the superfluid suppresses the growth of structure;
+the fermion masses that structure formation allows are too large for the fermions to be degenerate in
+any galaxy, and a condensate of bound pairs cannot support cores larger than {{GEN:sfdm_rtf_pc_5p3}}
+parsec. The superfluid explains neither the Hubble tension nor the galactic phenomenology of dark
+matter. Heavy bound pairs or clusters of the fermions remain a possible, and so far untestable, form of
+cold dark matter.
+
+\subsection{Organization, units and notation}
+\label{sec:notation}
+
+Section~\ref{sec:matrices} defines the Dirac matrices and proves their properties.
+Section~\ref{sec:dirac} gives the Dirac equation and its quantization. Section~\ref{sec:pairs}
+determines which fermion pairs exist. Section~\ref{sec:vs} invents the Vorton-Scalar.
+Section~\ref{sec:pairing} derives the pairing interaction, Sec.~\ref{sec:cjt} the paired state, and
+Sec.~\ref{sec:order} its order parameter and ground state. Section~\ref{sec:matter} follows the
+Vorton-Scalar into matter, to finite temperature and into the vacuum. Section~\ref{sec:higgs} examines
+the Higgs hypothesis, Secs.~\ref{sec:hubble} and \ref{sec:dm} the Hubble tension and the dark matter.
+Section~\ref{sec:predictions} collects the predictions, Sec.~\ref{sec:status} lists the principal
+statements with their status, and Sec.~\ref{sec:concl} concludes. Each of
+Secs.~\ref{sec:matrices} to \ref{sec:dm} ends with a subsection that separates what has been
+established from what has not.
+
+\emph{Coordinates.} The eight coordinates are
+\begin{equation}
+X=\{x0,\;x1,\;x2,\;x3,\;x4,\;x5,\;x6,\;x7\}.
+\label{eq:coords}
+\end{equation}
+They are never renamed. The coordinates $x1,x2,x3$ are the Cartesian coordinates $x,y,z$ of ordinary
+space, and $x4$ is the ordinary time. The coordinate $x0$ is a \emph{hidden} space-like coordinate.
+The coordinates $x5,x6,x7$ are \SIG{three additional time-like coordinates}{three additional
+space-like coordinates}. A capital index $A,B,\dots\in\{0,\dots,7\}$ labels the coordinate $xA$, with
+$\partial_A=\partial/\partial x^A$ and summation over repeated indices. Three smaller index sets recur:
+$i,j\in\{1,2,3\}$ for ordinary space; $a,b\in\{0,5,6,7\}$ for the hidden axis and the three additional
+coordinates, which we call \emph{the four extra axes}; and $t\in\{5,6,7\}$ for the three additional
+coordinates alone.
+
+\emph{Units.} $\hbar=c=k_B=1$.
+
+\emph{Tags.} The companion paper uses the same letters for the corresponding objects of the other
+spacetime, which are different matrices. To keep the two apart, every object of the $4+4$ spacetime
+carries the tag 1644 and every object of the $7+1$ spacetime the tag 1671 (16 components; signature
+$4+4$ or $7+1$): $\gamma_{1644}^A$ and $\gamma_{1671}^A$, for example. In this paper the tag
+$\tg$ is written in the equations that define an object or state a result, and omitted in derivations;
+an object of the other spacetime always carries its tag. The 16-component fields of the two papers are
+named \texttt{dirac1644} and \texttt{dirac1671}.
+
+\emph{Two stages.} The spacetime of this paper is flat. In the program to which the paper belongs
+this is the first of two stages. In the second stage, which is not implemented here, the metric is
+dynamical: the three ordinary space dimensions inflate, the three additional dimensions deflate, which
+is the proposed reason why they have not been detected, and the hidden coordinate $x0$ curls up into a
+ring of very small radius. Where a result of this paper depends on what the second stage would have
+to provide, this is said.

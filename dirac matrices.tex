@@ -242,7 +242,7 @@ entries \(0\), \(+1\), \(-1\) (or, for two projectors, \(0\),
 \(\pm\tfrac12\), \(\pm\tfrac i2\)). An identity between such matrices
 can be verified with exact integer arithmetic, and a verification of
 that kind is a proof. The Rust program \texttt{spacetimes} (directory
-\texttt{code/spacetimes-rs}) performs 107 such verifications. Each has
+\texttt{code/spacetimes-rs}) performs 106 such verifications. Each has
 an identifier, such as \texttt{44-C1} (the prefix \texttt{44-} refers to
 the 4+4 set, \texttt{71-} to the 7+1 set), which is quoted below at the
 place where the statement is used; the complete output of the program is
@@ -509,7 +509,7 @@ Step 2 writes \texttt{data/gamma1644.txt}, \texttt{data/gamma1671.txt},
 \texttt{data/pair\_classification.csv},
 \texttt{data/pair\_classification.txt} and the matrix displays of this
 document (\texttt{provenance/generated/matrices.md}). The program ends
-with the line ``107 of 107 checks passed'' and returns a non-zero exit
+with the line ``106 of 106 checks passed'' and returns a non-zero exit
 status if any check fails. Step 3 writes
 \texttt{data/matrix\_checks\_independent.txt}.
 
@@ -2203,7 +2203,7 @@ found in this way proves linear independence over the rational numbers.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] = T16[A] of 4+4.nb; 7+1: gamma1671[A] = Gamma17up[swap04(A)] of 7+1.nb, swap04 = (0 4)); identifiers 44{-}.. refer to the 4+4 set, 71{-}.. to the 7+1 set}
-\NormalTok{107 of 107 checks passed}
+\NormalTok{106 of 106 checks passed}
 
 \NormalTok{[PASS] 44{-}R1  (exact) every entry of gamma1644[A], A = 0..7, is one of the integers {-}1, 0, +1; hence the eight matrices are real}
 \NormalTok{[PASS] 44{-}R2  (exact) every gamma1644[A] is a signed permutation matrix (one entry +1 or {-}1 in each row and in each column)}
