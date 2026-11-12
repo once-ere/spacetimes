@@ -1,0 +1,21 @@
+[package]
+name = "spacetimes"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes: real 16x16 Dirac matrices on 4+4 and 7+1 Minkowski spacetime, pairing of the 16-component field through the Vorton-Scalar, and cosmological tests"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# No external crates: everything (exact integer linear algebra, quadrature, ODE
+# integration, special functions) is implemented in src/, so that the program
+# builds offline with nothing but a Rust toolchain (rustc >= 1.70).
+[dependencies]
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true     # exact integer arithmetic must never wrap silently
+
+[[bin]]
+name = "spacetimes"
+path = "src/main.rs"
