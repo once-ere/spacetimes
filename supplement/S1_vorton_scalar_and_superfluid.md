@@ -77,7 +77,7 @@ spacetime only, and boxed results carry all tags.
 
 ```
 cd "/Users/nsh/Developer/github/spacetimes"
-cargo test --release --manifest-path code/spacetimes-rs/Cargo.toml     # 61 unit tests
+cargo test --release --manifest-path code/spacetimes-rs/Cargo.toml     # 63 unit tests
 cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- channels
 cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- symmetry
 cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- gap

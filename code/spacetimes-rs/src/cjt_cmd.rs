@@ -8,13 +8,13 @@
 //!   cjt_gl.csv, cjt_gl_summary.csv   Ginzburg-Landau coefficients from the potential (checks of supplement S1)
 //!   cjt_threshold.csv        two-particle threshold from the gap equation (check of dimer.rs)
 //!   cjt_landscape.csv        order-parameter space from the Dirac matrices of both signatures
-//!   cjt_normal.csv, cjt_normal_summary.csv, cjt_fock.csv   normal state in a medium
+//!   cjt_normal.csv, cjt_normal_summary.csv, cjt_fock.csv, cjt_vacuum_stability.csv   normal state in a medium; one-loop vacuum potential
 //!   cjt_thermal.csv, cjt_thermal_profile.csv               melting of the vacuum value at finite temperature
 //!   cjt_vacuum.csv           critical coupling of a pair condensate in the vacuum
 //!
 //! The function returns false if any of the built-in consistency requirements fails.
 
-use spacetimes::cjt_normal::{critical_c, fock_energy, i_scalar, Medium, Thermal, NU};
+use spacetimes::cjt_normal::{critical_c, fock_energy, i_scalar, vacuum_instability, Medium, Thermal, NU};
 use spacetimes::cjt_pairing::{gap_squares, pair_bubble_curvature, threshold_d, Potential, ShellModel};
 use spacetimes::cjt_toy;
 use spacetimes::cjt_vacuum::critical_alpha;
@@ -297,6 +297,7 @@ fn landscape() -> std::io::Result<bool> {
             let half = d2[0].abs() < 1e-9;
             let (mut hess_txt, mut flat_txt, mut remark) = ("-".to_string(), "-".to_string(), String::new());
             let (mut flat, mut positive) = (0usize, 0usize);
+            let mut dv = [f64::NAN; 3];
             if unitary {
                 // the potential is smooth here: eigenvalues of the matrix of second derivatives
                 flat = w.iter().filter(|x| x.abs() < 1e-3).count();
@@ -322,6 +323,7 @@ fn landscape() -> std::io::Result<bool> {
                 let mut opened = *delta;
                 opened[0] = opened[0] + c(0.05, 0.0);
                 let open = sm.potential(&op, &opened, &p, 1.0) - v;
+                dv = [up, down, open];
                 remark = format!("V changes by {:+.2e} / {:+.2e} when Delta is multiplied by 1.02 / 0.98, and by {:+.2e} when 0.05 is added to Delta^0 (second gap opened)", up, down, open);
                 ok &= (d2[7] - 1.0).abs() < 1e-9 && (v + 1.0).abs() < 1e-3 && grad < 1e-4 && up > 0.0 && down > 0.0 && open < 0.0;
             } else {
@@ -333,14 +335,14 @@ fn landscape() -> std::io::Result<bool> {
             rows.push(vec![op.tag.to_string(), label.to_string(),
                 format!("({:+.4}{:+.4}i; {:+.4}{:+.4}i; {:+.4}{:+.4}i; {:+.4}{:+.4}i)", delta[0].re, delta[0].im, delta[1].re, delta[1].im, delta[2].re, delta[2].im, delta[3].re, delta[3].im),
                 format!("{:.8}", d2[0].abs()), format!("{:.8}", d2[7]), format!("{:.8}", v), format!("{:.3e}", grad), format!("{}", flat), format!("{}", positive),
-                hess_txt, flat_txt, remark]);
+                hess_txt, flat_txt, remark, format!("{:.6e}", dv[0]), format!("{:.6e}", dv[1]), format!("{:.6e}", dv[2])]);
         }
     }
     write_csv_str("cjt_landscape.csv",
         &[("content", "the CJT potential at T = 0 in weak coupling as a function of the order parameter Delta^a (a = 0, 5, 6, 7), evaluated with the gap matrix built from the Dirac matrices of each signature; unit: gap of the unitary state = 1, density of states per internal state N(0) = 1, shell half-width 200".to_string()),
-          ("columns", "gap2_small, gap2_large: the two fourfold eigenvalues of M M^dagger; V: potential (unitary state: -2; half-paired state: -1); grad: norm of the gradient in the eight real coordinates; for unitary states: flat, positive = numbers of eigenvalues of the matrix of second derivatives that vanish (|.| < 1e-3) or are positive, hessian = its eight eigenvalues, flat_coordinates = the coordinates that span the flat directions (D0 = Delta^0 etc.); remark: for the half-paired state, where the potential is not twice differentiable, changes of V along chosen directions".to_string()),
+          ("columns", "gap2_small, gap2_large: the two fourfold eigenvalues of M M^dagger; V: potential (unitary state: -2; half-paired state: -1); grad: norm of the gradient in the eight real coordinates; for unitary states: flat, positive = numbers of eigenvalues of the matrix of second derivatives that vanish (|.| < 1e-3) or are positive, hessian = its eight eigenvalues, flat_coordinates = the coordinates that span the flat directions (D0 = Delta^0 etc.); remark: for the half-paired state, where the potential is not twice differentiable, changes of V along chosen directions; the last three columns give these changes as numbers (Delta multiplied by 1.02, by 0.98, and 0.05 added to Delta^0)".to_string()),
           cmd("landscape")],
-        &["signature", "state", "Delta", "gap2_small", "gap2_large", "V", "grad", "flat", "positive", "hessian", "flat_coordinates", "remark"], &rows)?;
+        &["signature", "state", "Delta", "gap2_small", "gap2_large", "V", "grad", "flat", "positive", "hessian", "flat_coordinates", "remark", "dV_scaled_up", "dV_scaled_down", "dV_second_gap_opened"], &rows)?;
     Ok(ok)
 }
 
@@ -407,6 +409,20 @@ fn normal_state() -> std::io::Result<bool> {
           ("columns", "bound = 1 if the lowest energy per particle is below m; e_bind = that energy minus m (units of m); kF_sat, x_sat: Fermi momentum and m*/m there; kF_abnormal: smallest Fermi momentum at which the stable state has m* = 0; x_before: m*/m just below that density (a value well above 0 means a discontinuous transition); kF_spinodal: smallest Fermi momentum with dP/dn < 0".to_string()),
           cmd("normal")],
         &["C", "sea", "bound", "e_bind", "kF_sat", "x_sat", "kF_abnormal", "x_before", "kF_spinodal"], &rows)?;
+    // stability of the vacuum at one loop
+    println!("    one-loop potential of the Vorton-Scalar in the vacuum: field (in units of the vacuum value) of its maximum, and field beyond which it lies below the vacuum");
+    let mut vrows = Vec::new();
+    for &c in &[0.1, 0.5, 1.0, 2.0, 3.7011, 5.9218, 10.0, 20.0, 35.5] {
+        let (x_max, x_zero) = vacuum_instability(c);
+        println!("      C = {:>7}: maximum at {:.4e}, below the vacuum beyond {:.4e}", c, x_max, x_zero);
+        vrows.push(vec![c, x_max, x_zero, x_max.log10(), x_zero.log10()]);
+        ok &= x_zero > x_max && x_max > 1.0;
+    }
+    write_csv("cjt_vacuum_stability.csv",
+        &[("content", "the potential of the Vorton-Scalar in the vacuum with the renormalized one-loop contribution of the fermions, (x^2 - 1)^2/(8 C) + V_sea(x), x = field in units of its vacuum value: where it turns over".to_string()),
+          ("columns", "x_max: field at the maximum of the potential beyond the vacuum; x_zero: field beyond which the potential is lower than in the vacuum; log10 of both".to_string()),
+          cmd("normal")],
+        &["C", "x_max", "x_zero", "log10_x_max", "log10_x_zero"], &vrows)?;
     // exchange energy
     println!("    exchange (Fock) energy to first order, relative to the mean-field energy shift:");
     let mut frows = Vec::new();
@@ -435,7 +451,7 @@ fn normal_state() -> std::io::Result<bool> {
 /// Part 7: finite temperature.
 fn thermal() -> std::io::Result<bool> {
     println!("\n[7] finite temperature: melting of the vacuum value of the Vorton-Scalar (fermions at one loop, bosons in the Hartree approximation)");
-    println!("{:>5} {:>5} {:>8} {:>7} | {:>9} {:>9} {:>9} | {:>9} {:>9} | {:>8}", "g", "m_s/m", "lambda", "C", "T_hi/v", "T_N/v", "T_half/v", "phi-/v", "phi+/v", "T_half/m");
+    println!("{:>5} {:>5} {:>8} {:>7} | {:>9} {:>9} {:>9} | {:>9} {:>9} | {:>8}", "g", "m_s/m", "lambda", "C", "T_hi/v", "T_N/v", "T_half/v", "T_zero/v", "phi before", "T_half/m");
     let mut rows = Vec::new();
     let mut prof = Vec::new();
     let mut ok = true;
@@ -443,11 +459,11 @@ fn thermal() -> std::io::Result<bool> {
         let th = Thermal { g, lambda: 0.5 * g * g * m_s * m_s };
         let v = th.v();
         let c = g * g / (m_s * m_s);
-        let (t_half, below, above) = th.melting();
-        println!("{:>5} {:>5} {:>8.4} {:>7.3} | {:>9.5} {:>9.5} {:>9.5} | {:>9.4} {:>9.4} | {:>8.4}", g, m_s, th.lambda, c, th.t_high() / v, th.t_large_n() / v, t_half / v, below, above, t_half);
-        rows.push(vec![g, m_s, th.lambda, c, th.t_high() / v, th.t_large_n() / v, t_half / v, below, above, t_half, th.t_high(), th.t_large_n()]);
+        let (t_half, t_zero, before) = th.melting();
+        println!("{:>5} {:>5} {:>8.4} {:>7.3} | {:>9.5} {:>9.5} {:>9.5} | {:>9.5} {:>9.4} | {:>8.4}", g, m_s, th.lambda, c, th.t_high() / v, th.t_large_n() / v, t_half / v, t_zero / v, before, t_half);
+        rows.push(vec![g, m_s, th.lambda, c, th.t_high() / v, th.t_large_n() / v, t_half / v, t_zero / v, before, t_half, th.t_high(), th.t_large_n()]);
         // the three estimates of the melting temperature agree within 25%
-        ok &= (t_half / th.t_high() - 1.0).abs() < 0.25 && (t_half / th.t_large_n() - 1.0).abs() < 0.25;
+        ok &= (t_half / th.t_high() - 1.0).abs() < 0.25 && (t_half / th.t_large_n() - 1.0).abs() < 0.25 && t_zero >= t_half;
         for i in 1..=80 {
             let t = 1.6 * th.t_high() * i as f64 / 80.0;
             if let Some((phi, _, ms2, mt2)) = th.global_minimum(t) {
@@ -457,9 +473,9 @@ fn thermal() -> std::io::Result<bool> {
     }
     write_csv("cjt_thermal.csv",
         &[("content", "temperature at which the expectation value of the Vorton-Scalar melts and the fermions lose their mass, at zero net density: two closed estimates and the Hartree approximation of the CJT potential".to_string()),
-          ("columns", "lambda = g^2 m_s^2/(2 m^2); C = g^2 m^2/m_s^2; T_high = sqrt(12 [lambda v^2 + nu g^2 m^2/(8 pi^2)]/(4 lambda + nu g^2)): critical temperature of the one-loop high-temperature expansion (also the temperature above which the symmetric state exists in the Hartree approximation); T_largeN: the same with 2 lambda in place of 4 lambda; T_half: temperature at which the expectation value of the state of lowest Hartree potential falls below v/2; phi_below, phi_above: expectation value in units of v at 0.998 and 1.002 T_half (a large difference means a discontinuous transition); _over_v: in units of the vacuum value v = m/g; _over_m: in units of the fermion mass".to_string()),
+          ("columns", "lambda = g^2 m_s^2/(2 m^2); C = g^2 m^2/m_s^2; T_high = sqrt(12 [lambda v^2 + nu g^2 m^2/(8 pi^2)]/(4 lambda + nu g^2)): critical temperature of the one-loop high-temperature expansion (also the temperature above which the symmetric state exists in the Hartree approximation); T_largeN: the same with 2 lambda in place of 4 lambda; T_half: temperature at which the expectation value of the state of lowest Hartree potential falls below v/2; T_zero: temperature at which it falls below 0.02 v; phi_before_zero: expectation value in units of v at 0.998 T_zero (a value of order one means a discontinuous transition); _over_v: in units of the vacuum value v = m/g; _over_m: in units of the fermion mass".to_string()),
           cmd("thermal")],
-        &["g", "m_s_over_m", "lambda", "C", "T_high_over_v", "T_largeN_over_v", "T_half_over_v", "phi_below", "phi_above", "T_half_over_m", "T_high_over_m", "T_largeN_over_m"], &rows)?;
+        &["g", "m_s_over_m", "lambda", "C", "T_high_over_v", "T_largeN_over_v", "T_half_over_v", "T_zero_over_v", "phi_before_zero", "T_half_over_m", "T_high_over_m", "T_largeN_over_m"], &rows)?;
     write_csv("cjt_thermal_profile.csv",
         &[("content", "Hartree approximation at finite temperature: the state of lowest potential as a function of temperature, for the seven sets of couplings of cjt_thermal.csv".to_string()),
           ("columns", "T_over_v; T_over_Thigh; phi_over_v (= fermion mass divided by its vacuum value); Ms_over_ms, Mth_over_ms: masses of the radial and of the phase mode in units of the vacuum mass of the radial mode (in the exact theory the phase mode is massless wherever phi > 0; its non-zero value is the known defect of the Hartree approximation)".to_string()),

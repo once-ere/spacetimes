@@ -64,6 +64,61 @@ pub fn v_sea(x: f64) -> f64 {
     -(NU / (32.0 * PI * PI)) * (log - 1.5 * x2 * x2 + 2.0 * x2 - 0.5)
 }
 
+/// The potential of the Vorton-Scalar in the vacuum at one loop of the fermions, in
+/// units of m^4 and as a function of x = g phi/m:  (x^2 - 1)^2/(8 C) + V_sea(x).
+/// It vanishes with zero slope at the vacuum value x = 1.
+pub fn vacuum_potential(c: f64, x: f64) -> f64 {
+    (x * x - 1.0).powi(2) / (8.0 * c) + v_sea(x)
+}
+
+/// Where the one-loop vacuum potential turns over at large field: returns
+/// (x_max, x_zero), the field (in units of the vacuum value) at which the potential
+/// has its maximum beyond x = 1, and the field at which it falls below its value in
+/// the vacuum.  Beyond x_zero the vacuum is not the state of lowest energy.
+/// Scan in ln x up to x = 1e30, refined by bisection.
+pub fn vacuum_instability(c: f64) -> (f64, f64) {
+    let f = |l: f64| vacuum_potential(c, l.exp());
+    let n = 20000;
+    let top = 30.0 * std::f64::consts::LN_10;
+    let (mut x_max, mut x_zero) = (f64::INFINITY, f64::INFINITY);
+    let mut prev = f(0.0);
+    let mut rising = true;
+    for i in 1..=n {
+        let l = top * i as f64 / n as f64;
+        let v = f(l);
+        if rising && v < prev {
+            // maximum between the two previous steps: golden section on -f
+            let (mut a, mut b) = (top * (i as f64 - 2.0).max(0.0) / n as f64, l);
+            let r = 0.5 * (5f64.sqrt() - 1.0);
+            for _ in 0..80 {
+                let (l1, l2) = (b - r * (b - a), a + r * (b - a));
+                if f(l1) > f(l2) {
+                    b = l2;
+                } else {
+                    a = l1;
+                }
+            }
+            x_max = (0.5 * (a + b)).exp();
+            rising = false;
+        }
+        if !rising && v < 0.0 {
+            let (mut a, mut b) = (top * (i as f64 - 1.0) / n as f64, l);
+            for _ in 0..80 {
+                let mid = 0.5 * (a + b);
+                if f(mid) > 0.0 {
+                    a = mid;
+                } else {
+                    b = mid;
+                }
+            }
+            x_zero = (0.5 * (a + b)).exp();
+            break;
+        }
+        prev = v;
+    }
+    (x_max, x_zero)
+}
+
 /// A state of the normal matter at zero temperature.
 #[derive(Clone, Copy, Debug)]
 pub struct State {
@@ -303,8 +358,19 @@ pub fn thermal_integrals(a: f64) -> (f64, f64, f64, f64) {
 }
 
 /// Table of the four thermal integrals at a = 0, h, 2h, ... (h = 0.002, a <= 50),
-/// built once on first use; `thermal_fast` interpolates linearly (relative error
-/// below 1e-6) and returns zeros beyond the table, where the integrals are below e^-50.
+/// built once on first use; `thermal_fast` interpolates in it with the cubic through
+/// the four nearest points and returns zeros beyond the table, where the integrals
+/// are below e^-50.
+///
+/// Why a cubic and not a straight line: the Hartree equations use the first and
+/// second derivatives of the potential with respect to phi, some of them by finite
+/// differences.  A piecewise linear interpolant has a discontinuous derivative at
+/// every node; the minimum of the potential then jumps from node to node as the
+/// temperature changes, and quantities that are small differences (the mass of the
+/// phase mode) become visibly noisy.  The integrals contain terms a^2 ln a and |a|^3
+/// that are not analytic at a = 0, so the error of the cubic is largest there:
+/// relative error below 1e-6 in the first two intervals, below 1e-8 for a < 0.1 and
+/// below 1e-10 beyond (unit test `thermal_table_interpolation`).
 struct ThermalTable {
     h: f64,
     v: Vec<[f64; 4]>,
@@ -325,17 +391,36 @@ fn thermal_table() -> &'static ThermalTable {
     })
 }
 
-/// The thermal integrals by interpolation in the table (see `thermal_integrals`).
+/// The thermal integrals by interpolation in the table (see `thermal_integrals`):
+/// Lagrange's cubic through the table points i0, i0+1, i0+2, i0+3, where the argument
+/// lies between i0+1 and i0+2 (at the two ends of the table, in the first or the last
+/// interval of the four points).
 pub fn thermal_fast(a: f64) -> (f64, f64, f64, f64) {
     let t = thermal_table();
     let x = a.abs() / t.h;
     let i = x.floor() as usize;
-    if i + 1 >= t.v.len() {
+    let n = t.v.len();
+    if i + 1 >= n {
         return (0.0, 0.0, 0.0, 0.0);
     }
-    let f = x - i as f64;
-    let (p, q) = (&t.v[i], &t.v[i + 1]);
-    (p[0] + f * (q[0] - p[0]), p[1] + f * (q[1] - p[1]), p[2] + f * (q[2] - p[2]), p[3] + f * (q[3] - p[3]))
+    // first point of the stencil, kept inside the table
+    let i0 = i.saturating_sub(1).min(n - 4);
+    // position relative to the stencil: u = 0, 1, 2, 3 at its four points
+    let u = x - i0 as f64;
+    // Lagrange weights for the nodes 0, 1, 2, 3
+    let w = [
+        -(u - 1.0) * (u - 2.0) * (u - 3.0) / 6.0,
+        u * (u - 2.0) * (u - 3.0) / 2.0,
+        -u * (u - 1.0) * (u - 3.0) / 2.0,
+        u * (u - 1.0) * (u - 2.0) / 6.0,
+    ];
+    let mut out = [0.0; 4];
+    for (k, wk) in w.iter().enumerate() {
+        for (c, o) in out.iter_mut().enumerate() {
+            *o += wk * t.v[i0 + k][c];
+        }
+    }
+    (out[0], out[1], out[2], out[3])
 }
 
 /// Fermions at one loop and the radial and phase modes in the Hartree approximation of
@@ -524,25 +609,30 @@ impl Thermal {
         Some((phi, self.potential(phi, t)?, ms2, mt2))
     }
 
-    /// The melting of the expectation value in the Hartree approximation: the
-    /// temperature T_half at which phi of the state of lowest potential falls below
-    /// v/2 (bisection between t_lo and t_hi), and the values of phi/v just below and
-    /// just above it (at T_half (1 -+ 0.002)).  A difference of the two values that
-    /// is of order one means a discontinuous (first-order) transition.
+    /// The melting of the expectation value in the Hartree approximation.  Returns
+    ///   t_half:  the temperature at which phi of the state of lowest potential falls below v/2;
+    ///   t_zero:  the temperature at which it falls below 0.02 v (the resolution of the scan);
+    ///   phi_before: phi/v at 0.998 t_zero.
+    /// Both temperatures by bisection (phi decreases with temperature).  A value of
+    /// phi_before of order one means that phi jumps to zero: a discontinuous
+    /// (first-order) transition in this approximation.
     pub fn melting(&self) -> (f64, f64, f64) {
         let v = self.v();
         let phi = |t: f64| self.global_minimum(t).map(|s| s.0).unwrap_or(0.0);
-        let (mut lo, mut hi) = (0.2 * self.t_high(), 3.0 * self.t_high());
-        for _ in 0..36 {
-            let mid = 0.5 * (lo + hi);
-            if phi(mid) > 0.5 * v {
-                lo = mid;
-            } else {
-                hi = mid;
+        let cross = |level: f64| -> f64 {
+            let (mut lo, mut hi) = (0.2 * self.t_high(), 3.0 * self.t_high());
+            for _ in 0..36 {
+                let mid = 0.5 * (lo + hi);
+                if phi(mid) > level * v {
+                    lo = mid;
+                } else {
+                    hi = mid;
+                }
             }
-        }
-        let t_half = 0.5 * (lo + hi);
-        (t_half, phi(0.998 * t_half) / v, phi(1.002 * t_half) / v)
+            0.5 * (lo + hi)
+        };
+        let (t_half, t_zero) = (cross(0.5), cross(0.02));
+        (t_half, t_zero, phi(0.998 * t_zero) / v)
     }
 
     /// Temperature above which the symmetric state exists in the Hartree approximation
@@ -584,6 +674,22 @@ mod tests {
         // massless limit
         assert!((i_scalar(1.0, 0.0) - 1.0 / (4.0 * PI * PI)).abs() < 1e-15);
         assert!((e_kinetic(1.0, 0.0) - 1.0 / (8.0 * PI * PI)).abs() < 1e-15);
+    }
+
+    /// The interpolation of the thermal integrals against direct quadrature.
+    #[test]
+    fn thermal_table_interpolation() {
+        for &a in &[0.0005, 0.0013, 0.0031, 0.0107, 0.2, 0.777_3, 1.0, 3.141_59, 9.999_9, 25.000_7, 49.998_9] {
+            let (exact, fast) = (thermal_integrals(a), thermal_fast(a));
+            let tol = if a < 0.004 { 1e-6 } else if a < 0.1 { 1e-8 } else { 1e-10 };
+            for (e, f) in [(exact.0, fast.0), (exact.1, fast.1), (exact.2, fast.2), (exact.3, fast.3)] {
+                assert!((f / e - 1.0).abs() < tol, "a = {}: {} vs {}", a, f, e);
+            }
+        }
+        // the limits at zero mass
+        let z = thermal_fast(0.0);
+        assert!((z.0 - 1.0 / 12.0).abs() < 1e-9 && (z.1 + PI * PI / 90.0).abs() < 1e-9);
+        assert!((z.2 - 1.0 / 24.0).abs() < 1e-9 && (z.3 - 7.0 * PI * PI / 720.0).abs() < 1e-9);
     }
 
     /// The sea term and its first two derivatives vanish at the vacuum mass; at x = 0
@@ -645,6 +751,23 @@ mod tests {
         assert!((md.sound_speed_sq(kf) / free - 1.0).abs() < 0.02);
     }
 
+    /// For weak coupling the one-loop vacuum potential falls below the vacuum where
+    /// the coefficient of x^4 changes sign, ln x^2 = 3/2 + 4 pi^2/(nu C) (the terms of
+    /// lower order in x are negligible there); for strong coupling it does so at a
+    /// field not much larger than the vacuum value.
+    #[test]
+    fn vacuum_instability_scale() {
+        for &c in &[0.5, 1.0] {
+            let (x_max, x_zero) = vacuum_instability(c);
+            let estimate = (0.5 * (1.5 + 4.0 * PI * PI / (NU * c))).exp();
+            assert!(x_max > 1.0 && x_zero > x_max);
+            assert!((x_zero / estimate - 1.0).abs() < 0.02, "C = {}: {} vs {}", c, x_zero, estimate);
+            assert!(vacuum_potential(c, 0.999 * x_zero) > 0.0 && vacuum_potential(c, 1.001 * x_zero) < 0.0);
+        }
+        let (x_max, x_zero) = vacuum_instability(20.0);
+        assert!(x_max > 1.0 && x_zero > x_max && x_zero < 1.5);
+    }
+
     /// Exchange energy in the limit of a heavy radial mode (contact interaction):
     /// E_x = (g^2/(2 m_s^2)) (n^2 + rho_s^2)/(2 nu), the Fierz rearrangement of the
     /// scalar interaction.
@@ -677,7 +800,8 @@ mod tests {
         // far above the transition it is the symmetric state
         assert_eq!(th.global_minimum(2.0 * t2).unwrap().0, 0.0);
         // the melting temperature lies within 25% of the two closed estimates
-        let (t_half, _, _) = th.melting();
+        let (t_half, t_zero, _) = th.melting();
         assert!((t_half / t2 - 1.0).abs() < 0.25 && (t_half / th.t_large_n() - 1.0).abs() < 0.25);
+        assert!(t_zero >= t_half);
     }
 }

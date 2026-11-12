@@ -35,11 +35,60 @@ def _text(DATA, name):
     return [dict(zip(rows[0], r)) for r in rows[1:]]
 
 
+# The items of data/reduced_symmetry.csv are plain text written by the Rust program.
+# For the documents they are typeset here.  A vertical bar must not appear in a cell
+# of a Markdown table (it separates the cells), so norms are written with \lVert.
+_SYMMETRY_ITEMS = {
+    "|P^2 - 1| for the traceless central generator P":
+        r"$\lVert P^2-1\rVert$ for the traceless central generator $P$",
+    "structure constants |f_123| of the ideals (generators with Tr T_i T_j = 2 delta_ij)":
+        r"structure constant $\lvert f_{123}\rvert$ of each ideal (generators with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$)",
+    "|sum_i T_i^2 - (3/4) projector| of the ideals":
+        r"$\lVert\sum_iT_i^2-\tfrac34\,(\text{projector})\rVert$ for each ideal",
+    "closure of the four vector pair operators C^- gamma^a, a in {0,5,6,7}":
+        r"the four vector pair operators $C^-\gamma^a$, $a\in\{0,5,6,7\}$, transform among themselves: residual",
+    "|Casimir - 3/4| of the two ideals on the four pair operators":
+        r"$\lvert\text{Casimir}-\tfrac34\rvert$ of each ideal on the four pair operators",
+    "complex dimension of the particle-antiparticle mixing generators, mu = 0":
+        r"complex dimension of the generators that mix particles with antiparticles, $\mu=0$",
+}
+
+
+def _symmetry_item(item):
+    """Typeset one item of data/reduced_symmetry.csv for a Markdown table."""
+    if item in _SYMMETRY_ITEMS:
+        return _SYMMETRY_ITEMS[item]
+    parts = item.split()
+    if len(parts) == 2 and all(q.startswith("gamma^") for q in parts):   # e.g. "gamma^0 gamma^5"
+        return "$\\gamma^%s\\gamma^%s$" % (parts[0][6:], parts[1][6:])
+    assert "|" not in item and "^" not in item and "_" not in item, "untreated item: %r" % item
+    return item
+
+
+def _symmetry_value(value, sci):
+    """Typeset one value: residuals in scientific notation, no vertical bars."""
+    value = value.replace("|[.,dynamics]| =", "commutator with the dynamics")
+
+    def number(tok):
+        if tok in ("0.00e0", "0.00e+0"):
+            return "0"
+        try:
+            if "e" in tok:
+                return sci(float(tok))
+        except ValueError:
+            pass
+        return tok
+
+    out = " ".join(number(t) for t in value.split())
+    assert "|" not in out, "vertical bar left in %r" % out
+    return out
+
+
 def run(frag, read_csv, sci, table, DATA):
     # ---------------------------------------------------------------- symmetry (S1 Sec. 2.1, S4 Sec. 2)
     rows = _text(DATA, "reduced_symmetry.csv")
     if rows is not None:
-        body = [[r["item"].replace("^", "\\^{}").replace("_", "\\_"), r["value_1671"], r["value_1644"]] for r in rows]
+        body = [[_symmetry_item(r["item"]), _symmetry_value(r["value_1671"], sci), _symmetry_value(r["value_1644"], sci)] for r in rows]
         text = table(["item (computed from the matrices)", "7+1", "4+4"], [":------------------------------------------", ":-----------------", ":-----------------"], body)
         n_ok = sum(1 for r in rows if r["ok"] == "1")
         text += "\n\nAll %d items have the expected values (`data/reduced_symmetry.csv`, column `expected`; %d of %d flagged as correct by the program)." % (len(rows), n_ok, len(rows))
@@ -93,8 +142,8 @@ def run(frag, read_csv, sci, table, DATA):
             body.append(["%g" % g, "%g" % ms, "%g" % kf, names[r["channel"]], sci(gap / ef, 3), sci(float(r["max_rel_diff"])),
                          sci(d_scan) if math.isfinite(d_scan) else "—", "%.4f" % v, "%.3f" % float(r["curvature_min"]),
                          "%.4f" % float(r["Tc_over_gap"]), sci(abs(float(r["Tc_rel_diff"])))])
-        hdr = ["$g_{VS}$", "$m_s/m$", "$k_F/m$", "channel", "gap$/E_F$", "Newton vs fixed point", "vs `gap_scan.csv`", "$V/V_{\\rm BCS}$", "smallest curvature", "$T_c$/gap", "$T_c$: two methods"]
-        frag("cjt_pairing_table", table(hdr, ["---:", "---:", "---:", ":-------", "--------:", "--------:", "--------:", "------:", "------:", "------:", "--------:"], body))
+        hdr = ["$g_{VS}$", "$m_s$", "$k_F$", "pair", "gap$/E_F$", "Newton vs fixed point", "vs `gap_scan.csv`", "$V/V_{\\rm BCS}$", "smallest curvature", "$T_c$/gap", "$T_c$: two methods"]
+        frag("cjt_pairing_table", table(hdr, ["-----:", "-----:", "-----:", ":------", "--------:", "--------:", "--------:", "---------:", "-------:", "------:", "--------:"], body))
         frag("cjt_pair_worst_newton", sci(worst["newton"]))
         frag("cjt_pair_worst_scan", sci(worst["scan"]))
         frag("cjt_pair_worst_tc", sci(worst["tc"]))
@@ -131,6 +180,14 @@ def run(frag, read_csv, sci, table, DATA):
                                    ["---:", "---:", "---:", "-----:", "-------:", "---------:", "---------:", "---------:"], body))
         frag("cjt_gl_worst", "%.1f" % (100 * max(max(abs(r["alpha_ratio"] - 1), abs(r["beta_ratio"] - 1), abs(r["K_ratio"] - 1)) for r in t)))
     t = read_csv("cjt_gl.csv")
+    summ = read_csv("cjt_gl_summary.csv")
+    if t is not None and summ is not None:
+        # logarithmic slope of the quartic coefficient with temperature at T_c (first parameter set):
+        # measured from T/T_c = 0.99 and 1.01, and predicted by Eq. (3.4): -(2 + 4 lambda)
+        lo = [r for r in t if r["g"] == 3.0 and abs(r["T_over_Tc"] - 0.99) < 1e-9][0]
+        hi = [r for r in t if r["g"] == 3.0 and abs(r["T_over_Tc"] - 1.01) < 1e-9][0]
+        frag("cjt_beta_slope_measured", "%.2f" % (math.log(hi["beta"] / lo["beta"]) / math.log(1.01 / 0.99)))
+        frag("cjt_beta_slope_predicted", "%.2f" % (-(2 + 4 * [r for r in summ if r["g"] == 3.0][0]["lambda"])))
     if t is not None:
         sel = [r for r in t if r["g"] == 3.0]
         body = [["%.2f" % r["T_over_Tc"], "%.4f" % r["alpha_ratio"], "%.4f" % r["beta_ratio"]] for r in sel]
@@ -148,7 +205,8 @@ def run(frag, read_csv, sci, table, DATA):
         frag("cjt_landscape_table", table(["", "state", "the two gaps$^2$", "$V$", "second derivatives", "flat directions"],
                                           [":---", ":-------------------------", ":--------", "------:", ":----------------", ":----------------"], body))
         half = [r for r in rows if r["state"].startswith("half")][0]
-        frag("cjt_half_remark", half["remark"])
+        frag("cjt_half_up", sci(max(float(half["dV_scaled_up"]), float(half["dV_scaled_down"]))))
+        frag("cjt_half_open", sci(-float(half["dV_second_gap_opened"])))
         g = [r for r in rows if r["state"].startswith("hidden")][0]
         frag("cjt_massive_curvature", g["hessian"].split()[-1])
 
@@ -194,13 +252,24 @@ def run(frag, read_csv, sci, table, DATA):
     t = read_csv("cjt_thermal.csv")
     if t is not None:
         body = [["%g" % r["g"], "%g" % r["m_s_over_m"], "%.3g" % r["C"], "%.3f" % r["T_high_over_v"], "%.3f" % r["T_largeN_over_v"], "%.3f" % r["T_half_over_v"],
-                 "%.2f / %.2f" % (r["phi_below"], r["phi_above"]), "%.2f" % r["T_half_over_m"]] for r in t]
-        frag("cjt_thermal_table", table(["$g_{VS}$", "$m_s/m$", "$C$", "$T_{\\rm high}/v$", "$T_{N}/v$", "$T_{1/2}/v$", "$\\phi/v$ below / above", "$T_{1/2}/m$"],
-                                        ["----:", "----:", "-----:", "------:", "------:", "------:", ":-----------", "------:"], body))
+                 "%.3f" % r["T_zero_over_v"], "%.2f" % r["phi_before_zero"], "%.2f" % r["T_half_over_m"]] for r in t]
+        frag("cjt_thermal_table", table(["$g_{VS}$", "$m_s/m$", "$C$", "$T_{\\rm high}/v$", "$T_{N}/v$", "$T_{1/2}/v$", "$T_0/v$", "$\\phi/v$ before $T_0$", "$T_{1/2}/m$"],
+                                        ["----:", "----:", "-----:", "------:", "------:", "------:", "------:", "---------:", "------:"], body))
+        frag("cjt_thermal_jumps", ", ".join("(%g, %g)" % (r["g"], r["m_s_over_m"]) for r in t if r["phi_before_zero"] > 0.25))
+        frag("cjt_thermal_jump_size", "%.1f" % max(r["phi_before_zero"] for r in t))
+        cont = [r["phi_before_zero"] for r in t if r["phi_before_zero"] <= 0.25]
+        frag("cjt_thermal_cont_lo", "%.2f" % min(cont))
+        frag("cjt_thermal_cont_hi", "%.2f" % max(cont))
         frag("cjt_thermal_spread", "%.0f" % (100 * max(max(abs(r["T_half_over_v"] / r["T_high_over_v"] - 1), abs(r["T_half_over_v"] / r["T_largeN_over_v"] - 1)) for r in t)))
     p = read_csv("cjt_thermal_profile.csv")
     if p is not None:
         frag("cjt_goldstone_defect", "%.2f" % max(r["Mth_over_ms"] for r in p if r["phi_over_v"] > 0.3))
+
+    # ---------------------------------------------------------------- stability of the one-loop vacuum
+    t = read_csv("cjt_vacuum_stability.csv")
+    if t is not None:
+        body = [["%g" % r["C"], ("%.3g" % r["x_max"]) if r["x_max"] < 1e4 else sci(r["x_max"]), ("%.3g" % r["x_zero"]) if r["x_zero"] < 1e4 else sci(r["x_zero"])] for r in t]
+        frag("cjt_vacstab_table", table(["$C$", "maximum of the potential at $\\phi/v_{VS}=$", "below the vacuum beyond $\\phi/v_{VS}=$"], ["------:", "---------------:", "---------------:"], body))
 
     # ---------------------------------------------------------------- vacuum
     t = read_csv("cjt_vacuum.csv")

@@ -69,7 +69,8 @@ def read_csv_text(name):
 
 def save(fig, name):
     os.makedirs(FIGS, exist_ok=True)
-    fig.savefig(os.path.join(FIGS, name + ".pdf"), bbox_inches="tight", pad_inches=0.03)
+    # no creation date in the PDF: the file then changes only when the figure changes
+    fig.savefig(os.path.join(FIGS, name + ".pdf"), bbox_inches="tight", pad_inches=0.03, metadata={"CreationDate": None})
     fig.savefig(os.path.join(FIGS, name + ".png"), bbox_inches="tight", pad_inches=0.03)
     plt.close(fig)
     print("wrote figures/%s.pdf, .png" % name)

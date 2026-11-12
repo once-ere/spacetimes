@@ -588,6 +588,45 @@ coefficient equal to four times the coupling. & Smaller amplitudes; the
 coefficients are compared at \(T_c\), where they agree with S1 within 1
 per cent; the factor is derived in S4. & \texttt{data/cjt\_gl.csv},
 \texttt{data/cjt\_gl\_summary.csv} \\
+E32 & \texttt{cjt\_normal.rs}, finite temperature: the four thermal
+integrals were taken from a table by \emph{linear} interpolation. A
+piecewise linear function has a discontinuous derivative at every node
+of the table, and the Hartree equations use derivatives of the potential
+with respect to the expectation value (one of them by finite differences
+over a step much smaller than the spacing of the table). The position of
+the minimum therefore jumped from node to node as the temperature
+changed. The melting temperatures were affected in the third digit; the
+mass of the phase mode, a small difference, was visibly noisy for the
+weakest coupling (\(g_{VS}=0.1\): scatter of 30 per cent). The faulty
+table \texttt{data/cjt\_thermal\_profile.csv} is in commit
+\texttt{489d7f6}; no document quoted it. & Looking at the figure of the
+phase-mode mass against temperature: one curve was jagged. & Cubic
+interpolation through the four nearest points of the table (relative
+error below \(10^{-8}\), against \(10^{-6}\) before, and a continuous
+derivative to the accuracy needed). The curves are smooth;
+\(T_{1/2}/v_{VS}\) of the weakest coupling changed from 0.679 to 0.677.
+& \texttt{cjt\_normal.rs}, \texttt{thermal\_fast}; unit test
+\texttt{cjt\_normal::tests::thermal\_table\_interpolation};
+\texttt{figures/fig\_cjt\_thermal.png} \\
+E33 & The draft of S4 contained a table of the internal symmetry whose
+entries were copied from the data file with vertical bars (for norms)
+and carets in them. A vertical bar separates the cells of a Markdown
+table, so several rows were split into the wrong columns in the PDF,
+although the build reported no error. & Reading the PDF after the build.
+& The entries are typeset by \texttt{make\_tables\_cjt.py}
+(\texttt{\_symmetry\_item}, \texttt{\_symmetry\_value}), which stops
+with an error if a vertical bar would reach a table. Never committed in
+the faulty form. & S4, Sec. 2.4 \\
+E34 & The draft of S4 (Sec. 1.7) said that the truncations of
+\(\Gamma_2\) ``with an odd number of terms'' have no solution of the gap
+equation at strong coupling. It is the truncations at three and at five
+loops (two and four terms), whose last term in the self-energy is
+negative. The draft of Sec. 6 also stated that a discontinuous thermal
+transition ``is expected on physical grounds'' for a large Yukawa
+coupling; the calculation does not support a statement about the order
+of the transition either way. & Comparing each sentence of the draft
+with the tables it refers to. & Both sentences corrected. Never
+committed in the faulty form. & S4, Secs. 1.7 and 6 \\
 \end{longtable}
 
 \end{document}

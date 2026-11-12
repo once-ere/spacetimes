@@ -134,7 +134,22 @@ def s1_dimer_and_gl():
             frag("gl_dev_%d" % int(row["signature"]), sci(float(row["largest_deviation"])))
 
 
+def code_counts():
+    """Number of unit tests of the Rust program, counted in its source files (the
+    attribute #[test] marks each one); `cargo test --release` reports the same number."""
+    src = os.path.join(ROOT, "code", "spacetimes-rs", "src")
+    counts = {}
+    for name in sorted(os.listdir(src)):
+        if name.endswith(".rs"):
+            with open(os.path.join(src, name), encoding="utf-8") as f:
+                counts[name] = sum(1 for line in f if line.strip() == "#[test]")
+    frag("n_unit_tests", "%d" % sum(counts.values()))
+    # the files written for supplement S4
+    frag("n_unit_tests_s4", "%d" % sum(v for k, v in counts.items() if k.startswith("cjt_") or k == "symmetry.rs"))
+
+
 if __name__ == "__main__":
+    code_counts()
     s1_kernels()
     s1_gap()
     s1_dimer_and_gl()
