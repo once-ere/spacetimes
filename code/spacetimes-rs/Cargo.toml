@@ -19,3 +19,7 @@ overflow-checks = true     # exact integer arithmetic must never wrap silently
 [[bin]]
 name = "spacetimes"
 path = "src/main.rs"
+
+[lib]
+# The formulas displayed in the documentation comments are not Rust code.
+doctest = false

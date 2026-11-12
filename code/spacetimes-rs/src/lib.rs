@@ -15,16 +15,23 @@
 //! * `pairs`   which s-wave pairs of two identical particles exist (Pauli principle);
 //! * `kernel`  pairing kernels of the Vorton-Scalar exchange, channel by channel;
 //! * `gap`     the gap equation of the hidden-axis singlet superfluid;
+//! * `cosmo`   expansion history, stepped dark radiation, recombination;
+//! * `boltzmann`, `bessel`, `spectra`  Einstein-Boltzmann solver, spherical Bessel functions, power spectra;
+//! * `forecast`  mock microwave-background data, Fisher matrices and profile fits;
 //! * `export`  text files and LaTeX arrays for the documents;
 //! * `complex`, `linalg`, `quad`, `roots`, `io`  numerical utilities taken from
 //!   the author's NCSS project.
 //!
 //! Everything is std-only Rust (no external crates).
 
+pub mod bessel;
+pub mod boltzmann;
 pub mod complex;
+pub mod cosmo;
 pub mod dirac;
 pub mod export;
 pub mod fmat;
+pub mod forecast;
 pub mod gamma;
 pub mod gap;
 pub mod imat;
@@ -34,4 +41,5 @@ pub mod linalg;
 pub mod pairs;
 pub mod quad;
 pub mod roots;
+pub mod spectra;
 pub mod verify;

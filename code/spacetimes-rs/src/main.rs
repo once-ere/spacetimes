@@ -245,6 +245,345 @@ fn cmd_gap() -> std::io::Result<bool> {
     Ok(ok)
 }
 
+/// `background`: expansion history and recombination of the fiducial model and of
+/// dark-fluid variants; prints the derived parameters.
+fn cmd_background() -> std::io::Result<bool> {
+    use spacetimes::cosmo::{Background, DarkFluid, Params, Step, Thermo};
+    let fid = Params::fiducial();
+    let variants: Vec<(&str, Params)> = vec![
+        ("fiducial LambdaCDM", fid),
+        ("fluid dark radiation, N = 0.5", Params { dark: DarkFluid { n_ir: 0.5, step: None }, ..fid }),
+        ("stepped fluid (1 boson + 16 fermionic d.o.f.), N_IR = 0.5, z_t = 2e4",
+            Params { dark: DarkFluid { n_ir: 0.5, step: Some(Step::project(2.0e4)) }, ..fid }),
+    ];
+    println!("{:<70} {:>9} {:>8} {:>8} {:>8} {:>9} {:>9} {:>10} {:>10} {:>7} {:>7}", "model", "tau0", "z_star", "z_rec", "z_drag", "rs_star", "rs_drag", "100th_s", "100th_*", "z_reio", "Y_He");
+    for (name, p) in &variants {
+        let bg = Background::new(p);
+        let th = Thermo::new(&bg);
+        println!("{:<70} {:>9.2} {:>8.2} {:>8.2} {:>8.2} {:>9.3} {:>9.3} {:>10.5} {:>10.5} {:>7.3} {:>7.4}", name, bg.tau0, th.z_star, th.z_rec, th.z_drag, th.rs_star, th.rs_drag, th.theta_s_100, th.theta_star_100, th.z_reio, th.y_he);
+    }
+    Ok(true)
+}
+
+/// Positions and heights of the local maxima of a spectrum D_l between l_lo and l_hi
+/// (parabolic refinement).
+fn peaks(d: &[f64], l_lo: usize, l_hi: usize) -> Vec<(f64, f64)> {
+    let mut out = Vec::new();
+    for l in l_lo.max(3)..l_hi.min(d.len() - 2) {
+        if d[l] > d[l - 1] && d[l] >= d[l + 1] {
+            let den = d[l - 1] - 2.0 * d[l] + d[l + 1];
+            let shift = if den != 0.0 { 0.5 * (d[l - 1] - d[l + 1]) / den } else { 0.0 };
+            out.push((l as f64 + shift, d[l] - 0.25 * (d[l - 1] - d[l + 1]) * shift));
+        }
+    }
+    out
+}
+
+/// `spectrum`: power spectra of the fiducial model; numerical convergence; comparison
+/// with numbers of the code CLASS quoted in the author's NCSS project.  Writes
+/// data/cmb_fiducial_cl.csv, data/cmb_fiducial_pk.csv and data/cmb_convergence.csv.
+fn cmd_spectrum() -> std::io::Result<bool> {
+    use spacetimes::cosmo::Params;
+    use spacetimes::spectra::{compute, Workspace};
+    let t0 = std::time::Instant::now();
+    let ws = Workspace::new(2500);
+    println!("Bessel tables: {:.2} s ({} sample multipoles)", t0.elapsed().as_secs_f64(), ws.ls.len());
+    let p = Params::fiducial();
+    let t1 = std::time::Instant::now();
+    let sp = compute(&p, &ws, 1.0);
+    println!("spectra (accuracy 1): {:.2} s", t1.elapsed().as_secs_f64());
+    let d = &sp.thermo;
+    println!("100 theta_s = {:.5} (CLASS: 1.040374)   r_drag = {:.3} Mpc (CLASS: 147.114)   sigma_8 = {:.5} (CLASS: 0.82291)", d.theta_s_100, d.rs_drag, sp.sigma8);
+    let pk = peaks(&sp.tt, 100, 1600);
+    println!("TT peaks (l, D_l in muK^2): {:?}", pk.iter().map(|(l, h)| format!("({:.1}, {:.0})", l, h)).collect::<Vec<_>>());
+    println!("CLASS with lensing (NCSS project): 220.6, 536.9, 814.0, 1127.9, 1423.3");
+    for &l in &[2usize, 10, 30, 100, 220, 500, 1000, 1500, 2000, 2500] {
+        println!("l = {:>4}: TT = {:>9.2}  TE = {:>9.3}  EE = {:>9.4}", l, sp.tt[l], sp.te[l], sp.ee[l]);
+    }
+    let meta = vec![
+        ("content", "angular power spectra of the fiducial LambdaCDM model WITHOUT gravitational lensing, D_l = l(l+1) C_l / (2 pi) in microkelvin^2".to_string()),
+        ("parameters", format!("omega_b = {}, omega_c = {}, h = {}, A_s = {:e}, n_s = {}, tau_reio = {}, N_ur = {} (massless), T_cmb = {} K", p.omega_b, p.omega_c, p.h, p.a_s, p.n_s, p.tau_reio, p.n_ur, p.t_cmb)),
+        ("derived", format!("100 theta_s = {:.6}, z_star = {:.3}, z_drag = {:.3}, r_s(z_star) = {:.4} Mpc, r_drag = {:.4} Mpc, z_reio = {:.4}, Y_He = {:.5}, z_eq = {:.2}, sigma_8 = {:.5}, tau_0 = {:.3} Mpc", d.theta_s_100, d.z_star, d.z_drag, d.rs_star, d.rs_drag, d.z_reio, d.y_he, d.z_eq, sp.sigma8, d.tau0)),
+        ("command", "spacetimes spectrum".to_string()),
+    ];
+    let rows: Vec<Vec<f64>> = (2..=2500).map(|l| vec![l as f64, sp.tt[l], sp.te[l], sp.ee[l]]).collect();
+    spacetimes::io::write_csv("cmb_fiducial_cl.csv", &meta, &["ell", "Dl_TT", "Dl_TE", "Dl_EE"], &rows)?;
+    let rows: Vec<Vec<f64>> = sp.k_pk.iter().zip(&sp.pk).map(|(k, v)| vec![*k, *v]).collect();
+    spacetimes::io::write_csv("cmb_fiducial_pk.csv",
+        &[("content", "linear matter power spectrum of the fiducial model today (baryons + cold dark matter)".to_string()),
+          ("units", "k in 1/Mpc, P in Mpc^3 (no factors of h)".to_string()),
+          ("sigma_8", format!("{:.5}", sp.sigma8)),
+          ("command", "spacetimes spectrum".to_string())],
+        &["k", "P"], &rows)?;
+    // numerical convergence: halve all tolerances and grid spacings
+    let t2 = std::time::Instant::now();
+    let s2 = compute(&p, &ws, 2.0);
+    println!("spectra (accuracy 2): {:.2} s", t2.elapsed().as_secs_f64());
+    let mut rows = Vec::new();
+    // maxima in the ranges 30 <= l < 100 (index 0) and 100 <= l <= 2500 (index 1)
+    let mut mx = [[0.0f64; 3]; 2];
+    for l in 2..=2500usize {
+        let r_tt = sp.tt[l] / s2.tt[l] - 1.0;
+        let r_ee = sp.ee[l] / s2.ee[l] - 1.0;
+        let r_te = (sp.te[l] - s2.te[l]) / (s2.tt[l] * s2.ee[l]).sqrt();
+        if l >= 30 {
+            let i = if l < 100 { 0 } else { 1 };
+            mx[i][0] = mx[i][0].max(r_tt.abs());
+            mx[i][1] = mx[i][1].max(r_te.abs());
+            mx[i][2] = mx[i][2].max(r_ee.abs());
+        }
+        rows.push(vec![l as f64, r_tt, r_te, r_ee]);
+    }
+    println!("convergence (setting 1 against setting 2), maximum over 30 <= l < 100:    |dTT/TT| = {:.2e}, |dTE|/sqrt(TT EE) = {:.2e}, |dEE/EE| = {:.2e}", mx[0][0], mx[0][1], mx[0][2]);
+    println!("convergence (setting 1 against setting 2), maximum over 100 <= l <= 2500: |dTT/TT| = {:.2e}, |dTE|/sqrt(TT EE) = {:.2e}, |dEE/EE| = {:.2e}", mx[1][0], mx[1][1], mx[1][2]);
+    println!("sigma_8: {:.6} (setting 1), {:.6} (setting 2)", sp.sigma8, s2.sigma8);
+    spacetimes::io::write_csv("cmb_convergence.csv",
+        &[("content", "numerical convergence of the spectra: accuracy setting 1 (used everywhere) relative to setting 2 (all tolerances and wavenumber steps halved)".to_string()),
+          ("columns", "rel_TT = TT_1/TT_2 - 1; rel_EE likewise; dTE = (TE_1 - TE_2)/sqrt(TT_2 EE_2)".to_string()),
+          ("maxima_30_to_99", format!("TT {:.3e}, TE {:.3e}, EE {:.3e}", mx[0][0], mx[0][1], mx[0][2])),
+          ("maxima_100_to_2500", format!("TT {:.3e}, TE {:.3e}, EE {:.3e}", mx[1][0], mx[1][1], mx[1][2])),
+          ("sigma_8", format!("{:.6} (setting 1), {:.6} (setting 2)", sp.sigma8, s2.sigma8)),
+          ("command", "spacetimes spectrum".to_string())],
+        &["ell", "rel_TT", "dTE", "rel_EE"], &rows)?;
+    // Requirements.  For l >= 100: better than 0.05 per cent.  For 30 <= l < 100, where the
+    // cosmic variance of a single multipole is 10 to 20 per cent: 0.2 per cent (TT) and
+    // 1 per cent (TE, EE).  Multipoles below 30 are not used by the mock likelihoods.
+    let ok = mx[1].iter().all(|&v| v < 5e-4) && mx[0][0] < 2e-3 && mx[0][1] < 1e-2 && mx[0][2] < 1e-2 && (sp.sigma8 / s2.sigma8 - 1.0).abs() < 1e-4;
+    println!("checks (convergence): {}", ok);
+    Ok(ok)
+}
+
+/// One-parameter families of dark-radiation models; N is the density of the extra
+/// radiation today in units of the density of one massless neutrino species.
+fn dr_family(id: usize, n: f64) -> spacetimes::cosmo::Params {
+    use spacetimes::cosmo::{DarkFluid, Params, Step};
+    let fid = Params::fiducial();
+    match id {
+        0 => Params { n_ur: fid.n_ur + n, ..fid },
+        1 => Params { dark: DarkFluid { n_ir: n, step: None }, ..fid },
+        2 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(1.0e4)) }, ..fid },
+        3 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(2.0e4)) }, ..fid },
+        4 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(5.0e4)) }, ..fid },
+        5 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::wess_zumino(2.0e4)) }, ..fid },
+        _ => panic!("unknown family"),
+    }
+}
+
+const DR_FAMILIES: [&str; 6] = [
+    "0 = free-streaming extra radiation (N_ur = 3.044 + N)",
+    "1 = fluid dark radiation without step",
+    "2 = stepped fluid of the model (1 massless boson + 16 fermionic d.o.f., r_step = 15^(1/3)), z_t = 1e4",
+    "3 = the same, z_t = 2e4",
+    "4 = the same, z_t = 5e4",
+    "5 = Wess-Zumino stepped fluid (r_step = (15/7)^(1/3)), z_t = 2e4",
+];
+
+/// Row of derived numbers for a fitted model.
+fn dr_row(head: &[f64], f: &spacetimes::forecast::Fit, refreshed: f64) -> Vec<f64> {
+    let p = &f.params;
+    let d = &f.spectra.thermo;
+    let om = (p.omega_b + p.omega_c) / (p.h * p.h);
+    let mut r = head.to_vec();
+    r.extend_from_slice(&[f.chi2, p.omega_b, p.omega_c, p.h, (1e10 * p.a_s).ln(), p.n_s, p.tau_reio, 100.0 * p.h, f.spectra.sigma8,
+        f.spectra.sigma8 * (om / 0.3).sqrt(), om, d.rs_drag, d.theta_s_100, d.z_eq, d.y_he, p.n_ur - 3.044 + p.dark_n_uv(), f.evaluations as f64, refreshed]);
+    r
+}
+
+const DR_COLS: [&str; 18] = ["chi2", "omega_b", "omega_c", "h", "ln10A", "n_s", "tau", "H0", "sigma8", "S8", "Omega_m", "rs_drag", "theta_s_100", "z_eq", "Y_He", "dN_bbn", "evaluations", "jacobian_refreshed"];
+
+/// `forecast`: fits of the dark-radiation families to mock microwave-background data.
+/// Writes data/dr_fisher.csv, data/dr_profiles.csv, data/dr_chord_check.csv,
+/// data/dr_residuals.csv and data/dr_zt_scan.csv.  Run time: about 40 minutes on two cores.
+fn cmd_forecast() -> std::io::Result<bool> {
+    use spacetimes::cosmo::{DarkFluid, Params, Step};
+    use spacetimes::forecast::*;
+    use spacetimes::spectra::{compute, Workspace};
+    let t0 = std::time::Instant::now();
+    let quick = std::env::args().nth(2).map(|s| s == "quick").unwrap_or(false);
+    let ws = Workspace::new(2500);
+    let fid = Params::fiducial();
+    let data = compute(&fid, &ws, 1.0);
+    let jac0 = jacobian(&fid, &ws);
+    println!("[{:>5.0} s] fiducial spectra and their derivatives", t0.elapsed().as_secs_f64());
+    let v_fid = to_vec(&fid);
+    let n_fam = if quick { 2 } else { DR_FAMILIES.len() };
+    let n_grid: Vec<f64> = if quick { vec![0.2, 0.5] } else { vec![0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0] };
+    let n_refresh = 0.5;
+
+    // derivative of the spectra with respect to N at N = 0 for every family
+    let mut d_n: Vec<[Vec<f64>; 3]> = Vec::new();
+    for fam in 0..n_fam {
+        let e = 0.05;
+        let d = if fam == 0 {
+            family_derivative(&|x| dr_family(0, x), 0.0, e, false, &ws)
+        } else {
+            // the density of a fluid cannot be negative: one-sided formula of second order
+            let s1 = compute(&dr_family(fam, e), &ws, 1.0);
+            let s2 = compute(&dr_family(fam, 2.0 * e), &ws, 1.0);
+            let f = |a: &Vec<f64>, b: &Vec<f64>, c: &Vec<f64>| -> Vec<f64> { (0..a.len()).map(|l| (-3.0 * a[l] + 4.0 * b[l] - c[l]) / (2.0 * e)).collect() };
+            [f(&data.tt, &s1.tt, &s2.tt), f(&data.te, &s1.te, &s2.te), f(&data.ee, &s1.ee, &s2.ee)]
+        };
+        d_n.push(d);
+    }
+    println!("[{:>5.0} s] derivatives with respect to N", t0.elapsed().as_secs_f64());
+
+    let configs = if quick { vec![Config::planck_like()] } else { vec![Config::planck_like(), Config::planck_plus_deep()] };
+    let fam_meta = DR_FAMILIES.join("; ");
+    let mut fisher_rows: Vec<Vec<f64>> = Vec::new();
+    let mut prof_rows: Vec<Vec<f64>> = Vec::new();
+    let mut chord_rows: Vec<Vec<f64>> = Vec::new();
+    let mut resid: Vec<Vec<f64>> = (2..=2500).map(|l| vec![l as f64]).collect();
+    let mut resid_cols: Vec<String> = vec!["ell".to_string()];
+    let mut refreshed_jac: Vec<Option<Jacobian>> = (0..n_fam).map(|_| None).collect();
+    let mut ok = true;
+    for (ic, cfg) in configs.into_iter().enumerate() {
+        let cfg_name = cfg.name;
+        let mock = Mock { cfg, data: data.clone(), tau0: fid.tau_reio };
+        // the fiducial model must have chi^2 = 0 exactly
+        ok &= chi2(&mock, &data.tt, &data.te, &data.ee, fid.tau_reio).abs() < 1e-9;
+        // Fisher matrix of LambdaCDM alone
+        let f6 = fisher(&mock, &jac0, &[]);
+        let c6 = invert_spd(&f6).expect("Fisher matrix not positive definite");
+        println!("\n=== mock data set '{}' ===", cfg_name);
+        println!("LambdaCDM Fisher errors: {}", (0..NPAR).map(|i| format!("{} {:.3e}", PAR_NAMES[i], c6[i][i].sqrt())).collect::<Vec<_>>().join(", "));
+        for fam in 0..n_fam {
+            // Fisher matrix with N as seventh parameter
+            let f7 = fisher(&mock, &jac0, &[d_n[fam].clone()]);
+            let c7 = invert_spd(&f7).expect("Fisher matrix not positive definite");
+            let sigma_n = c7[6][6].sqrt();
+            // shift of the six parameters per unit N at fixed N (conditional mean): -F6^-1 F_6N
+            let rhs: Vec<f64> = (0..NPAR).map(|i| -f7[i][6]).collect();
+            let slope = solve_spd(&f6, &rhs).unwrap();
+            // chi^2 per unit N^2 at fixed N after refitting: F_NN - F_N6 F6^-1 F_6N = 1/sigma_N^2
+            let mut row = vec![ic as f64, fam as f64, sigma_n, 100.0 * slope[2]];
+            for i in 0..NPAR {
+                row.push(c6[i][i].sqrt());
+            }
+            for i in 0..NPAR {
+                row.push(c7[i][i].sqrt());
+            }
+            for i in 0..NPAR {
+                row.push(slope[i]);
+            }
+            fisher_rows.push(row);
+            println!("family {}: Fisher sigma(N) = {:.4}; dH0/dN along the degeneracy = {:.3} km/s/Mpc; sigma(H0) with N free = {:.3}", fam, sigma_n, 100.0 * slope[2], 100.0 * c7[2][2].sqrt());
+
+            // profile: fit at fixed N, continuing from the previous point
+            let mut v_prev = v_fid;
+            let mut n_prev = 0.0;
+            let mut jac = jac0.clone();
+            let mut is_refreshed = 0.0;
+            for &n in &n_grid {
+                if n > n_refresh + 1e-9 {
+                    if let Some(j) = &refreshed_jac[fam] {
+                        jac = j.clone();
+                        is_refreshed = 1.0;
+                    }
+                }
+                let base = dr_family(fam, n);
+                let mut start = v_prev;
+                for i in 0..NPAR {
+                    start[i] += slope[i] * (n - n_prev);
+                }
+                let mut fit_n = fit(&mock, &jac, &ws, &base, &start, 8);
+                if (n - n_refresh).abs() < 1e-9 && !quick {
+                    // measure the error of using derivatives of the fiducial point: recompute
+                    // them at the end point and continue the fit
+                    if refreshed_jac[fam].is_none() {
+                        refreshed_jac[fam] = Some(jacobian(&fit_n.params, &ws));
+                    }
+                    let j = refreshed_jac[fam].as_ref().unwrap();
+                    let again = fit(&mock, j, &ws, &base, &to_vec(&fit_n.params), 8);
+                    chord_rows.push(vec![ic as f64, fam as f64, n, fit_n.chi2, again.chi2, 100.0 * fit_n.params.h, 100.0 * again.params.h, fit_n.params.omega_c, again.params.omega_c, fit_n.params.n_s, again.params.n_s]);
+                    println!("    derivative refresh at N = {}: chi2 {:.3} -> {:.3}, H0 {:.3} -> {:.3}", n, fit_n.chi2, again.chi2, 100.0 * fit_n.params.h, 100.0 * again.params.h);
+                    if again.chi2 < fit_n.chi2 {
+                        fit_n = again;
+                        is_refreshed = 1.0;
+                    }
+                }
+                println!("[{:>5.0} s] {} family {} N = {:.2}: chi2 = {:>8.3}  H0 = {:.3}  omega_c = {:.5}  n_s = {:.4}  sigma8 = {:.4}  ({} computations)", t0.elapsed().as_secs_f64(), cfg_name, fam, n, fit_n.chi2, 100.0 * fit_n.params.h, fit_n.params.omega_c, fit_n.params.n_s, fit_n.spectra.sigma8, fit_n.evaluations);
+                prof_rows.push(dr_row(&[ic as f64, fam as f64, n], &fit_n, is_refreshed));
+                if ic == 0 && (n - n_refresh).abs() < 1e-9 {
+                    // residuals of the best fit relative to the data
+                    for l in 2..=2500usize {
+                        let s = &fit_n.spectra;
+                        resid[l - 2].push(s.tt[l] / data.tt[l] - 1.0);
+                        resid[l - 2].push((s.te[l] - data.te[l]) / (data.tt[l] * data.ee[l]).sqrt());
+                        resid[l - 2].push(s.ee[l] / data.ee[l] - 1.0);
+                    }
+                    for q in ["TT", "TE", "EE"] {
+                        resid_cols.push(format!("fam{}_{}", fam, q));
+                    }
+                }
+                v_prev = to_vec(&fit_n.params);
+                n_prev = n;
+            }
+            // write what exists so far (a long run should not lose its results)
+            let mut cols = vec!["config", "family", "N"];
+            cols.extend_from_slice(&DR_COLS);
+            spacetimes::io::write_csv("dr_profiles.csv",
+                &[("content", "best fits of the six LambdaCDM parameters to mock microwave-background data (fiducial LambdaCDM spectra, no lensing) for fixed density N of extra radiation".to_string()),
+                  ("config", "0 = Planck-like (f_sky 0.6, l = 30..2500 in T and 30..2000 in E); 1 = Planck-like plus a deep survey of 25 per cent of the sky (1.4 arcmin, 10 microkelvin arcmin)".to_string()),
+                  ("family", fam_meta.clone()),
+                  ("N", "density of the extra radiation today in units of one massless neutrino species (for stepped fluids: the value after the step)".to_string()),
+                  ("columns", "chi2 = minimum chi^2 (0 for LambdaCDM by construction); H0 in km/s/Mpc; rs_drag in Mpc; S8 = sigma8 sqrt(Omega_m/0.3); dN_bbn = extra radiation during nucleosynthesis used for the helium abundance; jacobian_refreshed = 1 if the derivatives of the spectra were recomputed at the N = 0.5 best fit of the family".to_string()),
+                  ("command", "spacetimes forecast".to_string())],
+                &cols, &prof_rows)?;
+        }
+    }
+    let mut cols: Vec<String> = vec!["config".into(), "family".into(), "sigma_N".into(), "dH0_dN".into()];
+    for pre in ["sigma6_", "sigma7_", "slope_"] {
+        for nme in PAR_NAMES {
+            cols.push(format!("{}{}", pre, nme));
+        }
+    }
+    let cols_ref: Vec<&str> = cols.iter().map(|s| s.as_str()).collect();
+    spacetimes::io::write_csv("dr_fisher.csv",
+        &[("content", "Fisher-matrix forecasts for the mock data sets: errors of the six LambdaCDM parameters without (sigma6_) and with (sigma7_) the density N of extra radiation as a free parameter; error of N; shift of the best-fit parameters per unit N at fixed N (slope_)".to_string()),
+          ("config", "0 = Planck-like; 1 = Planck-like plus deep survey".to_string()),
+          ("family", fam_meta.clone()),
+          ("units", "dH0_dN in km/s/Mpc per unit N; h dimensionless".to_string()),
+          ("command", "spacetimes forecast".to_string())],
+        &cols_ref, &fisher_rows)?;
+    spacetimes::io::write_csv("dr_chord_check.csv",
+        &[("content", "effect of recomputing the derivatives of the spectra at the end point of a fit (N = 0.5) and continuing the fit: chi2 and parameters before (a) and after (b)".to_string()),
+          ("family", fam_meta.clone()),
+          ("command", "spacetimes forecast".to_string())],
+        &["config", "family", "N", "chi2_a", "chi2_b", "H0_a", "H0_b", "omega_c_a", "omega_c_b", "n_s_a", "n_s_b"], &chord_rows)?;
+    let rc: Vec<&str> = resid_cols.iter().map(|s| s.as_str()).collect();
+    spacetimes::io::write_csv("dr_residuals.csv",
+        &[("content", "best-fit spectra at N = 0.5 (Planck-like mock) relative to the fiducial LambdaCDM spectra".to_string()),
+          ("columns", "famK_TT = TT_model/TT_fid - 1; famK_EE likewise; famK_TE = (TE_model - TE_fid)/sqrt(TT_fid EE_fid)".to_string()),
+          ("family", fam_meta.clone()),
+          ("command", "spacetimes forecast".to_string())],
+        &rc, &resid)?;
+
+    // dependence on the transition redshift at fixed N (Planck-like mock)
+    if !quick {
+        let mock = Mock { cfg: Config::planck_like(), data: data.clone(), tau0: fid.tau_reio };
+        let n = 0.4;
+        let mut rows = Vec::new();
+        let mut v_prev = v_fid;
+        for i in 0..=12 {
+            let lz = 3.0 + 0.25 * i as f64;
+            let base = Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(10f64.powf(lz))) }, ..fid };
+            let start = if i == 0 { let mut s = v_fid; s[2] += 0.02; s[1] += 0.004; s } else { v_prev };
+            let f = fit(&mock, &jac0, &ws, &base, &start, 8);
+            println!("[{:>5.0} s] z_t = 10^{:.2}: chi2 = {:.3}, H0 = {:.3}", t0.elapsed().as_secs_f64(), lz, f.chi2, 100.0 * f.params.h);
+            rows.push(dr_row(&[lz, n], &f, 0.0));
+            v_prev = to_vec(&f.params);
+        }
+        let mut cols = vec!["log10_z_t", "N"];
+        cols.extend_from_slice(&DR_COLS);
+        spacetimes::io::write_csv("dr_zt_scan.csv",
+            &[("content", "stepped fluid of the model (r_step = 15^(1/3)) with N = 0.4 after the step: best fit to the Planck-like mock as a function of the transition redshift z_t".to_string()),
+              ("command", "spacetimes forecast".to_string())],
+            &cols, &rows)?;
+    }
+    println!("\n[{:>5.0} s] done; fiducial chi2 = 0 check: {}", t0.elapsed().as_secs_f64(), ok);
+    Ok(ok)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
@@ -252,8 +591,11 @@ fn main() {
         "matrices" => cmd_matrices().expect("i/o error"),
         "channels" => cmd_channels().expect("i/o error"),
         "gap" => cmd_gap().expect("i/o error"),
+        "background" => cmd_background().expect("i/o error"),
+        "spectrum" => cmd_spectrum().expect("i/o error"),
+        "forecast" => cmd_forecast().expect("i/o error"),
         _ => {
-            println!("usage: spacetimes <command>\n\ncommands:\n  matrices   build and verify the two sets of real 16x16 Dirac matrices; write data/ and provenance/generated/\n  channels   exchange amplitudes of the Vorton-Scalar in the pair channels; write data/pair_channel_kernel.csv\n  gap        gap equation of the hidden-axis singlet superfluid; write data/gap_scan.csv, data/gap_profile.csv");
+            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (terminal only)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about 40 minutes");
             true
         }
     };
