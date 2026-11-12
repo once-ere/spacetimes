@@ -1,0 +1,368 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P11 --- Stages of PROJECT spacetimes that were paused on November 12, 2026},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P11 --- Stages of PROJECT spacetimes that were paused on November
+12, 2026}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance required by Hard Rule 7: what is not finished, why,
+and how to finish it}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is-for}{%
+\section{1. What this document is for}\label{what-this-document-is-for}}
+
+On Thursday, November 12, 2026, at 15:20 Pacific Standard Time, the
+author instructed that all running stages be paused and completed later,
+and that a new piece of work be started in the folder
+\texttt{Revision\_Deflation}. This document records, for the stages that
+were interrupted, (i) what was running, (ii) what state it was in, (iii)
+what is known already, and (iv) what has to be done to complete it.
+Nothing in the stages listed here is to be taken as finished.
+
+The state of the repository at the moment of the pause is the commit
+\texttt{3368a72}. All documents, programs and data of that commit are
+complete in themselves; the stages below were to \emph{check and refine}
+them.
+
+\hypertarget{paused-stage-a-the-independent-verification}{%
+\section{2. Paused stage A: the independent
+verification}\label{paused-stage-a-the-independent-verification}}
+
+\textbf{The instruction.} The task specification asks: ``Check and
+verify all of your previous results/conclusions {[}\ldots{]} and refine
+and refactor your solution.''
+
+\textbf{What was running.} Four independent verification passes had been
+started after the commit \texttt{3368a72}. Each pass was given to a
+separate worker that had not seen the work being produced, that could
+read the repository but not change it, and that was to re-derive or
+re-compute what it checked by its own means. Each was to deliver a
+report with three parts: findings (error, gap or minor point, each with
+its exact place, the evidence and a proposed correction), what was
+verified and how, and what was not checked.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.0429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.9571}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Pass
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Scope
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & The two sets of Dirac matrices, the groups they generate, the chiral
+projectors, the Dirac equations, the classification of the fermion pairs
+(``dirac matrices''; manuscripts, Secs. II to IV and Appendix A). \\
+B & The Vorton-Scalar model, the exchange amplitudes, the gap equation,
+the bound pair, the effective action of Cornwall, Jackiw and Tomboulis,
+the Higgs discussion (Supplements S1, S2, S4; manuscripts, Secs. V to
+X). \\
+C & Cosmology and dark matter (Supplement S3; manuscripts, Secs. XI and
+XII and Appendix D). \\
+D & Audit of the documents: every number against the data files,
+cross-references, reproduction of the data from a clean copy, the symbol
+rules of P1, the layout, and the rule that the manuscripts do not
+mention the tools with which they were prepared. \\
+\end{longtable}
+
+\textbf{State.} The passes had run for about eleven minutes when the
+service that runs them was restarted. They were started again and, a few
+minutes later, stopped at the author's instruction. \textbf{No pass
+delivered a report. No finding was received.} Therefore nothing in the
+project has been confirmed, and nothing has been refuted, by this stage.
+The working files of the passes are in a temporary workspace, not in
+this repository, and should be considered lost.
+
+\textbf{To complete.} Run the four passes again with the scopes of the
+table; evaluate every finding; correct every confirmed error in the
+programs and in the documents; record each correction in
+\texttt{provenance/P9\_error\_log}; write the result as
+\texttt{provenance/P10\_independent\_verification} (\texttt{.md},
+\texttt{.tex}, \texttt{.pdf}), with the findings, their resolution, and
+what was not checked; add P10 to the list of documents in
+\texttt{README.md}.
+
+\hypertarget{paused-stage-b-fermions-bound-to-a-vortex-line-a-known-imprecision}{%
+\section{3. Paused stage B: fermions bound to a vortex line (a known
+imprecision)}\label{paused-stage-b-fermions-bound-to-a-vortex-line-a-known-imprecision}}
+
+\textbf{The statement that is to be corrected.} Section V H of both
+manuscripts and Sec. 8 of Supplement S1 say that the Dirac equation in
+the background of a vortex line of the Vorton-Scalar with winding number
+\(n\) has ``\(|n|\) normalizable solutions of zero energy that move
+along the line at the speed of light'', and attribute this to Jackiw and
+Rossi. The count \(|n|\) is correct for \emph{one four-component} Dirac
+field. It is not the count for the sixteen-component fields of this
+project. The statement is recorded as error E43 in
+\texttt{provenance/P9\_error\_log}, with the status ``identified, not
+yet corrected''.
+
+\textbf{What the analysis gives so far.} In the sector of fields that do
+not depend on the extra coordinates, the one-particle Hamiltonian in a
+Vorton-Scalar background \(\Phi_{VS}=(\phi_1+i\phi_2)/\sqrt2\) is
+
+\[\mathsf h=\alpha^jp_j+g_{VS}\,\phi_1\,\beta+g_{VS}\,\phi_2\,(i\beta\chi),\qquad j=1,2,3,\]
+
+with the five anticommuting Hermitian matrices
+\(\alpha^1,\alpha^2,\alpha^3,\beta, i\beta\chi\) of either spacetime.
+For a straight vortex line along \(x3\) with one unit of winding,
+\(\phi_1+i\phi_2\propto e^{i\varphi}\) in the plane \((x1,x2)\), the
+solutions of zero energy that do not depend on \(x3\) are a common
+radial function, which decays away from the line, times a constant
+spinor \(u\) that satisfies the two conditions
+
+\[(i\beta\alpha^1)\,u=-u,\qquad(\alpha^2\beta\chi)\,u=-u .\]
+
+The two matrices are Hermitian, have square one and commute. The
+prototype \texttt{provenance/paused/vortex\_prototype\_algebra.py}
+evaluates these conditions with the matrices of
+\texttt{data/gamma1644.txt} and \texttt{data/gamma1671.txt}. Its
+results, the same for both spacetimes, all exact:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6420}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3580}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Quantity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Result
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Dimension of the space of spinors \(u\) that satisfy both conditions &
+4 \\
+The matrix \(i\alpha^1\alpha^2\alpha^3\chi\) (the product of the five
+matrices) & commutes with all five, is Hermitian and traceless and has
+square one: it is \(\pm P\), the generator of \(U(1)_E\) \\
+\(\alpha^3\) on the space of the four solutions & equal to
+\(i\alpha^1\alpha^2\alpha^3\chi\); eigenvalues \(+1,+1,-1,-1\) \\
+The same for the opposite winding (second condition with \(+u\)) &
+dimension 4; \(\alpha^3=-i\alpha^1\alpha^2\alpha^3\chi\) \\
+\end{longtable}
+
+Because the energy of such a solution with the wavenumber \(k_3\) along
+the line is \(\alpha^3k_3\), two of the four solutions move in the
+direction \(+x3\) and two in the direction \(-x3\), at the speed of
+light; the two directions are distinguished by the sign of \(P\). For a
+general winding number the count per four-component field is \(|n|\)
+(Jackiw and Rossi; an index theorem), so that the sixteen-component
+field has \(4|n|\) zero modes, \(2|n|\) in each direction.
+
+A second prototype,
+\texttt{provenance/paused/vortex\_prototype\_profile.py}, solves the
+equation of the profile of the vortex,
+\(f''+f'/\rho-n^2f/\rho^2=\tfrac12f(f^2-1)\) with
+\(\rho=m_s\times\)(distance from the line), by two methods. For \(n=1\)
+it gives the slope \(f'(0)=0.4123772\), which is the known value
+\(0.58319/\sqrt2\) of the vortex of the Ginzburg-Pitaevskii equation,
+and the constant \(0.0343\) in the energy per unit length
+\(\pi v_{VS}^2[\ln(m_sR)+0.0343]\) inside a radius \(R\), which
+corresponds to the known form \(\ln(1.464\,R/\xi)\) of that equation.
+
+\textbf{What is not done.} These are prototype results. They are not
+part of the Rust program, they have no unit tests, and the documents
+have not been changed.
+
+\textbf{To complete.} (1) Add a module \texttt{vortex.rs} and a command
+\texttt{spacetimes\ vortex} to the Rust program: the algebra above for
+both spacetimes; the profile for \(n=1,2\); the radial functions of the
+zero modes; the count of normalizable solutions in each angular-momentum
+channel; unit tests; data files; one figure. (2) Correct the two
+passages, and say in Sec. XIII of the manuscripts that the result is now
+computed. (3) Enter the new symbols in the registry of P1, extend P8,
+complete entry E43 of P9. (4) Run the fixed point of the symbol checks
+and rebuild all documents that changed.
+
+\hypertarget{other-things-that-were-still-to-be-done}{%
+\section{4. Other things that were still to be
+done}\label{other-things-that-were-still-to-be-done}}
+
+\begin{itemize}
+\tightlist
+\item
+  The final report to the author, with three questions: whether the
+  affiliation printed in the manuscripts (``Independent researcher'',
+  taken from the manuscript of the project NCSS) is the one wanted;
+  whether the reference code CLASS may be built and run on this computer
+  (it was not; the comparison uses the spectra stored in the project
+  NCSS); and a reminder that the journal asks authors to state how a
+  manuscript was prepared, while the manuscripts, as instructed, contain
+  no such statement.
+\item
+  The code was executed in the cloud workspace, not under macOS: the
+  sandbox on the author's Mac has no Rust compiler.
+  \texttt{provenance/P8\_code} gives the commands for macOS; they have
+  not been run there.
+\end{itemize}
+
+\hypertarget{what-is-not-affected-by-the-pause}{%
+\section{\texorpdfstring{5. What is \emph{not} affected by the
+pause}{5. What is not affected by the pause}}\label{what-is-not-affected-by-the-pause}}
+
+The work in \texttt{Revision\_Deflation} is a separate piece of work
+with hypotheses of its own. It uses the programs and matrices of this
+project, but it does not change any file outside its folder, and its
+documents state their own results. The pending correction E43 concerns
+vortex lines, which the revision treats independently.
+
+\end{document}

@@ -188,7 +188,7 @@
 | `S1` | every name of the registry belongs to exactly one entry (78 names in 113 entries) | passed |
 | `S2` | no name of the registry is a symbol defined in any of the 14 notebooks (1921 notebook symbols compared; exempt: the 8 coordinate names x0 ... x7, taken from N04 with the same meaning) | passed |
 | `S3` | 65 of the 78 names of the registry carry the tag 1644 or 1671 or the suffix VS; of the other 13, 8 are the coordinate names (deliberately those of the notebooks, S2) and 5 (F_pseudoscalar, F_scalar, J5, sigma88, swap04) are symbols of no notebook | passed |
-| `S4` | every name with the tag 1644 or 1671 that occurs in a data file or a document is in the registry (48 different names in 93 files; 4 further tokens are names of columns, bibliography keys or program variables) | passed |
+| `S4` | every name with the tag 1644 or 1671 that occurs in a data file or a document is in the registry (48 different names in 94 files; 4 further tokens are names of columns, bibliography keys or program variables) | passed |
 | `S5` | every name with the suffix VS that occurs in a data file or a document is in the registry (17 different names) | passed |
 | `S6` | no symbol of any notebook contains the tag 1644 or 1671 or ends with VS, so a tagged name cannot be mistaken for a symbol of a notebook | passed |
 | `S7` | the manuscripts contain none of the 34 original names of the objects taken from the notebooks (T16, Γ17, η4488, χ17, τO, g44, ...): they use the symbols of the registry only | passed |

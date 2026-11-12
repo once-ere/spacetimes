@@ -70,13 +70,14 @@ Every document exists in three versions with the same name: Markdown (`.md`), La
 | `manuscript/` | the two manuscripts (REVTeX, PDF, Markdown) and their bibliography |
 | `dirac matrices.*` | provenance "dirac matrices": definitions, theorems, proofs and worked examples for both sets of matrices |
 | `supplement/` | Supplements S1 to S4 |
-| `provenance/` | P0 (how commits reach GitHub), P1 (MASTER provenance of the symbols), P2 (the PDF files used), P3 (the notebooks used), P8 (the code), P9 (the error log); `symbols.csv`; `inputs_sha256.txt`; `generated/` (fragments made by the programs) |
+| `provenance/` | P0 (how commits reach GitHub), P1 (MASTER provenance of the symbols), P2 (the PDF files used), P3 (the notebooks used), P8 (the code), P9 (the error log), P11 (the stages that were paused on November 12, 2026, and how to complete them; `paused/` holds two prototypes of such a stage); `symbols.csv`; `inputs_sha256.txt`; `generated/` (fragments made by the programs) |
 | `code/spacetimes-rs/` | the Rust program that computes everything (no external libraries; 63 unit tests) |
 | `code/scripts/` | Python scripts: independent verification, tables, figures, building of the documents, checks of the symbols |
 | `tools/` | reading the Mathematica notebooks without Mathematica |
 | `data/` | every data file that a program wrote, each with a header that states the program, the command, the content and the units |
 | `figures/` | every figure, as PDF and PNG |
 | `docs_src/` | the sources of the documents, with placeholders for the generated numbers |
+| `Revision_Deflation/` | a second piece of work, begun on November 12, 2026: every calculation repeated under the hypothesis that the coordinates $x5$, $x6$, $x7$ deflate exponentially; it has its own programs, data, figures, provenances and manuscripts, and its own `README` |
 
 Not in the repository: the author's Mathematica notebooks, the nine published papers
 of the project folder, and the task specification. The provenances identify these
