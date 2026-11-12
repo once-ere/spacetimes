@@ -467,6 +467,15 @@ pub fn verify_71(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
         chi.re.is_zero() && chi.im == IMat::block2(&z8, &id8.neg(), &id8, &z8)
             && two_pl.re == id16 && two_pl.im == IMat::block2(&z8, &id8, &id8.neg(), &z8) && two_pr.im == IMat::block2(&z8, &id8.neg(), &id8, &z8));
 
+    // relation to the real projectors of 4+4.nb.  7+1.nb (section 4.3) maps the real matrices to the
+    // complex set Gamma71 = S.(i Gamma17).S^(-1) with the unitary S = (1 - i Gamma17[0])/sqrt(2); then
+    // S.Gamma17[8].S^(-1) = Gamma71[8] and, with the notebook's chi71 := -i Gamma71[8] = T16[8],
+    // S.chi17.S^(-1) = S.(i Gamma17[8]).S^(-1) = -T16[8].  Checked as  s.chi = -T16[8].s  with s = 1 - i Gamma17[0].
+    let smat = GMat { re: id16.clone(), im: gnb[0].neg() };
+    let t8 = GMat::from_real(&gm.t16_8);
+    rep.add("71-P5", "exact", "with s := 1 - i Gamma17[0] (s.s^dagger = 2, so S = s/sqrt(2) is unitary): s.chi71 = -T16[8].s, i.e. S.chi71.inverse(S) = -omega44.  Hence S.P_L(71).inverse(S) = P_R(44) and S.P_R(71).inverse(S) = P_L(44): the complex chiral projectors of 7+1 are unitarily equivalent to the real projectors of 4+4.nb, with the names L and R exchanged (7+1.nb uses chi17 = +i Gamma17[8] for the real matrices but chi71 = -i Gamma71[8] for the complex ones)",
+        smat.mul(&smat.dagger()) == one.scale(2) && smat.mul(&chi) == t8.mul(&smat).scale(-1));
+
     // ---- adjoint, charge conjugation ------------------------------------------------------
     rep.add("71-S1", "exact", "Dirac adjoint: transpose(gamma71[A]) = gamma71[4].gamma71[A].gamma71[4] for A = 0..7 (gamma71[4] is the time-like matrix; it is symmetric and squares to +1)",
         g[4].is_symmetric() && g[4].mul(&g[4]) == id16 && (0..8).all(|a| g[a].transpose() == g[4].mul(&g[a]).mul(&g[4])));

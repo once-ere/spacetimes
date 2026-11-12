@@ -6,9 +6,10 @@
 //! cargo run --release --manifest-path code/spacetimes-rs/Cargo.toml -- matrices
 //! ```
 //!
-//! `matrices`  builds the two sets of Dirac matrices, runs every check, and writes
-//!             data/gamma44.txt, data/gamma71.txt, data/matrix_checks.{txt,csv} and
-//!             provenance/generated/matrices.md.
+//! `matrices`  builds the two sets of Dirac matrices, runs every check (matrices,
+//!             Dirac equations, fermion pairs), and writes data/gamma44.txt,
+//!             data/gamma71.txt, data/matrix_checks.{txt,csv},
+//!             data/pair_classification.{csv,txt} and provenance/generated/matrices.md.
 
 use spacetimes::export::{latex_gmat, latex_imat, write_matrices, write_report, Fragments};
 use spacetimes::gamma::{pi71, ETA44, ETA71};
@@ -19,6 +20,11 @@ fn cmd_matrices() -> std::io::Result<bool> {
     let nb44 = "data/notebook_matrices_4+4.txt";
     let nb71 = "data/notebook_matrices_7+1.txt";
     let (gm, mut rep) = verify::run_all(nb44, nb71);
+    // the two Dirac equations, and the classification of fermion pairs
+    spacetimes::dirac::verify_dirac_44(&gm, &mut rep);
+    spacetimes::dirac::verify_dirac_71(&gm, &mut rep);
+    let pair_lines = spacetimes::pairs::run(&gm, &mut rep)?;
+    std::fs::write("data/pair_classification.txt", pair_lines.join("\n") + "\n")?;
     let id16 = IMat::identity(16);
 
     // ---------------- plain-text matrix files ---------------------------------------
