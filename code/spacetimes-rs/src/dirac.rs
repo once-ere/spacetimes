@@ -113,7 +113,7 @@ pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
         }
         GMat { re: g[4].scale(-m), im }
     };
-    rep.add("44-D6", "exact", "alpha1644^a := gamma1644[4].gamma1644[a] (a = 0..3) are real symmetric with square +1; gamma1644[4].gamma1644[t] (t = 5, 6, 7) are real antisymmetric with square -1; gamma1644[4] is real antisymmetric with square -1",
+    rep.add("44-D6", "exact", "gamma1644[4].gamma1644[a] (a = 0..3) are real symmetric with square +1 (and so are alpha1644^a := -gamma1644[4].gamma1644[a], the matrices of the Hamiltonian h1644 = alpha1644^a k_a + beta1644 m1644, beta1644 := -i gamma1644[4]); gamma1644[4].gamma1644[t] (t = 5, 6, 7) are real antisymmetric with square -1; gamma1644[4] is real antisymmetric with square -1",
         (0..4).all(|a| { let x = g[4].mul(&g[a]); x.is_symmetric() && x.mul(&x) == id16 }) && (5..8).all(|t| { let x = g[4].mul(&g[t]); x.is_antisymmetric() && x.mul(&x) == id16.neg() })
             && g[4].is_antisymmetric() && g[4].mul(&g[4]) == id16.neg());
     let mut ok_sq = true;

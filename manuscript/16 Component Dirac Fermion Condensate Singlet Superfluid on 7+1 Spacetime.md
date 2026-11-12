@@ -79,7 +79,7 @@ All programs, all data and the documents that record the provenance of every num
 Section II defines the Dirac matrices and proves their properties. Section III gives the Dirac equation and its quantization. Section IV determines which fermion pairs exist. Section V invents the Vorton-Scalar. Section VI derives the pairing interaction, Sec. VII the paired state, and Sec. VIII its order parameter and ground state. Section IX follows the Vorton-Scalar into matter, to finite temperature and into the vacuum. Section X examines the Higgs hypothesis, Secs. XI and XII the Hubble tension and the dark matter. Section XIII collects the predictions, Sec. XIV lists the principal statements with their status, and Sec. XV concludes. Each of Secs. II to XII ends with a subsection that separates what has been established from what has not.
 
 *Coordinates.* The eight coordinates are $$X=\{x0,\;x1,\;x2,\;x3,\;x4,\;x5,\;x6,\;x7\}.
-\tag{1}$$ They are never renamed. The coordinates $x1,x2,x3$ are the Cartesian coordinates $x,y,z$ of ordinary space, and $x4$ is the ordinary time. The coordinate $x0$ is a *hidden* space-like coordinate. The coordinates $x5,x6,x7$ are three additional space-like coordinates. A capital index $A,B,\dots\in\{0,\dots,7\}$ labels the coordinate $xA$, with $\partial_A=\partial/\partial x^A$ and summation over repeated indices. Three smaller index sets recur: $i,j\in\{1,2,3\}$ for ordinary space; $a,b\in\{0,5,6,7\}$ for the hidden axis and the three additional coordinates, which we call *the four extra axes*; and $t\in\{5,6,7\}$ for the three additional coordinates alone.
+\tag{1}$$ They are never renamed. The coordinates $x1,x2,x3$ are the Cartesian coordinates $x,y,z$ of ordinary space, and $x4$ is the ordinary time. The coordinate $x0$ is a *hidden* space-like coordinate. The coordinates $x5,x6,x7$ are three additional space-like coordinates. A capital index $A,B,\dots\in\{0,\dots,7\}$ labels the coordinate $xA$, with $\partial_A=\partial/\partial x^A$ and summation over repeated indices. Three smaller index sets recur: $i,j$ for space-like coordinates, with the values $1,2,3$ of ordinary space unless a sum is said to run over all space-like coordinates of the spacetime; $a,b\in\{0,5,6,7\}$ for the hidden axis and the three additional coordinates, which we call *the four extra axes*; and $t\in\{5,6,7\}$ for the three additional coordinates alone.
 
 *Units.* $\hbar=c=k_B=1$.
 
@@ -397,7 +397,7 @@ Varying Eq. (40) with respect to $\bar\psi$ and $\Phi_{\mathrm{VS}}^*$ gives th
 
 ### G. The internal symmetry of the zero-mode sector
 
-The pairing calculation of the following sections uses fields that do not depend on the four extra coordinates: all momenta lie in ordinary space. In this zero-mode sector the dynamics is fixed by five Hermitian matrices only, $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$, and an *internal symmetry* is a unitary transformation $\psi\to e^{i\theta a}\psi$ of the sixteen components whose generator $a$ commutes with all five. The set of all such generators was computed from the matrices of each spacetime, by solving the linear equations that express the commutation. Table II gives the result.
+The pairing calculation of the following sections uses fields that do not depend on the four extra coordinates: all momenta lie in ordinary space. In this zero-mode sector the dynamics is fixed by five Hermitian matrices only, $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$, and an *internal symmetry* is a unitary transformation $\psi\to e^{i\theta\mathsf g}\psi$ of the sixteen components whose generator, a Hermitian matrix $\mathsf g$, commutes with all five. The set of all such generators was computed from the matrices of each spacetime, by solving the linear equations that express the commutation. Table II gives the result.
 
 | Quantity computed from the matrices                                                            | $7{+}1$                                    | $4{+}4$                                    |
 |:-----------------------------------------------------------------------------------------------|:-------------------------------------------|:-------------------------------------------|
@@ -600,7 +600,7 @@ Figure 2 and Table V show the result that matters for hypothesis H1. *The gap 
 
 At low density the attraction (59) is felt by two fermions alone. Whether they bind is decided by one number, $$D_{\mathrm{VS}}\equiv\frac{\alpha_{\mathrm{VS}}\,m}{m_s}.
 \tag{73}$$ The radial Schrödinger equation of the relative motion, with the reduced mass $m/2$, is $u''+D_{\mathrm{VS}}\,e^{-\rho}u/\rho=\varepsilon u$ in the variables $\rho=m_sr$ and $\varepsilon=mE_b/m_s^2$, where $E_b$ is the binding energy. Its numerical integration gives a bound state if and only if $$D_{\mathrm{VS}}>D_c=1.67981,
-\tag{74}$$ which is the critical value known for the Yukawa potential ([Rogers, Graboske, and Harwood 1970](#ref-RogersGraboskeHarwood1970)). The scattering length has the Born limit $a=-D_{\mathrm{VS}}/m_s$ for weak coupling and diverges at $D_c$ (Fig. 3).
+\tag{74}$$ which is the critical value known for the Yukawa potential ([Rogers, Graboske, and Harwood 1970](#ref-RogersGraboskeHarwood1970)). The scattering length $a_{\rm sc}$ has the Born limit $a_{\rm sc}=-D_{\mathrm{VS}}/m_s$ for weak coupling and diverges at $D_c$ (Fig. 3).
 
 <figure>
 <img src="../figures/fig_dimer.png" />
@@ -650,19 +650,19 @@ The potential (68) was evaluated on the momentum grid for twelve of the paramete
 
 TABLE VII. Checks of the paired state through the CJT potential (68). $m_s$ and $k_F$ are in units of $m$. “Newton” and “scan” are the largest relative differences between the gap function found by Newton’s method on the potential and, respectively, the gap function found by iteration and the gap stored by the scan of Sec. VII D. $V/V_{\rm BCS}$ is the condensation energy relative to its weak-coupling value. The last column is the relative difference between the two determinations of $T_c$.
 
-*The Ginzburg-Landau coefficients.* Near $T_c$ the potential can be expanded along a gap function of fixed shape, $\Delta(k)=s\,\varphi(k)$, where $\varphi$ is the solution of the linearized gap equation normalized to 1 at the Fermi momentum: $V=\alpha(T)\,s^2+\tfrac12\beta\,s^4+\dots$ Expanding Eq. (68) gives $$\begin{aligned}
-\alpha(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\\
-\frac\beta2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
+*The Ginzburg-Landau coefficients.* Near $T_c$ the potential can be expanded along a gap function of fixed shape, $\Delta(k)=s\,\varphi(k)$, where $\varphi$ is the solution of the linearized gap equation normalized to 1 at the Fermi momentum: $V=A_2(T)\,s^2+\tfrac12A_4\,s^4+\dots$ Expanding Eq. (68) gives $$\begin{aligned}
+A_2(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\\
+\frac{A_4}2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
 \tag{75}
-\end{aligned}$$ where $\eta(T)$ is the largest eigenvalue of the linearized gap equation, with $\eta(T_c)=1$, and $\kappa'$, $\kappa'''$ are the first and third derivatives of Eq. (66) with respect to $\Delta$ at $\Delta=0$. With a constant density of states these expressions reduce at $T_c$ to the weak-coupling coefficients $a$ and $b$ of Eq. (79) below, with $\alpha=8a$ and $\beta=8b$. The gradient coefficient $K$ is obtained independently, from the dependence of the pair susceptibility on the momentum of the pair. Table VIII compares the three coefficients, extracted numerically at $T_c$, with the weak-coupling formulas: they agree within 1.0 per cent, and the deviations decrease with the coupling.
+\end{aligned}$$ where $\eta(T)$ is the largest eigenvalue of the linearized gap equation, with $\eta(T_c)=1$, and $\kappa'$, $\kappa'''$ are the first and third derivatives of Eq. (66) with respect to $\Delta$ at $\Delta=0$. With a constant density of states these expressions reduce at $T_c$ to the weak-coupling coefficients $a$ and $b$ of Eq. (79) below, with $A_2=8a$ and $A_4=8b$. The gradient coefficient $K_{\rm GL}$ is obtained independently, from the dependence of the pair susceptibility on the momentum of the pair. Table VIII compares the three coefficients, extracted numerically at $T_c$, with the weak-coupling formulas: they agree within 1.0 per cent, and the deviations decrease with the coupling.
 
-| $g_{\mathrm{VS}}$ | $m_s/m$ | $k_F/m$ |  $a$   |  $b$   |  $K$   |
-|:-----------------:|:-------:|:-------:|:------:|:------:|:------:|
-|         3         |    1    |   0.5   | 0.9993 | 0.9949 | 1.0101 |
-|         2         |   0.3   |    1    | 0.9998 | 0.9996 | 1.0007 |
-|         2         |    1    |    1    | 1.0000 | 1.0003 | 1.0000 |
+| $g_{\mathrm{VS}}$ | $m_s/m$ | $k_F/m$ |  $a$   |  $b$   | $K_{\rm GL}$ |
+|:-----------------:|:-------:|:-------:|:------:|:------:|:------------:|
+|         3         |    1    |   0.5   | 0.9993 | 0.9949 |    1.0101    |
+|         2         |   0.3   |    1    | 0.9998 | 0.9996 |    1.0007    |
+|         2         |    1    |    1    | 1.0000 | 1.0003 |    1.0000    |
 
-TABLE VIII. The Ginzburg-Landau coefficients extracted from the CJT potential at $T_c$, divided by the weak-coupling formulas of Eq. (79): $a$ and $b$ from the expansion of the potential, $K$ from the pair susceptibility.
+TABLE VIII. The Ginzburg-Landau coefficients extracted from the CJT potential at $T_c$, divided by the weak-coupling formulas of Eq. (79): $a$ and $b$ from the expansion of the potential, $K_{\rm GL}$ from the pair susceptibility.
 
 ### G. Thermodynamics of the paired state
 
@@ -715,25 +715,25 @@ The condensate is described by the expectation values of the four vector pair op
 
 Near the critical temperature the free energy can be expanded in the order parameter. At weak coupling the expansion of Ginzburg and Landau, as derived from the microscopic theory by Gor’kov ([Gor’kov 1959](#ref-Gorkov1959)), is $$\begin{aligned}
 \mathcal F={}&a(T)\,\mathrm{Tr}\big[\mathsf{M}\mathsf{M}^\dagger\big]+\frac b2\,\mathrm{Tr}\big[(\mathsf{M}\mathsf{M}^\dagger)^2\big]\\
-&+K\,\mathrm{Tr}\big[\nabla\mathsf{M}\cdot\nabla\mathsf{M}^\dagger\big]+\dots,\\
+&+K_{\rm GL}\,\mathrm{Tr}\big[\nabla\mathsf{M}\cdot\nabla\mathsf{M}^\dagger\big]+\dots,\\
 a(T)={}&\frac{N(0)}2\ln\frac{T}{T_c},\qquad b=\frac{7\zeta(3)}{16\pi^2T_c^2}N(0),\\
-K={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
+K_{\rm GL}={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
 \tag{79}
 \end{aligned}$$ with the Fermi velocity $v_F$ and the density of states $N(0)$ of Eq. (72). For a unitary state this is the textbook energy of four independent copies of a spin-$\tfrac12$ superconductor. Section VII F confirmed the three coefficients from the CJT potential.
 
 The form of the quartic term is decided by one matrix identity. The program verifies it from the matrices of both spacetimes, with a largest deviation of $2.1\times10^{-14}$ for the present one: $$\begin{aligned}
-\frac18\mathrm{Tr}\big[\mathsf{M}\mathsf{M}^\dagger\big]&=\sum_a|\Delta^a|^2\equiv\mathcal S,\\
-\frac18\mathrm{Tr}\big[(\mathsf{M}\mathsf{M}^\dagger)^2\big]&=2\,\mathcal S^2-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
+\frac18\mathrm{Tr}\big[\mathsf{M}\mathsf{M}^\dagger\big]&=\sum_a|\Delta^a|^2\equiv|\Delta|^2,\\
+\frac18\mathrm{Tr}\big[(\mathsf{M}\mathsf{M}^\dagger)^2\big]&=2\,|\Delta|^4-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
 \tag{80}
 \end{aligned}$$ where $\eta_{ab}$ is the metric of the spacetime restricted to the four extra axes, $$\eta_{ab}=\mathrm{diag}(-1,-1,-1,-1)\qquad(a,b\in\{0,5,6,7\})
 \tag{81}$$ for the $7{+}1$ spacetime: all four extra axes are space-like. On the $4{+}4$ spacetime the hidden axis is space-like and the other three are time-like, and $\eta_{ab}=\mathrm{diag}(+1,-1,-1,-1)$. *The signature of the spacetime thus enters the energy of the superfluid through the quadratic form $\eta_{ab}\Delta^a\Delta^b$.* It is the invariant form (53) of the internal symmetry.
 
-Equation (80) is a statement about the sum of the fourth powers of the gaps. The complete statement, which the program also verifies, is that the eight eigenvalues of $\mathsf{M}\mathsf{M}^\dagger$ form two fourfold sets, $$d_\pm^2=\mathcal S\pm\sqrt{\mathcal S^2-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
-\tag{82}$$ A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=\mathcal S$.
+Equation (80) is a statement about the sum of the fourth powers of the gaps. The complete statement, which the program also verifies, is that the eight eigenvalues of $\mathsf{M}\mathsf{M}^\dagger$ form two fourfold sets, $$d_\pm^2=|\Delta|^2\pm\sqrt{|\Delta|^4-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
+\tag{82}$$ A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=|\Delta|^2$.
 
 ### C. The ground state, and the hidden-axis singlet
 
-At fixed $\mathcal S$ the quartic term (80) is smallest when $|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $\mathcal S$. The ground states are therefore the unitary states: all eight quasiparticle branches have the same gap, and the condensation energy is the largest possible. The minimizing configurations are $$\Delta^a=|\Delta|\,e^{i\varphi}\,n^a
+At fixed $|\Delta|^2$ the quartic term (80) is smallest when $|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $|\Delta|^2$. The ground states are therefore the unitary states: all eight quasiparticle branches have the same gap, and the condensation energy is the largest possible. The minimizing configurations are $$\Delta^a=|\Delta|\,e^{i\varphi}\,n^a
 \tag{83}$$ with a phase $\varphi$ and a *real* unit vector $n^a$ in the space of the four extra axes. The *hidden-axis singlet* of hypothesis H1, $$\Delta^a=\Delta\,\delta^{a0},\qquad\big\langle\psi_{1671}^T\,C^{-}_{1671}\gamma_{1671}^0\,\psi_{1671}\big\rangle\neq0,
 \tag{84}$$ is a member of this family. Its properties were proved in Sec. IV C: the pair has ordinary spin 0; it is invariant under the rotations of ordinary space and of the coordinates $x5,x6,x7$; and it is a scalar under the Lorentz group of the seven coordinates other than $x0$.
 
@@ -787,7 +787,7 @@ i\partial_4\psi&=(\mathsf{h}-\mu)\,\psi+\hat\Delta\,\psi^{\dagger T},\\
 \hat\Delta(\vec p)&=U(\vec p)^{*}\,\mathsf{M}(\vec p)\,U(-\vec p)^{\dagger},
 \tag{86}
 \end{aligned}$$ in which $\hat\Delta$ is the $16\times16$ pair potential built from the gap matrix (78), and the gap obeys the self-consistency equation (71). Near $T_c$ the order parameter varies slowly and obeys the Ginzburg-Landau equation that follows from Eqs. (79) and (80) by variation with respect to $\Delta^{a*}$, $$\begin{aligned}
--K\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\\
+-K_{\rm GL}\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\\
 &-\big(\eta_{cd}\Delta^c\Delta^d\big)\,\eta_{ab}\,\Delta^{b*}\Big]=0 .
 \tag{87}
 \end{aligned}$$ For a uniform unitary state it gives $a+b|\Delta|^2=0$, that is, $|\Delta|^2=\frac{8\pi^2}{7\zeta(3)}T_c^2(1-T/T_c)$ near $T_c$.
@@ -842,7 +842,7 @@ C&>\frac{3\pi^2}{5}\quad\text{(with the sea term)}.
 \tag{92}
 \end{aligned}$$ The program finds 3.7011 and 5.9218. The closed values follow from the energy of the abnormal state: massless fermions with a pressure equal to the energy density $B$ of the state without expectation value, as in the bag model of hadrons ([Chodos et al. 1974](#ref-Chodos1974)), have the energy per particle $(24\pi^2B/\nu)^{1/4}$, and $B=m^4/8C$ at tree level, $B=m^4/8C+\nu m^4/64\pi^2$ with the sea term. The bound state is always the abnormal one. For large $C$ a fermion in bulk matter has much less energy than a free one: 43 per cent less for $C=35.5$ without the sea term, 17 per cent with it.
 
-*The dilute gas is mechanically unstable above a low density.* At low density the criterion is $k_F>\pi^2m/4C$, or, in terms of the scattering length $a=-g_{\mathrm{VS}}^2m/4\pi m_s^2$ of the mean-field interaction, $k_F|a|>\pi/16$.
+*The dilute gas is mechanically unstable above a low density.* At low density the criterion is $k_F>\pi^2m/4C$, or, in terms of the scattering length $a_{\rm sc}=-g_{\mathrm{VS}}^2m/4\pi m_s^2$ of the mean-field interaction, $k_F|a_{\rm sc}|>\pi/16$.
 
 ### B. A warning about strong coupling
 
@@ -876,7 +876,7 @@ E_x={}&\frac{g_{\mathrm{VS}}^2}{2}\,\frac\nu2\!\int\!\!\int_{k,k'<k_F}\!\frac{d^
 \frac{EE'\pm m^{*2}-\vec k\cdot\vec k'}{EE'}\\
 &\times\frac{1}{|\vec k-\vec k'|^2+M^2},
 \tag{93}
-\end{aligned}$$ with the upper sign and $M=m_s$ for the radial mode and the lower sign and $M=0$ for the phase mode. Both contributions are positive. Evaluated for 16 combinations of $C$, $m_s/m$ and $k_F/m$, the exchange of the radial mode reduces the mean-field attraction by at most 12.6 per cent, the factor $1/\nu$ expected for $\nu=8$ internal states, and by less when the range of the force exceeds the distance between the particles. The exchange of the phase mode is of relative size $2m_s^2/\nu^2m^2$ at low density: negligible for a light radial mode, but larger than the contribution of the radial mode for $m_s=3m$. The thresholds of Sec. IX A are therefore accurate to about ten per cent for $m_s\lesssim m$, and the criterion for the instability becomes $k_F|a|>\pi/14$ when the exchange is included.
+\end{aligned}$$ with the upper sign and $M=m_s$ for the radial mode and the lower sign and $M=0$ for the phase mode. Both contributions are positive. Evaluated for 16 combinations of $C$, $m_s/m$ and $k_F/m$, the exchange of the radial mode reduces the mean-field attraction by at most 12.6 per cent, the factor $1/\nu$ expected for $\nu=8$ internal states, and by less when the range of the force exceeds the distance between the particles. The exchange of the phase mode is of relative size $2m_s^2/\nu^2m^2$ at low density: negligible for a light radial mode, but larger than the contribution of the radial mode for $m_s=3m$. The thresholds of Sec. IX A are therefore accurate to about ten per cent for $m_s\lesssim m$, and the criterion for the instability becomes $k_F|a_{\rm sc}|>\pi/14$ when the exchange is included.
 
 ### D. Finite temperature: the fermion mass melts
 
@@ -1225,7 +1225,7 @@ In the densest systems of dark matter that are observed, the cores of dwarf sphe
 *Bound pairs.* The sound speed of the condensate today must be below $1.6\times10^{-11}$ of the speed of light, and the Thomas-Fermi radius below 0.37 pc. The reason for so strong a bound is visible in Fig. 14(b): such a condensate is like radiation in the early universe, and all perturbations that enter the horizon during that phase are erased. *The pressure of the condensate cannot produce the cores of kiloparsec size that motivate superfluid dark matter;* for a core of 1 kpc the half mode would be at 0.42 $h$ Mpc$^{-1}$, more than a hundred times too small. There is a second, independent obstacle. Bosons of the mass $m_B$ are condensed at the density $\rho$ and the temperature that corresponds to the velocity dispersion $\sigma$, $k_BT=m_B\sigma^2$, only if the number of particles in a cube with the edge of the thermal wavelength $\lambda$ satisfies $n\lambda^3\ge2.612$, that is, only if they are lighter than $$m_{B,\max}=\Big[\frac{(2\pi)^{3/2}\hbar^3\rho}{2.612\,\sigma^3}\Big]^{1/4},
 \tag{104}$$ which is 262 eV in a dwarf galaxy (Table XXII). The limit on their self-interaction demands the opposite, as shown next.
 
-*Self-interaction.* Colliding clusters of galaxies limit the cross section per unit mass of dark matter to about 1 cm$^2$/g ([Markevitch et al. 2004](#ref-Markevitch2004); [Randall et al. 2008](#ref-Randall2008)). A pair that is bound by the Yukawa potential of the radial mode has a size, and a scattering length, of at least the range $1/m_s$ of that potential, and binding requires $D_{\mathrm{VS}}>D_c$ (Sec. VII E). Identical bosons with the scattering length $a_s$ scatter at low energy with the cross section $8\pi a_s^2$; with $a_s=1/m_s$ and the mass $2m$ of a pair, the two conditions together give a smallest fermion mass, $m\ge[4\pi D_c^2/(\alpha_{\mathrm{VS}}^2\kappa)]^{1/3}$ with $\kappa=1$ cm$^2$/g, listed in Table XXIII for several couplings.
+*Self-interaction.* Colliding clusters of galaxies limit the cross section per unit mass of dark matter to about 1 cm$^2$/g ([Markevitch et al. 2004](#ref-Markevitch2004); [Randall et al. 2008](#ref-Randall2008)). A pair that is bound by the Yukawa potential of the radial mode has a size, and a scattering length, of at least the range $1/m_s$ of that potential, and binding requires $D_{\mathrm{VS}}>D_c$ (Sec. VII E). Identical bosons with the scattering length $a_{\rm sc}$ scatter at low energy with the cross section $8\pi a_{\rm sc}^2$; with $a_{\rm sc}=1/m_s$ and the mass $2m$ of a pair, the two conditions together give a smallest fermion mass, $m\ge[4\pi D_c^2/(\alpha_{\mathrm{VS}}^2\kappa)]^{1/3}$ with $\kappa=1$ cm$^2$/g, listed in Table XXIII for several couplings.
 
 | $\alpha_{\mathrm{VS}}$ | $m$ (MeV) | $m_s$ (MeV) | $1/m_s$ (fm) |    $n\lambda^3$     |
 |:----------------------:|:---------:|:-----------:|:------------:|:-------------------:|
@@ -1257,7 +1257,7 @@ The hypothesis has two readings, and they have different answers. Figure 15 sum
 
 Established: the suppression of structure by superfluid dark matter in both limits and the resulting bounds; and the elementary conditions for degeneracy, for condensation and for an acceptable self-interaction in halos, which the masses allowed by those bounds violate by large factors.
 
-Not established, or assumed: the translation of the limits from the Lyman-$\alpha$ forest into a half mode uses a fitting formula for thermal relics, whereas the spectrum of a fluid with sound waves has a different shape beyond the half mode; a dedicated analysis of those data could shift the bounds by a factor of order one, not by the orders of magnitude that separate them from the interesting values. For bound pairs a repulsive interaction between the pairs was assumed; with eight internal states it may be attractive, in which case the condensate is unstable to the formation of larger clusters. The sound speed of the degenerate gas was that of free fermions; the correction from the mean field of the Vorton-Scalar is of the relative order $k_F|a_s|$, with $a_s$ the scattering length, which the limit on the self-interaction keeps below $6.4\times10^{-13}$ in a dwarf galaxy for fermions of 1 keV. The abundance of the dark matter, the origin of the excess of particles, the thermal history of the dark sector and the formation of bound states were not addressed.
+Not established, or assumed: the translation of the limits from the Lyman-$\alpha$ forest into a half mode uses a fitting formula for thermal relics, whereas the spectrum of a fluid with sound waves has a different shape beyond the half mode; a dedicated analysis of those data could shift the bounds by a factor of order one, not by the orders of magnitude that separate them from the interesting values. For bound pairs a repulsive interaction between the pairs was assumed; with eight internal states it may be attractive, in which case the condensate is unstable to the formation of larger clusters. The sound speed of the degenerate gas was that of free fermions; the correction from the mean field of the Vorton-Scalar is of the relative order $k_F|a_{\rm sc}|$, with $a_{\rm sc}$ the scattering length, which the limit on the self-interaction keeps below $6.4\times10^{-13}$ in a dwarf galaxy for fermions of 1 keV. The abundance of the dark matter, the origin of the excess of particles, the thermal history of the dark sector and the formation of bound states were not addressed.
 
 ## XIII. Predictions
 
@@ -1705,7 +1705,7 @@ compile and test the program, recompute every data file, repeat the independent 
 | 1500–2000  | 0.13 | 0.08 | 0.12  | 0.06 | 0.19 | 0.09 |
 | 2001–2500  | 2.00 | 0.41 | 13.40 | 1.53 | 8.65 | 2.31 |
 
-TABLE XXIX. Differences, in per cent, between the spectra of this work, lensed with the lensing potential of the reference, and those of <span class="smallcaps">class</span>: largest and root-mean-square values of $D_\ell/D_\ell^{\rm ref}-1$ for TT and EE and of $(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE. Below $\ell=30$ the polarization depends on the description of reionization; above $\ell=2000$ the lensed result depends on the continuation of the spectra beyond $\ell=2500$.
+TABLE XXIX. Differences, in per cent, between the spectra of this work, lensed with the lensing potential of the reference, and those of <span class="smallcaps">class</span>: largest and root-mean-square values of $D_\ell/D_\ell^{\rm ref}-1$ for TT and EE and of $(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE, where $D_\ell\equiv\ell(\ell+1)C_\ell/2\pi$ and $C_\ell$ is an angular power spectrum. Below $\ell=30$ the polarization depends on the description of reionization; above $\ell=2000$ the lensed result depends on the continuation of the spectra beyond $\ell=2500$.
 
 All calculations are performed by one program, written in the language Rust, with 63 unit tests; the figures and tables are produced from its output files by scripts. This appendix summarizes the methods; the source code is commented, and the repository ([Patrick Lee Nash 2026c](#ref-SpacetimesRepo)) documents, for every number of this paper, the command that produces it.
 
@@ -1720,10 +1720,10 @@ All calculations are performed by one program, written in the language Rust, wit
 *Cosmology.* The background is integrated by Gauss-Legendre quadrature. Recombination follows Saha equilibrium at early times and then the rate equations of the effective three-level atoms ([Seager, Sasselov, and Scott 1999](#ref-SeagerSasselovScott1999), [2000](#ref-SeagerSasselovScott2000); [Wong, Moss, and Scott 2008](#ref-WongMossScott2008)); reionization is a step whose redshift is fitted to the optical depth. The perturbations obey 50 coupled equations per wavenumber, integrated with an adaptive Runge-Kutta method of Dormand and Prince, with the tight-coupling approximation of first order at early times. The spectra are obtained by integration along the line of sight with tabulated spherical Bessel functions. Table XXIX gives the comparison with <span class="smallcaps">class</span> by ranges of the multipole.
 
 *Mock likelihood.* For Gaussian fields observed on a fraction $f_{\rm sky}$ of the sky, $$\begin{aligned}
-\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\mathrm{Tr}\big(D_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det D_\ell}-n\Big]\\
+\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\mathrm{Tr}\big(\hat C_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det\hat C_\ell}-n\Big]\\
 &+\Big(\frac{\tau-\tau_0}{\sigma_\tau}\Big)^2,
 \tag{D1}
-\end{aligned}$$ where $C_\ell$ is the $n\times n$ matrix of the model spectra plus noise, for temperature and polarization, $D_\ell$ the same matrix for the data, and the last term the prior on the optical depth. A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise and range of multipoles, and their $\chi^2$ add.
+\end{aligned}$$ where $C_\ell$ is here the $n\times n$ matrix of the model spectra plus noise, for temperature and polarization, $\hat C_\ell$ the same matrix for the data, and the last term the prior on the optical depth $\tau$ (central value $\tau_0$, standard error $\sigma_\tau$). A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise and range of multipoles, and their $\chi^2$ add.
 
 ## References
 

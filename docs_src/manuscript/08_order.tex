@@ -36,9 +36,9 @@ coupling the expansion of Ginzburg and Landau, as derived from the microscopic t
 \cite{Gorkov1959}, is
 \begin{align}
 \mathcal F={}&a(T)\,\Tr\big[\MM\MM^\dagger\big]+\frac b2\,\Tr\big[(\MM\MM^\dagger)^2\big]\nonumber\\
-&+K\,\Tr\big[\nabla\MM\cdot\nabla\MM^\dagger\big]+\dots,\nonumber\\
+&+K_{\rm GL}\,\Tr\big[\nabla\MM\cdot\nabla\MM^\dagger\big]+\dots,\nonumber\\
 a(T)={}&\frac{N(0)}2\ln\frac{T}{T_c},\qquad b=\frac{7\zeta(3)}{16\pi^2T_c^2}N(0),\nonumber\\
-K={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
+K_{\rm GL}={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
 \label{eq:GL}
 \end{align}
 with the Fermi velocity $v_F$ and the density of states $N(0)$ of Eq.~(\ref{eq:lambda_coupling}). For
@@ -48,8 +48,8 @@ superconductor. Section~\ref{sec:checks} confirmed the three coefficients from t
 The form of the quartic term is decided by one matrix identity. The program verifies it from the
 matrices of both spacetimes, with a largest deviation of {{GEN:gl_dev_@SIG@}} for the present one:
 \begin{align}
-\frac18\Tr\big[\MM\MM^\dagger\big]&=\sum_a|\Delta^a|^2\equiv\mathcal S,\nonumber\\
-\frac18\Tr\big[(\MM\MM^\dagger)^2\big]&=2\,\mathcal S^2-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
+\frac18\Tr\big[\MM\MM^\dagger\big]&=\sum_a|\Delta^a|^2\equiv|\Delta|^2,\nonumber\\
+\frac18\Tr\big[(\MM\MM^\dagger)^2\big]&=2\,|\Delta|^4-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
 \label{eq:quartic}
 \end{align}
 where $\eta_{ab}$ is the metric of the spacetime restricted to the four extra axes,
@@ -68,16 +68,16 @@ Equation (\ref{eq:quartic}) is a statement about the sum of the fourth powers of
 complete statement, which the program also verifies, is that the eight eigenvalues of
 $\MM\MM^\dagger$ form two fourfold sets,
 \begin{equation}
-d_\pm^2=\mathcal S\pm\sqrt{\mathcal S^2-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
+d_\pm^2=|\Delta|^2\pm\sqrt{|\Delta|^4-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
 \label{eq:twogaps}
 \end{equation}
-A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=\mathcal S$.
+A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=|\Delta|^2$.
 
 \subsection{The ground state, and the hidden-axis singlet}
 \label{sec:ground}
 
-At fixed $\mathcal S$ the quartic term (\ref{eq:quartic}) is smallest when
-$|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $\mathcal S$. The ground states are
+At fixed $|\Delta|^2$ the quartic term (\ref{eq:quartic}) is smallest when
+$|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $|\Delta|^2$. The ground states are
 therefore the unitary states: all eight quasiparticle branches have the same gap, and the
 condensation energy is the largest possible. The minimizing configurations are
 \begin{equation}
@@ -232,7 +232,7 @@ in which $\hat\Delta$ is the $16\times16$ pair potential built from the gap matr
 order parameter varies slowly and obeys the Ginzburg-Landau equation that follows from
 Eqs.~(\ref{eq:GL}) and (\ref{eq:quartic}) by variation with respect to $\Delta^{a*}$,
 \begin{align}
--K\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\nonumber\\
+-K_{\rm GL}\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\nonumber\\
 &-\big(\eta_{cd}\Delta^c\Delta^d\big)\,\eta_{ab}\,\Delta^{b*}\Big]=0 .
 \label{eq:GLeq}
 \end{align}

@@ -252,10 +252,15 @@ Natural units \(\hbar=c=k_B=1\) are used.
 supplement}\label{symbols-introduced-in-this-supplement}}
 
 The symbols of ``dirac matrices'' keep their meaning and their tags
-(1644 for 4+4, 1671 for 7+1). The symbols below are new. None of them
-occurs in the author's notebooks or papers with another meaning, because
-each carries the subscript VS or a tag; the MASTER provenance
-(\texttt{provenance/P1\_master\_symbols}) records the check.
+(1644 for 4+4, 1671 for 7+1). The symbols below are new. Their names in
+the files carry the suffix VS or a tag, which no symbol of the author's
+notebooks contains (MASTER provenance,
+\texttt{provenance/P1\_master\_symbols}, check \texttt{S6}). A few of
+the letters used in formulas carry neither (\(m_s\), \(J_5\), \(F_S\),
+\(F_P\), \(\Delta^a\), \(\mathsf M\)); where such a letter also occurs
+in a notebook with another meaning, the MASTER provenance says so (its
+Sec. 6.3: \(m_s\), for example, is the mass of the strange quark in one
+section of \texttt{7+1.nb}).
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1528}}
@@ -569,10 +574,10 @@ on the four extra coordinates \(x0,x5,x6,x7\): all momenta lie in
 ordinary space. In this \textbf{zero-mode sector} the dynamics is fixed
 by five Hermitian matrices only --- \(\alpha^1,\alpha^2,\alpha^3\),
 \(\beta\) and \(i\beta\chi\) --- and an \emph{internal symmetry} is a
-unitary transformation \(\psi\to e^{i\theta a}\psi\) of the sixteen
-components whose generator \(a\) commutes with all five. The program
-\texttt{spacetimes\ symmetry} (\texttt{symmetry.rs};
-\texttt{data/reduced\_symmetry.csv}; unit test
+unitary transformation \(\psi\to e^{i\theta\mathsf g}\psi\) of the
+sixteen components whose generator, a Hermitian matrix \(\mathsf g\),
+commutes with all five. The program \texttt{spacetimes\ symmetry}
+(\texttt{symmetry.rs}; \texttt{data/reduced\_symmetry.csv}; unit test
 \texttt{symmetry::tests::zero\_mode\_symmetry\_is\_u2\_times\_u2\_in\_both\_signatures})
 computes the set of all such generators from the matrices of each
 spacetime. The result is \textbf{the same for 7+1 and 4+4}:

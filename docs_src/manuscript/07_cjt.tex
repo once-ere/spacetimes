@@ -266,7 +266,7 @@ where $E_b$ is the binding energy. Its numerical integration gives a bound state
 \label{eq:Dc}
 \end{equation}
 which is the critical value known for the Yukawa potential \cite{RogersGraboskeHarwood1970}. The
-scattering length has the Born limit $a=-\DVS/m_s$ for weak coupling and diverges at $D_c$
+scattering length $a_{\rm sc}$ has the Born limit $a_{\rm sc}=-\DVS/m_s$ for weak coupling and diverges at $D_c$
 (Fig.~\ref{fig:dimer}).
 
 \begin{figure*}
@@ -352,18 +352,18 @@ $\gVS$ & $m_s$ & $\kF$ & pair & $\Delta/\EF$ & Newton & scan & $V/V_{\rm BCS}$ &
 
 \emph{The Ginzburg-Landau coefficients.} Near $T_c$ the potential can be expanded along a gap function
 of fixed shape, $\Delta(k)=s\,\varphi(k)$, where $\varphi$ is the solution of the linearized gap
-equation normalized to 1 at the Fermi momentum: $V=\alpha(T)\,s^2+\tfrac12\beta\,s^4+\dots$ Expanding
+equation normalized to 1 at the Fermi momentum: $V=A_2(T)\,s^2+\tfrac12A_4\,s^4+\dots$ Expanding
 Eq.~(\ref{eq:Vpair}) gives
 \begin{align}
-\alpha(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\nonumber\\
-\frac\beta2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
+A_2(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\nonumber\\
+\frac{A_4}2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
 \label{eq:GLcjt}
 \end{align}
 where $\eta(T)$ is the largest eigenvalue of the linearized gap equation, with $\eta(T_c)=1$, and
 $\kappa'$, $\kappa'''$ are the first and third derivatives of Eq.~(\ref{eq:kappa}) with respect to
 $\Delta$ at $\Delta=0$. With a constant density of states these expressions reduce at $T_c$ to the
-weak-coupling coefficients $a$ and $b$ of Eq.~(\ref{eq:GL}) below, with $\alpha=8a$ and
-$\beta=8b$. The gradient coefficient $K$ is obtained independently, from the dependence of the pair
+weak-coupling coefficients $a$ and $b$ of Eq.~(\ref{eq:GL}) below, with $A_2=8a$ and
+$A_4=8b$. The gradient coefficient $K_{\rm GL}$ is obtained independently, from the dependence of the pair
 susceptibility on the momentum of the pair. Table~\ref{tab:gl} compares the three coefficients,
 extracted numerically at $T_c$, with the weak-coupling formulas: they agree within
 {{GEN:cjt_gl_worst}} per cent, and the deviations decrease with the coupling.
@@ -371,10 +371,10 @@ extracted numerically at $T_c$, with the weak-coupling formulas: they agree with
 \begin{table}
 \caption{\label{tab:gl}The Ginzburg-Landau coefficients extracted from the CJT potential at $T_c$,
 divided by the weak-coupling formulas of Eq.~(\ref{eq:GL}): $a$ and $b$ from the expansion of the
-potential, $K$ from the pair susceptibility.}
+potential, $K_{\rm GL}$ from the pair susceptibility.}
 \begin{ruledtabular}
 \begin{tabular}{cccccc}
-$\gVS$ & $m_s/m$ & $\kF/m$ & $a$ & $b$ & $K$ \\
+$\gVS$ & $m_s/m$ & $\kF/m$ & $a$ & $b$ & $K_{\rm GL}$ \\
 \hline
 {{ROWS:cjt_gl_table|cols=0,1,2,5,6,7}}
 \end{tabular}

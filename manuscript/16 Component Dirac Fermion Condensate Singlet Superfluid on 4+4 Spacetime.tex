@@ -285,9 +285,10 @@ They are never renamed. The coordinates $x1,x2,x3$ are the Cartesian coordinates
 space, and $x4$ is the ordinary time. The coordinate $x0$ is a \emph{hidden} space-like coordinate.
 The coordinates $x5,x6,x7$ are three additional time-like coordinates. A capital index $A,B,\dots\in\{0,\dots,7\}$ labels the coordinate $xA$, with
 $\partial_A=\partial/\partial x^A$ and summation over repeated indices. Three smaller index sets recur:
-$i,j\in\{1,2,3\}$ for ordinary space; $a,b\in\{0,5,6,7\}$ for the hidden axis and the three additional
-coordinates, which we call \emph{the four extra axes}; and $t\in\{5,6,7\}$ for the three additional
-coordinates alone.
+$i,j$ for space-like coordinates, with the values $1,2,3$ of ordinary space unless a sum is said to
+run over all space-like coordinates of the spacetime; $a,b\in\{0,5,6,7\}$ for the hidden axis and
+the three additional coordinates, which we call \emph{the four extra axes}; and $t\in\{5,6,7\}$ for
+the three additional coordinates alone.
 
 \emph{Units.} $\hbar=c=k_B=1$.
 
@@ -671,14 +672,14 @@ $\psi^\dagger\Cm\psi$ does not vanish.
 
 Here the four time-like dimensions show their consequences, and they must be stated without
 embellishment. Solve Eq.~(\ref{eq:dirac}) for $\partial_4\psi$, using $(\gamma^4)^{-1}=-\gamma^4$. For
-a field proportional to $\exp\big(i\sum_{a=0}^3k_ax^a+i\sum_{t=5}^7\kappa_tx^t\big)$,
+a field proportional to $\exp\big(i\sum_{j=0}^3k_jx^j+i\sum_{t=5}^7\kappa_tx^t\big)$,
 \begin{align}
 \partial_4\psi&=K\psi,\nonumber\\
-K&=-m\gamma^4+i\sum_{a=0}^{3}k_a\,\gamma^4\gamma^a+i\sum_{t=5}^{7}\kappa_t\,\gamma^4\gamma^t .
+K&=-m\gamma^4+i\sum_{j=0}^{3}k_j\,\gamma^4\gamma^j+i\sum_{t=5}^{7}\kappa_t\,\gamma^4\gamma^t .
 \label{eq:K}
 \end{align}
-Here $k_a$ are the four momenta along the space-like coordinates and $\kappa_t$ the three frequencies
-along the additional times. The matrices $\gamma^4\gamma^a$ are real and symmetric, while
+Here $k_j$ are the four momenta along the space-like coordinates and $\kappa_t$ the three frequencies
+along the additional times. The matrices $\gamma^4\gamma^j$ ($j=0,\dots,3$) are real and symmetric, while
 $\gamma^4\gamma^t$ and $\gamma^4$ are real and antisymmetric (check \texttt{44-D6}). Two exact results
 follow (checks \texttt{44-D7}, \texttt{44-D8}):
 \begin{align}
@@ -1138,8 +1139,8 @@ vacuum value. This is what makes the fermion mass depend on the density (Sec.~\r
 The pairing calculation of the following sections uses fields that do not depend on the four extra
 coordinates: all momenta lie in ordinary space. In this zero-mode sector the dynamics is fixed by five
 Hermitian matrices only, $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$, and an \emph{internal
-symmetry} is a unitary transformation $\psi\to e^{i\theta a}\psi$ of the sixteen components whose
-generator $a$ commutes with all five. The set of all such generators was computed from the matrices of
+symmetry} is a unitary transformation $\psi\to e^{i\theta\mathsf g}\psi$ of the sixteen components whose
+generator, a Hermitian matrix $\mathsf g$, commutes with all five. The set of all such generators was computed from the matrices of
 each spacetime, by solving the linear equations that express the commutation.
 Table~\ref{tab:symmetry} gives the result.
 
@@ -1687,7 +1688,7 @@ where $E_b$ is the binding energy. Its numerical integration gives a bound state
 \label{eq:Dc}
 \end{equation}
 which is the critical value known for the Yukawa potential \cite{RogersGraboskeHarwood1970}. The
-scattering length has the Born limit $a=-\DVS/m_s$ for weak coupling and diverges at $D_c$
+scattering length $a_{\rm sc}$ has the Born limit $a_{\rm sc}=-\DVS/m_s$ for weak coupling and diverges at $D_c$
 (Fig.~\ref{fig:dimer}).
 
 \begin{figure*}
@@ -1788,18 +1789,18 @@ $\gVS$ & $m_s$ & $\kF$ & pair & $\Delta/\EF$ & Newton & scan & $V/V_{\rm BCS}$ &
 
 \emph{The Ginzburg-Landau coefficients.} Near $T_c$ the potential can be expanded along a gap function
 of fixed shape, $\Delta(k)=s\,\varphi(k)$, where $\varphi$ is the solution of the linearized gap
-equation normalized to 1 at the Fermi momentum: $V=\alpha(T)\,s^2+\tfrac12\beta\,s^4+\dots$ Expanding
+equation normalized to 1 at the Fermi momentum: $V=A_2(T)\,s^2+\tfrac12A_4\,s^4+\dots$ Expanding
 Eq.~(\ref{eq:Vpair}) gives
 \begin{align}
-\alpha(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\nonumber\\
-\frac\beta2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
+A_2(T)&=\frac\nu2\big[1-\eta(T)\big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'\varphi^2,\nonumber\\
+\frac{A_4}2&=\nu\Big[\frac18-\frac{\eta(T)}{6}\Big]\!\int\!\!\frac{d^3k}{(2\pi)^3}\,\kappa'''\varphi^4,
 \label{eq:GLcjt}
 \end{align}
 where $\eta(T)$ is the largest eigenvalue of the linearized gap equation, with $\eta(T_c)=1$, and
 $\kappa'$, $\kappa'''$ are the first and third derivatives of Eq.~(\ref{eq:kappa}) with respect to
 $\Delta$ at $\Delta=0$. With a constant density of states these expressions reduce at $T_c$ to the
-weak-coupling coefficients $a$ and $b$ of Eq.~(\ref{eq:GL}) below, with $\alpha=8a$ and
-$\beta=8b$. The gradient coefficient $K$ is obtained independently, from the dependence of the pair
+weak-coupling coefficients $a$ and $b$ of Eq.~(\ref{eq:GL}) below, with $A_2=8a$ and
+$A_4=8b$. The gradient coefficient $K_{\rm GL}$ is obtained independently, from the dependence of the pair
 susceptibility on the momentum of the pair. Table~\ref{tab:gl} compares the three coefficients,
 extracted numerically at $T_c$, with the weak-coupling formulas: they agree within
 1.0 per cent, and the deviations decrease with the coupling.
@@ -1807,10 +1808,10 @@ extracted numerically at $T_c$, with the weak-coupling formulas: they agree with
 \begin{table}
 \caption{\label{tab:gl}The Ginzburg-Landau coefficients extracted from the CJT potential at $T_c$,
 divided by the weak-coupling formulas of Eq.~(\ref{eq:GL}): $a$ and $b$ from the expansion of the
-potential, $K$ from the pair susceptibility.}
+potential, $K_{\rm GL}$ from the pair susceptibility.}
 \begin{ruledtabular}
 \begin{tabular}{cccccc}
-$\gVS$ & $m_s/m$ & $\kF/m$ & $a$ & $b$ & $K$ \\
+$\gVS$ & $m_s/m$ & $\kF/m$ & $a$ & $b$ & $K_{\rm GL}$ \\
 \hline
 3 & 1 & 0.5 & 0.9993 & 0.9949 & 1.0101 \\
 2 & 0.3 & 1 & 0.9998 & 0.9996 & 1.0007 \\
@@ -1925,9 +1926,9 @@ coupling the expansion of Ginzburg and Landau, as derived from the microscopic t
 \cite{Gorkov1959}, is
 \begin{align}
 \mathcal F={}&a(T)\,\Tr\big[\MM\MM^\dagger\big]+\frac b2\,\Tr\big[(\MM\MM^\dagger)^2\big]\nonumber\\
-&+K\,\Tr\big[\nabla\MM\cdot\nabla\MM^\dagger\big]+\dots,\nonumber\\
+&+K_{\rm GL}\,\Tr\big[\nabla\MM\cdot\nabla\MM^\dagger\big]+\dots,\nonumber\\
 a(T)={}&\frac{N(0)}2\ln\frac{T}{T_c},\qquad b=\frac{7\zeta(3)}{16\pi^2T_c^2}N(0),\nonumber\\
-K={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
+K_{\rm GL}={}&\frac{7\zeta(3)}{96\pi^2T_c^2}N(0)\,v_F^2,
 \label{eq:GL}
 \end{align}
 with the Fermi velocity $v_F$ and the density of states $N(0)$ of Eq.~(\ref{eq:lambda_coupling}). For
@@ -1937,8 +1938,8 @@ superconductor. Section~\ref{sec:checks} confirmed the three coefficients from t
 The form of the quartic term is decided by one matrix identity. The program verifies it from the
 matrices of both spacetimes, with a largest deviation of $1.8\times10^{-14}$ for the present one:
 \begin{align}
-\frac18\Tr\big[\MM\MM^\dagger\big]&=\sum_a|\Delta^a|^2\equiv\mathcal S,\nonumber\\
-\frac18\Tr\big[(\MM\MM^\dagger)^2\big]&=2\,\mathcal S^2-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
+\frac18\Tr\big[\MM\MM^\dagger\big]&=\sum_a|\Delta^a|^2\equiv|\Delta|^2,\nonumber\\
+\frac18\Tr\big[(\MM\MM^\dagger)^2\big]&=2\,|\Delta|^4-\big|\eta_{ab}\,\Delta^a\Delta^b\big|^2 ,
 \label{eq:quartic}
 \end{align}
 where $\eta_{ab}$ is the metric of the spacetime restricted to the four extra axes,
@@ -1956,16 +1957,16 @@ Equation (\ref{eq:quartic}) is a statement about the sum of the fourth powers of
 complete statement, which the program also verifies, is that the eight eigenvalues of
 $\MM\MM^\dagger$ form two fourfold sets,
 \begin{equation}
-d_\pm^2=\mathcal S\pm\sqrt{\mathcal S^2-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
+d_\pm^2=|\Delta|^2\pm\sqrt{|\Delta|^4-\big|\eta_{ab}\Delta^a\Delta^b\big|^2}.
 \label{eq:twogaps}
 \end{equation}
-A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=\mathcal S$.
+A state is unitary, $d_+=d_-$, exactly when $|\eta_{ab}\Delta^a\Delta^b|=|\Delta|^2$.
 
 \subsection{The ground state, and the hidden-axis singlet}
 \label{sec:ground}
 
-At fixed $\mathcal S$ the quartic term (\ref{eq:quartic}) is smallest when
-$|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $\mathcal S$. The ground states are
+At fixed $|\Delta|^2$ the quartic term (\ref{eq:quartic}) is smallest when
+$|\eta_{ab}\Delta^a\Delta^b|$ is largest, that is, equal to $|\Delta|^2$. The ground states are
 therefore the unitary states: all eight quasiparticle branches have the same gap, and the
 condensation energy is the largest possible. The minimizing configurations are
 \begin{equation}
@@ -2118,7 +2119,7 @@ in which $\hat\Delta$ is the $16\times16$ pair potential built from the gap matr
 order parameter varies slowly and obeys the Ginzburg-Landau equation that follows from
 Eqs.~(\ref{eq:GL}) and (\ref{eq:quartic}) by variation with respect to $\Delta^{a*}$,
 \begin{align}
--K\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\nonumber\\
+-K_{\rm GL}\,\nabla^2\Delta^a+a(T)\,\Delta^a+b\Big[&2\Big(\sum_c|\Delta^c|^2\Big)\Delta^a\nonumber\\
 &-\big(\eta_{cd}\Delta^c\Delta^d\big)\,\eta_{ab}\,\Delta^{b*}\Big]=0 .
 \label{eq:GLeq}
 \end{align}
@@ -2245,8 +2246,8 @@ $C$ a fermion in bulk matter has much less energy than a free one: 43 per cent
 less for $C=35.5$ without the sea term, 17 per cent with it.
 
 \emph{The dilute gas is mechanically unstable above a low density.} At low density the criterion is
-$\kF>\pi^2m/4C$, or, in terms of the scattering length $a=-\gVS^2m/4\pi m_s^2$ of the mean-field
-interaction, $\kF|a|>\pi/16$.
+$\kF>\pi^2m/4C$, or, in terms of the scattering length $a_{\rm sc}=-\gVS^2m/4\pi m_s^2$ of the mean-field
+interaction, $\kF|a_{\rm sc}|>\pi/16$.
 
 \subsection{A warning about strong coupling}
 \label{sec:warning}
@@ -2312,7 +2313,7 @@ force exceeds the distance between the particles. The exchange of the phase mode
 $2m_s^2/\nu^2m^2$ at low density: negligible for a light radial mode, but larger than the
 contribution of the radial mode for $m_s=3m$. The thresholds of Sec.~\ref{sec:normal} are therefore
 accurate to about ten per cent for $m_s\lesssim m$, and the criterion for the instability becomes
-$\kF|a|>\pi/14$ when the exchange is included.
+$\kF|a_{\rm sc}|>\pi/14$ when the exchange is included.
 
 \subsection{Finite temperature: the fermion mass melts}
 \label{sec:thermal}
@@ -3195,8 +3196,8 @@ self-interaction demands the opposite, as shown next.
 dark matter to about 1 cm$^2$/g \cite{Markevitch2004,Randall2008}. A pair that is bound by the
 Yukawa potential of the radial mode has a size, and a scattering length, of at least the range
 $1/m_s$ of that potential, and binding requires $\DVS>D_c$ (Sec.~\ref{sec:dimer}). Identical
-bosons with the scattering length $a_s$ scatter at low energy with the cross section $8\pi a_s^2$;
-with $a_s=1/m_s$ and the mass $2m$ of a pair, the two conditions together give a smallest fermion
+bosons with the scattering length $a_{\rm sc}$ scatter at low energy with the cross section $8\pi a_{\rm sc}^2$;
+with $a_{\rm sc}=1/m_s$ and the mass $2m$ of a pair, the two conditions together give a smallest fermion
 mass, $m\ge[4\pi D_c^2/(\aVS^2\kappa)]^{1/3}$ with $\kappa=1$ cm$^2$/g, listed in
 Table~\ref{tab:selfint} for several couplings.
 
@@ -3275,7 +3276,7 @@ bounds by a factor of order one, not by the orders of magnitude that separate th
 interesting values. For bound pairs a repulsive interaction between the pairs was assumed; with
 eight internal states it may be attractive, in which case the condensate is unstable to the
 formation of larger clusters. The sound speed of the degenerate gas was that of free fermions; the
-correction from the mean field of the Vorton-Scalar is of the relative order $\kF|a_s|$, with $a_s$
+correction from the mean field of the Vorton-Scalar is of the relative order $\kF|a_{\rm sc}|$, with $a_{\rm sc}$
 the scattering length, which the limit on the self-interaction keeps below $6.4\times10^{-13}$ in
 a dwarf galaxy for fermions of 1 keV. The abundance of the dark matter, the origin of the excess of
 particles, the thermal history of the dark sector and the formation of bound states were not
@@ -3966,7 +3967,8 @@ half on a computer with two processor cores, most of it for the fits to the mock
 \caption{\label{tab:cmbval}Differences, in per cent, between the spectra of this work, lensed with the
 lensing potential of the reference, and those of \textsc{class}: largest and root-mean-square values
 of $D_\ell/D_\ell^{\rm ref}-1$ for TT and EE and of
-$(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE. Below $\ell=30$ the
+$(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE, where
+$D_\ell\equiv\ell(\ell+1)C_\ell/2\pi$ and $C_\ell$ is an angular power spectrum. Below $\ell=30$ the
 polarization depends on the description of reionization; above $\ell=2000$ the lensed result depends
 on the continuation of the spectra beyond $\ell=2500$.}
 \begin{ruledtabular}
@@ -4025,13 +4027,13 @@ comparison with \textsc{class} by ranges of the multipole.
 
 \emph{Mock likelihood.} For Gaussian fields observed on a fraction $f_{\rm sky}$ of the sky,
 \begin{align}
-\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\Tr\big(D_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det D_\ell}-n\Big]\nonumber\\
+\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\Tr\big(\hat C_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det\hat C_\ell}-n\Big]\nonumber\\
 &+\Big(\frac{\tau-\tau_0}{\sigma_\tau}\Big)^2,
 \label{eq:likelihood}
 \end{align}
-where $C_\ell$ is the $n\times n$ matrix of the model spectra plus noise, for temperature and
-polarization, $D_\ell$ the same matrix for the data, and the last term the prior on the optical
-depth. A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise
+where $C_\ell$ is here the $n\times n$ matrix of the model spectra plus noise, for temperature and
+polarization, $\hat C_\ell$ the same matrix for the data, and the last term the prior on the optical
+depth $\tau$ (central value $\tau_0$, standard error $\sigma_\tau$). A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise
 and range of multipoles, and their $\chi^2$ add.
 
 

@@ -709,6 +709,64 @@ too tall and lists the places where floats were collected on a page of
 their own. Never committed in the faulty form. &
 \texttt{code/scripts/build\_manuscripts.py} (\texttt{log\_problems},
 \texttt{log\_notes}); \texttt{manuscript/spacetimes\_refs.bib} \\
+E41 & The text of check \texttt{44-D6} (\texttt{dirac.rs};
+\texttt{data/matrix\_checks.*}) defined
+\texttt{alpha1644\^{}a\ :=\ gamma1644{[}4{]}.gamma1644{[}a{]}}, with the
+sign opposite to the definition
+\(\alpha_{1644}^j=-\gamma_{1644}^4\gamma_{1644}^j\) that Supplement S1,
+the manuscripts and the program itself (\texttt{kernel.rs}) use. What
+the check verifies (these products are real, symmetric and have square
+\(+1\)) is true for either sign, and no number depended on the sentence;
+but the same name stood for two matrices that differ by a sign. In
+commits up to \texttt{19c4df3}. & Comparing every entry of the symbol
+registry with the statements of the machine checks, for the MASTER
+provenance. & The statement of the check now gives the definition with
+the minus sign and names the Hamiltonian
+\(\mathsf h_{1644}=\alpha_{1644}^ak_a+\beta_{1644}m_{1644}\) in which
+the matrices are used. & line \texttt{44-D6} of
+\texttt{data/matrix\_checks.txt}; \texttt{dirac.rs} \\
+E42 & The first draft of the MASTER provenance (P1) and the first
+version of the program that scans the notebooks for symbols were wrong
+in several places. (a) The scanner recorded only definitions at the
+beginning of a line: it missed definitions in parentheses, inside
+\texttt{Do{[}...{]}} and of typeset names (it reported, for example,
+that \texttt{4+4.nb} does not define \texttt{η4488}, \texttt{P\_L} or
+\texttt{s4by4}), and it counted local variables of \texttt{Block} and
+\texttt{Module} as symbols of a notebook. (b) Statements of the draft
+that had been written from working notes did not survive comparison with
+the notebooks: that \texttt{m} and \texttt{ψ} are symbols of
+\texttt{4+4.nb} (they are local variables of a \texttt{Block}); that the
+evaluated cells of the two Einstein-Lovelock notebooks use a coordinate
+\texttt{x8} (only a chapter title and an unevaluated text cell do); that
+\texttt{σ} of \texttt{Dirac\_Nash\_Identity.nb} is the 8×8 matrix of
+\texttt{4+4.nb} (it is a 4×4 matrix there); that \texttt{H} of
+\texttt{7+1.nb} is a Hamiltonian (it has three meanings there); that two
+matrices of \texttt{7+1.nb} are introduced in its sections 8 and 9
+(sections 7.11 and 9.1); that the paper of Brown and Gray writes \(P\)
+for a cross product (it writes \(X\)). (c) The draft did not treat the
+project NCSS, although its symbols collide with those of this project
+(the quantity \(D\) differs by a factor of two). (d) Two letters had two
+meanings within a few pages of the manuscripts, \(D_\ell\) (spectrum,
+and matrix of the mock data) and \(a\) (index, and generator of a
+symmetry; also in Supplement S1); this was in the commit
+\texttt{19c4df3}. (e) Supplement S1 (Sec. 0.2, in all commits up to
+\texttt{19c4df3}) said that none of its new symbols occurs in the
+notebooks with another meaning; the names in the files do not, but the
+plain letter \(m_s\) does (it is the mass of the strange quark in
+section 17.4 of \texttt{7+1.nb}), and so does \(\lambda_P\). & Every
+statement of the draft was compared with the notebooks, the papers and
+the documents before the provenance was built; a machine-made
+concordance of the letters in the documents was made for the purpose. &
+The scanner was rewritten (all assignments wherever they stand, typeset
+names, declarations of the tensor package, local variables excluded,
+text cells marked); the statements were corrected; a section on NCSS, a
+table of the plain letters that coincide with a symbol of a notebook and
+a ninth machine check (\texttt{S9}) were added; the manuscripts (and S1)
+write \(\hat C_\ell\) and \(\mathsf g\) for the two quantities of (d);
+the sentence of S1 was corrected. Items (a) to (c) were never committed
+in the faulty form. & \texttt{tools/scan\_notebook\_symbols.py}
+(header); \texttt{code/scripts/check\_symbols.py}, check \texttt{S9};
+\texttt{data/symbol\_concordance.csv}; P1, Secs. 5 and 6 \\
 \end{longtable}
 
 \end{document}

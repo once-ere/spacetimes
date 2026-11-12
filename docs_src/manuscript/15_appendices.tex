@@ -222,7 +222,8 @@ half on a computer with two processor cores, most of it for the fits to the mock
 \caption{\label{tab:cmbval}Differences, in per cent, between the spectra of this work, lensed with the
 lensing potential of the reference, and those of \textsc{class}: largest and root-mean-square values
 of $D_\ell/D_\ell^{\rm ref}-1$ for TT and EE and of
-$(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE. Below $\ell=30$ the
+$(D_\ell^{TE}-D_\ell^{TE,\rm ref})/\sqrt{D_\ell^{TT}D_\ell^{EE}}$ for TE, where
+$D_\ell\equiv\ell(\ell+1)C_\ell/2\pi$ and $C_\ell$ is an angular power spectrum. Below $\ell=30$ the
 polarization depends on the description of reionization; above $\ell=2000$ the lensed result depends
 on the continuation of the spectra beyond $\ell=2500$.}
 \begin{ruledtabular}
@@ -275,12 +276,12 @@ comparison with \textsc{class} by ranges of the multipole.
 
 \emph{Mock likelihood.} For Gaussian fields observed on a fraction $f_{\rm sky}$ of the sky,
 \begin{align}
-\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\Tr\big(D_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det D_\ell}-n\Big]\nonumber\\
+\chi^2={}&\sum_\ell(2\ell+1)\,f_{\rm sky}\Big[\Tr\big(\hat C_\ell C_\ell^{-1}\big)+\ln\frac{\det C_\ell}{\det\hat C_\ell}-n\Big]\nonumber\\
 &+\Big(\frac{\tau-\tau_0}{\sigma_\tau}\Big)^2,
 \label{eq:likelihood}
 \end{align}
-where $C_\ell$ is the $n\times n$ matrix of the model spectra plus noise, for temperature and
-polarization, $D_\ell$ the same matrix for the data, and the last term the prior on the optical
-depth. A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise
+where $C_\ell$ is here the $n\times n$ matrix of the model spectra plus noise, for temperature and
+polarization, $\hat C_\ell$ the same matrix for the data, and the last term the prior on the optical
+depth $\tau$ (central value $\tau_0$, standard error $\sigma_\tau$). A data set is a list of disjoint patches of the sky, each with its own $f_{\rm sky}$, noise
 and range of multipoles, and their $\chi^2$ add.
 

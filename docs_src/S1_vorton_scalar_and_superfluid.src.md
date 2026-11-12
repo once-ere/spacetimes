@@ -48,9 +48,13 @@ Natural units $\hbar=c=k_B=1$ are used.
 ## 0.2 Symbols introduced in this supplement
 
 The symbols of "dirac matrices" keep their meaning and their tags (1644 for 4+4, 1671
-for 7+1). The symbols below are new. None of them occurs in the author's notebooks
-or papers with another meaning, because each carries the subscript VS or a tag; the
-MASTER provenance (`provenance/P1_master_symbols`) records the check.
+for 7+1). The symbols below are new. Their names in the files carry the suffix VS or
+a tag, which no symbol of the author's notebooks contains (MASTER provenance,
+`provenance/P1_master_symbols`, check `S6`). A few of the letters used in formulas
+carry neither ($m_s$, $J_5$, $F_S$, $F_P$, $\Delta^a$, $\mathsf M$); where such a
+letter also occurs in a notebook with another meaning, the MASTER provenance says so
+(its Sec. 6.3: $m_s$, for example, is the mass of the strange quark in one section of
+`7+1.nb`).
 
 | Symbol | Name in files | Meaning |
 |:----------|:-----------|:------------------------------------------------|
@@ -263,8 +267,8 @@ The pairing calculation of Secs. 4 to 6 uses fields that do not depend on the fo
 extra coordinates $x0,x5,x6,x7$: all momenta lie in ordinary space. In this
 **zero-mode sector** the dynamics is fixed by five Hermitian matrices only —
 $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$ — and an *internal symmetry* is a
-unitary transformation $\psi\to e^{i\theta a}\psi$ of the sixteen components whose
-generator $a$ commutes with all five. The program `spacetimes symmetry`
+unitary transformation $\psi\to e^{i\theta\mathsf g}\psi$ of the sixteen components whose
+generator, a Hermitian matrix $\mathsf g$, commutes with all five. The program `spacetimes symmetry`
 (`symmetry.rs`; `data/reduced_symmetry.csv`; unit test
 `symmetry::tests::zero_mode_symmetry_is_u2_times_u2_in_both_signatures`) computes
 the set of all such generators from the matrices of each spacetime. The result is
