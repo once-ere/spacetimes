@@ -70,7 +70,8 @@ S="cargo run --release --manifest-path code/spacetimes-rs/Cargo.toml --"
 $S symmetry        # data/reduced_symmetry.csv
 $S cjt             # all parts (about one minute); data/cjt_*.csv
 $S cjt pairing     # one part: toy pairing thermo threshold landscape normal thermal vacuum
-python3 code/scripts/make_figures.py cjt_toy cjt_thermo cjt_normal cjt_thermal cjt_vacuum
+python3 code/scripts/make_figures.py cjt_toy cjt_thermo cjt_landscape cjt_normal \
+        cjt_vacpot cjt_thermal cjt_vacuum
 python3 code/scripts/make_tables.py
 ```
 
@@ -502,6 +503,19 @@ Reading the table:
    other (last line of each block): the relative phase between $\Delta^0$ and
    $\Delta^5$ that minimizes the energy is 0 in 7+1 and $\pi/2$ in 4+4.
 
+![A section through the space of the order parameter: directions $(\cos\theta,\,e^{i\varphi}\sin\theta,\,0,\,0)$ on the extra axes $(x0,x5)$. (a), (b) The potential at the amplitude that minimizes it in each direction, for 7+1 and 4+4. The unitary states form the flat valley at $-2$ (relative phase $\varphi=0$ in 7+1, $\varphi=90^\circ$ in 4+4); the half-paired state is the saddle at $-1$. The two panels differ only by the exchange $\varphi\leftrightarrow90^\circ-\varphi$. (c) The two fourfold gaps along the section that contains the half-paired state. Data: `data/cjt_landscape_scan.csv`.](../figures/fig_cjt_landscape.png){width=100%}
+
+Figure 3 shows the same facts along a section through the space of the order
+parameter. In the direction $(\cos\theta,e^{i\varphi}\sin\theta,0,0)$ the two gaps
+are, by (4.1), proportional to $\sqrt{1\mp\sin2\theta\,|\sin\varphi|}$ in 7+1 and to
+$\sqrt{1\mp\sin2\theta\,|\cos\varphi|}$ in 4+4 (the program compares these forms with
+the eigenvalues computed from the matrices at every point of the figure). For each
+direction the potential is minimized over the overall amplitude. A rotation of the
+order parameter from the hidden axis towards $x5$ costs nothing if the two components
+have the relative phase 0 in 7+1, or $90^\circ$ in 4+4; with any other relative phase
+it costs energy, and with the opposite phase the path leads over the half-paired
+state.
+
 The curvatures of the potential in the massive directions depend on how propagators
 away from the stationary point are parametrized; they are not frequencies of
 collective modes. The number of flat directions and the energies of stationary
@@ -580,6 +594,8 @@ coupling when $\ln x^2>\tfrac32+4\pi^2/\nu C$). The program locates the turning
 points (`vacuum_instability`; `data/cjt_vacuum_stability.csv`):
 
 {{GEN:cjt_vacstab_table}}
+
+![The potential of the Vorton-Scalar in the vacuum, in units of the height $m^4/8C$ of its tree-level barrier, without (dashed) and with the renormalized loop of the fermions. The vacuum is at $\phi=v_{VS}$. For $C\gtrsim3.7$, where matter is self-bound, the potential falls below its vacuum value at a field a few times $v_{VS}$. Data: `data/cjt_vacuum_potential.csv`.](../figures/fig_cjt_vacpot.png){width=55%}
 
 For $C\ll1$, the regime of the weakly coupled superfluid, the instability lies at
 exponentially large fields and is irrelevant. But **the region of $C$ in which
@@ -797,10 +813,10 @@ replaces a cruder estimate in an earlier draft of S2 (error log E28).
 | threshold of the bound pair (Sec. 3.3) | `threshold` | `cjt_pairing.rs` | `data/cjt_threshold.csv` |
 | Ginzburg–Landau coefficients (Sec. 3.4) | `thermo` | `cjt_pairing.rs` | `data/cjt_gl.csv`, `cjt_gl_summary.csv` |
 | thermodynamics (Sec. 4.1, Fig. 2) | `thermo` | `cjt_pairing.rs` | `data/cjt_thermo.csv` |
-| space of the order parameter (Sec. 4.2) | `landscape` | `cjt_pairing.rs` | `data/cjt_landscape.csv` |
-| unpaired state in matter (Sec. 5, Fig. 3) | `normal` | `cjt_normal.rs` | `data/cjt_normal.csv`, `cjt_normal_summary.csv`, `cjt_fock.csv`, `cjt_vacuum_stability.csv` |
-| finite temperature (Sec. 6, Fig. 4) | `thermal` | `cjt_normal.rs` | `data/cjt_thermal.csv`, `cjt_thermal_profile.csv` |
-| vacuum (Sec. 7, Fig. 5) | `vacuum` | `cjt_vacuum.rs` | `data/cjt_vacuum.csv` |
+| space of the order parameter (Sec. 4.2, Fig. 3) | `landscape` | `cjt_pairing.rs` | `data/cjt_landscape.csv`, `cjt_landscape_scan.csv` |
+| unpaired state in matter (Sec. 5, Figs. 4, 5) | `normal` | `cjt_normal.rs` | `data/cjt_normal.csv`, `cjt_normal_summary.csv`, `cjt_fock.csv`, `cjt_vacuum_stability.csv`, `cjt_vacuum_potential.csv` |
+| finite temperature (Sec. 6, Fig. 6) | `thermal` | `cjt_normal.rs` | `data/cjt_thermal.csv`, `cjt_thermal_profile.csv` |
+| vacuum (Sec. 7, Fig. 7) | `vacuum` | `cjt_vacuum.rs` | `data/cjt_vacuum.csv` |
 | tables and single numbers of this document | — | `code/scripts/make_tables_cjt.py` | `provenance/generated/tables.md` |
 | figures | — | `code/scripts/make_figures.py` | `figures/fig_cjt_*.pdf`, `.png` |
 

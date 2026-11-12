@@ -627,7 +627,10 @@ abundance, is outside this project.
 
 ## 4.4 Verdict on dark matter
 
-The hypothesis has two readings, and they have different answers.
+![The fermion masses that a superfluid on galactic scales needs (blue) and those that the observations allow (orange). For weak pairing the fermions must be degenerate in halos, which requires a mass below the Tremaine–Gunn value, while the Lyman-$\alpha$ forest requires a larger one. For bound pairs, condensation in a halo requires light pairs, while the limit on the self-interaction requires heavy ones (ticks: other values of the coupling). In neither case do the ranges overlap. Data: `data/dm_halo_estimates.csv`, `data/sfdm_bounds.csv`, `data/dm_selfinteraction.csv`.](../figures/fig_dm_windows.png){width=100%}
+
+The hypothesis has two readings, and they have different answers. Figure 7
+summarizes the numbers of Secs. 4.2 and 4.3 on which the first answer rests.
 
 * *The superfluid state explains the observed properties of dark matter* (as in
   proposals where a condensate of galactic size shapes rotation curves or cores).
@@ -707,7 +710,7 @@ The hypothesis has two readings, and they have different answers.
 | accuracy of the fitting procedure | `spacetimes forecast` | `data/dr_chord_check.csv` |
 | scan of the transition redshift (Fig. 5) | `spacetimes forecast` | `data/dr_zt_scan.csv` |
 | superfluid dark matter (Fig. 6, tables of Sec. 4.2) | `spacetimes superfluid` | `data/sfdm_transfer.csv`, `sfdm_summary.csv`, `sfdm_bounds.csv` |
-| halos, self-interaction (tables of Sec. 4.3) | `spacetimes halos` | `data/dm_halo_estimates.csv`, `dm_selfinteraction.csv` |
+| halos, self-interaction (tables of Sec. 4.3, Fig. 7) | `spacetimes halos` | `data/dm_halo_estimates.csv`, `dm_selfinteraction.csv` |
 | interpolated quantities ($N$ and $H_0$ at given $\Delta\chi^2$; cost of the local $H_0$) | `make_tables_cosmo.py` (method in its header) | `provenance/generated/tables.md` |
 | figures | `make_figures.py` | `figures/` |
 

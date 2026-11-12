@@ -508,7 +508,118 @@ def fig_cjt_vacuum():
     save(fig, "fig_cjt_vacuum")
 
 
-ALL = {"kernels": fig_kernels, "gap": fig_gap, "cmb": fig_cmb_validation, "step": fig_step, "dr": fig_dr,
+def fig_cjt_landscape():
+    """The energy of the paired state as a function of the direction of the order
+    parameter: a section through the space of the order parameter, both signatures."""
+    t = read_csv("cjt_landscape_scan.csv")
+    if t is None:
+        return
+    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.75))
+    phis = [0.0, 30.0, 60.0, 90.0]
+    for ax, sig, title in ((axes[0], 1671, "(a) 7+1"), (axes[1], 1644, "(b) 4+4")):
+        for slot, phi in enumerate(phis):
+            c, ls, mk = STYLES[slot]
+            m = (t["signature"] == sig) & (t["phi_deg"] == phi)
+            ax.plot(t["theta_deg"][m], t["V_floor"][m], color=c, ls=ls, label="relative phase $\\varphi=%g^\\circ$" % phi)
+        ax.set_xlabel("mixing angle $\\theta$ (degrees)")
+        ax.set_xticks([0, 15, 30, 45, 60, 75, 90])
+        ax.set_ylim(-2.12, -0.85)
+        ax.text(45, -2.07, "unitary states", ha="center", va="center", color=INK2, fontsize=7)
+        ax.text(45, -0.93, "half-paired state", ha="center", va="center", color=INK2, fontsize=7)
+        panel_label(ax, title)
+    axes[0].set_ylabel("potential at the best amplitude, $V/N(0)\\Delta_0^2$")
+    # (c) the two gaps along the section that contains the half-paired state (the same for both signatures)
+    m = (t["signature"] == 1671) & (t["phi_deg"] == 90.0)
+    for slot, (col, lab) in enumerate((("gap2_large", "larger gap (four states)"), ("gap2_small", "smaller gap (four states)"))):
+        c, ls, mk = STYLES[slot]
+        axes[2].plot(t["theta_deg"][m], t["s_min"][m] * np.sqrt(np.abs(t[col][m])), color=c, ls=ls, label=lab)
+    axes[2].set_xlabel("mixing angle $\\theta$ (degrees)")
+    axes[2].set_xticks([0, 15, 30, 45, 60, 75, 90])
+    axes[2].set_ylabel("gap$/\\Delta_0$")
+    axes[2].set_ylim(0, 1.25)
+    axes[2].legend(loc="center", fontsize=7, bbox_to_anchor=(0.5, 0.60), handlelength=1.8)
+    panel_label(axes[2], "(c) gaps, section with $\\eta_{ab}\\Delta^a\\Delta^b\\to0$")
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=4, bbox_to_anchor=(0.5, -0.09))
+    fig.tight_layout(w_pad=1.0)
+    save(fig, "fig_cjt_landscape")
+
+
+def fig_cjt_vacpot():
+    """The potential of the Vorton-Scalar in the vacuum with the fermion loop."""
+    t = read_csv("cjt_vacuum_potential.csv")
+    if t is None:
+        return
+    fig, ax = plt.subplots(1, 1, figsize=(3.6, 2.9))
+    m = t["C"] == 0.0
+    ax.plot(t["x"][m], t["U_tree"][m], color=INK2, lw=1.0, ls=(0, (4, 3)), label="tree level")
+    for slot, c_val in enumerate([c for c in sorted(set(t["C"])) if c > 0]):
+        c, ls, mk = STYLES[slot]
+        m = t["C"] == c_val
+        ax.plot(t["x"][m], t["U_one_loop"][m], color=c, ls=ls, label="$C=%.3g$" % c_val)
+    ax.axhline(0.0, color=INK2, lw=0.6)
+    ax.set_xlim(0, 4)
+    ax.set_ylim(-4, 6)
+    ax.set_xlabel("field $\\phi/v_{VS}$")
+    ax.set_ylabel("potential in units of $m^4/8C$")
+    ax.annotate("vacuum", xy=(1.0, 0.0), xytext=(1.0, -1.6), ha="center", color=INK2, fontsize=7,
+                arrowprops=dict(arrowstyle="-", color=INK2, lw=0.6))
+    ax.legend(loc="upper center", ncol=2, fontsize=7, bbox_to_anchor=(0.5, -0.2))
+    save(fig, "fig_cjt_vacpot")
+
+
+def fig_dm_windows():
+    """Which fermion masses are needed for a superfluid on galactic scales, and which
+    are allowed by observations: the two never overlap."""
+    halos, bounds, selfint = read_csv("dm_halo_estimates.csv"), read_csv("sfdm_bounds.csv"), read_csv("dm_selfinteraction.csv")
+    if halos is None or bounds is None or selfint is None:
+        return
+    dwarf = halos[halos["system"] == 0][0]
+    m_deg = float(dwarf["m_deg_keV"]) * 1e3                      # eV: degenerate in a dwarf core below this
+    m_pair = 0.5 * float(dwarf["mB_max_eV"])                     # eV: fermion mass = half the largest pair mass
+    b = {round(float(r["m_wdm_keV"]), 1): float(r["m_fermion_min_keV"]) * 1e3 for r in np.atleast_1d(bounds)}
+    m_lya, m_lya_cons = b[5.3], b[3.5]
+    m_self = {float(r["alpha"]): float(r["m_min_MeV"]) * 1e6 for r in np.atleast_1d(selfint)}
+    lo, hi = 10.0, 3e10                                          # eV
+    fig, ax = plt.subplots(1, 1, figsize=(7.0, 3.0))
+    # (height on the axis, from, to, colour, label written above the bar)
+    rows = [
+        (3.3, lo, m_deg, BLUE, "needed: fermions degenerate in the core of a dwarf galaxy, $m<%.2f$ keV" % (m_deg / 1e3)),
+        (2.3, m_lya, hi, ORANGE, "allowed by the Lyman-$\\alpha$ forest, $m>%.2f$ keV" % (m_lya / 1e3)),
+        (0.8, lo, m_pair, BLUE, "needed: bound pairs condensed in the core of a dwarf galaxy, pair mass $2m<%.0f$ eV" % (2 * m_pair)),
+        (-0.2, m_self[1.0], hi, ORANGE, "allowed by colliding clusters of galaxies for $\\alpha_{VS}=1$, $m>%.0f$ MeV" % (m_self[1.0] / 1e6)),
+    ]
+    for y, a, bb, col, text in rows:
+        ax.barh(y, math.log10(bb) - math.log10(a), left=math.log10(a), height=0.32, color=col, edgecolor="white", linewidth=1.0)
+        if col == BLUE:
+            ax.text(math.log10(lo) + 0.04, y + 0.27, text, va="bottom", ha="left", fontsize=7.2, color=INK)
+        else:
+            ax.text(math.log10(hi) - 0.04, y + 0.27, text, va="bottom", ha="right", fontsize=7.2, color=INK)
+    # the more conservative Lyman-alpha benchmark, and the thresholds for other couplings, as ticks below the bars
+    ax.plot([math.log10(m_lya_cons)] * 2, [2.3 - 0.26, 2.3 + 0.16], color=INK, lw=1.0)
+    ax.text(math.log10(m_lya_cons), 2.3 - 0.30, "%.2f keV (conservative benchmark)" % (m_lya_cons / 1e3), ha="center", va="top", fontsize=6.5, color=INK2)
+    for k, (alpha, mm) in enumerate(sorted(m_self.items())):
+        if alpha != 1.0:
+            ax.plot([math.log10(mm)] * 2, [-0.2 - 0.26, -0.2 + 0.16], color=INK, lw=1.0)
+            ax.text(math.log10(mm), -0.2 - 0.30 - (0.30 if alpha == 0.1 else 0.0), "$\\alpha_{VS}=%g$" % alpha, ha="center", va="top", fontsize=6.5, color=INK2)
+    ax.text(math.log10(lo) - 0.12, 2.9, "weak pairing", rotation=90, ha="right", va="center", fontsize=7.5, color=INK2)
+    ax.text(math.log10(lo) - 0.12, 0.4, "bound pairs", rotation=90, ha="right", va="center", fontsize=7.5, color=INK2)
+    ax.axhline(1.62, color=GRID, lw=0.8)
+    ax.set_xlim(math.log10(lo), math.log10(hi))
+    ax.set_ylim(-1.2, 4.05)
+    ax.set_yticks([])
+    ticks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(["10 eV", "100 eV", "1 keV", "10 keV", "100 keV", "1 MeV", "10 MeV", "100 MeV", "1 GeV", "10 GeV"])
+    ax.set_xlabel("fermion mass $m$")
+    ax.grid(axis="y", visible=False)
+    ax.spines["left"].set_visible(False)
+    handles = [matplotlib.patches.Patch(color=BLUE, label="needed for a superfluid of galactic size"),
+               matplotlib.patches.Patch(color=ORANGE, label="allowed by observations")]
+    ax.legend(handles=handles, loc="upper center", ncol=2, bbox_to_anchor=(0.5, -0.22))
+    save(fig, "fig_dm_windows")
+
+
+ALL = {"cjt_landscape": fig_cjt_landscape, "cjt_vacpot": fig_cjt_vacpot, "dm_windows": fig_dm_windows, "kernels": fig_kernels, "gap": fig_gap, "cmb": fig_cmb_validation, "step": fig_step, "dr": fig_dr,
        "residuals": fig_dr_residuals, "zt": fig_dr_zt, "sfdm": fig_sfdm, "dimer": fig_dimer,
        "cjt_toy": fig_cjt_toy, "cjt_thermo": fig_cjt_thermo, "cjt_normal": fig_cjt_normal, "cjt_thermal": fig_cjt_thermal, "cjt_vacuum": fig_cjt_vacuum}
 

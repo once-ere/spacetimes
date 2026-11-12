@@ -1382,7 +1382,23 @@ such clusters form, and with what abundance, is outside this project.
 \hypertarget{verdict-on-dark-matter}{%
 \subsection{4.4 Verdict on dark matter}\label{verdict-on-dark-matter}}
 
-The hypothesis has two readings, and they have different answers.
+\begin{figure}
+\centering
+\includegraphics[width=1\textwidth,height=\textheight]{../figures/fig_dm_windows.png}
+\caption{The fermion masses that a superfluid on galactic scales needs
+(blue) and those that the observations allow (orange). For weak pairing
+the fermions must be degenerate in halos, which requires a mass below
+the Tremaine--Gunn value, while the Lyman-\(\alpha\) forest requires a
+larger one. For bound pairs, condensation in a halo requires light
+pairs, while the limit on the self-interaction requires heavy ones
+(ticks: other values of the coupling). In neither case do the ranges
+overlap. Data: \texttt{data/dm\_halo\_estimates.csv},
+\texttt{data/sfdm\_bounds.csv}, \texttt{data/dm\_selfinteraction.csv}.}
+\end{figure}
+
+The hypothesis has two readings, and they have different answers. Figure
+7 summarizes the numbers of Secs. 4.2 and 4.3 on which the first answer
+rests.
 
 \begin{itemize}
 \tightlist
@@ -1528,7 +1544,7 @@ scan of the transition redshift (Fig. 5) & \texttt{spacetimes\ forecast}
 superfluid dark matter (Fig. 6, tables of Sec. 4.2) &
 \texttt{spacetimes\ superfluid} & \texttt{data/sfdm\_transfer.csv},
 \texttt{sfdm\_summary.csv}, \texttt{sfdm\_bounds.csv} \\
-halos, self-interaction (tables of Sec. 4.3) &
+halos, self-interaction (tables of Sec. 4.3, Fig. 7) &
 \texttt{spacetimes\ halos} & \texttt{data/dm\_halo\_estimates.csv},
 \texttt{dm\_selfinteraction.csv} \\
 interpolated quantities (\(N\) and \(H_0\) at given \(\Delta\chi^2\);

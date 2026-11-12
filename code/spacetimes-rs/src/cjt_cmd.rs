@@ -14,7 +14,7 @@
 //!
 //! The function returns false if any of the built-in consistency requirements fails.
 
-use spacetimes::cjt_normal::{critical_c, fock_energy, i_scalar, vacuum_instability, Medium, Thermal, NU};
+use spacetimes::cjt_normal::{critical_c, fock_energy, i_scalar, vacuum_instability, vacuum_potential, Medium, Thermal, NU};
 use spacetimes::cjt_pairing::{gap_squares, pair_bubble_curvature, threshold_d, Potential, ShellModel};
 use spacetimes::cjt_toy;
 use spacetimes::cjt_vacuum::critical_alpha;
@@ -338,6 +338,65 @@ fn landscape() -> std::io::Result<bool> {
                 hess_txt, flat_txt, remark, format!("{:.6e}", dv[0]), format!("{:.6e}", dv[1]), format!("{:.6e}", dv[2])]);
         }
     }
+    // ---- a section through the space of the order parameter (for the figure) ----
+    // Direction: Delta = s (cos theta, e^{i phi} sin theta, 0, 0) on the axes (x0, x5).
+    // Eq. (4.1) of S4 gives the two fourfold gaps in closed form:
+    //   7+1:  d^2 = s^2 [1 -+ sin(2 theta) |sin phi|]      (unitary for phi = 0)
+    //   4+4:  d^2 = s^2 [1 -+ sin(2 theta) |cos phi|]      (unitary for phi = 90 degrees)
+    // For every direction the potential is evaluated from the matrices (i) at s = 1 and
+    // (ii) at the amplitude s that minimizes it (golden-section search): the "valley
+    // floor", which is -2 for a unitary direction and -1 for the half-paired one.
+    let mut scan = Vec::new();
+    let mut worst_gap = 0.0f64;
+    for op in [OneParticle::new_1671(&gm), OneParticle::new_1644(&gm)] {
+        let is44 = op.tag == "1644";
+        for &phi_deg in &[0.0f64, 30.0, 60.0, 90.0] {
+            let phi = phi_deg.to_radians();
+            let (mut floor_min, mut floor_max) = (f64::MAX, f64::MIN);
+            for i in 0..=90 {
+                let theta = (i as f64).to_radians();
+                let dir = [c(theta.cos(), 0.0), C64::cis(phi).scale(theta.sin()), c(0.0, 0.0), c(0.0, 0.0)];
+                let d2 = gap_squares(&op, &dir, &p, 1.0);
+                let split = (2.0 * theta).sin() * if is44 { phi.cos().abs() } else { phi.sin().abs() };
+                worst_gap = worst_gap.max((d2[0] - (1.0 - split)).abs()).max((d2[7] - (1.0 + split)).abs());
+                let v_of = |amp: f64| sm.potential(&op, &[dir[0].scale(amp), dir[1].scale(amp), dir[2].scale(amp), dir[3].scale(amp)], &p, 1.0);
+                let v_one = v_of(1.0);
+                // the minimum over the amplitude lies between 1/sqrt(2) (half-paired) and 1 (unitary)
+                let (mut a, mut b) = (0.5, 1.2);
+                let r = 0.5 * (5f64.sqrt() - 1.0);
+                for _ in 0..60 {
+                    let (s1, s2) = (b - r * (b - a), a + r * (b - a));
+                    if v_of(s1) < v_of(s2) {
+                        b = s2;
+                    } else {
+                        a = s1;
+                    }
+                }
+                let s_min = 0.5 * (a + b);
+                let floor = v_of(s_min);
+                floor_min = floor_min.min(floor);
+                floor_max = floor_max.max(floor);
+                scan.push(vec![if is44 { 1644.0 } else { 1671.0 }, phi_deg, i as f64, d2[0].abs(), d2[7], v_one, s_min, floor]);
+            }
+            // along the unitary section the floor is flat at -2; along the opposite one it
+            // rises to the half-paired value -1 at theta = 45 degrees
+            let unitary_section = if is44 { phi_deg == 90.0 } else { phi_deg == 0.0 };
+            let opposite_section = if is44 { phi_deg == 0.0 } else { phi_deg == 90.0 };
+            if unitary_section {
+                ok &= (floor_min + 2.0).abs() < 1e-3 && (floor_max + 2.0).abs() < 1e-3;
+            }
+            if opposite_section {
+                ok &= (floor_max + 1.0).abs() < 1e-3 && (floor_min + 2.0).abs() < 1e-3;
+            }
+        }
+    }
+    println!("    section s (cos theta, e^(i phi) sin theta, 0, 0): gaps agree with the closed form within {:.1e}", worst_gap);
+    ok &= worst_gap < 1e-9;
+    write_csv("cjt_landscape_scan.csv",
+        &[("content", "a section through the space of the order parameter: directions (cos theta, e^{i phi} sin theta, 0, 0) on the extra axes (x0, x5); the two fourfold gaps and the weak-coupling CJT potential at T = 0, from the Dirac matrices of each signature (units as in cjt_landscape.csv)".to_string()),
+          ("columns", "signature: 1671 (7+1) or 1644 (4+4); phi_deg: relative phase of the two components in degrees; theta_deg: mixing angle in degrees; gap2_small, gap2_large: the two fourfold eigenvalues of M M^dagger for sum |Delta^a|^2 = 1, equal to 1 -+ sin(2 theta)|sin phi| in 7+1 and 1 -+ sin(2 theta)|cos phi| in 4+4; V_unit: potential for sum |Delta^a|^2 = 1; s_min: the overall amplitude that minimizes the potential in this direction; V_floor: the potential there (-2 for a unitary direction, -1 for the half-paired direction)".to_string()),
+          cmd("landscape")],
+        &["signature", "phi_deg", "theta_deg", "gap2_small", "gap2_large", "V_unit", "s_min", "V_floor"], &scan)?;
     write_csv_str("cjt_landscape.csv",
         &[("content", "the CJT potential at T = 0 in weak coupling as a function of the order parameter Delta^a (a = 0, 5, 6, 7), evaluated with the gap matrix built from the Dirac matrices of each signature; unit: gap of the unitary state = 1, density of states per internal state N(0) = 1, shell half-width 200".to_string()),
           ("columns", "gap2_small, gap2_large: the two fourfold eigenvalues of M M^dagger; V: potential (unitary state: -2; half-paired state: -1); grad: norm of the gradient in the eight real coordinates; for unitary states: flat, positive = numbers of eigenvalues of the matrix of second derivatives that vanish (|.| < 1e-3) or are positive, hessian = its eight eigenvalues, flat_coordinates = the coordinates that span the flat directions (D0 = Delta^0 etc.); remark: for the half-paired state, where the potential is not twice differentiable, changes of V along chosen directions; the last three columns give these changes as numbers (Delta multiplied by 1.02, by 0.98, and 0.05 added to Delta^0)".to_string()),
@@ -423,6 +482,24 @@ fn normal_state() -> std::io::Result<bool> {
           ("columns", "x_max: field at the maximum of the potential beyond the vacuum; x_zero: field beyond which the potential is lower than in the vacuum; log10 of both".to_string()),
           cmd("normal")],
         &["C", "x_max", "x_zero", "log10_x_max", "log10_x_zero"], &vrows)?;
+    // the potential itself, for the figure: in units of the height m^4/(8 C) of the
+    // tree-level barrier at x = 0, so that the tree-level potential (x^2 - 1)^2 is the
+    // same curve for every C
+    let mut prows = Vec::new();
+    for &c in &[0.0, 1.0, 2.0, 3.7011, 5.9218, 10.0, 35.5] {
+        for i in 0..=400 {
+            let x = 4.0 * i as f64 / 400.0;
+            let tree = (x * x - 1.0).powi(2);
+            // C = 0 stands for the tree-level potential (no fermion loop)
+            let full = if c == 0.0 { tree } else { 8.0 * c * vacuum_potential(c, x) };
+            prows.push(vec![c, x, tree, full]);
+        }
+    }
+    write_csv("cjt_vacuum_potential.csv",
+        &[("content", "the potential of the Vorton-Scalar in the vacuum as a function of the field, without and with the renormalized one-loop contribution of the fermions, in units of the tree-level barrier m^4/(8 C)".to_string()),
+          ("columns", "C = g^2 m^2/m_s^2 (C = 0 denotes the tree-level potential alone); x: field in units of its vacuum value; U_tree = (x^2 - 1)^2; U_one_loop = (x^2 - 1)^2 + 8 C V_sea(x)".to_string()),
+          cmd("normal")],
+        &["C", "x", "U_tree", "U_one_loop"], &prows)?;
     // exchange energy
     println!("    exchange (Fock) energy to first order, relative to the mean-field energy shift:");
     let mut frows = Vec::new();
