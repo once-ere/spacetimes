@@ -20,7 +20,11 @@ import numpy as np
 H0_FID = 67.36
 H0_LOCAL = 73.50        # local distance network; reference in the documents
 FAMILY = ["free-streaming radiation", "fluid, no step", "model fluid, $z_t=10^4$", "model fluid, $z_t=2\\times10^4$",
-          "model fluid, $z_t=5\\times10^4$", "Wess–Zumino fluid, $z_t=2\\times10^4$"]
+          "model fluid, $z_t=5\\times10^4$", "Wess–Zumino fluid, $z_t=2\\times10^4$", "model fluid, $z_t=10^6$"]
+NFAM = len(FAMILY)
+# the stepped fluid of the model: transition while the scales of the microwave background enter the horizon (2, 3, 4), and before (6)
+MODEL_MID = (2, 3, 4)
+MODEL_EARLY = 6
 CONFIG = ["Planck-like", "Planck-like + deep survey"]
 # Planck 2018 results VI, Table 2, column TT,TE,EE+lowE (68 per cent errors)
 PLANCK_ERR = {"omega_b": 0.00015, "omega_c": 0.0014, "h": 0.0060, "ln10A": 0.016, "n_s": 0.0044, "tau": 0.0076}
@@ -130,7 +134,7 @@ def run(frag_outer, read_csv, sci, table, DATA):
 
         summary_rows = {0: [], 1: []}
         for cfg in (0, 1):
-            for fam in range(6):
+            for fam in range(NFAM):
                 ff = f[(f["config"] == cfg) & (f["family"] == fam)]
                 pp = p[(p["config"] == cfg) & (p["family"] == fam)]
                 if len(ff) == 0 or len(pp) == 0:
@@ -164,30 +168,38 @@ def run(frag_outer, read_csv, sci, table, DATA):
                 if n_ == name:
                     return float(t_.rstrip("*"))
             return float("nan")
-        h4 = [val("dr_h0_2sigma_c0_f%d" % k) for k in range(6)]
-        sg = [val("dr_sig_local_c0_f%d" % k) for k in range(6)]
+        h4 = [val("dr_h0_2sigma_c0_f%d" % k) for k in range(NFAM)]
+        sg = [val("dr_sig_local_c0_f%d" % k) for k in range(NFAM)]
         if all(math.isfinite(x) for x in h4 + sg):
             frag("dr_gain_2sigma_best", "%.1f" % (max(h4) - H0_FID))
-            frag("dr_h0_2sigma_min_model", "%.1f" % min(h4[2:5]))
-            frag("dr_h0_2sigma_max_model", "%.1f" % max(h4[2:5]))
-            frag("dr_sig_local_min_model", "%.1f" % min(sg[2:5]))
+            frag("dr_h0_2sigma_min_model", "%.1f" % min(h4[k] for k in MODEL_MID))
+            frag("dr_h0_2sigma_max_model", "%.1f" % max(h4[k] for k in MODEL_MID))
+            frag("dr_sig_local_min_model", "%.1f" % min(sg[k] for k in MODEL_MID))
+            frag("dr_sig_local_max_model", "%.1f" % max(sg[k] for k in MODEL_MID))
             frag("dr_sig_local_min_all", "%.1f" % min(sg))
+            frag("dr_gain_2sigma_early", "%.1f" % (h4[MODEL_EARLY] - H0_FID))
+            # the helium abundance: the fit of the early-step fluid at N = 0.5 against that of the fluid without step
+            for fam, name in ((1, "nostep"), (MODEL_EARLY, "early")):
+                m = (p["config"] == 0) & (p["family"] == fam) & (np.abs(p["N"] - 0.5) < 1e-9)
+                if m.any():
+                    frag("dr_yhe_" + name, "%.4f" % p[m][0]["Y_He"])
+                    frag("dr_chi2_half_" + name, "%.1f" % p[m][0]["chi2"])
             slope_free = val("dr_slope_c0_f0")
             slope_fluid = val("dr_slope_c0_f1")
             frag("dr_weinberg_gain", "%.1f" % (0.39 * slope_free))
             frag("dr_act_gain", "%.1f" % (0.134 * slope_fluid))
             frag("dr_act_fraction", "%.0f" % (100 * 0.134 * slope_fluid / (H0_LOCAL - H0_FID)))
-        hdr = ["family", "$\\sigma(N)$", "$dH_0/dN$", "$N$ at $\\Delta\\chi^2=4$", "$H_0$ there", "$H_0$ at $\\Delta\\chi^2=9$", "$N$ for $H_0=73.5$", "its $\\Delta\\chi^2$", "$\\sqrt{\\Delta\\chi^2}$"]
-        al = [":----------------------", "------:", "------:", "-------:", "------:", "-------:", "-------:", "------:", "------:"]
+        hdr = ["family", "$\\sigma(N)$", "$dH_0/dN$", "$N$ at $\\Delta\\chi^2\\!=\\!4$", "$H_0$ there", "$H_0$ at $\\Delta\\chi^2\\!=\\!9$", "$N_{73.5}$", "its $\\Delta\\chi^2$", "$\\sqrt{\\Delta\\chi^2}$"]
+        al = [":------------------", "------:", "---------:", "---------:", "------:", "---------:", "------:", "------:", "------:"]
         for cfg in (0, 1):
             if summary_rows[cfg]:
                 text = table(hdr, al, summary_rows[cfg])
                 text += ("\n\nMock data set: %s. $\\sigma(N)$ and $dH_0/dN$ (km s$^{-1}$ Mpc$^{-1}$ per unit $N$) from the Fisher matrix at the fiducial point; the other columns from the exact fits "
-                         "(`data/dr_profiles.csv`), interpolated as described in `code/scripts/make_tables_cosmo.py`. An asterisk marks a linear extrapolation beyond the largest fitted $N$." % CONFIG[cfg])
+                         "(`data/dr_profiles.csv`), interpolated as described in `code/scripts/make_tables_cosmo.py`. $N_{73.5}$ is the density at which the best-fit $H_0$ equals the local value 73.5. An asterisk marks a linear extrapolation beyond the largest fitted $N$." % CONFIG[cfg])
                 frag("dr_summary_table_c%d" % cfg, text)
         # profile table (Planck-like): three values of N
         rows = []
-        for fam in range(6):
+        for fam in range(NFAM):
             for nval in (0.2, 0.5, 1.0):
                 m = (p["config"] == 0) & (p["family"] == fam) & (np.abs(p["N"] - nval) < 1e-9)
                 if not m.any():
@@ -212,6 +224,20 @@ def run(frag_outer, read_csv, sci, table, DATA):
              + "\n\nModel fluid with $N=0.4$ after the step, Planck-like mock data. Source: `data/dr_zt_scan.csv`.")
         i = int(np.argmin(z["chi2"]))
         j = int(np.argmax(z["chi2"]))
+        # Fermion mass that corresponds to a transition redshift: m = T_d0 (1 + z_t), with the
+        # temperature T_d0 of the dark radiation today from its density N (in units of one
+        # neutrino species) for one bosonic degree of freedom:
+        #   rho_d = N (7/8) (4/11)^(4/3) rho_gamma  and  rho ~ g T^4  with g = 1 against g = 2 for photons,
+        # so T_d0 = T_gamma0 [2 N (7/8) (4/11)^(4/3)]^(1/4);  T_gamma0 = 2.7255 K = 2.3487e-4 eV.
+        t_d0 = 2.7255 * 8.617333262e-5 * (2 * 0.4 * 0.875 * (4.0 / 11.0) ** (4.0 / 3.0)) ** 0.25
+        for lz, name in ((4.0, "4"), (5.5, "5p5"), (6.0, "6")):
+            frag("dr_mass_zt_" + name, "%.2g" % (t_d0 * 10 ** lz))
+        early = [r for r in z if r["log10_z_t"] >= 5.74]
+        frag("dr_zt_early_chi2", "%.1f" % early[-1]["chi2"])
+        frag("dr_zt_early_h0", "%.1f" % early[-1]["H0"])
+        late = [r for r in z if r["log10_z_t"] <= 3.01]
+        frag("dr_zt_late_chi2", "%.1f" % late[0]["chi2"])
+        frag("dr_zt_late_h0", "%.1f" % late[0]["H0"])
         frag("dr_zt_best", "%.2f" % z["log10_z_t"][i])
         frag("dr_zt_best_chi2", "%.1f" % z["chi2"][i])
         frag("dr_zt_worst", "%.2f" % z["log10_z_t"][j])

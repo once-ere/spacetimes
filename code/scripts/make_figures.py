@@ -191,7 +191,9 @@ def fig_step():
     save(fig, "fig_step_thermo")
 
 
-FAMILY_LABELS = ["free-streaming radiation", "fluid, no step", "model fluid, $z_t=10^4$", "model fluid, $z_t=2\\times10^4$", "model fluid, $z_t=5\\times10^4$", "Wess-Zumino fluid, $z_t=2\\times10^4$"]
+FAMILY_LABELS = ["free-streaming radiation", "fluid, no step", "model fluid, $z_t=10^4$", "model fluid, $z_t=2\\times10^4$", "model fluid, $z_t=5\\times10^4$", "Wess-Zumino fluid, $z_t=2\\times10^4$", "model fluid, $z_t=10^6$"]
+# the families drawn (in this order, which fixes their colours); family 4 appears in the tables only
+DR_SHOWN = [0, 1, 2, 3, 6, 5]
 H0_LOCAL = (73.50, 0.81)   # local distance network (see the documents for the reference)
 H0_FID = 67.36
 
@@ -204,11 +206,12 @@ def fig_dr():
         if not np.any(p["config"] == cfg):
             continue
         fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.75))
-        for fam in range(6):
+        # six series (the palette has six colours): family 4 (z_t = 5e4) is in the tables only
+        for slot, fam in enumerate(DR_SHOWN):
             m = (p["config"] == cfg) & (p["family"] == fam)
             if not m.any():
                 continue
-            c, ls, mk = STYLES[fam]
+            c, ls, mk = STYLES[slot]
             n = np.concatenate([[0.0], p["N"][m]])
             chi = np.concatenate([[0.0], p["chi2"][m]])
             h0 = np.concatenate([[H0_FID], p["H0"][m]])
@@ -253,20 +256,21 @@ def fig_dr_residuals():
     r = read_csv("dr_residuals.csv")
     if r is None:
         return
-    fig, axes = plt.subplots(3, 1, figsize=(7.0, 5.0), sharex=True)
-    fams = [f for f in range(6) if "fam%d_TT" % f in r.dtype.names]
-    for ax, (q, title) in zip(axes, (("TT", "(a) $D_\\ell^{TT}/D_\\ell^{TT,\\rm fid}-1$"), ("TE", "(b) $(D_\\ell^{TE}-D_\\ell^{TE,\\rm fid})/\\sqrt{D_\\ell^{TT}D_\\ell^{EE}}$"), ("EE", "(c) $D_\\ell^{EE}/D_\\ell^{EE,\\rm fid}-1$"))):
-        for fam in fams:
-            if fam in (2, 4):
-                continue  # the three transition redshifts are shown in the profile figure
-            c, ls, mk = STYLES[fam]
+    fig, axes = plt.subplots(3, 1, figsize=(7.0, 5.2), sharex=True)
+    shown = [(slot, fam) for slot, fam in enumerate(DR_SHOWN) if "fam%d_TT" % fam in r.dtype.names and fam in (0, 1, 3, 6, 5)]
+    panels = (("TT", "(a) $D_\\ell^{TT}/D_\\ell^{TT,\\rm fid}-1$", 2.0), ("TE", "(b) $(D_\\ell^{TE}-D_\\ell^{TE,\\rm fid})/\\sqrt{D_\\ell^{TT}D_\\ell^{EE}}$", 2.0), ("EE", "(c) $D_\\ell^{EE}/D_\\ell^{EE,\\rm fid}-1$", 4.0))
+    for ax, (q, title, lim) in zip(axes, panels):
+        for slot, fam in shown:
+            c, ls, mk = STYLES[slot]
             ax.plot(r["ell"], 100 * r["fam%d_%s" % (fam, q)], color=c, ls=ls, lw=1.2, label=FAMILY_LABELS[fam])
         ax.axhline(0, color=INK2, lw=0.6)
         ax.set_ylabel("per cent")
+        ax.set_ylim(-lim, lim)
         panel_label(ax, title)
-    axes[0].legend(loc="lower left", ncol=2)
     axes[2].set_xlabel("multipole $\\ell$")
     axes[2].set_xlim(30, 2500)
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.07))
+    fig.tight_layout(h_pad=0.8)
     save(fig, "fig_dr_residuals")
 
 
@@ -274,54 +278,63 @@ def fig_dr_zt():
     z = read_csv("dr_zt_scan.csv")
     if z is None:
         return
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.5), sharex=True)
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.5))
     axes[0].plot(z["log10_z_t"], z["chi2"], color=BLUE, marker="o")
     axes[1].plot(z["log10_z_t"], z["H0"], color=BLUE, marker="o")
     axes[0].set_ylabel("$\\Delta\\chi^2$ of the best fit")
     axes[1].set_ylabel("best-fit $H_0$ (km s$^{-1}$ Mpc$^{-1}$)")
     for ax in axes:
-        ax.set_xlabel("$\\log_{10} z_t$")
-    panel_label(axes[0], "(a) model fluid with $N=0.4$: cost against the transition redshift")
+        ax.set_xlabel("transition redshift, $\\log_{10} z_t$")
+    panel_label(axes[0], "(a) cost")
     panel_label(axes[1], "(b) Hubble constant")
-    fig.tight_layout(w_pad=1.5)
+    fig.tight_layout(w_pad=2.0)
     save(fig, "fig_dr_zt")
 
 
 def fig_sfdm():
-    t = read_csv("sfdm_transfer.csv")
+    # the column names contain decimal points and minus signs: read the header as text
+    t = read_csv_text("sfdm_transfer.csv")
+    summ = read_csv("sfdm_summary.csv")
     b = read_csv("sfdm_bounds.csv")
-    if t is None:
+    if t is None or summ is None:
         return
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.9), sharey=True)
-    names = t.dtype.names
-    fermi = [n for n in names if n.startswith("T2_fermi")]
-    bose = [n for n in names if n.startswith("T2_bose")]
+    cols = list(t[0].keys())
+    k_h = np.array([float(r["k_h"]) for r in t])
+    fermi = [n for n in cols if n.startswith("T2_fermi")]
+    bose = [n for n in cols if n.startswith("T2_bose")]
+    # parameters in the order of the columns (sfdm_summary.csv lists the same models in the same order)
+    par_f = [float(x) for x in summ["parameter"][summ["family"] == 0]]
+    par_b = [float(x) for x in summ["parameter"][summ["family"] == 1]]
+    assert len(par_f) == len(fermi) and len(par_b) == len(bose)
 
-    def lab_f(n):
-        return "$m=%s$ keV" % n.split("_m")[1].replace("keV", "")
+    def lab_f(i):
+        return "$m=%g$ keV" % par_f[i]
 
-    def lab_b(n):
-        v = float(n.split("cs")[1].replace("e", "e"))
-        e = int(math.floor(math.log10(v)))
-        return "$c_{s0}=%.2g\\times10^{%d}\\,c$" % (v / 10**e, e)
+    def lab_b(i):
+        e = int(math.floor(math.log10(par_b[i])))
+        return "$c_{s0}=%.2g\\times10^{%d}\\,c$" % (par_b[i] / 10**e, e)
 
-    for ax, cols, lab, title in ((axes[0], fermi[1:7], lab_f, "(a) weak pairing: degenerate fermions"), (axes[1], bose[:6], lab_b, "(b) condensate of bound bosons")):
-        for i, n in enumerate(cols):
-            c, ls, mk = STYLES[i]
-            ax.plot(t["k_h"], np.clip(t[n], 1e-9, None), color=c, ls=ls, label=lab(n))
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.3), sharey=True)
+    for ax, names, idx, lab, title in ((axes[0], fermi, range(1, 7), lab_f, "(a) weak pairing: degenerate fermions"),
+                                       (axes[1], bose, range(1, 7), lab_b, "(b) condensate of bound pairs")):
+        for slot, i in enumerate(idx):
+            c, ls, mk = STYLES[slot]
+            y = np.array([float(r[names[i]]) for r in t])
+            ax.plot(k_h, np.clip(y, 1e-9, None), color=c, ls=ls, label=lab(i))
         ax.axhline(0.25, color=INK2, lw=0.6, ls=(0, (4, 3)))
         if b is not None:
             for row in np.atleast_1d(b):
                 ax.axvline(row["k_half_h_Mpc"], color=INK2, lw=0.6)
                 ax.text(row["k_half_h_Mpc"] * 1.04, 1.12, "%.1f keV" % row["m_wdm_keV"], rotation=90, va="top", ha="left", color=INK2, fontsize=6.5)
         ax.set_xscale("log")
-        ax.set_xlim(0.1, 370)
+        ax.set_xlim(0.05, 370)
         ax.set_ylim(0, 1.15)
         ax.set_xlabel("wavenumber $k$ ($h$ Mpc$^{-1}$)")
-        ax.legend(loc="lower left")
+        ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.24), ncol=2)
         panel_label(ax, title)
     axes[0].set_ylabel("$P(k)/P_{\\rm CDM}(k)$")
-    axes[0].text(0.12, 0.27, "half mode", color=INK2, fontsize=7, va="bottom")
+    axes[0].text(0.06, 0.27, "half mode", color=INK2, fontsize=7, va="bottom")
+    fig.tight_layout(w_pad=1.5)
     save(fig, "fig_sfdm_transfer")
 
 
@@ -362,8 +375,141 @@ def fig_dimer():
     save(fig, "fig_dimer")
 
 
+def fig_cjt_toy():
+    t = read_csv("cjt_toy.csv")
+    if t is None:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.8))
+    lam = t["lambda"]
+    ax = axes[0]
+    ax.plot(lam, t["G_exact"], color=INK, lw=2.2, label="exact")
+    for slot, (col, lab) in enumerate((("G_2loop", "CJT, 2 loops"), ("G_3loop", "CJT, 3 loops"), ("G_4loop", "CJT, 4 loops"), ("pert_1", "perturbation theory, $O(\\lambda)$"), ("pert_2", "perturbation theory, $O(\\lambda^2)$"))):
+        c, ls, mk = STYLES[slot]
+        ax.plot(lam, t[col], color=c, ls=ls, marker=mk, ms=3, label=lab)
+    ax.set_xscale("log")
+    ax.set_ylim(0, 1.3)
+    ax.set_xlabel("coupling $\\lambda$")
+    ax.set_ylabel("$G=\\langle\\phi^2\\rangle$")
+    panel_label(ax, "(a) the propagator")
+    ax = axes[1]
+    for slot, (col, lab) in enumerate((("Gamma_2loop", "CJT, 2 loops"), ("Gamma_3loop", "CJT, 3 loops"), ("Gamma_4loop", "CJT, 4 loops"))):
+        c, ls, mk = STYLES[slot]
+        ax.plot(lam, np.abs(t[col] - t["minus_lnZ"]), color=c, ls=ls, marker=mk, ms=3)
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("coupling $\\lambda$")
+    ax.set_ylabel("$|\\Gamma_{\\rm stationary}+\\ln Z|$")
+    panel_label(ax, "(b) error of the effective action")
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.16))
+    fig.tight_layout(w_pad=1.5)
+    save(fig, "fig_cjt_toy")
+
+
+def fig_cjt_thermo():
+    t = read_csv("cjt_thermo.csv")
+    if t is None:
+        return
+    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.4))
+    x = t["T_over_Tc"]
+    axes[0].plot(np.append(x, 1.0), np.append(t["gap_over_gap0"], 0.0), color=BLUE)
+    axes[0].set_ylabel("gap$(T)$ / gap$(0)$")
+    axes[1].plot(np.append(x, 1.0), np.append(-t["V_over_absV0"], 0.0), color=BLUE)
+    axes[1].set_ylabel("$-V(T)/|V(0)|$")
+    axes[2].plot(x, t["C_paired"] / t["C_unpaired"], color=BLUE, label="paired")
+    axes[2].plot([0, 1.1], [1, 1], color=ORANGE, ls="--", label="unpaired")
+    axes[2].plot([1.0, 1.0], [1.0, (t["C_paired"] / t["C_unpaired"])[-1]], color=INK2, lw=0.6, ls=(0, (4, 3)))
+    axes[2].set_ylabel("heat capacity $C/C_{\\rm unpaired}$")
+    axes[2].legend(loc="upper left")
+    for ax in axes:
+        ax.set_xlabel("$T/T_c$")
+        ax.set_xlim(0, 1.1)
+        ax.set_ylim(bottom=0)
+    panel_label(axes[0], "(a) gap")
+    panel_label(axes[1], "(b) condensation energy")
+    panel_label(axes[2], "(c) heat capacity")
+    fig.tight_layout(w_pad=1.2)
+    save(fig, "fig_cjt_thermo")
+
+
+def fig_cjt_normal():
+    t = read_csv("cjt_normal.csv")
+    if t is None:
+        return
+    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.7))
+    cs = sorted(set(t["C"]))
+    for slot, c_val in enumerate(cs):
+        c, ls, mk = STYLES[slot]
+        for sea, ax in ((0, axes[0]), (1, axes[1])):
+            m = (t["C"] == c_val) & (t["sea"] == sea)
+            ax.plot(t["kF"][m], t["x"][m], color=c, ls=ls, label="$C=%g$" % c_val)
+        m = (t["C"] == c_val) & (t["sea"] == 0)
+        axes[2].plot(t["kF"][m], t["e_bind"][m], color=c, ls=ls)
+    for ax in axes:
+        ax.set_xscale("log")
+        ax.set_xlim(0.03, 4)
+        ax.set_xlabel("Fermi momentum $k_F/m$")
+    axes[0].set_ylabel("fermion mass in the medium, $m^*/m$")
+    axes[1].set_ylabel("$m^*/m$")
+    axes[2].set_ylabel("$(E/N-m)/m$")
+    axes[2].axhline(0, color=INK2, lw=0.6)
+    axes[2].set_ylim(-0.25, 0.6)
+    panel_label(axes[0], "(a) without the sea term")
+    panel_label(axes[1], "(b) with the sea term")
+    panel_label(axes[2], "(c) energy per particle")
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=5, bbox_to_anchor=(0.5, -0.1))
+    fig.tight_layout(w_pad=1.0)
+    save(fig, "fig_cjt_normal")
+
+
+def fig_cjt_thermal():
+    p = read_csv("cjt_thermal_profile.csv")
+    if p is None:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.8))
+    sets = [(0.1, 1.0), (0.5, 0.5), (1.0, 3.0), (1.0, 1.0), (2.0, 1.0), (3.0, 1.0)]
+    for slot, (g, ms) in enumerate(sets):
+        c, ls, mk = STYLES[slot]
+        m = (np.abs(p["g"] - g) < 1e-9) & (np.abs(p["m_s_over_m"] - ms) < 1e-9)
+        lab = "$g_{VS}=%g$, $m_s=%g\\,m$" % (g, ms)
+        axes[0].plot(p["T_over_Thigh"][m], p["phi_over_v"][m], color=c, ls=ls, label=lab)
+        # the phase mode in the state with broken symmetry only (above the transition there is no phase mode)
+        mb = m & (p["phi_over_v"] > 0.05)
+        axes[1].plot(p["T_over_Thigh"][mb], p["Mth_over_ms"][mb], color=c, ls=ls)
+    axes[0].set_ylabel("fermion mass, $m(T)/m$")
+    axes[1].set_ylabel("mass of the phase mode, $M_\\vartheta/m_s$")
+    for ax in axes:
+        ax.set_xlabel("$T/T_{\\rm high}$")
+        ax.set_xlim(0, 1.6)
+        ax.set_ylim(bottom=0)
+    panel_label(axes[0], "(a) melting of the vacuum value")
+    panel_label(axes[1], "(b) phase mode below the transition (exact value: 0)")
+    fig.legend(*axes[0].get_legend_handles_labels(), loc="lower center", ncol=3, bbox_to_anchor=(0.5, -0.16))
+    fig.tight_layout(w_pad=1.5)
+    save(fig, "fig_cjt_thermal")
+
+
+def fig_cjt_vacuum():
+    t = read_csv("cjt_vacuum.csv")
+    if t is None:
+        return
+    fig, ax = plt.subplots(1, 1, figsize=(3.6, 2.6))
+    for slot, ms in enumerate(sorted(set(t["m_s_over_m"]))):
+        c, ls, mk = STYLES[slot]
+        m = t["m_s_over_m"] == ms
+        ax.plot(t["cutoff_over_m"][m], t["alpha_c"][m], color=c, ls=ls, marker=mk, label="$m_s=%g\\,m$" % ms)
+    ax.axhline(0.5 * math.pi, color=INK2, lw=0.6, ls=(0, (4, 3)))
+    ax.text(12, 0.5 * math.pi + 0.04, "$\\pi/2$", color=INK2, fontsize=7, va="bottom")
+    ax.set_xscale("log")
+    ax.set_ylim(1.2, 4.5)
+    ax.set_xlabel("cutoff $\\Lambda/m$")
+    ax.set_ylabel("critical coupling $\\alpha_c=g_c^2/4\\pi$")
+    ax.legend(loc="upper right")
+    save(fig, "fig_cjt_vacuum")
+
+
 ALL = {"kernels": fig_kernels, "gap": fig_gap, "cmb": fig_cmb_validation, "step": fig_step, "dr": fig_dr,
-       "residuals": fig_dr_residuals, "zt": fig_dr_zt, "sfdm": fig_sfdm, "dimer": fig_dimer}
+       "residuals": fig_dr_residuals, "zt": fig_dr_zt, "sfdm": fig_sfdm, "dimer": fig_dimer,
+       "cjt_toy": fig_cjt_toy, "cjt_thermo": fig_cjt_thermo, "cjt_normal": fig_cjt_normal, "cjt_thermal": fig_cjt_thermal, "cjt_vacuum": fig_cjt_vacuum}
 
 if __name__ == "__main__":
     which = sys.argv[1:] or list(ALL)
