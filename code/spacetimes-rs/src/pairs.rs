@@ -435,11 +435,11 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     }
     let ops1 = vec![casimir(&agen), casimir(&bgen), casimir(&tgen), casimir(&jgen), w.clone()];
     let (m1, res1, _, _) = joint_spectrum(&ops1);
-    out.lines.push(format!("4+4 (fields independent of x5,x6,x7) one particle at rest (8 states): {}", fmt_multiplets(&m1, &["A(A+1)", "B(B+1)", "T(T+1)", "J(J+1)", "W"])));
+    out.lines.push(format!("4+4 (fields independent of x5,x6,x7) one particle at rest (8 states): {}", fmt_multiplets(&m1, &["X(X+1)", "Y(Y+1)", "T(T+1)", "J(J+1)", "W"])));
     let ok1 = m1.len() == 2 && m1.iter().all(|m| m.count == 4 && m.values[2] == 0.75 && m.values[3] == 0.75)
         && m1.iter().any(|m| m.values[0] == 0.75 && m.values[1] == 0.0) && m1.iter().any(|m| m.values[0] == 0.0 && m.values[1] == 0.75)
         && m1[0].values[4] * m1[1].values[4] == -1.0;
-    rep.add("44-Q1", "numerical", &format!("4+4, fields independent of x5 x6 x7, one particle at rest (gamma1644[4] u = i u, 8 states; deviation {:.0e}): under SU(2)_A x SU(2)_B (rotations of the space x0 x1 x2 x3) x SU(2)_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W1644 and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual {:.0e})", dev, res1),
+    rep.add("44-Q1", "numerical", &format!("4+4, fields independent of x5 x6 x7, one particle at rest (gamma1644[4] u = i u, 8 states; deviation {:.0e}): under SU(2)_X x SU(2)_Y (the two factors of the rotation group SO(4) of the four space coordinates x0 x1 x2 x3; they are NOT the factors SU(2)_A x SU(2)_B of the internal symmetry of the zero-mode sector, which do not act on ordinary space) x SU(2)_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W1644 and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual {:.0e})", dev, res1),
         ok1 && dev < 1e-12 && comm_ab < 1e-12 && res1 < 1e-9);
 
     let la: Vec<CMat> = agen.iter().map(|x| lift(x, 8)).collect();
@@ -449,7 +449,7 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     let ww = lift_parity(&w, 8);
     let ops2 = vec![casimir(&la), casimir(&lb), casimir(&lt), casimir(&lj), ww];
     let (m2, res2, vecs, tuples) = joint_spectrum(&ops2);
-    out.lines.push(format!("4+4 two particles, s wave (28 states): {}", fmt_multiplets(&m2, &["A(A+1)", "B(B+1)", "T(T+1)", "J(J+1)", "WW"])));
+    out.lines.push(format!("4+4 two particles, s wave (28 states): {}", fmt_multiplets(&m2, &["X(X+1)", "Y(Y+1)", "T(T+1)", "J(J+1)", "WW"])));
     for m in &m2 {
         out.csv_rows.push(vec!["4+4".into(), format!("{}", su2_dim(m.values[0])), format!("{}", su2_dim(m.values[1])), format!("{}", su2_dim(m.values[2])),
             format!("{}", su2_dim(m.values[3])), format!("{:+}", m.values[4]), format!("{}", m.count)]);
@@ -459,7 +459,7 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     let n_j0: usize = m2.iter().filter(|m| m.values[3] == 0.0).map(|m| m.count).sum();
     let ok2 = cnt(0.0, 0.0, 2.0) == 6 && cnt(0.0, 0.0, 0.0) == 0 && cnt(2.0, 0.0, 0.0) == 3 && cnt(0.0, 2.0, 0.0) == 3 && cnt(0.75, 0.75, 0.0) == 4 && cnt(0.75, 0.75, 2.0) == 12
         && m2.iter().map(|m| m.count).sum::<usize>() == 28;
-    rep.add("44-Q2", "numerical", &format!("4+4, fields independent of x5 x6 x7, two identical particles in an s wave (28 states): (1, 1; 3) twice, (3, 1; 1), (1, 3; 1), (2, 2; 1), (2, 2; 3) under SU(2)_A x SU(2)_B x SU(2)_T.  The pairs that are singlets under ALL rotations of the four space dimensions are the {} states (1, 1; 3) + (1, 1; 3): two triplets of the extra-time rotations, none of them a singlet of SU(2)_T.  {} states have ordinary spin 0 (residual {:.0e})", n_so4_singlets, n_j0, res2),
+    rep.add("44-Q2", "numerical", &format!("4+4, fields independent of x5 x6 x7, two identical particles in an s wave (28 states): (1, 1; 3) twice, (3, 1; 1), (1, 3; 1), (2, 2; 1), (2, 2; 3) under SU(2)_X x SU(2)_Y x SU(2)_T (X, Y as in 44-Q1).  The pairs that are singlets under ALL rotations of the four space dimensions are the {} states (1, 1; 3) + (1, 1; 3): two triplets of the extra-time rotations, none of them a singlet of SU(2)_T.  {} states have ordinary spin 0 (residual {:.0e})", n_so4_singlets, n_j0, res2),
         ok2 && n_so4_singlets == 6 && n_j0 == 10 && res2 < 1e-9);
 
     // which covariant bilinears dirac1644^T (Cm1644 gamma1644[A1]...gamma1644[Ar]) dirac1644 contain the SO(4)-singlet pairs?
@@ -534,18 +534,22 @@ pub fn run(gm: &Gammas, rep: &mut Report) -> std::io::Result<Vec<String>> {
     let a44 = analyse_44(gm, rep);
     let mut rows: Vec<Vec<String>> = Vec::new();
     for r in a71.csv_rows {
-        rows.push(vec![r[0].clone(), r[1].clone(), r[2].clone(), r[3].clone(), "-".into(), r[4].clone(), "-".into(), r[5].clone()]);
+        rows.push(vec![r[0].clone(), r[1].clone(), r[2].clone(), r[3].clone(), "-".into(), "-".into(), "-".into(), r[4].clone(), "-".into(), r[5].clone()]);
     }
     for r in a44.csv_rows {
-        rows.push(vec![r[0].clone(), r[4].clone(), r[1].clone(), r[2].clone(), r[3].clone(), "-".into(), r[5].clone(), r[6].clone()]);
+        rows.push(vec![r[0].clone(), r[4].clone(), "-".into(), "-".into(), r[1].clone(), r[2].clone(), r[3].clone(), "-".into(), r[5].clone(), r[6].clone()]);
     }
-    // columns: for 7+1: (dim J, dim A, dim B, SO(7) multiplet); for 4+4: (dim J, dim A, dim B, dim T, W W)
+    // columns: for 7+1: (dim J, dim A, dim B, SO(7) multiplet); for 4+4: (dim J, dim X, dim Y, dim T, W W).
+    // The two pairs of SU(2) factors are different groups and have different names:
+    // A, B rotate the four extra space axes of 7+1 (an internal symmetry of ordinary
+    // physics); X, Y rotate the four space coordinates x0..x3 of 4+4, which include
+    // ordinary space.
     crate::io::write_csv_str("pair_classification.csv",
         &[("content", "s-wave pair states of two identical particles of the 16-component field at rest, by multiplet".to_string()),
           ("7+1", "J: ordinary rotations (x1 x2 x3); A, B: the two SU(2) factors of the rotations of the extra space (x0 x5 x6 x7); SO(7) multiplet".to_string()),
-          ("4+4", "fields independent of x5 x6 x7; A, B: the two SU(2) factors of the rotations of space (x0 x1 x2 x3); T: rotations of the extra times; J: ordinary rotations; WW: product of the W1644 eigenvalues of the two particles".to_string()),
+          ("4+4", "fields independent of x5 x6 x7; X, Y: the two SU(2) factors of the rotations of the four space coordinates (x0 x1 x2 x3), which are not the groups A, B; T: rotations of the extra times; J: ordinary rotations; WW: product of the W1644 eigenvalues of the two particles".to_string()),
           ("entries", "dimension 2j+1 of each SU(2) multiplet".to_string())],
-        &["spacetime", "dim_J", "dim_A", "dim_B", "dim_T", "SO7_multiplet", "WW", "states"], &rows)?;
+        &["spacetime", "dim_J", "dim_A", "dim_B", "dim_X", "dim_Y", "dim_T", "SO7_multiplet", "WW", "states"], &rows)?;
     let mut lines = a71.lines;
     lines.extend(a44.lines);
     Ok(lines)

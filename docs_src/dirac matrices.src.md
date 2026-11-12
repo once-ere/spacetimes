@@ -960,8 +960,11 @@ $\tau_{1671}^i\tau_{1671}^j$ ($i<j$; space indices).
 
 **4+4, fields independent of $x5,x6,x7$** (checks `44-Q1` to `44-Q4`, `I44-P2`,
 `I44-P3`). A particle at rest satisfies $\gamma_{1644}^4u=iu$. The symmetry is $SO(4)$
-(rotations of the space $x0,\dots,x3$) times $SO(3)_T$ (rotations of the additional
-times) times the sign of $W_{1644}$.
+(rotations of the space $x0,\dots,x3$; locally $SU(2)_X\times SU(2)_Y$) times $SO(3)_T$
+(rotations of the additional times) times the sign of $W_{1644}$. The group
+$SU(2)_X\times SU(2)_Y$ must not be confused with the group $SU(2)_A\times SU(2)_B$ of
+7+1 above: it rotates the hidden coordinate into ordinary space, and it is not an
+internal symmetry.
 
 * The pairs that are singlets under all rotations of the four space dimensions are six
   in number: two triplets of $SO(3)_T$. None of them is a singlet of $SO(3)_T$.
@@ -1020,7 +1023,12 @@ linear independence over the rational numbers.
 
 The classification of the pair states (`data/pair_classification.txt`; for an $SU(2)$
 multiplet of spin $j$ the program prints $j(j+1)$, so that 0, 0.75 and 2 denote a
-singlet, a doublet and a triplet):
+singlet, a doublet and a triplet). The letters name the groups: J the ordinary
+rotations; in the lines for 7+1, A and B the two $SU(2)$ factors of the rotation group
+of the four extra space axes $x0,x5,x6,x7$; in the lines for 4+4, X and Y the two
+$SU(2)$ factors of the rotation group of the four space coordinates $x0,x1,x2,x3$ — a
+different group, which contains the ordinary rotations and is therefore given
+different letters — and T the rotations of the three additional times:
 
 ```text
 {{FILE:data/pair_classification.txt}}

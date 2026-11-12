@@ -2104,8 +2104,12 @@ matrices are spanned by the seven \(\tau_{1671}^j\) and the twenty-one
 \textbf{4+4, fields independent of \(x5,x6,x7\)} (checks \texttt{44-Q1}
 to \texttt{44-Q4}, \texttt{I44-P2}, \texttt{I44-P3}). A particle at rest
 satisfies \(\gamma_{1644}^4u=iu\). The symmetry is \(SO(4)\) (rotations
-of the space \(x0,\dots,x3\)) times \(SO(3)_T\) (rotations of the
-additional times) times the sign of \(W_{1644}\).
+of the space \(x0,\dots,x3\); locally \(SU(2)_X\times SU(2)_Y\)) times
+\(SO(3)_T\) (rotations of the additional times) times the sign of
+\(W_{1644}\). The group \(SU(2)_X\times SU(2)_Y\) must not be confused
+with the group \(SU(2)_A\times SU(2)_B\) of 7+1 above: it rotates the
+hidden coordinate into ordinary space, and it is not an internal
+symmetry.
 
 \begin{itemize}
 \tightlist
@@ -2289,8 +2293,8 @@ found in this way proves linear independence over the rational numbers.
 \NormalTok{[PASS] 71{-}Q8  (exact) 7+1: each of tau1671\^{}j (any space index j) and tau1671\^{}i tau1671\^{}j (i != j) is an orthogonal matrix: Phi.transpose(Phi) = 1.  A condensate whose pair matrix is proportional to tau1671\^{}j or to tau1671\^{}i tau1671\^{}j therefore gives the SAME gap to all eight spin states (a \textquotesingle{}unitary\textquotesingle{} state)}
 \NormalTok{[PASS] 71{-}Q9  (exact) 7+1: two{-}particle content of the field bilinears, u\_s\^{}T X u\_r for particles at rest: X = Cm1671.gamma1671[j] gives {-}tau1671\^{}j (space index j) and X = Cm1671.gamma1671[4] gives 0; X = Cp1671.gamma1671[i].gamma1671[j] gives tau1671\^{}i tau1671\^{}j.  Hence the vector pair field is DeltaV1671\^{}j := dirac1671\^{}T Cm1671 gamma1671\^{}j dirac1671 (its time component contains no pair of two particles) and the adjoint pair field is DeltaT1671\^{}(ij) := dirac1671\^{}T Cp1671 gamma1671\^{}i gamma1671\^{}j dirac1671}
 \NormalTok{[PASS] 71{-}Q10 (exact) 7+1: the system [tau1671\^{}i tau1671\^{}j, Phi] = 0 for the six rotation planes (1,2), (1,3), (2,3) of ordinary space and (5,6), (5,7), (6,7) of the extra space, on antisymmetric Phi, has rank 27 = 28 {-} 1, and Phi = tau1671\^{}0 solves it: EXACTLY ONE s{-}wave pair is a singlet both of the ordinary rotations and of the rotations of x5 x6 x7.  Its pair matrix is tau1671\^{}0, the two{-}particle content of DeltaV1671\^{}0 = dirac1671\^{}T Cm1671 gamma1671\^{}0 dirac1671, the component of the vector pair field along the hidden space dimension x0 (the same result as in 4+4, check 44{-}Q4)}
-\NormalTok{[PASS] 44{-}Q1  (numerical) 4+4, fields independent of x5 x6 x7, one particle at rest (gamma1644[4] u = i u, 8 states; deviation 0e0): under SU(2)\_A x SU(2)\_B (rotations of the space x0 x1 x2 x3) x SU(2)\_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W1644 and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual 2e{-}16)}
-\NormalTok{[PASS] 44{-}Q2  (numerical) 4+4, fields independent of x5 x6 x7, two identical particles in an s wave (28 states): (1, 1; 3) twice, (3, 1; 1), (1, 3; 1), (2, 2; 1), (2, 2; 3) under SU(2)\_A x SU(2)\_B x SU(2)\_T.  The pairs that are singlets under ALL rotations of the four space dimensions are the 6 states (1, 1; 3) + (1, 1; 3): two triplets of the extra{-}time rotations, none of them a singlet of SU(2)\_T.  10 states have ordinary spin 0 (residual 1e{-}14)}
+\NormalTok{[PASS] 44{-}Q1  (numerical) 4+4, fields independent of x5 x6 x7, one particle at rest (gamma1644[4] u = i u, 8 states; deviation 0e0): under SU(2)\_X x SU(2)\_Y (the two factors of the rotation group SO(4) of the four space coordinates x0 x1 x2 x3; they are NOT the factors SU(2)\_A x SU(2)\_B of the internal symmetry of the zero{-}mode sector, which do not act on ordinary space) x SU(2)\_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W1644 and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual 2e{-}16)}
+\NormalTok{[PASS] 44{-}Q2  (numerical) 4+4, fields independent of x5 x6 x7, two identical particles in an s wave (28 states): (1, 1; 3) twice, (3, 1; 1), (1, 3; 1), (2, 2; 1), (2, 2; 3) under SU(2)\_X x SU(2)\_Y x SU(2)\_T (X, Y as in 44{-}Q1).  The pairs that are singlets under ALL rotations of the four space dimensions are the 6 states (1, 1; 3) + (1, 1; 3): two triplets of the extra{-}time rotations, none of them a singlet of SU(2)\_T.  10 states have ordinary spin 0 (residual 1e{-}14)}
 \NormalTok{[PASS] 44{-}Q3  (numerical) 4+4: among the 120 Pauli{-}allowed bilinears dirac1644\^{}T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 (A1 \textless{} ... \textless{} Ar), those whose two{-}particle content (particles at rest) lies entirely in the SO(4){-}singlet pairs have the index sets \{A1,...,Ar\} = \{5\} \{0,1,2,3,5\} \{4,5\} \{0,1,2,3,4,5\} \{6\} \{0,1,2,3,6\} \{4,6\} \{0,1,2,3,4,6\} \{7\} \{0,1,2,3,7\} \{4,7\} \{0,1,2,3,4,7\}; they include the components A = 5, 6, 7 (the extra{-}time components) of the vector pair field DeltaV1644\^{}A := dirac1644\^{}T Cm1644 gamma1644\^{}A dirac1644}
 \NormalTok{[PASS] 44{-}Q4  (numerical) 4+4: exactly 1 of the 28 pair states is a singlet both of the ordinary rotations (x1 x2 x3) and of the extra{-}time rotations (x5 x6 x7); it belongs to the space vector (2, 2; 1), is made of one particle with W1644 = +1 and one with W1644 = {-}1, and is the two{-}particle content of the bilinears with the index sets \{A1,...,Ar\} = \{0\} \{0,4\}: in particular of DeltaV1644\^{}0 = dirac1644\^{}T Cm1644 gamma1644\^{}0 dirac1644, the component of the vector pair field along the hidden space dimension x0}
 \NormalTok{[PASS] ALL    (exact) every check above passed}
@@ -2300,14 +2304,21 @@ found in this way proves linear independence over the rational numbers.
 The classification of the pair states
 (\texttt{data/pair\_classification.txt}; for an \(SU(2)\) multiplet of
 spin \(j\) the program prints \(j(j+1)\), so that 0, 0.75 and 2 denote a
-singlet, a doublet and a triplet):
+singlet, a doublet and a triplet). The letters name the groups: J the
+ordinary rotations; in the lines for 7+1, A and B the two \(SU(2)\)
+factors of the rotation group of the four extra space axes
+\(x0,x5,x6,x7\); in the lines for 4+4, X and Y the two \(SU(2)\) factors
+of the rotation group of the four space coordinates \(x0,x1,x2,x3\) ---
+a different group, which contains the ordinary rotations and is
+therefore given different letters --- and T the rotations of the three
+additional times:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{7+1 one particle at rest (8 states): [J(J+1)=0.75, A(A+1)=0, B(B+1)=0.75, C\_SO(7)=5.25 : 4 states] [J(J+1)=0.75, A(A+1)=0.75, B(B+1)=0, C\_SO(7)=5.25 : 4 states] }
 \NormalTok{7+1 two particles, s wave (28 states): [J(J+1)=0, A(A+1)=0, B(B+1)=2, C\_SO(7)=10 : 3 states] [J(J+1)=0, A(A+1)=0.75, B(B+1)=0.75, C\_SO(7)=6 : 4 states] [J(J+1)=0, A(A+1)=2, B(B+1)=0, C\_SO(7)=10 : 3 states] [J(J+1)=2, A(A+1)=0, B(B+1)=0, C\_SO(7)=6 : 3 states] [J(J+1)=2, A(A+1)=0, B(B+1)=0, C\_SO(7)=10 : 3 states] [J(J+1)=2, A(A+1)=0.75, B(B+1)=0.75, C\_SO(7)=10 : 12 states] }
-\NormalTok{4+4 (fields independent of x5,x6,x7) one particle at rest (8 states): [A(A+1)=0, B(B+1)=0.75, T(T+1)=0.75, J(J+1)=0.75, W=1 : 4 states] [A(A+1)=0.75, B(B+1)=0, T(T+1)=0.75, J(J+1)=0.75, W={-}1 : 4 states] }
-\NormalTok{4+4 two particles, s wave (28 states): [A(A+1)=0, B(B+1)=0, T(T+1)=2, J(J+1)=0, WW=1 : 6 states] [A(A+1)=0, B(B+1)=2, T(T+1)=0, J(J+1)=2, WW=1 : 3 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=0, J(J+1)=0, WW={-}1 : 1 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=0, J(J+1)=2, WW={-}1 : 3 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=2, J(J+1)=0, WW={-}1 : 3 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=2, J(J+1)=2, WW={-}1 : 9 states] [A(A+1)=2, B(B+1)=0, T(T+1)=0, J(J+1)=2, WW=1 : 3 states] }
+\NormalTok{4+4 (fields independent of x5,x6,x7) one particle at rest (8 states): [X(X+1)=0, Y(Y+1)=0.75, T(T+1)=0.75, J(J+1)=0.75, W=1 : 4 states] [X(X+1)=0.75, Y(Y+1)=0, T(T+1)=0.75, J(J+1)=0.75, W={-}1 : 4 states] }
+\NormalTok{4+4 two particles, s wave (28 states): [X(X+1)=0, Y(Y+1)=0, T(T+1)=2, J(J+1)=0, WW=1 : 6 states] [X(X+1)=0, Y(Y+1)=2, T(T+1)=0, J(J+1)=2, WW=1 : 3 states] [X(X+1)=0.75, Y(Y+1)=0.75, T(T+1)=0, J(J+1)=0, WW={-}1 : 1 states] [X(X+1)=0.75, Y(Y+1)=0.75, T(T+1)=0, J(J+1)=2, WW={-}1 : 3 states] [X(X+1)=0.75, Y(Y+1)=0.75, T(T+1)=2, J(J+1)=0, WW={-}1 : 3 states] [X(X+1)=0.75, Y(Y+1)=0.75, T(T+1)=2, J(J+1)=2, WW={-}1 : 9 states] [X(X+1)=2, Y(Y+1)=0, T(T+1)=0, J(J+1)=2, WW=1 : 3 states] }
 \NormalTok{4+4: bilinears dirac1644\^{}T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 whose two{-}particle content lies entirely in the SO(4){-}singlet pairs: index sets \{A1,...,Ar\} = \{5\} \{0,1,2,3,5\} \{4,5\} \{0,1,2,3,4,5\} \{6\} \{0,1,2,3,6\} \{4,6\} \{0,1,2,3,4,6\} \{7\} \{0,1,2,3,7\} \{4,7\} \{0,1,2,3,4,7\}}
 \NormalTok{4+4: bilinears dirac1644\^{}T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 whose two{-}particle content is the unique pair state with ordinary spin 0 and extra{-}time isospin 0: index sets \{A1,...,Ar\} = \{0\} \{0,4\}}
 \end{Highlighting}
