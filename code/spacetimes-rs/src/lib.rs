@@ -13,6 +13,8 @@
 //! * `verify`  the machine-checked statements quoted in `dirac matrices.md`;
 //! * `dirac`   the two Dirac equations in momentum space (exact checks);
 //! * `pairs`   which s-wave pairs of two identical particles exist (Pauli principle);
+//! * `kernel`  pairing kernels of the Vorton-Scalar exchange, channel by channel;
+//! * `gap`     the gap equation of the hidden-axis singlet superfluid;
 //! * `export`  text files and LaTeX arrays for the documents;
 //! * `complex`, `linalg`, `quad`, `roots`, `io`  numerical utilities taken from
 //!   the author's NCSS project.
@@ -24,8 +26,10 @@ pub mod dirac;
 pub mod export;
 pub mod fmat;
 pub mod gamma;
+pub mod gap;
 pub mod imat;
 pub mod io;
+pub mod kernel;
 pub mod linalg;
 pub mod pairs;
 pub mod quad;

@@ -129,13 +129,131 @@ fn cmd_matrices() -> std::io::Result<bool> {
     Ok(rep.all_pass())
 }
 
+/// `channels`: the exchange amplitude of the Vorton-Scalar in every representative pair
+/// channel, for both signatures; writes data/pair_channel_kernel.csv.
+fn cmd_channels() -> std::io::Result<bool> {
+    use spacetimes::kernel::{channel_table, f_pseudo_hidden, f_scalar_hidden, OneParticle};
+    let gm = spacetimes::gamma::Gammas::build();
+    // kinematics: fermion mass m = 1, momentum k on a sphere, 0 <= theta <= pi
+    let m = 1.0;
+    let thetas: Vec<f64> = (0..=12).map(|i| std::f64::consts::PI * i as f64 / 12.0).collect();
+    let mut rows: Vec<Vec<String>> = Vec::new();
+    let mut ok = true;
+    for &k in &[0.1, 1.0, 3.0] {
+        for op in [OneParticle::new_1671(&gm), OneParticle::new_1644(&gm)] {
+            println!("\nsignature tag {}  (m = {}, |p| = |p'| = {}):  channel, norm of the two-particle content, F_S and F_P at theta = 0, 90, 180 degrees", op.tag, m, k);
+            for r in channel_table(&op, m, k, &thetas) {
+                println!("  {:<40} N = {:<8.4} F_S = {:+.4} {:+.4} {:+.4}   F_P = {:+.4} {:+.4} {:+.4}   {}",
+                    r.channel, r.norm, r.f_s[0], r.f_s[6], r.f_s[12], r.f_p[0], r.f_p[6], r.f_p[12], r.description);
+                for (i, th) in thetas.iter().enumerate() {
+                    rows.push(vec![r.tag.to_string(), r.channel.clone(), r.description.clone(), format!("{}", m), format!("{}", k),
+                        format!("{:.6}", th.to_degrees()), format!("{:.6e}", r.norm), format!("{:.10e}", r.f_s[i]), format!("{:.10e}", r.f_p[i])]);
+                }
+                // the hidden-axis channel must reproduce the closed forms
+                if r.channel.ends_with("[0]") && r.channel.starts_with("Cm") {
+                    for (i, th) in thetas.iter().enumerate() {
+                        ok &= (r.f_s[i] - f_scalar_hidden(m, k, k, th.cos())).abs() < 1e-9;
+                        ok &= (r.f_p[i] - f_pseudo_hidden(m, k, k, th.cos())).abs() < 1e-9;
+                    }
+                }
+            }
+        }
+    }
+    spacetimes::io::write_csv_str("pair_channel_kernel.csv",
+        &[("content", "on-shell exchange amplitude F_X(p', p) of the Vorton-Scalar in representative pair channels; F > 0 is attraction".to_string()),
+          ("definition", "F_X = Tr[Phi_X(p')^T V1 conj(Phi_X(p)) V2^T]/sqrt(N(p') N(p)); V = U^dagger Gamma U; Gamma_S = beta (radial mode), Gamma_P = i beta chi (phase mode)".to_string()),
+          ("kinematics", "momenta of equal magnitude k in the (x1, x2) plane, scattering angle theta; fermion mass m".to_string()),
+          ("signature", "1671: 7+1 spacetime; 1644: 4+4 spacetime, fields independent of x5 x6 x7".to_string()),
+          ("norm", "N = squared norm of the two-particle content of the pair operator; N = 0 means the operator contains no pair of two particles".to_string()),
+          ("command", "spacetimes channels".to_string())],
+        &["signature", "channel", "description", "m", "k", "theta_deg", "norm", "F_scalar", "F_pseudoscalar"], &rows)?;
+    println!("\nclosed forms of the hidden-axis channel reproduced: {}", ok);
+    Ok(ok)
+}
+
+/// `gap`: solutions of the gap equation of the hidden-axis singlet superfluid;
+/// writes data/gap_scan.csv and data/gap_profile.csv.
+fn cmd_gap() -> std::io::Result<bool> {
+    use spacetimes::gap::{critical_temperature, fermi_grid, solve_gap, Pairing};
+    let m = 1.0;
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let mut prof: Vec<Vec<f64>> = Vec::new();
+    let mut ok = true;
+    // couplings g = m/v_VS, radial masses m_s/m, Fermi momenta k_F/m
+    let gs = [1.0, 2.0, 3.0];
+    let mss = [0.03, 0.1, 0.3, 1.0];
+    let kfs = [0.03, 0.05, 0.1, 0.2, 0.35, 0.5, 0.75, 1.0, 1.5, 2.0];
+    println!("gaps in units of the Fermi kinetic energy E_F; V = vector (hidden-axis) channel, T = two-form channel, S = radial mode only");
+    println!("{:>4} {:>6} {:>6} | {:>8} {:>8} | {:>10} {:>10} {:>10} | {:>7} | regime", "g", "m_s/m", "k_F/m", "lambda_S", "lambda_P", "gap_V", "gap_T", "gap_S", "Tc/gapV");
+    for &g in &gs {
+        for &m_s in &mss {
+            for &k_f in &kfs {
+                let base = Pairing { m, g, m_s, m_ph: 0.0, scalar: true, phase: true, phase_sign: 1.0, k_f };
+                let ef = base.mu() - m; // Fermi kinetic energy
+                let grid = fermi_grid(k_f, 60.0 * m.max(k_f), 11, 8);
+                let lam_s = Pairing { phase: false, ..base }.lambda();
+                let lam_p = Pairing { scalar: false, ..base }.lambda();
+                // vector channel (S + P), two-form channel (S - P), radial mode only (S)
+                let variants = [Pairing { ..base }, Pairing { phase_sign: -1.0, ..base }, Pairing { phase: false, ..base }];
+                let mut gaps = [0.0; 3];
+                let mut tc_ratio = f64::NAN;
+                for (iv, p) in variants.iter().enumerate() {
+                    let lam = p.lambda();
+                    // start from the weak-coupling estimate, or from E_F at strong coupling
+                    let start = (2.0 * ef * (-1.0 / lam.max(1e-3)).exp()).max(1e-11 * ef).min(ef);
+                    let sol = solve_gap(p, &grid, 0.0, start, 1e-9, 40000);
+                    let gap = if sol.converged && sol.delta_f > 1e-7 * ef { sol.delta_f } else { 0.0 };
+                    gaps[iv] = gap;
+                    if iv == 0 && gap > 0.0 {
+                        if let Some(tc) = critical_temperature(p, &grid, 1e-11 * ef, 5.0 * (ef + m)) {
+                            tc_ratio = tc / gap;
+                        }
+                        if (g, m_s, k_f) == (2.0, 0.1, 0.5) {
+                            for (k, d) in sol.k.iter().zip(&sol.delta) {
+                                prof.push(vec![*k, *d, *d / gap]);
+                            }
+                        }
+                    }
+                }
+                // The chemical potential is kept at its weak-coupling value, which is
+                // justified only while the gap is small compared with E_F (BCS regime).
+                let bcs = gaps[0] < 0.3 * ef;
+                println!("{:>4} {:>6} {:>6} | {:>8.4} {:>8.4} | {:>10.3e} {:>10.3e} {:>10.3e} | {:>7.4} | {}", g, m_s, k_f, lam_s, lam_p,
+                    gaps[0] / ef, gaps[1] / ef, gaps[2] / ef, tc_ratio, if bcs { "BCS" } else { "beyond BCS (not quantitative)" });
+                // sanity: T_c/gap must be close to the BCS value 0.567 whenever the gap is small
+                if gaps[0] > 0.0 && gaps[0] < 0.05 * ef && tc_ratio.is_finite() {
+                    ok &= (tc_ratio - 0.567).abs() < 0.03;
+                }
+                // sanity: the phase mode favours the vector channel
+                ok &= gaps[0] >= gaps[2] && gaps[2] >= gaps[1];
+                rows.push(vec![g, m_s, k_f, ef, lam_s, lam_p, gaps[0] / ef, gaps[1] / ef, gaps[2] / ef, tc_ratio, if bcs { 1.0 } else { 0.0 }]);
+            }
+        }
+    }
+    spacetimes::io::write_csv("gap_scan.csv",
+        &[("content", "zero-temperature gap at the Fermi surface, and critical temperature, for the vector (hidden-axis) pair channel and for a two-form pair channel".to_string()),
+          ("model", "exchange of the radial mode (mass m_s, scalar vertex) and of the massless phase mode (pseudoscalar vertex) of the Vorton-Scalar, both with coupling g = m/v_VS; kernels of kernel.rs; chemical potential fixed at sqrt(m^2 + k_F^2)".to_string()),
+          ("units", "hbar = c = k_B = 1; momenta and masses in units of the fermion mass m; gaps in units of the Fermi kinetic energy E_F = sqrt(m^2 + k_F^2) - m".to_string()),
+          ("columns", "lambda = N(0) W(k_F, k_F), N(0) = k_F sqrt(m^2+k_F^2)/(2 pi^2), for the radial mode (S) and the phase mode (P); gap_V: vector channel (kernel S + P); gap_T: two-form channel (kernel S - P); gap_S: radial mode only; gap = 0 means below the resolution 1e-7 E_F of the calculation; bcs_regime = 1 if gap_V < 0.3 E_F (only then is the fixed chemical potential justified)".to_string()),
+          ("command", "spacetimes gap".to_string())],
+        &["g", "m_s_over_m", "kF_over_m", "EF_over_m", "lambda_S", "lambda_P", "gap_V_over_EF", "gap_T_over_EF", "gap_S_over_EF", "Tc_over_gap_V", "bcs_regime"], &rows)?;
+    spacetimes::io::write_csv("gap_profile.csv",
+        &[("content", "momentum dependence of the gap function Delta(k) of the vector channel for g = 2, m_s = 0.1 m, k_F = 0.5 m".to_string()),
+          ("command", "spacetimes gap".to_string())],
+        &["k_over_m", "gap_over_m", "gap_over_gapF"], &prof)?;
+    println!("\nchecks (T_c/gap = 0.567 at weak coupling; gap_V >= gap_S >= gap_T): {}", ok);
+    Ok(ok)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
     let ok = match cmd {
         "matrices" => cmd_matrices().expect("i/o error"),
+        "channels" => cmd_channels().expect("i/o error"),
+        "gap" => cmd_gap().expect("i/o error"),
         _ => {
-            println!("usage: spacetimes <command>\n\ncommands:\n  matrices   build and verify the two sets of real 16x16 Dirac matrices; write data/ and provenance/generated/");
+            println!("usage: spacetimes <command>\n\ncommands:\n  matrices   build and verify the two sets of real 16x16 Dirac matrices; write data/ and provenance/generated/\n  channels   exchange amplitudes of the Vorton-Scalar in the pair channels; write data/pair_channel_kernel.csv\n  gap        gap equation of the hidden-axis singlet superfluid; write data/gap_scan.csv, data/gap_profile.csv");
             true
         }
     };
