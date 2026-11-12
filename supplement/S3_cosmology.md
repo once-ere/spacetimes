@@ -253,7 +253,7 @@ Seven one-parameter families of models are compared; in each, $N$ is varied:
 | 6 | fluid of the model, early step | $r_{\rm step}=15^{1/3}$, $z_t=10^6$: after nucleosynthesis, before the scales of the microwave background enter the horizon |
 
 For $N=0.4$ the transition redshifts $10^4$, $10^{5.5}$ and $10^6$ correspond to the
-fermion masses 1.5, 48 and 1.5e+02 eV
+fermion masses 1.5, 48 and 150 eV
 (`make_tables_cosmo.py`, from $m=T_{d0}(1+z_t)$).
 
 ## 3.3 Mock data and method
@@ -308,7 +308,7 @@ $(0.14/0.19)^2\approx0.6$.
 
 ## 3.4 Results
 
-![Planck-like mock data. (a) Worsening of the best fit, relative to ΛCDM, as a function of the density $N$ of the extra radiation, for the six families. (b) The Hubble constant of the best fit; the band is the local measurement. (c) The same information combined: the cost of a given Hubble constant. Data: `data/dr_profiles.csv`.](../figures/fig_dr_profiles_planck.png){width=100%}
+![Planck-like mock data. (a) Worsening of the best fit, relative to ΛCDM, as a function of the density $N$ of the extra radiation, for six of the seven families (the family with $z_t=5\times10^4$ is omitted from the figure for clarity; it is in the tables). (b) The Hubble constant of the best fit; the band is the local measurement. (c) The same information combined: the cost of a given Hubble constant. Data: `data/dr_profiles.csv`.](../figures/fig_dr_profiles_planck.png){width=100%}
 
 | family | $\sigma(N)$ | $dH_0/dN$ | $N$ at $\Delta\chi^2\!=\!4$ | $H_0$ there | $H_0$ at $\Delta\chi^2\!=\!9$ | $N_{73.5}$ | its $\Delta\chi^2$ | $\sqrt{\Delta\chi^2}$ |
 |:------------------|------:|---------:|---------:|------:|---------:|------:|------:|------:|

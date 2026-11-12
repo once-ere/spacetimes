@@ -281,7 +281,7 @@ $(0.14/0.19)^2\approx0.6$.
 
 ## 3.4 Results
 
-![Planck-like mock data. (a) Worsening of the best fit, relative to ΛCDM, as a function of the density $N$ of the extra radiation, for the six families. (b) The Hubble constant of the best fit; the band is the local measurement. (c) The same information combined: the cost of a given Hubble constant. Data: `data/dr_profiles.csv`.](../figures/fig_dr_profiles_planck.png){width=100%}
+![Planck-like mock data. (a) Worsening of the best fit, relative to ΛCDM, as a function of the density $N$ of the extra radiation, for six of the seven families (the family with $z_t=5\times10^4$ is omitted from the figure for clarity; it is in the tables). (b) The Hubble constant of the best fit; the band is the local measurement. (c) The same information combined: the cost of a given Hubble constant. Data: `data/dr_profiles.csv`.](../figures/fig_dr_profiles_planck.png){width=100%}
 
 {{GEN:dr_summary_table_c0}}
 

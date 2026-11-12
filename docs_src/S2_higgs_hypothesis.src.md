@@ -162,7 +162,7 @@ generator $T^3_B$ of $SU(2)_B$, the four components of $\Delta^a$ have the elect
 charges $Q=T^3_A+T^3_B=(+1,0,0,-1)$, the hidden-axis direction is electrically
 neutral, and conditions C3 and C4 are met.
 
-Three qualifications:
+Four qualifications:
 
 1. *The order parameter is complex.* $\Delta^a$ has four complex components — twice
    the content of the Higgs doublet — because the pair carries fermion number. Its

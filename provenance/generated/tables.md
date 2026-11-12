@@ -522,7 +522,7 @@ Model fluid with $N=0.4$ after the step, Planck-like mock data. Source: `data/dr
 48
 <!-- END dr_mass_zt_5p5 -->
 <!-- BEGIN dr_mass_zt_6 -->
-1.5e+02
+150
 <!-- END dr_mass_zt_6 -->
 <!-- BEGIN dr_zt_early_chi2 -->
 7.0

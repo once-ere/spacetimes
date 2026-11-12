@@ -231,7 +231,10 @@ def run(frag_outer, read_csv, sci, table, DATA):
         # so T_d0 = T_gamma0 [2 N (7/8) (4/11)^(4/3)]^(1/4);  T_gamma0 = 2.7255 K = 2.3487e-4 eV.
         t_d0 = 2.7255 * 8.617333262e-5 * (2 * 0.4 * 0.875 * (4.0 / 11.0) ** (4.0 / 3.0)) ** 0.25
         for lz, name in ((4.0, "4"), (5.5, "5p5"), (6.0, "6")):
-            frag("dr_mass_zt_" + name, "%.2g" % (t_d0 * 10 ** lz))
+            # two significant digits, written without an exponent (1.5, 48, 150)
+            mass = t_d0 * 10 ** lz
+            e = int(math.floor(math.log10(mass)))
+            frag("dr_mass_zt_" + name, "%.*f" % (max(0, 1 - e), round(mass, 1 - e)))
         early = [r for r in z if r["log10_z_t"] >= 5.74]
         frag("dr_zt_early_chi2", "%.1f" % early[-1]["chi2"])
         frag("dr_zt_early_h0", "%.1f" % early[-1]["H0"])
