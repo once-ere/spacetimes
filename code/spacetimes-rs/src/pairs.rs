@@ -21,7 +21,7 @@
 //! Exact (integer) statements about explicit pair matrices are added for 7+1.
 
 use crate::complex::C64;
-use crate::gamma::{clifford_basis, pi71, rank_of, Gammas};
+use crate::gamma::{clifford_basis, swap04, rank_of, Gammas};
 use crate::imat::{rank, IMat};
 use crate::linalg::{eigh, CMat};
 use crate::verify::Report;
@@ -185,7 +185,8 @@ pub fn su2_dim(c: f64) -> usize {
 fn fmt_multiplets(ms: &[Multiplet], names: &[&str]) -> String {
     let mut s = String::new();
     for m in ms {
-        let lab: Vec<String> = names.iter().zip(&m.values).map(|(n, v)| format!("{}={}", n, v)).collect();
+        // "+ 0.0" turns a floating-point "-0" into "0" in the printed label
+        let lab: Vec<String> = names.iter().zip(&m.values).map(|(n, v)| format!("{}={}", n, v + 0.0)).collect();
         s.push_str(&format!("[{} : {} states] ", lab.join(", "), m.count));
     }
     s
@@ -199,7 +200,7 @@ pub struct PairAnalysis {
 
 /// Classification for the 7+1 spacetime.
 pub fn analyse_71(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
-    let g = &gm.g71;
+    let g = &gm.gamma1671;
     let mut out = PairAnalysis { lines: Vec::new(), csv_rows: Vec::new() };
     let space: [usize; 7] = [0, 1, 2, 3, 5, 6, 7];
     // one particle at rest: beta u = +u, beta = gamma^4 = [[0,1],[1,0]]:  u_s = (e_s; e_s)/sqrt(2)
@@ -253,27 +254,27 @@ pub fn analyse_71(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     rep.add("71-Q2", "numerical", &format!("7+1, two identical particles in an s wave (28 states allowed by the Pauli principle): under SO(7) they form 7 + 21 (Casimir 6 and 10); there is NO SO(7) singlet.  Under SO(3) x SU(2)_A x SU(2)_B:  7 = (1; 2, 2) + (3; 1, 1),  21 = (1; 3, 1) + (1; 1, 3) + (3; 1, 1) + (3; 2, 2).  The pairs of ordinary spin 0 are the 10 states (1; 2, 2) + (1; 3, 1) + (1; 1, 3) (residual {:.0e})", res2),
         ok2 && res2 < 1e-9);
 
-    // ---- exact statements with the integer matrices rho^j = tauO[pi(j)] ------------------
-    // On the particle space the generator Sigma^{ij} acts as (1/2) rho^i rho^j, and a pair amplitude
-    // transforms by the commutator.  (gamma^i gamma^j = diag(rho^i rho^j, rho^i rho^j) for space indices.)
-    let rho: Vec<IMat> = (0..8).map(|a| gm.tau_o[pi71(a)].clone()).collect();
+    // ---- exact statements with the integer matrices tau1671^j = tauO[swap04(j)] ------------------
+    // On the particle space the generator Sigma^{ij} acts as (1/2) tau1671^i tau1671^j, and a pair amplitude
+    // transforms by the commutator.  (gamma^i gamma^j = diag(tau1671^i tau1671^j, tau1671^i tau1671^j) for space indices.)
+    let tau1671: Vec<IMat> = (0..8).map(|a| gm.tau_o[swap04(a)].clone()).collect();
     let id8 = IMat::identity(8);
     let z8 = IMat::zeros(8, 8);
-    let ok_blocks = space.iter().all(|&i| space.iter().all(|&j| i == j || g[i].mul(&g[j]) == IMat::block2(&rho[i].mul(&rho[j]), &z8, &z8, &rho[i].mul(&rho[j]))));
-    rep.add("71-Q3", "exact", "7+1: for space indices i != j, gamma71[i].gamma71[j] = diag(rho^i rho^j, rho^i rho^j) in 8x8 blocks, so on the particles at rest, u = (e; e)/sqrt(2), the rotation generator Sigma^(ij) acts as the real antisymmetric 8x8 matrix (1/2) rho^i rho^j", ok_blocks);
-    // the 7 matrices rho^j and the 21 matrices rho^i rho^j: 28 independent antisymmetric matrices
-    let mut basis: Vec<IMat> = space.iter().map(|&j| rho[j].clone()).collect();
+    let ok_blocks = space.iter().all(|&i| space.iter().all(|&j| i == j || g[i].mul(&g[j]) == IMat::block2(&tau1671[i].mul(&tau1671[j]), &z8, &z8, &tau1671[i].mul(&tau1671[j]))));
+    rep.add("71-Q3", "exact", "7+1: for space indices i != j, gamma1671[i].gamma1671[j] = diag(tau1671^i tau1671^j, tau1671^i tau1671^j) in 8x8 blocks, so on the particles at rest, u = (e; e)/sqrt(2), the rotation generator Sigma1671^(ij) acts as the real antisymmetric 8x8 matrix (1/2) tau1671^i tau1671^j", ok_blocks);
+    // the 7 matrices tau1671^j and the 21 matrices tau1671^i tau1671^j: 28 independent antisymmetric matrices
+    let mut basis: Vec<IMat> = space.iter().map(|&j| tau1671[j].clone()).collect();
     let mut planes: Vec<IMat> = Vec::new();
     for (ii, &i) in space.iter().enumerate() {
         for &j in &space[(ii + 1)..] {
-            planes.push(rho[i].mul(&rho[j]));
+            planes.push(tau1671[i].mul(&tau1671[j]));
         }
     }
     basis.extend(planes.iter().cloned());
     let rows: Vec<Vec<i64>> = basis.iter().map(|m| m.flatten()).collect();
-    rep.add("71-Q4", "exact", "7+1: the 7 matrices rho^j and the 21 matrices rho^i rho^j (i < j; space indices) are antisymmetric and linearly independent: together they span all 28 antisymmetric 8x8 matrices, i.e. all s-wave pair amplitudes",
+    rep.add("71-Q4", "exact", "7+1: the 7 matrices tau1671^j and the 21 matrices tau1671^i tau1671^j (i < j; space indices) are antisymmetric and linearly independent: together they span all 28 antisymmetric 8x8 matrices, i.e. all s-wave pair amplitudes",
         basis.iter().all(|m| m.is_antisymmetric()) && rank(&rows) == 28);
-    // so(7) Casimir on the two families:  sum_{i<j} [N_ij, [N_ij, Phi]] = -4 C Phi  with N_ij = rho^i rho^j = 2 Sigma^{ij}
+    // so(7) Casimir on the two families:  sum_{i<j} [N_ij, [N_ij, Phi]] = -4 C Phi  with N_ij = tau1671^i tau1671^j = 2 Sigma^{ij}
     let cas = |phi: &IMat| -> IMat {
         let mut s = IMat::zeros(8, 8);
         for n in &planes {
@@ -281,9 +282,9 @@ pub fn analyse_71(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
         }
         s
     };
-    rep.add("71-Q5", "exact", "7+1: the quadratic Casimir operator of SO(7), C Phi = -sum_(i<j) [Sigma^(ij), [Sigma^(ij), Phi]], equals 6 Phi on every rho^j (the vector, 7) and 10 Phi on every rho^i rho^j (the adjoint, 21)",
-        space.iter().all(|&j| cas(&rho[j]) == rho[j].scale(-24)) && planes.iter().all(|n| cas(n) == n.scale(-40)));
-    // no invariant antisymmetric matrix: the only 8x8 matrices commuting with all rho^i rho^j are multiples of 1
+    rep.add("71-Q5", "exact", "7+1: the quadratic Casimir operator of SO(7), Cas7(Phi) := -sum_(i<j) [Sigma1671^(ij), [Sigma1671^(ij), Phi]], gives Cas7(Phi) = 6 Phi for every Phi = tau1671^j (the vector, 7) and Cas7(Phi) = 10 Phi for every Phi = tau1671^i tau1671^j (the adjoint, 21)",
+        space.iter().all(|&j| cas(&tau1671[j]) == tau1671[j].scale(-24)) && planes.iter().all(|n| cas(n) == n.scale(-40)));
+    // no invariant antisymmetric matrix: the only 8x8 matrices commuting with all tau1671^i tau1671^j are multiples of 1
     let mut sys: Vec<Vec<i64>> = Vec::new();
     for n in &planes {
         for i in 0..8 {
@@ -297,17 +298,17 @@ pub fn analyse_71(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
             }
         }
     }
-    rep.add("71-Q6", "exact", "7+1: the linear system [rho^i rho^j, X] = 0 (all 21 planes) for an 8x8 matrix X has rank 63 and is solved by X = 1: the only rotation-invariant pair matrix is the unit matrix, which is SYMMETRIC and therefore excluded by the Pauli principle.  Two identical particles of the field cannot form an s-wave pair that is a singlet under all rotations of the seven space dimensions",
+    rep.add("71-Q6", "exact", "7+1: the linear system [tau1671^i tau1671^j, X] = 0 (all 21 planes) for an 8x8 matrix X has rank 63 and is solved by X = 1: the only rotation-invariant pair matrix is the unit matrix, which is SYMMETRIC and therefore excluded by the Pauli principle.  Two identical particles of the field cannot form an s-wave pair that is a singlet under all rotations of the seven space dimensions",
         rank(&sys) == 63 && planes.iter().all(|n| n.comm(&id8).is_zero()));
     // the ten pair matrices of ordinary spin 0
     let extra: [usize; 4] = [0, 5, 6, 7];
-    let mut ten: Vec<IMat> = extra.iter().map(|&j| rho[j].clone()).collect();
+    let mut ten: Vec<IMat> = extra.iter().map(|&j| tau1671[j].clone()).collect();
     for (ii, &a) in extra.iter().enumerate() {
         for &b in &extra[(ii + 1)..] {
-            ten.push(rho[a].mul(&rho[b]));
+            ten.push(tau1671[a].mul(&tau1671[b]));
         }
     }
-    let jplanes = [rho[2].mul(&rho[3]), rho[3].mul(&rho[1]), rho[1].mul(&rho[2])];
+    let jplanes = [tau1671[2].mul(&tau1671[3]), tau1671[3].mul(&tau1671[1]), tau1671[1].mul(&tau1671[2])];
     // system: antisymmetric Phi commuting with the three ordinary rotation generators
     let idx = pair_index(8);
     let mut sys: Vec<Vec<i64>> = Vec::new();
@@ -329,10 +330,10 @@ pub fn analyse_71(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
         }
     }
     let rows: Vec<Vec<i64>> = ten.iter().map(|m| m.flatten()).collect();
-    rep.add("71-Q7", "exact", "7+1: the ten antisymmetric matrices rho^0, rho^5, rho^6, rho^7 and rho^a rho^b (a < b in {0, 5, 6, 7}) are linearly independent and commute with the generators rho^2 rho^3, rho^3 rho^1, rho^1 rho^2 of ordinary rotations; the system [rho^i rho^j, Phi] = 0 (ordinary rotations) on antisymmetric Phi has rank 18 = 28 - 10: these ten matrices are ALL the s-wave pairs of ordinary spin 0",
+    rep.add("71-Q7", "exact", "7+1: the ten antisymmetric matrices tau1671^0, tau1671^5, tau1671^6, tau1671^7 and tau1671^a tau1671^b (a < b in {0, 5, 6, 7}) are linearly independent and commute with the generators tau1671^2 tau1671^3, tau1671^3 tau1671^1, tau1671^1 tau1671^2 of ordinary rotations; the system [tau1671^i tau1671^j, Phi] = 0 (ordinary rotations) on antisymmetric Phi has rank 18 = 28 - 10: these ten matrices are ALL the s-wave pairs of ordinary spin 0",
         rank(&rows) == 10 && ten.iter().all(|m| m.is_antisymmetric() && jplanes.iter().all(|n| n.comm(m).is_zero())) && rank(&sys) == 18);
-    rep.add("71-Q8", "exact", "7+1: each of rho^j (any space index j) and rho^i rho^j (i != j) is an orthogonal matrix: Phi.transpose(Phi) = 1.  A condensate with pair matrix Delta rho^j or Delta rho^i rho^j therefore gives the SAME gap |Delta| to all eight spin states (a 'unitary' state)",
-        space.iter().all(|&j| rho[j].mul(&rho[j].transpose()) == id8) && planes.iter().all(|n| n.mul(&n.transpose()) == id8));
+    rep.add("71-Q8", "exact", "7+1: each of tau1671^j (any space index j) and tau1671^i tau1671^j (i != j) is an orthogonal matrix: Phi.transpose(Phi) = 1.  A condensate whose pair matrix is proportional to tau1671^j or to tau1671^i tau1671^j therefore gives the SAME gap to all eight spin states (a 'unitary' state)",
+        space.iter().all(|&j| tau1671[j].mul(&tau1671[j].transpose()) == id8) && planes.iter().all(|n| n.mul(&n.transpose()) == id8));
 
     // ---- which field bilinears psi^T X psi contain these pairs? ---------------------------
     // two-particle content of psi^T X psi at zero momentum: u_s^T X u_r = (X11 + X12 + X21 + X22)_{sr} / 2
@@ -342,16 +343,43 @@ pub fn analyse_71(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     let c_minus = g[4].mul(&om);
     let content = |x: &IMat| -> IMat { x.block(0, 0, 8, 8).add(&x.block(0, 8, 8, 8)).add(&x.block(8, 0, 8, 8)).add(&x.block(8, 8, 8, 8)) };
     // u = (e; e)/sqrt(2):  u_s^T X u_r = content(X)_{sr} / 2
-    let ok_v = space.iter().all(|&j| content(&c_minus.mul(&g[j])) == rho[j].scale(-2)) && content(&c_minus.mul(&g[4])).is_zero();
-    let ok_t = space.iter().all(|&i| space.iter().all(|&j| i == j || content(&c_plus.mul(&g[i]).mul(&g[j])) == rho[i].mul(&rho[j]).scale(2)));
-    rep.add("71-Q9", "exact", "7+1: two-particle content of the field bilinears, u_s^T X u_r for particles at rest: X = C_-.gamma71[j] gives -rho^j (space index j) and X = C_-.gamma71[4] gives 0; X = C_+.gamma71[i].gamma71[j] gives rho^i rho^j.  Hence the vector pair field is Delta_V^j = psi^T C_- gamma71^j psi (its time component contains no pair of two particles) and the adjoint pair field is Delta_T^(ij) = psi^T C_+ gamma71^i gamma71^j psi",
+    let ok_v = space.iter().all(|&j| content(&c_minus.mul(&g[j])) == tau1671[j].scale(-2)) && content(&c_minus.mul(&g[4])).is_zero();
+    let ok_t = space.iter().all(|&i| space.iter().all(|&j| i == j || content(&c_plus.mul(&g[i]).mul(&g[j])) == tau1671[i].mul(&tau1671[j]).scale(2)));
+    rep.add("71-Q9", "exact", "7+1: two-particle content of the field bilinears, u_s^T X u_r for particles at rest: X = Cm1671.gamma1671[j] gives -tau1671^j (space index j) and X = Cm1671.gamma1671[4] gives 0; X = Cp1671.gamma1671[i].gamma1671[j] gives tau1671^i tau1671^j.  Hence the vector pair field is DeltaV1671^j := dirac1671^T Cm1671 gamma1671^j dirac1671 (its time component contains no pair of two particles) and the adjoint pair field is DeltaT1671^(ij) := dirac1671^T Cp1671 gamma1671^i gamma1671^j dirac1671",
         ok_v && ok_t);
+
+    // ---- the unique singlet of SO(3) (x1 x2 x3) x SO(3)' (x5 x6 x7) -----------------------
+    // In stage 2 of the author's programme the hidden coordinate x0 is singled out, and the
+    // rotation symmetry of the extra space x0 x5 x6 x7 is reduced from SO(4) to the rotations
+    // SO(3)' of x5 x6 x7.  Which s-wave pairs are invariant under SO(3) x SO(3)'?
+    let six = [tau1671[2].mul(&tau1671[3]), tau1671[3].mul(&tau1671[1]), tau1671[1].mul(&tau1671[2]),
+               tau1671[6].mul(&tau1671[7]), tau1671[7].mul(&tau1671[5]), tau1671[5].mul(&tau1671[6])];
+    let mut sys: Vec<Vec<i64>> = Vec::new();
+    for n in &six {
+        for i in 0..8 {
+            for j in 0..8 {
+                let mut row = vec![0i64; 28];
+                for (c, &(s, r)) in idx.iter().enumerate() {
+                    // basis element E_sr - E_rs; ([N, Phi])_{ij}
+                    let mut x = 0i64;
+                    if j == r { x += n.get(i, s); }
+                    if j == s { x -= n.get(i, r); }
+                    if i == s { x -= n.get(r, j); }
+                    if i == r { x += n.get(s, j); }
+                    row[c] = x;
+                }
+                sys.push(row);
+            }
+        }
+    }
+    rep.add("71-Q10", "exact", "7+1: the system [tau1671^i tau1671^j, Phi] = 0 for the six rotation planes (1,2), (1,3), (2,3) of ordinary space and (5,6), (5,7), (6,7) of the extra space, on antisymmetric Phi, has rank 27 = 28 - 1, and Phi = tau1671^0 solves it: EXACTLY ONE s-wave pair is a singlet both of the ordinary rotations and of the rotations of x5 x6 x7.  Its pair matrix is tau1671^0, the two-particle content of DeltaV1671^0 = dirac1671^T Cm1671 gamma1671^0 dirac1671, the component of the vector pair field along the hidden space dimension x0 (the same result as in 4+4, check 44-Q4)",
+        rank(&sys) == 27 && six.iter().all(|n| n.comm(&tau1671[0]).is_zero()) && tau1671[0].is_antisymmetric());
     out
 }
 
 /// Classification for the 4+4 spacetime, in the sector of fields independent of x5, x6, x7.
 pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
-    let g = &gm.g44;
+    let g = &gm.gamma1644;
     let mut out = PairAnalysis { lines: Vec::new(), csv_rows: Vec::new() };
     // one particle at rest: psi = u exp(-i m x4) with gamma^4 u = +i u.
     // gamma^4 is a signed permutation with square -1: gamma^4 e_a = +-e_b.  u = (e_a - i gamma^4 e_a)/sqrt(2).
@@ -390,7 +418,7 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     let agen: Vec<CMat> = (0..3).map(|a| jgen[a].add(&kgen[a]).scale(0.5)).collect();
     let bgen: Vec<CMat> = (0..3).map(|a| jgen[a].sub(&kgen[a]).scale(0.5)).collect();
     let tgen = vec![sig(6, 7), sig(7, 5), sig(5, 6)]; // rotations of the extra times
-    // W = i sigma16 gamma^4 restricted to the particle space
+    // W1644 = i Cm1644 gamma1644^4 (Cm1644 = sigma16 of 4+4.nb) restricted to the particle space
     let wfull = cm(&gm.sigma16.mul(&g[4]));
     let mut w = restrict(&wfull, &u);
     for i in 0..8 {
@@ -411,7 +439,7 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     let ok1 = m1.len() == 2 && m1.iter().all(|m| m.count == 4 && m.values[2] == 0.75 && m.values[3] == 0.75)
         && m1.iter().any(|m| m.values[0] == 0.75 && m.values[1] == 0.0) && m1.iter().any(|m| m.values[0] == 0.0 && m.values[1] == 0.75)
         && m1[0].values[4] * m1[1].values[4] == -1.0;
-    rep.add("44-Q1", "numerical", &format!("4+4, fields independent of x5 x6 x7, one particle at rest (gamma44[4] u = i u, 8 states; deviation {:.0e}): under SU(2)_A x SU(2)_B (rotations of the space x0 x1 x2 x3) x SU(2)_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual {:.0e})", dev, res1),
+    rep.add("44-Q1", "numerical", &format!("4+4, fields independent of x5 x6 x7, one particle at rest (gamma1644[4] u = i u, 8 states; deviation {:.0e}): under SU(2)_A x SU(2)_B (rotations of the space x0 x1 x2 x3) x SU(2)_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W1644 and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual {:.0e})", dev, res1),
         ok1 && dev < 1e-12 && comm_ab < 1e-12 && res1 < 1e-9);
 
     let la: Vec<CMat> = agen.iter().map(|x| lift(x, 8)).collect();
@@ -434,7 +462,7 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
     rep.add("44-Q2", "numerical", &format!("4+4, fields independent of x5 x6 x7, two identical particles in an s wave (28 states): (1, 1; 3) twice, (3, 1; 1), (1, 3; 1), (2, 2; 1), (2, 2; 3) under SU(2)_A x SU(2)_B x SU(2)_T.  The pairs that are singlets under ALL rotations of the four space dimensions are the {} states (1, 1; 3) + (1, 1; 3): two triplets of the extra-time rotations, none of them a singlet of SU(2)_T.  {} states have ordinary spin 0 (residual {:.0e})", n_so4_singlets, n_j0, res2),
         ok2 && n_so4_singlets == 6 && n_j0 == 10 && res2 < 1e-9);
 
-    // which covariant bilinears psi^T (C_- Gamma^K) psi contain the SO(4)-singlet pairs?
+    // which covariant bilinears dirac1644^T (Cm1644 gamma1644[A1]...gamma1644[Ar]) dirac1644 contain the SO(4)-singlet pairs?
     let basis = clifford_basis(g);
     let idx = pair_index(8);
     let mut kinds: Vec<String> = Vec::new();
@@ -463,9 +491,9 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
             kinds.push(format!("{{{}}}", ind.join(",")));
         }
     }
-    out.lines.push(format!("4+4: bilinears psi^T C_- Gamma^K psi (rank {}..) whose two-particle content lies entirely in the SO(4)-singlet pairs: K = {}", 1, kinds.join(" ")));
+    out.lines.push(format!("4+4: bilinears dirac1644^T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 whose two-particle content lies entirely in the SO(4)-singlet pairs: index sets {{A1,...,Ar}} = {}", kinds.join(" ")));
     let has = |s: &str| kinds.iter().any(|k| k == s);
-    rep.add("44-Q3", "numerical", &format!("4+4: among the 120 Pauli-allowed bilinears psi^T C_- Gamma^K psi, those whose two-particle content (particles at rest) lies entirely in the SO(4)-singlet pairs are K = {}; they include the time-like components K = {{5}}, {{6}}, {{7}} of the vector pair field psi^T C_- gamma44^A psi", kinds.join(" ")),
+    rep.add("44-Q3", "numerical", &format!("4+4: among the 120 Pauli-allowed bilinears dirac1644^T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 (A1 < ... < Ar), those whose two-particle content (particles at rest) lies entirely in the SO(4)-singlet pairs have the index sets {{A1,...,Ar}} = {}; they include the components A = 5, 6, 7 (the extra-time components) of the vector pair field DeltaV1644^A := dirac1644^T Cm1644 gamma1644^A dirac1644", kinds.join(" ")),
         has("{5}") && has("{6}") && has("{7}") && !has("{0}") && !has("{4}"));
     // the unique pair state that is a singlet of ordinary rotations AND of the extra-time rotations
     let mut kinds0: Vec<String> = Vec::new();
@@ -493,8 +521,8 @@ pub fn analyse_44(gm: &Gammas, rep: &mut Report) -> PairAnalysis {
         }
     }
     let n00: usize = m2.iter().filter(|m| m.values[2] == 0.0 && m.values[3] == 0.0).map(|m| m.count).sum();
-    out.lines.push(format!("4+4: bilinears psi^T C_- Gamma^K psi whose two-particle content is the unique pair state with ordinary spin 0 and extra-time isospin 0: K = {}", kinds0.join(" ")));
-    rep.add("44-Q4", "numerical", &format!("4+4: exactly {} of the 28 pair states is a singlet both of the ordinary rotations (x1 x2 x3) and of the extra-time rotations (x5 x6 x7); it belongs to the space vector (2, 2; 1), is made of one particle with W = +1 and one with W = -1, and is the two-particle content of the bilinears with K = {}: in particular of psi^T C_- gamma44^0 psi, the component of the vector pair field along the hidden space dimension x0", n00, kinds0.join(" ")),
+    out.lines.push(format!("4+4: bilinears dirac1644^T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 whose two-particle content is the unique pair state with ordinary spin 0 and extra-time isospin 0: index sets {{A1,...,Ar}} = {}", kinds0.join(" ")));
+    rep.add("44-Q4", "numerical", &format!("4+4: exactly {} of the 28 pair states is a singlet both of the ordinary rotations (x1 x2 x3) and of the extra-time rotations (x5 x6 x7); it belongs to the space vector (2, 2; 1), is made of one particle with W1644 = +1 and one with W1644 = -1, and is the two-particle content of the bilinears with the index sets {{A1,...,Ar}} = {}: in particular of DeltaV1644^0 = dirac1644^T Cm1644 gamma1644^0 dirac1644, the component of the vector pair field along the hidden space dimension x0", n00, kinds0.join(" ")),
         n00 == 1 && kinds0.iter().any(|k| k == "{0}"));
     let _ = rank_of(0);
     out
@@ -515,7 +543,7 @@ pub fn run(gm: &Gammas, rep: &mut Report) -> std::io::Result<Vec<String>> {
     crate::io::write_csv_str("pair_classification.csv",
         &[("content", "s-wave pair states of two identical particles of the 16-component field at rest, by multiplet".to_string()),
           ("7+1", "J: ordinary rotations (x1 x2 x3); A, B: the two SU(2) factors of the rotations of the extra space (x0 x5 x6 x7); SO(7) multiplet".to_string()),
-          ("4+4", "fields independent of x5 x6 x7; A, B: the two SU(2) factors of the rotations of space (x0 x1 x2 x3); T: rotations of the extra times; J: ordinary rotations; WW: product of the W eigenvalues".to_string()),
+          ("4+4", "fields independent of x5 x6 x7; A, B: the two SU(2) factors of the rotations of space (x0 x1 x2 x3); T: rotations of the extra times; J: ordinary rotations; WW: product of the W1644 eigenvalues of the two particles".to_string()),
           ("entries", "dimension 2j+1 of each SU(2) multiplet".to_string())],
         &["spacetime", "dim_J", "dim_A", "dim_B", "dim_T", "SO7_multiplet", "WW", "states"], &rows)?;
     let mut lines = a71.lines;

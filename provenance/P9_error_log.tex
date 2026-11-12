@@ -1,0 +1,295 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P9 --- Error log of PROJECT spacetimes},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P9 --- Error log of PROJECT spacetimes}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance: every error made during the work, how it was
+found, and how it was corrected}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{purpose}{%
+\section{Purpose}\label{purpose}}
+
+Hard Rule 7 of the task specification forbids shortcuts and demands that
+problems be explained. This file therefore records every error that was
+made while the project was carried out, including errors that were
+corrected before anything was published. For each error it states what
+was wrong, how it was detected, what was done, and where the corrected
+statement can be checked. An error that is not listed here and is found
+later is to be added, not silently repaired.
+
+\hypertarget{errors-in-the-construction-and-verification-of-the-dirac-matrices}{%
+\section{Errors in the construction and verification of the Dirac
+matrices}\label{errors-in-the-construction-and-verification-of-the-dirac-matrices}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3043}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2319}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2464}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1739}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+No.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What was wrong
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How it was found
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Correction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where to check
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+E1 & The first version of check \texttt{71-P4} stated the block form of
+the complex projectors of 7+1 with the wrong sign of the off-diagonal
+blocks. & The program compares the statement with the computed matrices;
+the check failed. & The statement was corrected: \(\chi_{1671}\) has the
+blocks \((0,-i;\,i,0)\), and \(2P_{1671}^{L}\) has the blocks
+\((1,i;\,-i,1)\). & \texttt{data/matrix\_checks.txt}, line
+\texttt{71-P4} \\
+E2 & The 7+1 matrices of the project were first defined as the covariant
+matrices \texttt{Γ17{[}swap04(A){]}} of \texttt{7+1.nb}. The Dirac
+equation of the notebook, however, is written with the contravariant
+matrices \texttt{Γ17up}. & Re-reading sections 5.3 and 7.1 of
+\texttt{7+1.nb} while writing the Dirac equation of dirac1671. & The
+project's matrices are \(\gamma_{1671}^A=\)
+\texttt{Γ17up{[}swap04(A){]}}; then \(\omega_{1671}\) equals
+\texttt{Γ17{[}8{]}} exactly and \(\chi_{1671}\) equals \texttt{χ17}. &
+\texttt{data/matrix\_checks.txt}, lines \texttt{71-N2}, \texttt{71-V1},
+\texttt{71-P1} \\
+E3 & Check \texttt{71-Q9} first claimed that the two-particle content of
+\(\psi^TC_{1671}^{-}\gamma_{1671}^j\psi\) is \(+\tau_{1671}^j\). & The
+check failed. & The content is \(-\tau_{1671}^j\). & line
+\texttt{71-Q9} \\
+E4 & Check \texttt{71-P5} first claimed that the unitary matrix
+\(U_{1671}^{c}\) maps \(P_{1671}^{L}\) to \(P_{1644}^{L}\). & The check
+failed. & It maps \(P_{1671}^{L}\) to \(P_{1644}^{R}\) and
+\(P_{1671}^{R}\) to \(P_{1644}^{L}\); the reason (two different sign
+conventions for the chirality matrix in \texttt{7+1.nb}) is stated in
+the check and in Sec. 2.6 of ``dirac matrices''. & line
+\texttt{71-P5} \\
+E5 & A commit was created although one check (E4) still failed, because
+the commands were chained in a way that did not stop on failure; its
+message claimed that all checks pass. & Reading the output after the
+commit. & The check was corrected, the program was run again (all checks
+passed), and the commit was amended before it left the workspace; it was
+never pushed in the faulty state. Since then a commit is made only if
+the check program returns success. & \texttt{git\ log}: commit ``Dirac
+equations (dirac1644, dirac1671) and Pauli classification of fermion
+pairs'' \\
+E6 & The first implementation of the exact rank (fraction-free
+elimination with 128-bit integers) overflowed for 256×256 matrices. &
+The Rust program is compiled with overflow checks and stopped with an
+error instead of returning a wrong number. & Ranks are computed modulo
+the prime \(2^{61}-1\), with the argument (in the documentation of
+\texttt{rank}) that a rank found modulo a prime is a lower bound of the
+rank over the rational numbers, so that a full rank is proved;
+statements about a null space are in addition backed by an explicit null
+vector. The Python script confirms the same statements by other methods
+(Gram matrices, enumeration, exact rational elimination). &
+\texttt{code/spacetimes-rs/src/imat.rs};
+\texttt{data/matrix\_checks\_independent.txt} \\
+E7 & \textbf{Symbol collision introduced by this project.} Until
+November 12, 2026 the program and the drafts used the names
+\texttt{g44}, \texttt{g71}, \texttt{eta44}, \texttt{eta71},
+\texttt{gamma44}, \texttt{gamma71}, \texttt{chi71} and the like for the
+project's matrices. The author's notebooks use these very names for
+other objects: \texttt{g44} and \texttt{g71} are metric tensors of the
+gravity notebooks, \texttt{η44} is a 4×4 metric in
+\texttt{Dirac\_Nash\_Identity.nb}, and \texttt{η71}, \texttt{Γ71},
+\texttt{χ71}, \texttt{PL71}, \texttt{PR71} of \texttt{7+1.nb} differ
+from the project's 7+1 metric, matrices, chirality matrix and
+projectors. This is exactly the kind of ambiguity that Hard Rule 5
+forbids. & A systematic search of all notebooks for names carrying the
+tags 44, 71 and 17, made while the symbol table of ``dirac matrices''
+was written. & All project symbols were renamed with the tags 1644 and
+1671, which occur in no original file (source code, check statements,
+data files, documents). Other letters with two meanings were separated
+as well: the 8×8 matrix \(\sigma\) became \(\sigma_{88}\), the
+permutation ``π'' became \(\mathrm{swap}_{04}\), the 8×8 blocks ``ρ'' of
+7+1 became \(\tau_{1671}^A\), the multi-index ``K'' was replaced by
+explicit index sets, and rotation parameters are written \(\theta_{AB}\)
+instead of \(\omega_{AB}\). & MASTER provenance P1; Sec. 0.2 of ``dirac
+matrices'' \\
+E8 & In the first draft of ``dirac matrices'' the proof of Lorentz
+covariance used the transformation \(\psi'(x)=S^{-1}\psi(\Lambda x)\)
+and contracted the indices of \(\Lambda\) incorrectly. & Re-deriving
+every formula of the draft before the document was assembled. & The
+correct statement is \(\psi'(x)=S\,\psi(\Lambda x)\) with
+\(S\gamma^AS^{-1}=\Lambda^A{}_B\gamma^B\); the derivation is given in
+Sec. 1.8.2. The faulty draft was never committed. & ``dirac matrices'',
+Sec. 1.8.2 \\
+E9 & The first version of the routine of the Python script that counts
+invariant pair matrices mixed the linear equations of different
+generators. & Review of the code before its first complete run. & Each
+generator contributes its own 64 equations for the 28 unknowns. The
+corrected routine reproduces the numbers of the Rust program (0 and 10
+for 7+1; 6, 10, 1 and 0 for 4+4). The faulty version was never
+committed. & \texttt{code/scripts/verify\_matrices\_independent.py},
+function \texttt{invariant\_dimension} \\
+E10 & The draft of Sec. 1.6 said that cell 166 of \texttt{4+4.nb}
+verifies all five projector relations; the cell verifies three of them.
+& Comparing the sentence with the cell. & The text now says which three
+relations the notebook verifies; all five are verified by checks
+\texttt{44-P1}, \texttt{44-P2}. Never committed in the faulty form. &
+``dirac matrices'', Sec. 1.6 \\
+\end{longtable}
+
+\end{document}

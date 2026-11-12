@@ -1,7 +1,7 @@
 //! The Dirac equations of the two fields, checked in momentum space.
 //!
-//! * 4+4, field `dirac1644`:   ( gamma44^A d_A - m ) psi = 0      (a REAL operator)
-//! * 7+1, field `dirac1671`:   ( i gamma71^A d_A - m ) psi = 0
+//! * 4+4, field `dirac1644`:   ( gamma1644^A d_A - m ) psi = 0      (a REAL operator)
+//! * 7+1, field `dirac1671`:   ( i gamma1671^A d_A - m ) psi = 0
 //!
 //! (d_A = d/dx^A, A = 0..7, summation over A.)  A plane wave turns d_A into a
 //! number, and every statement below becomes an identity between matrices with
@@ -12,7 +12,7 @@
 //! are printed in the documents.
 
 use crate::fmat::Rng;
-use crate::gamma::{pi71, Gammas, ETA44, ETA71};
+use crate::gamma::{swap04, Gammas, ETA1644, ETA1671};
 use crate::imat::{GMat, IMat};
 use crate::verify::Report;
 
@@ -45,9 +45,9 @@ fn m_plus_i(m: i64, s: &IMat) -> GMat {
     GMat { re: IMat::identity(16).scale(m), im: s.clone() }
 }
 
-/// Checks of the 4+4 Dirac equation (gamma44^A d_A - m) psi = 0.
+/// Checks of the 4+4 Dirac equation (gamma1644^A d_A - m) psi = 0.
 pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
-    let g = &gm.g44;
+    let g = &gm.gamma1644;
     let id16 = IMat::identity(16);
     let id8 = IMat::identity(8);
     let z8 = IMat::zeros(8, 8);
@@ -60,14 +60,14 @@ pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
         let k = random_k(&mut rng);
         let m = rng.int(1, 5);
         let s = slash(g, &k);
-        let kk = dot(&ETA44, &k);
+        let kk = dot(&ETA1644, &k);
         ok1 &= s.mul(&s) == id16.scale(kk);
         // psi = u exp(i k_A x^A):  (gamma.d - m) -> (i gamma.k - m);  (i s + m)(i s - m) = -(k.k + m^2)
         let prod = m_plus_i(m, &s).mul(&m_plus_i(-m, &s));
         ok2 &= prod == GMat::from_real(&id16.scale(-(kk + m * m)));
     }
-    rep.add("44-D1", "exact", "(gamma44^A k_A)^2 = (eta44^(AB) k_A k_B) 1 for 40 random integer vectors k: the Dirac operator gamma44^A d_A squares to the wave operator eta44^(AB) d_A d_B = d0^2 + d1^2 + d2^2 + d3^2 - d4^2 - d5^2 - d6^2 - d7^2", ok1);
-    rep.add("44-D2", "exact", "(i gamma44.k + m)(i gamma44.k - m) = -(k.k + m^2) 1 for 40 random integer (k, m): every component of a solution of (gamma44^A d_A - m) psi = 0 obeys the Klein-Gordon equation (eta44^(AB) d_A d_B - m^2) psi = 0", ok2);
+    rep.add("44-D1", "exact", "(gamma1644^A k_A)^2 = (eta1644^(AB) k_A k_B) 1 for 40 random integer vectors k: the Dirac operator gamma1644^A d_A squares to the wave operator eta1644^(AB) d_A d_B = d0^2 + d1^2 + d2^2 + d3^2 - d4^2 - d5^2 - d6^2 - d7^2", ok1);
+    rep.add("44-D2", "exact", "(i gamma1644.k + m1644)(i gamma1644.k - m1644) = -(k.k + m1644^2) 1 for 40 random integer (k, m1644): every component of a solution of (gamma1644^A d_A - m1644) dirac1644 = 0 obeys the Klein-Gordon equation (eta1644^(AB) d_A d_B - m1644^2) dirac1644 = 0", ok2);
 
     // D3: a worked on-shell example.  k = (k0..k7) = (0, 2, 2, 4; 5, 0, 0, 0), m = 1:
     // k.k = 4 + 4 + 16 - 25 = -1 = -m^2, i.e. k4^2 + ... + k7^2 = k0^2 + ... + k3^2 + m^2.
@@ -76,19 +76,19 @@ pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
     let s = slash(g, &k);
     let n = m_plus_i(-m, &s); // i gamma.k - m
     let two_m_pi = m_plus_i(m, &s); // 2m Pi = i gamma.k + m
-    rep.add("44-D3", "exact", "worked example k = (0,2,2,4; 5,0,0,0), m = 1 (on the mass shell: k4^2+k5^2+k6^2+k7^2 = k0^2+k1^2+k2^2+k3^2 + m^2): Pi := (i gamma44.k + m)/(2m) satisfies Pi.Pi = Pi, trace Pi = 8 and (i gamma44.k - m).Pi = 0, so the plane-wave solutions u exp(i k.x) form an 8-dimensional space, u = Pi w",
-        dot(&ETA44, &k) == -m * m && two_m_pi.mul(&two_m_pi) == two_m_pi.scale(2 * m) && two_m_pi.re.trace() == 16 * m && two_m_pi.im.trace() == 0 && n.mul(&two_m_pi).is_zero());
+    rep.add("44-D3", "exact", "worked example k = (0,2,2,4; 5,0,0,0), m1644 = 1 (on the mass shell: k4^2+k5^2+k6^2+k7^2 = k0^2+k1^2+k2^2+k3^2 + m1644^2): Pi1644 := (i gamma1644.k + m1644)/(2 m1644) satisfies Pi1644.Pi1644 = Pi1644, trace Pi1644 = 8 and (i gamma1644.k - m1644).Pi1644 = 0, so the plane-wave solutions u exp(i k.x) form an 8-dimensional space, u = Pi1644 w",
+        dot(&ETA1644, &k) == -m * m && two_m_pi.mul(&two_m_pi) == two_m_pi.scale(2 * m) && two_m_pi.re.trace() == 16 * m && two_m_pi.im.trace() == 0 && n.mul(&two_m_pi).is_zero());
 
     // D4: chiral block structure.  psi = (psi_L, psi_R) = (upper 8, lower 8 components).
     let pl = IMat::block2(&id8, &z8, &z8, &z8);
     let pr = IMat::block2(&z8, &z8, &z8, &id8);
-    rep.add("44-D4", "exact", "P_L.gamma44[A].P_R = [[0, taubar[A]], [0, 0]], P_R.gamma44[A].P_L = [[0, 0], [tau[A], 0]], P_L.gamma44[A].P_L = P_R.gamma44[A].P_R = 0: with psi = (psi_L, psi_R) the 16-component equation is the pair  taubar^A d_A psi_R = m psi_L,  tau^A d_A psi_L = m psi_R  of 8-component equations",
+    rep.add("44-D4", "exact", "PL1644.gamma1644[A].PR1644 = [[0, taubar1644[A]], [0, 0]], PR1644.gamma1644[A].PL1644 = [[0, 0], [tau1644[A], 0]], PL1644.gamma1644[A].PL1644 = PR1644.gamma1644[A].PR1644 = 0: with dirac1644 = (psiL1644, psiR1644) the 16-component equation is the pair  taubar1644^A d_A psiR1644 = m1644 psiL1644,  tau1644^A d_A psiL1644 = m1644 psiR1644  of 8-component equations",
         (0..8).all(|a| pl.mul(&g[a]).mul(&pr) == IMat::block2(&z8, &gm.taubar[a], &z8, &z8) && pr.mul(&g[a]).mul(&pl) == IMat::block2(&z8, &z8, &gm.tau[a], &z8)
             && pl.mul(&g[a]).mul(&pl).is_zero() && pr.mul(&g[a]).mul(&pr).is_zero()));
     let mut ok = true;
     for _ in 0..40 {
         let k = random_k(&mut rng);
-        let kk = dot(&ETA44, &k);
+        let kk = dot(&ETA1644, &k);
         let mut t = IMat::zeros(8, 8);
         let mut tb = IMat::zeros(8, 8);
         for a in 0..8 {
@@ -97,10 +97,11 @@ pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
         }
         ok &= t.mul(&tb) == id8.scale(kk) && tb.mul(&t) == id8.scale(kk);
     }
-    rep.add("44-D5", "exact", "(tau^A k_A)(taubar^B k_B) = (taubar^A k_A)(tau^B k_B) = (eta44^(AB) k_A k_B) 1_8 for 40 random integer k: each 8-component field obeys the Klein-Gordon equation", ok);
+    rep.add("44-D5", "exact", "(tau1644^A k_A)(taubar1644^B k_B) = (taubar1644^A k_A)(tau1644^B k_B) = (eta1644^(AB) k_A k_B) 1_8 for 40 random integer k: each 8-component field obeys the Klein-Gordon equation", ok);
 
     // D6: evolution in the ordinary time x4.  From gamma^A d_A psi = m psi and (gamma^4)^(-1) = -gamma^4:
-    //   d_4 psi = K psi,   K = -m gamma^4 + i sum_{a=0..3} k_a gamma^4 gamma^a + i sum_{t=5..7} kappa_t gamma^4 gamma^t
+    //   d_4 dirac1644 = K1644 dirac1644,   K1644 = -m gamma^4 + i sum_{a=0..3} k_a gamma^4 gamma^a + i sum_{t=5..7} kappa_t gamma^4 gamma^t
+    //   (gamma^A = gamma1644^A, m = m1644 in this function)
     // for psi proportional to exp(i(k_a x^a + kappa_t x^t)).
     let build_k = |ks: &[i64; 4], kap: &[i64; 3], m: i64| -> GMat {
         let mut im = IMat::zeros(16, 16);
@@ -112,7 +113,7 @@ pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
         }
         GMat { re: g[4].scale(-m), im }
     };
-    rep.add("44-D6", "exact", "alpha^a := gamma44[4].gamma44[a] (a = 0..3) are real symmetric with square +1; gamma44[4].gamma44[t] (t = 5, 6, 7) are real antisymmetric with square -1; gamma44[4] is real antisymmetric with square -1",
+    rep.add("44-D6", "exact", "alpha1644^a := gamma1644[4].gamma1644[a] (a = 0..3) are real symmetric with square +1; gamma1644[4].gamma1644[t] (t = 5, 6, 7) are real antisymmetric with square -1; gamma1644[4] is real antisymmetric with square -1",
         (0..4).all(|a| { let x = g[4].mul(&g[a]); x.is_symmetric() && x.mul(&x) == id16 }) && (5..8).all(|t| { let x = g[4].mul(&g[t]); x.is_antisymmetric() && x.mul(&x) == id16.neg() })
             && g[4].is_antisymmetric() && g[4].mul(&g[4]) == id16.neg());
     let mut ok_sq = true;
@@ -124,35 +125,35 @@ pub fn verify_dirac_44(gm: &Gammas, rep: &mut Report) {
         let k = build_k(&ks, &kap, m);
         let om2 = m * m + ks.iter().map(|x| x * x).sum::<i64>() - kap.iter().map(|x| x * x).sum::<i64>();
         ok_sq &= k.mul(&k) == GMat::from_real(&id16.scale(-om2));
-        // K + K^dagger = 2 i sum_t kappa_t gamma^4 gamma^t
+        // K1644 + K1644^dagger = 2 i sum_t kappa_t gamma^4 gamma^t
         let mut want = IMat::zeros(16, 16);
         for t in 0..3 {
             want = want.add(&g[4].mul(&g[5 + t]).scale(2 * kap[t]));
         }
         ok_herm &= k.add(&k.dagger()) == GMat::i_times(&want);
     }
-    rep.add("44-D7", "exact", "x4-evolution d_4 psi = K psi with K = -m gamma^4 + i k_a gamma^4 gamma^a + i kappa_t gamma^4 gamma^t (a = 0..3 space, t = 5, 6, 7 extra times): K.K = -(m^2 + |k|^2 - |kappa|^2) 1 for 40 random integer (k, kappa, m): the frequencies in x4 are +-sqrt(m^2 + |k|^2 - |kappa|^2)", ok_sq);
-    rep.add("44-D8", "exact", "K + K^dagger = 2 i kappa_t gamma^4 gamma^t: K is anti-Hermitian (so that H = iK is Hermitian and the x4-evolution preserves psi^dagger psi) if and only if kappa = 0, i.e. if the field does not depend on the extra times x5, x6, x7", ok_herm);
-    // D9: an explicitly unstable mode: m = 3, k = 0, kappa = (5, 0, 0):  K.K = +16
+    rep.add("44-D7", "exact", "x4-evolution d_4 dirac1644 = K1644 dirac1644 with K1644 = -m1644 gamma1644^4 + i k_a gamma1644^4 gamma1644^a + i kappa_t gamma1644^4 gamma1644^t (a = 0..3 space, t = 5, 6, 7 extra times): K1644.K1644 = -(m1644^2 + |k|^2 - |kappa|^2) 1 for 40 random integer (k, kappa, m1644): the frequencies in x4 are +-sqrt(m1644^2 + |k|^2 - |kappa|^2)", ok_sq);
+    rep.add("44-D8", "exact", "K1644 + K1644^dagger = 2 i kappa_t gamma1644^4 gamma1644^t: K1644 is anti-Hermitian (so that h1644 := i K1644 is Hermitian and the x4-evolution preserves dirac1644^dagger dirac1644) if and only if kappa = 0, i.e. if the field does not depend on the extra times x5, x6, x7", ok_herm);
+    // D9: an explicitly unstable mode: m = 3, k = 0, kappa = (5, 0, 0):  K1644.K1644 = +16
     let kk = build_k(&[0, 0, 0, 0], &[5, 0, 0], 3);
     let k_minus = kk.sub(&GMat::from_real(&id16.scale(4)));
     let k_plus = kk.add(&GMat::from_real(&id16.scale(4)));
-    rep.add("44-D9", "exact", "example of the instability: m = 3, k = 0, kappa = (5, 0, 0) gives K.K = +16, (K - 4)(K + 4) = 0 with trace K = 0: K has the real eigenvalues +4 and -4, eight times each, so eight solutions grow like exp(+4 x4)",
+    rep.add("44-D9", "exact", "example of the instability: m1644 = 3, k = 0, kappa = (5, 0, 0) gives K1644.K1644 = +16, (K1644 - 4)(K1644 + 4) = 0 with trace K1644 = 0: K1644 has the real eigenvalues +4 and -4, eight times each, so eight solutions grow like exp(+4 x4)",
         kk.mul(&kk) == GMat::from_real(&id16.scale(16)) && k_minus.mul(&k_plus).is_zero() && !k_minus.is_zero() && !k_plus.is_zero() && kk.re.trace() == 0 && kk.im.trace() == 0);
 
-    // D10: the grading W = i sigma16 gamma^4 of the sector kappa = 0
+    // D10: the grading W1644 = i Cm1644 gamma1644^4 (Cm1644 = sigma16 of 4+4.nb) of the sector kappa = 0
     let w = GMat::i_times(&gm.sigma16.mul(&g[4]));
     let comm_real = |x: &IMat| { let gx = GMat::from_real(x); w.mul(&gx).sub(&gx.mul(&w)).is_zero() };
     let anti_real = |x: &IMat| { let gx = GMat::from_real(x); w.mul(&gx).add(&gx.mul(&w)).is_zero() };
-    rep.add("44-D10", "exact", "W := i sigma16.gamma44[4] is Hermitian with W.W = 1 and trace 0 (eigenvalues +1 and -1, eight times each); W commutes with gamma44[4] and with gamma44[4].gamma44[a] (a = 0..3), hence with K at kappa = 0, and anticommutes with gamma44[4].gamma44[t] (t = 5, 6, 7)",
+    rep.add("44-D10", "exact", "W1644 := i Cm1644.gamma1644[4] is Hermitian with W1644.W1644 = 1 and trace 0 (eigenvalues +1 and -1, eight times each); W1644 commutes with gamma1644[4] and with gamma1644[4].gamma1644[a] (a = 0..3), hence with K1644 at kappa = 0, and anticommutes with gamma1644[4].gamma1644[t] (t = 5, 6, 7)",
         w.dagger() == w && w.mul(&w) == GMat::from_real(&id16) && w.im.trace() == 0 && comm_real(&g[4]) && (0..4).all(|a| comm_real(&g[4].mul(&g[a]))) && (5..8).all(|t| anti_real(&g[4].mul(&g[t]))));
-    rep.add("44-D11", "exact", "the density of the conserved current of the Spin(4,4)-invariant Lagrangian, j^4 = psi^dagger (i sigma16 gamma44[4]) psi = psi^dagger W psi, is NOT positive: W has eight eigenvalues -1; the positive density psi^dagger psi is conserved only for kappa = 0 (44-D8)",
+    rep.add("44-D11", "exact", "the density of the conserved current of the Spin(4,4)-invariant Lagrangian, j1644^4 = dirac1644^dagger (i Cm1644.gamma1644[4]) dirac1644 = dirac1644^dagger W1644 dirac1644, is NOT positive: W1644 has eight eigenvalues -1; the positive density dirac1644^dagger dirac1644 is conserved only for kappa = 0 (44-D8)",
         w.mul(&w) == GMat::from_real(&id16) && w.im.trace() == 0);
 }
 
-/// Checks of the 7+1 Dirac equation (i gamma71^A d_A - m) psi = 0.
+/// Checks of the 7+1 Dirac equation (i gamma1671^A d_A - m) psi = 0.
 pub fn verify_dirac_71(gm: &Gammas, rep: &mut Report) {
-    let g = &gm.g71;
+    let g = &gm.gamma1671;
     let id16 = IMat::identity(16);
     let id8 = IMat::identity(8);
     let z8 = IMat::zeros(8, 8);
@@ -165,19 +166,19 @@ pub fn verify_dirac_71(gm: &Gammas, rep: &mut Report) {
         let k = random_k(&mut rng);
         let m = rng.int(1, 5);
         let s = slash(g, &k);
-        let kk = dot(&ETA71, &k);
+        let kk = dot(&ETA1671, &k);
         ok1 &= s.mul(&s) == id16.scale(kk);
         ok2 &= s.add(&id16.scale(m)).mul(&s.sub(&id16.scale(m))) == id16.scale(kk - m * m);
     }
-    rep.add("71-D1", "exact", "(gamma71^A k_A)^2 = (eta71^(AB) k_A k_B) 1 = (k4^2 - k0^2 - k1^2 - k2^2 - k3^2 - k5^2 - k6^2 - k7^2) 1 for 40 random integer vectors k", ok1);
-    rep.add("71-D2", "exact", "(gamma71.k + m)(gamma71.k - m) = (k.k - m^2) 1 for 40 random integer (k, m): with psi = u exp(-i k_A x^A) the operator i gamma71^A d_A - m becomes gamma71.k - m, and every component of a solution obeys the Klein-Gordon equation (d4^2 - d0^2 - d1^2 - d2^2 - d3^2 - d5^2 - d6^2 - d7^2 + m^2) psi = 0", ok2);
+    rep.add("71-D1", "exact", "(gamma1671^A k_A)^2 = (eta1671^(AB) k_A k_B) 1 = (k4^2 - k0^2 - k1^2 - k2^2 - k3^2 - k5^2 - k6^2 - k7^2) 1 for 40 random integer vectors k", ok1);
+    rep.add("71-D2", "exact", "(gamma1671.k + m1671)(gamma1671.k - m1671) = (k.k - m1671^2) 1 for 40 random integer (k, m1671): with dirac1671 = u exp(-i k_A x^A) the operator i gamma1671^A d_A - m1671 becomes gamma1671.k - m1671, and every component of a solution obeys the Klein-Gordon equation (d4^2 - d0^2 - d1^2 - d2^2 - d3^2 - d5^2 - d6^2 - d7^2 + m1671^2) dirac1671 = 0", ok2);
 
     // D3: worked on-shell example: energy 5, momentum (2, 2, 4) along x1, x2, x3, m = 1 (the example of 7+1.nb)
     let k = [0, -2, -2, -4, 5, 0, 0, 0]; // covariant components k_A = (E at index 4; -p^j)
     let s = slash(g, &k);
     let two_m_pi = s.add(&id16); // 2m Pi with m = 1
-    rep.add("71-D3", "exact", "worked example E = 5, momentum p = (p1, p2, p3) = (2, 2, 4), m = 1 (on the mass shell, 25 = 24 + 1): Pi := (gamma71.k + m)/(2m) satisfies Pi.Pi = Pi, trace Pi = 8, (gamma71.k - m).Pi = 0: eight independent positive-energy plane waves",
-        dot(&ETA71, &k) == 1 && two_m_pi.mul(&two_m_pi) == two_m_pi.scale(2) && two_m_pi.trace() == 16 && s.sub(&id16).mul(&two_m_pi).is_zero());
+    rep.add("71-D3", "exact", "worked example E = 5, momentum p = (p1, p2, p3) = (2, 2, 4), m1671 = 1 (on the mass shell, 25 = 24 + 1): Pi1671 := (gamma1671.k + m1671)/(2 m1671) satisfies Pi1671.Pi1671 = Pi1671, trace Pi1671 = 8, (gamma1671.k - m1671).Pi1671 = 0: eight independent positive-energy plane waves",
+        dot(&ETA1671, &k) == 1 && two_m_pi.mul(&two_m_pi) == two_m_pi.scale(2) && two_m_pi.trace() == 16 && s.sub(&id16).mul(&two_m_pi).is_zero());
 
     // D4: Hamiltonian form  i d_4 psi = h psi,  h = -i alpha^j d_j + beta m,  beta = gamma^4, alpha^j = gamma^4 gamma^j
     let beta = g[4].clone();
@@ -189,7 +190,7 @@ pub fn verify_dirac_71(gm: &Gammas, rep: &mut Report) {
             ok &= alpha[i].anti(&alpha[j]) == id16.scale(if i == j { 2 } else { 0 });
         }
     }
-    rep.add("71-D4", "exact", "beta := gamma71[4] and alpha^j := gamma71[4].gamma71[j] (j = 0, 1, 2, 3, 5, 6, 7) are real symmetric; alpha^i.alpha^j + alpha^j.alpha^i = 2 delta^(ij), alpha^j.beta + beta.alpha^j = 0, beta.beta = 1: the Hamiltonian h = -i alpha^j d_j + beta m is Hermitian", ok);
+    rep.add("71-D4", "exact", "beta1671 := gamma1671[4] and alpha1671^j := gamma1671[4].gamma1671[j] (j = 0, 1, 2, 3, 5, 6, 7) are real symmetric; alpha1671^i.alpha1671^j + alpha1671^j.alpha1671^i = 2 delta^(ij), alpha1671^j.beta1671 + beta1671.alpha1671^j = 0, beta1671.beta1671 = 1: the Hamiltonian h1671 = -i alpha1671^j d_j + beta1671 m1671 is Hermitian", ok);
     let mut ok = true;
     for _ in 0..40 {
         let m = rng.int(1, 5);
@@ -202,48 +203,48 @@ pub fn verify_dirac_71(gm: &Gammas, rep: &mut Report) {
         }
         ok &= h.is_symmetric() && h.mul(&h) == id16.scale(p2 + m * m);
     }
-    rep.add("71-D5", "exact", "h(p) = p^j alpha^j + m beta is a real symmetric matrix with h(p).h(p) = (|p|^2 + m^2) 1 for 40 random integer (p, m): the energies are +E and -E, E = sqrt(|p|^2 + m^2), eight times each", ok);
+    rep.add("71-D5", "exact", "h1671(p) = p^j alpha1671^j + m1671 beta1671 is a real symmetric matrix with h1671(p).h1671(p) = (|p|^2 + m1671^2) 1 for 40 random integer (p, m1671): the energies are +E and -E, E = sqrt(|p|^2 + m1671^2), eight times each", ok);
 
-    // D6: block form and the real 8x8 matrices rho^j := tauO[pi(j)]
-    let rho: Vec<IMat> = (0..8).map(|a| gm.tau_o[pi71(a)].clone()).collect();
-    rep.add("71-D6", "exact", "rho^j := tauO[pi(j)] (pi = (0 4)): rho^4 = 1_8; for the seven space indices rho^j is real, antisymmetric, rho^i.rho^j + rho^j.rho^i = -2 delta^(ij); in 8x8 blocks beta = [[0, 1], [1, 0]] and alpha^j = [[0, rho^j], [-rho^j, 0]] (the matrices betaD, alphaD of 7+1.nb section 7.1)",
-        rho[4] == id8 && beta == IMat::block2(&z8, &id8, &id8, &z8)
-            && space.iter().all(|&j| rho[j].is_antisymmetric() && alpha[j] == IMat::block2(&z8, &rho[j], &rho[j].neg(), &z8))
-            && space.iter().all(|&i| space.iter().all(|&j| rho[i].anti(&rho[j]) == id8.scale(if i == j { -2 } else { 0 }))));
+    // D6: block form and the real 8x8 matrices tau1671^j := tauO[swap04(j)]
+    let tau1671: Vec<IMat> = (0..8).map(|a| gm.tau_o[swap04(a)].clone()).collect();
+    rep.add("71-D6", "exact", "tau1671^j := tauO[swap04(j)] (swap04 = (0 4)): tau1671^4 = 1_8; for the seven space indices tau1671^j is real, antisymmetric, tau1671^i.tau1671^j + tau1671^j.tau1671^i = -2 delta^(ij); in 8x8 blocks beta1671 = [[0, 1], [1, 0]] and alpha1671^j = [[0, tau1671^j], [-tau1671^j, 0]] (beta1671 = betaD and alpha1671^j = alphaD[swap04(j)] of 7+1.nb section 7.1)",
+        tau1671[4] == id8 && beta == IMat::block2(&z8, &id8, &id8, &z8)
+            && space.iter().all(|&j| tau1671[j].is_antisymmetric() && alpha[j] == IMat::block2(&z8, &tau1671[j], &tau1671[j].neg(), &z8))
+            && space.iter().all(|&i| space.iter().all(|&j| tau1671[i].anti(&tau1671[j]) == id8.scale(if i == j { -2 } else { 0 }))));
 
     // D7: chiral (Weyl) form.  e_L = (1; -i), e_R = (-i; 1) in 8x8 blocks (16x8 matrices; 1/sqrt(2) omitted).
     let e_l = GMat { re: IMat::from_rows(&(0..16).map(|i| (0..8).map(|j| if i == j { 1 } else { 0 }).collect()).collect::<Vec<_>>()),
                      im: IMat::from_rows(&(0..16).map(|i| (0..8).map(|j| if i == j + 8 { -1 } else { 0 }).collect()).collect::<Vec<_>>()) };
     let e_r = GMat { re: IMat::from_rows(&(0..16).map(|i| (0..8).map(|j| if i == j + 8 { 1 } else { 0 }).collect()).collect::<Vec<_>>()),
                      im: IMat::from_rows(&(0..16).map(|i| (0..8).map(|j| if i == j { -1 } else { 0 }).collect()).collect::<Vec<_>>()) };
-    let chi = GMat::i_times(&gm.gamma17_8); // chi71 = i omega71
+    let chi = GMat::i_times(&gm.gamma17_8); // chi1671 = i omega1671
     let mut ok = chi.mul(&e_l) == e_l.scale(-1) && chi.mul(&e_r) == e_r
         && e_l.dagger().mul(&e_l) == GMat::from_real(&id8.scale(2)) && e_r.dagger().mul(&e_r) == GMat::from_real(&id8.scale(2)) && e_l.dagger().mul(&e_r).is_zero();
     for _ in 0..20 {
         let m = rng.int(1, 5);
         let mut h = beta.scale(m);
-        let mut prho = IMat::zeros(8, 8);
+        let mut ptau = IMat::zeros(8, 8);
         for &j in &space {
             let p = rng.int(-9, 9);
             h = h.add(&alpha[j].scale(p));
-            prho = prho.add(&rho[j].scale(p));
+            ptau = ptau.add(&tau1671[j].scale(p));
         }
         let hg = GMat::from_real(&h);
-        // e_L^dagger h e_L = -2 i (p.rho),  e_R^dagger h e_R = +2 i (p.rho),  e_L^dagger h e_R = e_R^dagger h e_L = 2 m
-        ok &= e_l.dagger().mul(&hg).mul(&e_l) == GMat::i_times(&prho.scale(-2));
-        ok &= e_r.dagger().mul(&hg).mul(&e_r) == GMat::i_times(&prho.scale(2));
+        // e_L^dagger h e_L = -2 i (p.tau1671),  e_R^dagger h e_R = +2 i (p.tau1671),  e_L^dagger h e_R = e_R^dagger h e_L = 2 m
+        ok &= e_l.dagger().mul(&hg).mul(&e_l) == GMat::i_times(&ptau.scale(-2));
+        ok &= e_r.dagger().mul(&hg).mul(&e_r) == GMat::i_times(&ptau.scale(2));
         ok &= e_l.dagger().mul(&hg).mul(&e_r) == GMat::from_real(&id8.scale(2 * m));
         ok &= e_r.dagger().mul(&hg).mul(&e_l) == GMat::from_real(&id8.scale(2 * m));
     }
-    rep.add("71-D7", "exact", "chiral form: with E_L = (1; -i)/sqrt(2), E_R = (-i; 1)/sqrt(2) (16x8, in 8x8 blocks; chi71.E_L = -E_L, chi71.E_R = +E_R, orthonormal): E_L^dagger.h(p).E_L = -i p^j rho^j, E_R^dagger.h(p).E_R = +i p^j rho^j, E_L^dagger.h(p).E_R = E_R^dagger.h(p).E_L = m (20 random integer (p, m)); hence (i d_4 + rho^j d_j) phi_L = m phi_R and (i d_4 - rho^j d_j) phi_R = m phi_L for phi_L = E_L^dagger psi, phi_R = E_R^dagger psi", ok);
+    rep.add("71-D7", "exact", "chiral form: with EL1671 = (1; -i)/sqrt(2), ER1671 = (-i; 1)/sqrt(2) (16x8, in 8x8 blocks; chi1671.EL1671 = -EL1671, chi1671.ER1671 = +ER1671, orthonormal): EL1671^dagger.h1671(p).EL1671 = -i p^j tau1671^j, ER1671^dagger.h1671(p).ER1671 = +i p^j tau1671^j, EL1671^dagger.h1671(p).ER1671 = ER1671^dagger.h1671(p).EL1671 = m1671 (20 random integer (p, m1671)); hence (i d_4 + tau1671^j d_j) phiL1671 = m1671 phiR1671 and (i d_4 - tau1671^j d_j) phiR1671 = m1671 phiL1671 for phiL1671 = EL1671^dagger dirac1671, phiR1671 = ER1671^dagger dirac1671 (EL1671, ER1671, phiL1671, phiR1671 are the objects EL, ER, phiL, phiR of 7+1.nb sections 7.10 and 7.11, in the PROJECT labelling of the coordinates)", ok);
 
     // D8: plane-wave spinors of the worked example, exactly: E = 5, p = (2, 2, 4) along x1, x2, x3, m = 1
     let (e, m) = (5i64, 1i64);
-    let mut mm = id8.scale(m); // M = m + p^j rho^j
+    let mut mm = id8.scale(m); // M = m + p^j tau1671^j
     let mut h = beta.scale(m);
     let mut hneg = beta.scale(m);
     for (j, p) in [(1usize, 2i64), (2, 2), (3, 4)] {
-        mm = mm.add(&rho[j].scale(p));
+        mm = mm.add(&tau1671[j].scale(p));
         h = h.add(&alpha[j].scale(p));
         hneg = hneg.sub(&alpha[j].scale(p));
     }
@@ -260,12 +261,12 @@ pub fn verify_dirac_71(gm: &Gammas, rep: &mut Report) {
     };
     let u = stack(&id8.scale(e), &mm.transpose());
     let v = stack(&id8.scale(e), &mm.neg());
-    rep.add("71-D8", "exact", "worked example E = 5, p = (2, 2, 4), m = 1: with M = m + p^j rho^j (M.transpose(M) = E^2 1_8), the columns of U = (E 1; transpose(M)) satisfy h(p).U = +E U and those of V = (E 1; -M) satisfy h(-p).V = -E V; transpose(U).U = transpose(V).V = 2 E^2 1_8: the spinors u_s = U e_s/sqrt(E), v_s = V e_s/sqrt(E) are REAL and normalized to 2E",
+    rep.add("71-D8", "exact", "worked example E = 5, p = (2, 2, 4), m1671 = 1: with M1671 = m1671 + p^j tau1671^j (M1671.transpose(M1671) = E^2 1_8), the columns of Upos1671 := (E 1; transpose(M1671)) satisfy h1671(p).Upos1671 = +E Upos1671 and those of Vneg1671 := (E 1; -M1671) satisfy h1671(-p).Vneg1671 = -E Vneg1671; transpose(Upos1671).Upos1671 = transpose(Vneg1671).Vneg1671 = 2 E^2 1_8: the spinors u_s = Upos1671 e_s/sqrt(E), v_s = Vneg1671 e_s/sqrt(E) are REAL and normalized to 2E",
         mm.mul(&mm.transpose()) == id8.scale(e * e) && h.mul(&u) == u.scale(e) && hneg.mul(&v) == v.scale(-e)
             && u.transpose().mul(&u) == id8.scale(2 * e * e) && v.transpose().mul(&v) == id8.scale(2 * e * e));
-    // D9: charge conjugation.  omega71 is real and anticommutes with every gamma (71-V2), so psi_c = omega71 conj(psi)
-    // solves the same equation; (psi_c)_c = omega71.omega71 psi = -psi.
+    // D9: charge conjugation.  omega1671 is real and anticommutes with every gamma (71-V2), so psi_c = omega1671 conj(psi)
+    // solves the same equation; (psi_c)_c = omega1671.omega1671 psi = -psi.
     let om = &gm.gamma17_8;
-    rep.add("71-D9", "exact", "charge conjugation psi_c := omega71 conj(psi): omega71 is real and omega71.gamma71[A] = -gamma71[A].omega71, so (i gamma71^A d_A - m) psi_c = omega71 conj((i gamma71^A d_A - m) psi); omega71.omega71 = -1 gives (psi_c)_c = -psi: a 16-component Majorana condition psi_c = psi has only the solution psi = 0",
+    rep.add("71-D9", "exact", "charge conjugation dirac1671_c := omega1671 conj(dirac1671): omega1671 is real and omega1671.gamma1671[A] = -gamma1671[A].omega1671, so (i gamma1671^A d_A - m1671) dirac1671_c = omega1671 conj((i gamma1671^A d_A - m1671) dirac1671); omega1671.omega1671 = -1 gives (dirac1671_c)_c = -dirac1671: a 16-component Majorana condition dirac1671_c = dirac1671 has only the solution dirac1671 = 0",
         (0..8).all(|a| om.anti(&g[a]).is_zero()) && om.mul(om) == id16.neg());
 }

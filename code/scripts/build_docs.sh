@@ -6,6 +6,9 @@
 #     .md   Markdown, the SOURCE that is edited by hand;
 #     .tex  LaTeX, GENERATED from the .md by pandoc;
 #     .pdf  PDF, COMPILED from that .tex with XeLaTeX.
+# Documents that display machine-generated matrices, tables or logs have one more
+# stage in front: their hand-edited source is docs_src/<name>.src.md, from which
+# code/scripts/assemble_docs.py writes the .md (run it before this script).
 # The two PRD manuscripts are the exception: their source is REVTeX (.tex) and
 # their Markdown version is generated from it (see code/scripts/tex2md.py).
 #
@@ -27,7 +30,9 @@ PROBLEMS=0   # number of documents with layout problems
 
 # ---------------------------------------------------------------------------
 # Which documents?  Either the ones named on the command line, or every
-# Markdown file of the repository except the generated manuscript Markdown.
+# Markdown file of the repository except the generated manuscript Markdown,
+# the document sources (docs_src/) and the generated fragments
+# (provenance/generated/), which are not documents.
 # The list is read line by line so that file names with spaces survive.
 # ---------------------------------------------------------------------------
 DOCS=()
@@ -36,7 +41,8 @@ if [ "$#" -gt 0 ]; then
 else
   while IFS= read -r f; do DOCS+=("$f"); done < <(
     find . -name '*.md' -not -path './.git/*' -not -path './manuscript/*' \
-           -not -path '*/target/*' -not -path './.git-transfer/*' | sed 's|^\./||' | sort)
+           -not -path '*/target/*' -not -path './.git-transfer/*' \
+           -not -path './docs_src/*' -not -path './provenance/generated/*' | sed 's|^\./||' | sort)
 fi
 
 for md in "${DOCS[@]}"; do
@@ -44,9 +50,11 @@ for md in "${DOCS[@]}"; do
   base="$(basename "$md" .md)"
   echo "[docs] $md -> $dir/$base.tex -> $dir/$base.pdf"
   # 0. Code blocks: a line of more than 96 characters does not fit the text
-  #    width at the type size used and would be wrapped in the PDF; report it.
+  #    width at the type size used and is wrapped in the PDF (the continuation
+  #    is marked by a hooked arrow).  Report how many such lines there are.
   awk -v f="$md" '/^```/ {code = !code; next}
-       code && length($0) > 96 {printf "[docs]   note: %s line %d: code line of %d characters will be wrapped\n", f, NR, length($0)}' "$md"
+       code && length($0) > 96 {n++; if (!first) first = NR}
+       END {if (n) printf "[docs]   note: %s: %d code line(s) longer than 96 characters are wrapped in the PDF (first: line %d)\n", f, n, first}' "$md"
   # 1. Markdown -> standalone LaTeX (pandoc).  The header file adds breakable
   #    code blocks, compact long tables and the running head.
   pandoc "$md" --standalone --from markdown+tex_math_dollars+pipe_tables+smart \

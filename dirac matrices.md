@@ -1,0 +1,2037 @@
+---
+title: "dirac matrices — the two sets of eight real 16×16 Dirac matrices of PROJECT spacetimes, and the Dirac equations of the fields dirac1644 and dirac1671"
+subtitle: "Provenance: definitions, displays, proofs, machine checks, and how to reproduce them"
+author: "Prepared for Patrick Lee Nash, Ph.D."
+date: "November 12, 2026"
+---
+
+<!-- This file is GENERATED from "docs_src/dirac matrices.src.md" by code/scripts/assemble_docs.py.
+     Edit the source, not this file: every matrix and every table below is inserted by machine. -->
+
+# 0. What this document proves, and for whom
+
+This document is written for a reader who knows the Dirac equation in four dimensions
+but has never seen the matrices of this project. It has three parts.
+
+* **Part 1** treats the eight real 16×16 Dirac matrices of the spacetime of signature
+  **4+4** (four space-like and four time-like dimensions), which are defined in the
+  author's notebook `4+4.nb`, and the Dirac equation of the field **dirac1644**.
+* **Part 2** treats the eight real 16×16 Dirac matrices of the spacetime of signature
+  **7+1** (seven space-like dimensions and one time-like dimension), which are defined in
+  the notebook `7+1.nb`, and the Dirac equation of the field **dirac1671**.
+* **Part 3** derives from the two sets of matrices a result that the rest of the project
+  needs: which pairs of two identical fermions can exist.
+
+For each set the document (i) displays the eight matrices and the other 16×16 matrices
+that matter; (ii) proves that the eight matrices are real; (iii) proves their
+anticommutation relations; (iv) determines the group that their scaled commutators
+generate; (v) re-derives the chiral projection operators; (vi) writes down a Dirac
+equation for a 16-component field whose components are complex-valued Grassmann
+operators, and checks it; and (vii) uses the chiral projections to write that equation
+as two coupled 8-component equations.
+
+**How the proofs are made.** Every matrix in this document has entries $0$, $+1$, $-1$
+(or, for two projectors, $0$, $\pm\tfrac12$, $\pm\tfrac i2$). An identity between such
+matrices can be verified with exact integer arithmetic, and a verification of that kind
+is a proof. The Rust program `spacetimes` (directory `code/spacetimes-rs`) performs
+106 such verifications. Each has an identifier, such as `44-C1` (the prefix
+`44-` refers to the 4+4 set, `71-` to the 7+1 set), which is quoted below at the place
+where the statement is used; the complete output of the program is reproduced verbatim
+in Appendix A. Where a human-readable argument is short, it is given as well, so that
+the reader can follow the logic without the computer.
+
+**Three independent constructions.** The matrices are obtained in three ways, which
+agree entry by entry (checks `44-N1`, `44-N2`, `44-P3`, `71-N1` of the Rust program and
+`I44-F`, `I71-F`, `I44-N`, `I71-N` of the Python script):
+
+1. *as printed by Mathematica*: the script `tools/extract_nb_matrices.py` reads the
+   output cells of the notebooks and writes `data/notebook_matrices_4+4.txt` and
+   `data/notebook_matrices_7+1.txt`;
+2. *rebuilt in Rust* from the definitions in the notebooks' input cells
+   (`code/spacetimes-rs/src/gamma.rs`);
+3. *rebuilt in Python* by a separate implementation
+   (`code/scripts/verify_matrices_independent.py`), which also repeats the essential
+   proofs by different methods (Appendix A.2).
+
+| Input file | SHA-256 checksum |
+|:-----------|:-----------------|
+| `4+4.nb` | `740023233eaa0cd24ca0e2e7010094671b1d314b698114c08db94050d3e0aed5` |
+| `7+1.nb` | `41d252f9852f210c228f45e1ac956d2d7ef26faeb0062a5880280e1aae0effc7` |
+| `Dirac_Einstein-Lovelock_4+4_Nash.nb` | `cdbb6a2c0b31ffd6a4fd951746a1e1c3ea5748afd371edc5095cea7e34cf79c0` |
+
+## 0.1 Coordinates: confirmation
+
+We use the coordinates
+$$X=\{x0,\;x1,\;x2,\;x3,\;x4,\;x5,\;x6,\;x7\}$$
+of the notebook `Dirac_Einstein-Lovelock_4+4_Nash.nb`, section `DEFCHART`, where they
+are defined by `X = {x0[], x1[], x2[], x3[], x4[], x5[], x6[], x7[]}` (with the xAct
+libraries a coordinate is written `x0[]`). They are never renamed, and their meaning is
+the same in both signatures as far as the first five are concerned:
+
+| Coordinate | 4+4 spacetime | 7+1 spacetime |
+|:-----------|:--------------|:--------------|
+| $x0$ | hidden space-like coordinate | hidden space-like coordinate |
+| $x1,x2,x3$ | the Cartesian space coordinates $x,y,z$ | the Cartesian space coordinates $x,y,z$ |
+| $x4$ | ordinary time | ordinary time |
+| $x5,x6,x7$ | three additional time-like coordinates | three additional space-like coordinates |
+
+An index $A,B,C,D\in\{0,\dots,7\}$ always labels the coordinate $xA$; we write
+$\partial_A\equiv\partial/\partial x^A$ and sum over repeated indices.
+
+*A difference from `7+1.nb` that the reader must know.* The notebook `7+1.nb` (its
+section 1.1) uses the same eight symbols but lets $x0$ be the time and $x4$ a space
+coordinate. On November 12, 2026 the author decided that in this project $x4$ is the
+time in both signatures. The matrices of `7+1.nb` are therefore used here with the
+indices 0 and 4 exchanged. The exchange is denoted $\mathrm{swap}_{04}$:
+$\mathrm{swap}_{04}(0)=4$, $\mathrm{swap}_{04}(4)=0$, and $\mathrm{swap}_{04}(A)=A$
+otherwise. Section 2.1 states the relabelling explicitly.
+
+## 0.2 The unique symbols of this document
+
+The author's notebooks use the same names for different objects. Three examples that
+concern this document directly: `γ` is a list of sixteen 4×4 matrices in `4+4.nb` but
+the four-dimensional Dirac matrices in `Dirac_Nash_Identity.nb`; `g44` and `g71` are
+the metric tensors of the gravity notebooks; and `7+1.nb` itself contains two different
+sets of matrices and two different chirality matrices, `Γ17`, `χ17` (real set) and
+`Γ71`, `χ71` (complex set), as well as two metrics, `η17` and `η71` $=-$`η17`. The
+MASTER provenance (`provenance/P1_master_symbols`) lists every collision and its
+remedy. The remedy adopted throughout the project is a **tag**:
+
+* the tag **1644** marks an object of the 4+4 spacetime (the spacetime of the field
+  dirac1644: 16 components, signature 4+4);
+* the tag **1671** marks an object of the 7+1 spacetime (the field dirac1671).
+
+No name of any original file contains either tag, so a tagged symbol cannot be mistaken
+for a symbol of a notebook. The symbols of this document are the following; the second
+column gives the name used in program output and in data files.
+
+| Symbol | Name in files | Meaning | Name in the notebooks |
+|:--------------|:-------------|:---------------------------------|:---------------------|
+| $\eta_{1644}$ | `eta1644` | metric of 4+4, $\mathrm{diag}(+1,+1,+1,+1,-1,-1,-1,-1)$ (space-like $=+1$) | `η4488` (`4+4.nb`) |
+| $\gamma_{1644}^A$ | `gamma1644[A]` | the eight Dirac matrices of 4+4 | `T16^A[A]` (`4+4.nb`), `T16[A]` (`7+1.nb`) |
+| $\omega_{1644}$ | `omega1644` | volume element of 4+4: the product of the eight $\gamma_{1644}^A$ in the order $A=0,\dots,7$ | `T16^A[8]` |
+| $P_{1644}^{L}$, $P_{1644}^{R}$ | `PL1644`, `PR1644` | chiral projectors of 4+4 (real) | `P_L`, `P_R` (`4+4.nb`); `PL44`, `PR44` (`7+1.nb`) |
+| $\tau_{1644}^A$, $\bar\tau_{1644}^A$ | `tau1644[A]`, `taubar1644[A]` | real 8×8 blocks of $\gamma_{1644}^A$ | `τ[A]` and τ with an overbar (`4+4.nb`); `τ[A]`, `τbar[A]` (`7+1.nb`) |
+| $\sigma_{88}$ | `sigma88` | the 8×8 matrix with the 4×4 blocks $(0,1_4;\,1_4,0)$ | `σ`, `σ88` (`4+4.nb`) |
+| $C_{1644}^{-}$, $C_{1644}^{+}$ | `Cm1644`, `Cp1644` | the products $\gamma^0\gamma^1\gamma^2\gamma^3$ and $\gamma^4\gamma^5\gamma^6\gamma^7$ of the 4+4 matrices | `σ16` (`4+4.nb`); `S44` (`7+1.nb`) |
+| $W_{1644}$ | `W1644` | $i\,C_{1644}^{-}\gamma_{1644}^4$, the grading of Sec. 1.8.4 | — |
+| $K_{1644}$, $\mathsf{h}_{1644}$ | `K1644`, `h1644` | generator of the evolution in $x4$, and Hamiltonian matrix, of 4+4 | — |
+| $\psi_{1644}$ | `dirac1644` | the field **dirac1644** | — |
+| $\psi_{1644}^{L}$, $\psi_{1644}^{R}$ | `psiL1644`, `psiR1644` | the two 8-component chiral parts of dirac1644 | — |
+| $m_{1644}$ | `m1644` | mass of the field dirac1644 | — |
+| $\eta_{1671}$ | `eta1671` | metric of 7+1, $\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1)$ (time-like $=+1$, time at index 4) | `η17` with the indices 0 and 4 exchanged; **not** `η71` |
+| $\gamma_{1671}^A$ | `gamma1671[A]` | the eight Dirac matrices of 7+1 | `Γ17up[swap04(A)]`; **not** `Γ71[A]` |
+| $\omega_{1671}$ | `omega1671` | volume element of 7+1: the product of the eight $\gamma_{1671}^A$ in the order $A=0,\dots,7$ | `Γ17[8]`, `ω17` |
+| $\chi_{1671}$ | `chi1671` | $i\,\omega_{1671}$, chirality matrix of 7+1 | `χ17`; **not** `χ71` |
+| $P_{1671}^{L}$, $P_{1671}^{R}$ | `PL1671`, `PR1671` | chiral projectors of 7+1 (complex) | `PL17`, `PR17`; **not** `PL71`, `PR71` |
+| $\tau_{1671}^A$ | `tau1671[A]` | real 8×8 blocks of the 7+1 matrices | `τO[swap04(A)]` |
+| $C_{1671}^{+}$, $C_{1671}^{-}$ | `Cp1671`, `Cm1671` | $\gamma_{1671}^4$ and $\gamma_{1671}^4\omega_{1671}$ | — |
+| $\beta_{1671}$, $\alpha_{1671}^j$ | `beta1671`, `alpha1671^j` | Hamiltonian matrices of 7+1 | `βD`, `αD[swap04(j)]` |
+| $\mathsf{h}_{1671}$ | `h1671` | Hamiltonian of 7+1 | `h` |
+| $E_{1671}^{L}$, $E_{1671}^{R}$ | `EL1671`, `ER1671` | chiral frames (16×8 matrices) of 7+1 | `EL`, `ER` |
+| $\phi_{1671}^{L}$, $\phi_{1671}^{R}$ | `phiL1671`, `phiR1671` | the two 8-component chiral parts of dirac1671 | `φL`, `φR` |
+| $U_{1671}^{c}$ | `Uc1671` | the unitary matrix of Eq. (2.5) | — |
+| $\psi_{1671}$ | `dirac1671` | the field **dirac1671** | `dirac16complex` |
+| $m_{1671}$ | `m1671` | mass of the field dirac1671 | `m`, `mD` |
+| $\Sigma_{1644}^{AB}$, $\Sigma_{1671}^{AB}$ | `Sigma1644^(AB)`, `Sigma1671^(AB)` | $\tfrac14[\gamma^A,\gamma^B]$, the scaled commutators of each set | `Σ17[A,B]` (for the `Γ17`) |
+| $\Delta_{1644}^{A}$, $\Delta_{1671}^{A}$ | `DeltaV1644^A`, `DeltaV1671^A` | the vector pair operators of Part 3 | — |
+
+**Scope rule.** Within Part 1 every formula refers to the 4+4 spacetime, and the tag
+1644 is dropped from the symbols inside derivations; within Part 2 the tag 1671 is
+dropped in the same way. The boxed equations, which state the results, carry the full
+tags. In Part 3 and in the appendices, where both signatures appear together, every
+tag is written.
+
+In the displays of matrices a dot stands for the entry 0, and thin rules separate the
+8×8 blocks (4×4 blocks in 8×8 matrices). The same matrices are available as plain
+integers in `data/gamma1644.txt` and `data/gamma1671.txt`.
+
+## 0.3 How to reproduce everything in this document
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes"
+# 1. matrices printed by Mathematica -> text files (needs only python3)
+python3 tools/extract_nb_matrices.py 4+4.nb 314 136 163 165 13 > "data/notebook_matrices_4+4.txt"
+python3 tools/extract_nb_matrices.py 7+1.nb 204 > "data/notebook_matrices_7+1.txt"
+# 2. build the Rust program, run its unit tests, run all checks (a few seconds)
+cargo build --release --manifest-path code/spacetimes-rs/Cargo.toml
+cargo test  --release --manifest-path code/spacetimes-rs/Cargo.toml
+./code/spacetimes-rs/target/release/spacetimes matrices
+# 3. independent check (pure Python, exact arithmetic, about 2 seconds)
+python3 code/scripts/verify_matrices_independent.py
+# 4. rebuild this document (Markdown, LaTeX, PDF)
+python3 code/scripts/assemble_docs.py
+bash code/scripts/build_docs.sh "dirac matrices.md"
+```
+
+Step 2 writes `data/gamma1644.txt`, `data/gamma1671.txt`, `data/matrix_checks.txt`,
+`data/matrix_checks.csv`, `data/pair_classification.csv`, `data/pair_classification.txt`
+and the matrix displays of this document (`provenance/generated/matrices.md`). The
+program ends with the line "106 of 106 checks passed"
+and returns a non-zero exit status if any check fails. Step 3 writes
+`data/matrix_checks_independent.txt`.
+
+---
+
+# Part 1. Signature 4+4: the matrices $\gamma_{1644}^A$ of `4+4.nb`
+
+*Scope rule: in this Part $\gamma^A$, $\eta$, $\omega$, $P^{L}$, $P^{R}$, $C^{\mp}$,
+$\Sigma^{AB}$, $\tau^A$, $\bar\tau^A$, $\psi$, $m$, $K$, $W$, $\mathsf{h}$ stand for the
+objects with the tag 1644.*
+
+## 1.1 Definition
+
+The construction of `4+4.nb` proceeds in four steps, from 4×4 matrices to 16×16
+matrices. We repeat it with the notebook's cell numbers (as counted by
+`tools/nb2txt.py`) so that each step can be compared with the source.
+
+**Step 1: six antisymmetric 4×4 matrices** (`4+4.nb` cells 25–36). Let
+$\epsilon_{hpq4}$ be the sign of the permutation $(h,p,q,4)$ of $(1,2,3,4)$, and zero if
+two indices coincide. For $h=1,2,3$ and $p,q=1,\dots,4$,
+$$(s_h)_{pq}=\epsilon_{hpq4}-\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big),\qquad
+(t_h)_{pq}=\epsilon_{hpq4}+\big(\delta_{p4}\delta_{qh}-\delta_{ph}\delta_{q4}\big).$$
+The $s_h$ are self-dual and the $t_h$ anti-self-dual (`s4by4[h]`, `t4by4[h]` in the
+notebook).
+
+**Step 2: seven 8×8 matrices** (cells 74 and 88). With 4×4 blocks,
+$$\tau^h=\begin{pmatrix}0&s_h\\s_h&0\end{pmatrix}\;(h=1,2,3),\qquad
+\tau^{7-h}=\begin{pmatrix}0&t_h\\-t_h&0\end{pmatrix}\;(h=1,2,3),\qquad
+\tau^7=\tau^1\tau^2\tau^3\tau^4\tau^5\tau^6,$$
+and $\tau^0=1_8$. (The notebook first calls these matrices `ζ[A]` and then sets
+`τ[A] = ζ[A]`.) One finds $\tau^7=\mathrm{diag}(-1_4,1_4)$ and
+$\tau^1\tau^2\tau^3=\tau^4\tau^5\tau^6\tau^7=\sigma_{88}$ (check `44-B1`).
+
+**Step 3: the barred matrices** (cell 92). $\bar\tau^0=1_8$ and
+$\bar\tau^A=\sigma_{88}\,(\tau^A)^{T}\sigma_{88}$ for $A=1,\dots,7$, where ${}^T$
+denotes the transpose. They satisfy (check `44-B2`)
+$$\tau^A\bar\tau^B+\tau^B\bar\tau^A=2\,\eta^{AB}\,1_8=\bar\tau^A\tau^B+\bar\tau^B\tau^A .\tag{1.1}$$
+
+**Step 4: the eight 16×16 matrices** (cell 134). In 8×8 blocks,
+$$\boxed{\;\gamma_{1644}^A=\begin{pmatrix}0&\bar\tau_{1644}^A\\ \tau_{1644}^A&0\end{pmatrix},\qquad A=0,1,\dots,7\;}\tag{1.2}$$
+(check `44-B4`). These are the matrices `T16^A[A]` of `4+4.nb`. Because the notebook
+itself writes the index as a superscript, and because these are the matrices that
+multiply $\partial_A$ in the Dirac operator, we regard $A$ as a contravariant index.
+
+## 1.2 The eight matrices
+
+$$
+\gamma_{1644}^{0} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\hline
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{1} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{2} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{3} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{4} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{5} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{6} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1644}^{7} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\hline
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+These displays were compared by the program, entry by entry, with the eight matrices
+that Mathematica printed in `4+4.nb` (cell 314, `Out[211]`): check `44-N1`.
+
+## 1.3 Proof that the matrices are real
+
+The matrices $s_h$, $t_h$ are built from the integers $\epsilon_{hpq4}$ and Kronecker
+deltas; $\tau^A$, $\bar\tau^A$ and $\gamma^A$ are built from them by forming blocks,
+transposes and products. No complex number enters at any step. Check `44-R1` confirms
+that every entry of every $\gamma_{1644}^A$ is one of the integers $-1,0,+1$; check
+`44-R2` adds that each matrix has exactly one non-zero entry in every row and in every
+column (it is a *signed permutation matrix*). $\blacksquare$
+
+## 1.4 Proof of the anticommutation relations
+
+**Statement.**
+$$\boxed{\;\gamma_{1644}^A\gamma_{1644}^B+\gamma_{1644}^B\gamma_{1644}^A=2\,\eta_{1644}^{AB}\,1_{16},\qquad
+\eta_{1644}=\mathrm{diag}(+1,+1,+1,+1,-1,-1,-1,-1)\;}\tag{1.3}$$
+Thus $\gamma^0,\gamma^1,\gamma^2,\gamma^3$ (space-like directions) square to $+1$,
+$\gamma^4,\gamma^5,\gamma^6,\gamma^7$ (time-like directions) square to $-1$, and
+different matrices anticommute.
+
+**Proof.** From the block form (1.2),
+$$\gamma^A\gamma^B+\gamma^B\gamma^A=\begin{pmatrix}\bar\tau^A\tau^B+\bar\tau^B\tau^A&0\\0&\tau^A\bar\tau^B+\tau^B\bar\tau^A\end{pmatrix},$$
+and both blocks equal $2\eta^{AB}1_8$ by Eq. (1.1). Equation (1.1) is itself an
+identity between integer matrices; it is verified for all 64 pairs $(A,B)$ by check
+`44-B2`, and Eq. (1.3) is verified directly by check `44-C1`. $\blacksquare$
+
+**Consequences** (checks `44-C2`, `44-C3`, `44-C4`).
+
+* $(\gamma^A)^T=\eta^{AA}\gamma^A$ (no sum): the space-like matrices are symmetric, the
+  time-like ones antisymmetric, and every $\gamma^A$ is an orthogonal matrix.
+* The 256 products $\gamma^{A_1}\cdots\gamma^{A_r}$ with $A_1<\dots<A_r$,
+  $r=0,\dots,8$, are linearly independent. They therefore span all real 16×16 matrices:
+  the matrices generate the full matrix algebra, $\mathrm{Cl}(4,4)\cong\mathbb{R}(16)$,
+  and the 16-dimensional representation is irreducible over the real numbers. (The
+  Python script proves the independence differently: the 256 products are mutually
+  orthogonal for the scalar product $\langle X,Y\rangle=\mathrm{tr}(X^TY)$, check
+  `I44-G`.)
+
+## 1.5 The scaled commutators and the group they generate
+
+**Definition.** The *scaled commutators* are
+$$\Sigma^{AB}\equiv\tfrac14\big[\gamma^A,\gamma^B\big]=\tfrac12\gamma^A\gamma^B\quad(A\neq B),\qquad\Sigma^{AB}=-\Sigma^{BA},\tag{1.4}$$
+where the second form follows from Eq. (1.3) (check `44-L1`). There are $8\cdot7/2=28$
+of them with $A<B$, and they are linearly independent (check `44-L2`).
+
+**Theorem 1.** Let $\gamma^A=\gamma_{1644}^A$, $\Sigma^{AB}=\Sigma_{1644}^{AB}$ and
+$\eta=\eta_{1644}$.
+
+1. *(Lie algebra.)* The scaled commutators satisfy
+   $$[\Sigma^{AB},\Sigma^{CD}]=\eta^{BC}\Sigma^{AD}-\eta^{AC}\Sigma^{BD}-\eta^{BD}\Sigma^{AC}+\eta^{AD}\Sigma^{BC},\tag{1.5}$$
+   $$[\Sigma^{AB},\gamma^{C}]=\eta^{BC}\gamma^{A}-\eta^{AC}\gamma^{B}.\tag{1.6}$$
+   Their real span is a Lie algebra isomorphic to $\mathfrak{so}(4,4)$.
+2. *(Identity component.)* The matrices
+   $S=\exp\!\big(\sum_{A<B}\theta_{AB}\Sigma^{AB}\big)$ with real parameters
+   $\theta_{AB}$ generate a connected group, $\mathrm{Spin}_0(4,4)$. Every such $S$
+   satisfies $S\gamma^AS^{-1}=\Lambda^A{}_B\gamma^B$ with a real 8×8 matrix $\Lambda$
+   that obeys $\Lambda\,\eta\,\Lambda^T=\eta$ and $\det\Lambda=+1$. The map
+   $S\mapsto\Lambda$ sends $\mathrm{Spin}_0(4,4)$ onto the identity component
+   $SO_0(4,4)$ of the pseudo-orthogonal group, and $S$ and $-S$ are sent to the same
+   $\Lambda$.
+3. *(The whole group.)* Each $\gamma^A$ is invertible, and
+   $v\mapsto-\gamma^Av(\gamma^A)^{-1}$ maps $\gamma^B\mapsto\gamma^B$ $(B\neq A)$ and
+   $\gamma^A\mapsto-\gamma^A$: it is the reflection that reverses the axis $xA$. The
+   group generated by $\mathrm{Spin}_0(4,4)$ together with the eight matrices
+   $\gamma^A$ is $\mathrm{Pin}(4,4)$, which consists of four connected pieces,
+   $$\mathrm{Pin}(4,4)=\mathrm{Spin}_0(4,4)\;\cup\;\gamma^0\,\mathrm{Spin}_0(4,4)\;\cup\;\gamma^4\,\mathrm{Spin}_0(4,4)\;\cup\;\gamma^0\gamma^4\,\mathrm{Spin}_0(4,4) .$$
+
+*In words:* the scaled commutators span the Lie algebra of $\mathrm{Pin}(4,4)$ and
+generate, by exponentiation, its identity component; the three other components are
+reached by multiplying with one space-like matrix, one time-like matrix, or both.
+Exponentials alone can never leave the identity component, because $\exp(sY)$,
+$0\le s\le1$, is a continuous path from the unit matrix to $\exp(Y)$. This is why
+item 3 is needed, and it is the precise sense in which "the scaled commutators generate
+$\mathrm{Pin}(4,4)$".
+
+**Proof.** *Item 1.* Equation (1.6) follows from (1.3):
+$[\gamma^A\gamma^B,\gamma^C]=\gamma^A\{\gamma^B,\gamma^C\}-\{\gamma^A,\gamma^C\}\gamma^B=2\eta^{BC}\gamma^A-2\eta^{AC}\gamma^B$;
+applying it twice to $\Sigma^{CD}=\tfrac12\gamma^C\gamma^D$ gives (1.5). Both are also
+verified for all index combinations (checks `44-L3`, `44-L4`). Relations (1.5) are the
+defining relations of the Lie algebra of the pseudo-orthogonal group of the metric
+$\eta$, and by (1.6) the $\Sigma^{AB}$ act on the eight $\gamma^C$ exactly as the
+generators of that group act on a vector. To identify the real form without appeal to
+the literature, the program also computes the Killing form
+$B_{\rm Kil}(X,Y)=\mathrm{tr}(\mathrm{ad}_X\mathrm{ad}_Y)$ from the structure constants:
+it is diagonal in the basis $\Sigma^{AB}$, with
+$B_{\rm Kil}(\Sigma^{AB},\Sigma^{AB})=-12\,\eta^{AA}\eta^{BB}$, hence it has 12 negative
+and 16 positive eigenvalues (checks `44-L5`, `I44-K`). Equivalently, 12 generators are
+antisymmetric matrices, which exponentiate to rotations, and 16 are symmetric matrices,
+which exponentiate to boosts (check `44-L6`). The numbers (compact, non-compact) of the
+real forms $\mathfrak{so}(p,q)$, $p+q=8$, are $(28,0)$ for $\mathfrak{so}(8)$, $(21,7)$
+for $\mathfrak{so}(7,1)$, $(16,12)$ for $\mathfrak{so}(6,2)$, $(13,15)$ for
+$\mathfrak{so}(5,3)$ and $(12,16)$ for $\mathfrak{so}(4,4)$: the algebra is
+$\mathfrak{so}(4,4)$.
+
+*Item 2.* For a single plane the exponential is elementary, because
+$(\gamma^A\gamma^B)^2=-\eta^{AA}\eta^{BB}$:
+$$\exp(\theta\,\Sigma^{AB})=\begin{cases}\cos\frac\theta2+\gamma^A\gamma^B\sin\frac\theta2,&\eta^{AA}\eta^{BB}=+1\ \text{(rotation)},\\[2pt]
+\cosh\frac\theta2+\gamma^A\gamma^B\sinh\frac\theta2,&\eta^{AA}\eta^{BB}=-1\ \text{(boost)}\end{cases}\tag{1.7}$$
+(check `44-G2`). By Eq. (1.6), $\frac{d}{ds}\big(e^{sY}\gamma^Ce^{-sY}\big)$ is again a
+linear combination of the $\gamma$'s when $Y$ is a combination of the $\Sigma^{AB}$, so
+$S\gamma^CS^{-1}=\Lambda^C{}_D\gamma^D$; applying $S(\cdot)S^{-1}$ to Eq. (1.3) shows
+$\Lambda\eta\Lambda^T=\eta$. Check `44-G3` confirms both statements, and
+$\det\Lambda=1$, numerically for 20 random elements. A rotation by $\theta=2\pi$ in
+Eq. (1.7) gives $S=-1$ while $\Lambda=1$: the map is two-to-one, and $-1$ is connected
+to $+1$ inside $\mathrm{Spin}_0(4,4)$.
+
+*Item 3.* $(\gamma^A)^{-1}=\eta^{AA}\gamma^A$ and the reflection property are check
+`44-G1`. By definition $\mathrm{Pin}(4,4)$ is the group generated, inside the Clifford
+algebra, by the vectors $v=v_A\gamma^A$ with $v^2=\pm1$; every such $v$ is obtained from
+$\gamma^0$ (if $v^2=+1$) or from $\gamma^4$ (if $v^2=-1$) by conjugation with an element
+of $\mathrm{Spin}_0(4,4)$, so the group generated by $\mathrm{Spin}_0(4,4)$ and the
+$\gamma^A$ is $\mathrm{Pin}(4,4)$. A product of two different $\gamma$'s of the same
+kind is $\exp(\pi\Sigma^{AB})$ by Eq. (1.7) and lies in $\mathrm{Spin}_0(4,4)$; a
+product $\gamma^a\gamma^t$ of a space-like and a time-like matrix reverses one space
+axis and one time axis and does not. Hence the four components listed. $\blacksquare$
+
+## 1.6 The chiral projection operators, re-derived
+
+*Reference:* `4+4.nb`, subsection "Left - Handed vs . Right - Handed Fermion Fields
+(Chirality) ; projection operators" (cells 161–167).
+
+**Volume element.** Multiply the eight matrices in order:
+$$\omega\equiv\gamma^0\gamma^1\gamma^2\gamma^3\gamma^4\gamma^5\gamma^6\gamma^7 .$$
+Two properties follow from Eq. (1.3) alone. (a) $\omega$ anticommutes with every
+$\gamma^A$: moving $\gamma^A$ through the product costs seven sign changes (one for each
+of the other matrices). (b)
+$\omega^2=(-1)^{8\cdot7/2}\prod_A(\gamma^A)^2=(+1)(+1)^4(-1)^4=+1$, where $(-1)^{28}$ is
+the sign of reversing the order of eight anticommuting factors. Because $\omega$ is
+real with $\omega^2=+1$, the matrices $\frac12(1\mp\omega)$ are *real* projectors.
+Explicitly (checks `44-V1`, `44-V2`; identical to `T16^A[8]` printed in cell 136 of the
+notebook, check `44-N2`):
+
+$$
+\omega_{1644} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1
+\end{array}\right)
+$$
+
+**Projectors.**
+$$\boxed{\;P_{1644}^{L}=\tfrac12\big(1-\omega_{1644}\big)=\begin{pmatrix}1_8&0\\0&0\end{pmatrix},\qquad
+P_{1644}^{R}=\tfrac12\big(1+\omega_{1644}\big)=\begin{pmatrix}0&0\\0&1_8\end{pmatrix}\;}\tag{1.8}$$
+
+$$
+P_{1644}^{L} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+P_{1644}^{R} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1
+\end{array}\right)
+$$
+
+These are the definitions of the notebook (cell 162: `P_L = (1/2)(ID16 - T16^A[8])`),
+and the matrices are identical to `P_L`, `P_R` printed in its cells 163 and 165 (check
+`44-P3`). They satisfy
+$$P^{L}+P^{R}=1,\qquad P^{L}P^{L}=P^{L},\qquad P^{R}P^{R}=P^{R},\qquad P^{L}P^{R}=P^{R}P^{L}=0,\qquad\mathrm{tr}\,P^{L}=\mathrm{tr}\,P^{R}=8$$
+(checks `44-P1`, `44-P2`); the notebook verifies the first, the second and the fourth of
+these relations in its cell 166, with the output `{True, True, True}`. Two further
+properties make them *chiral* projectors:
+
+* $\gamma^AP^{L}=P^{R}\gamma^A$ and $\gamma^AP^{R}=P^{L}\gamma^A$ (check `44-P4`): every
+  Dirac matrix turns a left-handed spinor into a right-handed one, and conversely;
+* $[P^{L},\Sigma^{AB}]=[P^{R},\Sigma^{AB}]=0$ (check `44-P5`): the splitting
+  $\psi=P^{L}\psi+P^{R}\psi$ is the same in every Lorentz frame.
+
+In this basis the splitting is simply "upper eight components, lower eight components".
+
+## 1.7 Other important 16×16 matrices of 4+4
+
+**The two transposition matrices.** Let
+$$C^{-}\equiv\gamma^0\gamma^1\gamma^2\gamma^3=\begin{pmatrix}-\sigma_{88}&0\\0&\sigma_{88}\end{pmatrix},\qquad
+C^{+}\equiv\gamma^4\gamma^5\gamma^6\gamma^7=\begin{pmatrix}\sigma_{88}&0\\0&\sigma_{88}\end{pmatrix},\qquad
+\omega=C^{-}C^{+}$$
+(checks `44-S1`, `44-S2`). $C_{1644}^{-}$ is the matrix `σ16` of `4+4.nb`;
+$C_{1644}^{+}$ is the matrix `S44` of `7+1.nb`. Both are real, symmetric and square to
+$1$, and
+$$C^{-}\gamma^A(C^{-})^{-1}=-(\gamma^A)^T,\qquad C^{+}\gamma^A(C^{+})^{-1}=+(\gamma^A)^T\tag{1.9}$$
+(check `44-S3`). They play two roles: $C^{-}$ defines the Dirac adjoint of Sec. 1.8,
+and both define the bilinear forms $\psi^TC^{\mp}\,\cdots\,\psi$ from which fermion
+pairs are built (Part 3).
+
+$$
+C_{1644}^{-} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+C_{1644}^{+} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+**The complex structure.** The matrix $\gamma_{1644}^4$ (called `JT4` in `4+4.nb`,
+cell 670) is real, squares to $-1$, and satisfies
+$(\gamma^4)^TC^{-}\gamma^4=C^{-}$ (check `44-S5`). It will reappear as the generator of
+the evolution in the time $x4$ of a particle at rest.
+
+**The 8×8 blocks.** $\sigma_{88}$, $\tau_{1644}^A$ and $\bar\tau_{1644}^A$ are listed in
+Appendix B.
+
+## 1.8 The Dirac equation of the field dirac1644
+
+### 1.8.1 The equation
+
+The field **dirac1644** is the column
+$$\psi_{1644}(x)=\big(\psi_1(x),\dots,\psi_{16}(x)\big)^T,\qquad x=(x0,\dots,x7),$$
+whose sixteen components are complex-valued Grassmann operators (anticommuting, and not
+Hermitian: $\psi_a^\dagger\neq\psi_a$). Its Dirac equation is
+$$\boxed{\;\big(\gamma_{1644}^A\,\partial_A-m_{1644}\big)\,\psi_{1644}=0\;}\tag{1.10}$$
+with a real mass $m_{1644}>0$ and the purely real matrices $\gamma_{1644}^A$ of
+Sec. 1.2.
+
+*Why there is no factor $i$.* The Dirac operator must be a square root of the wave
+operator. By Eq. (1.3),
+$$(\gamma^A\partial_A)^2=\eta^{AB}\partial_A\partial_B\equiv\Box_{1644}
+=\partial_0^2+\partial_1^2+\partial_2^2+\partial_3^2-\partial_4^2-\partial_5^2-\partial_6^2-\partial_7^2,$$
+so that
+$$\big(\gamma^A\partial_A+m\big)\big(\gamma^B\partial_B-m\big)=\Box_{1644}-m^2 .\tag{1.11}$$
+Every component of a solution of (1.10) therefore satisfies the Klein–Gordon equation
+$(\Box_{1644}-m^2)\psi_a=0$. For a plane wave $\psi\propto e^{ik_Ax^A}$ this reads
+$$k_4^2+k_5^2+k_6^2+k_7^2=k_0^2+k_1^2+k_2^2+k_3^2+m^2,\tag{1.12}$$
+which is the mass shell of a particle of mass $m$ when $x4,\dots,x7$ are the time-like
+coordinates. With the metric convention of `4+4.nb` (space-like $=+1$) the correct sign
+of $m^2$ is obtained *without* an $i$; an operator $i\gamma^A\partial_A-m$ would give
+$\Box_{1644}+m^2$, that is, Eq. (1.12) with space and time exchanged. The operator in
+Eq. (1.10) is real; the field is complex because a Lagrangian with a mass term requires
+it (Sec. 1.8.3).
+
+**Checks.** In momentum space ($\partial_A\to ik_A$) the statements above are identities
+between Gaussian-integer matrices for integer $k_A$ and $m$: checks `44-D1`, `44-D2`.
+Check `44-D3` is a worked example: for $k=(0,2,2,4;\,5,0,0,0)$ and $m=1$, which
+satisfies (1.12) because $25=24+1$, the matrix
+$\Pi_{1644}=(i\gamma^Ak_A+m)/2m$ is a projector of trace 8 with
+$(i\gamma^Ak_A-m)\Pi_{1644}=0$: the plane-wave solutions $u\,e^{ik_Ax^A}$,
+$u=\Pi_{1644}w$, form an 8-dimensional space.
+
+### 1.8.2 Lorentz covariance and the conserved current
+
+*Covariance.* Let $S\in\mathrm{Spin}_0(4,4)$ with $S\gamma^AS^{-1}=\Lambda^A{}_B\gamma^B$
+(Theorem 1), so that $S^{-1}\gamma^AS=(\Lambda^{-1})^A{}_B\gamma^B$. If $\psi(x)$ solves
+(1.10), then so does
+$$\psi'(x)=S\,\psi(\Lambda x),\qquad(\Lambda x)^A=\Lambda^A{}_Bx^B .$$
+Indeed $\partial_A\psi'(x)=\Lambda^B{}_A\,S\,(\partial_B\psi)(\Lambda x)$, hence
+$$\begin{aligned}\gamma^A\partial_A\psi'(x)&=S\,(S^{-1}\gamma^AS)\,\Lambda^B{}_A\,(\partial_B\psi)(\Lambda x)
+=S\,(\Lambda^{-1})^A{}_C\,\Lambda^B{}_A\,\gamma^C(\partial_B\psi)(\Lambda x)\\
+&=S\,\gamma^B(\partial_B\psi)(\Lambda x)=m\,S\,\psi(\Lambda x)=m\,\psi'(x).\end{aligned}$$
+The relation $\Lambda\eta\Lambda^T=\eta$ of Theorem 1 states that $x\mapsto\Lambda x$
+preserves the interval $\eta_{AB}x^Ax^B$, i.e. that it is a symmetry of the 4+4
+spacetime.
+
+*Adjoint.* Define $\tilde\psi\equiv\psi^\dagger C^{-}$. From Eq. (1.9) and the reality
+of the matrices, $(\gamma^A)^\dagger C^{-}=-C^{-}\gamma^A$. The conjugate transpose of
+(1.10) is $\partial_A\psi^\dagger(\gamma^A)^\dagger=m\psi^\dagger$; multiplying by
+$C^{-}$ from the right gives the adjoint equation
+$-\partial_A\tilde\psi\,\gamma^A=m\tilde\psi$.
+
+*Current.* Adding the two equations,
+$$\partial_A\big(\tilde\psi\gamma^A\psi\big)=(\partial_A\tilde\psi\gamma^A)\psi+\tilde\psi\gamma^A\partial_A\psi=-m\tilde\psi\psi+m\tilde\psi\psi=0 .$$
+Since $C^{-}\gamma^A$ is a real antisymmetric matrix (check `44-S4`),
+$\tilde\psi\gamma^A\psi$ is anti-Hermitian, and the Hermitian conserved current is
+$$j_{1644}^A=i\,\tilde\psi\,\gamma^A\psi=\psi^\dagger\big(i\,C^{-}\gamma^A\big)\psi,\qquad\partial_Aj_{1644}^A=0 .\tag{1.13}$$
+It is the Noether current of the phase symmetry $\psi\to e^{i\vartheta}\psi$
+(*fermion number*).
+
+### 1.8.3 Lagrangian
+
+$$\mathcal{L}_{1644}=\tilde\psi\big(\gamma^A\partial_A-m\big)\psi,\qquad\tilde\psi=\psi^\dagger C^{-} .\tag{1.14}$$
+It is invariant under $\mathrm{Spin}_0(4,4)$, because $S^TC^{-}S=C^{-}$ for the real
+matrices $S$ of Theorem 1 (a consequence of Eq. (1.9):
+$(\Sigma^{AB})^TC^{-}=-C^{-}\Sigma^{AB}$); it is Hermitian up to a total derivative,
+because $C^{-}\gamma^A$ is antisymmetric and $C^{-}$ symmetric; and varying
+$\tilde\psi$ gives Eq. (1.10).
+
+*Why the components must be complex.* For a real (Majorana) anticommuting field the
+mass term would have to be $\psi^TC\psi$ with an invariant matrix $C$. The invariant
+matrices are the combinations of $C^{-}$ and $C^{+}$, and both are symmetric
+(Sec. 1.7). For anticommuting components
+$\psi^TC\psi=\sum_{ab}\psi_aC_{ab}\psi_b=-\sum_{ab}\psi_bC_{ab}\psi_a=-\psi^TC^T\psi$,
+so $\psi^TC^{\mp}\psi=0$: a real 16-component Grassmann field in 4+4 is necessarily
+massless. The complex field avoids this because $\psi^\dagger C^{-}\psi$ does not
+vanish.
+
+### 1.8.4 Evolution in the ordinary time $x4$, and what "quantized" can mean
+
+Here the four time-like dimensions show their consequences, and they must be stated
+without embellishment.
+
+Solve Eq. (1.10) for $\partial_4\psi$, using $(\gamma^4)^{-1}=-\gamma^4$. For a field
+proportional to $\exp\!\big(i\sum_{a=0}^3k_ax^a+i\sum_{t=5}^7\kappa_tx^t\big)$,
+$$\partial_4\psi=K\psi,\qquad K=-m\gamma^4+i\sum_{a=0}^{3}k_a\,\gamma^4\gamma^a+i\sum_{t=5}^{7}\kappa_t\,\gamma^4\gamma^t .\tag{1.15}$$
+Here $k_a$ ($a=0,1,2,3$) are the four momenta along the space-like coordinates and
+$\kappa_t$ ($t=5,6,7$) the three frequencies along the additional times. The matrices
+$\gamma^4\gamma^a$ are real symmetric, while $\gamma^4\gamma^t$ and $\gamma^4$ are real
+antisymmetric (check `44-D6`). Two exact results follow (checks `44-D7`, `44-D8`):
+$$K^2=-\big(m^2+|k|^2-|\kappa|^2\big)\,1,\qquad K+K^\dagger=2i\sum_{t=5}^{7}\kappa_t\,\gamma^4\gamma^t .\tag{1.16}$$
+
+1. **If the field does not depend on $x5,x6,x7$** ($\kappa=0$), $K$ is anti-Hermitian:
+   $\mathsf{h}\equiv iK=-im\gamma^4-k_a\gamma^4\gamma^a$ is a Hermitian matrix with
+   $\mathsf{h}^2=(m^2+|k|^2)1$. The evolution in $x4$ is unitary, the positive quantity
+   $\psi^\dagger\psi$ is conserved, and the energies are $\pm E$, $E=\sqrt{m^2+|k|^2}$,
+   each eight times.
+2. **If the field depends on the additional times** ($\kappa\neq0$), $K$ is not
+   anti-Hermitian and $\psi^\dagger\psi$ is not conserved. For
+   $|\kappa|^2>m^2+|k|^2$ the frequencies in $x4$ are imaginary: the modes grow
+   exponentially. Check `44-D9` exhibits one: $m=3$, $k=0$, $\kappa=(5,0,0)$ gives
+   $K^2=+16$, so eight solutions grow as $e^{+4\,x4}$.
+3. **The covariant charge is not positive.** The density of the conserved current
+   (1.13) is $j_{1644}^4=\psi^\dagger W\psi$ with $W\equiv i\,C^{-}\gamma^4$, a Hermitian
+   matrix with $W^2=1$ and trace 0, i.e. with eigenvalues $+1$ and $-1$, eight times
+   each (checks `44-D10`, `44-D11`).
+
+These are not defects of the matrices; they are the known price of more than one time
+dimension: the wave operator is ultra-hyperbolic, and no positive conserved density is
+invariant under the whole group $\mathrm{Spin}(4,4)$.
+
+**Definition of the quantized field in this project (Stage 1).** The author's
+hypothesis is that the three additional times deflate away. In flat spacetime, without
+gravity, we implement this hypothesis as a restriction: *the field dirac1644 does not
+depend on $x5$, $x6$, $x7$*. On such fields $W$ commutes with $K$ (check `44-D10`), the
+Lagrangian (1.14) equals $-\psi^\dagger W(i\partial_4-\mathsf{h})\psi$, and we quantize
+with the positive Lagrangian
+$$\mathcal{L}^{\rm red}_{1644}=\psi^\dagger\big(i\partial_4-\mathsf{h}\big)\psi,\qquad\mathsf{h}=-im\gamma^4+i\gamma^4\gamma^a\partial_a,\quad a=0,1,2,3,\tag{1.17}$$
+which gives the canonical anticommutators
+$$\{\psi_a(x4,\vec x),\psi_b^\dagger(x4,\vec y)\}=\delta_{ab}\,\delta^4(\vec x-\vec y),\qquad\{\psi_a,\psi_b\}=0,\qquad\vec x=(x0,x1,x2,x3).\tag{1.18}$$
+$\mathcal{L}^{\rm red}_{1644}$ agrees with (1.14) on the half of the components with
+$W=-1$ and has the opposite sign on the half with $W=+1$. It is invariant under the
+rotations of the four space coordinates, under boosts between them and $x4$, and under
+rotations of the three additional times, i.e. under
+$\mathrm{Spin}(4,1)\times\mathrm{Spin}(3)$, because $W$ commutes with the generators of
+these transformations; it is not invariant under boosts into the additional times,
+with whose generators $W$ anticommutes. Whether gravity (Stage 2 of the author's
+programme) justifies this restriction is outside the present document; it is recorded
+as an assumption wherever it is used.
+
+### 1.8.5 The two coupled 8-component equations
+
+Write $\psi_{1644}=(\psi^{L},\psi^{R})$, where $\psi^{L}$ consists of the upper and
+$\psi^{R}$ of the lower eight components; by Eq. (1.8), $P^{L}\psi=(\psi^{L},0)$ and
+$P^{R}\psi=(0,\psi^{R})$. Inserting the block form (1.2) into (1.10) gives (check
+`44-D4`)
+$$\boxed{\;\bar\tau_{1644}^A\,\partial_A\,\psi_{1644}^{R}=m_{1644}\,\psi_{1644}^{L},\qquad\tau_{1644}^A\,\partial_A\,\psi_{1644}^{L}=m_{1644}\,\psi_{1644}^{R}\;}\tag{1.19}$$
+with the real 8×8 matrices of Sec. 1.1 ($\tau^0=\bar\tau^0=1_8$, so the first terms are
+$\partial_0\psi^{R}$ and $\partial_0\psi^{L}$). The mass couples the two 8-component
+fields; for $m=0$ they decouple into $\bar\tau^A\partial_A\psi^{R}=0$ and
+$\tau^A\partial_A\psi^{L}=0$. Each field obeys the Klein–Gordon equation: applying
+$\tau^B\partial_B$ to the first equation and using the second and Eq. (1.1),
+$\Box_{1644}\psi^{R}=m\,\tau^B\partial_B\psi^{L}=m^2\psi^{R}$ (check `44-D5`). Because
+the projectors and all matrices are real, Eq. (1.19) is a pair of real equations: the
+Hermitian and the anti-Hermitian parts of $\psi^{L}$, $\psi^{R}$ do not mix.
+
+---
+
+# Part 2. Signature 7+1: the matrices $\gamma_{1671}^A$ of `7+1.nb`
+
+*Scope rule: in this Part $\gamma^A$, $\eta$, $\omega$, $\chi$, $P^{L}$, $P^{R}$,
+$C^{\pm}$, $\Sigma^{AB}$, $\tau^A$, $\alpha^j$, $\beta$, $\mathsf{h}$, $E^{L}$, $E^{R}$,
+$\phi^{L}$, $\phi^{R}$, $\psi$, $m$ stand for the objects with the tag 1671. Symbols of
+Part 1 that are needed here carry their tag 1644.*
+
+## 2.1 Definition, and the relation to the notebook
+
+`7+1.nb` builds its matrices from those of `4+4.nb` in three steps (its sections 3.1,
+4.1 and 4.2; cells 90, 187 and 197).
+
+**Step 1: octonionic 8×8 matrices.** `τO[0]` $=1_8$; `τO[A]` $=\tau_{1644}^A$ for
+$A=1,2,3$; `τO[A]` $=\tau_{1644}^A\sigma_{88}$ for $A=4,\dots,7$. The seven matrices
+`τO[1..7]` are real, antisymmetric, mutually anticommuting, and square to $-1$ (check
+`71-B1`).
+
+**Step 2: sixteen-dimensional Euclidean generators.** `T16O[A]` $=\begin{pmatrix}0&\texttt{τO[A]}^T\\\texttt{τO[A]}&0\end{pmatrix}$.
+
+**Step 3: the 7+1 matrices of the notebook.** `Γ17[0]` $=$ `T16O[0]` and
+`Γ17[i]` $=$ `T16O[0].T16O[i]` for $i=1,\dots,7$. They obey
+`Γ17[A].Γ17[B] + Γ17[B].Γ17[A]` $=2\,$`η17[[A+1,B+1]]` with `η17`
+$=\mathrm{diag}(+1,-1,\dots,-1)$ (check `71-N3`), and the notebook raises the index
+with this metric: `Γ17up[A]` $=$ `η17[[A+1,A+1]] Γ17[A]` (its sections 5.3 and 7.1), so
+`Γ17up[0] = Γ17[0]` and `Γ17up[i] = -Γ17[i]`. The notebook's Dirac equation is written
+with `Γ17up`.
+
+**The matrices of this project.**
+$$\boxed{\;\begin{aligned}
+&\gamma_{1671}^A\equiv\texttt{Γ17up}[\mathrm{swap}_{04}(A)],\qquad A=0,1,\dots,7,\qquad\text{that is,}\\
+&\gamma_{1671}^4=\texttt{Γ17[0]},\qquad\gamma_{1671}^0=-\texttt{Γ17[4]},\qquad\gamma_{1671}^j=-\texttt{Γ17[}j\texttt{]}\quad(j=1,2,3,5,6,7)
+\end{aligned}\;}\tag{2.1}$$
+(check `71-N2`). Thus $\gamma_{1671}^4$ belongs to the time $x4$, and the matrix that
+the notebook attaches to its space coordinate "x4" now belongs to the hidden coordinate
+$x0$. The eight matrices `Γ17[0..7]` rebuilt by the program are identical to those
+printed by Mathematica in cell 204 of `7+1.nb` (check `71-N1`).
+
+**In 8×8 blocks.** Let $\tau_{1671}^A\equiv$ `τO[swap04(A)]`, so that $\tau^4=1_8$ and
+the seven $\tau^j$ with $j\in\{0,1,2,3,5,6,7\}$ are real antisymmetric with
+$\tau^i\tau^j+\tau^j\tau^i=-2\delta^{ij}$ (check `71-D6`). Then
+$$\gamma_{1671}^4=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\qquad
+\gamma_{1671}^j=\begin{pmatrix}-\tau_{1671}^j&0\\0&\tau_{1671}^j\end{pmatrix}\quad(j=0,1,2,3,5,6,7)\tag{2.2}$$
+(check `71-B2`, with the sign of `Γ17up`; verified again by `I71-D2`).
+
+**Built from the 4+4 matrices** (check `71-B3`): `Γ17[0]` $=\gamma_{1644}^0$,
+`Γ17[i]` $=\gamma_{1644}^0\gamma_{1644}^i$ for $i=1,2,3$, and
+`Γ17[k]` $=\gamma_{1644}^0\gamma_{1644}^kC_{1644}^{+}$ for $k=4,\dots,7$. Both sets
+therefore live in the same algebra of real 16×16 matrices, but the 7+1 matrices are
+*not* linear combinations of the 4+4 matrices: they are products of two and of six of
+them.
+
+## 2.2 The eight matrices
+
+$$
+\gamma_{1671}^{0} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{1} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{2} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{3} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{4} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\hline
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{5} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{6} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\gamma_{1671}^{7} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+## 2.3 Proof that the matrices are real
+
+The matrices are products and blocks of the integer matrices of Part 1 and of
+$\sigma_{88}$; no complex number enters. Check `71-R1`: every entry is $-1$, $0$ or
+$+1$; check `71-R2`: every matrix is a signed permutation matrix. $\blacksquare$
+
+## 2.4 Proof of the anticommutation relations
+
+**Statement.**
+$$\boxed{\;\gamma_{1671}^A\gamma_{1671}^B+\gamma_{1671}^B\gamma_{1671}^A=2\,\eta_{1671}^{AB}\,1_{16},\qquad
+\eta_{1671}=\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1)\;}\tag{2.3}$$
+The time-like matrix $\gamma^4$ squares to $+1$ and the seven space-like matrices
+square to $-1$.
+
+**Proof.** From the block form (2.2): $(\gamma^4)^2=1$;
+$(\gamma^j)^2=\mathrm{diag}((\tau^j)^2,(\tau^j)^2)=-1$; for $i\ne j$,
+$\gamma^i\gamma^j+\gamma^j\gamma^i=\mathrm{diag}(\tau^i\tau^j+\tau^j\tau^i,\ \tau^i\tau^j+\tau^j\tau^i)=0$;
+and
+$$\gamma^4\gamma^j+\gamma^j\gamma^4=\begin{pmatrix}0&\tau^j\\-\tau^j&0\end{pmatrix}+\begin{pmatrix}0&-\tau^j\\ \tau^j&0\end{pmatrix}=0 .$$
+The properties of the $\tau^j$ used here are check `71-D6`; Eq. (2.3) itself is check
+`71-C1`. $\blacksquare$
+
+**Why the sign convention differs from Part 1.** In Part 1 space-like directions square
+to $+1$; here they square to $-1$. This is forced. `7+1.nb` proves (its section 4.4)
+that eight *real* 16×16 matrices with seven squares $+1$ and one square $-1$ do not
+exist, because that Clifford algebra is $\mathrm{Cl}(7,1)\cong\mathbb{H}(8)$, the 8×8
+matrices over the quaternions, whereas $\mathrm{Cl}(1,7)\cong\mathbb{R}(16)$. For 4+4
+the two conventions are equivalent ($\mathrm{Cl}(4,4)\cong\mathbb{R}(16)$ either way).
+The consequence for the Dirac equation is the factor $i$ in Eq. (2.9), which is absent
+in Eq. (1.10).
+
+**Consequences** (checks `71-C2`, `71-C3`, `71-C4`, `I71-G`): $(\gamma^A)^T=\eta^{AA}\gamma^A$,
+so $\gamma^4$ is symmetric and the seven $\gamma^j$ are antisymmetric; the 256 ordered
+products are linearly independent, so the matrices generate all real 16×16 matrices and
+the representation is irreducible over the reals.
+
+## 2.5 The scaled commutators and the group they generate
+
+Define $\Sigma^{AB}=\frac14[\gamma^A,\gamma^B]$ as in Eq. (1.4), now with the matrices
+$\gamma_{1671}^A$.
+
+**Theorem 2.** Statements 1–3 of Theorem 1 hold for $\gamma^A=\gamma_{1671}^A$,
+$\Sigma^{AB}=\Sigma_{1671}^{AB}$ and $\eta=\eta_{1671}$, with the following changes:
+the Lie algebra is $\mathfrak{so}(7,1)$; the identity component generated by the
+exponentials is $\mathrm{Spin}_0(7,1)$, which covers the proper orthochronous Lorentz
+group $SO_0(7,1)$ twice; and the group generated by it together with the eight matrices
+is the pin group of $\mathrm{Cl}(1,7)$,
+$$\mathrm{Pin}(1,7)=\mathrm{Spin}_0(7,1)\;\cup\;\gamma^1\,\mathrm{Spin}_0(7,1)\;\cup\;\gamma^4\,\mathrm{Spin}_0(7,1)\;\cup\;\gamma^1\gamma^4\,\mathrm{Spin}_0(7,1) .$$
+
+**Proof.** Identical to that of Theorem 1, with checks `71-L1` to `71-L6` and `71-G1`
+to `71-G3`. The Killing form is
+$B_{\rm Kil}(\Sigma^{AB},\Sigma^{AB})=-12\eta^{AA}\eta^{BB}$; now 21 generators are
+compact (the rotations among the seven space coordinates, which are antisymmetric
+matrices) and 7 are non-compact (the boosts $\Sigma^{4j}$, symmetric matrices) (checks
+`71-L5`, `71-L6`, `I71-K`). $\blacksquare$
+
+**An instruction that cannot be carried out as written.** The task specification asks,
+for the 7+1 matrices too, to "prove that their scaled commutators generate Pin(4,4)".
+That statement is false, and the proof above shows why: the algebra spanned by the
+scaled commutators of the 7+1 matrices has 21 compact and 7 non-compact generators,
+while $\mathfrak{so}(4,4)$ has 12 and 16; the two are different real Lie algebras, and
+the signature of the Killing form (checks `44-L5`, `71-L5`) is an invariant that
+distinguishes them. What is true is Theorem 2. The sentence in the specification is
+evidently the sentence of Part 1 repeated in Part 2; this document proves the correct
+counterpart and records the discrepancy here, as Hard Rule 7 of the specification
+requires.
+
+## 2.6 Chirality in 7+1: no real projector; the complex projectors
+
+**Volume element.**
+$\omega\equiv\gamma^0\gamma^1\cdots\gamma^7=\begin{pmatrix}0&-1_8\\1_8&0\end{pmatrix}$,
+which equals `Γ17[8]`, the `ω17` of the notebook (check `71-V1`):
+
+$$
+\omega_{1671} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\hline
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+As in Sec. 1.6, $\omega$ anticommutes with every $\gamma^A$ (check `71-V2`), but now
+$\omega^2=(-1)^{28}\,(+1)(-1)^7=-1$.
+
+**Theorem 3 (no real chirality in 7+1).** A real 16×16 matrix that anticommutes with
+all eight $\gamma_{1671}^A$ is a real multiple of $\omega_{1671}$. Since
+$\omega_{1671}^2=-1$, no real matrix with square $+1$ anticommutes with all of them, and
+no real chiral projector exists.
+
+**Proof.** The condition $X\gamma^A+\gamma^AX=0$ for $A=0,\dots,7$ is a homogeneous
+linear system for the 256 entries of $X$. Its rank is 255, and $X=\omega$ is a solution
+(check `71-V3`); hence the solutions are the multiples $c\,\omega$, whose squares are
+$-c^2\le0$. *A second proof, without a linear system* (check `I71-A`): expand $X$ in the
+256 products $\gamma^{A_1}\cdots\gamma^{A_r}$. A product of rank $r$ anticommutes with
+$\gamma^A$ if $A$ is among its indices and $r$ is even, or if $A$ is not among them and
+$r$ is odd; it commutes otherwise. A product anticommutes with all eight matrices only
+if every index occurs and $r$ is even, i.e. only for $r=8$. Finally, the map
+$X\mapsto X\gamma^A+\gamma^AX$ sends each product either to zero or to $\pm2$ times
+another product, and different products to different products, so the terms of a
+general $X$ cannot cancel one another: $X$ anticommutes with all eight matrices only if
+it is a multiple of the product of rank 8, which is $\omega$. $\blacksquare$
+
+**The complex projectors.** With complex numbers a chirality matrix exists,
+$$\chi\equiv i\,\omega=\begin{pmatrix}0&-i\,1_8\\ i\,1_8&0\end{pmatrix},\qquad\chi^\dagger=\chi,\qquad\chi^2=1,$$
+anticommuting with every $\gamma^A$ (check `71-P1`); $\chi_{1671}$ is the matrix `χ17`
+of the notebook. The chiral projectors are
+$$\boxed{\;P_{1671}^{L}=\tfrac12\big(1-\chi_{1671}\big)=\tfrac12\begin{pmatrix}1_8&i\,1_8\\-i\,1_8&1_8\end{pmatrix},\qquad
+P_{1671}^{R}=\tfrac12\big(1+\chi_{1671}\big)=\tfrac12\begin{pmatrix}1_8&-i\,1_8\\ i\,1_8&1_8\end{pmatrix}\;}\tag{2.4}$$
+(checks `71-P2`, `71-P4`): Hermitian, $P^{L}+P^{R}=1$, $P^{L}P^{L}=P^{L}$,
+$P^{R}P^{R}=P^{R}$, $P^{L}P^{R}=0$, trace 8 each, $\gamma^AP^{L}=P^{R}\gamma^A$, and
+commuting with every $\Sigma^{AB}$ (check `71-P3`). They are `PL17`, `PR17` of `7+1.nb`
+(its sections 4.6 and 7.10). The Dirac matrices remain real; only the projectors are
+complex.
+
+$$
+2\,P_{1671}^{L} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i \\[-1.8pt]
+\hline
+-i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1
+\end{array}\right)
+$$
+
+$$
+2\,P_{1671}^{R} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -i \\[-1.8pt]
+\hline
+\phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}i & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1
+\end{array}\right)
+$$
+
+**Relation to the projectors of `4+4.nb`.** The specification asks, in its part [2] as
+in its part [1], to re-derive the projectors of the subsection "Left - Handed vs .
+Right - Handed Fermion Fields (Chirality) ; projection operators" of `4+4.nb`. That was
+done in Sec. 1.6. For the 7+1 matrices those real projectors are not chiral projectors
+(Theorem 3), but they are unitarily equivalent to the complex ones: with the unitary
+matrix $U_{1671}^{c}=(1-i\,\texttt{Γ17[0]})/\sqrt2$,
+$$\begin{aligned}U_{1671}^{c}\,\chi_{1671}\,(U_{1671}^{c})^{-1}&=-\omega_{1644},\\
+U_{1671}^{c}\,P_{1671}^{L}\,(U_{1671}^{c})^{-1}&=P_{1644}^{R},\qquad U_{1671}^{c}\,P_{1671}^{R}\,(U_{1671}^{c})^{-1}=P_{1644}^{L}\end{aligned}\tag{2.5}$$
+(checks `71-P5`, `I71-U`). $U_{1671}^{c}$ is the matrix by which `7+1.nb` (its section
+4.3) passes from the real set `Γ17` to its complex set `Γ71`, which has the block form
+of `4+4.nb`. The exchange of the names L and R in Eq. (2.5) is a matter of convention:
+the notebook defines `χ17` $=+i\,$`Γ17[8]` for the real set but `χ71` $=-i\,$`Γ71[8]`
+for the complex set. The project's $\chi_{1671}$ is `χ17`.
+
+## 2.7 Other important 16×16 matrices of 7+1
+
+**The Dirac adjoint matrix** is the time-like matrix itself, $\gamma_{1671}^4$: it is
+real, symmetric, squares to $1$, and $(\gamma^A)^T=\gamma^4\gamma^A\gamma^4$ (check
+`71-S1`). We write $\bar\psi\equiv\psi^\dagger\gamma^4$.
+
+**The two transposition matrices** (check `71-K0`):
+$$C_{1671}^{+}\equiv\gamma_{1671}^4,\qquad C_{1671}^{-}\equiv\gamma_{1671}^4\,\omega_{1671}=\begin{pmatrix}1_8&0\\0&-1_8\end{pmatrix},\qquad
+C^{\pm}\gamma^A(C^{\pm})^{-1}=\pm(\gamma^A)^T .\tag{2.6}$$
+Both are real and symmetric.
+
+$$
+C_{1671}^{+} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\hline
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+C_{1671}^{-} = \left(\begin{array}{rrrrrrrr|rrrrrrrr}
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1
+\end{array}\right)
+$$
+
+**The Hamiltonian matrices.** $\beta\equiv\gamma^4$ and $\alpha^j\equiv\gamma^4\gamma^j$
+($j=0,1,2,3,5,6,7$) are real symmetric, with
+$\alpha^i\alpha^j+\alpha^j\alpha^i=2\delta^{ij}$, $\alpha^j\beta+\beta\alpha^j=0$,
+$\beta^2=1$ (check `71-D4`). In blocks,
+$$\beta_{1671}=\begin{pmatrix}0&1_8\\1_8&0\end{pmatrix},\qquad\alpha_{1671}^j=\begin{pmatrix}0&\tau_{1671}^j\\-\tau_{1671}^j&0\end{pmatrix}\tag{2.7}$$
+(check `71-D6`); they are `βD` and `αD[swap04(j)]` of `7+1.nb`, section 7.1.
+
+**The 8×8 blocks** $\tau_{1671}^A$ are listed in Appendix B.
+
+## 2.8 The Dirac equation of the field dirac1671
+
+### 2.8.1 The equation
+
+The field **dirac1671** is the column
+$\psi_{1671}(x)=(\psi_1(x),\dots,\psi_{16}(x))^T$ of sixteen complex-valued Grassmann
+operators. Its Dirac equation is
+$$\boxed{\;\big(i\,\gamma_{1671}^A\,\partial_A-m_{1671}\big)\,\psi_{1671}=0\;}\tag{2.9}$$
+i.e. $i\gamma^4\partial_4\psi+i\sum_j\gamma^j\partial_j\psi-m\psi=0$ with the real
+matrices of Sec. 2.2 and a real mass $m_{1671}>0$. With Eq. (2.3),
+$(\gamma^A\partial_A)^2=\eta^{AB}\partial_A\partial_B=\partial_4^2-\nabla^2$, where
+$\nabla^2=\partial_0^2+\partial_1^2+\partial_2^2+\partial_3^2+\partial_5^2+\partial_6^2+\partial_7^2$, so
+$$\big(i\gamma^A\partial_A+m\big)\big(i\gamma^B\partial_B-m\big)=-\big(\partial_4^2-\nabla^2+m^2\big) :\tag{2.10}$$
+every component obeys the Klein–Gordon equation of 7+1 spacetime. For a plane wave
+$\psi=u\,e^{-ik_Ax^A}$ the operator becomes $\gamma^Ak_A-m$ and the mass shell is
+$k_4^2=k_0^2+k_1^2+k_2^2+k_3^2+k_5^2+k_6^2+k_7^2+m^2$ (checks `71-D1`, `71-D2`).
+Equation (2.9) is the Dirac equation of `7+1.nb` (its section 7.2) for the field that
+the notebook calls `dirac16complex`, written with the coordinates relabelled by
+$\mathrm{swap}_{04}$.
+
+*The factor $i$ is unavoidable here.* A real first-order operator
+$\gamma^A\partial_A-m$ squares to $\partial_4^2-\nabla^2-m^2$, the wrong sign of the
+mass term. A real equation with the correct mass term would require eight real 16×16
+matrices $M^A$ with $M^AM^B+M^BM^A=-2\eta_{1671}^{AB}$ (seven squares $+1$, one square
+$-1$), and by Sec. 2.4 no such matrices exist. The matrices in Eq. (2.9) are real; only
+the number $i$ in front of them is not.
+
+**Worked example** (check `71-D3`, the example of the notebook): energy $E=5$, momentum
+$(p^1,p^2,p^3)=(2,2,4)$, $m=1$; then $\Pi_{1671}=(\gamma^Ak_A+m)/2m$ is a projector of
+trace 8 with $(\gamma^Ak_A-m)\Pi_{1671}=0$: eight independent positive-energy plane
+waves.
+
+### 2.8.2 Hamiltonian form, plane waves, quantization
+
+Multiplying Eq. (2.9) by $\gamma^4$ gives
+$$i\,\partial_4\psi=\mathsf{h}\,\psi,\qquad\mathsf{h}_{1671}=-i\,\alpha_{1671}^j\partial_j+\beta_{1671}\,m_{1671},\tag{2.11}$$
+with the real symmetric matrices of Eq. (2.7) and summation over the seven space
+indices $j$. In momentum space $\mathsf{h}(\vec p)=p^j\alpha^j+m\beta$ is a real
+symmetric matrix with $\mathsf{h}(\vec p)^2=(|\vec p|^2+m^2)\,1$ (check `71-D5`): the
+evolution in $x4$ is unitary for every momentum, and the energies are $\pm E$,
+$E=\sqrt{|\vec p|^2+m^2}$, eight times each. There is one time, and none of the
+difficulties of Sec. 1.8.4 arises.
+
+*Real spinors.* With the real 8×8 matrix $M_{1671}(\vec p)=m+p^j\tau^j$, which satisfies
+$M_{1671}M_{1671}^T=E^2$, the eigenvectors of $\mathsf{h}$ are real:
+$$u_s(\vec p)=\frac1{\sqrt E}\begin{pmatrix}E\,e_s\\M_{1671}^Te_s\end{pmatrix},\quad\mathsf{h}(\vec p)u_s=+Eu_s;\qquad
+v_s(\vec p)=\frac1{\sqrt E}\begin{pmatrix}E\,e_s\\-M_{1671}e_s\end{pmatrix},\quad\mathsf{h}(-\vec p)v_s=-Ev_s,$$
+where $e_s$ ($s=1,\dots,8$) are the unit vectors of $\mathbb{R}^8$; they are normalized
+to $u_s^Tu_r=v_s^Tv_r=2E\delta_{sr}$ (check `71-D8`, exact for the worked example).
+
+*Lagrangian, current, quantization.* With $\bar\psi=\psi^\dagger\gamma^4$,
+$$\mathcal{L}_{1671}=\bar\psi\big(i\gamma^A\partial_A-m\big)\psi,\qquad j_{1671}^A=\bar\psi\gamma^A\psi,\qquad\partial_Aj^A_{1671}=0,$$
+and the density $j_{1671}^4=\psi^\dagger\psi$ is positive. The quantized field is, in a
+box of volume $V$,
+$$\psi(x4,\vec x)=\sum_{\vec p}\sum_{s=1}^{8}\frac{1}{\sqrt{2EV}}\Big[b_s(\vec p)\,u_s(\vec p)\,e^{-i(E\,x4-\vec p\cdot\vec x)}+d_s^\dagger(\vec p)\,v_s(\vec p)\,e^{+i(E\,x4-\vec p\cdot\vec x)}\Big],$$
+with $\{b_s(\vec p),b_r^\dagger(\vec q)\}=\{d_s(\vec p),d_r^\dagger(\vec q)\}=\delta_{sr}\delta_{\vec p\vec q}$
+and all other anticommutators zero, which is equivalent to
+$\{\psi_a(x4,\vec x),\psi_b^\dagger(x4,\vec y)\}=\delta_{ab}\delta^7(\vec x-\vec y)$.
+A particle has eight spin states and so has its antiparticle. These statements are
+derived and checked symbolically in `7+1.nb` (its sections 7.4–7.7); here they are
+restated in the relabelled coordinates, and the algebraic identities on which they rest
+are checks `71-D4`, `71-D5`, `71-D8`.
+
+*Charge conjugation* (check `71-D9`): $\psi_c=\omega\,\psi^*$, where $\psi^*$ is the
+column of the Hermitian conjugates of the components, solves Eq. (2.9) whenever $\psi$
+does, and $(\psi_c)_c=-\psi$; a 16-component Majorana condition $\psi_c=\psi$
+has no non-zero solution.
+
+### 2.8.3 The two coupled 8-component equations
+
+The eigenvectors of $\chi$ give two 16×8 matrices with orthonormal columns,
+$$E^{L}=\frac1{\sqrt2}\begin{pmatrix}1_8\\-i\,1_8\end{pmatrix}\;(\chi E^{L}=-E^{L}),\qquad
+E^{R}=\frac1{\sqrt2}\begin{pmatrix}-i\,1_8\\1_8\end{pmatrix}\;(\chi E^{R}=+E^{R}),$$
+with $E^{L}(E^{L})^\dagger=P^{L}$ and $E^{R}(E^{R})^\dagger=P^{R}$. The chiral parts of
+the field are the 8-component fields
+$$\phi^{L}=(E^{L})^\dagger\psi=\frac{\psi_{\rm up}+i\,\psi_{\rm down}}{\sqrt2},\qquad\phi^{R}=(E^{R})^\dagger\psi=\frac{i\,\psi_{\rm up}+\psi_{\rm down}}{\sqrt2},$$
+where $\psi_{\rm up}$, $\psi_{\rm down}$ are the upper and lower eight components, so
+that $P^{L}\psi=E^{L}\phi^{L}$ and $P^{R}\psi=E^{R}\phi^{R}$. In this basis
+$(E^{L})^\dagger\mathsf{h}E^{L}=-ip^j\tau^j$, $(E^{R})^\dagger\mathsf{h}E^{R}=+ip^j\tau^j$,
+$(E^{L})^\dagger\mathsf{h}E^{R}=(E^{R})^\dagger\mathsf{h}E^{L}=m$ (checks `71-D7`,
+`I71-D3`), and Eq. (2.11) becomes
+$$\boxed{\;\big(i\,\partial_4+\tau_{1671}^j\partial_j\big)\phi_{1671}^{L}=m_{1671}\,\phi_{1671}^{R},\qquad\big(i\,\partial_4-\tau_{1671}^j\partial_j\big)\phi_{1671}^{R}=m_{1671}\,\phi_{1671}^{L}\;}\tag{2.12}$$
+with summation over the seven space indices $j\in\{0,1,2,3,5,6,7\}$ and the real
+antisymmetric 8×8 matrices $\tau_{1671}^j$. The mass couples the two 8-component
+fields; for $m=0$ they decouple into two Weyl equations. Each field obeys the
+Klein–Gordon equation, because $(\tau^j\partial_j)^2=-\nabla^2$:
+$(i\partial_4-\tau^i\partial_i)(i\partial_4+\tau^j\partial_j)=-(\partial_4^2-\nabla^2)$.
+Equations (2.12) are those of section 7.11 of `7+1.nb` with the coordinates $x0$ and
+$x4$ exchanged.
+
+---
+
+# Part 3. Which fermion pairs exist: a consequence of the two sets of matrices
+
+*All tags are written in this Part. The field $\psi$ is $\psi_{1644}$ in statements
+about 4+4 and $\psi_{1671}$ in statements about 7+1.*
+
+The main task of the project is a superfluid built from pairs of quanta of the
+16-component field. Which pairs are possible is decided by the matrices of Parts 1 and
+2, and the result is needed in every later document, so it is recorded here.
+
+## 3.1 No Lorentz-scalar pair
+
+A pair operator of two field operators of the same kind has the form
+$\psi^TX\psi=\sum_{a,b}\psi_aX_{ab}\psi_b$. Because the components anticommute, only the
+antisymmetric part of the 16×16 matrix $X$ contributes. The matrices
+$X=C\,\gamma^{A_1}\cdots\gamma^{A_r}$ ($A_1<\dots<A_r$), with $C=C^{-}$ or $C^{+}$,
+transform under Lorentz transformations as the components of antisymmetric tensors of
+rank $r$ (by Eqs. (1.9) and (2.6): $S^TC\,\gamma^{A_1}\cdots\gamma^{A_r}S=C\,S^{-1}\gamma^{A_1}\cdots\gamma^{A_r}S$).
+The program determines the symmetry of all 256 of them, for each of the four matrices
+$C$ (checks `44-K1`, `71-K1`, `I-P1`). A symmetric matrix gives a pair operator that
+vanishes identically:
+
+| rank $r$ | number of matrices | $C_{1644}^{-}\,\gamma^{A_1}\cdots\gamma^{A_r}$ | $C_{1644}^{+}\,\gamma^{A_1}\cdots\gamma^{A_r}$ | $C_{1671}^{-}\,\gamma^{A_1}\cdots\gamma^{A_r}$ | $C_{1671}^{+}\,\gamma^{A_1}\cdots\gamma^{A_r}$ |
+|:--:|:--:|:--:|:--:|:--:|:--:|
+| 0 | 1 | symmetric | symmetric | symmetric | symmetric |
+| 1 | 8 | **antisymmetric** | symmetric | **antisymmetric** | symmetric |
+| 2 | 28 | **antisymmetric** | **antisymmetric** | **antisymmetric** | **antisymmetric** |
+| 3 | 56 | symmetric | **antisymmetric** | symmetric | **antisymmetric** |
+| 4 | 70 | symmetric | symmetric | symmetric | symmetric |
+| 5 | 56 | **antisymmetric** | symmetric | **antisymmetric** | symmetric |
+| 6 | 28 | **antisymmetric** | **antisymmetric** | **antisymmetric** | **antisymmetric** |
+| 7 | 8 | symmetric | **antisymmetric** | symmetric | **antisymmetric** |
+| 8 | 1 | symmetric | symmetric | symmetric | symmetric |
+
+
+The pattern is the same for both signatures; 120 matrices are antisymmetric, as many as
+there are independent products $\psi_a\psi_b$ with $a<b$.
+
+**Theorem 4.** In both spacetimes the Lorentz-scalar pair operators, $\psi^TC^{-}\psi$
+(rank 0) and $\psi^TC^{-}\omega\,\psi=\pm\psi^TC^{+}\psi$ (rank 8), vanish identically
+(checks `44-K2`, `71-K2`). A single 16-component field has no Lorentz-invariant fermion
+pair. The pair operators that exist are, in terms of $C^{-}$, a vector ($r=1$, 8
+components), a 2-form (28), a 5-form (56) and a 6-form (28).
+
+## 3.2 The pairs of two particles at rest
+
+A superfluid is formed in a medium, and the medium singles out a rest frame. The
+relevant question is then: which pairs of two identical particles at rest, in a state
+of zero orbital angular momentum (an *s wave*), are allowed, and how do they transform
+under the rotations that the medium leaves intact? One particle at rest has eight
+internal states; the Pauli principle admits the $8\cdot7/2=28$ antisymmetric
+combinations, which are described by the antisymmetric 8×8 *pair matrices*.
+
+**7+1** (checks `71-Q1` to `71-Q10`, `I71-P2` to `I71-P4`). On particles at rest the
+rotation generators act as $\frac12\tau_{1671}^i\tau_{1671}^j$, and the 28
+antisymmetric 8×8 matrices are spanned by the seven $\tau_{1671}^j$ and the twenty-one
+$\tau_{1671}^i\tau_{1671}^j$ ($i<j$; space indices).
+
+* The only matrix that commutes with all rotations is the unit matrix, which is
+  symmetric. **There is no s-wave pair that is a singlet under the rotations $SO(7)$ of
+  the seven space dimensions** (check `71-Q6`).
+* Under $SO(7)$ the 28 pairs form a vector (7, spanned by the $\tau_{1671}^j$) and an
+  adjoint (21, spanned by the $\tau_{1671}^i\tau_{1671}^j$) (check `71-Q5`).
+* Split the seven space coordinates into the ordinary ones, $x1,x2,x3$ (rotations
+  $SO(3)$, generating ordinary spin), and the four others, $x0,x5,x6,x7$ (rotations
+  $SO(4)$, locally $SU(2)_A\times SU(2)_B$). **Exactly ten pairs have ordinary spin
+  0**: the four matrices $\tau_{1671}^0,\tau_{1671}^5,\tau_{1671}^6,\tau_{1671}^7$,
+  which form a 4-vector of $SO(4)$, i.e. the representation $(2,2)$ of
+  $SU(2)_A\times SU(2)_B$; and the six matrices $\tau_{1671}^a\tau_{1671}^b$ ($a<b$ in
+  $\{0,5,6,7\}$), which form $(3,1)+(1,3)$ (checks `71-Q2`, `71-Q7`).
+* **Exactly one pair is a singlet both of the ordinary rotations and of the rotations
+  of $x5,x6,x7$**: the pair matrix $\tau_{1671}^0$ (checks `71-Q10`, `I71-P4`).
+* The corresponding field operators are $\psi^TC_{1671}^{-}\gamma_{1671}^j\psi$ for the
+  vector and $\psi^TC_{1671}^{+}\gamma_{1671}^i\gamma_{1671}^j\psi$ for the adjoint
+  (check `71-Q9`).
+
+**4+4, fields independent of $x5,x6,x7$** (checks `44-Q1` to `44-Q4`, `I44-P2`,
+`I44-P3`). A particle at rest satisfies $\gamma_{1644}^4u=iu$. The symmetry is $SO(4)$
+(rotations of the space $x0,\dots,x3$) times $SO(3)_T$ (rotations of the additional
+times) times the sign of $W_{1644}$.
+
+* The pairs that are singlets under all rotations of the four space dimensions are six
+  in number: two triplets of $SO(3)_T$. None of them is a singlet of $SO(3)_T$.
+* Ten pairs have ordinary spin 0, as in 7+1.
+* **Exactly one pair is a singlet both of the ordinary rotations and of the rotations
+  of the additional times.** It is the two-particle content of
+  $\psi^TC_{1644}^{-}\gamma_{1644}^0\psi$ (check `44-Q4`).
+
+The complete lists are in `data/pair_classification.csv`.
+
+## 3.3 The common result: the hidden-axis pair
+
+In both signatures there is a *vector pair operator*,
+$$\Delta_{1644}^{A}\equiv\psi_{1644}^{T}\,C_{1644}^{-}\,\gamma_{1644}^{A}\,\psi_{1644},\qquad
+\Delta_{1671}^{A}\equiv\psi_{1671}^{T}\,C_{1671}^{-}\,\gamma_{1671}^{A}\,\psi_{1671},\qquad A=0,\dots,7,$$
+and in both signatures its component along the hidden coordinate $x0$,
+$$\boxed{\;\Delta_{1644}^{0}=\psi_{1644}^{T}\,C_{1644}^{-}\,\gamma_{1644}^{0}\,\psi_{1644},\qquad
+\Delta_{1671}^{0}=\psi_{1671}^{T}\,C_{1671}^{-}\,\gamma_{1671}^{0}\,\psi_{1671}\;}\tag{3.1}$$
+has three properties:
+
+1. its two-particle content has ordinary spin 0;
+2. it is the only s-wave pair that is invariant under the ordinary rotations and under
+   the rotations of $x5,x6,x7$ (Sec. 3.2);
+3. it is invariant under all 21 generators $\Sigma^{AB}$ with $A,B\in\{1,\dots,7\}$,
+   and only the 7 generators $\Sigma^{0B}$ that involve the hidden axis change it
+   (checks `44-K3`, `71-K3`, `I-P5`). In other words $\Delta^{0}$ is a *scalar* under the
+   Lorentz group of the seven coordinates other than $x0$ — in particular under the
+   Lorentz group of ordinary spacetime $(x1,x2,x3;x4)$ — although it is the component
+   of a vector of the eight-dimensional spacetime.
+
+Property 3 follows from Eq. (1.6): a transformation $\psi\to S\psi$ generated by
+$\Sigma^{AB}$ changes $\Delta^{0}$ by $-\psi^TC^{-}[\Sigma^{AB},\gamma^0]\psi$, which
+vanishes unless $A$ or $B$ is 0.
+
+The operator (3.1) carries fermion number 2 and is the natural order parameter of a
+spin-0 (singlet) superfluid of the field. Its dynamics is not the subject of this
+document; it is developed in the supplements of the two manuscripts.
+
+---
+
+# Appendix A. Complete output of the programs
+
+## A.1 The Rust program
+
+The following is the file `data/matrix_checks.txt`, written by
+`spacetimes matrices`. "exact" means that the statement is an identity between integer
+or Gaussian-integer matrices, verified in exact arithmetic; "numerical" means that it
+involves real numbers and is verified to the accuracy stated in the line. Ranks are
+computed modulo the prime $2^{61}-1$; the documentation of the function `rank` in
+`code/spacetimes-rs/src/imat.rs` explains why a full rank found in this way proves
+linear independence over the rational numbers.
+
+```text
+PROJECT spacetimes: checks of the real 16x16 Dirac matrices (4+4: gamma1644[A] = T16[A] of 4+4.nb; 7+1: gamma1671[A] = Gamma17up[swap04(A)] of 7+1.nb, swap04 = (0 4)); identifiers 44-.. refer to the 4+4 set, 71-.. to the 7+1 set
+106 of 106 checks passed
+
+[PASS] 44-R1  (exact) every entry of gamma1644[A], A = 0..7, is one of the integers -1, 0, +1; hence the eight matrices are real
+[PASS] 44-R2  (exact) every gamma1644[A] is a signed permutation matrix (one entry +1 or -1 in each row and in each column)
+[PASS] 44-C1  (exact) gamma1644[A].gamma1644[B] + gamma1644[B].gamma1644[A] = 2 eta1644^(AB) 1 for all 64 pairs (A, B), with eta1644 = diag[1, 1, 1, 1, -1, -1, -1, -1]
+[PASS] 44-C2  (exact) transpose(gamma1644[A]) = eta1644^(AA) gamma1644[A]: matrices with square +1 are symmetric, matrices with square -1 are antisymmetric; hence transpose(gamma1644[A]) = inverse(gamma1644[A])
+[PASS] 44-C3  (exact) the 256 ordered products gamma1644[A1]...gamma1644[Ak] (A1 < ... < Ak, k = 0..8) are linearly independent: they span all real 16x16 matrices, so the representation is irreducible over the real numbers
+[PASS] 44-C4  (exact) every one of the 255 non-empty products has trace 0, and the square of every product is +1 or -1
+[PASS] 44-L1  (exact) Sigma1644^(AB) := (1/4)[gamma1644[A], gamma1644[B]] equals (1/2) gamma1644[A].gamma1644[B] for A != B, and Sigma1644^(AB) = -Sigma1644^(BA)
+[PASS] 44-L2  (exact) the 28 matrices Sigma1644^(AB), A < B, are linearly independent
+[PASS] 44-L3  (exact) [Sigma1644^(AB), gamma1644[C]] = eta1644^(BC) gamma1644[A] - eta1644^(AC) gamma1644[B] for all A, B, C: the Sigma1644^(AB) rotate the eight matrices as the components of a vector
+[PASS] 44-L4  (exact) [Sigma1644^(AB), Sigma1644^(CD)] = eta1644^(BC) Sigma1644^(AD) - eta1644^(AC) Sigma1644^(BD) - eta1644^(BD) Sigma1644^(AC) + eta1644^(AD) Sigma1644^(BC) for all 4096 index combinations: the commutation relations of the Lie algebra so(p,q) of the metric eta1644
+[PASS] 44-L5  (exact) the structure constants are integers and the Killing form is diagonal in the basis Sigma1644^(AB): B(Sigma1644^(AB), Sigma1644^(AB)) = -12 eta1644^(AA) eta1644^(BB); it has 16 positive and 12 negative eigenvalues (no zero eigenvalue: the algebra is semisimple)
+[PASS] 44-L6  (exact) 12 generators are antisymmetric matrices (compact: they generate rotations) and 16 are symmetric (non-compact: they generate boosts); these are the numbers of the real form so(4,4), which has 12 compact and 16 non-compact generators
+[PASS] 44-G1  (exact) each gamma1644[A] is invertible with inverse eta1644^(AA) gamma1644[A], and -gamma1644[A].gamma1644[B].inverse(gamma1644[A]) = gamma1644[B] for B != A, = -gamma1644[A] for B = A: gamma1644[A] acts on the vector index as the reflection that reverses the axis xA
+[PASS] 44-G2  (numerical) exp(theta Sigma1644^(AB)) = cos(theta/2) 1 + sin(theta/2) gamma1644[A].gamma1644[B] when (gamma1644[A].gamma1644[B])^2 = -1 (rotation), and = cosh(theta/2) 1 + sinh(theta/2) gamma1644[A].gamma1644[B] when (gamma1644[A].gamma1644[B])^2 = +1 (boost), for the 28 planes and random theta (largest deviation 2.3e-14)
+[PASS] 44-G3  (numerical) for 20 random elements S = exp(sum_(A<B) theta_AB Sigma1644^(AB)) (theta_AB random real numbers):  S.gamma1644[C].inverse(S) = sum_D Lambda^C_D gamma1644[D] with a real 8x8 matrix Lambda that preserves eta1644 (Lambda.eta1644.transpose(Lambda) = eta1644) and has determinant +1 (largest deviations 2.0e-13, 2.2e-15, 2.7e-15)
+[PASS] 44-N1  (exact) the eight matrices rebuilt from the definitions equal, entry by entry, the eight matrices T16[0..7] printed by Mathematica in 4+4.nb (cell 314, Out[211])
+[PASS] 44-N2  (exact) the rebuilt volume element equals T16[8] printed in 4+4.nb (cell 136, Out[99])
+[PASS] 44-N3  (exact) the metric printed in 4+4.nb (cell 13, Out[9]) is eta4488 = diag(1,1,1,1,-1,-1,-1,-1) (PROJECT name: eta1644)
+[PASS] 44-B1  (exact) the 8x8 matrix sigma (= sigma88) of 4+4.nb, PROJECT name sigma88: sigma88 = tau[1].tau[2].tau[3] = tau[4].tau[5].tau[6].tau[7], sigma88.sigma88 = 1, tau[1].tau[2]...tau[7] = 1, and tau[7] = diag(-1_4, +1_4) (4+4.nb Out[72], Out[89], Out[87], Out[63])
+[PASS] 44-B2  (exact) tau[A].taubar[B] + tau[B].taubar[A] = 2 eta1644^(AB) 1 and taubar[A].tau[B] + taubar[B].tau[A] = 2 eta1644^(AB) 1 (8x8), A, B = 0..7 (4+4.nb Out[77])
+[PASS] 44-B3  (exact) sigma88.taubar[A] = transpose(sigma88.tau[A]) for A = 0..7 (4+4.nb Out[76])
+[PASS] 44-B4  (exact) T16[A] = [[0, taubar[A]], [tau[A], 0]] in 8x8 blocks, with tau[0] = taubar[0] = 1.  PROJECT names of these objects of 4+4.nb: gamma1644[A] := T16[A], tau1644[A] := tau[A], taubar1644[A] := taubar[A]
+[PASS] 44-V1  (exact) omega1644 := gamma1644[0]...gamma1644[7] (= T16[8]) = diag(-1_8, +1_8): real, diagonal, symmetric, with square +1
+[PASS] 44-V2  (exact) omega1644 anticommutes with every gamma1644[A] and commutes with every Sigma1644^(AB)
+[PASS] 44-P1  (exact) PL1644 := (1 - omega1644)/2 = diag(1_8, 0_8) and PR1644 := (1 + omega1644)/2 = diag(0_8, 1_8) are real matrices with integer entries
+[PASS] 44-P2  (exact) PL1644 + PR1644 = 1, PL1644.PL1644 = PL1644, PR1644.PR1644 = PR1644, PL1644.PR1644 = PR1644.PL1644 = 0, trace PL1644 = trace PR1644 = 8 (4+4.nb Out[114])
+[PASS] 44-P3  (exact) the rebuilt projectors PL1644 and PR1644 equal the matrices P_L and P_R printed in 4+4.nb (cells 163 and 165, Out[112] and Out[113])
+[PASS] 44-P4  (exact) gamma1644[A].PL1644 = PR1644.gamma1644[A] and gamma1644[A].PR1644 = PL1644.gamma1644[A]: every Dirac matrix maps left-handed spinors to right-handed ones and conversely
+[PASS] 44-P5  (exact) PL1644 and PR1644 commute with every Sigma1644^(AB): chirality is invariant under Spin(4,4)
+[PASS] 44-S1  (exact) Cm1644 := gamma1644[0].gamma1644[1].gamma1644[2].gamma1644[3] (the matrix sigma16 of 4+4.nb) = diag(-sigma88, sigma88), symmetric, Cm1644.Cm1644 = 1 (4+4.nb Out[106])
+[PASS] 44-S2  (exact) Cp1644 := gamma1644[4].gamma1644[5].gamma1644[6].gamma1644[7] (the matrix S44 of 7+1.nb) = diag(sigma88, sigma88), symmetric, Cp1644.Cp1644 = 1, and omega1644 = Cm1644.Cp1644
+[PASS] 44-S3  (exact) Cm1644.gamma1644[A].Cm1644 = -transpose(gamma1644[A]) and Cp1644.gamma1644[A].Cp1644 = +transpose(gamma1644[A]) for A = 0..7
+[PASS] 44-S4  (exact) Cm1644.gamma1644[A] is antisymmetric for A = 0..7 (4+4.nb Out[105]) and Cp1644.gamma1644[A] is symmetric
+[PASS] 44-S5  (exact) gamma1644[4] (the matrix JT4 = T16[4] of 4+4.nb) is a complex structure: gamma1644[4].gamma1644[4] = -1, and transpose(gamma1644[4]).Cm1644.gamma1644[4] = Cm1644
+[PASS] 71-R1  (exact) every entry of gamma1671[A], A = 0..7, is one of the integers -1, 0, +1; hence the eight matrices are real
+[PASS] 71-R2  (exact) every gamma1671[A] is a signed permutation matrix (one entry +1 or -1 in each row and in each column)
+[PASS] 71-C1  (exact) gamma1671[A].gamma1671[B] + gamma1671[B].gamma1671[A] = 2 eta1671^(AB) 1 for all 64 pairs (A, B), with eta1671 = diag[-1, -1, -1, -1, 1, -1, -1, -1]
+[PASS] 71-C2  (exact) transpose(gamma1671[A]) = eta1671^(AA) gamma1671[A]: matrices with square +1 are symmetric, matrices with square -1 are antisymmetric; hence transpose(gamma1671[A]) = inverse(gamma1671[A])
+[PASS] 71-C3  (exact) the 256 ordered products gamma1671[A1]...gamma1671[Ak] (A1 < ... < Ak, k = 0..8) are linearly independent: they span all real 16x16 matrices, so the representation is irreducible over the real numbers
+[PASS] 71-C4  (exact) every one of the 255 non-empty products has trace 0, and the square of every product is +1 or -1
+[PASS] 71-L1  (exact) Sigma1671^(AB) := (1/4)[gamma1671[A], gamma1671[B]] equals (1/2) gamma1671[A].gamma1671[B] for A != B, and Sigma1671^(AB) = -Sigma1671^(BA)
+[PASS] 71-L2  (exact) the 28 matrices Sigma1671^(AB), A < B, are linearly independent
+[PASS] 71-L3  (exact) [Sigma1671^(AB), gamma1671[C]] = eta1671^(BC) gamma1671[A] - eta1671^(AC) gamma1671[B] for all A, B, C: the Sigma1671^(AB) rotate the eight matrices as the components of a vector
+[PASS] 71-L4  (exact) [Sigma1671^(AB), Sigma1671^(CD)] = eta1671^(BC) Sigma1671^(AD) - eta1671^(AC) Sigma1671^(BD) - eta1671^(BD) Sigma1671^(AC) + eta1671^(AD) Sigma1671^(BC) for all 4096 index combinations: the commutation relations of the Lie algebra so(p,q) of the metric eta1671
+[PASS] 71-L5  (exact) the structure constants are integers and the Killing form is diagonal in the basis Sigma1671^(AB): B(Sigma1671^(AB), Sigma1671^(AB)) = -12 eta1671^(AA) eta1671^(BB); it has 7 positive and 21 negative eigenvalues (no zero eigenvalue: the algebra is semisimple)
+[PASS] 71-L6  (exact) 21 generators are antisymmetric matrices (compact: they generate rotations) and 7 are symmetric (non-compact: they generate boosts); these are the numbers of the real form so(7,1), which has 21 compact and 7 non-compact generators
+[PASS] 71-G1  (exact) each gamma1671[A] is invertible with inverse eta1671^(AA) gamma1671[A], and -gamma1671[A].gamma1671[B].inverse(gamma1671[A]) = gamma1671[B] for B != A, = -gamma1671[A] for B = A: gamma1671[A] acts on the vector index as the reflection that reverses the axis xA
+[PASS] 71-G2  (numerical) exp(theta Sigma1671^(AB)) = cos(theta/2) 1 + sin(theta/2) gamma1671[A].gamma1671[B] when (gamma1671[A].gamma1671[B])^2 = -1 (rotation), and = cosh(theta/2) 1 + sinh(theta/2) gamma1671[A].gamma1671[B] when (gamma1671[A].gamma1671[B])^2 = +1 (boost), for the 28 planes and random theta (largest deviation 7.1e-15)
+[PASS] 71-G3  (numerical) for 20 random elements S = exp(sum_(A<B) theta_AB Sigma1671^(AB)) (theta_AB random real numbers):  S.gamma1671[C].inverse(S) = sum_D Lambda^C_D gamma1671[D] with a real 8x8 matrix Lambda that preserves eta1671 (Lambda.eta1671.transpose(Lambda) = eta1671) and has determinant +1 (largest deviations 5.0e-14, 2.0e-15, 2.0e-15)
+[PASS] 71-N1  (exact) the eight matrices rebuilt from the definitions equal, entry by entry, the eight matrices Gamma17[0..7] printed by Mathematica in 7+1.nb (cell 204, Out[178])
+[PASS] 71-N2  (exact) PROJECT matrices: gamma1671[A] = Gamma17up[swap04(A)] with swap04 = (0 4) and Gamma17up[A] = eta17^(AA) Gamma17[A] (7+1.nb section 5.3); explicitly gamma1671[4] = Gamma17[0] (time-like), gamma1671[0] = -Gamma17[4], gamma1671[j] = -Gamma17[j] for j = 1, 2, 3, 5, 6, 7.  (gamma1671 is NOT the complex set Gamma71 of 7+1.nb section 4.3, and eta1671 is NOT the matrix eta71 of 7+1.nb)
+[PASS] 71-N3  (exact) in the labelling of 7+1.nb: Gamma17[A].Gamma17[B] + Gamma17[B].Gamma17[A] = 2 eta17^(AB) 1 with eta17 = diag(+1,-1,-1,-1,-1,-1,-1,-1) (7+1.nb Out[173])
+[PASS] 71-B1  (exact) tauO[A] = tau[A] (A = 1, 2, 3), tauO[A] = tau[A].sigma (A = 4..7): real, antisymmetric, tauO[A].tauO[A] = -1, mutually anticommuting, tauO[1]...tauO[7] = 1 (7+1.nb section 3.1)
+[PASS] 71-B2  (exact) block form: Gamma17[0] = [[0, 1], [1, 0]] and Gamma17[i] = [[tauO[i], 0], [0, tauObar[i]]] with tauObar[i] = transpose(tauO[i]) = -tauO[i], i = 1..7 (7+1.nb Out[175])
+[PASS] 71-B3  (exact) built from the 4+4 matrices only: Gamma17[0] = T16[0], Gamma17[i] = T16[0].T16[i] (i = 1, 2, 3), Gamma17[k] = T16[0].T16[k].S44 (k = 4..7) (7+1.nb Out[176])
+[PASS] 71-V1  (exact) omega1671 := gamma1671[0]...gamma1671[7] = Gamma17[8] = [[0, -1], [1, 0]] in 8x8 blocks (the omega17 of 7+1.nb: the seven sign changes of Gamma17up and the odd permutation swap04 compensate): real, antisymmetric, with square -1
+[PASS] 71-V2  (exact) omega1671 anticommutes with every gamma1671[A] and commutes with every Sigma1671^(AB)
+[PASS] 71-V3  (exact) the linear system X.gamma1671[A] + gamma1671[A].X = 0 (A = 0..7) for a real 16x16 matrix X has rank 255, and omega1671 solves it (71-V2): the real matrices that anticommute with all eight gamma1671[A] are exactly the multiples of omega1671; since omega1671.omega1671 = -1, no real matrix with square +1 anticommutes with all of them: there is NO real chirality matrix in 7+1
+[PASS] 71-P1  (exact) chi1671 := i omega1671 = i Gamma17[8] (= chi17 of 7+1.nb) is Hermitian, chi1671.chi1671 = 1, anticommutes with every gamma1671[A]
+[PASS] 71-P2  (exact) PL1671 := (1 - chi1671)/2 and PR1671 := (1 + chi1671)/2: PL1671 + PR1671 = 1, PL1671.PL1671 = PL1671, PR1671.PR1671 = PR1671, PL1671.PR1671 = 0, Hermitian, trace 8 each; they are complex (not real) matrices
+[PASS] 71-P3  (exact) gamma1671[A].PL1671 = PR1671.gamma1671[A] for A = 0..7, and PL1671, PR1671 commute with every Sigma1671^(AB)
+[PASS] 71-P4  (exact) in 8x8 blocks chi1671 = [[0, -i], [i, 0]], 2 PL1671 = [[1, i], [-i, 1]] and 2 PR1671 = [[1, -i], [i, 1]]; these are chi17, PL17 and PR17 of 7+1.nb (sections 4.6 and 7.10)
+[PASS] 71-P5  (exact) with s := 1 - i Gamma17[0] (s.s^dagger = 2, so Uc1671 := s/sqrt(2) is unitary): s.chi1671 = -T16[8].s, i.e. Uc1671.chi1671.inverse(Uc1671) = -omega1644.  Hence Uc1671.PL1671.inverse(Uc1671) = PR1644 and Uc1671.PR1671.inverse(Uc1671) = PL1644: the complex chiral projectors of 7+1 are unitarily equivalent to the real projectors of 4+4.nb, with the names L and R exchanged.  (7+1.nb defines chi17 = +i Gamma17[8] for its real matrices and chi71 = -i Gamma71[8] for its complex matrices Gamma71; the PROJECT matrix chi1671 equals chi17, NOT chi71)
+[PASS] 71-S1  (exact) Dirac adjoint: transpose(gamma1671[A]) = gamma1671[4].gamma1671[A].gamma1671[4] for A = 0..7 (gamma1671[4] is the time-like matrix; it is symmetric and squares to +1)
+[PASS] 44-K1  (exact) 4+4: the matrices Cm1644.gamma1644[A1]...gamma1644[Ar] (A1 < ... < Ar) of rank r = 0..8 are all symmetric (+) or all antisymmetric (-): signs [1, -1, -1, 1, 1, -1, -1, 1, 1]; the matrices Cp1644.gamma1644[A1]...gamma1644[Ar]: signs [1, 1, -1, -1, 1, 1, -1, -1, 1]; in both cases exactly 120 of the 256 matrices are antisymmetric
+[PASS] 44-K2  (exact) 4+4: the two Lorentz-scalar pair matrices Cm1644 (rank 0) and Cm1644.omega1644 (rank 8; equal to Cp1644 up to sign) are SYMMETRIC: the Lorentz-scalar bilinears dirac1644^T Cm1644 dirac1644 and dirac1644^T Cp1644 dirac1644 of one anticommuting 16-component field vanish identically
+[PASS] 71-K0  (exact) 7+1: Cp1671 := gamma1671[4] satisfies Cp1671.gamma1671[A] = +transpose(gamma1671[A]).Cp1671 and Cm1671 := gamma1671[4].omega1671 satisfies Cm1671.gamma1671[A] = -transpose(gamma1671[A]).Cm1671; both are symmetric matrices
+[PASS] 71-K1  (exact) 7+1: signs (+ symmetric, - antisymmetric) of the matrices Cm1671.gamma1671[A1]...gamma1671[Ar] (A1 < ... < Ar) by rank r = 0..8: [1, -1, -1, 1, 1, -1, -1, 1, 1]; of Cp1671.gamma1671[A1]...gamma1671[Ar]: [1, 1, -1, -1, 1, 1, -1, -1, 1]; exactly 120 of the 256 matrices are antisymmetric in both cases
+[PASS] 71-K2  (exact) 7+1: the two Lorentz-scalar pair matrices Cm1671 (rank 0) and Cm1671.omega1671 = -Cp1671 (rank 8) are SYMMETRIC: the Lorentz-scalar bilinears dirac1671^T Cm1671 dirac1671 and dirac1671^T Cp1671 dirac1671 of one anticommuting 16-component field vanish identically
+[PASS] 44-K3  (exact) 4+4: for all A != B in 1..7, transpose(Sigma1644^(AB)).Cm1644.gamma1644[0] + Cm1644.gamma1644[0].Sigma1644^(AB) = 0, while the same expression with A = 0 is not zero: the bilinear DeltaV1644^0 = dirac1644^T Cm1644 gamma1644^0 dirac1644 is INVARIANT under the 21 generators of the pseudo-rotations of the seven coordinates x1..x7 (the group Spin(3,4), which contains the Lorentz group of x1 x2 x3 x4), and only the 7 generators that involve the hidden axis x0 change it
+[PASS] 71-K3  (exact) 7+1: for all A != B in 1..7, transpose(Sigma1671^(AB)).Cm1671.gamma1671[0] + Cm1671.gamma1671[0].Sigma1671^(AB) = 0, while the same expression with A = 0 is not zero: the bilinear DeltaV1671^0 = dirac1671^T Cm1671 gamma1671^0 dirac1671 is INVARIANT under the 21 generators of the Lorentz group of the seven coordinates x1..x7 (the group Spin(6,1), which contains the Lorentz group of x1 x2 x3 x4), and only the 7 generators that involve the hidden axis x0 change it
+[PASS] 44-D1  (exact) (gamma1644^A k_A)^2 = (eta1644^(AB) k_A k_B) 1 for 40 random integer vectors k: the Dirac operator gamma1644^A d_A squares to the wave operator eta1644^(AB) d_A d_B = d0^2 + d1^2 + d2^2 + d3^2 - d4^2 - d5^2 - d6^2 - d7^2
+[PASS] 44-D2  (exact) (i gamma1644.k + m1644)(i gamma1644.k - m1644) = -(k.k + m1644^2) 1 for 40 random integer (k, m1644): every component of a solution of (gamma1644^A d_A - m1644) dirac1644 = 0 obeys the Klein-Gordon equation (eta1644^(AB) d_A d_B - m1644^2) dirac1644 = 0
+[PASS] 44-D3  (exact) worked example k = (0,2,2,4; 5,0,0,0), m1644 = 1 (on the mass shell: k4^2+k5^2+k6^2+k7^2 = k0^2+k1^2+k2^2+k3^2 + m1644^2): Pi1644 := (i gamma1644.k + m1644)/(2 m1644) satisfies Pi1644.Pi1644 = Pi1644, trace Pi1644 = 8 and (i gamma1644.k - m1644).Pi1644 = 0, so the plane-wave solutions u exp(i k.x) form an 8-dimensional space, u = Pi1644 w
+[PASS] 44-D4  (exact) PL1644.gamma1644[A].PR1644 = [[0, taubar1644[A]], [0, 0]], PR1644.gamma1644[A].PL1644 = [[0, 0], [tau1644[A], 0]], PL1644.gamma1644[A].PL1644 = PR1644.gamma1644[A].PR1644 = 0: with dirac1644 = (psiL1644, psiR1644) the 16-component equation is the pair  taubar1644^A d_A psiR1644 = m1644 psiL1644,  tau1644^A d_A psiL1644 = m1644 psiR1644  of 8-component equations
+[PASS] 44-D5  (exact) (tau1644^A k_A)(taubar1644^B k_B) = (taubar1644^A k_A)(tau1644^B k_B) = (eta1644^(AB) k_A k_B) 1_8 for 40 random integer k: each 8-component field obeys the Klein-Gordon equation
+[PASS] 44-D6  (exact) alpha1644^a := gamma1644[4].gamma1644[a] (a = 0..3) are real symmetric with square +1; gamma1644[4].gamma1644[t] (t = 5, 6, 7) are real antisymmetric with square -1; gamma1644[4] is real antisymmetric with square -1
+[PASS] 44-D7  (exact) x4-evolution d_4 dirac1644 = K1644 dirac1644 with K1644 = -m1644 gamma1644^4 + i k_a gamma1644^4 gamma1644^a + i kappa_t gamma1644^4 gamma1644^t (a = 0..3 space, t = 5, 6, 7 extra times): K1644.K1644 = -(m1644^2 + |k|^2 - |kappa|^2) 1 for 40 random integer (k, kappa, m1644): the frequencies in x4 are +-sqrt(m1644^2 + |k|^2 - |kappa|^2)
+[PASS] 44-D8  (exact) K1644 + K1644^dagger = 2 i kappa_t gamma1644^4 gamma1644^t: K1644 is anti-Hermitian (so that h1644 := i K1644 is Hermitian and the x4-evolution preserves dirac1644^dagger dirac1644) if and only if kappa = 0, i.e. if the field does not depend on the extra times x5, x6, x7
+[PASS] 44-D9  (exact) example of the instability: m1644 = 3, k = 0, kappa = (5, 0, 0) gives K1644.K1644 = +16, (K1644 - 4)(K1644 + 4) = 0 with trace K1644 = 0: K1644 has the real eigenvalues +4 and -4, eight times each, so eight solutions grow like exp(+4 x4)
+[PASS] 44-D10 (exact) W1644 := i Cm1644.gamma1644[4] is Hermitian with W1644.W1644 = 1 and trace 0 (eigenvalues +1 and -1, eight times each); W1644 commutes with gamma1644[4] and with gamma1644[4].gamma1644[a] (a = 0..3), hence with K1644 at kappa = 0, and anticommutes with gamma1644[4].gamma1644[t] (t = 5, 6, 7)
+[PASS] 44-D11 (exact) the density of the conserved current of the Spin(4,4)-invariant Lagrangian, j1644^4 = dirac1644^dagger (i Cm1644.gamma1644[4]) dirac1644 = dirac1644^dagger W1644 dirac1644, is NOT positive: W1644 has eight eigenvalues -1; the positive density dirac1644^dagger dirac1644 is conserved only for kappa = 0 (44-D8)
+[PASS] 71-D1  (exact) (gamma1671^A k_A)^2 = (eta1671^(AB) k_A k_B) 1 = (k4^2 - k0^2 - k1^2 - k2^2 - k3^2 - k5^2 - k6^2 - k7^2) 1 for 40 random integer vectors k
+[PASS] 71-D2  (exact) (gamma1671.k + m1671)(gamma1671.k - m1671) = (k.k - m1671^2) 1 for 40 random integer (k, m1671): with dirac1671 = u exp(-i k_A x^A) the operator i gamma1671^A d_A - m1671 becomes gamma1671.k - m1671, and every component of a solution obeys the Klein-Gordon equation (d4^2 - d0^2 - d1^2 - d2^2 - d3^2 - d5^2 - d6^2 - d7^2 + m1671^2) dirac1671 = 0
+[PASS] 71-D3  (exact) worked example E = 5, momentum p = (p1, p2, p3) = (2, 2, 4), m1671 = 1 (on the mass shell, 25 = 24 + 1): Pi1671 := (gamma1671.k + m1671)/(2 m1671) satisfies Pi1671.Pi1671 = Pi1671, trace Pi1671 = 8, (gamma1671.k - m1671).Pi1671 = 0: eight independent positive-energy plane waves
+[PASS] 71-D4  (exact) beta1671 := gamma1671[4] and alpha1671^j := gamma1671[4].gamma1671[j] (j = 0, 1, 2, 3, 5, 6, 7) are real symmetric; alpha1671^i.alpha1671^j + alpha1671^j.alpha1671^i = 2 delta^(ij), alpha1671^j.beta1671 + beta1671.alpha1671^j = 0, beta1671.beta1671 = 1: the Hamiltonian h1671 = -i alpha1671^j d_j + beta1671 m1671 is Hermitian
+[PASS] 71-D5  (exact) h1671(p) = p^j alpha1671^j + m1671 beta1671 is a real symmetric matrix with h1671(p).h1671(p) = (|p|^2 + m1671^2) 1 for 40 random integer (p, m1671): the energies are +E and -E, E = sqrt(|p|^2 + m1671^2), eight times each
+[PASS] 71-D6  (exact) tau1671^j := tauO[swap04(j)] (swap04 = (0 4)): tau1671^4 = 1_8; for the seven space indices tau1671^j is real, antisymmetric, tau1671^i.tau1671^j + tau1671^j.tau1671^i = -2 delta^(ij); in 8x8 blocks beta1671 = [[0, 1], [1, 0]] and alpha1671^j = [[0, tau1671^j], [-tau1671^j, 0]] (beta1671 = betaD and alpha1671^j = alphaD[swap04(j)] of 7+1.nb section 7.1)
+[PASS] 71-D7  (exact) chiral form: with EL1671 = (1; -i)/sqrt(2), ER1671 = (-i; 1)/sqrt(2) (16x8, in 8x8 blocks; chi1671.EL1671 = -EL1671, chi1671.ER1671 = +ER1671, orthonormal): EL1671^dagger.h1671(p).EL1671 = -i p^j tau1671^j, ER1671^dagger.h1671(p).ER1671 = +i p^j tau1671^j, EL1671^dagger.h1671(p).ER1671 = ER1671^dagger.h1671(p).EL1671 = m1671 (20 random integer (p, m1671)); hence (i d_4 + tau1671^j d_j) phiL1671 = m1671 phiR1671 and (i d_4 - tau1671^j d_j) phiR1671 = m1671 phiL1671 for phiL1671 = EL1671^dagger dirac1671, phiR1671 = ER1671^dagger dirac1671 (EL1671, ER1671, phiL1671, phiR1671 are the objects EL, ER, phiL, phiR of 7+1.nb sections 7.10 and 7.11, in the PROJECT labelling of the coordinates)
+[PASS] 71-D8  (exact) worked example E = 5, p = (2, 2, 4), m1671 = 1: with M1671 = m1671 + p^j tau1671^j (M1671.transpose(M1671) = E^2 1_8), the columns of Upos1671 := (E 1; transpose(M1671)) satisfy h1671(p).Upos1671 = +E Upos1671 and those of Vneg1671 := (E 1; -M1671) satisfy h1671(-p).Vneg1671 = -E Vneg1671; transpose(Upos1671).Upos1671 = transpose(Vneg1671).Vneg1671 = 2 E^2 1_8: the spinors u_s = Upos1671 e_s/sqrt(E), v_s = Vneg1671 e_s/sqrt(E) are REAL and normalized to 2E
+[PASS] 71-D9  (exact) charge conjugation dirac1671_c := omega1671 conj(dirac1671): omega1671 is real and omega1671.gamma1671[A] = -gamma1671[A].omega1671, so (i gamma1671^A d_A - m1671) dirac1671_c = omega1671 conj((i gamma1671^A d_A - m1671) dirac1671); omega1671.omega1671 = -1 gives (dirac1671_c)_c = -dirac1671: a 16-component Majorana condition dirac1671_c = dirac1671 has only the solution dirac1671 = 0
+[PASS] 71-Q1  (numerical) 7+1, one particle at rest: the 8 spin states form the spinor of SO(7) (Casimir 21/4) and split under SO(3) x SU(2)_A x SU(2)_B (ordinary rotations x rotations of the extra space x0 x5 x6 x7) as (2; 2, 1) + (2; 1, 2); [A_a, B_b] = 0 to 0e0, residual 6e-16
+[PASS] 71-Q2  (numerical) 7+1, two identical particles in an s wave (28 states allowed by the Pauli principle): under SO(7) they form 7 + 21 (Casimir 6 and 10); there is NO SO(7) singlet.  Under SO(3) x SU(2)_A x SU(2)_B:  7 = (1; 2, 2) + (3; 1, 1),  21 = (1; 3, 1) + (1; 1, 3) + (3; 1, 1) + (3; 2, 2).  The pairs of ordinary spin 0 are the 10 states (1; 2, 2) + (1; 3, 1) + (1; 1, 3) (residual 3e-13)
+[PASS] 71-Q3  (exact) 7+1: for space indices i != j, gamma1671[i].gamma1671[j] = diag(tau1671^i tau1671^j, tau1671^i tau1671^j) in 8x8 blocks, so on the particles at rest, u = (e; e)/sqrt(2), the rotation generator Sigma1671^(ij) acts as the real antisymmetric 8x8 matrix (1/2) tau1671^i tau1671^j
+[PASS] 71-Q4  (exact) 7+1: the 7 matrices tau1671^j and the 21 matrices tau1671^i tau1671^j (i < j; space indices) are antisymmetric and linearly independent: together they span all 28 antisymmetric 8x8 matrices, i.e. all s-wave pair amplitudes
+[PASS] 71-Q5  (exact) 7+1: the quadratic Casimir operator of SO(7), Cas7(Phi) := -sum_(i<j) [Sigma1671^(ij), [Sigma1671^(ij), Phi]], gives Cas7(Phi) = 6 Phi for every Phi = tau1671^j (the vector, 7) and Cas7(Phi) = 10 Phi for every Phi = tau1671^i tau1671^j (the adjoint, 21)
+[PASS] 71-Q6  (exact) 7+1: the linear system [tau1671^i tau1671^j, X] = 0 (all 21 planes) for an 8x8 matrix X has rank 63 and is solved by X = 1: the only rotation-invariant pair matrix is the unit matrix, which is SYMMETRIC and therefore excluded by the Pauli principle.  Two identical particles of the field cannot form an s-wave pair that is a singlet under all rotations of the seven space dimensions
+[PASS] 71-Q7  (exact) 7+1: the ten antisymmetric matrices tau1671^0, tau1671^5, tau1671^6, tau1671^7 and tau1671^a tau1671^b (a < b in {0, 5, 6, 7}) are linearly independent and commute with the generators tau1671^2 tau1671^3, tau1671^3 tau1671^1, tau1671^1 tau1671^2 of ordinary rotations; the system [tau1671^i tau1671^j, Phi] = 0 (ordinary rotations) on antisymmetric Phi has rank 18 = 28 - 10: these ten matrices are ALL the s-wave pairs of ordinary spin 0
+[PASS] 71-Q8  (exact) 7+1: each of tau1671^j (any space index j) and tau1671^i tau1671^j (i != j) is an orthogonal matrix: Phi.transpose(Phi) = 1.  A condensate whose pair matrix is proportional to tau1671^j or to tau1671^i tau1671^j therefore gives the SAME gap to all eight spin states (a 'unitary' state)
+[PASS] 71-Q9  (exact) 7+1: two-particle content of the field bilinears, u_s^T X u_r for particles at rest: X = Cm1671.gamma1671[j] gives -tau1671^j (space index j) and X = Cm1671.gamma1671[4] gives 0; X = Cp1671.gamma1671[i].gamma1671[j] gives tau1671^i tau1671^j.  Hence the vector pair field is DeltaV1671^j := dirac1671^T Cm1671 gamma1671^j dirac1671 (its time component contains no pair of two particles) and the adjoint pair field is DeltaT1671^(ij) := dirac1671^T Cp1671 gamma1671^i gamma1671^j dirac1671
+[PASS] 71-Q10 (exact) 7+1: the system [tau1671^i tau1671^j, Phi] = 0 for the six rotation planes (1,2), (1,3), (2,3) of ordinary space and (5,6), (5,7), (6,7) of the extra space, on antisymmetric Phi, has rank 27 = 28 - 1, and Phi = tau1671^0 solves it: EXACTLY ONE s-wave pair is a singlet both of the ordinary rotations and of the rotations of x5 x6 x7.  Its pair matrix is tau1671^0, the two-particle content of DeltaV1671^0 = dirac1671^T Cm1671 gamma1671^0 dirac1671, the component of the vector pair field along the hidden space dimension x0 (the same result as in 4+4, check 44-Q4)
+[PASS] 44-Q1  (numerical) 4+4, fields independent of x5 x6 x7, one particle at rest (gamma1644[4] u = i u, 8 states; deviation 0e0): under SU(2)_A x SU(2)_B (rotations of the space x0 x1 x2 x3) x SU(2)_T (rotations of the extra times) the states are (2, 1; 2) with one sign of W1644 and (1, 2; 2) with the other; every state has ordinary spin 1/2 (residual 2e-16)
+[PASS] 44-Q2  (numerical) 4+4, fields independent of x5 x6 x7, two identical particles in an s wave (28 states): (1, 1; 3) twice, (3, 1; 1), (1, 3; 1), (2, 2; 1), (2, 2; 3) under SU(2)_A x SU(2)_B x SU(2)_T.  The pairs that are singlets under ALL rotations of the four space dimensions are the 6 states (1, 1; 3) + (1, 1; 3): two triplets of the extra-time rotations, none of them a singlet of SU(2)_T.  10 states have ordinary spin 0 (residual 1e-14)
+[PASS] 44-Q3  (numerical) 4+4: among the 120 Pauli-allowed bilinears dirac1644^T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 (A1 < ... < Ar), those whose two-particle content (particles at rest) lies entirely in the SO(4)-singlet pairs have the index sets {A1,...,Ar} = {5} {0,1,2,3,5} {4,5} {0,1,2,3,4,5} {6} {0,1,2,3,6} {4,6} {0,1,2,3,4,6} {7} {0,1,2,3,7} {4,7} {0,1,2,3,4,7}; they include the components A = 5, 6, 7 (the extra-time components) of the vector pair field DeltaV1644^A := dirac1644^T Cm1644 gamma1644^A dirac1644
+[PASS] 44-Q4  (numerical) 4+4: exactly 1 of the 28 pair states is a singlet both of the ordinary rotations (x1 x2 x3) and of the extra-time rotations (x5 x6 x7); it belongs to the space vector (2, 2; 1), is made of one particle with W1644 = +1 and one with W1644 = -1, and is the two-particle content of the bilinears with the index sets {A1,...,Ar} = {0} {0,4}: in particular of DeltaV1644^0 = dirac1644^T Cm1644 gamma1644^0 dirac1644, the component of the vector pair field along the hidden space dimension x0
+[PASS] ALL    (exact) every check above passed
+```
+
+The classification of the pair states (`data/pair_classification.txt`; for an $SU(2)$
+multiplet of spin $j$ the program prints $j(j+1)$, so that 0, 0.75 and 2 denote a
+singlet, a doublet and a triplet):
+
+```text
+7+1 one particle at rest (8 states): [J(J+1)=0.75, A(A+1)=0, B(B+1)=0.75, C_SO(7)=5.25 : 4 states] [J(J+1)=0.75, A(A+1)=0.75, B(B+1)=0, C_SO(7)=5.25 : 4 states] 
+7+1 two particles, s wave (28 states): [J(J+1)=0, A(A+1)=0, B(B+1)=2, C_SO(7)=10 : 3 states] [J(J+1)=0, A(A+1)=0.75, B(B+1)=0.75, C_SO(7)=6 : 4 states] [J(J+1)=0, A(A+1)=2, B(B+1)=0, C_SO(7)=10 : 3 states] [J(J+1)=2, A(A+1)=0, B(B+1)=0, C_SO(7)=6 : 3 states] [J(J+1)=2, A(A+1)=0, B(B+1)=0, C_SO(7)=10 : 3 states] [J(J+1)=2, A(A+1)=0.75, B(B+1)=0.75, C_SO(7)=10 : 12 states] 
+4+4 (fields independent of x5,x6,x7) one particle at rest (8 states): [A(A+1)=0, B(B+1)=0.75, T(T+1)=0.75, J(J+1)=0.75, W=1 : 4 states] [A(A+1)=0.75, B(B+1)=0, T(T+1)=0.75, J(J+1)=0.75, W=-1 : 4 states] 
+4+4 two particles, s wave (28 states): [A(A+1)=0, B(B+1)=0, T(T+1)=2, J(J+1)=0, WW=1 : 6 states] [A(A+1)=0, B(B+1)=2, T(T+1)=0, J(J+1)=2, WW=1 : 3 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=0, J(J+1)=0, WW=-1 : 1 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=0, J(J+1)=2, WW=-1 : 3 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=2, J(J+1)=0, WW=-1 : 3 states] [A(A+1)=0.75, B(B+1)=0.75, T(T+1)=2, J(J+1)=2, WW=-1 : 9 states] [A(A+1)=2, B(B+1)=0, T(T+1)=0, J(J+1)=2, WW=1 : 3 states] 
+4+4: bilinears dirac1644^T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 whose two-particle content lies entirely in the SO(4)-singlet pairs: index sets {A1,...,Ar} = {5} {0,1,2,3,5} {4,5} {0,1,2,3,4,5} {6} {0,1,2,3,6} {4,6} {0,1,2,3,4,6} {7} {0,1,2,3,7} {4,7} {0,1,2,3,4,7}
+4+4: bilinears dirac1644^T Cm1644 gamma1644[A1]...gamma1644[Ar] dirac1644 whose two-particle content is the unique pair state with ordinary spin 0 and extra-time isospin 0: index sets {A1,...,Ar} = {0} {0,4}
+```
+
+## A.2 The independent Python script
+
+The following is the file `data/matrix_checks_independent.txt`, written by
+`code/scripts/verify_matrices_independent.py`. All arithmetic is exact (integers,
+rational numbers, Gaussian integers).
+
+```text
+PROJECT spacetimes: INDEPENDENT checks (pure Python, exact arithmetic) of the two sets of real 16x16 Dirac matrices
+36 of 36 checks passed
+
+[PASS] I44-F   the Python matrices gamma1644[0..7], omega1644, PL1644, PR1644, Cm1644, Cp1644, sigma88, tau1644[0..7], taubar1644[0..7] equal those in data/gamma1644.txt (written by the Rust program), entry by entry
+[PASS] I71-F   the Python matrices gamma1671[0..7], omega1671, 2 PL1671, 2 PR1671, Cp1671, Cm1671, tau1671[0..7] equal those in data/gamma1671.txt, entry by entry
+[PASS] I44-N   gamma1644[0..7], omega1644, PL1644, PR1644 and eta1644 equal the matrices printed by Mathematica in 4+4.nb (cells 314, 136, 163, 165, 13)
+[PASS] I71-N   Gamma17[0..7], rebuilt from the definitions of 7+1.nb, equal the matrices printed by Mathematica in 7+1.nb (cell 204); gamma1671[4] = Gamma17[0], gamma1671[0] = -Gamma17[4], gamma1671[j] = -Gamma17[j] (j = 1,2,3,5,6,7)
+[PASS] I44-R   every entry of gamma1644[A] is -1, 0 or +1 (the matrices are real), and every matrix has exactly one non-zero entry in each row and column
+[PASS] I44-C   gamma1644[A].gamma1644[B] + gamma1644[B].gamma1644[A] = 2 eta1644^(AB) 1 for all 64 pairs, eta1644 = diag[1, 1, 1, 1, -1, -1, -1, -1]
+[PASS] I44-G   Gram matrix of the 256 ordered products of the gamma1644[A] under <X, Y> = trace(transpose(X).Y) equals 16 times the unit matrix: the products are orthogonal, hence linearly independent, hence a basis of all real 16x16 matrices (METHOD differs from the Rust check C3, which uses a rank)
+[PASS] I44-A   of the 256 basis products exactly one anticommutes with all eight gamma1644[A]: the product of all eight (index set [(0, 1, 2, 3, 4, 5, 6, 7)]); exactly one commutes with all eight: the unit matrix.  Because X.gamma1644[A] +- gamma1644[A].X maps different basis products to different basis products, a general real matrix X anticommutes (commutes) with all eight only if it is a multiple of that product (of the unit matrix)
+[PASS] I44-L1  [gamma1644[A], gamma1644[B]] = 4 Sigma1644^(AB) with Sigma1644^(AB) = (1/2) gamma1644[A].gamma1644[B] (A != B), and [Sigma1644^(AB), gamma1644[C]] = eta1644^(BC) gamma1644[A] - eta1644^(AC) gamma1644[B] for all 512 index triples
+[PASS] I44-L2  [Sigma1644^(AB), Sigma1644^(CD)] = eta1644^(BC) Sigma1644^(AD) - eta1644^(AC) Sigma1644^(BD) - eta1644^(BD) Sigma1644^(AC) + eta1644^(AD) Sigma1644^(BC) for all A < B, C < D (784 cases)
+[PASS] I44-K   4+4: the scaled commutators close under commutation; the Killing form, computed from the adjoint representation, is diagonal with B(Sigma1644^(AB), Sigma1644^(AB)) = -12 eta1644^(AA) eta1644^(BB): 16 positive (non-compact) and 12 negative (compact) directions, the signature of so(4,4)
+[PASS] I71-R   every entry of gamma1671[A] is -1, 0 or +1 (the matrices are real), and every matrix has exactly one non-zero entry in each row and column
+[PASS] I71-C   gamma1671[A].gamma1671[B] + gamma1671[B].gamma1671[A] = 2 eta1671^(AB) 1 for all 64 pairs, eta1671 = diag[-1, -1, -1, -1, 1, -1, -1, -1]
+[PASS] I71-G   Gram matrix of the 256 ordered products of the gamma1671[A] under <X, Y> = trace(transpose(X).Y) equals 16 times the unit matrix: the products are orthogonal, hence linearly independent, hence a basis of all real 16x16 matrices (METHOD differs from the Rust check C3, which uses a rank)
+[PASS] I71-A   of the 256 basis products exactly one anticommutes with all eight gamma1671[A]: the product of all eight (index set [(0, 1, 2, 3, 4, 5, 6, 7)]); exactly one commutes with all eight: the unit matrix.  Because X.gamma1671[A] +- gamma1671[A].X maps different basis products to different basis products, a general real matrix X anticommutes (commutes) with all eight only if it is a multiple of that product (of the unit matrix)
+[PASS] I71-L1  [gamma1671[A], gamma1671[B]] = 4 Sigma1671^(AB) with Sigma1671^(AB) = (1/2) gamma1671[A].gamma1671[B] (A != B), and [Sigma1671^(AB), gamma1671[C]] = eta1671^(BC) gamma1671[A] - eta1671^(AC) gamma1671[B] for all 512 index triples
+[PASS] I71-L2  [Sigma1671^(AB), Sigma1671^(CD)] = eta1671^(BC) Sigma1671^(AD) - eta1671^(AC) Sigma1671^(BD) - eta1671^(BD) Sigma1671^(AC) + eta1671^(AD) Sigma1671^(BC) for all A < B, C < D (784 cases)
+[PASS] I71-K   7+1: the scaled commutators close under commutation; the Killing form is diagonal with B(Sigma1671^(AB), Sigma1671^(AB)) = -12 eta1671^(AA) eta1671^(BB): 7 positive (non-compact) and 21 negative (compact) directions, the signature of so(7,1), NOT of so(4,4)
+[PASS] I44-V   omega1644 = diag(-1_8, +1_8), omega1644.omega1644 = 1; PL1644 = diag(1_8, 0), PR1644 = diag(0, 1_8); PL1644 + PR1644 = 1, PL1644.PL1644 = PL1644, PR1644.PR1644 = PR1644, PL1644.PR1644 = 0; gamma1644[A].PL1644 = PR1644.gamma1644[A]
+[PASS] I44-S   Cm1644 = diag(-sigma88, sigma88) and Cp1644 = diag(sigma88, sigma88) are symmetric with square 1; Cm1644.gamma1644[A].Cm1644 = -transpose(gamma1644[A]), Cp1644.gamma1644[A].Cp1644 = +transpose(gamma1644[A])
+[PASS] I71-V   omega1671 = [[0, -1], [1, 0]], omega1671.omega1671 = -1; chi1671 = i omega1671 is Hermitian with square 1 and anticommutes with every gamma1671[A]; (2 PL1671).(2 PL1671) = 2 (2 PL1671), (2 PL1671).(2 PR1671) = 0, gamma1671[A].PL1671 = PR1671.gamma1671[A]
+[PASS] I71-U   with s = 1 - i Gamma17[0]: s.s^dagger = 2 and s.chi1671 = -omega1644.s, so Uc1671 = s/sqrt(2) is unitary and maps PL1671 to PR1644 and PR1671 to PL1644
+[PASS] I71-S   Cp1671 = gamma1671[4] and Cm1671 = gamma1671[4].omega1671 = diag(1_8, -1_8) are symmetric; Cp1671.gamma1671[A] = +transpose(gamma1671[A]).Cp1671, Cm1671.gamma1671[A] = -transpose(gamma1671[A]).Cm1671
+[PASS] I-D1    (gamma1644^A k_A)^2 = eta1644^(AB) k_A k_B and (gamma1671^A k_A)^2 = eta1671^(AB) k_A k_B for 25 random integer vectors k: both Dirac operators square to the wave operator of their spacetime
+[PASS] I44-D2  gamma1644[A] = [[0, taubar1644[A]], [tau1644[A], 0]] and tau1644[A].taubar1644[B] + tau1644[B].taubar1644[A] = 2 eta1644^(AB) 1_8: the equation (gamma1644^A d_A - m1644) dirac1644 = 0 is the pair taubar1644^A d_A psiR1644 = m1644 psiL1644, tau1644^A d_A psiL1644 = m1644 psiR1644
+[PASS] I44-D3  4+4: K1644.K1644 = -(m1644^2 + |k|^2 - |kappa|^2) 1 and K1644 + K1644^dagger = 2 i kappa_t gamma1644^4 gamma1644^t for 25 random integer (m1644, k, kappa): the x4-evolution is unitary exactly when the field is independent of x5, x6, x7
+[PASS] I44-D4  W1644 = i Cm1644.gamma1644[4] is Hermitian, W1644.W1644 = 1, trace W1644 = 0: the conserved density dirac1644^dagger W1644 dirac1644 of the Spin(4,4)-invariant current is indefinite
+[PASS] I71-D2  tau1671[4] = 1_8; for the seven space indices tau1671[j] is antisymmetric with tau1671[i].tau1671[j] + tau1671[j].tau1671[i] = -2 delta_ij; gamma1671[4] = [[0, 1], [1, 0]], gamma1671[j] = diag(-tau1671[j], tau1671[j]); alpha1671^j = gamma1671[4].gamma1671[j] = [[0, tau1671[j]], [-tau1671[j], 0]] is symmetric
+[PASS] I71-D3  7+1: h1671(p) = p^j alpha1671^j + m1671 beta1671 satisfies h1671.h1671 = (|p|^2 + m1671^2) 1, and in the chiral basis EL1671^dagger.h1671.EL1671 = -i p^j tau1671^j, ER1671^dagger.h1671.ER1671 = +i p^j tau1671^j, EL1671^dagger.h1671.ER1671 = ER1671^dagger.h1671.EL1671 = m1671 (10 random integer cases): (i d_4 + tau1671^j d_j) phiL1671 = m1671 phiR1671, (i d_4 - tau1671^j d_j) phiR1671 = m1671 phiL1671
+[PASS] I-P1    symmetry (+1 symmetric, -1 antisymmetric) of C.gamma[A1]...gamma[Ar] by rank r = 0..8: [1, -1, -1, 1, 1, -1, -1, 1, 1] for Cm1644 and for Cm1671, [1, 1, -1, -1, 1, 1, -1, -1, 1] for Cp1644 and for Cp1671; in particular the rank-0 and rank-8 (Lorentz-scalar) matrices are symmetric, so the scalar pair bilinears of one anticommuting field vanish
+[PASS] I71-P2  7+1, two identical particles at rest in an s wave: the antisymmetric pair matrices invariant under all 21 rotation generators of SO(7) form a space of dimension 0 (no rotation-singlet pair); those invariant under the ordinary rotations (x1 x2 x3) form a space of dimension 10 (ten pairs of ordinary spin 0)
+[PASS] I44-P2  4+4 (fields independent of x5 x6 x7), two identical particles at rest in an s wave: pairs invariant under the rotations of the four space dimensions: 6; under the ordinary rotations: 10; under the ordinary rotations AND the rotations of the extra times: 1; under the rotations of the four space dimensions AND of the extra times: 0
+[PASS] I44-P3  4+4: the two-particle content of the bilinear DeltaV1644^0 = dirac1644^T Cm1644 gamma1644[0] dirac1644 is a non-zero antisymmetric pair matrix that is invariant under the ordinary rotations and under the rotations of the extra times: it is the unique pair of I44-P2 with ordinary spin 0 and extra-time spin 0
+[PASS] I71-P3  7+1: the two-particle content of DeltaV1671^j = dirac1671^T Cm1671 gamma1671[j] dirac1671 (particles at rest) is -tau1671[j] for the seven space indices, and 0 for the time index 4; the hidden-axis component DeltaV1671^0 has the pair matrix -tau1671[0], one of the ten pairs of ordinary spin 0
+[PASS] I71-P4  7+1: the antisymmetric pair matrices invariant under the ordinary rotations (x1 x2 x3) AND under the rotations of x5 x6 x7 form a space of dimension 1, spanned by tau1671[0]: exactly one s-wave pair is a singlet of both, the hidden-axis pair, as in 4+4 (I44-P2, I44-P3)
+[PASS] I-P5    in both signatures the bilinear DeltaV^0 = dirac^T Cm gamma[0] dirac is invariant under the 21 generators Sigma^(AB) with A, B in 1..7 (the Lorentz group of the seven coordinates other than x0, which contains the Lorentz group of x1 x2 x3 x4), and is changed by each of the 7 generators Sigma^(0B)
+```
+
+# Appendix B. The 8×8 blocks
+
+**$\sigma_{88}$ and the matrices $\tau_{1644}^A$, $\bar\tau_{1644}^A$ of 4+4** (4×4
+blocks are separated by rules; $\tau_{1644}^0=\bar\tau_{1644}^0=1_8$):
+
+$$
+\sigma_{88} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\hline
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{1} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{2} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{3} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{4} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{5} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{6} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1644}^{7} = \left(\begin{array}{rrrr|rrrr}
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{1} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{2} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{3} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{4} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{5} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{6} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\bar\tau_{1644}^{7} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1
+\end{array}\right)
+$$
+
+**The matrices $\tau_{1671}^A$ of 7+1** ($\tau_{1671}^4=1_8$):
+
+$$
+\tau_{1671}^{0} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1671}^{1} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1671}^{2} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1671}^{3} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+-1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1671}^{5} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1671}^{6} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\hline
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+$$
+\tau_{1671}^{7} = \left(\begin{array}{rrrr|rrrr}
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & -1 \\[-1.8pt]
+\hline
+\phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot \\[-1.8pt]
+\phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}1 & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot & \phantom{-}\cdot
+\end{array}\right)
+$$
+
+# Appendix C. Files
+
+| File | Content |
+|:-----|:--------|
+| `tools/nb2txt.py` | converts a Mathematica notebook to readable text, cell by cell (no Mathematica needed) |
+| `tools/extract_nb_matrices.py` | extracts the matrices printed in notebook output cells |
+| `data/notebook_matrices_4+4.txt`, `data/notebook_matrices_7+1.txt` | the matrices as printed by Mathematica |
+| `code/spacetimes-rs/src/gamma.rs` | construction of all matrices from the notebooks' definitions |
+| `code/spacetimes-rs/src/verify.rs` | checks R, C, L, G, N, B, V, P, S, K |
+| `code/spacetimes-rs/src/dirac.rs` | checks D (the two Dirac equations) |
+| `code/spacetimes-rs/src/pairs.rs` | checks Q (fermion pairs) |
+| `code/spacetimes-rs/src/imat.rs`, `fmat.rs` | exact integer / Gaussian-integer matrices; double-precision matrices |
+| `code/scripts/verify_matrices_independent.py` | independent re-computation in Python (checks I) |
+| `data/gamma1644.txt`, `data/gamma1671.txt` | the project's matrices as plain integers |
+| `data/matrix_checks.txt`, `data/matrix_checks.csv` | the result of every check of the Rust program |
+| `data/matrix_checks_independent.txt` | the result of every check of the Python script |
+| `data/pair_classification.csv`, `data/pair_classification.txt` | the pair states by multiplet |
+| `provenance/generated/matrices.md` | the matrix displays inserted into this document |
+| `docs_src/dirac matrices.src.md` | the source of this document |

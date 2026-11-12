@@ -7,7 +7,7 @@
 //! transcendental functions and are verified to a stated tolerance.
 
 use crate::fmat::{FMat, Rng};
-use crate::gamma::{clifford_basis, pi71, rank_of, Gammas, ETA17_NB, ETA44, ETA71};
+use crate::gamma::{clifford_basis, swap04, rank_of, Gammas, ETA17_NB, ETA1644, ETA1671};
 use crate::imat::{rank, GMat, IMat};
 
 /// One verified statement.
@@ -78,6 +78,8 @@ fn m_ab(g: &[IMat], a: usize, b: usize) -> IMat {
 pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mut Report) {
     let id16 = IMat::identity(16);
     let p = |s: &str| format!("{}-{}", tag, s);
+    // tag of the PROJECT symbols in the statements: 1644 (4+4) or 1671 (7+1)
+    let t = format!("16{}", tag);
 
     // ---- R: reality -----------------------------------------------------------
     rep.add(&p("R1"), "exact", &format!("every entry of {}[A], A = 0..7, is one of the integers -1, 0, +1; hence the eight matrices are real", name),
@@ -96,8 +98,8 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
             ok &= g[a].anti(&g[b]) == id16.scale(want);
         }
     }
-    rep.add(&p("C1"), "exact", &format!("{0}[A].{0}[B] + {0}[B].{0}[A] = 2 eta^(AB) 1 for all 64 pairs (A, B), with eta = diag{1:?}", name, eta), ok);
-    rep.add(&p("C2"), "exact", &format!("transpose({0}[A]) = eta^(AA) {0}[A]: matrices with square +1 are symmetric, matrices with square -1 are antisymmetric; hence transpose({0}[A]) = inverse({0}[A])", name),
+    rep.add(&p("C1"), "exact", &format!("{0}[A].{0}[B] + {0}[B].{0}[A] = 2 eta{t}^(AB) 1 for all 64 pairs (A, B), with eta{t} = diag{1:?}", name, eta), ok);
+    rep.add(&p("C2"), "exact", &format!("transpose({0}[A]) = eta{t}^(AA) {0}[A]: matrices with square +1 are symmetric, matrices with square -1 are antisymmetric; hence transpose({0}[A]) = inverse({0}[A])", name),
         (0..8).all(|a| g[a].transpose() == g[a].scale(eta[a]) && g[a].mul(&g[a].transpose()) == id16));
     let basis = clifford_basis(g);
     let rows: Vec<Vec<i64>> = basis.iter().map(|(_, m)| m.flatten()).collect();
@@ -117,11 +119,11 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
             }
         }
     }
-    rep.add(&p("L1"), "exact", &format!("Sigma^(AB) := (1/4)[{0}[A], {0}[B]] equals (1/2) {0}[A].{0}[B] for A != B, and Sigma^(AB) = -Sigma^(BA)", name), ok);
+    rep.add(&p("L1"), "exact", &format!("Sigma{t}^(AB) := (1/4)[{0}[A], {0}[B]] equals (1/2) {0}[A].{0}[B] for A != B, and Sigma{t}^(AB) = -Sigma{t}^(BA)", name), ok);
     let pairs: Vec<(usize, usize)> = (0..8).flat_map(|a| ((a + 1)..8).map(move |b| (a, b))).collect();
     let gens: Vec<IMat> = pairs.iter().map(|&(a, b)| g[a].mul(&g[b])).collect(); // N^{AB} = 2 Sigma^{AB}
     let rows: Vec<Vec<i64>> = gens.iter().map(|m| m.flatten()).collect();
-    rep.add(&p("L2"), "exact", "the 28 matrices Sigma^(AB), A < B, are linearly independent", rank(&rows) == 28);
+    rep.add(&p("L2"), "exact", &format!("the 28 matrices Sigma{t}^(AB), A < B, are linearly independent"), rank(&rows) == 28);
     let mut ok = true;
     for a in 0..8 {
         for b in 0..8 {
@@ -139,7 +141,7 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
             }
         }
     }
-    rep.add(&p("L3"), "exact", &format!("[Sigma^(AB), {0}[C]] = eta^(BC) {0}[A] - eta^(AC) {0}[B] for all A, B, C: the Sigma^(AB) rotate the eight matrices as the components of a vector", name), ok);
+    rep.add(&p("L3"), "exact", &format!("[Sigma{t}^(AB), {0}[C]] = eta{t}^(BC) {0}[A] - eta{t}^(AC) {0}[B] for all A, B, C: the Sigma{t}^(AB) rotate the eight matrices as the components of a vector", name), ok);
     let mut ok = true;
     for a in 0..8 {
         for b in 0..8 {
@@ -165,7 +167,7 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
             }
         }
     }
-    rep.add(&p("L4"), "exact", "[Sigma^(AB), Sigma^(CD)] = eta^(BC) Sigma^(AD) - eta^(AC) Sigma^(BD) - eta^(BD) Sigma^(AC) + eta^(AD) Sigma^(BC) for all 4096 index combinations: the commutation relations of the Lie algebra so(p,q) of the metric eta", ok);
+    rep.add(&p("L4"), "exact", &format!("[Sigma{t}^(AB), Sigma{t}^(CD)] = eta{t}^(BC) Sigma{t}^(AD) - eta{t}^(AC) Sigma{t}^(BD) - eta{t}^(BD) Sigma{t}^(AC) + eta{t}^(AD) Sigma{t}^(BC) for all 4096 index combinations: the commutation relations of the Lie algebra so(p,q) of the metric eta{t}"), ok);
 
     // Killing form from the structure constants, computed from the matrices alone.
     // With N_I = 2 Sigma_I:  f_IJ^K = tr([N_I, N_J] N_K) / (2 tr(N_K N_K)).
@@ -209,7 +211,7 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
     let (pp, qq) = (nspace, 8 - nspace);
     let want_noncompact = pp * qq;
     let want_compact = pp * (pp - 1) / 2 + qq * (qq - 1) / 2;
-    rep.add(&p("L5"), "exact", &format!("the structure constants are integers and the Killing form is diagonal in the basis Sigma^(AB): B(Sigma^(AB), Sigma^(AB)) = -12 eta^(AA) eta^(BB); it has {} positive and {} negative eigenvalues (no zero eigenvalue: the algebra is semisimple)", npos, nneg),
+    rep.add(&p("L5"), "exact", &format!("the structure constants are integers and the Killing form is diagonal in the basis Sigma{t}^(AB): B(Sigma{t}^(AB), Sigma{t}^(AB)) = -12 eta{t}^(AA) eta{t}^(BB); it has {} positive and {} negative eigenvalues (no zero eigenvalue: the algebra is semisimple)", npos, nneg),
         integral && diag_ok && expect_ok && npos + nneg == 28 && npos == want_noncompact && nneg == want_compact);
     let nsym = gens.iter().filter(|m| m.is_symmetric()).count();
     let nanti = gens.iter().filter(|m| m.is_antisymmetric()).count();
@@ -227,7 +229,7 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
             ok &= if a == b { r == g[b].neg() } else { r == g[b] };
         }
     }
-    rep.add(&p("G1"), "exact", &format!("each {0}[A] is invertible with inverse eta^(AA) {0}[A], and -{0}[A].{0}[B].inverse({0}[A]) = {0}[B] for B != A, = -{0}[A] for B = A: {0}[A] acts on the vector index as the reflection that reverses the axis xA", name), ok);
+    rep.add(&p("G1"), "exact", &format!("each {0}[A] is invertible with inverse eta{t}^(AA) {0}[A], and -{0}[A].{0}[B].inverse({0}[A]) = {0}[B] for B != A, = -{0}[A] for B = A: {0}[A] acts on the vector index as the reflection that reverses the axis xA", name), ok);
 
     // numerical: exp(theta Sigma^{AB}) in closed form, and its action on the vector index
     let gf: Vec<FMat> = g.iter().map(FMat::from_imat).collect();
@@ -243,7 +245,7 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
         let closed = FMat::identity(16).scale(c).add(&gf[a].mul(&gf[b]).scale(sn));
         worst_closed = worst_closed.max(s.sub(&closed).max_abs());
     }
-    rep.add(&p("G2"), "numerical", &format!("exp(theta Sigma^(AB)) = cos(theta/2) 1 + sin(theta/2) {0}[A].{0}[B] when ({0}[A].{0}[B])^2 = -1 (rotation), and = cosh(theta/2) 1 + sinh(theta/2) {0}[A].{0}[B] when ({0}[A].{0}[B])^2 = +1 (boost), for the 28 planes and random theta (largest deviation {1:.1e})", name, worst_closed),
+    rep.add(&p("G2"), "numerical", &format!("exp(theta Sigma{t}^(AB)) = cos(theta/2) 1 + sin(theta/2) {0}[A].{0}[B] when ({0}[A].{0}[B])^2 = -1 (rotation), and = cosh(theta/2) 1 + sinh(theta/2) {0}[A].{0}[B] when ({0}[A].{0}[B])^2 = +1 (boost), for the 28 planes and random theta (largest deviation {1:.1e})", name, worst_closed),
         worst_closed < 1e-12);
     let mut worst_res = 0.0f64;
     let mut worst_orth = 0.0f64;
@@ -279,7 +281,7 @@ pub fn verify_common(tag: &str, name: &str, g: &[IMat], eta: &[i64; 8], rep: &mu
         // here we verify it directly by Gaussian elimination.
         worst_det = worst_det.max((det(&lam) - 1.0).abs());
     }
-    rep.add(&p("G3"), "numerical", &format!("for 20 random elements S = exp(sum omega_AB Sigma^(AB)):  S.{0}[C].inverse(S) = sum_D Lambda^C_D {0}[D] with a real 8x8 matrix Lambda that preserves eta (Lambda.eta.transpose(Lambda) = eta) and has determinant +1 (largest deviations {1:.1e}, {2:.1e}, {3:.1e})", name, worst_res, worst_orth, worst_det),
+    rep.add(&p("G3"), "numerical", &format!("for 20 random elements S = exp(sum_(A<B) theta_AB Sigma{t}^(AB)) (theta_AB random real numbers):  S.{0}[C].inverse(S) = sum_D Lambda^C_D {0}[D] with a real 8x8 matrix Lambda that preserves eta{t} (Lambda.eta{t}.transpose(Lambda) = eta{t}) and has determinant +1 (largest deviations {1:.1e}, {2:.1e}, {3:.1e})", name, worst_res, worst_orth, worst_det),
         worst_res < 1e-10 && worst_orth < 1e-10 && worst_det < 1e-10);
 }
 
@@ -317,7 +319,7 @@ pub fn det(m: &FMat) -> f64 {
 
 /// Checks that are specific to the 4+4 matrices of `4+4.nb`.
 pub fn verify_44(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
-    let g = &gm.g44;
+    let g = &gm.gamma1644;
     let id16 = IMat::identity(16);
     let id8 = IMat::identity(8);
     let z8 = IMat::zeros(8, 8);
@@ -329,66 +331,66 @@ pub fn verify_44(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
         t16_nb.len() == 8 && (0..8).all(|a| *t16_nb[a] == g[a]));
     let get = |cell: usize| nb.iter().find(|x| x.0 == cell).map(|x| x.2.clone());
     rep.add("44-N2", "exact", "the rebuilt volume element equals T16[8] printed in 4+4.nb (cell 136, Out[99])", get(136) == Some(gm.t16_8.clone()));
-    rep.add("44-N3", "exact", "the metric printed in 4+4.nb (cell 13, Out[9]) is eta4488 = diag(1,1,1,1,-1,-1,-1,-1)", get(13) == Some(IMat::diag(&ETA44)));
+    rep.add("44-N3", "exact", "the metric printed in 4+4.nb (cell 13, Out[9]) is eta4488 = diag(1,1,1,1,-1,-1,-1,-1) (PROJECT name: eta1644)", get(13) == Some(IMat::diag(&ETA1644)));
 
     // ---- definitions of the 8x8 blocks (checks made in 4+4.nb, repeated) ------------
     let (tau, tb, sg) = (&gm.tau, &gm.taubar, &gm.sigma);
-    rep.add("44-B1", "exact", "sigma = tau[1].tau[2].tau[3] = tau[4].tau[5].tau[6].tau[7], sigma.sigma = 1, and tau[1].tau[2]...tau[7] = 1 (4+4.nb Out[72], Out[89], Out[87])",
-        *sg == IMat::product(&[&tau[1], &tau[2], &tau[3]]) && *sg == IMat::product(&[&tau[4], &tau[5], &tau[6], &tau[7]]) && sg.mul(sg) == id8
+    rep.add("44-B1", "exact", "the 8x8 matrix sigma (= sigma88) of 4+4.nb, PROJECT name sigma88: sigma88 = tau[1].tau[2].tau[3] = tau[4].tau[5].tau[6].tau[7], sigma88.sigma88 = 1, tau[1].tau[2]...tau[7] = 1, and tau[7] = diag(-1_4, +1_4) (4+4.nb Out[72], Out[89], Out[87], Out[63])",
+        tau[7] == IMat::diag(&[-1, -1, -1, -1, 1, 1, 1, 1]) && *sg == IMat::product(&[&tau[1], &tau[2], &tau[3]]) && *sg == IMat::product(&[&tau[4], &tau[5], &tau[6], &tau[7]]) && sg.mul(sg) == id8
             && IMat::product(&[&tau[1], &tau[2], &tau[3], &tau[4], &tau[5], &tau[6], &tau[7]]) == id8);
     let mut ok = true;
     for a in 0..8 {
         for b in 0..8 {
-            let want = if a == b { 2 * ETA44[a] } else { 0 };
+            let want = if a == b { 2 * ETA1644[a] } else { 0 };
             ok &= tau[a].mul(&tb[b]).add(&tau[b].mul(&tb[a])) == id8.scale(want);
             ok &= tb[a].mul(&tau[b]).add(&tb[b].mul(&tau[a])) == id8.scale(want);
         }
     }
-    rep.add("44-B2", "exact", "tau[A].taubar[B] + tau[B].taubar[A] = 2 eta44^(AB) 1 and taubar[A].tau[B] + taubar[B].tau[A] = 2 eta44^(AB) 1 (8x8), A, B = 0..7 (4+4.nb Out[77])", ok);
-    rep.add("44-B3", "exact", "sigma.taubar[A] = transpose(sigma.tau[A]) for A = 0..7 (4+4.nb Out[76])",
+    rep.add("44-B2", "exact", "tau[A].taubar[B] + tau[B].taubar[A] = 2 eta1644^(AB) 1 and taubar[A].tau[B] + taubar[B].tau[A] = 2 eta1644^(AB) 1 (8x8), A, B = 0..7 (4+4.nb Out[77])", ok);
+    rep.add("44-B3", "exact", "sigma88.taubar[A] = transpose(sigma88.tau[A]) for A = 0..7 (4+4.nb Out[76])",
         (0..8).all(|a| sg.mul(&tb[a]) == sg.mul(&tau[a]).transpose()));
-    rep.add("44-B4", "exact", "T16[A] = [[0, taubar[A]], [tau[A], 0]] in 8x8 blocks, with tau[0] = taubar[0] = 1",
+    rep.add("44-B4", "exact", "T16[A] = [[0, taubar[A]], [tau[A], 0]] in 8x8 blocks, with tau[0] = taubar[0] = 1.  PROJECT names of these objects of 4+4.nb: gamma1644[A] := T16[A], tau1644[A] := tau[A], taubar1644[A] := taubar[A]",
         (0..8).all(|a| g[a] == IMat::block2(&z8, &tb[a], &tau[a], &z8)) && tau[0] == id8 && tb[0] == id8);
 
     // ---- V: volume element and chirality -----------------------------------------------
     let om = &gm.t16_8;
-    rep.add("44-V1", "exact", "omega44 := gamma44[0]...gamma44[7] (= T16[8]) = diag(-1_8, +1_8): real, diagonal, symmetric, with square +1",
+    rep.add("44-V1", "exact", "omega1644 := gamma1644[0]...gamma1644[7] (= T16[8]) = diag(-1_8, +1_8): real, diagonal, symmetric, with square +1",
         *om == IMat::block2(&id8.neg(), &z8, &z8, &id8) && om.mul(om) == id16);
-    rep.add("44-V2", "exact", "omega44 anticommutes with every gamma44[A] and commutes with every Sigma^(AB)",
+    rep.add("44-V2", "exact", "omega1644 anticommutes with every gamma1644[A] and commutes with every Sigma1644^(AB)",
         (0..8).all(|a| om.anti(&g[a]).is_zero()) && (0..8).all(|a| (0..8).all(|b| om.comm(&g[a].mul(&g[b])).is_zero())));
-    // projectors: 2 P_L = 1 - omega, 2 P_R = 1 + omega  must have even entries
+    // projectors: 2 PL1644 = 1 - omega1644, 2 PR1644 = 1 + omega1644  must have even entries
     let two_pl = id16.sub(om);
     let two_pr = id16.add(om);
     let even = two_pl.a.iter().chain(two_pr.a.iter()).all(|x| x % 2 == 0);
     let pl = IMat { n: 16, m: 16, a: two_pl.a.iter().map(|x| x / 2).collect() };
     let pr = IMat { n: 16, m: 16, a: two_pr.a.iter().map(|x| x / 2).collect() };
-    rep.add("44-P1", "exact", "P_L := (1 - omega44)/2 = diag(1_8, 0_8) and P_R := (1 + omega44)/2 = diag(0_8, 1_8) are real matrices with integer entries",
+    rep.add("44-P1", "exact", "PL1644 := (1 - omega1644)/2 = diag(1_8, 0_8) and PR1644 := (1 + omega1644)/2 = diag(0_8, 1_8) are real matrices with integer entries",
         even && pl == IMat::block2(&id8, &z8, &z8, &z8) && pr == IMat::block2(&z8, &z8, &z8, &id8));
-    rep.add("44-P2", "exact", "P_L + P_R = 1, P_L.P_L = P_L, P_R.P_R = P_R, P_L.P_R = P_R.P_L = 0, trace P_L = trace P_R = 8 (4+4.nb Out[114])",
+    rep.add("44-P2", "exact", "PL1644 + PR1644 = 1, PL1644.PL1644 = PL1644, PR1644.PR1644 = PR1644, PL1644.PR1644 = PR1644.PL1644 = 0, trace PL1644 = trace PR1644 = 8 (4+4.nb Out[114])",
         pl.add(&pr) == id16 && pl.mul(&pl) == pl && pr.mul(&pr) == pr && pl.mul(&pr) == z16 && pr.mul(&pl) == z16 && pl.trace() == 8 && pr.trace() == 8);
-    rep.add("44-P3", "exact", "the rebuilt projectors equal P_L and P_R printed in 4+4.nb (cells 163 and 165, Out[112] and Out[113])",
+    rep.add("44-P3", "exact", "the rebuilt projectors PL1644 and PR1644 equal the matrices P_L and P_R printed in 4+4.nb (cells 163 and 165, Out[112] and Out[113])",
         get(163) == Some(pl.clone()) && get(165) == Some(pr.clone()));
-    rep.add("44-P4", "exact", "gamma44[A].P_L = P_R.gamma44[A] and gamma44[A].P_R = P_L.gamma44[A]: every Dirac matrix maps left-handed spinors to right-handed ones and conversely",
+    rep.add("44-P4", "exact", "gamma1644[A].PL1644 = PR1644.gamma1644[A] and gamma1644[A].PR1644 = PL1644.gamma1644[A]: every Dirac matrix maps left-handed spinors to right-handed ones and conversely",
         (0..8).all(|a| g[a].mul(&pl) == pr.mul(&g[a]) && g[a].mul(&pr) == pl.mul(&g[a])));
-    rep.add("44-P5", "exact", "P_L and P_R commute with every Sigma^(AB): chirality is invariant under Spin(4,4)",
+    rep.add("44-P5", "exact", "PL1644 and PR1644 commute with every Sigma1644^(AB): chirality is invariant under Spin(4,4)",
         (0..8).all(|a| (0..8).all(|b| pl.comm(&g[a].mul(&g[b])).is_zero())));
 
     // ---- other important 16x16 matrices of 4+4.nb ------------------------------------
-    rep.add("44-S1", "exact", "sigma16 := T16[0].T16[1].T16[2].T16[3] = diag(-sigma, sigma), symmetric, sigma16.sigma16 = 1 (4+4.nb Out[106])",
+    rep.add("44-S1", "exact", "Cm1644 := gamma1644[0].gamma1644[1].gamma1644[2].gamma1644[3] (the matrix sigma16 of 4+4.nb) = diag(-sigma88, sigma88), symmetric, Cm1644.Cm1644 = 1 (4+4.nb Out[106])",
         gm.sigma16 == IMat::block2(&gm.sigma.neg(), &z8, &z8, &gm.sigma) && gm.sigma16.is_symmetric() && gm.sigma16.mul(&gm.sigma16) == id16);
-    rep.add("44-S2", "exact", "S44 := T16[4].T16[5].T16[6].T16[7] = diag(sigma, sigma), symmetric, S44.S44 = 1, and omega44 = sigma16.S44",
+    rep.add("44-S2", "exact", "Cp1644 := gamma1644[4].gamma1644[5].gamma1644[6].gamma1644[7] (the matrix S44 of 7+1.nb) = diag(sigma88, sigma88), symmetric, Cp1644.Cp1644 = 1, and omega1644 = Cm1644.Cp1644",
         gm.s44 == IMat::block2(&gm.sigma, &z8, &z8, &gm.sigma) && gm.s44.is_symmetric() && gm.s44.mul(&gm.s44) == id16 && gm.sigma16.mul(&gm.s44) == *om);
-    rep.add("44-S3", "exact", "sigma16.gamma44[A].sigma16 = -transpose(gamma44[A]) and S44.gamma44[A].S44 = +transpose(gamma44[A]) for A = 0..7",
+    rep.add("44-S3", "exact", "Cm1644.gamma1644[A].Cm1644 = -transpose(gamma1644[A]) and Cp1644.gamma1644[A].Cp1644 = +transpose(gamma1644[A]) for A = 0..7",
         (0..8).all(|a| gm.sigma16.mul(&g[a]).mul(&gm.sigma16) == g[a].transpose().neg() && gm.s44.mul(&g[a]).mul(&gm.s44) == g[a].transpose()));
-    rep.add("44-S4", "exact", "sigma16.gamma44[A] is antisymmetric for A = 0..7 (4+4.nb Out[105]) and S44.gamma44[A] is symmetric",
+    rep.add("44-S4", "exact", "Cm1644.gamma1644[A] is antisymmetric for A = 0..7 (4+4.nb Out[105]) and Cp1644.gamma1644[A] is symmetric",
         (0..8).all(|a| gm.sigma16.mul(&g[a]).is_antisymmetric() && gm.s44.mul(&g[a]).is_symmetric()));
-    rep.add("44-S5", "exact", "J := gamma44[4] (the matrix JT4 = T16[4] of 4+4.nb) is a complex structure: J.J = -1, and transpose(J).sigma16.J = sigma16",
+    rep.add("44-S5", "exact", "gamma1644[4] (the matrix JT4 = T16[4] of 4+4.nb) is a complex structure: gamma1644[4].gamma1644[4] = -1, and transpose(gamma1644[4]).Cm1644.gamma1644[4] = Cm1644",
         g[4].mul(&g[4]) == id16.neg() && g[4].transpose().mul(&gm.sigma16).mul(&g[4]) == gm.sigma16);
 }
 
 /// Checks that are specific to the 7+1 matrices of `7+1.nb` and to their PROJECT relabelling.
 pub fn verify_71(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
-    let g = &gm.g71;
+    let g = &gm.gamma1671;
     let gnb = &gm.gamma17;
     let id16 = IMat::identity(16);
     let id8 = IMat::identity(8);
@@ -398,8 +400,8 @@ pub fn verify_71(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
     let nbm: Vec<&IMat> = nb.iter().filter(|x| x.0 == 204).map(|x| &x.2).collect();
     rep.add("71-N1", "exact", "the eight matrices rebuilt from the definitions equal, entry by entry, the eight matrices Gamma17[0..7] printed by Mathematica in 7+1.nb (cell 204, Out[178])",
         nbm.len() == 8 && (0..8).all(|a| *nbm[a] == gnb[a]));
-    rep.add("71-N2", "exact", "PROJECT matrices: gamma71[A] = Gamma17up[pi(A)] with pi = (0 4) and Gamma17up[A] = eta17^(AA) Gamma17[A] (7+1.nb section 5.3); explicitly gamma71[4] = Gamma17[0] (time-like), gamma71[0] = -Gamma17[4], gamma71[j] = -Gamma17[j] for j = 1, 2, 3, 5, 6, 7",
-        (0..8).all(|a| g[a] == gm.gamma17up[pi71(a)]) && g[4] == gnb[0] && g[0] == gnb[4].neg() && [1usize, 2, 3, 5, 6, 7].iter().all(|&j| g[j] == gnb[j].neg()));
+    rep.add("71-N2", "exact", "PROJECT matrices: gamma1671[A] = Gamma17up[swap04(A)] with swap04 = (0 4) and Gamma17up[A] = eta17^(AA) Gamma17[A] (7+1.nb section 5.3); explicitly gamma1671[4] = Gamma17[0] (time-like), gamma1671[0] = -Gamma17[4], gamma1671[j] = -Gamma17[j] for j = 1, 2, 3, 5, 6, 7.  (gamma1671 is NOT the complex set Gamma71 of 7+1.nb section 4.3, and eta1671 is NOT the matrix eta71 of 7+1.nb)",
+        (0..8).all(|a| g[a] == gm.gamma17up[swap04(a)]) && g[4] == gnb[0] && g[0] == gnb[4].neg() && [1usize, 2, 3, 5, 6, 7].iter().all(|&j| g[j] == gnb[j].neg()));
     let mut ok = true;
     for a in 0..8 {
         for b in 0..8 {
@@ -422,12 +424,12 @@ pub fn verify_71(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
 
     // ---- V: volume element; no real chirality -----------------------------------------
     let refs: Vec<&IMat> = g.iter().collect();
-    let om = IMat::product(&refs); // omega71 = gamma71[0] ... gamma71[7]
-    rep.add("71-V1", "exact", "omega71 := gamma71[0]...gamma71[7] = Gamma17[8] = [[0, -1], [1, 0]] in 8x8 blocks (the omega17 of 7+1.nb: the seven sign changes of Gamma17up and the odd permutation pi compensate): real, antisymmetric, with square -1",
+    let om = IMat::product(&refs); // omega1671 = gamma1671[0] ... gamma1671[7]
+    rep.add("71-V1", "exact", "omega1671 := gamma1671[0]...gamma1671[7] = Gamma17[8] = [[0, -1], [1, 0]] in 8x8 blocks (the omega17 of 7+1.nb: the seven sign changes of Gamma17up and the odd permutation swap04 compensate): real, antisymmetric, with square -1",
         om == gm.gamma17_8 && om == IMat::block2(&z8, &id8.neg(), &id8, &z8) && om.is_antisymmetric() && om.mul(&om) == id16.neg());
-    rep.add("71-V2", "exact", "omega71 anticommutes with every gamma71[A] and commutes with every Sigma^(AB)",
+    rep.add("71-V2", "exact", "omega1671 anticommutes with every gamma1671[A] and commutes with every Sigma1671^(AB)",
         (0..8).all(|a| om.anti(&g[a]).is_zero()) && (0..8).all(|a| (0..8).all(|b| om.comm(&g[a].mul(&g[b])).is_zero())));
-    // every real matrix that anticommutes with all eight gammas is a multiple of omega71:
+    // every real matrix that anticommutes with all eight gammas is a multiple of omega1671:
     // solve X g^A + g^A X = 0 as a linear system for the 256 entries of X
     let mut sys: Vec<Vec<i64>> = Vec::new();
     for a in 0..8 {
@@ -443,52 +445,53 @@ pub fn verify_71(gm: &Gammas, nb: &[(usize, usize, IMat)], rep: &mut Report) {
             }
         }
     }
-    rep.add("71-V3", "exact", "the linear system X.gamma71[A] + gamma71[A].X = 0 (A = 0..7) for a real 16x16 matrix X has rank 255, and omega71 solves it (71-V2): the real matrices that anticommute with all eight gamma71[A] are exactly the multiples of omega71; since omega71.omega71 = -1, no real matrix with square +1 anticommutes with all of them: there is NO real chirality matrix in 7+1",
+    rep.add("71-V3", "exact", "the linear system X.gamma1671[A] + gamma1671[A].X = 0 (A = 0..7) for a real 16x16 matrix X has rank 255, and omega1671 solves it (71-V2): the real matrices that anticommute with all eight gamma1671[A] are exactly the multiples of omega1671; since omega1671.omega1671 = -1, no real matrix with square +1 anticommutes with all of them: there is NO real chirality matrix in 7+1",
         rank(&sys) == 255 && (0..8).all(|a| om.anti(&g[a]).is_zero()));
 
     // ---- P: complex chirality and projectors --------------------------------------------
-    // chi71 := i omega71 = i Gamma17[8]  (= chi17 of 7+1.nb);  2 P_L = 1 - chi71, 2 P_R = 1 + chi71
+    // chi1671 := i omega1671 = i Gamma17[8]  (= chi17 of 7+1.nb);  2 PL1671 = 1 - chi1671, 2 PR1671 = 1 + chi1671
     let chi = GMat::i_times(&om);
     let one = GMat::from_real(&id16);
     let two_pl = one.sub(&chi);
     let two_pr = one.add(&chi);
-    rep.add("71-P1", "exact", "chi71 := i omega71 = i Gamma17[8] (= chi17 of 7+1.nb) is Hermitian, chi71.chi71 = 1, anticommutes with every gamma71[A]",
+    rep.add("71-P1", "exact", "chi1671 := i omega1671 = i Gamma17[8] (= chi17 of 7+1.nb) is Hermitian, chi1671.chi1671 = 1, anticommutes with every gamma1671[A]",
         chi == GMat::i_times(&gm.gamma17_8) && chi.dagger() == chi && chi.mul(&chi) == one
             && (0..8).all(|a| { let ga = GMat::from_real(&g[a]); chi.mul(&ga).add(&ga.mul(&chi)).is_zero() }));
-    rep.add("71-P2", "exact", "P_L := (1 - chi71)/2 and P_R := (1 + chi71)/2: P_L + P_R = 1, P_L.P_L = P_L, P_R.P_R = P_R, P_L.P_R = 0, Hermitian, trace 8 each; they are complex (not real) matrices",
+    rep.add("71-P2", "exact", "PL1671 := (1 - chi1671)/2 and PR1671 := (1 + chi1671)/2: PL1671 + PR1671 = 1, PL1671.PL1671 = PL1671, PR1671.PR1671 = PR1671, PL1671.PR1671 = 0, Hermitian, trace 8 each; they are complex (not real) matrices",
         two_pl.add(&two_pr) == one.scale(2) && two_pl.mul(&two_pl) == two_pl.scale(2) && two_pr.mul(&two_pr) == two_pr.scale(2)
             && two_pl.mul(&two_pr).is_zero() && two_pl.dagger() == two_pl && two_pr.dagger() == two_pr
             && two_pl.re.trace() == 16 && two_pr.re.trace() == 16 && two_pl.im.trace() == 0 && !two_pl.is_real() && !two_pr.is_real());
-    rep.add("71-P3", "exact", "gamma71[A].P_L = P_R.gamma71[A] for A = 0..7, and P_L, P_R commute with every Sigma^(AB)",
+    rep.add("71-P3", "exact", "gamma1671[A].PL1671 = PR1671.gamma1671[A] for A = 0..7, and PL1671, PR1671 commute with every Sigma1671^(AB)",
         (0..8).all(|a| { let ga = GMat::from_real(&g[a]); ga.mul(&two_pl) == two_pr.mul(&ga) })
             && (0..8).all(|a| (0..8).all(|b| { let s = GMat::from_real(&g[a].mul(&g[b])); s.mul(&two_pl) == two_pl.mul(&s) })));
-    // block form of the projectors: chi71 = [[0, -i], [i, 0]], 2 P_L = [[1, i], [-i, 1]], 2 P_R = [[1, -i], [i, 1]]
-    rep.add("71-P4", "exact", "in 8x8 blocks chi71 = [[0, -i], [i, 0]], 2 P_L = [[1, i], [-i, 1]] and 2 P_R = [[1, -i], [i, 1]]; these are chi17, PL17 and PR17 of 7+1.nb (sections 4.6 and 7.10)",
+    // block form of the projectors: chi1671 = [[0, -i], [i, 0]], 2 PL1671 = [[1, i], [-i, 1]], 2 PR1671 = [[1, -i], [i, 1]]
+    rep.add("71-P4", "exact", "in 8x8 blocks chi1671 = [[0, -i], [i, 0]], 2 PL1671 = [[1, i], [-i, 1]] and 2 PR1671 = [[1, -i], [i, 1]]; these are chi17, PL17 and PR17 of 7+1.nb (sections 4.6 and 7.10)",
         chi.re.is_zero() && chi.im == IMat::block2(&z8, &id8.neg(), &id8, &z8)
             && two_pl.re == id16 && two_pl.im == IMat::block2(&z8, &id8, &id8.neg(), &z8) && two_pr.im == IMat::block2(&z8, &id8.neg(), &id8, &z8));
 
     // relation to the real projectors of 4+4.nb.  7+1.nb (section 4.3) maps the real matrices to the
     // complex set Gamma71 = S.(i Gamma17).S^(-1) with the unitary S = (1 - i Gamma17[0])/sqrt(2); then
-    // S.Gamma17[8].S^(-1) = Gamma71[8] and, with the notebook's chi71 := -i Gamma71[8] = T16[8],
+    // S.Gamma17[8].S^(-1) = Gamma71[8] and, with the notebook's chi1671 := -i Gamma71[8] = T16[8],
     // S.chi17.S^(-1) = S.(i Gamma17[8]).S^(-1) = -T16[8].  Checked as  s.chi = -T16[8].s  with s = 1 - i Gamma17[0].
     let smat = GMat { re: id16.clone(), im: gnb[0].neg() };
     let t8 = GMat::from_real(&gm.t16_8);
-    rep.add("71-P5", "exact", "with s := 1 - i Gamma17[0] (s.s^dagger = 2, so S = s/sqrt(2) is unitary): s.chi71 = -T16[8].s, i.e. S.chi71.inverse(S) = -omega44.  Hence S.P_L(71).inverse(S) = P_R(44) and S.P_R(71).inverse(S) = P_L(44): the complex chiral projectors of 7+1 are unitarily equivalent to the real projectors of 4+4.nb, with the names L and R exchanged (7+1.nb uses chi17 = +i Gamma17[8] for the real matrices but chi71 = -i Gamma71[8] for the complex ones)",
+    rep.add("71-P5", "exact", "with s := 1 - i Gamma17[0] (s.s^dagger = 2, so Uc1671 := s/sqrt(2) is unitary): s.chi1671 = -T16[8].s, i.e. Uc1671.chi1671.inverse(Uc1671) = -omega1644.  Hence Uc1671.PL1671.inverse(Uc1671) = PR1644 and Uc1671.PR1671.inverse(Uc1671) = PL1644: the complex chiral projectors of 7+1 are unitarily equivalent to the real projectors of 4+4.nb, with the names L and R exchanged.  (7+1.nb defines chi17 = +i Gamma17[8] for its real matrices and chi71 = -i Gamma71[8] for its complex matrices Gamma71; the PROJECT matrix chi1671 equals chi17, NOT chi71)",
         smat.mul(&smat.dagger()) == one.scale(2) && smat.mul(&chi) == t8.mul(&smat).scale(-1));
 
     // ---- adjoint, charge conjugation ------------------------------------------------------
-    rep.add("71-S1", "exact", "Dirac adjoint: transpose(gamma71[A]) = gamma71[4].gamma71[A].gamma71[4] for A = 0..7 (gamma71[4] is the time-like matrix; it is symmetric and squares to +1)",
+    rep.add("71-S1", "exact", "Dirac adjoint: transpose(gamma1671[A]) = gamma1671[4].gamma1671[A].gamma1671[4] for A = 0..7 (gamma1671[4] is the time-like matrix; it is symmetric and squares to +1)",
         g[4].is_symmetric() && g[4].mul(&g[4]) == id16 && (0..8).all(|a| g[a].transpose() == g[4].mul(&g[a]).mul(&g[4])));
 }
 
-/// Transposition symmetry of the 256 matrices C.Gamma^K for the two candidate
-/// "charge conjugation" matrices C of a set of real Dirac matrices.
+/// Transposition symmetry of the 256 matrices C.g[A1]...g[Ar] (A1 < ... < Ar,
+/// r = 0..8) for the two candidate "charge conjugation" matrices C of a set g of
+/// real Dirac matrices.
 ///
-/// A bilinear psi^T (C Gamma^K) psi of ONE anticommuting field vanishes
-/// identically when C Gamma^K is symmetric.  The function returns, for each rank
-/// r = 0..8, the sign s(r) = +1 (all C Gamma^K of that rank symmetric) or -1
-/// (all antisymmetric), for C = c_minus and for C = c_plus, and reports whether
-/// the sign is uniform within every rank.
+/// A bilinear psi^T (C g[A1]...g[Ar]) psi of ONE anticommuting field psi vanishes
+/// identically when the matrix C g[A1]...g[Ar] is symmetric.  The function returns,
+/// for each rank r = 0..8, the sign s(r) = +1 (all matrices of that rank symmetric)
+/// or -1 (all antisymmetric), for C = c_minus and for C = c_plus, and reports
+/// whether the sign is uniform within every rank.
 pub fn pair_symmetry_table(g: &[IMat], c_minus: &IMat, c_plus: &IMat) -> (Vec<i64>, Vec<i64>, bool) {
     let basis = clifford_basis(g);
     let mut sm = vec![0i64; 9];
@@ -511,27 +514,46 @@ pub fn pair_symmetry_table(g: &[IMat], c_minus: &IMat, c_plus: &IMat) -> (Vec<i6
 /// Checks on the bilinear forms that decide which fermion pairs can exist.
 pub fn verify_pairs(gm: &Gammas, rep: &mut Report) -> ((Vec<i64>, Vec<i64>), (Vec<i64>, Vec<i64>)) {
     let binom = [1usize, 8, 28, 56, 70, 56, 28, 8, 1];
-    // 4+4:  C_- = sigma16 (C g C^-1 = -g^T),  C_+ = S44 (C g C^-1 = +g^T)
-    let (sm44, sp44, u44) = pair_symmetry_table(&gm.g44, &gm.sigma16, &gm.s44);
+    // 4+4:  Cm1644 = sigma16 of 4+4.nb (C g C^-1 = -g^T),  Cp1644 = S44 of 7+1.nb (C g C^-1 = +g^T)
+    let (sm44, sp44, u44) = pair_symmetry_table(&gm.gamma1644, &gm.sigma16, &gm.s44);
     let n_anti = |s: &Vec<i64>| (0..9).filter(|&r| s[r] < 0).map(|r| binom[r]).sum::<usize>();
-    rep.add("44-K1", "exact", &format!("4+4: for C_- := sigma16 the matrices C_-.Gamma^K of rank r = 0..8 are all symmetric (+) or all antisymmetric (-): signs {:?}; for C_+ := S44: signs {:?}; in both cases exactly 120 of the 256 matrices are antisymmetric", sm44, sp44),
+    rep.add("44-K1", "exact", &format!("4+4: the matrices Cm1644.gamma1644[A1]...gamma1644[Ar] (A1 < ... < Ar) of rank r = 0..8 are all symmetric (+) or all antisymmetric (-): signs {:?}; the matrices Cp1644.gamma1644[A1]...gamma1644[Ar]: signs {:?}; in both cases exactly 120 of the 256 matrices are antisymmetric", sm44, sp44),
         u44 && n_anti(&sm44) == 120 && n_anti(&sp44) == 120);
-    rep.add("44-K2", "exact", "4+4: the two Lorentz-scalar pair matrices C_- (rank 0) and C_-.omega44 (rank 8; equal to C_+ up to sign) are SYMMETRIC: the Lorentz-scalar bilinear psi^T C psi of one anticommuting 16-component field vanishes identically",
+    rep.add("44-K2", "exact", "4+4: the two Lorentz-scalar pair matrices Cm1644 (rank 0) and Cm1644.omega1644 (rank 8; equal to Cp1644 up to sign) are SYMMETRIC: the Lorentz-scalar bilinears dirac1644^T Cm1644 dirac1644 and dirac1644^T Cp1644 dirac1644 of one anticommuting 16-component field vanish identically",
         sm44[0] == 1 && sm44[8] == 1 && sp44[0] == 1 && sp44[8] == 1);
-    // 7+1:  C_+ = gamma71[4] (the time-like matrix),  C_- = gamma71[4].omega71
-    let g = &gm.g71;
+    // 7+1:  Cp1671 = gamma1671[4] (the time-like matrix),  Cm1671 = gamma1671[4].omega1671
+    let g = &gm.gamma1671;
     let refs: Vec<&IMat> = g.iter().collect();
     let om = IMat::product(&refs);
     let c_plus = g[4].clone();
     let c_minus = g[4].mul(&om);
     let ok_c = (0..8).all(|a| c_plus.mul(&g[a]) == g[a].transpose().mul(&c_plus) && c_minus.mul(&g[a]) == g[a].transpose().neg().mul(&c_minus));
     let (sm71, sp71, u71) = pair_symmetry_table(g, &c_minus, &c_plus);
-    rep.add("71-K0", "exact", "7+1: C_+ := gamma71[4] satisfies C_+.gamma71[A] = +transpose(gamma71[A]).C_+ and C_- := gamma71[4].omega71 satisfies C_-.gamma71[A] = -transpose(gamma71[A]).C_-; both are symmetric matrices",
+    rep.add("71-K0", "exact", "7+1: Cp1671 := gamma1671[4] satisfies Cp1671.gamma1671[A] = +transpose(gamma1671[A]).Cp1671 and Cm1671 := gamma1671[4].omega1671 satisfies Cm1671.gamma1671[A] = -transpose(gamma1671[A]).Cm1671; both are symmetric matrices",
         ok_c && c_plus.is_symmetric() && c_minus.is_symmetric());
-    rep.add("71-K1", "exact", &format!("7+1: signs of C_-.Gamma^K by rank: {:?}; of C_+.Gamma^K: {:?}; exactly 120 of the 256 matrices are antisymmetric in both cases", sm71, sp71),
+    rep.add("71-K1", "exact", &format!("7+1: signs (+ symmetric, - antisymmetric) of the matrices Cm1671.gamma1671[A1]...gamma1671[Ar] (A1 < ... < Ar) by rank r = 0..8: {:?}; of Cp1671.gamma1671[A1]...gamma1671[Ar]: {:?}; exactly 120 of the 256 matrices are antisymmetric in both cases", sm71, sp71),
         u71 && n_anti(&sm71) == 120 && n_anti(&sp71) == 120);
-    rep.add("71-K2", "exact", "7+1: the two Lorentz-scalar pair matrices (rank 0 and rank 8) are SYMMETRIC: the Lorentz-scalar bilinear psi^T C psi of one anticommuting 16-component field vanishes identically",
+    rep.add("71-K2", "exact", "7+1: the two Lorentz-scalar pair matrices Cm1671 (rank 0) and Cm1671.omega1671 = -Cp1671 (rank 8) are SYMMETRIC: the Lorentz-scalar bilinears dirac1671^T Cm1671 dirac1671 and dirac1671^T Cp1671 dirac1671 of one anticommuting 16-component field vanish identically",
         sm71[0] == 1 && sm71[8] == 1 && sp71[0] == 1 && sp71[8] == 1);
+
+    // ---- K3: the hidden-axis component of the vector pair field is a scalar of the
+    //      Lorentz group of the seven coordinates other than x0 ---------------------------
+    // dirac -> S dirac changes DeltaV^0 = dirac^T (C_minus g[0]) dirac by
+    //   dirac^T ( transpose(N) C g[0] + C g[0] N ) dirac  for the generator N = g[A] g[B] = 2 Sigma^(AB).
+    let k3 = |g: &[IMat], cm: &IMat| -> (bool, bool) {
+        let x = cm.mul(&g[0]);
+        let var = |a: usize, b: usize| { let n = g[a].mul(&g[b]); n.transpose().mul(&x).add(&x.mul(&n)) };
+        let inv = (1..8).all(|a| (1..8).all(|b| a == b || var(a, b).is_zero()));
+        // a rotation or boost that involves the axis x0 turns DeltaV^0 into DeltaV^B: the variation is not zero
+        let moved = (1..8).all(|b| !var(0, b).is_zero());
+        (inv, moved)
+    };
+    let (inv44, mov44) = k3(&gm.gamma1644, &gm.sigma16);
+    rep.add("44-K3", "exact", "4+4: for all A != B in 1..7, transpose(Sigma1644^(AB)).Cm1644.gamma1644[0] + Cm1644.gamma1644[0].Sigma1644^(AB) = 0, while the same expression with A = 0 is not zero: the bilinear DeltaV1644^0 = dirac1644^T Cm1644 gamma1644^0 dirac1644 is INVARIANT under the 21 generators of the pseudo-rotations of the seven coordinates x1..x7 (the group Spin(3,4), which contains the Lorentz group of x1 x2 x3 x4), and only the 7 generators that involve the hidden axis x0 change it",
+        inv44 && mov44);
+    let (inv71, mov71) = k3(g, &c_minus);
+    rep.add("71-K3", "exact", "7+1: for all A != B in 1..7, transpose(Sigma1671^(AB)).Cm1671.gamma1671[0] + Cm1671.gamma1671[0].Sigma1671^(AB) = 0, while the same expression with A = 0 is not zero: the bilinear DeltaV1671^0 = dirac1671^T Cm1671 gamma1671^0 dirac1671 is INVARIANT under the 21 generators of the Lorentz group of the seven coordinates x1..x7 (the group Spin(6,1), which contains the Lorentz group of x1 x2 x3 x4), and only the 7 generators that involve the hidden axis x0 change it",
+        inv71 && mov71);
     ((sm44, sp44), (sm71, sp71))
 }
 
@@ -542,9 +564,9 @@ pub fn run_all(nb44: &str, nb71: &str) -> (Gammas, Report) {
     let mut rep = Report::new();
     let m44 = read_notebook_matrices(nb44);
     let m71 = read_notebook_matrices(nb71);
-    verify_common("44", "gamma44", &gm.g44, &ETA44, &mut rep);
+    verify_common("44", "gamma1644", &gm.gamma1644, &ETA1644, &mut rep);
     verify_44(&gm, &m44, &mut rep);
-    verify_common("71", "gamma71", &gm.g71, &ETA71, &mut rep);
+    verify_common("71", "gamma1671", &gm.gamma1671, &ETA1671, &mut rep);
     verify_71(&gm, &m71, &mut rep);
     verify_pairs(&gm, &mut rep);
     (gm, rep)

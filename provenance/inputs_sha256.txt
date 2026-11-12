@@ -1,0 +1,26 @@
+# SHA-256 checksums of the input files of PROJECT spacetimes (the author's notebooks and papers).
+# The files themselves are not in the repository (see provenance/P0_push_status.md, Sec. 7).
+# Format: <checksum><two spaces><file name>; verify with  shasum -a 256 <file>  (macOS) or  sha256sum <file>  (Linux).
+740023233eaa0cd24ca0e2e7010094671b1d314b698114c08db94050d3e0aed5  4+4.nb
+41d252f9852f210c228f45e1ac956d2d7ef26faeb0062a5880280e1aae0effc7  7+1.nb
+5e3d97c18050178f74068925c540d6ac5ca0eaa8f9416cc53b96f6a961959b81  Bessel product.nb
+cdbb6a2c0b31ffd6a4fd951746a1e1c3ea5748afd371edc5095cea7e34cf79c0  Dirac_Einstein-Lovelock_4+4_Nash.nb
+66267b2bf43dc711c6228822948db4da8f4b26b1a74d5839c049a35c5314e842  Dirac_Nash_Identity.nb
+e749997952af0ba64e347864cab209d140cc361cd059effaadf3d68410f1f96b  Einstein-Lovelock-4+4-Nash.nb
+af47a11d9a5d9f56a46a81b0613626ed3b5b7fd13111ed21bd4d3feee763acdc  Einstein-Lovelock-7+1-Nash.nb
+a0e01b0101bcad8ee252591065b3999b0efe816b5eb306af2c4e0abd19c888cb  Einstein-Lovelock-Eternal.nb
+23bb4e0c70943e766d9b081a3a399ef29664889aad088041329ce2e065b80afb  Generalized _Kronecker_Delta_4+4.nb
+5ee5cb2a95146136ee65636a4aef174f303b6c41da130d2c57e4684f9c8ff69f  Pair_Creation_of_Universes_WaveFunctionOfUniverse-4+4-Einstein-Lovelock-Nash.nb
+d06875b70d0926bd12fbb3d24cc14f2b425be7feaa9956b581319ff54004fa97  WaveFunctionUniverse-4+4-Einstein-Lovelock-Nash.nb
+3e0ef380cc36198cbc05da72de26a4218c0a64ab0711fa179a1701c77ca0fb8b  WaveFunctionUniverse-4+4-Einstein-Lovelock.nb
+afca8dcfd94394eb3acb0ba60444968a062ba7c86bbf8a09e6037a6f87c74e9d  det-g.nb
+3bd90c1b93aa29c53e1388a4f73f6ec0645227124dbc8ee217c21fdde6d9a3f9  field_equations.nb
+8d2a2c77c7d0fa0a864e9254d465771b6164355b863f969e561eb0677cfcdc90  6dim dirac.pdf
+56e95fadec54e9b72e63f9beb0ddf6e424796622a64e7039a21b7ec98fc8fb3f  A Remarkable Representation.pdf
+8eddd3a6a63d38531d881e12be56e350cd3f14846c112b53c59f7099ee6a86f1  A new spin-half.pdf
+85a8fe5049e60b5b8a65bc531110bc371f96749360c120716b00c0daaebcc0cf  Bryant-octon-17-2-185-txt.pdf
+af0befdd8949c78ca55f3c4aac8fb4f741083df9f23415cbd48c875160df64e3  Calibrated geometries.pdf
+197d18bfe18917375b11703bbf0b2fe022d97afb41278024841cd0d0ead64d22  Identities satisfied.pdf
+27fbbfb90522fecb4f23ec77a23ea621a87b0c9a3ad5d8b29f97dff2cd18d0bc  On the structure of the split octonion algebra.pdf
+7be828aad7e05b1753f9b81fdb57f65983a8b38536b49f3bdafeaa16242fc36a  Second gravity.pdf
+a436b29fd6b0e0d8ee9819398389619f4427b5384207bd404565ea569dde36c6  Vector cross products.pdf

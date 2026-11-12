@@ -10,7 +10,8 @@
 % smaller type in long tables so that wide audit tables fit the text width;
 % inside a table a line break is allowed after an underscore of plain text
 % (pandoc writes it as \_), so that long identifiers wrap inside their column
-\AtBeginEnvironment{longtable}{\footnotesize
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
   \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
 \setlength{\LTcapwidth}{\textwidth}
 % allow line breaks after slashes and hyphens inside table cells
@@ -29,14 +30,20 @@
 % hyphen could be read as part of a file name -- but allow a line break after
 % an underscore, slash, comma, colon or equals sign, so that long paths and
 % column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
 \ExplSyntaxOn
 \tl_new:N \l__spt_code_tl
-\RenewDocumentCommand \texttt { m }
+\cs_new_protected:Npn \__spt_texttt:n #1
   {
     \tl_set:Nn \l__spt_code_tl {#1}
     \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
     \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
     \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
   }
 \ExplSyntaxOff
 % A figure is written in the Markdown source as an image paragraph followed by
@@ -57,3 +64,9 @@
 \fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
 \fancyhead[R]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}

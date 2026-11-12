@@ -47,18 +47,24 @@ pub fn latex_array<F: Fn(usize, usize) -> String>(n: usize, m: usize, block: usi
         }
         let row: Vec<String> = (0..m).map(|j| entry(i, j)).collect();
         s.push_str(&row.join(" & "));
-        s.push_str(if i + 1 < n { " \\\\\n" } else { "\n" });
+        // rows are set 1.8 pt closer than the default, so that three 16x16 matrices fit on a page
+        s.push_str(if i + 1 < n { " \\\\[-1.8pt]\n" } else { "\n" });
     }
     s.push_str("\\end{array}\\right)");
     s
 }
 
-/// LaTeX array of an integer matrix (zeros as dots).
+/// LaTeX array of an integer matrix (zeros as dots).  Every entry that has no minus
+/// sign is preceded by an invisible one (`\phantom{-}`), so that all columns of a
+/// matrix with entries 0, +1, -1 get the same width and the matrix is printed on a
+/// regular grid.
 pub fn latex_imat(m: &IMat, block: usize) -> String {
     latex_array(m.n, m.m, block, |i, j| {
         let x = m.get(i, j);
         if x == 0 {
-            "\\cdot".to_string()
+            "\\phantom{-}\\cdot".to_string()
+        } else if x > 0 {
+            format!("\\phantom{{-}}{}", x)
         } else {
             format!("{}", x)
         }
@@ -70,9 +76,10 @@ pub fn latex_gmat(m: &GMat, block: usize) -> String {
     latex_array(m.re.n, m.re.m, block, |i, j| {
         let (a, b) = (m.re.get(i, j), m.im.get(i, j));
         match (a, b) {
-            (0, 0) => "\\cdot".to_string(),
+            (0, 0) => "\\phantom{-}\\cdot".to_string(),
+            (a, 0) if a > 0 => format!("\\phantom{{-}}{}", a),
             (a, 0) => format!("{}", a),
-            (0, 1) => "i".to_string(),
+            (0, 1) => "\\phantom{-}i".to_string(),
             (0, -1) => "-i".to_string(),
             (0, b) => format!("{}i", b),
             (a, b) => format!("{}{:+}i", a, b),

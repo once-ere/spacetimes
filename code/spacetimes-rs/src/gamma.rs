@@ -9,18 +9,27 @@
 //!   Clifford generators T16O[A], and the Dirac matrices
 //!   Gamma17[0] = T16O[0],  Gamma17[i] = T16O[0].T16O[i]  (i = 1..7).
 //!
-//! PROJECT spacetimes uses the UNIQUE symbols (MASTER provenance, P1):
+//! PROJECT spacetimes uses UNIQUE symbols (MASTER provenance, P1).  The tag 1644
+//! marks the objects of the 4+4 spacetime (field dirac1644), the tag 1671 those of
+//! the 7+1 spacetime (field dirac1671):
 //!
-//! * `g44[A]`  = gamma_(44)^A = T16[A]                         (A = 0..7)
-//! * `g71[A]`  = gamma_(71)^A = Gamma17up[pi(A)],  pi = (0 4)  (A = 0..7)
+//! * `gamma1644[A]`  = T16[A] of 4+4.nb                                  (A = 0..7)
+//! * `gamma1671[A]`  = Gamma17up[swap04(A)] of 7+1.nb,  swap04 = (0 4)   (A = 0..7)
 //!
-//! Both are the CONTRAVARIANT (upper-index) matrices, the ones that stand in the
+//! WHY THESE NAMES.  The obvious short names are already taken by the author's
+//! notebooks for DIFFERENT objects, and must therefore not be used:
+//! `g44`, `g71` are the xAct metric tensors of the gravity notebooks; `eta44` is a
+//! 4x4 metric in Dirac_Nash_Identity.nb; `eta71` (= -eta17), `Gamma71` (complex
+//! matrices), `chi71`, `PL71`, `PR71` are objects of 7+1.nb that differ from the
+//! project's eta1671, gamma1671, chi1671, PL1671, PR1671.
+//!
+//! Both sets are the CONTRAVARIANT (upper-index) matrices, the ones that stand in the
 //! Dirac operator gamma^A d/dx^A.  7+1.nb prints the covariant matrices
 //! Gamma17[A] and defines Gamma17up[A] = eta17[A][A] Gamma17[A] (its section 5.3),
 //! i.e. Gamma17up[0] = Gamma17[0] and Gamma17up[i] = -Gamma17[i]; the notebook's
 //! Dirac equation is written with Gamma17up, and so is the project's.
 //!
-//! pi exchanges the indices 0 and 4, so that in BOTH signatures x4 is the
+//! swap04 exchanges the indices 0 and 4, so that in BOTH signatures x4 is the
 //! ordinary time and x0 is the hidden space-like coordinate (decision of the
 //! author, 12 November 2026).  Index convention everywhere: A = 0..7 labels the
 //! coordinate xA of the chart X = {x0, x1, ..., x7}.
@@ -95,26 +104,26 @@ pub struct Gammas {
     pub gamma17_8: IMat,
     /// Gamma17up[A] = eta17[A][A] Gamma17[A] of 7+1.nb (contravariant matrices).
     pub gamma17up: Vec<IMat>,
-    /// PROJECT matrices of the 4+4 spacetime: g44[A] = T16[A].
-    pub g44: Vec<IMat>,
-    /// PROJECT matrices of the 7+1 spacetime: g71[A] = Gamma17up[pi(A)], pi = (0 4).
-    pub g71: Vec<IMat>,
+    /// PROJECT matrices of the 4+4 spacetime: gamma1644[A] = T16[A].
+    pub gamma1644: Vec<IMat>,
+    /// PROJECT matrices of the 7+1 spacetime: gamma1671[A] = Gamma17up[swap04(A)], swap04 = (0 4).
+    pub gamma1671: Vec<IMat>,
 }
 
 /// Metric of the 4+4 spacetime in the sign convention of 4+4.nb ("space-like = +1"):
-/// eta44 = diag(+1, +1, +1, +1, -1, -1, -1, -1); x0..x3 space-like, x4..x7 time-like.
-pub const ETA44: [i64; 8] = [1, 1, 1, 1, -1, -1, -1, -1];
+/// eta1644 = diag(+1, +1, +1, +1, -1, -1, -1, -1); x0..x3 space-like, x4..x7 time-like.
+pub const ETA1644: [i64; 8] = [1, 1, 1, 1, -1, -1, -1, -1];
 
 /// Metric of the 7+1 spacetime as 7+1.nb writes it (eta17, "time-like = +1",
 /// time at index 0): diag(+1, -1, ..., -1).
 pub const ETA17_NB: [i64; 8] = [1, -1, -1, -1, -1, -1, -1, -1];
 
 /// Metric of the 7+1 spacetime in PROJECT labelling ("time-like = +1", time at
-/// index 4): eta71 = diag(-1, -1, -1, -1, +1, -1, -1, -1).
-pub const ETA71: [i64; 8] = [-1, -1, -1, -1, 1, -1, -1, -1];
+/// index 4): eta1671 = diag(-1, -1, -1, -1, +1, -1, -1, -1).
+pub const ETA1671: [i64; 8] = [-1, -1, -1, -1, 1, -1, -1, -1];
 
-/// The permutation pi = (0 4) that maps a PROJECT index to the 7+1.nb index.
-pub fn pi71(a: usize) -> usize {
+/// The permutation swap04 = (0 4) that maps a PROJECT index to the 7+1.nb index.
+pub fn swap04(a: usize) -> usize {
     match a {
         0 => 4,
         4 => 0,
@@ -194,18 +203,18 @@ impl Gammas {
         let gamma17_8 = IMat::product(&refs);
 
         // --- PROJECT matrices ------------------------------------------------------
-        let g44 = t16.clone();
+        let gamma1644 = t16.clone();
         // 7+1.nb section 5.3: Gamma17up[A] = eta17[A][A] Gamma17[A]
         let gamma17up: Vec<IMat> = (0..8).map(|a| gamma17[a].scale(ETA17_NB[a])).collect();
-        let g71: Vec<IMat> = (0..8).map(|a| gamma17up[pi71(a)].clone()).collect();
+        let gamma1671: Vec<IMat> = (0..8).map(|a| gamma17up[swap04(a)].clone()).collect();
 
-        Gammas { s4, t4, sigma, tau, taubar, t16, t16_8, sigma16, s44, tau_o, tau_obar, t16o, gamma17, gamma17_8, gamma17up, g44, g71 }
+        Gammas { s4, t4, sigma, tau, taubar, t16, t16_8, sigma16, s44, tau_o, tau_obar, t16o, gamma17, gamma17_8, gamma17up, gamma1644, gamma1671 }
     }
 }
 
 /// All 256 products gamma^{A1} gamma^{A2} ... gamma^{Ak} with A1 < A2 < ... < Ak,
-/// together with their index sets K = {A1, ..., Ak} (encoded as a bit mask:
-/// bit A is set if A belongs to K).  The empty product is the identity.
+/// together with their index sets {A1, ..., Ak} (encoded as a bit mask:
+/// bit A is set if A belongs to the index set).  The empty product is the identity.
 pub fn clifford_basis(g: &[IMat]) -> Vec<(u32, IMat)> {
     let n = g[0].n;
     let mut out = Vec::with_capacity(256);
@@ -243,17 +252,17 @@ mod tests {
         let id = IMat::identity(16);
         for a in 0..8 {
             for b in 0..8 {
-                let e44 = if a == b { 2 * ETA44[a] } else { 0 };
-                assert_eq!(g.g44[a].anti(&g.g44[b]), id.scale(e44));
-                let e71 = if a == b { 2 * ETA71[a] } else { 0 };
-                assert_eq!(g.g71[a].anti(&g.g71[b]), id.scale(e71));
+                let e44 = if a == b { 2 * ETA1644[a] } else { 0 };
+                assert_eq!(g.gamma1644[a].anti(&g.gamma1644[b]), id.scale(e44));
+                let e71 = if a == b { 2 * ETA1671[a] } else { 0 };
+                assert_eq!(g.gamma1671[a].anti(&g.gamma1671[b]), id.scale(e71));
             }
         }
     }
     #[test]
     fn basis_has_256_independent_elements() {
         let g = Gammas::build();
-        for set in [&g.g44, &g.g71] {
+        for set in [&g.gamma1644, &g.gamma1671] {
             let rows: Vec<Vec<i64>> = clifford_basis(set).iter().map(|(_, m)| m.flatten()).collect();
             assert_eq!(crate::imat::rank(&rows), 256);
         }
