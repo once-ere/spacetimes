@@ -15,6 +15,7 @@
 //! * `pairs`   which s-wave pairs of two identical particles exist (Pauli principle);
 //! * `kernel`  pairing kernels of the Vorton-Scalar exchange, channel by channel;
 //! * `gap`     the gap equation of the hidden-axis singlet superfluid;
+//! * `dimer`   bound state and scattering length of two particles in the Yukawa potential;
 //! * `cosmo`   expansion history, stepped dark radiation, recombination;
 //! * `boltzmann`, `bessel`, `spectra`  Einstein-Boltzmann solver, spherical Bessel functions, power spectra;
 //! * `forecast`  mock microwave-background data, Fisher matrices and profile fits;
@@ -28,6 +29,7 @@ pub mod bessel;
 pub mod boltzmann;
 pub mod complex;
 pub mod cosmo;
+pub mod dimer;
 pub mod dirac;
 pub mod export;
 pub mod fmat;

@@ -337,3 +337,22 @@ mod tests {
         }
     }
 }
+
+/// Linear matter power spectrum today, P(k) in Mpc^3, at the wavenumbers `ks` (1/Mpc),
+/// which may be much larger than those needed for the microwave background.  Uses the
+/// fast integration with the radiation-streaming approximation at late times, and a
+/// thermodynamic table that starts early enough for the largest wavenumber.
+/// Returns (P(k), delta_m(k)); the latter is the density contrast per unit primordial
+/// curvature perturbation.
+pub fn matter_power(p: &Params, ks: &[f64], rtol: f64) -> (Vec<f64>, Vec<f64>) {
+    let bg = Background::new(p);
+    let th = Thermo::new(&bg);
+    let k_max = ks.iter().cloned().fold(0.0, f64::max);
+    // start when k tau = 0.02 for the largest k, but not before tau = 2e-5 Mpc (z ~ 2e10)
+    let tau_min = (0.01 / k_max).clamp(1.0e-5, 1.0e-3);
+    let fast = Fast::with(&bg, &th, tau_min, 30000);
+    let last = [bg.tau0];
+    let d: Vec<f64> = par_map(ks, |&k| integrate_mode(&fast, k, &last, rtol, true).delta_m0);
+    let pk = ks.iter().zip(&d).map(|(&k, &dm)| 2.0 * std::f64::consts::PI.powi(2) / k.powi(3) * p.a_s * (k / 0.05).powf(p.n_s - 1.0) * dm * dm).collect();
+    (pk, d)
+}

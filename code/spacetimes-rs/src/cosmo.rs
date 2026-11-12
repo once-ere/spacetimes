@@ -103,6 +103,85 @@ impl Step {
     }
 }
 
+/// Dark matter that is a SUPERFLUID instead of cold collisionless particles.
+///
+/// If `Params::superfluid_dm` is set, the whole dark-matter density omega_c is carried
+/// by a barotropic fluid whose pressure is that of the superfluid ground state.  Its
+/// density perturbations propagate as first sound (the Bogoliubov-Anderson mode),
+/// with the adiabatic sound speed c_s^2 = dP/d rho.  Two limiting cases:
+///
+/// * `Degenerate { x0 }`: weak pairing (BCS regime).  The pressure is the degeneracy
+///   pressure of the fermions; pairing changes it only by terms of relative order
+///   (gap / Fermi energy)^2.  With x = k_F / m = x0 / a (k_F Fermi momentum, m fermion
+///   mass, a scale factor) the ideal Fermi gas has
+///       rho ~ chi(x) = [ x sqrt(1+x^2) (1+2x^2) - asinh x ] / 8 ,
+///       P   ~ phi(x) = [ x sqrt(1+x^2) (2x^2/3 - 1) + asinh x ] / 8 ,
+///       c_s^2 = x^2 / (3 (1 + x^2))          (= v_F^2 / 3),
+///   both in units of g m^4 / (2 pi^2).
+///
+/// * `Bose { cs0_sq }`: tightly bound bosons (pairs or larger clusters) that have
+///   condensed, with a repulsive contact interaction (BEC regime).  The condensate of
+///   a complex scalar field with quartic self-interaction has (Colpi, Shapiro and
+///   Wasserman 1986; Li, Rindler-Daller and Shapiro 2014)
+///       P = (y - 1)^2 / (18 B),   rho = (y^2 - 1) / (6 B),   y = sqrt(1 + 6 B rho),
+///       c_s^2 = (y - 1) / (3 y),   w = (y - 1) / (3 (y + 1)),
+///   which is matter-like at low density (c_s^2 = B rho, Bogoliubov sound) and
+///   radiation-like at high density.  Energy conservation gives
+///       (y - 1) sqrt(2y + 1) = const / a^3.
+///   `cs0_sq` is c_s^2 today at the mean cosmic density, in units of c^2.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum SuperfluidDm {
+    Degenerate { x0: f64 },
+    Bose { cs0_sq: f64 },
+}
+
+impl SuperfluidDm {
+    /// (rho(a) a^3 / rho(1), w, c_s^2) at scale factor a.
+    pub fn state(&self, a: f64) -> (f64, f64, f64) {
+        match *self {
+            SuperfluidDm::Degenerate { x0 } => {
+                // chi and phi; series for small x to avoid cancellation
+                let chi_phi = |x: f64| -> (f64, f64) {
+                    if x < 0.05 {
+                        let x3 = x * x * x;
+                        let x2 = x * x;
+                        (x3 * (1.0 / 3.0 + x2 * (0.1 - x2 / 56.0)), x3 * x2 * (1.0 / 15.0 - x2 / 42.0))
+                    } else {
+                        let r = (1.0 + x * x).sqrt();
+                        let ash = x.asinh();
+                        ((x * r * (1.0 + 2.0 * x * x) - ash) / 8.0, (x * r * (2.0 * x * x / 3.0 - 1.0) + ash) / 8.0)
+                    }
+                };
+                let x = x0 / a;
+                let (chi, phi) = chi_phi(x);
+                let (chi0, _) = chi_phi(x0);
+                (chi / chi0 * a * a * a, phi / chi, x * x / (3.0 * (1.0 + x * x)))
+            }
+            SuperfluidDm::Bose { cs0_sq } => {
+                // u = y - 1 solves  u sqrt(2u + 3) = K / a^3  with  K = u0 sqrt(2 u0 + 3);
+                // today c_s^2 = u0 / (3 (1 + u0))
+                let u0 = 3.0 * cs0_sq / (1.0 - 3.0 * cs0_sq);
+                let rhs = u0 * (2.0 * u0 + 3.0).sqrt() / (a * a * a);
+                // Newton iteration on f(u) = u sqrt(2u+3) - rhs, started from the asymptotic forms
+                let mut u = if rhs < 1.0 { rhs / 3f64.sqrt() } else { (rhs * rhs / 2.0).powf(1.0 / 3.0) };
+                for _ in 0..60 {
+                    let r = (2.0 * u + 3.0).sqrt();
+                    let f = u * r - rhs;
+                    let df = r + u / r;
+                    let du = f / df;
+                    u -= du;
+                    if du.abs() < 1e-15 * u.abs() {
+                        break;
+                    }
+                }
+                // rho ~ y^2 - 1 = u (u + 2)
+                let ratio = u * (u + 2.0) / (u0 * (u0 + 2.0)) * a * a * a;
+                (ratio, u / (3.0 * (u + 2.0)), u / (3.0 * (u + 1.0)))
+            }
+        }
+    }
+}
+
 /// Cosmological parameters.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Params {
@@ -120,6 +199,8 @@ pub struct Params {
     /// helium mass fraction; None = the standard-BBN value for omega_b and the radiation content
     pub y_he: Option<f64>,
     pub dark: DarkFluid,
+    /// if set, the dark matter (density omega_c) is a superfluid instead of cold particles
+    pub superfluid_dm: Option<SuperfluidDm>,
 }
 
 impl Params {
@@ -137,6 +218,7 @@ impl Params {
             t_cmb: 2.7255,
             y_he: None,
             dark: DarkFluid { n_ir: 0.0, step: None },
+            superfluid_dm: None,
         }
     }
 
@@ -301,6 +383,8 @@ pub struct Background {
     pub omega_nu: f64,
     /// dark-fluid density today (as if it were radiation), omega_d = n_ir * (7/8)(4/11)^(4/3) omega_gamma
     pub omega_d: f64,
+    /// density of cold collisionless dark matter (zero if the dark matter is a superfluid)
+    pub omega_cdm: f64,
     pub omega_lambda: f64,
     pub step: Option<StepTable>,
     /// conformal time today, Mpc
@@ -317,7 +401,10 @@ impl Background {
         let omega_d = p.dark.n_ir * neutrino_factor() * omega_gamma;
         let step = p.dark.step.as_ref().map(StepTable::new);
         let omega_lambda = p.h * p.h - p.omega_b - p.omega_c - omega_gamma - omega_nu - omega_d;
-        let mut bg = Background { p: *p, omega_gamma, omega_nu, omega_d, omega_lambda, step, tau0: 0.0, tab_lna: Vec::new(), tab_tau: Vec::new() };
+        // the code has one slot for a dark fluid: dark radiation OR superfluid dark matter
+        assert!(p.superfluid_dm.is_none() || p.dark.n_ir == 0.0, "dark radiation and superfluid dark matter cannot be combined");
+        let omega_cdm = if p.superfluid_dm.is_some() { 0.0 } else { p.omega_c };
+        let mut bg = Background { p: *p, omega_gamma, omega_nu, omega_d, omega_cdm, omega_lambda, step, tau0: 0.0, tab_lna: Vec::new(), tab_tau: Vec::new() };
         // conformal time tau(a) = Int_0^a da / (a^2 H): tabulate on a grid in ln a
         let gl = gauss_legendre(8);
         let n = 2400;
@@ -343,6 +430,11 @@ impl Background {
 
     /// Dark-fluid quantities at scale factor a: (omega_d(a) a^4, w, c_s^2).
     pub fn dark(&self, a: f64) -> (f64, f64, f64) {
+        if let Some(sf) = &self.p.superfluid_dm {
+            // superfluid dark matter: rho a^4 = omega_c a (rho a^3 / rho_0)
+            let (ratio, w, cs2) = sf.state(a);
+            return (self.p.omega_c * a * ratio, w, cs2);
+        }
         match &self.step {
             None => (self.omega_d, 1.0 / 3.0, 1.0 / 3.0),
             Some(t) => {
@@ -355,7 +447,7 @@ impl Background {
     /// Hubble rate H(a) in 1/Mpc.
     pub fn hubble(&self, a: f64) -> f64 {
         let (od, _, _) = self.dark(a);
-        let e2 = (self.omega_gamma + self.omega_nu + od) / a.powi(4) + (self.p.omega_b + self.p.omega_c) / a.powi(3) + self.omega_lambda;
+        let e2 = (self.omega_gamma + self.omega_nu + od) / a.powi(4) + (self.p.omega_b + self.omega_cdm) / a.powi(3) + self.omega_lambda;
         e2.sqrt() / HUBBLE_LENGTH
     }
 
@@ -435,6 +527,9 @@ impl Background {
     pub fn a_eq(&self) -> f64 {
         let om = self.p.omega_b + self.p.omega_c;
         let mut a = (self.omega_gamma + self.omega_nu + self.omega_d) / om;
+        if self.p.superfluid_dm.is_some() {
+            return a; // (the superfluid counts as matter here)
+        }
         for _ in 0..20 {
             let (od, _, _) = self.dark(a);
             a = (self.omega_gamma + self.omega_nu + od) / om;
@@ -959,6 +1054,38 @@ mod tests {
         }
         assert!(xe(1300.0) > 0.5 && xe(1250.0) < 0.5, "{} {}", xe(1300.0), xe(1250.0));
         assert!(xe(200.0) > 2.5e-4 && xe(200.0) < 4.5e-4, "{}", xe(200.0));
+    }
+
+    #[test]
+    fn superfluid_equations_of_state() {
+        // (1) energy conservation d(rho a^3)/d ln a = -3 w (rho a^3), by finite differences;
+        // (2) c_s^2 = dP/d rho along the expansion;  (3) the limits.
+        for sf in [SuperfluidDm::Degenerate { x0: 3e-3 }, SuperfluidDm::Bose { cs0_sq: 1e-9 }] {
+            for &a in &[1e-7f64, 1e-5, 1e-4, 1e-3, 1e-2, 0.3] {
+                let e = 1e-4;
+                let (r0, w, cs2) = sf.state(a);
+                let (rp, wp, _) = sf.state(a * (1.0 + e));
+                let (rm, wm, _) = sf.state(a * (1.0 - e));
+                let dlnr = (rp - rm) / (2.0 * e * r0);
+                assert!((dlnr + 3.0 * w).abs() < 1e-6 + 1e-5 * w, "{:?} a = {}: {} vs {}", sf, a, dlnr, -3.0 * w);
+                // rho ~ r / a^3, P = w rho
+                let rho = |r: f64, a: f64| r / (a * a * a);
+                let (rho_p, rho_m) = (rho(rp, a * (1.0 + e)), rho(rm, a * (1.0 - e)));
+                let dp = wp * rho_p - wm * rho_m;
+                let drho = rho_p - rho_m;
+                assert!((dp / drho - cs2).abs() < 1e-6 + 1e-4 * cs2, "{:?} a = {}: {} vs {}", sf, a, dp / drho, cs2);
+            }
+            let (r1, _, _) = sf.state(1.0);
+            assert!((r1 - 1.0).abs() < 1e-12);
+            // radiation-like at early times
+            let (_, w_early, c_early) = sf.state(1e-12);
+            assert!((w_early - 1.0 / 3.0).abs() < 1e-3 && (c_early - 1.0 / 3.0).abs() < 1e-3, "{} {}", w_early, c_early);
+        }
+        // today: c_s^2 = x0^2/3 (Fermi), = cs0_sq (Bose); w = x0^2/5 (Fermi), = cs0_sq/2 (Bose)
+        let (_, w, c) = SuperfluidDm::Degenerate { x0: 1e-4 }.state(1.0);
+        assert!((c / (1e-8 / 3.0) - 1.0).abs() < 1e-6 && (w / (1e-8 / 5.0) - 1.0).abs() < 1e-6);
+        let (_, w, c) = SuperfluidDm::Bose { cs0_sq: 1e-10 }.state(1.0);
+        assert!((c / 1e-10 - 1.0).abs() < 1e-8 && (w / 0.5e-10 - 1.0).abs() < 1e-8);
     }
 
     #[test]

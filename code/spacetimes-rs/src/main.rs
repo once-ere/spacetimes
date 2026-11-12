@@ -168,6 +168,19 @@ fn cmd_channels() -> std::io::Result<bool> {
           ("command", "spacetimes channels".to_string())],
         &["signature", "channel", "description", "m", "k", "theta_deg", "norm", "F_scalar", "F_pseudoscalar"], &rows)?;
     println!("\nclosed forms of the hidden-axis channel reproduced: {}", ok);
+    // quartic invariant of the Ginzburg-Landau energy for the four spin-0 vector pairs
+    let mut gl_rows = Vec::new();
+    for op in [OneParticle::new_1671(&gm), OneParticle::new_1644(&gm)] {
+        let w = spacetimes::kernel::quartic_invariant_check(&op);
+        println!("signature tag {}: Tr[(M M^dagger)^2]/8 = 2 (sum |Delta^a|^2)^2 - |eta_ab Delta^a Delta^b|^2 for the pairs along x0, x5, x6, x7; largest deviation {:.2e}", op.tag, w);
+        ok &= w < 1e-9;
+        gl_rows.push(vec![op.tag.parse::<f64>().unwrap(), w]);
+    }
+    spacetimes::io::write_csv("gl_quartic_check.csv",
+        &[("content", "check of the identities Tr[M M^dagger]/8 = sum_a |Delta^a|^2 and Tr[(M M^dagger)^2]/8 = 2 (sum_a |Delta^a|^2)^2 - |eta_ab Delta^a Delta^b|^2 for the gap matrix M of the four spin-0 vector pairs (components a = 0, 5, 6, 7), with eta_ab the metric of the spacetime restricted to these axes: (-1,-1,-1,-1) in 7+1 and (+1,-1,-1,-1) in 4+4; five complex test vectors, at rest and at |p| = m".to_string()),
+          ("signature", "1671: 7+1 spacetime; 1644: 4+4 spacetime, fields independent of x5 x6 x7".to_string()),
+          ("command", "spacetimes channels".to_string())],
+        &["signature", "largest_deviation"], &gl_rows)?;
     Ok(ok)
 }
 
@@ -248,7 +261,7 @@ fn cmd_gap() -> std::io::Result<bool> {
 /// `background`: expansion history and recombination of the fiducial model and of
 /// dark-fluid variants; prints the derived parameters.
 fn cmd_background() -> std::io::Result<bool> {
-    use spacetimes::cosmo::{Background, DarkFluid, Params, Step, Thermo};
+    use spacetimes::cosmo::{Background, DarkFluid, Params, Step, StepTable, Thermo};
     let fid = Params::fiducial();
     let variants: Vec<(&str, Params)> = vec![
         ("fiducial LambdaCDM", fid),
@@ -262,6 +275,22 @@ fn cmd_background() -> std::io::Result<bool> {
         let th = Thermo::new(&bg);
         println!("{:<70} {:>9.2} {:>8.2} {:>8.2} {:>8.2} {:>9.3} {:>9.3} {:>10.5} {:>10.5} {:>7.3} {:>7.4}", name, bg.tau0, th.z_star, th.z_rec, th.z_drag, th.rs_star, th.rs_drag, th.theta_s_100, th.theta_star_100, th.z_reio, th.y_he);
     }
+    // thermodynamics of the two stepped fluids as functions of a (1 + z_t), for the figure
+    let (sp, sw) = (StepTable::new(&Step::project(1.0e4)), StepTable::new(&Step::wess_zumino(1.0e4)));
+    let mut rows = Vec::new();
+    for i in 0..=240 {
+        let x = 10f64.powf(-3.0 + 5.0 * i as f64 / 240.0); // a (1 + z_t)
+        let a = x / (1.0 + 1.0e4);
+        let (r1, w1, c1) = sp.at(a);
+        let (r2, w2, c2) = sw.at(a);
+        rows.push(vec![x, r1, w1, c1, r2, w2, c2]);
+    }
+    spacetimes::io::write_csv("step_thermo.csv",
+        &[("content", "stepped dark fluids: energy density relative to its late-time a^-4 law, equation of state w = P/rho and adiabatic sound speed, as functions of x = a (1 + z_t)".to_string()),
+          ("models", "project: one massless boson and 16 fermionic degrees of freedom of mass m_t (r_step = 15^(1/3) = 2.466); wz: Wess-Zumino dark radiation, two massive bosonic and two massless fermionic degrees of freedom (r_step = (15/7)^(1/3) = 1.289)".to_string()),
+          ("definition", "m_t = T_d0 (1 + z_t), T_d0 = temperature of the fluid today".to_string()),
+          ("command", "spacetimes background".to_string())],
+        &["x", "ratio_project", "w_project", "cs2_project", "ratio_wz", "w_wz", "cs2_wz"], &rows)?;
     Ok(true)
 }
 
@@ -365,17 +394,22 @@ fn dr_family(id: usize, n: f64) -> spacetimes::cosmo::Params {
         3 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(2.0e4)) }, ..fid },
         4 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(5.0e4)) }, ..fid },
         5 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::wess_zumino(2.0e4)) }, ..fid },
+        // a step that is complete before the wavelengths seen in the microwave background
+        // enter the horizon, but that happens after nucleosynthesis: the radiation present
+        // during nucleosynthesis (which fixes the helium abundance) is only N / r_step
+        6 => Params { dark: DarkFluid { n_ir: n, step: Some(Step::project(1.0e6)) }, ..fid },
         _ => panic!("unknown family"),
     }
 }
 
-const DR_FAMILIES: [&str; 6] = [
+const DR_FAMILIES: [&str; 7] = [
     "0 = free-streaming extra radiation (N_ur = 3.044 + N)",
     "1 = fluid dark radiation without step",
     "2 = stepped fluid of the model (1 massless boson + 16 fermionic d.o.f., r_step = 15^(1/3)), z_t = 1e4",
     "3 = the same, z_t = 2e4",
     "4 = the same, z_t = 5e4",
     "5 = Wess-Zumino stepped fluid (r_step = (15/7)^(1/3)), z_t = 2e4",
+    "6 = stepped fluid of the model, z_t = 1e6 (step after nucleosynthesis, before the scales of the microwave background enter the horizon)",
 ];
 
 /// Row of derived numbers for a fitted model.
@@ -393,7 +427,7 @@ const DR_COLS: [&str; 18] = ["chi2", "omega_b", "omega_c", "h", "ln10A", "n_s", 
 
 /// `forecast`: fits of the dark-radiation families to mock microwave-background data.
 /// Writes data/dr_fisher.csv, data/dr_profiles.csv, data/dr_chord_check.csv,
-/// data/dr_residuals.csv and data/dr_zt_scan.csv.  Run time: about 40 minutes on two cores.
+/// data/dr_residuals.csv and data/dr_zt_scan.csv.  Run time: about one hour on two cores.
 fn cmd_forecast() -> std::io::Result<bool> {
     use spacetimes::cosmo::{DarkFluid, Params, Step};
     use spacetimes::forecast::*;
@@ -584,6 +618,281 @@ fn cmd_forecast() -> std::io::Result<bool> {
     Ok(ok)
 }
 
+/// Wavenumber (1/Mpc) at which the transfer function of thermal warm dark matter of
+/// mass `m_kev` falls to 1/2, from the fitting formula of Viel et al. (2005),
+///     T(k) = [1 + (alpha k)^(2 nu)]^(-5/nu),  nu = 1.12,
+///     alpha = 0.049 (m/keV)^-1.11 (Omega_dm/0.25)^0.11 (h/0.7)^1.22 Mpc/h.
+fn wdm_half_mode(m_kev: f64, omega_dm: f64, h: f64) -> f64 {
+    let nu: f64 = 1.12;
+    let alpha = 0.049 * m_kev.powf(-1.11) * (omega_dm / 0.25).powf(0.11) * (h / 0.7).powf(1.22); // Mpc/h
+    (2f64.powf(nu / 5.0) - 1.0).powf(1.0 / (2.0 * nu)) / alpha * h
+}
+
+/// Inverse of `wdm_half_mode`: the thermal-relic mass (keV) with the given half-mode wavenumber (1/Mpc).
+fn wdm_mass_of_half_mode(k_half: f64, omega_dm: f64, h: f64) -> f64 {
+    let nu: f64 = 1.12;
+    let kappa = (2f64.powf(nu / 5.0) - 1.0).powf(1.0 / (2.0 * nu));
+    let alpha = kappa / (k_half / h);
+    (alpha / (0.049 * (omega_dm / 0.25).powf(0.11) * (h / 0.7).powf(1.22))).powf(-1.0 / 1.11)
+}
+
+/// First wavenumber at which t2 = P/P_cdm falls below 1/4 (log-linear interpolation).
+fn half_mode(ks: &[f64], t2: &[f64]) -> f64 {
+    for i in 1..ks.len() {
+        if t2[i] < 0.25 && t2[i - 1] >= 0.25 {
+            let f = (t2[i - 1] - 0.25) / (t2[i - 1] - t2[i]);
+            return (ks[i - 1].ln() + f * (ks[i].ln() - ks[i - 1].ln())).exp();
+        }
+    }
+    f64::NAN
+}
+
+/// `superfluid`: linear growth of structure if the dark matter is the superfluid
+/// (a fluid with first sound) instead of cold particles.  Writes
+/// data/sfdm_transfer.csv, data/sfdm_summary.csv and data/sfdm_bounds.csv.
+fn cmd_superfluid() -> std::io::Result<bool> {
+    use spacetimes::cosmo::{neutrino_factor, Params, SuperfluidDm, C_LIGHT, EV, G_NEWTON, H_PLANCK, MPC};
+    use spacetimes::spectra::matter_power;
+    let t0 = std::time::Instant::now();
+    let fid = Params::fiducial();
+    let pi = std::f64::consts::PI;
+    // mean dark-matter density today
+    let h100 = 1e5 / MPC; // 100 km/s/Mpc in 1/s
+    let rho_dm = 3.0 * h100 * h100 / (8.0 * pi * G_NEWTON) * fid.omega_c; // kg/m^3
+    let rho_dm_ev = rho_dm * C_LIGHT * C_LIGHT / EV * 1e-6; // eV/cm^3
+    let hbar_c = H_PLANCK * C_LIGHT / (2.0 * pi) / EV * 100.0; // eV cm
+    let g_states = 8.0; // internal states of the particles of the 16-component field
+    // x0 = k_F/m today for fermions of mass m (keV)
+    let x0_of_mass = |m_kev: f64| -> f64 {
+        let m = 1e3 * m_kev; // eV
+        let n = rho_dm_ev / m; // 1/cm^3
+        hbar_c * (6.0 * pi * pi * n / g_states).powf(1.0 / 3.0) / m
+    };
+    // Thomas-Fermi radius of a condensate with sound speed c_s0 (units of c) at the mean density:
+    // R_TF = pi sqrt(a/(G m_B^3)) = pi c_s / sqrt(4 pi G rho)
+    let kpc = MPC / 1e3;
+    let r_tf_kpc = |cs0: f64| pi * cs0 * C_LIGHT / (4.0 * pi * G_NEWTON * rho_dm).sqrt() / kpc;
+    let omega_nu1 = neutrino_factor() * fid.omega_gamma();
+    let omega_dm = fid.omega_c / (fid.h * fid.h);
+
+    // wavenumbers
+    let nk = 57;
+    let ks: Vec<f64> = (0..nk).map(|i| (0.05f64.ln() + (250f64.ln() - 0.05f64.ln()) * i as f64 / (nk - 1) as f64).exp()).collect();
+    let (p_cdm, _) = matter_power(&fid, &ks, 1e-5);
+    println!("[{:>4.0} s] cold dark matter reference ({} wavenumbers up to {} /Mpc)", t0.elapsed().as_secs_f64(), nk, ks[nk - 1]);
+
+    let masses = [0.3, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.5]; // keV
+    // c_s0 / c; the last value corresponds to a Thomas-Fermi radius of 1 kpc
+    let speeds = [3.0e-12, 1.0e-11, 3.0e-11, 1.0e-10, 1.0e-9, 1.0e-8, 4.5e-8];
+    let mut cols: Vec<String> = vec!["k".into(), "k_h".into(), "P_cdm".into()];
+    let mut t2_all: Vec<Vec<f64>> = Vec::new();
+    let mut summary: Vec<Vec<f64>> = Vec::new();
+    let mut run = |fam: usize, par: f64, sf: SuperfluidDm, label: String, cols: &mut Vec<String>| -> (f64, Vec<f64>) {
+        let p = Params { superfluid_dm: Some(sf), ..fid };
+        let (pk, _) = matter_power(&p, &ks, 1e-5);
+        let t2: Vec<f64> = pk.iter().zip(&p_cdm).map(|(a, b)| a / b).collect();
+        let kh = half_mode(&ks, &t2);
+        let (_, _, cs2_0) = sf.state(1.0);
+        let cs0 = cs2_0.sqrt();
+        // the fluid at the time of nucleosynthesis (a = 1e-9): density in units of one neutrino species
+        let (ratio_bbn, w_bbn, _) = sf.state(1e-9);
+        let dn_bbn = fid.omega_c * ratio_bbn * 1e-9 / omega_nu1;
+        // scale factor at which the fluid changes from radiation-like to matter-like (w = 1/6)
+        let (mut lo, mut hi) = (1e-12f64, 1.0f64);
+        for _ in 0..80 {
+            let mid = (lo * hi).sqrt();
+            if sf.state(mid).1 > 1.0 / 6.0 { lo = mid; } else { hi = mid; }
+        }
+        let a_tr = if sf.state(1e-12).1 > 1.0 / 6.0 { (lo * hi).sqrt() } else { 0.0 };
+        println!("[{:>4.0} s] {:<34} c_s0 = {:.3e} c = {:>8.3} m/s   half-mode k = {:>7.2} /Mpc = {:>7.2} h/Mpc   (thermal relic of {:.2} keV)   dN_BBN = {:.2e}  w_BBN = {:.3}", t0.elapsed().as_secs_f64(), label, cs0, cs0 * C_LIGHT, kh, kh / fid.h, wdm_mass_of_half_mode(kh, omega_dm, fid.h), dn_bbn, w_bbn);
+        summary.push(vec![fam as f64, par, cs0, cs0 * C_LIGHT, kh, kh / fid.h, wdm_mass_of_half_mode(kh, omega_dm, fid.h), if fam == 1 { r_tf_kpc(cs0) } else { f64::NAN }, dn_bbn, a_tr]);
+        cols.push(label.replace(' ', "_"));
+        (kh, t2)
+    };
+    let mut kh_fermi = Vec::new();
+    for &m in &masses {
+        let (kh, t2) = run(0, m, SuperfluidDm::Degenerate { x0: x0_of_mass(m) }, format!("T2_fermi_m{}keV", m), &mut cols);
+        kh_fermi.push(kh);
+        t2_all.push(t2);
+    }
+    let mut kh_bose = Vec::new();
+    for &c in &speeds {
+        let (kh, t2) = run(1, c, SuperfluidDm::Bose { cs0_sq: c * c }, format!("T2_bose_cs{:.1e}", c), &mut cols);
+        kh_bose.push(kh);
+        t2_all.push(t2);
+    }
+    let rows: Vec<Vec<f64>> = (0..nk)
+        .map(|i| {
+            let mut r = vec![ks[i], ks[i] / fid.h, p_cdm[i]];
+            r.extend(t2_all.iter().map(|t| t[i]));
+            r
+        })
+        .collect();
+    let cref: Vec<&str> = cols.iter().map(|s| s.as_str()).collect();
+    spacetimes::io::write_csv("sfdm_transfer.csv",
+        &[("content", "linear matter power spectrum today if the dark matter is a superfluid, relative to cold dark matter: T2 = P/P_cdm".to_string()),
+          ("models", "fermi: degenerate Fermi gas of 8 internal states and particle mass m (weak pairing; first sound c_s = v_F/sqrt(3)); bose: condensate of bosons with repulsive contact interaction and sound speed c_s0 (in units of c) at the mean density today".to_string()),
+          ("units", "k in 1/Mpc, k_h in h/Mpc (h = 0.6736), P_cdm in Mpc^3".to_string()),
+          ("command", "spacetimes superfluid".to_string())],
+        &cref, &rows)?;
+    spacetimes::io::write_csv("sfdm_summary.csv",
+        &[("content", "half-mode wavenumber (where P/P_cdm first falls to 1/4) of superfluid dark matter".to_string()),
+          ("family", "0 = degenerate Fermi gas, parameter = particle mass in keV; 1 = Bose condensate, parameter = c_s0/c".to_string()),
+          ("columns", "cs0: sound speed today at the mean density (units of c); m_thermal_keV: mass of the thermal warm-dark-matter relic with the same half-mode (fit of Viel et al. 2005); R_TF_kpc: radius of the Thomas-Fermi core, pi c_s/sqrt(4 pi G rho) (Bose only); dN_bbn: density of the fluid at a = 1e-9 in units of one neutrino species; a_transition: scale factor where w = 1/6 (0 if the fluid is never radiation-like after a = 1e-12)".to_string()),
+          ("command", "spacetimes superfluid".to_string())],
+        &["family", "parameter", "cs0", "cs0_m_per_s", "k_half_Mpc", "k_half_h_Mpc", "m_thermal_keV", "R_TF_kpc", "dN_bbn", "a_transition"], &summary)?;
+
+    // bounds: parameter at which the half-mode equals that of the Lyman-alpha limits on
+    // thermal warm dark matter (interpolation of ln k_half against ln parameter)
+    let interp = |xs: &[f64], khs: &[f64], target: f64| -> f64 {
+        for i in 1..xs.len() {
+            let (a, b) = (khs[i - 1], khs[i]);
+            if a.is_finite() && b.is_finite() && (a - target) * (b - target) <= 0.0 {
+                let f = (target.ln() - a.ln()) / (b.ln() - a.ln());
+                return (xs[i - 1].ln() + f * (xs[i].ln() - xs[i - 1].ln())).exp();
+            }
+        }
+        f64::NAN
+    };
+    let mut bounds = Vec::new();
+    let mut ok = true;
+    for &m_wdm in &[3.5, 5.3] {
+        let kt = wdm_half_mode(m_wdm, omega_dm, fid.h);
+        let m_min = interp(&masses, &kh_fermi, kt);
+        let cs_max = interp(&speeds, &kh_bose, kt);
+        println!("thermal relic of {} keV: half-mode k = {:.1} /Mpc = {:.1} h/Mpc  ->  fermion mass > {:.2} keV (x0 < {:.3e}, v_F0 < {:.2} m/s);  condensate c_s0 < {:.3e} c = {:.3} m/s, Thomas-Fermi radius < {:.4} kpc",
+            m_wdm, kt, kt / fid.h, m_min, x0_of_mass(m_min), x0_of_mass(m_min) * C_LIGHT, cs_max, cs_max * C_LIGHT, r_tf_kpc(cs_max));
+        bounds.push(vec![m_wdm, kt, kt / fid.h, m_min, x0_of_mass(m_min), x0_of_mass(m_min) * C_LIGHT, cs_max, cs_max * C_LIGHT, r_tf_kpc(cs_max)]);
+        ok &= m_min.is_finite() && cs_max.is_finite();
+    }
+    spacetimes::io::write_csv("sfdm_bounds.csv",
+        &[("content", "limits on superfluid dark matter from the requirement that its half-mode wavenumber is not smaller than that of thermal warm dark matter at the Lyman-alpha mass limits".to_string()),
+          ("columns", "m_wdm_keV: thermal-relic mass limit used as benchmark; m_fermion_min_keV: smallest mass of the fermions (8 internal states) in the weak-pairing regime; vF0: their Fermi velocity today at the mean density; cs0_max: largest sound speed of a Bose condensate today at the mean density; R_TF_max_kpc: the corresponding largest Thomas-Fermi core radius".to_string()),
+          ("mean_dark_matter_density", format!("{:.5e} kg/m^3 = {:.5e} eV/cm^3", rho_dm, rho_dm_ev)),
+          ("command", "spacetimes superfluid".to_string())],
+        &["m_wdm_keV", "k_half_Mpc", "k_half_h_Mpc", "m_fermion_min_keV", "x0_max", "vF0_max_m_per_s", "cs0_max", "cs0_max_m_per_s", "R_TF_max_kpc"], &bounds)?;
+    println!("[{:>4.0} s] done: {}", t0.elapsed().as_secs_f64(), ok);
+    Ok(ok)
+}
+
+/// `dimer`: bound state and scattering length of two particles of the field in the
+/// attractive Yukawa potential of the radial mode.  Writes data/dimer.csv.
+fn cmd_dimer() -> std::io::Result<bool> {
+    use spacetimes::dimer::{binding, bound_states, critical_d, scattering_length};
+    let dc = critical_d();
+    println!("critical coupling: D_c = alpha m / m_s = {:.5}  (literature: 1.6798)", dc);
+    let mut rows = Vec::new();
+    let mut ds: Vec<f64> = Vec::new();
+    let mut d = 0.05;
+    while d < 1.5 {
+        ds.push(d);
+        d += 0.05;
+    }
+    for &x in &[1.5, 1.55, 1.6, 1.62, 1.64, 1.66, 1.67, 1.675, 1.685, 1.69, 1.7, 1.72, 1.75, 1.8, 1.9, 2.0, 2.2, 2.5, 3.0, 3.5, 4.0, 5.0, 6.0] {
+        ds.push(x);
+    }
+    println!("{:>7} {:>13} {:>13} {:>7}", "D", "a m_s", "m E_b/m_s^2", "states");
+    for &d in &ds {
+        let a = scattering_length(d);
+        let e = binding(d).unwrap_or(0.0);
+        let nb = bound_states(d);
+        if (d * 20.0).round() as i64 % 5 == 0 || d > 1.45 {
+            println!("{:>7.3} {:>13.5} {:>13.6} {:>7}", d, a, e, nb);
+        }
+        rows.push(vec![d, a, e, nb as f64]);
+    }
+    spacetimes::io::write_csv("dimer.csv",
+        &[("content", "two particles of mass m in the attractive Yukawa potential V = -alpha exp(-m_s r)/r (exchange of the radial mode of the Vorton-Scalar; hidden-axis singlet channel at low density): s-wave scattering length and binding energy".to_string()),
+          ("units", "D = alpha m / m_s; scattering length a in units of 1/m_s; binding energy E_b in units of m_s^2/m; 0 = no bound state".to_string()),
+          ("critical_D", format!("{:.5}", dc)),
+          ("command", "spacetimes dimer".to_string())],
+        &["D", "a_times_ms", "Eb_times_m_over_ms2", "bound_states"], &rows)?;
+    let ok = (dc - 1.6798).abs() < 2e-4;
+    println!("check (critical coupling reproduces the literature value): {}", ok);
+    Ok(ok)
+}
+
+/// `halos`: where in the universe could the particles of the model be degenerate or
+/// condensed?  Elementary estimates (closed formulas, evaluated here so that no number
+/// in the documents is computed by hand).  Writes data/dm_halo_estimates.csv and
+/// data/dm_selfinteraction.csv.
+fn cmd_halos() -> std::io::Result<bool> {
+    use spacetimes::cosmo::{C_LIGHT, EV, H_PLANCK};
+    let pi = std::f64::consts::PI;
+    let hbar = H_PLANCK / (2.0 * pi);
+    let m_sun = 1.988_47e30; // kg
+    let pc: f64 = 3.085_677_581_491_367_3e16; // m
+    let kev = 1e3 * EV / (C_LIGHT * C_LIGHT); // kg
+    let g_states = 8.0;
+    let d_c = spacetimes::dimer::critical_d();
+    // systems: (central or local dark-matter density in solar masses per pc^3, one-dimensional velocity dispersion in km/s)
+    let systems: [(&str, f64, f64); 3] = [
+        ("dwarf spheroidal galaxy, core", 0.1, 10.0),
+        ("Milky Way at the Sun", 0.0105, 156.0),
+        ("cluster of galaxies, core", 0.003, 1000.0),
+    ];
+    println!("{:<34} {:>12} {:>10} {:>16} {:>16} {:>18}", "system", "rho GeV/cm3", "sigma km/s", "m_deg (keV)", "m_B,max (eV)", "rho_deg(1.5 keV)");
+    let mut rows = Vec::new();
+    for (i, (name, rho_sun, sig_kms)) in systems.iter().enumerate() {
+        let rho = rho_sun * m_sun / pc.powi(3); // kg/m^3
+        let sig: f64 = sig_kms * 1e3; // m/s
+        let rho_gev = rho * C_LIGHT * C_LIGHT / EV * 1e-9 * 1e-6; // GeV/cm^3
+        // fermions (g internal states) are degenerate if v_F >= sigma, v_F = (hbar/m) (6 pi^2 rho/(g m))^(1/3):
+        //   m <= m_deg = [6 pi^2 hbar^3 rho / (g sigma^3)]^(1/4)
+        let m_deg = (6.0 * pi * pi * hbar.powi(3) * rho / (g_states * sig.powi(3))).powf(0.25) / kev;
+        // bosons condense if n lambda^3 >= zeta(3/2) = 2.612, lambda = h / sqrt(2 pi m k T), k T = m sigma^2:
+        //   m <= m_B,max = [rho (2 pi)^(3/2) hbar^3 / (2.612 sigma^3)]^(1/4)
+        let m_bmax = (rho * (2.0 * pi).powf(1.5) * hbar.powi(3) / (2.612 * sig.powi(3))).powf(0.25) / kev * 1e3;
+        // density at which fermions of 1.5 keV would be degenerate at this velocity dispersion
+        let m15 = 1.5 * kev;
+        let rho_deg = g_states * m15.powi(4) * sig.powi(3) / (6.0 * pi * pi * hbar.powi(3));
+        let rho_deg_sun = rho_deg / (m_sun / pc.powi(3));
+        // Fermi velocity of 1.5 keV fermions at the actual density
+        let v_f = hbar / m15 * (6.0 * pi * pi * rho / (g_states * m15)).powf(1.0 / 3.0);
+        println!("{:<34} {:>12.4} {:>10.0} {:>16.4} {:>16.3} {:>12.3e} Msun/pc3", name, rho_gev, sig_kms, m_deg, m_bmax, rho_deg_sun);
+        rows.push(vec![i as f64, *rho_sun, rho_gev, *sig_kms, m_deg, m_bmax, rho_deg_sun, rho_deg_sun / rho_sun, v_f / 1e3, v_f / sig]);
+    }
+    spacetimes::io::write_csv("dm_halo_estimates.csv",
+        &[("content", "could the particles of the model be degenerate (fermions) or Bose-condensed (bound pairs) in observed dark-matter halos?".to_string()),
+          ("systems", "0 = dwarf spheroidal galaxy, core (0.1 Msun/pc^3, 10 km/s); 1 = Milky Way at the Sun (0.0105 Msun/pc^3 = 0.4 GeV/cm^3, 156 km/s); 2 = cluster of galaxies, core (0.003 Msun/pc^3, 1000 km/s)".to_string()),
+          ("columns", "m_deg_keV: fermions with 8 internal states are degenerate (v_F >= sigma) only if lighter than this; mB_max_eV: bosons are condensed (n lambda^3 >= 2.612 at k T = m sigma^2) only if lighter than this; rho_deg_1p5keV: density (Msun/pc^3) at which fermions of 1.5 keV would be degenerate at this velocity dispersion, and its ratio to the actual density; vF_1p5keV: their Fermi velocity at the actual density (km/s) and its ratio to sigma".to_string()),
+          ("formulas", "m_deg = [6 pi^2 hbar^3 rho/(g sigma^3)]^(1/4), g = 8; m_B,max = [rho (2 pi)^(3/2) hbar^3/(2.612 sigma^3)]^(1/4); v_F = (hbar/m)(6 pi^2 rho/(g m))^(1/3)".to_string()),
+          ("command", "spacetimes halos".to_string())],
+        &["system", "rho_Msun_pc3", "rho_GeV_cm3", "sigma_km_s", "m_deg_keV", "mB_max_eV", "rho_deg_1p5keV_Msun_pc3", "rho_deg_over_rho", "vF_1p5keV_km_s", "vF_over_sigma"], &rows)?;
+
+    // self-interaction of bound pairs
+    // 1 cm^2/g in natural units (eV^-3): cm^2 = (1/(hbar c))^2 with hbar c in eV cm; g = c^2/eV in eV
+    let hbar_c_cm = hbar * C_LIGHT / EV * 100.0; // eV cm
+    let gram_ev = 1e-3 * C_LIGHT * C_LIGHT / EV; // eV
+    let kappa = 1.0 / (hbar_c_cm * hbar_c_cm) / gram_ev; // eV^-3 per (cm^2/g)
+    println!("\n1 cm^2/g = {:.4e} eV^-3;  critical coupling D_c = {:.4}", kappa, d_c);
+    println!("{:>8} {:>16} {:>16} {:>20} {:>22}", "alpha", "m_min (MeV)", "m_s (MeV)", "a = 1/m_s (fm)", "n lambda^3 (dwarf)");
+    let mut rows2 = Vec::new();
+    for &alpha in &[0.01, 0.1, 1.0, 4.0] {
+        // bosons of mass 2m with scattering length a: sigma_x/m_B = 8 pi a^2/(2m) <= 1 cm^2/g.
+        // A pair bound by a Yukawa potential of range 1/m_s has a >~ 1/m_s, and binding needs
+        // alpha m/m_s >= D_c.  With a = 1/m_s:  m >= [4 pi D_c^2/(alpha^2 kappa)]^(1/3).
+        let m_min = (4.0 * pi * d_c * d_c / (alpha * alpha * kappa)).powf(1.0 / 3.0); // eV
+        let m_s = alpha * m_min / d_c; // eV
+        let a_fm = hbar_c_cm / m_s * 1e13; // fm
+        // phase-space density of the pairs in the dwarf core
+        let (rho_sun, sig_kms): (f64, f64) = (0.1, 10.0);
+        let rho = rho_sun * m_sun / pc.powi(3);
+        let sig: f64 = sig_kms * 1e3;
+        let m_b = 2.0 * m_min * EV / (C_LIGHT * C_LIGHT); // kg
+        let nl3 = rho * (2.0 * pi).powf(1.5) * hbar.powi(3) / (m_b.powi(4) * sig.powi(3));
+        println!("{:>8} {:>16.2} {:>16.3} {:>20.3} {:>22.2e}", alpha, m_min / 1e6, m_s / 1e6, a_fm, nl3);
+        rows2.push(vec![alpha, m_min / 1e6, m_s / 1e6, a_fm, nl3]);
+    }
+    spacetimes::io::write_csv("dm_selfinteraction.csv",
+        &[("content", "smallest fermion mass for which a gas of bound pairs satisfies the bound sigma/m <= 1 cm^2/g on the self-interaction of dark matter, if the pair-pair scattering length is the range 1/m_s of the binding potential and the potential binds (alpha m/m_s >= D_c)".to_string()),
+          ("formula", "m_min = [4 pi D_c^2/(alpha^2 kappa)]^(1/3), kappa = 1 cm^2/g in natural units; m_s = alpha m_min/D_c; last column: phase-space density n lambda^3 of the pairs in the core of a dwarf spheroidal galaxy (condensation needs 2.612)".to_string()),
+          ("constants", format!("kappa = {:.5e} eV^-3; D_c = {:.5}", kappa, d_c)),
+          ("command", "spacetimes halos".to_string())],
+        &["alpha", "m_min_MeV", "m_s_MeV", "range_fm", "phase_space_density_dwarf"], &rows2)?;
+    Ok(true)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
@@ -594,8 +903,11 @@ fn main() {
         "background" => cmd_background().expect("i/o error"),
         "spectrum" => cmd_spectrum().expect("i/o error"),
         "forecast" => cmd_forecast().expect("i/o error"),
+        "superfluid" => cmd_superfluid().expect("i/o error"),
+        "dimer" => cmd_dimer().expect("i/o error"),
+        "halos" => cmd_halos().expect("i/o error"),
         _ => {
-            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (terminal only)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about 40 minutes");
+            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (step_thermo.csv)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about 40 minutes\n  superfluid  growth of structure if the dark matter is a superfluid with first sound (sfdm_*.csv); about 10 minutes\n  dimer       bound state and scattering length of two particles in the Yukawa potential (dimer.csv)\n  halos       degeneracy, condensation and self-interaction of the particles in observed halos (dm_*.csv)");
             true
         }
     };

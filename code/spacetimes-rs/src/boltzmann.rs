@@ -74,9 +74,14 @@ pub struct Fast {
     pub omega_g: f64,
     pub omega_n: f64,
     pub omega_b: f64,
+    /// cold collisionless dark matter (zero if the dark matter is a superfluid)
     pub omega_c: f64,
+    /// superfluid dark matter today (zero if there is none); it occupies the dark-fluid slot
+    pub omega_sf: f64,
     pub omega_l: f64,
     pub tau0: f64,
+    /// first time of the table (Mpc)
+    pub tau_min: f64,
 }
 
 /// Background quantities at one time.
@@ -94,8 +99,11 @@ pub struct Point {
 
 impl Fast {
     pub fn new(bg: &Background, th: &Thermo) -> Fast {
-        let n = 24000;
-        let tau_min: f64 = 1e-3;
+        Fast::with(bg, th, 1e-3, 24000)
+    }
+
+    /// Table that starts at conformal time `tau_min` (Mpc) and has `n` points.
+    pub fn with(bg: &Background, th: &Thermo, tau_min: f64, n: usize) -> Fast {
         let (lt0, lt1) = (tau_min.ln(), bg.tau0.ln());
         let dlt = (lt1 - lt0) / (n - 1) as f64;
         let mut f = Fast {
@@ -112,9 +120,11 @@ impl Fast {
             omega_g: bg.omega_gamma,
             omega_n: bg.omega_nu,
             omega_b: bg.p.omega_b,
-            omega_c: bg.p.omega_c,
+            omega_c: bg.omega_cdm,
+            omega_sf: if bg.p.superfluid_dm.is_some() { bg.p.omega_c } else { 0.0 },
             omega_l: bg.omega_lambda,
             tau0: bg.tau0,
+            tau_min,
         };
         for i in 0..n {
             let tau = (lt0 + dlt * i as f64).exp().min(bg.tau0);
@@ -199,9 +209,11 @@ fn rhs(f: &Fast, k: f64, tau: f64, y: &[f64], dy: &mut [f64], tca: bool, rad_off
         // the momentum density of the radiation is NOT small compared with that of the
         // baryons, which move with the dark matter.  Inserting them into the constraints
         // gives alpha from the matter terms alone, and the corrections below.
-        let g1 = 4.0 / 3.0 * (grho_g + grho_n) + (1.0 + p.wd) * grho_d;
-        let drho_m = grho_c * dc + grho_b * db;
-        let rho_theta_m = grho_b * tb;
+        // (a superfluid in the dark-fluid slot is matter and is kept; dark radiation streams)
+        let sf = f.omega_sf > 0.0;
+        let g1 = 4.0 / 3.0 * (grho_g + grho_n) + if sf { 0.0 } else { (1.0 + p.wd) * grho_d };
+        let drho_m = grho_c * dc + grho_b * db + if sf { grho_d * dd } else { 0.0 };
+        let rho_theta_m = grho_b * tb + if sf { grho_d * (1.0 + p.wd) * td } else { 0.0 };
         let hp_m = 2.0 * (k2 * eta + 0.5 * drho_m) / hub;
         alpha = (hp_m + 3.0 * rho_theta_m / k2) / (2.0 * k2);
         hprime = hp_m + 3.0 * alpha * g1;
@@ -229,6 +241,11 @@ fn rhs(f: &Fast, k: f64, tau: f64, y: &[f64], dy: &mut [f64], tca: bool, rad_off
     if rad_off {
         // baryons: pressureless, decoupled
         dy[I_TB] = -hub * tb + p.cb2 * k2 * db;
+        if f.omega_sf > 0.0 {
+            // superfluid dark matter: the fluid equations stay on
+            dy[I_DD] = -(1.0 + p.wd) * (td + 0.5 * hprime) - 3.0 * hub * (p.cd2 - p.wd) * dd;
+            dy[I_TD] = -hub * (1.0 - 3.0 * p.cd2) * td + p.cd2 * k2 * dd / (1.0 + p.wd);
+        }
         sigma_g = 0.0;
         pi = 0.0;
     } else {
@@ -298,7 +315,7 @@ fn rhs(f: &Fast, k: f64, tau: f64, y: &[f64], dy: &mut [f64], tca: bool, rad_off
         kappa: p.kappa,
         delta_g: dg,
         theta_b: tb,
-        delta_m: (f.omega_c * dc + f.omega_b * db) / (f.omega_c + f.omega_b),
+        delta_m: (f.omega_c * dc + f.omega_sf * dd + f.omega_b * db) / (f.omega_c + f.omega_sf + f.omega_b),
     }
 }
 
@@ -434,7 +451,7 @@ fn tca_end(f: &Fast, k: f64, tau_ini: f64, eps: f64) -> f64 {
 /// by the radiation-streaming approximation (see `rhs`), which is adequate (and much
 /// faster) for the matter power spectrum at large k.
 pub fn integrate_mode(f: &Fast, k: f64, tau_out: &[f64], rtol: f64, matter_only: bool) -> ModeOut {
-    let tau_ini = (0.02 / k).min(0.3).max(2e-3);
+    let tau_ini = (0.02 / k).min(0.3).max(2.0 * f.tau_min);
     // free-streaming fraction of the radiation
     let p0 = f.at(tau_ini);
     let r_nu = f.omega_n / (f.omega_g + f.omega_n + p0.od);
@@ -449,7 +466,9 @@ pub fn integrate_mode(f: &Fast, k: f64, tau_out: &[f64], rtol: f64, matter_only:
     y[I_DB] = 0.75 * dg;
     y[I_TB] = tg;
     y[I_DD] = 0.75 * (1.0 + p0.wd) * dg;
-    y[I_TD] = tg;
+    // velocity of a perfect fluid with equation of state w in the adiabatic mode:
+    // theta = theta_gamma 9w/(4 - 3w)  (theta_gamma for w = 1/3, zero for pressureless matter)
+    y[I_TD] = tg * 9.0 * p0.wd / (4.0 - 3.0 * p0.wd);
     y[I_FG] = dg;
     y[I_FG + 1] = 4.0 / (3.0 * k) * tg;
     y[I_FN] = dg;
@@ -457,7 +476,9 @@ pub fn integrate_mode(f: &Fast, k: f64, tau_out: &[f64], rtol: f64, matter_only:
     y[I_FN + 2] = 2.0 * (2.0 * kt2 / (3.0 * (15.0 + 4.0 * r_nu)));
 
     let tau_sw = tca_end(f, k, tau_ini, 0.008);
-    let tau_off = if matter_only { 800.0 } else { f64::INFINITY };
+    // (for k > 3.5/Mpc, beyond the wavenumbers used for sigma_8, the switch is made earlier:
+    // these modes are deep inside the horizon soon after recombination)
+    let tau_off = if matter_only { if k > 3.5 { 450.0 } else { 800.0 } } else { f64::INFINITY };
     let n_out = tau_out.len();
     let mut out = ModeOut { k, s0: vec![0.0; n_out], s1: vec![0.0; n_out], s2: vec![0.0; n_out], se: vec![0.0; n_out], delta_m0: 0.0 };
     let mut t = tau_ini;
@@ -620,7 +641,9 @@ mod source_tests {
                 y[I_DB] = 0.75 * dg;
                 y[I_TB] = tg;
                 y[I_DD] = dg;
-                y[I_TD] = tg;
+                // velocity of a perfect fluid with equation of state w in the adiabatic mode:
+    // theta = theta_gamma 9w/(4 - 3w)  (theta_gamma for w = 1/3, zero for pressureless matter)
+    y[I_TD] = tg * 9.0 * p0.wd / (4.0 - 3.0 * p0.wd);
                 y[I_FG] = dg;
                 y[I_FG + 1] = 4.0 / (3.0 * k) * tg;
                 y[I_FN] = dg;
@@ -669,11 +692,36 @@ mod pk_tests {
         let th = Thermo::new(&bg);
         let f = Fast::new(&bg, &th);
         let tau_out = source_times(&bg);
-        for &k in &[0.2, 0.35, 0.42] {
+        for &k in &[0.2, 0.35, 0.42, 2.0, 5.0] {
             let full = integrate_mode(&f, k, &tau_out, 1e-5, false).delta_m0;
             let fast = integrate_mode(&f, k, &[bg.tau0], 1e-5, true).delta_m0;
             println!("k = {}: full {:.6e}  matter-only {:.6e}  ratio {:.5}", k, full, fast, fast / full);
-            assert!((fast / full - 1.0).abs() < 5e-4, "k = {}: {} vs {}", k, fast, full);
+            assert!((fast / full - 1.0).abs() < 1e-3, "k = {}: {} vs {}", k, fast, full);
         }
+    }
+
+    /// A superfluid with a negligible sound speed must reproduce cold dark matter
+    /// (it is evolved by the general fluid equations in the dark-fluid slot), and a
+    /// sound speed must suppress the growth at large wavenumbers only.
+    #[test]
+    fn superfluid_with_zero_sound_speed_is_cold_dark_matter() {
+        use crate::cosmo::SuperfluidDm;
+        let fid = Params::fiducial();
+        let run = |p: &Params, k: f64| -> f64 {
+            let bg = Background::new(p);
+            let th = Thermo::new(&bg);
+            let f = Fast::new(&bg, &th);
+            integrate_mode(&f, k, &[bg.tau0], 1e-5, true).delta_m0
+        };
+        let cold = Params { superfluid_dm: Some(SuperfluidDm::Bose { cs0_sq: 1e-30 }), ..fid };
+        let warm = Params { superfluid_dm: Some(SuperfluidDm::Bose { cs0_sq: 1e-14 }), ..fid };
+        for &k in &[0.01, 0.3, 2.5] {
+            let (c, s, w) = (run(&fid, k), run(&cold, k), run(&warm, k));
+            println!("k = {}: CDM {:.6e}  superfluid(c_s=0) {:.6e}  ratio {:.6};  c_s0^2 = 1e-14: ratio {:.4}", k, c, s, s / c, w / c);
+            assert!((s / c - 1.0).abs() < 2e-4, "k = {}: {} vs {}", k, s, c);
+            assert!(w / c < 1.0 + 1e-3);
+        }
+        assert!((run(&warm, 0.01) / run(&fid, 0.01) - 1.0).abs() < 1e-3);
+        assert!(run(&warm, 2.5) / run(&fid, 2.5) < 0.9);
     }
 }

@@ -260,6 +260,63 @@ pub fn f_pseudo_hidden(m: f64, k: f64, kp: f64, mu: f64) -> f64 {
     (cc * cc + 2.0 * cc * pdot + m * m * q2 + k * k * kp * kp) / (4.0 * e * e * ep * ep)
 }
 
+/// The gap matrix of the four spin-0 vector pairs, and the invariants that enter the
+/// Ginzburg-Landau energy.
+///
+/// For an order parameter with components Delta^a along the hidden axis and the
+/// three other extra axes (a = 0, 5, 6, 7) the gap matrix on the eight internal
+/// states of the pair (p, -p) is  M = sum_a Delta^a Phi_a(p) / sqrt(N_a/8),  where
+/// Phi_a(p) = U(p)^T C^- gamma^a U(-p) is the two-particle content of the vector pair
+/// operator along a, and N_a its squared norm (so that each normalized content has
+/// Phi Phi^dagger of trace 8).  Returns
+///     t2 = Tr[M M^dagger] / 8 ,     t4 = Tr[(M M^dagger)^2] / 8 .
+/// The traces do not depend on the choice of the basis U(p).
+pub fn gap_matrix_invariants(op: &OneParticle, delta: &[C64; 4], p: &[f64; 8], m: f64) -> (f64, f64) {
+    let (u, _) = op.particles(p, m);
+    let (um, _) = op.particles(&neg(p), m);
+    let axes = [0usize, 5, 6, 7];
+    let mut gap = zeros(8, 8);
+    for (i, &a) in axes.iter().enumerate() {
+        let phi = mul(&mul(&transpose(&u), &op.pair_vector(a)), &um);
+        let n = norm2(&phi);
+        gap = add(&gap, &scale(&phi, delta[i] * (8.0 / n).sqrt()));
+    }
+    let mm = mul(&gap, &dagger(&gap));
+    (trace(&mm).re / 8.0, trace(&mul(&mm, &mm)).re / 8.0)
+}
+
+/// Check of the quartic Ginzburg-Landau invariant: for every complex 4-vector Delta
+/// (components along x0, x5, x6, x7),
+///     t2 = sum_a |Delta^a|^2 ,
+///     t4 = 2 (sum_a |Delta^a|^2)^2 - | eta_ab Delta^a Delta^b |^2 ,
+/// where eta_ab is the metric of the spacetime restricted to the four axes:
+/// (-1, -1, -1, -1) in 7+1 (all four are space-like) and (+1, -1, -1, -1) in 4+4 (x0
+/// is space-like, x5, x6, x7 are time-like).  Returns the largest deviation found for
+/// a set of test vectors, at rest and at |p| = m.
+pub fn quartic_invariant_check(op: &OneParticle) -> f64 {
+    let eta: [f64; 4] = if op.tag == "1644" { [1.0, -1.0, -1.0, -1.0] } else { [-1.0; 4] };
+    let tests: [[C64; 4]; 5] = [
+        [c(1.0, 0.0), c(0.0, 0.0), c(0.0, 0.0), c(0.0, 0.0)],
+        [c(0.6, 0.0), c(0.0, 0.0), c(0.8, 0.0), c(0.0, 0.0)],
+        [c(1.0, 0.0), c(0.0, 1.0), c(0.0, 0.0), c(0.0, 0.0)],
+        [c(0.3, -0.7), c(1.1, 0.2), c(-0.4, 0.9), c(0.5, 0.5)],
+        [c(0.0, 0.2), c(-1.3, 0.4), c(0.7, 0.7), c(0.1, -0.6)],
+    ];
+    let mut worst: f64 = 0.0;
+    for p in [[0.0; 8], [0.0, 0.6, 0.0, 0.8, 0.0, 0.0, 0.0, 0.0]] {
+        for d in &tests {
+            let (t2, t4) = gap_matrix_invariants(op, d, &p, 1.0);
+            let dd: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+            let mut d2 = c(0.0, 0.0);
+            for (z, e) in d.iter().zip(&eta) {
+                d2 += *z * *z * *e;
+            }
+            worst = worst.max((t2 - dd).abs()).max((t4 - (2.0 * dd * dd - d2.norm_sqr())).abs());
+        }
+    }
+    worst
+}
+
 /// One line of the channel table: on-shell amplitudes at scattering angle theta.
 pub struct ChannelRow {
     pub tag: &'static str,
@@ -392,4 +449,15 @@ mod tests {
             }
         }
     }
+
+    /// Quartic invariant of the Ginzburg-Landau energy, both signatures.
+    #[test]
+    fn ginzburg_landau_quartic_invariant() {
+        let gm = Gammas::build();
+        for op in [OneParticle::new_1671(&gm), OneParticle::new_1644(&gm)] {
+            let w = quartic_invariant_check(&op);
+            assert!(w < 1e-9, "signature {}: deviation {:e}", op.tag, w);
+        }
+    }
 }
+

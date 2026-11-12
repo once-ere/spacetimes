@@ -292,4 +292,231 @@ relations the notebook verifies; all five are verified by checks
 ``dirac matrices'', Sec. 1.6 \\
 \end{longtable}
 
+\hypertarget{errors-in-the-pairing-calculations}{%
+\section{Errors in the pairing
+calculations}\label{errors-in-the-pairing-calculations}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3043}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2319}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2464}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1739}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+No.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What was wrong
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How it was found
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Correction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where to check
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+E11 & A formula derived by hand for the exchange amplitude of the radial
+mode in the two-form pair channels, proportional to \(4m^2-q^2\), was
+wrong. & The program \texttt{spacetimes\ channels} computes every
+amplitude numerically from the Dirac matrices; the hand formula
+disagreed with it. & The amplitude of the radial mode is the same in the
+vector and in the two-form channels, \((4m^2+q^2)/4E^2\) on the mass
+shell; only the phase mode distinguishes the channels. The hand formula
+was never written into a document. &
+\texttt{data/pair\_channel\_kernel.csv}; unit test
+\texttt{kernel::tests::hidden\_axis\_closed\_forms} \\
+E12 & In the unit test of the angular average of the pairing kernel
+(\texttt{gap.rs}), the reference value was computed with a 64-point
+Gauss rule, which is inaccurate for the nearly singular integrand; the
+test failed although the analytic formula was right. & The test failed;
+refining the reference quadrature made it converge to the analytic
+value. & The reference is now a composite quadrature graded towards the
+singularity. & unit test
+\texttt{gap::tests::angular\_average\_matches\_quadrature} \\
+E13 & Documentation comments of \texttt{gap.rs} and \texttt{kernel.rs}
+contain indented formulas, which the Rust test tool treats as code
+examples and tries to compile. Commit \texttt{97df13f} was made after
+\texttt{cargo\ test} reported success for the unit tests; the
+documentation-test stage, which runs afterwards, failed and was
+overlooked. & Running the complete test command again before the next
+commit. & The crate declares \texttt{doctest\ =\ false} (the formulas
+are not code). All unit tests passed in \texttt{97df13f}; no result is
+affected. & \texttt{code/spacetimes-rs/Cargo.toml} \\
+E14 & \texttt{dimer.rs}: the number of bound states was taken to be the
+number of nodes of the zero-energy solution inside the integration
+range; the node that lies beyond the range just above threshold was not
+counted, which gave the critical coupling \(D_c=1.718\) instead of
+\(1.6798\). & The unit test compares \(D_c\) with the literature value
+and failed. & The node of the asymptotic straight line is counted
+(\(u\,u'<0\) at the end of the range). Never committed in the faulty
+form. & unit test \texttt{dimer::tests::critical\_coupling};
+\texttt{data/dimer.csv} \\
+\end{longtable}
+
+\hypertarget{errors-in-the-cosmological-programs}{%
+\section{Errors in the cosmological
+programs}\label{errors-in-the-cosmological-programs}}
+
+All errors in this section were found by comparing the Rust solver with
+the code CLASS (spectra of the author's NCSS project) \emph{before} any
+cosmological result was committed; none of them reached a document. They
+are recorded because the comparison is what makes the final agreement
+(Supplement S3, Sec. 2) meaningful.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3043}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2319}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2464}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1739}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+No.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What was wrong
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How it was found
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Correction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where to check
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+E15 & \texttt{spectra.rs}: wavenumbers above
+\(\max(2.45\,\ell/\tau_0,\,0.012\ \mathrm{Mpc}^{-1})\) were not allowed
+to contribute to the multipole \(\ell\). The projection of a wave of
+wavenumber \(k\) contributes to all \(\ell<k\tau_0\) with a slowly
+decaying weight, so power was lost: the temperature spectrum was too low
+by up to 14 per cent at \(\ell=100\). & Comparison with CLASS. & The cut
+was removed; only the cut \(\ell>1.02\,k\tau_0+10\) (where the spherical
+Bessel function is negligible) remains. & \texttt{spectra.rs}, comment
+in \texttt{compute} \\
+E16 & \texttt{bessel.rs}: a unit test demanded an interpolation error of
+the Bessel table below \(3\times10^{-7}/x\), which is stricter than the
+error bound \((h^4/384)\max|f''''|\) of cubic Hermite interpolation with
+the table's step \(h=0.2\). The code was right and the test was wrong. &
+The test failed; the measured error was compared with the theoretical
+bound. & The test now checks the theoretical bounds of value and
+derivative, and a second test checks the differential equation. & unit
+tests \texttt{bessel::tests::table\_interpolation\_error\_bounds},
+\texttt{differential\_equation} \\
+E17 & \texttt{boltzmann.rs}: for the matter power spectrum at large
+wavenumbers the perturbations of the radiation were simply dropped at
+late times. In the synchronous gauge this is inconsistent: the frame
+moves with the dark matter, so the radiation has a bulk velocity
+\(-k^2\alpha\) relative to it, and its momentum density is not small
+compared with that of the baryons. The matter power spectrum was 11 per
+cent too high for \(k>0.33\ \mathrm{Mpc}^{-1}\). & Comparison of
+\(P(k)\) with CLASS. & Replaced by the radiation-streaming
+approximation, which keeps these terms. The fast and the full
+integration now agree to \(5\times10^{-5}\) (\(k\le0.42\)) and
+\(3\times10^{-4}\) (\(k=2\ \mathrm{Mpc}^{-1}\)). & unit test
+\texttt{boltzmann::pk\_tests::matter\_only\_mode\_agrees\_with\_full\_integration} \\
+E18 & \texttt{cosmo.rs}: recombination was computed with the equations
+of RECFAST 1.0 (factor 1.14 for hydrogen, singlet channel only for
+helium), which lack the corrections that reproduce the modern
+multi-level calculations. Effect: 100 \(\theta_s\) off by
+\(3.4\times10^{-4}\) (relative), spectra off by up to 1.5 per cent at
+\(\ell=2000\). & Comparison with CLASS (which uses HyRec): a smooth,
+growing difference in TT and EE after lensing had been accounted for. &
+The equations of RECFAST 1.5.2 are used: factor 1.125, the two Gaussian
+corrections of the Lyman-alpha escape factor, and for helium the
+modified escape probability with hydrogen continuum opacity and the
+triplet channel. 100 \(\theta_s\) and \(r_{\rm drag}\) now agree with
+CLASS to \(1.3\times10^{-5}\) and \(3\times10^{-5}\). &
+\texttt{cosmo.rs}, \texttt{Thermo::new}; unit test
+\texttt{cosmo::tests::background\_and\_recombination\_of\_the\_fiducial\_model} \\
+E19 & \texttt{cosmo.rs}: while the gas is tightly coupled to the
+radiation, the temperature equation is extremely stiff. The Runge-Kutta
+stages advanced the temperature with this stiff derivative; at
+\(z=2812\), in the first step of the helium rate equation, a stage
+produced a negative temperature and a NaN, and the program then set the
+fraction of singly ionized helium to zero. Helium ``recombined'' within
+one step instead of gradually between \(z=3000\) and \(z=1700\). & After
+E18 a difference of 1 per cent at \(\ell=2000\) remained; switching the
+helium corrections on and off changed nothing at all, which exposed the
+fault; a printout of \(x_e(z)\) confirmed it. & Every stage uses the
+quasi-static solution of the temperature equation while the coupling is
+tight (as RECFAST does); the program stops if an ionization fraction is
+not finite. & unit test \texttt{cosmo::tests::ionization\_history}
+(fails for the faulty version) \\
+E20 & \texttt{validate\_cmb\_against\_class.py}: the Rust matter power
+spectrum was interpolated linearly in the logarithms onto the
+wavenumbers of the reference; near the maximum of \(P(k)\), where the
+Rust grid is coarse, this produced an apparent difference of 1.3 per
+cent. & The difference was confined to the region where the grid spacing
+changes. & Cubic-spline interpolation; the difference is
+\(1\times10^{-4}\) there. & \texttt{data/pk\_validation.csv} \\
+E21 & The fiducial amplitude was \(A_s=e^{3.0445}\times10^{-10}\), while
+the reference spectra of the NCSS project were computed with
+\(A_s=2.1\times10^{-9}\) (\(\ln(10^{10}A_s)=3.04452\)): a difference of
+\(2\times10^{-5}\). & Reading the header of the reference file. & The
+fiducial model uses \(A_s=2.1\times10^{-9}\). & \texttt{cosmo.rs},
+\texttt{Params::fiducial} \\
+E22 & A first run of the mock-data fits (\texttt{spacetimes\ forecast})
+was started before the validation against CLASS was complete, with the
+faults E18 and E19 present. & --- & The run was stopped and its output
+discarded; all results in the repository come from the corrected
+program. & commit \texttt{045e161} and later \\
+\end{longtable}
+
+\hypertarget{errors-in-drafts-of-the-documents}{%
+\section{Errors in drafts of the
+documents}\label{errors-in-drafts-of-the-documents}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3043}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2319}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2464}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1739}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+No.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What was wrong
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How it was found
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Correction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Where to check
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+E23 & The draft of Supplement S1 stated a closed formula,
+\(F_P=[q^2-2(\vec q\cdot\hat n)^2]/4E^2\), for the phase-mode amplitude
+of a vector pair polarized along an axis \(\hat n\) of ordinary space,
+and concluded that its angular average is one third of that of an
+extra-axis pair. & Before the text was accepted, the formula was
+compared with \texttt{data/pair\_channel\_kernel.csv}; it is wrong for
+pairs polarized in ordinary space (their two-particle content depends on
+the direction of the momentum). & The formula and the conclusion were
+removed; the text states only what the data show. Never committed in the
+faulty form. & S1, Sec. 4.2 (iii) \\
+E24 & The draft of S1 conjectured that the quartic Ginzburg--Landau
+invariant is \(2(\sum|\Delta^a|^2)^2-|\sum_a(\Delta^a)^2|^2\) in both
+spacetimes. & The machine check failed for 4+4 (deviation 4). & The
+correct invariant contains the metric of the spacetime on the four extra
+axes, \(|\eta_{ab}\Delta^a\Delta^b|^2\); in 4+4 the components along the
+time-like axes enter with the opposite sign. Never committed in the
+faulty form. & S1, Eq. (6.2); \texttt{data/gl\_quartic\_check.csv} \\
+E25 & The draft of S1 gave the Ginzburg--Landau coefficients \(a\),
+\(b\) and the stiffness \(K\) with factors of 2 that did not match the
+stated normalization of the energy. & Checking that the uniform solution
+reproduces the textbook result
+\(|\Delta|^2=\frac{8\pi^2}{7\zeta(3)}T_c^2(1-T/T_c)\). & Coefficients
+corrected: \(a=\tfrac12N(0)\ln(T/T_c)\),
+\(b=7\zeta(3)N(0)/16\pi^2T_c^2\), \(K=7\zeta(3)N(0)v_F^2/96\pi^2T_c^2\).
+Never committed in the faulty form. & S1, Secs. 6.2 and 7 \\
+\end{longtable}
+
 \end{document}
