@@ -1,0 +1,28 @@
+[package]
+name = "spacetimes-deflation-cjt-ks"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes, Revision_Deflation_CJT_and_Kohn-Sham: the self-coupled 16-component Dirac fields (mass term and nine-channel self-interaction), their Kohn-Sham and Cornwall-Jackiw-Tomboulis theories, the Vorton-Scalar and the singlet superfluid on the 4+4 and 7+1 spacetimes whose coordinates x5, x6, x7 deflate exponentially"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# The only dependency is the Rust program of the main project (two folders up),
+# which supplies the real 16x16 Dirac matrices of the two notebooks, exact integer
+# matrices, complex linear algebra, quadrature, root finding, the gap equation,
+# the bound pair, the effective action and the cosmological solver.
+# No crate is downloaded: the program builds offline with a Rust toolchain alone.
+[dependencies]
+spacetimes = { path = "../../../code/spacetimes-rs" }
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true     # exact rational arithmetic must never wrap silently
+
+[[bin]]
+name = "deflation_cjt_ks"
+path = "src/main.rs"
+
+[lib]
+# The formulas displayed in the documentation comments are not Rust code.
+doctest = false
