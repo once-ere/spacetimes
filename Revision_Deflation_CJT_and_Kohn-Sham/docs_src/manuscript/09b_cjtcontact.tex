@@ -1,0 +1,312 @@
+\section{The effective potential with the self-interaction}
+\label{sec:cjtcontact}
+
+Section~\ref{sec:cjt} applied the effective action of Cornwall, Jackiw and Tomboulis to the model
+in which the Vorton-Scalar alone provides mass and interaction. This section applies the same
+method to the self-interaction of the fermion field: first without the Vorton-Scalar, where it must
+reproduce the Kohn-Sham results of Sec.~\ref{sec:ks} and goes beyond them by counting the filled
+states of negative energy; then with the bare Dirac mass, the self-interaction and the Vorton-Scalar
+together.
+
+\subsection{The effective potential of uniform matter}
+
+The CJT effective action is a functional of the full propagator $S$ of the fermions,
+\begin{equation}
+\Gamma[S]=-i\,\mathrm{Tr}\ln S^{-1}-i\,\mathrm{Tr}\big(S_0^{-1}S-1\big)+\Gamma_2[S],
+\label{eq:GammaCJT}
+\end{equation}
+where $S_0$ is the propagator of free particles of the mass $m$ and $\Gamma_2$ is the sum of the
+vacuum diagrams that cannot be cut in two by cutting two lines, drawn with the full propagator. For
+the contact interaction $\Lself$ the lowest order of $\Gamma_2$ consists of two diagrams, each with
+two loops that meet at one vertex: the direct (Hartree) and the exchange (Fock) diagram. At this
+order the stationarity condition $\delta\Gamma/\delta S=0$ says that the self-energy
+$S_0^{-1}-S^{-1}$ does not depend on the momentum. For uniform matter at rest it is a combination of
+the unit matrix and of $\beta$ (Sec.~\ref{sec:hf}): the full propagator is that of free particles of
+a mass $\mst$ whose energies are shifted by a constant $V_0$. The effective action per unit volume
+and time then becomes an ordinary function of the two numbers $\mst$ and $V_0$, the \emph{effective
+potential}. At zero temperature and at the chemical potential $\mu$,
+\begin{align}
+\Omega_{\mathrm{CJT}}&(\mst,V_0;\mu)=-\frac{(\mst-m)^{2}}{2\,\GS}-\frac{V_0^{2}}{2\,\GV}\nonumber\\
+&-\nu\!\int\!\frac{d^{D}k}{(2\pi)^{D}}\,\big(\mu-V_0-E^{*}\big)\,\theta\big(\mu-V_0-E^{*}\big),
+\label{eq:OmegaCJT}
+\end{align}
+with $E^{*}=(k^{2}+\mstq)^{1/2}$, the step function $\theta$, and the couplings $\GS$, $\GV$ of
+Eq.~(\ref{eq:GHF}). The integral is the grand potential of free particles of the mass $\mst$ at
+the chemical potential $\mu-V_0$; the two other terms remove the interaction energy that the
+integral counts twice. The two stationarity conditions are
+\begin{equation}
+\begin{aligned}
+\frac{\partial\Omega_{\mathrm{CJT}}}{\partial V_0}&=0:\quad V_0=\GV\,n,\\
+\frac{\partial\Omega_{\mathrm{CJT}}}{\partial\mst}&=0:\quad\mst=m+\GS\,\nS ,
+\end{aligned}
+\label{eq:CJTstat}
+\end{equation}
+the two equations (\ref{eq:hKS}) of the Kohn-Sham method. At the stationary point
+$-\Omega_{\mathrm{CJT}}$ is the pressure and $\Omega_{\mathrm{CJT}}+\mu\,n$ the energy density.
+\emph{The Kohn-Sham method and the CJT effective potential at this order are two formulations of the
+same approximation}: the first works at a fixed density and solves the gap equation, the second
+works at a fixed chemical potential and searches the stationary point of a function.
+
+The program evaluates the two with separate code (Gauss-Legendre integrals and a root search in the
+one, Simpson integrals and a minimization in the other) for {{GEN:cjt_n_states}} states in $D=7$,
+$4$ and $3$ dimensions (Table~\ref{tab:cjtks}). Mass, density, energy density and pressure agree to
+{{GEN:cjt_ks_dev}} (sum of the four relative deviations); the independent script repeats the
+comparison with its own integrals and finds the same.
+
+\begin{table}
+\caption{\label{tab:cjtks}The Kohn-Sham method (KS) and the CJT effective potential compared, without
+the filled states of negative energy (units $m=1$): the mass of the particles in matter by both
+methods, and $-\Omega_{\mathrm{CJT}}$ at its stationary point divided by the Kohn-Sham pressure $p$,
+for ten of the {{GEN:cjt_n_states}} states computed (the data files hold eleven digits).}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+$D$ & $\GS$ & $\GV$ & $\kF$ & $\mst$ (KS) & $\mst$ (CJT) & $-\Omega_{\mathrm{CJT}}/p$ \\
+\hline
+{{ROWS:tbl_cjt_vs_ks}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The effective potential says more than the gap equation in one respect. At a given chemical
+potential the stationary point with the lowest $\Omega_{\mathrm{CJT}}$, that is, with the highest
+pressure, is the state of equilibrium (the vector field $V_0$ is taken at its stationary value, a
+maximum; the minimum is over $\mst$). Of the {{GEN:cjt_n_positive}} states of the comparison with a
+positive pressure, {{GEN:cjt_n_global}} are that minimum. In the others a denser state has the higher
+pressure at the same chemical potential: the Kohn-Sham state of that density is metastable, a dilute
+gas that can lower its energy by condensing into saturated matter.
+
+\subsection{The filled states of negative energy}
+\label{sec:sea}
+
+The Kohn-Sham calculation counts the particles of matter only. The term
+$-i\,\mathrm{Tr}\ln S^{-1}$ of Eq.~(\ref{eq:GammaCJT}) also contains the filled states of negative
+energy of the vacuum, whose energy depends on the mass of the particles. Because the contact
+interaction is an effective interaction, their momenta are counted up to a cutoff $\Lambda$:
+\begin{equation}
+\begin{aligned}
+\Omega_{\mathrm{CJT}}\to{}&\Omega_{\mathrm{CJT}}-\nu\!\int_{|\vec k|<\Lambda}\!\frac{d^{D}k}{(2\pi)^{D}}\\
+&\times\Big[\sqrt{k^{2}+\mstq}-\sqrt{k^{2}+m^{2}}\Big].
+\end{aligned}
+\label{eq:sea}
+\end{equation}
+The filled states contribute the scalar density
+$-\nu\int_{|\vec k|<\Lambda}d^{D}k\,(\mst/E^{*})/(2\pi)^{D}$ to the gap equation. The mass parameter
+of the Lagrangian is then no longer the mass of a particle in vacuum and is called the \emph{bare
+mass} $m_{\mathrm{bare}}$; the mass in vacuum, $m_{\mathrm{vac}}$, is the solution of
+\begin{equation}
+\begin{aligned}
+m_{\mathrm{vac}}&=m_{\mathrm{bare}}+\GS\,\langle\bar\psi\psi\rangle_{\mathrm{vac}},\\
+\langle\bar\psi\psi\rangle_{\mathrm{vac}}&=-\nu\!\int_{|\vec k|<\Lambda}\!\frac{d^{D}k}{(2\pi)^{D}}\,\frac{m_{\mathrm{vac}}}{\sqrt{k^{2}+m_{\mathrm{vac}}^{2}}} .
+\end{aligned}
+\label{eq:mvac}
+\end{equation}
+The scalar density of the vacuum is negative, so that an attraction ($\GS<0$) \emph{raises} the mass
+above the bare mass.
+
+\emph{A critical coupling.} For $m_{\mathrm{bare}}=0$ Eq.~(\ref{eq:mvac}) always has the solution
+$m_{\mathrm{vac}}=0$. A second solution, of lower energy, exists if the attraction exceeds a
+critical value, $\GS<G_c$. Expanding the integral for small $m_{\mathrm{vac}}$, with the area
+$A_D=D\,V_D$ of the unit sphere,
+\begin{equation}
+\begin{aligned}
+G_c&=-\frac{(2\pi)^{D}\,(D-1)}{\nu\,A_D\,\Lambda^{D-1}},\\
+G_c\,\Lambda^{D-1}&=-90\pi^{4},\ -3\pi^{2},\ -\frac{\pi^{2}}{2}\quad\text{for }D=7,\ 4,\ 3 .
+\end{aligned}
+\label{eq:Gc}
+\end{equation}
+\emph{A field without a mass term acquires a mass by its own self-interaction when the scalar
+attraction exceeds $G_c$.} This is the mechanism of Nambu and Jona-Lasinio \cite{NJL1961};
+the minimization of the effective potential gives no mass two per cent below $G_c$ and a mass two
+per cent above it in all three cases.
+
+\emph{On the deflating spacetime the critical coupling is crossed at a definite moment.} In the
+sector of fields that do not depend on $x5,x6,x7$ the coupling grows as $e^{\td}$ while the cutoff,
+a momentum along the flat coordinates, does not change. A field that is massless at early times
+therefore acquires a mass at the clock reading $\td=\ln[G_c/\GS(x4_{\mathrm{ref}})]$, and from then
+on the mass grows [Fig.~\ref{fig:cjtsea}(a), Table~\ref{tab:cjtvac}]. With a small bare mass the
+transition is smooth. The mass reaches the cutoff about half a unit of the clock after the critical
+coupling is crossed; beyond that point the effective theory says nothing.
+
+\begin{table}
+\caption{\label{tab:cjtvac}The mass of the fermions in vacuum, $m_{\mathrm{vac}}/\Lambda$, with the
+filled states of negative energy, along the deflation clock counted from the moment at which
+$\GS=G_c$, for a field without bare mass and for the bare mass $0.05\,\Lambda$.}
+\begin{ruledtabular}
+\begin{tabular}{cccccc}
+$D$ & $m_{\mathrm{bare}}/\Lambda$ & $\td=-1$ & $\td=0$ & $\td=0.24$ & $\td=0.48$ \\
+\hline
+{{ROWS:tbl_cjt_vacuum}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{figure*}
+\includegraphics[width=0.86\textwidth]{fig_cjt_sea}
+\caption{\label{fig:cjtsea}The filled states of negative energy. (a) The mass of the fermions in
+vacuum, in units of the cutoff, along the deflation clock counted from the moment at which the
+scalar attraction equals the critical coupling, for $D=7$, $4$ and $3$ dimensions, without bare mass
+and with the bare mass $0.05\,\Lambda$. (b) Energy per particle of matter relative to the vacuum, for
+\SIG{an example on the $7+1$ spacetime}{the reference example of Sec.~\ref{sec:ksflat}} ($D=7$,
+$\GS=-10^{5}$, $\GV=+10^{4}$ in units of the mass in vacuum) without the filled states and with them
+for three cutoffs; the bare mass is chosen so that the mass in vacuum is the same.}
+\end{figure*}
+
+%%<1671>
+\emph{The reference example with the filled states.} The coupling $\GS=-10^{5}\,m^{-6}$ of the
+reference example of Sec.~\ref{sec:ksflat} exceeds the critical coupling $90\pi^{4}/\Lambda^{6}$ as
+soon as the cutoff is larger than $\Lambda={{GENM:cjt_cut_limit}}\,m$: \emph{the calculation without
+the filled states presupposes a cutoff below this value}, which is smaller than the Fermi momentum
+of the saturated matter. With the filled states included, and with the bare mass adjusted so that
+the mass in vacuum stays the same, the saturation point moves little for the two smaller cutoffs of
+Table~\ref{tab:cjtsea}, and the binding grows for the largest [Fig.~\ref{fig:cjtsea}(b)]. The example is therefore meaningful only as an
+effective theory with a low cutoff, and its numbers depend on the cutoff at the level that the table
+shows.
+
+\begin{table}
+\caption{\label{tab:cjtsea}The reference example ($D=7$, $\GS=-10^{5}$, $\GV=+10^{4}$, units
+$m_{\mathrm{vac}}=1$) with the filled states of negative energy below the cutoff $\Lambda$: the bare
+mass that keeps the mass in vacuum, and the saturation point (Fermi momentum, mass of the particles
+in matter, energy per particle relative to the vacuum).}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+$\Lambda$ & $m_{\mathrm{bare}}$ & $\kF$ & $\mst$ & $\varepsilon/n-m_{\mathrm{vac}}$ \\
+\hline
+{{ROWS:tbl_cjt_sea}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+%%</1671>
+%%<1644>
+\emph{The thresholds of Sec.~\ref{sec:ks} and the vacuum.} The last column of
+Table~\ref{tab:ksthr} shows that the attraction that binds matter exceeds the critical coupling of
+the vacuum for a cutoff equal to the mass. \emph{The calculation without the filled states
+presupposes a lower cutoff}: for the smallest attraction that binds matter without a vector
+repulsion, a cutoff below ${{GENM:cjt_cut_d4}}\,m$ in $D=4$ dimensions and below
+${{GENM:cjt_cut_d3}}\,m$ in $D=3$. How the filled states change a saturation point when they are
+included was computed for an example on the $7+1$ spacetime ($D=7$), with the bare mass adjusted so
+that the mass in vacuum stays the same: the saturation point moves little while the cutoff stays
+below about half the mass in vacuum, and the binding grows for larger cutoffs
+[Fig.~\ref{fig:cjtsea}(b)]. The results of Sec.~\ref{sec:ks} are therefore those of an effective
+theory with a low cutoff.
+%%</1644>
+
+\subsection{Bare mass, self-interaction and Vorton-Scalar together}
+\label{sec:unified}
+
+Now let all terms of the model (\ref{eq:LVS}) act together, for fields in ordinary space ($D=3$) and
+without the filled states. Let $\phi$ be the expectation value of the Vorton-Scalar,
+$\langle\PhiVS\rangle=\phi/\sqrt2$, and $x=\phi/\vVS$. The mass of a fermion in a region with the
+expectation value $\phi$ is $m_D+m_Y\,x$; let $f_D=m_D/m$ be the fraction of the mass in vacuum that
+is a bare Dirac mass. In units $m=1$ the energy density of matter of the Fermi momentum $\kF$ is the
+stationary value of
+\begin{equation}
+\begin{aligned}
+\varepsilon={}&\frac{(1-f_D)^{2}\,(x^{2}-1)^{2}}{8\,C}+\langle E^{*}\rangle+\tfrac12\GV\,n^{2}\\
+&-\frac{\big[\mst-f_D-(1-f_D)\,x\big]^{2}}{2\,\GS}
+\end{aligned}
+\label{eq:unified}
+\end{equation}
+with respect to $x$ and $\mst$: the first term is the potential of the scalar, with the number $C$
+of Eq.~(\ref{eq:DC}); the others are Eq.~(\ref{eq:epsKS}) with the mass $f_D+(1-f_D)x$ in place of
+$m$. For $f_D=0$ and $\GS=\GV=0$ this is the functional of Sec.~\ref{sec:cjt}, and the program
+reproduces its masses and energies to {{GEN:uni_u1_dev}} and its binding threshold
+$C=3\pi^{2}/8$.
+
+\emph{At low density the Vorton-Scalar acts as a scalar contact coupling.} Expanding
+Eq.~(\ref{eq:unified}) for small densities gives $\mst=m+(\GS-C/m^{2})\,\nS$: the exchange of the
+radial mode adds $-\gVS^{2}/m_s^{2}$ to the scalar coupling, whatever fraction of the mass is a bare
+mass (verified for five sets of parameters to {{GEN:uni_u2_dev}} at Fermi momenta up to a
+twentieth of $m$). The scalar
+channel of the self-interaction and the exchange of the radial mode are the same interaction at
+momenta far below $m_s$; they differ at higher densities, where the scalar field itself changes.
+
+\emph{The moment at which matter becomes self-bound.} All three couplings $C$, $\GS$, $\GV$ grow as
+$e^{\td}$, so that their ratios are fixed and the deflation carries matter through a sequence of
+states with growing $C$. Table~\ref{tab:unified} gives the smallest $C$ at which matter is
+self-bound, and the shift of that moment relative to the model with the Vorton-Scalar alone
+[Fig.~\ref{fig:unified}(a,b)]. \emph{A bare Dirac mass makes matter bind earlier}, by
+{{GEN:uni_dtau_fd025}} units of the clock if a quarter of the mass is a bare mass and by
+{{GEN:uni_dtau_fd05}} if half of it is: the matter no longer has to pay for the destruction of the
+whole expectation value of the scalar. \emph{A vector repulsion delays the binding}, by
+{{GEN:uni_dtau_kv01}} and {{GEN:uni_dtau_kv03}} units for the two vector couplings of the table,
+without bare mass. A scalar contact attraction acts only where the particles keep a mass: without a
+bare mass the matter of lowest energy at the threshold consists of massless particles, whose scalar
+density vanishes, and the scalar coupling of the second row of the table changes nothing.
+
+\begin{table*}
+\caption{\label{tab:unified}Bare Dirac mass, contact couplings and Vorton-Scalar together ($D=3$,
+without the filled states): the smallest $C$ at which uniform matter is self-bound, for three
+vector couplings, and in parentheses the shift of the moment of binding along the deflation clock
+relative to the first entry (negative: earlier).}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+$f_D$ & $-\GS/C$ & $\GV=0$ & $\GV=0.1\,C$ & $\GV=0.3\,C$ \\
+\hline
+{{ROWS:tbl_unified}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_unified}
+\caption{\label{fig:unified}Bare Dirac mass, contact couplings and Vorton-Scalar together. (a), (b)
+The shift of the moment at which matter becomes self-bound, in units of the deflation clock, against
+the vector contact coupling, for three fractions $f_D$ of bare mass, without and with a scalar
+contact coupling. (c) The square of the mass of the phase mode in matter divided by its value in
+vacuum, against the Fermi momentum in units of the cutoff.}
+\end{figure*}
+
+\subsection{The mass of the phase mode}
+\label{sec:phasemass}
+
+A bare Dirac mass breaks the chiral symmetry $\UVS$ explicitly, and the phase mode of the
+Vorton-Scalar is then no longer massless. Write $\PhiVS=(\vVS/\sqrt2)\,e^{i\vartheta_{\mathrm{VS}}}$
+with a constant phase $\vartheta_{\mathrm{VS}}$. The mass term of the fermions becomes
+$m_D+m_Y\,e^{i\vartheta_{\mathrm{VS}}\chi}$, the mass of a particle
+\begin{equation}
+m(\vartheta_{\mathrm{VS}})=\sqrt{m_D^{2}+m_Y^{2}+2\,m_Dm_Y\cos\vartheta_{\mathrm{VS}}},
+\end{equation}
+largest at $\vartheta_{\mathrm{VS}}=0$. The energy of the filled states of negative energy is lowest
+where the mass is largest, so that the vacuum selects $\vartheta_{\mathrm{VS}}=0$, and the second
+derivative of the energy density with respect to the phase is $\mth^{2}\vVS^{2}$. With
+$dm/d\vartheta_{\mathrm{VS}}=0$ and $d^{2}m/d\vartheta_{\mathrm{VS}}^{2}=-m_Dm_Y/m$ at
+$\vartheta_{\mathrm{VS}}=0$, and with the derivative of the energy density with respect to the mass,
+which is the scalar density,
+\begin{equation}
+\mth^{2}\,\vVS^{2}=\Big(\big|\langle\bar\psi\psi\rangle_{\mathrm{vac}}\big|-\nS\Big)\,\frac{m_D\,m_Y}{m} .
+\label{eq:mtheta}
+\end{equation}
+In vacuum ($\nS=0$) this is the relation of Gell-Mann, Oakes and Renner \cite{GellMannOakesRenner1968}
+for the model at hand: the square of the mass of the phase mode is proportional to the bare mass and
+to the scalar density of the vacuum. In ordinary space
+$|\langle\bar\psi\psi\rangle_{\mathrm{vac}}|=(\nu m/4\pi^{2})\,[\Lambda\sqrt{\Lambda^{2}+m^{2}}-m^{2}\,\mathrm{arsinh}(\Lambda/m)]$;
+the program confirms Eq.~(\ref{eq:mtheta}) against the numerical second derivative of the energy in
+{{GEN:uni_u3_cases}} cases to {{GEN:uni_u3_dev}} of the value in vacuum. Three consequences follow.
+
+\emph{The phase mode becomes heavier along the clock.} In the couplings of the model,
+$\mth^{2}=C\,m_s^{2}\,f_D\,(|\langle\bar\psi\psi\rangle_{\mathrm{vac}}|-\nS)/[(1-f_D)\,m^{3}]$, which
+grows as $e^{\td}$: $\mth\propto e^{\td/2}$, while all other masses stay fixed. Its value depends on
+the cutoff through the scalar density of the vacuum (Table~\ref{tab:phasemode}).
+
+\emph{In matter the phase mode is lighter.} The matter subtracts its scalar density:
+$\mth^{2}(\kF)/\mth^{2}(0)=1-\nS/|\langle\bar\psi\psi\rangle_{\mathrm{vac}}|$
+[Table~\ref{tab:phasemode}, Fig.~\ref{fig:unified}(c)].
+
+\emph{A massive phase mode binds pairs less.} The exchange of the phase mode contributes to the
+pairing potential (\ref{eq:VVS}) with the range $1/\mth$; a mass of three tenths of the fermion
+mass reduces the gap of the example of Table~\ref{tab:gapcontact} ($m_s=m$) from
+{{GEN:gapc_exchange}} to {{GEN:gapc_phase}} of the Fermi kinetic energy.
+
+\begin{table}
+\caption{\label{tab:phasemode}The phase mode of the Vorton-Scalar when a tenth of the fermion mass
+is a bare Dirac mass ($f_D=0.1$; $D=3$; units $m=1$): scalar density of the vacuum, square of the
+mass of the phase mode in vacuum in units of $C\,m_s^{2}$, and its reduction in matter of the Fermi
+momenta $\Lambda/4$, $\Lambda/2$ and $3\Lambda/4$.}
+\begin{ruledtabular}
+\begin{tabular}{cccccc}
+$\Lambda$ & $|\langle\bar\psi\psi\rangle_{\mathrm{vac}}|$ & $\mth^{2}/(C\,m_s^{2})$ & $\kF=\Lambda/4$ & $\Lambda/2$ & $3\Lambda/4$ \\
+\hline
+{{ROWS:tbl_phase_mode}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}

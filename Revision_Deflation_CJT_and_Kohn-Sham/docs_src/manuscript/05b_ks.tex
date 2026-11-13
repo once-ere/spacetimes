@@ -1,0 +1,301 @@
+\section{Matter: the Kohn-Sham analysis}
+\label{sec:ks}
+
+This section determines the states of uniform matter made of the fermions of the model when the
+self-interaction acts between them. The Vorton-Scalar is set aside here ($\yVS=0$, so that the mass
+$m$ of the fermions in vacuum is the bare Dirac mass); Sec.~\ref{sec:cjtcontact} restores it.
+
+\subsection{The method}
+\label{sec:ksmethod}
+
+In the method of Kohn and Sham \cite{KohnSham1965} a system of interacting fermions is replaced by
+independent fermions that move in fields which their own densities determine. The energy is written
+as a function of the densities; the fields are its derivatives; and the densities are computed from
+the occupied states in those fields, until both agree. For uniform matter of the present model the
+densities are two numbers (Sec.~\ref{sec:hf}): the number density $n=\langle\psi^\dagger\psi\rangle$
+and the scalar density $\nS=\langle\bar\psi\psi\rangle$. The interaction energy is
+$\tfrac12\GV n^{2}+\tfrac12\GS\nS^{2}$ with a scalar coupling $\GS$ and a vector coupling $\GV$, and
+each particle obeys the Dirac equation with the Hamiltonian matrix
+\begin{equation}
+\begin{aligned}
+\hh_{\mathrm{KS}}&=\sum_j\alpha^{j}k_j+\beta\,\mst+V_0,\\
+\mst&=m+\GS\,\nS,\qquad V_0=\GV\,n .
+\end{aligned}
+\label{eq:hKS}
+\end{equation}
+The scalar field changes the mass of the particles in matter from $m$ to $\mst$; the vector field
+shifts all energies by $V_0$. A negative $\GS$ is an attraction (it lowers the mass and the energy)
+and a positive $\GV$ a repulsion; this is the structure of the mean-field theory of dense matter
+with a scalar and a vector field \cite{Walecka1974}. With the couplings of Eq.~(\ref{eq:GHF}) the exchange terms are
+contained exactly, because for a contact interaction they are a function of the same two densities.
+
+A particle of the momentum $\vec k$ has the energy $E^{*}(k)+V_0$ with
+$E^{*}(k)=(k^{2}+\mstq)^{1/2}$. The occupied states are those with $|\vec k|<\kF$, eight for each
+momentum ($\nu=8$), and averages over them are written
+$\langle f\rangle=\nu\int d^{D}k\,f/(2\pi)^{D}$, where $D$ is the number of space dimensions in which
+the particles have momentum. Then
+\begin{equation}
+n=\langle1\rangle=\frac{\nu\,V_D\,\kF^{D}}{(2\pi)^{D}},\qquad\nS=\Big\langle\frac{\mst}{E^{*}}\Big\rangle,
+\label{eq:densities}
+\end{equation}
+with the volume $V_D=\pi^{D/2}/\Gamma_{\mathrm E}(D/2+1)$ of the unit ball ($\Gamma_{\mathrm E}$ is
+Euler's gamma function). The second of Eqs.~(\ref{eq:hKS}) with the second of
+Eqs.~(\ref{eq:densities}) is the \emph{gap equation} for $\mst$. The energy density is
+\begin{equation}
+\varepsilon=\langle E^{*}\rangle+\tfrac12\GV\,n^{2}-\frac{(\mst-m)^{2}}{2\GS},
+\label{eq:epsKS}
+\end{equation}
+which is the kinetic and mass energy of the particles plus the interaction energy [the first term
+counts the mass as $\mst$ instead of $m$, which the last term corrects]; it is stationary with
+respect to $\mst$ exactly when the gap equation holds. The pressure along the coordinate $xj$ is
+\begin{equation}
+p_j=\Big\langle\frac{k_j^{2}}{E^{*}}\Big\rangle+\pint,\qquad\pint=\tfrac12\GV\,n^{2}+\frac{(\mst-m)^{2}}{2\GS}.
+\label{eq:pKS}
+\end{equation}
+The first term is the momentum that the particles carry across a surface; the \emph{interaction
+pressure} $\pint$ is the same in all directions. \emph{Along a coordinate on which the fields do not
+depend the particles have no momentum, and the pressure is $\pint$ alone}; this remark is used for
+the deflating coordinates below. The chemical potential is $\mu=E^{*}(\kF)+V_0$, and for an
+isotropic state $p=\mu n-\varepsilon$. Matter is \emph{self-bound} if its energy per particle,
+$\varepsilon/n$, is below the mass $m$ at some density; the density at which $\varepsilon/n$ is
+smallest is the \emph{saturation} density, where the pressure vanishes and
+$\mu=\varepsilon/n$ \cite{HugenholtzVanHove1958}.
+
+Two limitations are stated here once. The filled states of negative energy are not counted (the
+\emph{no-sea approximation}); Sec.~\ref{sec:cjtcontact} counts them. And the state is the one of
+lowest energy among the solutions of the gap equation: without the filled negative-energy states the
+energy as a function of an unrestricted trial mass has no lowest value, because a large negative
+trial mass places particles in states of negative rest energy.
+
+%%<1671>
+\subsection{Flat spacetime: the reference calculation}
+\label{sec:ksflat}
+
+On the flat $7+1$ spacetime the particles have momentum along all seven space coordinates, $D=7$,
+and a coupling has the dimension of a length to the sixth power. The reference example has
+$\GS=-10^{5}$ and $\GV=+10^{4}$ in units $m=1$. Table~\ref{tab:ksflat} gives its saturation point,
+computed by the program of this paper, together with the values of a first calculation with a
+notebook in the Wolfram Language; an independent script reproduces the same numbers a third time.
+Figure~\ref{fig:ksflat} shows the equation of state.
+
+\begin{table*}
+\caption{\label{tab:ksflat}Uniform matter on the flat $7+1$ spacetime at saturation, for
+$\GS=-10^{5}$, $\GV=+10^{4}$ (units $m=1$, seven space dimensions): the program of this paper and
+the first calculation with a notebook.}
+\begin{ruledtabular}
+\begin{tabular}{lll}
+quantity & this program & notebook \\
+\hline
+{{ROWS:tbl_ks_flat}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_ks_flat}
+\caption{\label{fig:ksflat}Uniform matter on the flat $7+1$ spacetime (seven space dimensions; units
+$m=1$) for two pairs of mean-field couplings. (a) Energy per particle minus $m$; the circle marks the
+saturation point of Table~\ref{tab:ksflat}. (b) Mass of the particles in matter. (c) Pressure
+divided by the energy density.}
+\end{figure*}
+
+The matter is self-bound: at $\kF={{GENM:ks_kf_sat}}\,m$ the energy per particle is
+${{GENM:ks_ebind}}\,m$ below the mass, and the mass of the particles in it is
+$\mst={{GENM:ks_mstar}}\,m$. The identity $p=\mu n-\varepsilon$ holds along the whole equation of state
+to $10^{-15}$ of $\varepsilon$, and at saturation $\mu=\varepsilon/n$.
+
+One remark concerns the relation between these two numbers and the couplings of the Lagrangian. If
+the Lagrangian has $g_0=-10^{5}$, $g_1=+10^{4}$ and no other coupling, Eq.~(\ref{eq:GHF}) gives
+$\GS^{\mathrm{HF}}=-98750$ and $\GV^{\mathrm{HF}}=+20000$: the exchange terms double the vector
+repulsion. For that pair the energy per particle is above $m$ at all densities [dashed curves of
+Fig.~\ref{fig:ksflat}; its local minimum lies ${{GENM:ks_hf_localmin}}\,m$ above $m$, at
+$\kF={{GENM:ks_hf_localmin_kf}}\,m$]: \emph{uniform matter is not self-bound.} The reference example is therefore to be read as $\GS=-10^{5}$, $\GV=+10^{4}$ for the
+mean-field couplings themselves, which corresponds to $g_0=-105341.6$, $g_1=+2484.5$ if no other
+coupling of the Lagrangian differs from zero.
+
+\subsection{Matter with momentum along the deflating coordinates}
+\label{sec:ks71}
+
+Now let $x5,x6,x7$ deflate, and consider matter whose particles have momentum along all seven space
+coordinates. The linear Dirac equation conserves the wavenumbers $k_t$ of a particle
+(Sec.~\ref{sec:dirac}); its proper momentum along $xt$ is $k_t/b_t$ and grows as the coordinate
+shrinks. If the particles do not collide, the occupied states remain the ball $|\vec k|<\kF$ of
+wavenumbers that they filled at a reference time, and the occupied proper momenta form an
+\emph{ellipsoid} that is stretched along $x5,x6,x7$ by the factors
+$b_t^{\mathrm{ref}}/b_t=e^{\rt(x4-x4_{\mathrm{ref}})}$. The number density grows as the volume
+shrinks,
+\begin{equation}
+n=n_{\mathrm{ref}}\,e^{\td},
+\end{equation}
+and the equations of Sec.~\ref{sec:ksmethod} hold with the averages taken over the ellipsoid; the
+pressure along a deflating coordinate is $p_t=\langle(k_t/b_t)^{2}/E^{*}\rangle+\pint$. The energy
+density obeys
+\begin{equation}
+\frac{d\varepsilon}{dx4}=\sum_{t}\rt\,(\varepsilon+p_t),
+\label{eq:conservation}
+\end{equation}
+the statement that the covariant divergence of the energy-momentum tensor vanishes; the program
+confirms it to $6\times10^{-9}$ and the independent script to $2\times10^{-8}$.
+
+Figure~\ref{fig:ksdefl} shows the history of the saturated matter of Table~\ref{tab:ksflat}, taken as
+the state at the reference time, for three equal rates and for rates in the ratio $1:2:3$.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_ks_deflating}
+\caption{\label{fig:ksdefl}Matter of the $7+1$ model with momentum along all seven space coordinates
+while $x5,x6,x7$ deflate, without collisions. At the clock reading $\td=0$ it is the saturated matter
+of Table~\ref{tab:ksflat}. (a) Mass of the particles in matter. (b) Energy per particle minus $m$:
+for the collisionless state, and for the state of lowest energy at the same density (``relaxed'').
+(c) Pressures along the flat coordinates and along the three deflating ones, divided by the energy
+density, for rates in the ratio $1:2:3$.}
+\end{figure*}
+
+\emph{The mass of the particles falls.} It reaches half its value at the reference time at
+$\td={{GENM:ks71_half_eq}}$ (equal rates) or ${{GENM:ks71_half_123}}$ (rates $1:2:3$).
+
+\emph{Matter is self-bound only for a limited time.} The energy per particle is below $m$ only for
+${{GENM:ks71_lo_eq}}<\td<{{GENM:ks71_hi_eq}}$ (equal rates;
+${{GENM:ks71_lo_123}}<\td<{{GENM:ks71_hi_123}}$ for $1:2:3$): about one e-folding of the deflating
+volume. Before that the matter is too dilute to bind, afterwards the vector repulsion
+$\tfrac12\GV n^{2}$ dominates; at $\td=4$ it is {{GEN:ks71_vec_eq}} per cent of the energy density,
+which then grows as $e^{2\td}$.
+
+\emph{The pressure becomes anisotropic}, larger along the coordinates that deflate faster
+[Fig.~\ref{fig:ksdefl}(c)].
+
+\emph{Collisions would release heat.} The collisionless state has more energy than the state of
+lowest energy at the same density, a ball of occupied states; the difference reaches
+${{GENM:ks71_heat}}\,m$ per particle at $\td=4$. Whether collisions are frequent enough to release it
+is not examined here.
+%%</1671>
+
+\subsection{Fields that do not depend on the deflating coordinates}
+\label{sec:ksreduced}
+
+%%<1644>
+On the $4+4$ spacetime matter exists only in the quantized sector: a mode that depends on a
+deflating time is extinguished (Sec.~\ref{sec:modes}). The particles then have momentum along
+$x0,\dots,x3$, so that $D=4$, or, if the fields do not depend on the hidden coordinate $x0$ either,
+along ordinary space, $D=3$. The self-interaction is taken in the quantized-sector form
+(Sec.~\ref{sec:forms}).
+%%</1644>
+%%<1671>
+Consider now the sector of fields that do not depend on $x5,x6,x7$. Its particles have momentum
+along $x0,\dots,x3$, so that $D=4$, or, if the fields do not depend on the hidden coordinate $x0$
+either, along ordinary space, $D=3$.
+%%</1671>
+By Eq.~(\ref{eq:couplings}) the equations of Sec.~\ref{sec:ksmethod} hold for the weighted field at
+each moment with the couplings of that moment,
+\begin{equation}
+\GS(x4)=\GS^{\mathrm{ref}}\,e^{\td},\qquad\GV(x4)=\GV^{\mathrm{ref}}\,e^{\td},
+\end{equation}
+while the mass $m$ and the density of particles per unit of the volume of $x0,\dots,x3$ do not
+change. The ratio $\GV/|\GS|$ is fixed. The deflation therefore carries the matter through a
+one-parameter sequence of interactions of growing strength, and \emph{a gas becomes self-bound
+matter at a definite moment}: when the scalar attraction reaches the threshold of
+Table~\ref{tab:ksthr}.
+
+\begin{table}
+\caption{\label{tab:ksthr}The smallest scalar attraction at which uniform matter is self-bound, for
+$D=4$ and $D=3$ space dimensions with momentum and three ratios of the vector repulsion to the
+scalar attraction, with the Fermi momentum of the bound state at the threshold (units $m=1$). The
+ratio 0.2025 is that of the Hartree-Fock couplings for $g_1=-0.1\,g_0$. Last column: the critical
+coupling of the vacuum for a cutoff equal to $m$ (Sec.~\ref{sec:cjtcontact}).}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+$D$ & $\GV/|\GS|$ & $|\GS|\,m^{D-1}$ & $\kF/m$ & $|G_c|\,m^{D-1}$ \\
+\hline
+{{ROWS:tbl_ks_thresholds}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+If the coupling at a reference time is $\GS^{\mathrm{ref}}$, the binding begins at the clock reading
+$\td=\ln(|\GS|_{\mathrm{threshold}}/|\GS^{\mathrm{ref}}|)$. Figure~\ref{fig:ksbind} follows the saturated
+matter from that moment on: its energy per particle falls and the mass of its particles falls, more
+slowly if a vector repulsion is present. The thresholds were computed twice, by the program and by
+the independent script, and agree to $10^{-9}$.
+
+\begin{figure*}
+\includegraphics[width=0.86\textwidth]{fig_ks_binding}
+\caption{\label{fig:ksbind}Self-bound matter in the sector of fields that do not depend on
+$x5,x6,x7$, along the deflation clock, counted from the moment at which matter first becomes
+self-bound. Upper row: energy per particle of the saturated state minus $m$. Lower row: mass of its
+particles. Left: $D=4$; right: $D=3$. Three ratios of the vector to the scalar coupling.}
+\end{figure*}
+
+Matter of a \emph{fixed} density is carried through the same sequence
+(Fig.~\ref{fig:ksgas}). Its pressure along the flat coordinates becomes negative at a moment that
+depends on the density (Table~\ref{tab:ksgas}): a uniform gas is then unstable against breaking up
+into drops of saturated matter. Along the deflating coordinates the pressure is the interaction
+pressure $\pint$ of Eq.~(\ref{eq:pKS}) alone, which is negative as long as the scalar attraction
+dominates: \emph{the matter pulls on the deflating coordinates.} Section~\ref{sec:gravity} uses this.
+
+\begin{table}
+\caption{\label{tab:ksgas}A gas of fixed Fermi momentum in the sector of fields that do not depend on
+$x5,x6,x7$: the coupling at which its pressure along the flat coordinates vanishes, and the clock
+reading of that moment counted from the binding threshold of Table~\ref{tab:ksthr} (negative: before
+the threshold is reached, at this higher density).}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+$D$ & $\GV/|\GS|$ & $\kF/m$ & $|\GS|\,m^{D-1}$ & $\td$ \\
+\hline
+{{ROWS:tbl_ks_gas}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_ks_gas}
+\caption{\label{fig:ksgas}A gas of fixed density in the sector of fields that do not depend on
+$x5,x6,x7$ ($D=4$, $\GV=0.1\,|\GS|$), along the deflation clock counted from the binding threshold.
+(a) Mass of the particles in matter. (b) Pressure along $x0,\dots,x3$ divided by the energy density.
+(c) Pressure along $x5,x6,x7$, the interaction pressure alone, divided by the energy density.}
+\end{figure*}
+
+%%<1644>
+\subsection{The two halves of the field in the covariant form}
+\label{sec:kshalves}
+
+With the covariant form of the self-interaction and the positive kinetic term
+(Sec.~\ref{sec:forms}) the particles of the two halves $W_{1644}=\pm1$ of the field are two kinds of
+particles with four internal states each, which carry opposite scalar and vector charges. The
+interaction energy is the four-term expression of Sec.~\ref{sec:hf}, and the masses of the two kinds
+obey two coupled gap equations,
+\begin{equation}
+m^{*}_{\pm}=m+\GS^{\mathrm c}\,\nS\pm\GS^{\mathrm{HF}}\,n_{SW} .
+\end{equation}
+For a scalar attraction $\GS^{\mathrm{HF}}<0$ a particle is attracted by particles of its own half
+and repelled by those of the other. The state with equal halves is then never the state of lowest
+energy at a given total density: \emph{the matter polarizes spontaneously}
+(Fig.~\ref{fig:kshalves}, Table~\ref{tab:kshalves}). The gap equations have exactly one solution at
+each polarization, with positive masses (the independent script searched from 81 starting values,
+including negative masses). For couplings three times the binding threshold of the quantized-sector
+form and a total density of the Fermi momentum $0.8\,m$ the energy per particle minus $m$ is
+${{GENM:halves_e0}}\,m$ for equal halves and ${{GENM:halves_e1}}\,m$ with all particles in one half,
+against ${{GENM:halves_eq}}\,m$ in the quantized-sector form: \emph{the covariant form binds matter
+much less.} A fully polarized state is matter of one kind of particle with four internal states.
+
+\begin{table}
+\caption{\label{tab:kshalves}Covariant form on $4+4$: the polarization
+$\mathrm{pol}_W=(n_+-n_-)/n$ of the state of lowest energy, for couplings $g_0<0$, $g_1=-0.1\,g_0$
+of 1.5, 3 and 6 times the value at which the quantized-sector form first binds matter, and four
+total densities given by the Fermi momentum that the density would have with equal halves ($D=4$;
+steps of 0.05 in the polarization).}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+couplings & $\kF=0.4\,m$ & $0.6\,m$ & $0.8\,m$ & $1.0\,m$ \\
+\hline
+{{ROWS:tbl_ks_halves}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_ks_halves}
+\caption{\label{fig:kshalves}Covariant form of the self-interaction on $4+4$: energy per particle as
+a function of the polarization of the two halves of the field, relative to the state with equal
+halves, for three strengths of the couplings and four total densities. Circles mark the state of
+lowest energy.}
+\end{figure*}
+%%</1644>

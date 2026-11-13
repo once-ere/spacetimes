@@ -1,0 +1,296 @@
+\section{The Dirac field with mass term and self-interaction}
+\label{sec:dirac}
+
+\subsection{Matrices and spin connection}
+
+At each point of a curved spacetime the tangent space is flat. The Dirac matrices of the orthonormal
+frame are therefore eight constant matrices $\gamma^{A}$, $A=0,\dots,7$. They are real $16\times16$
+matrices with entries $0$ and $\pm1$, printed in full in Appendix~\ref{app:matrices}.
+%%<1644>
+The four matrices of the space-like coordinates are symmetric and square to $+1$, the four matrices
+of the time-like coordinates are antisymmetric and square to $-1$, and different matrices
+anticommute:
+\begin{equation}
+\gamma^{A}\gamma^{B}+\gamma^{B}\gamma^{A}=2\,\etamup{AB} .
+\label{eq:clifford}
+\end{equation}
+%%</1644>
+%%<1671>
+The matrix of the time, $\gamma^{4}$, is symmetric and squares to $+1$; the seven matrices of the
+space-like coordinates are antisymmetric and square to $-1$; different matrices anticommute:
+\begin{equation}
+\gamma^{A}\gamma^{B}+\gamma^{B}\gamma^{A}=-2\,\etamup{AB} .
+\label{eq:clifford}
+\end{equation}
+The minus sign is a consequence of the sign convention of the metric (space-like components
+positive) together with matrices whose time matrix squares to $+1$; it accompanies the matrices
+through all formulas below.
+%%</1671>
+All of these properties were verified by exact integer arithmetic for this work. The matrices with a
+coordinate index are $\gamma^{\mu}=e_A{}^{\mu}\gamma^{A}$: five of them are the constant matrices,
+and the three along the deflating coordinates are the constant matrices divided by the scale
+factors, $\gamma^{A=t}/b_t$. They satisfy
+$\gamma^{\mu}\gamma^{\nu}+\gamma^{\nu}\gamma^{\mu}=\SIG{2}{-2}\,\gmup{\mu\nu}$ with the inverse
+metric $\gmup{\mu\nu}$.
+
+A spinor is defined relative to a frame, and its derivative must account for the turning of the frame
+from point to point \cite{BrillWheeler1957}. The covariant derivative of a spinor is
+$\nabla_\mu\psi=(\partial_\mu+\Omega_\mu)\psi$ with the spin connection
+\begin{equation}
+\begin{aligned}
+\Omega_\mu&=\SIG{}{-}\tfrac14\,\omega_{\mu AB}\,\gamma^{A}\gamma^{B},\\
+\omega_{\mu AB}&=\etam_{AC}\,e^{C}{}_{\nu}\big(\partial_\mu e_B{}^{\nu}+\Gamma^{\nu}{}_{\mu\lambda}e_B{}^{\lambda}\big),
+\end{aligned}
+\label{eq:spindef}
+\end{equation}
+whose coefficients $\omega_{\mu AB}=-\omega_{\mu BA}$ follow from the metric ($e^{C}{}_{\nu}$ is
+the inverse of the frame). \SIG{}{The minus sign is that of Eq.~(\ref{eq:clifford}): the matrices
+$-\tfrac14[\gamma^{A},\gamma^{B}]$ generate the Lorentz transformations of the spinors. }For the
+metric (\ref{eq:metric}) the only coefficients that do not vanish are
+$\omega_{t\,t4}=-\omega_{t\,4t}=\SIG{}{-}\rt\,b_t$, so that
+\begin{equation}
+\begin{aligned}
+\Omega_t&=\tfrac12\,\rt\,b_t\,\gamma^{t}\gamma^{4}\quad(t=5,6,7),\\
+\Omega_0&=\dots=\Omega_4=0,
+\end{aligned}
+\label{eq:spinconn}
+\end{equation}
+with the constant matrices of the frame on the right. Each $\Omega_t$ generates the Lorentz
+transformation in the plane of $xt$ and $x4$. The spin connection is correct if and only if the
+Dirac matrices are covariantly constant,
+$\partial_\mu\gamma^{\nu}+\Gamma^{\nu}{}_{\mu\lambda}\gamma^{\lambda}+[\Omega_\mu,\gamma^{\nu}]=0$,
+which holds for all 64 pairs of indices. Its curvature is the Riemann tensor,
+$[\nabla_\mu,\nabla_\nu]\psi=\SIG{}{-}\tfrac14R_{AB\mu\nu}\gamma^{A}\gamma^{B}\psi$, a third route to
+Eq.~(\ref{eq:riemann}). One combination enters the Dirac equation:
+\begin{equation}
+\gamma^{\mu}\Omega_\mu=-\tfrac12\,\gsum\,\gamma^{4} .
+\label{eq:gammaomega}
+\end{equation}
+The scale factors cancel, and only the total rate remains.
+
+\subsection{The Lagrangian: kinetic term, mass term, self-interaction}
+\label{sec:lagrangian}
+
+The field of this paper, $\psi_{\tg}(x)$, is a column of sixteen complex-valued Grassmann operators.
+Its Lagrangian has three parts,
+\begin{equation}
+\mathcal L_{\tg}=\Vd\,\big[\mathcal L_{\mathrm{kin}}+\mathcal L_{\mathrm{mass}}+\Lself\big],
+\label{eq:Ltot}
+\end{equation}
+where $\Vd=\sqrt{|\det g|}$ is the factor that makes $\mathcal L_{\tg}\,d^{8}x$ invariant. A
+bosonic field theory would call the second part the ``mass times $\phi^{2}$'' term and the third the
+``$\phi^{4}$'' term; for a fermion field they are bilinear and quartic in $\psi$.
+
+%%<1671>
+\emph{Kinetic and mass terms.} With the adjoint $\bar\psi=\psi^\dagger\gamma^{4}$,
+\begin{equation}
+\mathcal L_{\mathrm{kin}}+\mathcal L_{\mathrm{mass}}=\bar\psi\,\big(i\gamma^{\mu}\nabla_\mu-m\big)\,\psi .
+\label{eq:Lfree}
+\end{equation}
+The mass term $-m\,\bar\psi\psi$ is real because $\gamma^{4}$ is symmetric, and it is a scalar under
+the Lorentz transformations of the frame.
+
+\emph{Self-interaction.} The most general interaction without derivatives that is quartic in the
+field and invariant under the Lorentz transformations of the frame is built from the products of
+the Dirac matrices. Let $K=(A_1<A_2<\dots<A_r)$ be a strictly increasing list of $r$ indices out of
+$0,\dots,7$; $r=|K|$ is its \emph{rank}, and there are $2^{8}=256$ lists, with
+$1,8,28,56,70,56,28,8,1$ of the ranks $0,\dots,8$. Define
+\begin{equation}
+\Theta^{K}=\zeta_r\,\gamma^{A_1}\gamma^{A_2}\cdots\gamma^{A_r},\qquad
+\zeta_r=\begin{cases}i,&r=2,3,6,7,\\1,&\text{otherwise},\end{cases}
+\label{eq:Theta}
+\end{equation}
+($\Theta^{()}=1$ for the empty list) and $\Theta_K=(\Theta^{K})^{-1}=\sgnK\,\Theta^{K}$, where the
+sign $\sgnK=\pm1$ is the product of the squares of the matrices in $K$. The phase $\zeta_r$ makes
+$\gamma^{4}\Theta^{K}$ Hermitian, so that every bilinear $\bar\psi\Theta^{K}\psi$ is real. The
+\emph{invariant of rank $r$} and the self-interaction are
+\begin{equation}
+I_r=\sum_{|K|=r}(\bar\psi\Theta_K\psi)(\bar\psi\Theta^{K}\psi),\qquad
+\Lself=-\frac12\sum_{r=0}^{8}g_r\,I_r .
+\label{eq:Lself}
+\end{equation}
+The nine real constants $g_r$ are the couplings. $I_0=(\bar\psi\psi)^{2}$ is the square of the scalar
+density and $I_1=\sum_A(\bar\psi\gamma_{A}\psi)(\bar\psi\gamma^{A}\psi)$ the square of the current, where
+$\gamma_A=(\gamma^{A})^{-1}$; with the chirality matrix $\chi$ of Sec.~\ref{sec:clock},
+$I_8=-(\bar\psi\,i\chi\,\psi)^{2}$ and
+$I_7=-\sum_A(\bar\psi\gamma_{A}\chi\psi)(\bar\psi\gamma^{A}\chi\psi)$. In the traditional names the scalar,
+vector, axial-vector and pseudoscalar couplings are $g_S=g_0$, $g_V=g_1$, $g_A=-g_7$, $g_P=-g_8$. A
+coupling $g_r$ carries one digit as its subscript; it must not be confused with a rate ($\gff$) or
+with a component of the metric ($\gm_{55}$). In a gravitational field each $I_r$ is written with the
+frame matrices exactly as in flat spacetime, because it is invariant under the Lorentz
+transformations of the frame. Section~\ref{sec:selfint} shows that for anticommuting fields only
+four of the nine invariants are independent.
+
+\subsection{The field equation}
+
+The variation of the action with respect to $\bar\psi$ gives
+\begin{equation}
+\big(i\gamma^{\mu}\nabla_\mu-m\big)\psi_{\tg}=\sum_{r=0}^{8}g_r\sum_{|K|=r}\big(\bar\psi\Theta_K\psi\big)\,\Theta^{K}\psi .
+\label{eq:dirac}
+\end{equation}
+(The bilinears are even elements of the Grassmann algebra, so that the derivative with respect to
+$\bar\psi$ acts on $\Lself$ as on a product of ordinary numbers.) The left-hand side is the Dirac
+operator with the mass term; the right-hand side is the self-interaction, cubic in the field.
+Without it the equation is linear. With Eq.~(\ref{eq:gammaomega}),
+\begin{equation}
+\begin{aligned}
+&i\gamma^{4}\Big(\partial_4-\frac{\gsum}{2}\Big)\psi+i\sum_{j=0}^{3}\gamma^{j}\partial_j\psi
++i\sum_{t=5}^{7}\frac{\gamma^{t}}{b_t}\,\partial_t\psi-m\,\psi\\
+&\qquad=\sum_{r=0}^{8}g_r\sum_{|K|=r}\big(\bar\psi\Theta_K\psi\big)\,\Theta^{K}\psi,
+\end{aligned}
+\label{eq:diracexp}
+\end{equation}
+%%</1671>
+%%<1644>
+\emph{Kinetic and mass terms.} With the adjoint $\tilde\psi=\psi^\dagger\Cm$, where
+$\Cm=\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}$ (a real symmetric matrix that turns each Dirac matrix
+into minus its transpose),
+\begin{equation}
+\mathcal L_{\mathrm{kin}}+\mathcal L_{\mathrm{mass}}=\tilde\psi\,\big(\gamma^{\mu}\nabla_\mu-m\big)\,\psi .
+\label{eq:Lfree}
+\end{equation}
+It contains no factor $i$: with the real matrices of $4+4$ the operator $\gamma^{\mu}\nabla_\mu-m$
+gives the mass shell of a particle of mass $m$. The mass term $-m\,\tilde\psi\psi$ is real because
+$\Cm$ is symmetric, and it is invariant under the transformations of $SO(4,4)$ of the frame.
+
+\emph{Self-interaction.} The most general interaction without derivatives that is quartic in the
+field and invariant under the transformations of the frame is built from the products of the Dirac
+matrices. Let $K=(A_1<A_2<\dots<A_r)$ be a strictly increasing list of $r$ indices out of
+$0,\dots,7$; $r=|K|$ is its \emph{rank}, and there are $2^{8}=256$ lists, with
+$1,8,28,56,70,56,28,8,1$ of the ranks $0,\dots,8$. Define
+\begin{equation}
+\Theta^{K}=\zeta_r\,\gamma^{A_1}\gamma^{A_2}\cdots\gamma^{A_r},\qquad
+\zeta_r=\begin{cases}i,&r=1,2,5,6,\\1,&\text{otherwise},\end{cases}
+\label{eq:Theta}
+\end{equation}
+($\Theta^{()}=1$ for the empty list) and $\Theta_K=(\Theta^{K})^{-1}=\sgnK\,\Theta^{K}$, where the
+sign $\sgnK=\pm1$ is $(-1)^{r}$ times the product of the squares of the matrices in $K$. The phase
+$\zeta_r$ makes $\Cm\Theta^{K}$ Hermitian, so that every bilinear $\tilde\psi\Theta^{K}\psi$ is real.
+The \emph{invariant of rank $r$} and the self-interaction are
+\begin{equation}
+I_r=\sum_{|K|=r}(\tilde\psi\Theta_K\psi)(\tilde\psi\Theta^{K}\psi),\qquad
+\Lself=-\frac12\sum_{r=0}^{8}g_r\,I_r .
+\label{eq:Lself}
+\end{equation}
+The nine real constants $g_r$ are the couplings: $g_0$ multiplies the square of the scalar
+$\tilde\psi\psi$, $g_1$ the square of the current $\tilde\psi\gamma^{A}\psi$, $g_7$ and $g_8$ the
+squares of the axial current and of the pseudoscalar; in the traditional names $g_S=g_0$, $g_V=g_1$,
+$g_A=-g_7$, $g_P=-g_8$. A coupling $g_r$ carries one digit as its subscript; it must not be confused
+with a rate ($\gff$) or with a component of the metric ($\gm_{55}$). In a gravitational field each
+$I_r$ is written with the frame matrices exactly as in flat spacetime, because it is invariant under
+the transformations of the frame. Equation~(\ref{eq:Lself}) is the \emph{covariant form} of the
+self-interaction. Section~\ref{sec:selfint} shows that for anticommuting fields only four of the nine
+invariants are independent, and Sec.~\ref{sec:forms} that in the sector of the theory that can be
+quantized a second form of the self-interaction exists, which this paper adopts.
+
+\subsection{The field equation}
+
+The variation of the action with respect to $\tilde\psi$ gives
+\begin{equation}
+\big(\gamma^{\mu}\nabla_\mu-m\big)\psi_{\tg}=\sum_{r=0}^{8}g_r\sum_{|K|=r}\big(\tilde\psi\Theta_K\psi\big)\,\Theta^{K}\psi .
+\label{eq:dirac}
+\end{equation}
+(The bilinears are even elements of the Grassmann algebra, so that the derivative with respect to
+$\tilde\psi$ acts on $\Lself$ as on a product of ordinary numbers.) The left-hand side is the Dirac
+operator with the mass term; the right-hand side is the self-interaction, cubic in the field.
+Without it the equation is linear. With Eq.~(\ref{eq:gammaomega}),
+\begin{equation}
+\begin{aligned}
+&\gamma^{4}\Big(\partial_4-\frac{\gsum}{2}\Big)\psi+\sum_{j=0}^{3}\gamma^{j}\partial_j\psi
++\sum_{t=5}^{7}\frac{\gamma^{t}}{b_t}\,\partial_t\psi-m\,\psi\\
+&\qquad=\sum_{r=0}^{8}g_r\sum_{|K|=r}\big(\tilde\psi\Theta_K\psi\big)\,\Theta^{K}\psi,
+\end{aligned}
+\label{eq:diracexp}
+\end{equation}
+%%</1644>
+with the constant matrices. Three things distinguish the left-hand side and the interaction from
+their forms on flat spacetime: the derivative along the time is shifted by $\gsum/2$, each
+derivative along a deflating coordinate is divided by its scale factor, and, as the next subsection
+shows, the self-interaction is strengthened by the shrinking of the volume.
+
+\subsection{The weighted field}
+
+The shift is removed by a change of normalization. Define the \emph{weighted field}
+\begin{equation}
+\hpsi=\sqrt{\Vd}\,\psi .
+\label{eq:weighted}
+\end{equation}
+Because $\partial_4\sqrt{\Vd}=-\tfrac12\gsum\sqrt{\Vd}$, the left-hand side of
+Eq.~(\ref{eq:diracexp}) applied to $\psi$ equals $\Vd^{-1/2}$ times the same expression without the
+term $\gsum/2$ applied to $\hpsi$. The right-hand side is cubic in the field and therefore equals
+$\Vd^{-3/2}$ times the same expression in $\hpsi$. The weighted field thus obeys
+Eq.~(\ref{eq:diracexp}) \emph{without the term $\gsum/2$ and with every coupling $g_r$ replaced by}
+\begin{equation}
+\frac{g_r}{\Vd(x4)}\ \propto\ g_r\,e^{\gsum\,x4} .
+\label{eq:grun}
+\end{equation}
+The quantity $\psi^\dagger\psi$ is a density per unit of proper volume and grows as the deflating
+coordinates shrink; $\hpsi^\dagger\hpsi$ is the density per unit of coordinate volume, from which
+this trivial growth is removed.
+
+The central observation of this paper follows at once. \emph{For a field that does not depend on
+$x5$, $x6$, $x7$, the equation of the weighted field is exactly the flat equation with a
+self-interaction whose couplings grow as $e^{\gsum\,x4}$.} Every result that holds on flat
+spacetime for such fields, in particular everything about the pairing of the fermions, holds for
+the weighted field at each moment with the couplings of that moment. The deflation enters those
+results in one way only, through the dependence of the couplings on $\Vd$ (Sec.~\ref{sec:clock}):
+the mass term is not changed, and every quartic coupling grows at the same rate.
+
+A field that does depend on a deflating coordinate feels the deflation directly. The rest of this
+section and Sec.~\ref{sec:modes} treat the equation without the self-interaction, which is linear
+and can be solved exactly; it describes a field so dilute that the cubic term is negligible, and
+the single-particle states from which the many-body treatment of
+Secs.~\ref{sec:selfint}--\ref{sec:ks} starts. Because the
+coefficients depend on $x4$ only, a solution of the linear equation can be taken proportional to
+$\exp(i\sum_j\SIG{k_j}{p_j}\,xj+i\sum_tk_t\,xt)$ with seven constant wavenumbers, four along the flat
+coordinates $xj$, $j=0,1,2,3$, and three along the deflating ones; such a solution is a \emph{mode}. Multiplying the equation of the weighted field by $\gamma^{4}$ gives an ordinary
+differential equation in the time:
+%%<1644>
+\begin{equation}
+\partial_4\hpsi=K(x4)\,\hpsi,\qquad K=K_\perp+i\,\kd(x4)\,\gamma^{4}\gamma^{d},
+\label{eq:K}
+\end{equation}
+where $K_\perp=-m\gamma^{4}+i\sum_jk_j\gamma^{4}\gamma^{j}$ is the operator of the modes that do not
+depend on the deflating times,
+\begin{equation}
+\kd(x4)=\Big(\sum_t\frac{k_t^{2}}{b_t(x4)^{2}}\Big)^{1/2}
+\label{eq:kd}
+\end{equation}
+is the \emph{physical} wavenumber along the deflating coordinates, and
+$\gamma^{d}=\kd^{-1}\sum_t(k_t/b_t)\gamma^{t}$ is the frame matrix along its direction. With
+$\Eperp=(m^{2}+\sum_jk_j^{2})^{1/2}$,
+\begin{equation}
+K^{2}=\big(\kd^{2}-\Eperp^{2}\big)\,1 .
+\label{eq:K2}
+\end{equation}
+$K_\perp$ is anti-Hermitian and $i\gamma^{4}\gamma^{d}$ is Hermitian. The evolution in the time is
+unitary, and $\hpsi^\dagger\hpsi$ is conserved, if and only if $k_5=k_6=k_7=0$. For the other modes
+the square of $K$ is negative while $\kd<\Eperp$ and positive afterwards: the mode oscillates until
+its physical wavenumber, which grows as $e^{\rt\,x4}$, has reached $\Eperp$, and its solutions grow
+or decay exponentially thereafter. A conserved charge exists, $\hpsi^\dagger W_{1644}\hpsi$ with the
+Hermitian matrix $W_{1644}=i\Cm\gamma^{4}$ ($W_{1644}^{2}=1$), but it is not positive.
+%%</1644>
+%%<1671>
+\begin{equation}
+i\,\partial_4\hpsi=\hh(x4)\,\hpsi,\qquad\hh=\hh_\perp+\kd(x4)\,\alpha^{d},
+\label{eq:h}
+\end{equation}
+where $\hh_\perp=m\beta+\sum_jp_j\alpha^{j}$ is the Hamiltonian of the modes that do not depend on
+the deflating coordinates ($\beta=\gamma^{4}$, $\alpha^{A}=\gamma^{4}\gamma^{A}$),
+\begin{equation}
+\kd(x4)=\Big(\sum_t\frac{k_t^{2}}{b_t(x4)^{2}}\Big)^{1/2}
+\label{eq:kd}
+\end{equation}
+is the \emph{physical} wavenumber along the deflating coordinates, and
+$\alpha^{d}=\kd^{-1}\sum_t(k_t/b_t)\alpha^{t}$ is the matrix $\alpha$ along its direction. With
+$\Eperp=(m^{2}+\sum_jp_j^{2})^{1/2}$,
+\begin{equation}
+\hh^{2}=\big(\Eperp^{2}+\kd^{2}\big)\,1 .
+\label{eq:h2}
+\end{equation}
+The Hamiltonian is real and symmetric at every time: the evolution is unitary and
+$\hpsi^\dagger\hpsi$ is conserved. But the Hamiltonian depends on the time, through a term that
+anticommutes with $\beta$, and the energy of a mode with $k_t\neq0$ grows as $e^{\rt\,x4}$. A
+Hamiltonian of this kind creates pairs \cite{Parker1969}.
+%%</1671>
+

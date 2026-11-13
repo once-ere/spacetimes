@@ -1,0 +1,160 @@
+\section{Order parameter, hidden symmetry and vortices}
+\label{sec:order}
+
+\subsection{Frame components and coordinate components}
+
+The order parameter of the superfluid is the expectation value $\Delta^{a}$ of the vector pair
+operator (\ref{eq:pairs}) along the extra axis $a\in\{0,5,6,7\}$: four complex numbers. On the
+deflating spacetime the index $a$ is a \emph{frame} index: $\Delta^{a}$ is the component along the
+unit vector $e_a$. The coordinate components along the deflating coordinates are
+$\Delta_t=b_t(x4)\,\Delta^{t}$, and they shrink with the scale factors when the frame components are
+constant. All statements below are about frame components.
+
+The energy of the paired state depends on the order parameter through the $8\times8$ gap matrix
+$\MM$ on the internal states of a pair. The identity
+\begin{equation}
+\tfrac18\,\mathrm{Tr}\big[(\MM\MM^\dagger)^{2}\big]
+=2\Big(\sum_a|\Delta^{a}|^{2}\Big)^{2}-\Big|\sum_{a,b}\eta_{ab}\,\Delta^{a}\Delta^{b}\Big|^{2},
+\label{eq:quartic}
+\end{equation}
+holds on the deflating spacetime with the frame metric $\eta_{ab}$ of the four axes, to
+$2\times10^{-14}$. In coordinate components the same expression contains the metric $g_{tt}$ of the
+moment.
+
+\subsection{The ground state: no direction is preferred}
+
+\begin{table}
+\caption{\label{tab:states}The potential $V$ of the paired state for six states of the order
+parameter, in units of $N(0)\Delta_F^{2}$, where $\Delta_F$ is the gap of a unitary state. Each
+state is taken at the magnitude of the order parameter at which its potential is stationary.
+$d_-^{2}$ and $d_+^{2}$: the squares of the two fourfold gaps of the state, in units of
+$\Delta_F^{2}$. Flat and positive: the numbers of eigenvalues of the matrix of second derivatives of
+the potential that vanish and that are positive.}
+\begin{ruledtabular}
+\begin{tabular}{p{0.37\columnwidth}ccccc}
+state & $d_-^{2}$ & $d_+^{2}$ & $V$ & flat & positive \\
+\hline
+{{ROWS:tbl_states|rows=\SIG{6-11}{0-5}|cols=1,2,3,4,5,6}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Table~\ref{tab:states} gives the potential of the paired state for six states of the order
+parameter. Every \emph{unitary} state, in which $\Delta^{a}$ is a real unit vector times a phase, has
+all eight gaps equal and the lowest potential, whichever direction the vector has. It has four flat
+directions, the Goldstone modes (one phase and three rotations of the direction), and four
+directions of positive curvature. The \emph{half-paired} states, in which four of the eight gaps
+vanish, have half the condensation energy.
+
+One might have expected the deflation to select the direction of the order parameter: the hidden
+axis $x0$, which does not deflate, against the three axes that do. \emph{In the sector of fields
+that do not depend on the extra coordinates it does not.} The reason is the central observation of
+Sec.~\ref{sec:dirac}: in this sector the weighted field obeys the flat equations, and their internal
+symmetry rotates the four frame axes into one another. The symmetry of the manifold of ground states
+is larger than the symmetry of the spacetime.
+
+\subsection{The internal symmetry of the sector, and the symmetries of the spacetime}
+\label{sec:hidden}
+
+For fields that depend on $x1,x2,x3,x4$ only, the equation of the weighted field contains five
+matrices: \SIG{$\alpha^{1},\alpha^{2},\alpha^{3}$, $\beta$ and $i\beta\chi$}{$\alpha^{1},\alpha^{2},\alpha^{3}$,
+$\beta$ and $i\beta\chi$}, the last through the coupling of the phase mode. The matrices that commute
+with all five generate the \emph{internal symmetry} of the sector. The program computes it again for
+the deflating spacetime, item by item, and finds it unchanged:
+\begin{itemize}
+\item the algebra is $su(2)_A\oplus su(2)_B\oplus u(1)_F\oplus u(1)_E$, of dimension 8;
+\item the eight internal states of a fermion form the two doublets $(2,1)+(1,2)$;
+\item the four vector pair operators (\ref{eq:pairs}) form the $(2,2)$, with fermion number 2, and
+their one invariant quadratic form is the frame metric of the four axes, with the signs
+\SIG{$(+,-,-,-)$}{$(+,+,+,+)$ up to an overall sign};
+\item a condensate along one axis breaks $SO(4)=[SU(2)_A\times SU(2)_B]/Z_2$ to $SO(3)$.
+\end{itemize}
+Here $U(1)_E$ is a second phase symmetry of the sector, with a generator $P$ that has the square one
+and distinguishes the doublets of $SU(2)_A$ from those of $SU(2)_B$.
+
+Six of the generators are the products $\gamma^{A}\gamma^{B}$ of the six pairs taken from the four
+axes $x0,x5,x6,x7$.
+%%<1671>
+On the flat $7+1$ spacetime they are the rotations of the four extra space-like coordinates, and the
+internal symmetry $SO(4)$ is a symmetry of the spacetime. On the deflating spacetime this is no
+longer so (Fig.~\ref{fig:isometries}). Of the six, the spacetime keeps
+\begin{itemize}
+\item none, if the three rates differ;
+\item one, the rotation of the two coordinates with the same rate, if two rates are equal;
+\item three, the rotations of $x5,x6,x7$ among themselves, if the three rates are equal.
+\end{itemize}
+The three rotations that mix the hidden axis $x0$ with a deflating coordinate are never symmetries
+of the deflating spacetime: $x0$ keeps its size and the other three shrink. The generators that are
+lost as symmetries of the spacetime remain exact symmetries of the sector. They are \emph{hidden
+symmetries}: symmetries of the equations of a sector that are not transformations of the spacetime.
+On the $4+4$ spacetime this is the situation from the start, with or without deflation, because
+the rotations that mix the hidden coordinate with the additional times are not unitary there.
+%%</1671>
+%%<1644>
+On the flat $4+4$ spacetime only three of them belong to transformations of the spacetime that the
+sector inherits: the products $\gamma^{s}\gamma^{t}$ of two additional times generate the rotations
+$SO(3)_T$ of $x5,x6,x7$. The other three, $\gamma^{0}\gamma^{t}$, are Hermitian; the unitary
+transformations that they generate in the quantized sector are not the boosts of the planes of $x0$
+and $xt$, which are not unitary. The full $SU(2)_A\times SU(2)_B$ was therefore a \emph{hidden
+symmetry} already on the flat spacetime: a symmetry of the equations of a sector that is not a
+transformation of the spacetime. On the deflating spacetime even $SO(3)_T$ is a
+symmetry of the spacetime only if the three rates are equal (Fig.~\ref{fig:isometries}). With two
+equal rates one rotation remains, and with three different rates none. The internal symmetry of the
+sector is nevertheless exact in all three cases.
+%%</1644>
+
+\subsection{Vortices and their zero modes}
+\label{sec:vortex}
+
+Because the vacuum value of the Vorton-Scalar breaks the phase symmetry $\UVS$, the field has
+line-like defects \cite{NielsenOlesen1973}: along a straight line, say the $x3$ axis, its magnitude
+vanishes, and around the line its phase winds by $2\pi$ times an integer. For unit winding,
+$\PhiVS$ is $\vVS/\sqrt2$ times a profile that rises from 0 on the line to 1 at a distance of the
+order of $1/m_s$, times $e^{i\theta_{12}}$ with the angle $\theta_{12}$ around the line in the plane
+of $x1$ and $x2$.
+
+\emph{Energy per unit length.} It is proportional to the square of the four-dimensional vacuum
+value and so falls as $e^{-\td}$: in the four-dimensional description vortex lines become lighter as
+the deflation proceeds, while their core, of the radius $1/m_s$, keeps its size.
+
+\emph{Fermions on the line.} On the line the fermion mass vanishes, and fermions can be trapped
+there \cite{JackiwRossi1981}. In the field of the vortex the Hamiltonian of a fermion is
+\begin{equation}
+\sum_{j=1}^{3}\alpha^{j}p_j+m\,(\text{profile})\,\beta\,\big(\cos\theta_{12}+i\chi\,\sin\theta_{12}\big),
+\end{equation}
+with the momenta $p_j$ along $x1,x2,x3$. A state of zero energy at zero momentum along the line is a
+constant spinor $w_z$ times a function that decays away from the line. Inserting this form, the
+Hamiltonian annihilates the state for every angle if and only if
+\begin{equation}
+\big(i\alpha^{1}+\beta\big)\,w_z=0,\qquad\big(i\alpha^{2}+i\beta\chi\big)\,w_z=0 .
+\label{eq:zeromode}
+\end{equation}
+The five matrices $\alpha^{1},\alpha^{2},\alpha^{3},\beta,i\beta\chi$ are Hermitian, have the square
+one and anticommute with one another. The two conditions state that $w_z$ is an eigenvector, with the
+eigenvalue $-1$, of the two commuting matrices $i\beta\alpha^{1}$ and $\alpha^{2}\beta\chi$, and each
+joint eigenspace of these two matrices has the dimension $16/4=4$. \emph{A vortex line of unit
+winding carries four zero modes of the sixteen-component field.}
+
+For a momentum $p_3$ along the line the energy is the eigenvalue of $\alpha^{3}p_3$. On the four
+zero modes $\alpha^{3}$ equals the matrix
+\begin{equation}
+P_c=i\,\alpha^{1}\alpha^{2}\alpha^{3}\chi,
+\end{equation}
+the product of the five matrices, which commutes with each of them, is Hermitian and traceless and
+has the square one; it is, up to its sign, the generator $P$ of $U(1)_E$. Its trace on the four zero
+modes vanishes. \emph{Two zero modes move along the line in one direction at the speed of light and
+two in the other}, and the direction of motion is tied to the charge under $U(1)_E$. For winding $-1$
+the two directions are exchanged.
+
+Equations (\ref{eq:zeromode}) contain only the matrices of the frame and the fermion mass, neither of
+which changes. The four zero modes therefore exist at every moment of the deflation. The count also
+holds on flat spacetime. (The familiar count for a four-component field is one zero mode for each
+unit of winding; the sixteen components are equivalent to four such fields.)
+
+Massless fermions that run along a vortex line carry a current \cite{Witten1985}; a closed loop of
+the line can be held open by that current, and such loops are the \emph{vortons} of the literature
+on cosmic strings \cite{DavisShellard1989}. Because the energy per length of the line falls as
+$e^{-\td}$ while the fermions on it stay massless, the balance between the tension of a loop and the
+current on it shifts in favor of the current as the deflation proceeds. This paper establishes the
+ingredients of that statement; it does not compute the equilibrium radius of a loop.
+

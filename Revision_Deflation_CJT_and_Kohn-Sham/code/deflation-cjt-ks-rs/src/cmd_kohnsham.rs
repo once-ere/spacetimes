@@ -130,12 +130,12 @@ pub fn run() -> std::io::Result<bool> {
         }
     }
     write_csv("ks_flat_eos.csv",
-        &[("content", format!("equation of state of uniform matter on flat 7+1 spacetime (seven space dimensions, no-sea approximation) for g_0 = -1e5, g_1 = +1e4: set 0 = Hartree (G_S = g_0, G_V = g_1, as in the author's document), set 1 = Hartree-Fock (G_S = G_0 = {}, G_V = G_1 = {}; module selfint)", hf.gs, hf.gv)),
+        &[("content", format!("equation of state of uniform matter on flat 7+1 spacetime (seven space dimensions, no-sea approximation) for two sets of the mean-field couplings: set 0 = G_S = -1e5, G_V = +1e4, the values that the Kohn-Sham section of the author's document KOHN_SHAM_GRAVITY uses; set 1 = G_S = {}, G_V = {}, the Hartree-Fock couplings G = (1 - F^T) g that the couplings g_0 = -1e5, g_1 = +1e4 of the Lagrangian give (module selfint; the same two numbers are printed in section 4 of the author's document)", hf.gs, hf.gv)),
           ("columns", "set; kF: Fermi momentum; rho: density; M: mass of the particles in matter; eps: energy density; p: pressure; e_bind: energy per particle minus m; mu: chemical potential; cs2: square of the speed of sound dp/d eps (units m = 1)".to_string()),
           ("command", CMD.to_string())],
         &["set", "kF", "rho", "M", "eps", "p", "e_bind", "mu", "cs2"], &rows)?;
     let mu_sat = chemical_potential(&hartree, ksat, &sat);
-    rep.add("ks-K2", "numerical", &format!("thermodynamic consistency of the Kohn-Sham state (flat, seven space dimensions): the pressure computed from the momentum integral, <k^2/(7 w)> + Pi, equals mu rho - eps with mu = sqrt(k_F^2 + M^2) + G_V rho along the whole equation of state (141 Fermi momenta for each of the two sets; largest deviation {:.1e} of eps); at saturation the chemical potential equals the energy per particle (theorem of Hugenholtz and Van Hove): mu - E/A = {:.1e}. With the exchange terms (G_0 = {}, G_1 = {}) the lowest energy per particle is E/A - m = {:.6} at k_F = {:.4}: {}", thermo, mu_sat - sat.e_per_particle, hf.gs, hf.gv, e_hf, khf, if e_hf < -1e-9 { "matter is self-bound in Hartree-Fock as well" } else { "in Hartree-Fock the doubled vector repulsion removes the binding: matter is not self-bound for these couplings" }), thermo < 1e-9 && (mu_sat - sat.e_per_particle).abs() < 1e-9);
+    rep.add("ks-K2", "numerical", &format!("thermodynamic consistency of the Kohn-Sham state (flat, seven space dimensions): the pressure computed from the momentum integral, <k^2/(7 w)> + Pi, equals mu rho - eps with mu = sqrt(k_F^2 + M^2) + G_V rho along the whole equation of state (141 Fermi momenta for each of the two sets; largest deviation {:.1e} of eps); at saturation the chemical potential equals the energy per particle (theorem of Hugenholtz and Van Hove): mu - E/A = {:.1e}. A remark on the author's example: his document uses G_S = -1e5, G_V = +1e4 in its Kohn-Sham section and calls them the Hartree-Fock couplings G_0, G_1, while the Hartree-Fock couplings of g_0 = -1e5, g_1 = +1e4 are G_0 = {}, G_1 = {} (his section 4 and check 71s-S7 here). For the second pair the lowest energy per particle is E/A - m = {:.6} at k_F = {:.4}: {}", thermo, mu_sat - sat.e_per_particle, hf.gs, hf.gv, e_hf, khf, if e_hf < -1e-9 { "matter is self-bound for these couplings as well" } else { "the doubled vector repulsion removes the binding, and uniform matter is not self-bound. The numbers of the author's Kohn-Sham section therefore belong to G_S = -1e5, G_V = +1e4 taken as the mean-field couplings themselves (as couplings of the Lagrangian with g_2 = .. = g_8 = 0 that would be g_0 = -105341.6, g_1 = +2484.5)" }), thermo < 1e-9 && (mu_sat - sat.e_per_particle).abs() < 1e-9);
     println!("[{:>5.1} s] flat spacetime done", t0.elapsed().as_secs_f64());
 
     // =====================================================================================
@@ -214,7 +214,7 @@ pub fn run() -> std::io::Result<bool> {
     // 3. the sector of fields that do not depend on x5, x6, x7: D = 4 and D = 3
     // =====================================================================================
     let hf_ratio = hf.gv / -hf.gs;
-    let ratios: [(&str, f64); 3] = [("scalar attraction alone (G_V = 0)", 0.0), ("G_V = 0.1 |G_S| (the author's example, Hartree)", 0.1), ("the author's example with exchange terms (Hartree-Fock)", hf_ratio)];
+    let ratios: [(&str, f64); 3] = [("scalar attraction alone (G_V = 0)", 0.0), ("G_V = 0.1 |G_S| (the ratio of the values G_S = -1e5, G_V = +1e4 of the author's document)", 0.1), ("G_V = 0.2025 |G_S| (the ratio of the Hartree-Fock couplings of g_0 = -1e5, g_1 = +1e4)", hf_ratio)];
     let mut thr_rows: Vec<Vec<String>> = Vec::new();
     let mut gas_rows: Vec<Vec<f64>> = Vec::new();
     let mut sat_rows: Vec<Vec<f64>> = Vec::new();
@@ -263,17 +263,17 @@ pub fn run() -> std::io::Result<bool> {
     }
     write_csv_str("ks_reduced_thresholds.csv",
         &[("content", "fields that do not depend on x5, x6, x7 (D = 4 space dimensions: the quantized sector of 4+4 with the quantized-sector form of the interaction, and the low-energy sector of 7+1; D = 3: fields that do not depend on the hidden coordinate x0 either). The couplings of the reduced Lagrangian grow as exp(tau_d). The smallest scalar attraction at which uniform matter is self-bound (energy per particle below m at some density), in units m = 1, the Fermi momentum of the bound state just above the threshold, and for comparison the critical coupling of the vacuum for a cutoff equal to m".to_string()),
-          ("columns", "D; ratio_set: 0 = G_V = 0, 1 = G_V = 0.1 |G_S|, 2 = Hartree-Fock ratio; description; ratio G_V/|G_S|; GS_abs: |G_S| m^(D-1) at the threshold; kF: Fermi momentum of the bound state; Gc: critical coupling G_c m^(D-1) of the vacuum for Lambda = m".to_string()),
+          ("columns", "D; ratio_set: 0 = G_V = 0, 1 = G_V = 0.1 |G_S|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g_1 = -0.1 g_0; description; ratio G_V/|G_S|; GS_abs: |G_S| m^(D-1) at the threshold; kF: Fermi momentum of the bound state; Gc: critical coupling G_c m^(D-1) of the vacuum for Lambda = m".to_string()),
           ("command", CMD.to_string())],
         &["D", "ratio_set", "description", "ratio", "GS_abs", "kF", "Gc"], &thr_rows)?;
     write_csv("ks_reduced_gas.csv",
         &[("content", "fields that do not depend on x5, x6, x7: a gas of fixed Fermi momentum while the couplings grow as exp(tau_d): the coupling and the clock reading (counted from the binding threshold of the same ratio set) at which the pressure of the gas becomes negative".to_string()),
-          ("columns", "D; ratio_set: 0 = G_V = 0, 1 = G_V = 0.1 |G_S|, 2 = Hartree-Fock ratio; ratio G_V/|G_S|; kF; GS_abs: |G_S| m^(D-1) at which p = 0; tau_d: clock reading relative to the binding threshold".to_string()),
+          ("columns", "D; ratio_set: 0 = G_V = 0, 1 = G_V = 0.1 |G_S|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g_1 = -0.1 g_0; ratio G_V/|G_S|; kF; GS_abs: |G_S| m^(D-1) at which p = 0; tau_d: clock reading relative to the binding threshold".to_string()),
           ("command", CMD.to_string())],
         &["D", "ratio_set", "ratio", "kF", "GS_abs", "tau_d"], &gas_rows)?;
     write_csv("ks_reduced_saturation.csv",
         &[("content", "self-bound matter in the sector of fields that do not depend on x5, x6, x7, along the deflation clock: at each clock reading the state of lowest energy per particle (the saturation point, pressure zero) for the couplings of that moment, G_S = -|G_S(threshold)| exp(tau_d), G_V = ratio |G_S|; tau_d is counted from the moment at which matter first becomes self-bound".to_string()),
-          ("columns", "D: number of space dimensions with momentum (4 or 3); ratio_set: 0 = G_V = 0, 1 = G_V = 0.1 |G_S|, 2 = Hartree-Fock ratio of the author's example; tau_d; GS_abs = |G_S| m^(D-1); kF: Fermi momentum at saturation; rho; M: mass of the particles in matter; e_bind: energy per particle minus m; p: pressure (zero at an interior minimum); cs2: square of the speed of sound".to_string()),
+          ("columns", "D: number of space dimensions with momentum (4 or 3); ratio_set: 0 = G_V = 0, 1 = G_V = 0.1 |G_S|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g_1 = -0.1 g_0; tau_d; GS_abs = |G_S| m^(D-1); kF: Fermi momentum at saturation; rho; M: mass of the particles in matter; e_bind: energy per particle minus m; p: pressure (zero at an interior minimum); cs2: square of the speed of sound".to_string()),
           ("command", CMD.to_string())],
         &["D", "ratio_set", "tau_d", "GS_abs", "kF", "rho", "M", "e_bind", "p", "cs2"], &sat_rows)?;
     write_csv("ks_reduced_fixed_density.csv",
@@ -344,9 +344,9 @@ pub fn run() -> std::io::Result<bool> {
     }
     write_csv("ks_44c_polarization.csv",
         &[("content", format!("the covariant form of the self-interaction on 4+4 in the quantized sector (D = 4): the two halves W = +1 and W = -1 of the field as two kinds of particles with four states each. Couplings g_0 = -|g_0|, g_1 = 0.1 |g_0| with |g_0| = mult times {:.5} (the value at which the quantized-sector form with the same couplings first binds matter); Hartree-Fock couplings of module selfint (check 44c-S7)", thr_q)),
-          ("columns", "mult: strength of the couplings; kF_total: Fermi momentum that the total density would have with all eight states filled equally; rho: total density; P = (rho_+ - rho_-)/rho: polarization; M_plus, M_minus: masses of the particles of the two halves; eps: energy density; e_bind: energy per particle minus m; e_bind_q: the same density in the quantized-sector form".to_string()),
+          ("columns", "mult: strength of the couplings; kF_total: Fermi momentum that the total density would have with all eight states filled equally; rho: total density; pol_W = (rho_+ - rho_-)/rho: polarization; M_plus, M_minus: masses of the particles of the two halves; eps: energy density; e_bind: energy per particle minus m; e_bind_q: the same density in the quantized-sector form".to_string()),
           ("command", CMD.to_string())],
-        &["mult", "kF_total", "rho", "P", "M_plus", "M_minus", "eps", "e_bind", "e_bind_q"], &rows)?;
+        &["mult", "kF_total", "rho", "pol_W", "M_plus", "M_minus", "eps", "e_bind", "e_bind_q"], &rows)?;
     rep.add("ks-K8", "numerical", &format!("covariant form of the interaction on 4+4 (the two halves W = +1 and W = -1 carry opposite scalar and vector charge): for the attractive scalar coupling of the author's example (g_1 = -0.1 g_0) the state with equal halves is never the state of lowest energy; matter polarizes spontaneously. Polarization P = (rho_+ - rho_-)/rho of the state of lowest energy, for couplings 1.5, 3 and 6 times the binding threshold of the quantized-sector form and total densities of Fermi momentum 0.4, 0.6, 0.8, 1.0 (in this order): {} (grid of 0.05). The fully polarized state is the Kohn-Sham state of one kind of particle with four states and the couplings G_S0 + G_0, G_V0 + G_1 (verified to 1e-9). Example: {}", k8_pol.join(", "), k8_txt.join("; ")), k8);
     println!("[{:>5.1} s] covariant form done", t0.elapsed().as_secs_f64());
 

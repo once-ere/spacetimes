@@ -141,13 +141,16 @@ pub fn run() -> std::io::Result<bool> {
         ("y_VS (four-dimensional)", "Yukawa coupling of the weighted fields", 1, 2, "y_VS/sqrt(Vd)"),
         ("lambda_VS (four-dimensional)", "quartic coupling of the weighted Vorton-Scalar", 1, 1, "lambda_VS/Vd"),
         ("v_VS (four-dimensional)", "vacuum value of the weighted Vorton-Scalar", -1, 2, "v_VS sqrt(Vd)"),
-        ("m", "fermion mass y_VS v_VS/sqrt(2)", 0, 1, "constant"),
+        ("m_D", "bare Dirac mass (the mass term of the Lagrangian of the fermion field)", 0, 1, "constant"),
+        ("m_Y", "part of the fermion mass that the Vorton-Scalar gives, y_VS v_VS/sqrt(2); the mass in vacuum is m = m_D + m_Y", 0, 1, "constant"),
         ("m_s", "mass of the radial mode sqrt(2 lambda_VS) v_VS", 0, 1, "constant"),
-        ("g_VS", "coupling of the radial mode to the fermions, m/v_VS", 1, 2, "follows v_VS"),
+        ("g_r (four-dimensional)", "each of the nine couplings of the self-interaction of the weighted field, and with them the mean-field couplings G_S, G_V", 1, 1, "g_r/Vd"),
+        ("g_VS", "coupling of both modes of the Vorton-Scalar to the fermions, m_Y/v_VS", 1, 2, "follows v_VS"),
         ("alpha_VS", "g_VS^2/(4 pi)", 1, 1, ""),
         ("G_VS", "constant of the Fermi type of the neutral-current interaction, 1/(sqrt(2) v_VS^2)", 1, 1, "follows v_VS"),
         ("D_VS", "alpha_VS m/m_s: decides whether two fermions bind", 1, 1, ""),
         ("C", "g_VS^2 m^2/m_s^2: decides the state of matter", 1, 1, ""),
+        ("m_ph", "mass of the phase mode of the Vorton-Scalar when m_D is not zero, m_ph^2 v_VS^2 = |<psibar psi>_vac| m_D m_Y/m", 1, 2, "follows 1/v_VS"),
         ("vortex energy per length", "proportional to v_VS^2 (four-dimensional)", -1, 1, ""),
         ("G_Fermi (Fermi constant of the weak interaction) if the vacuum value of the Vorton-Scalar sets the electroweak scale (assumption HV)", "1/(sqrt(2) v_VS^2), four-dimensional vacuum value", 1, 1, "all masses m = y v/sqrt(2) stay constant"),
         ("G_N (Newton's constant) if gravity is eight-dimensional (A2)", "G_8/(volume of x5 x6 x7)", 1, 1, ""),
@@ -176,6 +179,22 @@ pub fn run() -> std::io::Result<bool> {
     rep.add("def-S4", "exact",
         "reduction to fields that do not depend on x5, x6, x7: sqrt|g| times the Yukawa term and the potential of the Vorton-Scalar, written with the weighted fields psihat = sqrt(Vd) psi and Phihat = sqrt(Vd) Phi_VS, are the same expressions with the couplings y_VS/sqrt(Vd), lambda_VS/Vd and the vacuum value v_VS sqrt(Vd); the products y_VS v_VS and lambda_VS v_VS^2, hence the fermion mass and the mass of the radial mode, do not change (rational sample values, exact). The exponents of data/coupling_exponents.csv follow, with Vd proportional to exp(-gsum x4)",
         red_ok);
+
+    // exact check of the same reduction for the mass term and for the self-interaction of the fermion field:
+    // sqrt|g| [ -m_D bil - (1/2) g bil^2 ]  with a bilinear bil = psibar Theta psi of the field psi
+    let mut self_ok = true;
+    for (s, md, g, bil) in [(Rat::new(2, 3), Rat::new(5, 7), Rat::new(-3, 11), Rat::new(-4, 13)), (Rat::new(1, 5), Rat::new(9, 4), Rat::new(7, 2), Rat::new(6, 5)), (Rat::new(7, 2), Rat::new(1, 3), Rat::new(-8, 5), Rat::new(2, 9))] {
+        let vd = s * s;
+        let half = Rat::new(1, 2);
+        let orig = vd * (-(md * bil) - half * g * bil * bil);
+        // weighted field psihat = sqrt(Vd) psi: every bilinear is multiplied by Vd; coupling g/Vd; the mass m_D is not changed
+        let (bh, gh) = (vd * bil, g / vd);
+        let weighted = -(md * bh) - half * gh * bh * bh;
+        self_ok &= orig == weighted;
+    }
+    rep.add("def-S5", "exact",
+        "reduction to fields that do not depend on x5, x6, x7, mass term and self-interaction of the fermion field: sqrt|g| times [-m_D psibar psi - (1/2) g_r (psibar Theta_K psi)(psibar Theta^K psi)], written with the weighted field psihat = sqrt(Vd) psi, is the same expression with the unchanged bare Dirac mass m_D and with the coupling g_r/Vd; every coupling of the self-interaction therefore grows as exp(tau_d), as g_VS^2 does, and the ratio of the contact couplings to g_VS^2 is constant (rational sample values, three sets)",
+        self_ok);
 
     let (ok, n) = rep.count();
     let all = rep.all_pass();

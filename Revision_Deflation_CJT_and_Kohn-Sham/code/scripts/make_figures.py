@@ -1029,8 +1029,8 @@ def fig_ks_flat():
     d = read_csv("ks_flat_eos.csv")
     if d is None:
         return
-    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.45))
-    names = ["Hartree", "Hartree-Fock"]
+    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.7))
+    names = ["$G_S=-10^5$, $G_V=+10^4$", "$G_S=-98750$, $G_V=+20000$"]
     for iset in (0, 1):
         sel = d[d["set"] == iset]
         col, ls, _ = STYLES[iset]
@@ -1048,7 +1048,7 @@ def fig_ks_flat():
     axes[0].axhline(0, color=INK2, lw=0.6)
     axes[0].set_ylim(-0.04, 0.10)
     axes[0].set_ylabel("energy per particle minus $m$ (units $m$)")
-    axes[1].set_ylabel("mass in matter $M/m$")
+    axes[1].set_ylabel("mass in matter $m^*/m$")
     axes[2].axhline(0, color=INK2, lw=0.6)
     axes[2].set_ylabel("pressure / energy density")
     axes[2].set_ylim(-0.08, 0.35)
@@ -1056,8 +1056,10 @@ def fig_ks_flat():
         ax.set_xlabel("Fermi momentum $k_F/m$")
         ax.set_xlim(0.1, 1.2)
         panel_label(ax, lab)
-    axes[2].legend(loc="upper left", fontsize=6.8)
-    fig.tight_layout(w_pad=1.0)
+    # one legend for the three panels, below them (inside a panel it would cover a curve)
+    fig.tight_layout(w_pad=1.0, rect=(0, 0.09, 1, 1))
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, ["mean-field couplings " + l for l in labels], loc="lower center", ncol=2, fontsize=7, handlelength=2.2)
     save(fig, "fig_ks_flat")
 
 
@@ -1081,7 +1083,7 @@ def fig_ks_deflating():
         col, ls, _ = STYLES[k]
         axes[2].plot(sel["tau_d"], sel[key] / sel["eps"], color=col, ls=ls, label=lab)
     axes[2].axhline(0, color=INK2, lw=0.6)
-    axes[0].set_ylabel("mass in matter $M/m$")
+    axes[0].set_ylabel("mass in matter $m^*/m$")
     axes[1].set_ylabel("energy per particle minus $m$ (units $m$)")
     axes[2].set_ylabel("pressure / energy density")
     for ax, lab in zip(axes, ("(a) mass of the particles", "(b) energy per particle", "(c) pressures, rates 1 : 2 : 3")):
@@ -1099,7 +1101,7 @@ def fig_ks_binding():
     if d is None:
         return
     fig, axes = plt.subplots(2, 2, figsize=(7.0, 4.4), sharex=True)
-    names = ["$G_V=0$", "$G_V=0.1\\,|G_S|$", "Hartree-Fock ratio $0.2025$"]
+    names = ["$G_V=0$", "$G_V=0.1\\,|G_S|$", "$G_V=0.2025\\,|G_S|$"]
     for col_i, dim in enumerate((4, 3)):
         for iset in (0, 1, 2):
             sel = d[(d["D"] == dim) & (d["ratio_set"] == iset)]
@@ -1110,8 +1112,8 @@ def fig_ks_binding():
         axes[1][col_i].set_xlabel("deflation clock $\\tau_d$, counted from the binding threshold")
         panel_label(axes[0][col_i], "(%s) $D=%d$: energy per particle at saturation" % ("ab"[col_i], dim))
         panel_label(axes[1][col_i], "(%s) $D=%d$: mass of the particles at saturation" % ("cd"[col_i], dim))
-    axes[0][0].set_ylabel("$E/A-m$ (units $m$)")
-    axes[1][0].set_ylabel("$M/m$")
+    axes[0][0].set_ylabel("$\\varepsilon/n-m$ (units $m$)")
+    axes[1][0].set_ylabel("$m^*/m$")
     axes[0][0].legend(loc="lower left")
     fig.tight_layout(w_pad=1.2, h_pad=1.0)
     save(fig, "fig_ks_binding")
@@ -1135,7 +1137,7 @@ def fig_ks_gas():
         ax.axhline(0, color=INK2, lw=0.6)
     axes[1].set_ylim(-0.45, 0.45)
     axes[2].set_ylim(-0.45, 0.45)
-    axes[0].set_ylabel("mass in matter $M/m$")
+    axes[0].set_ylabel("mass in matter $m^*/m$")
     axes[1].set_ylabel("pressure / energy density")
     axes[2].set_ylabel("pressure / energy density")
     for ax, lab in zip(axes, ("(a) mass of the particles", "(b) pressure along $x0..x3$", "(c) pressure along $x5,x6,x7$")):
@@ -1159,13 +1161,13 @@ def fig_ks_halves():
         for k, kf in enumerate(kfs):
             sel = sel0[np.abs(sel0["kF_total"] - kf) < 1e-6]
             ls = ["-", "--", "-.", ":"][k % 4]
-            ax.plot(sel["P"], sel["e_bind"] - sel["e_bind"][0], color=shades[k], ls=ls, label="$k_F=%.1f\\,m$" % kf)
+            ax.plot(sel["pol_W"], sel["e_bind"] - sel["e_bind"][0], color=shades[k], ls=ls, label="$k_F=%.1f\\,m$" % kf)
             i = int(np.argmin(sel["e_bind"]))
-            ax.plot([sel["P"][i]], [sel["e_bind"][i] - sel["e_bind"][0]], marker="o", color=shades[k], mfc="white", mew=1.1)
+            ax.plot([sel["pol_W"][i]], [sel["e_bind"][i] - sel["e_bind"][0]], marker="o", color=shades[k], mfc="white", mew=1.1)
         ax.axhline(0, color=INK2, lw=0.6)
-        ax.set_xlabel("polarization $P=(\\rho_+-\\rho_-)/\\rho$")
+        ax.set_xlabel("polarization $\\mathrm{pol}_W=(n_+-n_-)/n$")
         panel_label(ax, "couplings %.1f $\\times$ threshold" % mult)
-    axes[0].set_ylabel("$E/A$ relative to equal halves (units $m$)")
+    axes[0].set_ylabel("$\\varepsilon/n$ relative to equal halves (units $m$)")
     axes[0].legend(loc="upper left")
     fig.tight_layout(w_pad=1.0)
     save(fig, "fig_ks_halves")
@@ -1190,7 +1192,7 @@ def fig_cjt_sea():
     ax.set_xlim(-1.0, 0.8)
     ax.set_ylim(0, 1.3)
     ax.set_xlabel("deflation clock, counted from $G_S=G_c$")
-    ax.set_ylabel("mass in vacuum $M_{\\mathrm{vac}}/\\Lambda$")
+    ax.set_ylabel("mass in vacuum $m_{\\mathrm{vac}}/\\Lambda$")
     ax.legend(loc=(0.03, 0.24), ncol=1)
     panel_label(ax, "(a) mass of the fermions in vacuum")
     ax = axes[1]
@@ -1199,12 +1201,12 @@ def fig_cjt_sea():
     for k, lam in enumerate(lams):
         sel = s[np.abs(s["Lambda"] - lam) < 1e-6]
         ls = ["-", "--", "-.", ":"][k % 4]
-        ax.plot(sel["kF"], sel["e_bind"], color=shades[k], ls=ls, label="no sea" if lam == 0 else "$\\Lambda=%.2f\\,M_{\\mathrm{vac}}$" % lam)
+        ax.plot(sel["kF"], sel["e_bind"], color=shades[k], ls=ls, label="no sea" if lam == 0 else "$\\Lambda=%.2f\\,m_{\\mathrm{vac}}$" % lam)
     ax.axhline(0, color=INK2, lw=0.6)
     ax.set_ylim(-0.06, 0.06)
     ax.set_xlim(0.4, 1.3)
-    ax.set_xlabel("Fermi momentum $k_F/M_{\\mathrm{vac}}$")
-    ax.set_ylabel("$E/A-M_{\\mathrm{vac}}$ (units $M_{\\mathrm{vac}}$)")
+    ax.set_xlabel("Fermi momentum $k_F/m_{\\mathrm{vac}}$")
+    ax.set_ylabel("$\\varepsilon/n-m_{\\mathrm{vac}}$ (units $m_{\\mathrm{vac}}$)")
     ax.legend(loc="upper right", title="cutoff of the sea", title_fontsize=7)
     panel_label(ax, "(b) the example with the filled sea")
     fig.tight_layout(w_pad=1.5)
@@ -1223,9 +1225,9 @@ def fig_unified():
             col, ls, mk = STYLES[k]
             ax.plot(sel["kappa_V"], sel["dtau"], color=col, ls=ls, marker=mk, label="$f_D=%.2f$" % f_d)
         ax.axhline(0, color=INK2, lw=0.6)
-        ax.set_xlabel("vector contact repulsion $\\kappa_V=G_V/C$")
+        ax.set_xlabel("vector contact repulsion $G_V/C$")
         ax.set_ylim(-0.85, 1.15)
-        panel_label(ax, "(%s) scalar contact term $\\kappa_S=%g$" % ("ab"[col_i], kap_s))
+        panel_label(ax, "(%s) scalar contact term $-G_S/C=%g$" % ("ab"[col_i], kap_s))
     axes[0].set_ylabel("shift of the binding moment $\\Delta\\tau_d$")
     axes[0].legend(loc="upper left", title="bare-mass fraction", title_fontsize=7)
     ax = axes[2]
@@ -1234,7 +1236,7 @@ def fig_unified():
         col, ls, mk = STYLES[k]
         ax.plot(sel["kF"] / lam, sel["ratio"], color=col, ls=ls, marker=mk, label="$\\Lambda=%g\\,m$" % lam)
     ax.set_xlabel("Fermi momentum / cutoff, $k_F/\\Lambda$")
-    ax.set_ylabel("$m_{ph}^2$ in matter / $m_{ph}^2$ in vacuum")
+    ax.set_ylabel("$m_\\vartheta^2$ in matter / $m_\\vartheta^2$ in vacuum")
     ax.set_ylim(0, 1.05)
     ax.legend(loc="lower left")
     panel_label(ax, "(c) phase mode in matter")
@@ -1285,14 +1287,14 @@ def fig_gravity_reference():
         axes[1].plot(sel["x4"], sel["H_b"], color=ORANGE, ls=ls)
         axes[2].plot(sel["x4"], sel["M"], color=AQUA, ls=ls, label=names[case])
     # direct labels (the colour marks the quantity, the line style the gravity; see the legend of panel c)
-    axes[0].text(11.0, 1.44, "$a$: ordinary space", color=INK, fontsize=7.2, ha="right")
-    axes[0].text(20.0, 1.03, "$b$: auxiliary space", color=INK, fontsize=7.2, ha="right")
-    axes[1].text(7.0, 0.036, "$H_a$", color=INK, fontsize=7.5)
-    axes[1].text(12.0, 0.0045, "$H_b$", color=INK, fontsize=7.5)
+    axes[0].text(11.0, 1.44, "$\\mathsf{a}$: ordinary space", color=INK, fontsize=7.2, ha="right")
+    axes[0].text(20.0, 1.03, "$\\mathsf{b}$: auxiliary space", color=INK, fontsize=7.2, ha="right")
+    axes[1].text(7.0, 0.036, "$H_{\\mathsf{a}}$", color=INK, fontsize=7.5)
+    axes[1].text(12.0, 0.0045, "$H_{\\mathsf{b}}$", color=INK, fontsize=7.5)
     axes[1].set_ylim(0.0, 0.052)
     axes[0].set_ylabel("scale factors")
     axes[1].set_ylabel("rates (units $m$)")
-    axes[2].set_ylabel("mass in matter $M/m$")
+    axes[2].set_ylabel("mass in matter $m^*/m$")
     for ax, lab in zip(axes, ("(a) scale factors", "(b) rates of expansion", "(c) mass of the particles")):
         ax.set_xlabel("time $x4$ (units $1/m$)")
         panel_label(ax, lab)
@@ -1301,16 +1303,18 @@ def fig_gravity_reference():
     save(fig, "fig_gravity_reference")
 
 
-def fig_gravity_deflating():
+def _gravity_deflating_panels(matter):
+    """The three panels of the figures on the deflating spacetime with matter as a source of gravity.
+    matter = 0: 7+1, momenta along all seven space coordinates; matter = 1: fields that do not depend on x5, x6, x7."""
     d, v = read_csv("gravity_deflating.csv"), read_csv("gravity_vacuum_perturbation.csv")
     if d is None or v is None:
-        return
-    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.9))
+        return None
+    fig, axes = plt.subplots(1, 3, figsize=(7.0, 3.05))
     runs = [(0, 1e-3, "tuned Einstein-Lovelock, loading $10^{-3}$"), (0, 1e-1, "tuned Einstein-Lovelock, loading $10^{-1}$"),
             (1, 1e-3, "Einstein, loading $10^{-3}$"), (1, 1e-1, "Einstein, loading $10^{-1}$")]
     handles = []
     for k, (grav, eta, name) in enumerate(runs):
-        sel = d[(d["matter"] == 0) & (d["gravity"] == grav) & (np.abs(d["loading"] / eta - 1) < 1e-6)]
+        sel = d[(d["matter"] == matter) & (d["gravity"] == grav) & (np.abs(d["loading"] / eta - 1) < 1e-6)]
         col, ls, _ = STYLES[k]
         handles.append(axes[0].plot(sel["tau_ref"], -sel["Hb_over_g"], color=col, ls=ls, label=name)[0])
         axes[1].plot(sel["tau_ref"], np.where(sel["Ha_over_g"] > 0, sel["Ha_over_g"], np.nan), color=col, ls=ls, label=name)
@@ -1318,25 +1322,39 @@ def fig_gravity_deflating():
     axes[0].text(6.0, 0.22, "undisturbed deflation:\ndotted line", color=INK2, fontsize=7, ha="right")
     for ax in axes:
         ax.set_yscale("log")
-        ax.set_xlabel("reference clock $3\\,\\mathrm{g55}\\,x4$")
+        ax.set_xlabel("clock $\\tau_d^{0}=3\\,\\mathrm{g55}\\,x4$")
     axes[0].set_ylim(0.02, 80)
     axes[1].set_ylim(1e-7, 80)
-    axes[0].set_ylabel("rate of deflation $-H_b/\\mathrm{g55}$")
-    axes[1].set_ylabel("rate of expansion $H_a/\\mathrm{g55}$")
+    axes[0].set_ylabel("rate of deflation $-H_{\\mathsf{b}}/\\mathrm{g55}$")
+    axes[1].set_ylabel("rate of expansion $H_{\\mathsf{a}}/\\mathrm{g55}$")
     panel_label(axes[0], "(a) deflation with matter")
     panel_label(axes[1], "(b) $x0..x3$ expand")
     ax = axes[2]
     for case, (col, ls) in enumerate(((BLUE, "-"), (ORANGE, "--"))):
         sel = v[v["case"] == case]
-        ax.plot(sel["tau_ref"], -sel["Hb_over_g"], color=col, ls=ls, label="$H_a(0)%s0$" % (">" if case == 0 else "<"))
+        ax.plot(sel["tau_ref"], -sel["Hb_over_g"], color=col, ls=ls, label="$H_{\\mathsf{a}}(0)%s0$" % (">" if case == 0 else "<"))
     ax.axhline(1.0, color=INK2, lw=0.7, ls=":")
     ax.set_ylim(0.5, 80)
-    ax.set_ylabel("rate of deflation $-H_b/\\mathrm{g55}$")
+    ax.set_ylabel("rate of deflation $-H_{\\mathsf{b}}/\\mathrm{g55}$")
     ax.legend(loc="upper left")
     panel_label(ax, "(c) no matter")
-    fig.tight_layout(w_pad=1.0, rect=(0, 0.13, 1, 1))
-    fig.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.03, 0.0), ncol=2, fontsize=7, title="panels (a) and (b)", title_fontsize=7)
-    save(fig, "fig_gravity_deflating")
+    fig.tight_layout(w_pad=1.0, rect=(0, 0.17, 1, 1))
+    fig.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.03, 0.0), ncol=2, fontsize=7, title="lines of panels (a) and (b)", title_fontsize=7)
+    return fig
+
+
+def fig_gravity_deflating():
+    """7+1: matter with momenta along all seven space coordinates."""
+    fig = _gravity_deflating_panels(0)
+    if fig is not None:
+        save(fig, "fig_gravity_deflating")
+
+
+def fig_gravity_deflating_sector():
+    """Matter whose fields do not depend on x5, x6, x7 (the quantized sector of 4+4; the sector of 7+1)."""
+    fig = _gravity_deflating_panels(1)
+    if fig is not None:
+        save(fig, "fig_gravity_deflating_sector")
 
 FIGURES = {
     "geodesics": fig_geodesics, "isometries": fig_isometries, "creation": fig_creation, "extinction": fig_extinction,
@@ -1346,6 +1364,7 @@ FIGURES = {
     "ks_flat": fig_ks_flat, "ks_deflating": fig_ks_deflating, "ks_binding": fig_ks_binding, "ks_gas": fig_ks_gas,
     "ks_halves": fig_ks_halves, "cjt_sea": fig_cjt_sea, "unified": fig_unified, "pair_contact": fig_pair_contact,
     "gravity_reference": fig_gravity_reference, "gravity_deflating": fig_gravity_deflating,
+    "gravity_deflating_sector": fig_gravity_deflating_sector,
 }
 
 if __name__ == "__main__":

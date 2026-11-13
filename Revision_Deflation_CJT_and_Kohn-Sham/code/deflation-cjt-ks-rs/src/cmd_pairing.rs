@@ -160,14 +160,14 @@ pub fn run() -> std::io::Result<bool> {
             dev_radial = dev_radial.max((Kernel::w(&contact, k, kp) / Kernel::w(&radial, k, kp) - 1.0).abs());
         }
     }
-    rep.add("pc-P3", "numerical", &format!("the exchange of the Vorton-Scalar is a self-interaction of finite range: (i) without contact couplings the pairing kernel of this program equals the kernel of the main project (four sets of parameters, five pairs of momenta each: largest relative difference {:.1e}); (ii) the scalar contact coupling g_0eff = -g_VS^2/m_s^2 with the range parameter Lambda = m_s gives exactly the kernel of the exchange of the radial mode (largest relative difference {:.1e}): g_0eff(q) = -g_VS^2/(q^2 + m_s^2), and likewise g_8eff(q) = +g_VS^2/(q^2 + m_ph^2) for the phase mode", dev_main, dev_radial), dev_main < 1e-12 && dev_radial < 1e-12);
+    rep.add("pc-P3", "numerical", &format!("the exchange of the Vorton-Scalar is a self-interaction of finite range: (i) without contact couplings the pairing kernel of this program equals the kernel of the main project (four sets of parameters, five pairs of momenta each: largest relative difference {:.1e}); (ii) the scalar contact coupling g_0eff = -g_VS^2/m_s^2 with the range parameter m_ct = m_s (the mass of the heavy boson whose exchange the contact coupling stands for) gives exactly the kernel of the exchange of the radial mode (largest relative difference {:.1e}): g_0eff(q) = -g_VS^2/(q^2 + m_s^2), and likewise g_8eff(q) = +g_VS^2/(q^2 + m_ph^2) for the phase mode", dev_main, dev_radial), dev_main < 1e-12 && dev_radial < 1e-12);
 
     // =====================================================================================
     // 3. the gap along the deflation clock
     // =====================================================================================
     // sets (m_s, k_F) and clock grid of the calculation without contact terms; g_VS = exp(tau_d/2)
     let sets: [(f64, f64, f64); 4] = [(1.0, 0.1, 0.5), (2.0, 0.3, 0.5), (3.0, 1.0, 0.5), (4.0, 0.1, 0.2)];
-    // variants: (kappa_S, kappa_V, kappa_7, with exchange, m_ph); contact couplings g_0eff = -kappa_S g^2, g_1eff = +kappa_V g^2, g_7eff = kappa_7 g^2 (units m = 1), range Lambda = m
+    // variants: (kappa_S, kappa_V, kappa_7, with exchange, m_ph); contact couplings g_0eff = -kappa_S g^2, g_1eff = +kappa_V g^2, g_7eff = kappa_7 g^2 (units m = 1), range parameter m_ct = m
     let variants: [(&str, f64, f64, f64, bool, f64); 7] = [
         ("exchange of the Vorton-Scalar alone (as before)", 0.0, 0.0, 0.0, true, 0.0),
         ("exchange and scalar contact attraction, g_0eff = -g^2/m^2", 1.0, 0.0, 0.0, true, 0.0),
@@ -215,7 +215,7 @@ pub fn run() -> std::io::Result<bool> {
         println!("[{:>5.1} s] gap history, set {} done", t0.elapsed().as_secs_f64(), id);
     }
     write_csv("pair_gap_history.csv",
-        &[("content", format!("the gap of the hidden-axis pair at the Fermi surface along the deflation clock, with contact couplings and the exchange of the Vorton-Scalar; g_VS = exp(tau_d/2), fermion mass m = 1; contact couplings proportional to g_VS^2 (all couplings of the reduced Lagrangian grow as exp(tau_d)), with the range parameter Lambda = m. Variants: {}", variants.iter().enumerate().map(|(i, v)| format!("{} = {}", i, v.0)).collect::<Vec<String>>().join("; "))),
+        &[("content", format!("the gap of the hidden-axis pair at the Fermi surface along the deflation clock, with contact couplings and the exchange of the Vorton-Scalar; g_VS = exp(tau_d/2), fermion mass m = 1; contact couplings proportional to g_VS^2 (all couplings of the reduced Lagrangian grow as exp(tau_d)), with the range parameter m_ct = m (each contact coupling g is replaced by g m_ct^2/(q^2 + m_ct^2)). Variants: {}", variants.iter().enumerate().map(|(i, v)| format!("{} = {}", i, v.0)).collect::<Vec<String>>().join("; "))),
           ("columns", "set: 1 = (m_s, k_F) = (0.1, 0.5), 2 = (0.3, 0.5), 3 = (1.0, 0.5), 4 = (0.1, 0.2), in units of m; variant; m_s; k_F; tau_d; g = g_VS; lambda = N(0) W(k_F, k_F): dimensionless pairing strength; gap: gap at the Fermi surface in units of the Fermi kinetic energy E_F (0: below 1e-7 E_F or no solution); Tc_over_gap (computed for the variants 0, 2 and 5 where the kernel has no sign change; NaN otherwise)".to_string()),
           ("command", CMD.to_string())],
         &["set", "variant", "m_s", "k_F", "tau_d", "g", "lambda", "gap", "Tc_over_gap"], &rows)?;

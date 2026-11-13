@@ -7,9 +7,9 @@
 //! bilinear vertex psi^dagger Gamma psi the amplitude in the pair channel X = C^- gamma^0 is
 //!
 //!     F(k', k) = Tr[ kappa(k')^dagger Gamma kappa(k) Gamma^T ] / sqrt(N(k') N(k)),
-//!     kappa(k) = Lambda_+(k) conj(X) Lambda_+(-k)^T,     N(k) = Tr[ kappa(k)^dagger kappa(k) ],
+//!     kappa(k) = proj_+(k) conj(X) proj_+(-k)^T,     N(k) = Tr[ kappa(k)^dagger kappa(k) ],
 //!
-//! with the projector Lambda_+(k) = (1 + h(k)/E)/2 on the states of positive energy of
+//! with the projector proj_+(k) = (1 + h(k)/E)/2 on the states of positive energy of
 //! the single-particle Hamiltonian h(k) = alpha.k + beta M, E = sqrt(k^2 + M^2).
 //!
 //! THE FOUR CONTACT CHANNELS.  The self-interaction L_self = -(1/2) sum_r g_r I_r has four
@@ -47,10 +47,10 @@
 //! interaction (check 71s-S10).
 //!
 //! THE RANGE OF THE CONTACT INTERACTION.  A contact interaction in the gap equation needs
-//! a regularization.  Here each contact coupling is given the range 1/Lambda of an
-//! exchanged heavy particle, g -> g Lambda^2/(q^2 + Lambda^2), the form that the exchange
-//! of the Vorton-Scalar itself has; Lambda is a parameter of the model (the scale above
-//! which the contact interaction is resolved).
+//! a regularization.  Here each contact coupling is given the range 1/m_ct of an
+//! exchanged heavy particle of mass m_ct, g -> g m_ct^2/(q^2 + m_ct^2), the form that the
+//! exchange of the Vorton-Scalar itself has; m_ct is a parameter of the model (the scale
+//! above which the contact interaction is resolved; the field `lam` of `PairKernel`).
 //!
 //! THE GAP EQUATION is that of the main project (routine `spacetimes::gap::solve_gap`),
 //!
@@ -109,7 +109,7 @@ pub struct PairKernel {
     pub phase: bool,
     /// the four contact couplings (g_0eff, g_1eff, g_7eff, g_8eff)
     pub contact: [f64; 4],
-    /// the range parameter Lambda of the contact couplings (f64::INFINITY: no form factor)
+    /// the range parameter m_ct of the contact couplings (f64::INFINITY: no form factor)
     pub lam: f64,
 }
 
@@ -211,7 +211,7 @@ impl DirectAmplitudes {
         out
     }
 
-    /// kappa(p) = Lambda_+(p) conj(X) Lambda_+(-p)^T.
+    /// kappa(p) = proj_+(p) conj(X) proj_+(-p)^T.
     fn kappa(&self, p: &[f64; 8], m: f64) -> Mat {
         let mut pm = *p;
         for x in pm.iter_mut() {

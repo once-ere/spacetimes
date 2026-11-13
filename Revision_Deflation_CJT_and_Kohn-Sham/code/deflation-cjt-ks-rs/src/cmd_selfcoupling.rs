@@ -67,9 +67,9 @@ pub fn run() -> std::io::Result<bool> {
     let rows: Vec<Vec<String>> = (0..9).map(|r| std::iter::once(r.to_string()).chain((0..9).map(|s| f[r][s].to_string())).collect()).collect();
     write_csv_str("selfcoupling_fierz.csv",
         &[("content", "the Fierz matrix of the nine channels of the self-interaction, multiplied by 16: sum_(K of rank r) (Theta_K)_(ab) (Theta^K)_(cd) = sum_s F_rs sum_(L of rank s) (Theta_L)_(ad) (Theta^L)_(cb); 16 F_rs = sum_l (-1)^(rs - l) C(s, l) C(8 - s, r - l); F^2 = 1 (checks 71s-S5, 44q-S5, 44c-S5: the same matrix for all three models)".to_string()),
-          ("columns", "r: rank of the left-hand side; s0 .. s8: 16 F_rs for s = 0 .. 8 (integers)".to_string()),
+          ("columns", "r: rank of the left-hand side; F_r0 .. F_r8: 16 times the element of the Fierz matrix in the row r and the column 0 .. 8 (integers)".to_string()),
           ("command", CMD.to_string())],
-        &["r", "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"], &rows)?;
+        &["r", "F_r0", "F_r1", "F_r2", "F_r3", "F_r4", "F_r5", "F_r6", "F_r7", "F_r8"], &rows)?;
 
     // ---- the reduction to four invariants ---------------------------------------------------
     let red = reduction_matrix();

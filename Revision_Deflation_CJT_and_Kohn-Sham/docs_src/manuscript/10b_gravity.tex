@@ -1,0 +1,241 @@
+\section{Gravity: the deflating spacetime with matter as its source}
+\label{sec:gravity}
+
+The hypothesis (\ref{eq:hyp}) prescribes the metric. This section asks what the field equations of
+gravity make of it when the matter of Sec.~\ref{sec:ks} is their source: whether such matter can
+produce the deflation, and what it does to a deflation that is already under way.
+
+\subsection{Two scale factors and the Einstein-Lovelock equations}
+
+Let the three rates be equal, and let the four flat coordinates have a scale factor of their own:
+\begin{equation}
+ds^{2}=-(dx4)^{2}+\ma(x4)^{2}\sum_{j=0}^{3}(dxj)^{2}\SIG{-}{+}\mb(x4)^{2}\sum_{t=5}^{7}(dxt)^{2},
+\label{eq:twofactors}
+\end{equation}
+with the rates $H_{\ma}=\ma'/\ma$ and $H_{\mb}=\mb'/\mb$ (a prime is a derivative with respect to
+$x4$). The deflating spacetime of the hypothesis is $\ma=1$, $\mb=\cff\,e^{-\gff\,x4}$, that is,
+$H_{\ma}=0$ and $H_{\mb}=-\gff$; it is called the \emph{undisturbed deflation} below.
+
+For a metric of this kind the Riemann tensor is determined by one number for each pair of
+directions of the frame, the sectional curvature of their plane (Appendix~\ref{app:curvature}):
+\begin{equation}
+K_{4i}=H_i'+H_i^{2},\qquad K_{ij}=H_i\,H_j\quad(i\ne j),
+\label{eq:paircurv}
+\end{equation}
+where $i,j$ run over the seven directions other than the time and $H_i$ is the rate of the
+direction $i$. \SIG{The same formulas hold for the time-like directions $x5,x6,x7$ of the $4+4$
+spacetime, so that everything that follows is the same on the $4+4$ and on the $7+1$
+spacetime.}{}The field equations of second order for the metric in eight dimensions are those of
+Lovelock \cite{Lovelock1971}, with tensors $E^{(k)\mu}{}_{\nu}$ of the orders $k=1,2,3$ in the
+curvature. For the metric (\ref{eq:twofactors}) they are diagonal, and
+\begin{equation}
+E^{(k)m}{}_{m}=(-1)^{k+1}\,k!\,2^{k-1}\!\!\sum_{\substack{\text{sets of }2k\\ \text{directions}\ne m}}\ \sum_{\substack{\text{divisions}\\ \text{into pairs}}}\ \prod_{\text{pairs}}K_{\text{pair}} ,
+\label{eq:lovelockE}
+\end{equation}
+without summation over $m$: the sum runs over all sets of $2k$ directions that do not contain $m$,
+and over the ways to divide such a set into $k$ pairs (one way for $k=1$, three for $k=2$, fifteen
+for $k=3$). In this notation and sign $E^{(1)\mu}{}_{\nu}=-\cG^{\mu}{}_{\nu}$ is minus the Einstein
+tensor and $E^{(2)\mu}{}_{\nu}=\cH^{\mu}{}_{\nu}$ the Lanczos tensor of Sec.~\ref{sec:egb}. The
+\emph{Einstein-Lovelock equations} are
+\begin{equation}
+\sum_{k=1}^{3}\alpha_k\,E^{(k)\mu}{}_{\nu}-\bar\Lambda\,\delta^{\mu}_{\nu}=\kappa_8\,T^{\mu}{}_{\nu},\qquad\alpha_1=1,
+\label{eq:EL}
+\end{equation}
+with the couplings $\alpha_2$, $\alpha_3$ of the two higher terms, the cosmological term
+$\bar\Lambda$, and the gravitational coupling $\kappa_8$ of the eight-dimensional theory. The
+energy-momentum tensor of uniform matter has the components $T^{4}{}_{4}=\varepsilon$ and
+$T^{m}{}_{m}=-p_m$, with the energy density and the pressures of Sec.~\ref{sec:ks}. [In terms of
+Eq.~(\ref{eq:egb}): $\bar\Lambda=\Lam$ and $\alpha_2=-\aGB$.]
+
+Written out for four directions with the rate $H_{\ma}$ and three with the rate $H_{\mb}$, the
+first two orders are
+\begin{equation}
+\begin{aligned}
+E^{(1)4}{}_{4}={}&6H_{\ma}^{2}+12H_{\ma}H_{\mb}+3H_{\mb}^{2},\\
+E^{(1)\ma}{}_{\ma}={}&3H_{\ma}'+3H_{\mb}'+6H_{\ma}^{2}+9H_{\ma}H_{\mb}+6H_{\mb}^{2},\\
+E^{(1)\mb}{}_{\mb}={}&4H_{\ma}'+2H_{\mb}'+10H_{\ma}^{2}+8H_{\ma}H_{\mb}+3H_{\mb}^{2},
+\end{aligned}
+\label{eq:E1}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+E^{(2)4}{}_{4}={}&-12H_{\ma}^{4}-144H_{\ma}^{3}H_{\mb}-216H_{\ma}^{2}H_{\mb}^{2}\\
+&-48H_{\ma}H_{\mb}^{3},\\
+E^{(2)\ma}{}_{\ma}={}&-12\big(H_{\ma}^{2}+6H_{\ma}H_{\mb}+3H_{\mb}^{2}\big)H_{\ma}'\\
+&-12\big(3H_{\ma}^{2}+6H_{\ma}H_{\mb}+H_{\mb}^{2}\big)H_{\mb}'\\
+&-12H_{\ma}^{4}-108H_{\ma}^{3}H_{\mb}-180H_{\ma}^{2}H_{\mb}^{2}\\
+&-108H_{\ma}H_{\mb}^{3}-12H_{\mb}^{4},\\
+E^{(2)\mb}{}_{\mb}={}&-16\big(3H_{\ma}^{2}+6H_{\ma}H_{\mb}+H_{\mb}^{2}\big)H_{\ma}'\\
+&-16\big(3H_{\ma}^{2}+2H_{\ma}H_{\mb}\big)H_{\mb}'-60H_{\ma}^{4}\\
+&-192H_{\ma}^{3}H_{\mb}-136H_{\ma}^{2}H_{\mb}^{2}-32H_{\ma}H_{\mb}^{3},
+\end{aligned}
+\label{eq:E2}
+\end{equation}
+where the index $\ma$ ($\mb$) stands for any one of the four (three) directions. Every term of the
+third order contains at least two factors of $H_{\ma}$ or of its derivative, for example
+$E^{(3)4}{}_{4}=1080H_{\ma}^{4}H_{\mb}^{2}+1440H_{\ma}^{3}H_{\mb}^{3}$. The component along the time
+contains no derivative of a rate: it is a \emph{constraint} on the initial data. The two other
+components are linear in $H_{\ma}'$ and $H_{\mb}'$ and are solved for them at every step of an
+integration. The polynomials (\ref{eq:E1}) and (\ref{eq:E2}) were obtained by the program from
+Eq.~(\ref{eq:lovelockE}) and, independently, by computer algebra in two ways: from the Riemann
+tensor of the metric, and as the Euler-Lagrange equations of the reduced action for the lapse and
+the two scale factors.
+
+\subsection{A reference calculation}
+
+The program was tested on a calculation done before with other tools: gravity with three
+coordinates of ordinary space (scale factor $\ma$) and four further space coordinates (scale factor
+$\mb$), driven by the matter of the reference example of
+\SIG{the $7+1$ spacetime ($D=7$, $\GS=-10^{5}$, $\GV=+10^{4}$ in units $m=1$, at its saturation
+density)}{Sec.~\ref{sec:ksflat} at its saturation density}, with $\kappa_8=1000$, $\bar\Lambda=0$,
+$H_{\ma}(0)=0.05$ and $\ma(0)=\mb(0)=1$, integrated to $x4=20$ in Einstein gravity and in
+Einstein-Lovelock gravity with $\alpha_2=20$, $\alpha_3=500$. The constraint gives $H_{\mb}(0)$. The
+ten numbers of the first calculation are reproduced to {{GEN:grav_ref_dev}} by the program and by
+the independent script (Table~\ref{tab:gravref}, Fig.~\ref{fig:gravref}); the constraint is
+preserved along the integration to {{GEN:grav_ref_constraint}}.
+
+\begin{table}
+\caption{\label{tab:gravref}The reference calculation: three space coordinates with the scale factor
+$\ma$ and four with the scale factor $\mb$, with matter of seven space dimensions as the source
+(units $m=1$). EL: Einstein-Lovelock gravity with $\alpha_2=20$, $\alpha_3=500$.}
+\begin{ruledtabular}
+\begin{tabular}{llll}
+gravity & quantity & this program & first calculation \\
+\hline
+{{ROWS:tbl_gravity_reference}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_gravity_reference}
+\caption{\label{fig:gravref}The reference calculation of Table~\ref{tab:gravref}: (a) the two scale
+factors, (b) their rates, (c) the mass of the particles in the matter, which rises as the matter is
+diluted. Solid lines: Einstein gravity; dashed lines: Einstein-Lovelock gravity.}
+\end{figure*}
+
+\subsection{The undisturbed deflation as a solution}
+
+\emph{Without matter.} For $H_{\ma}=0$, $H_{\mb}=-\gff$ and constant rates,
+Eqs.~(\ref{eq:E1}) and (\ref{eq:E2}) give
+$E^{(1)4}{}_{4}=3\gff^{2}$, $E^{(1)\ma}{}_{\ma}=6\gff^{2}$, $E^{(1)\mb}{}_{\mb}=3\gff^{2}$,
+$E^{(2)\ma}{}_{\ma}=-12\gff^{4}$, and zero for the other components. The three equations
+(\ref{eq:EL}) without matter hold if and only if
+\begin{equation}
+\bar\Lambda=3\,\gff^{2},\qquad\alpha_2=\frac{1}{4\,\gff^{2}},
+\label{eq:tuned}
+\end{equation}
+which is Eq.~(\ref{eq:egbsol}); $\alpha_3$ is arbitrary. The gravity with these two constants is
+called the \emph{tuned} Einstein-Lovelock gravity below. At this solution the coefficients of
+$(H_{\ma}',H_{\mb}')$ in the two evolution equations form the matrix $\mathrm{diag}(-6,2)$, which
+can be inverted: the evolution of a perturbed solution is well defined.
+
+\emph{In Einstein gravity.} Without the Gauss-Bonnet term and without $\bar\Lambda$ the same
+spacetime requires a source with
+\begin{equation}
+\kappa_8\,\varepsilon=3\,\gff^{2},\qquad p_{\ma}=-2\,\varepsilon,\qquad p_{\mb}=-\varepsilon ,
+\label{eq:agent}
+\end{equation}
+a tension along the flat coordinates twice as large as the energy density, and a tension along the
+deflating coordinates equal to it. \emph{The matter of Sec.~\ref{sec:ks} cannot be this source.} Its
+pressure along a coordinate on which the fields do not depend is the interaction pressure $\pint$ of
+Eq.~(\ref{eq:pKS}), and $\varepsilon+\pint=\langle E^{*}\rangle+\GV\,n^{2}$, which is positive for a
+repulsive or vanishing vector coupling; $p_{\mb}=-\varepsilon$ is not reached. Something else must
+hold the deflation: an \emph{agent} with the equation of state (\ref{eq:agent}), or the tuned
+Gauss-Bonnet term.
+
+\subsection{Matter on the deflating spacetime}
+
+Now let matter be present, with the initial data $\ma=\mb=1$, $H_{\ma}=0$, and $H_{\mb}$ from the
+constraint. Its amount is given by the \emph{loading}, $\kappa_8\,\varepsilon(0)/(3\,\gff^{2})$, the
+energy density at the start in units of the energy density that would make three coordinates
+deflate at the rate $\gff$ in Einstein gravity. The rate is $\gff=0.01\,m$.
+\SIG{The matter is that of the quantized sector, whose fields do not depend on $x5,x6,x7$ ($D=4$;
+$\GS=-256.95\,m^{-3}$, $\GV=0.1\,|\GS|$, at its saturation density), with the pressure $\pint$ along
+the deflating coordinates.}{Two kinds of matter are compared: the saturated matter of the reference
+example with momenta along all seven space coordinates (Sec.~\ref{sec:ks71}), and matter whose
+fields do not depend on $x5,x6,x7$ ($D=4$; $\GS=-256.95\,m^{-3}$, $\GV=0.1\,|\GS|$, at its
+saturation density), whose pressure along the deflating coordinates is $\pint$.} The integration
+runs until the clock of the undisturbed deflation, $\td^{0}=3\,\gff\,x4$, reads 6, or until a rate
+exceeds $50\,\gff$ (Table~\ref{tab:gravdefl}, Fig.~\ref{fig:gravdefl}).
+
+\begin{table*}
+\caption{\label{tab:gravdefl}The deflating spacetime with matter as a source of gravity. Tuned EL:
+Einstein-Lovelock gravity with the constants (\ref{eq:tuned}), in which the undisturbed deflation
+is a solution without matter; Einstein: Einstein gravity with the matter as the only source. The
+last five columns give the state at the end of the integration; ``runaway'' marks an evolution in
+which a rate exceeded $50\,\gff$ before $\td^{0}=6$.}
+\begin{ruledtabular}
+\begin{tabular}{lllcllcccc}
+matter & gravity & loading & $H_{\mb}(0)/\gff$ & end & $\td^{0}$ & $\ma$ & $\mb$ & $H_{\ma}/\gff$ & $H_{\mb}/\gff$ \\
+\hline
+{{ROWS:tbl_gravity_deflating\SIG{|rows=4-7}{}}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{\SIG{fig_gravity_deflating_sector}{fig_gravity_deflating}}
+\caption{\label{fig:gravdefl}The deflating spacetime with matter as a source of gravity
+(\SIG{matter of the quantized sector}{matter with momenta along all seven space coordinates}; the
+runs of Table~\ref{tab:gravdefl}). (a) The rate of deflation $-H_{\mb}$ in units of $\gff$ against
+the clock of the undisturbed deflation. (b) The rate $H_{\ma}$ at which the four flat coordinates
+expand. (c) The tuned Einstein-Lovelock gravity without matter, started with a deflation one part in
+a thousand faster than the undisturbed one: the two initial data that the constraint allows.}
+\end{figure*}
+
+\emph{Matter makes the deflation faster than exponential and makes the flat coordinates expand.} In
+the tuned gravity the smaller loading leaves the deflation close to the undisturbed one for about
+four units of the clock; then the rates grow, and at $\td^{0}=6$ the three coordinates deflate
+\SIG{{{GEN:grav_end_sector}}}{{{GEN:grav_end_all}}} times faster than at the start while the four flat
+coordinates expand. With the larger loading the rates exceed $50\,\gff$ before the clock reads 4:
+they grow without bound in a finite time. In Einstein gravity with the matter as the only source the
+initial rate is $-H_{\mb}(0)=\gff\times(\text{loading})^{1/2}$, far below $\gff$ for a small loading,
+and it grows as the matter is compressed. In \SIG{{{GEN:grav_n_runaway_sector}} of the
+four}{{{GEN:grav_n_runaway}} of the eight} evolutions of the table the rates run away. The constraint is preserved along
+every evolution to {{GEN:grav_constraint}}.
+
+\subsection{The undisturbed deflation is unstable}
+
+The behavior just described is not caused by the matter alone. Near the undisturbed deflation, with
+$H_{\mb}=-\gff+\delta H_{\mb}$ and to the lowest order in $\delta H_{\mb}$, $H_{\ma}$ and the energy
+density, the constraint of the tuned gravity reads
+\begin{equation}
+-6\,\gff\,\delta H_{\mb}-48\,H_{\ma}^{2}=\kappa_8\,\varepsilon .
+\label{eq:constraint}
+\end{equation}
+The terms linear in $H_{\ma}$ cancel between the Einstein and the Gauss-Bonnet part, which is why
+$H_{\ma}$ enters quadratically. Since $\varepsilon\ge0$, the left-hand side must not be negative:
+\emph{initial data exist only for a deflation that is at least as fast as the undisturbed one},
+$\delta H_{\mb}\le0$. For a deflation exactly at the rate $\gff$ and without matter the constraint is
+$H_{\ma}^{2}\,(H_{\ma}^{2}-12\,\gff H_{\ma}+16\,\gff^{2})=0$, with the roots $0$, $0$ and
+$(6\pm\sqrt{20})\,\gff$: the undisturbed deflation is a double root, on the edge of the allowed
+initial data.
+
+For a deflation faster by one part in a thousand and no matter, the constraint has the two roots
+$H_{\ma}(0)=\pm\gff\,(0.001/8)^{1/2}$ to the lowest order. Starting from either, the deflation does
+not return to the rate $\gff$: it becomes faster and faster
+[Table~\ref{tab:gravvac}, Fig.~\ref{fig:gravdefl}(c)]. \emph{The exactly exponential deflation is an
+unstable solution of the gravity in which it is a solution without matter}; every allowed
+perturbation, with or without matter, grows.
+
+\begin{table}
+\caption{\label{tab:gravvac}The tuned Einstein-Lovelock gravity without matter, started at
+$H_{\mb}(0)=-1.001\,\gff$ with the two values of $H_{\ma}(0)$ that the constraint allows: the state
+at the end of the integration (at $\td^{0}=6$, or where a rate exceeded $50\,\gff$).}
+\begin{ruledtabular}
+\begin{tabular}{cccc}
+$H_{\ma}(0)/\gff$ & $\td^{0}$ at the end & $H_{\ma}/\gff$ & $H_{\mb}/\gff$ \\
+\hline
+{{ROWS:tbl_gravity_vacuum}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+Three conclusions follow for the hypothesis. First, the matter of the model does not produce the
+deflation; an agent with the equation of state (\ref{eq:agent}), or a tuned Gauss-Bonnet term, is
+needed. Second, with the Gauss-Bonnet term the deflation is not stable, so that the Gauss-Bonnet term
+alone does not explain a deflation that lasts. Third, whatever holds the deflation must also absorb
+the reaction of the matter, which pushes toward a faster deflation and an expansion of the flat
+coordinates; the sections on cosmology assume such an agent and say so (assumption A2 of
+Sec.~\ref{sec:cosmo}).

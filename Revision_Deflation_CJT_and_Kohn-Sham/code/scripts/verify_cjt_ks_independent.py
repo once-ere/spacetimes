@@ -608,7 +608,7 @@ def part_kohn_sham(models, red_num):
     g_0, g_1 = hf["rho_S"] @ g9, hf["rho"] @ g9
     e_hf = min(e_bind(7, kf, m, g_0, g_1) for kf in np.linspace(0.02, 1.5, 75))
     report("Icks-K2", dev < 2e-9 and abs(kf_sat / kf_doc - 1) < 1e-9 and abs(s_sat["p"]) < 1e-10 * s_sat["eps"] and abs(mu - (e_sat + m)) < 1e-9 and cons < 1e-12 and e_hf > 0,
-           "flat 7+1 spacetime, the example of the author's document KOHN_SHAM_GRAVITY (m = 1, G_S = -1e5, G_V = +1e4, k_F = 0.756636150701493): M = %.12f, rho = %.9e, eps = %.9e, E/A - m = %.11f here, against the printed 0.348097340146, 1.388100213e-5, 1.348787233e-5, -0.02832142796 (largest relative difference %.1e); the minimum of the energy per particle, located by the vanishing of the pressure, is at k_F = %.12f (printed: 0.756636150701493; pressure there %.1e) and the chemical potential equals the energy per particle (difference %.1e); p = mu rho - eps along the equation of state to %.1e. With the Hartree-Fock couplings of the same g_0, g_1 (G_0 = %.0f, G_1 = %.0f, from Icks-S5) the energy per particle stays above m for all Fermi momenta from 0.02 to 1.5 (lowest value %+.6f): with exchange terms the example is not self-bound"
+           "flat 7+1 spacetime, the example of the author's document KOHN_SHAM_GRAVITY (m = 1, G_S = -1e5, G_V = +1e4, k_F = 0.756636150701493): M = %.12f, rho = %.9e, eps = %.9e, E/A - m = %.11f here, against the printed 0.348097340146, 1.388100213e-5, 1.348787233e-5, -0.02832142796 (largest relative difference %.1e); the minimum of the energy per particle, located by the vanishing of the pressure, is at k_F = %.12f (printed: 0.756636150701493; pressure there %.1e) and the chemical potential equals the energy per particle (difference %.1e); p = mu rho - eps along the equation of state to %.1e. With G_S = %.0f, G_V = %.0f, the Hartree-Fock couplings that g_0 = -1e5, g_1 = +1e4 give (Icks-S5; the same numbers are printed in section 4 of the author's document), the energy per particle stays above m for all Fermi momenta from 0.02 to 1.5 (lowest value %+.6f): uniform matter is not self-bound for that pair of couplings. The Kohn-Sham numbers of the document belong to G_S = -1e5, G_V = +1e4 taken as the mean-field couplings themselves"
            % (got["M"], got["rho"], got["eps"], got["e"], dev, kf_sat, s_sat["p"], mu - (e_sat + m), cons, g_0, g_1, e_hf))
     # ---- K3: deflating 7+1, all momenta ----
     rows = read_csv("ks_deflating_71.csv")
@@ -662,7 +662,7 @@ def part_kohn_sham(models, red_num):
             worst = max(worst, abs(thr / float(row["GS_abs"]) - 1), abs(ratio - float(row["ratio"])))
             txt.append("D = %d, G_V/|G_S| = %.4f: %.4f" % (d, ratio, thr))
     report("Icks-K4", worst < 2e-6,
-           "fields that do not depend on x5, x6, x7 (D = 4) nor on x0 (D = 3): the smallest scalar attraction |G_S| m^(D-1) at which uniform matter is self-bound, found with scipy (lowest energy per particle over the Fermi momentum equal to m): %s; the table ks_reduced_thresholds.csv of the Rust program agrees to %.1e (relative). The third ratio, %.6f, is the Hartree-Fock ratio G_1/|G_0| of the couplings g_1 = -0.1 g_0 (Icks-S5)"
+           "fields that do not depend on x5, x6, x7 (D = 4) nor on x0 (D = 3): the smallest scalar attraction |G_S| m^(D-1) at which uniform matter is self-bound, found with scipy (lowest energy per particle over the Fermi momentum equal to m): %s; the table ks_reduced_thresholds.csv of the Rust program agrees to %.1e (relative). The third ratio, %.6f, is the ratio G_V/|G_S| of the Hartree-Fock couplings of g_1 = -0.1 g_0 (Icks-S5)"
            % ("; ".join(txt), worst, ratios[2]))
     # ---- K5: the two halves of the covariant form on 4+4 ----
     hfc = {row["density"]: np.array([float(sp.Rational(row["c%d" % r])) for r in range(9)]) / 16 for row in read_csv("selfcoupling_hartree_fock.csv") if row["model"] == "44c"}
@@ -709,7 +709,7 @@ def part_kohn_sham(models, red_num):
     for pol in (0.0, 0.5, 1.0):
         sols, runaway = halves(pol)
         unique &= len(sols) == 1 and min(sols[0][0]) > 0
-        row = next(r for r in rust if abs(float(r["P"]) - pol) < 1e-9)
+        row = next(r for r in rust if abs(float(r["pol_W"]) - pol) < 1e-9)
         vals[pol] = sols[0][1]
         worst = max(worst, abs(vals[pol] - float(row["e_bind"])), abs(sols[0][0][0] - float(row["M_plus"])), abs(sols[0][0][1] - float(row["M_minus"])))
         if pol == 0.0:
@@ -1361,6 +1361,27 @@ def part_gravity():
     ok &= roots.get(sp.Integer(0), 0) == 2 and sp.simplify(sum(r * mult for r, mult in roots.items()) - 12 * g) == 0 and all(sp.simplify((r - 6 * g) ** 2 - 20 * g**2) == 0 for r in roots if r != 0)
     report("Icks-G4", ok,
            "the deflating spacetime (four flat coordinates, H_a = 0; three coordinates deflating at the same rate, H_b = -g55) in the author's Einstein-Lovelock gravity, by computer algebra in the symbol g55: it solves the three field equations without matter for LambdaBar = 3 g55^2 and alpha_2 = 1/(4 g55^2); E^(3) vanishes identically there (alpha_3 is arbitrary); the matrix of the coefficients of (H_a', H_b') in the two space equations is diag(-6, 2); in Einstein gravity alone the same spacetime needs kappa eps = 3 g55^2, kappa p_a = -6 g55^2, kappa p_b = -3 g55^2; near the solution the constraint is -6 g55 dH_b - 48 H_a^2 + (higher orders) = kappa eps, with no term linear in H_a; for H_b = -g55 its four roots in H_a are 0, 0 and (6 +- sqrt(20)) g55")
+    # ---- G6: the polynomials that the documents print for four directions with the rate H_a and three with H_b ----
+    A_, B_, dA, dB = sp.symbols("A_ B_ dA dB")
+    sym43 = {"ha": A_, "hb": B_, "kta": dA + A_**2, "ktb": dB + B_**2}
+    printed = {
+        (1, "t"): 6 * A_**2 + 12 * A_ * B_ + 3 * B_**2,
+        (1, "a"): 3 * dA + 3 * dB + 6 * A_**2 + 9 * A_ * B_ + 6 * B_**2,
+        (1, "b"): 4 * dA + 2 * dB + 10 * A_**2 + 8 * A_ * B_ + 3 * B_**2,
+        (2, "t"): -12 * A_**4 - 144 * A_**3 * B_ - 216 * A_**2 * B_**2 - 48 * A_ * B_**3,
+        (2, "a"): -12 * (A_**2 + 6 * A_ * B_ + 3 * B_**2) * dA - 12 * (3 * A_**2 + 6 * A_ * B_ + B_**2) * dB
+                  - 12 * A_**4 - 108 * A_**3 * B_ - 180 * A_**2 * B_**2 - 108 * A_ * B_**3 - 12 * B_**4,
+        (2, "b"): -16 * (3 * A_**2 + 6 * A_ * B_ + B_**2) * dA - 16 * (3 * A_**2 + 2 * A_ * B_) * dB
+                  - 60 * A_**4 - 192 * A_**3 * B_ - 136 * A_**2 * B_**2 - 32 * A_ * B_**3,
+        (3, "t"): 1080 * A_**4 * B_**2 + 1440 * A_**3 * B_**3,
+    }
+    ok = all(sp.expand(lovelock_component(k, 4, 3, w, sym43) - expr) == 0 for (k, w), expr in printed.items())
+    # every term of the third order contains at least two factors of H_a or of its derivative
+    for w in "tab":
+        e3 = sp.Poly(sp.expand(lovelock_component(3, 4, 3, w, sym43)), A_, dA)
+        ok &= all(i + j >= 2 for (i, j) in e3.monoms())
+    report("Icks-G6", ok,
+           "the Einstein-Lovelock polynomials that the documents print for four directions with the rate H_a and three with the rate H_b (E^(1) and E^(2): time component and both space components; E^(3): time component) are the sums over pair curvatures, term by term (computer algebra, seven identities); every term of the three components of E^(3) contains at least two factors of H_a or of its derivative, so that E^(3) and its first variation vanish at H_a = 0")
     # ---- G5: evolutions of the deflating spacetime ----
     gv_ = 0.01
     tuned_alpha = (1.0, 1.0 / (4 * gv_**2), 0.0)
