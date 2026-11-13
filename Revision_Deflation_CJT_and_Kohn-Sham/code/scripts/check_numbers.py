@@ -80,6 +80,8 @@ LITERATURE = {
     "60": "the mass in GeV that the constituents of a scalar of 125 GeV would have if the scalar weighs about twice as much as its constituents (models of the Nambu-Jona-Lasinio type)",
 }
 DEFINITIONS = {
+    "42": "run time of the command superfluid in minutes, measured on the two-processor machine of this work (not a result of a calculation)",
+    "75": "run time of the command families in minutes, measured on the two-processor machine of this work (not a result of a calculation)",
     "0.5": "one half, as a threshold or a parameter stated in the text",
     "10.75": "effective number of relativistic degrees of freedom during nucleosynthesis: 2 for photons plus 7/8 of 4 for electrons and positrons and of 6 for three neutrino species",
     "28": "number of rotations and boosts in eight dimensions, 8*7/2",
@@ -124,6 +126,8 @@ ERROR_LOG = {
 # stated number that the text means, as judged by reading the sentence and the output of the
 # programs.  A number of kind (r) or (c) that is missing here makes the script fail.
 JUDGED = {
+    "42": "a run time in minutes (list DEFINITIONS of this script); that it is also the rounded value of a stated number is a coincidence",
+    "75": "a run time in minutes (list DEFINITIONS of this script); that it is also the rounded value of a stated number is a coincidence",
     "60": "half of the mass of the scalar particle of 125 GeV, the estimate of condition C5 (list LITERATURE of this script); that it is also the rounded value of a stated number is a coincidence",
     "256.95": "description of data/gravity_deflating.csv: the matter of the sector has G_S = -256.951 (D = 4), quoted with two decimals",
     "2\\times10^{-8}": "check Icks-K3 of the independent script: the conservation law d eps/dx4 = sum_t rate_t (eps + p_t) holds to 1.9e-08",
@@ -291,7 +295,7 @@ def clean_md(text):
 
 IDENT = re.compile(r"(Python 3\.\d+|REVTeX 4\.\d|pandoc >= \d\.\d+|rustc \d\.\d+|g55|g66|g77|const[567]|x[0-7]|1644d?|1671d?|16[ -]component|4\+4|7\+1|4\{\+\}4|7\{\+\}1|[RS]S?[0-9]|RP[0-9]|"
                    r"R-E\d+|E\d+|[CH][1-7]\b|A[12]\b|P\d+\b|N\d\d\b|D0\d\b|16\\times16|8\\times8|16×16|8×8|SO\(\d\)|SU\(\d\)|U\(1\)|su\(2\)|u\(1\)|"
-                   r"Sec(s)?\.\s*[\d., and]+|Eqs?\.\s*\([\d.a-z]+\)(\s*(to|and|,)\s*\([\d.a-z]+\))*|Refs?\.\s*\[\d+\]|\[\d+\]|Part \d|Step \d|"
+                   r"Sec(s)?\.\s*[\d., and]+|Sections?\s+[\d., and]+|Eqs?\.\s*\([\d.a-z]+\)(\s*(to|and|,)\s*\([\d.a-z]+\))*|Refs?\.\s*\[\d+\]|\[\d+\]|Part \d|Step \d|"
                    r"\(\d\.\d+[a-z]?\)|items? R-E\d+|\\tag\{[^}]*\}|H\^4|O\(4\))")
 
 

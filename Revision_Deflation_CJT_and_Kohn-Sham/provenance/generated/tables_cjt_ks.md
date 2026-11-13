@@ -109,11 +109,11 @@
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
-437 numbers in 23 documents, 5 not traced
+431 numbers in 23 documents, 0 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-not all
+17
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN tbl_sources -->
@@ -1500,7 +1500,7 @@ $6.4\times10^{-10}$
 | `fig:kernels` | figure `fig_kernels` | Exchange amplitudes in three pair channels, divided by the square of the coupling of the moment, against the scattering angle, for momenta of the magnitude ... in the plane of ... and ... | `channels` | `pair_channel_kernel.csv` |
 | `tab:gap` | table | The gap along the deflation clock for two of the four sets computed | `history` | `gap_history.csv` |
 | `fig:gap` | figure `fig_gap_history` | The gap along the deflation clock, for four sets of the mass of the radial mode and of the Fermi momentum (in units of ...) | `history` | `gap_history.csv` |
-| `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading {{GEN:gapc\_tau}} \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
+| `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
 | `fig:paircontact` | figure `fig_pair_contact` | The gap of the hidden-axis pair along the deflation clock with contact couplings, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
 | `tab:dimer` | table | Two fermions as the clock passes the moment of binding | `history` | `dimer_history.csv` |
 | `fig:binding` | figure `fig_binding` | The bound pair along the clock | `history`, `matter` | `dimer_history.csv`, `dm_resonance.csv` |
@@ -1559,7 +1559,7 @@ $6.4\times10^{-10}$
 | `fig:kernels` | figure `fig_kernels` | Exchange amplitudes in three pair channels, divided by the square of the coupling of the moment, against the scattering angle, for momenta of the magnitude ... in the plane of ... and ... | `channels` | `pair_channel_kernel.csv` |
 | `tab:gap` | table | The gap along the deflation clock for two of the four sets computed | `history` | `gap_history.csv` |
 | `fig:gap` | figure `fig_gap_history` | The gap along the deflation clock, for four sets of the mass of the radial mode and of the Fermi momentum (in units of ...) | `history` | `gap_history.csv` |
-| `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading {{GEN:gapc\_tau}} \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
+| `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
 | `fig:paircontact` | figure `fig_pair_contact` | The gap of the hidden-axis pair along the deflation clock with contact couplings, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
 | `tab:dimer` | table | Two fermions as the clock passes the moment of binding | `history` | `dimer_history.csv` |
 | `fig:binding` | figure `fig_binding` | The bound pair along the clock | `history`, `matter` | `dimer_history.csv`, `dm_resonance.csv` |

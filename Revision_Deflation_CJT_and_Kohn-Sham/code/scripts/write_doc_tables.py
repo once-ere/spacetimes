@@ -1152,6 +1152,9 @@ def provenance_plain():
             label = re.search(r"\\label\{((?:fig|tab):\w+)\}", body).group(1)
             cap = re.search(r"\\caption\{\\label\{[^}]*\}(.*?)[.:]\s", body, re.S)
             title = re.sub(r"\s+", " ", cap.group(1)) if cap else ""
+            # a caption may quote a generated number: put the number in, as the builder of the manuscripts does
+            fr_now = dict(FRAGS)
+            title = re.sub(r"\{\{GENM?:(\w+)\}\}", lambda q: fr_now[q.group(1)].strip("$"), title)
             title = re.sub(r"\\[A-Za-z]+\{([^{}]*)\}", r"\1", title)
             title = re.sub(r"\$[^$]*\$", "...", title).replace("~", " ").replace("\\", "")
             if label.startswith("fig:"):
