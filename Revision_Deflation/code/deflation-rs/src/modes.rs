@@ -12,8 +12,8 @@
 //! field psihat = sqrt(b_5 b_6 b_7) psi obeys (checks 71d-D2, 44d-D2 of `curved.rs`)
 //!
 //!   7+1:   i d psihat/dx4 = h(x4) psihat,   h = m beta + p_a alpha^a + sum_t q_t(x4) alpha^t,   h^2 = (E_perp^2 + k_d^2) 1,
-//!   4+4:     d psihat/dx4 = K(x4) psihat,   K = K0 + sum_t q_t(x4) N_t,                         K^2 = (k_d^2 - E_perp^2) 1,
-//!          K0 = -m gamma^4 + i p_a gamma^4 gamma^a  (anti-Hermitian),  N_t = i gamma^4 gamma^t  (Hermitian, N_t^2 = 1),
+//!   4+4:     d psihat/dx4 = K(x4) psihat,   K = K_perp + sum_t q_t(x4) N_t,                         K^2 = (k_d^2 - E_perp^2) 1,
+//!          K_perp = -m gamma^4 + i p_a gamma^4 gamma^a  (anti-Hermitian),  N_t = i gamma^4 gamma^t  (Hermitian, N_t^2 = 1),
 //!
 //! with E_perp^2 = m^2 + p_0^2 + p_1^2 + p_2^2 + p_3^2.
 //!
@@ -37,7 +37,7 @@
 //!
 //!     psihat = sqrt(u_d) K_{1/2 + i E_perp/rate_t}(u_d) w - sqrt(u_d) K_{1/2 - i E_perp/rate_t}(u_d) N_t w,   u_d = q_t/rate_t,
 //!
-//! with the modified Bessel function K and any w of positive energy (i K0 w = E_perp w).
+//! with the modified Bessel function K and any w of positive energy (i K_perp w = E_perp w).
 //! They are standing waves at early times and fall off as exp(-s) at late times.
 //!
 //! NUMERICAL METHOD.  The equations are integrated with the commutator-free Magnus
@@ -247,8 +247,8 @@ impl Dirac71 {
         Dirac71 { beta: g[4].clone(), alpha }
     }
 
-    /// h0 = m beta + sum_a p_a alpha^a (a = 0..3): the Hamiltonian without the deflating momenta.
-    pub fn h0(&self, mode: &Mode) -> CMat {
+    /// h_perp = m beta + sum_a p_a alpha^a (a = 0..3): the Hamiltonian without the deflating momenta.
+    pub fn h_perp(&self, mode: &Mode) -> CMat {
         let mut h = self.beta.scale(mode.m);
         for a in 0..4 {
             if mode.p[a] != 0.0 {
@@ -258,9 +258,9 @@ impl Dirac71 {
         h
     }
 
-    /// c0 h0 + sum_t c_t alpha^t.
-    fn comb(&self, h0: &CMat, c0: f64, c: &[f64; 3]) -> CMat {
-        let mut h = h0.scale(c0);
+    /// c0 h_perp + sum_t c_t alpha^t.
+    fn comb(&self, h_perp: &CMat, c0: f64, c: &[f64; 3]) -> CMat {
+        let mut h = h_perp.scale(c0);
         for i in 0..3 {
             if c[i] != 0.0 {
                 h = h.add(&self.alpha[5 + i].scale(c[i]));
@@ -271,7 +271,7 @@ impl Dirac71 {
 
     /// The Hamiltonian h(x4) of the weighted field.
     pub fn h(&self, mode: &Mode, bg: &Background, x4: f64) -> CMat {
-        self.comb(&self.h0(mode), 1.0, &bg.q(&mode.kappa, x4))
+        self.comb(&self.h_perp(mode), 1.0, &bg.q(&mode.kappa, x4))
     }
 
     /// The projector on the negative-energy states in the first superadiabatic basis.
@@ -289,13 +289,13 @@ impl Dirac71 {
         let q = bg.q(&mode.kappa, x4);
         let qq = q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
         let omega = (eps * eps + qq).sqrt();
-        let h0 = self.h0(mode);
-        let h = self.comb(&h0, 1.0, &q);
+        let h_perp = self.h_perp(mode);
+        let h = self.comb(&h_perp, 1.0, &q);
         // dh/dx4 = sum rate_t q_t alpha^t,  d omega/dx4 = sum rate_t q_t^2 / omega
         let dq = [bg.rate[0] * q[0], bg.rate[1] * q[1], bg.rate[2] * q[2]];
         let domega = (bg.rate[0] * q[0] * q[0] + bg.rate[1] * q[1] * q[1] + bg.rate[2] * q[2] * q[2]) / omega;
         // dn/dx4 = (dh/dx4)/omega - h (d omega/dx4)/omega^2
-        let dn = self.comb(&h0, -domega / (omega * omega), &[dq[0] / omega - q[0] * domega / (omega * omega), dq[1] / omega - q[1] * domega / (omega * omega), dq[2] / omega - q[2] * domega / (omega * omega)]);
+        let dn = self.comb(&h_perp, -domega / (omega * omega), &[dq[0] / omega - q[0] * domega / (omega * omega), dq[1] / omega - q[1] * domega / (omega * omega), dq[2] / omega - q[2] * domega / (omega * omega)]);
         let n = h.scale(1.0 / omega);
         // H1 = h - (i/2) dn n
         let dnn = dn.mul(&n);
@@ -314,15 +314,15 @@ impl Dirac71 {
     }
 
     /// One step of the commutator-free Magnus method for i dY/dx4 = h(x4) Y.
-    fn step(&self, h0: &CMat, eps: f64, mode: &Mode, bg: &Background, x4: f64, dt: f64, y: &mut Block) {
+    fn step(&self, h_perp: &CMat, eps: f64, mode: &Mode, bg: &Background, x4: f64, dt: f64, y: &mut Block) {
         let q1 = bg.q(&mode.kappa, x4 + CF4_C1 * dt);
         let q2 = bg.q(&mode.kappa, x4 + CF4_C2 * dt);
         for (wa, wb) in [(CF4_A1, CF4_A2), (CF4_A2, CF4_A1)] {
-            // exponent: -i dt A,  A = (wa + wb) h0 + sum_t (wa q1_t + wb q2_t) alpha^t,  A^2 = s 1
+            // exponent: -i dt A,  A = (wa + wb) h_perp + sum_t (wa q1_t + wb q2_t) alpha^t,  A^2 = s 1
             let c0 = wa + wb;
             let c = [wa * q1[0] + wb * q2[0], wa * q1[1] + wb * q2[1], wa * q1[2] + wb * q2[2]];
             let s = c0 * c0 * eps * eps + c[0] * c[0] + c[1] * c[1] + c[2] * c[2];
-            let a = self.comb(h0, c0, &c);
+            let a = self.comb(h_perp, c0, &c);
             let rt = s.sqrt();
             let th = dt * rt;
             // exp(-i dt A) = cos(th) - i sin(th)/rt A
@@ -335,7 +335,7 @@ impl Dirac71 {
     /// phase omega dt does not exceed `phase` and rate dt does not exceed `slow`.
     /// `sample` is called after every step with (x4, y).  Returns the number of steps.
     pub fn evolve<F: FnMut(f64, &Block)>(&self, mode: &Mode, bg: &Background, x4_a: f64, x4_b: f64, y: &mut Block, phase: f64, slow: f64, mut sample: F) -> usize {
-        let h0 = self.h0(mode);
+        let h_perp = self.h_perp(mode);
         let eps = mode.eps();
         let rmax = bg.rate.iter().cloned().fold(0.0, f64::max);
         let mut t = x4_a;
@@ -351,7 +351,7 @@ impl Dirac71 {
             if t + dt > x4_b {
                 dt = x4_b - t;
             }
-            self.step(&h0, eps, mode, bg, t, dt, y);
+            self.step(&h_perp, eps, mode, bg, t, dt, y);
             t += dt;
             steps += 1;
             sample(t, y);
@@ -463,8 +463,8 @@ impl Dirac44 {
         Dirac44 { g4: g[4].clone(), g4g, n, w }
     }
 
-    /// K0 = -m gamma^4 + i sum_a p_a gamma^4 gamma^a: anti-Hermitian, K0^2 = -E_perp^2.
-    pub fn k0(&self, mode: &Mode) -> CMat {
+    /// K_perp = -m gamma^4 + i sum_a p_a gamma^4 gamma^a: anti-Hermitian, K_perp^2 = -E_perp^2.
+    pub fn k_perp(&self, mode: &Mode) -> CMat {
         let mut k = self.g4.scale(-mode.m);
         for a in 0..4 {
             if mode.p[a] != 0.0 {
@@ -476,9 +476,9 @@ impl Dirac44 {
         k
     }
 
-    /// c0 K0 + sum_t c_t N_t.
-    fn comb(&self, k0: &CMat, c0: f64, c: &[f64; 3]) -> CMat {
-        let mut k = k0.scale(c0);
+    /// c0 K_perp + sum_t c_t N_t.
+    fn comb(&self, k_perp: &CMat, c0: f64, c: &[f64; 3]) -> CMat {
+        let mut k = k_perp.scale(c0);
         for i in 0..3 {
             if c[i] != 0.0 {
                 k = lin2(&k, 1.0, &self.n[i], c[i]);
@@ -489,19 +489,19 @@ impl Dirac44 {
 
     /// The generator K(x4) of the weighted field.
     pub fn k(&self, mode: &Mode, bg: &Background, x4: f64) -> CMat {
-        self.comb(&self.k0(mode), 1.0, &bg.q(&mode.kappa, x4))
+        self.comb(&self.k_perp(mode), 1.0, &bg.q(&mode.kappa, x4))
     }
 
     /// One step (dt may be negative) of the commutator-free Magnus method for dY/dx4 = K(x4) Y.
-    fn step(&self, k0: &CMat, eps: f64, mode: &Mode, bg: &Background, x4: f64, dt: f64, y: &mut Block) {
+    fn step(&self, k_perp: &CMat, eps: f64, mode: &Mode, bg: &Background, x4: f64, dt: f64, y: &mut Block) {
         let q1 = bg.q(&mode.kappa, x4 + CF4_C1 * dt);
         let q2 = bg.q(&mode.kappa, x4 + CF4_C2 * dt);
         for (wa, wb) in [(CF4_A1, CF4_A2), (CF4_A2, CF4_A1)] {
-            // exponent: dt A,  A = (wa + wb) K0 + sum_t (wa q1_t + wb q2_t) N_t,  A^2 = s 1,  s = -c0^2 E_perp^2 + sum c_t^2
+            // exponent: dt A,  A = (wa + wb) K_perp + sum_t (wa q1_t + wb q2_t) N_t,  A^2 = s 1,  s = -c0^2 E_perp^2 + sum c_t^2
             let c0 = wa + wb;
             let c = [wa * q1[0] + wb * q2[0], wa * q1[1] + wb * q2[1], wa * q1[2] + wb * q2[2]];
             let s = -c0 * c0 * eps * eps + c[0] * c[0] + c[1] * c[1] + c[2] * c[2];
-            let a = self.comb(k0, c0, &c);
+            let a = self.comb(k_perp, c0, &c);
             let rt = s.abs().sqrt();
             let th = dt * rt;
             let (f1, f2) = if rt < 1e-300 {
@@ -524,7 +524,7 @@ impl Dirac44 {
     /// introduced by rounding dies out: the backward integration is stable.
     pub fn bounded(&self, mode: &Mode, bg: &Background, s_late: f64, q_early: f64, phase: f64, slow: f64) -> Extinction {
         let eps = mode.eps();
-        let k0 = self.k0(mode);
+        let k_perp = self.k_perp(mode);
         let x4_turn = bg.x4_where_q_is(&mode.kappa, eps);
         let rmax = bg.rate.iter().cloned().fold(0.0, f64::max);
         // find x4_late: integrate lambda = sqrt(k_d^2 - E_perp^2) by the midpoint rule until the exponent is s_late
@@ -565,7 +565,7 @@ impl Dirac44 {
             if t - dt < x4_early {
                 dt = t - x4_early;
             }
-            self.step(&k0, eps, mode, bg, t, -dt, &mut y);
+            self.step(&k_perp, eps, mode, bg, t, -dt, &mut y);
             t -= dt;
             steps += 1;
             if t <= next {
@@ -578,12 +578,12 @@ impl Dirac44 {
         let (aw, _) = eigh(&gram);
         let log_amp_min = 0.5 * aw[0].ln();
         let log_amp_max = 0.5 * aw[7].ln();
-        // decomposition into the positive- and negative-energy states of h0 = i K0
-        let mut h0 = CMat::zeros(16);
+        // decomposition into the positive- and negative-energy states of h_perp = i K_perp
+        let mut h_perp = CMat::zeros(16);
         for i in 0..256 {
-            h0.a[i] = C64::I * k0.a[i];
+            h_perp.a[i] = C64::I * k_perp.a[i];
         }
-        let (_, hv) = eigh(&h0);
+        let (_, hv) = eigh(&h_perp);
         let vneg = Block::from_columns(&hv, 0, 8);
         let vpos = Block::from_columns(&hv, 8, 8);
         // coefficients: U+ = V+^dagger Y, U- = V-^dagger Y (8x8 each); compare U+^dagger U+ with U-^dagger U-

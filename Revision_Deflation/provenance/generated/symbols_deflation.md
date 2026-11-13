@@ -18,8 +18,11 @@
 | $\Gamma^\rho{}_{\mu\nu}$ | `Gamma`, `christoffel` | the Christoffel symbols of the deflating metric (three indices; the letter $\Gamma$ with square brackets is the effective action of the main registry) | DMD 1.2 | new |
 | $R^\rho{}_{\sigma\mu\nu}$, $R^\mu{}_\nu$, $R$ | `riemann`, `ricci`, `Ric44`, `Ric55`, `Ric66`, `Ric77`, `Rscalar` | Riemann tensor, Ricci tensor and curvature scalar of the deflating metric | DMD 1.3 | new |
 | $\mathcal G^\mu{}_\nu$ | `Ein00`, `Ein44`, `Ein55`, `Ein66`, `Ein77`, `einstein_mixed` | the Einstein tensor $R^\mu{}_\nu-\tfrac12R\,\delta^\mu_\nu$ (script letter, so that it cannot be taken for Newton's constant or for a constant of the Fermi type) | DMD 1.4 | new |
-| $\varsigma$ | `affine` | affine parameter along a geodesic; the proper time for a massive particle on the 7+1 spacetime | DMD 1.7 | new |
+| $\mathcal X$; $\mathcal X_{\rm scale}$, $\mathcal X_{(s)}$ | `killing_vectors`, `killing_count` | a Killing vector field of the deflating metric (script letter; the plain letter $X$ is the set of coordinates of the main registry); the scaling vector $\partial_4+\sum_t\mathrm{rate}_t\,xt\,\partial_t$; the three special Killing vectors of the case of equal rates, $s=5,6,7$ | DMD 1.5, 1.6 | new |
+| $\bar x4$; $\bar x5$, $\bar x6$, $\bar x7$ | — | coordinates of the case of equal rates in which the line element of $x4,\dots,x7$ is a multiple of a flat one: $\bar x4=e^{\mathrm{g55}\,x4}/\mathrm{g55}$, $\bar xt=\mathrm{const}_t\,xt$ | DMD 1.6 | new |
+| $\varsigma$ | `affine` | affine parameter along a geodesic; for a massive particle on the 7+1 spacetime, the proper time divided by the mass | DMD 1.7 | new |
 | $P_\mu$ | `P_1`, `P_5` | the conserved covariant momenta of a geodesic (with an index; $P$ without index is the generator of the main registry) | DMD 1.7 | new |
+| $x4_{\rm turn}$ | `x4_turn` | the value of the ordinary time at which a classical particle with momentum along a deflating time turns back, and beyond which a mode that depends on a deflating time is extinguished (4+4): there $k_d=E_\perp$ | DMD 1.7, 4.3 | new |
 
 **D2 Matrices, fields and their equations**
 
@@ -37,10 +40,14 @@
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $k_5$, $k_6$, $k_7$; $k_t$ | `k_5`, `k_6`, `k_7`, `k_t` | the conserved wavenumbers of a mode along the deflating coordinates (covariant components of the wave vector $k_A$ of the main project) | DMD 3.4; M IV | new |
-| $E_\perp$ | `E_perp` | the energy of a mode without its motion along the deflating coordinates: $\sqrt{m^2+k_0^2+k_1^2+k_2^2+k_3^2}$ | DMD 4.1; M IV | new |
-| $k_d$ | `k_d` | the physical wavenumber along the deflating coordinates, $k_d(x4)=\big[\sum_tk_t^2/b_t(x4)^2\big]^{1/2}$; it grows as the coordinates deflate | DMD 4.1; M IV | new |
-| $u_d$ | `u_d` | $k_d/\mathrm{rate}_t$ for a mode that depends on one deflating coordinate: the argument of the Bessel functions of the exact solutions | DMD 4.2 | new |
+| $E_\perp$ | `E_perp` | the energy of a mode, or of a classical particle, without its motion along the deflating coordinates: $\sqrt{m^2+k_0^2+k_1^2+k_2^2+k_3^2}$ (with the wavenumbers or momenta along $x0,\dots,x3$) | DMD 1.7, 3.4; M IV | new |
+| $k_d$ | `k_d` | the physical wavenumber along the deflating coordinates, $k_d(x4)=\big[\sum_tk_t^2/b_t(x4)^2\big]^{1/2}$; it grows as the coordinates deflate | DMD 3.4; M IV | new |
+| $\mathsf h_\perp$, $K_\perp$ | `h_perp`, `K_perp` | the parts of $\mathsf h$ and of $K$ that do not contain the scale factors: the operators of the modes that do not depend on the deflating coordinates, $\mathsf h_\perp=m\beta+\sum_ap_a\alpha^a$ with $\mathsf h_\perp^2=E_\perp^2$, and $K_\perp=-m\gamma^4+i\sum_ak_a\gamma^4\gamma^a$ with $K_\perp^2=-E_\perp^2$ | DMD 4.1 | new |
+| $\gamma^d$, $\alpha^d$ | — | the frame matrix along the direction of the wave vector in the deflating coordinates, $\gamma^d=k_d^{-1}\sum_t(k_t/b_t)\gamma^t$, and $\alpha^d=\gamma^4\gamma^d$; constant in time when one rate governs | DMD 4.1 | new |
+| $w$; $f_+$, $f_-$; $Z_+$, $Z_-$ | — | auxiliary objects of the exact solutions, used only in DMD 4.2 and 4.3: a constant eigenvector of $\mathsf h_\perp$ or of $K_\perp$; the two coefficient functions of the ansatz; two cylinder functions whose orders differ by one | DMD 4.2, 4.3 | new |
+| $u_d$ | `u_d` | $k_d/\mathrm{rate}_t$ for a mode that depends on one deflating coordinate: the argument of the Bessel functions of the exact solutions | DMD 4.1 | new |
 | $n_{\rm cr}$ | `n_cr`, `n_min`, `n_mean`, `n_max`, `n_exact`, `fd5`, `fd6` | the number of particles per internal state that the deflation creates in a mode that starts empty (7+1) | DMD 4.2; M IV | new |
+| $T_{\rm defl}$ | — | the temperature of the thermal spectrum of the created quanta, $\mathrm{rate}_t/2\pi$ in units with $\hbar=k_B=1$ (7+1) | DMD 4.2; M IV | new |
 | $S_{\rm WKB}$ | `S_wkb` | $\int\sqrt{k_d^2-E_\perp^2}\,dx4$ from the turning value on: exponent of the extinction of a bounded solution (4+4) | DMD 4.3; M IV | new |
 | $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
 | $\varpi_b$ | `varpi_b` | $\sqrt{k^2+m_{\rm bos}^2-\mathrm{gsum}^2/4}$: the frequency of the weighted boson mode that does not depend on the deflating coordinates | RS1 2 | new |
@@ -106,8 +113,11 @@
 | $\Gamma^\rho{}_{\mu\nu}$ | `Gamma`, `christoffel` | the Christoffel symbols of the deflating metric (three indices; the letter $\Gamma$ with square brackets is the effective action of the main registry) | DMD 1.2 | new |
 | $R^\rho{}_{\sigma\mu\nu}$, $R^\mu{}_\nu$, $R$ | `riemann`, `ricci`, `Ric44`, `Ric55`, `Ric66`, `Ric77`, `Rscalar` | Riemann tensor, Ricci tensor and curvature scalar of the deflating metric | DMD 1.3 | new |
 | $\mathcal G^\mu{}_\nu$ | `Ein00`, `Ein44`, `Ein55`, `Ein66`, `Ein77`, `einstein_mixed` | the Einstein tensor $R^\mu{}_\nu-\tfrac12R\,\delta^\mu_\nu$ (script letter, so that it cannot be taken for Newton's constant or for a constant of the Fermi type) | DMD 1.4 | new |
-| $\varsigma$ | `affine` | affine parameter along a geodesic; the proper time for a massive particle on the 7+1 spacetime | DMD 1.7 | new |
+| $\mathcal X$; $\mathcal X_{\rm scale}$, $\mathcal X_{(s)}$ | `killing_vectors`, `killing_count` | a Killing vector field of the deflating metric (script letter; the plain letter $X$ is the set of coordinates of the main registry); the scaling vector $\partial_4+\sum_t\mathrm{rate}_t\,xt\,\partial_t$; the three special Killing vectors of the case of equal rates, $s=5,6,7$ | DMD 1.5, 1.6 | new |
+| $\bar x4$; $\bar x5$, $\bar x6$, $\bar x7$ | — | coordinates of the case of equal rates in which the line element of $x4,\dots,x7$ is a multiple of a flat one: $\bar x4=e^{\mathrm{g55}\,x4}/\mathrm{g55}$, $\bar xt=\mathrm{const}_t\,xt$ | DMD 1.6 | new |
+| $\varsigma$ | `affine` | affine parameter along a geodesic; for a massive particle on the 7+1 spacetime, the proper time divided by the mass | DMD 1.7 | new |
 | $P_\mu$ | `P_1`, `P_5` | the conserved covariant momenta of a geodesic (with an index; $P$ without index is the generator of the main registry) | DMD 1.7 | new |
+| $x4_{\rm turn}$ | `x4_turn` | the value of the ordinary time at which a classical particle with momentum along a deflating time turns back, and beyond which a mode that depends on a deflating time is extinguished (4+4): there $k_d=E_\perp$ | DMD 1.7, 4.3 | new |
 <!-- END symbols_D1 -->
 
 <!-- BEGIN symbols_D2 -->
@@ -125,10 +135,14 @@
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $k_5$, $k_6$, $k_7$; $k_t$ | `k_5`, `k_6`, `k_7`, `k_t` | the conserved wavenumbers of a mode along the deflating coordinates (covariant components of the wave vector $k_A$ of the main project) | DMD 3.4; M IV | new |
-| $E_\perp$ | `E_perp` | the energy of a mode without its motion along the deflating coordinates: $\sqrt{m^2+k_0^2+k_1^2+k_2^2+k_3^2}$ | DMD 4.1; M IV | new |
-| $k_d$ | `k_d` | the physical wavenumber along the deflating coordinates, $k_d(x4)=\big[\sum_tk_t^2/b_t(x4)^2\big]^{1/2}$; it grows as the coordinates deflate | DMD 4.1; M IV | new |
-| $u_d$ | `u_d` | $k_d/\mathrm{rate}_t$ for a mode that depends on one deflating coordinate: the argument of the Bessel functions of the exact solutions | DMD 4.2 | new |
+| $E_\perp$ | `E_perp` | the energy of a mode, or of a classical particle, without its motion along the deflating coordinates: $\sqrt{m^2+k_0^2+k_1^2+k_2^2+k_3^2}$ (with the wavenumbers or momenta along $x0,\dots,x3$) | DMD 1.7, 3.4; M IV | new |
+| $k_d$ | `k_d` | the physical wavenumber along the deflating coordinates, $k_d(x4)=\big[\sum_tk_t^2/b_t(x4)^2\big]^{1/2}$; it grows as the coordinates deflate | DMD 3.4; M IV | new |
+| $\mathsf h_\perp$, $K_\perp$ | `h_perp`, `K_perp` | the parts of $\mathsf h$ and of $K$ that do not contain the scale factors: the operators of the modes that do not depend on the deflating coordinates, $\mathsf h_\perp=m\beta+\sum_ap_a\alpha^a$ with $\mathsf h_\perp^2=E_\perp^2$, and $K_\perp=-m\gamma^4+i\sum_ak_a\gamma^4\gamma^a$ with $K_\perp^2=-E_\perp^2$ | DMD 4.1 | new |
+| $\gamma^d$, $\alpha^d$ | — | the frame matrix along the direction of the wave vector in the deflating coordinates, $\gamma^d=k_d^{-1}\sum_t(k_t/b_t)\gamma^t$, and $\alpha^d=\gamma^4\gamma^d$; constant in time when one rate governs | DMD 4.1 | new |
+| $w$; $f_+$, $f_-$; $Z_+$, $Z_-$ | — | auxiliary objects of the exact solutions, used only in DMD 4.2 and 4.3: a constant eigenvector of $\mathsf h_\perp$ or of $K_\perp$; the two coefficient functions of the ansatz; two cylinder functions whose orders differ by one | DMD 4.2, 4.3 | new |
+| $u_d$ | `u_d` | $k_d/\mathrm{rate}_t$ for a mode that depends on one deflating coordinate: the argument of the Bessel functions of the exact solutions | DMD 4.1 | new |
 | $n_{\rm cr}$ | `n_cr`, `n_min`, `n_mean`, `n_max`, `n_exact`, `fd5`, `fd6` | the number of particles per internal state that the deflation creates in a mode that starts empty (7+1) | DMD 4.2; M IV | new |
+| $T_{\rm defl}$ | — | the temperature of the thermal spectrum of the created quanta, $\mathrm{rate}_t/2\pi$ in units with $\hbar=k_B=1$ (7+1) | DMD 4.2; M IV | new |
 | $S_{\rm WKB}$ | `S_wkb` | $\int\sqrt{k_d^2-E_\perp^2}\,dx4$ from the turning value on: exponent of the extinction of a bounded solution (4+4) | DMD 4.3; M IV | new |
 | $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
 | $\varpi_b$ | `varpi_b` | $\sqrt{k^2+m_{\rm bos}^2-\mathrm{gsum}^2/4}$: the frequency of the weighted boson mode that does not depend on the deflating coordinates | RS1 2 | new |

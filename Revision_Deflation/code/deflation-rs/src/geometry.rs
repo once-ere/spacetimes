@@ -24,10 +24,10 @@
 //!        a particle with momentum along a deflating time cannot pass the value of x4 at
 //!        which the right-hand side vanishes; it turns back.
 //!
-//! For one non-zero P_t (Q = |P_t|/const_t, E0^2 = M^2 + |P|^2) the affine
+//! For one non-zero P_t (E_perp^2 = M^2 + |P|^2, the energy without the motion along xt) the affine
 //! parameter that elapses from x4 = x4_0 is, in closed form,
-//!     7+1, to x4 = infinity:        arcsinh( E0 e^{-rate x4_0} / Q ) / (rate E0),
-//!     4+4, to the turning point:    arccosh( E0 e^{-rate x4_0} / Q ) / (rate E0).
+//!     7+1, to x4 = infinity:        arcsinh( E_perp const_t e^{-rate x4_0} / |P_t| ) / (rate E_perp),
+//!     4+4, to the turning point:    arccosh( E_perp const_t e^{-rate x4_0} / |P_t| ) / (rate E_perp).
 
 use crate::curved::{parameter_sets, parameter_sets_text, Curved};
 use crate::metric::{killing_count, killing_vectors, lie_derivative_of_metric, Point, Sig};
@@ -290,7 +290,7 @@ pub fn geodesic_run(sig: Sig, rate: f64, b0: f64, m: f64, p1: f64, p5: f64, x4_s
             }
             lam_event = lam;
             x4_max = s.x[4];
-            // closed form from x4_start to x4_max: [asinh(E0 e^{-k x4_start}/Q) - asinh(E0 e^{-k x4_max}/Q)] / (k E0)
+            // closed form from x4_start to x4_max: [asinh(E_perp e^{-rate x4_start}/q) - asinh(E_perp e^{-rate x4_max}/q)] / (rate E_perp), q = |P_t|/const_t
             let f = |x4: f64| (e0 * (-rate * x4).exp() / q).asinh() / (rate * e0);
             let lam_closed = f(x4_start) - f(x4_max);
             GeoResult { drift, lam: lam_event, lam_closed, x4_max, x4_turn: f64::INFINITY, path }
@@ -334,7 +334,7 @@ pub fn verify_geodesics(sig: Sig, rep: &mut Report) -> GeoResult {
         Sig::S1644 => {
             let r = geodesic_run(sig, 1.0, 0.8, 1.0, 0.5, 0.3, -2.0);
             let ok = r.drift < 1e-9 && ((r.lam - r.lam_closed) / r.lam_closed).abs() < 1e-6 && (r.x4_max - r.x4_turn).abs() < 1e-6;
-            rep.add("44d-G9", "numerical", &format!("geodesic with m = 1, momentum P_1 = 0.5 along x1 and P_5 = 0.3 along the deflating time x5 (g55 = 1, const5 = 0.8), started at x4 = -2 with increasing x4: P_1, P_5 and the norm are conserved to {:.1e}; the path reaches the largest value x4 = {:.8} (predicted turning value ln(E0 const5/|P_5|)/g55 = {:.8}) after the affine parameter {:.8} (closed form {:.8}) and then returns to smaller x4: a particle with momentum along a deflating time cannot pass the turning value", r.drift, r.x4_max, r.x4_turn, r.lam, r.lam_closed), ok);
+            rep.add("44d-G9", "numerical", &format!("geodesic with m = 1, momentum P_1 = 0.5 along x1 and P_5 = 0.3 along the deflating time x5 (g55 = 1, const5 = 0.8), started at x4 = -2 with increasing x4: P_1, P_5 and the norm are conserved to {:.1e}; the path reaches the largest value x4 = {:.8} (predicted turning value ln(E_perp const5/|P_5|)/g55 with E_perp = sqrt(m^2 + P_1^2) = {:.8}) after the affine parameter {:.8} (closed form {:.8}) and then returns to smaller x4: a particle with momentum along a deflating time cannot pass the turning value", r.drift, r.x4_max, r.x4_turn, r.lam, r.lam_closed), ok);
             r
         }
     }
