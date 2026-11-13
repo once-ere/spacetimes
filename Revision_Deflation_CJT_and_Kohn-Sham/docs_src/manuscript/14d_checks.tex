@@ -1,0 +1,143 @@
+\section{Programs, checks and provenance}
+\label{app:checks}
+
+This appendix says how every number, table and figure of this paper was computed, how the
+computation is verified, and how a reader repeats it.
+
+\subsection{The program and how to run it}
+
+All physics of this paper is computed by one program, \texttt{deflation\_cjt\_ks}, written in the
+Rust language ({{GEN:n_source_files}} source files, {{GEN:n_source_lines}} lines with their
+comments, {{GEN:n_unit_tests}} unit tests). It uses no library other than a second Rust crate of the
+same repository, which supplies the Dirac matrices, exact integer arithmetic, quadrature, the gap
+equation and the Einstein-Boltzmann program for static extra coordinates. It is compiled, tested and
+run from the folder \texttt{Revision\_Deflation\_CJT\_and\_Kohn-Sham} of the repository
+\cite{DeflationRepo} with a Rust toolchain alone:
+{\footnotesize
+\begin{verbatim}
+M=code/deflation-cjt-ks-rs/Cargo.toml
+cargo test  --release --manifest-path $M
+cargo build --release --manifest-path $M
+B=code/deflation-cjt-ks-rs/target/release
+$B/deflation_cjt_ks help
+$B/deflation_cjt_ks kohnsham
+\end{verbatim}
+}
+\noindent The first and the fourth line only abbreviate two paths. The second line runs the unit
+tests, the third builds the program, the fifth lists its commands, and the sixth executes one of
+them. Each command writes its results as tables of numbers into the
+folder \texttt{data}, each table with a description of its content and of its columns at its head,
+together with a list of \emph{checks}: statements that the command verified, each with its
+accuracy. A check marked ``exact'' is an identity verified in exact rational arithmetic; a check
+marked ``numerical'' states its largest deviation. Table~\ref{tab:checks} lists the commands. Then
+{\footnotesize
+\begin{verbatim}
+python3 code/scripts/make_figures.py
+python3 code/scripts/write_doc_tables.py
+python3 code/scripts/build_manuscripts.py
+\end{verbatim}
+}
+\noindent draw the figures from the data files, write every table and every computed number of the text from
+the data files, and assemble and typeset this paper. No computed number in a table of this paper was
+typed by hand.
+
+\begin{table*}
+\caption{\label{tab:checks}The commands of the program: what each computes, and the number of its
+checks that pass. The checks of both deflating spacetimes are counted, since the program treats the
+two together. The last four rows are the verifications by other programs.}
+\begin{ruledtabular}
+\begin{tabular}{lp{0.7\textwidth}c}
+command & content & checks passed \\
+\hline
+\texttt{selfcoupling} & the nine channels of the self-interaction in exact arithmetic: Fierz matrix, reduction to four couplings, Hartree-Fock couplings, pair couplings, symmetries & {{GEN:n_selfcoupling_checks}} \\
+\texttt{kohnsham} & uniform matter by the Kohn-Sham method and by the CJT effective potential; the filled states of negative energy; bare mass, self-interaction and Vorton-Scalar together & {{GEN:n_kohnsham_checks}} \\
+\texttt{pairing} & the gap of the pair along the hidden axis with contact couplings and exchange of the Vorton-Scalar & {{GEN:n_pairing_checks}} \\
+\texttt{gravity} & the Einstein-Lovelock equations with matter as a source; stability of the deflation & {{GEN:n_gravity_checks}} \\
+\texttt{matrices} & the Dirac matrices of the frame & {{GEN:n_flat_matrix_checks}} \\
+\texttt{matrices} & geometry, Killing vectors, Einstein and Lanczos tensors, geodesics; matrices in coordinate components, spin connection, Dirac operators & {{GEN:n_deflating_checks}} \\
+\texttt{modes} & solutions of the Dirac equation mode by mode: creation ($7+1$) and extinction ($4+4$) & {{GEN:n_mode_checks}} \\
+\texttt{symmetry} & surviving rotations and boosts, internal symmetry of the sector, zero modes on a vortex line, exponents of the couplings & {{GEN:n_symmetry_checks}} \\
+\texttt{channels} & exchange amplitudes in the pair channels; modes of the Vorton-Scalar & {{GEN:n_channel_checks}} \\
+\texttt{history} & gap, bound pair, matter, vacuum and temperature along the clock; order of events & {{GEN:n_history_checks}} \\
+\texttt{quench} & dynamics of the paired state under a growing coupling & {{GEN:n_quench_checks}} \\
+\texttt{paired} & the paired state and self-bound matter from the effective action & {{GEN:n_paired_checks}} \\
+\texttt{cosmology} & inferred Hubble constant, bounds on the rate, the exponent $\nEW$ & {{GEN:n_cosmology_checks}} \\
+\texttt{matter} & dark-matter estimates, the resonance, growth of structure, drifts\SIG{}{, temperature of the created quanta} & {{GEN:n_matter_checks}} \\
+\texttt{background} & recombination, sound horizons and helium on the deflating background & {{GEN:n_background_checks}} \\
+\texttt{spectrum} & spectra of the microwave background at a fixed angle; the two closures; the gaps and their identities; convergence; growth of structure & {{GEN:n_spectrum_checks}} \\
+\texttt{forecast} & mock data against the rate of deflation: Fisher matrices and fits & {{GEN:n_forecast_checks}} \\
+\texttt{families} & the seven families of dark radiation on the deflating background, and together with the rate & {{GEN:n_families_checks}} \\
+\texttt{superfluid} & superfluid dark matter: suppression of small-scale structure & {{GEN:n_superfluid_checks}} \\
+\hline
+independent script 1 & geometry, completeness of the Killing vectors, Lanczos tensor, spin connection and Dirac operators by computer algebra; exact solutions; vortex zero modes; Hubble constant; recombination; perturbation equations, identities, closures and growth & {{GEN:n_deflating_checks_independent}} \\
+independent script 2 & self-interaction on Grassmann-valued fields; Kohn-Sham and CJT calculations; pairing amplitudes and gap equation; Lovelock tensors from the metric and from the reduced action; the evolutions with gravity & {{GEN:n_cjt_ks_checks_independent}} \\
+deliberate errors & errors introduced one at a time into the two independent scripts, and detected by them & {{GEN:n_mutations}} \\
+registry of symbols & no symbol and no name in a data file has two meanings & {{GEN:n_symbol_checks}} \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{Independent verification}
+
+The central results are verified a second time by two scripts in the Python language that share no
+code with the program and use other methods: computer algebra with symbolic rates and constants
+instead of rational arithmetic; an implementation of the Grassmann algebra for the invariants of
+the self-interaction; general-purpose integrators, minimizers and quadratures; the Riemann tensor
+computed from the metric, and the Lovelock tensors derived as Euler-Lagrange equations of the
+reduced action, for the equations of gravity; and Peebles' three-level atom \cite{Peebles1968} for
+recombination. They are run by
+{\footnotesize
+\begin{verbatim}
+S=code/scripts
+python3 $S/verify_deflating_independent.py
+python3 $S/verify_cjt_ks_independent.py
+python3 $S/mutation_test_independent.py
+\end{verbatim}
+}
+\noindent The last line tests the two scripts themselves: it introduces deliberate errors into copies of
+them, one at a time (a wrong sign, a wrong factor, a wrong exponent), and records whether the
+checks notice. All {{GEN:n_mutations_short}} errors were detected: {{GEN:n_mutations_parts}}.
+
+\subsection{Where each table and each figure comes from}
+
+Tables~\ref{tab:prov1} to \ref{tab:prov3} give, for every table and every figure of this paper that
+contains computed numbers, the command that computed them, the source files of the program in which
+the calculation is written, and the data files from which the table or figure was made. The numbers
+quoted in the running text are taken from the same data files or from the statements of the checks,
+which the commands write to the files \texttt{data/*\_checks.txt}; a script
+(\texttt{code/scripts/check\_numbers.py}) verifies that every number of the text occurs there.
+
+\begin{table*}
+\caption{\label{tab:prov1}Provenance of the tables and figures of this paper, first part. Source
+files are in \texttt{code/deflation-cjt-ks-rs/src}, data files in \texttt{data}.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}}
+item & command & source files & data files \\
+\hline
+{{ROWS:tbl_prov_\SIG{1644}{1671}_a}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:prov2}Provenance of the tables and figures of this paper, second part.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}}
+item & command & source files & data files \\
+\hline
+{{ROWS:tbl_prov_\SIG{1644}{1671}_b}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:prov3}Provenance of the tables and figures of this paper, third part.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.4\textwidth}}
+item & command & source files & data files \\
+\hline
+{{ROWS:tbl_prov_\SIG{1644}{1671}_c}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+

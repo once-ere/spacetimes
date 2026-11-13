@@ -429,6 +429,7 @@ its caption (formulas replaced by dots), the commands and the data files.
 | `check_numbers.py` | verifies that every number of the running text of the documents is a number that a program stated (Section 5.15) |
 | `check_self_contained.py` | verifies that no document sends its reader to another document (Section 5.16) |
 | `check_all.sh` | runs the three checks of the documents again and reads the verdict of every report in `data`; ends with `ALL PASS` or names what fails |
+| `build_all_docs.sh` | runs the registry, the generated tables, the assembly, the typesetting and the checks in the order in which each finds current input (twice where a report that a document prints is made from the documents), and ends with the verdict of `check_all.sh` |
 | `verify_deflating_independent.py` | independent verification of geometry, Dirac field, modes, cosmology (Section 5.11) |
 | `verify_cjt_ks_independent.py` | independent verification of self-interaction, Kohn–Sham and CJT calculations, pairing, gravity (Section 5.12) |
 | `mutation_test_independent.py` | the test of the two independent scripts with deliberate errors (Section 5.13) |

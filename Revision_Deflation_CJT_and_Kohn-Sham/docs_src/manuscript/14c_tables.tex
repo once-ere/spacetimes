@@ -1,0 +1,459 @@
+\section{Complete tables of the calculations}
+\label{app:tables}
+
+Several sections of this paper quote selected numbers from calculations whose complete results
+are tables. This appendix prints those tables, in the order of the sections to which they belong.
+Each caption defines every column; the numbers are written by a script from the data files of the
+program (Appendix~\ref{app:checks}). M and P stand throughout for the closures ``Momentum'' and
+``Pressure'' of the perturbation equations (Sec.~\ref{sec:pert}), and $H_0$ is given in $\kmsMpc$.
+
+\subsection{The paired state, the bound pair, temperature and vacuum (Secs.~\ref{sec:pair} and \ref{sec:cjt})}
+
+Tables~\ref{tab:xthermo} and \ref{tab:xgl} follow the paired state from zero temperature to its
+critical temperature at three moments of the deflation; they contain the universal ratios and the
+coefficients of the Ginzburg-Landau energy that Sec.~\ref{sec:cjt} quotes.
+Table~\ref{tab:xthreshold} compares two calculations of the critical value $D_c$ at which two
+fermions bind. Table~\ref{tab:xthermal} lists the melting temperatures along the clock and
+Table~\ref{tab:xvacuum} the fields at which the one-loop potential of the vacuum turns over.
+
+\begin{table*}
+\caption{\label{tab:xthermo}The paired state between zero temperature and the critical temperature
+$T_c$, at three moments of the deflation, from the CJT potential, for $m_s=m$ and $\kF=0.5\,m$
+(vector channel). $\lambda$: pairing strength. $\Delta_F(0)/T_c$: the gap at the Fermi momentum at zero
+temperature divided by $T_c$; its weak-coupling value is 1.7639. Jump: the heat capacity of the paired
+state minus that of the unpaired state, divided by the latter, at $T_c$; its weak-coupling value is
+1.4261.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+$\td$ & $\gVS$ & $\lambda$ & $T_c/m$ & $T_c/\EF$ & $\Delta_F(0)/T_c$ & jump of the heat capacity \\
+\hline
+{{ROWS:tbl_cjt_thermo}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xgl}The Ginzburg-Landau energy of the paired state at the three moments of
+Table~\ref{tab:xthermo}. Near $T_c$ the CJT potential reduces to a quadratic term in the gap with the
+coefficient $a(T)$, a quartic term with the coefficient $b$ and a gradient term with the coefficient
+$K_{\mathrm{GL}}$. Columns 4 to 6: the slope of $a$ with respect to $\ln T$ at $T_c$, the coefficient
+$b$ and the coefficient $K_{\mathrm{GL}}$, each divided by its value in the weak-coupling theory.
+Last two columns: the coherence length of the Ginzburg-Landau energy, $(K_{\mathrm{GL}}/|a|)^{1/2}$ at
+$|\ln(T/T_c)|=1$, in units of $1/m$ and in units of $v_F/T_c$ with the Fermi velocity $v_F$; in weak
+coupling the latter is 0.1333.}
+\begin{ruledtabular}
+\begin{tabular}{cccccccc}
+ & & & \multicolumn{3}{c}{ratio to weak coupling} & \multicolumn{2}{c}{coherence length} \\
+$\td$ & $\gVS$ & $T_c/m$ & slope of $a(T)$ & $b$ & $K_{\mathrm{GL}}$ & $\times\,m$ & $\times\,T_c/v_F$ \\
+\hline
+{{ROWS:tbl_cjt_gl}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table}
+\caption{\label{tab:xthreshold}The critical value $D_c$ of $\DVS=\aVS\,m/m_s$ at which two fermions
+bind (Sec.~\ref{sec:pair}), from the linearized gap equation in vacuum, whose kernel is relativistic,
+and from the Schr\"odinger equation with the Yukawa potential. The two approach each other as the
+radial mode becomes light and the binding non-relativistic.}
+\begin{ruledtabular}
+\begin{tabular}{cccc}
+$m_s/m$ & gap equation & Schr\"odinger equation & difference \\
+\hline
+{{ROWS:tbl_threshold}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{table*}
+\caption{\label{tab:xthermal}Temperature along the clock: the melting of the expectation value of the
+Vorton-Scalar, for three ratios $m_s/m$ and ten couplings each. $T_{\mathrm{high}}$: a closed estimate
+of the temperature above which the expectation value vanishes. $T_{1/2}$ and $T_0$: the temperatures
+at which the expectation value has fallen to one half and to 0.02 of its vacuum value, in the Hartree
+approximation. Last column: ``no'' marks the moments at which no melting temperature can be given,
+because the Hartree potential ceases to exist before the expectation value has fallen
+(Sec.~\ref{sec:cjt}).}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+$m_s/m$ & $\gVS$ & $C$ & $T_{\mathrm{high}}/m$ & $T_{1/2}/m$ & $T_0/m$ & melting defined \\
+\hline
+{{ROWS:tbl_thermal}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table}
+\caption{\label{tab:xvacuum}The one-loop potential of the Vorton-Scalar in the vacuum along the clock
+($C\propto e^{\td}$): the field at which the potential has its maximum beyond the vacuum, and the
+field beyond which it lies below its value in the vacuum, both in units of the vacuum value $\vVS$.}
+\begin{ruledtabular}
+\begin{tabular}{ccc}
+$C$ & maximum & below the vacuum value \\
+\hline
+{{ROWS:tbl_vacuum}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{The unperturbed universe (Sec.~\ref{sec:cosmo})}
+
+Table~\ref{tab:xdrift} gives the drift of the quantities of the model, Table~\ref{tab:xmassloss} the
+examples of bound pairs that lose rest mass, and Table~\ref{tab:xgrowth} the growth of structure from
+the two growth equations.
+%%<1671>
+Table~\ref{tab:xtemperature} gives the temperature of the quanta that the deflation creates at the
+largest rates that the bounds allow.
+%%</1671>
+
+\begin{table*}
+\caption{\label{tab:xdrift}How fast the quantities of the model drift. $n$: the logarithmic derivative
+of the quantity with respect to the clock $\td$. Last three columns: the relative change
+$n\,\gsum\,t_0$ of the quantity over the age $t_0$ of the universe at the largest total rate that each
+bound of Table~\ref{tab:bounds} allows: lunar laser ranging (assumption A2); nucleosynthesis through
+Newton's constant (A2); nucleosynthesis through the Fermi constant (assumption HV); with
+$H_0t_0=0.9516$ of the model without deflation.}
+\begin{ruledtabular}
+\begin{tabular}{p{0.33\textwidth}p{0.2\textwidth}cccc}
+ & & & lunar & \multicolumn{2}{c}{nucleosynthesis through} \\
+quantity & where evaluated & $n$ & ranging & $\GN$ & $G_{\mathrm{Fermi}}$ \\
+\hline
+{{ROWS:tbl_drift}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+%%<1671>
+\begin{table*}
+\caption{\label{tab:xtemperature}The quanta that the deflation creates (Sec.~\ref{sec:modes}), for
+three equal rates at the largest total rates that the bounds allow, and at $\gsum=H_0$. $\hbar\,\rt$:
+the rate of one coordinate as an energy. $\Tdefl$: the temperature of Eq.~(\ref{eq:Tdefl}).
+Exponent: $2\pi m/\rt$ for a particle of the mass $m$; the number of particles created per mode is
+$e^{-\mathrm{exponent}}$.}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+bound & $\gsum/H_0$ & $\hbar\,\rt$ (eV) & $\Tdefl$ (K) & exponent, $m=1$~keV & exponent, $m=1$~GeV \\
+\hline
+{{ROWS:tbl_temperature}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+%%</1671>
+
+\begin{table*}
+\caption{\label{tab:xmassloss}Dark matter made of bound pairs, which lose rest mass as the binding
+energy grows (Sec.~\ref{sec:cosmo}): four examples of $\DVS$, $m_s/m$ and $\aVS$ today, each at six
+rates. ``Gravity feels the deflation'': yes, assumptions A1 and A2; no, Newton's constant is held
+fixed and the deflation acts on the dark sector alone. Mass ratio: the rest mass of a pair today
+divided by its rest mass in the early universe. $H_0$: the Hubble constant inferred with the density
+of dark matter at early times, the density of baryons and the angle $\theta_*$ held fixed; change: its
+difference from the value without deflation.}
+\begin{ruledtabular}
+\begin{tabular}{cccccccc}
+$\DVS$ today & $m_s/m$ & $\aVS$ today & $\gsum/H_0$ & gravity feels the deflation & mass ratio & $H_0$ & change \\
+\hline
+{{ROWS:tbl_massloss}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xgrowth}Linear growth of pressureless matter from $a_{\mathrm{sp}}=0.01$ to
+today, from the growth equations (\ref{eq:growthM}) of the closure M and (\ref{eq:growthP}) of the
+closure P. Columns 3 to 6, at the Hubble constant of column 2, which keeps the angle of the sound
+horizon: the amplitude today and the growth rate $f_g$ today, each divided by its value without
+deflation. Columns 7 and 8: the amplitude ratio at the fixed Hubble constant $67.36~\kmsMpc$. Last
+column: the same from the equation
+$d^{2}\delta_m/dx4^{2}+2H\,d\delta_m/dx4=4\pi\GN(x4)\rho_m\delta_m$, which is the equation of neither
+closure and is shown for comparison.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccccc}
+ & & \multicolumn{2}{c}{amplitude} & \multicolumn{2}{c}{$f_g$} & \multicolumn{3}{c}{amplitude at fixed $H_0$} \\
+$\gsum/H_0$ & $H_0$ & M & P & M & P & M & P & four-dimensional \\
+\hline
+{{ROWS:tbl_growth}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{The microwave background (Secs.~\ref{sec:pert} and \ref{sec:spectra})}
+
+Table~\ref{tab:xbackground} gives the thermal history for three models, Table~\ref{tab:xpeaks} the
+acoustic peaks, Table~\ref{tab:xclosure} the difference between the two closures,
+Table~\ref{tab:xgaps} what the agent must supply in each closure, and Tables~\ref{tab:xebgrowth} and
+\ref{tab:xebgrowth2} the growth of structure in the complete calculation.
+
+\begin{table*}
+\caption{\label{tab:xbackground}Thermal history on the deflating spacetime (assumptions A1, A2; three
+equal rates) for three models: the standard model (``fiducial''); the same with a fluid of extra
+radiation of the density $N=0.5$; and the same with the stepped fluid of the model, $N=0.5$ and
+$z_t=2\times10^{4}$. Held: the row keeps either the Hubble constant $67.36~\kmsMpc$ or the angle
+$\theta_*$ of the same model without deflation. $z_*$: redshift of last scattering. $r_s$: sound
+horizon at last scattering. $\YHe$: mass fraction of helium. $\GN$ ratio: Newton's constant at last
+scattering divided by its value today.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccccc}
+model & $\gsum/H_0$ & held & $H_0$ & $z_*$ & $r_s$ (Mpc) & $100\,\theta_*$ & $\YHe$ & $\GN$ ratio \\
+\hline
+{{ROWS:tbl_eb_background}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xpeaks}The first five acoustic peaks of the temperature spectrum at a fixed angle
+of the sound horizon (closure M; without gravitational lensing): the multipole $\ell$ and the height
+$D_\ell^{TT}$ in $\mu\mathrm{K}^{2}$, without deflation and at the largest rates that lunar laser
+ranging and nucleosynthesis allow.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+ & \multicolumn{2}{c}{no deflation} & \multicolumn{2}{c}{lunar ranging rate} & \multicolumn{2}{c}{nucleosynthesis rate} \\
+peak & $\ell$ & $D_\ell^{TT}$ & $\ell$ & $D_\ell^{TT}$ & $\ell$ & $D_\ell^{TT}$ \\
+\hline
+{{ROWS:tbl_eb_peaks}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xclosure}The two closures compared, at a fixed angle of the sound horizon.
+Difference: the largest difference between the temperature spectra of the two closures in the range
+of multipoles named, in units of the cosmic variance of a single multipole. Share of the effect: the
+root of the sum of the squares of that difference over the range, divided by the same for the effect
+of the deflation itself. $\sigma_8$ ratio: the amplitude of clustering divided by its value without
+deflation. For $\ell\ge30$ the closure does not matter; for $\ell<30$ the closures differ by more
+than the effect of the deflation in either.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+ & \multicolumn{2}{c}{$\ell\ge30$} & \multicolumn{2}{c}{$\ell<30$} & \multicolumn{2}{c}{$\sigma_8$ ratio} \\
+$\gsum/H_0$ & difference & share of the effect & difference & share of the effect & M & P \\
+\hline
+{{ROWS:tbl_eb_closure}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xgaps}What the agent must supply in each closure, at the largest rate that
+nucleosynthesis allows, for the wavenumber $k=0.02~\mathrm{Mpc}^{-1}$ at five conformal times.
+$\gsum/H$: the ratio $a_{\mathrm{sp}}\gsum/\Hcf$. $\mathcal{U}=\etasy+\alsy'$: the sum of the two
+gravitational potentials of the conformal Newtonian gauge, the potential that light feels. The gaps
+$\cYM$, $\cYT$, $\cYS$ of Eq.~(\ref{eq:gaps}) are divided by $\gsum/H$ times the size of the terms of
+their equations, $k^{2}\Hcf|\mathcal{U}|$, $(k^{2}+\Hcf^{2})|\mathcal{U}|$ and $|\mathcal{U}|$, so
+that a number of order one means ``of the first order in the rate''. Last two columns: the residuals
+of the identities (\ref{eq:id2}) and (\ref{eq:id1}), relative to the size of their terms.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccccc}
+closure & $\tcf$ (Mpc) & $\gsum/H$ & $\mathcal{U}$ & $\cYM$ & $\cYT$ & $\cYS$ & residual of (\ref{eq:id2}) & residual of (\ref{eq:id1}) \\
+\hline
+{{ROWS:tbl_eb_gaps}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table}
+\caption{\label{tab:xebgrowth}Growth of the density contrast of cold dark matter and baryons at
+$k=0.1~\mathrm{Mpc}^{-1}$ from $a_{\mathrm{sp}}=0.01$ to today, divided by its value without
+deflation, at the fixed Hubble constant $67.36~\kmsMpc$: from the complete Einstein-Boltzmann
+calculation (``program'') and from the growth equation of the same closure,
+Eq.~(\ref{eq:growthM}) for M and Eq.~(\ref{eq:growthP}) for P.}
+\begin{ruledtabular}
+\begin{tabular}{ccccc}
+ & \multicolumn{2}{c}{closure M} & \multicolumn{2}{c}{closure P} \\
+$\gsum/H_0$ & program & equation & program & equation \\
+\hline
+{{ROWS:tbl_eb_growth}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{table}
+\caption{\label{tab:xebgrowth2}The same growth in the complete calculation at the Hubble
+constant that keeps the angle of the sound horizon, and the amplitude $\sigma_8$ divided by its value
+without deflation.}
+\begin{ruledtabular}
+\begin{tabular}{cccccc}
+ & & \multicolumn{2}{c}{growth} & \multicolumn{2}{c}{$\sigma_8$ ratio} \\
+$\gsum/H_0$ & $H_0$ & M & P & M & P \\
+\hline
+{{ROWS:tbl_eb_growth_angle}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Fits to mock data (Sec.~\ref{sec:forecast})}
+
+Table~\ref{tab:xfcprofile} lists the best fits of the six parameters of the standard model at fixed
+rates of deflation. Tables~\ref{tab:xfamfisher} to \ref{tab:xfamjoint} give, for the seven families
+of extra radiation, the Fisher forecasts, the best fits at fixed density $N$ of the extra radiation,
+their summary, and the forecasts with $N$ and the rate free together. ``Model fluid'' is the stepped
+fluid of the model with the transition redshift $z_t$; ``with deep survey'' means the Planck-like
+mock data together with a deep survey of a quarter of the sky.
+
+\begin{table*}
+\caption{\label{tab:xfcprofile}Best fits of the six parameters of the standard model to mock data of
+the microwave background at fixed total rates of deflation (three equal rates; assumptions A1, A2,
+A3). $\Delta\chi^{2}$: relative to the best fit without deflation, which is zero by construction.
+$H_0$, $\omega_c$, $n_s$: the best-fitting Hubble constant, density of cold dark matter and spectral
+index. $\sigma_8$: the amplitude of clustering of the best fit. $\GN$ ratio: Newton's constant at last
+scattering divided by its value today.}
+\begin{ruledtabular}
+\begin{tabular}{llccccccc}
+mock data & closure & $\gsum/H_0$ & $\Delta\chi^{2}$ & $H_0$ & $\omega_c$ & $n_s$ & $\sigma_8$ & $\GN$ ratio \\
+\hline
+{{ROWS:tbl_fc_profile}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xfamfisher}Fisher forecasts for the seven families of extra radiation, with static
+extra coordinates (``static'') and on the deflating spacetime at the largest rate that lunar laser
+ranging allows (``deflating''): the standard error of the density $N$ with the six parameters of the
+standard model free, and the change of the best-fit Hubble constant per unit of $N$.}
+\begin{ruledtabular}
+\begin{tabular}{llcccc}
+ & & \multicolumn{2}{c}{error of $N$} & \multicolumn{2}{c}{$dH_0/dN$} \\
+mock data & family & static & deflating & static & deflating \\
+\hline
+{{ROWS:tbl_fam_fisher}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xfamprofiles}Best fits of the six parameters of the standard model at fixed
+density $N$ of extra radiation, for the seven families and both sets of mock data, with static extra
+coordinates and on the deflating spacetime at the largest rate that lunar laser ranging allows. $H_0$:
+the best-fitting Hubble constant; shift: the difference of the two. $\Delta\chi^{2}$: relative to the
+best fit of the standard model with static extra coordinates.}
+\begin{ruledtabular}
+\begin{tabular}{llcccccc}
+ & & & \multicolumn{3}{c}{$H_0$} & \multicolumn{2}{c}{$\Delta\chi^{2}$} \\
+mock data & family & $N$ & static & deflating & shift & static & deflating \\
+\hline
+{{ROWS:tbl_fam_profiles}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xfamsummary}Summary of the fits of Table~\ref{tab:xfamprofiles}, by interpolation
+in $N$: the density $N$ at which the best fit reaches $\Delta\chi^{2}=4$; the Hubble constant there;
+and the $\Delta\chi^{2}$ of the best fit whose Hubble constant equals the local measurement
+$73.50~\kmsMpc$. An asterisk marks a value obtained by extrapolation beyond the largest $N$ computed.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccc}
+ & \multicolumn{2}{c}{$N$ at $\Delta\chi^{2}=4$} & \multicolumn{2}{c}{$H_0$ there} & \multicolumn{2}{c}{$\Delta\chi^{2}$ at $H_0=73.50$} \\
+family & static & deflating & static & deflating & static & deflating \\
+\hline
+\multicolumn{7}{c}{Planck-like mock data} \\
+{{ROWS:tbl_fam_summary_planck}}
+\hline
+\multicolumn{7}{c}{with deep survey} \\
+{{ROWS:tbl_fam_summary_deep}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xfamjoint}The density $N$ of extra radiation and the total rate of deflation as
+free parameters together (Fisher matrices with eight parameters at the standard model). Columns 2 and
+3: the standard error of $N$ with the rate held at zero and with the rate free. Column 4: the standard
+error of $\gsum/H_0$ with $N$ free. Correlation: the correlation coefficient of $N$ and the rate. $N$
+per unit rate: the change of the best-fitting $N$ per unit of $\gsum/H_0$. Net slope: the change of
+the best-fit Hubble constant per unit of $\gsum/H_0$ when $N$ follows its best-fitting value. Largest
+rise: the largest rise of the best-fit Hubble constant among the models with $N\ge0$, $\gsum\ge0$ and
+$\Delta\chi^{2}\le3.84$, which is reached at zero rate.}
+\begin{ruledtabular}
+\begin{tabular}{lccccccc}
+ & \multicolumn{2}{c}{error of $N$} & error of & & $N$ per & net & largest \\
+family & rate zero & rate free & the rate & correlation & unit rate & slope & rise \\
+\hline
+\multicolumn{8}{c}{Planck-like mock data} \\
+{{ROWS:tbl_fam_joint_planck}}
+\hline
+\multicolumn{8}{c}{with deep survey} \\
+{{ROWS:tbl_fam_joint_deep}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{Superfluid dark matter (Sec.~\ref{sec:dm})}
+
+Table~\ref{tab:xsfdmhalf} lists the wavenumber of the half mode for the fifteen models of
+Sec.~\ref{sec:dm} and Table~\ref{tab:xsfdmbounds} the limits that follow from the Lyman-$\alpha$
+forest.
+
+\begin{table*}
+\caption{\label{tab:xsfdmhalf}Superfluid dark matter: the wavenumber of the half mode, at which the
+power spectrum of matter first falls to one quarter of that of cold dark matter, in
+$\mathrm{Mpc}^{-1}$, for a degenerate gas of the fermions of eight masses and for a condensate of
+bound pairs with seven sound speeds $c_{s0}$ today: without deflation, at the largest rate that lunar
+laser ranging allows, and at the largest rate that nucleosynthesis allows in the two closures. Last
+column: the change at the rate of nucleosynthesis relative to no deflation, in per cent.}
+\begin{ruledtabular}
+\begin{tabular}{lccccc}
+ & no & lunar ranging & \multicolumn{2}{c}{nucleosynthesis rate} & change \\
+dark matter & deflation & rate & M & P & (per cent) \\
+\hline
+{{ROWS:tbl_sfdm_half}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xsfdmbounds}Limits on superfluid dark matter from the requirement that its half
+mode lies at a wavenumber not smaller than that of thermal warm dark matter at two mass limits of the
+Lyman-$\alpha$ forest (``relic'', the mass of the thermal relic). Half mode: the wavenumber required.
+Fermion mass: the smallest mass of the fermions of a degenerate gas that meets it. Largest $c_{s0}/c$:
+the largest sound speed today of a condensate of bound pairs that meets it, also in m/s.
+$R_{\mathrm{TF}}$: the radius of a core of the condensate supported by its own pressure, at that
+sound speed.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccc}
+deflation & relic (keV) & half mode ($\mathrm{Mpc}^{-1}$) & fermion mass (keV) & largest $c_{s0}/c$ & in m/s & $R_{\mathrm{TF}}$ (pc) \\
+\hline
+{{ROWS:tbl_sfdm_bounds}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\subsection{Symmetries (Secs.~\ref{sec:geometry} and \ref{sec:hidden})}
+
+Table~\ref{tab:xisometries} counts the rotations and boosts that remain symmetries of the deflating
+spacetime, and Table~\ref{tab:xsymmetry} lists, item by item, the internal symmetry of the fields that
+depend on $x1,x2,x3,x4$ only, as the program computed it for the deflating spacetime.
+
+\begin{table*}
+\caption{\label{tab:xisometries}Of the 28 rotations and boosts of flat spacetime, the number that
+remain symmetries of the deflating spacetime for three sets of rates
+$(\gff,\gss,\gvv)$; and of the six rotations of the extra axes $x0,x5,x6,x7$, whose generators act as
+internal symmetries on fields that do not depend on these coordinates, the number that remain
+symmetries of the spacetime.}
+\begin{ruledtabular}
+\begin{tabular}{lcccccccc}
+ & rotations & \multicolumn{3}{c}{symmetries for the rates} & internal & \multicolumn{3}{c}{of these, symmetries for the rates} \\
+spacetime & and boosts & $(1,2,3)$ & $(2,2,5)$ & $(1,1,1)$ & generators & $(1,2,3)$ & $(2,2,5)$ & $(1,1,1)$ \\
+\hline
+{{ROWS:tbl_isometries}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:xsymmetry}The internal symmetry of the fields that depend on $x1,x2,x3,x4$ only
+(Sec.~\ref{sec:hidden}), item by item, computed with the matrices of the \SIG{$4+4$}{$7+1$} spacetime;
+a number of the order of $10^{-16}$ is zero to the accuracy of the arithmetic. $P$: the traceless
+generator of $U(1)_E$. $T_i$: the generators of one of the two ideals $su(2)_A$, $su(2)_B$. The pair
+operators are the four vector pair operators of Eq.~(\ref{eq:pairs}).}
+\begin{ruledtabular}
+\begin{tabular}{p{0.46\textwidth}p{0.16\textwidth}p{0.3\textwidth}}
+item & value & expected, and what it means \\
+\hline
+{{ROWS:tbl_symmetry_ms\SIG{|cols=0,2,3}{|cols=0,1,3}}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+% all tables of this appendix are printed before the next appendix begins
+\clearpage

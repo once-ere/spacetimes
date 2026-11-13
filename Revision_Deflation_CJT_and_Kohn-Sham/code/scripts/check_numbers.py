@@ -126,6 +126,7 @@ ERROR_LOG = {
 # stated number that the text means, as judged by reading the sentence and the output of the
 # programs.  A number of kind (r) or (c) that is missing here makes the script fail.
 JUDGED = {
+    "10^{-16}": "the order of magnitude of the rounding errors of double-precision arithmetic: the residuals of the table of the internal symmetry lie between 5.6e-17 and 3.1e-16 (generated table tbl_symmetry_ms)",
     "42": "a run time in minutes (list DEFINITIONS of this script); that it is also the rounded value of a stated number is a coincidence",
     "75": "a run time in minutes (list DEFINITIONS of this script); that it is also the rounded value of a stated number is a coincidence",
     "60": "half of the mass of the scalar particle of 125 GeV, the estimate of condition C5 (list LITERATURE of this script); that it is also the rounded value of a stated number is a coincidence",

@@ -140,7 +140,9 @@ write every table and every computed number of the documents from the data files
 assemble the Markdown documents; assemble and typeset the two manuscripts; typeset
 the other documents; run the checks of the documents and read the verdict of every
 report. The last command prints one line for each check and must end with
-`ALL PASS`.
+`ALL PASS`. The single command `bash code/scripts/build_all_docs.sh` runs all of
+the steps after the figures in the right order, twice where a report that a document
+prints is itself made from the documents, and ends with the same verdict.
 
 # 5. The checks, in numbers
 

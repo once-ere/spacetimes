@@ -139,7 +139,9 @@ write every table and every computed number of the documents from the data files
 assemble the Markdown documents; assemble and typeset the two manuscripts; typeset
 the other documents; run the checks of the documents and read the verdict of every
 report. The last command prints one line for each check and must end with
-`ALL PASS`.
+`ALL PASS`. The single command `bash code/scripts/build_all_docs.sh` runs all of
+the steps after the figures in the right order, twice where a report that a document
+prints is itself made from the documents, and ends with the same verdict.
 
 # 5. The checks, in numbers
 
@@ -151,7 +153,7 @@ report. The last command prints one line for each check and must end with
 | independent verification, self-interaction, Kohn–Sham, CJT, pairing, gravity | 37 of 37 pass |
 | deliberate errors introduced into the independent scripts | 36 of 36 detected |
 | checks of the registry of symbols, of the documents and of the data files against it | 7 of 7 pass |
-| numbers of the running text traced to a statement of a program | 500 numbers in 26 documents, 0 not traced |
+| numbers of the running text traced to a statement of a program | 532 numbers in 28 documents, 0 not traced |
 
 # 6. Conventions in one place
 

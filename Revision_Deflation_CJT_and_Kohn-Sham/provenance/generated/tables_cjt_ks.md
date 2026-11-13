@@ -109,11 +109,11 @@
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
-500 numbers in 26 documents, 0 not traced
+532 numbers in 28 documents, 0 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-17
+18
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN mat_gamma1644_0 -->
@@ -473,7 +473,7 @@
 <!-- END tbl_eb_peaks -->
 
 <!-- BEGIN tbl_eb_gaps -->
-| closure | $\tau_{\rm cf}$ (Mpc) | $\mathrm{gsum}/H$ | $\mathcal U$ | $\mathcal Y_M$ | $\mathcal Y_T$ | $\mathcal Y_S$ | check of (3.4) | check of (3.2) |
+| closure | $\tau_{\rm cf}$ (Mpc) | $\mathrm{gsum}/H$ | $\mathcal U$ | $\mathcal Y_M$ | $\mathcal Y_T$ | $\mathcal Y_S$ | residual of the identity for $\mathcal Y_S$ | residual of the identity for $\mathcal Y_M$ |
 |:------|------:|--------:|------:|-----:|------:|-------:|-------:|-------:|
 | M | 280 | $2.7\times10^{-6}$ | 0.7373 | 0.000 | -0.507 | -0.2679 | $3\times10^{-5}$ | $5\times10^{-5}$ |
 | M | 800 | $3.0\times10^{-5}$ | 0.5402 | 0.000 | -0.656 | -0.3314 | $4\times10^{-5}$ | $7\times10^{-5}$ |
@@ -488,7 +488,7 @@
 <!-- END tbl_eb_gaps -->
 
 <!-- BEGIN tbl_eb_growth -->
-| $\mathrm{gsum}/H_0$ | program, M | Eq. (4.2) | program, P | Eq. (4.1) |
+| $\mathrm{gsum}/H_0$ | program, M | growth equation, M | program, P | growth equation, P |
 |--------:|--------:|--------:|--------:|--------:|
 | 0 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
 | 0.00324 | 0.99856 | 0.99857 | 0.99933 | 0.99933 |
@@ -867,6 +867,35 @@
 | 7+1 | 28 | 6 | 7 | 9 | 6 | 0 | 1 | 3 |
 | 4+4 | 28 | 6 | 7 | 9 | 6 | 0 | 1 | 3 |
 <!-- END tbl_isometries -->
+
+<!-- BEGIN tbl_symmetry_ms -->
+| item | 7+1 | 4+4 | expected, and what it means |
+|:----------|:---|:---|:---|
+| dimension of the algebra of the matrices that commute with $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$ | 8 | 8 | 8 |
+| the same if the fields depend on $x0$ as well | 4 | 4 | 4 |
+| the same if the fields depend on every space-like coordinate of the model | 1 | 4 | 1 (7+1); 4 (4+4) |
+| dimension of the centre of the algebra | 2 | 2 | 2 |
+| $\lVert P^2-1\rVert$ for the traceless generator $P$ of the centre | 0 | 0 | 0 |
+| dimensions of the two simple ideals | 3, 3 | 3, 3 | 3, 3 |
+| structure constants $\lvert f_{123}\rvert$ of the two ideals, for generators $T_i$ with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$ | 1, 1 | 1, 1 | 1, 1: each ideal is $su(2)$ |
+| $\lVert\sum_iT_i^2-\tfrac34\,\mathrm{projector}\rVert$ for the two ideals | 0, 0 | $2.2\times10^{-16}$, $2.2\times10^{-16}$ | 0, 0: doublets |
+| number of states of positive energy with $P=+1$ and with $P=-1$ at a test momentum | 4, 4 | 4, 4 | 4, 4: the doublets $(2,1)$ and $(1,2)$ |
+| residual of the closure of the four pair operators $\psi^TC^-\gamma^a\psi$, $a\in\{0,5,6,7\}$, under the algebra | 0 | $3.1\times10^{-16}$ | 0 |
+| Casimir operator of each ideal on the four pair operators, minus $\tfrac34$ | 0, 0 | $5.6\times10^{-17}$, $5.6\times10^{-17}$ | 0, 0: the $(2,2)$ |
+| fermion number of the pair operators | 2 | 2 | 2 |
+| charge of the pair operators under $P$ | 0 | 0 | 0 |
+| number of invariant quadratic forms on the four pair operators | 1 | 1 | 1 |
+| the invariant quadratic form: its diagonal along the frame axes 0, 5, 6, 7 (first entry 1) | $+1$, $+1$, $+1$, $+1$ | $+1$, $-1$, $-1$, $-1$ | $+1,+1,+1,+1$ (7+1); $+1,-1,-1,-1$ (4+4): the signs of the metric of the four extra axes |
+| largest off-diagonal entry of that form | 0 | $2.2\times10^{-16}$ | 0 |
+| complex dimension of the generators that mix particles with antiparticles, without chemical potential | 2 | 2 | 2: the symmetry is $O(4)\times O(4)$, of dimension 12 |
+| the same with a chemical potential | 0 | 0 | 0: the symmetry is $U(2)\times U(2)$, of dimension 8 |
+| $\gamma^{0}\gamma^{5}$: character, and norm of its commutator with the five matrices | anti-Hermitian; 0 | Hermitian; 0 | anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0 |
+| $\gamma^{0}\gamma^{6}$: character, and norm of its commutator with the five matrices | anti-Hermitian; 0 | Hermitian; 0 | anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0 |
+| $\gamma^{0}\gamma^{7}$: character, and norm of its commutator with the five matrices | anti-Hermitian; 0 | Hermitian; 0 | anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0 |
+| $\gamma^{5}\gamma^{6}$: character, and norm of its commutator with the five matrices | anti-Hermitian; 0 | anti-Hermitian; 0 | anti-Hermitian (a rotation) on both; 0 |
+| $\gamma^{5}\gamma^{7}$: character, and norm of its commutator with the five matrices | anti-Hermitian; 0 | anti-Hermitian; 0 | anti-Hermitian (a rotation) on both; 0 |
+| $\gamma^{6}\gamma^{7}$: character, and norm of its commutator with the five matrices | anti-Hermitian; 0 | anti-Hermitian; 0 | anti-Hermitian (a rotation) on both; 0 |
+<!-- END tbl_symmetry_ms -->
 
 <!-- BEGIN tbl_fierz -->
 | $r$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
@@ -1266,11 +1295,6 @@ $6.4\times10^{-10}$
 | Fig.~\ref{fig:gap} | `history` | `history.rs`, `main.rs` | `gap_history.csv` |
 | Table~\ref{tab:gapcontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
 | Fig.~\ref{fig:paircontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
-<!-- END tbl_prov_1644_a -->
-
-<!-- BEGIN tbl_prov_1644_b -->
-| item | command | source files | data files |
-|:---|:---|:----------|:----------|
 | Table~\ref{tab:dimer} | `history` | `history.rs`, `main.rs` | `dimer_history.csv` |
 | Fig.~\ref{fig:binding} | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv` |
 | Table~\ref{tab:events} | `history` | `history.rs`, `main.rs` | `events.csv` |
@@ -1279,6 +1303,11 @@ $6.4\times10^{-10}$
 | Table~\ref{tab:cjt} | `paired` | `cmd_paired.rs` | `cjt_history.csv` |
 | Fig.~\ref{fig:cjt} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv`, `cjt_history.csv` |
 | Table~\ref{tab:saturation} | `paired` | `cmd_paired.rs` | `matter_saturation.csv` |
+<!-- END tbl_prov_1644_a -->
+
+<!-- BEGIN tbl_prov_1644_b -->
+| item | command | source files | data files |
+|:---|:---|:----------|:----------|
 | Fig.~\ref{fig:matter} | `history`, `paired` | `history.rs`, `main.rs`, `cmd_paired.rs` | `matter_saturation.csv`, `medium_history.csv`, `thermal_history.csv`, `vacuum_history.csv` |
 | Table~\ref{tab:cjtks} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_vs_ks.csv`, `kohnsham_checks.txt` |
 | Table~\ref{tab:cjtvac} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_vacuum.csv` |
@@ -1289,11 +1318,6 @@ $6.4\times10^{-10}$
 | Table~\ref{tab:states} | `paired` | `cmd_paired.rs` | `order_parameter_states.csv` |
 | Table~\ref{tab:gravref} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_reference.csv` |
 | Fig.~\ref{fig:gravref} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_reference_path.csv` |
-<!-- END tbl_prov_1644_b -->
-
-<!-- BEGIN tbl_prov_1644_c -->
-| item | command | source files | data files |
-|:---|:---|:----------|:----------|
 | Table~\ref{tab:gravdefl} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating_summary.csv` |
 | Fig.~\ref{fig:gravdefl} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
 | Table~\ref{tab:gravvac} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_vacuum_perturbation.csv` |
@@ -1310,11 +1334,39 @@ $6.4\times10^{-10}$
 | Fig.~\ref{fig:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv` |
 | Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
 | Fig.~\ref{fig:sfdm} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
+<!-- END tbl_prov_1644_b -->
+
+<!-- BEGIN tbl_prov_1644_c -->
+| item | command | source files | data files |
+|:---|:---|:----------|:----------|
 | Table~\ref{tab:higgs} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `higgs_scale_exponent.csv` |
+| Table~\ref{tab:xthermo} | `paired` | `cmd_paired.rs` | `cjt_thermo_history.csv` |
+| Table~\ref{tab:xgl} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv` |
+| Table~\ref{tab:xthreshold} | `paired` | `cmd_paired.rs` | `cjt_threshold.csv` |
+| Table~\ref{tab:xthermal} | `history` | `history.rs`, `main.rs` | `thermal_history.csv` |
+| Table~\ref{tab:xvacuum} | `history` | `history.rs`, `main.rs` | `vacuum_history.csv` |
+| Table~\ref{tab:xdrift} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_drift.csv` |
+| Table~\ref{tab:xmassloss} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `hubble_mass_loss.csv` |
+| Table~\ref{tab:xgrowth} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `growth_deflation.csv` |
+| Table~\ref{tab:xbackground} | `background` | `spectra_defl.rs`, `eb_cosmo.rs`, `cmd_spectra.rs` | `background_deflation.csv` |
+| Table~\ref{tab:xpeaks} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_peaks.csv` |
+| Table~\ref{tab:xclosure} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_summary.csv` |
+| Table~\ref{tab:xgaps} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_gaps.csv` |
+| Table~\ref{tab:xebgrowth} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_growth.csv` |
+| Table~\ref{tab:xebgrowth2} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_growth.csv` |
+| Table~\ref{tab:xfcprofile} | `forecast` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_profile.csv` |
+| Table~\ref{tab:xfamfisher} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_fisher.csv` |
+| Table~\ref{tab:xfamprofiles} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_profiles.csv` |
+| Table~\ref{tab:xfamsummary} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
+| Table~\ref{tab:xfamjoint} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
+| Table~\ref{tab:xsfdmhalf} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv` |
+| Table~\ref{tab:xsfdmbounds} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_bounds.csv` |
+| Table~\ref{tab:xisometries} | `symmetry` | `symmetry_defl.rs`, `cmd_symmetry.rs` | `isometries.csv` |
+| Table~\ref{tab:xsymmetry} | `symmetry` | `symmetry_defl.rs`, `cmd_symmetry.rs` | `reduced_symmetry.csv` |
 <!-- END tbl_prov_1644_c -->
 
 <!-- BEGIN n_prov_items_1644 -->
-53
+76
 <!-- END n_prov_items_1644 -->
 
 <!-- BEGIN tbl_prov_1671_a -->
@@ -1339,11 +1391,6 @@ $6.4\times10^{-10}$
 | Fig.~\ref{fig:gap} | `history` | `history.rs`, `main.rs` | `gap_history.csv` |
 | Table~\ref{tab:gapcontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
 | Fig.~\ref{fig:paircontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
-<!-- END tbl_prov_1671_a -->
-
-<!-- BEGIN tbl_prov_1671_b -->
-| item | command | source files | data files |
-|:---|:---|:----------|:----------|
 | Table~\ref{tab:dimer} | `history` | `history.rs`, `main.rs` | `dimer_history.csv` |
 | Fig.~\ref{fig:binding} | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv` |
 | Table~\ref{tab:events} | `history` | `history.rs`, `main.rs` | `events.csv` |
@@ -1352,6 +1399,11 @@ $6.4\times10^{-10}$
 | Table~\ref{tab:cjt} | `paired` | `cmd_paired.rs` | `cjt_history.csv` |
 | Fig.~\ref{fig:cjt} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv`, `cjt_history.csv` |
 | Table~\ref{tab:saturation} | `paired` | `cmd_paired.rs` | `matter_saturation.csv` |
+<!-- END tbl_prov_1671_a -->
+
+<!-- BEGIN tbl_prov_1671_b -->
+| item | command | source files | data files |
+|:---|:---|:----------|:----------|
 | Fig.~\ref{fig:matter} | `history`, `paired` | `history.rs`, `main.rs`, `cmd_paired.rs` | `matter_saturation.csv`, `medium_history.csv`, `thermal_history.csv`, `vacuum_history.csv` |
 | Table~\ref{tab:cjtks} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_vs_ks.csv`, `kohnsham_checks.txt` |
 | Table~\ref{tab:cjtvac} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_vacuum.csv` |
@@ -1363,11 +1415,6 @@ $6.4\times10^{-10}$
 | Table~\ref{tab:states} | `paired` | `cmd_paired.rs` | `order_parameter_states.csv` |
 | Table~\ref{tab:gravref} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_reference.csv` |
 | Fig.~\ref{fig:gravref} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_reference_path.csv` |
-<!-- END tbl_prov_1671_b -->
-
-<!-- BEGIN tbl_prov_1671_c -->
-| item | command | source files | data files |
-|:---|:---|:----------|:----------|
 | Table~\ref{tab:gravdefl} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating_summary.csv` |
 | Fig.~\ref{fig:gravdefl} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
 | Table~\ref{tab:gravvac} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_vacuum_perturbation.csv` |
@@ -1384,11 +1431,40 @@ $6.4\times10^{-10}$
 | Fig.~\ref{fig:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv` |
 | Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
 | Fig.~\ref{fig:sfdm} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
+<!-- END tbl_prov_1671_b -->
+
+<!-- BEGIN tbl_prov_1671_c -->
+| item | command | source files | data files |
+|:---|:---|:----------|:----------|
 | Table~\ref{tab:higgs} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `higgs_scale_exponent.csv` |
+| Table~\ref{tab:xthermo} | `paired` | `cmd_paired.rs` | `cjt_thermo_history.csv` |
+| Table~\ref{tab:xgl} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv` |
+| Table~\ref{tab:xthreshold} | `paired` | `cmd_paired.rs` | `cjt_threshold.csv` |
+| Table~\ref{tab:xthermal} | `history` | `history.rs`, `main.rs` | `thermal_history.csv` |
+| Table~\ref{tab:xvacuum} | `history` | `history.rs`, `main.rs` | `vacuum_history.csv` |
+| Table~\ref{tab:xdrift} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_drift.csv` |
+| Table~\ref{tab:xtemperature} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `deflation_temperature.csv` |
+| Table~\ref{tab:xmassloss} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `hubble_mass_loss.csv` |
+| Table~\ref{tab:xgrowth} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `growth_deflation.csv` |
+| Table~\ref{tab:xbackground} | `background` | `spectra_defl.rs`, `eb_cosmo.rs`, `cmd_spectra.rs` | `background_deflation.csv` |
+| Table~\ref{tab:xpeaks} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_peaks.csv` |
+| Table~\ref{tab:xclosure} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_summary.csv` |
+| Table~\ref{tab:xgaps} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_gaps.csv` |
+| Table~\ref{tab:xebgrowth} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_growth.csv` |
+| Table~\ref{tab:xebgrowth2} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_growth.csv` |
+| Table~\ref{tab:xfcprofile} | `forecast` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_profile.csv` |
+| Table~\ref{tab:xfamfisher} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_fisher.csv` |
+| Table~\ref{tab:xfamprofiles} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_profiles.csv` |
+| Table~\ref{tab:xfamsummary} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
+| Table~\ref{tab:xfamjoint} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
+| Table~\ref{tab:xsfdmhalf} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv` |
+| Table~\ref{tab:xsfdmbounds} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_bounds.csv` |
+| Table~\ref{tab:xisometries} | `symmetry` | `symmetry_defl.rs`, `cmd_symmetry.rs` | `isometries.csv` |
+| Table~\ref{tab:xsymmetry} | `symmetry` | `symmetry_defl.rs`, `cmd_symmetry.rs` | `reduced_symmetry.csv` |
 <!-- END tbl_prov_1671_c -->
 
 <!-- BEGIN n_prov_items_1671 -->
-55
+79
 <!-- END n_prov_items_1671 -->
 
 <!-- BEGIN tbl_data_files -->
@@ -1625,6 +1701,29 @@ $6.4\times10^{-10}$
 | `tab:halos` | table | Could the fermions of the model be degenerate, or their bound pairs condensed, in observed systems of dark matter? ... | `matter` | `dm_halo_estimates.csv` |
 | `fig:sfdm` | figure `fig_sfdm` | Superfluid dark matter on the deflating spacetime | `superfluid` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
 | `tab:higgs` | table |  | `cosmology` | `higgs_scale_exponent.csv` |
+| `tab:xthermo` | table | The paired state between zero temperature and the critical temperature ..., at three moments of the deflation, from the CJT potential, for ... and ... (vector channel) | `paired` | `cjt_thermo_history.csv` |
+| `tab:xgl` | table | The Ginzburg-Landau energy of the paired state at the three moments of Table tab:xthermo | `paired` | `cjt_gl_history.csv` |
+| `tab:xthreshold` | table | The critical value ... of ... at which two fermions bind (Sec. sec:pair), from the linearized gap equation in vacuum, whose kernel is relativistic, and from the Schr"odinger equation with the Yukawa potential | `paired` | `cjt_threshold.csv` |
+| `tab:xthermal` | table | Temperature along the clock | `history` | `thermal_history.csv` |
+| `tab:xvacuum` | table | The one-loop potential of the Vorton-Scalar in the vacuum along the clock (...) | `history` | `vacuum_history.csv` |
+| `tab:xdrift` | table | How fast the quantities of the model drift | `matter` | `dm_drift.csv` |
+| `tab:xmassloss` | table | Dark matter made of bound pairs, which lose rest mass as the binding energy grows (Sec. sec:cosmo) | `cosmology` | `hubble_mass_loss.csv` |
+| `tab:xgrowth` | table | Linear growth of pressureless matter from ... to today, from the growth equations (eq:growthM) of the closure M and (eq:growthP) of the closure P | `matter` | `growth_deflation.csv` |
+| `tab:xbackground` | table | Thermal history on the deflating spacetime (assumptions A1, A2; three equal rates) for three models | `background` | `background_deflation.csv` |
+| `tab:xpeaks` | table | The first five acoustic peaks of the temperature spectrum at a fixed angle of the sound horizon (closure M; without gravitational lensing) | `spectrum` | `cmb_deflation_peaks.csv` |
+| `tab:xclosure` | table | The two closures compared, at a fixed angle of the sound horizon | `spectrum` | `cmb_deflation_summary.csv` |
+| `tab:xgaps` | table | What the agent must supply in each closure, at the largest rate that nucleosynthesis allows, for the wavenumber ... at five conformal times | `spectrum` | `cmb_deflation_gaps.csv` |
+| `tab:xebgrowth` | table | Growth of the density contrast of cold dark matter and baryons at ... from ... to today, divided by its value without deflation, at the fixed Hubble constant ... | `spectrum` | `cmb_deflation_growth.csv` |
+| `tab:xebgrowth2` | table |  | `spectrum` | `cmb_deflation_growth.csv` |
+| `tab:xfcprofile` | table | Best fits of the six parameters of the standard model to mock data of the microwave background at fixed total rates of deflation (three equal rates; assumptions A1, A2, A3) | `forecast` | `deflation_profile.csv` |
+| `tab:xfamfisher` | table | Fisher forecasts for the seven families of extra radiation, with static extra coordinates (\`\`static'') and on the deflating spacetime at the largest rate that lunar laser ranging allows (\`\`deflating'') | `families` | `dr_deflation_fisher.csv` |
+| `tab:xfamprofiles` | table | Best fits of the six parameters of the standard model at fixed density ... of extra radiation, for the seven families and both sets of mock data, with static extra coordinates and on the deflating spacetime at the largest rate that lunar laser ranging allows | `families` | `dr_deflation_profiles.csv` |
+| `tab:xfamsummary` | table | Summary of the fits of Table tab:xfamprofiles, by interpolation in ... | `families` | `dr_deflation_joint.csv` |
+| `tab:xfamjoint` | table | The density ... of extra radiation and the total rate of deflation as free parameters together (Fisher matrices with eight parameters at the standard model) | `families` | `dr_deflation_joint.csv` |
+| `tab:xsfdmhalf` | table | Superfluid dark matter | `superfluid` | `sfdm_deflation_summary.csv` |
+| `tab:xsfdmbounds` | table | Limits on superfluid dark matter from the requirement that its half mode lies at a wavenumber not smaller than that of thermal warm dark matter at two mass limits of the Lyman-... forest (\`\`relic'', the mass of the thermal relic) | `superfluid` | `sfdm_deflation_bounds.csv` |
+| `tab:xisometries` | table |  | `symmetry` | `isometries.csv` |
+| `tab:xsymmetry` | table | The internal symmetry of the fields that depend on ... only (Sec. sec:hidden), item by item, computed with the matrices of the ... spacetime; a number of the order of ... is zero to the accuracy of the arithmetic | `symmetry` | `reduced_symmetry.csv` |
 <!-- END tbl_prov_plain_1644 -->
 
 <!-- BEGIN tbl_prov_plain_1671 -->
@@ -1685,5 +1784,29 @@ $6.4\times10^{-10}$
 | `tab:halos` | table | Could the fermions of the model be degenerate, or their bound pairs condensed, in observed systems of dark matter? ... | `matter` | `dm_halo_estimates.csv` |
 | `fig:sfdm` | figure `fig_sfdm` | Superfluid dark matter on the deflating spacetime | `superfluid` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
 | `tab:higgs` | table |  | `cosmology` | `higgs_scale_exponent.csv` |
+| `tab:xthermo` | table | The paired state between zero temperature and the critical temperature ..., at three moments of the deflation, from the CJT potential, for ... and ... (vector channel) | `paired` | `cjt_thermo_history.csv` |
+| `tab:xgl` | table | The Ginzburg-Landau energy of the paired state at the three moments of Table tab:xthermo | `paired` | `cjt_gl_history.csv` |
+| `tab:xthreshold` | table | The critical value ... of ... at which two fermions bind (Sec. sec:pair), from the linearized gap equation in vacuum, whose kernel is relativistic, and from the Schr"odinger equation with the Yukawa potential | `paired` | `cjt_threshold.csv` |
+| `tab:xthermal` | table | Temperature along the clock | `history` | `thermal_history.csv` |
+| `tab:xvacuum` | table | The one-loop potential of the Vorton-Scalar in the vacuum along the clock (...) | `history` | `vacuum_history.csv` |
+| `tab:xdrift` | table | How fast the quantities of the model drift | `matter` | `dm_drift.csv` |
+| `tab:xtemperature` | table | The quanta that the deflation creates (Sec. sec:modes), for three equal rates at the largest total rates that the bounds allow, and at ... | `matter` | `deflation_temperature.csv` |
+| `tab:xmassloss` | table | Dark matter made of bound pairs, which lose rest mass as the binding energy grows (Sec. sec:cosmo) | `cosmology` | `hubble_mass_loss.csv` |
+| `tab:xgrowth` | table | Linear growth of pressureless matter from ... to today, from the growth equations (eq:growthM) of the closure M and (eq:growthP) of the closure P | `matter` | `growth_deflation.csv` |
+| `tab:xbackground` | table | Thermal history on the deflating spacetime (assumptions A1, A2; three equal rates) for three models | `background` | `background_deflation.csv` |
+| `tab:xpeaks` | table | The first five acoustic peaks of the temperature spectrum at a fixed angle of the sound horizon (closure M; without gravitational lensing) | `spectrum` | `cmb_deflation_peaks.csv` |
+| `tab:xclosure` | table | The two closures compared, at a fixed angle of the sound horizon | `spectrum` | `cmb_deflation_summary.csv` |
+| `tab:xgaps` | table | What the agent must supply in each closure, at the largest rate that nucleosynthesis allows, for the wavenumber ... at five conformal times | `spectrum` | `cmb_deflation_gaps.csv` |
+| `tab:xebgrowth` | table | Growth of the density contrast of cold dark matter and baryons at ... from ... to today, divided by its value without deflation, at the fixed Hubble constant ... | `spectrum` | `cmb_deflation_growth.csv` |
+| `tab:xebgrowth2` | table |  | `spectrum` | `cmb_deflation_growth.csv` |
+| `tab:xfcprofile` | table | Best fits of the six parameters of the standard model to mock data of the microwave background at fixed total rates of deflation (three equal rates; assumptions A1, A2, A3) | `forecast` | `deflation_profile.csv` |
+| `tab:xfamfisher` | table | Fisher forecasts for the seven families of extra radiation, with static extra coordinates (\`\`static'') and on the deflating spacetime at the largest rate that lunar laser ranging allows (\`\`deflating'') | `families` | `dr_deflation_fisher.csv` |
+| `tab:xfamprofiles` | table | Best fits of the six parameters of the standard model at fixed density ... of extra radiation, for the seven families and both sets of mock data, with static extra coordinates and on the deflating spacetime at the largest rate that lunar laser ranging allows | `families` | `dr_deflation_profiles.csv` |
+| `tab:xfamsummary` | table | Summary of the fits of Table tab:xfamprofiles, by interpolation in ... | `families` | `dr_deflation_joint.csv` |
+| `tab:xfamjoint` | table | The density ... of extra radiation and the total rate of deflation as free parameters together (Fisher matrices with eight parameters at the standard model) | `families` | `dr_deflation_joint.csv` |
+| `tab:xsfdmhalf` | table | Superfluid dark matter | `superfluid` | `sfdm_deflation_summary.csv` |
+| `tab:xsfdmbounds` | table | Limits on superfluid dark matter from the requirement that its half mode lies at a wavenumber not smaller than that of thermal warm dark matter at two mass limits of the Lyman-... forest (\`\`relic'', the mass of the thermal relic) | `superfluid` | `sfdm_deflation_bounds.csv` |
+| `tab:xisometries` | table |  | `symmetry` | `isometries.csv` |
+| `tab:xsymmetry` | table | The internal symmetry of the fields that depend on ... only (Sec. sec:hidden), item by item, computed with the matrices of the ... spacetime; a number of the order of ... is zero to the accuracy of the arithmetic | `symmetry` | `reduced_symmetry.csv` |
 <!-- END tbl_prov_plain_1671 -->
 

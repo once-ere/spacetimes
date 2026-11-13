@@ -71,13 +71,13 @@ The purpose is to carry out every calculation that these hypotheses call for und
 
 ### E. Method, and the limits of what is claimed
 
-Every statement of this paper about geometry, matrices and operators is an identity that a program has verified in exact rational arithmetic, and that an independent program has verified again by computer algebra or with Grassmann-valued fields. Every numerical statement is the output of a program, with a stated accuracy, and the central ones were computed twice by independent programs. The programs and their output are public ([Patrick Lee Nash 2026](#ref-DeflationRepo)); Appendix D says how each number of this paper is reproduced. The program performs 295 checks and the independent verification 80, all of which pass. The metric of Eq. (1) is a hypothesis. The paper derives its consequences; it does not claim that the hypothesis is true. Section XVIII lists what has been established and what has not.
+Every statement of this paper about geometry, matrices and operators is an identity that a program has verified in exact rational arithmetic, and that an independent program has verified again by computer algebra or with Grassmann-valued fields. Every numerical statement is the output of a program, with a stated accuracy, and the central ones were computed twice by independent programs. The programs and their output are public ([Patrick Lee Nash 2026](#ref-DeflationRepo)); Appendix E says how each number of this paper is reproduced. The program performs 295 checks and the independent verification 80, all of which pass. The metric of Eq. (1) is a hypothesis. The paper derives its consequences; it does not claim that the hypothesis is true. Section XVIII lists what has been established and what has not.
 
 Units are natural, $\hbar=c=k_B=1$. Symbols that carry the tag $1644d$ refer to the deflating $4{+}4$ spacetime. A general coordinate among the three deflating ones is written $xt$ with $t\in\{5,6,7\}$ and its rate $\mathrm{rate}_t$; a general coordinate among $x0,x1,x2,x3$ is written $xj$ with $j\in\{0,1,2,3\}$. The letter $a$ is kept for the four extra axes, $a\in\{0,5,6,7\}$ (Sec. VIII). Every symbol is defined where it first appears, and Appendix A lists all of them.
 
 ## II. The deflating spacetime
 
-This section derives the geometry that the hypothesis implies: the curvature, the field equations that the metric does and does not solve, its symmetries, and the motion of a classical particle. Every formula of this section was obtained twice by exact computer algebra, by the program of this paper and by an independent script (Appendix D); the steps are short enough to be repeated by hand, and the text says how.
+This section derives the geometry that the hypothesis implies: the curvature, the field equations that the metric does and does not solve, its symmetries, and the motion of a classical particle. Every formula of this section was obtained twice by exact computer algebra, by the program of this paper and by an independent script (Appendix E); the steps are short enough to be repeated by hand, and the text says how.
 
 ### A. Metric, frame and volume
 
@@ -115,7 +115,7 @@ A Killing vector is a vector field along which the metric does not change. Flat 
 
 Three consequences are used below. The spacetime is homogeneous: no place and no moment is distinguished. The constants $\mathrm{const}_t$ are not observable by themselves, since a rescaling of $xt$ changes them; the deflation is observable only through an object that fixes a coordinate scale along $xt$, such as a wave of given coordinate wavelength. And there is no conserved energy, because a translation in time alone is not a symmetry.
 
-Of the 28 rotations and boosts of flat spacetime, only the six rotations of $x0,\dots,x3$ survive for general rates (Fig. 1). Nothing that involves the time survives, in particular not the boosts of ordinary special relativity: the deflation defines a preferred state of rest, as the expansion of the universe does.
+Of the 28 rotations and boosts of flat spacetime, only the six rotations of $x0,\dots,x3$ survive for general rates (Fig. 1, Table LVII). Nothing that involves the time survives, in particular not the boosts of ordinary special relativity: the deflation defines a preferred state of rest, as the expansion of the universe does.
 
 ![image](../figures/fig_isometries.png)
 
@@ -321,7 +321,7 @@ The limits of this conclusion must be stated with equal clarity. The eight growi
 
 ### E. The numerical method
 
-The equations of this section are linear, with coefficients that grow exponentially, and an integrator with a fixed step fails on them. The program uses a commutator-free Magnus method of the fourth order: over each step the solution is advanced by the product of two matrix exponentials of linear combinations of the coefficient matrix at two Gauss points. Because the square of $K$ is a multiple of the unit matrix at any one time, each exponential is evaluated in closed form. The length of a step is chosen so that neither the phase accumulated in it nor the relative change of the coefficients exceeds a fixed bound. An independent program, which uses an explicit Runge-Kutta method of the eighth order and the Bessel functions of another library, confirms Eq. (47) and, to the accuracy of the semiclassical form at the exponent that it reaches, Eq. (50) (Appendix D).
+The equations of this section are linear, with coefficients that grow exponentially, and an integrator with a fixed step fails on them. The program uses a commutator-free Magnus method of the fourth order: over each step the solution is advanced by the product of two matrix exponentials of linear combinations of the coefficient matrix at two Gauss points. Because the square of $K$ is a multiple of the unit matrix at any one time, each exponential is evaluated in closed form. The length of a step is chosen so that neither the phase accumulated in it nor the relative change of the coefficients exceeds a fixed bound. An independent program, which uses an explicit Runge-Kutta method of the eighth order and the Bessel functions of another library, confirms Eq. (47) and, to the accuracy of the semiclassical form at the exponent that it reaches, Eq. (50) (Appendix E).
 
 ## VI. The Vorton-Scalar and the deflation clock
 
@@ -609,7 +609,7 @@ Without contact couplings the program reproduces the gaps of Sec. VIII to $7\ti
 ### A. The moment of binding
 
 Two fermions in the Yukawa potential (59) form a bound state if and only if the number $D_{\mathrm{VS}}$ of Eq. (56) exceeds a critical value, $D_c=1.67981$. On a deflating spacetime $D_{\mathrm{VS}}\propto e^{\tau_d}$, so that the pair becomes bound at a definite time. Measure the clock from that moment: $$\tau_{\mathrm{pair}}=\ln\frac{D_{\mathrm{VS}}}{D_c}=\mathrm{gsum}\,\big(x4-x4_{\mathrm{binding}}\big).
-\tag{76}$$ Table VIII and Fig. 12 show the scattering length $a_{\mathrm{sc}}$ of two fermions and the binding energy $E_b$ of the pair as the clock passes the binding.
+\tag{76}$$ Table VIII and Fig. 12 show the scattering length $a_{\mathrm{sc}}$ of two fermions and the binding energy $E_b$ of the pair as the clock passes the binding. The linearized gap equation in vacuum, whose kernel is relativistic, gives nearly the same critical value: 1.7347, 1.6902 and 1.6810 for $m_s/m=0.3$, $0.1$ and $0.03$ (Table XXXVIII).
 
 | $\tau_{\mathrm{pair}}$ | $D_{\mathrm{VS}}$ | $a_{\mathrm{sc}}\,m_s$ | bound states |  $E_b\,m/m_s^{2}$   |
 |:----------------------:|:-----------------:|:----------------------:|:------------:|:-------------------:|
@@ -732,7 +732,7 @@ TABLE XI. The paired state along the clock from the CJT potential, for $k_F=0.5\
 
 *The pairs shrink.* The coherence length of the first set falls from 25 to 1.0 in units of $1/k_F$. At its last five moments the gap exceeds $0.1\,E_F$, and at the last the pair is as small as the distance between the particles. *The deflation carries the paired state from overlapping pairs toward bound pairs.* On flat spacetime this crossover ([Nozières and Schmitt-Rink 1985](#ref-NozieresSchmittRink1985); [Leggett 1975](#ref-Leggett1975)) is reached by choosing a larger coupling; here it is reached by waiting.
 
-*The universal ratios hold while the coupling is weak.* While the critical temperature rises by a factor of sixteen, from $6.3\times10^{-3}$ to $0.10$ of the Fermi energy, the ratio of the gap at zero temperature to the critical temperature stays within 0.019 of the weak-coupling value 1.7639, and the relative jump of the heat capacity at $T_c$ within 0.048 of 1.4261. The coefficients of the Ginzburg-Landau energy agree with their weak-coupling formulas to 1.0 per cent while $T_c$ is below $0.05\,E_F$ and differ by up to 7.9 per cent at $T_c=0.10\,E_F$. The coherence length of the Ginzburg-Landau energy, $0.1333\,v_F/T_c$ in weak coupling with the Fermi velocity $v_F$, shrinks from 80 to 5.1 in units of $1/m$: the cores of the vortices of the superfluid shrink as the deflation proceeds.
+*The universal ratios hold while the coupling is weak.* While the critical temperature rises by a factor of sixteen, from $6.3\times10^{-3}$ to $0.10$ of the Fermi energy, the ratio of the gap at zero temperature to the critical temperature stays within 0.019 of the weak-coupling value 1.7639, and the relative jump of the heat capacity at $T_c$ within 0.048 of 1.4261. The coefficients of the Ginzburg-Landau energy agree with their weak-coupling formulas to 1.0 per cent while $T_c$ is below $0.05\,E_F$ and differ by up to 7.9 per cent at $T_c=0.10\,E_F$. The coherence length of the Ginzburg-Landau energy, $0.1333\,v_F/T_c$ in weak coupling with the Fermi velocity $v_F$, shrinks from 80 to 5.1 in units of $1/m$: the cores of the vortices of the superfluid shrink as the deflation proceeds. Tables XXXVI and XXXVII of Appendix D give the numbers at the three moments computed.
 
 ![image](../figures/fig_cjt_history.png)
 
@@ -760,11 +760,11 @@ TABLE XII. Self-bound matter along the clock, in the mean-field approximation wi
 
 ### D. Temperature
 
-At high temperature the expectation value of the Vorton-Scalar vanishes and the fermions are massless. The temperature $T_{1/2}$ at which the expectation value has fallen to one half is of the order of the four-dimensional vacuum value $v_{\mathrm{VS}}=m/g_{\mathrm{VS}}$, which falls as $e^{-\tau_d/2}$ while the masses stay fixed. In units of the constant fermion mass, $T_{1/2}$ falls monotonically as the coupling grows, for each of the three ratios $m_s/m=0.3$, $1$ and $3$ examined; for $m_s/m=1$, from $2.33\,m$ at $g_{\mathrm{VS}}=0.3$ to $0.37\,m$ at $g_{\mathrm{VS}}=4$ \[Fig. 15(d)\]. *Matter of a fixed temperature melts at a definite moment of the deflation.* For $m_s/m=0.3$ no melting temperature can be given from $C=32$ on: there the one-loop potential of the vacuum turns over so close to the vacuum value that the Hartree potential ceases to exist before the expectation value has fallen, and the program marks these moments as not defined.
+At high temperature the expectation value of the Vorton-Scalar vanishes and the fermions are massless. The temperature $T_{1/2}$ at which the expectation value has fallen to one half is of the order of the four-dimensional vacuum value $v_{\mathrm{VS}}=m/g_{\mathrm{VS}}$, which falls as $e^{-\tau_d/2}$ while the masses stay fixed. In units of the constant fermion mass, $T_{1/2}$ falls monotonically as the coupling grows, for each of the three ratios $m_s/m=0.3$, $1$ and $3$ examined; for $m_s/m=1$, from $2.33\,m$ at $g_{\mathrm{VS}}=0.3$ to $0.37\,m$ at $g_{\mathrm{VS}}=4$ \[Fig. 15(d)\]. *Matter of a fixed temperature melts at a definite moment of the deflation.* For $m_s/m=0.3$ no melting temperature can be given from $C=32$ on: there the one-loop potential of the vacuum turns over so close to the vacuum value that the Hartree potential ceases to exist before the expectation value has fallen, and the program marks these moments as not defined (Table XXXIX).
 
 ### E. The vacuum
 
-The one-loop potential of the Vorton-Scalar in vacuum contains the negative contribution of the fermion loop ([Coleman and Weinberg 1973](#ref-ColemanWeinberg1973)), which grows with the fourth power of the field and eventually wins: beyond some field the potential lies below its value in the vacuum. The larger $C$, the smaller that field: 24.7 times the vacuum value at $C=1$, and 1.77 times at $C=10$ \[Fig. 15(c)\]. As the deflation proceeds, the barrier between the vacuum of the model and the region where the one-loop potential is unbounded below moves in toward the vacuum.
+The one-loop potential of the Vorton-Scalar in vacuum contains the negative contribution of the fermion loop ([Coleman and Weinberg 1973](#ref-ColemanWeinberg1973)), which grows with the fourth power of the field and eventually wins: beyond some field the potential lies below its value in the vacuum. The larger $C$, the smaller that field: 24.7 times the vacuum value at $C=1$, and 1.77 times at $C=10$ \[Fig. 15(c), Table XL\]. As the deflation proceeds, the barrier between the vacuum of the model and the region where the one-loop potential is unbounded below moves in toward the vacuum.
 
 The one-loop potential is not reliable at fields far from the vacuum value, and a potential that falls at large field signals that the effective theory needs completion there, not that the vacuum decays. What the result establishes is a trend: every statement of the model that rests on the vacuum of the Vorton-Scalar becomes less secure with time. The order of this event relative to the binding of the pair was given in Sec. X.
 
@@ -925,7 +925,7 @@ One might have expected the deflation to select the direction of the order param
 
 ### C. The internal symmetry of the sector, and the symmetries of the spacetime
 
-For fields that depend on $x1,x2,x3,x4$ only, the equation of the weighted field contains five matrices: $\alpha^{1},\alpha^{2},\alpha^{3}$, $\beta$ and $i\beta\chi$, the last through the coupling of the phase mode. The matrices that commute with all five generate the *internal symmetry* of the sector. The program computes it again for the deflating spacetime, item by item, and finds it unchanged:
+For fields that depend on $x1,x2,x3,x4$ only, the equation of the weighted field contains five matrices: $\alpha^{1},\alpha^{2},\alpha^{3}$, $\beta$ and $i\beta\chi$, the last through the coupling of the phase mode. The matrices that commute with all five generate the *internal symmetry* of the sector. The program computes it again for the deflating spacetime, item by item (Table LVIII), and finds it unchanged:
 
 - the algebra is $su(2)_A\oplus su(2)_B\oplus u(1)_F\oplus u(1)_E$, of dimension 8;
 
@@ -1086,7 +1086,7 @@ The microwave background fixes the angle $\theta_*$ to high precision. A model t
 
 TABLE XXI. The Hubble constant inferred from the angular scale of the sound horizon if Newton’s constant grows with the deflation (assumptions A1 and A2). $G_N$ ratio: Newton’s constant in the early universe divided by its value today, $e^{-\mathrm{gsum}\,t_0}$ with the age $t_0$ of the model. $z_*$: redshift of last scattering; $Y_{\mathrm{He}}$: mass fraction of helium. Last column: the Hubble constant that results if $z_*$ and $Y_{\mathrm{He}}$ are held at their values without deflation. The rows at $\mathrm{gsum}/H_0=0.00324$ and $0.0644$ are the bounds of lunar laser ranging and of nucleosynthesis (Table XXII).
 
-*The inferred Hubble constant falls*, with the slope $d\ln H_0/d(\mathrm{gsum}/H_0)=-0.969$ at small rates. The reason is this. By Eq. (104) gravity was weaker in the early universe; the universe expanded more slowly at a given density; sound had more time to travel, and the sound horizon is larger. To keep the angle, the distance to last scattering must be larger, which requires a smaller Hubble constant. The deflation moves the inferred value *away* from the local measurement \[Fig. 20(a)\]. Weaker gravity also delays last scattering and lowers the helium fraction, because the universe expanded more slowly during recombination and during nucleosynthesis as well; both enlarge the sound horizon further. If $z_*$ and $Y_{\mathrm{He}}$ are held at their values without deflation, the slope is $-0.911$: that simpler calculation underestimates the fall by six per cent of itself. An independent calculation of recombination confirms both numbers (Appendix D). The term $\mathrm{gprod}$ of Eq. (105) plays no part in this: it is of the second order in the rate, and it acts as a constant, which the cosmological term that is adjusted to today’s expansion absorbs almost exactly.
+*The inferred Hubble constant falls*, with the slope $d\ln H_0/d(\mathrm{gsum}/H_0)=-0.969$ at small rates. The reason is this. By Eq. (104) gravity was weaker in the early universe; the universe expanded more slowly at a given density; sound had more time to travel, and the sound horizon is larger. To keep the angle, the distance to last scattering must be larger, which requires a smaller Hubble constant. The deflation moves the inferred value *away* from the local measurement \[Fig. 20(a)\]. Weaker gravity also delays last scattering and lowers the helium fraction, because the universe expanded more slowly during recombination and during nucleosynthesis as well; both enlarge the sound horizon further. If $z_*$ and $Y_{\mathrm{He}}$ are held at their values without deflation, the slope is $-0.911$: that simpler calculation underestimates the fall by six per cent of itself. An independent calculation of recombination confirms both numbers (Appendix E). The term $\mathrm{gprod}$ of Eq. (105) plays no part in this: it is of the second order in the rate, and it acts as a constant, which the cosmological term that is adjusted to today’s expansion absorbs almost exactly.
 
 ![image](../figures/fig_hubble.png)
 
@@ -1128,7 +1128,7 @@ The consequence for the histories of Secs. VIII to XII is severe. Under A2 the 
 
 ### D. Bound pairs lose rest mass
 
-If the dark matter consists of bound pairs of the fermions, its particles have the rest mass $2m$ minus the binding energy. The binding energy grows with the coupling, so that the pairs become lighter as the deflation proceeds, and the density of dark matter falls slightly faster than the inverse volume. A dark matter that was heavier in the past raises the inferred Hubble constant. The program computes the effect for four examples with $\alpha_{\mathrm{VS}}$ between 0.4 and 1 today, where the binding energy is at most 8.2 per cent of the rest mass \[Fig. 20(b)\]. If gravity feels the deflation, the inferred Hubble constant changes by between $-4.11$ and $-0.19~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ at the rates that nucleosynthesis and lunar laser ranging allow: the weaker gravity of the past outweighs the loss of mass. (These examples hold $z_*$ and $Y_{\mathrm{He}}$ fixed, which by Table XXI underestimates a fall by about six per cent of itself.) If Newton’s constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and $1\,H_0$ raise the inferred Hubble constant by at most $+0.48~\mathrm{km\,s^{-1}\,Mpc^{-1}}$, for a loss of up to 7.7 per cent of the rest mass. This is the only effect of the deflation found here that raises the inferred Hubble constant, and in these examples it supplies less than a tenth of the $6.1~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ that separate the model from the local measurement.
+If the dark matter consists of bound pairs of the fermions, its particles have the rest mass $2m$ minus the binding energy. The binding energy grows with the coupling, so that the pairs become lighter as the deflation proceeds, and the density of dark matter falls slightly faster than the inverse volume. A dark matter that was heavier in the past raises the inferred Hubble constant. The program computes the effect for four examples with $\alpha_{\mathrm{VS}}$ between 0.4 and 1 today, where the binding energy is at most 8.2 per cent of the rest mass \[Fig. 20(b), Table XLII\]. If gravity feels the deflation, the inferred Hubble constant changes by between $-4.11$ and $-0.19~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ at the rates that nucleosynthesis and lunar laser ranging allow: the weaker gravity of the past outweighs the loss of mass. (These examples hold $z_*$ and $Y_{\mathrm{He}}$ fixed, which by Table XXI underestimates a fall by about six per cent of itself.) If Newton’s constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and $1\,H_0$ raise the inferred Hubble constant by at most $+0.48~\mathrm{km\,s^{-1}\,Mpc^{-1}}$, for a loss of up to 7.7 per cent of the rest mass. This is the only effect of the deflation found here that raises the inferred Hubble constant, and in these examples it supplies less than a tenth of the $6.1~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ that separate the model from the local measurement.
 
 ### E. Perturbations of ordinary space: what must be assumed
 
@@ -1152,7 +1152,7 @@ h_{\mathrm{sy}}''+2H_e\,h_{\mathrm{sy}}'-2k^{2}\eta_{\mathrm{sy}}&=-3\,\mathcal{
 \end{aligned}$$
 
 with $$H_e=H_{\mathrm{cf}}-\tfrac12\,a_{\mathrm{sp}}\,\mathrm{gsum}.
-\tag{108}$$ They are the energy constraint, the momentum constraint, the trace of the space-space equations and their traceless part, the equation of the shear. An independent program derives them by computer algebra for arbitrary rates and for both signatures (Appendix D). They are the four equations of general relativity ([Ma and Bertschinger 1995](#ref-MaBertschinger1995)) with two changes: Newton’s constant is that of the moment, and $H_{\mathrm{cf}}$ is replaced by $H_e$ in three of them. The second change can be read off Eq. (105). The time component of the Einstein tensor is the sum of the products of all pairs of expansion rates. If the rate of one ordinary direction is perturbed, the perturbation multiplies the sum of the rates of all *other* directions, which is $2H$ in four dimensions and $2H-\mathrm{gsum}$ here.
+\tag{108}$$ They are the energy constraint, the momentum constraint, the trace of the space-space equations and their traceless part, the equation of the shear. An independent program derives them by computer algebra for arbitrary rates and for both signatures (Appendix E). They are the four equations of general relativity ([Ma and Bertschinger 1995](#ref-MaBertschinger1995)) with two changes: Newton’s constant is that of the moment, and $H_{\mathrm{cf}}$ is replaced by $H_e$ in three of them. The second change can be read off Eq. (105). The time component of the Einstein tensor is the sum of the products of all pairs of expansion rates. If the rate of one ordinary direction is perturbed, the perturbation multiplies the sum of the rates of all *other* directions, which is $2H$ in four dimensions and $2H-\mathrm{gsum}$ here.
 
 *The four equations cannot all hold with matter alone.* In general relativity two of the four equations (107) imply the other two, because the energy and the momentum of matter are conserved. Here they do not. Let Eq. (107a) hold, and define three *gaps*, the amounts by which the other three fail when only matter and radiation stand on their right-hand sides: $$\begin{aligned}
 \mathcal{Y}_M&=2k^{2}\eta_{\mathrm{sy}}'-\mathcal{T},\\
@@ -1179,15 +1179,15 @@ For pressureless matter with the density contrast $\delta_m$ and the density $\r
 \tag{114}$$ gravity is that of the moment, and the Hubble friction is reduced by $\mathrm{gsum}/2$. In the closure “Momentum”, the derivative of Eq. (107a) with Eq. (107b) gives, in conformal time, $$\delta_m''+\frac{2H_e'+\mathcal{E}_m+\tfrac43\mathcal{E}_r}{2H_e}\,\delta_m'=\frac{H_{\mathrm{cf}}-a_{\mathrm{sp}}\,\mathrm{gsum}}{2H_e}\,\mathcal{E}_m\,\delta_m ,
 \tag{115}$$ where $\mathcal{E}_m$ and $\mathcal{E}_r$ are the parts of $\mathcal{E}$ from matter and from radiation. Here the source is reduced as well, by the factor $(H-\mathrm{gsum})/(H-\mathrm{gsum}/2)$. (The term with $\mathcal{E}_r$ is the momentum density of radiation that streams freely: far inside the horizon its velocity divergence is $-h_{\mathrm{sy}}'/2$ ([Ma and Bertschinger 1995](#ref-MaBertschinger1995)).) Without deflation both equations reduce to the familiar $d^{2}\delta_m/dx4^{2}+2H\,d\delta_m/dx4=4\pi G_N\rho_m\delta_m$. With deflation that familiar equation, with $G_N(x4)$ inserted, is neither of the two. For matter alone and three equal rates the growth rate $d\ln\delta_m/d\ln a_{\mathrm{sp}}$ is, to the first order in $\mathrm{gsum}/H$, $1-\tfrac{9}{16}\,\mathrm{gsum}/H$ in the closure “Pressure” and $1-\tfrac{13}{16}\,\mathrm{gsum}/H$ in the closure “Momentum”.
 
-Two effects oppose each other \[Fig. 20(c)\]. At a *fixed* Hubble constant, weaker gravity in the past lowers the amplitude $\sigma_8$ of clustering today: $d\ln\sigma_8/d(\mathrm{gsum}/H_0)=-0.443$ in the closure “Momentum” and $-0.207$ in the closure “Pressure”. But the Hubble constant that keeps the angle of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer. With that Hubble constant the net change is $+0.003$ and $+0.239$ per unit of $\mathrm{gsum}/H_0$: $+0.001$ and $+0.077$ per cent at the bound of lunar laser ranging, and $+0.01$ and $+1.60$ per cent at the bound of nucleosynthesis. The growth rate today, $f_g=d\ln\delta_m/d\ln a_{\mathrm{sp}}$, rises in both closures, by the factors 1.0021 and 1.0035 at the first bound and 1.0463 and 1.0773 at the second. Common to both closures is that, at a fixed angle, the amplitude does not fall and the growth rate rises. How large the changes are depends on the closure: *the growth of structure on the deflating spacetime is not predicted until the perturbations of the agent are specified.*
+Two effects oppose each other \[Fig. 20(c), Table XLIII\]. At a *fixed* Hubble constant, weaker gravity in the past lowers the amplitude $\sigma_8$ of clustering today: $d\ln\sigma_8/d(\mathrm{gsum}/H_0)=-0.443$ in the closure “Momentum” and $-0.207$ in the closure “Pressure”. But the Hubble constant that keeps the angle of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer. With that Hubble constant the net change is $+0.003$ and $+0.239$ per unit of $\mathrm{gsum}/H_0$: $+0.001$ and $+0.077$ per cent at the bound of lunar laser ranging, and $+0.01$ and $+1.60$ per cent at the bound of nucleosynthesis. The growth rate today, $f_g=d\ln\delta_m/d\ln a_{\mathrm{sp}}$, rises in both closures, by the factors 1.0021 and 1.0035 at the first bound and 1.0463 and 1.0773 at the second. Common to both closures is that, at a fixed angle, the amplitude does not fall and the growth rate rises. How large the changes are depends on the closure: *the growth of structure on the deflating spacetime is not predicted until the perturbations of the agent are specified.*
 
 ### G. The spectra of the microwave background
 
 *The program.* The temperature and polarization spectra of the microwave background and the power spectrum of matter are computed with an Einstein-Boltzmann program written for this work. It integrates the equations of motion of photons, neutrinos, baryons and cold dark matter in the synchronous gauge ([Ma and Bertschinger 1995](#ref-MaBertschinger1995)) together with the equations of the metric perturbations, and obtains the spectra by integrating the sources along the line of sight ([Seljak and Zaldarriaga 1996](#ref-SeljakZaldarriaga1996)). Its version for static extra coordinates has Newton’s constant built into its units. For the deflating spacetime four of its parts were copied and changed in a short, listed set of places: the expansion obeys Eq. (105); every source of the metric perturbations carries the Newton’s constant of the moment; the energy constraint is Eq. (107a); and the sources of the temperature anisotropy contain the gap $\mathcal{Y}_S$ of the closure. The equations of motion of photons, neutrinos, baryons and dark matter are not changed: matter that is spread uniformly over the extra coordinates moves in ordinary space as it does in four dimensions, and Thomson scattering and recombination are atomic physics, which the model does not alter. The copies are written by a script from the original files, so that they cannot differ from them in any place that is not listed, and without deflation the two versions give the same spectra to the last binary digit.
 
-*Recombination and helium.* Recombination is computed on the expansion history of Eq. (105), with the three-level atom and its standard corrections ([Seager, Sasselov, and Scott 1999](#ref-SeagerSasselovScott1999)). The helium fraction responds as well. At nucleosynthesis Newton’s constant was smaller than today by the factor $G_N$ ratio of Table XXI; a universe that expands more slowly by that factor in $H^{2}$ is equivalent, for nucleosynthesis, to one with $\tfrac{43}{7}(G_N\ \text{ratio}-1)$ additional neutrino species, a negative number, and the helium fraction follows from the standard fit ([Ade et al. 2016](#ref-Planck2015XIII)). (In a model with extra radiation, $\tfrac{43}{7}$ is replaced by $\tfrac{43}{7}+\Delta N$, where $\Delta N$ is the density of that radiation during nucleosynthesis in units of one neutrino species.) At the largest rate that nucleosynthesis allows, and without extra radiation, this is $-0.379$ species, and $Y_{\mathrm{He}}$ falls from 0.24540 to 0.24008.
+*Recombination and helium.* Recombination is computed on the expansion history of Eq. (105), with the three-level atom and its standard corrections ([Seager, Sasselov, and Scott 1999](#ref-SeagerSasselovScott1999)). The helium fraction responds as well. At nucleosynthesis Newton’s constant was smaller than today by the factor $G_N$ ratio of Table XXI; a universe that expands more slowly by that factor in $H^{2}$ is equivalent, for nucleosynthesis, to one with $\tfrac{43}{7}(G_N\ \text{ratio}-1)$ additional neutrino species, a negative number, and the helium fraction follows from the standard fit ([Ade et al. 2016](#ref-Planck2015XIII)). (In a model with extra radiation, $\tfrac{43}{7}$ is replaced by $\tfrac{43}{7}+\Delta N$, where $\Delta N$ is the density of that radiation during nucleosynthesis in units of one neutrino species.) At the largest rate that nucleosynthesis allows, and without extra radiation, this is $-0.379$ species, and $Y_{\mathrm{He}}$ falls from 0.24540 to 0.24008. Table XLIV gives the thermal history of three models.
 
-*Spectra at a fixed angle.* Table XXIII lists the model without deflation and five models with three equal rates, each with the densities, the primordial amplitude and tilt and the optical depth of the standard model and with the Hubble constant that keeps $100\,\theta_*=1.03965$. Keeping the angle keeps the acoustic peaks in place: the first five move by at most 0.32 in the multipole $\ell$. What changes is their height and the damping tail \[Fig. 22\], for the reasons that apply to any change of the expansion rate at recombination: the ratio of the diffusion length to the sound horizon, the width of the last-scattering surface and the decay of the potentials shortly after recombination all change, and the lower helium fraction leaves more electrons per baryon.
+*Spectra at a fixed angle.* Table XXIII lists the model without deflation and five models with three equal rates, each with the densities, the primordial amplitude and tilt and the optical depth of the standard model and with the Hubble constant that keeps $100\,\theta_*=1.03965$. Keeping the angle keeps the acoustic peaks in place: the first five move by at most 0.32 in the multipole $\ell$ (Table XLV). What changes is their height and the damping tail \[Fig. 22\], for the reasons that apply to any change of the expansion rate at recombination: the ratio of the diffusion length to the sound horizon, the width of the last-scattering surface and the decay of the potentials shortly after recombination all change, and the lower helium fraction leaves more electrons per baryon.
 
 | $\mathrm{gsum}/H_0$ | $H_0$  | $G_N(z_*)/G_N$ | $\sigma_8$ (M) | $\sigma_8$ (P) |   largest change   | ideal measurement | $\Delta\chi^{2}$ |
 |:-------------------:|:------:|:--------------:|:--------------:|:--------------:|:------------------:|:-----------------:|:----------------:|
@@ -1206,9 +1206,9 @@ At the rate that lunar laser ranging allows, the temperature spectrum differs fr
 
 **FIG. 22.** The spectra of the microwave background at a fixed angle of the sound horizon. (a) The temperature spectrum without deflation and at the largest rate that nucleosynthesis allows. (b), (c) The change of the temperature and polarization spectra relative to the model without deflation for four rates (darker: faster); the band is the cosmic variance of a single multipole. Closure “Momentum”; at these multipoles the closure “Pressure” gives the same curves.
 
-*The closure.* For $30\le\ell\le2500$ the spectra of the two closures differ by a thousandth of the effect of the deflation itself ($1.4\times10^{-3}$ and $1.2\times10^{-3}$ of it at the two bounds), and $\Delta\chi^{2}$ is the same to five digits \[Fig. 23(a)\]. *The spectra at these multipoles follow from A1, A2 and A3, whatever the closure.* For $\ell<30$, where the potentials of the recent universe act through the late integrated Sachs-Wolfe effect, the closures differ by more than the effect of the deflation in either of them, by a factor 2.1. The largest angular scales are not predicted; their cosmic variance is large, and at the rate of nucleosynthesis the closures differ by at most a third of it. The amplitude of matter is 0.9762 of its value without deflation in the closure “Momentum” and 0.9918 in the closure “Pressure” at the rate of nucleosynthesis, and 0.99892 and 0.99969 at the rate of lunar laser ranging.
+*The closure.* For $30\le\ell\le2500$ the spectra of the two closures differ by a thousandth of the effect of the deflation itself ($1.4\times10^{-3}$ and $1.2\times10^{-3}$ of it at the two bounds), and $\Delta\chi^{2}$ is the same to five digits \[Fig. 23(a)\]. *The spectra at these multipoles follow from A1, A2 and A3, whatever the closure.* For $\ell<30$, where the potentials of the recent universe act through the late integrated Sachs-Wolfe effect, the closures differ by more than the effect of the deflation in either of them, by a factor 2.1. The largest angular scales are not predicted; their cosmic variance is large, and at the rate of nucleosynthesis the closures differ by at most a third of it. The amplitude of matter is 0.9762 of its value without deflation in the closure “Momentum” and 0.9918 in the closure “Pressure” at the rate of nucleosynthesis, and 0.99892 and 0.99969 at the rate of lunar laser ranging (Table XLVI).
 
-Figure 23(b) shows what the agent must supply. In units of $a_{\mathrm{sp}}\,\mathrm{gsum}/H_{\mathrm{cf}}$ times the terms of each equation, the closure “Momentum” lacks 0.54 to 0.98 in Eq. (107c) and 0.31 to 0.49 in Eq. (107d) after recombination; the closure “Pressure” lacks 0.62 to 0.94 in Eq. (107b), and in Eq. (107d) an amount that falls as $(H_{\mathrm{cf}}/k)^{2}$ inside the horizon, as Eq. (113) requires. The two identities (110) and (111) hold along the numerical solutions to $8.6\times10^{-4}$, the accuracy of the numerical derivative with which they are tested. The complete calculation, with photons, neutrinos and baryons, reproduces the growth of Eqs. (114) and (115) to $1.3\times10^{-4}$ \[Fig. 23(c)\]; with the equation of the other closure it would disagree by a quarter of $\mathrm{gsum}/H_0$.
+Figure 23(b) and Table XLVII show what the agent must supply. In units of $a_{\mathrm{sp}}\,\mathrm{gsum}/H_{\mathrm{cf}}$ times the terms of each equation, the closure “Momentum” lacks 0.54 to 0.98 in Eq. (107c) and 0.31 to 0.49 in Eq. (107d) after recombination; the closure “Pressure” lacks 0.62 to 0.94 in Eq. (107b), and in Eq. (107d) an amount that falls as $(H_{\mathrm{cf}}/k)^{2}$ inside the horizon, as Eq. (113) requires. The two identities (110) and (111) hold along the numerical solutions to $8.6\times10^{-4}$, the accuracy of the numerical derivative with which they are tested. The complete calculation, with photons, neutrinos and baryons, reproduces the growth of Eqs. (114) and (115) to $1.3\times10^{-4}$ \[Fig. 23(c), Tables XLVIII and XLIX\]; with the equation of the other closure it would disagree by a quarter of $\mathrm{gsum}/H_0$.
 
 ![image](../figures/fig_closure.png)
 
@@ -1229,13 +1229,13 @@ TABLE XXIV. Forecast for the rate of deflation from mock data of the microwave b
 
 *A bound, as a forecast.* With the six parameters free, Planck-like data determine $\mathrm{gsum}/H_0$ to 0.0196 (Table XXIV), and the upper bound at 95 per cent is $$\mathrm{gsum}<0.0385\,H_0=2.65\times10^{-12}\ \text{per year},$$ or $0.0207\,H_0$ with the deep survey. With the six parameters *held* the error would be 0.00108: nearly all of the effect of the deflation on the spectra, above all the shift of the angle $\theta_*$, can be absorbed by the other parameters \[Fig. 24(c)\]. The bound lies between those of Table XXII: it is 11.9 times weaker than that of lunar laser ranging and 1.7 times stronger than that of nucleosynthesis. The closure changes it by half a per cent.
 
-*The Hubble constant falls in every fit.* Along the degeneracy the best-fit Hubble constant changes by $-84.35~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ per unit of $\mathrm{gsum}/H_0$ for the Planck-like data and by $-82.11$ with the deep survey, that is, by $-3.2$ and $-1.7~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ at the respective bounds. This is steeper than the slope $-65.24$ at a fixed angle and fixed densities, because in the fit the density of dark matter rises and the tilt falls as well. Fits of the six parameters at fixed rates confirm the Fisher matrix \[Fig. 24(a), (b)\]: for rates up to $0.01\,H_0$ the minimum $\Delta\chi^{2}$ and the shift of the Hubble constant are 1.00 to 1.01 times its predictions, and the fits reach $\Delta\chi^{2}=3.84$ at $\mathrm{gsum}=0.0376\,H_0$ and, with the deep survey, at $0.0205\,H_0$. At the rate that lunar laser ranging allows the best fit has $\Delta\chi^{2}=0.027$ and $H_0=67.086~\mathrm{km\,s^{-1}\,Mpc^{-1}}$. At the rate that nucleosynthesis allows it has $\Delta\chi^{2}=11.6$, a deviation of 3.4 standard deviations, and $H_0=61.70~\mathrm{km\,s^{-1}\,Mpc^{-1}}$; with the deep survey $\Delta\chi^{2}=39.8$. *The largest rate that nucleosynthesis allows would be excluded by data of the quality of Planck.*
+*The Hubble constant falls in every fit.* Along the degeneracy the best-fit Hubble constant changes by $-84.35~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ per unit of $\mathrm{gsum}/H_0$ for the Planck-like data and by $-82.11$ with the deep survey, that is, by $-3.2$ and $-1.7~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ at the respective bounds. This is steeper than the slope $-65.24$ at a fixed angle and fixed densities, because in the fit the density of dark matter rises and the tilt falls as well. Fits of the six parameters at fixed rates confirm the Fisher matrix \[Fig. 24(a), (b); Table L\]: for rates up to $0.01\,H_0$ the minimum $\Delta\chi^{2}$ and the shift of the Hubble constant are 1.00 to 1.01 times its predictions, and the fits reach $\Delta\chi^{2}=3.84$ at $\mathrm{gsum}=0.0376\,H_0$ and, with the deep survey, at $0.0205\,H_0$. At the rate that lunar laser ranging allows the best fit has $\Delta\chi^{2}=0.027$ and $H_0=67.086~\mathrm{km\,s^{-1}\,Mpc^{-1}}$. At the rate that nucleosynthesis allows it has $\Delta\chi^{2}=11.6$, a deviation of 3.4 standard deviations, and $H_0=61.70~\mathrm{km\,s^{-1}\,Mpc^{-1}}$; with the deep survey $\Delta\chi^{2}=39.8$. *The largest rate that nucleosynthesis allows would be excluded by data of the quality of Planck.*
 
 ![image](../figures/fig_forecast.png)
 
-**FIG. 24.** Mock data of the microwave background against the rate of deflation. (a) The minimum $\Delta\chi^{2}$ of fits of the six parameters of the standard model at a fixed rate (symbols) and the parabola of the Fisher matrix (lines), for the two data sets; the rates that lunar laser ranging and nucleosynthesis allow are marked. (b) The best-fit Hubble constant, with the slope of the Fisher matrix and, dotted, the Hubble constant that keeps the angle when nothing else is refitted. (c) The temperature spectrum at $\mathrm{gsum}=0.02\,H_0$ relative to the data: with the angle kept and nothing refitted, and at the best fit, which absorbs most of the difference; the band is the cosmic variance of a single multipole.
+**FIG. 24.** Mock data of the microwave background against the rate of deflation. (a) The minimum $\Delta\chi^{2}$ of fits of the six parameters of the standard model at a fixed rate (symbols) and the parabola of the Fisher matrix (lines), for the two data sets; the rates that lunar laser ranging and nucleosynthesis allow are marked, and the horizontal line is $\Delta\chi^{2}=3.84$, the bound at 95 per cent. (b) The best-fit Hubble constant, with the slope of the Fisher matrix and, dotted, the Hubble constant that keeps the angle when nothing else is refitted. (c) The temperature spectrum at $\mathrm{gsum}=0.02\,H_0$ relative to the data: with the angle kept and nothing refitted, and at the best fit, which absorbs most of the difference; the band is the cosmic variance of a single multipole.
 
-*Deflation and dark radiation together.* Extra radiation is the candidate of the model for the Hubble tension. Seven one-parameter families of extra radiation were fitted to the same mock data, each with a density $N$ in units of one neutrino species: radiation that streams freely; a fluid; the *stepped fluid of the model*, at four transition redshifts $z_t$; and the stepped fluid of the Wess-Zumino model ([Aloni et al. 2022](#ref-Aloni2022)). The stepped fluid of the model is the massless phase mode of the Vorton-Scalar in equilibrium with the sixteen components of the fermion field: when the fermions become non-relativistic, at the redshift $z_t$, they annihilate and heat the phase mode, so that the temperature of the fluid rises by the factor $15^{1/3}$ relative to the law of dilution ($N$ is the density after this step; the Wess-Zumino fluid has the factor $(15/7)^{1/3}$). Every family can raise the Hubble constant, and every one at a price in $\Delta\chi^{2}$. Does the deflation lower the price? All fits were made with static extra coordinates and on the deflating spacetime at the largest rate that lunar laser ranging allows, and the Fisher matrix was computed with $N$ and the rate free together (Table XXV, Fig. 25). Three results follow.
+*Deflation and dark radiation together.* Extra radiation is the candidate of the model for the Hubble tension. Seven one-parameter families of extra radiation were fitted to the same mock data, each with a density $N$ in units of one neutrino species: radiation that streams freely; a fluid; the *stepped fluid of the model*, at four transition redshifts $z_t$; and the stepped fluid of the Wess-Zumino model ([Aloni et al. 2022](#ref-Aloni2022)). The stepped fluid of the model is the massless phase mode of the Vorton-Scalar in equilibrium with the sixteen components of the fermion field: when the fermions become non-relativistic, at the redshift $z_t$, they annihilate and heat the phase mode, so that the temperature of the fluid rises by the factor $15^{1/3}$ relative to the law of dilution ($N$ is the density after this step; the Wess-Zumino fluid has the factor $(15/7)^{1/3}$). Every family can raise the Hubble constant, and every one at a price in $\Delta\chi^{2}$. Does the deflation lower the price? All fits were made with static extra coordinates and on the deflating spacetime at the largest rate that lunar laser ranging allows, and the Fisher matrix was computed with $N$ and the rate free together (Table XXV, Fig. 25; Tables LI to LIV of Appendix D). Three results follow.
 
 First, at that rate every best-fit Hubble constant of the static case falls by 0.274 to $0.279~\mathrm{km\,s^{-1}\,Mpc^{-1}}$, which is the shift of the model without extra radiation: the effects of the deflation and of the extra radiation add \[Fig. 25(a), (b)\].
 
@@ -1278,13 +1278,13 @@ TABLE XXVI. Could the fermions of the model be degenerate, or their bound pairs 
 *Self-interaction, and the epoch of the resonance.* The cross-section per mass of bound pairs must respect the bound of about $\kappa_{\mathrm{SI}}=1~\mathrm{cm^{2}/g}$ from colliding clusters ([Markevitch et al. 2004](#ref-Markevitch2004); [Randall et al. 2008](#ref-Randall2008)). A pair bound by the Yukawa potential (59) has a scattering length of at least the range $1/m_s$; identical bosons with that scattering length scatter at low energy with the cross-section $8\pi/m_s^{2}$; and the pair exists only if $D_{\mathrm{VS}}=\alpha_{\mathrm{VS}}\,m/m_s>D_c$ (Sec. X). Together, for pairs of the mass $2m$, these give a smallest fermion mass, $$m\ge\Big[\frac{4\pi\,D_c^{2}}{\alpha_{\mathrm{VS}}^{2}\,\kappa_{\mathrm{SI}}}\Big]^{1/3},
 \tag{118}$$ which is 918 MeV for $\alpha_{\mathrm{VS}}=0.1$ and falls as $\alpha_{\mathrm{VS}}^{-2/3}$, that is, as $e^{-2\tau_d/3}$ along the deflation. For a given particle the masses are constant and so is this cross-section. What the deflation changes is whether the pair *exists*: it is bound only after $D_{\mathrm{VS}}$ has grown to $D_c$. And at that moment the scattering length of two unbound fermions diverges (Sec. X), so that their cross-section rises to the limit that unitarity allows, which is larger the slower the particles. For the example particle, $m=918$ MeV and $m_s=54.7$ MeV, at the relative velocities 10, 156 and 1000 km/s \[Fig. 12(c)\]: one unit of the clock before the binding the cross-section per mass is $0.84~\mathrm{cm^{2}/g}$ at all three velocities; at the binding it peaks at $1.3\times10^{7}$, $5.2\times10^{4}$ and $1.3\times10^{3}~\mathrm{cm^{2}/g}$; and it exceeds $100~\mathrm{cm^{2}/g}$ during an interval of the clock of 0.27, 0.27 and 0.26 around the binding. *A deflating universe whose dark matter consists of these fermions passes through an epoch of strong, velocity-dependent self-interaction*, strongest in the smallest halos. Whether the epoch lies in the observable past depends on the rate. Under A2 and a constant rate it does so only if $D_{\mathrm{VS}}$ today exceeds $D_c$ by less than a third of a per cent, a coincidence that nothing in the model explains.
 
-*Superfluid dark matter and small-scale structure.* What becomes of the growth of structure if the dark matter is the superfluid itself, a fluid with first sound? Two limits are computed: a degenerate gas of the fermions with eight internal states, and a condensate of bound pairs with the sound speed $c_{s0}$ today. The pressure of such a fluid suppresses structure below a wavenumber, and the bound of the Lyman-$\alpha$ forest on warm dark matter ([Viel et al. 2005](#ref-Viel2005); [Iršič et al. 2017](#ref-Irsic2017)) then limits the fermion mass from below and the sound speed from above. Computed again on the deflating background under A1 to A3, at the Hubble constant that keeps the angle, the wavenumber at which the power falls to a quarter of that of cold dark matter is lower by 0.15 to 0.16 per cent at the rate that lunar laser ranging allows and by 3.0 to 3.3 per cent at the rate that nucleosynthesis allows, for fifteen models (Fig. 26). The reason is the weaker gravity of the time at which the suppression is set: the Jeans wavenumber is proportional to the square root of Newton’s constant. The limits move accordingly, from $m>1.514$ keV and $c_{s0}<1.645\times10^{-11}\,c$ without deflation to $m>1.516$ keV and $c_{s0}<1.641\times10^{-11}\,c$ at the first rate and $m>1.555$ keV and $c_{s0}<1.565\times10^{-11}\,c$ at the second. The two closures give the same wavenumbers to $1.5\times10^{-5}$. In this calculation the equation of state of the superfluid in ordinary space is that of static extra coordinates; whether the self-interaction of a condensate would itself follow the volume of the deflating coordinates is a question about the microscopic model that the calculation does not answer.
+*Superfluid dark matter and small-scale structure.* What becomes of the growth of structure if the dark matter is the superfluid itself, a fluid with first sound? Two limits are computed: a degenerate gas of the fermions with eight internal states, and a condensate of bound pairs with the sound speed $c_{s0}$ today. The pressure of such a fluid suppresses structure below a wavenumber, and the bound of the Lyman-$\alpha$ forest on warm dark matter ([Viel et al. 2005](#ref-Viel2005); [Iršič et al. 2017](#ref-Irsic2017)) then limits the fermion mass from below and the sound speed from above. Computed again on the deflating background under A1 to A3, at the Hubble constant that keeps the angle, the wavenumber at which the power falls to a quarter of that of cold dark matter is lower by 0.15 to 0.16 per cent at the rate that lunar laser ranging allows and by 3.0 to 3.3 per cent at the rate that nucleosynthesis allows, for fifteen models (Fig. 26, Tables LV and LVI). The reason is the weaker gravity of the time at which the suppression is set: the Jeans wavenumber is proportional to the square root of Newton’s constant. The limits move accordingly, from $m>1.514$ keV and $c_{s0}<1.645\times10^{-11}\,c$ without deflation to $m>1.516$ keV and $c_{s0}<1.641\times10^{-11}\,c$ at the first rate and $m>1.555$ keV and $c_{s0}<1.565\times10^{-11}\,c$ at the second. The two closures give the same wavenumbers to $1.5\times10^{-5}$. In this calculation the equation of state of the superfluid in ordinary space is that of static extra coordinates; whether the self-interaction of a condensate would itself follow the volume of the deflating coordinates is a question about the microscopic model that the calculation does not answer.
 
 ![image](../figures/fig_sfdm.png)
 
 **FIG. 26.** Superfluid dark matter on the deflating spacetime. (a) The power spectrum of matter divided by that of cold dark matter, for a degenerate gas of the fermions of two masses and for a condensate of bound pairs with two sound speeds today: without deflation (lines) and at the rate that nucleosynthesis allows (symbols). The horizontal line marks one quarter, the value that defines the half mode. (b) The change of the wavenumber of the half mode for the degenerate gas, against the fermion mass, at the rates that lunar laser ranging and nucleosynthesis allow, for the closures “Momentum” (M) and “Pressure” (P). (c) The same for the condensate, against its sound speed today.
 
-*How fast the quantities drift.* With $n=d\ln(\text{quantity})/d\tau_d$, the relative change of a quantity over the age of the universe is $n\,\mathrm{gsum}\,t_0$. The couplings themselves drift with $n=1$ or $\tfrac12$ (Table II). Quantities near a threshold drift much faster: the scattering length just below the binding, at $D_{\mathrm{VS}}=1.5$, with $n=9.1$; the binding energy just above it, at $D_{\mathrm{VS}}=1.8$, with $n=30$; the gap of a weakly paired state with $n=1/\lambda$. These are the quantities in which a slow deflation would first be seen.
+*How fast the quantities drift.* With $n=d\ln(\text{quantity})/d\tau_d$, the relative change of a quantity over the age of the universe is $n\,\mathrm{gsum}\,t_0$. The couplings themselves drift with $n=1$ or $\tfrac12$ (Table II). Quantities near a threshold drift much faster: the scattering length just below the binding, at $D_{\mathrm{VS}}=1.5$, with $n=9.1$; the binding energy just above it, at $D_{\mathrm{VS}}=1.8$, with $n=30$; the gap of a weakly paired state with $n=1/\lambda$. These are the quantities in which a slow deflation would first be seen (Table XLI).
 
 ### J. Verdict on hypothesis H3
 
@@ -1364,7 +1364,7 @@ On the deflating spacetime the hypothesis that the singlet superfluid is the Hig
 
 ## XVIII. What has been established, and what has not
 
-The sections above reported results of very different standing: identities verified in exact arithmetic, numerical results with a stated accuracy, consequences of additional assumptions, and estimates. This section sorts them. An item is called established if a machine check stands behind it (Appendix D); statements of interpretation deserve the reader’s independent scrutiny more than the numbers do.
+The sections above reported results of very different standing: identities verified in exact arithmetic, numerical results with a stated accuracy, consequences of additional assumptions, and estimates. This section sorts them. An item is called established if a machine check stands behind it (Appendix E); statements of interpretation deserve the reader’s independent scrutiny more than the numbers do.
 
 ### A. Established
 
@@ -1488,11 +1488,11 @@ These results are quantitative, and they come with the programs that produced th
 
 ## Data availability
 
-The source code of all programs, the data files from which every figure and every computed number of this paper is generated, the instructions for compiling and running the programs (Appendix D), and the records of the provenance of each result are openly available ([Patrick Lee Nash 2026](#ref-DeflationRepo)).
+The source code of all programs, the data files from which every figure and every computed number of this paper is generated, the instructions for compiling and running the programs (Appendix E), and the records of the provenance of each result are openly available ([Patrick Lee Nash 2026](#ref-DeflationRepo)).
 
 ## Appendix A: Symbols
 
-Tables XXXI to XXXIV list every symbol of this paper with its meaning and the place of its definition. No symbol has two meanings. Where one letter occurs with different indices or in different type, the tables say how the uses are told apart; a machine check of the registry from which these tables are taken verifies that no symbol and no name in a data file is defined twice (Appendix D).
+Tables XXXI to XXXIV list every symbol of this paper with its meaning and the place of its definition. No symbol has two meanings. Where one letter occurs with different indices or in different type, the tables say how the uses are told apart; a machine check of the registry from which these tables are taken verifies that no symbol and no name in a data file is defined twice (Appendix E).
 
 | symbol                                                                                        | meaning                                                                                                                                                                                                                                                                                                      | defined in        |
 |:----------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------|
@@ -1567,6 +1567,7 @@ TABLE XXXII. The symbols of this paper, continued: mass term and self-interactio
 | $\Xi_d$; $\Delta_{\mathrm{eq}}$; $E_{\mathrm{sh}}$; $n_{\mathrm{ex}}$              | the parameter that decides whether the paired state follows the deflation; equilibrium gap; half-width of the shell of states; density of broken pairs                                                                                                                                                  | Sec. XI         |
 | $\xi_k$, $E_k$, $\kappa$, $n_k$                                                    | single-particle energy, quasi-particle energy, pair correlation and occupation of a pair of states                                                                                                                                                                                                      | Eq. (79)        |
 | $V[\Delta]$; $\phi$; $m^{*}$; $T_{1/2}$                                            | effective potential of the paired state; expectation value of the Vorton-Scalar, $\langle\Phi_{\mathrm{VS}}\rangle=\phi/\sqrt2$; mass of a fermion in matter; temperature at which the fermions have lost half of their mass                                                                            | Secs. XII, VII  |
+| $a(T)$, $b$, $K_{\mathrm{GL}}$; $T_{\mathrm{high}}$, $T_0$                         | coefficients of the Ginzburg-Landau energy of the paired state near $T_c$ (quadratic, quartic and gradient term); a closed estimate of the temperature above which the expectation value of the Vorton-Scalar vanishes, and the temperature at which it has fallen to 0.02 of its vacuum value          | Appendix D      |
 | $\Delta^{a}$, $\Delta_t$; $\mathsf{M}$; $d_\pm$                                    | order parameter (frame components), and its coordinate components along the deflating coordinates; gap matrix; the two fourfold gaps of a state                                                                                                                                                         | Sec. XIV        |
 | $SU(2)_A$, $SU(2)_B$, $U(1)_E$; $SO(3)_T$                                          | the factors of the internal symmetry of the fields that do not depend on the extra coordinates; the rotations of the three additional times $x5,x6,x7$                                                                                                                                                  | Sec. XIV C      |
 | $P$, $P_c$; $w_z$; $\theta_{12}$                                                   | generator of $U(1)_E$ and the product of the five matrices of the sector; spinor of a zero mode; angle around a vortex line                                                                                                                                                                             | Sec. XIV D      |
@@ -1586,6 +1587,7 @@ TABLE XXXIII. The symbols of this paper, continued: the model and the superfluid
 | $\mathcal{D}$, $\mathcal{T}$, $\mathcal{P}$, $\mathcal{A}$                                     | $8\pi G_Na_{\mathrm{sp}}^{2}$ times the perturbations of the energy density, of the divergence of the momentum density, of the pressure, and the anisotropic stress, of matter and radiation together                                                            | Eq. (107)           |
 | $\mathcal{E}$, $\mathcal{E}_P$, $\mathcal{E}_m$, $\mathcal{E}_r$; $\mathcal{B}$, $\mathcal{Z}$ | $8\pi G_Na_{\mathrm{sp}}^{2}$ times the density and the pressure of the unperturbed universe, and the parts of the first from matter and from radiation; two combinations that vanish without deflation                                                          | Eq. (112)           |
 | $\mathcal{Y}_M$, $\mathcal{Y}_T$, $\mathcal{Y}_S$                                              | the gaps: what the momentum constraint, the trace equation and the equation of the shear lack with matter and radiation alone                                                                                                                                    | Eq. (109)           |
+| $\mathcal{U}$; $R_{\mathrm{TF}}$                                                               | $\eta_{\mathrm{sy}}+\alpha_{\mathrm{sy}}'$, the sum of the two gravitational potentials of the conformal Newtonian gauge; the radius of a core of condensed pairs that is supported by its own pressure                                                          | Appendix D          |
 | $\Delta\chi^{2}$; $N$, $z_t$; $c_{s0}$                                                         | difference of $\chi^{2}$ from the best fit of the standard model to the mock data; density of extra radiation in units of that of one neutrino species, and the transition redshift of a stepped fluid; sound speed today of a condensate of bound pairs         | Secs. XVI H, XVI I  |
 | $\sigma_v$; $m_{\mathrm{deg}}$, $m_{B,\max}$, $m_B$; $\kappa_{\mathrm{SI}}$                    | velocity dispersion of the dark matter of a halo; the largest masses at which fermions are degenerate and bosons of the mass $m_B$ condensed there; the bound on the cross-section per mass of dark matter                                                       | Sec. XVI I          |
 | $v_{\mathrm{EW}}$, $n_{\mathrm{EW}}$; $\alpha_c$, $\varrho_c$                                  | electroweak scale and the exponent with which it would follow the coupling under H2; critical coupling of the vacuum condensate, and an abbreviation                                                                                                             | Sec. XVII           |
@@ -1596,7 +1598,7 @@ TABLE XXXIV. The symbols of this paper, continued: the cosmological part and the
 
 ## Appendix B: The Dirac matrices
 
-Table XXXV prints the eight Dirac matrices of the orthonormal frame and three matrices built from them. All are real, with entries $0$, $+1$ and $-1$, and each Dirac matrix is a signed permutation matrix. The matrices $\gamma^{0},\dots,\gamma^{3}$ of the space-like coordinates are symmetric and square to $+1$; the matrices $\gamma^{4},\dots,\gamma^{7}$ of the time-like coordinates are antisymmetric and square to $-1$ \[Eq. (15)\]. Their product $\omega_{1644}=\gamma^{0}\gamma^{1}\cdots\gamma^{7}$ is the chirality matrix $\chi$; it is real and diagonal, $\mathrm{diag}(-1_8,+1_8)$, so that the chiral projectors $P^{L,R}=\tfrac12(1\mp\chi)$ select the upper and the lower eight components. The matrix $C^{-}=\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}$ is real and symmetric and turns each Dirac matrix into minus its transpose, $C^{-}\gamma^{A}(C^{-})^{-1}=-(\gamma^{A})^{T}$; it defines the covariant adjoint $\tilde\psi=\psi^\dagger C^{-}$. The matrix $C^{+}=C^{-}\omega_{1644}$ turns each Dirac matrix into plus its transpose. Three further matrices follow by one multiplication: the Hermitian matrices $\beta=-i\gamma^{4}$ and $\alpha^{j}=-\gamma^{4}\gamma^{j}$ ($j=0,1,2,3$) of the quantized sector, and $W_{1644}=i\,C^{-}\gamma^{4}$, which is Hermitian, squares to one, commutes with $\beta$ and with the $\alpha^{j}$, and satisfies $C^{-}=-W_{1644}\beta$. The program verifies every property stated here in exact integer arithmetic (Appendix D).
+Table XXXV prints the eight Dirac matrices of the orthonormal frame and three matrices built from them. All are real, with entries $0$, $+1$ and $-1$, and each Dirac matrix is a signed permutation matrix. The matrices $\gamma^{0},\dots,\gamma^{3}$ of the space-like coordinates are symmetric and square to $+1$; the matrices $\gamma^{4},\dots,\gamma^{7}$ of the time-like coordinates are antisymmetric and square to $-1$ \[Eq. (15)\]. Their product $\omega_{1644}=\gamma^{0}\gamma^{1}\cdots\gamma^{7}$ is the chirality matrix $\chi$; it is real and diagonal, $\mathrm{diag}(-1_8,+1_8)$, so that the chiral projectors $P^{L,R}=\tfrac12(1\mp\chi)$ select the upper and the lower eight components. The matrix $C^{-}=\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}$ is real and symmetric and turns each Dirac matrix into minus its transpose, $C^{-}\gamma^{A}(C^{-})^{-1}=-(\gamma^{A})^{T}$; it defines the covariant adjoint $\tilde\psi=\psi^\dagger C^{-}$. The matrix $C^{+}=C^{-}\omega_{1644}$ turns each Dirac matrix into plus its transpose. Three further matrices follow by one multiplication: the Hermitian matrices $\beta=-i\gamma^{4}$ and $\alpha^{j}=-\gamma^{4}\gamma^{j}$ ($j=0,1,2,3$) of the quantized sector, and $W_{1644}=i\,C^{-}\gamma^{4}$, which is Hermitian, squares to one, commutes with $\beta$ and with the $\alpha^{j}$, and satisfies $C^{-}=-W_{1644}\beta$. The program verifies every property stated here in exact integer arithmetic (Appendix E).
 
 **TABLE XXXV.** The real matrices of the $4{+}4$ spacetime ($+$ stands for $+1$, $-$ for $-1$, a dot for $0$; the lines separate the upper and the lower eight components). First and second row: the eight Dirac matrices $\gamma^{A}$ of the orthonormal frame. Third row: their product $\omega_{1644}$, and the matrices $C^{-}$ and $C^{+}$.
 
@@ -1841,7 +1843,472 @@ Let $\mathrm{g55}=\mathrm{g66}=\mathrm{g77}$, and introduce in place of $x4,\dot
 \end{aligned}
 \tag{C8}$$ with $\bar x4\,\partial/\partial\bar x4=\mathrm{g55}^{-1}\partial_4$. Together with the 14 Killing vectors of the general case and the three rotations of $x5,x6,x7$ they are the 20 Killing vectors of the case of equal rates.
 
-## Appendix D: Programs, checks and provenance
+## Appendix D: Complete tables of the calculations
+
+Several sections of this paper quote selected numbers from calculations whose complete results are tables. This appendix prints those tables, in the order of the sections to which they belong. Each caption defines every column; the numbers are written by a script from the data files of the program (Appendix E). M and P stand throughout for the closures “Momentum” and “Pressure” of the perturbation equations (Sec. XVI E), and $H_0$ is given in $\mathrm{km\,s^{-1}\,Mpc^{-1}}$.
+
+### A. The paired state, the bound pair, temperature and vacuum (Secs. X and XII)
+
+Tables XXXVI and XXXVII follow the paired state from zero temperature to its critical temperature at three moments of the deflation; they contain the universal ratios and the coefficients of the Ginzburg-Landau energy that Sec. XII quotes. Table XXXVIII compares two calculations of the critical value $D_c$ at which two fermions bind. Table XXXIX lists the melting temperatures along the clock and Table XL the fields at which the one-loop potential of the vacuum turns over.
+
+| $\tau_d$ | $g_{\mathrm{VS}}$ | $\lambda$ |       $T_c/m$       | $T_c/E_F$ | $\Delta_F(0)/T_c$ | jump of the heat capacity |
+|:--------:|:-----------------:|:---------:|:-------------------:|:---------:|:-----------------:|:-------------------------:|
+|  0.000   |       2.60        |   0.156   | $7.49\times10^{-4}$ |  0.0063   |      1.7640       |          1.4266           |
+|  0.286   |       3.00        |   0.208   | $3.90\times10^{-3}$ |  0.0330   |      1.7668       |          1.4331           |
+|  0.537   |       3.40        |   0.267   |       0.0122        |  0.1036   |      1.7828       |          1.4742           |
+
+TABLE XXXVI. The paired state between zero temperature and the critical temperature $T_c$, at three moments of the deflation, from the CJT potential, for $m_s=m$ and $k_F=0.5\,m$ (vector channel). $\lambda$: pairing strength. $\Delta_F(0)/T_c$: the gap at the Fermi momentum at zero temperature divided by $T_c$; its weak-coupling value is 1.7639. Jump: the heat capacity of the paired state minus that of the unpaired state, divided by the latter, at $T_c$; its weak-coupling value is 1.4261.
+
+|          |                   |                     |                        |        |                   |                  |                   |
+|:--------:|:-----------------:|:-------------------:|:----------------------:|:------:|:-----------------:|:----------------:|:-----------------:|
+|          |                   |                     | ratio to weak coupling |        |                   | coherence length |                   |
+| $\tau_d$ | $g_{\mathrm{VS}}$ |       $T_c/m$       |    slope of $a(T)$     |  $b$   | $K_{\mathrm{GL}}$ |   $\times\,m$    | $\times\,T_c/v_F$ |
+|  0.000   |       2.60        | $7.49\times10^{-4}$ |         1.0000         | 1.0001 |      1.0005       |       79.6       |      0.1333       |
+|  0.286   |       3.00        | $3.90\times10^{-3}$ |         0.9993         | 0.9949 |      1.0101       |       15.4       |      0.1340       |
+|  0.537   |       3.40        |       0.0122        |         0.9927         | 0.9641 |      1.0793       |       5.1        |      0.1390       |
+
+TABLE XXXVII. The Ginzburg-Landau energy of the paired state at the three moments of Table XXXVI. Near $T_c$ the CJT potential reduces to a quadratic term in the gap with the coefficient $a(T)$, a quartic term with the coefficient $b$ and a gradient term with the coefficient $K_{\mathrm{GL}}$. Columns 4 to 6: the slope of $a$ with respect to $\ln T$ at $T_c$, the coefficient $b$ and the coefficient $K_{\mathrm{GL}}$, each divided by its value in the weak-coupling theory. Last two columns: the coherence length of the Ginzburg-Landau energy, $(K_{\mathrm{GL}}/|a|)^{1/2}$ at $|\ln(T/T_c)|=1$, in units of $1/m$ and in units of $v_F/T_c$ with the Fermi velocity $v_F$; in weak coupling the latter is 0.1333.
+
+| $m_s/m$ | gap equation | Schrödinger equation | difference |
+|:-------:|:------------:|:--------------------:|:----------:|
+|  0.30   |    1.7347    |        1.6798        |   3.3 %    |
+|  0.10   |    1.6902    |        1.6798        |   0.6 %    |
+|  0.030  |    1.6810    |        1.6798        |   0.1 %    |
+
+TABLE XXXVIII. The critical value $D_c$ of $D_{\mathrm{VS}}=\alpha_{\mathrm{VS}}\,m/m_s$ at which two fermions bind (Sec. X), from the linearized gap equation in vacuum, whose kernel is relativistic, and from the Schrödinger equation with the Yukawa potential. The two approach each other as the radial mode becomes light and the binding non-relativistic.
+
+| $m_s/m$ | $g_{\mathrm{VS}}$ |  $C$   | $T_{\mathrm{high}}/m$ | $T_{1/2}/m$ | $T_0/m$ | melting defined |
+|:-------:|:-----------------:|:------:|:---------------------:|:-----------:|:-------:|:---------------:|
+|  0.30   |       0.30        |  1.00  |         0.939         |    0.857    |  0.941  |       yes       |
+|  0.30   |       0.40        |  1.78  |         0.749         |    0.691    |  0.751  |       yes       |
+|  0.30   |       0.53        |  3.16  |         0.617         |    0.573    |  0.618  |       yes       |
+|  0.30   |       0.71        |  5.62  |         0.528         |    0.491    |  0.528  |       yes       |
+|  0.30   |       0.95        | 10.00  |         0.471         |    0.435    |  0.471  |       yes       |
+|  0.30   |       1.26        |  17.8  |         0.436         |    0.400    |  0.436  |       yes       |
+|  0.30   |       1.69        |  31.6  |         0.415         |      —      |    —    |       no        |
+|  0.30   |       2.25        |  56.2  |         0.402         |      —      |    —    |       no        |
+|  0.30   |       3.00        | 100.0  |         0.395         |      —      |    —    |       no        |
+|  0.30   |       4.00        |  178   |         0.391         |      —      |    —    |       no        |
+|   1.0   |       0.30        | 0.0900 |         2.605         |    2.325    |  2.627  |       yes       |
+|   1.0   |       0.40        | 0.160  |         1.967         |    1.776    |  1.991  |       yes       |
+|   1.0   |       0.53        | 0.285  |         1.493         |    1.368    |  1.519  |       yes       |
+|   1.0   |       0.71        | 0.506  |         1.143         |    1.065    |  1.170  |       yes       |
+|   1.0   |       0.95        | 0.900  |         0.888         |    0.842    |  0.914  |       yes       |
+|   1.0   |       1.26        |  1.60  |         0.705         |    0.679    |  0.726  |       yes       |
+|   1.0   |       1.69        |  2.85  |         0.577         |    0.561    |  0.587  |       yes       |
+|   1.0   |       2.25        |  5.06  |         0.490         |    0.476    |  0.490  |       yes       |
+|   1.0   |       3.00        |  9.00  |         0.434         |    0.413    |  0.434  |       yes       |
+|   1.0   |       4.00        |  16.0  |         0.399         |    0.366    |  0.399  |       yes       |
+|   3.0   |       0.30        | 0.0100 |         4.809         |    4.536    |  4.899  |       yes       |
+|   3.0   |       0.40        | 0.0178 |         3.609         |    3.492    |  3.719  |       yes       |
+|   3.0   |       0.53        | 0.0316 |         2.710         |    2.707    |  2.842  |       yes       |
+|   3.0   |       0.71        | 0.0562 |         2.037         |    2.115    |  2.190  |       yes       |
+|   3.0   |       0.95        | 0.1000 |         1.535         |    1.668    |  1.706  |       yes       |
+|   3.0   |       1.26        | 0.178  |         1.160         |    1.329    |  1.346  |       yes       |
+|   3.0   |       1.69        | 0.316  |         0.881         |    1.070    |  1.075  |       yes       |
+|   3.0   |       2.25        | 0.562  |         0.676         |    0.870    |  0.870  |       yes       |
+|   3.0   |       3.00        | 1.000  |         0.527         |    0.713    |  0.713  |       yes       |
+|   3.0   |       4.00        |  1.78  |         0.420         |    0.590    |  0.590  |       yes       |
+
+TABLE XXXIX. Temperature along the clock: the melting of the expectation value of the Vorton-Scalar, for three ratios $m_s/m$ and ten couplings each. $T_{\mathrm{high}}$: a closed estimate of the temperature above which the expectation value vanishes. $T_{1/2}$ and $T_0$: the temperatures at which the expectation value has fallen to one half and to 0.02 of its vacuum value, in the Hartree approximation. Last column: “no” marks the moments at which no melting temperature can be given, because the Hartree potential ceases to exist before the expectation value has fallen (Sec. XII).
+
+|  $C$  | maximum | below the vacuum value |
+|:-----:|:-------:|:----------------------:|
+| 0.490 |   252   |          324           |
+| 1.01  |  18.9   |          24.2          |
+| 9.89  |  1.55   |          1.78          |
+| 20.3  |  1.25   |          1.37          |
+
+TABLE XL. The one-loop potential of the Vorton-Scalar in the vacuum along the clock ($C\propto e^{\tau_d}$): the field at which the potential has its maximum beyond the vacuum, and the field beyond which it lies below its value in the vacuum, both in units of the vacuum value $v_{\mathrm{VS}}$.
+
+### B. The unperturbed universe (Sec. XVI)
+
+Table XLI gives the drift of the quantities of the model, Table XLII the examples of bound pairs that lose rest mass, and Table XLIII the growth of structure from the two growth equations.
+
+|                                                                                  |                                       |          |                      |                         |                      |
+|:---------------------------------------------------------------------------------|:--------------------------------------|:--------:|:--------------------:|:-----------------------:|:--------------------:|
+|                                                                                  |                                       |          |        lunar         | nucleosynthesis through |                      |
+| quantity                                                                         | where evaluated                       |   $n$    |       ranging        |          $G_N$          | $G_{\mathrm{Fermi}}$ |
+| $\alpha_{\mathrm{VS}}$, $G_{\mathrm{VS}}$, $D_{\mathrm{VS}}$, $C$                | any                                   |  1.000   | $3.08\times10^{-3}$  |         0.0612          |        0.223         |
+| $g_{\mathrm{VS}}$                                                                | any                                   |  0.500   | $1.54\times10^{-3}$  |         0.0306          |        0.112         |
+| fermion mass $m$, mass $m_s$ of the radial mode                                  | any                                   |  0.000   |          0           |            0            |          0           |
+| scattering length of two fermions (no bound state)                               | $D_{\mathrm{VS}}$ = 0.5               |  1.368   | $4.21\times10^{-3}$  |         0.0838          |        0.305         |
+| scattering length of two fermions (no bound state)                               | $D_{\mathrm{VS}}$ = 1                 |  2.336   | $7.20\times10^{-3}$  |          0.143          |        0.521         |
+| scattering length of two fermions (no bound state)                               | $D_{\mathrm{VS}}$ = 1.5               |  9.092   |        0.0280        |          0.557          |         2.03         |
+| binding energy of the pair                                                       | $D_{\mathrm{VS}}$ = 1.8               |  30.129  |        0.0928        |          1.85           |         6.72         |
+| binding energy of the pair                                                       | $D_{\mathrm{VS}}$ = 2                 |  12.657  |        0.0390        |          0.775          |         2.82         |
+| binding energy of the pair                                                       | $D_{\mathrm{VS}}$ = 3                 |  4.673   |        0.0144        |          0.286          |         1.04         |
+| binding energy of the pair                                                       | $D_{\mathrm{VS}}$ = 5                 |  3.101   | $9.55\times10^{-3}$  |          0.190          |        0.692         |
+| binding energy of the pair                                                       | $D_{\mathrm{VS}}$ = 10                |  2.456   | $7.57\times10^{-3}$  |          0.150          |        0.548         |
+| rest mass of the bound pair                                                      | $D_{\mathrm{VS}}$ = 5, $m_s/m$ = 0.2  | $-0.162$ | $-4.99\times10^{-4}$ |  $-9.91\times10^{-3}$   |      $-0.0361$       |
+| rest mass of the bound pair                                                      | $D_{\mathrm{VS}}$ = 10, $m_s/m$ = 0.1 | $-0.218$ | $-6.73\times10^{-4}$ |        $-0.0134$        |      $-0.0488$       |
+| gap and critical temperature of the paired state (weak coupling)                 | pairing strength $\lambda$ = 0.15     |  6.667   |        0.0205        |          0.408          |         1.49         |
+| gap and critical temperature of the paired state (weak coupling)                 | pairing strength $\lambda$ = 0.2      |  5.000   |        0.0154        |          0.306          |         1.12         |
+| gap and critical temperature of the paired state (weak coupling)                 | pairing strength $\lambda$ = 0.3      |  3.333   |        0.0103        |          0.204          |        0.744         |
+| cross-section of two fermions at low energy (Born regime, $D_{\mathrm{VS}}\ll1$) | $D_{\mathrm{VS}}$ = 0.05              |  2.052   | $6.32\times10^{-3}$  |          0.126          |        0.458         |
+
+TABLE XLI. How fast the quantities of the model drift. $n$: the logarithmic derivative of the quantity with respect to the clock $\tau_d$. Last three columns: the relative change $n\,\mathrm{gsum}\,t_0$ of the quantity over the age $t_0$ of the universe at the largest total rate that each bound of Table XXII allows: lunar laser ranging (assumption A2); nucleosynthesis through Newton’s constant (A2); nucleosynthesis through the Fermi constant (assumption HV); with $H_0t_0=0.9516$ of the model without deflation.
+
+| $D_{\mathrm{VS}}$ today | $m_s/m$ | $\alpha_{\mathrm{VS}}$ today | $\mathrm{gsum}/H_0$ | gravity feels the deflation | mass ratio | $H_0$ | change  |
+|:-----------------------:|:-------:|:----------------------------:|:-------------------:|:---------------------------:|:----------:|:-----:|:-------:|
+|          2.50           |  0.20   |             0.50             |       0.00324       |             yes             |  0.99995   | 67.16 | $-0.20$ |
+|          2.50           |  0.20   |             0.50             |       0.0644        |             yes             |  0.99905   | 63.25 | $-4.11$ |
+|          2.50           |  0.20   |             0.50             |       0.0300        |             no              |  0.99953   | 67.37 |  0.01   |
+|          2.50           |  0.20   |             0.50             |        0.100        |             no              |  0.99865   | 67.38 |  0.02   |
+|          2.50           |  0.20   |             0.50             |        0.300        |             no              |  0.99736   | 67.38 |  0.02   |
+|          2.50           |  0.20   |             0.50             |        1.00         |             no              |  0.99721   | 67.34 | $-0.02$ |
+|          5.00           |  0.20   |             1.00             |       0.00324       |             yes             |  0.99950   | 67.17 | $-0.19$ |
+|          5.00           |  0.20   |             1.00             |       0.0644        |             yes             |  0.99085   | 63.36 | $-4.00$ |
+|          5.00           |  0.20   |             1.00             |       0.0300        |             no              |  0.99557   | 67.42 |  0.06   |
+|          5.00           |  0.20   |             1.00             |        0.100        |             no              |  0.98658   | 67.54 |  0.18   |
+|          5.00           |  0.20   |             1.00             |        0.300        |             no              |  0.96882   | 67.68 |  0.32   |
+|          5.00           |  0.20   |             1.00             |        1.00         |             no              |  0.95069   | 67.36 |  0.00   |
+|          4.00           |  0.10   |             0.40             |       0.00324       |             yes             |  0.99994   | 67.16 | $-0.20$ |
+|          4.00           |  0.10   |             0.40             |       0.0644        |             yes             |  0.99880   | 63.25 | $-4.11$ |
+|          4.00           |  0.10   |             0.40             |       0.0300        |             no              |  0.99942   | 67.37 |  0.01   |
+|          4.00           |  0.10   |             0.40             |        0.100        |             no              |  0.99824   | 67.38 |  0.02   |
+|          4.00           |  0.10   |             0.40             |        0.300        |             no              |  0.99594   | 67.40 |  0.04   |
+|          4.00           |  0.10   |             0.40             |        1.00         |             no              |  0.99408   | 67.35 | $-0.01$ |
+|          10.00          |  0.10   |             1.00             |       0.00324       |             yes             |  0.99933   | 67.17 | $-0.19$ |
+|          10.00          |  0.10   |             1.00             |       0.0644        |             yes             |  0.98756   | 63.40 | $-3.96$ |
+|          10.00          |  0.10   |             1.00             |       0.0300        |             no              |  0.99400   | 67.45 |  0.09   |
+|          10.00          |  0.10   |             1.00             |        0.100        |             no              |  0.98168   | 67.61 |  0.25   |
+|          10.00          |  0.10   |             1.00             |        0.300        |             no              |  0.95635   | 67.84 |  0.48   |
+|          10.00          |  0.10   |             1.00             |        1.00         |             no              |  0.92342   | 67.58 |  0.22   |
+
+TABLE XLII. Dark matter made of bound pairs, which lose rest mass as the binding energy grows (Sec. XVI): four examples of $D_{\mathrm{VS}}$, $m_s/m$ and $\alpha_{\mathrm{VS}}$ today, each at six rates. “Gravity feels the deflation”: yes, assumptions A1 and A2; no, Newton’s constant is held fixed and the deflation acts on the dark sector alone. Mass ratio: the rest mass of a pair today divided by its rest mass in the early universe. $H_0$: the Hubble constant inferred with the density of dark matter at early times, the density of baryons and the angle $\theta_*$ held fixed; change: its difference from the value without deflation.
+
+|                     |       |           |        |        |        |                          |        |                  |
+|:-------------------:|:-----:|:---------:|:------:|:------:|:------:|:------------------------:|:------:|:----------------:|
+|                     |       | amplitude |        | $f_g$  |        | amplitude at fixed $H_0$ |        |                  |
+| $\mathrm{gsum}/H_0$ | $H_0$ |     M     |   P    |   M    |   P    |            M             |   P    | four-dimensional |
+|          0          | 67.36 |  1.0000   | 1.0000 | 1.0000 | 1.0000 |          1.0000          | 1.0000 |      1.0000      |
+|       0.00100       | 67.29 |  1.0000   | 1.0002 | 1.0006 | 1.0011 |          0.9996          | 0.9998 |      0.9997      |
+|       0.00324       | 67.15 |  1.0000   | 1.0008 | 1.0021 | 1.0035 |          0.9986          | 0.9993 |      0.9990      |
+|       0.0100        | 66.70 |  1.0000   | 1.0024 | 1.0064 | 1.0109 |          0.9956          | 0.9979 |      0.9968      |
+|       0.0300        | 65.36 |  1.0001   | 1.0073 | 1.0201 | 1.0339 |          0.9867          | 0.9937 |      0.9904      |
+|       0.0644        | 62.98 |  1.0001   | 1.0160 | 1.0463 | 1.0773 |          0.9713          | 0.9863 |      0.9792      |
+|        0.100        | 60.37 |  1.0001   | 1.0256 | 1.0780 | 1.1287 |          0.9553          | 0.9783 |      0.9674      |
+|        0.300        | 41.94 |  1.0005   | 1.0907 | 1.4637 | 1.6751 |          0.8638          | 0.9288 |      0.8975      |
+
+TABLE XLIII. Linear growth of pressureless matter from $a_{\mathrm{sp}}=0.01$ to today, from the growth equations (115) of the closure M and (114) of the closure P. Columns 3 to 6, at the Hubble constant of column 2, which keeps the angle of the sound horizon: the amplitude today and the growth rate $f_g$ today, each divided by its value without deflation. Columns 7 and 8: the amplitude ratio at the fixed Hubble constant $67.36~\mathrm{km\,s^{-1}\,Mpc^{-1}}$. Last column: the same from the equation $d^{2}\delta_m/dx4^{2}+2H\,d\delta_m/dx4=4\pi G_N(x4)\rho_m\delta_m$, which is the equation of neither closure and is shown for comparison.
+
+### C. The microwave background (Secs. XVI E and XVI G)
+
+Table XLIV gives the thermal history for three models, Table XLV the acoustic peaks, Table XLVI the difference between the two closures, Table XLVII what the agent must supply in each closure, and Tables XLVIII and XLIX the growth of structure in the complete calculation.
+
+| model            | $\mathrm{gsum}/H_0$ | held  | $H_0$ |  $z_*$  | $r_s$ (Mpc) | $100\,\theta_*$ | $Y_{\mathrm{He}}$ | $G_N$ ratio |
+|:-----------------|:-------------------:|:-----:|:-----:|:-------:|:-----------:|:---------------:|:-----------------:|:-----------:|
+| fiducial         |          0          | $H_0$ | 67.36 | 1089.92 |   144.45    |     1.03965     |      0.2454       |   1.0000    |
+| fiducial         |       0.00324       | $H_0$ | 67.36 | 1089.86 |   144.68    |     1.04028     |      0.2451       |   0.9969    |
+| fiducial         |       0.00324       | angle | 67.15 | 1089.86 |   144.68    |     1.03965     |      0.2451       |   0.9969    |
+| fiducial         |       0.0644        | $H_0$ | 67.36 | 1088.76 |   149.09    |     1.05252     |      0.2402       |   0.9400    |
+| fiducial         |       0.0644        | angle | 62.98 | 1088.72 |   149.23    |     1.03965     |      0.2401       |   0.9383    |
+| fluid, $N=0.5$   |          0          | $H_0$ | 67.36 | 1090.40 |   142.02    |     1.02248     |      0.2520       |   1.0000    |
+| fluid, $N=0.5$   |       0.00324       | $H_0$ | 67.36 | 1090.34 |   142.25    |     1.02310     |      0.2517       |   0.9969    |
+| fluid, $N=0.5$   |       0.00324       | angle | 67.15 | 1090.34 |   142.25    |     1.02248     |      0.2517       |   0.9969    |
+| fluid, $N=0.5$   |       0.0644        | $H_0$ | 67.36 | 1089.22 |   146.59    |     1.03517     |      0.2468       |   0.9400    |
+| fluid, $N=0.5$   |       0.0644        | angle | 62.97 | 1089.19 |   146.73    |     1.02248     |      0.2466       |   0.9383    |
+| stepped, $N=0.5$ |          0          | $H_0$ | 67.36 | 1090.25 |   142.55    |     1.02627     |      0.2481       |   1.0000    |
+| stepped, $N=0.5$ |       0.00324       | $H_0$ | 67.36 | 1090.19 |   142.77    |     1.02689     |      0.2479       |   0.9969    |
+| stepped, $N=0.5$ |       0.00324       | angle | 67.15 | 1090.19 |   142.77    |     1.02627     |      0.2479       |   0.9969    |
+| stepped, $N=0.5$ |       0.0644        | $H_0$ | 67.36 | 1089.07 |   147.13    |     1.03900     |      0.2429       |   0.9400    |
+| stepped, $N=0.5$ |       0.0644        | angle | 62.97 | 1089.04 |   147.27    |     1.02627     |      0.2428       |   0.9383    |
+
+TABLE XLIV. Thermal history on the deflating spacetime (assumptions A1, A2; three equal rates) for three models: the standard model (“fiducial”); the same with a fluid of extra radiation of the density $N=0.5$; and the same with the stepped fluid of the model, $N=0.5$ and $z_t=2\times10^{4}$. Held: the row keeps either the Hubble constant $67.36~\mathrm{km\,s^{-1}\,Mpc^{-1}}$ or the angle $\theta_*$ of the same model without deflation. $z_*$: redshift of last scattering. $r_s$: sound horizon at last scattering. $Y_{\mathrm{He}}$: mass fraction of helium. $G_N$ ratio: Newton’s constant at last scattering divided by its value today.
+
+|      |              |               |                    |               |                      |               |
+|:----:|:------------:|:-------------:|:------------------:|:-------------:|:--------------------:|:-------------:|
+|      | no deflation |               | lunar ranging rate |               | nucleosynthesis rate |               |
+| peak |    $\ell$    | $D_\ell^{TT}$ |       $\ell$       | $D_\ell^{TT}$ |        $\ell$        | $D_\ell^{TT}$ |
+|  1   |    220.9     |     5740      |       220.9        |     5741      |        220.9         |     5752      |
+|  2   |    537.4     |     2607      |       537.4        |     2608      |        537.5         |     2623      |
+|  3   |    815.2     |     2584      |       815.2        |     2585      |        815.3         |     2612      |
+|  4   |    1131.4    |     1264      |       1131.4       |     1265      |        1131.5        |     1287      |
+|  5   |    1429.3    |      844      |       1429.3       |      845      |        1429.5        |      865      |
+
+TABLE XLV. The first five acoustic peaks of the temperature spectrum at a fixed angle of the sound horizon (closure M; without gravitational lensing): the multipole $\ell$ and the height $D_\ell^{TT}$ in $\mu\mathrm{K}^{2}$, without deflation and at the largest rates that lunar laser ranging and nucleosynthesis allow.
+
+|                     |                    |                     |            |                     |                  |        |
+|:-------------------:|:------------------:|:-------------------:|:----------:|:-------------------:|:----------------:|:------:|
+|                     |    $\ell\ge30$     |                     | $\ell<30$  |                     | $\sigma_8$ ratio |        |
+| $\mathrm{gsum}/H_0$ |     difference     | share of the effect | difference | share of the effect |        M         |   P    |
+|       0.00324       | $1.4\times10^{-3}$ | $1.4\times10^{-3}$  |   0.011    |        2.14         |      0.9989      | 0.9997 |
+|       0.0100        | $4.3\times10^{-3}$ | $1.4\times10^{-3}$  |   0.037    |        2.15         |      0.9966      | 0.9990 |
+|       0.0300        |       0.012        | $1.3\times10^{-3}$  |   0.129    |        2.16         |      0.9896      | 0.9967 |
+|       0.0644        |       0.023        | $1.2\times10^{-3}$  |   0.330    |        2.13         |      0.9762      | 0.9918 |
+|        0.100        |       0.031        | $9.9\times10^{-4}$  |   0.556    |        2.04         |      0.9605      | 0.9850 |
+
+TABLE XLVI. The two closures compared, at a fixed angle of the sound horizon. Difference: the largest difference between the temperature spectra of the two closures in the range of multipoles named, in units of the cosmic variance of a single multipole. Share of the effect: the root of the sum of the squares of that difference over the range, divided by the same for the effect of the deflation itself. $\sigma_8$ ratio: the amplitude of clustering divided by its value without deflation. For $\ell\ge30$ the closure does not matter; for $\ell<30$ the closures differ by more than the effect of the deflation in either.
+
+| closure | $\tau_{\mathrm{cf}}$ (Mpc) | $\mathrm{gsum}/H$  | $\mathcal{U}$ | $\mathcal{Y}_M$ | $\mathcal{Y}_T$ | $\mathcal{Y}_S$ | residual of (111) | residual of (110) |
+|:-------:|:--------------------------:|:------------------:|:-------------:|:---------------:|:---------------:|:---------------:|:-----------------:|:-----------------:|
+|    M    |            280             | $2.7\times10^{-6}$ |    0.7373     |      0.000      |    $-0.507$     |    $-0.2679$    | $3\times10^{-5}$  | $5\times10^{-5}$  |
+|    M    |            800             | $3.0\times10^{-5}$ |    0.5402     |      0.000      |    $-0.656$     |    $-0.3314$    | $4\times10^{-5}$  | $7\times10^{-5}$  |
+|    M    |            3000            | $9.4\times10^{-4}$ |    0.5178     |      0.000      |    $-0.666$     |    $-0.3333$    | $4\times10^{-4}$  | $9\times10^{-4}$  |
+|    M    |            9000            |       0.021        |    0.5083     |      0.000      |    $-0.708$     |    $-0.3543$    | $4\times10^{-4}$  | $9\times10^{-4}$  |
+|    M    |           13000            |       0.055        |    0.4633     |      0.000      |    $-0.980$     |    $-0.4900$    | $4\times10^{-4}$  | $7\times10^{-4}$  |
+|    P    |            280             | $2.7\times10^{-6}$ |    0.7373     |      0.536      |      0.000      |     0.1355      | $3\times10^{-5}$  | $5\times10^{-5}$  |
+|    P    |            800             | $3.0\times10^{-5}$ |    0.5402     |      0.663      |      0.000      |     0.0289      | $4\times10^{-5}$  | $7\times10^{-5}$  |
+|    P    |            3000            | $9.4\times10^{-4}$ |    0.5181     |      0.666      |      0.000      |     0.0028      | $4\times10^{-4}$  | $9\times10^{-4}$  |
+|    P    |            9000            |       0.021        |    0.5139     |      0.697      |      0.000      |     0.0004      | $4\times10^{-4}$  | $9\times10^{-4}$  |
+|    P    |           13000            |       0.055        |    0.4810     |      0.936      |      0.000      |     0.0004      | $4\times10^{-4}$  | $7\times10^{-4}$  |
+
+TABLE XLVII. What the agent must supply in each closure, at the largest rate that nucleosynthesis allows, for the wavenumber $k=0.02~\mathrm{Mpc}^{-1}$ at five conformal times. $\mathrm{gsum}/H$: the ratio $a_{\mathrm{sp}}\mathrm{gsum}/H_{\mathrm{cf}}$. $\mathcal{U}=\eta_{\mathrm{sy}}+\alpha_{\mathrm{sy}}'$: the sum of the two gravitational potentials of the conformal Newtonian gauge, the potential that light feels. The gaps $\mathcal{Y}_M$, $\mathcal{Y}_T$, $\mathcal{Y}_S$ of Eq. (109) are divided by $\mathrm{gsum}/H$ times the size of the terms of their equations, $k^{2}H_{\mathrm{cf}}|\mathcal{U}|$, $(k^{2}+H_{\mathrm{cf}}^{2})|\mathcal{U}|$ and $|\mathcal{U}|$, so that a number of order one means “of the first order in the rate”. Last two columns: the residuals of the identities (111) and (110), relative to the size of their terms.
+
+|                     |           |          |           |          |
+|:-------------------:|:---------:|:--------:|:---------:|:--------:|
+|                     | closure M |          | closure P |          |
+| $\mathrm{gsum}/H_0$ |  program  | equation |  program  | equation |
+|          0          |  1.00000  | 1.00000  |  1.00000  | 1.00000  |
+|       0.00324       |  0.99856  | 0.99857  |  0.99933  | 0.99933  |
+|       0.0100        |  0.99556  | 0.99557  |  0.99791  | 0.99792  |
+|       0.0300        |  0.98664  | 0.98668  |  0.99368  | 0.99371  |
+|       0.0644        |  0.97123  | 0.97131  |  0.98620  | 0.98627  |
+|        0.100        |  0.95513  | 0.95525  |  0.97819  | 0.97830  |
+
+TABLE XLVIII. Growth of the density contrast of cold dark matter and baryons at $k=0.1~\mathrm{Mpc}^{-1}$ from $a_{\mathrm{sp}}=0.01$ to today, divided by its value without deflation, at the fixed Hubble constant $67.36~\mathrm{km\,s^{-1}\,Mpc^{-1}}$: from the complete Einstein-Boltzmann calculation (“program”) and from the growth equation of the same closure, Eq. (115) for M and Eq. (114) for P.
+
+|                     |        |         |         |                  |         |
+|:-------------------:|:------:|:-------:|:-------:|:----------------:|:-------:|
+|                     |        | growth  |         | $\sigma_8$ ratio |         |
+| $\mathrm{gsum}/H_0$ | $H_0$  |    M    |    P    |        M         |    P    |
+|          0          | 67.360 | 1.00000 | 1.00000 |     1.00000      | 1.00000 |
+|       0.00324       | 67.149 | 1.00001 | 1.00077 |     0.99892      | 0.99969 |
+|       0.0100        | 66.704 | 1.00001 | 1.00239 |     0.99663      | 0.99901 |
+|       0.0300        | 65.365 | 1.00003 | 1.00727 |     0.98955      | 0.99672 |
+|       0.0644        | 62.976 | 1.00004 | 1.01597 |     0.97620      | 0.99177 |
+|        0.100        | 60.368 | 1.00001 | 1.02545 |     0.96051      | 0.98497 |
+
+TABLE XLIX. The same growth in the complete calculation at the Hubble constant that keeps the angle of the sound horizon, and the amplitude $\sigma_8$ divided by its value without deflation.
+
+### D. Fits to mock data (Sec. XVI H)
+
+Table L lists the best fits of the six parameters of the standard model at fixed rates of deflation. Tables LI to LIV give, for the seven families of extra radiation, the Fisher forecasts, the best fits at fixed density $N$ of the extra radiation, their summary, and the forecasts with $N$ and the rate free together. “Model fluid” is the stepped fluid of the model with the transition redshift $z_t$; “with deep survey” means the Planck-like mock data together with a deep survey of a quarter of the sky.
+
+| mock data        | closure | $\mathrm{gsum}/H_0$ | $\Delta\chi^{2}$ | $H_0$  | $\omega_c$ | $n_s$  | $\sigma_8$ | $G_N$ ratio |
+|:-----------------|:--------|:-------------------:|:----------------:|:------:|:----------:|:------:|:----------:|:-----------:|
+| Planck-like      | M       |       0.00324       |      0.027       | 67.086 |  0.12009   | 0.9638 |   0.8218   |   0.9969    |
+| Planck-like      | M       |       0.00500       |      0.065       | 66.937 |  0.12014   | 0.9633 |   0.8213   |   0.9952    |
+| Planck-like      | M       |       0.0100        |      0.261       | 66.512 |  0.12029   | 0.9616 |   0.8198   |   0.9905    |
+| Planck-like      | P       |       0.0100        |      0.258       | 66.512 |  0.12029   | 0.9616 |   0.8218   |   0.9905    |
+| Planck-like      | M       |       0.0150        |      0.589       | 66.084 |  0.12043   | 0.9599 |   0.8183   |   0.9857    |
+| Planck-like      | M       |       0.0200        |      1.051       | 65.654 |  0.12058   | 0.9583 |   0.8168   |   0.9809    |
+| Planck-like      | M       |       0.0300        |      2.398       | 64.784 |  0.12087   | 0.9549 |   0.8136   |   0.9713    |
+| Planck-like      | M       |       0.0644        |      11.575      | 61.695 |  0.12193   | 0.9430 |   0.8016   |   0.9379    |
+| Planck-like      | P       |       0.0644        |      11.467      | 61.695 |  0.12193   | 0.9430 |   0.8145   |   0.9379    |
+| with deep survey | M       |       0.00324       |      0.094       | 67.094 |  0.12008   | 0.9637 |   0.8218   |   0.9969    |
+| with deep survey | M       |       0.00500       |      0.225       | 66.948 |  0.12013   | 0.9631 |   0.8212   |   0.9952    |
+| with deep survey | M       |       0.0100        |      0.904       | 66.534 |  0.12025   | 0.9613 |   0.8197   |   0.9905    |
+| with deep survey | P       |       0.0100        |      0.900       | 66.534 |  0.12025   | 0.9613 |   0.8216   |   0.9905    |
+| with deep survey | M       |       0.0150        |      2.040       | 66.117 |  0.12038   | 0.9594 |   0.8181   |   0.9857    |
+| with deep survey | M       |       0.0200        |      3.644       | 65.699 |  0.12050   | 0.9576 |   0.8165   |   0.9809    |
+| with deep survey | M       |       0.0300        |      8.301       | 64.851 |  0.12076   | 0.9539 |   0.8131   |   0.9713    |
+| with deep survey | M       |       0.0644        |      39.791      | 61.842 |  0.12169   | 0.9408 |   0.8007   |   0.9380    |
+| with deep survey | P       |       0.0644        |      39.655      | 61.841 |  0.12170   | 0.9408 |   0.8136   |   0.9380    |
+
+TABLE L. Best fits of the six parameters of the standard model to mock data of the microwave background at fixed total rates of deflation (three equal rates; assumptions A1, A2, A3). $\Delta\chi^{2}$: relative to the best fit without deflation, which is zero by construction. $H_0$, $\omega_c$, $n_s$: the best-fitting Hubble constant, density of cold dark matter and spectral index. $\sigma_8$: the amplitude of clustering of the best fit. $G_N$ ratio: Newton’s constant at last scattering divided by its value today.
+
+|                  |                                      |              |           |           |           |
+|:-----------------|:-------------------------------------|:------------:|:---------:|:---------:|:---------:|
+|                  |                                      | error of $N$ |           | $dH_0/dN$ |           |
+| mock data        | family                               |    static    | deflating |  static   | deflating |
+| Planck-like      | free-streaming radiation             |    0.1431    |  0.1432   |   8.190   |   8.180   |
+| Planck-like      | fluid, no step                       |    0.1352    |  0.1352   |  10.441   |  10.435   |
+| Planck-like      | model fluid, $z_t=10^4$              |    0.1222    |  0.1222   |   5.631   |   5.624   |
+| Planck-like      | model fluid, $z_t=2\times10^4$       |    0.0846    |  0.0846   |   4.684   |   4.676   |
+| Planck-like      | model fluid, $z_t=5\times10^4$       |    0.0602    |  0.0602   |   9.283   |   9.273   |
+| Planck-like      | Wess-Zumino fluid, $z_t=2\times10^4$ |    0.1601    |  0.1598   |   8.578   |   8.573   |
+| Planck-like      | model fluid, $z_t=10^6$              |    0.1500    |  0.1500   |  10.042   |  10.038   |
+| with deep survey | free-streaming radiation             |    0.0770    |  0.0771   |   7.923   |   7.915   |
+| with deep survey | fluid, no step                       |    0.0667    |  0.0666   |   9.801   |   9.797   |
+| with deep survey | model fluid, $z_t=10^4$              |    0.0858    |  0.0858   |   6.275   |   6.271   |
+| with deep survey | model fluid, $z_t=2\times10^4$       |    0.0591    |  0.0591   |   5.399   |   5.395   |
+| with deep survey | model fluid, $z_t=5\times10^4$       |    0.0421    |  0.0421   |   6.928   |   6.919   |
+| with deep survey | Wess-Zumino fluid, $z_t=2\times10^4$ |    0.0879    |  0.0876   |   8.246   |   8.241   |
+| with deep survey | model fluid, $z_t=10^6$              |    0.0742    |  0.0741   |   9.445   |   9.442   |
+
+TABLE LI. Fisher forecasts for the seven families of extra radiation, with static extra coordinates (“static”) and on the deflating spacetime at the largest rate that lunar laser ranging allows (“deflating”): the standard error of the density $N$ with the six parameters of the standard model free, and the change of the best-fit Hubble constant per unit of $N$.
+
+|                  |                                      |     |        |           |          |                  |           |
+|:-----------------|:-------------------------------------|:---:|:------:|:---------:|:--------:|:----------------:|:---------:|
+|                  |                                      |     | $H_0$  |           |          | $\Delta\chi^{2}$ |           |
+| mock data        | family                               | $N$ | static | deflating |  shift   |      static      | deflating |
+| Planck-like      | no extra radiation                   |  0  | 67.360 |  67.086   | $-0.274$ |        0         |   0.027   |
+| Planck-like      | free-streaming radiation             | 0.2 | 68.996 |  68.722   | $-0.274$ |       1.92       |   1.57    |
+| Planck-like      | free-streaming radiation             | 0.5 | 71.455 |  71.179   | $-0.276$ |      11.55       |   10.67   |
+| Planck-like      | free-streaming radiation             | 1.0 | 75.533 |  75.255   | $-0.278$ |      43.83       |   42.10   |
+| Planck-like      | fluid, no step                       | 0.2 | 69.445 |  69.171   | $-0.274$ |       2.17       |   1.79    |
+| Planck-like      | fluid, no step                       | 0.5 | 72.548 |  72.273   | $-0.275$ |      13.32       |   12.34   |
+| Planck-like      | fluid, no step                       | 1.0 | 77.746 |  77.469   | $-0.277$ |      51.94       |   50.01   |
+| Planck-like      | model fluid, $z_t=10^4$              | 0.2 | 68.485 |  68.211   | $-0.274$ |       2.64       |   2.38    |
+| Planck-like      | model fluid, $z_t=10^4$              | 0.5 | 70.174 |  69.898   | $-0.276$ |      16.08       |   15.40   |
+| Planck-like      | model fluid, $z_t=10^4$              | 1.0 | 72.991 |  72.714   | $-0.277$ |      61.23       |   59.89   |
+| Planck-like      | model fluid, $z_t=2\times10^4$       | 0.2 | 68.292 |  68.019   | $-0.274$ |       5.47       |   5.21    |
+| Planck-like      | model fluid, $z_t=2\times10^4$       | 0.5 | 69.698 |  69.422   | $-0.276$ |      32.98       |   32.32   |
+| Planck-like      | model fluid, $z_t=2\times10^4$       | 1.0 | 72.025 |  71.747   | $-0.278$ |      124.24      |  122.93   |
+| Planck-like      | model fluid, $z_t=5\times10^4$       | 0.2 | 69.216 |  68.942   | $-0.274$ |      10.81       |   10.18   |
+| Planck-like      | model fluid, $z_t=5\times10^4$       | 0.5 | 71.968 |  71.695   | $-0.274$ |      65.29       |   63.71   |
+| Planck-like      | model fluid, $z_t=5\times10^4$       | 1.0 | 76.625 |  76.351   | $-0.275$ |      247.48      |  244.38   |
+| Planck-like      | Wess-Zumino fluid, $z_t=2\times10^4$ | 0.2 | 69.072 |  68.798   | $-0.274$ |       1.55       |   1.22    |
+| Planck-like      | Wess-Zumino fluid, $z_t=2\times10^4$ | 0.5 | 71.641 |  71.365   | $-0.276$ |       9.38       |   8.52    |
+| Planck-like      | Wess-Zumino fluid, $z_t=2\times10^4$ | 1.0 | 75.926 |  75.647   | $-0.279$ |      35.77       |   34.11   |
+| Planck-like      | model fluid, $z_t=10^6$              | 0.2 | 69.364 |  69.091   | $-0.274$ |       1.76       |   1.44    |
+| Planck-like      | model fluid, $z_t=10^6$              | 0.5 | 72.345 |  72.071   | $-0.275$ |      10.80       |   9.97    |
+| Planck-like      | model fluid, $z_t=10^6$              | 1.0 | 77.334 |  77.058   | $-0.277$ |      42.16       |   40.49   |
+| with deep survey | no extra radiation                   |  0  | 67.360 |  67.094   | $-0.266$ |        0         |   0.094   |
+| with deep survey | free-streaming radiation             | 0.2 | 68.943 |  68.676   | $-0.267$ |       6.63       |   5.36    |
+| with deep survey | free-streaming radiation             | 0.5 | 71.311 |  71.044   | $-0.268$ |      40.18       |   36.94   |
+| with deep survey | free-streaming radiation             | 1.0 | 75.230 |  74.961   | $-0.269$ |      153.44      |  147.06   |
+| with deep survey | fluid, no step                       | 0.2 | 69.315 |  69.048   | $-0.267$ |       8.89       |   7.29    |
+| with deep survey | fluid, no step                       | 0.5 | 72.193 |  71.926   | $-0.267$ |      54.51       |   50.44   |
+| with deep survey | fluid, no step                       | 1.0 | 77.000 |  76.731   | $-0.269$ |      211.85      |  203.79   |
+| with deep survey | model fluid, $z_t=10^4$              | 0.2 | 68.614 |  68.347   | $-0.267$ |       5.37       |   4.70    |
+| with deep survey | model fluid, $z_t=10^4$              | 0.5 | 70.487 |  70.219   | $-0.268$ |      32.60       |   30.85   |
+| with deep survey | model fluid, $z_t=10^4$              | 1.0 | 73.616 |  73.346   | $-0.269$ |      124.07      |  120.58   |
+| with deep survey | model fluid, $z_t=2\times10^4$       | 0.2 | 68.436 |  68.169   | $-0.267$ |      11.22       |   10.72   |
+| with deep survey | model fluid, $z_t=2\times10^4$       | 0.5 | 70.035 |  69.766   | $-0.269$ |      67.34       |   66.03   |
+| with deep survey | model fluid, $z_t=2\times10^4$       | 1.0 | 72.694 |  72.423   | $-0.270$ |      252.39      |  249.73   |
+| with deep survey | model fluid, $z_t=5\times10^4$       | 0.2 | 68.742 |  68.475   | $-0.267$ |      22.10       |   20.77   |
+| with deep survey | model fluid, $z_t=5\times10^4$       | 0.5 | 70.759 |  70.493   | $-0.266$ |      132.70      |  129.29   |
+| with deep survey | model fluid, $z_t=5\times10^4$       | 1.0 | 74.148 |  73.879   | $-0.268$ |      498.87      |  492.12   |
+| with deep survey | Wess-Zumino fluid, $z_t=2\times10^4$ | 0.2 | 69.005 |  68.738   | $-0.267$ |       5.17       |   4.00    |
+| with deep survey | Wess-Zumino fluid, $z_t=2\times10^4$ | 0.5 | 71.456 |  71.189   | $-0.267$ |      31.49       |   28.50   |
+| with deep survey | Wess-Zumino fluid, $z_t=2\times10^4$ | 1.0 | 75.542 |  75.274   | $-0.268$ |      121.43      |  115.53   |
+| with deep survey | model fluid, $z_t=10^6$              | 0.2 | 69.243 |  68.976   | $-0.267$ |       7.18       |   5.79    |
+| with deep survey | model fluid, $z_t=10^6$              | 0.5 | 72.016 |  71.749   | $-0.267$ |      44.03       |   40.45   |
+| with deep survey | model fluid, $z_t=10^6$              | 1.0 | 76.641 |  76.373   | $-0.268$ |      171.23      |  164.11   |
+
+TABLE LII. Best fits of the six parameters of the standard model at fixed density $N$ of extra radiation, for the seven families and both sets of mock data, with static extra coordinates and on the deflating spacetime at the largest rate that lunar laser ranging allows. $H_0$: the best-fitting Hubble constant; shift: the difference of the two. $\Delta\chi^{2}$: relative to the best fit of the standard model with static extra coordinates.
+
+|                                      |                           |           |             |           |                                 |           |
+|:-------------------------------------|:-------------------------:|:---------:|:-----------:|:---------:|:-------------------------------:|:---------:|
+|                                      | $N$ at $\Delta\chi^{2}=4$ |           | $H_0$ there |           | $\Delta\chi^{2}$ at $H_0=73.50$ |           |
+| family                               |          static           | deflating |   static    | deflating |             static              | deflating |
+| Planck-like mock data                |                           |           |             |           |                                 |           |
+| free-streaming radiation             |           0.29            |   0.31    |    69.74    |   69.62   |               25                |    26     |
+| fluid, no step                       |           0.27            |   0.29    |    70.20    |   70.12   |               19                |    19     |
+| model fluid, $z_t=10^4$              |           0.25            |   0.26    |    68.75    |   68.53   |              72\*               |   77\*    |
+| model fluid, $z_t=2\times10^4$       |           0.17            |   0.18    |    68.16    |   67.90   |              211\*              |   228\*   |
+| model fluid, $z_t=5\times10^4$       |           0.12            |   0.13    |    68.48    |   68.27   |               113               |    121    |
+| Wess-Zumino fluid, $z_t=2\times10^4$ |           0.32            |   0.35    |    70.13    |   70.06   |               19                |    19     |
+| model fluid, $z_t=10^6$              |           0.30            |   0.32    |    70.39    |   70.32   |               16                |    17     |
+| with deep survey                     |                           |           |             |           |                                 |           |
+| free-streaming radiation             |           0.16            |   0.18    |    68.59    |   68.48   |               95                |    98     |
+| fluid, no step                       |           0.13            |   0.15    |    68.67    |   68.59   |               87                |    90     |
+| model fluid, $z_t=10^4$              |           0.17            |   0.19    |    68.44    |   68.25   |               120               |   126\*   |
+| model fluid, $z_t=2\times10^4$       |           0.12            |   0.12    |    68.00    |   67.75   |              330\*              |   356\*   |
+| model fluid, $z_t=5\times10^4$       |           0.08            |   0.09    |    67.94    |   67.70   |               412               |    441    |
+| Wess-Zumino fluid, $z_t=2\times10^4$ |           0.18            |   0.20    |    68.81    |   68.74   |               69                |    71     |
+| model fluid, $z_t=10^6$              |           0.15            |   0.17    |    68.76    |   68.69   |               76                |    78     |
+
+TABLE LIII. Summary of the fits of Table LII, by interpolation in $N$: the density $N$ at which the best fit reaches $\Delta\chi^{2}=4$; the Hubble constant there; and the $\Delta\chi^{2}$ of the best fit whose Hubble constant equals the local measurement $73.50~\mathrm{km\,s^{-1}\,Mpc^{-1}}$. An asterisk marks a value obtained by extrapolation beyond the largest $N$ computed.
+
+|                                      |              |           |          |             |           |         |         |
+|:-------------------------------------|:------------:|:---------:|:--------:|:-----------:|:---------:|:-------:|:-------:|
+|                                      | error of $N$ |           | error of |             |  $N$ per  |   net   | largest |
+| family                               |  rate zero   | rate free | the rate | correlation | unit rate |  slope  |  rise   |
+| Planck-like mock data                |              |           |          |             |           |         |         |
+| free-streaming radiation             |    0.1431    |  0.2505   |  0.0344  |    0.821    |   5.98    | $-35.3$ |  2.30   |
+| fluid, no step                       |    0.1352    |  0.2490   |  0.0362  |    0.840    |   5.79    | $-23.9$ |  2.77   |
+| model fluid, $z_t=10^4$              |    0.1222    |  0.1451   |  0.0233  |    0.540    |   3.36    | $-65.4$ |  1.35   |
+| model fluid, $z_t=2\times10^4$       |    0.0846    |  0.0911   |  0.0211  |    0.370    |   1.60    | $-76.9$ |  0.78   |
+| model fluid, $z_t=5\times10^4$       |    0.0602    |  0.0760   |  0.0248  |    0.610    |   1.87    | $-67.0$ |  1.10   |
+| Wess-Zumino fluid, $z_t=2\times10^4$ |    0.1601    |  0.3503   |  0.0429  |    0.889    |   7.26    | $-22.1$ |  2.69   |
+| model fluid, $z_t=10^6$              |    0.1500    |  0.2496   |  0.0326  |    0.799    |   6.11    | $-23.0$ |  2.95   |
+| with deep survey                     |              |           |          |             |           |         |         |
+| free-streaming radiation             |    0.0770    |  0.1540   |  0.0211  |    0.866    |   6.32    | $-32.1$ |  1.20   |
+| fluid, no step                       |    0.0667    |  0.1763   |  0.0279  |    0.926    |   5.85    | $-24.8$ |  1.28   |
+| model fluid, $z_t=10^4$              |    0.0858    |  0.1012   |  0.0125  |    0.530    |   4.31    | $-55.0$ |  1.06   |
+| model fluid, $z_t=2\times10^4$       |    0.0591    |  0.0617   |  0.0110  |    0.283    |   1.58    | $-73.6$ |  0.63   |
+| model fluid, $z_t=5\times10^4$       |    0.0421    |  0.0485   |  0.0121  |    0.495    |   1.97    | $-68.4$ |  0.57   |
+| Wess-Zumino fluid, $z_t=2\times10^4$ |    0.0879    |  0.2121   |  0.0255  |    0.910    |   7.57    | $-19.7$ |  1.42   |
+| model fluid, $z_t=10^6$              |    0.0742    |  0.1767   |  0.0251  |    0.908    |   6.38    | $-21.9$ |  1.37   |
+
+TABLE LIV. The density $N$ of extra radiation and the total rate of deflation as free parameters together (Fisher matrices with eight parameters at the standard model). Columns 2 and 3: the standard error of $N$ with the rate held at zero and with the rate free. Column 4: the standard error of $\mathrm{gsum}/H_0$ with $N$ free. Correlation: the correlation coefficient of $N$ and the rate. $N$ per unit rate: the change of the best-fitting $N$ per unit of $\mathrm{gsum}/H_0$. Net slope: the change of the best-fit Hubble constant per unit of $\mathrm{gsum}/H_0$ when $N$ follows its best-fitting value. Largest rise: the largest rise of the best-fit Hubble constant among the models with $N\ge0$, $\mathrm{gsum}\ge0$ and $\Delta\chi^{2}\le3.84$, which is reached at zero rate.
+
+### E. Superfluid dark matter (Sec. XVI I)
+
+Table LV lists the wavenumber of the half mode for the fifteen models of Sec. XVI I and Table LVI the limits that follow from the Lyman-$\alpha$ forest.
+
+|                                             |           |               |                      |         |            |
+|:--------------------------------------------|:---------:|:-------------:|:--------------------:|:-------:|:----------:|
+|                                             |    no     | lunar ranging | nucleosynthesis rate |         |   change   |
+| dark matter                                 | deflation |     rate      |          M           |    P    | (per cent) |
+| fermions, $m=0.3$ keV                       |   6.215   |     6.206     |        6.025         |  6.025  |  $-3.07$   |
+| fermions, $m=0.5$ keV                       |  11.222   |    11.205     |        10.875        | 10.875  |  $-3.09$   |
+| fermions, $m=0.75$ keV                      |  17.996   |    17.969     |        17.444        | 17.444  |  $-3.07$   |
+| fermions, $m=1$ keV                         |  25.196   |    25.159     |        24.426        | 24.426  |  $-3.06$   |
+| fermions, $m=1.5$ keV                       |  40.657   |    40.590     |        39.379        | 39.379  |  $-3.14$   |
+| fermions, $m=2$ keV                         |  57.249   |    57.159     |        55.401        | 55.401  |  $-3.23$   |
+| fermions, $m=3$ keV                         |  92.774   |    92.633     |        89.868        | 89.868  |  $-3.13$   |
+| fermions, $m=4.5$ keV                       |  150.645  |    150.419    |       146.013        | 146.010 |  $-3.08$   |
+| condensate, $c_{s0}/c=$ $3.0\times10^{-12}$ |  125.047  |    124.857    |       121.132        | 121.132 |  $-3.13$   |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-11}$ |  56.870   |    56.781     |        55.003        | 55.003  |  $-3.28$   |
+| condensate, $c_{s0}/c=$ $3.0\times10^{-11}$ |  27.777   |    27.736     |        26.922        | 26.922  |  $-3.08$   |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-10}$ |  12.734   |    12.714     |        12.333        | 12.333  |  $-3.15$   |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-9}$  |   2.911   |     2.906     |        2.822         |  2.822  |  $-3.04$   |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-8}$  |   0.693   |     0.692     |        0.670         |  0.670  |  $-3.28$   |
+| condensate, $c_{s0}/c=$ $4.5\times10^{-8}$  |   0.280   |     0.280     |        0.271         |  0.271  |  $-3.25$   |
+
+TABLE LV. Superfluid dark matter: the wavenumber of the half mode, at which the power spectrum of matter first falls to one quarter of that of cold dark matter, in $\mathrm{Mpc}^{-1}$, for a degenerate gas of the fermions of eight masses and for a condensate of bound pairs with seven sound speeds $c_{s0}$ today: without deflation, at the largest rate that lunar laser ranging allows, and at the largest rate that nucleosynthesis allows in the two closures. Last column: the change at the rate of nucleosynthesis relative to no deflation, in per cent.
+
+| deflation               | relic (keV) | half mode ($\mathrm{Mpc}^{-1}$) | fermion mass (keV) |  largest $c_{s0}/c$   | in m/s  | $R_{\mathrm{TF}}$ (pc) |
+|:------------------------|:-----------:|:-------------------------------:|:------------------:|:---------------------:|:-------:|:----------------------:|
+| none                    |     3.5     |              25.94              |       1.0249       | $3.335\times10^{-11}$ | 0.01000 |         0.740          |
+| none                    |     5.3     |              41.11              |       1.5140       | $1.645\times10^{-11}$ | 0.00493 |         0.365          |
+| lunar ranging rate      |     3.5     |              25.94              |       1.0262       | $3.327\times10^{-11}$ | 0.00997 |         0.739          |
+| lunar ranging rate      |     5.3     |              41.11              |       1.5161       | $1.641\times10^{-11}$ | 0.00492 |         0.364          |
+| nucleosynthesis rate, M |     3.5     |              25.94              |       1.0523       | $3.178\times10^{-11}$ | 0.00953 |         0.705          |
+| nucleosynthesis rate, M |     5.3     |              41.11              |       1.5554       | $1.565\times10^{-11}$ | 0.00469 |         0.347          |
+| nucleosynthesis rate, P |     3.5     |              25.94              |       1.0523       | $3.178\times10^{-11}$ | 0.00953 |         0.705          |
+| nucleosynthesis rate, P |     5.3     |              41.11              |       1.5554       | $1.565\times10^{-11}$ | 0.00469 |         0.347          |
+
+TABLE LVI. Limits on superfluid dark matter from the requirement that its half mode lies at a wavenumber not smaller than that of thermal warm dark matter at two mass limits of the Lyman-$\alpha$ forest (“relic”, the mass of the thermal relic). Half mode: the wavenumber required. Fermion mass: the smallest mass of the fermions of a degenerate gas that meets it. Largest $c_{s0}/c$: the largest sound speed today of a condensate of bound pairs that meets it, also in m/s. $R_{\mathrm{TF}}$: the radius of a core of the condensate supported by its own pressure, at that sound speed.
+
+### F. Symmetries (Secs. II and XIV C)
+
+Table LVII counts the rotations and boosts that remain symmetries of the deflating spacetime, and Table LVIII lists, item by item, the internal symmetry of the fields that depend on $x1,x2,x3,x4$ only, as the program computed it for the deflating spacetime.
+
+|           |            |                          |           |           |            |                                    |           |           |
+|:----------|:----------:|:------------------------:|:---------:|:---------:|:----------:|:----------------------------------:|:---------:|:---------:|
+|           | rotations  | symmetries for the rates |           |           |  internal  | of these, symmetries for the rates |           |           |
+| spacetime | and boosts |        $(1,2,3)$         | $(2,2,5)$ | $(1,1,1)$ | generators |             $(1,2,3)$              | $(2,2,5)$ | $(1,1,1)$ |
+| 7+1       |     28     |            6             |     7     |     9     |     6      |                 0                  |     1     |     3     |
+| 4+4       |     28     |            6             |     7     |     9     |     6      |                 0                  |     1     |     3     |
+
+TABLE LVII. Of the 28 rotations and boosts of flat spacetime, the number that remain symmetries of the deflating spacetime for three sets of rates $(\mathrm{g55},\mathrm{g66},\mathrm{g77})$; and of the six rotations of the extra axes $x0,x5,x6,x7$, whose generators act as internal symmetries on fields that do not depend on these coordinates, the number that remain symmetries of the spacetime.
+
+| item                                                                                                                       | value                                    | expected, and what it means                                                              |
+|:---------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------|:-----------------------------------------------------------------------------------------|
+| dimension of the algebra of the matrices that commute with $\alpha^1,\alpha^2,\alpha^3$, $\beta$ and $i\beta\chi$          | 8                                        | 8                                                                                        |
+| the same if the fields depend on $x0$ as well                                                                              | 4                                        | 4                                                                                        |
+| the same if the fields depend on every space-like coordinate of the model                                                  | 4                                        | 1 (7+1); 4 (4+4)                                                                         |
+| dimension of the centre of the algebra                                                                                     | 2                                        | 2                                                                                        |
+| $\lVert P^2-1\rVert$ for the traceless generator $P$ of the centre                                                         | 0                                        | 0                                                                                        |
+| dimensions of the two simple ideals                                                                                        | 3, 3                                     | 3, 3                                                                                     |
+| structure constants $\lvert f_{123}\rvert$ of the two ideals, for generators $T_i$ with $\mathrm{Tr}\,T_iT_j=2\delta_{ij}$ | 1, 1                                     | 1, 1: each ideal is $su(2)$                                                              |
+| $\lVert\sum_iT_i^2-\tfrac34\,\mathrm{projector}\rVert$ for the two ideals                                                  | $2.2\times10^{-16}$, $2.2\times10^{-16}$ | 0, 0: doublets                                                                           |
+| number of states of positive energy with $P=+1$ and with $P=-1$ at a test momentum                                         | 4, 4                                     | 4, 4: the doublets $(2,1)$ and $(1,2)$                                                   |
+| residual of the closure of the four pair operators $\psi^TC^-\gamma^a\psi$, $a\in\{0,5,6,7\}$, under the algebra           | $3.1\times10^{-16}$                      | 0                                                                                        |
+| Casimir operator of each ideal on the four pair operators, minus $\tfrac34$                                                | $5.6\times10^{-17}$, $5.6\times10^{-17}$ | 0, 0: the $(2,2)$                                                                        |
+| fermion number of the pair operators                                                                                       | 2                                        | 2                                                                                        |
+| charge of the pair operators under $P$                                                                                     | 0                                        | 0                                                                                        |
+| number of invariant quadratic forms on the four pair operators                                                             | 1                                        | 1                                                                                        |
+| the invariant quadratic form: its diagonal along the frame axes 0, 5, 6, 7 (first entry 1)                                 | $+1$, $-1$, $-1$, $-1$                   | $+1,+1,+1,+1$ (7+1); $+1,-1,-1,-1$ (4+4): the signs of the metric of the four extra axes |
+| largest off-diagonal entry of that form                                                                                    | $2.2\times10^{-16}$                      | 0                                                                                        |
+| complex dimension of the generators that mix particles with antiparticles, without chemical potential                      | 2                                        | 2: the symmetry is $O(4)\times O(4)$, of dimension 12                                    |
+| the same with a chemical potential                                                                                         | 0                                        | 0: the symmetry is $U(2)\times U(2)$, of dimension 8                                     |
+| $\gamma^{0}\gamma^{5}$: character, and norm of its commutator with the five matrices                                       | Hermitian; 0                             | anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0                                     |
+| $\gamma^{0}\gamma^{6}$: character, and norm of its commutator with the five matrices                                       | Hermitian; 0                             | anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0                                     |
+| $\gamma^{0}\gamma^{7}$: character, and norm of its commutator with the five matrices                                       | Hermitian; 0                             | anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0                                     |
+| $\gamma^{5}\gamma^{6}$: character, and norm of its commutator with the five matrices                                       | anti-Hermitian; 0                        | anti-Hermitian (a rotation) on both; 0                                                   |
+| $\gamma^{5}\gamma^{7}$: character, and norm of its commutator with the five matrices                                       | anti-Hermitian; 0                        | anti-Hermitian (a rotation) on both; 0                                                   |
+| $\gamma^{6}\gamma^{7}$: character, and norm of its commutator with the five matrices                                       | anti-Hermitian; 0                        | anti-Hermitian (a rotation) on both; 0                                                   |
+
+TABLE LVIII. The internal symmetry of the fields that depend on $x1,x2,x3,x4$ only (Sec. XIV C), item by item, computed with the matrices of the $4{+}4$ spacetime; a number of the order of $10^{-16}$ is zero to the accuracy of the arithmetic. $P$: the traceless generator of $U(1)_E$. $T_i$: the generators of one of the two ideals $su(2)_A$, $su(2)_B$. The pair operators are the four vector pair operators of Eq. (66).
+
+## Appendix E: Programs, checks and provenance
 
 This appendix says how every number, table and figure of this paper was computed, how the computation is verified, and how a reader repeats it.
 
@@ -1856,7 +2323,7 @@ All physics of this paper is computed by one program, `deflation_cjt_ks`, writte
     $B/deflation_cjt_ks help
     $B/deflation_cjt_ks kohnsham
 
-The first and the fourth line only abbreviate two paths. The second line runs the unit tests, the third builds the program, the fifth lists its commands, and the sixth executes one of them. Each command writes its results as tables of numbers into the folder `data`, each table with a description of its content and of its columns at its head, together with a list of *checks*: statements that the command verified, each with its accuracy. A check marked “exact” is an identity verified in exact rational arithmetic; a check marked “numerical” states its largest deviation. Table XXXVI lists the commands. Then
+The first and the fourth line only abbreviate two paths. The second line runs the unit tests, the third builds the program, the fifth lists its commands, and the sixth executes one of them. Each command writes its results as tables of numbers into the folder `data`, each table with a description of its content and of its columns at its head, together with a list of *checks*: statements that the command verified, each with its accuracy. A check marked “exact” is an identity verified in exact rational arithmetic; a check marked “numerical” states its largest deviation. Table LIX lists the commands. Then
 
     python3 code/scripts/make_figures.py
     python3 code/scripts/write_doc_tables.py
@@ -1890,7 +2357,7 @@ draw the figures from the data files, write every table and every computed numbe
 | deliberate errors    | errors introduced one at a time into the two independent scripts, and detected by them                                                                                                                                                              |   36 of 36    |
 | registry of symbols  | no symbol and no name in a data file has two meanings                                                                                                                                                                                               |    7 of 7     |
 
-TABLE XXXVI. The commands of the program: what each computes, and the number of its checks that pass. The checks of both deflating spacetimes are counted, since the program treats the two together. The last four rows are the verifications by other programs.
+TABLE LIX. The commands of the program: what each computes, and the number of its checks that pass. The checks of both deflating spacetimes are counted, since the program treats the two together. The last four rows are the verifications by other programs.
 
 ### B. Independent verification
 
@@ -1905,75 +2372,98 @@ The last line tests the two scripts themselves: it introduces deliberate errors 
 
 ### C. Where each table and each figure comes from
 
-Tables XXXVII to XXXIX give, for every table and every figure of this paper that contains computed numbers, the command that computed them, the source files of the program in which the calculation is written, and the data files from which the table or figure was made. The numbers quoted in the running text are taken from the same data files or from the statements of the checks, which the commands write to the files `data/*_checks.txt`; a script (`code/scripts/check_numbers.py`) verifies that every number of the text occurs there.
+Tables LX to LXII give, for every table and every figure of this paper that contains computed numbers, the command that computed them, the source files of the program in which the calculation is written, and the data files from which the table or figure was made. The numbers quoted in the running text are taken from the same data files or from the statements of the checks, which the commands write to the files `data/*_checks.txt`; a script (`code/scripts/check_numbers.py`) verifies that every number of the text occurs there.
 
-| item      | command             | source files                                          | data files                                    |
-|:----------|:--------------------|:------------------------------------------------------|:----------------------------------------------|
-| Fig. 1    | `symmetry`          | `symmetry_defl.rs`, `cmd_symmetry.rs`                 | `isometries.csv`                              |
-| Fig. 2    | `matrices`          | `metric.rs`, `geometry.rs`, `curved.rs`, `main.rs`    | `geodesic_1644d.csv`, `geodesic_1671d.csv`    |
-| Table I   | `selfcoupling`      | `selfint.rs`, `cmd_selfcoupling.rs`                   | `selfcoupling_fierz.csv`                      |
-| Fig. 3    | `channels`, `modes` | `scalar.rs`, `cmd_channels.rs`, `modes.rs`, `main.rs` | `boson_bounded.csv`, `extinction_profile.csv` |
-| Table II  | `symmetry`          | `symmetry_defl.rs`, `cmd_symmetry.rs`                 | `coupling_exponents.csv`                      |
-| Fig. 4    | `history`           | `history.rs`, `main.rs`                               | `events.csv`                                  |
-| Fig. 5    | `channels`          | `scalar.rs`, `cmd_channels.rs`                        | `scalar_zero_modes.csv`, `static_source.csv`  |
-| Table III | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`   | `ks_reduced_thresholds.csv`                   |
-| Fig. 6    | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`   | `ks_reduced_saturation.csv`                   |
-| Table IV  | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`   | `ks_reduced_gas.csv`                          |
-| Fig. 7    | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`   | `ks_reduced_fixed_density.csv`                |
-| Table V   | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`   | `ks_44c_polarization.csv`                     |
-| Fig. 8    | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`   | `ks_44c_polarization.csv`                     |
-| Fig. 9    | `channels`          | `scalar.rs`, `cmd_channels.rs`                        | `pair_channel_kernel.csv`                     |
-| Table VI  | `history`           | `history.rs`, `main.rs`                               | `gap_history.csv`                             |
-| Fig. 10   | `history`           | `history.rs`, `main.rs`                               | `gap_history.csv`                             |
-| Table VII | `pairing`           | `pair_contact.rs`, `cmd_pairing.rs`                   | `pair_gap_history.csv`                        |
-| Fig. 11   | `pairing`           | `pair_contact.rs`, `cmd_pairing.rs`                   | `pair_gap_history.csv`                        |
+| item       | command             | source files                                              | data files                                    |
+|:-----------|:--------------------|:----------------------------------------------------------|:----------------------------------------------|
+| Fig. 1     | `symmetry`          | `symmetry_defl.rs`, `cmd_symmetry.rs`                     | `isometries.csv`                              |
+| Fig. 2     | `matrices`          | `metric.rs`, `geometry.rs`, `curved.rs`, `main.rs`        | `geodesic_1644d.csv`, `geodesic_1671d.csv`    |
+| Table I    | `selfcoupling`      | `selfint.rs`, `cmd_selfcoupling.rs`                       | `selfcoupling_fierz.csv`                      |
+| Fig. 3     | `channels`, `modes` | `scalar.rs`, `cmd_channels.rs`, `modes.rs`, `main.rs`     | `boson_bounded.csv`, `extinction_profile.csv` |
+| Table II   | `symmetry`          | `symmetry_defl.rs`, `cmd_symmetry.rs`                     | `coupling_exponents.csv`                      |
+| Fig. 4     | `history`           | `history.rs`, `main.rs`                                   | `events.csv`                                  |
+| Fig. 5     | `channels`          | `scalar.rs`, `cmd_channels.rs`                            | `scalar_zero_modes.csv`, `static_source.csv`  |
+| Table III  | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `ks_reduced_thresholds.csv`                   |
+| Fig. 6     | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `ks_reduced_saturation.csv`                   |
+| Table IV   | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `ks_reduced_gas.csv`                          |
+| Fig. 7     | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `ks_reduced_fixed_density.csv`                |
+| Table V    | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `ks_44c_polarization.csv`                     |
+| Fig. 8     | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `ks_44c_polarization.csv`                     |
+| Fig. 9     | `channels`          | `scalar.rs`, `cmd_channels.rs`                            | `pair_channel_kernel.csv`                     |
+| Table VI   | `history`           | `history.rs`, `main.rs`                                   | `gap_history.csv`                             |
+| Fig. 10    | `history`           | `history.rs`, `main.rs`                                   | `gap_history.csv`                             |
+| Table VII  | `pairing`           | `pair_contact.rs`, `cmd_pairing.rs`                       | `pair_gap_history.csv`                        |
+| Fig. 11    | `pairing`           | `pair_contact.rs`, `cmd_pairing.rs`                       | `pair_gap_history.csv`                        |
+| Table VIII | `history`           | `history.rs`, `main.rs`                                   | `dimer_history.csv`                           |
+| Fig. 12    | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv`       |
+| Table IX   | `history`           | `history.rs`, `main.rs`                                   | `events.csv`                                  |
+| Table X    | `quench`            | `quench.rs`, `main.rs`                                    | `quench_summary.csv`                          |
+| Fig. 13    | `quench`            | `quench.rs`, `main.rs`                                    | `quench_history.csv`, `quench_summary.csv`    |
+| Table XI   | `paired`            | `cmd_paired.rs`                                           | `cjt_history.csv`                             |
+| Fig. 14    | `paired`            | `cmd_paired.rs`                                           | `cjt_gl_history.csv`, `cjt_history.csv`       |
+| Table XII  | `paired`            | `cmd_paired.rs`                                           | `matter_saturation.csv`                       |
 
-TABLE XXXVII. Provenance of the tables and figures of this paper, first part. Source files are in `code/deflation-cjt-ks-rs/src`, data files in `data`.
+TABLE LX. Provenance of the tables and figures of this paper, first part. Source files are in `code/deflation-cjt-ks-rs/src`, data files in `data`.
 
-| item        | command             | source files                                              | data files                                                                                 |
-|:------------|:--------------------|:----------------------------------------------------------|:-------------------------------------------------------------------------------------------|
-| Table VIII  | `history`           | `history.rs`, `main.rs`                                   | `dimer_history.csv`                                                                        |
-| Fig. 12     | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv`                                                    |
-| Table IX    | `history`           | `history.rs`, `main.rs`                                   | `events.csv`                                                                               |
-| Table X     | `quench`            | `quench.rs`, `main.rs`                                    | `quench_summary.csv`                                                                       |
-| Fig. 13     | `quench`            | `quench.rs`, `main.rs`                                    | `quench_history.csv`, `quench_summary.csv`                                                 |
-| Table XI    | `paired`            | `cmd_paired.rs`                                           | `cjt_history.csv`                                                                          |
-| Fig. 14     | `paired`            | `cmd_paired.rs`                                           | `cjt_gl_history.csv`, `cjt_history.csv`                                                    |
-| Table XII   | `paired`            | `cmd_paired.rs`                                           | `matter_saturation.csv`                                                                    |
-| Fig. 15     | `history`, `paired` | `history.rs`, `main.rs`, `cmd_paired.rs`                  | `matter_saturation.csv`, `medium_history.csv`, `thermal_history.csv`, `vacuum_history.csv` |
-| Table XIII  | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `cjt_vs_ks.csv`, `kohnsham_checks.txt`                                                     |
-| Table XIV   | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `cjt_sea_vacuum.csv`                                                                       |
-| Fig. 16     | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `cjt_sea_saturation.csv`, `cjt_sea_vacuum.csv`                                             |
-| Table XV    | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `unified_thresholds.csv`                                                                   |
-| Fig. 17     | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `unified_phase_mode.csv`, `unified_thresholds.csv`                                         |
-| Table XVI   | `kohnsham`          | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`       | `unified_phase_mode.csv`                                                                   |
-| Table XVII  | `paired`            | `cmd_paired.rs`                                           | `order_parameter_states.csv`                                                               |
-| Table XVIII | `gravity`           | `gravity.rs`, `cmd_gravity.rs`                            | `gravity_reference.csv`                                                                    |
-| Fig. 18     | `gravity`           | `gravity.rs`, `cmd_gravity.rs`                            | `gravity_reference_path.csv`                                                               |
+| item        | command                 | source files                                                                                              | data files                                                                                                                                                     |
+|:------------|:------------------------|:----------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Fig. 15     | `history`, `paired`     | `history.rs`, `main.rs`, `cmd_paired.rs`                                                                  | `matter_saturation.csv`, `medium_history.csv`, `thermal_history.csv`, `vacuum_history.csv`                                                                     |
+| Table XIII  | `kohnsham`              | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`                                                       | `cjt_vs_ks.csv`, `kohnsham_checks.txt`                                                                                                                         |
+| Table XIV   | `kohnsham`              | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`                                                       | `cjt_sea_vacuum.csv`                                                                                                                                           |
+| Fig. 16     | `kohnsham`              | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`                                                       | `cjt_sea_saturation.csv`, `cjt_sea_vacuum.csv`                                                                                                                 |
+| Table XV    | `kohnsham`              | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`                                                       | `unified_thresholds.csv`                                                                                                                                       |
+| Fig. 17     | `kohnsham`              | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`                                                       | `unified_phase_mode.csv`, `unified_thresholds.csv`                                                                                                             |
+| Table XVI   | `kohnsham`              | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs`                                                       | `unified_phase_mode.csv`                                                                                                                                       |
+| Table XVII  | `paired`                | `cmd_paired.rs`                                                                                           | `order_parameter_states.csv`                                                                                                                                   |
+| Table XVIII | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_reference.csv`                                                                                                                                        |
+| Fig. 18     | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_reference_path.csv`                                                                                                                                   |
+| Table XIX   | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_deflating_summary.csv`                                                                                                                                |
+| Fig. 19     | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv`                                                                                                     |
+| Table XX    | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_vacuum_perturbation.csv`                                                                                                                              |
+| Table XXI   | `cosmology`             | `cosmo_defl.rs`, `main.rs`                                                                                | `hubble_deflation.csv`                                                                                                                                         |
+| Fig. 20     | `cosmology`, `matter`   | `cosmo_defl.rs`, `main.rs`, `cmd_matter.rs`                                                               | `growth_deflation.csv`, `hubble_deflation.csv`, `hubble_mass_loss.csv`                                                                                         |
+| Table XXII  | `cosmology`             | `cosmo_defl.rs`, `main.rs`                                                                                | `deflation_bounds.csv`                                                                                                                                         |
+| Fig. 21     | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                | `deflation_bounds.csv`, `deflation_fisher.csv`                                                                                                                 |
+| Table XXIII | `spectrum`              | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                   | `cmb_deflation_summary.csv`                                                                                                                                    |
+| Fig. 22     | `spectrum`              | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                   | `cmb_deflation_cl.csv`, `cmb_deflation_summary.csv`                                                                                                            |
+| Fig. 23     | `matter`, `spectrum`    | `cosmo_defl.rs`, `cmd_matter.rs`, `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_cl.csv`, `cmb_deflation_closure.csv`, `cmb_deflation_gaps.csv`, `cmb_deflation_growth.csv`, `cmb_deflation_summary.csv`, `growth_deflation.csv` |
+| Table XXIV  | `forecast`              | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                                            | `deflation_fisher.csv`                                                                                                                                         |
+| Fig. 24     | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                | `deflation_fisher.csv`, `deflation_profile.csv`, `deflation_residuals.csv`, `hubble_deflation.csv`                                                             |
+| Table XXV   | `families`              | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                                            | `dr_deflation_joint.csv`                                                                                                                                       |
+| Fig. 25     | `families`              | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                                            | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv`                                                                                                          |
+| Table XXVI  | `matter`                | `cosmo_defl.rs`, `cmd_matter.rs`                                                                          | `dm_halo_estimates.csv`                                                                                                                                        |
+| Fig. 26     | `superfluid`            | `eb_boltzmann.rs`, `cmd_spectra.rs`                                                                       | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv`                                                                                                    |
 
-TABLE XXXVIII. Provenance of the tables and figures of this paper, second part.
+TABLE LXI. Provenance of the tables and figures of this paper, second part.
 
-| item         | command                 | source files                                                                                              | data files                                                                                                                                                     |
-|:-------------|:------------------------|:----------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Table XIX    | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_deflating_summary.csv`                                                                                                                                |
-| Fig. 19      | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv`                                                                                                     |
-| Table XX     | `gravity`               | `gravity.rs`, `cmd_gravity.rs`                                                                            | `gravity_vacuum_perturbation.csv`                                                                                                                              |
-| Table XXI    | `cosmology`             | `cosmo_defl.rs`, `main.rs`                                                                                | `hubble_deflation.csv`                                                                                                                                         |
-| Fig. 20      | `cosmology`, `matter`   | `cosmo_defl.rs`, `main.rs`, `cmd_matter.rs`                                                               | `growth_deflation.csv`, `hubble_deflation.csv`, `hubble_mass_loss.csv`                                                                                         |
-| Table XXII   | `cosmology`             | `cosmo_defl.rs`, `main.rs`                                                                                | `deflation_bounds.csv`                                                                                                                                         |
-| Fig. 21      | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                | `deflation_bounds.csv`, `deflation_fisher.csv`                                                                                                                 |
-| Table XXIII  | `spectrum`              | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                   | `cmb_deflation_summary.csv`                                                                                                                                    |
-| Fig. 22      | `spectrum`              | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                   | `cmb_deflation_cl.csv`, `cmb_deflation_summary.csv`                                                                                                            |
-| Fig. 23      | `matter`, `spectrum`    | `cosmo_defl.rs`, `cmd_matter.rs`, `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_cl.csv`, `cmb_deflation_closure.csv`, `cmb_deflation_gaps.csv`, `cmb_deflation_growth.csv`, `cmb_deflation_summary.csv`, `growth_deflation.csv` |
-| Table XXIV   | `forecast`              | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                                            | `deflation_fisher.csv`                                                                                                                                         |
-| Fig. 24      | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                | `deflation_fisher.csv`, `deflation_profile.csv`, `deflation_residuals.csv`, `hubble_deflation.csv`                                                             |
-| Table XXV    | `families`              | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                                            | `dr_deflation_joint.csv`                                                                                                                                       |
-| Fig. 25      | `families`              | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                                                            | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv`                                                                                                          |
-| Table XXVI   | `matter`                | `cosmo_defl.rs`, `cmd_matter.rs`                                                                          | `dm_halo_estimates.csv`                                                                                                                                        |
-| Fig. 26      | `superfluid`            | `eb_boltzmann.rs`, `cmd_spectra.rs`                                                                       | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv`                                                                                                    |
-| Table XXVIII | `cosmology`             | `cosmo_defl.rs`, `main.rs`                                                                                | `higgs_scale_exponent.csv`                                                                                                                                     |
+| item          | command      | source files                                                            | data files                   |
+|:--------------|:-------------|:------------------------------------------------------------------------|:-----------------------------|
+| Table XXVIII  | `cosmology`  | `cosmo_defl.rs`, `main.rs`                                              | `higgs_scale_exponent.csv`   |
+| Table XXXVI   | `paired`     | `cmd_paired.rs`                                                         | `cjt_thermo_history.csv`     |
+| Table XXXVII  | `paired`     | `cmd_paired.rs`                                                         | `cjt_gl_history.csv`         |
+| Table XXXVIII | `paired`     | `cmd_paired.rs`                                                         | `cjt_threshold.csv`          |
+| Table XXXIX   | `history`    | `history.rs`, `main.rs`                                                 | `thermal_history.csv`        |
+| Table XL      | `history`    | `history.rs`, `main.rs`                                                 | `vacuum_history.csv`         |
+| Table XLI     | `matter`     | `cosmo_defl.rs`, `cmd_matter.rs`                                        | `dm_drift.csv`               |
+| Table XLII    | `cosmology`  | `cosmo_defl.rs`, `main.rs`                                              | `hubble_mass_loss.csv`       |
+| Table XLIII   | `matter`     | `cosmo_defl.rs`, `cmd_matter.rs`                                        | `growth_deflation.csv`       |
+| Table XLIV    | `background` | `spectra_defl.rs`, `eb_cosmo.rs`, `cmd_spectra.rs`                      | `background_deflation.csv`   |
+| Table XLV     | `spectrum`   | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_peaks.csv`    |
+| Table XLVI    | `spectrum`   | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_summary.csv`  |
+| Table XLVII   | `spectrum`   | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_gaps.csv`     |
+| Table XLVIII  | `spectrum`   | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_growth.csv`   |
+| Table XLIX    | `spectrum`   | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_growth.csv`   |
+| Table L       | `forecast`   | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                          | `deflation_profile.csv`      |
+| Table LI      | `families`   | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                          | `dr_deflation_fisher.csv`    |
+| Table LII     | `families`   | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                          | `dr_deflation_profiles.csv`  |
+| Table LIII    | `families`   | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                          | `dr_deflation_joint.csv`     |
+| Table LIV     | `families`   | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs`                          | `dr_deflation_joint.csv`     |
+| Table LV      | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs`                                     | `sfdm_deflation_summary.csv` |
+| Table LVI     | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs`                                     | `sfdm_deflation_bounds.csv`  |
+| Table LVII    | `symmetry`   | `symmetry_defl.rs`, `cmd_symmetry.rs`                                   | `isometries.csv`             |
+| Table LVIII   | `symmetry`   | `symmetry_defl.rs`, `cmd_symmetry.rs`                                   | `reduced_symmetry.csv`       |
 
-TABLE XXXIX. Provenance of the tables and figures of this paper, third part.
+TABLE LXII. Provenance of the tables and figures of this paper, third part.
 
 ## References
 

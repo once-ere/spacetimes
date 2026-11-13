@@ -115,7 +115,7 @@ def fig_geodesics():
     ax.plot(a["affine"], a["x4"], color=BLUE)
     lam_end = a["affine"][-1]
     ax.axvline(lam_end, color=INK2, lw=0.7, ls=":")
-    ax.text(lam_end, a["x4"][0] + 0.06 * (a["x4"][-1] - a["x4"][0]), " proper time at which\n $x4\\to\\infty$ ", ha="right", va="bottom", color=INK2, fontsize=7.5)
+    ax.text(lam_end - 0.08, a["x4"][0] + 0.06 * (a["x4"][-1] - a["x4"][0]), "proper time at which\n$x4\\to\\infty$", ha="right", va="bottom", color=INK2, fontsize=7.5)
     ax.set_xlabel("proper time $\\varsigma$ (units $1/m$)")
     ax.set_ylabel("coordinate time $x4$")
     panel_label(ax, "(a) 7+1: momentum along a deflating coordinate")
@@ -286,7 +286,7 @@ def fig_extinction():
         ax.set_ylim(1e-9, 3)
         ax.set_xlabel("$u_d=k_d/\\mathrm{g55}$")
         ax.set_ylabel("$\\hat S^2$ (maximum = 1)")
-        ax.legend(loc="lower left", fontsize=7.0, title="lines: exact (Bessel function $K$)\nsymbols: computed", title_fontsize=6.6)
+        ax.legend(loc="lower left", fontsize=7.0, title="lines: exact\nsymbols: computed", title_fontsize=6.6)
     panel_label(ax, "(c) bounded scalar modes")
     fig.tight_layout(w_pad=0.9)
     save(fig, "fig_extinction")
@@ -409,7 +409,8 @@ def fig_binding():
     ax.set_yscale("log")
     ax.set_ylim(1e-7, 1e8)
     ax.axhline(1.0, color=INK2, lw=0.7, ls=":")
-    ax.text(0.88, 0.12, "1 cm$^2$/g", color=INK2, fontsize=7.0, ha="right")
+    # the label of the dotted line stands in the empty lower right corner, below the ends of the curves
+    ax.text(0.97, 3.0e-6, "dotted line:\n1 cm$^2$/g", color=INK2, fontsize=7.0, ha="right", va="bottom")
     ax.set_xlabel("$\\tau_{\\rm pair}$")
     ax.set_ylabel("$\\sigma/m$ (cm$^2$/g)")
     ax.legend(loc="lower left", fontsize=7.0, title="relative velocity", title_fontsize=6.8)
@@ -487,10 +488,11 @@ def fig_quench():
     for c, g in zip(cols, rates):
         sel = h["gsum"] == g
         ax.plot(h["lambda"][sel], h["ratio"][sel], color=c, lw=1.2)
-    ax.text(0.155, 0.05, "fast: gsum $=0.1\\,E_{\\rm sh}$", color=INK, fontsize=7.0)
-    ax.text(0.5, 1.04, "slow: $10^{-4}\\,E_{\\rm sh}$", color=INK, fontsize=7.0, ha="right")
+    ax.text(0.155, -0.11, "fast (lowest curve): gsum $=0.1\\,E_{\\rm sh}$", color=INK, fontsize=7.0, va="bottom")
+    ax.text(0.5, 1.12, "slow (top): $10^{-4}\\,E_{\\rm sh}$", color=INK, fontsize=7.0, ha="right", va="bottom")
     ax.axhline(1.0, color=INK2, lw=0.6)
-    ax.set_ylim(0, 1.25)
+    ax.axhline(0.0, color=INK2, lw=0.4)
+    ax.set_ylim(-0.14, 1.25)
     ax.set_xlabel("pairing strength $\\lambda\\ \\propto\\ e^{\\tau_d}$")
     ax.set_ylabel("$|\\Delta|/\\Delta_{\\rm eq}(\\lambda)$")
     panel_label(ax, "(a) can the paired state follow?")
@@ -527,9 +529,10 @@ def fig_hubble():
     # the local measurement with which the main project compares: 73.50 +- 0.81 km/s/Mpc
     ax.axhspan(73.50 - 0.81, 73.50 + 0.81, color=ORANGE, alpha=0.18, lw=0)
     ax.axhline(73.50, color=ORANGE, lw=1.0, ls="--")
-    ax.text(0.28, 74.45, "local measurement: 73.50 $\\pm$ 0.81", color=INK, fontsize=7.0, va="bottom", ha="right")
-    for x, lab, y0 in ((3.237e-3, "lunar ranging", 53.5), (0.0644, "nucleosynthesis", 45.0)):
-        ax.plot([x, x], [42, 66.3], color=INK2, lw=0.7, ls=":")
+    ax.text(0.28, 74.45, "local: 73.50 $\\pm$ 0.81", color=INK, fontsize=7.0, va="bottom", ha="right")
+    for x, lab, y0, ylow in ((3.237e-3, "lunar ranging", 53.5, 52.0), (0.0644, "nucleosynthesis", 45.0, 42.0)):
+        # the first line ends above the legend, which stands in the lower left corner
+        ax.plot([x, x], [ylow, 66.3], color=INK2, lw=0.7, ls=":")
         ax.text(x * 1.12, y0, lab, rotation=90, color=INK2, fontsize=6.6, va="bottom")
     ax.set_xscale("log")
     ax.set_ylim(42, 77.5)
@@ -546,7 +549,7 @@ def fig_hubble():
     ax.set_xscale("log")
     ax.set_xlabel("gsum / $H_0$")
     ax.set_ylabel("change of $H_0$ (km/s/Mpc)")
-    ax.set_ylim(-0.05, 0.95)
+    ax.set_ylim(-0.05, 1.12)
     ax.legend(loc="upper left", fontsize=6.6, title="bound pairs today", title_fontsize=6.6)
     panel_label(ax, "(b) constant $G_N$: pairs lose mass")
     ax = axes[2]
@@ -560,7 +563,7 @@ def fig_hubble():
         ax.set_xscale("log")
         ax.set_ylim(0.9, 1.75)
         ax.set_xlabel("gsum / $H_0$")
-        ax.set_ylabel("ratio to the model without deflation")
+        ax.set_ylabel("ratio to no deflation")
         ax.legend(loc="upper left", fontsize=6.4, title="closures M: \"Momentum\",\nP: \"Pressure\"", title_fontsize=6.2)
     panel_label(ax, "(c) growth of structure, fixed angle")
     fig.tight_layout(w_pad=0.9)
@@ -636,7 +639,8 @@ def fig_scalar():
         ax.plot(z["k"][sel], z["exponent1_im"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
     ax.set_xlabel("$k$ / gsum")
     ax.set_ylabel("imaginary part of the exponent / gsum")
-    ax.legend(loc="upper left", fontsize=7.0)
+    # the legend stands in the empty region at the left, below the third curve and above the two that start at zero
+    ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.40), fontsize=7.0)
     panel_label(ax, "(b) frequency of oscillation")
     ax = axes[2]
     combos = [(1.0, 0.2), (0.25, 0.2), (1.0, 1.0), (4.0, 0.5)]
@@ -671,7 +675,8 @@ def fig_cjt_history():
     ax.set_yscale("log")
     ax.set_xlabel("$g_{VS}\\ \\propto\\ e^{\\tau_d/2}$")
     ax.set_ylabel("condensation energy (units $m^4$)")
-    ax.legend(loc="lower right", fontsize=7.0, title="$k_F=0.5\\,m$", title_fontsize=6.8)
+    ax.legend(loc="lower right", fontsize=6.6, handlelength=1.4, borderaxespad=0.1, labelspacing=0.3,
+              title="$k_F=0.5\\,m$", title_fontsize=6.4)
     panel_label(ax, "(a) the potential deepens")
     ax = axes[1]
     ax.set_yscale("log")
@@ -834,7 +839,8 @@ def fig_forecast():
         sel = (pr["config"] == c) & (pr["closure"] == 0)
         ax.plot(pr["gsum_over_H0"][sel], pr["chi2"][sel], ls="none", marker=mk, color=col, mfc="white", mew=1.0, ms=4.0, label=names[c])
     ax.axhline(3.84, color=INK2, lw=0.6)
-    ax.text(0.0685, 0.6, "3.84: 95 per cent", color=INK2, fontsize=6.6, ha="right", va="bottom")
+    # the label ends to the left of the dotted line of nucleosynthesis and begins to the right of the last point below the line
+    ax.text(0.0628, 0.5, "95 per cent", color=INK2, fontsize=6.4, ha="right", va="bottom")
     ax.axvline(3.237e-3, color=INK2, lw=0.7, ls=":")
     ax.text(3.237e-3 + 0.0012, 14.5, "lunar ranging", rotation=90, color=INK2, fontsize=6.6, va="bottom")
     ax.axvline(0.0644, color=INK2, lw=0.7, ls=":")
@@ -987,7 +993,7 @@ def fig_sfdm():
             continue
         ax.plot(k, y0, color=col, ls="-", lw=1.1, label=lab)
         ax.plot(k, y2, color=col, ls="none", marker=mk, mfc="white", mew=0.8, ms=2.8, markevery=3)
-    ax.axhline(0.25, color=INK2, lw=0.6)
+    ax.plot([6.0, 250.0], [0.25, 0.25], color=INK2, lw=0.6)
     ax.set_xscale("log")
     ax.set_xlim(0.05, 250)
     ax.set_ylim(0, 1.08)
@@ -1014,7 +1020,7 @@ def fig_sfdm():
             ax.xaxis.set_minor_locator(matplotlib.ticker.FixedLocator([1e-10, 1e-8]))
             ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
         ax.set_xlabel(xl)
-        ax.set_ylabel("change of its wavenumber (per cent)")
+        ax.set_ylabel("change of the half mode (per cent)")
         ax.set_ylim(-3.6, 0.15)
         panel_label(ax, lab)
     axes[1].legend(loc="center", fontsize=6.0, handlelength=2.0, title="closures M: \"Momentum\",\nP: \"Pressure\"", title_fontsize=6.0)
@@ -1081,7 +1087,7 @@ def fig_ks_deflating():
     axes[1].axhline(0, color=INK2, lw=0.6)
     axes[1].set_ylim(-0.1, 2.2)
     sel = d[d["set"] == 1]
-    for k, (key, lab) in enumerate((("p_flat", "$x0..x3$"), ("p5", "$x5$"), ("p6", "$x6$"), ("p7", "$x7$"))):
+    for k, (key, lab) in enumerate((("p_flat", "$x0,\\dots,x3$"), ("p5", "$x5$"), ("p6", "$x6$"), ("p7", "$x7$"))):
         col, ls, _ = STYLES[k]
         axes[2].plot(sel["tau_d"], sel[key] / sel["eps"], color=col, ls=ls, label=lab)
     axes[2].axhline(0, color=INK2, lw=0.6)
@@ -1142,7 +1148,7 @@ def fig_ks_gas():
     axes[0].set_ylabel("mass in matter $m^*/m$")
     axes[1].set_ylabel("pressure / energy density")
     axes[2].set_ylabel("pressure / energy density")
-    for ax, lab in zip(axes, ("(a) mass of the particles", "(b) pressure along $x0..x3$", "(c) pressure along $x5,x6,x7$")):
+    for ax, lab in zip(axes, ("(a) mass of the particles", "(b) pressure along $x0,\\dots,x3$", "(c) pressure along $x5,x6,x7$")):
         ax.set_xlabel("deflation clock $\\tau_d$")
         panel_label(ax, lab)
     axes[0].legend(loc="lower left")
@@ -1190,7 +1196,7 @@ def fig_cjt_sea():
     ax.plot([], [], color=INK2, ls="--", label="bare mass $0.05\\,\\Lambda$")
     ax.axvline(0, color=INK2, lw=0.6, ls=":")
     ax.axhline(1.0, color=INK2, lw=0.6, ls=":")
-    ax.text(-0.97, 1.03, "mass = cutoff: end of the effective theory", color=INK2, fontsize=6.8, va="bottom")
+    ax.text(-0.97, 1.03, "mass = cutoff:\nend of the effective theory", color=INK2, fontsize=6.8, va="bottom")
     ax.set_xlim(-1.0, 0.8)
     ax.set_ylim(0, 1.3)
     ax.set_xlabel("deflation clock, counted from $G_S=G_c$")
@@ -1321,7 +1327,7 @@ def _gravity_deflating_panels(matter):
         handles.append(axes[0].plot(sel["tau_ref"], -sel["Hb_over_g"], color=col, ls=ls, label=name)[0])
         axes[1].plot(sel["tau_ref"], np.where(sel["Ha_over_g"] > 0, sel["Ha_over_g"], np.nan), color=col, ls=ls, label=name)
     axes[0].axhline(1.0, color=INK2, lw=0.7, ls=":")
-    axes[0].text(6.0, 0.22, "undisturbed deflation:\ndotted line", color=INK2, fontsize=7, ha="right")
+    axes[0].text(6.0, 0.075, "undisturbed deflation:\ndotted line", color=INK2, fontsize=7, ha="right", va="bottom")
     for ax in axes:
         ax.set_yscale("log")
         ax.set_xlabel("clock $\\tau_d^{0}=3\\,\\mathrm{g55}\\,x4$")
@@ -1330,7 +1336,7 @@ def _gravity_deflating_panels(matter):
     axes[0].set_ylabel("rate of deflation $-H_{\\mathsf{b}}/\\mathrm{g55}$")
     axes[1].set_ylabel("rate of expansion $H_{\\mathsf{a}}/\\mathrm{g55}$")
     panel_label(axes[0], "(a) deflation with matter")
-    panel_label(axes[1], "(b) $x0..x3$ expand")
+    panel_label(axes[1], "(b) $x0,\\dots,x3$ expand")
     ax = axes[2]
     for case, (col, ls) in enumerate(((BLUE, "-"), (ORANGE, "--"))):
         sel = v[v["case"] == case]

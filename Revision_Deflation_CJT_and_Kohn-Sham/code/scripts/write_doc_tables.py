@@ -390,12 +390,12 @@ def rs5():
     gp = rows_of("cmb_deflation_gaps.csv")
     rows = [["M" if num(x["closure"]) < 0.5 else "P", fix(x["tau_cf"], 0), sci(x["a_gsum_over_Hc"], 1), fix(x["potential"], 4),
              fix(x["momentum_gap"], 3), fix(x["trace_gap"], 3), fix(x["shear_gap"], 4), sci(x["shear_check"], 0), sci(x["trace_check"], 0)] for x in gp if abs(num(x["k"]) - 0.02) < 1e-9]
-    table("tbl_eb_gaps", ["closure", "$\\tau_{\\rm cf}$ (Mpc)", "$\\mathrm{gsum}/H$", "$\\mathcal U$", "$\\mathcal Y_M$", "$\\mathcal Y_T$", "$\\mathcal Y_S$", "check of (3.4)", "check of (3.2)"], rows,
+    table("tbl_eb_gaps", ["closure", "$\\tau_{\\rm cf}$ (Mpc)", "$\\mathrm{gsum}/H$", "$\\mathcal U$", "$\\mathcal Y_M$", "$\\mathcal Y_T$", "$\\mathcal Y_S$", "residual of the identity for $\\mathcal Y_S$", "residual of the identity for $\\mathcal Y_M$"], rows,
           ["l7", "r7", "r9", "r7", "r6", "r7", "r8", "r8", "r8"])
 
     gr = rows_of("cmb_deflation_growth.csv")
     rows = [[auto(x["gsum_over_H0"], 3), fix(x["growth_EB_fixed_H0_M"], 5), fix(x["growth_ODE_fixed_H0_M"], 5), fix(x["growth_EB_fixed_H0_P"], 5), fix(x["growth_ODE_fixed_H0_P"], 5)] for x in gr]
-    table("tbl_eb_growth", ["$\\mathrm{gsum}/H_0$", "program, M", "Eq. (4.2)", "program, P", "Eq. (4.1)"], rows, ["r9", "r9", "r9", "r9", "r9"])
+    table("tbl_eb_growth", ["$\\mathrm{gsum}/H_0$", "program, M", "growth equation, M", "program, P", "growth equation, P"], rows, ["r9", "r9", "r9", "r9", "r9"])
     rows = [[auto(x["gsum_over_H0"], 3), fix(x["H0"], 3), fix(x["growth_EB_M"], 5), fix(x["growth_EB_P"], 5), fix(x["sigma_8_ratio_M"], 5), fix(x["sigma_8_ratio_P"], 5)] for x in gr]
     table("tbl_eb_growth_angle", ["$\\mathrm{gsum}/H_0$", "$H_0$", "growth, M", "growth, P", "$\\sigma_8$ ratio, M", "$\\sigma_8$ ratio, P"], rows, ["r9", "r8", "r9", "r9", "r9", "r9"])
 
@@ -624,6 +624,79 @@ def symmetry_tables():
                      sum(1 for x in iso if x["spacetime"] == tag and x["internal"] == "1" and x["rates_2_2_5"] == "1"),
                      sum(1 for x in iso if x["spacetime"] == tag and x["internal"] == "1" and x["rates_1_1_1"] == "1")])
     table("tbl_isometries", ["spacetime", "rotations and boosts", "isometries, rates (1, 2, 3)", "rates (2, 2, 5)", "rates (1, 1, 1)", "internal generators", "of these isometries: (1, 2, 3)", "(2, 2, 5)", "(1, 1, 1)"], rows, ["l"] + ["r"] * 8)
+
+
+# The same table in the typography of the manuscripts: the items of data/reduced_symmetry.csv are
+# program text; here each is paired with its typeset form.  The values are those of the file.
+SYMMETRY_ITEMS = [
+    ("dimension of the commutant, momenta along x1 x2 x3",
+     "dimension of the algebra of the matrices that commute with $\\alpha^1,\\alpha^2,\\alpha^3$, $\\beta$ and $i\\beta\\chi$", "8"),
+    ("dimension of the commutant, momenta along x0 x1 x2 x3",
+     "the same if the fields depend on $x0$ as well", "4"),
+    ("dimension of the commutant, momenta along every space coordinate of the model",
+     "the same if the fields depend on every space-like coordinate of the model", "1 (7+1); 4 (4+4)"),
+    ("dimension of the centre of the commutant", "dimension of the centre of the algebra", "2"),
+    ("|P^2 - 1| for the traceless central generator P",
+     "$\\lVert P^2-1\\rVert$ for the traceless generator $P$ of the centre", "0"),
+    ("dimensions of the two ideals", "dimensions of the two simple ideals", "3, 3"),
+    ("structure constants |f_123| of the ideals (generators with Tr T_i T_j = 2 delta_ij)",
+     "structure constants $\\lvert f_{123}\\rvert$ of the two ideals, for generators $T_i$ with $\\mathrm{Tr}\\,T_iT_j=2\\delta_{ij}$", "1, 1: each ideal is $su(2)$"),
+    ("|sum_i T_i^2 - (3/4) projector| of the ideals",
+     "$\\lVert\\sum_iT_i^2-\\tfrac34\\,\\mathrm{projector}\\rVert$ for the two ideals", "0, 0: doublets"),
+    ("positive-energy states with P = +1 and P = -1 at a test momentum",
+     "number of states of positive energy with $P=+1$ and with $P=-1$ at a test momentum", "4, 4: the doublets $(2,1)$ and $(1,2)$"),
+    ("closure of the four vector pair operators C^- gamma^a, a in {0,5,6,7}",
+     "residual of the closure of the four pair operators $\\psi^TC^-\\gamma^a\\psi$, $a\\in\\{0,5,6,7\\}$, under the algebra", "0"),
+    ("|Casimir - 3/4| of the two ideals on the four pair operators",
+     "Casimir operator of each ideal on the four pair operators, minus $\\tfrac34$", "0, 0: the $(2,2)$"),
+    ("fermion number of the pair operators", "fermion number of the pair operators", "2"),
+    ("charge of the pair operators under the central generator P", "charge of the pair operators under $P$", "0"),
+    ("number of invariant quadratic forms on the four pair operators",
+     "number of invariant quadratic forms on the four pair operators", "1"),
+    ("the invariant form (diagonal; frame axes 0 5 6 7; first entry 1)",
+     "the invariant quadratic form: its diagonal along the frame axes 0, 5, 6, 7 (first entry 1)",
+     "$+1,+1,+1,+1$ (7+1); $+1,-1,-1,-1$ (4+4): the signs of the metric of the four extra axes"),
+    ("largest off-diagonal entry of the invariant form", "largest off-diagonal entry of that form", "0"),
+    ("complex dimension of the particle-antiparticle mixing generators, no chemical potential",
+     "complex dimension of the generators that mix particles with antiparticles, without chemical potential",
+     "2: the symmetry is $O(4)\\times O(4)$, of dimension 12"),
+    ("the same with a chemical potential", "the same with a chemical potential", "0: the symmetry is $U(2)\\times U(2)$, of dimension 8"),
+] + [("gamma^%d gamma^%d" % ab, "$\\gamma^{%d}\\gamma^{%d}$: character, and norm of its commutator with the five matrices" % ab,
+      ("anti-Hermitian (7+1: a rotation), Hermitian (4+4); 0" if ab[0] == 0 else "anti-Hermitian (a rotation) on both; 0"))
+     for ab in ((0, 5), (0, 6), (0, 7), (5, 6), (5, 7), (6, 7))]
+
+
+def symmetry_value(v):
+    """A value of data/reduced_symmetry.csv in the typography of the manuscripts."""
+    v = v.strip()
+    m = re.match(r"(antihermitian|Hermitian); \|\[\.,dynamics\]\| = (\S+)$", v)
+    if m:
+        return "%s; %s" % ("anti-Hermitian" if m.group(1) == "antihermitian" else "Hermitian", symmetry_value(m.group(2)))
+    toks = v.strip("[]").replace(",", " ").split()
+    out = []
+    for t in toks:
+        x = float(t)
+        if x == 0.0:
+            out.append("0")
+        elif abs(x) < 1e-9:
+            out.append(tex_num("%.1e" % x))
+        elif abs(x - round(x)) < 1e-9:
+            out.append(("$%+d$" % round(x)) if t[0] in "+-" else "%d" % round(x))
+        else:
+            out.append(t)
+    return ", ".join(out)
+
+
+def symmetry_table_ms():
+    r = rows_of("reduced_symmetry.csv")
+    by_item = {x["item"]: x for x in r}
+    assert len(by_item) == len(SYMMETRY_ITEMS) == len(r), "items of reduced_symmetry.csv: %d, typeset: %d" % (len(r), len(SYMMETRY_ITEMS))
+    rows = []
+    for item, typeset, expected in SYMMETRY_ITEMS:
+        x = by_item[item]
+        assert x["ok"] == "1", item
+        rows.append([typeset, symmetry_value(x["value_1671d"]), symmetry_value(x["value_1644d"]), expected])
+    table("tbl_symmetry_ms", ["item", "7+1", "4+4", "expected, and what it means"], rows, ["L", "l", "l", "l"])
 
 
 # ------------------------------------------------------------------------------------------
@@ -1215,6 +1288,7 @@ def main():
     rs4()
     higgs_table()
     symmetry_tables()
+    symmetry_table_ms()
     cjt_ks_fragments()
     provenance_maps()
     provenance_plain()

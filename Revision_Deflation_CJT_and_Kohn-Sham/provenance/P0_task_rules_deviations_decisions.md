@@ -121,7 +121,8 @@ or the other, so that the manuscripts cannot drift apart.
 | `990d697` | correction of a failing symbol check (Section 12, C-E12) |
 | `8231b87` | correction of a failing number check and of an unresolved placeholder; the script `check_all.sh` (C-E13, C-E14) |
 | `56f9162` | the document "dirac matrices deflating"; corrections C-E15, C-E16 |
-| the commit that contains this document | `P0` and README |
+| `8216184` | `P0` and README |
+| the commit that follows it | the appendix "Complete tables of the calculations" of the two manuscripts (the tables that the first revision printed in its supplements); all figures inspected, eleven corrected; corrections C-E18, C-E19 |
 
 # 6. The results in brief
 
@@ -196,14 +197,12 @@ supplements is therefore inside each manuscript:
 | Higgs hypothesis | Sec. XVII |
 
 The derivations are in the sections named. Of the tables of the supplements, the
-manuscripts print those that carry the argument and quote numbers from the others;
-the complete tables that are only quoted are generated in
-`provenance/generated/tables_cjt_ks.md` and their data files are listed in `P2`,
-Section 6. Printing them as an appendix of each manuscript is the last step of
-Section 10. If the author wants the supplements as separate, self-contained documents
-as well, that is a matter of assembling existing material; it has not been done
-because it would repeat, five times over, the definitions that each manuscript
-already contains.
+sections print those that carry the argument and quote numbers from the others; the
+others are printed in full in the appendix "Complete tables of the calculations" of
+each manuscript, each with a caption that defines its columns. If the author wants
+the supplements as separate, self-contained documents as well, that is a matter of
+assembling existing material; it has not been done because it would repeat, five
+times over, the definitions that each manuscript already contains.
 
 **V2. Python is used beside Rust**, for three purposes: (i) the independent
 verification, which must not share code with the program that it verifies and
@@ -304,21 +303,15 @@ of the fields in ordinary space, on which the hypothesis about the Higgs field r
 
 # 10. What has not been done
 
-1. *Complete tables as an appendix of the manuscripts.* Twenty-six tables whose
-   numbers the manuscripts quote in part (thermodynamic ratios and Ginzburg–Landau
-   coefficients of the paired state; melting temperatures; the vacuum potential; the
-   drift of quantities; the loss of rest mass of bound pairs; details of the
-   microwave-background calculation and of the fits to mock data; the limits on
-   superfluid dark matter; the internal symmetry item by item) are generated but not
-   yet printed in the manuscripts.
-2. *Matter beyond the mean field; pairing inside dense self-bound matter; a
+1. *Matter beyond the mean field; pairing inside dense self-bound matter; a
    self-consistent solution with the created particles acting on the metric.* Stated
    as not established in the manuscripts, Sec. XVIII D.
-3. *The covariant form C of the 4+4 model* is computed for the couplings, for uniform
+2. *The covariant form C of the 4+4 model* is computed for the couplings, for uniform
    matter and for pairs at rest, not for every later result (gap along the clock,
    gravity).
-4. *A test with deliberate errors for the geometric part of the first independent
+3. *A test with deliberate errors for the geometric part of the first independent
    script* (Section 7, item V4).
+4. *Separate supplements* (Section 7, item V1).
 5. *The paused stages of the flat-spacetime part of the project* were not touched,
    as instructed.
 
@@ -360,6 +353,8 @@ exposed it; an entry says no more than the record contains.
 | C-E14 | `P2` printed a caption with an unresolved placeholder. | The new script `check_all.sh`. | Commit `8231b87`. |
 | C-E15 | The running header of `P1` and `P2` named the folder of the first revision. | Looking at the typeset pages. | Commit `56f9162`. |
 | C-E16 | In the figure of the creation of particles the labels of two axes touched, and two legends lay on curves; the figure is in the 7+1 manuscript. | Looking at the typeset page of the new document. | Commit `56f9162`: labels on two lines, legends moved, manuscript rebuilt. |
+| C-E18 | The headers of two generated tables carried equation numbers of documents of the first revision. | Writing the appendix of complete tables. | The headers describe the columns; the manuscripts refer to their own equations. |
+| C-E19 | In eleven of the thirty figures a label or a legend touched a curve, a marked line or the frame (figures of the bound pair, of the effective action, of the vacuum mass, of the extinction, of the geodesics, of the two evolutions with gravity, of the Hubble constant, of the quench, of the scalar modes, of the forecast, and of superfluid dark matter); and three figures wrote the coordinates $x0,\dots,x3$ with two dots. Most of these figures had been taken over from the first revision without being looked at again. | Every figure was looked at, one by one, after C-E16. | Labels and legends moved, lines shortened, captions adjusted where a label was shortened; all documents rebuilt. |
 | C-E17 | A sentence drafted for "dirac matrices deflating" took the roots of the constraint of the gravitational equations for rates of growth. | Reading the statement of check `gr-G5` before the document was committed. | The document says what the check says. |
 
 **The cause of C-E12 to C-E14, and the remedy.** After long builds only the last
