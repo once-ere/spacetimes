@@ -34,7 +34,7 @@ use crate::metric::{killing_count, killing_vectors, lie_derivative_of_metric, Po
 use crate::rat::Rat;
 use spacetimes::verify::Report;
 
-/// The exact checks G1..G7 for one spacetime.  Identifiers 44d-G.. and 71d-G...
+/// The exact checks G1..G7 and G10 for one spacetime.  Identifiers 44d-G.. and 71d-G...
 pub fn verify_geometry(sig: Sig, rep: &mut Report) {
     let pre = match sig {
         Sig::S1644 => "44d",
@@ -422,7 +422,7 @@ mod tests {
         let mut rep = Report::new();
         verify_geometry(Sig::S1644, &mut rep);
         verify_geometry(Sig::S1671, &mut rep);
-        assert_eq!(rep.checks.len(), 14);
+        assert_eq!(rep.checks.len(), 16); // G1..G7 and G10 for each of the two spacetimes
         for c in &rep.checks {
             assert!(c.pass, "check {} fails", c.id);
         }

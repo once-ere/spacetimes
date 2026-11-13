@@ -50,7 +50,7 @@ system can follow the sequence is examined in RS1, Sec. 7.
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
 cargo build --release --manifest-path code/deflation-rs/Cargo.toml
-./code/deflation-rs/target/release/deflation paired     # Sec. 2 and the last part of Sec. 3 (about a minute)
+./code/deflation-rs/target/release/deflation paired     # Sec. 2 and the last part of Sec. 3 (about ten seconds)
 ./code/deflation-rs/target/release/deflation history    # Secs. 3 to 5 (about a minute and a half)
 python3 code/scripts/make_figures.py cjt matter
 python3 code/scripts/write_doc_tables.py

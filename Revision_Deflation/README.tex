@@ -1,0 +1,370 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_Deflation --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Revision\_Deflation --- the 16-component Dirac field and its singlet superfluid on spacetimes whose coordinates x5, x6, x7 deflate exponentially},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Revision\_Deflation --- the 16-component Dirac field and its
+singlet superfluid on spacetimes whose coordinates x5, x6, x7 deflate
+exponentially}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{PROJECT spacetimes: where to start, what was found, and what
+is open}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-folder-is}{%
+\section{What this folder is}\label{what-this-folder-is}}
+
+The main project (the folder above this one) studies a 16-component
+Dirac field on two flat eight-dimensional spacetimes, of signatures 4+4
+and 7+1, and a superfluid of fermion pairs bound by a scalar field, the
+Vorton-Scalar. On November 12, 2026 the author paused the main project
+and instructed that every calculation be repeated under new hypotheses:
+
+\begin{quote}
+the coordinates \(x5\), \(x6\), \(x7\) deflate exponentially; Minkowski
+space is replaced by a pseudo-Riemannian space with a diagonal metric
+whose components along these coordinates are
+\(g_{55}=-\mathrm{const}^2e^{-2\,\mathrm{g55}\,x4}\), and likewise
+\(g_{66}\) with the rate \(\mathrm{g66}\) and \(g_{77}\) with the rate
+\(\mathrm{g77}\).
+\end{quote}
+
+Here \(\mathrm{g55}\), \(\mathrm{g66}\), \(\mathrm{g77}\) are the
+author's names for three positive rates, and \(g_{55}\), \(g_{66}\),
+\(g_{77}\) are components of the metric. This folder contains the
+repetition: programs, data, figures, documents and two manuscripts.
+Nothing in the folder above was changed, except one line of a build
+script (recorded in the provenance P11 of the main project).
+
+\hypertarget{where-to-start}{%
+\section{Where to start}\label{where-to-start}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.2353}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.7647}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+if you want
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+read
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+the two papers &
+\texttt{manuscript/16\ Component\ Dirac\ Fermion\ Condensate\ Singlet\ Superfluid\ on\ 4+4\ Deflating\ Spacetime.pdf}
+and \texttt{...\ on\ 7+1\ Deflating\ Spacetime.pdf} \\
+the geometry and the Dirac equations, derived step by step &
+\texttt{dirac\ matrices\ deflating.pdf} (DMD) \\
+the superfluid on the deflating spacetimes &
+\texttt{supplement/RS1\_vorton\_scalar\_and\_superfluid\_deflating.pdf} \\
+the effective action along the deflation &
+\texttt{supplement/RS4\_effective\_action\_along\_the\_clock.pdf} \\
+the Higgs hypothesis &
+\texttt{supplement/RS2\_higgs\_hypothesis\_deflating.pdf} \\
+cosmology, dark matter, the Hubble tension &
+\texttt{supplement/RS3\_cosmology\_deflating.pdf} \\
+what was assumed, what mirrors what, what is open &
+\texttt{provenance/RP0\_hypotheses\_and\_status.pdf} \\
+the proof that no symbol has two meanings &
+\texttt{provenance/RP1\_master\_symbols\_deflation.pdf} \\
+how to run everything & \texttt{provenance/RP8\_code\_deflation.pdf} \\
+every error that was made &
+\texttt{provenance/RP9\_error\_log\_deflation.pdf} \\
+\end{longtable}
+
+Every document exists as \texttt{.md}, \texttt{.tex} and \texttt{.pdf}.
+
+\hypertarget{what-was-found}{%
+\section{What was found}\label{what-was-found}}
+
+\textbf{Geometry} (DMD, Part 1). The deflating spacetimes are
+homogeneous, with 14, 15 or 20 symmetries (three different, two equal,
+three equal rates) instead of the 36 of flat spacetime. They are not
+vacuum solutions of Einstein's equations. \emph{With three equal rates
+they are exact vacuum solutions of Einstein--Gauss--Bonnet gravity}, for
+a cosmological constant \(3\,\mathrm{g55}^2\) and a Gauss--Bonnet
+coupling \(-1/(4\,\mathrm{g55}^2)\).
+
+\textbf{The Dirac field} (DMD, Parts 2 to 4). A field that does not
+depend on \(x5,x6,x7\) obeys, after a rescaling by the square root of
+the deflating volume, exactly the flat equations. A field that does
+depend on them behaves in opposite ways on the two spacetimes. On
+\textbf{7+1} the deflation creates particles, with a Fermi--Dirac
+spectrum of the temperature \(\mathrm{rate}/2\pi\). On \textbf{4+4}
+every admissible mode that depends on a deflating time is a standing
+wave that is extinguished as the exponential of an exponential:
+\emph{the deflation removes the dependence on the additional times,
+which the main project had to impose by hand.}
+
+\textbf{The superfluid} (RS1, RS4). The model of the main project holds
+unchanged, with a coupling that grows:
+\(\alpha_{VS}\propto e^{\tau_d}\), where \(\tau_d=\mathrm{gsum}\,x4\) is
+the number of e-foldings of the deflating volume; the masses are
+constant. Every threshold of the main project is therefore passed at a
+definite time. The gap grows much faster than the coupling,
+\(d\ln(\mathrm{gap})/d\tau_d=1/\lambda\). Two fermions become bound at a
+scattering resonance. The paired state can follow the deflation only
+once the gap exceeds a few times \(\mathrm{gsum}/\lambda\); before that
+it lags and breaks pairs. A vortex line carries four fermion zero modes,
+two for each direction.
+
+\textbf{The Higgs hypothesis} (RS2). The internal symmetry that gives
+the pair condensate the pattern of the Higgs vacuum survives exactly,
+but on the deflating 7+1 spacetime it is no longer a symmetry of the
+spacetime. And if the condensate were the Higgs field, the electroweak
+scale would follow the growing coupling; atomic clocks then limit the
+rate of deflation to about \(10^{-6}\) of the Hubble constant. \emph{The
+Higgs hypothesis and a deflation of any consequence today exclude each
+other.}
+
+\textbf{Cosmology} (RS3). If gravity is the eight-dimensional Einstein
+theory, Newton's constant grows with the deflation, lunar laser ranging
+limits the rate to \(3\times10^{-3}\) of the Hubble constant, and the
+Hubble constant inferred from the microwave background \emph{falls}. The
+Hubble tension is not relieved. For dark matter the deflation adds an
+epoch of resonant self-interaction and a small change of the growth
+rate; the conclusions of the main project about the masses are
+unchanged.
+
+\hypertarget{what-is-open}{%
+\section{What is open}\label{what-is-open}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The spectra of the microwave background with a time-dependent Newton's
+  constant were not computed (RP0, Sec. 5). The author's decision is
+  requested.
+\item
+  The stability of the Einstein--Gauss--Bonnet solution, and the source
+  of the deflation for unequal rates.
+\item
+  The back-reaction of the created particles (7+1), and a principle that
+  excludes the growing solutions (4+4).
+\item
+  The end of every history: the couplings grow without bound, and the
+  model fails when they become strong.
+\end{enumerate}
+
+The stages of the main project that were paused are listed in its
+provenance P11 and remain paused.
+
+\hypertarget{numbers}{%
+\section{Numbers}\label{numbers}}
+
+The Rust program \texttt{deflation} performs 217 checks; an independent
+Python script 33 of 33; the registry of symbols 6 of 6. All pass. The
+folder contains 14 figures and the data files from which every table and
+figure is made.
+
+\hypertarget{how-to-run-it}{%
+\section{How to run it}\label{how-to-run-it}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
+\ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
+\ExtensionTok{cargo}\NormalTok{ test  }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
+\ControlFlowTok{for}\NormalTok{ c }\KeywordTok{in}\NormalTok{ matrices modes history quench cosmology symmetry channels matter paired}\KeywordTok{;} \ControlFlowTok{do}
+  \ExtensionTok{./code/deflation{-}rs/target/release/deflation} \VariableTok{$c}
+\ControlFlowTok{done}
+\ExtensionTok{python3}\NormalTok{ code/scripts/verify\_deflating\_independent.py}
+\end{Highlighting}
+\end{Shaded}
+
+The provenance RP8 explains every step, and the remaining ones (symbols,
+tables, figures, documents).
+
+\end{document}

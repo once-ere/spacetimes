@@ -91,7 +91,8 @@ python3 code/scripts/assemble_docs.py docs_src/RS1_vorton_scalar_and_superfluid_
 bash code/scripts/build_docs.sh supplement/RS1_vorton_scalar_and_superfluid_deflating.md
 ```
 
-The command `history` takes about a minute, the others a few seconds. The complete
+The command `history` takes about a minute and a half, the command `quench` a quarter
+of a minute, the others a few seconds. The complete
 output of the four commands is reproduced in Appendix A.
 
 ---

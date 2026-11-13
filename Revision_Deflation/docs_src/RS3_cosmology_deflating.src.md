@@ -51,7 +51,7 @@ kept apart throughout, so that the reader can see which conclusion rests on whic
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
 cargo build --release --manifest-path code/deflation-rs/Cargo.toml
-./code/deflation-rs/target/release/deflation cosmology   # Secs. 2 to 4
+./code/deflation-rs/target/release/deflation cosmology   # Secs. 2 to 4 (about a minute)
 ./code/deflation-rs/target/release/deflation matter      # Secs. 5 to 7
 python3 code/scripts/make_figures.py hubble bounds binding
 python3 code/scripts/write_doc_tables.py

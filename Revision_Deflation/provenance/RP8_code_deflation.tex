@@ -1,0 +1,547 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_Deflation --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={RP8 --- The source code of Revision\_Deflation: what computes what, and how to compile and run it},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{RP8 --- The source code of Revision\_Deflation: what computes
+what, and how to compile and run it}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance required by Hard Rule 6 (PROJECT spacetimes,
+Revision\_Deflation)}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 12, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is-for}{%
+\section{1. What this document is for}\label{what-this-document-is-for}}
+
+Hard Rule 6 demands commented source code for every equation, result,
+figure and prediction, instructions for using it, a provenance for every
+computed value, and that the code be executed. This document is the map
+of the code of the revision: which program computes which file, which
+file feeds which figure and which table, how the programs are tested,
+and how to compile and run everything. It follows the provenance P8 of
+the main project, which the reader may consult for the general rules;
+they are the same here:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Rust for every computation.} All physics of the revision is
+  computed by one Rust program, \texttt{deflation} (folder
+  \texttt{code/deflation-rs}: 18 source files, about 6200 lines, 38 unit
+  tests). It uses the program of the main project as a library and no
+  other library.
+\item
+  \textbf{Python for an independent verification, and for tables,
+  figures and documents.} The central results are verified a second time
+  by a Python script that shares no code with the Rust program and uses
+  other methods (computer algebra instead of rational arithmetic; a
+  general-purpose integrator and library Bessel functions instead of the
+  integrator of the program).
+\item
+  \textbf{No number is typed by hand.} Every table of a document is
+  written by a script from a data file that the program wrote; every
+  check quoted in a document is reproduced verbatim in an appendix.
+\end{itemize}
+
+\textbf{Where the code was executed.} On a Linux computer (x86-64) with
+rustc 1.97.0, Python 3.13 (numpy 2.5.3, scipy 1.18.1, sympy 1.14.0,
+mpmath 1.3.0, matplotlib 3.11.2), pandoc and XeLaTeX. As for the main
+project, the assistant could not run the Rust program on the author's
+Mac, where no Rust compiler is reachable from its sandbox; the program
+has no dependency outside the repository and should build and run on
+macOS unchanged.
+
+\hypertarget{how-to-compile-and-run-everything-on-a-mac}{%
+\section{2. How to compile and run everything on a
+Mac}\label{how-to-compile-and-run-everything-on-a-mac}}
+
+Each block can be pasted into the Terminal as it is. A line that begins
+with \texttt{\#} is an explanation and does nothing. The Rust compiler
+and the Python packages are installed as described in P8 of the main
+project, Sec. 2, Steps 1 and 2; if the main project has been run on this
+Mac, nothing needs to be installed. The independent check needs two
+Python packages more than the main project:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# once: the two additional Python packages of the revision (computer algebra; precise special functions)}
+\ExtensionTok{python3} \AttributeTok{{-}m}\NormalTok{ pip install }\AttributeTok{{-}{-}user}\NormalTok{ sympy mpmath}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Step 1: go to the folder of the revision and build the program.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# every command of the revision is run from this folder}
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
+\CommentTok{\# compile the program (the first time this also compiles the program of the main project; about a minute)}
+\ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
+\CommentTok{\# run the 38 unit tests; the last lines must say "test result: ok. 38 passed"}
+\ExtensionTok{cargo}\NormalTok{ test }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Step 2: run the nine commands.} Each prints its checks, one per
+line, beginning with \texttt{{[}PASS{]}} or \texttt{{[}FAIL{]}}, and
+ends with a line such as \texttt{matrices:\ ...\ checks\ passed}.
+Together they take about three and a half minutes and rewrite every file
+of the folder \texttt{data}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# geometry, Dirac matrices, spin connection, Dirac operators           (less than a second)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ matrices}
+\CommentTok{\# solutions of the Dirac equations: creation and extinction           (about 12 seconds)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ modes}
+\CommentTok{\# gap, bound pair, matter, vacuum, temperature along the clock        (about a minute and a half)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ history}
+\CommentTok{\# can the paired state follow the deflation?                          (about 16 seconds)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ quench}
+\CommentTok{\# Hubble constant, bounds on the rate, the exponent under H2          (about a minute)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ cosmology}
+\CommentTok{\# surviving symmetries, vortex zero modes, exponents of the couplings (less than a second)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ symmetry}
+\CommentTok{\# exchange amplitudes, modes of the scalar                            (about a second)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ channels}
+\CommentTok{\# dark matter, growth of structure, drifts                            (about 6 seconds)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ matter}
+\CommentTok{\# the paired state from the effective action                          (about 10 seconds)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ paired}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Step 3: the independent verification} (about 6 seconds; must end
+with ``33 of 33 checks passed'').
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{python3}\NormalTok{ code/scripts/verify\_deflating\_independent.py}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Step 4: symbols, tables, figures, documents.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# the registry of symbols and its six checks (provenance RP1)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py}
+\CommentTok{\# the tables of the documents, from the data files}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_doc\_tables.py}
+\CommentTok{\# the fourteen figures (written to the folder figures as .pdf and .png)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/make\_figures.py}
+\CommentTok{\# the documents: Markdown from the sources, then LaTeX and PDF (needs pandoc and XeLaTeX)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py}
+\FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh}
+\CommentTok{\# the two manuscripts (needs pdflatex with REVTeX 4.2)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/build\_manuscripts.py}
+\end{Highlighting}
+\end{Shaded}
+
+If a command of Step 2 prints a line that begins with
+\texttt{{[}FAIL{]}}, or if the numbers in a document change when Steps 2
+to 4 are repeated, something is wrong and should be reported; on another
+processor the last digits of floating-point results may differ, the
+exact checks may not.
+
+\hypertarget{the-rust-program-file-by-file}{%
+\section{3. The Rust program, file by
+file}\label{the-rust-program-file-by-file}}
+
+All files are in \texttt{code/deflation-rs/src}. Every file begins with
+a description of the physics that it computes, with the formulas; every
+public function is documented.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1905}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1905}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6190}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+file
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+lines
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+content
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{rat.rs} & 223 & exact rational numbers with overflow checks; the
+trait that lets the geometry be computed in rational or in
+floating-point arithmetic \\
+\texttt{qmat.rs} & 201 & exact matrices with complex-rational entries \\
+\texttt{metric.rs} & 714 & the deflating metric: Christoffel symbols,
+Riemann, Ricci and Einstein tensors from their definitions and in closed
+form; Killing vectors; Lie derivative \\
+\texttt{geometry.rs} & 443 & the exact geometry checks \texttt{G1} to
+\texttt{G7}, \texttt{G10} (Lovelock tensors) and the geodesics
+\texttt{G8}, \texttt{G9} \\
+\texttt{curved.rs} & 530 & coordinate matrices, spin connection, Dirac
+operators; checks \texttt{C1} to \texttt{C8}, \texttt{D1} to
+\texttt{D7} \\
+\texttt{modes.rs} & 766 & integration of the mode equations
+(commutator-free Magnus method), creation of particles, bounded
+solutions, modified Bessel function of complex order \\
+\texttt{scalar.rs} & 295 & modes of a scalar field: exponents, static
+source, creation, bounded solutions \\
+\texttt{history.rs} & 274 & the couplings along the clock; thresholds
+and events \\
+\texttt{quench.rs} & 280 & time-dependent mean-field dynamics of the
+shell model \\
+\texttt{cosmo\_defl.rs} & 346 & expansion with deflation, sound horizon,
+age, growth of structure \\
+\texttt{symmetry\_defl.rs} & 217 & test of the 28 rotations and boosts;
+algebra of the vortex zero modes \\
+\texttt{cmd\_symmetry.rs}, \texttt{cmd\_channels.rs},
+\texttt{cmd\_matter.rs}, \texttt{cmd\_paired.rs} & 985 & the commands
+\texttt{symmetry}, \texttt{channels}, \texttt{matter},
+\texttt{paired} \\
+\texttt{main.rs} & 788 & the commands \texttt{matrices}, \texttt{modes},
+\texttt{history}, \texttt{quench}, \texttt{cosmology} \\
+\texttt{io.rs}, \texttt{lib.rs} & 106 & writing of data files and
+reports; list of modules \\
+\end{longtable}
+
+\textbf{What is taken from the program of the main project} (crate
+\texttt{spacetimes}, used as a library and not changed): the Dirac
+matrices and their checks, the routine for the internal symmetry, the
+exchange amplitudes, the gap equation, the bound pair, the effective
+action, the routines for matter, temperature and vacuum, the background
+cosmology without deflation, and linear algebra. The revision calls
+these routines with the couplings of each moment; it does not copy them.
+
+\hypertarget{the-checks}{%
+\section{4. The checks}\label{the-checks}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+command
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+file of checks
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+number
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{matrices} & \texttt{data/flat\_matrix\_checks.txt} (the checks
+of the main project, again) & 106 of 106 \\
+\texttt{matrices} & \texttt{data/deflating\_checks.txt} & 47 of 47 \\
+\texttt{modes} & \texttt{data/mode\_checks.txt} & 7 of 7 \\
+\texttt{history} & \texttt{data/history\_checks.txt} & 8 of 8 \\
+\texttt{quench} & \texttt{data/quench\_checks.txt} & 5 of 5 \\
+\texttt{cosmology} & \texttt{data/cosmology\_checks.txt} & 6 of 6 \\
+\texttt{symmetry} & \texttt{data/symmetry\_checks.txt} & 18 of 18 \\
+\texttt{channels} & \texttt{data/channel\_checks.txt} & 7 of 7 \\
+\texttt{matter} & \texttt{data/matter\_checks.txt} & 6 of 6 \\
+\texttt{paired} & \texttt{data/paired\_checks.txt} & 7 of 7 \\
+Python script & \texttt{data/deflating\_checks\_independent.txt} & 33 of
+33 \\
+symbols & \texttt{data/symbol\_checks\_deflation.txt} & 6 of 6 \\
+\end{longtable}
+
+Each file of checks exists also as \texttt{.csv}. A check marked
+``exact'' is an identity verified in exact rational arithmetic; a check
+marked ``numerical'' states its accuracy. The identifiers begin with
+\texttt{44d-} (deflating 4+4), \texttt{71d-} (deflating 7+1) or
+\texttt{def-} (both); those of the Python script with \texttt{I}; those
+of the symbols with \texttt{RS}.
+
+\emph{Was the independent script itself tested?} Yes: twenty deliberate
+errors were introduced into it, one at a time (a wrong sign in a
+Christoffel symbol, a wrong factor in the Einstein tensor, the wrong
+order of a Bessel function, and so on). The script detected nineteen.
+The twentieth, a change of the term \(\mathrm{gprod}\) in the equation
+of the expansion, cannot be detected by the comparison of Hubble
+constants, because that term is absorbed by the cosmological term (RS3,
+Sec. 2); it is tested by the symbolic check of the Einstein tensor
+instead. The checks of the completeness of the Killing vectors and of
+the Lanczos tensor were added afterwards; the second is validated by the
+agreement of two independent formulas (the program uses the formula for
+curvatures that act on pairs of directions, the script the standard
+formula with four terms).
+
+\hypertarget{the-scripts}{%
+\section{5. The scripts}\label{the-scripts}}
+
+All in \texttt{code/scripts}.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.2353}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.7647}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+script
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+what it does
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{verify\_deflating\_independent.py} & the independent
+verification (Sec. 4) \\
+\texttt{write\_symbol\_registry.py}, \texttt{check\_symbols.py} & the
+registry of the symbols and its six checks (RP1) \\
+\texttt{write\_doc\_tables.py} & writes every table of the documents
+from the data files
+(\texttt{provenance/generated/tables\_deflation.md}) \\
+\texttt{make\_figures.py} & draws the fourteen figures from the data
+files \\
+\texttt{assemble\_docs.py} & inserts tables, registry and program output
+into the document sources (\texttt{docs\_src/*.src.md}) \\
+\texttt{build\_docs.sh}, \texttt{doc\_header.tex},
+\texttt{check\_layout.py} & Markdown to LaTeX to PDF, and a check that
+no line, table cell or formula is wider than its box \\
+\texttt{build\_manuscripts.py}, \texttt{tex2md.py} & the two manuscripts
+from one source; their Markdown versions \\
+\end{longtable}
+
+\hypertarget{which-data-file-feeds-which-figure}{%
+\section{6. Which data file feeds which
+figure}\label{which-data-file-feeds-which-figure}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2222}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5556}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2222}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+figure
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+data files
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+in
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{fig\_geodesics} & \texttt{geodesic\_1671d.csv},
+\texttt{geodesic\_1644d.csv} & DMD \\
+\texttt{fig\_isometries} & \texttt{isometries.csv} & DMD, RS2 \\
+\texttt{fig\_creation} & \texttt{creation\_single.csv},
+\texttt{creation\_history.csv}, \texttt{creation\_anisotropic.csv},
+\texttt{boson\_creation.csv} & DMD \\
+\texttt{fig\_extinction} & \texttt{extinction\_profile.csv},
+\texttt{boson\_bounded.csv} & DMD \\
+\texttt{fig\_clock} & \texttt{coupling\_exponents.csv},
+\texttt{events.csv} & RS1 \\
+\texttt{fig\_scalar} & \texttt{scalar\_zero\_modes.csv},
+\texttt{static\_source.csv} & RS1 \\
+\texttt{fig\_kernels} & \texttt{pair\_channel\_kernel.csv} & RS1 \\
+\texttt{fig\_gap\_history} & \texttt{gap\_history.csv} & RS1 \\
+\texttt{fig\_binding} & \texttt{dimer\_history.csv},
+\texttt{dm\_resonance.csv} & RS1, RS3 \\
+\texttt{fig\_quench} & \texttt{quench\_history.csv},
+\texttt{quench\_summary.csv} & RS1 \\
+\texttt{fig\_cjt\_history} & \texttt{cjt\_history.csv} & RS4 \\
+\texttt{fig\_matter\_history} & \texttt{medium\_history.csv},
+\texttt{matter\_saturation.csv}, \texttt{vacuum\_history.csv},
+\texttt{thermal\_history.csv} & RS4 \\
+\texttt{fig\_hubble} & \texttt{hubble\_deflation.csv},
+\texttt{hubble\_mass\_loss.csv}, \texttt{growth\_deflation.csv} & RS3 \\
+\texttt{fig\_bounds} & \texttt{deflation\_bounds.csv} & RS3, RS2 \\
+\end{longtable}
+
+Every data file begins with lines that state which program and which
+command wrote it and what its columns mean.
+
+\end{document}
