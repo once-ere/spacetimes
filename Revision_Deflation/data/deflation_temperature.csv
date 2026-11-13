@@ -4,6 +4,6 @@
 # command: deflation matter
 bound,gsum_over_H0,hbar_rate_eV,T_K,exponent_1keV,exponent_1GeV
 lunar laser ranging (A2),3.237e-3,1.550e-36,2.863e-33,4.05e39,4.05e45
-"nucleosynthesis, G (A2)",6.440e-2,3.085e-35,5.697e-32,2.04e38,2.04e44
+"nucleosynthesis, G_N (A2)",6.440e-2,3.085e-35,5.697e-32,2.04e38,2.04e44
 "nucleosynthesis, G_F (H2), 20 per cent",2.340e-1,1.121e-34,2.070e-31,5.61e37,5.61e43
 gsum = H_0,1.000e0,4.790e-34,8.846e-31,1.31e37,1.31e43

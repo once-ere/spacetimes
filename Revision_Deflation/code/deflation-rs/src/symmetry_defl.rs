@@ -6,8 +6,8 @@
 //!     rotations and boosts, one for each pair (A, B) of coordinates, generated on spinors
 //!     by the scaled commutators Sigma^(AB).  On the deflating spacetime a rotation of
 //!     the pair (A, B), neither of which is x4, is the vector field
-//!         xi = u x^A d/dx^B - w x^B d/dx^A .
-//!     The Killing equations require u and w to be constants with g_BB u = g_AA w; this
+//!         xi = c_B x^A d/dx^B - c_A x^B d/dx^A .
+//!     The Killing equations require c_A and c_B to be constants with g_BB c_B = g_AA c_A; this
 //!     can hold at every x4 only if g_AA/g_BB does not depend on x4, that is, if the two
 //!     coordinates deflate at the same rate (or not at all).  A boost or rotation that
 //!     involves x4 shifts x4 by an amount that depends on position and changes the scale
@@ -29,11 +29,11 @@
 //!         h = alpha^j p_j + g phi1 beta + g phi2 (i beta chi) .
 //!     For a straight line along x3 around which the phase of Phi_VS winds once,
 //!     phi1 + i phi2 ~ f(r) exp(i theta) in the plane (x1, x2), the solutions of zero
-//!     energy that do not depend on x3 are exp(-m Int f dr) u with a constant spinor u
+//!     energy that do not depend on x3 are exp(-m Int f dr) w0 with a constant spinor w0
 //!     that satisfies
-//!         (i beta alpha^1) u = -u ,       (alpha^2 beta chi) u = -u .
+//!         (i beta alpha^1) w0 = -w0 ,       (alpha^2 beta chi) w0 = -w0 .
 //!     The two matrices are commuting Hermitian involutions.  Exact results (both
-//!     spacetimes): the space of such u has dimension 4; the product of the five
+//!     spacetimes): the space of such w0 has dimension 4; the product of the five
 //!     matrices, Pc = i alpha^1 alpha^2 alpha^3 chi, is a central Hermitian traceless
 //!     involution (the generator of U(1)_E up to sign); on the four zero modes
 //!     alpha^3 = Pc, with the eigenvalues +1, +1, -1, -1.  Since the energy of a zero mode
@@ -119,7 +119,7 @@ impl VortexAlgebra {
         VortexAlgebra { five: vec![alpha[0].clone(), alpha[1].clone(), alpha[2].clone(), beta, b5], inv1, inv2, pc }
     }
 
-    /// The projector on the spinors with inv1 = s1, inv2 = s2 (s1, s2 = +-1).
+    /// The projector on the spinors w0 with inv1 = s1, inv2 = s2 (s1, s2 = +-1).
     pub fn projector(&self, s1: i128, s2: i128) -> QMat {
         let one = QMat::identity(16);
         let a = one.add(&self.inv1.scale(Qc::int(s1)));
@@ -165,15 +165,15 @@ pub fn vortex_checks(gm: &Gammas, sig: Sig) -> Vec<(String, bool)> {
     // zero-mode equation for winding +1 and -1, and alpha^3 on the zero modes
     let (a1, a2, a3, beta, b5) = (&v.five[0], &v.five[1], &v.five[2], &v.five[3], &v.five[4]);
     let pm = v.projector(-1, -1);
-    // (i alpha^1 + beta) u = 0 and (i alpha^2 + i beta chi) u = 0
+    // (i alpha^1 + beta) w0 = 0 and (i alpha^2 + i beta chi) w0 = 0
     let eq_plus = a1.times_i().add(beta).mul(&pm).is_zero() && a2.times_i().add(b5).mul(&pm).is_zero();
     let a3_plus = a3.sub(&v.pc).mul(&pm).is_zero();
     let split_plus = pm.mul(a3).trace().is_zero();
-    out.push(("winding +1: every u with (i beta alpha^1) u = -u, (alpha^2 beta chi) u = -u solves the zero-energy equations (i alpha^1 + beta) u = 0, (i alpha^2 + i beta chi) u = 0; on these four spinors alpha^3 = Pc, and its trace vanishes: two zero modes have alpha^3 = +1 (energy +k_3) and two alpha^3 = -1 (energy -k_3)".into(), eq_plus && a3_plus && split_plus));
+    out.push(("winding +1: every w0 with (i beta alpha^1) w0 = -w0, (alpha^2 beta chi) w0 = -w0 solves the zero-energy equations (i alpha^1 + beta) w0 = 0, (i alpha^2 + i beta chi) w0 = 0; on these four spinors alpha^3 = Pc, and its trace vanishes: two zero modes have alpha^3 = +1 (energy +k_3) and two alpha^3 = -1 (energy -k_3)".into(), eq_plus && a3_plus && split_plus));
     let pn = v.projector(-1, 1);
     let eq_minus = a1.times_i().add(beta).mul(&pn).is_zero() && a2.times_i().sub(b5).mul(&pn).is_zero();
     let a3_minus = a3.add(&v.pc).mul(&pn).is_zero();
-    out.push(("winding -1: the spinors with (i beta alpha^1) u = -u, (alpha^2 beta chi) u = +u solve (i alpha^1 + beta) u = 0, (i alpha^2 - i beta chi) u = 0, and on them alpha^3 = -Pc: the directions of motion are exchanged".into(), eq_minus && a3_minus));
+    out.push(("winding -1: the spinors w0 with (i beta alpha^1) w0 = -w0, (alpha^2 beta chi) w0 = +w0 solve (i alpha^1 + beta) w0 = 0, (i alpha^2 - i beta chi) w0 = 0, and on them alpha^3 = -Pc: the directions of motion are exchanged".into(), eq_minus && a3_minus));
     out
 }
 

@@ -10,34 +10,34 @@
 //! sqrt|g| = b_5 b_6 b_7 falls as exp(-gsum x4).  The first-derivative term has the sign
 //! opposite to the friction term of an expanding universe: the deflation feeds the field.
 //!
-//! For a field of mass M proportional to exp(i k.x + i kappa_t x^t), the weighted field
+//! For a field of mass m_b proportional to exp(i k.x + i k_t x^t), the weighted field
 //! Shat = sqrt(b_5 b_6 b_7) S = exp(-gsum x4/2) S obeys
 //!
-//!   Shat'' + [ Omega0^2 + sgn Q(x4)^2 ] Shat = 0 ,     Omega0^2 = k^2 + M^2 - gsum^2/4 ,
+//!   Shat'' + [ varpi_b^2 + sgn k_d(x4)^2 ] Shat = 0 ,     varpi_b^2 = k^2 + m_b^2 - gsum^2/4 ,
 //!
-//! with sgn = +1 on 7+1 and -1 on 4+4 and Q^2 = sum_t kappa_t^2/b_t^2.  The radial mode of
-//! the Vorton-Scalar has M = m_s, the phase mode M = 0.
+//! with sgn = +1 on 7+1 and -1 on 4+4 and k_d^2 = sum_t k_t^2/b_t^2.  The radial mode of
+//! the Vorton-Scalar has m_b = m_s, the phase mode m_b = 0.
 //!
 //! WHAT THIS MODULE COMPUTES.
-//!  (a) Fields that do not depend on x5, x6, x7 (Q = 0): S goes as exp(sigma x4) with
-//!      sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - M^2).  For k^2 + M^2 > gsum^2/4 the weighted
-//!      field oscillates with the constant frequency Omega0 (the number of quanta is
-//!      conserved); for k^2 + M^2 < gsum^2/4 it does not oscillate.  For the phase mode the
+//!  (a) Fields that do not depend on x5, x6, x7 (k_d = 0): S goes as exp(sigma x4) with
+//!      sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_b^2).  For k^2 + m_b^2 > gsum^2/4 the weighted
+//!      field oscillates with the constant frequency varpi_b (the number of quanta is
+//!      conserved); for k^2 + m_b^2 < gsum^2/4 it does not oscillate.  For the phase mode the
 //!      band k < gsum/2 always exists.
 //!  (b) The field of a static source.  A source at rest that is spread uniformly over the
 //!      deflating coordinates has a proper density proportional to 1/sqrt|g|, that is to
-//!      exp(+gsum x4).  For S'' - gsum S' + (k^2 + M^2) S = J exp(gsum x4) the particular
-//!      solution is S = J exp(gsum x4)/(k^2 + M^2), exactly: the field of the source is the
-//!      Yukawa field of the mass M itself, with a strength that grows as exp(gsum x4); the
+//!      exp(+gsum x4).  For S'' - gsum S' + (k^2 + m_b^2) S = J exp(gsum x4) the particular
+//!      solution is S = J exp(gsum x4)/(k^2 + m_b^2), exactly: the field of the source is the
+//!      Yukawa field of the mass m_b itself, with a strength that grows as exp(gsum x4); the
 //!      shift -gsum^2/4 does not enter.  `static_source_response` integrates the equation
 //!      from zero initial data and shows that the solution approaches this form.
-//!  (c) 7+1, Q != 0: the number of quanta that the deflation creates in a mode that starts
-//!      empty.  For one non-zero kappa_t the solutions are Bessel functions of the order
-//!      i Omega0/rate_t and the number is exactly 1/(exp(2 pi Omega0/rate_t) - 1), a
+//!  (c) 7+1, k_d != 0: the number of quanta that the deflation creates in a mode that starts
+//!      empty.  For one non-zero k_t the solutions are Bessel functions of the order
+//!      i varpi_b/rate_t and the number is exactly 1/(exp(2 pi varpi_b/rate_t) - 1), a
 //!      Bose-Einstein law with the temperature rate_t/(2 pi).  Computed numerically here.
-//!  (d) 4+4, Q != 0: beyond the turning value of x4 (Q = Omega0) one solution grows and
-//!      one decays; the bounded solution is the modified Bessel function K_{i nu}(s), s = Q/rate_t,
-//!      nu = Omega0/rate_t, a standing wave at early times.
+//!  (d) 4+4, k_d != 0: beyond the turning value of x4 (k_d = varpi_b) one solution grows and
+//!      one decays; the bounded solution is the modified Bessel function K_{i varpi_b/rate_t}(u), u = k_d/rate_t,
+//!      a standing wave at early times.
 //!
 //! METHOD.  The second-order equation is written as a first-order system for (y, y') and
 //! integrated with the same commutator-free Magnus method of order four as the Dirac
@@ -52,7 +52,7 @@ const CF4_A1: f64 = 0.25 + 0.288_675_134_594_812_9;
 const CF4_A2: f64 = 0.25 - 0.288_675_134_594_812_9;
 
 /// The two exponents sigma of S ~ exp(sigma x4) for a field that does not depend on the
-/// deflating coordinates: sigma = gsum/2 +- sqrt(gsum^2/4 - w2), w2 = k^2 + M^2.
+/// deflating coordinates: sigma = gsum/2 +- sqrt(gsum^2/4 - w2), w2 = k^2 + m_b^2.
 /// Returns (real part of both, imaginary part or 0, real square root or 0).
 pub fn zero_mode_exponents(w2: f64, gsum: f64) -> (C64, C64) {
     let disc = 0.25 * gsum * gsum - w2;
@@ -100,8 +100,8 @@ pub struct BosonCreation {
 }
 
 /// 7+1: number of quanta created in the mode with the squared frequency
-/// w2(x4) = omega0^2 + Q(x4)^2, starting empty at Q = q_start omega0 and ending at
-/// Q = q_end omega0.  Positive- and negative-frequency parts are separated with the WKB
+/// w2(x4) = varpi_b^2 + k_d(x4)^2, starting empty at k_d = q_start varpi_b and ending at
+/// k_d = q_end varpi_b.  Positive- and negative-frequency parts are separated with the WKB
 /// modes of first adiabatic order, f = exp(-i Int omega)/sqrt(2 omega), f' = (-i omega - omega'/(2 omega)) f.
 pub fn boson_creation(omega0: f64, kappa: &[f64; 3], bg: &Background, q_start: f64, q_end: f64, phase: f64, slow: f64) -> BosonCreation {
     let t0 = bg.x4_where_q_is(kappa, q_start * omega0);
@@ -147,16 +147,16 @@ pub fn boson_creation(omega0: f64, kappa: &[f64; 3], bg: &Background, q_start: f
     BosonCreation { omega0, n: b2, norm_dev: a2 - b2 - 1.0, steps }
 }
 
-/// The exact number of created quanta for one non-zero kappa_t: 1/(exp(2 pi omega0/rate) - 1).
+/// The exact number of created quanta for one non-zero k_t: 1/(exp(2 pi varpi_b/rate) - 1).
 pub fn bose_einstein_creation(omega0: f64, rate: f64) -> f64 {
     1.0 / ((2.0 * std::f64::consts::PI * omega0 / rate).exp() - 1.0)
 }
 
-/// 4+4: the bounded solution of Shat'' + [omega0^2 - Q(x4)^2] Shat = 0, integrated
+/// 4+4: the bounded solution of Shat'' + [varpi_b^2 - k_d(x4)^2] Shat = 0, integrated
 /// backwards from the x4 at which the WKB exponent beyond the turning value is `s_late`
-/// down to Q = q_early omega0.  Returns the samples (x4, Q/omega0, Shat^2 normalized to
+/// down to k_d = q_early varpi_b.  Returns the samples (x4, k_d/varpi_b, Shat^2 normalized to
 /// its maximum) and the ratio of the amplitudes of the two travelling waves
-/// exp(-+ i omega0 x4) at the early time, |c_-/c_+| (1 for a standing wave).
+/// exp(-+ i varpi_b x4) at the early time, |c_-/c_+| (1 for a standing wave).
 pub fn boson_bounded(omega0: f64, kappa: &[f64; 3], bg: &Background, s_late: f64, q_early: f64, phase: f64, slow: f64) -> (Vec<[f64; 3]>, f64) {
     let rmax = bg.rate.iter().cloned().fold(0.0, f64::max);
     let x4_turn = bg.x4_where_q_is(kappa, omega0);
@@ -206,8 +206,8 @@ pub fn boson_bounded(omega0: f64, kappa: &[f64; 3], bg: &Background, s_late: f64
     (prof, ratio)
 }
 
-/// Shat^2 of the exact bounded solution for one non-zero kappa_t, up to a constant:
-/// K_{i nu}(s)^2 with s = Q/rate_t and nu = omega0/rate_t (K of imaginary order is real).
+/// Shat^2 of the exact bounded solution for one non-zero k_t, up to a constant:
+/// K_{i varpi_b/rate_t}(u)^2 with u = k_d/rate_t (K of imaginary order is real); arguments: u and the ratio varpi_b/rate_t.
 pub fn boson_bounded_exact(s: f64, nu: f64) -> f64 {
     bessel_k(C64::new(0.0, nu), s).norm_sqr()
 }
@@ -245,7 +245,7 @@ mod tests {
         // massless, k = 0: sigma = gsum and 0
         let (a, b) = zero_mode_exponents(0.0, 3.0);
         assert!((a.re - 3.0).abs() < 1e-15 && b.re.abs() < 1e-15 && a.im == 0.0);
-        // k^2 + M^2 = 4, gsum = 2: sigma = 1 +- i sqrt(3)
+        // k^2 + m_b^2 = 4, gsum = 2: sigma = 1 +- i sqrt(3)
         let (a, b) = zero_mode_exponents(4.0, 2.0);
         assert!((a.re - 1.0).abs() < 1e-15 && (a.im - 3f64.sqrt()).abs() < 1e-15 && (b.im + 3f64.sqrt()).abs() < 1e-15);
     }

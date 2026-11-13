@@ -15,19 +15,19 @@
 //! and with the extra term +(gsum^2/4)|Phihat|^2 for the scalar (module `scalar`).
 //! Hence, with the DEFLATION CLOCK
 //!
-//!     tau = gsum (x4 - x4_ref),        Dd(tau) = Vd(x4_ref)/Vd(x4) = exp(tau),
+//!     tau_d = gsum (x4 - x4_ref),        Dd(tau_d) = Vd(x4_ref)/Vd(x4) = exp(tau_d),
 //!
 //!     m = y v/sqrt(2)  and  m_s = sqrt(2 lambda) v      do not change;
-//!     g_VS = m/v ~ exp(tau/2);   alpha_VS = g_VS^2/(4 pi),  G_VS,  D_VS = alpha_VS m/m_s,
-//!     C = g_VS^2 m^2/m_s^2 = 4 pi alpha_VS (m/m_s)^2          all grow as exp(tau).
+//!     g_VS = m/v ~ exp(tau_d/2);   alpha_VS = g_VS^2/(4 pi),  G_VS,  D_VS = alpha_VS m/m_s,
+//!     C = g_VS^2 m^2/m_s^2 = 4 pi alpha_VS (m/m_s)^2          all grow as exp(tau_d).
 //!
 //! Only the SUM of the three rates enters, and the constants const5, const6, const7 only
 //! through the values of the couplings at the reference time.
 //!
 //! WHAT THIS MODULE DOES.  It calls the solvers of the main project (gap equation, bound
 //! pair, normal matter, vacuum potential, finite temperature, vacuum condensate) along
-//! the clock, and converts every threshold of the main project into a value of tau,
-//! that is, into a time.  "Adiabatic" throughout: at each tau the equilibrium state for
+//! the clock, and converts every threshold of the main project into a value of tau_d,
+//! that is, into a time.  "Adiabatic" throughout: at each tau_d the equilibrium state for
 //! the couplings of that moment is computed.  Whether the state can follow is the
 //! subject of the module `quench`.
 //!
@@ -43,7 +43,7 @@ const PI: f64 = std::f64::consts::PI;
 /// The couplings of the model as functions of the deflation clock.
 #[derive(Clone, Copy, Debug)]
 pub struct Clock {
-    /// alpha_VS at the reference time tau = 0
+    /// alpha_VS at the reference time tau_d = 0
     pub alpha_ref: f64,
     /// m_s/m (constant)
     pub ms: f64,
@@ -113,7 +113,7 @@ pub fn gap_point(g: f64, m_s: f64, k_f: f64, with_tc: bool) -> GapRow {
     GapRow { g, alpha: g * g / (4.0 * PI), lambda_s: lam_s, lambda_p: lam_p, gap_v: gaps[0] / ef, gap_t: gaps[1] / ef, gap_s: gaps[2] / ef, tc_over_gap, ef }
 }
 
-/// The gap along the clock: `n` values of tau between tau_a and tau_b, with g = g_ref exp(tau/2).
+/// The gap along the clock: `n` values of tau_d between tau_a and tau_b, with g = g_ref exp(tau_d/2).
 pub fn gap_history(g_ref: f64, m_s: f64, k_f: f64, tau_a: f64, tau_b: f64, n: usize, with_tc: bool) -> Vec<(f64, GapRow)> {
     (0..n)
         .map(|i| {

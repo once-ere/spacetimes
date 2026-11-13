@@ -1,43 +1,43 @@
 //! Solutions of the two Dirac equations on the deflating spacetimes, mode by mode.
 //!
-//! A mode is a solution proportional to exp(i p_a x^a + i kappa_t x^t): p_a (a = 0..3)
-//! are the wavenumbers along the flat space coordinates x0..x3, kappa_t (t = 5, 6, 7) the
+//! A mode is a solution proportional to exp(i p_a x^a + i k_t x^t): p_a (a = 0..3)
+//! are the wavenumbers along the flat space coordinates x0..x3, k_t (t = 5, 6, 7) the
 //! wavenumbers along the deflating coordinates.  Both are constants of the motion,
 //! because the metric depends on x4 only.  What changes with x4 is the *physical*
 //! wavenumber along a deflating coordinate,
 //!
-//!     q_t(x4) = kappa_t / b_t(x4) = (kappa_t / const_t) exp(+rate_t x4),      Q(x4)^2 = q_5^2 + q_6^2 + q_7^2,
+//!     q_t(x4) = k_t / b_t(x4) = (k_t / const_t) exp(+rate_t x4),      k_d(x4)^2 = q_5^2 + q_6^2 + q_7^2,
 //!
 //! which grows exponentially (rate_t = g55, g66, g77 for t = 5, 6, 7).  The weighted
 //! field psihat = sqrt(b_5 b_6 b_7) psi obeys (checks 71d-D2, 44d-D2 of `curved.rs`)
 //!
-//!   7+1:   i d psihat/dx4 = h(x4) psihat,   h = m beta + p_a alpha^a + sum_t q_t(x4) alpha^t,   h^2 = (eps^2 + Q^2) 1,
-//!   4+4:     d psihat/dx4 = K(x4) psihat,   K = K0 + sum_t q_t(x4) N_t,                         K^2 = (Q^2 - eps^2) 1,
+//!   7+1:   i d psihat/dx4 = h(x4) psihat,   h = m beta + p_a alpha^a + sum_t q_t(x4) alpha^t,   h^2 = (E_perp^2 + k_d^2) 1,
+//!   4+4:     d psihat/dx4 = K(x4) psihat,   K = K0 + sum_t q_t(x4) N_t,                         K^2 = (k_d^2 - E_perp^2) 1,
 //!          K0 = -m gamma^4 + i p_a gamma^4 gamma^a  (anti-Hermitian),  N_t = i gamma^4 gamma^t  (Hermitian, N_t^2 = 1),
 //!
-//! with eps^2 = m^2 + p_0^2 + p_1^2 + p_2^2 + p_3^2.
+//! with E_perp^2 = m^2 + p_0^2 + p_1^2 + p_2^2 + p_3^2.
 //!
 //! 7+1: PAIR CREATION.  h(x4) is Hermitian: the evolution is unitary, but the positive-
 //! and negative-energy states of early times are mixed by the time the mode has become
 //! energetic.  The expectation number of particles found at late times in a mode that
 //! was empty at early times is the square of the Bogoliubov coefficient.  For one
-//! non-zero kappa_t the equation is solved by Bessel functions of the order
-//! 1/2 + i eps/rate_t and the result is exactly
+//! non-zero k_t the equation is solved by Bessel functions of the order
+//! 1/2 + i E_perp/rate_t and the result is exactly
 //!
-//!     n = 1 / ( exp(2 pi eps / rate_t) + 1 ),
+//!     n = 1 / ( exp(2 pi E_perp / rate_t) + 1 ),
 //!
-//! a Fermi-Dirac distribution in eps with the temperature rate_t/(2 pi).  This module
+//! a Fermi-Dirac distribution in E_perp with the temperature rate_t/(2 pi).  This module
 //! computes n numerically for any mode and any rates, and compares.
 //!
-//! 4+4: EXTINCTION.  K(x4) is not anti-Hermitian when kappa != 0, and beyond the value
-//! of x4 at which Q = eps its eigenvalues are real, +-sqrt(Q^2 - eps^2): of the sixteen
+//! 4+4: EXTINCTION.  K(x4) is not anti-Hermitian when k_t != 0, and beyond the value
+//! of x4 at which k_d = E_perp its eigenvalues are real, +-sqrt(k_d^2 - E_perp^2): of the sixteen
 //! solutions eight grow and eight decay faster than any exponential.  The bounded
 //! solutions (the decaying ones) are computed here by integrating backwards in x4.
-//! For one non-zero kappa_t they are, exactly,
+//! For one non-zero k_t they are, exactly,
 //!
-//!     psihat = sqrt(s) K_{1/2 + i mu}(s) w - sqrt(s) K_{1/2 - i mu}(s) N_t w,   s = q_t/rate_t,  mu = eps/rate_t,
+//!     psihat = sqrt(u) K_{1/2 + i E_perp/rate_t}(u) w - sqrt(u) K_{1/2 - i E_perp/rate_t}(u) N_t w,   u = q_t/rate_t,
 //!
-//! with the modified Bessel function K and any w of positive energy (i K0 w = eps w).
+//! with the modified Bessel function K and any w of positive energy (i K0 w = E_perp w).
 //! They are standing waves at early times and fall off as exp(-s) at late times.
 //!
 //! NUMERICAL METHOD.  The equations are integrated with the commutator-free Magnus
@@ -70,16 +70,16 @@ impl Background {
     pub fn b(&self, i: usize, x4: f64) -> f64 {
         self.cst[i] * (-self.rate[i] * x4).exp()
     }
-    /// The physical wavenumbers q_t = kappa_t / b_t(x4).
+    /// The physical wavenumbers q_t = k_t / b_t(x4).
     pub fn q(&self, kappa: &[f64; 3], x4: f64) -> [f64; 3] {
         [kappa[0] / self.b(0, x4), kappa[1] / self.b(1, x4), kappa[2] / self.b(2, x4)]
     }
-    /// Q(x4) = sqrt(q_5^2 + q_6^2 + q_7^2).
+    /// k_d(x4) = sqrt(q_5^2 + q_6^2 + q_7^2).
     pub fn q_norm(&self, kappa: &[f64; 3], x4: f64) -> f64 {
         let q = self.q(kappa, x4);
         (q[0] * q[0] + q[1] * q[1] + q[2] * q[2]).sqrt()
     }
-    /// The value of x4 at which Q equals `target` (Q increases monotonically with x4).
+    /// The value of x4 at which k_d equals `target` (k_d increases monotonically with x4).
     pub fn x4_where_q_is(&self, kappa: &[f64; 3], target: f64) -> f64 {
         let (mut lo, mut hi) = (-1.0, 1.0);
         while self.q_norm(kappa, lo) > target {
@@ -109,7 +109,7 @@ pub struct Mode {
 }
 
 impl Mode {
-    /// eps = sqrt(m^2 + |p|^2): the energy of the mode before the deflation acts on it.
+    /// E_perp = sqrt(m^2 + |p|^2): the energy of the mode before the deflation acts on it.
     pub fn eps(&self) -> f64 {
         (self.m * self.m + self.p.iter().map(|x| x * x).sum::<f64>()).sqrt()
     }
@@ -236,7 +236,7 @@ pub struct Creation {
     /// deviation of the evolved states from orthonormality
     pub unitarity: f64,
     pub steps: usize,
-    /// (x4, Q/eps, mean adiabatic particle number) along the way
+    /// (x4, k_d/E_perp, mean adiabatic particle number) along the way
     pub history: Vec<[f64; 3]>,
 }
 
@@ -363,8 +363,8 @@ impl Dirac71 {
     }
 
     /// The number of particles that the deflation creates in a mode that starts in the
-    /// vacuum: the eight positive-energy states at an early time (Q = `q_start` eps) are
-    /// evolved to a late time (Q = `q_end` eps) and projected on the negative-energy
+    /// vacuum: the eight positive-energy states at an early time (k_d = `q_start` E_perp) are
+    /// evolved to a late time (k_d = `q_end` E_perp) and projected on the negative-energy
     /// states there, in the first superadiabatic basis at both ends.
     pub fn creation(&self, mode: &Mode, bg: &Background, q_start: f64, q_end: f64, phase: f64, slow: f64, with_history: bool) -> Creation {
         let eps = mode.eps();
@@ -401,7 +401,7 @@ impl Dirac71 {
     }
 }
 
-/// The exact number of created particles for one non-zero kappa_t: 1/(exp(2 pi eps/rate) + 1).
+/// The exact number of created particles for one non-zero k_t: 1/(exp(2 pi E_perp/rate) + 1).
 pub fn fermi_dirac_creation(eps: f64, rate: f64) -> f64 {
     1.0 / ((2.0 * std::f64::consts::PI * eps / rate).exp() + 1.0)
 }
@@ -425,10 +425,10 @@ pub struct Dirac44 {
 #[derive(Clone, Debug)]
 pub struct Extinction {
     pub eps: f64,
-    /// x4 at which Q = eps (the turning value) and x4 at which the backward integration started
+    /// x4 at which k_d = E_perp (the turning value) and x4 at which the backward integration started
     pub x4_turn: f64,
     pub x4_late: f64,
-    /// exponent S = integral of sqrt(Q^2 - eps^2) dx4 from the turning value to x4_late (quadrature)
+    /// exponent S = integral of sqrt(k_d^2 - E_perp^2) dx4 from the turning value to x4_late (quadrature)
     pub s_wkb: f64,
     /// smallest and largest logarithm of the amplification of the eight bounded solutions between x4_late and the early time
     pub log_amp_min: f64,
@@ -437,7 +437,7 @@ pub struct Extinction {
     pub standing_wave_dev: f64,
     /// |psihat^dagger W psihat| / |psihat^dagger psihat| of the bounded solutions at early times (0 = no covariant charge)
     pub charge_ratio: f64,
-    /// (x4, Q/eps, |psihat|^2 normalized to its maximum) of one bounded solution
+    /// (x4, k_d/E_perp, |psihat|^2 normalized to its maximum) of one bounded solution
     pub profile: Vec<[f64; 3]>,
     pub steps: usize,
 }
@@ -463,7 +463,7 @@ impl Dirac44 {
         Dirac44 { g4: g[4].clone(), g4g, n, w }
     }
 
-    /// K0 = -m gamma^4 + i sum_a p_a gamma^4 gamma^a: anti-Hermitian, K0^2 = -eps^2.
+    /// K0 = -m gamma^4 + i sum_a p_a gamma^4 gamma^a: anti-Hermitian, K0^2 = -E_perp^2.
     pub fn k0(&self, mode: &Mode) -> CMat {
         let mut k = self.g4.scale(-mode.m);
         for a in 0..4 {
@@ -497,7 +497,7 @@ impl Dirac44 {
         let q1 = bg.q(&mode.kappa, x4 + CF4_C1 * dt);
         let q2 = bg.q(&mode.kappa, x4 + CF4_C2 * dt);
         for (wa, wb) in [(CF4_A1, CF4_A2), (CF4_A2, CF4_A1)] {
-            // exponent: dt A,  A = (wa + wb) K0 + sum_t (wa q1_t + wb q2_t) N_t,  A^2 = s 1,  s = -c0^2 eps^2 + sum c_t^2
+            // exponent: dt A,  A = (wa + wb) K0 + sum_t (wa q1_t + wb q2_t) N_t,  A^2 = s 1,  s = -c0^2 E_perp^2 + sum c_t^2
             let c0 = wa + wb;
             let c = [wa * q1[0] + wb * q2[0], wa * q1[1] + wb * q2[1], wa * q1[2] + wb * q2[2]];
             let s = -c0 * c0 * eps * eps + c[0] * c[0] + c[1] * c[1] + c[2] * c[2];
@@ -515,19 +515,19 @@ impl Dirac44 {
         }
     }
 
-    /// The bounded solutions of a mode with kappa != 0.
+    /// The bounded solutions of a mode with k_t != 0.
     ///
     /// The eight decaying solutions are identified at a late x4 (where the WKB exponent
     /// counted from the turning value equals `s_late`) as the eigenvectors of K with the
-    /// eigenvalue -sqrt(Q^2 - eps^2), and are integrated backwards to an early time
-    /// (Q = `q_early` eps).  Backwards they grow, so the admixture of growing solutions
+    /// eigenvalue -sqrt(k_d^2 - E_perp^2), and are integrated backwards to an early time
+    /// (k_d = `q_early` E_perp).  Backwards they grow, so the admixture of growing solutions
     /// introduced by rounding dies out: the backward integration is stable.
     pub fn bounded(&self, mode: &Mode, bg: &Background, s_late: f64, q_early: f64, phase: f64, slow: f64) -> Extinction {
         let eps = mode.eps();
         let k0 = self.k0(mode);
         let x4_turn = bg.x4_where_q_is(&mode.kappa, eps);
         let rmax = bg.rate.iter().cloned().fold(0.0, f64::max);
-        // find x4_late: integrate lambda = sqrt(Q^2 - eps^2) by the midpoint rule until the exponent is s_late
+        // find x4_late: integrate lambda = sqrt(k_d^2 - E_perp^2) by the midpoint rule until the exponent is s_late
         let mut t = x4_turn;
         let mut s_acc = 0.0;
         let dts = 1e-4 / rmax;
@@ -650,8 +650,8 @@ pub fn bessel_k(nu: C64, s: f64) -> C64 {
     sum
 }
 
-/// |psihat|^2 of the exact bounded solution for one non-zero kappa_t, up to a constant
-/// factor:  2 s |K_{1/2 + i mu}(s)|^2  with s = q_t/rate_t and mu = eps/rate_t.
+/// |psihat|^2 of the exact bounded solution for one non-zero k_t, up to a constant
+/// factor:  2 u |K_{1/2 + i E_perp/rate_t}(u)|^2  with u = q_t/rate_t (arguments: u, and the ratio E_perp/rate_t).
 pub fn bounded_profile_exact(s: f64, mu: f64) -> f64 {
     2.0 * s * bessel_k(C64::new(0.5, mu), s).norm_sqr()
 }
@@ -744,7 +744,7 @@ mod tests {
         // all eight solutions are amplified (backwards) by the same factor, close to exp(S)
         assert!((r.log_amp_max - r.log_amp_min).abs() < 1e-6);
         assert!((r.log_amp_min - r.s_wkb).abs() < 1.5, "log amplification {}, S = {}", r.log_amp_min, r.s_wkb);
-        // comparison of the profile with the exact solution 2 s |K_{1/2 + i mu}(s)|^2 (ratio constant)
+        // comparison of the profile with the exact solution 2 u |K_{1/2 + i E_perp/rate_t}(u)|^2 (ratio constant)
         let mu = mode.eps() / 2.0;
         let mut ratios: Vec<f64> = Vec::new();
         for row in r.profile.iter().step_by(40) {

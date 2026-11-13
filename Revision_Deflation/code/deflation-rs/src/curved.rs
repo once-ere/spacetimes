@@ -130,8 +130,8 @@ impl Curved {
     }
 
     /// 4+4: the generator K of the evolution of the weighted field in x4, d_4 psihat = K psihat,
-    /// for a field proportional to exp(i k_a x^a + i kappa_t x^t):
-    ///     K = -m gamma^4 + i sum_{a=0..3} k_a gamma^4 gamma^a + i sum_t (kappa_t / b_t) gamma^4 gamma^t .
+    /// for a field proportional to exp(i k_a x^a + i k_t x^t):
+    ///     K = -m gamma^4 + i sum_{a=0..3} k_a gamma^4 gamma^a + i sum_t (k_t / b_t) gamma^4 gamma^t .
     pub fn k_1644(&self, m: Rat, k: &[Rat; 4], kappa: &[Rat; 3]) -> QMat {
         let mut out = self.flat[4].scale_rat(-m);
         for a in 0..4 {
@@ -144,8 +144,8 @@ impl Curved {
     }
 
     /// 7+1: the Hamiltonian of the weighted field, i d_4 psihat = h psihat, for a field
-    /// proportional to exp(i p_j x^j + i kappa_t x^t)  (j = 0, 1, 2, 3):
-    ///     h = m beta + sum_j p_j alpha^j + sum_t (kappa_t / b_t) alpha^t,   beta = gamma^4, alpha^A = gamma^4 gamma^A .
+    /// proportional to exp(i p_j x^j + i k_t x^t)  (j = 0, 1, 2, 3):
+    ///     h = m beta + sum_j p_j alpha^j + sum_t (k_t / b_t) alpha^t,   beta = gamma^4, alpha^A = gamma^4 gamma^A .
     pub fn h_1671(&self, m: Rat, p: &[Rat; 4], kappa: &[Rat; 3]) -> QMat {
         let mut out = self.flat[4].scale_rat(m);
         for a in 0..4 {
@@ -350,21 +350,21 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
                     for i in 0..3 {
                         dk = dk.add(&cv.gam[5 + i].scale(Qc { re: Rat::ZERO, im: kap[i] }));
                     }
-                    let gkk = eps2 - *m * *m - k4 * k4 - q2; // g^{mu nu} k_mu k_nu = |k|^2 - k_4^2 - sum kappa^2/b^2
+                    let gkk = eps2 - *m * *m - k4 * k4 - q2; // g^{mu nu} k_mu k_nu = |k|^2 - k_4^2 - sum k_t^2/b^2
                     let mm = one.scale_rat(*m);
                     d1 &= dk.add(&mm).mul(&dk.sub(&mm)).is_multiple_of_identity(Qc::real(-(gkk + *m * *m)));
-                    // D2: K^2 = (q^2 - eps^2) 1,  K + K^dagger = 2 i sum (kappa_t/b_t) gamma^4 gamma^t
+                    // D2: K^2 = (q^2 - E_perp^2) 1,  K + K^dagger = 2 i sum (k_t/b_t) gamma^4 gamma^t
                     d2 &= kk.mul(&kk).is_multiple_of_identity(Qc::real(q2 - eps2));
                     let mut herm = zero16.clone();
                     let mut kdot = zero16.clone();
                     for i in 0..3 {
                         herm = herm.add(&cv.g4g(5 + i).scale(Qc { re: Rat::ZERO, im: rat(2) * kap[i] / b[i] }));
-                        // d_4 (kappa_t / b_t) = +rate_t kappa_t / b_t
+                        // d_4 (k_t / b_t) = +rate_t k_t / b_t
                         kdot = kdot.add(&cv.g4g(5 + i).scale(Qc { re: Rat::ZERO, im: rate[i] * kap[i] / b[i] }));
                     }
                     d2 &= kk.add(&kk.dagger()) == herm;
-                    // D3: dK/dx4 = i sum_t rate_t (kappa_t/b_t) gamma^4 gamma^t (because d_4 (1/b_t) = rate_t/b_t).
-                    //     It is Hermitian (i times a real antisymmetric matrix) and its square is sum_t (rate_t kappa_t/b_t)^2.
+                    // D3: dK/dx4 = i sum_t rate_t (k_t/b_t) gamma^4 gamma^t (because d_4 (1/b_t) = rate_t/b_t).
+                    //     It is Hermitian (i times a real antisymmetric matrix) and its square is sum_t (rate_t k_t/b_t)^2.
                     //     The second-order equation of the weighted field is d_4^2 psihat = (K^2 + dK/dx4) psihat.
                     d3 &= kdot.is_hermitian() && kdot.mul(&kdot).is_multiple_of_identity(Qc::real({
                         let mut s = Rat::ZERO;
@@ -376,7 +376,7 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
                     }));
                     // D4: W K + K^dagger W = 0 (the covariant charge psihat^dagger W psihat is conserved for every mode)
                     d4 &= w.mul(&kk).add(&kk.dagger().mul(&w)).is_zero();
-                    // D5: K is anti-Hermitian (unitary evolution) if and only if kappa = 0
+                    // D5: K is anti-Hermitian (unitary evolution) if and only if k_t = 0
                     let anti = kk.is_antihermitian();
                     d5 &= anti == (kap.iter().all(|x| x.is_zero()));
                     // D6: the two 8-component equations.  gamma^A = [[0, taubar^A], [tau^A, 0]]:
@@ -393,13 +393,13 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
                     d6 &= dk.block(0, 8, 8, 8) == ur && dk.block(8, 0, 8, 8) == ll && dk.block(0, 0, 8, 8).is_zero() && dk.block(8, 8, 8, 8).is_zero();
                 }
             }
-            rep.add("44d-D1", "exact", "in momentum space (d_mu -> i k_mu) the Dirac operator of the weighted field at fixed x4, D = i gamma^mu k_mu with the coordinate matrices, satisfies (D + m)(D - m) = -(g^(mu nu) k_mu k_nu + m^2) 1 with g^(mu nu) k_mu k_nu = k_0^2 + k_1^2 + k_2^2 + k_3^2 - k_4^2 - sum_t kappa_t^2/b_t^2: the instantaneous mass shell is k_4^2 + sum_t kappa_t^2/b_t(x4)^2 = |k|^2 + m^2. Verified for five rational parameter sets and four rational momenta each", d1);
-            rep.add("44d-D2", "exact", "the generator of the evolution of the weighted field in x4, K(x4) = -m gamma1644[4] + i sum_a k_a gamma1644[4].gamma1644[a] + i sum_t (kappa_t/b_t(x4)) gamma1644[4].gamma1644[t], satisfies K^2 = (sum_t kappa_t^2/b_t^2 - m^2 - |k|^2) 1 and K + K^dagger = 2 i sum_t (kappa_t/b_t) gamma1644[4].gamma1644[t]", d2);
-            rep.add("44d-D3", "exact", "dK/dx4 = i sum_t rate_t (kappa_t/b_t) gamma1644[4].gamma1644[t] is a Hermitian matrix whose square is sum_t (rate_t kappa_t/b_t)^2 times the unit matrix; the weighted field obeys the second-order equation d_4^2 psihat = (K^2 + dK/dx4) psihat, a Klein-Gordon equation with a term that depends on the spin", d3);
-            rep.add("44d-D4", "exact", "W = i Cm1644.gamma1644[4] is Hermitian with W^2 = 1 and trace 0, and W.K + K^dagger.W = 0 for every momentum and every kappa: the covariant charge psihat^dagger W psihat of a mode is conserved on the deflating spacetime, and it is not positive", d4);
-            rep.add("44d-D5", "exact", "K is anti-Hermitian (the evolution in x4 is unitary and psihat^dagger psihat is conserved) if and only if kappa_5 = kappa_6 = kappa_7 = 0, that is, if the field does not depend on the deflating times", d5);
+            rep.add("44d-D1", "exact", "in momentum space (d_mu -> i k_mu) the Dirac operator of the weighted field at fixed x4, D = i gamma^mu k_mu with the coordinate matrices, satisfies (D + m)(D - m) = -(g^(mu nu) k_mu k_nu + m^2) 1 with g^(mu nu) k_mu k_nu = k_0^2 + k_1^2 + k_2^2 + k_3^2 - k_4^2 - sum_t k_t^2/b_t^2: the instantaneous mass shell is k_4^2 + sum_t k_t^2/b_t(x4)^2 = |k|^2 + m^2. Verified for five rational parameter sets and four rational momenta each", d1);
+            rep.add("44d-D2", "exact", "the generator of the evolution of the weighted field in x4, K(x4) = -m gamma1644[4] + i sum_a k_a gamma1644[4].gamma1644[a] + i sum_t (k_t/b_t(x4)) gamma1644[4].gamma1644[t], satisfies K^2 = (sum_t k_t^2/b_t^2 - m^2 - |k|^2) 1 and K + K^dagger = 2 i sum_t (k_t/b_t) gamma1644[4].gamma1644[t]", d2);
+            rep.add("44d-D3", "exact", "dK/dx4 = i sum_t rate_t (k_t/b_t) gamma1644[4].gamma1644[t] is a Hermitian matrix whose square is sum_t (rate_t k_t/b_t)^2 times the unit matrix; the weighted field obeys the second-order equation d_4^2 psihat = (K^2 + dK/dx4) psihat, a Klein-Gordon equation with a term that depends on the spin", d3);
+            rep.add("44d-D4", "exact", "W = i Cm1644.gamma1644[4] is Hermitian with W^2 = 1 and trace 0, and W.K + K^dagger.W = 0 for every momentum and all k_5, k_6, k_7: the covariant charge psihat^dagger W psihat of a mode is conserved on the deflating spacetime, and it is not positive", d4);
+            rep.add("44d-D5", "exact", "K is anti-Hermitian (the evolution in x4 is unitary and psihat^dagger psihat is conserved) if and only if k_5 = k_6 = k_7 = 0, that is, if the field does not depend on the deflating times", d5);
             rep.add("44d-D6", "exact", "with gamma1644[A] = [[0, taubar1644[A]], [tau1644[A], 0]] the operator gamma^mu d_mu of the weighted field has the blocks [[0, sum_A taubar1644[A] e_A^mu d_mu], [sum_A tau1644[A] e_A^mu d_mu, 0]], e_A^mu d_mu = (d_0, .., d_4, d_5/b_5, d_6/b_6, d_7/b_7): the equation is the pair taubar^A e_A^mu d_mu psihat^R = m psihat^L, tau^A e_A^mu d_mu psihat^L = m psihat^R of real 8-component equations", d6);
-            // D7: worked example in the evanescent region: m = 3, k = 0, kappa_5/b_5 = 5 -> K^2 = +16
+            // D7: worked example in the evanescent region: m = 3, k = 0, k_5/b_5 = 5 -> K^2 = +16
             let p = Point { sig, rate: [r(1, 1), r(1, 1), r(1, 1)], b: [r(1, 5), r(1, 1), r(1, 1)] };
             let cv = Curved::new(gm, p);
             let kk = cv.k_1644(r(3, 1), &[Rat::ZERO; 4], &[r(1, 1), Rat::ZERO, Rat::ZERO]);
@@ -412,7 +412,7 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
                 && grow.trace() == Qc::int(8)
                 && decay.trace() == Qc::int(8)
                 && grow.mul(&decay).is_zero();
-            rep.add("44d-D7", "exact", "worked example: m = 3, k = 0, kappa = (1, 0, 0) at the value of x4 where b_5 = 1/5 (so kappa_5/b_5 = 5 > m): K^2 = +16 1, and (4 + K)/8 and (4 - K)/8 are complementary projectors of trace 8: at this x4 eight independent solutions grow as exp(+4 x4) and eight decay as exp(-4 x4) to first order. A mode that depends on a deflating time is oscillatory only while kappa_t/b_t(x4) < sqrt(m^2 + |k|^2)", ok);
+            rep.add("44d-D7", "exact", "worked example: m = 3, k = 0, (k_5, k_6, k_7) = (1, 0, 0) at the value of x4 where b_5 = 1/5 (so k_5/b_5 = 5 > m): K^2 = +16 1, and (4 + K)/8 and (4 - K)/8 are complementary projectors of trace 8: at this x4 eight independent solutions grow as exp(+4 x4) and eight decay as exp(-4 x4) to first order. A mode that depends on a deflating time is oscillatory only while k_t/b_t(x4) < sqrt(m^2 + |k|^2)", ok);
         }
         Sig::S1671 => {
             let refs: Vec<&spacetimes::imat::IMat> = gm.gamma1671.iter().collect();
@@ -443,9 +443,9 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
                     let gkk = k4 * k4 - (eps2 - *m * *m) - q2;
                     let mm = one.scale_rat(*m);
                     d1 &= dk.add(&mm).mul(&dk.sub(&mm)).is_multiple_of_identity(Qc::real(gkk - *m * *m));
-                    // D2: h real symmetric, h^2 = (eps^2 + q^2) 1
+                    // D2: h real symmetric, h^2 = (E_perp^2 + q^2) 1
                     d2 &= h.is_real() && h.is_hermitian() && h.mul(&h).is_multiple_of_identity(Qc::real(eps2 + q2));
-                    // D3: dh/dx4 = sum_t rate_t (kappa_t/b_t) alpha^t; it is real symmetric and anticommutes with beta
+                    // D3: dh/dx4 = sum_t rate_t (k_t/b_t) alpha^t; it is real symmetric and anticommutes with beta
                     let mut hdot = zero16.clone();
                     for i in 0..3 {
                         hdot = hdot.add(&cv.g4g(5 + i).scale_rat(rate[i] * kap[i] / b[i]));
@@ -482,12 +482,12 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
                         && er.dagger().mul(&h).mul(&el) == two_m;
                 }
             }
-            rep.add("71d-D1", "exact", "in momentum space (d_mu -> -i k_mu) the Dirac operator of the weighted field at fixed x4 is gamma^mu k_mu - m with the coordinate matrices, and (gamma^mu k_mu + m)(gamma^nu k_nu - m) = (g^(mu nu) k_mu k_nu - m^2) 1 with g^(mu nu) k_mu k_nu = k_4^2 - k_0^2 - k_1^2 - k_2^2 - k_3^2 - sum_t kappa_t^2/b_t^2: the instantaneous mass shell is k_4^2 = |p|^2 + sum_t kappa_t^2/b_t(x4)^2 + m^2. Verified for five rational parameter sets and four rational momenta each", d1);
-            rep.add("71d-D2", "exact", "the Hamiltonian of the weighted field, h(x4) = m beta1671 + sum_j p_j alpha1671^j + sum_t (kappa_t/b_t(x4)) alpha1671^t (beta1671 = gamma1671[4], alpha1671^A = gamma1671[4].gamma1671[A]), is real and symmetric for every momentum and every x4, and h^2 = (m^2 + |p|^2 + sum_t kappa_t^2/b_t^2) 1: the evolution in x4 is unitary and psihat^dagger psihat is conserved, but the energy of a mode with kappa_t != 0 grows as exp(rate_t x4)", d2);
-            rep.add("71d-D3", "exact", "dh/dx4 = sum_t rate_t (kappa_t/b_t) alpha1671^t is real symmetric and anticommutes with beta1671: the Hamiltonian changes with x4 only through the momenta along the deflating coordinates, which is what creates pairs", d3);
+            rep.add("71d-D1", "exact", "in momentum space (d_mu -> -i k_mu) the Dirac operator of the weighted field at fixed x4 is gamma^mu k_mu - m with the coordinate matrices, and (gamma^mu k_mu + m)(gamma^nu k_nu - m) = (g^(mu nu) k_mu k_nu - m^2) 1 with g^(mu nu) k_mu k_nu = k_4^2 - k_0^2 - k_1^2 - k_2^2 - k_3^2 - sum_t k_t^2/b_t^2: the instantaneous mass shell is k_4^2 = |p|^2 + sum_t k_t^2/b_t(x4)^2 + m^2. Verified for five rational parameter sets and four rational momenta each", d1);
+            rep.add("71d-D2", "exact", "the Hamiltonian of the weighted field, h(x4) = m beta1671 + sum_j p_j alpha1671^j + sum_t (k_t/b_t(x4)) alpha1671^t (beta1671 = gamma1671[4], alpha1671^A = gamma1671[4].gamma1671[A]), is real and symmetric for every momentum and every x4, and h^2 = (m^2 + |p|^2 + sum_t k_t^2/b_t^2) 1: the evolution in x4 is unitary and psihat^dagger psihat is conserved, but the energy of a mode with k_t != 0 grows as exp(rate_t x4)", d2);
+            rep.add("71d-D3", "exact", "dh/dx4 = sum_t rate_t (k_t/b_t) alpha1671^t is real symmetric and anticommutes with beta1671: the Hamiltonian changes with x4 only through the momenta along the deflating coordinates, which is what creates pairs", d3);
             rep.add("71d-D5", "exact", "omega1671 commutes with every alpha1671^A and anticommutes with beta1671; hence the charge-conjugate field omega1671 psi^* solves the Dirac equation on the deflating spacetime whenever psi does (the scale factors are real)", d5);
-            rep.add("71d-D6", "exact", "with the chiral 16x8 matrices E^L, E^R of the main project, (E^L)^dagger h E^L = -i sum_j (p_j/e_j) tau1671^j, (E^R)^dagger h E^R = +i sum_j (p_j/e_j) tau1671^j and (E^L)^dagger h E^R = (E^R)^dagger h E^L = m, where p_j/e_j = (p_0, p_1, p_2, p_3, kappa_5/b_5, kappa_6/b_6, kappa_7/b_7): the equation of the weighted field is the pair (i d_4 + tau^j e_j^mu d_mu) phihat^L = m phihat^R, (i d_4 - tau^j e_j^mu d_mu) phihat^R = m phihat^L of 8-component equations", d6);
-            // D7: worked example: m = 3, p = 0, kappa_5/b_5 = 4 -> E = 5
+            rep.add("71d-D6", "exact", "with the chiral 16x8 matrices E^L, E^R of the main project, (E^L)^dagger h E^L = -i sum_j (p_j/e_j) tau1671^j, (E^R)^dagger h E^R = +i sum_j (p_j/e_j) tau1671^j and (E^L)^dagger h E^R = (E^R)^dagger h E^L = m, where p_j/e_j = (p_0, p_1, p_2, p_3, k_5/b_5, k_6/b_6, k_7/b_7): the equation of the weighted field is the pair (i d_4 + tau^j e_j^mu d_mu) phihat^L = m phihat^R, (i d_4 - tau^j e_j^mu d_mu) phihat^R = m phihat^L of 8-component equations", d6);
+            // D7: worked example: m = 3, p = 0, k_5/b_5 = 4 -> E = 5
             let p = Point { sig, rate: [r(1, 1), r(1, 1), r(1, 1)], b: [r(1, 2), r(1, 1), r(1, 1)] };
             let cv = Curved::new(gm, p);
             let h = cv.h_1671(r(3, 1), &[Rat::ZERO; 4], &[r(2, 1), Rat::ZERO, Rat::ZERO]);
@@ -495,7 +495,7 @@ pub fn verify_curved(gm: &Gammas, sig: Sig, rep: &mut Report) {
             let pos = five.add(&h).scale_rat(r(1, 10));
             let neg = five.sub(&h).scale_rat(r(1, 10));
             let ok = h.mul(&h).is_multiple_of_identity(Qc::int(25)) && pos.mul(&pos) == pos && neg.mul(&neg) == neg && pos.trace() == Qc::int(8) && neg.trace() == Qc::int(8);
-            rep.add("71d-D7", "exact", "worked example: m = 3, p = 0, kappa = (2, 0, 0) at the value of x4 where b_5 = 1/2 (so kappa_5/b_5 = 4): h^2 = 25 1, and (5 + h)/10, (5 - h)/10 are complementary projectors of trace 8: eight states of energy +5 and eight of energy -5 at this x4; one e-folding of the deflation later the energy is sqrt(9 + 16 e^2) = 11.28", ok);
+            rep.add("71d-D7", "exact", "worked example: m = 3, p = 0, (k_5, k_6, k_7) = (2, 0, 0) at the value of x4 where b_5 = 1/2 (so k_5/b_5 = 4): h^2 = 25 1, and (5 + h)/10, (5 - h)/10 are complementary projectors of trace 8: eight states of energy +5 and eight of energy -5 at this x4; one e-folding of the deflation later the energy is sqrt(9 + 16 e^2) = 11.28", ok);
         }
     }
 }

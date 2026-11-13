@@ -327,13 +327,13 @@ impl<F: Field> Point<F> {
         e
     }
 
-    /// Closed forms (S2 = sum of the squares of the rates, gsum = their sum):
+    /// Closed forms (gsq = sum of the squares of the rates, gsum = their sum):
     ///
-    ///     R^4_4 = -eta_44 S2,     R^t_t = -eta_44 rate_t gsum,     R^a_a = 0 (a = 0..3),
-    ///     R     = -eta_44 (S2 + gsum^2),
-    ///     G^4_4 = (eta_44/2)(gsum^2 - S2) = eta_44 (g55 g66 + g55 g77 + g66 g77),
-    ///     G^t_t = eta_44 [ (S2 + gsum^2)/2 - rate_t gsum ],
-    ///     G^a_a = (eta_44/2)(S2 + gsum^2)   (a = 0..3).
+    ///     R^4_4 = -eta_44 gsq,     R^t_t = -eta_44 rate_t gsum,     R^a_a = 0 (a = 0..3),
+    ///     R     = -eta_44 (gsq + gsum^2),
+    ///     G^4_4 = (eta_44/2)(gsum^2 - gsq) = eta_44 (g55 g66 + g55 g77 + g66 g77),
+    ///     G^t_t = eta_44 [ (gsq + gsum^2)/2 - rate_t gsum ],
+    ///     G^a_a = (eta_44/2)(gsq + gsum^2)   (a = 0..3).
     ///
     /// Returns (diagonal of the mixed Ricci tensor, curvature scalar, diagonal of the mixed Einstein tensor).
     pub fn curvature_closed(&self) -> ([F; 8], F, [F; 8]) {

@@ -112,20 +112,20 @@ def fig_geodesics():
         return
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.6))
     ax = axes[0]
-    ax.plot(a["lam"], a["x4"], color=BLUE)
-    lam_end = a["lam"][-1]
+    ax.plot(a["affine"], a["x4"], color=BLUE)
+    lam_end = a["affine"][-1]
     ax.axvline(lam_end, color=INK2, lw=0.7, ls=":")
     ax.text(lam_end, a["x4"][0] + 0.06 * (a["x4"][-1] - a["x4"][0]), " proper time at which\n $x4\\to\\infty$ ", ha="right", va="bottom", color=INK2, fontsize=7.5)
-    ax.set_xlabel("proper time $\\lambda$ (units $1/M$)")
+    ax.set_xlabel("proper time $\\varsigma$ (units $1/m$)")
     ax.set_ylabel("coordinate time $x4$")
     panel_label(ax, "(a) 7+1: momentum along a deflating coordinate")
     ax = axes[1]
-    ax.plot(b["lam"], b["x4"], color=ORANGE)
+    ax.plot(b["affine"], b["x4"], color=ORANGE)
     i = int(np.argmax(b["x4"]))
-    ax.plot([b["lam"][i]], [b["x4"][i]], marker="o", color=ORANGE, mfc="white", mew=1.2)
-    ax.annotate("turning value: the world line\ngoes back to smaller $x4$", xy=(b["lam"][i], b["x4"][i]), xytext=(0.5, 0.25), textcoords="axes fraction", ha="center", color=INK2, fontsize=7.5,
+    ax.plot([b["affine"][i]], [b["x4"][i]], marker="o", color=ORANGE, mfc="white", mew=1.2)
+    ax.annotate("turning value: the world line\ngoes back to smaller $x4$", xy=(b["affine"][i], b["x4"][i]), xytext=(0.5, 0.25), textcoords="axes fraction", ha="center", color=INK2, fontsize=7.5,
                 arrowprops=dict(arrowstyle="-", color=INK2, lw=0.6))
-    ax.set_xlabel("affine parameter $\\lambda$ (units $1/M$)")
+    ax.set_xlabel("affine parameter $\\varsigma$ (units $1/m$)")
     ax.set_ylabel("coordinate $x4$")
     panel_label(ax, "(b) 4+4: momentum along a deflating time")
     fig.tight_layout(w_pad=1.5)
@@ -194,32 +194,32 @@ def fig_creation():
     # shown relative to the Boltzmann factor exp(-2 pi x), so that the two statistics can be told apart
     x = np.linspace(0.2, 3.1, 200)
     ax.plot(x, 1.0 / (1.0 + np.exp(-2 * np.pi * x)), color=BLUE, label="fermions (Fermi-Dirac)")
-    xs = s["eps_over_g55"]
+    xs = s["E_perp_over_g55"]
     ax.plot(xs, 0.5 * (s["n_min"] + s["n_max"]) * np.exp(2 * np.pi * xs), ls="none", marker="o", color=BLUE, mfc="white", mew=1.1)
     if b is not None:
         ax.plot(x, 1.0 / (1.0 - np.exp(-2 * np.pi * x)), color=ORANGE, ls="--", label="scalar (Bose-Einstein)")
         sel = b["coordinate"] == 5
-        ax.plot(b["x"][sel], b["n"][sel] * np.exp(2 * np.pi * b["x"][sel]), ls="none", marker="s", color=ORANGE, mfc="white", mew=1.1)
+        ax.plot(b["order"][sel], b["n"][sel] * np.exp(2 * np.pi * b["order"][sel]), ls="none", marker="s", color=ORANGE, mfc="white", mew=1.1)
     ax.axhline(1.0, color=INK2, lw=0.6)
     ax.set_ylim(0.75, 1.3)
-    ax.set_xlabel("$x=\\epsilon/\\mathrm{g55}$ (fermions), $\\Omega_0/\\mathrm{g55}$ (scalar)")
-    ax.set_ylabel("created quanta per state $\\times\\ e^{2\\pi x}$")
+    ax.set_xlabel("ratio $E_\\perp/\\mathrm{g55}$ (fermions), $\\varpi_b/\\mathrm{g55}$ (scalar)")
+    ax.set_ylabel("created quanta per state $\\times\\ e^{2\\pi\\,\\mathrm{ratio}}$")
     ax.legend(loc="lower right", fontsize=7.0, title="lines: exact laws\nsymbols: computed", title_fontsize=6.6)
     panel_label(ax, "(a) thermal spectrum, $T=\\mathrm{g55}/2\\pi$")
     ax = axes[1]
-    lab = {1: "$\\epsilon/\\mathrm{g55}=1$", 2: "$\\epsilon/\\mathrm{g55}=0.5$"}
+    lab = {1: "$E_\\perp/\\mathrm{g55}=1$", 2: "$E_\\perp/\\mathrm{g55}=0.5$"}
     for k, case in enumerate((1, 2)):
         sel = h["case"] == case
         c, ls, _ = STYLES[k]
-        ax.plot(h["Q_over_eps"][sel], h["n"][sel], color=c, ls=ls, label=lab[case])
+        ax.plot(h["k_d_over_E_perp"][sel], h["n"][sel], color=c, ls=ls, label=lab[case])
         ax.axhline(1.0 / (math.exp(2 * math.pi * (1.0 if case == 1 else 0.5)) + 1.0), color=c, lw=0.6, ls=":")
     ax.set_xscale("log")
     ax.set_yscale("log")
     ax.set_xlim(1e-2, 1e3)
     ax.set_ylim(1e-6, 1.0)
     ax.axvline(1.0, color=INK2, lw=0.6)
-    ax.text(1.15, 2e-6, "$Q=\\epsilon$", color=INK2, fontsize=7.5)
-    ax.set_xlabel("physical wavenumber $Q/\\epsilon$ (grows with $x4$)")
+    ax.text(1.15, 2e-6, "$k_d=E_\\perp$", color=INK2, fontsize=7.5)
+    ax.set_xlabel("physical wavenumber $k_d/E_\\perp$ (grows with $x4$)")
     ax.set_ylabel("particles in the mode")
     ax.legend(loc="upper left", fontsize=7.0)
     panel_label(ax, "(b) history of one mode")
@@ -227,7 +227,7 @@ def fig_creation():
     for k, g66 in enumerate((2.0, 1.2, 0.5)):
         sel = np.isclose(an["g66"], g66)
         c, ls, _ = STYLES[k]
-        ax.plot(an["delta"][sel], an["n_mean"][sel], color=c, ls=ls, label="g66 = %g" % g66)
+        ax.plot(an["delay"][sel], an["n_mean"][sel], color=c, ls=ls, label="g66 = %g" % g66)
         ax.axhline(an["fd6"][sel][0], color=c, lw=0.6, ls=":")
     ax.axhline(an["fd5"][0], color=INK2, lw=0.6, ls=":")
     ax.text(7.8, an["fd5"][0] * 1.25, "law of g55", ha="right", color=INK2, fontsize=7.0)
@@ -247,44 +247,44 @@ def fig_extinction():
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6))
     ax = axes[0]
     sel = p["case"] == 1
-    ax.plot(p["Q_over_eps"][sel], p["norm2"][sel], color=BLUE, label="computed")
+    ax.plot(p["k_d_over_E_perp"][sel], p["norm2"][sel], color=BLUE, label="computed")
     ok = sel & np.isfinite(p["exact"])
-    ax.plot(p["Q_over_eps"][ok][::6], p["exact"][ok][::6], ls="none", marker="o", ms=2.6, color=ORANGE, label="$2s\\,|K_{1/2+i\\mu}(s)|^2$")
+    ax.plot(p["k_d_over_E_perp"][ok][::6], p["exact"][ok][::6], ls="none", marker="o", ms=2.6, color=ORANGE, label="exact")
     ax.set_xscale("log")
     ax.set_xlim(1e-3, 30)
     ax.axvline(1.0, color=INK2, lw=0.6)
-    ax.text(0.9, 0.05, "turning value\n$Q=\\epsilon$", ha="right", color=INK2, fontsize=7.0)
-    ax.set_xlabel("$Q/\\epsilon$ (grows with $x4$)")
+    ax.text(0.9, 0.05, "turning value\n$k_d=E_\\perp$", ha="right", color=INK2, fontsize=7.0)
+    ax.set_xlabel("$k_d/E_\\perp$ (grows with $x4$)")
     ax.set_ylabel("$|\\hat\\psi|^2$ (maximum = 1)")
     ax.legend(loc="center left", bbox_to_anchor=(0.0, 0.36), fontsize=7.0)
     panel_label(ax, "(a) 4+4: a bounded solution")
     ax = axes[1]
     for k, case in enumerate((1, 2, 3, 4, 5)):
-        sel = (p["case"] == case) & (p["Q_over_eps"] > 0.5)
+        sel = (p["case"] == case) & (p["k_d_over_E_perp"] > 0.5)
         c, ls, _ = STYLES[k]
-        ax.plot(p["Q_over_eps"][sel], p["norm2"][sel], color=c, ls=ls, label="case %d" % case)
+        ax.plot(p["k_d_over_E_perp"][sel], p["norm2"][sel], color=c, ls=ls, label="case %d" % case)
     ax.set_yscale("log")
     ax.set_xscale("log")
     ax.set_ylim(1e-26, 5)
-    ax.set_xlabel("$Q/\\epsilon$")
+    ax.set_xlabel("$k_d/E_\\perp$")
     ax.set_ylabel("$|\\hat\\psi|^2$")
     ax.legend(loc="lower left", fontsize=6.8)
     panel_label(ax, "(b) extinction")
     ax = axes[2]
     if b is not None:
         for k, nu in enumerate((0.5, 1.5, 3.0)):
-            sel = np.isclose(b["nu"], nu)
+            sel = np.isclose(b["order"], nu)
             c, ls, mk = STYLES[k]
             scale = np.nanmax(b["K2"][sel])
-            ax.plot(b["s"][sel], b["K2"][sel] / scale, color=c, ls=ls, label="$\\nu=%g$" % nu)
+            ax.plot(b["u"][sel], b["K2"][sel] / scale, color=c, ls=ls, label="$\\varpi_b/\\mathrm{g55}=%g$" % nu)
             m = np.nanmax(b["Shat2"][sel])
-            ax.plot(b["s"][sel][::3], b["Shat2"][sel][::3] / m, ls="none", marker=mk, ms=3.0, color=c, mfc="white", mew=0.9)
+            ax.plot(b["u"][sel][::3], b["Shat2"][sel][::3] / m, ls="none", marker=mk, ms=3.0, color=c, mfc="white", mew=0.9)
         ax.set_xscale("log")
         ax.set_yscale("log")
         ax.set_ylim(1e-9, 3)
-        ax.set_xlabel("$s=Q/\\mathrm{g55}$")
+        ax.set_xlabel("$u=k_d/\\mathrm{g55}$")
         ax.set_ylabel("$\\hat S^2$ (maximum = 1)")
-        ax.legend(loc="lower left", fontsize=7.0, title="lines: $K_{i\\nu}(s)^2$\nsymbols: computed", title_fontsize=6.6)
+        ax.legend(loc="lower left", fontsize=7.0, title="lines: exact (Bessel function $K$)\nsymbols: computed", title_fontsize=6.6)
     panel_label(ax, "(c) bounded scalar modes")
     fig.tight_layout(w_pad=0.9)
     save(fig, "fig_extinction")
@@ -305,8 +305,8 @@ def fig_clock():
     ax.set_yscale("log")
     plain_ticks(ax, "y", [0.2, 0.5, 1, 2, 5])
     ax.set_xlim(-2, 2)
-    ax.set_xlabel("deflation clock $\\tau=\\mathrm{gsum}\\,(x4-x4_{\\rm ref})$")
-    ax.set_ylabel("value relative to $\\tau=0$")
+    ax.set_xlabel("deflation clock $\\tau_d=\\mathrm{gsum}\\,(x4-x4_{\\rm ref})$")
+    ax.set_ylabel("value relative to $\\tau_d=0$")
     panel_label(ax, "(a) what changes, and what does not")
     ax = axes[1]
     kinds = [("falls below its vacuum value at a field of 10", BLUE, "v", "vacuum potential turns over at $10\\,v_{VS}$"),
@@ -326,7 +326,7 @@ def fig_clock():
     ax.set_yticks(range(len(ratios)))
     ax.set_yticklabels(ratios)
     ax.set_ylabel("$m_s/m$")
-    ax.set_xlabel("clock reading relative to the binding of the pair, $\\tau-\\tau_{\\rm pair}$")
+    ax.set_xlabel("clock reading relative to the binding of the pair, $\\tau_{\\rm pair}=\\ln(D_{VS}/D_c)$")
     ax.grid(axis="y", visible=False)
     handles = [plt.Line2D([], [], marker=mk, color=col, mfc="white" if mk in "v^sD" else col, mew=1.2, ms=5.5, ls="none") for _, col, mk, _ in kinds]
     ax.legend(handles, [k[3] for k in kinds], loc="upper center", bbox_to_anchor=(0.5, -0.36), ncol=2, fontsize=7.0)
@@ -344,7 +344,7 @@ def fig_gap_history():
     for k, st in enumerate((1, 2, 3, 4)):
         sel = (a["set"] == st) & (a["gap_V"] > 0)
         c, ls, mk = STYLES[k]
-        axes[0].plot(a["tau"][sel], a["gap_V"][sel], color=c, ls=ls, label=labels[st])
+        axes[0].plot(a["tau_d"][sel], a["gap_V"][sel], color=c, ls=ls, label=labels[st])
         ok = sel & np.isfinite(a["Tc_over_gap_V"]) & (a["Tc_over_gap_V"] > 0)
         axes[1].plot(a["gap_V"][ok], a["Tc_over_gap_V"][ok], color=c, ls="none", marker=mk, mfc="white", mew=1.0, ms=3.6)
         ok = sel & np.isfinite(a["dln_gap_dtau"]) & (a["dln_gap_dtau"] > 0) & (a["gap_V"] < 0.02) & (a["gap_V"] > 1e-6)
@@ -352,7 +352,7 @@ def fig_gap_history():
         axes[2].plot(1.0 / lam, a["dln_gap_dtau"][ok], color=c, ls="none", marker=mk, mfc="white", mew=1.0, ms=3.6)
     ax = axes[0]
     ax.set_yscale("log")
-    ax.set_xlabel("deflation clock $\\tau$ ($g_{VS}=e^{\\tau/2}$)")
+    ax.set_xlabel("deflation clock $\\tau_d$ ($g_{VS}=e^{\\tau_d/2}$)")
     ax.set_ylabel("gap / $E_F$")
     panel_label(ax, "(a) the gap grows")
     ax = axes[1]
@@ -370,7 +370,7 @@ def fig_gap_history():
     ax.plot(xs, xs, color=INK2, lw=0.8)
     ax.text(13.2, 10.6, "line: $1/\\lambda$", color=INK2, fontsize=7.5, ha="left")
     ax.set_xlabel("$1/\\lambda$ (pairing strength of the moment)")
-    ax.set_ylabel("$d\\ln(\\mathrm{gap})/d\\tau$")
+    ax.set_ylabel("$d\\ln(\\mathrm{gap})/d\\tau_d$")
     panel_label(ax, "(c) rate of growth")
     fig.tight_layout(w_pad=0.9)
     save(fig, "fig_gap_history")
@@ -389,26 +389,26 @@ def fig_binding():
     ax.set_xlim(-1.5, 1.0)
     ax.axvline(0.0, color=INK2, lw=0.7, ls=":")
     ax.axhline(0.0, color=INK2, lw=0.6)
-    ax.set_xlabel("$\\tau-\\tau_{\\rm pair}=\\ln(D_{VS}/D_c)$")
+    ax.set_xlabel("$\\tau_{\\rm pair}=\\ln(D_{VS}/D_c)$")
     ax.set_ylabel("scattering length $\\times\\,m_s$")
     panel_label(ax, "(a) two fermions: resonance")
     ax = axes[1]
     ok = d["Eb"] > 0
     ax.plot(d["tau_pair"][ok], d["Eb"][ok], color=ORANGE)
     ax.set_yscale("log")
-    ax.set_xlabel("$\\tau-\\tau_{\\rm pair}$")
+    ax.set_xlabel("$\\tau_{\\rm pair}$")
     ax.set_ylabel("binding energy $\\times\\,m/m_s^2$")
     panel_label(ax, "(b) the bound pair")
     ax = axes[2]
-    keep = r["tau"] <= 0.9
+    keep = r["tau_pair"] <= 0.9
     for k, (col, lab) in enumerate((("sigma_over_m_v10", "10 km/s"), ("sigma_over_m_v156", "156 km/s"), ("sigma_over_m_v1000", "1000 km/s"))):
         c, ls, _ = STYLES[k]
-        ax.plot(r["tau"][keep], r[col][keep], color=c, ls=ls, label=lab)
+        ax.plot(r["tau_pair"][keep], r[col][keep], color=c, ls=ls, label=lab)
     ax.set_yscale("log")
     ax.set_ylim(1e-7, 1e8)
     ax.axhline(1.0, color=INK2, lw=0.7, ls=":")
     ax.text(0.88, 0.12, "1 cm$^2$/g", color=INK2, fontsize=7.0, ha="right")
-    ax.set_xlabel("$\\tau-\\tau_{\\rm pair}$")
+    ax.set_xlabel("$\\tau_{\\rm pair}$")
     ax.set_ylabel("$\\sigma/m$ (cm$^2$/g)")
     ax.legend(loc="lower left", fontsize=7.0, title="relative velocity", title_fontsize=6.8)
     panel_label(ax, "(c) self-interaction at the binding")
@@ -427,7 +427,7 @@ def fig_matter_history():
         c, ls, _ = STYLES[k]
         ax.plot(md["C"][sel], md["x"][sel], color=c, ls=ls, label="$k_F=%g\\,m$" % kf)
     ax.set_xscale("log")
-    ax.set_xlabel("$C=g_{VS}^2m^2/m_s^2\\ \\propto\\ e^{\\tau}$")
+    ax.set_xlabel("$C=g_{VS}^2m^2/m_s^2\\ \\propto\\ e^{\\tau_d}$")
     ax.set_ylabel("fermion mass in matter, $m^*/m$")
     ax.legend(loc="lower left", fontsize=7.0)
     panel_label(ax, "(a) matter of fixed density becomes abnormal")
@@ -466,7 +466,7 @@ def fig_matter_history():
     ax.set_yscale("log")
     plain_ticks(ax, "x", [0.3, 0.5, 1, 2, 4])
     plain_ticks(ax, "y", [0.3, 0.5, 1, 2, 4])
-    ax.set_xlabel("$g_{VS}\\ \\propto\\ e^{\\tau/2}$")
+    ax.set_xlabel("$g_{VS}\\ \\propto\\ e^{\\tau_d/2}$")
     ax.set_ylabel("$T_{1/2}/m$")
     ax.legend(loc="upper right", fontsize=7.0)
     panel_label(ax, "(d) temperature at which the mass melts")
@@ -485,25 +485,25 @@ def fig_quench():
     for c, g in zip(cols, rates):
         sel = h["gsum"] == g
         ax.plot(h["lambda"][sel], h["ratio"][sel], color=c, lw=1.2)
-    ax.text(0.155, 0.05, "fast: gsum $=0.1\\,\\omega_c$", color=INK, fontsize=7.0)
-    ax.text(0.5, 1.04, "slow: $10^{-4}\\,\\omega_c$", color=INK, fontsize=7.0, ha="right")
+    ax.text(0.155, 0.05, "fast: gsum $=0.1\\,E_{\\rm sh}$", color=INK, fontsize=7.0)
+    ax.text(0.5, 1.04, "slow: $10^{-4}\\,E_{\\rm sh}$", color=INK, fontsize=7.0, ha="right")
     ax.axhline(1.0, color=INK2, lw=0.6)
     ax.set_ylim(0, 1.25)
-    ax.set_xlabel("pairing strength $\\lambda\\ \\propto\\ e^{\\tau}$")
+    ax.set_xlabel("pairing strength $\\lambda\\ \\propto\\ e^{\\tau_d}$")
     ax.set_ylabel("$|\\Delta|/\\Delta_{\\rm eq}(\\lambda)$")
     panel_label(ax, "(a) can the paired state follow?")
     ax = axes[1]
     ax.plot(s["gsum"], s["ratio_min"], color=BLUE, marker="o", mfc="white", mew=1.1)
     ax.set_xscale("log")
     ax.set_ylim(0, 1.05)
-    ax.set_xlabel("rate of deflation gsum / $\\omega_c$")
+    ax.set_xlabel("rate of deflation gsum / $E_{\\rm sh}$")
     ax.set_ylabel("smallest $|\\Delta|/\\Delta_{\\rm eq}$")
     panel_label(ax, "(b) how far it falls behind")
     ax = axes[2]
     ax.plot(s["gsum"], s["n_ex_final"], color=ORANGE, marker="s", mfc="white", mew=1.1)
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlabel("gsum / $\\omega_c$")
+    ax.set_xlabel("gsum / $E_{\\rm sh}$")
     ax.set_ylabel("broken pairs at $\\lambda=0.5$")
     panel_label(ax, "(c) what the lag leaves behind")
     fig.tight_layout(w_pad=0.9)
@@ -542,13 +542,13 @@ def fig_hubble():
     ax.set_ylabel("change of $H_0$ (km/s/Mpc)")
     ax.set_ylim(-0.05, 0.95)
     ax.legend(loc="upper left", fontsize=6.6, title="bound pairs today", title_fontsize=6.6)
-    panel_label(ax, "(b) constant $G$: pairs lose mass")
+    panel_label(ax, "(b) constant $G_N$: pairs lose mass")
     ax = axes[2]
     if gr is not None:
         ok = gr["gsum_over_H0"] > 0
-        ax.plot(gr["gsum_over_H0"][ok], gr["f_ratio"][ok], color=ORANGE, ls="--", marker="s", mfc="white", mew=1.0, ms=3.6, label="growth rate $f$")
-        ax.plot(gr["gsum_over_H0"][ok], gr["D_ratio"][ok], color=BLUE, marker="o", mfc="white", mew=1.0, ms=3.6, label="amplitude $\\sigma_8$")
-        ax.plot(gr["gsum_over_H0"][ok], gr["D_ratio_fixed_h"][ok], color=AQUA, ls="-.", marker="^", mfc="white", mew=1.0, ms=3.6, label="$\\sigma_8$ at fixed $H_0$")
+        ax.plot(gr["gsum_over_H0"][ok], gr["f_growth_ratio"][ok], color=ORANGE, ls="--", marker="s", mfc="white", mew=1.0, ms=3.6, label="growth rate $f_g$")
+        ax.plot(gr["gsum_over_H0"][ok], gr["growth_ratio"][ok], color=BLUE, marker="o", mfc="white", mew=1.0, ms=3.6, label="amplitude $\\sigma_8$")
+        ax.plot(gr["gsum_over_H0"][ok], gr["growth_ratio_fixed_h"][ok], color=AQUA, ls="-.", marker="^", mfc="white", mew=1.0, ms=3.6, label="$\\sigma_8$ at fixed $H_0$")
         ax.axhline(1.0, color=INK2, lw=0.6)
         ax.set_xscale("log")
         ax.set_ylim(0.85, 1.6)
@@ -574,9 +574,9 @@ def fig_bounds():
             lo = float(v.split("(")[1].rstrip(")"))
             items.append(("nucleosynthesis: Fermi constant\n(needs the Higgs hypothesis H2)", lo, first(v), AQUA))
         elif "lunar" in name:
-            items.append(("lunar laser ranging: $\\dot G/G$\n(needs eight-dimensional gravity, A2)", first(v), None, BLUE))
+            items.append(("lunar laser ranging: $\\dot G_N/G_N$\n(needs eight-dimensional gravity, A2)", first(v), None, BLUE))
         elif "nucleosynthesis" in name:
-            items.append(("nucleosynthesis: $G$\n(needs A2)", first(v), None, BLUE))
+            items.append(("nucleosynthesis: $G_N$\n(needs A2)", first(v), None, BLUE))
         else:
             items.append(("atomic clocks: $\\dot\\alpha/\\alpha$\n(only if electromagnetism were eight-dimensional;\nnot part of the model)", first(v), None, INK2))
     fig, ax = plt.subplots(figsize=(6.6, 2.5))
@@ -606,9 +606,9 @@ def fig_scalar():
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6))
     ax = axes[0]
     for k, mass in enumerate((0.0, 0.3)):
-        sel = np.isclose(z["M"], mass)
+        sel = np.isclose(z["m_b"], mass)
         c, ls, _ = STYLES[k]
-        ax.plot(z["k"][sel], z["sigma1_re"][sel], color=c, ls=ls, label="$M=%g$" % mass)
+        ax.plot(z["k"][sel], z["sigma1_re"][sel], color=c, ls=ls, label="$m_b=%g$" % mass)
         ax.plot(z["k"][sel], z["sigma2_re"][sel], color=c, ls=ls)
     ax.set_xlabel("wavenumber $k$ / gsum")
     ax.set_ylabel("growth exponents Re $\\sigma$ / gsum")
@@ -616,9 +616,9 @@ def fig_scalar():
     panel_label(ax, "(a) growth of the modes")
     ax = axes[1]
     for k, mass in enumerate((0.0, 0.3, 1.0)):
-        sel = np.isclose(z["M"], mass)
+        sel = np.isclose(z["m_b"], mass)
         c, ls, _ = STYLES[k]
-        ax.plot(z["k"][sel], z["sigma1_im"][sel], color=c, ls=ls, label="$M=%g$" % mass)
+        ax.plot(z["k"][sel], z["sigma1_im"][sel], color=c, ls=ls, label="$m_b=%g$" % mass)
     ax.set_xlabel("$k$ / gsum")
     ax.set_ylabel("frequency Im $\\sigma$ / gsum")
     ax.legend(loc="upper left", fontsize=7.0)
@@ -628,12 +628,12 @@ def fig_scalar():
     for k, (w2, g) in enumerate(combos):
         sel = np.isclose(s["w2"], w2) & np.isclose(s["gsum"], g)
         c, ls, _ = STYLES[k]
-        ax.plot(s["tau"][sel], s["ratio"][sel], color=c, ls=ls, label="$k^2+M^2=%g$, gsum $=%g$" % (w2, g))
+        ax.plot(s["tau_d"][sel], s["ratio"][sel], color=c, ls=ls, label="$k^2+m_b^2=%g$, gsum $=%g$" % (w2, g))
     ax.axhline(1.0, color=INK2, lw=0.6)
     ax.set_xlim(0, 12)
     ax.set_ylim(0, 2.9)
-    ax.set_xlabel("$\\tau=\\mathrm{gsum}\\,x4$ since switching on")
-    ax.set_ylabel("field / [$e^{\\tau}/(k^2+M^2)$]")
+    ax.set_xlabel("$\\tau_d=\\mathrm{gsum}\\,x4$ since switching on")
+    ax.set_ylabel("field / [$e^{\\tau_d}/(k^2+m_b^2)$]")
     ax.legend(loc="upper right", fontsize=6.4)
     panel_label(ax, "(c) the field of a static source")
     fig.tight_layout(w_pad=0.9)
@@ -654,7 +654,7 @@ def fig_cjt_history():
         axes[2].plot(a["gap_newton"][sel] / a["E_F"][sel], a["V_over_V_BCS"][sel], color=c, ls=ls, marker=mk, mfc="white", mew=1.0, ms=3.6, label=labels[st])
     ax = axes[0]
     ax.set_yscale("log")
-    ax.set_xlabel("$g_{VS}\\ \\propto\\ e^{\\tau/2}$")
+    ax.set_xlabel("$g_{VS}\\ \\propto\\ e^{\\tau_d/2}$")
     ax.set_ylabel("condensation energy (units $m^4$)")
     ax.legend(loc="lower right", fontsize=7.0, title="$k_F=0.5\\,m$", title_fontsize=6.8)
     panel_label(ax, "(a) the potential deepens")

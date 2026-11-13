@@ -7,19 +7,19 @@
 //! coupling (check def-H3).  A state changes at most at the rate of its own energy
 //! scale, the gap; so the paired state can follow only if
 //!
-//!     A(x4) = gsum / ( lambda(x4) gap_eq(x4) )   <<  1 .
+//!     Xi(x4) = gsum / ( lambda(x4) gap_eq(x4) )   <<  1 .
 //!
 //! Early in the deflation the gap is exponentially small and this must fail.  What
 //! happens then is computed here.
 //!
 //! MODEL.  The standard reduced model of a superfluid: pairs (k, -k) with energies xi
-//! (measured from the Fermi energy) in a shell -omega_c < xi < omega_c with a constant
+//! (measured from the Fermi energy) in a shell -E_sh < xi < E_sh with a constant
 //! density of states, and a pairing interaction of the dimensionless strength lambda
 //! between all of them.  In the mean-field (time-dependent Bardeen-Cooper-Schrieffer)
 //! approximation each pair is described by its anomalous amplitude F(xi, t) (complex)
 //! and its occupation n(xi, t); with the order parameter
 //!
-//!     Delta(t) = lambda(t) Int_{-omega_c}^{omega_c} F(xi, t) dxi
+//!     Delta(t) = lambda(t) Int_{-E_sh}^{E_sh} F(xi, t) dxi
 //!
 //! the equations of motion are
 //!
@@ -27,24 +27,24 @@
 //!
 //! They conserve |2F|^2 + (1 - 2n)^2 = 1 for every xi.  In equilibrium
 //! F = Delta/(2E), n = (1 - xi/E)/2, E = sqrt(xi^2 + Delta^2), and the gap equation
-//! 1 = lambda asinh(omega_c/Delta) gives
+//! 1 = lambda asinh(E_sh/Delta) gives
 //!
-//!     Delta_eq(lambda) = omega_c / sinh(1/lambda)      (= 2 omega_c exp(-1/lambda) at weak coupling).
+//!     Delta_eq(lambda) = E_sh / sinh(1/lambda)      (= 2 E_sh exp(-1/lambda) at weak coupling).
 //!
 //! The model keeps exactly what matters for the question: a gap that depends
 //! exponentially on a coupling that grows exponentially.  It does not keep the momentum
 //! dependence of the gap function of the main project; the mapping is
-//! lambda = N(0) W(k_F, k_F) of `gap.rs`, and omega_c stands for the energy range of the
+//! lambda = N(0) W(k_F, k_F) of `gap.rs`, and E_sh stands for the energy range of the
 //! attraction.
 //!
 //! NUMBERS REPORTED.  |Delta(t)|, Delta_eq(lambda(t)), and the density of broken pairs
 //!     N_ex = Int dxi (1 - S.B)/2,   S = (2 Re F, 2 Im F, 1 - 2n),   B = (Re Delta, Im Delta, xi)/E ,
-//! which is the number of pairs (per unit energy of the shell, times omega_c) that are
+//! which is the number of pairs (per unit energy of the shell, times E_sh) that are
 //! not in the ground state of the order parameter of the moment.
 //!
 //! METHOD.  The classical Runge-Kutta method with a fixed step; the energies are placed
-//! on a grid that is dense at the Fermi energy, xi = omega_c sinh(a u)/sinh(a), u uniform.
-//! UNITS: omega_c = 1.
+//! on a grid that is dense at the Fermi energy, xi = E_sh sinh(a u)/sinh(a), u uniform.
+//! UNITS: E_sh = 1.
 
 /// The energies of the shell and their quadrature weights.
 pub struct Shell {
@@ -75,7 +75,7 @@ pub struct State {
     pub n: Vec<f64>,
 }
 
-/// The equilibrium gap of the shell model, omega_c/sinh(1/lambda), omega_c = 1.
+/// The equilibrium gap of the shell model, E_sh/sinh(1/lambda), E_sh = 1.
 pub fn delta_eq(lambda: f64) -> f64 {
     1.0 / (1.0 / lambda).sinh()
 }
@@ -185,7 +185,7 @@ pub fn workspace(m: usize) -> [State; 5] {
 /// One sample of a run.
 #[derive(Clone, Copy, Debug)]
 pub struct Sample {
-    /// tau = gsum (t - t_i): the deflation clock since the start
+    /// tau_d = gsum (t - t_i): the deflation clock since the start
     pub tau: f64,
     pub lambda: f64,
     /// |Delta| of the evolving state and the equilibrium gap for the coupling of the moment
@@ -197,7 +197,7 @@ pub struct Sample {
 
 /// The paired state under exponential growth of the coupling,
 /// lambda(t) = lambda_i exp(gsum t), from lambda_i to lambda_f, starting in equilibrium.
-/// `gsum` in units of omega_c; `dt` in units of 1/omega_c; about `samples` samples are returned.
+/// `gsum` in units of E_sh; `dt` in units of 1/E_sh; about `samples` samples are returned.
 pub fn ramp(sh: &Shell, lambda_i: f64, lambda_f: f64, gsum: f64, dt: f64, samples: usize) -> (Vec<Sample>, f64) {
     let t_end = (lambda_f / lambda_i).ln() / gsum;
     let steps = (t_end / dt).ceil() as usize;
@@ -267,12 +267,12 @@ mod tests {
     #[test]
     fn a_slow_ramp_is_followed_and_a_fast_one_is_not() {
         let sh = Shell::new(2000, 8.0);
-        // slow: at the start A = gsum/(lambda gap) = 3e-4/(0.3 * 0.0715) = 0.014
+        // slow: at the start Xi = gsum/(lambda gap) = 3e-4/(0.3 * 0.0715) = 0.014
         let (slow, _) = ramp(&sh, 0.3, 0.5, 3e-4, 0.025, 50);
         let last = slow.last().unwrap();
         assert!((last.delta / last.delta_eq - 1.0).abs() < 0.01, "slow ramp: {} vs {}", last.delta, last.delta_eq);
         assert!(last.n_ex < 1e-3);
-        // fast: A = 30 at the start; the gap has no time to grow
+        // fast: Xi = 30 at the start; the gap has no time to grow
         let (fast, _) = ramp(&sh, 0.3, 0.5, 0.6, 0.025, 50);
         let last = fast.last().unwrap();
         assert!(last.delta / last.delta_eq < 0.6, "fast ramp: {} vs {}", last.delta, last.delta_eq);

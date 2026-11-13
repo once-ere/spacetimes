@@ -14,12 +14,12 @@
 //!      coordinates, the four-dimensional constant is G_8 divided by the proper volume of
 //!      the extra coordinates, which falls as exp(-gsum x4), gsum = g55 + g66 + g77:
 //!
-//!          G(x4) = G_0 exp( gsum (x4 - x4_today) ) ,        (dG/dx4)/G = gsum > 0 .
+//!          G_N(x4) = G_N(today) exp( gsum (x4 - x4_today) ) ,        (dG_N/dx4)/G_N = gsum > 0 .
 //!
 //!  (2) Expansion.  The time-time Einstein equation of the metric (A1) is
 //!      sum over pairs of the seven spatial expansion rates (H, H, H, 0, -g55, -g66, -g77):
 //!
-//!          3 H^2 - 3 gsum H + P = 8 pi G(x4) rho ,     P = g55 g66 + g55 g77 + g66 g77 ,
+//!          3 H^2 - 3 gsum H + gprod = 8 pi G_N(x4) rho ,     gprod = g55 g66 + g55 g77 + g66 g77 ,
 //!
 //!      with H = (da/dx4)/a and rho the energy density in ordinary space.  The same
 //!      equation holds for the 4+4 signs (check G5 of `geometry.rs`: the Einstein tensor
@@ -30,7 +30,7 @@
 //!
 //!          E^2 - gam E + p/3 = exp(s) [ omega_r a^-4 + omega_m(a) a^-3 + omega_L ] ,   ds/dln a = gam / E ,
 //!
-//!  gam = gsum/H_100, p = P/H_100^2; omega_L is fixed by E(a = 1) = h.
+//!  gam = gsum/H_100, p = gprod/H_100^2; omega_L is fixed by E(a = 1) = h.
 //!
 //! WHAT IS COMPUTED.  The sound horizon r_s at the redshift z_* of last scattering, the
 //! comoving distance D_M to it, their ratio theta_* (the best-measured quantity of the
@@ -58,10 +58,10 @@ pub struct Model {
     pub h: f64,
     /// gsum / H_100
     pub gam: f64,
-    /// P / H_100^2
+    /// gprod / H_100^2
     pub p: f64,
     /// true: assumptions (A1), (A2), gravity feels the deflation (G and the expansion equation change);
-    /// false: gravity is the ordinary four-dimensional theory with constant G, and the deflation acts
+    /// false: gravity is the ordinary four-dimensional theory with constant G_N, and the deflation acts
     /// only on the couplings of the dark sector (the clock s still runs at the rate gam)
     pub gravity: bool,
 }
@@ -77,7 +77,7 @@ pub struct History {
 
 impl Model {
     /// The fiducial densities of the main project with the rate `gam` (units of H_100);
-    /// the three rates are taken equal, so that P = gsum^2/3.
+    /// the three rates are taken equal, so that gprod = gsum^2/3.
     pub fn fiducial(gam: f64, h: f64) -> Model {
         let pf = Params::fiducial();
         let og = pf.omega_gamma();
@@ -224,7 +224,7 @@ pub fn solve_h<M: Fn(f64) -> f64>(base: &Model, z_star: f64, theta100: f64, mass
 /// horizon (Newtonian limit of the eight-dimensional theory for matter that is spread
 /// uniformly over the extra coordinates):
 ///
-///     d^2 delta/dx4^2 + 2 H d delta/dx4 = 4 pi G(x4) rho_m delta ,
+///     d^2 delta/dx4^2 + 2 H d delta/dx4 = 4 pi G_N(x4) rho_m delta ,
 ///
 /// that is, with a prime for d/d ln a and omega_m(a) = omega_b + omega_c mass(s),
 ///

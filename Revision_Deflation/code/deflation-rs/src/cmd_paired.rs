@@ -25,7 +25,7 @@ pub fn run() -> std::io::Result<bool> {
     let mut rep = Report::new();
 
     // ---- (1) the potential of the paired state along the clock ------------------------------------
-    // two particles (m_s/m, k_F/m); the coupling g_VS grows as exp(tau/2)
+    // two particles (m_s/m, k_F/m); the coupling g_VS grows as exp(tau_d/2)
     let particles: [(f64, f64, Vec<f64>); 2] = [(0.3, 0.5, vec![1.8, 2.0, 2.2, 2.4, 2.6, 2.8, 3.0]), (1.0, 0.5, vec![2.4, 2.6, 2.8, 3.0, 3.2, 3.4])];
     let mut rows: Vec<Vec<f64>> = Vec::new();
     let (mut newton_dev, mut smin_dev, mut tc_dev): (f64, f64, f64) = (0.0, 0.0, 0.0);
@@ -33,7 +33,7 @@ pub fn run() -> std::io::Result<bool> {
     let mut energy_exponent_dev: f64 = 0.0;
     let mut strong_moments = 0usize;
     for (set, (m_s, k_f, gs)) in particles.iter().enumerate() {
-        let mut prev: Option<(f64, f64, f64)> = None; // (tau, ln gap, ln |V|)
+        let mut prev: Option<(f64, f64, f64)> = None; // (tau_d, ln gap, ln |V|)
         for &g in gs {
             let tau = 2.0 * (g / gs[0]).ln();
             let p = vector_channel(g, *m_s, *k_f);
@@ -82,10 +82,10 @@ pub fn run() -> std::io::Result<bool> {
         }
     }
     write_csv("cjt_history.csv",
-        &[("content", "the paired state at zero temperature along the deflation clock, from the CJT potential of the main project (vector channel): two particles, the coupling g_VS growing as exp(tau/2)".to_string()),
-          ("columns", "set: 1 = (m_s, k_F) = (0.3, 0.5), 2 = (1.0, 0.5) in units of m; tau = 2 ln(g/g_first); g; lambda: pairing strength; E_F; gap_fixed_point, gap_newton: gap at the Fermi momentum from the iteration of the gap equation and from Newton's method on the potential; max_rel_diff of the two gap functions; V: potential per unit volume at the solution (units m^4), the condensation energy; V_BCS = -nu N(0) gap^2/4; V_over_V_BCS; s_min_minus_1: position of the minimum of V along the ray s x solution, minus 1; curvature_min: smallest eigenvalue of the second variation (positive: a minimum); Tc_linear, Tc_second_variation: critical temperature from the linearized gap equation and from the potential; Tc_over_gap; xi_kF: coherence length v_F/(pi gap) in units of 1/k_F".to_string()),
+        &[("content", "the paired state at zero temperature along the deflation clock, from the CJT potential of the main project (vector channel): two particles, the coupling g_VS growing as exp(tau_d/2)".to_string()),
+          ("columns", "set: 1 = (m_s, k_F) = (0.3, 0.5), 2 = (1.0, 0.5) in units of m; tau_d = 2 ln(g/g_first); g; lambda: pairing strength; E_F; gap_fixed_point, gap_newton: gap at the Fermi momentum from the iteration of the gap equation and from Newton's method on the potential; max_rel_diff of the two gap functions; V: potential per unit volume at the solution (units m^4), the condensation energy; V_BCS = -nu N(0) gap^2/4; V_over_V_BCS; s_min_minus_1: position of the minimum of V along the ray s x solution, minus 1; curvature_min: smallest eigenvalue of the second variation (positive: a minimum); Tc_linear, Tc_second_variation: critical temperature from the linearized gap equation and from the potential; Tc_over_gap; xi_kF: coherence length v_F/(pi gap) in units of 1/k_F".to_string()),
           ("command", "deflation paired".to_string())],
-        &["set", "m_s", "k_F", "tau", "g", "lambda", "E_F", "gap_fixed_point", "gap_newton", "max_rel_diff", "V", "V_BCS", "V_over_V_BCS", "s_min_minus_1", "curvature_min", "Tc_linear", "Tc_second_variation", "Tc_over_gap", "xi_kF"], &rows)?;
+        &["set", "m_s", "k_F", "tau_d", "g", "lambda", "E_F", "gap_fixed_point", "gap_newton", "max_rel_diff", "V", "V_BCS", "V_over_V_BCS", "s_min_minus_1", "curvature_min", "Tc_linear", "Tc_second_variation", "Tc_over_gap", "xi_kF"], &rows)?;
     let xi_first = rows[0][18];
     let xi_last = rows[particles[0].2.len() - 1][18];
     rep.add("def-P1", "numerical",
@@ -126,9 +126,9 @@ pub fn run() -> std::io::Result<bool> {
     }
     write_csv("cjt_thermo_history.csv",
         &[("content", "thermodynamic ratios of the paired state at three moments of the deflation, particle (m_s, k_F) = (1.0, 0.5) m, vector channel: the critical temperature and the gap grow, their ratio and the jump of the heat capacity at T_c do not change".to_string()),
-          ("columns", "tau = 2 ln(g/2.6); g; lambda; Tc; Tc_over_EF; gap0: gap at T = 0; gap0_over_Tc (weak coupling: 1.7639); heat_capacity_jump: (C_paired - C_unpaired)/C_unpaired at T_c (weak coupling: 1.4261)".to_string()),
+          ("columns", "tau_d = 2 ln(g/2.6); g; lambda; Tc; Tc_over_EF; gap0: gap at T = 0; gap0_over_Tc (weak coupling: 1.7639); heat_capacity_jump: (C_paired - C_unpaired)/C_unpaired at T_c (weak coupling: 1.4261)".to_string()),
           ("command", "deflation paired".to_string())],
-        &["tau", "g", "lambda", "Tc", "Tc_over_EF", "gap0", "gap0_over_Tc", "heat_capacity_jump"], &trows)?;
+        &["tau_d", "g", "lambda", "Tc", "Tc_over_EF", "gap0", "gap0_over_Tc", "heat_capacity_jump"], &trows)?;
     rep.add("def-P2", "numerical",
         &format!("thermodynamics along the clock: while the critical temperature rises from {:.2e} to {:.2e} E_F (g_VS = 2.6 to 3.4), the ratio gap(0)/T_c stays within {:.3} of the weak-coupling value 1.7639 and the jump of the heat capacity within {:.3} of 1.4261: both ratios are universal while the coupling is weak, and they move only slightly as the gap approaches 0.2 E_F at the last moment", trows[0][4], trows[2][4], ratio_dev, jump_dev),
         ratio_dev < 0.03 && jump_dev < 0.08 && trows[2][3] > trows[0][3]);
@@ -171,9 +171,9 @@ pub fn run() -> std::io::Result<bool> {
     }
     write_csv("cjt_gl_history.csv",
         &[("content", "Ginzburg-Landau coefficients of the paired state at three moments of the deflation, particle (m_s, k_F) = (1.0, 0.5) m, from the CJT potential, with their ratios to the weak-coupling formulas".to_string()),
-          ("columns", "tau; g; Tc; dalpha_dlnT (formula 4 N(0)) and its ratio to the formula; beta at T_c (formula 7 zeta(3) N(0)/(2 pi^2 T_c^2)) and ratio; K: gradient coefficient (formula 7 zeta(3) N(0) v_F^2/(96 pi^2 T_c^2)) and ratio; xi_GL = sqrt(K/|a|) for |ln(T/T_c)| = 1, a = alpha/8: coherence length (units 1/m); xi_GL T_c/v_F (formula sqrt(7 zeta(3)/(48 pi^2)) = 0.1333)".to_string()),
+          ("columns", "tau_d; g; Tc; dalpha_dlnT (formula 4 N(0)) and its ratio to the formula; beta at T_c (formula 7 zeta(3) N(0)/(2 pi^2 T_c^2)) and ratio; K: gradient coefficient (formula 7 zeta(3) N(0) v_F^2/(96 pi^2 T_c^2)) and ratio; xi_GL = sqrt(K/|a|) for |ln(T/T_c)| = 1, a = alpha/8: coherence length (units 1/m); xi_GL T_c/v_F (formula sqrt(7 zeta(3)/(48 pi^2)) = 0.1333)".to_string()),
           ("command", "deflation paired".to_string())],
-        &["tau", "g", "Tc", "dalpha_dlnT", "alpha_ratio", "beta_Tc", "beta_ratio", "K", "K_ratio", "xi_GL", "xi_GL_Tc_over_vF"], &grows)?;
+        &["tau_d", "g", "Tc", "dalpha_dlnT", "alpha_ratio", "beta_Tc", "beta_ratio", "K", "K_ratio", "xi_GL", "xi_GL_Tc_over_vF"], &grows)?;
     rep.add("def-P3", "numerical",
         &format!("Ginzburg-Landau energy along the clock (three moments, T_c = {:.1e}, {:.1e}, {:.1e} E_F): while T_c is below 0.05 E_F the coefficients from the CJT potential agree with the weak-coupling formulas to {:.1} per cent; at the third moment, T_c = 0.10 E_F, they differ by up to {:.1} per cent, the state leaving the weak-coupling regime. The quadratic coefficient keeps its slope 4 N(0), the quartic and the gradient coefficients fall as 1/T_c^2, and the coherence length, sqrt(7 zeta(3)/(48 pi^2)) v_F/T_c = {:.4} v_F/T_c in weak coupling (computed: {:.4}, {:.4}, {:.4}), shrinks from {:.0} to {:.1} (units 1/m). Vortex cores shrink as the deflation proceeds", grows[0][2] / 0.118034, grows[1][2] / 0.118034, grows[2][2] / 0.118034, 100.0 * gl_dev, 100.0 * gl_dev_strong, xi_number, grows[0][10], grows[1][10], grows[2][10], grows[0][9], grows[2][9]),
         gl_dev < 0.015 && gl_dev_strong < 0.12 && gl_dev_strong > gl_dev && grows[2][9] < grows[1][9] && grows[1][9] < grows[0][9] && grows.iter().take(2).all(|r| (r[10] / xi_number - 1.0).abs() < 0.01));
@@ -284,10 +284,10 @@ pub fn run() -> std::io::Result<bool> {
         srows.push(vec![tau, cc, e_bind, kf_sat, x_sat, g2, hartree, es, ep, es / hartree.abs(), ep / hartree.abs()]);
     }
     write_csv("matter_saturation.csv",
-        &[("content", "self-bound normal matter along the deflation clock (mean field without the negative-energy states): C = g_VS^2 m^2/m_s^2 = 4 exp(tau); energy per particle at the density of lowest energy, and the exchange (Fock) energies of the two modes there for m_s/m = 0.3".to_string()),
-          ("columns", "tau; C; e_bind: lowest energy per particle minus m (units of m; negative: bound); kF_sat: Fermi momentum there; x_sat: m*/m there; g2 = g_VS^2; hartree: mean-field energy density minus that of free fermions at the same density; fock_radial, fock_phase: exchange energy densities; their ratios to |hartree|".to_string()),
+        &[("content", "self-bound normal matter along the deflation clock (mean field without the negative-energy states): C = g_VS^2 m^2/m_s^2 = 4 exp(tau_d); energy per particle at the density of lowest energy, and the exchange (Fock) energies of the two modes there for m_s/m = 0.3".to_string()),
+          ("columns", "tau_d; C; e_bind: lowest energy per particle minus m (units of m; negative: bound); kF_sat: Fermi momentum there; x_sat: m*/m there; g2 = g_VS^2; hartree: mean-field energy density minus that of free fermions at the same density; fock_radial, fock_phase: exchange energy densities; their ratios to |hartree|".to_string()),
           ("command", "deflation paired".to_string())],
-        &["tau", "C", "e_bind", "kF_sat", "x_sat", "g2", "hartree", "fock_radial", "fock_phase", "fock_radial_over_hartree", "fock_phase_over_hartree"], &srows)?;
+        &["tau_d", "C", "e_bind", "kF_sat", "x_sat", "g2", "hartree", "fock_radial", "fock_phase", "fock_radial_over_hartree", "fock_phase_over_hartree"], &srows)?;
     let last = srows.last().unwrap();
     rep.add("def-P7", "numerical",
         &format!("self-bound matter along the clock: once C has passed 3.7011 the lowest energy per particle lies below m, and it falls monotonically as the deflation proceeds: from {:.4} m at C = 4 to {:.3} m at C = {:.1}. At every one of these moments the matter of lowest energy is in the abnormal state (fermion mass zero inside the matter, largest value of m*/m in the table {:.1e}), at a Fermi momentum that falls from {:.2} m to {:.2} m. The exchange energies of the radial and of the phase mode at that density are {:.2} and {:.2} per cent of the mean-field energy at C = 4, and {:.2} and {:.2} per cent at C = {:.1} (m_s/m = 0.3): the mean field remains a good approximation along the whole history", srows[0][2], last[2], last[1], srows.iter().map(|r| r[4]).fold(0.0, f64::max), srows[0][3], last[3], 100.0 * srows[0][9], 100.0 * srows[0][10], 100.0 * last[9], 100.0 * last[10], last[1]),

@@ -135,7 +135,7 @@ pub fn run() -> std::io::Result<bool> {
     }
 
     // ---- (4) how the quantities of the model follow the deflation -----------------------------
-    // exponents n in  quantity ~ exp(n tau), tau = gsum (x4 - x4_ref); an exact check of the reduction follows
+    // exponents n in  quantity ~ exp(n tau_d), tau_d = gsum (x4 - x4_ref); an exact check of the reduction follows
     let ex: Vec<(&str, &str, i32, i32, &str)> = vec![
         ("Vd", "b_5 b_6 b_7: the factor sqrt|g| of the measure", -1, 1, "definition"),
         ("y_VS (four-dimensional)", "Yukawa coupling of the weighted fields", 1, 2, "y_VS/sqrt(Vd)"),
@@ -145,16 +145,16 @@ pub fn run() -> std::io::Result<bool> {
         ("m_s", "mass of the radial mode sqrt(2 lambda_VS) v_VS", 0, 1, "constant"),
         ("g_VS", "coupling of the radial mode to the fermions, m/v_VS", 1, 2, "follows v_VS"),
         ("alpha_VS", "g_VS^2/(4 pi)", 1, 1, ""),
-        ("G_VS", "strength of the contact interaction, g_VS^2/m_s^2", 1, 1, ""),
+        ("G_VS", "constant of the Fermi type of the neutral-current interaction, 1/(sqrt(2) v_VS^2)", 1, 1, "follows v_VS"),
         ("D_VS", "alpha_VS m/m_s: decides whether two fermions bind", 1, 1, ""),
         ("C", "g_VS^2 m^2/m_s^2: decides the state of matter", 1, 1, ""),
         ("vortex energy per length", "proportional to v_VS^2 (four-dimensional)", -1, 1, ""),
         ("G_F if the Vorton-Scalar is the Higgs field (H2)", "1/(sqrt(2) v_VS^2), four-dimensional vacuum value", 1, 1, "all masses m = y v/sqrt(2) stay constant"),
-        ("G (Newton) if gravity is eight-dimensional (A2)", "G_8/(volume of x5 x6 x7)", 1, 1, ""),
+        ("G_N (Newton's constant) if gravity is eight-dimensional (A2)", "G_8/(volume of x5 x6 x7)", 1, 1, ""),
     ];
     let erows: Vec<Vec<String>> = ex.iter().map(|(q, d, n, den, note)| vec![q.to_string(), d.to_string(), if *den == 1 { format!("{}", n) } else { format!("{}/{}", n, den) }, note.to_string()]).collect();
     write_csv_str("coupling_exponents.csv",
-        &[("content", "how the quantities of the model follow the deflation in the sector of fields that do not depend on x5, x6, x7: quantity proportional to exp(n tau), tau = gsum (x4 - x4_ref), gsum = g55 + g66 + g77".to_string()),
+        &[("content", "how the quantities of the model follow the deflation in the sector of fields that do not depend on x5, x6, x7: quantity proportional to exp(n tau_d), tau_d = gsum (x4 - x4_ref), gsum = g55 + g66 + g77".to_string()),
           ("columns", "quantity; meaning; n; note".to_string()),
           ("command", "deflation symmetry".to_string())],
         &["quantity", "meaning", "n", "note"], &erows)?;

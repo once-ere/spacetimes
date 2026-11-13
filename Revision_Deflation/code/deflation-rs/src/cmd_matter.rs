@@ -89,16 +89,16 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         }
     }
     write_csv("dm_selfinteraction.csv",
-        &[("content", "smallest fermion mass for which a gas of bound pairs satisfies sigma/m <= 1 cm^2/g, if the pair-pair scattering length is the range 1/m_s of the binding potential and the potential binds (alpha m/m_s >= D_c), evaluated with the coupling of the moment alpha = alpha_today exp(tau), tau = gsum (x4 - x4_today)".to_string()),
+        &[("content", "smallest fermion mass for which a gas of bound pairs satisfies sigma/m <= 1 cm^2/g, if the pair-pair scattering length is the range 1/m_s of the binding potential and the potential binds (alpha m/m_s >= D_c), evaluated with the coupling of the moment alpha = alpha_today exp(tau_d), tau_d = gsum (x4 - x4_today)".to_string()),
           ("formula", "m_min = [4 pi D_c^2/(alpha^2 kappa)]^(1/3), kappa = 1 cm^2/g in natural units; m_s = alpha m_min/D_c; last column: phase-space density n lambda^3 of the pairs in the core of a dwarf spheroidal galaxy (condensation needs 2.612)".to_string()),
           ("constants", format!("kappa = {:.5e} eV^-3; D_c = {:.5}", kappa, d_c)),
-          ("note", "the rows with tau = 0 are the table of the main project. For a given particle (m and m_s fixed, they do not change) the cross-section of the pairs, 8 pi/m_s^2, does not change either; what changes is whether the pair is bound".to_string()),
+          ("note", "the rows with tau_d = 0 are the table of the main project. For a given particle (m and m_s fixed, they do not change) the cross-section of the pairs, 8 pi/m_s^2, does not change either; what changes is whether the pair is bound".to_string()),
           ("command", "deflation matter".to_string())],
-        &["alpha_today", "tau", "alpha", "m_min_MeV", "m_s_MeV", "range_fm", "phase_space_density_dwarf"], &rows2)?;
+        &["alpha_today", "tau_d", "alpha", "m_min_MeV", "m_s_MeV", "range_fm", "phase_space_density_dwarf"], &rows2)?;
     let main_si = read_numbers(&format!("{}/dm_selfinteraction.csv", main_data_dir));
     let si_same = main_si.as_ref().map(|m| same(m, &today, 1e-9)).unwrap_or(false);
     rep.add("def-D2", "numerical",
-        &format!("self-interaction of bound pairs: with the coupling of today the table of the main project is reproduced (smallest fermion mass {:.0} MeV for alpha_VS = 0.1). The smallest mass falls as alpha_VS^(-2/3), that is, as exp(-2 tau/3) along the deflation. For a given particle the masses m and m_s are constant, hence so is the cross-section 8 pi/m_s^2 of the pairs; the deflation changes whether the pair exists: it is bound only after D_VS = alpha_VS m/m_s has grown to {:.5}", today[1][1], d_c),
+        &format!("self-interaction of bound pairs: with the coupling of today the table of the main project is reproduced (smallest fermion mass {:.0} MeV for alpha_VS = 0.1). The smallest mass falls as alpha_VS^(-2/3), that is, as exp(-2 tau_d/3) along the deflation. For a given particle the masses m and m_s are constant, hence so is the cross-section 8 pi/m_s^2 of the pairs; the deflation changes whether the pair exists: it is bound only after D_VS = alpha_VS m/m_s has grown to {:.5}", today[1][1], d_c),
         si_same);
 
     // ---- (3) resonance at the moment of binding ---------------------------------------------------
@@ -132,15 +132,15 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     }
     write_csv("dm_resonance.csv",
         &[("content", "scattering of two unbound fermions of the model at low energy while the deflation carries D_VS = alpha_VS m/m_s through the value D_c at which the pair becomes bound: s-wave cross-section per mass, sigma/m = 4 pi a^2/[(1 + k^2 a^2) m], with the scattering length a(D_VS) of the Yukawa potential (routine dimer::scattering_length of the main project) and k = m v/2".to_string()),
-          ("particle", format!("m = {:.1} MeV, m_s = {:.2} MeV (the row alpha_VS = 0.1 of data/dm_selfinteraction.csv); tau = 0 is the moment of binding", m_ev / 1e6, ms_ev / 1e6)),
-          ("columns", "tau = gsum (x4 - x4_binding); D = D_c exp(tau); a_ms: scattering length in units of 1/m_s; sigma/m in cm^2/g at the relative velocities 10, 156 and 1000 km/s (effective-range corrections neglected)".to_string()),
+          ("particle", format!("m = {:.1} MeV, m_s = {:.2} MeV (the row alpha_VS = 0.1 of data/dm_selfinteraction.csv); tau_pair = 0 is the moment of binding", m_ev / 1e6, ms_ev / 1e6)),
+          ("columns", "tau_pair = gsum (x4 - x4_binding) = ln(D_VS/D_c); D = D_VS = D_c exp(tau_pair); a_ms: scattering length in units of 1/m_s; sigma/m in cm^2/g at the relative velocities 10, 156 and 1000 km/s (effective-range corrections neglected)".to_string()),
           ("command", "deflation matter".to_string())],
-        &["tau", "D", "a_ms", "sigma_over_m_v10", "sigma_over_m_v156", "sigma_over_m_v1000"], &rrows)?;
+        &["tau_pair", "D", "a_ms", "sigma_over_m_v10", "sigma_over_m_v156", "sigma_over_m_v1000"], &rrows)?;
     // unitarity limit 4 pi/k^2 at v = 10 km/s
     let k10 = 0.5 * m_ev * (10.0e3 / C_LIGHT);
     let unit10 = 4.0 * pi / (k10 * k10) / m_ev / kappa;
     rep.add("def-D3", "numerical",
-        &format!("the moment at which the pair becomes bound is a zero-energy resonance of the scattering of two fermions: the scattering length diverges at D_VS = D_c. For a particle with m = {:.0} MeV and m_s = {:.1} MeV the cross-section per mass at the relative velocities 10, 156 and 1000 km/s rises from {:.1e}, {:.1e}, {:.1e} cm^2/g one unit of tau before the binding to the peak values {:.1e}, {:.1e}, {:.1e} cm^2/g (limit of unitarity at 10 km/s: {:.1e}); it exceeds 100 cm^2/g during an interval of tau of {:.3}, {:.3}, {:.3} around the moment of binding. A deflating universe in which the dark matter is made of these fermions passes through an epoch of strong, velocity-dependent self-interaction", m_ev / 1e6, ms_ev / 1e6, far[0], far[1], far[2], peak[0], peak[1], peak[2], unit10, window[0], window[1], window[2]),
+        &format!("the moment at which the pair becomes bound is a zero-energy resonance of the scattering of two fermions: the scattering length diverges at D_VS = D_c. For a particle with m = {:.0} MeV and m_s = {:.1} MeV the cross-section per mass at the relative velocities 10, 156 and 1000 km/s rises from {:.1e}, {:.1e}, {:.1e} cm^2/g one unit of the deflation clock before the binding to the peak values {:.1e}, {:.1e}, {:.1e} cm^2/g (limit of unitarity at 10 km/s: {:.1e}); it exceeds 100 cm^2/g during an interval of the clock of {:.3}, {:.3}, {:.3} around the moment of binding. A deflating universe in which the dark matter is made of these fermions passes through an epoch of strong, velocity-dependent self-interaction", m_ev / 1e6, ms_ev / 1e6, far[0], far[1], far[2], peak[0], peak[1], peak[2], unit10, window[0], window[1], window[2]),
         peak[0] > 1e3 * far[0] && peak[0] <= unit10 * 1.0001 && peak[0] > peak[1] && peak[1] > peak[2] && window[0] >= window[2] && window[0] < 0.5);
 
     // ---- (4) growth of structure ---------------------------------------------------------------------
@@ -171,27 +171,27 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         grows.push(vec![*r, h, d, f, d / d_ref, f / f_ref, d * f / (d_ref * f_ref), d_h / d_ref, f_h / f_ref]);
     }
     write_csv("growth_deflation.csv",
-        &[("content", "linear growth of the density contrast of matter in ordinary space when Newton's constant grows with the deflation (assumptions A1, A2; Newtonian limit): delta'' + 2 H delta' = 4 pi G(x4) rho_m delta; each model has the Hubble constant that keeps the angular scale of the sound horizon, as in data/hubble_deflation.csv".to_string()),
-          ("columns", "gsum_over_H0; h; D: delta at a = 1 for delta = a + 2 a_eq/3 at a = 0.01; f = d ln delta/d ln a at a = 1; D_ratio, f_ratio, fD_ratio: ratios to the model without deflation (D_ratio is the ratio of the amplitudes sigma_8 for the same primordial amplitude); D_ratio_fixed_h, f_ratio_fixed_h: the same ratios if the Hubble constant is held at 67.36 km/s/Mpc instead".to_string()),
+        &[("content", "linear growth of the density contrast of matter in ordinary space when Newton's constant grows with the deflation (assumptions A1, A2; Newtonian limit): delta_m'' + 2 H delta_m' = 4 pi G_N(x4) rho_m delta_m (primes: derivatives with respect to x4); each model has the Hubble constant that keeps the angular scale of the sound horizon, as in data/hubble_deflation.csv".to_string()),
+          ("columns", "gsum_over_H0; h; growth: density contrast delta_m at a = 1 for delta_m = a + 2 a_eq/3 at a = 0.01; f_growth = d ln delta_m/d ln a at a = 1; growth_ratio, f_growth_ratio, f_sigma8_ratio: ratios to the model without deflation (growth_ratio is the ratio of the amplitudes sigma_8 for the same primordial amplitude; f_sigma8_ratio the ratio of the products); growth_ratio_fixed_h, f_growth_ratio_fixed_h: the same ratios if the Hubble constant is held at 67.36 km/s/Mpc instead".to_string()),
           ("command", "deflation matter".to_string())],
-        &["gsum_over_H0", "h", "D", "f", "D_ratio", "f_ratio", "fD_ratio", "D_ratio_fixed_h", "f_ratio_fixed_h"], &grows)?;
+        &["gsum_over_H0", "h", "growth", "f_growth", "growth_ratio", "f_growth_ratio", "f_sigma8_ratio", "growth_ratio_fixed_h", "f_growth_ratio_fixed_h"], &grows)?;
     let at = |r: f64| grows.iter().find(|x| (x[0] - r).abs() < 1e-12).unwrap().clone();
     let slope = (at(1e-3)[4] - 1.0) / 1e-3;
     let slope_h = (at(1e-3)[7] - 1.0) / 1e-3;
     let mono_h = grows.windows(2).all(|w| w[1][7] < w[0][7]);
     let mono = grows.windows(2).all(|w| w[1][4] > w[0][4]);
     rep.add("def-D4", "numerical",
-        &format!("growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = {:.3}. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = {:+.3}, a rise of {:.2} per cent at the rate that lunar laser ranging allows, {:.2} per cent at the rate that nucleosynthesis allows and {:.2} per cent for gsum = 0.1 H_0. The growth rate f = d ln delta/d ln a today rises by the factors {:.4}, {:.4}, {:.4}. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in f sigma_8 rather than in sigma_8 (data/growth_deflation.csv)", slope_h, slope, 100.0 * (at(llr)[4] - 1.0), 100.0 * (at(0.0644)[4] - 1.0), 100.0 * (at(0.1)[4] - 1.0), at(llr)[5], at(0.0644)[5], at(0.1)[5]),
+        &format!("growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = {:.3}. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = {:+.3}, a rise of {:.2} per cent at the rate that lunar laser ranging allows, {:.2} per cent at the rate that nucleosynthesis allows and {:.2} per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors {:.4}, {:.4}, {:.4}. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)", slope_h, slope, 100.0 * (at(llr)[4] - 1.0), 100.0 * (at(0.0644)[4] - 1.0), 100.0 * (at(0.1)[4] - 1.0), at(llr)[5], at(0.0644)[5], at(0.1)[5]),
         mono && mono_h && slope_h < 0.0 && slope > 0.0 && at(0.0644)[5] > 1.0);
 
     // ---- (5) drift of the quantities -----------------------------------------------------------------
-    // logarithmic derivatives with respect to tau (every quantity depends on tau through D or alpha ~ exp(tau))
+    // logarithmic derivatives with respect to tau_d (every quantity depends on tau_d through D or alpha ~ exp(tau_d))
     let dlog = |f: &dyn Fn(f64) -> f64, d: f64| -> f64 {
         let e = 1e-3;
         (f(d * (1.0 + e)).abs().ln() - f(d * (1.0 - e)).abs().ln()) / ((1.0 + e).ln() - (1.0 - e).ln())
     };
     let mut drows: Vec<Vec<String>> = Vec::new();
-    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G (A2)", 0.0644), ("nucleosynthesis, G_F (H2), 20 per cent", 0.234)];
+    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_F (H2), 20 per cent", 0.234)];
     let t0_h0 = 0.9507; // age of the model without deflation times H_0 (13.81 Gyr)
     let mut push = |q: &str, at: &str, n: f64| {
         let mut row = vec![q.to_string(), at.to_string(), format!("{:.3}", n)];
@@ -218,8 +218,8 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     }
     push("cross-section of two fermions at low energy (Born regime, D_VS << 1)", "D_VS = 0.05", 2.0 * dlog(&|x| scattering_length(x), 0.05));
     write_csv_str("dm_drift.csv",
-        &[("content", "how fast the quantities of the model drift on a deflating spacetime: n = d ln(quantity)/d tau with tau = gsum x4, and the relative change n gsum t_0 over the age of the universe at the largest rates that the three bounds allow (gsum = 3.24e-3, 0.0644 and 0.234 H_0; H_0 t_0 = 0.9507)".to_string()),
-          ("columns", "quantity; where evaluated; n; change over the age at the bound from lunar laser ranging (assumption A2); at the bound from nucleosynthesis through G (A2); at the bound from nucleosynthesis through the Fermi constant (H2, 20 per cent)".to_string()),
+        &[("content", "how fast the quantities of the model drift on a deflating spacetime: n = d ln(quantity)/d tau_d with tau_d = gsum x4, and the relative change n gsum t_0 over the age of the universe at the largest rates that the three bounds allow (gsum = 3.24e-3, 0.0644 and 0.234 H_0; H_0 t_0 = 0.9507)".to_string()),
+          ("columns", "quantity; where evaluated; n; change over the age at the bound from lunar laser ranging (assumption A2); at the bound from nucleosynthesis through G_N (A2); at the bound from nucleosynthesis through the Fermi constant (H2, 20 per cent)".to_string()),
           ("command", "deflation matter".to_string())],
         &["quantity", "at", "n", "change_LLR", "change_BBN_G", "change_BBN_GF"], &drows)?;
     let n_a = dlog(&|x| scattering_length(x), 1.5);
@@ -236,7 +236,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let mut trows: Vec<Vec<String>> = Vec::new();
     let h0_per_yr = h0 / HUBBLE_TIME_100_YR;
     let mut t_llr = 0.0;
-    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G (A2)", 0.0644), ("nucleosynthesis, G_F (H2), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
+    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_F (H2), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
         let rate_per_s = r * h0_per_yr / year / 3.0; // each of three equal rates
         let e = hbar_ev_s * rate_per_s; // eV
         let t = e / (2.0 * pi) / k_b_ev;
