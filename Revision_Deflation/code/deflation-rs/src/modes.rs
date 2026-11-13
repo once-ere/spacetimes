@@ -35,7 +35,7 @@
 //! solutions (the decaying ones) are computed here by integrating backwards in x4.
 //! For one non-zero k_t they are, exactly,
 //!
-//!     psihat = sqrt(u) K_{1/2 + i E_perp/rate_t}(u) w - sqrt(u) K_{1/2 - i E_perp/rate_t}(u) N_t w,   u = q_t/rate_t,
+//!     psihat = sqrt(u_d) K_{1/2 + i E_perp/rate_t}(u_d) w - sqrt(u_d) K_{1/2 - i E_perp/rate_t}(u_d) N_t w,   u_d = q_t/rate_t,
 //!
 //! with the modified Bessel function K and any w of positive energy (i K0 w = E_perp w).
 //! They are standing waves at early times and fall off as exp(-s) at late times.
@@ -651,7 +651,7 @@ pub fn bessel_k(nu: C64, s: f64) -> C64 {
 }
 
 /// |psihat|^2 of the exact bounded solution for one non-zero k_t, up to a constant
-/// factor:  2 u |K_{1/2 + i E_perp/rate_t}(u)|^2  with u = q_t/rate_t (arguments: u, and the ratio E_perp/rate_t).
+/// factor:  2 u_d |K_{1/2 + i E_perp/rate_t}(u_d)|^2  with u_d = q_t/rate_t (arguments: u_d, and the ratio E_perp/rate_t).
 pub fn bounded_profile_exact(s: f64, mu: f64) -> f64 {
     2.0 * s * bessel_k(C64::new(0.5, mu), s).norm_sqr()
 }
@@ -744,7 +744,7 @@ mod tests {
         // all eight solutions are amplified (backwards) by the same factor, close to exp(S)
         assert!((r.log_amp_max - r.log_amp_min).abs() < 1e-6);
         assert!((r.log_amp_min - r.s_wkb).abs() < 1.5, "log amplification {}, S = {}", r.log_amp_min, r.s_wkb);
-        // comparison of the profile with the exact solution 2 u |K_{1/2 + i E_perp/rate_t}(u)|^2 (ratio constant)
+        // comparison of the profile with the exact solution 2 u_d |K_{1/2 + i E_perp/rate_t}(u_d)|^2 (ratio constant)
         let mu = mode.eps() / 2.0;
         let mut ratios: Vec<f64> = Vec::new();
         for row in r.profile.iter().step_by(40) {

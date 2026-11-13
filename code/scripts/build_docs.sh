@@ -32,7 +32,9 @@ PROBLEMS=0   # number of documents with layout problems
 # Which documents?  Either the ones named on the command line, or every
 # Markdown file of the repository except the generated manuscript Markdown,
 # the document sources (docs_src/) and the generated fragments
-# (provenance/generated/), which are not documents.
+# (provenance/generated/), which are not documents, and except the folder
+# Revision_Deflation, which has its own copy of this script
+# (Revision_Deflation/code/scripts/build_docs.sh).
 # The list is read line by line so that file names with spaces survive.
 # ---------------------------------------------------------------------------
 DOCS=()
@@ -42,7 +44,8 @@ else
   while IFS= read -r f; do DOCS+=("$f"); done < <(
     find . -name '*.md' -not -path './.git/*' -not -path './manuscript/*' \
            -not -path '*/target/*' -not -path './.git-transfer/*' \
-           -not -path './docs_src/*' -not -path './provenance/generated/*' | sed 's|^\./||' | sort)
+           -not -path './docs_src/*' -not -path './provenance/generated/*' \
+           -not -path './Revision_Deflation/*' | sed 's|^\./||' | sort)
 fi
 
 for md in "${DOCS[@]}"; do

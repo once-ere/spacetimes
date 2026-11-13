@@ -131,6 +131,12 @@ passages, and say in Sec. XIII of the manuscripts that the result is now compute
 # 5. What is *not* affected by the pause
 
 The work in `Revision_Deflation` is a separate piece of work with hypotheses of its
-own. It uses the programs and matrices of this project, but it does not change any
-file outside its folder, and its documents state their own results. The pending
+own. It uses the programs and matrices of this project, and its documents state their
+own results. It changes one file outside its folder: the script
+`code/scripts/build_docs.sh`, which until then built every Markdown file of the
+repository, now leaves the folder `Revision_Deflation` to that folder's own copy of the
+script (five lines changed on November 12, 2026). Without this change, building all
+documents of the main project would also have rebuilt the documents of the revision
+with the wrong settings and would have overwritten its two manuscripts. No document,
+program or data file of the main project was changed. The pending
 correction E43 concerns vortex lines, which the revision treats independently.

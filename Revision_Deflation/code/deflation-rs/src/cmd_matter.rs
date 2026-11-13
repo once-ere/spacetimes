@@ -191,7 +191,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         (f(d * (1.0 + e)).abs().ln() - f(d * (1.0 - e)).abs().ln()) / ((1.0 + e).ln() - (1.0 - e).ln())
     };
     let mut drows: Vec<Vec<String>> = Vec::new();
-    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_F (H2), 20 per cent", 0.234)];
+    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (H2), 20 per cent", 0.234)];
     let t0_h0 = 0.9507; // age of the model without deflation times H_0 (13.81 Gyr)
     let mut push = |q: &str, at: &str, n: f64| {
         let mut row = vec![q.to_string(), at.to_string(), format!("{:.3}", n)];
@@ -236,7 +236,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let mut trows: Vec<Vec<String>> = Vec::new();
     let h0_per_yr = h0 / HUBBLE_TIME_100_YR;
     let mut t_llr = 0.0;
-    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_F (H2), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
+    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (H2), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
         let rate_per_s = r * h0_per_yr / year / 3.0; // each of three equal rates
         let e = hbar_ev_s * rate_per_s; // eV
         let t = e / (2.0 * pi) / k_b_ev;

@@ -88,9 +88,9 @@ fn cmd_matrices() -> std::io::Result<bool> {
     }
     write_csv("curvature.csv",
         &[("content", "curvature of the deflating spacetimes for several sets of rates, from the closed forms of check G5 (mixed components; they do not depend on x4)".to_string()),
-          ("columns", "spacetime: 1644 = 4+4, 1671 = 7+1; g55, g66, g77: rates; Ric44, Ric55, Ric66, Ric77: mixed Ricci tensor R^mu_mu; R: curvature scalar; Ein00 (= Ein11 = Ein22 = Ein33), Ein44, Ein55, Ein66, Ein77: mixed Einstein tensor, components (mu, mu)".to_string()),
+          ("columns", "spacetime: 1644 = 4+4, 1671 = 7+1; g55, g66, g77: rates; Ric44, Ric55, Ric66, Ric77: mixed Ricci tensor, components (mu, mu); Rscalar: curvature scalar; Ein00 (= Ein11 = Ein22 = Ein33), Ein44, Ein55, Ein66, Ein77: mixed Einstein tensor, components (mu, mu)".to_string()),
           ("command", "deflation matrices".to_string())],
-        &["spacetime", "g55", "g66", "g77", "Ric44", "Ric55", "Ric66", "Ric77", "R", "Ein00", "Ein44", "Ein55", "Ein66", "Ein77"], &rows)?;
+        &["spacetime", "g55", "g66", "g77", "Ric44", "Ric55", "Ric66", "Ric77", "Rscalar", "Ein00", "Ein44", "Ein55", "Ein66", "Ein77"], &rows)?;
     Ok(all_flat && all)
 }
 
@@ -184,9 +184,9 @@ fn cmd_modes() -> std::io::Result<bool> {
     }
     write_csv("creation_history.csv",
         &[("content", "7+1 deflating spacetime: mean number of particles (per spin state, first superadiabatic basis) in a mode that starts empty, as a function of x4".to_string()),
-          ("columns", "case: 1 = E_perp/g55 = 1, one direction; 2 = E_perp/g55 = 0.5, one direction; 3 = E_perp = 1, wavenumbers along x5 (g55 = 1) and x6 (g66 = 2); x4 (the physical wavenumber along x5 equals 1 at x4 = 0); k_d_over_E_perp; n: mean adiabatic particle number".to_string()),
+          ("columns", "case: 1 = E_perp/g55 = 1, one direction; 2 = E_perp/g55 = 0.5, one direction; 3 = E_perp = 1, wavenumbers along x5 (g55 = 1) and x6 (g66 = 2); x4 (the physical wavenumber along x5 equals 1 at x4 = 0); k_d_over_E_perp; n_cr: mean adiabatic particle number".to_string()),
           ("command", "deflation modes".to_string())],
-        &["case", "x4", "k_d_over_E_perp", "n"], &rows)?;
+        &["case", "x4", "k_d_over_E_perp", "n_cr"], &rows)?;
 
     // ---- 4+4: bounded solutions -----------------------------------------------------------
     let mut rows: Vec<Vec<f64>> = Vec::new();
@@ -247,13 +247,13 @@ fn cmd_modes() -> std::io::Result<bool> {
         &["case", "E_perp", "x4_turn", "x4_late", "S_wkb", "log_amp_min", "log_amp_max", "standing_wave_dev", "charge_ratio", "steps"], &rows)?;
     write_csv("extinction_profile.csv",
         &[("content", "4+4 deflating spacetime: |psihat|^2 of one bounded solution as a function of x4, normalized to its maximum, for the five cases of data/extinction_checks.csv".to_string()),
-          ("columns", "case; x4; k_d_over_E_perp; norm2: numerical; exact: 2 u |K_(1/2 + i E_perp/rate_t)(u)|^2 with u = k_d/rate_t, scaled to the numerical curve by least squares (cases 1 to 4, where one rate governs; nan where not evaluated)".to_string()),
+          ("columns", "case; x4; k_d_over_E_perp; norm2: numerical; exact: 2 u_d |K_(1/2 + i E_perp/rate_t)(u_d)|^2 with u_d = k_d/rate_t, scaled to the numerical curve by least squares (cases 1 to 4, where one rate governs; nan where not evaluated)".to_string()),
           ("command", "deflation modes".to_string())],
         &["case", "x4", "k_d_over_E_perp", "norm2", "exact"], &prof_rows)?;
     rep.add("44d-M1", "numerical", &format!("modes of the 4+4 field that depend on the deflating times (five cases: one, two or three non-zero k_t; equal and unequal rates and constants): beyond the turning value of x4 exactly eight of the sixteen solutions stay bounded; integrated backwards to early times they contain positive- and negative-energy parts of equal weight (relative difference of the two Gram matrices at most {:.1e}): they are standing waves in x4, not travelling particles", sw), sw < 1e-5);
     rep.add("44d-M2", "numerical", &format!("the covariant charge psihat^dagger W psihat of every bounded solution vanishes (ratio to psihat^dagger psihat at most {:.1e}), as it must for a conserved quantity of a solution that dies out", ch), ch < 1e-5);
     rep.add("44d-M3", "numerical", &format!("between the turning value and the late x4 every bounded solution falls by exp(-S) times a factor of order one, S = Int sqrt(k_d^2 - E_perp^2) dx4 = 30 being the WKB exponent (largest difference between the logarithm of the factor and S in the five cases: {:.2}). Where one rate governs (cases 1 to 4) the eight solutions fall by the same factor (spread of the logarithms at most {:.1e}) and its logarithm is S + (1/2) ln 2 - (1/2) ln(1 + exp(-2 pi E_perp/rate_t)), as the exact solution requires (largest deviation {:.1e}); with three unequal rates (case 5) the factor depends on the spin state (spread {:.2}). The dependence on a deflating time dies out as exp(-S), and S grows as exp(rate_t x4)", amp, spread_one, offset_dev, spread_all), amp < 1.0 && spread_one < 1e-6 && offset_dev < 5e-3);
-    rep.add("44d-M4", "numerical", &format!("where one rate governs (one non-zero k_t, or equal rates) the computed |psihat|^2 equals the exact form 2 u |K_(1/2 + i E_perp/rate_t)(u)|^2 (modified Bessel function of the order 1/2 + i E_perp/rate_t, u = k_d/rate_t) over the range 0.02 < u < 12 with a largest relative deviation of {:.1e}", prof_dev), prof_dev < 1e-5);
+    rep.add("44d-M4", "numerical", &format!("where one rate governs (one non-zero k_t, or equal rates) the computed |psihat|^2 equals the exact form 2 u_d |K_(1/2 + i E_perp/rate_t)(u_d)|^2 (modified Bessel function of the order 1/2 + i E_perp/rate_t, u_d = k_d/rate_t) over the range 0.02 < u_d < 12 with a largest relative deviation of {:.1e}", prof_dev), prof_dev < 1e-5);
 
     let (ok, n) = rep.count();
     let all = rep.all_pass();
@@ -364,9 +364,9 @@ fn cmd_history() -> std::io::Result<bool> {
     }
     write_csv("medium_history.csv",
         &[("content", "normal matter of fixed density along the deflation clock: C = g_VS^2 m^2/m_s^2 grows as exp(gsum x4)".to_string()),
-          ("columns", "k_F (units of m); sea: 1 if the filled negative-energy states are included; C; x = m*/m: fermion mass in the matter; e_per_n: energy per fermion (units of m; below 1 = bound); p: pressure (units of m^4); cs2: square of the sound speed".to_string()),
+          ("columns", "k_F (units of m); sea: 1 if the filled negative-energy states are included; C; x = m*/m: fermion mass in the matter; e_per_n: energy per fermion (units of m; below 1 = bound); pressure (units of m^4); cs2: square of the sound speed".to_string()),
           ("command", "deflation history".to_string())],
-        &["k_F", "sea", "C", "x", "e_per_n", "p", "cs2"], &rows)?;
+        &["k_F", "sea", "C", "x", "e_per_n", "pressure", "cs2"], &rows)?;
     // the critical C of abnormal matter for several densities, and the estimate of the main project,
     // k_F = pi m/(2 sqrt(C)), which holds where the transition happens at weak coupling, i.e. at high density
     let mut ab_txt: Vec<String> = Vec::new();
@@ -515,14 +515,14 @@ fn cmd_quench() -> std::io::Result<bool> {
     write_csv("quench_history.csv",
         &[("content", "the order parameter of the paired state while the pairing strength grows as lambda = 0.15 exp(tau_d), tau_d = gsum (x4 - x4_i), up to lambda = 0.5; time-dependent mean-field dynamics of the shell model (quench.rs), started in equilibrium".to_string()),
           ("units", "energies in units of the half-width E_sh of the shell; gsum in units of E_sh".to_string()),
-          ("columns", "gsum; tau_d; lambda; gap_abs: |Delta| of the evolving state; gap_eq: equilibrium gap for the coupling of the moment, 1/sinh(1/lambda); ratio = gap_abs/gap_eq; n_ex: density of broken pairs; Xi = gsum/(lambda gap_eq): the parameter that decides whether the state can follow".to_string()),
+          ("columns", "gsum; tau_d; lambda; gap_abs: |Delta| of the evolving state; gap_eq: equilibrium gap for the coupling of the moment, 1/sinh(1/lambda); ratio = gap_abs/gap_eq; n_ex: density of broken pairs; Xi_d = gsum/(lambda gap_eq): the parameter that decides whether the state can follow".to_string()),
           ("command", "deflation quench".to_string())],
-        &["gsum", "tau_d", "lambda", "gap_abs", "gap_eq", "ratio", "n_ex", "Xi"], &hist)?;
+        &["gsum", "tau_d", "lambda", "gap_abs", "gap_eq", "ratio", "n_ex", "Xi_d"], &hist)?;
     write_csv("quench_summary.csv",
         &[("content", "summary of data/quench_history.csv, one row per rate of deflation".to_string()),
-          ("columns", "gsum (units of E_sh); Xi_start, Xi_end: Xi = gsum/(lambda gap_eq) at the start and at the end; ratio_min: smallest gap_abs/gap_eq during the run; tau_d_min: clock reading there; tau_d_catch, Xi_catch: clock reading and Xi at which gap_abs/gap_eq first exceeds 0.9 after the minimum (nan: never); ratio_final: mean of gap_abs/gap_eq over the last tenth of the run; n_ex_final: density of broken pairs at the end".to_string()),
+          ("columns", "gsum (units of E_sh); Xi_d_start, Xi_d_end: Xi_d = gsum/(lambda gap_eq) at the start and at the end; ratio_min: smallest gap_abs/gap_eq during the run; tau_d_min: clock reading there; tau_d_catch, Xi_d_catch: clock reading and Xi_d at which gap_abs/gap_eq first exceeds 0.9 after the minimum (nan: never); ratio_final: mean of gap_abs/gap_eq over the last tenth of the run; n_ex_final: density of broken pairs at the end".to_string()),
           ("command", "deflation quench".to_string())],
-        &["gsum", "Xi_start", "Xi_end", "ratio_min", "tau_d_min", "tau_d_catch", "Xi_catch", "ratio_final", "n_ex_final"], &summ)?;
+        &["gsum", "Xi_d_start", "Xi_d_end", "ratio_min", "tau_d_min", "tau_d_catch", "Xi_d_catch", "ratio_final", "n_ex_final"], &summ)?;
 
     // checks
     rep.add("def-Q1", "numerical", &format!("the equations of motion conserve |2F|^2 + (1 - 2n)^2 = 1 for every pair: largest deviation at the end of the seven runs {:.1e}", len_dev), len_dev < 1e-8);
@@ -534,10 +534,10 @@ fn cmd_quench() -> std::io::Result<bool> {
     let (dmin, dnex) = ((min2 - mins[2]).abs(), (nex2 / nex[2] - 1.0).abs());
     rep.add("def-Q2", "numerical", &format!("convergence: with twice as many energies (4000) and half the time step the run with gsum = 1e-3 E_sh gives the smallest ratio {:.5} (against {:.5}) and the final density of broken pairs {:.4e} (against {:.4e})", min2, mins[2], nex2, nex[2]), dmin < 2e-3 && dnex < 0.03);
     let mono = mins.windows(2).all(|w| w[1] < w[0]);
-    rep.add("def-Q3", "numerical", &format!("the faster the deflation, the further the order parameter falls behind: the smallest value of |Delta|/Delta_eq is {:.3}, {:.3}, {:.3}, {:.3}, {:.3}, {:.3}, {:.3} for gsum/E_sh = 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1 (Xi at the start: 0.26 to 262)", mins[0], mins[1], mins[2], mins[3], mins[4], mins[5], mins[6]), mono && mins[0] > 0.9 && mins[6] < 0.2);
+    rep.add("def-Q3", "numerical", &format!("the faster the deflation, the further the order parameter falls behind: the smallest value of |Delta|/Delta_eq is {:.3}, {:.3}, {:.3}, {:.3}, {:.3}, {:.3}, {:.3} for gsum/E_sh = 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1 (Xi_d at the start: 0.26 to 262)", mins[0], mins[1], mins[2], mins[3], mins[4], mins[5], mins[6]), mono && mins[0] > 0.9 && mins[6] < 0.2);
     let ca: Vec<f64> = catch_a.iter().cloned().filter(|x| x.is_finite()).collect();
     let (ca_lo, ca_hi) = (ca.iter().cloned().fold(f64::INFINITY, f64::min), ca.iter().cloned().fold(0.0, f64::max));
-    rep.add("def-Q4", "numerical", &format!("the order parameter catches up with the equilibrium gap of the moment (to within 10 per cent) when Xi = gsum/(lambda Delta_eq) has fallen to a value between {:.2} and {:.2} (six runs; in the fastest run, gsum = 0.1 E_sh, it does not catch up before lambda = 0.5): the paired state follows the deflation if and only if gsum is small compared with lambda times the gap", ca_lo, ca_hi), ca.len() == 6 && ca_lo > 0.1 && ca_hi < 1.0);
+    rep.add("def-Q4", "numerical", &format!("the order parameter catches up with the equilibrium gap of the moment (to within 10 per cent) when Xi_d = gsum/(lambda Delta_eq) has fallen to a value between {:.2} and {:.2} (six runs; in the fastest run, gsum = 0.1 E_sh, it does not catch up before lambda = 0.5): the paired state follows the deflation if and only if gsum is small compared with lambda times the gap", ca_lo, ca_hi), ca.len() == 6 && ca_lo > 0.1 && ca_hi < 1.0);
     let nmono = nex.windows(2).take(5).all(|w| w[1] > w[0]);
     rep.add("def-Q5", "numerical", &format!("the lag leaves broken pairs behind: their density at lambda = 0.5 is {:.1e}, {:.1e}, {:.1e}, {:.1e}, {:.1e}, {:.1e} (units of E_sh times the density of states) for gsum/E_sh = 1e-4 to 3e-2, growing with the rate; for the equilibrium state it is zero", nex[0], nex[1], nex[2], nex[3], nex[4], nex[5]), nmono && nex[0] < 1e-4);
 
@@ -592,11 +592,11 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     };
     let gam_bbn = gam_of_g(g_bbn_min);
     // the Higgs hypothesis H2: all masses m = y v/sqrt(2) are constant along the deflation; the four-dimensional vacuum value
-    // falls as exp(-gsum x4/2), so that the Fermi constant G_F = 1/(sqrt(2) v^2) grows at the rate gsum.  Nucleosynthesis with
-    // the fermion masses held fixed: G_F at t = 1 s within about 10 to 20 per cent of today's value (Scherrer and Spergel 1993,
+    // falls as exp(-gsum x4/2), so that the Fermi constant G_Fermi = 1/(sqrt(2) v^2) grows at the rate gsum.  Nucleosynthesis with
+    // the fermion masses held fixed: G_Fermi at t = 1 s within about 10 to 20 per cent of today's value (Scherrer and Spergel 1993,
     // their case (b)).  Without assumption A2 the age is that of the model without deflation.
-    let gam_gf_20 = (1.0_f64 / 0.8).ln() / d0.age; // in units of H_100
-    let gam_gf_10 = (1.0_f64 / 0.9).ln() / d0.age;
+    let gam_gfermi_20 = (1.0_f64 / 0.8).ln() / d0.age; // in units of H_100
+    let gam_gfermi_10 = (1.0_f64 / 0.9).ln() / d0.age;
     // atomic clocks: (d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year; two-sigma upper value 3.2e-18 per year.  This bounds the
     // rate only if the electromagnetic field, too, propagates along x5, x6, x7 (then alpha ~ exp(gsum x4)); the ratio of the
     // proton mass to the electron mass, also measured by the clocks, does not change in the model at all.
@@ -635,11 +635,11 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let rows: Vec<Vec<String>> = vec![
         vec!["lunar laser ranging".into(), "(dG_N/dt)/G_N = (7.1 +- 7.6) e-14 per year (68%)".into(), "G_N = G_8/(volume of the extra coordinates): (dG_N/dt)/G_N = gsum".into(), format!("{:.3e}", llr), format!("{:.3e}", gam_llr / h0), "gravity is eight-dimensional (A2)".into()],
         vec!["primordial nucleosynthesis".into(), "G_N(nucleosynthesis)/G_N(today) = 0.99 +0.06 -0.05 (two sigma)".into(), "G_N(nucleosynthesis)/G_N(today) = exp(-gsum t_0) > 0.94".into(), format!("{:.3e}", gam_bbn / HUBBLE_TIME_100_YR), format!("{:.4}", gam_bbn / h0), "A2, and a rate that is constant from nucleosynthesis until today".into()],
-        vec!["primordial nucleosynthesis, weak interaction".into(), "G_F at t = 1 s within 20 per cent (10 per cent) of today's value, fermion masses held fixed".into(), "G_F = 1/(sqrt(2) v^2) with the four-dimensional vacuum value v ~ exp(-gsum x4/2): G_F(1 s)/G_F(today) = exp(-gsum t_0) > 0.8 (0.9); all masses constant".into(), format!("{:.3e} ({:.3e})", gam_gf_20 / HUBBLE_TIME_100_YR, gam_gf_10 / HUBBLE_TIME_100_YR), format!("{:.3} ({:.3})", gam_gf_20 / h0, gam_gf_10 / h0), "the Higgs hypothesis H2: the Vorton-Scalar is the Higgs field, so that its four-dimensional vacuum value fixes the Fermi constant; a rate that is constant from nucleosynthesis until today; no assumption about gravity".into()],
+        vec!["primordial nucleosynthesis, weak interaction".into(), "G_Fermi at t = 1 s within 20 per cent (10 per cent) of today's value, fermion masses held fixed".into(), "G_Fermi = 1/(sqrt(2) v^2) with the four-dimensional vacuum value v ~ exp(-gsum x4/2): G_Fermi(1 s)/G_Fermi(today) = exp(-gsum t_0) > 0.8 (0.9); all masses constant".into(), format!("{:.3e} ({:.3e})", gam_gfermi_20 / HUBBLE_TIME_100_YR, gam_gfermi_10 / HUBBLE_TIME_100_YR), format!("{:.3} ({:.3})", gam_gfermi_20 / h0, gam_gfermi_10 / h0), "the Higgs hypothesis H2: the Vorton-Scalar is the Higgs field, so that its four-dimensional vacuum value fixes the Fermi constant; a rate that is constant from nucleosynthesis until today; no assumption about gravity".into()],
         vec!["atomic clocks".into(), "(d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year (68%), alpha = fine-structure constant; the ratio of the proton mass to the electron mass, (-8 +- 36) e-18 per year, does not change in the model".into(), "alpha ~ exp(gsum x4) if the electromagnetic field propagates along x5, x6, x7".into(), format!("{:.3e}", clocks), format!("{:.3e}", gam_clock / h0), "an assumption OUTSIDE the model, which contains no electromagnetic field: stated to show how strongly such an extension would be constrained".into()],
     ];
-    rep.add("def-C5", "numerical", &format!("bounds that do not rest on gravity: (i) if the Vorton-Scalar is the Higgs field (H2), the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_F at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < {:.3} to {:.3} H_0, weaker than the bound from Newton's constant; (ii) the ratio of the proton mass to the electron mass does not change in the model, so that its measured constancy does not bound the rate; (iii) the fine-structure constant would bound it, gsum < {:.1e} per year = {:.1e} H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model", gam_gf_10 / h0, gam_gf_20 / h0, clocks, gam_clock / h0),
-        gam_gf_10 < gam_gf_20 && gam_gf_10 > gam_bbn && gam_clock < gam_llr);
+    rep.add("def-C5", "numerical", &format!("bounds that do not rest on gravity: (i) if the Vorton-Scalar is the Higgs field (H2), the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_Fermi at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < {:.3} to {:.3} H_0, weaker than the bound from Newton's constant; (ii) the ratio of the proton mass to the electron mass does not change in the model, so that its measured constancy does not bound the rate; (iii) the fine-structure constant would bound it, gsum < {:.1e} per year = {:.1e} H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model", gam_gfermi_10 / h0, gam_gfermi_20 / h0, clocks, gam_clock / h0),
+        gam_gfermi_10 < gam_gfermi_20 && gam_gfermi_10 > gam_bbn && gam_clock < gam_llr);
     write_csv_str("deflation_bounds.csv",
         &[("content", "upper bounds (two sigma) on the present total rate of deflation gsum = g55 + g66 + g77, each under the stated assumption".to_string()),
           ("columns", "observation; measured value; relation to gsum; bound on gsum per year; bound in units of H_0 = 67.36 km/s/Mpc; assumption".to_string()),

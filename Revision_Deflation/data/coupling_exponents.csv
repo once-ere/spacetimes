@@ -15,5 +15,5 @@ G_VS,"constant of the Fermi type of the neutral-current interaction, 1/(sqrt(2) 
 D_VS,alpha_VS m/m_s: decides whether two fermions bind,1,
 C,g_VS^2 m^2/m_s^2: decides the state of matter,1,
 vortex energy per length,proportional to v_VS^2 (four-dimensional),-1,
-G_F if the Vorton-Scalar is the Higgs field (H2),"1/(sqrt(2) v_VS^2), four-dimensional vacuum value",1,all masses m = y v/sqrt(2) stay constant
+G_Fermi (Fermi constant of the weak interaction) if the Vorton-Scalar is the Higgs field (H2),"1/(sqrt(2) v_VS^2), four-dimensional vacuum value",1,all masses m = y v/sqrt(2) stay constant
 G_N (Newton's constant) if gravity is eight-dimensional (A2),G_8/(volume of x5 x6 x7),1,

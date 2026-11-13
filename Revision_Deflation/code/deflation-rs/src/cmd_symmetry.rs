@@ -74,9 +74,9 @@ pub fn run() -> std::io::Result<bool> {
     }
     write_csv_str("isometries.csv",
         &[("content", "the 28 rotations and boosts of the flat eight-dimensional spacetimes, one for each pair (A, B) of coordinates: which of them are isometries of the deflating spacetimes, and which act as internal symmetries on fields that do not depend on the extra coordinates x0, x5, x6, x7".to_string()),
-          ("columns", "spacetime: 1644d = 4+4, 1671d = 7+1; A, B: the pair of coordinates; kind; flat: 1 = isometry of the flat spacetime (all are); rates_1_2_3, rates_2_2_5, rates_1_1_1: 1 = isometry of the deflating spacetime with (g55, g66, g77) = (1, 2, 3), (2, 2, 5), (1, 1, 1), verified by exact arithmetic (symmetry_defl.rs); internal: 1 = gamma^A gamma^B commutes with alpha^1, alpha^2, alpha^3, beta and i beta chi".to_string()),
+          ("columns", "spacetime: 1644d = 4+4, 1671d = 7+1; axis_A, axis_B: the pair of coordinates (A, B); kind; flat: 1 = isometry of the flat spacetime (all are); rates_1_2_3, rates_2_2_5, rates_1_1_1: 1 = isometry of the deflating spacetime with (g55, g66, g77) = (1, 2, 3), (2, 2, 5), (1, 1, 1), verified by exact arithmetic (symmetry_defl.rs); internal: 1 = gamma^A gamma^B commutes with alpha^1, alpha^2, alpha^3, beta and i beta chi".to_string()),
           ("command", "deflation symmetry".to_string())],
-        &["spacetime", "A", "B", "kind", "flat", "rates_1_2_3", "rates_2_2_5", "rates_1_1_1", "internal"], &rows)?;
+        &["spacetime", "axis_A", "axis_B", "kind", "flat", "rates_1_2_3", "rates_2_2_5", "rates_1_1_1", "internal"], &rows)?;
 
     // ---- (2) the internal symmetry, computed again ---------------------------------------
     let reps = [analyse(&OneParticle::new_1671(&gm)), analyse(&OneParticle::new_1644(&gm))];
@@ -149,7 +149,7 @@ pub fn run() -> std::io::Result<bool> {
         ("D_VS", "alpha_VS m/m_s: decides whether two fermions bind", 1, 1, ""),
         ("C", "g_VS^2 m^2/m_s^2: decides the state of matter", 1, 1, ""),
         ("vortex energy per length", "proportional to v_VS^2 (four-dimensional)", -1, 1, ""),
-        ("G_F if the Vorton-Scalar is the Higgs field (H2)", "1/(sqrt(2) v_VS^2), four-dimensional vacuum value", 1, 1, "all masses m = y v/sqrt(2) stay constant"),
+        ("G_Fermi (Fermi constant of the weak interaction) if the Vorton-Scalar is the Higgs field (H2)", "1/(sqrt(2) v_VS^2), four-dimensional vacuum value", 1, 1, "all masses m = y v/sqrt(2) stay constant"),
         ("G_N (Newton's constant) if gravity is eight-dimensional (A2)", "G_8/(volume of x5 x6 x7)", 1, 1, ""),
     ];
     let erows: Vec<Vec<String>> = ex.iter().map(|(q, d, n, den, note)| vec![q.to_string(), d.to_string(), if *den == 1 { format!("{}", n) } else { format!("{}/{}", n, den) }, note.to_string()]).collect();

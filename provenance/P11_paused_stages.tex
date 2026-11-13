@@ -361,8 +361,15 @@ pause}{5. What is not affected by the pause}}\label{what-is-not-affected-by-the-
 
 The work in \texttt{Revision\_Deflation} is a separate piece of work
 with hypotheses of its own. It uses the programs and matrices of this
-project, but it does not change any file outside its folder, and its
-documents state their own results. The pending correction E43 concerns
-vortex lines, which the revision treats independently.
+project, and its documents state their own results. It changes one file
+outside its folder: the script \texttt{code/scripts/build\_docs.sh},
+which until then built every Markdown file of the repository, now leaves
+the folder \texttt{Revision\_Deflation} to that folder's own copy of the
+script (five lines changed on November 12, 2026). Without this change,
+building all documents of the main project would also have rebuilt the
+documents of the revision with the wrong settings and would have
+overwritten its two manuscripts. No document, program or data file of
+the main project was changed. The pending correction E43 concerns vortex
+lines, which the revision treats independently.
 
 \end{document}

@@ -137,7 +137,7 @@ def fig_isometries():
     if rows is None:
         return
     def table(tag):
-        return {(int(r["A"]), int(r["B"])): r for r in rows if r["spacetime"] == tag}
+        return {(int(r["axis_A"]), int(r["axis_B"])): r for r in rows if r["spacetime"] == tag}
     t44, t71 = table("1644d"), table("1671d")
     same = all(t44[k]["rates_1_2_3"] == t71[k]["rates_1_2_3"] and t44[k]["rates_1_1_1"] == t71[k]["rates_1_1_1"] and t44[k]["internal"] == t71[k]["internal"] for k in t44)
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.0), gridspec_kw={"width_ratios": [1.25, 1.0]})
@@ -199,7 +199,7 @@ def fig_creation():
     if b is not None:
         ax.plot(x, 1.0 / (1.0 - np.exp(-2 * np.pi * x)), color=ORANGE, ls="--", label="scalar (Bose-Einstein)")
         sel = b["coordinate"] == 5
-        ax.plot(b["order"][sel], b["n"][sel] * np.exp(2 * np.pi * b["order"][sel]), ls="none", marker="s", color=ORANGE, mfc="white", mew=1.1)
+        ax.plot(b["order"][sel], b["n_cr"][sel] * np.exp(2 * np.pi * b["order"][sel]), ls="none", marker="s", color=ORANGE, mfc="white", mew=1.1)
     ax.axhline(1.0, color=INK2, lw=0.6)
     ax.set_ylim(0.75, 1.3)
     ax.set_xlabel("ratio $E_\\perp/\\mathrm{g55}$ (fermions), $\\varpi_b/\\mathrm{g55}$ (scalar)")
@@ -211,7 +211,7 @@ def fig_creation():
     for k, case in enumerate((1, 2)):
         sel = h["case"] == case
         c, ls, _ = STYLES[k]
-        ax.plot(h["k_d_over_E_perp"][sel], h["n"][sel], color=c, ls=ls, label=lab[case])
+        ax.plot(h["k_d_over_E_perp"][sel], h["n_cr"][sel], color=c, ls=ls, label=lab[case])
         ax.axhline(1.0 / (math.exp(2 * math.pi * (1.0 if case == 1 else 0.5)) + 1.0), color=c, lw=0.6, ls=":")
     ax.set_xscale("log")
     ax.set_yscale("log")
@@ -276,13 +276,13 @@ def fig_extinction():
             sel = np.isclose(b["order"], nu)
             c, ls, mk = STYLES[k]
             scale = np.nanmax(b["K2"][sel])
-            ax.plot(b["u"][sel], b["K2"][sel] / scale, color=c, ls=ls, label="$\\varpi_b/\\mathrm{g55}=%g$" % nu)
+            ax.plot(b["u_d"][sel], b["K2"][sel] / scale, color=c, ls=ls, label="$\\varpi_b/\\mathrm{g55}=%g$" % nu)
             m = np.nanmax(b["Shat2"][sel])
-            ax.plot(b["u"][sel][::3], b["Shat2"][sel][::3] / m, ls="none", marker=mk, ms=3.0, color=c, mfc="white", mew=0.9)
+            ax.plot(b["u_d"][sel][::3], b["Shat2"][sel][::3] / m, ls="none", marker=mk, ms=3.0, color=c, mfc="white", mew=0.9)
         ax.set_xscale("log")
         ax.set_yscale("log")
         ax.set_ylim(1e-9, 3)
-        ax.set_xlabel("$u=k_d/\\mathrm{g55}$")
+        ax.set_xlabel("$u_d=k_d/\\mathrm{g55}$")
         ax.set_ylabel("$\\hat S^2$ (maximum = 1)")
         ax.legend(loc="lower left", fontsize=7.0, title="lines: exact (Bessel function $K$)\nsymbols: computed", title_fontsize=6.6)
     panel_label(ax, "(c) bounded scalar modes")
@@ -606,9 +606,9 @@ def fig_scalar():
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6))
     ax = axes[0]
     for k, mass in enumerate((0.0, 0.3)):
-        sel = np.isclose(z["m_b"], mass)
+        sel = np.isclose(z["m_bos"], mass)
         c, ls, _ = STYLES[k]
-        ax.plot(z["k"][sel], z["sigma1_re"][sel], color=c, ls=ls, label="$m_b=%g$" % mass)
+        ax.plot(z["k"][sel], z["sigma1_re"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
         ax.plot(z["k"][sel], z["sigma2_re"][sel], color=c, ls=ls)
     ax.set_xlabel("wavenumber $k$ / gsum")
     ax.set_ylabel("growth exponents Re $\\sigma$ / gsum")
@@ -616,9 +616,9 @@ def fig_scalar():
     panel_label(ax, "(a) growth of the modes")
     ax = axes[1]
     for k, mass in enumerate((0.0, 0.3, 1.0)):
-        sel = np.isclose(z["m_b"], mass)
+        sel = np.isclose(z["m_bos"], mass)
         c, ls, _ = STYLES[k]
-        ax.plot(z["k"][sel], z["sigma1_im"][sel], color=c, ls=ls, label="$m_b=%g$" % mass)
+        ax.plot(z["k"][sel], z["sigma1_im"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
     ax.set_xlabel("$k$ / gsum")
     ax.set_ylabel("frequency Im $\\sigma$ / gsum")
     ax.legend(loc="upper left", fontsize=7.0)
@@ -628,12 +628,12 @@ def fig_scalar():
     for k, (w2, g) in enumerate(combos):
         sel = np.isclose(s["w2"], w2) & np.isclose(s["gsum"], g)
         c, ls, _ = STYLES[k]
-        ax.plot(s["tau_d"][sel], s["ratio"][sel], color=c, ls=ls, label="$k^2+m_b^2=%g$, gsum $=%g$" % (w2, g))
+        ax.plot(s["tau_d"][sel], s["ratio"][sel], color=c, ls=ls, label="$k^2+m_{\\rm bos}^2=%g$, gsum $=%g$" % (w2, g))
     ax.axhline(1.0, color=INK2, lw=0.6)
     ax.set_xlim(0, 12)
     ax.set_ylim(0, 2.9)
     ax.set_xlabel("$\\tau_d=\\mathrm{gsum}\\,x4$ since switching on")
-    ax.set_ylabel("field / [$e^{\\tau_d}/(k^2+m_b^2)$]")
+    ax.set_ylabel("field / [$e^{\\tau_d}/(k^2+m_{\\rm bos}^2)$]")
     ax.legend(loc="upper right", fontsize=6.4)
     panel_label(ax, "(c) the field of a static source")
     fig.tight_layout(w_pad=0.9)

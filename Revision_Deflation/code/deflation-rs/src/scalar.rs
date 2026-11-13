@@ -10,25 +10,25 @@
 //! sqrt|g| = b_5 b_6 b_7 falls as exp(-gsum x4).  The first-derivative term has the sign
 //! opposite to the friction term of an expanding universe: the deflation feeds the field.
 //!
-//! For a field of mass m_b proportional to exp(i k.x + i k_t x^t), the weighted field
+//! For a field of mass m_bos proportional to exp(i k.x + i k_t x^t), the weighted field
 //! Shat = sqrt(b_5 b_6 b_7) S = exp(-gsum x4/2) S obeys
 //!
-//!   Shat'' + [ varpi_b^2 + sgn k_d(x4)^2 ] Shat = 0 ,     varpi_b^2 = k^2 + m_b^2 - gsum^2/4 ,
+//!   Shat'' + [ varpi_b^2 + sgn k_d(x4)^2 ] Shat = 0 ,     varpi_b^2 = k^2 + m_bos^2 - gsum^2/4 ,
 //!
 //! with sgn = +1 on 7+1 and -1 on 4+4 and k_d^2 = sum_t k_t^2/b_t^2.  The radial mode of
-//! the Vorton-Scalar has m_b = m_s, the phase mode m_b = 0.
+//! the Vorton-Scalar has m_bos = m_s, the phase mode m_bos = 0.
 //!
 //! WHAT THIS MODULE COMPUTES.
 //!  (a) Fields that do not depend on x5, x6, x7 (k_d = 0): S goes as exp(sigma x4) with
-//!      sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_b^2).  For k^2 + m_b^2 > gsum^2/4 the weighted
+//!      sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2).  For k^2 + m_bos^2 > gsum^2/4 the weighted
 //!      field oscillates with the constant frequency varpi_b (the number of quanta is
-//!      conserved); for k^2 + m_b^2 < gsum^2/4 it does not oscillate.  For the phase mode the
+//!      conserved); for k^2 + m_bos^2 < gsum^2/4 it does not oscillate.  For the phase mode the
 //!      band k < gsum/2 always exists.
 //!  (b) The field of a static source.  A source at rest that is spread uniformly over the
 //!      deflating coordinates has a proper density proportional to 1/sqrt|g|, that is to
-//!      exp(+gsum x4).  For S'' - gsum S' + (k^2 + m_b^2) S = J exp(gsum x4) the particular
-//!      solution is S = J exp(gsum x4)/(k^2 + m_b^2), exactly: the field of the source is the
-//!      Yukawa field of the mass m_b itself, with a strength that grows as exp(gsum x4); the
+//!      exp(+gsum x4).  For S'' - gsum S' + (k^2 + m_bos^2) S = J exp(gsum x4) the particular
+//!      solution is S = J exp(gsum x4)/(k^2 + m_bos^2), exactly: the field of the source is the
+//!      Yukawa field of the mass m_bos itself, with a strength that grows as exp(gsum x4); the
 //!      shift -gsum^2/4 does not enter.  `static_source_response` integrates the equation
 //!      from zero initial data and shows that the solution approaches this form.
 //!  (c) 7+1, k_d != 0: the number of quanta that the deflation creates in a mode that starts
@@ -36,7 +36,7 @@
 //!      i varpi_b/rate_t and the number is exactly 1/(exp(2 pi varpi_b/rate_t) - 1), a
 //!      Bose-Einstein law with the temperature rate_t/(2 pi).  Computed numerically here.
 //!  (d) 4+4, k_d != 0: beyond the turning value of x4 (k_d = varpi_b) one solution grows and
-//!      one decays; the bounded solution is the modified Bessel function K_{i varpi_b/rate_t}(u), u = k_d/rate_t,
+//!      one decays; the bounded solution is the modified Bessel function K_{i varpi_b/rate_t}(u_d), u_d = k_d/rate_t,
 //!      a standing wave at early times.
 //!
 //! METHOD.  The second-order equation is written as a first-order system for (y, y') and
@@ -52,7 +52,7 @@ const CF4_A1: f64 = 0.25 + 0.288_675_134_594_812_9;
 const CF4_A2: f64 = 0.25 - 0.288_675_134_594_812_9;
 
 /// The two exponents sigma of S ~ exp(sigma x4) for a field that does not depend on the
-/// deflating coordinates: sigma = gsum/2 +- sqrt(gsum^2/4 - w2), w2 = k^2 + m_b^2.
+/// deflating coordinates: sigma = gsum/2 +- sqrt(gsum^2/4 - w2), w2 = k^2 + m_bos^2.
 /// Returns (real part of both, imaginary part or 0, real square root or 0).
 pub fn zero_mode_exponents(w2: f64, gsum: f64) -> (C64, C64) {
     let disc = 0.25 * gsum * gsum - w2;
@@ -207,7 +207,7 @@ pub fn boson_bounded(omega0: f64, kappa: &[f64; 3], bg: &Background, s_late: f64
 }
 
 /// Shat^2 of the exact bounded solution for one non-zero k_t, up to a constant:
-/// K_{i varpi_b/rate_t}(u)^2 with u = k_d/rate_t (K of imaginary order is real); arguments: u and the ratio varpi_b/rate_t.
+/// K_{i varpi_b/rate_t}(u_d)^2 with u_d = k_d/rate_t (K of imaginary order is real); arguments: u_d and the ratio varpi_b/rate_t.
 pub fn boson_bounded_exact(s: f64, nu: f64) -> f64 {
     bessel_k(C64::new(0.0, nu), s).norm_sqr()
 }
@@ -245,7 +245,7 @@ mod tests {
         // massless, k = 0: sigma = gsum and 0
         let (a, b) = zero_mode_exponents(0.0, 3.0);
         assert!((a.re - 3.0).abs() < 1e-15 && b.re.abs() < 1e-15 && a.im == 0.0);
-        // k^2 + m_b^2 = 4, gsum = 2: sigma = 1 +- i sqrt(3)
+        // k^2 + m_bos^2 = 4, gsum = 2: sigma = 1 +- i sqrt(3)
         let (a, b) = zero_mode_exponents(4.0, 2.0);
         assert!((a.re - 1.0).abs() < 1e-15 && (a.im - 3f64.sqrt()).abs() < 1e-15 && (b.im + 3f64.sqrt()).abs() < 1e-15);
     }

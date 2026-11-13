@@ -7,7 +7,7 @@
 //! coupling (check def-H3).  A state changes at most at the rate of its own energy
 //! scale, the gap; so the paired state can follow only if
 //!
-//!     Xi(x4) = gsum / ( lambda(x4) gap_eq(x4) )   <<  1 .
+//!     Xi_d(x4) = gsum / ( lambda(x4) gap_eq(x4) )   <<  1 .
 //!
 //! Early in the deflation the gap is exponentially small and this must fail.  What
 //! happens then is computed here.
@@ -267,12 +267,12 @@ mod tests {
     #[test]
     fn a_slow_ramp_is_followed_and_a_fast_one_is_not() {
         let sh = Shell::new(2000, 8.0);
-        // slow: at the start Xi = gsum/(lambda gap) = 3e-4/(0.3 * 0.0715) = 0.014
+        // slow: at the start Xi_d = gsum/(lambda gap) = 3e-4/(0.3 * 0.0715) = 0.014
         let (slow, _) = ramp(&sh, 0.3, 0.5, 3e-4, 0.025, 50);
         let last = slow.last().unwrap();
         assert!((last.delta / last.delta_eq - 1.0).abs() < 0.01, "slow ramp: {} vs {}", last.delta, last.delta_eq);
         assert!(last.n_ex < 1e-3);
-        // fast: Xi = 30 at the start; the gap has no time to grow
+        // fast: Xi_d = 30 at the start; the gap has no time to grow
         let (fast, _) = ramp(&sh, 0.3, 0.5, 0.6, 0.025, 50);
         let last = fast.last().unwrap();
         assert!(last.delta / last.delta_eq < 0.6, "fast ramp: {} vs {}", last.delta, last.delta_eq);
