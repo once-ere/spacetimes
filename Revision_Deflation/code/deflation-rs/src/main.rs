@@ -8,6 +8,8 @@
 //!
 //! `deflation help` lists the commands.
 
+mod cmd_symmetry;
+
 use spacetimes_deflation::io::{write_csv, write_csv_str, write_report};
 use spacetimes_deflation::curved::verify_curved;
 use spacetimes_deflation::geometry::{verify_geodesics, verify_geometry};
@@ -575,9 +577,17 @@ fn cmd_cosmology() -> std::io::Result<bool> {
         0.5 * (lo + hi)
     };
     let gam_bbn = gam_of_g(g_bbn_min);
-    // atomic clocks: (d mu/dt)/mu = (-8 +- 36) e-18 per year (mu = proton-to-electron mass ratio); two-sigma magnitude 80e-18
-    let clocks = (8.0 + 2.0 * 36.0) * 1e-18;
-    let gam_clock = 2.0 * clocks * HUBBLE_TIME_100_YR; // if the electroweak scale followed the four-dimensional vacuum value ~ exp(-gsum x4/2)
+    // the Higgs hypothesis H2: all masses m = y v/sqrt(2) are constant along the deflation; the four-dimensional vacuum value
+    // falls as exp(-gsum x4/2), so that the Fermi constant G_F = 1/(sqrt(2) v^2) grows at the rate gsum.  Nucleosynthesis with
+    // the fermion masses held fixed: G_F at t = 1 s within about 10 to 20 per cent of today's value (Scherrer and Spergel 1993,
+    // their case (b)).  Without assumption A2 the age is that of the model without deflation.
+    let gam_gf_20 = (1.0_f64 / 0.8).ln() / d0.age; // in units of H_100
+    let gam_gf_10 = (1.0_f64 / 0.9).ln() / d0.age;
+    // atomic clocks: (d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year; two-sigma upper value 3.2e-18 per year.  This bounds the
+    // rate only if the electromagnetic field, too, propagates along x5, x6, x7 (then alpha ~ exp(gsum x4)); the ratio of the
+    // proton mass to the electron mass, also measured by the clocks, does not change in the model at all.
+    let clocks = (1.0 + 2.0 * 1.1) * 1e-18;
+    let gam_clock = clocks * HUBBLE_TIME_100_YR;
 
     // ---- the Hubble constant as a function of the rate -----------------------------------
     let mut rows: Vec<Vec<f64>> = Vec::new();
@@ -611,12 +621,15 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let rows: Vec<Vec<String>> = vec![
         vec!["lunar laser ranging".into(), "(dG/dt)/G = (7.1 +- 7.6) e-14 per year (68%)".into(), "G = G_8/(volume of the extra coordinates): (dG/dt)/G = gsum".into(), format!("{:.3e}", llr), format!("{:.3e}", gam_llr / h0), "gravity is eight-dimensional (A2)".into()],
         vec!["primordial nucleosynthesis".into(), "G_BBN/G_0 = 0.99 +0.06 -0.05 (two sigma)".into(), "G_BBN/G_0 = exp(-gsum t_0) > 0.94".into(), format!("{:.3e}", gam_bbn / HUBBLE_TIME_100_YR), format!("{:.4}", gam_bbn / h0), "A2, and a rate that is constant from nucleosynthesis until today".into()],
-        vec!["atomic clocks".into(), "(d mu/dt)/mu = (-8 +- 36) e-18 per year (68%), mu = proton-to-electron mass ratio".into(), "electron mass ~ electroweak scale ~ four-dimensional vacuum value of the Vorton-Scalar ~ exp(-gsum x4/2)".into(), format!("{:.3e}", 2.0 * clocks), format!("{:.3e}", gam_clock / h0), "the Higgs hypothesis H2 in the form that the electroweak scale is the four-dimensional vacuum value of the Vorton-Scalar; the scale of the strong interaction does not change".into()],
+        vec!["primordial nucleosynthesis, weak interaction".into(), "G_F at t = 1 s within 20 per cent (10 per cent) of today's value, fermion masses held fixed".into(), "G_F = 1/(sqrt(2) v^2) with the four-dimensional vacuum value v ~ exp(-gsum x4/2): G_F(1 s)/G_F(today) = exp(-gsum t_0) > 0.8 (0.9); all masses constant".into(), format!("{:.3e} ({:.3e})", gam_gf_20 / HUBBLE_TIME_100_YR, gam_gf_10 / HUBBLE_TIME_100_YR), format!("{:.3} ({:.3})", gam_gf_20 / h0, gam_gf_10 / h0), "the Higgs hypothesis H2: the Vorton-Scalar is the Higgs field, so that its four-dimensional vacuum value fixes the Fermi constant; a rate that is constant from nucleosynthesis until today; no assumption about gravity".into()],
+        vec!["atomic clocks".into(), "(d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year (68%), alpha = fine-structure constant; the ratio of the proton mass to the electron mass, (-8 +- 36) e-18 per year, does not change in the model".into(), "alpha ~ exp(gsum x4) if the electromagnetic field propagates along x5, x6, x7".into(), format!("{:.3e}", clocks), format!("{:.3e}", gam_clock / h0), "an assumption OUTSIDE the model, which contains no electromagnetic field: stated to show how strongly such an extension would be constrained".into()],
     ];
+    rep.add("def-C5", "numerical", &format!("bounds that do not rest on gravity: (i) if the Vorton-Scalar is the Higgs field (H2), the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_F at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < {:.3} to {:.3} H_0, weaker than the bound from Newton's constant; (ii) the ratio of the proton mass to the electron mass does not change in the model, so that its measured constancy does not bound the rate; (iii) the fine-structure constant would bound it, gsum < {:.1e} per year = {:.1e} H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model", gam_gf_10 / h0, gam_gf_20 / h0, clocks, gam_clock / h0),
+        gam_gf_10 < gam_gf_20 && gam_gf_10 > gam_bbn && gam_clock < gam_llr);
     write_csv_str("deflation_bounds.csv",
         &[("content", "upper bounds (two sigma) on the present total rate of deflation gsum = g55 + g66 + g77, each under the stated assumption".to_string()),
           ("columns", "observation; measured value; relation to gsum; bound on gsum per year; bound in units of H_0 = 67.36 km/s/Mpc; assumption".to_string()),
-          ("sources", "Hofmann and Mueller, Class. Quantum Grav. 35, 035015 (2018); Alvey, Sabti, Escudero and Fairbairn, Eur. Phys. J. C 80, 148 (2020); Lange et al., Phys. Rev. Lett. 126, 011102 (2021)".to_string()),
+          ("sources", "Hofmann and Mueller, Class. Quantum Grav. 35, 035015 (2018); Alvey, Sabti, Escudero and Fairbairn, Eur. Phys. J. C 80, 148 (2020); Scherrer and Spergel, Phys. Rev. D 47, 4774 (1993); Lange et al., Phys. Rev. Lett. 126, 011102 (2021)".to_string()),
           ("command", "deflation cosmology".to_string())],
         &["observation", "measured", "relation", "gsum_max_per_yr", "gsum_max_over_H0", "assumption"], &rows)?;
 
@@ -688,6 +701,7 @@ fn main() {
         "history" => cmd_history(),
         "quench" => cmd_quench(),
         "cosmology" => cmd_cosmology(),
+        "symmetry" => cmd_symmetry::run(),
         _ => {
             println!("deflation: PROJECT spacetimes, Revision_Deflation (x5, x6, x7 deflate exponentially)\n");
             println!("commands (run from the folder Revision_Deflation):");
@@ -699,6 +713,8 @@ fn main() {
             println!("             gap, bound pair, normal matter, vacuum potential, melting, order of events");
             println!("  quench     time-dependent dynamics of the paired state while the coupling grows: can it follow?");
             println!("  cosmology  expansion of ordinary space on the deflating spacetime, bounds on the rate, the Hubble constant");
+            println!("  symmetry   isometries of the deflating spacetimes, internal symmetry of the fields that do not depend on");
+            println!("             the extra coordinates, zero modes on a vortex line, exponents of the couplings");
             Ok(true)
         }
     };

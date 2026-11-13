@@ -18,6 +18,7 @@
 //! * `history` the couplings and every threshold of the model as functions of the deflation clock;
 //! * `quench`  time-dependent mean-field dynamics of the paired state while the coupling grows;
 //! * `cosmo_defl` expansion of ordinary space while x5, x6, x7 deflate; bounds on the rate; the Hubble constant;
+//! * `symmetry_defl` isometries against the rotations of the flat spacetime; zero modes on a vortex line;
 //! * `io`      data files with self-describing headers;
 //! * `geometry` machine checks of the geometry; geodesics;
 //! * `curved`  Dirac matrices, spin connection and Dirac operators on the deflating spacetimes;
@@ -36,3 +37,4 @@ pub mod qmat;
 pub mod quench;
 pub mod rat;
 pub mod scalar;
+pub mod symmetry_defl;
