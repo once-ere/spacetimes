@@ -298,6 +298,37 @@ be different from zero in eight dimensions, vanishes identically (checks `44d-G1
 independently `I44d-L1`, `I71d-L1`, from the standard formula of the Lanczos tensor by
 computer algebra).
 
+*The formula that the program uses, so that the result can be checked by hand.* In the
+orthonormal frame the Riemann tensor (1.8) has, for each pair of frame directions
+$A\neq B$, one independent component: the sectional curvature $K_{AB}=K_{BA}$ of the
+plane that the two directions span. In the convention of this subsection
+$$K_{4t}=\mathrm{rate}_t^2,\qquad K_{ts}=\mathrm{rate}_t\,\mathrm{rate}_s\quad(t\neq s),\tag{1.10c}$$
+and $K_{AB}=0$ for every pair that contains one of the flat directions $0,1,2,3$. (A
+sectional curvature carries two subscripts; the letter $K$ without subscript is the
+matrix of Eq. (3.9).) For a Riemann tensor of this kind the Einstein tensor and the
+Lanczos tensor are diagonal, and
+$$\mathcal G^A{}_A=-\sum_{\{B,C\}}K_{BC},\qquad
+\mathcal H^A{}_A=-4\sum_{\{B,C\},\{B',C'\}}K_{BC}\,K_{B'C'}\tag{1.10d}$$
+without summation over $A$. The first sum runs over the pairs of directions that do not
+contain the direction $A$; the second runs over the unordered couples of two such pairs
+that have no direction in common, so that a set of four directions contributes its
+three divisions into two pairs. *Test:* for a space of constant curvature in eight
+dimensions, where all $K_{BC}$ equal one number, the first sum has 21 terms and the
+second $3\times35$, and the formulas give $-21$ times that number and $-420$ times its
+square: the known values $-\tfrac12\cdot7\cdot6$ and
+$-\tfrac12\cdot7\cdot6\cdot5\cdot4$. *Application:* a couple of pairs contributes to
+$\mathcal H^A{}_A$ only if neither pair contains a flat direction, that is, only if the
+four directions are $4,5,6,7$. For a flat direction $A$ these four are allowed, and
+their three divisions give
+$$K_{45}K_{67}+K_{46}K_{57}+K_{47}K_{56}=\mathrm{g55}\,\mathrm{g66}\,\mathrm{g77}\,\mathrm{gsum},$$
+which is Eq. (1.10b). For $A=4,5,6,7$ the direction $A$ is itself one of the four, no
+couple remains, and the component vanishes. The Lovelock tensor of the third order is
+built in the same way from sets of six directions other than $A$; every such set
+contains a flat direction, and the tensor vanishes. With Eq. (1.10c) the first formula
+gives $\mathcal G^4{}_4=-\mathrm{gprod}$ and
+$\mathcal G^a{}_a=-(\mathrm{gsq}+\mathrm{gprod})$, which are Eq. (1.10) multiplied by
+$-\eta_{44}$, as they must be.
+
 *The result.* Insert Eqs. (1.10) and (1.10b) into Eq. (1.10a).
 
 * The components along $x4$ and along the three deflating coordinates contain no
@@ -828,7 +859,7 @@ through the crossing and projects the result on the states of negative energy.
   by up to a factor 110 between the most and the least populated state — and the result
   is known only numerically (`data/creation_anisotropic.csv`).
 * *Independent integration* (checks `I71d-M2`, `I71d-M3`): a Runge–Kutta method of a
-  general-purpose library reproduces Eq. (4.3) to $2\times10^{-5}$.
+  general-purpose library reproduces Eq. (4.3) to $2.2\times10^{-5}$.
 
 ![Creation of particles on the deflating 7+1 spacetime. (a) Created quanta per state, multiplied by $e^{2\pi\,\mathrm{ratio}}$, against the ratio of the energy to the rate: fermions follow the Fermi–Dirac law (4.3), the scalar modes of the supplement RS1 the Bose–Einstein law, both at the temperature $\mathrm{g55}/2\pi$. Lines: the exact laws; symbols: computed. (b) History of two modes, with $E_\perp/\mathrm{g55}=1$ and $0.5$: the number of particles in the mode against the physical wavenumber $k_d/E_\perp$, which grows with the time; after the crossing at $k_d=E_\perp$ the number settles at the value of Eq. (4.3) (dotted). (c) Two deflating directions, $\mathrm{g55}=1$ and $\mathrm{g66}=2$, $1.2$ or $0.5$: mean number of created particles per state against the delay between the two crossings; the dotted lines are Eq. (4.3) with each of the rates. Data: `data/creation_single.csv`, `data/boson_creation.csv`, `data/creation_history.csv`, `data/creation_anisotropic.csv`; programs: `deflation modes`, `deflation channels`.](figures/fig_creation.png){width=100%}
 

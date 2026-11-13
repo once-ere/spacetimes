@@ -1,0 +1,230 @@
+\appendix
+
+\section{Symbols}
+\label{app:symbols}
+
+Tables~\ref{tab:symbols} and \ref{tab:symbols2} list the symbols of this paper with the place of
+their definition. Symbols of the earlier paper \cite{\SIG{Flat1644}{Flat1671}} keep their meanings. The complete registry, with
+the machine checks that no symbol has two meanings, is part of Ref.~\cite{DeflationRepo}.
+
+\begin{table*}
+\caption{\label{tab:symbols}The symbols of this paper: geometry and the Dirac field.}
+\begin{ruledtabular}
+\begin{tabular}{p{0.2\textwidth}p{0.6\textwidth}p{0.14\textwidth}}
+symbol & meaning & defined in \\
+\hline
+$x0,\dots,x7$ & the eight coordinates: $x0$ hidden space-like coordinate; $x1,x2,x3$ ordinary space; $x4$ ordinary time; $x5,x6,x7$ the deflating coordinates, \SIG{time-like}{space-like} & Sec.~\ref{sec:intro} \\
+$xt$; $xj$; $a$ & a deflating coordinate, $t\in\{5,6,7\}$; a flat coordinate other than the time, $j\in\{0,1,2,3\}$; index of the four extra axes, $a\in\{0,5,6,7\}$ & Sec.~\ref{sec:intro} \\
+$\gff$, $\gss$, $\gvv$; $\rt$ & the three rates of deflation (upright, without subscript; not components of the metric); the rate of $xt$ & Eq.~(\ref{eq:hyp}) \\
+$\cff$, $\css$, $\cvv$; $\ct$ & the three positive constants of the metric: the scale factors at $x4=0$ & Eq.~(\ref{eq:hyp}) \\
+$\gsum$, $\gsq$, $\gprod$ & the sum of the rates, the sum of their squares, the sum of their products in pairs & Sec.~\ref{sec:geometry} \\
+$b_t$ & scale factor of the deflating coordinate $xt$ & Eq.~(\ref{eq:scale}) \\
+$\eta$; $g_{\mu\nu}$; $e_A{}^{\mu}$ & flat metric; metric of the deflating spacetime; orthonormal frame & Eq.~(\ref{eq:metric}) \\
+$\Vd$ & proper volume of a unit coordinate cell of the deflating coordinates & Eq.~(\ref{eq:Vd}) \\
+$\Gamma^{\rho}{}_{\mu\nu}$; $R^{\rho}{}_{\sigma\mu\nu}$, $R^{\mu}{}_{\nu}$, $R$ & Christoffel symbols; Riemann tensor [in Eq.~(\ref{eq:riemann}) its components in the orthonormal frame], Ricci tensor, curvature scalar & Sec.~\ref{sec:curvature} \\
+$\cG^{\mu}{}_{\nu}$; $\cH^{\mu}{}_{\nu}$; $\Lam$, $\aGB$ & Einstein tensor; Lanczos tensor of the Gauss-Bonnet term; cosmological constant and coupling of Einstein-Gauss-Bonnet gravity & Sec.~\ref{sec:egb} \\
+$\cX_{\mathrm{scale}}$, $\cX_{(s)}$ & the scaling Killing vector; the three special Killing vectors of the case of equal rates & Eqs.~(\ref{eq:scaling}), (\ref{eq:special}) \\
+$K_{AB}$; $\bar x4$, $\bar xt$ & sectional curvature of the plane of the frame directions $A$ and $B$; coordinates adapted to the case of equal rates & Appendix~\ref{app:curvature} \\
+$P_\mu$; $\varsigma$\SIG{; $x4_{\mathrm{turn}}$}{} & conserved momenta of a classical particle; affine parameter\SIG{; turning value of the ordinary time}{} & Sec.~\ref{sec:geodesics} \\
+$\gamma^{A}$, $\gamma^{\mu}$; $\Omega_\mu$, $\omega_{\mu AB}$ & Dirac matrices of the frame and in coordinate components; spin connection and its coefficients & Sec.~\ref{sec:dirac} \\
+%%<1644>
+$\Cm$; $\chi$, $P^{L,R}$ & the matrix that turns each Dirac matrix into minus its transpose; chirality matrix and the two chiral projectors & Secs.~\ref{sec:dirac}, \ref{sec:clock} \\
+%%</1644>
+%%<1671>
+$\chi$, $P^{L,R}$; $\Cm$ & chirality matrix and the two chiral projectors; the matrix that turns each Dirac matrix into minus its transpose & Secs.~\ref{sec:clock}, \ref{sec:gap} \\
+%%</1671>
+$\psi_{\tg}$; $\hpsi$ & the 16-component field on the deflating spacetime; the weighted field $\sqrt{\Vd}\,\psi$ & Eqs.~(\ref{eq:dirac}), (\ref{eq:weighted}) \\
+%%<1644>
+$K$, $K_\perp$; $\gamma^{d}$; $W_{1644}$ & generator of the evolution of a mode in the time, and its part without the scale factors; frame matrix along the wave vector in the deflating coordinates; matrix of the conserved charge & Eq.~(\ref{eq:K}) \\
+$\beta$, $\alpha^{j}$; $\bar\psi$ & the Hermitian matrices $-i\gamma^{4}$ and $-\gamma^{4}\gamma^{j}$ of the earlier paper; the adjoint $\psi^\dagger\beta$ & Eq.~(\ref{eq:LVS}) \\
+$k_j$, $k_t$; $\Eperp$; $\kd$; $\ud$ & wavenumbers along the flat and the deflating coordinates; $(m^{2}+\sum_jk_j^{2})^{1/2}$; physical wavenumber along the deflating coordinates; $\kd/\rt$ & Eqs.~(\ref{eq:kd}), (\ref{eq:ud}) \\
+$w$; $\Swkb$ & one of the eight constant spinors from which the exact solutions are built; exponent of the extinction of a bounded solution & Eqs.~(\ref{eq:exact}), (\ref{eq:Swkb}) \\
+%%</1644>
+%%<1671>
+$\hh$, $\hh_\perp$; $\beta$, $\alpha^{A}$, $\alpha^{d}$; $\bar\psi$ & Hamiltonian of a mode, and its part without the scale factors; $\gamma^{4}$, $\gamma^{4}\gamma^{A}$, and the matrix $\alpha$ along the wave vector in the deflating coordinates; the adjoint $\psi^\dagger\beta$ & Eqs.~(\ref{eq:h}), (\ref{eq:LVS}) \\
+$p_j$, $k_t$; $\Eperp$; $\kd$; $\ud$ & wavenumbers along the flat and the deflating coordinates; $(m^{2}+\sum_jp_j^{2})^{1/2}$; physical wavenumber along the deflating coordinates; $\kd/\rt$ & Eqs.~(\ref{eq:kd}), (\ref{eq:ud}) \\
+$w$; $Z_+$, $Z_-$ & one of the eight constant spinors from which the exact solutions are built; two cylinder functions whose orders differ by one & Eq.~(\ref{eq:exact}) \\
+$\ncr$; $\Tdefl$ & number of quanta that the deflation creates in a mode, per internal state; temperature of their spectrum & Eqs.~(\ref{eq:ncr}), (\ref{eq:Tdefl}) \\
+%%</1671>
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{table*}
+\caption{\label{tab:symbols2}The symbols of this paper, continued: the model, the superfluid, and
+the cosmological part.}
+\begin{ruledtabular}
+\begin{tabular}{p{0.2\textwidth}p{0.6\textwidth}p{0.14\textwidth}}
+symbol & meaning & defined in \\
+\hline
+$\mathcal L_{\tg}^{\mathrm{VS}}$; $\PhiVS$, $\hat\Phi_{\mathrm{VS}}$ & Lagrangian of the model; the Vorton-Scalar and its weighted form $\sqrt{\Vd}\,\PhiVS$ & Eq.~(\ref{eq:LVS}) \\
+$\lamVS$, $\vVS$, $\yVS$ & self-coupling of the Vorton-Scalar, the constant that fixes its vacuum value, its Yukawa coupling & Sec.~\ref{sec:clock} \\
+$U(1)_F$, $\UVS$; $\epsilon$ & the symmetries of fermion number and of chirality; parameter of a symmetry transformation & Sec.~\ref{sec:clock} \\
+$m$, $m_s$; $\gVS$, $\aVS$ & fermion mass, mass of the radial mode; coupling of both modes to the fermions, and $\gVS^{2}/4\pi$ & Eq.~(\ref{eq:masses}) \\
+$\DVS$, $C$; $D_c$ & the two numbers that decide the state of matter; critical value of $\DVS$ for a bound pair & Eq.~(\ref{eq:DC}) \\
+$\td$; $\tpair$ & the deflation clock; the clock measured from the binding of the pair & Eqs.~(\ref{eq:clock}), (\ref{eq:tpair}) \\
+$\varphi_{\mathrm{bos}}$, $m_{\mathrm{bos}}$, $\varpi_b$ & a mode of the Vorton-Scalar, its mass, the frequency of its weighted form & Sec.~\ref{sec:scalarmodes} \\
+$F_S$, $F_P$; $W(k,k')$ & exchange amplitudes of the radial and of the phase mode; kernel of the gap equation (always written with its two arguments) & Sec.~\ref{sec:gap} \\
+$\lambda$, $\lambda_S$, $\lambda_P$; $\Delta_F$; $T_c$ & pairing strength, and its parts from the radial and from the phase mode; gap at the Fermi momentum; critical temperature & Sec.~\ref{sec:gap} \\
+$\kF$, $\EF$, $v_F$, $N(0)$ & Fermi momentum, Fermi kinetic energy, Fermi velocity, density of states at the Fermi surface per internal state & Secs.~\ref{sec:gap}, \ref{sec:cjt} \\
+$a_{\mathrm{sc}}$, $E_b$ & scattering length of two fermions; binding energy of the pair & Sec.~\ref{sec:pair} \\
+$\Xid$; $\Deq$; $\Esh$; $\nex$ & the parameter that decides whether the paired state follows the deflation; equilibrium gap; half-width of the shell of states; density of broken pairs & Sec.~\ref{sec:quench} \\
+$\xi_k$, $E_k$, $\kappa$, $n_k$ & single-particle energy, quasi-particle energy, pair correlation and occupation of a pair of states & Eq.~(\ref{eq:bloch}) \\
+$V[\Delta]$; $\phi$; $m^{*}$; $T_{1/2}$ & effective potential of the paired state; expectation value of the Vorton-Scalar; fermion mass in matter; temperature at which the fermions have lost half of their mass & Sec.~\ref{sec:cjt} \\
+$\Delta^{a}$, $\Delta_t$; $\MM$; $d_\pm$ & order parameter (frame components), and its coordinate components along the deflating coordinates; gap matrix; the two fourfold gaps of a state & Sec.~\ref{sec:order} \\
+$SU(2)_A$, $SU(2)_B$, $U(1)_E$\SIG{; $SO(3)_T$}{} & the factors of the internal symmetry of the fields that do not depend on the extra coordinates\SIG{; the rotations of the three additional times $x5,x6,x7$}{} & Sec.~\ref{sec:hidden} \\
+$P$, $P_c$; $w_z$; $\theta_{12}$ & generator of $U(1)_E$ and the product of the five matrices of the sector; spinor of a zero mode; angle around a vortex line & Sec.~\ref{sec:vortex} \\
+$a_{\mathrm{sp}}$, $H$, $H_0$; $\GN$, $G_8$ & scale factor of ordinary space, Hubble rate, Hubble constant; Newton's constant and the constant of gravitation in eight dimensions & Sec.~\ref{sec:cosmo} \\
+$\rho$, $\rho_m$; $\omega_b$, $\omega_c$ & energy density in ordinary space, and that of matter; the densities of baryons and of cold dark matter of the standard model of cosmology & Sec.~\ref{sec:cosmo} \\
+$\theta_*$, $r_s$; $t_0$ & angle under which the sound horizon at last scattering is seen, and that sound horizon; age of the universe & Sec.~\ref{sec:cosmo} \\
+$\delta_m$, $f_g$, $\sigma_8$ & density contrast of matter, its growth rate, amplitude of clustering & Sec.~\ref{sec:cosmo} \\
+$\vEW$, $\nEW$; $\alpha_c$, $\varrho_c$ & electroweak scale and the exponent with which it would follow the coupling under H2; critical coupling of the vacuum condensate, and an abbreviation & Sec.~\ref{sec:higgs} \\
+$m_p/m_e$; $G_{\mathrm{Fermi}}$; $\alpha_{\mathrm{em}}$ & ratio of the proton mass to the electron mass; Fermi constant; fine-structure constant & Sec.~\ref{sec:cosmo} \\
+H1, H2, H3; A1, A2; HV & the three hypotheses about the superfluid; the two assumptions of the cosmological part; the assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale & Secs.~\ref{sec:intro}, \ref{sec:cosmo} \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\section{Curvature of the deflating metric}
+\label{app:curvature}
+
+This appendix derives the Einstein tensor and the Lanczos tensor of Sec.~\ref{sec:geometry} in a
+form that can be checked by hand, and gives the coordinates and the additional symmetries of the
+case of equal rates.
+
+\subsection{Curvatures on pairs of directions}
+
+In the orthonormal frame the Riemann tensor (\ref{eq:riemann}) of the deflating metric is diagonal
+on pairs of directions: for each pair of frame directions $A\ne B$ it has one independent component,
+the sectional curvature $K_{AB}=K_{BA}$ of the plane that the two directions span. In the convention
+in which space-like components of the metric are positive, which this appendix uses, the sectional
+curvatures are, for both signatures,
+\begin{equation}
+K_{4t}=\rt^{2},\qquad K_{ts}=\rt\,\mathrm{rate}_s\quad(t\ne s),
+\label{eq:sectional}
+\end{equation}
+and $K_{AB}=0$ for every pair that contains one of the flat directions $0,1,2,3$. \SIG{(A sectional
+curvature $K_{AB}$ carries two subscripts; it is not the matrix $K$ of Sec.~\ref{sec:dirac}.) }{}For a
+Riemann tensor of this kind the mixed components of the Einstein tensor and of the Lanczos tensor
+are diagonal, and
+\begin{align}
+\cG^{A}{}_{A}&=-\sum_{\{B,C\}}K_{BC},\label{eq:pairG}\\
+\cH^{A}{}_{A}&=-4\sum_{\{B,C\},\{B',C'\}}K_{BC}\,K_{B'C'},
+\label{eq:pairH}
+\end{align}
+without summation over $A$. The first sum runs over the pairs of directions that do not contain the
+direction $A$. The second runs over the unordered couples of two such pairs that have no direction
+in common; a set of four directions contributes its three divisions into two pairs. As a test, for a
+space of constant curvature in eight dimensions, where all $K_{BC}$ equal one number, the first sum
+has $21$ terms and the second $3\times35$, so that the two formulas give $-21$ times that number and
+$-420$ times its square, the known values $-\tfrac12\cdot7\cdot6$ and
+$-\tfrac12\cdot7\cdot6\cdot5\cdot4$.
+
+\emph{The Einstein tensor.} With Eq.~(\ref{eq:sectional}), Eq.~(\ref{eq:pairG}) gives
+\begin{equation}
+\begin{aligned}
+\cG^{4}{}_{4}&=-\gprod,\qquad\cG^{j}{}_{j}=-(\gsq+\gprod),\\
+\cG^{5}{}_{5}&=-(\gss^{2}+\gvv^{2}+\gss\,\gvv),
+\end{aligned}
+\end{equation}
+and the corresponding expressions for $\cG^{6}{}_{6}$ and $\cG^{7}{}_{7}$. Because
+$\gsum^{2}=\gsq+2\,\gprod$, these are Eq.~(\ref{eq:einstein}) multiplied by $-\eta_{44}$, the factor
+that relates the two conventions.
+
+\emph{The Lanczos tensor.} A couple of pairs contributes to Eq.~(\ref{eq:pairH}) only if neither
+pair contains a flat direction, that is, only if the four directions are $4,5,6,7$. For a flat
+direction $A=j$ these are allowed, and their three divisions into two pairs give
+\begin{equation}
+K_{45}K_{67}+K_{46}K_{57}+K_{47}K_{56}=\gff\,\gss\,\gvv\,\gsum ,
+\end{equation}
+which is Eq.~(\ref{eq:lanczos}). For $A=4,5,6,7$ the direction $A$ is itself among the four, and
+these components vanish. The Lovelock tensor of the third order is built in the same way from sets
+of six directions, and every such set contains a flat direction: it vanishes.
+
+\emph{The field equations.} In Eq.~(\ref{eq:egb}) the components along $x4$ and along the deflating
+coordinates read $\cG^{4}{}_{4}+\Lam=0$ and $\cG^{t}{}_{t}+\Lam=0$. Since
+$\cG^{5}{}_{5}-\cG^{6}{}_{6}=(\gff-\gss)\,\gsum$, they can hold together only if the three rates are
+equal, and then $\Lam=3\,\gff^{2}$. The components along the flat coordinates read
+$-6\,\gff^{2}+\Lam-12\,\aGB\,\gff^{4}=0$, which gives $\aGB=-1/(4\,\gff^{2})$:
+Eq.~(\ref{eq:egbsol}). The program verifies Eqs.~(\ref{eq:pairG}) and (\ref{eq:pairH}) for the
+deflating metric in exact arithmetic, and an independent program obtains the same Lanczos tensor
+from its standard definition by computer algebra, for arbitrary rates and constants.
+
+\subsection{Equal rates: a space of constant curvature}
+
+Let $\gff=\gss=\gvv$, and introduce in place of $x4,\dots,x7$ the coordinates
+\begin{equation}
+\bar x4=\frac{e^{\gff\,x4}}{\gff},\qquad\bar xt=\ct\,xt\quad(t=5,6,7).
+\end{equation}
+The part of the line element that contains $x4,\dots,x7$ becomes
+\begin{equation}
+\eta_{44}\,dx4^{2}-e^{-2\,\gff\,x4}\sum_t d\bar xt^{2}
+=\frac{\eta_{44}\,d\bar x4^{2}-\sum_t d\bar xt^{2}}{(\gff\,\bar x4)^{2}} .
+\label{eq:conformal}
+\end{equation}
+\SIG{With $\eta_{44}=-1$ this is minus the line element of four-dimensional hyperbolic space of the
+radius $1/\gff$, in its upper-half-space form: the four time-like coordinates span a
+negative-definite space of constant curvature.}{With $\eta_{44}=+1$ this is the line element of de
+Sitter space of the radius $1/\gff$, in the half of its flat slicing in which space contracts. De
+Sitter space is familiar as the geometry of inflation, where the same line element is used with the
+opposite direction of time.} The line element (\ref{eq:conformal}) is a multiple of a flat one. The
+special conformal transformations of that flat metric along the three axes $\bar x5,\bar x6,\bar x7$
+leave the factor $1/\bar x4^{2}$ unchanged and are therefore symmetries. Their generators are, for
+$s=5,6,7$,
+\begin{equation}
+\begin{aligned}
+\cX_{(s)}={}&2\,\bar xs\,\Big[\bar x4\,\frac{\partial}{\partial\bar x4}+\sum_t\bar xt\,\frac{\partial}{\partial\bar xt}\Big]\\
+&-\Big(\sum_t\bar xt^{2}\SIG{+}{-}\bar x4^{2}\Big)\frac{\partial}{\partial\bar xs},
+\end{aligned}
+\label{eq:special}
+\end{equation}
+with $\bar x4\,\partial/\partial\bar x4=\gff^{-1}\partial_4$. Together with the 14 Killing vectors of
+the general case and the three rotations of $x5,x6,x7$ they are the 20 Killing vectors of the case
+of equal rates.
+
+\section{Machine checks, and how the results are reproduced}
+\label{app:checks}
+
+All physics of this paper is computed by one program, written in Rust, which uses the program of the
+earlier paper as a library and no other library. Each of its nine commands writes data files and a
+list of checks; a check marked ``exact'' is an identity verified in exact rational arithmetic, and a
+check marked ``numerical'' states its accuracy. Table~\ref{tab:checks} lists them. The central
+results are verified a second time by a program in Python that shares no code with the first and
+uses other methods: computer algebra with symbolic rates and constants instead of rational
+arithmetic, a general-purpose integrator and the Bessel functions of a library instead of the
+integrator of the program. That second program was itself tested by introducing twenty deliberate
+errors into it, one at a time; it detected nineteen, and the twentieth, a change of the term
+$\gprod$ of Eq.~(\ref{eq:friedmann}), cannot be detected by a comparison of Hubble constants for the
+reason given in Sec.~\ref{sec:cosmo} and is covered by the symbolic check of the Einstein tensor.
+
+\begin{table*}
+\caption{\label{tab:checks}The machine checks behind this paper: the commands of the program, what
+each verifies or computes, and the number of its checks that pass. The checks of both deflating
+spacetimes are counted, since the program treats the two together.}
+\begin{ruledtabular}
+\begin{tabular}{lp{0.68\textwidth}c}
+command & content & checks passed \\
+\hline
+\texttt{matrices} & the Dirac matrices of the frame, verified again & {{GEN:n_flat_matrix_checks}} \\
+\texttt{matrices} & geometry, Killing vectors, Einstein and Lanczos tensors, geodesics; matrices in coordinate components, spin connection, Dirac operators & {{GEN:n_deflating_checks}} \\
+\texttt{modes} & solutions of the Dirac equation mode by mode: creation ($7+1$) and extinction ($4+4$) & {{GEN:n_mode_checks}} \\
+\texttt{symmetry} & surviving rotations and boosts, internal symmetry of the sector, zero modes on a vortex line, reduction of the couplings & {{GEN:n_symmetry_checks}} \\
+\texttt{channels} & exchange amplitudes in the pair channels; modes of the Vorton-Scalar & {{GEN:n_channel_checks}} \\
+\texttt{history} & gap, bound pair, matter, vacuum and temperature along the clock; order of events & {{GEN:n_history_checks}} \\
+\texttt{quench} & dynamics of the paired state under a growing coupling & {{GEN:n_quench_checks}} \\
+\texttt{paired} & the paired state and self-bound matter from the effective action & {{GEN:n_paired_checks}} \\
+\texttt{cosmology} & inferred Hubble constant, bounds on the rate, the exponent $\nEW$ & {{GEN:n_cosmology_checks}} \\
+\texttt{matter} & dark-matter estimates, the resonance, growth of structure, drifts\SIG{}{, temperature of the created quanta} & {{GEN:n_matter_checks}} \\
+independent program & geometry, completeness of the Killing vectors, Lanczos tensor, spin connection and Dirac operators by computer algebra; exact solutions; vortex zero modes; Hubble constant & {{GEN:n_deflating_checks_independent}} \\
+registry of symbols & no symbol and no name in a data file has two meanings & {{GEN:n_symbol_checks_deflation}} \\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+No computed number in a table of this paper was typed by hand: the tables are written by a script
+from the data files of the program. The figures are drawn by a script from the same files. The
+repository \cite{DeflationRepo} contains the programs with their unit tests, the data, the
+instructions for compiling and running everything, four supplements and a document on the Dirac
+matrices of the deflating spacetimes that derive each result of this paper step by step, and the
+record of the errors that were made and corrected during the work.
+

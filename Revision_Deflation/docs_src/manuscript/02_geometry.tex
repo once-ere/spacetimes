@@ -1,0 +1,193 @@
+\section{The deflating spacetime}
+\label{sec:geometry}
+
+This section derives the geometry that the hypothesis implies: the curvature, the field equations
+that the metric does and does not solve, its symmetries, and the motion of a classical particle. The
+derivations are given in full in Ref.~\cite{DeflationRepo}.
+
+\subsection{Metric, frame and volume}
+
+Let $\eta=\mathrm{diag}\SIG{(+1,+1,+1,+1,-1,-1,-1,-1)}{(-1,-1,-1,-1,+1,-1,-1,-1)}$ be the flat metric
+of the earlier paper, with the coordinates in the order $x0,\dots,x7$. Define three \emph{scale
+factors}, one for each deflating coordinate,
+\begin{equation}
+b_t(x4)=\ct\,e^{-\rt\,x4},\qquad t=5,6,7,
+\label{eq:scale}
+\end{equation}
+with $\mathrm{rate}_5=\gff$, $\mathrm{rate}_6=\gss$, $\mathrm{rate}_7=\gvv$. The metric of the
+deflating spacetime is
+\begin{equation}
+g_{\mu\nu}=\mathrm{diag}\big(\eta_{00},\eta_{11},\eta_{22},\eta_{33},\eta_{44},\,\eta_{55}b_5^2,\,\eta_{66}b_6^2,\,\eta_{77}b_7^2\big),
+\label{eq:metric}
+\end{equation}
+whose last three components are those of Eq.~(\ref{eq:hyp}). Greek indices label the coordinates. A
+coordinate interval $dxt$ has the proper extent $b_t\,|dxt|$, which shrinks by the factor $e$ in the
+time $1/\rt$. \SIG{Because $x5,x6,x7$ are time-like, what shrinks is a duration measured along an
+additional time.}{Because $x5,x6,x7$ are space-like, what shrinks is a length.}
+
+Capital indices $A,B$ label an orthonormal frame, eight vector fields $e_A=e_A{}^{\mu}\partial_\mu$
+with $g_{\mu\nu}e_A{}^{\mu}e_B{}^{\nu}=\eta_{AB}$. We take the frame along the coordinates,
+$e_A{}^{\mu}=\mathrm{diag}(1,1,1,1,1,b_5^{-1},b_6^{-1},b_7^{-1})$. The volume element is $\Vd\,d^8x$
+with
+\begin{equation}
+\Vd(x4)=b_5b_6b_7\propto e^{-\gsum\,x4},\quad\gsum=\gff+\gss+\gvv .
+\label{eq:Vd}
+\end{equation}
+$\Vd$ is the proper volume of a unit coordinate cell of the deflating coordinates, and the
+\emph{total rate} $\gsum$ is the rate at which it shrinks. Most results below depend on the three
+rates only through $\gsum$.
+
+\subsection{Curvature}
+\label{sec:curvature}
+
+The only components of the metric that depend on a coordinate are the three $g_{tt}$, and they depend
+on $x4$ alone. The Christoffel symbols that do not vanish are
+\begin{equation}
+\Gamma^{t}{}_{4t}=-\rt,\qquad\Gamma^{4}{}_{tt}=\eta_{44}\eta_{tt}\,\rt\,b_t^{2},
+\end{equation}
+without summation over $t$. The Riemann tensor has, in the orthonormal frame, the components
+\begin{equation}
+R^{t}{}_{4t4}=-\rt^{2},\quad R^{t}{}_{sts}=-\eta_{44}\eta_{ss}\,\rt\,\mathrm{rate}_s\ \ (t\ne s),
+\label{eq:riemann}
+\end{equation}
+and those related to them by symmetry. No component carries an index of $x0,\dots,x3$: these four
+coordinates span a flat space, and the curvature lives in the four coordinates $x4,\dots,x7$. With
+$\gsq=\gff^2+\gss^2+\gvv^2$ and $\gprod=\gff\gss+\gff\gvv+\gss\gvv$, the curvature scalar is the
+constant $R=-\eta_{44}(\gsq+\gsum^{2})$, and the Einstein tensor
+$\cG^{\mu}{}_{\nu}=R^{\mu}{}_{\nu}-\tfrac12R\,\delta^{\mu}_{\nu}$ is diagonal with
+\begin{equation}
+\begin{aligned}
+\cG^{4}{}_{4}&=\eta_{44}\,\gprod,\qquad\cG^{j}{}_{j}=\tfrac12\eta_{44}\,(\gsq+\gsum^{2}),\\
+\cG^{t}{}_{t}&=\eta_{44}\big[\tfrac12(\gsq+\gsum^{2})-\rt\,\gsum\big].
+\end{aligned}
+\label{eq:einstein}
+\end{equation}
+The Einstein tensor does not vanish, and it is not a multiple of the unit matrix unless all rates
+vanish. \emph{The deflating spacetime is not a solution of Einstein's equations without matter, with
+or without a cosmological constant.}
+
+\subsection{A solution of Einstein-Gauss-Bonnet gravity}
+\label{sec:egb}
+
+In more than four dimensions the general field equations of second order for the metric are those of
+Lovelock \cite{Lovelock1971}. Their first term beyond Einstein's is the Lanczos tensor
+$\cH^{\mu}{}_{\nu}$ of the Gauss-Bonnet term \cite{BoulwareDeser1985}, and the equations without
+matter read
+\begin{equation}
+\cG^{\mu}{}_{\nu}+\Lam\,\delta^{\mu}_{\nu}+\aGB\,\cH^{\mu}{}_{\nu}=0,
+\label{eq:egb}
+\end{equation}
+with a cosmological constant $\Lam$ and a coupling $\aGB$. (In this subsection the signs are those of
+the convention in which space-like components of the metric are positive.) For the metric
+(\ref{eq:metric}) we find
+\begin{equation}
+\begin{aligned}
+\cH^{j}{}_{j}&=-4\,\gff\,\gss\,\gvv\,\gsum\quad(j=0,1,2,3),\\
+\cH^{4}{}_{4}&=\cH^{t}{}_{t}=0,
+\end{aligned}
+\label{eq:lanczos}
+\end{equation}
+and the Lovelock tensor of the third order, the last that can differ from zero in eight dimensions,
+vanishes identically. The components of Eq.~(\ref{eq:egb}) along $x4,\dots,x7$ therefore contain no
+Gauss-Bonnet term and require the four corresponding components of the Einstein tensor to be equal,
+which holds if and only if the three rates are equal. The components along $x0,\dots,x3$ then fix the
+coupling. The result:
+\begin{equation}
+\gff=\gss=\gvv:\qquad\Lam=3\,\gff^{2},\qquad\aGB=-\frac{1}{4\,\gff^{2}} .
+\label{eq:egbsol}
+\end{equation}
+\emph{With three equal rates the deflating spacetime is an exact solution of Einstein-Gauss-Bonnet
+gravity without matter}, in a theory whose two constants satisfy $4\aGB\Lam=-3$; the rate is then
+$\gff=\sqrt{\Lam/3}$. With unequal rates it is not a solution for any $\Lam$ and $\aGB$. Solutions of
+this theory in which every scale factor is an exponential of the time have been classified in five
+and six dimensions \cite{ChirkovPavluchenkoToporensky2014}; the present one, with four static and
+three contracting directions in eight dimensions, is of that kind. Whether it is stable has not been
+examined.
+
+\subsection{Symmetries}
+
+A Killing vector is a vector field along which the metric does not change. Flat spacetime in eight
+dimensions has 36. The deflating spacetime has, for any rates, 14: the seven translations along all
+coordinates but $x4$; the six rotations of $x0,x1,x2,x3$; and the scaling
+\begin{equation}
+\cX_{\mathrm{scale}}=\partial_4+\gff\,x5\,\partial_5+\gss\,x6\,\partial_6+\gvv\,x7\,\partial_7,
+\label{eq:scaling}
+\end{equation}
+which shifts the time and stretches the deflating coordinates so as to undo the shrinking. Two equal
+rates add the rotation of the two coordinates concerned. Three equal rates add the three rotations of
+$x5,x6,x7$ and three further vectors, 20 in all; the four coordinates $x4,\dots,x7$ then form a space
+of constant curvature of radius $1/\gff$:
+\SIG{minus a four-dimensional hyperbolic space.}{de Sitter space in the half of its flat slicing in
+which space contracts.} These lists are complete. (A Killing vector that vanishes at a point is a
+Lorentz transformation of the tangent space that leaves the Riemann tensor (\ref{eq:riemann})
+unchanged; the dimension of the space of such transformations is 6, 7 or 12, which bounds the number
+of Killing vectors by 14, 15 or 20.)
+
+Three consequences are used below. The spacetime is homogeneous: no place and no moment is
+distinguished. The constants $\ct$ are not observable by themselves, since a rescaling of $xt$
+changes them; the deflation is observable only through an object that fixes a coordinate scale along
+$xt$, such as a wave of given coordinate wavelength. And there is no conserved energy, because a
+translation in time alone is not a symmetry.
+
+Of the 28 rotations and boosts of flat spacetime, only the six rotations of $x0,\dots,x3$ survive for
+general rates (Fig.~\ref{fig:isometries}). Nothing that involves the time survives, in particular
+not the boosts of ordinary special relativity: the deflation defines a preferred state of rest, as
+the expansion of the universe does.
+
+\begin{figure*}
+\includegraphics[width=0.86\textwidth]{fig_isometries}
+\caption{\label{fig:isometries}Symmetries of the deflating spacetime. (a) The 28 rotations and boosts
+of flat spacetime, one square for each pair of coordinates: those that remain symmetries for any
+rates, those that remain symmetries only if the two coordinates deflate equally fast, and those that
+are never symmetries. Circles mark the six pairs whose rotations act as internal symmetries on fields
+that do not depend on $x0,x5,x6,x7$ (Sec.~\ref{sec:higgs}). (b) The number of Killing vectors.}
+\end{figure*}
+
+\subsection{Geodesics}
+\label{sec:geodesics}
+
+The translations give seven conserved momenta $P_\mu$ ($\mu\ne4$) of a classical particle. Let
+$\Eperp=(m^{2}+\sum_jP_j^{2})^{1/2}$, with the sum over $j=0,1,2,3$, be the energy that a particle of
+mass $m$ would have without momentum along the deflating coordinates. The conservation of the norm of the momentum gives the
+velocity along the time, with an affine parameter $\varsigma$ along the path:
+\begin{equation}
+\Big(\frac{dx4}{d\varsigma}\Big)^{2}=\Eperp^{2}\SIG{-}{+}\sum_{t}\frac{P_t^{2}}{b_t(x4)^{2}} .
+\label{eq:geodesic}
+\end{equation}
+The last term grows as $e^{2\,\rt\,x4}$: the momentum $P_t$ belongs to a fixed coordinate wavelength,
+and the proper wavelength shrinks.
+%%<1644>
+With the minus sign the right-hand side vanishes at a \emph{turning value} of the time; for momentum
+along $x5$ alone,
+\begin{equation}
+x4_{\mathrm{turn}}=\frac{1}{\gff}\ln\frac{\Eperp\,\cff}{|P_5|} .
+\label{eq:turn}
+\end{equation}
+The path reaches this value and returns to smaller $x4$ [Fig.~\ref{fig:geodesics}(b)]. A classical
+particle with momentum along a deflating time cannot pass the turning value of the ordinary time. Section~\ref{sec:modes} shows the
+quantum form of this result. (On the $7+1$ spacetime the sign is the opposite, and the energy of such
+a particle grows without bound \cite{CompanionDefl1671}.)
+%%</1644>
+%%<1671>
+With the plus sign the energy of a particle that moves along a deflating coordinate grows without
+bound, the reverse of the redshift in an expanding universe. For momentum along $x5$ alone the proper
+time that elapses between $x4$ and $x4=\infty$ is
+\begin{equation}
+\frac{m}{\gff\,\Eperp}\,\mathrm{arsinh}\Big(\frac{\Eperp\,\cff\,e^{-\gff\,x4}}{|P_5|}\Big),
+\label{eq:incomplete}
+\end{equation}
+which is finite [Fig.~\ref{fig:geodesics}(a)]: the coordinates of Eq.~(\ref{eq:metric}) do not cover
+the whole future of such a particle. For equal rates this is the known incompleteness of the flat slicing of de Sitter space.
+Section~\ref{sec:modes} shows the quantum form of the blueshift. (On the $4+4$ spacetime the sign is
+the opposite, and such a particle is turned back \cite{CompanionDefl1644}.)
+%%</1671>
+
+\begin{figure*}
+\includegraphics[width=0.8\textwidth]{fig_geodesics}
+\caption{\label{fig:geodesics}A classical particle of the mass $m=1$ with the momenta $P_1=0.5$ along
+$x1$ and $P_5=0.3$ along the deflating coordinate $x5$, for $\gff=1$ and $\cff=0.8$, started at
+$x4=-2$. (a) On the $7+1$ spacetime the time $x4$ grows without bound within the finite proper time
+3.386. (b) On the $4+4$ spacetime the path reaches the turning value $x4=1.0924$ and returns to
+smaller $x4$.}
+\end{figure*}
+

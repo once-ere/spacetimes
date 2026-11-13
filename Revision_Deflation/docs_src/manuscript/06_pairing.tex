@@ -1,0 +1,110 @@
+\section{Pairing and the gap along the clock}
+\label{sec:gap}
+
+\subsection{The pair channels}
+
+A pair of fermions is created by an operator $\psi^{T}X\psi$ with a $16\times16$ matrix $X$; the
+choice of $X$ is the \emph{channel} of the pair. The earlier paper classified the channels and
+computed, for each, the \emph{exchange amplitudes} $F_S$ and $F_P$ of the radial mode and of the
+phase mode: the matrix elements of the exchange of one boson between two fermions of opposite
+momenta in the internal state of the channel. It found that the radial mode attracts in every
+channel, and that the phase mode attracts in the four \emph{vector pairs along the extra axes},
+\begin{equation}
+\psi^{T}\Cm\gamma^{a}\psi,\qquad a\in\{0,5,6,7\},
+\label{eq:pairs}
+\end{equation}
+and repels in their partners that are built with two Dirac matrices. Here
+$\Cm=\SIG{\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}}{\gamma^{4}\gamma^{0}\gamma^{1}\cdots\gamma^{7}}$
+is the matrix that turns each Dirac matrix into minus its transpose\SIG{ (Sec.~\ref{sec:dirac})}{}, and the index $a$ labels the
+four extra axes. The pair along the hidden axis, $a=0$, has spin 0 in ordinary spacetime; it is the
+\emph{hidden-axis singlet} of hypothesis H1.
+
+The amplitudes are computed from the Dirac matrices of the frame, which the deflation does not
+change, and each is proportional to the square of the coupling. For fields that do not depend on
+$x5,x6,x7$ the amplitude of a channel at the time $x4$ is therefore
+\begin{equation}
+\begin{aligned}
+F_{S,P}(x4)={}&\gVS(x4)^{2}\\
+&\times\big(F_{S,P}\text{ of the flat spacetime at }\gVS=1\big).
+\end{aligned}
+\label{eq:amplitudes}
+\end{equation}
+The program computes the amplitudes of the 15 representative channels of the earlier paper again
+from the matrices of the deflating spacetime, at three momenta and 13 scattering angles; the numbers
+agree with those of the earlier paper to every digit recorded there,
+and the amplitudes of the hidden-axis channel reproduce its closed forms to $1.1\times10^{-15}$. The
+conclusion of the earlier paper about the channels therefore stands at every moment
+(Fig.~\ref{fig:kernels}): the most attractive channel is the vector pair along an extra axis.
+
+\begin{figure*}
+\includegraphics[width=0.84\textwidth]{fig_kernels}
+\caption{\label{fig:kernels}Exchange amplitudes in three pair channels, divided by the square of the
+coupling of the moment, against the scattering angle, for momenta of the magnitude $m$ in the plane
+of $x1$ and $x2$. Lines: deflating $7+1$ spacetime; open symbols: deflating $4+4$ spacetime. (a) The
+radial mode attracts in all three channels. (b) The phase mode attracts in the vector pair along the
+hidden axis and repels in its partner built with two Dirac matrices. The amplitudes are those of flat
+spacetime: the deflation changes their overall strength and nothing else.}
+\end{figure*}
+
+\subsection{The gap grows much faster than the coupling}
+
+In matter of a given density the attraction opens a gap $\Delta_F$ at the Fermi momentum $\kF$: the
+energy that it costs to break a pair. The gap equation of the earlier paper, which generalizes that
+of Bardeen, Cooper and Schrieffer \cite{BCS1957}, holds at each moment with the couplings of that
+moment. Its solution as a function of the clock is the \emph{adiabatic history} of the paired state:
+the state that matter would have if it were always in equilibrium. (Section~\ref{sec:quench}
+examines when it can be.) The strength of the pairing is measured by the dimensionless number
+$\lambda=N(0)\,W(\kF,\kF)$, the density of states at the Fermi surface times the kernel of the gap
+equation there; in the vector channel it is the sum $\lambda_S+\lambda_P$ of the contributions of the
+two modes. Since the kernel is proportional to $\gVS^{2}$,
+\begin{equation}
+\lambda\ \propto\ e^{\td}.
+\end{equation}
+
+The program solves the gap equation at 34 moments for each of four sets of the mass $m_s$ and the
+Fermi momentum (Table~\ref{tab:gap}, Fig.~\ref{fig:gap}). There are three results.
+
+\begin{table*}
+\caption{\label{tab:gap}The gap along the deflation clock for two of the four sets computed. $\gVS$
+and $\lambda$: coupling and pairing strength of the moment. $\EF$: Fermi kinetic energy. $T_c$:
+critical temperature. Rate of growth: $d\ln\Delta_F/d\td$; the last column, its product with
+$\lambda$, is given where the gap is between $10^{-6}$ and $0.02$ of $\EF$.}
+\begin{ruledtabular}
+\begin{tabular}{cccccccc}
+$m_s/m$, $\kF/m$ & $\td$ & $\gVS$ & $\lambda$ & $\Delta_F/\EF$ & $T_c/\Delta_F$ & rate of growth & $\lambda\,\times$ rate \\
+\hline
+{{ROWS:tbl_gap}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\emph{The order of the channels does not change.} At every moment the gap of the vector channel is
+at least as large as the gap that the radial mode alone would give, and that at least as large as
+the gap of the channel in which the phase mode repels. The gap never decreases.
+
+\emph{The critical temperature follows the gap.} Wherever the gap is below 5 per cent of the Fermi
+kinetic energy $\EF$, the critical temperature is $T_c=0.567\,\Delta_F$, the ratio of weak coupling,
+to within 0.002.
+
+\emph{The law of growth.} In weak coupling the gap is proportional to $e^{-1/\lambda}$. With
+$\lambda\propto e^{\td}$,
+\begin{equation}
+\frac{d\ln\Delta_F}{d\td}=\frac{1}{\lambda}.
+\label{eq:growth}
+\end{equation}
+In the computed histories the product $\lambda\,d\ln\Delta_F/d\td$ lies between 1.00 and 1.03
+wherever the gap is between $10^{-6}$ and $0.02$ of $\EF$.
+
+Equation (\ref{eq:growth}) is the central quantitative statement about the superfluid on a deflating
+spacetime. While the coupling grows by one e-folding, the gap of a weakly paired state with
+$\lambda=0.1$ grows by ten e-foldings, a factor of twenty thousand. A paired state that is
+unobservably weak at one time is strong a few e-foldings of the volume later.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_gap_history}
+\caption{\label{fig:gap}The gap along the deflation clock, for four sets of the mass of the radial
+mode and of the Fermi momentum (in units of $m$). (a) The gap of the vector channel in units of the
+Fermi kinetic energy. (b) The ratio of the critical temperature to the gap. (c) The rate of growth of
+the gap against $1/\lambda$; the line is Eq.~(\ref{eq:growth}).}
+\end{figure*}
+

@@ -40,8 +40,9 @@ kept apart throughout, so that the reader can see which conclusion rests on whic
    scattering resonance, during which the self-interaction of the fermions exceeds the
    observational bound by many orders of magnitude (Sec. 6). The growth of structure
    changes little in amplitude and more in rate (Sec. 5).
-4. *The particles that the deflation creates* (7+1) have a temperature of $10^{-33}$ K
-   at the allowed rate: none are created today (Sec. 7).
+4. *The particles that the deflation creates* (7+1) have a temperature of
+   $2.9\times10^{-33}$ K at the rate that lunar laser ranging allows, and below
+   $10^{-30}$ K at any allowed rate: none are created today (Sec. 7).
 5. *Not done.* The spectra of the microwave background, which S3 computes with its own
    Einstein–Boltzmann program, have not been recomputed with a time-dependent Newton's
    constant. The reason and the consequence are stated in Sec. 9.
@@ -145,7 +146,7 @@ was weaker in the early universe, the universe expanded more slowly at a given
 density, sound had more time to travel, and the sound horizon is larger; to keep the
 angle, the distance to last scattering must be larger, which requires a smaller
 Hubble constant. The deflation moves the inferred value *away* from the locally
-measured 73 km/s/Mpc.
+measured $73.50\pm0.81$ km/s/Mpc (the value with which the main project compares).
 
 *A remark on the term $\mathrm{gprod}$.* In Eq. (1.2) it acts as a constant addition to
 the left-hand side and is absorbed, almost exactly, by the cosmological term that is
@@ -238,8 +239,8 @@ energy is at most 8.2 per cent of the rest mass (check `def-C4`):
   most $+0.48$ km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass.
 
 The loss of rest mass is the only effect of the deflation found here that raises the
-inferred Hubble constant. In these examples it supplies less than a tenth of the 5.6
-km/s/Mpc that separate 67.4 from the local value.
+inferred Hubble constant. In these examples it supplies less than a tenth of the 6.1
+km/s/Mpc that separate 67.36 from the local value.
 
 ---
 
@@ -261,7 +262,7 @@ constant that keeps the sound-horizon angle is lower, the cosmological term take
 later, and matter clusters for longer; with that Hubble constant the net change is
 $+0.102$ per unit of $\mathrm{gsum}/H_0$. The amplitude therefore barely moves — $+0.03$
 per cent at the bound of lunar laser ranging, $+0.67$ per cent at the bound of
-nucleosynthesis — while the growth rate today rises by the factors 1.0027 and 1.0590.
+nucleosynthesis — while the growth rate today rises by the factors 1.0027 and 1.0589.
 A deflating universe would show itself in the product $f_g\sigma_8$, which
 redshift-space distortions measure, rather than in $\sigma_8$.
 
@@ -313,7 +314,7 @@ a per cent, a coincidence that nothing in the model explains.
 ## 6.3 How fast the quantities drift
 
 With $n=d\ln(\text{quantity})/d\tau_d$, the relative change of a quantity over the age
-of the universe is $n\,\mathrm{gsum}\,t_0$ ($H_0t_0=0.9507$; check `def-D5`):
+of the universe is $n\,\mathrm{gsum}\,t_0$ ($H_0t_0=0.9516$ for the model without deflation; check `def-D5`):
 
 {{GEN:tbl_drift}}
 
@@ -355,7 +356,7 @@ disfavoured.**
 
 **The Higgs hypothesis and the deflation together.** If the superfluid is the Higgs
 field (H2), the atomic clocks limit the rate of deflation to
-$1.2\times10^{-6}\,H_0/n_{\rm EW}$: the two hypotheses can both hold only if the
+$1.16\times10^{-6}\,H_0/n_{\rm EW}$: the two hypotheses can both hold only if the
 deflation is, for every purpose of this supplement, switched off today.
 
 **Dark matter.** The conclusions of S3 about the mass ranges hold unchanged. The
@@ -390,11 +391,15 @@ observable part is empty if gravity is eight-dimensional and the rate constant.
 1. *The spectra of the microwave background.* S3 of the main project computes the
    temperature and polarization spectra with its own Einstein–Boltzmann program and
    forecasts the constraints from them. The revision has **not** repeated this
-   calculation with a time-dependent Newton's constant. It requires a copy of that
-   program in which the gravitational coupling of the background and of the
-   perturbations depends on time while the rates of Thomson scattering and of
-   recombination do not, validated again against the constant case; it cannot be
-   emulated by changing parameters of the existing program. What Sec. 2 establishes is
+   calculation with a time-dependent Newton's constant, for two reasons. First, the
+   equations of the perturbations contain the stresses of the source that keeps the
+   rates of deflation constant, which the hypotheses do not specify (item 2 below):
+   a spectrum can be computed only under a further assumption, which is the author's
+   to make. Second, it requires a copy of that program in which the gravitational
+   coupling of the background and of the perturbations depends on time while the
+   rates of Thomson scattering and of recombination do not, validated again against
+   the constant case; it cannot be emulated by changing parameters of the existing
+   program. What Sec. 2 establishes is
    the effect on the *background*. At the bound of lunar laser ranging Newton's
    constant at last scattering was 0.9969 of today's value; the effect on the spectra
    beyond the shift of the sound-horizon angle is of that relative size, and has not

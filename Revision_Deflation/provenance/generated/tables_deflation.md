@@ -52,6 +52,49 @@
 217
 <!-- END n_checks_rust -->
 
+<!-- BEGIN n_number_checks -->
+542 numbers in 28 documents, 0 not traced
+<!-- END n_number_checks -->
+
+<!-- BEGIN n_numbers_judged -->
+9
+<!-- END n_numbers_judged -->
+
+<!-- BEGIN tbl_sources -->
+| file | lines | content |
+|:---|---:|:----------|
+| `rat.rs` | 223 | exact rational numbers with overflow checks; the trait that lets the geometry be computed in rational or in floating-point arithmetic |
+| `qmat.rs` | 201 | exact matrices with complex-rational entries |
+| `metric.rs` | 714 | the deflating metric: Christoffel symbols, Riemann, Ricci and Einstein tensors from their definitions and in closed form; Killing vectors; Lie derivative |
+| `geometry.rs` | 443 | the exact geometry checks `G1` to `G7`, `G10` (Lovelock tensors) and the geodesics `G8`, `G9` |
+| `curved.rs` | 530 | coordinate matrices, spin connection, Dirac operators; checks `C1` to `C8`, `D1` to `D7` |
+| `modes.rs` | 766 | integration of the mode equations (commutator-free Magnus method), creation of particles, bounded solutions, modified Bessel function of complex order |
+| `scalar.rs` | 295 | modes of a scalar field: exponents, static source, creation, bounded solutions |
+| `history.rs` | 274 | the couplings along the clock; thresholds and events |
+| `quench.rs` | 280 | time-dependent mean-field dynamics of the shell model |
+| `cosmo_defl.rs` | 426 | expansion with deflation, sound horizon, age, growth of structure |
+| `symmetry_defl.rs` | 217 | test of the 28 rotations and boosts; algebra of the vortex zero modes |
+| `cmd_symmetry.rs`, `cmd_channels.rs`, `cmd_matter.rs`, `cmd_paired.rs` | 995 | the commands `symmetry`, `channels`, `matter`, `paired` |
+| `main.rs` | 771 | the commands `matrices`, `modes`, `history`, `quench`, `cosmology` |
+| `io.rs`, `lib.rs` | 106 | writing of data files and reports; list of modules |
+<!-- END tbl_sources -->
+
+<!-- BEGIN n_source_files -->
+18
+<!-- END n_source_files -->
+
+<!-- BEGIN n_source_lines -->
+6241
+<!-- END n_source_lines -->
+
+<!-- BEGIN n_unit_tests -->
+39
+<!-- END n_unit_tests -->
+
+<!-- BEGIN n_figures -->
+14
+<!-- END n_figures -->
+
 <!-- BEGIN tbl_exponents -->
 | quantity | meaning | exponent $n$ |
 |:---|:----------|---:|
@@ -59,13 +102,13 @@
 | $y_{VS}$ of the four-dimensional description | Yukawa coupling of the weighted fields | $\tfrac12$ |
 | $\lambda_{VS}$ of the four-dimensional description | quartic coupling of the weighted Vorton-Scalar | $1$ |
 | $v_{VS}$ of the four-dimensional description | vacuum value of the weighted Vorton-Scalar | $-\tfrac12$ |
-| m | fermion mass $y_{VS}v_{VS}/\sqrt2$ | $0$ |
+| $m$ | fermion mass $y_{VS}v_{VS}/\sqrt2$ | $0$ |
 | $m_s$ | mass of the radial mode $\sqrt{2\lambda_{VS}}\,v_{VS}$ | $0$ |
 | $g_{VS}$ | coupling of the radial mode to the fermions, $m/v_{VS}$ | $\tfrac12$ |
 | $\alpha_{VS}$ | $g_{VS}^2/4\pi$ | $1$ |
 | $G_{VS}$ | constant of the Fermi type of the neutral-current interaction, $1/(\sqrt2\,v_{VS}^2)$ | $1$ |
 | $D_{VS}$ | $\alpha_{VS}\,m/m_s$: decides whether two fermions bind | $1$ |
-| C | $g_{VS}^2m^2/m_s^2$: decides the state of matter | $1$ |
+| $C$ | $g_{VS}^2m^2/m_s^2$: decides the state of matter | $1$ |
 | vortex energy per length | proportional to $v_{VS}^2$ (four-dimensional) | $-1$ |
 | $G_{\rm Fermi}$ (Fermi constant of the weak interaction) if the vacuum value of the Vorton-Scalar sets the electroweak scale (assumption HV) | $1/(\sqrt2\,v_{VS}^2)$, four-dimensional vacuum value | $1$ |
 | $G_N$ (Newton's constant) if gravity is eight-dimensional (A2) | $G_8$ divided by the volume of $x5,x6,x7$ | $1$ |
@@ -157,7 +200,7 @@
 | 0.00324 | 67.16 | 1.0003 | 1.0027 | 1.0030 | 0.9990 | 0.9993 |
 | 0.0100 | 66.74 | 1.0010 | 1.0083 | 1.0093 | 0.9968 | 0.9979 |
 | 0.0300 | 65.48 | 1.0031 | 1.0258 | 1.0290 | 0.9904 | 0.9937 |
-| 0.0644 | 63.23 | 1.0067 | 1.0590 | 1.0661 | 0.9792 | 0.9865 |
+| 0.0644 | 63.23 | 1.0067 | 1.0589 | 1.0661 | 0.9792 | 0.9865 |
 | 0.100 | 60.77 | 1.0106 | 1.0982 | 1.1098 | 0.9674 | 0.9790 |
 | 0.300 | 43.41 | 1.0350 | 1.5100 | 1.5628 | 0.8975 | 0.9365 |
 <!-- END tbl_growth -->
@@ -165,31 +208,31 @@
 <!-- BEGIN tbl_drift -->
 | quantity | where evaluated | $n$ | change at the bound of lunar laser ranging | at the bound of nucleosynthesis ($G_N$) | at the bound of nucleosynthesis ($G_{\rm Fermi}$) |
 |:---|:---|---:|---:|---:|---:|
-| $\alpha_{VS}$, $G_{VS}$, $D_{VS}$, $C$ | any | 1.000 | $3.08\times10^{-3}$ | 0.0612 | 0.222 |
-| $g_{VS}$ | any | 0.500 | $1.54\times10^{-3}$ | 0.0306 | 0.111 |
+| $\alpha_{VS}$, $G_{VS}$, $D_{VS}$, $C$ | any | 1.000 | $3.08\times10^{-3}$ | 0.0612 | 0.223 |
+| $g_{VS}$ | any | 0.500 | $1.54\times10^{-3}$ | 0.0306 | 0.112 |
 | fermion mass $m$, mass $m_s$ of the radial mode | any | 0.000 | 0 | 0 | 0 |
-| scattering length of two fermions (no bound state) | $D_{VS}$ = 0.5 | 1.368 | $4.21\times10^{-3}$ | 0.0837 | 0.304 |
-| scattering length of two fermions (no bound state) | $D_{VS}$ = 1 | 2.336 | $7.19\times10^{-3}$ | 0.143 | 0.520 |
-| scattering length of two fermions (no bound state) | $D_{VS}$ = 1.5 | 9.092 | 0.0280 | 0.557 | 2.02 |
-| binding energy of the pair | $D_{VS}$ = 1.8 | 30.129 | 0.0927 | 1.84 | 6.70 |
+| scattering length of two fermions (no bound state) | $D_{VS}$ = 0.5 | 1.368 | $4.21\times10^{-3}$ | 0.0838 | 0.305 |
+| scattering length of two fermions (no bound state) | $D_{VS}$ = 1 | 2.336 | $7.20\times10^{-3}$ | 0.143 | 0.521 |
+| scattering length of two fermions (no bound state) | $D_{VS}$ = 1.5 | 9.092 | 0.0280 | 0.557 | 2.03 |
+| binding energy of the pair | $D_{VS}$ = 1.8 | 30.129 | 0.0928 | 1.85 | 6.72 |
 | binding energy of the pair | $D_{VS}$ = 2 | 12.657 | 0.0390 | 0.775 | 2.82 |
 | binding energy of the pair | $D_{VS}$ = 3 | 4.673 | 0.0144 | 0.286 | 1.04 |
-| binding energy of the pair | $D_{VS}$ = 5 | 3.101 | $9.54\times10^{-3}$ | 0.190 | 0.690 |
-| binding energy of the pair | $D_{VS}$ = 10 | 2.456 | $7.56\times10^{-3}$ | 0.150 | 0.546 |
-| rest mass of the bound pair | $D_{VS}$ = 5, $m_s/m$ = 0.2 | -0.162 | $-4.98\times10^{-4}$ | $-9.91\times10^{-3}$ | -0.0360 |
-| rest mass of the bound pair | $D_{VS}$ = 10, $m_s/m$ = 0.1 | -0.218 | $-6.72\times10^{-4}$ | -0.0134 | -0.0486 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.15 | 6.667 | 0.0205 | 0.408 | 1.48 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.2 | 5.000 | 0.0154 | 0.306 | 1.11 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.3 | 3.333 | 0.0103 | 0.204 | 0.742 |
-| cross-section of two fermions at low energy (Born regime, $D_{VS}\ll1$) | $D_{VS}$ = 0.05 | 2.052 | $6.31\times10^{-3}$ | 0.126 | 0.456 |
+| binding energy of the pair | $D_{VS}$ = 5 | 3.101 | $9.55\times10^{-3}$ | 0.190 | 0.692 |
+| binding energy of the pair | $D_{VS}$ = 10 | 2.456 | $7.57\times10^{-3}$ | 0.150 | 0.548 |
+| rest mass of the bound pair | $D_{VS}$ = 5, $m_s/m$ = 0.2 | -0.162 | $-4.99\times10^{-4}$ | $-9.91\times10^{-3}$ | -0.0361 |
+| rest mass of the bound pair | $D_{VS}$ = 10, $m_s/m$ = 0.1 | -0.218 | $-6.73\times10^{-4}$ | -0.0134 | -0.0488 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.15 | 6.667 | 0.0205 | 0.408 | 1.49 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.2 | 5.000 | 0.0154 | 0.306 | 1.12 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.3 | 3.333 | 0.0103 | 0.204 | 0.744 |
+| cross-section of two fermions at low energy (Born regime, $D_{VS}\ll1$) | $D_{VS}$ = 0.05 | 2.052 | $6.32\times10^{-3}$ | 0.126 | 0.458 |
 <!-- END tbl_drift -->
 
 <!-- BEGIN tbl_temperature -->
 | bound | $\mathrm{gsum}/H_0$ | $\hbar\,\mathrm{rate}_t$ (eV) | $T_{\rm defl}$ (K) | exponent for $m=1$ keV | exponent for $m=1$ GeV |
 |:---|---:|---:|---:|---:|---:|
 | lunar laser ranging (A2) | 0.00324 | $1.55\times10^{-36}$ | $2.86\times10^{-33}$ | $4.05\times10^{39}$ | $4.05\times10^{45}$ |
-| nucleosynthesis, $G_N$ (A2) | 0.0644 | $3.08\times10^{-35}$ | $5.70\times10^{-32}$ | $2.04\times10^{38}$ | $2.04\times10^{44}$ |
-| nucleosynthesis, $G_{\rm Fermi}$ (HV), 20 per cent | 0.234 | $1.12\times10^{-34}$ | $2.07\times10^{-31}$ | $5.61\times10^{37}$ | $5.61\times10^{43}$ |
+| nucleosynthesis, $G_N$ (A2) | 0.0644 | $3.08\times10^{-35}$ | $5.69\times10^{-32}$ | $2.04\times10^{38}$ | $2.04\times10^{44}$ |
+| nucleosynthesis, $G_{\rm Fermi}$ (HV), 20 per cent | 0.234 | $1.12\times10^{-34}$ | $2.07\times10^{-31}$ | $5.59\times10^{37}$ | $5.59\times10^{43}$ |
 | $\mathrm{gsum}=H_0$ | 1.00 | $4.79\times10^{-34}$ | $8.85\times10^{-31}$ | $1.31\times10^{37}$ | $1.31\times10^{43}$ |
 <!-- END tbl_temperature -->
 

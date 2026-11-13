@@ -280,9 +280,10 @@ are computed from the Dirac matrices of the frame, which the deflation does not 
 and each is proportional to the square of the coupling. Therefore, for fields that do
 not depend on $x5,x6,x7$,
 $$F_{S,P}\ \text{on the deflating spacetime at the time }x4\;=\;g_{VS}(x4)^2\times\big(F_{S,P}\ \text{of S1 at }g_{VS}=1\big).\tag{3.1}$$
-The program computes the amplitudes of all 90 pair channels again, from the matrices
-of each deflating spacetime, and compares them with the file of the main project: the
-1170 rows agree to the digits printed there (check `def-K1`), and the amplitudes of the
+The program computes the amplitudes of the representative pair channels of the main
+project again — 15 on each spacetime, at three momenta and 13 scattering angles — from
+the matrices of each deflating spacetime, and compares them with the file of the main
+project: the 1170 rows agree to the digits printed there (check `def-K1`), and the amplitudes of the
 hidden-axis channel reproduce the closed forms of S1 to $1.1\times10^{-15}$ (check
 `def-K2`).
 
@@ -412,7 +413,11 @@ contains the metric $g_{tt}$ of the moment.
 ## 5.2 The ground state: no direction is preferred
 
 The potential of the paired state as a function of the order parameter is computed in
-the supplement RS4. Its result for the six states examined on each spacetime:
+the supplement RS4. Its result for the six states examined on each spacetime follows.
+Each state is taken at the magnitude of the order parameter at which its potential is
+stationary. The squares of its two fourfold gaps are given in units of $\Delta_F^2$,
+where $\Delta_F$ is the gap of a unitary state, and the potential in units of
+$N(0)\Delta_F^2$:
 
 {{GEN:tbl_states}}
 
@@ -586,7 +591,7 @@ times $\mathrm{gsum}/\lambda$.
 2. The modes of the Vorton-Scalar: growth with the weight only, a static potential of
    unchanged range and of the strength of the moment, thermal creation on 7+1 and
    extinction on 4+4 for modes that depend on a deflating coordinate (Sec. 2).
-3. The exchange amplitudes of all 90 pair channels are those of the main project times
+3. The exchange amplitudes of the 30 pair channels computed are those of the main project times
    the square of the coupling of the moment; the most attractive channel is unchanged
    (Sec. 3.1).
 4. The gap grows according to $d\ln(\mathrm{gap})/d\tau_d=1/\lambda$ in weak coupling;

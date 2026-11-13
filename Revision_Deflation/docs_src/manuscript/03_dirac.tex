@@ -1,0 +1,148 @@
+\section{The Dirac field}
+\label{sec:dirac}
+
+\subsection{Matrices and spin connection}
+
+At each point of a curved spacetime the tangent space is flat. The Dirac matrices of the orthonormal
+frame are therefore the eight real $16\times16$ matrices $\gamma^{A}$ of the earlier paper
+\cite{\SIG{Flat1644}{Flat1671}}, which satisfy $\gamma^{A}\gamma^{B}+\gamma^{B}\gamma^{A}=2\eta^{AB}$;
+all of their properties were verified again for this work. The matrices with a coordinate index are
+$\gamma^{\mu}=e_A{}^{\mu}\gamma^{A}$: five of them are the constant matrices, and the three along the
+deflating coordinates are the constant matrices divided by the scale factors, $\gamma^{A=t}/b_t$.
+They satisfy $\gamma^{\mu}\gamma^{\nu}+\gamma^{\nu}\gamma^{\mu}=2g^{\mu\nu}$.
+
+A spinor is defined relative to a frame, and its derivative must account for the turning of the frame
+from point to point \cite{BrillWheeler1957}. The covariant derivative of a spinor is
+$\nabla_\mu\psi=(\partial_\mu+\Omega_\mu)\psi$ with the spin connection
+$\Omega_\mu=\tfrac14\omega_{\mu AB}\gamma^{A}\gamma^{B}$, whose coefficients follow from the metric.
+For the metric (\ref{eq:metric}) the only coefficients that do not vanish are
+$\omega_{t\,t4}=-\omega_{t\,4t}=-\eta_{tt}\,\rt\,b_t$, so that
+\begin{equation}
+\begin{aligned}
+\Omega_t&=-\tfrac12\,\eta_{tt}\,\rt\,b_t\,\gamma^{t}\gamma^{4}\quad(t=5,6,7),\\
+\Omega_0&=\dots=\Omega_4=0,
+\end{aligned}
+\label{eq:spinconn}
+\end{equation}
+with the constant matrices of the frame on the right. Each $\Omega_t$ generates the Lorentz
+transformation in the plane of $xt$ and $x4$. The spin connection is correct if and only if the
+Dirac matrices are covariantly constant,
+$\partial_\mu\gamma^{\nu}+\Gamma^{\nu}{}_{\mu\lambda}\gamma^{\lambda}+[\Omega_\mu,\gamma^{\nu}]=0$,
+which holds for all 64 pairs of indices. Its curvature is the Riemann tensor,
+$[\nabla_\mu,\nabla_\nu]\psi=\tfrac14R_{AB\mu\nu}\gamma^{A}\gamma^{B}\psi$, a third route to
+Eq.~(\ref{eq:riemann}). One combination enters the Dirac equation:
+\begin{equation}
+\gamma^{\mu}\Omega_\mu=-\tfrac12\,\gsum\,\gamma^{4} .
+\label{eq:gammaomega}
+\end{equation}
+The scale factors cancel, and only the total rate remains.
+
+\subsection{The Dirac equation}
+
+The field of this paper, $\psi_{\tg}(x)$, is a column of sixteen complex-valued Grassmann operators.
+Its equation is the equation of the earlier paper with the covariant derivative and the matrices
+$\gamma^{\mu}$:
+%%<1644>
+\begin{equation}
+\big(\gamma^{\mu}\nabla_\mu-m\big)\psi_{\tg}=0 .
+\label{eq:dirac}
+\end{equation}
+It contains no factor $i$: with the real matrices of $4+4$ and the metric convention of this paper
+the operator $\gamma^{\mu}\nabla_\mu-m$ gives the mass shell of a particle of mass $m$
+\cite{Flat1644}. With Eq.~(\ref{eq:gammaomega}),
+\begin{equation}
+\gamma^{4}\Big(\partial_4-\frac{\gsum}{2}\Big)\psi+\sum_{j=0}^{3}\gamma^{j}\partial_j\psi
++\sum_{t=5}^{7}\frac{\gamma^{t}}{b_t}\,\partial_t\psi-m\,\psi=0,
+\label{eq:diracexp}
+\end{equation}
+%%</1644>
+%%<1671>
+\begin{equation}
+\big(i\gamma^{\mu}\nabla_\mu-m\big)\psi_{\tg}=0 .
+\label{eq:dirac}
+\end{equation}
+With Eq.~(\ref{eq:gammaomega}),
+\begin{equation}
+i\gamma^{4}\Big(\partial_4-\frac{\gsum}{2}\Big)\psi+i\sum_{j=0}^{3}\gamma^{j}\partial_j\psi
++i\sum_{t=5}^{7}\frac{\gamma^{t}}{b_t}\,\partial_t\psi-m\,\psi=0,
+\label{eq:diracexp}
+\end{equation}
+%%</1671>
+with the constant matrices. Two things have changed with respect to flat spacetime: the derivative
+along the time is shifted by $\gsum/2$, and each derivative along a deflating coordinate is divided
+by its scale factor.
+
+\subsection{The weighted field}
+
+The shift is removed by a change of normalization. Define the \emph{weighted field}
+\begin{equation}
+\hpsi=\sqrt{\Vd}\,\psi .
+\label{eq:weighted}
+\end{equation}
+Because $\partial_4\sqrt{\Vd}=-\tfrac12\gsum\sqrt{\Vd}$, the weighted field obeys
+Eq.~(\ref{eq:diracexp}) without the term $\gsum/2$. The quantity $\psi^\dagger\psi$ is a density per
+unit of proper volume and grows as the deflating coordinates shrink; $\hpsi^\dagger\hpsi$ is the
+density per unit of coordinate volume, from which this trivial growth is removed.
+
+The central observation of this paper follows at once. \emph{For a field that does not depend on
+$x5$, $x6$, $x7$, the equation of the weighted field is exactly the flat equation.} Every result of
+the earlier paper for such fields, in particular everything about the pairing of the fermions, holds
+for the weighted field. The deflation enters those results in one way only, through the dependence of
+the couplings on $\Vd$ (Sec.~\ref{sec:clock}).
+
+A field that does depend on a deflating coordinate feels the deflation directly. Because the
+coefficients depend on $x4$ only, a solution can be taken proportional to
+$\exp(i\sum_j\SIG{k_j}{p_j}\,xj+i\sum_tk_t\,xt)$ with seven constant wavenumbers, four along the flat
+coordinates $xj$, $j=0,1,2,3$, and three along the deflating ones; such a solution is a \emph{mode}. Multiplying the equation of the weighted field by $\gamma^{4}$ gives an ordinary
+differential equation in the time:
+%%<1644>
+\begin{equation}
+\partial_4\hpsi=K(x4)\,\hpsi,\qquad K=K_\perp+i\,\kd(x4)\,\gamma^{4}\gamma^{d},
+\label{eq:K}
+\end{equation}
+where $K_\perp=-m\gamma^{4}+i\sum_jk_j\gamma^{4}\gamma^{j}$ is the operator of the modes that do not
+depend on the deflating times,
+\begin{equation}
+\kd(x4)=\Big(\sum_t\frac{k_t^{2}}{b_t(x4)^{2}}\Big)^{1/2}
+\label{eq:kd}
+\end{equation}
+is the \emph{physical} wavenumber along the deflating coordinates, and
+$\gamma^{d}=\kd^{-1}\sum_t(k_t/b_t)\gamma^{t}$ is the frame matrix along its direction. With
+$\Eperp=(m^{2}+\sum_jk_j^{2})^{1/2}$,
+\begin{equation}
+K^{2}=\big(\kd^{2}-\Eperp^{2}\big)\,1 .
+\label{eq:K2}
+\end{equation}
+$K_\perp$ is anti-Hermitian and $i\gamma^{4}\gamma^{d}$ is Hermitian. The evolution in the time is
+unitary, and $\hpsi^\dagger\hpsi$ is conserved, if and only if $k_5=k_6=k_7=0$. For the other modes
+the square of $K$ is negative while $\kd<\Eperp$ and positive afterwards: the mode oscillates until
+its physical wavenumber, which grows as $e^{\rt\,x4}$, has reached $\Eperp$, and its solutions grow
+or decay exponentially thereafter. A conserved charge exists, $\hpsi^\dagger W_{1644}\hpsi$ with the
+Hermitian matrix $W_{1644}=i\Cm\gamma^{4}$ of the earlier paper, but it is not positive. (Here
+$\Cm=\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}$ is the matrix that turns each Dirac matrix into minus its
+transpose.)
+%%</1644>
+%%<1671>
+\begin{equation}
+i\,\partial_4\hpsi=\hh(x4)\,\hpsi,\qquad\hh=\hh_\perp+\kd(x4)\,\alpha^{d},
+\label{eq:h}
+\end{equation}
+where $\hh_\perp=m\beta+\sum_jp_j\alpha^{j}$ is the Hamiltonian of the modes that do not depend on
+the deflating coordinates ($\beta=\gamma^{4}$, $\alpha^{A}=\gamma^{4}\gamma^{A}$),
+\begin{equation}
+\kd(x4)=\Big(\sum_t\frac{k_t^{2}}{b_t(x4)^{2}}\Big)^{1/2}
+\label{eq:kd}
+\end{equation}
+is the \emph{physical} wavenumber along the deflating coordinates, and
+$\alpha^{d}=\kd^{-1}\sum_t(k_t/b_t)\alpha^{t}$ is the matrix $\alpha$ along its direction. With
+$\Eperp=(m^{2}+\sum_jp_j^{2})^{1/2}$,
+\begin{equation}
+\hh^{2}=\big(\Eperp^{2}+\kd^{2}\big)\,1 .
+\label{eq:h2}
+\end{equation}
+The Hamiltonian is real and symmetric at every time: the evolution is unitary and
+$\hpsi^\dagger\hpsi$ is conserved. But the Hamiltonian depends on the time, through a term that
+anticommutes with $\beta$, and the energy of a mode with $k_t\neq0$ grows as $e^{\rt\,x4}$. A
+Hamiltonian of this kind creates pairs \cite{Parker1969}.
+%%</1671>
+

@@ -1,0 +1,97 @@
+\section{Can the paired state follow the deflation?}
+\label{sec:quench}
+
+\subsection{The question, and the parameter that decides it}
+
+Section~\ref{sec:gap} gave the gap that the paired state would have in equilibrium at each moment.
+But a state can change at most at the rate of its own energy scale, which for a paired state is the
+gap. By Eq.~(\ref{eq:growth}) the equilibrium gap, written $\Deq$ in this section, changes at the
+rate $\gsum/\lambda$. The paired state can follow only if that rate is small compared with the gap
+itself:
+\begin{equation}
+\Xid=\frac{\gsum}{\lambda\,\Deq}\ \ll\ 1 .
+\label{eq:Xi}
+\end{equation}
+Early in the deflation the gap is exponentially small, and the condition fails however small the
+rate is. A system that is carried through a change faster than it can respond falls out of
+equilibrium, as in the formation of defects at a phase transition \cite{Kibble1976,Zurek1985}. The
+question is what the paired state does then, and when it catches up.
+
+\subsection{The model}
+
+The question is answered with the standard reduced model of a superfluid, whose dynamics without
+collisions is known in detail \cite{BarankovLevitovSpivak2004}. Pairs of states of opposite momenta,
+with the single-particle energy $\xi_k$ measured from the Fermi energy, fill a shell
+$-\Esh<\xi_k<\Esh$ with a constant density of states, and all attract one another with the
+dimensionless strength $\lambda$. In the mean-field approximation each pair of states is described by
+its pair correlation $\kappa$, a complex number, and its occupation $n_k$; the order parameter is
+$\Delta=\lambda\int\kappa\,d\xi_k$. The equations of motion are
+\begin{align}
+\frac{d\kappa}{dx4}&=-i\,\big[2\,\xi_k\,\kappa-\Delta\,(1-2n_k)\big],\nonumber\\
+\frac{dn_k}{dx4}&=2\,\mathrm{Im}\big(\Delta^{*}\kappa\big).
+\label{eq:bloch}
+\end{align}
+They conserve $|2\kappa|^{2}+(1-2n_k)^{2}=1$ for every pair of states. In equilibrium
+$\kappa=\Delta/2E_k$ and $n_k=\tfrac12(1-\xi_k/E_k)$ with the quasi-particle energy
+$E_k=(\xi_k^{2}+\Delta^{2})^{1/2}$, and the gap equation gives
+\begin{equation}
+\Deq(\lambda)=\frac{\Esh}{\sinh(1/\lambda)}\ \approx\ 2\,\Esh\,e^{-1/\lambda}\quad(\lambda\ll1).
+\end{equation}
+The model keeps what matters for the question, a gap that depends exponentially on a coupling that
+grows exponentially, and omits the dependence of the gap on the momentum; $\Esh$ stands for the
+range of energies over which the attraction acts. The program starts the model in equilibrium at
+$\lambda=0.15$, lets the coupling grow as $\lambda=0.15\,e^{\td}$ up to $\lambda=0.5$, and integrates
+Eqs.~(\ref{eq:bloch}) for 2000 energies. Doubling the number of energies and halving the step
+changes no digit of the results quoted. Besides $|\Delta|$ the program records the density $\nex$ of
+\emph{broken pairs}: the number of pairs of states, per unit of $\Esh$ times the density of states,
+that are not in the ground state that belongs to the order parameter of the moment. In equilibrium
+it is zero.
+
+\subsection{Results}
+
+\begin{table*}
+\caption{\label{tab:quench}The paired state while the pairing strength grows from 0.15 to 0.5, for
+seven rates of deflation: the parameter $\Xid$ at the start; the smallest ratio of the order
+parameter to the equilibrium gap of the moment; the clock reading at which the order parameter has
+returned to within 10 per cent of the equilibrium gap, and $\Xid$ at that moment; the ratio at the
+end; and the density of broken pairs at the end.}
+\begin{ruledtabular}
+\begin{tabular}{ccccccc}
+$\gsum/\Esh$ & $\Xid$ at the start & smallest $|\Delta|/\Deq$ & $\td$ of the catch-up & $\Xid$ there & final $|\Delta|/\Deq$ & $\nex$ at the end \\
+\hline
+{{ROWS:tbl_quench}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+Table~\ref{tab:quench} and Fig.~\ref{fig:quench} show three results.
+
+\emph{The faster the deflation, the further the order parameter falls behind.} For a rate of
+$10^{-4}\,\Esh$ the order parameter drops to 0.958 of the equilibrium gap of the moment before it
+recovers; for $10^{-1}\,\Esh$ it drops to 0.098.
+
+\emph{The state catches up when $\Xid$ has fallen to a value between 0.23 and 0.52.} In six of the
+seven runs the order parameter returns to within 10 per cent of the equilibrium gap at such a value.
+In the fastest run it has not caught up when the coupling reaches 0.5. This confirms the estimate
+(\ref{eq:Xi}) and fixes the number that ``small'' means.
+
+\emph{The lag leaves broken pairs behind.} Their density at the end grows with the rate, from
+$6.0\times10^{-6}$ to $4.1\times10^{-2}$ in the six slower runs. They are excitations of the
+superfluid that the deflation itself has made; in a system without dissipation they remain.
+
+Because $\Deq$ grows as $e^{-1/\lambda}$ while $\lambda$ grows only as $e^{\td}$, the parameter
+$\Xid$ falls steeply with time. For any rate there is a moment at which $\Xid$ passes through the
+window of the second result. Before it the paired state is out of equilibrium, with an order
+parameter below the equilibrium value; after it the adiabatic history of Sec.~\ref{sec:gap}
+applies. The slower the deflation, the earlier that moment and the smaller the gap at which it
+happens: it is the moment at which the equilibrium gap has grown to between two and four times
+$\gsum/\lambda$.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_quench}
+\caption{\label{fig:quench}The paired state while the coupling grows. (a) The order parameter
+divided by the equilibrium gap of the moment, against the pairing strength, for seven rates of
+deflation. (b) The smallest value of that ratio against the rate. (c) The density of broken pairs at
+the end of the run against the rate.}
+\end{figure*}
+

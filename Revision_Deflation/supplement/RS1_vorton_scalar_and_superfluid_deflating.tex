@@ -299,9 +299,9 @@ which the volume \(V_d\) has shrunk since the reference time (the letter
 registry) & RS1 1; M V & new \\
 \(\tau_{\rm pair}\) & \texttt{tau\_pair} & the clock measured from the
 moment at which two fermions become bound: \(\ln(D_{VS}/D_c)\) & RS1 4;
-RS4 1 & new \\
+RS4 1; M VII & new \\
 \(\hat\Phi_{VS}\) & \texttt{Phihat} & the weighted Vorton-Scalar
-\(\sqrt{V_d}\,\Phi_{VS}\) & RS1 1 & new \\
+\(\sqrt{V_d}\,\Phi_{VS}\) & RS1 1; M V & new \\
 \end{longtable}
 
 \begin{longtable}[]{@{}
@@ -332,15 +332,16 @@ state can follow the deflation (\(\Xi_d\ll1\): yes) & RS1 7; M VIII &
 new \\
 \(n_k\) & --- & occupation of the pair of states of the single-particle
 energy \(\xi_k\) in the shell model of the paired state (with the index
-\(k\); the letter \(n\) without index is a density) & RS1 7 & new \\
+\(k\); the letter \(n\) without index is a density) & RS1 7; M VIII &
+new \\
 \(\Delta_{\rm eq}\) & \texttt{gap\_eq} & the equilibrium gap for the
-pairing strength of the moment & RS1 7 & new \\
+pairing strength of the moment & RS1 7; M VIII & new \\
 \(E_{\rm sh}\) & \texttt{E\_sh} & half-width in energy of the shell of
 states around the Fermi surface in the model of the pair dynamics; unit
-of energy and of inverse time there & RS1 7 & new \\
+of energy and of inverse time there & RS1 7; M VIII & new \\
 \(n_{\rm ex}\) & \texttt{n\_ex}, \texttt{n\_ex\_final} & density of
 broken pairs (in units of \(E_{\rm sh}\) times the density of states) &
-RS1 7 & new \\
+RS1 7; M VIII & new \\
 \end{longtable}
 
 \begin{longtable}[]{@{}
@@ -368,16 +369,16 @@ origin
 \(P_c\) & \texttt{Pc} & \(i\alpha^1\alpha^2\alpha^3\chi\), the product
 of the five matrices of the sector that does not depend on the extra
 coordinates; equal, up to sign, to the generator \(P\) of \(U(1)_E\) of
-the main registry & RS1 6 & new \\
+the main registry & RS1 6; M X & new \\
 \(\theta_{12}\) & --- & the angle around a vortex line that lies along
 \(x3\), in the plane of \(x1\) and \(x2\) (with the index 12; \(\theta\)
 with other indices and the scattering angle keep the meanings of the
-main project) & RS1 6 & new \\
+main project) & RS1 6; M X & new \\
 \(\mathsf M\) (main registry) & \texttt{M\_gap} & the \(8\times8\) gap
 matrix of the main registry; \texttt{M\_gap} is its spelling in the
-statements of the programs of the revision & RS1 5 & main \\
+statements of the programs of the revision & RS1 5; M X & main \\
 \(w_z\) & \texttt{w\_z} & a constant spinor of a fermion zero mode on a
-vortex line & RS1 6 & new \\
+vortex line & RS1 6; M X & new \\
 \end{longtable}
 
 Symbols of DMD that are used here: the rates \(\mathrm{g55}\),
@@ -542,7 +543,7 @@ weighted fields & \(\tfrac12\) \\
 of the weighted Vorton-Scalar & \(1\) \\
 \(v_{VS}\) of the four-dimensional description & vacuum value of the
 weighted Vorton-Scalar & \(-\tfrac12\) \\
-m & fermion mass \(y_{VS}v_{VS}/\sqrt2\) & \(0\) \\
+\(m\) & fermion mass \(y_{VS}v_{VS}/\sqrt2\) & \(0\) \\
 \(m_s\) & mass of the radial mode \(\sqrt{2\lambda_{VS}}\,v_{VS}\) &
 \(0\) \\
 \(g_{VS}\) & coupling of the radial mode to the fermions, \(m/v_{VS}\) &
@@ -552,7 +553,7 @@ m & fermion mass \(y_{VS}v_{VS}/\sqrt2\) & \(0\) \\
 interaction, \(1/(\sqrt2\,v_{VS}^2)\) & \(1\) \\
 \(D_{VS}\) & \(\alpha_{VS}\,m/m_s\): decides whether two fermions bind &
 \(1\) \\
-C & \(g_{VS}^2m^2/m_s^2\): decides the state of matter & \(1\) \\
+\(C\) & \(g_{VS}^2m^2/m_s^2\): decides the state of matter & \(1\) \\
 vortex energy per length & proportional to \(v_{VS}^2\)
 (four-dimensional) & \(-1\) \\
 \(G_{\rm Fermi}\) (Fermi constant of the weak interaction) if the vacuum
@@ -748,12 +749,13 @@ Dirac matrices of the frame, which the deflation does not change, and
 each is proportional to the square of the coupling. Therefore, for
 fields that do not depend on \(x5,x6,x7\),
 \[F_{S,P}\ \text{on the deflating spacetime at the time }x4\;=\;g_{VS}(x4)^2\times\big(F_{S,P}\ \text{of S1 at }g_{VS}=1\big).\tag{3.1}\]
-The program computes the amplitudes of all 90 pair channels again, from
-the matrices of each deflating spacetime, and compares them with the
-file of the main project: the 1170 rows agree to the digits printed
-there (check \texttt{def-K1}), and the amplitudes of the hidden-axis
-channel reproduce the closed forms of S1 to \(1.1\times10^{-15}\) (check
-\texttt{def-K2}).
+The program computes the amplitudes of the representative pair channels
+of the main project again --- 15 on each spacetime, at three momenta and
+13 scattering angles --- from the matrices of each deflating spacetime,
+and compares them with the file of the main project: the 1170 rows agree
+to the digits printed there (check \texttt{def-K1}), and the amplitudes
+of the hidden-axis channel reproduce the closed forms of S1 to
+\(1.1\times10^{-15}\) (check \texttt{def-K2}).
 
 The conclusion of S1 about the channels therefore stands at every
 moment: the radial mode attracts in every channel; the phase mode
@@ -1084,7 +1086,11 @@ preferred}\label{the-ground-state-no-direction-is-preferred}}
 
 The potential of the paired state as a function of the order parameter
 is computed in the supplement RS4. Its result for the six states
-examined on each spacetime:
+examined on each spacetime follows. Each state is taken at the magnitude
+of the order parameter at which its potential is stationary. The squares
+of its two fourfold gaps are given in units of \(\Delta_F^2\), where
+\(\Delta_F\) is the gap of a unitary state, and the potential in units
+of \(N(0)\Delta_F^2\):
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1143}}
@@ -1418,9 +1424,9 @@ not}\label{what-has-been-established-and-what-has-not}}
   thermal creation on 7+1 and extinction on 4+4 for modes that depend on
   a deflating coordinate (Sec. 2).
 \item
-  The exchange amplitudes of all 90 pair channels are those of the main
-  project times the square of the coupling of the moment; the most
-  attractive channel is unchanged (Sec. 3.1).
+  The exchange amplitudes of the 30 pair channels computed are those of
+  the main project times the square of the coupling of the moment; the
+  most attractive channel is unchanged (Sec. 3.1).
 \item
   The gap grows according to \(d\ln(\mathrm{gap})/d\tau_d=1/\lambda\) in
   weak coupling; the critical temperature follows it (Sec. 3.2).
@@ -1525,12 +1531,12 @@ programs}\label{appendix-a.-complete-output-of-the-programs}}
 \NormalTok{generated by: deflation (Rust crate spacetimes{-}deflation, version 0.1.0; PROJECT spacetimes, Revision\_Deflation); command: deflation channels}
 \NormalTok{7 of 7 checks passed}
 
-\NormalTok{[PASS] def{-}K1  (numerical) the exchange amplitudes of the Vorton{-}Scalar in 90 pair channels (both spacetimes, three momenta, 13 angles: 1170 rows) computed again with the frame matrices agree with every number of the file data/pair\_channel\_kernel.csv of the main project to the digits printed there (1170 rows compared). For fields that do not depend on x5, x6, x7 the amplitude of a channel on the deflating spacetime is the flat amplitude times the square of the coupling of the moment}
+\NormalTok{[PASS] def{-}K1  (numerical) the exchange amplitudes of the Vorton{-}Scalar in the 30 representative pair channels of the main project (15 on each spacetime; three momenta and 13 scattering angles each: 1170 rows) computed again with the frame matrices agree with every number of the file data/pair\_channel\_kernel.csv of the main project to the digits printed there (1170 rows compared). For fields that do not depend on x5, x6, x7 the amplitude of a channel on the deflating spacetime is the flat amplitude times the square of the coupling of the moment}
 \NormalTok{[PASS] def{-}K2  (numerical) the amplitudes of the hidden{-}axis channel reproduce the closed forms of the main project (largest deviation 1.1e{-}15)}
 \NormalTok{[PASS] def{-}K3  (numerical) the quartic invariant of the gap matrix of the four vector pairs, Tr[(M\_gap M\_gap\^{}dagger)\^{}2]/8 = 2 (sum |Delta\^{}a|\^{}2)\^{}2 {-} |eta\_ab Delta\^{}a Delta\^{}b|\^{}2 with the frame metric of x0, x5, x6, x7, holds on both deflating spacetimes (largest deviation 2.1e{-}14); in coordinate components Delta\_t = b\_t(x4) Delta\^{}t the same form reads with the metric g\_tt of the moment}
 \NormalTok{[PASS] def{-}B1  (numerical) the field that a static source builds up from zero approaches exp(gsum x4)/(k\^{}2 + m\_bos\^{}2): after tau\_d = gsum x4 = 20 the relative difference is 1.9e{-}5 4.3e{-}6 2.4e{-}5 3.5e{-}5 for (k\^{}2 + m\_bos\^{}2, gsum) = (1, 0.2), (0.25, 0.2), (1, 1), (4, 0.5) (transient proportional to exp({-}tau\_d/2)). The potential between two fermions at rest is therefore the Yukawa potential of the unshifted mass m\_s with the strength alpha\_VS of the moment}
 \NormalTok{[PASS] def{-}B2  (exact) a mode of the Vorton{-}Scalar that does not depend on x5, x6, x7 goes as exp(exponent x4) with exponent = gsum/2 +{-} sqrt(gsum\^{}2/4 {-} k\^{}2 {-} m\_bos\^{}2): it oscillates if and only if k\^{}2 + m\_bos\^{}2 \textgreater{} gsum\^{}2/4, and its amplitude then grows as exp(gsum x4/2) (the weighted field has constant amplitude: the number of quanta is conserved). The phase mode (m\_bos = 0) does not oscillate for k \textless{} gsum/2; the radial mode oscillates at every k if m\_s \textgreater{} gsum/2 (table data/scalar\_zero\_modes.csv)}
-\NormalTok{[PASS] def{-}B3  (numerical) 7+1: a mode of the Vorton{-}Scalar that depends on one deflating coordinate and starts empty ends with 1/(exp(2 pi varpi\_b/rate\_t) {-} 1) quanta, a Bose{-}Einstein law with the temperature rate\_t/(2 pi): 36 cases (varpi\_b/rate\_t = 0.25 to 3, each of the three coordinates), largest relative deviation 1.9e{-}5; the Bogoliubov coefficients satisfy |alpha|\^{}2 {-} |beta|\^{}2 = 1 to 1.3e{-}13}
+\NormalTok{[PASS] def{-}B3  (numerical) 7+1: a mode of the Vorton{-}Scalar that depends on one deflating coordinate and starts empty ends with 1/(exp(2 pi varpi\_b/rate\_t) {-} 1) quanta, a Bose{-}Einstein law with the temperature rate\_t/(2 pi): 36 cases (varpi\_b/rate\_t = 0.25 to 3, each of the three coordinates; the number is read off where the physical wavenumber is 3000 varpi\_b), largest relative deviation 1.9e{-}5; the Bogoliubov coefficients satisfy |alpha|\^{}2 {-} |beta|\^{}2 = 1 to 1.3e{-}13}
 \NormalTok{[PASS] def{-}B4  (numerical) 4+4: a mode of the Vorton{-}Scalar that depends on a deflating time has one bounded solution; at early x4 it is a standing wave (the two travelling waves have equal amplitudes) and its profile is the modified Bessel function K of the imaginary order i varpi\_b/rate\_t (ratio to the exact form constant to 1e{-}4 away from the zeros): varpi\_b/rate\_t = 0.5: |c\_{-}/c\_+| {-} 1 = 0.0e0, 23 of 23 samples; varpi\_b/rate\_t = 1.5: |c\_{-}/c\_+| {-} 1 = 0.0e0, 24 of 24 samples; varpi\_b/rate\_t = 3: |c\_{-}/c\_+| {-} 1 = 0.0e0, 26 of 26 samples;}
 \NormalTok{[PASS] ALL  (numerical) every check above passed}
 \end{Highlighting}

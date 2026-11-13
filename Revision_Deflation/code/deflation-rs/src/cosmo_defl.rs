@@ -273,6 +273,65 @@ pub fn growth<M: Fn(f64) -> f64>(m: &Model, hist: &History, a_start: f64, mass: 
     (d, u / d)
 }
 
+/// The largest present total rates of deflation that the observations of the cosmological
+/// part allow, and the age of the model without deflation.  The commands `cosmology` and
+/// `matter` both take them from here, so that the two cannot disagree.  Rates are in units
+/// of H_100 = 100 km/s/Mpc (divide by `h` for units of the Hubble constant of the model).
+///
+/// * Lunar laser ranging: (dG_N/dt)/G_N = (7.1 +- 7.6) e-14 per year (68 per cent; Hofmann
+///   and Mueller 2018).  Under assumption A2, (dG_N/dt)/G_N = gsum; the two-sigma upper value
+///   is (7.1 + 2 * 7.6) e-14 per year.
+/// * Nucleosynthesis and Newton's constant: G_N(nucleosynthesis)/G_N(today) = 0.99 +0.06 -0.05
+///   at two sigma (Alvey et al. 2020), hence >= 0.94.  Under A2 and for a constant rate the
+///   ratio is exp(-gsum t_0), with the age t_0 of the deflating model itself (Hubble constant
+///   held at `h`); the rate at which it equals 0.94 is found by bisection.
+/// * Nucleosynthesis and the Fermi constant (assumption HV: the vacuum value of the
+///   Vorton-Scalar sets the electroweak scale; NOT the author's hypothesis H2): with all
+///   masses fixed, G_Fermi at t = 1 s within 20 (10) per cent of today's value (Scherrer and
+///   Spergel 1993, their case (b)); G_Fermi grows at the rate gsum, so that
+///   gsum t_0 < ln(1/0.8) (ln(1/0.9)), with the age of the model without deflation (no
+///   assumption about gravity is made here).
+pub struct RateBounds {
+    /// lunar laser ranging, two-sigma upper value of the rate, per year
+    pub llr_per_yr: f64,
+    /// the same in units of H_100
+    pub llr: f64,
+    /// nucleosynthesis and Newton's constant, in units of H_100
+    pub bbn: f64,
+    /// nucleosynthesis and the Fermi constant, 20 per cent, in units of H_100
+    pub gfermi_20: f64,
+    /// the same for 10 per cent
+    pub gfermi_10: f64,
+    /// age of the model without deflation, in units of 1/H_100
+    pub age: f64,
+}
+
+/// The bounds for the fiducial model with the Hubble constant `h` (see `RateBounds`).
+pub fn rate_bounds(h: f64) -> RateBounds {
+    let (z_star, _, _) = main_project_reference();
+    let none = |_s: f64| 1.0;
+    let age = theta_star(&Model::fiducial(0.0, h), z_star, &none).age;
+    let llr_per_yr = (7.1 + 2.0 * 7.6) * 1e-14;
+    // bisection for exp(-gsum t_0) = 0.94
+    let (mut lo, mut hi) = (0.0_f64, 1.0_f64);
+    for _ in 0..60 {
+        let mid = 0.5 * (lo + hi);
+        if theta_star(&Model::fiducial(mid, h), z_star, &none).g_early > 0.94 {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    RateBounds {
+        llr_per_yr,
+        llr: llr_per_yr * HUBBLE_TIME_100_YR,
+        bbn: 0.5 * (lo + hi),
+        gfermi_20: (1.0_f64 / 0.8).ln() / age,
+        gfermi_10: (1.0_f64 / 0.9).ln() / age,
+        age,
+    }
+}
+
 /// z_* and 100 theta_* of the fiducial model of the main project (its recombination
 /// calculation and its own distance integrals), for comparison.
 pub fn main_project_reference() -> (f64, f64, f64) {
@@ -299,6 +358,27 @@ mod tests {
         let age_gyr = d.age * HUBBLE_TIME_100_YR / 1e9;
         assert!((age_gyr - 13.8).abs() < 0.1, "age {} Gyr", age_gyr);
         assert!((d.g_early - 1.0).abs() < 1e-15);
+    }
+
+    #[test]
+    fn the_bounds_on_the_rate_follow_from_their_definitions() {
+        let h = 0.6736;
+        let rb = rate_bounds(h);
+        // lunar laser ranging: 22.3e-14 per year, in units of H_100
+        assert!((rb.llr_per_yr - 22.3e-14).abs() < 1e-18);
+        assert!((rb.llr - 22.3e-14 * HUBBLE_TIME_100_YR).abs() < 1e-15);
+        // nucleosynthesis: at the bound, Newton's constant in the early universe is 0.94 of today's value
+        let (z_star, _, _) = main_project_reference();
+        let d = theta_star(&Model::fiducial(rb.bbn, h), z_star, &|_s| 1.0);
+        assert!((d.g_early - 0.94).abs() < 1e-9, "G_N ratio at the bound: {}", d.g_early);
+        // and exp(-gsum t_0) with the age of that model
+        assert!(((-rb.bbn * d.age).exp() - 0.94).abs() < 1e-6);
+        // Fermi constant: gsum t_0 = ln(1/0.8) and ln(1/0.9) with the age of the model without deflation
+        assert!(((rb.gfermi_20 * rb.age).exp() - 1.25).abs() < 1e-12);
+        assert!(((rb.gfermi_10 * rb.age).exp() - 1.0 / 0.9).abs() < 1e-12);
+        // order of the bounds, and the age: H_0 t_0 = 0.95 for this model
+        assert!(rb.llr < rb.bbn && rb.bbn < rb.gfermi_10 && rb.gfermi_10 < rb.gfermi_20);
+        assert!((rb.age * h - 0.9516).abs() < 5e-4, "H_0 t_0 = {}", rb.age * h);
     }
 
     #[test]

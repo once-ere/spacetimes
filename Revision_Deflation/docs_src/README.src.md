@@ -104,10 +104,13 @@ remain paused.
 
 # Numbers
 
-The Rust program `deflation` performs {{GEN:n_checks_rust}} checks; an independent
-Python script {{GEN:n_deflating_checks_independent}}; the registry of symbols
-{{GEN:n_symbol_checks_deflation}}. All pass. The folder contains 14 figures and the
-data files from which every table and figure is made.
+The Rust program `deflation` performs {{GEN:n_checks_rust}} checks and has
+{{GEN:n_unit_tests}} unit tests; an independent Python script performs
+{{GEN:n_deflating_checks_independent}} checks; the registry of symbols
+{{GEN:n_symbol_checks_deflation}}. All pass. A further script compares every number
+that is quoted in the running text of the documents and of the manuscripts with the
+numbers that the programs state ({{GEN:n_number_checks}}). The folder contains
+{{GEN:n_figures}} figures and the data files from which every table and figure is made.
 
 # How to run it
 

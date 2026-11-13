@@ -59,7 +59,22 @@ exponential scale factors write the rate as `H`. No collision arises.
 
 The registry is the file `provenance/symbols_deflation.csv`, written by
 `code/scripts/write_symbol_registry.py`. "Origin" says whether a symbol is the
-author's, is taken over from the main project, or is new.
+author's, is taken over from the main project, or is new. "Defined in" names the
+document and the number of its section: DMD is the document "dirac matrices
+deflating", RS1 to RS4 are the supplements, RP0 is the provenance of the hypotheses,
+and M stands for the two manuscripts, whose sections carry the same numbers in both
+(M II is Sec. II of either manuscript; "(4+4)" or "(7+1)" marks a symbol that only one
+of them uses).
+
+*Index letters.* An index letter has no meaning of its own; its range is stated where
+it is used. The revision keeps the rule of the main registry and adds one letter. The
+indices $a,b$ label the four extra axes $x0,x5,x6,x7$ in the supplements RS1 to RS4 and
+in the manuscripts, and the four flat coordinates $x0,x1,x2,x3$ in DMD and in the
+statements of the checks, as in the corresponding documents of the main project. The
+two uses never meet in one formula. In the manuscripts, where both sets of coordinates
+occur, the flat coordinates carry the index $j$ instead, with the range
+$j\in\{0,1,2,3\}$ stated in their introduction. The registry lists the index letters
+in its first group.
 
 {{GEN:symbols_all}}
 

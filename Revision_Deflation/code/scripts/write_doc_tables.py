@@ -146,6 +146,15 @@ def check_counts():
             if name not in ("deflating_checks_independent", "symbol_checks_deflation"):
                 total += int(m.group(2))
     text("n_checks_rust", total)
+    # the check of the numbers of the running text (code/scripts/check_numbers.py)
+    p = os.path.join(DATA, "number_checks_deflation.txt")
+    if os.path.exists(p):
+        body = open(p, encoding="utf-8").read()
+        m = re.search(r"(\d+) numbers in the running text of (\d+) documents.*?(\d+) could not be traced", body, re.S)
+        if m:
+            text("n_number_checks", "%s numbers in %s documents, %s not traced" % (m.group(1), m.group(2), m.group(3)))
+        m = re.search(r"each of the (\d+) different numbers of kinds \(r\) and \(c\) has been judged", body)
+        text("n_numbers_judged", m.group(1) if m else "not all")
 
 
 # ------------------------------------------------------------------------------------------
@@ -157,7 +166,9 @@ def rs1():
     for x in r:
         q = x["quantity"]
         q = q.replace("(four-dimensional)", "of the four-dimensional description")
-        rows.append([tex_name(q), tex_name(x["meaning"]).replace("1/(sqrt(2) $v_{VS}$^2)", "$1/(\\sqrt2\\,v_{VS}^2)$").replace("$g_{VS}$^2/(4 pi)", "$g_{VS}^2/4\\pi$")
+        # a quantity whose name is a single letter (m, C) is set as a formula, like the others
+        name = "$%s$" % q if re.fullmatch(r"[A-Za-z]", q) else tex_name(q)
+        rows.append([name, tex_name(x["meaning"]).replace("1/(sqrt(2) $v_{VS}$^2)", "$1/(\\sqrt2\\,v_{VS}^2)$").replace("$g_{VS}$^2/(4 pi)", "$g_{VS}^2/4\\pi$")
                      .replace("$g_{VS}$^2 m^2/$m_s$^2", "$g_{VS}^2m^2/m_s^2$").replace("$alpha_{VS}$", "$\\alpha_{VS}$").replace("$\\alpha_{VS}$ m/$m_s$", "$\\alpha_{VS}\\,m/m_s$")
                      .replace("$y_{VS}$ $v_{VS}$/sqrt(2)", "$y_{VS}v_{VS}/\\sqrt2$").replace("sqrt(2 $\\lambda_{VS}$) $v_{VS}$", "$\\sqrt{2\\lambda_{VS}}\\,v_{VS}$")
                      .replace("m/$v_{VS}$", "$m/v_{VS}$").replace("$v_{VS}$^2", "$v_{VS}^2$").replace("$G_8$/(volume of $x5,x6,x7$)", "$G_8$ divided by the volume of $x5,x6,x7$")
@@ -308,8 +319,52 @@ def symmetry_tables():
     table("tbl_isometries", ["spacetime", "rotations and boosts", "isometries, rates (1, 2, 3)", "rates (2, 2, 5)", "rates (1, 1, 1)", "internal generators", "of these isometries: (1, 2, 3)", "(2, 2, 5)", "(1, 1, 1)"], rows, ["l"] + ["r"] * 8)
 
 
+# ------------------------------------------------------------------------------------------
+# the source files of the Rust program (provenance RP8): lines and tests are counted, not typed
+# ------------------------------------------------------------------------------------------
+SOURCE_FILES = [
+    (["rat.rs"], "exact rational numbers with overflow checks; the trait that lets the geometry be computed in rational or in floating-point arithmetic"),
+    (["qmat.rs"], "exact matrices with complex-rational entries"),
+    (["metric.rs"], "the deflating metric: Christoffel symbols, Riemann, Ricci and Einstein tensors from their definitions and in closed form; Killing vectors; Lie derivative"),
+    (["geometry.rs"], "the exact geometry checks `G1` to `G7`, `G10` (Lovelock tensors) and the geodesics `G8`, `G9`"),
+    (["curved.rs"], "coordinate matrices, spin connection, Dirac operators; checks `C1` to `C8`, `D1` to `D7`"),
+    (["modes.rs"], "integration of the mode equations (commutator-free Magnus method), creation of particles, bounded solutions, modified Bessel function of complex order"),
+    (["scalar.rs"], "modes of a scalar field: exponents, static source, creation, bounded solutions"),
+    (["history.rs"], "the couplings along the clock; thresholds and events"),
+    (["quench.rs"], "time-dependent mean-field dynamics of the shell model"),
+    (["cosmo_defl.rs"], "expansion with deflation, sound horizon, age, growth of structure"),
+    (["symmetry_defl.rs"], "test of the 28 rotations and boosts; algebra of the vortex zero modes"),
+    (["cmd_symmetry.rs", "cmd_channels.rs", "cmd_matter.rs", "cmd_paired.rs"], "the commands `symmetry`, `channels`, `matter`, `paired`"),
+    (["main.rs"], "the commands `matrices`, `modes`, `history`, `quench`, `cosmology`"),
+    (["io.rs", "lib.rs"], "writing of data files and reports; list of modules"),
+]
+
+
+def sources():
+    src = os.path.join(ROOT, "code", "deflation-rs", "src")
+    on_disk = sorted(f for f in os.listdir(src) if f.endswith(".rs"))
+    listed = sorted(f for names, _ in SOURCE_FILES for f in names)
+    assert on_disk == listed, "the list of source files in write_doc_tables.py does not match the folder: %s" % sorted(set(on_disk) ^ set(listed))
+    rows, total, tests = [], 0, 0
+    for names, content in SOURCE_FILES:
+        n = 0
+        for f in names:
+            body = open(os.path.join(src, f), encoding="utf-8").read()
+            n += body.count("\n")
+            tests += len(re.findall(r"(?m)^\s*#\[test\]", body))
+        total += n
+        rows.append([", ".join("`%s`" % f for f in names), "%d" % n, content])
+    table("tbl_sources", ["file", "lines", "content"], rows, ["l", "r", "L"])
+    text("n_source_files", len(on_disk))
+    text("n_source_lines", total)
+    text("n_unit_tests", tests)
+    figs = sorted(f for f in os.listdir(os.path.join(ROOT, "figures")) if f.endswith(".png"))
+    text("n_figures", len(figs))
+
+
 def main():
     check_counts()
+    sources()
     rs1()
     rs3()
     rs4()

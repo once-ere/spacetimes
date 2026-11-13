@@ -1,0 +1,236 @@
+\section{Modes that depend on the deflating coordinates}
+\label{sec:modes}
+
+\subsection{Three kinds of modes}
+
+Modes fall into three kinds. A mode that does not depend on the deflating coordinates,
+$k_5=k_6=k_7=0$, obeys the flat equation; its solutions are the plane waves of the earlier paper, with
+the energies $\pm\Eperp$, eight of each sign. A mode with some $k_t\ne0$ behaves in the same way as
+long as its physical wavenumber is negligible, $\kd\ll\Eperp$. But $\kd$ grows without bound, and
+every such mode sooner or later reaches $\kd\gg\Eperp$. The moment at which $\kd=\Eperp$ is its
+\emph{crossing}. \SIG{It is the turning value (\ref{eq:turn}) of the classical particle, with the
+wavenumbers in place of the momenta.}{} The crossing is where the deflation acts on the field, and
+this section solves the equation of the weighted field across it.
+
+The solution is exact when \emph{one rate governs}: when only one of the $k_t$ differs from zero, or
+when the three rates are equal. In both cases the matrix \SIG{$\gamma^{d}$}{$\alpha^{d}$} does not
+depend on the time, and $\kd$ is proportional to $e^{\rt\,x4}$ with the rate that governs. The natural
+variable is then the physical wavenumber in units of the rate,
+\begin{equation}
+\ud=\frac{\kd(x4)}{\rt},\qquad\frac{d}{dx4}=\rt\,\ud\,\frac{d}{d\ud}.
+\label{eq:ud}
+\end{equation}
+The crossing is at $\ud=\Eperp/\rt$, and this ratio of the energy to the rate is the one parameter
+on which the results depend.
+
+%%<1671>
+\subsection{The exact solution}
+
+In $\hh=\hh_\perp+\kd\,\alpha^{d}$ the two constant matrices satisfy $\hh_\perp^{2}=\Eperp^{2}$ and
+$(\alpha^{d})^{2}=1$, and they anticommute. Let $w$ be one of the eight eigenvectors of $\hh_\perp$
+with the eigenvalue $+\Eperp$; then $\alpha^{d}w$ is an eigenvector with the eigenvalue $-\Eperp$.
+Let $Z_+$ and $Z_-$ denote two cylinder functions of the same kind (Bessel functions of the first or
+of the second kind, or Hankel functions) of the orders $\tfrac12+i\Eperp/\rt$ and
+$-\tfrac12+i\Eperp/\rt$. The recurrence relations of the cylinder functions connect two functions
+whose orders differ by one, and with them one verifies by substitution that
+\begin{equation}
+\hpsi=\sqrt{\ud}\,\Big[Z_+(\ud)\,w+i\,Z_-(\ud)\,\alpha^{d}w\Big]
+\label{eq:exact}
+\end{equation}
+solves Eq.~(\ref{eq:h}) for each of the eight $w$. Two independent kinds of cylinder function give
+all sixteen solutions. Equation (\ref{eq:exact}) was verified with the Bessel functions of an
+arbitrary-precision library, to a relative residual of $10^{-15}$.
+
+\subsection{The deflation creates particles}
+
+At early times, $\ud\to0$, a Bessel function of the first kind behaves as the power of its argument
+that its order gives. The solution that has positive energy at early times,
+$\propto e^{-i\Eperp x4}\,w$, is therefore Eq.~(\ref{eq:exact}) with $Z_+$ the Bessel function of the
+first kind of the order $-\tfrac12-i\Eperp/\rt$ and $Z_-$ minus that of the order
+$+\tfrac12-i\Eperp/\rt$, a pair that obeys the same recurrence relations. At late times, $\ud\to\infty$, the solution of
+positive energy is Eq.~(\ref{eq:exact}) with the Hankel functions of the second kind, which behave as
+$e^{-i\ud}$, and the solution of negative energy is the one with the Hankel functions of the first
+kind. The connection formula of the Bessel functions expresses the first solution through the other
+two, and the weight of the negative-energy part divided by that of the positive-energy part is
+$e^{-2\pi\Eperp/\rt}$. A mode that starts empty therefore ends with
+\begin{equation}
+\ncr=\frac{1}{e^{2\pi\Eperp/\rt}+1}
+\label{eq:ncr}
+\end{equation}
+particles in each of its eight internal states, and with as many antiparticles. This is the
+Fermi-Dirac distribution in the energy $\Eperp$ at the temperature
+\begin{equation}
+\Tdefl=\frac{\rt}{2\pi}.
+\label{eq:Tdefl}
+\end{equation}
+For equal rates it is the temperature that Gibbons and Hawking found for de Sitter space
+\cite{GibbonsHawking1977}; the creation of particles by a time-dependent metric is the phenomenon
+discovered by Parker \cite{Parker1969,BirrellDavies1982}.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_creation}
+\caption{\label{fig:creation}Creation of particles on the deflating $7+1$ spacetime. (a) Created
+quanta per state, multiplied by $e^{2\pi\,\mathrm{ratio}}$, against the ratio of the energy to the
+rate. Fermions follow the Fermi-Dirac law (\ref{eq:ncr}), the modes of the Vorton-Scalar the
+Bose-Einstein law (\ref{eq:bose}), both at the temperature $\gff/2\pi$. Lines: the exact laws;
+symbols: computed. (b) History of two modes, with $\Eperp/\gff=1$ and $0.5$: the number of particles
+in the mode against the physical wavenumber $\kd/\Eperp$, which grows with the time. After the
+crossing at $\kd=\Eperp$ the number settles at the value of Eq.~(\ref{eq:ncr}) (dotted). (c) Two
+deflating directions, $\gff=1$ and $\gss=2$, $1.2$ or $0.5$: mean number of created particles per
+state against the delay between the two crossings; the dotted lines are Eq.~(\ref{eq:ncr}) with each
+of the two rates.}
+\end{figure*}
+
+The numerical solution of Eq.~(\ref{eq:h}) for all sixteen components confirms the law
+(Fig.~\ref{fig:creation}). For $\Eperp/\gff$ between 0.25 and 3 the created number agrees with
+Eq.~(\ref{eq:ncr}) to a relative deviation of at most $3.2\times10^{-6}$, while the numbers
+themselves range from 0.17 to $6.5\times10^{-9}$; the eight internal states are created equally.
+With three equal rates the result depends neither on the direction of the wavenumber nor on the
+constants $\ct$. With unequal rates no exact solution is known. If the second physical wavenumber is
+still below $e^{-3}\Eperp$ when the first reaches $\Eperp$, the mean created number is
+Eq.~(\ref{eq:ncr}) with the rate of the coordinate that becomes energetic first, to within 1.2 per
+cent. If two directions become energetic together, the eight internal states are created
+\emph{unequally}, in the cases computed by up to a factor 110 between the most and the least
+populated state, and the result is known only numerically.
+
+\subsection{What the result means}
+
+Each mode with $k_t\ne0$ is populated once, at its crossing. Its particles then gain energy without
+bound, as $(\Eperp^{2}+\kd^{2})^{1/2}$, like the classical particle of Sec.~\ref{sec:geodesics}.
+Modes with $k_t=0$ stay empty. Two remarks are in order.
+
+First, the stress of the created particles must eventually change the metric. That reaction of the
+fields on the metric has not been computed, and the results of this section hold for as long as it
+can be neglected. For any rate of deflation that the bounds of Sec.~\ref{sec:cosmo} allow today the
+temperature (\ref{eq:Tdefl}) is below $10^{-30}$~K, and nothing is created.
+
+Second, the instantaneous energy of a quantum in a mode with $k_t\ne0$ is at least $|k_t|/b_t$,
+which grows as $e^{\rt\,x4}$. A process with a given energy at its disposal can excite such a mode
+only before the mode has crossed that energy. If the deflating coordinates are periodic, the
+smallest wavenumber that differs from zero is fixed, and the sector of fields that do not depend on
+$x5,x6,x7$ is separated from the rest by a gap that grows exponentially. This is the sense in which
+the deflation supports the restriction to that sector, which the earlier paper assumed. If the
+deflating coordinates are infinite, modes of arbitrarily small $k_t$ exist at every time, and the
+restriction remains an assumption.
+%%</1671>
+%%<1644>
+\subsection{The exact solution}
+
+In $K=K_\perp+i\,\kd\,\gamma^{4}\gamma^{d}$ the first matrix is anti-Hermitian with
+$K_\perp^{2}=-\Eperp^{2}$, the matrix $i\gamma^{4}\gamma^{d}$ is Hermitian with the square one, and
+the two anticommute. Let $w$ be one of the eight eigenvectors of $K_\perp$ with the eigenvalue
+$+i\Eperp$; then $i\gamma^{4}\gamma^{d}w$ is an eigenvector with the eigenvalue $-i\Eperp$ and is
+orthogonal to $w$. The equation is solved by the modified Bessel functions that decay at large
+argument, of the orders $\tfrac12\mp i\Eperp/\rt$. Such a function is written here with its order
+as a subscript and with its argument; the letter $K$ without subscript and argument is the matrix of
+Eq.~(\ref{eq:K}). With the recurrence relations of these functions one verifies by substitution that
+\begin{equation}
+\begin{aligned}
+\hpsi=\sqrt{\ud}\,\Big[&K_{\frac12-i\Eperp/\rt}(\ud)\,w\\
+&-K_{\frac12+i\Eperp/\rt}(\ud)\,i\gamma^{4}\gamma^{d}w\Big]
+\end{aligned}
+\label{eq:exact}
+\end{equation}
+solves Eq.~(\ref{eq:K}) for each of the eight $w$; the relative residual, computed with the Bessel
+functions of an arbitrary-precision library, is $2\times10^{-15}$. The other eight solutions are built in
+the same way from the modified Bessel functions that \emph{grow} as $e^{+\ud}$.
+
+\subsection{Standing waves, and their extinction}
+
+Since $\ud$ itself grows exponentially with the time, a solution of the second kind grows as the
+exponential of an exponential. Such a solution is not admissible; it is the counterpart of the
+growing exponential under a potential barrier. Admissible are the eight solutions
+(\ref{eq:exact}), which stay bounded. Their properties are exact.
+
+\emph{Magnitude.} Because $w$ and $i\gamma^{4}\gamma^{d}w$ are orthogonal, and because the two
+functions in Eq.~(\ref{eq:exact}) are complex conjugates of each other,
+\begin{equation}
+|\hpsi|^{2}=2\,\ud\,\big|K_{\frac12+i\Eperp/\rt}(\ud)\big|^{2}\,|w|^{2}.
+\label{eq:magnitude}
+\end{equation}
+
+\emph{Early times}, $\ud\to0$: $|\hpsi|^{2}\to\pi\,|w|^{2}/\cosh(\pi\Eperp/\rt)$, a constant. The
+solution is then a combination of $e^{+i\Eperp x4}\,w$ and $e^{-i\Eperp x4}\,i\gamma^{4}\gamma^{d}w$
+with coefficients of \emph{equal} magnitude: the two signs of the frequency enter with equal weight.
+A bounded solution is a \emph{standing wave} in the ordinary time, not a traveling wave. Its
+conserved charge $\hpsi^\dagger W_{1644}\hpsi$ vanishes.
+
+\emph{Late times}, $\ud\to\infty$: $|\hpsi|^{2}\to\pi\,|w|^{2}e^{-2\ud}$. The mode dies out as the
+exponential of an exponential of the time.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_extinction}
+\caption{\label{fig:extinction}Extinction on the deflating $4+4$ spacetime. (a) A bounded solution:
+$|\hpsi|^{2}$ against the physical wavenumber $\kd/\Eperp$, which grows with the time; computed
+(line) and the exact form (\ref{eq:magnitude}) (symbols). It is constant long before the crossing at
+$\kd=\Eperp$ and falls after it. (b) Five cases, with one, two or three wavenumbers $k_t$ different
+from zero and with equal and unequal rates, on a logarithmic scale. (c) The bounded modes of the
+Vorton-Scalar on the same spacetime (Sec.~\ref{sec:scalarmodes}), which are extinguished in the same
+way; lines: exact, symbols: computed.}
+\end{figure*}
+
+\emph{The law of the extinction.} In the semiclassical (WKB) approximation the bounded solution
+falls beyond the turning value, at which $\kd=\Eperp$, as $e^{-\Swkb}$ with
+\begin{align}
+\Swkb&=\int_{x4_{\mathrm{turn}}}^{x4}\sqrt{\kd^{2}-\Eperp^{2}}\;dx4'\nonumber\\
+&=\frac{1}{\rt}\Big[\sqrt{\kd^{2}-\Eperp^{2}}-\Eperp\arccos\frac{\Eperp}{\kd}\Big],
+\label{eq:Swkb}
+\end{align}
+which approaches $(\kd-\tfrac{\pi}{2}\Eperp)/\rt$ for $\kd\gg\Eperp$. The exact solution fixes the
+constant that the approximation leaves open:
+\begin{equation}
+\begin{aligned}
+\ln\frac{|\hpsi|_{\mathrm{early}}}{|\hpsi|_{\mathrm{late}}}-\Swkb\ \longrightarrow\ {}&\tfrac12\ln2\\
+&-\tfrac12\ln\big(1+e^{-2\pi\Eperp/\rt}\big).
+\end{aligned}
+\label{eq:constant}
+\end{equation}
+
+The numerical solution of Eq.~(\ref{eq:K}) for all sixteen components confirms these statements
+(Fig.~\ref{fig:extinction}). Beyond the turning value exactly eight of the sixteen solutions stay
+bounded; followed backwards to early times they contain parts of positive and of negative frequency
+of equal weight, to $2\times10^{-14}$. Where one rate governs, the computed magnitude equals
+Eq.~(\ref{eq:magnitude}) over the range $0.02<\ud<12$ to a relative deviation of
+$3.6\times10^{-12}$, and Eq.~(\ref{eq:constant}) holds to $3.6\times10^{-4}$ at $\Swkb=30$. With
+three unequal rates no exact solution is known; the bounded solutions fall as $e^{-\Swkb}$ times a
+factor that depends on the internal state, with a spread of 0.40 in its logarithm at $\Swkb=30$.
+
+\subsection{What the result means}
+
+On the flat $4+4$ spacetime a field that depends on the additional times evolves non-unitarily in
+the ordinary time. This is the principal difficulty of four time-like dimensions
+\cite{Tegmark1997,CraigWeinstein2009}, and the earlier paper met it by imposing that the fields do
+not depend on those times \cite{Flat1644}. On the deflating $4+4$ spacetime every admissible mode
+that depends on a deflating time is a standing wave that is extinguished after its crossing, with an
+exponent $\Swkb$ that grows as $e^{\rt\,x4}$. What remains at late times is the sector of fields
+that do not depend on $x5,x6,x7$, and in that sector the evolution is unitary and
+$\hpsi^\dagger\hpsi$ is conserved. \emph{The deflation of the three additional times removes,
+dynamically, the sector that causes the difficulty.} The classical counterpart is the turning value
+of Sec.~\ref{sec:geodesics}.
+
+The limits of this conclusion must be stated with equal clarity. The eight growing solutions are
+discarded because they are unbounded. That is a condition of admissibility, imposed as in the theory
+of a potential barrier; it is not derived from a principle. The theory still has no positive
+conserved charge for modes that depend on the deflating times, and a consistent quantization exists,
+as before, only for the sector that does not depend on them. What has been shown is that the
+admissible modes outside that sector die out, not that the difficulty of four time-like dimensions
+has been solved.
+%%</1644>
+
+\subsection{The numerical method}
+
+The equations of this section are linear, with coefficients that grow exponentially, and an
+integrator with a fixed step fails on them. The program uses a commutator-free Magnus method of the
+fourth order: over each step the solution is advanced by the product of two matrix exponentials of
+linear combinations of the coefficient matrix at two Gauss points. Because the square of
+\SIG{$K$}{$\hh$} is a multiple of the unit matrix at any one time, each exponential is evaluated in
+closed form\SIG{.}{, and every step is exactly unitary.} The length of a step is chosen so that
+neither the phase accumulated in it nor the relative change of the coefficients exceeds a fixed
+bound. \SIG{}{The number of particles is read off by projection on the eigenstates of the
+Hamiltonian corrected to the first order in the rate at which its direction changes, which removes
+the leading spurious oscillation of the particle number at finite time. }An independent program,
+which uses an explicit Runge-Kutta method of the eighth order and the Bessel functions of another
+library, \SIG{confirms Eq.~(\ref{eq:exact}) and, to the accuracy of the semiclassical form at the
+exponent that it reaches, Eq.~(\ref{eq:constant})}{reproduces Eq.~(\ref{eq:ncr}) to
+$2.2\times10^{-5}$} \cite{DeflationRepo}.
+

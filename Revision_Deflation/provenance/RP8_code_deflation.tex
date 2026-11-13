@@ -216,7 +216,7 @@ they are the same here:
 \item
   \textbf{Rust for every computation.} All physics of the revision is
   computed by one Rust program, \texttt{deflation} (folder
-  \texttt{code/deflation-rs}: 18 source files, about 6200 lines, 38 unit
+  \texttt{code/deflation-rs}: 18 source files, 6241 lines, 39 unit
   tests). It uses the program of the main project as a library and no
   other library.
 \item
@@ -266,7 +266,7 @@ Python packages more than the main project:
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
 \CommentTok{\# compile the program (the first time this also compiles the program of the main project; about a minute)}
 \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
-\CommentTok{\# run the 38 unit tests; the last lines must say "test result: ok. 38 passed"}
+\CommentTok{\# run the unit tests; the last lines must say "test result: ok. 39 passed"}
 \ExtensionTok{cargo}\NormalTok{ test }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
 \end{Highlighting}
 \end{Shaded}
@@ -313,20 +313,33 @@ with ``33 of 33 checks passed'').
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# the registry of symbols and its six checks (provenance RP1)}
+\CommentTok{\# the registry of symbols (provenance RP1)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py}
-\ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py}
-\CommentTok{\# the tables of the documents, from the data files}
+\CommentTok{\# are the numbers quoted in the running text of the documents numbers that the programs stated?}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_numbers.py}
+\CommentTok{\# the tables of the documents, from the data files and from the reports of the checks}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_doc\_tables.py}
-\CommentTok{\# the fourteen figures (written to the folder figures as .pdf and .png)}
+\CommentTok{\# the 14 figures (written to the folder figures as .pdf and .png)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/make\_figures.py}
 \CommentTok{\# the documents: Markdown from the sources, then LaTeX and PDF (needs pandoc and XeLaTeX)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh}
 \CommentTok{\# the two manuscripts (needs pdflatex with REVTeX 4.2)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/build\_manuscripts.py}
+\CommentTok{\# the six checks of the symbols, which read the registry, the data files and the finished documents}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py}
 \end{Highlighting}
 \end{Shaded}
+
+Two of these scripts read documents and write reports that documents
+print: the report of \texttt{check\_numbers.py} is quoted in RP8 and in
+the README, and the report of \texttt{check\_symbols.py} is printed in
+RP1. After a change of a document the commands of Step 4 are therefore
+run twice, and the second run must leave every data file, report, table,
+figure, Markdown file and LaTeX file as it was. (The PDF files of the
+documents other than the manuscripts carry the time of their compilation
+and differ in that alone.) In the repository as it stands a single run
+leaves these files as they are.
 
 If a command of Step 2 prints a line that begins with
 \texttt{{[}FAIL{]}}, or if the numbers in a document change when Steps 2
@@ -343,9 +356,9 @@ a description of the physics that it computes, with the formulas; every
 public function is documented.
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1905}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1905}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6190}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2105}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2105}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5789}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 file
@@ -380,19 +393,22 @@ source, creation, bounded solutions \\
 and events \\
 \texttt{quench.rs} & 280 & time-dependent mean-field dynamics of the
 shell model \\
-\texttt{cosmo\_defl.rs} & 346 & expansion with deflation, sound horizon,
+\texttt{cosmo\_defl.rs} & 426 & expansion with deflation, sound horizon,
 age, growth of structure \\
 \texttt{symmetry\_defl.rs} & 217 & test of the 28 rotations and boosts;
 algebra of the vortex zero modes \\
 \texttt{cmd\_symmetry.rs}, \texttt{cmd\_channels.rs},
-\texttt{cmd\_matter.rs}, \texttt{cmd\_paired.rs} & 985 & the commands
+\texttt{cmd\_matter.rs}, \texttt{cmd\_paired.rs} & 995 & the commands
 \texttt{symmetry}, \texttt{channels}, \texttt{matter},
 \texttt{paired} \\
-\texttt{main.rs} & 788 & the commands \texttt{matrices}, \texttt{modes},
+\texttt{main.rs} & 771 & the commands \texttt{matrices}, \texttt{modes},
 \texttt{history}, \texttt{quench}, \texttt{cosmology} \\
 \texttt{io.rs}, \texttt{lib.rs} & 106 & writing of data files and
 reports; list of modules \\
 \end{longtable}
+
+(The numbers of lines and of unit tests in this document are counted by
+the script that writes the tables; they are not typed.)
 
 \textbf{What is taken from the program of the main project} (crate
 \texttt{spacetimes}, used as a library and not changed): the Dirac
@@ -435,6 +451,9 @@ of the main project, again) & 106 of 106 \\
 Python script & \texttt{data/deflating\_checks\_independent.txt} & 33 of
 33 \\
 symbols & \texttt{data/symbol\_checks\_deflation.txt} & 6 of 6 \\
+numbers of the running text &
+\texttt{data/number\_checks\_deflation.txt} & 542 numbers in 28
+documents, 0 not traced \\
 \end{longtable}
 
 Each file of checks exists also as \texttt{.csv}. A check marked
@@ -457,6 +476,76 @@ the Lanczos tensor were added afterwards; the second is validated by the
 agreement of two independent formulas (the program uses the formula for
 curvatures that act on pairs of directions, the script the standard
 formula with four terms).
+
+\emph{Are the numbers in the text the numbers of the programs?} The
+tables of the documents are written by a script. The running text quotes
+numbers by hand, and a quoted number can be mistyped or can outlive a
+change of the program. The script \texttt{check\_numbers.py} extracts
+every number from the running text of the sources of all documents and
+of the two manuscripts (numbers with a decimal point, numbers in
+scientific notation, and integers from 20 on) and looks it up among the
+numbers that the programs \emph{stated}: in the statements of the
+checks, in the generated tables, and in the descriptions at the head of
+the data files. A number of the text counts as traced if
+
+\begin{itemize}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \tightlist
+  \item
+    a stated number equals it; or
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \setcounter{enumi}{17}
+  \tightlist
+  \item
+    a stated number rounds to it at the precision typed; or
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \setcounter{enumi}{1}
+  \tightlist
+  \item
+    it is listed in the script, with the reason, as a number that the
+    programs do not state: a value from the literature, a definition, a
+    count that follows from a formula of the text, a parameter of a run,
+    or (in the error log RP9 only) a superseded value that the log
+    quotes; or
+  \end{enumerate}
+\item
+  \begin{enumerate}
+  \def\labelenumi{(\alph{enumi})}
+  \setcounter{enumi}{2}
+  \tightlist
+  \item
+    it is typed with one significant digit in scientific notation, as a
+    bound or a power of ten, and a stated number lies below it within
+    one decade.
+  \end{enumerate}
+\end{itemize}
+
+The numbers inside the data files are deliberately not used: the files
+hold more than a hundred thousand numbers, and almost any number is the
+rounded value of one of them by coincidence. The matches of the kinds
+(r) and (c) are weaker than those of kind (a): among several thousand
+stated numbers a short number can have a rounded partner by coincidence.
+Each number of these two kinds must therefore be \emph{judged} by a
+reader, who reads the sentence and the output of the programs and enters
+into the script the stated number that the text means. The report
+\texttt{data/number\_checks\_deflation.txt} lists these numbers one by
+one, with the stated numbers that match and with the judgement, and the
+script fails if one of them has not been judged. Result: 542 numbers in
+28 documents, 0 not traced; different numbers of the kinds (r) and (c),
+all judged: 9. The check is a necessary condition, not a sufficient one:
+it cannot tell whether the right number is quoted in the right place,
+and a match can be a coincidence. It found the errors R-E28 and R-E29 of
+the error log RP9. The stale value of R-E27 passed it, because a number
+of a generated table rounds to it by coincidence; that error was found
+by reading the program.
 
 \hypertarget{the-scripts}{%
 \section{5. The scripts}\label{the-scripts}}
@@ -483,15 +572,17 @@ registry of the symbols and its six checks (RP1) \\
 \texttt{write\_doc\_tables.py} & writes every table of the documents
 from the data files
 (\texttt{provenance/generated/tables\_deflation.md}) \\
-\texttt{make\_figures.py} & draws the fourteen figures from the data
-files \\
+\texttt{make\_figures.py} & draws the 14 figures from the data files \\
 \texttt{assemble\_docs.py} & inserts tables, registry and program output
 into the document sources (\texttt{docs\_src/*.src.md}) \\
 \texttt{build\_docs.sh}, \texttt{doc\_header.tex},
 \texttt{check\_layout.py} & Markdown to LaTeX to PDF, and a check that
 no line, table cell or formula is wider than its box \\
 \texttt{build\_manuscripts.py}, \texttt{tex2md.py} & the two manuscripts
-from one source; their Markdown versions \\
+from one source (\texttt{docs\_src/manuscript/*.tex}); their Markdown
+versions \\
+\texttt{check\_numbers.py} & looks up every number of the running text
+of the documents in the output of the programs (Sec. 4) \\
 \end{longtable}
 
 \hypertarget{which-data-file-feeds-which-figure}{%
@@ -515,33 +606,34 @@ in
 \bottomrule\noalign{}
 \endlastfoot
 \texttt{fig\_geodesics} & \texttt{geodesic\_1671d.csv},
-\texttt{geodesic\_1644d.csv} & DMD \\
-\texttt{fig\_isometries} & \texttt{isometries.csv} & DMD, RS2 \\
+\texttt{geodesic\_1644d.csv} & DMD, M \\
+\texttt{fig\_isometries} & \texttt{isometries.csv} & DMD, RS2, M \\
 \texttt{fig\_creation} & \texttt{creation\_single.csv},
 \texttt{creation\_history.csv}, \texttt{creation\_anisotropic.csv},
-\texttt{boson\_creation.csv} & DMD \\
+\texttt{boson\_creation.csv} & DMD, M (7+1) \\
 \texttt{fig\_extinction} & \texttt{extinction\_profile.csv},
-\texttt{boson\_bounded.csv} & DMD \\
+\texttt{boson\_bounded.csv} & DMD, M (4+4) \\
 \texttt{fig\_clock} & \texttt{coupling\_exponents.csv},
-\texttt{events.csv} & RS1 \\
+\texttt{events.csv} & RS1, M \\
 \texttt{fig\_scalar} & \texttt{scalar\_zero\_modes.csv},
-\texttt{static\_source.csv} & RS1 \\
-\texttt{fig\_kernels} & \texttt{pair\_channel\_kernel.csv} & RS1 \\
-\texttt{fig\_gap\_history} & \texttt{gap\_history.csv} & RS1 \\
+\texttt{static\_source.csv} & RS1, M \\
+\texttt{fig\_kernels} & \texttt{pair\_channel\_kernel.csv} & RS1, M \\
+\texttt{fig\_gap\_history} & \texttt{gap\_history.csv} & RS1, M \\
 \texttt{fig\_binding} & \texttt{dimer\_history.csv},
-\texttt{dm\_resonance.csv} & RS1, RS3 \\
+\texttt{dm\_resonance.csv} & RS1, RS3, M \\
 \texttt{fig\_quench} & \texttt{quench\_history.csv},
-\texttt{quench\_summary.csv} & RS1 \\
-\texttt{fig\_cjt\_history} & \texttt{cjt\_history.csv} & RS4 \\
+\texttt{quench\_summary.csv} & RS1, M \\
+\texttt{fig\_cjt\_history} & \texttt{cjt\_history.csv} & RS4, M \\
 \texttt{fig\_matter\_history} & \texttt{medium\_history.csv},
 \texttt{matter\_saturation.csv}, \texttt{vacuum\_history.csv},
-\texttt{thermal\_history.csv} & RS4 \\
+\texttt{thermal\_history.csv} & RS4, M \\
 \texttt{fig\_hubble} & \texttt{hubble\_deflation.csv},
-\texttt{hubble\_mass\_loss.csv}, \texttt{growth\_deflation.csv} & RS3 \\
-\texttt{fig\_bounds} & \texttt{deflation\_bounds.csv} & RS3, RS2 \\
+\texttt{hubble\_mass\_loss.csv}, \texttt{growth\_deflation.csv} & RS3,
+M \\
+\texttt{fig\_bounds} & \texttt{deflation\_bounds.csv} & RS3, RS2, M \\
 \end{longtable}
 
-Every data file begins with lines that state which program and which
-command wrote it and what its columns mean.
+(M: the two manuscripts.) Every data file begins with lines that state
+which program and which command wrote it and what its columns mean.
 
 \end{document}

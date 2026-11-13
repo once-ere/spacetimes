@@ -271,7 +271,7 @@ coordinates. The first is the content of H2; the second is exact (RS1, Sec. 1).
 | C5 scale and scalar mass | unfavourable (estimate of S2, unchanged) | — | S2, Sec. 5 |
 | C6 masses of ordinary fermions | not addressed | — | S2, Sec. 5 |
 | C7 no unobserved particles | additional particles predicted | — | S2, Sec. 5 |
-| **new:** the electroweak scale does not drift | requires $\mathrm{gsum}<1.2\times10^{-6}H_0/n_{\rm EW}$ | the same | Sec. 5; check `def-C6` |
+| **new:** the electroweak scale does not drift | requires $\mathrm{gsum}<1.16\times10^{-6}H_0/n_{\rm EW}$ | the same | Sec. 5; check `def-C6` |
 
 **What has been established.**
 

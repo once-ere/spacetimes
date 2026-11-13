@@ -4,7 +4,7 @@
 use spacetimes::cosmo::{C_LIGHT, EV, H_PLANCK};
 use spacetimes::dimer::{binding, critical_d, scattering_length};
 use spacetimes::verify::Report;
-use spacetimes_deflation::cosmo_defl::{grid, growth, main_project_reference, solve_h, theta_star, Model, HUBBLE_TIME_100_YR};
+use spacetimes_deflation::cosmo_defl::{grid, growth, main_project_reference, rate_bounds, solve_h, theta_star, Model, HUBBLE_TIME_100_YR};
 use spacetimes_deflation::io::{write_csv, write_csv_str, write_report};
 
 /// Numbers of a data file of the main project: every line that is not a comment, split
@@ -149,8 +149,11 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let none = |_s: f64| 1.0;
     let theta = theta_star(&Model::fiducial(0.0, h0), z_star, &none).theta100;
     let (a_min, n) = grid(z_star, 4000);
-    let llr = (7.1 + 2.0 * 7.6) * 1e-14 * HUBBLE_TIME_100_YR / h0;
-    let mut ratios: Vec<f64> = vec![0.0, 1e-3, llr, 1e-2, 3e-2, 0.0644, 0.1, 0.3];
+    // the bounds on the rate, in units of H_0, and H_0 times the age of the model without deflation:
+    // the same numbers that the command `cosmology` reports (cosmo_defl::rate_bounds)
+    let rb = rate_bounds(h0);
+    let (llr, bbn, gf20, t0_h0) = (rb.llr / h0, rb.bbn / h0, rb.gfermi_20 / h0, rb.age * h0);
+    let mut ratios: Vec<f64> = vec![0.0, 1e-3, llr, 1e-2, 3e-2, bbn, 0.1, 0.3];
     ratios.sort_by(|a, b| a.partial_cmp(b).unwrap());
     let mut grows: Vec<Vec<f64>> = Vec::new();
     let (mut d_ref, mut f_ref) = (0.0, 0.0);
@@ -181,8 +184,8 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let mono_h = grows.windows(2).all(|w| w[1][7] < w[0][7]);
     let mono = grows.windows(2).all(|w| w[1][4] > w[0][4]);
     rep.add("def-D4", "numerical",
-        &format!("growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = {:.3}. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = {:+.3}, a rise of {:.2} per cent at the rate that lunar laser ranging allows, {:.2} per cent at the rate that nucleosynthesis allows and {:.2} per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors {:.4}, {:.4}, {:.4}. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)", slope_h, slope, 100.0 * (at(llr)[4] - 1.0), 100.0 * (at(0.0644)[4] - 1.0), 100.0 * (at(0.1)[4] - 1.0), at(llr)[5], at(0.0644)[5], at(0.1)[5]),
-        mono && mono_h && slope_h < 0.0 && slope > 0.0 && at(0.0644)[5] > 1.0);
+        &format!("growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = {:.3}. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = {:+.3}, a rise of {:.2} per cent at the rate that lunar laser ranging allows, {:.2} per cent at the rate that nucleosynthesis allows and {:.2} per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors {:.4}, {:.4}, {:.4}. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)", slope_h, slope, 100.0 * (at(llr)[4] - 1.0), 100.0 * (at(bbn)[4] - 1.0), 100.0 * (at(0.1)[4] - 1.0), at(llr)[5], at(bbn)[5], at(0.1)[5]),
+        mono && mono_h && slope_h < 0.0 && slope > 0.0 && at(bbn)[5] > 1.0);
 
     // ---- (5) drift of the quantities -----------------------------------------------------------------
     // logarithmic derivatives with respect to tau_d (every quantity depends on tau_d through D or alpha ~ exp(tau_d))
@@ -191,8 +194,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         (f(d * (1.0 + e)).abs().ln() - f(d * (1.0 - e)).abs().ln()) / ((1.0 + e).ln() - (1.0 - e).ln())
     };
     let mut drows: Vec<Vec<String>> = Vec::new();
-    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (HV), 20 per cent", 0.234)];
-    let t0_h0 = 0.9507; // age of the model without deflation times H_0 (13.81 Gyr)
+    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", bbn), ("nucleosynthesis, G_Fermi (HV), 20 per cent", gf20)];
     let mut push = |q: &str, at: &str, n: f64| {
         let mut row = vec![q.to_string(), at.to_string(), format!("{:.3}", n)];
         for (_, b) in bounds.iter() {
@@ -218,14 +220,14 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     }
     push("cross-section of two fermions at low energy (Born regime, D_VS << 1)", "D_VS = 0.05", 2.0 * dlog(&|x| scattering_length(x), 0.05));
     write_csv_str("dm_drift.csv",
-        &[("content", "how fast the quantities of the model drift on a deflating spacetime: n = d ln(quantity)/d tau_d with tau_d = gsum x4, and the relative change n gsum t_0 over the age of the universe at the largest rates that the three bounds allow (gsum = 3.24e-3, 0.0644 and 0.234 H_0; H_0 t_0 = 0.9507)".to_string()),
+        &[("content", format!("how fast the quantities of the model drift on a deflating spacetime: n = d ln(quantity)/d tau_d with tau_d = gsum x4, and the relative change n gsum t_0 over the age of the universe at the largest rates that the three bounds allow (gsum = {:.2e}, {:.4} and {:.3} H_0), with the age t_0 of the model without deflation (H_0 t_0 = {:.4})", llr, bbn, gf20, t0_h0)),
           ("columns", "quantity; where evaluated; n; change over the age at the bound from lunar laser ranging (assumption A2); at the bound from nucleosynthesis through G_N (A2); at the bound from nucleosynthesis through the Fermi constant (assumption HV, 20 per cent)".to_string()),
           ("command", "deflation matter".to_string())],
         &["quantity", "at", "n", "change_LLR", "change_BBN_G", "change_BBN_GF"], &drows)?;
     let n_a = dlog(&|x| scattering_length(x), 1.5);
     let n_e = dlog(&|x| binding(x).unwrap_or(1e-300), 1.8);
     rep.add("def-D5", "numerical",
-        &format!("drift of the quantities (table data/dm_drift.csv): the couplings change by {:.1e} of themselves over the age of the universe at the rate that lunar laser ranging allows and by {:.2} at the rate that nucleosynthesis allows; quantities near the threshold of binding move much faster (scattering length at D_VS = 1.5: n = {:.1}; binding energy at D_VS = 1.8: n = {:.1}), and the gap of a weakly paired state moves as 1/lambda (n = 5 for lambda = 0.2). The masses do not move", llr * t0_h0, 0.0644 * t0_h0, n_a, n_e),
+        &format!("drift of the quantities (table data/dm_drift.csv): the couplings change by {:.1e} of themselves over the age of the universe at the rate that lunar laser ranging allows and by {:.2} at the rate that nucleosynthesis allows; quantities near the threshold of binding move much faster (scattering length at D_VS = 1.5: n = {:.1}; binding energy at D_VS = 1.8: n = {:.1}), and the gap of a weakly paired state moves as 1/lambda (n = 5 for lambda = 0.2). The masses do not move", llr * t0_h0, bbn * t0_h0, n_a, n_e),
         n_a > 5.0 && n_e > 10.0);
 
     // ---- (6) the quanta that the deflation creates -------------------------------------------------------
@@ -236,12 +238,18 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let mut trows: Vec<Vec<String>> = Vec::new();
     let h0_per_yr = h0 / HUBBLE_TIME_100_YR;
     let mut t_llr = 0.0;
-    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (HV), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
+    // the largest of the three bounds: temperature there, and hbar gsum in units of a mass of 1 keV
+    let (mut t_max, mut gsum_over_kev) = (0.0_f64, 0.0_f64);
+    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", bbn), ("nucleosynthesis, G_Fermi (HV), 20 per cent", gf20), ("gsum = H_0", 1.0)] {
         let rate_per_s = r * h0_per_yr / year / 3.0; // each of three equal rates
         let e = hbar_ev_s * rate_per_s; // eV
         let t = e / (2.0 * pi) / k_b_ev;
         if name.starts_with("lunar") {
             t_llr = t;
+        }
+        if !name.starts_with("gsum") && t > t_max {
+            t_max = t;
+            gsum_over_kev = 3.0 * e / 1e3;
         }
         // suppression of the creation of fermions of 1 keV and of 1 GeV: exp(-2 pi m/rate); print the exponent
         trows.push(vec![name.to_string(), format!("{:.3e}", r), format!("{:.3e}", e), format!("{:.3e}", t), format!("{:.2e}", 2.0 * pi * 1e3 / e), format!("{:.2e}", 2.0 * pi * 1e9 / e)]);
@@ -252,8 +260,8 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
           ("command", "deflation matter".to_string())],
         &["bound", "gsum_over_H0", "hbar_rate_eV", "T_K", "exponent_1keV", "exponent_1GeV"], &trows)?;
     rep.add("def-D6", "numerical",
-        &format!("the quanta that the deflation creates (7+1; modes that depend on a deflating coordinate): at the present rate that lunar laser ranging allows the temperature of the spectrum is {:.1e} K, and the creation of massive particles is suppressed by exp(-2 pi m/rate_t) with an exponent above 1e37 for every mass above 1 keV: no particles are created today. Creation matters only for an epoch in which the rate was comparable with the masses", t_llr),
-        t_llr < 1e-28);
+        &format!("the quanta that the deflation creates (7+1; modes that depend on a deflating coordinate): at the present rate that lunar laser ranging allows the temperature of the spectrum is {:.1e} K; at the largest rate that any of the three bounds of the cosmological part allows (gsum = {:.3} H_0) it is {:.1e} K, and hbar gsum is then {:.1e} of a mass of 1 keV. The creation of massive particles is suppressed by exp(-2 pi m/rate_t) with an exponent above 1e37 for every mass above 1 keV: no particles are created today. Creation matters only for an epoch in which the rate was comparable with the masses", t_llr, gf20.max(bbn).max(llr), t_max, gsum_over_kev),
+        t_llr < 1e-28 && t_max < 1e-30 && gsum_over_kev < 1e-36);
 
     let (ok, n) = rep.count();
     let all = rep.all_pass();

@@ -15,14 +15,15 @@ pandoc cannot do by itself:
     when the Markdown is rendered (for example on GitHub);
   * section headings receive their Roman numerals and subsection headings their
     letters, as in the PDF; appendices are named "Appendix A", ...;
-  * figure* / table* are mapped to figure / table, ruledtabular is dropped, and
-    figures point at the PNG files in ../figures, with numbered captions;
+  * table* is mapped to table and ruledtabular is dropped; each figure becomes the
+    picture (the PNG file in ../figures) followed by its numbered caption as an ordinary
+    paragraph, so that the formulas of the caption remain TeX formulas;
   * the table that displays the 16x16 matrices becomes a caption followed by one
     display equation per matrix (a Markdown table cannot hold such a formula);
   * the front matter (title, author, affiliation, date, abstract) is written as
     a Markdown header, because pandoc ignores the REVTeX commands;
   * the reference list embedded in the .tex file is removed, and the citations
-    are rendered by pandoc (citeproc) from manuscript/spacetimes_refs.bib.
+    are rendered by pandoc (citeproc) from manuscript/deflation_refs.bib.
 
 Usage:  python3 code/scripts/tex2md.py 1644      (or 1671; called by build_manuscripts.py,
         which leaves the .aux file in manuscript/ for this purpose)
@@ -38,10 +39,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 MAN = os.path.join(ROOT, "manuscript")
-BIB = os.path.join(MAN, "spacetimes_refs.bib")
+BIB = os.path.join(MAN, "deflation_refs.bib")
 NAMES = {
-    "1644": "16 Component Dirac Fermion Condensate Singlet Superfluid on 4+4 Spacetime",
-    "1671": "16 Component Dirac Fermion Condensate Singlet Superfluid on 7+1 Spacetime",
+    "1644": "16 Component Dirac Fermion Condensate Singlet Superfluid on 4+4 Deflating Spacetime",
+    "1671": "16 Component Dirac Fermion Condensate Singlet Superfluid on 7+1 Deflating Spacetime",
 }
 
 
@@ -185,6 +186,20 @@ def preprocess(tex, labels):
         i = end
     res.append(body[i:])
     body = "".join(res)
+    # figures: pandoc would write a figure environment as an HTML block, in which the formulas
+    # of the caption are no longer TeX.  Each figure becomes the picture, in a paragraph of its
+    # own, followed by its caption as an ordinary paragraph, so that the formulas stay formulas.
+    def figure(m):
+        block = m.group(1)
+        g = re.search(r"\\includegraphics(\[[^\]]*\])?\{([^}]*)\}", block)
+        c = block.find("\\caption{")
+        if not g or c < 0:
+            return m.group(0)
+        cap, _ = braced(block, c + len("\\caption"))
+        cm = re.match(r"(FIG\. [^.]*\.)\s*(.*)", cap.strip(), re.S)
+        cap = "\\textbf{%s} %s" % (cm.group(1), cm.group(2)) if cm else cap
+        return "\n\n" + g.group(0) + "\n\n" + cap + "\n\n"
+    body = re.sub(r"\\begin\{figure\}(.*?)\\end\{figure\}", figure, body, flags=re.S)
     body = re.sub(r"\\label\{[^}]*\}", "", body)
     body = re.sub(r"\\ref\{([^}]*)\}", lambda m: labels.get(m.group(1), "??"), body)
     body = re.sub(r"\\includegraphics(\[[^\]]*\])?\{([^}]*)\}", r"\\includegraphics{../figures/\2.png}", body)

@@ -520,13 +520,15 @@ def fig_hubble():
     ax.plot(h["gsum_over_H0"][ok], 100 * h["h"][ok], color=BLUE, marker="o", mfc="white", mew=1.0, ms=3.6)
     ax.axhline(67.36, color=INK2, lw=0.6)
     ax.text(1.1e-3, 67.5, "no deflation: 67.36", color=INK2, fontsize=7.0, va="bottom")
-    ax.axhline(73.0, color=ORANGE, lw=1.0, ls="--")
-    ax.text(0.28, 73.15, "local measurements: 73", color=INK, fontsize=7.0, va="bottom", ha="right")
+    # the local measurement with which the main project compares: 73.50 +- 0.81 km/s/Mpc
+    ax.axhspan(73.50 - 0.81, 73.50 + 0.81, color=ORANGE, alpha=0.18, lw=0)
+    ax.axhline(73.50, color=ORANGE, lw=1.0, ls="--")
+    ax.text(0.28, 74.45, "local measurement: 73.50 $\\pm$ 0.81", color=INK, fontsize=7.0, va="bottom", ha="right")
     for x, lab in ((3.237e-3, "lunar ranging"), (0.0644, "nucleosynthesis")):
         ax.plot([x, x], [42, 66.3], color=INK2, lw=0.7, ls=":")
         ax.text(x * 1.12, 45.5, lab, rotation=90, color=INK2, fontsize=7.0, va="bottom")
     ax.set_xscale("log")
-    ax.set_ylim(42, 76)
+    ax.set_ylim(42, 77.5)
     ax.set_xlabel("gsum / $H_0$")
     ax.set_ylabel("inferred $H_0$ (km/s/Mpc)")
     panel_label(ax, "(a) gravity feels the deflation")

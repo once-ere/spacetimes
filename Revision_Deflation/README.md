@@ -103,10 +103,13 @@ remain paused.
 
 # Numbers
 
-The Rust program `deflation` performs 217 checks; an independent
-Python script 33 of 33; the registry of symbols
-6 of 6. All pass. The folder contains 14 figures and the
-data files from which every table and figure is made.
+The Rust program `deflation` performs 217 checks and has
+39 unit tests; an independent Python script performs
+33 of 33 checks; the registry of symbols
+6 of 6. All pass. A further script compares every number
+that is quoted in the running text of the documents and of the manuscripts with the
+numbers that the programs state (542 numbers in 28 documents, 0 not traced). The folder contains
+14 figures and the data files from which every table and figure is made.
 
 # How to run it
 

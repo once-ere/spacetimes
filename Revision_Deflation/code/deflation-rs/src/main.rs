@@ -559,10 +559,14 @@ fn cmd_quench() -> std::io::Result<bool> {
 /// data/hubble_deflation.csv, deflation_bounds.csv, hubble_mass_loss.csv,
 /// cosmology_checks.{txt,csv}.
 fn cmd_cosmology() -> std::io::Result<bool> {
-    use spacetimes_deflation::cosmo_defl::{main_project_reference, solve_h, theta_star, Model, HUBBLE_TIME_100_YR};
+    use spacetimes_deflation::cosmo_defl::{main_project_reference, rate_bounds, solve_h, theta_star, Model, HUBBLE_TIME_100_YR};
     let mut rep = spacetimes::verify::Report::new();
     let h0 = 0.6736_f64;
     let kms = 100.0; // H_100 in km/s/Mpc
+    // the locally measured Hubble constant with which the main project compares (its manuscripts,
+    // Sec. XI: 73.50 +- 0.81 km/s/Mpc, the consensus value of the local distance network)
+    let (h_local, h_local_err) = (73.50_f64, 0.81_f64);
+    let gap_local = h_local - kms * h0; // what separates the model without deflation from it
     let (z_star, theta_main, rs_main) = main_project_reference();
     let none = |_s: f64| 1.0;
     let m0 = Model::fiducial(0.0, h0);
@@ -572,32 +576,11 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let theta = d0.theta100;
 
     // ---- the bounds on the rate ------------------------------------------------------
-    // lunar laser ranging: (dG_N/dt)/G_N = (7.1 +- 7.6) e-14 per year (68%); two-sigma upper value 22.3e-14 per year
-    let llr = (7.1 + 2.0 * 7.6) * 1e-14; // per year
-    let gam_llr = llr * HUBBLE_TIME_100_YR; // in units of H_100
-    // nucleosynthesis: G_N(nucleosynthesis)/G_N(today) = 0.99 +0.06 -0.05 (two sigma): G_N(nucleosynthesis)/G_N(today) >= 0.94
-    let g_bbn_min = 0.94_f64;
-    let gam_of_g = |target: f64| -> f64 {
-        // solve exp(-gsum t_0) = target for the rate, with the age of the deflating model itself (h held at h0)
-        let (mut lo, mut hi) = (0.0_f64, 1.0_f64);
-        for _ in 0..60 {
-            let mid = 0.5 * (lo + hi);
-            if theta_star(&Model::fiducial(mid, h0), z_star, &none).g_early > target {
-                lo = mid;
-            } else {
-                hi = mid;
-            }
-        }
-        0.5 * (lo + hi)
-    };
-    let gam_bbn = gam_of_g(g_bbn_min);
-    // assumption HV (the vacuum value of the Vorton-Scalar sets the electroweak scale; this is NOT the author's hypothesis H2,
-    // in which the Higgs field is the pair condensate): all masses m = y v/sqrt(2) are constant along the deflation; the four-dimensional vacuum value
-    // falls as exp(-gsum x4/2), so that the Fermi constant G_Fermi = 1/(sqrt(2) v^2) grows at the rate gsum.  Nucleosynthesis with
-    // the fermion masses held fixed: G_Fermi at t = 1 s within about 10 to 20 per cent of today's value (Scherrer and Spergel 1993,
-    // their case (b)).  Without assumption A2 the age is that of the model without deflation.
-    let gam_gfermi_20 = (1.0_f64 / 0.8).ln() / d0.age; // in units of H_100
-    let gam_gfermi_10 = (1.0_f64 / 0.9).ln() / d0.age;
+    // lunar laser ranging, nucleosynthesis (Newton's constant; Fermi constant under the assumption HV): the
+    // measured values and the derivation are documented with `rate_bounds` in cosmo_defl.rs, which the
+    // command `matter` uses as well
+    let rb = rate_bounds(h0);
+    let (llr, gam_llr, gam_bbn, gam_gfermi_20, gam_gfermi_10) = (rb.llr_per_yr, rb.llr, rb.bbn, rb.gfermi_20, rb.gfermi_10);
     // atomic clocks: (d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year; two-sigma upper value 3.2e-18 per year.  This bounds the
     // rate only if the electromagnetic field, too, propagates along x5, x6, x7 (then alpha ~ exp(gsum x4)); the ratio of the
     // proton mass to the electron mass, also measured by the clocks, does not change in the model at all.
@@ -659,7 +642,7 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let slope = (h_at(1e-3) - h0) / h0 / 1e-3;
     rep.add("def-C2", "numerical", &format!("with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = {:.3} at small rates; H_0 = {:.2}, {:.2}, {:.2} km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value", slope, kms * h_at(1e-2), kms * h_at(3e-2), kms * h_at(0.1)), mono && slope < 0.0);
     let (h_llr, h_bbn) = (h_at(gam_llr / h0), h_at(gam_bbn / h0));
-    rep.add("def-C3", "numerical", &format!("bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < {:.2e} per year = {:.2e} H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < {:.2e} per year = {:.3} H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by {:.3} and {:.2} km/s/Mpc: the local measurement, 73 km/s/Mpc, cannot be approached", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0, kms * (h_llr - h0), kms * (h_bbn - h0)),
+    rep.add("def-C3", "numerical", &format!("bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < {:.2e} per year = {:.2e} H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < {:.2e} per year = {:.3} H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by {:.3} and {:.2} km/s/Mpc: the local measurement, {:.2} +- {:.2} km/s/Mpc, cannot be approached. Over the age t_0 of the model without deflation (H_0 t_0 = {:.4}) the deflation clock has advanced by gsum t_0 = {:.1e} at the first of these rates", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0, kms * (h_llr - h0), kms * (h_bbn - h0), h_local, h_local_err, rb.age * h0, gam_llr * rb.age),
         h_llr < h0 && h_bbn < h_llr && kms * (h0 - h_llr) < 0.2);
 
     let rows: Vec<Vec<String>> = vec![
@@ -671,7 +654,7 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     ];
     rep.add("def-C5", "numerical", &format!("bounds that do not rest on gravity: (i) under the assumption HV (the vacuum value of the Vorton-Scalar sets the electroweak scale) the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_Fermi at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < {:.3} to {:.3} H_0, weaker than the bound from Newton's constant; (ii) in the model as it stands (without H2 and without HV) no mass of ordinary matter depends on the deflation, and the measured constancy of the ratio of the proton mass to the electron mass does not bound the rate; (iii) the fine-structure constant would bound it, gsum < {:.1e} per year = {:.1e} H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model", gam_gfermi_10 / h0, gam_gfermi_20 / h0, clocks, gam_clock / h0),
         gam_gfermi_10 < gam_gfermi_20 && gam_gfermi_10 > gam_bbn && gam_clock < gam_llr);
-    rep.add("def-C6", "numerical", &format!("the author's hypothesis H2 (the superfluid state is the Higgs field) on a deflating spacetime: the electroweak scale is then the scale of the pair condensate, which depends on alpha_VS, and alpha_VS grows as exp(gsum x4). With n_EW = d ln v_EW/d ln alpha_VS the electron mass changes at the rate n_EW gsum and the proton mass does not; atomic clocks (ratio of the two masses constant to 8.0e-17 per year at two sigma) then give gsum < {:.1e} per year / n_EW = {:.2e} H_0 / n_EW, a bound {:.0} times stronger than that of lunar laser ranging for n_EW = 1, and one that needs no assumption about gravity. In the scale-invariant ladder equation of the main project n_EW = (1 + 4 rho_c^2) atan(1/(2 rho_c))/(8 rho_c^3) + 1/(4 rho_c^2) with rho_c^2 = (alpha_VS/alpha_c - 1)/4 (agreement with the numerical derivative: {:.1e}): n_EW = {:.1}, {:.2}, {:.2}, {:.2} for alpha_VS/alpha_c = 1.25, 2, 3, 5; it diverges at the critical coupling and exceeds 1 for alpha_VS < {:.2} alpha_c. For the model itself (massive fermions, massive radial mode) n_EW has not been computed", clocks_mu, gam_mu / h0, gam_llr / gam_mu, ew_dev, n_ew(1.25), n_ew(2.0), n_ew(3.0), n_ew(5.0), x_one),
+    rep.add("def-C6", "numerical", &format!("the author's hypothesis H2 (the superfluid state is the Higgs field) on a deflating spacetime: the electroweak scale is then the scale of the pair condensate, which depends on alpha_VS, and alpha_VS grows as exp(gsum x4). With n_EW = d ln v_EW/d ln alpha_VS the electron mass changes at the rate n_EW gsum and the proton mass does not; atomic clocks (ratio of the two masses constant to 8.0e-17 per year at two sigma) then give gsum < {:.1e} per year / n_EW = {:.2e} H_0 / n_EW, a bound {:.0} times stronger than that of lunar laser ranging for n_EW = 1, and one that needs no assumption about gravity; over the age of the universe the deflation clock can then have advanced by at most {:.1e}/n_EW. In the scale-invariant ladder equation of the main project n_EW = (1 + 4 rho_c^2) atan(1/(2 rho_c))/(8 rho_c^3) + 1/(4 rho_c^2) with rho_c^2 = (alpha_VS/alpha_c - 1)/4 (agreement with the numerical derivative: {:.1e}): n_EW = {:.1}, {:.2}, {:.2}, {:.2} for alpha_VS/alpha_c = 1.25, 2, 3, 5; it diverges at the critical coupling and exceeds 1 for alpha_VS < {:.2} alpha_c. For the model itself (massive fermions, massive radial mode) n_EW has not been computed", clocks_mu, gam_mu / h0, gam_llr / gam_mu, gam_mu * rb.age, ew_dev, n_ew(1.25), n_ew(2.0), n_ew(3.0), n_ew(5.0), x_one),
         ew_dev < 1e-6 && gam_clock < gam_mu && gam_mu < gam_llr && n_ew(2.0) > 1.0 && n_ew(5.0) < 1.0);
     write_csv_str("deflation_bounds.csv",
         &[("content", "upper bounds (two sigma) on the present total rate of deflation gsum = g55 + g66 + g77, each under the stated assumption".to_string()),
@@ -724,8 +707,8 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let grav: Vec<f64> = rows.iter().filter(|r| r[4] == 1.0).map(|r| r[7]).collect();
     let (grav_lo, grav_hi) = (grav.iter().cloned().fold(f64::INFINITY, f64::min), grav.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
     let loss_max = rows.iter().filter(|r| r[4] == 0.0).map(|r| 1.0 - r[5]).fold(0.0, f64::max);
-    rep.add("def-C4", "numerical", &format!("dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most {:.1} per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between {:.2} and {:.2} km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +{:.2} km/s/Mpc, for a loss of up to {:.1} per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the 5.6 km/s/Mpc that separate 67.4 from the local value", 100.0 * bind_frac_max, grav_lo, grav_hi, gain_max, 100.0 * loss_max),
-        grav_hi < 0.0 && gain_max > 0.0 && gain_max < 0.56 && bind_frac_max < 0.2);
+    rep.add("def-C4", "numerical", &format!("dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most {:.1} per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between {:.2} and {:.2} km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +{:.2} km/s/Mpc, for a loss of up to {:.1} per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the {:.1} km/s/Mpc that separate {:.2} from the local value {:.2}", 100.0 * bind_frac_max, grav_lo, grav_hi, gain_max, 100.0 * loss_max, gap_local, kms * h0, h_local),
+        grav_hi < 0.0 && gain_max > 0.0 && gain_max < 0.1 * gap_local && bind_frac_max < 0.2);
 
     let (ok, n) = rep.count();
     let all = rep.all_pass();

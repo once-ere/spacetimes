@@ -39,8 +39,9 @@ kept apart throughout, so that the reader can see which conclusion rests on whic
    scattering resonance, during which the self-interaction of the fermions exceeds the
    observational bound by many orders of magnitude (Sec. 6). The growth of structure
    changes little in amplitude and more in rate (Sec. 5).
-4. *The particles that the deflation creates* (7+1) have a temperature of $10^{-33}$ K
-   at the allowed rate: none are created today (Sec. 7).
+4. *The particles that the deflation creates* (7+1) have a temperature of
+   $2.9\times10^{-33}$ K at the rate that lunar laser ranging allows, and below
+   $10^{-30}$ K at any allowed rate: none are created today (Sec. 7).
 5. *Not done.* The spectra of the microwave background, which S3 computes with its own
    Einstein–Boltzmann program, have not been recomputed with a time-dependent Newton's
    constant. The reason and the consequence are stated in Sec. 9.
@@ -63,13 +64,14 @@ bash code/scripts/build_docs.sh supplement/RS3_cosmology_deflating.md
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $G_N$, $G_8$ | `G_N`, `GN_early`, `GN_star`, `G_8` | Newton's constant of ordinary space, and the gravitational coupling of the eight-dimensional Einstein theory (assumption A2): $G_N=G_8/(\text{proper volume of the extra coordinates})\propto e^{\mathrm{gsum}\,x4}$ | RS3 1; M XI | new |
-| $a_{\rm sp}$, $H$ | — | scale factor of ordinary space (assumption A1) and its rate $H=(da_{\rm sp}/dx4)/a_{\rm sp}$; $H_0$, $h$ as in the main registry. (The author's Einstein-Lovelock notebooks use the letter $H$ for the rate in the exponent of their metric; that rate corresponds here to $\mathrm{g55}$, $\mathrm{g66}$, $\mathrm{g77}$) | RS3 1 | new |
-| $t_0$ | `age`, `age_Gyr` | the age of the universe in the model at hand | RS3 2 | new |
-| $\delta_m$, $f_g$, $\sigma_8$ | `growth`, `f_growth`, `growth_ratio`, `f_growth_ratio`, `f_sigma8_ratio` | density contrast of matter in ordinary space; its growth rate $d\ln\delta_m/d\ln a_{\rm sp}$ today; the amplitude of clustering (only ratios of $\sigma_8$ are used) | RS3 5 | new |
-| $v_{\rm EW}$ (main project), $n_{\rm EW}$ | `v_EW`, `n_EW` | the electroweak scale of the supplement S2 of the main project, and the exponent with which it would follow the coupling under the hypothesis H2: $n_{\rm EW}=d\ln v_{\rm EW}/d\ln\alpha_{VS}$ | RS2 5 | new |
-| $\varrho_c$ | `rho_c` | abbreviation in the formula for $n_{\rm EW}$ of the scale-invariant ladder equation: $\varrho_c=\tfrac12\sqrt{\alpha_{VS}/\alpha_c-1}$ (the letter $\rho$ without index is a density) | RS2 5 | new |
-| $m_p/m_e$ | `mu_pe` | the ratio of the proton mass to the electron mass (always written as this ratio in the documents; `mu_pe` in the statements of the programs) | RS2 5; RS3 3 | new |
-| $G_{\rm Fermi}$, $\alpha_{\rm em}$ | `G_Fermi` | the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds) | RS3 1, 3 | new |
+| $a_{\rm sp}$, $H$ | — | scale factor of ordinary space (assumption A1) and its rate $H=(da_{\rm sp}/dx4)/a_{\rm sp}$; $H_0$, $h$ as in the main registry. (The author's Einstein-Lovelock notebooks use the letter $H$ for the rate in the exponent of their metric; that rate corresponds here to $\mathrm{g55}$, $\mathrm{g66}$, $\mathrm{g77}$) | RS3 1; M XI | new |
+| $t_0$ | `age`, `age_Gyr` | the age of the universe in the model at hand | RS3 2; M XI | new |
+| $\theta_*$, $z_*$ | `theta_star`, `z_star` | the angle under which the sound horizon at last scattering is seen, $r_s(z_*)/D_A(z_*)$ with the comoving distance $D_A$, and the redshift $z_*$ of last scattering at which the optical depth without reionization is 1 (the $100\,\theta_*$ of the Planck papers). The angle $\theta_s$ of the main registry is the same ratio at the maximum of the visibility function; for the model without deflation $100\,\theta_*=1.03965$ and $100\,\theta_s=1.040358$ | RS3 1, 2; M XI | new |
+| $\delta_m$, $f_g$, $\sigma_8$ | `growth`, `f_growth`, `growth_ratio`, `f_growth_ratio`, `f_sigma8_ratio` | density contrast of matter in ordinary space; its growth rate $d\ln\delta_m/d\ln a_{\rm sp}$ today; the amplitude of clustering (only ratios of $\sigma_8$ are used) | RS3 5; M XI | new |
+| $v_{\rm EW}$ (main project), $n_{\rm EW}$ | `v_EW`, `n_EW` | the electroweak scale of the supplement S2 of the main project, and the exponent with which it would follow the coupling under the hypothesis H2: $n_{\rm EW}=d\ln v_{\rm EW}/d\ln\alpha_{VS}$ | RS2 5; M XII | new |
+| $\varrho_c$ | `rho_c` | abbreviation in the formula for $n_{\rm EW}$ of the scale-invariant ladder equation: $\varrho_c=\tfrac12\sqrt{\alpha_{VS}/\alpha_c-1}$ (the letter $\rho$ without index is a density) | RS2 5; M XII | new |
+| $m_p/m_e$ | `mu_pe` | the ratio of the proton mass to the electron mass (always written as this ratio in the documents; `mu_pe` in the statements of the programs) | RS2 5; RS3 3; M XI | new |
+| $G_{\rm Fermi}$, $\alpha_{\rm em}$ | `G_Fermi` | the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds) | RS3 1, 3; M XI | new |
 
 ---
 
@@ -163,7 +165,7 @@ was weaker in the early universe, the universe expanded more slowly at a given
 density, sound had more time to travel, and the sound horizon is larger; to keep the
 angle, the distance to last scattering must be larger, which requires a smaller
 Hubble constant. The deflation moves the inferred value *away* from the locally
-measured 73 km/s/Mpc.
+measured $73.50\pm0.81$ km/s/Mpc (the value with which the main project compares).
 
 *A remark on the term $\mathrm{gprod}$.* In Eq. (1.2) it acts as a constant addition to
 the left-hand side and is absorbed, almost exactly, by the cosmological term that is
@@ -287,8 +289,8 @@ energy is at most 8.2 per cent of the rest mass (check `def-C4`):
   most $+0.48$ km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass.
 
 The loss of rest mass is the only effect of the deflation found here that raises the
-inferred Hubble constant. In these examples it supplies less than a tenth of the 5.6
-km/s/Mpc that separate 67.4 from the local value.
+inferred Hubble constant. In these examples it supplies less than a tenth of the 6.1
+km/s/Mpc that separate 67.36 from the local value.
 
 ---
 
@@ -309,7 +311,7 @@ today (check `def-D4`):
 | 0.00324 | 67.16 | 1.0003 | 1.0027 | 1.0030 | 0.9990 | 0.9993 |
 | 0.0100 | 66.74 | 1.0010 | 1.0083 | 1.0093 | 0.9968 | 0.9979 |
 | 0.0300 | 65.48 | 1.0031 | 1.0258 | 1.0290 | 0.9904 | 0.9937 |
-| 0.0644 | 63.23 | 1.0067 | 1.0590 | 1.0661 | 0.9792 | 0.9865 |
+| 0.0644 | 63.23 | 1.0067 | 1.0589 | 1.0661 | 0.9792 | 0.9865 |
 | 0.100 | 60.77 | 1.0106 | 1.0982 | 1.1098 | 0.9674 | 0.9790 |
 | 0.300 | 43.41 | 1.0350 | 1.5100 | 1.5628 | 0.8975 | 0.9365 |
 
@@ -319,7 +321,7 @@ constant that keeps the sound-horizon angle is lower, the cosmological term take
 later, and matter clusters for longer; with that Hubble constant the net change is
 $+0.102$ per unit of $\mathrm{gsum}/H_0$. The amplitude therefore barely moves — $+0.03$
 per cent at the bound of lunar laser ranging, $+0.67$ per cent at the bound of
-nucleosynthesis — while the growth rate today rises by the factors 1.0027 and 1.0590.
+nucleosynthesis — while the growth rate today rises by the factors 1.0027 and 1.0589.
 A deflating universe would show itself in the product $f_g\sigma_8$, which
 redshift-space distortions measure, rather than in $\sigma_8$.
 
@@ -371,27 +373,27 @@ a per cent, a coincidence that nothing in the model explains.
 ## 6.3 How fast the quantities drift
 
 With $n=d\ln(\text{quantity})/d\tau_d$, the relative change of a quantity over the age
-of the universe is $n\,\mathrm{gsum}\,t_0$ ($H_0t_0=0.9507$; check `def-D5`):
+of the universe is $n\,\mathrm{gsum}\,t_0$ ($H_0t_0=0.9516$ for the model without deflation; check `def-D5`):
 
 | quantity | where evaluated | $n$ | change at the bound of lunar laser ranging | at the bound of nucleosynthesis ($G_N$) | at the bound of nucleosynthesis ($G_{\rm Fermi}$) |
 |:---|:---|---:|---:|---:|---:|
-| $\alpha_{VS}$, $G_{VS}$, $D_{VS}$, $C$ | any | 1.000 | $3.08\times10^{-3}$ | 0.0612 | 0.222 |
-| $g_{VS}$ | any | 0.500 | $1.54\times10^{-3}$ | 0.0306 | 0.111 |
+| $\alpha_{VS}$, $G_{VS}$, $D_{VS}$, $C$ | any | 1.000 | $3.08\times10^{-3}$ | 0.0612 | 0.223 |
+| $g_{VS}$ | any | 0.500 | $1.54\times10^{-3}$ | 0.0306 | 0.112 |
 | fermion mass $m$, mass $m_s$ of the radial mode | any | 0.000 | 0 | 0 | 0 |
-| scattering length of two fermions (no bound state) | $D_{VS}$ = 0.5 | 1.368 | $4.21\times10^{-3}$ | 0.0837 | 0.304 |
-| scattering length of two fermions (no bound state) | $D_{VS}$ = 1 | 2.336 | $7.19\times10^{-3}$ | 0.143 | 0.520 |
-| scattering length of two fermions (no bound state) | $D_{VS}$ = 1.5 | 9.092 | 0.0280 | 0.557 | 2.02 |
-| binding energy of the pair | $D_{VS}$ = 1.8 | 30.129 | 0.0927 | 1.84 | 6.70 |
+| scattering length of two fermions (no bound state) | $D_{VS}$ = 0.5 | 1.368 | $4.21\times10^{-3}$ | 0.0838 | 0.305 |
+| scattering length of two fermions (no bound state) | $D_{VS}$ = 1 | 2.336 | $7.20\times10^{-3}$ | 0.143 | 0.521 |
+| scattering length of two fermions (no bound state) | $D_{VS}$ = 1.5 | 9.092 | 0.0280 | 0.557 | 2.03 |
+| binding energy of the pair | $D_{VS}$ = 1.8 | 30.129 | 0.0928 | 1.85 | 6.72 |
 | binding energy of the pair | $D_{VS}$ = 2 | 12.657 | 0.0390 | 0.775 | 2.82 |
 | binding energy of the pair | $D_{VS}$ = 3 | 4.673 | 0.0144 | 0.286 | 1.04 |
-| binding energy of the pair | $D_{VS}$ = 5 | 3.101 | $9.54\times10^{-3}$ | 0.190 | 0.690 |
-| binding energy of the pair | $D_{VS}$ = 10 | 2.456 | $7.56\times10^{-3}$ | 0.150 | 0.546 |
-| rest mass of the bound pair | $D_{VS}$ = 5, $m_s/m$ = 0.2 | -0.162 | $-4.98\times10^{-4}$ | $-9.91\times10^{-3}$ | -0.0360 |
-| rest mass of the bound pair | $D_{VS}$ = 10, $m_s/m$ = 0.1 | -0.218 | $-6.72\times10^{-4}$ | -0.0134 | -0.0486 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.15 | 6.667 | 0.0205 | 0.408 | 1.48 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.2 | 5.000 | 0.0154 | 0.306 | 1.11 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.3 | 3.333 | 0.0103 | 0.204 | 0.742 |
-| cross-section of two fermions at low energy (Born regime, $D_{VS}\ll1$) | $D_{VS}$ = 0.05 | 2.052 | $6.31\times10^{-3}$ | 0.126 | 0.456 |
+| binding energy of the pair | $D_{VS}$ = 5 | 3.101 | $9.55\times10^{-3}$ | 0.190 | 0.692 |
+| binding energy of the pair | $D_{VS}$ = 10 | 2.456 | $7.57\times10^{-3}$ | 0.150 | 0.548 |
+| rest mass of the bound pair | $D_{VS}$ = 5, $m_s/m$ = 0.2 | -0.162 | $-4.99\times10^{-4}$ | $-9.91\times10^{-3}$ | -0.0361 |
+| rest mass of the bound pair | $D_{VS}$ = 10, $m_s/m$ = 0.1 | -0.218 | $-6.73\times10^{-4}$ | -0.0134 | -0.0488 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.15 | 6.667 | 0.0205 | 0.408 | 1.49 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.2 | 5.000 | 0.0154 | 0.306 | 1.12 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.3 | 3.333 | 0.0103 | 0.204 | 0.744 |
+| cross-section of two fermions at low energy (Born regime, $D_{VS}\ll1$) | $D_{VS}$ = 0.05 | 2.052 | $6.32\times10^{-3}$ | 0.126 | 0.458 |
 
 The couplings themselves drift with $n=1$ or $\tfrac12$. Quantities near a threshold
 drift much faster: the scattering length just below the binding with $n=9.1$, the
@@ -410,8 +412,8 @@ equal rates at the largest total rates that the bounds allow (check `def-D6`):
 | bound | $\mathrm{gsum}/H_0$ | $\hbar\,\mathrm{rate}_t$ (eV) | $T_{\rm defl}$ (K) | exponent for $m=1$ keV | exponent for $m=1$ GeV |
 |:---|---:|---:|---:|---:|---:|
 | lunar laser ranging (A2) | 0.00324 | $1.55\times10^{-36}$ | $2.86\times10^{-33}$ | $4.05\times10^{39}$ | $4.05\times10^{45}$ |
-| nucleosynthesis, $G_N$ (A2) | 0.0644 | $3.08\times10^{-35}$ | $5.70\times10^{-32}$ | $2.04\times10^{38}$ | $2.04\times10^{44}$ |
-| nucleosynthesis, $G_{\rm Fermi}$ (HV), 20 per cent | 0.234 | $1.12\times10^{-34}$ | $2.07\times10^{-31}$ | $5.61\times10^{37}$ | $5.61\times10^{43}$ |
+| nucleosynthesis, $G_N$ (A2) | 0.0644 | $3.08\times10^{-35}$ | $5.69\times10^{-32}$ | $2.04\times10^{38}$ | $2.04\times10^{44}$ |
+| nucleosynthesis, $G_{\rm Fermi}$ (HV), 20 per cent | 0.234 | $1.12\times10^{-34}$ | $2.07\times10^{-31}$ | $5.59\times10^{37}$ | $5.59\times10^{43}$ |
 | $\mathrm{gsum}=H_0$ | 1.00 | $4.79\times10^{-34}$ | $8.85\times10^{-31}$ | $1.31\times10^{37}$ | $1.31\times10^{43}$ |
 
 The exponent is $2\pi m/\mathrm{rate}_t$; the number of created particles of mass $m$
@@ -436,7 +438,7 @@ disfavoured.**
 
 **The Higgs hypothesis and the deflation together.** If the superfluid is the Higgs
 field (H2), the atomic clocks limit the rate of deflation to
-$1.2\times10^{-6}\,H_0/n_{\rm EW}$: the two hypotheses can both hold only if the
+$1.16\times10^{-6}\,H_0/n_{\rm EW}$: the two hypotheses can both hold only if the
 deflation is, for every purpose of this supplement, switched off today.
 
 **Dark matter.** The conclusions of S3 about the mass ranges hold unchanged. The
@@ -471,11 +473,15 @@ observable part is empty if gravity is eight-dimensional and the rate constant.
 1. *The spectra of the microwave background.* S3 of the main project computes the
    temperature and polarization spectra with its own Einstein–Boltzmann program and
    forecasts the constraints from them. The revision has **not** repeated this
-   calculation with a time-dependent Newton's constant. It requires a copy of that
-   program in which the gravitational coupling of the background and of the
-   perturbations depends on time while the rates of Thomson scattering and of
-   recombination do not, validated again against the constant case; it cannot be
-   emulated by changing parameters of the existing program. What Sec. 2 establishes is
+   calculation with a time-dependent Newton's constant, for two reasons. First, the
+   equations of the perturbations contain the stresses of the source that keeps the
+   rates of deflation constant, which the hypotheses do not specify (item 2 below):
+   a spectrum can be computed only under a further assumption, which is the author's
+   to make. Second, it requires a copy of that program in which the gravitational
+   coupling of the background and of the perturbations depends on time while the
+   rates of Thomson scattering and of recombination do not, validated again against
+   the constant case; it cannot be emulated by changing parameters of the existing
+   program. What Sec. 2 establishes is
    the effect on the *background*. At the bound of lunar laser ranging Newton's
    constant at last scattering was 0.9969 of today's value; the effect on the spectra
    beyond the shift of the sound-horizon angle is of that relative size, and has not
@@ -512,10 +518,10 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 
 [PASS] def-C1  (numerical) without deflation the background integrals of this module agree with the main project (its recombination calculation gives z_* = 1089.92): 100 theta_* = 1.03965 here against 1.03965, sound horizon 144.449 Mpc against 144.449 Mpc; age 13.814 Gyr
 [PASS] def-C2  (numerical) with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = -0.911 at small rates; H_0 = 66.74, 65.48, 60.77 km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value
-[PASS] def-C3  (numerical) bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < 2.23e-13 per year = 3.24e-3 H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < 4.43e-12 per year = 0.064 H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by -0.199 and -4.13 km/s/Mpc: the local measurement, 73 km/s/Mpc, cannot be approached
+[PASS] def-C3  (numerical) bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < 2.23e-13 per year = 3.24e-3 H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < 4.43e-12 per year = 0.064 H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by -0.199 and -4.13 km/s/Mpc: the local measurement, 73.50 +- 0.81 km/s/Mpc, cannot be approached. Over the age t_0 of the model without deflation (H_0 t_0 = 0.9516) the deflation clock has advanced by gsum t_0 = 3.1e-3 at the first of these rates
 [PASS] def-C5  (numerical) bounds that do not rest on gravity: (i) under the assumption HV (the vacuum value of the Vorton-Scalar sets the electroweak scale) the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_Fermi at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < 0.111 to 0.234 H_0, weaker than the bound from Newton's constant; (ii) in the model as it stands (without H2 and without HV) no mass of ordinary matter depends on the deflation, and the measured constancy of the ratio of the proton mass to the electron mass does not bound the rate; (iii) the fine-structure constant would bound it, gsum < 3.2e-18 per year = 4.6e-8 H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model
-[PASS] def-C6  (numerical) the author's hypothesis H2 (the superfluid state is the Higgs field) on a deflating spacetime: the electroweak scale is then the scale of the pair condensate, which depends on alpha_VS, and alpha_VS grows as exp(gsum x4). With n_EW = d ln v_EW/d ln alpha_VS the electron mass changes at the rate n_EW gsum and the proton mass does not; atomic clocks (ratio of the two masses constant to 8.0e-17 per year at two sigma) then give gsum < 8.0e-17 per year / n_EW = 1.16e-6 H_0 / n_EW, a bound 2787 times stronger than that of lunar laser ranging for n_EW = 1, and one that needs no assumption about gravity. In the scale-invariant ladder equation of the main project n_EW = (1 + 4 rho_c^2) atan(1/(2 rho_c))/(8 rho_c^3) + 1/(4 rho_c^2) with rho_c^2 = (alpha_VS/alpha_c - 1)/4 (agreement with the numerical derivative: 2.8e-8): n_EW = 15.1, 2.57, 1.15, 0.54 for alpha_VS/alpha_c = 1.25, 2, 3, 5; it diverges at the critical coupling and exceeds 1 for alpha_VS < 3.27 alpha_c. For the model itself (massive fermions, massive radial mode) n_EW has not been computed
-[PASS] def-C4  (numerical) dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most 8.2 per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between -4.11 and -0.19 km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +0.48 km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the 5.6 km/s/Mpc that separate 67.4 from the local value
+[PASS] def-C6  (numerical) the author's hypothesis H2 (the superfluid state is the Higgs field) on a deflating spacetime: the electroweak scale is then the scale of the pair condensate, which depends on alpha_VS, and alpha_VS grows as exp(gsum x4). With n_EW = d ln v_EW/d ln alpha_VS the electron mass changes at the rate n_EW gsum and the proton mass does not; atomic clocks (ratio of the two masses constant to 8.0e-17 per year at two sigma) then give gsum < 8.0e-17 per year / n_EW = 1.16e-6 H_0 / n_EW, a bound 2787 times stronger than that of lunar laser ranging for n_EW = 1, and one that needs no assumption about gravity; over the age of the universe the deflation clock can then have advanced by at most 1.1e-6/n_EW. In the scale-invariant ladder equation of the main project n_EW = (1 + 4 rho_c^2) atan(1/(2 rho_c))/(8 rho_c^3) + 1/(4 rho_c^2) with rho_c^2 = (alpha_VS/alpha_c - 1)/4 (agreement with the numerical derivative: 2.8e-8): n_EW = 15.1, 2.57, 1.15, 0.54 for alpha_VS/alpha_c = 1.25, 2, 3, 5; it diverges at the critical coupling and exceeds 1 for alpha_VS < 3.27 alpha_c. For the model itself (massive fermions, massive radial mode) n_EW has not been computed
+[PASS] def-C4  (numerical) dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most 8.2 per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between -4.11 and -0.19 km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +0.48 km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the 6.1 km/s/Mpc that separate 67.36 from the local value 73.50
 [PASS] ALL  (numerical) every check above passed
 ```
 
@@ -529,9 +535,9 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 [PASS] def-D1  (numerical) the estimates of degeneracy and of condensation in halos contain no coupling: fermions with eight internal states are degenerate in the core of a dwarf galaxy only below 0.276 keV, bound pairs are condensed there only below 262 eV. Computed again; every number agrees with the file of the main project (the masses do not change along the deflation)
 [PASS] def-D2  (numerical) self-interaction of bound pairs: with the coupling of today the table of the main project is reproduced (smallest fermion mass 918 MeV for alpha_VS = 0.1). The smallest mass falls as alpha_VS^(-2/3), that is, as exp(-2 tau_d/3) along the deflation. For a given particle the masses m and m_s are constant, hence so is the cross-section 8 pi/m_s^2 of the pairs; the deflation changes whether the pair exists: it is bound only after D_VS = alpha_VS m/m_s has grown to 1.67981
 [PASS] def-D3  (numerical) the moment at which the pair becomes bound is a zero-energy resonance of the scattering of two fermions: the scattering length diverges at D_VS = D_c. For a particle with m = 918 MeV and m_s = 54.7 MeV the cross-section per mass at the relative velocities 10, 156 and 1000 km/s rises from 8.4e-1, 8.4e-1, 8.4e-1 cm^2/g one unit of the deflation clock before the binding to the peak values 1.3e7, 5.2e4, 1.3e3 cm^2/g (limit of unitarity at 10 km/s: 1.3e7); it exceeds 100 cm^2/g during an interval of the clock of 0.268, 0.268, 0.258 around the moment of binding. A deflating universe in which the dark matter is made of these fermions passes through an epoch of strong, velocity-dependent self-interaction
-[PASS] def-D4  (numerical) growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = -0.317. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = +0.102, a rise of 0.03 per cent at the rate that lunar laser ranging allows, 0.67 per cent at the rate that nucleosynthesis allows and 1.06 per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors 1.0027, 1.0590, 1.0982. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)
+[PASS] def-D4  (numerical) growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = -0.317. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = +0.102, a rise of 0.03 per cent at the rate that lunar laser ranging allows, 0.67 per cent at the rate that nucleosynthesis allows and 1.06 per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors 1.0027, 1.0589, 1.0982. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)
 [PASS] def-D5  (numerical) drift of the quantities (table data/dm_drift.csv): the couplings change by 3.1e-3 of themselves over the age of the universe at the rate that lunar laser ranging allows and by 0.06 at the rate that nucleosynthesis allows; quantities near the threshold of binding move much faster (scattering length at D_VS = 1.5: n = 9.1; binding energy at D_VS = 1.8: n = 30.1), and the gap of a weakly paired state moves as 1/lambda (n = 5 for lambda = 0.2). The masses do not move
-[PASS] def-D6  (numerical) the quanta that the deflation creates (7+1; modes that depend on a deflating coordinate): at the present rate that lunar laser ranging allows the temperature of the spectrum is 2.9e-33 K, and the creation of massive particles is suppressed by exp(-2 pi m/rate_t) with an exponent above 1e37 for every mass above 1 keV: no particles are created today. Creation matters only for an epoch in which the rate was comparable with the masses
+[PASS] def-D6  (numerical) the quanta that the deflation creates (7+1; modes that depend on a deflating coordinate): at the present rate that lunar laser ranging allows the temperature of the spectrum is 2.9e-33 K; at the largest rate that any of the three bounds of the cosmological part allows (gsum = 0.234 H_0) it is 2.1e-31 K, and hbar gsum is then 3.4e-37 of a mass of 1 keV. The creation of massive particles is suppressed by exp(-2 pi m/rate_t) with an exponent above 1e37 for every mass above 1 keV: no particles are created today. Creation matters only for an epoch in which the rate was comparable with the masses
 [PASS] ALL  (numerical) every check above passed
 ```
 

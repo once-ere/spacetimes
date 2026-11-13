@@ -95,7 +95,7 @@ computes and where the revision repeats it. The program of the revision is `defl
 | command of the main project | what it computes | repeated in the revision by | status |
 |:---|:---------|:---------|:---|
 | `matrices` | the Dirac matrices and their 106 checks; pair classification | `deflation matrices`: the same 106 checks again, and 47 of 47 checks of the geometry, of the coordinate matrices, of the spin connection and of the Dirac operators | done (DMD) |
-| `channels` | exchange amplitudes of the Vorton-Scalar in 90 pair channels | `deflation channels` (checks `def-K1` to `def-K3`) | done (RS1, Sec. 3) |
+| `channels` | exchange amplitudes of the Vorton-Scalar in 15 representative pair channels on each spacetime | `deflation channels` (checks `def-K1` to `def-K3`) | done (RS1, Sec. 3) |
 | `gap` | the gap equation | `deflation history` (checks `def-H2`, `def-H3`) | done (RS1, Sec. 3) |
 | `dimer` | the bound pair | `deflation history` (`def-H1`, `def-H4`), `deflation matter` (`def-D3`) | done (RS1, Sec. 4) |
 | `symmetry` | the internal symmetry of the sector | `deflation symmetry` (`def-S3`; new: `44d-S1`, `S2`, `71d-S1`, `S2`) | done (RS2; DMD, Part 5) |
@@ -120,6 +120,16 @@ New in the revision, without counterpart in the main project:
 In total the program of the revision performs 217 checks, and the
 independent Python script 33 of 33; all pass.
 
+The documents of the main project and their counterparts:
+
+| main project | revision |
+|:---|:---|
+| `dirac matrices` (DM) | `dirac matrices deflating` (DMD) |
+| supplements S1 to S4 | supplements RS1 to RS4 |
+| the two manuscripts on the flat 4+4 and 7+1 spacetimes | the two manuscripts on the deflating 4+4 and 7+1 spacetimes (folder `manuscript`), built from one source (`docs_src/manuscript`) by `code/scripts/build_manuscripts.py` |
+| provenances P0 to P3, P8, P9 | provenances RP0 to RP3, RP8, RP9 |
+| provenance P11 (paused stages) | none: nothing of the revision is paused; the one open item is Sec. 5 below |
+
 # 5. The item that was not carried out, and why (Hard Rule 7)
 
 **What.** The commands `spectrum` and `forecast` of the main project compute the
@@ -127,6 +137,23 @@ temperature and polarization spectra of the microwave background with an
 Einstein–Boltzmann program written for the main project, and forecast from them how
 well the parameters of the model can be constrained. The revision has not repeated
 these two calculations on the deflating spacetimes.
+
+**Why the hypotheses do not determine it.** The background calculation of RS3 uses one
+of Einstein's equations, the component along the time. The source that keeps the
+three rates of deflation constant enters it only through its energy density, which the
+adjusted cosmological term absorbs (RS3, Sec. 2), and not through its stresses. The
+perturbations of the metric obey the other components as well, and those contain the
+stresses of that source and their perturbations. The hypotheses of the revision
+prescribe the metric and say nothing about the source; assumption A2 does not supply
+it either; and if gravity is of the Einstein–Gauss–Bonnet kind, for which the
+deflating spacetime with equal rates needs no source at all (DMD, Sec. 1.4a), the
+equations of the perturbations are different again. A spectrum of the microwave
+background on the deflating spacetime can therefore be computed only under a further
+assumption about the source or about the theory of gravity, and that assumption is
+the author's to make. The simplest candidate would be: the scale factors of $x5$,
+$x6$, $x7$ are not perturbed, and the perturbations of ordinary spacetime obey the
+four-dimensional equations with the Newton's constant of the moment. Whether that is
+what the author intends is not known.
 
 **Why it cannot be done by changing parameters.** Under assumption A2 Newton's
 constant depends on the time. In an Einstein–Boltzmann calculation the gravitational
@@ -140,8 +167,9 @@ copy against the unchanged program at zero rate.
 
 **Why it was not done.** The main project is paused by the author's instruction, so
 its program was not to be changed; the copy would have to be made and validated inside
-the revision. That work was placed after the documents and the manuscripts, and was
-not reached in this session.
+the revision. Because the calculation needs an assumption that the hypotheses do not
+contain, the assistant has not chosen one and computed with it; it stops at this point
+and asks, as Hard Rule 7 prescribes.
 
 **What is established without it.** The effect of the deflation on the *background* —
 the sound horizon, its angular scale and the inferred Hubble constant — is computed
@@ -150,9 +178,9 @@ laser ranging allows under A2, Newton's constant at last scattering was 0.9969 o
 present value. The spectra would change, beyond the shift of the angular scale, by
 effects of that relative size.
 
-**What the author is asked to decide.** Whether the two calculations are to be
-carried out in a further session (the plan above is ready), or whether the statement
-of RS3, Sec. 9, suffices. Until then the item is open, and no document of the revision
+**What the author is asked to decide.** (1) Whether the two calculations are to be
+carried out. (2) If so, under which assumption about the perturbations: the candidate
+named above, or another. Until then the item is open, and no document of the revision
 claims a result about the spectra.
 
 Three smaller items are open as well and are stated where they arise: the simulation

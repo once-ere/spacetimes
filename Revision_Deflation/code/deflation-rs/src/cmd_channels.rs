@@ -37,11 +37,12 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let mut rows: Vec<Vec<String>> = Vec::new();
     let mut numbers: Vec<[f64; 3]> = Vec::new();
     let mut closed_dev: f64 = 0.0;
-    let mut n_channels = 0;
+    // the distinct pair channels (the same channels are evaluated at each of the three momenta)
+    let mut channel_names: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
     for &k in &[0.1, 1.0, 3.0] {
         for op in [OneParticle::new_1671(&gm), OneParticle::new_1644(&gm)] {
             for r in channel_table(&op, m, k, &thetas) {
-                n_channels += 1;
+                channel_names.insert(r.channel.clone());
                 for (i, th) in thetas.iter().enumerate() {
                     rows.push(vec![format!("{}d", r.tag), r.channel.clone(), r.description.clone(), format!("{}", m), format!("{}", k),
                         format!("{:.6}", th.to_degrees()), format!("{:.6e}", r.norm), format!("{:.10e}", r.f_s[i]), format!("{:.10e}", r.f_p[i])]);
@@ -56,6 +57,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
             }
         }
     }
+    let n_channels = channel_names.len();
     write_csv_str("pair_channel_kernel.csv",
         &[("content", "on-shell exchange amplitude F_X(p', p) of the Vorton-Scalar in representative pair channels on the deflating spacetimes, for fields that do not depend on x5, x6, x7 (frame matrices, weighted fields); F > 0 is attraction. The amplitude of a channel is F_X times the square of the coupling of the moment, which grows as exp(gsum x4)".to_string()),
           ("definition", "F_X = Tr[Phi_X(p')^T V1 conj(Phi_X(p)) V2^T]/sqrt(N(p') N(p)); V = U^dagger Gamma U; Gamma_S = beta (radial mode), Gamma_P = i beta chi (phase mode)".to_string()),
@@ -84,7 +86,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         Err(_) => {}
     }
     rep.add("def-K1", "numerical",
-        &format!("the exchange amplitudes of the Vorton-Scalar in {} pair channels (both spacetimes, three momenta, 13 angles: {} rows) computed again with the frame matrices agree with every number of the file data/pair_channel_kernel.csv of the main project to the digits printed there ({} rows compared). For fields that do not depend on x5, x6, x7 the amplitude of a channel on the deflating spacetime is the flat amplitude times the square of the coupling of the moment", n_channels, numbers.len(), compared),
+        &format!("the exchange amplitudes of the Vorton-Scalar in the {} representative pair channels of the main project ({} on each spacetime; three momenta and 13 scattering angles each: {} rows) computed again with the frame matrices agree with every number of the file data/pair_channel_kernel.csv of the main project to the digits printed there ({} rows compared). For fields that do not depend on x5, x6, x7 the amplitude of a channel on the deflating spacetime is the flat amplitude times the square of the coupling of the moment", n_channels, n_channels / 2, numbers.len(), compared),
         compared == numbers.len() && compared > 0 && worst <= 1.0);
     rep.add("def-K2", "numerical",
         &format!("the amplitudes of the hidden-axis channel reproduce the closed forms of the main project (largest deviation {:.1e})", closed_dev), closed_dev < 1e-9);
@@ -172,7 +174,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
           ("command", "deflation channels".to_string())],
         &["coordinate", "rate", "varpi_b", "order", "n_cr", "n_exact", "rel_dev", "norm_dev"], &crow)?;
     rep.add("def-B3", "numerical",
-        &format!("7+1: a mode of the Vorton-Scalar that depends on one deflating coordinate and starts empty ends with 1/(exp(2 pi varpi_b/rate_t) - 1) quanta, a Bose-Einstein law with the temperature rate_t/(2 pi): 36 cases (varpi_b/rate_t = 0.25 to 3, each of the three coordinates), largest relative deviation {:.1e}; the Bogoliubov coefficients satisfy |alpha|^2 - |beta|^2 = 1 to {:.1e}", c_dev, c_norm),
+        &format!("7+1: a mode of the Vorton-Scalar that depends on one deflating coordinate and starts empty ends with 1/(exp(2 pi varpi_b/rate_t) - 1) quanta, a Bose-Einstein law with the temperature rate_t/(2 pi): 36 cases (varpi_b/rate_t = 0.25 to 3, each of the three coordinates; the number is read off where the physical wavenumber is 3000 varpi_b), largest relative deviation {:.1e}; the Bogoliubov coefficients satisfy |alpha|^2 - |beta|^2 = 1 to {:.1e}", c_dev, c_norm),
         c_dev < 1e-4 && c_norm < 1e-7);
     // (b4) bounded solutions, 4+4
     let bg1 = Background { rate: [1.0, 1.0, 1.0], cst: [1.0, 1.0, 1.0] };
