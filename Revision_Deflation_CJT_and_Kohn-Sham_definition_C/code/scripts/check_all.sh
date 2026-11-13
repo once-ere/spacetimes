@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# check_all.sh (Revision_Deflation_CJT_and_Kohn-Sham_definition_C) -- one verdict for the whole folder.
+#
+# Runs the checks of the documents again and reads the verdict of every check report in
+# data/.  Prints one line for each, and ends with the status 0 only if every one of them
+# passes.  It exists because a report that fails is easy to overlook when only the last
+# lines of a long output are read: nothing is to be committed unless this script ends
+# with "ALL PASS".
+#
+# It does NOT run the program again (the commands of `deflation_cjt_ks_c` take about two and
+# a half hours) and it does not run the two independent verifications or the mutation test
+# again (about twelve minutes); it reads the reports that they wrote.  Run those first when
+# a program or a data file was changed.
+#
+# Usage (from the folder Revision_Deflation_CJT_and_Kohn-Sham_definition_C):
+#     bash code/scripts/check_all.sh
+set -u
+cd "$(dirname "$0")/../.."
+fail=0
+line() { printf '%-6s %s\n' "$1" "$2"; }
+
+# 1. checks of the documents, executed now
+for s in check_numbers check_symbols check_self_contained; do
+    if python3 code/scripts/$s.py > /dev/null 2>&1; then line PASS "code/scripts/$s.py"; else line FAIL "code/scripts/$s.py"; fail=1; fi
+done
+if python3 code/scripts/vendor_eb.py --check > /dev/null 2>&1; then line PASS "code/scripts/vendor_eb.py --check"; else line FAIL "code/scripts/vendor_eb.py --check"; fail=1; fi
+
+# 2. the reports in data/: "N of N checks passed", "N of N deliberate errors detected", or a line [PASS]/[FAIL]
+for f in data/*_checks.txt data/*_checks_independent.txt data/mutation_test_independent.txt; do
+    [ -f "$f" ] || continue
+    if grep -q '^\[FAIL\]' "$f"; then line FAIL "$f (contains a failed check)"; fail=1; continue; fi
+    c=$(grep -m1 -oE '[0-9]+ of [0-9]+ (checks passed|deliberate errors detected)' "$f" || true)
+    if [ -n "$c" ]; then
+        a=${c%% of *}; b=${c#* of }; b=${b%% *}
+        if [ "$a" = "$b" ]; then line PASS "$f ($c)"; else line FAIL "$f ($c)"; fail=1; fi
+    elif grep -q '^\[PASS\]' "$f"; then line PASS "$f"
+    else line FAIL "$f (no verdict found)"; fail=1
+    fi
+done
+
+# 3. no document may contain an unresolved placeholder
+if grep -l '{{[A-Z]*:' provenance/*.md manuscript/*.md manuscript/*.tex ./*.md 2>/dev/null | grep -q .; then
+    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md manuscript/*.md manuscript/*.tex ./*.md 2>/dev/null | tr '\n' ' ')"; fail=1
+else
+    line PASS "no unresolved placeholder in the built documents"
+fi
+
+# 4. a report that a document prints must be the report as it now is in data/
+#    (a document assembled before a check was run again would print an outdated report)
+stale=$(python3 - <<'PY'
+import glob, os, re
+out = []
+for src in sorted(glob.glob("docs_src/*.src.md")):
+    text = open(src, encoding="utf-8").read()
+    m = re.match(r"<!-- OUTPUT: (.+?) -->", text)
+    if not m or not os.path.exists(m.group(1)):
+        out.append("%s (not assembled)" % src)
+        continue
+    built = open(m.group(1), encoding="utf-8").read()
+    for f in re.findall(r"\{\{FILE:([^}]+)\}\}", text):
+        if not os.path.exists(f) or open(f, encoding="utf-8").read().strip() not in built:
+            out.append("%s prints an outdated %s" % (m.group(1), f))
+print("; ".join(out))
+PY
+)
+if [ -n "$stale" ]; then line FAIL "$stale (run assemble_docs.py and build_docs.sh again)"; fail=1
+else line PASS "every report printed in a document is the current report"; fi
+
+# 5. a formula that ends directly before a digit ("$x=$0.5") is not read as a formula by pandoc
+#    and would be printed with its dollar signs
+bad=$(python3 - <<'PY'
+import glob, re
+out = []
+for f in sorted(glob.glob("*.md") + glob.glob("provenance/*.md") + glob.glob("manuscript/*.md")):
+    text = open(f, encoding="utf-8").read()
+    text = re.sub(r"(?s)```.*?```", " ", text)
+    text = re.sub(r"`[^`\n]*`", " ", text)
+    text = re.sub(r"(?s)\$\$.*?\$\$", " ", text)
+    for para in re.split(r"\n\s*\n", text):
+        segs = re.split(r"(?<!\\)\$", para)
+        for i in range(1, len(segs) - 1, 2):
+            if segs[i + 1][:1].isdigit():
+                out.append("%s: ...$%s$%s" % (f, segs[i][-20:], segs[i + 1][:8]))
+                break
+print("; ".join(out[:5]))
+PY
+)
+if [ -n "$bad" ]; then line FAIL "a formula ends directly before a digit: $bad"; fail=1
+else line PASS "no formula ends directly before a digit"; fi
+
+if [ $fail -eq 0 ]; then echo "ALL PASS"; else echo "SOME CHECK FAILS"; fi
+exit $fail
