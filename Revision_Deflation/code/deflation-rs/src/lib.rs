@@ -13,6 +13,7 @@
 //! * `rat`     exact rational and complex-rational numbers;
 //! * `qmat`    exact matrices over Q + iQ;
 //! * `metric`  geometry: metric, Christoffel symbols, curvature, Killing vectors;
+//! * `modes`   solutions of the Dirac equations mode by mode: pair creation (7+1), extinction (4+4);
 //! * `io`      data files with self-describing headers;
 //! * `geometry` machine checks of the geometry; geodesics;
 //! * `curved`  Dirac matrices, spin connection and Dirac operators on the deflating spacetimes;
@@ -24,5 +25,6 @@ pub mod curved;
 pub mod geometry;
 pub mod io;
 pub mod metric;
+pub mod modes;
 pub mod qmat;
 pub mod rat;
