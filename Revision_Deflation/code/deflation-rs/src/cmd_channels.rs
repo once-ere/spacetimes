@@ -96,12 +96,12 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         gl_rows.push(vec![op.tag.parse::<f64>().unwrap(), w]);
     }
     write_csv("gl_quartic_check.csv",
-        &[("content", "check of the identities Tr[m_bos m_bos^dagger]/8 = sum_a |Delta^a|^2 and Tr[(m_bos m_bos^dagger)^2]/8 = 2 (sum_a |Delta^a|^2)^2 - |eta_ab Delta^a Delta^b|^2 for the gap matrix m_bos of the four spin-0 vector pairs (frame components a = 0, 5, 6, 7), with eta_ab the frame metric restricted to these axes: (-1,-1,-1,-1) in 7+1 and (+1,-1,-1,-1) in 4+4; five complex test vectors, at rest and at |p| = m".to_string()),
+        &[("content", "check of the identities Tr[M_gap M_gap^dagger]/8 = sum_a |Delta^a|^2 and Tr[(M_gap M_gap^dagger)^2]/8 = 2 (sum_a |Delta^a|^2)^2 - |eta_ab Delta^a Delta^b|^2 for the gap matrix M_gap of the four spin-0 vector pairs (frame components a = 0, 5, 6, 7), with eta_ab the frame metric restricted to these axes: (-1,-1,-1,-1) in 7+1 and (+1,-1,-1,-1) in 4+4; five complex test vectors, at rest and at |p| = m".to_string()),
           ("spacetime", "1671: deflating 7+1 spacetime; 1644: deflating 4+4 spacetime (frame matrices)".to_string()),
           ("command", "deflation channels".to_string())],
         &["spacetime", "largest_deviation"], &gl_rows)?;
     rep.add("def-K3", "numerical",
-        &format!("the quartic invariant of the gap matrix of the four vector pairs, Tr[(m_bos m_bos^dagger)^2]/8 = 2 (sum |Delta^a|^2)^2 - |eta_ab Delta^a Delta^b|^2 with the frame metric of x0, x5, x6, x7, holds on both deflating spacetimes (largest deviation {:.1e}); in coordinate components Delta_t = b_t(x4) Delta^t the same form reads with the metric g_tt of the moment", gl_dev), gl_dev < 1e-9);
+        &format!("the quartic invariant of the gap matrix of the four vector pairs, Tr[(M_gap M_gap^dagger)^2]/8 = 2 (sum |Delta^a|^2)^2 - |eta_ab Delta^a Delta^b|^2 with the frame metric of x0, x5, x6, x7, holds on both deflating spacetimes (largest deviation {:.1e}); in coordinate components Delta_t = b_t(x4) Delta^t the same form reads with the metric g_tt of the moment", gl_dev), gl_dev < 1e-9);
 
     // ---- (B) the exchanged field ---------------------------------------------------------------
     // (b1) static source
@@ -119,7 +119,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         src_text.push_str(&format!(" {:.1e}", (last - 1.0).abs()));
     }
     write_csv("static_source.csv",
-        &[("content", "the field of a static source on the deflating background: solution of S'' - gsum S' + w2 S = exp(gsum x4) from S = S' = 0 at x4 = 0, divided by the exact particular solution exp(gsum x4)/w2; w2 = k^2 + m_bos^2".to_string()),
+        &[("content", "the field of a static source on the deflating background: solution of phi_bos'' - gsum phi_bos' + w2 phi_bos = exp(gsum x4) from phi_bos = phi_bos' = 0 at x4 = 0, divided by the exact particular solution exp(gsum x4)/w2; w2 = k^2 + m_bos^2".to_string()),
           ("columns", "w2; gsum; x4; tau_d = gsum x4; ratio (tends to 1: the field of the source is the Yukawa field of the mass m_bos, with a strength that grows as exp(gsum x4))".to_string()),
           ("command", "deflation channels".to_string())],
         &["w2", "gsum", "x4", "tau_d", "ratio"], &srows)?;
@@ -140,12 +140,12 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         }
     }
     write_csv("scalar_zero_modes.csv",
-        &[("content", "a scalar field of mass m_bos that does not depend on x5, x6, x7 on the deflating spacetimes: S ~ exp(i k.x + sigma x4), sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2); units gsum = 1".to_string()),
-          ("columns", "m_bos (0: the phase mode; m_s for the radial mode); k; real and imaginary parts of the two exponents sigma".to_string()),
+        &[("content", "a scalar field of mass m_bos that does not depend on x5, x6, x7 on the deflating spacetimes: phi_bos ~ exp(i k.x + exponent x4), exponent = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2); units gsum = 1".to_string()),
+          ("columns", "m_bos (0: the phase mode; m_s for the radial mode); k; real and imaginary parts of the two exponents".to_string()),
           ("command", "deflation channels".to_string())],
-        &["m_bos", "k", "sigma1_re", "sigma1_im", "sigma2_re", "sigma2_im"], &zrows)?;
+        &["m_bos", "k", "exponent1_re", "exponent1_im", "exponent2_re", "exponent2_im"], &zrows)?;
     rep.add("def-B2", "exact",
-        "a mode of the Vorton-Scalar that does not depend on x5, x6, x7 goes as exp(sigma x4) with sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2): it oscillates if and only if k^2 + m_bos^2 > gsum^2/4, and its amplitude then grows as exp(gsum x4/2) (the weighted field has constant amplitude: the number of quanta is conserved). The phase mode (m_bos = 0) does not oscillate for k < gsum/2; the radial mode oscillates at every k if m_s > gsum/2 (table data/scalar_zero_modes.csv)", band_ok);
+        "a mode of the Vorton-Scalar that does not depend on x5, x6, x7 goes as exp(exponent x4) with exponent = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2): it oscillates if and only if k^2 + m_bos^2 > gsum^2/4, and its amplitude then grows as exp(gsum x4/2) (the weighted field has constant amplitude: the number of quanta is conserved). The phase mode (m_bos = 0) does not oscillate for k < gsum/2; the radial mode oscillates at every k if m_s > gsum/2 (table data/scalar_zero_modes.csv)", band_ok);
     // (b3) creation of quanta, 7+1
     let bg = Background { rate: [1.0, 2.0, 0.5], cst: [1.0, 0.7, 1.3] };
     let mut crow: Vec<Vec<f64>> = Vec::new();

@@ -46,7 +46,7 @@ rates_1_2_3 rates_2_2_5 rates_1_1_1 dim_J dim_A dim_B dim_X dim_Y dim_T SO7_mult
 log_amp_min log_amp_max standing_wave_dev charge_ratio ratio_min ratio_final
 gsum_over_H0 gsum_per_yr gsum_max_per_yr gsum_max_over_H0 hbar_rate_eV T_K exponent_1keV exponent_1GeV
 change_LLR change_BBN_G change_BBN_GF growth_ratio_fixed_h f_growth_ratio_fixed_h
-sigma1_re sigma1_im sigma2_re sigma2_im sigma_over_m_v10 sigma_over_m_v156 sigma_over_m_v1000
+exponent1_re exponent1_im exponent2_re exponent2_im sigma_over_m_v10 sigma_over_m_v156 sigma_over_m_v1000
 alpha_today D_today m_s_over_m alpha_ratio beta_ratio K_ratio beta_Tc dalpha_dlnT xi_GL xi_GL_Tc_over_vF xi_kF
 gap_fixed_point gap_newton max_rel_diff V_BCS V_over_V_BCS s_min_minus_1 curvature_min Tc_linear Tc_second_variation Tc_over_gap
 Tc Tc_over_EF gap0 gap0_over_Tc heat_capacity_jump D_c_gap_equation D_c_schroedinger

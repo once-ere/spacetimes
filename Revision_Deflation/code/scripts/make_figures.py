@@ -608,19 +608,19 @@ def fig_scalar():
     for k, mass in enumerate((0.0, 0.3)):
         sel = np.isclose(z["m_bos"], mass)
         c, ls, _ = STYLES[k]
-        ax.plot(z["k"][sel], z["sigma1_re"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
-        ax.plot(z["k"][sel], z["sigma2_re"][sel], color=c, ls=ls)
+        ax.plot(z["k"][sel], z["exponent1_re"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
+        ax.plot(z["k"][sel], z["exponent2_re"][sel], color=c, ls=ls)
     ax.set_xlabel("wavenumber $k$ / gsum")
-    ax.set_ylabel("growth exponents Re $\\sigma$ / gsum")
+    ax.set_ylabel("real part of the exponents / gsum")
     ax.legend(loc="upper right", fontsize=7.0)
     panel_label(ax, "(a) growth of the modes")
     ax = axes[1]
     for k, mass in enumerate((0.0, 0.3, 1.0)):
         sel = np.isclose(z["m_bos"], mass)
         c, ls, _ = STYLES[k]
-        ax.plot(z["k"][sel], z["sigma1_im"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
+        ax.plot(z["k"][sel], z["exponent1_im"][sel], color=c, ls=ls, label="$m_{\\rm bos}=%g$" % mass)
     ax.set_xlabel("$k$ / gsum")
-    ax.set_ylabel("frequency Im $\\sigma$ / gsum")
+    ax.set_ylabel("imaginary part of the exponent / gsum")
     ax.legend(loc="upper left", fontsize=7.0)
     panel_label(ax, "(b) frequency of oscillation")
     ax = axes[2]

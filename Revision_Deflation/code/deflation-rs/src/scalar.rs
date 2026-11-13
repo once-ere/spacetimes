@@ -1,17 +1,17 @@
 //! The two modes of the Vorton-Scalar on the deflating spacetimes.
 //!
 //! FIELD EQUATION.  On either deflating spacetime the covariant wave operator of a
-//! scalar field S(x) is, with a prime for d/dx4,
+//! scalar field phi_bos(x) is, with a prime for d/dx4,
 //!
-//!   7+1:  (1/sqrt|g|) d_mu ( sqrt|g| g^{mu nu} d_nu S ) =  S'' - gsum S' - Lap S - sum_t b_t^{-2} d_t^2 S ,
-//!   4+4:  the same operator up to an overall sign, with  + sum_t b_t^{-2} d_t^2 S  (x5, x6, x7 are times),
+//!   7+1:  (1/sqrt|g|) d_mu ( sqrt|g| g^{mu nu} d_nu phi_bos ) =  phi_bos'' - gsum phi_bos' - Lap phi_bos - sum_t b_t^{-2} d_t^2 phi_bos ,
+//!   4+4:  the same operator up to an overall sign, with  + sum_t b_t^{-2} d_t^2 phi_bos  (x5, x6, x7 are times),
 //!
 //! where Lap is the Laplacian of the flat coordinates x0..x3, gsum = g55 + g66 + g77 and
 //! sqrt|g| = b_5 b_6 b_7 falls as exp(-gsum x4).  The first-derivative term has the sign
 //! opposite to the friction term of an expanding universe: the deflation feeds the field.
 //!
 //! For a field of mass m_bos proportional to exp(i k.x + i k_t x^t), the weighted field
-//! Shat = sqrt(b_5 b_6 b_7) S = exp(-gsum x4/2) S obeys
+//! Shat = sqrt(b_5 b_6 b_7) phi_bos = exp(-gsum x4/2) phi_bos obeys
 //!
 //!   Shat'' + [ varpi_b^2 + sgn k_d(x4)^2 ] Shat = 0 ,     varpi_b^2 = k^2 + m_bos^2 - gsum^2/4 ,
 //!
@@ -19,15 +19,15 @@
 //! the Vorton-Scalar has m_bos = m_s, the phase mode m_bos = 0.
 //!
 //! WHAT THIS MODULE COMPUTES.
-//!  (a) Fields that do not depend on x5, x6, x7 (k_d = 0): S goes as exp(sigma x4) with
-//!      sigma = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2).  For k^2 + m_bos^2 > gsum^2/4 the weighted
+//!  (a) Fields that do not depend on x5, x6, x7 (k_d = 0): phi_bos goes as exp(exponent x4) with
+//!      exponent = gsum/2 +- sqrt(gsum^2/4 - k^2 - m_bos^2).  For k^2 + m_bos^2 > gsum^2/4 the weighted
 //!      field oscillates with the constant frequency varpi_b (the number of quanta is
 //!      conserved); for k^2 + m_bos^2 < gsum^2/4 it does not oscillate.  For the phase mode the
 //!      band k < gsum/2 always exists.
 //!  (b) The field of a static source.  A source at rest that is spread uniformly over the
 //!      deflating coordinates has a proper density proportional to 1/sqrt|g|, that is to
-//!      exp(+gsum x4).  For S'' - gsum S' + (k^2 + m_bos^2) S = J exp(gsum x4) the particular
-//!      solution is S = J exp(gsum x4)/(k^2 + m_bos^2), exactly: the field of the source is the
+//!      exp(+gsum x4).  For phi_bos'' - gsum phi_bos' + (k^2 + m_bos^2) phi_bos = J exp(gsum x4) the particular
+//!      solution is phi_bos = J exp(gsum x4)/(k^2 + m_bos^2), exactly: the field of the source is the
 //!      Yukawa field of the mass m_bos itself, with a strength that grows as exp(gsum x4); the
 //!      shift -gsum^2/4 does not enter.  `static_source_response` integrates the equation
 //!      from zero initial data and shows that the solution approaches this form.
@@ -51,8 +51,8 @@ const CF4_C2: f64 = 0.5 + 0.288_675_134_594_812_9;
 const CF4_A1: f64 = 0.25 + 0.288_675_134_594_812_9;
 const CF4_A2: f64 = 0.25 - 0.288_675_134_594_812_9;
 
-/// The two exponents sigma of S ~ exp(sigma x4) for a field that does not depend on the
-/// deflating coordinates: sigma = gsum/2 +- sqrt(gsum^2/4 - w2), w2 = k^2 + m_bos^2.
+/// The two exponents of phi_bos ~ exp(exponent x4) for a field that does not depend on the
+/// deflating coordinates: exponent = gsum/2 +- sqrt(gsum^2/4 - w2), w2 = k^2 + m_bos^2.
 /// Returns (real part of both, imaginary part or 0, real square root or 0).
 pub fn zero_mode_exponents(w2: f64, gsum: f64) -> (C64, C64) {
     let disc = 0.25 * gsum * gsum - w2;
@@ -213,12 +213,12 @@ pub fn boson_bounded_exact(s: f64, nu: f64) -> f64 {
 }
 
 /// The field of a static source on the deflating background (item (b) of the module
-/// documentation).  Integrates S'' - gsum S' + w2 S = exp(gsum x4) from S = S' = 0 at
+/// documentation).  Integrates phi_bos'' - gsum phi_bos' + w2 phi_bos = exp(gsum x4) from phi_bos = phi_bos' = 0 at
 /// x4 = 0 to x4 = x4_end with the classical Runge-Kutta method and returns the samples
-/// (x4, S(x4) w2 exp(-gsum x4)): the ratio of the solution to the exact particular
+/// (x4, phi_bos(x4) w2 exp(-gsum x4)): the ratio of the solution to the exact particular
 /// solution exp(gsum x4)/w2.  It tends to 1; the difference falls as exp(-gsum x4/2).
 pub fn static_source_response(w2: f64, gsum: f64, x4_end: f64, n: usize) -> Vec<[f64; 2]> {
-    // variables u = S exp(-gsum x4) (so that the target is the constant 1/w2):
+    // variables u = phi_bos exp(-gsum x4) (so that the target is the constant 1/w2):
     //   u'' + gsum u' + w2 u = 1
     let h = x4_end / n as f64;
     let f = |u: f64, v: f64| -> (f64, f64) { (v, 1.0 - gsum * v - w2 * u) };
@@ -242,10 +242,10 @@ mod tests {
 
     #[test]
     fn exponents_of_fields_that_do_not_depend_on_the_deflating_coordinates() {
-        // massless, k = 0: sigma = gsum and 0
+        // massless, k = 0: the exponents are gsum and 0
         let (a, b) = zero_mode_exponents(0.0, 3.0);
         assert!((a.re - 3.0).abs() < 1e-15 && b.re.abs() < 1e-15 && a.im == 0.0);
-        // k^2 + m_bos^2 = 4, gsum = 2: sigma = 1 +- i sqrt(3)
+        // k^2 + m_bos^2 = 4, gsum = 2: the exponents are 1 +- i sqrt(3)
         let (a, b) = zero_mode_exponents(4.0, 2.0);
         assert!((a.re - 1.0).abs() < 1e-15 && (a.im - 3f64.sqrt()).abs() < 1e-15 && (b.im + 3f64.sqrt()).abs() < 1e-15);
     }

@@ -145,7 +145,7 @@ same object in the Rust program and in the data files.
 | $n_{\rm cr}$ | `n_cr`, `n_min`, `n_mean`, `n_max`, `n_exact`, `fd5`, `fd6` | the number of particles per internal state that the deflation creates in a mode that starts empty (7+1) | DMD 4.2; M IV | new |
 | $T_{\rm defl}$ | — | the temperature of the thermal spectrum of the created quanta, $\mathrm{rate}_t/2\pi$ in units with $\hbar=k_B=1$ (7+1) | DMD 4.2; M IV | new |
 | $S_{\rm WKB}$ | `S_wkb` | $\int\sqrt{k_d^2-E_\perp^2}\,dx4$ from the turning value on: exponent of the extinction of a bounded solution (4+4) | DMD 4.3; M IV | new |
-| $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
+| $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `phi_bos`, `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
 | $\varpi_b$ | `varpi_b` | $\sqrt{k^2+m_{\rm bos}^2-\mathrm{gsum}^2/4}$: the frequency of the weighted boson mode that does not depend on the deflating coordinates | RS1 2 | new |
 
 Symbols that this document takes over unchanged from the main project — the matrices

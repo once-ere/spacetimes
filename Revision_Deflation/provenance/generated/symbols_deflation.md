@@ -49,7 +49,7 @@
 | $n_{\rm cr}$ | `n_cr`, `n_min`, `n_mean`, `n_max`, `n_exact`, `fd5`, `fd6` | the number of particles per internal state that the deflation creates in a mode that starts empty (7+1) | DMD 4.2; M IV | new |
 | $T_{\rm defl}$ | — | the temperature of the thermal spectrum of the created quanta, $\mathrm{rate}_t/2\pi$ in units with $\hbar=k_B=1$ (7+1) | DMD 4.2; M IV | new |
 | $S_{\rm WKB}$ | `S_wkb` | $\int\sqrt{k_d^2-E_\perp^2}\,dx4$ from the turning value on: exponent of the extinction of a bounded solution (4+4) | DMD 4.3; M IV | new |
-| $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
+| $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `phi_bos`, `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
 | $\varpi_b$ | `varpi_b` | $\sqrt{k^2+m_{\rm bos}^2-\mathrm{gsum}^2/4}$: the frequency of the weighted boson mode that does not depend on the deflating coordinates | RS1 2 | new |
 
 **D4 The deflation clock and the couplings**
@@ -65,6 +65,7 @@
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $\Xi_d$ | `Xi_d` | $\mathrm{gsum}/(\lambda\,\Delta_{\rm eq})$: decides whether the paired state can follow the deflation ($\Xi_d\ll1$: yes) | RS1 7; M VIII | new |
+| $n_k$ | — | occupation of the pair of states of the single-particle energy $\xi_k$ in the shell model of the paired state (with the index $k$; the letter $n$ without index is a density) | RS1 7 | new |
 | $\Delta_{\rm eq}$ | `gap_eq` | the equilibrium gap for the pairing strength of the moment | RS1 7 | new |
 | $E_{\rm sh}$ | `E_sh` | half-width in energy of the shell of states around the Fermi surface in the model of the pair dynamics; unit of energy and of inverse time there | RS1 7 | new |
 | $n_{\rm ex}$ | `n_ex`, `n_ex_final` | density of broken pairs (in units of $E_{\rm sh}$ times the density of states) | RS1 7 | new |
@@ -84,6 +85,8 @@
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $P_c$ | `Pc` | $i\alpha^1\alpha^2\alpha^3\chi$, the product of the five matrices of the sector that does not depend on the extra coordinates; equal, up to sign, to the generator $P$ of $U(1)_E$ of the main registry | RS1 6 | new |
+| $\theta_{12}$ | — | the angle around a vortex line that lies along $x3$, in the plane of $x1$ and $x2$ (with the index 12; $\theta$ with other indices and the scattering angle keep the meanings of the main project) | RS1 6 | new |
+| $\mathsf M$ (main registry) | `M_gap` | the $8\times8$ gap matrix of the main registry; `M_gap` is its spelling in the statements of the programs of the revision | RS1 5 | main |
 | $w_z$ | `w_z` | a constant spinor of a fermion zero mode on a vortex line | RS1 6 | new |
 
 **D8 Tags and identifiers**
@@ -144,7 +147,7 @@
 | $n_{\rm cr}$ | `n_cr`, `n_min`, `n_mean`, `n_max`, `n_exact`, `fd5`, `fd6` | the number of particles per internal state that the deflation creates in a mode that starts empty (7+1) | DMD 4.2; M IV | new |
 | $T_{\rm defl}$ | — | the temperature of the thermal spectrum of the created quanta, $\mathrm{rate}_t/2\pi$ in units with $\hbar=k_B=1$ (7+1) | DMD 4.2; M IV | new |
 | $S_{\rm WKB}$ | `S_wkb` | $\int\sqrt{k_d^2-E_\perp^2}\,dx4$ from the turning value on: exponent of the extinction of a bounded solution (4+4) | DMD 4.3; M IV | new |
-| $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
+| $\varphi_{\rm bos}$, $\hat\varphi_{\rm bos}$, $m_{\rm bos}$ | `phi_bos`, `Shat`, `Shat2`, `m_bos` | a mode of the Vorton-Scalar (the radial mode, $m_{\rm bos}=m_s$, or the phase mode, $m_{\rm bos}=0$), its weighted form $\sqrt{V_d}\,\varphi_{\rm bos}$, and its mass | RS1 2 | new |
 | $\varpi_b$ | `varpi_b` | $\sqrt{k^2+m_{\rm bos}^2-\mathrm{gsum}^2/4}$: the frequency of the weighted boson mode that does not depend on the deflating coordinates | RS1 2 | new |
 <!-- END symbols_D3 -->
 
@@ -160,6 +163,7 @@
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $\Xi_d$ | `Xi_d` | $\mathrm{gsum}/(\lambda\,\Delta_{\rm eq})$: decides whether the paired state can follow the deflation ($\Xi_d\ll1$: yes) | RS1 7; M VIII | new |
+| $n_k$ | — | occupation of the pair of states of the single-particle energy $\xi_k$ in the shell model of the paired state (with the index $k$; the letter $n$ without index is a density) | RS1 7 | new |
 | $\Delta_{\rm eq}$ | `gap_eq` | the equilibrium gap for the pairing strength of the moment | RS1 7 | new |
 | $E_{\rm sh}$ | `E_sh` | half-width in energy of the shell of states around the Fermi surface in the model of the pair dynamics; unit of energy and of inverse time there | RS1 7 | new |
 | $n_{\rm ex}$ | `n_ex`, `n_ex_final` | density of broken pairs (in units of $E_{\rm sh}$ times the density of states) | RS1 7 | new |
@@ -179,6 +183,8 @@
 | symbol | in programs and data files | meaning | defined in | origin |
 |:---|:---|:------------|:---|:---|
 | $P_c$ | `Pc` | $i\alpha^1\alpha^2\alpha^3\chi$, the product of the five matrices of the sector that does not depend on the extra coordinates; equal, up to sign, to the generator $P$ of $U(1)_E$ of the main registry | RS1 6 | new |
+| $\theta_{12}$ | — | the angle around a vortex line that lies along $x3$, in the plane of $x1$ and $x2$ (with the index 12; $\theta$ with other indices and the scattering angle keep the meanings of the main project) | RS1 6 | new |
+| $\mathsf M$ (main registry) | `M_gap` | the $8\times8$ gap matrix of the main registry; `M_gap` is its spelling in the statements of the programs of the revision | RS1 5 | main |
 | $w_z$ | `w_z` | a constant spinor of a fermion zero mode on a vortex line | RS1 6 | new |
 <!-- END symbols_D7 -->
 
