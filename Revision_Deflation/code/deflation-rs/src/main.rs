@@ -591,7 +591,8 @@ fn cmd_cosmology() -> std::io::Result<bool> {
         0.5 * (lo + hi)
     };
     let gam_bbn = gam_of_g(g_bbn_min);
-    // the Higgs hypothesis H2: all masses m = y v/sqrt(2) are constant along the deflation; the four-dimensional vacuum value
+    // assumption HV (the vacuum value of the Vorton-Scalar sets the electroweak scale; this is NOT the author's hypothesis H2,
+    // in which the Higgs field is the pair condensate): all masses m = y v/sqrt(2) are constant along the deflation; the four-dimensional vacuum value
     // falls as exp(-gsum x4/2), so that the Fermi constant G_Fermi = 1/(sqrt(2) v^2) grows at the rate gsum.  Nucleosynthesis with
     // the fermion masses held fixed: G_Fermi at t = 1 s within about 10 to 20 per cent of today's value (Scherrer and Spergel 1993,
     // their case (b)).  Without assumption A2 the age is that of the model without deflation.
@@ -602,6 +603,35 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     // proton mass to the electron mass, also measured by the clocks, does not change in the model at all.
     let clocks = (1.0 + 2.0 * 1.1) * 1e-18;
     let gam_clock = clocks * HUBBLE_TIME_100_YR;
+    // the author's hypothesis H2 (the superfluid state is the Higgs field): the electroweak scale v_EW is then the scale of the
+    // pair condensate in the vacuum, a function of alpha_VS, which grows as exp(gsum x4).  With n_EW = d ln v_EW/d ln alpha_VS the
+    // masses of the ordinary fermions change at the rate n_EW gsum, while the proton mass (mostly due to the strong interaction)
+    // does not: |d ln mu_pe/dt| = n_EW gsum.  Atomic clocks: (d mu_pe/dt)/mu_pe = (-8 +- 36) e-18 per year; largest absolute
+    // value at two sigma: 8.0e-17 per year.  The bound is given for n_EW = 1 and scales as 1/n_EW.
+    let clocks_mu = (8.0 + 2.0 * 36.0) * 1e-18;
+    let gam_mu = clocks_mu * HUBBLE_TIME_100_YR;
+    // n_EW in the scale-invariant ladder equation (the test case of the main project, S4 Sec. 7.2): with
+    // rho^2 = (alpha_VS/alpha_c - 1)/4 the infrared scale of the condensate obeys rho ln(cutoff/scale) = atan(1/(2 rho)).
+    let ln_ratio = |x: f64| { let rho = (0.25 * (x - 1.0)).sqrt(); (1.0 / (2.0 * rho)).atan() / rho };
+    let n_ew = |x: f64| { let rho = (0.25 * (x - 1.0)).sqrt(); (1.0 + 4.0 * rho * rho) * (1.0 / (2.0 * rho)).atan() / (8.0 * rho.powi(3)) + 1.0 / (4.0 * rho * rho) };
+    let mut ew_rows: Vec<Vec<f64>> = Vec::new();
+    let mut ew_dev = 0.0_f64;
+    for x in [1.05, 1.1, 1.25, 1.5, 2.0, 3.0, 5.0, 10.0] {
+        // finite-difference derivative of -ln(cutoff/scale) with respect to ln(alpha_VS)
+        let e = 1e-5;
+        let fd = -(ln_ratio(x * (1.0 + e)) - ln_ratio(x * (1.0 - e))) / ((1.0 + e).ln() - (1.0 - e).ln());
+        ew_dev = ew_dev.max((fd / n_ew(x) - 1.0).abs());
+        ew_rows.push(vec![x, ln_ratio(x), n_ew(x), clocks_mu / n_ew(x), gam_mu / h0 / n_ew(x)]);
+    }
+    // the ratio alpha_VS/alpha_c at which n_EW = 1 (bisection)
+    let (mut lo1, mut hi1) = (1.5_f64, 10.0_f64);
+    for _ in 0..60 { let mid = 0.5 * (lo1 + hi1); if n_ew(mid) > 1.0 { lo1 = mid } else { hi1 = mid } }
+    let x_one = 0.5 * (lo1 + hi1);
+    write_csv("higgs_scale_exponent.csv",
+        &[("content", "the author's hypothesis H2 on a deflating spacetime: if the Higgs field is the pair condensate, the electroweak scale v_EW is the scale of that condensate and depends on alpha_VS, which grows as exp(gsum x4). Table: n_EW = d ln v_EW/d ln alpha_VS in the scale-invariant ladder equation (massless fermions and bosons; the test case of the supplement S4 of the main project, Sec. 7.2), where rho_c^2 = (alpha_VS/alpha_c - 1)/4 and rho_c ln(cutoff/scale) = atan(1/(2 rho_c))".to_string()),
+          ("columns", "alpha_over_alpha_c; ln_cutoff_over_scale; n_EW; gsum_max_per_yr and gsum_max_over_H0: the bound on the rate of deflation from the constancy of the ratio mu_pe of the proton mass to the electron mass, 8.0e-17 per year (two sigma), divided by n_EW".to_string()),
+          ("command", "deflation cosmology".to_string())],
+        &["alpha_over_alpha_c", "ln_cutoff_over_scale", "n_EW", "gsum_max_per_yr", "gsum_max_over_H0"], &ew_rows)?;
 
     // ---- the Hubble constant as a function of the rate -----------------------------------
     let mut rows: Vec<Vec<f64>> = Vec::new();
@@ -635,11 +665,14 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let rows: Vec<Vec<String>> = vec![
         vec!["lunar laser ranging".into(), "(dG_N/dt)/G_N = (7.1 +- 7.6) e-14 per year (68%)".into(), "G_N = G_8/(volume of the extra coordinates): (dG_N/dt)/G_N = gsum".into(), format!("{:.3e}", llr), format!("{:.3e}", gam_llr / h0), "gravity is eight-dimensional (A2)".into()],
         vec!["primordial nucleosynthesis".into(), "G_N(nucleosynthesis)/G_N(today) = 0.99 +0.06 -0.05 (two sigma)".into(), "G_N(nucleosynthesis)/G_N(today) = exp(-gsum t_0) > 0.94".into(), format!("{:.3e}", gam_bbn / HUBBLE_TIME_100_YR), format!("{:.4}", gam_bbn / h0), "A2, and a rate that is constant from nucleosynthesis until today".into()],
-        vec!["primordial nucleosynthesis, weak interaction".into(), "G_Fermi at t = 1 s within 20 per cent (10 per cent) of today's value, fermion masses held fixed".into(), "G_Fermi = 1/(sqrt(2) v^2) with the four-dimensional vacuum value v ~ exp(-gsum x4/2): G_Fermi(1 s)/G_Fermi(today) = exp(-gsum t_0) > 0.8 (0.9); all masses constant".into(), format!("{:.3e} ({:.3e})", gam_gfermi_20 / HUBBLE_TIME_100_YR, gam_gfermi_10 / HUBBLE_TIME_100_YR), format!("{:.3} ({:.3})", gam_gfermi_20 / h0, gam_gfermi_10 / h0), "the Higgs hypothesis H2: the Vorton-Scalar is the Higgs field, so that its four-dimensional vacuum value fixes the Fermi constant; a rate that is constant from nucleosynthesis until today; no assumption about gravity".into()],
-        vec!["atomic clocks".into(), "(d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year (68%), alpha = fine-structure constant; the ratio of the proton mass to the electron mass, (-8 +- 36) e-18 per year, does not change in the model".into(), "alpha ~ exp(gsum x4) if the electromagnetic field propagates along x5, x6, x7".into(), format!("{:.3e}", clocks), format!("{:.3e}", gam_clock / h0), "an assumption OUTSIDE the model, which contains no electromagnetic field: stated to show how strongly such an extension would be constrained".into()],
+        vec!["primordial nucleosynthesis, weak interaction".into(), "G_Fermi at t = 1 s within 20 per cent (10 per cent) of today's value, fermion masses held fixed".into(), "G_Fermi = 1/(sqrt(2) v^2) with the four-dimensional vacuum value v ~ exp(-gsum x4/2): G_Fermi(1 s)/G_Fermi(today) = exp(-gsum t_0) > 0.8 (0.9); all masses constant".into(), format!("{:.3e} ({:.3e})", gam_gfermi_20 / HUBBLE_TIME_100_YR, gam_gfermi_10 / HUBBLE_TIME_100_YR), format!("{:.3} ({:.3})", gam_gfermi_20 / h0, gam_gfermi_10 / h0), "the assumption HV: the four-dimensional vacuum value of the Vorton-Scalar sets the electroweak scale, as that of the Higgs field does (not the author's hypothesis H2, in which the Higgs field is the pair condensate); a rate that is constant from nucleosynthesis until today; no assumption about gravity".into()],
+        vec!["atomic clocks, mass ratio".into(), "(d mu_pe/dt)/mu_pe = (-8 +- 36) e-18 per year (68%), mu_pe = ratio of the proton mass to the electron mass".into(), "under H2 the electroweak scale is the scale of the pair condensate, v_EW ~ exp(n_EW gsum x4) with n_EW = d ln v_EW/d ln alpha_VS; the electron mass follows v_EW, the proton mass does not: |d ln mu_pe/dt| = n_EW gsum".into(), format!("{:.3e}", clocks_mu), format!("{:.3e}", gam_mu / h0), "the author's hypothesis H2 (the superfluid state is the Higgs field), for n_EW = 1; the bound scales as 1/n_EW (data/higgs_scale_exponent.csv)".into()],
+        vec!["atomic clocks".into(), "(d alpha/dt)/alpha = (1.0 +- 1.1) e-18 per year (68%), alpha = fine-structure constant".into(), "alpha ~ exp(gsum x4) if the electromagnetic field propagates along x5, x6, x7".into(), format!("{:.3e}", clocks), format!("{:.3e}", gam_clock / h0), "an assumption OUTSIDE the model, which contains no electromagnetic field: stated to show how strongly such an extension would be constrained".into()],
     ];
-    rep.add("def-C5", "numerical", &format!("bounds that do not rest on gravity: (i) if the Vorton-Scalar is the Higgs field (H2), the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_Fermi at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < {:.3} to {:.3} H_0, weaker than the bound from Newton's constant; (ii) the ratio of the proton mass to the electron mass does not change in the model, so that its measured constancy does not bound the rate; (iii) the fine-structure constant would bound it, gsum < {:.1e} per year = {:.1e} H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model", gam_gfermi_10 / h0, gam_gfermi_20 / h0, clocks, gam_clock / h0),
+    rep.add("def-C5", "numerical", &format!("bounds that do not rest on gravity: (i) under the assumption HV (the vacuum value of the Vorton-Scalar sets the electroweak scale) the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_Fermi at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < {:.3} to {:.3} H_0, weaker than the bound from Newton's constant; (ii) in the model as it stands (without H2 and without HV) no mass of ordinary matter depends on the deflation, and the measured constancy of the ratio of the proton mass to the electron mass does not bound the rate; (iii) the fine-structure constant would bound it, gsum < {:.1e} per year = {:.1e} H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model", gam_gfermi_10 / h0, gam_gfermi_20 / h0, clocks, gam_clock / h0),
         gam_gfermi_10 < gam_gfermi_20 && gam_gfermi_10 > gam_bbn && gam_clock < gam_llr);
+    rep.add("def-C6", "numerical", &format!("the author's hypothesis H2 (the superfluid state is the Higgs field) on a deflating spacetime: the electroweak scale is then the scale of the pair condensate, which depends on alpha_VS, and alpha_VS grows as exp(gsum x4). With n_EW = d ln v_EW/d ln alpha_VS the electron mass changes at the rate n_EW gsum and the proton mass does not; atomic clocks (ratio of the two masses constant to 8.0e-17 per year at two sigma) then give gsum < {:.1e} per year / n_EW = {:.2e} H_0 / n_EW, a bound {:.0} times stronger than that of lunar laser ranging for n_EW = 1, and one that needs no assumption about gravity. In the scale-invariant ladder equation of the main project n_EW = (1 + 4 rho_c^2) atan(1/(2 rho_c))/(8 rho_c^3) + 1/(4 rho_c^2) with rho_c^2 = (alpha_VS/alpha_c - 1)/4 (agreement with the numerical derivative: {:.1e}): n_EW = {:.1}, {:.2}, {:.2}, {:.2} for alpha_VS/alpha_c = 1.25, 2, 3, 5; it diverges at the critical coupling and exceeds 1 for alpha_VS < {:.2} alpha_c. For the model itself (massive fermions, massive radial mode) n_EW has not been computed", clocks_mu, gam_mu / h0, gam_llr / gam_mu, ew_dev, n_ew(1.25), n_ew(2.0), n_ew(3.0), n_ew(5.0), x_one),
+        ew_dev < 1e-6 && gam_clock < gam_mu && gam_mu < gam_llr && n_ew(2.0) > 1.0 && n_ew(5.0) < 1.0);
     write_csv_str("deflation_bounds.csv",
         &[("content", "upper bounds (two sigma) on the present total rate of deflation gsum = g55 + g66 + g77, each under the stated assumption".to_string()),
           ("columns", "observation; measured value; relation to gsum; bound on gsum per year; bound in units of H_0 = 67.36 km/s/Mpc; assumption".to_string()),

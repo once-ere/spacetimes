@@ -149,7 +149,7 @@ pub fn run() -> std::io::Result<bool> {
         ("D_VS", "alpha_VS m/m_s: decides whether two fermions bind", 1, 1, ""),
         ("C", "g_VS^2 m^2/m_s^2: decides the state of matter", 1, 1, ""),
         ("vortex energy per length", "proportional to v_VS^2 (four-dimensional)", -1, 1, ""),
-        ("G_Fermi (Fermi constant of the weak interaction) if the Vorton-Scalar is the Higgs field (H2)", "1/(sqrt(2) v_VS^2), four-dimensional vacuum value", 1, 1, "all masses m = y v/sqrt(2) stay constant"),
+        ("G_Fermi (Fermi constant of the weak interaction) if the vacuum value of the Vorton-Scalar sets the electroweak scale (assumption HV)", "1/(sqrt(2) v_VS^2), four-dimensional vacuum value", 1, 1, "all masses m = y v/sqrt(2) stay constant"),
         ("G_N (Newton's constant) if gravity is eight-dimensional (A2)", "G_8/(volume of x5 x6 x7)", 1, 1, ""),
     ];
     let erows: Vec<Vec<String>> = ex.iter().map(|(q, d, n, den, note)| vec![q.to_string(), d.to_string(), if *den == 1 { format!("{}", n) } else { format!("{}/{}", n, den) }, note.to_string()]).collect();

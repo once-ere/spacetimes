@@ -93,6 +93,32 @@ def text(name, value):
     FRAGS.append((name, str(value)))
 
 
+def tex_sci_in_text(q):
+    """Replace numbers such as 1.615e-11 inside a sentence by 1.615 x 10^-11 in LaTeX."""
+    def f(m_):
+        mant, e = m_.group(1), int(m_.group(2))
+        return mant if e == 0 else "$%s\\times10^{%d}$" % (mant, e)
+    return re.sub(r"(?<![A-Za-z_])(\d+\.\d+)e(-?\d+)", f, q)
+
+
+def tex_words(q):
+    """Program spellings in sentences -> document symbols."""
+    rep = [("(d alpha/dt)/alpha", "$(d\\alpha_{\\rm em}/dt)/\\alpha_{\\rm em}$"), ("alpha = fine-structure constant", "$\\alpha_{\\rm em}$ = fine-structure constant"),
+           ("(dG_N/dt)/G_N", "$(dG_N/dt)/G_N$"), ("G_N(nucleosynthesis)/G_N(today)", "$G_N$(nucleosynthesis)$/G_N$(today)"),
+           ("t = 1 s", "$t=1$ s"), ("+-", "$\\pm$"), ("e-14", "$\\times10^{-14}$"), ("e-18", "$\\times10^{-18}$"), ("G_Fermi", "$G_{\\rm Fermi}$"),
+           ("D_VS << 1", "$D_{VS}\\ll1$"), ("D_VS", "$D_{VS}$"), ("m_s/m", "$m_s/m$"), ("pairing strength lambda", "pairing strength $\\lambda$"),
+           ("fermion mass m,", "fermion mass $m$,"), ("mass m_s", "mass $m_s$"), ("gsum = H_0", "$\\mathrm{gsum}=H_0$"), ("G_N", "$G_N$"),
+           ("alpha_VS", "$\\alpha_{VS}$"), ("G_VS", "$G_{VS}$"), ("g_VS", "$g_{VS}$"), (", C", ", $C$"), ("OUTSIDE", "outside")]
+    held = []
+    for a, b in rep:                      # longest patterns first; each replacement is protected from the later ones
+        if a in q:
+            q = q.replace(a, "\x00%d\x00" % len(held))
+            held.append(b)
+    for k in range(len(held) - 1, -1, -1):
+        q = q.replace("\x00%d\x00" % k, held[k])
+    return q
+
+
 def tex_name(q):
     """Program names of quantities -> document symbols."""
     rep = [("alpha_VS", "$\\alpha_{VS}$"), ("G_VS", "$G_{VS}$"), ("D_VS", "$D_{VS}$"), ("g_VS", "$g_{VS}$"), ("y_VS", "$y_{VS}$"),
@@ -196,13 +222,12 @@ def rs1():
 def rs3():
     b = rows_of("deflation_bounds.csv")
     keys = list(b[0].keys())
-    rows = [[x[keys[0]], x[keys[1]].replace("+-", "$\\pm$").replace("e-14", "$\\times10^{-14}$").replace("e-18", "$\\times10^{-18}$").replace("G_N", "$G_N$").replace("G_Fermi", "$G_{\\rm Fermi}$"),
-             sci(x[keys[3]], 2) if not math.isnan(num(x[keys[3]])) else x[keys[3]], x[keys[4]], tex_name(x[keys[5]])] for x in b]
+    rows = [[x[keys[0]], tex_words(x[keys[1]]), tex_sci_in_text(x[keys[3]]), tex_sci_in_text(x[keys[4]]), tex_words(x[keys[5]])] for x in b]
     table("tbl_bounds", ["observation", "measured", "bound on gsum (per year)", "bound in units of $H_0$", "assumption"], rows, ["l", "L", "r", "r", "L"])
 
     h = rows_of("hubble_deflation.csv")
     rows = [[auto(x["gsum_over_H0"], 3), sci(x["gsum_per_yr"], 2), fix(100 * num(x["h"]), 2), fix(x["dH0"], 2), fix(x["GN_early"], 4), fix(x["rs_Mpc"], 2), fix(x["age_Gyr"], 2)] for x in h]
-    table("tbl_hubble", ["$\\mathrm{gsum}/H_0$", "gsum (per year)", "$H_0$ (km/s/Mpc)", "change", "$G_N$(early)$/G_N$(today)", "sound horizon (Mpc)", "age (Gyr)"], rows, ["r"] * 7)
+    table("tbl_hubble", ["$\\mathrm{gsum}/H_0$", "gsum (per year)", "$H_0$ (km/s/Mpc)", "change", "$G_N$ ratio", "sound horizon (Mpc)", "age (Gyr)"], rows, ["r"] * 7)
 
     g = rows_of("growth_deflation.csv")
     rows = [[auto(x["gsum_over_H0"], 3), fix(100 * num(x["h"]), 2), fix(x["growth_ratio"], 4), fix(x["f_growth_ratio"], 4), fix(x["f_sigma8_ratio"], 4), fix(x["growth_ratio_fixed_h"], 4), fix(x["f_growth_ratio_fixed_h"], 4)] for x in g]
@@ -210,12 +235,12 @@ def rs3():
 
     d = rows_of("dm_drift.csv")
     keys = list(d[0].keys())
-    rows = [[tex_name(x[keys[0]]), tex_name(x[keys[1]]), x[keys[2]]] + [sci(x[k], 2) if not math.isnan(num(x[k])) else x[k] for k in keys[3:6]] for x in d]
+    rows = [[tex_words(x[keys[0]]), tex_words(x[keys[1]]), x[keys[2]]] + [sci(x[k], 2) if not math.isnan(num(x[k])) else x[k] for k in keys[3:6]] for x in d]
     table("tbl_drift", ["quantity", "where evaluated", "$n$", "change at the bound of lunar laser ranging", "at the bound of nucleosynthesis ($G_N$)", "at the bound of nucleosynthesis ($G_{\\rm Fermi}$)"], rows, ["l", "l", "r", "r", "r", "r"])
 
     t = rows_of("deflation_temperature.csv")
     keys = list(t[0].keys())
-    rows = [[tex_name(x[keys[0]]), x[keys[1]], sci(x[keys[2]], 2), sci(x[keys[3]], 2), sci(x[keys[4]], 2), sci(x[keys[5]], 2)] for x in t]
+    rows = [[tex_words(x[keys[0]]), auto(x[keys[1]], 3), sci(x[keys[2]], 2), sci(x[keys[3]], 2), sci(x[keys[4]], 2), sci(x[keys[5]], 2)] for x in t]
     table("tbl_temperature", ["bound", "$\\mathrm{gsum}/H_0$", "$\\hbar\\,\\mathrm{rate}_t$ (eV)", "$T_{\\rm defl}$ (K)", "exponent for $m=1$ keV", "exponent for $m=1$ GeV"], rows, ["l"] + ["r"] * 5)
 
     m = rows_of("hubble_mass_loss.csv")
@@ -227,7 +252,7 @@ def rs4():
     c = rows_of("cjt_history.csv")
     rows = [["%s, %s" % (auto(x["m_s"], 2), auto(x["k_F"], 2)), fix(x["tau_d"], 2), fix(x["g"], 2), fix(x["lambda"], 3), sci(x["gap_newton"], 2), sci(x["V"], 2), fix(x["V_over_V_BCS"], 3),
              sci(x["curvature_min"], 1), fix(x["Tc_over_gap"], 3), fix(x["xi_kF"], 1)] for x in c]
-    table("tbl_cjt", ["$m_s/m$, $k_F/m$", "$\\tau_d$", "$g_{VS}$", "$\\lambda$", "gap$/m$", "potential$/m^4$", "ratio to weak coupling", "smallest curvature", "$T_c/$gap", "coherence length $\\times k_F$"], rows, ["l"] + ["r"] * 9)
+    table("tbl_cjt", ["$m_s/m$, $k_F/m$", "$\\tau_d$", "$g_{VS}$", "$\\lambda$", "gap$/m$", "$V/m^4$", "ratio", "curvature", "$T_c/$gap", "size $\\times k_F$"], rows, ["l"] + ["r"] * 9)
 
     t = rows_of("cjt_thermo_history.csv")
     rows = [[fix(x["tau_d"], 3), fix(x["g"], 2), fix(x["lambda"], 3), sci(x["Tc"], 2), fix(x["Tc_over_EF"], 4), fix(x["gap0_over_Tc"], 4), fix(x["heat_capacity_jump"], 4)] for x in t]
@@ -235,7 +260,7 @@ def rs4():
 
     g = rows_of("cjt_gl_history.csv")
     rows = [[fix(x["tau_d"], 3), fix(x["g"], 2), sci(x["Tc"], 2), fix(x["alpha_ratio"], 4), fix(x["beta_ratio"], 4), fix(x["K_ratio"], 4), fix(x["xi_GL"], 1), fix(x["xi_GL_Tc_over_vF"], 4)] for x in g]
-    table("tbl_cjt_gl", ["$\\tau_d$", "$g_{VS}$", "$T_c/m$", "ratio of $d\\alpha/d\\ln T$", "ratio of $\\beta$", "ratio of $K$", "$\\xi_{GL}\\,m$", "$\\xi_{GL}T_c/v_F$"], rows, ["r"] * 8)
+    table("tbl_cjt_gl", ["$\\tau_d$", "$g_{VS}$", "$T_c/m$", "ratio for the slope of $a(T)$", "ratio for $b$", "ratio for $K_{\\rm GL}$", "coherence length $\\times\\,m$", "coherence length $\\times\\,T_c/v_F$"], rows, ["r"] * 8)
 
     o = rows_of("order_parameter_states.csv")
     rows = [[{"1671d": "7+1", "1644d": "4+4"}[x["spacetime"]], x["state"].replace("eta_ab Delta^a Delta^b = 0", "$\\eta_{ab}\\Delta^a\\Delta^b=0$").replace("x0", "$x0$").replace("x5", "$x5$").replace("x6", "$x6$").replace("x7", "$x7$"), fix(x["gap2_small"], 3), fix(x["gap2_large"], 3), fix(x["V"], 4),
@@ -260,9 +285,16 @@ def rs4():
     table("tbl_vacuum", ["$C$", "field at the maximum $/v_{VS}$", "field beyond which the potential is below its vacuum value $/v_{VS}$"], rows, ["r"] * 3)
 
 
+def higgs_table():
+    h = rows_of("higgs_scale_exponent.csv")
+    rows = [[auto(x["alpha_over_alpha_c"], 3), fix(x["ln_cutoff_over_scale"], 3), auto(x["n_EW"], 3), sci(x["gsum_max_per_yr"], 1), sci(x["gsum_max_over_H0"], 1)] for x in h]
+    table("tbl_higgs", ["$\\alpha_{VS}/\\alpha_c$", "$\\ln$(cutoff/scale)", "$n_{\\rm EW}$", "bound on gsum (per year)", "bound in units of $H_0$"], rows, ["r"] * 5)
+
+
 def symmetry_tables():
     r = rows_of("reduced_symmetry.csv")
-    rows = [[x["item"].replace("x1 x2 x3", "$x1,x2,x3$").replace("x0", "$x0$").replace("x5 x6 x7", "$x5,x6,x7$"), x["value_1671d"], x["value_1644d"], x["expected"]] for x in r]
+    esc = lambda c: c.replace("|", "\\|").replace("^", "\\^").replace("_", "\\_").replace("*", "\\*")
+    rows = [[esc(x["item"]), esc(x["value_1671d"]), esc(x["value_1644d"]), esc(x["expected"])] for x in r]
     table("tbl_symmetry", ["item", "7+1", "4+4", "expected"], rows, ["L", "r", "r", "r"])
     iso = rows_of("isometries.csv")
     def count(tag, col):
@@ -281,6 +313,7 @@ def main():
     rs1()
     rs3()
     rs4()
+    higgs_table()
     symmetry_tables()
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:

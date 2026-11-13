@@ -187,7 +187,7 @@ definite exponent $n$:
 | $D_{VS}$ | $\alpha_{VS}\,m/m_s$: decides whether two fermions bind | $1$ |
 | C | $g_{VS}^2m^2/m_s^2$: decides the state of matter | $1$ |
 | vortex energy per length | proportional to $v_{VS}^2$ (four-dimensional) | $-1$ |
-| $G_{\rm Fermi}$ (Fermi constant of the weak interaction) if the Vorton-Scalar is the Higgs field (H2) | $1/(\sqrt2\,v_{VS}^2)$, four-dimensional vacuum value | $1$ |
+| $G_{\rm Fermi}$ (Fermi constant of the weak interaction) if the vacuum value of the Vorton-Scalar sets the electroweak scale (assumption HV) | $1/(\sqrt2\,v_{VS}^2)$, four-dimensional vacuum value | $1$ |
 | $G_N$ (Newton's constant) if gravity is eight-dimensional (A2) | $G_8$ divided by the volume of $x5,x6,x7$ | $1$ |
 
 The last two rows hold under additional hypotheses, which the supplements RS2 and RS3

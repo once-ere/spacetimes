@@ -78,7 +78,10 @@
 | $a_{\rm sp}$, $H$ | — | scale factor of ordinary space (assumption A1) and its rate $H=(da_{\rm sp}/dx4)/a_{\rm sp}$; $H_0$, $h$ as in the main registry. (The author's Einstein-Lovelock notebooks use the letter $H$ for the rate in the exponent of their metric; that rate corresponds here to $\mathrm{g55}$, $\mathrm{g66}$, $\mathrm{g77}$) | RS3 1 | new |
 | $t_0$ | `age`, `age_Gyr` | the age of the universe in the model at hand | RS3 2 | new |
 | $\delta_m$, $f_g$, $\sigma_8$ | `growth`, `f_growth`, `growth_ratio`, `f_growth_ratio`, `f_sigma8_ratio` | density contrast of matter in ordinary space; its growth rate $d\ln\delta_m/d\ln a_{\rm sp}$ today; the amplitude of clustering (only ratios of $\sigma_8$ are used) | RS3 5 | new |
-| $G_{\rm Fermi}$, $\alpha_{\rm em}$ | `G_Fermi` | the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds) | RS2 5; RS3 3 | new |
+| $v_{\rm EW}$ (main project), $n_{\rm EW}$ | `v_EW`, `n_EW` | the electroweak scale of the supplement S2 of the main project, and the exponent with which it would follow the coupling under the hypothesis H2: $n_{\rm EW}=d\ln v_{\rm EW}/d\ln\alpha_{VS}$ | RS2 5 | new |
+| $\varrho_c$ | `rho_c` | abbreviation in the formula for $n_{\rm EW}$ of the scale-invariant ladder equation: $\varrho_c=\tfrac12\sqrt{\alpha_{VS}/\alpha_c-1}$ (the letter $\rho$ without index is a density) | RS2 5 | new |
+| $m_p/m_e$ | `mu_pe` | the ratio of the proton mass to the electron mass (always written as this ratio in the documents; `mu_pe` in the statements of the programs) | RS2 5; RS3 3 | new |
+| $G_{\rm Fermi}$, $\alpha_{\rm em}$ | `G_Fermi` | the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds) | RS3 1, 3 | new |
 
 **D7 Symmetries and vortex lines**
 
@@ -96,7 +99,7 @@
 | 1644d, 1671d | `1644d`, `1671d` | tags of the deflating 4+4 and 7+1 spacetimes and of every object defined on them (the main project's tags 1644, 1671 with the letter d) | DMD 0.1 | new |
 | `44d-..`, `71d-..`, `def-..` | — | identifiers of the machine checks of the revision: on the deflating 4+4 spacetime, on the deflating 7+1 spacetime, and for results that hold on both (`44-..`, `71-..` without d are the checks of the main project, executed again) | DMD Appendix A | new |
 | RP0 to RP9, RS1 to RS4, DMD | — | the provenances and supplements of the revision and the document \"dirac matrices deflating\" (P0 to P11, S1 to S4, DM are the documents of the main project) | README | new |
-| A1, A2, H2 | — | the two assumptions of the cosmological part (A1: ordinary space expands; A2: gravity is the eight-dimensional Einstein theory) and the Higgs hypothesis of the main project | RP0 3 | new |
+| A1, A2, H2, HV | — | A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale | RP0 3; RS2 1 | new |
 
 <!-- END symbols_all -->
 
@@ -176,7 +179,10 @@
 | $a_{\rm sp}$, $H$ | — | scale factor of ordinary space (assumption A1) and its rate $H=(da_{\rm sp}/dx4)/a_{\rm sp}$; $H_0$, $h$ as in the main registry. (The author's Einstein-Lovelock notebooks use the letter $H$ for the rate in the exponent of their metric; that rate corresponds here to $\mathrm{g55}$, $\mathrm{g66}$, $\mathrm{g77}$) | RS3 1 | new |
 | $t_0$ | `age`, `age_Gyr` | the age of the universe in the model at hand | RS3 2 | new |
 | $\delta_m$, $f_g$, $\sigma_8$ | `growth`, `f_growth`, `growth_ratio`, `f_growth_ratio`, `f_sigma8_ratio` | density contrast of matter in ordinary space; its growth rate $d\ln\delta_m/d\ln a_{\rm sp}$ today; the amplitude of clustering (only ratios of $\sigma_8$ are used) | RS3 5 | new |
-| $G_{\rm Fermi}$, $\alpha_{\rm em}$ | `G_Fermi` | the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds) | RS2 5; RS3 3 | new |
+| $v_{\rm EW}$ (main project), $n_{\rm EW}$ | `v_EW`, `n_EW` | the electroweak scale of the supplement S2 of the main project, and the exponent with which it would follow the coupling under the hypothesis H2: $n_{\rm EW}=d\ln v_{\rm EW}/d\ln\alpha_{VS}$ | RS2 5 | new |
+| $\varrho_c$ | `rho_c` | abbreviation in the formula for $n_{\rm EW}$ of the scale-invariant ladder equation: $\varrho_c=\tfrac12\sqrt{\alpha_{VS}/\alpha_c-1}$ (the letter $\rho$ without index is a density) | RS2 5 | new |
+| $m_p/m_e$ | `mu_pe` | the ratio of the proton mass to the electron mass (always written as this ratio in the documents; `mu_pe` in the statements of the programs) | RS2 5; RS3 3 | new |
+| $G_{\rm Fermi}$, $\alpha_{\rm em}$ | `G_Fermi` | the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds) | RS3 1, 3 | new |
 <!-- END symbols_D6 -->
 
 <!-- BEGIN symbols_D7 -->
@@ -194,6 +200,6 @@
 | 1644d, 1671d | `1644d`, `1671d` | tags of the deflating 4+4 and 7+1 spacetimes and of every object defined on them (the main project's tags 1644, 1671 with the letter d) | DMD 0.1 | new |
 | `44d-..`, `71d-..`, `def-..` | — | identifiers of the machine checks of the revision: on the deflating 4+4 spacetime, on the deflating 7+1 spacetime, and for results that hold on both (`44-..`, `71-..` without d are the checks of the main project, executed again) | DMD Appendix A | new |
 | RP0 to RP9, RS1 to RS4, DMD | — | the provenances and supplements of the revision and the document \"dirac matrices deflating\" (P0 to P11, S1 to S4, DM are the documents of the main project) | README | new |
-| A1, A2, H2 | — | the two assumptions of the cosmological part (A1: ordinary space expands; A2: gravity is the eight-dimensional Einstein theory) and the Higgs hypothesis of the main project | RP0 3 | new |
+| A1, A2, H2, HV | — | A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale | RP0 3; RS2 1 | new |
 <!-- END symbols_D8 -->
 

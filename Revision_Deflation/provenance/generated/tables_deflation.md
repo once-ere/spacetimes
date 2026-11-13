@@ -21,7 +21,7 @@
 <!-- END n_quench_checks -->
 
 <!-- BEGIN n_cosmology_checks -->
-5 of 5
+6 of 6
 <!-- END n_cosmology_checks -->
 
 <!-- BEGIN n_symmetry_checks -->
@@ -49,7 +49,7 @@
 <!-- END n_symbol_checks_deflation -->
 
 <!-- BEGIN n_checks_rust -->
-214
+215
 <!-- END n_checks_rust -->
 
 <!-- BEGIN tbl_exponents -->
@@ -67,7 +67,7 @@
 | $D_{VS}$ | $\alpha_{VS}\,m/m_s$: decides whether two fermions bind | $1$ |
 | C | $g_{VS}^2m^2/m_s^2$: decides the state of matter | $1$ |
 | vortex energy per length | proportional to $v_{VS}^2$ (four-dimensional) | $-1$ |
-| $G_{\rm Fermi}$ (Fermi constant of the weak interaction) if the Vorton-Scalar is the Higgs field (H2) | $1/(\sqrt2\,v_{VS}^2)$, four-dimensional vacuum value | $1$ |
+| $G_{\rm Fermi}$ (Fermi constant of the weak interaction) if the vacuum value of the Vorton-Scalar sets the electroweak scale (assumption HV) | $1/(\sqrt2\,v_{VS}^2)$, four-dimensional vacuum value | $1$ |
 | $G_N$ (Newton's constant) if gravity is eight-dimensional (A2) | $G_8$ divided by the volume of $x5,x6,x7$ | $1$ |
 <!-- END tbl_exponents -->
 
@@ -128,14 +128,15 @@
 <!-- BEGIN tbl_bounds -->
 | observation | measured | bound on gsum (per year) | bound in units of $H_0$ | assumption |
 |:---|:----------|---:|---:|:----------|
-| lunar laser ranging | (d$G_N$/dt)/$G_N$ = (7.1 $\pm$ 7.6) $\times10^{-14}$ per year (68%) | $2.23\times10^{-13}$ | 3.237e-3 | gravity is eight-dimensional (A2) |
-| primordial nucleosynthesis | $G_N$(nucleosynthesis)/$G_N$(today) = 0.99 +0.06 -0.05 (two sigma) | $4.43\times10^{-12}$ | 0.0644 | A2, and a rate that is constant from nucleosynthesis until today |
-| primordial nucleosynthesis, weak interaction | $G_{\rm Fermi}$ at t = 1 s within 20 per cent (10 per cent) of today's value, fermion masses held fixed | 1.615e-11 (7.627e-12) | 0.234 (0.111) | the Higgs hypothesis H2: the Vorton-Scalar is the Higgs field, so that its four-dimensional vacuum value fixes the Fermi constant; a rate that is constant from nucleosynthesis until today; no assumption about gravity |
-| atomic clocks | (d alpha/dt)/alpha = (1.0 $\pm$ 1.1) $\times10^{-18}$ per year (68%), alpha = fine-structure constant; the ratio of the proton mass to the electron mass, (-8 $\pm$ 36) $\times10^{-18}$ per year, does not change in the model | $3.20\times10^{-18}$ | 4.645e-8 | an assumption OUTSIDE the model, which contains no electromagnetic field: stated to show how strongly such an extension would be constrained |
+| lunar laser ranging | $(dG_N/dt)/G_N$ = (7.1 $\pm$ 7.6) $\times10^{-14}$ per year (68%) | $2.230\times10^{-13}$ | $3.237\times10^{-3}$ | gravity is eight-dimensional (A2) |
+| primordial nucleosynthesis | $G_N$(nucleosynthesis)$/G_N$(today) = 0.99 +0.06 -0.05 (two sigma) | $4.434\times10^{-12}$ | 0.0644 | A2, and a rate that is constant from nucleosynthesis until today |
+| primordial nucleosynthesis, weak interaction | $G_{\rm Fermi}$ at $t=1$ s within 20 per cent (10 per cent) of today's value, fermion masses held fixed | $1.615\times10^{-11}$ ($7.627\times10^{-12}$) | 0.234 (0.111) | the assumption HV: the four-dimensional vacuum value of the Vorton-Scalar sets the electroweak scale, as that of the Higgs field does (not the author's hypothesis H2, in which the Higgs field is the pair condensate); a rate that is constant from nucleosynthesis until today; no assumption about gravity |
+| atomic clocks, mass ratio | (d mu_pe/dt)/mu_pe = (-8 $\pm$ 36) $\times10^{-18}$ per year (68%), mu_pe = ratio of the proton mass to the electron mass | $8.000\times10^{-17}$ | $1.161\times10^{-6}$ | the author's hypothesis H2 (the superfluid state is the Higgs field), for n_EW = 1; the bound scales as 1/n_EW (data/higgs_scale_exponent.csv) |
+| atomic clocks | $(d\alpha_{\rm em}/dt)/\alpha_{\rm em}$ = (1.0 $\pm$ 1.1) $\times10^{-18}$ per year (68%), $\alpha_{\rm em}$ = fine-structure constant | $3.200\times10^{-18}$ | $4.645\times10^{-8}$ | an assumption outside the model, which contains no electromagnetic field: stated to show how strongly such an extension would be constrained |
 <!-- END tbl_bounds -->
 
 <!-- BEGIN tbl_hubble -->
-| $\mathrm{gsum}/H_0$ | gsum (per year) | $H_0$ (km/s/Mpc) | change | $G_N$(early)$/G_N$(today) | sound horizon (Mpc) | age (Gyr) |
+| $\mathrm{gsum}/H_0$ | gsum (per year) | $H_0$ (km/s/Mpc) | change | $G_N$ ratio | sound horizon (Mpc) | age (Gyr) |
 |---:|---:|---:|---:|---:|---:|---:|
 | 0 | 0 | 67.36 | 0.00 | 1.0000 | 144.45 | 13.81 |
 | 0.00100 | $6.89\times10^{-14}$ | 67.30 | -0.06 | 0.9990 | 144.52 | 13.82 |
@@ -164,9 +165,9 @@
 <!-- BEGIN tbl_drift -->
 | quantity | where evaluated | $n$ | change at the bound of lunar laser ranging | at the bound of nucleosynthesis ($G_N$) | at the bound of nucleosynthesis ($G_{\rm Fermi}$) |
 |:---|:---|---:|---:|---:|---:|
-| $\alpha_{VS}$, $G_{VS}$, $D_{VS}$, C | any | 1.000 | $3.08\times10^{-3}$ | 0.0612 | 0.222 |
+| $\alpha_{VS}$, $G_{VS}$, $D_{VS}$, $C$ | any | 1.000 | $3.08\times10^{-3}$ | 0.0612 | 0.222 |
 | $g_{VS}$ | any | 0.500 | $1.54\times10^{-3}$ | 0.0306 | 0.111 |
-| fermion mass m, mass $m_s$ of the radial mode | any | 0.000 | 0 | 0 | 0 |
+| fermion mass $m$, mass $m_s$ of the radial mode | any | 0.000 | 0 | 0 | 0 |
 | scattering length of two fermions (no bound state) | $D_{VS}$ = 0.5 | 1.368 | $4.21\times10^{-3}$ | 0.0837 | 0.304 |
 | scattering length of two fermions (no bound state) | $D_{VS}$ = 1 | 2.336 | $7.19\times10^{-3}$ | 0.143 | 0.520 |
 | scattering length of two fermions (no bound state) | $D_{VS}$ = 1.5 | 9.092 | 0.0280 | 0.557 | 2.02 |
@@ -175,21 +176,21 @@
 | binding energy of the pair | $D_{VS}$ = 3 | 4.673 | 0.0144 | 0.286 | 1.04 |
 | binding energy of the pair | $D_{VS}$ = 5 | 3.101 | $9.54\times10^{-3}$ | 0.190 | 0.690 |
 | binding energy of the pair | $D_{VS}$ = 10 | 2.456 | $7.56\times10^{-3}$ | 0.150 | 0.546 |
-| rest mass of the bound pair | $D_{VS}$ = 5, $m_s$/m = 0.2 | -0.162 | $-4.98\times10^{-4}$ | $-9.91\times10^{-3}$ | -0.0360 |
-| rest mass of the bound pair | $D_{VS}$ = 10, $m_s$/m = 0.1 | -0.218 | $-6.72\times10^{-4}$ | -0.0134 | -0.0486 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength lambda = 0.15 | 6.667 | 0.0205 | 0.408 | 1.48 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength lambda = 0.2 | 5.000 | 0.0154 | 0.306 | 1.11 |
-| gap and critical temperature of the paired state (weak coupling) | pairing strength lambda = 0.3 | 3.333 | 0.0103 | 0.204 | 0.742 |
-| cross-section of two fermions at low energy (Born regime, $D_{VS}$ << 1) | $D_{VS}$ = 0.05 | 2.052 | $6.31\times10^{-3}$ | 0.126 | 0.456 |
+| rest mass of the bound pair | $D_{VS}$ = 5, $m_s/m$ = 0.2 | -0.162 | $-4.98\times10^{-4}$ | $-9.91\times10^{-3}$ | -0.0360 |
+| rest mass of the bound pair | $D_{VS}$ = 10, $m_s/m$ = 0.1 | -0.218 | $-6.72\times10^{-4}$ | -0.0134 | -0.0486 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.15 | 6.667 | 0.0205 | 0.408 | 1.48 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.2 | 5.000 | 0.0154 | 0.306 | 1.11 |
+| gap and critical temperature of the paired state (weak coupling) | pairing strength $\lambda$ = 0.3 | 3.333 | 0.0103 | 0.204 | 0.742 |
+| cross-section of two fermions at low energy (Born regime, $D_{VS}\ll1$) | $D_{VS}$ = 0.05 | 2.052 | $6.31\times10^{-3}$ | 0.126 | 0.456 |
 <!-- END tbl_drift -->
 
 <!-- BEGIN tbl_temperature -->
 | bound | $\mathrm{gsum}/H_0$ | $\hbar\,\mathrm{rate}_t$ (eV) | $T_{\rm defl}$ (K) | exponent for $m=1$ keV | exponent for $m=1$ GeV |
 |:---|---:|---:|---:|---:|---:|
-| lunar laser ranging (A2) | 3.237e-3 | $1.55\times10^{-36}$ | $2.86\times10^{-33}$ | $4.05\times10^{39}$ | $4.05\times10^{45}$ |
-| nucleosynthesis, $G_N$ (A2) | 6.440e-2 | $3.08\times10^{-35}$ | $5.70\times10^{-32}$ | $2.04\times10^{38}$ | $2.04\times10^{44}$ |
-| nucleosynthesis, $G_{\rm Fermi}$ (H2), 20 per cent | 2.340e-1 | $1.12\times10^{-34}$ | $2.07\times10^{-31}$ | $5.61\times10^{37}$ | $5.61\times10^{43}$ |
-| gsum = H_0 | 1.000e0 | $4.79\times10^{-34}$ | $8.85\times10^{-31}$ | $1.31\times10^{37}$ | $1.31\times10^{43}$ |
+| lunar laser ranging (A2) | 0.00324 | $1.55\times10^{-36}$ | $2.86\times10^{-33}$ | $4.05\times10^{39}$ | $4.05\times10^{45}$ |
+| nucleosynthesis, $G_N$ (A2) | 0.0644 | $3.08\times10^{-35}$ | $5.70\times10^{-32}$ | $2.04\times10^{38}$ | $2.04\times10^{44}$ |
+| nucleosynthesis, $G_{\rm Fermi}$ (HV), 20 per cent | 0.234 | $1.12\times10^{-34}$ | $2.07\times10^{-31}$ | $5.61\times10^{37}$ | $5.61\times10^{43}$ |
+| $\mathrm{gsum}=H_0$ | 1.00 | $4.79\times10^{-34}$ | $8.85\times10^{-31}$ | $1.31\times10^{37}$ | $1.31\times10^{43}$ |
 <!-- END tbl_temperature -->
 
 <!-- BEGIN tbl_massloss -->
@@ -222,7 +223,7 @@
 <!-- END tbl_massloss -->
 
 <!-- BEGIN tbl_cjt -->
-| $m_s/m$, $k_F/m$ | $\tau_d$ | $g_{VS}$ | $\lambda$ | gap$/m$ | potential$/m^4$ | ratio to weak coupling | smallest curvature | $T_c/$gap | coherence length $\times k_F$ |
+| $m_s/m$, $k_F/m$ | $\tau_d$ | $g_{VS}$ | $\lambda$ | gap$/m$ | $V/m^4$ | ratio | curvature | $T_c/$gap | size $\times k_F$ |
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | 0.30, 0.50 | 0.00 | 1.80 | 0.216 | $2.81\times10^{-3}$ | $-4.46\times10^{-7}$ | 1.000 | 0.21 | 0.567 | 25.4 |
 | 0.30, 0.50 | 0.21 | 2.00 | 0.266 | $6.89\times10^{-3}$ | $-2.68\times10^{-6}$ | 0.998 | 0.26 | 0.566 | 10.3 |
@@ -248,7 +249,7 @@
 <!-- END tbl_cjt_thermo -->
 
 <!-- BEGIN tbl_cjt_gl -->
-| $\tau_d$ | $g_{VS}$ | $T_c/m$ | ratio of $d\alpha/d\ln T$ | ratio of $\beta$ | ratio of $K$ | $\xi_{GL}\,m$ | $\xi_{GL}T_c/v_F$ |
+| $\tau_d$ | $g_{VS}$ | $T_c/m$ | ratio for the slope of $a(T)$ | ratio for $b$ | ratio for $K_{\rm GL}$ | coherence length $\times\,m$ | coherence length $\times\,T_c/v_F$ |
 |---:|---:|---:|---:|---:|---:|---:|---:|
 | 0.000 | 2.60 | $7.49\times10^{-4}$ | 1.0000 | 1.0001 | 1.0005 | 79.6 | 0.1333 |
 | 0.286 | 3.00 | $3.90\times10^{-3}$ | 0.9993 | 0.9949 | 1.0101 | 15.4 | 0.1340 |
@@ -338,20 +339,33 @@
 | 20.3 | 1.25 | 1.37 |
 <!-- END tbl_vacuum -->
 
+<!-- BEGIN tbl_higgs -->
+| $\alpha_{VS}/\alpha_c$ | $\ln$(cutoff/scale) | $n_{\rm EW}$ | bound on gsum (per year) | bound in units of $H_0$ |
+|---:|---:|---:|---:|---:|
+| 1.05 | 12.082 | 147 | $5.4\times10^{-19}$ | $7.9\times10^{-9}$ |
+| 1.10 | 7.998 | 54.0 | $1.5\times10^{-18}$ | $2.2\times10^{-8}$ |
+| 1.25 | 4.429 | 15.1 | $5.3\times10^{-18}$ | $7.7\times10^{-8}$ |
+| 1.50 | 2.702 | 6.05 | $1.3\times10^{-17}$ | $1.9\times10^{-7}$ |
+| 2.00 | 1.571 | 2.57 | $3.1\times10^{-17}$ | $4.5\times10^{-7}$ |
+| 3.00 | 0.870 | 1.15 | $6.9\times10^{-17}$ | $1.0\times10^{-6}$ |
+| 5.00 | 0.464 | 0.540 | $1.5\times10^{-16}$ | $2.2\times10^{-6}$ |
+| 10.0 | 0.215 | 0.230 | $3.5\times10^{-16}$ | $5.0\times10^{-6}$ |
+<!-- END tbl_higgs -->
+
 <!-- BEGIN tbl_symmetry -->
 | item | 7+1 | 4+4 | expected |
 |:----------|---:|---:|---:|
-| dimension of the commutant, momenta along $x1,x2,x3$ | 8 | 8 | 8 |
-| dimension of the commutant, momenta along $x0$ $x1,x2,x3$ | 4 | 4 | 4 |
+| dimension of the commutant, momenta along x1 x2 x3 | 8 | 8 | 8 |
+| dimension of the commutant, momenta along x0 x1 x2 x3 | 4 | 4 | 4 |
 | dimension of the commutant, momenta along every space coordinate of the model | 1 | 4 | 1 (7+1); 4 (4+4) |
 | dimension of the centre of the commutant | 2 | 2 | 2 |
-| |P^2 - 1| for the traceless central generator P | 0.00e0 | 0.00e0 | 0 |
+| \|P\^2 - 1\| for the traceless central generator P | 0.00e0 | 0.00e0 | 0 |
 | dimensions of the two ideals | [3, 3] | [3, 3] | [3, 3] |
-| structure constants |f_123| of the ideals (generators with Tr T_i T_j = 2 delta_ij) | 1.000000000000 1.000000000000 | 1.000000000000 1.000000000000 | 1 1 (su(2)) |
-| |sum_i T_i^2 - (3/4) projector| of the ideals | 0.00e0 0.00e0 | 2.22e-16 2.22e-16 | 0 0 (doublets) |
+| structure constants \|f\_123\| of the ideals (generators with Tr T\_i T\_j = 2 delta\_ij) | 1.000000000000 1.000000000000 | 1.000000000000 1.000000000000 | 1 1 (su(2)) |
+| \|sum\_i T\_i\^2 - (3/4) projector\| of the ideals | 0.00e0 0.00e0 | 2.22e-16 2.22e-16 | 0 0 (doublets) |
 | positive-energy states with P = +1 and P = -1 at a test momentum | 4.000000 4.000000 | 4.000000 4.000000 | 4 4: (2,1) + (1,2) |
-| closure of the four vector pair operators C^- gamma^a, a in {0,5,6,7} | 0.00e0 | 3.14e-16 | 0 |
-| |Casimir - 3/4| of the two ideals on the four pair operators | 0.00e0 0.00e0 | 5.55e-17 5.55e-17 | 0 0: the (2,2) |
+| closure of the four vector pair operators C\^- gamma\^a, a in {0,5,6,7} | 0.00e0 | 3.14e-16 | 0 |
+| \|Casimir - 3/4\| of the two ideals on the four pair operators | 0.00e0 0.00e0 | 5.55e-17 5.55e-17 | 0 0: the (2,2) |
 | fermion number of the pair operators | 2.000000 | 2.000000 | 2 |
 | charge of the pair operators under the central generator P | 0.00e0 | 0.00e0 | 0 |
 | number of invariant quadratic forms on the four pair operators | 1 | 1 | 1 |
@@ -359,12 +373,12 @@
 | largest off-diagonal entry of the invariant form | 0.00e0 | 2.22e-16 | 0 |
 | complex dimension of the particle-antiparticle mixing generators, no chemical potential | 2 | 2 | 2 (symmetry O(4) x O(4), dimension 12) |
 | the same with a chemical potential | 0 | 0 | 0 (symmetry U(2) x U(2), dimension 8) |
-| gamma^0 gamma^5 | antihermitian; |[.,dynamics]| = 0.00e0 | Hermitian; |[.,dynamics]| = 0.00e0 | antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes |
-| gamma^0 gamma^6 | antihermitian; |[.,dynamics]| = 0.00e0 | Hermitian; |[.,dynamics]| = 0.00e0 | antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes |
-| gamma^0 gamma^7 | antihermitian; |[.,dynamics]| = 0.00e0 | Hermitian; |[.,dynamics]| = 0.00e0 | antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes |
-| gamma^5 gamma^6 | antihermitian; |[.,dynamics]| = 0.00e0 | antihermitian; |[.,dynamics]| = 0.00e0 | antihermitian (rotation) in both; commutes |
-| gamma^5 gamma^7 | antihermitian; |[.,dynamics]| = 0.00e0 | antihermitian; |[.,dynamics]| = 0.00e0 | antihermitian (rotation) in both; commutes |
-| gamma^6 gamma^7 | antihermitian; |[.,dynamics]| = 0.00e0 | antihermitian; |[.,dynamics]| = 0.00e0 | antihermitian (rotation) in both; commutes |
+| gamma\^0 gamma\^5 | antihermitian; \|[.,dynamics]\| = 0.00e0 | Hermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes |
+| gamma\^0 gamma\^6 | antihermitian; \|[.,dynamics]\| = 0.00e0 | Hermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes |
+| gamma\^0 gamma\^7 | antihermitian; \|[.,dynamics]\| = 0.00e0 | Hermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian (7+1: rotation); Hermitian (4+4: not a boost); commutes |
+| gamma\^5 gamma\^6 | antihermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian (rotation) in both; commutes |
+| gamma\^5 gamma\^7 | antihermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian (rotation) in both; commutes |
+| gamma\^6 gamma\^7 | antihermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian; \|[.,dynamics]\| = 0.00e0 | antihermitian (rotation) in both; commutes |
 <!-- END tbl_symmetry -->
 
 <!-- BEGIN tbl_isometries -->

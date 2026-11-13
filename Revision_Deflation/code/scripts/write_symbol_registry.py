@@ -185,9 +185,18 @@ SYMBOLS = [
     (G6, r"$\delta_m$, $f_g$, $\sigma_8$", "growth f_growth growth_ratio f_growth_ratio f_sigma8_ratio",
      r"density contrast of matter in ordinary space; its growth rate $d\ln\delta_m/d\ln a_{\rm sp}$ today; the amplitude of clustering (only ratios of $\sigma_8$ are used)",
      "RS3 5", "new"),
+    (G6, r"$v_{\rm EW}$ (main project), $n_{\rm EW}$", "v_EW n_EW",
+     r"the electroweak scale of the supplement S2 of the main project, and the exponent with which it would follow the coupling under the hypothesis H2: $n_{\rm EW}=d\ln v_{\rm EW}/d\ln\alpha_{VS}$",
+     "RS2 5", "new"),
+    (G6, r"$\varrho_c$", "rho_c",
+     r"abbreviation in the formula for $n_{\rm EW}$ of the scale-invariant ladder equation: $\varrho_c=\tfrac12\sqrt{\alpha_{VS}/\alpha_c-1}$ (the letter $\rho$ without index is a density)",
+     "RS2 5", "new"),
+    (G6, r"$m_p/m_e$", "mu_pe",
+     r"the ratio of the proton mass to the electron mass (always written as this ratio in the documents; `mu_pe` in the statements of the programs)",
+     "RS2 5; RS3 3", "new"),
     (G6, r"$G_{\rm Fermi}$, $\alpha_{\rm em}$", "G_Fermi",
      r"the Fermi constant of the weak interaction and the fine-structure constant (they enter only in the discussion of bounds)",
-     "RS2 5; RS3 3", "new"),
+     "RS3 1, 3", "new"),
     # ---- D7 ------------------------------------------------------------------------------------
     (G7, r"$P_c$", "Pc",
      r"$i\alpha^1\alpha^2\alpha^3\chi$, the product of the five matrices of the sector that does not depend on the extra coordinates; equal, up to sign, to the generator $P$ of $U(1)_E$ of the main registry",
@@ -211,9 +220,9 @@ SYMBOLS = [
     (G8, r"RP0 to RP9, RS1 to RS4, DMD", "",
      r"the provenances and supplements of the revision and the document \"dirac matrices deflating\" (P0 to P11, S1 to S4, DM are the documents of the main project)",
      "README", "new"),
-    (G8, "A1, A2, H2", "",
-     r"the two assumptions of the cosmological part (A1: ordinary space expands; A2: gravity is the eight-dimensional Einstein theory) and the Higgs hypothesis of the main project",
-     "RP0 3", "new"),
+    (G8, "A1, A2, H2, HV", "",
+     r"A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale",
+     "RP0 3; RS2 1", "new"),
 ]
 
 

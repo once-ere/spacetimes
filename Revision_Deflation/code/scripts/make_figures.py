@@ -572,14 +572,16 @@ def fig_bounds():
         v = r["gsum_max_over_H0"]
         if "weak interaction" in name:
             lo = float(v.split("(")[1].rstrip(")"))
-            items.append(("nucleosynthesis: Fermi constant\n(needs the Higgs hypothesis H2)", lo, first(v), AQUA))
+            items.append(("nucleosynthesis: Fermi constant\n(needs the assumption HV)", lo, first(v), AQUA))
+        elif "mass ratio" in name:
+            items.append(("atomic clocks: proton-electron mass ratio\n(the hypothesis H2, for $n_{EW}=1$)", first(v), None, ORANGE))
         elif "lunar" in name:
             items.append(("lunar laser ranging: $\\dot G_N/G_N$\n(needs eight-dimensional gravity, A2)", first(v), None, BLUE))
         elif "nucleosynthesis" in name:
             items.append(("nucleosynthesis: $G_N$\n(needs A2)", first(v), None, BLUE))
         else:
             items.append(("atomic clocks: $\\dot\\alpha/\\alpha$\n(only if electromagnetism were eight-dimensional;\nnot part of the model)", first(v), None, INK2))
-    fig, ax = plt.subplots(figsize=(6.6, 2.5))
+    fig, ax = plt.subplots(figsize=(6.6, 3.0))
     for i, (name, v, v2, col) in enumerate(items):
         y = len(items) - 1 - i
         ax.plot([v], [y], marker="o", color=col, ms=6)

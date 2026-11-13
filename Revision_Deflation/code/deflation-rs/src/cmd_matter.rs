@@ -191,7 +191,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         (f(d * (1.0 + e)).abs().ln() - f(d * (1.0 - e)).abs().ln()) / ((1.0 + e).ln() - (1.0 - e).ln())
     };
     let mut drows: Vec<Vec<String>> = Vec::new();
-    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (H2), 20 per cent", 0.234)];
+    let bounds = [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (HV), 20 per cent", 0.234)];
     let t0_h0 = 0.9507; // age of the model without deflation times H_0 (13.81 Gyr)
     let mut push = |q: &str, at: &str, n: f64| {
         let mut row = vec![q.to_string(), at.to_string(), format!("{:.3}", n)];
@@ -219,7 +219,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     push("cross-section of two fermions at low energy (Born regime, D_VS << 1)", "D_VS = 0.05", 2.0 * dlog(&|x| scattering_length(x), 0.05));
     write_csv_str("dm_drift.csv",
         &[("content", "how fast the quantities of the model drift on a deflating spacetime: n = d ln(quantity)/d tau_d with tau_d = gsum x4, and the relative change n gsum t_0 over the age of the universe at the largest rates that the three bounds allow (gsum = 3.24e-3, 0.0644 and 0.234 H_0; H_0 t_0 = 0.9507)".to_string()),
-          ("columns", "quantity; where evaluated; n; change over the age at the bound from lunar laser ranging (assumption A2); at the bound from nucleosynthesis through G_N (A2); at the bound from nucleosynthesis through the Fermi constant (H2, 20 per cent)".to_string()),
+          ("columns", "quantity; where evaluated; n; change over the age at the bound from lunar laser ranging (assumption A2); at the bound from nucleosynthesis through G_N (A2); at the bound from nucleosynthesis through the Fermi constant (assumption HV, 20 per cent)".to_string()),
           ("command", "deflation matter".to_string())],
         &["quantity", "at", "n", "change_LLR", "change_BBN_G", "change_BBN_GF"], &drows)?;
     let n_a = dlog(&|x| scattering_length(x), 1.5);
@@ -236,7 +236,7 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let mut trows: Vec<Vec<String>> = Vec::new();
     let h0_per_yr = h0 / HUBBLE_TIME_100_YR;
     let mut t_llr = 0.0;
-    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (H2), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
+    for (name, r) in [("lunar laser ranging (A2)", llr), ("nucleosynthesis, G_N (A2)", 0.0644), ("nucleosynthesis, G_Fermi (HV), 20 per cent", 0.234), ("gsum = H_0", 1.0)] {
         let rate_per_s = r * h0_per_yr / year / 3.0; // each of three equal rates
         let e = hbar_ev_s * rate_per_s; // eV
         let t = e / (2.0 * pi) / k_b_ev;
