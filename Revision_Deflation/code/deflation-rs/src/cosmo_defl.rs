@@ -220,6 +220,59 @@ pub fn solve_h<M: Fn(f64) -> f64>(base: &Model, z_star: f64, theta100: f64, mass
     0.5 * (lo + hi)
 }
 
+/// Linear growth of the density contrast of matter in ordinary space, far inside the
+/// horizon (Newtonian limit of the eight-dimensional theory for matter that is spread
+/// uniformly over the extra coordinates):
+///
+///     d^2 delta/dx4^2 + 2 H d delta/dx4 = 4 pi G(x4) rho_m delta ,
+///
+/// that is, with a prime for d/d ln a and omega_m(a) = omega_b + omega_c mass(s),
+///
+///     delta'' + (2 + E'/E) delta' = (3/2) exp(s) omega_m(a) a^-3 delta / E^2 .
+///
+/// (For `gravity = false` the factor exp(s) is absent.)  The equation is integrated on
+/// the grid of `hist` from the first grid point with a >= a_start to a = 1, with the
+/// classical Runge-Kutta method over two grid intervals per step; it starts on the
+/// growing solution delta = a + 2 a_eq/3, delta' = a of a universe of matter and
+/// radiation.  Returns (delta at a = 1, f = d ln delta/d ln a at a = 1).
+pub fn growth<M: Fn(f64) -> f64>(m: &Model, hist: &History, a_start: f64, mass: &M) -> (f64, f64) {
+    let dl = hist.lna[1] - hist.lna[0]; // negative
+    let n = hist.lna.len();
+    // d ln E/d ln a at every grid point (central differences; one-sided at the ends)
+    let dlne: Vec<f64> = (0..n)
+        .map(|i| {
+            let (a, b) = (if i == 0 { 0 } else { i - 1 }, if i + 1 == n { i } else { i + 1 });
+            (hist.e[b].ln() - hist.e[a].ln()) / (hist.lna[b] - hist.lna[a])
+        })
+        .collect();
+    let mut i0 = ((a_start.ln() - hist.lna[0]) / dl).floor() as usize;
+    if i0 % 2 == 1 {
+        i0 -= 1;
+    }
+    assert!(i0 >= 2 && i0 < n);
+    let rhs = |i: usize, d: f64, u: f64| -> (f64, f64) {
+        let a = hist.lna[i].exp();
+        let om = m.omega_b + m.omega_c * mass(hist.s[i]);
+        let g = if m.gravity { hist.s[i].exp() } else { 1.0 };
+        (u, -(2.0 + dlne[i]) * u + 1.5 * g * om / (a * a * a * hist.e[i] * hist.e[i]) * d)
+    };
+    let a0 = hist.lna[i0].exp();
+    let a_eq = m.omega_r / (m.omega_b + m.omega_c * mass(hist.s[i0]));
+    let (mut d, mut u) = (a0 + 2.0 * a_eq / 3.0, a0);
+    let h = -2.0 * dl; // positive step in ln a
+    let mut i = i0;
+    while i >= 2 {
+        let (k1d, k1u) = rhs(i, d, u);
+        let (k2d, k2u) = rhs(i - 1, d + 0.5 * h * k1d, u + 0.5 * h * k1u);
+        let (k3d, k3u) = rhs(i - 1, d + 0.5 * h * k2d, u + 0.5 * h * k2u);
+        let (k4d, k4u) = rhs(i - 2, d + h * k3d, u + h * k3u);
+        d += h / 6.0 * (k1d + 2.0 * k2d + 2.0 * k3d + k4d);
+        u += h / 6.0 * (k1u + 2.0 * k2u + 2.0 * k3u + k4u);
+        i -= 2;
+    }
+    (d, u / d)
+}
+
 /// z_* and 100 theta_* of the fiducial model of the main project (its recombination
 /// calculation and its own distance integrals), for comparison.
 pub fn main_project_reference() -> (f64, f64, f64) {
@@ -246,6 +299,25 @@ mod tests {
         let age_gyr = d.age * HUBBLE_TIME_100_YR / 1e9;
         assert!((age_gyr - 13.8).abs() < 0.1, "age {} Gyr", age_gyr);
         assert!((d.g_early - 1.0).abs() < 1e-15);
+    }
+
+    #[test]
+    fn growth_without_deflation_has_the_known_values() {
+        let (z_star, _, _) = main_project_reference();
+        let m = Model::fiducial(0.0, 0.6736);
+        let (a_min, n) = grid(z_star, 4000);
+        let hist = m.history(a_min, n, &|_s| 1.0);
+        let (d, f) = growth(&m, &hist, 0.01, &|_s| 1.0);
+        // growth rate today: f = Omega_m^0.55 to about one per cent (Omega_m = 0.3153 with the densities of the model)
+        let om = (m.omega_b + m.omega_c) / (m.h * m.h);
+        assert!((f / om.powf(0.55) - 1.0).abs() < 0.01, "f = {}, Omega_m^0.55 = {}", f, om.powf(0.55));
+        // growth factor today relative to the Einstein-de Sitter law delta = a: about 0.78 for Omega_m = 0.315
+        assert!(d > 0.76 && d < 0.81, "D(1) = {}", d);
+        // matter era: an Einstein-de Sitter universe (no radiation, no cosmological term) keeps delta = a
+        let eds = Model { omega_r: 1e-12, omega_gamma: 1e-12, omega_b: 0.05, omega_c: 0.95, h: 1.0, gam: 0.0, p: 0.0, gravity: true };
+        let hist = eds.history(a_min, n, &|_s| 1.0);
+        let (d, f) = growth(&eds, &hist, 0.01, &|_s| 1.0);
+        assert!((d - 1.0).abs() < 1e-5 && (f - 1.0).abs() < 1e-5, "Einstein-de Sitter: D = {}, f = {}", d, f);
     }
 
     #[test]

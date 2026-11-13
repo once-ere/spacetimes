@@ -8,6 +8,9 @@
 //!
 //! `deflation help` lists the commands.
 
+mod cmd_channels;
+mod cmd_matter;
+mod cmd_paired;
 mod cmd_symmetry;
 
 use spacetimes_deflation::io::{write_csv, write_csv_str, write_report};
@@ -702,6 +705,9 @@ fn main() {
         "quench" => cmd_quench(),
         "cosmology" => cmd_cosmology(),
         "symmetry" => cmd_symmetry::run(),
+        "channels" => cmd_channels::run(&main_data_dir()),
+        "matter" => cmd_matter::run(&main_data_dir()),
+        "paired" => cmd_paired::run(),
         _ => {
             println!("deflation: PROJECT spacetimes, Revision_Deflation (x5, x6, x7 deflate exponentially)\n");
             println!("commands (run from the folder Revision_Deflation):");
@@ -713,6 +719,12 @@ fn main() {
             println!("             gap, bound pair, normal matter, vacuum potential, melting, order of events");
             println!("  quench     time-dependent dynamics of the paired state while the coupling grows: can it follow?");
             println!("  cosmology  expansion of ordinary space on the deflating spacetime, bounds on the rate, the Hubble constant");
+            println!("  channels   exchange of the Vorton-Scalar: amplitudes in the pair channels (compared with the main project),");
+            println!("             the field of a static source, modes of the Vorton-Scalar, creation of quanta, bounded solutions");
+            println!("  matter     dark matter on the deflating spacetime: degeneracy, self-interaction, the resonance at the moment");
+            println!("             of binding, growth of structure, drift of the quantities, quanta created by the deflation");
+            println!("  paired     the results of the effective action of Cornwall, Jackiw and Tomboulis along the clock: potential");
+            println!("             of the paired state, thermodynamics, Ginzburg-Landau coefficients, order-parameter space, matter");
             println!("  symmetry   isometries of the deflating spacetimes, internal symmetry of the fields that do not depend on");
             println!("             the extra coordinates, zero modes on a vortex line, exponents of the couplings");
             Ok(true)
