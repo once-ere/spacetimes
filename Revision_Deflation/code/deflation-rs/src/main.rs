@@ -8,7 +8,7 @@
 //!
 //! `deflation help` lists the commands.
 
-use spacetimes_deflation::io::{write_csv, write_report};
+use spacetimes_deflation::io::{write_csv, write_csv_str, write_report};
 use spacetimes_deflation::curved::verify_curved;
 use spacetimes_deflation::geometry::{verify_geodesics, verify_geometry};
 use spacetimes_deflation::metric::{Point, Sig};
@@ -262,12 +262,290 @@ fn cmd_modes() -> std::io::Result<bool> {
     Ok(all)
 }
 
+/// `history`: every coupling-dependent result of the main project as a function of the
+/// deflation clock tau = gsum (x4 - x4_ref), along which all dimensionless couplings grow
+/// as exp(tau) (module history.rs).  Writes data/gap_history.csv, dimer_history.csv,
+/// medium_history.csv, vacuum_history.csv, thermal_history.csv, events.csv,
+/// history_checks.{txt,csv}.
+fn cmd_history() -> std::io::Result<bool> {
+    use spacetimes::cjt_normal::{critical_c, vacuum_instability, Medium};
+    use spacetimes_deflation::history::{abnormal_c, dimer_point, events, gap_history, thermal_point};
+    let pi = std::f64::consts::PI;
+    let mut rep = spacetimes::verify::Report::new();
+
+    // ---- thresholds, computed again -------------------------------------------------
+    let dc = spacetimes::dimer::critical_d();
+    let (cc, ccs) = (critical_c(false), critical_c(true));
+    rep.add("def-H1", "numerical", &format!("thresholds of the model, computed again: a pair of fermions is bound if D_VS > {:.5}; matter is self-bound if C > {:.4} (3 pi^2/8 = {:.4}) or, with the negative-energy states, C > {:.4} (3 pi^2/5 = {:.4}). On a deflating spacetime D_VS and C grow as exp(gsum x4), so each threshold is passed at a definite x4", dc, cc, 3.0 * pi * pi / 8.0, ccs, 3.0 * pi * pi / 5.0),
+        (dc - 1.67981).abs() < 1e-4 && (cc - 3.0 * pi * pi / 8.0).abs() < 2e-3 && (ccs - 3.0 * pi * pi / 5.0).abs() < 2e-3);
+
+    // ---- the gap along the clock ------------------------------------------------------
+    let sets: [(f64, f64, f64); 4] = [(1.0, 0.1, 0.5), (2.0, 0.3, 0.5), (3.0, 1.0, 0.5), (4.0, 0.1, 0.2)];
+    let (tau_a, tau_b, n) = ((0.25f64).ln(), (16.0f64).ln(), 34usize);
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let (mut tc_dev, mut order_ok, mut mono_ok) = (0.0_f64, true, true);
+    let (mut slope_lo, mut slope_hi) = (f64::INFINITY, 0.0_f64);
+    for (id, ms, kf) in sets {
+        let h = gap_history(1.0, ms, kf, tau_a, tau_b, n, true);
+        for i in 0..n {
+            let (tau, r) = h[i];
+            // d ln(gap_V)/d tau by central differences where the neighbours have a gap
+            let dln = if i > 0 && i + 1 < n && h[i - 1].1.gap_v > 0.0 && h[i + 1].1.gap_v > 0.0 {
+                (h[i + 1].1.gap_v.ln() - h[i - 1].1.gap_v.ln()) / (h[i + 1].0 - h[i - 1].0)
+            } else {
+                f64::NAN
+            };
+            let follow = if dln.is_finite() && dln > 0.0 { r.gap_v / dln } else { f64::NAN };
+            rows.push(vec![id, ms, kf, tau, r.g, r.alpha, r.alpha / ms, r.g * r.g / (ms * ms), r.lambda_s, r.lambda_p, r.gap_v, r.gap_t, r.gap_s, r.tc_over_gap, dln, follow]);
+            if r.gap_v > 0.0 && r.gap_v < 0.05 && r.tc_over_gap.is_finite() {
+                tc_dev = tc_dev.max((r.tc_over_gap - 0.567).abs());
+            }
+            order_ok &= r.gap_v >= r.gap_s && r.gap_s >= r.gap_t;
+            if i > 0 {
+                mono_ok &= r.gap_v >= h[i - 1].1.gap_v;
+            }
+            // weak coupling: Delta ~ exp(-1/lambda) and lambda ~ exp(tau) give d ln(Delta)/d tau = 1/lambda
+            let lam = r.lambda_s + r.lambda_p;
+            if dln.is_finite() && r.gap_v > 1e-6 && r.gap_v < 0.02 {
+                slope_lo = slope_lo.min(dln * lam);
+                slope_hi = slope_hi.max(dln * lam);
+            }
+        }
+    }
+    write_csv("gap_history.csv",
+        &[("content", "the gap of the paired state along the deflation clock tau = gsum (x4 - x4_ref): equilibrium gap at the Fermi surface and critical temperature for the couplings of each moment (adiabatic history)".to_string()),
+          ("model", "gap equation of the main project (exchange of the radial mode and of the phase mode of the Vorton-Scalar); fermion mass m = 1; g_VS = exp(tau/2), i.e. alpha_VS = exp(tau)/(4 pi): the reference time is the moment at which g_VS = 1".to_string()),
+          ("columns", "set: 1 = (m_s, k_F) = (0.1, 0.5), 2 = (0.3, 0.5), 3 = (1.0, 0.5), 4 = (0.1, 0.2), in units of m; tau; g; alpha = g^2/(4 pi); D_VS = alpha m/m_s; C = g^2 m^2/m_s^2; lambda_S, lambda_P: dimensionless pairing strengths of the two modes; gap_V, gap_T, gap_S: gap of the vector channel, of the two-form channel and with the radial mode only, in units of the Fermi kinetic energy E_F (0 = below 1e-7 E_F); Tc_over_gap_V; dln_gap_dtau = d ln(gap_V)/d tau; follow = gap_V/(d ln gap_V/d tau) in units of E_F: the gap can follow the deflation only if gsum is much smaller than this".to_string()),
+          ("command", "deflation history".to_string())],
+        &["set", "m_s", "k_F", "tau", "g", "alpha", "D_VS", "C", "lambda_S", "lambda_P", "gap_V", "gap_T", "gap_S", "Tc_over_gap_V", "dln_gap_dtau", "follow"], &rows)?;
+    rep.add("def-H2", "numerical", &format!("along the clock, wherever the gap is below 0.05 E_F the critical temperature is 0.567 times the gap (largest deviation {:.4}); the gap of the vector channel is at every moment at least as large as the gap with the radial mode alone, and that at least as large as the gap of the two-form channel; the gap never decreases as the deflation proceeds (four sets of m_s/m and k_F/m, 34 moments each)", tc_dev), tc_dev < 0.012 && order_ok && mono_ok);
+    rep.add("def-H3", "numerical", &format!("growth of the gap: for a weakly coupled state the gap is proportional to exp(-1/lambda) and lambda grows as exp(tau), which gives d ln(gap)/d tau = 1/lambda; in the computed histories lambda d ln(gap)/d tau lies between {:.2} and {:.2} wherever 1e-6 < gap/E_F < 0.02: the gap grows much faster than the couplings, by one e-folding in the time 1/(gsum/lambda)", slope_lo, slope_hi), slope_lo > 0.6 && slope_hi < 1.6);
+
+    // ---- the bound pair along the clock -----------------------------------------------
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let mut ds: Vec<f64> = (0..70).map(|i| 0.2 * (150.0f64).powf(i as f64 / 69.0)).collect();
+    for f in [0.9, 0.95, 0.98, 0.99, 1.01, 1.02, 1.04, 1.08, 1.16] {
+        ds.push(dc * f);
+    }
+    ds.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let pts: Vec<[f64; 4]> = ds.iter().map(|d| dimer_point(*d)).collect();
+    for p in &pts {
+        rows.push(vec![p[0], (p[0] / dc).ln(), p[1], p[2], p[3]]);
+    }
+    write_csv("dimer_history.csv",
+        &[("content", "two fermions in the Yukawa potential of the radial mode along the deflation clock: D_VS = alpha_VS m/m_s grows as exp(gsum x4)".to_string()),
+          ("columns", "D; tau_pair = ln(D/D_c) = gsum (x4 - x4 at which the pair becomes bound); a_ms: scattering length times m_s; bound_states; Eb: binding energy times m/m_s^2 (0 = unbound)".to_string()),
+          ("critical_D", format!("{:.6}", dc)),
+          ("command", "deflation history".to_string())],
+        &["D", "tau_pair", "a_ms", "bound_states", "Eb"], &rows)?;
+    let e = |f: f64| dimer_point(dc * f)[3];
+    let (e2, e4, e8) = (e(1.02), e(1.04), e(1.08));
+    let (x1, x2) = ((e4 / e2).ln() / (2.0f64).ln(), (e8 / e4).ln() / (2.0f64).ln());
+    let (am, ap) = (dimer_point(dc * 0.99)[1], dimer_point(dc * 1.01)[1]);
+    rep.add("def-H4", "numerical", &format!("the moment at which a pair becomes bound: just below D_c the scattering length is large and negative ({:.1}/m_s at 0.99 D_c), just above large and positive ({:.1}/m_s at 1.01 D_c); the binding energy starts as a power of the distance from the threshold with the exponents {:.2} (between 2 and 4 per cent above D_c) and {:.2} (between 4 and 8 per cent), that is quadratically: E_b ~ (exp(tau_pair) - 1)^2 m_s^2/m. Because E_b vanishes at the threshold, the pair cannot follow the deflation adiabatically at first, however slow the deflation is", am, ap, x1, x2),
+        am < -20.0 && ap > 20.0 && (x1 - 2.0).abs() < 0.25 && (x2 - 2.0).abs() < 0.35);
+
+    // ---- normal matter along the clock ---------------------------------------------------
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let cs: Vec<f64> = (0..60).map(|i| 0.05 * (1200.0f64).powf(i as f64 / 59.0)).collect();
+    for kf in [0.2, 0.5, 1.0] {
+        for sea in [false, true] {
+            for c in &cs {
+                let md = Medium { c: *c, sea };
+                let st = md.state(kf);
+                rows.push(vec![kf, if sea { 1.0 } else { 0.0 }, *c, st.x, st.eps / st.n, st.p, md.sound_speed_sq(kf)]);
+            }
+        }
+    }
+    write_csv("medium_history.csv",
+        &[("content", "normal matter of fixed density along the deflation clock: C = g_VS^2 m^2/m_s^2 grows as exp(gsum x4)".to_string()),
+          ("columns", "k_F (units of m); sea: 1 if the filled negative-energy states are included; C; x = m*/m: fermion mass in the matter; e_per_n: energy per fermion (units of m; below 1 = bound); p: pressure (units of m^4); cs2: square of the sound speed".to_string()),
+          ("command", "deflation history".to_string())],
+        &["k_F", "sea", "C", "x", "e_per_n", "p", "cs2"], &rows)?;
+    // the critical C of abnormal matter for several densities, and the estimate of the main project,
+    // k_F = pi m/(2 sqrt(C)), which holds where the transition happens at weak coupling, i.e. at high density
+    let mut ab_txt: Vec<String> = Vec::new();
+    let mut ab_ok = true;
+    let mut prev_c = f64::INFINITY;
+    let mut last_ratio = f64::NAN;
+    for kf in [0.2, 0.5, 1.0, 2.0] {
+        let c = abnormal_c(kf, false).unwrap_or(f64::NAN);
+        let est = pi * pi / (4.0 * kf * kf);
+        ab_txt.push(format!("k_F = {} m: C = {:.3} ({:.2} times pi^2 m^2/(4 k_F^2))", kf, c, c / est));
+        ab_ok &= c.is_finite() && c < prev_c;
+        prev_c = c;
+        last_ratio = c / est;
+    }
+    ab_ok &= (last_ratio - 1.0).abs() < 0.05;
+    rep.add("def-H5", "numerical", &format!("matter of fixed density loses the fermion mass (the Vorton-Scalar loses its expectation value in the matter) when C passes a critical value that falls with the density: {}. The estimate C = pi^2 m^2/(4 k_F^2) of the main project is reached at high density, where the transition happens at weak coupling; at low density the critical C is larger. On a deflating spacetime every piece of matter becomes abnormal at a definite x4, the denser the earlier", ab_txt.join("; ")), ab_ok);
+
+    // ---- the vacuum potential along the clock ----------------------------------------------
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let mut prev = f64::INFINITY;
+    let mut dec = true;
+    for c in &cs {
+        let (xm, xz) = vacuum_instability(*c);
+        rows.push(vec![*c, xm, xz]);
+        if xz.is_finite() {
+            dec &= xz <= prev * 1.0000001;
+            prev = xz;
+        }
+    }
+    write_csv("vacuum_history.csv",
+        &[("content", "the one-loop potential of the Vorton-Scalar in the vacuum along the deflation clock: where it turns over".to_string()),
+          ("columns", "C; x_max: field (units of the vacuum value) at the maximum beyond the vacuum; x_zero: field beyond which the potential lies below its vacuum value (inf = beyond 1e30)".to_string()),
+          ("command", "deflation history".to_string())],
+        &["C", "x_max", "x_zero"], &rows)?;
+    let (_, xz1) = vacuum_instability(1.0);
+    let (_, xz10) = vacuum_instability(10.0);
+    rep.add("def-H6", "numerical", &format!("the field beyond which the one-loop potential of the Vorton-Scalar lies below its vacuum value decreases monotonically as C grows: {:.1} v_VS at C = 1, {:.2} v_VS at C = 10. As the deflation proceeds the barrier that protects the vacuum moves in towards the vacuum value", xz1, xz10), dec && xz1 > xz10);
+
+    // ---- finite temperature along the clock -------------------------------------------------
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    for ms in [0.3, 1.0, 3.0] {
+        for i in 0..10 {
+            let g = 0.3 * (4.0f64 / 0.3).powf(i as f64 / 9.0);
+            let t = thermal_point(g, ms);
+            rows.push(vec![ms, g, g * g / (4.0 * pi), t[0], t[1], t[2], t[3], t[4], t[5], t[6]]);
+        }
+    }
+    write_csv("thermal_history.csv",
+        &[("content", "temperature at which the expectation value of the Vorton-Scalar melts, along the deflation clock (g_VS grows as exp(gsum x4/2))".to_string()),
+          ("columns", "m_s (units of m); g; alpha; lambda = g^2 m_s^2/(2 m^2); C; T_high, T_largeN: closed estimates (units of m); T_half, T_zero: temperatures at which the expectation value has fallen to one half and to 0.02 of its vacuum value in the Hartree approximation (units of m); phi_before: expectation value over its vacuum value just below T_zero".to_string()),
+          ("command", "deflation history".to_string())],
+        &["m_s", "g", "alpha", "lambda", "C", "T_high", "T_largeN", "T_half", "T_zero", "phi_before"], &rows)?;
+    // the melting temperature in units of m falls as the coupling grows (T ~ v ~ m/g)
+    let mut fall = true;
+    for ms in [0.3, 1.0, 3.0] {
+        let sub: Vec<&Vec<f64>> = rows.iter().filter(|r| r[0] == ms).collect();
+        for w in sub.windows(2) {
+            fall &= w[1][7] < w[0][7];
+        }
+    }
+    rep.add("def-H7", "numerical", "the temperature T_half at which the fermions lose half of their mass, in units of the (constant) fermion mass, falls monotonically as g_VS grows, for m_s/m = 0.3, 1 and 3 (it is of the order of the four-dimensional vacuum value m/g_VS, which falls as exp(-gsum x4/2)): matter of a fixed temperature melts at a definite x4", fall);
+
+    // ---- the order of events ------------------------------------------------------------------
+    let mut rows: Vec<Vec<String>> = Vec::new();
+    let mut pair_before_instability: Vec<String> = Vec::new();
+    for ms in [0.1, 0.3, 1.0, 3.0, 10.0, 30.0] {
+        let ev = events(ms, 0.5, 100.0);
+        let a_pair = ev.iter().find(|e| e.name.contains("bound pair")).unwrap().alpha;
+        let a_inst = ev.iter().find(|e| e.name.contains("3 v_VS")).unwrap().alpha;
+        if a_pair < a_inst {
+            pair_before_instability.push(format!("{}", ms));
+        }
+        for e in &ev {
+            rows.push(vec![format!("{}", ms), e.name.clone(), e.quantity.clone(), format!("{:.6}", e.critical), format!("{:.6e}", e.alpha), format!("{:.4}", (e.alpha / a_pair).ln())]);
+        }
+    }
+    write_csv_str("events.csv",
+        &[("content", "the order of events on a deflating spacetime: values of alpha_VS = g_VS^2/(4 pi) at which the thresholds of the model are passed, for several mass ratios m_s/m; matter of Fermi momentum 0.5 m; cutoff 100 m for the vacuum condensate".to_string()),
+          ("columns", "m_s_over_m; event; quantity that passes a critical value; that value; alpha_VS at the event; tau_pair = ln(alpha/alpha at which a pair becomes bound) = gsum (x4 - x4 of that event): negative = earlier".to_string()),
+          ("command", "deflation history".to_string())],
+        &["m_s_over_m", "event", "quantity", "critical", "alpha", "tau_pair"], &rows)?;
+    rep.add("def-H8", "numerical", &format!("order of events: the pair of fermions becomes bound before the one-loop potential of the Vorton-Scalar has fallen below its vacuum value at a field of 3 v_VS only for the mass ratios m_s/m = {} of the six ratios 0.1, 0.3, 1, 3, 10, 30 examined (the condition is 4 pi D_c m/m_s < 4.27, i.e. m_s/m > 4.9): for a light radial mode the deflation destabilizes the vacuum first", pair_before_instability.join(", ")), pair_before_instability == vec!["10".to_string(), "30".to_string()]);
+
+    let (ok, n) = rep.count();
+    let all = rep.all_pass();
+    rep.add("ALL", "numerical", "every check above passed", all);
+    write_report(&rep, "history_checks.txt", "history_checks.csv",
+        "PROJECT spacetimes, Revision_Deflation: checks of the history of the model along the deflation clock (couplings that grow as exp(gsum x4))", "deflation history")?;
+    for c in &rep.checks {
+        println!("[{}] {:<7} ({}) {}", if c.pass { "PASS" } else { "FAIL" }, c.id, c.kind, c.statement);
+    }
+    println!("\nhistory: {} of {} checks passed", ok, n);
+    Ok(all)
+}
+
+/// `quench`: can the paired state follow the deflation?  Time-dependent mean-field
+/// dynamics of the order parameter while the pairing strength grows as exp(gsum x4)
+/// (module quench.rs).  Writes data/quench_history.csv, quench_summary.csv,
+/// quench_checks.{txt,csv}.
+fn cmd_quench() -> std::io::Result<bool> {
+    use spacetimes_deflation::quench::{delta_eq, ramp, Shell};
+    let mut rep = spacetimes::verify::Report::new();
+    let sh = Shell::new(2000, 8.0);
+    let (li, lf) = (0.15_f64, 0.5_f64);
+    let rates = [1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1];
+    let mut hist: Vec<Vec<f64>> = Vec::new();
+    let mut summ: Vec<Vec<f64>> = Vec::new();
+    let mut len_dev: f64 = 0.0;
+    let mut mins: Vec<f64> = Vec::new();
+    let mut catch_a: Vec<f64> = Vec::new();
+    let mut nex: Vec<f64> = Vec::new();
+    for gsum in rates {
+        let (h, dev) = ramp(&sh, li, lf, gsum, 0.025, 800);
+        len_dev = len_dev.max(dev);
+        let a = |s: &spacetimes_deflation::quench::Sample| gsum / (s.lambda * s.delta_eq);
+        for s in &h {
+            hist.push(vec![gsum, s.tau, s.lambda, s.delta, s.delta_eq, s.delta / s.delta_eq, s.n_ex, a(s)]);
+        }
+        let ratio = |s: &spacetimes_deflation::quench::Sample| s.delta / s.delta_eq;
+        let imin = (0..h.len()).min_by(|i, j| ratio(&h[*i]).partial_cmp(&ratio(&h[*j])).unwrap()).unwrap();
+        let catch = h.iter().skip(imin).find(|s| ratio(s) > 0.9);
+        let (ctau, ca) = match catch {
+            Some(s) => (s.tau, a(s)),
+            None => (f64::NAN, f64::NAN),
+        };
+        // mean of the ratio over the last tenth of the run (it oscillates)
+        let tail = &h[h.len() - h.len() / 10..];
+        let fin = tail.iter().map(|s| ratio(s)).sum::<f64>() / tail.len() as f64;
+        let last = h.last().unwrap();
+        summ.push(vec![gsum, a(&h[0]), a(last), ratio(&h[imin]), h[imin].tau, ctau, ca, fin, last.n_ex]);
+        mins.push(ratio(&h[imin]));
+        catch_a.push(ca);
+        nex.push(last.n_ex);
+    }
+    write_csv("quench_history.csv",
+        &[("content", "the order parameter of the paired state while the pairing strength grows as lambda = 0.15 exp(tau), tau = gsum (x4 - x4_i), up to lambda = 0.5; time-dependent mean-field dynamics of the shell model (quench.rs), started in equilibrium".to_string()),
+          ("units", "energies in units of the half-width omega_c of the shell; gsum in units of omega_c".to_string()),
+          ("columns", "gsum; tau; lambda; delta: |Delta| of the evolving state; delta_eq: equilibrium gap for the coupling of the moment, 1/sinh(1/lambda); ratio = delta/delta_eq; n_ex: density of broken pairs; A = gsum/(lambda delta_eq): the parameter that decides whether the state can follow".to_string()),
+          ("command", "deflation quench".to_string())],
+        &["gsum", "tau", "lambda", "delta", "delta_eq", "ratio", "n_ex", "A"], &hist)?;
+    write_csv("quench_summary.csv",
+        &[("content", "summary of data/quench_history.csv, one row per rate of deflation".to_string()),
+          ("columns", "gsum (units of omega_c); A_start, A_end: A = gsum/(lambda delta_eq) at the start and at the end; ratio_min: smallest delta/delta_eq during the run; tau_min: clock reading there; tau_catch, A_catch: clock reading and A at which delta/delta_eq first exceeds 0.9 after the minimum (nan: never); ratio_final: mean of delta/delta_eq over the last tenth of the run; n_ex_final: density of broken pairs at the end".to_string()),
+          ("command", "deflation quench".to_string())],
+        &["gsum", "A_start", "A_end", "ratio_min", "tau_min", "tau_catch", "A_catch", "ratio_final", "n_ex_final"], &summ)?;
+
+    // checks
+    rep.add("def-Q1", "numerical", &format!("the equations of motion conserve |2F|^2 + (1 - 2n)^2 = 1 for every pair: largest deviation at the end of the seven runs {:.1e}", len_dev), len_dev < 1e-8);
+    // convergence: the run with gsum = 1e-3 on a grid twice as fine in energy and in time
+    let sh2 = Shell::new(4000, 8.0);
+    let (h2, _) = ramp(&sh2, li, lf, 1e-3, 0.0125, 800);
+    let min2 = h2.iter().map(|s| s.delta / s.delta_eq).fold(f64::INFINITY, f64::min);
+    let nex2 = h2.last().unwrap().n_ex;
+    let (dmin, dnex) = ((min2 - mins[2]).abs(), (nex2 / nex[2] - 1.0).abs());
+    rep.add("def-Q2", "numerical", &format!("convergence: with twice as many energies (4000) and half the time step the run with gsum = 1e-3 omega_c gives the smallest ratio {:.5} (against {:.5}) and the final density of broken pairs {:.4e} (against {:.4e})", min2, mins[2], nex2, nex[2]), dmin < 2e-3 && dnex < 0.03);
+    let mono = mins.windows(2).all(|w| w[1] < w[0]);
+    rep.add("def-Q3", "numerical", &format!("the faster the deflation, the further the order parameter falls behind: the smallest value of |Delta|/Delta_eq is {:.3}, {:.3}, {:.3}, {:.3}, {:.3}, {:.3}, {:.3} for gsum/omega_c = 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1 (A at the start: 0.26 to 262)", mins[0], mins[1], mins[2], mins[3], mins[4], mins[5], mins[6]), mono && mins[0] > 0.9 && mins[6] < 0.2);
+    let ca: Vec<f64> = catch_a.iter().cloned().filter(|x| x.is_finite()).collect();
+    let (ca_lo, ca_hi) = (ca.iter().cloned().fold(f64::INFINITY, f64::min), ca.iter().cloned().fold(0.0, f64::max));
+    rep.add("def-Q4", "numerical", &format!("the order parameter catches up with the equilibrium gap of the moment (to within 10 per cent) when A = gsum/(lambda Delta_eq) has fallen to a value between {:.2} and {:.2} (six runs; in the fastest run, gsum = 0.1 omega_c, it does not catch up before lambda = 0.5): the paired state follows the deflation if and only if gsum is small compared with lambda times the gap", ca_lo, ca_hi), ca.len() == 6 && ca_lo > 0.1 && ca_hi < 1.0);
+    let nmono = nex.windows(2).take(5).all(|w| w[1] > w[0]);
+    rep.add("def-Q5", "numerical", &format!("the lag leaves broken pairs behind: their density at lambda = 0.5 is {:.1e}, {:.1e}, {:.1e}, {:.1e}, {:.1e}, {:.1e} (units of omega_c times the density of states) for gsum/omega_c = 1e-4 to 3e-2, growing with the rate; for the equilibrium state it is zero", nex[0], nex[1], nex[2], nex[3], nex[4], nex[5]), nmono && nex[0] < 1e-4);
+
+    let (ok, n) = rep.count();
+    let all = rep.all_pass();
+    rep.add("ALL", "numerical", "every check above passed", all);
+    write_report(&rep, "quench_checks.txt", "quench_checks.csv",
+        "PROJECT spacetimes, Revision_Deflation: checks of the time-dependent dynamics of the paired state under a coupling that grows as exp(gsum x4)", "deflation quench")?;
+    for c in &rep.checks {
+        println!("[{}] {:<7} ({}) {}", if c.pass { "PASS" } else { "FAIL" }, c.id, c.kind, c.statement);
+    }
+    let _ = delta_eq(0.3);
+    println!("\nquench: {} of {} checks passed", ok, n);
+    Ok(all)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
     let result = match cmd {
         "matrices" => cmd_matrices(),
         "modes" => cmd_modes(),
+        "history" => cmd_history(),
+        "quench" => cmd_quench(),
         _ => {
             println!("deflation: PROJECT spacetimes, Revision_Deflation (x5, x6, x7 deflate exponentially)\n");
             println!("commands (run from the folder Revision_Deflation):");
@@ -275,6 +553,9 @@ fn main() {
             println!("             of the coordinate matrices, the spin connection and the Dirac operators");
             println!("  modes      solutions of the Dirac equations mode by mode: pair creation by the deflation (7+1),");
             println!("             bounded solutions and their extinction (4+4)");
+            println!("  history    the couplings and every threshold of the model along the deflation clock:");
+            println!("             gap, bound pair, normal matter, vacuum potential, melting, order of events");
+            println!("  quench     time-dependent dynamics of the paired state while the coupling grows: can it follow?");
             Ok(true)
         }
     };
