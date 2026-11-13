@@ -411,23 +411,34 @@ fn cmd_history() -> std::io::Result<bool> {
         for i in 0..10 {
             let g = 0.3 * (4.0f64 / 0.3).powf(i as f64 / 9.0);
             let t = thermal_point(g, ms);
-            rows.push(vec![ms, g, g * g / (4.0 * pi), t[0], t[1], t[2], t[3], t[4], t[5], t[6]]);
+            rows.push(vec![ms, g, g * g / (4.0 * pi), t[0], t[1], t[2], t[3], t[4], t[5], t[6], t[7]]);
         }
     }
     write_csv("thermal_history.csv",
         &[("content", "temperature at which the expectation value of the Vorton-Scalar melts, along the deflation clock (g_VS grows as exp(gsum x4/2))".to_string()),
-          ("columns", "m_s (units of m); g; alpha; lambda = g^2 m_s^2/(2 m^2); C; T_high, T_largeN: closed estimates (units of m); T_half, T_zero: temperatures at which the expectation value has fallen to one half and to 0.02 of its vacuum value in the Hartree approximation (units of m); phi_before: expectation value over its vacuum value just below T_zero".to_string()),
+          ("columns", "m_s (units of m); g; alpha; lambda = g^2 m_s^2/(2 m^2); C; T_high, T_largeN: closed estimates (units of m); T_half, T_zero: temperatures at which the expectation value has fallen to one half and to 0.02 of its vacuum value in the Hartree approximation (units of m); phi_before: expectation value over its vacuum value just below T_zero (a value of order one: a discontinuous transition); valid: 1 = the three preceding numbers describe a melting; 0 = the Hartree potential ceases to exist at 1.05 v_VS before the expectation value has fallen (the one-loop potential turns over too close to the vacuum value, see vacuum_history.csv), no melting temperature can be given (NaN)".to_string()),
           ("command", "deflation history".to_string())],
-        &["m_s", "g", "alpha", "lambda", "C", "T_high", "T_largeN", "T_half", "T_zero", "phi_before"], &rows)?;
-    // the melting temperature in units of m falls as the coupling grows (T ~ v ~ m/g)
+        &["m_s", "g", "alpha", "lambda", "C", "T_high", "T_largeN", "T_half", "T_zero", "phi_before", "valid"], &rows)?;
+    // the melting temperature in units of m falls as the coupling grows (T ~ v ~ m/g), wherever it can be computed
     let mut fall = true;
+    let mut n_valid = 0;
+    let mut invalid_text = String::new();
     for ms in [0.3, 1.0, 3.0] {
-        let sub: Vec<&Vec<f64>> = rows.iter().filter(|r| r[0] == ms).collect();
+        let sub: Vec<&Vec<f64>> = rows.iter().filter(|r| r[0] == ms && r[10] == 1.0).collect();
+        n_valid += sub.len();
         for w in sub.windows(2) {
             fall &= w[1][7] < w[0][7];
         }
+        if let Some(first_bad) = rows.iter().find(|r| r[0] == ms && r[10] == 0.0) {
+            invalid_text.push_str(&format!(" for m_s/m = {} from g_VS = {:.2} (C = {:.0}) on;", ms, first_bad[1], first_bad[4]));
+        }
     }
-    rep.add("def-H7", "numerical", "the temperature T_half at which the fermions lose half of their mass, in units of the (constant) fermion mass, falls monotonically as g_VS grows, for m_s/m = 0.3, 1 and 3 (it is of the order of the four-dimensional vacuum value m/g_VS, which falls as exp(-gsum x4/2)): matter of a fixed temperature melts at a definite x4", fall);
+    let prefix_ok = [0.3, 1.0, 3.0].iter().all(|ms| {
+        // the rows that cannot be computed lie at the strong-coupling end of each series
+        let flags: Vec<f64> = rows.iter().filter(|r| r[0] == *ms).map(|r| r[10]).collect();
+        flags.windows(2).all(|w| w[0] >= w[1])
+    });
+    rep.add("def-H7", "numerical", &format!("the temperature T_half at which the fermions lose half of their mass, in units of the (constant) fermion mass, falls monotonically as g_VS grows, for m_s/m = 0.3, 1 and 3 ({} of the 30 moments examined; it is of the order of the four-dimensional vacuum value m/g_VS, which falls as exp(-gsum x4/2)): matter of a fixed temperature melts at a definite x4. No melting temperature can be given{} there the Hartree potential ceases to exist at 1.05 v_VS before the expectation value has fallen, because the one-loop potential turns over too close to the vacuum value", n_valid, if invalid_text.is_empty() { " in none of the cases;".to_string() } else { invalid_text }), fall && prefix_ok && n_valid >= 20);
 
     // ---- the order of events ------------------------------------------------------------------
     let mut rows: Vec<Vec<String>> = Vec::new();

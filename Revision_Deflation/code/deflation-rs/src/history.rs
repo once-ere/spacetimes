@@ -206,13 +206,28 @@ pub fn events(ms: f64, k_f: f64, cutoff: f64) -> Vec<Event> {
     ev
 }
 
-/// The melting temperatures of the expectation value of the Vorton-Scalar for the
-/// coupling g and the mass ratio m_s/m: (lambda, C, T_high/m, T_largeN/m, T_half/m, T_zero/m, phi before the drop).
-pub fn thermal_point(g: f64, ms: f64) -> [f64; 7] {
+/// The melting of the expectation value of the Vorton-Scalar at finite temperature for
+/// the couplings of one moment (routine `Thermal::melting` of the main project, Hartree
+/// approximation).  Returns [lambda, C, T_high, T_largeN, T_half, T_zero, phi_before, valid].
+///
+/// `valid` = 1 if the result is a melting temperature.  The routine of the main project
+/// searches the state of lowest potential among the fields up to 1.05 v_VS and treats a
+/// temperature at which the Hartree potential does not exist at 1.05 v_VS as "melted".
+/// At strong coupling (large C) the one-loop potential turns over so close to the vacuum
+/// value that this happens before the expectation value has fallen: the temperatures
+/// returned are then the temperatures at which the calculation ceases to be possible, not
+/// melting temperatures.  Such results are marked valid = 0 and their temperatures are
+/// replaced by NaN.
+pub fn thermal_point(g: f64, ms: f64) -> [f64; 8] {
     let lambda = 0.5 * g * g * ms * ms;
     let th = Thermal { g, lambda };
     let (t_half, t_zero, phi_before) = th.melting();
-    [lambda, g * g / (ms * ms), th.t_high(), th.t_large_n(), t_half, t_zero, phi_before]
+    let valid = th.global_minimum(1.02 * t_zero).is_some() && th.global_minimum(0.98 * t_half).is_some();
+    if valid {
+        [lambda, g * g / (ms * ms), th.t_high(), th.t_large_n(), t_half, t_zero, phi_before, 1.0]
+    } else {
+        [lambda, g * g / (ms * ms), th.t_high(), th.t_large_n(), f64::NAN, f64::NAN, f64::NAN, 0.0]
+    }
 }
 
 #[cfg(test)]
