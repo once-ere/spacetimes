@@ -109,11 +109,11 @@
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
-488 numbers in 24 documents, 0 not traced
+500 numbers in 26 documents, 0 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-16
+17
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN mat_gamma1644_0 -->

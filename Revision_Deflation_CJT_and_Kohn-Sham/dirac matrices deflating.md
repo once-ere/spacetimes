@@ -1561,7 +1561,11 @@ $\gamma_{1644}^A$ and $\gamma_{1671}^A$; `Cm1644` is $C^-_{1644}$; `psihat` is t
 weighted field $\hat\psi$; `gs` is the list of the signs $\mathrm{gs}_{AA}$ and `c`
 the constant $c_\gamma$ of Section 0.2; `G_0` and `G_1` are $G_S^{\rm HF}$ and
 $G_V^{\rm HF}$; `eps_K` is $\mathrm{sgn}_K$; `F` is the Fierz matrix $\mathsf F$;
-`rho` and `rho_S` are the densities $n$ and $n_S$.
+`rho` and `rho_S` are the densities $n$ and $n_S$. "The main project" means the part of
+PROJECT spacetimes that treats the flat 4+4 and 7+1 spacetimes: its program is used
+as a library, the matrices of the frame are its matrices, and several checks compare
+with its data files. "The author's document" means his document on Kohn–Sham matter
+and gravity on the 7+1 spacetime.
 
 ## A.1 Geometry, coordinate matrices, spin connection, Dirac operators (`deflation_cjt_ks matrices`)
 

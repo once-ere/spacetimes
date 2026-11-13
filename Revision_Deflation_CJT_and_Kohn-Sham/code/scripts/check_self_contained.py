@@ -53,6 +53,13 @@ ALLOWED = [
 ]
 
 
+# a wording that is allowed in one document only, with the reason; the report prints this list
+ALLOWED_IN = [
+    ("P0_task_rules_deviations_decisions", "the word supplement",
+     "the provenance P0 has to explain why this revision has no supplements (its deviation V1); there the word names what the first revision had and sends the reader nowhere"),
+]
+
+
 def documents():
     docs = sorted(glob.glob(os.path.join(ROOT, "docs_src", "*.src.md"))) + sorted(glob.glob(os.path.join(ROOT, "docs_src", "manuscript", "*.tex")))
     built = sorted(glob.glob(os.path.join(ROOT, "*.md"))) + sorted(glob.glob(os.path.join(ROOT, "provenance", "*.md"))) + sorted(glob.glob(os.path.join(ROOT, "manuscript", "*.md"))) \
@@ -88,6 +95,8 @@ def main():
                 for m in re.finditer(pat, line, re.I):
                     if any(re.search(a, line) for a, _ in ALLOWED):
                         continue
+                    if any(name in rel and what == w for name, w, _ in ALLOWED_IN):
+                        continue
                     n += 1
                     hits.append("%s, line %d: %s: ...%s..." % (rel, k, what, line[max(0, m.start() - 60):m.end() + 60].strip()))
         lines_out.append("%-110s %d" % (rel, n))
@@ -99,7 +108,8 @@ def main():
             "[PASS] no document of this folder sends its reader to another manuscript, document, provenance or symbol file" if ok
             else "[FAIL] %d referrals found" % len(hits),
             "",
-            "wordings searched for:"] + ["  - " + what for _, what in PATTERNS] + ["", "hits per file:"]
+            "wordings searched for:"] + ["  - " + what for _, what in PATTERNS] \
+        + ["", "allowed in one document only:"] + ["  - %s, in %s: %s" % (w, name, why) for name, w, why in ALLOWED_IN] + ["", "hits per file:"]
     out = "\n".join(head + lines_out + ([""] + hits if hits else [])) + "\n"
     with open(os.path.join(ROOT, "data", "self_contained_checks.txt"), "w", encoding="utf-8") as f:
         f.write(out)

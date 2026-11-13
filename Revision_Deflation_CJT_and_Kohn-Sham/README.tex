@@ -1,0 +1,479 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_Deflation\_CJT\_and\_Kohn-Sham}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={README --- Revision\_Deflation\_CJT\_and\_Kohn-Sham},
+  pdfauthor={Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{README --- Revision\_Deflation\_CJT\_and\_Kohn-Sham}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{PROJECT spacetimes: the 16-component Dirac field with mass
+term and self-interaction on the 4+4 and 7+1 spacetimes whose
+coordinates x5, x6, x7 deflate exponentially; Kohn--Sham and CJT
+analyses}
+\author{Patrick Lee Nash, Ph.D.}
+\date{November 13, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-folder-is}{%
+\section{1. What this folder is}\label{what-this-folder-is}}
+
+The folder holds one sub-project of PROJECT spacetimes. Its hypotheses
+are the author's:
+
+\begin{itemize}
+\tightlist
+\item
+  The three extra coordinates \(x5\), \(x6\), \(x7\) deflate
+  exponentially in the ordinary time \(x4\). The metric is diagonal, and
+  its components along them are
+  \(g^{(4+4)}_{tt}=-\mathrm{const}_t^{\,2}\,e^{-2\,\mathrm{rate}_t\,x4}\)
+  on the 4+4 spacetime (where they are time-like) and
+  \(g^{(7+1)}_{tt}=+\mathrm{const}_t^{\,2}\,e^{-2\,\mathrm{rate}_t\,x4}\)
+  on the 7+1 spacetime (where they are space-like), for \(t=5,6,7\),
+  with the positive rates \(\mathrm{rate}_5=\mathrm{g55}\),
+  \(\mathrm{rate}_6=\mathrm{g66}\), \(\mathrm{rate}_7=\mathrm{g77}\) and
+  positive constants \(\mathrm{const}_t\).
+\item
+  The Lagrangian of the sixteen-component Dirac field contains a kinetic
+  term, a \textbf{mass term} and a \textbf{self-interaction} that is
+  quartic in the field, with nine couplings \(g_0,\dots,g_8\).
+\item
+  The consequences are worked out with two methods, the Kohn--Sham
+  ansatz and the effective potential for composite operators of
+  Cornwall, Jackiw and Tomboulis (CJT), each as a check of the other and
+  of the earlier results.
+\end{itemize}
+
+Everything in the folder was computed for it: every number in a document
+comes from a data file that a command of the program wrote, and every
+table is inserted by a script.
+
+\hypertarget{where-to-start-reading}{%
+\section{2. Where to start reading}\label{where-to-start-reading}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+if you want
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+read
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+the physics of one spacetime, complete & the manuscript for that
+spacetime, in \texttt{manuscript/}; it defines every symbol it uses and
+contains its own appendices \\
+the definitions: metric, Dirac matrices printed in full, Lagrangians,
+field equations, derived step by step for both spacetimes side by side &
+\texttt{dirac\ matrices\ deflating} \\
+the meaning of a symbol &
+\texttt{provenance/P1\_master\_symbols\_spacetimes} (every symbol of the
+project, with one meaning) \\
+how a number was computed, or how to compute it again &
+\texttt{provenance/P2\_calculations\_code\_and\_checks} \\
+what was asked, what was done, what was not, and which decisions are
+open & \texttt{provenance/P0\_task\_rules\_deviations\_decisions} \\
+\end{longtable}
+
+Each document exists as \texttt{.md}, \texttt{.tex} and \texttt{.pdf},
+and each is complete in itself.
+
+\hypertarget{contents}{%
+\section{3. Contents}\label{contents}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+path
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+content
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{manuscript/16\ Component\ Dirac\ Fermion\ Condensate\ Singlet\ Superfluid\ on\ 4+4\ Deflating\ Spacetime}
+& manuscript for the 4+4 spacetime (\texttt{.tex}, \texttt{.pdf},
+\texttt{.md}) \\
+\texttt{manuscript/16\ Component\ Dirac\ Fermion\ Condensate\ Singlet\ Superfluid\ on\ 7+1\ Deflating\ Spacetime}
+& manuscript for the 7+1 spacetime \\
+\texttt{manuscript/deflation\_refs.bib} & the references of the
+manuscripts \\
+\texttt{dirac\ matrices\ deflating} & geometry, Dirac matrices,
+Lagrangians, field equations, solutions; reports of the checks \\
+\texttt{provenance/P0\_task\_rules\_deviations\_decisions} & the task,
+the rules, deviations, decisions, error log \\
+\texttt{provenance/P1\_master\_symbols\_spacetimes} & the MASTER
+registry of symbols and the proof that no symbol has two meanings \\
+\texttt{provenance/P2\_calculations\_code\_and\_checks} & commands,
+instructions, data files, figures, complete output of all checks, source
+files \\
+\texttt{provenance/symbols\_master.csv} & the registry as a table (229
+symbols) \\
+\texttt{provenance/generated/} & tables and numbers written by the
+scripts from the data files \\
+\texttt{code/deflation-cjt-ks-rs/} & the Rust program
+\texttt{deflation\_cjt\_ks} (33 source files, 15007 lines, 68 unit
+tests) \\
+\texttt{code/scripts/} & independent verification, figures, and the
+scripts that build and check the documents \\
+\texttt{data/} & 111 data files and the reports of the checks \\
+\texttt{figures/} & 30 figures (\texttt{.pdf} and \texttt{.png}) \\
+\texttt{docs\_src/} & the sources of all documents \\
+\end{longtable}
+
+\hypertarget{how-to-run-everything}{%
+\section{4. How to run everything}\label{how-to-run-everything}}
+
+\textbf{What is needed.} A Rust toolchain (\texttt{cargo}); Python 3
+with numpy, scipy, sympy, mpmath and matplotlib; for the documents,
+pandoc, XeLaTeX with latexmk, and pdflatex with REVTeX 4.2 and BibTeX.
+The program uses the Rust crate \texttt{code/spacetimes-rs} at the top
+of the repository as a library; nothing is downloaded.
+
+\textbf{Where.} All commands are run from this folder. On the author's
+computer:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation\_CJT\_and\_Kohn{-}Sham"}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Step 1. Compile the program and run its unit tests.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{cargo}\NormalTok{ test  }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}cjt{-}ks{-}rs/Cargo.toml}
+\ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}cjt{-}ks{-}rs/Cargo.toml}
+\end{Highlighting}
+\end{Shaded}
+
+The first command must end with \texttt{test\ result:\ ok}. The second
+builds the program
+\texttt{code/deflation-cjt-ks-rs/target/release/deflation\_cjt\_ks}.
+
+\textbf{Step 2. Run the commands of the program.} Each writes its data
+files and its report of checks into \texttt{data} and ends with a line
+such as \texttt{kohnsham:\ 13\ of\ 13\ checks\ passed}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\VariableTok{B}\OperatorTok{=}\NormalTok{code/deflation{-}cjt{-}ks{-}rs/target/release/deflation\_cjt\_ks}
+\VariableTok{$B}\NormalTok{ help}
+\ControlFlowTok{for}\NormalTok{ c }\KeywordTok{in}\NormalTok{ selfcoupling kohnsham pairing gravity matrices modes symmetry channels }\DataTypeTok{\textbackslash{}}
+\NormalTok{         history quench paired cosmology matter background spectrum}\KeywordTok{;} \ControlFlowTok{do} \VariableTok{$B} \VariableTok{$c}\KeywordTok{;} \ControlFlowTok{done}
+\VariableTok{$B}\NormalTok{ forecast}
+\VariableTok{$B}\NormalTok{ superfluid}
+\VariableTok{$B}\NormalTok{ families}
+\end{Highlighting}
+\end{Shaded}
+
+The first line abbreviates the path of the program, and \texttt{help}
+lists the commands with a description of each. The loop runs fifteen
+commands, each of which takes from a few seconds to about two minutes.
+The last three take longer (about a quarter of an hour, three quarters
+of an hour, and an hour and a quarter on a machine with two processors).
+
+\textbf{Step 3. The independent verifications.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{python3}\NormalTok{ code/scripts/verify\_deflating\_independent.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/verify\_cjt\_ks\_independent.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/mutation\_test\_independent.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/vendor\_eb.py }\AttributeTok{{-}{-}check}
+\end{Highlighting}
+\end{Shaded}
+
+The first two repeat the central results with computer algebra and
+general-purpose numerical tools (43 of 43 and 37 of 37 checks pass). The
+third introduces deliberate errors into copies of the two scripts, one
+at a time, and records whether the checks notice (36 of 36 detected;
+about six minutes). The fourth verifies that four modules of the program
+are exact copies of modules of the library crate with a listed set of
+changes.
+
+\textbf{Step 4. Figures, tables, documents, and the checks of the
+documents.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{python3}\NormalTok{ code/scripts/make\_figures.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_doc\_tables.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/build\_manuscripts.py}
+\FunctionTok{bash}\NormalTok{    code/scripts/build\_docs.sh}
+\FunctionTok{bash}\NormalTok{    code/scripts/check\_all.sh}
+\end{Highlighting}
+\end{Shaded}
+
+In this order: draw every figure from the data files; write the registry
+of symbols; write every table and every computed number of the documents
+from the data files; assemble the Markdown documents; assemble and
+typeset the two manuscripts; typeset the other documents; run the checks
+of the documents and read the verdict of every report. The last command
+prints one line for each check and must end with \texttt{ALL\ PASS}.
+
+\hypertarget{the-checks-in-numbers}{%
+\section{5. The checks, in numbers}\label{the-checks-in-numbers}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+what
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+result
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+checks of the program (exact where possible; reports
+\texttt{data/*\_checks.txt}) & 295 of 295 pass \\
+unit tests of the program & 68 pass \\
+independent verification, geometry, Dirac field, modes, cosmology & 43
+of 43 pass \\
+independent verification, self-interaction, Kohn--Sham, CJT, pairing,
+gravity & 37 of 37 pass \\
+deliberate errors introduced into the independent scripts & 36 of 36
+detected \\
+checks of the registry of symbols, of the documents and of the data
+files against it & 7 of 7 pass \\
+numbers of the running text traced to a statement of a program & 500
+numbers in 26 documents, 0 not traced \\
+\end{longtable}
+
+\hypertarget{conventions-in-one-place}{%
+\section{6. Conventions in one place}\label{conventions-in-one-place}}
+
+\begin{itemize}
+\tightlist
+\item
+  Coordinates \(x0,\dots,x7\): \(x1,x2,x3\) ordinary space, \(x4\)
+  ordinary time, \(x0\) a hidden space-like coordinate, \(x5,x6,x7\) the
+  deflating coordinates.
+\item
+  Sign of the metric: space-like components positive, time-like
+  components negative.
+\item
+  The rates \(\mathrm{g55}\), \(\mathrm{g66}\), \(\mathrm{g77}\) are
+  written upright and never with a subscript; a component of the metric
+  carries the superscript \((4+4)\) or \((7+1)\); a coupling of the
+  self-interaction, \(g_0,\dots,g_8\), carries one digit as its
+  subscript.
+\item
+  Units: \(\hbar=c=1\).
+\item
+  In the output of the programs, ``the main project'' means the part of
+  PROJECT spacetimes that treats the flat 4+4 and 7+1 spacetimes; its
+  program is used as a library, and several checks compare with its data
+  files.
+\end{itemize}
+
+\hypertarget{what-is-open}{%
+\section{7. What is open}\label{what-is-open}}
+
+Three matters need the author's decision: the form of the
+self-interaction on the 4+4 spacetime (two forms are computed; one is
+adopted), the role of a bare mass beside the Vorton-Scalar, and the
+reading of the couplings of the reference example. They are set out,
+with the deviations from the instructions and the log of errors, in the
+document P0.
+
+\end{document}

@@ -66,5 +66,27 @@ PY
 if [ -n "$stale" ]; then line FAIL "$stale (run assemble_docs.py and build_docs.sh again)"; fail=1
 else line PASS "every report printed in a document is the current report"; fi
 
+# 5. a formula that ends directly before a digit ("$x=$0.5") is not read as a formula by pandoc
+#    and would be printed with its dollar signs
+bad=$(python3 - <<'PY'
+import glob, re
+out = []
+for f in sorted(glob.glob("*.md") + glob.glob("provenance/*.md") + glob.glob("manuscript/*.md")):
+    text = open(f, encoding="utf-8").read()
+    text = re.sub(r"(?s)```.*?```", " ", text)
+    text = re.sub(r"`[^`\n]*`", " ", text)
+    text = re.sub(r"(?s)\$\$.*?\$\$", " ", text)
+    for para in re.split(r"\n\s*\n", text):
+        segs = re.split(r"(?<!\\)\$", para)
+        for i in range(1, len(segs) - 1, 2):
+            if segs[i + 1][:1].isdigit():
+                out.append("%s: ...$%s$%s" % (f, segs[i][-20:], segs[i + 1][:8]))
+                break
+print("; ".join(out[:5]))
+PY
+)
+if [ -n "$bad" ]; then line FAIL "a formula ends directly before a digit: $bad"; fail=1
+else line PASS "no formula ends directly before a digit"; fi
+
 if [ $fail -eq 0 ]; then echo "ALL PASS"; else echo "SOME CHECK FAILS"; fi
 exit $fail
