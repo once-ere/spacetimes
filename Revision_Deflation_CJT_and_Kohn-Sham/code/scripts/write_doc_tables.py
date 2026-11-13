@@ -1172,8 +1172,42 @@ def provenance_plain():
         table("tbl_prov_plain_%s" % sig, ["label", "kind", "caption begins", "commands", "data files"], rows, ["l13", "l16", "l27", "l13", "l29"])
 
 
+# ------------------------------------------------------------------------------------------
+# the real 16x16 matrices, printed
+# ------------------------------------------------------------------------------------------
+def matrix_fragments():
+    """The eight Dirac matrices of each signature, their product and the two charge-conjugation
+    matrices as formulas (+ for +1, - for -1, a dot for 0), read from the files in which the
+    program of the project wrote them.  Fragment names: mat_gamma1644_0 .. mat_gamma1644_7,
+    mat_omega1644, mat_Cm1644, mat_Cp1644, and the same with 1671.  A fragment is the body of a
+    formula (no dollar signs); the document puts it into a display."""
+    sym = {0: "\\cdot", 1: "+", -1: "-"}
+    for sig in ("1644", "1671"):
+        path = os.path.join(ROOT, "..", "data", "gamma%s.txt" % sig)
+        mats, label, rows = {}, None, []
+        for line in open(path, encoding="utf-8"):
+            if line.startswith("#"):
+                continue
+            if line.startswith("MATRIX"):
+                if label:
+                    mats[label] = rows
+                label, rows = re.match(r"MATRIX (.+) rows (\d+) cols (\d+)", line).group(1), []
+            elif line.strip():
+                rows.append([int(x) for x in line.split()])
+        if label:
+            mats[label] = rows
+        wanted = [("gamma%s[%d]" % (sig, a), "mat_gamma%s_%d" % (sig, a)) for a in range(8)]
+        wanted += [("omega" + sig, "mat_omega" + sig), ("Cm" + sig, "mat_Cm" + sig), ("Cp" + sig, "mat_Cp" + sig)]
+        for lab, name in wanted:
+            m = mats[lab]
+            assert len(m) == 16 and all(len(r) == 16 and all(x in sym for x in r) for r in m), lab
+            body = " \\\\ ".join(" & ".join(sym[x] for x in r) for r in m)
+            FRAGS.append((name, "\\left(\\begin{smallmatrix} " + body + " \\end{smallmatrix}\\right)"))
+
+
 def main():
     check_counts()
+    matrix_fragments()
     sources()
     rs1()
     rs3()

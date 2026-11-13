@@ -295,7 +295,7 @@ def clean_md(text):
 
 IDENT = re.compile(r"(Python 3\.\d+|REVTeX 4\.\d|pandoc >= \d\.\d+|rustc \d\.\d+|g55|g66|g77|const[567]|x[0-7]|1644d?|1671d?|16[ -]component|4\+4|7\+1|4\{\+\}4|7\{\+\}1|[RS]S?[0-9]|RP[0-9]|"
                    r"R-E\d+|E\d+|[CH][1-7]\b|A[12]\b|P\d+\b|N\d\d\b|D0\d\b|16\\times16|8\\times8|16×16|8×8|SO\(\d\)|SU\(\d\)|U\(1\)|su\(2\)|u\(1\)|"
-                   r"Sec(s)?\.\s*[\d., and]+|Sections?\s+[\d., and]+|Eqs?\.\s*\([\d.a-z]+\)(\s*(to|and|,)\s*\([\d.a-z]+\))*|Refs?\.\s*\[\d+\]|\[\d+\]|Part \d|Step \d|"
+                   r"Sections?\s+\d[\d.]*(?:\s*(?:,|and|to)\s*\d[\d.]*)*|Sec(s)?\.\s*[\d., and]+|Eqs?\.\s*\([\d.a-z]+\)(\s*(to|and|,)\s*\([\d.a-z]+\))*|Refs?\.\s*\[\d+\]|\[\d+\]|Part \d|Step \d|"
                    r"\(\d\.\d+[a-z]?\)|items? R-E\d+|\\tag\{[^}]*\}|H\^4|O\(4\))")
 
 

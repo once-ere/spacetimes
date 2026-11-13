@@ -45,5 +45,26 @@ else
     line PASS "no unresolved placeholder in the built documents"
 fi
 
+# 4. a report that a document prints must be the report as it now is in data/
+#    (a document assembled before a check was run again would print an outdated report)
+stale=$(python3 - <<'PY'
+import glob, os, re
+out = []
+for src in sorted(glob.glob("docs_src/*.src.md")):
+    text = open(src, encoding="utf-8").read()
+    m = re.match(r"<!-- OUTPUT: (.+?) -->", text)
+    if not m or not os.path.exists(m.group(1)):
+        out.append("%s (not assembled)" % src)
+        continue
+    built = open(m.group(1), encoding="utf-8").read()
+    for f in re.findall(r"\{\{FILE:([^}]+)\}\}", text):
+        if not os.path.exists(f) or open(f, encoding="utf-8").read().strip() not in built:
+            out.append("%s prints an outdated %s" % (m.group(1), f))
+print("; ".join(out))
+PY
+)
+if [ -n "$stale" ]; then line FAIL "$stale (run assemble_docs.py and build_docs.sh again)"; fail=1
+else line PASS "every report printed in a document is the current report"; fi
+
 if [ $fail -eq 0 ]; then echo "ALL PASS"; else echo "SOME CHECK FAILS"; fi
 exit $fail

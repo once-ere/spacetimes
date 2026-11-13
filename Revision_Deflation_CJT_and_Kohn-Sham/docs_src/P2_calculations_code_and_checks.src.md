@@ -214,6 +214,7 @@ bash    code/scripts/build_docs.sh
 python3 code/scripts/check_numbers.py
 python3 code/scripts/check_symbols.py
 python3 code/scripts/check_self_contained.py
+bash    code/scripts/check_all.sh
 ```
 
 In this order: draw every figure from the data files; write the registry of symbols;
@@ -222,7 +223,17 @@ assemble the Markdown documents; assemble and typeset the two manuscripts (REVTe
 script fails if a reference is undefined or a box is too wide) and write their
 Markdown versions; typeset the other documents; verify that every number of the
 running text is a number that a program stated; verify the symbols; verify that no
-document sends its reader to another document.
+document sends its reader to another document. The last command runs these three
+checks once more and reads the verdict of every report in the folder `data`; it prints
+one line for each and ends with `ALL PASS` only if every check of every report passes.
+Nothing is to be committed to the repository unless it does.
+
+One of the reports, `data/symbol_checks.txt`, is made from the assembled documents,
+and `write_doc_tables.py` refuses to run while a report fails. If a change of a
+document makes that report fail, run `python3 code/scripts/write_doc_tables.py
+--first-pass` (which does not require that one report to pass), then
+`assemble_docs.py` and `check_symbols.py`, and then the commands above in their
+order.
 
 # 4. The commands of the program
 
@@ -417,6 +428,7 @@ its caption (formulas replaced by dots), the commands and the data files.
 | `build_manuscripts.py` | assembles and typesets the two manuscripts and writes their Markdown versions with `tex2md.py` |
 | `check_numbers.py` | verifies that every number of the running text of the documents is a number that a program stated (Section 5.15) |
 | `check_self_contained.py` | verifies that no document sends its reader to another document (Section 5.16) |
+| `check_all.sh` | runs the three checks of the documents again and reads the verdict of every report in `data`; ends with `ALL PASS` or names what fails |
 | `verify_deflating_independent.py` | independent verification of geometry, Dirac field, modes, cosmology (Section 5.11) |
 | `verify_cjt_ks_independent.py` | independent verification of self-interaction, Kohn–Sham and CJT calculations, pairing, gravity (Section 5.12) |
 | `mutation_test_independent.py` | the test of the two independent scripts with deliberate errors (Section 5.13) |
