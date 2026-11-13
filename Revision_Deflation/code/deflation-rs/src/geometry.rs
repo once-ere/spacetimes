@@ -44,6 +44,8 @@ pub fn verify_geometry(sig: Sig, rep: &mut Report) {
     let sets = parameter_sets();
     let (mut g1, mut g2, mut g3, mut g4, mut g5, mut g6, mut g7) = (true, true, true, true, true, true, true);
     let mut counts: Vec<usize> = Vec::new();
+    let mut g10 = true;
+    let mut n_egb = 0usize;
     for (rate, b) in &sets {
         let p = Point { sig, rate: *rate, b: *b };
         let g = p.metric();
@@ -146,6 +148,72 @@ pub fn verify_geometry(sig: Sig, rep: &mut Report) {
                 }
             }
         }
+        // G10: Lovelock gravity.  Convention of this check: the metric with positive space-like components (g_1644d itself,
+        //      minus g_1671d).  In it the curvature of the pair of directions (A, B), K_AB = R^{AB}_{AB}, is -eta_44 times that
+        //      of the project's convention.  The Einstein tensor and the Lanczos tensor of the Gauss-Bonnet term are then
+        //          G^m_m       = - sum over pairs {a,b} of other directions            K_ab ,
+        //          Lanczos^m_m = -4 sum over sets {a,b,c,d} of other directions      ( K_ab K_cd + K_ac K_bd + K_ad K_bc ) ,
+        //      (for a curvature that acts diagonally on pairs of directions), and the Lovelock tensor of third order is a sum
+        //      of products of three pair curvatures on six different directions.
+        let mut ksec = [[Rat::ZERO; 8]; 8];
+        for a in 0..8 {
+            for bb in 0..8 {
+                for mu in 0..8 {
+                    for nu in 0..8 {
+                        if !riem[a][bb][mu][nu].is_zero() {
+                            g10 &= (a == mu && bb == nu) || (a == nu && bb == mu);
+                        }
+                    }
+                }
+                if a != bb {
+                    ksec[a][bb] = -p.eta(4) * riem[a][bb][a][bb] / g[bb].v;
+                }
+            }
+        }
+        let mut e1 = [Rat::ZERO; 8];
+        let mut lz = [Rat::ZERO; 8];
+        let mut third_zero = true;
+        for m in 0..8 {
+            let o: Vec<usize> = (0..8).filter(|&i| i != m).collect();
+            for i in 0..7 {
+                for j in (i + 1)..7 {
+                    e1[m] = e1[m] - ksec[o[i]][o[j]];
+                    for k in (j + 1)..7 {
+                        for l in (k + 1)..7 {
+                            let (a, b, c, d) = (o[i], o[j], o[k], o[l]);
+                            lz[m] = lz[m] - Rat::int(4) * (ksec[a][b] * ksec[c][d] + ksec[a][c] * ksec[b][d] + ksec[a][d] * ksec[b][c]);
+                        }
+                    }
+                }
+            }
+            for skip in 0..7 {
+                let s6: Vec<usize> = (0..7).filter(|&i| i != skip).map(|i| o[i]).collect();
+                let mut sum = Rat::ZERO;
+                for i in 1..6 {
+                    let r: Vec<usize> = (1..6).filter(|&q| q != i).map(|q| s6[q]).collect();
+                    sum = sum + ksec[s6[0]][s6[i]] * (ksec[r[0]][r[1]] * ksec[r[2]][r[3]] + ksec[r[0]][r[2]] * ksec[r[1]][r[3]] + ksec[r[0]][r[3]] * ksec[r[1]][r[2]]);
+                }
+                third_zero &= sum.is_zero();
+            }
+        }
+        let gs = rate[0] + rate[1] + rate[2];
+        for m in 0..8 {
+            g10 &= e1[m] == -p.eta(4) * ein[m][m];
+            let want = if m < 4 { -Rat::int(4) * rate[0] * rate[1] * rate[2] * gs } else { Rat::ZERO };
+            g10 &= lz[m] == want;
+        }
+        g10 &= third_zero;
+        if rate[0] == rate[1] && rate[1] == rate[2] {
+            let lam8 = Rat::int(3) * rate[0] * rate[0];
+            let agb = -Rat::ONE / (Rat::int(4) * rate[0] * rate[0]);
+            for m in 0..8 {
+                g10 &= (e1[m] + lam8 + agb * lz[m]).is_zero();
+            }
+            n_egb += 1;
+        } else {
+            // the Lanczos tensor vanishes on the components 4, 5, 6, 7: a solution would need the Einstein tensor to be equal there
+            g10 &= !(e1[4] == e1[5] && e1[5] == e1[6] && e1[6] == e1[7]);
+        }
     }
     let sets_txt = parameter_sets_text();
     let eta = sig.eta();
@@ -160,6 +228,11 @@ pub fn verify_geometry(sig: Sig, rep: &mut Report) {
         Sig::S1671 => "if the three rates are equal, g55 = g66 = g77, the part (x4, x5, x6, x7) of the metric has constant curvature, R_(rho sigma mu nu) = -g55^2 (g_(rho mu) g_(sigma nu) - g_(rho nu) g_(sigma mu)): it is de Sitter space of radius 1/g55 in the contracting half of its flat slicing",
     };
     rep.add(&format!("{}-G7", pre), "exact", cc, g7);
+    let conv = match sig {
+        Sig::S1644 => "the metric g_1644d itself",
+        Sig::S1671 => "minus the metric g_1671d",
+    };
+    rep.add(&format!("{}-G10", pre), "exact", &format!("Lovelock gravity. In the convention in which the space-like components of the metric are positive ({}), with the action R - 2 Lambda_8 + alpha_GB (R^2 - 4 R_(mu nu) R^(mu nu) + R_(mu nu rho sigma) R^(mu nu rho sigma)) and the field equations G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0: the curvature acts diagonally on pairs of frame directions; the Lanczos tensor of the Gauss-Bonnet term is Lanczos^a_a = -4 g55 g66 g77 gsum (a = 0..3), Lanczos^4_4 = Lanczos^t_t = 0; the Lovelock tensor of third order vanishes identically. For three equal rates ({} of the five parameter sets) the deflating spacetime solves the vacuum field equations with Lambda_8 = 3 g55^2 and alpha_GB = -1/(4 g55^2), that is 4 alpha_GB Lambda_8 = -3: the deflation needs no matter as its source in Einstein-Gauss-Bonnet gravity. For rates that are not all equal no choice of Lambda_8 and alpha_GB satisfies the components 4, 5, 6, 7", conv, n_egb), g10 && n_egb == 2);
 }
 
 /// State of a geodesic: position and velocity with respect to the affine parameter.

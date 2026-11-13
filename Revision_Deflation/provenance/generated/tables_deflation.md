@@ -5,7 +5,7 @@
 <!-- END n_flat_matrix_checks -->
 
 <!-- BEGIN n_deflating_checks -->
-45 of 45
+47 of 47
 <!-- END n_deflating_checks -->
 
 <!-- BEGIN n_mode_checks -->
@@ -41,7 +41,7 @@
 <!-- END n_paired_checks -->
 
 <!-- BEGIN n_deflating_checks_independent -->
-31 of 31
+33 of 33
 <!-- END n_deflating_checks_independent -->
 
 <!-- BEGIN n_symbol_checks_deflation -->
@@ -49,7 +49,7 @@
 <!-- END n_symbol_checks_deflation -->
 
 <!-- BEGIN n_checks_rust -->
-215
+217
 <!-- END n_checks_rust -->
 
 <!-- BEGIN tbl_exponents -->

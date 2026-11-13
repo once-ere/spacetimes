@@ -120,6 +120,7 @@ same object in the Rust program and in the data files.
 | $\mathcal G^\mu{}_\nu$ | `Ein00`, `Ein44`, `Ein55`, `Ein66`, `Ein77`, `einstein_mixed` | the Einstein tensor $R^\mu{}_\nu-\tfrac12R\,\delta^\mu_\nu$ (script letter, so that it cannot be taken for Newton's constant or for a constant of the Fermi type) | DMD 1.4 | new |
 | $\mathcal X$; $\mathcal X_{\rm scale}$, $\mathcal X_{(s)}$ | `killing_vectors`, `killing_count` | a Killing vector field of the deflating metric (script letter; the plain letter $X$ is the set of coordinates of the main registry); the scaling vector $\partial_4+\sum_t\mathrm{rate}_t\,xt\,\partial_t$; the three special Killing vectors of the case of equal rates, $s=5,6,7$ | DMD 1.5, 1.6 | new |
 | $\bar x4$; $\bar x5$, $\bar x6$, $\bar x7$ | — | coordinates of the case of equal rates in which the line element of $x4,\dots,x7$ is a multiple of a flat one: $\bar x4=e^{\mathrm{g55}\,x4}/\mathrm{g55}$, $\bar xt=\mathrm{const}_t\,xt$ | DMD 1.6 | new |
+| $\mathcal H^\mu{}_\nu$; $\alpha_{GB}$, $\Lambda_8$ | `Lanczos`, `alpha_GB`, `Lambda_8` | the Lanczos tensor of the Gauss-Bonnet term (script letter; $H$ is the Hubble rate); the coupling of the Gauss-Bonnet term and the cosmological constant of Einstein-Gauss-Bonnet gravity in eight dimensions (with the index 8; $\Lambda$ without index is the momentum cutoff of the main registry) | DMD 1.4 | new |
 | $\varsigma$ | `affine` | affine parameter along a geodesic; for a massive particle on the 7+1 spacetime, the proper time divided by the mass | DMD 1.7 | new |
 | $P_\mu$ | `P_1`, `P_5` | the conserved covariant momenta of a geodesic (with an index; $P$ without index is the generator of the main registry) | DMD 1.7 | new |
 | $x4_{\rm turn}$ | `x4_turn` | the value of the ordinary time at which a classical particle with momentum along a deflating time turns back, and beyond which a mode that depends on a deflating time is extinguished (4+4): there $k_d=E_\perp$ | DMD 1.7, 4.3 | new |
@@ -175,7 +176,7 @@ bash code/scripts/build_docs.sh "dirac matrices deflating.md"
 ```
 
 Step 2 writes the files listed in Appendix B. Each command prints its checks and ends
-with a line of the form "45 of 45 checks passed"; it returns a non-zero exit status if a
+with a line of the form "47 of 47 checks passed"; it returns a non-zero exit status if a
 check fails. The provenance RP8 explains every step for a reader who has not used a
 terminal before.
 
@@ -299,14 +300,76 @@ Two conclusions follow.
    $2\,\mathrm{gprod}=\mathrm{gsq}+\mathrm{gsum}^2$, that is $\mathrm{gsq}=0$: all
    three rates would vanish.
 
-If gravity in eight dimensions obeys Einstein's equations, the deflation therefore
+If gravity in eight dimensions obeys *Einstein's* equations, the deflation therefore
 requires a source with the stress tensor $\mathcal G^\mu{}_\nu/(8\pi G_8)$, where $G_8$
 is the eight-dimensional constant of gravitation: a positive energy density
 proportional to $\mathrm{gprod}$ on the 7+1 spacetime, and a stress along the flat
 coordinates $x0,\dots,x3$ that is larger than the energy density. The hypotheses
 prescribe the metric and say nothing about its source. This document follows them: the
 metric (1.2) is a *given background*, on which the fields of the project move without
-acting back on it. What sustains the deflation is an open question (Part 6).
+acting back on it. The next subsection shows that in the gravity of Lovelock, which the
+author's notebooks study, no source is needed if the three rates are equal.
+
+## 1.4a What can sustain the deflation: the Gauss–Bonnet term
+
+In more than four dimensions Einstein's equations are not the only field equations of
+second order for the metric. The general ones are those of Lovelock, which add to the
+Einstein tensor a series of tensors of higher order in the curvature; the first of
+them is the Lanczos tensor $\mathcal H^\mu{}_\nu$ of the Gauss–Bonnet term. The author's
+notebooks on the Einstein–Lovelock equations (N06 to N08 of the provenance P3 of the
+main project) study this theory. It is therefore natural to ask whether the deflating
+spacetime solves the field equations of Einstein–Gauss–Bonnet gravity without matter,
+$$\mathcal G^\mu{}_\nu+\Lambda_8\,\delta^\mu_\nu+\alpha_{GB}\,\mathcal H^\mu{}_\nu=0,\tag{1.10a}$$
+which follow from the action
+$R-2\Lambda_8+\alpha_{GB}\,(R^2-4R_{\mu\nu}R^{\mu\nu}+R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma})$
+with a cosmological constant $\Lambda_8$ and a coupling $\alpha_{GB}$. (In this
+subsection, and only here, the signs are those of the convention in which the
+space-like components of the metric are positive: the metric $g_{1644d}$ itself, and
+minus the metric $g_{1671d}$. In that convention the Einstein tensor is $-\eta_{44}$
+times that of Eq. (1.10), for both spacetimes.)
+
+*The Lanczos tensor.* Computed from its definition,
+$$\mathcal H^a{}_a=-4\,\mathrm{g55}\,\mathrm{g66}\,\mathrm{g77}\,\mathrm{gsum}\quad(a=0,1,2,3),\qquad
+\mathcal H^4{}_4=\mathcal H^t{}_t=0,\tag{1.10b}$$
+for both spacetimes, and the Lovelock tensor of the third order, the last one that can
+be different from zero in eight dimensions, vanishes identically (checks `44d-G10`,
+`71d-G10`, by a formula for curvatures that act diagonally on pairs of directions;
+independently `I44d-L1`, `I71d-L1`, from the standard formula of the Lanczos tensor by
+computer algebra).
+
+*The result.* Insert Eqs. (1.10) and (1.10b) into Eq. (1.10a).
+
+* The components along $x4$ and along the three deflating coordinates contain no
+  Gauss–Bonnet term. They require the four components
+  $\mathcal G^4{}_4,\mathcal G^5{}_5,\mathcal G^6{}_6,\mathcal G^7{}_7$ of the Einstein
+  tensor to be equal. Because
+  $\mathcal G^5{}_5-\mathcal G^6{}_6=\pm(\mathrm{g55}-\mathrm{g66})\,\mathrm{gsum}$, this
+  holds **if and only if the three rates are equal**; the cosmological constant is then
+  $\Lambda_8=3\,\mathrm{g55}^2$.
+* The components along the flat coordinates then fix the coupling:
+  $\alpha_{GB}=-1/(4\,\mathrm{g55}^2)$.
+
+Hence:
+
+> **With three equal rates, the deflating 4+4 spacetime and the deflating 7+1 spacetime
+> are exact solutions of Einstein–Gauss–Bonnet gravity without matter, with
+> $\Lambda_8=3\,\mathrm{g55}^2$ and $\alpha_{GB}=-1/(4\,\mathrm{g55}^2)$, that is,
+> $4\,\alpha_{GB}\Lambda_8=-3$.** With rates that are not all equal they are not, for
+> any $\Lambda_8$ and $\alpha_{GB}$.
+
+*Meaning.* In the theory that the author's notebooks study, the deflation at equal
+rates needs no source: the rate is fixed by the constants of the theory,
+$\mathrm{g55}=\sqrt{\Lambda_8/3}$, and the theory must have the particular ratio
+$4\alpha_{GB}\Lambda_8=-3$ of its two constants. Solutions of Einstein–Gauss–Bonnet
+gravity in which every scale factor is an exponential of the time have been classified
+in five and six dimensions (Ref. [1]); the present solution is of that kind in eight
+dimensions, with four static and three contracting directions. Three limits of the
+result must be stated. (i) It concerns the metric alone; the fields of Parts 3 and 4
+remain test fields on it. (ii) Whether the solution is stable against perturbations of
+the metric has not been examined. (iii) If gravity is of this kind, the relation
+between Newton's constant and the volume of the deflating coordinates that the
+supplement RS3 assumes for Einstein gravity (its assumption A2) would have to be
+derived anew.
 
 ## 1.5 Symmetries of the metric
 
@@ -966,7 +1029,9 @@ marked with I, symbolically for arbitrary parameters).
    vectors, 14, 15 or 20, and the completeness of the lists; homogeneity; constant
    curvature of the four coordinates $x4,\dots,x7$ for equal rates.
 2. The deflating spacetimes are not vacuum solutions of Einstein's equations, with or
-   without a cosmological constant.
+   without a cosmological constant. With three equal rates they are exact vacuum
+   solutions of Einstein–Gauss–Bonnet gravity, for $\Lambda_8=3\,\mathrm{g55}^2$ and
+   $\alpha_{GB}=-1/(4\,\mathrm{g55}^2)$ (I); with unequal rates they are not.
 3. Geodesics: unbounded blueshift and geodesic incompleteness on 7+1; a turning value
    of the ordinary time on 4+4.
 4. The Dirac matrices in coordinate components, the spin connection, the covariant
@@ -982,10 +1047,11 @@ marked with I, symbolically for arbitrary parameters).
 
 **Not established.**
 
-1. *The source of the deflation.* The hypotheses prescribe the metric. No field
-   equation for the metric has been solved, and the stress tensor that Eq. (1.10) would
-   require has not been identified with any matter. All results here are results on a
-   prescribed background.
+1. *The source of the deflation.* For equal rates Sec. 1.4a gives an answer within
+   Einstein–Gauss–Bonnet gravity; its stability has not been examined. For unequal
+   rates no field equation has been found that the metric solves, and the stress
+   tensor that Eq. (1.10) would require has not been identified with any matter. All
+   results on fields are results on a prescribed background.
 2. *The effect of the fields on the metric.* The particles created on 7+1 gain energy
    without bound. Their stress tensor must eventually change the metric; this
    back-reaction has not been computed, and the results for 7+1 hold only for as long
@@ -1019,7 +1085,7 @@ The file `data/deflating_checks.txt`, written by `deflation matrices`:
 ```text
 PROJECT spacetimes, Revision_Deflation: checks of the geometry, of the Dirac matrices, of the spin connection and of the Dirac operators of the deflating spacetimes (44d-..: 4+4 with deflating x5, x6, x7; 71d-..: 7+1 with deflating x5, x6, x7)
 generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT spacetimes, Revision_Deflation); command: deflation matrices
-45 of 45 checks passed
+47 of 47 checks passed
 
 [PASS] 44d-G1  (exact) metric of the deflating 4+4 spacetime: g_1644d = diag(eta_00, .., eta_44, eta_55 b_5^2, eta_66 b_6^2, eta_77 b_7^2) with eta = diag[1, 1, 1, 1, -1, -1, -1, -1] and the scale factors b_5 = const5 exp(-g55 x4), b_6 = const6 exp(-g66 x4), b_7 = const7 exp(-g77 x4), that is g_55 = -const5^2 exp(-2 g55 x4) and likewise g_66, g_77 (the author's formulas; g55, g66, g77 > 0 are the three rates, and in statements with a general index t = 5, 6, 7 the rate of xt is written rate_t, gsum = g55 + g66 + g77). Verified: g_tt = -b_t^2 and d g_tt/dx4 = -2 rate_t g_tt; the frame e^A = (dx0, .., dx4, b_5 dx5, b_6 dx6, b_7 dx7) is orthonormal. All exact geometry checks use five rational parameter sets: (g55, g66, g77) = (1, 1, 1) at a point where (b_5, b_6, b_7) = (1, 1, 1); (g55, g66, g77) = (1, 2, 3) at a point where (b_5, b_6, b_7) = (1/2, 1/3, 1/5); (g55, g66, g77) = (1/2, 3/4, 5/3) at a point where (b_5, b_6, b_7) = (2, 1/3, 5/7); (g55, g66, g77) = (2, 2, 5) at a point where (b_5, b_6, b_7) = (3/2, 3/2, 1/4); (g55, g66, g77) = (7/3, 7/3, 7/3) at a point where (b_5, b_6, b_7) = (1/2, 3, 5/4)
 [PASS] 44d-G2  (exact) the Christoffel symbols computed from their definition are Gamma^t_(4t) = Gamma^t_(t4) = -rate_t and Gamma^4_(tt) = eta_44 eta_tt rate_t b_t^2 (t = 5, 6, 7); all others vanish
@@ -1028,6 +1094,7 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 [PASS] 44d-G5  (exact) with gsq = g55^2 + g66^2 + g77^2 and gsum = g55 + g66 + g77: Ricci tensor R^4_4 = -eta_44 gsq, R^t_t = -eta_44 rate_t gsum, R^a_a = 0 (a = 0..3); curvature scalar R = -eta_44 (gsq + gsum^2); Einstein tensor G^4_4 = eta_44 (g55 g66 + g55 g77 + g66 g77), G^t_t = eta_44 [(gsq + gsum^2)/2 - rate_t gsum], G^a_a = eta_44 (gsq + gsum^2)/2; its covariant divergence vanishes. The Einstein tensor does not vanish: the deflating spacetime is not a vacuum solution of Einstein's equations
 [PASS] 44d-G6  (exact) Killing vectors (the Lie derivative of the metric along each vanishes identically): 7 translations (x0, x1, x2, x3, x5, x6, x7), 6 rotations of (x0, x1, x2, x3), and the scaling d/dx4 + sum_t rate_t xt d/dxt, 14 in all; one more for every pair of equal rates (a rotation of the two coordinates); and 20 in all if the three rates are equal. Numbers found for the five parameter sets: [20, 14, 14, 15, 20]
 [PASS] 44d-G7  (exact) if the three rates are equal, g55 = g66 = g77, the part (x4, x5, x6, x7) of the metric has constant curvature, R_(rho sigma mu nu) = +g55^2 (g_(rho mu) g_(sigma nu) - g_(rho nu) g_(sigma mu)): the four time-like coordinates carry minus the metric of hyperbolic space H^4 of radius 1/g55, written in horospherical coordinates
+[PASS] 44d-G10  (exact) Lovelock gravity. In the convention in which the space-like components of the metric are positive (the metric g_1644d itself), with the action R - 2 Lambda_8 + alpha_GB (R^2 - 4 R_(mu nu) R^(mu nu) + R_(mu nu rho sigma) R^(mu nu rho sigma)) and the field equations G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0: the curvature acts diagonally on pairs of frame directions; the Lanczos tensor of the Gauss-Bonnet term is Lanczos^a_a = -4 g55 g66 g77 gsum (a = 0..3), Lanczos^4_4 = Lanczos^t_t = 0; the Lovelock tensor of third order vanishes identically. For three equal rates (2 of the five parameter sets) the deflating spacetime solves the vacuum field equations with Lambda_8 = 3 g55^2 and alpha_GB = -1/(4 g55^2), that is 4 alpha_GB Lambda_8 = -3: the deflation needs no matter as its source in Einstein-Gauss-Bonnet gravity. For rates that are not all equal no choice of Lambda_8 and alpha_GB satisfies the components 4, 5, 6, 7
 [PASS] 44d-G9  (numerical) geodesic with m = 1, momentum P_1 = 0.5 along x1 and P_5 = 0.3 along the deflating time x5 (g55 = 1, const5 = 0.8), started at x4 = -2 with increasing x4: P_1, P_5 and the norm are conserved to 1.7e-14; the path reaches the largest value x4 = 1.09240103 (predicted turning value ln(E_perp const5/|P_5|)/g55 with E_perp = sqrt(m^2 + P_1^2) = 1.09240103) after the affine parameter 3.38543615 (closed form 3.38543615) and then returns to smaller x4: a particle with momentum along a deflating time cannot pass the turning value
 [PASS] 44d-C1  (exact) the coordinate matrices gamma_1644d^mu = e_A^mu gamma1644[A] (gamma^t = gamma1644[t]/b_t for t = 5, 6, 7; the other five unchanged) are real and satisfy gamma^mu.gamma^nu + gamma^nu.gamma^mu = 2 g_1644d^(mu nu) 1 for all 64 pairs, with g^(tt) = eta^(tt)/b_t^2. Verified for five rational parameter sets: (g55, g66, g77) = (1, 1, 1) at a point where (b_5, b_6, b_7) = (1, 1, 1); (g55, g66, g77) = (1, 2, 3) at a point where (b_5, b_6, b_7) = (1/2, 1/3, 1/5); (g55, g66, g77) = (1/2, 3/4, 5/3) at a point where (b_5, b_6, b_7) = (2, 1/3, 5/7); (g55, g66, g77) = (2, 2, 5) at a point where (b_5, b_6, b_7) = (3/2, 3/2, 1/4); (g55, g66, g77) = (7/3, 7/3, 7/3) at a point where (b_5, b_6, b_7) = (1/2, 3, 5/4)
 [PASS] 44d-C2  (exact) the spin-connection coefficients computed from the tetrad postulate omega_mu^A_B = e^A_nu (d_mu e_B^nu + Gamma^nu_(mu lam) e_B^lam), with the Christoffel symbols obtained from the metric, are antisymmetric, omega_(mu A B) = -omega_(mu B A), and the only non-zero ones are omega_(t,t4) = -omega_(t,4t) = -eta_tt rate_t b_t (t = 5, 6, 7); same five parameter sets
@@ -1051,6 +1118,7 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 [PASS] 71d-G5  (exact) with gsq = g55^2 + g66^2 + g77^2 and gsum = g55 + g66 + g77: Ricci tensor R^4_4 = -eta_44 gsq, R^t_t = -eta_44 rate_t gsum, R^a_a = 0 (a = 0..3); curvature scalar R = -eta_44 (gsq + gsum^2); Einstein tensor G^4_4 = eta_44 (g55 g66 + g55 g77 + g66 g77), G^t_t = eta_44 [(gsq + gsum^2)/2 - rate_t gsum], G^a_a = eta_44 (gsq + gsum^2)/2; its covariant divergence vanishes. The Einstein tensor does not vanish: the deflating spacetime is not a vacuum solution of Einstein's equations
 [PASS] 71d-G6  (exact) Killing vectors (the Lie derivative of the metric along each vanishes identically): 7 translations (x0, x1, x2, x3, x5, x6, x7), 6 rotations of (x0, x1, x2, x3), and the scaling d/dx4 + sum_t rate_t xt d/dxt, 14 in all; one more for every pair of equal rates (a rotation of the two coordinates); and 20 in all if the three rates are equal. Numbers found for the five parameter sets: [20, 14, 14, 15, 20]
 [PASS] 71d-G7  (exact) if the three rates are equal, g55 = g66 = g77, the part (x4, x5, x6, x7) of the metric has constant curvature, R_(rho sigma mu nu) = -g55^2 (g_(rho mu) g_(sigma nu) - g_(rho nu) g_(sigma mu)): it is de Sitter space of radius 1/g55 in the contracting half of its flat slicing
+[PASS] 71d-G10  (exact) Lovelock gravity. In the convention in which the space-like components of the metric are positive (minus the metric g_1671d), with the action R - 2 Lambda_8 + alpha_GB (R^2 - 4 R_(mu nu) R^(mu nu) + R_(mu nu rho sigma) R^(mu nu rho sigma)) and the field equations G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0: the curvature acts diagonally on pairs of frame directions; the Lanczos tensor of the Gauss-Bonnet term is Lanczos^a_a = -4 g55 g66 g77 gsum (a = 0..3), Lanczos^4_4 = Lanczos^t_t = 0; the Lovelock tensor of third order vanishes identically. For three equal rates (2 of the five parameter sets) the deflating spacetime solves the vacuum field equations with Lambda_8 = 3 g55^2 and alpha_GB = -1/(4 g55^2), that is 4 alpha_GB Lambda_8 = -3: the deflation needs no matter as its source in Einstein-Gauss-Bonnet gravity. For rates that are not all equal no choice of Lambda_8 and alpha_GB satisfies the components 4, 5, 6, 7
 [PASS] 71d-G8  (numerical) geodesic of a particle of mass m = 1 with momentum P_1 = 0.5 along x1 and P_5 = 0.3 along the deflating coordinate x5 (g55 = 1, const5 = 0.8), integrated from x4 = -2 to x4 = 4 by the Runge-Kutta method: P_1, P_5 and the norm are conserved to 2.0e-10; the affine parameter (the proper time, since m = 1) that elapses is 3.3375401839, the closed form gives 3.3375401839; the proper time to x4 = infinity is finite, 3.386358: a particle that moves along a deflating coordinate leaves the coordinate patch after a finite proper time, with unbounded energy
 [PASS] 71d-C1  (exact) the coordinate matrices gamma_1671d^mu = e_A^mu gamma1671[A] (gamma^t = gamma1671[t]/b_t for t = 5, 6, 7; the other five unchanged) are real and satisfy gamma^mu.gamma^nu + gamma^nu.gamma^mu = 2 g_1671d^(mu nu) 1 for all 64 pairs, with g^(tt) = eta^(tt)/b_t^2. Verified for five rational parameter sets: (g55, g66, g77) = (1, 1, 1) at a point where (b_5, b_6, b_7) = (1, 1, 1); (g55, g66, g77) = (1, 2, 3) at a point where (b_5, b_6, b_7) = (1/2, 1/3, 1/5); (g55, g66, g77) = (1/2, 3/4, 5/3) at a point where (b_5, b_6, b_7) = (2, 1/3, 5/7); (g55, g66, g77) = (2, 2, 5) at a point where (b_5, b_6, b_7) = (3/2, 3/2, 1/4); (g55, g66, g77) = (7/3, 7/3, 7/3) at a point where (b_5, b_6, b_7) = (1/2, 3, 5/4)
 [PASS] 71d-C2  (exact) the spin-connection coefficients computed from the tetrad postulate omega_mu^A_B = e^A_nu (d_mu e_B^nu + Gamma^nu_(mu lam) e_B^lam), with the Christoffel symbols obtained from the metric, are antisymmetric, omega_(mu A B) = -omega_(mu B A), and the only non-zero ones are omega_(t,t4) = -omega_(t,4t) = -eta_tt rate_t b_t (t = 5, 6, 7); same five parameter sets
@@ -1249,13 +1317,14 @@ wavenumbers; the others are numerical.
 ```text
 PROJECT spacetimes, Revision_Deflation: independent verification (computer algebra and general-purpose numerical tools)
 generated by: code/scripts/verify_deflating_independent.py (sympy 1.14.0, scipy, numpy 2.5.3, mpmath 1.3.0)
-31 of 31 checks passed
+33 of 33 checks passed
 
 [PASS] I44d-G1  4+4, arbitrary rates and constants (computer algebra): the Christoffel symbols obtained from the metric by differentiation are Gamma^t_(4t) = -rate_t and Gamma^4_(tt) = eta_44 eta_tt rate_t b_t^2; all others vanish
 [PASS] I44d-G2  4+4: Ricci tensor R^4_4 = -eta_44 gsq, R^t_t = -eta_44 rate_t gsum, zero along x0..x3; curvature scalar -eta_44 (gsq + gsum^2); Einstein tensor eta_44 gprod (component 44), eta_44 [(gsq + gsum^2)/2 - rate_t gsum] (components tt), eta_44 (gsq + gsum^2)/2 (x0..x3): identities in the six symbols g55, g66, g77, const5, const6, const7
 [PASS] I44d-G3  4+4: Riemann tensor in the orthonormal frame, R^t_(4t4) = -rate_t^2 and R^t_(sts) = -eta_44 eta_ss rate_t rate_s; no component carries an index 0, 1, 2 or 3
 [PASS] I44d-G4  4+4: the Lie derivative of the metric vanishes identically along 14 vector fields (7 translations, 6 rotations of x0..x3, the scaling d_4 + sum rate_t xt d_t); it does not vanish for the rotation of x0 and x5 nor for the boost of x4 and x1; for g55 = g66 = g77 it vanishes in addition along the three rotations of x5, x6, x7 and three special vector fields (20 in all)
 [PASS] I44d-G5  4+4: the list of Killing vectors is complete. The matrices of the Lorentz algebra of the tangent space that leave the Riemann tensor unchanged form a space whose dimension, plus 8, bounds the number of Killing vectors from above; exact ranks for (g55, g66, g77) = (1, 2, 3): 6 + 8 = 14; (1, 2, 4): 6 + 8 = 14; (3, 5, 7): 6 + 8 = 14; (2, 2, 5): 7 + 8 = 15; (5, 2, 2): 7 + 8 = 15; (1, 1, 1): 12 + 8 = 20; (7, 7, 7): 12 + 8 = 20: the bounds 14 (three different rates), 15 (two equal) and 20 (three equal) equal the numbers of Killing vectors exhibited
+[PASS] I44d-L1  4+4, Einstein-Gauss-Bonnet gravity (metric with positive space-like components; standard formula of the Lanczos tensor, computer algebra): Lanczos^a_a = -4 g55 g66 g77 gsum for a = 0..3 and Lanczos^4_4 = Lanczos^t_t = 0, identically in the rates and constants; for g55 = g66 = g77 the deflating spacetime solves G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0 with Lambda_8 = 3 g55^2 and alpha_GB = -1/(4 g55^2); for unequal rates it does not, because G^5_5 - G^6_6 = +-(g55 - g66) gsum while the Lanczos tensor vanishes there
 [PASS] I44d-C1  4+4: the coordinate matrices gamma^mu = e_A^mu gamma^A satisfy gamma^mu gamma^nu + gamma^nu gamma^mu = 2 g^(mu nu) for all 64 pairs, identically in b_5, b_6, b_7
 [PASS] I44d-C2  4+4: the spin connection computed from the tetrad postulate is antisymmetric in its frame indices and equals Omega_t = -(1/2) eta_tt rate_t b_t gamma^t gamma^4 (frame matrices) for t = 5, 6, 7, zero otherwise
 [PASS] I44d-C3  4+4: d_mu gamma^nu + Gamma^nu_(mu lam) gamma^lam + [Omega_mu, gamma^nu] = 0 for all 64 pairs
@@ -1267,6 +1336,7 @@ generated by: code/scripts/verify_deflating_independent.py (sympy 1.14.0, scipy,
 [PASS] I71d-G3  7+1: Riemann tensor in the orthonormal frame, R^t_(4t4) = -rate_t^2 and R^t_(sts) = -eta_44 eta_ss rate_t rate_s; no component carries an index 0, 1, 2 or 3
 [PASS] I71d-G4  7+1: the Lie derivative of the metric vanishes identically along 14 vector fields (7 translations, 6 rotations of x0..x3, the scaling d_4 + sum rate_t xt d_t); it does not vanish for the rotation of x0 and x5 nor for the boost of x4 and x1; for g55 = g66 = g77 it vanishes in addition along the three rotations of x5, x6, x7 and three special vector fields (20 in all)
 [PASS] I71d-G5  7+1: the list of Killing vectors is complete. The matrices of the Lorentz algebra of the tangent space that leave the Riemann tensor unchanged form a space whose dimension, plus 8, bounds the number of Killing vectors from above; exact ranks for (g55, g66, g77) = (1, 2, 3): 6 + 8 = 14; (1, 2, 4): 6 + 8 = 14; (3, 5, 7): 6 + 8 = 14; (2, 2, 5): 7 + 8 = 15; (5, 2, 2): 7 + 8 = 15; (1, 1, 1): 12 + 8 = 20; (7, 7, 7): 12 + 8 = 20: the bounds 14 (three different rates), 15 (two equal) and 20 (three equal) equal the numbers of Killing vectors exhibited
+[PASS] I71d-L1  7+1, Einstein-Gauss-Bonnet gravity (metric with positive space-like components; standard formula of the Lanczos tensor, computer algebra): Lanczos^a_a = -4 g55 g66 g77 gsum for a = 0..3 and Lanczos^4_4 = Lanczos^t_t = 0, identically in the rates and constants; for g55 = g66 = g77 the deflating spacetime solves G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0 with Lambda_8 = 3 g55^2 and alpha_GB = -1/(4 g55^2); for unequal rates it does not, because G^5_5 - G^6_6 = +-(g55 - g66) gsum while the Lanczos tensor vanishes there
 [PASS] I71d-C1  7+1: the coordinate matrices gamma^mu = e_A^mu gamma^A satisfy gamma^mu gamma^nu + gamma^nu gamma^mu = 2 g^(mu nu) for all 64 pairs, identically in b_5, b_6, b_7
 [PASS] I71d-C2  7+1: the spin connection computed from the tetrad postulate is antisymmetric in its frame indices and equals Omega_t = -(1/2) eta_tt rate_t b_t gamma^t gamma^4 (frame matrices) for t = 5, 6, 7, zero otherwise
 [PASS] I71d-C3  7+1: d_mu gamma^nu + Gamma^nu_(mu lam) gamma^lam + [Omega_mu, gamma^nu] = 0 for all 64 pairs
@@ -1283,6 +1353,10 @@ generated by: code/scripts/verify_deflating_independent.py (sympy 1.14.0, scipy,
 [PASS] I71d-V1  7+1: the two zero-energy equations of a vortex line of unit winding have a 4-dimensional space of constant spinor solutions (singular values, numpy); on it alpha^3 has the eigenvalues -1 -1 +1 +1 and equals the central matrix P_c = i alpha^1 alpha^2 alpha^3 chi: four zero modes, two for each direction along the line
 [PASS] Idef-C1  cosmology: an independent integration (scipy) of the expansion with three equal rates gives, at fixed 100 theta_* = 1.03958, the Hubble constant for gsum = 0.01 H_0: 66.743 km/s/Mpc (Rust program: 66.743); for gsum = 0.1 H_0: 60.773 km/s/Mpc (Rust program: 60.773)
 ```
+
+# References
+
+1. D. Chirkov, S. Pavluchenko and A. Toporensky, *Exact exponential solutions in Einstein–Gauss–Bonnet flat anisotropic cosmology*, Mod. Phys. Lett. A **29**, 1450093 (2014); arXiv:1401.2962.
 
 # Appendix B. Files
 

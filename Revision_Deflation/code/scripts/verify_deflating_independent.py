@@ -275,6 +275,64 @@ def part_completeness(tag):
     report("I%sd-G5" % tag[2:4], ok, "%s: the list of Killing vectors is complete. The matrices of the Lorentz algebra of the tangent space that leave the Riemann tensor unchanged form a space whose dimension, plus 8, bounds the number of Killing vectors from above; exact ranks for (g55, g66, g77) = %s: the bounds 14 (three different rates), 15 (two equal) and 20 (three equal) equal the numbers of Killing vectors exhibited" % (NAME[tag], "; ".join(out)))
 
 
+def part_lovelock(tag):
+    """The Lanczos tensor of the Gauss-Bonnet term, from its standard formula, and the field equations of
+    Einstein-Gauss-Bonnet gravity.
+
+    Convention of this check: the metric with positive space-like components (g_1644d itself; minus g_1671d), the action
+    R - 2 Lambda_8 + alpha_GB (R^2 - 4 R_(mu nu) R^(mu nu) + R_(mu nu rho sigma) R^(mu nu rho sigma)), field equations
+        G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0,
+        Lanczos_(mu nu) = 2 [ R R_(mu nu) - 2 R_(mu a) R^a_nu - 2 R_(mu a nu b) R^(a b) + R_(mu a b c) R_nu^(a b c) ] - (1/2) g_(mu nu) (Gauss-Bonnet scalar).
+    The Riemann tensor with one upper index does not change when the sign of the metric is reversed.
+    """
+    eta = ETA[tag]
+    gdiag, ginv, gam, riem = geometry(tag)
+    sgn = 1 if tag == "1644d" else -1
+    gl = [sgn * v for v in gdiag]
+    gu = [1 / v for v in gl]
+    R = lambda a, b, c, d: riem.get((a, b, c, d), 0)
+    ric = [[sp.simplify(sum(R(r, m, r, n) for r in range(8))) for n in range(8)] for m in range(8)]
+    assert all(ric[m][n] == 0 for m in range(8) for n in range(8) if m != n)
+    ricm = [sp.simplify(gu[m] * ric[m][m]) for m in range(8)]            # R^mu_mu
+    rs = sp.simplify(sum(ricm))
+    ein = [sp.simplify(ricm[m] - rs / 2) for m in range(8)]
+    riem2 = 0
+    for (a, b, c, d), v in riem.items():
+        riem2 += (gl[a] * v) * (gu[b] * gu[c] * gu[d] * v)
+    gb_scalar = sp.simplify(rs**2 - 4 * sum(v**2 for v in ricm) + riem2)
+    lanczos = [[None] * 8 for _ in range(8)]
+    for m in range(8):
+        for n in range(8):
+            t1 = rs * ricm[m] if m == n else 0
+            t2 = ricm[m] * ricm[m] if m == n else 0
+            # R^{m a}_{n b} R^b_a with a diagonal Ricci tensor: sum_a g^{aa} R^m_{a n a} R^a_a
+            t3 = sum(gu[a] * R(m, a, n, a) * ricm[a] for a in range(8))
+            # R^{m a b c} R_{n a b c}
+            t4 = 0
+            for (mm, a, b, c), v in riem.items():
+                if mm == m:
+                    w = R(n, a, b, c)
+                    if w != 0:
+                        t4 += (gu[a] * gu[b] * gu[c] * v) * (gl[n] * w)
+            val = 2 * (t1 - 2 * t2 - 2 * t3 + t4) - (gb_scalar / 2 if m == n else 0)
+            lanczos[m][n] = sp.simplify(val)
+    offdiag = all(lanczos[m][n] == 0 for m in range(8) for n in range(8) if m != n)
+    ok = offdiag
+    for m in range(8):
+        want = -4 * g55 * g66 * g77 * gsum if m < 4 else 0
+        ok &= sp.simplify(lanczos[m][m] - want) == 0
+    # Einstein tensor in this convention: minus eta_44 times that of the project's convention
+    ok &= sp.simplify(ein[4] + gprod) == 0 and all(sp.simplify(ein[a] + (gsq + gsum**2) / 2) == 0 for a in range(4))
+    # equal rates: the vacuum equations hold with Lambda_8 = 3 g55^2, alpha_GB = -1/(4 g55^2)
+    eq = {g66: g55, g77: g55}
+    lam8, agb = 3 * g55**2, -1 / (4 * g55**2)
+    ok_eq = all(sp.simplify((ein[m] + lam8 + agb * lanczos[m][m]).subs(eq)) == 0 for m in range(8))
+    # unequal rates: the Lanczos tensor vanishes on the components 4..7, where the Einstein tensor is not a multiple of the unit matrix
+    diff = sp.factor(sp.simplify(ein[5] - ein[6]))
+    ok_ne = sp.simplify(diff - (g55 - g66) * gsum) == 0 or sp.simplify(diff + (g55 - g66) * gsum) == 0
+    report("I%sd-L1" % tag[2:4], ok and ok_eq and ok_ne, "%s, Einstein-Gauss-Bonnet gravity (metric with positive space-like components; standard formula of the Lanczos tensor, computer algebra): Lanczos^a_a = -4 g55 g66 g77 gsum for a = 0..3 and Lanczos^4_4 = Lanczos^t_t = 0, identically in the rates and constants; for g55 = g66 = g77 the deflating spacetime solves G^mu_nu + Lambda_8 delta^mu_nu + alpha_GB Lanczos^mu_nu = 0 with Lambda_8 = 3 g55^2 and alpha_GB = -1/(4 g55^2); for unequal rates it does not, because G^5_5 - G^6_6 = +-(g55 - g66) gsum while the Lanczos tensor vanishes there" % NAME[tag])
+
+
 # ---------------------------------------------------------------------------------------
 # Part 2: Dirac matrices and spin connection, symbolically in b_5, b_6, b_7
 # ---------------------------------------------------------------------------------------
@@ -588,6 +646,7 @@ def main():
     for tag in ("1644d", "1671d"):
         part_geometry(tag)
         part_completeness(tag)
+        part_lovelock(tag)
         part_dirac(tag)
     part_modes()
     part_vortex()

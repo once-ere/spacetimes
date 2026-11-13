@@ -137,7 +137,7 @@ bash code/scripts/build_docs.sh "dirac matrices deflating.md"
 ```
 
 Step 2 writes the files listed in Appendix B. Each command prints its checks and ends
-with a line of the form "45 of 45 checks passed"; it returns a non-zero exit status if a
+with a line of the form "{{GEN:n_deflating_checks}} checks passed"; it returns a non-zero exit status if a
 check fails. The provenance RP8 explains every step for a reader who has not used a
 terminal before.
 
@@ -261,14 +261,76 @@ Two conclusions follow.
    $2\,\mathrm{gprod}=\mathrm{gsq}+\mathrm{gsum}^2$, that is $\mathrm{gsq}=0$: all
    three rates would vanish.
 
-If gravity in eight dimensions obeys Einstein's equations, the deflation therefore
+If gravity in eight dimensions obeys *Einstein's* equations, the deflation therefore
 requires a source with the stress tensor $\mathcal G^\mu{}_\nu/(8\pi G_8)$, where $G_8$
 is the eight-dimensional constant of gravitation: a positive energy density
 proportional to $\mathrm{gprod}$ on the 7+1 spacetime, and a stress along the flat
 coordinates $x0,\dots,x3$ that is larger than the energy density. The hypotheses
 prescribe the metric and say nothing about its source. This document follows them: the
 metric (1.2) is a *given background*, on which the fields of the project move without
-acting back on it. What sustains the deflation is an open question (Part 6).
+acting back on it. The next subsection shows that in the gravity of Lovelock, which the
+author's notebooks study, no source is needed if the three rates are equal.
+
+## 1.4a What can sustain the deflation: the Gauss–Bonnet term
+
+In more than four dimensions Einstein's equations are not the only field equations of
+second order for the metric. The general ones are those of Lovelock, which add to the
+Einstein tensor a series of tensors of higher order in the curvature; the first of
+them is the Lanczos tensor $\mathcal H^\mu{}_\nu$ of the Gauss–Bonnet term. The author's
+notebooks on the Einstein–Lovelock equations (N06 to N08 of the provenance P3 of the
+main project) study this theory. It is therefore natural to ask whether the deflating
+spacetime solves the field equations of Einstein–Gauss–Bonnet gravity without matter,
+$$\mathcal G^\mu{}_\nu+\Lambda_8\,\delta^\mu_\nu+\alpha_{GB}\,\mathcal H^\mu{}_\nu=0,\tag{1.10a}$$
+which follow from the action
+$R-2\Lambda_8+\alpha_{GB}\,(R^2-4R_{\mu\nu}R^{\mu\nu}+R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma})$
+with a cosmological constant $\Lambda_8$ and a coupling $\alpha_{GB}$. (In this
+subsection, and only here, the signs are those of the convention in which the
+space-like components of the metric are positive: the metric $g_{1644d}$ itself, and
+minus the metric $g_{1671d}$. In that convention the Einstein tensor is $-\eta_{44}$
+times that of Eq. (1.10), for both spacetimes.)
+
+*The Lanczos tensor.* Computed from its definition,
+$$\mathcal H^a{}_a=-4\,\mathrm{g55}\,\mathrm{g66}\,\mathrm{g77}\,\mathrm{gsum}\quad(a=0,1,2,3),\qquad
+\mathcal H^4{}_4=\mathcal H^t{}_t=0,\tag{1.10b}$$
+for both spacetimes, and the Lovelock tensor of the third order, the last one that can
+be different from zero in eight dimensions, vanishes identically (checks `44d-G10`,
+`71d-G10`, by a formula for curvatures that act diagonally on pairs of directions;
+independently `I44d-L1`, `I71d-L1`, from the standard formula of the Lanczos tensor by
+computer algebra).
+
+*The result.* Insert Eqs. (1.10) and (1.10b) into Eq. (1.10a).
+
+* The components along $x4$ and along the three deflating coordinates contain no
+  Gauss–Bonnet term. They require the four components
+  $\mathcal G^4{}_4,\mathcal G^5{}_5,\mathcal G^6{}_6,\mathcal G^7{}_7$ of the Einstein
+  tensor to be equal. Because
+  $\mathcal G^5{}_5-\mathcal G^6{}_6=\pm(\mathrm{g55}-\mathrm{g66})\,\mathrm{gsum}$, this
+  holds **if and only if the three rates are equal**; the cosmological constant is then
+  $\Lambda_8=3\,\mathrm{g55}^2$.
+* The components along the flat coordinates then fix the coupling:
+  $\alpha_{GB}=-1/(4\,\mathrm{g55}^2)$.
+
+Hence:
+
+> **With three equal rates, the deflating 4+4 spacetime and the deflating 7+1 spacetime
+> are exact solutions of Einstein–Gauss–Bonnet gravity without matter, with
+> $\Lambda_8=3\,\mathrm{g55}^2$ and $\alpha_{GB}=-1/(4\,\mathrm{g55}^2)$, that is,
+> $4\,\alpha_{GB}\Lambda_8=-3$.** With rates that are not all equal they are not, for
+> any $\Lambda_8$ and $\alpha_{GB}$.
+
+*Meaning.* In the theory that the author's notebooks study, the deflation at equal
+rates needs no source: the rate is fixed by the constants of the theory,
+$\mathrm{g55}=\sqrt{\Lambda_8/3}$, and the theory must have the particular ratio
+$4\alpha_{GB}\Lambda_8=-3$ of its two constants. Solutions of Einstein–Gauss–Bonnet
+gravity in which every scale factor is an exponential of the time have been classified
+in five and six dimensions (Ref. [1]); the present solution is of that kind in eight
+dimensions, with four static and three contracting directions. Three limits of the
+result must be stated. (i) It concerns the metric alone; the fields of Parts 3 and 4
+remain test fields on it. (ii) Whether the solution is stable against perturbations of
+the metric has not been examined. (iii) If gravity is of this kind, the relation
+between Newton's constant and the volume of the deflating coordinates that the
+supplement RS3 assumes for Einstein gravity (its assumption A2) would have to be
+derived anew.
 
 ## 1.5 Symmetries of the metric
 
@@ -928,7 +990,9 @@ marked with I, symbolically for arbitrary parameters).
    vectors, 14, 15 or 20, and the completeness of the lists; homogeneity; constant
    curvature of the four coordinates $x4,\dots,x7$ for equal rates.
 2. The deflating spacetimes are not vacuum solutions of Einstein's equations, with or
-   without a cosmological constant.
+   without a cosmological constant. With three equal rates they are exact vacuum
+   solutions of Einstein–Gauss–Bonnet gravity, for $\Lambda_8=3\,\mathrm{g55}^2$ and
+   $\alpha_{GB}=-1/(4\,\mathrm{g55}^2)$ (I); with unequal rates they are not.
 3. Geodesics: unbounded blueshift and geodesic incompleteness on 7+1; a turning value
    of the ordinary time on 4+4.
 4. The Dirac matrices in coordinate components, the spin connection, the covariant
@@ -944,10 +1008,11 @@ marked with I, symbolically for arbitrary parameters).
 
 **Not established.**
 
-1. *The source of the deflation.* The hypotheses prescribe the metric. No field
-   equation for the metric has been solved, and the stress tensor that Eq. (1.10) would
-   require has not been identified with any matter. All results here are results on a
-   prescribed background.
+1. *The source of the deflation.* For equal rates Sec. 1.4a gives an answer within
+   Einstein–Gauss–Bonnet gravity; its stability has not been examined. For unequal
+   rates no field equation has been found that the metric solves, and the stress
+   tensor that Eq. (1.10) would require has not been identified with any matter. All
+   results on fields are results on a prescribed background.
 2. *The effect of the fields on the metric.* The particles created on 7+1 gain energy
    without bound. Their stress tensor must eventually change the metric; this
    back-reaction has not been computed, and the results for 7+1 hold only for as long
@@ -1019,6 +1084,10 @@ wavenumbers; the others are numerical.
 ```text
 {{FILE:data/deflating_checks_independent.txt}}
 ```
+
+# References
+
+1. D. Chirkov, S. Pavluchenko and A. Toporensky, *Exact exponential solutions in Einstein–Gauss–Bonnet flat anisotropic cosmology*, Mod. Phys. Lett. A **29**, 1450093 (2014); arXiv:1401.2962.
 
 # Appendix B. Files
 

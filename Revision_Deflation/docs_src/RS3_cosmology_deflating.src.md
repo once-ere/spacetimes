@@ -400,10 +400,16 @@ observable part is empty if gravity is eight-dimensional and the rate constant.
    beyond the shift of the sound-horizon angle is of that relative size, and has not
    been computed. This item is recorded in the provenance RP0 as open, awaiting the
    author's instruction.
-2. *The other Einstein equations.* Only the time component (1.2) is used. The spatial
-   components constrain the stresses of the source that drives the deflation, which
-   is unknown (DMD, Part 6). Whether a source exists that keeps three rates constant
-   while ordinary space expands has not been examined.
+2. *The other field equations, and the theory of gravity.* Only the time component
+   (1.2) of Einstein's equations is used. The spatial components constrain the
+   stresses of the source that drives the deflation, which is unknown. Whether a
+   source exists that keeps three rates constant while ordinary space expands has not
+   been examined. DMD, Sec. 1.4a, shows that *without* expansion of ordinary space
+   and with three equal rates the deflating spacetimes solve the equations of
+   Einstein–Gauss–Bonnet gravity without any source. If gravity is of that kind,
+   assumption A2 does not hold as stated: the relation (1.1) between Newton's
+   constant and the volume of the deflating coordinates, and with it every bound and
+   every result of this supplement that is marked A2, would have to be derived anew.
 3. *A varying rate.* All bounds that reach back to nucleosynthesis assume a constant
    rate. A rate that was large early and is small today is neither excluded nor
    described.
