@@ -375,6 +375,6 @@
 | D08 | P. L. Nash, "Second gravity", J. Math. Phys. 51, 042501 (2010) |
 | K1 | the author's document `KOHN_SHAM_GRAVITY` (folder 7+1; sections 15 and 16 of the notebook `7+1.nb`): nine-channel self-coupling, Fierz matrix, Kohn-Sham theory, Einstein-Lovelock evolution |
 | K2 | the author's document `DIRAC16COMPLEX` (folder 7+1): the critical coupling of the vacuum in seven space dimensions |
-| author | a name that an instruction of the author fixes (the rates g55, g66, g77; the constants; the signs of the metric) |
+| author | a name that an instruction of the author fixes (the rates $\mathrm{g55}$, $\mathrm{g66}$, $\mathrm{g77}$; the constants; the signs of the metric) |
 | new | introduced by this project |
 <!-- END symbols_origin_key -->

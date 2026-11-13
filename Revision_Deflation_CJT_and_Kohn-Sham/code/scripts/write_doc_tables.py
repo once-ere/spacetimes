@@ -13,6 +13,18 @@ placeholder {{GEN:name}}, which code/scripts/assemble_docs.py replaces by the fr
 Run from the folder Revision_Deflation_CJT_and_Kohn-Sham, after the commands of the program `deflation_cjt_ks`:
 
     python3 code/scripts/write_doc_tables.py
+
+The script stops if one of the check reports in data/ does not say that all of its checks
+pass.  One report, data/symbol_checks.txt, is written by code/scripts/check_symbols.py from
+the assembled documents themselves.  If a document was changed so that this report fails,
+the fragments cannot be rewritten before the report passes, and the report cannot pass
+before the documents are rebuilt.  For that case only:
+
+    python3 code/scripts/write_doc_tables.py --first-pass   # does not require the symbol report to pass
+    python3 code/scripts/assemble_docs.py
+    python3 code/scripts/check_symbols.py                   # must now report that all checks pass
+    python3 code/scripts/write_doc_tables.py                # the strict run
+    python3 code/scripts/assemble_docs.py
 """
 import csv
 import math
@@ -23,6 +35,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA = os.path.join(ROOT, "data")
 OUT = os.path.join(ROOT, "provenance", "generated", "tables_cjt_ks.md")
+FIRST_PASS = "--first-pass" in sys.argv
 FRAGS = []
 # Provenance of the fragments: the data files read since the last table, recorded for each table.
 READ = []          # files read since the last call of table()
@@ -199,7 +212,11 @@ def check_counts():
         assert os.path.exists(p), "missing report " + p
         m = re.search(r"(\d+) of (\d+) checks passed", open(p, encoding="utf-8").read())
         assert m, "no count in " + p
-        assert m.group(1) == m.group(2), "%s: %s of %s checks pass" % (name, m.group(1), m.group(2))
+        if name == "symbol_checks" and FIRST_PASS:
+            # the symbol checks read the documents that are assembled from these fragments (see the option --first-pass)
+            pass
+        else:
+            assert m.group(1) == m.group(2), "%s: %s of %s checks pass" % (name, m.group(1), m.group(2))
         text("n_" + name, "%s of %s" % (m.group(1), m.group(2)))
         if name in rust:
             total += int(m.group(2))
@@ -1075,6 +1092,8 @@ def md_escape(t):
         t = t.replace(a, "\\" + a)
     # a product of matrices written with dots and no spaces (gamma1644[0].gamma1644[1]...) gets spaces, so that the line can break
     t = re.sub(r"\\\]\.(?=[A-Za-z])", r"\\] . ", t)
+    # the rates of deflation are written upright wherever they stand in running text (rule R3 of the registry)
+    t = re.sub(r"(?<![A-Za-z0-9_\\{])g(55|66|77)(?![A-Za-z0-9_])", r"$\\mathrm{g\1}$", t)
     return t
 
 
