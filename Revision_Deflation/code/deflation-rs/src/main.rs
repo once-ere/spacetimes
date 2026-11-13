@@ -538,6 +538,147 @@ fn cmd_quench() -> std::io::Result<bool> {
     Ok(all)
 }
 
+/// `cosmology`: the expansion of ordinary space on a deflating spacetime, the bounds on
+/// the rate of deflation, and the Hubble constant (module cosmo_defl.rs).  Writes
+/// data/hubble_deflation.csv, deflation_bounds.csv, hubble_mass_loss.csv,
+/// cosmology_checks.{txt,csv}.
+fn cmd_cosmology() -> std::io::Result<bool> {
+    use spacetimes_deflation::cosmo_defl::{main_project_reference, solve_h, theta_star, Model, HUBBLE_TIME_100_YR};
+    let mut rep = spacetimes::verify::Report::new();
+    let h0 = 0.6736_f64;
+    let kms = 100.0; // H_100 in km/s/Mpc
+    let (z_star, theta_main, rs_main) = main_project_reference();
+    let none = |_s: f64| 1.0;
+    let m0 = Model::fiducial(0.0, h0);
+    let d0 = theta_star(&m0, z_star, &none);
+    rep.add("def-C1", "numerical", &format!("without deflation the background integrals of this module agree with the main project (its recombination calculation gives z_* = {:.2}): 100 theta_* = {:.5} here against {:.5}, sound horizon {:.3} Mpc against {:.3} Mpc; age {:.3} Gyr", z_star, d0.theta100, theta_main, d0.rs * 2997.92458, rs_main, d0.age * HUBBLE_TIME_100_YR / 1e9),
+        (d0.theta100 / theta_main - 1.0).abs() < 2e-4 && (d0.rs * 2997.92458 / rs_main - 1.0).abs() < 2e-4);
+    let theta = d0.theta100;
+
+    // ---- the bounds on the rate ------------------------------------------------------
+    // lunar laser ranging: (dG/dt)/G = (7.1 +- 7.6) e-14 per year (68%); two-sigma upper value 22.3e-14 per year
+    let llr = (7.1 + 2.0 * 7.6) * 1e-14; // per year
+    let gam_llr = llr * HUBBLE_TIME_100_YR; // in units of H_100
+    // nucleosynthesis: G_BBN/G_0 = 0.99 +0.06 -0.05 (two sigma): G_BBN/G_0 >= 0.94
+    let g_bbn_min = 0.94_f64;
+    let gam_of_g = |target: f64| -> f64 {
+        // solve exp(-gsum t_0) = target for the rate, with the age of the deflating model itself (h held at h0)
+        let (mut lo, mut hi) = (0.0_f64, 1.0_f64);
+        for _ in 0..60 {
+            let mid = 0.5 * (lo + hi);
+            if theta_star(&Model::fiducial(mid, h0), z_star, &none).g_early > target {
+                lo = mid;
+            } else {
+                hi = mid;
+            }
+        }
+        0.5 * (lo + hi)
+    };
+    let gam_bbn = gam_of_g(g_bbn_min);
+    // atomic clocks: (d mu/dt)/mu = (-8 +- 36) e-18 per year (mu = proton-to-electron mass ratio); two-sigma magnitude 80e-18
+    let clocks = (8.0 + 2.0 * 36.0) * 1e-18;
+    let gam_clock = 2.0 * clocks * HUBBLE_TIME_100_YR; // if the electroweak scale followed the four-dimensional vacuum value ~ exp(-gsum x4/2)
+
+    // ---- the Hubble constant as a function of the rate -----------------------------------
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let mut ratios: Vec<f64> = vec![0.0, 1e-3, 3e-3, 1e-2, 3e-2, 0.1, 0.3];
+    ratios.push(gam_llr / h0);
+    ratios.push(gam_bbn / h0);
+    ratios.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let mut hs: Vec<(f64, f64)> = Vec::new();
+    for r in &ratios {
+        let gam = r * h0;
+        let base = Model::fiducial(gam, h0);
+        let h = solve_h(&base, z_star, theta, &none);
+        let d = theta_star(&Model { h, ..base }, z_star, &none);
+        rows.push(vec![*r, gam / HUBBLE_TIME_100_YR, h, kms * (h - h0), d.g_early, d.g_star, d.rs * 2997.92458, d.age * HUBBLE_TIME_100_YR / 1e9]);
+        hs.push((*r, h));
+    }
+    write_csv("hubble_deflation.csv",
+        &[("content", "the Hubble constant inferred from the angular scale of the sound horizon when x5, x6, x7 deflate at a constant total rate gsum throughout cosmic history (assumptions A1, A2 of cosmo_defl.rs; three equal rates); densities omega_b, omega_c and 100 theta_* held at the values of the model without deflation".to_string()),
+          ("columns", "gsum_over_H0: gsum divided by the Hubble constant of the model without deflation (67.36 km/s/Mpc); gsum_per_yr; h; dH0: change of the inferred Hubble constant in km/s/Mpc; G_early: Newton's constant in the early universe over its value today, exp(-gsum t_0); G_star: the same at last scattering; rs_Mpc: sound horizon at last scattering; age_Gyr".to_string()),
+          ("bounds", format!("lunar laser ranging (two sigma): gsum < {:.3e} per year = {:.3e} H_0; nucleosynthesis (G_BBN/G_0 > 0.94, two sigma): gsum < {:.3e} per year = {:.4} H_0", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0)),
+          ("command", "deflation cosmology".to_string())],
+        &["gsum_over_H0", "gsum_per_yr", "h", "dH0", "G_early", "G_star", "rs_Mpc", "age_Gyr"], &rows)?;
+    let mono = hs.windows(2).all(|w| w[1].1 < w[0].1);
+    let h_at = |r: f64| hs.iter().find(|x| (x.0 - r).abs() < 1e-12).unwrap().1;
+    let slope = (h_at(1e-3) - h0) / h0 / 1e-3;
+    rep.add("def-C2", "numerical", &format!("with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = {:.3} at small rates; H_0 = {:.2}, {:.2}, {:.2} km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value", slope, kms * h_at(1e-2), kms * h_at(3e-2), kms * h_at(0.1)), mono && slope < 0.0);
+    let (h_llr, h_bbn) = (h_at(gam_llr / h0), h_at(gam_bbn / h0));
+    rep.add("def-C3", "numerical", &format!("bounds on the present rate of deflation if gravity is eight-dimensional (G grows at the rate gsum): lunar laser ranging, (dG/dt)/G = (7.1 +- 7.6) 10^-14 per year, gives gsum < {:.2e} per year = {:.2e} H_0 at two sigma; nucleosynthesis, G_BBN/G_0 > 0.94 at two sigma, gives gsum < {:.2e} per year = {:.3} H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by {:.3} and {:.2} km/s/Mpc: the local measurement, 73 km/s/Mpc, cannot be approached", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0, kms * (h_llr - h0), kms * (h_bbn - h0)),
+        h_llr < h0 && h_bbn < h_llr && kms * (h0 - h_llr) < 0.2);
+
+    let rows: Vec<Vec<String>> = vec![
+        vec!["lunar laser ranging".into(), "(dG/dt)/G = (7.1 +- 7.6) e-14 per year (68%)".into(), "G = G_8/(volume of the extra coordinates): (dG/dt)/G = gsum".into(), format!("{:.3e}", llr), format!("{:.3e}", gam_llr / h0), "gravity is eight-dimensional (A2)".into()],
+        vec!["primordial nucleosynthesis".into(), "G_BBN/G_0 = 0.99 +0.06 -0.05 (two sigma)".into(), "G_BBN/G_0 = exp(-gsum t_0) > 0.94".into(), format!("{:.3e}", gam_bbn / HUBBLE_TIME_100_YR), format!("{:.4}", gam_bbn / h0), "A2, and a rate that is constant from nucleosynthesis until today".into()],
+        vec!["atomic clocks".into(), "(d mu/dt)/mu = (-8 +- 36) e-18 per year (68%), mu = proton-to-electron mass ratio".into(), "electron mass ~ electroweak scale ~ four-dimensional vacuum value of the Vorton-Scalar ~ exp(-gsum x4/2)".into(), format!("{:.3e}", 2.0 * clocks), format!("{:.3e}", gam_clock / h0), "the Higgs hypothesis H2 in the form that the electroweak scale is the four-dimensional vacuum value of the Vorton-Scalar; the scale of the strong interaction does not change".into()],
+    ];
+    write_csv_str("deflation_bounds.csv",
+        &[("content", "upper bounds (two sigma) on the present total rate of deflation gsum = g55 + g66 + g77, each under the stated assumption".to_string()),
+          ("columns", "observation; measured value; relation to gsum; bound on gsum per year; bound in units of H_0 = 67.36 km/s/Mpc; assumption".to_string()),
+          ("sources", "Hofmann and Mueller, Class. Quantum Grav. 35, 035015 (2018); Alvey, Sabti, Escudero and Fairbairn, Eur. Phys. J. C 80, 148 (2020); Lange et al., Phys. Rev. Lett. 126, 011102 (2021)".to_string()),
+          ("command", "deflation cosmology".to_string())],
+        &["observation", "measured", "relation", "gsum_max_per_yr", "gsum_max_over_H0", "assumption"], &rows)?;
+
+    // ---- dark matter of bound pairs that lose rest mass as the coupling grows --------------------
+    // mass of a pair: 2 m - E_b, E_b = eps(D) m_s^2/m;  mass(s) = [1 - (m_s/m)^2 eps(D_0 e^s)/2] / [1 - (m_s/m)^2 eps(D_0)/2]
+    let table: Vec<(f64, f64)> = (0..=400).map(|i| {
+        let d = 1.0 * (30.0f64).powf(i as f64 / 400.0);
+        (d.ln(), spacetimes::dimer::binding(d).unwrap_or(0.0))
+    }).collect();
+    let eps_of = |d: f64| -> f64 {
+        let l = d.max(1.0).min(30.0).ln();
+        let x = (l - table[0].0) / (table[400].0 - table[0].0) * 400.0;
+        let i = (x.floor() as usize).min(399);
+        let f = x - i as f64;
+        table[i].1 * (1.0 - f) + table[i + 1].1 * f
+    };
+    let mut rows: Vec<Vec<f64>> = Vec::new();
+    let mut gain_max: f64 = 0.0;
+    // examples with alpha_VS = D m_s/m <= 1 today, so that the binding energy (at most alpha^2 m/4) stays well below the
+    // rest mass 2m and the non-relativistic formula for it can be used
+    let mut bind_frac_max: f64 = 0.0;
+    for (d_today, ms) in [(2.5_f64, 0.2_f64), (5.0, 0.2), (4.0, 0.1), (10.0, 0.1)] {
+        bind_frac_max = bind_frac_max.max(0.5 * ms * ms * eps_of(d_today));
+        for (r, gravity) in [(gam_llr / h0, true), (gam_bbn / h0, true), (0.03, false), (0.1, false), (0.3, false), (1.0, false)] {
+            let mass = |s: f64| (1.0 - 0.5 * ms * ms * eps_of(d_today * s.exp())) / (1.0 - 0.5 * ms * ms * eps_of(d_today));
+            let base = Model { gravity, ..Model::fiducial(r * h0, h0) };
+            // omega_c is the density inferred at early times; today's is omega_c * mass(0)/mass(early) -> normalize so that the EARLY density is fixed:
+            // rho_c(a) = omega_c_early a^-3 mass(s)/mass(s_early); with mass(0) = 1 this is omega_c_early * mass(s)/mass_early
+            let s_early = theta_star(&base, z_star, &mass).g_early.ln();
+            let m_early = mass(s_early);
+            let mass_n = |s: f64| mass(s) / m_early;
+            let h = solve_h(&base, z_star, theta, &mass_n);
+            rows.push(vec![d_today, ms, d_today * ms, r, if gravity { 1.0 } else { 0.0 }, 1.0 / m_early, h, kms * (h - h0)]);
+            if !gravity {
+                gain_max = gain_max.max(kms * (h - h0));
+            }
+        }
+    }
+    write_csv("hubble_mass_loss.csv",
+        &[("content", "dark matter made of bound pairs on a deflating spacetime: the pair loses rest mass as its binding energy grows with the coupling; inferred Hubble constant with the dark-matter density at early times, omega_b and 100 theta_* held fixed".to_string()),
+          ("columns", "D_today = alpha_VS m/m_s today; m_s_over_m; alpha_today; gsum_over_H0; gravity: 1 = gravity feels the deflation (assumptions A1, A2), 0 = constant G, the deflation acts on the dark sector only; mass_ratio: rest mass of a pair today over its mass in the early universe; h; dH0 (km/s/Mpc)".to_string()),
+          ("note", "rows with gravity = 1 use the largest rates that lunar laser ranging and nucleosynthesis allow".to_string()),
+          ("command", "deflation cosmology".to_string())],
+        &["D_today", "m_s_over_m", "alpha_today", "gsum_over_H0", "gravity", "mass_ratio", "h", "dH0"], &rows)?;
+    let grav: Vec<f64> = rows.iter().filter(|r| r[4] == 1.0).map(|r| r[7]).collect();
+    let (grav_lo, grav_hi) = (grav.iter().cloned().fold(f64::INFINITY, f64::min), grav.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
+    let loss_max = rows.iter().filter(|r| r[4] == 0.0).map(|r| 1.0 - r[5]).fold(0.0, f64::max);
+    rep.add("def-C4", "numerical", &format!("dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most {:.1} per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between {:.2} and {:.2} km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +{:.2} km/s/Mpc, for a loss of up to {:.1} per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the 5.6 km/s/Mpc that separate 67.4 from the local value", 100.0 * bind_frac_max, grav_lo, grav_hi, gain_max, 100.0 * loss_max),
+        grav_hi < 0.0 && gain_max > 0.0 && gain_max < 0.56 && bind_frac_max < 0.2);
+
+    let (ok, n) = rep.count();
+    let all = rep.all_pass();
+    rep.add("ALL", "numerical", "every check above passed", all);
+    write_report(&rep, "cosmology_checks.txt", "cosmology_checks.csv",
+        "PROJECT spacetimes, Revision_Deflation: checks of the cosmological calculations on the deflating spacetime", "deflation cosmology")?;
+    for c in &rep.checks {
+        println!("[{}] {:<7} ({}) {}", if c.pass { "PASS" } else { "FAIL" }, c.id, c.kind, c.statement);
+    }
+    println!("\ncosmology: {} of {} checks passed", ok, n);
+    Ok(all)
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
@@ -546,6 +687,7 @@ fn main() {
         "modes" => cmd_modes(),
         "history" => cmd_history(),
         "quench" => cmd_quench(),
+        "cosmology" => cmd_cosmology(),
         _ => {
             println!("deflation: PROJECT spacetimes, Revision_Deflation (x5, x6, x7 deflate exponentially)\n");
             println!("commands (run from the folder Revision_Deflation):");
@@ -556,6 +698,7 @@ fn main() {
             println!("  history    the couplings and every threshold of the model along the deflation clock:");
             println!("             gap, bound pair, normal matter, vacuum potential, melting, order of events");
             println!("  quench     time-dependent dynamics of the paired state while the coupling grows: can it follow?");
+            println!("  cosmology  expansion of ordinary space on the deflating spacetime, bounds on the rate, the Hubble constant");
             Ok(true)
         }
     };

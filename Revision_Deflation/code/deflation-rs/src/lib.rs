@@ -17,6 +17,7 @@
 //! * `scalar`  the two modes of the Vorton-Scalar on the deflating spacetimes;
 //! * `history` the couplings and every threshold of the model as functions of the deflation clock;
 //! * `quench`  time-dependent mean-field dynamics of the paired state while the coupling grows;
+//! * `cosmo_defl` expansion of ordinary space while x5, x6, x7 deflate; bounds on the rate; the Hubble constant;
 //! * `io`      data files with self-describing headers;
 //! * `geometry` machine checks of the geometry; geodesics;
 //! * `curved`  Dirac matrices, spin connection and Dirac operators on the deflating spacetimes;
@@ -24,6 +25,7 @@
 //! The Dirac matrices, the exact integer matrices and the numerical utilities are
 //! those of the main project (crate `spacetimes`, code/spacetimes-rs).
 
+pub mod cosmo_defl;
 pub mod curved;
 pub mod geometry;
 pub mod history;
