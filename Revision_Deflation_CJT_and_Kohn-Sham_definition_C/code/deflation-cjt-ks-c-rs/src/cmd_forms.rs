@@ -17,7 +17,7 @@
 use spacetimes::gamma::Gammas;
 use spacetimes::verify::Report;
 use spacetimes_deflation_cjt_ks_c::cjt_contact::Cjt;
-use spacetimes_deflation_cjt_ks_c::halves::{binding_threshold, Form, Halves, HalvesCouplings, Hf4, HState};
+use spacetimes_deflation_cjt_ks_c::halves::{binding_threshold, Form, Halves, HalvesCouplings, Hf4, HState, KF_SCAN};
 use crate::cmd_forms_b::run_part2;
 use spacetimes_deflation_cjt_ks_c::io::{write_csv, write_csv_str, write_report};
 use spacetimes_deflation_cjt_ks_c::kohn_sham::{global_min, ks_solve, Contact, Fermi, NU};
@@ -69,9 +69,9 @@ pub(crate) fn halves_of(tabs: &SelfTables, d: usize, form: Form, set: usize, g: 
     Halves { d, nu_half: NU / 2.0, c: HalvesCouplings::new(form, 1.0, &hf) }
 }
 
-/// Lowest energy per particle minus m over kf_total in [0.02, 20]: (kf_total, state).
+/// The state of lowest energy per particle over kf_total in [0.05, 5] (scan `KF_SCAN` of the library): (kf_total, state).
 pub(crate) fn lowest(h: &Halves) -> (f64, HState) {
-    h.lowest_energy_per_particle(0.02, 20.0, 40).expect("forms: no state found")
+    h.lowest_energy_per_particle(KF_SCAN.0, KF_SCAN.1, KF_SCAN.2).expect("forms: no state found")
 }
 
 /// The smallest strength g at which matter is self-bound (library routine `binding_threshold`).
@@ -88,7 +88,7 @@ fn threshold_one_kind(d: usize, nu: f64, cs: f64, cv: f64) -> f64 {
     let bound = |ln_g: f64| {
         let g = ln_g.exp();
         let c = Contact { m: 1.0, gs: cs * g, gv: cv * g };
-        global_min(|l: f64| ks_solve(&f, &c, l.exp(), &ONE).e_per_particle - 1.0, 0.02f64.ln(), 20.0f64.ln(), 240, 1e-11).1 < -1e-10
+        global_min(|l: f64| ks_solve(&f, &c, l.exp(), &ONE).e_per_particle - 1.0, KF_SCAN.0.ln(), KF_SCAN.1.ln(), 240, 1e-11).1 < -1e-10
     };
     let (mut lo, mut hi) = (1e-2f64.ln(), 1e5f64.ln());
     if bound(lo) || !bound(hi) {

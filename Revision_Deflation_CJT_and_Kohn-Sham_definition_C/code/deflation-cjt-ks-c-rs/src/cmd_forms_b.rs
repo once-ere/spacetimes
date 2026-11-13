@@ -27,18 +27,9 @@ fn unified_threshold(tabs: &SelfTables, form: Form, f_d: f64, kappa0: f64, kappa
         g9[1] = kappa1 * c;
         UnifiedHalves { form, f_d, c, hf: Hf4::from_tables(tabs, &g9) }
     };
-    let lowest = |c: f64| functional(c).lowest_energy_per_particle(0.05, 8.0, 24);
-    // bound: a first look at 13 densities decides most cases; the full search follows otherwise
-    let bound = |c: f64| {
-        let f = functional(c);
-        for i in 0..=12 {
-            let kf = (0.25f64.ln() + (4.0f64.ln() - 0.25f64.ln()) * i as f64 / 12.0).exp();
-            if f.state(UnifiedHalves::density_of_kf_total(kf)).map_or(false, |s| s.e_per_particle - 1.0 < -1e-9) {
-                return true;
-            }
-        }
-        lowest(c).map_or(false, |(_, s)| s.e_per_particle - 1.0 < -1e-9)
-    };
+    // kf_total from 0.1 m to 6 m in 60 steps of ln kf_total, refinement around every local minimum
+    let lowest = |c: f64| functional(c).lowest_energy_per_particle(0.1, 6.0, 60);
+    let bound = |c: f64| lowest(c).map_or(false, |(_, s)| s.e_per_particle - 1.0 < -1e-9);
     let (mut lo, mut hi) = (0.05f64.ln(), 60.0f64.ln());
     if bound(lo.exp()) || !bound(hi.exp()) {
         return None;
@@ -280,7 +271,7 @@ pub(crate) fn run_part2(tabs: &SelfTables, rep: &mut Report, cases: &[(usize, us
         let hc = HalvesCouplings::new(form, 1.0, &hf1);
         let mut one_kind = f64::NAN;
         if st.halves.pol < 1e-6 {
-            let lowest = |cc: f64| global_min(|l: f64| Unified { f_d, c: cc, gs: hc.ts * cc, gv: hc.tv * cc }.state(&f3, l.exp()).e_per_particle - 1.0, 0.05f64.ln(), 8.0f64.ln(), 120, 1e-9).1;
+            let lowest = |cc: f64| global_min(|l: f64| Unified { f_d, c: cc, gs: hc.ts * cc, gv: hc.tv * cc }.state(&f3, l.exp()).e_per_particle - 1.0, 0.1f64.ln(), 6.0f64.ln(), 120, 1e-9).1;
             let (mut lo, mut hi) = (0.05f64.ln(), 60.0f64.ln());
             if lowest(lo.exp()) >= -1e-9 && lowest(hi.exp()) < -1e-9 {
                 for _ in 0..20 {

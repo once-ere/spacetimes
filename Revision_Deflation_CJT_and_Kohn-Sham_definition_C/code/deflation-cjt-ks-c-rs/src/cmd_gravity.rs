@@ -9,7 +9,7 @@
 use spacetimes::verify::Report;
 use spacetimes_deflation_cjt_ks_c::gravity::{field_equations, Evolution, Geometry, Lovelock, Matter, State};
 use spacetimes_deflation_cjt_ks_c::io::{write_csv, write_csv_str, write_report};
-use spacetimes_deflation_cjt_ks_c::halves::{binding_threshold, halves_for, Form, Hf4};
+use spacetimes_deflation_cjt_ks_c::halves::{binding_threshold, halves_for, Form, Hf4, KF_SCAN};
 use spacetimes_deflation_cjt_ks_c::kohn_sham::{ks_solve, saturation, Contact, Fermi, NU};
 use spacetimes_deflation_cjt_ks_c::selfint::SelfTables;
 
@@ -236,7 +236,7 @@ pub fn run() -> std::io::Result<bool> {
     for form in Form::both() {
         let g_thr = binding_threshold(4, form, &hf_unit);
         let h = halves_for(4, form, &hf_unit, 3.0 * g_thr);
-        let (_, st) = h.lowest_energy_per_particle(0.02, 20.0, 40).expect("gravity: no saturated state");
+        let (_, st) = h.lowest_energy_per_particle(KF_SCAN.0, KF_SCAN.1, KF_SCAN.2).expect("gravity: no saturated state");
         // the saturated state is matter of one kind of particle: one half filled (four states, couplings a_S, a_V)
         // or equal halves (eight states, couplings T_S, T_V)
         let (c, half) = if st.pol > 1.0 - 1e-6 {

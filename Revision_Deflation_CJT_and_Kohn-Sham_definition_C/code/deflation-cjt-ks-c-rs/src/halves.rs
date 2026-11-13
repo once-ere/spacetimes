@@ -648,27 +648,35 @@ impl Halves {
         Some(st)
     }
 
-    /// The lowest energy per particle minus m over the total densities that correspond to
-    /// kf_total in [lo, hi] (scan of `n_scan` + 1 values of ln kf_total, golden-section
-    /// refinement around the lowest).  Returns (kf_total, state).
+    /// The lowest energy per particle over the total densities that correspond to kf_total in
+    /// [lo, hi]: scan of `n_scan` + 1 values of ln kf_total, then golden-section refinement
+    /// around EVERY grid point that is not higher than its neighbours (the energy per particle
+    /// of a dilute gas tends to m from above, so that the lowest grid value can lie at the
+    /// dilute end while a narrow bound minimum lies between two grid points elsewhere).
+    /// Returns (kf_total, state).
     pub fn lowest_energy_per_particle(&self, lo: f64, hi: f64, n_scan: usize) -> Option<(f64, HState)> {
         let (a, b) = (lo.ln(), hi.ln());
         let h = (b - a) / n_scan as f64;
         let e = |l: f64| self.lowest_at_density(self.density_of_kf_total(l.exp())).map_or(f64::INFINITY, |s| s.e_per_particle);
+        let v: Vec<f64> = (0..=n_scan).map(|i| e(a + h * i as f64)).collect();
         let mut best = (f64::INFINITY, a);
         for i in 0..=n_scan {
-            let l = a + h * i as f64;
-            let v = e(l);
-            if v < best.0 {
-                best = (v, l);
+            let left = if i == 0 { f64::INFINITY } else { v[i - 1] };
+            let right = if i == n_scan { f64::INFINITY } else { v[i + 1] };
+            if v[i].is_finite() && v[i] <= left && v[i] <= right {
+                let l0 = a + h * i as f64;
+                let l = golden_min(e, (l0 - h).max(a), (l0 + h).min(b), 1e-9);
+                let el = e(l);
+                let (l, el) = if el <= v[i] { (l, el) } else { (l0, v[i]) };
+                if el < best.0 {
+                    best = (el, l);
+                }
             }
         }
         if !best.0.is_finite() {
             return None;
         }
-        let l = golden_min(e, (best.1 - h).max(a), (best.1 + h).min(b), 1e-9);
-        let l = if e(l) <= best.0 { l } else { best.1 };
-        self.lowest_at_density(self.density_of_kf_total(l.exp())).map(|s| (l.exp(), s))
+        self.lowest_at_density(self.density_of_kf_total(best.1.exp())).map(|s| (best.1.exp(), s))
     }
 
     /// The matter of one kind of particle that a fully polarized state is: `nu_half` states,
@@ -684,6 +692,10 @@ impl Halves {
     }
 }
 
+/// The scan of the total density used for saturation points and binding thresholds:
+/// kf_total from 0.05 m to 5 m in 80 steps of ln kf_total.
+pub const KF_SCAN: (f64, f64, usize) = (0.05, 5.0, 80);
+
 /// The two halves in d dimensions for the couplings g times `hf_unit` and the mass 1.
 pub fn halves_for(d: usize, form: Form, hf_unit: &Hf4, g: f64) -> Halves {
     Halves { d, nu_half: 4.0, c: HalvesCouplings::new(form, 1.0, &hf_unit.scaled(g)) }
@@ -691,10 +703,11 @@ pub fn halves_for(d: usize, form: Form, hf_unit: &Hf4, g: f64) -> Halves {
 
 /// The smallest strength g at which uniform matter with the couplings g times `hf_unit` is
 /// self-bound: its lowest energy per particle, over all densities with kf_total in
-/// [0.02, 20] and all polarizations, lies below the mass (bisection in ln g on [0.01, 1e5]).
+/// [0.05, 5] (scan of 81 values with refinement around every local minimum) and all
+/// polarizations, lies below the mass (bisection in ln g on [0.01, 1e5]).
 /// Units m = 1.  Returns NaN if the interval contains no threshold.
 pub fn binding_threshold(d: usize, form: Form, hf_unit: &Hf4) -> f64 {
-    let bound = |ln_g: f64| halves_for(d, form, hf_unit, ln_g.exp()).lowest_energy_per_particle(0.02, 20.0, 40).map_or(false, |(_, s)| s.e_per_particle - 1.0 < -1e-10);
+    let bound = |ln_g: f64| halves_for(d, form, hf_unit, ln_g.exp()).lowest_energy_per_particle(KF_SCAN.0, KF_SCAN.1, KF_SCAN.2).map_or(false, |(_, s)| s.e_per_particle - 1.0 < -1e-10);
     let (mut lo, mut hi) = (1e-2f64.ln(), 1e5f64.ln());
     if bound(lo) || !bound(hi) {
         return f64::NAN;
@@ -982,7 +995,7 @@ impl UnifiedHalves {
             }
         }
         let b = best?;
-        let x = golden_min(|x| self.at_x(n, x).map_or(f64::INFINITY, |s| s.eps), (b.x - h).max(0.0), (b.x + h).min(1.2), 1e-6);
+        let x = golden_min(|x| self.at_x(n, x).map_or(f64::INFINITY, |s| s.eps), (b.x - h).max(0.0), (b.x + h).min(1.2), 1e-4);
         match self.at_x(n, x) {
             Some(s) if s.eps < b.eps - 1e-13 * b.eps.abs() => Some(s),
             _ => Some(b),
@@ -994,26 +1007,32 @@ impl UnifiedHalves {
         4.0 * kf_total.powi(3) / (3.0 * PI * PI)
     }
 
-    /// The lowest energy per particle minus 1 over kf_total in [lo, hi] (scan of n_scan + 1
-    /// values of ln kf_total, golden-section refinement).  Returns (kf_total, state).
+    /// The lowest energy per particle over kf_total in [lo, hi] (scan of n_scan + 1 values of
+    /// ln kf_total, golden-section refinement around every grid point that is not higher
+    /// than its neighbours).  Returns (kf_total, state).
     pub fn lowest_energy_per_particle(&self, lo: f64, hi: f64, n_scan: usize) -> Option<(f64, UnifiedHalvesState)> {
         let (a, b) = (lo.ln(), hi.ln());
         let h = (b - a) / n_scan as f64;
         let e = |l: f64| self.state(UnifiedHalves::density_of_kf_total(l.exp())).map_or(f64::INFINITY, |s| s.e_per_particle);
+        let v: Vec<f64> = (0..=n_scan).map(|i| e(a + h * i as f64)).collect();
         let mut best = (f64::INFINITY, a);
         for i in 0..=n_scan {
-            let l = a + h * i as f64;
-            let v = e(l);
-            if v < best.0 {
-                best = (v, l);
+            let left = if i == 0 { f64::INFINITY } else { v[i - 1] };
+            let right = if i == n_scan { f64::INFINITY } else { v[i + 1] };
+            if v[i].is_finite() && v[i] <= left && v[i] <= right {
+                let l0 = a + h * i as f64;
+                let l = golden_min(e, (l0 - h).max(a), (l0 + h).min(b), 1e-6);
+                let el = e(l);
+                let (l, el) = if el <= v[i] { (l, el) } else { (l0, v[i]) };
+                if el < best.0 {
+                    best = (el, l);
+                }
             }
         }
         if !best.0.is_finite() {
             return None;
         }
-        let l = golden_min(e, (best.1 - h).max(a), (best.1 + h).min(b), 1e-6);
-        let l = if e(l) <= best.0 { l } else { best.1 };
-        self.state(UnifiedHalves::density_of_kf_total(l.exp())).map(|s| (l.exp(), s))
+        self.state(UnifiedHalves::density_of_kf_total(best.1.exp())).map(|s| (best.1.exp(), s))
     }
 }
 
