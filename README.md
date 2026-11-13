@@ -110,7 +110,7 @@ it and how to recompute every data file, table and figure.
   correction (`provenance/P9_error_log`).
 * What is not established is said, in every section.
 
-# 7. Licence
+# 7. License
 
 The source code is distributed under the GNU General Public License, version 3 or
 later (file `LICENSE`).
