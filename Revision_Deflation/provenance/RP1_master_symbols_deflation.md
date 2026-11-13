@@ -2,7 +2,7 @@
 title: "RP1 — MASTER provenance of the symbols of Revision_Deflation"
 subtitle: "Proof, required by Hard Rule 5, that every symbol of the revision has one meaning and collides neither with the MASTER registry of the main project nor with the author's notebooks"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/RP1_master_symbols_deflation.src.md by code/scripts/assemble_docs.py.
@@ -16,7 +16,8 @@ and prove that it has. The main project does so with a MASTER registry
 (`provenance/symbols.csv` in the folder above; provenance P1) in which every symbol has
 exactly one meaning.
 
-The revision introduces new objects — rates, scale factors, a curved metric, a clock —
+The revision introduces new objects — rates, scale factors, a curved metric, a clock,
+and for the perturbations of ordinary space the quantities of the supplement RS5 —
 and therefore new symbols. This document is the extension of the MASTER registry by
 those symbols. It proves, by six machine checks whose output is reproduced in Sec. 4:
 
@@ -60,7 +61,7 @@ The registry is the file `provenance/symbols_deflation.csv`, written by
 `code/scripts/write_symbol_registry.py`. "Origin" says whether a symbol is the
 author's, is taken over from the main project, or is new. "Defined in" names the
 document and the number of its section: DMD is the document "dirac matrices
-deflating", RS1 to RS4 are the supplements, RP0 is the provenance of the hypotheses,
+deflating", RS1 to RS5 are the supplements, RP0 is the provenance of the hypotheses,
 and M stands for the two manuscripts, whose sections carry the same numbers in both
 (M II is Sec. II of either manuscript; "(4+4)" or "(7+1)" marks a symbol that only one
 of them uses).
@@ -74,6 +75,22 @@ two uses never meet in one formula. In the manuscripts, where both sets of coord
 occur, the flat coordinates carry the index $j$ instead, with the range
 $j\in\{0,1,2,3\}$ stated in their introduction. The registry lists the index letters
 in its first group.
+
+*The letters of the perturbation equations (group D9).* The supplement RS5 uses the
+equations of cosmological perturbation theory in the form of Ma and Bertschinger
+(RS5, Ref. [1]). That reference writes $h$ and $\eta$ for the two functions of the
+perturbed metric, $\alpha$ for a combination of their derivatives, $\theta$ and
+$\sigma$ for the velocity divergence and the shear of a fluid, $\tau$ for the
+conformal time and $\mathcal H$ for the conformal Hubble rate. Every one of these
+letters is taken in the project: $h$ is the Hubble parameter, $\eta$ the flat metric,
+$\alpha^j$ the Dirac matrices and $\alpha_{VS}$ a coupling, $\theta$ an angle,
+$\sigma$ a self-energy, $\tau$ the optical depth, and $\mathcal H$ the Lanczos tensor
+of DMD. The revision therefore writes $h_{\rm sy}$, $\eta_{\rm sy}$,
+$\alpha_{\rm sy}$ (sy for the synchronous gauge), $\tau_{\rm cf}$ and $H_{\rm cf}$
+(cf for conformal), and does not name the velocity divergence and the shear of single
+fluids at all: only their sums over all matter and radiation occur, as the script
+letters $\mathcal T$ and $\mathcal A$. All quantities that are new in RS5 are script
+letters or carry an index.
 
 **D1 Hypotheses and geometry**
 
@@ -177,8 +194,25 @@ in its first group.
 |:---|:---|:------------|:---|:---|
 | 1644d, 1671d | `1644d`, `1671d` | tags of the deflating 4+4 and 7+1 spacetimes and of every object defined on them (the main project's tags 1644, 1671 with the letter d) | DMD 0.1; M I | new |
 | `44d-..`, `71d-..`, `def-..` | — | identifiers of the machine checks of the revision: on the deflating 4+4 spacetime, on the deflating 7+1 spacetime, and for results that hold on both (`44-..`, `71-..` without d are the checks of the main project, executed again) | DMD Appendix A | new |
-| RP0 to RP9, RS1 to RS4, DMD | — | the provenances and supplements of the revision and the document \"dirac matrices deflating\" (P0 to P11, S1 to S4, DM are the documents of the main project) | README | new |
-| A1, A2, H2, HV | — | A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale | RP0 3; RS2 1; M XI, XII | new |
+| RP0 to RP9, RS1 to RS5, DMD | — | the provenances and supplements of the revision and the document \"dirac matrices deflating\" (P0 to P11, S1 to S4, DM are the documents of the main project) | README | new |
+| A1, A2, A3, H2, HV | — | A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). A3: the assumption about the perturbations of ordinary space (the scale factors of the extra coordinates are not perturbed, and the agent that holds them has no energy density), with its closures. H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale | RP0 3; RS2 1; RS5 1; M XI, XII | new |
+| \"Momentum\", \"Pressure\", \"Shear\" (closures) | `Momentum`, `Pressure`, `Shear`, `closure` | the three closures of the perturbation equations under assumption A3, named after the Einstein equation of ordinary space that holds with matter and radiation alone besides the energy constraint: the momentum constraint, the trace (pressure) equation, or the equation of the shear. In data files the suffixes `_M` and `_P` mark the first two; `_N4` marks the four-dimensional growth equation, which is none of them | RS5 3; M XI | new |
+
+**D9 Perturbations of ordinary space and the microwave background**
+
+| symbol | in programs and data files | meaning | defined in | origin |
+|:---|:---|:------------|:---|:---|
+| $\tau_{\rm cf}$ | `tau_cf`, `tau0_Mpc` | the conformal time of ordinary space, $d\tau_{\rm cf}=dx4/a_{\rm sp}$, in Mpc (`tau0_Mpc`: its value today). In the equations of the perturbations a prime is the derivative with respect to $\tau_{\rm cf}$. (The letter $\tau$ without index is the optical depth of the main registry, and $\tau_d$ is the deflation clock) | RS5 2; M XI | new |
+| $H_{\rm cf}$, $H_e$ | `Hc`, `He`, `hub`, `hub_e`, `a_gsum_over_Hc` | the conformal Hubble rate $H_{\rm cf}=a_{\rm sp}H$, and $H_e=H_{\rm cf}-a_{\rm sp}\,\mathrm{gsum}/2$, which takes its place in three of the Einstein equations of ordinary space when the extra coordinates deflate | RS5 2; M XI | new |
+| $k$ (perturbations), $\ell$, $D_\ell^{TT}$, $D_\ell^{TE}$, $D_\ell^{EE}$ | — | the comoving wavenumber of a perturbation of ordinary space (in Mpc$^{-1}$; the physical wavenumber is $k/a_{\rm sp}$); the multipole; and the spectra of the temperature, of the polarization and their cross spectrum, $D_\ell=\ell(\ell+1)C_\ell/2\pi$ in $\mu$K$^2$, as in the supplement S3 of the main project | RS5 2, 7; M XI | new |
+| $h_{\rm sy}$, $\eta_{\rm sy}$, $\alpha_{\rm sy}$ | — | the two functions that describe a scalar perturbation of the metric of ordinary space in the synchronous gauge (the $h$ and $\eta$ of Ma and Bertschinger; here with the index sy, because $h$ is the Hubble parameter and $\eta$ the flat metric), and the combination $\alpha_{\rm sy}=(h_{\rm sy}'+6\eta_{\rm sy}')/2k^2$ | RS5 2; M XI | new |
+| $\mathcal U$ | `potential` | $\eta_{\rm sy}+\alpha_{\rm sy}'$, the sum of the two gravitational potentials of the conformal Newtonian gauge (script letter): the potential that light feels | RS5 2, 7 | new |
+| $\mathcal D$, $\mathcal T$, $\mathcal P$, $\mathcal A$ | `d_sum`, `three_dpres` | $8\pi G_N a_{\rm sp}^2$ times the perturbation of the density, of the divergence of the momentum density, of the pressure, and of the anisotropic stress of matter and radiation together (script letters; in the notation of Ma and Bertschinger: $\delta\rho$, $(\rho+P)\theta$, $\delta P$, $(\rho+P)\sigma$) | RS5 2 | new |
+| $\mathcal E$, $\mathcal E_P$, $\mathcal E_m$, $\mathcal E_r$, $\mathcal B$ | `grho_sum`, `half_rho_plus_p`, `b_trace`, `n_bg` | $8\pi G_N a_{\rm sp}^2$ times the density and the pressure of the unperturbed universe, summed over the species ($\mathcal E_m$, $\mathcal E_r$: the parts of $\mathcal E$ from pressureless matter and from radiation); and $\mathcal B=H_e'-H_e^2+\tfrac12(\mathcal E+\mathcal E_P)$, which vanishes without deflation (script letters) | RS5 2, 3, 4 | new |
+| $p_{\rm agent}$ | — | the pressure in ordinary space of the agent, that is, of whatever keeps the three rates of deflation constant, in the unperturbed universe (under assumption A2 the agent has no energy density) | RS5 1 | new |
+| $\mathcal Y_M$, $\mathcal Y_T$, $\mathcal Y_S$; $\mathcal Z$ | `momentum_gap`, `trace_gap`, `shear_gap`, `x_gap`, `shear_check`, `trace_check` | the gaps: what the momentum constraint, the trace equation and the equation of the shear lack when only matter and radiation stand on their right-hand sides; the agent that holds the extra scale factors supplies them. $\mathcal Z=h_{\rm sy}'\,\mathcal B-\tfrac12a_{\rm sp}\,\mathrm{gsum}\,(\mathcal D-3\mathcal P)$ (script letters) | RS5 3 | new |
+| $Y_{\rm He}$ | — | the mass fraction of helium after nucleosynthesis (with the index He; `Y_He` in the data files, as in the main project) | RS5 5; M XI | new |
+| $\tau$ (main registry) | `tau_reio` | the optical depth of reionization of the main registry; `tau_reio` is its name in the data files that the revision writes (the bare name `tau` is not used there) | RS5 8 | main |
 
 
 **Letters that the revision deliberately does not use**, because the main registry or
@@ -187,9 +221,9 @@ density; a transformation parameter), $\nu$ and $N$ as free symbols (the number 
 internal states; a density), $C$ (a coupling), $z$ (a redshift), $\xi$ (a
 single-particle energy), $\sigma$ without index (a self-energy), $\tau$ without index
 (the optical depth), $\Lambda$ without index (a cutoff), and the names `h0`, `E0`,
-`mu`, `nu`, `eps`, `Q`, `M`, `S`, `u`, `w0`. Where a first draft used one of them, it
-was replaced before or after the first commit; the provenance RP9 lists each case
-(items R-E16, R-E19, R-E20, R-E22).
+`mu`, `nu`, `eps`, `Q`, `M`, `S`, `u`, `w0`, `tau`. Where a first draft used one of
+them, it was replaced before or after the first commit; the provenance RP9 lists each
+case (items R-E16, R-E19, R-E20, R-E22, R-E40).
 
 # 4. The output of the checks
 
@@ -201,20 +235,20 @@ PROJECT spacetimes, Revision_Deflation: checks of the symbols of the revision
 generated by: code/scripts/check_symbols.py
 6 of 6 checks passed
 
-[PASS] RS1  the 117 names in programs and data files of the 65 entries of the registry of the revision are pairwise different
+[PASS] RS1  the 142 names in programs and data files of the 77 entries of the registry of the revision are pairwise different
 [PASS] RS2  no name and no symbol that the revision introduces is a name or a symbol of the main registry (78 names of the main registry compared)
-[PASS] RS3  none of the 114 names that the revision introduces is a symbol of one of the author's notebooks (1921 symbols compared); in particular g55, g66, g77 do not occur in any notebook (the notebooks use g44 and g71 as names of whole metrics)
-[PASS] RS4  in the 44 documents of the revision the rates g55, g66, g77 are written upright 427 times and never as a letter with a subscript; each of the 27 paragraphs that contain a metric component g_{55}, g_{66} or g_{77} says that it is a component of the metric; \varkappa does not occur
-[PASS] RS5  the 13 retired names (tau, kappa_t, eps, Q_over_eps, Omega0, S2, mu and nu as orders of Bessel functions, A, Xi without index, m_b, w0, and omega_c for the shell) do not occur in the 62 data files that the routines of the revision write
-[PASS] RS6  each of the 361 columns of the 53 data files of the revision is a registered name of the revision, a registered name or a column of the main project, or one of the 190 descriptive words listed in the script
+[PASS] RS3  none of the 138 names that the revision introduces is a symbol of one of the author's notebooks (1921 symbols compared); in particular g55, g66, g77 do not occur in any notebook (the notebooks use g44 and g71 as names of whole metrics)
+[PASS] RS4  in the 46 documents of the revision the rates g55, g66, g77 are written upright 459 times and never as a letter with a subscript; each of the 31 paragraphs that contain a metric component g_{55}, g_{66} or g_{77} says that it is a component of the metric; \varkappa does not occur
+[PASS] RS5  the 13 retired names (tau, kappa_t, eps, Q_over_eps, Omega0, S2, mu and nu as orders of Bessel functions, A, Xi without index, m_b, w0, and omega_c for the shell) do not occur in the 95 data files that the routines of the revision write
+[PASS] RS6  each of the 811 columns of the 80 data files of the revision is a registered name of the revision, a registered name or a column of the main project, one of the 224 descriptive words listed in the script, or (182 columns) such a name followed by the number of a model, the letter of a closure or the number of a background
 ```
 
 # 5. How to repeat the proof
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
-python3 code/scripts/write_symbol_registry.py     # writes the registry from its source
-python3 code/scripts/check_symbols.py             # runs the six checks; exit status 0 if all pass
+python3 code/scripts/write_symbol_registry.py   # writes the registry from its source
+python3 code/scripts/check_symbols.py           # runs the six checks; exit status 0 if all pass
 ```
 
 The second command reads the registry of the revision, the MASTER registry of the main

@@ -11,6 +11,7 @@
 mod cmd_channels;
 mod cmd_matter;
 mod cmd_paired;
+mod cmd_spectra;
 mod cmd_symmetry;
 
 use spacetimes_deflation::io::{write_csv, write_csv_str, write_report};
@@ -622,28 +623,46 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     ratios.push(gam_llr / h0);
     ratios.push(gam_bbn / h0);
     ratios.sort_by(|a, b| a.partial_cmp(b).unwrap());
-    let mut hs: Vec<(f64, f64)> = Vec::new();
+    // Two calculations.  (a) The integrals of the module cosmo_defl with the redshift of last scattering held at its value
+    // without deflation and the helium fraction unchanged: fast, and the only one available when the dark matter loses rest
+    // mass (below).  (b) The full calculation of recombination on the deflating background, with the helium fraction that
+    // follows from Newton's constant at nucleosynthesis (modules eb_cosmo and spectra_defl: the thermal history of the main
+    // project with Newton's constant of the moment).  (b) is the result; (a) is tabulated beside it.
+    let fid = spacetimes::cosmo::Params::fiducial();
+    let none_defl = spacetimes_deflation::eb_cosmo::Deflation::none();
+    let theta_full = spacetimes_deflation::spectra_defl::theta_star_100(&fid, &none_defl);
+    let mut hs: Vec<(f64, f64, f64)> = Vec::new();
     for r in &ratios {
         let gam = r * h0;
         let base = Model::fiducial(gam, h0);
-        let h = solve_h(&base, z_star, theta, &none);
-        let d = theta_star(&Model { h, ..base }, z_star, &none);
-        rows.push(vec![*r, gam / HUBBLE_TIME_100_YR, h, kms * (h - h0), d.g_early, d.g_star, d.rs * 2997.92458, d.age * HUBBLE_TIME_100_YR / 1e9]);
-        hs.push((*r, h));
+        let h_fix = solve_h(&base, z_star, theta, &none);
+        let dfl = spacetimes_deflation::eb_cosmo::Deflation::equal_rates(gam);
+        let h = if gam == 0.0 { h0 } else { spacetimes_deflation::spectra_defl::h_at_fixed_theta(&fid, &dfl, theta_full) };
+        let bg = spacetimes_deflation::eb_cosmo::Background::new(&spacetimes::cosmo::Params { h, ..fid }, &dfl);
+        let th = spacetimes_deflation::eb_cosmo::Thermo::new(&bg);
+        rows.push(vec![*r, gam / HUBBLE_TIME_100_YR, h, kms * (h - h0), bg.s_early().exp(), bg.s_of_a(1.0 / (1.0 + th.z_star)).exp(), th.rs_star, bg.age() * HUBBLE_TIME_100_YR / 1e9, th.z_star, th.y_he, h_fix, kms * (h_fix - h0)]);
+        hs.push((*r, h, h_fix));
     }
     write_csv("hubble_deflation.csv",
-        &[("content", "the Hubble constant inferred from the angular scale of the sound horizon when x5, x6, x7 deflate at a constant total rate gsum throughout cosmic history (assumptions A1, A2 of cosmo_defl.rs; three equal rates); densities omega_b, omega_c and 100 theta_* held at the values of the model without deflation".to_string()),
-          ("columns", "gsum_over_H0: gsum divided by the Hubble constant of the model without deflation (67.36 km/s/Mpc); gsum_per_yr; h; dH0: change of the inferred Hubble constant in km/s/Mpc; GN_early: Newton's constant in the early universe over its value today, exp(-gsum t_0); GN_star: the same at last scattering; rs_Mpc: sound horizon at last scattering; age_Gyr".to_string()),
+        &[("content", "the Hubble constant inferred from the angular scale of the sound horizon when x5, x6, x7 deflate at a constant total rate gsum throughout cosmic history (assumptions A1, A2 of cosmo_defl.rs; three equal rates); densities omega_b, omega_c and 100 theta_* held at the values of the model without deflation; recombination and the helium fraction computed on the deflating background (the thermal history of the main project with Newton's constant of the moment)".to_string()),
+          ("columns", "gsum_over_H0: gsum divided by the Hubble constant of the model without deflation (67.36 km/s/Mpc); gsum_per_yr; h; dH0: change of the inferred Hubble constant in km/s/Mpc; GN_early: Newton's constant in the early universe over its value today, exp(-gsum t_0); GN_star: the same at last scattering; rs_Mpc: sound horizon at last scattering; age_Gyr; z_star: redshift of last scattering; Y_He: helium mass fraction; h_fixed_zstar, dH0_fixed_zstar: the Hubble constant and its change if the redshift of last scattering and the helium fraction are held at their values without deflation (the approximation of the module cosmo_defl)".to_string()),
           ("bounds", format!("lunar laser ranging (two sigma): gsum < {:.3e} per year = {:.3e} H_0; nucleosynthesis (G_N(nucleosynthesis)/G_N(today) > 0.94, two sigma): gsum < {:.3e} per year = {:.4} H_0", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0)),
           ("command", "deflation cosmology".to_string())],
-        &["gsum_over_H0", "gsum_per_yr", "h", "dH0", "GN_early", "GN_star", "rs_Mpc", "age_Gyr"], &rows)?;
-    let mono = hs.windows(2).all(|w| w[1].1 < w[0].1);
+        &["gsum_over_H0", "gsum_per_yr", "h", "dH0", "GN_early", "GN_star", "rs_Mpc", "age_Gyr", "z_star", "Y_He", "h_fixed_zstar", "dH0_fixed_zstar"], &rows)?;
+    let mono = hs.windows(2).all(|w| w[1].1 < w[0].1 && w[1].2 < w[0].2);
     let h_at = |r: f64| hs.iter().find(|x| (x.0 - r).abs() < 1e-12).unwrap().1;
+    let h_fix_at = |r: f64| hs.iter().find(|x| (x.0 - r).abs() < 1e-12).unwrap().2;
     let slope = (h_at(1e-3) - h0) / h0 / 1e-3;
-    rep.add("def-C2", "numerical", &format!("with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = {:.3} at small rates; H_0 = {:.2}, {:.2}, {:.2} km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value", slope, kms * h_at(1e-2), kms * h_at(3e-2), kms * h_at(0.1)), mono && slope < 0.0);
+    let slope_fix = (h_fix_at(1e-3) - h0) / h0 / 1e-3;
+    // by how much the approximation (a) underestimates the fall
+    let under: Vec<f64> = hs.iter().filter(|x| x.0 > 0.0).map(|x| 1.0 - (h0 - x.2) / (h0 - x.1)).collect();
+    let (under_lo, under_hi) = (under.iter().cloned().fold(f64::INFINITY, f64::min), under.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
+    let z_at = |r: f64| rows.iter().find(|x| (x[0] - r).abs() < 1e-12).unwrap()[8];
+    rep.add("def-C2", "numerical", &format!("with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = {:.3} at small rates; H_0 = {:.2}, {:.2}, {:.2} km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value. These numbers come from the full calculation of recombination on the deflating background (last scattering moves from z_* = {:.2} to {:.2} at gsum = 0.1 H_0, and the helium fraction falls). If z_* and the helium fraction are held at their values without deflation, the slope is {:.3} and the values are {:.2}, {:.2}, {:.2} km/s/Mpc: that approximation underestimates the fall by {:.1} to {:.1} per cent", slope, kms * h_at(1e-2), kms * h_at(3e-2), kms * h_at(0.1), z_at(0.0), z_at(0.1), slope_fix, kms * h_fix_at(1e-2), kms * h_fix_at(3e-2), kms * h_fix_at(0.1), 100.0 * under_lo, 100.0 * under_hi),
+        mono && slope < 0.0 && slope < slope_fix && under_lo > 0.0 && under_hi < 0.12);
     let (h_llr, h_bbn) = (h_at(gam_llr / h0), h_at(gam_bbn / h0));
-    rep.add("def-C3", "numerical", &format!("bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < {:.2e} per year = {:.2e} H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < {:.2e} per year = {:.3} H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by {:.3} and {:.2} km/s/Mpc: the local measurement, {:.2} +- {:.2} km/s/Mpc, cannot be approached. Over the age t_0 of the model without deflation (H_0 t_0 = {:.4}) the deflation clock has advanced by gsum t_0 = {:.1e} at the first of these rates", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0, kms * (h_llr - h0), kms * (h_bbn - h0), h_local, h_local_err, rb.age * h0, gam_llr * rb.age),
-        h_llr < h0 && h_bbn < h_llr && kms * (h0 - h_llr) < 0.2);
+    rep.add("def-C3", "numerical", &format!("bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < {:.2e} per year = {:.2e} H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < {:.2e} per year = {:.3} H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by {:.3} and {:.2} km/s/Mpc, in the direction away from the local measurement, {:.2} +- {:.2} km/s/Mpc. Over the age t_0 of the model without deflation (H_0 t_0 = {:.4}) the deflation clock has advanced by gsum t_0 = {:.1e} at the first of these rates", llr, gam_llr / h0, gam_bbn / HUBBLE_TIME_100_YR, gam_bbn / h0, kms * (h_llr - h0), kms * (h_bbn - h0), h_local, h_local_err, rb.age * h0, gam_llr * rb.age),
+        h_llr < h0 && h_bbn < h_llr && kms * (h0 - h_llr) < h_local_err);
 
     let rows: Vec<Vec<String>> = vec![
         vec!["lunar laser ranging".into(), "(dG_N/dt)/G_N = (7.1 +- 7.6) e-14 per year (68%)".into(), "G_N = G_8/(volume of the extra coordinates): (dG_N/dt)/G_N = gsum".into(), format!("{:.3e}", llr), format!("{:.3e}", gam_llr / h0), "gravity is eight-dimensional (A2)".into()],
@@ -679,7 +698,10 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let mut rows: Vec<Vec<f64>> = Vec::new();
     let mut gain_max: f64 = 0.0;
     // examples with alpha_VS = D m_s/m <= 1 today, so that the binding energy (at most alpha^2 m/4) stays well below the
-    // rest mass 2m and the non-relativistic formula for it can be used
+    // rest mass 2m and the non-relativistic formula for it can be used.
+    // (These runs use the approximation (a): last scattering at the redshift of the model without deflation.  The program
+    // for the full thermal history has no dark matter of varying rest mass; by def-C2 the approximation underestimates a
+    // fall of the Hubble constant by a few per cent of itself.)
     let mut bind_frac_max: f64 = 0.0;
     for (d_today, ms) in [(2.5_f64, 0.2_f64), (5.0, 0.2), (4.0, 0.1), (10.0, 0.1)] {
         bind_frac_max = bind_frac_max.max(0.5 * ms * ms * eps_of(d_today));
@@ -707,7 +729,7 @@ fn cmd_cosmology() -> std::io::Result<bool> {
     let grav: Vec<f64> = rows.iter().filter(|r| r[4] == 1.0).map(|r| r[7]).collect();
     let (grav_lo, grav_hi) = (grav.iter().cloned().fold(f64::INFINITY, f64::min), grav.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
     let loss_max = rows.iter().filter(|r| r[4] == 0.0).map(|r| 1.0 - r[5]).fold(0.0, f64::max);
-    rep.add("def-C4", "numerical", &format!("dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most {:.1} per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between {:.2} and {:.2} km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +{:.2} km/s/Mpc, for a loss of up to {:.1} per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the {:.1} km/s/Mpc that separate {:.2} from the local value {:.2}", 100.0 * bind_frac_max, grav_lo, grav_hi, gain_max, 100.0 * loss_max, gap_local, kms * h0, h_local),
+    rep.add("def-C4", "numerical", &format!("dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most {:.1} per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between {:.2} and {:.2} km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. (The runs with a varying rest mass hold the redshift of last scattering and the helium fraction at their values without deflation, which by def-C2 underestimates a fall by about six per cent of itself.) If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +{:.2} km/s/Mpc, for a loss of up to {:.1} per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the {:.1} km/s/Mpc that separate {:.2} from the local value {:.2}", 100.0 * bind_frac_max, grav_lo, grav_hi, gain_max, 100.0 * loss_max, gap_local, kms * h0, h_local),
         grav_hi < 0.0 && gain_max > 0.0 && gain_max < 0.1 * gap_local && bind_frac_max < 0.2);
 
     let (ok, n) = rep.count();
@@ -735,6 +757,11 @@ fn main() {
         "channels" => cmd_channels::run(&main_data_dir()),
         "matter" => cmd_matter::run(&main_data_dir()),
         "paired" => cmd_paired::run(),
+        "background" => cmd_spectra::run_background(),
+        "spectrum" => cmd_spectra::run_spectrum(&main_data_dir()),
+        "forecast" => cmd_spectra::run_forecast(&main_data_dir()),
+        "families" => cmd_spectra::run_families(&main_data_dir()),
+        "superfluid" => cmd_spectra::run_superfluid(&main_data_dir()),
         _ => {
             println!("deflation: PROJECT spacetimes, Revision_Deflation (x5, x6, x7 deflate exponentially)\n");
             println!("commands (run from the folder Revision_Deflation):");
@@ -754,6 +781,16 @@ fn main() {
             println!("             of the paired state, thermodynamics, Ginzburg-Landau coefficients, order-parameter space, matter");
             println!("  symmetry   isometries of the deflating spacetimes, internal symmetry of the fields that do not depend on");
             println!("             the extra coordinates, zero modes on a vortex line, exponents of the couplings");
+            println!("  background thermal history (recombination, sound horizons, helium) on the deflating spacetime, for the three");
+            println!("             models of the command `background` of the main project");
+            println!("  spectrum   spectra of the microwave background and of matter on the deflating spacetime (the Einstein-Boltzmann");
+            println!("             program of the main project with Newton's constant of the moment), for two closures of the");
+            println!("             perturbation equations; what depends on the closure; convergence; growth of structure");
+            println!("  forecast   mock data of the microwave background: how well they bound the rate of deflation (Fisher matrix,");
+            println!("             fits at fixed rate), and what happens to the Hubble constant");
+            println!("  families   the forecast of the main project for its dark-radiation families, repeated on the deflating");
+            println!("             spacetime at the rate that lunar laser ranging allows (about one hour; `families quick`: a test)");
+            println!("  superfluid superfluid dark matter (first sound) on the deflating spacetime: suppression of structure, limits");
             Ok(true)
         }
     };

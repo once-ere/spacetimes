@@ -18,16 +18,26 @@
 //! * `history` the couplings and every threshold of the model as functions of the deflation clock;
 //! * `quench`  time-dependent mean-field dynamics of the paired state while the coupling grows;
 //! * `cosmo_defl` expansion of ordinary space while x5, x6, x7 deflate; bounds on the rate; the Hubble constant;
+//!   the growth of pressureless matter for the closures of the perturbation equations;
 //! * `symmetry_defl` isometries against the rotations of the flat spacetime; zero modes on a vortex line;
 //! * `io`      data files with self-describing headers;
 //! * `geometry` machine checks of the geometry; geodesics;
 //! * `curved`  Dirac matrices, spin connection and Dirac operators on the deflating spacetimes;
+//! * `spectra_defl`  the assumption about the perturbations (A3) with its closures, and the routines shared by the
+//!   commands `background`, `spectrum`, `forecast`, `families` and `superfluid`;
+//! * `eb_cosmo`, `eb_boltzmann`, `eb_spectra`, `eb_fit`  the Einstein-Boltzmann program of the main project on a
+//!   deflating spacetime: copies of four of its modules with a short list of changes, written by
+//!   code/scripts/vendor_eb.py (not edited by hand);
 //!
 //! The Dirac matrices, the exact integer matrices and the numerical utilities are
 //! those of the main project (crate `spacetimes`, code/spacetimes-rs).
 
 pub mod cosmo_defl;
 pub mod curved;
+pub mod eb_boltzmann;
+pub mod eb_cosmo;
+pub mod eb_fit;
+pub mod eb_spectra;
 pub mod geometry;
 pub mod history;
 pub mod io;
@@ -37,4 +47,5 @@ pub mod qmat;
 pub mod quench;
 pub mod rat;
 pub mod scalar;
+pub mod spectra_defl;
 pub mod symmetry_defl;

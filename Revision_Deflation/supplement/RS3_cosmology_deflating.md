@@ -2,7 +2,7 @@
 title: "RS3 — Cosmology on the deflating spacetimes: bounds on the rate of deflation, dark matter, and the Hubble tension"
 subtitle: "PROJECT spacetimes, Revision_Deflation. Supplement to both manuscripts of the revision"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/RS3_cosmology_deflating.src.md by code/scripts/assemble_docs.py.
@@ -38,18 +38,26 @@ kept apart throughout, so that the reader can see which conclusion rests on whic
    unchanged. New is an epoch: the moment at which the pairs become bound is a
    scattering resonance, during which the self-interaction of the fermions exceeds the
    observational bound by many orders of magnitude (Sec. 6). The growth of structure
-   changes little in amplitude and more in rate (Sec. 5).
+   is not fixed by the hypotheses: it depends, at the first order in the rate, on
+   which perturbations the agent carries that keeps the rates constant (Sec. 5).
 4. *The particles that the deflation creates* (7+1) have a temperature of
    $2.9\times10^{-33}$ K at the rate that lunar laser ranging allows, and below
    $10^{-30}$ K at any allowed rate: none are created today (Sec. 7).
-5. *Not done.* The spectra of the microwave background, which S3 computes with its own
-   Einstein–Boltzmann program, have not been recomputed with a time-dependent Newton's
-   constant. The reason and the consequence are stated in Sec. 9.
+5. *The spectra of the microwave background*, which S3 computes with its own
+   Einstein–Boltzmann program, are computed on the deflating spacetimes in the
+   supplement RS5, under one further assumption about the perturbations. Its results
+   that bear on this supplement: the Hubble constant falls in every fit to mock data,
+   by 84 km/s/Mpc per unit of $\mathrm{gsum}/H_0$; data of the quality of the Planck
+   satellite would bound the rate to $\mathrm{gsum}<0.0385\,H_0$, between the bounds of
+   lunar laser ranging and of nucleosynthesis (Sec. 3); and the rate cannot help the
+   dark radiation of the main project to raise the Hubble constant (Sec. 8).
 
 ## 0.1 How to reproduce
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
+# the copied modules with which `cosmology` computes recombination (RS5, Sec. 5.1)
+python3 code/scripts/vendor_eb.py
 cargo build --release --manifest-path code/deflation-rs/Cargo.toml
 ./code/deflation-rs/target/release/deflation cosmology   # Secs. 2 to 4 (about a minute)
 ./code/deflation-rs/target/release/deflation matter      # Secs. 5 to 7
@@ -125,8 +133,9 @@ with $\mathrm{gprod}=\mathrm{g55}\,\mathrm{g66}+\mathrm{g55}\,\mathrm{g77}+\math
 and the density $\rho$ of radiation, matter and the cosmological term in ordinary
 space. For $H=0$ and $\rho\to$ the source of DMD, Sec. 1.4, this is the component
 $\mathcal G^4{}_4$ computed there. Equation (1.2) is the only one of Einstein's
-equations that this supplement uses; the others would determine the stresses of the
-unknown source that keeps the three rates constant (Sec. 9).
+equations that this supplement uses for the unperturbed universe; the others determine
+the stresses of the unknown source that keeps the three rates constant, which RS5 calls
+the agent (RS5, Sec. 1.1; Sec. 9 below).
 
 The calculations take three equal rates, so that $\mathrm{gprod}=\mathrm{gsum}^2/3$,
 and the densities of the model of the main project without deflation (baryons
@@ -134,6 +143,11 @@ $\omega_b=0.02237$, cold dark matter $\omega_c=0.1200$, $H_0=67.36$ km/s/Mpc); t
 cosmological term is chosen so that Eq. (1.2) holds today. Without deflation the
 program reproduces the angular scale of the sound horizon and the sound horizon of the
 main project: $100\,\theta_*=1.03965$ and 144.449 Mpc (check `def-C1`).
+
+Equation (1.2) describes the unperturbed universe. Everything in this supplement
+follows from it except the growth of structure (Sec. 5), which needs the equations of
+the perturbations; these require a third assumption, A3, which the supplement RS5
+states and examines.
 
 ---
 
@@ -143,29 +157,46 @@ The microwave background fixes, to high precision, the angle $\theta_*$ under wh
 the sound horizon at last scattering is seen. A model that changes the expansion
 history must keep that angle, and the Hubble constant that it then requires is the
 "inferred" Hubble constant. With A1 and A2, at fixed $\theta_*$ and fixed densities of
-baryons and dark matter (check `def-C2`; independently `Idef-C1`):
+baryons and dark matter (check `def-C2`):
 
-| $\mathrm{gsum}/H_0$ | gsum (per year) | $H_0$ (km/s/Mpc) | change | $G_N$ ratio | sound horizon (Mpc) | age (Gyr) |
-|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 0 | 67.36 | 0.00 | 1.0000 | 144.45 | 13.81 |
-| 0.00100 | $6.89\times10^{-14}$ | 67.30 | -0.06 | 0.9990 | 144.52 | 13.82 |
-| 0.00300 | $2.07\times10^{-13}$ | 67.18 | -0.18 | 0.9971 | 144.66 | 13.84 |
-| 0.00324 | $2.23\times10^{-13}$ | 67.16 | -0.20 | 0.9969 | 144.67 | 13.84 |
-| 0.0100 | $6.89\times10^{-13}$ | 66.74 | -0.62 | 0.9905 | 145.14 | 13.89 |
-| 0.0300 | $2.07\times10^{-12}$ | 65.48 | -1.88 | 0.9714 | 146.56 | 14.05 |
-| 0.0644 | $4.43\times10^{-12}$ | 63.23 | -4.13 | 0.9384 | 149.12 | 14.34 |
-| 0.100 | $6.89\times10^{-12}$ | 60.77 | -6.59 | 0.9039 | 151.93 | 14.66 |
-| 0.300 | $2.07\times10^{-11}$ | 43.41 | -23.95 | 0.7024 | 172.36 | 17.10 |
+| $\mathrm{gsum}/H_0$ | gsum (per year) | $H_0$ | change | $G_N$ ratio | $z_*$ | $Y_{\rm He}$ | $r_s$ (Mpc) | age (Gyr) | $H_0$, $z_*$ and $Y_{\rm He}$ held |
+|-------:|----------:|-----:|------:|------:|-------:|------:|------:|-----:|--------:|
+| 0 | 0 | 67.36 | 0.00 | 1.0000 | 1089.92 | 0.2454 | 144.45 | 13.81 | 67.36 |
+| 0.00100 | $6.89\times10^{-14}$ | 67.29 | -0.07 | 0.9990 | 1089.90 | 0.2453 | 144.52 | 13.82 | 67.30 |
+| 0.00300 | $2.07\times10^{-13}$ | 67.16 | -0.20 | 0.9971 | 1089.86 | 0.2452 | 144.66 | 13.84 | 67.18 |
+| 0.00324 | $2.23\times10^{-13}$ | 67.15 | -0.21 | 0.9969 | 1089.86 | 0.2451 | 144.68 | 13.84 | 67.16 |
+| 0.0100 | $6.89\times10^{-13}$ | 66.70 | -0.66 | 0.9905 | 1089.73 | 0.2446 | 145.16 | 13.90 | 66.74 |
+| 0.0300 | $2.07\times10^{-12}$ | 65.36 | -2.00 | 0.9714 | 1089.37 | 0.2430 | 146.61 | 14.06 | 65.48 |
+| 0.0644 | $4.43\times10^{-12}$ | 62.98 | -4.38 | 0.9383 | 1088.72 | 0.2401 | 149.23 | 14.37 | 63.23 |
+| 0.100 | $6.89\times10^{-12}$ | 60.37 | -6.99 | 0.9037 | 1088.04 | 0.2370 | 152.13 | 14.70 | 60.77 |
+| 0.300 | $2.07\times10^{-11}$ | 41.94 | -25.42 | 0.6995 | 1083.78 | 0.2168 | 173.35 | 17.29 | 43.41 |
 
-(The column "$G_N$ ratio" is Newton's constant in the early universe divided by its
-value today, $e^{-\mathrm{gsum}\,t_0}$ with the age $t_0$ of the model.)
+($H_0$ and its change in km/s/Mpc; $r_s$ is the sound horizon at last scattering. The
+column "$G_N$ ratio" is Newton's constant in the early universe divided by its value
+today, $e^{-\mathrm{gsum}\,t_0}$ with the age $t_0$ of the model. The redshift $z_*$ of
+last scattering and the helium mass fraction $Y_{\rm He}$ are computed on the deflating
+background, as described in RS5, Sec. 5; the last column holds them at their values
+without deflation.)
 **The inferred Hubble constant falls**, with the slope
-$d\ln H_0/d(\mathrm{gsum}/H_0)=-0.911$ at small rates. The reason: by Eq. (1.1) gravity
+$$\frac{d\ln H_0}{d(\mathrm{gsum}/H_0)}=-0.969$$
+at small rates. The reason: by Eq. (1.1) gravity
 was weaker in the early universe, the universe expanded more slowly at a given
 density, sound had more time to travel, and the sound horizon is larger; to keep the
 angle, the distance to last scattering must be larger, which requires a smaller
 Hubble constant. The deflation moves the inferred value *away* from the locally
 measured $73.50\pm0.81$ km/s/Mpc (the value with which the main project compares).
+
+*The thermal history matters.* Weaker gravity also delays last scattering — $z_*$
+falls from 1089.92 to 1088.04 at $\mathrm{gsum}=0.1\,H_0$ — and lowers the helium
+fraction, because the universe expanded more slowly during nucleosynthesis too. Both
+enlarge the sound horizon further. An earlier version of this supplement held $z_*$
+and $Y_{\rm He}$ at their values without deflation and found the slope $-0.911$ and
+$H_0=66.74$, 65.48, 60.77 km/s/Mpc for $\mathrm{gsum}=0.01$, 0.03, $0.1\,H_0$, instead
+of 66.70, 65.36, 60.37: that approximation underestimates the fall by 5.8 to 6.0 per
+cent of itself (provenance RP9, item R-E34). Both sets of numbers are confirmed
+independently: the approximation by a separate integration (check `Idef-C1`), the
+full calculation by a separate code for recombination (check `Idef-C2`; RS5,
+Sec. 5.2).
 
 *A remark on the term $\mathrm{gprod}$.* In Eq. (1.2) it acts as a constant addition to
 the left-hand side and is absorbed, almost exactly, by the cosmological term that is
@@ -173,7 +204,7 @@ adjusted to today's expansion rate. The inferred Hubble constant is insensitive 
 it; the effect of the deflation is carried by the term linear in $\mathrm{gsum}$ and
 by $G_N(x4)$.
 
-![The Hubble constant and the growth of structure on a deflating spacetime. (a) The Hubble constant inferred from the angular scale of the sound horizon against the rate of deflation, if gravity feels the deflation (A1, A2); the bounds of Sec. 3 are marked. (b) The change of the inferred Hubble constant if Newton's constant is held fixed and bound pairs lose rest mass (Sec. 4). (c) Amplitude and rate of the growth of structure relative to the model without deflation (Sec. 5). Data: `data/hubble_deflation.csv`, `data/hubble_mass_loss.csv`, `data/growth_deflation.csv`; programs: `deflation cosmology`, `deflation matter`.](../figures/fig_hubble.png){width=100%}
+![The Hubble constant and the growth of structure on a deflating spacetime. (a) The Hubble constant inferred from the angular scale of the sound horizon against the rate of deflation, if gravity feels the deflation (A1, A2): the full calculation, and the approximation that holds last scattering and the helium fraction fixed; the bounds of Sec. 3 are marked. (b) The change of the inferred Hubble constant if Newton's constant is held fixed and bound pairs lose rest mass (Sec. 4). (c) Amplitude and rate of the growth of structure relative to the model without deflation, for the two closures of the perturbation equations (Sec. 5). Data: `data/hubble_deflation.csv`, `data/hubble_mass_loss.csv`, `data/growth_deflation.csv`; programs: `deflation cosmology`, `deflation matter`.](../figures/fig_hubble.png){width=100%}
 
 ---
 
@@ -222,6 +253,13 @@ Fermi constant, Ref. [4]; atomic clocks, Ref. [3].)
 6. **In the model as it stands** — without H2, HV or an electromagnetic extension —
    no mass and no coupling of ordinary matter depends on the deflation, and the
    atomic clocks do not bound the rate at all.
+7. **Under A2, the microwave background** would bound the rate as well. This item is a
+   forecast, not a measurement, and is therefore not in the table: fits to mock data
+   of the quality of the Planck satellite give $\mathrm{gsum}<0.0385\,H_0$ at 95 per
+   cent, and $0.0207\,H_0$ if a deep survey is added (RS5, Sec. 8). The bound lies
+   between items 1 and 2. Like item 2 it concerns a rate that was constant through
+   cosmic history, and it does not depend on what is assumed about the perturbations
+   of the agent that keeps the rates constant.
 
 *Two corrections, recorded.* An earlier version of this table derived a bound from the
 mass ratio by assuming that the electron mass follows the four-dimensional vacuum
@@ -240,7 +278,7 @@ of the universe requires that gravity does not feel the deflation (A2 abandoned)
 the superfluid is not the Higgs field (H2 abandoned), or that the rate was much larger
 in the past than it is today.
 
-![Upper bounds on the present total rate of deflation in units of the Hubble constant, each under the assumption stated in the table of this section. The allowed region is to the left of each bound. Data: `data/deflation_bounds.csv`; program: `deflation cosmology`.](../figures/fig_bounds.png){width=100%}
+![Upper bounds on the present total rate of deflation in units of the Hubble constant, each under the assumption stated in the table of this section. The allowed region is to the left of each bound. The row "microwave background" is not a measurement but the forecast of item 7 for mock data (open symbol: Planck-like; filled: with a deep survey). Data: `data/deflation_bounds.csv`, `data/deflation_fisher.csv`; programs: `deflation cosmology`, `deflation forecast`.](../figures/fig_bounds.png){width=100%}
 
 ---
 
@@ -284,6 +322,9 @@ energy is at most 8.2 per cent of the rest mass (check `def-C4`):
 * *If gravity feels the deflation* (rows "yes"), the inferred Hubble constant changes
   by between $-4.11$ and $-0.19$ km/s/Mpc at the rates that nucleosynthesis and lunar
   laser ranging allow: the weaker gravity of the past outweighs the loss of mass.
+  (The runs with a varying rest mass hold $z_*$ and $Y_{\rm He}$ at their values
+  without deflation, which by Sec. 2 underestimates a fall by about six per cent of
+  itself.)
 * *If Newton's constant is held fixed* and the deflation acts on the dark sector alone
   (rows "no"), rates between 0.03 and $1\,H_0$ raise the inferred Hubble constant by at
   most $+0.48$ km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass.
@@ -296,34 +337,67 @@ km/s/Mpc that separate 67.36 from the local value.
 
 # 5. The growth of structure
 
-Under A1 and A2 the density contrast $\delta_m$ of matter in ordinary space obeys, in
-the Newtonian limit, the usual equation with the Newton's constant of the moment,
-$$\frac{d^2\delta_m}{dx4^2}+2H\,\frac{d\delta_m}{dx4}=4\pi\,G_N(x4)\,\rho_m\,\delta_m .$$
-The program integrates it for each model of Sec. 2 and reports the amplitude today
-relative to the model without deflation — the ratio of the amplitudes $\sigma_8$ for
-the same primordial amplitude — and the growth rate $f_g=d\ln\delta_m/d\ln a_{\rm sp}$
-today (check `def-D4`):
+The density contrast $\delta_m$ of matter grows according to the equations of the
+perturbations of ordinary space. On the deflating spacetimes these are not fixed by A1
+and A2. The supplement RS5, Sec. 3, shows that the agent that keeps the three rates
+constant must itself carry perturbations, and that one must say which; each choice is
+called a *closure* there. Two closures are computed. For pressureless matter they give
+(RS5, Sec. 4)
 
-| $\mathrm{gsum}/H_0$ | $H_0$ | $\sigma_8$ ratio | $f_g$ ratio | $f_g\sigma_8$ ratio | $\sigma_8$ ratio, fixed $H_0$ | $f_g$ ratio, fixed $H_0$ |
-|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 67.36 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| 0.00100 | 67.30 | 1.0001 | 1.0008 | 1.0009 | 0.9997 | 0.9998 |
-| 0.00324 | 67.16 | 1.0003 | 1.0027 | 1.0030 | 0.9990 | 0.9993 |
-| 0.0100 | 66.74 | 1.0010 | 1.0083 | 1.0093 | 0.9968 | 0.9979 |
-| 0.0300 | 65.48 | 1.0031 | 1.0258 | 1.0290 | 0.9904 | 0.9937 |
-| 0.0644 | 63.23 | 1.0067 | 1.0589 | 1.0661 | 0.9792 | 0.9865 |
-| 0.100 | 60.77 | 1.0106 | 1.0982 | 1.1098 | 0.9674 | 0.9790 |
-| 0.300 | 43.41 | 1.0350 | 1.5100 | 1.5628 | 0.8975 | 0.9365 |
+* *closure "Pressure"* (the agent carries no perturbation of its pressure):
+  $$\frac{d^2\delta_m}{dx4^2}+\Big(2H-\frac{\mathrm{gsum}}{2}\Big)\frac{d\delta_m}{dx4}=4\pi\,G_N(x4)\,\rho_m\,\delta_m ;$$
+* *closure "Momentum"* (the agent carries no momentum density): Eq. (4.2) of RS5, in
+  which the friction is reduced as well and, in addition, the source on the right is
+  multiplied by $(H-\mathrm{gsum})/(H-\mathrm{gsum}/2)$.
+
+A third closure ("Shear": the agent carries no anisotropic stress) coincides with
+"Pressure" on all scales far inside the horizon.
+
+*A correction, recorded.* An earlier version of this section integrated the familiar
+equation of four dimensions with Newton's constant of the moment,
+$d^2\delta_m/dx4^2+2H\,d\delta_m/dx4=4\pi G_N(x4)\rho_m\delta_m$, and called it the
+Newtonian limit of the eight-dimensional theory. It is the limit of neither closure
+(provenance RP9, item R-E33). Its results lie between those of the two.
+
+The program integrates the equations for each model of Sec. 2 and reports the
+amplitude today relative to the model without deflation — the ratio of the amplitudes
+$\sigma_8$ for the same primordial amplitude — and the growth rate
+$f_g=d\ln\delta_m/d\ln a_{\rm sp}$ today (check `def-D4`; independently `Idef-P5`):
+
+| $\mathrm{gsum}/H_0$ | $H_0$ | amplitude, M | amplitude, P | $f_g$, M | $f_g$, P | fixed $H_0$: amplitude, M | amplitude, P | four-dimensional equation |
+|-------:|-----:|---------:|---------:|------:|------:|---------:|---------:|-----------:|
+| 0 | 67.36 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
+| 0.00100 | 67.29 | 1.0000 | 1.0002 | 1.0006 | 1.0011 | 0.9996 | 0.9998 | 0.9997 |
+| 0.00324 | 67.15 | 1.0000 | 1.0008 | 1.0021 | 1.0035 | 0.9986 | 0.9993 | 0.9990 |
+| 0.0100 | 66.70 | 1.0000 | 1.0024 | 1.0064 | 1.0109 | 0.9956 | 0.9979 | 0.9968 |
+| 0.0300 | 65.36 | 1.0001 | 1.0073 | 1.0201 | 1.0339 | 0.9867 | 0.9937 | 0.9904 |
+| 0.0644 | 62.98 | 1.0001 | 1.0160 | 1.0463 | 1.0773 | 0.9713 | 0.9863 | 0.9792 |
+| 0.100 | 60.37 | 1.0001 | 1.0256 | 1.0780 | 1.1287 | 0.9553 | 0.9783 | 0.9674 |
+| 0.300 | 41.94 | 1.0005 | 1.0907 | 1.4637 | 1.6751 | 0.8638 | 0.9288 | 0.8975 |
+
+(M, P: the closures "Momentum" and "Pressure". Columns 3 to 6: ratios to the model
+without deflation at the Hubble constant of column 2, in km/s/Mpc, which keeps the
+angle of the sound horizon. Columns 7 to 9: the ratio of the amplitudes at the fixed
+Hubble constant 67.36 km/s/Mpc, for the two closures and for the four-dimensional
+equation.)
 
 Two effects oppose each other. At a *fixed* Hubble constant, weaker gravity in the
-past lowers the amplitude: $d\ln\sigma_8/d(\mathrm{gsum}/H_0)=-0.317$. But the Hubble
-constant that keeps the sound-horizon angle is lower, the cosmological term takes over
-later, and matter clusters for longer; with that Hubble constant the net change is
-$+0.102$ per unit of $\mathrm{gsum}/H_0$. The amplitude therefore barely moves — $+0.03$
-per cent at the bound of lunar laser ranging, $+0.67$ per cent at the bound of
-nucleosynthesis — while the growth rate today rises by the factors 1.0027 and 1.0589.
-A deflating universe would show itself in the product $f_g\sigma_8$, which
-redshift-space distortions measure, rather than in $\sigma_8$.
+past lowers the amplitude: $d\ln\sigma_8/d(\mathrm{gsum}/H_0)=-0.443$ in the closure
+"Momentum" and $-0.207$ in the closure "Pressure" (the four-dimensional equation:
+$-0.317$). But the Hubble constant that keeps the sound-horizon angle is lower, the
+cosmological term takes over later, and matter clusters for longer; with that Hubble
+constant the net change is $+0.003$ and $+0.239$ per unit of $\mathrm{gsum}/H_0$: $+0.001$
+and $+0.077$ per cent at the bound of lunar laser ranging, $+0.01$ and $+1.60$ per cent
+at the bound of nucleosynthesis. The growth rate today rises in both closures, by the
+factors 1.0021 and 1.0035 at the first bound and 1.0463 and 1.0773 at the second.
+
+Common to both closures is that, at a fixed angle, the amplitude does not fall and
+the growth rate rises; a deflating universe would show itself in the growth rate,
+which redshift-space distortions measure through the product $f_g\sigma_8$, before it
+shows in $\sigma_8$. **How large the changes are is not a prediction of the hypotheses**
+until the perturbations of the agent are specified. The complete Einstein–Boltzmann
+calculation of RS5 reproduces the growth of each closure to $1.3\times10^{-4}$ (RS5,
+Sec. 7.5).
 
 ---
 
@@ -432,20 +506,29 @@ the allowed rates, since the couplings drift by parts in a thousand; their verdi
 S3 stands and is not improved. The deflation itself contributes two effects. The
 first, through Newton's constant, has the wrong sign and is bounded to 0.2 km/s/Mpc.
 The second, the loss of mass of bound pairs, has the right sign and is bounded, in the
-examples computed, to 0.5 km/s/Mpc. **The hypothesis that the model resolves the
-Hubble tension is not supported by the deflation, and under A2 it is mildly
-disfavoured.**
+examples computed, to 0.5 km/s/Mpc. The fits of RS5 to mock data of the microwave
+background confirm the first with all parameters of the standard model free: the
+best-fit Hubble constant falls by 84 km/s/Mpc per unit of $\mathrm{gsum}/H_0$ (RS5,
+Sec. 8). They also answer the question whether the rate could help the dark radiation
+of the main project: extra radiation and deflation compensate in part, so that more
+radiation is allowed when the rate is free, but the largest Hubble constant that the
+mock data allow is reached at zero rate (RS5, Sec. 9). **The hypothesis that the model
+resolves the Hubble tension is not supported by the deflation, and under A2 it is
+mildly disfavoured.**
 
 **The Higgs hypothesis and the deflation together.** If the superfluid is the Higgs
 field (H2), the atomic clocks limit the rate of deflation to
 $1.16\times10^{-6}\,H_0/n_{\rm EW}$: the two hypotheses can both hold only if the
 deflation is, for every purpose of this supplement, switched off today.
 
-**Dark matter.** The conclusions of S3 about the mass ranges hold unchanged. The
-deflation adds one qualitative prediction, the resonance epoch of Sec. 6.2, and one
-quantitative one, the shift of the growth rate of Sec. 5. Neither is in conflict with
-observation at the allowed rates, and neither is detectable at the rate that lunar
-laser ranging allows. **The hypothesis that the superfluid is the dark matter is
+**Dark matter.** The conclusions of S3 about the mass ranges hold unchanged; its
+limits on superfluid dark matter from the suppression of small-scale structure move
+by two tenths of a per cent at the rate that lunar laser ranging allows (RS5,
+Sec. 10). The deflation adds one qualitative prediction, the resonance epoch of
+Sec. 6.2, and one quantitative one, a rise of the growth rate (Sec. 5) whose size
+depends on the perturbations of the agent. Neither is in conflict with observation at
+the allowed rates, and neither is detectable at the rate that lunar laser ranging
+allows. **The hypothesis that the superfluid is the dark matter is
 neither strengthened nor weakened by the deflation**; it acquires a history, whose
 observable part is empty if gravity is eight-dimensional and the rate constant.
 
@@ -456,42 +539,35 @@ observable part is empty if gravity is eight-dimensional and the rate constant.
 **Established**, each under the assumptions named:
 
 1. the equation of the expansion (1.2) (A1, A2) and the fall of the inferred Hubble
-   constant, $d\ln H_0/d(\mathrm{gsum}/H_0)=-0.911$, verified by an independent
-   integration;
+   constant, $d\ln H_0/d(\mathrm{gsum}/H_0)=-0.969$ with recombination computed on the
+   deflating background, verified by an independent calculation;
 2. the bounds of Sec. 3 on the present rate (under A2; under HV; under the author's
    hypothesis H2, from atomic clocks; under an electromagnetic extension), and that
    in the model as it stands the atomic clocks give none;
 3. the effect of the loss of mass of bound pairs on the inferred Hubble constant
    (Sec. 4);
-4. the growth of structure (A1, A2; Sec. 5);
+4. the growth of structure for two closures of the perturbation equations (A1, A2
+   and A3 of RS5; Sec. 5), and that it depends on the closure;
 5. the unchanged estimates of degeneracy and condensation, the resonance epoch, and
    the table of drifts (Sec. 6);
 6. the temperature of the created quanta at the allowed rates (Sec. 7).
 
 **Not established.**
 
-1. *The spectra of the microwave background.* S3 of the main project computes the
-   temperature and polarization spectra with its own Einstein–Boltzmann program and
-   forecasts the constraints from them. The revision has **not** repeated this
-   calculation with a time-dependent Newton's constant, for two reasons. First, the
-   equations of the perturbations contain the stresses of the source that keeps the
-   rates of deflation constant, which the hypotheses do not specify (item 2 below):
-   a spectrum can be computed only under a further assumption, which is the author's
-   to make. Second, it requires a copy of that program in which the gravitational
-   coupling of the background and of the perturbations depends on time while the
-   rates of Thomson scattering and of recombination do not, validated again against
-   the constant case; it cannot be emulated by changing parameters of the existing
-   program. What Sec. 2 establishes is
-   the effect on the *background*. At the bound of lunar laser ranging Newton's
-   constant at last scattering was 0.9969 of today's value; the effect on the spectra
-   beyond the shift of the sound-horizon angle is of that relative size, and has not
-   been computed. This item is recorded in the provenance RP0 as open, awaiting the
-   author's instruction.
-2. *The other field equations, and the theory of gravity.* Only the time component
-   (1.2) of Einstein's equations is used. The spatial components constrain the
-   stresses of the source that drives the deflation, which is unknown. Whether a
-   source exists that keeps three rates constant while ordinary space expands has not
-   been examined. DMD, Sec. 1.4a, shows that *without* expansion of ordinary space
+1. *The agent, and with it the growth of structure.* Nothing in the hypotheses says
+   what keeps the rates of deflation constant. RS5 computes the spectra of the
+   microwave background under the assumption A3 that the extra scale factors are not
+   perturbed, and finds that the multipoles $\ell\ge30$ do not depend on what else is
+   assumed about the agent. The growth of structure (Sec. 5), the amplitude
+   $\sigma_8$ and the multipoles $\ell<30$ do depend on it, at the first order in the
+   rate. (An earlier version of this supplement listed the spectra as not computed;
+   they are now computed in RS5.)
+2. *The other field equations, and the theory of gravity.* For the unperturbed
+   universe only the time component (1.2) of Einstein's equations is used. The
+   spatial components give the stresses of the agent: in ordinary space a tension of
+   the relative size $\mathrm{gsum}/H$ and no energy density (RS5, Sec. 1.1). Whether
+   a physical source with these stresses exists, one that keeps three rates constant
+   while ordinary space expands, has not been examined. DMD, Sec. 1.4a, shows that *without* expansion of ordinary space
    and with three equal rates the deflating spacetimes solve the equations of
    Einstein–Gauss–Bonnet gravity without any source. If gravity is of that kind,
    assumption A2 does not hold as stated: the relation (1.1) between Newton's
@@ -517,11 +593,11 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 6 of 6 checks passed
 
 [PASS] def-C1  (numerical) without deflation the background integrals of this module agree with the main project (its recombination calculation gives z_* = 1089.92): 100 theta_* = 1.03965 here against 1.03965, sound horizon 144.449 Mpc against 144.449 Mpc; age 13.814 Gyr
-[PASS] def-C2  (numerical) with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = -0.911 at small rates; H_0 = 66.74, 65.48, 60.77 km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value
-[PASS] def-C3  (numerical) bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < 2.23e-13 per year = 3.24e-3 H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < 4.43e-12 per year = 0.064 H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by -0.199 and -4.13 km/s/Mpc: the local measurement, 73.50 +- 0.81 km/s/Mpc, cannot be approached. Over the age t_0 of the model without deflation (H_0 t_0 = 0.9516) the deflation clock has advanced by gsum t_0 = 3.1e-3 at the first of these rates
+[PASS] def-C2  (numerical) with deflation at a constant rate, gravity was weaker in the past, the early universe expanded more slowly at a given density, and the sound horizon is larger; holding 100 theta_*, omega_b and omega_c fixed, the inferred Hubble constant FALLS monotonically with the rate: d ln H_0/d(gsum/H_0) = -0.969 at small rates; H_0 = 66.70, 65.36, 60.37 km/s/Mpc for gsum = 0.01, 0.03, 0.1 H_0 (67.36 without deflation). Deflation moves the Hubble constant away from the locally measured value. These numbers come from the full calculation of recombination on the deflating background (last scattering moves from z_* = 1089.92 to 1088.04 at gsum = 0.1 H_0, and the helium fraction falls). If z_* and the helium fraction are held at their values without deflation, the slope is -0.911 and the values are 66.74, 65.48, 60.77 km/s/Mpc: that approximation underestimates the fall by 5.8 to 6.0 per cent
+[PASS] def-C3  (numerical) bounds on the present rate of deflation if gravity is eight-dimensional (G_N grows at the rate gsum): lunar laser ranging, (dG_N/dt)/G_N = (7.1 +- 7.6) 10^-14 per year, gives gsum < 2.23e-13 per year = 3.24e-3 H_0 at two sigma; nucleosynthesis, G_N(nucleosynthesis)/G_N(today) > 0.94 at two sigma, gives gsum < 4.43e-12 per year = 0.064 H_0 for a rate that was constant since then. At these rates the inferred Hubble constant changes by -0.211 and -4.38 km/s/Mpc, in the direction away from the local measurement, 73.50 +- 0.81 km/s/Mpc. Over the age t_0 of the model without deflation (H_0 t_0 = 0.9516) the deflation clock has advanced by gsum t_0 = 3.1e-3 at the first of these rates
 [PASS] def-C5  (numerical) bounds that do not rest on gravity: (i) under the assumption HV (the vacuum value of the Vorton-Scalar sets the electroweak scale) the Fermi constant grows at the rate gsum while every mass stays constant; nucleosynthesis with fixed masses allows G_Fermi at t = 1 s to differ by 10 to 20 per cent from today's value (Scherrer and Spergel 1993), which gives gsum < 0.111 to 0.234 H_0, weaker than the bound from Newton's constant; (ii) in the model as it stands (without H2 and without HV) no mass of ordinary matter depends on the deflation, and the measured constancy of the ratio of the proton mass to the electron mass does not bound the rate; (iii) the fine-structure constant would bound it, gsum < 3.2e-18 per year = 4.6e-8 H_0, only if the electromagnetic field propagated along the deflating coordinates, which is not part of the model
 [PASS] def-C6  (numerical) the author's hypothesis H2 (the superfluid state is the Higgs field) on a deflating spacetime: the electroweak scale is then the scale of the pair condensate, which depends on alpha_VS, and alpha_VS grows as exp(gsum x4). With n_EW = d ln v_EW/d ln alpha_VS the electron mass changes at the rate n_EW gsum and the proton mass does not; atomic clocks (ratio of the two masses constant to 8.0e-17 per year at two sigma) then give gsum < 8.0e-17 per year / n_EW = 1.16e-6 H_0 / n_EW, a bound 2787 times stronger than that of lunar laser ranging for n_EW = 1, and one that needs no assumption about gravity; over the age of the universe the deflation clock can then have advanced by at most 1.1e-6/n_EW. In the scale-invariant ladder equation of the main project n_EW = (1 + 4 rho_c^2) atan(1/(2 rho_c))/(8 rho_c^3) + 1/(4 rho_c^2) with rho_c^2 = (alpha_VS/alpha_c - 1)/4 (agreement with the numerical derivative: 2.8e-8): n_EW = 15.1, 2.57, 1.15, 0.54 for alpha_VS/alpha_c = 1.25, 2, 3, 5; it diverges at the critical coupling and exceeds 1 for alpha_VS < 3.27 alpha_c. For the model itself (massive fermions, massive radial mode) n_EW has not been computed
-[PASS] def-C4  (numerical) dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most 8.2 per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between -4.11 and -0.19 km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +0.48 km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the 6.1 km/s/Mpc that separate 67.36 from the local value 73.50
+[PASS] def-C4  (numerical) dark matter of bound pairs loses rest mass while the coupling grows, because the binding energy increases (four examples with alpha_VS = 0.4 to 1 today; binding energy at most 8.2 per cent of the rest mass). If gravity feels the deflation, the inferred Hubble constant changes by between -4.11 and -0.19 km/s/Mpc at the rates that lunar laser ranging and nucleosynthesis allow: it falls, the weaker gravity of the past outweighing the loss of mass. (The runs with a varying rest mass hold the redshift of last scattering and the helium fraction at their values without deflation, which by def-C2 underestimates a fall by about six per cent of itself.) If Newton's constant is held fixed and the deflation acts on the dark sector alone, rates between 0.03 and 1 H_0 change the inferred Hubble constant by at most +0.48 km/s/Mpc, for a loss of up to 7.7 per cent of the rest mass (data/hubble_mass_loss.csv). The loss of rest mass is the only effect of the deflation that raises the inferred Hubble constant; in these examples it supplies less than a tenth of the 6.1 km/s/Mpc that separate 67.36 from the local value 73.50
 [PASS] ALL  (numerical) every check above passed
 ```
 
@@ -535,7 +611,7 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 [PASS] def-D1  (numerical) the estimates of degeneracy and of condensation in halos contain no coupling: fermions with eight internal states are degenerate in the core of a dwarf galaxy only below 0.276 keV, bound pairs are condensed there only below 262 eV. Computed again; every number agrees with the file of the main project (the masses do not change along the deflation)
 [PASS] def-D2  (numerical) self-interaction of bound pairs: with the coupling of today the table of the main project is reproduced (smallest fermion mass 918 MeV for alpha_VS = 0.1). The smallest mass falls as alpha_VS^(-2/3), that is, as exp(-2 tau_d/3) along the deflation. For a given particle the masses m and m_s are constant, hence so is the cross-section 8 pi/m_s^2 of the pairs; the deflation changes whether the pair exists: it is bound only after D_VS = alpha_VS m/m_s has grown to 1.67981
 [PASS] def-D3  (numerical) the moment at which the pair becomes bound is a zero-energy resonance of the scattering of two fermions: the scattering length diverges at D_VS = D_c. For a particle with m = 918 MeV and m_s = 54.7 MeV the cross-section per mass at the relative velocities 10, 156 and 1000 km/s rises from 8.4e-1, 8.4e-1, 8.4e-1 cm^2/g one unit of the deflation clock before the binding to the peak values 1.3e7, 5.2e4, 1.3e3 cm^2/g (limit of unitarity at 10 km/s: 1.3e7); it exceeds 100 cm^2/g during an interval of the clock of 0.268, 0.268, 0.258 around the moment of binding. A deflating universe in which the dark matter is made of these fermions passes through an epoch of strong, velocity-dependent self-interaction
-[PASS] def-D4  (numerical) growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = -0.317. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = +0.102, a rise of 0.03 per cent at the rate that lunar laser ranging allows, 0.67 per cent at the rate that nucleosynthesis allows and 1.06 per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors 1.0027, 1.0589, 1.0982. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)
+[PASS] def-D4  (numerical) growth of structure on the deflating spacetime (A1, A2, A3; data/growth_deflation.csv). The growth depends on the closure of the perturbation equations at the first order in the rate. (i) At a fixed Hubble constant the amplitude of the density contrast today (sigma_8 for a given primordial amplitude) falls with the rate in both closures: d ln sigma_8/d(gsum/H_0) = -0.443 (closure "Momentum") and -0.207 (closure "Pressure"). (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer. With that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = +0.003 ("Momentum") and +0.239 ("Pressure"): +0.001 and +0.077 per cent at the rate that lunar laser ranging allows, +0.01 and +1.60 per cent at the rate that nucleosynthesis allows. The growth rate f_growth = d ln delta_m/d ln a today rises in both closures, by the factors 1.0021 and 1.0035 (lunar laser ranging), 1.0463 and 1.0773 (nucleosynthesis). Common to both closures is that, at a fixed angle, the amplitude does not fall and the growth rate rises; how large these changes are, and whether the amplitude changes at all, depends on which perturbations the agent carries that holds the extra scale factors, and is not a prediction of the hypotheses. (iii) The four-dimensional equation delta_m'' + 2 H delta_m' = 4 pi G_N(x4) rho_m delta_m, which an earlier version of this command integrated, is neither closure: it gives d ln sigma_8/d(gsum/H_0) = -0.317 at a fixed Hubble constant and +0.128 at a fixed angle
 [PASS] def-D5  (numerical) drift of the quantities (table data/dm_drift.csv): the couplings change by 3.1e-3 of themselves over the age of the universe at the rate that lunar laser ranging allows and by 0.06 at the rate that nucleosynthesis allows; quantities near the threshold of binding move much faster (scattering length at D_VS = 1.5: n = 9.1; binding energy at D_VS = 1.8: n = 30.1), and the gap of a weakly paired state moves as 1/lambda (n = 5 for lambda = 0.2). The masses do not move
 [PASS] def-D6  (numerical) the quanta that the deflation creates (7+1; modes that depend on a deflating coordinate): at the present rate that lunar laser ranging allows the temperature of the spectrum is 2.9e-33 K; at the largest rate that any of the three bounds of the cosmological part allows (gsum = 0.234 H_0) it is 2.1e-31 K, and hbar gsum is then 3.4e-37 of a mass of 1 keV. The creation of massive particles is suppressed by exp(-2 pi m/rate_t) with an exponent above 1e37 for every mass above 1 keV: no particles are created today. Creation matters only for an epoch in which the rate was comparable with the masses
 [PASS] ALL  (numerical) every check above passed
@@ -545,7 +621,8 @@ generated by: deflation (Rust crate spacetimes-deflation, version 0.1.0; PROJECT
 
 | file | content | written by |
 |:---|:------------|:---|
-| `code/deflation-rs/src/cosmo_defl.rs` | background with deflation, sound horizon, age, growth | — |
+| `code/deflation-rs/src/cosmo_defl.rs` | background with deflation, sound horizon, age, growth equations of the closures | — |
+| `code/deflation-rs/src/eb_cosmo.rs`, `spectra_defl.rs` | recombination on the deflating background; the Hubble constant at a fixed angle (RS5, Sec. 5) | `vendor_eb.py`; — |
 | `code/deflation-rs/src/cmd_matter.rs` | dark-matter estimates, resonance, growth, drift, temperature | — |
 | `data/hubble_deflation.csv` | Sec. 2 | `deflation cosmology` |
 | `data/deflation_bounds.csv` | Sec. 3 | `deflation cosmology` |

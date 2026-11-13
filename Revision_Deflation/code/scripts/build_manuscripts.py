@@ -135,6 +135,8 @@ def md_inline_to_tex(s):
         for a, b in UNICODE.items():
             part = part.replace(a, b)
         part = part.replace("<", r"$<$").replace(">", r"$>$")
+        # a name in straight quotation marks (the closure "Momentum") gets the opening and closing marks of LaTeX
+        part = re.sub(r'"([^"]*)"', lambda m: "``" + m.group(1) + "''", part)
         part = re.sub("\x00(\\d+)\x01", lambda m: "\\texttt{" + codes[int(m.group(1))] + "}", part)
         out.append(part)
     return "".join(out)

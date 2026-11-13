@@ -17,8 +17,9 @@ verifies that the additions are unique and that they are used as registered:
        objects although the main registry uses them for other objects (error R-E16 of
        provenance RP9) do not occur in the data files that the revision writes;
   RS6  every column of every data file of the revision is a registered name of the
-       revision, a registered name or a column of the main project, or one of the
-       descriptive words listed in this script.
+       revision, a registered name or a column of the main project, one of the
+       descriptive words listed in this script, or such a name followed by the number
+       of a model, the letter of a closure or the number of a background.
 
 Run from the folder Revision_Deflation:   python3 code/scripts/check_symbols.py
 Output: data/symbol_checks_deflation.txt  (and the same text on the screen).
@@ -56,7 +57,25 @@ D_VS axis_A axis_B pressure gap_V gap_T gap_S Tc_over_gap_V dln_gap_dtau lambda_
 T_high T_largeN T_half T_zero phi_before tau_d_min tau_d_catch Xi_d_start Xi_d_end Xi_d_catch gap_abs
 m_deg_keV mB_max_eV rho_Msun_pc3 rho_GeV_cm3 sigma_km_s rho_deg_1p5keV_Msun_pc3 rho_deg_over_rho vF_1p5keV_km_s vF_over_sigma
 m_min_MeV m_s_MeV phase_space_density_dwarf k_d_over_E_perp E_perp_over_g55 value_1671d value_1644d
-F_scalar F_pseudoscalar""".split())
+F_scalar F_pseudoscalar
+model fixed background peak z_rec z_drag rs_star theta_star_100 z_reio H0_fixed_zstar h_fixed_zstar dH0_fixed_zstar
+max_rel_TT cv_max cv_rss closure_cv_low closure_cv_high closure_over_effect_low closure_over_effect_high difference expression
+sigma_rate bound95_rate sigma_rate_fixed dH0_drate
+sigma_N_joint sigma_rate_joint correlation N_best_llr chi2_best_llr H0_gain_zero_rate H0_gain N_at_gain rate_at_gain""".split())
+
+# Systematic column names: a registered or descriptive name, or a column of the main project, followed by the
+# number of a model (data/cmb_deflation_summary.csv), the letter of a closure (_M "Momentum", _P "Pressure"; _N4 the
+# four-dimensional growth equation) or the number of a background (_b0 .. _b3, data/sfdm_deflation_summary.csv)
+PATTERNS = [
+    r"(TT|TE|EE|P)_\d+(_[MP])?",                      # spectra and matter power of the model i
+    r"(ell|Dl)_\d+",                                  # position and height of an acoustic peak in the model i
+    r"(closure|effect)_\d+",                          # difference between the closures, effect of the deflation, model i
+    r"(fit|angle|fam\d)_(TT|TE|EE)",                  # residuals of fitted spectra
+    r"(P_cdm|T2_(fermi|bose)_[A-Za-z0-9.+-]+)_b\d",    # matter power on the background b
+    r"(growth|f_growth|growth_ratio|f_growth_ratio|f_sigma8_ratio|growth_ratio_fixed_h|f_growth_ratio_fixed_h)_(M|P|N4)",
+    r"(growth_EB|growth_ODE|growth_EB_fixed_H0|growth_ODE_fixed_H0|sigma_8|sigma_8_ratio|chi2_planck|rel_TT|dTE|rel_EE)_(M|P)",
+    r"cross_N0\.\d",                                  # fits against the Fisher matrix at the density N = 0.1, 0.2 of extra radiation
+]
 
 
 def read_registry(path):
@@ -181,7 +200,7 @@ def main():
                     main_cols.update(next(csv.reader([line])))
                     break
     registered = set(seen) | main_names | main_cols | DESCRIPTIVE
-    unknown, n_cols = [], 0
+    unknown, n_cols, n_pat = [], 0, 0
     for path in sorted(glob.glob(os.path.join(ROOT, "data", "*.csv"))):
         with open(path, encoding="utf-8") as f:
             for line in f:
@@ -189,9 +208,12 @@ def main():
                     for c in next(csv.reader([line])):
                         n_cols += 1
                         if c not in registered:
-                            unknown.append("%s (%s)" % (c, os.path.basename(path)))
+                            if any(re.fullmatch(pat, c) for pat in PATTERNS):
+                                n_pat += 1
+                            else:
+                                unknown.append("%s (%s)" % (c, os.path.basename(path)))
                     break
-    report("RS6", not unknown, "each of the %d columns of the %d data files of the revision is a registered name of the revision, a registered name or a column of the main project, or one of the %d descriptive words listed in the script%s" % (n_cols, len(glob.glob(os.path.join(ROOT, "data", "*.csv"))), len(DESCRIPTIVE), "" if not unknown else "; not registered: " + ", ".join(unknown[:12])))
+    report("RS6", not unknown, "each of the %d columns of the %d data files of the revision is a registered name of the revision, a registered name or a column of the main project, one of the %d descriptive words listed in the script, or (%d columns) such a name followed by the number of a model, the letter of a closure or the number of a background%s" % (n_cols, len(glob.glob(os.path.join(ROOT, "data", "*.csv"))), len(DESCRIPTIVE), n_pat, "" if not unknown else "; not registered: " + ", ".join(unknown[:12])))
 
     head = ["PROJECT spacetimes, Revision_Deflation: checks of the symbols of the revision",
             "generated by: code/scripts/check_symbols.py",

@@ -3,7 +3,7 @@
 title: "RS2 — The hypothesis that the singlet superfluid is the Higgs field, on the deflating 4+4 and 7+1 spacetimes"
 subtitle: "PROJECT spacetimes, Revision_Deflation. Supplement to both manuscripts of the revision"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/RS2_higgs_hypothesis_deflating.src.md by code/scripts/assemble_docs.py.

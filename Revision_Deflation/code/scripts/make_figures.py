@@ -517,16 +517,18 @@ def fig_hubble():
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.7))
     ax = axes[0]
     ok = h["gsum_over_H0"] > 0
-    ax.plot(h["gsum_over_H0"][ok], 100 * h["h"][ok], color=BLUE, marker="o", mfc="white", mew=1.0, ms=3.6)
+    ax.plot(h["gsum_over_H0"][ok], 100 * h["h_fixed_zstar"][ok], color=INK2, ls="--", lw=1.0, label="$z_*$, $Y_{He}$ fixed")
+    ax.plot(h["gsum_over_H0"][ok], 100 * h["h"][ok], color=BLUE, marker="o", mfc="white", mew=1.0, ms=3.6, label="full calculation")
+    ax.legend(loc="lower left", fontsize=6.4, handlelength=1.6, borderaxespad=0.3)
     ax.axhline(67.36, color=INK2, lw=0.6)
     ax.text(1.1e-3, 67.5, "no deflation: 67.36", color=INK2, fontsize=7.0, va="bottom")
     # the local measurement with which the main project compares: 73.50 +- 0.81 km/s/Mpc
     ax.axhspan(73.50 - 0.81, 73.50 + 0.81, color=ORANGE, alpha=0.18, lw=0)
     ax.axhline(73.50, color=ORANGE, lw=1.0, ls="--")
     ax.text(0.28, 74.45, "local measurement: 73.50 $\\pm$ 0.81", color=INK, fontsize=7.0, va="bottom", ha="right")
-    for x, lab in ((3.237e-3, "lunar ranging"), (0.0644, "nucleosynthesis")):
+    for x, lab, y0 in ((3.237e-3, "lunar ranging", 53.5), (0.0644, "nucleosynthesis", 45.0)):
         ax.plot([x, x], [42, 66.3], color=INK2, lw=0.7, ls=":")
-        ax.text(x * 1.12, 45.5, lab, rotation=90, color=INK2, fontsize=7.0, va="bottom")
+        ax.text(x * 1.12, y0, lab, rotation=90, color=INK2, fontsize=6.6, va="bottom")
     ax.set_xscale("log")
     ax.set_ylim(42, 77.5)
     ax.set_xlabel("gsum / $H_0$")
@@ -548,16 +550,17 @@ def fig_hubble():
     ax = axes[2]
     if gr is not None:
         ok = gr["gsum_over_H0"] > 0
-        ax.plot(gr["gsum_over_H0"][ok], gr["f_growth_ratio"][ok], color=ORANGE, ls="--", marker="s", mfc="white", mew=1.0, ms=3.6, label="growth rate $f_g$")
-        ax.plot(gr["gsum_over_H0"][ok], gr["growth_ratio"][ok], color=BLUE, marker="o", mfc="white", mew=1.0, ms=3.6, label="amplitude $\\sigma_8$")
-        ax.plot(gr["gsum_over_H0"][ok], gr["growth_ratio_fixed_h"][ok], color=AQUA, ls="-.", marker="^", mfc="white", mew=1.0, ms=3.6, label="$\\sigma_8$ at fixed $H_0$")
+        ax.plot(gr["gsum_over_H0"][ok], gr["f_growth_ratio_P"][ok], color=ORANGE, ls="--", marker="s", mfc="white", mew=1.0, ms=3.6, label="rate $f_g$, P")
+        ax.plot(gr["gsum_over_H0"][ok], gr["f_growth_ratio_M"][ok], color=ORANGE, ls="-", marker="s", ms=3.0, label="rate $f_g$, M")
+        ax.plot(gr["gsum_over_H0"][ok], gr["growth_ratio_P"][ok], color=BLUE, ls="--", marker="o", mfc="white", mew=1.0, ms=3.6, label="amplitude, P")
+        ax.plot(gr["gsum_over_H0"][ok], gr["growth_ratio_M"][ok], color=BLUE, ls="-", marker="o", ms=3.0, label="amplitude, M")
         ax.axhline(1.0, color=INK2, lw=0.6)
         ax.set_xscale("log")
-        ax.set_ylim(0.85, 1.6)
+        ax.set_ylim(0.9, 1.75)
         ax.set_xlabel("gsum / $H_0$")
         ax.set_ylabel("ratio to the model without deflation")
-        ax.legend(loc="upper left", fontsize=7.0)
-    panel_label(ax, "(c) growth of structure")
+        ax.legend(loc="upper left", fontsize=6.4, title="closures M: \"Momentum\",\nP: \"Pressure\"", title_fontsize=6.2)
+    panel_label(ax, "(c) growth of structure, fixed angle")
     fig.tight_layout(w_pad=0.9)
     save(fig, "fig_hubble")
 
@@ -583,7 +586,13 @@ def fig_bounds():
             items.append(("nucleosynthesis: $G_N$\n(needs A2)", first(v), None, BLUE))
         else:
             items.append(("atomic clocks: $\\dot\\alpha/\\alpha$\n(only if electromagnetism were eight-dimensional;\nnot part of the model)", first(v), None, INK2))
-    fig, ax = plt.subplots(figsize=(6.6, 3.0))
+    fisher = read_csv("deflation_fisher.csv")
+    if fisher is not None:
+        sel = fisher["closure"] == 0
+        b_planck, b_deep = float(fisher["bound95_rate"][sel][0]), float(fisher["bound95_rate"][sel][1])
+        # a forecast for mock data, not a measurement: open symbol; from the Planck-like set to the set with the deep survey
+        items.insert(2, ("microwave background, mock data (forecast):\nPlanck-like, and with a deep survey (needs A2)", b_deep, b_planck, MAGENTA))
+    fig, ax = plt.subplots(figsize=(6.6, 3.0 + (0.5 if fisher is not None else 0.0)))
     for i, (name, v, v2, col) in enumerate(items):
         y = len(items) - 1 - i
         ax.plot([v], [y], marker="o", color=col, ms=6)
@@ -717,10 +726,305 @@ def fig_kernels():
     save(fig, "fig_kernels")
 
 
+def fig_spectra():
+    cl, sm = read_csv("cmb_deflation_cl.csv"), read_csv("cmb_deflation_summary.csv")
+    if cl is None or sm is None:
+        return
+    ell = cl["ell"]
+    rates = sm["gsum_over_H0"][1:]
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6))
+    ax = axes[0]
+    ax.plot(ell, cl["TT_0"], color=INK, lw=1.2, label="no deflation")
+    ax.plot(ell, cl["TT_4_M"], color=BLUE, lw=1.0, ls="--", label="gsum = %.3g $H_0$" % rates[3])
+    ax.set_xscale("log")
+    plain_ticks(ax, "x", [2, 10, 30, 100, 300, 1000])
+    ax.set_xlim(2, 2500)
+    ax.set_xlabel("multipole $\\ell$")
+    ax.set_ylabel("$D_\\ell^{TT}$ ($\\mu$K$^2$)")
+    ax.legend(loc="upper left", fontsize=6.0, handlelength=1.0, borderaxespad=0.2)
+    panel_label(ax, "(a) temperature, fixed angle $\\theta_*$")
+    cols = ramp(len(rates))
+    for ax, q, lab in ((axes[1], "TT", "(b) change of $D_\\ell^{TT}$"), (axes[2], "EE", "(c) change of $D_\\ell^{EE}$")):
+        sel = ell >= 30
+        ax.fill_between(ell[sel], -100 * np.sqrt(2.0 / (2 * ell[sel] + 1)), 100 * np.sqrt(2.0 / (2 * ell[sel] + 1)), color=PALE, lw=0)
+        if q == "EE":
+            ax.text(2440, -6.9, "band: cosmic variance\nof one multipole", color=INK2, fontsize=6.4, ha="right", va="bottom")
+        for j in (0, 1, 2, 3):
+            ax.plot(ell[sel], 100 * (cl["%s_%d_M" % (q, j + 1)][sel] / cl["%s_0" % q][sel] - 1.0), color=cols[j], lw=0.9, label="gsum = %.3g $H_0$" % rates[j])
+        ax.axhline(0.0, color=INK2, lw=0.6)
+        ax.set_xlim(30, 2500)
+        ax.set_ylim(-7.5, 7.5)
+        ax.set_xlabel("multipole $\\ell$")
+        ax.set_ylabel("change (per cent)")
+        panel_label(ax, lab)
+    axes[1].legend(loc="lower right", fontsize=6.4, ncol=1)
+    fig.tight_layout(w_pad=0.9)
+    save(fig, "fig_spectra")
+
+
+def fig_closure():
+    cl, co, gp, gr, sm = read_csv("cmb_deflation_cl.csv"), read_csv("cmb_deflation_closure.csv"), read_csv("cmb_deflation_gaps.csv"), read_csv("cmb_deflation_growth.csv"), read_csv("cmb_deflation_summary.csv")
+    ode = read_csv("growth_deflation.csv")
+    if cl is None or co is None or gp is None or gr is None or sm is None or ode is None:
+        return
+    rate = sm["gsum_over_H0"][4]
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.7))
+    ax = axes[0]
+    ell = co["ell"]
+    cv = np.sqrt(2.0 / (2 * ell + 1)) * co["TT_0"]
+    ax.axvspan(2, 30, color=PALE, lw=0)
+    ax.plot(ell, np.abs(co["effect_4"]) / cv, color=INK, lw=1.0, label="effect of the deflation")
+    ax.plot(ell, np.abs(co["closure_4"]) / cv, color=ORANGE, lw=1.0, ls="--", label="difference between the closures")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlim(2, 2500)
+    ax.set_ylim(1e-6, 3000)
+    plain_ticks(ax, "x", [2, 10, 100, 1000])
+    ax.set_xlabel("multipole $\\ell$")
+    ax.set_ylabel("$|\\Delta D_\\ell^{TT}|$ / cosmic variance")
+    ax.text(2.3, 3e-6, "$\\ell<30$", color=INK2, fontsize=7.0, va="center")
+    ax.legend(loc="upper left", fontsize=6.4, handlelength=1.6, borderaxespad=0.3)
+    panel_label(ax, "(a) spectra, gsum = %.3g $H_0$" % rate)
+    ax = axes[1]
+    sel = np.abs(gp["k"] - 0.02) < 1e-9
+    m, p = sel & (gp["closure"] == 0), sel & (gp["closure"] == 1)
+    x = gp["tau_cf"]
+    ax.plot(x[m], np.abs(gp["trace_gap"][m]), color=BLUE, ls="-", marker="o", ms=3.2, label="M: trace")
+    ax.plot(x[m], np.abs(gp["shear_gap"][m]), color=AQUA, ls="-.", marker="^", ms=3.4, label="M: shear")
+    ax.plot(x[p], np.abs(gp["momentum_gap"][p]), color=ORANGE, ls="--", marker="s", mfc="white", mew=1.0, ms=3.4, label="P: momentum")
+    ax.plot(x[p], np.abs(gp["shear_gap"][p]), color=YELLOW, ls=":", marker="D", mfc="white", mew=1.0, ms=3.2, label="P: shear")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_ylim(1e-6, 8)
+    ax.set_xlabel("conformal time $\\tau_{cf}$ (Mpc)")
+    ax.set_ylabel("gap / [($a_{sp}$ gsum/$H_{cf}$) $\\times$ terms]")
+    ax.legend(loc="lower left", fontsize=6.2, ncol=2, columnspacing=1.0, handlelength=2.2, title="closures M: \"Momentum\", P: \"Pressure\"", title_fontsize=6.2)
+    panel_label(ax, "(b) the gaps, $k=0.02$/Mpc")
+    ax = axes[2]
+    ok = (ode["gsum_over_H0"] > 0) & (ode["gsum_over_H0"] < 0.11)
+    ax.plot(ode["gsum_over_H0"][ok], ode["growth_ratio_fixed_h_P"][ok], color=ORANGE, ls="--", label="\"Pressure\"")
+    ax.plot(ode["gsum_over_H0"][ok], ode["growth_ratio_fixed_h_M"][ok], color=BLUE, ls="-", label="\"Momentum\"")
+    ax.plot(ode["gsum_over_H0"][ok], ode["growth_ratio_fixed_h_N4"][ok], color=INK2, ls=":", lw=1.0, label="four-dimensional")
+    g = gr["gsum_over_H0"] > 0
+    ax.plot(gr["gsum_over_H0"][g], gr["growth_EB_fixed_H0_P"][g], ls="none", marker="s", color=ORANGE, mfc="white", mew=1.0, ms=4.0)
+    ax.plot(gr["gsum_over_H0"][g], gr["growth_EB_fixed_H0_M"][g], ls="none", marker="o", color=BLUE, mfc="white", mew=1.0, ms=4.0)
+    ax.set_xscale("log")
+    ax.set_xlabel("gsum / $H_0$")
+    ax.set_ylabel("growth since $a_{sp}=0.01$, ratio")
+    ax.legend(loc="lower left", fontsize=6.4, title="lines: growth equations\nsymbols: full calculation", title_fontsize=6.2)
+    panel_label(ax, "(c) growth of matter, fixed $H_0$")
+    fig.tight_layout(w_pad=0.9)
+    save(fig, "fig_closure")
+
+
+def fig_forecast():
+    fi, pr, re_, hb = read_csv("deflation_fisher.csv"), read_csv("deflation_profile.csv"), read_csv("deflation_residuals.csv"), read_csv("hubble_deflation.csv")
+    if fi is None or pr is None or re_ is None or hb is None:
+        return
+    names = ["Planck-like", "with a deep survey"]
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.7))
+    ax = axes[0]
+    x = np.linspace(0.0, 0.07, 200)
+    for c in (0, 1):
+        col, ls, mk = STYLES[c]
+        sig = float(fi["sigma_rate"][(fi["config"] == c) & (fi["closure"] == 0)][0])
+        ax.plot(x, (x / sig) ** 2, color=col, ls=ls, lw=1.0)
+        sel = (pr["config"] == c) & (pr["closure"] == 0)
+        ax.plot(pr["gsum_over_H0"][sel], pr["chi2"][sel], ls="none", marker=mk, color=col, mfc="white", mew=1.0, ms=4.0, label=names[c])
+    ax.axhline(3.84, color=INK2, lw=0.6)
+    ax.text(0.0685, 0.6, "3.84: 95 per cent", color=INK2, fontsize=6.6, ha="right", va="bottom")
+    ax.axvline(3.237e-3, color=INK2, lw=0.7, ls=":")
+    ax.text(3.237e-3 + 0.0012, 14.5, "lunar ranging", rotation=90, color=INK2, fontsize=6.6, va="bottom")
+    ax.axvline(0.0644, color=INK2, lw=0.7, ls=":")
+    ax.text(0.0644 - 0.0010, 13.0, "nucleosynthesis", rotation=90, color=INK2, fontsize=6.6, va="bottom", ha="right")
+    ax.set_xlim(0, 0.07)
+    ax.set_ylim(0, 42)
+    ax.set_xlabel("gsum / $H_0$")
+    ax.set_ylabel("$\\Delta\\chi^2$ of the best fit")
+    ax.legend(loc="upper left", fontsize=6.4, title="points: fits\nlines: Fisher matrix", title_fontsize=6.4, bbox_to_anchor=(0.09, 1.0), handlelength=1.2)
+    panel_label(ax, "(a) mock data against the rate")
+    ax = axes[1]
+    ok = (hb["gsum_over_H0"] > 0) & (hb["gsum_over_H0"] < 0.11)
+    ax.plot(np.concatenate(([0.0], hb["gsum_over_H0"][ok])), np.concatenate(([67.36], 100 * hb["h"][ok])), color=INK2, lw=1.0, ls=":", label="angle kept, no refit")
+    for c in (0, 1):
+        col, ls, mk = STYLES[c]
+        slope = float(fi["dH0_drate"][(fi["config"] == c) & (fi["closure"] == 0)][0])
+        ax.plot(x, 67.36 + slope * x, color=col, ls=ls, lw=1.0)
+        sel = (pr["config"] == c) & (pr["closure"] == 0)
+        ax.plot(pr["gsum_over_H0"][sel], pr["H0"][sel], ls="none", marker=mk, color=col, mfc="white", mew=1.0, ms=4.0, label=names[c])
+    ax.set_xlim(0, 0.07)
+    ax.set_xlabel("gsum / $H_0$")
+    ax.set_ylabel("best-fit $H_0$ (km/s/Mpc)")
+    ax.legend(loc="lower left", fontsize=6.4, handlelength=1.6, borderaxespad=0.3)
+    panel_label(ax, "(b) the Hubble constant falls")
+    ax = axes[2]
+    ell = re_["ell"]
+    sel = ell >= 30
+    ax.fill_between(ell[sel], -100 * np.sqrt(2.0 / (2 * ell[sel] + 1)), 100 * np.sqrt(2.0 / (2 * ell[sel] + 1)), color=PALE, lw=0)
+    ax.plot(ell[sel], 100 * re_["angle_TT"][sel], color=INK2, lw=0.9, ls="--", label="angle kept, nothing refitted")
+    ax.plot(ell[sel], 100 * re_["fit_TT"][sel], color=BLUE, lw=1.0, label="best fit of the six parameters")
+    ax.axhline(0.0, color=INK2, lw=0.6)
+    ax.set_xlim(30, 2500)
+    ax.set_ylim(-3.2, 3.2)
+    ax.set_xlabel("multipole $\\ell$")
+    ax.set_ylabel("change of $D_\\ell^{TT}$ (per cent)")
+    ax.legend(loc="lower left", fontsize=6.6)
+    panel_label(ax, "(c) what the fit absorbs, gsum = 0.02 $H_0$")
+    fig.tight_layout(w_pad=0.9)
+    save(fig, "fig_forecast")
+
+
+def fig_families():
+    d, jt = read_csv("dr_deflation_profiles.csv"), read_csv("dr_deflation_joint.csv")
+    path = os.path.join(ROOT, "..", "data", "dr_profiles.csv")
+    if d is None or jt is None or not os.path.exists(path):
+        return
+    with open(path) as f:
+        m = np.genfromtxt(io.StringIO("".join(l for l in f if not l.startswith("#"))), delimiter=",", names=True)
+    # the names of the tables of the main project (S3, Sec. 3.4), shortened: "model fluid" is the stepped fluid of the model
+    labels = ["free-streaming", "fluid, no step", "model fluid, $z_t=10^4$", "model fluid, $2\\times10^4$", "model fluid, $5\\times10^4$", "Wess–Zumino fluid",
+              "model fluid, $10^6$"]
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.8))
+    fams = [0, 1, 3, 5]
+    ax = axes[0]
+    for j, fm in enumerate(fams):
+        col, ls, mk = STYLES[j]
+        a = (d["config"] == 0) & (d["family"] == fm)
+        b = (m["config"] == 0) & (m["family"] == fm)
+        ax.plot(m["N"][b], m["H0"][b], color=col, ls=ls, lw=1.0)
+        ax.plot(d["N"][a], d["H0"][a], ls="none", marker=mk, color=col, mfc="white", mew=1.0, ms=3.8, label=labels[fm])
+    ax.set_xlabel("extra radiation $N$")
+    ax.set_ylabel("best-fit $H_0$ (km/s/Mpc)")
+    ax.set_ylim(67.0, 84.5)
+    ax.set_xlim(0.04, 1.06)
+    ax.set_xticks([0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.legend(loc="upper left", fontsize=6.4, handletextpad=0.4, title="lines: no deflation\npoints: deflating", title_fontsize=6.2)
+    panel_label(ax, "(a) fits at fixed $N$")
+    ax = axes[1]
+    for j, fm in enumerate(range(7)):
+        col, ls, mk = STYLES[j % len(STYLES)]
+        a = (d["config"] == 0) & (d["family"] == fm)
+        b = (m["config"] == 0) & (m["family"] == fm)
+        if a.sum() == 0 or a.sum() != b.sum():
+            continue
+        ax.plot(d["N"][a], d["H0"][a] - m["H0"][b], color=col if j < 6 else INK2, ls=ls, marker=mk, mfc="white", mew=0.9, ms=3.4, lw=0.9, label=labels[fm])
+    base = d["H0"][(d["config"] == 0) & (d["family"] == -1)]
+    if len(base):
+        ax.axhline(float(base[0]) - 67.36, color=INK, lw=0.7)
+        ax.text(1.0, float(base[0]) - 67.36 + 0.012, "no extra radiation", color=INK2, fontsize=6.6, ha="right", va="bottom")
+    ax.set_xlabel("extra radiation $N$")
+    ax.set_ylabel("change of $H_0$ by the deflation (km/s/Mpc)")
+    ax.set_ylim(-0.66, 0.0)
+    ax.set_xlim(0.04, 1.06)
+    ax.set_xticks([0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.legend(loc="lower left", fontsize=5.8, handletextpad=0.4, labelspacing=0.35)
+    panel_label(ax, "(b) deflating minus not deflating")
+    # (c) the region that the mock data allow when N and the rate are both free: the contour chi^2 = 3.84 of the
+    # Fisher matrix with eight parameters (an ellipse, drawn from the two errors and the correlation of the file)
+    ax = axes[2]
+    level = 3.84
+    t = np.linspace(0.0, 2.0 * np.pi, 721)
+    for j, fm in enumerate((0, 3)):
+        col, ls, mk = STYLES[0 if j == 0 else 2]
+        row = (jt["config"] == 0) & (jt["family"] == fm)
+        if row.sum() != 1:
+            continue
+        sn, sg, rho = float(jt["sigma_N_joint"][row][0]), float(jt["sigma_rate_joint"][row][0]), float(jt["correlation"][row][0])
+        xn = np.sqrt(level) * sn * np.cos(t)
+        xg = np.sqrt(level) * sg * (rho * np.cos(t) + np.sqrt(1.0 - rho * rho) * np.sin(t))
+        keep = (xn >= 0) & (xg >= 0)
+        order = np.argsort(np.arctan2(xg[keep] / sg, xn[keep] / sn))
+        ax.plot(np.concatenate(([float(jt["sigma_N"][row][0]) * np.sqrt(level)], xn[keep][order], [0.0])),
+                np.concatenate(([0.0], xg[keep][order], [float(jt["sigma_rate"][row][0]) * np.sqrt(level)])), color=col, ls=ls, lw=1.3, label=labels[fm])
+        # the point of the largest Hubble constant
+        ax.plot([float(jt["N_at_gain"][row][0])], [float(jt["rate_at_gain"][row][0])], marker=mk, color=col, ms=5.0, clip_on=False, zorder=5)
+        if j == 0:
+            a_, b_ = float(jt["dH0_dN"][row][0]), float(jt["dH0_drate"][row][0])
+            nn = np.linspace(0.0, 0.78, 60)
+            for dh in (-2.0, 0.0, 2.0):
+                gg = (dh - a_ * nn) / b_
+                ok = (gg >= 0) & (gg <= 0.155)
+                if ok.sum() > 1:
+                    ax.plot(nn[ok], gg[ok], color=INK2, lw=0.6, ls=":")
+                    i = np.where(ok)[0][-1]
+                    ax.text(nn[i] - 0.008, gg[i] - 0.0035, ("$%+.0f$" % dh) if dh else "0", color=INK2, fontsize=6.4, ha="right", va="top")
+    ax.axhline(3.237e-3, color=INK2, lw=0.7, ls="--")
+    ax.text(0.772, 3.237e-3 + 0.0015, "lunar ranging", color=INK2, fontsize=6.4, ha="right", va="bottom")
+    ax.set_xlim(0, 0.78)
+    ax.set_xticks([0.0, 0.2, 0.4, 0.6])
+    ax.plot([], [], color=INK2, lw=0.6, ls=":", label="change of $H_0$ (km/s/Mpc)")
+    ax.set_ylim(0, 0.155)
+    ax.set_yticks([0.0, 0.02, 0.04, 0.06, 0.08, 0.10, 0.12, 0.14])
+    ax.set_xlabel("extra radiation $N$")
+    ax.set_ylabel("gsum / $H_0$")
+    ax.legend(loc="upper left", fontsize=6.4, title="below each curve: $\\Delta\\chi^2<3.84$", title_fontsize=6.2)
+    panel_label(ax, "(c) rate and radiation together")
+    fig.tight_layout(w_pad=0.9)
+    save(fig, "fig_families")
+
+
+def fig_sfdm():
+    tr, su = read_csv("sfdm_deflation_transfer.csv"), read_csv("sfdm_deflation_summary.csv")
+    if tr is None or su is None:
+        return
+    fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.7))
+    ax = axes[0]
+    k = tr["k"]
+    picks = [("T2_fermi_m1keV", "fermions, 1 keV"), ("T2_fermi_m3keV", "fermions, 3 keV"), ("T2_bose_cs10e11", "$c_{s0}=10^{-11}\\,c$"), ("T2_bose_cs10e10", "$c_{s0}=10^{-10}\\,c$")]
+    names = tr.dtype.names
+    def column(stem, b):
+        want = (stem + "_b%d" % b).replace(".", "").replace("-", "")
+        for n in names:
+            if n.replace(".", "").replace("-", "") == want:
+                return tr[n]
+        return None
+    for j, (stem, lab) in enumerate(picks):
+        col, ls, mk = STYLES[j]
+        y0, y2 = column(stem, 0), column(stem, 2)
+        if y0 is None:
+            continue
+        ax.plot(k, y0, color=col, ls="-", lw=1.1, label=lab)
+        ax.plot(k, y2, color=col, ls="none", marker=mk, mfc="white", mew=0.8, ms=2.8, markevery=3)
+    ax.axhline(0.25, color=INK2, lw=0.6)
+    ax.set_xscale("log")
+    ax.set_xlim(0.05, 250)
+    ax.set_ylim(0, 1.08)
+    plain_ticks(ax, "x", [0.1, 1, 10, 100])
+    ax.set_xlabel("wavenumber $k$ (Mpc$^{-1}$)")
+    ax.set_ylabel("$P/P_{CDM}$")
+    ax.legend(loc="lower left", fontsize=6.0, handlelength=1.3, borderaxespad=0.2, title="lines: no deflation\npoints: nucleosynthesis\n($c_{s0}$: condensate)", title_fontsize=5.8)
+    panel_label(ax, "(a) suppression by sound")
+    for ax, fam, xl, lab in ((axes[1], 0, "fermion mass (keV)", "(b) fermions: half mode"), (axes[2], 1, "sound speed today $c_{s0}/c$", "(c) condensate: half mode")):
+        base = {p: v for p, v in zip(su["parameter"][(su["background"] == 0) & (su["family"] == fam)], su["k_half_Mpc"][(su["background"] == 0) & (su["family"] == fam)])}
+        for j, (b, lab2) in enumerate(((1, "lunar ranging rate"), (2, "nucleosynthesis rate, M"), (3, "nucleosynthesis rate, P"))):
+            col, ls, mk = STYLES[j]
+            sel = (su["background"] == b) & (su["family"] == fam)
+            xs = su["parameter"][sel]
+            ys = np.array([100 * (v / base[p_] - 1.0) for p_, v in zip(xs, su["k_half_Mpc"][sel])])
+            good = np.isfinite(ys)
+            ax.plot(xs[good], ys[good], color=col, ls=ls, marker=mk, mfc="white", mew=1.0, ms=3.8, label=lab2)
+        ax.axhline(0.0, color=INK2, lw=0.6)
+        ax.set_xscale("log")
+        if fam == 0:
+            plain_ticks(ax, "x", [0.3, 1, 3])
+        else:
+            ax.xaxis.set_major_locator(matplotlib.ticker.FixedLocator([1e-11, 1e-9]))
+            ax.xaxis.set_minor_locator(matplotlib.ticker.FixedLocator([1e-10, 1e-8]))
+            ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
+        ax.set_xlabel(xl)
+        ax.set_ylabel("change of its wavenumber (per cent)")
+        ax.set_ylim(-3.6, 0.15)
+        panel_label(ax, lab)
+    axes[1].legend(loc="center", fontsize=6.0, handlelength=2.0, title="closures M: \"Momentum\",\nP: \"Pressure\"", title_fontsize=6.0)
+    fig.tight_layout(w_pad=0.9)
+    save(fig, "fig_sfdm")
+
+
 FIGURES = {
     "geodesics": fig_geodesics, "isometries": fig_isometries, "creation": fig_creation, "extinction": fig_extinction,
     "clock": fig_clock, "gap": fig_gap_history, "binding": fig_binding, "matter": fig_matter_history, "quench": fig_quench,
     "hubble": fig_hubble, "bounds": fig_bounds, "scalar": fig_scalar, "cjt": fig_cjt_history, "kernels": fig_kernels,
+    "spectra": fig_spectra, "closure": fig_closure, "forecast": fig_forecast, "families": fig_families, "sfdm": fig_sfdm,
 }
 
 if __name__ == "__main__":

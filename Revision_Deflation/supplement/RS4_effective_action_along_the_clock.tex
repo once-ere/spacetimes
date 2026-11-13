@@ -208,7 +208,7 @@ along the deflation clock}
 manuscripts of the revision: the paired state, matter, temperature and
 the vacuum of the two models as the couplings grow}
 \author{Prepared for Patrick Lee Nash, Ph.D.}
-\date{November 12, 2026}
+\date{November 13, 2026}
 
 \begin{document}
 \maketitle
@@ -274,8 +274,10 @@ Sec. 7.
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
 \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
-\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ paired     }\CommentTok{\# Sec. 2 and the last part of Sec. 3 (about ten seconds)}
-\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ history    }\CommentTok{\# Secs. 3 to 5 (about a minute and a half)}
+\CommentTok{\# Sec. 2 and the last part of Sec. 3 (about ten seconds)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ paired}
+\CommentTok{\# Secs. 3 to 5 (about a minute and a half)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ history}
 \ExtensionTok{python3}\NormalTok{ code/scripts/make\_figures.py cjt matter}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_doc\_tables.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py docs\_src/RS4\_effective\_action\_along\_the\_clock.src.md}

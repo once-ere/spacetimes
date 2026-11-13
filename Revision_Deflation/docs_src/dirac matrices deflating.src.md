@@ -3,7 +3,7 @@
 title: "dirac matrices deflating — geometry, Dirac matrices, spin connection, Dirac equations and their solutions on the 4+4 and 7+1 spacetimes whose coordinates x5, x6, x7 deflate exponentially"
 subtitle: "PROJECT spacetimes, Revision_Deflation. Provenance: definitions, derivations, machine checks, and how to reproduce them"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from "docs_src/dirac matrices deflating.src.md" by code/scripts/assemble_docs.py.

@@ -3,7 +3,7 @@
 title: "Revision_Deflation — the 16-component Dirac field and its singlet superfluid on spacetimes whose coordinates x5, x6, x7 deflate exponentially"
 subtitle: "PROJECT spacetimes: where to start, what was found, and what is open"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/README.src.md by code/scripts/assemble_docs.py. -->
@@ -37,6 +37,7 @@ script (recorded in the provenance P11 of the main project).
 | the effective action along the deflation | `supplement/RS4_effective_action_along_the_clock.pdf` |
 | the Higgs hypothesis | `supplement/RS2_higgs_hypothesis_deflating.pdf` |
 | cosmology, dark matter, the Hubble tension | `supplement/RS3_cosmology_deflating.pdf` |
+| the microwave background and the growth of structure | `supplement/RS5_microwave_background_deflating.pdf` |
 | what was assumed, what mirrors what, what is open | `provenance/RP0_hypotheses_and_status.pdf` |
 | the proof that no symbol has two meanings | `provenance/RP1_master_symbols_deflation.pdf` |
 | how to run everything | `provenance/RP8_code_deflation.pdf` |
@@ -85,13 +86,28 @@ If gravity is the eight-dimensional Einstein theory, Newton's constant grows wit
 deflation, lunar laser ranging limits the rate to $3\times10^{-3}$ of the Hubble
 constant, and the Hubble constant inferred from the microwave background *falls*. The
 Hubble tension is not relieved. For dark matter the deflation adds an epoch of
-resonant self-interaction and a small change of the growth rate; the conclusions of
-the main project about the masses are unchanged.
+resonant self-interaction; the conclusions of the main project about the masses are
+unchanged.
+
+**The microwave background and the growth of structure** (RS5).
+The spectra need one assumption more: that the scale factors of $x5,x6,x7$ are not
+perturbed when ordinary space is. Even then the Einstein equations of ordinary space
+cannot all hold with matter alone. Whatever keeps the three rates constant must carry
+a tension and perturbations of it, and the hypotheses do not say which. *What does not
+depend on that choice:* the spectra at the multipoles $\ell\ge30$. Mock data of the
+quality of the Planck satellite would bound the rate to $0.0385\,H_0$, between the
+bounds of lunar laser ranging and of nucleosynthesis; in every fit the Hubble constant
+falls, by 84 km/s/Mpc per unit of $\mathrm{gsum}/H_0$; and the rate cannot help the
+dark radiation of the main project to raise the Hubble constant. *What does depend on
+it:* the growth of structure and the largest angular scales, which the revision
+brackets with two choices.
 
 # What is open
 
-1. The spectra of the microwave background with a time-dependent Newton's constant
-   were not computed (RP0, Sec. 5). The author's decision is requested.
+1. What keeps the three rates constant. The revision calls it the agent and assumes
+   nothing about its nature. The spectra of the microwave background were computed
+   under an assumption about it that the author is asked to confirm or replace
+   (RP0, Sec. 5); the growth of structure remains undetermined until it is specified.
 2. The stability of the Einstein–Gauss–Bonnet solution, and the source of the
    deflation for unequal rates.
 3. The back-reaction of the created particles (7+1), and a principle that excludes
@@ -116,9 +132,15 @@ numbers that the programs state ({{GEN:n_number_checks}}). The folder contains
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
+python3 code/scripts/vendor_eb.py --check
 cargo build --release --manifest-path code/deflation-rs/Cargo.toml
 cargo test  --release --manifest-path code/deflation-rs/Cargo.toml
+# the first nine commands: about three and a half minutes together
 for c in matrices modes history quench cosmology symmetry channels matter paired; do
+  ./code/deflation-rs/target/release/deflation $c
+done
+# the Einstein-Boltzmann calculations of RS5: about an hour and ten minutes together
+for c in background spectrum forecast families superfluid; do
   ./code/deflation-rs/target/release/deflation $c
 done
 python3 code/scripts/verify_deflating_independent.py

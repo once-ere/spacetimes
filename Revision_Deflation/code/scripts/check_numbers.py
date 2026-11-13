@@ -80,6 +80,7 @@ LITERATURE = {
 }
 DEFINITIONS = {
     "0.5": "one half, as a threshold or a parameter stated in the text",
+    "10.75": "effective number of relativistic degrees of freedom during nucleosynthesis: 2 for photons plus 7/8 of 4 for electrons and positrons and of 6 for three neutrino species",
     "28": "number of rotations and boosts in eight dimensions, 8*7/2",
     "64": "number of pairs of indices, 8*8",
     "21": "number of pairs among seven directions, 7*6/2",
@@ -111,6 +112,12 @@ ERROR_LOG = {
     "2": "R-E6: an earlier assertion", "3": "R-E6: a parameter of an earlier calculation",
     "0.9507": "R-E27: the value of H_0 t_0 that had been copied by hand", "1.0590": "R-E27: a growth factor before the correction",
     "10^{-33}": "R-E28: the temperature as the summary of RS3 had given it",
+    "0.199": "R-E34: change of the Hubble constant at the bound of lunar laser ranging with the redshift of last scattering and the helium fraction held (superseded)",
+    "4.13": "R-E34: the same change at the bound of nucleosynthesis (superseded)",
+    "1.0027": "R-E33: growth-rate factor of the four-dimensional equation at the bound of lunar laser ranging (superseded)",
+    "1.0589": "R-E33 and R-E27: growth-rate factor of the four-dimensional equation at the bound of nucleosynthesis (superseded)",
+    "1.6\\times10^{-3}": "R-E36: difference between two spectra in a discarded version of the program",
+    "10^{-12}": "R-E39: the rate of deflation of an earlier version of a test",
 }
 # Numbers of the text that are traced only by rounding (kind (r)) or as a bound (kind (c)): the
 # stated number that the text means, as judged by reading the sentence and the output of the
@@ -121,10 +128,13 @@ JUDGED = {
     "3.386": "check 71d-G8: proper time 3.38636 of the geodesic on the 7+1 spacetime",
     "1.0924": "check 44d-G9: turning value 1.09240103 of the geodesic on the 4+4 spacetime",
     "10^{-15}": "check I71d-M1: relative residual 1.1e-15 of the exact solution with the Bessel functions of mpmath",
-    "10^{-30}": "check def-D6: the temperature at the largest allowed rate is 2.1e-31 K, below the bound quoted",
+    "10^{-30}": "check def-D6: the temperature at the largest allowed rate is 2.1e-31 K, below the bound quoted; in RS5, Sec. 5.1, and in RP9 (R-E39) the same power of ten is the rate, in units of 100 km/s/Mpc, of the unit test that runs the program at a negligible rate (a parameter of the test)",
     "3\\times10^{-8}": "check def-C6: the formula for n_EW agrees with the numerical derivative to 2.8e-08",
     "4\\times10^{-5}": "check def-B1: the largest of the four relative differences is 3.5e-5",
     "10^{-36}": "check def-D6: hbar gsum is 3.4e-37 of 1 keV at the largest allowed rate, below the bound quoted",
+    "84": "check def-F3: the best-fit Hubble constant changes by -84.35 km/s/Mpc per unit of gsum/H_0 (Planck-like mock data), quoted without decimals",
+    "125": "the mass of the Higgs boson in GeV, a value from the literature (list LITERATURE of this script); that it is also the rounded value of two entries of a generated table is a coincidence",
+    "2.1": "check def-E4: below multipole 30 the two closures differ by 2.14 and 2.13 times the effect of the deflation at the two bounds, quoted as 2.1",
 }
 
 # ---------------------------------------------------------------------------------------------

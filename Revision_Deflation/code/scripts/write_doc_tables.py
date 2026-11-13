@@ -18,6 +18,7 @@ import csv
 import math
 import os
 import re
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA = os.path.join(ROOT, "data")
@@ -82,8 +83,15 @@ def auto(x, sig=4):
 
 def table(name, header, rows, align=None):
     align = align or ["l"] + ["r"] * (len(header) - 1)
+    # The numbers of characters of the separator cells are the relative widths of the columns.  Besides the
+    # letters, a column can be given as a letter and a width, such as "r8" (right-aligned, eight characters).
     line = {"l": ":---", "r": "---:", "c": ":---:", "L": ":----------", "M": ":------"}
-    out = ["| " + " | ".join(header) + " |", "|" + "|".join(line[a] for a in align) + "|"]
+    def sep(a):
+        if a in line:
+            return line[a]
+        width = int(a[1:])
+        return (":" + "-" * (width - 1)) if a[0] == "l" else ("-" * (width - 1) + ":")
+    out = ["| " + " | ".join(header) + " |", "|" + "|".join(sep(a) for a in align) + "|"]
     for r in rows:
         out.append("| " + " | ".join(str(c) for c in r) + " |")
     FRAGS.append((name, "\n".join(out)))
@@ -136,7 +144,8 @@ def tex_name(q):
 def check_counts():
     total = 0
     for name in ("flat_matrix_checks", "deflating_checks", "mode_checks", "history_checks", "quench_checks", "cosmology_checks",
-                 "symmetry_checks", "channel_checks", "matter_checks", "paired_checks", "deflating_checks_independent", "symbol_checks_deflation"):
+                 "symmetry_checks", "channel_checks", "matter_checks", "paired_checks", "background_checks", "spectrum_checks",
+                 "forecast_checks", "families_checks", "superfluid_checks", "deflating_checks_independent", "symbol_checks_deflation"):
         p = os.path.join(DATA, name + ".txt")
         if not os.path.exists(p):
             continue
@@ -237,12 +246,15 @@ def rs3():
     table("tbl_bounds", ["observation", "measured", "bound on gsum (per year)", "bound in units of $H_0$", "assumption"], rows, ["l", "L", "r", "r", "L"])
 
     h = rows_of("hubble_deflation.csv")
-    rows = [[auto(x["gsum_over_H0"], 3), sci(x["gsum_per_yr"], 2), fix(100 * num(x["h"]), 2), fix(x["dH0"], 2), fix(x["GN_early"], 4), fix(x["rs_Mpc"], 2), fix(x["age_Gyr"], 2)] for x in h]
-    table("tbl_hubble", ["$\\mathrm{gsum}/H_0$", "gsum (per year)", "$H_0$ (km/s/Mpc)", "change", "$G_N$ ratio", "sound horizon (Mpc)", "age (Gyr)"], rows, ["r"] * 7)
+    rows = [[auto(x["gsum_over_H0"], 3), sci(x["gsum_per_yr"], 2), fix(100 * num(x["h"]), 2), fix(x["dH0"], 2), fix(x["GN_early"], 4), fix(x["z_star"], 2), fix(x["Y_He"], 4),
+             fix(x["rs_Mpc"], 2), fix(x["age_Gyr"], 2), fix(100 * num(x["h_fixed_zstar"]), 2)] for x in h]
+    table("tbl_hubble", ["$\\mathrm{gsum}/H_0$", "gsum (per year)", "$H_0$", "change", "$G_N$ ratio", "$z_*$", "$Y_{\\rm He}$", "$r_s$ (Mpc)", "age (Gyr)", "$H_0$, $z_*$ and $Y_{\\rm He}$ held"], rows, ["r8", "r11", "r6", "r7", "r7", "r8", "r7", "r7", "r6", "r9"])
 
     g = rows_of("growth_deflation.csv")
-    rows = [[auto(x["gsum_over_H0"], 3), fix(100 * num(x["h"]), 2), fix(x["growth_ratio"], 4), fix(x["f_growth_ratio"], 4), fix(x["f_sigma8_ratio"], 4), fix(x["growth_ratio_fixed_h"], 4), fix(x["f_growth_ratio_fixed_h"], 4)] for x in g]
-    table("tbl_growth", ["$\\mathrm{gsum}/H_0$", "$H_0$", "$\\sigma_8$ ratio", "$f_g$ ratio", "$f_g\\sigma_8$ ratio", "$\\sigma_8$ ratio, fixed $H_0$", "$f_g$ ratio, fixed $H_0$"], rows, ["r"] * 7)
+    rows = [[auto(x["gsum_over_H0"], 3), fix(100 * num(x["h"]), 2), fix(x["growth_ratio_M"], 4), fix(x["growth_ratio_P"], 4), fix(x["f_growth_ratio_M"], 4), fix(x["f_growth_ratio_P"], 4),
+             fix(x["growth_ratio_fixed_h_M"], 4), fix(x["growth_ratio_fixed_h_P"], 4), fix(x["growth_ratio_fixed_h_N4"], 4)] for x in g]
+    table("tbl_growth", ["$\\mathrm{gsum}/H_0$", "$H_0$", "amplitude, M", "amplitude, P", "$f_g$, M", "$f_g$, P",
+                         "fixed $H_0$: amplitude, M", "amplitude, P", "four-dimensional equation"], rows, ["r8", "r6", "r10", "r10", "r7", "r7", "r10", "r10", "r12"])
 
     d = rows_of("dm_drift.csv")
     keys = list(d[0].keys())
@@ -257,6 +269,214 @@ def rs3():
     m = rows_of("hubble_mass_loss.csv")
     rows = [[fix(x["D_today"], 2), fix(x["m_s_over_m"], 2), fix(x["alpha_today"], 2), auto(x["gsum_over_H0"], 3), "yes" if num(x["gravity"]) > 0.5 else "no", fix(x["mass_ratio"], 5), fix(100 * num(x["h"]), 2), fix(x["dH0"], 2)] for x in m]
     table("tbl_massloss", ["$D_{VS}$ today", "$m_s/m$", "$\\alpha_{VS}$ today", "$\\mathrm{gsum}/H_0$", "gravity feels the deflation", "mass today / early", "$H_0$", "change"], rows, ["r"] * 8)
+
+
+def rs5():
+    """Tables of the supplement RS5 (microwave background on the deflating spacetime).
+
+    The tables are set in small type on a page that holds about 110 characters.  Every table therefore has at most
+    nine columns, short column heads (M and P stand for the closures "Momentum" and "Pressure"; the notes under the
+    tables in the document say so), and explicit relative widths of the columns ("r8": right-aligned, 8 units)."""
+    models = ["fiducial", "fluid, $N=0.5$", "stepped, $N=0.5$"]
+    b = rows_of("background_deflation.csv")
+    rows = [[models[int(num(x["model"]))], auto(x["gsum_over_H0"], 3), "angle" if num(x["fixed"]) > 0.5 else "$H_0$", fix(x["H0"], 2), fix(x["z_star"], 2),
+             fix(x["rs_star"], 2), fix(x["theta_star_100"], 5), fix(x["Y_He"], 4), fix(x["GN_star"], 4)] for x in b]
+    table("tbl_eb_background", ["model", "$\\mathrm{gsum}/H_0$", "held", "$H_0$", "$z_*$", "$r_s$ (Mpc)", "$100\\,\\theta_*$", "$Y_{\\rm He}$", "$G_N$ ratio"], rows,
+          ["l16", "r9", "l6", "r6", "r8", "r7", "r8", "r7", "r7"])
+
+    sm = rows_of("cmb_deflation_summary.csv")
+    rows = [[auto(x["gsum_over_H0"], 3), fix(x["H0"], 3), fix(x["GN_star"], 4), fix(x["Y_He"], 4), fix(x["sigma_8_M"], 4), fix(x["sigma_8_P"], 4),
+             sci(x["max_rel_TT"], 1) if num(x["gsum_over_H0"]) > 0 else "0", fix(x["cv_rss"], 1), fix(x["chi2_planck_M"], 2)] for x in sm]
+    table("tbl_eb_summary", ["$\\mathrm{gsum}/H_0$", "$H_0$", "$G_N$ ratio", "$Y_{\\rm He}$", "$\\sigma_8$, M", "$\\sigma_8$, P", "largest change", "ideal", "$\\Delta\\chi^2$"], rows,
+          ["r9", "r7", "r7", "r7", "r7", "r7", "r9", "r7", "r8"])
+    s0 = num(sm[0]["sigma_8_M"])
+    rows = [[auto(x["gsum_over_H0"], 3), sci(x["closure_cv_high"], 1), sci(x["closure_over_effect_high"], 1), fix(x["closure_cv_low"], 3), fix(x["closure_over_effect_low"], 2),
+             fix(num(x["sigma_8_M"]) / s0, 4), fix(num(x["sigma_8_P"]) / s0, 4)] for x in sm if num(x["gsum_over_H0"]) > 0]
+    table("tbl_eb_closure", ["$\\mathrm{gsum}/H_0$", "$\\ell\\ge30$: difference", "share of the effect", "$\\ell<30$: difference", "share of the effect",
+                             "$\\sigma_8$ ratio, M", "$\\sigma_8$ ratio, P"], rows, ["r9", "r11", "r10", "r11", "r10", "r8", "r8"])
+
+    pk = rows_of("cmb_deflation_peaks.csv")
+    rows = [[int(num(x["peak"])), fix(x["ell_0"], 1), fix(x["Dl_0"], 0), fix(x["ell_1"], 1), fix(x["Dl_1"], 0), fix(x["ell_4"], 1), fix(x["Dl_4"], 0)] for x in pk]
+    table("tbl_eb_peaks", ["peak", "$\\ell$: no deflation", "$D_\\ell^{TT}$", "$\\ell$: lunar ranging rate", "$D_\\ell^{TT}$", "$\\ell$: nucleosynthesis rate", "$D_\\ell^{TT}$"], rows,
+          ["r5", "r9", "r8", "r9", "r8", "r14", "r8"])
+
+    gp = rows_of("cmb_deflation_gaps.csv")
+    rows = [["M" if num(x["closure"]) < 0.5 else "P", fix(x["tau_cf"], 0), sci(x["a_gsum_over_Hc"], 1), fix(x["potential"], 4),
+             fix(x["momentum_gap"], 3), fix(x["trace_gap"], 3), fix(x["shear_gap"], 4), sci(x["shear_check"], 0), sci(x["trace_check"], 0)] for x in gp if abs(num(x["k"]) - 0.02) < 1e-9]
+    table("tbl_eb_gaps", ["closure", "$\\tau_{\\rm cf}$ (Mpc)", "$\\mathrm{gsum}/H$", "$\\mathcal U$", "$\\mathcal Y_M$", "$\\mathcal Y_T$", "$\\mathcal Y_S$", "check of (3.4)", "check of (3.2)"], rows,
+          ["l7", "r7", "r9", "r7", "r6", "r7", "r8", "r8", "r8"])
+
+    gr = rows_of("cmb_deflation_growth.csv")
+    rows = [[auto(x["gsum_over_H0"], 3), fix(x["growth_EB_fixed_H0_M"], 5), fix(x["growth_ODE_fixed_H0_M"], 5), fix(x["growth_EB_fixed_H0_P"], 5), fix(x["growth_ODE_fixed_H0_P"], 5)] for x in gr]
+    table("tbl_eb_growth", ["$\\mathrm{gsum}/H_0$", "program, M", "Eq. (4.2)", "program, P", "Eq. (4.1)"], rows, ["r9", "r9", "r9", "r9", "r9"])
+    rows = [[auto(x["gsum_over_H0"], 3), fix(x["H0"], 3), fix(x["growth_EB_M"], 5), fix(x["growth_EB_P"], 5), fix(x["sigma_8_ratio_M"], 5), fix(x["sigma_8_ratio_P"], 5)] for x in gr]
+    table("tbl_eb_growth_angle", ["$\\mathrm{gsum}/H_0$", "$H_0$", "growth, M", "growth, P", "$\\sigma_8$ ratio, M", "$\\sigma_8$ ratio, P"], rows, ["r9", "r8", "r9", "r9", "r9", "r9"])
+
+    cfg = ["Planck-like", "Planck-like and deep survey"]
+    cfg_short = ["Planck-like", "with deep survey"]
+    clo = ["M", "P"]
+    f = rows_of("deflation_fisher.csv")
+    rows = [[cfg_short[int(num(x["config"]))], clo[int(num(x["closure"]))], fix(x["sigma_rate"], 5), fix(x["bound95_rate"], 4), fix(x["sigma_rate_fixed"], 5), fix(x["dH0_drate"], 2),
+             fix(100 * num(x["sigma6_h"]), 3), fix(100 * num(x["sigma7_h"]), 3)] for x in f]
+    table("tbl_fc_fisher", ["mock data", "closure", "error of the rate", "bound", "six held", "slope", "error of $H_0$", "rate free"], rows,
+          ["l12", "l7", "r8", "r7", "r8", "r8", "r7", "r7"])
+    pr = rows_of("deflation_profile.csv")
+    rows = [[cfg_short[int(num(x["config"]))], clo[int(num(x["closure"]))], auto(x["gsum_over_H0"], 3), fix(x["chi2"], 3), fix(x["H0"], 3), fix(x["omega_c"], 5), fix(x["n_s"], 4),
+             fix(x["sigma8"], 4), fix(x["GN_star"], 4)] for x in pr]
+    table("tbl_fc_profile", ["mock data", "closure", "$\\mathrm{gsum}/H_0$", "$\\Delta\\chi^2$", "$H_0$", "$\\omega_c$", "$n_s$", "$\\sigma_8$", "$G_N$ ratio"], rows,
+          ["l14", "l6", "r8", "r7", "r7", "r8", "r7", "r7", "r7"])
+
+    # ---- the dark-radiation families: the main project against the deflating background ----
+    path = os.path.join(DATA, "dr_deflation_profiles.csv")
+    main_path = os.path.join(ROOT, "..", "data", "dr_profiles.csv")
+    # the names of the families are those of the tables of the main project (code/scripts/make_tables_cosmo.py):
+    # "model fluid" is the stepped fluid of the model, "Wess–Zumino fluid" the stepped fluid of the Wess-Zumino model
+    fam = ["free-streaming radiation", "fluid, no step", "model fluid, $z_t=10^4$", "model fluid, $z_t=2\\times10^4$", "model fluid, $z_t=5\\times10^4$",
+           "Wess–Zumino fluid, $z_t=2\\times10^4$", "model fluid, $z_t=10^6$"]
+    tag = ["planck", "deep"]
+    if os.path.exists(path) and os.path.exists(main_path):
+        d = rows_of("dr_deflation_profiles.csv")
+        with open(main_path, encoding="utf-8") as fh:
+            m = list(csv.DictReader(l for l in fh if not l.startswith("#")))
+
+        def find(rows_, c, fm, n):
+            for x in rows_:
+                if int(num(x["config"])) == c and int(num(x["family"])) == fm and abs(num(x["N"]) - n) < 1e-9:
+                    return x
+            return None
+        rows = []
+        for c in (0, 1):
+            base = find(d, c, -1, 0.0)
+            if base is not None:
+                rows.append([cfg_short[c], "no extra radiation", "0", "67.360", fix(base["H0"], 3), fix(num(base["H0"]) - 67.36, 3), "0", fix(base["chi2"], 3)])
+            for fm in range(7):
+                for n in (0.2, 0.5, 1.0):
+                    x, y = find(d, c, fm, n), find(m, c, fm, n)
+                    if x is None or y is None:
+                        continue
+                    rows.append([cfg_short[c], fam[fm], fix(n, 1), fix(y["H0"], 3), fix(x["H0"], 3), fix(num(x["H0"]) - num(y["H0"]), 3), fix(y["chi2"], 2), fix(x["chi2"], 2)])
+        table("tbl_fam_profiles", ["mock data", "family", "$N$", "$H_0$: no deflation", "deflating", "shift", "$\\Delta\\chi^2$: no deflation", "deflating"], rows,
+              ["l14", "l26", "r4", "r8", "r8", "r6", "r8", "r8"])
+        fd_path = os.path.join(DATA, "dr_deflation_fisher.csv")
+        if os.path.exists(fd_path):
+            fd = rows_of("dr_deflation_fisher.csv")
+            with open(os.path.join(ROOT, "..", "data", "dr_fisher.csv"), encoding="utf-8") as fh:
+                fm_ = list(csv.DictReader(l for l in fh if not l.startswith("#")))
+            rows = []
+            for x in fd:
+                y = [q for q in fm_ if q["config"] == x["config"] and q["family"] == x["family"]]
+                if not y:
+                    continue
+                y = y[0]
+                rows.append([cfg_short[int(num(x["config"]))], fam[int(num(x["family"]))], fix(y["sigma_N"], 4), fix(x["sigma_N"], 4), fix(y["dH0_dN"], 3), fix(x["dH0_dN"], 3)])
+            table("tbl_fam_fisher", ["mock data", "family", "error of $N$: no deflation", "deflating", "$dH_0/dN$: no deflation", "deflating"], rows, ["l13", "l22", "r9", "r8", "r9", "r8"])
+
+        # The summary of the main project (S3, Sec. 3.4) for both backgrounds: the density N at which the best fit has
+        # Delta chi^2 = 4, the Hubble constant there, and the Delta chi^2 at which the best-fit Hubble constant reaches
+        # the local value 73.50.  The interpolations are those of the script of the main project
+        # (code/scripts/make_tables_cosmo.py): sqrt(chi^2) linear in N between the fitted points, H0 linear in N, linear
+        # extrapolation beyond the last point (marked by an asterisk).  The first point is the model without extra radiation.
+        def crossing(n, chi, target):
+            sq = [math.sqrt(max(c, 0.0)) for c in chi]
+            t = math.sqrt(target)
+            for i in range(1, len(n)):
+                if sq[i - 1] <= t <= sq[i]:
+                    return n[i - 1] + (t - sq[i - 1]) / (sq[i] - sq[i - 1]) * (n[i] - n[i - 1]), False
+            return n[-1] + (t - sq[-1]) / ((sq[-1] - sq[-2]) / (n[-1] - n[-2])), True
+
+        def interp(x, xs, ys):
+            if x <= xs[-1]:
+                for i in range(1, len(xs)):
+                    if xs[i - 1] <= x <= xs[i]:
+                        return ys[i - 1] + (x - xs[i - 1]) / (xs[i] - xs[i - 1]) * (ys[i] - ys[i - 1]), False
+                return ys[0], False
+            return ys[-1] + (ys[-1] - ys[-2]) / (xs[-1] - xs[-2]) * (x - xs[-1]), True
+
+        def summary(rows_, c, fm, first):
+            pts = sorted(((num(x["N"]), num(x["chi2"]), num(x["H0"])) for x in rows_ if int(num(x["config"])) == c and int(num(x["family"])) == fm), key=lambda q: q[0])
+            if len(pts) < 8:
+                return None
+            n = [0.0] + [q[0] for q in pts]
+            chi = [first[0]] + [q[1] for q in pts]
+            h0 = [first[1]] + [q[2] for q in pts]
+            n4, _ = crossing(n, chi, 4.0)
+            h4, _ = interp(n4, n, h0)
+            local = 73.50
+            if h0[-1] >= local:
+                n_loc, ex1 = interp(local, h0, n)[0], False
+            else:
+                n_loc, ex1 = n[-1] + (local - h0[-1]) / (h0[-1] - h0[-2]) * (n[-1] - n[-2]), True
+            s_loc, ex2 = interp(n_loc, n, [math.sqrt(max(c_, 0.0)) for c_ in chi])
+            return n4, h4, s_loc ** 2, "*" if (ex1 or ex2) else ""
+        joint_path = os.path.join(DATA, "dr_deflation_joint.csv")
+        jt = rows_of("dr_deflation_joint.csv") if os.path.exists(joint_path) else []
+
+        # Two columns of the tables that follow are combinations of columns of the file dr_deflation_joint.csv.
+        # At a fixed rate the best-fitting density is  N = (correlation * sigma_N_joint / sigma_rate_joint) * gsum/H_0
+        # (the conditional mean of a Gaussian), and along that line the best-fit Hubble constant changes by
+        # dH0_drate + dH0_dN * correlation * sigma_N_joint / sigma_rate_joint  per unit of gsum/H_0 (the "net slope").
+        def per_rate(x):
+            return num(x["correlation"]) * num(x["sigma_N_joint"]) / num(x["sigma_rate_joint"])
+
+        def net_slope(x):
+            return num(x["dH0_drate"]) + num(x["dH0_dN"]) * per_rate(x)
+        for c in (0, 1):
+            base = find(d, c, -1, 0.0)
+            if base is None:
+                continue
+            rows, ms = [], []
+            for fm in range(7):
+                a = summary(m, c, fm, (0.0, 67.36))
+                bq = summary(d, c, fm, (num(base["chi2"]), num(base["H0"])))
+                if a is None or bq is None:
+                    continue
+                rows.append([fam[fm], fix(a[0], 2), fix(bq[0], 2), fix(a[1], 2), fix(bq[1], 2), "%.0f%s" % (a[2], a[3]), "%.0f%s" % (bq[2], bq[3])])
+                j_ = [x for x in jt if int(num(x["config"])) == c and int(num(x["family"])) == fm]
+                if j_:
+                    # the compact form for the manuscripts: the fits and the joint Fisher matrix side by side
+                    ms.append([fam[fm], fix(a[0], 2), fix(bq[0], 2), fix(a[1], 2), fix(bq[1], 2), fix(j_[0]["sigma_N"], 3), fix(j_[0]["sigma_N_joint"], 3), fix(j_[0]["correlation"], 2),
+                               fix(net_slope(j_[0]), 1), fix(j_[0]["H0_gain"], 2)])
+            if rows:
+                table("tbl_fam_summary_" + tag[c], ["family", "$N$ at $\\Delta\\chi^2=4$: no deflation", "deflating", "$H_0$ there: no deflation", "deflating",
+                                                    "$\\Delta\\chi^2$ at $H_0=73.50$: no deflation", "deflating"], rows, ["l24", "r9", "r8", "r9", "r8", "r10", "r8"])
+            if ms and c == 0:
+                table("tbl_fam_ms", ["family", "$N$ at $\\Delta\\chi^2=4$: no deflation", "deflating", "$H_0$ there: no deflation", "deflating", "error of $N$: rate zero", "rate free", "correlation",
+                                     "net slope", "largest rise of $H_0$"], ms, ["l"] + ["r"] * 9)
+        # the rate and the extra radiation as free parameters together
+        # The documents say that the largest rise of the Hubble constant is reached at zero rate for every family and
+        # both data sets (check def-N4).  The tables therefore have no column for that rate; this script stops if the
+        # statement is not true of the data file.
+        if any(num(x["rate_at_gain"]) != 0.0 for x in jt):
+            sys.exit("write_doc_tables.py: dr_deflation_joint.csv has a largest rise of H_0 at a rate above zero; the tables and the text of RS5, Sec. 9.3, must be revised")
+        for c in (0, 1):
+            rows = [[fam[int(num(x["family"]))], fix(x["sigma_N"], 4), fix(x["sigma_N_joint"], 4), fix(x["sigma_rate_joint"], 4), fix(x["correlation"], 3),
+                     fix(per_rate(x), 2), fix(net_slope(x), 1), fix(x["H0_gain"], 2)] for x in jt if int(num(x["config"])) == c]
+            if rows:
+                table("tbl_fam_joint_" + tag[c], ["family", "error of $N$, rate zero", "error of $N$, rate free", "error of the rate, $N$ free", "correlation",
+                                                  "$N$ per unit rate", "net slope", "largest rise of $H_0$"], rows,
+                      ["l26", "r7", "r7", "r7", "r10", "r8", "r7", "r8"])
+
+    # ---- superfluid dark matter ----
+    path = os.path.join(DATA, "sfdm_deflation_bounds.csv")
+    if os.path.exists(path):
+        bgs = ["none", "lunar ranging rate", "nucleosynthesis rate, M", "nucleosynthesis rate, P"]
+        bd = rows_of("sfdm_deflation_bounds.csv")
+        # the Thomas-Fermi radius is given in parsec (the file has it in kpc)
+        rows = [[bgs[int(num(x["background"]))], fix(x["m_wdm_keV"], 1), fix(x["k_half_Mpc"], 2), fix(x["m_fermion_min_keV"], 4), sci(x["cs0_max"], 3), fix(x["cs0_max_m_per_s"], 5),
+                 fix(1e3 * num(x["R_TF_max_kpc"]), 3)] for x in bd]
+        table("tbl_sfdm_bounds", ["deflation", "relic (keV)", "half mode (Mpc$^{-1}$)", "fermion mass (keV)", "largest $c_{s0}/c$", "in m/s", "$R_{TF}$ (pc)"], rows,
+              ["l15", "r7", "r8", "r8", "r10", "r8", "r7"])
+        su = rows_of("sfdm_deflation_summary.csv")
+        keys = sorted({(int(num(x["family"])), num(x["parameter"])) for x in su})
+        rows = []
+        for fm, par in keys:
+            vals = {int(num(x["background"])): num(x["k_half_Mpc"]) for x in su if int(num(x["family"])) == fm and num(x["parameter"]) == par}
+            if 0 not in vals:
+                continue
+            label = ("fermions, $m=%g$ keV" % par) if fm == 0 else ("condensate, $c_{s0}/c=$ %s" % sci(par, 1))
+            rows.append([label] + [fix(vals.get(i, float("nan")), 3) for i in range(4)] + [fix(100 * (vals.get(2, float("nan")) / vals[0] - 1), 2)])
+        table("tbl_sfdm_half", ["dark matter", "no deflation", "lunar ranging rate", "nucleosynthesis rate, M", "nucleosynthesis rate, P", "change (per cent)"], rows,
+              ["l30", "r9", "r9", "r12", "r12", "r8"])
 
 
 def rs4():
@@ -332,9 +552,12 @@ SOURCE_FILES = [
     (["scalar.rs"], "modes of a scalar field: exponents, static source, creation, bounded solutions"),
     (["history.rs"], "the couplings along the clock; thresholds and events"),
     (["quench.rs"], "time-dependent mean-field dynamics of the shell model"),
-    (["cosmo_defl.rs"], "expansion with deflation, sound horizon, age, growth of structure"),
+    (["cosmo_defl.rs"], "expansion with deflation, sound horizon, age, bounds on the rate, growth of pressureless matter for the closures"),
+    (["spectra_defl.rs"], "assumption A3 and its closures; the Hubble constant at a fixed angle with the full thermal history; potentials and gaps of single modes; derivatives of the spectra"),
+    (["eb_cosmo.rs", "eb_boltzmann.rs", "eb_spectra.rs", "eb_fit.rs"], "the Einstein-Boltzmann program of the main project on the deflating spacetime: copies of four of its modules with a listed set of changes, written by `code/scripts/vendor_eb.py`"),
     (["symmetry_defl.rs"], "test of the 28 rotations and boosts; algebra of the vortex zero modes"),
     (["cmd_symmetry.rs", "cmd_channels.rs", "cmd_matter.rs", "cmd_paired.rs"], "the commands `symmetry`, `channels`, `matter`, `paired`"),
+    (["cmd_spectra.rs"], "the commands `background`, `spectrum`, `forecast`, `families`, `superfluid`"),
     (["main.rs"], "the commands `matrices`, `modes`, `history`, `quench`, `cosmology`"),
     (["io.rs", "lib.rs"], "writing of data files and reports; list of modules"),
 ]
@@ -367,6 +590,7 @@ def main():
     sources()
     rs1()
     rs3()
+    rs5()
     rs4()
     higgs_table()
     symmetry_tables()

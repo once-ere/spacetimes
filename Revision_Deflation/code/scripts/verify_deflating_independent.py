@@ -13,13 +13,21 @@ equations with a Magnus method of its own.  This script repeats the central resu
     squares of the evolution operators;
   * NUMERICALLY with general-purpose integrators (scipy) and with the Bessel functions of
     mpmath: the exact solutions of the mode equations, the number of created particles,
-    the creation of quanta of a scalar mode, the zero modes on a vortex line, and the
-    Hubble constant of a deflating model.
+    the creation of quanta of a scalar mode, the zero modes on a vortex line, the
+    Hubble constant of a deflating model, and recombination on the deflating background
+    (a three-level atom, independent of the recombination program of the main project);
+  * THE PERTURBATIONS OF ORDINARY SPACE (assumption A3), symbolically: the Einstein tensor
+    to first order in a perturbation for arbitrary rates and both signatures, the
+    identities between what the momentum constraint, the trace equation and the equation
+    of the shear lack when Newton's constant depends on the time, the growth equations of
+    the closures; and numerically: the growth of pressureless matter in the three
+    closures, against the Rust program and against its Einstein-Boltzmann calculation.
 
 The Dirac matrices are read from the files data/gamma1644.txt and data/gamma1671.txt of
 the main project (which three independent constructions of the main project agree on).
 
-Run from the folder Revision_Deflation (about one minute):
+Run from the folder Revision_Deflation (about one and a half minutes; after the commands
+`cosmology`, `matter` and `spectrum` of the Rust program, whose files it reads):
 
     python3 code/scripts/verify_deflating_independent.py
 
@@ -623,15 +631,18 @@ def part_hubble():
         rs += 1e-9 / math.sqrt(3.0 * math.exp(s_of(1e-9)) * orad)
         return 100.0 * rs / dm
     theta0 = model(0.0, h0)
-    # values of the Rust program.  (The comparison tests the term linear in gsum; the term gprod is nearly degenerate
-    # with the cosmological constant, which is adjusted to give the Hubble constant, and changes h by less than 1e-5.)
+    # values of the Rust program with the redshift of last scattering held at its value without deflation (column
+    # h_fixed_zstar; this routine holds it fixed as well; the full calculation is the subject of the check Idef-C2).
+    # (The comparison tests the term linear in gsum; the term gprod is nearly degenerate with the cosmological
+    # constant, which is adjusted to give the Hubble constant, and changes h by less than 1e-5.)
     want = {}
     path = os.path.join(ROOT, "data", "hubble_deflation.csv")
     if os.path.exists(path):
         rows = [l for l in open(path) if not l.startswith("#")]
+        col = rows[0].strip().split(",").index("h_fixed_zstar")
         for l in rows[1:]:
             c = [float(v) for v in l.split(",")]
-            want[round(c[0], 6)] = c[2]
+            want[round(c[0], 6)] = c[col]
     ok = abs(theta0 - 1.03965) < 2e-4
     found = []
     for ratio in (0.01, 0.1):
@@ -639,7 +650,501 @@ def part_hubble():
         w = want.get(ratio)
         ok &= w is not None and abs(h1 - w) < 2e-5
         found.append("gsum = %g H_0: %.3f km/s/Mpc (Rust program: %s)" % (ratio, 100 * h1, "%.3f" % (100 * w) if w else "file data/hubble_deflation.csv not found"))
-    report("Idef-C1", ok, "cosmology: an independent integration (scipy) of the expansion with three equal rates gives, at fixed 100 theta_* = %.5f, the Hubble constant for %s" % (theta0, "; for ".join(found)))
+    report("Idef-C1", ok, "cosmology: an independent integration (scipy) of the expansion with three equal rates gives, at fixed 100 theta_* = %.5f and with last scattering held at z_* = %.2f, the Hubble constant for %s" % (theta0, zstar, "; for ".join(found)))
+
+
+# ---------------------------------------------------------------------------------------
+# Part 5: perturbations of ordinary space on the deflating spacetime (assumption A3)
+# ---------------------------------------------------------------------------------------
+def part_perturbations():
+    """The Einstein equations of ordinary space to first order in a perturbation, the
+    identities between them, and the growth of structure in the three closures."""
+    tau, k, eps = sp.symbols("tau k epsilon", positive=True)
+    a = sp.Function("a")(tau)
+    h = sp.Function("h")(tau)
+    eta = sp.Function("eta")(tau)
+    hc = sp.Function("Hc")(tau)
+    bs = {t: sp.Function("b%d" % t)(tau) for t in (5, 6, 7)}
+    cosk = sp.cos(k * x[3])
+
+    def trunc(e):
+        return sp.expand(sp.series(sp.expand(e), eps, 0, 2).removeO())
+
+    def apply_rates(e):
+        # b_t'/b_t = -g_t a (the scale factor of x_t is const exp(-g_t x4), and dx4 = a dtau); a'/a = Hc
+        e = e.doit()
+        for t in (5, 6, 7):
+            b, r = bs[t], RATE[t]
+            e = e.subs(sp.Derivative(b, (tau, 2)), sp.diff(-r * a * b, tau).subs(sp.Derivative(b, tau), -r * a * b))
+            e = e.subs(sp.Derivative(b, tau), -r * a * b)
+        e = e.subs(sp.Derivative(a, (tau, 2)), sp.diff(hc * a, tau).subs(sp.Derivative(a, tau), hc * a))
+        e = e.subs(sp.Derivative(a, tau), hc * a)
+        return sp.simplify(e)
+
+    he = hc - a * gsum / 2
+    d1 = lambda f: sp.Derivative(f, tau)
+    d2 = lambda f: sp.Derivative(f, (tau, 2))
+    for tag in ("1644d", "1671d"):
+        sig = ETA[tag]
+        # coordinates: x0 static, x1..x3 ordinary space (plane wave along x3, synchronous gauge, Ma and Bertschinger 1995
+        # Eq. (4): h_11 = h_22 = -2 eta, h_33 = h + 4 eta), x4 -> conformal time tau, x5..x7 deflating
+        X = [x[0], x[1], x[2], x[3], tau, x[5], x[6], x[7]]
+        gd = [sp.Integer(sig[0]),
+              sig[1] * a**2 * (1 + eps * (-2 * eta) * cosk),
+              sig[2] * a**2 * (1 + eps * (-2 * eta) * cosk),
+              sig[3] * a**2 * (1 + eps * (h + 4 * eta) * cosk),
+              sig[4] * a**2,
+              sig[5] * bs[5]**2, sig[6] * bs[6]**2, sig[7] * bs[7]**2]
+        gi = [sp.series(1 / v, eps, 0, 2).removeO() for v in gd]
+        gam = [[[0] * 8 for _ in range(8)] for _ in range(8)]
+        for r in range(8):
+            for m in range(8):
+                for n in range(m, 8):
+                    s = 0
+                    if r == n:
+                        s += sp.diff(gd[r], X[m])
+                    if r == m:
+                        s += sp.diff(gd[r], X[n])
+                    if m == n:
+                        s -= sp.diff(gd[m], X[r])
+                    gam[r][m][n] = gam[r][n][m] = trunc(gi[r] * s / 2)
+
+        def ricci(m, n):
+            s = 0
+            for r in range(8):
+                s += sp.diff(gam[r][m][n], X[r]) - sp.diff(gam[r][m][r], X[n])
+                for l in range(8):
+                    s += gam[r][r][l] * gam[l][m][n] - gam[r][n][l] * gam[l][m][r]
+            return trunc(s)
+
+        ric = {}
+        for m in range(8):
+            for n in range(m, 8):
+                ric[(m, n)] = ric[(n, m)] = ricci(m, n)
+        rs = trunc(sum(gi[i] * ric[(i, i)] for i in range(8)))
+
+        def einstein(m, n):  # mixed components G^m_n
+            return trunc(gi[m] * ric[(m, n)] - (rs / 2 if m == n else 0))
+
+        first = {}
+        for (m, n) in [(4, 4), (4, 3), (1, 1), (2, 2), (3, 3), (0, 0), (5, 5), (1, 2), (1, 3), (4, 1), (4, 5), (3, 5)]:
+            e = einstein(m, n)
+            first[(m, n)] = apply_rates(e.coeff(eps, 1))
+            if (m, n) == (4, 4):
+                zeroth = apply_rates(e.coeff(eps, 0))
+            if (m, n) == (1, 1):
+                zeroth11 = apply_rates(e.coeff(eps, 0))
+        # with the signs of the project: s4 = -(sign of the time-time component); s4 a^2 G^4_4 = -(8 pi G) a^2 rho etc.
+        s4 = -sig[4]
+        ok_bg = sp.simplify(s4 * a**2 * zeroth + (3 * hc**2 - 3 * a * gsum * hc + a**2 * gprod)) == 0
+        # the space-space component of the unperturbed universe (it is 8 pi G times the total pressure)
+        ok_bg &= sp.simplify(s4 * a**2 * zeroth11 + (2 * d1(hc) + hc**2 - 2 * a * gsum * hc + a**2 * (gsq + gprod))) == 0
+        e_E = sp.simplify(s4 * a**2 * first[(4, 4)] - (2 * k**2 * eta - he * d1(h)) * cosk)
+        e_M = sp.simplify(s4 * a**2 * first[(4, 3)] - 2 * k * sp.sin(k * x[3]) * d1(eta))
+        e_T = sp.simplify(s4 * a**2 * (first[(1, 1)] + first[(2, 2)] + first[(3, 3)]) - (2 * k**2 * eta - 2 * he * d1(h) - d2(h)) * cosk)
+        e_S = sp.simplify(s4 * a**2 * (first[(3, 3)] - first[(1, 1)]) - sp.Rational(1, 2) * ((d2(h) + 6 * d2(eta)) + 2 * he * (d1(h) + 6 * d1(eta)) - 2 * k**2 * eta) * cosk)
+        ok = ok_bg and e_E == 0 and e_M == 0 and e_T == 0 and e_S == 0 and sp.simplify(first[(1, 1)] - first[(2, 2)]) == 0
+        ok &= all(first[q] == 0 for q in [(1, 2), (1, 3), (4, 1), (4, 5), (3, 5)])
+        extra = sp.simplify(first[(0, 0)]) != 0 and sp.simplify(first[(5, 5)]) != 0
+        report("I%sd-P1" % tag[2:4], ok and extra,
+               "%s: Einstein tensor of ordinary space to first order in a perturbation (plane wave along x3, synchronous gauge, conformal time, scale factors of x5, x6, x7 unperturbed; arbitrary rates; sympy). With Hc = a'/a, He = Hc - a gsum/2 and the signs chosen so that the time-time component is -(8 pi G) rho: background 3 Hc^2 - 3 a gsum Hc + a^2 gprod (time-time) and -(2 Hc' + Hc^2 - 2 a gsum Hc + a^2 (gsq + gprod)) (space-space); G^4_4: (2 k^2 eta - He h') cos(k x3); G^4_3: 2 k eta' sin(k x3); trace of the space-space part: (2 k^2 eta - 2 He h' - h'') cos(k x3); G^3_3 - G^1_1: (1/2)[(h'' + 6 eta'') + 2 He (h' + 6 eta') - 2 k^2 eta] cos(k x3); all divided by a^2. These are the equations (E), (M), (T), (S) of assumption A3: those of Ma and Bertschinger with Hc replaced by He in three of them. The components G^0_0 and G^5_5 along the extra coordinates are perturbed as well: an agent must hold those coordinates" % NAME[tag])
+
+    # ---- background: the derivative of Hc, and the quantity B of the closure "Pressure" ----
+    A, GA, HC, PH = sp.symbols("a ga Hc phat", positive=True)       # a, a gsum, Hc, gprod in conformal units
+    gr = sp.symbols("grho1:5", positive=True)                         # 8 pi G_N a^2 rho of four species
+    w3 = sp.Symbol("w3")
+    c3 = sp.Symbol("c3sq")                                            # sound speed squared of the fourth... third species
+    ws = [0, sp.Rational(1, 3), w3, -1]                               # dust, radiation, a general fluid, cosmological term
+    ssum = sum(gr)
+    psum = sum(wi * gi_ for wi, gi_ in zip(ws, gr))
+    m0 = -sum((1 + 3 * wi) * gi_ for wi, gi_ in zip(ws, gr)) / 6
+    hc_prime = m0 + (GA * (m0 + ssum / 3 + HC**2) - sp.Rational(2, 3) * PH * A**2 * HC) / (2 * HC - GA)
+    w3_prime = 3 * HC * (1 + w3) * (w3 - c3)
+    # derivative along the background of an expression in (a, ga, Hc, grho_i, w3); c3sq is treated as a constant here
+    rates = {A: A * HC, GA: GA * HC, HC: hc_prime, w3: w3_prime}
+    for wi, gi_ in zip(ws, gr):
+        rates[gi_] = (GA - (1 + 3 * wi) * HC) * gi_
+    D = lambda e: sum(sp.diff(e, v) * r for v, r in rates.items())
+    friedmann = HC**2 - GA * HC + A**2 * PH / 3 - ssum / 3
+    ok1 = sp.simplify(D(friedmann)) == 0
+    HE = HC - GA / 2
+    b_def = D(HE) - HE**2 + (ssum + psum) / 2
+    n_bg = sum((1 - 3 * wi) * gi_ for wi, gi_ in zip(ws, gr)) / 6 + GA**2 / 4 - A**2 * PH / 3
+    b_closed = GA * n_bg / (2 * HE)
+    # equal on the surface friedmann = 0: eliminate the cosmological term
+    on_shell = {gr[3]: sp.solve(friedmann, gr[3])[0]}
+    ok2 = sp.simplify((b_def - b_closed).subs(on_shell)) == 0
+    # the expression of the program for B' (function `rhs` of eb_boltzmann.rs)
+    n_prime = (((GA - HC) * gr[0]) + (1 - 3 * w3) * (GA - (1 + 3 * w3) * HC) * gr[2] - 3 * w3_prime * gr[2] + 4 * (GA + 2 * HC) * gr[3]) / 6 + GA**2 * HC / 2 - sp.Rational(2, 3) * A**2 * PH * HC
+    b_prime_prog = GA * (HC * n_bg + n_prime) / (2 * HE) - b_closed * D(HE) / HE
+    ok3 = sp.simplify(D(b_closed) - b_prime_prog) == 0
+    report("Idef-P2", ok1 and ok2 and ok3,
+           "background on the deflating spacetime (sympy; four species: pressureless matter, radiation, a fluid with a variable equation of state, cosmological term): the expression of the program for the derivative of the conformal Hubble rate is the derivative of the equation of the expansion Hc^2 - a gsum Hc + a^2 gprod/3 = (sum of 8 pi G_N a^2 rho)/3 with (8 pi G_N a^2 rho)' = (a gsum - (1 + 3 w) Hc) 8 pi G_N a^2 rho; the quantity B = He' - He^2 + 4 pi G_N a^2 (rho + P) equals a gsum [ (1/6) sum of 8 pi G_N a^2 rho (1 - 3 w) + (a gsum)^2/4 - a^2 gprod/3 ] / (2 He), which vanishes without deflation; and the expression of the program for B' is its derivative")
+
+    # ---- the agent in the unperturbed universe ----
+    # cosmic time x4: H = Hc/a, dH/dx4 = (Hc' - Hc^2)/a^2.  Time-time: 8 pi G_N rho = 3 H^2 - 3 gsum H + gprod (assumption A2: the
+    # agent has no energy density).  Space-space: 8 pi G_N (P + p_agent) = -(2 dH/dx4 + 3 H^2 - 2 gsum H + gsq + gprod).  Matter is
+    # conserved in ordinary space and G_N grows at the rate gsum: (8 pi G_N rho)' = gsum (8 pi G_N rho) - 3 H 8 pi G_N (rho + P).
+    Hs, Hd, gPm = sp.symbols("H Hdot gPm")
+    grho_bg = 3 * Hs**2 - 3 * gsum * Hs + gprod
+    total_p = -(2 * Hd + 3 * Hs**2 - 2 * gsum * Hs + gsq + gprod)
+    gp_matter = sp.solve(sp.Eq((6 * Hs - 3 * gsum) * Hd, gsum * grho_bg - 3 * Hs * (grho_bg + gPm)), gPm)[0]
+    p_agent = sp.simplify(total_p - gp_matter)
+    claim = -(gsum / Hs) * Hd - 2 * gsum * Hs + 2 * gprod - gsum * gprod / (3 * Hs)
+    e1 = sp.Symbol("e1", positive=True)
+    matter_era = sp.series(claim.subs({g55: e1, g66: e1, g77: e1}).subs(Hd, -sp.Rational(3, 2) * Hs**2), e1, 0, 2).removeO()
+    ok8 = sp.simplify(p_agent - claim) == 0 and sp.simplify(matter_era + sp.Rational(3, 2) * Hs * e1) == 0
+    report("Idef-P8", ok8,
+           "the agent in the unperturbed universe (sympy; arbitrary rates): if the time-time Einstein equation holds with matter alone (assumption A2: the agent that keeps the rates constant has no energy density), the space-space equation and the conservation of matter require the agent to have the pressure p_agent in ordinary space with 8 pi G_N p_agent = -(gsum/H) dH/dx4 - 2 gsum H + 2 gprod - gsum gprod/(3 H). To the first order in the rates this is -gsum H/2 in an era of matter: a tension, of the relative size gsum/H")
+
+    # ---- the identities between the three gaps ----
+    # functions of tau: metric h; matter: dust (delta1), radiation with shear (delta2, theta2, sigma2), a fluid with
+    # variable equation of state (delta3, theta3).  eta is eliminated with the energy constraint (E).
+    t = tau
+    f = lambda name: sp.Function(name)(t)
+    aa, hh, gg = f("a"), f("Hc"), f("ga")
+    g1, g2, g3, g4 = f("grho1"), f("grho2"), f("grho3"), f("grho4")
+    w3f, c3f = f("w3"), f("c3sq")
+    dl1, dl2, th2, sg2, dl3, th3 = f("delta1"), f("delta2"), f("theta2"), f("sigma2"), f("delta3"), f("theta3")
+    hfun = f("h")
+    hp = sp.Derivative(hfun, t)
+    wsf = [0, sp.Rational(1, 3), w3f, -1]
+    grf = [g1, g2, g3, g4]
+    ssum_f = sum(grf)
+    m0f = -sum((1 + 3 * wi) * gi_ for wi, gi_ in zip(wsf, grf)) / 6
+    phat = sp.Symbol("phat", positive=True)
+    hcp = m0f + (gg * (m0f + ssum_f / 3 + hh**2) - sp.Rational(2, 3) * phat * aa**2 * hh) / (2 * hh - gg)
+    rules = {sp.Derivative(aa, t): aa * hh, sp.Derivative(gg, t): gg * hh, sp.Derivative(hh, t): hcp,
+             sp.Derivative(w3f, t): 3 * hh * (1 + w3f) * (w3f - c3f)}
+    for wi, gi_ in zip(wsf, grf):
+        rules[sp.Derivative(gi_, t)] = (gg - (1 + 3 * wi) * hh) * gi_
+    # equations of motion of matter in the synchronous gauge (Ma and Bertschinger 1995, Eq. (30))
+    rules[sp.Derivative(dl1, t)] = -hp / 2
+    rules[sp.Derivative(dl2, t)] = -sp.Rational(4, 3) * th2 - sp.Rational(2, 3) * hp
+    rules[sp.Derivative(th2, t)] = k**2 * (dl2 / 4 - sg2)
+    rules[sp.Derivative(dl3, t)] = -(1 + w3f) * (th3 + hp / 2) - 3 * hh * (c3f - w3f) * dl3
+    rules[sp.Derivative(th3, t)] = -hh * (1 - 3 * c3f) * th3 + c3f * k**2 * dl3 / (1 + w3f)
+
+    def dt(e, times=1):
+        for _ in range(times):
+            e = sp.diff(e, t)
+            # replace first derivatives of everything but h (and sigma2, c3sq, which stay free functions) by the equations
+            for _ in range(3):
+                e = e.subs(rules)
+        return e
+
+    hef = hh - gg / 2
+    Dsum = g1 * dl1 + g2 * dl2 + g3 * dl3
+    Tsum = sp.Rational(4, 3) * g2 * th2 + (1 + w3f) * g3 * th3
+    DP = g2 * dl2 / 3 + c3f * g3 * dl3
+    Pi = sp.Rational(4, 3) * g2 * sg2
+    Rsum = g1 + sp.Rational(4, 3) * g2 + (1 + w3f) * g3
+    eta_e = (hef * hp - Dsum) / (2 * k**2)              # (E)
+    eta_p = dt(eta_e)
+    x2 = 2 * k**2 * eta_p - Tsum                         # momentum gap
+    zgap = dt(hp) + 2 * hef * hp - 2 * k**2 * eta_e + 3 * DP       # trace gap
+    alpha = (hp + 6 * eta_p) / (2 * k**2)
+    ygap = dt(alpha) + 2 * hef * alpha - eta_e + sp.Rational(3, 2) * Pi / k**2    # shear gap
+    nbg_f = (g1 + (1 - 3 * w3f) * g3 + 4 * g4) / 6 + gg**2 / 4 - aa**2 * phat / 3
+    bcl = gg * nbg_f / (2 * hef)
+    xq = hp * bcl - gg / 2 * (Dsum - 3 * DP)
+    # on the surface of the equation of the expansion
+    shell = {g4: 3 * (hh**2 - gg * hh + aa**2 * phat / 3) - g1 - g2 - g3}
+    id1 = sp.simplify((x2 - hef * zgap - xq).subs(shell))
+    id2 = sp.simplify((2 * k**2 * ygap - zgap - 3 / k**2 * (dt(x2) + 2 * hef * x2)).subs(shell))
+    report("Idef-P3", id1 == 0 and id2 == 0,
+           "the two identities between the gaps (sympy; pressureless matter, radiation with anisotropic stress, a fluid with variable equation of state and its own sound speed, cosmological term; arbitrary rates). With D, T, DP, Pi the sums of 8 pi G_N a^2 times the density, momentum, pressure and shear perturbations, eta eliminated by the energy constraint (E), and the equations of motion of matter of Ma and Bertschinger: momentum gap = 2 k^2 eta' - T, trace gap = h'' + 2 He h' - 2 k^2 eta + 3 DP, shear gap = alpha' + 2 He alpha - eta + (3/2) Pi/k^2 with alpha = (h' + 6 eta')/(2 k^2) obey  momentum gap = He (trace gap) + h' B - (a gsum/2)(D - 3 DP)  and  2 k^2 (shear gap) = (trace gap) + (3/k^2)[(momentum gap)' + 2 He (momentum gap)].  Without deflation B = 0 and a gsum = 0: the three gaps then vanish together, as in general relativity; with deflation they cannot all vanish")
+
+    # ---- growth of pressureless matter in the three closures ----
+    dlt = f("delta")
+    g_m = f("grho_m")
+    rules_m = {sp.Derivative(g_m, t): (gg - hh) * g_m}
+    # (E): 2 k^2 eta = He h' - g delta, h' = -2 delta'.  Closure "Momentum": eta' = 0.
+    eta_m = (hef * (-2 * sp.Derivative(dlt, t)) - g_m * dlt) / (2 * k**2)
+    mom = sp.diff(eta_m, t).subs(rules_m) * (-k**2 / hef)
+    law_m = sp.Derivative(dlt, (t, 2)) + (2 * sp.Derivative(hef, t) + g_m) / (2 * hef) * sp.Derivative(dlt, t) - (hh - gg) / (2 * hef) * g_m * dlt
+    ok_m = sp.simplify((mom - law_m).doit()) == 0
+    # closure "Pressure": h'' + 2 He h' - 2 k^2 eta = 0 with (E)
+    prs = (-2 * sp.Derivative(dlt, (t, 2)) + 2 * hef * (-2 * sp.Derivative(dlt, t)) - 2 * k**2 * eta_m) / (-2)
+    law_p = sp.Derivative(dlt, (t, 2)) + hef * sp.Derivative(dlt, t) - g_m * dlt / 2
+    ok_p = sp.simplify(prs - law_p) == 0
+    # first order in r = gam/E for matter alone and three equal rates: Q = (3/2)(1 - r), L = -3/2 + (5/4) r, r' = (3/2) r;
+    # delta = a (1 + beta r):  growth rate 1 + (3/2) beta r
+    r, beta = sp.symbols("r beta")
+    # exact: Q = (3/2)(1 - r + r^2/9), L = (1 - r + r^2/9)(r - 3)/(2 - r)
+    Lx = sp.series((1 - r + r**2 / 9) * (r - 3) / (2 - r), r, 0, 2).removeO()
+    Qx = sp.Rational(3, 2) * (1 - r)
+    laws = {"Pressure": (2 + Lx - r / 2, Qx),
+            "Momentum": (1 + Lx + (2 * (1 + Lx) - r + 2 * Qx) / (2 - r), (1 - r) / (1 - r / 2) * Qx),
+            "four-dimensional": (2 + Lx, Qx)}
+    cs = {}
+    for name, (fr, src) in laws.items():
+        # delta = e^x (1 + beta r), r' = (3/2) r:  delta' = e^x (1 + (5/2) beta r), delta'' = e^x (1 + (25/4) beta r)
+        res = sp.series((1 + sp.Rational(25, 4) * beta * r) + fr * (1 + sp.Rational(5, 2) * beta * r) - src * (1 + beta * r), r, 0, 2).removeO()
+        sol = sp.solve(sp.expand(res).coeff(r, 1), beta)[0]
+        ok0 = sp.expand(res).coeff(r, 0) == 0
+        cs[name] = (sp.Rational(3, 2) * sol, ok0)
+    ok_c = cs["Pressure"] == (sp.Rational(-9, 16), True) and cs["Momentum"] == (sp.Rational(-13, 16), True) and cs["four-dimensional"] == (sp.Rational(-11, 16), True)
+    report("Idef-P4", ok_m and ok_p and ok_c,
+           "growth of pressureless matter (sympy). From (E) with the momentum constraint: delta'' + [(2 He' + g)/(2 He)] delta' = [(Hc - a gsum)/(2 He)] g delta (closure \"Momentum\"); from (E) with the trace equation: delta'' + He delta' = g delta/2, that is, in the time x4, delta'' + (2 H - gsum/2) delta' = 4 pi G_N rho_m delta (closure \"Pressure\"); g = 8 pi G_N a^2 rho_m, primes in conformal time. Both hold for every wavenumber. For matter alone and three equal rates, to the first order in r = gsum/H the growth rate is d ln delta/d ln a = 1 + c r with c = %s (\"Pressure\"), %s (\"Momentum\"), and %s for the four-dimensional equation delta'' + 2 H delta' = 4 pi G_N rho_m delta, which is neither" % (cs["Pressure"][0], cs["Momentum"][0], cs["four-dimensional"][0]))
+
+
+def growth_models():
+    """Numerical growth of pressureless matter in the closures, by general-purpose integrators."""
+    ob, oc, h0, tcmb, nur = 0.02237, 0.1200, 0.6736, 2.7255, 3.044
+    og = 2.4728e-5 * (tcmb / 2.7255) ** 4
+    orad = og * (1.0 + nur * (7.0 / 8.0) * (4.0 / 11.0) ** (4.0 / 3.0))
+    om = ob + oc
+    HL = 2997.92458  # c/H_100 in Mpc
+
+    def background(gam, h, radiation=True):
+        p = gam * gam / 3.0
+        orr = orad if radiation else 0.0
+        ol = h * h - gam * h + p / 3.0 - orr - om
+        def e_of(a, s):
+            return 0.5 * gam + math.sqrt(0.25 * gam * gam - p / 3.0 + math.exp(s) * (orr / a**4 + om / a**3 + ol))
+        lmin = math.log(1e-3)
+        sol = solve_ivp(lambda l, s: [gam / e_of(math.exp(l), s[0])], (0.0, lmin), [0.0], method="DOP853", rtol=1e-12, atol=1e-14, dense_output=True)
+        s_of = lambda l: float(sol.sol(l)[0])
+        return e_of, s_of, p
+
+    def growth_law(gam, h, law):
+        e_of, s_of, p = background(gam, h)
+        def rhs(l, y):
+            a = math.exp(l)
+            s = s_of(l)
+            e = e_of(a, s)
+            d_e = (e_of(a * 1.0001, s_of(l + math.log(1.0001))) - e_of(a / 1.0001, s_of(l - math.log(1.0001)))) / (2 * math.log(1.0001))
+            L = d_e / e
+            q = 1.5 * math.exp(s) * om / (a**3 * e * e)
+            qr = 2.0 * math.exp(s) * orad / (a**4 * e * e)
+            r = gam / e
+            if law == "P":
+                return [y[1], -(2 + L - 0.5 * r) * y[1] + q * y[0]]
+            if law == "M":
+                return [y[1], -(1 + L + (2 * (1 + L) - r + 2 * (q + qr)) / (2 - r)) * y[1] + (1 - r) / (1 - 0.5 * r) * q * y[0]]
+            return [y[1], -(2 + L) * y[1] + q * y[0]]
+        a0 = 0.01
+        sol = solve_ivp(rhs, (math.log(a0), 0.0), [a0 + 2.0 * (orad / om) / 3.0, a0], method="DOP853", rtol=1e-10, atol=1e-14)
+        return sol.y[0, -1]
+
+    def growth_system(gam, h, kk, closure):
+        """Pressureless matter and the metric (eta, and alpha for the closure "Shear"), no approximation:
+        h' = (2 k^2 eta + g delta)/He, delta' = -h'/2, and for eta: "M": eta' = 0; "P": 2 k^2 eta' = h' B - (a gsum/2) g delta;
+        "S": eta' = (2 k^2 alpha - h')/6, alpha' = -2 He alpha + eta.  Independent variable ln a.  Stiff: implicit method."""
+        e_of, s_of, p = background(gam, h, radiation=False)
+        def quantities(l):
+            a = math.exp(l)
+            s = s_of(l)
+            e = e_of(a, s)
+            hcv = a * e / HL
+            ga = a * gam / HL
+            g = 3.0 * math.exp(s) * om / a / HL**2
+            gl = 3.0 * math.exp(s) * (h * h - gam * h + p / 3.0 - om) * a * a / HL**2
+            return a, hcv, ga, g, gl
+        def rhs(l, y):
+            a, hcv, ga, g, gl = quantities(l)
+            he = hcv - 0.5 * ga
+            delta, eta_ = y[0], y[1]
+            hpr = (2 * kk * kk * eta_ + g * delta) / he
+            out = [-0.5 * hpr / hcv]
+            if closure == "M":
+                out.append(0.0)
+            elif closure == "P":
+                # B for matter and a cosmological term (radiation is neglected in this system: background of matter and Lambda)
+                b = ga * ((g + 4 * gl) / 6.0 + 0.25 * ga * ga - (a * a * p / HL**2) / 3.0) / (2 * he)
+                out.append((hpr * b - 0.5 * ga * g * delta) / (2 * kk * kk) / hcv)
+            else:
+                alpha = y[2]
+                out.append((2 * kk * kk * alpha - hpr) / 6.0 / hcv)
+                out.append((-2 * he * alpha + eta_) / hcv)
+            return out
+        a0 = 0.01
+        l0 = math.log(a0)
+        a, hcv, ga, g, gl = quantities(l0)
+        he = hcv - 0.5 * ga
+        d0, dd0 = a0, a0                      # growing solution of a matter universe: delta = a
+        hpr0 = -2.0 * hcv * dd0
+        eta0 = (he * hpr0 - g * d0) / (2 * kk * kk)
+        y0 = [d0, eta0] + ([hpr0 / (2 * kk * kk)] if closure == "S" else [])
+        sol = solve_ivp(rhs, (l0, 0.0), y0, method="Radau", rtol=1e-10, atol=1e-16)
+        return sol.y[0, -1]
+
+    return growth_law, growth_system, h0, orad, om
+
+
+def part_growth():
+    growth_law, growth_system, h0, orad, om = growth_models()
+    # (1) the Rust routine cosmo_defl::growth (file data/growth_deflation.csv) against scipy, at a fixed Hubble constant
+    path = os.path.join(ROOT, "data", "growth_deflation.csv")
+    rows, head = [], []
+    if os.path.exists(path):
+        lines = [l for l in open(path) if not l.startswith("#")]
+        head = lines[0].strip().split(",")
+        rows = [[float(v) for v in l.split(",")] for l in lines[1:]]
+    ok = bool(rows)
+    dev = 0.0
+    found = []
+    ref = {law: growth_law(0.0, h0, law) for law in ("M", "P", "N4")}
+    for row in rows:
+        ratio = row[0]
+        if ratio == 0.0 or ratio > 0.11:
+            continue
+        for law in ("M", "P", "N4"):
+            mine = growth_law(ratio * h0, h0, law) / ref[law]
+            theirs = row[head.index("growth_ratio_fixed_h_" + law)]
+            dev = max(dev, abs(mine / theirs - 1.0))
+            if abs(ratio - 0.1) < 1e-9:
+                found.append("%s %.5f (Rust %.5f)" % ({"M": "closure \"Momentum\"", "P": "closure \"Pressure\"", "N4": "four-dimensional equation"}[law], mine, theirs))
+    ok &= dev < 2e-5
+    report("Idef-P5", ok,
+           "growth of pressureless matter from a = 0.01 to today at a fixed Hubble constant, relative to no deflation: an independent integration (scipy) of the three growth equations agrees with the Rust program (data/growth_deflation.csv) to %.1e for the rates up to 0.1 H_0; at gsum = 0.1 H_0: %s" % (dev, "; ".join(found)))
+    # (2) the closures as systems for the density and the metric, at several wavenumbers (matter and cosmological term)
+    gam = 0.1 * h0
+    HL = 2997.92458
+    sys_ref = {c: growth_system(0.0, h0, 0.1, c) for c in ("M", "P", "S")}
+    table = []
+    ok = True
+    worst_mp = 0.0
+    shear_dev = []
+    for kk in (0.1, 0.03, 0.01, 0.003):
+        vals = {c: growth_system(gam, h0, kk, c) / growth_system(0.0, h0, kk, c) for c in ("M", "P", "S")}
+        table.append((kk, vals))
+        shear_dev.append(abs(vals["S"] / vals["P"] - 1.0))
+    base = table[0][1]
+    for kk, vals in table:
+        worst_mp = max(worst_mp, abs(vals["M"] / base["M"] - 1.0), abs(vals["P"] / base["P"] - 1.0))
+    # "Momentum" and "Pressure" do not depend on the wavenumber; "Shear" approaches "Pressure" as (H/k)^2
+    hub_today = h0 / HL
+    scaled = [d / (hub_today / kk) ** 2 for d, (kk, _) in zip(shear_dev, table)]
+    ok = worst_mp < 1e-7 and shear_dev[0] < 2e-4 and all(shear_dev[i] < shear_dev[i + 1] for i in range(3)) and abs(base["M"] / base["P"] - 1.0) > 0.01
+    ok &= all(0.2 < s_ / scaled[0] < 5.0 for s_ in scaled[:3])
+    report("Idef-P6", ok,
+           "the three closures as systems of equations for the density contrast of pressureless matter and the metric (matter and cosmological term; implicit integrator of scipy; gsum = 0.1 H_0, Hubble constant fixed; growth from a = 0.01 to today relative to no deflation). Closure \"Momentum\": %.6f; closure \"Pressure\": %.6f; neither depends on the wavenumber (to %.0e for k = 0.1, 0.03, 0.01, 0.003/Mpc). Closure \"Shear\" (energy constraint and equation of the shear; its equations are stiff, because the momentum density of the agent relaxes at the rate k^2/(3 Hc)): %s; it differs from the closure \"Pressure\" by %s, that is by %s times (H_0/k)^2: far inside the horizon the closure \"Shear\" is the closure \"Pressure\"" % (base["M"], base["P"], worst_mp, ", ".join("%.6f at k = %g/Mpc" % (v["S"], kk) for kk, v in table), ", ".join("%.1e" % d for d in shear_dev), ", ".join("%.2f" % s_ for s_ in scaled)))
+    # (3) the Einstein-Boltzmann program against the growth equations (file data/cmb_deflation_growth.csv)
+    path = os.path.join(ROOT, "data", "cmb_deflation_growth.csv")
+    ok = os.path.exists(path)
+    dev = 0.0
+    n = 0
+    if ok:
+        lines = [l for l in open(path) if not l.startswith("#")]
+        head = lines[0].strip().split(",")
+        for l in lines[2:]:
+            row = [float(v) for v in l.split(",")]
+            for law in ("M", "P"):
+                mine = growth_law(row[0] * h0, h0, law) / ref[law]
+                dev = max(dev, abs(row[head.index("growth_EB_fixed_H0_" + law)] / mine - 1.0))
+                n += 1
+    ok &= n == 10 and dev < 3e-4
+    report("Idef-P7", ok,
+           "the Einstein-Boltzmann program of the revision against the growth equations: for the five rates of data/cmb_deflation_growth.csv and both closures, the growth of the density contrast of matter at k = 0.1/Mpc from a = 0.01 to today in the full calculation (photons, neutrinos, baryons, cold dark matter), relative to no deflation and at a fixed Hubble constant, agrees with the independent integration (scipy) of the growth equation of the closure to %.1e" % dev)
+
+
+def part_recombination():
+    """An independent calculation of recombination (the three-level atom of Peebles) on the deflating
+    background: the shift of last scattering, the helium fraction, and the Hubble constant at a fixed angle."""
+    c, kB, hP, me, mH = 299792458.0, 1.380649e-23, 6.62607015e-34, 9.1093837015e-31, 1.673575e-27
+    sigT, GN, eV, Mpc = 6.6524587321e-29, 6.67430e-11, 1.602176634e-19, 3.0856775814913673e22
+    ob, oc, h0, tcmb, nur = 0.02237, 0.1200, 0.6736, 2.7255, 3.044
+    h100 = 1e5 / Mpc
+    rho_c100 = 3.0 * h100**2 / (8.0 * math.pi * GN)
+    a_rad = 8.0 * math.pi**5 * kB**4 / (15.0 * hP**3 * c**3)
+    og = a_rad * tcmb**4 / c**2 / rho_c100
+    orad = og * (1.0 + nur * (7.0 / 8.0) * (4.0 / 11.0) ** (4.0 / 3.0))
+    e_ion = 13.605693 * eV
+    lam_a, lam_2s = 121.5670e-9, 8.2246
+
+    def model(gam, h, zstar_fixed=None, helium=True):
+        p = gam * gam / 3.0
+        ol = h * h - gam * h + p / 3.0 - orad - ob - oc
+        def e_of(a, s):
+            return 0.5 * gam + math.sqrt(0.25 * gam * gam - p / 3.0 + math.exp(s) * (orad / a**4 + (ob + oc) / a**3 + ol))
+        lmin = math.log(1e-9)
+        if gam > 0.0:
+            sol = solve_ivp(lambda l, s: [gam / e_of(math.exp(l), s[0])], (0.0, lmin), [0.0], method="DOP853", rtol=1e-11, atol=1e-13, dense_output=True)
+            s_of = lambda a: float(sol.sol(max(math.log(a), lmin))[0])
+        else:
+            s_of = lambda a: 0.0
+        e = lambda a: e_of(a, s_of(a))
+        g_early = math.exp(s_of(1e-9))
+        # helium: the fit to the code PArthENoPE quoted by the Planck Collaboration (2016), shifted to 0.2454 for the
+        # standard model; a Newton's constant smaller by the factor g_early is equivalent to 43 (g_early - 1)/7 neutrino species
+        fit = lambda dn: 0.2311 + 0.9502 * ob - 11.27 * ob * ob + dn * (0.01356 + 0.008581 * ob - 0.1810 * ob * ob) + dn * dn * (-0.0009795 - 0.001370 * ob + 0.01746 * ob * ob)
+        y_he = 0.2454 + (fit(43.0 / 7.0 * (g_early - 1.0)) - fit(0.0) if helium else 0.0)
+        nh0 = (1.0 - y_he) * ob * rho_c100 / mH
+        f_he = y_he / (3.9715 * (1.0 - y_he))
+        hub = lambda z: h100 * e(1.0 / (1.0 + z))
+        if zstar_fixed is None:
+            # hydrogen: Peebles' three-level atom with the case-B coefficient of Pequignot et al. times 1.14; helium neutral
+            def rhs(z, y):
+                x, tm = y
+                tr = tcmb * (1.0 + z)
+                nh = nh0 * (1.0 + z) ** 3
+                hz = hub(z)
+                t4 = tm / 1e4
+                alpha = 1.14 * 1e-19 * 4.309 * t4 ** (-0.6166) / (1.0 + 0.6703 * t4**0.5300)
+                beta = alpha * (2.0 * math.pi * me * kB * tm / hP**2) ** 1.5 * math.exp(-e_ion / (4.0 * kB * tm))
+                kk = lam_a**3 / (8.0 * math.pi * hz)
+                cr = (1.0 + kk * lam_2s * nh * (1.0 - x)) / (1.0 + kk * (lam_2s + beta) * nh * (1.0 - x))
+                dxdt = -cr * (alpha * nh * x * x - beta * (1.0 - x) * math.exp(-0.75 * e_ion / (kB * tm)))
+                compton = 8.0 * sigT * a_rad * tr**4 / (3.0 * me * c) * x / (1.0 + x + f_he)
+                dtmdt = -2.0 * hz * tm + compton * (tr - tm)
+                return [-dxdt / ((1.0 + z) * hz), -dtmdt / ((1.0 + z) * hz)]
+            z0 = 1800.0
+            t0 = tcmb * (1.0 + z0)
+            saha = (2.0 * math.pi * me * kB * t0 / hP**2) ** 1.5 * math.exp(-e_ion / (kB * t0)) / (nh0 * (1.0 + z0) ** 3)
+            x0 = 0.5 * (-saha + math.sqrt(saha * saha + 4.0 * saha))
+            rec = solve_ivp(rhs, (z0, 0.0), [x0, t0], method="LSODA", rtol=1e-9, atol=[1e-13, 1e-9], dense_output=True)
+            dkap = lambda z: c * sigT * nh0 * (1.0 + z) ** 2 * float(rec.sol(z)[0]) / hub(z)
+            kap_low = quad(dkap, 0.0, 800.0, epsabs=0, epsrel=1e-9, limit=400)[0]
+            kappa = lambda z: kap_low + quad(dkap, 800.0, z, epsabs=0, epsrel=1e-10, limit=400)[0]
+            zstar = brentq(lambda z: kappa(z) - 1.0, 900.0, 1300.0, xtol=1e-7)
+        else:
+            zstar = zstar_fixed
+        a_star = 1.0 / (1.0 + zstar)
+        dm = quad(lambda l: 1.0 / (math.exp(l) * e(math.exp(l))), math.log(a_star), 0.0, epsabs=0, epsrel=1e-10, limit=400)[0]
+        cs = lambda a: 1.0 / math.sqrt(3.0 * (1.0 + 0.75 * ob * a / og))
+        rs = quad(lambda l: cs(math.exp(l)) / (math.exp(l) * e(math.exp(l))), lmin, math.log(a_star), epsabs=0, epsrel=1e-10, limit=400)[0]
+        rs += 1e-9 / math.sqrt(3.0 * g_early * orad)
+        return {"theta": 100.0 * rs / dm, "zstar": zstar, "y_he": y_he, "g_early": g_early}
+
+    # the Rust program
+    path = os.path.join(ROOT, "data", "hubble_deflation.csv")
+    rust = {}
+    if os.path.exists(path):
+        lines = [l for l in open(path) if not l.startswith("#")]
+        head = lines[0].strip().split(",")
+        for l in lines[1:]:
+            v = [float(q) for q in l.split(",")]
+            rust[round(v[0], 6)] = dict(zip(head, v))
+    ok = bool(rust) and "h_fixed_zstar" in next(iter(rust.values()), {})
+    base = model(0.0, h0)
+    z0_rust = rust.get(0.0, {}).get("z_star", float("nan"))
+    ok &= abs(base["zstar"] - z0_rust) < 3.0 and abs(base["theta"] / 1.03965 - 1.0) < 2e-3
+    text = []
+    worst = [0.0, 0.0, 0.0, 0.0]
+    for ratio in (0.03, 0.1):
+        r = rust.get(ratio)
+        if r is None:
+            ok = False
+            continue
+        gam = ratio * h0
+        # (a) last scattering and helium at the Hubble constant of the Rust program
+        m = model(gam, r["h"])
+        dz_mine, dz_rust = m["zstar"] - base["zstar"], r["z_star"] - z0_rust
+        dy_mine, dy_rust = m["y_he"] - base["y_he"], r["Y_He"] - rust[0.0]["Y_He"]
+        worst[0] = max(worst[0], abs(dz_mine / dz_rust - 1.0))
+        worst[1] = max(worst[1], abs(dy_mine / dy_rust - 1.0))
+        # (b) the Hubble constant at the fixed angle: full, and with last scattering and helium held fixed
+        h_full = brentq(lambda h: model(gam, h)["theta"] - base["theta"], 0.5, 0.75, xtol=1e-9)
+        h_fix = brentq(lambda h: model(gam, h, zstar_fixed=base["zstar"], helium=False)["theta"] - base["theta"], 0.5, 0.75, xtol=1e-9)
+        worst[2] = max(worst[2], abs((h_full - h0) / (r["h"] - h0) - 1.0))
+        worst[3] = max(worst[3], abs((h_fix - h0) / (r["h_fixed_zstar"] - h0) - 1.0))
+        text.append("gsum = %g H_0: last scattering moves by %+.3f (Rust: %+.3f), the helium fraction by %+.5f (%+.5f); Hubble constant %.3f km/s/Mpc (Rust: %.3f), and %.3f (%.3f) if last scattering and helium are held fixed" % (ratio, dz_mine, dz_rust, dy_mine, dy_rust, 100 * h_full, 100 * r["h"], 100 * h_fix, 100 * r["h_fixed_zstar"]))
+        ok &= h_full < h_fix
+    ok &= worst[0] < 0.02 and worst[1] < 1e-3 and worst[2] < 2e-3 and worst[3] < 5e-4
+    report("Idef-C2", ok,
+           "recombination on the deflating background, independently: Peebles' three-level atom (scipy; not the recombination program of the main project) gives z_* = %.2f without deflation (Rust program: %.2f) and 100 theta_* = %.5f (1.03965). For %s. The shifts of last scattering agree to %.1f per cent, the changes of the Hubble constant at the fixed angle to %.2f per cent (full) and %.2f per cent (last scattering and helium held fixed): the larger fall of the Hubble constant in the full calculation is confirmed by a calculation that shares no recombination code with it" % (base["zstar"], z0_rust, base["theta"], "; for ".join(text), 100 * worst[0], 100 * worst[2], 100 * worst[3]))
 
 
 def main():
@@ -651,6 +1156,15 @@ def main():
     part_modes()
     part_vortex()
     part_hubble()
+    part_recombination()
+    part_perturbations()
+    part_growth()
+    # (checks of Part 5 in the order of their numbers)
+    order = ["I44d-P1", "I71d-P1", "Idef-P2", "Idef-P3", "Idef-P4", "Idef-P5", "Idef-P6", "Idef-P7", "Idef-P8"]
+    tail = [l for l in LINES if any((" %s  " % c) in l for c in order)]
+    if len(tail) == len(order):
+        rest = [l for l in LINES if l not in tail]
+        LINES[:] = rest + sorted(tail, key=lambda l: order.index(next(c for c in order if (" %s  " % c) in l)))
     n_ok = sum(1 for l in LINES if l.startswith("[PASS]"))
     head = ["PROJECT spacetimes, Revision_Deflation: independent verification (computer algebra and general-purpose numerical tools)",
             "generated by: code/scripts/verify_deflating_independent.py (sympy %s, scipy, numpy %s, mpmath %s)" % (sp.__version__, np.__version__, mp.__version__),

@@ -220,22 +220,54 @@ pub fn solve_h<M: Fn(f64) -> f64>(base: &Model, z_star: f64, theta100: f64, mass
     0.5 * (lo + hi)
 }
 
-/// Linear growth of the density contrast of matter in ordinary space, far inside the
-/// horizon (Newtonian limit of the eight-dimensional theory for matter that is spread
-/// uniformly over the extra coordinates):
+/// Which equation the density contrast of matter obeys on the deflating spacetime.
 ///
-///     d^2 delta/dx4^2 + 2 H d delta/dx4 = 4 pi G_N(x4) rho_m delta ,
+/// With a Newton's constant that depends on the time, the Einstein equations of ordinary
+/// space cannot all hold with matter alone; which of them hold is the closure of the
+/// perturbation equations (assumption A3; module `spectra_defl`).  The growth of structure
+/// depends on the closure at the first order in the rate of deflation.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum GrowthLaw {
+    /// closure "Momentum": energy and momentum constraints
+    Momentum,
+    /// closure "Pressure": energy constraint and trace equation (also the closure "Shear",
+    /// energy constraint and equation of the shear, far inside the horizon)
+    Pressure,
+    /// the equation of four-dimensional Newtonian gravity with Newton's constant of the
+    /// moment.  It is NOT a consequence of the eight-dimensional equations with either
+    /// closure; an earlier version of this project used it (error R-E33 of the provenance
+    /// RP9), and it is kept so that the size of that error can be stated.
+    FourDimensional,
+}
+
+/// Linear growth of the density contrast delta of pressureless matter in ordinary space,
+/// for matter that is spread uniformly over the extra coordinates.  With a prime for
+/// d/d ln a, E = H/H_100, r = gam/E, omega_m(a) = omega_b + omega_c mass(s),
 ///
-/// that is, with a prime for d/d ln a and omega_m(a) = omega_b + omega_c mass(s),
+///     Q = (3/2) exp(s) omega_m(a) a^-3 / E^2 ,    Q_r = 2 exp(s) omega_r a^-4 / E^2 ,    L = E'/E ,
 ///
-///     delta'' + (2 + E'/E) delta' = (3/2) exp(s) omega_m(a) a^-3 delta / E^2 .
+/// the three laws are (derived in the provenance RS3 of the revision and, by computer
+/// algebra, in code/scripts/verify_deflating_independent.py):
 ///
-/// (For `gravity = false` the factor exp(s) is absent.)  The equation is integrated on
-/// the grid of `hist` from the first grid point with a >= a_start to a = 1, with the
-/// classical Runge-Kutta method over two grid intervals per step; it starts on the
-/// growing solution delta = a + 2 a_eq/3, delta' = a of a universe of matter and
-/// radiation.  Returns (delta at a = 1, f = d ln delta/d ln a at a = 1).
-pub fn growth<M: Fn(f64) -> f64>(m: &Model, hist: &History, a_start: f64, mass: &M) -> (f64, f64) {
+///     Pressure:         delta'' + (2 + L - r/2) delta' = Q delta ,
+///                       that is  d^2 delta/dx4^2 + (2 H - gsum/2) d delta/dx4 = 4 pi G_N(x4) rho_m delta ;
+///     Momentum:         delta'' + { 1 + L + [2 (1 + L) - r + 2 (Q + Q_r)]/(2 - r) } delta' = [(1 - r)/(1 - r/2)] Q delta ;
+///     FourDimensional:  delta'' + (2 + L) delta' = Q delta ,
+///                       that is  d^2 delta/dx4^2 + 2 H d delta/dx4 = 4 pi G_N(x4) rho_m delta .
+///
+/// "Pressure" is exact for pressureless matter at every wavenumber; "Momentum" is exact
+/// for pressureless matter alone and, with the term Q_r (the momentum of radiation that
+/// streams freely), holds far inside the horizon when radiation is present.  Without
+/// deflation (r = 0, where L = -Q - Q_r) the three coincide.  For `gravity = false` the
+/// factor exp(s) and the terms with r are absent, and the three laws are the same equation.
+/// The laws "Momentum" and "Pressure" assume that the rest mass of the matter is constant
+/// (`mass` = 1).
+///
+/// The equation is integrated on the grid of `hist` from the first grid point with
+/// a >= a_start to a = 1, with the classical Runge-Kutta method over two grid intervals
+/// per step; it starts on the growing solution delta = a + 2 a_eq/3, delta' = a of a
+/// universe of matter and radiation.  Returns (delta at a = 1, f = d ln delta/d ln a at a = 1).
+pub fn growth<M: Fn(f64) -> f64>(m: &Model, hist: &History, a_start: f64, mass: &M, law: GrowthLaw) -> (f64, f64) {
     let dl = hist.lna[1] - hist.lna[0]; // negative
     let n = hist.lna.len();
     // d ln E/d ln a at every grid point (central differences; one-sided at the ends)
@@ -254,7 +286,19 @@ pub fn growth<M: Fn(f64) -> f64>(m: &Model, hist: &History, a_start: f64, mass: 
         let a = hist.lna[i].exp();
         let om = m.omega_b + m.omega_c * mass(hist.s[i]);
         let g = if m.gravity { hist.s[i].exp() } else { 1.0 };
-        (u, -(2.0 + dlne[i]) * u + 1.5 * g * om / (a * a * a * hist.e[i] * hist.e[i]) * d)
+        let e2 = hist.e[i] * hist.e[i];
+        let q = 1.5 * g * om / (a * a * a * e2);
+        let r = if m.gravity { m.gam / hist.e[i] } else { 0.0 };
+        let l = dlne[i];
+        match law {
+            GrowthLaw::FourDimensional => (u, -(2.0 + l) * u + q * d),
+            GrowthLaw::Pressure => (u, -(2.0 + l - 0.5 * r) * u + q * d),
+            GrowthLaw::Momentum => {
+                let q_r = 2.0 * g * m.omega_r / (a * a * a * a * e2);
+                let friction = 1.0 + l + (2.0 * (1.0 + l) - r + 2.0 * (q + q_r)) / (2.0 - r);
+                (u, -friction * u + (1.0 - r) / (1.0 - 0.5 * r) * q * d)
+            }
+        }
     };
     let a0 = hist.lna[i0].exp();
     let a_eq = m.omega_r / (m.omega_b + m.omega_c * mass(hist.s[i0]));
@@ -387,17 +431,59 @@ mod tests {
         let m = Model::fiducial(0.0, 0.6736);
         let (a_min, n) = grid(z_star, 4000);
         let hist = m.history(a_min, n, &|_s| 1.0);
-        let (d, f) = growth(&m, &hist, 0.01, &|_s| 1.0);
+        let (d, f) = growth(&m, &hist, 0.01, &|_s| 1.0, GrowthLaw::Pressure);
         // growth rate today: f = Omega_m^0.55 to about one per cent (Omega_m = 0.3153 with the densities of the model)
         let om = (m.omega_b + m.omega_c) / (m.h * m.h);
         assert!((f / om.powf(0.55) - 1.0).abs() < 0.01, "f = {}, Omega_m^0.55 = {}", f, om.powf(0.55));
         // growth factor today relative to the Einstein-de Sitter law delta = a: about 0.78 for Omega_m = 0.315
         assert!(d > 0.76 && d < 0.81, "D(1) = {}", d);
+        // without deflation the three laws are the same equation (the law "Momentum" is written with
+        // L = E'/E taken from the tabulated history, and agrees to the accuracy of that derivative)
+        let (d4, f4) = growth(&m, &hist, 0.01, &|_s| 1.0, GrowthLaw::FourDimensional);
+        assert!(d4.to_bits() == d.to_bits() && f4.to_bits() == f.to_bits());
+        let (dm, fm) = growth(&m, &hist, 0.01, &|_s| 1.0, GrowthLaw::Momentum);
+        assert!((dm / d - 1.0).abs() < 1e-6 && (fm / f - 1.0).abs() < 1e-6, "Momentum without deflation: D {} vs {}, f {} vs {}", dm, d, fm, f);
         // matter era: an Einstein-de Sitter universe (no radiation, no cosmological term) keeps delta = a
         let eds = Model { omega_r: 1e-12, omega_gamma: 1e-12, omega_b: 0.05, omega_c: 0.95, h: 1.0, gam: 0.0, p: 0.0, gravity: true };
         let hist = eds.history(a_min, n, &|_s| 1.0);
-        let (d, f) = growth(&eds, &hist, 0.01, &|_s| 1.0);
-        assert!((d - 1.0).abs() < 1e-5 && (f - 1.0).abs() < 1e-5, "Einstein-de Sitter: D = {}, f = {}", d, f);
+        for law in [GrowthLaw::Momentum, GrowthLaw::Pressure, GrowthLaw::FourDimensional] {
+            let (d, f) = growth(&eds, &hist, 0.01, &|_s| 1.0, law);
+            assert!((d - 1.0).abs() < 1e-5 && (f - 1.0).abs() < 1e-5, "Einstein-de Sitter, {:?}: D = {}, f = {}", law, d, f);
+        }
+    }
+
+    /// With deflation and pressureless matter alone the three laws can be solved to the first order
+    /// in r = gam/E.  For three equal rates the expansion obeys E^2 - gam E + gam^2/9 = exp(s) omega_m a^-3,
+    /// so that Q = (3/2)(1 - r), L = E'/E = -3/2 + (5/4) r and r' = (3/2) r to this order; the growing
+    /// solution is delta = a (1 + beta r) with 6 beta = S_1 - F_1, where F_1 and S_1 are the coefficients
+    /// of r in the friction term and in the source term of the law.  The growth rate is then
+    ///     d ln delta/d ln a = 1 + c r ,    c = (S_1 - F_1)/4 = -9/16 ("Pressure"), -13/16 ("Momentum"), -11/16 (four-dimensional)
+    /// (derived again by computer algebra in code/scripts/verify_deflating_independent.py).
+    #[test]
+    fn growth_with_deflation_follows_the_first_order_laws() {
+        let (z_star, _, _) = main_project_reference();
+        let (a_min, n) = grid(z_star, 4000);
+        // matter only (the Hubble constant is the one for which the cosmological term vanishes);
+        // a rate that makes r = gam/E about 1e-3 at a = 0.05
+        let gam: f64 = 0.1;
+        let h = 0.5 * gam + (0.25 * gam * gam - gam * gam / 9.0 + 1.0).sqrt();
+        let mdl = Model { omega_r: 1e-14, omega_gamma: 1e-14, omega_b: 0.05, omega_c: 0.95, h, gam, p: gam * gam / 3.0, gravity: true };
+        assert!(mdl.omega_lambda(&|_s| 1.0).abs() < 1e-12);
+        let hist = mdl.history(a_min, n, &|_s| 1.0);
+        for (law, c) in [(GrowthLaw::Pressure, -9.0 / 16.0), (GrowthLaw::Momentum, -13.0 / 16.0), (GrowthLaw::FourDimensional, -11.0 / 16.0)] {
+            // integrate from a = 5e-4 to a = 0.05 and read the growth rate there
+            let cut = |a_end: f64| -> History {
+                // the history from a = a_end downwards, relabelled so that the integration ends there
+                let i_end = ((a_end.ln() - hist.lna[0]) / (hist.lna[1] - hist.lna[0])).round() as usize;
+                let i_end = if i_end % 2 == 0 { i_end } else { i_end + 1 };
+                History { lna: hist.lna[i_end..].to_vec(), e: hist.e[i_end..].to_vec(), s: hist.s[i_end..].to_vec() }
+            };
+            let h1 = cut(0.05);
+            let (_, f) = growth(&mdl, &h1, 5e-4, &|_s| 1.0, law);
+            let r = gam / h1.e[0];
+            println!("{:?}: (f - 1)/r = {:.5} at r = {:.3e}; first order: {:.5}", law, (f - 1.0) / r, r, c);
+            assert!(((f - 1.0) / r - c).abs() < 2e-3, "{:?}: (f - 1)/r = {} at r = {}, expected {}", law, (f - 1.0) / r, r, c);
+        }
     }
 
     #[test]

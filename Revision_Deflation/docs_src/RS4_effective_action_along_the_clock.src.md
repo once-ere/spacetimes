@@ -3,7 +3,7 @@
 title: "RS4 — The effective action of Cornwall, Jackiw and Tomboulis along the deflation clock"
 subtitle: "PROJECT spacetimes, Revision_Deflation. Supplement to both manuscripts of the revision: the paired state, matter, temperature and the vacuum of the two models as the couplings grow"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/RS4_effective_action_along_the_clock.src.md by code/scripts/assemble_docs.py.
@@ -50,8 +50,10 @@ system can follow the sequence is examined in RS1, Sec. 7.
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
 cargo build --release --manifest-path code/deflation-rs/Cargo.toml
-./code/deflation-rs/target/release/deflation paired     # Sec. 2 and the last part of Sec. 3 (about ten seconds)
-./code/deflation-rs/target/release/deflation history    # Secs. 3 to 5 (about a minute and a half)
+# Sec. 2 and the last part of Sec. 3 (about ten seconds)
+./code/deflation-rs/target/release/deflation paired
+# Secs. 3 to 5 (about a minute and a half)
+./code/deflation-rs/target/release/deflation history
 python3 code/scripts/make_figures.py cjt matter
 python3 code/scripts/write_doc_tables.py
 python3 code/scripts/assemble_docs.py docs_src/RS4_effective_action_along_the_clock.src.md

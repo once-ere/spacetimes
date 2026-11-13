@@ -194,7 +194,7 @@ what, and how to compile and run it}
 \subtitle{Provenance required by Hard Rule 6 (PROJECT spacetimes,
 Revision\_Deflation)}
 \author{Prepared for Patrick Lee Nash, Ph.D.}
-\date{November 12, 2026}
+\date{November 13, 2026}
 
 \begin{document}
 \maketitle
@@ -216,9 +216,11 @@ they are the same here:
 \item
   \textbf{Rust for every computation.} All physics of the revision is
   computed by one Rust program, \texttt{deflation} (folder
-  \texttt{code/deflation-rs}: 18 source files, 6241 lines, 39 unit
+  \texttt{code/deflation-rs}: 24 source files, 10324 lines, 49 unit
   tests). It uses the program of the main project as a library and no
-  other library.
+  other library. Four of its source files are copies of modules of the
+  main project with a listed set of changes; they are written by a
+  script and not edited by hand (Sec. 3.1).
 \item
   \textbf{Python for an independent verification, and for tables,
   figures and documents.} The central results are verified a second time
@@ -253,7 +255,7 @@ Python packages more than the main project:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# once: the two additional Python packages of the revision (computer algebra; precise special functions)}
+\CommentTok{\# once: the two additional Python packages (computer algebra; precise special functions)}
 \ExtensionTok{python3} \AttributeTok{{-}m}\NormalTok{ pip install }\AttributeTok{{-}{-}user}\NormalTok{ sympy mpmath}
 \end{Highlighting}
 \end{Shaded}
@@ -264,18 +266,25 @@ Python packages more than the main project:
 \begin{Highlighting}[]
 \CommentTok{\# every command of the revision is run from this folder}
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
-\CommentTok{\# compile the program (the first time this also compiles the program of the main project; about a minute)}
+\CommentTok{\# are the four copied modules what vendor\_eb.py writes from the sources of the main project?}
+\CommentTok{\# (must end with "the four copied modules are up to date";}
+\CommentTok{\#  without {-}{-}check the script writes them again)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/vendor\_eb.py }\AttributeTok{{-}{-}check}
+\CommentTok{\# compile the program (the first time also that of the main project; about a minute)}
 \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
-\CommentTok{\# run the unit tests; the last lines must say "test result: ok. 39 passed"}
+\CommentTok{\# run the unit tests; the last lines must say "test result: ok. 49 passed"}
 \ExtensionTok{cargo}\NormalTok{ test }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Step 2: run the nine commands.} Each prints its checks, one per
-line, beginning with \texttt{{[}PASS{]}} or \texttt{{[}FAIL{]}}, and
-ends with a line such as \texttt{matrices:\ ...\ checks\ passed}.
-Together they take about three and a half minutes and rewrite every file
-of the folder \texttt{data}.
+\textbf{Step 2: run the fourteen commands.} Each prints its checks, one
+per line, beginning with \texttt{{[}PASS{]}} or \texttt{{[}FAIL{]}}, and
+ends with a line such as \texttt{matrices:\ ...\ checks\ passed}. The
+first nine take about three and a half minutes together. The last five
+are the Einstein--Boltzmann calculations of the supplement RS5 and take
+about an hour and ten minutes on two processor cores, most of it the
+commands \texttt{families} and \texttt{superfluid}. Together the
+fourteen rewrite every file of the folder \texttt{data}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -283,7 +292,7 @@ of the folder \texttt{data}.
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ matrices}
 \CommentTok{\# solutions of the Dirac equations: creation and extinction           (about 12 seconds)}
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ modes}
-\CommentTok{\# gap, bound pair, matter, vacuum, temperature along the clock        (about a minute and a half)}
+\CommentTok{\# gap, bound pair, matter, vacuum, temperature along the clock        (about 1.5 minutes)}
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ history}
 \CommentTok{\# can the paired state follow the deflation?                          (about 16 seconds)}
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ quench}
@@ -293,19 +302,37 @@ of the folder \texttt{data}.
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ symmetry}
 \CommentTok{\# exchange amplitudes, modes of the scalar                            (about a second)}
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ channels}
-\CommentTok{\# dark matter, growth of structure, drifts                            (about 6 seconds)}
+\CommentTok{\# dark matter, growth of structure, drifts                            (about 10 seconds)}
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ matter}
 \CommentTok{\# the paired state from the effective action                          (about 10 seconds)}
 \ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ paired}
+\CommentTok{\# recombination and the sound horizon on the deflating background     (about 5 seconds)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ background}
+\CommentTok{\# spectra of the microwave background at a fixed angle; closures      (about a minute)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ spectrum}
+\CommentTok{\# mock data against the rate of deflation: Fisher matrices and fits   (about 6 minutes)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ forecast}
+\CommentTok{\# the dark{-}radiation families of the main project, with deflation     (about 40 minutes)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ families}
+\CommentTok{\# superfluid dark matter: suppression of small{-}scale structure        (about 20 minutes)}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ superfluid}
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Step 3: the independent verification} (about 6 seconds; must end
-with ``33 of 33 checks passed'').
+(\texttt{deflation\ families\ quick} runs two of the seven families at
+two densities for one data set in three minutes. It is a test of the
+command: it writes its files to a temporary folder, which it names, and
+leaves the folder \texttt{data} as it is.)
+
+\textbf{Step 3: the independent verification} (about 20 seconds; must
+end with ``43 of 43 checks passed''), and the test that it can fail
+(about four minutes; must end with ``16 of 16 deliberate errors
+detected'').
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \ExtensionTok{python3}\NormalTok{ code/scripts/verify\_deflating\_independent.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/mutation\_test\_independent.py}
 \end{Highlighting}
 \end{Shaded}
 
@@ -319,14 +346,14 @@ with ``33 of 33 checks passed'').
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_numbers.py}
 \CommentTok{\# the tables of the documents, from the data files and from the reports of the checks}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_doc\_tables.py}
-\CommentTok{\# the 14 figures (written to the folder figures as .pdf and .png)}
+\CommentTok{\# the 19 figures (written to the folder figures as .pdf and .png)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/make\_figures.py}
 \CommentTok{\# the documents: Markdown from the sources, then LaTeX and PDF (needs pandoc and XeLaTeX)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh}
 \CommentTok{\# the two manuscripts (needs pdflatex with REVTeX 4.2)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/build\_manuscripts.py}
-\CommentTok{\# the six checks of the symbols, which read the registry, the data files and the finished documents}
+\CommentTok{\# the six checks of the symbols (they read the registry, the data files and the documents)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py}
 \end{Highlighting}
 \end{Shaded}
@@ -393,17 +420,29 @@ source, creation, bounded solutions \\
 and events \\
 \texttt{quench.rs} & 280 & time-dependent mean-field dynamics of the
 shell model \\
-\texttt{cosmo\_defl.rs} & 426 & expansion with deflation, sound horizon,
-age, growth of structure \\
+\texttt{cosmo\_defl.rs} & 512 & expansion with deflation, sound horizon,
+age, bounds on the rate, growth of pressureless matter for the
+closures \\
+\texttt{spectra\_defl.rs} & 611 & assumption A3 and its closures; the
+Hubble constant at a fixed angle with the full thermal history;
+potentials and gaps of single modes; derivatives of the spectra \\
+\texttt{eb\_cosmo.rs}, \texttt{eb\_boltzmann.rs},
+\texttt{eb\_spectra.rs}, \texttt{eb\_fit.rs} & 1891 & the
+Einstein-Boltzmann program of the main project on the deflating
+spacetime: copies of four of its modules with a listed set of changes,
+written by \texttt{code/scripts/vendor\_eb.py} \\
 \texttt{symmetry\_defl.rs} & 217 & test of the 28 rotations and boosts;
 algebra of the vortex zero modes \\
 \texttt{cmd\_symmetry.rs}, \texttt{cmd\_channels.rs},
-\texttt{cmd\_matter.rs}, \texttt{cmd\_paired.rs} & 995 & the commands
+\texttt{cmd\_matter.rs}, \texttt{cmd\_paired.rs} & 1017 & the commands
 \texttt{symmetry}, \texttt{channels}, \texttt{matter},
 \texttt{paired} \\
-\texttt{main.rs} & 771 & the commands \texttt{matrices}, \texttt{modes},
+\texttt{cmd\_spectra.rs} & 1425 & the commands \texttt{background},
+\texttt{spectrum}, \texttt{forecast}, \texttt{families},
+\texttt{superfluid} \\
+\texttt{main.rs} & 808 & the commands \texttt{matrices}, \texttt{modes},
 \texttt{history}, \texttt{quench}, \texttt{cosmology} \\
-\texttt{io.rs}, \texttt{lib.rs} & 106 & writing of data files and
+\texttt{io.rs}, \texttt{lib.rs} & 117 & writing of data files and
 reports; list of modules \\
 \end{longtable}
 
@@ -415,8 +454,91 @@ the script that writes the tables; they are not typed.)
 matrices and their checks, the routine for the internal symmetry, the
 exchange amplitudes, the gap equation, the bound pair, the effective
 action, the routines for matter, temperature and vacuum, the background
-cosmology without deflation, and linear algebra. The revision calls
-these routines with the couplings of each moment; it does not copy them.
+cosmology without deflation, linear algebra, and from its
+Einstein--Boltzmann part the parameters, the dark fluids, the superfluid
+dark matter, the Bessel functions, the mock data, the likelihood and the
+Fisher matrix. The revision calls these routines with the couplings of
+each moment; it does not copy them.
+
+\hypertarget{the-four-copied-modules}{%
+\subsection{3.1 The four copied modules}\label{the-four-copied-modules}}
+
+The Einstein--Boltzmann program of the main project has Newton's
+constant built into its units and the ordinary equation of the expansion
+built into its routines. On the deflating spacetimes both change (RS3,
+Sec. 1; RS5, Sec. 2). The main project is paused and its program is not
+to be changed, so the revision cannot add a parameter to it; and a
+library routine cannot be altered from outside. The four modules that
+must change are therefore \emph{copied}:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1905}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1905}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.6190}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+file of the revision
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+copied from (main project, \texttt{code/spacetimes-rs/src})
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+what is changed
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{eb\_cosmo.rs} & \texttt{cosmo.rs}: the structures
+\texttt{Background} and \texttt{Thermo} & the equation of the expansion
+(RS3, Eq. (1.2)); the clock of Newton's constant; the helium fraction \\
+\texttt{eb\_boltzmann.rs} & \texttt{boltzmann.rs} & Newton's constant of
+the moment in every source of the metric; \(H_e\) in the energy
+constraint; the closure ``Pressure''; the gaps; the sources of the
+temperature \\
+\texttt{eb\_spectra.rs} & \texttt{spectra.rs}: the functions
+\texttt{compute} and \texttt{matter\_power} & they take the deflation as
+an argument \\
+\texttt{eb\_fit.rs} & \texttt{forecast.rs}: the functions
+\texttt{minimize\_linearized} and \texttt{fit} & they take the deflation
+as an argument \\
+\end{longtable}
+
+So that a copy cannot differ from its original in any place that is not
+listed, the copies are \textbf{not edited by hand}. The script
+\texttt{code/scripts/vendor\_eb.py} reads the four original files and
+applies a list of replacements, each of which must match the original
+text exactly once; otherwise it stops. The head of the script states
+every change in words, and the head of each written file repeats the
+list. If the main project changes one of the four files,
+\texttt{vendor\_eb.py\ -\/-check} reports that the copies are no longer
+current, and running the script without \texttt{-\/-check} either
+reproduces the copies from the new originals or stops at the replacement
+that no longer matches.
+
+Three tests guard the copies (file \texttt{spectra\_defl.rs}; checks
+\texttt{def-E1}, \texttt{def-B1}, \texttt{def-F1}, \texttt{def-U1}):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Without deflation the copies are the program of the main
+  project.} The spectra TT, TE, EE for \(2\le\ell\le2500\), the matter
+  power spectrum, \(\sigma_8\), the angle and the sound horizon agree
+  \textbf{bit for bit} with the library routines, for the fiducial
+  model, for superfluid dark matter and for a stepped dark fluid, and
+  for both closures.
+\item
+  \emph{With a rate too small to matter the deflating code paths give
+  the same numbers.} A rate of \(10^{-30}\) (in units of 100 km/s/Mpc)
+  makes the program execute every branch of the deflating model;
+  potentials, sources and spectra are again identical to the last bit.
+\item
+  \emph{With a real rate each closure is a consistent theory.} The
+  quantity that the source of the temperature uses equals the derivative
+  of the potentials along the solution, and the two identities between
+  the gaps (RS5, Sec. 3.1) hold along the solution to the accuracy of a
+  numerical derivative.
+\end{enumerate}
 
 \hypertarget{the-checks}{%
 \section{4. The checks}\label{the-checks}}
@@ -448,11 +570,16 @@ of the main project, again) & 106 of 106 \\
 \texttt{channels} & \texttt{data/channel\_checks.txt} & 7 of 7 \\
 \texttt{matter} & \texttt{data/matter\_checks.txt} & 6 of 6 \\
 \texttt{paired} & \texttt{data/paired\_checks.txt} & 7 of 7 \\
-Python script & \texttt{data/deflating\_checks\_independent.txt} & 33 of
-33 \\
+\texttt{background} & \texttt{data/background\_checks.txt} & 2 of 2 \\
+\texttt{spectrum} & \texttt{data/spectrum\_checks.txt} & 8 of 8 \\
+\texttt{forecast} & \texttt{data/forecast\_checks.txt} & 5 of 5 \\
+\texttt{families} & \texttt{data/families\_checks.txt} & 4 of 4 \\
+\texttt{superfluid} & \texttt{data/superfluid\_checks.txt} & 2 of 2 \\
+Python script & \texttt{data/deflating\_checks\_independent.txt} & 43 of
+43 \\
 symbols & \texttt{data/symbol\_checks\_deflation.txt} & 6 of 6 \\
 numbers of the running text &
-\texttt{data/number\_checks\_deflation.txt} & 542 numbers in 28
+\texttt{data/number\_checks\_deflation.txt} & 974 numbers in 29
 documents, 0 not traced \\
 \end{longtable}
 
@@ -476,6 +603,44 @@ the Lanczos tensor were added afterwards; the second is validated by the
 agreement of two independent formulas (the program uses the formula for
 curvatures that act on pairs of directions, the script the standard
 formula with four terms).
+
+The checks of the perturbation equations, of the closures, of the growth
+of structure and of recombination, which were added for the supplement
+RS5, were tested in the same way, and for them the test is itself a
+script: \texttt{mutation\_test\_independent.py} introduces sixteen
+deliberate errors, one at a time, into a copy of that part of the
+independent script (a wrong factor in an Einstein equation, in an
+identity between the gaps, in a growth equation, in the response of
+recombination and of the helium fraction to Newton's constant, and so
+on), runs the copy, and records which check fails. Its report:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PROJECT spacetimes, Revision\_Deflation: mutation test of the independent verification of the cosmological perturbations}
+\NormalTok{generated by: code/scripts/mutation\_test\_independent.py}
+
+\NormalTok{the unchanged script: 11 checks (Idef{-}C1, Idef{-}C2, I44d{-}P1, I71d{-}P1, Idef{-}P2, Idef{-}P8, Idef{-}P3, Idef{-}P4, Idef{-}P5, Idef{-}P6, Idef{-}P7), all pass}
+
+\NormalTok{ 1. energy constraint with He = Hc {-} a gsum instead of Hc {-} a gsum/2: detected by I44d{-}P1, I71d{-}P1}
+\NormalTok{ 2. trace equation with He h\textquotesingle{} instead of 2 He h\textquotesingle{}: detected by I44d{-}P1, I71d{-}P1}
+\NormalTok{ 3. closed form of B with (a gsum)\^{}2/2 instead of (a gsum)\^{}2/4: detected by Idef{-}P2}
+\NormalTok{ 4. pressure of the agent with gprod instead of 2 gprod: detected by Idef{-}P8}
+\NormalTok{ 5. first identity between the gaps with (D {-} DP) instead of (D {-} 3 DP): detected by Idef{-}P3}
+\NormalTok{ 6. second identity between the gaps with He instead of 2 He: detected by Idef{-}P3}
+\NormalTok{ 7. growth equation of the closure "Momentum" with the source not reduced: detected by Idef{-}P4}
+\NormalTok{ 8. growth equation of the closure "Pressure" with the friction Hc instead of He: detected by Idef{-}P4}
+\NormalTok{ 9. numerical growth, closure "Pressure": friction reduced by gsum instead of gsum/2: detected by Idef{-}P5, Idef{-}P7}
+\NormalTok{10. numerical growth, closure "Momentum": source not reduced: detected by Idef{-}P5, Idef{-}P7}
+\NormalTok{11. system of the closure "Pressure" with a gsum instead of a gsum/2: detected by Idef{-}P6}
+\NormalTok{12. system of the closure "Shear" with Hc instead of He: detected by Idef{-}P6}
+\NormalTok{13. recombination on a background in which Newton\textquotesingle{}s constant does not change: detected by Idef{-}C2}
+\NormalTok{14. response of the helium fraction to Newton\textquotesingle{}s constant doubled: detected by Idef{-}C2}
+\NormalTok{15. Peebles\textquotesingle{} factor with 4 pi instead of 8 pi (an error of atomic physics): detected by Idef{-}C2}
+\NormalTok{16. equation of the expansion with the term {-}gsum H doubled (integration at fixed last scattering): detected by Idef{-}C1}
+
+\NormalTok{16 of 16 deliberate errors detected}
+\end{Highlighting}
+\end{Shaded}
 
 \emph{Are the numbers in the text the numbers of the programs?} The
 tables of the documents are written by a script. The running text quotes
@@ -538,14 +703,14 @@ reader, who reads the sentence and the output of the programs and enters
 into the script the stated number that the text means. The report
 \texttt{data/number\_checks\_deflation.txt} lists these numbers one by
 one, with the stated numbers that match and with the judgement, and the
-script fails if one of them has not been judged. Result: 542 numbers in
-28 documents, 0 not traced; different numbers of the kinds (r) and (c),
-all judged: 9. The check is a necessary condition, not a sufficient one:
-it cannot tell whether the right number is quoted in the right place,
-and a match can be a coincidence. It found the errors R-E28 and R-E29 of
-the error log RP9. The stale value of R-E27 passed it, because a number
-of a generated table rounds to it by coincidence; that error was found
-by reading the program.
+script fails if one of them has not been judged. Result: 974 numbers in
+29 documents, 0 not traced; different numbers of the kinds (r) and (c),
+all judged: 10. The check is a necessary condition, not a sufficient
+one: it cannot tell whether the right number is quoted in the right
+place, and a match can be a coincidence. It found the errors R-E28 and
+R-E29 of the error log RP9. The stale value of R-E27 passed it, because
+a number of a generated table rounds to it by coincidence; that error
+was found by reading the program.
 
 \hypertarget{the-scripts}{%
 \section{5. The scripts}\label{the-scripts}}
@@ -565,14 +730,20 @@ what it does
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
+\texttt{vendor\_eb.py} & writes the four copied modules of the
+Einstein--Boltzmann program from the sources of the main project (Sec.
+3.1); with \texttt{-\/-check}, tests that they are current \\
 \texttt{verify\_deflating\_independent.py} & the independent
 verification (Sec. 4) \\
+\texttt{mutation\_test\_independent.py} & introduces sixteen deliberate
+errors into the cosmological part of the independent verification, one
+at a time, and records which check detects each (Sec. 4) \\
 \texttt{write\_symbol\_registry.py}, \texttt{check\_symbols.py} & the
 registry of the symbols and its six checks (RP1) \\
 \texttt{write\_doc\_tables.py} & writes every table of the documents
 from the data files
 (\texttt{provenance/generated/tables\_deflation.md}) \\
-\texttt{make\_figures.py} & draws the 14 figures from the data files \\
+\texttt{make\_figures.py} & draws the 19 figures from the data files \\
 \texttt{assemble\_docs.py} & inserts tables, registry and program output
 into the document sources (\texttt{docs\_src/*.src.md}) \\
 \texttt{build\_docs.sh}, \texttt{doc\_header.tex},
@@ -630,7 +801,21 @@ in
 \texttt{fig\_hubble} & \texttt{hubble\_deflation.csv},
 \texttt{hubble\_mass\_loss.csv}, \texttt{growth\_deflation.csv} & RS3,
 M \\
-\texttt{fig\_bounds} & \texttt{deflation\_bounds.csv} & RS3, RS2, M \\
+\texttt{fig\_bounds} & \texttt{deflation\_bounds.csv},
+\texttt{deflation\_fisher.csv} & RS3, RS2, M \\
+\texttt{fig\_spectra} & \texttt{cmb\_deflation\_cl.csv},
+\texttt{cmb\_deflation\_summary.csv} & RS5, M \\
+\texttt{fig\_closure} & \texttt{cmb\_deflation\_closure.csv},
+\texttt{cmb\_deflation\_gaps.csv}, \texttt{cmb\_deflation\_growth.csv},
+\texttt{growth\_deflation.csv} & RS5, M \\
+\texttt{fig\_forecast} & \texttt{deflation\_fisher.csv},
+\texttt{deflation\_profile.csv}, \texttt{deflation\_residuals.csv},
+\texttt{hubble\_deflation.csv} & RS5, M \\
+\texttt{fig\_families} & \texttt{dr\_deflation\_profiles.csv},
+\texttt{dr\_deflation\_joint.csv}, and \texttt{dr\_profiles.csv} of the
+main project & RS5 \\
+\texttt{fig\_sfdm} & \texttt{sfdm\_deflation\_transfer.csv},
+\texttt{sfdm\_deflation\_summary.csv} & RS5 \\
 \end{longtable}
 
 (M: the two manuscripts.) Every data file begins with lines that state

@@ -210,7 +210,7 @@ clock, modes of the scalar, pairing interaction, gap, bound pair, order
 parameter, vortices, and whether the paired state can follow the
 deflation}
 \author{Prepared for Patrick Lee Nash, Ph.D.}
-\date{November 12, 2026}
+\date{November 13, 2026}
 
 \begin{document}
 \maketitle
@@ -398,10 +398,10 @@ numbers}\label{how-to-reproduce-the-numbers}}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
 \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
-\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ symmetry    }\CommentTok{\# reduction of the couplings, vortices}
-\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ channels    }\CommentTok{\# exchange amplitudes, modes of the scalar}
-\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ history     }\CommentTok{\# gap, bound pair, order of events}
-\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ quench      }\CommentTok{\# dynamics of the paired state}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ symmetry   }\CommentTok{\# reduction of the couplings, vortices}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ channels   }\CommentTok{\# exchange amplitudes, scalar modes}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ history    }\CommentTok{\# gap, bound pair, order of events}
+\ExtensionTok{./code/deflation{-}rs/target/release/deflation}\NormalTok{ quench     }\CommentTok{\# dynamics of the paired state}
 \ExtensionTok{python3}\NormalTok{ code/scripts/make\_figures.py clock scalar kernels gap binding quench}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_doc\_tables.py                 }\CommentTok{\# the tables of this supplement}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py docs\_src/RS1\_vorton\_scalar\_and\_superfluid\_deflating.src.md}

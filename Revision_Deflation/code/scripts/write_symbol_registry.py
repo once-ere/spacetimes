@@ -16,7 +16,7 @@ Edit the list SYMBOLS below, then run (from the folder Revision_Deflation)
 
 Columns of an entry: group; symbol as written in the documents (LaTeX); names in
 programs and data files (blank-separated); meaning; where defined (DMD = "dirac matrices
-deflating", RS1..RS4 = supplements of the revision, RP0 = hypotheses, M = manuscripts);
+deflating", RS1..RS5 = supplements of the revision, RP0 = hypotheses, M = manuscripts);
 origin ("author" = the author's instruction of November 12, 2026; "new" = introduced by
 the revision; "main" = a symbol of the main registry whose meaning the revision extends).
 """
@@ -33,6 +33,7 @@ G5 = "D5 Dynamics of the paired state"
 G6 = "D6 Cosmology and bounds"
 G7 = "D7 Symmetries and vortex lines"
 G8 = "D8 Tags and identifiers"
+G9 = "D9 Perturbations of ordinary space and the microwave background"
 
 SYMBOLS = [
     # ---- D1 ------------------------------------------------------------------------------------
@@ -232,12 +233,49 @@ SYMBOLS = [
     (G8, r"`44d-..`, `71d-..`, `def-..`", "",
      r"identifiers of the machine checks of the revision: on the deflating 4+4 spacetime, on the deflating 7+1 spacetime, and for results that hold on both (`44-..`, `71-..` without d are the checks of the main project, executed again)",
      "DMD Appendix A", "new"),
-    (G8, r"RP0 to RP9, RS1 to RS4, DMD", "",
+    (G8, r"RP0 to RP9, RS1 to RS5, DMD", "",
      r"the provenances and supplements of the revision and the document \"dirac matrices deflating\" (P0 to P11, S1 to S4, DM are the documents of the main project)",
      "README", "new"),
-    (G8, "A1, A2, H2, HV", "",
-     r"A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale",
-     "RP0 3; RS2 1; M XI, XII", "new"),
+    (G8, "A1, A2, A3, H2, HV", "",
+     r"A1, A2: the two assumptions of the cosmological part (ordinary space expands; gravity is the eight-dimensional Einstein theory). A3: the assumption about the perturbations of ordinary space (the scale factors of the extra coordinates are not perturbed, and the agent that holds them has no energy density), with its closures. H2: the author's hypothesis of the main project that the superfluid state is the Higgs field. HV: the different assumption that the vacuum value of the Vorton-Scalar sets the electroweak scale",
+     "RP0 3; RS2 1; RS5 1; M XI, XII", "new"),
+    (G8, r"\"Momentum\", \"Pressure\", \"Shear\" (closures)", "Momentum Pressure Shear closure",
+     r"the three closures of the perturbation equations under assumption A3, named after the Einstein equation of ordinary space that holds with matter and radiation alone besides the energy constraint: the momentum constraint, the trace (pressure) equation, or the equation of the shear. In data files the suffixes `_M` and `_P` mark the first two; `_N4` marks the four-dimensional growth equation, which is none of them",
+     "RS5 3; M XI", "new"),
+    # ---- D9 ------------------------------------------------------------------------------------
+    (G9, r"$\tau_{\rm cf}$", "tau_cf tau0_Mpc",
+     r"the conformal time of ordinary space, $d\tau_{\rm cf}=dx4/a_{\rm sp}$, in Mpc (`tau0_Mpc`: its value today). In the equations of the perturbations a prime is the derivative with respect to $\tau_{\rm cf}$. (The letter $\tau$ without index is the optical depth of the main registry, and $\tau_d$ is the deflation clock)",
+     "RS5 2; M XI", "new"),
+    (G9, r"$H_{\rm cf}$, $H_e$", "Hc He hub hub_e a_gsum_over_Hc",
+     r"the conformal Hubble rate $H_{\rm cf}=a_{\rm sp}H$, and $H_e=H_{\rm cf}-a_{\rm sp}\,\mathrm{gsum}/2$, which takes its place in three of the Einstein equations of ordinary space when the extra coordinates deflate",
+     "RS5 2; M XI", "new"),
+    (G9, r"$k$ (perturbations), $\ell$, $D_\ell^{TT}$, $D_\ell^{TE}$, $D_\ell^{EE}$", "",
+     r"the comoving wavenumber of a perturbation of ordinary space (in Mpc$^{-1}$; the physical wavenumber is $k/a_{\rm sp}$); the multipole; and the spectra of the temperature, of the polarization and their cross spectrum, $D_\ell=\ell(\ell+1)C_\ell/2\pi$ in $\mu$K$^2$, as in the supplement S3 of the main project",
+     "RS5 2, 7; M XI", "new"),
+    (G9, r"$h_{\rm sy}$, $\eta_{\rm sy}$, $\alpha_{\rm sy}$", "",
+     r"the two functions that describe a scalar perturbation of the metric of ordinary space in the synchronous gauge (the $h$ and $\eta$ of Ma and Bertschinger; here with the index sy, because $h$ is the Hubble parameter and $\eta$ the flat metric), and the combination $\alpha_{\rm sy}=(h_{\rm sy}'+6\eta_{\rm sy}')/2k^2$",
+     "RS5 2; M XI", "new"),
+    (G9, r"$\mathcal U$", "potential",
+     r"$\eta_{\rm sy}+\alpha_{\rm sy}'$, the sum of the two gravitational potentials of the conformal Newtonian gauge (script letter): the potential that light feels",
+     "RS5 2, 7", "new"),
+    (G9, r"$\mathcal D$, $\mathcal T$, $\mathcal P$, $\mathcal A$", "d_sum three_dpres",
+     r"$8\pi G_N a_{\rm sp}^2$ times the perturbation of the density, of the divergence of the momentum density, of the pressure, and of the anisotropic stress of matter and radiation together (script letters; in the notation of Ma and Bertschinger: $\delta\rho$, $(\rho+P)\theta$, $\delta P$, $(\rho+P)\sigma$)",
+     "RS5 2", "new"),
+    (G9, r"$\mathcal E$, $\mathcal E_P$, $\mathcal E_m$, $\mathcal E_r$, $\mathcal B$", "grho_sum half_rho_plus_p b_trace n_bg",
+     r"$8\pi G_N a_{\rm sp}^2$ times the density and the pressure of the unperturbed universe, summed over the species ($\mathcal E_m$, $\mathcal E_r$: the parts of $\mathcal E$ from pressureless matter and from radiation); and $\mathcal B=H_e'-H_e^2+\tfrac12(\mathcal E+\mathcal E_P)$, which vanishes without deflation (script letters)",
+     "RS5 2, 3, 4", "new"),
+    (G9, r"$p_{\rm agent}$", "",
+     r"the pressure in ordinary space of the agent, that is, of whatever keeps the three rates of deflation constant, in the unperturbed universe (under assumption A2 the agent has no energy density)",
+     "RS5 1", "new"),
+    (G9, r"$\mathcal Y_M$, $\mathcal Y_T$, $\mathcal Y_S$; $\mathcal Z$", "momentum_gap trace_gap shear_gap x_gap shear_check trace_check",
+     r"the gaps: what the momentum constraint, the trace equation and the equation of the shear lack when only matter and radiation stand on their right-hand sides; the agent that holds the extra scale factors supplies them. $\mathcal Z=h_{\rm sy}'\,\mathcal B-\tfrac12a_{\rm sp}\,\mathrm{gsum}\,(\mathcal D-3\mathcal P)$ (script letters)",
+     "RS5 3", "new"),
+    (G9, r"$Y_{\rm He}$", "",
+     r"the mass fraction of helium after nucleosynthesis (with the index He; `Y_He` in the data files, as in the main project)",
+     "RS5 5; M XI", "new"),
+    (G9, r"$\tau$ (main registry)", "tau_reio",
+     r"the optical depth of reionization of the main registry; `tau_reio` is its name in the data files that the revision writes (the bare name `tau` is not used there)",
+     "RS5 8", "main"),
 ]
 
 
@@ -247,7 +285,7 @@ def main():
     with open(out_csv, "w", newline="", encoding="utf-8") as f:
         f.write("# PROJECT spacetimes, Revision_Deflation: registry of the symbols that the revision adds to the MASTER registry of the main project (../provenance/symbols.csv)\n")
         f.write("# written by: code/scripts/write_symbol_registry.py (edit the list there); verified by: code/scripts/check_symbols.py\n")
-        f.write("# columns: group; symbol as written in the documents (LaTeX); names in programs and data files (blank-separated); meaning; where defined (DMD = dirac matrices deflating, RS1..RS4 = supplements, RP0 = provenance of the hypotheses, M = the two manuscripts of the revision, whose sections carry the same numbers in both; each followed by the number of the section); origin (author = the author's instruction; new = introduced by the revision; main = extends a symbol of the main registry)\n")
+        f.write("# columns: group; symbol as written in the documents (LaTeX); names in programs and data files (blank-separated); meaning; where defined (DMD = dirac matrices deflating, RS1..RS5 = supplements, RP0 = provenance of the hypotheses, M = the two manuscripts of the revision, whose sections carry the same numbers in both; each followed by the number of the section); origin (author = the author's instruction; new = introduced by the revision; main = extends a symbol of the main registry)\n")
         w = csv.writer(f)
         w.writerow(["group", "symbol", "program_names", "meaning", "defined", "origin"])
         for row in SYMBOLS:

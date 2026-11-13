@@ -40,8 +40,28 @@
 7 of 7
 <!-- END n_paired_checks -->
 
+<!-- BEGIN n_background_checks -->
+2 of 2
+<!-- END n_background_checks -->
+
+<!-- BEGIN n_spectrum_checks -->
+8 of 8
+<!-- END n_spectrum_checks -->
+
+<!-- BEGIN n_forecast_checks -->
+5 of 5
+<!-- END n_forecast_checks -->
+
+<!-- BEGIN n_families_checks -->
+4 of 4
+<!-- END n_families_checks -->
+
+<!-- BEGIN n_superfluid_checks -->
+2 of 2
+<!-- END n_superfluid_checks -->
+
 <!-- BEGIN n_deflating_checks_independent -->
-33 of 33
+43 of 43
 <!-- END n_deflating_checks_independent -->
 
 <!-- BEGIN n_symbol_checks_deflation -->
@@ -49,15 +69,15 @@
 <!-- END n_symbol_checks_deflation -->
 
 <!-- BEGIN n_checks_rust -->
-217
+238
 <!-- END n_checks_rust -->
 
 <!-- BEGIN n_number_checks -->
-542 numbers in 28 documents, 0 not traced
+974 numbers in 29 documents, 0 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-9
+10
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN tbl_sources -->
@@ -72,27 +92,30 @@
 | `scalar.rs` | 295 | modes of a scalar field: exponents, static source, creation, bounded solutions |
 | `history.rs` | 274 | the couplings along the clock; thresholds and events |
 | `quench.rs` | 280 | time-dependent mean-field dynamics of the shell model |
-| `cosmo_defl.rs` | 426 | expansion with deflation, sound horizon, age, growth of structure |
+| `cosmo_defl.rs` | 512 | expansion with deflation, sound horizon, age, bounds on the rate, growth of pressureless matter for the closures |
+| `spectra_defl.rs` | 611 | assumption A3 and its closures; the Hubble constant at a fixed angle with the full thermal history; potentials and gaps of single modes; derivatives of the spectra |
+| `eb_cosmo.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `eb_fit.rs` | 1891 | the Einstein-Boltzmann program of the main project on the deflating spacetime: copies of four of its modules with a listed set of changes, written by `code/scripts/vendor_eb.py` |
 | `symmetry_defl.rs` | 217 | test of the 28 rotations and boosts; algebra of the vortex zero modes |
-| `cmd_symmetry.rs`, `cmd_channels.rs`, `cmd_matter.rs`, `cmd_paired.rs` | 995 | the commands `symmetry`, `channels`, `matter`, `paired` |
-| `main.rs` | 771 | the commands `matrices`, `modes`, `history`, `quench`, `cosmology` |
-| `io.rs`, `lib.rs` | 106 | writing of data files and reports; list of modules |
+| `cmd_symmetry.rs`, `cmd_channels.rs`, `cmd_matter.rs`, `cmd_paired.rs` | 1017 | the commands `symmetry`, `channels`, `matter`, `paired` |
+| `cmd_spectra.rs` | 1425 | the commands `background`, `spectrum`, `forecast`, `families`, `superfluid` |
+| `main.rs` | 808 | the commands `matrices`, `modes`, `history`, `quench`, `cosmology` |
+| `io.rs`, `lib.rs` | 117 | writing of data files and reports; list of modules |
 <!-- END tbl_sources -->
 
 <!-- BEGIN n_source_files -->
-18
+24
 <!-- END n_source_files -->
 
 <!-- BEGIN n_source_lines -->
-6241
+10324
 <!-- END n_source_lines -->
 
 <!-- BEGIN n_unit_tests -->
-39
+49
 <!-- END n_unit_tests -->
 
 <!-- BEGIN n_figures -->
-14
+19
 <!-- END n_figures -->
 
 <!-- BEGIN tbl_exponents -->
@@ -179,30 +202,30 @@
 <!-- END tbl_bounds -->
 
 <!-- BEGIN tbl_hubble -->
-| $\mathrm{gsum}/H_0$ | gsum (per year) | $H_0$ (km/s/Mpc) | change | $G_N$ ratio | sound horizon (Mpc) | age (Gyr) |
-|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 0 | 67.36 | 0.00 | 1.0000 | 144.45 | 13.81 |
-| 0.00100 | $6.89\times10^{-14}$ | 67.30 | -0.06 | 0.9990 | 144.52 | 13.82 |
-| 0.00300 | $2.07\times10^{-13}$ | 67.18 | -0.18 | 0.9971 | 144.66 | 13.84 |
-| 0.00324 | $2.23\times10^{-13}$ | 67.16 | -0.20 | 0.9969 | 144.67 | 13.84 |
-| 0.0100 | $6.89\times10^{-13}$ | 66.74 | -0.62 | 0.9905 | 145.14 | 13.89 |
-| 0.0300 | $2.07\times10^{-12}$ | 65.48 | -1.88 | 0.9714 | 146.56 | 14.05 |
-| 0.0644 | $4.43\times10^{-12}$ | 63.23 | -4.13 | 0.9384 | 149.12 | 14.34 |
-| 0.100 | $6.89\times10^{-12}$ | 60.77 | -6.59 | 0.9039 | 151.93 | 14.66 |
-| 0.300 | $2.07\times10^{-11}$ | 43.41 | -23.95 | 0.7024 | 172.36 | 17.10 |
+| $\mathrm{gsum}/H_0$ | gsum (per year) | $H_0$ | change | $G_N$ ratio | $z_*$ | $Y_{\rm He}$ | $r_s$ (Mpc) | age (Gyr) | $H_0$, $z_*$ and $Y_{\rm He}$ held |
+|-------:|----------:|-----:|------:|------:|-------:|------:|------:|-----:|--------:|
+| 0 | 0 | 67.36 | 0.00 | 1.0000 | 1089.92 | 0.2454 | 144.45 | 13.81 | 67.36 |
+| 0.00100 | $6.89\times10^{-14}$ | 67.29 | -0.07 | 0.9990 | 1089.90 | 0.2453 | 144.52 | 13.82 | 67.30 |
+| 0.00300 | $2.07\times10^{-13}$ | 67.16 | -0.20 | 0.9971 | 1089.86 | 0.2452 | 144.66 | 13.84 | 67.18 |
+| 0.00324 | $2.23\times10^{-13}$ | 67.15 | -0.21 | 0.9969 | 1089.86 | 0.2451 | 144.68 | 13.84 | 67.16 |
+| 0.0100 | $6.89\times10^{-13}$ | 66.70 | -0.66 | 0.9905 | 1089.73 | 0.2446 | 145.16 | 13.90 | 66.74 |
+| 0.0300 | $2.07\times10^{-12}$ | 65.36 | -2.00 | 0.9714 | 1089.37 | 0.2430 | 146.61 | 14.06 | 65.48 |
+| 0.0644 | $4.43\times10^{-12}$ | 62.98 | -4.38 | 0.9383 | 1088.72 | 0.2401 | 149.23 | 14.37 | 63.23 |
+| 0.100 | $6.89\times10^{-12}$ | 60.37 | -6.99 | 0.9037 | 1088.04 | 0.2370 | 152.13 | 14.70 | 60.77 |
+| 0.300 | $2.07\times10^{-11}$ | 41.94 | -25.42 | 0.6995 | 1083.78 | 0.2168 | 173.35 | 17.29 | 43.41 |
 <!-- END tbl_hubble -->
 
 <!-- BEGIN tbl_growth -->
-| $\mathrm{gsum}/H_0$ | $H_0$ | $\sigma_8$ ratio | $f_g$ ratio | $f_g\sigma_8$ ratio | $\sigma_8$ ratio, fixed $H_0$ | $f_g$ ratio, fixed $H_0$ |
-|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 67.36 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| 0.00100 | 67.30 | 1.0001 | 1.0008 | 1.0009 | 0.9997 | 0.9998 |
-| 0.00324 | 67.16 | 1.0003 | 1.0027 | 1.0030 | 0.9990 | 0.9993 |
-| 0.0100 | 66.74 | 1.0010 | 1.0083 | 1.0093 | 0.9968 | 0.9979 |
-| 0.0300 | 65.48 | 1.0031 | 1.0258 | 1.0290 | 0.9904 | 0.9937 |
-| 0.0644 | 63.23 | 1.0067 | 1.0589 | 1.0661 | 0.9792 | 0.9865 |
-| 0.100 | 60.77 | 1.0106 | 1.0982 | 1.1098 | 0.9674 | 0.9790 |
-| 0.300 | 43.41 | 1.0350 | 1.5100 | 1.5628 | 0.8975 | 0.9365 |
+| $\mathrm{gsum}/H_0$ | $H_0$ | amplitude, M | amplitude, P | $f_g$, M | $f_g$, P | fixed $H_0$: amplitude, M | amplitude, P | four-dimensional equation |
+|-------:|-----:|---------:|---------:|------:|------:|---------:|---------:|-----------:|
+| 0 | 67.36 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
+| 0.00100 | 67.29 | 1.0000 | 1.0002 | 1.0006 | 1.0011 | 0.9996 | 0.9998 | 0.9997 |
+| 0.00324 | 67.15 | 1.0000 | 1.0008 | 1.0021 | 1.0035 | 0.9986 | 0.9993 | 0.9990 |
+| 0.0100 | 66.70 | 1.0000 | 1.0024 | 1.0064 | 1.0109 | 0.9956 | 0.9979 | 0.9968 |
+| 0.0300 | 65.36 | 1.0001 | 1.0073 | 1.0201 | 1.0339 | 0.9867 | 0.9937 | 0.9904 |
+| 0.0644 | 62.98 | 1.0001 | 1.0160 | 1.0463 | 1.0773 | 0.9713 | 0.9863 | 0.9792 |
+| 0.100 | 60.37 | 1.0001 | 1.0256 | 1.0780 | 1.1287 | 0.9553 | 0.9783 | 0.9674 |
+| 0.300 | 41.94 | 1.0005 | 1.0907 | 1.4637 | 1.6751 | 0.8638 | 0.9288 | 0.8975 |
 <!-- END tbl_growth -->
 
 <!-- BEGIN tbl_drift -->
@@ -264,6 +287,287 @@
 | 10.00 | 0.10 | 1.00 | 0.300 | no | 0.95635 | 67.84 | 0.48 |
 | 10.00 | 0.10 | 1.00 | 1.00 | no | 0.92342 | 67.58 | 0.22 |
 <!-- END tbl_massloss -->
+
+<!-- BEGIN tbl_eb_background -->
+| model | $\mathrm{gsum}/H_0$ | held | $H_0$ | $z_*$ | $r_s$ (Mpc) | $100\,\theta_*$ | $Y_{\rm He}$ | $G_N$ ratio |
+|:---------------|--------:|:-----|-----:|-------:|------:|-------:|------:|------:|
+| fiducial | 0 | $H_0$ | 67.36 | 1089.92 | 144.45 | 1.03965 | 0.2454 | 1.0000 |
+| fiducial | 0.00324 | $H_0$ | 67.36 | 1089.86 | 144.68 | 1.04028 | 0.2451 | 0.9969 |
+| fiducial | 0.00324 | angle | 67.15 | 1089.86 | 144.68 | 1.03965 | 0.2451 | 0.9969 |
+| fiducial | 0.0644 | $H_0$ | 67.36 | 1088.76 | 149.09 | 1.05252 | 0.2402 | 0.9400 |
+| fiducial | 0.0644 | angle | 62.98 | 1088.72 | 149.23 | 1.03965 | 0.2401 | 0.9383 |
+| fluid, $N=0.5$ | 0 | $H_0$ | 67.36 | 1090.40 | 142.02 | 1.02248 | 0.2520 | 1.0000 |
+| fluid, $N=0.5$ | 0.00324 | $H_0$ | 67.36 | 1090.34 | 142.25 | 1.02310 | 0.2517 | 0.9969 |
+| fluid, $N=0.5$ | 0.00324 | angle | 67.15 | 1090.34 | 142.25 | 1.02248 | 0.2517 | 0.9969 |
+| fluid, $N=0.5$ | 0.0644 | $H_0$ | 67.36 | 1089.22 | 146.59 | 1.03517 | 0.2468 | 0.9400 |
+| fluid, $N=0.5$ | 0.0644 | angle | 62.97 | 1089.19 | 146.73 | 1.02248 | 0.2466 | 0.9383 |
+| stepped, $N=0.5$ | 0 | $H_0$ | 67.36 | 1090.25 | 142.55 | 1.02627 | 0.2481 | 1.0000 |
+| stepped, $N=0.5$ | 0.00324 | $H_0$ | 67.36 | 1090.19 | 142.77 | 1.02689 | 0.2479 | 0.9969 |
+| stepped, $N=0.5$ | 0.00324 | angle | 67.15 | 1090.19 | 142.77 | 1.02627 | 0.2479 | 0.9969 |
+| stepped, $N=0.5$ | 0.0644 | $H_0$ | 67.36 | 1089.07 | 147.13 | 1.03900 | 0.2429 | 0.9400 |
+| stepped, $N=0.5$ | 0.0644 | angle | 62.97 | 1089.04 | 147.27 | 1.02627 | 0.2428 | 0.9383 |
+<!-- END tbl_eb_background -->
+
+<!-- BEGIN tbl_eb_summary -->
+| $\mathrm{gsum}/H_0$ | $H_0$ | $G_N$ ratio | $Y_{\rm He}$ | $\sigma_8$, M | $\sigma_8$, P | largest change | ideal | $\Delta\chi^2$ |
+|--------:|------:|------:|------:|------:|------:|--------:|------:|-------:|
+| 0 | 67.360 | 1.0000 | 0.2454 | 0.8228 | 0.8228 | 0 | 0.0 | 0.00 |
+| 0.00324 | 67.149 | 0.9969 | 0.2451 | 0.8219 | 0.8225 | $2.7\times10^{-3}$ | 3.1 | 1.12 |
+| 0.0100 | 66.704 | 0.9905 | 0.2446 | 0.8200 | 0.8219 | $8.3\times10^{-3}$ | 9.7 | 10.79 |
+| 0.0300 | 65.365 | 0.9714 | 0.2430 | 0.8142 | 0.8201 | 0.025 | 29.5 | 98.85 |
+| 0.0644 | 62.976 | 0.9383 | 0.2401 | 0.8032 | 0.8160 | 0.056 | 64.8 | 468.30 |
+| 0.100 | 60.368 | 0.9037 | 0.2370 | 0.7903 | 0.8104 | 0.090 | 103.5 | 1166.70 |
+<!-- END tbl_eb_summary -->
+
+<!-- BEGIN tbl_eb_closure -->
+| $\mathrm{gsum}/H_0$ | $\ell\ge30$: difference | share of the effect | $\ell<30$: difference | share of the effect | $\sigma_8$ ratio, M | $\sigma_8$ ratio, P |
+|--------:|----------:|---------:|----------:|---------:|-------:|-------:|
+| 0.00324 | $1.4\times10^{-3}$ | $1.4\times10^{-3}$ | 0.011 | 2.14 | 0.9989 | 0.9997 |
+| 0.0100 | $4.3\times10^{-3}$ | $1.4\times10^{-3}$ | 0.037 | 2.15 | 0.9966 | 0.9990 |
+| 0.0300 | 0.012 | $1.3\times10^{-3}$ | 0.129 | 2.16 | 0.9896 | 0.9967 |
+| 0.0644 | 0.023 | $1.2\times10^{-3}$ | 0.330 | 2.13 | 0.9762 | 0.9918 |
+| 0.100 | 0.031 | $9.9\times10^{-4}$ | 0.556 | 2.04 | 0.9605 | 0.9850 |
+<!-- END tbl_eb_closure -->
+
+<!-- BEGIN tbl_eb_peaks -->
+| peak | $\ell$: no deflation | $D_\ell^{TT}$ | $\ell$: lunar ranging rate | $D_\ell^{TT}$ | $\ell$: nucleosynthesis rate | $D_\ell^{TT}$ |
+|----:|--------:|-------:|--------:|-------:|-------------:|-------:|
+| 1 | 220.9 | 5740 | 220.9 | 5741 | 220.9 | 5752 |
+| 2 | 537.4 | 2607 | 537.4 | 2608 | 537.5 | 2623 |
+| 3 | 815.2 | 2584 | 815.2 | 2585 | 815.3 | 2612 |
+| 4 | 1131.4 | 1264 | 1131.4 | 1265 | 1131.5 | 1287 |
+| 5 | 1429.3 | 844 | 1429.3 | 845 | 1429.5 | 865 |
+<!-- END tbl_eb_peaks -->
+
+<!-- BEGIN tbl_eb_gaps -->
+| closure | $\tau_{\rm cf}$ (Mpc) | $\mathrm{gsum}/H$ | $\mathcal U$ | $\mathcal Y_M$ | $\mathcal Y_T$ | $\mathcal Y_S$ | check of (3.4) | check of (3.2) |
+|:------|------:|--------:|------:|-----:|------:|-------:|-------:|-------:|
+| M | 280 | $2.7\times10^{-6}$ | 0.7373 | 0.000 | -0.507 | -0.2679 | $3\times10^{-5}$ | $5\times10^{-5}$ |
+| M | 800 | $3.0\times10^{-5}$ | 0.5402 | 0.000 | -0.656 | -0.3314 | $4\times10^{-5}$ | $7\times10^{-5}$ |
+| M | 3000 | $9.4\times10^{-4}$ | 0.5178 | 0.000 | -0.666 | -0.3333 | $4\times10^{-4}$ | $9\times10^{-4}$ |
+| M | 9000 | 0.021 | 0.5083 | 0.000 | -0.708 | -0.3543 | $4\times10^{-4}$ | $9\times10^{-4}$ |
+| M | 13000 | 0.055 | 0.4633 | 0.000 | -0.980 | -0.4900 | $4\times10^{-4}$ | $7\times10^{-4}$ |
+| P | 280 | $2.7\times10^{-6}$ | 0.7373 | 0.536 | 0.000 | 0.1355 | $3\times10^{-5}$ | $5\times10^{-5}$ |
+| P | 800 | $3.0\times10^{-5}$ | 0.5402 | 0.663 | 0.000 | 0.0289 | $4\times10^{-5}$ | $7\times10^{-5}$ |
+| P | 3000 | $9.4\times10^{-4}$ | 0.5181 | 0.666 | 0.000 | 0.0028 | $4\times10^{-4}$ | $9\times10^{-4}$ |
+| P | 9000 | 0.021 | 0.5139 | 0.697 | 0.000 | 0.0004 | $4\times10^{-4}$ | $9\times10^{-4}$ |
+| P | 13000 | 0.055 | 0.4810 | 0.936 | 0.000 | 0.0004 | $4\times10^{-4}$ | $7\times10^{-4}$ |
+<!-- END tbl_eb_gaps -->
+
+<!-- BEGIN tbl_eb_growth -->
+| $\mathrm{gsum}/H_0$ | program, M | Eq. (4.2) | program, P | Eq. (4.1) |
+|--------:|--------:|--------:|--------:|--------:|
+| 0 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| 0.00324 | 0.99856 | 0.99857 | 0.99933 | 0.99933 |
+| 0.0100 | 0.99556 | 0.99557 | 0.99791 | 0.99792 |
+| 0.0300 | 0.98664 | 0.98668 | 0.99368 | 0.99371 |
+| 0.0644 | 0.97123 | 0.97131 | 0.98620 | 0.98627 |
+| 0.100 | 0.95513 | 0.95525 | 0.97819 | 0.97830 |
+<!-- END tbl_eb_growth -->
+
+<!-- BEGIN tbl_eb_growth_angle -->
+| $\mathrm{gsum}/H_0$ | $H_0$ | growth, M | growth, P | $\sigma_8$ ratio, M | $\sigma_8$ ratio, P |
+|--------:|-------:|--------:|--------:|--------:|--------:|
+| 0 | 67.360 | 1.00000 | 1.00000 | 1.00000 | 1.00000 |
+| 0.00324 | 67.149 | 1.00001 | 1.00077 | 0.99892 | 0.99969 |
+| 0.0100 | 66.704 | 1.00001 | 1.00239 | 0.99663 | 0.99901 |
+| 0.0300 | 65.365 | 1.00003 | 1.00727 | 0.98955 | 0.99672 |
+| 0.0644 | 62.976 | 1.00004 | 1.01597 | 0.97620 | 0.99177 |
+| 0.100 | 60.368 | 1.00001 | 1.02545 | 0.96051 | 0.98497 |
+<!-- END tbl_eb_growth_angle -->
+
+<!-- BEGIN tbl_fc_fisher -->
+| mock data | closure | error of the rate | bound | six held | slope | error of $H_0$ | rate free |
+|:-----------|:------|-------:|------:|-------:|-------:|------:|------:|
+| Planck-like | M | 0.01963 | 0.0385 | 0.00108 | -84.35 | 0.561 | 1.748 |
+| Planck-like | P | 0.01974 | 0.0387 | 0.00108 | -84.40 | 0.561 | 1.758 |
+| with deep survey | M | 0.01056 | 0.0207 | 0.00055 | -82.11 | 0.372 | 0.943 |
+| with deep survey | P | 0.01058 | 0.0207 | 0.00055 | -82.13 | 0.372 | 0.945 |
+<!-- END tbl_fc_fisher -->
+
+<!-- BEGIN tbl_fc_profile -->
+| mock data | closure | $\mathrm{gsum}/H_0$ | $\Delta\chi^2$ | $H_0$ | $\omega_c$ | $n_s$ | $\sigma_8$ | $G_N$ ratio |
+|:-------------|:-----|-------:|------:|------:|-------:|------:|------:|------:|
+| Planck-like | M | 0.00324 | 0.027 | 67.086 | 0.12009 | 0.9638 | 0.8218 | 0.9969 |
+| Planck-like | M | 0.00500 | 0.065 | 66.937 | 0.12014 | 0.9633 | 0.8213 | 0.9952 |
+| Planck-like | M | 0.0100 | 0.261 | 66.512 | 0.12029 | 0.9616 | 0.8198 | 0.9905 |
+| Planck-like | P | 0.0100 | 0.258 | 66.512 | 0.12029 | 0.9616 | 0.8218 | 0.9905 |
+| Planck-like | M | 0.0150 | 0.589 | 66.084 | 0.12043 | 0.9599 | 0.8183 | 0.9857 |
+| Planck-like | M | 0.0200 | 1.051 | 65.654 | 0.12058 | 0.9583 | 0.8168 | 0.9809 |
+| Planck-like | M | 0.0300 | 2.398 | 64.784 | 0.12087 | 0.9549 | 0.8136 | 0.9713 |
+| Planck-like | M | 0.0644 | 11.575 | 61.695 | 0.12193 | 0.9430 | 0.8016 | 0.9379 |
+| Planck-like | P | 0.0644 | 11.467 | 61.695 | 0.12193 | 0.9430 | 0.8145 | 0.9379 |
+| with deep survey | M | 0.00324 | 0.094 | 67.094 | 0.12008 | 0.9637 | 0.8218 | 0.9969 |
+| with deep survey | M | 0.00500 | 0.225 | 66.948 | 0.12013 | 0.9631 | 0.8212 | 0.9952 |
+| with deep survey | M | 0.0100 | 0.904 | 66.534 | 0.12025 | 0.9613 | 0.8197 | 0.9905 |
+| with deep survey | P | 0.0100 | 0.900 | 66.534 | 0.12025 | 0.9613 | 0.8216 | 0.9905 |
+| with deep survey | M | 0.0150 | 2.040 | 66.117 | 0.12038 | 0.9594 | 0.8181 | 0.9857 |
+| with deep survey | M | 0.0200 | 3.644 | 65.699 | 0.12050 | 0.9576 | 0.8165 | 0.9809 |
+| with deep survey | M | 0.0300 | 8.301 | 64.851 | 0.12076 | 0.9539 | 0.8131 | 0.9713 |
+| with deep survey | M | 0.0644 | 39.791 | 61.842 | 0.12169 | 0.9408 | 0.8007 | 0.9380 |
+| with deep survey | P | 0.0644 | 39.655 | 61.841 | 0.12170 | 0.9408 | 0.8136 | 0.9380 |
+<!-- END tbl_fc_profile -->
+
+<!-- BEGIN tbl_fam_profiles -->
+| mock data | family | $N$ | $H_0$: no deflation | deflating | shift | $\Delta\chi^2$: no deflation | deflating |
+|:-------------|:-------------------------|---:|-------:|-------:|-----:|-------:|-------:|
+| Planck-like | no extra radiation | 0 | 67.360 | 67.086 | -0.274 | 0 | 0.027 |
+| Planck-like | free-streaming radiation | 0.2 | 68.996 | 68.722 | -0.274 | 1.92 | 1.57 |
+| Planck-like | free-streaming radiation | 0.5 | 71.455 | 71.179 | -0.276 | 11.55 | 10.67 |
+| Planck-like | free-streaming radiation | 1.0 | 75.533 | 75.255 | -0.278 | 43.83 | 42.10 |
+| Planck-like | fluid, no step | 0.2 | 69.445 | 69.171 | -0.274 | 2.17 | 1.79 |
+| Planck-like | fluid, no step | 0.5 | 72.548 | 72.273 | -0.275 | 13.32 | 12.34 |
+| Planck-like | fluid, no step | 1.0 | 77.746 | 77.469 | -0.277 | 51.94 | 50.01 |
+| Planck-like | model fluid, $z_t=10^4$ | 0.2 | 68.485 | 68.211 | -0.274 | 2.64 | 2.38 |
+| Planck-like | model fluid, $z_t=10^4$ | 0.5 | 70.174 | 69.898 | -0.276 | 16.08 | 15.40 |
+| Planck-like | model fluid, $z_t=10^4$ | 1.0 | 72.991 | 72.714 | -0.277 | 61.23 | 59.89 |
+| Planck-like | model fluid, $z_t=2\times10^4$ | 0.2 | 68.292 | 68.019 | -0.274 | 5.47 | 5.21 |
+| Planck-like | model fluid, $z_t=2\times10^4$ | 0.5 | 69.698 | 69.422 | -0.276 | 32.98 | 32.32 |
+| Planck-like | model fluid, $z_t=2\times10^4$ | 1.0 | 72.025 | 71.747 | -0.278 | 124.24 | 122.93 |
+| Planck-like | model fluid, $z_t=5\times10^4$ | 0.2 | 69.216 | 68.942 | -0.274 | 10.81 | 10.18 |
+| Planck-like | model fluid, $z_t=5\times10^4$ | 0.5 | 71.968 | 71.695 | -0.274 | 65.29 | 63.71 |
+| Planck-like | model fluid, $z_t=5\times10^4$ | 1.0 | 76.625 | 76.351 | -0.275 | 247.48 | 244.38 |
+| Planck-like | Wess–Zumino fluid, $z_t=2\times10^4$ | 0.2 | 69.072 | 68.798 | -0.274 | 1.55 | 1.22 |
+| Planck-like | Wess–Zumino fluid, $z_t=2\times10^4$ | 0.5 | 71.641 | 71.365 | -0.276 | 9.38 | 8.52 |
+| Planck-like | Wess–Zumino fluid, $z_t=2\times10^4$ | 1.0 | 75.926 | 75.647 | -0.279 | 35.77 | 34.11 |
+| Planck-like | model fluid, $z_t=10^6$ | 0.2 | 69.364 | 69.091 | -0.274 | 1.76 | 1.44 |
+| Planck-like | model fluid, $z_t=10^6$ | 0.5 | 72.345 | 72.071 | -0.275 | 10.80 | 9.97 |
+| Planck-like | model fluid, $z_t=10^6$ | 1.0 | 77.334 | 77.058 | -0.277 | 42.16 | 40.49 |
+| with deep survey | no extra radiation | 0 | 67.360 | 67.094 | -0.266 | 0 | 0.094 |
+| with deep survey | free-streaming radiation | 0.2 | 68.943 | 68.676 | -0.267 | 6.63 | 5.36 |
+| with deep survey | free-streaming radiation | 0.5 | 71.311 | 71.044 | -0.268 | 40.18 | 36.94 |
+| with deep survey | free-streaming radiation | 1.0 | 75.230 | 74.961 | -0.269 | 153.44 | 147.06 |
+| with deep survey | fluid, no step | 0.2 | 69.315 | 69.048 | -0.267 | 8.89 | 7.29 |
+| with deep survey | fluid, no step | 0.5 | 72.193 | 71.926 | -0.267 | 54.51 | 50.44 |
+| with deep survey | fluid, no step | 1.0 | 77.000 | 76.731 | -0.269 | 211.85 | 203.79 |
+| with deep survey | model fluid, $z_t=10^4$ | 0.2 | 68.614 | 68.347 | -0.267 | 5.37 | 4.70 |
+| with deep survey | model fluid, $z_t=10^4$ | 0.5 | 70.487 | 70.219 | -0.268 | 32.60 | 30.85 |
+| with deep survey | model fluid, $z_t=10^4$ | 1.0 | 73.616 | 73.346 | -0.269 | 124.07 | 120.58 |
+| with deep survey | model fluid, $z_t=2\times10^4$ | 0.2 | 68.436 | 68.169 | -0.267 | 11.22 | 10.72 |
+| with deep survey | model fluid, $z_t=2\times10^4$ | 0.5 | 70.035 | 69.766 | -0.269 | 67.34 | 66.03 |
+| with deep survey | model fluid, $z_t=2\times10^4$ | 1.0 | 72.694 | 72.423 | -0.270 | 252.39 | 249.73 |
+| with deep survey | model fluid, $z_t=5\times10^4$ | 0.2 | 68.742 | 68.475 | -0.267 | 22.10 | 20.77 |
+| with deep survey | model fluid, $z_t=5\times10^4$ | 0.5 | 70.759 | 70.493 | -0.266 | 132.70 | 129.29 |
+| with deep survey | model fluid, $z_t=5\times10^4$ | 1.0 | 74.148 | 73.879 | -0.268 | 498.87 | 492.12 |
+| with deep survey | Wess–Zumino fluid, $z_t=2\times10^4$ | 0.2 | 69.005 | 68.738 | -0.267 | 5.17 | 4.00 |
+| with deep survey | Wess–Zumino fluid, $z_t=2\times10^4$ | 0.5 | 71.456 | 71.189 | -0.267 | 31.49 | 28.50 |
+| with deep survey | Wess–Zumino fluid, $z_t=2\times10^4$ | 1.0 | 75.542 | 75.274 | -0.268 | 121.43 | 115.53 |
+| with deep survey | model fluid, $z_t=10^6$ | 0.2 | 69.243 | 68.976 | -0.267 | 7.18 | 5.79 |
+| with deep survey | model fluid, $z_t=10^6$ | 0.5 | 72.016 | 71.749 | -0.267 | 44.03 | 40.45 |
+| with deep survey | model fluid, $z_t=10^6$ | 1.0 | 76.641 | 76.373 | -0.268 | 171.23 | 164.11 |
+<!-- END tbl_fam_profiles -->
+
+<!-- BEGIN tbl_fam_fisher -->
+| mock data | family | error of $N$: no deflation | deflating | $dH_0/dN$: no deflation | deflating |
+|:------------|:---------------------|--------:|-------:|--------:|-------:|
+| Planck-like | free-streaming radiation | 0.1431 | 0.1432 | 8.190 | 8.180 |
+| Planck-like | fluid, no step | 0.1352 | 0.1352 | 10.441 | 10.435 |
+| Planck-like | model fluid, $z_t=10^4$ | 0.1222 | 0.1222 | 5.631 | 5.624 |
+| Planck-like | model fluid, $z_t=2\times10^4$ | 0.0846 | 0.0846 | 4.684 | 4.676 |
+| Planck-like | model fluid, $z_t=5\times10^4$ | 0.0602 | 0.0602 | 9.283 | 9.273 |
+| Planck-like | Wess–Zumino fluid, $z_t=2\times10^4$ | 0.1601 | 0.1598 | 8.578 | 8.573 |
+| Planck-like | model fluid, $z_t=10^6$ | 0.1500 | 0.1500 | 10.042 | 10.038 |
+| with deep survey | free-streaming radiation | 0.0770 | 0.0771 | 7.923 | 7.915 |
+| with deep survey | fluid, no step | 0.0667 | 0.0666 | 9.801 | 9.797 |
+| with deep survey | model fluid, $z_t=10^4$ | 0.0858 | 0.0858 | 6.275 | 6.271 |
+| with deep survey | model fluid, $z_t=2\times10^4$ | 0.0591 | 0.0591 | 5.399 | 5.395 |
+| with deep survey | model fluid, $z_t=5\times10^4$ | 0.0421 | 0.0421 | 6.928 | 6.919 |
+| with deep survey | Wess–Zumino fluid, $z_t=2\times10^4$ | 0.0879 | 0.0876 | 8.246 | 8.241 |
+| with deep survey | model fluid, $z_t=10^6$ | 0.0742 | 0.0741 | 9.445 | 9.442 |
+<!-- END tbl_fam_fisher -->
+
+<!-- BEGIN tbl_fam_summary_planck -->
+| family | $N$ at $\Delta\chi^2=4$: no deflation | deflating | $H_0$ there: no deflation | deflating | $\Delta\chi^2$ at $H_0=73.50$: no deflation | deflating |
+|:-----------------------|--------:|-------:|--------:|-------:|---------:|-------:|
+| free-streaming radiation | 0.29 | 0.31 | 69.74 | 69.62 | 25 | 26 |
+| fluid, no step | 0.27 | 0.29 | 70.20 | 70.12 | 19 | 19 |
+| model fluid, $z_t=10^4$ | 0.25 | 0.26 | 68.75 | 68.53 | 72* | 77* |
+| model fluid, $z_t=2\times10^4$ | 0.17 | 0.18 | 68.16 | 67.90 | 211* | 228* |
+| model fluid, $z_t=5\times10^4$ | 0.12 | 0.13 | 68.48 | 68.27 | 113 | 121 |
+| Wess–Zumino fluid, $z_t=2\times10^4$ | 0.32 | 0.35 | 70.13 | 70.06 | 19 | 19 |
+| model fluid, $z_t=10^6$ | 0.30 | 0.32 | 70.39 | 70.32 | 16 | 17 |
+<!-- END tbl_fam_summary_planck -->
+
+<!-- BEGIN tbl_fam_ms -->
+| family | $N$ at $\Delta\chi^2=4$: no deflation | deflating | $H_0$ there: no deflation | deflating | error of $N$: rate zero | rate free | correlation | net slope | largest rise of $H_0$ |
+|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| free-streaming radiation | 0.29 | 0.31 | 69.74 | 69.62 | 0.143 | 0.250 | 0.82 | -35.3 | 2.30 |
+| fluid, no step | 0.27 | 0.29 | 70.20 | 70.12 | 0.135 | 0.249 | 0.84 | -23.9 | 2.77 |
+| model fluid, $z_t=10^4$ | 0.25 | 0.26 | 68.75 | 68.53 | 0.122 | 0.145 | 0.54 | -65.4 | 1.35 |
+| model fluid, $z_t=2\times10^4$ | 0.17 | 0.18 | 68.16 | 67.90 | 0.085 | 0.091 | 0.37 | -76.9 | 0.78 |
+| model fluid, $z_t=5\times10^4$ | 0.12 | 0.13 | 68.48 | 68.27 | 0.060 | 0.076 | 0.61 | -67.0 | 1.10 |
+| Wess–Zumino fluid, $z_t=2\times10^4$ | 0.32 | 0.35 | 70.13 | 70.06 | 0.160 | 0.350 | 0.89 | -22.1 | 2.69 |
+| model fluid, $z_t=10^6$ | 0.30 | 0.32 | 70.39 | 70.32 | 0.150 | 0.250 | 0.80 | -23.0 | 2.95 |
+<!-- END tbl_fam_ms -->
+
+<!-- BEGIN tbl_fam_summary_deep -->
+| family | $N$ at $\Delta\chi^2=4$: no deflation | deflating | $H_0$ there: no deflation | deflating | $\Delta\chi^2$ at $H_0=73.50$: no deflation | deflating |
+|:-----------------------|--------:|-------:|--------:|-------:|---------:|-------:|
+| free-streaming radiation | 0.16 | 0.18 | 68.59 | 68.48 | 95 | 98 |
+| fluid, no step | 0.13 | 0.15 | 68.67 | 68.59 | 87 | 90 |
+| model fluid, $z_t=10^4$ | 0.17 | 0.19 | 68.44 | 68.25 | 120 | 126* |
+| model fluid, $z_t=2\times10^4$ | 0.12 | 0.12 | 68.00 | 67.75 | 330* | 356* |
+| model fluid, $z_t=5\times10^4$ | 0.08 | 0.09 | 67.94 | 67.70 | 412 | 441 |
+| Wess–Zumino fluid, $z_t=2\times10^4$ | 0.18 | 0.20 | 68.81 | 68.74 | 69 | 71 |
+| model fluid, $z_t=10^6$ | 0.15 | 0.17 | 68.76 | 68.69 | 76 | 78 |
+<!-- END tbl_fam_summary_deep -->
+
+<!-- BEGIN tbl_fam_joint_planck -->
+| family | error of $N$, rate zero | error of $N$, rate free | error of the rate, $N$ free | correlation | $N$ per unit rate | net slope | largest rise of $H_0$ |
+|:-------------------------|------:|------:|------:|---------:|-------:|------:|-------:|
+| free-streaming radiation | 0.1431 | 0.2505 | 0.0344 | 0.821 | 5.98 | -35.3 | 2.30 |
+| fluid, no step | 0.1352 | 0.2490 | 0.0362 | 0.840 | 5.79 | -23.9 | 2.77 |
+| model fluid, $z_t=10^4$ | 0.1222 | 0.1451 | 0.0233 | 0.540 | 3.36 | -65.4 | 1.35 |
+| model fluid, $z_t=2\times10^4$ | 0.0846 | 0.0911 | 0.0211 | 0.370 | 1.60 | -76.9 | 0.78 |
+| model fluid, $z_t=5\times10^4$ | 0.0602 | 0.0760 | 0.0248 | 0.610 | 1.87 | -67.0 | 1.10 |
+| Wess–Zumino fluid, $z_t=2\times10^4$ | 0.1601 | 0.3503 | 0.0429 | 0.889 | 7.26 | -22.1 | 2.69 |
+| model fluid, $z_t=10^6$ | 0.1500 | 0.2496 | 0.0326 | 0.799 | 6.11 | -23.0 | 2.95 |
+<!-- END tbl_fam_joint_planck -->
+
+<!-- BEGIN tbl_fam_joint_deep -->
+| family | error of $N$, rate zero | error of $N$, rate free | error of the rate, $N$ free | correlation | $N$ per unit rate | net slope | largest rise of $H_0$ |
+|:-------------------------|------:|------:|------:|---------:|-------:|------:|-------:|
+| free-streaming radiation | 0.0770 | 0.1540 | 0.0211 | 0.866 | 6.32 | -32.1 | 1.20 |
+| fluid, no step | 0.0667 | 0.1763 | 0.0279 | 0.926 | 5.85 | -24.8 | 1.28 |
+| model fluid, $z_t=10^4$ | 0.0858 | 0.1012 | 0.0125 | 0.530 | 4.31 | -55.0 | 1.06 |
+| model fluid, $z_t=2\times10^4$ | 0.0591 | 0.0617 | 0.0110 | 0.283 | 1.58 | -73.6 | 0.63 |
+| model fluid, $z_t=5\times10^4$ | 0.0421 | 0.0485 | 0.0121 | 0.495 | 1.97 | -68.4 | 0.57 |
+| Wess–Zumino fluid, $z_t=2\times10^4$ | 0.0879 | 0.2121 | 0.0255 | 0.910 | 7.57 | -19.7 | 1.42 |
+| model fluid, $z_t=10^6$ | 0.0742 | 0.1767 | 0.0251 | 0.908 | 6.38 | -21.9 | 1.37 |
+<!-- END tbl_fam_joint_deep -->
+
+<!-- BEGIN tbl_sfdm_bounds -->
+| deflation | relic (keV) | half mode (Mpc$^{-1}$) | fermion mass (keV) | largest $c_{s0}/c$ | in m/s | $R_{TF}$ (pc) |
+|:--------------|------:|-------:|-------:|---------:|-------:|------:|
+| none | 3.5 | 25.94 | 1.0249 | $3.335\times10^{-11}$ | 0.01000 | 0.740 |
+| none | 5.3 | 41.11 | 1.5140 | $1.645\times10^{-11}$ | 0.00493 | 0.365 |
+| lunar ranging rate | 3.5 | 25.94 | 1.0262 | $3.327\times10^{-11}$ | 0.00997 | 0.739 |
+| lunar ranging rate | 5.3 | 41.11 | 1.5161 | $1.641\times10^{-11}$ | 0.00492 | 0.364 |
+| nucleosynthesis rate, M | 3.5 | 25.94 | 1.0523 | $3.178\times10^{-11}$ | 0.00953 | 0.705 |
+| nucleosynthesis rate, M | 5.3 | 41.11 | 1.5554 | $1.565\times10^{-11}$ | 0.00469 | 0.347 |
+| nucleosynthesis rate, P | 3.5 | 25.94 | 1.0523 | $3.178\times10^{-11}$ | 0.00953 | 0.705 |
+| nucleosynthesis rate, P | 5.3 | 41.11 | 1.5554 | $1.565\times10^{-11}$ | 0.00469 | 0.347 |
+<!-- END tbl_sfdm_bounds -->
+
+<!-- BEGIN tbl_sfdm_half -->
+| dark matter | no deflation | lunar ranging rate | nucleosynthesis rate, M | nucleosynthesis rate, P | change (per cent) |
+|:-----------------------------|--------:|--------:|-----------:|-----------:|-------:|
+| fermions, $m=0.3$ keV | 6.215 | 6.206 | 6.025 | 6.025 | -3.07 |
+| fermions, $m=0.5$ keV | 11.222 | 11.205 | 10.875 | 10.875 | -3.09 |
+| fermions, $m=0.75$ keV | 17.996 | 17.969 | 17.444 | 17.444 | -3.07 |
+| fermions, $m=1$ keV | 25.196 | 25.159 | 24.426 | 24.426 | -3.06 |
+| fermions, $m=1.5$ keV | 40.657 | 40.590 | 39.379 | 39.379 | -3.14 |
+| fermions, $m=2$ keV | 57.249 | 57.159 | 55.401 | 55.401 | -3.23 |
+| fermions, $m=3$ keV | 92.774 | 92.633 | 89.868 | 89.868 | -3.13 |
+| fermions, $m=4.5$ keV | 150.645 | 150.419 | 146.013 | 146.010 | -3.08 |
+| condensate, $c_{s0}/c=$ $3.0\times10^{-12}$ | 125.047 | 124.857 | 121.132 | 121.132 | -3.13 |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-11}$ | 56.870 | 56.781 | 55.003 | 55.003 | -3.28 |
+| condensate, $c_{s0}/c=$ $3.0\times10^{-11}$ | 27.777 | 27.736 | 26.922 | 26.922 | -3.08 |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-10}$ | 12.734 | 12.714 | 12.333 | 12.333 | -3.15 |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-9}$ | 2.911 | 2.906 | 2.822 | 2.822 | -3.04 |
+| condensate, $c_{s0}/c=$ $1.0\times10^{-8}$ | 0.693 | 0.692 | 0.670 | 0.670 | -3.28 |
+| condensate, $c_{s0}/c=$ $4.5\times10^{-8}$ | 0.280 | 0.280 | 0.271 | 0.271 | -3.25 |
+<!-- END tbl_sfdm_half -->
 
 <!-- BEGIN tbl_cjt -->
 | $m_s/m$, $k_F/m$ | $\tau_d$ | $g_{VS}$ | $\lambda$ | gap$/m$ | $V/m^4$ | ratio | curvature | $T_c/$gap | size $\times k_F$ |

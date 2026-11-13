@@ -4,7 +4,10 @@
 use spacetimes::cosmo::{C_LIGHT, EV, H_PLANCK};
 use spacetimes::dimer::{binding, critical_d, scattering_length};
 use spacetimes::verify::Report;
-use spacetimes_deflation::cosmo_defl::{grid, growth, main_project_reference, rate_bounds, solve_h, theta_star, Model, HUBBLE_TIME_100_YR};
+use spacetimes::cosmo::Params;
+use spacetimes_deflation::cosmo_defl::{grid, growth, main_project_reference, rate_bounds, GrowthLaw, Model, HUBBLE_TIME_100_YR};
+use spacetimes_deflation::eb_cosmo::Deflation;
+use spacetimes_deflation::spectra_defl::{h_at_fixed_theta, theta_star_100};
 use spacetimes_deflation::io::{write_csv, write_csv_str, write_report};
 
 /// Numbers of a data file of the main project: every line that is not a comment, split
@@ -144,10 +147,11 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
         peak[0] > 1e3 * far[0] && peak[0] <= unit10 * 1.0001 && peak[0] > peak[1] && peak[1] > peak[2] && window[0] >= window[2] && window[0] < 0.5);
 
     // ---- (4) growth of structure ---------------------------------------------------------------------
+    // The density contrast of pressureless matter, for the two closures of the perturbation equations (assumption A3;
+    // `cosmo_defl::growth`), and, for comparison, for the four-dimensional equation that an earlier version used.
     let h0 = 0.6736_f64;
     let (z_star, _, _) = main_project_reference();
     let none = |_s: f64| 1.0;
-    let theta = theta_star(&Model::fiducial(0.0, h0), z_star, &none).theta100;
     let (a_min, n) = grid(z_star, 4000);
     // the bounds on the rate, in units of H_0, and H_0 times the age of the model without deflation:
     // the same numbers that the command `cosmology` reports (cosmo_defl::rate_bounds)
@@ -155,37 +159,55 @@ pub fn run(main_data_dir: &str) -> std::io::Result<bool> {
     let (llr, bbn, gf20, t0_h0) = (rb.llr / h0, rb.bbn / h0, rb.gfermi_20 / h0, rb.age * h0);
     let mut ratios: Vec<f64> = vec![0.0, 1e-3, llr, 1e-2, 3e-2, bbn, 0.1, 0.3];
     ratios.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    // the Hubble constant that keeps the angular scale of the sound horizon: the full calculation of recombination on
+    // the deflating background, as in the command `cosmology` (data/hubble_deflation.csv)
+    let fid = Params::fiducial();
+    let theta_fid = theta_star_100(&fid, &Deflation::none());
+    let laws = [GrowthLaw::Momentum, GrowthLaw::Pressure, GrowthLaw::FourDimensional];
     let mut grows: Vec<Vec<f64>> = Vec::new();
-    let (mut d_ref, mut f_ref) = (0.0, 0.0);
+    let mut refs = [(0.0, 0.0); 3];
     for r in &ratios {
         let base = Model::fiducial(r * h0, h0);
-        // (i) the Hubble constant held at 67.36 km/s/Mpc: the effect of the weaker gravity of the past alone
-        let hist = base.history(a_min, n, &none);
-        let (d_h, f_h) = growth(&base, &hist, 0.01, &none);
-        // (ii) the Hubble constant that keeps the angular scale of the sound horizon
-        let h = solve_h(&base, z_star, theta, &none);
+        let h = if *r == 0.0 { h0 } else { h_at_fixed_theta(&fid, &Deflation::equal_rates(r * h0), theta_fid) };
         let mdl = Model { h, ..base };
-        let hist = mdl.history(a_min, n, &none);
-        let (d, f) = growth(&mdl, &hist, 0.01, &none);
-        if *r == 0.0 {
-            d_ref = d;
-            f_ref = f;
+        let (hist_h, hist) = (base.history(a_min, n, &none), mdl.history(a_min, n, &none));
+        let mut row = vec![*r, h];
+        for (i, law) in laws.iter().enumerate() {
+            // (i) the Hubble constant held at 67.36 km/s/Mpc: the effect of the deflation on the growth alone
+            let (d_h, f_h) = growth(&base, &hist_h, 0.01, &none, *law);
+            // (ii) the Hubble constant that keeps the angular scale of the sound horizon
+            let (d, f) = growth(&mdl, &hist, 0.01, &none, *law);
+            if *r == 0.0 {
+                refs[i] = (d, f);
+            }
+            let (d_ref, f_ref) = refs[i];
+            row.extend_from_slice(&[d, f, d / d_ref, f / f_ref, d * f / (d_ref * f_ref), d_h / d_ref, f_h / f_ref]);
         }
-        grows.push(vec![*r, h, d, f, d / d_ref, f / f_ref, d * f / (d_ref * f_ref), d_h / d_ref, f_h / f_ref]);
+        grows.push(row);
     }
+    let mut gcols: Vec<String> = vec!["gsum_over_H0".into(), "h".into()];
+    for tag in ["M", "P", "N4"] {
+        for c in ["growth", "f_growth", "growth_ratio", "f_growth_ratio", "f_sigma8_ratio", "growth_ratio_fixed_h", "f_growth_ratio_fixed_h"] {
+            gcols.push(format!("{}_{}", c, tag));
+        }
+    }
+    let gcols_ref: Vec<&str> = gcols.iter().map(|s| s.as_str()).collect();
     write_csv("growth_deflation.csv",
-        &[("content", "linear growth of the density contrast of matter in ordinary space when Newton's constant grows with the deflation (assumptions A1, A2; Newtonian limit): delta_m'' + 2 H delta_m' = 4 pi G_N(x4) rho_m delta_m (primes: derivatives with respect to x4); each model has the Hubble constant that keeps the angular scale of the sound horizon, as in data/hubble_deflation.csv".to_string()),
-          ("columns", "gsum_over_H0; h; growth: density contrast delta_m at a = 1 for delta_m = a + 2 a_eq/3 at a = 0.01; f_growth = d ln delta_m/d ln a at a = 1; growth_ratio, f_growth_ratio, f_sigma8_ratio: ratios to the model without deflation (growth_ratio is the ratio of the amplitudes sigma_8 for the same primordial amplitude; f_sigma8_ratio the ratio of the products); growth_ratio_fixed_h, f_growth_ratio_fixed_h: the same ratios if the Hubble constant is held at 67.36 km/s/Mpc instead".to_string()),
+        &[("content", "linear growth of the density contrast delta_m of pressureless matter in ordinary space on the deflating spacetime (assumptions A1, A2, A3), from a = 0.01 to today. With a Newton's constant that depends on the time the growth depends on the closure of the perturbation equations (A3). Closure \"Pressure\" (suffix _P; also the closure \"Shear\" far inside the horizon): delta_m'' + (2 H - gsum/2) delta_m' = 4 pi G_N(x4) rho_m delta_m, primes for derivatives with respect to x4. Closure \"Momentum\" (suffix _M): in conformal time, delta_m'' + [(2 He' + R)/(2 He)] delta_m' = [(Hc - a gsum)/(2 He)] g delta_m, with Hc = a H, He = Hc - a gsum/2, g = 8 pi G_N(x4) a^2 rho_m and R = g + (4/3) 8 pi G_N(x4) a^2 rho_r. Suffix _N4: the four-dimensional equation delta_m'' + 2 H delta_m' = 4 pi G_N(x4) rho_m delta_m, which is not a consequence of the eight-dimensional equations and is listed only because an earlier version of this file contained it".to_string()),
+          ("columns", "gsum_over_H0; h: the Hubble constant that keeps the angular scale of the sound horizon (as in data/hubble_deflation.csv); then for each of the three equations: growth = delta_m at a = 1 for delta_m = a + 2 a_eq/3 at a = 0.01; f_growth = d ln delta_m/d ln a at a = 1; growth_ratio, f_growth_ratio, f_sigma8_ratio: ratios to the model without deflation (f_sigma8_ratio is the ratio of the products growth times f_growth); growth_ratio_fixed_h, f_growth_ratio_fixed_h: the same ratios if the Hubble constant is held at 67.36 km/s/Mpc instead".to_string()),
           ("command", "deflation matter".to_string())],
-        &["gsum_over_H0", "h", "growth", "f_growth", "growth_ratio", "f_growth_ratio", "f_sigma8_ratio", "growth_ratio_fixed_h", "f_growth_ratio_fixed_h"], &grows)?;
+        &gcols_ref, &grows)?;
+    // columns of the law i: 2 + 7 i + (0 growth, 1 f, 2 growth ratio, 3 f ratio, 4 f sigma8 ratio, 5 growth ratio at fixed h, 6 f ratio at fixed h)
     let at = |r: f64| grows.iter().find(|x| (x[0] - r).abs() < 1e-12).unwrap().clone();
-    let slope = (at(1e-3)[4] - 1.0) / 1e-3;
-    let slope_h = (at(1e-3)[7] - 1.0) / 1e-3;
-    let mono_h = grows.windows(2).all(|w| w[1][7] < w[0][7]);
-    let mono = grows.windows(2).all(|w| w[1][4] > w[0][4]);
+    let col = |law: usize, q: usize| 2 + 7 * law + q;
+    let slope = |law: usize, q: usize| (at(1e-3)[col(law, q)] - 1.0) / 1e-3;
+    let mono = |law: usize, q: usize, up: bool| grows.windows(2).all(|w| if up { w[1][col(law, q)] > w[0][col(law, q)] } else { w[1][col(law, q)] < w[0][col(law, q)] });
     rep.add("def-D4", "numerical",
-        &format!("growth of structure when Newton's constant grows with the deflation (A1, A2). Two effects oppose each other. (i) Gravity was weaker in the past: at a fixed Hubble constant the amplitude today (sigma_8 for a given primordial amplitude) falls, d ln sigma_8/d(gsum/H_0) = {:.3}. (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer: with that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = {:+.3}, a rise of {:.2} per cent at the rate that lunar laser ranging allows, {:.2} per cent at the rate that nucleosynthesis allows and {:.2} per cent for gsum = 0.1 H_0. The growth rate f_growth = d ln delta_m/d ln a today rises by the factors {:.4}, {:.4}, {:.4}. The amplitude of clustering is thus almost unchanged while its present rate of growth is not: a deflating universe would show itself in the product f_growth sigma_8 rather than in sigma_8 (data/growth_deflation.csv)", slope_h, slope, 100.0 * (at(llr)[4] - 1.0), 100.0 * (at(bbn)[4] - 1.0), 100.0 * (at(0.1)[4] - 1.0), at(llr)[5], at(bbn)[5], at(0.1)[5]),
-        mono && mono_h && slope_h < 0.0 && slope > 0.0 && at(bbn)[5] > 1.0);
+        &format!("growth of structure on the deflating spacetime (A1, A2, A3; data/growth_deflation.csv). The growth depends on the closure of the perturbation equations at the first order in the rate. (i) At a fixed Hubble constant the amplitude of the density contrast today (sigma_8 for a given primordial amplitude) falls with the rate in both closures: d ln sigma_8/d(gsum/H_0) = {:.3} (closure \"Momentum\") and {:.3} (closure \"Pressure\"). (ii) The Hubble constant that keeps the angular scale of the sound horizon is lower, the cosmological term takes over later, and matter clusters for longer. With that Hubble constant the net change is d ln sigma_8/d(gsum/H_0) = {:+.3} (\"Momentum\") and {:+.3} (\"Pressure\"): {:+.3} and {:+.3} per cent at the rate that lunar laser ranging allows, {:+.2} and {:+.2} per cent at the rate that nucleosynthesis allows. The growth rate f_growth = d ln delta_m/d ln a today rises in both closures, by the factors {:.4} and {:.4} (lunar laser ranging), {:.4} and {:.4} (nucleosynthesis). Common to both closures is that, at a fixed angle, the amplitude does not fall and the growth rate rises; how large these changes are, and whether the amplitude changes at all, depends on which perturbations the agent carries that holds the extra scale factors, and is not a prediction of the hypotheses. (iii) The four-dimensional equation delta_m'' + 2 H delta_m' = 4 pi G_N(x4) rho_m delta_m, which an earlier version of this command integrated, is neither closure: it gives d ln sigma_8/d(gsum/H_0) = {:.3} at a fixed Hubble constant and {:+.3} at a fixed angle",
+            slope(0, 5), slope(1, 5), slope(0, 2), slope(1, 2), 100.0 * (at(llr)[col(0, 2)] - 1.0), 100.0 * (at(llr)[col(1, 2)] - 1.0), 100.0 * (at(bbn)[col(0, 2)] - 1.0), 100.0 * (at(bbn)[col(1, 2)] - 1.0),
+            at(llr)[col(0, 3)], at(llr)[col(1, 3)], at(bbn)[col(0, 3)], at(bbn)[col(1, 3)], slope(2, 5), slope(2, 2)),
+        mono(0, 5, false) && mono(1, 5, false) && slope(0, 5) < slope(2, 5) && slope(2, 5) < slope(1, 5) && slope(1, 5) < 0.0 && slope(0, 2) < slope(1, 2)
+            && slope(0, 2) > -0.02 && mono(1, 2, true) && at(bbn)[col(0, 3)] > 1.0 && at(bbn)[col(1, 3)] > at(bbn)[col(0, 3)] && at(llr)[col(0, 3)] > 1.0);
 
     // ---- (5) drift of the quantities -----------------------------------------------------------------
     // logarithmic derivatives with respect to tau_d (every quantity depends on tau_d through D or alpha ~ exp(tau_d))

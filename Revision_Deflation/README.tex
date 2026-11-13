@@ -195,7 +195,7 @@ exponentially}
 \subtitle{PROJECT spacetimes: where to start, what was found, and what
 is open}
 \author{Prepared for Patrick Lee Nash, Ph.D.}
-\date{November 12, 2026}
+\date{November 13, 2026}
 
 \begin{document}
 \maketitle
@@ -254,6 +254,8 @@ the Higgs hypothesis &
 \texttt{supplement/RS2\_higgs\_hypothesis\_deflating.pdf} \\
 cosmology, dark matter, the Hubble tension &
 \texttt{supplement/RS3\_cosmology\_deflating.pdf} \\
+the microwave background and the growth of structure &
+\texttt{supplement/RS5\_microwave\_background\_deflating.pdf} \\
 what was assumed, what mirrors what, what is open &
 \texttt{provenance/RP0\_hypotheses\_and\_status.pdf} \\
 the proof that no symbol has two meanings &
@@ -313,9 +315,23 @@ theory, Newton's constant grows with the deflation, lunar laser ranging
 limits the rate to \(3\times10^{-3}\) of the Hubble constant, and the
 Hubble constant inferred from the microwave background \emph{falls}. The
 Hubble tension is not relieved. For dark matter the deflation adds an
-epoch of resonant self-interaction and a small change of the growth
-rate; the conclusions of the main project about the masses are
-unchanged.
+epoch of resonant self-interaction; the conclusions of the main project
+about the masses are unchanged.
+
+\textbf{The microwave background and the growth of structure} (RS5). The
+spectra need one assumption more: that the scale factors of \(x5,x6,x7\)
+are not perturbed when ordinary space is. Even then the Einstein
+equations of ordinary space cannot all hold with matter alone. Whatever
+keeps the three rates constant must carry a tension and perturbations of
+it, and the hypotheses do not say which. \emph{What does not depend on
+that choice:} the spectra at the multipoles \(\ell\ge30\). Mock data of
+the quality of the Planck satellite would bound the rate to
+\(0.0385\,H_0\), between the bounds of lunar laser ranging and of
+nucleosynthesis; in every fit the Hubble constant falls, by 84 km/s/Mpc
+per unit of \(\mathrm{gsum}/H_0\); and the rate cannot help the dark
+radiation of the main project to raise the Hubble constant. \emph{What
+does depend on it:} the growth of structure and the largest angular
+scales, which the revision brackets with two choices.
 
 \hypertarget{what-is-open}{%
 \section{What is open}\label{what-is-open}}
@@ -324,9 +340,11 @@ unchanged.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  The spectra of the microwave background with a time-dependent Newton's
-  constant were not computed (RP0, Sec. 5). The author's decision is
-  requested.
+  What keeps the three rates constant. The revision calls it the agent
+  and assumes nothing about its nature. The spectra of the microwave
+  background were computed under an assumption about it that the author
+  is asked to confirm or replace (RP0, Sec. 5); the growth of structure
+  remains undetermined until it is specified.
 \item
   The stability of the Einstein--Gauss--Bonnet solution, and the source
   of the deflation for unequal rates.
@@ -344,12 +362,12 @@ provenance P11 and remain paused.
 \hypertarget{numbers}{%
 \section{Numbers}\label{numbers}}
 
-The Rust program \texttt{deflation} performs 217 checks and has 39 unit
-tests; an independent Python script performs 33 of 33 checks; the
+The Rust program \texttt{deflation} performs 238 checks and has 49 unit
+tests; an independent Python script performs 43 of 43 checks; the
 registry of symbols 6 of 6. All pass. A further script compares every
 number that is quoted in the running text of the documents and of the
-manuscripts with the numbers that the programs state (542 numbers in 28
-documents, 0 not traced). The folder contains 14 figures and the data
+manuscripts with the numbers that the programs state (974 numbers in 29
+documents, 0 not traced). The folder contains 19 figures and the data
 files from which every table and figure is made.
 
 \hypertarget{how-to-run-it}{%
@@ -358,9 +376,15 @@ files from which every table and figure is made.
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Deflation"}
+\ExtensionTok{python3}\NormalTok{ code/scripts/vendor\_eb.py }\AttributeTok{{-}{-}check}
 \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
 \ExtensionTok{cargo}\NormalTok{ test  }\AttributeTok{{-}{-}release} \AttributeTok{{-}{-}manifest{-}path}\NormalTok{ code/deflation{-}rs/Cargo.toml}
+\CommentTok{\# the first nine commands: about three and a half minutes together}
 \ControlFlowTok{for}\NormalTok{ c }\KeywordTok{in}\NormalTok{ matrices modes history quench cosmology symmetry channels matter paired}\KeywordTok{;} \ControlFlowTok{do}
+  \ExtensionTok{./code/deflation{-}rs/target/release/deflation} \VariableTok{$c}
+\ControlFlowTok{done}
+\CommentTok{\# the Einstein{-}Boltzmann calculations of RS5: about an hour and ten minutes together}
+\ControlFlowTok{for}\NormalTok{ c }\KeywordTok{in}\NormalTok{ background spectrum forecast families superfluid}\KeywordTok{;} \ControlFlowTok{do}
   \ExtensionTok{./code/deflation{-}rs/target/release/deflation} \VariableTok{$c}
 \ControlFlowTok{done}
 \ExtensionTok{python3}\NormalTok{ code/scripts/verify\_deflating\_independent.py}

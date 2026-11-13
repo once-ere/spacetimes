@@ -2,7 +2,7 @@
 title: "RS1 — The Vorton-Scalar and the hidden-axis singlet superfluid on the deflating 4+4 and 7+1 spacetimes"
 subtitle: "PROJECT spacetimes, Revision_Deflation. Supplement to both manuscripts of the revision: reduction to four dimensions, the deflation clock, modes of the scalar, pairing interaction, gap, bound pair, order parameter, vortices, and whether the paired state can follow the deflation"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/RS1_vorton_scalar_and_superfluid_deflating.src.md by code/scripts/assemble_docs.py.
@@ -81,10 +81,10 @@ $T_{\rm defl}=\mathrm{rate}_t/2\pi$.
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
 cargo build --release --manifest-path code/deflation-rs/Cargo.toml
-./code/deflation-rs/target/release/deflation symmetry    # reduction of the couplings, vortices
-./code/deflation-rs/target/release/deflation channels    # exchange amplitudes, modes of the scalar
-./code/deflation-rs/target/release/deflation history     # gap, bound pair, order of events
-./code/deflation-rs/target/release/deflation quench      # dynamics of the paired state
+./code/deflation-rs/target/release/deflation symmetry   # reduction of the couplings, vortices
+./code/deflation-rs/target/release/deflation channels   # exchange amplitudes, scalar modes
+./code/deflation-rs/target/release/deflation history    # gap, bound pair, order of events
+./code/deflation-rs/target/release/deflation quench     # dynamics of the paired state
 python3 code/scripts/make_figures.py clock scalar kernels gap binding quench
 python3 code/scripts/write_doc_tables.py                 # the tables of this supplement
 python3 code/scripts/assemble_docs.py docs_src/RS1_vorton_scalar_and_superfluid_deflating.src.md

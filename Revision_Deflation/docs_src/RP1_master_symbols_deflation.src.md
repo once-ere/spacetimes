@@ -3,7 +3,7 @@
 title: "RP1 — MASTER provenance of the symbols of Revision_Deflation"
 subtitle: "Proof, required by Hard Rule 5, that every symbol of the revision has one meaning and collides neither with the MASTER registry of the main project nor with the author's notebooks"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 <!-- This file is GENERATED from docs_src/RP1_master_symbols_deflation.src.md by code/scripts/assemble_docs.py.
@@ -17,7 +17,8 @@ and prove that it has. The main project does so with a MASTER registry
 (`provenance/symbols.csv` in the folder above; provenance P1) in which every symbol has
 exactly one meaning.
 
-The revision introduces new objects — rates, scale factors, a curved metric, a clock —
+The revision introduces new objects — rates, scale factors, a curved metric, a clock,
+and for the perturbations of ordinary space the quantities of the supplement RS5 —
 and therefore new symbols. This document is the extension of the MASTER registry by
 those symbols. It proves, by six machine checks whose output is reproduced in Sec. 4:
 
@@ -61,7 +62,7 @@ The registry is the file `provenance/symbols_deflation.csv`, written by
 `code/scripts/write_symbol_registry.py`. "Origin" says whether a symbol is the
 author's, is taken over from the main project, or is new. "Defined in" names the
 document and the number of its section: DMD is the document "dirac matrices
-deflating", RS1 to RS4 are the supplements, RP0 is the provenance of the hypotheses,
+deflating", RS1 to RS5 are the supplements, RP0 is the provenance of the hypotheses,
 and M stands for the two manuscripts, whose sections carry the same numbers in both
 (M II is Sec. II of either manuscript; "(4+4)" or "(7+1)" marks a symbol that only one
 of them uses).
@@ -76,6 +77,22 @@ occur, the flat coordinates carry the index $j$ instead, with the range
 $j\in\{0,1,2,3\}$ stated in their introduction. The registry lists the index letters
 in its first group.
 
+*The letters of the perturbation equations (group D9).* The supplement RS5 uses the
+equations of cosmological perturbation theory in the form of Ma and Bertschinger
+(RS5, Ref. [1]). That reference writes $h$ and $\eta$ for the two functions of the
+perturbed metric, $\alpha$ for a combination of their derivatives, $\theta$ and
+$\sigma$ for the velocity divergence and the shear of a fluid, $\tau$ for the
+conformal time and $\mathcal H$ for the conformal Hubble rate. Every one of these
+letters is taken in the project: $h$ is the Hubble parameter, $\eta$ the flat metric,
+$\alpha^j$ the Dirac matrices and $\alpha_{VS}$ a coupling, $\theta$ an angle,
+$\sigma$ a self-energy, $\tau$ the optical depth, and $\mathcal H$ the Lanczos tensor
+of DMD. The revision therefore writes $h_{\rm sy}$, $\eta_{\rm sy}$,
+$\alpha_{\rm sy}$ (sy for the synchronous gauge), $\tau_{\rm cf}$ and $H_{\rm cf}$
+(cf for conformal), and does not name the velocity divergence and the shear of single
+fluids at all: only their sums over all matter and radiation occur, as the script
+letters $\mathcal T$ and $\mathcal A$. All quantities that are new in RS5 are script
+letters or carry an index.
+
 {{GEN:symbols_all}}
 
 **Letters that the revision deliberately does not use**, because the main registry or
@@ -84,9 +101,9 @@ density; a transformation parameter), $\nu$ and $N$ as free symbols (the number 
 internal states; a density), $C$ (a coupling), $z$ (a redshift), $\xi$ (a
 single-particle energy), $\sigma$ without index (a self-energy), $\tau$ without index
 (the optical depth), $\Lambda$ without index (a cutoff), and the names `h0`, `E0`,
-`mu`, `nu`, `eps`, `Q`, `M`, `S`, `u`, `w0`. Where a first draft used one of them, it
-was replaced before or after the first commit; the provenance RP9 lists each case
-(items R-E16, R-E19, R-E20, R-E22).
+`mu`, `nu`, `eps`, `Q`, `M`, `S`, `u`, `w0`, `tau`. Where a first draft used one of
+them, it was replaced before or after the first commit; the provenance RP9 lists each
+case (items R-E16, R-E19, R-E20, R-E22, R-E40).
 
 # 4. The output of the checks
 
@@ -101,8 +118,8 @@ The following is the file `data/symbol_checks_deflation.txt`, written by
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Deflation"
-python3 code/scripts/write_symbol_registry.py     # writes the registry from its source
-python3 code/scripts/check_symbols.py             # runs the six checks; exit status 0 if all pass
+python3 code/scripts/write_symbol_registry.py   # writes the registry from its source
+python3 code/scripts/check_symbols.py           # runs the six checks; exit status 0 if all pass
 ```
 
 The second command reads the registry of the revision, the MASTER registry of the main
