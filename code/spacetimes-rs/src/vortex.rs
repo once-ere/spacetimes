@@ -1,5 +1,11 @@
-//! Fermions bound to a vortex line of the Vorton-Scalar: the zero modes of the
+//! Fermions bound to a vortex line of the Vorton-Scalar: the line modes of the
 //! sixteen-component field.
+//!
+//! THE TERM "LINE MODE".  A line mode is a solution of the Dirac equation in the field of a
+//! vortex line that is bound to the line and has zero energy when it does not depend on the
+//! coordinate along the line.  The literature calls such a solution a zero mode.  This
+//! project does not, because it uses "zero-mode sector" for something else: the fields that
+//! do not depend on the four extra coordinates x0, x5, x6, x7.
 //!
 //! NOTATION.  The names of this module and of its data files are those of the documents
 //! (registry: provenance/symbols.csv, group 6):
@@ -75,16 +81,16 @@
 //!    solution is not even square-integrable).
 //! 5. Both exponents are non-negative exactly for zeta = -sign(n) and |l| <= (|n| - 1)/2:
 //!    these are |n| channels.  The space of the spinors e (Xi = zeta, i beta alpha^1 = +1)
-//!    has dimension 4: each channel carries 4 zero modes, so that the vortex line has 4|n|
+//!    has dimension 4: each channel carries 4 line modes, so that the vortex line has 4|n|
 //!    in all.  For l = 0 (odd n) the solution is known in closed form: w_plus = 0 and
 //!        w_minus = rho^((|n|-1)/2) exp(-(m/m_s) Int_0^rho f_n) .
 //! 6. Motion along the line.  alpha^3 anticommutes with the part of h that acts in the
-//!    plane, so that it maps zero modes to zero modes, and with p_3 = k_3 the energy of a
-//!    zero mode is alpha^3 k_3 = +k_3 or -k_3: the modes move along the line at the speed of
+//!    plane, so that it maps line modes to line modes, and with p_3 = k_3 the energy of a
+//!    line mode is alpha^3 k_3 = +k_3 or -k_3: the modes move along the line at the speed of
 //!    light.  The product of the five matrices, P = i alpha^1 alpha^2 alpha^3 chi, commutes
 //!    with all five (it is the generator of the symmetry U(1)_E; the command `vortex`
 //!    verifies that the centre of the commutant consists of the combinations of 1 and P),
-//!    and alpha^3 = -Xi P.  On the zero modes of winding n > 0 (Xi = -1) therefore
+//!    and alpha^3 = -Xi P.  On the line modes of winding n > 0 (Xi = -1) therefore
 //!    alpha^3 = P: half of them (P = +1) move in the direction +x3 and half (P = -1) in the
 //!    direction -x3; for n < 0 the directions are exchanged.
 //!
@@ -591,9 +597,9 @@ pub fn channel_is_bound(n: i32, zeta: i32, two_l: i32) -> bool {
     ep > -0.5 && em > -0.5
 }
 
-/// The channels (zeta, 2l) of the winding number n that carry zero modes, by the rule of the
+/// The channels (zeta, 2l) of the winding number n that carry line modes, by the rule of the
 /// derivation: zeta = -sign(n), l = -(|n|-1)/2, ..., (|n|-1)/2.
-pub fn zero_mode_channels(n: i32) -> Vec<(i32, i32)> {
+pub fn line_mode_channels(n: i32) -> Vec<(i32, i32)> {
     let zeta = if n > 0 { -1 } else { 1 };
     let k = n.abs() - 1;
     (0..=k).map(|j| (zeta, -k + 2 * j)).collect()
@@ -693,7 +699,7 @@ pub fn radial_solution(p: &Profile, n: i32, zeta: i32, two_l: i32, m_over_ms: f6
     RadialSolution { rho, w_plus, w_minus, exponent_plus, exponent_minus, bound }
 }
 
-/// The closed form of the zero mode with l = 0 (odd n): w_plus = 0,
+/// The closed form of the line mode with l = 0 (odd n): w_plus = 0,
 /// w_minus = rho^((|n|-1)/2) exp(-(m/m_s) Int_0^rho f_n), not normalized, at the grid points
 /// of the profile (the integral by the trapezoidal rule with the end correction of the
 /// Euler-Maclaurin formula, h^2 (f'(0) - f'(rho))/12).  `m_over_ms` = m/m_s.
@@ -798,7 +804,7 @@ mod tests {
     }
 
     #[test]
-    fn the_zero_mode_with_l_equal_zero_is_the_closed_form() {
+    fn the_line_mode_with_l_equal_zero_is_the_closed_form() {
         let p = profile(1, 0.01, 40.0);
         for m_over_ms in [0.5, 1.0, 2.0] {
             let sol = radial_solution(&p, 1, -1, 0, m_over_ms);
@@ -819,7 +825,7 @@ mod tests {
     }
 
     #[test]
-    fn the_count_of_zero_modes_is_four_times_the_winding_number() {
+    fn the_count_of_line_modes_is_four_times_the_winding_number() {
         for n in [1i32, 2, 3, -1, -2] {
             let p = profile(n.unsigned_abs(), 0.01, 40.0);
             let mut bound_channels = 0;
@@ -841,14 +847,14 @@ mod tests {
                     }
                     if channel_is_bound(n, zeta, two_l) {
                         bound_channels += 1;
-                        assert!(zero_mode_channels(n).contains(&(zeta, two_l)));
+                        assert!(line_mode_channels(n).contains(&(zeta, two_l)));
                     }
                     two_l += 2;
                 }
             }
             assert_eq!(bound_channels, n.abs(), "n = {}", n);
-            assert_eq!(zero_mode_channels(n).len() as i32, n.abs());
-            // four zero modes of the sixteen-component field in each channel: 4|n| in all
+            assert_eq!(line_mode_channels(n).len() as i32, n.abs());
+            // four line modes of the sixteen-component field in each channel: 4|n| in all
             assert_eq!(4 * bound_channels, 4 * n.abs());
         }
     }

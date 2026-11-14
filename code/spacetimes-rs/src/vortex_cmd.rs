@@ -9,16 +9,16 @@
 //!   3. the profile of the vortex line for the winding numbers 1, 2 and 3, by two methods;
 //!   4. the solutions of the radial equations in every channel (zeta, l) with |l| <= 3, for
 //!      three ratios m/m_s: which channels carry a bound solution of zero energy;
-//!   5. the radial functions of the zero modes of the winding numbers 1 and 2.
+//!   5. the radial functions of the line modes of the winding numbers 1 and 2.
 //!
 //! Output files (data/):
 //!   vortex_checks.csv             every check of this command: identifier, kind, value, verdict, statement
 //!   vortex_profile.csv            the profiles f_n(rho), n = 1, 2, 3
 //!   vortex_profile_summary.csv    coefficient on the line, energy constant and core radius, on two grids and by shooting
 //!   vortex_channels.csv           exponents near the line and the verdict "bound" for every channel
-//!   vortex_counts.csv             for each winding number: the channels with zero modes, their number, and the directions of motion
-//!   vortex_zero_modes.csv         the normalized radial functions of the zero modes
-//!   vortex_zero_mode_summary.csv  mean radius and rate of decay of each zero mode
+//!   vortex_counts.csv             for each winding number: the channels with line modes, their number, and the directions of motion
+//!   vortex_line_modes.csv         the normalized radial functions of the line modes
+//!   vortex_line_mode_summary.csv  mean radius and rate of decay of each line mode
 //!
 //! The function returns false if any check fails.
 
@@ -29,7 +29,7 @@ use spacetimes::kernel::{Mat, OneParticle};
 use spacetimes::symmetry::{commutant, dynamics, hermitian_basis};
 use spacetimes::io::{write_csv, write_csv_str};
 use spacetimes::vortex::{
-    channel_is_bound, closed_form_l0, core_radius, energy_constant, expected_exponents, profile, radial_solution, reduction_residual, slope_by_shooting, zero_mode_channels, Profile, VortexAlgebra,
+    channel_is_bound, closed_form_l0, core_radius, energy_constant, expected_exponents, profile, radial_solution, reduction_residual, slope_by_shooting, line_mode_channels, Profile, VortexAlgebra,
 };
 
 fn cmd() -> (&'static str, String) {
@@ -72,7 +72,7 @@ pub fn run() -> std::io::Result<bool> {
     let gm = Gammas::build();
 
     // ------------------------------------------------------------------------------------------
-    println!("[1] the algebra of the zero modes, exact, for both spacetimes");
+    println!("[1] the algebra of the line modes, exact, for both spacetimes");
     let alg = [VortexAlgebra::new(&gm, "1671"), VortexAlgebra::new(&gm, "1644")];
     let (c71, c44) = (alg[0].checks(), alg[1].checks());
     for (a, b) in c71.iter().zip(c44.iter()) {
@@ -197,7 +197,7 @@ pub fn run() -> std::io::Result<bool> {
         &["n", "grid", "slope_fd", "slope_shooting", "c_energy", "core_radius", "f_1", "f_2", "f_5", "newton_steps", "last_newton_step"], &summary)?;
 
     // ------------------------------------------------------------------------------------------
-    println!("[4] the channels: exponents near the line, and which channels carry a zero mode");
+    println!("[4] the channels: exponents near the line, and which channels carry a line mode");
     let ratios = [0.5, 1.0, 2.0];
     let mut chan_rows: Vec<Vec<f64>> = Vec::new();
     let mut count_rows: Vec<Vec<f64>> = Vec::new();
@@ -231,15 +231,15 @@ pub fn run() -> std::io::Result<bool> {
                 two_l += 2;
             }
         }
-        let mut rule = zero_mode_channels(n);
+        let mut rule = line_mode_channels(n);
         rule.sort();
         bound_here.sort();
         counts_ok &= bound_here == rule && bound_here.len() as i32 == n.abs();
-        count_text.push(format!("n = {}: {} channel{} (zeta = {}, l = {}), {} zero modes", n, bound_here.len(), if bound_here.len() == 1 { "" } else { "s" }, if n > 0 { "-1" } else { "+1" },
+        count_text.push(format!("n = {}: {} channel{} (zeta = {}, l = {}), {} line modes", n, bound_here.len(), if bound_here.len() == 1 { "" } else { "s" }, if n > 0 { "-1" } else { "+1" },
             bound_here.iter().map(|c| if c.1 % 2 == 0 { format!("{}", c.1 / 2) } else { format!("{}/2", c.1) }).collect::<Vec<_>>().join(", "), 4 * bound_here.len()));
         // Counts.  Each channel carries the four spinors of the joint eigenspace of i beta alpha^1 and Xi, on which
         // alpha^3 has the eigenvalues +1, +1, -1, -1 (checks 71-V6, 44-V6): two modes for each direction.  On the
-        // zero modes alpha^3 = -Xi P = sign(n) P (checks V5): the modes with P = +1 move in the direction sign(n) x3.
+        // line modes alpha^3 = -Xi P = sign(n) P (checks V5): the modes with P = +1 move in the direction sign(n) x3.
         let channels = bound_here.len() as f64;
         let (l_min, l_max) = (bound_here.iter().map(|c| c.1).min().unwrap() as f64 / 2.0, bound_here.iter().map(|c| c.1).max().unwrap() as f64 / 2.0);
         count_rows.push(vec![n as f64, if n > 0 { -1.0 } else { 1.0 }, channels, l_min, l_max, 4.0 * channels, 2.0 * channels, 2.0 * channels, n.signum() as f64]);
@@ -247,18 +247,18 @@ pub fn run() -> std::io::Result<bool> {
     ck.add("VX-C1", "numerical", format!("{:.3}", worst_dominant), worst_dominant < 0.1,
         format!("in each of {} cases (winding numbers +-1, +-2, +-3; zeta = +-1; all l with |l| <= 3; m/m_s = 0.5, 1, 2) the solution that falls far from the line behaves near the line as rho to the power -|l| - (1 + n zeta)/2, an integer: the measured exponent differs from it by at most {:.3}", n_channels, worst_dominant));
     ck.add("VX-C2", "numerical", format!("{:.3}", worst_bound), counts_ok && worst_bound < 0.1,
-        format!("the channels in which that exponent is not negative, so that the solution is bound to the line, are those with zeta = -sign(n) and |l| <= (|n| - 1)/2; each carries four zero modes of the sixteen-component field. {}. In these channels both exponents, of w_plus + w_minus and of w_plus - w_minus, are the expected integers to {:.3}", count_text.join("; "), worst_bound));
+        format!("the channels in which that exponent is not negative, so that the solution is bound to the line, are those with zeta = -sign(n) and |l| <= (|n| - 1)/2; each carries four line modes of the sixteen-component field. {}. In these channels both exponents, of w_plus + w_minus and of w_plus - w_minus, are the expected integers to {:.3}", count_text.join("; "), worst_bound));
     write_csv("vortex_channels.csv",
         &[("content", "fermions in the field of a vortex line of winding number n: for each channel (Xi = zeta, angular momentum l) the solution of the radial equations d w_plus/drho = (-(1 + n zeta)/(2 rho) + (m/m_s) f_n) w_plus + (l/rho) w_minus, d w_minus/drho = (-(1 + n zeta)/(2 rho) - (m/m_s) f_n) w_minus + (l/rho) w_plus that falls far from the line, and its behaviour near the line".to_string()),
-          ("columns", "n: winding number; zeta: eigenvalue of Xi = Theta chi, Theta = -i alpha^1 alpha^2; two_l: twice the angular momentum l; m_over_ms: fermion mass divided by the mass of the radial mode, m/m_s; exp_plus_expected = l - (1 + n zeta)/2 and exp_minus_expected = -l - (1 + n zeta)/2: exponents of w_plus + w_minus and of w_plus - w_minus near the line; exp_plus_measured, exp_minus_measured: logarithmic slopes of the computed solution between rho = 0.16 and 0.32 (only the smaller of the two is a property of the solution where 2|l| > |n| + 1); exp_solution_measured: that of the combination that dominates near the line; bound: 1 if both expected exponents are non-negative; zero_modes: number of zero modes of the sixteen-component field in the channel".to_string()), cmd()],
-        &["n", "zeta", "two_l", "m_over_ms", "exp_plus_expected", "exp_minus_expected", "exp_plus_measured", "exp_minus_measured", "exp_solution_measured", "bound", "zero_modes"], &chan_rows)?;
+          ("columns", "n: winding number; zeta: eigenvalue of Xi = Theta chi, Theta = -i alpha^1 alpha^2; two_l: twice the angular momentum l; m_over_ms: fermion mass divided by the mass of the radial mode, m/m_s; exp_plus_expected = l - (1 + n zeta)/2 and exp_minus_expected = -l - (1 + n zeta)/2: exponents of w_plus + w_minus and of w_plus - w_minus near the line; exp_plus_measured, exp_minus_measured: logarithmic slopes of the computed solution between rho = 0.16 and 0.32 (only the smaller of the two is a property of the solution where 2|l| > |n| + 1); exp_solution_measured: that of the combination that dominates near the line; bound: 1 if both expected exponents are non-negative; line_modes: number of line modes of the sixteen-component field in the channel".to_string()), cmd()],
+        &["n", "zeta", "two_l", "m_over_ms", "exp_plus_expected", "exp_minus_expected", "exp_plus_measured", "exp_minus_measured", "exp_solution_measured", "bound", "line_modes"], &chan_rows)?;
     write_csv("vortex_counts.csv",
-        &[("content", "zero modes of the sixteen-component field on a vortex line of winding number n (the same for the 7+1 and the 4+4 matrices): the channels found by the numerical solution of the radial equations (vortex_channels.csv), four modes in each channel and two for each direction of motion (exact checks V5 and V6 of vortex_checks.csv)".to_string()),
-          ("columns", "n: winding number; zeta: eigenvalue of Xi on the zero modes, -sign(n); channels: number of channels of angular momentum with a bound solution, |n|; l_min, l_max: smallest and largest angular momentum l of these channels (l runs in steps of 1); zero_modes: 4|n|; along_plus_x3, along_minus_x3: number of modes that move in the direction +x3 and -x3, 2|n| each; direction_of_P_plus: +1 if the modes with P = +1 move in the direction +x3, -1 if they move in the direction -x3 (alpha^3 = sign(n) P on the zero modes)".to_string()), cmd()],
-        &["n", "zeta", "channels", "l_min", "l_max", "zero_modes", "along_plus_x3", "along_minus_x3", "direction_of_P_plus"], &count_rows)?;
+        &[("content", "line modes of the sixteen-component field on a vortex line of winding number n (the same for the 7+1 and the 4+4 matrices): the channels found by the numerical solution of the radial equations (vortex_channels.csv), four modes in each channel and two for each direction of motion (exact checks V5 and V6 of vortex_checks.csv)".to_string()),
+          ("columns", "n: winding number; zeta: eigenvalue of Xi on the line modes, -sign(n); channels: number of channels of angular momentum with a bound solution, |n|; l_min, l_max: smallest and largest angular momentum l of these channels (l runs in steps of 1); line_modes: 4|n|; along_plus_x3, along_minus_x3: number of modes that move in the direction +x3 and -x3, 2|n| each; direction_of_P_plus: +1 if the modes with P = +1 move in the direction +x3, -1 if they move in the direction -x3 (alpha^3 = sign(n) P on the line modes)".to_string()), cmd()],
+        &["n", "zeta", "channels", "l_min", "l_max", "line_modes", "along_plus_x3", "along_minus_x3", "direction_of_P_plus"], &count_rows)?;
 
     // ------------------------------------------------------------------------------------------
-    println!("[5] the radial functions of the zero modes");
+    println!("[5] the radial functions of the line modes");
     let mut mode_rows: Vec<Vec<f64>> = Vec::new();
     let mut mode_summary: Vec<Vec<f64>> = Vec::new();
     let mut worst_closed = 0.0f64;
@@ -266,7 +266,7 @@ pub fn run() -> std::io::Result<bool> {
     let mut radii: Vec<String> = Vec::new();
     for n in [1i32, 2] {
         let p = &profiles[(n - 1) as usize];
-        for (zeta, two_l) in zero_mode_channels(n) {
+        for (zeta, two_l) in line_mode_channels(n) {
             for m_over_ms in ratios {
                 let sol = radial_solution(p, n, zeta, two_l, m_over_ms);
                 // mean radius of the density (w_plus^2 + w_minus^2), which is normalized with the measure rho drho
@@ -307,13 +307,13 @@ pub fn run() -> std::io::Result<bool> {
     ck.add("VX-Z1", "numerical", format!("{:.1e}", worst_closed), worst_closed < 1e-6,
         format!("winding number 1, l = 0: the integrated solution has w_plus = 0 and w_minus proportional to exp(-(m/m_s) Int_0^rho f_1), the closed form, to {:.1e} (m/m_s = 0.5, 1, 2; radii from rho = 0.2 to rho = 8 m_s/m)", worst_closed));
     ck.add("VX-Z2", "numerical", format!("{:.1e}", worst_decay), worst_decay < 2e-2,
-        format!("far from the line every zero mode of the winding numbers 1 and 2 falls as rho^((|n|-1)/2) exp(-(m/m_s) rho): the measured rate between rho = 20 and 30 agrees to {:.1e}. Mean radius of the density w_plus^2 + w_minus^2 in units of 1/m_s: {}", worst_decay, radii.join("; ")));
-    write_csv("vortex_zero_modes.csv",
-        &[("content", "radial functions of the fermion zero modes on a vortex line of the Vorton-Scalar, winding numbers 1 (l = 0) and 2 (l = -1/2, +1/2), normalized to Int (w_plus^2 + w_minus^2) rho drho = 1".to_string()),
+        format!("far from the line every line mode of the winding numbers 1 and 2 falls as rho^((|n|-1)/2) exp(-(m/m_s) rho): the measured rate between rho = 20 and 30 agrees to {:.1e}. Mean radius of the density w_plus^2 + w_minus^2 in units of 1/m_s: {}", worst_decay, radii.join("; ")));
+    write_csv("vortex_line_modes.csv",
+        &[("content", "radial functions of the fermion line modes on a vortex line of the Vorton-Scalar, winding numbers 1 (l = 0) and 2 (l = -1/2, +1/2), normalized to Int (w_plus^2 + w_minus^2) rho drho = 1".to_string()),
           ("columns", "n: winding number; two_l: twice the angular momentum l; m_over_ms: m/m_s; rho: distance from the line in units of 1/m_s; w_plus: component with i beta alpha^1 = +1; w_minus: component with i beta alpha^1 = -1; density: w_plus^2 + w_minus^2".to_string()), cmd()],
         &["n", "two_l", "m_over_ms", "rho", "w_plus", "w_minus", "density"], &mode_rows)?;
-    write_csv("vortex_zero_mode_summary.csv",
-        &[("content", "fermion zero modes on a vortex line of the Vorton-Scalar, winding numbers 1 and 2: mean distance from the line and rate of decay far from the line".to_string()),
+    write_csv("vortex_line_mode_summary.csv",
+        &[("content", "fermion line modes on a vortex line of the Vorton-Scalar, winding numbers 1 and 2: mean distance from the line and rate of decay far from the line".to_string()),
           ("columns", "n: winding number; two_l: twice the angular momentum l; m_over_ms: m/m_s; mean_radius: Int (w_plus^2 + w_minus^2) rho^2 drho for the normalized mode, the mean distance from the line in units of 1/m_s; decay_measured: -d ln|w_minus|/d rho between rho = 20 and 30; decay_expected: the same for rho^((|n|-1)/2) exp(-(m/m_s) rho)".to_string()), cmd()],
         &["n", "two_l", "m_over_ms", "mean_radius", "decay_measured", "decay_expected"], &mode_summary)?;
 
@@ -321,7 +321,7 @@ pub fn run() -> std::io::Result<bool> {
     let passed = ck.rows.iter().filter(|r| r[3] == "1").count();
     println!("vortex: {} of {} checks passed", passed, ck.rows.len());
     write_csv_str("vortex_checks.csv",
-        &[("content", "checks of the command vortex: fermions bound to a vortex line of the Vorton-Scalar (zero modes of the sixteen-component field)".to_string()),
+        &[("content", "checks of the command vortex: fermions bound to a vortex line of the Vorton-Scalar (line modes of the sixteen-component field)".to_string()),
           ("columns", "check: identifier (71-, 44-: exact statement for the 7+1 or the 4+4 matrices; VX-: numerical); kind: exact (verified in integer arithmetic) or numerical; value: the number that the check measures, where there is one; ok: 1 if the check passed; statement".to_string()),
           ("result", format!("{} of {} checks passed", passed, ck.rows.len())), cmd()],
         &["check", "kind", "value", "ok", "statement"], &ck.rows)?;

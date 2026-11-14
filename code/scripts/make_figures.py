@@ -621,9 +621,9 @@ def fig_dm_windows():
 
 # ----------------------------------------------------------------------------------
 def fig_vortex():
-    """Vortex line of the Vorton-Scalar and the fermion zero modes on it (command `spacetimes vortex`)."""
+    """Vortex line of the Vorton-Scalar and the fermion line modes on it (command `spacetimes vortex`)."""
     prof = read_csv("vortex_profile.csv")
-    modes = read_csv("vortex_zero_modes.csv")
+    modes = read_csv("vortex_line_modes.csv")
     if prof is None or modes is None:
         return
     fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.45))
@@ -639,7 +639,7 @@ def fig_vortex():
     ax.set_ylabel("profile $f_n(\\rho)$")
     ax.legend(loc="lower right")
     panel_label(ax, "(a) the vortex line")
-    # (b) winding number 1: radial density of the zero mode for three mass ratios
+    # (b) winding number 1: radial density of the line mode for three mass ratios
     ax = axes[1]
     for k, ratio in enumerate((0.5, 1.0, 2.0)):
         c, ls, _ = STYLES[k]
@@ -651,7 +651,7 @@ def fig_vortex():
     ax.set_xlabel("$\\rho=m_s r$")
     ax.set_ylabel("radial density $\\rho\\,(w_+^2+w_-^2)$")
     ax.legend(loc="upper right")
-    panel_label(ax, "(b) zero mode, $n=1$, $l=0$")
+    panel_label(ax, "(b) line mode, $n=1$, $l=0$")
     # (c) winding number 2, l = 1/2, m/m_s = 1: the two components
     ax = axes[2]
     m = (modes["n"] == 2) & (modes["two_l"] == 1) & (np.abs(modes["m_over_ms"] - 1.0) < 1e-9)
