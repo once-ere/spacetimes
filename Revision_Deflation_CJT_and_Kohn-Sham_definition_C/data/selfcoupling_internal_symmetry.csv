@@ -6,12 +6,12 @@ model,generators,number,n_conditions,conditions
 71s,phase of the field (fermion number),1,0,none (invariant for all couplings)
 71s,"rotations of x5, x6, x7 among themselves: gamma^5 gamma^6, gamma^5 gamma^7, gamma^6 gamma^7",3,0,none (invariant for all couplings)
 71s,"rotations that mix the hidden axis x0 with x5, x6 or x7: gamma^0 gamma^5, gamma^0 gamma^6, gamma^0 gamma^7",3,0,none (invariant for all couplings)
-71s,"P_E = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E",1,2,g_1eff - g_7eff = 0; -g_7eff = 0
+71s,"P = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E",1,2,g_1eff - g_7eff = 0; -g_7eff = 0
 44c,phase of the field (fermion number),1,0,none (invariant for all couplings)
 44c,"rotations of x5, x6, x7 among themselves: gamma^5 gamma^6, gamma^5 gamma^7, gamma^6 gamma^7",3,0,none (invariant for all couplings)
 44c,"rotations that mix the hidden axis x0 with x5, x6 or x7: gamma^0 gamma^5, gamma^0 gamma^6, gamma^0 gamma^7",3,4,(5 g_0eff - 16 g_7eff + g_8eff)/5 = 0; (5 g_1eff - 4 g_7eff - g_8eff)/5 = 0; (-4 g_7eff - g_8eff)/5 = 0; (-g_7eff + g_8eff)/5 = 0
-44c,"P_E = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E",1,4,(5 g_0eff - 16 g_7eff + g_8eff)/5 = 0; (5 g_1eff - 4 g_7eff - g_8eff)/5 = 0; (-4 g_7eff - g_8eff)/5 = 0; (-g_7eff + g_8eff)/5 = 0
+44c,"P = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E",1,4,(5 g_0eff - 16 g_7eff + g_8eff)/5 = 0; (5 g_1eff - 4 g_7eff - g_8eff)/5 = 0; (-4 g_7eff - g_8eff)/5 = 0; (-g_7eff + g_8eff)/5 = 0
 44q,phase of the field (fermion number),1,0,none (invariant for all couplings)
 44q,"rotations of x5, x6, x7 among themselves: gamma^5 gamma^6, gamma^5 gamma^7, gamma^6 gamma^7",3,0,none (invariant for all couplings)
 44q,"rotations that mix the hidden axis x0 with x5, x6 or x7: gamma^0 gamma^5, gamma^0 gamma^6, gamma^0 gamma^7",3,0,none (invariant for all couplings)
-44q,"P_E = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E",1,2,g_1eff - g_7eff = 0; -g_7eff = 0
+44q,"P = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E",1,2,g_1eff - g_7eff = 0; -g_7eff = 0

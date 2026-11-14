@@ -14,35 +14,38 @@
 //! (n_+-: number densities of the halves, s_+-: their scalar densities <psibar psi>), the
 //! Hartree-Fock energy of the self-interaction is
 //!
-//!     E_int = (1/2) [ T_V n^2 + T_S n_S^2 + D_V n_W^2 + D_S n_SW^2 ] ,
+//!     E_int = (1/2) [ G_Vtot n^2 + G_Stot n_S^2 + G_Vdif n_W^2 + G_Sdif n_SW^2 ] ,
 //!
-//!     covariant form C (the DEFINITION in this folder):   T_V = G_Vc, T_S = G_Sc, D_V = G_V^HF, D_S = G_S^HF ,
-//!     quantized-sector form Q (the alternative):          T_V = G_V^HF, T_S = G_S^HF, D_V = G_Vc, D_S = G_Sc ,
+//!     covariant form C (the DEFINITION in this folder):   G_Vtot = G_Vc, G_Stot = G_Sc, G_Vdif = G_V^HF, G_Sdif = G_S^HF ,
+//!     quantized-sector form Q (the alternative):          G_Vtot = G_V^HF, G_Stot = G_S^HF, G_Vdif = G_Vc, G_Sdif = G_Sc ,
 //!
 //! with the four combinations of the couplings of the Lagrangian
 //!
 //!     G_S^HF = (15 g_0eff - 8 g_1eff - 8 g_7eff - g_8eff)/16 ,     G_V^HF = (-g_0eff + 22 g_1eff - 6 g_7eff + g_8eff)/16 ,
 //!     G_Sc   = (-g_0eff - 2 g_1eff + 2 g_7eff + g_8eff)/16 ,       G_Vc   = -(g_0eff + g_8eff)/16 .
 //!
-//! ("T" for the couplings of the total densities, "D" for those of the differences.)
-//! Equivalently, with a = T + D (two particles of the same half) and b = T - D,
+//! (G_tot: the couplings of the squares of the total densities; G_dif: those of the squares of
+//! the differences between the halves.)  Equivalently, with G_same = G_tot + G_dif (two particles
+//! of the same half) and G_opp = G_tot - G_dif (a particle of each half),
 //!
-//!     E_int = (1/2) a_V (n_+^2 + n_-^2) + b_V n_+ n_- + (1/2) a_S (s_+^2 + s_-^2) + b_S s_+ s_- :
+//!     E_int = (1/2) G_Vsame (n_+^2 + n_-^2) + G_Vopp n_+ n_- + (1/2) G_Ssame (s_+^2 + s_-^2) + G_Sopp s_+ s_- :
 //!
-//! a is the same in both forms, and b changes its sign from one form to the other.
+//! G_same is the same in both forms, and G_opp changes its sign from one form to the other.
+//! (The first version of this module wrote T, D, a, b for G_tot, G_dif, G_same, G_opp; the
+//! name T_V is a symbol of one of the author's notebooks and was therefore given up.)
 //!
 //! THE KOHN-SHAM EQUATIONS OF TWO HALVES.  The particles of the half W = +-1 have the mass
 //! and the energy shift
 //!
-//!     M_+- = m + T_S n_S +- D_S n_SW ,        V_+- = T_V n +- D_V n_W ,
+//!     M_+- = m + G_Stot n_S +- G_Sdif n_SW ,        V_+- = G_Vtot n +- G_Vdif n_W ,
 //!
 //! and fill a ball of the Fermi momentum k_+- in D space dimensions (D = 4: momenta along
 //! x0..x3; D = 3: fields that do not depend on the hidden coordinate x0 either).  With the
 //! moments of one half, <f>_+- = (NU/2) Int_{|k| < k_+-} d^Dk/(2 pi)^D f,
 //!
 //!     n_+- = <1>_+- ,   s_+- = <M_+-/w>_+- ,   w = sqrt(k^2 + M_+-^2) ,
-//!     eps = sum_+- <w>_+- + (1/2)(T_V n^2 + D_V n_W^2) - (1/2)(T_S n_S^2 + D_S n_SW^2) ,
-//!     Pi  = (1/2)(T_V n^2 + D_V n_W^2) + (1/2)(T_S n_S^2 + D_S n_SW^2)      (interaction pressure) ,
+//!     eps = sum_+- <w>_+- + (1/2)(G_Vtot n^2 + G_Vdif n_W^2) - (1/2)(G_Stot n_S^2 + G_Sdif n_SW^2) ,
+//!     Pi  = (1/2)(G_Vtot n^2 + G_Vdif n_W^2) + (1/2)(G_Stot n_S^2 + G_Sdif n_SW^2)      (interaction pressure) ,
 //!     p   = sum_+- <k^2/(D w)>_+- + Pi                                      (pressure along x0..x3 or x1..x3) ,
 //!     mu_+- = sqrt(k_+-^2 + M_+-^2) + V_+-                                  (chemical potentials) .
 //!
@@ -63,7 +66,7 @@
 //! THE EFFECTIVE POTENTIAL (CJT) OF TWO HALVES is the function of the four mean fields
 //!
 //!     Omega(M_+, M_-, V_+, V_-; mu) = sum_+- Omega_1(M_+-, mu - V_+-)
-//!         - muS^2/(2 T_S) - dS^2/(2 D_S) - vT^2/(2 T_V) - vD^2/(2 D_V) ,
+//!         - muS^2/(2 G_Stot) - dS^2/(2 G_Sdif) - vT^2/(2 G_Vtot) - vD^2/(2 G_Vdif) ,
 //!     muS = (M_+ + M_-)/2 - m ,  dS = (M_+ - M_-)/2 ,  vT = (V_+ + V_-)/2 ,  vD = (V_+ - V_-)/2 ,
 //!
 //! with the grand potential Omega_1 of free particles of one half (module `cjt_contact`,
@@ -490,17 +493,17 @@ impl Halves {
     }
 
     /// ALL solutions (M_+, M_-) with non-negative masses of the two gap equations
-    ///     M_+ = m + a_S s_+(M_+) + b_S s_-(M_-),     M_- = m + a_S s_-(M_-) + b_S s_+(M_+)
-    /// (a_S = T_S + D_S, b_S = T_S - D_S) for the Fermi momenta kf = (k_+, k_-).
+    ///     M_+ = m + G_Ssame s_+(M_+) + G_Sopp s_-(M_-),     M_- = m + G_Ssame s_-(M_-) + G_Sopp s_+(M_+)
+    /// (G_Ssame = G_Stot + G_Sdif, G_Sopp = G_Stot - G_Sdif) for the Fermi momenta kf = (k_+, k_-).
     ///
-    /// Method.  If both halves are occupied and b_S is not zero, the first equation gives
-    /// s_-(M_-) = [M_+ - m - a_S s_+(M_+)]/b_S =: R(M_+), and M_- follows uniquely because s_-
+    /// Method.  If both halves are occupied and G_Sopp is not zero, the first equation gives
+    /// s_-(M_-) = [M_+ - m - G_Ssame s_+(M_+)]/G_Sopp =: R(M_+), and M_- follows uniquely because s_-
     /// grows monotonically with M_- (no solution if R lies outside [0, n_-)).  The second
-    /// equation is then one equation F(M_+) = M_-(M_+) - m - a_S R - b_S s_+(M_+) = 0 for one
+    /// equation is then one equation F(M_+) = M_-(M_+) - m - G_Ssame R - G_Sopp s_+(M_+) = 0 for one
     /// unknown, whose roots are searched between 0 and the
-    /// bound m + |a_S| n_+ + |b_S| n_- (see `coupled_solutions`, which treats correctly the
+    /// bound m + |G_Ssame| n_+ + |G_Sopp| n_- (see `coupled_solutions`, which treats correctly the
     /// narrow intervals of M_+ on which R lies in the range of s_-).  If one half is empty or
-    /// b_S = 0 the equations decouple.
+    /// G_Sopp = 0 the equations decouple.
     pub fn solutions(&self, kf: &[f64; 2]) -> Vec<[f64; 2]> {
         let (a, b, m) = (self.c.a_s(), self.c.b_s(), self.c.m);
         let unit = self.unit_density();
@@ -581,16 +584,16 @@ impl Halves {
 
     /// The largest eigenvalue of the response matrix of the two gap equations at a state.
     ///
-    /// The gap equations are M_+ = m + a_S s_+ + b_S s_-, M_- = m + b_S s_+ + a_S s_-, with the
+    /// The gap equations are M_+ = m + G_Ssame s_+ + G_Sopp s_-, M_- = m + G_Sopp s_+ + G_Ssame s_-, with the
     /// scalar densities s_+-(k_+-, M_+-) of the two halves.  A small change of the masses changes
-    /// the right-hand sides by the matrix  R = [[a_S s_+', b_S s_-'], [b_S s_+', a_S s_-']],
+    /// the right-hand sides by the matrix  R = [[G_Ssame s_+', G_Sopp s_-'], [G_Sopp s_+', G_Ssame s_-']],
     /// s' = ds/dM at fixed Fermi momentum (positive for particles of positive energy).  In
     /// dilute matter the eigenvalues of R are small.  The solution that is connected to the
     /// dilute gas is a regular function of the density and of the couplings as long as both
     /// eigenvalues stay below 1; where one reaches 1 the solution branches, and beyond that
     /// point the state is unstable against the corresponding change of the two masses.  For
-    /// equal halves the eigenvalues are 2 T_S s' (the two masses change together) and
-    /// 2 D_S s' (they split); for one filled half they are a_S s' and 0.
+    /// equal halves the eigenvalues are 2 G_Stot s' (the two masses change together) and
+    /// 2 G_Sdif s' (they split); for one filled half they are G_Ssame s' and 0.
     pub fn response_eigenvalue(&self, st: &HState) -> f64 {
         let sp = |kf: f64, mass: f64| -> f64 {
             if kf <= 0.0 {
@@ -707,13 +710,13 @@ impl Halves {
     }
 
     /// The matter of one kind of particle that a fully polarized state is: `nu_half` states,
-    /// scalar coupling a_S and vector coupling a_V (for the comparison with module `kohn_sham`).
+    /// scalar coupling G_Ssame and vector coupling G_Vsame (for the comparison with module `kohn_sham`).
     pub fn polarized_contact(&self) -> Contact {
         Contact { m: self.c.m, gs: self.c.a_s(), gv: self.c.a_v() }
     }
 
     /// The matter with equal halves as matter of one kind of particle with 2 `nu_half` states:
-    /// scalar coupling T_S and vector coupling T_V.
+    /// scalar coupling G_Stot and vector coupling G_Vtot.
     pub fn unpolarized_contact(&self) -> Contact {
         Contact { m: self.c.m, gs: self.c.ts, gv: self.c.tv }
     }
@@ -846,7 +849,7 @@ impl CjtHalves {
     }
 
     /// The four stationarity conditions, written as the differences
-    /// (muS - T_S n_S, dS - D_S n_SW, vT - T_V n, vD - D_V n_W), with the scalar densities of
+    /// (muS - G_Stot n_S, dS - G_Sdif n_SW, vT - G_Vtot n, vD - G_Vdif n_W), with the scalar densities of
     /// the filled states of negative energy included in n_S and n_SW.
     pub fn residuals(&self, mass: &[f64; 2], v: &[f64; 2], mu: f64) -> [f64; 4] {
         let c = &self.c;
@@ -898,10 +901,10 @@ impl CjtHalves {
     }
 
     /// The vacuum with the filled states of negative energy: ALL solutions (M_+, M_-) of
-    ///     (M_+ + M_-)/2 - m = T_S (s_+ + s_-),   (M_+ - M_-)/2 = D_S (s_+ - s_-),
+    ///     (M_+ + M_-)/2 - m = G_Stot (s_+ + s_-),   (M_+ - M_-)/2 = G_Sdif (s_+ - s_-),
     ///     s_+- = -(NU/2) Int_{|k| < Lambda} d^Dk/(2 pi)^D M_+-/sqrt(k^2 + M_+-^2),
     /// with masses of either sign, each with its value of Omega_vac = sum of the energies of the
-    /// filled states (relative to mass m) - muS^2/(2 T_S) - dS^2/(2 D_S).  Sorted by Omega.
+    /// filled states (relative to mass m) - muS^2/(2 G_Stot) - dS^2/(2 G_Sdif).  Sorted by Omega.
     /// The scalar density of the filled states falls monotonically with the mass, so that the
     /// search is the same one-dimensional search as in `Halves::solutions`.
     pub fn vacuum(&self) -> Vec<([f64; 2], f64)> {
@@ -1188,8 +1191,8 @@ mod tests {
 
     #[test]
     fn the_response_eigenvalue_reaches_one_where_the_solution_branches() {
-        // quantized-sector form, D = 3, scalar attraction alone: T_S = -15 g/16, D_S = +g/16.  Equal halves:
-        // eigenvalues 2 T_S s' < 0 and 2 D_S s' > 0.  Where 2 D_S s' passes 1, solutions with unequal masses
+        // quantized-sector form, D = 3, scalar attraction alone: G_Stot = -15 g/16, G_Sdif = +g/16.  Equal halves:
+        // eigenvalues 2 G_Stot s' < 0 and 2 G_Sdif s' > 0.  Where 2 G_Sdif s' passes 1, solutions with unequal masses
         // appear at equal densities.
         let hf1 = Hf4::from_effective(&[-1.0, 0.0, 0.0, 0.0]);
         let kf = 0.3;
@@ -1205,7 +1208,7 @@ mod tests {
         };
         let (l1, e1, n1) = lam(20.0);
         assert!((l1 - e1).abs() < 1e-7 && l1 < 1.0 && n1 == 1, "{} {} {}", l1, e1, n1);
-        // one filled half: eigenvalue a_S s' (negative for an attraction inside the half)
+        // one filled half: eigenvalue G_Ssame s' (negative for an attraction inside the half)
         let h = halves_for(3, Form::C, &hf1, 20.0);
         let st = h.solve(&[0.4, 0.0]).unwrap();
         assert!(h.response_eigenvalue(&st) <= 0.0);

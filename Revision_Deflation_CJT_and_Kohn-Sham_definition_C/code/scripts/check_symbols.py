@@ -22,7 +22,10 @@ the symbols as registered:
   MS7  every column of every data file of this folder is a registered name, a column of
        the flat-space part of the project, one of the descriptive words listed in this
        script, or a systematic name (a registered name followed by the number of a
-       model, of a rank, of a closure or of a background).
+       model, of a rank, of a closure or of a background);
+  MS8  the symbols that the first version of the document on the two forms of the
+       self-interaction used and that collided, or nearly collided, with registered
+       symbols do not occur in the documents (list REPLACED below).
 
 Run from the folder Revision_Deflation_CJT_and_Kohn-Sham_definition_C:   python3 code/scripts/check_symbols.py
 Output: data/symbol_checks.txt  (and the same text on the screen).
@@ -66,7 +69,30 @@ max_rel_TT cv_max cv_rss closure_cv_low closure_cv_high closure_over_effect_low 
 sigma_rate bound95_rate sigma_rate_fixed dH0_drate
 sigma_N_joint sigma_rate_joint correlation N_best_llr chi2_best_llr H0_gain_zero_rate H0_gain N_at_gain rate_at_gain
 C_bind at_rest constraint cos coupling d2E density dtau e_bind_q e_bind_relaxed formula here kp matter mult ratio_set rel_diff
-slope stop variant w_parity eta_J r document M_cjt_global""".split())
+slope stop variant w_parity eta_J r document M_cjt_global
+e_rel e_above e_below n_solutions n_conditions number generators conditions method axis sign
+tau_polarized tau_one_half tau_p0 g_p0 g_threshold g_one_kind G_most C_equal_halves C_one_half
+gap_60 gap_2e3 gap_2e4 gap_2e5""".split())
+
+# MS8: symbols of the first version of provenance P3 (commit 9f8a206) that were replaced, with the registered
+# symbol that stands in their place.  (pattern, what it was, what replaces it)
+REPLACED = [
+    (r"\\mathsf W\b", "sans-serif W for the kernel of the gap equation", "W(k,k')"),
+    (r"(?<![A-Za-z\\{])[TD]\\?_[SV](?![A-Za-z_{])", "T_S, T_V, D_S, D_V (D_S differs from the propagator D_s only by a capital)", "G_S^tot, G_V^tot, G_S^dif, G_V^dif"),
+    (r"(?<![A-Za-z\\{])[ab]\\?_[SV](?![A-Za-z_{])", "a_S, a_V, b_S, b_V (a_S differs from the curvature a_s only by a capital)", "G_S^same, G_V^same, G_S^opp, G_V^opp"),
+    (r"\\kappa_[01]\b", "kappa_0, kappa_1 (kappa_8 is the gravitational coupling)", "the ratios -g_0/C, g_1/C"),
+    (r"M_\\pm|(?<![A-Za-z\\{])M_[+-]|M_\{[+-]\}", "M_+, M_- for the masses of the two halves", "m*_+, m*_-"),
+    (r"\\varepsilon(\^Q)?_K|\\varepsilon_K\^Q", "epsilon_K for the sign of the square of Theta^K (epsilon is an energy density)", "sgn_K, sgn_K^Q"),
+    (r"I_r\^\{\\rm cov\}", "I_r^cov", "I_r^C"),
+    (r"V_\{\\rm contact\}", "V_contact", "V_ct"),
+    (r"\\Omega_1\(", "Omega_1 for the grand potential of one half", "Omega_half"),
+    (r"(?<![A-Za-z\\{])I_[SV](?![A-Za-z_{])", "I_S, I_V for the two integrals of the ultraviolet criterion (I_0 is the scalar invariant)", "u_S, u_V"),
+    (r"\\mathsf [ws]\b", "sans-serif w and s of the ultraviolet criterion", "w_infty, s_Delta"),
+    (r"(?<![A-Za-z\\{])[kVws]_\\pm", "k_+-, V_+-, w_+-, s_+- of the two halves", "k_F+-, V_0+-, E*_+-, n_S+-^vac"),
+    (r"P_E\b", "P_E for the generator of U(1)_E", "P"),
+    (r"K_\{\\rm pair\}", "K_pair", "K_AB"),
+    (r"\\mathcal L_\{?\\rm [CQ]\}?|\\mathcal L_0\b|\\mathcal L_\{\\rm cov\}\^\{\(0\)\}|V_\{\\rm C\}", "L_C, L_Q, L_0, L_cov^(0), V_C", "L_self^C, L_self^Q, L_kin + L_mass, L_cov"),
+]
 
 # Systematic column names: a registered or descriptive name, or a column of the main project, followed by the
 # number of a model (data/cmb_deflation_summary.csv), the letter of a closure (_M "Momentum", _P "Pressure"; _N4 the
@@ -222,6 +248,18 @@ def main():
                                 unknown.append("%s (%s)" % (c, os.path.basename(path)))
                     break
     report("MS7", not unknown, "each of the %d columns of the %d data files of this folder is a registered name, a column of the flat-space part of the project, one of the %d descriptive words listed in the script, or (%d columns) a systematic name%s" % (n_cols, n_files, len(DESCRIPTIVE), n_pat, "" if not unknown else "; not registered: " + ", ".join(unknown[:12])))
+
+    # MS8
+    hits = []
+    for path in docs:
+        text = strip_code(open(path, encoding="utf-8").read())
+        rel = os.path.relpath(path, ROOT)
+        for pat, was, now in REPLACED:
+            n = len(re.findall(pat, text))
+            if n:
+                hits.append("%s: %d times %s" % (rel, n, was.split(" (")[0]))
+    report("MS8", not hits, "none of the %d groups of symbols that the first version of the document on the two forms of the self-interaction used and that collided, or nearly collided, with registered symbols occurs in the %d documents of this folder (%s)%s" % (
+        len(REPLACED), len(docs), "; ".join("%s -> %s" % (was.split(" (")[0], now) for _, was, now in REPLACED), "" if not hits else "; FOUND: " + "; ".join(hits[:12])))
 
     head = ["PROJECT spacetimes, Revision_Deflation_CJT_and_Kohn-Sham_definition_C: checks of the symbols (MASTER registry provenance/symbols_master.csv)",
             "generated by: code/scripts/check_symbols.py",

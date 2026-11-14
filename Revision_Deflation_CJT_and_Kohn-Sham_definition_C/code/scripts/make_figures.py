@@ -1480,10 +1480,10 @@ def fig_forms_vacuum():
     for ax, mb, lab in zip(axes, (0.0, 0.05), ("(a) no mass term", "(b) bare mass $0.05\\,\\Lambda$")):
         q = d[(d["D"] == 4) & (d["set"] == 0) & (d["form"] == 1) & (np.abs(d["m_bare"] - mb) < 1e-12)]
         c = d[(d["D"] == 4) & (d["set"] == 0) & (d["form"] == 0) & (np.abs(d["m_bare"] - mb) < 1e-12)]
-        ax.plot(c["tau_d"], c["M_large"], color=BLUE, ls="-", lw=2.6, label="form C: $M_+$")
-        ax.plot(c["tau_d"], c["M_small"], color=BLUE, ls="-.", label="form C: $M_-$")
+        ax.plot(c["tau_d"], c["M_large"], color=BLUE, ls="-", lw=2.6, label="form C: $m^*_+$")
+        ax.plot(c["tau_d"], c["M_small"], color=BLUE, ls="-.", label="form C: $m^*_-$")
         # drawn last and thinner, so that it stays visible where it coincides with M_+ of form C
-        ax.plot(q["tau_d"], q["M_large"], color=ORANGE, ls="--", lw=1.3, label="form Q: $M_+=M_-$")
+        ax.plot(q["tau_d"], q["M_large"], color=ORANGE, ls="--", lw=1.3, label="form Q: $m^*_+=m^*_-$")
         ax.axhline(0, color=INK2, lw=0.6)
         ax.axvline(0, color=INK2, lw=0.7, ls=":")
         ax.set_xlim(-1, 1)
@@ -1506,7 +1506,7 @@ def fig_forms_gap():
     for ax, (var, title) in zip(axes, panels):
         base = d[(d["set"] == 3) & (d["variant"] == 0) & (d["ct_sign"] == 1)]
         ax.plot(base["tau_d"], np.where(base["gap"] > 0, base["gap"], np.nan), color=INK2, ls=":", marker="D", ms=2.4, label="exchange of the Vorton-Scalar alone")
-        for sign, (col, ls, mk, name) in ((1, (ORANGE, "--", "s", "$s=+1$: form Q; form C, pairs along $x5,x6,x7$")), (-1, (BLUE, "-", "o", "$s=-1$: form C, pair along the hidden axis"))):
+        for sign, (col, ls, mk, name) in ((1, (ORANGE, "--", "s", "$s_{\\mathrm{ct}}=+1$: form Q; form C, pairs along $x5,x6,x7$")), (-1, (BLUE, "-", "o", "$s_{\\mathrm{ct}}=-1$: form C, pair along the hidden axis"))):
             sel = d[(d["set"] == 3) & (d["variant"] == var) & (d["ct_sign"] == sign)]
             gap = np.where(sel["gap"] > 0, sel["gap"], np.nan)
             ax.plot(sel["tau_d"], gap, color=col, ls=ls, marker=mk, ms=2.8, label=name)
@@ -1514,7 +1514,7 @@ def fig_forms_gap():
             if len(above):
                 t0 = above["tau_d"].min()
                 ax.axvspan(t0 - 0.12, sel["tau_d"].max() + 0.1, color=PALE, lw=0)
-                ax.text(t0 - 0.08, 2e-6, "$U>4\\pi^2$:\nno gap\nindependent\nof the limit", color=INK2, fontsize=6.6, ha="left", va="bottom")
+                ax.text(t0 - 0.08, 2e-6, "$U_{\\mathrm{uv}}>4\\pi^2$:\nno gap\nindependent\nof the limit", color=INK2, fontsize=6.6, ha="left", va="bottom")
         ax.set_yscale("log")
         ax.set_ylim(1e-6, 20)
         ax.set_xlabel("deflation clock $\\tau_d$ ($g_{VS}=e^{\\tau_d/2}$)")
@@ -1541,11 +1541,11 @@ def fig_forms_uv():
         if not np.all(gaps > 0):
             continue
         ls = ["-", "--", "-.", ":"][k % 4]
-        ax.plot(limits, gaps / gaps[0], color=shades[k], ls=ls, marker="o", label="$U/4\\pi^2=%.2f$ ($\\tau_d=%.2f$)" % (row["uv"], row["tau_d"]))
+        ax.plot(limits, gaps / gaps[0], color=shades[k], ls=ls, marker="o", label="$U_{\\mathrm{uv}}/4\\pi^2=%.2f$ ($\\tau_d=%.2f$)" % (row["uv"], row["tau_d"]))
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlabel("upper limit $K$ of the momentum integral (units $m$)")
-    ax.set_ylabel("gap relative to its value at $K=60\\,m$")
+    ax.set_xlabel("upper limit $k_{\\max}$ of the momentum integral (units $m$)")
+    ax.set_ylabel("gap relative to its value at $k_{\\max}=60\\,m$")
     ax.legend(loc="upper left", title="hidden-axis pair of form C,\n$g_1^{\\mathrm{eff}}=+0.3\\,g_{VS}^2/m^2$", title_fontsize=7)
     fig.tight_layout()
     save(fig, "fig_forms_uv")

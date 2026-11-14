@@ -846,7 +846,7 @@ pub struct InternalSymmetry {
     pub rot_times: Vec<(usize, usize, Vec<[Rat; 9]>)>,
     /// the three rotations that mix the hidden axis x0 with one of x5, x6, x7: (0, t, conditions)
     pub rot_hidden: Vec<(usize, usize, Vec<[Rat; 9]>)>,
-    /// the generator P_E of U(1)_E
+    /// the generator P of U(1)_E
     pub pe: Vec<[Rat; 9]>,
 }
 
@@ -863,7 +863,7 @@ fn conditions_text(cond: &[[Rat; 9]]) -> String {
 /// alpha^1, alpha^2, alpha^3 and beta.  The eight Hermitian matrices that commute with them
 /// and with the coupling of the phase mode of the Vorton-Scalar are the six rotations of the
 /// extra axes, (phase) gamma^a gamma^b with a < b in {0, 5, 6, 7}, the unit matrix (the phase
-/// of the field, fermion number), and P_E = (phase) gamma^0 gamma^5 gamma^6 gamma^7.
+/// of the field, fermion number), and the generator P = (phase) gamma^0 gamma^5 gamma^6 gamma^7 of U(1)_E.
 /// For each generator T the transformation psi -> exp(i theta T) psi is unitary; the
 /// conditions on the nine couplings under which sum_r g_r I_r is invariant are determined
 /// by `invariance_conditions`.  Adds one check; returns the conditions.
@@ -914,7 +914,7 @@ pub fn verify_internal_symmetry(gm: &Gammas, model: Model, rep: &mut Report) -> 
         ok &= pe.comm(d).is_zero();
     }
     ok &= pe.mul(&pe) == one && pe.trace() == (0, 0);
-    // P_E commutes with the chirality matrix and with the pseudoscalar vertex beta chi
+    // the generator P of U(1)_E commutes with the chirality matrix and with the pseudoscalar vertex beta chi
     ok &= pe.comm(&al.chi).is_zero() && pe.comm(&al.beta.mul(&al.chi)).is_zero();
     let (cond_pe, inv_ranks, real) = invariance_conditions(&al, &pe);
     real_all &= real;
@@ -929,7 +929,7 @@ pub fn verify_internal_symmetry(gm: &Gammas, model: Model, rep: &mut Report) -> 
             let t56 = herm(al.real_gamma[5].mul(&al.real_gamma[6]));
             let t05 = herm(al.real_gamma[0].mul(&al.real_gamma[5]));
             ok &= t56.comm(w).is_zero() && t05.anti(w).is_zero() && pe.anti(w).is_zero();
-            " The rotations of x5, x6, x7 among themselves commute with W (they act inside each half of the field); the three generators gamma^0 gamma^t and P_E anticommute with W (they connect the half W = +1 with the half W = -1)."
+            " The rotations of x5, x6, x7 among themselves commute with W (they act inside each half of the field); the three generators gamma^0 gamma^t and the generator P of U(1)_E anticommute with W (they connect the half W = +1 with the half W = -1)."
         }
         None => "",
     };
@@ -943,7 +943,7 @@ pub fn verify_internal_symmetry(gm: &Gammas, model: Model, rep: &mut Report) -> 
         Model::S71 | Model::S44Q => format!("The self-interaction is invariant under the six rotations and the phase for all values of the nine couplings ({} conditions found), because the rotations are among the 28 generators of check S4.", 6 * n_times.max(n_hidden)),
         Model::S44C => format!("Under the three rotations of x5, x6, x7 among themselves, which are unitary elements of Spin(4,4), the self-interaction is invariant {}. Under each of the three unitary transformations psi -> exp(i theta gamma^0 gamma^t) psi (t = 5, 6, 7), which are NOT elements of Spin(4,4) (there gamma^0 gamma^t generates a boost, which is not unitary), the interaction sum_r g_r I_r is invariant {} ({} condition(s) on the nine couplings, the same for the three)", conditions_text(&rot_times[0].2), conditions_text(&rot_hidden[0].2), n_hidden),
     };
-    rep.add(&format!("{}-S12", model.tag()), "exact", &format!("internal symmetry of the fields that do not depend on the extra coordinates x0, x5, x6, x7 (their kinetic term contains alpha^1, alpha^2, alpha^3 and beta only). The eight Hermitian generators of the symmetry of the model with the Vorton-Scalar are the six rotations of the extra axes, (phase) gamma^a gamma^b with a < b in {{0, 5, 6, 7}}, the unit matrix (fermion number), and P_E = (phase) gamma^0 gamma^5 gamma^6 gamma^7 with P_E^2 = 1 and trace 0; all commute with the four matrices of the kinetic term, and P_E commutes with the chirality matrix.{} {} Under psi -> exp(i theta P_E) psi the invariants of the ranks {:?} are invariant one by one, and the interaction sum_r g_r I_r is invariant {} ({} condition(s))", w_txt, class_txt, inv_ranks, conditions_text(&cond_pe), cond_pe.len()), ok && real_all && expect);
+    rep.add(&format!("{}-S12", model.tag()), "exact", &format!("internal symmetry of the fields that do not depend on the extra coordinates x0, x5, x6, x7 (their kinetic term contains alpha^1, alpha^2, alpha^3 and beta only). The eight Hermitian generators of the symmetry of the model with the Vorton-Scalar are the six rotations of the extra axes, (phase) gamma^a gamma^b with a < b in {{0, 5, 6, 7}}, the unit matrix (fermion number), and the generator P = (phase) gamma^0 gamma^5 gamma^6 gamma^7 of U(1)_E, with P^2 = 1 and trace 0; all commute with the four matrices of the kinetic term, and P commutes with the chirality matrix.{} {} Under psi -> exp(i theta P) psi the invariants of the ranks {:?} are invariant one by one, and the interaction sum_r g_r I_r is invariant {} ({} condition(s))", w_txt, class_txt, inv_ranks, conditions_text(&cond_pe), cond_pe.len()), ok && real_all && expect);
     InternalSymmetry { rot_times, rot_hidden, pe: cond_pe }
 }
 
@@ -964,7 +964,7 @@ pub fn verify_44_swap(q: &ModelTables, c: &ModelTables, rep: &mut Report) {
     };
     let (a_s, b_s) = (comb(&q.hf[1], &q.hf[3], 1), comb(&q.hf[1], &q.hf[3], -1));
     let (a_v, b_v) = (comb(&q.hf[0], &q.hf[2], 1), comb(&q.hf[0], &q.hf[2], -1));
-    rep.add("44-S13", "exact", &format!("the two forms of the 4+4 interaction in uniform matter whose density matrix is diagonal in W. With n_+-, s_+- the number and scalar densities of the halves W = +-1, rho = n_+ + n_-, rho_W = n_+ - n_-, rho_S = s_+ + s_-, rho_SW = s_+ - s_-, the Hartree-Fock energies are E(quantized-sector form) = (1/2)[G_1 rho^2 + G_0 rho_S^2 + G_V0 rho_W^2 + G_S0 rho_SW^2] and E(covariant form) = (1/2)[G_V0 rho^2 + G_S0 rho_S^2 + G_1 rho_W^2 + G_0 rho_SW^2] with THE SAME four combinations of the nine couplings (compared coefficient by coefficient): G_0 = {} = {}, G_1 = {} = {}, G_S0 = {} = {}, G_V0 = {} = {}. Equivalently E = (1/2) a_V (n_+^2 + n_-^2) + (1/2) a_S (s_+^2 + s_-^2) +- [b_V n_+ n_- + b_S s_+ s_-], upper sign for the quantized-sector form and lower sign for the covariant form, with the couplings between particles of the same half a_S = G_0 + G_S0 = {}, a_V = G_1 + G_V0 = {} and the couplings between particles of different halves b_S = G_0 - G_S0 = {}, b_V = G_1 - G_V0 = {}: the two forms agree inside each half and have opposite signs between the halves", row_text(&q.hf[1]), red(&q.hf[1]), row_text(&q.hf[0]), red(&q.hf[0]), row_text(&q.hf[3]), red(&q.hf[3]), row_text(&q.hf[2]), red(&q.hf[2]), red(&a_s), red(&a_v), red(&b_s), red(&b_v)), ok);
+    rep.add("44-S13", "exact", &format!("the two forms of the 4+4 interaction in uniform matter whose density matrix is diagonal in W. With n_+-, s_+- the number and scalar densities of the halves W = +-1, rho = n_+ + n_-, rho_W = n_+ - n_-, rho_S = s_+ + s_-, rho_SW = s_+ - s_-, the Hartree-Fock energies are E(quantized-sector form) = (1/2)[G_1 rho^2 + G_0 rho_S^2 + G_V0 rho_W^2 + G_S0 rho_SW^2] and E(covariant form) = (1/2)[G_V0 rho^2 + G_S0 rho_S^2 + G_1 rho_W^2 + G_0 rho_SW^2] with THE SAME four combinations of the nine couplings (compared coefficient by coefficient): G_0 = {} = {}, G_1 = {} = {}, G_S0 = {} = {}, G_V0 = {} = {}. Equivalently E = (1/2) G_Vsame (n_+^2 + n_-^2) + (1/2) G_Ssame (s_+^2 + s_-^2) +- [G_Vopp n_+ n_- + G_Sopp s_+ s_-], upper sign for the quantized-sector form and lower sign for the covariant form, with the couplings between particles of the same half G_Ssame = G_0 + G_S0 = {}, G_Vsame = G_1 + G_V0 = {} and the couplings between particles of different halves G_Sopp = G_0 - G_S0 = {}, G_Vopp = G_1 - G_V0 = {}: the two forms agree inside each half and have opposite signs between the halves", row_text(&q.hf[1]), red(&q.hf[1]), row_text(&q.hf[0]), red(&q.hf[0]), row_text(&q.hf[3]), red(&q.hf[3]), row_text(&q.hf[2]), red(&q.hf[2]), red(&a_s), red(&a_v), red(&b_s), red(&b_v)), ok);
 }
 
 /// All exact checks of one model.  Appends the checks to `rep` and returns the

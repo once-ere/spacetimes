@@ -81,7 +81,7 @@ pub fn run() -> std::io::Result<bool> {
         rows.push(vec![model.tag().to_string(), "phase of the field (fermion number)".to_string(), "1".to_string(), "0".to_string(), "none (invariant for all couplings)".to_string()]);
         rows.push(vec![model.tag().to_string(), "rotations of x5, x6, x7 among themselves: gamma^5 gamma^6, gamma^5 gamma^7, gamma^6 gamma^7".to_string(), "3".to_string(), sym.rot_times[0].2.len().to_string(), cond_cell(&sym.rot_times[0].2)]);
         rows.push(vec![model.tag().to_string(), "rotations that mix the hidden axis x0 with x5, x6 or x7: gamma^0 gamma^5, gamma^0 gamma^6, gamma^0 gamma^7".to_string(), "3".to_string(), sym.rot_hidden[0].2.len().to_string(), cond_cell(&sym.rot_hidden[0].2)]);
-        rows.push(vec![model.tag().to_string(), "P_E = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E".to_string(), "1".to_string(), sym.pe.len().to_string(), cond_cell(&sym.pe)]);
+        rows.push(vec![model.tag().to_string(), "P = (phase) gamma^0 gamma^5 gamma^6 gamma^7, the generator of U(1)_E".to_string(), "1".to_string(), sym.pe.len().to_string(), cond_cell(&sym.pe)]);
     }
     write_csv_str("selfcoupling_internal_symmetry.csv",
         &[("content", "the internal symmetry of the fields that do not depend on the extra coordinates x0, x5, x6, x7 and the self-interaction: for each class of the eight generators T (Hermitian matrices that commute with alpha^1, alpha^2, alpha^3 and beta), the conditions on the couplings under which sum_r g_r I_r is invariant under the unitary transformation psi -> exp(i theta T) psi (checks 71s-S12, 44c-S12, 44q-S12). Four independent conditions on the four effective couplings mean that only the vanishing interaction is invariant".to_string()),

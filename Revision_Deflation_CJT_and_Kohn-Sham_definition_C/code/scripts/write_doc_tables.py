@@ -1088,21 +1088,22 @@ def forms_fragments():
         text(frag, seen[key])
     assert seen["G_0"] == dict(FRAGS)["hf_formula_S"] and seen["G_1"] == dict(FRAGS)["hf_formula_V"]
     dens = {"rho": "$n^2$", "rho_S": "$n_S^2$", "rho_W": "$n_W^2$", "rho_SW": "$n_{SW}^2$"}
+    role = {"rho": "$G_V^{\\rm tot}$", "rho_S": "$G_S^{\\rm tot}$", "rho_W": "$G_V^{\\rm dif}$", "rho_SW": "$G_S^{\\rm dif}$"}
     rows = []
     for d_ in ("rho", "rho_S", "rho_W", "rho_SW"):
         c = [x for x in hf if x["model"] == "44c" and x["density"] == d_][0]["coupling"]
         q = [x for x in hf if x["model"] == "44q" and x["density"] == d_][0]["coupling"]
-        rows.append([dens[d_], "$%s$" % names[c], "$%s$" % names[q]])
-    table("tbl_fm_hf_roles", ["coefficient of", "form C (the definition)", "form Q (the alternative)"], rows, ["l", "l", "l"])
+        rows.append([role[d_], dens[d_], "$%s$" % names[c], "$%s$" % names[q]])
+    table("tbl_fm_hf_roles", ["coupling", "multiplies", "form C (the definition)", "form Q (the alternative)"], rows, ["l", "l", "l", "l"])
 
     # ---- the couplings of the two sets -----------------------------------------------------------------------
     cp = rows_of("forms_couplings.csv")
-    table("tbl_fm_couplings", ["set", "form", "$T_V/g$", "$T_S/g$", "$D_V/g$", "$D_S/g$", "$a_V/g$", "$a_S/g$", "$(T_V-D_V)/g$", "$(T_S-D_S)/g$"],
-          [[x["set"], x["form"]] + [frac16(x[k]) for k in ("T_V", "T_S", "D_V", "D_S", "a_V", "a_S", "b_V", "b_S")] for x in cp], ["l", "l"] + ["r"] * 8)
+    table("tbl_fm_couplings", ["set", "form", "$G_V^{\\rm tot}$", "$G_S^{\\rm tot}$", "$G_V^{\\rm dif}$", "$G_S^{\\rm dif}$", "$G_V^{\\rm same}$", "$G_S^{\\rm same}$", "$G_V^{\\rm opp}$", "$G_S^{\\rm opp}$"],
+          [[x["set"], x["form"]] + [frac16(x[k]) for k in ("G_Vtot", "G_Stot", "G_Vdif", "G_Sdif", "G_Vsame", "G_Ssame", "G_Vopp", "G_Sopp")] for x in cp], ["l", "l"] + ["r"] * 8)
 
     # ---- thresholds -------------------------------------------------------------------------------------------
     th = rows_of("forms_thresholds.csv")
-    table("tbl_fm_thresholds", ["$D$", "set", "form", "$g\\,m^{D-1}$", "state", "$k_{F,\\rm tot}/m$", "$M_+/m$", "$M_-/m$", "$\\Lambda_{\\max}/m$"],
+    table("tbl_fm_thresholds", ["$D$", "set", "form", "$g\\,m^{D-1}$", "state", "$k_{F,\\rm tot}/m$", "$m^*_+/m$", "$m^*_-/m$", "$\\Lambda_{\\max}/m$"],
           [[x["D"], x["set"], x["form"], fix(x["g_threshold"], 4), x["kind"], fix(x["kF_total"], 4), fix(x["M_plus"], 4), fix(x["M_minus"], 4), fix(x["cutoff_max"], 3)] for x in th],
           ["r3", "l4", "l5", "r10", "l13", "r9", "r8", "r8", "r9"])
     thr = {(int(x["D"]), x["set"], x["form"]): num(x["g_threshold"]) for x in th}
@@ -1134,7 +1135,7 @@ def forms_fragments():
                 rows.append(row)
                 kinds = set(round(num(x["pol"]), 6) for x in sel if num(x["tau_d"]) > 0.07)
                 assert kinds == ({1.0} if fm == "C" else {0.0}), "the kind of the saturated state changes along the clock"
-    table("tbl_fm_saturation", ["$D$", "set", "form", "$\\tau_d=1$", "$2$", "$3$", "$4$", "$M$ at 1", "$M$ at 3", "$k$ at 1", "$k$ at 3"], rows, ["r3", "l4", "l5", "r10", "r10", "r10", "r10", "r8", "r8", "r8", "r8"])
+    table("tbl_fm_saturation", ["$D$", "set", "form", "$\\tau_d=1$", "$2$", "$3$", "$4$", "$m^*$ at 1", "$m^*$ at 3", "$k_{F,\\rm tot}$ at 1", "$k_{F,\\rm tot}$ at 3"], rows, ["r3", "l4", "l5", "r10", "r10", "r10", "r10", "r8", "r8", "r8", "r8"])
     text("fm_response_max", fix(resp_max, 3))
     f4 = check_statement("forms_checks", "fm-F4")
     m_ = re.search(r"reaches the eigenvalue 1 .*? at: (.*?); the saturated state of the covariant form", f4)
@@ -1194,7 +1195,7 @@ def forms_fragments():
             assert abs(num(c["g_crit"]) - num(q["g_crit"])) < 1e-9 * num(c["g_crit"])
             assert abs(num(c["Mp_above"]) + num(c["Mm_above"])) < 1e-7 and abs(num(q["Mp_above"]) - num(q["Mm_above"])) < 1e-7 and num(c["Mp_above"]) > 0 and num(q["Mp_above"]) > 0
             rows.append(["%d" % d, st, "$%s$" % fix(c["Gc"], 4), fix(c["g_crit"], 4), "$(%s,\\ %s)$" % (fix(q["Mp_above"], 4), fix(q["Mm_above"], 4)), "$(%s,\\ %s)$" % (fix(c["Mp_above"], 4), fix(c["Mm_above"], 4))])
-    table("tbl_fm_vacuum_critical", ["$D$", "set", "$G_c\\Lambda^{D-1}$", "$g_{\\rm crit}\\Lambda^{D-1}$", "form Q: $(M_+,M_-)/\\Lambda$", "form C: $(M_+,M_-)/\\Lambda$"], rows, ["r3", "l4", "r10", "r10", "r18", "r18"])
+    table("tbl_fm_vacuum_critical", ["$D$", "set", "$G_c\\Lambda^{D-1}$", "$g_{\\rm crit}\\Lambda^{D-1}$", "form Q: $(m^*_+,m^*_-)/\\Lambda$", "form C: $(m^*_+,m^*_-)/\\Lambda$"], rows, ["r3", "l4", "r10", "r10", "r18", "r18"])
     va = rows_of("forms_vacuum.csv")
     rows = []
     for d in (4, 3):
@@ -1230,14 +1231,15 @@ def forms_fragments():
                 assert x["method"] == "0" and num(x["pol"]) < 1e-6, "a threshold of the functional with the Vorton-Scalar is not that of matter with equal halves"
                 row += ["%s ($%s$)" % (fix(x["C_bind"], 4), ("%+.3f" % d_) if abs(d_) > 5e-4 else "0"), fix(x["x"], 3)]
             rows.append(row)
-    table("tbl_fm_unified", ["$f_D$", "$\\kappa_0$", "$\\kappa_1$", "form C: $C$ ($\\Delta\\tau_d$)", "$x$", "form Q: $C$ ($\\Delta\\tau_d$)", "$x$"], rows, ["r6", "r5", "r5", "r20", "r8", "r20", "r8"])
+    table("tbl_fm_unified", ["$f_D$", "$-g_0/C$", "$g_1/C$", "form C: $C$ ($\\Delta\\tau_d$)", "$x$", "form Q: $C$ ($\\Delta\\tau_d$)", "$x$"], rows, ["r6", "r5", "r5", "r20", "r8", "r20", "r8"])
     f8 = check_statement("forms_checks", "fm-F8")
     text("fm_uni_margin", tex_num(grab(f8, r"E/N - m >= ([\d.e+-]+) m")))
     text("fm_uni_n", grab(f8, r"In (\d+) of the \d+ cases"))
 
     # ---- scalar coupling of the opposite sign -------------------------------------------------------------------
     f9 = check_statement("forms_checks", "fm-F9")
-    text("fm_f9_statement", tex_sci_in_text(md_escape(f9.split(") ", 1)[1])))
+    # the statement as the program prints it, for a code block (no Markdown escaping)
+    text("fm_f9_statement_raw", f9.split(") ", 1)[1])
 
     # ---- pairs at rest ---------------------------------------------------------------------------------------------
     pr = rows_of("selfcoupling_pairs.csv")
@@ -1283,7 +1285,7 @@ def forms_fragments():
             y_ = [y for y in near(pg, set=3.0, variant=float(v), ct_sign=-1.0) if abs(num(y["tau_d"]) - tau) < 1e-5][0]
             row += [fix(x["uv"], 3), fix(y_["uv"], 3)]
             rows.append(row)
-        table(tname, ["interaction", "$m_s=0.3m$, $s=+1$", "$s=-1$", "$m_s=m$, $s=+1$", "$s=-1$", "$U/4\\pi^2$, $s=+1$", "$s=-1$"], rows, ["l34", "r10", "r8", "r10", "r8", "r10", "r8"])
+        table(tname, ["interaction", "$m_s=0.3m$, $s_{\\rm ct}=+1$", "$-1$", "$m_s=m$, $s_{\\rm ct}=+1$", "$-1$", "$U_{\\rm uv}/4\\pi^2$, $s_{\\rm ct}=+1$", "$-1$"], rows, ["l34", "r10", "r8", "r10", "r8", "r10", "r8"])
         text(tname.replace("tbl_", "") + "_tau", fix(tau, 2))
     # the ultraviolet strengths per unit g_VS^2 and the clock readings of the criterion (formula; compared with the file)
     i_s, i_v = math.pi ** 2 / 8 - 0.5, 3 * math.pi ** 2 / 4 - 1
@@ -1302,23 +1304,23 @@ def forms_fragments():
             else:
                 cells += ["$%s$" % fix(u1, 3), "—", "—"]
         rows.append(cells)
-    table("tbl_fm_uv", ["interaction", "$s=+1$: $U/g_{VS}^2$", "critical $g_{VS}^2$", "$\\tau_d$", "$s=-1$: $U/g_{VS}^2$", "critical $g_{VS}^2$", "$\\tau_d$"], rows, ["l34", "r10", "r9", "r6", "r10", "r9", "r6"])
+    table("tbl_fm_uv", ["interaction", "$s_{\\rm ct}=+1$: $U_{\\rm uv}/g_{VS}^2$", "critical $g_{VS}^2$", "$\\tau_d$", "$s_{\\rm ct}=-1$: $U_{\\rm uv}/g_{VS}^2$", "critical $g_{VS}^2$", "$\\tau_d$"], rows, ["l34", "r10", "r9", "r6", "r10", "r9", "r6"])
     text("uv_IS", fix(i_s, 4)); text("uv_IV", fix(i_v, 4)); text("uv_g2c_exchange", fix(4 * math.pi ** 2 / (2 * i_s), 2)); text("uv_tau_exchange", fix(math.log(4 * math.pi ** 2 / (2 * i_s)), 2))
     text("uv_g2c_v3minus", fix(4 * math.pi ** 2 / (2 * i_s + 0.3 * i_v), 2)); text("uv_tau_v3minus", fix(math.log(4 * math.pi ** 2 / (2 * i_s + 0.3 * i_v)), 2))
     text("uv_tau_last", fix(max(taus), 2))
     lim = rows_of("pair_gap_upper_limit.csv")
     rows = []
-    for v, sign, lab in ((0, 1.0, labels[0]), (1, 1.0, labels[1] + ", $s=+1$"), (3, -1.0, labels[3] + ", $s=-1$")):
+    for v, sign, lab in ((0, 1.0, labels[0]), (1, 1.0, labels[1] + ", $s_{\\rm ct}=+1$"), (3, -1.0, labels[3] + ", $s_{\\rm ct}=-1$")):
         for tau_want in (2.04, 2.53, 2.77):
             sel = near(lim, set=3.0, variant=float(v), ct_sign=sign)
             x = min(sel, key=lambda y: abs(num(y["tau_d"]) - tau_want))
             rows.append([lab, fix(x["tau_d"], 2), fix(x["uv"], 3)] + [auto(x[k], 5) for k in ("gap_60", "gap_2e3", "gap_2e4", "gap_2e5")])
-    table("tbl_fm_gap_limit", ["interaction", "$\\tau_d$", "$U/4\\pi^2$", "$K=60$", "$2\\times10^3$", "$2\\times10^4$", "$2\\times10^5$"], rows, ["l30", "r6", "r8", "r10", "r10", "r13", "r13"])
+    table("tbl_fm_gap_limit", ["interaction", "$\\tau_d$", "$U_{\\rm uv}/4\\pi^2$", "$k_{\\max}=60$", "$2\\times10^3$", "$2\\times10^4$", "$2\\times10^5$"], rows, ["l30", "r6", "r8", "r10", "r10", "r13", "r13"])
     p7 = check_statement("pairing_checks", "pc-P7")
     m_ = re.search(r"U/\(4 pi\^2\) < 0\.5 \((\d+) cases\): change from 2e4 to 2e5 at most ([\d.e+-]+), from 60 to 2e4 at most ([\d.]+) per cent; 0\.5 to 0\.7 \((\d+) cases\): ([\d.e+-]+) and ([\d.]+) per cent; 0\.7 to 0\.9 \((\d+) cases\): ([\d.e+-]+) and ([\d.]+) per cent", p7)
     assert m_, "check pc-P7 does not state the three classes"
-    cls_rows = [["$U/4\\pi^2<0.5$", m_.group(1), tex_num(m_.group(2)), m_.group(3)], ["$0.5$ to $0.7$", m_.group(4), tex_num(m_.group(5)), m_.group(6)], ["$0.7$ to $0.9$", m_.group(7), tex_num(m_.group(8)), m_.group(9)]]
-    table("tbl_fm_uv_classes", ["ultraviolet strength", "cases", "change of the gap from $K=2\\times10^4$ to $2\\times10^5$ (relative)", "error of the limit $K=60$ (per cent)"], cls_rows, ["l", "r", "r", "r"])
+    cls_rows = [["$U_{\\rm uv}/4\\pi^2<0.5$", m_.group(1), tex_num(m_.group(2)), m_.group(3)], ["$0.5$ to $0.7$", m_.group(4), tex_num(m_.group(5)), m_.group(6)], ["$0.7$ to $0.9$", m_.group(7), tex_num(m_.group(8)), m_.group(9)]]
+    table("tbl_fm_uv_classes", ["ultraviolet strength", "cases", "change of the gap from $k_{\\max}=2\\times10^4$ to $2\\times10^5$ (relative)", "error of the limit $k_{\\max}=60$ (per cent)"], cls_rows, ["l", "r", "r", "r"])
     text("uv_exchange_error", grab(p7, r"too small by up to ([\d.]+) per cent"))
     text("uv_growth_lo", grab(p7, r"grows by a factor between ([\d.]+) and")); text("uv_growth_hi", grab(p7, r"grows by a factor between [\d.]+ and (\d+\.\d+)"))
     text("uv_n_above", grab(p7, r"Cases above the criterion \((\d+)\)")); text("uv_n_cases", grab(p7, r"in (\d+) cases \(four sets"))
@@ -1344,7 +1346,7 @@ def forms_fragments():
         assert n_ == 4
         return "no coupling ($g_0^{\\rm eff}=g_1^{\\rm eff}=g_7^{\\rm eff}=g_8^{\\rm eff}=0$)"
     gens = [("phase", "phase of the field (fermion number)", "1"), ("rotations of x5", "rotations of $x5,x6,x7$ among themselves", "3"),
-            ("rotations that mix", "rotations that mix $x0$ with $x5$, $x6$ or $x7$", "3"), ("P_E", "$P_E$, the generator of $U(1)_E$", "1")]
+            ("rotations that mix", "rotations that mix $x0$ with $x5$, $x6$ or $x7$", "3"), ("P = (phase)", "$P$, the generator of $U(1)_E$", "1")]
     table("tbl_fm_symmetry", ["generators", "number", "$7+1$", "$4+4$, form Q", "$4+4$, form C"],
           [[lab, n_, cond("71s", key), cond("44q", key), cond("44c", key)] for key, lab, n_ in gens], ["l", "r", "l", "l", "l"])
 
@@ -1353,7 +1355,7 @@ def forms_fragments():
     mc = re.search(r"covariant form \(the definition\): threshold g m\^3 = ([\d.]+); at three times that strength the saturated state has one half filled \(Fermi momentum of the filled states ([\d.]+) m, mass ([\d.]+) m, E/N - m = (-[\d.]+) m", g6)
     mq = re.search(r"quantized-sector form \(the alternative\): threshold g m\^3 = ([\d.]+); at three times that strength the saturated state has equal halves \(Fermi momentum of the filled states ([\d.]+) m, mass ([\d.]+) m, E/N - m = (-[\d.]+) m", g6)
     assert mc and mq, "check gr-G6 does not state the two kinds of matter"
-    table("tbl_fm_gravity_matter", ["form", "threshold $g\\,m^3$", "state at 3 times the threshold", "$k_F/m$ of the filled states", "$M/m$", "$\\varepsilon/n-m$ (units $m$)"],
+    table("tbl_fm_gravity_matter", ["form", "threshold $g\\,m^3$", "state at 3 times the threshold", "$k_F/m$ of the filled states", "$m^*/m$", "$\\varepsilon/n-m$ (units $m$)"],
           [["C", mc.group(1), "one half filled", mc.group(2), mc.group(3), "$%s$" % mc.group(4)], ["Q", mq.group(1), "equal halves", mq.group(2), mq.group(3), "$%s$" % mq.group(4)]], ["l", "r", "l", "r", "r", "r"])
     text("fm_grav_dev", tex_num(grab(g6, r"agree in mass, energy density, pressure and interaction pressure to (\d+\.\d+e[+-]?\d+)")))
 

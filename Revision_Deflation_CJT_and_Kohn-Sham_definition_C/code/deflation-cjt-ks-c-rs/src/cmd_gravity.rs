@@ -237,8 +237,8 @@ pub fn run() -> std::io::Result<bool> {
         let g_thr = binding_threshold(4, form, &hf_unit);
         let h = halves_for(4, form, &hf_unit, 3.0 * g_thr);
         let (_, st) = h.lowest_energy_per_particle(KF_SCAN.0, KF_SCAN.1, KF_SCAN.2).expect("gravity: no saturated state");
-        // the saturated state is matter of one kind of particle: one half filled (four states, couplings a_S, a_V)
-        // or equal halves (eight states, couplings T_S, T_V)
+        // the saturated state is matter of one kind of particle: one half filled (four states, couplings G_Ssame, G_Vsame)
+        // or equal halves (eight states, couplings G_Stot, G_Vtot)
         let (c, half) = if st.pol > 1.0 - 1e-6 {
             (h.polarized_contact(), true)
         } else if st.pol < 1e-6 {

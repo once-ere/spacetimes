@@ -89,7 +89,7 @@
 <!-- END n_cjt_ks_checks_independent -->
 
 <!-- BEGIN n_symbol_checks -->
-6 of 7
+6 of 8
 <!-- END n_symbol_checks -->
 
 <!-- BEGIN n_checks_rust -->
@@ -101,15 +101,15 @@
 <!-- END n_indep_checks -->
 
 <!-- BEGIN n_mutations -->
-36 of 36
+45 of 45
 <!-- END n_mutations -->
 
 <!-- BEGIN n_mutations_short -->
-36
+45
 <!-- END n_mutations_short -->
 
 <!-- BEGIN n_mutations_parts -->
-20 in the script for the self-interaction, the Kohn-Sham and CJT calculations, pairing and gravity, 16 in the cosmological part of the other script
+29 in the script for the self-interaction, the Kohn-Sham and CJT calculations, pairing and gravity, 16 in the cosmological part of the other script
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
@@ -212,7 +212,7 @@
 | file | lines | content |
 |:---|---:|:----------|
 | `selfint.rs` | 1543 | the self-interaction: the 256 matrices and nine invariants of the three models (7+1; 4+4 in the covariant form, the definition, and in the quantized-sector form, the alternative) in exact integer arithmetic; Fierz matrix; reduction to four couplings; Hartree-Fock couplings of four densities; pair couplings; chiral and internal symmetry; the exact relation between the two forms |
-| `halves.rs` | 1286 | the two halves $W=\pm1$ of the 4+4 field as two kinds of particles, for either form of the self-interaction: mean-field couplings of the totals and of the differences, closed forms of the Fermi integrals, all solutions of the two coupled gap equations, the state of lowest energy with respect to the polarization, saturation, binding thresholds, the response matrix of the gap equations, the CJT effective potential of two halves, the vacuum with the filled states of negative energy, the functional with the Vorton-Scalar |
+| `halves.rs` | 1289 | the two halves $W=\pm1$ of the 4+4 field as two kinds of particles, for either form of the self-interaction: mean-field couplings of the totals and of the differences, closed forms of the Fermi integrals, all solutions of the two coupled gap equations, the state of lowest energy with respect to the polarization, saturation, binding thresholds, the response matrix of the gap equations, the CJT effective potential of two halves, the vacuum with the filled states of negative energy, the functional with the Vorton-Scalar |
 | `kohn_sham.rs` | 704 | the Kohn-Sham method for uniform matter with scalar and vector coupling: Fermi integrals over a ball and over an ellipsoid of momenta, gap equation, energy density, pressures, saturation, thresholds; the two halves of the 4+4 field; the functional with bare mass, contact couplings and Vorton-Scalar |
 | `cjt_contact.rs` | 365 | the CJT effective potential of uniform matter with contact interaction, without and with the filled states of negative energy; vacuum mass; critical coupling |
 | `pair_contact.rs` | 424 | pairing amplitudes of the contact channels in the pairs along the extra axes (closed forms and direct evaluation, both forms of 4+4); the pairing kernel with contact couplings and exchange of the Vorton-Scalar; the ultraviolet strength of the kernel |
@@ -242,7 +242,7 @@
 <!-- END n_source_files -->
 
 <!-- BEGIN n_source_lines -->
-17771
+17774
 <!-- END n_source_lines -->
 
 <!-- BEGIN n_unit_tests -->
@@ -1304,16 +1304,16 @@ $G_V^{\rm c}=\tfrac1{16}(-g_0+4g_2+10g_4+4g_6-g_8)$
 <!-- END hf_formula_Vc -->
 
 <!-- BEGIN tbl_fm_hf_roles -->
-| coefficient of | form C (the definition) | form Q (the alternative) |
-|:---|:---|:---|
-| $n^2$ | $G_V^{\rm c}$ | $G_V^{\rm HF}$ |
-| $n_S^2$ | $G_S^{\rm c}$ | $G_S^{\rm HF}$ |
-| $n_W^2$ | $G_V^{\rm HF}$ | $G_V^{\rm c}$ |
-| $n_{SW}^2$ | $G_S^{\rm HF}$ | $G_S^{\rm c}$ |
+| coupling | multiplies | form C (the definition) | form Q (the alternative) |
+|:---|:---|:---|:---|
+| $G_V^{\rm tot}$ | $n^2$ | $G_V^{\rm c}$ | $G_V^{\rm HF}$ |
+| $G_S^{\rm tot}$ | $n_S^2$ | $G_S^{\rm c}$ | $G_S^{\rm HF}$ |
+| $G_V^{\rm dif}$ | $n_W^2$ | $G_V^{\rm HF}$ | $G_V^{\rm c}$ |
+| $G_S^{\rm dif}$ | $n_{SW}^2$ | $G_S^{\rm HF}$ | $G_S^{\rm c}$ |
 <!-- END tbl_fm_hf_roles -->
 
 <!-- BEGIN tbl_fm_couplings -->
-| set | form | $T_V/g$ | $T_S/g$ | $D_V/g$ | $D_S/g$ | $a_V/g$ | $a_S/g$ | $(T_V-D_V)/g$ | $(T_S-D_S)/g$ |
+| set | form | $G_V^{\rm tot}$ | $G_S^{\rm tot}$ | $G_V^{\rm dif}$ | $G_S^{\rm dif}$ | $G_V^{\rm same}$ | $G_S^{\rm same}$ | $G_V^{\rm opp}$ | $G_S^{\rm opp}$ |
 |:---|:---|---:|---:|---:|---:|---:|---:|---:|---:|
 | A | C | $\tfrac{1}{16}$ | $\tfrac{1}{16}$ | $\tfrac{1}{16}$ | $-\tfrac{15}{16}$ | $\tfrac{1}{8}$ | $-\tfrac{7}{8}$ | 0 | $1$ |
 | A | Q | $\tfrac{1}{16}$ | $-\tfrac{15}{16}$ | $\tfrac{1}{16}$ | $\tfrac{1}{16}$ | $\tfrac{1}{8}$ | $-\tfrac{7}{8}$ | 0 | $-1$ |
@@ -1322,7 +1322,7 @@ $G_V^{\rm c}=\tfrac1{16}(-g_0+4g_2+10g_4+4g_6-g_8)$
 <!-- END tbl_fm_couplings -->
 
 <!-- BEGIN tbl_fm_thresholds -->
-| $D$ | set | form | $g\,m^{D-1}$ | state | $k_{F,\rm tot}/m$ | $M_+/m$ | $M_-/m$ | $\Lambda_{\max}/m$ |
+| $D$ | set | form | $g\,m^{D-1}$ | state | $k_{F,\rm tot}/m$ | $m^*_+/m$ | $m^*_-/m$ | $\Lambda_{\max}/m$ |
 |--:|:---|:----|---------:|:------------|--------:|-------:|-------:|--------:|
 | 4 | A | C | 224.7386 | one half | 0.6140 | 0.5239 | 1.5441 | 0.520 |
 | 4 | A | Q | 82.1116 | equal halves | 0.8054 | 0.4946 | 0.4946 | 0.727 |
@@ -1403,7 +1403,7 @@ $5.7\times10^{-14}$
 <!-- END fm_thr_onekind_dev -->
 
 <!-- BEGIN tbl_fm_saturation -->
-| $D$ | set | form | $\tau_d=1$ | $2$ | $3$ | $4$ | $M$ at 1 | $M$ at 3 | $k$ at 1 | $k$ at 3 |
+| $D$ | set | form | $\tau_d=1$ | $2$ | $3$ | $4$ | $m^*$ at 1 | $m^*$ at 3 | $k_{F,\rm tot}$ at 1 | $k_{F,\rm tot}$ at 3 |
 |--:|:---|:----|---------:|---------:|---------:|---------:|-------:|-------:|-------:|-------:|
 | 4 | A | C | $-0.1092$ | $-0.2079$ | $-0.2913$ | $-0.3597$ | 0.351 | 0.183 | 0.538 | 0.361 |
 | 4 | A | Q | $-0.1284$ | $-0.2449$ | $-0.3438$ | $-0.4254$ | 0.319 | 0.156 | 0.713 | 0.486 |
@@ -1514,7 +1514,7 @@ $4.9\times10^{-11}$
 <!-- END fm_cjt_n_one -->
 
 <!-- BEGIN tbl_fm_vacuum_critical -->
-| $D$ | set | $G_c\Lambda^{D-1}$ | $g_{\rm crit}\Lambda^{D-1}$ | form Q: $(M_+,M_-)/\Lambda$ | form C: $(M_+,M_-)/\Lambda$ |
+| $D$ | set | $G_c\Lambda^{D-1}$ | $g_{\rm crit}\Lambda^{D-1}$ | form Q: $(m^*_+,m^*_-)/\Lambda$ | form C: $(m^*_+,m^*_-)/\Lambda$ |
 |--:|:---|---------:|---------:|-----------------:|-----------------:|
 | 4 | A | $-29.6088$ | 31.5827 | $(0.1243,\ 0.1243)$ | $(0.1243,\ -0.1243)$ |
 | 4 | B | $-29.6088$ | 29.9836 | $(0.1243,\ 0.1243)$ | $(0.1243,\ -0.1243)$ |
@@ -1568,7 +1568,7 @@ $2.1\times10^{-10}$
 <!-- END fm_vac_Gc_d3 -->
 
 <!-- BEGIN tbl_fm_unified -->
-| $f_D$ | $\kappa_0$ | $\kappa_1$ | form C: $C$ ($\Delta\tau_d$) | $x$ | form Q: $C$ ($\Delta\tau_d$) | $x$ |
+| $f_D$ | $-g_0/C$ | $g_1/C$ | form C: $C$ ($\Delta\tau_d$) | $x$ | form Q: $C$ ($\Delta\tau_d$) | $x$ |
 |-----:|----:|----:|-------------------:|-------:|-------------------:|-------:|
 | 0 | 0 | 0 | 3.7011 ($0$) | 0.000 | 3.7011 ($0$) | 0.000 |
 | 0 | 1 | 0 | 3.9399 ($+0.063$) | 0.000 | 3.7156 ($+0.004$) | 0.614 |
@@ -1589,9 +1589,9 @@ $1.6\times10^{-4}$
 18
 <!-- END fm_uni_n -->
 
-<!-- BEGIN fm_f9_statement -->
-a scalar coupling of the opposite sign, g\_0 \> 0 alone. In the covariant form particles of different halves attract each other; the coupling of the square of the total density is T\_V = G\_Vc = -g\_0/16 \< 0, and the energy per particle of uniform matter falls without bound as the density grows: the contact model then has no saturated state without a cutoff. In the quantized-sector form the same coupling repels (T\_S = 15 g\_0/16 \> 0) and the energy per particle rises with the density. D = 4, g\_0 = +100 m\^-3, form C: E/N - m = +0.089, -1.518, -35.819, -641.710 m at k\_F,total = 1, 2, 4, 8 m; D = 4, g\_0 = +100 m\^-3, form Q: E/N - m = +1.095, +15.250, +243.184, +3890.737 m at k\_F,total = 1, 2, 4, 8 m; D = 3, g\_0 = +15 m\^-2, form C: E/N - m = +0.158, -0.054, -5.220, -58.160 m at k\_F,total = 1, 2, 4, 8 m; D = 3, g\_0 = +15 m\^-2, form Q: E/N - m = +0.929, +6.205, +48.701, +389.107 m at k\_F,total = 1, 2, 4, 8 m
-<!-- END fm_f9_statement -->
+<!-- BEGIN fm_f9_statement_raw -->
+a scalar coupling of the opposite sign, g_0 > 0 alone. In the covariant form particles of different halves attract each other; the coupling of the square of the total density is G_Vtot = G_Vc = -g_0/16 < 0, and the energy per particle of uniform matter falls without bound as the density grows: the contact model then has no saturated state without a cutoff. In the quantized-sector form the same coupling repels (G_Stot = 15 g_0/16 > 0) and the energy per particle rises with the density. D = 4, g_0 = +100 m^-3, form C: E/N - m = +0.089, -1.518, -35.819, -641.710 m at k_F,total = 1, 2, 4, 8 m; D = 4, g_0 = +100 m^-3, form Q: E/N - m = +1.095, +15.250, +243.184, +3890.737 m at k_F,total = 1, 2, 4, 8 m; D = 3, g_0 = +15 m^-2, form C: E/N - m = +0.158, -0.054, -5.220, -58.160 m at k_F,total = 1, 2, 4, 8 m; D = 3, g_0 = +15 m^-2, form Q: E/N - m = +0.929, +6.205, +48.701, +389.107 m at k_F,total = 1, 2, 4, 8 m
+<!-- END fm_f9_statement_raw -->
 
 <!-- BEGIN tbl_fm_pairs_rest -->
 | form | number of pairs | the two particles are in | $G_{\rm pair}$ |
@@ -1607,7 +1607,7 @@ a scalar coupling of the opposite sign, g\_0 \> 0 alone. In the covariant form p
 <!-- END tbl_fm_pairs_rest -->
 
 <!-- BEGIN tbl_fm_gap -->
-| interaction | $m_s=0.3m$, $s=+1$ | $s=-1$ | $m_s=m$, $s=+1$ | $s=-1$ | $U/4\pi^2$, $s=+1$ | $s=-1$ |
+| interaction | $m_s=0.3m$, $s_{\rm ct}=+1$ | $-1$ | $m_s=m$, $s_{\rm ct}=+1$ | $-1$ | $U_{\rm uv}/4\pi^2$, $s_{\rm ct}=+1$ | $-1$ |
 |:---------------------------------|---------:|-------:|---------:|-------:|---------:|-------:|
 | exchange of the Vorton-Scalar alone | 0.4118 | 0.4118 | 0.0247 | 0.0247 | 0.285 | 0.285 |
 | with $g_0^{\rm eff}=-g_{VS}^2/m^2$ | 0.9035 | 0.1481 | 0.2975 | 0.0000 | 0.428 | 0.143 |
@@ -1622,7 +1622,7 @@ a scalar coupling of the opposite sign, g\_0 \> 0 alone. In the covariant form p
 <!-- END fm_gap_tau -->
 
 <!-- BEGIN tbl_fm_gap_late -->
-| interaction | $m_s=0.3m$, $s=+1$ | $s=-1$ | $m_s=m$, $s=+1$ | $s=-1$ | $U/4\pi^2$, $s=+1$ | $s=-1$ |
+| interaction | $m_s=0.3m$, $s_{\rm ct}=+1$ | $-1$ | $m_s=m$, $s_{\rm ct}=+1$ | $-1$ | $U_{\rm uv}/4\pi^2$, $s_{\rm ct}=+1$ | $-1$ |
 |:---------------------------------|---------:|-------:|---------:|-------:|---------:|-------:|
 | exchange of the Vorton-Scalar alone | 2.3493 | 2.3493 | 0.6763 | 0.6763 | 0.595 | 0.595 |
 | with $g_0^{\rm eff}=-g_{VS}^2/m^2$ | 8.3750 | 0.7618 | 5.8068 | 0.0002 | 0.892 | 0.297 |
@@ -1637,7 +1637,7 @@ a scalar coupling of the opposite sign, g\_0 \> 0 alone. In the covariant form p
 <!-- END fm_gap_late_tau -->
 
 <!-- BEGIN tbl_fm_uv -->
-| interaction | $s=+1$: $U/g_{VS}^2$ | critical $g_{VS}^2$ | $\tau_d$ | $s=-1$: $U/g_{VS}^2$ | critical $g_{VS}^2$ | $\tau_d$ |
+| interaction | $s_{\rm ct}=+1$: $U_{\rm uv}/g_{VS}^2$ | critical $g_{VS}^2$ | $\tau_d$ | $s_{\rm ct}=-1$: $U_{\rm uv}/g_{VS}^2$ | critical $g_{VS}^2$ | $\tau_d$ |
 |:---------------------------------|---------:|--------:|-----:|---------:|--------:|-----:|
 | exchange of the Vorton-Scalar alone | 1.467 | 26.90 | 3.29 | 1.467 | 26.90 | 3.29 |
 | with $g_0^{\rm eff}=-g_{VS}^2/m^2$ | 2.201 | 17.94 | 2.89 | 0.734 | 53.81 | 3.99 |
@@ -1676,23 +1676,23 @@ a scalar coupling of the opposite sign, g\_0 \> 0 alone. In the covariant form p
 <!-- END uv_tau_last -->
 
 <!-- BEGIN tbl_fm_gap_limit -->
-| interaction | $\tau_d$ | $U/4\pi^2$ | $K=60$ | $2\times10^3$ | $2\times10^4$ | $2\times10^5$ |
+| interaction | $\tau_d$ | $U_{\rm uv}/4\pi^2$ | $k_{\max}=60$ | $2\times10^3$ | $2\times10^4$ | $2\times10^5$ |
 |:-----------------------------|-----:|-------:|---------:|---------:|------------:|------------:|
 | exchange of the Vorton-Scalar alone | 2.04 | 0.285 | 0.024647 | 0.024674 | 0.024674 | 0.024674 |
 | exchange of the Vorton-Scalar alone | 2.53 | 0.466 | 0.25708 | 0.25804 | 0.25805 | 0.25805 |
 | exchange of the Vorton-Scalar alone | 2.77 | 0.595 | 0.66928 | 0.67618 | 0.67629 | 0.67629 |
-| with $g_0^{\rm eff}=-g_{VS}^2/m^2$, $s=+1$ | 2.04 | 0.428 | 0.29679 | 0.29751 | 0.29752 | 0.29752 |
-| with $g_0^{\rm eff}=-g_{VS}^2/m^2$, $s=+1$ | 2.53 | 0.698 | 1.8061 | 1.8486 | 1.8498 | 1.8500 |
-| with $g_0^{\rm eff}=-g_{VS}^2/m^2$, $s=+1$ | 2.77 | 0.892 | 5.0760 | 5.7318 | 5.8068 | 5.8262 |
-| with $g_1^{\rm eff}=+0.3\,g_{VS}^2/m^2$, $s=-1$ | 2.04 | 0.659 | 0.22460 | 0.22842 | 0.22849 | 0.22850 |
-| with $g_1^{\rm eff}=+0.3\,g_{VS}^2/m^2$, $s=-1$ | 2.53 | 1.075 | 4.8524 | 14.617 | 51.803 | 753.50 |
-| with $g_1^{\rm eff}=+0.3\,g_{VS}^2/m^2$, $s=-1$ | 2.77 | 1.373 | 34.748 | 1044.3 | $1.1991\times10^{4}$ | $1.3779\times10^{5}$ |
+| with $g_0^{\rm eff}=-g_{VS}^2/m^2$, $s_{\rm ct}=+1$ | 2.04 | 0.428 | 0.29679 | 0.29751 | 0.29752 | 0.29752 |
+| with $g_0^{\rm eff}=-g_{VS}^2/m^2$, $s_{\rm ct}=+1$ | 2.53 | 0.698 | 1.8061 | 1.8486 | 1.8498 | 1.8500 |
+| with $g_0^{\rm eff}=-g_{VS}^2/m^2$, $s_{\rm ct}=+1$ | 2.77 | 0.892 | 5.0760 | 5.7318 | 5.8068 | 5.8262 |
+| with $g_1^{\rm eff}=+0.3\,g_{VS}^2/m^2$, $s_{\rm ct}=-1$ | 2.04 | 0.659 | 0.22460 | 0.22842 | 0.22849 | 0.22850 |
+| with $g_1^{\rm eff}=+0.3\,g_{VS}^2/m^2$, $s_{\rm ct}=-1$ | 2.53 | 1.075 | 4.8524 | 14.617 | 51.803 | 753.50 |
+| with $g_1^{\rm eff}=+0.3\,g_{VS}^2/m^2$, $s_{\rm ct}=-1$ | 2.77 | 1.373 | 34.748 | 1044.3 | $1.1991\times10^{4}$ | $1.3779\times10^{5}$ |
 <!-- END tbl_fm_gap_limit -->
 
 <!-- BEGIN tbl_fm_uv_classes -->
-| ultraviolet strength | cases | change of the gap from $K=2\times10^4$ to $2\times10^5$ (relative) | error of the limit $K=60$ (per cent) |
+| ultraviolet strength | cases | change of the gap from $k_{\max}=2\times10^4$ to $2\times10^5$ (relative) | error of the limit $k_{\max}=60$ (per cent) |
 |:---|---:|---:|---:|
-| $U/4\pi^2<0.5$ | 118 | $2.5\times10^{-6}$ | 0.75 |
+| $U_{\rm uv}/4\pi^2<0.5$ | 118 | $2.5\times10^{-6}$ | 0.75 |
 | $0.5$ to $0.7$ | 28 | $6.4\times10^{-5}$ | 2.37 |
 | $0.7$ to $0.9$ | 8 | $3.3\times10^{-3}$ | 12.59 |
 <!-- END tbl_fm_uv_classes -->
@@ -1748,11 +1748,11 @@ $7.8\times10^{-5}$
 | phase of the field (fermion number) | 1 | all couplings | all couplings | all couplings |
 | rotations of $x5,x6,x7$ among themselves | 3 | all couplings | all couplings | all couplings |
 | rotations that mix $x0$ with $x5$, $x6$ or $x7$ | 3 | all couplings | all couplings | no coupling ($g_0^{\rm eff}=g_1^{\rm eff}=g_7^{\rm eff}=g_8^{\rm eff}=0$) |
-| $P_E$, the generator of $U(1)_E$ | 1 | $g_1^{\rm eff}=g_7^{\rm eff}=0$ | $g_1^{\rm eff}=g_7^{\rm eff}=0$ | no coupling ($g_0^{\rm eff}=g_1^{\rm eff}=g_7^{\rm eff}=g_8^{\rm eff}=0$) |
+| $P$, the generator of $U(1)_E$ | 1 | $g_1^{\rm eff}=g_7^{\rm eff}=0$ | $g_1^{\rm eff}=g_7^{\rm eff}=0$ | no coupling ($g_0^{\rm eff}=g_1^{\rm eff}=g_7^{\rm eff}=g_8^{\rm eff}=0$) |
 <!-- END tbl_fm_symmetry -->
 
 <!-- BEGIN tbl_fm_gravity_matter -->
-| form | threshold $g\,m^3$ | state at 3 times the threshold | $k_F/m$ of the filled states | $M/m$ | $\varepsilon/n-m$ (units $m$) |
+| form | threshold $g\,m^3$ | state at 3 times the threshold | $k_F/m$ of the filled states | $m^*/m$ | $\varepsilon/n-m$ (units $m$) |
 |:---|---:|:---|---:|---:|---:|
 | C | 332.2917 | one half filled | 0.52859 | 0.37920 | $-0.09072$ |
 | Q | 121.0858 | equal halves | 0.58171 | 0.35844 | $-0.10601$ |
@@ -2011,15 +2011,15 @@ $1.3\times10^{-15}$
 | `forecast_checks.csv` | `forecast` | PROJECT spacetimes, Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C: checks of the forecast for the rate of deflation from mock data of the microwave background |  |
 | `forms_checks.csv` | `forms` | PROJECT spacetimes, Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C: checks of the calculations for the two forms of the self-interaction on the 4+4 spacetime, C = covariant form (the definition) and Q = quantized-sector form (the alternative): uniform matter, effective potential, vacuum, Vorton-Scalar (fm-..) |  |
 | `forms_cjt_vs_ks.csv` | `forms` | the 4+4 model in its two forms: the Kohn-Sham method and the effective potential of Cornwall, Jackiw and Tomboulis compared for the two halves of the field (no-sea approximation). For each Kohn-Sham state (state of lowest energy at a given total density; closed forms of the momentum integrals; solution of the coupled gap equations) the chemical potential is computed and passed to the effective potential Omega(M\_+, M\_-, V\_+, V\_-; mu) (Simpson integrals), whose stationary point is searched by Newton's method from displaced start values. Strength of the couplings: mult times the binding threshold of the same form, set and dimension | D; set: 0 = A, 1 = B; form: 0 = C, 1 = Q; mult; kF\_total; mu: chemical potential; pol: polarization of the Kohn-Sham state; Mp\_ks, Mp\_cjt: mass of the particles of the half W = +1 by the two methods; Mm\_ks, Mm\_cjt: the same for the half W = -1; n\_ks, n\_cjt: total density; eps\_ks, eps\_cjt = Omega + mu n: energy density; p\_ks: pressure; minus\_Omega; residual: largest residual of the four stationarity conditions (units m = 1) |
-| `forms_couplings.csv` | `forms` | the mean-field couplings of the two halves W = +1 and W = -1 of the 4+4 field for the sets of couplings of the Lagrangian used by the command \`forms\`, per unit of the strength g = \|g\_0\|: E\_int = (1/2)\[T\_V n\^2 + T\_S n\_S\^2 + D\_V n\_W\^2 + D\_S n\_SW\^2\] with n = n\_+ + n\_-, n\_W = n\_+ - n\_-, n\_S = s\_+ + s\_-, n\_SW = s\_+ - s\_- (number and scalar densities of the two halves); equivalently E\_int = (1/2) a\_V (n\_+\^2 + n\_-\^2) + b\_V n\_+ n\_- + (1/2) a\_S (s\_+\^2 + s\_-\^2) + b\_S s\_+ s\_- (checks 44c-S7, 44q-S7, 44-S13, fm-F1) | set; form: C = covariant form (the definition), Q = quantized-sector form (the alternative); description of the set; T\_V, T\_S: couplings of the total densities; D\_V, D\_S: couplings of the differences; a\_V = T\_V + D\_V, a\_S = T\_S + D\_S: couplings between particles of the same half (the same in both forms); b\_V = T\_V - D\_V, b\_S = T\_S - D\_S: couplings between particles of different halves (opposite in the two forms); all in units of g |
+| `forms_couplings.csv` | `forms` | the mean-field couplings of the two halves W = +1 and W = -1 of the 4+4 field for the sets of couplings of the Lagrangian used by the command \`forms\`, per unit of the strength g = \|g\_0\|: E\_int = (1/2)\[G\_Vtot n\^2 + G\_Stot n\_S\^2 + G\_Vdif n\_W\^2 + G\_Sdif n\_SW\^2\] with n = n\_+ + n\_-, n\_W = n\_+ - n\_-, n\_S = s\_+ + s\_-, n\_SW = s\_+ - s\_- (number and scalar densities of the two halves); equivalently E\_int = (1/2) G\_Vsame (n\_+\^2 + n\_-\^2) + G\_Vopp n\_+ n\_- + (1/2) G\_Ssame (s\_+\^2 + s\_-\^2) + G\_Sopp s\_+ s\_- (checks 44c-S7, 44q-S7, 44-S13, fm-F1) | set; form: C = covariant form (the definition), Q = quantized-sector form (the alternative); description of the set; G\_Vtot, G\_Stot: couplings of the total densities; G\_Vdif, G\_Sdif: couplings of the differences; G\_Vsame = G\_Vtot + G\_Vdif, G\_Ssame = G\_Stot + G\_Sdif: couplings between particles of the same half (the same in both forms); G\_Vopp = G\_Vtot - G\_Vdif, G\_Sopp = G\_Stot - G\_Sdif: couplings between particles of different halves (opposite in the two forms); all in units of g |
 | `forms_energy_vs_polarization.csv` | `forms` | the 4+4 model in its two forms: energy of uniform matter of a given total density as a function of the polarization pol = (n\_+ - n\_-)/n of the two halves W = +1 and W = -1 of the field (four internal states each); at each polarization the solution of the two gap equations of lowest energy. Strength of the couplings: mult times the strength at which the quantized-sector form first binds matter (file forms\_thresholds.csv), the same couplings of the Lagrangian for both forms | D; set: 0 = A (g\_0 = -g alone), 1 = B (g\_0 = -g, g\_1 = +0.1 g); form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); mult; kF\_total: Fermi momentum that the total density would have with equal halves; n: total density; pol; M\_plus, M\_minus: masses of the particles of the two halves; eps: energy density; e\_bind: energy per particle minus m; e\_rel: energy per particle minus its value at pol = 0; n\_solutions: number of solutions of the gap equations with non-negative masses (units m = 1). A polarization at which the gap equations have no solution with non-negative masses has no row (check fm-F3) |
 | `forms_fixed_density.csv` | `forms` | the 4+4 model in its two forms: matter of a fixed total density (fixed number of particles per unit of the volume of the coordinates in which they move) while the couplings grow with the deflation clock, g = g\_threshold exp(tau\_d); at each clock reading the state of lowest energy with respect to the polarization of the two halves | D; set: 0 = A, 1 = B; form: 0 = C, 1 = Q; kF\_total: Fermi momentum of the density with equal halves; tau\_d: clock reading counted from the binding threshold of the same form, set and dimension; g; pol; M\_plus, M\_minus; eps: energy density; p: pressure along the coordinates in which the particles move; Pi: interaction pressure (the pressure along the deflating coordinates); e\_bind: energy per particle minus m |
 | `forms_gas_events.csv` | `forms` | the events in the history of matter of fixed density of file forms\_fixed\_density.csv: the clock readings (counted from the binding threshold of the same form, set and dimension) at which the two halves first become unequal, at which one half is empty, and at which the pressure along the coordinates of the motion becomes negative. NaN: the event does not happen for -3 \<= tau\_d \<= 5 | D; set: 0 = A, 1 = B; form: 0 = C, 1 = Q; kF\_total; tau\_polarized: the halves become unequal (resolution 0.05); tau\_one\_half: one half is empty (resolution 0.05); tau\_p0: the pressure vanishes; g\_p0: the strength g at that moment |
-| `forms_reversed_sign.csv` | `forms` | the 4+4 model in its two forms for a scalar coupling of the opposite sign, g\_0 = +g with all other couplings zero: energy per particle of uniform matter (state of lowest energy with respect to the polarization; no-sea approximation) at six total densities. In the covariant form particles of different halves then attract each other, the halves stay equal, and the coupling T\_V = G\_Vc = -g/16 of the square of the total density is negative: the energy per particle falls without bound as the density grows (the contact model has no state of lowest energy; it needs a cutoff). In the quantized-sector form the scalar coupling repels and the energy per particle rises | D; form: 0 = C, 1 = Q; g = g\_0 m\^(D-1); kF\_total; n: total density; pol; M\_plus, M\_minus; e\_bind: energy per particle minus m; T\_V, T\_S, D\_V, D\_S: the four mean-field couplings of the form (units m = 1) |
-| `forms_saturation.csv` | `forms` | the 4+4 model in its two forms: self-bound matter along the deflation clock. At each clock reading tau\_d the couplings of the reduced Lagrangian are g = g\_threshold exp(tau\_d) (g\_threshold: the strength at which matter of that form, set and dimension first binds, file forms\_thresholds.csv), and the row gives the state of lowest energy per particle over all densities and polarizations (the saturation point; no-sea approximation) | D; set: 0 = A, 1 = B; form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); tau\_d; g = \|g\_0\| m\^(D-1); kF\_total: Fermi momentum that the density would have with equal halves; n: total density; pol: polarization (n\_+ - n\_-)/n; M\_plus, M\_minus: masses of the particles of the two halves; e\_bind: energy per particle minus m; p: pressure (zero at an interior minimum); Pi: interaction pressure, the pressure along the deflating coordinates; eps: energy density; mu\_plus, mu\_minus: chemical potentials of the two halves (for an empty half the energy of its lowest state); response: the largest eigenvalue of the response matrix of the two gap equations (the solution is the regular continuation of the dilute gas while it is below 1; for equal halves it is the larger of 2 T\_S ds/dM and 2 D\_S ds/dM, for one filled half a\_S ds/dM) |
-| `forms_thresholds.csv` | `forms` | the 4+4 model in its two forms, fields that do not depend on x5, x6, x7 (D = 4), or on x0 either (D = 3): the smallest strength g = \|g\_0\| of the couplings of the Lagrangian at which uniform matter is self-bound (its energy per particle lies below m at some density; no-sea approximation; state of lowest energy with respect to the polarization of the two halves), in units m = 1, and the state 0.1 per cent above that strength. On the deflating spacetime the strength grows as exp(tau\_d): the threshold is reached at a definite clock reading | D; set: A = g\_0 = -g alone, B = g\_0 = -g and g\_1 = +0.1 g; form: C = covariant (the definition), Q = quantized-sector (the alternative); g\_threshold: g m\^(D-1); kF\_total: Fermi momentum that the density of the bound state would have with equal halves; pol: polarization (n\_+ - n\_-)/n; kind: equal halves, one half, or unequal halves; M\_plus, M\_minus: masses of the particles of the two halves (for an empty half: the mass that a particle of that half would have); g\_one\_kind: the threshold computed for matter of one kind of particle by the routines of module kohn\_sham (eight states with T\_S, T\_V for equal halves; four states with a\_S, a\_V for one half); G\_most: the more attractive of the couplings T\_S, D\_S at the threshold; Gc: critical coupling of the vacuum for a cutoff equal to m; cutoff\_max: the cutoff (in units of m) below which G\_most stays below the critical coupling |
-| `forms_unified_thresholds.csv` | `forms` | the 4+4 model in its two forms: bare Dirac mass, self-interaction and Vorton-Scalar together, ordinary space (D = 3, no-sea approximation): the smallest coupling C = g\_VS\^2 m\^2/m\_s\^2 of the scalar at which uniform matter is self-bound, when a fraction f\_D of the vacuum mass of the fermions is a bare Dirac mass and the couplings of the self-interaction are g\_0 = -kappa\_0 C, g\_1 = +kappa\_1 C (all other couplings zero; units m = 1). The Vorton-Scalar shifts the masses of both halves alike; the self-interaction acts between the halves with the sign of its form. Without bare mass and self-interaction the value is 3.701102 (= 3 pi\^2/8). All couplings grow as exp(tau\_d), so that dtau is the shift of the clock reading at which matter becomes self-bound. Method: the thresholds of the two kinds of matter of one kind (equal halves: eight states with the couplings T\_S, T\_V; one half filled: four states with a\_S = T\_S + D\_S, a\_V = T\_V + D\_V) are computed with the functional of module kohn\_sham; the smaller one is the threshold if the functional of two halves, minimized over density, field of the scalar and polarization, has a bound state at 1.001 times and none at 0.999 times that value (method 0); otherwise the threshold is found by bisection with the functional of two halves (method 1) | f\_D = m\_D/m; kappa\_0 = -g\_0/C; kappa\_1 = g\_1/C; form: C = covariant (the definition), Q = quantized-sector (the alternative); C\_bind; dtau = ln(C\_bind/C\_bind(0, 0, 0)): negative = earlier; kF\_total, x = phi/v\_VS, pol, M\_plus, M\_minus: the state of lowest energy per particle at 1.001 C\_bind (functional of two halves); C\_equal\_halves, C\_one\_half: thresholds of matter of one kind (NaN: none between 0.05 and 60); e\_above, e\_below: E/N - m of the lowest state of the functional of two halves at 1.001 C\_bind and at 0.999 C\_bind; method: 0 or 1 |
-| `forms_vacuum.csv` | `forms` | the 4+4 model in its two forms: the masses of the two halves of the field in vacuum with the filled states of negative energy (cutoff Lambda = 1), along the deflation clock counted from the moment at which the strength of the couplings reaches the critical strength of a massless field (file forms\_vacuum\_critical.csv), for a field without mass term and for the bare mass 0.05 Lambda. The row gives the solution of the two gap equations of the vacuum with the lowest Omega\_vac = sum over the halves of -(NU/2) Int\^Lambda \[w(M) - w(m)\] - muS\^2/(2 T\_S) - dS\^2/(2 D\_S) | D; set: 0 = A, 1 = B; form: 0 = C (covariant), 1 = Q (quantized-sector); m\_bare; tau\_d = ln(g/g\_crit); g; M\_large, M\_small: the two masses, the larger first (by the symmetry between the halves the assignment to W = +1 and W = -1 is free; without mass term the reversal of both signs is a symmetry too, and the solution with M\_large \>= 0 is listed; a negative value is a mass term of the opposite sign); Omega: Omega\_vac; n\_solutions: number of solutions of the two gap equations |
+| `forms_reversed_sign.csv` | `forms` | the 4+4 model in its two forms for a scalar coupling of the opposite sign, g\_0 = +g with all other couplings zero: energy per particle of uniform matter (state of lowest energy with respect to the polarization; no-sea approximation) at six total densities. In the covariant form particles of different halves then attract each other, the halves stay equal, and the coupling G\_Vtot = G\_Vc = -g/16 of the square of the total density is negative: the energy per particle falls without bound as the density grows (the contact model has no state of lowest energy; it needs a cutoff). In the quantized-sector form the scalar coupling repels and the energy per particle rises | D; form: 0 = C, 1 = Q; g = g\_0 m\^(D-1); kF\_total; n: total density; pol; M\_plus, M\_minus; e\_bind: energy per particle minus m; G\_Vtot, G\_Stot, G\_Vdif, G\_Sdif: the four mean-field couplings of the form (units m = 1) |
+| `forms_saturation.csv` | `forms` | the 4+4 model in its two forms: self-bound matter along the deflation clock. At each clock reading tau\_d the couplings of the reduced Lagrangian are g = g\_threshold exp(tau\_d) (g\_threshold: the strength at which matter of that form, set and dimension first binds, file forms\_thresholds.csv), and the row gives the state of lowest energy per particle over all densities and polarizations (the saturation point; no-sea approximation) | D; set: 0 = A, 1 = B; form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); tau\_d; g = \|g\_0\| m\^(D-1); kF\_total: Fermi momentum that the density would have with equal halves; n: total density; pol: polarization (n\_+ - n\_-)/n; M\_plus, M\_minus: masses of the particles of the two halves; e\_bind: energy per particle minus m; p: pressure (zero at an interior minimum); Pi: interaction pressure, the pressure along the deflating coordinates; eps: energy density; mu\_plus, mu\_minus: chemical potentials of the two halves (for an empty half the energy of its lowest state); response: the largest eigenvalue of the response matrix of the two gap equations (the solution is the regular continuation of the dilute gas while it is below 1; for equal halves it is the larger of 2 G\_Stot ds/dM and 2 G\_Sdif ds/dM, for one filled half G\_Ssame ds/dM) |
+| `forms_thresholds.csv` | `forms` | the 4+4 model in its two forms, fields that do not depend on x5, x6, x7 (D = 4), or on x0 either (D = 3): the smallest strength g = \|g\_0\| of the couplings of the Lagrangian at which uniform matter is self-bound (its energy per particle lies below m at some density; no-sea approximation; state of lowest energy with respect to the polarization of the two halves), in units m = 1, and the state 0.1 per cent above that strength. On the deflating spacetime the strength grows as exp(tau\_d): the threshold is reached at a definite clock reading | D; set: A = g\_0 = -g alone, B = g\_0 = -g and g\_1 = +0.1 g; form: C = covariant (the definition), Q = quantized-sector (the alternative); g\_threshold: g m\^(D-1); kF\_total: Fermi momentum that the density of the bound state would have with equal halves; pol: polarization (n\_+ - n\_-)/n; kind: equal halves, one half, or unequal halves; M\_plus, M\_minus: masses of the particles of the two halves (for an empty half: the mass that a particle of that half would have); g\_one\_kind: the threshold computed for matter of one kind of particle by the routines of module kohn\_sham (eight states with G\_Stot, G\_Vtot for equal halves; four states with G\_Ssame, G\_Vsame for one half); G\_most: the more attractive of the couplings G\_Stot, G\_Sdif at the threshold; Gc: critical coupling of the vacuum for a cutoff equal to m; cutoff\_max: the cutoff (in units of m) below which G\_most stays below the critical coupling |
+| `forms_unified_thresholds.csv` | `forms` | the 4+4 model in its two forms: bare Dirac mass, self-interaction and Vorton-Scalar together, ordinary space (D = 3, no-sea approximation): the smallest coupling C = g\_VS\^2 m\^2/m\_s\^2 of the scalar at which uniform matter is self-bound, when a fraction f\_D of the vacuum mass of the fermions is a bare Dirac mass and the couplings of the self-interaction are g\_0 = -kappa\_0 C, g\_1 = +kappa\_1 C (all other couplings zero; units m = 1). The Vorton-Scalar shifts the masses of both halves alike; the self-interaction acts between the halves with the sign of its form. Without bare mass and self-interaction the value is 3.701102 (= 3 pi\^2/8). All couplings grow as exp(tau\_d), so that dtau is the shift of the clock reading at which matter becomes self-bound. Method: the thresholds of the two kinds of matter of one kind (equal halves: eight states with the couplings G\_Stot, G\_Vtot; one half filled: four states with G\_Ssame = G\_Stot + G\_Sdif, G\_Vsame = G\_Vtot + G\_Vdif) are computed with the functional of module kohn\_sham; the smaller one is the threshold if the functional of two halves, minimized over density, field of the scalar and polarization, has a bound state at 1.001 times and none at 0.999 times that value (method 0); otherwise the threshold is found by bisection with the functional of two halves (method 1) | f\_D = m\_D/m; kappa\_0 = -g\_0/C; kappa\_1 = g\_1/C; form: C = covariant (the definition), Q = quantized-sector (the alternative); C\_bind; dtau = ln(C\_bind/C\_bind(0, 0, 0)): negative = earlier; kF\_total, x = phi/v\_VS, pol, M\_plus, M\_minus: the state of lowest energy per particle at 1.001 C\_bind (functional of two halves); C\_equal\_halves, C\_one\_half: thresholds of matter of one kind (NaN: none between 0.05 and 60); e\_above, e\_below: E/N - m of the lowest state of the functional of two halves at 1.001 C\_bind and at 0.999 C\_bind; method: 0 or 1 |
+| `forms_vacuum.csv` | `forms` | the 4+4 model in its two forms: the masses of the two halves of the field in vacuum with the filled states of negative energy (cutoff Lambda = 1), along the deflation clock counted from the moment at which the strength of the couplings reaches the critical strength of a massless field (file forms\_vacuum\_critical.csv), for a field without mass term and for the bare mass 0.05 Lambda. The row gives the solution of the two gap equations of the vacuum with the lowest Omega\_vac = sum over the halves of -(NU/2) Int\^Lambda \[w(M) - w(m)\] - muS\^2/(2 G\_Stot) - dS\^2/(2 G\_Sdif) | D; set: 0 = A, 1 = B; form: 0 = C (covariant), 1 = Q (quantized-sector); m\_bare; tau\_d = ln(g/g\_crit); g; M\_large, M\_small: the two masses, the larger first (by the symmetry between the halves the assignment to W = +1 and W = -1 is free; without mass term the reversal of both signs is a symmetry too, and the solution with M\_large \>= 0 is listed; a negative value is a mass term of the opposite sign); Omega: Omega\_vac; n\_solutions: number of solutions of the two gap equations |
 | `forms_vacuum_critical.csv` | `forms` | the 4+4 model in its two forms: the vacuum of a field without mass term with the filled states of negative energy (cutoff Lambda = 1: all quantities in units of the cutoff), 2 per cent below and 2 per cent above the critical strength g\_crit = G\_c/(G\_S\^HF per unit strength), where G\_c = -(2 pi)\^D (D - 1)/(NU A\_D Lambda\^(D-1)) is the critical coupling. Above it the field acquires a mass by its own self-interaction: in the quantized-sector form the same mass in both halves (the mass term psibar psi of the positive Lagrangian), in the covariant form masses of opposite sign in the two halves (the mass term psitilde psi of the covariant Lagrangian) | D; set; form; Gc: G\_c Lambda\^(D-1); g\_crit; Mp\_below, Mm\_below: masses of the two halves at 0.98 g\_crit; Mp\_above, Mm\_above: at 1.02 g\_crit (the solution of lowest Omega; the solutions of lowest Omega are degenerate by the exchange of the halves and by the reversal of both signs: the representative with Mp\_above \> 0 is listed); n\_solutions: number of solutions of the two gap equations of the vacuum at 1.02 g\_crit |
 | `gap_history.csv` | `history` | the gap of the paired state along the deflation clock tau\_d = gsum (x4 - x4\_ref): equilibrium gap at the Fermi surface and critical temperature for the couplings of each moment (adiabatic history) | set: 1 = (m\_s, k\_F) = (0.1, 0.5), 2 = (0.3, 0.5), 3 = (1.0, 0.5), 4 = (0.1, 0.2), in units of m; tau\_d; g; alpha = g\^2/(4 pi); D\_VS = alpha m/m\_s; C = g\^2 m\^2/m\_s\^2; lambda\_S, lambda\_P: dimensionless pairing strengths of the two modes; gap\_V, gap\_T, gap\_S: gap of the vector channel, of the two-form channel and with the radial mode only, in units of the Fermi kinetic energy E\_F (0 = below 1e-7 E\_F); Tc\_over\_gap\_V; dln\_gap\_dtau = d ln(gap\_V)/d tau\_d; follow = gap\_V/(d ln gap\_V/d tau\_d) in units of E\_F: the gap can follow the deflation only if gsum is much smaller than this |
 | `geodesic_1644d.csv` | `matrices` | a geodesic of the deflating 4+4 spacetime with momentum along the deflating coordinate x5 (check 44d-G9): $\mathrm{g55}$ = 1, const5 = 0.8, m = 1, P\_1 = 0.5, P\_5 = 0.3, start at x4 = -2 | affine: affine parameter (proper time for m = 1); x4; u4 = dx4/dlam |
@@ -2045,7 +2045,7 @@ $1.3\times10^{-15}$
 | `ks_reduced_fixed_density.csv` | `kohnsham` | a gas of fixed density (fixed Fermi momentum) in the sector of fields that do not depend on x5, x6, x7, while the couplings grow with the deflation clock; tau\_d is counted from the binding threshold of the same ratio set | D; ratio\_set; kF; tau\_d; GS\_abs; M; eps; p: pressure along the flat directions; Pi: pressure along the deflating coordinates (interaction part alone); e\_bind: energy per particle minus m |
 | `ks_reduced_gas.csv` | `kohnsham` | fields that do not depend on x5, x6, x7: a gas of fixed Fermi momentum while the couplings grow as exp(tau\_d): the coupling and the clock reading (counted from the binding threshold of the same ratio set) at which the pressure of the gas becomes negative | D; ratio\_set: 0 = G\_V = 0, 1 = G\_V = 0.1 \|G\_S\|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g\_1 = -0.1 g\_0; ratio G\_V/\|G\_S\|; kF; GS\_abs: \|G\_S\| m\^(D-1) at which p = 0; tau\_d: clock reading relative to the binding threshold |
 | `ks_reduced_saturation.csv` | `kohnsham` | self-bound matter in the sector of fields that do not depend on x5, x6, x7, along the deflation clock: at each clock reading the state of lowest energy per particle (the saturation point, pressure zero) for the couplings of that moment, G\_S = -\|G\_S(threshold)\| exp(tau\_d), G\_V = ratio \|G\_S\|; tau\_d is counted from the moment at which matter first becomes self-bound | D: number of space dimensions with momentum (4 or 3); ratio\_set: 0 = G\_V = 0, 1 = G\_V = 0.1 \|G\_S\|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g\_1 = -0.1 g\_0; tau\_d; GS\_abs = \|G\_S\| m\^(D-1); kF: Fermi momentum at saturation; rho; M: mass of the particles in matter; e\_bind: energy per particle minus m; p: pressure (zero at an interior minimum); cs2: square of the speed of sound |
-| `ks_reduced_thresholds.csv` | `kohnsham` | fields that do not depend on x5, x6, x7, for matter of one kind of particle with eight internal states and the mean-field couplings G\_S, G\_V (D = 4 space dimensions: the low-energy sector of 7+1; on 4+4 the matter with equal halves, whose couplings G\_S, G\_V are T\_S, T\_V of the form of the interaction, see the files forms\_\*.csv; D = 3: fields that do not depend on the hidden coordinate x0 either). The couplings of the reduced Lagrangian grow as exp(tau\_d). The smallest scalar attraction at which uniform matter is self-bound (energy per particle below m at some density), in units m = 1, the Fermi momentum of the bound state just above the threshold, and for comparison the critical coupling of the vacuum for a cutoff equal to m | D; ratio\_set: 0 = G\_V = 0, 1 = G\_V = 0.1 \|G\_S\|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g\_1 = -0.1 g\_0; description; ratio G\_V/\|G\_S\|; GS\_abs: \|G\_S\| m\^(D-1) at the threshold; kF: Fermi momentum of the bound state; Gc: critical coupling G\_c m\^(D-1) of the vacuum for Lambda = m |
+| `ks_reduced_thresholds.csv` | `kohnsham` | fields that do not depend on x5, x6, x7, for matter of one kind of particle with eight internal states and the mean-field couplings G\_S, G\_V (D = 4 space dimensions: the low-energy sector of 7+1; on 4+4 the matter with equal halves, whose couplings G\_S, G\_V are G\_Stot, G\_Vtot of the form of the interaction, see the files forms\_\*.csv; D = 3: fields that do not depend on the hidden coordinate x0 either). The couplings of the reduced Lagrangian grow as exp(tau\_d). The smallest scalar attraction at which uniform matter is self-bound (energy per particle below m at some density), in units m = 1, the Fermi momentum of the bound state just above the threshold, and for comparison the critical coupling of the vacuum for a cutoff equal to m | D; ratio\_set: 0 = G\_V = 0, 1 = G\_V = 0.1 \|G\_S\|, 2 = ratio 0.2025 of the Hartree-Fock couplings of g\_1 = -0.1 g\_0; description; ratio G\_V/\|G\_S\|; GS\_abs: \|G\_S\| m\^(D-1) at the threshold; kF: Fermi momentum of the bound state; Gc: critical coupling G\_c m\^(D-1) of the vacuum for Lambda = m |
 | `matter_checks.csv` | `matter` | PROJECT spacetimes, Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C: checks of the dark-matter estimates on the deflating spacetime |  |
 | `matter_saturation.csv` | `paired` | self-bound normal matter along the deflation clock (mean field without the negative-energy states): C = g\_VS\^2 m\^2/m\_s\^2 = 4 exp(tau\_d); energy per particle at the density of lowest energy, and the exchange (Fock) energies of the two modes there for m\_s/m = 0.3 | tau\_d; C; e\_bind: lowest energy per particle minus m (units of m; negative: bound); kF\_sat: Fermi momentum there; x\_sat: m\*/m there; g2 = g\_VS\^2; hartree: mean-field energy density minus that of free fermions at the same density; fock\_radial, fock\_phase: exchange energy densities; their ratios to \|hartree\| |
 | `medium_history.csv` | `history` | normal matter of fixed density along the deflation clock: C = g\_VS\^2 m\^2/m\_s\^2 grows as exp(gsum x4) | k\_F (units of m); sea: 1 if the filled negative-energy states are included; C; x = m\*/m: fermion mass in the matter; e\_per\_n: energy per fermion (units of m; below 1 = bound); pressure (units of m\^4); cs2: square of the sound speed |
