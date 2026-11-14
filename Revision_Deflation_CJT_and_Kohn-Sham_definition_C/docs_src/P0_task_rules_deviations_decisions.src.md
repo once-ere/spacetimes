@@ -511,3 +511,113 @@ it does not contain.
 The author's files were read, not changed, and none of them is copied into the
 repository.
 
+# 12. Log of errors
+
+Every error made during the work is recorded here, including errors that were
+corrected before anything was committed. Section 12.1 lists the errors made in the
+work on this folder. Section 12.2 repeats the log of the folder
+`Revision_Deflation_CJT_and_Kohn-Sham`, from which this folder started and whose
+program and documents it inherited with their corrections.
+
+## 12.1 Errors made in the work on this folder
+
+| No. | what was wrong | how it was found | correction |
+|---|---|---|---|
+| N-E1 | **Hard Rule 2 was broken.** From the author's instruction to the first commit of the folder, about an hour and a half, nothing was committed or carried to his folder. | The author pointed it out. | Every step ends with a commit that is transferred to his folder at once (Section 7, V9). |
+| N-E2 | The first version of the search for the state of lowest energy per particle refined only around the lowest value of a coarse scan of the density. A narrow bound minimum between two scan points was missed, and binding thresholds came out up to 2.7 per cent too high. | The command `forms` prints beside every threshold the threshold of the routine for matter of one kind; the two disagreed. | Commit `6d654e8`: a finer scan, and a refinement around every local minimum. |
+| N-E3 | The folder began as a copy of another folder, so that its folder `data` at first held the data files of the other program; a file that no command of this folder wrote again would have carried the numbers of the other program into the documents. | Foreseen when the folder was created. | No file of the copy was committed before a command of this folder had written it again. The script `check_all.sh` now verifies that every file in `data` names this folder in its head. |
+| N-E4 | Check `fm-F3` required a state at every polarization. In form Q, at three and six times the threshold and at high density, {{GEN:fm_pol_n_missing}} of {{GEN:fm_pol_n_states}} states with unequal halves do not exist with non-negative masses. | The first complete run of the command `forms` reported six of nine checks. | The check states the fact and requires the states with equal halves and with one filled half. |
+| N-E5 | Check `fm-F4` covered clock readings up to 6. In form Q the state with equal halves reaches the eigenvalue 1 of the matrix $\mathsf R_{\rm gap}$ at the clock reading {{GEN:fm_stab_first_tau}} ({{GEN:fm_stab_first_case}}), and states with slightly unequal masses appeared in the table. | The same run. | The table ends at the clock reading 5 and carries the eigenvalue as a column; the check reports where each case reaches 1. |
+| N-E6 | Check `fm-F5` required that the pressure of a gas of fixed density become negative in every case. In form C at the higher density it stays positive in {{GEN:fm_gas_n_no_tension}} of the 8 cases. | The same run. | The check states what happens in each case. |
+| N-E7 | The vacuum of the two halves has two solutions that differ by the exchange of the halves. The first version of the command printed whichever the solver found, and the first version of the independent check compared the signed masses. | The independent check failed on a case in which the two programs had found different members of the pair. | The program prints a fixed representative (the half with the positive mass first); the independent check compares the magnitudes and the relative sign. |
+| N-E8 | The gap equation was solved with the upper limit 60 of its momentum integral, taken over from the earlier programs of the project; the gaps depend on it. | The gap solver of the independent script used another limit and disagreed with the program. | Commit `69d03e8`: the ultraviolet criterion, the limit $2\times10^4$, check `pc-P7` (Section 9, F6 and F7). |
+| N-E9 | **Hard Rule 5 was broken.** The first version of `P3` (commit `9f8a206`) introduced symbols that had not been compared with the MASTER registry; fifteen groups of them collided, or nearly collided, with registered symbols. | Comparison of `P3` with the registry before the next document was written. | Commit `2ef3704`: the symbols entered in the registry, `P3` rewritten, check MS8; `P1`, Section 3.3, lists what was replaced. |
+| N-E10 | A column of the data files had a name that is a symbol of one of the author's notebooks (check MS3 failed). | The check. | The eight names of the mean-field couplings in the program and in the data files were changed; the four commands concerned were executed again; every number is unchanged. |
+| N-E11 | While `P3` was being rewritten: a script changed the registry in memory and did not write the file; a replacement of the name of a matrix throughout the text also changed a sentence about the letter itself; a test for leftover symbols gave a false alarm on an index list. | Reading the saved files and the differences. | Corrected before the commit. |
+| N-E12 | An equation of `P3` was wider than the page. A line of a report of checks was too long for the typesetting program, which stopped. The script `check_all.sh` then compared the printed reports with the unfolded files and called two documents outdated that were not. | The builds; the script. | The equation is set on two lines; the script that assembles the documents continues a report line of more than 1800 characters on the next line; `check_all.sh` folds in the same way before it compares. |
+| N-E13 | Drafts contained a number that no program states (in a reworded sentence), a section number that the number check took for a result, the name of a generated text that does not exist, and a reference to an appendix by a number that had changed. | The number check; the script that assembles the documents. | Corrected before the commits. |
+| N-E14 | One transfer of a commit to the author's folder failed half-way: the permission to replace files there had lapsed, and the program git left a lock file and two files of the new commit as untracked files. | The output of the transfer. | The permission was renewed by the author; the lock was removed; the two files were compared by their hashes with those of the commit, found identical, and removed; the transfer was repeated. No file of the author's was touched. |
+| N-E15 | A generated text counted the evolutions with gravity whose rates run away over all sixteen evolutions of the folder, where the sentences that use it speak of the eight of one spacetime. | Writing the section on gravity of the manuscripts. | A count for each spacetime. |
+| N-E16 | **A document with two outdated numbers was committed.** Commit `25d5665` of the manuscripts quoted, in the section on the effective action, two numbers of the comparison of the Ginzburg–Landau coefficients that belong to the upper limit 60 (1.0 and 7.9 per cent; the program of this folder states 1.2 and 9.8). The sentence had been typed by hand in the predecessor of this folder. | The number check no longer found the second number among the numbers that the programs state. | Commit `a824eab`. Then every number that the programs of the folder with the limit 60 state and those of this folder do not state was searched for in the sources of all documents of this folder: no other occurrence. |
+| N-E17 | In the same commit the table of the checks in both manuscripts gave 7 of 8 for the checks of the symbols, because `P1`, `P2` and a status file of the folder still contained replaced symbols. The message of the commit says so. | Known when it was committed. | The documents were rebuilt when `P1` and `P2` were complete, and the status file was removed. |
+| N-E18 | The 7+1 manuscript said that gaps computed with the limit 60 are too small "by the percentages" of a table whose classes also contain kernels of the sign that does not occur on the 7+1 spacetime. | Reading the typeset page. | "By up to"; the caption says that the classes hold the kernels of both signs. |
+| N-E19 | The first build of the manuscripts had seven boxes wider than their space and one table of symbols taller than a page. | The build script, which fails on them. | Equations and tables rearranged; the table of symbols divided in two. |
+
+**The cause of N-E16, and the remedy.** The number check accepts a number of the text
+if any program states that number anywhere; it cannot know which statement a sentence
+means. A number typed by hand can therefore survive a change of the calculation
+behind it. The remedy used here is the comparison described in the row N-E16. Where a
+sentence quotes a result of a calculation that may change, the manuscripts of this
+folder take the number from a generated text and not from the keyboard; the sentence
+of N-E16 was one of those that had been typed.
+
+## 12.2 Errors of the work that this folder inherited
+
+These errors were made, and corrected, in the folder
+`Revision_Deflation_CJT_and_Kohn-Sham`; the commits named are commits of that work.
+For the errors C-E1 to C-E11, which were corrected before anything was committed,
+the record kept during the work names the error and what exposed it; an entry says
+no more than the record contains.
+
+| No. | what was wrong | how it was found | correction |
+|---|---|---|---|
+| C-E1 | The first formula for the pair couplings acted on pair states without projecting on the states of positive energy and gave other integers. | Comparison with the exact diagonalization for two particles at rest. | The projected map; checks `71s-S9`, `44q-S9`. |
+| C-E2 | An early text called the author's values $G_S$, $G_V$ of the Kohn–Sham example the Hartree–Fock couplings of $g_0$, $g_1$ with the same numbers. | The exact Hartree–Fock formula (check `self-X1`). | The texts distinguish the two; finding F2. |
+| C-E3 | In the first version of the check of the mass of the phase mode (`uni-U3`) a deviation appeared that was an artefact of the momentum cutoff. | The check failed. | Both sides of the comparison are evaluated with the same cutoff. |
+| C-E4 | In the history of deflating matter (`ks-K5`) a minimization ran without bounds. | Unphysical values in the output. | The search is bounded. |
+| C-E5 | An angular average of the pairing amplitudes evaluated a function outside its domain. | The program stopped. | Corrected. |
+| C-E6 | The tolerance of an independent comparison of two integrations of the deflating spacetime with matter (`Icks-G5`) was set tighter than the accuracy of the comparison. | The check failed although both integrations were correct. | The tolerance follows from the measured accuracy, which the check states. |
+| C-E7 | Labels of several new figures collided with curves, and some used the names of the program or of the author's document instead of the registered symbols. | Looking at each figure. | Figures redrawn. |
+| C-E8 | The registry of symbols at first contained collisions introduced by this sub-project: one letter for a velocity dispersion and for a self-energy, one for a pair state and for a pair correlation, and two definitions of $x$. | The checks of the registry and reading the manuscripts. | New symbols $\sigma_v$, $\Phi(\vec p)$; one definition of $x$. |
+| C-E9 | A generated table contained section numbers typed by hand. | Reading the built manuscript. | The table carries references that the typesetting resolves. |
+| C-E10 | The description of the test with deliberate errors repeated a statement that belonged to a test of the first revision. | Comparison with the report of the script of this folder. | The text states what the report of this folder says. |
+| C-E11 | A clause about the degeneracy of pair states in the section on the Higgs hypothesis had not been verified. | Review of the section against the checks. | Removed. |
+| C-E12 | **A failing check was committed.** The message of commit `a232561` says that the symbol checks pass `7 of 7`; the report in that commit says `6 of 7`. With the documents `P1` and `P2` in the folder, check MS4 failed: two generated texts wrote the rates as plain text. | Reading the whole report instead of its last lines, one step later. | Commit `990d697`: both texts write the rates upright. |
+| C-E13 | **A second failing check was committed.** Since `P2` was added, the check of the numbers failed (it did not recognize `Section 5.11` as a section number, and two run times had no entry in its lists), and `P2` printed the failing report. | As C-E12. | Commit `8231b87`. |
+| C-E14 | `P2` printed a caption with an unresolved placeholder. | The new script `check_all.sh`. | Commit `8231b87`. |
+| C-E15 | The running header of `P1` and `P2` named the folder of the first revision. | Looking at the typeset pages. | Commit `56f9162`. |
+| C-E16 | In the figure of the creation of particles the labels of two axes touched, and two legends lay on curves; the figure is in the 7+1 manuscript. | Looking at the typeset page of the new document. | Commit `56f9162`: labels on two lines, legends moved, manuscript rebuilt. |
+| C-E18 | The headers of two generated tables carried equation numbers of documents of the first revision. | Writing the appendix of complete tables. | The headers describe the columns; the manuscripts refer to their own equations. |
+| C-E19 | In eleven of the thirty figures a label or a legend touched a curve, a marked line or the frame (figures of the bound pair, of the effective action, of the vacuum mass, of the extinction, of the geodesics, of the two evolutions with gravity, of the Hubble constant, of the quench, of the scalar modes, of the forecast, and of superfluid dark matter); and three figures wrote the coordinates $x0,\dots,x3$ with two dots. Most of these figures had been taken over from the first revision without being looked at again. | Every figure was looked at, one by one, after C-E16. | Labels and legends moved, lines shortened, captions adjusted where a label was shortened; all documents rebuilt. |
+| C-E17 | A sentence drafted for "dirac matrices deflating" took the roots of the constraint of the gravitational equations for rates of growth. | Reading the statement of check `gr-G5` before the document was committed. | The document says what the check says. |
+
+**The cause of C-E12 to C-E14, and the remedy.** After long builds only the last
+lines of the outputs were read, and a verdict further up was missed. The script
+`code/scripts/check_all.sh` now runs the checks of the documents, reads the verdict of
+every report in `data`, verifies that no built document contains an unresolved
+placeholder and that every report printed in a document is the current one, and
+prints `ALL PASS` only then. Nothing is committed without it.
+
+# 13. The symbols used in this document
+
+| symbol | meaning |
+|---|---|
+| $x0,\dots,x7$; $xt$ | the eight coordinates ($x4$: ordinary time); a deflating coordinate, $t=5,6,7$ |
+| $\mathrm{g55}$, $\mathrm{g66}$, $\mathrm{g77}$; $\mathrm{rate}_t$; $\mathrm{gsum}$ | the three rates of deflation (the author's names; upright, never with a subscript); the rate of $xt$; their sum |
+| $\mathrm{const}_t$ | the positive constants of the hypothesis, one for each deflating coordinate |
+| $g^{(4+4)}_{\mu\nu}$, $g^{(7+1)}_{\mu\nu}$ | the metrics of the two deflating spacetimes, space-like components positive |
+| $V_d$ | $\sqrt{\lvert\det g\rvert}$, the proper volume of a unit coordinate cell of $x5,x6,x7$; proportional to $e^{-\mathrm{gsum}\,x4}$ |
+| $\tau_d$ | the deflation clock, $\mathrm{gsum}\,(x4-x4_{\rm ref})$, with a reference time $x4_{\rm ref}$ |
+| $\psi$; $\hat\psi$ | the sixteen-component Dirac field; the weighted field $\sqrt{V_d}\,\psi$ |
+| $\gamma^A$; $\gamma^\mu$; $\nabla_\mu$ | the eight real $16\times16$ Dirac matrices of an orthonormal frame, $A=0,\dots,7$; the same with a coordinate index; the covariant derivative of a spinor |
+| $\beta$; $\bar\psi$; $\alpha^j$; $\mathsf h$ | $\gamma^4$ on 7+1 and $-i\gamma^4$ on 4+4; the adjoint $\psi^\dagger\beta$; on 4+4 the matrices $-\gamma^4\gamma^j$, $j=0,1,2,3$; the Hamiltonian matrix of a free particle |
+| $C^-$; $\tilde\psi$; $W_{1644}$ | on 4+4: the matrix $\gamma^0\gamma^1\gamma^2\gamma^3$; the covariant adjoint $\psi^\dagger C^-$; the matrix $iC^-\gamma^4$, Hermitian with the eigenvalues $+1$ and $-1$, eight times each; its two eigenspaces are the two *halves* of the field |
+| $\mathrm{Adj}$ | the matrix of the adjoint in a bilinear $\psi^\dagger\mathrm{Adj}\,\Theta^K\psi$: $\beta$ on 7+1 and in form Q, $C^-$ in form C |
+| form C, form Q | the two forms of the self-interaction of the 4+4 model in the quantized sector: with the covariant adjoint (the definition) and with the adjoint of the positive Lagrangian (the alternative) |
+| $\gamma_{44q}^A$; $\Theta_Q^K$; $\mathrm{sgn}_K$, $\mathrm{sgn}_K^Q$ | the Dirac matrices of form Q, $-i\gamma^A$ for $A\le4$ and $\gamma^A$ for $A\ge5$; their products with a phase that makes the bilinears real; the signs $\pm1$ of the squares of $\Theta^K$ and of $\Theta_Q^K$ |
+| $I_r^{\rm C}$, $I_r^{\rm Q}$; $\mathcal L_{\rm self}^{\rm C}$, $\mathcal L_{\rm self}^{\rm Q}$ | the nine invariants and the self-interaction in the two forms |
+| $g_0^{\rm eff}$, $g_1^{\rm eff}$, $g_7^{\rm eff}$, $g_8^{\rm eff}$; $g$; set A, set B | the four independent combinations of the nine couplings (scalar, vector, axial vector, pseudoscalar); the strength of the couplings; the two sets of couplings $g_0=-g$, and $g_0=-g$ with $g_1=+0.1\,g$ |
+| $\mathsf R_{\rm gap}$ | for matter of the two halves, the matrix of the derivatives of the right-hand sides of the two gap equations with respect to the two masses |
+| $s_{\rm ct}$; $m_{\rm ct}$; $g_{VS}$ | the sign $\pm1$ with which the contact couplings enter the pairing potential of a pair; their range parameter; the coupling of the Vorton-Scalar to the fermions |
+| $U_{\rm uv}$; $u_S$, $u_V$ | the ultraviolet strength of the kernel of the gap equation; its two numerical constants |
+| $D$; $\tau_d$ in the tables of Section 6 | the number of space dimensions in which the particles have momentum (4, or 3 for fields in ordinary space); the deflation clock |
+| $m$; $m_D$ | the mass of the fermion; the part of it that is a bare mass in the model with the Vorton-Scalar |
+| $\mathcal L_{\rm kin}$, $\mathcal L_{\rm mass}$, $\mathcal L_{\rm self}$ | the three parts of the Lagrangian: kinetic term, mass term, self-interaction |
+| $K$; $r$; $\Theta^K$, $\Theta_K$ | a strictly increasing list of indices out of $0,\dots,7$; its length, the rank; the product of the Dirac matrices of the list, with a phase that makes the bilinears real, and its inverse |
+| $I_r$; $g_r$ | the invariant of rank $r$ of the covariant Lagrangian; the nine couplings, $r=0,\dots,8$ ($g_0$ scalar, $g_1$ vector) |
+| $\mathsf F$ | the Fierz matrix, a $9\times9$ matrix of rational numbers with $\mathsf F^2=1$ |
+| $G_S$, $G_V$; $G_S^{\rm HF}$, $G_V^{\rm HF}$ | the scalar and the vector coupling of the mean-field energy of uniform matter; their values from the nine couplings in the Hartree–Fock approximation |
+| $k_F$ | the Fermi momentum |
+| $\Lambda$ | a momentum cutoff |
+| $SO(4)$; $U(1)_E$ | for fields that depend on $x1,x2,x3,x4$ only: the rotations of the four extra axes $x0,x5,x6,x7$, generated by the products $\gamma^a\gamma^b$ of their Dirac matrices; a second phase symmetry, generated by a multiple of $\gamma^0\gamma^5\gamma^6\gamma^7$ |
+| Vorton-Scalar | the complex scalar field of the model, coupled to $\bar\psi\psi$; its radial mode and its phase mode are its two kinds of excitation |
