@@ -579,6 +579,33 @@ impl Halves {
         2.0 * self.unit_density() * kf_total.powi(self.d as i32)
     }
 
+    /// The largest eigenvalue of the response matrix of the two gap equations at a state.
+    ///
+    /// The gap equations are M_+ = m + a_S s_+ + b_S s_-, M_- = m + b_S s_+ + a_S s_-, with the
+    /// scalar densities s_+-(k_+-, M_+-) of the two halves.  A small change of the masses changes
+    /// the right-hand sides by the matrix  R = [[a_S s_+', b_S s_-'], [b_S s_+', a_S s_-']],
+    /// s' = ds/dM at fixed Fermi momentum (positive for particles of positive energy).  In
+    /// dilute matter the eigenvalues of R are small.  The solution that is connected to the
+    /// dilute gas is a regular function of the density and of the couplings as long as both
+    /// eigenvalues stay below 1; where one reaches 1 the solution branches, and beyond that
+    /// point the state is unstable against the corresponding change of the two masses.  For
+    /// equal halves the eigenvalues are 2 T_S s' (the two masses change together) and
+    /// 2 D_S s' (they split); for one filled half they are a_S s' and 0.
+    pub fn response_eigenvalue(&self, st: &HState) -> f64 {
+        let sp = |kf: f64, mass: f64| -> f64 {
+            if kf <= 0.0 {
+                return 0.0;
+            }
+            let h = 1e-5 * (1.0 + mass.abs());
+            (half_moments(self.d, self.nu_half, kf, mass + h).s - half_moments(self.d, self.nu_half, kf, mass - h).s) / (2.0 * h)
+        };
+        let (s1, s2) = (sp(st.kf[0], st.mass[0]), sp(st.kf[1], st.mass[1]));
+        let (a, b) = (self.c.a_s(), self.c.b_s());
+        let tr = a * (s1 + s2);
+        let disc = (a * a * (s1 - s2).powi(2) + 4.0 * b * b * s1 * s2).sqrt();
+        0.5 * (tr + disc)
+    }
+
     /// The state of total density `n` and polarization `pol` = (n_+ - n_-)/n in [0, 1].
     pub fn at_polarization(&self, n: f64, pol: f64) -> Option<HState> {
         let pol = pol.clamp(0.0, 1.0);
@@ -1157,6 +1184,50 @@ mod tests {
             assert!((found.mass[0] - st.mass[0]).abs() < 1e-7 && (found.mass[1] - st.mass[1]).abs() < 1e-6, "{:?}: {:?} against {:?}", form, found.mass, st.mass);
             assert!((found.eps / st.eps - 1.0).abs() < 1e-7 && (-found.omega - st.p_flat).abs() < 1e-7 * st.eps.abs());
         }
+    }
+
+    #[test]
+    fn the_response_eigenvalue_reaches_one_where_the_solution_branches() {
+        // quantized-sector form, D = 3, scalar attraction alone: T_S = -15 g/16, D_S = +g/16.  Equal halves:
+        // eigenvalues 2 T_S s' < 0 and 2 D_S s' > 0.  Where 2 D_S s' passes 1, solutions with unequal masses
+        // appear at equal densities.
+        let hf1 = Hf4::from_effective(&[-1.0, 0.0, 0.0, 0.0]);
+        let kf = 0.3;
+        let lam = |g: f64| {
+            let h = halves_for(3, Form::Q, &hf1, g);
+            let st = h.solve(&[kf, kf]).unwrap();
+            assert!((st.mass[0] - st.mass[1]).abs() < 1e-9 || h.response_eigenvalue(&st) > 0.9);
+            // closed form for equal halves
+            let m = st.mass[0];
+            let sprime = (half_moments(3, 4.0, kf, m + 1e-5).s - half_moments(3, 4.0, kf, m - 1e-5).s) / 2e-5;
+            let expected = (2.0 * h.c.ds * sprime).max(2.0 * h.c.ts * sprime);
+            (h.response_eigenvalue(&st), expected, h.solutions(&[kf, kf]).len())
+        };
+        let (l1, e1, n1) = lam(20.0);
+        assert!((l1 - e1).abs() < 1e-7 && l1 < 1.0 && n1 == 1, "{} {} {}", l1, e1, n1);
+        // one filled half: eigenvalue a_S s' (negative for an attraction inside the half)
+        let h = halves_for(3, Form::C, &hf1, 20.0);
+        let st = h.solve(&[0.4, 0.0]).unwrap();
+        assert!(h.response_eigenvalue(&st) <= 0.0);
+        // strong coupling: find a strength at which the eigenvalue of the equal-halves solution exceeds 1,
+        // and verify that solutions with unequal masses then exist at equal densities
+        let mut g = 100.0;
+        let mut found = false;
+        while g < 1.0e5 {
+            let h = halves_for(3, Form::Q, &hf1, g);
+            let sols = h.solutions(&[kf, kf]);
+            let sym: Vec<&[f64; 2]> = sols.iter().filter(|x| (x[0] - x[1]).abs() < 1e-9).collect();
+            if let Some(ms) = sym.first() {
+                let st = h.state_at(&[kf, kf], ms, sols.len());
+                if h.response_eigenvalue(&st) > 1.02 {
+                    assert!(sols.iter().any(|x| (x[0] - x[1]).abs() > 1e-6), "g = {}: eigenvalue {} but no solution with unequal masses: {:?}", g, h.response_eigenvalue(&st), sols);
+                    found = true;
+                    break;
+                }
+            }
+            g *= 1.1;
+        }
+        assert!(found, "no strength with an eigenvalue above 1 found");
     }
 
     #[test]

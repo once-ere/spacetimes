@@ -262,6 +262,11 @@ pub fn run() -> std::io::Result<bool> {
     let mut n_c_all = 0usize;
     let mut n_q_pol = 0usize;
     let mut f3_ex = String::new();
+    // (polarization, case) combinations without a solution of the gap equations with non-negative masses, by form
+    let mut n_missing = [0usize; 2];
+    let mut n_scanned = 0usize;
+    let mut missing_cases: Vec<String> = Vec::new();
+    let mut missing_only_strong = true;
     for &d in &dims {
         for is in 0..SETS.len() {
             let g_q = thr_of(d, is, Form::Q);
@@ -274,12 +279,21 @@ pub fn run() -> std::io::Result<bool> {
                         let h = halves_of(&tabs, d, *form, is, mult * g_q);
                         let n = h.density_of_kf_total(kf_tot);
                         let e0 = h.at_polarization(n, 0.0).map(|s| s.e_per_particle);
+                        // the states with equal halves and with one half filled must exist
+                        f3 &= e0.is_some() && h.at_polarization(n, 1.0).is_some();
+                        let mut miss_here = 0usize;
                         for i in 0..=40 {
                             let pol = 0.025 * i as f64;
+                            n_scanned += 1;
                             match h.at_polarization(n, pol) {
                                 Some(s) => rows.push(vec![d as f64, is as f64, form.code(), mult, kf_tot, n, pol, s.mass[0], s.mass[1], s.eps, s.e_per_particle - 1.0, s.e_per_particle - e0.unwrap_or(f64::NAN), s.n_solutions as f64]),
-                                None => f3 = false,
+                                None => miss_here += 1,
                             }
+                        }
+                        if miss_here > 0 {
+                            n_missing[iform] += miss_here;
+                            missing_cases.push(format!("D = {}, set {}, form {}, {} times, k_F,total = {} m: {} of 41", d, SETS[is].0, form.tag(), mult, kf_tot, miss_here));
+                            missing_only_strong &= mult >= 3.0 && kf_tot >= 0.8;
                         }
                         match h.lowest_at_density(n) {
                             Some(s) => {
@@ -303,16 +317,16 @@ pub fn run() -> std::io::Result<bool> {
     }
     write_csv("forms_energy_vs_polarization.csv",
         &[("content", "the 4+4 model in its two forms: energy of uniform matter of a given total density as a function of the polarization pol = (n_+ - n_-)/n of the two halves W = +1 and W = -1 of the field (four internal states each); at each polarization the solution of the two gap equations of lowest energy. Strength of the couplings: mult times the strength at which the quantized-sector form first binds matter (file forms_thresholds.csv), the same couplings of the Lagrangian for both forms".to_string()),
-          ("columns", "D; set: 0 = A (g_0 = -g alone), 1 = B (g_0 = -g, g_1 = +0.1 g); form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); mult; kF_total: Fermi momentum that the total density would have with equal halves; n: total density; pol; M_plus, M_minus: masses of the particles of the two halves; eps: energy density; e_bind: energy per particle minus m; e_rel: energy per particle minus its value at pol = 0; n_solutions: number of solutions of the gap equations with non-negative masses (units m = 1)".to_string()),
+          ("columns", "D; set: 0 = A (g_0 = -g alone), 1 = B (g_0 = -g, g_1 = +0.1 g); form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); mult; kF_total: Fermi momentum that the total density would have with equal halves; n: total density; pol; M_plus, M_minus: masses of the particles of the two halves; eps: energy density; e_bind: energy per particle minus m; e_rel: energy per particle minus its value at pol = 0; n_solutions: number of solutions of the gap equations with non-negative masses (units m = 1). A polarization at which the gap equations have no solution with non-negative masses has no row (check fm-F3)".to_string()),
           ("command", CMD.to_string())],
         &["D", "set", "form", "mult", "kF_total", "n", "pol", "M_plus", "M_minus", "eps", "e_bind", "e_rel", "n_solutions"], &rows)?;
-    rep.add("fm-F3", "numerical", &format!("the polarization of the two halves. For the same couplings of the Lagrangian (sets A and B, attractive scalar coupling g_0 < 0), 1.5, 3 and 6 times the strength at which the quantized-sector form first binds matter, and total densities of the Fermi momenta 0.4, 0.6, 0.8, 1.0 (48 cases): in the covariant form a particle is attracted by the particles of its own half and repelled by those of the other, and the state of lowest energy is polarized in {} of the {} cases; in the quantized-sector form it is polarized in {} cases. Polarization (n_+ - n_-)/n of the state of lowest energy in the covariant form (four densities in the order given): {}. Example: {}", n_c_pol, n_c_all, n_q_pol, f3_pol.join("; "), f3_ex), f3);
+    rep.add("fm-F3", "numerical", &format!("the polarization of the two halves. For the same couplings of the Lagrangian (sets A and B, attractive scalar coupling g_0 < 0), 1.5, 3 and 6 times the strength at which the quantized-sector form first binds matter, and total densities of the Fermi momenta 0.4, 0.6, 0.8, 1.0 (48 cases): in the covariant form a particle is attracted by the particles of its own half and repelled by those of the other, and the state of lowest energy is polarized in {} of the {} cases; in the quantized-sector form it is polarized in {} cases. Polarization (n_+ - n_-)/n of the state of lowest energy in the covariant form (four densities in the order given): {}. Example: {}. Existence of the states: the energy was computed at 41 polarizations in each case and form ({} states). In the covariant form every one of these states exists. In the quantized-sector form {} states with unequal halves do not exist ({}): the gap equations have no solution with non-negative masses, because the attraction by the more populated half (coupling b_S between the halves, stronger than the coupling a_S inside a half) would make the mass of the particles of the less populated half negative; this happens only at 3 or 6 times the threshold and k_F,total >= 0.8 m, and the states with equal halves and with one half filled exist in all cases", n_c_pol, n_c_all, n_q_pol, f3_pol.join("; "), f3_ex, n_scanned, n_missing[1], missing_cases.join("; ")), f3 && n_missing[0] == 0 && missing_only_strong && n_q_pol == 0 && n_c_pol == n_c_all);
     println!("[{:>6.1} s] polarization done", t0.elapsed().as_secs_f64());
 
     // =====================================================================================
     // 4. saturated matter along the deflation clock
     // =====================================================================================
-    let n_tau = 121usize;
+    let n_tau = 101usize;
     let sat: Vec<Vec<Vec<f64>>> = par_map(cases.len(), |i| {
         let (d, is, form) = cases[i];
         let mut out: Vec<Vec<f64>> = Vec::with_capacity(n_tau);
@@ -321,35 +335,73 @@ pub fn run() -> std::io::Result<bool> {
             let g = thr[i] * tau.exp();
             let h = halves_of(&tabs, d, form, is, g);
             let (kf, s) = lowest(&h);
-            out.push(vec![d as f64, is as f64, form.code(), tau, g, kf, s.n_total(), s.pol, s.mass[0], s.mass[1], s.e_per_particle - 1.0, s.p_flat, s.p_int, s.eps, s.mu[0], s.mu[1]]);
+            out.push(vec![d as f64, is as f64, form.code(), tau, g, kf, s.n_total(), s.pol, s.mass[0], s.mass[1], s.e_per_particle - 1.0, s.p_flat, s.p_int, s.eps, s.mu[0], s.mu[1], h.response_eigenvalue(&s)]);
         }
         out
     });
     let mut f4 = true;
     let mut f4_txt: Vec<String> = Vec::new();
     let mut p_max: f64 = 0.0;
+    let mut stab_max: f64 = f64::NEG_INFINITY;
+    let mut stab_txt: Vec<String> = Vec::new();
     for (i, &(d, is, form)) in cases.iter().enumerate() {
         let rws = &sat[i];
-        // the energy per particle falls monotonically along the clock; the pressure vanishes at saturation
+        // the energy per particle falls monotonically along the clock; the pressure vanishes at saturation;
+        // the kind of the state does not change; the response eigenvalue of the gap equations stays below 1
         let mut mono = true;
+        let mut same_kind = true;
         for j in 1..n_tau {
             mono &= rws[j][10] <= rws[j - 1][10] + 1e-10;
             if j >= 2 {
                 p_max = p_max.max(rws[j][11].abs() / rws[j][13].abs());
+                same_kind &= match form {
+                    Form::C => rws[j][7] > 1.0 - 1e-9,
+                    Form::Q => rws[j][7] < 1e-9,
+                };
+            }
+            stab_max = stab_max.max(rws[j][16]);
+        }
+        f4 &= mono && same_kind;
+        let at = |tau: f64| &rws[(tau / 0.05).round() as usize];
+        f4_txt.push(format!("D = {}, set {}, form {} ({}): E/N - m = {:+.4} m at tau_d = 1 and {:+.4} m at tau_d = 3 (mass of the particles of the filled half or halves {:.3} m and {:.3} m)", d, SETS[is].0, form.tag(), kind_of(at(1.0)[7]), at(1.0)[10], at(3.0)[10], at(1.0)[8], at(3.0)[8]));
+        // beyond the table: the clock reading at which the response eigenvalue of the saturated state reaches 1
+        // (equal halves in the form Q: matter of one kind with eight states; the eigenvalue is 2 D_S s')
+        if form == Form::Q {
+            let lam_at = |tau: f64| {
+                let h = halves_of(&tabs, d, form, is, thr[i] * tau.exp());
+                // saturation of matter with equal halves: lowest energy per particle over the density at polarization 0
+                let e = |l: f64| h.at_polarization(h.density_of_kf_total(l.exp()), 0.0).map_or(f64::INFINITY, |s| s.e_per_particle);
+                let (l, _) = spacetimes_deflation_cjt_ks_c::kohn_sham::global_min(e, 0.05f64.ln(), 5.0f64.ln(), 160, 1e-10);
+                let st = h.at_polarization(h.density_of_kf_total(l.exp()), 0.0).expect("forms: equal halves");
+                h.response_eigenvalue(&st)
+            };
+            let (mut a, mut b) = (5.0, 5.0);
+            while b < 9.0 && lam_at(b) < 1.0 {
+                a = b;
+                b += 0.25;
+            }
+            if lam_at(b) >= 1.0 {
+                for _ in 0..30 {
+                    let mid = 0.5 * (a + b);
+                    if lam_at(mid) < 1.0 {
+                        a = mid;
+                    } else {
+                        b = mid;
+                    }
+                }
+                stab_txt.push(format!("D = {}, set {}: tau_d = {:.3}", d, SETS[is].0, 0.5 * (a + b)));
+            } else {
+                stab_txt.push(format!("D = {}, set {}: not before tau_d = 9", d, SETS[is].0));
             }
         }
-        f4 &= mono;
-        let at = |tau: f64| &rws[(tau / 0.05).round() as usize];
-        let kinds: Vec<&str> = [0.5, 1.0, 2.0, 4.0].iter().map(|&t| kind_of(at(t)[7])).collect();
-        f4_txt.push(format!("D = {}, set {}, form {}: E/N - m = {:+.4} m at tau_d = 1 and {:+.4} m at tau_d = 3 (mass of the particles of the filled half or halves {:.3} m and {:.3} m); state at tau_d = 0.5, 1, 2, 4: {}", d, SETS[is].0, form.tag(), at(1.0)[10], at(3.0)[10], at(1.0)[8], at(3.0)[8], kinds.join(", ")));
     }
     let sat_rows: Vec<Vec<f64>> = sat.into_iter().flatten().collect();
     write_csv("forms_saturation.csv",
         &[("content", "the 4+4 model in its two forms: self-bound matter along the deflation clock. At each clock reading tau_d the couplings of the reduced Lagrangian are g = g_threshold exp(tau_d) (g_threshold: the strength at which matter of that form, set and dimension first binds, file forms_thresholds.csv), and the row gives the state of lowest energy per particle over all densities and polarizations (the saturation point; no-sea approximation)".to_string()),
-          ("columns", "D; set: 0 = A, 1 = B; form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); tau_d; g = |g_0| m^(D-1); kF_total: Fermi momentum that the density would have with equal halves; n: total density; pol: polarization (n_+ - n_-)/n; M_plus, M_minus: masses of the particles of the two halves; e_bind: energy per particle minus m; p: pressure (zero at an interior minimum); Pi: interaction pressure, the pressure along the deflating coordinates; eps: energy density; mu_plus, mu_minus: chemical potentials of the two halves (for an empty half the energy of its lowest state)".to_string()),
+          ("columns", "D; set: 0 = A, 1 = B; form: 0 = C (covariant, the definition), 1 = Q (quantized-sector, the alternative); tau_d; g = |g_0| m^(D-1); kF_total: Fermi momentum that the density would have with equal halves; n: total density; pol: polarization (n_+ - n_-)/n; M_plus, M_minus: masses of the particles of the two halves; e_bind: energy per particle minus m; p: pressure (zero at an interior minimum); Pi: interaction pressure, the pressure along the deflating coordinates; eps: energy density; mu_plus, mu_minus: chemical potentials of the two halves (for an empty half the energy of its lowest state); response: the largest eigenvalue of the response matrix of the two gap equations (the solution is the regular continuation of the dilute gas while it is below 1; for equal halves it is the larger of 2 T_S ds/dM and 2 D_S ds/dM, for one filled half a_S ds/dM)".to_string()),
           ("command", CMD.to_string())],
-        &["D", "set", "form", "tau_d", "g", "kF_total", "n", "pol", "M_plus", "M_minus", "e_bind", "p", "Pi", "eps", "mu_plus", "mu_minus"], &sat_rows)?;
-    rep.add("fm-F4", "numerical", &format!("self-bound matter along the deflation clock in the two forms (clock counted from the moment at which matter of the respective form first binds; 121 clock readings from 0 to 6 in each of the 8 cases): the energy per particle of the saturated state falls monotonically, and its pressure vanishes (largest |p|/eps after the first two readings: {:.1e}). {}", p_max, f4_txt.join("; ")), f4 && p_max < 1e-6);
+        &["D", "set", "form", "tau_d", "g", "kF_total", "n", "pol", "M_plus", "M_minus", "e_bind", "p", "Pi", "eps", "mu_plus", "mu_minus", "response"], &sat_rows)?;
+    rep.add("fm-F4", "numerical", &format!("self-bound matter along the deflation clock in the two forms (clock counted from the moment at which matter of the respective form first binds; 101 clock readings from 0 to 5 in each of the 8 cases, the couplings growing to 148 times their value at the threshold): the energy per particle of the saturated state falls monotonically, its pressure vanishes (largest |p|/eps after the first two readings: {:.1e}), and the kind of the state does not change: one half filled in the covariant form, equal halves in the quantized-sector form. {}. Regularity: the largest eigenvalue of the response matrix of the two gap equations stays below 1 at all readings (largest value {:.3}), so that each state is the regular continuation of the dilute gas. Beyond the table the saturated state of the quantized-sector form, which has equal halves, reaches the eigenvalue 1 (2 D_S ds/dM = 1: the two masses can split) at: {}; the saturated state of the covariant form has one half filled and a negative eigenvalue throughout", p_max, f4_txt.join("; "), stab_max, stab_txt.join("; ")), f4 && p_max < 1e-6 && stab_max < 1.0);
     println!("[{:>6.1} s] saturation along the clock done", t0.elapsed().as_secs_f64());
 
     // =====================================================================================
@@ -402,9 +454,19 @@ pub fn run() -> std::io::Result<bool> {
           ("columns", "D; set: 0 = A, 1 = B; form: 0 = C, 1 = Q; kF_total; tau_polarized: the halves become unequal (resolution 0.05); tau_one_half: one half is empty (resolution 0.05); tau_p0: the pressure vanishes; g_p0: the strength g at that moment".to_string()),
           ("command", CMD.to_string())],
         &["D", "set", "form", "kF_total", "tau_polarized", "tau_one_half", "tau_p0", "g_p0"], &ev_rows)?;
-    let ev_txt: Vec<String> = ev_rows.iter().filter(|r| r[0] == 4.0).map(|r| format!("set {}, form {}, k_F,total = {}: halves unequal from tau_d = {:.2}, pressure negative from tau_d = {:.2}", SETS[r[1] as usize].0, if r[2] == 0.0 { "C" } else { "Q" }, r[3], r[4], r[6])).collect();
-    let f5 = ev_rows.iter().all(|r| r[6].is_finite()) && ev_rows.iter().filter(|r| r[2] == 0.0).all(|r| r[4].is_finite());
-    rep.add("fm-F5", "numerical", &format!("matter of fixed density while the couplings grow with the deflation clock (clock counted from the binding threshold of the respective form; total densities of the Fermi momenta 0.3 m and 0.6 m; D = 4 and D = 3; sets A and B). In the covariant form the matter first polarizes (the two halves become unequal) and its pressure along the coordinates of the motion becomes negative later or at the same time; in the quantized-sector form the pressure becomes negative while the halves are still equal wherever \"nan\" stands for the polarization below. For D = 4: {}", ev_txt.join("; ")), f5);
+    let ev_txt: Vec<String> = ev_rows.iter().map(|r| {
+        let form_c = r[2] == 0.0;
+        let pol = if r[4].is_finite() { format!("halves unequal from tau_d = {:.2}, one half empty from {:.2}", r[4], r[5]) } else { "halves equal throughout".to_string() };
+        let p0 = if r[6].is_finite() { format!("pressure negative from tau_d = {:.2}", r[6]) } else { "pressure positive throughout".to_string() };
+        format!("D = {}, set {}, form {}, k_F,total = {} m: {}; {}", r[0], SETS[r[1] as usize].0, if form_c { "C" } else { "Q" }, r[3], pol, p0)
+    }).collect();
+    // covariant form: the matter polarizes, and where its pressure becomes negative it does so after the polarization;
+    // quantized-sector form: the halves stay equal and the pressure becomes negative
+    let f5 = ev_rows.iter().filter(|r| r[2] == 0.0).all(|r| r[4].is_finite() && r[5].is_finite() && r[5] > r[4] && (r[6].is_nan() || r[6] >= r[4]))
+        && ev_rows.iter().filter(|r| r[2] == 1.0).all(|r| r[4].is_nan() && r[6].is_finite());
+    let n_no_tension = ev_rows.iter().filter(|r| r[2] == 0.0 && r[6].is_nan()).count();
+    let width_max = ev_rows.iter().filter(|r| r[2] == 0.0).map(|r| r[5] - r[4]).fold(0.0f64, f64::max);
+    rep.add("fm-F5", "numerical", &format!("matter of fixed density while the couplings grow with the deflation clock (clock counted from the binding threshold of the respective form; total densities of the Fermi momenta 0.3 m and 0.6 m; D = 4 and D = 3; sets A and B). In the covariant form the matter polarizes at a definite clock reading before the binding threshold: the two halves become unequal, and within at most {:.2} of the clock one half is empty; where the pressure along the coordinates of the motion becomes negative, it does so after the polarization, and in {} of the 8 cases (the higher density) the pressure stays positive for -3 <= tau_d <= 5, because the repulsion a_V between the particles of the filled half grows with the couplings while the attraction saturates as the mass falls. In the quantized-sector form the halves stay equal and the pressure becomes negative in all 8 cases. {}", width_max, n_no_tension, ev_txt.join("; ")), f5);
     println!("[{:>6.1} s] fixed density done", t0.elapsed().as_secs_f64());
 
     // the rest of the command is in the second part of this file
