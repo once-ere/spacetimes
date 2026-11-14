@@ -619,9 +619,58 @@ def fig_dm_windows():
     save(fig, "fig_dm_windows")
 
 
+# ----------------------------------------------------------------------------------
+def fig_vortex():
+    """Vortex line of the Vorton-Scalar and the fermion zero modes on it (command `spacetimes vortex`)."""
+    prof = read_csv("vortex_profile.csv")
+    modes = read_csv("vortex_zero_modes.csv")
+    if prof is None or modes is None:
+        return
+    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.45))
+    # (a) the profiles
+    ax = axes[0]
+    for k, n in enumerate((1, 2, 3)):
+        c, ls, _ = STYLES[k]
+        m = prof["n"] == n
+        ax.plot(prof["rho"][m], prof["f"][m], color=c, ls=ls, label="$n=%d$" % n)
+    ax.set_xlim(0, 12)
+    ax.set_ylim(0, 1.05)
+    ax.set_xlabel("distance from the line, $\\rho=m_s r$")
+    ax.set_ylabel("profile $f_n(\\rho)$")
+    ax.legend(loc="lower right")
+    panel_label(ax, "(a) the vortex line")
+    # (b) winding number 1: radial density of the zero mode for three mass ratios
+    ax = axes[1]
+    for k, ratio in enumerate((0.5, 1.0, 2.0)):
+        c, ls, _ = STYLES[k]
+        m = (modes["n"] == 1) & (modes["two_l"] == 0) & (np.abs(modes["m_over_ms"] - ratio) < 1e-9)
+        # the radial density vanishes on the line (the data start at rho = 0.08)
+        ax.plot(np.concatenate(([0.0], modes["rho"][m])), np.concatenate(([0.0], modes["rho"][m] * modes["density"][m])), color=c, ls=ls, label="$m/m_s=%g$" % ratio)
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, None)
+    ax.set_xlabel("$\\rho=m_s r$")
+    ax.set_ylabel("radial density $\\rho\\,(w_+^2+w_-^2)$")
+    ax.legend(loc="upper right")
+    panel_label(ax, "(b) zero mode, $n=1$, $l=0$")
+    # (c) winding number 2, l = 1/2, m/m_s = 1: the two components
+    ax = axes[2]
+    m = (modes["n"] == 2) & (modes["two_l"] == 1) & (np.abs(modes["m_over_ms"] - 1.0) < 1e-9)
+    ax.plot(modes["rho"][m], modes["w_minus"][m], color=STYLES[0][0], ls=STYLES[0][1], label="$w_-$")
+    ax.plot(modes["rho"][m], modes["w_plus"][m], color=STYLES[1][0], ls=STYLES[1][1], label="$w_+$")
+    ax.axhline(0.0, color=INK2, lw=0.6)
+    ax.set_xlim(0, 10)
+    ax.set_xlabel("$\\rho=m_s r$")
+    ax.set_ylabel("radial functions")
+    ax.legend(loc="upper right")
+    panel_label(ax, "(c) $n=2$, $l=\\frac{1}{2}$, $m/m_s=1$")
+    fig.tight_layout(w_pad=1.2)
+    save(fig, "fig_vortex")
+
+
 ALL = {"cjt_landscape": fig_cjt_landscape, "cjt_vacpot": fig_cjt_vacpot, "dm_windows": fig_dm_windows, "kernels": fig_kernels, "gap": fig_gap, "cmb": fig_cmb_validation, "step": fig_step, "dr": fig_dr,
        "residuals": fig_dr_residuals, "zt": fig_dr_zt, "sfdm": fig_sfdm, "dimer": fig_dimer,
-       "cjt_toy": fig_cjt_toy, "cjt_thermo": fig_cjt_thermo, "cjt_normal": fig_cjt_normal, "cjt_thermal": fig_cjt_thermal, "cjt_vacuum": fig_cjt_vacuum}
+       "cjt_toy": fig_cjt_toy, "cjt_thermo": fig_cjt_thermo, "cjt_normal": fig_cjt_normal, "cjt_thermal": fig_cjt_thermal, "cjt_vacuum": fig_cjt_vacuum,
+       "vortex": fig_vortex}
 
 if __name__ == "__main__":
     which = sys.argv[1:] or list(ALL)
