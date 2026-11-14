@@ -107,7 +107,7 @@ instruction is the task of the present folder.
 ## 2.3 How the instruction was read
 
 | the instruction | what was done | where |
-|---|---|---|
+|:---------|:----------------------------|:-----------|
 | a new folder | The folder `Revision_Deflation_CJT_and_Kohn-Sham_definition_C`, with its own program (`deflation_cjt_ks_c`), data, figures and documents. The folder `Revision_Deflation_CJT_and_Kohn-Sham` was not changed in any file; nor were the folder `Revision_Deflation` and the flat-spacetime part of the project. | the repository |
 | form C is the definition | In every document of the folder the 4+4 model is defined by $\mathcal L_{\rm kin}+\mathcal L_{\rm mass}+\mathcal L_{\rm self}^{\rm C}$: the positive kinetic and mass terms of the quantized sector with the quartic term of the covariant Lagrangian. Every result of the 4+4 model that depends on the self-interaction was computed again with form C: the mean-field couplings, uniform matter (now of two halves of the field), the effective potential and the vacuum, the pair couplings and the gap, the symmetries, the matter as a source of gravity, the thresholds with the Vorton-Scalar. | manuscripts; "dirac matrices deflating", Parts 5 and 6; `P3` |
 | "C" with which kinetic term | The covariant kinetic term is indefinite and defines no quantum theory with states of positive norm (Section 2.2). Form C therefore means the covariant quartic term together with the positive kinetic term. The third possibility, the covariant kinetic term with the covariant quartic term, is recorded as a classical field equation, $i\partial_4\psi=\mathsf h\psi+W_{1644}\,\partial\mathcal L_{\rm self}^{\rm C}/\partial\psi^\dagger$; nothing is computed with it (Section 7, V8). | the same |
@@ -215,8 +215,8 @@ half the coupling is $\tfrac78g_0$ in both; between particles of different halve
 is $g_0$ in form Q and $-g_0$ in form C.
 
 **Matter.** In form C matter polarizes: the state of lowest energy is polarized in
-{{GEN:fm_pol_n_cases}} of {{GEN:fm_pol_n_all}} cases examined, in form Q in
-{{GEN:fm_pol_n_q}}. Self-bound matter of form C has one half of the field filled,
+{{GEN:fm_pol_n_cases}} of the {{GEN:fm_pol_n_all}} cases examined in form C and in
+{{GEN:fm_pol_n_q}} of them in form Q. Self-bound matter of form C has one half of the field filled,
 that of form Q both halves equally. The strength $g\,m^{D-1}$ at which a gas becomes
 self-bound matter is, in $D=4$ space dimensions with momentum, {{GEN:fm_thr_d4_A_C}}
 (form C) against {{GEN:fm_thr_d4_A_Q}} (form Q) for set A and {{GEN:fm_thr_d4_B_C}}
@@ -255,10 +255,12 @@ Higgs field rests, down to the rotations of $x5,x6,x7$; form Q keeps $SO(4)$ for
 couplings.
 
 **Gravity.** With self-bound matter of set B at three times its binding threshold as
-the source of the tuned Einstein–Lovelock equations, the rate of deflation at the end
-of the evolution is {{GEN:grav_end_formC}} times the initial rate for the matter of
-form C and {{GEN:grav_end_formQ}} times for that of form Q; the conclusions (matter
-accelerates the deflation; the undisturbed deflation is unstable) are the same.
+the source of the tuned Einstein–Lovelock equations (the gravity in which the
+undisturbed deflation is a solution without matter), and with the smaller of the two
+amounts of matter examined, the rate of deflation at the end of the evolution is
+{{GEN:grav_end_formC}} times the initial rate for the matter of form C and
+{{GEN:grav_end_formQ}} times for that of form Q; the conclusions (matter accelerates
+the deflation; the undisturbed deflation is unstable) are the same.
 
 **A result that concerns both forms and both spacetimes: the ultraviolet criterion.**
 The gap equation has a solution that does not depend on the upper limit of its
@@ -458,10 +460,14 @@ collapses to short distances, as two relativistic particles do in a Coulomb pote
 that is too strong). The exchange of the two modes of the Vorton-Scalar alone reaches
 the criterion at $g_{VS}^2={{GEN:uv_g2c_exchange}}$, the clock reading
 {{GEN:uv_tau_exchange}}, beyond the last reading {{GEN:uv_tau_last}} of the histories
-of the project; attractive contact couplings bring it nearer. In the folder with
-form Q the entries of the gap with the contact couplings of the sign $s_{\rm ct}=-1$
-that lie above the criterion are artifacts of the limit 60 and not properties of the
-model; in this folder no gap is given above the criterion. Along the deflation clock
+of the project; attractive contact couplings bring it nearer. No entry of the gap
+tables of the earlier folders lies above the criterion; the entries nearest to it,
+those with the scalar contact attraction at the last clock reading, are the ones that
+the limit 60 changes most (F6). In this folder the contact couplings enter the pair
+along the hidden axis of form C with the opposite sign, a vector repulsion then acts
+as an attraction, and with the vector coupling of the examples the criterion is
+reached at the clock reading {{GEN:uv_tau_v3minus}}; no gap is given above the
+criterion. Along the deflation clock
 every coupling grows without bound, so that the criterion is reached at a definite
 moment in every history: beyond it the model needs physics at short distances that
 it does not contain.

@@ -174,8 +174,10 @@ $\varepsilon_{\rm int}=\tfrac12G_V^{\rm HF}n^2+\tfrac12G_S^{\rm HF}n_S^2$ on 7+1
 $n_\pm$, scalar densities $n_{S\pm}$; $n=n_++n_-$, $n_W=n_+-n_-$, $n_S=n_{S+}+n_{S-}$,
 $n_{SW}=n_{S+}-n_{S-}$),
 
-$$\varepsilon_{\rm int}=\tfrac12\big(G_V^{\rm tot}n^2+G_S^{\rm tot}n_S^2+G_V^{\rm dif}n_W^2+G_S^{\rm dif}n_{SW}^2\big)
-=\tfrac12G_V^{\rm same}(n_+^2+n_-^2)+\tfrac12G_S^{\rm same}(n_{S+}^2+n_{S-}^2)+G_V^{\rm opp}n_+n_-+G_S^{\rm opp}n_{S+}n_{S-},$$
+$$\begin{aligned}
+\varepsilon_{\rm int}&=\tfrac12\big(G_V^{\rm tot}n^2+G_S^{\rm tot}n_S^2+G_V^{\rm dif}n_W^2+G_S^{\rm dif}n_{SW}^2\big)\\
+&=\tfrac12G_V^{\rm same}(n_+^2+n_-^2)+\tfrac12G_S^{\rm same}(n_{S+}^2+n_{S-}^2)+G_V^{\rm opp}n_+n_-+G_S^{\rm opp}n_{S+}n_{S-},
+\end{aligned}$$
 
 with $G^{\rm same}=G^{\rm tot}+G^{\rm dif}$, $G^{\rm opp}=G^{\rm tot}-G^{\rm dif}$ and the four
 combinations of the effective couplings
@@ -200,10 +202,12 @@ $$m^*_\pm=m+G_S^{\rm tot}\,n_S\pm G_S^{\rm dif}\,n_{SW},\qquad V_{0\pm}=G_V^{\rm
 and fill four states for each momentum below $k_{F\pm}$; with
 $E^*_\pm(k)=\sqrt{k^2+m^{*2}_\pm}$,
 
-$$n_\pm=4\!\int_{|\vec k|<k_{F\pm}}\!\frac{d^Dk}{(2\pi)^D},\quad
-n_{S\pm}=4\!\int_{|\vec k|<k_{F\pm}}\!\frac{d^Dk}{(2\pi)^D}\frac{m^*_\pm}{E^*_\pm},\quad
-\varepsilon=\sum_\pm4\!\int_{|\vec k|<k_{F\pm}}\!\frac{d^Dk}{(2\pi)^D}E^*_\pm
-+\tfrac12\big(G_V^{\rm tot}n^2+G_V^{\rm dif}n_W^2\big)-\tfrac12\big(G_S^{\rm tot}n_S^2+G_S^{\rm dif}n_{SW}^2\big).$$
+$$\begin{aligned}
+n_\pm&=4\!\int_{|\vec k|<k_{F\pm}}\!\frac{d^Dk}{(2\pi)^D},\qquad
+n_{S\pm}=4\!\int_{|\vec k|<k_{F\pm}}\!\frac{d^Dk}{(2\pi)^D}\,\frac{m^*_\pm}{E^*_\pm},\\
+\varepsilon&=\sum_\pm4\!\int_{|\vec k|<k_{F\pm}}\!\frac{d^Dk}{(2\pi)^D}\,E^*_\pm
++\tfrac12\big(G_V^{\rm tot}n^2+G_V^{\rm dif}n_W^2\big)-\tfrac12\big(G_S^{\rm tot}n_S^2+G_S^{\rm dif}n_{SW}^2\big).
+\end{aligned}$$
 
 At a given total density the state is the one of lowest energy with respect to the
 polarization $\mathrm{pol}_W=(n_+-n_-)/n$; $k_{F,\rm tot}$ is the Fermi momentum that
@@ -224,9 +228,11 @@ acquires a mass when $G_S$ is below the critical coupling
 $G_c=-(2\pi)^D(D-1)/(\nu A_D\Lambda^{D-1})$, where $A_D$ is the area of the unit sphere
 in $D$ dimensions. For the two halves the potential is a function of four numbers,
 
-$$\Omega_{\rm CJT}=\sum_\pm\Omega_{\rm half}(m^*_\pm,\mu-V_{0\pm})
--\frac{[\tfrac12(m^*_++m^*_-)-m]^2}{2G_S^{\rm tot}}-\frac{[\tfrac12(m^*_+-m^*_-)]^2}{2G_S^{\rm dif}}
--\frac{[\tfrac12(V_{0+}+V_{0-})]^2}{2G_V^{\rm tot}}-\frac{[\tfrac12(V_{0+}-V_{0-})]^2}{2G_V^{\rm dif}},$$
+$$\begin{aligned}
+\Omega_{\rm CJT}={}&\sum_\pm\Omega_{\rm half}(m^*_\pm,\mu-V_{0\pm})
+-\frac{[\tfrac12(m^*_++m^*_-)-m]^2}{2G_S^{\rm tot}}-\frac{[\tfrac12(m^*_+-m^*_-)]^2}{2G_S^{\rm dif}}\\
+&-\frac{[\tfrac12(V_{0+}+V_{0-})]^2}{2G_V^{\rm tot}}-\frac{[\tfrac12(V_{0+}-V_{0-})]^2}{2G_V^{\rm dif}},
+\end{aligned}$$
 
 with the grand potential
 $\Omega_{\rm half}(m^*,\mu)=-4\int d^Dk\,(\mu-E^*)\,\theta(\mu-E^*)/(2\pi)^D$ of free
@@ -254,10 +260,12 @@ two particles of the mass $m^*$ with momenta $\pm\vec p$ scattering into $\pm\ve
 in the pair along the hidden axis (energies $E$, $E'$), the amplitudes of the four
 independent channels are, on 7+1 and in form Q,
 
-$$F_0=\frac{EE'+m^{*2}-\vec p\cdot\vec p'}{2EE'},\quad
-F_1=\frac{3EE'-2m^{*2}-\vec p\cdot\vec p'}{EE'},\quad
-F_7=\frac{3EE'+2m^{*2}-\vec p\cdot\vec p'}{EE'},\quad
-F_8=-\frac{EE'-m^{*2}-\vec p\cdot\vec p'}{2EE'},$$
+$$\begin{aligned}
+F_0&=\frac{EE'+m^{*2}-\vec p\cdot\vec p'}{2EE'},&
+F_1&=\frac{3EE'-2m^{*2}-\vec p\cdot\vec p'}{EE'},\\
+F_7&=\frac{3EE'+2m^{*2}-\vec p\cdot\vec p'}{EE'},&
+F_8&=-\frac{EE'-m^{*2}-\vec p\cdot\vec p'}{2EE'},
+\end{aligned}$$
 
 and $F_S=F_0$, $F_P=-F_8$ are the amplitudes of the exchange of the radial and of the
 phase mode of the Vorton-Scalar. The pairing potentials are
@@ -279,8 +287,10 @@ of $m$ and $k_F$ in this folder). At momenta above all masses
 $W(k,k')\to w_\infty(k'/k)/k^2$, and a solution that does not depend on $k_{\max}$
 exists, falling as $k^{-s_\Delta}$, only if the *ultraviolet strength*
 
-$$U_{\rm uv}=\int_0^\infty dt\,w_\infty(t)=2\,u_S\,g_{VS}^2-s_{\rm ct}\,m_{\rm ct}^2\big[(g_0^{\rm eff}-g_8^{\rm eff})\,u_S+(g_1^{\rm eff}+g_7^{\rm eff})\,u_V\big],
-\qquad u_S=\frac{\pi^2}{8}-\frac12,\quad u_V=\frac{3\pi^2}{4}-1,$$
+$$\begin{aligned}
+U_{\rm uv}&=\int_0^\infty dt\,w_\infty(t)=2\,u_S\,g_{VS}^2-s_{\rm ct}\,m_{\rm ct}^2\big[(g_0^{\rm eff}-g_8^{\rm eff})\,u_S+(g_1^{\rm eff}+g_7^{\rm eff})\,u_V\big],\\
+u_S&=\frac{\pi^2}{8}-\frac12,\qquad u_V=\frac{3\pi^2}{4}-1,
+\end{aligned}$$
 
 is below $4\pi^2$; no gap is given above that criterion.
 

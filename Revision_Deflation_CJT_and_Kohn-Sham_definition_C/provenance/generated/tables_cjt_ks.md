@@ -89,7 +89,7 @@
 <!-- END n_cjt_ks_checks_independent -->
 
 <!-- BEGIN n_symbol_checks -->
-7 of 8
+8 of 8
 <!-- END n_symbol_checks -->
 
 <!-- BEGIN n_checks_rust -->
@@ -113,11 +113,11 @@
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
-624 numbers in 29 documents, 0 not traced
+660 numbers in 29 documents, 0 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-18
+20
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN mat_gamma1644_0 -->
@@ -1823,7 +1823,7 @@ $1.3\times10^{-15}$
 | Table~\ref{tab:cjtvac} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_vacuum.csv` |
 | Fig.~\ref{fig:cjtsea} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_saturation.csv`, `cjt_sea_vacuum.csv` |
 | Table~\ref{tab:vachalves} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum_critical.csv` |
-| Table~\ref{tab:vachalvesclock} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum.csv` |
+| Table~\ref{tab:vacclock} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum.csv` |
 | Fig.~\ref{fig:vachalves} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum.csv` |
 | Table~\ref{tab:unified} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_unified_thresholds.csv` |
 | Fig.~\ref{fig:unified} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `unified_phase_mode.csv`, `unified_thresholds.csv` |
@@ -2230,7 +2230,7 @@ $1.3\times10^{-15}$
 | `tab:cjtvac` | table |  | `kohnsham` | `cjt_sea_vacuum.csv` |
 | `fig:cjtsea` | figure `fig_cjt_sea` | The filled states of negative energy | `kohnsham` | `cjt_sea_saturation.csv`, `cjt_sea_vacuum.csv` |
 | `tab:vachalves` | table | The vacuum of a field without mass term in the two forms, with the filled states of negative energy (units of the cutoff) | `forms` | `forms_vacuum_critical.csv` |
-| `tab:vachalvesclock` | table | The masses of the two halves in vacuum, in units of the cutoff, along the deflation clock counted from the critical strength of the massless field (set A), without bare mass and with the bare mass ... | `forms` | `forms_vacuum.csv` |
+| `tab:vacclock` | table | The masses of the two halves in vacuum, in units of the cutoff, along the deflation clock counted from the critical strength of the massless field (set A), without bare mass and with the bare mass ... | `forms` | `forms_vacuum.csv` |
 | `fig:vachalves` | figure `fig_forms_vacuum` | The masses of the particles of the two halves in vacuum with the filled states of negative energy, along the clock counted from the critical strength of a massless field (dotted line; ..., set A; units of the cutoff) | `forms` | `forms_vacuum.csv` |
 | `tab:unified` | table | Bare Dirac mass, contact couplings and Vorton-Scalar together in the two forms (..., without the filled states) | `forms` | `forms_unified_thresholds.csv` |
 | `fig:unified` | figure `fig_unified` | Bare Dirac mass, contact couplings and Vorton-Scalar together | `kohnsham` | `unified_phase_mode.csv`, `unified_thresholds.csv` |
