@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # check_all.sh (Revision_Deflation_CJT_and_Kohn-Sham_definition_C) -- one verdict for the whole folder.
 #
-# Runs the checks of the documents again and reads the verdict of every check report in
-# data/.  Prints one line for each, and ends with the status 0 only if every one of them
-# passes.  It exists because a report that fails is easy to overlook when only the last
+# Runs the checks of the documents again, reads the verdict of every check report in
+# data/, and verifies that every data file was written in this folder.  Prints one line
+# for each, and ends with the status 0 only if every one of them passes.  It exists because a report that fails is easy to overlook when only the last
 # lines of a long output are read: nothing is to be committed unless this script ends
 # with "ALL PASS".
 #
@@ -48,7 +48,9 @@ fi
 # 4. a report that a document prints must be the report as it now is in data/
 #    (a document assembled before a check was run again would print an outdated report)
 stale=$(python3 - <<'PY'
-import glob, os, re
+import glob, os, re, sys
+sys.path.insert(0, "code/scripts")
+from assemble_docs import fold_long_lines   # a document prints a report with its long lines continued on the next line
 out = []
 for src in sorted(glob.glob("docs_src/*.src.md")):
     text = open(src, encoding="utf-8").read()
@@ -58,7 +60,7 @@ for src in sorted(glob.glob("docs_src/*.src.md")):
         continue
     built = open(m.group(1), encoding="utf-8").read()
     for f in re.findall(r"\{\{FILE:([^}]+)\}\}", text):
-        if not os.path.exists(f) or open(f, encoding="utf-8").read().strip() not in built:
+        if not os.path.exists(f) or fold_long_lines(open(f, encoding="utf-8").read().rstrip("\n")).strip() not in built:
             out.append("%s prints an outdated %s" % (m.group(1), f))
 print("; ".join(out))
 PY
@@ -87,6 +89,21 @@ PY
 )
 if [ -n "$bad" ]; then line FAIL "a formula ends directly before a digit: $bad"; fail=1
 else line PASS "no formula ends directly before a digit"; fi
+
+# 6. every file in data/ must have been written in this folder: the folder began as a copy of
+#    the folder Revision_Deflation_CJT_and_Kohn-Sham, and a file that a command of this folder
+#    did not write again would carry the numbers of the other program.  Every data file and
+#    every report names the folder in its first three lines; the one exception is
+#    data/pair_classification.txt, which the command `matrices` of this folder writes from a
+#    routine of the library crate that prints no head line (its content does not depend on
+#    the folder).
+foreign=""
+for f in data/*; do
+    [ "$f" = "data/pair_classification.txt" ] && continue
+    if ! head -3 "$f" | grep -q "Revision_Deflation_CJT_and_Kohn-Sham_definition_C"; then foreign="$foreign $f"; fi
+done
+if [ -n "$foreign" ]; then line FAIL "data files that do not name this folder in their first three lines:$foreign"; fail=1
+else line PASS "every file in data/ names this folder in its first three lines ($(ls data | wc -l | tr -d ' ') files; pair_classification.txt excepted)"; fi
 
 if [ $fail -eq 0 ]; then echo "ALL PASS"; else echo "SOME CHECK FAILS"; fi
 exit $fail
