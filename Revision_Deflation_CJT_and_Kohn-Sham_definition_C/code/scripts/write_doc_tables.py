@@ -201,7 +201,7 @@ def tex_name(q):
 # ------------------------------------------------------------------------------------------
 def check_counts():
     total = 0
-    rust = ("selfcoupling_checks", "kohnsham_checks", "pairing_checks", "gravity_checks",
+    rust = ("selfcoupling_checks", "kohnsham_checks", "forms_checks", "pairing_checks", "gravity_checks",
             "flat_matrix_checks", "deflating_checks", "mode_checks", "history_checks", "quench_checks", "cosmology_checks",
             "symmetry_checks", "channel_checks", "matter_checks", "paired_checks", "background_checks", "spectrum_checks",
             "forecast_checks", "families_checks", "superfluid_checks")
@@ -703,12 +703,13 @@ def symmetry_table_ms():
 # the source files of the Rust program (provenance RP8): lines and tests are counted, not typed
 # ------------------------------------------------------------------------------------------
 SOURCE_FILES = [
-    (["selfint.rs"], "the self-interaction: the 256 matrices and nine invariants of the three models (7+1; 4+4 in the quantized-sector and in the covariant form) in exact integer arithmetic; Fierz matrix; reduction to four couplings; Hartree-Fock couplings; pair couplings; symmetries"),
+    (["selfint.rs"], "the self-interaction: the 256 matrices and nine invariants of the three models (7+1; 4+4 in the covariant form, the definition, and in the quantized-sector form, the alternative) in exact integer arithmetic; Fierz matrix; reduction to four couplings; Hartree-Fock couplings of four densities; pair couplings; chiral and internal symmetry; the exact relation between the two forms"),
+    (["halves.rs"], "the two halves $W=\\pm1$ of the 4+4 field as two kinds of particles, for either form of the self-interaction: mean-field couplings of the totals and of the differences, closed forms of the Fermi integrals, all solutions of the two coupled gap equations, the state of lowest energy with respect to the polarization, saturation, binding thresholds, the response matrix of the gap equations, the CJT effective potential of two halves, the vacuum with the filled states of negative energy, the functional with the Vorton-Scalar"),
     (["kohn_sham.rs"], "the Kohn-Sham method for uniform matter with scalar and vector coupling: Fermi integrals over a ball and over an ellipsoid of momenta, gap equation, energy density, pressures, saturation, thresholds; the two halves of the 4+4 field; the functional with bare mass, contact couplings and Vorton-Scalar"),
     (["cjt_contact.rs"], "the CJT effective potential of uniform matter with contact interaction, without and with the filled states of negative energy; vacuum mass; critical coupling"),
-    (["pair_contact.rs"], "pairing amplitudes of the contact channels in the hidden-axis channel (closed forms and direct evaluation); the pairing kernel with contact couplings and exchange of the Vorton-Scalar"),
+    (["pair_contact.rs"], "pairing amplitudes of the contact channels in the pairs along the extra axes (closed forms and direct evaluation, both forms of 4+4); the pairing kernel with contact couplings and exchange of the Vorton-Scalar; the ultraviolet strength of the kernel"),
     (["gravity.rs"], "the Einstein-Lovelock equations for two scale factors from the pair curvatures; constraint; evolution with Kohn-Sham matter as the source"),
-    (["cmd_selfcoupling.rs", "cmd_kohnsham.rs", "cmd_pairing.rs", "cmd_gravity.rs"], "the commands `selfcoupling`, `kohnsham`, `pairing`, `gravity`"),
+    (["cmd_selfcoupling.rs", "cmd_kohnsham.rs", "cmd_forms.rs", "cmd_forms_b.rs", "cmd_pairing.rs", "cmd_gravity.rs"], "the commands `selfcoupling`, `kohnsham`, `forms` (two files), `pairing`, `gravity`"),
     (["rat.rs"], "exact rational numbers with overflow checks; the trait that lets the geometry be computed in rational or in floating-point arithmetic"),
     (["qmat.rs"], "exact matrices with complex-rational entries"),
     (["metric.rs"], "the deflating metric in the sign convention of the hypothesis: Christoffel symbols, Riemann, Ricci and Einstein tensors from their definitions and in closed form; Killing vectors; Lie derivative"),
@@ -978,20 +979,34 @@ def cjt_ks_fragments():
     text("grav_ref_dev", tex_num("%.1e" % dev)); text("grav_ref_constraint", tex_num("%.1e" % cons))
     gs_ = rows_of("gravity_deflating_summary.csv")
     rows, runaway, cmax, ends = [], [0, 0], 0.0, {}
+    def matter_kind(text_):
+        if text_.startswith("7+1, momenta"):
+            return 0
+        if text_.startswith("fields"):
+            return 1
+        if text_.startswith("4+4, covariant"):
+            return 2
+        assert text_.startswith("4+4, quantized-sector"), text_
+        return 3
+    kind_names = ["$7+1$, seven momenta", "$7+1$ sector, $D=4$", "$4+4$, form C", "$4+4$, form Q"]
+    ends4 = {}
     for x in gs_:
-        sector = x["matter"].startswith("fields")
+        kind = matter_kind(x["matter"])
+        sector = kind >= 1
         tuned = x["gravity"].startswith("Einstein-Lovelock")
-        rows.append(["sector, $D=4$" if sector else "seven momenta", "tuned EL" if tuned else "Einstein", tex_num("%.0e" % num(x["loading"])).replace("$1\\times", "$"),
+        rows.append([kind_names[kind], "tuned EL" if tuned else "Einstein", tex_num("%.0e" % num(x["loading"])).replace("$1\\times", "$"),
                      "$%s$" % fix(x["Hb0_over_g"], 4), "runaway" if x["stop"] == "runaway" else "reached", fix(x["tau_ref_end"], 2), fix(x["a_end"], 4), auto(x["b_end"], 4),
                      "$%s$" % ("%+.4f" % num(x["Ha_end_over_g"])), "$%s$" % fix(x["Hb_end_over_g"], 3)])
         runaway[1 if sector else 0] += x["stop"] == "runaway"
         cmax = max(cmax, num(x["constraint"]))
         if tuned and abs(num(x["loading"]) - 1e-3) < 1e-9:
-            ends[sector] = num(x["Hb_end_over_g"]) / num(x["Hb0_over_g"])
-    assert len(rows) == 8 and [r[0] for r in rows[:4]] == ["seven momenta"] * 4, "order of the rows of gravity_deflating_summary.csv"
+            ends4[kind] = num(x["Hb_end_over_g"]) / num(x["Hb0_over_g"])
+    ends = {False: ends4[0], True: ends4[1]}
+    text("grav_end_formC", fix(ends4[2], 1)); text("grav_end_formQ", fix(ends4[3], 1))
+    assert len(rows) == 16 and [r[0] for r in rows[:4]] == [kind_names[0]] * 4, "order of the rows of gravity_deflating_summary.csv"
     table("tbl_gravity_deflating", ["matter", "gravity", "loading", "$H_{\\mathsf b}(0)/\\mathrm{g55}$", "end", "$\\tau_d^0$", "$\\mathsf a$", "$\\mathsf b$", "$H_{\\mathsf a}/\\mathrm{g55}$", "$H_{\\mathsf b}/\\mathrm{g55}$"],
           rows, ["l", "l", "r", "r", "l", "r", "r", "r", "r", "r"])
-    words = ["none", "one", "two", "three", "four", "five", "six", "seven", "eight"]
+    words = ["none", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"]
     text("grav_n_runaway", words[runaway[0] + runaway[1]]); text("grav_n_runaway_sector", words[runaway[1]])
     text("grav_end_all", fix(ends[False], 1)); text("grav_end_sector", fix(ends[True], 1))
     text("grav_constraint", tex_num("%.1e" % cmax))
@@ -1044,11 +1059,311 @@ def cjt_ks_fragments():
     table("tbl_crosschecks", ["result", "obtained by", "deviation"], rows, ["L", "L", "r"])
 
 
+def forms_fragments():
+    """Fragments on the two forms of the self-interaction on 4+4 (command `forms`, and the parts of the commands
+    `selfcoupling`, `pairing` and `gravity` that concern the two forms)."""
+    form_word = {"C": "C", "Q": "Q", 0: "C", 1: "Q"}
+
+    def frac16(v):
+        """A rational number with a denominator up to 160 as a reduced fraction (the couplings of the sets A and B
+        are multiples of 1/16 and of 1/80)."""
+        from fractions import Fraction
+        v = num(v)
+        fr = Fraction(v).limit_denominator(160)
+        assert abs(float(fr) - v) < 1e-9, "not a fraction with a small denominator: %r" % v
+        if fr == 0:
+            return "0"
+        sign = "-" if fr < 0 else ""
+        return "$%s%d$" % (sign, abs(fr.numerator)) if fr.denominator == 1 else "$%s\\tfrac{%d}{%d}$" % (sign, abs(fr.numerator), fr.denominator)
+
+    # ---- the four Hartree-Fock combinations in the nine couplings (exact; command selfcoupling) -------------
+    hf = rows_of("selfcoupling_hartree_fock.csv")
+    names = {"G_0": "G_S^{\\rm HF}", "G_1": "G_V^{\\rm HF}", "G_S0": "G_S^{\\rm c}", "G_V0": "G_V^{\\rm c}"}
+    seen = {}
+    for x in hf:
+        if x["model"] in ("44c", "44q"):
+            f_ = g_formula([x["c%d" % k] for k in range(9)], names[x["coupling"]])
+            assert seen.setdefault(x["coupling"], f_) == f_, "the two forms give different formulas for " + x["coupling"]
+    for key, frag in (("G_S0", "hf_formula_Sc"), ("G_V0", "hf_formula_Vc")):
+        text(frag, seen[key])
+    assert seen["G_0"] == dict(FRAGS)["hf_formula_S"] and seen["G_1"] == dict(FRAGS)["hf_formula_V"]
+    dens = {"rho": "$n^2$", "rho_S": "$n_S^2$", "rho_W": "$n_W^2$", "rho_SW": "$n_{SW}^2$"}
+    rows = []
+    for d_ in ("rho", "rho_S", "rho_W", "rho_SW"):
+        c = [x for x in hf if x["model"] == "44c" and x["density"] == d_][0]["coupling"]
+        q = [x for x in hf if x["model"] == "44q" and x["density"] == d_][0]["coupling"]
+        rows.append([dens[d_], "$%s$" % names[c], "$%s$" % names[q]])
+    table("tbl_fm_hf_roles", ["coefficient of", "form C (the definition)", "form Q (the alternative)"], rows, ["l", "l", "l"])
+
+    # ---- the couplings of the two sets -----------------------------------------------------------------------
+    cp = rows_of("forms_couplings.csv")
+    table("tbl_fm_couplings", ["set", "form", "$T_V/g$", "$T_S/g$", "$D_V/g$", "$D_S/g$", "$a_V/g$", "$a_S/g$", "$(T_V-D_V)/g$", "$(T_S-D_S)/g$"],
+          [[x["set"], x["form"]] + [frac16(x[k]) for k in ("T_V", "T_S", "D_V", "D_S", "a_V", "a_S", "b_V", "b_S")] for x in cp], ["l", "l"] + ["r"] * 8)
+
+    # ---- thresholds -------------------------------------------------------------------------------------------
+    th = rows_of("forms_thresholds.csv")
+    table("tbl_fm_thresholds", ["$D$", "set", "form", "$g\\,m^{D-1}$", "state", "$k_{F,\\rm tot}/m$", "$M_+/m$", "$M_-/m$", "$\\Lambda_{\\max}/m$"],
+          [[x["D"], x["set"], x["form"], fix(x["g_threshold"], 4), x["kind"], fix(x["kF_total"], 4), fix(x["M_plus"], 4), fix(x["M_minus"], 4), fix(x["cutoff_max"], 3)] for x in th],
+          ["r3", "l4", "l5", "r10", "l13", "r9", "r8", "r8", "r9"])
+    thr = {(int(x["D"]), x["set"], x["form"]): num(x["g_threshold"]) for x in th}
+    for d in (4, 3):
+        for st in "AB":
+            text("fm_thr_d%d_%s_C" % (d, st), fix(thr[(d, st, "C")], 2 if d == 4 else 3))
+            text("fm_thr_d%d_%s_Q" % (d, st), fix(thr[(d, st, "Q")], 2 if d == 4 else 3))
+            text("fm_thr_ratio_d%d_%s" % (d, st), fix(thr[(d, st, "C")] / thr[(d, st, "Q")], 2))
+            text("fm_thr_dtau_d%d_%s" % (d, st), fix(math.log(thr[(d, st, "C")] / thr[(d, st, "Q")]), 2))
+    f2 = check_statement("forms_checks", "fm-F2")
+    text("fm_thr_onekind_dev", tex_num(grab(f2, r"largest relative difference ([\d.e+-]+)\)")))
+    for x in th:
+        assert x["kind"] == ("one half" if x["form"] == "C" else "equal halves"), "kind of the bound state at the threshold"
+
+    # ---- saturation along the clock -------------------------------------------------------------------------
+    sat = rows_of("forms_saturation.csv")
+    rows = []
+    resp_max = max(num(x["response"]) for x in sat)
+    for d in (4, 3):
+        for iset, st in enumerate("AB"):
+            for iform, fm in enumerate("CQ"):
+                sel = near(sat, D=float(d), set=float(iset), form=float(iform))
+                row = ["%d" % d, st, fm]
+                for tau in (1.0, 2.0, 3.0, 4.0):
+                    x = near(sel, tau_d=tau)[0]
+                    row.append("$%s$" % fix(x["e_bind"], 4))
+                x1, x3 = near(sel, tau_d=1.0)[0], near(sel, tau_d=3.0)[0]
+                row += [fix(x1["M_plus"], 3), fix(x3["M_plus"], 3), fix(x1["kF_total"], 3), fix(x3["kF_total"], 3)]
+                rows.append(row)
+                kinds = set(round(num(x["pol"]), 6) for x in sel if num(x["tau_d"]) > 0.07)
+                assert kinds == ({1.0} if fm == "C" else {0.0}), "the kind of the saturated state changes along the clock"
+    table("tbl_fm_saturation", ["$D$", "set", "form", "$\\tau_d=1$", "$2$", "$3$", "$4$", "$M$ at 1", "$M$ at 3", "$k$ at 1", "$k$ at 3"], rows, ["r3", "l4", "l5", "r10", "r10", "r10", "r10", "r8", "r8", "r8", "r8"])
+    text("fm_response_max", fix(resp_max, 3))
+    f4 = check_statement("forms_checks", "fm-F4")
+    m_ = re.search(r"reaches the eigenvalue 1 .*? at: (.*?); the saturated state of the covariant form", f4)
+    assert m_, "check fm-F4 does not list the clock readings of the eigenvalue 1"
+    stab = dict(re.findall(r"(D = \d, set [AB]): (tau_d = [\d.]+|not before tau_d = 9)", m_.group(1)))
+    assert len(stab) == 4, stab
+    text("fm_stab_list", "; ".join("$D=%s$, set %s: %s" % (k[4], k[-1], ("$\\tau_d=%s$" % v.split("= ")[1]) if v.startswith("tau") else "not before $\\tau_d=9$") for k, v in stab.items()))
+    first = min((float(v.split("= ")[1]), k) for k, v in stab.items() if v.startswith("tau"))
+    text("fm_stab_first_tau", fix(first[0], 2)); text("fm_stab_first_case", "$D=%s$, set %s" % (first[1][4], first[1][-1]))
+
+    # ---- energy against polarization ------------------------------------------------------------------------
+    pol = rows_of("forms_energy_vs_polarization.csv")
+    rows = []
+    for d in (4, 3):
+        for iset, st in enumerate("AB"):
+            for mult in (1.5, 3.0):
+                row = ["%d" % d, st, "%g" % mult]
+                for iform in (0, 1):
+                    for pl in (0.0, 0.5, 1.0):
+                        x = near(pol, D=float(d), set=float(iset), form=float(iform), mult=mult, kF_total=0.6, pol=pl)
+                        row.append("$%s$" % ("%+.4f" % num(x[0]["e_bind"])) if x else "—")
+                rows.append(row)
+    table("tbl_fm_polarization", ["$D$", "set", "strength", "C, $\\mathrm{pol}_W=0$", "C, $0.5$", "C, $1$", "Q, $\\mathrm{pol}_W=0$", "Q, $0.5$", "Q, $1$"], rows, ["r3", "l4", "r8", "r12", "r10", "r10", "r12", "r10", "r10"])
+    f3 = check_statement("forms_checks", "fm-F3")
+    text("fm_pol_n_cases", grab(f3, r"is polarized in (\d+) of the \d+ cases"))
+    text("fm_pol_n_all", grab(f3, r"is polarized in \d+ of the (\d+) cases"))
+    text("fm_pol_n_q", grab(f3, r"in the quantized-sector form it is polarized in (\d+) cases"))
+    text("fm_pol_n_states", grab(f3, r"in each case and form \((\d+) states\)"))
+    text("fm_pol_n_missing", grab(f3, r"In the quantized-sector form (\d+) states with unequal halves do not exist"))
+
+    # ---- matter of fixed density --------------------------------------------------------------------------------
+    ev = rows_of("forms_gas_events.csv")
+    def tau_cell(v):
+        return "—" if math.isnan(num(v)) else "$%s$" % ("%+.2f" % num(v))
+    table("tbl_fm_gas", ["$D$", "set", "form", "$k_{F,\\rm tot}/m$", "halves unequal from", "one half empty from", "pressure negative from"],
+          [["%d" % num(x["D"]), "AB"[int(num(x["set"]))], "CQ"[int(num(x["form"]))], fix(x["kF_total"], 1), tau_cell(x["tau_polarized"]), tau_cell(x["tau_one_half"]), tau_cell(x["tau_p0"])] for x in ev],
+          ["r", "l", "l", "r", "r", "r", "r"])
+    f5 = check_statement("forms_checks", "fm-F5")
+    text("fm_gas_width", grab(f5, r"within at most ([\d.]+) of the clock"))
+    text("fm_gas_n_no_tension", grab(f5, r"and in (\d+) of the 8 cases"))
+
+    # ---- the two methods compared -----------------------------------------------------------------------------
+    f6 = check_statement("forms_checks", "fm-F6")
+    text("fm_cjt_n_states", grab(f6, r"for (\d+) states"))
+    text("fm_cjt_dev", tex_num(grab(f6, r"sum of the deviations at most ([\d.e+-]+);")))
+    text("fm_cjt_n_equal", grab(f6, r"(\d+) with equal halves"))
+    text("fm_cjt_n_unequal", grab(f6, r"(\d+) with unequal halves"))
+    text("fm_cjt_n_one", grab(f6, r"(\d+) with one half filled"))
+
+    # ---- the vacuum ---------------------------------------------------------------------------------------------
+    vc = rows_of("forms_vacuum_critical.csv")
+    rows = []
+    for d in (4, 3):
+        for st in "AB":
+            c = [x for x in vc if int(x["D"]) == d and x["set"] == st and x["form"] == "C"][0]
+            q = [x for x in vc if int(x["D"]) == d and x["set"] == st and x["form"] == "Q"][0]
+            assert abs(num(c["g_crit"]) - num(q["g_crit"])) < 1e-9 * num(c["g_crit"])
+            assert abs(num(c["Mp_above"]) + num(c["Mm_above"])) < 1e-7 and abs(num(q["Mp_above"]) - num(q["Mm_above"])) < 1e-7 and num(c["Mp_above"]) > 0 and num(q["Mp_above"]) > 0
+            rows.append(["%d" % d, st, "$%s$" % fix(c["Gc"], 4), fix(c["g_crit"], 4), "$(%s,\\ %s)$" % (fix(q["Mp_above"], 4), fix(q["Mm_above"], 4)), "$(%s,\\ %s)$" % (fix(c["Mp_above"], 4), fix(c["Mm_above"], 4))])
+    table("tbl_fm_vacuum_critical", ["$D$", "set", "$G_c\\Lambda^{D-1}$", "$g_{\\rm crit}\\Lambda^{D-1}$", "form Q: $(M_+,M_-)/\\Lambda$", "form C: $(M_+,M_-)/\\Lambda$"], rows, ["r3", "l4", "r10", "r10", "r18", "r18"])
+    va = rows_of("forms_vacuum.csv")
+    rows = []
+    for d in (4, 3):
+        for mb in (0.0, 0.05):
+            for iform, fm in ((1, "Q"), (0, "C")):
+                sel = near(va, D=float(d), set=0.0, form=float(iform), m_bare=mb)
+                row = ["%d" % d, "0" if mb == 0 else "%g" % mb, fm]
+                for tau in (-0.5, 0.1, 0.5, 1.0):
+                    x = near(sel, tau_d=tau)[0]
+                    a_, b_ = num(x["M_large"]), num(x["M_small"])
+                    cell = lambda v: "0" if abs(v) < 5e-4 else fix(v, 3)
+                    row.append("$%s$" % cell(a_) if abs(a_ - b_) < 5e-7 else "$(%s,\\ %s)$" % (cell(a_), cell(b_)))
+                rows.append(row)
+    table("tbl_fm_vacuum", ["$D$", "$m_{\\rm bare}/\\Lambda$", "form", "$\\tau_d=-0.5$", "$0.1$", "$0.5$", "$1$"], rows, ["r3", "r8", "l5", "r9", "r18", "r18", "r18"])
+    f7 = check_statement("forms_checks", "fm-F7")
+    splits = re.findall(r"D = (\d), set ([AB]): tau_d = (-?[\d.]+) \(linear criterion (-?[\d.]+)\)", f7)
+    assert len(splits) == 4, "check fm-F7 does not list four transitions"
+    text("fm_vac_split_list", "; ".join("$D=%s$, set %s: $\\tau_d=%s$" % (a_, b_, "%.3f" % float(c_)) for a_, b_, c_, _ in splits))
+    text("fm_vac_split_dev", tex_num(grab(f7, r"at the common mass to ([\d.e+-]+)")))
+    for d in (4, 3):
+        x = [y for y in vc if int(y["D"]) == d and y["set"] == "A" and y["form"] == "C"][0]
+        text("fm_vac_gcrit_d%d" % d, fix(x["g_crit"], 3)); text("fm_vac_mass_d%d" % d, fix(x["Mp_above"], 4)); text("fm_vac_Gc_d%d" % d, fix(abs(num(x["Gc"])), 4))
+
+    # ---- bare mass, self-interaction and Vorton-Scalar together -----------------------------------------------
+    un = rows_of("forms_unified_thresholds.csv")
+    rows = []
+    for fd in (0.0, 0.25, 0.5):
+        for k0, k1 in ((0.0, 0.0), (1.0, 0.0), (1.0, 0.1)):
+            row = ["%g" % fd, "%g" % k0, "%g" % k1]
+            for fm in "CQ":
+                x = [y for y in un if abs(num(y["f_D"]) - fd) < 1e-9 and abs(num(y["kappa_0"]) - k0) < 1e-9 and abs(num(y["kappa_1"]) - k1) < 1e-9 and y["form"] == fm][0]
+                d_ = num(x["dtau"])
+                assert x["method"] == "0" and num(x["pol"]) < 1e-6, "a threshold of the functional with the Vorton-Scalar is not that of matter with equal halves"
+                row += ["%s ($%s$)" % (fix(x["C_bind"], 4), ("%+.3f" % d_) if abs(d_) > 5e-4 else "0"), fix(x["x"], 3)]
+            rows.append(row)
+    table("tbl_fm_unified", ["$f_D$", "$\\kappa_0$", "$\\kappa_1$", "form C: $C$ ($\\Delta\\tau_d$)", "$x$", "form Q: $C$ ($\\Delta\\tau_d$)", "$x$"], rows, ["r6", "r5", "r5", "r20", "r8", "r20", "r8"])
+    f8 = check_statement("forms_checks", "fm-F8")
+    text("fm_uni_margin", tex_num(grab(f8, r"E/N - m >= ([\d.e+-]+) m")))
+    text("fm_uni_n", grab(f8, r"In (\d+) of the \d+ cases"))
+
+    # ---- scalar coupling of the opposite sign -------------------------------------------------------------------
+    f9 = check_statement("forms_checks", "fm-F9")
+    text("fm_f9_statement", tex_sci_in_text(md_escape(f9.split(") ", 1)[1])))
+
+    # ---- pairs at rest ---------------------------------------------------------------------------------------------
+    pr = rows_of("selfcoupling_pairs.csv")
+    classes = {}
+    for x in pr:
+        if x["model"] not in ("44c", "44q") or x["at_rest"] != "yes":
+            continue
+        key = (x["model"], x["w_parity"], tuple(int(x["q%d" % k]) for k in (0, 1, 7, 8)))
+        classes.setdefault(key, set()).add(frozenset([x["mask"], str(int(x["mask"]) ^ 16)]))     # X_J and X_J gamma^4 are the same pair
+    def gp(q):
+        terms = []
+        for c_, nm in zip(q, ("g_0^{\\rm eff}", "g_1^{\\rm eff}", "g_7^{\\rm eff}", "g_8^{\\rm eff}")):
+            if c_ == 0:
+                continue
+            mag = "" if abs(c_) == 1 else "%d\\," % abs(c_)
+            terms.append(("-" if c_ < 0 else ("+" if terms else "")) + mag + nm)
+        return "$" + "".join(terms) + "$"
+    rows = []
+    for model, label in (("44c", "C"), ("44q", "Q")):
+        for key in sorted(k for k in classes if k[0] == model):
+            rows.append([label, "%d" % len(classes[key]), "same half" if key[1] == "1" else "different halves", gp(key[2])])
+    assert sum(int(r[1]) for r in rows if r[0] == "C") == 28 and sum(int(r[1]) for r in rows if r[0] == "Q") == 28, "the pairs at rest do not add up to 28"
+    table("tbl_fm_pairs_rest", ["form", "number of pairs", "the two particles are in", "$G_{\\rm pair}$"], rows, ["l", "r", "l", "l"])
+
+    # ---- the gap in the two kinds of pairs ---------------------------------------------------------------------------
+    pg = rows_of("pair_gap_history.csv")
+    taus = sorted(set(round(num(x["tau_d"]), 6) for x in pg))
+    labels = ["exchange of the Vorton-Scalar alone", "with $g_0^{\\rm eff}=-g_{VS}^2/m^2$", "with $g_0^{\\rm eff}=-g_{VS}^2/m^2$, $g_1^{\\rm eff}=+0.1\\,g_{VS}^2/m^2$",
+              "with $g_1^{\\rm eff}=+0.3\\,g_{VS}^2/m^2$", "with $g_7^{\\rm eff}=-0.1\\,g_{VS}^2/m^2$", "contact couplings alone ($g_0^{\\rm eff}=-g_{VS}^2/m^2$, $g_1^{\\rm eff}=+0.1\\,g_{VS}^2/m^2$)"]
+    def gap_cell(x):
+        v = num(x["gap"])
+        return "none" if math.isnan(v) else fix(v, 4)
+    for tname, tau_want in (("tbl_fm_gap", 2.04), ("tbl_fm_gap_late", 2.77)):
+        tau = min(taus, key=lambda t: abs(t - tau_want))
+        rows = []
+        for v, lab in enumerate(labels):
+            row = [lab]
+            for set_ in (2.0, 3.0):
+                for sign in (1.0, -1.0):
+                    x = [y for y in near(pg, set=set_, variant=float(v), ct_sign=sign) if abs(num(y["tau_d"]) - tau) < 1e-5][0]
+                    row.append(gap_cell(x))
+            x = [y for y in near(pg, set=3.0, variant=float(v), ct_sign=1.0) if abs(num(y["tau_d"]) - tau) < 1e-5][0]
+            y_ = [y for y in near(pg, set=3.0, variant=float(v), ct_sign=-1.0) if abs(num(y["tau_d"]) - tau) < 1e-5][0]
+            row += [fix(x["uv"], 3), fix(y_["uv"], 3)]
+            rows.append(row)
+        table(tname, ["interaction", "$m_s=0.3m$, $s=+1$", "$s=-1$", "$m_s=m$, $s=+1$", "$s=-1$", "$U/4\\pi^2$, $s=+1$", "$s=-1$"], rows, ["l34", "r10", "r8", "r10", "r8", "r10", "r8"])
+        text(tname.replace("tbl_", "") + "_tau", fix(tau, 2))
+    # the ultraviolet strengths per unit g_VS^2 and the clock readings of the criterion (formula; compared with the file)
+    i_s, i_v = math.pi ** 2 / 8 - 0.5, 3 * math.pi ** 2 / 4 - 1
+    contact = [(0, 0, 0), (-1, 0, 0), (-1, 0.1, 0), (0, 0.3, 0), (0, 0, -0.1), (-1, 0.1, 0)]
+    rows = []
+    for v, lab in enumerate(labels):
+        g0, g1, g7 = contact[v]
+        cells = [lab]
+        for sign in (1.0, -1.0):
+            u1 = (0.0 if v == 5 else 2 * i_s) - sign * (g0 * i_s + (g1 + g7) * i_v)
+            x = [y for y in near(pg, set=3.0, variant=float(v), ct_sign=sign)][-1]
+            assert abs(u1 / (4 * math.pi ** 2) * num(x["g"]) ** 2 - num(x["uv"])) < 1e-8, "ultraviolet strength of the file against the formula"
+            if u1 > 0:
+                g2c = 4 * math.pi ** 2 / u1
+                cells += [fix(u1, 3), fix(g2c, 2), fix(math.log(g2c), 2)]
+            else:
+                cells += ["$%s$" % fix(u1, 3), "—", "—"]
+        rows.append(cells)
+    table("tbl_fm_uv", ["interaction", "$s=+1$: $U/g_{VS}^2$", "critical $g_{VS}^2$", "$\\tau_d$", "$s=-1$: $U/g_{VS}^2$", "critical $g_{VS}^2$", "$\\tau_d$"], rows, ["l34", "r10", "r9", "r6", "r10", "r9", "r6"])
+    text("uv_IS", fix(i_s, 4)); text("uv_IV", fix(i_v, 4)); text("uv_g2c_exchange", fix(4 * math.pi ** 2 / (2 * i_s), 2)); text("uv_tau_exchange", fix(math.log(4 * math.pi ** 2 / (2 * i_s)), 2))
+    text("uv_g2c_v3minus", fix(4 * math.pi ** 2 / (2 * i_s + 0.3 * i_v), 2)); text("uv_tau_v3minus", fix(math.log(4 * math.pi ** 2 / (2 * i_s + 0.3 * i_v)), 2))
+    text("uv_tau_last", fix(max(taus), 2))
+    lim = rows_of("pair_gap_upper_limit.csv")
+    rows = []
+    for v, sign, lab in ((0, 1.0, labels[0]), (1, 1.0, labels[1] + ", $s=+1$"), (3, -1.0, labels[3] + ", $s=-1$")):
+        for tau_want in (2.04, 2.53, 2.77):
+            sel = near(lim, set=3.0, variant=float(v), ct_sign=sign)
+            x = min(sel, key=lambda y: abs(num(y["tau_d"]) - tau_want))
+            rows.append([lab, fix(x["tau_d"], 2), fix(x["uv"], 3)] + [auto(x[k], 5) for k in ("gap_60", "gap_2e3", "gap_2e4", "gap_2e5")])
+    table("tbl_fm_gap_limit", ["interaction", "$\\tau_d$", "$U/4\\pi^2$", "$K=60$", "$2\\times10^3$", "$2\\times10^4$", "$2\\times10^5$"], rows, ["l30", "r6", "r8", "r10", "r10", "r13", "r13"])
+    p7 = check_statement("pairing_checks", "pc-P7")
+    m_ = re.search(r"U/\(4 pi\^2\) < 0\.5 \((\d+) cases\): change from 2e4 to 2e5 at most ([\d.e+-]+), from 60 to 2e4 at most ([\d.]+) per cent; 0\.5 to 0\.7 \((\d+) cases\): ([\d.e+-]+) and ([\d.]+) per cent; 0\.7 to 0\.9 \((\d+) cases\): ([\d.e+-]+) and ([\d.]+) per cent", p7)
+    assert m_, "check pc-P7 does not state the three classes"
+    cls_rows = [["$U/4\\pi^2<0.5$", m_.group(1), tex_num(m_.group(2)), m_.group(3)], ["$0.5$ to $0.7$", m_.group(4), tex_num(m_.group(5)), m_.group(6)], ["$0.7$ to $0.9$", m_.group(7), tex_num(m_.group(8)), m_.group(9)]]
+    table("tbl_fm_uv_classes", ["ultraviolet strength", "cases", "change of the gap from $K=2\\times10^4$ to $2\\times10^5$ (relative)", "error of the limit $K=60$ (per cent)"], cls_rows, ["l", "r", "r", "r"])
+    text("uv_exchange_error", grab(p7, r"too small by up to ([\d.]+) per cent"))
+    text("uv_growth_lo", grab(p7, r"grows by a factor between ([\d.]+) and")); text("uv_growth_hi", grab(p7, r"grows by a factor between [\d.]+ and (\d+\.\d+)"))
+    text("uv_n_above", grab(p7, r"Cases above the criterion \((\d+)\)")); text("uv_n_cases", grab(p7, r"in (\d+) cases \(four sets"))
+    p6 = check_statement("pairing_checks", "pc-P6")
+    text("uv_v3_n_above", grab(p6, r"at (\d+) of the \d+ clock readings")); text("uv_v3_last_below", grab(p6, r"last reading below it is tau_d = ([\d.]+)")); text("uv_v3_first_above", grab(p6, r"first above it tau_d = ([\d.]+)"))
+    wins = re.findall(r"variant (\d): the pairs along x5, x6, x7 have the larger gap at (\d+) readings, the hidden-axis pair at (\d+)", p6)
+    assert len(wins) == 4
+    table("tbl_fm_gap_wins", ["interaction", "readings at which the pairs along $x5,x6,x7$ have the larger gap", "readings at which the hidden-axis pair has"],
+          [[labels[int(v)], a_, b_] for v, a_, b_ in wins], ["l", "r", "r"])
+    f7i = check_statement("cjt_ks_checks_independent", "Icks-F7")
+    text("gapc_indep_minus", tex_num(grab(f7i, r"agrees with the program to ([\d.e+-]+)")))
+
+    # ---- internal symmetry ---------------------------------------------------------------------------------------------
+    sy = rows_of("selfcoupling_internal_symmetry.csv")
+    def cond(model, key):
+        x = [y for y in sy if y["model"] == model and y["generators"].startswith(key)][0]
+        n_ = int(x["n_conditions"])
+        if n_ == 0:
+            return "all couplings"
+        if n_ == 2:
+            assert x["conditions"] == "g_1eff - g_7eff = 0; -g_7eff = 0", x["conditions"]
+            return "$g_1^{\\rm eff}=g_7^{\\rm eff}=0$"
+        assert n_ == 4
+        return "no coupling ($g_0^{\\rm eff}=g_1^{\\rm eff}=g_7^{\\rm eff}=g_8^{\\rm eff}=0$)"
+    gens = [("phase", "phase of the field (fermion number)", "1"), ("rotations of x5", "rotations of $x5,x6,x7$ among themselves", "3"),
+            ("rotations that mix", "rotations that mix $x0$ with $x5$, $x6$ or $x7$", "3"), ("P_E", "$P_E$, the generator of $U(1)_E$", "1")]
+    table("tbl_fm_symmetry", ["generators", "number", "$7+1$", "$4+4$, form Q", "$4+4$, form C"],
+          [[lab, n_, cond("71s", key), cond("44q", key), cond("44c", key)] for key, lab, n_ in gens], ["l", "r", "l", "l", "l"])
+
+    # ---- gravity with the matter of the two forms -----------------------------------------------------------------------
+    g6 = check_statement("gravity_checks", "gr-G6")
+    mc = re.search(r"covariant form \(the definition\): threshold g m\^3 = ([\d.]+); at three times that strength the saturated state has one half filled \(Fermi momentum of the filled states ([\d.]+) m, mass ([\d.]+) m, E/N - m = (-[\d.]+) m", g6)
+    mq = re.search(r"quantized-sector form \(the alternative\): threshold g m\^3 = ([\d.]+); at three times that strength the saturated state has equal halves \(Fermi momentum of the filled states ([\d.]+) m, mass ([\d.]+) m, E/N - m = (-[\d.]+) m", g6)
+    assert mc and mq, "check gr-G6 does not state the two kinds of matter"
+    table("tbl_fm_gravity_matter", ["form", "threshold $g\\,m^3$", "state at 3 times the threshold", "$k_F/m$ of the filled states", "$M/m$", "$\\varepsilon/n-m$ (units $m$)"],
+          [["C", mc.group(1), "one half filled", mc.group(2), mc.group(3), "$%s$" % mc.group(4)], ["Q", mq.group(1), "equal halves", mq.group(2), mq.group(3), "$%s$" % mq.group(4)]], ["l", "r", "l", "r", "r", "r"])
+    text("fm_grav_dev", tex_num(grab(g6, r"agree in mass, energy density, pressure and interaction pressure to (\d+\.\d+e[+-]?\d+)")))
+
+
 # ------------------------------------------------------------------------------------------
 # provenance of the tables and figures of the manuscripts: label -> command, source files, data files
 # ------------------------------------------------------------------------------------------
 COMMAND_SOURCES = {
     "selfcoupling": ["selfint.rs", "cmd_selfcoupling.rs"], "kohnsham": ["kohn_sham.rs", "cjt_contact.rs", "cmd_kohnsham.rs"],
+    "forms": ["halves.rs", "cmd_forms.rs", "cmd_forms_b.rs"],
     "pairing": ["pair_contact.rs", "cmd_pairing.rs"], "gravity": ["gravity.rs", "cmd_gravity.rs"],
     "matrices": ["metric.rs", "geometry.rs", "curved.rs", "main.rs"], "modes": ["modes.rs", "main.rs"], "history": ["history.rs", "main.rs"],
     "quench": ["quench.rs", "main.rs"], "cosmology": ["cosmo_defl.rs", "main.rs"], "channels": ["scalar.rs", "cmd_channels.rs"],
@@ -1135,12 +1450,13 @@ def provenance_maps():
 # provenance in plain Markdown (for the provenance documents): commands, data files, figures, and
 # the map from the tables and figures of the manuscripts to them
 # ------------------------------------------------------------------------------------------
-COMMAND_ORDER = ["selfcoupling", "kohnsham", "pairing", "gravity", "matrices", "modes", "history", "quench", "cosmology", "channels",
+COMMAND_ORDER = ["selfcoupling", "kohnsham", "forms", "pairing", "gravity", "matrices", "modes", "history", "quench", "cosmology", "channels",
                  "matter", "paired", "symmetry", "background", "spectrum", "forecast", "families", "superfluid"]
 COMMAND_CONTENT = {
     "selfcoupling": "the nine channels of the self-interaction in exact arithmetic, for 7+1 and for the two forms of 4+4: reality, invariance, Fierz matrix, reduction to four couplings, Hartree-Fock couplings, pair couplings, chiral and internal symmetry",
     "kohnsham": "uniform matter by the Kohn-Sham method and by the CJT effective potential: the flat reference example; matter on the deflating spacetimes; binding thresholds along the clock; the two halves of the 4+4 field; the filled states of negative energy; bare mass, contact couplings and Vorton-Scalar together",
-    "pairing": "the gap of the pair along the hidden axis with contact couplings and exchange of the Vorton-Scalar",
+    "forms": "the two forms of the self-interaction on 4+4 (covariant: the definition; quantized-sector: the alternative) for the same couplings of the Lagrangian: matter of the two halves of the field, its polarization, binding thresholds, saturation along the clock, matter of fixed density, the CJT effective potential of two halves, the vacuum with the filled states of negative energy, the functional with the Vorton-Scalar, couplings of the opposite sign",
+    "pairing": "the gap of the vector pairs along the extra axes with contact couplings and exchange of the Vorton-Scalar, in both forms; the ultraviolet criterion of the gap equation",
     "gravity": "the Einstein-Lovelock equations with Kohn-Sham matter as the source: the reference evolution; the deflating spacetimes with matter; stability of the deflation",
     "matrices": "checks of the Dirac matrices of the frame, of the geometry of the deflating spacetimes, of the matrices in coordinate components, of the spin connection and of the Dirac operators",
     "modes": "solutions of the Dirac equations mode by mode: creation of particles by the deflation (7+1), bounded solutions and their extinction (4+4)",
@@ -1290,6 +1606,7 @@ def main():
     symmetry_tables()
     symmetry_table_ms()
     cjt_ks_fragments()
+    forms_fragments()
     provenance_maps()
     provenance_plain()
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

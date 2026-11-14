@@ -1264,7 +1264,8 @@ def fig_pair_contact():
         for c, (iset, m_s) in enumerate(sets):
             ax = axes[r][c]
             for k, (var, name) in enumerate(variants):
-                sel = d[(d["set"] == iset) & (d["variant"] == var)]
+                # the contact couplings with the sign of the closed forms (ct_sign = +1); NaN: above the ultraviolet criterion
+                sel = d[(d["set"] == iset) & (d["variant"] == var) & (d["ct_sign"] == 1)]
                 gap = np.where(sel["gap"] > 0, sel["gap"], np.nan)
                 col, ls, mk = STYLES[k]
                 ax.plot(sel["tau_d"], gap, color=col, ls=ls, marker=mk, ms=2.6, label=name)
@@ -1313,7 +1314,9 @@ def fig_gravity_reference():
 
 def _gravity_deflating_panels(matter):
     """The three panels of the figures on the deflating spacetime with matter as a source of gravity.
-    matter = 0: 7+1, momenta along all seven space coordinates; matter = 1: fields that do not depend on x5, x6, x7."""
+    matter = 0: 7+1, momenta along all seven space coordinates; matter = 1: fields that do not depend on x5, x6, x7
+    (one kind of particle with eight states); matter = 2: 4+4 in the covariant form (one half filled); matter = 3:
+    4+4 in the quantized-sector form (equal halves)."""
     d, v = read_csv("gravity_deflating.csv"), read_csv("gravity_vacuum_perturbation.csv")
     if d is None or v is None:
         return None
@@ -1364,6 +1367,190 @@ def fig_gravity_deflating_sector():
     if fig is not None:
         save(fig, "fig_gravity_deflating_sector")
 
+def fig_gravity_deflating_formC():
+    """The matter of the covariant form of the 4+4 model (the definition; one half filled) as a source."""
+    fig = _gravity_deflating_panels(2)
+    if fig is not None:
+        save(fig, "fig_gravity_deflating_formC")
+
+
+def fig_gravity_deflating_formQ():
+    """The matter of the quantized-sector form of the 4+4 model (the alternative; equal halves) as a source."""
+    fig = _gravity_deflating_panels(3)
+    if fig is not None:
+        save(fig, "fig_gravity_deflating_formQ")
+
+
+# ----------------------------------------------------------------------------------
+# the two forms of the self-interaction on 4+4 (command `forms`)
+# ----------------------------------------------------------------------------------
+FORM_STYLE = {0: (BLUE, "-", "o", "form C (covariant)"), 1: (ORANGE, "--", "s", "form Q (quantized-sector)")}
+
+
+def fig_forms_polarization():
+    """Energy of matter of a given density against the polarization of the two halves, in both forms."""
+    d = read_csv("forms_energy_vs_polarization.csv")
+    if d is None:
+        return
+    fig, axes = plt.subplots(2, 2, figsize=(7.0, 4.6), sharex=True)
+    for r, form in enumerate((0, 1)):
+        for c, mult in enumerate((1.5, 3.0)):
+            ax = axes[r][c]
+            sel0 = d[(d["D"] == 4) & (d["set"] == 0) & (d["form"] == form) & (np.abs(d["mult"] - mult) < 1e-6)]
+            kfs = sorted(set(np.round(sel0["kF_total"], 6)))
+            shades = ramp(len(kfs))
+            for k, kf in enumerate(kfs):
+                sel = sel0[np.abs(sel0["kF_total"] - kf) < 1e-6]
+                ls = ["-", "--", "-.", ":"][k % 4]
+                ax.plot(sel["pol"], sel["e_rel"], color=shades[k], ls=ls, label="$k_{F,\\mathrm{tot}}=%.1f\\,m$" % kf)
+                i = int(np.argmin(sel["e_rel"]))
+                ax.plot([sel["pol"][i]], [sel["e_rel"][i]], marker="o", color=shades[k], mfc="white", mew=1.1)
+            ax.axhline(0, color=INK2, lw=0.6)
+            panel_label(ax, "%s, strength %.1f $\\times$ threshold of form Q" % ("form C" if form == 0 else "form Q", mult))
+            if r == 1:
+                ax.set_xlabel("polarization $\\mathrm{pol}_W=(n_+-n_-)/n$")
+        axes[r][0].set_ylabel("$\\varepsilon/n$ relative to equal halves (units $m$)")
+    axes[0][0].legend(loc="lower left")
+    fig.tight_layout(w_pad=1.0, h_pad=1.0)
+    save(fig, "fig_forms_polarization")
+
+
+def fig_forms_saturation():
+    """Binding energy of self-bound matter along a common deflation clock, in both forms."""
+    d, th = read_csv("forms_saturation.csv"), read_csv_text("forms_thresholds.csv")
+    if d is None or th is None:
+        return
+    thr = {(int(x["D"]), x["set"], x["form"]): float(x["g_threshold"]) for x in th}
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.9), sharey=True)
+    for ax, dim in zip(axes, (4, 3)):
+        k = 0
+        for iset, st in enumerate("AB"):
+            for form, fm in enumerate("CQ"):
+                sel = d[(d["D"] == dim) & (d["set"] == iset) & (d["form"] == form)]
+                # common clock: counted from the binding threshold of form Q of the same set
+                shift = math.log(thr[(dim, st, fm)] / thr[(dim, st, "Q")])
+                col = BLUE if form == 0 else ORANGE
+                ls = "-" if iset == 0 else "--"
+                ax.plot(sel["tau_d"] + shift, sel["e_bind"], color=col, ls=ls, label="set %s, form %s" % (st, fm))
+                k += 1
+        ax.axhline(0, color=INK2, lw=0.6)
+        ax.set_xlim(0, 5)
+        ax.set_xlabel("clock $\\tau_d$ from the threshold of form Q")
+        panel_label(ax, "$D=%d$" % dim)
+    axes[0].set_ylabel("$\\varepsilon/n-m$ of saturated matter (units $m$)")
+    axes[0].legend(loc="lower left")
+    fig.tight_layout(w_pad=1.0)
+    save(fig, "fig_forms_saturation")
+
+
+def fig_forms_gas():
+    """Matter of fixed density while the couplings grow: polarization and pressure, in both forms."""
+    d = read_csv("forms_fixed_density.csv")
+    if d is None:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.9))
+    for form in (0, 1):
+        col, ls0, _mk, name = FORM_STYLE[form]
+        for kf, ls in ((0.3, "-"), (0.6, "--")):
+            sel = d[(d["D"] == 4) & (d["set"] == 0) & (d["form"] == form) & (np.abs(d["kF_total"] - kf) < 1e-9)]
+            lab = "%s, $k_{F,\\mathrm{tot}}=%.1f\\,m$" % ("form C" if form == 0 else "form Q", kf)
+            axes[0].plot(sel["tau_d"], sel["pol"], color=col, ls=ls, label=lab)
+            axes[1].plot(sel["tau_d"], sel["p"] / sel["eps"], color=col, ls=ls, label=lab)
+    axes[1].axhline(0, color=INK2, lw=0.6)
+    for ax in axes:
+        ax.set_xlim(-3, 2)
+        ax.set_xlabel("clock $\\tau_d$ from the binding threshold of each form")
+    axes[0].set_ylabel("polarization $\\mathrm{pol}_W$")
+    axes[1].set_ylabel("pressure / energy density")
+    axes[1].set_ylim(-0.08, 0.12)
+    panel_label(axes[0], "(a) the halves become unequal")
+    panel_label(axes[1], "(b) pressure along the coordinates of the motion")
+    fig.tight_layout(w_pad=1.2, rect=(0, 0.12, 1, 1))
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=4, fontsize=7)
+    save(fig, "fig_forms_gas")
+
+
+def fig_forms_vacuum():
+    """The masses of the two halves in vacuum with the filled states of negative energy, in both forms."""
+    d = read_csv("forms_vacuum.csv")
+    if d is None:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.9), sharey=True)
+    for ax, mb, lab in zip(axes, (0.0, 0.05), ("(a) no mass term", "(b) bare mass $0.05\\,\\Lambda$")):
+        q = d[(d["D"] == 4) & (d["set"] == 0) & (d["form"] == 1) & (np.abs(d["m_bare"] - mb) < 1e-12)]
+        c = d[(d["D"] == 4) & (d["set"] == 0) & (d["form"] == 0) & (np.abs(d["m_bare"] - mb) < 1e-12)]
+        ax.plot(c["tau_d"], c["M_large"], color=BLUE, ls="-", lw=2.6, label="form C: $M_+$")
+        ax.plot(c["tau_d"], c["M_small"], color=BLUE, ls="-.", label="form C: $M_-$")
+        # drawn last and thinner, so that it stays visible where it coincides with M_+ of form C
+        ax.plot(q["tau_d"], q["M_large"], color=ORANGE, ls="--", lw=1.3, label="form Q: $M_+=M_-$")
+        ax.axhline(0, color=INK2, lw=0.6)
+        ax.axvline(0, color=INK2, lw=0.7, ls=":")
+        ax.set_xlim(-1, 1)
+        ax.set_xlabel("deflation clock $\\tau_d=\\ln(g/g_{\\mathrm{crit}})$")
+        panel_label(ax, lab)
+    axes[0].set_ylabel("mass in vacuum (units of the cutoff $\\Lambda$)")
+    axes[0].legend(loc="upper left")
+    axes[0].text(0.02, -1.7, "critical strength:\ndotted line", color=INK2, fontsize=7, ha="left", va="bottom")
+    fig.tight_layout(w_pad=1.0)
+    save(fig, "fig_forms_vacuum")
+
+
+def fig_forms_gap():
+    """The gap of the two kinds of pairs with contact couplings (sign +1 and sign -1), along the clock."""
+    d = read_csv("pair_gap_history.csv")
+    if d is None:
+        return
+    panels = [(1, "scalar contact coupling $g_0^{\\mathrm{eff}}=-g_{VS}^2/m^2$"), (3, "vector contact coupling $g_1^{\\mathrm{eff}}=+0.3\\,g_{VS}^2/m^2$")]
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.0), sharey=True)
+    for ax, (var, title) in zip(axes, panels):
+        base = d[(d["set"] == 3) & (d["variant"] == 0) & (d["ct_sign"] == 1)]
+        ax.plot(base["tau_d"], np.where(base["gap"] > 0, base["gap"], np.nan), color=INK2, ls=":", marker="D", ms=2.4, label="exchange of the Vorton-Scalar alone")
+        for sign, (col, ls, mk, name) in ((1, (ORANGE, "--", "s", "$s=+1$: form Q; form C, pairs along $x5,x6,x7$")), (-1, (BLUE, "-", "o", "$s=-1$: form C, pair along the hidden axis"))):
+            sel = d[(d["set"] == 3) & (d["variant"] == var) & (d["ct_sign"] == sign)]
+            gap = np.where(sel["gap"] > 0, sel["gap"], np.nan)
+            ax.plot(sel["tau_d"], gap, color=col, ls=ls, marker=mk, ms=2.8, label=name)
+            above = sel[sel["uv"] >= 1.0]
+            if len(above):
+                t0 = above["tau_d"].min()
+                ax.axvspan(t0 - 0.12, sel["tau_d"].max() + 0.1, color=PALE, lw=0)
+                ax.text(t0 - 0.08, 2e-6, "$U>4\\pi^2$:\nno gap\nindependent\nof the limit", color=INK2, fontsize=6.6, ha="left", va="bottom")
+        ax.set_yscale("log")
+        ax.set_ylim(1e-6, 20)
+        ax.set_xlabel("deflation clock $\\tau_d$ ($g_{VS}=e^{\\tau_d/2}$)")
+        panel_label(ax, title)
+    axes[0].set_ylabel("gap / Fermi kinetic energy")
+    fig.tight_layout(w_pad=1.0, rect=(0, 0.16, 1, 1))
+    handles, labels = axes[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower left", bbox_to_anchor=(0.06, 0.0), ncol=1, fontsize=7)
+    save(fig, "fig_forms_gap")
+
+
+def fig_forms_uv():
+    """The gap against the upper limit of the momentum integral, below and above the ultraviolet criterion."""
+    d = read_csv("pair_gap_upper_limit.csv")
+    if d is None:
+        return
+    limits = np.array([60.0, 2.0e3, 2.0e4, 2.0e5])
+    sel = d[(d["set"] == 3) & (d["variant"] == 3) & (d["ct_sign"] == -1)]
+    sel = sel[np.argsort(sel["uv"])]
+    fig, ax = plt.subplots(1, 1, figsize=(4.6, 3.1))
+    shades = ramp(len(sel))
+    for k, row in enumerate(sel):
+        gaps = np.array([row["gap_60"], row["gap_2e3"], row["gap_2e4"], row["gap_2e5"]])
+        if not np.all(gaps > 0):
+            continue
+        ls = ["-", "--", "-.", ":"][k % 4]
+        ax.plot(limits, gaps / gaps[0], color=shades[k], ls=ls, marker="o", label="$U/4\\pi^2=%.2f$ ($\\tau_d=%.2f$)" % (row["uv"], row["tau_d"]))
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.set_xlabel("upper limit $K$ of the momentum integral (units $m$)")
+    ax.set_ylabel("gap relative to its value at $K=60\\,m$")
+    ax.legend(loc="upper left", title="hidden-axis pair of form C,\n$g_1^{\\mathrm{eff}}=+0.3\\,g_{VS}^2/m^2$", title_fontsize=7)
+    fig.tight_layout()
+    save(fig, "fig_forms_uv")
+
+
 FIGURES = {
     "geodesics": fig_geodesics, "isometries": fig_isometries, "creation": fig_creation, "extinction": fig_extinction,
     "clock": fig_clock, "gap": fig_gap_history, "binding": fig_binding, "matter": fig_matter_history, "quench": fig_quench,
@@ -1372,7 +1559,10 @@ FIGURES = {
     "ks_flat": fig_ks_flat, "ks_deflating": fig_ks_deflating, "ks_binding": fig_ks_binding, "ks_gas": fig_ks_gas,
     "ks_halves": fig_ks_halves, "cjt_sea": fig_cjt_sea, "unified": fig_unified, "pair_contact": fig_pair_contact,
     "gravity_reference": fig_gravity_reference, "gravity_deflating": fig_gravity_deflating,
-    "gravity_deflating_sector": fig_gravity_deflating_sector,
+    "gravity_deflating_sector": fig_gravity_deflating_sector, "gravity_deflating_formC": fig_gravity_deflating_formC,
+    "gravity_deflating_formQ": fig_gravity_deflating_formQ,
+    "forms_polarization": fig_forms_polarization, "forms_saturation": fig_forms_saturation, "forms_gas": fig_forms_gas,
+    "forms_vacuum": fig_forms_vacuum, "forms_gap": fig_forms_gap, "forms_uv": fig_forms_uv,
 }
 
 if __name__ == "__main__":
