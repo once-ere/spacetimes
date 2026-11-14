@@ -7,14 +7,14 @@
 //! act with the OPPOSITE sign in the pair along the hidden axis.
 //!
 //! Writes data/pair_amplitudes.csv, pair_amplitudes_forms.csv, pair_gap_history.csv,
-//! pairing_checks.{txt,csv}.
+//! pair_gap_upper_limit.csv, pairing_checks.{txt,csv}.
 
 use spacetimes::gamma::Gammas;
 use spacetimes::gap::{critical_temperature, fermi_grid, solve_gap, Kernel, Pairing};
 use spacetimes::verify::Report;
-use spacetimes_deflation_cjt_ks_c::history::gap_point;
+use spacetimes_deflation_cjt_ks_c::history::{gap_point, K_MAX, K_MAX_EARLIER};
 use spacetimes_deflation_cjt_ks_c::io::{write_csv, write_report};
-use spacetimes_deflation_cjt_ks_c::pair_contact::{amp_contact, DirectAmplitudes, PairKernel, RANKS4};
+use spacetimes_deflation_cjt_ks_c::pair_contact::{amp_contact, DirectAmplitudes, PairKernel, RANKS4, UV_CRITICAL, UV_I_S, UV_I_V};
 use spacetimes_deflation_cjt_ks_c::selfint::{reduction_matrix, Model, SelfTables};
 
 const CMD: &str = "deflation_cjt_ks_c pairing";
@@ -32,14 +32,35 @@ impl Lcg {
 }
 
 /// The gap at the Fermi surface in units of the Fermi kinetic energy, and T_c/gap
-/// (NaN if not computed or not defined).
+/// (NaN if not computed or not defined), with the upper limit K_MAX of the momentum integral.
+/// If the ultraviolet strength of the kernel is not below its critical value (U >= 4 pi^2,
+/// function `PairKernel::uv_ratio`), the gap equation has no solution that is independent of
+/// the upper limit: (NaN, NaN) is returned.
 fn gap_of(p: &PairKernel, with_tc: bool) -> (f64, f64) {
+    if p.uv_ratio() >= 1.0 {
+        return (f64::NAN, f64::NAN);
+    }
+    gap_of_limit(p, with_tc, K_MAX)
+}
+
+/// For comparisons of gaps: a kernel above the ultraviolet criterion (gap NaN) binds the pair more
+/// strongly than any kernel with a finite gap.
+fn rank(gap: f64) -> f64 {
+    if gap.is_nan() {
+        f64::INFINITY
+    } else {
+        gap
+    }
+}
+
+/// The same with the upper limit `k_max` (in units of max(m, k_F)) of the momentum integral.
+fn gap_of_limit(p: &PairKernel, with_tc: bool, k_max: f64) -> (f64, f64) {
     let ef = p.mu() - p.m;
     let lam = p.lambda();
     if lam <= 0.0 {
         return (0.0, f64::NAN);
     }
-    let grid = fermi_grid(p.k_f, 60.0 * p.m.max(p.k_f), 11, 8);
+    let grid = fermi_grid(p.k_f, k_max * p.m.max(p.k_f), 11, 8);
     let start = (2.0 * ef * (-1.0 / lam.max(1e-3)).exp()).max(1e-11 * ef).min(ef);
     let sol = solve_gap(p, &grid, 0.0, start, 1e-9, 40000);
     let gap = if sol.converged && sol.delta_f > 1e-7 * ef { sol.delta_f } else { 0.0 };
@@ -255,10 +276,40 @@ pub fn run() -> std::io::Result<bool> {
     let mut example = String::new();
     let mut example_minus = String::new();
     // in the covariant form: number of clock readings at which the pairs along x5, x6, x7 (sign +1) have the larger gap,
-    // and at which the hidden-axis pair (sign -1) has, for the variants 1 to 4
+    // and at which the hidden-axis pair (sign -1) has, for the variants 1 to 4 (readings at which both gaps are defined)
     let mut wins = [[0usize; 2]; 7];
+    // number of clock readings at which the kernel is above the ultraviolet criterion, by variant, for the two signs
+    let mut above = [[0usize; 2]; 7];
+    // the first clock reading above the criterion of the variant 3 with the sign -1, and the last one below it
+    let mut tau_last_below = f64::NEG_INFINITY;
+    let mut tau_first_above = f64::INFINITY;
     let mut n_no_gap_minus5 = 0usize;
     let mut n_readings = 0usize;
+    // dependence on the upper limit of the momentum integral (check pc-P7), in classes of U/(4 pi^2):
+    // below 0.5, 0.5 to 0.7, 0.7 to 0.9, 0.9 to 1, above 1
+    let limits = [K_MAX_EARLIER, 2.0e3, K_MAX, 2.0e5];
+    let class_of = |uv: f64| -> usize {
+        if uv < 0.5 {
+            0
+        } else if uv < 0.7 {
+            1
+        } else if uv < 0.9 {
+            2
+        } else if uv < 1.0 {
+            3
+        } else {
+            4
+        }
+    };
+    let mut cut_rows: Vec<Vec<f64>> = Vec::new();
+    let mut cls_n = [0usize; 5];
+    let mut cls_earlier = [0.0f64; 5]; // largest relative change of a gap from the limit 60 to K_MAX
+    let mut cls_last = [0.0f64; 5]; // from K_MAX to 2e5
+    let mut cut_earlier_exchange: f64 = 0.0; // from 60 to K_MAX for the exchange alone
+    let mut growth = (f64::INFINITY, 0.0f64); // above the criterion: smallest and largest factor gap(2e5)/gap(2e4)
+    let mut cut_monotone = true;
+    let mut cut_example = String::new();
+    let mut cut_example_above = String::new();
     for (id, ms, kf) in sets {
         for i in 0..n {
             let tau = tau_a + (tau_b - tau_a) * i as f64 / (n - 1) as f64;
@@ -269,39 +320,87 @@ pub fn run() -> std::io::Result<bool> {
                 let p = PairKernel { m: 1.0, k_f: kf, g2: if *exch { g * g } else { 0.0 }, m_s: ms, m_ph: *mph, phase: true, contact: [-ks * g * g, kv * g * g, k7 * g * g, 0.0], lam: 1.0, ct_sign: 1.0 };
                 let (gap, tc) = gap_of(&p, iv == 0 || iv == 2 || iv == 5);
                 gaps[iv] = gap;
-                rows.push(vec![id, iv as f64, 1.0, ms, kf, tau, g, p.lambda(), gap, tc]);
+                rows.push(vec![id, iv as f64, 1.0, ms, kf, tau, g, p.lambda(), p.uv_ratio(), gap, tc]);
                 if tc.is_finite() && gap > 0.0 && gap < 0.05 {
                     tc_dev = tc_dev.max((tc - 0.567).abs());
                 }
                 // the opposite sign of the contact couplings: the hidden-axis pair in the covariant form
                 let has_contact = *ks != 0.0 || *kv != 0.0 || *k7 != 0.0;
-                let (gap_m, tc_m, lam_m) = if has_contact {
+                let (gap_m, tc_m, lam_m, uv_m) = if has_contact {
                     let q = PairKernel { ct_sign: -1.0, ..p };
                     let (a, b) = gap_of(&q, iv == 3);
-                    (a, b, q.lambda())
+                    (a, b, q.lambda(), q.uv_ratio())
                 } else {
-                    (gap, tc, p.lambda())
+                    (gap, tc, p.lambda(), p.uv_ratio())
                 };
                 gaps_m[iv] = gap_m;
-                rows.push(vec![id, iv as f64, -1.0, ms, kf, tau, g, lam_m, gap_m, tc_m]);
-                if has_contact && (gap > 1e-6 || gap_m > 1e-6) {
+                rows.push(vec![id, iv as f64, -1.0, ms, kf, tau, g, lam_m, uv_m, gap_m, tc_m]);
+                above[iv][0] += usize::from(gap.is_nan());
+                above[iv][1] += usize::from(has_contact && gap_m.is_nan());
+                if has_contact && !gap.is_nan() && !gap_m.is_nan() && (gap > 1e-6 || gap_m > 1e-6) {
                     wins[iv][usize::from(gap_m > gap)] += 1;
+                }
+                if iv == 3 {
+                    if gap_m.is_nan() {
+                        tau_first_above = tau_first_above.min(tau);
+                    } else {
+                        tau_last_below = tau_last_below.max(tau);
+                    }
                 }
             }
             n_readings += 1;
             n_no_gap_minus5 += usize::from(gaps_m[5] == 0.0);
-            // variant 0 against the routine of the calculation without contact terms
+            // variant 0 against the routine of the calculation without contact terms (module history; the same upper limit)
             if i % 4 == 0 {
                 let old = gap_point(g, ms, kf, false);
                 if old.gap_v > 0.0 || gaps[0] > 0.0 {
                     dev_old = dev_old.max((gaps[0] - old.gap_v).abs() / old.gap_v.max(1e-12));
                 }
             }
+            // the upper limit of the momentum integral: four clock readings of every set, all variants, both signs
+            if i == 10 || i == 14 || i == 16 || i == 17 {
+                for (iv, (_, ks, kv, k7, exch, mph)) in variants.iter().enumerate() {
+                    let has_contact = *ks != 0.0 || *kv != 0.0 || *k7 != 0.0;
+                    for sign in [1.0, -1.0] {
+                        if sign < 0.0 && !has_contact {
+                            continue;
+                        }
+                        let p = PairKernel { m: 1.0, k_f: kf, g2: if *exch { g * g } else { 0.0 }, m_s: ms, m_ph: *mph, phase: true, contact: [-ks * g * g, kv * g * g, k7 * g * g, 0.0], lam: 1.0, ct_sign: sign };
+                        let uv = p.uv_ratio();
+                        let gl: Vec<f64> = limits.iter().map(|&k| gap_of_limit(&p, false, k).0).collect();
+                        cut_rows.push(vec![id, iv as f64, sign, ms, kf, tau, g, uv, gl[0], gl[1], gl[2], gl[3]]);
+                        let c = class_of(uv);
+                        let rel = |a: f64, b: f64| (a / b - 1.0).abs();
+                        if c == 4 {
+                            cls_n[4] += 1;
+                            if gl[2] > 0.0 {
+                                growth = (growth.0.min(gl[3] / gl[2]), growth.1.max(gl[3] / gl[2]));
+                            } else {
+                                growth = (0.0, growth.1);
+                            }
+                            if id == 3.0 && i == 17 && iv == 3 && sign < 0.0 {
+                                cut_example_above = format!("the same pair at tau_d = {:.2}, where U/(4 pi^2) = {:.3}: gap/E_F = {:.1}, {:.0}, {:.0}, {:.0}", tau, uv, gl[0], gl[1], gl[2], gl[3]);
+                            }
+                        } else if gl[2] > 1e-4 {
+                            cls_n[c] += 1;
+                            cls_earlier[c] = cls_earlier[c].max(rel(gl[0], gl[2]));
+                            cls_last[c] = cls_last[c].max(rel(gl[3], gl[2]));
+                            if !has_contact {
+                                cut_earlier_exchange = cut_earlier_exchange.max(rel(gl[0], gl[2]));
+                            }
+                            cut_monotone &= gl[0] <= gl[1] * (1.0 + 1e-7) && gl[1] <= gl[2] * (1.0 + 1e-7) && gl[2] <= gl[3] * (1.0 + 1e-7);
+                        }
+                        if id == 3.0 && i == 14 && iv == 3 && sign < 0.0 {
+                            cut_example = format!("for m_s = m, k_F = 0.5 m at tau_d = {:.2}, exchange with the vector contact coupling g_1eff = +0.3 g^2/m^2 in the hidden-axis pair of the covariant form, where U/(4 pi^2) = {:.3}: gap/E_F = {:.5}, {:.5}, {:.5}, {:.5} for the upper limits 60, 2e3, 2e4, 2e5", tau, uv, gl[0], gl[1], gl[2], gl[3]);
+                        }
+                    }
+                }
+            }
             if gaps[0] > 1e-6 {
                 // sign +1: attraction raises the gap, repulsion lowers it
-                order_ok &= gaps[1] >= gaps[0] && gaps[1] >= gaps[2] && gaps[3] <= gaps[0] && gaps[6] <= gaps[0];
+                order_ok &= rank(gaps[1]) >= gaps[0] && rank(gaps[1]) >= rank(gaps[2]) && gaps[3] <= gaps[0] && gaps[6] <= gaps[0];
                 // sign -1: the same couplings act in the opposite way
-                order_minus &= gaps_m[1] <= gaps[0] && gaps_m[2] <= gaps[0] && gaps_m[3] >= gaps[0] && gaps_m[4] <= gaps[0];
+                order_minus &= gaps_m[1] <= gaps[0] && gaps_m[2] <= gaps[0] && rank(gaps_m[3]) >= gaps[0] && gaps_m[4] <= gaps[0];
             }
             if id == 3.0 && i == 14 {
                 example = format!("for m_s = m, k_F = 0.5 m at tau_d = {:.2} (g_VS = {:.3}): gap/E_F = {:.4} (exchange alone), {:.4} (with scalar contact), {:.4} (author's ratio), {:.4} (with vector repulsion 0.3), {:.4} (with axial coupling), {:.4} (contact alone), {:.4} (phase mode of mass 0.3 m)", tau, g, gaps[0], gaps[1], gaps[2], gaps[3], gaps[4], gaps[5], gaps[6]);
@@ -311,14 +410,24 @@ pub fn run() -> std::io::Result<bool> {
         println!("[{:>5.1} s] gap history, set {} done", t0.elapsed().as_secs_f64(), id);
     }
     write_csv("pair_gap_history.csv",
-        &[("content", format!("the gap of a vector pair along an extra axis at the Fermi surface along the deflation clock, with contact couplings and the exchange of the Vorton-Scalar; g_VS = exp(tau_d/2), fermion mass m = 1; contact couplings proportional to g_VS^2 (all couplings of the reduced Lagrangian grow as exp(tau_d)), with the range parameter m_ct = m (each contact coupling g is replaced by g m_ct^2/(q^2 + m_ct^2)). The contact couplings enter the pairing potential with the sign ct_sign: +1 on 7+1, in the quantized-sector form of 4+4 (all four pairs along the extra axes), and in the covariant form of 4+4 for the pairs along x5, x6, x7; -1 in the covariant form of 4+4 for the pair along the hidden axis (check pc-P5). Variants: {}", variants.iter().enumerate().map(|(i, v)| format!("{} = {}", i, v.0)).collect::<Vec<String>>().join("; "))),
-          ("columns", "set: 1 = (m_s, k_F) = (0.1, 0.5), 2 = (0.3, 0.5), 3 = (1.0, 0.5), 4 = (0.1, 0.2), in units of m; variant; ct_sign: +1 or -1 (for the variants without contact couplings, 0 and 6, the two rows are equal); m_s; k_F; tau_d; g = g_VS; lambda = N(0) W(k_F, k_F): dimensionless pairing strength; gap: gap at the Fermi surface in units of the Fermi kinetic energy E_F (0: below 1e-7 E_F or no solution); Tc_over_gap (computed for the variants 0, 2 and 5 with ct_sign = +1 and for the variant 3 with ct_sign = -1, where the kernel has no sign change; NaN otherwise)".to_string()),
+        &[("content", format!("the gap of a vector pair along an extra axis at the Fermi surface along the deflation clock, with contact couplings and the exchange of the Vorton-Scalar; g_VS = exp(tau_d/2), fermion mass m = 1; contact couplings proportional to g_VS^2 (all couplings of the reduced Lagrangian grow as exp(tau_d)), with the range parameter m_ct = m (each contact coupling g is replaced by g m_ct^2/(q^2 + m_ct^2)). The momentum integral of the gap equation extends to 2e4 max(m, k_F). The pairing kernel falls as 1/k^2 at large momenta; its ultraviolet strength is U = g_VS^2 (pi^2/4 - 1) - ct_sign m_ct^2 [(g_0eff - g_8eff)(pi^2/8 - 1/2) + (g_1eff + g_7eff)(3 pi^2/4 - 1)], and the gap equation has a solution that is independent of the upper limit only if U < 4 pi^2 (check pc-P7); where U >= 4 pi^2 no gap is given (NaN). The contact couplings enter the pairing potential with the sign ct_sign: +1 on 7+1, in the quantized-sector form of 4+4 (all four pairs along the extra axes), and in the covariant form of 4+4 for the pairs along x5, x6, x7; -1 in the covariant form of 4+4 for the pair along the hidden axis (check pc-P5). Variants: {}", variants.iter().enumerate().map(|(i, v)| format!("{} = {}", i, v.0)).collect::<Vec<String>>().join("; "))),
+          ("columns", "set: 1 = (m_s, k_F) = (0.1, 0.5), 2 = (0.3, 0.5), 3 = (1.0, 0.5), 4 = (0.1, 0.2), in units of m; variant; ct_sign: +1 or -1 (for the variants without contact couplings, 0 and 6, the two rows are equal); m_s; k_F; tau_d; g = g_VS; lambda = N(0) W(k_F, k_F): dimensionless pairing strength; uv = U/(4 pi^2): ultraviolet strength of the kernel over its critical value; gap: gap at the Fermi surface in units of the Fermi kinetic energy E_F (0: below 1e-7 E_F or no solution; NaN: uv >= 1, no solution that is independent of the upper limit of the momentum integral); Tc_over_gap (computed for the variants 0, 2 and 5 with ct_sign = +1 and for the variant 3 with ct_sign = -1, where the kernel has no sign change; NaN otherwise)".to_string()),
           ("command", CMD.to_string())],
-        &["set", "variant", "ct_sign", "m_s", "k_F", "tau_d", "g", "lambda", "gap", "Tc_over_gap"], &rows)?;
-    rep.add("pc-P4", "numerical", &format!("the gap along the deflation clock with contact couplings that act with the sign of the closed forms (7+1: the hidden-axis pair; 4+4, quantized-sector form: all four vector pairs along the extra axes; 4+4, covariant form: the pairs along x5, x6, x7), 72 clock readings in four sets of (m_s, k_F), seven variants each: without contact couplings the gaps of the earlier calculation (exchange of the two modes of the Vorton-Scalar) are reproduced (largest relative difference {:.1e}); a scalar contact attraction raises the gap, a vector contact repulsion and a mass of the phase mode lower it (verified at every clock reading with a gap above 1e-6 E_F); for small gaps T_c/gap is within {:.3} of the weak-coupling value 0.567. Example: {}", dev_old, tc_dev, example), dev_old < 1e-6 && order_ok && tc_dev < 0.02);
+        &["set", "variant", "ct_sign", "m_s", "k_F", "tau_d", "g", "lambda", "uv", "gap", "Tc_over_gap"], &rows)?;
+    let none_above_plus = above.iter().all(|a| a[0] == 0);
+    rep.add("pc-P4", "numerical", &format!("the gap along the deflation clock with contact couplings that act with the sign of the closed forms (7+1: the hidden-axis pair; 4+4, quantized-sector form: all four vector pairs along the extra axes; 4+4, covariant form: the pairs along x5, x6, x7), 72 clock readings in four sets of (m_s, k_F), seven variants each; momentum integral up to 2e4 max(m, k_F); all {} kernels are below the ultraviolet criterion of check pc-P7. Without contact couplings the gaps of the calculation with the exchange of the two modes of the Vorton-Scalar alone (command history, the same upper limit) are reproduced (largest relative difference {:.1e}); a scalar contact attraction raises the gap, a vector contact repulsion and a mass of the phase mode lower it (verified at every clock reading with a gap above 1e-6 E_F); for small gaps T_c/gap is within {:.3} of the weak-coupling value 0.567. Example: {}", 7 * n_readings, dev_old, tc_dev, example), dev_old < 1e-6 && order_ok && tc_dev < 0.02 && none_above_plus);
 
     let win_txt: Vec<String> = (1..=4).map(|iv| format!("variant {}: the pairs along x5, x6, x7 have the larger gap at {} readings, the hidden-axis pair at {}", iv, wins[iv][0], wins[iv][1])).collect();
-    rep.add("pc-P6", "numerical", &format!("the gap of the HIDDEN-AXIS pair in the COVARIANT form of the 4+4 model, where the contact couplings enter the pairing potential with the opposite sign (check pc-P5), for the same variants and clock readings: a scalar contact attraction (g_0eff < 0) now LOWERS the gap, with or without the vector repulsion of the author's ratio, an axial coupling g_7eff < 0 lowers it, and a vector contact repulsion (g_1eff > 0) RAISES it (verified at every clock reading at which the gap of the exchange alone exceeds 1e-6 E_F); the contact couplings of the author's signs alone (variant 5) give no gap in this channel at any of the {} clock readings ({} without gap). Consequence: in the covariant form the self-interaction removes the degeneracy of the four vector pairs along the extra axes and selects the direction of the order parameter. With the exchange of the Vorton-Scalar and the contact couplings of the variants 1 to 4: {}. Example: {}", n_readings, n_no_gap_minus5, win_txt.join("; "), example_minus), order_minus && n_no_gap_minus5 == n_readings && wins[1][1] == 0 && wins[2][1] == 0 && wins[3][0] == 0);
+    let only_variant3_above = (0..7).all(|iv| (above[iv][1] > 0) == (iv == 3));
+    rep.add("pc-P6", "numerical", &format!("the gap of the HIDDEN-AXIS pair in the COVARIANT form of the 4+4 model, where the contact couplings enter the pairing potential with the opposite sign (check pc-P5), for the same variants and clock readings: a scalar contact attraction (g_0eff < 0) now LOWERS the gap, with or without the vector repulsion of the author's ratio, an axial coupling g_7eff < 0 lowers it, and a vector contact repulsion (g_1eff > 0) RAISES it (verified at every clock reading at which the gap of the exchange alone exceeds 1e-6 E_F); the contact couplings of the author's signs alone (variant 5) give no gap in this channel at any of the {} clock readings ({} without gap). With the vector contact coupling g_1eff = +0.3 g_VS^2/m^2 (variant 3) the kernel of this pair exceeds the ultraviolet criterion of check pc-P7 at {} of the {} clock readings (the last reading below it is tau_d = {:.3}, the first above it tau_d = {:.3}; the criterion U = 4 pi^2 is reached at g_VS^2 = 4 pi^2/[(pi^2/4 - 1) + 0.3 (3 pi^2/4 - 1)] = {:.3}, tau_d = {:.3}): there the gap equation has no solution that is independent of the upper limit of the momentum integral, and no gap is given; no other variant exceeds the criterion. Consequence: in the covariant form the self-interaction removes the degeneracy of the four vector pairs along the extra axes and selects the direction of the order parameter. With the exchange of the Vorton-Scalar and the contact couplings of the variants 1 to 4, at the readings at which both gaps are defined: {}. Example: {}", n_readings, n_no_gap_minus5, above[3][1], n_readings, tau_last_below, tau_first_above, UV_CRITICAL / (2.0 * UV_I_S + 0.3 * UV_I_V), (UV_CRITICAL / (2.0 * UV_I_S + 0.3 * UV_I_V)).ln(), win_txt.join("; "), example_minus), order_minus && n_no_gap_minus5 == n_readings && wins[1][1] == 0 && wins[2][1] == 0 && wins[3][0] == 0 && only_variant3_above && above[3][1] > 0 && tau_last_below < (UV_CRITICAL / (2.0 * UV_I_S + 0.3 * UV_I_V)).ln() && tau_first_above > (UV_CRITICAL / (2.0 * UV_I_S + 0.3 * UV_I_V)).ln());
+
+    write_csv("pair_gap_upper_limit.csv",
+        &[("content", "the gap at the Fermi surface for four upper limits of the momentum integral of the gap equation, at four clock readings of each of the four sets (m_s, k_F), for the seven variants of the file pair_gap_history.csv and both signs with which the contact couplings enter the pairing potential. The kernel falls as 1/k^2 at large momenta; U is its ultraviolet strength (header of pair_gap_history.csv). For U < 4 pi^2 the gap converges as a power of the upper limit, for U > 4 pi^2 it grows with the upper limit".to_string()),
+          ("columns", "set: 1 = (m_s, k_F) = (0.1, 0.5), 2 = (0.3, 0.5), 3 = (1.0, 0.5), 4 = (0.1, 0.2), in units of m; variant: as in pair_gap_history.csv; ct_sign; m_s; k_F; tau_d; g = g_VS; uv = U/(4 pi^2); gap_60, gap_2e3, gap_2e4, gap_2e5: gap in units of the Fermi kinetic energy for the upper limits 60, 2e3, 2e4 and 2e5 times max(m, k_F) (0: below 1e-7 E_F or no solution)".to_string()),
+          ("command", CMD.to_string())],
+        &["set", "variant", "ct_sign", "m_s", "k_F", "tau_d", "g", "uv", "gap_60", "gap_2e3", "gap_2e4", "gap_2e5"], &cut_rows)?;
+    rep.add("pc-P7", "numerical", &format!("the upper limit of the momentum integral of the gap equation, and the ultraviolet criterion. At momenta above all masses the pairing kernel is homogeneous, W(k, k') -> w(k'/k)/k^2, and a power Delta = k^(-s) solves the gap equation if Int_0^inf dt t^(1-s) w(t) = 4 pi^2; the integral is smallest at s = 1, where it is U = g_VS^2 (pi^2/4 - 1) - ct_sign m_ct^2 [(g_0eff - g_8eff)(pi^2/8 - 1/2) + (g_1eff + g_7eff)(3 pi^2/4 - 1)] (unit test of the module pair_contact: numerical integral of the kernel). For U < 4 pi^2 the gap equation has a solution that does not depend on the upper limit K, approached as a power of K; for U > 4 pi^2 it has none, and the gap grows with K (the pair collapses to short distances). The exchange of the two modes of the Vorton-Scalar alone reaches U = 4 pi^2 at g_VS^2 = {:.3} (tau_d = {:.3}, beyond the last clock reading {:.3} of this command). Test with the upper limits 60, 2e3, 2e4 and 2e5 times max(m, k_F) in {} cases (four sets of (m_s, k_F), four clock readings, seven variants, both signs of the contact couplings). Cases with a gap above 1e-4 E_F below the criterion: the gap grows monotonically with K; U/(4 pi^2) < 0.5 ({} cases): change from 2e4 to 2e5 at most {:.1e}, from 60 to 2e4 at most {:.2} per cent; 0.5 to 0.7 ({} cases): {:.1e} and {:.2} per cent; 0.7 to 0.9 ({} cases): {:.1e} and {:.2} per cent; 0.9 to 1 ({} cases){}. The limit 60, which the earlier calculations of the project use, gives gaps of the exchange alone that are too small by up to {:.2} per cent. Cases above the criterion ({}): from K = 2e4 to K = 2e5 the gap grows by a factor between {:.2} and {:.2}. The gaps of this command are computed with K = 2e4 max(m, k_F), and no gap is given above the criterion. Example: {}; {}", UV_CRITICAL / (2.0 * UV_I_S), (UV_CRITICAL / (2.0 * UV_I_S)).ln(), tau_b, cut_rows.len(), cls_n[0], cls_last[0], 100.0 * cls_earlier[0], cls_n[1], cls_last[1], 100.0 * cls_earlier[1], cls_n[2], cls_last[2], 100.0 * cls_earlier[2], cls_n[3], if cls_n[3] > 0 { format!(": {:.1e} and {:.2} per cent", cls_last[3], 100.0 * cls_earlier[3]) } else { String::new() }, 100.0 * cut_earlier_exchange, cls_n[4], growth.0, growth.1, cut_example, cut_example_above),
+        cut_monotone && cls_n[0] > 0 && cls_n[1] > 0 && cls_n[2] > 0 && cls_n[4] > 0 && cls_last[0] < 1e-4 && cls_last[1] < 1e-3 && cls_last[2] < 5e-3 && growth.0 > 5.0);
 
     let (ok, nchk) = rep.count();
     let all = rep.all_pass();

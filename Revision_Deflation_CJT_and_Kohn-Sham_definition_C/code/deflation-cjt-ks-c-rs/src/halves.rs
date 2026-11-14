@@ -978,8 +978,11 @@ impl UnifiedHalves {
         Some(UnifiedHalvesState { x, halves: st, eps, e_per_particle: eps / n })
     }
 
-    /// The state of lowest energy for the total density n on 0 <= x <= 1.2 (13 equidistant
-    /// values of x, golden-section refinement around the lowest).
+    /// The state of lowest energy for the total density n on 0 <= x <= 1.2: 13 equidistant
+    /// values of x, golden-section refinement around the lowest to 1e-4, and one step of
+    /// parabolic interpolation through three points at the distance 1e-3 (the energy is a
+    /// smooth function of x near an interior minimum; the step is accepted only if it lowers
+    /// the energy).
     pub fn state(&self, n: f64) -> Option<UnifiedHalvesState> {
         if self.f_d >= 1.0 {
             return self.at_x(n, 1.0);
@@ -994,12 +997,31 @@ impl UnifiedHalves {
                 }
             }
         }
-        let b = best?;
+        let mut b = best?;
         let x = golden_min(|x| self.at_x(n, x).map_or(f64::INFINITY, |s| s.eps), (b.x - h).max(0.0), (b.x + h).min(1.2), 1e-4);
-        match self.at_x(n, x) {
-            Some(s) if s.eps < b.eps - 1e-13 * b.eps.abs() => Some(s),
-            _ => Some(b),
+        if let Some(s) = self.at_x(n, x) {
+            if s.eps < b.eps - 1e-13 * b.eps.abs() {
+                b = s;
+            }
         }
+        // parabolic step
+        let dx = 1e-3;
+        if b.x > dx && b.x < 1.2 - dx {
+            if let (Some(lo), Some(hi)) = (self.at_x(n, b.x - dx), self.at_x(n, b.x + dx)) {
+                let curv = hi.eps - 2.0 * b.eps + lo.eps;
+                if curv > 0.0 {
+                    let step = -0.5 * dx * (hi.eps - lo.eps) / curv;
+                    if step.abs() <= dx {
+                        if let Some(s) = self.at_x(n, b.x + step) {
+                            if s.eps < b.eps {
+                                b = s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Some(b)
     }
 
     /// Density of the Fermi momentum kf_total with equal halves (D = 3, eight states): 4 kf^3/(3 pi^2).

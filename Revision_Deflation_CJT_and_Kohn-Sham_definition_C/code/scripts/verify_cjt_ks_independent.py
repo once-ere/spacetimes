@@ -38,6 +38,17 @@ script obtains them again in another language and BY OTHER METHODS:
      of pair curvatures that the Rust program uses.  The author's reference evolution
      and the evolutions of the deflating spacetime are integrated with scipy.
 
+  F  the two forms of the self-interaction on 4+4 (covariant: the definition in this
+     folder; quantized-sector: the alternative).  Wick's theorem for matter whose two
+     halves W = +1 and W = -1 are filled differently; the internal symmetry tested at a
+     FINITE angle on the antisymmetrized quartic tensors; the pairing amplitudes in the
+     two kinds of pairs; the states of matter of two halves with an independent
+     fixed-point solver of the coupled gap equations; the effective potential of two
+     halves with adaptive quadrature; the vacuum with the filled states of negative
+     energy; the gap of the hidden-axis pair; the ultraviolet criterion of the gap
+     equation (integrals by nested adaptive quadrature, and the gap for two upper limits
+     of the momentum integral below and above the criterion).
+
 Where a number is compared with the Rust program, the file of the Rust program is read
 from data/.  Where it is compared with the author's document KOHN_SHAM_GRAVITY, the
 printed number is quoted in this script.
@@ -942,13 +953,18 @@ def pair_kernel(k, kp, mass, g2, m_s, m_ph, contact, lam):
     return w / (e * ep)
 
 
-def solve_gap(mass, kf, g2, m_s, m_ph, contact, lam):
-    """Gap at the Fermi surface, zero temperature: Delta(k) = (1/(4 pi^2)) Int dk' k'^2 W(k, k') Delta(k')/sqrt(xi'^2 + Delta'^2)."""
+K_MAX = 2.0e4   # upper limit of the momentum integral of the gap equation, in units of max(m, k_F) (as in the Rust program)
+
+
+def solve_gap(mass, kf, g2, m_s, m_ph, contact, lam, kmax=K_MAX, start=None):
+    """Gap at the Fermi surface, zero temperature: Delta(k) = (1/(4 pi^2)) Int_0^K dk' k'^2 W(k, k') Delta(k')/sqrt(xi'^2 + Delta'^2),
+    K = kmax max(mass, kf).  Grid: geometric panels around the Fermi momentum and up to K, ten Gauss-Legendre nodes each."""
     xg, wg = np.polynomial.legendre.leggauss(10)
     edges = [0.0] + [kf * (1 - 10 ** (-0.4 * j)) for j in range(1, 26)] + [kf] + [kf * (1 + 10 ** (-0.4 * j)) for j in range(25, 0, -1)]
     top = edges[-1]
-    while top < 80.0:
-        top *= 1.5
+    k_top = kmax * max(mass, kf)
+    while top < k_top:
+        top = min(top * 1.5, k_top)
         edges.append(top)
     ks, ws = [], []
     for a, b in zip(edges[:-1], edges[1:]):
@@ -963,7 +979,7 @@ def solve_gap(mass, kf, g2, m_s, m_ph, contact, lam):
     km = np.array([[kern(k, kp) for kp in ks] for k in ks]) * (ws * ks**2)[None, :] / (4 * math.pi**2)
     kf_row = np.array([kern(kf, kp) for kp in ks]) * ws * ks**2 / (4 * math.pi**2)
     ef = mu - mass
-    delta = np.full(len(ks), 0.1 * ef)
+    delta = np.full(len(ks), (0.1 if start is None else start) * ef)
     for it in range(200000):
         new = km @ (delta / np.sqrt(xi**2 + delta**2))
         if np.abs(new - delta).max() < 1e-12 * max(np.abs(new).max(), 1e-300):
@@ -1058,7 +1074,7 @@ def part_pairing(models, red_num):
             worst_gap = max(worst_gap, abs(got / want - 1))
             txt.append("m_s = %.1f, variant %d: %.4f (Rust: %.4f)" % (m_s, variant, got, want))
     report("Icks-P2", worst < 1e-9 and worst_gap < 2e-3,
-           "the gap equation of the hidden-axis pair solved again in Python (another grid of momenta: geometric panels around the Fermi momentum, ten Gauss-Legendre nodes each, up to 80 m; plain iteration to a relative change below 1e-12; the gap at the Fermi momentum from the equation itself). The closed angular average of the kernel agrees with the adaptive quadrature of scipy (%.1e). Gap in units of the Fermi kinetic energy at the clock reading 2.04, k_F = 0.5 m, for the exchange of the Vorton-Scalar alone (variant 0), with the scalar contact attraction g_0eff = -g_VS^2/m^2 (variant 1) and with the contact couplings in the ratio of the author's example (variant 2): %s; largest relative difference %.1e"
+           "the gap equation of the hidden-axis pair solved again in Python (another grid of momenta: geometric panels around the Fermi momentum and up to the same upper limit 2e4 m as in the Rust program, ten Gauss-Legendre nodes each; plain iteration to a relative change below 1e-12; the gap at the Fermi momentum from the equation itself). The closed angular average of the kernel agrees with the adaptive quadrature of scipy (%.1e). Gap in units of the Fermi kinetic energy at the clock reading 2.04, k_F = 0.5 m, for the exchange of the Vorton-Scalar alone (variant 0), with the scalar contact attraction g_0eff = -g_VS^2/m^2 (variant 1) and with the contact couplings in the ratio of the author's example (variant 2): %s; largest relative difference %.1e"
            % (worst, "; ".join(txt), worst_gap))
 
 
@@ -1415,10 +1431,391 @@ def part_gravity():
            % ("; ".join(txt), worst, worst_cons, ha0 / gv_, ha_e / gv_, hb_e / gv_, float(vac["Ha_over_g"]), float(vac["Hb_over_g"]), dev_vac))
 
 
+# =======================================================================================
+# Part F: the two forms of the self-interaction on 4+4 (C: covariant, the definition of
+#         this folder; Q: quantized-sector, the alternative), for the same couplings
+# =======================================================================================
+SETS_F = {"A": (-1.0, 0.0), "B": (-1.0, 0.1)}   # (g_0, g_1) per unit strength g; all other couplings zero
+
+
+def four_couplings(g0, g1, g7=0.0, g8=0.0):
+    """(G_S^HF, G_V^HF, G_Sc, G_Vc) from the four effective couplings."""
+    return ((15 * g0 - 8 * g1 - 8 * g7 - g8) / 16, (-g0 + 22 * g1 - 6 * g7 + g8) / 16, (-g0 - 2 * g1 + 2 * g7 + g8) / 16, -(g0 + g8) / 16)
+
+
+def halves_couplings(form, g0, g1, g7=0.0, g8=0.0):
+    """(T_V, T_S, D_V, D_S): the couplings of n^2, n_S^2, n_W^2, n_SW^2 in the form C or Q."""
+    gs_hf, gv_hf, gs_c, gv_c = four_couplings(g0, g1, g7, g8)
+    return (gv_c, gs_c, gv_hf, gs_hf) if form == "C" else (gv_hf, gs_hf, gv_c, gs_c)
+
+
+def halves_solve(d, coup, kp, km, m=1.0, starts=None):
+    """The two coupled gap equations M_+- = m + T_S (s_+ + s_-) +- D_S (s_+ - s_-), by damped fixed-point iteration
+    from several start values (Gauss-Legendre integrals); the converged solution with non-negative masses of the
+    occupied halves and of lowest energy density.  Returns None or a dictionary."""
+    tv, ts, dv, ds = coup
+    best = None
+    for start in (starts or [(m, m), (0.5 * m, 0.5 * m), (0.1 * m, m), (m, 0.1 * m), (0.1 * m, 0.1 * m), (1.5 * m, 0.3 * m), (0.3 * m, 1.5 * m), (0.02, 0.02), (2 * m, 2 * m), (0.3 * m, 2 * m)]):
+        mass = np.array(start, dtype=float)
+        damp, last, ok = 0.5, 1e9, False
+        for _ in range(8000):
+            sp = fermi_integrals(d, kp, mass[0], NU / 2)[1] if kp > 0 else 0.0
+            sm = fermi_integrals(d, km, mass[1], NU / 2)[1] if km > 0 else 0.0
+            new = np.array([m + ts * (sp + sm) + ds * (sp - sm), m + ts * (sp + sm) - ds * (sp - sm)])
+            err = np.abs(new - mass).max()
+            if err < 1e-13:
+                mass, ok = new, True
+                break
+            if err > last:
+                damp *= 0.7
+            last = err
+            mass = mass + damp * (new - mass)
+        if not ok or (kp > 0 and mass[0] < 0) or (km > 0 and mass[1] < 0):
+            continue
+        a = fermi_integrals(d, kp, mass[0], NU / 2) if kp > 0 else (0.0, 0.0, 0.0, 0.0)
+        b = fermi_integrals(d, km, mass[1], NU / 2) if km > 0 else (0.0, 0.0, 0.0, 0.0)
+        n, nw, sn, sw = a[0] + b[0], a[0] - b[0], a[1] + b[1], a[1] - b[1]
+        vec, sca = 0.5 * (tv * n * n + dv * nw * nw), 0.5 * (ts * sn * sn + ds * sw * sw)
+        eps = a[2] + b[2] + vec - sca
+        st = {"M": mass.copy(), "n": (a[0], b[0]), "s": (a[1], b[1]), "eps": eps, "e": eps / n - m, "p": a[3] + b[3] + vec + sca, "Pi": vec + sca,
+              "V": (tv * n + dv * nw, tv * n - dv * nw)}
+        if best is None or eps < best["eps"]:
+            best = st
+    return best
+
+
+def halves_at(d, coup, kf_total, pol, m=1.0, starts=None):
+    """The state of the total density of the Fermi momentum kf_total (with equal halves) at the polarization pol."""
+    unit = pref(d, NU / 2) / d
+    n = 2 * unit * kf_total**d
+    kp = (0.5 * n * (1 + pol) / unit) ** (1.0 / d)
+    km = (0.5 * n * (1 - pol) / unit) ** (1.0 / d) if pol < 1 else 0.0
+    return halves_solve(d, coup, kp, km, m, starts)
+
+
+def part_forms(models):
+    cminus = G44[0] @ G44[1] @ G44[2] @ G44[3]
+    beta = -1j * G44[4]
+    wmat = 1j * cminus @ G44[4]
+    rng = np.random.default_rng(20261113)
+
+    # ---- F1: the Hartree-Fock energy of four densities in both forms ------------------------------------
+    dens = [ONE, beta, wmat, wmat @ beta]
+    worst_hf, worst_off = 0.0, 0.0
+    quad_forms = {}
+    for tag in ("44c", "44q"):
+        _gen, _adj, _beta, chans = models[tag]
+        q = np.zeros((9, 4, 4))
+        for (_m, r, eps, _th, mk) in chans:
+            t = [np.trace(mk @ dd) for dd in dens]
+            md = [mk @ dd for dd in dens]
+            for i in range(4):
+                for j in range(4):
+                    val = eps * (t[i] * t[j] - np.trace(md[i] @ md[j])) / 256.0
+                    worst_off = max(worst_off, abs(val.imag))
+                    q[r, i, j] += val.real
+        quad_forms[tag] = q
+        for r in range(9):
+            worst_off = max(worst_off, np.abs(q[r] - np.diag(np.diag(q[r]))).max())
+    # with couplings g_0, g_1, g_7, g_8 only (they are then the effective couplings)
+    for _ in range(20):
+        g0, g1, g7, g8 = rng.uniform(-2, 2, 4)
+        gs_hf, gv_hf, gs_c, gv_c = four_couplings(g0, g1, g7, g8)
+        for tag, want in (("44c", (gv_c, gs_c, gv_hf, gs_hf)), ("44q", (gv_hf, gs_hf, gv_c, gs_c))):
+            q = quad_forms[tag]
+            got = [g0 * q[0, i, i] + g1 * q[1, i, i] + g7 * q[7, i, i] + g8 * q[8, i, i] for i in range(4)]
+            worst_hf = max(worst_hf, max(abs(x - y) for x, y in zip(got, want)))
+    swap = max(np.abs(quad_forms["44c"][:, i, i] - quad_forms["44q"][:, j, j]).max() for i, j in ((0, 2), (1, 3), (2, 0), (3, 1)))
+    report("Icks-F1", worst_hf < 1e-12 and worst_off < 1e-12 and swap < 1e-12,
+           "the two forms of the 4+4 interaction in uniform matter whose two halves W = +1 and W = -1 are filled differently (numerical matrices; Wick's theorem with the density matrix (rho 1 + rho_S beta + rho_W W + rho_SW W.beta)/16): the Hartree-Fock energy is diagonal in the four densities for each of the nine ranks (largest off-diagonal element %.1e); for random couplings g_0, g_1, g_7, g_8 the four coefficients are, in the covariant form, (G_Vc, G_Sc, G_V^HF, G_S^HF) for (rho^2, rho_S^2, rho_W^2, rho_SW^2) and, in the quantized-sector form, (G_V^HF, G_S^HF, G_Vc, G_Sc), with G_S^HF = (15 g_0 - 8 g_1 - 8 g_7 - g_8)/16, G_V^HF = (-g_0 + 22 g_1 - 6 g_7 + g_8)/16, G_Sc = (-g_0 - 2 g_1 + 2 g_7 + g_8)/16, G_Vc = -(g_0 + g_8)/16 (largest deviation %.1e); for every one of the nine ranks the coefficients of the two forms are the same numbers with the sums and the differences of the densities exchanged (%.1e)" % (worst_off, worst_hf, swap))
+
+    # ---- F2: the internal symmetry and the self-interaction ----------------------------------------------------
+    def rank_of_variation(chans, gen_t, theta=0.37):
+        """Number of independent conditions on the nine couplings for invariance of sum_r g_r I_r under psi -> exp(i theta T) psi:
+        the rank of the nine variations of the antisymmetrized quartic tensors."""
+        u = expm(1j * theta * gen_t)
+        cols = []
+        for r in range(9):
+            t = np.zeros((16, 16, 16, 16), dtype=complex)
+            for (_m, rr, eps, _th, mk) in chans:
+                if rr == r:
+                    t += eps * np.einsum("ab,cd->abcd", mk, mk)
+            anti = t - t.transpose(0, 3, 2, 1)
+            # psi -> U psi: T'_{abcd} = sum conj(U_{a'a}) U_{b'b} conj(U_{c'c}) U_{d'd} T_{a'b'c'd'}
+            tp = np.einsum("ijkl,ia->ajkl", anti, u.conj())
+            tp = np.einsum("ajkl,jb->abkl", tp, u)
+            tp = np.einsum("abkl,kc->abcl", tp, u.conj())
+            tp = np.einsum("abcl,ld->abcd", tp, u)
+            cols.append((tp - anti).ravel())
+        mat = np.array(cols).T
+        sv = np.linalg.svd(mat, compute_uv=False)
+        rank = int(np.sum(sv > 1e-9 * max(sv.max(), 1.0)))
+        return rank, mat
+
+    def herm(mat):
+        return mat if np.abs(mat - mat.conj().T).max() < 1e-12 else 1j * mat
+
+    red_rows = np.array([[float(x) for x in reduction_table(fierz_closed())[r]] for r in range(9)]).T   # 4 x 9: g -> g_eff
+    counts = {}
+    only_trivial = True
+    for tag in ("44c", "44q"):
+        _gen, _adj, _beta, chans = models[tag]
+        gens = {"times": herm(G44[5] @ G44[6]), "hidden": herm(G44[0] @ G44[5]), "pe": herm(G44[0] @ G44[5] @ G44[6] @ G44[7])}
+        for name, gt in gens.items():
+            rank, mat = rank_of_variation(chans, gt)
+            counts[(tag, name)] = rank
+            if tag == "44c" and name in ("hidden", "pe"):
+                # four conditions: is the invariant subspace exactly the couplings with vanishing effective couplings?
+                null = np.linalg.svd(mat, full_matrices=False)[2][rank:].conj()        # 5 vectors g with vanishing variation
+                only_trivial &= np.abs(red_rows @ null.T).max() < 1e-8
+    want_counts = {("44c", "times"): 0, ("44c", "hidden"): 4, ("44c", "pe"): 4, ("44q", "times"): 0, ("44q", "hidden"): 0, ("44q", "pe"): 2}
+    report("Icks-F2", counts == want_counts and only_trivial,
+           "the internal symmetry of the fields in ordinary space and the self-interaction, tested at a finite angle (psi -> exp(0.37 i T) psi, numerical matrices, the nine antisymmetrized quartic tensors transformed index by index): number of independent conditions on the nine couplings for invariance, covariant form: %d for a rotation of two of x5, x6, x7, %d for the unitary transformation generated by gamma^0 gamma^5, %d for P_E; quantized-sector form: %d, %d, %d. In the covariant form the couplings that are invariant under gamma^0 gamma^5 or under P_E are exactly those whose four effective couplings vanish (the five combinations that are zero for anticommuting fields): every self-interaction that does not vanish breaks these symmetries" % (counts[("44c", "times")], counts[("44c", "hidden")], counts[("44c", "pe")], counts[("44q", "times")], counts[("44q", "hidden")], counts[("44q", "pe")]))
+
+    # ---- F3: the pairing amplitudes of the two forms in the two kinds of pairs ---------------------------------
+    alpha = {j: -G44[4] @ G44[j] for j in (1, 2, 3)}
+
+    def projector(p, mass):
+        h = sum(p[i] * alpha[i + 1] for i in range(3)) + mass * beta
+        w, v = np.linalg.eigh(h)
+        occ = v[:, w > 0]
+        return occ @ occ.conj().T
+
+    def amps(chans, xpair, p, pp, mass):
+        k = projector(p, mass) @ xpair.conj() @ projector(-p, mass).T
+        kp = projector(pp, mass) @ xpair.conj() @ projector(-pp, mass).T
+        norm = math.sqrt(np.trace(k.conj().T @ k).real * np.trace(kp.conj().T @ kp).real)
+        out = np.zeros(9)
+        for (_m, r, eps, _th, mk) in chans:
+            out[r] += eps * np.trace(kp.conj().T @ mk @ k @ mk.T).real / norm
+        return out
+
+    def closed(mass, p, pp):
+        e, ep, dot = math.sqrt(mass**2 + p @ p), math.sqrt(mass**2 + pp @ pp), p @ pp
+        return {0: (e * ep + mass**2 - dot) / (2 * e * ep), 1: (3 * e * ep - 2 * mass**2 - dot) / (e * ep), 7: (3 * e * ep + 2 * mass**2 - dot) / (e * ep), 8: -(e * ep - mass**2 - dot) / (2 * e * ep)}
+
+    worst_amp, w_par = 0.0, True
+    for tag, axis, sign in (("44c", 0, -1.0), ("44c", 5, 1.0), ("44c", 6, 1.0), ("44c", 7, 1.0), ("44q", 0, 1.0), ("44q", 5, 1.0)):
+        chans = models[tag][3]
+        xpair = cminus @ G44[axis]
+        # W kappa W^T = -kappa for the hidden axis (one particle of each half), +kappa for the axes 5, 6, 7
+        k0 = projector(np.array([0.3, -0.1, 0.2]), 0.9) @ xpair.conj() @ projector(-np.array([0.3, -0.1, 0.2]), 0.9).T
+        w_par &= np.abs(wmat @ k0 @ wmat.T - (-1.0 if axis == 0 else 1.0) * k0).max() < 1e-12
+        for _ in range(8):
+            mass = rng.uniform(0.3, 1.8)
+            p, pp = rng.uniform(-1.2, 1.2, 3), rng.uniform(-1.2, 1.2, 3)
+            got, cl = amps(chans, xpair, p, pp, mass), closed(mass, p, pp)
+            worst_amp = max(worst_amp, max(abs(got[r] - sign * cl[r]) for r in (0, 1, 7, 8)))
+    report("Icks-F3", worst_amp < 1e-11 and w_par,
+           "the pairing amplitudes of the contact channels in the two forms (projectors on the states of positive energy from numerical eigenvectors; random masses and momenta in ordinary space): the pair along the hidden axis satisfies W kappa W^T = -kappa (one particle of each half of the field), the pairs along x5, x6, x7 satisfy W kappa W^T = +kappa (two particles of the same half); in the quantized-sector form the amplitudes of the ranks 0, 1, 7, 8 are the closed forms F_0, F_1, F_7, F_8 in both kinds of pairs, in the covariant form they are the closed forms in the pairs along x5, x6, x7 and MINUS the closed forms in the pair along the hidden axis (largest deviation %.1e)" % worst_amp)
+
+    # ---- F4: uniform matter of two halves: states, polarization, thresholds, saturation -----------------------
+    pol_rows = read_csv("forms_energy_vs_polarization.csv")
+    picks = [r for i, r in enumerate(pol_rows) if i % 97 == 5][:36]
+    worst_state = 0.0
+    n_cmp = 0
+    for r in picks:
+        d, form = int(float(r["D"])), ("C" if float(r["form"]) == 0 else "Q")
+        g0u, g1u = SETS_F["AB"[int(float(r["set"]))]]
+        thr_q = None
+        # the strength of the row: mult times the threshold of the quantized-sector form (file forms_thresholds.csv)
+        for t in read_csv("forms_thresholds.csv"):
+            if int(t["D"]) == d and t["set"] == "AB"[int(float(r["set"]))] and t["form"] == "Q":
+                thr_q = float(t["g_threshold"])
+        g = float(r["mult"]) * thr_q
+        st = halves_at(d, halves_couplings(form, g0u * g, g1u * g), float(r["kF_total"]), float(r["pol"]), starts=[(float(r["M_plus"]) * 1.01, max(float(r["M_minus"]) * 0.99, 1e-3)), (1.0, 1.0), (0.3, 0.3), (0.3, 1.5), (1.5, 0.3)])
+        if st is None:
+            worst_state = 9.9
+            continue
+        # compare with the solution of the program if the iteration found the same one; a lower one would be an error of the program
+        dm = max(abs(st["M"][0] - float(r["M_plus"])), abs(st["M"][1] - float(r["M_minus"])) if float(r["pol"]) < 1 else 0.0)
+        de = st["e"] - float(r["e_bind"])
+        if de < -1e-9:
+            worst_state = max(worst_state, 9.9)       # the independent iteration found a state of lower energy
+        else:
+            worst_state = max(worst_state, dm if de < 1e-9 else 0.0, abs(de) if de < 1e-9 else 0.0)
+        n_cmp += 1
+    # thresholds: bound 1 per cent above (at the state that the program reports), not bound 1 per cent below (scan)
+    thr_ok, thr_txt = True, []
+    for t in read_csv("forms_thresholds.csv"):
+        d, form = int(t["D"]), t["form"]
+        g0u, g1u = SETS_F[t["set"]]
+        g = float(t["g_threshold"])
+        above = halves_at(d, halves_couplings(form, 1.01 * g0u * g, 1.01 * g1u * g), float(t["kF_total"]), float(t["pol"]))
+        e_above = above["e"] if above else 9.9
+        lowest_below = 9.9
+        for kf in np.exp(np.linspace(math.log(0.15), math.log(2.5), 36)):
+            for pol in (0.0, 0.25, 0.5, 0.75, 1.0):
+                st = halves_at(d, halves_couplings(form, 0.99 * g0u * g, 0.99 * g1u * g), kf, pol, starts=[(1.0, 1.0), (0.5, 0.5), (0.2, 1.4), (0.2, 0.2)])
+                if st:
+                    lowest_below = min(lowest_below, st["e"])
+        thr_ok &= e_above < 0 < lowest_below
+        thr_txt.append("D = %d, set %s, form %s: %.4f" % (d, t["set"], form, g))
+    # saturation: the reported state has the reported energy, and its pressure vanishes
+    sat_rows = [r for r in read_csv("forms_saturation.csv") if abs(float(r["tau_d"]) - 1.0) < 1e-9 or abs(float(r["tau_d"]) - 3.0) < 1e-9]
+    worst_sat, worst_p = 0.0, 0.0
+    for r in sat_rows:
+        d, form = int(float(r["D"])), ("C" if float(r["form"]) == 0 else "Q")
+        g0u, g1u = SETS_F["AB"[int(float(r["set"]))]]
+        g = float(r["g"])
+        st = halves_at(d, halves_couplings(form, g0u * g, g1u * g), float(r["kF_total"]), float(r["pol"]), starts=[(float(r["M_plus"]), max(float(r["M_minus"]), 1e-3)), (1.0, 1.0), (0.3, 0.3)])
+        worst_sat = max(worst_sat, abs(st["e"] - float(r["e_bind"])))
+        worst_p = max(worst_p, abs(st["p"]) / abs(st["eps"]))
+    report("Icks-F4", worst_state < 1e-8 and n_cmp == len(picks) and thr_ok and worst_sat < 1e-8 and worst_p < 1e-6,
+           "uniform matter of the two halves in both forms, recomputed with an independent solver of the two coupled gap equations (damped fixed-point iteration from several start values; Gauss-Legendre integrals), where the program uses closed forms of the integrals and a search for all solutions: (i) %d states of the table of the energy against the polarization (both forms, D = 4 and 3, sets A and B): masses and energy per particle agree to %.1e, and the iteration finds no solution of lower energy; (ii) the binding thresholds g m^(D-1) of the program (%s): at 1.01 times each threshold the state that the program reports is bound, and at 0.99 times the threshold a scan of 36 densities and 5 polarizations finds no bound state; (iii) the saturated states at the clock readings 1 and 3 (16 states): energy per particle to %.1e, pressure over energy density at most %.1e" % (n_cmp, worst_state, "; ".join(thr_txt), worst_sat, worst_p))
+
+    # ---- F5: the effective potential of two halves is stationary at the Kohn-Sham state ----------------------
+    def omega_halves(d, coup, m, mu, masses, vs):
+        tv, ts, dv, ds = coup
+        om = 0.0
+        for mass, v in zip(masses, vs):
+            mus = mu - v
+            if mus > abs(mass):
+                kf = math.sqrt(mus * mus - mass * mass)
+                om -= pref(d, NU / 2) * quad(lambda k: k ** (d - 1) * (mus - math.sqrt(k * k + mass * mass)), 0, kf, epsabs=1e-15, epsrel=1e-13)[0]
+        mu_s, d_s = 0.5 * (masses[0] + masses[1]) - m, 0.5 * (masses[0] - masses[1])
+        v_t, v_d = 0.5 * (vs[0] + vs[1]), 0.5 * (vs[0] - vs[1])
+        for x, gcoup in ((mu_s, ts), (d_s, ds), (v_t, tv), (v_d, dv)):
+            if gcoup != 0:
+                om -= x * x / (2 * gcoup)
+        return om
+
+    cj_rows = read_csv("forms_cjt_vs_ks.csv")
+    thr_map = {(int(t["D"]), t["set"], t["form"]): float(t["g_threshold"]) for t in read_csv("forms_thresholds.csv")}
+    worst_grad, worst_om = 0.0, 0.0
+    kinds = set()
+    for r in [x for i, x in enumerate(cj_rows) if i % 5 == 2]:
+        d, form, setn = int(float(r["D"])), ("C" if float(r["form"]) == 0 else "Q"), "AB"[int(float(r["set"]))]
+        g = float(r["mult"]) * thr_map[(d, setn, form)]
+        coup = halves_couplings(form, SETS_F[setn][0] * g, SETS_F[setn][1] * g)
+        pol = float(r["pol"])
+        st = halves_at(d, coup, float(r["kF_total"]), pol, starts=[(float(r["Mp_ks"]), max(float(r["Mm_ks"]), 1e-3))])
+        mu = float(r["mu"])
+        masses, vs = [float(r["Mp_ks"]), float(r["Mm_ks"])], list(st["V"])
+        kinds.add("one half" if pol > 1 - 1e-6 else ("equal halves" if pol < 1e-6 else "unequal halves"))
+        om0 = omega_halves(d, coup, 1.0, mu, masses, vs)
+        worst_om = max(worst_om, abs(-om0 - float(r["p_ks"])) / abs(float(r["eps_ks"])), abs(om0 + mu * float(r["n_ks"]) - float(r["eps_ks"])) / abs(float(r["eps_ks"])))
+        h = 1e-5
+        for i in range(4):
+            mp, mm, vp, vm = list(masses), list(masses), list(vs), list(vs)
+            if i < 2:
+                mp[i] += h
+                mm[i] -= h
+            else:
+                vp[i - 2] += h
+                vm[i - 2] -= h
+            grad = (omega_halves(d, coup, 1.0, mu, mp, vp) - omega_halves(d, coup, 1.0, mu, mm, vm)) / (2 * h)
+            worst_grad = max(worst_grad, abs(grad) / max(float(r["n_ks"]), 1e-12))
+    report("Icks-F5", worst_grad < 1e-6 and worst_om < 1e-9 and len(kinds) >= 2,
+           "the effective potential of two halves, Omega(M_+, M_-, V_+, V_-; mu) = sum over the halves of the grand potential of free particles - muS^2/(2 T_S) - dS^2/(2 D_S) - vT^2/(2 T_V) - vD^2/(2 D_V), evaluated with adaptive quadrature at 16 of the Kohn-Sham states of the program (both forms; states with %s): its four partial derivatives vanish (central differences; largest value %.1e of the density), -Omega equals the pressure and Omega + mu n the energy density of the Kohn-Sham state (%.1e)" % (", ".join(sorted(kinds)), worst_grad, worst_om))
+
+    # ---- F6: the vacuum with the filled states of negative energy ----------------------------------------------
+    def sea_s(d, mass, nu, lam=1.0):
+        return -pref(d, nu) * quad(lambda k: k ** (d - 1) * mass / math.sqrt(k * k + mass * mass), 0, lam, epsabs=1e-15, epsrel=1e-13)[0] if mass != 0 else 0.0
+
+    vac = read_csv("forms_vacuum.csv")
+    worst_vac, worst_res, kinds_ok = 0.0, 0.0, True
+    for r in vac:
+        tau = float(r["tau_d"])
+        if not any(abs(tau - t) < 1e-9 for t in (-0.5, 0.2, 0.5)):
+            continue
+        d, form, setn, bare, g = int(float(r["D"])), ("C" if float(r["form"]) == 0 else "Q"), "AB"[int(float(r["set"]))], float(r["m_bare"]), float(r["g"])
+        _tv, ts, _dv, ds = halves_couplings(form, SETS_F[setn][0] * g, SETS_F[setn][1] * g)
+        m1, m2 = float(r["M_large"]), float(r["M_small"])
+        s1, s2 = sea_s(d, m1, NU / 2), sea_s(d, m2, NU / 2)
+        # residuals of the two gap equations of the vacuum
+        worst_res = max(worst_res, abs(0.5 * (m1 + m2) - bare - ts * (s1 + s2)), abs(0.5 * (m1 - m2) - ds * (s1 - s2)))
+        if bare == 0.0:
+            gs_hf = four_couplings(SETS_F[setn][0] * g, SETS_F[setn][1] * g)[0]
+            # the mass of the attractive channel: M = G_S^HF s(M) with all NU states
+            if tau > 0:
+                mm = brentq(lambda x: x - gs_hf * sea_s(d, x, NU), 1e-6, 5.0, xtol=1e-14)
+                worst_vac = max(worst_vac, abs(m1 - mm), abs(abs(m2) - mm))
+                # the program lists the representative with M_large > 0: (M, M) in the form Q, (M, -M) in the form C
+                kinds_ok &= m1 > 0 and ((m2 < 0) if form == "C" else (m2 > 0))
+            else:
+                worst_vac = max(worst_vac, abs(m1), abs(m2))
+    report("Icks-F6", worst_vac < 1e-7 and worst_res < 1e-8 and kinds_ok,
+           "the vacuum of the two forms with the filled states of negative energy (adaptive quadrature), at the clock readings -0.5, 0.2 and 0.5 counted from the critical strength, D = 4 and 3, sets A and B, without bare mass and with the bare mass 0.05 Lambda: the masses that the program reports satisfy the two gap equations of the vacuum (largest residual %.1e); without bare mass they vanish below the critical strength, and above it their magnitude is the solution of M = -G_S^HF NU Int^Lambda M/w (%.1e), with EQUAL signs in the quantized-sector form and OPPOSITE signs in the covariant form" % (worst_res, worst_vac))
+
+    # ---- F7: the gap of the hidden-axis pair in the covariant form (contact couplings with the opposite sign) --
+    gh = read_csv("pair_gap_history.csv")
+    worst_gap, n_gap, order, none_small = 0.0, 0, True, True
+    for r in gh:
+        if float(r["set"]) != 3.0 or float(r["ct_sign"]) != -1.0 or int(float(r["variant"])) not in (1, 3):
+            continue
+        tau = float(r["tau_d"])
+        if not (1.9 < tau < 2.2):
+            continue
+        gg = float(r["g"])
+        iv = int(float(r["variant"]))
+        contact = [gg * gg, 0.0, 0.0, 0.0] if iv == 1 else [0.0, -0.3 * gg * gg, 0.0, 0.0]     # the couplings of the variant times ct_sign = -1
+        gap = solve_gap(1.0, float(r["k_F"]), gg * gg, float(r["m_s"]), 0.0, contact, 1.0)
+        base = [x for x in gh if float(x["set"]) == 3.0 and float(x["ct_sign"]) == 1.0 and int(float(x["variant"])) == 0 and abs(float(x["tau_d"]) - tau) < 1e-9][0]
+        if float(r["gap"]) > 0:
+            worst_gap = max(worst_gap, abs(gap / float(r["gap"]) - 1))
+        else:
+            # the program reports no gap (below 1e-7 E_F): the independent iteration must not find one either
+            none_small &= gap < 1e-6
+        order &= (float(r["gap"]) <= float(base["gap"])) if iv == 1 else (float(r["gap"]) >= float(base["gap"]))
+        n_gap += 1
+    report("Icks-F7", worst_gap < 2e-3 and n_gap == 2 and order and none_small,
+           "the gap of the hidden-axis pair in the covariant form, where the contact couplings enter the pairing potential with the opposite sign: independent solution of the gap equation (another grid of momenta, the same upper limit 2e4 m, plain iteration) for the exchange of the Vorton-Scalar with a scalar contact attraction and with a vector contact repulsion (m_s = m, k_F = 0.5 m, clock reading 2.04): with the vector coupling the gap agrees with the program to %.1e (relative) and exceeds the gap of the exchange alone; with the scalar coupling the program reports no gap and the independent iteration finds none above 1e-6 E_F" % worst_gap)
+
+    # ---- F8: the ultraviolet criterion of the gap equation -----------------------------------------------------
+    def uv_integral(a, b):
+        """Int_0^inf dt (1/2) Int_-1^1 dx (a + b x)/(1 + t^2 - 2 t x), by nested adaptive quadrature; the part t > 1 with t = 1/u."""
+        def inner(t):
+            return 0.5 * quad(lambda x: (a + b * x) / (1 + t * t - 2 * t * x), -1, 1, epsabs=1e-13, epsrel=1e-12, limit=400, points=[0.999])[0]
+        lower = quad(inner, 0, 1, epsabs=1e-11, epsrel=1e-10, limit=400)[0]
+        upper = quad(lambda u: inner(1 / u) / (u * u), 1e-12, 1, epsabs=1e-11, epsrel=1e-10, limit=400)[0]
+        return lower + upper
+
+    i_s_num, i_v_num = uv_integral(0.5, -0.5), uv_integral(3.0, -1.0)
+    i_s, i_v = math.pi**2 / 8 - 0.5, 3 * math.pi**2 / 4 - 1
+    dev_int = max(abs(i_s_num - i_s), abs(i_v_num - i_v))
+
+    def uv_strength(g2, contact, lam, sign, modes=2):
+        return g2 * modes * i_s - sign * lam * lam * ((contact[0] - contact[3]) * i_s + (contact[1] + contact[2]) * i_v)
+
+    # the kernel of this script at a large momentum, integrated over the ratio of the momenta
+    dev_kernel = 0.0
+    kbig = 3.0e4
+    for (g2, contact, lam) in ((2.3, [0.0, 0.0, 0.0, 0.0], 1.0), (0.0, [-1.3, 0.0, 0.0, 0.0], 1.5), (0.0, [0.0, 0.4, 0.0, 0.0], 0.8), (5.0, [5.0, -0.5, 0.3, -0.2], 1.0)):
+        def w_of(t):
+            return kbig * kbig * pair_kernel(kbig, max(t * kbig, 1e-9), 1.0, g2, 0.7, 0.0, contact, lam)
+        num = quad(w_of, 0, 1, epsabs=1e-10, epsrel=1e-9, limit=800)[0] + quad(lambda u: w_of(1 / u) / (u * u), 1e-9, 1, epsabs=1e-10, epsrel=1e-9, limit=800)[0]
+        # pair_kernel takes the contact couplings with the sign +1
+        dev_kernel = max(dev_kernel, abs(num - uv_strength(g2, contact, lam, 1.0)) / max(abs(num), 1.0))
+    # below and above the criterion: the hidden-axis pair of the covariant form with g_1eff = +0.3 g^2 (variant 3, sign -1), m_s = m, k_F = 0.5 m
+    lim = [r for r in read_csv("pair_gap_upper_limit.csv") if float(r["set"]) == 3.0 and int(float(r["variant"])) == 3 and float(r["ct_sign"]) == -1.0]
+    below = min(lim, key=lambda r: abs(float(r["tau_d"]) - 2.04))
+    above = max(lim, key=lambda r: float(r["tau_d"]))
+    txt, uv_ok, dev_rust = [], True, 0.0
+    for r, sub in ((below, True), (above, False)):
+        gg = float(r["g"])
+        contact = [0.0, -0.3 * gg * gg, 0.0, 0.0]
+        uv = uv_strength(gg * gg, [0.0, 0.3 * gg * gg, 0.0, 0.0], 1.0, -1.0) / (4 * math.pi**2)
+        dev_rust = max(dev_rust, abs(uv - float(r["uv"])))
+        g1 = solve_gap(1.0, 0.5, gg * gg, 1.0, 0.0, contact, 1.0, kmax=2.0e3, start=(None if sub else 1e3))
+        g2_ = solve_gap(1.0, 0.5, gg * gg, 1.0, 0.0, contact, 1.0, kmax=2.0e4, start=(None if sub else 1e4))
+        if sub:
+            # below the criterion the gap is a property of the model: the two programs must agree
+            dev_rust = max(dev_rust, abs(g1 / float(r["gap_2e3"]) - 1), abs(g2_ / float(r["gap_2e4"]) - 1))
+            uv_ok &= uv < 1 and abs(g2_ / g1 - 1) < 1e-3
+        else:
+            # above it the value depends on the upper limit and on the grid of momenta; both programs must show the growth
+            uv_ok &= uv > 1 and g2_ / g1 > 5 and float(r["gap_2e4"]) / float(r["gap_2e3"]) > 5
+        txt.append("clock reading %.2f, U/(4 pi^2) = %.3f: gap/E_F = %.5g and %.5g%s" % (float(r["tau_d"]), uv, g1, g2_, "" if sub else " (program, with its own grid: %.5g and %.5g)" % (float(r["gap_2e3"]), float(r["gap_2e4"]))))
+    report("Icks-F8", dev_int < 1e-8 and dev_kernel < 2e-3 and uv_ok and dev_rust < 1e-3,
+           "the ultraviolet criterion of the gap equation. (i) The integrals Int_0^inf dt (1/2) Int_-1^1 dx F(x)/(1 + t^2 - 2 t x) by nested adaptive quadrature: %.9f for F = (1 - x)/2 (closed form pi^2/8 - 1/2 = %.9f) and %.9f for F = 3 - x (closed form 3 pi^2/4 - 1 = %.9f). (ii) The kernel of this script at the momentum 3e4 m, integrated over the ratio of the momenta, equals U = g_VS^2 (pi^2/4 - 1) - m_ct^2 [(g_0eff - g_8eff)(pi^2/8 - 1/2) + (g_1eff + g_7eff)(3 pi^2/4 - 1)] for four sets of couplings (largest relative deviation %.1e). (iii) The hidden-axis pair of the covariant form with the vector contact coupling g_1eff = +0.3 g_VS^2/m^2 (m_s = m, k_F = 0.5 m), solved with the upper limits 2e3 m and 2e4 m: %s; below the criterion the gap does not depend on the limit, and the two values and the values of U/(4 pi^2) agree with the program to %.1e; above the criterion the gap grows with the limit in both programs by more than a factor 5 per decade (its value then depends on the limit and on the grid of momenta, and is not a property of the model)"
+           % (i_s_num, i_s, i_v_num, i_v, dev_kernel, "; ".join(txt), dev_rust))
+
+
 def main():
-    # optional arguments: the letters of the parts to run (S K J U P G), for testing; the report file is
+    # optional arguments: the letters of the parts to run (S K J U P G F), for testing; the report file is
     # written only by a complete run
-    want = [x.upper() for x in sys.argv[1:]] or ["S", "K", "J", "U", "P", "G"]
+    want = [x.upper() for x in sys.argv[1:]] or ["S", "K", "J", "U", "P", "G", "F"]
     complete = len(sys.argv) == 1
     models, red_num = part_selfinteraction() if "S" in want else ({t: build_model(t) for t in ("71s", "44q", "44c")}, None)
     if red_num is None:
@@ -1434,6 +1831,8 @@ def main():
         part_pairing(models, red_num)
     if "G" in want:
         part_gravity()
+    if "F" in want:
+        part_forms(models)
     if not complete:
         print("\npartial run: %d of %d checks passed (report file not written)" % (sum(1 for line in LINES if line.startswith("[PASS]")), len(LINES)))
         sys.exit(0 if ALL_OK else 1)

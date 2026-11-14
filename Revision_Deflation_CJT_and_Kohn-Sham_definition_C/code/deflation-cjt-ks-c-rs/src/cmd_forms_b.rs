@@ -17,10 +17,84 @@ fn sea_slope(d: usize, lam: f64, mass: f64) -> f64 {
     pref * simpson(|k| if k == 0.0 { 0.0 } else { k.powi(d as i32 + 1) / (k * k + mass * mass).powf(1.5) }, 0.0, lam, 4000)
 }
 
+/// The solutions of the gap equations of the vacuum with the lowest Omega are degenerate by the
+/// symmetries of the model: the exchange of the two halves turns (M_+, M_-) into (M_-, M_+), and for
+/// a field without mass term the reversal of the sign of both masses is a symmetry as well.  This
+/// function returns one representative of the degenerate set, the same in every run: the two masses
+/// ordered with the larger first, and, among the degenerate solutions, the one whose larger mass is
+/// largest (for a field without mass term: (M, M) in the quantized-sector form and (M, -M) in the
+/// covariant form, with M >= 0).  Argument: all solutions, sorted by Omega (CjtHalves::vacuum).
+fn vacuum_representative(v: &[([f64; 2], f64)]) -> ([f64; 2], f64) {
+    let om0 = v[0].1;
+    let tol = 1e-9 * om0.abs() + 1e-15;
+    let mut best = ([f64::NEG_INFINITY, f64::NEG_INFINITY], om0);
+    for &(ms, om) in v.iter() {
+        if om - om0 > tol {
+            break;
+        }
+        let (hi, lo) = if ms[0] >= ms[1] { (ms[0], ms[1]) } else { (ms[1], ms[0]) };
+        if hi > best.0[0] + 1e-12 {
+            best = ([hi, lo], om);
+        }
+    }
+    best
+}
+
+/// The smallest C at which matter of ONE kind of particle is self-bound in the functional
+/// with the Vorton-Scalar (module kohn_sham; the number of states per momentum is that of the
+/// integrator `f`), for the fraction f_d of bare mass and the contact couplings G_S = gs1 C,
+/// G_V = gv1 C: bisection in ln C on [0.05, 60] (24 steps).  None if matter is bound at
+/// C = 0.05 already or not bound at C = 60.
+fn one_kind_threshold(f: &Fermi, f_d: f64, gs1: f64, gv1: f64) -> Option<f64> {
+    let lowest = |cc: f64| global_min(|l: f64| Unified { f_d, c: cc, gs: gs1 * cc, gv: gv1 * cc }.state(f, l.exp()).e_per_particle - 1.0, 0.1f64.ln(), 6.0f64.ln(), 120, 1e-9).1;
+    let (mut lo, mut hi) = (0.05f64.ln(), 60.0f64.ln());
+    if !(lowest(lo.exp()) >= -1e-9 && lowest(hi.exp()) < -1e-9) {
+        return None;
+    }
+    for _ in 0..24 {
+        let mid = 0.5 * (lo + hi);
+        if lowest(mid.exp()) < -1e-9 {
+            hi = mid;
+        } else {
+            lo = mid;
+        }
+    }
+    Some((0.5 * (lo + hi)).exp())
+}
+
+/// Result of `unified_threshold`.
+#[derive(Clone, Copy, Debug)]
+struct UnifiedThreshold {
+    /// the smallest C at which matter is self-bound
+    c: f64,
+    /// the state of lowest energy per particle at 1.001 C (functional of two halves), and its kf_total
+    kf: f64,
+    st: spacetimes_deflation_cjt_ks_c::halves::UnifiedHalvesState,
+    /// binding energy per particle (E/N - m) of the lowest state at 1.001 C and at 0.999 C (functional of two halves)
+    e_above: f64,
+    e_below: f64,
+    /// thresholds of matter of one kind: equal halves (eight states, couplings T_S, T_V) and one half
+    /// filled (four states, couplings a_S = T_S + D_S, a_V = T_V + D_V); NaN: none in [0.05, 60]
+    c_equal: f64,
+    c_one_half: f64,
+    /// 0: the threshold is that of matter of one kind, confirmed by the functional of two halves;
+    /// 1: bisection with the functional of two halves
+    method: u8,
+}
+
 /// The smallest C at which matter of the functional with the Vorton-Scalar is self-bound,
-/// for the fraction f_d of bare mass and the contact couplings g_0 = -kappa0 C, g_1 = +kappa1 C
-/// (bisection in ln C on [0.05, 60]).  Returns (C, kf_total, state just above the threshold).
-fn unified_threshold(tabs: &SelfTables, form: Form, f_d: f64, kappa0: f64, kappa1: f64) -> Option<(f64, f64, spacetimes_deflation_cjt_ks_c::halves::UnifiedHalvesState)> {
+/// for the fraction f_d of bare mass and the contact couplings g_0 = -kappa0 C, g_1 = +kappa1 C.
+///
+/// The functional of two halves is minimized over the density, the field of the scalar and the
+/// polarization.  Two of its states are matter of one kind, for which the threshold is found
+/// quickly and accurately with the functional of module kohn_sham: matter with equal halves
+/// and matter with one half filled.  The smaller of these two thresholds, C*, is an upper
+/// bound of the threshold.  It IS the threshold if the functional of two halves, minimized
+/// over all densities, fields and polarizations, finds no bound state at 0.999 C* (and a bound
+/// state at 1.001 C*); this is tested.  If it does find one (a bound state with unequal
+/// halves below C*), the threshold is located by bisection with the functional of two halves
+/// (20 steps in ln C).
+fn unified_threshold(tabs: &SelfTables, form: Form, f_d: f64, kappa0: f64, kappa1: f64) -> Option<UnifiedThreshold> {
     let functional = |c: f64| {
         let mut g9 = [0.0; 9];
         g9[0] = -kappa0 * c;
@@ -29,8 +103,34 @@ fn unified_threshold(tabs: &SelfTables, form: Form, f_d: f64, kappa0: f64, kappa
     };
     // kf_total from 0.1 m to 6 m in 60 steps of ln kf_total, refinement around every local minimum
     let lowest = |c: f64| functional(c).lowest_energy_per_particle(0.1, 6.0, 60);
+    // matter of one kind
+    let mut g9 = [0.0; 9];
+    g9[0] = -kappa0;
+    g9[1] = kappa1;
+    let hc = HalvesCouplings::new(form, 1.0, &Hf4::from_tables(tabs, &g9));
+    let c_equal = one_kind_threshold(&Fermi::isotropic(3, NU, 96), f_d, hc.ts, hc.tv);
+    let c_one_half = one_kind_threshold(&Fermi::isotropic(3, NU / 2.0, 96), f_d, hc.a_s(), hc.a_v());
+    let cand = match (c_equal, c_one_half) {
+        (Some(x), Some(y)) => Some(x.min(y)),
+        (Some(x), None) | (None, Some(x)) => Some(x),
+        (None, None) => None,
+    };
+    let (ce, ch) = (c_equal.unwrap_or(f64::NAN), c_one_half.unwrap_or(f64::NAN));
+    let mut top = 60.0f64;
+    if let Some(c) = cand {
+        if let (Some((kf, s)), Some((_, sb))) = (lowest(1.001 * c), lowest(0.999 * c)) {
+            let (ea, eb) = (s.e_per_particle - 1.0, sb.e_per_particle - 1.0);
+            if ea < -1e-9 && eb > 1e-9 {
+                return Some(UnifiedThreshold { c, kf, st: s, e_above: ea, e_below: eb, c_equal: ce, c_one_half: ch, method: 0 });
+            }
+            if eb <= 1e-9 {
+                top = 0.999 * c;
+            }
+        }
+    }
+    // bisection with the functional of two halves
     let bound = |c: f64| lowest(c).map_or(false, |(_, s)| s.e_per_particle - 1.0 < -1e-9);
-    let (mut lo, mut hi) = (0.05f64.ln(), 60.0f64.ln());
+    let (mut lo, mut hi) = (0.05f64.ln(), top.ln());
     if bound(lo.exp()) || !bound(hi.exp()) {
         return None;
     }
@@ -43,7 +143,9 @@ fn unified_threshold(tabs: &SelfTables, form: Form, f_d: f64, kappa0: f64, kappa
         }
     }
     let c = (0.5 * (lo + hi)).exp();
-    lowest(1.001 * c).map(|(kf, s)| (c, kf, s))
+    let (kf, s) = lowest(1.001 * c)?;
+    let eb = lowest(0.999 * c).map_or(f64::NAN, |(_, sb)| sb.e_per_particle - 1.0);
+    Some(UnifiedThreshold { c, kf, st: s, e_above: s.e_per_particle - 1.0, e_below: eb, c_equal: ce, c_one_half: ch, method: 1 })
 }
 
 pub(crate) fn run_part2(tabs: &SelfTables, rep: &mut Report, cases: &[(usize, usize, Form)], thr: &[f64], t0: std::time::Instant) -> std::io::Result<bool> {
@@ -122,7 +224,7 @@ pub(crate) fn run_part2(tabs: &SelfTables, rep: &mut Report, cases: &[(usize, us
                 let vac = |g: f64, bare: f64| CjtHalves { d, nu_half: NU / 2.0, c: HalvesCouplings::new(form, bare, &hf1.scaled(g)), sea: Some(lam) }.vacuum();
                 let below = vac(0.98 * g_crit, 0.0);
                 let above = vac(1.02 * g_crit, 0.0);
-                let (mb, ma) = (below[0].0, above[0].0);
+                let (mb, ma) = (vacuum_representative(&below).0, vacuum_representative(&above).0);
                 f7 &= mb[0].abs() < 1e-5 && mb[1].abs() < 1e-5 && ma[0].abs() > 1e-2;
                 f7 &= match form {
                     Form::C => (ma[0] + ma[1]).abs() < 1e-7,
@@ -146,10 +248,9 @@ pub(crate) fn run_part2(tabs: &SelfTables, rep: &mut Report, cases: &[(usize, us
                 let tau = -1.0 + 0.02 * j as f64;
                 let g = g_crit * tau.exp();
                 let v = CjtHalves { d, nu_half: NU / 2.0, c: HalvesCouplings::new(form, bare, &hf1.scaled(g)), sea: Some(lam) }.vacuum();
-                let (ms, om) = v[0];
-                // by the symmetry between the halves the solutions come in pairs (M_+, M_-) and (M_-, M_+): the larger mass first
-                let (hi, lo) = if ms[0] >= ms[1] { (ms[0], ms[1]) } else { (ms[1], ms[0]) };
-                vec![d as f64, is as f64, form.code(), bare, tau, g, hi, lo, om, v.len() as f64]
+                // the solutions of lowest Omega are degenerate by the symmetries; the representative has the larger mass first
+                let (ms, om) = vacuum_representative(&v);
+                vec![d as f64, is as f64, form.code(), bare, tau, g, ms[0], ms[1], om, v.len() as f64]
             })
             .collect()
     });
@@ -220,12 +321,12 @@ pub(crate) fn run_part2(tabs: &SelfTables, rep: &mut Report, cases: &[(usize, us
     let vac_rows: Vec<Vec<f64>> = vac_rows_nested.into_iter().flatten().collect();
     write_csv_str("forms_vacuum_critical.csv",
         &[("content", "the 4+4 model in its two forms: the vacuum of a field without mass term with the filled states of negative energy (cutoff Lambda = 1: all quantities in units of the cutoff), 2 per cent below and 2 per cent above the critical strength g_crit = G_c/(G_S^HF per unit strength), where G_c = -(2 pi)^D (D - 1)/(NU A_D Lambda^(D-1)) is the critical coupling. Above it the field acquires a mass by its own self-interaction: in the quantized-sector form the same mass in both halves (the mass term psibar psi of the positive Lagrangian), in the covariant form masses of opposite sign in the two halves (the mass term psitilde psi of the covariant Lagrangian)".to_string()),
-          ("columns", "D; set; form; Gc: G_c Lambda^(D-1); g_crit; Mp_below, Mm_below: masses of the two halves at 0.98 g_crit; Mp_above, Mm_above: at 1.02 g_crit (the solution of lowest Omega); n_solutions: number of solutions of the two gap equations of the vacuum at 1.02 g_crit".to_string()),
+          ("columns", "D; set; form; Gc: G_c Lambda^(D-1); g_crit; Mp_below, Mm_below: masses of the two halves at 0.98 g_crit; Mp_above, Mm_above: at 1.02 g_crit (the solution of lowest Omega; the solutions of lowest Omega are degenerate by the exchange of the halves and by the reversal of both signs: the representative with Mp_above > 0 is listed); n_solutions: number of solutions of the two gap equations of the vacuum at 1.02 g_crit".to_string()),
           ("command", CMD.to_string())],
         &["D", "set", "form", "Gc", "g_crit", "Mp_below", "Mm_below", "Mp_above", "Mm_above", "n_solutions"], &crit_rows)?;
     write_csv("forms_vacuum.csv",
         &[("content", "the 4+4 model in its two forms: the masses of the two halves of the field in vacuum with the filled states of negative energy (cutoff Lambda = 1), along the deflation clock counted from the moment at which the strength of the couplings reaches the critical strength of a massless field (file forms_vacuum_critical.csv), for a field without mass term and for the bare mass 0.05 Lambda. The row gives the solution of the two gap equations of the vacuum with the lowest Omega_vac = sum over the halves of -(NU/2) Int^Lambda [w(M) - w(m)] - muS^2/(2 T_S) - dS^2/(2 D_S)".to_string()),
-          ("columns", "D; set: 0 = A, 1 = B; form: 0 = C (covariant), 1 = Q (quantized-sector); m_bare; tau_d = ln(g/g_crit); g; M_large, M_small: the two masses, the larger first (by the symmetry between the halves the assignment to W = +1 and W = -1 is free; a negative value is a mass term of the opposite sign); Omega: Omega_vac; n_solutions: number of solutions of the two gap equations".to_string()),
+          ("columns", "D; set: 0 = A, 1 = B; form: 0 = C (covariant), 1 = Q (quantized-sector); m_bare; tau_d = ln(g/g_crit); g; M_large, M_small: the two masses, the larger first (by the symmetry between the halves the assignment to W = +1 and W = -1 is free; without mass term the reversal of both signs is a symmetry too, and the solution with M_large >= 0 is listed; a negative value is a mass term of the opposite sign); Omega: Omega_vac; n_solutions: number of solutions of the two gap equations".to_string()),
           ("command", CMD.to_string())],
         &["D", "set", "form", "m_bare", "tau_d", "g", "M_large", "M_small", "Omega", "n_solutions"], &vac_rows)?;
     rep.add("fm-F7", "numerical", &format!("the vacuum of the two forms with the filled states of negative energy (cutoff Lambda). The gap equations of the vacuum are (M_+ + M_-)/2 - m = T_S (s_+ + s_-) and (M_+ - M_-)/2 = D_S (s_+ - s_-) with s_+- = -(NU/2) Int^Lambda M_+-/w. (a) Without mass term (m = 0) and for an attractive scalar coupling (sets A and B: G_S^HF < 0 < G_Sc) a field acquires a mass when |G_S^HF| exceeds the critical coupling |G_c| ({}), in both forms at the same strength of the couplings: no mass 2 per cent below it, a mass 2 per cent above it. In the quantized-sector form the two halves acquire the SAME mass (M_+ = M_-: the mass term of the positive Lagrangian); in the covariant form they acquire masses of OPPOSITE sign (M_+ = -M_-: the mass term -m psitilde psi of the covariant Lagrangian), verified to 1e-7. (b) With the bare mass 0.05 Lambda the quantized-sector form passes smoothly through the critical strength (the two masses stay equal at all 101 clock readings), whereas the covariant form has a sharp transition at which the two masses separate: {}; the strength of the transition agrees with the linear criterion 1 + D_S NU Int^Lambda d^Dk/(2 pi)^D k^2/w^3 = 0 at the common mass to {:.1e}", f7_txt.join(", "), tc_rows.join("; "), dev_lin), f7 && dev_lin < 1e-4 && tc_rows.len() == 4);
@@ -250,53 +351,44 @@ pub(crate) fn run_part2(tabs: &SelfTables, rep: &mut Report, cases: &[(usize, us
     let c_main = spacetimes::cjt_normal::critical_c(false);
     let mut f8 = true;
     let mut rows: Vec<Vec<String>> = Vec::new();
-    let mut dev_one: f64 = 0.0;
     let mut f8_txt: Vec<String> = Vec::new();
-    let f3 = Fermi::isotropic(3, NU, 96);
-    let c0: Vec<f64> = entries.iter().zip(&uni).filter(|(e, _)| (e.1, e.2, e.3) == (0.0, 0.0, 0.0)).map(|(_, u)| u.map_or(f64::NAN, |x| x.0)).collect();
+    let c0: Vec<f64> = entries.iter().zip(&uni).filter(|(e, _)| (e.1, e.2, e.3) == (0.0, 0.0, 0.0)).map(|(_, u)| u.map_or(f64::NAN, |x| x.c)).collect();
     f8 &= c0.len() == 2 && (c0[0] / c_main - 1.0).abs() < 1e-4 && (c0[1] / c_main - 1.0).abs() < 1e-4;
+    let (mut n_one_kind, mut n_bisect) = (0usize, 0usize);
+    let (mut margin_above, mut margin_below) = (f64::INFINITY, f64::INFINITY);
+    let mut kinds_match = true;
+    let nan = |x: f64| if x.is_nan() { "NaN".to_string() } else { format!("{:.8e}", x) };
     for (e, u) in entries.iter().zip(&uni) {
         let (form, f_d, k0, k1) = *e;
-        let Some((c, kf, st)) = u else {
+        let Some(t) = u else {
             f8 = false;
-            rows.push(vec![format!("{}", f_d), format!("{}", k0), format!("{}", k1), form.tag().to_string(), "NaN".to_string(), "NaN".to_string(), "".to_string(), "".to_string(), "".to_string(), "".to_string(), "".to_string(), "".to_string()]);
+            let mut row = vec![format!("{}", f_d), format!("{}", k0), format!("{}", k1), form.tag().to_string()];
+            row.extend(std::iter::repeat("NaN".to_string()).take(12));
+            rows.push(row);
             continue;
         };
-        let dtau = (c / c0[0]).ln();
-        // matter of one kind with the same couplings (module kohn_sham), where the state has equal halves
-        let mut g9 = [0.0; 9];
-        g9[0] = -k0;
-        g9[1] = k1;
-        let hf1 = Hf4::from_tables(tabs, &g9);
-        let hc = HalvesCouplings::new(form, 1.0, &hf1);
-        let mut one_kind = f64::NAN;
-        if st.halves.pol < 1e-6 {
-            let lowest = |cc: f64| global_min(|l: f64| Unified { f_d, c: cc, gs: hc.ts * cc, gv: hc.tv * cc }.state(&f3, l.exp()).e_per_particle - 1.0, 0.1f64.ln(), 6.0f64.ln(), 120, 1e-9).1;
-            let (mut lo, mut hi) = (0.05f64.ln(), 60.0f64.ln());
-            if lowest(lo.exp()) >= -1e-9 && lowest(hi.exp()) < -1e-9 {
-                for _ in 0..20 {
-                    let mid = 0.5 * (lo + hi);
-                    if lowest(mid.exp()) < -1e-9 {
-                        hi = mid;
-                    } else {
-                        lo = mid;
-                    }
-                }
-                one_kind = (0.5 * (lo + hi)).exp();
-                dev_one = dev_one.max((c / one_kind - 1.0).abs());
-            }
+        let dtau = (t.c / c0[0]).ln();
+        if t.method == 0 {
+            n_one_kind += 1;
+            margin_above = margin_above.min(-t.e_above);
+            margin_below = margin_below.min(t.e_below);
+            // the kind of the state that the functional of two halves finds must be the kind whose threshold is the smaller one
+            let equal_is_lower = !(t.c_one_half < t.c_equal);
+            kinds_match &= if equal_is_lower { t.st.halves.pol < 1e-6 } else { t.st.halves.pol > 1.0 - 1e-6 };
+        } else {
+            n_bisect += 1;
         }
-        rows.push(vec![format!("{}", f_d), format!("{}", k0), format!("{}", k1), form.tag().to_string(), format!("{:.8e}", c), format!("{:.6}", dtau), format!("{:.6}", kf), format!("{:.6}", st.x), format!("{:.6}", st.halves.pol), format!("{:.6}", st.halves.mass[0]), format!("{:.6}", st.halves.mass[1]), format!("{:.8e}", one_kind)]);
+        rows.push(vec![format!("{}", f_d), format!("{}", k0), format!("{}", k1), form.tag().to_string(), format!("{:.8e}", t.c), format!("{:.6}", dtau), format!("{:.6}", t.kf), format!("{:.6}", t.st.x), format!("{:.6}", t.st.halves.pol), format!("{:.6}", t.st.halves.mass[0]), format!("{:.6}", t.st.halves.mass[1]), nan(t.c_equal), nan(t.c_one_half), format!("{:.4e}", t.e_above), format!("{:.4e}", t.e_below), format!("{}", t.method)]);
         if k0 > 0.0 {
-            f8_txt.push(format!("f_D = {}, kappa_0 = {}, kappa_1 = {}, form {}: C = {:.4} (shift {:+.3}; {}, x = {:.3})", f_d, k0, k1, form.tag(), c, dtau, kind_of(st.halves.pol), st.x));
+            f8_txt.push(format!("f_D = {}, kappa_0 = {}, kappa_1 = {}, form {}: C = {:.4} (shift {:+.3}; {}, x = {:.3})", f_d, k0, k1, form.tag(), t.c, dtau, kind_of(t.st.halves.pol), t.st.x));
         }
     }
     write_csv_str("forms_unified_thresholds.csv",
-        &[("content", format!("the 4+4 model in its two forms: bare Dirac mass, self-interaction and Vorton-Scalar together, ordinary space (D = 3, no-sea approximation): the smallest coupling C = g_VS^2 m^2/m_s^2 of the scalar at which uniform matter is self-bound, when a fraction f_D of the vacuum mass of the fermions is a bare Dirac mass and the couplings of the self-interaction are g_0 = -kappa_0 C, g_1 = +kappa_1 C (all other couplings zero; units m = 1). The Vorton-Scalar shifts the masses of both halves alike; the self-interaction acts between the halves with the sign of its form. Without bare mass and self-interaction the value is {:.6} (= 3 pi^2/8). All couplings grow as exp(tau_d), so that dtau is the shift of the clock reading at which matter becomes self-bound", c_main)),
-          ("columns", "f_D = m_D/m; kappa_0 = -g_0/C; kappa_1 = g_1/C; form: C = covariant (the definition), Q = quantized-sector (the alternative); C_bind; dtau = ln(C_bind/C_bind(0, 0, 0)): negative = earlier; kF_total, x = phi/v_VS, pol, M_plus, M_minus: the state 0.1 per cent above the threshold; C_one_kind: the threshold computed with the functional of module kohn_sham for matter of one kind with the couplings T_S, T_V (given where the state has equal halves)".to_string()),
+        &[("content", format!("the 4+4 model in its two forms: bare Dirac mass, self-interaction and Vorton-Scalar together, ordinary space (D = 3, no-sea approximation): the smallest coupling C = g_VS^2 m^2/m_s^2 of the scalar at which uniform matter is self-bound, when a fraction f_D of the vacuum mass of the fermions is a bare Dirac mass and the couplings of the self-interaction are g_0 = -kappa_0 C, g_1 = +kappa_1 C (all other couplings zero; units m = 1). The Vorton-Scalar shifts the masses of both halves alike; the self-interaction acts between the halves with the sign of its form. Without bare mass and self-interaction the value is {:.6} (= 3 pi^2/8). All couplings grow as exp(tau_d), so that dtau is the shift of the clock reading at which matter becomes self-bound. Method: the thresholds of the two kinds of matter of one kind (equal halves: eight states with the couplings T_S, T_V; one half filled: four states with a_S = T_S + D_S, a_V = T_V + D_V) are computed with the functional of module kohn_sham; the smaller one is the threshold if the functional of two halves, minimized over density, field of the scalar and polarization, has a bound state at 1.001 times and none at 0.999 times that value (method 0); otherwise the threshold is found by bisection with the functional of two halves (method 1)", c_main)),
+          ("columns", "f_D = m_D/m; kappa_0 = -g_0/C; kappa_1 = g_1/C; form: C = covariant (the definition), Q = quantized-sector (the alternative); C_bind; dtau = ln(C_bind/C_bind(0, 0, 0)): negative = earlier; kF_total, x = phi/v_VS, pol, M_plus, M_minus: the state of lowest energy per particle at 1.001 C_bind (functional of two halves); C_equal_halves, C_one_half: thresholds of matter of one kind (NaN: none between 0.05 and 60); e_above, e_below: E/N - m of the lowest state of the functional of two halves at 1.001 C_bind and at 0.999 C_bind; method: 0 or 1".to_string()),
           ("command", CMD.to_string())],
-        &["f_D", "kappa_0", "kappa_1", "form", "C_bind", "dtau", "kF_total", "x", "pol", "M_plus", "M_minus", "C_one_kind"], &rows)?;
-    rep.add("fm-F8", "numerical", &format!("bare Dirac mass, self-interaction and Vorton-Scalar together, in the two forms (D = 3, no-sea approximation): the smallest C at which matter is self-bound, for f_D = 0, 0.25, 0.5 and the contact couplings g_0 = -kappa_0 C, g_1 = +kappa_1 C. Without self-interaction both forms give the threshold of the model with the Vorton-Scalar alone, C = {:.5} and {:.5} against 3 pi^2/8 = {:.5}. Where the bound state has equal halves, the threshold equals the one of the functional for matter of one kind (module kohn_sham) with the couplings T_S, T_V of the form (largest relative difference {:.1e}). With self-interaction: {}", c0[0], c0[1], c_main, dev_one, f8_txt.join("; ")), f8 && dev_one < 2e-4);
+        &["f_D", "kappa_0", "kappa_1", "form", "C_bind", "dtau", "kF_total", "x", "pol", "M_plus", "M_minus", "C_equal_halves", "C_one_half", "e_above", "e_below", "method"], &rows)?;
+    rep.add("fm-F8", "numerical", &format!("bare Dirac mass, self-interaction and Vorton-Scalar together, in the two forms (D = 3, no-sea approximation): the smallest C at which matter is self-bound, for f_D = 0, 0.25, 0.5 and the contact couplings g_0 = -kappa_0 C, g_1 = +kappa_1 C. Without self-interaction both forms give the threshold of the model with the Vorton-Scalar alone, C = {:.5} and {:.5} against 3 pi^2/8 = {:.5}. In {} of the {} cases the threshold is that of matter of one kind (the smaller of the thresholds of matter with equal halves and of matter with one half filled, functional of module kohn_sham), confirmed by the functional of two halves minimized over density, field and polarization: at 1.001 times the threshold its lowest state is bound (E/N - m <= {:.1e} m) and is of the expected kind, at 0.999 times the threshold no state is bound (E/N - m >= {:.1e} m); in {} cases the threshold was found by bisection with the functional of two halves (a bound state with unequal halves). With self-interaction: {}", c0[0], c0[1], c_main, n_one_kind, entries.len(), -margin_above, margin_below, n_bisect, f8_txt.join("; ")), f8 && kinds_match && n_one_kind + n_bisect == entries.len());
     println!("[{:>6.1} s] functional with the Vorton-Scalar done", t0.elapsed().as_secs_f64());
 
     // =====================================================================================

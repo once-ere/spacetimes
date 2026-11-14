@@ -86,13 +86,33 @@ pub struct GapRow {
     pub ef: f64,
 }
 
+/// Upper limit of the momentum integral of the gap equation in this program, in units of
+/// max(m, k_F).  The pairing kernel falls as 1/k'^2 at large momenta, and the integral
+/// converges as a power of the upper limit that becomes small when the couplings are strong
+/// (module `pair_contact`, THE ULTRAVIOLET CRITERION; check pc-P7 of the command `pairing`).
+/// With the limit 60 of the earlier calculations of the project the gaps of the exchange of
+/// the Vorton-Scalar would be too small by up to 1.1 per cent at the strongest couplings of
+/// the gap histories (g_VS = 4), and with contact couplings by up to 13 per cent.  With
+/// 2 x 10^4 the remaining error is below 1e-4 of the gap for U/(4 pi^2) < 0.7 and below
+/// 1 per cent up to 0.9.
+pub const K_MAX: f64 = 2.0e4;
+/// The upper limit of the earlier calculations of the project (kept for the comparison in
+/// check pc-P7).
+pub const K_MAX_EARLIER: f64 = 60.0;
+
 /// The gap at the Fermi surface for the coupling g (fermion mass 1, radial mass m_s,
-/// Fermi momentum k_f), in the three variants of the kernel of the main project.
+/// Fermi momentum k_f), in the three variants of the kernel of the main project.  The
+/// ultraviolet strengths of the three kernels are U = g^2 (pi^2/4 - 1) (vector channel:
+/// both modes attract), 0 (two-form channel: the two modes cancel at large momenta) and
+/// g^2 (pi^2/8 - 1/2) (radial mode alone); the criterion U < 4 pi^2 of the module
+/// `pair_contact` requires g^2 < 26.90 in the vector channel, which holds along the gap
+/// histories of this program (g^2 <= 16).
 pub fn gap_point(g: f64, m_s: f64, k_f: f64, with_tc: bool) -> GapRow {
     let m = 1.0;
     let base = Pairing { m, g, m_s, m_ph: 0.0, scalar: true, phase: true, phase_sign: 1.0, k_f };
     let ef = base.mu() - m;
-    let grid = fermi_grid(k_f, 60.0 * m.max(k_f), 11, 8);
+    assert!(g * g * (PI * PI / 4.0 - 1.0) < 4.0 * PI * PI, "gap_point: the vector channel is above the ultraviolet criterion (g^2 = {})", g * g);
+    let grid = fermi_grid(k_f, K_MAX * m.max(k_f), 11, 8);
     let lam_s = Pairing { phase: false, ..base }.lambda();
     let lam_p = Pairing { scalar: false, ..base }.lambda();
     let variants = [Pairing { ..base }, Pairing { phase_sign: -1.0, ..base }, Pairing { phase: false, ..base }];

@@ -80,6 +80,43 @@
 //! (double-bubble) truncation, and equally the Bogoliubov-de Gennes form of the Kohn-Sham
 //! equations with a pairing field.
 //!
+//! THE ULTRAVIOLET CRITERION.  Every term of the pairing potential has the form
+//! (coupling) x (amplitude)/(q^2 + mass^2), q^2 = k^2 + k'^2 - 2 k k' x with x the cosine of the
+//! angle between k and k'.  At momenta far above all masses the amplitudes depend on x alone,
+//!
+//!     F_0, F_S, F_P -> (1 - x)/2 ,     F_8 -> -(1 - x)/2 ,     F_1, F_7 -> 3 - x ,
+//!
+//! and the kernel is homogeneous of degree -2:  W(k, k') -> w(k'/k)/k^2.  Above the gap the
+//! gap equation is then Delta(k) = (1/(4 pi^2)) Int_0^inf dt t w(t) Delta(t k), which a power
+//! Delta = k^(-s) solves if J(s) = 4 pi^2, J(s) = Int_0^inf dt t^(1-s) w(t).  Because
+//! W(k, k') = W(k', k), w(1/t) = t^2 w(t) and J(2 - s) = J(s): the two exponents are
+//! s = 1 +- sigma, and J is smallest at s = 1.  With
+//!
+//!     U = J(1) = Int_0^inf dt w(t)
+//!
+//! there are two cases.  U < 4 pi^2: the exponents are real, the gap function falls as
+//! k^(-1-sigma), and the gap equation has a solution that does not depend on the upper limit
+//! K of the momentum integral (it is approached as K^(-2 sigma): slowly when U is close to
+//! 4 pi^2).  U > 4 pi^2: the exponents are complex and no such solution exists; with an
+//! upper limit K the gap grows in proportion to K.  The pair collapses to short distances.
+//! This is the fall to the centre of relativistic particles in a potential -alpha/r with
+//! alpha above its critical value: the Fourier transform of g/(q^2 + mu^2) is the Yukawa
+//! potential g exp(-mu r)/(4 pi r), which is a Coulomb potential at distances below 1/mu.
+//!
+//! The integral of one term is elementary.  With Int_0^inf dt/(1 + t^2 - 2 t cos(theta))
+//! = (pi - theta)/sin(theta),
+//!
+//!     Int_0^inf dt (1/2) Int_-1^1 dx (a + b x)/(1 + t^2 - 2 t x) = a pi^2/4 + b ,
+//!
+//! that is  I_S = pi^2/8 - 1/2 = 0.7337  for (1 - x)/2  and  I_V = 3 pi^2/4 - 1 = 6.4022  for
+//! 3 - x.  Therefore (functions `uv_strength`, `uv_ratio`; check pc-P7)
+//!
+//!     U = g_VS^2 n_modes I_S - s m_ct^2 [ (g_0eff - g_8eff) I_S + (g_1eff + g_7eff) I_V ] ,
+//!
+//! with n_modes = 2 when both modes of the Vorton-Scalar are exchanged (1 for the radial
+//! mode alone) and s the sign `ct_sign`.  The exchange of the two modes alone reaches
+//! U = 4 pi^2 at g_VS^2 = 4 pi^2/(pi^2/4 - 1) = 26.90.
+//!
 //! UNITS: hbar = c = k_B = 1.
 
 use crate::selfint::{Algebra, Model};
@@ -110,6 +147,13 @@ pub fn amp_contact(j: usize, m: f64, k: f64, kp: f64, mu: f64) -> f64 {
     let (a, b, den) = amp_coefficients(j, m, k, kp);
     (a + b * mu) / den
 }
+
+/// The critical value 4 pi^2 of the ultraviolet strength U of a pairing kernel (module text).
+pub const UV_CRITICAL: f64 = 4.0 * std::f64::consts::PI * std::f64::consts::PI;
+/// I_S = pi^2/8 - 1/2: the ultraviolet integral of an amplitude that tends to (1 - x)/2.
+pub const UV_I_S: f64 = std::f64::consts::PI * std::f64::consts::PI / 8.0 - 0.5;
+/// I_V = 3 pi^2/4 - 1: the ultraviolet integral of an amplitude that tends to 3 - x.
+pub const UV_I_V: f64 = 3.0 * std::f64::consts::PI * std::f64::consts::PI / 4.0 - 1.0;
 
 /// The pairing kernel of the hidden-axis channel.
 #[derive(Clone, Copy, Debug)]
@@ -170,6 +214,28 @@ impl PairKernel {
             w -= self.ct_sign * self.contact[j] * avg / den;
         }
         w
+    }
+    /// The ultraviolet strength U = Int_0^inf dt w(t) of the kernel, w(t) = lim k^2 W(k, t k)
+    /// (module text).  The gap equation has a solution that is independent of the upper limit
+    /// of the momentum integral only if U < 4 pi^2 (`UV_CRITICAL`).  Contact couplings without
+    /// a range (`lam` infinite) do not fall at large momenta: NaN is returned in that case.
+    pub fn uv_strength(&self) -> f64 {
+        let mut u = 0.0;
+        if self.g2 != 0.0 {
+            u += self.g2 * UV_I_S * if self.phase { 2.0 } else { 1.0 };
+        }
+        if self.contact.iter().any(|g| *g != 0.0) {
+            if self.lam.is_infinite() {
+                return f64::NAN;
+            }
+            let c = &self.contact;
+            u -= self.ct_sign * self.lam * self.lam * ((c[0] - c[3]) * UV_I_S + (c[1] + c[2]) * UV_I_V);
+        }
+        u
+    }
+    /// U/(4 pi^2): below 1 the gap equation has a solution independent of the upper limit.
+    pub fn uv_ratio(&self) -> f64 {
+        self.uv_strength() / UV_CRITICAL
     }
     /// Density of states at the Fermi surface per pair of internal states, N(0) = k_F E_F/(2 pi^2).
     pub fn n0(&self) -> f64 {
@@ -293,6 +359,48 @@ mod tests {
             let (a, b) = (Kernel::w(&exchange, k, kp), Kernel::w(&contact, k, kp));
             assert!((a / b - 1.0).abs() < 1e-13, "{} against {}", a, b);
         }
+    }
+
+    #[test]
+    fn the_ultraviolet_strength_is_the_integral_of_the_kernel_at_large_momenta() {
+        // U = Int_0^inf dt k^2 W(k, t k) at a momentum k far above all masses; by the symmetry
+        // w(1/t) = t^2 w(t) the integral over t > 1 equals that over t < 1 in the limit, but both
+        // parts are integrated here (Simpson's rule in t on [0, 1] and in u = 1/t on [0, 1])
+        let cases = [
+            PairKernel { m: 1.0, k_f: 0.5, g2: 2.3, m_s: 0.7, m_ph: 0.0, phase: true, contact: [0.0; 4], lam: 1.0, ct_sign: 1.0 },
+            PairKernel { m: 1.0, k_f: 0.5, g2: 2.3, m_s: 0.7, m_ph: 0.4, phase: false, contact: [0.0; 4], lam: 1.0, ct_sign: 1.0 },
+            PairKernel { m: 1.0, k_f: 0.5, g2: 0.0, m_s: 1.0, m_ph: 0.0, phase: true, contact: [-1.3, 0.0, 0.0, 0.0], lam: 1.5, ct_sign: 1.0 },
+            PairKernel { m: 1.0, k_f: 0.5, g2: 0.0, m_s: 1.0, m_ph: 0.0, phase: true, contact: [0.0, 0.4, 0.0, 0.0], lam: 0.8, ct_sign: -1.0 },
+            PairKernel { m: 1.0, k_f: 0.5, g2: 0.0, m_s: 1.0, m_ph: 0.0, phase: true, contact: [0.0, 0.0, -0.2, 0.0], lam: 1.0, ct_sign: 1.0 },
+            PairKernel { m: 1.0, k_f: 0.5, g2: 0.0, m_s: 1.0, m_ph: 0.0, phase: true, contact: [0.0, 0.0, 0.0, 0.9], lam: 1.0, ct_sign: 1.0 },
+            PairKernel { m: 1.0, k_f: 0.5, g2: 5.0, m_s: 1.0, m_ph: 0.0, phase: true, contact: [-5.0, 0.5, -0.3, 0.2], lam: 1.0, ct_sign: -1.0 },
+        ];
+        let k = 3.0e4;
+        let n = 20000usize;
+        for p in cases.iter() {
+            let mut sum = 0.0;
+            for i in 0..=n {
+                let t = i as f64 / n as f64;
+                let wgt = if i == 0 || i == n { 1.0 } else if i % 2 == 1 { 4.0 } else { 2.0 };
+                // t in [0, 1]: integrand k^2 W(k, t k); u = 1/t in (0, 1]: integrand k^2 W(k, k/u)/u^2
+                let lower = k * k * Kernel::w(p, k, (t * k).max(1e-9));
+                let upper = if t > 0.0 { k * k * Kernel::w(p, k, k / t) / (t * t) } else { 0.0 };
+                sum += wgt * (lower + upper);
+            }
+            // at t -> 0 the integrand of the upper part tends to a constant, which is taken at t = 1e-3
+            // (end point of Simpson's rule, weight 1)
+            let end = {
+                let t = 1e-3;
+                k * k * Kernel::w(p, k, k / t) / (t * t)
+            };
+            let numeric = (sum + end) / (3.0 * n as f64);
+            let exact = p.uv_strength();
+            assert!((numeric - exact).abs() < 2e-3 * exact.abs().max(1.0), "{:?}: numeric {} against {}", p, numeric, exact);
+        }
+        // the critical coupling of the exchange of both modes
+        let g2c = UV_CRITICAL / (2.0 * UV_I_S);
+        assert!((g2c - 26.90363).abs() < 1e-5, "{}", g2c);
+        assert!((UV_I_S - 0.733701).abs() < 1e-6 && (UV_I_V - 6.402203).abs() < 1e-6);
     }
 
     #[test]

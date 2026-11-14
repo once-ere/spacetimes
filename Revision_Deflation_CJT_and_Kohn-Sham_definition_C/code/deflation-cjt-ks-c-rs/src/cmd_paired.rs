@@ -7,6 +7,7 @@ use spacetimes::cjt_pairing::{gap_squares, pair_bubble_curvature, threshold_d, P
 use spacetimes::cjt_toy;
 use spacetimes::complex::C64;
 use spacetimes::gap::{critical_temperature, fermi_grid, solve_gap, Pairing};
+use spacetimes_deflation_cjt_ks_c::history::K_MAX;
 use spacetimes::kernel::OneParticle;
 use spacetimes::verify::Report;
 use spacetimes_deflation_cjt_ks_c::io::{write_csv, write_csv_str, write_report};
@@ -38,7 +39,7 @@ pub fn run() -> std::io::Result<bool> {
             let tau = 2.0 * (g / gs[0]).ln();
             let p = vector_channel(g, *m_s, *k_f);
             let ef = p.mu() - 1.0;
-            let grid = fermi_grid(*k_f, 60.0 * k_f.max(1.0), 11, 8);
+            let grid = fermi_grid(*k_f, K_MAX * k_f.max(1.0), 11, 8);
             let pot = Potential::new(&p, &grid);
             let start = (2.0 * ef * (-1.0 / p.lambda().max(1e-3)).exp()).max(1e-11 * ef).min(ef);
             let fp = solve_gap(&p, &grid, 0.0, start, 1e-12, 200000);
@@ -82,7 +83,7 @@ pub fn run() -> std::io::Result<bool> {
         }
     }
     write_csv("cjt_history.csv",
-        &[("content", "the paired state at zero temperature along the deflation clock, from the CJT potential of the main project (vector channel): two particles, the coupling g_VS growing as exp(tau_d/2)".to_string()),
+        &[("content", "the paired state at zero temperature along the deflation clock, from the CJT potential of the main project (vector channel): two particles, the coupling g_VS growing as exp(tau_d/2). The momentum integral of the gap equation extends to 2e4 max(m, k_F); the earlier calculations of the project use the limit 60, with which these gaps would be smaller by up to 1.1 per cent (check pc-P7 of the command pairing)".to_string()),
           ("columns", "set: 1 = (m_s, k_F) = (0.3, 0.5), 2 = (1.0, 0.5) in units of m; tau_d = 2 ln(g/g_first); g; lambda: pairing strength; E_F; gap_fixed_point, gap_newton: gap at the Fermi momentum from the iteration of the gap equation and from Newton's method on the potential; max_rel_diff of the two gap functions; V: potential per unit volume at the solution (units m^4), the condensation energy; V_BCS = -nu N(0) gap^2/4; V_over_V_BCS; s_min_minus_1: position of the minimum of V along the ray s x solution, minus 1; curvature_min: smallest eigenvalue of the second variation (positive: a minimum); Tc_linear, Tc_second_variation: critical temperature from the linearized gap equation and from the potential; Tc_over_gap; xi_kF: coherence length v_F/(pi gap) in units of 1/k_F".to_string()),
           ("command", "deflation_cjt_ks_c paired".to_string())],
         &["set", "m_s", "k_F", "tau_d", "g", "lambda", "E_F", "gap_fixed_point", "gap_newton", "max_rel_diff", "V", "V_BCS", "V_over_V_BCS", "s_min_minus_1", "curvature_min", "Tc_linear", "Tc_second_variation", "Tc_over_gap", "xi_kF"], &rows)?;
@@ -98,7 +99,7 @@ pub fn run() -> std::io::Result<bool> {
     for &g in &[2.6, 3.0, 3.4] {
         let p = vector_channel(g, 1.0, 0.5);
         let ef = p.mu() - 1.0;
-        let grid = fermi_grid(p.k_f, 60.0, 11, 8);
+        let grid = fermi_grid(p.k_f, K_MAX, 11, 8);
         let pot = Potential::new(&p, &grid);
         let tc = critical_temperature(&p, &grid, 1e-11 * ef, 5.0).unwrap();
         let d0 = pot.newton(&solve_gap(&p, &grid, 0.0, 0.05 * ef, 1e-10, 100000).delta, 0.0, 1e-12, 200).0;
@@ -125,7 +126,7 @@ pub fn run() -> std::io::Result<bool> {
         trows.push(vec![2.0 * (g / 2.6_f64).ln(), g, p.lambda(), tc, tc / ef, gap0, gap0 / tc, jump]);
     }
     write_csv("cjt_thermo_history.csv",
-        &[("content", "thermodynamic ratios of the paired state at three moments of the deflation, particle (m_s, k_F) = (1.0, 0.5) m, vector channel: the critical temperature and the gap grow, their ratio and the jump of the heat capacity at T_c do not change".to_string()),
+        &[("content", "thermodynamic ratios of the paired state at three moments of the deflation, particle (m_s, k_F) = (1.0, 0.5) m, vector channel: the critical temperature and the gap grow, their ratio and the jump of the heat capacity at T_c do not change. The momentum integral of the gap equation extends to 2e4 max(m, k_F); the earlier calculations of the project use the limit 60, with which these gaps would be smaller by up to 1.1 per cent (check pc-P7 of the command pairing)".to_string()),
           ("columns", "tau_d = 2 ln(g/2.6); g; lambda; Tc; Tc_over_EF; gap0: gap at T = 0; gap0_over_Tc (weak coupling: 1.7639); heat_capacity_jump: (C_paired - C_unpaired)/C_unpaired at T_c (weak coupling: 1.4261)".to_string()),
           ("command", "deflation_cjt_ks_c paired".to_string())],
         &["tau_d", "g", "lambda", "Tc", "Tc_over_EF", "gap0", "gap0_over_Tc", "heat_capacity_jump"], &trows)?;
@@ -141,7 +142,7 @@ pub fn run() -> std::io::Result<bool> {
     for &g in &[2.6, 3.0, 3.4] {
         let p = vector_channel(g, 1.0, 0.5);
         let ef = p.mu() - 1.0;
-        let grid = fermi_grid(p.k_f, 60.0, 11, 8);
+        let grid = fermi_grid(p.k_f, K_MAX, 11, 8);
         let pot = Potential::new(&p, &grid);
         let tc = critical_temperature(&p, &grid, 1e-11 * ef, 5.0 * (ef + 1.0)).unwrap();
         let shape = pot.critical_shape(tc);
@@ -170,7 +171,7 @@ pub fn run() -> std::io::Result<bool> {
         grows.push(vec![2.0 * (g / 2.6_f64).ln(), g, tc, slope, slope / (4.0 * n0), beta_c, beta_c / beta_s1, k_num, k_num / k_s1, xi_gl, xi_gl * tc / v_f]);
     }
     write_csv("cjt_gl_history.csv",
-        &[("content", "Ginzburg-Landau coefficients of the paired state at three moments of the deflation, particle (m_s, k_F) = (1.0, 0.5) m, from the CJT potential, with their ratios to the weak-coupling formulas".to_string()),
+        &[("content", "Ginzburg-Landau coefficients of the paired state at three moments of the deflation, particle (m_s, k_F) = (1.0, 0.5) m, from the CJT potential, with their ratios to the weak-coupling formulas. The momentum integral of the gap equation extends to 2e4 max(m, k_F); the earlier calculations of the project use the limit 60, with which these gaps would be smaller by up to 1.1 per cent (check pc-P7 of the command pairing)".to_string()),
           ("columns", "tau_d; g; Tc; dalpha_dlnT (formula 4 N(0)) and its ratio to the formula; beta at T_c (formula 7 zeta(3) N(0)/(2 pi^2 T_c^2)) and ratio; K: gradient coefficient (formula 7 zeta(3) N(0) v_F^2/(96 pi^2 T_c^2)) and ratio; xi_GL = sqrt(K/|a|) for |ln(T/T_c)| = 1, a = alpha/8: coherence length (units 1/m); xi_GL T_c/v_F (formula sqrt(7 zeta(3)/(48 pi^2)) = 0.1333)".to_string()),
           ("command", "deflation_cjt_ks_c paired".to_string())],
         &["tau_d", "g", "Tc", "dalpha_dlnT", "alpha_ratio", "beta_Tc", "beta_ratio", "K", "K_ratio", "xi_GL", "xi_GL_Tc_over_vF"], &grows)?;
