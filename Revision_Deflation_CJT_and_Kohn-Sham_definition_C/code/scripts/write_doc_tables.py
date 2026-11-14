@@ -1332,6 +1332,8 @@ def forms_fragments():
           [[labels[int(v)], a_, b_] for v, a_, b_ in wins], ["l", "r", "r"])
     f7i = check_statement("cjt_ks_checks_independent", "Icks-F7")
     text("gapc_indep_minus", tex_num(grab(f7i, r"agrees with the program to ([\d.e+-]+)")))
+    p5 = check_statement("pairing_checks", "pc-P5")
+    text("pc5_dev", tex_num(grab(p5, r"largest deviation over all cases ([\d.e+-]+);")))
 
     # ---- internal symmetry ---------------------------------------------------------------------------------------------
     sy = rows_of("selfcoupling_internal_symmetry.csv")

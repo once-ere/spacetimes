@@ -89,7 +89,7 @@
 <!-- END n_cjt_ks_checks_independent -->
 
 <!-- BEGIN n_symbol_checks -->
-6 of 8
+7 of 8
 <!-- END n_symbol_checks -->
 
 <!-- BEGIN n_checks_rust -->
@@ -113,11 +113,11 @@
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
-532 numbers in 28 documents, 0 not traced
+607 numbers in 29 documents, 2 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-18
+not all
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN mat_gamma1644_0 -->
@@ -1742,6 +1742,10 @@ a scalar coupling of the opposite sign, g_0 > 0 alone. In the covariant form par
 $7.8\times10^{-5}$
 <!-- END gapc_indep_minus -->
 
+<!-- BEGIN pc5_dev -->
+$2.2\times10^{-15}$
+<!-- END pc5_dev -->
+
 <!-- BEGIN tbl_fm_symmetry -->
 | generators | number | $7+1$ | $4+4$, form Q | $4+4$, form C |
 |:---|---:|:---|:---|:---|
@@ -1768,22 +1772,37 @@ $1.3\times10^{-15}$
 | Fig.~\ref{fig:isometries} | `symmetry` | `symmetry_defl.rs`, `cmd_symmetry.rs` | `isometries.csv` |
 | Fig.~\ref{fig:geodesics} | `matrices` | `metric.rs`, `geometry.rs`, `curved.rs`, `main.rs` | `geodesic_1644d.csv`, `geodesic_1671d.csv` |
 | Table~\ref{tab:fierz} | `selfcoupling` | `selfint.rs`, `cmd_selfcoupling.rs` | `selfcoupling_fierz.csv` |
+| Table~\ref{tab:pairsrest} | `selfcoupling` | `selfint.rs`, `cmd_selfcoupling.rs` | `selfcoupling_pairs.csv` |
+| Table~\ref{tab:intsym} | `selfcoupling` | `selfint.rs`, `cmd_selfcoupling.rs` | `selfcoupling_internal_symmetry.csv` |
 | Fig.~\ref{fig:extinction} | `channels`, `modes` | `scalar.rs`, `cmd_channels.rs`, `modes.rs`, `main.rs` | `boson_bounded.csv`, `extinction_profile.csv` |
 | Table~\ref{tab:exponents} | `symmetry` | `symmetry_defl.rs`, `cmd_symmetry.rs` | `coupling_exponents.csv` |
 | Fig.~\ref{fig:clock} | `history` | `history.rs`, `main.rs` | `events.csv` |
 | Fig.~\ref{fig:scalar} | `channels` | `scalar.rs`, `cmd_channels.rs` | `scalar_zero_modes.csv`, `static_source.csv` |
-| Table~\ref{tab:ksthr} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_reduced_thresholds.csv` |
-| Fig.~\ref{fig:ksbind} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_reduced_saturation.csv` |
-| Table~\ref{tab:ksgas} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_reduced_gas.csv` |
-| Fig.~\ref{fig:ksgas} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_reduced_fixed_density.csv` |
-| Table~\ref{tab:kshalves} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_44c_polarization.csv` |
-| Fig.~\ref{fig:kshalves} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_44c_polarization.csv` |
+| Table~\ref{tab:kscoup} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_couplings.csv` |
+| Table~\ref{tab:kspol} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_energy_vs_polarization.csv` |
+| Fig.~\ref{fig:kspol} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_energy_vs_polarization.csv` |
+| Table~\ref{tab:ksthr} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_thresholds.csv` |
+| Table~\ref{tab:kssat} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_saturation.csv` |
+| Fig.~\ref{fig:ksbind} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_saturation.csv`, `forms_thresholds.csv` |
+| Table~\ref{tab:ksgas} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_gas_events.csv` |
+| Fig.~\ref{fig:ksgas} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_fixed_density.csv` |
+| Table~\ref{tab:ksthrq} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `ks_reduced_thresholds.csv` |
 | Fig.~\ref{fig:kernels} | `channels` | `scalar.rs`, `cmd_channels.rs` | `pair_channel_kernel.csv` |
 | Table~\ref{tab:gap} | `history` | `history.rs`, `main.rs` | `gap_history.csv` |
 | Fig.~\ref{fig:gap} | `history` | `history.rs`, `main.rs` | `gap_history.csv` |
+| Table~\ref{tab:uv} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
+| Table~\ref{tab:uvclasses} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pairing_checks.txt` |
 | Table~\ref{tab:gapcontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
 | Fig.~\ref{fig:paircontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
+| Table~\ref{tab:gapsign} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
+| Fig.~\ref{fig:gapsign} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
+| Table~\ref{tab:gapwins} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pairing_checks.txt` |
 | Table~\ref{tab:dimer} | `history` | `history.rs`, `main.rs` | `dimer_history.csv` |
+<!-- END tbl_prov_1644_a -->
+
+<!-- BEGIN tbl_prov_1644_b -->
+| item | command | source files | data files |
+|:---|:---|:----------|:----------|
 | Fig.~\ref{fig:binding} | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv` |
 | Table~\ref{tab:events} | `history` | `history.rs`, `main.rs` | `events.csv` |
 | Table~\ref{tab:quench} | `quench` | `quench.rs`, `main.rs` | `quench_summary.csv` |
@@ -1791,11 +1810,6 @@ $1.3\times10^{-15}$
 | Table~\ref{tab:cjt} | `paired` | `cmd_paired.rs` | `cjt_history.csv` |
 | Fig.~\ref{fig:cjt} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv`, `cjt_history.csv` |
 | Table~\ref{tab:saturation} | `paired` | `cmd_paired.rs` | `matter_saturation.csv` |
-<!-- END tbl_prov_1644_a -->
-
-<!-- BEGIN tbl_prov_1644_b -->
-| item | command | source files | data files |
-|:---|:---|:----------|:----------|
 | Fig.~\ref{fig:matter} | `history`, `paired` | `history.rs`, `main.rs`, `cmd_paired.rs` | `matter_saturation.csv`, `medium_history.csv`, `thermal_history.csv`, `vacuum_history.csv` |
 | Table~\ref{tab:cjtks} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_vs_ks.csv`, `kohnsham_checks.txt` |
 | Table~\ref{tab:cjtvac} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_vacuum.csv` |
@@ -1818,15 +1832,15 @@ $1.3\times10^{-15}$
 | Fig.~\ref{fig:closure} | `matter`, `spectrum` | `cosmo_defl.rs`, `cmd_matter.rs`, `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_cl.csv`, `cmb_deflation_closure.csv`, `cmb_deflation_gaps.csv`, `cmb_deflation_growth.csv`, `cmb_deflation_summary.csv`, `growth_deflation.csv` |
 | Table~\ref{tab:fisher} | `forecast` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_fisher.csv` |
 | Fig.~\ref{fig:forecast} | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_fisher.csv`, `deflation_profile.csv`, `deflation_residuals.csv`, `hubble_deflation.csv` |
-| Table~\ref{tab:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
-| Fig.~\ref{fig:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv` |
-| Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
-| Fig.~\ref{fig:sfdm} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
 <!-- END tbl_prov_1644_b -->
 
 <!-- BEGIN tbl_prov_1644_c -->
 | item | command | source files | data files |
 |:---|:---|:----------|:----------|
+| Table~\ref{tab:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
+| Fig.~\ref{fig:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv` |
+| Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
+| Fig.~\ref{fig:sfdm} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
 | Table~\ref{tab:higgs} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `higgs_scale_exponent.csv` |
 | Table~\ref{tab:xthermo} | `paired` | `cmd_paired.rs` | `cjt_thermo_history.csv` |
 | Table~\ref{tab:xgl} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv` |
@@ -1854,7 +1868,7 @@ $1.3\times10^{-15}$
 <!-- END tbl_prov_1644_c -->
 
 <!-- BEGIN n_prov_items_1644 -->
-76
+86
 <!-- END n_prov_items_1644 -->
 
 <!-- BEGIN tbl_prov_1671_a -->
@@ -1877,6 +1891,8 @@ $1.3\times10^{-15}$
 | Fig.~\ref{fig:kernels} | `channels` | `scalar.rs`, `cmd_channels.rs` | `pair_channel_kernel.csv` |
 | Table~\ref{tab:gap} | `history` | `history.rs`, `main.rs` | `gap_history.csv` |
 | Fig.~\ref{fig:gap} | `history` | `history.rs`, `main.rs` | `gap_history.csv` |
+| Table~\ref{tab:uv} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
+| Table~\ref{tab:uvclasses} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pairing_checks.txt` |
 | Table~\ref{tab:gapcontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
 | Fig.~\ref{fig:paircontact} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
 | Table~\ref{tab:dimer} | `history` | `history.rs`, `main.rs` | `dimer_history.csv` |
@@ -1885,13 +1901,13 @@ $1.3\times10^{-15}$
 | Table~\ref{tab:quench} | `quench` | `quench.rs`, `main.rs` | `quench_summary.csv` |
 | Fig.~\ref{fig:quench} | `quench` | `quench.rs`, `main.rs` | `quench_history.csv`, `quench_summary.csv` |
 | Table~\ref{tab:cjt} | `paired` | `cmd_paired.rs` | `cjt_history.csv` |
-| Fig.~\ref{fig:cjt} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv`, `cjt_history.csv` |
-| Table~\ref{tab:saturation} | `paired` | `cmd_paired.rs` | `matter_saturation.csv` |
 <!-- END tbl_prov_1671_a -->
 
 <!-- BEGIN tbl_prov_1671_b -->
 | item | command | source files | data files |
 |:---|:---|:----------|:----------|
+| Fig.~\ref{fig:cjt} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv`, `cjt_history.csv` |
+| Table~\ref{tab:saturation} | `paired` | `cmd_paired.rs` | `matter_saturation.csv` |
 | Fig.~\ref{fig:matter} | `history`, `paired` | `history.rs`, `main.rs`, `cmd_paired.rs` | `matter_saturation.csv`, `medium_history.csv`, `thermal_history.csv`, `vacuum_history.csv` |
 | Table~\ref{tab:cjtks} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_vs_ks.csv`, `kohnsham_checks.txt` |
 | Table~\ref{tab:cjtvac} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_vacuum.csv` |
@@ -1917,13 +1933,13 @@ $1.3\times10^{-15}$
 | Fig.~\ref{fig:forecast} | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_fisher.csv`, `deflation_profile.csv`, `deflation_residuals.csv`, `hubble_deflation.csv` |
 | Table~\ref{tab:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
 | Fig.~\ref{fig:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv` |
-| Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
-| Fig.~\ref{fig:sfdm} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
 <!-- END tbl_prov_1671_b -->
 
 <!-- BEGIN tbl_prov_1671_c -->
 | item | command | source files | data files |
 |:---|:---|:----------|:----------|
+| Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
+| Fig.~\ref{fig:sfdm} | `superfluid` | `eb_boltzmann.rs`, `cmd_spectra.rs` | `sfdm_deflation_summary.csv`, `sfdm_deflation_transfer.csv` |
 | Table~\ref{tab:higgs} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `higgs_scale_exponent.csv` |
 | Table~\ref{tab:xthermo} | `paired` | `cmd_paired.rs` | `cjt_thermo_history.csv` |
 | Table~\ref{tab:xgl} | `paired` | `cmd_paired.rs` | `cjt_gl_history.csv` |
@@ -1952,7 +1968,7 @@ $1.3\times10^{-15}$
 <!-- END tbl_prov_1671_c -->
 
 <!-- BEGIN n_prov_items_1671 -->
-79
+81
 <!-- END n_prov_items_1671 -->
 
 <!-- BEGIN tbl_data_files -->
@@ -2163,21 +2179,31 @@ $1.3\times10^{-15}$
 | `fig:isometries` | figure `fig_isometries` | Symmetries of the deflating spacetime | `symmetry` | `isometries.csv` |
 | `fig:geodesics` | figure `fig_geodesics` | A classical particle of the mass ... with the momenta ... along ... and ... along the deflating coordinate ..., for ... and ..., started at ... | `matrices` | `geodesic_1644d.csv`, `geodesic_1671d.csv` |
 | `tab:fierz` | table | The Fierz matrix | `selfcoupling` | `selfcoupling_fierz.csv` |
+| `tab:pairsrest` | table |  | `selfcoupling` | `selfcoupling_pairs.csv` |
+| `tab:intsym` | table |  | `selfcoupling` | `selfcoupling_internal_symmetry.csv` |
 | `fig:extinction` | figure `fig_extinction` | Extinction on the deflating ... spacetime | `channels`, `modes` | `boson_bounded.csv`, `extinction_profile.csv` |
 | `tab:exponents` | table | How the quantities of the four-dimensional description follow the deflation clock | `symmetry` | `coupling_exponents.csv` |
 | `fig:clock` | figure `fig_clock` | The deflation clock | `history` | `events.csv` |
 | `fig:scalar` | figure `fig_scalar` | Modes of the Vorton-Scalar that do not depend on the deflating coordinates | `channels` | `scalar_zero_modes.csv`, `static_source.csv` |
-| `tab:ksthr` | table | The smallest scalar attraction at which uniform matter is self-bound, for ... and ... space dimensions with momentum and three ratios of the vector repulsion to the scalar attraction, with the Fermi momentum of the bound state at the threshold (units ...) | `kohnsham` | `ks_reduced_thresholds.csv` |
-| `fig:ksbind` | figure `fig_ks_binding` | Self-bound matter in the sector of fields that do not depend on ..., along the deflation clock, counted from the moment at which matter first becomes self-bound | `kohnsham` | `ks_reduced_saturation.csv` |
-| `tab:ksgas` | table | A gas of fixed Fermi momentum in the sector of fields that do not depend on ... | `kohnsham` | `ks_reduced_gas.csv` |
-| `fig:ksgas` | figure `fig_ks_gas` | A gas of fixed density in the sector of fields that do not depend on ... (..., ...), along the deflation clock counted from the binding threshold | `kohnsham` | `ks_reduced_fixed_density.csv` |
-| `tab:kshalves` | table | Covariant form on ... | `kohnsham` | `ks_44c_polarization.csv` |
-| `fig:kshalves` | figure `fig_ks_halves` | Covariant form of the self-interaction on ... | `kohnsham` | `ks_44c_polarization.csv` |
+| `tab:kscoup` | table |  | `forms` | `forms_couplings.csv` |
+| `tab:kspol` | table | Energy per particle minus ... of matter of the total density of the Fermi momentum ... (the Fermi momentum that the density would have with equal halves), at three polarizations, in the two forms of the ... model (units ...) | `forms` | `forms_energy_vs_polarization.csv` |
+| `fig:kspol` | figure `fig_forms_polarization` | Energy per particle of matter of a given total density against the polarization of the two halves of the field, relative to its value for equal halves (..., set A) | `forms` | `forms_energy_vs_polarization.csv` |
+| `tab:ksthr` | table | The smallest strength ... of the couplings of the Lagrangian at which uniform matter is self-bound, in the two forms of the ... model (units ...), with the state just above the threshold | `forms` | `forms_thresholds.csv` |
+| `tab:kssat` | table | Self-bound matter in the two forms along the deflation clock, counted for each case from its own binding threshold | `forms` | `forms_saturation.csv` |
+| `fig:ksbind` | figure `fig_forms_saturation` | Energy per particle minus the mass of self-bound matter along the deflation clock, for the same couplings of the Lagrangian in both forms | `forms` | `forms_saturation.csv`, `forms_thresholds.csv` |
+| `tab:ksgas` | table | A gas of fixed total density in the two forms | `forms` | `forms_gas_events.csv` |
+| `fig:ksgas` | figure `fig_forms_gas` | Matter of a fixed total density while the couplings grow (..., set A; the clock of each form is counted from its own binding threshold) | `forms` | `forms_fixed_density.csv` |
+| `tab:ksthrq` | table | Form Q with equal halves (matter of one kind with eight internal states) | `kohnsham` | `ks_reduced_thresholds.csv` |
 | `fig:kernels` | figure `fig_kernels` | Exchange amplitudes in three pair channels, divided by the square of the coupling of the moment, against the scattering angle, for momenta of the magnitude ... in the plane of ... and ... | `channels` | `pair_channel_kernel.csv` |
 | `tab:gap` | table | The gap along the deflation clock for two of the four sets computed | `history` | `gap_history.csv` |
 | `fig:gap` | figure `fig_gap_history` | The gap along the deflation clock, for four sets of the mass of the radial mode and of the Fermi momentum (in units of ...) | `history` | `gap_history.csv` |
-| `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
-| `fig:paircontact` | figure `fig_pair_contact` | The gap of the hidden-axis pair along the deflation clock with contact couplings, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
+| `tab:uv` | table | The ultraviolet strength ... of the pairing kernel per unit ..., the value of ... at which it reaches ..., and the clock reading of that moment (...), for the exchange of the two modes of the Vorton-Scalar alone and with contact couplings (...), for the two signs (eq:sct) | `pairing` | `pair_gap_history.csv` |
+| `tab:uvclasses` | table | Convergence of the gap with the upper limit ... of the momentum integral, by classes of the ultraviolet strength (kernels below the criterion with a gap above ... of the Fermi kinetic energy) | `pairing` | `pairing_checks.txt` |
+| `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings that enter with the sign ... (form Q, all four vector pairs along the extra axes; form C, the pairs along ...), at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
+| `fig:paircontact` | figure `fig_pair_contact` | The gap with contact couplings that enter with the sign ... (form Q; form C in the pairs along ...) along the deflation clock, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
+| `tab:gapsign` | table | The gap at the Fermi surface in units of the Fermi kinetic energy at the clock reading 2.04, for ... and two masses of the radial mode, for the two signs with which the contact couplings enter the pairing potential | `pairing` | `pair_gap_history.csv` |
+| `fig:gapsign` | figure `fig_forms_gap` | The gap at the Fermi surface, in units of the Fermi kinetic energy, along the deflation clock, for ... and ... | `pairing` | `pair_gap_history.csv` |
+| `tab:gapwins` | table | Form C | `pairing` | `pairing_checks.txt` |
 | `tab:dimer` | table | Two fermions as the clock passes the moment of binding | `history` | `dimer_history.csv` |
 | `fig:binding` | figure `fig_binding` | The bound pair along the clock | `history`, `matter` | `dimer_history.csv`, `dm_resonance.csv` |
 | `tab:events` | table | The order of events along the deflation | `history` | `events.csv` |
@@ -2258,6 +2284,8 @@ $1.3\times10^{-15}$
 | `fig:kernels` | figure `fig_kernels` | Exchange amplitudes in three pair channels, divided by the square of the coupling of the moment, against the scattering angle, for momenta of the magnitude ... in the plane of ... and ... | `channels` | `pair_channel_kernel.csv` |
 | `tab:gap` | table | The gap along the deflation clock for two of the four sets computed | `history` | `gap_history.csv` |
 | `fig:gap` | figure `fig_gap_history` | The gap along the deflation clock, for four sets of the mass of the radial mode and of the Fermi momentum (in units of ...) | `history` | `gap_history.csv` |
+| `tab:uv` | table | The ultraviolet strength ... of the pairing kernel per unit ..., the value of ... at which it reaches ..., and the clock reading of that moment (...), for the exchange of the two modes of the Vorton-Scalar alone and with contact couplings (...) | `pairing` | `pair_gap_history.csv` |
+| `tab:uvclasses` | table | Convergence of the gap with the upper limit ... of the momentum integral, by classes of the ultraviolet strength (kernels below the criterion with a gap above ... of the Fermi kinetic energy) | `pairing` | `pairing_checks.txt` |
 | `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
 | `fig:paircontact` | figure `fig_pair_contact` | The gap of the hidden-axis pair along the deflation clock with contact couplings, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
 | `tab:dimer` | table | Two fermions as the clock passes the moment of binding | `history` | `dimer_history.csv` |
