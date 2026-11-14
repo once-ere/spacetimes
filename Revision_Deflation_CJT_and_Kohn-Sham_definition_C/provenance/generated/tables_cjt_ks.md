@@ -113,11 +113,11 @@
 <!-- END n_mutations_parts -->
 
 <!-- BEGIN n_number_checks -->
-607 numbers in 29 documents, 2 not traced
+624 numbers in 29 documents, 0 not traced
 <!-- END n_number_checks -->
 
 <!-- BEGIN n_numbers_judged -->
-not all
+18
 <!-- END n_numbers_judged -->
 
 <!-- BEGIN mat_gamma1644_0 -->
@@ -2211,7 +2211,7 @@ $1.3\times10^{-15}$
 | `tab:gap` | table | The gap along the deflation clock for two of the four sets computed | `history` | `gap_history.csv` |
 | `fig:gap` | figure `fig_gap_history` | The gap along the deflation clock, for four sets of the mass of the radial mode and of the Fermi momentum (in units of ...) | `history` | `gap_history.csv` |
 | `tab:uv` | table | The ultraviolet strength ... of the pairing kernel per unit ..., the value of ... at which it reaches ..., and the clock reading of that moment (...), for the exchange of the two modes of the Vorton-Scalar alone and with contact couplings (...), for the two signs (eq:sct) | `pairing` | `pair_gap_history.csv` |
-| `tab:uvclasses` | table | Convergence of the gap with the upper limit ... of the momentum integral, by classes of the ultraviolet strength (kernels below the criterion with a gap above ... of the Fermi kinetic energy) | `pairing` | `pairing_checks.txt` |
+| `tab:uvclasses` | table | Convergence of the gap with the upper limit ... of the momentum integral, by classes of the ultraviolet strength (the kernels of both signs of the contact part that lie below the criterion and have a gap above ... of the Fermi kinetic energy) | `pairing` | `pairing_checks.txt` |
 | `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings that enter with the sign ... (form Q, all four vector pairs along the extra axes; form C, the pairs along ...), at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
 | `fig:paircontact` | figure `fig_pair_contact` | The gap with contact couplings that enter with the sign ... (form Q; form C in the pairs along ...) along the deflation clock, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
 | `tab:gapsign` | table | The gap at the Fermi surface in units of the Fermi kinetic energy at the clock reading 2.04, for ... and two masses of the radial mode, for the two signs with which the contact couplings enter the pairing potential | `pairing` | `pair_gap_history.csv` |
@@ -2303,7 +2303,7 @@ $1.3\times10^{-15}$
 | `tab:gap` | table | The gap along the deflation clock for two of the four sets computed | `history` | `gap_history.csv` |
 | `fig:gap` | figure `fig_gap_history` | The gap along the deflation clock, for four sets of the mass of the radial mode and of the Fermi momentum (in units of ...) | `history` | `gap_history.csv` |
 | `tab:uv` | table | The ultraviolet strength ... of the pairing kernel per unit ..., the value of ... at which it reaches ..., and the clock reading of that moment (...), for the exchange of the two modes of the Vorton-Scalar alone and with contact couplings (...) | `pairing` | `pair_gap_history.csv` |
-| `tab:uvclasses` | table | Convergence of the gap with the upper limit ... of the momentum integral, by classes of the ultraviolet strength (kernels below the criterion with a gap above ... of the Fermi kinetic energy) | `pairing` | `pairing_checks.txt` |
+| `tab:uvclasses` | table | Convergence of the gap with the upper limit ... of the momentum integral, by classes of the ultraviolet strength (the kernels of both signs of the contact part that lie below the criterion and have a gap above ... of the Fermi kinetic energy) | `pairing` | `pairing_checks.txt` |
 | `tab:gapcontact` | table | The gap at the Fermi surface in units of the Fermi kinetic energy, with contact couplings, at the clock reading 2.04 \[...\], for the Fermi momentum ... and three masses of the radial mode | `pairing` | `pair_gap_history.csv` |
 | `fig:paircontact` | figure `fig_pair_contact` | The gap of the hidden-axis pair along the deflation clock with contact couplings, for the Fermi momentum ... and three masses ... of the radial mode of the Vorton-Scalar | `pairing` | `pair_gap_history.csv` |
 | `tab:dimer` | table | Two fermions as the clock passes the moment of binding | `history` | `dimer_history.csv` |

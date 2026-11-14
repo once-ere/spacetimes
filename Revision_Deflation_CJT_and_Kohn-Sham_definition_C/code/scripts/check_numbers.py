@@ -135,6 +135,7 @@ JUDGED = {
     "6\\times10^{-9}": "check ks-K4: the same conservation law in the Rust program, largest relative deviation 5.6e-9",
     "7\\times10^{-16}": "check pc-P4: without contact couplings the gaps of the earlier calculation are reproduced to 6.6e-16",
     "0.27": "check def-D3: the widths 0.268 and 0.268 of the resonance window (the third, 0.258, is quoted as 0.26)",
+    "5.6": "check def-E3: at the rate that nucleosynthesis allows the difference of the temperature spectrum reaches 0.056 of the spectrum, quoted as 5.6 per cent (in the folder with the upper limit 60 of the gap equation the same text happened to equal an entry of a generated table, the size 5.6 of a pair, which is 5.5 here)",
     "2.33": "table of melting temperatures (data/thermal_history.csv): T_half = 2.325 m at g_VS = 0.3, m_s = m (2.32536 unrounded)",
     "3.386": "check 71d-G8: proper time 3.38636 of the geodesic on the 7+1 spacetime",
     "1.0924": "check 44d-G9: turning value 1.09240103 of the geodesic on the 4+4 spacetime",
