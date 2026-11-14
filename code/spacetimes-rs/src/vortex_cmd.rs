@@ -1,7 +1,9 @@
 //! The command `spacetimes vortex`: fermions bound to a vortex line of the Vorton-Scalar.
 //!
 //! What it does (the derivation is in the head of vortex.rs):
-//!   1. the exact statements of the algebra, for both spacetimes;
+//!   1. the exact statements of the algebra, for both spacetimes; and that the matrix Pc of the
+//!      algebra is, up to its sign, the central generator P of the internal symmetry of the
+//!      zero-mode sector (the centre of the commutant is computed as in symmetry.rs);
 //!   2. the identity that reduces the equation h psi = 0 to the radial equation, at random values;
 //!   3. the profile of the vortex line for the winding numbers 1, 2 and 3, by two methods;
 //!   4. the solutions of the radial equations in every channel (s, l) with |l| <= 3, for
@@ -17,7 +19,11 @@
 //!
 //! The function returns false if any check fails.
 
+use spacetimes::complex::C64;
 use spacetimes::gamma::Gammas;
+use spacetimes::imat::GMat;
+use spacetimes::kernel::{Mat, OneParticle};
+use spacetimes::symmetry::{commutant, dynamics, hermitian_basis};
 use spacetimes::io::{write_csv, write_csv_str};
 use spacetimes::vortex::{
     channel_is_bound, closed_form_l0, energy_constant, expected_exponents, profile, radial_solution, reduction_residual, slope_by_shooting, zero_mode_channels, Profile, VortexAlgebra,
@@ -25,6 +31,23 @@ use spacetimes::vortex::{
 
 fn cmd() -> (&'static str, String) {
     ("command", "spacetimes vortex".to_string())
+}
+
+/// A matrix of Gaussian integers as a matrix of complex numbers.
+fn to_mat(g: &GMat) -> Mat {
+    let n = g.re.n;
+    (0..n).map(|i| (0..n).map(|j| C64::new(g.re.get(i, j) as f64, g.im.get(i, j) as f64)).collect()).collect()
+}
+
+/// Largest absolute value of the entries of a - b.
+fn max_diff(a: &Mat, b: &Mat) -> f64 {
+    let mut d = 0.0f64;
+    for (ra, rb) in a.iter().zip(b.iter()) {
+        for (x, y) in ra.iter().zip(rb.iter()) {
+            d = d.max(((x.re - y.re).powi(2) + (x.im - y.im).powi(2)).sqrt());
+        }
+    }
+    d
 }
 
 /// One line of data/vortex_checks.csv, printed as it is recorded.
@@ -52,6 +75,51 @@ pub fn run() -> std::io::Result<bool> {
     for (a, b) in c71.iter().zip(c44.iter()) {
         ck.add(&format!("71-{}", a.0), "exact", String::new(), a.2, format!("7+1: {}", a.1));
         ck.add(&format!("44-{}", b.0), "exact", String::new(), b.2, format!("4+4: {}", b.1));
+    }
+
+    // The matrix Pc and the central generator P of the internal symmetry.  The five matrices of the
+    // algebra must be the five matrices that fix the dynamics of the zero-mode sector in the other
+    // commands (kernel.rs); the centre of their commutant is computed as in symmetry.rs; every central
+    // Hermitian matrix must be a combination of 1 and Pc.
+    for (k, op) in [OneParticle::new_1671(&gm), OneParticle::new_1644(&gm)].iter().enumerate() {
+        let v = &alg[k];
+        let ds = dynamics(op, &[1, 2, 3]);
+        let mine: Vec<Mat> = vec![to_mat(&v.alpha[0]), to_mat(&v.alpha[1]), to_mat(&v.alpha[2]), to_mat(&v.beta), to_mat(&v.b5)];
+        let same = ds.iter().zip(mine.iter()).map(|(a, b)| max_diff(a, b)).fold(0.0f64, f64::max);
+        let herm = hermitian_basis(&commutant(&ds));
+        let mut all = ds.clone();
+        all.extend(herm.iter().cloned());
+        let centre = hermitian_basis(&commutant(&all));
+        let pc = to_mat(&v.pc);
+        // remove from every central element its components along 1 and along Pc (both have Tr X^2 = 16, Tr Pc = 0)
+        let mut rest = 0.0f64;
+        let mut along_pc = 0.0f64;
+        for z in &centre {
+            let (mut t1, mut tp) = (C64::ZERO, C64::ZERO);
+            for i in 0..16 {
+                t1 = t1 + z[i][i];
+                for j in 0..16 {
+                    tp = tp + z[i][j] * pc[j][i];
+                }
+            }
+            let (c1, cp) = (t1.scale(1.0 / 16.0), tp.scale(1.0 / 16.0));
+            along_pc = along_pc.max(cp.abs());
+            let mut r = 0.0f64;
+            for i in 0..16 {
+                for j in 0..16 {
+                    let mut x = z[i][j] - cp * pc[i][j];
+                    if i == j {
+                        x = x - c1;
+                    }
+                    r = r.max(x.abs());
+                }
+            }
+            rest = rest.max(r);
+        }
+        let name = if k == 0 { "7+1" } else { "4+4" };
+        ck.add(&format!("{}-V9", if k == 0 { "71" } else { "44" }), "numerical", format!("{:.1e}", rest.max(same)),
+            same == 0.0 && herm.len() == 8 && centre.len() == 2 && rest < 1e-10 && along_pc > 0.1,
+            format!("{}: the five matrices of this command are those of the one-particle Hamiltonian of the other commands (largest difference {:.1e}); their commutant has {} independent Hermitian generators and a centre of dimension {}; every central Hermitian matrix is a combination of 1 and Pc (largest remainder {:.1e}). Hence the traceless central generator P of the internal symmetry, P^2 = 1, is +Pc or -Pc; the documents fix the sign by P = Pc = i alpha^1 alpha^2 alpha^3 chi", name, same, herm.len(), centre.len(), rest));
     }
 
     // ------------------------------------------------------------------------------------------
