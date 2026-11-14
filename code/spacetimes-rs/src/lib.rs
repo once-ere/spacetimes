@@ -16,6 +16,8 @@
 //! * `kernel`  pairing kernels of the Vorton-Scalar exchange, channel by channel;
 //! * `gap`     the gap equation of the hidden-axis singlet superfluid;
 //! * `symmetry`  internal symmetries of the zero-mode sector (commutant of the dynamics), for both signatures;
+//! * `vortex`  fermions bound to a vortex line of the Vorton-Scalar: exact algebra of the zero modes, profile of the
+//!   line, radial functions, count of the zero modes in each channel of angular momentum;
 //! * `cjt_toy`, `cjt_pairing`, `cjt_normal`, `cjt_vacuum`  the effective action of Cornwall, Jackiw and Tomboulis:
 //!   zero-dimensional test of the method; potential of the paired state; mean field in a medium and at
 //!   finite temperature; ladder equation in the vacuum (supplement S4);
@@ -54,3 +56,4 @@ pub mod roots;
 pub mod spectra;
 pub mod symmetry;
 pub mod verify;
+pub mod vortex;

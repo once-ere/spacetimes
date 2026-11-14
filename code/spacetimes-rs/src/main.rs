@@ -17,6 +17,7 @@ use spacetimes::imat::{GMat, IMat};
 use spacetimes::verify;
 
 mod cjt_cmd;
+mod vortex_cmd;
 
 fn cmd_matrices() -> std::io::Result<bool> {
     let nb44 = "data/notebook_matrices_4+4.txt";
@@ -967,8 +968,9 @@ fn main() {
         "halos" => cmd_halos().expect("i/o error"),
         "symmetry" => cmd_symmetry().expect("i/o error"),
         "cjt" => cjt_cmd::run().expect("i/o error"),
+        "vortex" => vortex_cmd::run().expect("i/o error"),
         _ => {
-            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (step_thermo.csv)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about one hour\n  superfluid  growth of structure if the dark matter is a superfluid with first sound (sfdm_*.csv); about 10 minutes\n  dimer       bound state and scattering length of two particles in the Yukawa potential (dimer.csv)\n  halos       degeneracy, condensation and self-interaction of the particles in observed halos (dm_*.csv)\n  symmetry    internal symmetries of the sector of fields independent of the extra coordinates (reduced_symmetry.csv)\n  cjt         effective action of Cornwall, Jackiw and Tomboulis: checks and further predictions (cjt_*.csv); about 10 minutes\n              (cjt <part> runs one part: toy pairing thermo threshold landscape normal thermal vacuum)");
+            println!("usage: spacetimes <command>\n\ncommands (run from the repository root; output goes to data/):\n  matrices    build and verify the two sets of real 16x16 Dirac matrices; also writes provenance/generated/\n  channels    exchange amplitudes of the Vorton-Scalar in the pair channels (pair_channel_kernel.csv)\n  gap         gap equation of the hidden-axis singlet superfluid (gap_scan.csv, gap_profile.csv)\n  background  expansion history and recombination of the fiducial model and of dark-fluid variants (step_thermo.csv)\n  spectrum    microwave-background and matter power spectra of the fiducial model; convergence test (cmb_*.csv)\n  forecast    fits of dark-radiation models to mock microwave-background data (dr_*.csv); about one hour\n  superfluid  growth of structure if the dark matter is a superfluid with first sound (sfdm_*.csv); about 10 minutes\n  dimer       bound state and scattering length of two particles in the Yukawa potential (dimer.csv)\n  halos       degeneracy, condensation and self-interaction of the particles in observed halos (dm_*.csv)\n  symmetry    internal symmetries of the sector of fields independent of the extra coordinates (reduced_symmetry.csv)\n  cjt         effective action of Cornwall, Jackiw and Tomboulis: checks and further predictions (cjt_*.csv); about 10 minutes\n              (cjt <part> runs one part: toy pairing thermo threshold landscape normal thermal vacuum)\n  vortex      fermions bound to a vortex line of the Vorton-Scalar: zero modes of the sixteen-component field (vortex_*.csv)");
             true
         }
     };
