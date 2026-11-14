@@ -1244,8 +1244,16 @@ eight
 <!-- END grav_n_runaway -->
 
 <!-- BEGIN grav_n_runaway_sector -->
-six
+two
 <!-- END grav_n_runaway_sector -->
+
+<!-- BEGIN grav_n_runaway_71 -->
+four
+<!-- END grav_n_runaway_71 -->
+
+<!-- BEGIN grav_n_runaway_44 -->
+four
+<!-- END grav_n_runaway_44 -->
 
 <!-- BEGIN grav_end_all -->
 8.0
@@ -1798,13 +1806,13 @@ $1.3\times10^{-15}$
 | Fig.~\ref{fig:gapsign} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pair_gap_history.csv` |
 | Table~\ref{tab:gapwins} | `pairing` | `pair_contact.rs`, `cmd_pairing.rs` | `pairing_checks.txt` |
 | Table~\ref{tab:dimer} | `history` | `history.rs`, `main.rs` | `dimer_history.csv` |
+| Fig.~\ref{fig:binding} | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv` |
+| Table~\ref{tab:events} | `history` | `history.rs`, `main.rs` | `events.csv` |
 <!-- END tbl_prov_1644_a -->
 
 <!-- BEGIN tbl_prov_1644_b -->
 | item | command | source files | data files |
 |:---|:---|:----------|:----------|
-| Fig.~\ref{fig:binding} | `history`, `matter` | `history.rs`, `main.rs`, `cosmo_defl.rs`, `cmd_matter.rs` | `dimer_history.csv`, `dm_resonance.csv` |
-| Table~\ref{tab:events} | `history` | `history.rs`, `main.rs` | `events.csv` |
 | Table~\ref{tab:quench} | `quench` | `quench.rs`, `main.rs` | `quench_summary.csv` |
 | Fig.~\ref{fig:quench} | `quench` | `quench.rs`, `main.rs` | `quench_history.csv`, `quench_summary.csv` |
 | Table~\ref{tab:cjt} | `paired` | `cmd_paired.rs` | `cjt_history.csv` |
@@ -1814,14 +1822,19 @@ $1.3\times10^{-15}$
 | Table~\ref{tab:cjtks} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_vs_ks.csv`, `kohnsham_checks.txt` |
 | Table~\ref{tab:cjtvac} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_vacuum.csv` |
 | Fig.~\ref{fig:cjtsea} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `cjt_sea_saturation.csv`, `cjt_sea_vacuum.csv` |
-| Table~\ref{tab:unified} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `unified_thresholds.csv` |
+| Table~\ref{tab:vachalves} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum_critical.csv` |
+| Table~\ref{tab:vachalvesclock} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum.csv` |
+| Fig.~\ref{fig:vachalves} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_vacuum.csv` |
+| Table~\ref{tab:unified} | `forms` | `halves.rs`, `cmd_forms.rs`, `cmd_forms_b.rs` | `forms_unified_thresholds.csv` |
 | Fig.~\ref{fig:unified} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `unified_phase_mode.csv`, `unified_thresholds.csv` |
 | Table~\ref{tab:phasemode} | `kohnsham` | `kohn_sham.rs`, `cjt_contact.rs`, `cmd_kohnsham.rs` | `unified_phase_mode.csv` |
 | Table~\ref{tab:states} | `paired` | `cmd_paired.rs` | `order_parameter_states.csv` |
 | Table~\ref{tab:gravref} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_reference.csv` |
 | Fig.~\ref{fig:gravref} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_reference_path.csv` |
+| Table~\ref{tab:gravmatter} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_checks.txt` |
 | Table~\ref{tab:gravdefl} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating_summary.csv` |
 | Fig.~\ref{fig:gravdefl} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
+| Fig.~\ref{fig:gravdeflQ} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
 | Table~\ref{tab:gravvac} | `gravity` | `gravity.rs`, `cmd_gravity.rs` | `gravity_vacuum_perturbation.csv` |
 | Table~\ref{tab:hubble} | `cosmology` | `cosmo_defl.rs`, `main.rs` | `hubble_deflation.csv` |
 | Fig.~\ref{fig:hubble} | `cosmology`, `matter` | `cosmo_defl.rs`, `main.rs`, `cmd_matter.rs` | `growth_deflation.csv`, `hubble_deflation.csv`, `hubble_mass_loss.csv` |
@@ -1831,12 +1844,12 @@ $1.3\times10^{-15}$
 | Fig.~\ref{fig:spectra} | `spectrum` | `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_cl.csv`, `cmb_deflation_summary.csv` |
 | Fig.~\ref{fig:closure} | `matter`, `spectrum` | `cosmo_defl.rs`, `cmd_matter.rs`, `spectra_defl.rs`, `eb_boltzmann.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `cmb_deflation_cl.csv`, `cmb_deflation_closure.csv`, `cmb_deflation_gaps.csv`, `cmb_deflation_growth.csv`, `cmb_deflation_summary.csv`, `growth_deflation.csv` |
 | Table~\ref{tab:fisher} | `forecast` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_fisher.csv` |
-| Fig.~\ref{fig:forecast} | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_fisher.csv`, `deflation_profile.csv`, `deflation_residuals.csv`, `hubble_deflation.csv` |
 <!-- END tbl_prov_1644_b -->
 
 <!-- BEGIN tbl_prov_1644_c -->
 | item | command | source files | data files |
 |:---|:---|:----------|:----------|
+| Fig.~\ref{fig:forecast} | `cosmology`, `forecast` | `cosmo_defl.rs`, `main.rs`, `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `deflation_fisher.csv`, `deflation_profile.csv`, `deflation_residuals.csv`, `hubble_deflation.csv` |
 | Table~\ref{tab:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv` |
 | Fig.~\ref{fig:families} | `families` | `eb_fit.rs`, `eb_spectra.rs`, `cmd_spectra.rs` | `dr_deflation_joint.csv`, `dr_deflation_profiles.csv` |
 | Table~\ref{tab:halos} | `matter` | `cosmo_defl.rs`, `cmd_matter.rs` | `dm_halo_estimates.csv` |
@@ -1868,7 +1881,7 @@ $1.3\times10^{-15}$
 <!-- END tbl_prov_1644_c -->
 
 <!-- BEGIN n_prov_items_1644 -->
-86
+91
 <!-- END n_prov_items_1644 -->
 
 <!-- BEGIN tbl_prov_1671_a -->
@@ -2216,14 +2229,19 @@ $1.3\times10^{-15}$
 | `tab:cjtks` | table | The Kohn-Sham method (KS) and the CJT effective potential compared, without the filled states of negative energy (units ...) | `kohnsham` | `cjt_vs_ks.csv`, `kohnsham_checks.txt` |
 | `tab:cjtvac` | table |  | `kohnsham` | `cjt_sea_vacuum.csv` |
 | `fig:cjtsea` | figure `fig_cjt_sea` | The filled states of negative energy | `kohnsham` | `cjt_sea_saturation.csv`, `cjt_sea_vacuum.csv` |
-| `tab:unified` | table | Bare Dirac mass, contact couplings and Vorton-Scalar together (..., without the filled states) | `kohnsham` | `unified_thresholds.csv` |
+| `tab:vachalves` | table | The vacuum of a field without mass term in the two forms, with the filled states of negative energy (units of the cutoff) | `forms` | `forms_vacuum_critical.csv` |
+| `tab:vachalvesclock` | table | The masses of the two halves in vacuum, in units of the cutoff, along the deflation clock counted from the critical strength of the massless field (set A), without bare mass and with the bare mass ... | `forms` | `forms_vacuum.csv` |
+| `fig:vachalves` | figure `fig_forms_vacuum` | The masses of the particles of the two halves in vacuum with the filled states of negative energy, along the clock counted from the critical strength of a massless field (dotted line; ..., set A; units of the cutoff) | `forms` | `forms_vacuum.csv` |
+| `tab:unified` | table | Bare Dirac mass, contact couplings and Vorton-Scalar together in the two forms (..., without the filled states) | `forms` | `forms_unified_thresholds.csv` |
 | `fig:unified` | figure `fig_unified` | Bare Dirac mass, contact couplings and Vorton-Scalar together | `kohnsham` | `unified_phase_mode.csv`, `unified_thresholds.csv` |
 | `tab:phasemode` | table | The phase mode of the Vorton-Scalar when a tenth of the fermion mass is a bare Dirac mass (...; ...; units ...) | `kohnsham` | `unified_phase_mode.csv` |
 | `tab:states` | table | The potential ... of the paired state for six states of the order parameter, in units of ..., where ... is the gap of a unitary state | `paired` | `order_parameter_states.csv` |
 | `tab:gravref` | table | The reference calculation | `gravity` | `gravity_reference.csv` |
 | `fig:gravref` | figure `fig_gravity_reference` | The reference calculation of Table tab:gravref | `gravity` | `gravity_reference_path.csv` |
+| `tab:gravmatter` | table | The matter of the evolutions of Table tab:gravdefl | `gravity` | `gravity_checks.txt` |
 | `tab:gravdefl` | table | The deflating spacetime with matter as a source of gravity | `gravity` | `gravity_deflating_summary.csv` |
-| `fig:gravdefl` | figure `fig_gravity_deflating_sector` | The deflating spacetime with matter as a source of gravity (matter of the quantized sector; the runs of Table tab:gravdefl) | `gravity` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
+| `fig:gravdefl` | figure `fig_gravity_deflating_formC` | The deflating spacetime with matter as a source of gravity (matter of form C, one half of the field filled; the runs of Table tab:gravdefl) | `gravity` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
+| `fig:gravdeflQ` | figure `fig_gravity_deflating_formQ` |  | `gravity` | `gravity_deflating.csv`, `gravity_vacuum_perturbation.csv` |
 | `tab:gravvac` | table | The tuned Einstein-Lovelock gravity without matter, started at ... with the two values of ... that the constraint allows | `gravity` | `gravity_vacuum_perturbation.csv` |
 | `tab:hubble` | table | The Hubble constant inferred from the angular scale of the sound horizon if Newton's constant grows with the deflation (assumptions A1 and A2) | `cosmology` | `hubble_deflation.csv` |
 | `fig:hubble` | figure `fig_hubble` | The Hubble constant and the growth of structure on a deflating spacetime | `cosmology`, `matter` | `growth_deflation.csv`, `hubble_deflation.csv`, `hubble_mass_loss.csv` |

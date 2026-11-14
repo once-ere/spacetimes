@@ -1,0 +1,488 @@
+\section{The self-interaction: nine channels, four couplings}
+\label{sec:selfint}
+
+This section analyzes the quartic term $\Lself$ of Eq.~(\ref{eq:Lself}) by exact algebra. Its results
+are used in every later section: the number of independent couplings, the couplings that act in
+uniform matter, the couplings that act between two particles, and the symmetries that the
+self-interaction keeps or breaks. \SIG{On the $4+4$ spacetime the quartic term can be completed in two
+ways once the theory is quantized. Section~\ref{sec:forms} defines them: \emph{form C}, the covariant
+form, which is the definition of the model in this paper, and \emph{form Q}, the quantized-sector
+form, which is the alternative and is recorded beside it. The later subsections give the algebra for
+both forms, and Sec.~\ref{sec:formsdisc} discusses the two.}{}
+
+%%<1644>
+\subsection{The quantized sector and the two forms of the self-interaction}
+\label{sec:forms}
+
+On the $4+4$ spacetime only fields that do not depend on the three additional times $x5,x6,x7$ have a
+unitary evolution (Sec.~\ref{sec:dirac}); they form the \emph{quantized sector}. For such fields the
+kinetic and mass terms (\ref{eq:Lfree}) become, with $\beta=-i\gamma^{4}$,
+$\alpha^{j}=-\gamma^{4}\gamma^{j}$ ($j=0,1,2,3$), the Hamiltonian matrix
+$\hh=\sum_j\alpha^{j}(-i\partial_j)+\beta m$, the matrix $\Wg=i\,\Cm\gamma^{4}$ and the identity
+$\Cm=-\Wg\beta$,
+\begin{equation}
+\tilde\psi\big(\gamma^{A}\partial_A-m\big)\psi=-\psi^\dagger\,\Wg\,\big(i\partial_4-\hh\big)\psi .
+\label{eq:indef}
+\end{equation}
+The matrix $\Wg$ is Hermitian with $\Wg^{2}=1$; it has the eigenvalues $+1$ and $-1$, eight times
+each, and it commutes with $\hh$. The field therefore consists of two \emph{halves},
+\begin{equation}
+\psi=\psi_++\psi_-,\qquad\Wg\,\psi_\pm=\pm\,\psi_\pm ,
+\label{eq:halves}
+\end{equation}
+and $\hh$ acts inside each half: of the eight states of positive energy of a given momentum, four lie
+in each half. By Eq.~(\ref{eq:indef}) the covariant Lagrangian is the ordinary Lagrangian
+$\psi^\dagger(i\partial_4-\hh)\psi$ of a Dirac field on the half $\Wg=-1$, and \emph{minus} that
+Lagrangian on the half $\Wg=+1$. For a free field the sign does not change the equation of motion, and
+the quantum theory is defined by the positive Lagrangian
+\begin{equation}
+\begin{aligned}
+\mathcal L_{\mathrm{kin}}+\mathcal L_{\mathrm{mass}}&=\psi^\dagger\big(i\partial_4-\hh\big)\psi\\
+&=\bar\psi\,(i\beta\partial_4-\beta\hh)\,\psi,\qquad\bar\psi=\psi^\dagger\beta,
+\end{aligned}
+\label{eq:Lpos}
+\end{equation}
+for all sixteen components, which gives a particle eight internal states of positive norm. Its mass
+term is $-m\,\bar\psi\psi$, the same mass for both halves. The mass term of the covariant Lagrangian
+is different:
+\begin{equation}
+-m\,\tilde\psi\psi=m\,\big(\psi_+^\dagger\beta\,\psi_+-\psi_-^\dagger\beta\,\psi_-\big),
+\label{eq:covmass}
+\end{equation}
+a mass term of opposite sign in the two halves. For a free field this difference is invisible,
+because the spectrum of $\hh$ does not depend on the sign of $m$. With a self-interaction the two
+halves are no longer equivalent, and the quantized theory can be completed in two ways. Both keep
+the positive Lagrangian (\ref{eq:Lpos}); they differ in the adjoint with which the nine invariants
+are built.
+
+\emph{Form C, the covariant form: the definition.} The quartic term is that of the covariant
+Lagrangian, Eq.~(\ref{eq:Lself}), with the adjoint $\tilde\psi=\psi^\dagger\Cm$ and the matrices
+(\ref{eq:Theta}):
+\begin{equation}
+\begin{aligned}
+\mathcal L_{\mathrm{kin}}+\mathcal L_{\mathrm{mass}}+\LselfC&=\psi^\dagger\big(i\partial_4-\hh\big)\psi-\frac12\sum_{r=0}^{8}g_r\,I_r^{\mathrm C},\\
+I_r^{\mathrm C}&=\sum_{|K|=r}\sgnK\,\big(\tilde\psi\,\Theta^{K}\psi\big)^{2} .
+\end{aligned}
+\label{eq:LselfC}
+\end{equation}
+($I_r^{\mathrm C}$ is the invariant $I_r$ of Eq.~(\ref{eq:Lself}); the superscript distinguishes it
+from the invariant of the second form.) \emph{This is the definition of the $4+4$ model in this
+paper.} Its quartic term is invariant under all 28 rotations and boosts of the frame, as the
+hypothesis requires of the invariants of the spacetime. Its kinetic and mass terms are invariant
+under the 13 of them that commute with $\Wg$: the ten rotations and boosts of $x0,\dots,x4$ and the
+three rotations of $x5,x6,x7$. The other fifteen mix one of $x0,\dots,x4$ with an additional time
+and do not preserve the quantized sector. The field equation is
+\begin{equation}
+i\partial_4\psi=\hh\,\psi+\sum_rg_r\sum_{|K|=r}\big(\tilde\psi\Theta_K\psi\big)\,\Cm\Theta^{K}\psi ;
+\label{eq:fieldC}
+\end{equation}
+it conserves $\int\psi^\dagger\psi$, the number of particles of both halves together.
+
+\emph{Form Q, the quantized-sector form: the alternative.} The bilinears are formed with the adjoint
+$\bar\psi=\psi^\dagger\beta$ of Eq.~(\ref{eq:Lpos}) and with the matrices
+\begin{equation}
+\gamma_{44q}^{A}=-i\gamma^{A}\ (A=0,\dots,4),\qquad\gamma_{44q}^{A}=\gamma^{A}\ (A=5,6,7),
+\label{eq:gq}
+\end{equation}
+which satisfy $\gamma_{44q}^{4}=\beta$ and in terms of which the positive Lagrangian reads
+$\bar\psi(i\gamma_{44q}^{A}\partial_A-m)\psi$ for fields of the quantized sector. They have the
+squares of the Dirac matrices of a spacetime with one time: $+1$ for $A=4$ and $-1$ otherwise. With
+\begin{equation}
+\begin{aligned}
+\ThQ^{K}&=\zeta_r^{Q}\,\gamma_{44q}^{A_1}\cdots\gamma_{44q}^{A_r},\\
+\zeta_r^{Q}&=\begin{cases}i,&r=2,3,6,7,\\1,&\text{otherwise},\end{cases}
+\end{aligned}
+\label{eq:ThetaQ}
+\end{equation}
+and with the sign $\sgnQ=\pm1$, the product of the squares of the matrices $\gamma_{44q}^{A}$ in $K$,
+so that $(\ThQ^{K})^{2}=\sgnQ$, the invariants and the self-interaction of this form are
+\begin{equation}
+I_r^{\mathrm Q}=\sum_{|K|=r}\sgnQ\,\big(\bar\psi\,\ThQ^{K}\psi\big)^{2},\qquad\LselfQ=-\frac12\sum_rg_r\,I_r^{\mathrm Q} .
+\label{eq:LselfQ}
+\end{equation}
+The field equation,
+\begin{equation}
+i\partial_4\psi=\hh\,\psi+\sum_rg_r\sum_{|K|=r}\sgnQ\,\big(\bar\psi\,\ThQ^{K}\psi\big)\,\beta\,\ThQ^{K}\psi ,
+\label{eq:fieldQ}
+\end{equation}
+is term by term that of the $7+1$ spacetime for fields that do not depend on $x5,x6,x7$, because the
+algebra of the matrices (\ref{eq:gq}) is that of the $7+1$ Dirac matrices: every result for such
+fields on $7+1$ holds for form Q without change. Its invariants are invariant under the group that
+the 28 products $\tfrac12\gamma_{44q}^{A}\gamma_{44q}^{B}$ generate. Thirteen of these are the
+transformations of the coordinates named above; the other fifteen mix the two halves of the field
+and are not transformations of the coordinates of the $4+4$ spacetime.
+
+\emph{The exact relation between the two forms.} For every one of the 256 lists $K$,
+$\Cm\Theta^{K}=z_K\,\Wg\,\beta\,\ThQ^{K}$ with a phase $z_K=\pm1$ if $K$ contains an even number of the
+indices 5, 6, 7 and $z_K=\pm i$ if it contains an odd number. Consequently
+\begin{equation}
+I_r^{\mathrm C}=\sum_{|K|=r}\sgnQ\,\big(\psi^\dagger\,\Wg\,\beta\,\ThQ^{K}\psi\big)^{2},
+\label{eq:forms}
+\end{equation}
+to be compared with $I_r^{\mathrm Q}=\sum_{|K|=r}\sgnQ\,(\psi^\dagger\beta\,\ThQ^{K}\psi)^{2}$:
+\emph{form C is form Q with the matrix $\Wg$ inserted in every bilinear, and nothing else.} What the
+insertion does is seen with the bilinears of the halves (\ref{eq:halves}),
+$\mathcal J_K^{++}=\psi_+^\dagger\beta\,\ThQ^{K}\psi_+$,
+$\mathcal J_K^{--}=\psi_-^\dagger\beta\,\ThQ^{K}\psi_-$,
+$\mathcal J_K^{+-}=\psi_+^\dagger\beta\,\ThQ^{K}\psi_-$ and
+$\mathcal J_K^{-+}=(\mathcal J_K^{+-})^\dagger$. If $K$ contains an even number of the indices 5, 6, 7,
+the Hermitian matrix $\beta\,\ThQ^{K}$ commutes with $\Wg$ and acts inside each half: form Q contains
+$(\mathcal J_K^{++}+\mathcal J_K^{--})^{2}$ and form C contains
+$(\mathcal J_K^{++}-\mathcal J_K^{--})^{2}$. The squares, which act between two particles of the same
+half, are equal; the product $2\,\mathcal J_K^{++}\mathcal J_K^{--}$, which acts between a particle
+of one half and a particle of the other, has opposite signs. If $K$ contains an odd number,
+$\beta\,\ThQ^{K}$ anticommutes with $\Wg$ and connects the halves: form Q contains
+$(\mathcal J_K^{+-}+\mathcal J_K^{-+})^{2}$ and form C contains
+$(\mathcal J_K^{+-}-\mathcal J_K^{-+})^{2}$. The squares $(\mathcal J_K^{+-})^{2}$ and
+$(\mathcal J_K^{-+})^{2}$, which move two particles from one half to the other, are equal; the
+products of $\mathcal J_K^{+-}$ and $\mathcal J_K^{-+}$, which exchange a particle of one half with a
+particle of the other, have opposite signs. \emph{Two particles of the same half interact
+identically in the two forms; a particle of the half $\Wg=+1$ and a particle of the half $\Wg=-1$
+interact with opposite signs.} Two further consequences are used below. In both forms the
+interaction can move two particles together from one half to the other, so that only the total
+number of particles is conserved, and the difference of the numbers of the two halves modulo 2. And
+both forms are symmetric under the exchange of the two halves, which for fields in ordinary space is
+the transformation $\psi\to\gamma^{0}\gamma^{5}\psi$ (a Hermitian matrix with the square 1 that
+commutes with $\alpha^{1},\alpha^{2},\alpha^{3}$ and $\beta$ and anticommutes with $\Wg$).
+
+\emph{What the covariant field equation itself says.} If the quartic term of form C is combined with
+the covariant kinetic and mass terms (\ref{eq:Lfree}) in place of the positive ones, the field
+equation is Eq.~(\ref{eq:dirac}). Restricted to the quantized sector it reads
+\begin{equation}
+i\partial_4\psi=\hh\,\psi+\Wg\,\frac{\partial\LselfC}{\partial\psi^\dagger},
+\label{eq:fieldcov}
+\end{equation}
+whereas Eq.~(\ref{eq:fieldC}) has $-\partial\LselfC/\partial\psi^\dagger$ in place of
+$+\Wg\,\partial\LselfC/\partial\psi^\dagger$. On the half $\Wg=-1$ the two agree. On the half
+$\Wg=+1$ the covariant equation has the opposite sign of the whole interaction, the same change of
+sign as in Eq.~(\ref{eq:indef}); it conserves $\psi^\dagger\Wg\psi$ rather than $\psi^\dagger\psi$ and
+is not the equation of a Hamiltonian with states of positive norm when both halves are occupied. It
+is a consistent classical field equation; no quantum theory of particles is built on it here.
+
+Table~\ref{tab:forms} places the three options side by side. The hypotheses fix the nine invariants
+as the invariants of the spacetime. On the $7+1$ spacetime this determines the model. On the $4+4$
+spacetime it does not, because the adjoint that makes the invariants covariant, $\Cm$, is not the
+adjoint that makes the energy positive, $\beta$: the two differ by the matrix $\Wg$. This paper
+takes form C as the definition, by the decision of the author of the hypotheses, and reports every
+result of form Q beside it.
+
+\begin{table}
+\caption{\label{tab:forms}The three ways to complete the self-interaction on the $4+4$ spacetime
+in the quantized sector.}
+\begin{ruledtabular}
+\begin{tabular}{p{0.19\columnwidth}p{0.22\columnwidth}p{0.24\columnwidth}p{0.23\columnwidth}}
+option & kinetic and mass term & bilinears of the quartic term & status \\
+\hline
+form C & positive, Eq.~(\ref{eq:Lpos}) & $\tilde\psi\,\Theta^{K}\psi$, Eq.~(\ref{eq:LselfC}) & the definition \\
+form Q & positive, Eq.~(\ref{eq:Lpos}) & $\bar\psi\,\ThQ^{K}\psi$, Eq.~(\ref{eq:LselfQ}) & the alternative, reported beside the definition \\
+covariant classical equation & indefinite, Eq.~(\ref{eq:indef}) & as in form C & Eq.~(\ref{eq:fieldcov}); not quantized \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+%%</1644>
+
+\subsection{The Fierz matrix}
+
+The 256 matrices $\Theta^{K}$ are a basis of all $16\times16$ matrices,
+$\mathrm{Tr}(\Theta_K\Theta^{J})=16\,\delta_{KJ}$ for two lists $K$ and $J$, so that
+$\sum_K(\Theta_K)_{cd}(\Theta^{K})_{ab}=16\,\delta_{ad}\delta_{bc}$, where the indices
+$a,b,c,d=1,\dots,16$ number the components. This completeness relation rearranges a product of two
+matrices of the basis, as in the rearrangement of Fierz for four Dirac matrices \cite{Fierz1937}:
+\begin{equation}
+\sum_{|K|=r}(\Theta_K)_{ab}\,(\Theta^{K})_{cd}=\sum_{r'=0}^{8}\sfF_{rr'}\sum_{|J|=r'}(\Theta_J)_{ad}\,(\Theta^{J})_{cb},
+\label{eq:fierz}
+\end{equation}
+with the \emph{Fierz matrix}
+\begin{equation}
+\sfF_{rr'}=\frac1{16}\sum_{l}(-1)^{rr'-l}\binom{r'}{l}\binom{8-r'}{r-l} ,
+\label{eq:fierzF}
+\end{equation}
+in which $r$ and $r'$ are ranks and $l$ is a summation index. The derivation takes three lines.
+Expanding the left-hand side of Eq.~(\ref{eq:fierz}) in the basis gives the coefficient
+$\tfrac1{256}\sum_{|K|=r}\mathrm{Tr}(\Theta_K\Theta_J\Theta^{K}\Theta^{J})$ for each list $J$ of rank
+$r'$. Two products of Dirac matrices either commute or anticommute:
+$\Theta_K\Theta_J\Theta^{K}=(-1)^{rr'-l}\Theta_J$ if the lists $K$ and $J$ have $l$ indices in common.
+And $\binom{r'}{l}\binom{8-r'}{r-l}$ lists $K$ of rank $r$ share exactly $l$ indices with a given $J$
+of rank $r'$. Table~\ref{tab:fierz} prints the matrix. It satisfies $\sfF^{2}=1$; its eigenvalues are
+$+1$ (five times) and $-1$ (four times).\SIG{ It is the same matrix for both forms (with
+$\ThQ^{K}$ for $\Theta^{K}$ in form Q).}{}
+
+\begin{table}
+\caption{\label{tab:fierz}The Fierz matrix: the integers $16\,\sfF_{rr'}$ of Eq.~(\ref{eq:fierzF}),
+rows $r=0,\dots,8$, columns $r'=0,\dots,8$.}
+\begin{ruledtabular}
+\begin{tabular}{c|rrrrrrrrr}
+$r\backslash r'$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\hline
+{{ROWS:tbl_fierz}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Anticommuting fields: only four invariants are independent}
+\label{sec:four}
+
+Contract Eq.~(\ref{eq:fierz}) with two adjoint fields (indices $a$ and $c$) and two fields (indices
+$b$ and $d$). The left-hand side is the invariant $I_r$. The right-hand side contains the two fields
+$\psi$ in the opposite order, and the components of $\psi$ anticommute, which costs a sign. The nine
+invariants therefore obey
+\begin{equation}
+I_r=-\sum_{r'}\sfF_{rr'}\,I_{r'},\qquad\text{that is}\qquad(1+\sfF)\,I=0 .
+\label{eq:theorem}
+\end{equation}
+Because $\sfF$ has the eigenvalue $+1$ five times, these are five independent linear relations:
+\emph{of the nine invariants only four are independent.} Solved for the tensor invariants,
+\begin{equation}
+\begin{aligned}
+I_2&=-3I_0-I_1-I_7-I_8, & I_3&=-4I_0-I_7+4I_8,\\
+I_4&=-5I_0-5I_8, & I_5&=-4I_0-I_1+4I_8,\\
+I_6&=-I_0+I_1+I_7-3I_8 .
+\end{aligned}
+\label{eq:reduction}
+\end{equation}
+Inserted into Eq.~(\ref{eq:Lself}),
+\begin{equation}
+\Lself=-\tfrac12\big(\geff0\,I_0+\geff1\,I_1+\geff7\,I_7+\geff8\,I_8\big)
+\label{eq:Lself4}
+\end{equation}
+with the four \emph{effective couplings}
+\begin{equation}
+\begin{aligned}
+\geff0&=g_0-3g_2-4g_3-5g_4-4g_5-g_6,\\
+\geff1&=g_1-g_2-g_5+g_6,\\
+\geff7&=g_7-g_2-g_3+g_6,\\
+\geff8&=g_8-g_2+4g_3-5g_4+4g_5-3g_6 .
+\end{aligned}
+\label{eq:geff}
+\end{equation}
+A tensor coupling $g_2,\dots,g_6$ is not a new parameter of the theory: it shifts the scalar,
+vector, axial-vector and pseudoscalar couplings. Every physical quantity computed below depends on
+the nine $g_r$ only through the four combinations (\ref{eq:geff}), and this is verified in each case.
+\SIG{The relations (\ref{eq:reduction}) and the combinations (\ref{eq:geff}) are the same in both
+forms, with $I_r^{\mathrm C}$ or $I_r^{\mathrm Q}$ for $I_r$: a model is specified, in either form, by
+the four numbers $\geff0,\geff1,\geff7,\geff8$, and the choice of the form decides what these four
+numbers mean. }{}The theorem (\ref{eq:theorem}) was verified in two independent ways: by exact integer
+arithmetic on the $16^{4}$ coefficients of the quartic form, antisymmetrized as anticommuting fields
+require, and by evaluating the nine invariants on Grassmann-valued fields with an implementation of
+the Grassmann algebra; in both, the rank of the nine invariants is exactly four.
+
+\subsection{Uniform matter: the mean-field couplings}
+\label{sec:hf}
+
+%%<1671>
+In uniform matter at rest the expectation value of a product of two fields is the density matrix
+$\sfn_{ab}=\langle\psi_b^\dagger\psi_a\rangle$. For a filled Fermi sea of particles of mass $\mst$
+it is $\sfn=(n+\nS\,\beta)/16$, where $n=\langle\psi^\dagger\psi\rangle$ is the number density and
+$\nS=\langle\bar\psi\psi\rangle$ the scalar density, with $\beta=\gamma^{4}$. By Wick's theorem the
+expectation value of a normal-ordered product of two bilinears is a direct (Hartree) term minus an
+exchange (Fock) term,
+$\langle(\bar\psi\Theta^{K}\psi)^{2}\rangle=[\mathrm{Tr}(\beta\Theta^{K}\sfn)]^{2}-\mathrm{Tr}(\beta\Theta^{K}\sfn\,\beta\Theta^{K}\sfn)$.
+The energy density of the self-interaction, $-\langle\Lself\rangle$, becomes
+\begin{equation}
+\varepsilon_{\mathrm{int}}=\tfrac12\,\GV^{\mathrm{HF}}\,n^{2}+\tfrac12\,\GS^{\mathrm{HF}}\,\nS^{2},
+\label{eq:EHF}
+\end{equation}
+\begin{equation}
+\begin{aligned}
+\GS^{\mathrm{HF}}&=\tfrac1{16}\big(15\,\geff0-8\,\geff1-8\,\geff7-\geff8\big),\\
+\GV^{\mathrm{HF}}&=\tfrac1{16}\big(-\geff0+22\,\geff1-6\,\geff7+\geff8\big).
+\end{aligned}
+\label{eq:GHF}
+\end{equation}
+These are the \emph{Hartree-Fock couplings}. In terms of the nine couplings, {{GEN:hf_formula_S}}
+and {{GEN:hf_formula_V}}. The direct terms alone would give $\GS=g_0$ and $\GV=g_1$; the exchange
+terms reduce the scalar coupling by one sixteenth and add to the vector coupling.
+Equation~(\ref{eq:EHF}) is the reason why uniform matter is described by two numbers, a scalar
+coupling $\GS$ and a vector coupling $\GV$, whatever the nine couplings are: Sec.~\ref{sec:ks}
+takes these two as its parameters.
+%%</1671>
+%%<1644>
+In uniform matter at rest the expectation value of a product of two fields is the density matrix
+$\sfn_{ab}=\langle\psi_b^\dagger\psi_a\rangle$. When the two halves (\ref{eq:halves}) of the field are
+filled with particles up to the Fermi momenta $k_{F+}$ and $k_{F-}$, and no coherence between the
+halves is present, it has four terms,
+\begin{equation}
+\sfn=\tfrac1{16}\big(n+\nS\,\beta+n_W\,\Wg+n_{SW}\,\Wg\beta\big),
+\label{eq:nhalves}
+\end{equation}
+with $n=n_++n_-$, $n_W=n_+-n_-$, $\nS=n_{S+}+n_{S-}$ and $n_{SW}=n_{S+}-n_{S-}$, where
+$n_\pm=\langle\psi_\pm^\dagger\psi_\pm\rangle$ are the number densities of the two halves and
+$n_{S\pm}=\langle\psi_\pm^\dagger\beta\,\psi_\pm\rangle$ their scalar densities. By Wick's theorem
+the expectation value of a normal-ordered product of two bilinears is a direct (Hartree) term minus
+an exchange (Fock) term. With it the energy density of the self-interaction is, in both forms, a sum
+of four squares,
+\begin{equation}
+\varepsilon_{\mathrm{int}}=\tfrac12\big(\GVtot\,n^{2}+\GStot\,\nS^{2}+\GVdif\,n_W^{2}+\GSdif\,n_{SW}^{2}\big).
+\label{eq:EHF}
+\end{equation}
+$\GVtot,\GStot$ are the couplings of the squares of the \emph{total} densities, $\GVdif,\GSdif$
+those of the squares of the \emph{differences} between the halves. They are four combinations of the
+effective couplings,
+\begin{equation}
+\begin{aligned}
+\GS^{\mathrm{HF}}&=\tfrac1{16}\big(15\,\geff0-8\,\geff1-8\,\geff7-\geff8\big),\\
+\GV^{\mathrm{HF}}&=\tfrac1{16}\big(-\geff0+22\,\geff1-6\,\geff7+\geff8\big),\\
+\GS^{\mathrm c}&=\tfrac1{16}\big(-\geff0-2\,\geff1+2\,\geff7+\geff8\big),\\
+\GV^{\mathrm c}&=-\tfrac1{16}\big(\geff0+\geff8\big),
+\end{aligned}
+\label{eq:GHF}
+\end{equation}
+\emph{the same four in both forms, with the roles of the totals and of the differences exchanged}:
+\begin{equation}
+\begin{aligned}
+\text{form C:}\quad&\GStot=\GS^{\mathrm c},\quad\GVtot=\GV^{\mathrm c},\\
+&\GSdif=\GS^{\mathrm{HF}},\quad\GVdif=\GV^{\mathrm{HF}};\\
+\text{form Q:}\quad&\GStot=\GS^{\mathrm{HF}},\quad\GVtot=\GV^{\mathrm{HF}},\\
+&\GSdif=\GS^{\mathrm c},\quad\GVdif=\GV^{\mathrm c}.
+\end{aligned}
+\label{eq:roles}
+\end{equation}
+In terms of the nine couplings, {{GEN:hf_formula_S}}, {{GEN:hf_formula_V}},
+{{GEN:hf_formula_Sc}} and {{GEN:hf_formula_Vc}}. $\GS^{\mathrm{HF}}$ and $\GV^{\mathrm{HF}}$ are the
+Hartree-Fock couplings of the $7+1$ model: the direct terms alone would give $g_0$ and $g_1$, and
+the exchange terms reduce the scalar coupling by one sixteenth and add to the vector coupling. An
+equivalent way to write Eq.~(\ref{eq:EHF}) shows what happens between particles:
+\begin{equation}
+\begin{aligned}
+\varepsilon_{\mathrm{int}}={}&\tfrac12\,\GVsame\,(n_+^{2}+n_-^{2})+\tfrac12\,\GSsame\,(n_{S+}^{2}+n_{S-}^{2})\\
+&+\GVopp\,n_+n_-+\GSopp\,n_{S+}n_{S-},
+\end{aligned}
+\label{eq:Esame}
+\end{equation}
+with $G^{\mathrm{same}}=G^{\mathrm{tot}}+G^{\mathrm{dif}}$ and
+$G^{\mathrm{opp}}=G^{\mathrm{tot}}-G^{\mathrm{dif}}$ for the scalar and for the vector couplings alike:
+\begin{equation}
+\begin{aligned}
+\GSsame&=\tfrac18\big(7\,\geff0-5\,\geff1-3\,\geff7\big),\\
+\GVsame&=\tfrac18\big(-\geff0+11\,\geff1-3\,\geff7\big),\\
+\GSopp&=\pm\tfrac18\big(8\,\geff0-3\,\geff1-5\,\geff7-\geff8\big),\\
+\GVopp&=\pm\tfrac18\big(11\,\geff1-3\,\geff7+\geff8\big),
+\end{aligned}
+\label{eq:Gsame}
+\end{equation}
+with the upper sign in form Q and the lower sign in form C. $\GSsame,\GVsame$ are the couplings
+between two particles of the same half; they are the same in both forms. $\GSopp,\GVopp$ are the
+couplings between a particle of one half and a particle of the other; they have opposite signs in
+the two forms. This is the statement of Sec.~\ref{sec:forms} for the mean field.
+
+For an attractive scalar coupling alone ($g_0<0$) the consequence is this. In form Q the attraction
+stands in $\GStot=\tfrac{15}{16}g_0$: it lowers the energy of any scalar density, as on $7+1$. In form
+C it stands in $\GSdif=\tfrac{15}{16}g_0$: it lowers the energy only if the scalar densities of the two
+halves differ, and the total scalar density is weakly repelled ($\GStot=-\tfrac1{16}g_0>0$). Between
+two particles of the same half the coupling attracts in both forms ($\GSsame=\tfrac78g_0$); between
+particles of opposite halves it attracts in form Q ($\GSopp=g_0$) and repels in form C
+($\GSopp=-g_0$). Matter in which only one half is filled is matter of one kind of particle with four
+internal states and the couplings $\GSsame$, $\GVsame$; matter of form Q with equal halves is matter
+of one kind with eight internal states and the couplings $\GS^{\mathrm{HF}}$, $\GV^{\mathrm{HF}}$.
+Section~\ref{sec:ks} sets out the method for one kind of particle with a scalar coupling $\GS$ and a
+vector coupling $\GV$, and then treats the two halves together.
+%%</1644>
+
+\subsection{Two particles: the pair couplings}
+\label{sec:pairs}
+
+Two particles at rest can be in $8\cdot7/2=28$ antisymmetric states, since a particle at rest has
+eight internal states (the eigenvalue $+1$ of $\beta$). The self-interaction acts on a pair state
+$\Phi$, an antisymmetric $16\times16$ matrix, as
+$\Phi\mapsto\sum_rg_r\sum_{|K|=r}\sgnK\,(\SIG{\Cm}{\beta}\Theta^{K})\,\Phi\,(\SIG{\Cm}{\beta}\Theta^{K})^{T}$\SIG{ in form C
+(in form Q with $\beta\,\ThQ^{K}$ and $\sgnQ$)}{},
+projected on the states of positive energy. Its eigenvalue is the \emph{pair coupling} $\Gpair$,
+the interaction energy of the pair times the volume; a negative value means attraction. Diagonalizing
+this map (exactly in the program, numerically in the independent verification) gives\SIG{, in form Q
+and on the $7+1$ spacetime,}{} two values:
+\begin{equation}
+\Gpair=\begin{cases}\geff0+\geff1+5\,\geff7&\text{for 7 pairs,}\\ \geff0+\geff1-3\,\geff7&\text{for 21 pairs.}\end{cases}
+\label{eq:Gpair}
+\end{equation}
+The seven pairs are those created by the vector pair operators $\psi^{T}\Cm\gamma^{A}\psi$ along
+the seven axes other than the time ($A\neq4$); among them is the pair along the hidden axis $x0$,
+the pair of the superfluid of this paper. A scalar attraction ($\geff0<0$) binds all 28 pairs equally; a vector repulsion
+($\geff1>0$) opposes all of them equally; the axial coupling distinguishes the seven from the
+twenty-one; and the pseudoscalar coupling does not act between particles at rest.
+%%<1644>
+
+In form C the result is different. The state that a vector pair operator creates has a definite
+behavior under $\Wg$: $\Wg\,\Phi\,\Wg^{T}=-\Phi$ for the pairs along $x0,x1,x2,x3$ and
+$\Wg\,\Phi\,\Wg^{T}=+\Phi$ for the pairs along $x5,x6,x7$. \emph{A pair along one of the four
+space-like axes consists of one particle of each half; a pair along one of the three additional
+time-like axes consists of two particles of the same half.} By Sec.~\ref{sec:forms} the two forms
+agree on the pairs of two particles of the same half and have opposite signs on the pairs of one
+particle of each half (Table~\ref{tab:pairsrest}). In form C the seven vector pairs split into the
+four pairs along the space-like axes, with $\Gpair=-(\geff0+\geff1+5\,\geff7)$, and the three pairs
+along the additional axes, with $\Gpair=+(\geff0+\geff1+5\,\geff7)$: \emph{a scalar coupling that
+attracts in form Q, and on $7+1$, repels in the hidden-axis pair of form C.}
+
+\begin{table}
+\caption{\label{tab:pairsrest}The pair couplings of the 28 antisymmetric states of two particles at
+rest on the $4+4$ spacetime, in the two forms of the self-interaction (exact).}
+\begin{ruledtabular}
+\begin{tabular}{crll}
+form & pairs & the two particles are in & $\Gpair$ \\
+\hline
+{{ROWS:tbl_fm_pairs_rest}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+%%</1644>
+
+\subsection{Symmetries}
+\label{sec:selfsym}
+
+\emph{Chiral symmetry.} The transformation $\psi\to e^{i\epsilon\chi}\psi$ with the chirality matrix
+$\chi$ (Hermitian, $\chi^{2}=1$, anticommuting with every $\gamma^{A}$) leaves the self-interaction
+invariant if and only if
+\begin{equation}
+\SIG{\geff1-\geff7=0\ \text{(form C)},\qquad\geff0+\geff8=0\ \text{(form Q)}.}{\geff0+\geff8=0 .}
+\label{eq:chiralcond}
+\end{equation}
+\SIG{In form Q, as on the $7+1$ spacetime, the transformation leaves $I_1$ and $I_7$ unchanged and
+rotates $I_0$ and $I_8$ into each other. In form C the roles of the even and of the odd ranks are
+exchanged, because the bilinears of the two forms differ by the matrix $\Wg$, which anticommutes with
+$\chi$: a scalar coupling alone is chirally invariant in form C and not in form Q, and a vector
+coupling alone is chirally invariant in form Q and not in form C. }{The transformation leaves $I_1$
+and $I_7$ unchanged and rotates $I_0$ and $I_8$ into each other. }The
+mass term breaks this symmetry in any case; it is the symmetry $\UVS$ of the model with the
+Vorton-Scalar (Sec.~\ref{sec:clock}), in which the mass arises from the vacuum value of a scalar
+field that transforms as well.
+
+\emph{The internal symmetry of fields in ordinary space.} A field that does not depend on the four
+extra coordinates $x0,x5,x6,x7$ has an internal symmetry $[SU(2)\times SU(2)]\times U(1)_E$ in
+addition to the phase symmetry $U(1)_F$ of the fermion number (Sec.~\ref{sec:higgs}): six generators
+proportional to $\gamma^{a}\gamma^{b}$ ($a<b$ out of $0,5,6,7$), which generate the rotations $SO(4)$
+of the four extra axes, and a generator $P$ proportional to $\gamma^{0}\gamma^{5}\gamma^{6}\gamma^{7}$.
+%%<1671>
+The self-interaction is invariant under the six rotations of the extra axes and under the phase for
+all couplings, but under $U(1)_E$ only if $\geff1=\geff7=0$: \emph{a vector or an axial-vector contact
+coupling breaks $U(1)_E$.} A scalar and a pseudoscalar coupling keep it.
+%%</1671>
+%%<1644>
+The three rotations of $x5,x6,x7$ among themselves commute with $\Wg$; the three generators
+$\gamma^{0}\gamma^{t}$ ($t=5,6,7$) and $P$ anticommute with $\Wg$ and connect the two halves.
+Table~\ref{tab:intsym} gives the couplings for which the self-interaction is invariant under the
+unitary transformations that each generator generates. \emph{In form C every self-interaction that
+does not vanish breaks the three transformations that mix the hidden axis with $x5,x6,x7$, and
+breaks $U(1)_E$}: the internal symmetry is reduced from $SO(4)\times U(1)_F\times U(1)_E$ to
+$SO(3)_T\times U(1)_F$, the rotations of the three additional times among themselves and the fermion
+number. In form Q, as on $7+1$, the self-interaction keeps the six rotations and the phase for all
+couplings and keeps $U(1)_E$ only if $\geff1=\geff7=0$. The reason for the difference is this. In the
+frame group of the $4+4$ spacetime $\gamma^{0}\gamma^{t}$ generates a boost, which mixes a space-like
+with a time-like coordinate and is not a unitary transformation of the field. The unitary
+transformation generated by the same matrix is a different transformation: it is a symmetry of the
+kinetic term of fields in ordinary space by accident, and it is not an element of the frame group.
+The quartic term of form C is invariant under the boost and has no reason to be invariant under the
+unitary transformation. In form Q the same matrices generate rotations, as on the $7+1$ spacetime,
+where all four extra axes are space-like.
+
+\begin{table*}
+\caption{\label{tab:intsym}The couplings for which the self-interaction is invariant under the
+internal symmetry of fields in ordinary space, on the $7+1$ spacetime and in the two forms of the
+$4+4$ spacetime (exact).}
+\begin{ruledtabular}
+\begin{tabular}{lcccc}
+generators & number & $7+1$ & $4+4$, form Q & $4+4$, form C \\
+\hline
+{{ROWS:tbl_fm_symmetry}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+%%</1644>

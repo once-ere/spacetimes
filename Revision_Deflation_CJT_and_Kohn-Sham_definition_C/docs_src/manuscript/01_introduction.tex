@@ -1,0 +1,190 @@
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{The question}
+
+This paper studies a single fermion field with sixteen complex components on a spacetime of eight
+dimensions. Two such spacetimes are of interest. One has four space-like and four time-like
+dimensions, and is written $4+4$; the other has seven space-like dimensions and one time-like
+dimension, and is written $7+1$. On both, the eight Dirac matrices can be chosen real
+\cite{Nash1984,Nash1990,Nash2010}, and the field
+supports a superfluid of fermion pairs of spin zero whose order parameter points along one of the
+four coordinates that are not the coordinates of ordinary spacetime. \SIG{This paper treats the $4+4$
+spacetime. Spacetimes with more than one time have been studied for their own sake
+\cite{Bars2001}; what a second time does to the evolution of a field is taken up in
+Sec.~\ref{sec:modes}.}{This paper treats the $7+1$ spacetime.}
+
+The eight coordinates are written $x0,x1,\dots,x7$. Throughout, $x1,x2,x3$ are the coordinates of
+ordinary space and $x4$ is the ordinary time. The coordinate $x0$ is an additional space-like
+coordinate, called the hidden coordinate. The remaining three, $x5,x6,x7$, are
+\SIG{three additional \emph{time-like} coordinates}{three additional \emph{space-like} coordinates}.
+
+On a flat spacetime nothing explains why the fields of ordinary physics do not depend on $x5$, $x6$
+and $x7$. \SIG{On the $4+4$ spacetime this is more than a gap in the explanation. A field that
+depends on an additional time does not evolve unitarily in the ordinary time, and on flat spacetime
+one has to \emph{impose} that the fields do not depend on the additional times.}{On a flat $7+1$
+spacetime it has to be assumed.} The present paper examines a definite proposal for what happens to
+these three coordinates, and it does so for a field with a mass and with a self-interaction.
+
+\subsection{The hypothesis of deflation}
+
+The hypothesis is that \emph{the coordinates $x5$, $x6$ and $x7$ deflate exponentially}: as the
+ordinary time $x4$ advances, the proper extent of every interval along each of these coordinates
+shrinks as an exponential of $x4$. Flat spacetime is replaced by a curved spacetime with a diagonal
+metric, in which the three components of the metric along the deflating coordinates are
+\begin{equation}
+\begin{aligned}
+\gm_{55}&=\SIG{-}{+}\cff^{2}\,e^{-2\,\gff\,x4},\\
+\gm_{66}&=\SIG{-}{+}\css^{2}\,e^{-2\,\gss\,x4},\\
+\gm_{77}&=\SIG{-}{+}\cvv^{2}\,e^{-2\,\gvv\,x4}.
+\end{aligned}
+\label{eq:hyp}
+\end{equation}
+Here $\gff$, $\gss$ and $\gvv$ are three positive constants, the \emph{rates} of deflation; $\cff$,
+$\css$ and $\cvv$ are three positive constants that set the scale at $x4=0$ and may differ from one
+another. The names of the rates are written upright and without a subscript, to distinguish them
+from the components $\gm_{55}$, $\gm_{66}$, $\gm_{77}$ of the metric, which carry subscripts and the
+superscript \SIG{$(4+4)$}{$(7+1)$}. The other five components of the metric keep their flat values,
+$+1$ for $x0,\dots,x3$ and $-1$ for the time $x4$. The sign convention is that space-like components
+of the metric are positive and time-like components negative: \SIG{the minus signs in
+Eq.~(\ref{eq:hyp}) say that $x5,x6,x7$ are time-like.}{the plus signs in Eq.~(\ref{eq:hyp}) say that
+$x5,x6,x7$ are space-like.}
+
+\subsection{Mass term, self-interaction, and the two methods}
+
+The Lagrangian of the fermion field has three parts (Sec.~\ref{sec:dirac}): the kinetic term; a
+\emph{mass term}, bilinear in the field; and a \emph{self-interaction}, quartic in the field. The
+self-interaction is the most general one without derivatives: nine invariants, one for each number
+$r=0,\dots,8$ of Dirac matrices in the bilinears from which it is built, with nine couplings $g_r$.
+The field equation is a nonlinear Dirac equation. The paper answers the following questions about
+it. How many of the nine couplings are independent? What do the mass term and the self-interaction
+do to matter made of these fermions, on flat spacetime and while three coordinates deflate? What do
+they do to the pairing of the fermions, which in this model is mediated by a second field, the
+Vorton-Scalar? And what does such matter do to the spacetime itself, if it is the source of gravity?
+
+Two methods are used throughout, and each checks the other.
+\begin{itemize}
+\item The \emph{Kohn-Sham method}, known from density-functional theory: the interacting fermions
+are replaced by independent fermions that move in fields which are determined self-consistently by
+their own densities. For uniform matter the fields are a shift of the mass and a shift of the
+energy.
+\item The \emph{effective potential for composite operators} of Cornwall, Jackiw and Tomboulis
+(CJT): a function of the full propagator of the fermions whose stationary points are the possible
+states of matter and whose value there is minus the pressure.
+\end{itemize}
+The two methods are equivalent at the level of approximation used here, and the paper verifies this
+numerically (Sec.~\ref{sec:cjtcontact}).
+
+The paper also examines three hypotheses about the superfluid.
+\begin{itemize}
+\item[H1.] The fermion field forms a superfluid state of spin 0 in which the fermions are paired by
+the exchange of a new scalar boson, the \emph{Vorton-Scalar}, through a neutral current of the kind
+known from the weak interaction.
+\item[H2.] This superfluid state is the Higgs field.
+\item[H3.] This superfluid state explains the observations of dark matter, or the Hubble tension, or
+both.
+\end{itemize}
+The purpose is to carry out every calculation that these hypotheses call for under the hypothesis of
+deflation, with the mass term and the self-interaction, and to report what follows for H1, H2 and
+H3, favorable or not.
+
+\subsection{Summary of results}
+
+\emph{Geometry} (Sec.~\ref{sec:geometry}). The deflating spacetime is homogeneous and has 14
+symmetries, or 15 or 20 if two or three of the rates are equal, instead of the 36 of flat spacetime.
+It is not a solution of Einstein's equations without matter. With three equal rates it \emph{is} an
+exact solution of the equations of Einstein-Gauss-Bonnet gravity without matter, for one definite
+relation between the rate and the two constants of that theory.
+
+\emph{The Dirac field} (Secs.~\ref{sec:dirac}, \ref{sec:modes}). A field that does not depend on
+$x5,x6,x7$ obeys, after multiplication by the square root of the volume factor of the deflating
+coordinates, exactly the flat equation with the mass unchanged and with every coupling of the
+self-interaction growing as the exponential of the time. A field that does depend on the deflating
+coordinates is affected directly.
+%%<1644>
+The linear equation is solved exactly. Of its sixteen solutions eight grow as the exponential of an
+exponential of the time and are not admissible. The other eight are standing waves, which are
+extinguished as the exponential of an exponential. \emph{The deflation removes the dependence of the
+field on the additional times}, and with it the sector in which the $4+4$ theory is not unitary.
+%%</1644>
+%%<1671>
+The linear equation is solved exactly. \emph{The deflation creates particles}: a mode that starts
+empty ends with the occupation of a Fermi-Dirac distribution at a temperature equal to the rate
+divided by $2\pi$, the Gibbons-Hawking temperature of the de Sitter space that the deflating
+coordinates and the time form when the rates are equal.
+%%</1671>
+
+\emph{The self-interaction} (Sec.~\ref{sec:selfint}). For anticommuting fields the nine invariants
+obey five linear relations: only four couplings are independent, a scalar, a vector, an axial-vector
+and a pseudoscalar one. Uniform matter feels two combinations of them, pairs of particles at rest
+feel a third. \SIG{On the $4+4$ spacetime the self-interaction has two forms in the sector that can
+be quantized, which agree for particles in the same half of the field and differ in sign for
+particles in different halves. The covariant form is the definition of the model in this paper;
+the other is recorded beside it, and the two are discussed in Sec.~\ref{sec:formsdisc}.}{}
+
+\emph{Matter} (Secs.~\ref{sec:ks}, \ref{sec:cjtcontact}). The Kohn-Sham method and the CJT effective
+potential give the same states. \SIG{}{For matter that has momentum along all seven space coordinates
+the deflation raises the density and the anisotropy of the pressure, and matter that is self-bound
+at one moment is so only for about one e-folding of the deflating volume. }In the sector of fields
+that do not depend on the deflating coordinates a scalar attraction grows with the deflation and
+turns a gas into self-bound matter at a definite moment. With the filled states of negative energy
+taken into account, the same growth gives a massless field a mass at a critical coupling.\SIG{ In
+the covariant form matter polarizes: the self-bound state fills one half of the field and forms at
+two to three times the strength that the alternative form needs, and the mass that a massless field
+acquires has opposite signs in the two halves.}{} A bare
+mass together with the Vorton-Scalar gives the phase mode of that field a mass.
+
+\emph{The superfluid} (Secs.~\ref{sec:clock} to \ref{sec:order}). For fields that do not depend on
+the extra coordinates the pairing calculation of flat spacetime holds at each moment with the
+couplings of that moment. The masses do not change. Every threshold is passed at a definite time. The
+gap of the paired state grows much faster than the coupling; \SIG{in the pairs along the additional
+times a scalar contact attraction raises it and a vector contact repulsion lowers it, and in the
+pair along the hidden axis the covariant form reverses both}{a scalar contact attraction raises it,
+a vector contact repulsion lowers it}. The gap equation has a solution that does not depend on the
+upper limit of its momentum integral only below an ultraviolet criterion. Two fermions become bound at a scattering resonance. The
+paired state can follow the deflation only once its gap exceeds a few times the rate divided by the
+pairing strength; before that it lags behind and breaks pairs. Matter of a given density loses its
+fermion mass at a definite time. A vortex line carries four fermion zero modes.
+
+\emph{Gravity} (Sec.~\ref{sec:gravity}). With Kohn-Sham matter as the source of the Einstein-Lovelock
+equations the deflating spacetime is not stationary: the three coordinates deflate faster than
+exponentially and the four flat coordinates expand. Even without matter the exactly exponential
+deflation is an unstable solution of the gravity in which it is a solution.
+
+\emph{Cosmology} (Sec.~\ref{sec:cosmo}). If gravity is the Einstein theory in eight dimensions,
+Newton's constant grows at the total rate of deflation; lunar laser ranging then bounds that rate to
+$3\times10^{-3}$ of the Hubble rate, and the Hubble constant inferred from the microwave background
+falls. The deflation does not relieve the Hubble tension. Whatever keeps the rates constant must
+carry a tension and must take part in the perturbations of ordinary space; the spectra of the
+microwave background at all but the largest angular scales do not depend on how it does so, and
+the growth of structure does.
+
+\emph{The Higgs hypothesis} (Sec.~\ref{sec:higgs}). \SIG{The symmetry under which the pair condensate
+has the pattern of the Higgs vacuum is a hidden symmetry on the $4+4$ spacetime, flat or deflating.}{The
+rotations of the four extra space-like coordinates, under which the pair condensate has the pattern
+of the Higgs vacuum, are no longer symmetries of the spacetime; the pattern survives only as a hidden
+symmetry.} \SIG{A contact self-interaction of the covariant form breaks it explicitly, down to the
+rotations of the additional times.}{A vector or an axial-vector contact coupling breaks one factor of
+that symmetry.} If the
+condensate were the Higgs field, the electroweak scale would follow the growing coupling, and atomic
+clocks would limit the rate of deflation to about $10^{-6}$ of the Hubble rate. The hypothesis H2 and
+a deflation of any consequence today exclude each other.
+
+\subsection{Method, and the limits of what is claimed}
+
+Every statement of this paper about geometry, matrices and operators is an identity that a program
+has verified in exact rational arithmetic, and that an independent program has verified again by
+computer algebra or with Grassmann-valued fields. Every numerical statement is the output of a
+program, with a stated accuracy, and the central ones were computed twice by independent programs.
+The programs and their output are public \cite{DeflationRepo}; Appendix~\ref{app:checks} says how each
+number of this paper is reproduced. The program performs {{CHECKS}} checks and the independent
+verification {{GEN:n_indep_checks}}, all of which pass. The metric of Eq.~(\ref{eq:hyp}) is a
+hypothesis. The paper derives its consequences; it does not claim that the hypothesis is true.
+Section~\ref{sec:status} lists what has been established and what has not.
+
+Units are natural, $\hbar=c=k_B=1$. Symbols that carry the tag $\tg$ refer to the deflating
+\SIG{$4+4$}{$7+1$} spacetime. A general coordinate among the three deflating ones is written $xt$ with
+$t\in\{5,6,7\}$ and its rate $\rt$; a general coordinate among $x0,x1,x2,x3$ is written $xj$ with
+$j\in\{0,1,2,3\}$. The letter $a$ is kept for the four extra axes, $a\in\{0,5,6,7\}$
+(Sec.~\ref{sec:gap}). Every symbol is defined where it first appears, and Appendix~\ref{app:symbols}
+lists all of them.

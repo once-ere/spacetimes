@@ -1,0 +1,259 @@
+\section{The Vorton-Scalar and the deflation clock}
+\label{sec:clock}
+
+\subsection{The model}
+
+The model contains, besides the fermion field, a complex scalar field, the \emph{Vorton-Scalar}
+$\PhiVS$, whose vacuum value gives the fermions a mass and whose exchange binds two fermions into a
+pair. This subsection states the complete model on the deflating spacetime: the fermion field with a
+mass term and with the self-interaction of Sec.~\ref{sec:dirac}, and the Vorton-Scalar. The
+Vorton-Scalar brings three real, positive constants: its self-coupling $\lamVS$, the constant
+$\vVS$ that fixes the magnitude $\vVS/\sqrt2$ at which the potential of the scalar is lowest, and
+its Yukawa coupling $\yVS$ to the fermions. The fermion field brings the mass $m_D$ of its
+Lagrangian, called the \emph{bare Dirac mass} from here on, and the couplings $g_r$ of its
+self-interaction. The chirality matrix is denoted by $\chi$, with
+\SIG{$\chi=\gamma^{0}\gamma^{1}\cdots\gamma^{7}$, which is real on the $4+4$ spacetime,}{$\chi=i\,\gamma^{0}\gamma^{1}\cdots\gamma^{7}$,}
+and the chiral projectors are $P^{L,R}=\tfrac12(1\mp\chi)$.
+
+On a curved spacetime a Lagrangian is multiplied by the volume factor $\Vd$, derivatives of spinors
+become covariant derivatives, and the flat metric is replaced by the curved one.
+%%<1671>
+The Lagrangian of the model is
+\begin{align}
+\mathcal L_{\tg}^{\mathrm{VS}}=\Vd\,\Big[&\bar\psi\,\big(i\gamma^{\mu}\nabla_\mu-m_D\big)\psi+\Lself\nonumber\\
+&-\gmup{\mu\nu}\,\partial_\mu\PhiVS^{*}\,\partial_\nu\PhiVS\nonumber\\
+&-\lamVS\Big(|\PhiVS|^{2}-\frac{\vVS^{2}}{2}\Big)^{2}\nonumber\\
+&-\yVS\,\bar\psi\big(\PhiVS\,P^{R}+\PhiVS^{*}\,P^{L}\big)\psi\Big],
+\label{eq:LVS}
+\end{align}
+with $\bar\psi=\psi^\dagger\beta$, $\beta=\gamma^{4}$. The first line is the Lagrangian of
+Sec.~\ref{sec:dirac} with the bare Dirac mass; the second is the kinetic term of the scalar (the minus
+sign belongs to the sign convention of the metric, in which the component of the time is negative,
+so that the term contains $+|\partial_4\PhiVS|^{2}$); the third is its potential; the fourth is the
+Yukawa coupling.
+%%</1671>
+%%<1644>
+On the $4+4$ spacetime the Yukawa coupling can be written only in the sector of fields that do not
+depend on the additional times, the quantized sector of Sec.~\ref{sec:forms}, because only there
+does the adjoint $\bar\psi=\psi^\dagger\beta$ exist with which the chiral projectors combine into
+a real, invariant term; the model is defined there. (The covariant adjoint cannot serve in the Yukawa
+coupling: $\Cm$ commutes with $\chi$, so that $\tilde\psi\psi$ and $\tilde\psi\chi\psi$ are each
+invariant under the chiral transformation and do not rotate into each other, whereas a complex
+scalar field whose phase is the Goldstone mode of that transformation must couple to two bilinears
+that do, $\bar\psi\psi$ and $\bar\psi\,i\chi\,\psi$. The Yukawa coupling is therefore written with
+$\bar\psi$ whatever the form of the self-interaction, and an expectation value of the scalar shifts
+the masses of both halves of the field by the same amount.) On the deflating spacetime Sec.~\ref{sec:modes}
+gives that sector a dynamical reason. In it the model is
+\begin{align}
+\mathcal L_{\tg}^{\mathrm{VS}}={}&\hpsi^\dagger\big(i\partial_4+i\sum_{j=0}^{3}\alpha^{j}\partial_j-\beta\,m_D\big)\hpsi+\Vd\,\Lself\nonumber\\
+&+\Vd\,\Big[|\partial_4\PhiVS|^{2}-\sum_{j=0}^{3}|\partial_j\PhiVS|^{2}\Big]\nonumber\\
+&-\Vd\,\lamVS\Big(|\PhiVS|^{2}-\frac{\vVS^{2}}{2}\Big)^{2}\nonumber\\
+&-\Vd\,\yVS\,\bar\psi\big(\PhiVS\,P^{R}+\PhiVS^{*}\,P^{L}\big)\psi ,
+\label{eq:LVS}
+\end{align}
+with the Hermitian matrices $\beta=-i\gamma^{4}$ and $\alpha^{j}=-\gamma^{4}\gamma^{j}$,
+$\bar\psi=\psi^\dagger\beta$, and the self-interaction $\Lself=\LselfC$ of form C,
+Eq.~(\ref{eq:LselfC}), the definition (with $\LselfQ$ of Eq.~(\ref{eq:LselfQ}) in its place the model
+is that of the alternative form Q). The first line is the positive Lagrangian (\ref{eq:Lpos}) for the weighted field
+$\hpsi=\sqrt{\Vd}\,\psi$, with the bare Dirac mass, and the self-interaction; without the
+self-interaction its equation of motion is the covariant Dirac equation (\ref{eq:dirac}) in this
+sector. The other terms carry the volume factor.
+%%</1644>
+The Lagrangian is invariant under the phase transformation $\psi\to e^{i\epsilon}\psi$ of the
+fermion number, $U(1)_F$, whatever its constants are. Without the bare Dirac mass, and with a
+self-interaction that satisfies the condition (\ref{eq:chiralcond}), it is also invariant under the
+chiral transformation $\UVS$: $\psi\to e^{i\epsilon\chi}\psi$ with
+$\PhiVS\to e^{-2i\epsilon}\PhiVS$. These statements hold on the deflating spacetime as on flat
+spacetime, because the transformations do not involve the coordinates. \emph{The case $m_D=0$,
+$g_r=0$ is the model in which the whole mass of the fermions comes from the Vorton-Scalar and the
+whole interaction from its exchange;} Secs.~\ref{sec:gap} to \ref{sec:order} treat it first, and
+Secs.~\ref{sec:ks}, \ref{sec:gapcontact} and \ref{sec:cjtcontact} then add the bare mass and the
+self-interaction and say what each changes.
+
+A constant field $\PhiVS=\vVS/\sqrt2$ with $\psi=0$ solves the field equations on the deflating
+spacetime, because a constant has no derivatives: the vacuum value is the same at all times. It
+breaks $\UVS$. Around it the Vorton-Scalar has two modes: the \emph{radial mode}, a real field of the
+mass $m_s$, and the \emph{phase mode}, a real massless field, the Goldstone boson of the broken
+symmetry (massless if $\UVS$ is exact; Sec.~\ref{sec:cjtcontact} computes the mass that a bare Dirac
+mass gives it). The fermions acquire the mass $m=m_D+m_Y$, of which $m_Y=\yVS\vVS/\sqrt2$ comes from
+the Vorton-Scalar. Both modes couple to the fermions with the same strength
+$\gVS$, the radial mode to the scalar density $\bar\psi\psi$ and the phase mode to the pseudoscalar
+density $\bar\psi\,i\chi\,\psi$:
+\begin{equation}
+\begin{aligned}
+m_Y&=\frac{\yVS\,\vVS}{\sqrt2},&\qquad m_s&=\sqrt{2\lamVS}\,\vVS,\\
+\gVS&=\frac{m_Y}{\vVS},&\qquad\aVS&=\frac{\gVS^{2}}{4\pi}.
+\end{aligned}
+\label{eq:masses}
+\end{equation}
+
+\subsection{Fields that do not depend on the extra coordinates}
+
+Consider fields that do not depend on the four extra coordinates
+$x0,x5,x6,x7$, and introduce the weighted fields
+\begin{equation}
+\hpsi=\sqrt{\Vd}\,\psi,\qquad\hat\Phi_{\mathrm{VS}}=\sqrt{\Vd}\,\PhiVS .
+\end{equation}
+Each term of Eq.~(\ref{eq:LVS}) is rewritten in turn. The kinetic term and the mass term of the
+fermions are the flat ones for $\hpsi$ (Sec.~\ref{sec:dirac}). The self-interaction contains four
+fermion fields and therefore the factor $\Vd\cdot\Vd^{-2}$, as in Eq.~(\ref{eq:grun}). The Yukawa
+term contains one scalar and two fermion fields
+and therefore the factor $\Vd\cdot\Vd^{-3/2}$. The potential becomes
+$(\lamVS/\Vd)\,(|\hat\Phi_{\mathrm{VS}}|^{2}-\Vd\vVS^{2}/2)^{2}$. In the kinetic term of the scalar the
+derivative along the time acts on the weight as well,
+$\sqrt{\Vd}\,\partial_4\PhiVS=\partial_4\hat\Phi_{\mathrm{VS}}+\tfrac12\gsum\,\hat\Phi_{\mathrm{VS}}$,
+which gives a term $\tfrac14\gsum^{2}|\hat\Phi_{\mathrm{VS}}|^{2}$ and a total derivative. The result
+is the flat Lagrangian for the weighted fields, with four replacements and one additional term:
+\begin{equation}
+\begin{aligned}
+&\yVS\to\frac{\yVS}{\sqrt{\Vd(x4)}},\qquad\lamVS\to\frac{\lamVS}{\Vd(x4)},\qquad g_r\to\frac{g_r}{\Vd(x4)},\\
+&\vVS\to\vVS\sqrt{\Vd(x4)},\qquad\text{and }+\frac{\gsum^{2}}{4}\,|\hat\Phi_{\mathrm{VS}}|^{2}.
+\end{aligned}
+\label{eq:couplings}
+\end{equation}
+The bare Dirac mass $m_D$ is not replaced. With a constant volume of the extra coordinates the same
+replacements define the couplings of a four-dimensional description on flat spacetime. Here that
+volume is the coordinate volume of a cell times $\Vd(x4)$, and it shrinks. The additional term lowers the square of
+the mass of each mode of the scalar by $\gsum^{2}/4$ in the equation of the weighted field;
+Section~\ref{sec:scalarmodes} shows what it does. From here on the couplings $\yVS$, $\lamVS$,
+$\vVS$, $\gVS$, $\aVS$ and $g_r$ are those of the four-dimensional description at the time
+considered.
+
+\subsection{The deflation clock}
+
+Define the \emph{deflation clock}
+\begin{equation}
+\td=\gsum\,(x4-x4_{\mathrm{ref}}),
+\label{eq:clock}
+\end{equation}
+the number of e-foldings by which the volume $\Vd$ has shrunk since a reference time
+$x4_{\mathrm{ref}}$, which is chosen in each application. By Eq.~(\ref{eq:couplings}) every quantity
+of the four-dimensional description is proportional to $e^{n\td}$ with a definite exponent $n$
+(Table~\ref{tab:exponents}). Three observations organize what follows.
+
+\begin{table*}
+\caption{\label{tab:exponents}How the quantities of the four-dimensional description follow the
+deflation clock: each is proportional to $e^{n\td}$. The last two rows hold under additional
+assumptions, which Secs.~\ref{sec:cosmo} and \ref{sec:higgs} state and examine.}
+\begin{ruledtabular}
+\begin{tabular}{p{0.37\textwidth}p{0.47\textwidth}c}
+quantity & meaning & exponent $n$ \\
+\hline
+{{ROWS:tbl_exponents}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\emph{The masses do not change.} The bare Dirac mass is not affected at all, and the part $m_Y$ of
+the fermion mass and the mass $m_s$ of the radial mode contain the couplings in combinations from
+which the volume cancels. So do the Fermi momentum and the Fermi
+energy of matter with a given number of particles per unit of ordinary volume.
+
+\emph{The couplings grow.} The coupling $\gVS=m_Y/\vVS$ grows as $e^{\td/2}$, because the
+four-dimensional vacuum value falls. The strength of the attraction, $\aVS$, grows as $e^{\td}$: it
+doubles every time the volume of the deflating coordinates halves. Every coupling $g_r$ of the
+self-interaction, and with them the couplings $\GS$, $\GV$ of Sec.~\ref{sec:ks}, grows as $e^{\td}$
+as well: \emph{the contact interaction and the exchange of the Vorton-Scalar keep their ratio.}
+
+\emph{The two numbers that decide the state of matter grow at the same rate.} These are
+\begin{equation}
+\DVS=\aVS\,\frac{m}{m_s},\qquad C=\frac{\gVS^{2}m^{2}}{m_s^{2}} .
+\label{eq:DC}
+\end{equation}
+The first decides whether two fermions form a bound pair (Sec.~\ref{sec:pair}), the second whether
+matter keeps its fermion mass (Sec.~\ref{sec:cjt}). Their ratio $C/\DVS=4\pi\,m/m_s$ is fixed.
+
+On flat spacetime the model is specified by the masses and the couplings. On a deflating spacetime
+it is specified by the masses and the values of the couplings \emph{at one time}; the deflation then
+carries it through all larger couplings. The constants of the flat theory become functions of the
+time, and its thresholds are passed one after another (Fig.~\ref{fig:clock}).
+
+\begin{figure*}
+\includegraphics[width=0.9\textwidth]{fig_clock}
+\caption{\label{fig:clock}The deflation clock. (a) How the quantities of the four-dimensional
+description change with the clock $\td$ (logarithmic scale; values relative to $\td=0$). (b) The
+order of events along the deflation for six ratios $m_s/m$: the clock reading of each event relative
+to the moment at which two fermions form a bound pair (Table~\ref{tab:events}).}
+\end{figure*}
+
+\subsection{Modes of the Vorton-Scalar}
+\label{sec:scalarmodes}
+
+Let $\varphi_{\mathrm{bos}}$ stand for the radial mode or the phase mode, with the mass
+$m_{\mathrm{bos}}=m_s$ or $m_{\mathrm{bos}}=0$. To first order in the field, a mode with a wavenumber
+of the magnitude $k$ along the flat coordinates and the wavenumbers $k_t$ along the deflating ones
+obeys
+\begin{equation}
+\begin{aligned}
+&\frac{1}{\Vd}\,\partial_4\big(\Vd\,\partial_4\varphi_{\mathrm{bos}}\big)\\
+&\quad+\Big(k^{2}\SIG{-}{+}\sum_t\frac{k_t^{2}}{b_t^{2}}+m_{\mathrm{bos}}^{2}\Big)\varphi_{\mathrm{bos}}=0 .
+\end{aligned}
+\label{eq:scalar}
+\end{equation}
+\SIG{The wavenumbers along the deflating coordinates, which are time-like, enter with the sign
+opposite to that of $k^{2}$, as for the fermions.}{}
+
+\emph{Modes that do not depend on the deflating coordinates.} With $k_t=0$ the equation has constant
+coefficients, and its solutions are the exponentials
+\begin{equation}
+\varphi_{\mathrm{bos}}\propto\exp\Big\{\Big[\frac{\gsum}{2}\pm\sqrt{\frac{\gsum^{2}}{4}-k^{2}-m_{\mathrm{bos}}^{2}}\,\Big]x4\Big\}.
+\label{eq:exponents}
+\end{equation}
+If $k^{2}+m_{\mathrm{bos}}^{2}>\gsum^{2}/4$, the mode oscillates with the frequency
+$\varpi_b=(k^{2}+m_{\mathrm{bos}}^{2}-\gsum^{2}/4)^{1/2}$, and its amplitude grows as
+$e^{\gsum\,x4/2}$. The growth is that of the weight alone: the weighted field has a constant
+amplitude, and the number of quanta in a cell of fixed coordinates is conserved while the cell
+shrinks. Otherwise the mode does not oscillate. For the radial mode this never happens if
+$m_s>\gsum/2$, which holds by many orders of magnitude for any rate that observation allows
+(Sec.~\ref{sec:cosmo}). For the phase mode it happens at wavelengths longer than $4\pi/\gsum$. At
+$k=0$ the two exponents of the phase mode are $0$ and $\gsum$: a constant phase, which costs nothing,
+and a phase that advances at a rate proportional to $1/\Vd$, which is the conservation of the charge
+of $\UVS$ in a shrinking volume. Neither is an instability of the vacuum. Figure~\ref{fig:scalar}
+shows the exponents.
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_scalar}
+\caption{\label{fig:scalar}Modes of the Vorton-Scalar that do not depend on the deflating
+coordinates. (a) Real parts of the two exponents of Eq.~(\ref{eq:exponents}) against the wavenumber,
+for the phase mode and for a radial mode, in units of $\gsum$. (b) Their imaginary part, the
+frequency of oscillation. (c) The field that a static source builds up from zero, divided by the form
+$e^{\td}/(k^{2}+m_{\mathrm{bos}}^{2})$ that leads to Eq.~(\ref{eq:yukawa}).}
+\end{figure*}
+
+\emph{The potential between two fermions.} Two fermions at rest attract each other by exchanging the
+radial mode. The density of a fixed number of fermions grows as $1/\Vd$, so that the radial mode
+obeys Eq.~(\ref{eq:scalar}) with a source proportional to $e^{\gsum\,x4}$. The solution that follows
+the source is $e^{\gsum\,x4}/(k^{2}+m_{\mathrm{bos}}^{2})$ times the source, as substitution shows:
+the terms $\gsum^{2}-\gsum\cdot\gsum$ cancel, and the denominator contains the \emph{unshifted} mass.
+The potential between two fermions at rest is therefore, at every moment, a Yukawa potential,
+\begin{equation}
+V_s(r)=-\aVS(x4)\,\frac{e^{-m_sr}}{r},
+\label{eq:yukawa}
+\end{equation}
+with the range $1/m_s$ unchanged and the strength of the moment. The numerical solution from rest
+approaches this form with a transient that decays as $e^{-\td/2}$ [Fig.~\ref{fig:scalar}(c)]; after
+$\td=20$ the relative difference is below $4\times10^{-5}$ in the four cases computed.
+
+\emph{Modes that depend on a deflating coordinate.} For $k_t\ne0$ the weighted field obeys
+$\partial_4^{2}\hat\varphi_{\mathrm{bos}}+(\varpi_b^{2}\SIG{-}{+}\kd^{2})\,\hat\varphi_{\mathrm{bos}}=0$
+with the physical wavenumber $\kd$ of Eq.~(\ref{eq:kd}), and the scalar behaves as the fermion field
+does.
+%%<1671>
+The frequency grows without bound. When one rate governs, the solutions are Bessel functions of the
+imaginary order $i\varpi_b/\rt$ and of the argument $\ud$, and a mode that starts empty ends with
+\begin{equation}
+\ncr=\frac{1}{e^{2\pi\varpi_b/\rt}-1}
+\label{eq:bose}
+\end{equation}
+quanta: the Bose-Einstein distribution at the same temperature $\Tdefl$ as for the fermions. The
+program confirms Eq.~(\ref{eq:bose}) in 36 cases to a relative deviation of $1.9\times10^{-5}$
+(Fig.~\ref{fig:creation}).
+%%</1671>
+%%<1644>
+Beyond the turning value, at which $\kd=\varpi_b$, one solution decays and one grows. The bounded
+solution is the modified Bessel function of the imaginary order $i\varpi_b/\rt$ that decays at large
+argument. At early times it is a standing wave; at late times it falls as $e^{-\ud}$
+(Fig.~\ref{fig:extinction}). The scalar field, like the fermion field, loses its dependence on the
+deflating times.
+%%</1644>
+

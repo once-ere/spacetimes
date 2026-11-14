@@ -990,6 +990,7 @@ def cjt_ks_fragments():
         return 3
     kind_names = ["$7+1$, seven momenta", "$7+1$ sector, $D=4$", "$4+4$, form C", "$4+4$, form Q"]
     ends4 = {}
+    runaway_kind = {}
     for x in gs_:
         kind = matter_kind(x["matter"])
         sector = kind >= 1
@@ -998,6 +999,7 @@ def cjt_ks_fragments():
                      "$%s$" % fix(x["Hb0_over_g"], 4), "runaway" if x["stop"] == "runaway" else "reached", fix(x["tau_ref_end"], 2), fix(x["a_end"], 4), auto(x["b_end"], 4),
                      "$%s$" % ("%+.4f" % num(x["Ha_end_over_g"])), "$%s$" % fix(x["Hb_end_over_g"], 3)])
         runaway[1 if sector else 0] += x["stop"] == "runaway"
+        runaway_kind[kind] = runaway_kind.get(kind, 0) + (x["stop"] == "runaway")
         cmax = max(cmax, num(x["constraint"]))
         if tuned and abs(num(x["loading"]) - 1e-3) < 1e-9:
             ends4[kind] = num(x["Hb_end_over_g"]) / num(x["Hb0_over_g"])
@@ -1007,7 +1009,10 @@ def cjt_ks_fragments():
     table("tbl_gravity_deflating", ["matter", "gravity", "loading", "$H_{\\mathsf b}(0)/\\mathrm{g55}$", "end", "$\\tau_d^0$", "$\\mathsf a$", "$\\mathsf b$", "$H_{\\mathsf a}/\\mathrm{g55}$", "$H_{\\mathsf b}/\\mathrm{g55}$"],
           rows, ["l", "l", "r", "r", "l", "r", "r", "r", "r", "r"])
     words = ["none", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"]
-    text("grav_n_runaway", words[runaway[0] + runaway[1]]); text("grav_n_runaway_sector", words[runaway[1]])
+    # all sixteen evolutions; the eight of the 7+1 manuscript (seven momenta, sector); the eight of the 4+4 manuscript
+    # (form C, form Q); the four of the sector of matter of one kind
+    text("grav_n_runaway", words[runaway[0] + runaway[1]]); text("grav_n_runaway_sector", words[runaway_kind[1]])
+    text("grav_n_runaway_71", words[runaway_kind[0] + runaway_kind[1]]); text("grav_n_runaway_44", words[runaway_kind[2] + runaway_kind[3]])
     text("grav_end_all", fix(ends[False], 1)); text("grav_end_sector", fix(ends[True], 1))
     text("grav_constraint", tex_num("%.1e" % cmax))
     vp = rows_of("gravity_vacuum_perturbation.csv")

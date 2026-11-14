@@ -1,0 +1,340 @@
+\section{Pairing with the self-interaction}
+\label{sec:gapcontact}
+
+Section~\ref{sec:gap} treated the pairing by the exchange of the Vorton-Scalar alone. This section
+adds the self-interaction of the fermion field. It writes out the amplitudes and the gap equation in
+full, shows that the exchange of the Vorton-Scalar is itself a self-interaction of finite range,
+gives the condition under which the gap equation has a solution that does not depend on the upper
+limit of its momentum integral, and gives the gap along the deflation clock when both interactions
+act.\SIG{ On the $4+4$ spacetime the contact couplings of form C enter the pair along the hidden axis
+with the sign opposite to that of form Q, and the two forms select different pairs.}{}
+
+\subsection{Amplitudes of the four contact channels}
+
+Two particles of the mass $\mst$ with the momenta $\vec p$ and $-\vec p$ in ordinary space scatter
+into $\vec p'$ and $-\vec p'$. Let $E=(\mstq+p^{2})^{1/2}$ and $E'$ likewise, and let
+$\hh(\vec p)=\sum_j\alpha^{j}p_j+\beta\,\mst$ be the Hamiltonian matrix of one particle, so that
+$\tfrac12(1+\hh/E)$ projects on its states of positive energy. The pair along the hidden axis has
+the wave function
+\begin{equation}
+\Phi(\vec p)=\tfrac12\Big(1+\frac{\hh(\vec p)}{E}\Big)\,X^{*}\,\tfrac12\Big(1+\frac{\hh(-\vec p)}{E}\Big)^{T},\qquad X=\Cm\gamma^{0},
+\end{equation}
+a $16\times16$ matrix. A vertex $\psi^\dagger\,\mathrm{Adj}\,\Theta^{K}\psi$ acting on both particles,
+with the adjoint matrix $\mathrm{Adj}$ of the model, gives the amplitude
+$\mathrm{Tr}[\Phi(\vec p')^\dagger\,\mathrm{Adj}\,\Theta^{K}\,\Phi(\vec p)\,(\mathrm{Adj}\,\Theta^{K})^{T}]$
+divided by the norms of the two wave functions. Summed over the lists $K$ of one rank with the signs
+$\sgnK$, this defines the amplitude of the rank $r$. \SIG{In form Q ($\mathrm{Adj}=\beta$, matrices
+$\ThQ^{K}$, signs $\sgnQ$), as on the $7+1$ spacetime, the result for the four independent channels of
+Sec.~\ref{sec:four} is}{With $\mathrm{Adj}=\beta$ the result for the four independent channels of
+Sec.~\ref{sec:four} is}
+\begin{equation}
+\begin{aligned}
+F_0&=\frac{EE'+\mstq-\vec p\cdot\vec p'}{2EE'},\\
+F_1&=\frac{3EE'-2\mstq-\vec p\cdot\vec p'}{EE'},\\
+F_7&=\frac{3EE'+2\mstq-\vec p\cdot\vec p'}{EE'},\\
+F_8&=-\frac{EE'-\mstq-\vec p\cdot\vec p'}{2EE'} .
+\end{aligned}
+\label{eq:Fclosed}
+\end{equation}
+$F_0$ is the amplitude $F_S$ of the exchange of the radial mode of the Vorton-Scalar, which couples
+to the scalar density, and $F_8=-F_P$ is minus the amplitude of the exchange of its phase mode,
+which couples to the pseudoscalar density. At rest $(F_0,F_1,F_7,F_8)=(1,1,5,0)$, the pair coupling
+(\ref{eq:Gpair}). The closed forms were verified against the direct evaluation with the 256 matrices
+at random momenta, by the program to $1.8\times10^{-15}$ and by the independent script with
+projectors built from numerical eigenvectors; \SIG{the $7+1$ spacetime gives the same four
+functions.}{form Q of the $4+4$ spacetime gives the same four functions.} They
+hold for momenta in ordinary space; a momentum along the hidden axis itself changes them, because
+the pair operator points along that axis.
+%%<1644>
+
+\emph{The sign of the contact couplings in the two forms.} The same evaluation for the pairs along
+$x5,x6,x7$, $\psi^{T}\Cm\gamma^{t}\psi$, and for both forms gives one rule. In form Q the amplitudes of
+all four vector pairs along the extra axes are the functions (\ref{eq:Fclosed}). In form C
+($\mathrm{Adj}=\Cm$) the amplitudes of the pairs along $x5,x6,x7$ are the same functions, and those of
+the pair along the hidden axis are \emph{minus} these functions, at all momenta (direct evaluation
+at random momenta, to {{GEN:pc5_dev}}). This is Sec.~\ref{sec:pairs} at general momenta: the pair
+along the hidden axis consists of one particle of each half of the field, the pairs along $x5,x6,x7$
+of two particles of the same half. The contact amplitudes therefore enter the pairing potential with
+a sign
+\begin{equation}
+\sct=\begin{cases}-1&\text{form C, pair along the hidden axis},\\+1&\text{form C, pairs along }x5,x6,x7,\\+1&\text{form Q, all four pairs}.\end{cases}
+\label{eq:sct}
+\end{equation}
+%%</1644>
+
+The relations (\ref{eq:reduction}) between the nine invariants hold for the amplitudes at rest, and at
+general momenta for the part of each amplitude that is even under $\vec p'\to-\vec p'$, which is the
+sum of the direct and of the exchange scattering of two identical particles; they do not hold for
+the odd part, which does not contribute to a contact interaction in a pair state without orbital
+angular momentum. For a strictly local interaction the four couplings (\ref{eq:geff}) therefore
+suffice. When the interaction is given a range, as below, the model is \emph{defined} by giving that
+range to the four channels.
+
+\subsection{The pairing potential and the gap equation}
+
+The pairing potential of the contact interaction in \SIG{each of these four pair channels}{the
+hidden-axis channel} is
+\begin{equation}
+V_{\mathrm{ct}}(\vec p',\vec p)=\SIG{\sct\,}{}\big(\geff0F_0+\geff1F_1+\geff7F_7+\geff8F_8\big)\,\frac{\mct^{2}}{q^{2}+\mct^{2}},
+\label{eq:Vct}
+\end{equation}
+attractive where it is negative, with $q=|\vec p'-\vec p|$\SIG{ and the sign (\ref{eq:sct})}{}. A contact interaction in a gap equation
+needs a regularization at large momentum transfer. The last factor gives each coupling the range
+$1/\mct$ of an exchanged particle of the mass $\mct$, the \emph{range parameter}; it is the form that
+the exchange of the Vorton-Scalar itself has:
+\begin{equation}
+V_{\mathrm{VS}}(\vec p',\vec p)=-\gVS^{2}\Big[\frac{F_S}{q^{2}+m_s^{2}}+\frac{F_P}{q^{2}+\mth^{2}}\Big],
+\label{eq:VVS}
+\end{equation}
+with the mass $m_s$ of the radial mode and the mass $\mth$ of the phase mode, which vanishes when the
+chiral symmetry is exact\SIG{; it is the same in all four pair channels and in both forms, because the
+Yukawa coupling contains the adjoint $\bar\psi$, in which the two halves of the field enter alike}{}.
+Comparing Eqs.~(\ref{eq:Vct}) and (\ref{eq:VVS}): \emph{the exchange of the
+Vorton-Scalar is a self-interaction of finite range}\SIG{ of form Q}{}, with the momentum-dependent couplings
+\begin{equation}
+\geff0(q)=-\frac{\gVS^{2}}{q^{2}+m_s^{2}},\qquad\geff8(q)=+\frac{\gVS^{2}}{q^{2}+\mth^{2}} .
+\label{eq:gq_exchange}
+\end{equation}
+At momenta far below $m_s$ the radial mode acts as the scalar contact coupling
+$g_0=-\gVS^{2}/m_s^{2}$\SIG{ of form Q}{}. In the phase with unbroken symmetry the two masses are equal and
+$\geff0(q)+\geff8(q)=0$, the condition (\ref{eq:chiralcond}) of chiral invariance\SIG{ in form Q}{}.
+\SIG{In the $4+4$ model of this paper the contact terms are of form C and the exchange is not: in the
+pair along the hidden axis the two enter with opposite relative sign, and in the pairs along
+$x5,x6,x7$ with the same. }{}The program confirms
+that the scalar contact coupling $-\gVS^{2}/m_s^{2}$ with $\mct=m_s$ reproduces the kernel of the
+exchange of the radial mode to $3\times10^{-16}$.
+
+The gap function $\Delta(k)$ of the paired state obeys, at the temperature $T$,
+\begin{equation}
+\begin{aligned}
+\Delta(k)&=\frac{1}{4\pi^{2}}\int_0^{\kmax}dk'\,k'^{2}\,W(k,k')\,\frac{\Delta(k')}{E_{k'}}\tanh\frac{E_{k'}}{2T},\\
+W(k,k')&=\frac12\int_{-1}^{1}d\cos\theta\,\big[-V_{\mathrm{VS}}-V_{\mathrm{ct}}\big],
+\end{aligned}
+\label{eq:gapeq}
+\end{equation}
+with $\xi_k=(k^{2}+m^{2})^{1/2}-\mu$, the quasi-particle energy $E_k=(\xi_k^{2}+\Delta(k)^{2})^{1/2}$,
+the chemical potential $\mu=(\kF^{2}+m^{2})^{1/2}$, and the angle $\theta$ between $\vec p$ and
+$\vec p'$ ($k=|\vec p|$, $k'=|\vec p'|$); $\Delta_F=\Delta(\kF)$; $\kmax$ is the upper limit of the
+momentum integral, which the next subsection examines. It is the condition that the CJT
+effective action be stationary with respect to the pair part of the propagator, in the truncation
+of Sec.~\ref{sec:cjt}, and equally the form that the Kohn-Sham equations take with a pairing field.
+The angular integral is elementary, because each amplitude is linear in $\cos\theta$.
+
+\subsection{The upper limit of the momentum integral: an ultraviolet criterion}
+\label{sec:uv}
+
+At momenta far above all masses every term of the pairing potential has the form of a coupling
+times a function of $\cos\theta$ divided by $q^{2}$, with $F_0,F_S,F_P\to\tfrac12(1-\cos\theta)$,
+$F_8\to-\tfrac12(1-\cos\theta)$ and $F_1,F_7\to3-\cos\theta$. The kernel is then homogeneous,
+$W(k,k')\to w_\infty(k'/k)/k^{2}$ with a function $w_\infty$ of the ratio of the two momenta, and
+above the gap Eq.~(\ref{eq:gapeq}) at zero temperature reads
+$\Delta(k)=\tfrac1{4\pi^{2}}\int_0^\infty dt\,t\,w_\infty(t)\,\Delta(tk)$. A power
+$\Delta(k)\propto k^{-s_\Delta}$ solves it if the exponent $s_\Delta$ obeys
+\begin{equation}
+\int_0^\infty dt\;t^{1-s_\Delta}\,w_\infty(t)=4\pi^{2} .
+\label{eq:uvroot}
+\end{equation}
+Because $W(k,k')$ is symmetric in its arguments, $w_\infty(1/t)=t^{2}\,w_\infty(t)$; the left-hand
+side of Eq.~(\ref{eq:uvroot}) is therefore unchanged when $s_\Delta$ is replaced by $2-s_\Delta$, and
+it is smallest at $s_\Delta=1$. Its value there is the \emph{ultraviolet strength} of the kernel,
+\begin{equation}
+\Uuv=\int_0^\infty dt\;w_\infty(t).
+\label{eq:Uuvdef}
+\end{equation}
+If $\Uuv<4\pi^{2}$, Eq.~(\ref{eq:uvroot}) has two real roots, $s_\Delta>1$ and $2-s_\Delta<1$; the gap
+function falls as $k^{-s_\Delta}$ with the larger root, and the gap equation has a solution that
+does not depend on $\kmax$, which is approached as $\kmax^{-2(s_\Delta-1)}$, slowly when $\Uuv$ is
+close to $4\pi^{2}$. If $\Uuv>4\pi^{2}$ the roots are complex, no such solution exists, and with an
+upper limit the gap grows in proportion to $\kmax$: the pair collapses to short distances. This is
+the fall to the center of relativistic particles in an attractive Coulomb potential whose strength
+exceeds a critical value; the exchange of a boson of the mass $m_s$ gives a Yukawa potential, which
+is a Coulomb potential at distances below $1/m_s$.
+
+The integrals over $t$ and over the angle are elementary. With
+$\int_0^\infty dt/(1+t^{2}-2t\cos\theta)=(\pi-\theta)/\sin\theta$ the two functions of the angle
+give
+\begin{equation}
+\begin{aligned}
+u_S&\equiv\int_0^\infty\!dt\,\frac12\int_{-1}^{1}\!d\cos\theta\,\frac{\tfrac12(1-\cos\theta)}{1+t^{2}-2t\cos\theta}=\frac{\pi^{2}}{8}-\frac12,\\
+u_V&\equiv\int_0^\infty\!dt\,\frac12\int_{-1}^{1}\!d\cos\theta\,\frac{3-\cos\theta}{1+t^{2}-2t\cos\theta}=\frac{3\pi^{2}}{4}-1,
+\end{aligned}
+\label{eq:uSuV}
+\end{equation}
+that is $u_S={{GENM:uv_IS}}$ and $u_V={{GENM:uv_IV}}$, and therefore
+\begin{equation}
+\begin{aligned}
+\Uuv={}&2\,u_S\,\gVS^{2}-\SIG{\sct\,}{}\mct^{2}\Big[\big(\geff0-\geff8\big)\,u_S\\
+&+\big(\geff1+\geff7\big)\,u_V\Big]
+\end{aligned}
+\label{eq:Uuv}
+\end{equation}
+when both modes of the Vorton-Scalar are exchanged (half the first term for the radial mode alone).
+The formula was verified against the numerical integral of the kernel by the program and by the
+independent script. \emph{The exchange of the two modes alone reaches $\Uuv=4\pi^{2}$ at
+$\gVS^{2}=4\pi^{2}/(2u_S)={{GENM:uv_g2c_exchange}}$}, the clock reading
+$\td={{GENM:uv_tau_exchange}}$ of the histories of Sec.~\ref{sec:gap}, beyond their last reading
+{{GEN:uv_tau_last}}. A scalar contact attraction \SIG{with $\sct=+1$ }{}brings the criterion nearer, a
+vector repulsion moves it away (Table~\ref{tab:uv})\SIG{; with $\sct=-1$ it is the other way round, and
+the vector contact coupling $+0.3\,\gVS^{2}/m^{2}$ in the hidden-axis pair of form C reaches the
+criterion at $\gVS^{2}={{GENM:uv_g2c_v3minus}}$, the clock reading ${{GENM:uv_tau_v3minus}}$, from which
+on no gap is given}{}.
+
+\begin{table*}
+\caption{\label{tab:uv}The ultraviolet strength $\Uuv$ of the pairing kernel per unit $\gVS^{2}$, the
+value of $\gVS^{2}$ at which it reaches $4\pi^{2}$, and the clock reading of that moment
+($\gVS=e^{\td/2}$), for the exchange of the two modes of the Vorton-Scalar alone and with contact
+couplings ($\mct=m$)\SIG{, for the two signs (\ref{eq:sct})}{}. A dash: the criterion is never reached.}
+\begin{ruledtabular}
+\begin{tabular}{\SIG{>{\raggedright\arraybackslash}p{0.3\textwidth}cccccc}{lccc}}
+interaction & \SIG{$\sct=+1$: $\Uuv/\gVS^{2}$}{$\Uuv/\gVS^{2}$} & critical $\gVS^{2}$ & $\td$\SIG{ & $\sct=-1$: $\Uuv/\gVS^{2}$ & critical $\gVS^{2}$ & $\td$}{} \\
+\hline
+{{ROWS:tbl_fm_uv\SIG{}{|cols=0,1,2,3}}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+The criterion was tested numerically: the gap was computed with the upper limits $\kmax=60$,
+$2\times10^{3}$, $2\times10^{4}$ and $2\times10^{5}$, in units of the larger of $m$ and $\kF$, for
+{{GEN:uv_n_cases}} kernels (four sets of $m_s$ and $\kF$, four clock readings, seven combinations of
+couplings, and both signs of the contact part\SIG{}{; the sign opposite to that of this spacetime
+occurs on the $4+4$ spacetime}). Below the criterion the gap converges
+(Table~\ref{tab:uvclasses}); above it ({{GEN:uv_n_above}} kernels\SIG{}{, all with the opposite sign})
+it grows by a factor between {{GEN:uv_growth_lo}} and {{GEN:uv_growth_hi}} from $\kmax=2\times10^{4}$
+to $2\times10^{5}$, so that its value is not a property of the model. \emph{All gaps of this paper are
+computed with $\kmax=2\times10^{4}$, and none is given above the criterion.} A limit of 60, with
+which gaps of this model were computed before, gives gaps of the exchange alone that are too small
+by up to {{GEN:uv_exchange_error}} per cent at the strongest coupling of the histories, and gaps with
+contact couplings that are too small by the percentages of the last column of the table.
+
+\begin{table}
+\caption{\label{tab:uvclasses}Convergence of the gap with the upper limit $\kmax$ of the momentum
+integral, by classes of the ultraviolet strength (kernels below the criterion with a gap above
+$10^{-4}$ of the Fermi kinetic energy): the largest relative change of the gap from
+$\kmax=2\times10^{4}$ to $2\times10^{5}$, and the largest error of the limit $\kmax=60$.}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+$\Uuv/4\pi^{2}$ & kernels & change & error of 60 (per cent) \\
+\hline
+{{ROWS:tbl_fm_uv_classes}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{The gap along the clock with contact couplings}
+
+All couplings of the four-dimensional description grow as $e^{\td}$ (Sec.~\ref{sec:clock}), so that
+the ratio of a contact coupling to $\gVS^{2}$ is fixed. Table~\ref{tab:gapcontact} and
+Fig.~\ref{fig:paircontact} give the gap\SIG{, for the sign $\sct=+1$,}{} for seven choices: the exchange alone; the exchange with a
+scalar contact attraction $\geff0=-\gVS^{2}/m^{2}$; with a scalar attraction and a vector repulsion
+one tenth as large, $\geff1=+0.1\,\gVS^{2}/m^{2}$; with a vector repulsion alone,
+$\geff1=+0.3\,\gVS^{2}/m^{2}$; with an axial coupling $\geff7=-0.1\,\gVS^{2}/m^{2}$; the contact
+couplings without the Vorton-Scalar; and the exchange alone with a phase mode of the mass
+$\mth=0.3\,m$. The range parameter is $\mct=m$.
+
+\begin{table*}
+\caption{\label{tab:gapcontact}The gap at the Fermi surface in units of the Fermi kinetic energy,
+with contact couplings\SIG{ that enter with the sign $\sct=+1$ (form Q, all four vector pairs along the
+extra axes; form C, the pairs along $x5,x6,x7$)}{}, at the clock reading {{GEN:gapc_tau}}
+[$\gVS={{GENM:gapc_g}}$], for the Fermi
+momentum $\kF=0.5\,m$ and three masses of the radial mode. Contact couplings in units of
+$\gVS^{2}/m^{2}$; $\mct=m$.}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+interaction & $m_s=0.1\,m$ & $m_s=0.3\,m$ & $m_s=m$ \\
+\hline
+{{ROWS:tbl_gap_contact}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{figure*}
+\includegraphics[width=\textwidth]{fig_pair_contact}
+\caption{\label{fig:paircontact}The gap \SIG{with contact couplings that enter with the sign $\sct=+1$
+(form Q; form C in the pairs along $x5,x6,x7$)}{of the hidden-axis pair} along the deflation clock\SIG{}{ with contact
+couplings}, for the Fermi momentum $0.5\,m$ and three masses $m_s$ of the radial mode of the
+Vorton-Scalar. Upper row: the exchange of the Vorton-Scalar alone; with a scalar contact attraction;
+with a scalar attraction and a vector repulsion one tenth as large; the contact couplings alone.
+Lower row: the exchange alone; with a vector contact repulsion; with an axial contact coupling; with
+a phase mode of the mass $0.3\,m$. Couplings and range parameter as in
+Table~\ref{tab:gapcontact}.}
+\end{figure*}
+
+Three statements summarize the result\SIG{ for $\sct=+1$}{}; each was verified at every clock reading at
+which the gap exceeds $10^{-6}$ of the Fermi kinetic energy.
+
+\emph{A scalar contact attraction raises the gap}, strongly so where the exchange alone is weak: for
+$m_s=m$ at the clock reading of Table~\ref{tab:gapcontact} by the factor {{GEN:gapc_factor}}.
+
+\emph{A vector contact repulsion lowers it.} A vector coupling of three tenths of $\gVS^{2}/m^{2}$
+removes most of the gap of a weakly paired state (Table~\ref{tab:gapcontact}, $m_s=m$) and reduces
+the gap of a strongly paired one.
+
+\emph{A mass of the phase mode lowers it}, because it weakens the attraction of that mode at small
+momentum transfer.
+
+Without contact couplings the program reproduces the gaps of Sec.~\ref{sec:gap} to $7\times10^{-16}$.
+For small gaps the critical temperature remains $0.567$ times the gap. An independent solution of
+Eq.~(\ref{eq:gapeq}) on another grid of momenta, by plain iteration, gives the gaps of
+Table~\ref{tab:gapcontact} for the first three rows to {{GEN:gapc_indep}} (relative). The law of growth
+(\ref{eq:growth}) holds with contact couplings as it does without, because every part of the kernel
+grows as $e^{\td}$.
+%%<1644>
+
+\subsection{The pair along the hidden axis in form C}
+\label{sec:gapformc}
+
+In the definition of the model, form C, the contact couplings enter the pair along the hidden axis
+with $\sct=-1$. Table~\ref{tab:gapsign} and Fig.~\ref{fig:gapsign} compare the two signs for the same
+couplings. With $\sct=-1$ the couplings act in the opposite way: \emph{a scalar contact attraction
+lowers the gap} (for $m_s=m$ it removes it at the clock reading of the table), an axial coupling
+$\geff7<0$ lowers it, and \emph{a vector contact repulsion raises it}; the contact couplings of the
+signs of set B alone give no gap in this pair at any clock reading. The gap with $\sct=-1$ and the
+vector coupling agrees with an independent solution of the gap equation to {{GEN:gapc_indep_minus}}.
+
+\begin{table*}
+\caption{\label{tab:gapsign}The gap at the Fermi surface in units of the Fermi kinetic energy at the
+clock reading {{GEN:fm_gap_tau}}, for $\kF=0.5\,m$ and two masses of the radial mode, for the two
+signs with which the contact couplings enter the pairing potential: $\sct=+1$ (form Q; form C in the
+pairs along $x5,x6,x7$) and $\sct=-1$ (form C in the pair along the hidden axis). Last two columns:
+the ultraviolet strength of the kernel for $m_s=m$. Contact couplings in units of $\gVS^{2}/m^{2}$;
+$\mct=m$.}
+\begin{ruledtabular}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.3\textwidth}cccccc}
+interaction & $m_s=0.3\,m$, $\sct=+1$ & $-1$ & $m_s=m$, $\sct=+1$ & $-1$ & $\Uuv/4\pi^{2}$, $\sct=+1$ & $-1$ \\
+\hline
+{{ROWS:tbl_fm_gap}}
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
+
+\begin{figure*}
+\includegraphics[width=0.86\textwidth]{fig_forms_gap}
+\caption{\label{fig:gapsign}The gap at the Fermi surface, in units of the Fermi kinetic energy, along
+the deflation clock, for $m_s=m$ and $\kF=0.5\,m$. Left: with the scalar contact coupling
+$\geff0=-\gVS^{2}/m^{2}$; right: with the vector contact coupling $\geff1=+0.3\,\gVS^{2}/m^{2}$. Dotted
+line: the exchange of the Vorton-Scalar alone. Dashed line (squares): the contact coupling with the
+sign $\sct=+1$ (form Q; form C in the pairs along $x5,x6,x7$). Solid line (circles): with the sign
+$\sct=-1$ (form C in the pair along the hidden axis). In the shaded band the kernel with $\sct=-1$
+exceeds the ultraviolet criterion of Sec.~\ref{sec:uv}, and no gap is given.}
+\end{figure*}
+
+\emph{In form C the self-interaction removes the degeneracy of the pair along the hidden axis with
+the pairs along $x5,x6,x7$, and so selects the direction of the order parameter}
+(Table~\ref{tab:gapwins}). With an attractive scalar coupling the pairs along the additional
+time-like axes have the larger gap, not the pair along the hidden axis; with a repulsive vector
+coupling alone the pair along the hidden axis has the larger gap. In form Q, as on the $7+1$
+spacetime, the four pairs have the same gap, and the direction is free (Sec.~\ref{sec:order}).
+
+\begin{table}
+\caption{\label{tab:gapwins}Form C: the number of clock readings, among those at which both gaps are
+defined, at which the pairs along $x5,x6,x7$ ($\sct=+1$) or the pair along the hidden axis
+($\sct=-1$) have the larger gap (four sets of $m_s$ and $\kF$).}
+\begin{ruledtabular}
+\begin{tabular}{p{0.52\columnwidth}cc}
+interaction & $x5,x6,x7$ & hidden axis \\
+\hline
+{{ROWS:tbl_fm_gap_wins}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+%%</1644>
