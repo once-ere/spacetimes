@@ -13,7 +13,9 @@ replaces with machine-generated text, so that no number can be mistyped.
 Placeholders
     {{GEN:name}}    the fragment  <!-- BEGIN name --> ... <!-- END name -->  found in any
                     file of provenance/generated/
-    {{FILE:path}}   the verbatim content of a text file (path relative to Revision_Deflation_CJT_and_Kohn-Sham_definition_C)
+    {{FILE:path}}   the verbatim content of a text file (path relative to Revision_Deflation_CJT_and_Kohn-Sham_definition_C);
+                    a line of more than 1800 characters is continued on the following lines, broken at
+                    spaces (TeX cannot typeset a single verbatim line of more than about 3400 characters)
     {{MAINFILE:path}} the verbatim content of a text file of the main project (path relative to the repository root)
     {{SHA:file}}    the SHA-256 checksum of an input file, from provenance/inputs_sha256.txt
 
@@ -35,6 +37,21 @@ def load_fragments():
         for m in re.finditer(r"<!-- BEGIN (\S+) -->\n(.*?)\n<!-- END \1 -->", text, re.S):
             frags[m.group(1)] = m.group(2)
     return frags
+
+def fold_long_lines(text, limit=1800):
+    """Break every line of more than `limit` characters at spaces into lines of at most `limit` characters.
+    Nothing but line breaks is added; the words and their order are unchanged."""
+    out = []
+    for line in text.split("\n"):
+        while len(line) > limit:
+            cut = line.rfind(" ", 0, limit)
+            if cut <= 0:
+                cut = limit
+            out.append(line[:cut])
+            line = line[cut:].lstrip(" ")
+        out.append(line)
+    return "\n".join(out)
+
 
 def load_hashes():
     h = {}
@@ -62,7 +79,7 @@ def assemble(src):
     def fil(mm):
         p = os.path.join(ROOT, mm.group(1))
         if not os.path.exists(p): missing.append("FILE:" + mm.group(1)); return mm.group(0)
-        return open(p, encoding="utf-8").read().rstrip("\n")
+        return fold_long_lines(open(p, encoding="utf-8").read().rstrip("\n"))
     def mainfil(mm):
         p = os.path.join(ROOT, "..", mm.group(1))
         if not os.path.exists(p): missing.append("MAINFILE:" + mm.group(1)); return mm.group(0)

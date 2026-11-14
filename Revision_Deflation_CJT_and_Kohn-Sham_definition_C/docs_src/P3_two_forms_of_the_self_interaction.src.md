@@ -1424,23 +1424,23 @@ Each command prints its checks and ends with the number of checks that passed.
 
 | file in `data/` | content | used in |
 |:------|:---------|:--|
-| `selfcoupling_hartree_fock.csv` | the four mean-field couplings in the nine couplings, for both forms | 5.1 |
-| `selfcoupling_pairs.csv` | the pair couplings of all pair operators, with the behavior under $W_{1644}$ | 7.2 |
-| `selfcoupling_internal_symmetry.csv` | the conditions of invariance under the internal symmetry | 8.2 |
-| `forms_couplings.csv` | the eight mean-field couplings of Eqs. (5.3) and (5.5) for the sets A and B | 5.2 |
-| `forms_energy_vs_polarization.csv` | energy against polarization | 5.4 |
-| `forms_thresholds.csv` | binding thresholds | 5.5 |
-| `forms_saturation.csv` | saturated matter along the clock | 5.6 |
-| `forms_fixed_density.csv`, `forms_gas_events.csv` | matter of fixed density | 5.7 |
-| `forms_cjt_vs_ks.csv` | the two methods compared | 5.8 |
-| `forms_vacuum_critical.csv`, `forms_vacuum.csv` | the vacuum | 6 |
-| `forms_unified_thresholds.csv` | thresholds with the Vorton-Scalar | 9 |
-| `forms_reversed_sign.csv` | a scalar coupling of the opposite sign (Appendix A) | A |
-| `pair_amplitudes_forms.csv` | pairing amplitudes of both forms in both kinds of pairs | 7.3 |
-| `pair_gap_history.csv` | the gaps along the clock for both signs, with $U_{\rm uv}/4\pi^2$ | 7.5 |
-| `pair_gap_upper_limit.csv` | the gaps for four upper limits of the momentum integral | 7.6 |
-| `gravity_deflating_summary.csv` | the evolutions with the matter of the two forms | 10 |
-| `forms_checks.txt`, `selfcoupling_checks.txt`, `pairing_checks.txt`, `gravity_checks.txt`, `cjt_ks_checks_independent.txt` | the reports of the checks | all |
+| `selfcoupling_hartree_fock.csv` | the four mean-field couplings in the nine couplings, for both forms | Section 5.1 |
+| `selfcoupling_pairs.csv` | the pair couplings of all pair operators, with the behavior under $W_{1644}$ | Section 7.2 |
+| `selfcoupling_internal_symmetry.csv` | the conditions of invariance under the internal symmetry | Section 8.2 |
+| `forms_couplings.csv` | the eight mean-field couplings of Eqs. (5.3) and (5.5) for the sets A and B | Section 5.2 |
+| `forms_energy_vs_polarization.csv` | energy against polarization | Section 5.4 |
+| `forms_thresholds.csv` | binding thresholds | Section 5.5 |
+| `forms_saturation.csv` | saturated matter along the clock | Section 5.6 |
+| `forms_fixed_density.csv`, `forms_gas_events.csv` | matter of fixed density | Section 5.7 |
+| `forms_cjt_vs_ks.csv` | the two methods compared | Section 5.8 |
+| `forms_vacuum_critical.csv`, `forms_vacuum.csv` | the vacuum | Section 6 |
+| `forms_unified_thresholds.csv` | thresholds with the Vorton-Scalar | Section 9 |
+| `forms_reversed_sign.csv` | a scalar coupling of the opposite sign (Appendix A) | Appendix A |
+| `pair_amplitudes_forms.csv` | pairing amplitudes of both forms in both kinds of pairs | Section 7.3 |
+| `pair_gap_history.csv` | the gaps along the clock for both signs, with $U_{\rm uv}/4\pi^2$ | Section 7.5 |
+| `pair_gap_upper_limit.csv` | the gaps for four upper limits of the momentum integral | Section 7.6 |
+| `gravity_deflating_summary.csv` | the evolutions with the matter of the two forms | Section 10 |
+| `forms_checks.txt`, `selfcoupling_checks.txt`, `pairing_checks.txt`, `gravity_checks.txt`, `cjt_ks_checks_independent.txt` | the reports of the checks | all sections |
 
 The figures of this document are drawn from these files by
 `code/scripts/make_figures.py` (functions `fig_forms_polarization`,
