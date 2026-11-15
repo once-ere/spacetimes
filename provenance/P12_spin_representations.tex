@@ -1,0 +1,568 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={P12 --- The sixteen-component spinor representation of Spin(4,4) and of Spin(7,1), and its two chiral parts},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{P12 --- The sixteen-component spinor representation of Spin(4,4)
+and of Spin(7,1), and its two chiral parts}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance of PROJECT spacetimes: check and correction of two
+claims of the author}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 15, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{the-two-claims-and-the-verdict-in-brief}{%
+\section{1. The two claims, and the verdict in
+brief}\label{the-two-claims-and-the-verdict-in-brief}}
+
+On November 15, 2026, the author asked for the following two claims to
+be checked, verified and corrected in a provenance:
+
+\begin{quote}
+Understand and verify that the 16 by 16 dimensional representation of
+Spin(4,4) is reducible to direct sum of two 8 by 8 dimensional
+irreducible representations of Spin(4,4)\_left and Spin(4,4)\_right.
+
+Understand and verify that the 16 by 16 dimensional representation of
+Spin(7,1) is reducible to direct sum of 8 by 8 dimensional irreducible
+representations of Spin(7,1)\_left and Spin(7,1)\_right.
+\end{quote}
+
+\textbf{Claim 1 (4+4) is correct in substance and needs two corrections
+of wording.} The real sixteen-dimensional spinor representation of
+\(\mathrm{Spin}_0(4,4)\) is the direct sum of two \emph{real}
+eight-dimensional invariant subspaces, the left-handed and the
+right-handed spinors. Each is irreducible, over the real and over the
+complex numbers, and the two are not equivalent. Corrections: (a)
+``Spin(4,4)\_left'' and ``Spin(4,4)\_right'' are not two groups; they
+are two representations of the \emph{one} group
+\(\mathrm{Spin}_0(4,4)\), the left and right half-spin representations.
+(b) Neither half-spin representation is faithful: each sends two
+elements of the group to the identity, so that the group of \(8\times8\)
+matrices that each produces is not a copy of \(\mathrm{Spin}_0(4,4)\)
+but a quotient of it by a group of order two, which preserves a
+symmetric form of signature (4,4).
+
+\textbf{Claim 2 (7+1) is correct only over the complex numbers.} The
+sixteen-dimensional representation of \(\mathrm{Spin}_0(7,1)\) that the
+project uses is real, and as a real representation it is
+\emph{irreducible}: no real change of basis splits it. Over the complex
+numbers it is the direct sum of two eight-dimensional irreducible
+representations, the left-handed and the right-handed spinors, which are
+not equivalent; the right one is the complex conjugate of the left one,
+and also its dual. Each is faithful. The same correction (a) applies:
+the two are representations of one group. The \(8\times8\) matrices of
+the two parts are necessarily complex.
+
+The rest of this document defines every term, gives the method, the
+results with the check that verifies each, the comparison with the
+four-dimensional case of E. A. Lord, and the complete output of the
+program.
+
+\hypertarget{definitions}{%
+\section{2. Definitions}\label{definitions}}
+
+\emph{The Dirac matrices.} \(\gamma^A\), \(A=0,\dots,7\), are the real
+\(16\times16\) matrices of the project, built by the program from the
+author's notebooks, with
+\[\gamma^A\gamma^B+\gamma^B\gamma^A=2\eta^{AB},\]
+\[\eta^{(4+4)}=\mathrm{diag}(+1,+1,+1,+1,-1,-1,-1,-1),\]
+\[\eta^{(7+1)}=\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1).\] The coordinates
+are \(x0,\dots,x7\): \(x1,x2,x3\) ordinary space, \(x4\) ordinary time,
+\(x0\) the hidden coordinate, \(x5,x6,x7\) the extra coordinates.
+
+\emph{The spin group.} The 28 matrices
+\[\Sigma^{AB}=\tfrac14\,[\gamma^A,\gamma^B],\qquad A<B,\] span a Lie
+algebra isomorphic to \(\mathfrak{so}(4,4)\) or \(\mathfrak{so}(7,1)\),
+the Lie algebra of the rotations of the spacetime:
+\([\Sigma^{AB},\gamma^C]=\eta^{BC}\gamma^A-\eta^{AC}\gamma^B\). The
+group generated by the exponentials
+\(\exp(\sum_{A<B}w_{AB}\Sigma^{AB})\) with real numbers \(w_{AB}\) is
+\(\mathrm{Spin}_0(4,4)\) or \(\mathrm{Spin}_0(7,1)\), the identity
+component of the spin group; the subscript 0 says that only elements
+connected to the identity are meant. Acting on the sixteen components of
+a spinor, these matrices form the \textbf{spinor representation}, of
+dimension sixteen.
+
+\emph{Chirality.} \(\omega=\gamma^{0}\gamma^{1}\cdots\gamma^{7}\); the
+chirality matrix is \(\chi=\omega\) on 4+4 and \(\chi=i\omega\) on 7+1;
+the chiral projectors are \(P^L=\tfrac12(1-\chi)\) and
+\(P^R=\tfrac12(1+\chi)\). A spinor with \(P^L\psi=\psi\) is
+\textbf{left-handed}, one with \(P^R\psi=\psi\) \textbf{right-handed}.
+
+\emph{The charge-conjugation matrix.}
+\(C^-=\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}\) on 4+4 and
+\(C^-=\gamma^{4}\omega\) on 7+1; it defines the bilinear form
+\(\psi^TC^-\psi'\) of two spinors.
+
+\emph{Terms of representation theory.} A subspace is \textbf{invariant}
+if every matrix of the representation maps it into itself. A
+representation is \textbf{irreducible} if it has no invariant subspace
+other than zero and the whole space, and \textbf{reducible} otherwise;
+whether it is irreducible can depend on whether real or complex numbers
+are allowed as coefficients. Two representations are \textbf{equivalent}
+if an invertible matrix \(T\) turns the matrices of one into those of
+the other, \(T\,\rho_1(g)=\rho_2(g)\,T\) for every group element \(g\).
+A representation is \textbf{faithful} if only the identity element is
+represented by the unit matrix. The \textbf{commutant} of a
+representation is the set of matrices that commute with all its
+matrices; for the representation of a connected group it is the set of
+matrices that commute with all the generators \(\Sigma^{AB}\).
+
+\hypertarget{the-method}{%
+\section{3. The method}\label{the-method}}
+
+Two theorems reduce the questions to the commutant.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Complete reducibility} (Weyl). The Lie algebras
+  \(\mathfrak{so}(4,4)\) and \(\mathfrak{so}(7,1)\) are semisimple.
+  Every finite-dimensional representation of a semisimple Lie algebra,
+  and of its connected group, is completely reducible: every invariant
+  subspace has an invariant complement. An invariant subspace with an
+  invariant complement is the image of a projector (a matrix \(E\) with
+  \(E^2=E\)) in the commutant.
+\item
+  \emph{Schur's lemma.} Over the complex numbers, a representation that
+  is a direct sum of irreducible parts, the \(k\)-th of which occurs
+  \(n_k\) times, has a commutant of dimension \(\sum_kn_k^2\).
+\end{itemize}
+
+Hence: over the real numbers the representation is irreducible exactly
+when its real commutant contains no projector other than 0 and 1. Over
+the complex numbers, a commutant of dimension 2, together with two
+non-zero invariant subspaces, means exactly two irreducible parts, each
+occurring once, and therefore not equivalent.
+
+The commutant is the solution space of the homogeneous linear system
+\(XM^{AB}=M^{AB}X\) for the 256 entries of a \(16\times16\) matrix
+\(X\), with \(M^{AB}=4\Sigma^{AB}=[\gamma^A,\gamma^B]\), whose entries
+are integers. The program computes the rank of this system modulo a
+large prime. That number is a lower bound for the rank over the rational
+numbers, so that \(256-\text{rank}\) is an upper bound for the dimension
+of the commutant; the program then exhibits that many independent
+solutions, which proves the dimension. Because the coefficients are
+real, the complex commutant has the same dimension as the real one.
+Every other check is an identity between integer (or, on 7+1,
+Gaussian-integer) matrices, and is exact.
+
+\hypertarget{results}{%
+\section{4. Results}\label{results}}
+
+\hypertarget{the-44-spacetime}{%
+\subsection{4.1 The 4+4 spacetime}\label{the-44-spacetime}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The matrices satisfy the Clifford relations with \(\eta^{(4+4)}\)
+  (check \texttt{44-R0}).
+\item
+  \(\omega\) is real, \(\omega^2=+1\), \(\mathrm{Tr}\,\omega=0\); it
+  anticommutes with every \(\gamma^A\) and therefore commutes with every
+  \(\Sigma^{AB}\) (\texttt{44-R1}).
+\item
+  The commutant of the 28 generators is spanned by \(1\) and \(\omega\)
+  and has dimension 2 (\texttt{44-R2}; rank 254 of the linear system).
+\item
+  \(P^L=\tfrac12(1-\omega)\) and \(P^R=\tfrac12(1+\omega)\) are
+  \textbf{real} projectors of rank 8 in the commutant: the real
+  representation splits into two real eight-dimensional invariant
+  subspaces. Since the commutant is spanned by \(P^L\) and \(P^R\), each
+  part is irreducible over the complex numbers (hence also over the real
+  numbers), and the two parts are not equivalent (\texttt{44-R3}).
+\item
+  In the basis of the matrix files the first eight components are
+  left-handed and the last eight right-handed:
+  \(\omega=\mathrm{diag}(-1_8,+1_8)\), and every \(\Sigma^{AB}\) is
+  block-diagonal (\texttt{44-R4}). With the blocks
+  \(\gamma^A=\begin{pmatrix}0&\bar\tau^A\\ \tau^A&0\end{pmatrix}\) of
+  the files, multiplying the block matrices shows that the upper-left
+  (left-handed) block of \(\Sigma^{AB}\) is
+  \(\tfrac14(\bar\tau^A\tau^B-\bar\tau^B\tau^A)\) and the lower-right
+  (right-handed) block is
+  \(\tfrac14(\tau^A\bar\tau^B-\tau^B\bar\tau^A)\).
+\item
+  The 28 generators remain linearly independent on each part: the whole
+  Lie algebra acts faithfully on each part (\texttt{44-R6}).
+\item
+  The form \(\psi^TC^-\psi'\) is invariant, \(C^-\) is symmetric with
+  \((C^-)^2=1\), and it commutes with \(\chi\): it pairs each part with
+  itself, and on each part it has the eigenvalues \(+1\) and \(-1\) four
+  times each. Each part therefore carries an invariant symmetric form of
+  signature (4,4), and the matrices of each part lie in the group
+  \(SO(4,4)\) of that form (\texttt{44-R7}).
+\item
+  \(\omega=(\gamma^{0}\gamma^{1})(\gamma^{2}\gamma^{3})(\gamma^{4}\gamma^{5})(\gamma^{6}\gamma^{7})\),
+  and each factor squares to \(-1\), so that each factor equals
+  \(\exp(\tfrac\pi2\gamma^a\gamma^b)=\exp(\pi\Sigma^{ab})\): \(\omega\)
+  and \(-\omega\) belong to \(\mathrm{Spin}_0(4,4)\). On the left part
+  \(\omega=-1\); hence the element \(-\omega\) is represented on the
+  left part by the unit matrix, and the element \(\omega\) on the right
+  part (\texttt{44-R8}). \textbf{Neither part is a faithful
+  representation of the group}; the sixteen-dimensional sum is. The
+  group of \(8\times8\) matrices produced by the left part is
+  \(\mathrm{Spin}_0(4,4)/\{1,-\omega\}\), that of the right part
+  \(\mathrm{Spin}_0(4,4)/\{1,\omega\}\). Each has the dimension 28 of
+  \(SO(4,4)\) and lies in it (item 7). (That each is all of the identity
+  component of \(SO(4,4)\), and that \(\pm1,\pm\omega\) are all the
+  central elements, are known facts, the ``triality'' of
+  eight-dimensional rotations; they were not computed.)
+\end{enumerate}
+
+\hypertarget{the-71-spacetime}{%
+\subsection{4.2 The 7+1 spacetime}\label{the-71-spacetime}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The Clifford relations hold with \(\eta^{(7+1)}\) (\texttt{71-R0}).
+\item
+  \(\omega\) is real, \(\omega^2=-1\), \(\mathrm{Tr}\,\omega=0\); it
+  commutes with every \(\Sigma^{AB}\) (\texttt{71-R1}).
+\item
+  The commutant is spanned by \(1\) and \(\omega\), of dimension 2
+  (\texttt{71-R2}).
+\item
+  Because \(\omega^2=-1\), the real commutant \(\{a+b\,\omega\}\) is a
+  copy of the complex numbers: \((a+b\omega)^2=a+b\omega\) has only the
+  solutions 0 and 1. It contains no projector other than 0 and 1, and
+  \textbf{the real sixteen-dimensional representation is irreducible
+  over the real numbers} (\texttt{71-R3}).
+\item
+  Over the complex numbers, \(P^L=\tfrac12(1-i\omega)\) and
+  \(P^R=\tfrac12(1+i\omega)\) split it into two eight-dimensional
+  invariant subspaces, which by item 3 are irreducible and not
+  equivalent (\texttt{71-R3}). In the basis of the files the generators
+  are not block-diagonal (\texttt{71-R4}).
+\item
+  Because \(\omega\) and the generators are real, complex conjugation
+  maps the left part onto the right part and commutes with the group:
+  \textbf{the right part is the complex conjugate of the left part}
+  (\texttt{71-R5}).
+\item
+  The generators remain independent on each part (\texttt{71-R6}).
+\item
+  The invariant form \(\psi^TC^-\psi'\) pairs the left part with the
+  right part, because \(C^-\) anticommutes with \(\chi\): the right part
+  is also the \textbf{dual} of the left part (\texttt{71-R7}).
+\item
+  \(\omega\) anticommutes with every \(\gamma^A\), so that it represents
+  the inversion of all eight axes; that inversion reverses the direction
+  of time, and \(\omega\) is therefore not in \(\mathrm{Spin}_0(7,1)\).
+  The only central elements of \(\mathrm{Spin}_0(7,1)\) are \(+1\) and
+  \(-1\), and \(-1\) is represented by \(-1\) on each part: \textbf{each
+  part is faithful} (\texttt{71-R8}; the statement about the central
+  elements is a known fact, not computed).
+\end{enumerate}
+
+\hypertarget{comparison-with-the-four-dimensional-case-lord-1971}{%
+\subsection{4.3 Comparison with the four-dimensional case (Lord
+1971)}\label{comparison-with-the-four-dimensional-case-lord-1971}}
+
+E. A. Lord, \emph{General relativity from gauge invariance}, Proc. Camb.
+Phil. Soc. 69, 423 (1971), works on the four-dimensional spacetime of
+signature (1,3). There the Dirac spinor belongs to the direct sum of two
+two-dimensional representations of \(SL(2,C)\), the double cover of the
+Lorentz group: one in which a spinor transforms with a unimodular
+\(2\times2\) matrix, and one in which it transforms with the inverse of
+the Hermitian conjugate of that matrix. In the Weyl representation the
+\(4\times4\) transformation is block-diagonal with these two blocks; the
+two representations are not equivalent, and each is faithful. The 7+1
+case is the analogue: two complex parts, conjugate to each other, both
+faithful. The 4+4 case differs: the two parts are real and dual to
+themselves, and neither is faithful.
+
+\hypertarget{the-corrected-statements}{%
+\section{5. The corrected statements}\label{the-corrected-statements}}
+
+\begin{quote}
+\textbf{Claim 1, corrected.} The sixteen-dimensional real spinor
+representation of \(\mathrm{Spin}_0(4,4)\) is the direct sum of two real
+eight-dimensional representations of the same group, the left-handed
+(\(\chi=-1\)) and the right-handed (\(\chi=+1\)) half-spin
+representations. Each is irreducible over the real and over the complex
+numbers, the two are not equivalent, and each preserves a symmetric
+bilinear form of signature (4,4). Neither is faithful: the left one
+represents \(-\omega\), the right one \(\omega\), by the unit matrix, so
+that the matrix groups they produce are
+\(\mathrm{Spin}_0(4,4)/\{1,-\omega\}\) and
+\(\mathrm{Spin}_0(4,4)/\{1,\omega\}\). In the basis of the project's
+matrix files the left part is the first eight components and the right
+part the last eight.
+
+\textbf{Claim 2, corrected.} The sixteen-dimensional real spinor
+representation of \(\mathrm{Spin}_0(7,1)\) is irreducible over the real
+numbers. Over the complex numbers it is the direct sum of two complex
+eight-dimensional representations of the same group, the left-handed and
+the right-handed ones, \(P^{L,R}=\tfrac12(1\mp i\omega)\). Each is
+irreducible and faithful, they are not equivalent, and each is the
+complex conjugate and the dual of the other.
+
+\textbf{For both.} ``Spin\_left'' and ``Spin\_right'' name two
+representations of one group, not two groups. A theory in which the
+left-handed and the right-handed parts transform with \emph{independent}
+group elements, for example a gauge theory with two independent gauge
+fields, uses a larger group, the product of the two matrix groups, of
+which the spin group is the diagonal; that is a choice of the model, not
+a consequence of the decomposition.
+\end{quote}
+
+\hypertarget{what-was-computed-how-to-reproduce-it-and-what-was-not-computed}{%
+\section{6. What was computed, how to reproduce it, and what was not
+computed}\label{what-was-computed-how-to-reproduce-it-and-what-was-not-computed}}
+
+The command \texttt{spinreps} of the program of the main project (file
+\texttt{code/spacetimes-rs/src/spinrep\_cmd.rs}) makes the checks
+printed in Sec. 7, all in exact integer arithmetic, and writes
+\texttt{data/spinrep\_checks.txt} and
+\texttt{data/spinrep\_summary.csv}. From the root of the repository:
+
+\begin{verbatim}
+cargo run --release --manifest-path code/spacetimes-rs/Cargo.toml -- spinreps
+\end{verbatim}
+
+The command ends with ``spinreps: N of N checks passed''. This document
+is built with
+
+\begin{verbatim}
+python3 code/scripts/assemble_docs.py docs_src/P12_spin_representations.src.md
+bash code/scripts/build_docs.sh provenance/P12_spin_representations.md
+\end{verbatim}
+
+\emph{Not computed:} that \(\pm1,\pm\omega\) are all the central
+elements of \(\mathrm{Spin}_0(4,4)\) and \(\pm1\) all those of
+\(\mathrm{Spin}_0(7,1)\); that the matrix group of each 4+4 part is all
+of the identity component of \(SO(4,4)\); the components of the spin
+groups other than the identity component. The documentation of the
+program (\texttt{provenance/P8\_code}) does not yet list the command
+\texttt{spinreps}.
+
+\hypertarget{the-complete-output-of-the-checks}{%
+\section{7. The complete output of the
+checks}\label{the-complete-output-of-the-checks}}
+
+\begin{verbatim}
+# PROJECT spacetimes: the spinor representation of Spin(4,4) and Spin(7,1) on sixteen components and its two eight-dimensional parts
+# generated by: spacetimes spinreps (code/spacetimes-rs/src/spinrep_cmd.rs); exact integer arithmetic
+# Sigma^{AB} = (1/4)[gamma^A, gamma^B]; omega = gamma^0...gamma^7; chi = omega (4+4), i omega (7+1); P^L = (1 - chi)/2, P^R = (1 + chi)/2
+[PASS] 44-R0  4+4: the sixteen real matrices gamma^A satisfy gamma^A gamma^B + gamma^B gamma^A = 2 eta^{AB} with eta = diag(+1, +1, +1, +1, -1, -1, -1, -1)
+[PASS] 44-R1  4+4: omega = gamma^0 ... gamma^7 is real, omega^2 = +1, Tr omega = 0; omega anticommutes with every gamma^A and commutes with all 28 generators Sigma^{AB}, so that the eigenspaces of chi are invariant under Spin_0
+[PASS] 44-R2  4+4: the linear system X M^{AB} = M^{AB} X (all 28 generators; 6656 integer equations for the 256 entries of X) has rank 254 modulo a prime, so its solutions form a space of dimension at most 2; 1 and omega are two independent solutions; hence the commutant is exactly the span of 1 and omega, of dimension 2, over the real numbers and (the equations being real) also over the complex numbers
+[PASS] 44-R3  4+4: P^L = (1 - omega)/2 and P^R = (1 + omega)/2 are REAL projectors of rank 8 that commute with every generator: the real 16-dimensional representation is the direct sum of two real 8-dimensional invariant subspaces, left (chi = -1) and right (chi = +1). The commutant is spanned by P^L and P^R (check R2): by Schur's lemma each part is irreducible over the complex numbers, and hence also over the real numbers, and the two parts are not equivalent (no non-zero invariant map from one to the other)
+[PASS] 44-R4  4+4: in the basis of the matrix files the generators are block-diagonal with two 8x8 blocks, and omega = diag(-1_8, +1_8): the first eight components are the left-handed part and the last eight the right-handed part
+[PASS] 44-R6  4+4: the 28 generators remain linearly independent on each part (rank 28 on the left part, 28 on the right part): the whole Lie algebra so(4,4) acts faithfully on each 8-dimensional part; each part is a representation of the one group Spin_0(4,4), not of a subgroup
+[PASS] 44-R7  4+4: C^- is real and symmetric, (C^-)^2 = 1, C^- M^{AB} + (M^{AB})^T C^- = 0 for all generators, and C^- commutes with omega: the form psi^T C^- psi' is invariant and pairs each part with itself; on each part it has the eigenvalues +1 and -1 four times each (2 Tr(P^L C^-) = 0, 2 Tr(P^R C^-) = 0), so that each part carries an invariant symmetric form of signature (4,4), and the image of Spin_0(4,4) in each part lies in SO(4,4)
+[PASS] 44-R8  4+4: omega = (gamma^0 gamma^1)(gamma^2 gamma^3)(gamma^4 gamma^5)(gamma^6 gamma^7), and each factor squares to -1, so that each factor equals exp((pi/2) gamma^a gamma^b) = exp(pi Sigma^{ab}): omega and -omega lie in Spin_0(4,4). omega acts as -1 on the left part and as +1 on the right part. Hence the element -omega acts as the identity on the left part and the element omega as the identity on the right part: NEITHER 8-dimensional part is a faithful representation of Spin_0(4,4); the 16-dimensional sum is
+[PASS] 71-R0  7+1: the sixteen real matrices gamma^A satisfy gamma^A gamma^B + gamma^B gamma^A = 2 eta^{AB} with eta = diag(-1, -1, -1, -1, +1, -1, -1, -1)
+[PASS] 71-R1  7+1: omega = gamma^0 ... gamma^7 is real, omega^2 = -1, Tr omega = 0; omega anticommutes with every gamma^A and commutes with all 28 generators Sigma^{AB}, so that the eigenspaces of chi are invariant under Spin_0
+[PASS] 71-R2  7+1: the linear system X M^{AB} = M^{AB} X (all 28 generators; 7168 integer equations for the 256 entries of X) has rank 254 modulo a prime, so its solutions form a space of dimension at most 2; 1 and omega are two independent solutions; hence the commutant is exactly the span of 1 and omega, of dimension 2, over the real numbers and (the equations being real) also over the complex numbers
+[PASS] 71-R3  7+1: the real commutant is spanned by 1 and omega with omega^2 = -1, an algebra isomorphic to the complex numbers; (a + b omega)^2 = a + b omega has only the solutions 0 and 1, so the real commutant contains no projector other than 0 and 1, and the real 16-dimensional representation is IRREDUCIBLE over the real numbers. Over the complex numbers P^L = (1 - i omega)/2 and P^R = (1 + i omega)/2 split it into two 8-dimensional parts, which by check R2 are irreducible and not equivalent
+[PASS] 71-R4  7+1: in the basis of the matrix files the generators are not block-diagonal: no choice of real components separates the two chiral parts; the left part consists of complex combinations of the real components
+[PASS] 71-R5  7+1: because omega is real, the complex conjugate of 2P^L = 1 - i omega is 2P^R = 1 + i omega, and the generators are real: complex conjugation maps the left part onto the right part and commutes with the action of Spin_0. The right part is the complex conjugate of the left part
+[PASS] 71-R6  7+1: the 28 generators remain linearly independent on each part (rank 28 on the left part, 28 on the right part): the whole Lie algebra so(7,1) acts faithfully on each 8-dimensional part; each part is a representation of the one group Spin_0(7,1), not of a subgroup
+[PASS] 71-R7  7+1: C^- M^{AB} + (M^{AB})^T C^- = 0 for all generators (C^- is symmetric), and C^- anticommutes with omega: the invariant form psi^T C^- psi' pairs the left part with the right part. The right part is therefore also the dual of the left part
+[PASS] 71-R8  7+1: omega = (gamma^0 gamma^1)(gamma^2 gamma^3)(gamma^4 gamma^5)(gamma^6 gamma^7), where the factor with the time axis x4 squares to +1 (a boost) and the other three to -1. omega anticommutes with every gamma^A, so that it maps every vector to its negative; that reverses the direction of time, and therefore omega is not in Spin_0(7,1). The central elements of Spin_0(7,1) are +1 and -1, and -1 acts as -1 on each part: each 8-dimensional part is a faithful representation of Spin_0(7,1)
+17 of 17 checks passed
+\end{verbatim}
+
+\hypertarget{notation}{%
+\section{8. Notation}\label{notation}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.3649}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.6351}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(x0,\dots,x7\) & the coordinates: \(x1,x2,x3\) ordinary space, \(x4\)
+time, \(x0\) hidden, \(x5,x6,x7\) extra \\
+\(\gamma^A\), \(\eta^{AB}\), \(A,B,C\) & the real \(16\times16\) Dirac
+matrices; the flat metric; indices \(0,\dots,7\) \\
+\(\Sigma^{AB}\), \(M^{AB}\) & \(\tfrac14[\gamma^A,\gamma^B]\), the
+generators of the spin group; \(4\Sigma^{AB}\) \\
+\(\mathrm{Spin}_0(4,4)\), \(\mathrm{Spin}_0(7,1)\) & the identity
+components of the spin groups \\
+\(\mathfrak{so}(4,4)\), \(\mathfrak{so}(7,1)\) & their Lie algebras \\
+\(SO(4,4)\), \(SL(2,C)\) & the group of real \(8\times8\) matrices
+preserving a symmetric form of signature (4,4); the group of complex
+\(2\times2\) matrices of determinant 1 \\
+\(w_{AB}\) & real parameters of an element
+\(\exp(\sum_{A<B}w_{AB}\Sigma^{AB})\) \\
+\(\omega\), \(\chi\) & \(\gamma^{0}\cdots\gamma^{7}\); the chirality
+matrix, \(\omega\) (4+4) or \(i\omega\) (7+1) \\
+\(P^L\), \(P^R\) & \(\tfrac12(1\mp\chi)\), the chiral projectors \\
+\(C^-\) & \(\gamma^{0}\gamma^{1}\gamma^{2}\gamma^{3}\) (4+4),
+\(\gamma^{4}\omega\) (7+1) \\
+\(\tau^A\), \(\bar\tau^A\) & the real \(8\times8\) blocks of the 4+4
+Dirac matrices in the files \\
+\(\psi\), \(\psi'\) & spinors with sixteen components \\
+\(X\), \(E\), \(T\) & a matrix of the commutant; a projector; an
+intertwining matrix \\
+\(\rho_1\), \(\rho_2\), \(g\) & two representations; a group element (in
+Sec. 2 only) \\
+\(1_8\) & the \(8\times8\) unit matrix \\
+\end{longtable}
+
+\end{document}
