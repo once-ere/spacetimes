@@ -1,0 +1,256 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (supplements, README, submission files).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes --- documentation and provenance}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={PROJECT spacetimes --- folder Revision\_2: left-handed Dirac spinors},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{PROJECT spacetimes --- folder Revision\_2: left-handed Dirac
+spinors}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{What the folder contains, its state, and how to rebuild it}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 15, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-the-folder-is-for}{%
+\section{1. What the folder is for}\label{what-the-folder-is-for}}
+
+The author instructed, on November 15, 2026, that every instruction,
+calculation, analysis, document, manuscript and provenance of the
+folders \texttt{Revision\_Deflation\_CJT\_and\_Kohn-Sham} and
+\texttt{Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C} be
+repeated in this folder for left-handed Dirac spinors, that is, for a
+field \(\psi\) with \(P^L\psi=\psi\), where \(P^L=\tfrac12(1-\chi)\) and
+\(\chi\) is the chirality matrix
+(\(\chi=\gamma^{0}\gamma^{1}\cdots\gamma^{7}\) on the 4+4 spacetime,
+\(\chi=i\gamma^{0}\gamma^{1}\cdots\gamma^{7}\) on the 7+1 spacetime,
+with the Dirac matrices \(\gamma^A\) of the project).
+
+\hypertarget{the-state-of-the-folder-paused}{%
+\section{2. The state of the folder:
+paused}\label{the-state-of-the-folder-paused}}
+
+Before anything was repeated, it was computed, in exact arithmetic,
+which terms of the model of the two folders a left-handed field keeps.
+On both spacetimes it keeps the kinetic term and half of the invariants
+of the self-interaction, but \textbf{not the mass term, not the coupling
+to the Vorton-Scalar, and not the pair along the hidden axis \(x0\)}
+whose condensate is the singlet superfluid of the two folders (29
+checks, all passing). The instruction can therefore not be carried out
+as a repetition. As the author's Hard Rule 8 requires, the provenance
+\texttt{P0} explains why, says what the result implies for each
+calculation of the two folders, and states the decision that is the
+author's. The work is paused until he decides.
+
+\hypertarget{contents}{%
+\section{3. Contents}\label{contents}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4337}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5663}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+path
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+content
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{provenance/P0\_left\_handed\_pause} (\texttt{.md},
+\texttt{.tex}, \texttt{.pdf}) & the instruction; what ``left-handed''
+means; the calculation and all its results; what they imply for each
+command of the two folders; why the work is paused and the author's
+decision; notation \\
+\texttt{README} (\texttt{.md}, \texttt{.tex}, \texttt{.pdf}) & this
+list \\
+\texttt{code/chirality-rs} & the Rust program \texttt{chirality}: the
+exact tests of every term of the model for both chiralities and both
+spacetimes \\
+\texttt{code/scripts/fill\_docs.py} & writes the Markdown documents from
+their sources in \texttt{docs\_src}, filling in the results from
+\texttt{data} \\
+\texttt{data/chirality\_checks.txt} & every check of the program with
+its statement and verdict \\
+\texttt{data/chirality\_terms.csv} & every term of the model: kept or
+lost, for each spacetime and chirality \\
+\texttt{data/chirality\_bilinears\_by\_rank.csv} & the bilinears of the
+self-interaction that are kept, by rank \\
+\texttt{data/chirality\_pairs\_by\_rank.csv} & the pair operators that
+are kept, by rank \\
+\texttt{docs\_src} & the sources of the two documents \\
+\end{longtable}
+
+\hypertarget{how-to-rebuild-everything}{%
+\section{4. How to rebuild everything}\label{how-to-rebuild-everything}}
+
+From the folder \texttt{Revision\_2} (a Rust toolchain is needed; no
+crate is downloaded; the program uses the library of the main project,
+\texttt{code/spacetimes-rs} at the root of the repository):
+
+\begin{verbatim}
+cargo run --release --manifest-path code/chirality-rs/Cargo.toml
+python3 code/scripts/fill_docs.py
+\end{verbatim}
+
+Then, from the root of the repository (pandoc, XeLaTeX and latexmk are
+needed):
+
+\begin{verbatim}
+bash code/scripts/build_docs.sh Revision_2/provenance/P0_left_handed_pause.md \
+     Revision_2/README.md
+\end{verbatim}
+
+The program ends with ``chirality: N of N checks passed'' and returns
+the exit status 1 if a check fails.
+
+\end{document}
