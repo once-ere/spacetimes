@@ -3,7 +3,7 @@
 title: "S1 — The Vorton-Scalar, its neutral current, and the hidden-axis singlet superfluid of the 16-component Dirac field"
 subtitle: "Supplement to both manuscripts of PROJECT spacetimes: invention of the field, Lagrangians, field equations, pairing interaction, gap equation, order parameter — for the 7+1 and the 4+4 spacetime, with the provenance of every statement"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 12, 2026"
+date: "November 13, 2026"
 ---
 
 # 0. Purpose, and how to read this supplement
@@ -78,6 +78,10 @@ letter also occurs in a notebook with another meaning, the MASTER provenance say
 As in "dirac matrices", the tag is dropped inside a section that deals with one
 spacetime only, and boxed results carry all tags.
 
+The symbols that occur only in the calculation of the vortex lines ($n$, $f_n$,
+$\Theta$, $\Xi$, $\zeta$, $P$, $l$, $w_\pm$, $r_{\rm out}$, $r^{\rm core}_n$) are
+collected, with their names in the files, in a table at the head of Sec. 8.
+
 ## 0.3 How to reproduce the numbers
 
 ```
@@ -87,7 +91,8 @@ cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- channels
 cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- symmetry
 cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- gap
 cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- dimer
-python3 code/scripts/make_figures.py kernels gap dimer
+cargo run  --release --manifest-path code/spacetimes-rs/Cargo.toml -- vortex
+python3 code/scripts/make_figures.py kernels gap dimer vortex
 ```
 
 The programs are described in `provenance/P8_code`; the table in Sec. 10 says which
@@ -709,50 +714,317 @@ this model and is quoted for orientation only.
 
 ---
 
-# 8. Vortices and vortons (what the name refers to)
+# 8. Vortices, line modes and vortons (what the name refers to)
 
-This section collects known results that apply to the Vorton-Scalar; none of them is
-computed in this project, and each is attributed. Two kinds of vortex must be kept
-apart.
+Two kinds of vortex must be kept apart: the vortices of the superfluid, and the
+vortex lines of the Vorton-Scalar itself. Section 8.1 describes the first kind and
+quotes known results. Sections 8.2 to 8.6 treat the second kind and are a calculation
+of this project: the profile of a vortex line of the Vorton-Scalar, the equation of a
+fermion in its field, and the count of the fermion states that are bound to the line
+with zero energy. Sections 8.7 and 8.8 quote known results again, each with its source.
 
-*Vortices of the superfluid.* The order parameter $\Delta^a$ has a phase, the
-Goldstone field of fermion number. A line around which this phase winds by $2\pi$ is
-a quantized vortex of the superfluid, with circulation $2\pi/(2m)$ per unit winding
-(Onsager, Feynman; the pair has mass $2m$). In its core the condensate vanishes and
-the scalar density of the fermions differs from its value in the bulk; by the second
-of Eqs. (1.8) so does the Vorton-Scalar. Every such vortex therefore carries a tube
-of displaced Vorton-Scalar field along with it. This is the sense in which the
-scalar was named in the NCSS project.
+**What the calculation replaces.** Earlier versions of this supplement stated that
+the Dirac equation in the field of a line of winding number $n$ has "$|n|$
+normalizable solutions of zero energy". That number is the result of Jackiw and Rossi
+[7] for one four-component field, and an index theorem protects it [15]. For the
+sixteen-component fields of this project it is too small by the factor four; the
+correct statement is Eq. (8.12). The error is entry E43 of the error log
+(`provenance/P9_error_log`).
 
-*Vortices of the Vorton-Scalar itself.* A complex scalar with the potential of (1.1) has static solutions in
-which the phase winds by $2\pi n$ around a line and $|\Phi_{VS}|$ vanishes on the
-line (Nielsen and Olesen for the gauged case; for a global symmetry such as
-$U(1)_{VS}$ the energy per length grows logarithmically with the distance).
+**A term.** In the literature a solution of the Dirac equation that is bound to a
+vortex line and has zero energy when it does not depend on the coordinate along the
+line is called a *zero mode*. This supplement calls it a **line mode**, because the
+words "zero-mode sector" already denote something else here: the fields that do not
+depend on the four extra coordinates $x0,x5,x6,x7$ (Sec. 2.1).
 
-*Zero modes.* A fermion that obtains its mass from the scalar through a Yukawa
-coupling of the form (1.1) is massless on the line, and the Dirac equation in the
-background of the vortex has $|n|$ normalizable solutions of zero energy that move
-along the line at the speed of light (Jackiw and Rossi). The first of Eqs. (1.8) is
-of exactly this type.
+**Symbols of this section.** Each is used in this section with the meaning given, and
+the name in the second column is the one that the program (`vortex.rs`,
+`vortex_cmd.rs`) and the data files `data/vortex_*.csv` use for it.
 
-*Currents and vortons.* Zero modes make the string a perfect conductor of the
-corresponding charge (Witten's superconducting strings; here the charge is fermion
-number). A closed loop carrying such a current has a conserved number of charge
-carriers and a conserved winding of the current; the resulting angular momentum can
-balance the tension of the string and prevent the loop from collapsing. Such
-stationary loops are **vortons** (Davis and Shellard). Whether they are stable, and
-with what abundance they would be produced, depends on details that have been
-studied for other models and are open here. The NCSS project used a real scalar,
+| Symbol | Name in files | Meaning |
+|:-----------|:-----------|:------------------------------------------------|
+| $n$ | `n` | winding number of a vortex line, an integer different from zero |
+| $r$, $\varphi$ | `r`, `phi` | polar coordinates in the plane $(x1,x2)$ perpendicular to the line: distance from the line, and angle around it |
+| $\rho$ | `rho` | $m_sr$, the distance from the line in units of $1/m_s$ |
+| $f_n(\rho)$ | `f` | profile of the line of winding number $n$, Eq. (8.1) |
+| $r_{\rm out}$ | `r_out` | radius of the cylinder around the line inside which the energy of the line is counted |
+| $r^{\rm core}_n$ | `core_radius` (the number $m_sr^{\rm core}_n$) | core radius of the line, defined by its energy, Eq. (8.5) |
+| $\Theta$ | `Theta` | the matrix $-i\alpha^1\alpha^2$ |
+| $\Xi$, $\zeta$ | `Xi`, `zeta` | the matrix $\Theta\chi$, and its eigenvalue, $\zeta=+1$ or $-1$ |
+| $P$ | `P` | the matrix $i\alpha^1\alpha^2\alpha^3\chi$; it generates the symmetry $U(1)_E$ of Sec. 2.1 |
+| $l$ | `l`; `two_l` for $2l$ | angular momentum of a channel, Eq. (8.7) |
+| $\psi^{(l)}(r)$ | `psi_l` | the sixteen-component radial function of the channel $l$, Eq. (8.7) |
+| $w_+(\rho)$, $w_-(\rho)$ | `w_plus`, `w_minus` | the two radial functions of a channel, Eq. (8.9) |
+| $k_3$ | — | wave number along the line |
+
+The ratio $m/m_s$ of the fermion mass to the mass of the radial mode is always written
+out (name in files: `m_over_ms`).
+
+## 8.1 Vortices of the superfluid (known results)
+
+The order parameter $\Delta^a$ has a phase, the Goldstone field of fermion number. A
+line around which this phase winds by $2\pi$ is a quantized vortex of the superfluid,
+with circulation $2\pi/(2m)$ per unit winding (Onsager, Feynman [13]; the pair has
+mass $2m$). In its core the condensate vanishes and the scalar density of the fermions
+differs from its value in the bulk; by the second of Eqs. (1.8) so does the
+Vorton-Scalar. Every such vortex therefore carries a tube of displaced Vorton-Scalar
+field along with it. This is the sense in which the scalar was named in the NCSS
+project. Nothing in this paragraph was computed in this project.
+
+## 8.2 The vortex line of the Vorton-Scalar: profile and energy
+
+A complex scalar with the potential of (1.1) has static solutions in which the phase
+winds $n$ times around a line and $|\Phi_{VS}|$ vanishes on the line (Nielsen and
+Olesen [6] for the case with a gauge field; the symmetry $U(1)_{VS}$ is global, so
+that there is no gauge field here). Let the line be the axis $x3$. We look for a
+static solution of the second of Eqs. (1.8), without fermions, of the form
+$$\Phi_{VS}=\frac{v_{VS}}{\sqrt2}\,f_n(\rho)\,e^{in\varphi},\qquad\rho=m_sr .\tag{8.1}$$
+The Laplace operator of the plane acts as
+$\nabla^2\big(f\,e^{in\varphi}\big)=\big(f''+f'/r-n^2f/r^2\big)e^{in\varphi}$, and the
+potential term is $2\lambda_{VS}(|\Phi_{VS}|^2-v_{VS}^2/2)\Phi_{VS}
+=\tfrac12m_s^2(f_n^2-1)\Phi_{VS}$, because $m_s^2=2\lambda_{VS}v_{VS}^2$. With primes
+for derivatives with respect to $\rho$ the field equation becomes
+$$f_n''+\frac{f_n'}{\rho}-\frac{n^2}{\rho^2}\,f_n=\frac12\,f_n\,(f_n^2-1),\qquad f_n(0)=0,\quad f_n(\infty)=1 .\tag{8.2}$$
+It contains no parameter, and it depends on $n$ through $n^2$ only: $f_{-n}=f_n$.
+Inserting power series gives the behaviour at the two ends,
+$$f_n\propto\rho^{|n|}\Big[1-\frac{\rho^2}{8(|n|+1)}+\dots\Big]\ (\rho\to0),\qquad
+f_n=1-\frac{n^2}{\rho^2}-\frac{n^2(n^2+8)}{2\rho^4}-\dots\ (\rho\to\infty).\tag{8.3}$$
+The energy of a static field per unit length of the line is the integral of
+$|\nabla\Phi_{VS}|^2+\lambda_{VS}(|\Phi_{VS}|^2-v_{VS}^2/2)^2$ over the plane. Inside a
+cylinder of radius $r_{\rm out}$ it is
+$$\pi\,v_{VS}^2\int_0^{m_sr_{\rm out}}\!\rho\,d\rho\,\Big[f_n'^2+\frac{n^2f_n^2}{\rho^2}+\frac{(f_n^2-1)^2}{4}\Big].\tag{8.4}$$
+Far from the line the second term of the integrand is $n^2/\rho$: the energy grows
+with the logarithm of the radius, as it does for every line defect of a global
+symmetry. For $m_sr_{\rm out}\gg1$ the integral (8.4) is therefore
+$$\pi\,v_{VS}^2\,n^2\,\ln\frac{r_{\rm out}}{r^{\rm core}_n}\tag{8.5}$$
+up to terms that vanish as $1/r_{\rm out}^2$, and this equation *defines* the core
+radius $r^{\rm core}_n$ of the line.
+
+**Numerical solution.** The program solves (8.2) in two independent ways. (i) The
+equation is written with finite differences on a grid from $\rho=0$ to $\rho=40$, where
+the second form of (8.3) supplies the boundary value, and the nonlinear system is
+solved by Newton's method; the solutions on two grids, of spacing 0.01 and 0.005, are
+combined by Richardson extrapolation, and the whole is repeated with the spacings 0.02
+and 0.01 as a test of convergence. (ii) The
+equation is integrated outward from the line with the Runge-Kutta method of fourth
+order, starting at $\rho=0.05$ with the series (8.3), and the unknown coefficient of
+$\rho^{|n|}$ is
+found by bisection: for too large a coefficient the solution exceeds 1, for too small
+a coefficient it turns down. The table gives the coefficient, the relative difference
+between the two methods, three values of the profile, the constant
+$\lim[\,(8.4)/\pi v_{VS}^2-n^2\ln(m_sr_{\rm out})]$ and the core radius.
+
+{{GEN:vx_profile_table}}
+
+Figure 4(a) shows the three profiles.
+
+![(a) Profiles $f_n$ of the vortex line of the Vorton-Scalar for the winding numbers 1, 2 and 3, Eq. (8.2). (b) Radial density $\rho\,(w_+^2+w_-^2)$ of the line mode of the winding number 1 for three ratios of the fermion mass to the mass of the radial mode; the area under each curve is 1. (c) The two radial functions of the line mode with $l=1/2$ of the winding number 2, for $m/m_s=1$. Data: `data/vortex_profile.csv`, `data/vortex_line_modes.csv`.](../figures/fig_vortex.png){width=100%}
+
+**A check against the literature.** For $n=1$ and with the length $\sqrt2/m_s$ as the
+unit, $x=m_sr/\sqrt2$, Eq. (8.2) reads $f''+f'/x-f/x^2=f(f^2-1)$. This is the equation
+of a vortex line in a dilute Bose gas (Ginzburg and Pitaevskii [16], Gross [17],
+Pitaevskii [18]), in which the unit of length is called the healing length. The energy
+of that vortex per unit length is quoted in the literature as proportional to
+$\ln(1.46\,r_{\rm out}/\text{healing length})$ (for example in the review [19]). In the
+same units the present calculation gives
+$\ln({{GEN:vx_gp_ratio}}\,r_{\rm out}/\text{healing length})$, in agreement to the
+digits quoted. In these units the derivative of the profile on the line is
+{{GEN:vx_gp_slope}}.
+
+**Lines with $|n|\ge2$.** By (8.5) the energy grows as $n^2$ times the logarithm.
+Compare a line of winding number $n$, $|n|\ge2$, with $|n|$ lines of winding number
+$\mathrm{sign}(n)$ that lie at distances of the order $d$ from one another, where
+$1/m_s\ll d\ll r_{\rm out}$. Beyond a distance of the order $d$ the two configurations
+have the same field and the same energy, $\pi v_{VS}^2\,n^2\ln(r_{\rm out}/d)$. Inside,
+the single line has the energy $\pi v_{VS}^2\,n^2\ln(d/r^{\rm core}_n)$, the separate
+lines $\pi v_{VS}^2\,|n|\ln(d/r^{\rm core}_1)$ plus a constant that does not depend on
+$d$. Because $n^2>|n|$, the separate lines have the lower energy for large $d$, and
+their energy falls when $d$ grows: lines of like winding repel each other, and a line
+with $|n|\ge2$ can lower its energy by splitting. The cases $|n|=2,3$ are computed
+here to exhibit the rule for the count of the line modes, not because such lines are
+expected to be stable.
+
+## 8.3 A fermion in the field of the line
+
+In the zero-mode sector the fermion field obeys $i\partial_4\psi=\mathsf h\,\psi$ with
+the Hamiltonian matrix of (2.1), in which the mass term is replaced by the Yukawa term
+of (1.1) (in 4+4: of (3.1)). With $P^{R}-P^{L}=\chi$ that term is
+$y_{VS}\,\psi^\dagger\beta(\mathrm{Re}\,\Phi_{VS}+i\chi\,\mathrm{Im}\,\Phi_{VS})\psi$. In the
+field (8.1), and with $m=y_{VS}v_{VS}/\sqrt2$,
+$$\mathsf h=-i\alpha^1\partial_1-i\alpha^2\partial_2-i\alpha^3\partial_3
++m\,f_n(\rho)\,\big[\beta\cos n\varphi+i\beta\chi\,\sin n\varphi\big].\tag{8.6}$$
+Far from the line $f_n=1$, and the fermion has the mass $m$; on the line it has none.
+The five matrices $\alpha^1,\alpha^2,\alpha^3,\beta,i\beta\chi$ are those of Sec. 2.1:
+Hermitian, of square one, anticommuting with one another.
+
+**The symmetry of the problem.** Define the two matrices
+$$\Theta\equiv-i\alpha^1\alpha^2,\qquad\Xi\equiv\Theta\,\chi .$$
+Both are Hermitian and have square one. $\Theta$ is twice the component of the spin
+along the line: $[\Theta,\alpha^1]=2i\alpha^2$ and $[\Theta,\alpha^2]=-2i\alpha^1$, while
+$\Theta$ commutes with $\alpha^3$, $\beta$, $i\beta\chi$ and $\chi$. The chirality matrix
+rotates the two matrices of the mass term into each other,
+$[\chi,\beta]=2i\,(i\beta\chi)$ and $[\chi,i\beta\chi]=-2i\beta$, and commutes with the
+$\alpha^j$. It follows that
+$$e^{-i\varphi(\Theta+n\chi)/2}\,\alpha^1\,e^{+i\varphi(\Theta+n\chi)/2}=\alpha^1\cos\varphi+\alpha^2\sin\varphi,\qquad
+e^{-i\varphi(\Theta+n\chi)/2}\,\beta\,e^{+i\varphi(\Theta+n\chi)/2}=\beta\cos n\varphi+i\beta\chi\sin n\varphi .$$
+A rotation of the plane by the angle $\varphi$, combined with a rotation of the phase
+of the Vorton-Scalar by $n\varphi$, leaves $\mathsf h$ unchanged; the operator
+$-i\partial_\varphi+\tfrac12(\Theta+n\chi)$ commutes with $\mathsf h$. Its eigenfunctions
+are
+$$\psi=e^{ik_3\,x3}\,e^{il\varphi}\,e^{-i\varphi(\Theta+n\chi)/2}\,\psi^{(l)}(r),\tag{8.7}$$
+with the eigenvalue $l$, the **angular momentum** of the channel. Because $\Theta$ and
+$\chi$ commute and have the eigenvalues $\pm1$, the matrix
+$e^{-i\varphi(\Theta+n\chi)/2}$ equals $(-1)^{n+1}$ at $\varphi=2\pi$. The function
+$\psi$ is single-valued if $l$ is an integer for odd $n$, and half an odd integer for
+even $n$.
+
+## 8.4 The radial equations and the count of the line modes
+
+Take $k_3=0$ and ask for solutions of zero energy, $\mathsf h\psi=0$. In polar
+coordinates $\alpha^1\partial_1+\alpha^2\partial_2
+=(\alpha^1\cos\varphi+\alpha^2\sin\varphi)\,\partial_r
++(-\alpha^1\sin\varphi+\alpha^2\cos\varphi)\,r^{-1}\partial_\varphi$. By the two rotation
+formulas of Sec. 8.3 every matrix in $\mathsf h\psi$ is a rotated matrix, and the
+rotation factors out. Multiplying what remains by $i\alpha^1$, and using
+$i\alpha^1\alpha^2=-\Theta$ and $\Theta^2=1$, one obtains the radial equation
+$$\frac{d\psi^{(l)}}{dr}=\Big[\frac{l\,\Theta-\tfrac12\,(1+n\,\Xi)}{r}+m\,f_n\;i\beta\alpha^1\Big]\psi^{(l)} .\tag{8.8}$$
+(The program verifies the identity between $\mathsf h\psi$ and the two sides of (8.8)
+for random spinors, radii, angles and winding numbers $\pm1,\pm2,\pm3$; the largest
+relative difference is {{GEN:vx_dev_reduction}}.)
+
+The matrix $i\beta\alpha^1$ is Hermitian with square one. It anticommutes with
+$\Theta$, and $\Xi$ commutes with both. Equation (8.8) therefore does not mix the two
+eigenspaces $\Xi=\zeta$, $\zeta=\pm1$, each of dimension eight. In one of them take a
+constant spinor $e$ with $(i\beta\alpha^1)\,e=e$; then $\Theta e$ has
+$i\beta\alpha^1=-1$. For
+$$\psi^{(l)}=w_+(\rho)\,e+w_-(\rho)\,\Theta e\tag{8.9}$$
+equation (8.8) becomes a pair of real equations,
+$$\frac{dw_+}{d\rho}=\Big[-\frac{1+n\zeta}{2\rho}+\frac{m}{m_s}f_n\Big]w_++\frac{l}{\rho}\,w_-,\qquad
+\frac{dw_-}{d\rho}=\Big[-\frac{1+n\zeta}{2\rho}-\frac{m}{m_s}f_n\Big]w_-+\frac{l}{\rho}\,w_+ .\tag{8.10}$$
+The spinors $e$ with $\Xi=\zeta$ and $i\beta\alpha^1=+1$ form a space of dimension
+four. Every solution of (8.10) therefore gives four independent solutions of (8.8),
+and all solutions of (8.8) are of this form.
+
+*Counting.* Far from the line, where $f_n\to1$, one solution of (8.10) falls as
+$e^{-(m/m_s)\rho}$ and the other grows; only the first can belong to a bound state.
+Near the line, where $f_n\to0$, the sum and the difference of the two functions
+decouple: $w_++w_-$ behaves as $\rho^{\,l-(1+n\zeta)/2}$ and $w_+-w_-$ as
+$\rho^{\,-l-(1+n\zeta)/2}$. Both exponents are integers. The falling solution contains
+both behaviours (Sec. 8.6 confirms this numerically in every case examined), and it is
+square-integrable at the line only if neither exponent is negative (a negative integer exponent is at most $-1$, and
+$\int\rho^{-2}\rho\,d\rho$ diverges). Both exponents are non-negative exactly if
+$$\zeta=-\mathrm{sign}(n)\qquad\text{and}\qquad|l|\le\frac{|n|-1}{2} .\tag{8.11}$$
+These are $|n|$ values of $l$. Each carries four line modes:
+$$\boxed{\;\text{a vortex line of winding number }n\text{ binds }4\,|n|\text{ line modes of the sixteen-component field, in 7+1 and in 4+4.}\;}\tag{8.12}$$
+This is $|n|$ for each of the four four-component Dirac fields to which the sixteen
+components are equivalent in the zero-mode sector, in agreement with [7] and [15].
+For $l=0$, which occurs for odd $n$, the equations (8.10) decouple and the line mode
+is known in closed form,
+$$w_+=0,\qquad w_-\propto\rho^{(|n|-1)/2}\exp\Big[-\frac{m}{m_s}\int_0^\rho f_n(\rho')\,d\rho'\Big].\tag{8.13}$$
+For $n=\pm1$ the spinors of the line modes are constant: on the space
+$\Xi=-\mathrm{sign}(n)$ the matrix $\Theta+n\chi$ vanishes for $n=\pm1$, and (8.7) is
+$\psi=e^{ik_3x3}\,w_-(\rho)\,\Theta e$.
+
+## 8.5 Motion along the line, and the generator $P$
+
+The matrix $\alpha^3$ anticommutes with the part of (8.6) that acts in the plane, and it
+commutes with $\Theta$, $\chi$, $\Xi$ and $i\beta\alpha^1$. It therefore maps the line
+modes of a channel to line modes of the same channel, and on the four-dimensional
+space of the spinors $e$ it has the eigenvalues $+1,+1,-1,-1$. For a line mode with
+$\alpha^3\psi=\pm\psi$ and the wave number $k_3$ along the line, (8.6) gives
+$$\mathsf h\,\psi=\alpha^3k_3\,\psi=\pm k_3\,\psi .\tag{8.14}$$
+The line modes are massless: they move along the line at the speed of light, half of
+them in the direction $+x3$ and half in the direction $-x3$.
+
+What distinguishes the two halves is an internal quantum number. The product of the
+five matrices,
+$$P\equiv\alpha^1\alpha^2\alpha^3\,\beta\,(i\beta\chi)=i\,\alpha^1\alpha^2\alpha^3\chi,$$
+commutes with each of them; it is Hermitian and traceless and has square one. The
+program verifies that every Hermitian matrix that commutes with the five matrices
+and with all generators of the internal symmetry of Sec. 2.1 is a combination of the
+unit matrix and $P$. Hence $P$ is, up to its sign, the generator of $U(1)_E$ of
+Sec. 2.1, and from here on the sign of that generator is fixed by this formula: the
+doublets of $SU(2)_A$ are the states with $i\alpha^1\alpha^2\alpha^3\chi=+1$. Now
+$\alpha^3=-\Xi P$, an identity between the matrices, and on the line modes
+$\Xi=-\mathrm{sign}(n)$. Therefore
+$$\alpha^3=\mathrm{sign}(n)\,P\qquad\text{on the line modes.}\tag{8.15}$$
+On a line with $n>0$ the $2|n|$ line modes with $P=+1$ move in the direction $+x3$ and
+the $2|n|$ with $P=-1$ in the direction $-x3$; on a line with $n<0$ the directions are
+exchanged. Because the generators of $SU(2)_A$ and $SU(2)_B$ commute with the five
+matrices, and thus with $\Xi$, $i\beta\alpha^1$ and $P$, the two line modes of a channel
+that move in one direction form a doublet of one of the two groups: for $n>0$, a
+doublet of $SU(2)_A$ moves along $+x3$ and a doublet of $SU(2)_B$ along $-x3$.
+
+## 8.6 What the program computes, and the results
+
+The command `spacetimes vortex` (`vortex.rs`, `vortex_cmd.rs`; {{GEN:n_unit_tests_vortex}}
+unit tests) verifies every step of Secs. 8.3 to 8.5 and solves the equations (8.2) and
+(8.10). It makes {{GEN:vx_n_checks}} checks, {{GEN:vx_n_exact}} of them in exact
+arithmetic with the matrices of the two spacetimes; {{GEN:vx_n_failed}} fail.
+
+*The count.* For the winding numbers $\pm1,\pm2,\pm3$, both values of $\zeta$, all
+$l$ with $|l|\le3$ and the three ratios $m/m_s=0.5,1,2$ (240 cases) the falling
+solution of (8.10) is computed by integration from $\rho=40$ inward, and its exponent
+near the line is measured. In every case it is the smaller of the two integers of
+Sec. 8.4, within {{GEN:vx_dev_exponent}}. The channels with a line mode are exactly
+those of (8.11):
+
+{{GEN:vx_counts_table}}
+
+*The radial functions.* For $n=1$ the computed function agrees with the closed form
+(8.13) within {{GEN:vx_dev_closed}}. The next table gives, for the line modes of the
+winding numbers 1 and 2, the mean distance from the line,
+$\int(w_+^2+w_-^2)\,\rho^2d\rho$ for functions normalized to
+$\int(w_+^2+w_-^2)\,\rho\,d\rho=1$, and the rate of decay far from the line. A heavier
+fermion is bound more closely. The line modes of the winding number 2 lie farther
+out, because the profile $f_2$ rises more slowly from the line (as $\rho^2$, not as
+$\rho$), so that the mass term $m f_n$, which confines the mode, is small in a wider
+region.
+
+{{GEN:vx_modes_table}}
+
+Figure 4(b) and (c) show two of them.
+
+*All checks of the command*, as the program states them (the names are those of the
+table at the head of this section; `alpha^1` stands for $\alpha^1$, and so on):
+
+{{GEN:vx_checks_table}}
+
+## 8.7 Currents and vortons (known results)
+
+Massless modes that move along a line defect make the defect a conductor of the
+charge that they carry, without resistance (Witten's superconducting strings [8]);
+here the charge is the fermion number. What Sec. 8.5 adds is that carriers exist for
+both directions along the line, and which carriers they are. A closed loop that
+carries such a current has a conserved number of charge carriers and a conserved
+winding of the current; the resulting angular momentum can balance the tension of
+the line and prevent the loop from collapsing. Such stationary loops are **vortons**
+(Davis and Shellard [9]). Whether they are stable, and with what abundance they would
+be produced, depends on details that have been studied for other models and are open
+here; none of it was computed in this project. The NCSS project used a real scalar,
 which has no such defects, and its documents state that its Vorton-Scalar is
-unrelated to these vortons; for the complex field of the present project the
-relation is literal, but nothing below depends on it.
+unrelated to these vortons; for the complex field of the present project the relation
+is literal, but nothing in Secs. 1 to 7 depends on it.
 
-*The hidden ring.* The author's hypothesis for Stage 2 is that $x0$ curls up into a
-ring. A Vorton-Scalar whose phase winds *around that ring*,
+## 8.8 The hidden ring
+
+The author's hypothesis for Stage 2 is that $x0$ curls up into a ring of radius $R$. A
+Vorton-Scalar whose phase winds *around that ring*,
 $\Phi_{VS}\propto e^{i\,n\,x0/R}$, is a configuration with a constant neutral current
 $J_{VS}^0=n\,v_{VS}^2/R$ along the hidden axis. By (1.7) it acts on the fermions as a
 constant axial potential along $x0$. This is a natural object to study in Stage 2;
 nothing about it is claimed here.
+
+## 8.9 What the calculation of this section does not cover
+
+* The fermions do not act back on the line: the profile (8.2) is that of the
+  Vorton-Scalar alone. The occupied line modes and the filled negative-energy states
+  change it, to an extent that was not computed.
+* The fields do not depend on the extra coordinates. Line modes of fields that depend
+  on $x0$ (the second stage of the program) were not studied.
+* The line is straight and at rest. Curved lines, loops and their dynamics were not
+  studied.
+* Bound states of non-zero energy in the field of the line were not computed.
 
 ---
 
@@ -782,6 +1054,12 @@ nothing about it is claimed here.
    the internal symmetry $SU(2)_A\times SU(2)_B\times U(1)_F\times U(1)_E$, under which
    the order parameter is a 4-vector; in 4+4 this symmetry is hidden (Sec. 2.1;
    machine check).
+8. A vortex line of the Vorton-Scalar with winding number $n$ binds $4|n|$ line modes
+   of the sixteen-component field, in both spacetimes: massless fermions that move
+   along the line at the speed of light, $2|n|$ in each direction, the two directions
+   being distinguished by the sign of $n\,P$ with the generator $P$ of $U(1)_E$.
+   (Sec. 8: exact algebra with the matrices of both spacetimes; numerical solution
+   of the radial equations for $n=\pm1,\pm2,\pm3$; {{GEN:vx_n_checks}} machine checks.)
 
 **Not established:**
 
@@ -795,7 +1073,9 @@ nothing about it is claimed here.
    fields independent of $x5,x6,x7$ is an assumption).
 4. The high-energy completion of the theory (the couplings have negative mass
    dimension in eight dimensions).
-5. Stability and abundance of vortons; anything about Stage 2.
+5. Stability and abundance of vortons; the reaction of the bound fermions on the
+   vortex line; line modes of fields that depend on the extra coordinates (Sec. 8.9);
+   anything about Stage 2.
 6. Whether nature contains this field. The consequences for the Higgs hypothesis are
    examined in Supplement S2, those for cosmology in Supplement S3; Supplement S4
    re-derives the results of Secs. 5 and 6 from the effective action of Cornwall,
@@ -814,7 +1094,11 @@ nothing about it is claimed here.
 | critical coupling, scattering length, binding energy (Fig. 3) | `spacetimes dimer` | `data/dimer.csv` |
 | identity (6.2) | `spacetimes channels`; unit test `kernel::tests::ginzburg_landau_quartic_invariant` | `data/gl_quartic_check.csv` |
 | internal symmetry (Sec. 2.1) | `spacetimes symmetry`; unit tests of `symmetry.rs` | `data/reduced_symmetry.csv` |
-| figures | `python3 code/scripts/make_figures.py kernels gap dimer` | `figures/fig_kernels`, `fig_gap`, `fig_dimer` (.pdf, .png) |
+| profile, energy and core radius of the vortex line (Sec. 8.2, Fig. 4a) | `spacetimes vortex`; unit tests `vortex::tests::the_profile_by_two_methods`, `the_asymptotic_form_solves_the_equation_far_from_the_line` | `data/vortex_profile.csv`, `data/vortex_profile_summary.csv` |
+| algebra of Secs. 8.3 to 8.5; the identity behind Eq. (8.8) | `spacetimes vortex`; unit tests `vortex::tests::the_exact_statements_hold_on_both_spacetimes`, `the_reduction_to_the_radial_equation_is_an_identity` | `data/vortex_checks.csv` |
+| count of the line modes and their directions (Sec. 8.6) | `spacetimes vortex`; unit test `vortex::tests::the_count_of_line_modes_is_four_times_the_winding_number` | `data/vortex_channels.csv`, `data/vortex_counts.csv` |
+| radial functions of the line modes (Sec. 8.6, Fig. 4b, c) | `spacetimes vortex`; unit test `vortex::tests::the_line_mode_with_l_equal_zero_is_the_closed_form` | `data/vortex_line_modes.csv`, `data/vortex_line_mode_summary.csv` |
+| figures | `python3 code/scripts/make_figures.py kernels gap dimer vortex` | `figures/fig_kernels`, `fig_gap`, `fig_dimer`, `fig_vortex` (.pdf, .png) |
 | tables of this document | `python3 code/scripts/make_tables.py` | `provenance/generated/tables.md` |
 
 # References
@@ -833,3 +1117,8 @@ nothing about it is claimed here.
 12. A. J. Leggett, *A theoretical description of the new phases of liquid $^3$He*, Rev. Mod. Phys. **47**, 331 (1975) (unitary states and the weak-coupling Ginzburg–Landau energy of multi-component pair condensates).
 13. L. Onsager, *Statistical hydrodynamics*, Nuovo Cimento Suppl. **6**, 279 (1949); R. P. Feynman, *Application of quantum mechanics to liquid helium*, Prog. Low Temp. Phys. **1**, 17 (1955) (quantized vortices).
 14. P. L. Nash, notebooks `4+4.nb` and `7+1.nb` (see `provenance/P3_notebooks_used`).
+15. E. J. Weinberg, *Index calculations for the fermion-vortex system*, Phys. Rev. D **24**, 2669 (1981).
+16. V. L. Ginzburg and L. P. Pitaevskii, *On the theory of superfluidity*, Zh. Eksp. Teor. Fiz. **34**, 1240 (1958) [Sov. Phys. JETP **7**, 858 (1958)].
+17. E. P. Gross, *Structure of a quantized vortex in boson systems*, Nuovo Cimento **20**, 454 (1961).
+18. L. P. Pitaevskii, *Vortex lines in an imperfect Bose gas*, Zh. Eksp. Teor. Fiz. **40**, 646 (1961) [Sov. Phys. JETP **13**, 451 (1961)].
+19. A. L. Fetter, *Rotating trapped Bose-Einstein condensates*, Rev. Mod. Phys. **81**, 647 (2009).

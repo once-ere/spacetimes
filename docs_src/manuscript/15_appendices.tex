@@ -174,6 +174,17 @@ stated in the program. All checks pass. The log of the program lists every check
 statement \cite{SpacetimesRepo}.
 
 
+\emph{Checks of the vortex line.} The command \texttt{vortex} of the program makes
+{{GEN:vx_n_checks}} checks of the statements of Sec.~\ref{sec:vortons}, with identifiers of the form
+\texttt{44-V1}, \texttt{71-V1} and \texttt{VX-C1}. {{GEN:vx_n_exact}} of them are exact identities
+between the matrices of the two spacetimes: the anticommutation of the five matrices of
+Eq.~(\ref{eq:hline}), the properties of $\Theta$, $\Xi$ and $P$ and the relation $\alpha^3=-\Xi P$,
+and the dimensions of the eigenspaces. The other {{GEN:vx_n_numerical}} are numerical: the centre
+of the commutant; the identity between $\hh\psi$ and the two sides of Eq.~(\ref{eq:radial}) for
+random spinors (largest relative difference {{GEN:vx_dev_reduction}}); the profile of the line by
+two methods; the exponents near the line in 240 channels; the closed form for $l=0$ (reproduced
+within {{GEN:vx_dev_closed}}); and the rate of decay far from the line. All pass.
+
 \emph{An independent second program.} A program can be wrong in the same way twice. A second
 program, in another language and sharing no code with the first, therefore rebuilds the matrices
 from their definitions and repeats the essential checks by different methods: linear independence
@@ -187,7 +198,8 @@ the matrices printed in the notebooks from which the definitions were taken.
 routine with a closed result or with an independent method: the exchange amplitudes with the closed
 forms (\ref{eq:FSFP}), the gap equation with the textbook limits, the gradient of the CJT potential
 with numerical derivatives, the two-particle-irreducible coefficients of Appendix~\ref{app:toy} with
-the exact integral, the equations of state of the dark fluids with the conservation of energy, and
+the exact integral, the profile of the vortex line by two methods and its line mode with the closed
+form, the equations of state of the dark fluids with the conservation of energy, and
 the Einstein-Boltzmann solver with stored reference values.
 
 \emph{Reproduction.} From the root of the repository, the commands
@@ -198,8 +210,8 @@ cargo test --release
 cd ../..
 B=code/spacetimes-rs/target/release/spacetimes
 for c in matrices channels gap dimer \
-    symmetry cjt background spectrum \
-    forecast superfluid halos
+    symmetry vortex cjt background \
+    spectrum forecast superfluid halos
 do $B $c; done
 python3 code/scripts/\
 verify_matrices_independent.py

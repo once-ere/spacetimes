@@ -149,6 +149,83 @@ def s1_dimer_and_gl():
             frag("gl_dev_%d" % int(row["signature"]), sci(float(row["largest_deviation"])))
 
 
+def md_plain(text):
+    """A plain-text statement of a program as Markdown that prints every character as it is."""
+    out = []
+    for ch in text:
+        out.append("\\" + ch if ch in "\\`*_{}[]<>()#+-.!|^~$'\"" else ch)
+    return "".join(out)
+
+
+def s1_vortex():
+    """Vortex line of the Vorton-Scalar and its line modes (command `spacetimes vortex`):
+    data/vortex_checks.csv, vortex_profile_summary.csv, vortex_counts.csv,
+    vortex_line_mode_summary.csv."""
+    checks = read_csv_text("vortex_checks.csv")
+    summ = read_csv("vortex_profile_summary.csv")
+    counts = read_csv("vortex_counts.csv")
+    modes = read_csv("vortex_line_mode_summary.csv")
+    if checks is None or summ is None or counts is None or modes is None:
+        return
+    # ---- the checks
+    frag("vx_n_checks", "%d" % len(checks))
+    frag("vx_n_exact", "%d" % sum(1 for c in checks if c["kind"] == "exact"))
+    frag("vx_n_numerical", "%d" % sum(1 for c in checks if c["kind"] == "numerical"))
+    frag("vx_n_failed", "%d" % sum(1 for c in checks if c["ok"] != "1"))
+    body = [["`%s`" % c["check"], c["kind"], md_plain(c["statement"]), "passed" if c["ok"] == "1" else "FAILED"] for c in checks]
+    frag("vx_checks_table", table(["Check", "Kind", "Statement of the program", "Result"], [":------", ":-------", ":--------------------------------------------------------------", ":------"], body))
+    value = {c["check"]: c["value"] for c in checks}
+    frag("vx_dev_reduction", sci(float(value["VX-R1"])))
+    frag("vx_dev_exponent", value["VX-C1"])
+    frag("vx_dev_closed", sci(float(value["VX-Z1"])))
+    frag("vx_dev_decay", sci(float(value["VX-Z2"])))
+    # ---- the profiles (the finer of the two grids)
+    fine = [r for r in np.atleast_1d(summ) if abs(float(r["grid"]) - 0.01) < 1e-9]
+    assert [int(r["n"]) for r in fine] == [1, 2, 3]
+    body = []
+    for r in fine:
+        n = int(r["n"])
+        agree = abs(float(r["slope_fd"]) / float(r["slope_shooting"]) - 1.0)
+        body.append(["%d" % n, "%.7f" % float(r["slope_fd"]) if n == 1 else ("%.7f" % float(r["slope_fd"]) if n == 2 else "%.8f" % float(r["slope_fd"])),
+                     sci(agree), "%.5f" % float(r["f_1"]), "%.5f" % float(r["f_2"]), "%.5f" % float(r["f_5"]), "%.4f" % float(r["c_energy"]), "%.4f" % float(r["core_radius"])])
+        frag("vx_slope_%d" % n, body[-1][1])
+        frag("vx_core_%d" % n, "%.4f" % float(r["core_radius"]))
+        frag("vx_cenergy_%d" % n, "%.4f" % float(r["c_energy"]))
+    frag("vx_profile_table", table(["$n$", "$\\lim_{\\rho\\to0}f_n/\\rho^{n}$", "two methods differ by", "$f_n(1)$", "$f_n(2)$", "$f_n(5)$", "constant in the energy", "$m_s\\,r^{\\rm core}_n$"],
+                                   ["--:", ":---------", ":--------", ":-------", ":-------", ":-------", "-------:", "------:"], body))
+    frag("vx_slope_agree_max", sci(max(abs(float(r["slope_fd"]) / float(r["slope_shooting"]) - 1.0) for r in fine), 1))
+    r1 = fine[0]
+    frag("vx_gp_slope", "%.5f" % (float(r1["slope_fd"]) * math.sqrt(2.0)))
+    frag("vx_gp_ratio", "%.3f" % (math.sqrt(2.0) / float(r1["core_radius"])))
+    # ---- the counts
+    def half(x):
+        x2 = int(round(2 * x))
+        return "%d" % (x2 // 2) if x2 % 2 == 0 else "%d/2" % x2
+    body = []
+    for r in np.atleast_1d(counts):
+        n = int(r["n"])
+        ls = []
+        x = float(r["l_min"])
+        while x <= float(r["l_max"]) + 1e-9:
+            ls.append(half(x))
+            x += 1.0
+        body.append(["$%+d$" % n, "$%+d$" % int(r["zeta"]), "$" + ",\\ ".join(ls) + "$", "%d" % int(r["line_modes"]), "%d" % int(r["along_plus_x3"]), "%d" % int(r["along_minus_x3"]),
+                     "$+x3$" if int(r["direction_of_P_plus"]) > 0 else "$-x3$"])
+    frag("vx_counts_table", table(["$n$", "$\\zeta$", "$l$ of the channels", "line modes", "along $+x3$", "along $-x3$", "modes with $P=+1$ move along"],
+                                  ["--:", "--:", ":-----------", "--:", "--:", "--:", ":-----"], body))
+    # ---- the line modes
+    body = []
+    for r in np.atleast_1d(modes):
+        body.append(["%d" % int(r["n"]), "$" + ("%d" % (int(r["two_l"]) // 2) if int(r["two_l"]) % 2 == 0 else "%+d/2" % int(r["two_l"])) + "$", "%g" % float(r["m_over_ms"]),
+                     "%.3f" % float(r["mean_radius"]), "%.4f" % float(r["decay_measured"]), "%.4f" % float(r["decay_expected"])])
+    # mean distances: n = 1 (l = 0) and n = 2 (l = 1/2), for the three mass ratios
+    for r in np.atleast_1d(modes):
+        if int(r["two_l"]) in (0, 1):
+            frag("vx_meanr_%d_%s" % (int(r["n"]), {0.5: "a", 1.0: "b", 2.0: "c"}[float(r["m_over_ms"])]), "%.2f" % float(r["mean_radius"]))
+    frag("vx_modes_table", table(["$n$", "$l$", "$m/m_s$", "mean distance from the line, in units of $1/m_s$", "rate of decay between $\\rho=20$ and 30", "the same for $\\rho^{(n-1)/2}e^{-(m/m_s)\\rho}$"],
+                                 ["--:", "--:", "--:", "-------:", "-------:", "-------:"], body))
+
+
 def code_counts():
     """Number of unit tests of the Rust program, counted in its source files (the
     attribute #[test] marks each one); `cargo test --release` reports the same number."""
@@ -161,6 +238,52 @@ def code_counts():
     frag("n_unit_tests", "%d" % sum(counts.values()))
     # the files written for supplement S4
     frag("n_unit_tests_s4", "%d" % sum(v for k, v in counts.items() if k.startswith("cjt_") or k == "symmetry.rs"))
+    # the unit tests of the module vortex.rs
+    frag("n_unit_tests_vortex", "%d" % counts.get("vortex.rs", 0))
+    # the table of the source files (provenance P8, Sec. 4): lines counted here, purposes stated here
+    purposes = [
+        ("gamma.rs", "construction of the two sets of Dirac matrices from their definitions"),
+        ("imat.rs", "exact matrix arithmetic over the integers and the Gaussian integers; exact rank"),
+        ("verify.rs", "the machine checks of the matrices (anticommutators, Lie algebra, group, notebooks, chirality)"),
+        ("dirac.rs", "the Dirac equations of the two fields, checked in momentum space"),
+        ("pairs.rs", "which pairs of two identical particles exist; their quantum numbers"),
+        ("symmetry.rs", "internal symmetries of the zero-mode sector"),
+        ("kernel.rs", "exchange amplitudes of the Vorton-Scalar, channel by channel"),
+        ("gap.rs", "the gap equation of the hidden-axis singlet"),
+        ("dimer.rs", "two particles in the Yukawa potential"),
+        ("vortex.rs", "fermions bound to a vortex line of the Vorton-Scalar: exact algebra, profile of the line, radial equations, count of the line modes"),
+        ("vortex_cmd.rs", "the command `vortex`"),
+        ("cjt_toy.rs", "the method of Cornwall, Jackiw and Tomboulis on a solvable model"),
+        ("cjt_pairing.rs", "effective potential of the paired state; thermodynamics; landscape"),
+        ("cjt_normal.rs", "effective potential for the expectation value of the Vorton-Scalar: matter, temperature"),
+        ("cjt_vacuum.rs", "the gap equation in the vacuum"),
+        ("cjt_cmd.rs", "the command `cjt`"),
+        ("cosmo.rs", "expansion history, the dark radiation of the model, recombination"),
+        ("boltzmann.rs", "linear perturbations: the Einstein-Boltzmann equations"),
+        ("spectra.rs", "angular power spectra and matter power spectrum"),
+        ("bessel.rs", "spherical Bessel functions for the line-of-sight integrals"),
+        ("forecast.rs", "mock likelihood, Fisher matrices, profile fits"),
+        ("fmat.rs", "small real matrices in double precision"),
+        ("quad.rs", "Gauss-Legendre quadrature"),
+        ("export.rs", "writing matrices and check reports"),
+        ("main.rs", "the other commands"),
+        ("lib.rs", "list of the modules"),
+    ]
+    from_ncss = ["complex.rs", "linalg.rs", "roots.rs", "io.rs"]
+    lines = {}
+    for name in sorted(os.listdir(src)):
+        if name.endswith(".rs"):
+            with open(os.path.join(src, name), encoding="utf-8") as f:
+                lines[name] = sum(1 for _ in f)
+    listed = [n for n, _ in purposes] + from_ncss
+    assert sorted(listed) == sorted(lines), "source files without a purpose in make_tables.py, or purposes without a file: %r" % sorted(set(listed) ^ set(lines))
+    body = [["`%s`" % n, "%d" % lines[n], t] for n, t in purposes]
+    body.append([", ".join("`%s`" % n for n in from_ncss), "%d" % sum(lines[n] for n in from_ncss), "complex numbers, small Hermitian eigenproblems, root finding, CSV output (from NCSS)"])
+    frag("source_files_table", table(["File", "Lines", "Purpose"], [":---------------", "-----:", ":---------------------------------------------------------"], body))
+    frag("n_source_files", "%d" % len(lines))
+    total = sum(lines.values())
+    frag("n_source_lines", "%d" % total)
+    frag("n_source_lines_rounded", "{:,}".format(int(round(total, -2))).replace(",", " "))
 
 
 def checks_summary():
@@ -218,6 +341,7 @@ if __name__ == "__main__":
     s1_kernels()
     s1_gap()
     s1_dimer_and_gl()
+    s1_vortex()
     try:
         import make_tables_cosmo
         make_tables_cosmo.run(frag, read_csv, sci, table, DATA)
