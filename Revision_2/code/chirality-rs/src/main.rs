@@ -1,7 +1,7 @@
 //! Program `chirality` of PROJECT spacetimes, folder `Revision_2` (left-handed Dirac spinors).
 //!
 //! WHAT IT ANSWERS.  The author asked that every instruction, calculation, analysis,
-//! document and provenance of the folders `Revision_Deflation_CJT_and_Kohn-Sham` and
+//! document, manuscript and provenance of the folders `Revision_Deflation_CJT_and_Kohn-Sham` and
 //! `Revision_Deflation_CJT_and_Kohn-Sham_definition_C` be repeated for LEFT-HANDED Dirac
 //! spinors (and, in the folder `Revision_2b`, for right-handed ones).  A left-handed field
 //! is a field with P^L psi = psi.  Before anything can be repeated one must know which terms

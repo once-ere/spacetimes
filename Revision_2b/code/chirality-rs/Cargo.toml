@@ -1,0 +1,23 @@
+[package]
+name = "spacetimes-chirality-right"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes, Revision_2b: which terms of the model of the folders Revision_Deflation_CJT_and_Kohn-Sham and Revision_Deflation_CJT_and_Kohn-Sham_definition_C a right-handed 16-component Dirac field keeps, on the 4+4 and the 7+1 spacetime, in exact integer arithmetic"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# The only dependency is the Rust program of the main project (three folders up),
+# which supplies the real 16x16 Dirac matrices built from the author's notebooks and
+# exact matrices over the integers and the Gaussian integers.
+# No crate is downloaded: the program builds offline with a Rust toolchain alone.
+[dependencies]
+spacetimes = { path = "../../../code/spacetimes-rs" }
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true     # exact integer arithmetic must never wrap silently
+
+[[bin]]
+name = "chirality"
+path = "src/main.rs"
