@@ -106,7 +106,7 @@ pub fn run() -> bool {
             }
         }
         let mixes = mixed.iter().all(|&(a, b)| four.iter().any(|&(c, d)| !s.two_sigma(a, b).comm(&s.two_sigma(c, d)).is_zero()));
-        ck.add(&format!("K-1 [{}]", t), "28 = 6 + 6 + 16: the four-dimensional Lorentz generators Sigma^(mu nu) (mu, nu in {1,2,3,4}) commute exactly with the internal generators Sigma^(ab) (a, b in {0,5,6,7}); every mixed generator Sigma^(mu a) fails to commute with some Sigma^(mu nu)", ok && mixes, String::new());
+        ck.add(&format!("K-1 [{}]", t), "28 = 6 + 6 + 16: the four-dimensional Lorentz generators Sigma^(AB) (A, B in {1,2,3,4}) commute exactly with the internal generators Sigma^(ab) (a, b in {0,5,6,7}); every mixed generator Sigma^(Aa) (A in {1,2,3,4}, a in {0,5,6,7}) fails to commute with some Sigma^(BC) (B, C in {1,2,3,4})", ok && mixes, String::new());
         // ---------------------------------------------------------------- K-2
         let int_gens: Vec<IMat> = internal.iter().map(|&(a, b)| s.two_sigma(a, b)).collect();
         let four_gens: Vec<IMat> = four.iter().map(|&(a, b)| s.two_sigma(a, b)).collect();
@@ -157,7 +157,7 @@ pub fn run() -> bool {
         };
         ck.add(
             &format!("K-3 [{}]", t),
-            "C^16 = C^4 x C^4: the 16 monomials of gamma^1..gamma^4 and the 16 monomials of omega4 gamma^a (a in INT) are each linearly independent and the two sets commute; omega4 = gamma^1 gamma^2 gamma^3 gamma^4 and omega_int = gamma^0 gamma^5 gamma^6 gamma^7 commute; sum of the squares of the six 2 Sigma^(ab) as stated",
+            "the 16 components are the tensor product of a 4-component world factor and a 4-component fibre factor: the 16 monomials of gamma^1..gamma^4 and the 16 monomials of omega4 gamma^a (a in INT) are each linearly independent and the two sets commute; omega4 = gamma^1 gamma^2 gamma^3 gamma^4 and omega_int = gamma^0 gamma^5 gamma^6 gamma^7 commute; sum of the squares of the six 2 Sigma^(ab) as stated",
             ok && r4 == 16 && ri == 16 && cas_ok,
             format!("ranks {} and {}; omega4^2 = {}, omega_int^2 = {}", r4, ri, if w42 == id { "+1" } else if w42 == id.neg() { "-1" } else { "?" }, if wi2 == id { "+1" } else if wi2 == id.neg() { "-1" } else { "?" }),
         );
@@ -232,7 +232,7 @@ pub fn run() -> bool {
         );
         ck.add(
             &format!("K-4 [{}]", t),
-            "one-field pairs psi^T X psi (X = C(+-) gamma^K, all 512): C+ and C- are symmetric (no one-field internal-singlet spin-zero pair); the nonzero, four-dimensionally scalar, s-wave, isotropic channels are EXACTLY C- gamma^a (internal vector, 4) and C+ gamma^a gamma^b (internal 2-form, 6); the spin-one channels C- gamma^j (j = 1,2,3) are s-wave but anisotropic",
+            "one-field pairs psi^T C(+-) gamma^K psi (all 512 matrices): C+ and C- are symmetric (no one-field internal-singlet spin-zero pair); the nonzero, four-dimensionally scalar, s-wave, isotropic channels are EXACTLY C- gamma^a (internal vector, 4) and C+ gamma^a gamma^b (internal 2-form, 6); the spin-one channels C- gamma^j (j = 1,2,3) are s-wave but anisotropic",
             ok_sym && n_scalar_iso == 10 && got == want_s && s1_ok,
             format!("{} channels: {}", n_scalar_iso, scalar_iso.join(" ")),
         );
@@ -260,7 +260,7 @@ pub fn run() -> bool {
             .count();
         ck.add(
             &format!("K-10 [{}]", t),
-            "the stabiliser of an internal vector n with eta(n, n) = -1 (n = e0 on 7+1, n = e5 on 4+4) in the Lorentz algebra has dimension 21 (so(6,1) on 7+1, so(4,3) on 4+4) and contains 12 generators that mix M(3,1) with the internal directions orthogonal to n",
+            "the stabiliser of an internal unit vector of square eta = -1 (along the axis x0 on 7+1, along x5 on 4+4) in the Lorentz algebra has dimension 21 (so(6,1) on 7+1, so(4,3) on 4+4) and contains 12 generators that mix M(3,1) with the internal directions orthogonal to the vector",
             stab.len() == 21 && mixing == 12,
             format!("dim = {}, mixing = {}", stab.len(), mixing),
         );
@@ -268,8 +268,8 @@ pub fn run() -> bool {
     write_csv_str(
         "ng_pair_channels.csv",
         &[
-            ("content", "all one-field pair matrices X = C(+-) gamma^K (K a subset of {0..7}) on both spacetimes".to_string()),
-            ("columns", "n4 = number of indices of K in ST = {1,2,3,4}; nt = 1 if the time index 4 is in K; nint = number of indices in INT = {0,5,6,7}; nonzero = 1 if psi^T X psi != 0 (X antisymmetric); s_wave and isotropic as defined in sig.rs".to_string()),
+            ("content", "all one-field pair matrices C(+-) gamma^K (K a subset of {0..7}) on both spacetimes".to_string()),
+            ("columns", "C = sign of C(+-); n4 = number of indices of K in the world {1,2,3,4}; nt = 1 if the time index 4 is in K; nint = number of indices of K in the fibre {0,5,6,7}; nonzero = 1 if psi^T C(+-) gamma^K psi != 0 (antisymmetric matrix); s_wave and isotropic as defined in sig.rs".to_string()),
         ],
         &["signature", "C", "K", "n4", "nt", "nint", "symmetry", "nonzero", "s_wave", "isotropic", "representation"],
         &pair_rows,
@@ -310,7 +310,7 @@ pub fn run() -> bool {
     };
     ck.add(
         "K-5a",
-        "G2 locking on 7+1: inside so(3) (rotations of x1, x2, x3 = Im H) + so(4) (rotations of x0, x5, x6, x7 = H l) the stabiliser of the associative 3-form phi(x,y,z) = <x, yz> has dimension 6 (= so(4)_H in G2), and so has the stabiliser of its 6 mixed components phi(e_mu, e_a, e_b) alone",
+        "G2 locking on 7+1: inside so(3) (rotations of x1, x2, x3 = Im H) + so(4) (rotations of x0, x5, x6, x7 = H l) the stabiliser of the associative 3-form phi(x,y,z) = <x, yz> has dimension 6 (= so(4)_H in G2), and so has the stabiliser of its 6 mixed components (one unit from e1, e2, e3 and two from e4, ..., e7) alone",
         st_full.len() == 6 && st_mixed.len() == 6 && nphi_mixed == 6,
         format!("dims {} and {}; nonzero mixed components = {}", st_full.len(), st_mixed.len(), nphi_mixed),
     );
@@ -441,7 +441,7 @@ pub fn run() -> bool {
     }
     ck.add(
         "K-9",
-        "Kaluza-Klein modes on a torus K of radius R ((mR)^2 = 1, |n_a| <= Nmax): 7+1 has m_eff^2 = m^2 + |n|^2/R^2 > 0 (no tachyon); 4+4 has m_eff^2 = m^2 + (n0^2 - n5^2 - n6^2 - n7^2)/R^2 and the number of tachyonic modes grows like Nmax^4 (a fixed fraction of all modes)",
+        "Kaluza-Klein modes on a torus of radius R ((mR)^2 = 1, |n_a| <= Nmax): 7+1 has m_eff^2 = m^2 + |n|^2/R^2 > 0 (no tachyon); 4+4 has m_eff^2 = m^2 + (n0^2 - n5^2 - n6^2 - n7^2)/R^2 and the number of tachyonic modes grows like Nmax^4 (a fixed fraction of all modes)",
         ok && last_frac > 0.5,
         format!("4+4 tachyon fraction at Nmax = 12: {:.4}", last_frac),
     );

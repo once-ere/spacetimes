@@ -1,0 +1,730 @@
+---
+title: "The calculations of Revision_NoGo: formulas, code, commands, and the output of every check"
+subtitle: "Provenance document `P2` of PROJECT spacetimes, Revision_NoGo"
+author: "Prepared for Patrick Lee Nash, Ph.D."
+date: "November 16, 2026"
+---
+
+<!-- This file is generated from docs_src/P2_calculations_code_and_checks.src.md by code/scripts/assemble_docs.py; edit the source. -->
+
+# 1. What this document is
+
+This document states, for every computation of the folder `Revision_NoGo`, the formulas that the program
+evaluates, how it evaluates them, the command that runs it, and the complete output of every check, as
+the program printed it in the last run. Section 2 says how to reproduce everything; Section 3 describes
+the program; Sections 4 to 9 go through its six commands; Section 10 reproduces the checks of the
+documents; Section 11 lists the data files and figures; Section 12 gives the checksums; Section 13 is the
+complete table of the symbols, which defines every symbol used here.
+
+# 2. How to reproduce everything
+
+From the folder `Revision_NoGo` of the repository:
+
+```
+cargo run --release --manifest-path code/nogo-rs/Cargo.toml -- all   # data files and checks of the program
+python3 code/scripts/make_figures.py                                 # the thirteen figures
+bash code/scripts/check_all.sh                                       # everything, with one verdict
+```
+
+`check_all.sh` runs, in this order: the program (all six commands); the figures; twice in a row the
+registry of the symbols, the fragments of the documents, the checks of the symbols, the assembly of the
+Markdown documents, the manuscript (.tex, .pdf, .md) and the provenance documents (.tex, .pdf), and the
+check of self-containedness (the second pass makes every document contain the reports of the first);
+then it searches the documents for the names of software tools that do not belong in a manuscript and
+prints one verdict, "ALL PASS" or the list of failures. Requirements: a Rust toolchain for the edition
+2021; Python 3 with NumPy and Matplotlib; TeX Live with REVTeX 4.2, XeLaTeX and latexmk, the DejaVu fonts
+and the Latin Modern Math font; pandoc. The program refuses to run unless it is started in the folder
+`Revision_NoGo` (it writes its data files into `data/` of the current folder).
+
+# 3. The program `nogo`
+
+`code/nogo-rs` (12 source files, 3667 lines) is a Rust program with the
+commands `octonions`, `triality`, `kaluza`, `superalgebra`, `pairs4d`, `renorm` and `all`. Its modules:
+
+| module | content |
+|---|---|
+| `main.rs` | the commands; the guard on the working folder |
+| `checks.rs` | a check is a numbered statement, PASS or FAIL; each command writes its report `data/ng_<command>_checks.txt`, whose second line reads "N of M checks passed" |
+| `exact.rs` | exact rational arithmetic (numerator and denominator are 128-bit integers, always reduced; overflow stops the program); reduced row echelon form, rank, null space, solution of linear systems, characteristic polynomials |
+| `oct.rs` | the Cayley-Dickson algebras and command `octonions` |
+| `triality.rs` | local triality, the commutants and command `triality` |
+| `sig.rs` | the Dirac matrices of the project on both spacetimes, their products $\gamma^K_{\rm NG}$, the Hamiltonian matrices, the pair channels |
+| `kaluza.rs` | the combined manifolds and command `kaluza` |
+| `superalg.rs` | the superalgebras and command `superalgebra` |
+| `pairs4d.rs` | the superfluid and command `pairs4d` |
+| `renorm.rs` | power counting, the Kaluza-Klein bubble and command `renorm` |
+| `integrate.rs` | adaptive Gauss-Legendre quadrature (rules of 20 and 40 points compared; an interval is halved until they agree to the absolute tolerance $10^{-15}$ or the relative tolerance $10^{-14}$), break points that cluster geometrically around the Fermi momentum, fixed composite rules |
+| `rsym.rs` | real symmetric matrices and the cyclic Jacobi method |
+
+The library crate `code/spacetimes-rs` of the repository supplies the real $16\times16$ Dirac matrices
+$\gamma^A_{1671}$ and $\gamma^A_{1644}$ of the project, complex numbers and complex Hermitian
+diagonalization, integer matrices with their rank modulo the prime $2^{61}-1$ (a rank modulo a prime
+can only be smaller than the rank over the rationals, so a rank found equal to its largest possible
+value is exact, and a dimension of a solution space computed from it is an upper bound), Gauss-Legendre
+nodes, Brent's root finder, a parallel map and the writer of data files.
+
+# 4. Command `octonions`
+
+**The algebras.** Quaternions $\mathbb H_{\rm NG}$: $\mathsf x=\sum_{p=0}^3\mathsf x^p\mathsf e_p$ with
+$\mathsf e_1^2=\mathsf e_2^2=\mathsf e_3^2=-1$, $\mathsf e_1\mathsf e_2=-\mathsf e_2\mathsf e_1=\mathsf e_3$ and cyclic
+permutations. The Cayley-Dickson double: pairs of quaternions with
+$$(\mathsf x_1,\mathsf x_2)(\mathsf y_1,\mathsf y_2)=(\mathsf x_1\mathsf y_1+\varsigma_{\rm NG}\,\bar{\mathsf y}_2\mathsf x_2,\ \mathsf y_2\mathsf x_1+\mathsf x_2\bar{\mathsf y}_1),\qquad \overline{(\mathsf x_1,\mathsf x_2)}=(\bar{\mathsf x}_1,-\mathsf x_2),$$
+with $\varsigma_{\rm NG}=-1$ (octonions $\mathbb O_{\rm NG}$) or $+1$ (split octonions $\mathbb O'_{\rm NG}$), basis
+$\mathsf e_0,\dots,\mathsf e_3=(\mathsf e_p,0)$, $\mathsf e_4=(0,1)$, $\mathsf e_5=(0,\mathsf e_1)$, $\mathsf e_6=(0,\mathsf e_2)$,
+$\mathsf e_7=(0,\mathsf e_3)$. The program builds the integer table of the 64 products of basis elements
+(data file `ng_octonion_tables.csv`) and computes everything else from it in exact arithmetic.
+
+**What it computes.** The norm $N_{\rm NG}(\mathsf x)=\mathsf x\bar{\mathsf x}$ and its polarization
+$\langle\mathsf x,\mathsf y\rangle_{\rm NG}$; the composition law $N_{\rm NG}(\mathsf x\mathsf y)=N_{\rm NG}(\mathsf x)N_{\rm NG}(\mathsf y)$
+in its fully polarized form
+$\langle\mathsf x\mathsf y,\mathsf z\mathsf w\rangle_{\rm NG}+\langle\mathsf x\mathsf w,\mathsf z\mathsf y\rangle_{\rm NG}=2\langle\mathsf x,\mathsf z\rangle_{\rm NG}\langle\mathsf y,\mathsf w\rangle_{\rm NG}$
+on all $8^4$ quadruples of basis elements (both sides are multilinear, so this proves it); the associator
+$(\mathsf x,\mathsf y,\mathsf z)=(\mathsf x\mathsf y)\mathsf z-\mathsf x(\mathsf y\mathsf z)$ on all 512 basis triples (total
+antisymmetry, the number of nonzero values); the Moufang identities on 2000 random triples with integer
+coefficients; the Jacobiator
+$$\mathrm{Jac}_{\rm NG}(\mathsf x,\mathsf y,\mathsf z)=[[\mathsf x,\mathsf y],\mathsf z]+[[\mathsf y,\mathsf z],\mathsf x]+[[\mathsf z,\mathsf x],\mathsf y],$$
+which in any algebra is the sum of the six associators of $\mathsf x,\mathsf y,\mathsf z$ in all orders, each with
+the sign of the permutation, hence $6(\mathsf x,\mathsf y,\mathsf z)$ in an alternative algebra; the rank of the
+Jacobiators of the imaginary units (7: they span all imaginary elements, so every linear map $\rho_{\rm NG}$
+that turns commutators into commutators of operators vanishes, because the Jacobiator of operators is
+zero); the Malcev identity
+$\mathrm{Jac}_{\rm NG}(\mathsf x,\mathsf y,[\mathsf x,\mathsf z])=[\mathrm{Jac}_{\rm NG}(\mathsf x,\mathsf y,\mathsf z),\mathsf x]$.
+
+The **derivations** $\mathsf D$ (with $\mathsf D(\mathsf x\mathsf y)=(\mathsf D\mathsf x)\mathsf y+\mathsf x(\mathsf D\mathsf y)$) are the
+null space of the 512 linear equations that this condition imposes on the 64 entries of an $8\times8$
+matrix, written for all pairs of basis elements; the program finds dimension 14 and computes the Killing
+form $B_{\rm NG}(\mathsf D_1,\mathsf D_2)=\mathrm{tr}(\mathrm{ad}\,\mathsf D_1\,\mathrm{ad}\,\mathsf D_2)$ exactly, then the
+signs of the eigenvalues of its $14\times14$ matrix. The **left multiplications** $L_{\rm NG}(\mathsf e_1),\dots,
+L_{\rm NG}(\mathsf e_7)$ generate under commutators a Lie algebra whose dimension the program determines by
+adding commutators until the rank stops growing (28).
+
+**The octonionic Dirac matrices.** On $7+1$, with the index map $u_{\rm NG}(4)=0$, $u_{\rm NG}(j)=j$,
+$u_{\rm NG}(0)=4$, $u_{\rm NG}(t)=t$,
+$$\Gamma^4_{71\rm NG}=\begin{pmatrix}0&\mathsf 1_8\\ \mathsf 1_8&0\end{pmatrix},\qquad
+\Gamma^A_{71\rm NG}=\begin{pmatrix}-L_{\rm NG}(\mathsf e_{u_{\rm NG}(A)})&0\\0&L_{\rm NG}(\mathsf e_{u_{\rm NG}(A)})\end{pmatrix}\ (A\ne4);$$
+on $4+4$,
+$\Gamma^A_{44\rm NG}=\begin{pmatrix}0&L_{\rm NG}(\bar{\mathsf e}_A)\\L_{\rm NG}(\mathsf e_A)&0\end{pmatrix}$.
+The program checks the Clifford relations
+$\Gamma^A_{71\rm NG}\Gamma^C_{71\rm NG}+\Gamma^C_{71\rm NG}\Gamma^A_{71\rm NG}=2\eta^{AC}_{1671}\mathsf 1_{16}$ and the same with
+$\Gamma^A_{44\rm NG}$ and $\eta^{AC}_{1644}$, that $\eta_{1671}(\mathsf x,\mathsf x)$ is the
+real part of the square of the octonion $\mathsf x=x4\,\mathsf e_0+x1\,\mathsf e_1+x2\,\mathsf e_2+x3\,\mathsf e_3+
+x0\,\mathsf e_4+x5\,\mathsf e_5+x6\,\mathsf e_6+x7\,\mathsf e_7$, and that $\eta_{1644}(\mathsf x,\mathsf x)$ is the split norm
+of $\mathsf x=\sum_AxA\,\mathsf e_A$. **The intertwiners**
+$$\mathcal I_{71\rm NG}=\sum_K\Gamma^K_{71\rm NG}\,\mathsf U_{\rm NG}\,(\gamma^K_{1671})^{-1}$$
+(sum over the 256 index sets; $\mathsf U_{\rm NG}$ the first matrix with one entry 1 and all others 0 that
+gives a nonzero sum), and $\mathcal I_{44\rm NG}$ in the same way, satisfy
+$\mathcal I_{71\rm NG}\gamma^A_{1671}=\Gamma^A_{71\rm NG}\mathcal I_{71\rm NG}$ because multiplying the sum by
+$\Gamma^A_{71\rm NG}$ on the left and by $(\gamma^A_{1671})^{-1}$ on the right only permutes its terms (up to
+signs that are the same on both sides). The program computes them in integers (data files
+`ng_intertwiner_1671.csv`, `ng_intertwiner_1644.csv`) and their exact ranks.
+
+```
+Revision_NoGo, command `octonions`: octonions O_NG and split octonions Os_NG (Cayley-Dickson), exact checks
+32 of 32 checks passed
+
+[PASS] O-1 [O_NG]  e0 = 1 is a two-sided unit
+[PASS] O-2 [O_NG]  x conj(x) = N(x) e0 with N = diag(norm); signature as stated  -- N = [1, 1, 1, 1, 1, 1, 1, 1]
+[PASS] O-3 [O_NG]  composition N(xy) = N(x) N(y), verified in its fully polarised form (linear in each of four arguments) on all 4096 quadruples of basis elements
+[PASS] O-4 [O_NG]  alternative: the associator (x,y,z) = (xy)z - x(yz) is totally antisymmetric (all 512 basis triples)
+[PASS] O-5 [O_NG]  NOT associative: the associator is nonzero on exactly 168 of the 512 ordered basis triples (the ordered triples of distinct imaginary units that do not lie in one quaternionic subalgebra); for example (e1, e2, e4) = (e1 e2) e4 - e1 (e2 e4) = e7 - (-e7) = 2 e7  -- nonzero triples = 168, (e1,e2,e4) = [0, 0, 0, 0, 0, 0, 0, 2]
+[PASS] O-6 [O_NG]  Moufang identities z(x(zy)) = ((zx)z)y, x(z(yz)) = ((xz)y)z, (zx)(yz) = (z(xy))z on 2000 random integer triples (exact)
+[PASS] O-7 [O_NG]  Jacobiator of the commutator Jac(x,y,z) = [[x,y],z] + [[y,z],x] + [[z,x],y] equals 6 (x,y,z) (all 512 basis triples)
+[PASS] O-8 [O_NG]  the Jacobiators of all triples of imaginary basis units span all of Im (rank 7): every linear representation of the commutator algebra (Im, [,]) by matrices vanishes identically  -- rank = 7
+[PASS] O-9 [O_NG]  Malcev identity Jac(x, y, [x,z]) = [Jac(x,y,z), x] on 2000 random imaginary integer triples (exact)
+[PASS] O-10 [O_NG]  derivation algebra Der = { delta : delta(xy) = (delta x)y + x(delta y) } has dimension 14 (exact null space), delta e0 = 0, delta in so(N)  -- dim = 14
+[PASS] O-11 [O_NG]  Killing form of Der(O) is negative definite: Der(O) = compact g2 (the Lie algebra of G2 = Aut(O))  -- signature (+0, -14)
+[PASS] O-12 [O_NG]  the left multiplications L_e1..L_e7 generate (under commutators) a Lie algebra of dimension 28 inside so(N): all of so(8) for O, all of so(4,4) for Os  -- dim = 28
+[PASS] O-13 [O_NG]  Z2 grading of the algebra = H + H l: H H in H, H (H l) in H l, (H l) H in H l, (H l)(H l) in H; H = span(e0..e3) is a quaternion subalgebra
+[PASS] O-1 [Os_NG]  e0 = 1 is a two-sided unit
+[PASS] O-2 [Os_NG]  x conj(x) = N(x) e0 with N = diag(norm); signature as stated  -- N = [1, 1, 1, 1, -1, -1, -1, -1]
+[PASS] O-3 [Os_NG]  composition N(xy) = N(x) N(y), verified in its fully polarised form (linear in each of four arguments) on all 4096 quadruples of basis elements
+[PASS] O-4 [Os_NG]  alternative: the associator (x,y,z) = (xy)z - x(yz) is totally antisymmetric (all 512 basis triples)
+[PASS] O-5 [Os_NG]  NOT associative: the associator is nonzero on exactly 168 of the 512 ordered basis triples (the ordered triples of distinct imaginary units that do not lie in one quaternionic subalgebra); for example (e1, e2, e4) = (e1 e2) e4 - e1 (e2 e4) = e7 - (-e7) = 2 e7  -- nonzero triples = 168, (e1,e2,e4) = [0, 0, 0, 0, 0, 0, 0, 2]
+[PASS] O-6 [Os_NG]  Moufang identities z(x(zy)) = ((zx)z)y, x(z(yz)) = ((xz)y)z, (zx)(yz) = (z(xy))z on 2000 random integer triples (exact)
+[PASS] O-7 [Os_NG]  Jacobiator of the commutator Jac(x,y,z) = [[x,y],z] + [[y,z],x] + [[z,x],y] equals 6 (x,y,z) (all 512 basis triples)
+[PASS] O-8 [Os_NG]  the Jacobiators of all triples of imaginary basis units span all of Im (rank 7): every linear representation of the commutator algebra (Im, [,]) by matrices vanishes identically  -- rank = 7
+[PASS] O-9 [Os_NG]  Malcev identity Jac(x, y, [x,z]) = [Jac(x,y,z), x] on 2000 random imaginary integer triples (exact)
+[PASS] O-10 [Os_NG]  derivation algebra Der = { delta : delta(xy) = (delta x)y + x(delta y) } has dimension 14 (exact null space), delta e0 = 0, delta in so(N)  -- dim = 14
+[PASS] O-11 [Os_NG]  Killing form of Der(Os) has signature (8+, 6-): Der(Os) = split real form of g2  -- signature (+8, -6)
+[PASS] O-12 [Os_NG]  the left multiplications L_e1..L_e7 generate (under commutators) a Lie algebra of dimension 28 inside so(N): all of so(8) for O, all of so(4,4) for Os  -- dim = 28
+[PASS] O-13 [Os_NG]  Z2 grading of the algebra = H + H l: H H in H, H (H l) in H l, (H l) H in H l, (H l)(H l) in H; H = span(e0..e3) is a quaternion subalgebra
+[PASS] O-14a  the octonionic matrices Gamma71oct[A] (time <-> 1, axes 1,2,3 <-> i,j,k, axes 0,5,6,7 <-> l,il,jl,kl) satisfy the Clifford relations of eta1671
+[PASS] O-14b  the octonionic matrices Gamma44oct[A] = [[0, L_conj(e_A)], [L_e_A, 0]] satisfy the Clifford relations of eta1644 (the split norm N of Os)
+[PASS] O-14c  the 7+1 metric is the real part of the octonion square: eta1671(x,x) = Re(x^2), x = x4 + x1 i + x2 j + x3 k + x0 l + x5 il + x6 jl + x7 kl
+[PASS] O-14d  the 4+4 metric is the split-octonion norm: eta1644(x,x) = N(x) = x conj(x), x = sum_A xA e_A
+[PASS] O-15 [1671]  an invertible intertwiner I1671 with I gamma1671[A] = Gamma_oct[A] I exists (Clifford-group average); the 256 monomials of gamma1671 are independent, so the representation is irreducible and I is unique up to a factor  -- rank I = 16, rank of the 256 monomials = 256
+[PASS] O-15 [1644]  an invertible intertwiner I1644 with I gamma1644[A] = Gamma_oct[A] I exists (Clifford-group average); the 256 monomials of gamma1644 are independent, so the representation is irreducible and I is unique up to a factor  -- rank I = 16, rank of the 256 monomials = 256
+```
+
+# 5. Command `triality`
+
+**Local triality.** For each of the 28 basis elements $\mathsf m_1$ of $\mathfrak{so}(N_{\rm NG})$ (the
+antisymmetric matrices with respect to the norm), the condition
+$$\mathsf m_1(\mathsf x\mathsf y)=(\mathsf m_2\mathsf x)\mathsf y+\mathsf x(\mathsf m_3\mathsf y)$$
+for all 64 pairs of basis elements $\mathsf x$, $\mathsf y$ is a system of 512 linear equations for the 56
+coordinates of $\mathsf m_2$ and $\mathsf m_3$ in $\mathfrak{so}(N_{\rm NG})$. The program solves it exactly and
+records the dimension of the solution space (0 for a unique solution). The maps
+$T^{(2)}_{\rm NG}:\mathsf m_1\mapsto\mathsf m_2$ and $T^{(3)}_{\rm NG}:\mathsf m_1\mapsto\mathsf m_3$ are then $28\times28$ rational
+matrices; the program checks that they preserve all 378 commutators of basis elements and that their
+squares are the identity. **Outer.** The characteristic polynomial $\det(\lambda_{\rm NG}\mathsf 1_8-\mathsf m)$
+is computed exactly for $\mathsf m=\mathsf r_{01}$ (the rotation in the plane of $\mathsf e_0$, $\mathsf e_1$) and for
+its images; a conjugation by an invertible matrix does not change it, so an automorphism that changes it
+is not a conjugation. **Order three.** With the conjugation $\kappa_{\rm NG}$ and
+$\mathrm{Ad}\,\kappa_{\rm NG}:\mathsf m\mapsto\kappa_{\rm NG}\mathsf m\kappa_{\rm NG}$, the program checks
+$\vartheta_{\rm NG}^3=1\ne\vartheta_{\rm NG}$ for $\vartheta_{\rm NG}=T^{(2)}_{\rm NG}\circ\mathrm{Ad}\,\kappa_{\rm NG}$, and
+$\mathrm{Ad}\,\kappa_{\rm NG}\,\vartheta_{\rm NG}\,\mathrm{Ad}\,\kappa_{\rm NG}=\vartheta_{\rm NG}^{-1}$.
+
+**No triality for $7+1$.** (a) For the boost that exchanges $\mathsf e_0$ and $\mathsf e_1$ (an element of
+$\mathfrak{so}(7,1)$ for the metric $\eta_{1671}(\mathsf x,\mathsf x)=\mathrm{Re}(\mathsf x^2)$), the program writes the
+local-triality system with $\mathsf m_2$, $\mathsf m_3$ arbitrary real $8\times8$ matrices (128 unknowns) and finds
+it inconsistent by exact elimination. (b) The commutant of a set of matrices $\{\mathsf G\}$ is the solution
+space of the linear equations $\mathsf X\mathsf G-\mathsf G\mathsf X=0$ for the entries of $\mathsf X$; its dimension is
+bounded from above by the rank modulo a prime and from below by exhibiting commuting matrices. For the
+28 generators $\Sigma^{AB}_{1671}$ on the 16 real spinor components the commutant is spanned by
+$\mathsf 1_{16}$ and $\omega_{1671}$, with $\omega_{1671}^2=-\mathsf 1_{16}$ (complex type); for the
+$\Sigma^{AB}_{1644}$ by $\mathsf 1_{16}$ and $\omega_{1644}$ with $\omega_{1644}^2=+\mathsf 1_{16}$ (two real
+half-spinor representations); in the vector representation of $\mathfrak{so}(7,1)$ the commutant is the real
+numbers (real type). An automorphism preserves the type, so it cannot map the vectors onto
+half-spinors.
+
+```
+Revision_NoGo, command `triality`: local triality of O_NG (so(8)) and Os_NG (so(4,4)); its absence for so(7,1)
+15 of 15 checks passed
+
+[PASS] T-1 [O_NG]  local triality (LT): for each of the 28 basis elements m1 of so(N) the linear system for (m2, m3) in so(N) x so(N) is consistent with a unique solution (exact)
+[PASS] T-2 [O_NG]  T2: m1 -> m2 and T3: m1 -> m3 are invertible Lie-algebra automorphisms of so(N): they preserve the commutators of all 378 pairs of basis elements
+[PASS] T-3 [O_NG]  T2 and T3 are involutions: T2^2 = T3^2 = 1
+[PASS] T-4 [O_NG]  T2 and T3 are OUTER: the simple rotation r01 has det(lambda - r01) = lambda^6 (lambda^2 + 1) (vector representation), its images have det(lambda - T2 r01) = det(lambda - T3 r01) = (lambda^2 + 1/4)^4 (half-spinor spectrum); conjugation by O(N) preserves characteristic polynomials  -- r01: 1 lambda^8 + 1 lambda^6; T2 r01: 1 lambda^8 + 1 lambda^6 + 3/8 lambda^4 + 1/16 lambda^2 + 1/256; T3 r01: 1 lambda^8 + 1 lambda^6 + 3/8 lambda^4 + 1/16 lambda^2 + 1/256
+[PASS] T-5 [O_NG]  vartheta = T2 o Ad(kappa) (kappa: x -> conj(x)) has order 3 (vartheta^3 = 1, vartheta != 1), Ad(kappa)^2 = 1 and Ad(kappa) vartheta Ad(kappa) = vartheta^-1: the automorphisms generate Sym(3) (the permutations of three objects), the outer automorphism group of so(8, C)
+[PASS] T-1 [Os_NG]  local triality (LT): for each of the 28 basis elements m1 of so(N) the linear system for (m2, m3) in so(N) x so(N) is consistent with a unique solution (exact)
+[PASS] T-2 [Os_NG]  T2: m1 -> m2 and T3: m1 -> m3 are invertible Lie-algebra automorphisms of so(N): they preserve the commutators of all 378 pairs of basis elements
+[PASS] T-3 [Os_NG]  T2 and T3 are involutions: T2^2 = T3^2 = 1
+[PASS] T-4 [Os_NG]  T2 and T3 are OUTER: the simple rotation r01 has det(lambda - r01) = lambda^6 (lambda^2 + 1) (vector representation), its images have det(lambda - T2 r01) = det(lambda - T3 r01) = (lambda^2 + 1/4)^4 (half-spinor spectrum); conjugation by O(N) preserves characteristic polynomials  -- r01: 1 lambda^8 + 1 lambda^6; T2 r01: 1 lambda^8 + 1 lambda^6 + 3/8 lambda^4 + 1/16 lambda^2 + 1/256; T3 r01: 1 lambda^8 + 1 lambda^6 + 3/8 lambda^4 + 1/16 lambda^2 + 1/256
+[PASS] T-5 [Os_NG]  vartheta = T2 o Ad(kappa) (kappa: x -> conj(x)) has order 3 (vartheta^3 = 1, vartheta != 1), Ad(kappa)^2 = 1 and Ad(kappa) vartheta Ad(kappa) = vartheta^-1: the automorphisms generate Sym(3) (the permutations of three objects), the outer automorphism group of so(8, C)
+[PASS] T-6 [Os_NG]  the triality images have exactly the spectrum of the half-spinor generators of the project: Sigma^01_1644 restricted to S+ and to S- has det(lambda - Sigma^01_1644) = (lambda^2 + 1/4)^4  -- S+: 1 lambda^8 + 1 lambda^6 + 3/8 lambda^4 + 1/16 lambda^2 + 1/256; S-: 1 lambda^8 + 1 lambda^6 + 3/8 lambda^4 + 1/16 lambda^2 + 1/256
+[PASS] T-7a  so(7,1) has no local triality: for the boost m1 with m1 e0 = e1, m1 e1 = e0 and m1 = 0 on e2..e7 (an element of so(7,1) for the metric Re(x^2)) the system (LT) is INCONSISTENT even with m2, m3 arbitrary real 8-by-8 matrices (exact elimination)
+[PASS] T-7b  commutant of so(7,1) on the real 16-dimensional spinor space is span{1, omega1671} with omega1671^2 = -1: the spinor representation is of COMPLEX type (no real 8-dimensional half-spinors; S+ and S- are complex conjugates)  -- dim <= 2 (rank modulo a large prime), 1 and omega1671 commute
+[PASS] T-7c  commutant of so(4,4) on the real 16-dimensional spinor space is span{1, omega1644} with omega1644^2 = +1: the space is S+ + S- with two REAL 8-dimensional half-spinor representations (Majorana-Weyl)  -- dim <= 2 (rank modulo a large prime)
+[PASS] T-7d  commutant of so(7,1) in its vector representation is the real numbers (dimension 1): the vector representation is of REAL type; an automorphism preserves the type, so no automorphism of so(7,1) maps the vector representation onto a half-spinor representation -- there is no triality for 7+1  -- dim <= 1 (rank modulo a large prime)
+```
+
+# 6. Command `kaluza`
+
+**The split.** World $\{1,2,3,4\}$, fibre $\{0,5,6,7\}$. The generators
+$\Sigma^{AB}_{\rm NG}=\tfrac14[\gamma^A_{\rm NG},\gamma^B_{\rm NG}]$ are integer matrices up to the factor
+$\tfrac12$ ($2\Sigma^{AB}_{\rm NG}=\gamma^A_{\rm NG}\gamma^B_{\rm NG}$ for $A\ne B$); the program checks the commutation
+of the six world generators with the six fibre generators, the non-commutation of each mixed generator
+with some world generator, the squares of the fibre generators, and the signature of the trace form
+(the symmetric matrix of the traces of the products of two generators, whose eigenvalues it computes).
+**The tensor product.** The 16 products of $\gamma^1_{\rm NG},\dots,\gamma^4_{\rm NG}$ and the 16 products of the
+matrices $\omega^{\rm 4D}_{\rm NG}\gamma^a_{\rm NG}$ are each linearly independent (exact rank 16), and every
+matrix of one set commutes with every matrix of the other: the 16 components are the product of a world
+factor and a fibre factor, of 4 components each. **The Dirac conjugation** matrix $\mathsf A_{\rm NG}$ must
+satisfy $\mathsf A_{\rm NG}\Sigma^{AB}_{\rm NG}\mathsf A_{\rm NG}^{-1}=-(\Sigma^{AB}_{\rm NG})^\dagger$ for all 28 generators;
+the program checks $\gamma^4_{1671}$ on $7+1$ and $\gamma^4_{1644}\gamma^5_{1644}\gamma^6_{1644}\gamma^7_{1644}$ on
+$4+4$, and the density matrix $\mathsf A_{\rm NG}\gamma^4_{\rm NG}$.
+
+**The pairs of one field.** For each of the 512 matrices $C^\pm_{\rm NG}\gamma^K_{\rm NG}$ the program records:
+antisymmetric (else the pair $\psi^T_{\rm NG}C^\pm_{\rm NG}\gamma^K_{\rm NG}\psi_{\rm NG}$ of anticommuting components
+vanishes); a scalar of the Lorentz group of the world ($\gamma^K_{\rm NG}$ commutes with the six world
+generators, because $C^\pm_{\rm NG}\Sigma^{AB}_{\rm NG}(C^\pm_{\rm NG})^{-1}=-(\Sigma^{AB}_{\rm NG})^T$); s-wave (the
+matrix commutes with $\gamma^4_{\rm NG}$ on $7+1$, anticommutes on $4+4$: the pair has a component on the
+states of positive energy at rest); isotropic (s-wave, and the matrix anticommutes with
+$\alpha^1_{\rm NG}$, $\alpha^2_{\rm NG}$, $\alpha^3_{\rm NG}$). Data file `ng_pair_channels.csv`.
+
+**$\mathrm G_2$ locking ($7+1$).** The associative three-form
+$\phi_{\rm NG}(\mathsf x,\mathsf y,\mathsf z)=\langle\mathsf x,\mathsf y\mathsf z\rangle_{\rm NG}$ on the imaginary units; a generator
+$\mathsf m$ of rotations leaves it unchanged when
+$\phi_{\rm NG}(\mathsf m\mathsf x,\mathsf y,\mathsf z)+\phi_{\rm NG}(\mathsf x,\mathsf m\mathsf y,\mathsf z)+\phi_{\rm NG}(\mathsf x,\mathsf y,\mathsf m\mathsf z)=0$ for all
+triples of units, a linear condition on the 9 coordinates of $\mathsf m$ in the rotations of
+$\mathsf e_1,\mathsf e_2,\mathsf e_3$ (3) plus those of $\mathsf e_4,\dots,\mathsf e_7$ (6). The program solves it for the full
+form and for its part $\phi^{\rm mix}_{\rm NG}$ with one unit from $\mathsf e_1,\mathsf e_2,\mathsf e_3$ and two from
+$\mathsf e_4,\dots,\mathsf e_7$, and computes the rank of the projection onto the space rotations and the
+solutions without a fibre part or without a space part. **The exchange on $4+4$**: the matrix
+$L_{\rm NG}(\mathsf e_4)$, its action on the units, and its conjugation of the world algebra.
+**O'Raifeartaigh**: the momentum with time component 5 and $x1$ component 3, rotated in the plane of
+$x1$, $x0$ by the angle with cosine $\tfrac35$, in exact rationals. **Kaluza-Klein modes**: the counts of
+integer vectors $(n^0_{\rm NG},n^5_{\rm NG},n^6_{\rm NG},n^7_{\rm NG})$ with
+$\lvert n^a_{\rm NG}\rvert\le n^{\max}_{\rm NG}$ and $(m^{\rm eff}_{\rm NG}R_{\rm NG})^2<0$, where
+$(m^{\rm eff}_{\rm NG})^2=m_{1644}^2+[(n^0_{\rm NG})^2-\sum_t(n^t_{\rm NG})^2]/R_{\rm NG}^2$ on $4+4$ and
+$m_{1671}^2+\sum_a(n^a_{\rm NG})^2/R_{\rm NG}^2$ on $7+1$, with $(m_{\rm NG}R_{\rm NG})^2=1$.
+**The stabilizer of a fibre vector** in the Lorentz algebra: the generators that annihilate the unit
+vector of $x0$ ($7+1$) or of $x5$ ($4+4$), computed in the vector representation.
+
+```
+Revision_NoGo, command `kaluza`: the combined manifolds M(3,1) x K(4) (7+1) and M(3,1) x K(1,3) (4+4)
+20 of 20 checks passed
+
+[PASS] K-1 [7+1]  28 = 6 + 6 + 16: the four-dimensional Lorentz generators Sigma^(AB) (A, B in {1,2,3,4}) commute exactly with the internal generators Sigma^(ab) (a, b in {0,5,6,7}); every mixed generator Sigma^(Aa) (A in {1,2,3,4}, a in {0,5,6,7}) fails to commute with some Sigma^(BC) (B, C in {1,2,3,4})
+[PASS] K-2 [7+1]  internal algebra COMPACT so(4): trace form negative definite, (2 Sigma^(ab))^2 = -1 for all six internal pairs (imaginary spectrum, unitary on finite multiplets)  -- internal (+0, -6), squares [-1, -1, -1, -1, -1, -1]; four-dimensional Lorentz (+3, -3)
+[PASS] K-3 [7+1]  the 16 components are the tensor product of a 4-component world factor and a 4-component fibre factor: the 16 monomials of gamma^1..gamma^4 and the 16 monomials of omega4 gamma^a (a in INT) are each linearly independent and the two sets commute; omega4 = gamma^1 gamma^2 gamma^3 gamma^4 and omega_int = gamma^0 gamma^5 gamma^6 gamma^7 commute; sum of the squares of the six 2 Sigma^(ab) as stated  -- ranks 16 and 16; omega4^2 = -1, omega_int^2 = +1
+[PASS] K-4a [7+1]  the two families coincide: every C+ gamma^K equals +-C- gamma^K' for exactly one K' (C- = +-C+ omega and omega gamma^K = +-gamma^(complement of K)); the rows with n4 = 4 of the table repeat the rows with n4 = 0 of the other family
+[PASS] K-4 [7+1]  one-field pairs psi^T C(+-) gamma^K psi (all 512 matrices): C+ and C- are symmetric (no one-field internal-singlet spin-zero pair); the nonzero, four-dimensionally scalar, s-wave, isotropic channels are EXACTLY C- gamma^a (internal vector, 4) and C+ gamma^a gamma^b (internal 2-form, 6); the spin-one channels C- gamma^j (j = 1,2,3) are s-wave but anisotropic  -- 10 channels: C+g[0, 5] C+g[0, 6] C+g[5, 6] C+g[0, 7] C+g[5, 7] C+g[6, 7] C-g[0] C-g[5] C-g[6] C-g[7]
+[PASS] K-10 [7+1]  the stabiliser of an internal unit vector of square eta = -1 (along the axis x0 on 7+1, along x5 on 4+4) in the Lorentz algebra has dimension 21 (so(6,1) on 7+1, so(4,3) on 4+4) and contains 12 generators that mix M(3,1) with the internal directions orthogonal to the vector  -- dim = 21, mixing = 12
+[PASS] K-1 [4+4]  28 = 6 + 6 + 16: the four-dimensional Lorentz generators Sigma^(AB) (A, B in {1,2,3,4}) commute exactly with the internal generators Sigma^(ab) (a, b in {0,5,6,7}); every mixed generator Sigma^(Aa) (A in {1,2,3,4}, a in {0,5,6,7}) fails to commute with some Sigma^(BC) (B, C in {1,2,3,4})
+[PASS] K-2 [4+4]  internal algebra NON-COMPACT so(1,3): trace form of signature (3+, 3-); (2 Sigma^(0a))^2 = +1 for a = 5, 6, 7 (REAL spectrum +-1/2: no positive-definite invariant inner product on the 16 components)  -- internal (+3, -3), squares [1, 1, 1, -1, -1, -1]; four-dimensional Lorentz (+3, -3)
+[PASS] K-3 [4+4]  the 16 components are the tensor product of a 4-component world factor and a 4-component fibre factor: the 16 monomials of gamma^1..gamma^4 and the 16 monomials of omega4 gamma^a (a in INT) are each linearly independent and the two sets commute; omega4 = gamma^1 gamma^2 gamma^3 gamma^4 and omega_int = gamma^0 gamma^5 gamma^6 gamma^7 commute; sum of the squares of the six 2 Sigma^(ab) as stated  -- ranks 16 and 16; omega4^2 = -1, omega_int^2 = -1
+[PASS] K-4a [4+4]  the two families coincide: every C+ gamma^K equals +-C- gamma^K' for exactly one K' (C- = +-C+ omega and omega gamma^K = +-gamma^(complement of K)); the rows with n4 = 4 of the table repeat the rows with n4 = 0 of the other family
+[PASS] K-4 [4+4]  one-field pairs psi^T C(+-) gamma^K psi (all 512 matrices): C+ and C- are symmetric (no one-field internal-singlet spin-zero pair); the nonzero, four-dimensionally scalar, s-wave, isotropic channels are EXACTLY C- gamma^a (internal vector, 4) and C+ gamma^a gamma^b (internal 2-form, 6); the spin-one channels C- gamma^j (j = 1,2,3) are s-wave but anisotropic  -- 10 channels: C+g[0, 5] C+g[0, 6] C+g[5, 6] C+g[0, 7] C+g[5, 7] C+g[6, 7] C-g[0] C-g[5] C-g[6] C-g[7]
+[PASS] K-10 [4+4]  the stabiliser of an internal unit vector of square eta = -1 (along the axis x0 on 7+1, along x5 on 4+4) in the Lorentz algebra has dimension 21 (so(6,1) on 7+1, so(4,3) on 4+4) and contains 12 generators that mix M(3,1) with the internal directions orthogonal to the vector  -- dim = 21, mixing = 12
+[PASS] K-5a  G2 locking on 7+1: inside so(3) (rotations of x1, x2, x3 = Im H) + so(4) (rotations of x0, x5, x6, x7 = H l) the stabiliser of the associative 3-form phi(x,y,z) = <x, yz> has dimension 6 (= so(4)_H in G2), and so has the stabiliser of its 6 mixed components (one unit from e1, e2, e3 and two from e4, ..., e7) alone  -- dims 6 and 6; nonzero mixed components = 6
+[PASS] K-5b  the locking is complete: the stabiliser projects ONTO the space rotations so(3) (rank 3), contains NO pure space rotation (dimension 0), and its kernel is an internal su(2) (dimension 3): every space rotation must be accompanied by an internal rotation  -- projection rank 3, pure space 0, pure internal 3
+[PASS] K-5c  the same subalgebra from Der(O) = g2: the elements of Der(O) that preserve Im H and H l form a 6-dimensional algebra (so(4)_H = su(2) + su(2))  -- dim = 6
+[PASS] K-6  4+4 exchange: left multiplication by l (N(l) = -1) is an anti-isometry (L^T N L = -N, L^2 = 1) that maps M(3,1) = span(i, j, k, l) onto K(1,3) = span(1, il, jl, kl) and back; Ad(L_l) maps so(3,1) of M onto so(1,3) of K and back (no such exchange exists on 7+1, where the two algebras are not isomorphic: check K-2)
+[PASS] K-7 [7+1]  7+1: the Dirac conjugation matrix A8 = gamma^4 satisfies A8 Sigma^(AB) A8^-1 = -Sigma^(AB)T for all 28 generators, and the 8D-covariant charge density psi^dagger A8 gamma^4 psi = psi^dagger psi is POSITIVE
+[PASS] K-7 [4+4]  4+4: the Dirac conjugation matrix A8 = gamma^4 gamma^5 gamma^6 gamma^7 satisfies A8 Sigma^(AB) A8^-1 = -Sigma^(AB)T for all 28 generators, and the 8D-covariant density matrix A8 gamma^4 = gamma^5 gamma^6 gamma^7 is traceless with square 1: the density is INDEFINITE (negative-norm states)
+[PASS] K-8  O'Raifeartaigh: a rotation of the 8D Lorentz group in the (x1, x0) plane (cos = 3/5, sin = 4/5) leaves the 8D mass^2 = 16 unchanged but changes the four-dimensional mass^2 from 16 to 544/25 (exact): a finite-dimensional Lie group containing the 4D Poincare group splits 4D masses because the 4D mass spectrum of one 8D particle is continuous (the theorem's isolated-eigenvalue hypothesis fails)  -- m4^2: 16 -> 544/25, m8^2 after = 16
+[PASS] K-9  Kaluza-Klein modes on a torus of radius R ((mR)^2 = 1, |n_a| <= Nmax): 7+1 has m_eff^2 = m^2 + |n|^2/R^2 > 0 (no tachyon); 4+4 has m_eff^2 = m^2 + (n0^2 - n5^2 - n6^2 - n7^2)/R^2 and the number of tachyonic modes grows like Nmax^4 (a fixed fraction of all modes)  -- 4+4 tachyon fraction at Nmax = 12: 0.8660
+```
+
+# 7. Command `superalgebra`
+
+The generators: $\mathcal J^{AB}_{\rm NG}$ ($A<B$, 28), $\mathcal P^{\rm NG}_C$ (8), $\mathcal Q^{\rm NG}_l$ (16),
+$\mathcal R_{\rm NG}$ (1), and on $7+1$ the 128 tensorial charges $\mathcal Z^K_{\rm NG}$. The brackets:
+$$[\mathcal J^{AB}_{\rm NG},\mathcal J^{CD}_{\rm NG}]=\eta^{\rm NG}_{BC}\mathcal J^{AD}_{\rm NG}-\eta^{\rm NG}_{AC}\mathcal J^{BD}_{\rm NG}-\eta^{\rm NG}_{BD}\mathcal J^{AC}_{\rm NG}+\eta^{\rm NG}_{AD}\mathcal J^{BC}_{\rm NG},$$
+$$[\mathcal J^{AB}_{\rm NG},\mathcal P^{\rm NG}_C]=\eta^{\rm NG}_{BC}\mathcal P^{\rm NG}_A-\eta^{\rm NG}_{AC}\mathcal P^{\rm NG}_B,\qquad
+[\mathcal J^{AB}_{\rm NG},\mathcal Q^{\rm NG}_l]=\sum_{l'}(\Sigma^{\rm NG}_{AB})_{l'l}\mathcal Q^{\rm NG}_{l'},$$
+$$\{\mathcal Q^{\rm NG}_l,\mathcal Q^{\rm NG}_{l'}\}=\sum_C(\mathsf Y^C_{\rm NG})_{ll'}\mathcal P^{\rm NG}_C\ \Big(+\sum_K(C^+_{1671}\gamma^K_{1671})_{ll'}\mathcal Z^K_{\rm NG}\Big),$$
+$$[\mathcal R_{\rm NG},\mathcal Q^{\rm NG}_l]=\sum_{l'}(\omega_{\rm NG})_{l'l}\mathcal Q^{\rm NG}_{l'},$$
+with $\Sigma^{\rm NG}_{AB}=\eta^{\rm NG}_{AA}\eta^{\rm NG}_{BB}\Sigma^{AB}_{\rm NG}$, $\mathsf Y^C_{\rm NG}=2C^+_{\rm NG}\gamma^C_{\rm NG}$, and
+the sum over $K$ running over the index sets with 0, 4, 5 or 8 elements (the term in parentheses is present
+only in the extended algebra of $7+1$, the one with the tensorial charges). The brackets of the
+$\mathcal Z^K_{\rm NG}$ with $\mathcal J^{AB}_{\rm NG}$ and $\mathcal R_{\rm NG}$ are not chosen but computed. Applying
+$[\mathcal J^{AB}_{\rm NG},\cdot\,]$ to $\{\mathcal Q^{\rm NG}_l,\mathcal Q^{\rm NG}_{l'}\}$ and using the graded Jacobi identity
+shows that the symmetric $16\times16$ matrix of the coefficients of each generator on the right side of the
+anticommutator changes by $(\Sigma^{\rm NG}_{AB})^T(\cdot)+(\cdot)\,\Sigma^{\rm NG}_{AB}$; the program expands the
+changed matrix again in the basis of the matrices $\mathsf Y^C_{\rm NG}$ and $C^+_{1671}\gamma^K_{1671}$, whose
+coefficients are the traces of its products with the transposed basis matrices divided by 16 (the basis
+is orthogonal for this trace form), and reads off $[\mathcal J^{AB}_{\rm NG},\mathcal Z^K_{\rm NG}]$; the same with
+$\omega_{\rm NG}$ in place of $\Sigma^{\rm NG}_{AB}$ for $\mathcal R_{\rm NG}$. The program builds the complete table of structure constants and checks
+$$(-1)^{\lvert\mathsf x\rvert\lvert\mathsf z\rvert}[\mathsf x,[\mathsf y,\mathsf z]\}+(-1)^{\lvert\mathsf y\rvert\lvert\mathsf x\rvert}[\mathsf y,[\mathsf z,\mathsf x]\}+(-1)^{\lvert\mathsf z\rvert\lvert\mathsf y\rvert}[\mathsf z,[\mathsf x,\mathsf y]\}=0$$
+on every ordered triple of generators ($\lvert\mathsf x\rvert=1$ for a supercharge, 0 otherwise). The structure
+constants are integers, halves and quarters ("dyadic"), which binary floating-point numbers represent
+exactly, with all their sums and products here; the check confirms that they are dyadic. **Positivity.**
+The eigenvalues of $\sum_C\mathsf Y^C_{\rm NG}\mathcal P^{\rm NG}_C$ for the momenta with $\mathcal P^{\rm NG}_4=1$,
+$\mathcal P^{\rm NG}_1=v_{\rm NG}$ (data file `ng_superalgebra_positivity.csv`), and the algebraic facts behind
+them: on $7+1$, $C^+_{1671}\gamma^4_{1671}=\mathsf 1_{16}$ and the seven matrices $C^+_{1671}\gamma^A_{1671}$
+($A\ne4$) anticommute and square to $\mathsf 1_{16}$, so the eigenvalues are
+$2(\mathcal P^{\rm NG}_4\pm\lvert\vec{\mathcal P}_{\rm NG}\rvert)$; on $4+4$ every $\mathsf Y^C_{\rm NG}$ is traceless.
+
+```
+Revision_NoGo, command `superalgebra`: super-Poincare algebras with R-symmetry and tensorial charges on 7+1 and 4+4
+8 of 8 checks passed
+
+[PASS] S-1 [7+1]  C+ gamma^A is symmetric for all A (a symmetric anticommutator {Q, Q} = Y^C P_C with Y^C = 2 C+ gamma^C exists); omega commutes with all Sigma^(AB) and omega^2 = -1: the R-charge Rch = omega generates a COMPACT U(1)_R
+[PASS] S-2a [7+1]  graded Jacobi identity of the super-Poincare algebra J (28) + P (8) + Q (16) + Rch (1) on all 53^3 triples; Rch commutes with J and P (an internal symmetry) but rotates the supercharges, and {Q, Q} produces the translations: spacetime and internal symmetry are linked through the odd generators (Haag-Lopuszanski-Sohnius loophole)  -- dimension 53, 148877 triples checked, 0 violations; dyadic true
+[PASS] S-2b [7+1]  the 7+1 superalgebra EXTENDED by the 128 tensorial charges Z_K (|K| = 0, 4, 5, 8; with P the 136 symmetric matrices C+ gamma^K): graded Jacobi identity on all triples (181 generators); the Z_K commute with P and Q but transform as Lorentz tensors (a McGlinn-type counterexample with an abelian, non-semisimple 'internal' algebra)  -- dimension 181, 5929741 triples checked, 0 violations; dyadic true
+[PASS] S-3 [7+1]  of the 128 tensorial charges, 56 (rank 5) are Rch-neutral and 72 (ranks 0, 4, 8) are rotated by Rch; the 126 charges of rank 4 and 5 are Lorentz tensors (commute with all P_C but not with J); only Z_() and Z_(01234567) are Lorentz scalars  -- neutral 56, charged 72, Lorentz tensors 126
+[PASS] S-4 [7+1]  positivity: Y^4 = 2 C+ gamma^4 = 2 and the seven matrices C+ gamma^A (A != 4) anticommute and square to 1, so sum_C Y^C P_C has eigenvalues 2 (P_4 +- |P|), |P|^2 = sum_(A != 4) P_A^2: positive semi-definite exactly when P lies in the closed forward cone
+[PASS] S-1 [4+4]  C+ gamma^A is symmetric for all A; omega1644 commutes with all Sigma^(AB) and omega1644^2 = +1: the R-charge Rch = omega1644 generates a NON-COMPACT SO(1,1)_R (Q+ -> e^(-varphi) Q+, Q- -> e^(+varphi) Q-)
+[PASS] S-2a [4+4]  graded Jacobi identity of the super-Poincare algebra J (28) + P (8) + Q (16) + Rch (1) on all 53^3 triples; Rch commutes with J and P (an internal symmetry) but rotates the supercharges, and {Q, Q} produces the translations: spacetime and internal symmetry are linked through the odd generators (Haag-Lopuszanski-Sohnius loophole)  -- dimension 53, 148877 triples checked, 0 violations; dyadic true
+[PASS] S-4 [4+4]  no positivity: every Y^C = 2 C+ gamma^C is traceless and nonzero, so sum_C Y^C P_C has a NEGATIVE eigenvalue for every P != 0 -- there is no unitary representation with Hermitian Q and P != 0; moreover omega1644 Y^C = -Y^C omega1644: {Q, Q} pairs Q+ with Q- only
+```
+
+# 8. Command `pairs4d`
+
+**The field of the world.** $\mathsf h_{\rm NG}(\vec q)=\sum_j\alpha^j_{\rm NG}q^j+\beta_{\rm NG}m_{\rm NG}$, with
+$\alpha^j_{1671}=\gamma^4_{1671}\gamma^j_{1671}$, $\beta_{1671}=\gamma^4_{1671}$, $\alpha^j_{1644}=-\gamma^4_{1644}\gamma^j_{1644}$,
+$\beta_{1644}=-i\gamma^4_{1644}$; eigenvalues $\pm\varepsilon_{\rm NG}$, $\varepsilon_{\rm NG}=(q^2+m_{\rm NG}^2)^{1/2}$.
+**The model.** The vector-pair interaction
+$\mathcal H^{\rm V}_{\rm NG}=\tfrac14G_{\rm NG}\sum_{A,B}\eta^{AB}_{1671}(\Delta^A_{1671})^\dagger\Delta^B_{1671}$ (on $4+4$
+with the tag 1644), attractive in the components with $\eta^{AA}_{1671}=-1$ (on $4+4$, $\eta^{AA}_{1644}=-1$);
+in the spin-zero channel
+$\mathcal H^{\rm int}_{\rm NG}=-\tfrac14G_{\rm NG}\sum_a(\psi^T_{\rm NG}\mathsf K^a_{\rm NG}\psi_{\rm NG})^\dagger(\psi^T_{\rm NG}\mathsf K^a_{\rm NG}\psi_{\rm NG})$,
+$\mathsf K^a_{\rm NG}=C^-_{\rm NG}\gamma^a_{\rm NG}$; the two-form channel with $\mathsf K^{ab}_{\rm NG}=C^+_{\rm NG}\gamma^a_{\rm NG}\gamma^b_{\rm NG}$;
+the doublet with $\Phi^{\rm D}_{\rm NG}=2(\psi^1_{\rm NG})^TC^+_{1671}\psi^2_{\rm NG}$ and
+$\mathcal H^{\rm D}_{\rm NG}=-\tfrac14G^{\rm D}_{\rm NG}(\Phi^{\rm D}_{\rm NG})^\dagger\Phi^{\rm D}_{\rm NG}$. **Mean field:** amplitudes
+$\Delta^a_{\rm NG}=\tfrac12G_{\rm NG}\langle\psi^T_{\rm NG}\mathsf K^a_{\rm NG}\psi_{\rm NG}\rangle$ (and $\Delta^{\rm D}_{\rm NG}=\tfrac12G^{\rm D}_{\rm NG}\langle\Phi^{\rm D}_{\rm NG}\rangle$),
+and the Bogoliubov-de Gennes matrix in the basis $\mathcal N_{\rm NG}(\vec q)=(\psi_{\rm NG}(\vec q),\psi_{\rm NG}(-\vec q)^{\dagger T})$
+$$\mathsf H_{\rm NG}(\vec q)=\begin{pmatrix}\mathsf h_{\rm NG}(\vec q)-\mu_{\rm NG}&\mathsf P_{\rm NG}\\\mathsf P_{\rm NG}^\dagger&-(\mathsf h_{\rm NG}(-\vec q)-\mu_{\rm NG})^T\end{pmatrix},$$
+$$\mathsf P_{\rm NG}=-\sum_a\Delta^a_{\rm NG}(\mathsf K^a_{\rm NG})^\dagger\quad(\text{doublet: }\Delta^{\rm D}_{\rm NG}(C^+_{1671})^*).$$
+**The grand potential** per volume, up to terms without the amplitudes,
+$$\Omega_{\rm NG}=\frac{\lvert\Delta_{\rm NG}\rvert^2}{G_{\rm NG}}-\frac12\int\frac{d^3q}{(2\pi)^3}\sum_{\mathcal E_{\rm NG}>0}\mathcal E_{\rm NG}(\vec q)$$
+(for the doublet without the factor $\tfrac12$ and with $G^{\rm D}_{\rm NG}$), the sum over the positive
+eigenvalues $\mathcal E_{\rm NG}$ of $\mathsf H_{\rm NG}$. For the isotropic channels the spectrum is $\pm E^\pm_{\rm NG}$,
+eight times each, $E^\pm_{\rm NG}=[(\varepsilon_{\rm NG}\pm\mu_{\rm NG})^2+\lvert\Delta_{\rm NG}\rvert^2]^{1/2}$, so
+$$\Omega_{\rm NG}=\frac{\lvert\Delta_{\rm NG}\rvert^2}{G_{\rm NG}}-\nu_{\rm NG}\int\frac{d^3q}{(2\pi)^3}(E^+_{\rm NG}+E^-_{\rm NG}),\qquad
+\frac1{G_{\rm NG}}=\frac{\nu_{\rm NG}}2\int\frac{d^3q}{(2\pi)^3}\Big(\frac1{E^+_{\rm NG}}+\frac1{E^-_{\rm NG}}\Big),$$
+with $\nu_{\rm NG}=4$ (one field) or 8 (doublet), $\lvert\vec q\rvert\le\Lambda_{\rm NG}=1$. Non-unitary states
+$\Delta^0_{\rm NG}=\lvert\Delta_{\rm NG}\rvert\cos\upsilon_{\rm NG}$, $\Delta^5_{\rm NG}=i\lvert\Delta_{\rm NG}\rvert\sin\upsilon_{\rm NG}$
+have the gaps $\lvert\Delta_{\rm NG}\rvert(1\pm\zeta_{\rm NG})^{1/2}$, $\zeta_{\rm NG}=\lvert\sin2\upsilon_{\rm NG}\rvert$,
+four times each; the spin-one channel $C^-_{\rm NG}\gamma^1_{\rm NG}$ has
+$(E^{(1)\pm}_{\rm NG})^2=\varepsilon_{\rm NG}^2+\mu_{\rm NG}^2+\lvert\Delta_{\rm NG}\rvert^2\pm2[\mu_{\rm NG}^2\varepsilon_{\rm NG}^2+\lvert\Delta_{\rm NG}\rvert^2(q^1)^2]^{1/2}$;
+its grand potential is integrated over the length of $\vec q$ and the cosine of its angle with the axis
+$x1$ (composite Gauss-Legendre rules). **Critical coupling:**
+$1/G^{\rm crit}_{\rm NG}=\nu_{\rm NG}\int d^3q\,(2\pi)^{-3}\varepsilon_{\rm NG}^{-1}$, $=\nu_{\rm NG}\Lambda_{\rm NG}^2/(4\pi^2)$ for
+$m_{\rm NG}=0$. **Weak coupling at a Fermi surface** ($q^{\rm F}_{\rm NG}=(\mu_{\rm NG}^2-m_{\rm NG}^2)^{1/2}$):
+$\ln\lvert\Delta_{\rm NG}\rvert=\text{constant}-2\pi^2/(\nu_{\rm NG}q^{\rm F}_{\rm NG}\mu_{\rm NG}G_{\rm NG})$; the program computes
+the slope of $\ln\lvert\Delta_{\rm NG}\rvert$ against $1/G_{\rm NG}$ from the two weakest couplings of a grid of twelve
+values of $1/G_{\rm NG}$ (data file `ng_bcs_law.csv`).
+**Amplitude mode** (random-phase approximation):
+$$\Pi^{\rm A}_{\rm NG}(w_{\rm NG})=\frac1{G_{\rm NG}}-\frac{\nu_{\rm NG}}2\int\frac{d^3q}{(2\pi)^3}\sum_\pm\frac{4(\varepsilon_{\rm NG}\pm\mu_{\rm NG})^2}{E^\pm_{\rm NG}[4(E^\pm_{\rm NG})^2-w_{\rm NG}^2]}=(4\lvert\Delta_{\rm NG}\rvert^2-w_{\rm NG}^2)\,c^\sigma_{\rm NG}(w_{\rm NG}),$$
+$c^\sigma_{\rm NG}(w_{\rm NG})=\tfrac12\nu_{\rm NG}\int d^3q\,(2\pi)^{-3}\sum_\pm\{E^\pm_{\rm NG}[4(E^\pm_{\rm NG})^2-w_{\rm NG}^2]\}^{-1}$;
+the static check compares $\Pi^{\rm A}_{\rm NG}(0)$ with half the second derivative of $\Omega_{\rm NG}$ with
+respect to $\lvert\Delta_{\rm NG}\rvert$, computed by a five-point difference. **Symmetry breaking:** the
+stabilizer of a condensate is the null space of the linear map that sends a generator (a fibre rotation
+$\mathcal T^{ab}_{\rm NG}$ or the fermion number $F_{\rm NG}$) to its action on the amplitude vector, computed in
+exact arithmetic. **Numerics:** the integrals over $q$ use the shifted variable $q-q^{\rm F}_{\rm NG}$ with
+break points clustered at the Fermi momentum, and
+$\varepsilon_{\rm NG}-\mu_{\rm NG}=(q^2-(q^{\rm F}_{\rm NG})^2)/(\varepsilon_{\rm NG}+\mu_{\rm NG})$ without cancellation; the gap
+equation is solved by Brent's method in $\ln\lvert\Delta_{\rm NG}\rvert$, and gaps below $10^{-12}$ are reported
+as zero. The spectra of the checks P-1 to P-4 are computed by diagonalizing the $32\times32$ complex
+Hermitian matrices at random momenta, chemical potentials, masses and amplitudes.
+
+```
+Revision_NoGo, command `pairs4d`: the spin-zero superfluid on the combined manifolds M(3,1) x K
+14 of 14 checks passed
+
+[PASS] P-1 [7+1]  alpha^1, alpha^2, alpha^3, beta are Hermitian, square to 1 and anticommute pairwise: the spectrum of h(q) is +-sqrt(q^2 + m^2) (8 times each)
+[PASS] P-1 [4+4]  alpha^1, alpha^2, alpha^3, beta are Hermitian, square to 1 and anticommute pairwise: the spectrum of h(q) is +-sqrt(q^2 + m^2) (8 times each)
+[PASS] P-2 [7+1]  isotropic channels (internal vector C- gamma^a, internal 2-form C+ gamma^a gamma^b, doublet C+): the 32 BdG eigenvalues are +-E^+, +-E^- (8 times each), E^(+-) = sqrt((eps +- mu)^2 + |Delta|^2), for every momentum direction (40 random samples each)  -- max deviation 4.44e-14
+[PASS] P-2 [4+4]  isotropic channels (internal vector C- gamma^a, internal 2-form C+ gamma^a gamma^b, doublet C+): the 32 BdG eigenvalues are +-E^+, +-E^- (8 times each), E^(+-) = sqrt((eps +- mu)^2 + |Delta|^2), for every momentum direction (40 random samples each)  -- max deviation 2.49e-14
+[PASS] P-3a [7+1]  non-unitary internal-vector states Delta^0 = |Delta| cos(ups), Delta^5 = i |Delta| sin(ups): the BdG spectrum is +-sqrt((eps +- mu)^2 + |Delta|^2 (1 +- |sin 2 ups|)) (4 times each) and independent of the momentum direction; the chiral state (ups = pi/4) has gaps sqrt(2)|Delta| and 0  -- max deviation 4.44e-14, isotropy 3.11e-14
+[PASS] P-3b [4+4]  Wick map: for arbitrary complex pair fields the 4+4 BdG spectrum equals the 7+1 spectrum after Delta_0 -> i Delta_0 (vector channel) and Delta_0a -> i Delta_0a (2-form channel): the positive-metric 4+4 superfluid is the 7+1 superfluid with the internal axis x0 Wick-rotated (40 random samples each)  -- max deviations 2.80e-14, 2.22e-14
+[PASS] P-4  spin-one channel C- gamma^1 (both spacetimes): E_(+-)^2 = eps^2 + mu^2 + |Delta|^2 +- 2 sqrt(mu^2 eps^2 + |Delta|^2 q_1^2) (8 times each) -- ANISOTROPIC: it differs from the isotropic formula unless q_1 = 0  -- max deviation 4.44e-14; anisotropy 0.249
+[PASS] P-5  normalisation: Omega from the numerical BdG spectrum (c_N = 1/2 one field, 1 doublet) equals the closed forms Omega = |Delta|^2/G - nu int (E^+ + E^-) with nu = 4 (one field, 7+1 and 4+4) and nu = 8 (doublet)  -- -1.8938756076e-4 vs -1.8938756076e-4; -1.4454417882e-3 vs -1.4454417882e-3; -1.8938756076e-4 vs -1.8938756076e-4
+[PASS] P-6  vacuum (mu = 0): the spin-zero gap appears only above the critical coupling G_crit = 4 pi^2/(nu Lambda^2) for m = 0: pi^2 (one field, internal vector or 2-form) and pi^2/2 (doublet); for m = 0.2 Lambda the one-field threshold is higher  -- G_crit = 9.869604401089 (pi^2 = 9.869604401089), 4.934802200545, m = 0.2: 10.643305
+[PASS] P-7  finite density (m = 0.2): for a coupling that is subcritical in vacuum there is no gap for mu < m and a gap for every mu >= 0.3 on the grid (Cooper instability of the Fermi surface; just above mu = m the gap is exponentially small, below the solver floor 1e-12), and at weak coupling ln|Delta| falls linearly in 1/G with the BCS slope -2 pi^2/(nu q_F mu)  -- slope -21.41969 vs prediction -21.53724 (ratio 0.9945)
+[PASS] P-8  at the SAME eight-dimensional vector coupling (7+1, m = 0.2, mu = 0.5, G = 0.9 G_crit(m)): Omega_polar < Omega_chiral and Omega_polar < Omega_spin-one for every |Delta| on the grid; the minimum is the polar spin-zero state (an internal vector condensate)  -- min Omega: polar -2.505051e-3, chiral -1.252231e-3, spin one -4.971294e-4; polar gap 0.317478
+[PASS] P-9  amplitude mode (vacuum, m = 0, G = 1.5 G_crit): Pi_A(w) = (4|Delta|^2 - w^2) c_sigma(w) with c_sigma finite and positive on [0, 2|Delta|], so Pi_A vanishes at w = 2|Delta|: m_sigma = 2|Delta|; static check: Pi_A(0) equals half the second derivative of Omega with respect to |Delta| at the minimum  -- |Delta| = 0.6753386910, Pi_A(0) = 3.28385662e-2, Omega''/2 = 3.28385662e-2
+[PASS] P-10  symmetry breaking (exact stabilisers): internal vector, polar: U(1)_F x SO(4) (7) -> SO(3) (3), 4 Goldstone modes; chiral: -> 2 generators, one of them LOCKS the fibre rotation Rot(0,5) (an 8D Lorentz rotation) to the fermion number F, 5 Goldstone modes; internal 2-form, self-dual polar: 7 -> U(1) x SU(2) (4), 3 Goldstone modes; 4+4 with the eta-weighted interaction: U(1)_F x SO(3) (4) -> SO(2) (1), 3 Goldstone modes; the four-dimensional Lorentz group is unbroken in every case (spin-zero condensates)  -- stabiliser dims: polar 3, chiral 2 (locked true), 2-form 4, 4+4 triplet 1
+[PASS] P-11  the 8D-invariant interaction (G/4) eta_AB V^A^dagger V^B (G > 0) of the vector pairs V^A = psi^T C- gamma^A psi attracts the components with eta_AA = -1: on 7+1 these are the internal 0,5,6,7 (spin zero, isotropic) and the space 1,2,3 (spin one, anisotropic) -- the time component 4 is repelled; on 4+4 they are 4,5,6,7: the internal 5,6,7 (spin zero, isotropic) and the time component 4 (not s-wave) -- the internal 0 and the space 1,2,3 are repelled  -- 7+1 attractive [0, 1, 2, 3, 5, 6, 7]; 4+4 attractive [4, 5, 6, 7]
+```
+
+# 9. Command `renorm`
+
+**Power counting**, in exact rationals, with $D$ space dimensions in which the fields carry momentum:
+a fermion field has the mass dimension $D/2$, a scalar or gauge field $(D-1)/2$; a gauge or Yukawa
+coupling $(3-D)/2$, a quartic scalar coupling $3-D$, a four-fermion coupling $1-D$ (data file
+`ng_power_counting.csv`, $D=1,\dots,9$). The superficial degree of divergence of a one-particle-irreducible
+graph with $e^{\rm F}_{\rm NG}$ external fermion lines, $e^{\rm B}_{\rm NG}$ external boson lines and couplings of
+dimension $[\cdot]$ at its vertices is
+$$\deg_{\rm NG}=(D+1)-\frac D2e^{\rm F}_{\rm NG}-\frac{D-1}2e^{\rm B}_{\rm NG}-\sum_{\rm vertices}[\text{coupling}],$$
+$(\mathcal V_{\rm NG}-1)(D-1)$ for the four-point function of the four-fermion interaction with
+$\mathcal V_{\rm NG}$ vertices, $\tfrac12(3-D)(1-\mathcal V_{\rm NG})$ for the Yukawa vertex function (data file
+`ng_superficial_degree.csv`). **Jacobi's four-square theorem**: the number $\mathrm r_4(\ell_{\rm NG})$ of integer
+vectors with four components and squared length $\ell_{\rm NG}$ is 8 times the sum of the divisors of
+$\ell_{\rm NG}$ that are not multiples of 4 ($\mathrm r_4(0)=1$); the program compares it with a direct count for
+$\ell_{\rm NG}\le200$. **The Kaluza-Klein bubble** ($7+1$, torus of radius $R_{\rm NG}=1$,
+$m_{1671}R_{\rm NG}=0.01$): the bubble of one four-dimensional field,
+$$f_{\rm NG}((m^{\rm eff}_{\rm NG})^2)=\int_{\varkappa_{\rm NG}<\Lambda_{\rm NG}}\frac{d^4\varkappa_{\rm NG}}{(2\pi)^4}\frac1{(\varkappa^2_{\rm NG}+(m^{\rm eff}_{\rm NG})^2)^2}=\frac1{16\pi^2}\Big[\ln\Big(1+\frac{\Lambda_{\rm NG}^2}{(m^{\rm eff}_{\rm NG})^2}\Big)-\frac{\Lambda_{\rm NG}^2}{\Lambda_{\rm NG}^2+(m^{\rm eff}_{\rm NG})^2}\Big],$$
+summed over the tower,
+$\mathcal B_{\rm NG}(\Lambda_{\rm NG})=\sum_{\ell_{\rm NG}\le(\Lambda_{\rm NG}R_{\rm NG})^2}\mathrm r_4(\ell_{\rm NG})f_{\rm NG}(m_{1671}^2+\ell_{\rm NG}/R_{\rm NG}^2)$,
+on 121 values of $\Lambda_{\rm NG}$ from 0.05 to 60 (data file `ng_kk_bubble.csv`); compared with the
+continuum form $\mathcal C^{(8)}_{\rm NG}(\Lambda_{\rm NG}R_{\rm NG})^4$,
+$\mathcal C^{(8)}_{\rm NG}=\tfrac18\int_0^1d\varpi_{\rm NG}\,\varpi_{\rm NG}^3[\ln(1+\varpi_{\rm NG}^{-2})-(1+\varpi_{\rm NG}^2)^{-1}]=1.207170\times10^{-2}$
+(adaptive quadrature), which follows when the sum over integer vectors is replaced by $R^4_{\rm NG}$ times an
+integral over the fibre momentum (volume element $2\pi^2$ times the cube of its length times its
+differential) and $m_{1671}\to0$. The logarithmic slope of the zero-mode bubble,
+$\Lambda_{\rm NG}\,df_{\rm NG}/d\Lambda_{\rm NG}=2\Lambda_{\rm NG}^4/[16\pi^2(\Lambda_{\rm NG}^2+(m^{\rm eff}_{\rm NG})^2)^2]$, is
+compared with $1/(8\pi^2)$ at $\Lambda_{\rm NG}=0.3/R_{\rm NG}$ by a central difference. **The $4+4$ tachyons
+below the cutoff**: the count of integer vectors with $\ell_{\rm NG}\le(\Lambda_{\rm NG}R_{\rm NG})^2$ and
+$(m_{1644}R_{\rm NG})^2+(n^0_{\rm NG})^2-\sum_t(n^t_{\rm NG})^2<0$, with $(m_{1644}R_{\rm NG})^2=1$, for
+$\Lambda_{\rm NG}R_{\rm NG}=2,4,\dots,20$ (data file `ng_kk_tachyons_cutoff.csv`).
+
+```
+Revision_NoGo, command `renorm`: power counting, the Kaluza-Klein tower and the 4+4 tachyons
+5 of 5 checks passed
+
+[PASS] R-1  mass dimensions with D space dimensions (D + 1 spacetime dimensions): D = 3: [g_gauge] = [g_Yukawa] = [g_quartic] = 0, [G4f] = -2; D = 7: [fermion] = 7/2, [scalar] = [gauge field] = 3, [g_gauge] = [g_Yukawa] = -2, [g_quartic] = -4, [G4f] = -6 (every interaction coupling has negative mass dimension for D = 7)
+[PASS] R-2  superficial degree of divergence deg (D space dimensions): four-fermion 4-point function deg = (nvert-1)(D-1) with nvert vertices: 2 at one loop for D = 3 (the Lambda^2 of the gap equation), 6 for D = 7, growing with nvert in both; Yukawa vertex function: independent of nvert for D = 3 (renormalizable), +2 per vertex for D = 7
+[PASS] R-3  Jacobi's four-square theorem: r4(ell) = 8 times the sum of the divisors of ell that are not multiples of 4 (r4(0) = 1) agrees with the direct count of the integer vectors n with |n|^2 = ell for ell = 0..200
+[PASS] R-4  Kaluza-Klein tower on the torus T^4 (7+1, m R = 0.01): for Lambda < 1/R the tower sum B is the zero-mode bubble f alone, logarithmic (dB/d ln Lambda = 1/(8 pi^2) up to terms of the order of m^2/Lambda^2; at Lambda = 0.3/R within 0.5 %); for Lambda >> 1/R it grows like Lambda^4 R^4: B/(Lambda R)^4 at Lambda R = 60 is within 4 % of the continuum (eight-dimensional) value C8 = (1/8) int_0^1 u^3 [ln(1 + 1/u^2) - 1/(1 + u^2)] du  -- slope ratio 0.99778; B/(Lambda R)^4 = 1.207225e-2 vs C8 = 1.207170e-2 (ratio 1.0000)
+[PASS] R-5  4+4: the number of tachyonic Kaluza-Klein modes below the cutoff grows like (Lambda R)^4 (doubling Lambda R from 10 to 20 multiplies it by 16 within 10 %); the Euclidean bubble f(m_eff^2) is undefined for m_eff^2 < 0  -- tachyons: 39966 at Lambda R = 10, 644274 at 20 (ratio 16.121)
+```
+
+# 10. The checks of the documents
+
+The checks of the symbols (the script `check_symbols.py`; they are explained in full, with the meaning of
+every plain-text name, in the symbol file of the folder) and of self-containedness (the script
+`check_self_contained.py`, which searches every document for the wordings by which a text sends its
+reader to another document):
+
+```
+PROJECT spacetimes, Revision_NoGo: checks of the symbols (registry provenance/symbols_ng.csv)
+6 of 6 checks passed
+
+[PASS] NG-S1  every symbol text is registered once (115 entries) and every plain-text name of the programs, figures and data files belongs to one entry (219 names)
+[PASS] NG-S2  the 27 taken entries carry exactly the meaning of the MASTER registry from which they are taken (113 entries of the main project, 229 of the revision on the deflating spacetimes compared), and none of the 88 new symbols is a symbol of either master registry
+[PASS] NG-S3  every column of the 19 data files data/ng_*.csv is a registered plain-text name or a descriptive word (93 different columns), and every file states its content; 9 column names also occur as names in a master registry or as symbols of the author's notebooks (C, D, G, K, Lambda, mu, phase, q, v) - they cannot be confused, because every data file of Revision_NoGo has the prefix ng_ and a line '# content:', and the name means in it the registered symbol of Revision_NoGo
+[PASS] NG-S4  each of the 4 documents of Revision_NoGo (and the manuscript) contains the complete table of the 115 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] NG-S5  in the 1566 formulas of the documents, mu, Lambda, Omega, nu, Pi^A, G^crit and G^D always carry the suffix NG, and Delta the suffix NG or a tag 1671, 1644
+[PASS] NG-S6  in the 2019 formulas of the documents and of the new registry entries, no letter that a master registry defines with another meaning stands bare: every letter except the taken indices and sets (A, B, C, D, K, X, a, b, j, r, s, t), the new plain symbols (i, l, p, q) and the differential d carries the suffix NG or a tag 1671, 1644, x occurs only in the coordinate names, and the Greek letters carry their suffix
+```
+
+```
+PROJECT spacetimes, Revision_NoGo: does any document send its reader to another document? (Hard Rule 7)
+1 of 1 checks passed
+
+[PASS] NG-H1  none of the 23 documents and document sources of Revision_NoGo refers its reader to another document for an equation, a symbol or a definition
+
+Allowed exceptions:
+  README: a provenance document named as a place to read (the README is the list of contents of the folder: naming its documents is its purpose)
+```
+
+# 11. Data files and figures
+
+| data file | content (header line of the file) | columns |
+|---|---|---|
+| `ng_amplitude_mode.csv` | amplitude-mode kernel in vacuum, m = 0, G = 1.5 pi^2, \|Delta\| = 0.6753386910: w/(2\|Delta\|), c_sigma(w), Pi_A(w) | `w_over_2Delta` `c_sigma` `Pi_A` |
+| `ng_bcs_law.csv` | weak-coupling law at m = 0.2, mu = 0.5: 1/G, \|Delta\|, ln\|Delta\|; predicted slope d ln Delta / d(1/G) = -21.5372424987 | `invG` `Delta` `lnDelta` |
+| `ng_dispersion.csv` | lowest BdG branches at m = 0.2, mu = 0.5, \|Delta\| = 0.3174778196: polar E^-, chiral branches sqrt((eps-mu)^2 + 2 Delta^2) and \|eps - mu\|, spin one along the pair direction and perpendicular to it | `q` `polar` `chiral_gapped` `chiral_gapless` `spin1_parallel` `spin1_perp` |
+| `ng_g2_locking.csv` | G2 locking on 7+1: dimensions of Lie algebras inside so(3) (space rotations, Im H) + so(4) (internal rotations, H l) | `row` `dimension` |
+| `ng_gap_vs_coupling.csv` | vacuum (mu = 0) gap \|Delta\| (units of Lambda) versus coupling G; G_over_Gcrit = G/G_crit with G_crit = pi^2/Lambda^2 (one field, m = 0) | `G_over_Gcrit` `G` `Delta_onefield_m0` `Delta_doublet_m0` `Delta_onefield_m0.2` |
+| `ng_gap_vs_mu.csv` | one-field spin-zero gap \|Delta\| versus mu at m = 0.2, G = 0.6 G_crit(m=0.2) = 6.3859829267 (subcritical in vacuum); a gap below 1e-12 is reported as 0 | `mu` `Delta` |
+| `ng_goldstone.csv` | symmetry breaking patterns: phase 1 = internal vector polar, 2 = internal vector chiral, 3 = internal 2-form self-dual polar (7+1), 4 = internal triplet polar with the eta-weighted interaction (4+4); dimension of the symmetry group, dimension of the unbroken subgroup, number of broken generators | `signature` `phase` `dim_symmetry` `dim_unbroken` `broken` |
+| `ng_intertwiner_1644.csv` | integer intertwiner I1644 with I gamma1644[A] = Gamma_oct[A] I (A = 0..7); rows 0..15, columns col0..col15 | `col0` `col1` `col2` `col3` `col4` `col5` `col6` `col7` `col8` `col9` `col10` `col11` `col12` `col13` `col14` `col15` |
+| `ng_intertwiner_1671.csv` | integer intertwiner I1671 with I gamma1671[A] = Gamma_oct[A] I (A = 0..7); rows 0..15, columns col0..col15 | `col0` `col1` `col2` `col3` `col4` `col5` `col6` `col7` `col8` `col9` `col10` `col11` `col12` `col13` `col14` `col15` |
+| `ng_kk_bubble.csv` | one-loop bubble B summed over the Kaluza-Klein tower on T^4 (R = 1, m R = 0.01) versus the cutoff Lambda, the zero-mode bubble f, and the continuum (eight-dimensional) form C8 (Lambda R)^4 with C8 = 0.012071698785 | `Lambda` `B_tower` `f_zero_mode` `C8_LambdaR4` `B_over_LambdaR4` |
+| `ng_kk_tachyons.csv` | Kaluza-Klein modes n in [-Nmax, Nmax]^4 on a torus of radius R with (mR)^2 = 1: number of tachyonic modes (m_eff^2 < 0) | `Nmax` `modes` `tachyons_71` `tachyons_44` `fraction_44` |
+| `ng_kk_tachyons_cutoff.csv` | 4+4 Kaluza-Klein modes with \|n\| <= Lambda R ((m R)^2 = 1): all modes, tachyonic modes, tachyons/(Lambda R)^4 | `LambdaR` `modes` `tachyons` `tachyons_over_LR4` |
+| `ng_octonion_tables.csv` | multiplication tables of O_NG (varsigma = -1) and Os_NG (varsigma = +1): e_(idx_left) e_(idx_right) = sign * e_(idx_product) | `algebra` `left` `right` `product` `idx_left` `idx_right` `idx_product` `sign` |
+| `ng_omega_states.csv` | Omega(\|Delta\|) - Omega(0) at m = 0.2, mu = 0.5, G = 9.5789743900 (one field, 7+1): polar spin-zero, chiral spin-zero (zeta = \|sin 2 ups\| = 1), spin-one polar | `Delta` `Omega_polar` `Omega_chiral` `Omega_spin1` |
+| `ng_pair_channels.csv` | all one-field pair matrices C(+-) gamma^K (K a subset of {0..7}) on both spacetimes | `signature` `C` `K` `n4` `nt` `nint` `symmetry` `nonzero` `s_wave` `isotropic` `representation` |
+| `ng_power_counting.csv` | mass dimensions with D space dimensions (D + 1 spacetime dimensions) of a fermion field, a scalar field, a gauge field, a gauge coupling, a Yukawa coupling, a quartic scalar coupling and a four-fermion contact coupling G4f | `D` `fermion` `scalar` `gauge_field` `g_gauge` `g_Yukawa` `g_quartic` `G4f` |
+| `ng_superalgebra_positivity.csv` | smallest and largest eigenvalue of {Q, Q} = sum_C Y^C P_C for P = (P_4 = 1, P_1 = v, other components 0) on 7+1 and on 4+4 (numerical diagonalisation) | `signature` `v` `eig_min` `eig_max` |
+| `ng_superficial_degree.csv` | superficial degree of divergence deg versus the number of vertices nvert: four-fermion 4-point function with D = 3 and D = 7 space dimensions; Yukawa vertex function (2 external fermion lines, 1 external boson line) with D = 3 and D = 7 | `nvert` `fourfermion_D3` `fourfermion_D7` `yukawa_D3` `yukawa_D7` |
+| `ng_triality_charpolys.csv` | characteristic polynomials det(lambda - matrix) of the simple rotation r01 and of its images under the triality automorphisms T2, T3, vartheta, vartheta^2 (exact rational coefficients) | `algebra` `matrix` `char_poly` |
+
+| figure (`figures/`, .pdf and .png) | what it shows | data |
+|---|---|---|
+| `fig_ng_manifolds` | the two combined manifolds: coordinates, octonion units, metric signs, world and fibre | definitions |
+| `fig_ng_tables` | the multiplication tables of the octonions and of the split octonions | `ng_octonion_tables.csv` |
+| `fig_ng_triality` | the spectra of $\mathsf r_{01}$ and of its triality images | `ng_triality_charpolys.csv` |
+| `fig_ng_locking` | dimensions of the Lie algebras of the $\mathrm G_2$ locking | `ng_g2_locking.csv` |
+| `fig_ng_kk` | Kaluza-Klein tachyons of $4+4$: fraction, and number below the cutoff | `ng_kk_tachyons.csv`, `ng_kk_tachyons_cutoff.csv` |
+| `fig_ng_superalgebra` | smallest and largest eigenvalue of $\sum_C\mathsf Y^C_{\rm NG}\mathcal P^{\rm NG}_C$ | `ng_superalgebra_positivity.csv` |
+| `fig_ng_channels` | all 512 one-field pair matrices, by the numbers of world and fibre indices | `ng_pair_channels.csv` |
+| `fig_ng_gap` | the vacuum gap versus the coupling | `ng_gap_vs_coupling.csv` |
+| `fig_ng_density` | the Cooper instability and the weak-coupling law | `ng_gap_vs_mu.csv`, `ng_bcs_law.csv` |
+| `fig_ng_states` | the grand potential of the polar, chiral and spin-one states; their branches | `ng_omega_states.csv`, `ng_dispersion.csv` |
+| `fig_ng_amplitude` | the amplitude mode | `ng_amplitude_mode.csv` |
+| `fig_ng_goldstone` | unbroken and broken generators | `ng_goldstone.csv` |
+| `fig_ng_renorm` | the Kaluza-Klein bubble; the superficial degree of divergence | `ng_kk_bubble.csv`, `ng_superficial_degree.csv` |
+
+# 12. Checksums
+
+SHA-256 of the data files, the figures and the programs from which the documents were built:
+
+```
+7581b21457c4b201a31d5ee1b7daad600011740b61ac998970db17b870dab7de  ng_amplitude_mode.csv
+ace9c68c313eaa907704b18c1dd724d1c4eecc37132872268b0e762dbe971c92  ng_bcs_law.csv
+f5e9fd9382cd77e098c567f83121d34a34d7491f2c5cf4b92f6d8c26d12dac21  ng_dispersion.csv
+1d02cf60b88feb24a39e1dcbcafb196f90dc3328b93e943cbc00ee0637a606f9  ng_g2_locking.csv
+60095189540f12acb94104ba536a21cad44a817e538c9349dd87ececfbb87289  ng_gap_vs_coupling.csv
+21e926935ea50156616c7f368aea1aadb3ffa7ed1f70c3f96a77abfc209499d3  ng_gap_vs_mu.csv
+d8202c9953c51ffc61466c1b8965336b14207b0879e2750d9c7d5a1cb117e07b  ng_goldstone.csv
+a024225b3b0dc9627ce0957c8cf35e668d8fbf91bcac44932257775a7121ec41  ng_intertwiner_1644.csv
+c33e2d1bf122aa44c77fa3f4a6da7cab0c823e79b24152cd469cc9ea6ccf53dd  ng_intertwiner_1671.csv
+7837e931de0aca7f188d18a0e6f4f636e69f62c051e6e9a915d83544cc15077f  ng_kaluza_checks.txt
+615ab0663924770a6edd51a1e03a902140a31c467d7c0b096040abb30d558381  ng_kk_bubble.csv
+d9b0141fc8d8c1c13525074e87c85a31c8f6040b37e46cc3acb8fdb7fdbba128  ng_kk_tachyons.csv
+b5dcf3227375edb906b602f3fbe842208c8a49a321e782715b6ccf5f87e84825  ng_kk_tachyons_cutoff.csv
+96aef6d10feb1f067565468494ff3959e1c25a6727c8ef927d3a1fb0e0c69ef7  ng_octonion_tables.csv
+9b5e31e6ce4f2093c55efd7c0021e1017688b493741c6c1aca4c9f83e85d42ff  ng_octonions_checks.txt
+6b97f2f4cf1f46e1a816b0d5fcdbfaf5ddcca52556db43dd969a55b7c2d24f12  ng_omega_states.csv
+77870b45147eeee3c8005c004cdaa8cf5324a0644bf230efff62d9a730d9c55a  ng_pair_channels.csv
+e724db047e95437f7caf72129d1c4351c8b4e1c3ce67f73363c59f7e2063f1e5  ng_pairs4d_checks.txt
+c473330fca82dabfe5767d609f0fa1a54f11d260330c9d313e8ddccf93733a4e  ng_power_counting.csv
+0833127fee94257490f68b7c649c519ce6c7085774b3700c8b20844b7a35baf6  ng_renorm_checks.txt
+4ffd95f8004a197852554cc91f987ca7f973f9eb11584212f7da602dbf632e77  ng_superalgebra_checks.txt
+2f45a964a921b2a84a57a196c84837c3cac63043abc547229fd767a10b4d703b  ng_superalgebra_positivity.csv
+df04bc9bedd4583261115df578d143a3a14798c69cc13a0a04ae819ceb8d0569  ng_superficial_degree.csv
+423c363f20934fd7cf108526409ae86010370c3a9d687c67f1dbab85053e6014  ng_triality_charpolys.csv
+701264c70b23426f38480a6604201df0706b67d123bdd8a7f1fac3322123193f  ng_triality_checks.txt
+0aec696b6932e627f8d4b62a8214221a55efde72ef5e8484e14ebb203b3e4b99  fig_ng_amplitude.pdf
+fb32e887ea4b4a40d68036de4414e63d0e7b5eb784f0962d277ee755f7d9ab7c  fig_ng_channels.pdf
+d88c8b9006c68f9d33cc90e9f1a8eef3b47b2642fd2ab8be019d780565d99dd1  fig_ng_density.pdf
+c9a26e48a234e890eb01031828950f2fdda08b9c5511a1584372efb23ee5a598  fig_ng_gap.pdf
+523d24c2b9201a12165a71eaa69dddea8c0b78fe49a88fc2f6bcfbe6525068f4  fig_ng_goldstone.pdf
+356f1ee01bf39d02171cea0834d0cb22c0be500b7ed11e1e86fb00853516c05d  fig_ng_kk.pdf
+443090e855ac11e883caf7ab155916e49e808f944b335eb1bdae5df448f989c8  fig_ng_locking.pdf
+1f635b841ce23515e258db02d868581fde7082c527870411ce337fc33a58d053  fig_ng_manifolds.pdf
+bbe9e561a46c8c1fde8fcd441fdc79bdd3a9206d4122b7f0015218fbcf26336b  fig_ng_renorm.pdf
+e276b424640d3bee995dd3498ce0b2a92869cad945f4c0bf98479a6e45a3d3e7  fig_ng_states.pdf
+bc4b366b8cb980b542824ee339f29b7d69dcd55c2b58f320891e9c7811531c5b  fig_ng_superalgebra.pdf
+a24a4bf70a97a2577bc596a22b2abd359325cdc90f50b55dbb137c42040a6edb  fig_ng_tables.pdf
+3c0fce19bda2e2c6c3ccf2f03aa416e03944a7910d0bff425545989eea74affd  fig_ng_triality.pdf
+41fba6fbce624acc26f145e11bbf50faece92062bcd209d03b902264050e1041  code/nogo-rs/src/checks.rs
+e09bd5867108304af90fef73d6d97fea4b1cb720104bf260a50528fda2df2ded  code/nogo-rs/src/exact.rs
+651efab2b48a6f53e4eca1e3a1e5d4731a19d1d91bd9feeceb12362382406f1a  code/nogo-rs/src/integrate.rs
+f703ad2758fef4dcd9f85685ff4c317e219d0f0d6dfcfd9656082a0d49ec44b3  code/nogo-rs/src/kaluza.rs
+b7084b44b1df2d4ad9408fc6d8fee2a758d24730fe18560b4bb1dd0d90f7cdb5  code/nogo-rs/src/main.rs
+a5b05a0b80abe3f085f9e11233eba5d1611caf7b51ee710017e212385b6af605  code/nogo-rs/src/oct.rs
+bf5347e564cb78a2b913bc5aa08e5acfdd73ba83d604b34a25a27595f9a1b873  code/nogo-rs/src/pairs4d.rs
+0803714a1180262e13a3d32283b8a59b2a96439ad0891cfd96d221f7298f1d2d  code/nogo-rs/src/renorm.rs
+a27a2ded2fb2da04f790ddc474feee25a802c51c8513c29102bcd6829a109fb1  code/nogo-rs/src/rsym.rs
+a78d4201c2f610f6f7f5ac7a98df79c20573abe704729161de54e2feb607bce6  code/nogo-rs/src/sig.rs
+4ab3b75629d85a130006bf5e9d52988c641aea2c4c0fd5fac3474921b985721c  code/nogo-rs/src/superalg.rs
+350c1e082b9a9c323c2d84af9b66a38736a29b99c7e4939628a0c900760c9e5e  code/nogo-rs/src/triality.rs
+8c7ece7d5d4ef2948d08fa207f46e620c648ba22842e227096aa0c41c47b97da  code/nogo-rs/Cargo.toml
+a11ef5cd08c51dccaf01b1f28be4ff85b747d0c3793c2c7bed584875941f4c9a  code/scripts/assemble_docs.py
+69e40372f846b3421d7e5aa439fe6e66fcfcf63966bb44a37122c6536264b222  code/scripts/build_manuscript.py
+465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
+575538fca483a4b2a62c3b345768e1f9c8a812a240be2b579a2576805178c7e6  code/scripts/check_self_contained.py
+973f838f92aacdcba55859777f2cee9f3955fe14630176f70beae6982908263d  code/scripts/check_symbols.py
+2c3a5bac5d4f6cfb36748115cfefc0b99d8c6f66db516efe11113a204deab143  code/scripts/make_figures.py
+36b06d03bd0e13e815b050b4338c810c254e860341bbaf7996dacabb77953c55  code/scripts/tex2md.py
+9ecf4785626cab2db94f02f53ea7b340bd3884243548547d6049d178c1342c34  code/scripts/write_doc_tables.py
+200df9b86494286b4c4f1a48a0f226280688b7da1854f58e7cbc8a1e0b6afee2  code/scripts/write_symbol_registry.py
+f67ec04162b5942359f455bb3ebbffeda87f85ef716c27801990036267cd7ce6  code/scripts/build_docs.sh
+596f2269a6094d1224ca243cfcd7a4e3731bf5cac7fdfba1d05283cb3c3df728  code/scripts/check_all.sh
+f7da314c7097bf0920e92cda2b3caefa9da132414dd68990252c5160a9fc8372  code/scripts/doc_header.tex
+```
+
+# 13. The symbols
+
+**1 Coordinates, indices and conventions**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $X=\{x0,\dots,x7\}$ | the eight coordinates of both spacetimes, never renamed: $x0$ hidden space-like; $x1,x2,x3$ ordinary space; $x4$ ordinary time; $x5,x6,x7$ additional coordinates (time-like in 4+4, space-like in 7+1) | taken | `x0` `x1` `x2` `x3` `x4` `x5` `x6` `x7` |
+| $A,B,C,D$ | index with the values $0,\dots,7$; always labels the coordinate $xA$. In Revision\_NoGo the letters $A$, $B$, $C$ are such indices (also as lower indices, as in $\eta^{\rm NG}_{AB}$, $\mathcal P^{\rm NG}_C$); the letter $D$ is used only with the meaning of the entry $D$ of this table. | taken |  |
+| $i,j$ | index of space-like coordinates; values 1, 2, 3 (ordinary space) unless a sum is said to run over all space-like coordinates of the spacetime. In Revision\_NoGo only $j$ is used as an index, with the values 1, 2, 3; the letter $i$ is the imaginary unit (entry $i$). | taken |  |
+| $a,b$ | indices whose range is stated at each place of use: the four extra axes, values 0, 5, 6, 7 (in everything that concerns pairs and the order parameter), or the four flat coordinates other than the time, values 0, 1, 2, 3 (in the statements of the machine checks). The letters $\mathsf a$, $\mathsf b$ in sans-serif type are the scale factors of the Einstein-Lovelock evolution; $a_{\rm sp}$, $a_{\rm sc}$, $a(T)$, $b_t$ and $b$ have their own entries. In Revision\_NoGo $a$ and $b$ always take the values 0, 5, 6, 7 (the fibre of the combined manifolds). | taken | `INT` |
+| $t$, $s$ (indices) | indices of the three additional coordinates $x5,x6,x7$, values 5, 6, 7; $s$ is a second such index where two are needed (the matrices $s_h$ carry the index $h$) | taken |  |
+| $D$ | the number of space dimensions in which the particles of matter have momentum: 7 (all space coordinates of 7+1), 4 (fields that do not depend on $x5,x6,x7$) or 3 (fields that depend on ordinary space only). $V_D=\pi^{D/2}/\Gamma_{\rm E}(D/2+1)$ is the volume and $A_D=D\,V_D$ the area of the unit ball in $D$ dimensions ($\Gamma_{\rm E}$: Euler's gamma function). In Revision\_NoGo $D=7$ on the eight-dimensional spacetimes and $D=3$ in the four-dimensional world of the combined manifolds; the volume and the area of the unit ball do not occur. | taken | `D` |
+| $K$, $J$ (index sets); $r$, $r'$ (ranks) | $K$, $J$: a strictly increasing list $A_1<\dots<A_r$ of indices out of $0,\dots,7$ (there are 256); $r=\lvert K\rvert$ is its rank, $0\le r\le8$; $r'$ is a second rank and $l$ the summation index in the closed form of the Fierz matrix. In the data files an index set is given by its bit mask (`mask`: the sum of $2^A$ over its indices). In Revision\_NoGo only $K$ and $r$ are used: $\gamma^K_{\rm NG}$, $\Gamma^K_{71\rm NG}$ and the tensorial charges $\mathcal Z^K_{\rm NG}$ are labelled by $K$; the Fierz matrix and the bit mask do not occur. | taken | `K` |
+| $i$ | the imaginary unit, $i^2=-1$ (in the plain text of the checks O-14a, O-14c and K-6 and of the figures of the algebras the letter i is the octonion unit $\mathsf e_1$, see the entry $\mathsf e_0,\dots,\mathsf e_7$) | new |  |
+| $l$, $l'$ | indices of the 16 supercharges $\mathcal Q^{\rm NG}_l$, one for each real spinor component (values $1,\dots,16$); the summation index of the Fierz matrix, which a master registry also calls $l$, does not occur in Revision\_NoGo | new |  |
+| $p$ | a summation index over the basis of an algebra (values $0,\dots,7$, or $0,\dots,3$ for the quaternions); used only in Sec. III A | new |  |
+| $\vec q=(q^1,q^2,q^3)$, $q$ | the momentum of a particle in ordinary space (the three directions $x1,x2,x3$) and its length $q=\lvert\vec q\rvert$ | new | `q` `q_1` |
+| $\gamma^A_{\rm NG}$, $\gamma^K_{\rm NG}$, $\Sigma^{AB}_{\rm NG}$, $\omega_{\rm NG}$, $C^\pm_{\rm NG}$, $\beta_{\rm NG}$, $\alpha^j_{\rm NG}$, $\psi_{\rm NG}$, $m_{\rm NG}$, $\eta_{\rm NG}$ | in statements that hold on both spacetimes: the object of the spacetime under discussion, i.e.\ $\gamma^A_{1671}$ or $\gamma^A_{1644}$, $\Sigma^{AB}_{1671}$ or $\Sigma^{AB}_{1644}$, $\omega_{1671}$ or $\omega_{1644}$, $C^\pm_{1671}$ or $C^\pm_{1644}$, $\beta_{1671}$ or $\beta_{1644}$, $\alpha^j_{1671}$ or $\alpha^j_{1644}$, $\psi_{1671}$ or $\psi_{1644}$, $m_{1671}$ or $m_{1644}$, $\eta_{1671}$ or $\eta_{1644}$; $\gamma^K_{\rm NG}$ is the ordered product of the $\gamma^A_{\rm NG}$ with $A$ in $K$ (increasing $A$; $\mathsf 1_{16}$ for the empty set); $\eta^{AB}_{1671}$, $\eta^{\rm NG}_{AB}$ and $\eta^{\rm NG}_{AA}=\pm1$ are the entries of the diagonal metric | new | `gamma^A` `gamma^K` `gamma^a` `gamma^j` `Sigma^(AB)` `Sigma^(ab)` `omega` `C+` `C-` `C(+-)` `beta` `alpha^j` `psi` `m` `eta` `eta_AB` `eta_AA` |
+| $\Sigma^{\rm NG}_{AB}$ | the spinor generators with lowered indices, $\Sigma^{\rm NG}_{AB}=\eta^{\rm NG}_{AA}\eta^{\rm NG}_{BB}\Sigma^{AB}_{\rm NG}$ (no sum), with which the Lorentz generators $\mathcal J^{AB}_{\rm NG}$ act on the supercharges | new |  |
+| $\mathsf 1_8$, $\mathsf 1_{16}$ | the unit matrices of size 8 and 16 | new |  |
+
+**2 Matrices and fields of the two spacetimes**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\eta_{1671}$ | metric of the 7+1 spacetime, $\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1)$: time-like $=+1$, time at index 4 | taken | `eta1671` |
+| $\eta_{1644}$ | metric of the 4+4 spacetime, $\mathrm{diag}(+1,+1,+1,+1,-1,-1,-1,-1)$: space-like $=+1$ | taken | `eta1644` |
+| $\gamma_{1671}^A$ | the eight real $16\times16$ Dirac matrices of the 7+1 spacetime (contravariant index) | taken | `gamma1671` |
+| $\gamma_{1644}^A$ | the eight real $16\times16$ Dirac matrices of the 4+4 spacetime | taken | `gamma1644` |
+| $\Sigma_{1671}^{AB}$ | $\tfrac14[\gamma_{1671}^A,\gamma_{1671}^B]$, the scaled commutators; they span $\mathfrak{so}(7,1)$ | taken | `Sigma1671` |
+| $\Sigma_{1644}^{AB}$ | $\tfrac14[\gamma_{1644}^A,\gamma_{1644}^B]$, the scaled commutators; they span $\mathfrak{so}(4,4)$ | taken | `Sigma1644` |
+| $\omega_{1671}$ | the product $\gamma_{1671}^0\cdots\gamma_{1671}^7$; real, $\omega_{1671}^2=-1$ | taken | `omega1671` |
+| $\omega_{1644}$ | the product $\gamma_{1644}^0\cdots\gamma_{1644}^7$; real chirality matrix of 4+4, $\mathrm{diag}(-1_8,+1_8)$ | taken | `omega1644` |
+| $C_{1671}^{+}$, $C_{1671}^{-}$ | $\gamma_{1671}^4$ and $\gamma_{1671}^4\omega_{1671}$; $C^{\pm}\gamma^A(C^{\pm})^{-1}=\pm(\gamma^A)^T$ | taken | `Cp1671` `Cm1671` |
+| $C_{1644}^{-}$, $C_{1644}^{+}$ | the products $\gamma^0\gamma^1\gamma^2\gamma^3$ and $\gamma^4\gamma^5\gamma^6\gamma^7$ of the 4+4 matrices; $C^{\mp}\gamma^A(C^{\mp})^{-1}=\mp(\gamma^A)^T$ | taken | `Cm1644` `Cp1644` |
+| $\beta_{1671}$, $\alpha_{1671}^j$ | the real symmetric matrices $\gamma_{1671}^4$ and $\gamma_{1671}^4\gamma_{1671}^j$ (seven space indices $j$) of the Hamiltonian. In Revision\_NoGo only $j=1,2,3$ occurs. | taken | `beta1671` `alpha1671` |
+| $\beta_{1644}$, $\alpha_{1644}^j$ | the Hermitian matrices $-i\gamma_{1644}^4$ and $-\gamma_{1644}^4\gamma_{1644}^j$ ($j=0,1,2,3$) of the quantized 4+4 theory. In Revision\_NoGo only $j=1,2,3$ occurs. | taken | `beta1644` `alpha1644` |
+| $\tau_{1671}^A$ | the real $8\times8$ matrices of the 7+1 construction: $\tau_{1671}^4=1_8$, the other seven represent the imaginary octonion units | taken | `tau1671` |
+| $\tau_{1644}^A$, $\bar\tau_{1644}^A$ | the real $8\times8$ blocks of the 4+4 Dirac matrices (reduced generators of the split octonion algebra) | taken | `tau1644` `taubar1644` |
+| $\psi_{1671}$ | the field dirac1671: 16 complex Grassmann components on the 7+1 spacetime; $(i\gamma_{1671}^A\partial_A-m_{1671})\psi_{1671}=0$ | taken | `dirac1671` |
+| $\psi_{1644}$ | the field dirac1644: 16 complex Grassmann components on the 4+4 spacetime; $(\gamma_{1644}^A\partial_A-m_{1644})\psi_{1644}=0$ | taken | `dirac1644` |
+| $m_{1671}$ | mass of the field dirac1671 | taken | `m1671` |
+| $m_{1644}$ | mass of the field dirac1644 | taken | `m1644` |
+| $u_{\rm NG}(A)$ | on $7+1$: the index of the octonion unit attached to the coordinate $xA$, $u_{\rm NG}(4)=0$, $u_{\rm NG}(j)=j$ ($j=1,2,3$), $u_{\rm NG}(0)=4$, $u_{\rm NG}(t)=t$ ($t=5,6,7$) | new |  |
+| $\Gamma^A_{71\rm NG}$, $\Gamma^A_{44\rm NG}$; $\Gamma^K_{71\rm NG}$, $\Gamma^K_{44\rm NG}$ | the octonionic $16\times16$ Dirac matrices: on $7+1$, $\Gamma^4_{71\rm NG}=\begin{pmatrix}0&\mathsf 1_8\\\mathsf 1_8&0\end{pmatrix}$ and $\Gamma^A_{71\rm NG}=\begin{pmatrix}-L_{\rm NG}(\mathsf e_{u_{\rm NG}(A)})&0\\0&L_{\rm NG}(\mathsf e_{u_{\rm NG}(A)})\end{pmatrix}$ for $A\ne4$, with $\Gamma^A_{71\rm NG}\Gamma^C_{71\rm NG}+\Gamma^C_{71\rm NG}\Gamma^A_{71\rm NG}=2\eta^{AC}_{1671}\mathsf 1_{16}$; on $4+4$, $\Gamma^A_{44\rm NG}=\begin{pmatrix}0&L_{\rm NG}(\bar{\mathsf e}_A)\\L_{\rm NG}(\mathsf e_A)&0\end{pmatrix}$ with the Clifford relations of $\eta_{1644}$; $\Gamma^K_{71\rm NG}$, $\Gamma^K_{44\rm NG}$ are their ordered products over an index set $K$ | new | `Gamma71oct` `Gamma44oct` `Gamma_oct` |
+| $\mathcal I_{71\rm NG}$, $\mathcal I_{44\rm NG}$; $\mathsf U_{\rm NG}$ | the integer intertwiners $\mathcal I_{71\rm NG}=\sum_K\Gamma^K_{71\rm NG}\mathsf U_{\rm NG}(\gamma^K_{1671})^{-1}$ (sum over the 256 index sets), with $\mathcal I_{71\rm NG}\gamma^A_{1671}=\Gamma^A_{71\rm NG}\mathcal I_{71\rm NG}$, and $\mathcal I_{44\rm NG}$, the same sum with $\Gamma^K_{44\rm NG}$ and $\gamma^K_{1644}$; $\mathsf U_{\rm NG}$ is a fixed $16\times16$ matrix with one entry 1 and all others 0 | new | `I1671` `I1644` `I` |
+| $\omega^{\rm 4D}_{\rm NG}$, $\omega^{\rm int}_{\rm NG}$ | the products $\gamma^1_{\rm NG}\gamma^2_{\rm NG}\gamma^3_{\rm NG}\gamma^4_{\rm NG}$ of the four matrices of the world and $\gamma^0_{\rm NG}\gamma^5_{\rm NG}\gamma^6_{\rm NG}\gamma^7_{\rm NG}$ of the four matrices of the fibre | new | `omega4` `omega_int` |
+| $\mathsf A_{\rm NG}$ | the Dirac conjugation matrix, $\mathsf A_{\rm NG}\Sigma^{AB}_{\rm NG}\mathsf A_{\rm NG}^{-1}=-(\Sigma^{AB}_{\rm NG})^\dagger$ for all 28 generators: $\gamma^4_{1671}$ on $7+1$, $\gamma^4_{1644}\gamma^5_{1644}\gamma^6_{1644}\gamma^7_{1644}$ on $4+4$ | new | `A8` |
+
+**3 Octonions, split octonions and triality**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\mathbb H_{\rm NG}$ | the quaternions: real combinations of $\mathsf e_0,\mathsf e_1,\mathsf e_2,\mathsf e_3$ with $\mathsf e_1^2=\mathsf e_2^2=\mathsf e_3^2=-1$, $\mathsf e_1\mathsf e_2=-\mathsf e_2\mathsf e_1=\mathsf e_3$ and cyclic permutations (plain text: Im H its imaginary part, H l the set $\mathbb H_{\rm NG}\mathsf e_4$) | new | `H` |
+| $\mathsf e_0,\dots,\mathsf e_7$; $\mathsf e_p$, $\mathsf e_A$, $\mathsf e_j$, $\mathsf e_{u_{\rm NG}(A)}$ | the basis of the octonions and of the split octonions, also called 1, i, j, k, l, il, jl, kl: $\mathsf e_0=1$, $\mathsf e_1,\mathsf e_2,\mathsf e_3$ the imaginary quaternion units (as pairs $(\mathsf e_p,0)$), $\mathsf e_4=(0,1)$, $\mathsf e_5=(0,\mathsf e_1)$, $\mathsf e_6=(0,\mathsf e_2)$, $\mathsf e_7=(0,\mathsf e_3)$ | new | `e0` `e1` `e2` `e3` `e4` `e5` `e6` `e7` `e_A` `1` `i` `j` `k` `l` `il` `jl` `kl` |
+| $\mathsf x$, $\mathsf y$, $\mathsf z$, $\mathsf w$; $\mathsf x^p$; $\mathsf x_1$, $\mathsf x_2$, $\mathsf y_1$, $\mathsf y_2$; $\mathsf e$, $\mathsf f$ | elements of the algebras (octonions, split octonions or quaternions); $\mathsf x^p$ the real coefficients of $\mathsf x=\sum_p\mathsf x^p\mathsf e_p$; $(\mathsf x_1,\mathsf x_2)=\mathsf x_1+\mathsf x_2\mathsf e_4$ the pair of quaternions that represents an element of the doubled algebra; $\mathsf e$, $\mathsf f$ two imaginary units; in Sec. VI, $\mathsf x$, $\mathsf y$, $\mathsf z$ are generators of a superalgebra | new | `x` `y` `z` |
+| $\bar{\mathsf x}$ | the conjugate of $\mathsf x$: the signs of $\mathsf e_1,\dots,\mathsf e_7$ are changed; $\overline{(\mathsf x_1,\mathsf x_2)}=(\bar{\mathsf x}_1,-\mathsf x_2)$ | new | `conj(x)` |
+| $\varsigma_{\rm NG}$ | the sign in the Cayley-Dickson product $(\mathsf x_1,\mathsf x_2)(\mathsf y_1,\mathsf y_2)=(\mathsf x_1\mathsf y_1+\varsigma_{\rm NG}\bar{\mathsf y}_2\mathsf x_2,\ \mathsf y_2\mathsf x_1+\mathsf x_2\bar{\mathsf y}_1)$: $-1$ for the octonions, $+1$ for the split octonions | new | `varsigma` |
+| $\mathbb O_{\rm NG}$, $\mathbb O'_{\rm NG}$; $\mathbb A_{\rm NG}$ | the octonions ($\varsigma_{\rm NG}=-1$, $\mathsf e_4^2=-1$) and the split octonions ($\varsigma_{\rm NG}=+1$, $\mathsf e_4^2=+1$); $\mathbb A_{\rm NG}$ denotes either | new | `O_NG` `Os_NG` `O` `Os` |
+| $N_{\rm NG}$; $\langle\mathsf x,\mathsf y\rangle_{\rm NG}$ | the norm $N_{\rm NG}(\mathsf x)=\mathsf x\bar{\mathsf x}$, $\sum_{p=0}^7(\mathsf x^p)^2$ in $\mathbb O_{\rm NG}$ and $\sum_{p=0}^3(\mathsf x^p)^2-\sum_{p=4}^7(\mathsf x^p)^2$ in $\mathbb O'_{\rm NG}$, and its polarization, the scalar product with $\langle\mathsf x,\mathsf x\rangle_{\rm NG}=N_{\rm NG}(\mathsf x)$ (plain text: $\langle\mathsf x,\mathsf y\rangle_{\rm NG}$ is written <x,y>) | new | `N` |
+| $(\mathsf x,\mathsf y,\mathsf z)$; $[\mathsf x,\mathsf y]$ | the associator $(\mathsf x\mathsf y)\mathsf z-\mathsf x(\mathsf y\mathsf z)$ and the commutator $\mathsf x\mathsf y-\mathsf y\mathsf x$ of elements of an algebra | new |  |
+| $\mathrm{Jac}_{\rm NG}$ | the Jacobiator $\mathrm{Jac}_{\rm NG}(\mathsf x,\mathsf y,\mathsf z)=[[\mathsf x,\mathsf y],\mathsf z]+[[\mathsf y,\mathsf z],\mathsf x]+[[\mathsf z,\mathsf x],\mathsf y]$; it vanishes in every Lie algebra | new | `Jac` |
+| $\rho_{\rm NG}$ | a linear map from the imaginary (split) octonions to the linear operators on a vector space that turns commutators into commutators (Theorem 1) | new |  |
+| $L_{\rm NG}(\mathsf x)$ | the left multiplication $\mathsf y\mapsto\mathsf x\mathsf y$, an $8\times8$ matrix | new | `L_e1` `L_e7` `L_e_A` `L_conj(e_A)` `L_l` `L` |
+| $\mathsf D$; $\mathsf D_1$, $\mathsf D_2$; $\mathrm{Der}(\mathbb A_{\rm NG})$ | derivations: linear maps with $\mathsf D(\mathsf x\mathsf y)=(\mathsf D\mathsf x)\mathsf y+\mathsf x(\mathsf D\mathsf y)$; $\mathrm{Der}(\mathbb A_{\rm NG})$ is the Lie algebra of all derivations (dimension 14) | new | `delta` `Der` |
+| $B_{\rm NG}$ | the Killing form of the derivation algebra, $B_{\rm NG}(\mathsf D_1,\mathsf D_2)=\mathrm{tr}(\mathrm{ad}\,\mathsf D_1\,\mathrm{ad}\,\mathsf D_2)$, with $\mathrm{ad}\,\mathsf D_1$ the matrix of the map $\mathsf D\mapsto[\mathsf D_1,\mathsf D]$ | new |  |
+| $\mathfrak g_2$, $\mathrm G_2$ | the exceptional Lie algebra of dimension 14 (compact for $\mathbb O_{\rm NG}$, split for $\mathbb O'_{\rm NG}$) and the compact group of automorphisms of the octonions | new | `g2` `G2` `Aut(O)` |
+| $\mathfrak{so}(N_{\rm NG})$ | the Lie algebra of the linear maps $\mathsf m$ of an algebra with $\langle\mathsf m\mathsf x,\mathsf y\rangle_{\rm NG}+\langle\mathsf x,\mathsf m\mathsf y\rangle_{\rm NG}=0$: $\mathfrak{so}(8)$ for the octonions, $\mathfrak{so}(4,4)$ for the split octonions | new | `so(N)` |
+| $\mathsf m$, $\mathsf m_1$, $\mathsf m_2$, $\mathsf m_3$ | elements of $\mathfrak{so}(N_{\rm NG})$; local triality: $\mathsf m_1(\mathsf x\mathsf y)=(\mathsf m_2\mathsf x)\mathsf y+\mathsf x(\mathsf m_3\mathsf y)$ for all $\mathsf x$, $\mathsf y$ (plain text LT: this system of equations) | new | `m1` `m2` `m3` `LT` |
+| $T^{(2)}_{\rm NG}$, $T^{(3)}_{\rm NG}$ | the triality maps $\mathsf m_1\mapsto\mathsf m_2$ and $\mathsf m_1\mapsto\mathsf m_3$, outer automorphisms of $\mathfrak{so}(N_{\rm NG})$ of order two | new | `T2` `T3` |
+| $\mathsf r_{01}$ | the generator of rotations in the plane of $\mathsf e_0$ and $\mathsf e_1$: $\mathsf r_{01}\mathsf e_1=\mathsf e_0$, $\mathsf r_{01}\mathsf e_0=-\mathsf e_1$, zero on the other six units | new | `r01` |
+| $\lambda_{\rm NG}$ | the variable of characteristic polynomials, $\det(\lambda_{\rm NG}\mathsf 1_8-\mathsf m)$ | new | `lambda` |
+| $\kappa_{\rm NG}$; $\mathrm{Ad}\,\kappa_{\rm NG}$ | the conjugation $\mathsf x\mapsto\bar{\mathsf x}$ (a reflection), and the automorphism $\mathsf m\mapsto\kappa_{\rm NG}\mathsf m\kappa_{\rm NG}$ that it induces | new | `kappa` |
+| $\vartheta_{\rm NG}$ | the triality automorphism of order three, $\vartheta_{\rm NG}=T^{(2)}_{\rm NG}\circ\mathrm{Ad}\,\kappa_{\rm NG}$ | new | `vartheta` |
+| $V_{\rm NG}$, $S^+_{\rm NG}$, $S^-_{\rm NG}$ | the three eight-dimensional representations of the rotation algebra of eight dimensions: the vectors and the two kinds of half-spinors ($S^\pm_{\rm NG}$ also the two real halves of the spinors of $4+4$) | new | `S+` `S-` |
+| $\phi_{\rm NG}$, $\phi^{\rm mix}_{\rm NG}$ | the associative three-form $\phi_{\rm NG}(\mathsf x,\mathsf y,\mathsf z)=\langle\mathsf x,\mathsf y\mathsf z\rangle_{\rm NG}$ on the imaginary octonions, and its part with one unit of ordinary space and two of the fibre | new | `phi` `phi_mixed` |
+
+**4 The no-go theorems and the superalgebras**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| H0, \dots, H8 | the labels of the hypotheses of the no-go theorems (Table I) | new |  |
+| $\mathcal Q_{\rm NG}$, $\mathcal Q^{\rm NG}_l$; $\mathcal Q^{\rm NG}_{\mathsf v}$, $\mathsf v^l$ | supercharges (odd generators); $\mathcal Q^{\rm NG}_l$ the 16 supercharges of Sec. VI; $\mathcal Q^{\rm NG}_{\mathsf v}=\sum_l\mathsf v^l\mathcal Q^{\rm NG}_l$ a real combination with real coefficients $\mathsf v^l$ (plain text: Q+ and Q- are the supercharges of the two chiralities of $4+4$) | new | `Q` `Q+` `Q-` |
+| $\mathcal J^{AB}_{\rm NG}$ | the 28 Lorentz generators of the super-Poincaré algebra ($A<B$; $\mathcal J^{BA}_{\rm NG}=-\mathcal J^{AB}_{\rm NG}$) | new | `J` |
+| $\mathcal P^{\rm NG}_C$; $\vec{\mathcal P}_{\rm NG}$ | the eight momenta (translation generators); $\lvert\vec{\mathcal P}_{\rm NG}\rvert^2=\sum_{A\ne4}(\mathcal P^{\rm NG}_A)^2$ | new | `P` `P_C` `P_A` `P_4` |
+| $\mathcal R_{\rm NG}$ | the R-charge, the even generator that commutes with the Lorentz generators and the momenta and acts on the supercharges by $\omega_{\rm NG}$ | new | `Rch` |
+| $\mathsf Y^C_{\rm NG}$ | the symmetric matrices $2C^+_{\rm NG}\gamma^C_{\rm NG}$ of the anticommutator $\{\mathcal Q^{\rm NG}_l,\mathcal Q^{\rm NG}_{l'}\}=\sum_C(\mathsf Y^C_{\rm NG})_{ll'}\mathcal P^{\rm NG}_C$ | new | `Y^C` |
+| $\mathcal Z^K_{\rm NG}$ | the 128 tensorial charges of $7+1$ (index sets $K$ with 0, 4, 5 or 8 elements), which commute with the momenta and the supercharges | new | `Z_K` |
+| $\lvert\mathsf x\rvert$ | the degree of a generator $\mathsf x$ of a superalgebra: 1 for a supercharge, 0 otherwise | new |  |
+| $\varphi_{\rm NG}$ | the real parameter of a one-parameter group of transformations: a rotation angle, a rapidity, or the phase of the fermion number | new | `varphi` |
+| $v_{\rm NG}$ | the component $\mathcal P^{\rm NG}_1$ of the momentum of the figure of the superalgebras, whose component $\mathcal P^{\rm NG}_4$ is 1 | new | `v` |
+
+**5 The combined manifolds**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\mathcal M^{3,1}_{\rm NG}$ | the four-dimensional world of the combined manifolds: Minkowski spacetime with the coordinates $x1,x2,x3$ (space) and $x4$ (time) | new | `M(3,1)` `M` |
+| $\mathcal K_{\rm NG}$; $\mathcal K^4_{\rm NG}$, $\mathcal K^{1,3}_{\rm NG}$ | the fibre with the coordinates $x0,x5,x6,x7$: Euclidean on $7+1$ ($\mathcal K^4_{\rm NG}$), with one direction of each sign class on $4+4$ ($\mathcal K^{1,3}_{\rm NG}$: $\eta_{1644}=+1$ along $x0$, $-1$ along $x5,x6,x7$) | new | `K(4)` `K(1,3)` |
+| $R_{\rm NG}$ | the radius of a torus fibre (each of its four circles has the circumference $2\pi R_{\rm NG}$) | new | `R` |
+| $n^a_{\rm NG}$; $n^{\max}_{\rm NG}$ | the integers that label the Kaluza-Klein modes $\exp(i\sum_an^a_{\rm NG}x^a/R_{\rm NG})$ on a torus fibre; $n^{\max}_{\rm NG}$ a bound on $\lvert n^a_{\rm NG}\rvert$ | new | `n` `n_a` `n0` `n5` `n6` `n7` `Nmax` |
+| $m^{\rm eff}_{\rm NG}$ | the four-dimensional mass of a Kaluza-Klein mode: $(m^{\rm eff}_{\rm NG})^2=m_{1671}^2+\sum_a(n^a_{\rm NG})^2/R_{\rm NG}^2$ on $7+1$, $m_{1644}^2+[(n^0_{\rm NG})^2-\sum_t(n^t_{\rm NG})^2]/R_{\rm NG}^2$ on $4+4$ | new | `m_eff` |
+| $\varepsilon_{\rm NG}$ | the energy $(q^2+m_{\rm NG}^2)^{1/2}$ of a particle of momentum $\vec q$ in the four-dimensional world (with $m^{\rm eff}_{\rm NG}$ in place of $m_{\rm NG}$ for a Kaluza-Klein mode) | new | `eps` |
+
+**6 The spin-zero superfluid**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\Delta_{1644}^{A}$, $\Delta_{1671}^{A}$ | the vector pair operators $\psi^TC^{-}\gamma^A\psi$ of each spacetime | taken | `V^A` `V^B` |
+| $\Delta_{1671}^{AB}$ | the two-form pair operators $\psi^TC^{+}\gamma^A\gamma^B\psi$ of the 7+1 spacetime | taken | `DeltaT1671` |
+| $\mathsf h_{\rm NG}(\vec q)$ | the Hamiltonian matrix $\sum_j\alpha^j_{\rm NG}q^j+\beta_{\rm NG}m_{\rm NG}$ of a plane wave of momentum $\vec q$ in the four-dimensional world, $i\partial_4\psi_{\rm NG}=\mathsf h_{\rm NG}\psi_{\rm NG}$; eigenvalues $\pm\varepsilon_{\rm NG}$, eight times each | new | `h(q)` |
+| $\mathsf K_{\rm NG}$; $\mathsf K^a_{\rm NG}$, $\mathsf K^{ab}_{\rm NG}$ | a $16\times16$ matrix of a pair $\psi^T_{\rm NG}\mathsf K_{\rm NG}\psi_{\rm NG}$; the isotropic spin-zero channels $\mathsf K^a_{\rm NG}=C^-_{\rm NG}\gamma^a_{\rm NG}$ (fibre vector) and $\mathsf K^{ab}_{\rm NG}=C^+_{\rm NG}\gamma^a_{\rm NG}\gamma^b_{\rm NG}$ (fibre two-form) | new |  |
+| $\Xi^{ab}_{\rm NG}$ | the two-form pair operators of $4+4$, $\psi^T_{1644}C^+_{1644}\gamma^a_{1644}\gamma^b_{1644}\psi_{1644}$ | new |  |
+| $\psi^1_{\rm NG}$, $\psi^2_{\rm NG}$; $\Phi^{\rm D}_{\rm NG}$ | two copies of the field $\psi_{1671}$ (the doublet) and their fibre-singlet spin-zero pair $\Phi^{\rm D}_{\rm NG}=2(\psi^1_{\rm NG})^TC^+_{1671}\psi^2_{\rm NG}$ | new |  |
+| $G_{\rm NG}$, $G^{\rm D}_{\rm NG}$, $G^{\rm crit}_{\rm NG}$ | the coupling of the eight-dimensional vector-pair interaction (dimension mass$^{-2}$ in the four-dimensional world), the coupling of the doublet channel, and the critical coupling above which the vacuum condenses (plain text G4f in check R-1: a four-fermion coupling in general) | new | `G` `G_crit` `G4f` `G^crit` `G^D` |
+| $\mathcal H^{\rm V}_{\rm NG}$, $\mathcal H^{\rm int}_{\rm NG}$, $\mathcal H^{\rm D}_{\rm NG}$, $\mathcal H^{\rm MF}_{\rm NG}$ | Hamiltonian densities: the eight-dimensionally Lorentz-invariant interaction $\tfrac14G_{\rm NG}\sum_{A,B}\eta^{AB}_{1671}(\Delta^A_{1671})^\dagger\Delta^B_{1671}$ of the vector pairs (and the same on $4+4$), its attractive spin-zero part, the interaction $-\tfrac14G^{\rm D}_{\rm NG}(\Phi^{\rm D}_{\rm NG})^\dagger\Phi^{\rm D}_{\rm NG}$ of the doublet, and the mean-field Hamiltonian density | new |  |
+| $\Delta^a_{\rm NG}$, $\Delta^{ab}_{\rm NG}$, $\Delta^{\rm D}_{\rm NG}$; $\lvert\Delta_{\rm NG}\rvert$ | the pair amplitudes (complex numbers) of the mean-field theory, $\Delta^a_{\rm NG}=\tfrac12G_{\rm NG}\langle\psi^T_{\rm NG}\mathsf K^a_{\rm NG}\psi_{\rm NG}\rangle$ and likewise for the two-form and the doublet; $\lvert\Delta_{\rm NG}\rvert^2$ the sum of the squared moduli of the components; for an isotropic state $\lvert\Delta_{\rm NG}\rvert$ is the gap | new | `Delta` `Delta^0` `Delta^5` `Delta_0` `Delta_0a` |
+| $\mu_{\rm NG}$ | the chemical potential, which fixes the density of fermions | new | `mu` |
+| $\mathcal N_{\rm NG}(\vec q)$ | the Nambu spinor of 32 components, $(\psi_{\rm NG}(\vec q),\psi_{\rm NG}(-\vec q)^{\dagger T})$, for the doublet $(\psi^1_{\rm NG}(\vec q),\psi^2_{\rm NG}(-\vec q)^{\dagger T})$ | new |  |
+| $\mathsf H_{\rm NG}(\vec q)$; $\mathsf P_{\rm NG}$ | the $32\times32$ Bogoliubov-de Gennes matrix $\begin{pmatrix}\mathsf h_{\rm NG}(\vec q)-\mu_{\rm NG}&\mathsf P_{\rm NG}\\\mathsf P_{\rm NG}^\dagger&-(\mathsf h_{\rm NG}(-\vec q)-\mu_{\rm NG})^T\end{pmatrix}$ and its pairing block, $\mathsf P_{\rm NG}=-\sum_a\Delta^a_{\rm NG}(\mathsf K^a_{\rm NG})^\dagger$ (for the doublet $\Delta^{\rm D}_{\rm NG}(C^+_{1671})^*$) | new |  |
+| $\Omega_{\rm NG}$ | the grand potential per volume at zero temperature (effective potential of the superfluid), up to terms that do not depend on the pair amplitudes | new | `Omega` |
+| $\mathcal E_{\rm NG}$ | an eigenvalue of $\mathsf H_{\rm NG}(\vec q)$ | new |  |
+| $E^\pm_{\rm NG}$ | the quasi-particle energies of an isotropic state, $[(\varepsilon_{\rm NG}\pm\mu_{\rm NG})^2+\lvert\Delta_{\rm NG}\rvert^2]^{1/2}$ | new | `E^+` `E^-` `E^(+-)` |
+| $E^{(1)\pm}_{\rm NG}$ | the quasi-particle energies of the spin-one state, $(E^{(1)\pm}_{\rm NG})^2=\varepsilon_{\rm NG}^2+\mu_{\rm NG}^2+\lvert\Delta_{\rm NG}\rvert^2\pm2[\mu_{\rm NG}^2\varepsilon_{\rm NG}^2+\lvert\Delta_{\rm NG}\rvert^2(q^1)^2]^{1/2}$ | new | `E_(+-)` |
+| $\nu_{\rm NG}$ | the factor 4 (one field) or 8 (doublet) of the isotropic grand potential $\lvert\Delta_{\rm NG}\rvert^2/G_{\rm NG}-\nu_{\rm NG}\int d^3q\,(2\pi)^{-3}(E^+_{\rm NG}+E^-_{\rm NG})$ | new | `nu` |
+| $\Lambda_{\rm NG}$ | the momentum cutoff: momentum integrals of the four-dimensional world are cut off at $\lvert\vec q\rvert=\Lambda_{\rm NG}$ (Euclidean four-momenta at $\varkappa_{\rm NG}=\Lambda_{\rm NG}$); $\Lambda_{\rm NG}=1$ sets the units | new | `Lambda` |
+| $\upsilon_{\rm NG}$, $\zeta_{\rm NG}$ | the angle of the non-unitary vector states $\Delta^0_{\rm NG}=\lvert\Delta_{\rm NG}\rvert\cos\upsilon_{\rm NG}$, $\Delta^5_{\rm NG}=i\lvert\Delta_{\rm NG}\rvert\sin\upsilon_{\rm NG}$, and $\zeta_{\rm NG}=\lvert\sin2\upsilon_{\rm NG}\rvert$ | new | `ups` `zeta` |
+| $\hat n_{\rm NG}$ | the unit vector in ordinary space along which a spin-one pair points | new |  |
+| $q^{\rm F}_{\rm NG}$ | the Fermi momentum $(\mu_{\rm NG}^2-m_{\rm NG}^2)^{1/2}$ for $\mu_{\rm NG}>m_{\rm NG}$ | new | `q_F` |
+| $\xi_{\rm NG}$ | the energy $\varepsilon_{\rm NG}\pm\mu_{\rm NG}$ of a particle (or hole) measured from the chemical potential | new |  |
+| $\delta_{\rm NG}$, $w_{\rm NG}$ | the small real amplitude and the frequency of an oscillation $\lvert\Delta_{\rm NG}\rvert+\delta_{\rm NG}\exp(-iw_{\rm NG}x4)$ of the gap | new | `w` |
+| $\Pi^{\rm A}_{\rm NG}$; $c^\sigma_{\rm NG}$; $m^\sigma_{\rm NG}$ | the inverse propagator of the amplitude oscillation (random-phase approximation), $\Pi^{\rm A}_{\rm NG}(w_{\rm NG})=(4\lvert\Delta_{\rm NG}\rvert^2-w_{\rm NG}^2)c^\sigma_{\rm NG}(w_{\rm NG})$ with $c^\sigma_{\rm NG}(w_{\rm NG})=\tfrac12\nu_{\rm NG}\int d^3q\,(2\pi)^{-3}\sum_\pm\{E^\pm_{\rm NG}[4(E^\pm_{\rm NG})^2-w_{\rm NG}^2]\}^{-1}$; the mass $m^\sigma_{\rm NG}=2\lvert\Delta_{\rm NG}\rvert$ of the amplitude mode | new | `Pi_A` `Pi^A` `c_sigma` `m_sigma` |
+| $\mathcal T^{ab}_{\rm NG}$ | the generator of rotations of the fibre in the plane of $xa$ and $xb$ ($a<b$); it changes $\Delta^a_{\rm NG}$ by $-\Delta^b_{\rm NG}$ and $\Delta^b_{\rm NG}$ by $+\Delta^a_{\rm NG}$ per unit parameter (plain text: Rot(0,5) is $\mathcal T^{05}_{\rm NG}$) | new | `Rot` |
+| $F_{\rm NG}$ | the generator of the fermion number $\psi_{\rm NG}\to\exp(i\varphi_{\rm NG})\psi_{\rm NG}$; it multiplies every pair amplitude by $2i$ (plain text: U(1)\_F is its group) | new | `F` |
+
+**7 Power counting and the Kaluza-Klein tower**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\deg_{\rm NG}$ | the superficial degree of divergence of a one-particle-irreducible graph: the power of the cutoff with which it grows when all its loop momenta are large | new | `deg` |
+| $e^{\rm F}_{\rm NG}$, $e^{\rm B}_{\rm NG}$ | the numbers of external fermion and boson lines of a graph | new |  |
+| $\mathcal V_{\rm NG}$ | the number of vertices of a graph | new | `nvert` |
+| $\ell_{\rm NG}$; $\mathrm r_4$ | the squared length $\sum_a(n^a_{\rm NG})^2$ of the integer vector of a Kaluza-Klein mode on the torus fibre, and the number $\mathrm r_4(\ell_{\rm NG})$ of integer vectors of four components with that squared length (Jacobi: 8 times the sum of the divisors of $\ell_{\rm NG}$ that are not multiples of 4; $\mathrm r_4(0)=1$) | new | `ell` `r4` |
+| $\varkappa_{\rm NG}$ | the Euclidean four-momentum of the world (and its length) in the one-loop bubble | new |  |
+| $f_{\rm NG}$ | the one-loop bubble of one four-dimensional field as a function of its squared mass, $f_{\rm NG}((m^{\rm eff}_{\rm NG})^2)=\int_{\varkappa_{\rm NG}<\Lambda_{\rm NG}}d^4\varkappa_{\rm NG}(2\pi)^{-4}(\varkappa^2_{\rm NG}+(m^{\rm eff}_{\rm NG})^2)^{-2}$ | new | `f` |
+| $\mathcal B_{\rm NG}$ | the one-loop bubble summed over the Kaluza-Klein tower of a torus fibre up to the cutoff, $\sum_{\ell_{\rm NG}\le(\Lambda_{\rm NG}R_{\rm NG})^2}\mathrm r_4(\ell_{\rm NG})f_{\rm NG}(m_{1671}^2+\ell_{\rm NG}/R_{\rm NG}^2)$ | new | `B` |
+| $\mathcal C^{(8)}_{\rm NG}$; $\varpi_{\rm NG}$ | the coefficient of the eight-dimensional growth $\mathcal B_{\rm NG}\to(\Lambda_{\rm NG}R_{\rm NG})^4\mathcal C^{(8)}_{\rm NG}$, $\mathcal C^{(8)}_{\rm NG}=\tfrac18\int_0^1d\varpi_{\rm NG}\,\varpi_{\rm NG}^3[\ln(1+\varpi_{\rm NG}^{-2})-(1+\varpi_{\rm NG}^2)^{-1}]$, with the integration variable $\varpi_{\rm NG}$ (the length of the fibre momentum divided by $\Lambda_{\rm NG}$) | new | `C8` `u` |
+
+**8 Number sets, groups, operations and labels**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\mathbb R$, $\mathbb C$ | the real and the complex numbers | new |  |
+| $\mathfrak{so}(8)$, $\mathfrak{so}(7,1)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(1,3)$, $\mathfrak{so}(4)$, $\mathfrak{so}(3)$, $\mathfrak{so}(6,1)$, $\mathfrak{so}(4,3)$, $\mathfrak{su}(2)$ | Lie algebras of the linear maps that preserve a quadratic form: $\mathfrak{so}(8)$ for a definite form in eight dimensions, $\mathfrak{so}(7,1)$ and $\mathfrak{so}(4,4)$ for the metrics $\eta_{1671}$ and $\eta_{1644}$, $\mathfrak{so}(3,1)$ for the world, $\mathfrak{so}(4)$ and $\mathfrak{so}(1,3)$ for the fibres of $7+1$ and $4+4$, $\mathfrak{so}(3)$ for ordinary space, $\mathfrak{so}(6,1)$ and $\mathfrak{so}(4,3)$ for the directions orthogonal to a fibre vector on $7+1$ and on $4+4$, $\mathfrak{so}(8,\mathbb C)$ for a complex form in eight dimensions; $\mathfrak{su}(2)$ is the Lie algebra of the special unitary group of two dimensions (plain text gl(8): all real $8\times8$ matrices) | new | `so(8)` `so(7,1)` `so(4,4)` `so(3,1)` `so(1,3)` `so(4)` `so(3)` `so(6,1)` `so(4,3)` `su(2)` `gl(8)` |
+| $SO(2)$, $SO(3)$, $SO(4)$, $SO(1,1)$, $U(1)$, $SU(2)$ | the rotation groups, the group of phases and the special unitary group of two dimensions (plain text: U(1)\_R and SO(1,1)\_R are the groups of the R-symmetry of $7+1$ and $4+4$, U(1)\_F the group of the fermion number, Sym(3) the group of permutations of three objects, O(N) the group that preserves the norm $N_{\rm NG}$, Z2 the group of two elements; a Z2 grading splits an algebra into an even and an odd part) | new | `SO(2)` `SO(3)` `SO(4)` `U(1)` `SU(2)` `U(1)_R` `SO(1,1)_R` `U(1)_F` `Sym(3)` `O(N)` `Z2` |
+| $\mathrm{tr}$, $\det$, $\mathrm{diag}$, $\mathrm{Re}$ | trace, determinant, diagonal matrix with the listed entries, real part (plain text: Im is the imaginary part, of an algebra the set of its imaginary elements; span the set of real linear combinations; ln, sqrt, sin, cos the natural logarithm, the square root, sine and cosine; int and sum an integral and a sum; dim a dimension) | new | `tr` `det` `diag` `Re` `Im` `span` `ln` `sqrt` `sin` `cos` `int` `sum` `dim` |
+| ${}^T$, ${}^\dagger$, ${}^*$; $[\ ,\ ]$, $\{\ ,\ \}$, $[\ ,\ \}$; $\langle\ \rangle$; $\otimes$; h.c. | transpose, Hermitian conjugate, complex conjugate (for operators: the Hermitian conjugate of each component); commutator, anticommutator and graded bracket (anticommutator of two odd generators, commutator otherwise); expectation value in the ground state; tensor product; the Hermitian conjugate of the preceding terms | new |  |

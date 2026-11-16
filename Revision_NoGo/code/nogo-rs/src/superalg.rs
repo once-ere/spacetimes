@@ -3,17 +3,19 @@
 //! charges that commute with all translations but are NOT Lorentz scalars.
 //!
 //! The real Lie superalgebra (basis and brackets; X_k = generator of so(eta) in the
-//! vector representation, S_k = (1/2) gamma_A gamma_B its spinor image, k <-> (A, B)):
+//! vector representation, S_k = (1/2) eta_AA eta_BB gamma^A gamma^B its spinor image,
+//! k <-> (A, B); J_k = the Lorentz generators of the superalgebra, Rch = the R-charge,
+//! Y^C = 2 C+ gamma^C):
 //!
-//!     [M_k, M_l]       = M_[X_k, X_l]
-//!     [M_k, P_C]       = sum_D (X_k)^D_C P_D
-//!     [M_k, Q_alpha]   = sum_beta (S_k)_(beta alpha) Q_beta
-//!     {Q_alpha, Q_beta} = sum_C (Gamma^C)_(alpha beta) P_C  [+ sum_K (C+ gamma^K)_(alpha beta) Z_K]
-//!     [R, Q_alpha]     = sum_beta (W)_(beta alpha) Q_beta,   W = omega
-//!     [M_k, Z_K], [R, Z_K]: the representations forced by the Jacobi identity
+//!     [J_k, J_l]       = J_[X_k, X_l]
+//!     [J_k, P_C]       = sum_D (X_k)^D_C P_D
+//!     [J_k, Q_alpha]   = sum_beta (S_k)_(beta alpha) Q_beta
+//!     {Q_alpha, Q_beta} = sum_C (Y^C)_(alpha beta) P_C  [+ sum_K (C+ gamma^K)_(alpha beta) Z_K]
+//!     [Rch, Q_alpha]   = sum_beta (omega)_(beta alpha) Q_beta
+//!     [J_k, Z_K], [Rch, Z_K]: the representations forced by the Jacobi identity
 //!     all other brackets zero,
 //!
-//! with Gamma^C = 2 C+ gamma^C (symmetric).  The command builds the complete table
+//! with Y^C = 2 C+ gamma^C (symmetric).  The command builds the complete table
 //! of brackets of basis elements and checks the graded Jacobi identity
 //!
 //!     (-1)^(|x||z|) [x,[y,z]] + (-1)^(|y||x|) [y,[z,x]] + (-1)^(|z||y|) [z,[x,y]] = 0
@@ -25,10 +27,10 @@
 //! structure constant is a multiple of 1/4 of modulus below 2^20).
 //!
 //! 7+1 (16 real supercharges, U(1) R-symmetry, omega^2 = -1): the anticommutator
-//! sum_C Gamma^C P_C has eigenvalues 2 (P_4 +- |P|): positive exactly in the forward
+//! sum_C Y^C P_C has eigenvalues 2 (P_4 +- |P|): positive exactly in the forward
 //! cone (unitary positive-energy representations exist).
 //! 4+4 (Majorana-Weyl supercharges Q+ and Q-, R-symmetry SO(1,1) since
-//! omega1644^2 = +1): every Gamma^C is traceless, so sum_C Gamma^C P_C is never
+//! omega1644^2 = +1): every Y^C is traceless, so sum_C Y^C P_C is never
 //! positive semi-definite for P != 0: no unitary representation with P != 0.
 
 use crate::checks::Checks;
@@ -285,7 +287,7 @@ pub fn run() -> bool {
         let wsq_ok = if sig == Sig::S71 { w2 == id.neg() } else { w2 == id };
         ck.add(
             &format!("S-1 [{}]", t),
-            if sig == Sig::S71 { "C+ gamma^A is symmetric for all A (a symmetric anticommutator {Q, Q} = Gamma^C P_C exists); omega commutes with all Sigma^(AB) and omega^2 = -1: R = omega generates a COMPACT U(1)_R" } else { "C+ gamma^A is symmetric for all A; omega1644 commutes with all Sigma^(AB) and omega1644^2 = +1: R = omega generates a NON-COMPACT SO(1,1)_R (Q+ -> e^(-t) Q+, Q- -> e^(+t) Q-)" },
+            if sig == Sig::S71 { "C+ gamma^A is symmetric for all A (a symmetric anticommutator {Q, Q} = Y^C P_C with Y^C = 2 C+ gamma^C exists); omega commutes with all Sigma^(AB) and omega^2 = -1: the R-charge Rch = omega generates a COMPACT U(1)_R" } else { "C+ gamma^A is symmetric for all A; omega1644 commutes with all Sigma^(AB) and omega1644^2 = +1: the R-charge Rch = omega1644 generates a NON-COMPACT SO(1,1)_R (Q+ -> e^(-varphi) Q+, Q- -> e^(+varphi) Q-)" },
             sym && wcomm && wsq_ok,
             String::new(),
         );
@@ -304,7 +306,7 @@ pub fn run() -> bool {
             let label = if tens {
                 "the 7+1 superalgebra EXTENDED by the 128 tensorial charges Z_K (|K| = 0, 4, 5, 8; with P the 136 symmetric matrices C+ gamma^K): graded Jacobi identity on all triples (181 generators); the Z_K commute with P and Q but transform as Lorentz tensors (a McGlinn-type counterexample with an abelian, non-semisimple 'internal' algebra)"
             } else {
-                "graded Jacobi identity of the super-Poincare algebra M (28) + P (8) + Q (16) + R (1) on all 53^3 triples; R commutes with M and P (an internal symmetry) but rotates the supercharges, and {Q, Q} produces the translations: spacetime and internal symmetry are linked through the odd generators (Haag-Lopuszanski-Sohnius loophole)"
+                "graded Jacobi identity of the super-Poincare algebra J (28) + P (8) + Q (16) + Rch (1) on all 53^3 triples; Rch commutes with J and P (an internal symmetry) but rotates the supercharges, and {Q, Q} produces the translations: spacetime and internal symmetry are linked through the odd generators (Haag-Lopuszanski-Sohnius loophole)"
             };
             ck.add(
                 &format!("S-2{} [{}]", if tens { "b" } else { "a" }, t),
@@ -331,7 +333,7 @@ pub fn run() -> bool {
                 }
                 ck.add(
                     "S-3 [7+1]",
-                    "of the 128 tensorial charges, 56 (rank 5) are R-neutral and 72 (ranks 0, 4, 8) are rotated by R; the 126 charges of rank 4 and 5 are Lorentz tensors (commute with all P_C but not with M); only Z_() and Z_(01234567) are Lorentz scalars",
+                    "of the 128 tensorial charges, 56 (rank 5) are Rch-neutral and 72 (ranks 0, 4, 8) are rotated by Rch; the 126 charges of rank 4 and 5 are Lorentz tensors (commute with all P_C but not with J); only Z_() and Z_(01234567) are Lorentz scalars",
                     neutral == 56 && charged == 72 && z_lorentz_tensor == 126,
                     format!("neutral {}, charged {}, Lorentz tensors {}", neutral, charged, z_lorentz_tensor),
                 );
@@ -350,13 +352,13 @@ pub fn run() -> bool {
                         cl &= a.anti(&b) == if i == j { id.scale(2) } else { IMat::zeros(16, 16) };
                     }
                 }
-                ck.add("S-4 [7+1]", "positivity: Gamma^4 = 2 C+ gamma^4 = 2 and the seven matrices C+ gamma^i (i != 4) anticommute and square to 1, so sum_C Gamma^C P_C has eigenvalues 2 (P_4 +- |P|), |P|^2 = sum_(i != 4) P_i^2: positive semi-definite exactly when P lies in the closed forward cone", one && cl, String::new());
+                ck.add("S-4 [7+1]", "positivity: Y^4 = 2 C+ gamma^4 = 2 and the seven matrices C+ gamma^A (A != 4) anticommute and square to 1, so sum_C Y^C P_C has eigenvalues 2 (P_4 +- |P|), |P|^2 = sum_(A != 4) P_A^2: positive semi-definite exactly when P lies in the closed forward cone", one && cl, String::new());
             }
             Sig::S44 => {
                 let traceless = (0..8).all(|c| s.cp.mul(&s.g[c]).trace() == 0);
                 // chirality: Gamma^C anticommutes with omega -> pairs S+ with S-
                 let chiral = (0..8).all(|c| s.omega.mul(&s.cp.mul(&s.g[c])).add(&s.cp.mul(&s.g[c]).mul(&s.omega)).is_zero());
-                ck.add("S-4 [4+4]", "no positivity: every Gamma^C = 2 C+ gamma^C is traceless and nonzero, so sum_C Gamma^C P_C has a NEGATIVE eigenvalue for every P != 0 -- there is no unitary representation with Hermitian Q and P != 0; moreover omega Gamma^C = -Gamma^C omega: {Q, Q} pairs Q+ with Q- only", traceless && chiral, String::new());
+                ck.add("S-4 [4+4]", "no positivity: every Y^C = 2 C+ gamma^C is traceless and nonzero, so sum_C Y^C P_C has a NEGATIVE eigenvalue for every P != 0 -- there is no unitary representation with Hermitian Q and P != 0; moreover omega1644 Y^C = -Y^C omega1644: {Q, Q} pairs Q+ with Q- only", traceless && chiral, String::new());
             }
         }
         // eigenvalues of sum_C Gamma^C P_C for P = (P_4 = 1, P_1 = v), computed numerically
@@ -376,8 +378,8 @@ pub fn run() -> bool {
     }
     write_csv(
         "ng_superalgebra_positivity.csv",
-        &[("content", "smallest and largest eigenvalue of {Q, Q} = sum_C Gamma^C P_C for P = (P_4 = 1, P_1 = v, other components 0) on 7+1 and on 4+4 (numerical diagonalisation)".to_string()), ("signature", "71 = 7+1, 44 = 4+4".to_string())],
-        &["signature", "v", "lambda_min", "lambda_max"],
+        &[("content", "smallest and largest eigenvalue of {Q, Q} = sum_C Y^C P_C for P = (P_4 = 1, P_1 = v, other components 0) on 7+1 and on 4+4 (numerical diagonalisation)".to_string()), ("signature", "71 = 7+1, 44 = 4+4".to_string())],
+        &["signature", "v", "eig_min", "eig_max"],
         &pos_rows,
     )
     .expect("csv");

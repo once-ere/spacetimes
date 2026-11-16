@@ -1,0 +1,9 @@
+PROJECT spacetimes, Revision_NoGo: checks of the symbols (registry provenance/symbols_ng.csv)
+6 of 6 checks passed
+
+[PASS] NG-S1  every symbol text is registered once (115 entries) and every plain-text name of the programs, figures and data files belongs to one entry (219 names)
+[PASS] NG-S2  the 27 taken entries carry exactly the meaning of the MASTER registry from which they are taken (113 entries of the main project, 229 of the revision on the deflating spacetimes compared), and none of the 88 new symbols is a symbol of either master registry
+[PASS] NG-S3  every column of the 19 data files data/ng_*.csv is a registered plain-text name or a descriptive word (93 different columns), and every file states its content; 9 column names also occur as names in a master registry or as symbols of the author's notebooks (C, D, G, K, Lambda, mu, phase, q, v) - they cannot be confused, because every data file of Revision_NoGo has the prefix ng_ and a line '# content:', and the name means in it the registered symbol of Revision_NoGo
+[PASS] NG-S4  each of the 4 documents of Revision_NoGo (and the manuscript) contains the complete table of the 115 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] NG-S5  in the 1566 formulas of the documents, mu, Lambda, Omega, nu, Pi^A, G^crit and G^D always carry the suffix NG, and Delta the suffix NG or a tag 1671, 1644
+[PASS] NG-S6  in the 2019 formulas of the documents and of the new registry entries, no letter that a master registry defines with another meaning stands bare: every letter except the taken indices and sets (A, B, C, D, K, X, a, b, j, r, s, t), the new plain symbols (i, l, p, q) and the differential d carries the suffix NG or a tag 1671, 1644, x occurs only in the coordinate names, and the Greek letters carry their suffix

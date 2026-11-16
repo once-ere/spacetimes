@@ -479,7 +479,7 @@ pub fn run() -> bool {
                 }
             }
         }
-        ck.add(&format!("O-3 [{}]", nm), "composition N(xy) = N(x) N(y): polarised identity <ab,cd> + <ad,cb> = 2<a,c><b,d> on all 4096 basis quadruples", ok, String::new());
+        ck.add(&format!("O-3 [{}]", nm), "composition N(xy) = N(x) N(y), verified in its fully polarised form (linear in each of four arguments) on all 4096 quadruples of basis elements", ok, String::new());
         // O-4 alternativity (linearised): (a,b,c) + (b,a,c) = 0 and (a,b,c) + (a,c,b) = 0
         let mut ok = true;
         for a in 0..8 {
@@ -525,7 +525,7 @@ pub fn run() -> bool {
                 }
             }
         }
-        ck.add(&format!("O-7 [{}]", nm), "Jacobiator of the commutator J(x,y,z) = [[x,y],z] + [[y,z],x] + [[z,x],y] equals 6 (x,y,z) (all 512 basis triples)", ok, String::new());
+        ck.add(&format!("O-7 [{}]", nm), "Jacobiator of the commutator Jac(x,y,z) = [[x,y],z] + [[y,z],x] + [[z,x],y] equals 6 (x,y,z) (all 512 basis triples)", ok, String::new());
         // O-8 span of Jacobiators on Im = Im (rank 7)
         let mut rows: QMat = Vec::new();
         for a in 1..8 {
@@ -538,20 +538,20 @@ pub fn run() -> bool {
         }
         let rk = rank(&rows);
         let real_part_zero = rows.iter().all(|r| r[0].is_zero());
-        ck.add(&format!("O-8 [{}]", nm), "the Jacobiators J(e_a,e_b,e_c) (a,b,c = 1..7) span all of Im (rank 7): every linear representation of the commutator algebra (Im, [,]) by matrices vanishes identically", rk == 7 && real_part_zero, format!("rank = {}", rk));
+        ck.add(&format!("O-8 [{}]", nm), "the Jacobiators of all triples of imaginary basis units span all of Im (rank 7): every linear representation of the commutator algebra (Im, [,]) by matrices vanishes identically", rk == 7 && real_part_zero, format!("rank = {}", rk));
         // O-9 Malcev identity J(x, y, [x, z]) = [J(x, y, z), x]
         let mut ok = true;
         for _ in 0..2000 {
             let (x, y, z) = (rng.imag(), rng.imag(), rng.imag());
             ok &= alg.jacobiator(&x, &y, &alg.comm(&x, &z)) == alg.comm(&alg.jacobiator(&x, &y, &z), &x);
         }
-        ck.add(&format!("O-9 [{}]", nm), "Malcev identity J(x, y, [x,z]) = [J(x,y,z), x] on 2000 random imaginary integer triples (exact)", ok, String::new());
+        ck.add(&format!("O-9 [{}]", nm), "Malcev identity Jac(x, y, [x,z]) = [Jac(x,y,z), x] on 2000 random imaginary integer triples (exact)", ok, String::new());
         // O-10 derivations
         let (der, free) = derivations(alg);
         let ok_dim = der.len() == 14;
         let ok_kill1 = der.iter().all(|d| (0..8).all(|s| d[s][0].is_zero()));
         let ok_so = der.iter().all(|d| in_so_n(d, &alg.norm));
-        ck.add(&format!("O-10 [{}]", nm), "derivation algebra Der = { D : D(xy) = (Dx)y + x(Dy) } has dimension 14 (exact null space), D e0 = 0, D in so(N)", ok_dim && ok_kill1 && ok_so, format!("dim = {}", der.len()));
+        ck.add(&format!("O-10 [{}]", nm), "derivation algebra Der = { delta : delta(xy) = (delta x)y + x(delta y) } has dimension 14 (exact null space), delta e0 = 0, delta in so(N)", ok_dim && ok_kill1 && ok_so, format!("dim = {}", der.len()));
         // O-11 Killing form signature
         let kf = killing(&der, &free);
         let km = crate::rsym::RMat { n: 14, a: kf.iter().flatten().cloned().collect() };
@@ -584,7 +584,7 @@ pub fn run() -> bool {
                 }
             }
         }
-        ck.add(&format!("O-13 [{}]", nm), "Z2 grading A = H + H l: H H in H, H (H l) in H l, (H l) H in H l, (H l)(H l) in H; H = span(e0..e3) is a quaternion subalgebra", ok, String::new());
+        ck.add(&format!("O-13 [{}]", nm), "Z2 grading of the algebra = H + H l: H H in H, H (H l) in H l, (H l) H in H l, (H l)(H l) in H; H = span(e0..e3) is a quaternion subalgebra", ok, String::new());
         // multiplication table rows
         for a in 0..8 {
             for b in 0..8 {
@@ -625,20 +625,20 @@ pub fn run() -> bool {
         let rk256 = spacetimes::imat::rank(&cb);
         ck.add(
             &format!("O-15 [{}]", lab),
-            &format!("an invertible intertwiner S{} with S gamma{}[A] = Gamma_oct[A] S exists (Clifford-group average); the 256 monomials of gamma{} are independent, so the representation is irreducible and S is unique up to a factor", lab, lab, lab),
+            &format!("an invertible intertwiner I{} with I gamma{}[A] = Gamma_oct[A] I exists (Clifford-group average); the 256 monomials of gamma{} are independent, so the representation is irreducible and I is unique up to a factor", lab, lab, lab),
             ok && rk == 16 && rk256 == 256,
-            format!("rank S = {}, rank of the 256 monomials = {}", rk, rk256),
+            format!("rank I = {}, rank of the 256 monomials = {}", rk, rk256),
         );
         let rows: Vec<Vec<String>> = (0..16).map(|i| (0..16).map(|j| s.get(i, j).to_string()).collect()).collect();
-        let hdr: Vec<String> = (0..16).map(|j| format!("c{}", j)).collect();
+        let hdr: Vec<String> = (0..16).map(|j| format!("col{}", j)).collect();
         let hdr_ref: Vec<&str> = hdr.iter().map(|s| s.as_str()).collect();
-        write_csv_str(&format!("ng_intertwiner_{}.csv", lab), &[("content", format!("integer intertwiner S{} with S gamma{}[A] = Gamma_oct[A] S (A = 0..7), rows i = 0..15", lab, lab))], &hdr_ref, &rows).expect("csv");
+        write_csv_str(&format!("ng_intertwiner_{}.csv", lab), &[("content", format!("integer intertwiner I{} with I gamma{}[A] = Gamma_oct[A] I (A = 0..7); rows 0..15, columns col0..col15", lab, lab))], &hdr_ref, &rows).expect("csv");
     }
 
     write_csv_str(
         "ng_octonion_tables.csv",
-        &[("content", "multiplication tables of O_NG (g = -1) and Os_NG (g = +1): e_a e_b = sign * e_t".to_string()), ("basis", "e0..e7 = 1, i, j, k, l, il, jl, kl".to_string())],
-        &["algebra", "left", "right", "product", "a", "b", "t", "sign"],
+        &[("content", "multiplication tables of O_NG (varsigma = -1) and Os_NG (varsigma = +1): e_(idx_left) e_(idx_right) = sign * e_(idx_product)".to_string()), ("basis", "e0..e7 = 1, i, j, k, l, il, jl, kl".to_string())],
+        &["algebra", "left", "right", "product", "idx_left", "idx_right", "idx_product", "sign"],
         &table_rows,
     )
     .expect("csv");

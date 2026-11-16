@@ -5,16 +5,16 @@
 //! Model.  Zero modes on the internal fibre (d_a psi = 0, a in INT), single-particle
 //! Hamiltonian h(q) = alpha^j q_j + beta m (module sig.rs), chemical potential mu,
 //! three-dimensional momentum cutoff |q| <= Lambda = 1 (all quantities in units of
-//! Lambda).  Interactions in the pair channels X_a = C(+-) gamma^K_a:
+//! Lambda).  Interactions in the pair channels Kmat_a = C(+-) gamma^K_a:
 //!
-//!   one field:  H_int = -(G/4) sum_a Phi_a^dagger Phi_a,   Phi_a = psi^T X_a psi,
+//!   one field:  H_int = -(G/4) sum_a Phi_a^dagger Phi_a,   Phi_a = psi^T Kmat_a psi,
 //!               mean field Delta_a = (G/2) <Phi_a>;
 //!   doublet:    H_int = -(G_D/4) Phi_D^dagger Phi_D,       Phi_D = 2 psi1^T C+ psi2,
 //!               Delta_D = (G_D/2) <Phi_D>   (the internal-singlet channel of the
 //!               gauged U(2) model of Revision_3, reduced to M(3,1)).
 //!
 //! The eight-dimensionally Lorentz-invariant vector-pair interaction
-//!     H_V = (G/4) eta_AB V^A^dagger V^B,   V^A = psi^T C- gamma^A psi,
+//!     (G/4) eta_AB V^A^dagger V^B,   V^A = psi^T C- gamma^A psi,
 //! reduces on the zero modes to these channels with ONE coupling G: on 7+1 the four
 //! internal components V^a (spin zero) and the three space components V^j (spin
 //! one) are attractive, the time component V^4 repulsive; on 4+4 the internal
@@ -23,8 +23,8 @@
 //!
 //! Bogoliubov-de Gennes matrices (32 x 32) in the Nambu basis (psi_q, psi_-q^dagger T)
 //! (one field) or (psi1_q, psi2_-q^dagger T) (doublet):
-//!     BdG = [[h(q) - mu, B], [B^dagger, -(h(-q) - mu)^T]],
-//!     one field: B = -sum_a Delta_a X_a^dagger,   doublet: B = Delta_D conj(C+),
+//!     BdG = [[h(q) - mu, Pblk], [Pblk^dagger, -(h(-q) - mu)^T]],
+//!     one field: Pblk = -sum_a Delta_a Kmat_a^dagger,   doublet: Pblk = Delta_D conj(C+),
 //! and the grand potential per unit volume (Delta-independent constants dropped)
 //!     Omega(Delta) = |Delta|^2/G - c_N int d^3q/(2 pi)^3 sum_(E_n > 0) E_n(q),
 //! c_N = 1/2 (one field: every mode appears twice in the Nambu basis), 1 (doublet).
@@ -34,10 +34,10 @@
 //!     E^(+-) = sqrt((eps +- mu)^2 + |Delta|^2),  eps = sqrt(q^2 + m^2),
 //! so Omega = |Delta|^2/G - nu int (E^+ + E^-), nu = 4 (one field), 8 (doublet), and
 //! the gap equation is 1/G = (nu/2) int (1/E^+ + 1/E^-).
-//! Non-unitary (chiral) internal-vector states Delta = |Delta|(cos t n + i sin t m)
-//! on 7+1: gaps |Delta| sqrt(1 +- s), s = |sin 2t|.
-//! Spin-one channel C- gamma^j (direction n = e_j): E_(+-)^2 = eps^2 + mu^2 + |Delta|^2
-//! +- 2 sqrt(mu^2 eps^2 + |Delta|^2 (q.n)^2)  (anisotropic; gap |Delta| m/mu along n).
+//! Non-unitary (chiral) internal-vector states Delta^0 = |Delta| cos(ups),
+//! Delta^5 = i |Delta| sin(ups) on 7+1: gaps |Delta| sqrt(1 +- zeta), zeta = |sin 2 ups|.
+//! Spin-one channel C- gamma^j (the pair points along x_j): E_(+-)^2 = eps^2 + mu^2 + |Delta|^2
+//! +- 2 sqrt(mu^2 eps^2 + |Delta|^2 q_j^2)  (anisotropic; gap |Delta| m/mu along x_j).
 
 use crate::checks::Checks;
 use crate::exact::{null_space, rank, Q, QMat};
@@ -488,7 +488,7 @@ pub fn run() -> bool {
         let sp2 = spectrum(&bdg(&s71, &ch71.vector, &dl, [0.0, 0.0, qq], mu, m, false));
         worst_iso = worst_iso.max(dev(&sp, sp2));
     }
-    ck.add("P-3a [7+1]", "non-unitary internal-vector states Delta = |Delta| (cos t e0 + i sin t e5): the BdG spectrum is +-sqrt((eps +- mu)^2 + |Delta|^2 (1 +- |sin 2t|)) (4 times each) and independent of the momentum direction; the chiral state (t = pi/4) has gaps sqrt(2)|Delta| and 0", worst < 1e-12 && worst_iso < 1e-12, format!("max deviation {:.2e}, isotropy {:.2e}", worst, worst_iso));
+    ck.add("P-3a [7+1]", "non-unitary internal-vector states Delta^0 = |Delta| cos(ups), Delta^5 = i |Delta| sin(ups): the BdG spectrum is +-sqrt((eps +- mu)^2 + |Delta|^2 (1 +- |sin 2 ups|)) (4 times each) and independent of the momentum direction; the chiral state (ups = pi/4) has gaps sqrt(2)|Delta| and 0", worst < 1e-12 && worst_iso < 1e-12, format!("max deviation {:.2e}, isotropy {:.2e}", worst, worst_iso));
     let mut wv = 0.0f64;
     let mut wt = 0.0f64;
     for _ in 0..40 {
@@ -582,10 +582,10 @@ pub fn run() -> bool {
     write_csv(
         "ng_gap_vs_coupling.csv",
         &[
-            ("content", "vacuum (mu = 0) gap |Delta| (units of Lambda) versus coupling G; x = G/G_crit with G_crit = pi^2/Lambda^2 (one field, m = 0)".to_string()),
+            ("content", "vacuum (mu = 0) gap |Delta| (units of Lambda) versus coupling G; G_over_Gcrit = G/G_crit with G_crit = pi^2/Lambda^2 (one field, m = 0)".to_string()),
             ("G_crit", format!("one field m=0: {:.12}; doublet m=0: {:.12}; one field m=0.2: {:.12}", gc1, gc2, gc1m)),
         ],
-        &["x", "G", "Delta_onefield_m0", "Delta_doublet_m0", "Delta_onefield_m0.2"],
+        &["G_over_Gcrit", "G", "Delta_onefield_m0", "Delta_doublet_m0", "Delta_onefield_m0.2"],
         &rows_g,
     )
     .expect("csv");
@@ -658,7 +658,7 @@ pub fn run() -> bool {
     );
     write_csv(
         "ng_omega_states.csv",
-        &[("content", format!("Omega(|Delta|) - Omega(0) at m = 0.2, mu = 0.5, G = {:.10} (one field, 7+1): polar spin-zero, chiral spin-zero (s = 1), spin-one polar", g))],
+        &[("content", format!("Omega(|Delta|) - Omega(0) at m = 0.2, mu = 0.5, G = {:.10} (one field, 7+1): polar spin-zero, chiral spin-zero (zeta = |sin 2 ups| = 1), spin-one polar", g))],
         &["Delta", "Omega_polar", "Omega_chiral", "Omega_spin1"],
         &rows_om,
     )
@@ -678,7 +678,7 @@ pub fn run() -> bool {
         };
         rows_disp.push(vec![q, em, emc, em0, s1(1.0), s1(0.0)]);
     }
-    write_csv("ng_dispersion.csv", &[("content", format!("lowest BdG branches at m = 0.2, mu = 0.5, |Delta| = {:.10}: polar E^-, chiral branches sqrt((eps-mu)^2 + 2 Delta^2) and |eps - mu|, spin one along n and perpendicular to n", dpol))], &["q", "polar", "chiral_gapped", "chiral_gapless", "spin1_parallel", "spin1_perp"], &rows_disp).expect("csv");
+    write_csv("ng_dispersion.csv", &[("content", format!("lowest BdG branches at m = 0.2, mu = 0.5, |Delta| = {:.10}: polar E^-, chiral branches sqrt((eps-mu)^2 + 2 Delta^2) and |eps - mu|, spin one along the pair direction and perpendicular to it", dpol))], &["q", "polar", "chiral_gapped", "chiral_gapless", "spin1_parallel", "spin1_perp"], &rows_disp).expect("csv");
 
     // ---------------------------------------------------------------- P-9 amplitude (Higgs) mode
     let gv = 1.5 * gc1; // vacuum, m = 0, supercritical
@@ -699,14 +699,14 @@ pub fn run() -> bool {
     let pa_end = rows_amp.last().unwrap()[2];
     ck.add(
         "P-9",
-        "amplitude mode (vacuum, m = 0, G = 1.5 G_crit): Pi_A(w) = (4|Delta|^2 - w^2) c_sigma(w) with c_sigma finite and positive on [0, 2|Delta|], so Pi_A vanishes at w = 2|Delta|: m_sigma = 2|Delta|; static check Pi_A(0) = (1/2) d^2 Omega/d|Delta|^2 at the minimum",
+        "amplitude mode (vacuum, m = 0, G = 1.5 G_crit): Pi_A(w) = (4|Delta|^2 - w^2) c_sigma(w) with c_sigma finite and positive on [0, 2|Delta|], so Pi_A vanishes at w = 2|Delta|: m_sigma = 2|Delta|; static check: Pi_A(0) equals half the second derivative of Omega with respect to |Delta| at the minimum",
         ok_amp && pa_end.abs() < 1e-12 && (0.5 * second / pa0 - 1.0).abs() < 1e-5,
         format!("|Delta| = {:.10}, Pi_A(0) = {:.8e}, Omega''/2 = {:.8e}", dv, pa0, 0.5 * second),
     );
     write_csv("ng_amplitude_mode.csv", &[("content", format!("amplitude-mode kernel in vacuum, m = 0, G = 1.5 pi^2, |Delta| = {:.10}: w/(2|Delta|), c_sigma(w), Pi_A(w)", dv))], &["w_over_2Delta", "c_sigma", "Pi_A"], &rows_amp).expect("csv");
 
     // ---------------------------------------------------------------- P-10 symmetry breaking and Goldstone counting
-    // internal vector channel (7+1): G = U(1)_N x SO(4); Delta in C^4 (axes 0,5,6,7 -> 0..3)
+    // internal vector channel (7+1): symmetry U(1)_F x SO(4) (F = fermion number); Delta in C^4 (axes 0,5,6,7 -> 0..3)
     let planes = crate::kaluza::pairs(&[0, 1, 2, 3]);
     let so4: Vec<Vec<Vec<i64>>> = so4_vec(&planes);
     let mut gens: Vec<Vec<Vec<Q>>> = vec![gen_number(4)];
@@ -717,7 +717,7 @@ pub fn run() -> bool {
     let one = Q::ONE;
     let polar = stabiliser(&gens, &[one, z, z, z], &[z, z, z, z]);
     let chiral = stabiliser(&gens, &[one, z, z, z], &[z, one, z, z]);
-    // the locked generator: a stabiliser element with nonzero N and nonzero L_(01) components
+    // the locked generator: a stabiliser element with nonzero F and nonzero Rot(0,5) components (internal labels 0, 1)
     let locked = chiral.iter().any(|v| !v[0].is_zero() && !v[1].is_zero());
     // 2-form channel: Delta in C^6, so(4) acts by the adjoint on 2-forms; self-dual direction T_01 + T_23
     let mut gens2: Vec<Vec<Vec<Q>>> = vec![gen_number(6)];
@@ -729,7 +729,7 @@ pub fn run() -> bool {
     sd_re[pr.iter().position(|&p| p == (0, 1)).unwrap()] = one;
     sd_re[pr.iter().position(|&p| p == (2, 3)).unwrap()] = one;
     let tw = stabiliser(&gens2, &sd_re, &[z; 6]);
-    // 4+4 with the eta-weighted interaction: symmetry U(1)_N x SO(3) (rotations of 5,6,7)
+    // 4+4 with the eta-weighted interaction: symmetry U(1)_F x SO(3) (rotations of 5,6,7)
     let so3: Vec<Vec<Vec<i64>>> = so4_vec(&[(1, 2), (1, 3), (2, 3)]);
     let mut gens44: Vec<Vec<Vec<Q>>> = vec![gen_number(4)];
     for r in &so3 {
@@ -741,7 +741,7 @@ pub fn run() -> bool {
     let ok = polar.len() == 3 && chiral.len() == 2 && locked && tw.len() == 4 && trip.len() == 1 && dim_g(&gens) == 7 && dim_g(&gens2) == 7 && dim_g(&gens44) == 4;
     ck.add(
         "P-10",
-        "symmetry breaking (exact stabilisers): internal vector, polar: U(1)_N x SO(4) (7) -> SO(3) (3), 4 Goldstone modes; chiral: -> 2 generators, one of them LOCKS the internal rotation L_(0 5) (an 8D Lorentz rotation) to the fermion number N, 5 Goldstone modes; internal 2-form, self-dual polar: 7 -> U(1) x SU(2) (4), 3 Goldstone modes; 4+4 with the eta-weighted interaction: U(1)_N x SO(3) (4) -> SO(2) (1), 3 Goldstone modes; the four-dimensional Lorentz group is unbroken in every case (spin-zero condensates)",
+        "symmetry breaking (exact stabilisers): internal vector, polar: U(1)_F x SO(4) (7) -> SO(3) (3), 4 Goldstone modes; chiral: -> 2 generators, one of them LOCKS the fibre rotation Rot(0,5) (an 8D Lorentz rotation) to the fermion number F, 5 Goldstone modes; internal 2-form, self-dual polar: 7 -> U(1) x SU(2) (4), 3 Goldstone modes; 4+4 with the eta-weighted interaction: U(1)_F x SO(3) (4) -> SO(2) (1), 3 Goldstone modes; the four-dimensional Lorentz group is unbroken in every case (spin-zero condensates)",
         ok,
         format!("stabiliser dims: polar {}, chiral {} (locked {}), 2-form {}, 4+4 triplet {}", polar.len(), chiral.len(), locked, tw.len(), trip.len()),
     );
@@ -751,14 +751,14 @@ pub fn run() -> bool {
         vec![71.0, 3.0, 7.0, tw.len() as f64, (7 - tw.len()) as f64],
         vec![44.0, 4.0, 4.0, trip.len() as f64, (4 - trip.len()) as f64],
     ];
-    write_csv("ng_goldstone.csv", &[("content", "symmetry breaking patterns: phase 1 = internal vector polar, 2 = internal vector chiral, 3 = internal 2-form self-dual polar (7+1), 4 = internal triplet polar with the eta-weighted interaction (4+4); dim G, dim H, number of broken generators".to_string())], &["signature", "phase", "dimG", "dimH", "broken"], &gold_rows).expect("csv");
+    write_csv("ng_goldstone.csv", &[("content", "symmetry breaking patterns: phase 1 = internal vector polar, 2 = internal vector chiral, 3 = internal 2-form self-dual polar (7+1), 4 = internal triplet polar with the eta-weighted interaction (4+4); dimension of the symmetry group, dimension of the unbroken subgroup, number of broken generators".to_string())], &["signature", "phase", "dim_symmetry", "dim_unbroken", "broken"], &gold_rows).expect("csv");
 
     // ---------------------------------------------------------------- P-11 signs of the eight-dimensional vector interaction
     let att71: Vec<usize> = (0..8).filter(|&a| s71.eta[a] < 0).collect();
     let att44: Vec<usize> = (0..8).filter(|&a| s44.eta[a] < 0).collect();
     ck.add(
         "P-11",
-        "the 8D-invariant interaction H_V = (G/4) eta_AB V^A^dagger V^B (G > 0) attracts the components with eta_AA = -1: on 7+1 these are the internal 0,5,6,7 (spin zero, isotropic) and the space 1,2,3 (spin one, anisotropic) -- the time component 4 is repelled; on 4+4 they are 4,5,6,7: the internal 5,6,7 (spin zero, isotropic) and the time component 4 (not s-wave) -- the internal 0 and the space 1,2,3 are repelled",
+        "the 8D-invariant interaction (G/4) eta_AB V^A^dagger V^B (G > 0) of the vector pairs V^A = psi^T C- gamma^A psi attracts the components with eta_AA = -1: on 7+1 these are the internal 0,5,6,7 (spin zero, isotropic) and the space 1,2,3 (spin one, anisotropic) -- the time component 4 is repelled; on 4+4 they are 4,5,6,7: the internal 5,6,7 (spin zero, isotropic) and the time component 4 (not s-wave) -- the internal 0 and the space 1,2,3 are repelled",
         att71 == vec![0, 1, 2, 3, 5, 6, 7] && att44 == vec![4, 5, 6, 7],
         format!("7+1 attractive {:?}; 4+4 attractive {:?}", att71, att44),
     );

@@ -1,0 +1,78 @@
+\section{What has been established, and what has not}
+\label{sec:status}
+
+\subsection{Established}
+
+Every statement in the following list is a theorem proved in the text or a result verified by the
+program of Appendix~\ref{app:data}; the labels of the machine checks are given in parentheses, and
+Appendix~\ref{app:checks} lists all of them with their results. All {{GEN:nchecks_rust}} checks of the
+program pass. The checks of the algebra (O, T, K, S and R-1 to R-3) are exact, in integer or rational
+arithmetic; the checks of the superfluid (P) and R-4, R-5 are numerical, with the tolerances stated in
+each check.
+\begin{enumerate}
+\item The octonions and the split octonions are composition algebras, alternative, not associative
+(168 of the 512 ordered basis triples have a nonzero associator), and Moufang; their derivations form
+the compact and the split real forms of $\mathfrak g_2$; their left multiplications generate
+$\mathfrak{so}(8)$ and $\mathfrak{so}(4,4)$; they produce the Dirac matrices of $7+1$ and $4+4$, which are
+equivalent to those of the project by integer intertwiners (O-1 to O-15).
+\item Theorem~1: the commutator algebra of the imaginary (split) octonions has no nonzero
+representation by operators, because its Jacobiators span it (O-7 to O-9).
+\item Local triality holds for $\mathfrak{so}(8)$ and $\mathfrak{so}(4,4)$, with outer automorphisms that
+generate the permutation group of three objects; on $4+4$ the images of a vector rotation have the
+spectrum of the half-spinor generators of the project. Theorem~2: $\mathfrak{so}(7,1)$ has no triality (T-1
+to T-7d).
+\item On the combined manifolds the 28 Lorentz generators split as $6+6+16$; the fibre algebra is
+compact on $7+1$ and non-compact on $4+4$, where no positive-definite scalar product is invariant
+(Theorem~3); the 16 components are a product of a world spinor and a fibre spinor; $\mathrm G_2$ locks the
+space rotations to fibre rotations on $7+1$; on $4+4$ a split unit exchanges world and fibre; a Lorentz
+rotation splits four-dimensional masses; a geometric $4+4$ fibre has a tower of tachyons; the
+stabilizer of a fibre vector is $\mathfrak{so}(6,1)$ or $\mathfrak{so}(4,3)$, with 12 mixing generators (K-1 to
+K-10).
+\item The super-Poincar\'e algebras of $7+1$ (with and without the 128 tensorial charges) and of $4+4$
+satisfy the graded Jacobi identity on every triple of generators; positivity holds on $7+1$ and fails
+for every nonzero momentum on $4+4$ (S-1 to S-4).
+\item Theorem~4 and the classification of all one-field pairs: on the combined manifolds the
+spin-zero, s-wave, isotropic pairs of one field are exactly the fibre vector and the fibre two-form
+(K-4, K-4a).
+\item Theorems~5 and~6 and the spectra of the isotropic, non-unitary and spin-one states (P-1 to P-4);
+the effective potential, the vacuum threshold, the Cooper instability with the weak-coupling law, the
+order of the states at one eight-dimensional coupling, the amplitude mode at $2\lvert\Delta_{\rm NG}\rvert$,
+the patterns of symmetry breaking with the locking of $\mathcal T^{05}_{\rm NG}$ to the fermion number, and
+the signs of the eight-dimensional interaction in each channel (P-5 to P-11).
+\item The power counting for $D=3$ and $D=7$; the return of the eight-dimensional divergence above
+$1/R_{\rm NG}$ in the Kaluza-Klein tower of $7+1$; the growth of the number of $4+4$ tachyons below the
+cutoff (R-1 to R-5).
+\end{enumerate}
+
+\subsection{Not established}
+
+\begin{enumerate}
+\item \emph{Counterexamples to the theorems as proved.} There are none, and there can be none: a
+theorem whose hypotheses hold has no counterexample. What this paper provides, and all that can be
+provided, is a set of structures in which a hypothesis fails and Lorentz and internal symmetries are
+combined (Table~\ref{tab:catalogue}).
+\item \emph{Scattering theory on the combined manifolds.} No scattering matrix was constructed. The
+statements about the hypotheses H2 to H5 are statements about the structures, not about a particular
+interacting theory; that the Coleman-Mandula conclusion holds in the four-dimensional world of the
+combined manifold, with the fibre algebra as internal symmetry, follows from the theorem itself and was
+not tested by computation.
+\item \emph{Beyond mean field.} The superfluid is treated in the mean-field and random-phase
+approximations of a four-fermion model with a sharp momentum cutoff; corrections beyond these
+approximations, finite temperatures and the dispersions of the Goldstone modes were not computed. The
+inverse propagator $-w_{\rm NG}^2c^\sigma_{\rm NG}(w_{\rm NG})$ of the phase mode was derived, not machine
+checked. Numbers in units of $\Lambda_{\rm NG}$ depend on the regularization; gaps of order
+$\Lambda_{\rm NG}$ are outside the range of validity of the model.
+\item \emph{Theorem~6} is proved for the square of the Bogoliubov-de Gennes matrix; the equality of the
+full spectra, including signs, is established by the numerical check P-3b on random samples, not by a
+proof.
+\item \emph{The octonionic locking.} Only the symmetry algebra of a $\mathrm G_2$-locked condensate was
+computed; whether an interaction makes such a condensate (of p-wave pairs, in a medium) the ground state
+was not studied.
+\item \emph{Tensorial charges and the $4+4$ superalgebra.} Whether any state carries the tensorial
+charges (they require extended objects), and whether the $4+4$ superalgebra has a consistent
+quantization in a space with indefinite metric, were not studied.
+\item \emph{Renormalizability} was decided by power counting and by the one-loop bubble of the
+Kaluza-Klein tower; the renormalization of the Yukawa completion of the internal reading was not
+carried out (it is that of a four-dimensional theory of fermions and scalars with dimensionless
+couplings).
+\end{enumerate}

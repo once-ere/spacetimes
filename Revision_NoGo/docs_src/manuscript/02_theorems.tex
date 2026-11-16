@@ -1,0 +1,71 @@
+\section{The no-go theorems and their hypotheses}
+\label{sec:theorems}
+
+We state each theorem in the form in which it is proved, and list its hypotheses with the labels
+H0 to H8 that the rest of the paper uses (Table~\ref{tab:hypotheses}). A \emph{symmetry} of a
+quantum theory with a scattering matrix is a linear operator on the Hilbert space of the theory
+that commutes with the scattering matrix; a \emph{generator} of a one-parameter group of such
+operators is the operator whose exponential gives the group. The \emph{Poincar\'e group} of a
+spacetime is the group of its translations and Lorentz transformations; its generators are the
+momenta and the generators of rotations and boosts.
+
+\emph{Coleman and Mandula~\cite{ColemanMandula1967}} (in the form of Ref.~\cite{WeinbergQFT3},
+Chap.~24). Let the symmetries of the scattering matrix form a connected Lie group of unitary operators
+on a Hilbert space with positive scalar product (H0). Assume: (H1) the group contains the Poincar\'e
+group of a spacetime with one time direction; (H2) for every mass there are finitely many kinds of
+particles below it; (H3) the amplitudes of elastic two-particle scattering are analytic functions of
+the energy and the momentum transfer near the physical region, apart from the normal thresholds;
+(H4) two particles scatter at almost every energy and angle; (H5) the generators act on states of one
+particle as integral operators in momentum space whose kernels are distributions, map one-particle
+states to one-particle states, and act on a state of several particles as the sum of their action
+on each particle. Then the group is locally the direct product of the Poincar\'e group and a group
+whose generators commute with all momenta, rotations and boosts and form the direct sum of a compact
+semisimple Lie algebra and an abelian one (for massless particles the Poincar\'e group may grow into
+the conformal group). Pelc and Horwitz proved the same conclusion for any number of space dimensions
+with one time~\cite{PelcHorwitz1997}; the theorem therefore applies to the $7+1$ spacetime, while on
+the $4+4$ spacetime, with four time-like directions, its hypothesis H1 fails from the outset.
+
+\emph{McGlinn~\cite{McGlinn1964}.} Let a Lie algebra be the sum of the Poincar\'e algebra and a set of
+generators that commute with all momenta. If these generators form a semisimple Lie algebra (H6),
+they commute with the rotations and boosts as well.
+
+\emph{O'Raifeartaigh~\cite{ORaifeartaigh1965}.} In a unitary representation of a Lie algebra of finite
+dimension that contains the Poincar\'e algebra, if the square of the momentum has an isolated
+eigenvalue on an irreducible representation (H7), every state of that representation has the same
+mass: a finite-dimensional symmetry algebra cannot split the masses of a multiplet.
+
+\emph{Haag, {\L}opusza\'nski and Sohnius~\cite{HLS1975}, Nahm~\cite{Nahm1978}.} If the symmetry
+generators may anticommute (a Lie superalgebra: even generators obey commutators, odd generators
+anticommutators), the hypotheses H0 to H5 admit exactly one extension of the conclusion of Coleman
+and Mandula: odd generators $\mathcal Q_{\rm NG}$ (supercharges) whose anticommutators give the
+momenta, with an internal ``R-symmetry'' that rotates the supercharges, and central or tensorial
+charges. Their proof uses the positivity of the anticommutator $\{\mathcal Q_{\rm NG},
+\mathcal Q_{\rm NG}^\dagger\}$ in a Hilbert space with positive scalar product (H8); in this
+extension Lorentz and internal symmetry are linked, because the supercharges carry spin and internal
+charge at once.
+
+\emph{Weinberg and Witten~\cite{WeinbergWitten1980}.} Massless particles of helicity larger than $1/2$
+in magnitude cannot carry a conserved current that transforms as a Lorentz vector, and those of
+helicity larger than 1 cannot carry a conserved energy-momentum tensor that transforms as a tensor.
+The proof uses H0, H1 and the fact that the little group of a massless momentum (the subgroup of the
+Lorentz group that leaves it unchanged) acts on helicity through a compact rotation group.
+
+\begin{table}[t]
+\caption{The hypotheses of the no-go theorems, with the labels used in this paper.}
+\label{tab:hypotheses}
+\begin{ruledtabular}
+\begin{tabular}{l>{\raggedright\arraybackslash}p{0.38\textwidth}}
+label & hypothesis\\
+\hline
+H0 & symmetries are linear operators on a Hilbert space with positive scalar product; their generators form a Lie algebra (an associative product, hence the Jacobi identity)\\
+H1 & the scattering matrix and the vacuum are invariant under the Poincar\'e group of a spacetime with one time\\
+H2 & finitely many kinds of particles below every mass\\
+H3 & analyticity of elastic two-particle amplitudes\\
+H4 & scattering occurs at almost all energies and angles\\
+H5 & generators map one particle to one particle and act additively on several\\
+H6 & (McGlinn) the internal algebra is semisimple\\
+H7 & (O'Raifeartaigh) the squared momentum has an isolated eigenvalue\\
+H8 & (Haag, {\L}opusza\'nski, Sohnius) the anticommutator of a supercharge with its adjoint is positive\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}

@@ -235,7 +235,7 @@ pub fn char_poly(m: &QMat) -> Vec<Q> {
     c
 }
 
-/// Human-readable polynomial sum_k c[k] x^k (highest power first).
+/// Human-readable polynomial sum_k c[k] lambda^k in the variable lambda (highest power first).
 pub fn poly_string(c: &[Q]) -> String {
     let mut s = String::new();
     for k in (0..c.len()).rev() {
@@ -244,8 +244,8 @@ pub fn poly_string(c: &[Q]) -> String {
         }
         let term = match k {
             0 => format!("{}", c[k]),
-            1 => format!("{} x", c[k]),
-            _ => format!("{} x^{}", c[k], k),
+            1 => format!("{} lambda", c[k]),
+            _ => format!("{} lambda^{}", c[k], k),
         };
         if !s.is_empty() {
             s += " + ";

@@ -97,7 +97,7 @@ def fig_manifolds():
         ("4+4:  x = x0 + x1 i + x2 j + x3 k + x4 l + x5 il + x6 jl + x7 kl,   eta1644(x,x) = N(x) = x conj(x)",
          [("x4", "l", "-"), ("x1", "i", "+"), ("x2", "j", "+"), ("x3", "k", "+")],
          [("x0", "1", "+"), ("x5", "il", "-"), ("x6", "jl", "-"), ("x7", "kl", "-")],
-         "M(3,1) = Im H + R l", "K(1,3) = R + (Im H) l  (non-compact SO(1,3))", "left multiplication by l (N(l) = -1) exchanges M and K"),
+         "M(3,1) = Im H + span(l)", "K(1,3) = span(1) + (Im H) l  (non-compact SO(1,3))", "left multiplication by l (N(l) = -1) exchanges M(3,1) and K(1,3)"),
     ]
     for ax, (title, st, internal, lab_st, lab_k, arrow) in zip(axes, rows):
         ax.set_axis_off()
@@ -129,13 +129,13 @@ def fig_tables():
         for r in rows:
             if r["algebra"] != alg:
                 continue
-            a, b, t = int(r["a"]), int(r["b"]), int(r["t"])
+            a, b, t = int(r["idx_left"]), int(r["idx_right"]), int(r["idx_product"])
             grid[a, b] = norm[t]
         ax.imshow(np.where(grid > 0, 0.0, 1.0), cmap=matplotlib.colors.ListedColormap(["#ffffff", LIGHT[ORANGE]]), vmin=0, vmax=1)
         for r in rows:
             if r["algebra"] != alg:
                 continue
-            a, b = int(r["a"]), int(r["b"])
+            a, b = int(r["idx_left"]), int(r["idx_right"])
             ax.text(b, a, r["product"], ha="center", va="center", fontsize=6.0, color=INK)
         ax.set_xticks(range(8))
         ax.set_yticks(range(8))
@@ -143,30 +143,30 @@ def fig_tables():
         ax.set_yticklabels(names)
         ax.tick_params(length=0)
         ax.grid(False)
-        ax.set_xlabel("right factor e_b")
-        ax.set_ylabel("left factor e_a")
+        ax.set_xlabel("right factor")
+        ax.set_ylabel("left factor")
         for v in np.arange(-0.5, 8, 1.0):
             ax.axhline(v, color=GRID, lw=0.5)
             ax.axvline(v, color=GRID, lw=0.5)
         ax.axhline(3.5, color=INK2, lw=1.0)
         ax.axvline(3.5, color=INK2, lw=1.0)
         panel_label(ax, title)
-    fig.text(0.5, -0.02, "entry: e_a e_b; shaded: the product has norm N = -1 (only in the split algebra). The lines separate H = span(1, i, j, k) from H l.", ha="center", fontsize=7.0, color=INK2)
+    fig.text(0.5, -0.02, "entry: (left factor)(right factor); shaded: the product has norm N = -1 (only in the split algebra). The lines separate H = span(1, i, j, k) from H l.", ha="center", fontsize=7.0, color=INK2)
     fig.tight_layout()
     save(fig, "tables")
 
 
 # --------------------------------------------------------------------------- 3. triality spectra
 def parse_poly(s):
-    """'1 x^8 + 1 x^6 + 3/8 x^4' -> numpy coefficient list (highest power first)."""
+    """'1 lambda^8 + 1 lambda^6 + 3/8 lambda^4' -> numpy coefficient list (highest power first)."""
     coeffs = {}
     for term in s.split(" + "):
         term = term.strip()
-        m = re.match(r"^(-?[0-9/]+)(?: x(?:\^(\d+))?)?$", term)
+        m = re.match(r"^(-?[0-9/]+)(?: lambda(?:\^(\d+))?)?$", term)
         if not m:
             raise ValueError(term)
         c = float(Fraction(m.group(1)))
-        if " x" in term:
+        if " lambda" in term:
             k = int(m.group(2)) if m.group(2) else 1
         else:
             k = 0
@@ -178,7 +178,7 @@ def parse_poly(s):
 def fig_triality():
     rows = read_rows("ng_triality_charpolys.csv")
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.6), sharey=True)
-    labels = ["a_01 (vector)", "T_b(a_01)", "T_c(a_01)", "theta(a_01)", "theta^2(a_01)"]
+    labels = ["r01 (vector)", "T2(r01)", "T3(r01)", "vartheta(r01)", "vartheta^2(r01)"]
     for ax, alg, title in zip(axes, ["O_NG", "Os_NG"], ["(a) so(8) from O_NG", "(b) so(4,4) from Os_NG"]):
         for y, lab in enumerate(labels):
             r = [x for x in rows if x["algebra"] == alg and x["matrix"] == lab][0]
@@ -191,7 +191,7 @@ def fig_triality():
             col = BLUE if y == 0 else ORANGE
             for v, c in zip(vals, counts):
                 ax.scatter([v], [y], s=18 + 22 * c, color=col, zorder=3, edgecolors="white", linewidths=0.5)
-                ax.text(v, y - 0.22, "x%d" % c, ha="center", va="bottom", fontsize=6.3, color=INK2)
+                ax.text(v, y - 0.22, "(%d)" % c, ha="center", va="bottom", fontsize=6.3, color=INK2)
         ax.set_yticks(range(len(labels)))
         ax.set_yticklabels(labels)
         ax.set_ylim(-0.75, len(labels) - 0.4)
@@ -199,7 +199,7 @@ def fig_triality():
         ax.set_xlabel("Im(eigenvalue)  (all eigenvalues are imaginary)")
         panel_label(ax, title)
     axes[0].invert_yaxis()
-    fig.text(0.5, -0.06, "blue: the simple rotation a_01 (eigenvalues +-i and 0 six times: vector representation); orange: its images under the triality automorphisms (+-i/2 four times each: half-spinor representation).", ha="center", fontsize=6.8, color=INK2, wrap=True)
+    fig.text(0.5, -0.06, "blue: the simple rotation r01 (eigenvalues +-i and 0 six times: vector representation); orange: its images under the triality automorphisms (+-i/2 four times each: half-spinor representation); (n): multiplicity.", ha="center", fontsize=6.8, color=INK2, wrap=True)
     fig.tight_layout()
     save(fig, "triality")
 
@@ -239,7 +239,7 @@ def fig_channels():
             for v in np.arange(-0.5, 5, 1.0):
                 ax.axhline(v, color=GRID, lw=0.5)
                 ax.axvline(v, color=GRID, lw=0.5)
-            panel_label(ax, "(%s) %s, X = %s gamma^K" % ("abcd"[2 * i + j], sig, cname))
+            panel_label(ax, "(%s) %s, pair matrices %s gamma^K" % ("abcd"[2 * i + j], sig, cname))
     fig.text(0.5, -0.03, "cell: nonzero pairs / all monomials, and how many of the nonzero ones are s-wave (s) and isotropic (iso); green: an isotropic spin-zero channel.\nColumns n4 = 0 and n4 = 4 hold the four-dimensional scalars (spin zero). The two families contain the same 256 matrices: column n4 = 4 of one family repeats column n4 = 0 of the other.", ha="center", fontsize=6.8, color=INK2)
     fig.tight_layout()
     save(fig, "channels")
@@ -263,7 +263,7 @@ def fig_locking():
     ax.set_xlim(0, 10)
     ax.set_xlabel("dimension of the Lie algebra")
     ax.grid(axis="y", visible=False)
-    panel_label(ax, "G2 locks the space rotations of M(3,1) = H to internal rotations of K = H l (7+1)")
+    panel_label(ax, "G2 locks the space rotations (Im H) to rotations of the fibre H l (7+1)")
     save(fig, "locking")
 
 
@@ -274,8 +274,8 @@ def fig_superalgebra():
     for ax, sg, title in zip(axes, [71.0, 44.0], ["(a) 7+1: unitary positive-energy representations", "(b) 4+4: no positivity for any P != 0"]):
         m = d["signature"] == sg
         v = d["v"][m]
-        ax.plot(v, d["lambda_max"][m], color=BLUE, ls="-", label="largest eigenvalue")
-        ax.plot(v, d["lambda_min"][m], color=ORANGE, ls="--", label="smallest eigenvalue")
+        ax.plot(v, d["eig_max"][m], color=BLUE, ls="-", label="largest eigenvalue")
+        ax.plot(v, d["eig_min"][m], color=ORANGE, ls="--", label="smallest eigenvalue")
         ax.axhline(0.0, color=INK2, lw=0.8)
         if sg == 71.0:
             ax.axvline(1.0, color=INK2, lw=0.6, ls=":")
@@ -283,7 +283,7 @@ def fig_superalgebra():
         ax.set_xlabel("v  (momentum P = (P_4 = 1, P_1 = v))")
         panel_label(ax, title)
         ax.legend(loc="lower left" if sg == 71.0 else "center left")
-    axes[0].set_ylabel("eigenvalue of {Q, Q} = Gamma^C P_C")
+    axes[0].set_ylabel("eigenvalue of {Q, Q} = Y^C P_C")
     fig.tight_layout()
     save(fig, "superalgebra")
 
@@ -292,9 +292,9 @@ def fig_superalgebra():
 def fig_gap():
     d = read_csv("ng_gap_vs_coupling.csv")
     fig, ax = plt.subplots(figsize=(4.6, 2.9))
-    ax.plot(d["x"], d["Delta_onefield_m0"], color=BLUE, ls="-", label="one field, internal vector or 2-form, m = 0")
-    ax.plot(d["x"], d["Delta_doublet_m0"], color=ORANGE, ls="--", label="doublet (internal singlet), m = 0")
-    ax.plot(d["x"], d["Delta_onefield_m02"] if "Delta_onefield_m02" in d.dtype.names else d[d.dtype.names[4]], color=AQUA, ls="-.", label="one field, m = 0.2")
+    ax.plot(d["G_over_Gcrit"], d["Delta_onefield_m0"], color=BLUE, ls="-", label="one field, internal vector or 2-form, m = 0")
+    ax.plot(d["G_over_Gcrit"], d["Delta_doublet_m0"], color=ORANGE, ls="--", label="doublet (internal singlet), m = 0")
+    ax.plot(d["G_over_Gcrit"], d["Delta_onefield_m02"] if "Delta_onefield_m02" in d.dtype.names else d[d.dtype.names[4]], color=AQUA, ls="-.", label="one field, m = 0.2")
     ax.axvline(1.0, color=INK2, lw=0.6, ls=":")
     ax.axvline(0.5, color=INK2, lw=0.6, ls=":")
     ax.text(1.012, 1.3, "G = pi^2", fontsize=6.8, color=INK2, rotation=90, va="bottom", ha="left")
@@ -344,17 +344,17 @@ def fig_states():
         ax.plot(o["Delta"][keep], 1e3 * o[key][keep], color=col, ls=ls, label=lab)
     ax.axhline(0.0, color=INK2, lw=0.6)
     ax.set_xlabel("|Delta| / Lambda")
-    ax.set_ylabel("10^3 x [Omega(|Delta|) - Omega(0)] / Lambda^4")
+    ax.set_ylabel("1000 [Omega(|Delta|) - Omega(0)] / Lambda^4")
     ax.legend(loc="upper left")
     panel_label(ax, "(a) one 8D coupling: polar spin zero wins")
     ax = axes[1]
-    for (col, ls, mk), key, lab in zip(STYLES, ["polar", "chiral_gapped", "chiral_gapless", "spin1_parallel", "spin1_perp"], ["polar", "chiral, gapped branch", "chiral, gapless branch", "spin one, q along n", "spin one, q perpendicular to n"]):
+    for (col, ls, mk), key, lab in zip(STYLES, ["polar", "chiral_gapped", "chiral_gapless", "spin1_parallel", "spin1_perp"], ["polar", "chiral, gapped branch", "chiral, gapless branch", "spin one, q along the pair direction", "spin one, q perpendicular to it"]):
         ax.plot(dd["q"], dd[key], color=col, ls=ls, label=lab)
     ax.set_xlabel("momentum q / Lambda")
     ax.set_ylabel("lowest quasiparticle energy / Lambda")
     ax.set_ylim(0, 0.8)
     ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1.0), fontsize=6.5)
-    ax.text(1.03, 0.25, "the spin-one branch for q\nperpendicular to n coincides\nwith the polar branch", transform=ax.transAxes, fontsize=6.3, color=INK2, va="top")
+    ax.text(1.03, 0.25, "the spin-one branch for q\nperpendicular to the pair\ndirection coincides with\nthe polar branch", transform=ax.transAxes, fontsize=6.3, color=INK2, va="top")
     panel_label(ax, "(b) quasiparticle branches at the polar gap")
     fig.tight_layout(w_pad=2.5)
     save(fig, "states")
@@ -408,24 +408,24 @@ def fig_renorm():
     s = read_csv("ng_superficial_degree.csv")
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.8))
     ax = axes[0]
-    ax.loglog(b["Lambda"], b["S_tower"], color=BLUE, ls="-", label="sum over the Kaluza-Klein tower")
-    ax.loglog(b["Lambda"], b["S_zero_mode"], color=ORANGE, ls="--", label="zero mode only (4D, logarithmic)")
+    ax.loglog(b["Lambda"], b["B_tower"], color=BLUE, ls="-", label="sum over the Kaluza-Klein tower")
+    ax.loglog(b["Lambda"], b["f_zero_mode"], color=ORANGE, ls="--", label="zero mode only (4D, logarithmic)")
     m = b["Lambda"] > 0.8
-    ax.loglog(b["Lambda"][m], b["c8_Lambda4R4"][m], color=AQUA, ls="-.", label="8D continuum c8 (Lambda R)^4")
+    ax.loglog(b["Lambda"][m], b["C8_LambdaR4"][m], color=AQUA, ls="-.", label="8D continuum C8 (Lambda R)^4")
     ax.axvline(1.0, color=INK2, lw=0.6, ls=":")
     ax.text(0.92, 3e2, "Lambda = 1/R", fontsize=6.8, color=INK2, ha="right")
     ax.set_xlabel("cutoff Lambda  (units of 1/R)")
-    ax.set_ylabel("one-loop bubble S(Lambda)")
+    ax.set_ylabel("one-loop bubble B(Lambda)")
     ax.legend(loc="upper left", fontsize=6.5)
     panel_label(ax, "(a) 7+1 on M(3,1) x T^4: the 8D divergence returns")
     ax = axes[1]
-    for (col, ls, mk), key, lab in zip(STYLES, ["fourfermion_D4", "fourfermion_D8", "yukawa_D4", "yukawa_D8"], ["four-fermion, D = 4", "four-fermion, D = 8", "Yukawa, D = 4", "Yukawa, D = 8"]):
-        ax.plot(s["V"], s[key], color=col, ls=ls, marker=mk, label=lab)
-    ax.text(4.0, 15.0, "four-fermion D = 4 and Yukawa D = 8\ncoincide: 2 (V - 1)", fontsize=6.5, color=INK2, va="top")
-    ax.set_xlabel("number of vertices V")
+    for (col, ls, mk), key, lab in zip(STYLES, ["fourfermion_D3", "fourfermion_D7", "yukawa_D3", "yukawa_D7"], ["four-fermion, D = 3", "four-fermion, D = 7", "Yukawa, D = 3", "Yukawa, D = 7"]):
+        ax.plot(s["nvert"], s[key], color=col, ls=ls, marker=mk, label=lab)
+    ax.text(4.0, 16.5, "four-fermion D = 3 and\nYukawa D = 7: 2 (nvert - 1)", fontsize=6.3, color=INK2, va="top")
+    ax.set_xlabel("number of vertices nvert")
     ax.set_ylabel("superficial degree of divergence")
     ax.legend(loc="upper left", fontsize=6.5)
-    panel_label(ax, "(b) power counting")
+    panel_label(ax, "(b) power counting (D space dimensions)")
     fig.tight_layout()
     save(fig, "renorm")
 
@@ -436,9 +436,9 @@ def fig_goldstone():
     labels = ["7+1 internal vector, polar", "7+1 internal vector, chiral", "7+1 internal 2-form, self-dual", "4+4 internal triplet, polar"]
     fig, ax = plt.subplots(figsize=(5.2, 2.3))
     y = np.arange(len(labels))
-    ax.barh(y - 0.2, g["dimH"], height=0.38, color=BLUE, label="unbroken generators (dim H)")
+    ax.barh(y - 0.2, g["dim_unbroken"], height=0.38, color=BLUE, label="unbroken generators")
     ax.barh(y + 0.2, g["broken"], height=0.38, color=ORANGE, hatch="///", edgecolor="white", label="broken generators = Goldstone modes")
-    for yi, h, br in zip(y, g["dimH"], g["broken"]):
+    for yi, h, br in zip(y, g["dim_unbroken"], g["broken"]):
         ax.text(h + 0.08, yi - 0.2, "%d" % h, va="center", fontsize=7.0)
         ax.text(br + 0.08, yi + 0.2, "%d" % br, va="center", fontsize=7.0)
     ax.set_yticks(y)

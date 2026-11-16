@@ -1,0 +1,79 @@
+\section{Introduction}
+\label{sec:intro}
+
+\emph{The question.} Can the Lorentz symmetry of space-time and an internal symmetry (a symmetry
+that acts on the components of a field at each point, such as isospin) be joined into one larger
+group in which the two kinds of generators do not commute? In four dimensions three theorems answer
+\emph{no}. McGlinn~\cite{McGlinn1964} showed that if the internal generators commute with the
+translations and form a semisimple Lie algebra, they commute with the Lorentz generators as well.
+O'Raifeartaigh~\cite{ORaifeartaigh1965} showed that a finite-dimensional Lie algebra that contains
+the Poincar\'e algebra cannot split the masses of a multiplet whose mass is an isolated eigenvalue.
+Coleman and Mandula~\cite{ColemanMandula1967} proved the decisive statement: the connected symmetry
+group of a nontrivial scattering matrix of particles in four dimensions is locally the direct
+product of the Poincar\'e group and a compact internal group. Pelc and Horwitz extended the theorem
+to every dimension with one time~\cite{PelcHorwitz1997}. The only known way around it within quantum
+field theory with a scattering matrix is to allow anticommuting generators: Haag, {\L}opusza\'nski
+and Sohnius~\cite{HLS1975} and Nahm~\cite{Nahm1978} found that supersymmetry is then the unique
+extension.
+
+\emph{The task of this paper} is to look for counterexamples to these theorems on the two
+eight-dimensional spacetimes of PROJECT spacetimes, the spacetime of signature $7+1$ (seven space
+directions and one time) and the spacetime of signature $4+4$, to find the places where their
+hypotheses break down in eight dimensions---through the octonions, their non-associativity, their
+triality---and to analyse the spin-zero superfluid of the 16-component Dirac field on eight-dimensional
+manifolds that combine Lorentz and internal degrees of freedom, instead of on an eight-dimensional
+spacetime. We also determine whether this cures the non-renormalizability of the eight-dimensional
+theory.
+
+\emph{What a counterexample can be.} A theorem whose hypotheses hold has no counterexample: if it
+had one, it would not be a theorem. A counterexample to the \emph{conclusion} ``Lorentz and internal
+symmetries cannot be combined'' is therefore a structure in which at least one hypothesis fails, and
+the useful content is to say exactly which. That is what we provide. For each hypothesis of the
+theorems we construct, on the $7+1$ or the $4+4$ spacetime or on both, an explicit structure that
+violates it and in which Lorentz and internal generators are combined, and we verify every statement
+about it in exact (rational) arithmetic. Table~\ref{tab:catalogue} in Sec.~\ref{sec:catalogue}
+collects them.
+
+\emph{Results.} (i) The octonions and the split octonions, built by the Cayley-Dickson
+construction, produce the Dirac matrices of both spacetimes; the $7+1$ metric is the real part of
+the square of an octonion and the $4+4$ metric is the norm of a split octonion
+(Sec.~\ref{sec:octonions}). (ii) The commutator algebra of the imaginary octonions violates the
+Jacobi identity on a set of generators that spans it, so it has no nonzero representation by
+operators on a Hilbert space: octonionic charges are excluded by the most basic hypothesis of the
+theorems, and their associative envelope is the rotation algebra of eight dimensions itself.
+(iii) Cartan's triality~\cite{Cartan1925} exists for the compact form and for the $4+4$ form of the
+rotation algebra and exchanges the vector representation with the spinors; for $7+1$ it provably does
+not exist (Sec.~\ref{sec:triality}). (iv) On the combined manifolds a four-dimensional spacetime
+times a four-dimensional internal fibre the internal group is a part of the eight-dimensional Lorentz
+group; on $7+1$ it is compact, on $4+4$ it is non-compact and cannot act unitarily; the automorphism
+group $\mathrm G_2$ of the octonions locks the rotations of three-dimensional space to internal
+rotations; on $4+4$ a split-octonion multiplication exchanges space-time and internal directions
+(Sec.~\ref{sec:combined}). (v) The super-Poincar\'e algebra of $7+1$, with its $U(1)$ R-symmetry
+and 128 tensorial charges, satisfies the graded Jacobi identity on every triple of generators and
+has positive energy; the one of $4+4$ exists but has no unitary representation with nonzero momentum
+(Sec.~\ref{sec:susy}).
+
+(vi) On the combined manifolds a \emph{single} 16-component field forms spin-zero pairs, which is
+impossible on the eight-dimensional spacetime: the pairs are vectors and two-forms of the internal
+group. Their superfluid has a vacuum threshold, a Cooper instability at finite density, an amplitude
+mode at twice the gap, and spontaneous breaking patterns in which an eight-dimensional Lorentz
+rotation can be locked to the fermion number (Sec.~\ref{sec:superfluid}). (vii) The combined
+manifolds do not cure non-renormalizability: on a compact fibre of radius $R_{\rm NG}$ the tower of
+Kaluza-Klein modes restores the eight-dimensional divergence at momenta above $1/R_{\rm NG}$, and on
+$4+4$ the tower contains infinitely many tachyons (Sec.~\ref{sec:renorm}).
+
+\emph{Conventions.} The eight coordinates $X=\{x0,\dots,x7\}$ of both spacetimes keep their names;
+$x4$ is the time, $x1,x2,x3$ are the three directions of ordinary space, and $x0,x5,x6,x7$ are the
+four further directions. Indices $A$, $B$, $C$ run over $0,\dots,7$, the index $j$ over $1,2,3$, the
+indices $a$, $b$ over $0,5,6,7$, and $s$, $t$ over $5,6,7$; $K$ denotes a set of indices and $\gamma^K_{\rm NG}$
+the ordered product of the matrices $\gamma^A_{\rm NG}$ with $A$ in $K$ (increasing $A$), and $D$ is the number of space
+dimensions in which the fields carry momentum (Sec.~\ref{sec:renorm}). Every symbol that this paper
+introduces carries the suffix NG, with two kinds of exception that cannot be read as anything else:
+the elements of the algebras of Secs.~\ref{sec:octonions}, \ref{sec:triality} and \ref{sec:susy} (octonions,
+split octonions, their rotation algebras and the superalgebras) are written in sans-serif type ($\mathsf x$, $\mathsf e_p$,
+$\mathsf m_1$, \dots), and $\mathsf 1_8$, $\mathsf 1_{16}$ are unit matrices. The objects of the two
+spacetimes keep the tags 1671 ($7+1$) and 1644 ($4+4$) of the project; a symbol with the suffix NG and
+without a tag, such as $\gamma^A_{\rm NG}$, denotes the object of the spacetime under discussion
+(Sec.~\ref{sec:combined}). Appendix~\ref{app:notation} defines every symbol, Appendix~\ref{app:checks}
+lists every machine check, and Appendix~\ref{app:data} the programs and data. Units: $\hbar=1$, the
+speed of light 1.

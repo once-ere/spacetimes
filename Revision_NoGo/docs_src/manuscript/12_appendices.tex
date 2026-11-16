@@ -1,0 +1,166 @@
+\appendix
+\onecolumngrid
+
+\section{Notation}
+\label{app:notation}
+
+Table~\ref{tab:symbols} defines every symbol of this paper. Symbols marked ``taken'' in the
+provenance documents are those of the rest of PROJECT spacetimes, used here with exactly the meaning
+that they have there (the meaning is copied from the project's master registries, with a note on the
+use here where needed); all others are new. Every new symbol carries the suffix NG, except the elements
+of the algebras (sans-serif type), the unit matrices, the standard number sets and operation signs; the
+Dirac matrices and their relatives keep the tags 1671 ($7+1$) and 1644 ($4+4$) of the project. The
+machine checks NG-S1 to NG-S6 (Appendix~\ref{app:checks}) verify that no symbol is registered twice,
+that the taken symbols carry the meanings of the project's master registries, that no new symbol
+coincides with a symbol of those registries, that every name in the data files is registered, and that
+no letter with another meaning in the project is used in a formula of this paper without its suffix.
+Units: $\hbar=1$, the speed of light 1, and the momentum cutoff $\Lambda_{\rm NG}=1$ in
+Secs.~\ref{sec:superfluid} and~\ref{sec:renorm} unless a unit is shown.
+
+{\small
+\begin{longtable}{p{0.24\textwidth}p{0.54\textwidth}>{\raggedright\arraybackslash\footnotesize}p{0.16\textwidth}}
+\caption{The symbols of this paper, by group, with the plain-text names under which the programs, the
+figures and the data files write them.}\label{tab:symbols}\\
+\toprule
+symbol & meaning & plain-text names\\
+\midrule
+\endfirsthead
+\toprule
+symbol & meaning (continued) & plain-text names\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+{{GENRAW:symbols_ng_texrows}}
+\end{longtable}
+}
+
+\emph{Plain-text names.} The programs, the figures and the data files write formulas in plain text,
+with the names of the last column of Table~\ref{tab:symbols}. A name followed by a tag in brackets in
+a check report (\texttt{[7+1]}, \texttt{[4+4]}, \texttt{[O\_NG]}, \texttt{[Os\_NG]}, \texttt{[1671]},
+\texttt{[1644]}) refers to that spacetime or algebra. The following names have a meaning that depends on
+the place, which is stated here: \texttt{i}, \texttt{j}, \texttt{k}, \texttt{l}, \texttt{il},
+\texttt{jl}, \texttt{kl} are the octonion units $\mathsf e_1,\dots,\mathsf e_7$ in checks O-14a, O-14c,
+K-6, in Figs.~\ref{fig:tables} and~\ref{fig:manifolds} and in the header of the file
+\texttt{ng\_octonion\_tables.csv} (and \texttt{1} is $\mathsf e_0$), while
+elsewhere \texttt{i} is the imaginary unit and \texttt{j} the index of a space direction;
+\texttt{x}, \texttt{y}, \texttt{z} are elements $\mathsf x$, $\mathsf y$, $\mathsf z$ of the algebras in
+the checks O, T and K-5a and in the figures of the algebras, while \texttt{x0}, \dots, \texttt{x7} and
+\texttt{xA} are always the coordinates; \texttt{M} and \texttt{K} in check K-6 are
+$\mathcal M^{3,1}_{\rm NG}$ and $\mathcal K^{1,3}_{\rm NG}$, while \texttt{K} elsewhere (in
+\texttt{gamma\^{}K}, \texttt{Z\_K}, \texttt{n4}) is an index set; \texttt{L} in check K-6 is
+$L_{\rm NG}(\mathsf e_4)$; \texttt{a} in \texttt{L\_e\_A}, \texttt{e\_A}, \texttt{gamma\^{}A} is an index
+of the eight axes and \texttt{a} in \texttt{Sigma\^{}(ab)}, \texttt{gamma\^{}a}, \texttt{Delta\_0a} a
+fibre index; \texttt{C+g[0, 5]} in check K-4 is $C^+_{\rm NG}\gamma^0_{\rm NG}\gamma^5_{\rm NG}$;
+\texttt{m4\^{}2} and \texttt{m8\^{}2} in check K-8 are the squares of the four-dimensional and the
+eight-dimensional mass; \texttt{c\_N} in check P-5 is the factor $\tfrac12$ (one field) or 1 (doublet)
+in front of the integral of Eq.~(\ref{eq:omega}); \texttt{Omega''/2} in check P-9 is half the second
+derivative of $\Omega_{\rm NG}$ with respect to $\lvert\Delta_{\rm NG}\rvert$; \texttt{u} in check R-4 is
+$\varpi_{\rm NG}$; \texttt{2 Sigma\^{}(ab)} is $2\Sigma^{ab}_{\rm NG}$; a superscript \texttt{T} is the
+transpose and \texttt{dagger} the Hermitian conjugate; \texttt{8D} and \texttt{4D} abbreviate
+eight-dimensional and four-dimensional, \texttt{BdG} and \texttt{BCS} Bogoliubov-de Gennes and
+Bardeen-Cooper-Schrieffer. The groups and algebras \texttt{so(N)}, \texttt{so(8)},
+\texttt{so(7,1)}, \texttt{so(4,4)}, \texttt{su(2)}, \texttt{g2}, \texttt{gl(8)}, \texttt{O(N)},
+\texttt{SO(3)}, \texttt{U(1)}, \dots\ are written as in the text, and \texttt{Sym(3)} is the
+permutation group of three objects.
+
+\section{The machine checks}
+\label{app:checks}
+
+The program \texttt{nogo} (Appendix~\ref{app:data}) verifies {{GEN:nchecks_rust}} statements on which
+the results rest; the script \texttt{check\_symbols.py} verifies the six statements NG-S1 to NG-S6 on
+the symbols, and \texttt{check\_self\_contained.py} that no document of this revision sends the reader to
+another document for a definition. Each check prints one line: its label, the statement, and, after two
+dashes, the numbers that decide it. Table~\ref{tab:checks} reproduces these lines as the programs print
+them, in plain text (Appendix~\ref{app:notation} explains the names).
+
+{\footnotesize
+\begin{longtable}{p{0.08\textwidth}p{0.80\textwidth}p{0.06\textwidth}}
+\caption{All machine checks of this paper, as the programs print them.}\label{tab:checks}\\
+\toprule
+label & statement and decisive numbers & result\\
+\midrule
+\endfirsthead
+\toprule
+label & statement and decisive numbers (continued) & result\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+{{GENRAW:checks_rows_tex}}
+\end{longtable}
+}
+
+\section{Programs, data, and how to reproduce every number}
+\label{app:data}
+
+\subsection{Programs}
+
+All computations are done by the Rust program \texttt{nogo} in the folder \texttt{code/nogo-rs} of
+\texttt{Revision\_NoGo}; the figures are drawn by a Python script, and the documents are assembled by
+Python scripts that insert every number from the data files, so that no computed number is typed by
+hand. The program has twelve modules: \texttt{oct} (the Cayley-Dickson algebras, their products,
+norms, associators, derivations and left multiplications, the octonionic Dirac matrices and the
+intertwiners; command \texttt{octonions}), \texttt{triality} (the system~(\ref{eq:lt}), the triality maps,
+their characteristic polynomials, the commutants; command \texttt{triality}), \texttt{sig} (the Dirac
+matrices of the project on both spacetimes, the products $\gamma^K_{\rm NG}$, the Hamiltonian matrices and
+the pair channels), \texttt{kaluza} (the combined manifolds, the pair classification, the $\mathrm G_2$
+locking, the Kaluza-Klein spectra; command \texttt{kaluza}), \texttt{superalg} (the superalgebras, their
+graded Jacobi identities and positivity; command \texttt{superalgebra}), \texttt{pairs4d} (the
+Bogoliubov-de Gennes matrices, the effective potential, the gap equation, the amplitude mode, the
+stabilizers; command \texttt{pairs4d}), \texttt{renorm} (power counting and the Kaluza-Klein bubble;
+command \texttt{renorm}), \texttt{exact} (exact rational arithmetic with 128-bit integers, null spaces,
+ranks, characteristic polynomials), \texttt{integrate} (adaptive Gauss-Legendre quadrature with 20 and
+40 points), \texttt{rsym} (real symmetric matrices and the cyclic Jacobi method), \texttt{checks} (the
+reports) and \texttt{main} (the commands). It uses the library crate \texttt{code/spacetimes-rs} of the
+repository for the Dirac matrices $\gamma^A_{1671}$ and $\gamma^A_{1644}$, complex numbers, integer
+matrices and their rank modulo a prime, complex Hermitian diagonalization, Gauss-Legendre nodes,
+Brent's root finder, a parallel map and the writing of data files.
+
+Numerical methods. The structural statements (checks O, T, K, S, R-1 to R-3) are decided in exact
+integer or rational arithmetic; ranks of large integer matrices are computed modulo a large prime,
+which can only underestimate a rank, so a rank found equal to its maximum is exact. The graded Jacobi
+identities use structure constants that are integers, halves and quarters, which binary floating-point
+arithmetic represents exactly. The momentum integrals of Sec.~\ref{sec:superfluid} use adaptive
+Gauss-Legendre quadrature (the rules of 20 and 40 points are compared on each interval, which is halved
+until they agree to the absolute tolerance $10^{-15}$ or the relative tolerance $10^{-14}$) on panels
+whose end points cluster geometrically around the Fermi momentum; there $\varepsilon_{\rm NG}-\mu_{\rm NG}$
+is computed as $(q^2-(q^{\rm F}_{\rm NG})^2)/(\varepsilon_{\rm NG}+\mu_{\rm NG})$, without cancellation. The
+gap equation is solved by Brent's method in the logarithm of the gap; gaps below
+$10^{-12}\Lambda_{\rm NG}$ are reported as zero.
+
+\subsection{Commands}
+
+From the folder \texttt{Revision\_NoGo} of the repository (a Rust toolchain for the edition 2021,
+Python 3 with NumPy and Matplotlib, and for the documents a TeX distribution with REVTeX 4.2, pandoc and
+XeLaTeX):
+\begin{verbatim}
+cargo run --release --manifest-path code/nogo-rs/Cargo.toml -- all
+python3 code/scripts/make_figures.py
+bash code/scripts/check_all.sh
+\end{verbatim}
+The first command writes every data file of the folder \texttt{data} (in about a second); the
+commands \texttt{octonions}, \texttt{triality}, \texttt{kaluza}, \texttt{superalgebra}, \texttt{pairs4d}
+and \texttt{renorm} in place of \texttt{all} run one part. The second draws the thirteen figures. The
+third runs both, then the checks of the symbols and of self-containedness, writes the fragments of the
+documents, and builds this paper and the provenance documents.
+
+\subsection{Data files}
+
+{{GENRAW:data_files_tex}}
+Every data file states its content and units in its header lines (\texttt{\# content:}), and every
+column name is either a descriptive word or one of the names listed in the last column of
+Table~\ref{tab:symbols}.
+
+\subsection{Checksums}
+
+SHA-256 checksums of the data files, the figures and the programs from which this paper was built:
+{\footnotesize
+\begin{verbatim}
+{{GENRAW:data_sha256}}
+{{GENRAW:figure_sha256}}
+{{GENRAW:code_sha256}}
+\end{verbatim}
+}
+
+\twocolumngrid
