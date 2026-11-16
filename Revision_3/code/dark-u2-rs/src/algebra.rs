@@ -12,6 +12,7 @@
 //!   omega    = g[0] g[1] ... g[7];
 //!   beta     = g[4];  alpha^j = g[4] g[j] for the seven space indices j;
 //!   cp = C^+ = g[4];  cm = C^- = g[4] omega   (the two charge-conjugation matrices);
+//!   G_K      = g[A1] g[A2] ... g[Ar] with A1 < ... < Ar, the ordered product over an index set K;
 //!   E        = the real antisymmetric 2x2 matrix [[0,1],[-1,0]] (= i tau^2) acting on
 //!              the doublet index of Psi_U2 = (psi^1_U2, psi^2_U2).
 
@@ -237,10 +238,10 @@ pub fn run() -> bool {
     let scalar_pairs_one_field = by_rank[0][1] + by_rank[0][2] + by_rank[8][1] + by_rank[8][2];
     ck.add(
         "R3-A7",
-        "pairs psi^T X psi of ONE anticommuting field are nonzero only for antisymmetric X; of the 512 matrices C^+ Theta_K and C^- Theta_K (Theta_K the 256 ordered products of gamma's) each is either symmetric or antisymmetric, and the four Lorentz-scalar ones (rank 0 and rank 8: C^+, C^-, C^+ omega, C^- omega) are all symmetric: a single Dirac field on the 7+1 spacetime has NO spin-zero (Lorentz-scalar) pair",
+        "pairs psi^T X psi of ONE anticommuting field are nonzero only for antisymmetric X; of the 512 matrices C^+ G_K and C^- G_K (G_K = gamma^A1 ... gamma^Ar, A1 < ... < Ar, the 256 ordered products over the index sets K) each is either symmetric or antisymmetric, and the four Lorentz-scalar ones (rank 0 and rank 8: C^+, C^-, C^+ omega, C^- omega) are all symmetric: a single Dirac field on the 7+1 spacetime has NO spin-zero (Lorentz-scalar) pair",
         ok_kind && scalar_pairs_one_field == 0,
         format!(
-            "antisymmetric C^+ Theta_K by rank 0..8: {:?}; antisymmetric C^- Theta_K by rank 0..8: {:?}",
+            "antisymmetric C^+ G_K by rank 0..8: {:?}; antisymmetric C^- G_K by rank 0..8: {:?}",
             (0..9).map(|r| by_rank[r][1]).collect::<Vec<_>>(),
             (0..9).map(|r| by_rank[r][2]).collect::<Vec<_>>()
         ),
@@ -250,7 +251,7 @@ pub fn run() -> bool {
         .collect();
     spacetimes::io::write_csv_str(
         "r3_pairs_by_rank.csv",
-        &[("meaning", "number of products Theta_K of rank r for which C^+ Theta_K and C^- Theta_K are antisymmetric (a pair of one field exists) or symmetric (it vanishes)".to_string())],
+        &[("meaning", "number of ordered products G_K = gamma^A1 ... gamma^Ar (A1 < ... < Ar) of rank r for which C^+ G_K and C^- G_K are antisymmetric (a pair of one field exists) or symmetric (it vanishes)".to_string())],
         &["rank", "products", "antisym_Cplus", "antisym_Cminus", "sym_Cplus", "sym_Cminus"],
         &rows_csv,
     )

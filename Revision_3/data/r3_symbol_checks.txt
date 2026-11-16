@@ -1,0 +1,9 @@
+PROJECT spacetimes, Revision_3: checks of the symbols (registry provenance/symbols_r3.csv)
+6 of 6 checks passed
+
+[PASS] R3-S1  every symbol text is registered once (90 entries) and every name used in the data files of Revision_3 belongs to one entry (88 names)
+[PASS] R3-S2  the 13 taken entries carry exactly the meaning of the MASTER registry (113 entries of the main project, 229 of the revision on the deflating spacetimes compared), and none of the 77 new symbols is a symbol of either master registry
+[PASS] R3-S3  every column of the 18 data files data/r3_*.csv is a registered name or a descriptive word (88 different columns), and every file states its meaning; 9 column names also occur as names in a master registry or as symbols of the author's notebooks (A, M, m, mu, n, name, q, rank, x) - they cannot be confused, because every data file of Revision_3 has the prefix r3_ and a line '# meaning:', and the name means in it the registered symbol of Revision_3
+[PASS] R3-S4  each of the 4 documents of Revision_3 (and the manuscript) contains the complete table of the 90 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] R3-S5  in the 1554 formulas of the documents, lambda^P, lambda^S, G^P, G^S, G^crit, mu, Lambda, Omega and Delta always carry the suffix U2 (Delta also the index 1 or 2 of its real and imaginary parts)
+[PASS] R3-S6  in the 1910 formulas of the documents and of the new registry entries, no letter that a master registry defines with another meaning stands bare: every letter except the taken indices and sets (A, C, D, K, X, j, r), the new plain symbols (i, l, q) and the differential d carries the suffix of its Revision_3 meaning, x occurs only in the coordinate names, and the Greek letters that are master symbols carry their suffix

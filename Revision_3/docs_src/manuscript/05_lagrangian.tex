@@ -1,0 +1,124 @@
+\section{The Lagrangian and the self-interacting Dirac equations}
+\label{sec:lagrangian}
+
+\subsection{The Lagrangian}
+
+The Lagrangian density of the model is
+\begin{equation}
+\begin{aligned}
+\mathcal L_{U2}={}&\bar\Psi_{U2}\big(i\gamma^A_{1671}D_{U2A}-m_{U2}\big)\Psi_{U2}\\
+&+G^S_{U2}\big(\bar\Psi_{U2}\Psi_{U2}\big)^2+G^P_{U2}\,\Phi^{+\dagger}_{U2}\Phi^+_{U2}\\
+&-\tfrac14\boldsymbol W_{U2AC}\cdot\boldsymbol W^{AC}_{U2}-\tfrac14B_{U2AC}B^{AC}_{U2}.
+\end{aligned}
+\label{eq:L}
+\end{equation}
+The self-interaction of the Dirac field is quadratic (the mass term) and quartic: the scalar
+channel $(\bar\Psi_{U2}\Psi_{U2})^2$ of Nambu and Jona-Lasinio~\cite{NJL1961}, and the pair channel
+$\Phi^{+\dagger}_{U2}\Phi^+_{U2}$ of the theory of superconductivity~\cite{BCS1957}. Both terms are
+Lorentz scalars and invariant under $U(2)_{U2}$: $\bar\Psi_{U2}\Psi_{U2}$ is invariant under every
+unitary $\Upsilon_{U2}$, and $\Phi^{+\dagger}_{U2}\Phi^+_{U2}$ is multiplied by
+$|\det\Upsilon_{U2}|^2=1$. Both are Hermitian. Positive couplings attract (Sec.~\ref{sec:potential});
+on the eight-dimensional spacetime $G^S_{U2}$ and $G^P_{U2}$ have the dimension mass$^{-6}$.
+
+These two couplings are not the most general quartic self-interaction allowed by the symmetries;
+there are further channels (vector, tensor, the pseudoscalar pair $\Phi^-_{U2}$). They are the two
+channels of total spin zero that compete for the vacuum: the scalar channel favours a mass and
+leaves $U(2)_{U2}$ intact, the pair channel favours the superfluid and breaks it. A Lagrangian is
+``interesting'' in the sense of the task if its effective potential has a minimum with
+$\langle\Phi^+_{U2}\rangle\neq0$; Sec.~\ref{sec:potential} maps the couplings for which this
+happens.
+
+A useful identity rewrites the conjugate pair with the conjugate doublet
+$\tilde\Psi_{U2}=\mathsf E\,\Psi^*_{U2}=(\psi^{2*}_{U2},-\psi^{1*}_{U2})$, where the asterisk on a
+column of operators denotes the column of their Hermitian conjugates. From
+$\Phi^{+\dagger}_{U2}=\psi^{2\dagger}_{U2}C^+_{1671}\psi^{1*}_{U2}$, from $C^+_{1671}=\beta_{1671}$ and from
+the anticommutation of the components,
+\begin{equation}
+\Phi^{+\dagger}_{U2}=\bar\psi^2_{U2}\psi^{1*}_{U2}=-\bar\psi^1_{U2}\psi^{2*}_{U2}
+=-\tfrac12\,\bar\Psi_{U2}\tilde\Psi_{U2}.
+\label{eq:phidag}
+\end{equation}
+$\tilde\Psi_{U2}$ transforms under $SU(2)_{U2}$ like $\Psi_{U2}$ (because
+$\mathsf E\,\Upsilon^*_{U2}\mathsf E^{-1}=\Upsilon_{U2}$ for $\det\Upsilon_{U2}=1$, by
+Eq.~\eqref{eq:detE}), under $U(1)_{U2}$ with the charge $-y_{U2}$, and under Spin(7,1) like
+$\Psi_{U2}$, since the $\gamma^A_{1671}$ are real.
+
+\subsection{The Euler--Lagrange equations}
+
+For anticommuting fields $\Psi_{U2}$ and $\bar\Psi_{U2}$ are varied independently, with the
+derivative taken from the left. $\bar\Psi_{U2}$ occurs without derivatives; by
+Eq.~\eqref{eq:phidag}, $\Phi^{+\dagger}_{U2}=-\tfrac12\bar\Psi_{U2}(\mathsf E\otimes\beta_{1671})
+\bar\Psi^T_{U2}$, whose derivative with respect to $\bar\Psi_{U2}$ is $-\tilde\Psi_{U2}$ (the
+matrix $\mathsf E\otimes\beta_{1671}$ is antisymmetric, and the two terms of the product rule are
+equal). The Euler--Lagrange equation $\partial\mathcal L_{U2}/\partial\bar\Psi_{U2}=0$ is the
+self-interacting Dirac equation
+\begin{equation}
+\begin{aligned}
+i\gamma^A_{1671}D_{U2A}\Psi_{U2}={}&\big(m_{U2}-2G^S_{U2}\,\bar\Psi_{U2}\Psi_{U2}\big)\Psi_{U2}\\
+&+G^P_{U2}\,\Phi^+_{U2}\,\tilde\Psi_{U2},
+\end{aligned}
+\label{eq:EL}
+\end{equation}
+or, member by member,
+\begin{equation}
+\begin{aligned}
+\big(i\gamma^A_{1671}D_{U2A}\Psi_{U2}\big)^1={}&\big(m_{U2}-2G^S_{U2}\bar\Psi_{U2}\Psi_{U2}\big)\psi^1_{U2}\\
+&+G^P_{U2}\Phi^+_{U2}\,\psi^{2*}_{U2},\\
+\big(i\gamma^A_{1671}D_{U2A}\Psi_{U2}\big)^2={}&\big(m_{U2}-2G^S_{U2}\bar\Psi_{U2}\Psi_{U2}\big)\psi^2_{U2}\\
+&-G^P_{U2}\Phi^+_{U2}\,\psi^{1*}_{U2},
+\end{aligned}
+\label{eq:ELcomp}
+\end{equation}
+where the superscripts 1 and 2 on the left select the member. The first term on the right is a
+mass that depends on the local scalar density; the second couples each member to the conjugate
+of the other, through the pair field. Both sides transform alike: $\Phi^+_{U2}\tilde\Psi_{U2}$ has
+the $U(1)_{U2}$ charge $1-y_{U2}=y_{U2}$. The equation for $\bar\Psi_{U2}$ is the Hermitian
+conjugate of Eq.~\eqref{eq:EL}. As operator equations, the products on the right need an
+ordering and a regularization; in this paper they are used in the mean-field approximation of
+Sec.~\ref{sec:meanfield}, where the products are replaced by expectation values.
+
+The gauge fields enter $\mathcal L_{U2}$ through
+$\bar\Psi_{U2}i\gamma^A_{1671}(i\mathcal W_{U2A})\Psi_{U2}=-g'_{U2}y_{U2}B_{U2A}J^A_{U2}
+-g_{U2}\boldsymbol W_{U2A}\cdot\boldsymbol J^A_{U2}$, with the currents
+$J^A_{U2}=\bar\Psi_{U2}\gamma^A_{1671}\Psi_{U2}$ and
+$\boldsymbol J^A_{U2}=\bar\Psi_{U2}\gamma^A_{1671}\tfrac12\boldsymbol\tau_{U2}\Psi_{U2}$. Their
+Euler--Lagrange equations are
+\begin{equation}
+\begin{aligned}
+\partial_AB^{AC}_{U2}&=g'_{U2}\,y_{U2}\,J^C_{U2},\\
+\partial_A\boldsymbol W^{AC}_{U2}-g_{U2}\,\boldsymbol W_{U2A}\times\boldsymbol W^{AC}_{U2}&=g_{U2}\,\boldsymbol J^C_{U2}.
+\end{aligned}
+\label{eq:gaugeeq}
+\end{equation}
+The left side of the second equation is the covariant divergence in the adjoint representation;
+the term with the cross product comes from the variation of $-\tfrac14\boldsymbol W_{U2AC}\cdot\boldsymbol
+W^{AC}_{U2}$ with respect to the $\boldsymbol W_{U2A}$ inside the field strength. Since
+$\partial_C\partial_AB^{AC}_{U2}=0$, the first equation requires the conservation of
+$J^C_{U2}$, which follows from Eq.~\eqref{eq:EL} because every term of $\mathcal L_{U2}$ is
+invariant under $U(1)_{U2}$; $J^4_{U2}=\Psi^\dagger_{U2}\Psi_{U2}$ is the number density of the
+fermions.
+
+\subsection{Hamiltonian, number, and the neutralizing background}
+
+The Hamiltonian $H_{U2}$ follows from $\mathcal L_{U2}$ in the usual way. With the gauge fields
+at zero (their mean values in the states of this paper, Sec.~\ref{sec:meanfield}) it is
+\begin{equation}
+\begin{aligned}
+H_{U2}=\int d^7x\,\Big[&\Psi^\dagger_{U2}\big(-i\alpha^j_{1671}\partial_j+\beta_{1671}m_{U2}\big)\Psi_{U2}\\
+&-G^S_{U2}\big(\bar\Psi_{U2}\Psi_{U2}\big)^2-G^P_{U2}\Phi^{+\dagger}_{U2}\Phi^+_{U2}\Big],
+\end{aligned}
+\label{eq:H}
+\end{equation}
+integrated over the seven space-like coordinates at a fixed time $x4$. The number operator
+$N_{U2}=\int d^7x\,J^4_{U2}$ is written in the charge-symmetric order,
+$\tfrac12(\Psi^\dagger_{U2}\Psi_{U2}-\Psi^T_{U2}\Psi^{*}_{U2})$ for the density, so that the vacuum of
+free fields has no charge; the same order is used for every fermion bilinear in $H_{U2}$. At
+zero temperature the ground state at the chemical potential $\mu_{U2}$ minimizes
+$\langle H_{U2}-\mu_{U2}N_{U2}\rangle$.
+
+A state with $\mu_{U2}\neq0$ has a nonzero density of the gauged charge $y_{U2}J^4_{U2}$. By the
+first of Eqs.~\eqref{eq:gaugeeq} a uniform charge density would produce a field whose energy grows
+without bound with the volume. As in the description of the electrons of a metal, we assume a
+uniform background of the opposite $U(1)_{U2}$ charge, so that the mean value of $B_{U2A}$
+vanishes; the background has no other effect. In the vacuum, $\mu_{U2}=0$, the density vanishes
+and no background is needed.

@@ -1,0 +1,146 @@
+\section{The new gauge group and its covariant derivative}
+\label{sec:gauge}
+
+\subsection{The symmetry that the pair selects}
+
+Let a $2\times2$ complex matrix $\Upsilon_{U2}$ act on the doublet index,
+$\Psi_{U2}\to(\Upsilon_{U2}\otimes\mathsf 1_{16})\Psi_{U2}$; such a transformation commutes with
+Spin(7,1), because it does not touch the spinor index. (Below, a matrix that acts on one of the two
+indices only is written without the unit matrix of the other: $\gamma^A_{1671}$ acting on
+$\Psi_{U2}$ means $\mathsf 1_2\otimes\gamma^A_{1671}$, and $\Upsilon_{U2}$ acting on $\Psi_{U2}$ means
+$\Upsilon_{U2}\otimes\mathsf 1_{16}$.) The kinetic and mass terms of the doublet,
+$\bar\Psi_{U2}(i\gamma^A_{1671}\partial_A-m_{U2})\Psi_{U2}$, are the sum of the same terms for
+$\psi^1_{U2}$ and $\psi^2_{U2}$ with the common mass $m_{U2}$, and $\bar\Psi_{U2}=
+\Psi^\dagger_{U2}\beta_{1671}$. Under a constant $\Upsilon_{U2}$ they become
+$\Psi^\dagger_{U2}\Upsilon^\dagger_{U2}\beta_{1671}(i\gamma^A_{1671}\partial_A-m_{U2})\Upsilon_{U2}\Psi_{U2}$,
+which equals the original for all fields if and only if
+$\Upsilon^\dagger_{U2}\Upsilon_{U2}=\mathsf 1_2$: the transformation must be unitary. For every $2\times2$ matrix the entries of $\Upsilon^T_{U2}\mathsf E\,\Upsilon_{U2}$ are its
+$2\times2$ minors, so that
+\begin{equation}
+\Upsilon^T_{U2}\,\mathsf E\,\Upsilon_{U2}=\det(\Upsilon_{U2})\,\mathsf E,
+\qquad
+\Phi^\pm_{U2}\to\det(\Upsilon_{U2})\,\Phi^\pm_{U2},
+\label{eq:detE}
+\end{equation}
+by Eq.~\eqref{eq:pairs} (R3-A9). A unitary transformation leaves the spin-zero pair invariant if
+and only if its determinant is 1: the pair selects $SU(2)$. Together with the overall phase,
+which counts the fermions, the unitary transformations form
+\begin{equation}
+\begin{aligned}
+U(2)_{U2}&=\big(SU(2)_{U2}\times U(1)_{U2}\big)/\mathbb Z_2,\\
+\Upsilon_{U2}&=\exp\!\big(\tfrac i2\boldsymbol\Theta_{U2}\cdot\boldsymbol\tau_{U2}\big)\exp\!\big(iy_{U2}\Theta^0_{U2}\big),
+\end{aligned}
+\label{eq:group}
+\end{equation}
+with the Pauli matrices $\boldsymbol\tau_{U2}=(\tau^1_{U2},\tau^2_{U2},\tau^3_{U2})$ acting on the
+doublet index, three real parameters $\boldsymbol\Theta_{U2}$, one real parameter
+$\Theta^0_{U2}$, and the $U(1)_{U2}$ charge $y_{U2}=\tfrac12$ of the doublet. The quotient by
+$\mathbb Z_2$ removes the double counting of the element $-\mathsf 1_2$, which belongs to
+$SU(2)_{U2}$ and equals $\exp(iy_{U2}\Theta^0_{U2})$ at $\Theta^0_{U2}=2\pi$. The determinant is
+$\det\Upsilon_{U2}=\exp(2iy_{U2}\Theta^0_{U2})=\exp(i\Theta^0_{U2})$. The value $y_{U2}=\tfrac12$
+copies the hypercharge of the Higgs doublet, Eq.~\eqref{eq:sm}; with it the pair has charge 1.
+We make this symmetry local, $\boldsymbol\Theta_{U2}(X)$ and $\Theta^0_{U2}(X)$, and call it the
+new gauge group. The group is the group of the electroweak theory; what is new is where it acts
+(on an internal index of 16-component fermions of the $7+1$ spacetime), why it is there (it is
+the symmetry of the only spin-zero pair, Theorem~1), and which field breaks it (a pair of
+fermions, not an elementary scalar).
+
+\subsection{The covariant derivative}
+
+Modelled on Eq.~\eqref{eq:sm}, the new covariant derivative is
+\begin{equation}
+\begin{aligned}
+D_{U2A}\Psi_{U2}&=\Big(\partial_A+\tfrac i2\,g_{U2}\,\boldsymbol\tau_{U2}\cdot\boldsymbol W_{U2A}\\
+&\qquad+i\,g'_{U2}\,y_{U2}\,B_{U2A}\Big)\Psi_{U2}\\
+&\equiv(\partial_A+i\mathcal W_{U2A})\Psi_{U2},
+\end{aligned}
+\label{eq:D}
+\end{equation}
+with a triple of real vector fields $\boldsymbol W_{U2A}=(W^1_{U2A},W^2_{U2A},W^3_{U2A})$ for
+$SU(2)_{U2}$, a real vector field $B_{U2A}$ for $U(1)_{U2}$, the couplings $g_{U2}$ and $g'_{U2}$,
+and the Hermitian $2\times2$ matrix $\mathcal W_{U2A}=\tfrac12g_{U2}\boldsymbol\tau_{U2}\cdot\boldsymbol
+W_{U2A}+g'_{U2}y_{U2}B_{U2A}\mathsf 1_2$. It acts on the doublet index, on each of the 16 spinor
+components alike. Under a local transformation $\Psi'_{U2}=\Upsilon_{U2}\Psi_{U2}$ the connection
+transforms as
+\begin{equation}
+\mathcal W'_{U2A}=\Upsilon_{U2}\mathcal W_{U2A}\Upsilon^{-1}_{U2}+i(\partial_A\Upsilon_{U2})\Upsilon^{-1}_{U2},
+\label{eq:Wtrans}
+\end{equation}
+and then $D'_{U2A}\Psi'_{U2}=\Upsilon_{U2}D_{U2A}\Psi_{U2}$: indeed
+$(\partial_A+i\mathcal W'_{U2A})\Upsilon_{U2}\Psi_{U2}=(\partial_A\Upsilon_{U2})\Psi_{U2}+\Upsilon_{U2}\partial_A\Psi_{U2}
++i\Upsilon_{U2}\mathcal W_{U2A}\Psi_{U2}-(\partial_A\Upsilon_{U2})\Psi_{U2}$ (R3-G1). The new connection
+$\mathcal W'_{U2A}$ is again Hermitian, because $\Upsilon_{U2}$ is unitary, and its $U(1)_{U2}$ part
+is $B'_{U2A}=B_{U2A}-\partial_A\Theta^0_{U2}/g'_{U2}$ (R3-G2). To first order in
+$\boldsymbol\Theta_{U2}$ the $SU(2)_{U2}$ part reads
+$\boldsymbol W'_{U2A}=\boldsymbol W_{U2A}-\boldsymbol\Theta_{U2}\times\boldsymbol W_{U2A}
+-\partial_A\boldsymbol\Theta_{U2}/g_{U2}$ ($\times$ is the cross product of triples); it follows from
+$\tau^1_{U2}\tau^2_{U2}-\tau^2_{U2}\tau^1_{U2}=2i\tau^3_{U2}$ and the two cyclic permutations (R3-A9),
+which turn the commutator of two combinations of Pauli matrices into the combination with the
+cross product of the coefficients.
+
+The commutator of two covariant derivatives defines the field strength,
+\begin{equation}
+\begin{aligned}
+[D_{U2A},D_{U2C}]\Psi_{U2}&=i\mathcal F_{U2AC}\Psi_{U2},\\
+\mathcal F_{U2AC}&=\partial_A\mathcal W_{U2C}-\partial_C\mathcal W_{U2A}\\
+&\quad+i[\mathcal W_{U2A},\mathcal W_{U2C}]\\
+&=\tfrac12g_{U2}\boldsymbol\tau_{U2}\cdot\boldsymbol W_{U2AC}\\
+&\quad+g'_{U2}y_{U2}B_{U2AC}\mathsf 1_2,
+\end{aligned}
+\label{eq:F}
+\end{equation}
+with $\boldsymbol W_{U2AC}=\partial_A\boldsymbol W_{U2C}-\partial_C\boldsymbol W_{U2A}-g_{U2}\boldsymbol
+W_{U2A}\times\boldsymbol W_{U2C}$ and $B_{U2AC}=\partial_AB_{U2C}-\partial_CB_{U2A}$ (R3-G3, R3-G4).
+It transforms by conjugation, $\mathcal F'_{U2AC}=\Upsilon_{U2}\mathcal F_{U2AC}\Upsilon^{-1}_{U2}$
+(R3-G5), so the traces $\mathrm{Tr}(\mathcal F_{U2AC}\mathcal F^{AC}_{U2})=\tfrac12g_{U2}^2
+\boldsymbol W_{U2AC}\cdot\boldsymbol W^{AC}_{U2}+2g'^2_{U2}y_{U2}^2B_{U2AC}B^{AC}_{U2}$ and
+$\mathrm{Tr}\,\mathcal F_{U2AC}=2g'_{U2}y_{U2}B_{U2AC}$ are invariant, and so is the Lagrangian of
+the gauge fields, $-\tfrac14\boldsymbol W_{U2AC}\cdot\boldsymbol W^{AC}_{U2}-\tfrac14B_{U2AC}B^{AC}_{U2}$.
+
+On the eight-dimensional spacetime the action is dimensionless when the Dirac field has the
+dimension mass$^{7/2}$ and the gauge fields mass$^{3}$; the couplings $g_{U2}$ and $g'_{U2}$ then
+have the dimension mass$^{-2}$.
+
+\subsection{The charges of the pairs}
+
+By Eq.~\eqref{eq:detE} the pairs are $SU(2)_{U2}$ singlets and carry the $U(1)_{U2}$ charge
+$2y_{U2}=1$: $\Phi^\pm_{U2}\to\exp(i\Theta^0_{U2})\Phi^\pm_{U2}$ (R3-G6). Their covariant derivative
+contains only $B_{U2A}$. Since $(\tau^1_{U2})^T\mathsf E+\mathsf E\tau^1_{U2}=0$, and the same for
+$\tau^2_{U2}$ and $\tau^3_{U2}$ (R3-A9), $\mathcal W^T_{U2A}\mathsf E+\mathsf E\mathcal W_{U2A}
+=2g'_{U2}y_{U2}B_{U2A}\mathsf E$, and the product rule gives
+\begin{equation}
+\begin{aligned}
+(\partial_A+ig'_{U2}B_{U2A})\Phi^\pm_{U2}={}&\tfrac12(D_{U2A}\Psi_{U2})^T(\mathsf E\otimes C^\pm_{1671})\Psi_{U2}\\
+&+\tfrac12\Psi^T_{U2}(\mathsf E\otimes C^\pm_{1671})D_{U2A}\Psi_{U2}.
+\end{aligned}
+\label{eq:Dpair}
+\end{equation}
+A condensate of $\Phi^+_{U2}$ is therefore invariant under $SU(2)_{U2}$ and changes its phase under
+$U(1)_{U2}$: if it forms, it breaks $U(2)_{U2}\to SU(2)_{U2}$, and only $B_{U2A}$ can acquire a mass
+(Sec.~\ref{sec:breaking}). In the electroweak theory the Higgs doublet carries both kinds of
+charge, and the boson that becomes massive is a mixture of the third component of $\boldsymbol W_{\rm SM}$
+and of $B_{\rm SM}$; here the order parameter
+is an $SU(2)_{U2}$ singlet, and there is no mixing.
+
+\subsection{Chirality and anomalies}
+
+In eight dimensions the gauge anomaly of Weyl fermions comes from one-loop diagrams with five
+external gauge bosons; it is governed by the fifth power of the field strength, and the mixed
+gauge-gravitational anomalies by its third and first powers multiplied by curvature
+terms~\cite{AlvarezGaumeWitten1984}. For a $U(1)$ the three coefficients are the sums of the fifth, of the third and of the first
+powers of the charges of the left-handed Weyl components.
+For $SU(2)_{U2}$ alone the symmetrized traces of three and of five Pauli matrices vanish
+(R3-B2): the group has no perturbative anomaly of its own.
+
+A Dirac doublet consists of a left-handed and a right-handed doublet. Because complex conjugation
+exchanges the chiralities on the $7+1$ spacetime (Sec.~\ref{sec:spacetime}), the right-handed
+doublet of charge $y_{U2}$ is equivalent to a left-handed doublet in the conjugate representation,
+of charge $-y_{U2}$, and the three coefficients vanish (R3-B2). More strongly, the Dirac doublet
+admits the gauge-invariant mass term $m_{U2}\bar\Psi_{U2}\Psi_{U2}$; a regulator field of large
+mass of the same kind (Pauli and Villars) then respects $U(2)_{U2}$, so every gauge anomaly of the
+Dirac doublet cancels. A doublet of one chirality, by contrast, has the coefficients
+$(\tfrac1{16},\tfrac14,1)$ (two components of charge $\tfrac12$; R3-B2): its $U(1)_{U2}$ cannot be
+gauged. Since the spin-zero pair joins equal chiralities (Sec.~\ref{sec:pairs}), a chiral doublet
+could still pair, but it could neither carry the gauged $U(1)_{U2}$ nor have a mass. The gauged
+doublet of this paper is the Dirac doublet; the chiral doublet is followed in
+Sec.~\ref{sec:chiral} only to compare its potential.

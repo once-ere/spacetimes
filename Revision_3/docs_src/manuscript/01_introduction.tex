@@ -1,0 +1,64 @@
+\section{Introduction}
+\label{sec:intro}
+
+This paper answers a question posed by the author of PROJECT spacetimes: can a new gauge
+symmetry act on a quantized 16-component Dirac field on the eight-dimensional Minkowski
+spacetime of signature $7+1$, with a Lagrangian that is quadratic and quartic in the Dirac
+field, such that the effective potential of the field has a minimum at which (i)~a superfluid
+of bosonic spin-zero pairs, built from the Dirac field alone, forms; (ii)~the new gauge group
+is spontaneously broken; and (iii)~a new electrically neutral scalar boson, which exists only
+after the breaking, carries the attraction between the members of the pairs?
+
+The spacetime is $\mathbb R^8$ with the coordinates $X=\{x0,\dots,x7\}$, of which $x4$ is the
+time, and the metric $\eta_{1671}=\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1)$. It is contractible,
+so it carries a spin structure and Dirac spinors exist; they have $2^{8/2}=16$ components. The
+fields of this paper are quantized: their components are complex Grassmann operators.
+
+The answer, worked out below and checked by machine at every step, is yes, with one
+qualification. The three requirements are met by the model of Secs.~\ref{sec:pairs}
+to~\ref{sec:breaking}. The qualification concerns the word ``gauge'' in ``scalar gauge
+boson'': a gauge field is a connection, a one-form, and its quanta are vectors. The two new
+neutral bosons that exist only after the breaking are a massive vector, $B_{U2A}$, the analogue
+of the Z boson of the electroweak theory, and a scalar, the amplitude mode $\sigma_{U2}$ of
+the pair condensate, the analogue of the Higgs boson. The scalar is the one that carries
+the pairing interaction, in the precise sense of Sec.~\ref{sec:sigma}.
+
+The electroweak theory~\cite{Weinberg1967} is the template. There the Higgs doublet
+$\phi_{\rm SM}$ of hypercharge $Y_{\rm SM}=\tfrac12$ has the covariant derivative, written with
+one-forms,
+\begin{equation}
+\mathrm D^{\rm SM}\phi_{\rm SM}=\big(\mathrm d+\tfrac i2\,g_{\rm SM}\,\boldsymbol\tau_{\rm SM}\cdot\boldsymbol W_{\rm SM}
++i\,g'_{\rm SM}Y_{\rm SM}B_{\rm SM}\big)\phi_{\rm SM},
+\label{eq:sm}
+\end{equation}
+with the Pauli matrices $\boldsymbol\tau_{\rm SM}$, the gauge fields $\boldsymbol W_{\rm SM}$,
+$B_{\rm SM}$ and the couplings $g_{\rm SM}$, $g'_{\rm SM}$; its expectation value breaks
+$SU(2)\times U(1)$ to the $U(1)$ of electromagnetism, and the bosons W$^\pm$, Z, the photon and
+the Higgs boson appear, the Z and the Higgs boson electrically neutral, and both defined only
+after the breaking. In this paper the covariant derivative acts on the fermions themselves,
+and the field whose expectation value breaks the symmetry is not elementary: it is a pair of
+fermions, as in the theory of superconductivity~\cite{BCS1957,Nambu1960} and in the model of
+Nambu and Jona-Lasinio~\cite{NJL1961}.
+
+Three facts specific to the $7+1$ spacetime shape the model. First (Sec.~\ref{sec:pairs}),
+both charge-conjugation matrices $C^\pm_{1671}$ of this spacetime are symmetric, so a single
+Dirac field has no Lorentz-scalar pair; a spin-zero pair needs two fields in the antisymmetric
+combination, and the group that preserves that combination is $SU(2)$. Second
+(Sec.~\ref{sec:gauge}), the left-handed and the right-handed spinors of $7+1$ are complex
+conjugates of each other, so a doublet of one chirality can pair but cannot carry a gauged
+$U(1)$ without an anomaly; the gauged doublet is a Dirac doublet. Third (Sec.~\ref{sec:potential}),
+the theory is not renormalizable: the quartic couplings have the dimension mass$^{-6}$ and the
+gauge couplings mass$^{-2}$, so the momentum cutoff $\Lambda_{U2}$ is part of the model, and we
+compute with two cutoffs to show which results depend on it.
+
+The paper is organized as follows. Section~\ref{sec:spacetime} sets out the Dirac matrices,
+Sec.~\ref{sec:pairs} the spin-zero pairs, Sec.~\ref{sec:gauge} the new gauge group and its
+covariant derivative, Sec.~\ref{sec:lagrangian} the Lagrangian and the self-interacting Dirac
+equations, Sec.~\ref{sec:meanfield} their mean-field spinor solutions and the superfluid state,
+Sec.~\ref{sec:potential} the effective potential and its minima, Sec.~\ref{sec:breaking} the
+breaking of the gauge group and the bosons that it produces, and Sec.~\ref{sec:status} what has
+been established and what has not. Appendix~\ref{app:notation} defines every symbol,
+Appendix~\ref{app:checks} lists the machine checks, and Appendix~\ref{app:data} the programs and
+data. The suffix U2 marks every symbol of the new sector, so that no symbol of this paper can
+be mistaken for a symbol of the same letter elsewhere in the project; units are those of the
+cutoff, $\Lambda_{U2}=1$, unless a unit is shown.

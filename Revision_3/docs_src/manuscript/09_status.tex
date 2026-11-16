@@ -1,0 +1,90 @@
+\section{What has been established, and what has not}
+\label{sec:status}
+
+\subsection{Established}
+
+Every statement in the following list is a theorem proved in the text or a result verified by the
+programs of Appendix~\ref{app:data}; the label of each machine check is given in parentheses, and
+Appendix~\ref{app:checks} lists all of them with their results. All
+{{GEN:nchecks_rust}} checks of the program pass.
+\begin{enumerate}
+\item On the $7+1$ spacetime a single Dirac field has no Lorentz-scalar pair, because both
+charge-conjugation matrices are symmetric; a doublet has exactly two, $\Phi^\pm_{U2}$, antisymmetric in
+the doublet index; $\Phi^+_{U2}$ is the pair of total spin zero and orbital angular momentum zero; the
+pairs join equal chiralities (R3-A1 to R3-A14).
+\item The unitary transformations of the doublet index that preserve $\Phi^+_{U2}$ form $SU(2)$; with the
+fermion number they form $U(2)_{U2}$. The covariant derivative~\eqref{eq:D} is covariant, its field
+strength transforms by conjugation, and the pair is an $SU(2)_{U2}$ singlet of $U(1)_{U2}$ charge 1
+(R3-A9, R3-G1 to R3-G6). The Dirac doublet is free of gauge anomalies; a chiral doublet cannot carry the
+gauged $U(1)_{U2}$ (R3-B2).
+\item The mean-field Dirac equation has the explicit spinor solutions~\eqref{eq:spinors} with the
+quasi-particle energies~\eqref{eq:Epm}; the spin-zero pair opens the full gap at a Fermi surface, the
+pseudoscalar pair only $\Delta_{U2}q^F_{U2}/\mu_{U2}$ (R3-C1 to R3-C6, R3-U1).
+\item The effective potential~\eqref{eq:Omega} has a Mexican-hat minimum, which breaks
+$U(2)_{U2}\to SU(2)_{U2}$, in the vacuum if and only if $\lambda^P_{U2}>\max(1,\lambda^S_{U2})$
+(critical couplings $90\pi^4\Lambda^{-6}_{U2}$ and $288\pi^4\Lambda^{-6}_{U2}$ in the two
+regularizations), and at finite density for every attraction, with the weak-coupling law~\eqref{eq:bcs};
+a density can drive a first-order transition from the massive symmetric vacuum to the superfluid
+(R3-P1 to R3-P12).
+\item After the breaking: a Goldstone mode, absorbed by $B_{U2A}$, which acquires the mass
+$g'_{U2}f_{U2}$; massless $SU(2)_{U2}$ bosons; and the neutral scalar $\sigma_{U2}$ with
+$m_{\sigma U2}=2|\Delta_{U2}|$ exactly in the vacuum without scalar coupling, a bound state below the
+pair-breaking threshold when the fermions have a bare mass, whose propagator is the pairing
+interaction of the broken phase. At finite density the stiffness obeys Leggett's theorem and the
+Goldstone velocity is $7^{-1/2}$ at weak coupling (R3-M1 to R3-M12).
+\item No symbol of this paper denotes two objects, here or in the rest of the project, and the
+documents are self-contained (R3-S1 to R3-S6 and the checks of self-containedness).
+\end{enumerate}
+
+\subsection{Not established}
+
+\begin{enumerate}
+\item \emph{Beyond mean field.} All results on the potential and the modes are of mean-field and
+random-phase order. With two flavours there is no small parameter that controls the corrections. The
+transition at the critical coupling should have the exponents of mean-field theory, because the
+order parameter lives in eight dimensions, above the upper critical dimension four of a
+Ginzburg--Landau theory; this has not been verified, and it would not make the mean-field values of
+$\Delta_{U2}$ exact.
+\item \emph{Renormalizability.} The theory is not renormalizable: $G^S_{U2}$ and $G^P_{U2}$ have the
+dimension mass$^{-6}$, $g_{U2}$ and $g'_{U2}$ mass$^{-2}$, so every order of perturbation theory
+brings higher powers of the cutoff. The cutoff $\Lambda_{U2}$ is part of the model, which is an
+effective theory below it. The results that do not depend on the regularization are the existence of
+a critical coupling, the Mexican hat, the Cooper instability, the Goldstone mode, $m_{\sigma U2}=2|\Delta_{U2}|$,
+$m_{BU2}=g'_{U2}f_{U2}$, the massless $SU(2)_{U2}$ bosons, Leggett's theorem and $(v^G_{U2})^2=1/7$. The
+numbers in units of $\Lambda_{U2}$ depend on it: the critical couplings differ by the factor $3.2$ between
+(R7) and (R8), the vacuum gaps by the factor ${{GENM:num_gap_ratio_l105}}$ at $\lambda^P_{U2}=1.05$, and (R7) breaks Lorentz invariance
+($f^s_{U2}\neq f^t_{U2}$). Whether an eight-dimensional theory of this kind can be made renormalizable
+is not addressed here.
+\item \emph{The gauge fields in the gap equation.} The exchange of $\boldsymbol W_{U2A}$ (attractive in
+the singlet) and of $B_{U2A}$ (repulsive) is not included in the gap equation; the contact coupling
+$G^P_{U2}$ stands for the net attraction. The couplings $g_{U2}$ and $g'_{U2}$ enter only through the
+masses and the static potentials of Sec.~\ref{sec:breaking}.
+\item \emph{Finite temperature.} Only zero temperature is computed; the critical temperature is not.
+\item \emph{The neutralizing background} at finite density is assumed, not derived.
+\item \emph{Global anomalies} of a chiral doublet are not examined; they do not concern the Dirac
+doublet, which admits a gauge-invariant mass.
+\item \emph{Physics in three space dimensions.} The model lives on the $7+1$ spacetime with momenta in
+all seven space dimensions; how it would appear in a world with three large space dimensions is
+not addressed, and gravity is not included.
+\end{enumerate}
+
+\subsection{Where the result differs from the wording of the task}
+
+\begin{enumerate}
+\item \emph{A ``scalar gauge boson'' does not exist.} A gauge boson is the quantum of a connection, a
+one-form; its quanta are vectors. The task asks for an electrically neutral scalar boson of the new
+group that appears only after the breaking and mediates the pairing. The model has two neutral
+bosons that exist as particles only after the breaking: the massive vector $B_{U2A}$ (a gauge boson,
+the analogue of the Z boson) and the scalar $\sigma_{U2}$ (not a gauge boson, the analogue of the Higgs
+boson). The scalar is the one that carries the pairing interaction, in the sense of
+Eq.~\eqref{eq:Vsigma}.
+\item \emph{``A new group''.} As an abstract group, $U(2)_{U2}$ is the group of the electroweak theory.
+What is new is its action on an internal index of 16-component fermions of the $7+1$ spacetime, the
+reason for it (Theorem~1), and the field that breaks it (a pair of fermions).
+\item \emph{``Mediated''.} The scalar mediates the pairing in the broken phase; the attraction that
+forms the condensate in the first place is the contact coupling (or the exchange of the
+$SU(2)_{U2}$ bosons).
+\item \emph{Superfluid or superconductor.} The pair carries the gauged charge of $U(1)_{U2}$, so with
+respect to $U(1)_{U2}$ the condensate is a superconductor (it expels the field of $B_{U2A}$); with respect
+to electromagnetism, under which the doublet is assumed neutral, it is a superfluid.
+\end{enumerate}

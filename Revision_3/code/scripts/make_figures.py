@@ -8,7 +8,7 @@ Every figure is drawn from a CSV file in data/ that the Rust program dark_u2
 quantities for display (stated at the place).  Units: the momentum cutoff
 Lambda_U2 = 1, so every mass, momentum, energy and chemical potential is in units of
 Lambda_U2 and the effective potential Omega_U2 is in units of Lambda_U2^8; where a
-figure shows Omega_U2 / a_7 the constant a_7 = A_7/(2 pi)^7 = 1/(120 pi^4) is divided out.
+figure shows Omega_U2 / a^(7)_U2 the constant a^(7)_U2 = A_7/(2 pi)^7 = 1/(120 pi^4) is divided out.
 
 Usage (from the folder Revision_3):
     python3 code/scripts/make_figures.py            # all figures
@@ -42,7 +42,7 @@ BLUE, ORANGE, AQUA, YELLOW, MAGENTA, GREEN = "#2a78d6", "#eb6834", "#1baf7a", "#
 INK, INK2, GRID = "#0b0b0b", "#52514e", "#d9d8d2"
 STYLES = [(BLUE, "-", "o"), (ORANGE, "--", "s"), (AQUA, "-.", "^"), (YELLOW, ":", "D"), (MAGENTA, (0, (5, 1, 1, 1)), "v"), (GREEN, (0, (1, 1)), "P")]
 SEQ = LinearSegmentedColormap.from_list("blues", ["#f2f6fc", "#a9c8ee", "#2a78d6", "#0f3f7a"])
-A7 = 1.0 / (120.0 * math.pi ** 4)
+A7 = 1.0 / (120.0 * math.pi ** 4)   # a^(7)_U2 = A_7/(2 pi)^7
 
 plt.rcParams.update({
     "font.size": 8.5, "axes.titlesize": 8.5, "axes.labelsize": 8.5, "legend.fontsize": 7.5,
@@ -79,7 +79,7 @@ def fig_hat():
     g = read_csv("r3_hat_2d.csv")
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.9), gridspec_kw={"width_ratios": [1.25, 1.0]})
     ax = axes[0]
-    labels = [("l095", r"$\lambda^P=0.95$"), ("l100", r"$\lambda^P=1$"), ("l102", r"$\lambda^P=1.02$"), ("l105", r"$\lambda^P=1.05$"), ("l110", r"$\lambda^P=1.1$")]
+    labels = [("l095", r"$\lambda^P_{U2}=0.95$"), ("l100", r"$\lambda^P_{U2}=1$"), ("l102", r"$\lambda^P_{U2}=1.02$"), ("l105", r"$\lambda^P_{U2}=1.05$"), ("l110", r"$\lambda^P_{U2}=1.1$")]
     for (col, lab), (c, ls, mk) in zip(labels, STYLES):
         ax.plot(r["Delta"], r[col] / A7, color=c, ls=ls, label=lab)
         k = np.argmin(r[col])
@@ -87,11 +87,11 @@ def fig_hat():
             ax.plot(r["Delta"][k], r[col][k] / A7, color=c, marker=mk, mfc="white", mew=1.1, ls="none")
     ax.axhline(0, color=INK2, lw=0.6)
     ax.set_xlabel(r"pair field $|\Delta_{U2}|/\Lambda_{U2}$")
-    ax.set_ylabel(r"$[\Omega_{U2}(\Delta)-\Omega_{U2}(0)]/(a_7\Lambda_{U2}^8)$")
+    ax.set_ylabel(r"$[\Omega_{U2}(\Delta_{U2})-\Omega_{U2}(0)]/(a^{(7)}_{U2}\Lambda_{U2}^8)$")
     ax.set_xlim(0, 0.5)
     ax.set_ylim(-0.012, 0.012)
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.27), ncol=3)
-    panel_label(ax, "(a) radial cuts: minimum at $\\Delta\\neq0$ for $\\lambda^P>1$ (markers)")
+    panel_label(ax, "(a) radial cuts: minimum at $\\Delta_{U2}\\neq0$ for $\\lambda^P_{U2}>1$ (markers)")
     ax = axes[1]
     n = int(round(math.sqrt(len(g))))
     x = g["Delta1"].reshape(n, n)
@@ -112,9 +112,9 @@ def fig_hat():
     ax.grid(False)
     cb = fig.colorbar(cs, ax=ax, fraction=0.046, pad=0.03, format="%.3f")
     cb.set_ticks([-0.002, -0.001, 0.0, 0.001, 0.002, 0.003, 0.004])
-    cb.set_label(r"$\Omega_{U2}/(a_7\Lambda_{U2}^8)$")
+    cb.set_label(r"$\Omega_{U2}/(a^{(7)}_{U2}\Lambda_{U2}^8)$")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.27), ncol=1)
-    panel_label(ax, "(b) $\\lambda^P=1.05$: the Mexican hat")
+    panel_label(ax, "(b) $\\lambda^P_{U2}=1.05$: the Mexican hat")
     fig.tight_layout()
     save(fig, "hat")
 
@@ -123,19 +123,19 @@ def fig_hat():
 def fig_gap():
     v = read_csv("r3_vacuum_gap.csv")
     fig, ax = plt.subplots(1, 1, figsize=(4.6, 3.0))
-    series = [("Delta_R7", "R7: cutoff on $|\\vec q|$", 0), ("Delta_R8", "R8: Lorentz-invariant cutoff", 1), ("Delta_chiral_R7", "left-handed doublet (R7)", 2)]
+    series = [("Delta_R7", "(R7): cutoff on $|\\vec q|$", 0), ("Delta_R8", "(R8): Lorentz-invariant cutoff", 1), ("Delta_chiral_R7", "left-handed doublet (R7)", 2)]
     for col, lab, i in series:
         c, ls, mk = STYLES[i]
         ax.plot(v["lambda"], v[col], color=c, ls=ls, label=lab)
     lam = v["lambda"]
     m = (lam > 1.0) & (lam < 1.4)
-    ax.plot(lam[m], v["Landau_R7"][m], color=BLUE, ls="none", marker="o", ms=2.6, mfc="white", mew=0.8, markevery=2, label="Landau form, R7")
-    ax.plot(lam[m], v["Landau_R8"][m], color=ORANGE, ls="none", marker="s", ms=2.6, mfc="white", mew=0.8, markevery=2, label="Landau form, R8")
+    ax.plot(lam[m], v["Landau_R7"][m], color=BLUE, ls="none", marker="o", ms=2.6, mfc="white", mew=0.8, markevery=2, label="Landau form (R7)")
+    ax.plot(lam[m], v["Landau_R8"][m], color=ORANGE, ls="none", marker="s", ms=2.6, mfc="white", mew=0.8, markevery=2, label="Landau form (R8)")
     ax.axvline(1.0, color=INK2, lw=0.6, ls=":")
     ax.axvline(2.0, color=INK2, lw=0.6, ls=":")
     ax.text(1.02, 2.2, "Dirac doublet\npairs", color=INK2, fontsize=7, va="top")
     ax.text(2.03, 2.2, "left-handed\ndoublet pairs", color=INK2, fontsize=7, va="top")
-    ax.set_xlabel(r"$\lambda^P = G^P_{U2}/G^P_{\rm crit}$")
+    ax.set_xlabel(r"$\lambda^P_{U2} = G^P_{U2}/G^{\rm crit}_{U2}$")
     ax.set_ylabel(r"vacuum pair field $\Delta_{U2}/\Lambda_{U2}$")
     ax.set_xlim(0.5, 3.0)
     ax.legend(loc="upper left", bbox_to_anchor=(0.0, 0.74))
@@ -147,7 +147,7 @@ def fig_gap():
 # --------------------------------------------------------------------------- 3. competition
 def fig_competition():
     c = read_csv("r3_competition.csv")
-    titles = [r"(a) $\lambda^S=1.05<\lambda^P=1.1$", r"(b) $\lambda^S=\lambda^P=1.1$", r"(c) $\lambda^S=1.1>\lambda^P=1.05$"]
+    titles = [r"(a) $\lambda^S_{U2}=1.05<\lambda^P_{U2}=1.1$", r"(b) $\lambda^S_{U2}=\lambda^P_{U2}=1.1$", r"(c) $\lambda^S_{U2}=1.1>\lambda^P_{U2}=1.05$"]
     fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.6), sharey=True)
     for k, ax in enumerate(axes):
         s = c[c["case"] == k]
@@ -174,7 +174,7 @@ def fig_competition():
         panel_label(ax, titles[k])
     fig.tight_layout()
     cb = fig.colorbar(cs, ax=axes, fraction=0.02, pad=0.02)
-    cb.set_label(r"$\Omega_{U2}/(a_7\Lambda_{U2}^8)$")
+    cb.set_label(r"$\Omega_{U2}/(a^{(7)}_{U2}\Lambda_{U2}^8)$")
     save(fig, "competition")
 
 
@@ -188,7 +188,7 @@ def fig_density():
         mu = d["mu"]
         lg = d["lgD" + tag]
         ok = np.isfinite(lg)
-        ax.plot(mu[ok], lg[ok], color=c, ls=ls, label=r"$\lambda^P=%s$" % lab)
+        ax.plot(mu[ok], lg[ok], color=c, ls=ls, label=r"$\lambda^P_{U2}=%s$" % lab)
     ax.axhline(math.log10(1e-300), color=INK2, lw=0.6, ls=":")
     ax.text(0.005, -292, "below $10^{-300}$: from the Cooper logarithm", color=INK2, fontsize=6.8, va="bottom")
     ax.set_ylim(-400, 5)
@@ -202,7 +202,7 @@ def fig_density():
     mu = 0.4
     slope = -1.0 / (8.0 * A7 * mu ** 6)
     x0 = b["inv_G"][0]
-    ax.plot(x, b["lnDelta"][0] + slope * (b["inv_G"] - x0), color=ORANGE, ls="--", label=r"slope $-1/(8a_7q_F^5\mu_{U2})$")
+    ax.plot(x, b["lnDelta"][0] + slope * (b["inv_G"] - x0), color=ORANGE, ls="--", label=r"slope $-1/(8a^{(7)}_{U2}(q^F_{U2})^5\mu_{U2})$")
     ax.set_xlabel(r"$10^4/(G^P_{U2}\Lambda_{U2}^6)$")
     ax.set_ylabel(r"$\ln(\Delta_{U2}/\Lambda_{U2})$")
     ax.legend(loc="upper right")
@@ -221,12 +221,12 @@ def fig_transition():
     ax.set_xlabel(r"$\mu_{U2}/\Lambda_{U2}$")
     ax.set_ylabel(r"value at the global minimum $/\Lambda_{U2}$")
     ax.legend(loc="center right")
-    panel_label(ax, "(a) $\\lambda^S=1.1$, $\\lambda^P=1.05$: first-order jump")
+    panel_label(ax, "(a) $\\lambda^S_{U2}=1.1$, $\\lambda^P_{U2}=1.05$: first-order jump")
     ax = axes[1]
-    ax.plot(t["mu"], (t["Omega"] - t["Omega_sym"]) / A7, color=AQUA, ls="-.", label=r"$\Omega_{\min}-\Omega_{\rm sym}$")
+    ax.plot(t["mu"], (t["Omega"] - t["Omega_sym"]) / A7, color=AQUA, ls="-.", label=r"$\Omega^{\min}_{U2}-\Omega^{\rm sym}_{U2}$")
     ax.axhline(0, color=INK2, lw=0.6)
     ax.set_xlabel(r"$\mu_{U2}/\Lambda_{U2}$")
-    ax.set_ylabel(r"$(\Omega_{\min}-\Omega_{\rm sym})/(a_7\Lambda_{U2}^8)$")
+    ax.set_ylabel(r"$(\Omega^{\min}_{U2}-\Omega^{\rm sym}_{U2})/(a^{(7)}_{U2}\Lambda_{U2}^8)$")
     ax.text(0.02, -0.01, "U(2)$_{U2}$ unbroken\n(massive vacuum)", color=INK2, fontsize=7, va="top")
     ax.text(0.21, -0.075, "U(2)$_{U2}\\to$SU(2)$_{U2}$\n(superfluid)", color=INK2, fontsize=7, va="top")
     ax.legend(loc="lower left")
@@ -246,7 +246,7 @@ def fig_phase():
     cs = ax.pcolormesh(lam, mu, zz, cmap=SEQ, shading="nearest", vmin=-6, vmax=0)
     ax.contour(lam, mu, zz, levels=[-4, -2, -1], colors=INK2, linewidths=0.6)
     ax.axvline(1.0, color=ORANGE, lw=1.2, ls="--", label="vacuum critical coupling")
-    ax.set_xlabel(r"$\lambda^P = G^P_{U2}/G^P_{\rm crit}$")
+    ax.set_xlabel(r"$\lambda^P_{U2} = G^P_{U2}/G^{\rm crit}_{U2}$")
     ax.set_ylabel(r"$\mu_{U2}/\Lambda_{U2}$")
     ax.grid(False)
     cb = fig.colorbar(cs, ax=ax, pad=0.02)
@@ -264,26 +264,26 @@ def fig_spectrum():
     fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.6))
     ax = axes[0]
     ax.plot(s["q"], s["vac_normal"], color=INK2, ls=":", label="normal, $E=q$")
-    ax.plot(s["q"], s["vac_sf"], color=BLUE, ls="-", label=r"superfluid, $\sqrt{q^2+\Delta^2}$")
+    ax.plot(s["q"], s["vac_sf"], color=BLUE, ls="-", label=r"superfluid, $\sqrt{q^2+\Delta_{U2}^2}$")
     ax.set_xlabel(r"$q/\Lambda_{U2}$")
     ax.set_ylabel(r"quasi-particle energy $/\Lambda_{U2}$")
     ax.legend(loc="lower right")
-    panel_label(ax, "(a) vacuum, $\\lambda^P=1.05$")
+    panel_label(ax, "(a) vacuum, $\\lambda^P_{U2}=1.05$")
     ax = axes[1]
-    ax.plot(s["q"], s["den_normal_minus"], color=INK2, ls=":", label=r"normal $|q-\mu|$")
+    ax.plot(s["q"], s["den_normal_minus"], color=INK2, ls=":", label=r"normal $|q-\mu_{U2}|$")
     ax.plot(s["q"], s["den_sf_minus"], color=BLUE, ls="-", label=r"$E^-_{U2}$")
     ax.plot(s["q"], s["den_sf_plus"], color=ORANGE, ls="--", label=r"$E^+_{U2}$")
     ax.set_xlabel(r"$q/\Lambda_{U2}$")
     ax.legend(loc="upper left")
-    panel_label(ax, "(b) $\\mu_{U2}=0.4$, $\\lambda^P=0.8$")
+    panel_label(ax, "(b) $\\mu_{U2}=0.4$, $\\lambda^P_{U2}=0.8$")
     ax = axes[2]
     ax.plot(f["q"], f["normal"], color=INK2, ls=":", label="normal")
-    ax.plot(f["q"], f["E_Cplus"], color=BLUE, ls="-", label=r"spin-zero pair ($C^+$)")
-    ax.plot(f["q"], f["E_Cminus"], color=MAGENTA, ls=(0, (5, 1, 1, 1)), label=r"pseudoscalar pair ($C^-$)")
+    ax.plot(f["q"], f["E_Cplus"], color=BLUE, ls="-", label=r"spin-zero pair ($C^+_{1671}$)")
+    ax.plot(f["q"], f["E_Cminus"], color=MAGENTA, ls=(0, (5, 1, 1, 1)), label=r"pseudoscalar pair ($C^-_{1671}$)")
     ax.set_xlabel(r"$q/\Lambda_{U2}$")
     ax.set_ylim(0, 0.2)
     ax.legend(loc="lower left", fontsize=6.8)
-    panel_label(ax, "(c) gap at the Fermi surface, $M=0.3$")
+    panel_label(ax, "(c) gap at the Fermi surface, $M_{U2}=0.3$")
     fig.tight_layout()
     save(fig, "spectrum")
 
@@ -296,33 +296,33 @@ def fig_modes():
     fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.7))
     ax = axes[0]
     ok = m["Delta"] > 0
-    ax.plot(m["m"][ok], m["threshold"][ok], color=INK2, ls=":", label=r"threshold $2\sqrt{m^2+\Delta^2}$")
+    ax.plot(m["m"][ok], m["threshold"][ok], color=INK2, ls=":", label=r"threshold $2\sqrt{m_{U2}^2+\Delta_{U2}^2}$")
     ax.plot(m["m"][ok], m["msigma"][ok], color=BLUE, ls="-", marker="o", mfc="white", mew=1.1, label=r"$m_{\sigma U2}$ (computed)")
     ax.plot(m["m"][ok], 2 * m["Delta"][ok], color=ORANGE, ls="--", label=r"$2\Delta_{U2}$")
     ax.set_xlabel(r"bare mass $m_{U2}/\Lambda_{U2}$")
     ax.set_ylabel(r"energy $/\Lambda_{U2}$")
     ax.legend(loc="lower left", fontsize=6.8)
-    panel_label(ax, "(a) $\\sigma_{U2}$ mass, $\\lambda^P=1.05$")
+    panel_label(ax, "(a) $\\sigma_{U2}$ mass, $\\lambda^P_{U2}=1.05$")
     ax = axes[1]
-    ax.plot(v["lambda"], np.sqrt(v["fs2"]), color=BLUE, ls="-", marker="o", mfc="white", mew=1.1, label=r"$f_s$ (R7)")
-    ax.plot(v["lambda"], np.sqrt(v["ft2"]), color=ORANGE, ls="--", marker="s", mfc="white", mew=1.1, label=r"$f_t$ (R7)")
-    ax.plot(v["lambda"], np.sqrt(v["f2_R8"]), color=AQUA, ls="-.", marker="^", mfc="white", mew=1.1, label=r"$f$ (R8, $f_s=f_t$)")
-    ax.set_xlabel(r"$\lambda^P$")
-    ax.set_ylabel(r"stiffness $f/\Lambda_{U2}^3$;  $m_{B U2}=g'_{U2}f$")
+    ax.plot(v["lambda"], np.sqrt(v["fs2"]), color=BLUE, ls="-", marker="o", mfc="white", mew=1.1, label=r"$f^s_{U2}$ (R7)")
+    ax.plot(v["lambda"], np.sqrt(v["ft2"]), color=ORANGE, ls="--", marker="s", mfc="white", mew=1.1, label=r"$f^t_{U2}$ (R7)")
+    ax.plot(v["lambda"], np.sqrt(v["f2_R8"]), color=AQUA, ls="-.", marker="^", mfc="white", mew=1.1, label=r"$f_{U2}$ (R8: $f^s_{U2}=f^t_{U2}$)")
+    ax.set_xlabel(r"$\lambda^P_{U2}$")
+    ax.set_ylabel(r"stiffness $/\Lambda_{U2}^3$;  $m_{B U2}=g'_{U2}f_{U2}$")
     ax.legend(loc="lower right", fontsize=6.8)
     panel_label(ax, "(b) vacuum stiffness")
     ax = axes[2]
     # a parametric plot (the points are states at mu = 0.49 ... 0.6): markers only
     x = d["Delta_dlnDelta_dmu"]
-    ax.plot(x, d["fs2_over_n4mu"], color=BLUE, ls="none", marker="o", mfc="white", mew=1.1, label=r"$f_s^2/(n/4\mu)$")
-    ax.plot(x, 7 * d["vG2"], color=ORANGE, ls="none", marker="s", mfc="white", mew=1.1, label=r"$7\,v_G^2$")
+    ax.plot(x, d["fs2_over_n4mu"], color=BLUE, ls="none", marker="o", mfc="white", mew=1.1, label=r"$(f^s_{U2})^2/(n_{U2}/4\mu_{U2})$")
+    ax.plot(x, 7 * d["vG2"], color=ORANGE, ls="none", marker="s", mfc="white", mew=1.1, label=r"$7\,(v^G_{U2})^2$")
     xx = np.linspace(0, 0.4, 50)
-    ax.plot(xx, 1 - xx ** 2, color=ORANGE, ls=":", lw=1.0, label=r"guide: $1-x^2$")
+    ax.plot(xx, 1 - xx ** 2, color=ORANGE, ls=":", lw=1.0, label=r"guide: $1-z_{U2}^2$")
     ax.axhline(1.0, color=INK2, lw=0.6)
-    ax.set_xlabel(r"$x=\Delta\, d\ln\Delta/d\mu$ (finite density)")
+    ax.set_xlabel(r"$z_{U2}=\Delta_{U2}\, d\ln\Delta_{U2}/d\mu_{U2}$")
     ax.set_ylabel("ratio")
     ax.legend(loc="lower left", fontsize=6.8)
-    panel_label(ax, "(c) $\\lambda^P=0.5$, $\\mu=0.49\\ldots0.6$")
+    panel_label(ax, "(c) $\\lambda^P_{U2}=0.5$, $\\mu_{U2}=0.49\\ldots0.6$")
     fig.tight_layout()
     save(fig, "modes")
 
@@ -337,7 +337,7 @@ def fig_static():
     ax.plot(s["x"], s["triplet_after"], color=ORANGE, ls="--", label="triplet, after breaking")
     ax.axhline(0, color=INK2, lw=0.6)
     ax.set_xlabel(r"$m_{B U2}\, r$")
-    ax.set_ylabel(r"$V(r)\,/\,(g_{U2}^2 G_7(r))$")
+    ax.set_ylabel(r"$V^{\rm pair}_{U2}(r)\,/\,(g_{U2}^2 V^{\rm C}_{U2}(r))$")
     ax.text(5.9, -0.6, "attraction", ha="right", color=INK2, fontsize=7)
     ax.text(5.9, 0.45, "repulsion", ha="right", color=INK2, fontsize=7)
     ax.legend(loc="center right", fontsize=6.8)

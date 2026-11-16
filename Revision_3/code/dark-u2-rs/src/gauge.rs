@@ -11,7 +11,7 @@
 //! (on every one of the 16 spinor components in the same way), so the checks use
 //! a two-component Psi.  A gauge transformation is a U(2)-valued function
 //!
-//!     Ups(X) = exp(i alpha(X).tau/2) exp(i y beta(X)),
+//!     Ups(X) = exp(i theta(X).tau/2) exp(i y theta0(X)),
 //!     Psi'   = Ups Psi,    calW'_A = Ups calW_A Ups^-1 + i (d_A Ups) Ups^-1,
 //!
 //! and the checks verify, at a point X0 and for random smooth fields, that
@@ -143,8 +143,8 @@ struct Fields {
     psi: Vec<(Poly, Poly)>,      // 2 complex components
     w: Vec<Vec<Poly>>,           // W^c_A: [c][A]
     b: Vec<Poly>,                // B_A
-    alpha: Vec<Poly>,            // alpha^c (gauge function of SU(2))
-    beta: Poly,                  // beta (gauge function of U(1))
+    theta: Vec<Poly>,            // the triple Theta_U2 (gauge function of SU(2)_U2)
+    theta0: Poly,                // Theta^0_U2 (gauge function of U(1)_U2)
 }
 
 impl Fields {
@@ -153,9 +153,9 @@ impl Fields {
         let psi = (0..2).map(|_| (Poly::random(&mut r, 1.0), Poly::random(&mut r, 1.0))).collect();
         let w = (0..3).map(|_| (0..8).map(|_| Poly::random(&mut r, 0.8)).collect()).collect();
         let b = (0..8).map(|_| Poly::random(&mut r, 0.8)).collect();
-        let alpha = (0..3).map(|_| Poly::random(&mut r, 1.2)).collect();
-        let beta = Poly::random(&mut r, 1.2);
-        Fields { psi, w, b, alpha, beta }
+        let theta = (0..3).map(|_| Poly::random(&mut r, 1.2)).collect();
+        let theta0 = Poly::random(&mut r, 1.2);
+        Fields { psi, w, b, theta, theta0 }
     }
     fn psi(&self, x: &[f64; 8]) -> V2 {
         [C64::new(self.psi[0].0.eval(x), self.psi[0].1.eval(x)), C64::new(self.psi[1].0.eval(x), self.psi[1].1.eval(x))]
@@ -168,16 +168,16 @@ impl Fields {
         }
         m
     }
-    /// Ups(X) = exp(i alpha.tau/2) exp(i y beta).
+    /// Ups(X) = exp(i Theta.tau/2) exp(i y Theta^0).
     fn ups(&self, x: &[f64; 8]) -> M2 {
-        let al: Vec<f64> = self.alpha.iter().map(|p| p.eval(x)).collect();
+        let al: Vec<f64> = self.theta.iter().map(|p| p.eval(x)).collect();
         let n = (al[0] * al[0] + al[1] * al[1] + al[2] * al[2]).sqrt();
         let (cs, sn) = ((0.5 * n).cos(), (0.5 * n).sin());
         let mut m = mscale(&mid(), c(cs));
         for cc in 0..3 {
             m = madd(&m, &mscale(&pauli(cc), C64::new(0.0, sn * al[cc] / n)));
         }
-        mscale(&m, C64::cis(Y * self.beta.eval(x)))
+        mscale(&m, C64::cis(Y * self.theta0.eval(x)))
     }
 }
 
@@ -252,12 +252,12 @@ pub fn run() -> bool {
             let rhs = mv(&u0, &d_psi);
             let e = vnorm(&[lhs[0] - rhs[0], lhs[1] - rhs[1]]) / vnorm(&rhs).max(1e-300);
             worst[0] = worst[0].max(e);
-            // (2) calW'_A is Hermitian, and its trace part is g' y (B_A - d_A beta / g')
+            // (2) calW'_A is Hermitian, and its trace part is g' y (B_A - d_A Theta^0 / g')
             let wpa = cal_w_p(a, &x0);
             let herm = mnorm(&madd(&wpa, &mscale(&mdag(&wpa), c(-1.0)))) / mnorm(&wpa);
             worst[1] = worst[1].max(herm);
             let bp = tr(&wpa).re / (2.0 * GP * Y);
-            let b_expect = f.b[a].eval(&x0) - ds(&|y: &[f64; 8]| f.beta.eval(y), &x0, a) / GP;
+            let b_expect = f.b[a].eval(&x0) - ds(&|y: &[f64; 8]| f.theta0.eval(y), &x0, a) / GP;
             worst[2] = worst[2].max((bp - b_expect).abs() / b_expect.abs().max(1e-3));
         }
         // (3) field strength: matrix form = component form, and [D_A, D_C] Psi = i calF_AC Psi
@@ -314,12 +314,12 @@ pub fn run() -> bool {
         }
     }
     ck.add("R3-G1", "covariance of the covariant derivative: D'_A Psi' = Ups D_A Psi for 4 random field configurations, 8 directions each, at a point X0", worst[0] < 1e-9, format!("largest relative deviation {:.2e}", worst[0]));
-    ck.add("R3-G2", "the transformed connection calW'_A is Hermitian (it lies in the Lie algebra u(2)) and its U(1)_U2 part is B'_A = B_A - (d_A beta)/g'_U2", worst[1] < 1e-12 && worst[2] < 1e-9, format!("Hermiticity {:.2e}, U(1) part {:.2e}", worst[1], worst[2]));
+    ck.add("R3-G2", "the transformed connection calW'_A is Hermitian (it lies in the Lie algebra u(2)) and its U(1)_U2 part is B'_A = B_A - (d_A Theta^0)/g'_U2", worst[1] < 1e-12 && worst[2] < 1e-9, format!("Hermiticity {:.2e}, U(1) part {:.2e}", worst[1], worst[2]));
     ck.add("R3-G3", "the matrix field strength d_A calW_C - d_C calW_A + i[calW_A, calW_C] equals g (tau.W_AC)/2 + g' y B_AC with W_AC = d_A W_C - d_C W_A - g W_A x W_C and B_AC = d_A B_C - d_C B_A", worst[3] < 1e-9, format!("largest relative deviation {:.2e}", worst[3]));
     ck.add("R3-G4", "[D_A, D_C] Psi = i calF_AC Psi (second derivatives by nested differences)", worst[4] < 1e-6, format!("largest relative deviation {:.2e}", worst[4]));
     ck.add("R3-G5", "the field strength transforms covariantly: calF'_AC = Ups calF_AC Ups^-1", worst[5] < 1e-6, format!("largest relative deviation {:.2e}", worst[5]));
 
-    // (4) the pair transforms with the factor det(Ups) = exp(2 i y beta): U^T E U = det(U) E for U in U(2)
+    // (4) the pair transforms with the factor det(Ups) = exp(2 i y Theta^0): U^T E U = det(U) E for U in U(2)
     let mut worst_det = 0.0f64;
     let mut worst_phase = 0.0f64;
     for seed in 0..6u64 {
@@ -330,9 +330,9 @@ pub fn run() -> bool {
         let lhs = mmul(&mmul(&ut, &e), &u);
         let det = u[0][0] * u[1][1] - u[0][1] * u[1][0];
         worst_det = worst_det.max(mnorm(&madd(&lhs, &mscale(&e, -det))));
-        worst_phase = worst_phase.max((det - C64::cis(2.0 * Y * f.beta.eval(&x0))).abs());
+        worst_phase = worst_phase.max((det - C64::cis(2.0 * Y * f.theta0.eval(&x0))).abs());
     }
-    ck.add("R3-G6", "for 6 random gauge transformations Ups: Ups^T E Ups = det(Ups) E and det(Ups) = exp(2 i y_U2 beta): the pair Phi^+_U2 is invariant under SU(2)_U2 and is multiplied by exp(i beta) under U(1)_U2 (charge 2 y_U2 = 1)", worst_det < 1e-13 && worst_phase < 1e-13, format!("{:.1e}, {:.1e}", worst_det, worst_phase));
+    ck.add("R3-G6", "for 6 random gauge transformations Ups: Ups^T E Ups = det(Ups) E and det(Ups) = exp(2 i y_U2 Theta^0): the pair Phi^+_U2 is invariant under SU(2)_U2 and is multiplied by exp(i Theta^0) under U(1)_U2 (charge 2 y_U2 = 1)", worst_det < 1e-13 && worst_phase < 1e-13, format!("{:.1e}, {:.1e}", worst_det, worst_phase));
 
     // (5) static potentials in seven space dimensions (heavy sources).
     // Green function of -Laplacian + m^2 in D = 7:  Y7(r; m) = (2 pi)^(-7/2) (m/r)^(5/2) K_{5/2}(m r)

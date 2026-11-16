@@ -1,0 +1,118 @@
+\section{Spin-zero pairs}
+\label{sec:pairs}
+
+\subsection{No spin-zero pair of a single field}
+
+\emph{The Lorentz-invariant bilinear forms on the 16 spinor components are exactly the real
+combinations of $C^+_{1671}$ and $C^-_{1671}$} (R3-A6). Equation~\eqref{eq:invariance} is a
+homogeneous linear system of $28\times256=7168$ equations for the 256 entries of $\mathsf K$.
+Its rank, computed exactly in integer arithmetic modulo the prime $2^{61}-1$, is 254; a rank
+modulo a prime is a lower bound of the rank over the rational numbers, so the solutions form a
+space of dimension at most $256-254=2$, and $C^+_{1671}$ and $C^-_{1671}$ are two independent
+solutions. The space has therefore exactly the dimension 2.
+
+The components of a quantized Dirac field anticommute. For a single field, say $\psi^1_{U2}$,
+with components $\psi^1_{U2\,l}$ ($l=1,\dots,16$),
+\begin{equation}
+\begin{aligned}
+\psi^{1T}_{U2}\mathsf K\psi^1_{U2}&=\sum_{l,l'}\psi^1_{U2\,l}\,\mathsf K_{ll'}\,\psi^1_{U2\,l'}\\
+&=\tfrac12\sum_{l,l'}\psi^1_{U2\,l}\big(\mathsf K_{ll'}-\mathsf K_{l'l}\big)\psi^1_{U2\,l'},
+\end{aligned}
+\label{eq:antisym}
+\end{equation}
+because $\psi^1_{U2\,l}\psi^1_{U2\,l'}=-\psi^1_{U2\,l'}\psi^1_{U2\,l}$: only the antisymmetric part
+of $\mathsf K$ survives. Both $C^\pm_{1671}$ are symmetric. Therefore:
+
+\emph{Theorem 1. On the $7+1$ spacetime a single Dirac field has no Lorentz-scalar pair:}
+$\psi^{1T}_{U2}C^\pm_{1671}\psi^1_{U2}=0$ identically.
+
+The same holds for the two other Lorentz scalars of the Clifford algebra, $C^\pm_{1671}\omega_{1671}$,
+which are $\pm C^\mp_{1671}$. Table~\ref{tab:pairs} lists, for every index set $K=(A_1<\dots<A_r)$
+of rank $r$ and the ordered product $\mathsf G_K=\gamma^{A_1}_{1671}\cdots\gamma^{A_r}_{1671}$
+($\mathsf G_K=\mathsf 1_{16}$ for the empty set), how many of the matrices
+$C^\pm_{1671}\mathsf G_K$ are antisymmetric, i.e.\ give a nonvanishing pair of one field (R3-A7;
+each of the 512 matrices is either symmetric or antisymmetric). Pairs of one field exist only
+with a vector index ($r=1$, for $C^-_{1671}$), with tensor indices, or with their duals; never
+as Lorentz scalars ($r=0$ or 8). This is unlike the $3+1$ spacetime of ordinary physics, whose
+charge-conjugation matrix is antisymmetric, so that a single field there has a spin-zero pair.
+
+\begin{table}[t]
+\caption{Pairs $\psi^{1T}_{U2}C^\pm_{1671}\mathsf G_K\psi^1_{U2}$ of one anticommuting Dirac field on
+the $7+1$ spacetime: for each rank $r$, the number of index sets $K$ (``products'') and the number
+of them for which the pair does not vanish, i.e.\ for which the matrix $C^\pm_{1671}\mathsf G_K$
+is antisymmetric. The Lorentz scalars are the ranks 0 and 8.}
+\label{tab:pairs}
+\begin{ruledtabular}
+\begin{tabular}{cccc}
+rank $r$ & products & $C^+_{1671}\mathsf G_K$ antisym. & $C^-_{1671}\mathsf G_K$ antisym.\\
+\hline
+{{ROWS:pairs_by_rank_table}}
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{The doublet and its two scalar pairs}
+
+Two fields $\psi^1_{U2}$, $\psi^2_{U2}$ do have Lorentz-scalar pairs,
+\begin{equation}
+\Phi^\pm_{U2}=\psi^{1T}_{U2}C^\pm_{1671}\psi^2_{U2}
+=\tfrac12\,\Psi^T_{U2}\big(\mathsf E\otimes C^\pm_{1671}\big)\Psi_{U2},
+\label{eq:pairs}
+\end{equation}
+where $\Psi_{U2}=(\psi^1_{U2},\psi^2_{U2})$ is the doublet (32 components, the doublet index
+outside) and $\mathsf E$ of Eq.~\eqref{eq:twobytwo} acts on the doublet index. The second form
+follows from $\psi^{2T}_{U2}C^\pm_{1671}\psi^1_{U2}=-\psi^{1T}_{U2}(C^\pm_{1671})^T\psi^2_{U2}
+=-\Phi^\pm_{U2}$. The $32\times32$ matrices $\mathsf E\otimes C^\pm_{1671}$ are antisymmetric,
+while $\mathsf 1_2\otimes C^\pm_{1671}$, $\mathsf X\otimes C^\pm_{1671}$ and $\mathsf Z\otimes C^\pm_{1671}$,
+built with the three symmetric $2\times2$ matrices, are symmetric (R3-A8): by Eq.~\eqref{eq:antisym}, applied to
+the 32 components of $\Psi_{U2}$, the scalar pairs of the doublet are antisymmetric in the doublet
+index, and there are exactly the two of Eq.~\eqref{eq:pairs}.
+
+\subsection{Which pair has spin zero}
+
+In the rest frame of a fermion, its positive-energy components are the eigenvectors of
+$\beta_{1671}$ with the eigenvalue $+1$, an eight-dimensional space. The 21 rotation generators
+$\gamma^j_{1671}\gamma^{j'}_{1671}$ ($j<j'$) are real, antisymmetric, and commute with
+$\beta_{1671}$. The real matrices that commute with all of them form a space of dimension 4,
+spanned by $\mathsf 1_{16}$, $\beta_{1671}$, $\omega_{1671}$, $\beta_{1671}\omega_{1671}$; those that
+also commute with $\beta_{1671}$, a space of dimension 2 (R3-A12, with exact ranks as in R3-A6).
+Hence each eigenspace of $\beta_{1671}$ is an absolutely irreducible real representation of the
+rotation group Spin(7), the eight-dimensional spinor, and \emph{a rotation-invariant bilinear
+form on it is unique up to a factor}: two fermions at rest of different flavour form exactly one
+state of total spin zero. The two pairs differ in how they reach it (R3-A11):
+\begin{equation}
+\begin{aligned}
+(\mathsf 1_{16}+\beta_{1671})C^+_{1671}(\mathsf 1_{16}+\beta_{1671})&=2(\mathsf 1_{16}+\beta_{1671}),\\
+(\mathsf 1_{16}\pm\beta_{1671})C^-_{1671}(\mathsf 1_{16}\pm\beta_{1671})&=0.
+\end{aligned}
+\label{eq:restframe}
+\end{equation}
+The first line follows from $C^+_{1671}=\beta_{1671}$ and
+$\beta_{1671}(\mathsf 1_{16}+\beta_{1671})=\mathsf 1_{16}+\beta_{1671}$; the second from
+$C^-_{1671}\beta_{1671}=-\beta_{1671}C^-_{1671}$, which moves the projector
+$\tfrac12(\mathsf 1_{16}\pm\beta_{1671})$ through $C^-_{1671}$ into
+$\tfrac12(\mathsf 1_{16}\mp\beta_{1671})$. Thus $\Phi^+_{U2}$ joins two positive-energy components at
+rest: in the non-relativistic limit it is the pair of spin zero and orbital angular momentum zero,
+the singlet of total spin zero that the task asks for. $\Phi^-_{U2}$ joins an upper with a lower
+component and vanishes in that limit: it is the pseudoscalar partner (in the non-relativistic
+language, spin one and orbital angular momentum one, coupled to zero).
+
+The first line of Eq.~\eqref{eq:restframe} also shows \emph{why} a single field cannot pair. On
+the positive-energy components at rest the form $C^+_{1671}=\beta_{1671}$ is the unit matrix: the
+invariant form of the eight-dimensional spinor of Spin(7) is \emph{symmetric}, so the state of
+total spin zero of two fermions at rest is symmetric in their spinor indices (in three space
+dimensions the spin singlet is antisymmetric). With a symmetric orbital part (orbital angular
+momentum zero), Fermi statistics demands antisymmetry in some other index, and the only one
+available is a flavour index: the pair needs two fields, in the antisymmetric combination
+$\mathsf E$ of Eq.~\eqref{eq:pairs}. The superfluid of this paper is the condensate of
+$\Phi^+_{U2}$; Sec.~\ref{sec:spectrum} shows the consequence of this
+choice at a Fermi surface.
+
+\subsection{Chirality}
+
+The matrices $(P^L_{1671})^TC^\pm_{1671}P^R_{1671}$ and $(P^R_{1671})^TC^\pm_{1671}P^L_{1671}$ vanish,
+while $(P^L_{1671})^TC^\pm_{1671}P^L_{1671}$ and $(P^R_{1671})^TC^\pm_{1671}P^R_{1671}$ do not; the
+mass term $\bar\psi^1_{U2}\psi^1_{U2}=\psi^{1\dagger}_{U2}\beta_{1671}\psi^1_{U2}$ joins a left-handed with a right-handed component
+(R3-A10): the scalar pairs join two left-handed or two right-handed components. A doublet of one
+chirality therefore has the pair $\Phi^+_{U2}$ too; a single chiral field has none (its matrix
+$(P^L_{1671})^TC^+_{1671}P^L_{1671}$ is symmetric).

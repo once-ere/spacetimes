@@ -1,0 +1,164 @@
+\appendix
+\onecolumngrid
+
+\section{Notation}
+\label{app:notation}
+
+Table~\ref{tab:symbols} defines every symbol of this paper. Symbols marked ``taken'' are those of the
+rest of PROJECT spacetimes, used here with exactly the meaning that they have there (their meaning is
+copied, with a note on their use here where needed); all others are new. Every new symbol of the gauge
+sector and of the superfluid carries the suffix U2, so that no letter of this paper can be read as a
+symbol of the same letter in another part of the project; the Dirac matrices and their relatives keep
+the tag 1671 of the $7+1$ spacetime, and the symbols of the electroweak theory, quoted as the template,
+carry the suffix SM. The machine checks R3-S1 to R3-S6 (Appendix~\ref{app:checks}) verify that no
+symbol is registered twice, that the taken symbols carry the meaning of the project's master
+registries, that no new symbol coincides with a symbol of those registries, and that no letter with
+another meaning in the project is used in a formula of this paper without its suffix. Units: the
+cutoff $\Lambda_{U2}=1$ unless a unit is shown; $\hbar=1$ and the speed of light is 1.
+
+{\small
+\begin{longtable}{p{0.24\textwidth}p{0.54\textwidth}>{\raggedright\arraybackslash\footnotesize}p{0.16\textwidth}}
+\caption{The symbols of this paper, by group, with the names under which the programs and the data
+files of this paper write them.}\label{tab:symbols}\\
+\toprule
+symbol & meaning & names in data files\\
+\midrule
+\endfirsthead
+\toprule
+symbol & meaning (continued) & names in data files\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+{{GENRAW:symbols_r3_texrows}}
+\end{longtable}
+}
+
+\section{The machine checks}
+\label{app:checks}
+
+The program \texttt{dark\_u2} (Appendix~\ref{app:data}) verifies {{GEN:nchecks_rust}} statements on
+which the results rest, the script \texttt{check\_symbols.py} the six statements on the symbols, and
+\texttt{check\_self\_contained.py} that no document of this revision sends the reader to another
+document for a definition. Each check prints one line: its label, the statement, and, after two
+dashes, the numbers that decide it. Table~\ref{tab:checks} reproduces these lines as the programs
+print them, in plain text: \texttt{gamma\^{}A\_1671} is $\gamma^A_{1671}$, \texttt{eta1671} is
+$\eta_{1671}$, \texttt{omega} is $\omega_{1671}$, \texttt{C\^{}+-} is $C^\pm_{1671}$, \texttt{beta},
+\texttt{alpha\^{}j} are $\beta_{1671}$, $\alpha^j_{1671}$, \texttt{Psi} is $\Psi_{U2}$, \texttt{tau\^{}c}
+is one of the Pauli matrices $\tau^1_{U2}$, $\tau^2_{U2}$, $\tau^3_{U2}$, \texttt{Ups} is
+$\Upsilon_{U2}$, \texttt{theta}, \texttt{theta0} are $\boldsymbol\Theta_{U2}$, $\Theta^0_{U2}$,
+\texttt{calW}, \texttt{calF} are $\mathcal W_{U2A}$, $\mathcal F_{U2AC}$, \texttt{g}, \texttt{g'},
+\texttt{y} are $g_{U2}$, $g'_{U2}$, $y_{U2}$, \texttt{Delta} is $\Delta_{U2}$, \texttt{mu} is
+$\mu_{U2}$, \texttt{M} and \texttt{m} are $M_{U2}$ and $m_{U2}$, \texttt{eps} is $\varepsilon_{U2}$,
+\texttt{E\^{}+-} is $E^\pm_{U2}$, \texttt{xi}, \texttt{u}, \texttt{v} are $\xi^\pm_{U2}$, $u^\pm_{U2}$,
+$v^\pm_{U2}$, \texttt{h(q)} is $\mathsf h_{U2}(\vec q)$, \texttt{w} in R3-C3 is an eigenvector
+$\mathsf e^\pm_{U2}$ and elsewhere the frequency $w_{U2}$, \texttt{q\_F} is $q^F_{U2}$, \texttt{Q} is
+$\vec Q_{U2}$, \texttt{G\^{}P}, \texttt{G\^{}S}, \texttt{G\^{}P\_crit} are $G^P_{U2}$, $G^S_{U2}$,
+$G^{\rm crit}_{U2}$, \texttt{lambda\^{}P}, \texttt{lambda\^{}S} are $\lambda^P_{U2}$, $\lambda^S_{U2}$,
+\texttt{a7}, \texttt{b8} are $a^{(7)}_{U2}$, $a^{(8)}_{U2}$, \texttt{F(s)} is $L_{U2}(s_{U2})$,
+\texttt{J\_n} is $\mathcal J^{(\iota)}_{U2}$ with $\iota$ the number written in place of n,
+\texttt{Omega} is $\Omega_{U2}$, \texttt{n} is $n_{U2}$, \texttt{f\_s}, \texttt{f\_t}, \texttt{f}
+are $f^s_{U2}$, $f^t_{U2}$, $f_{U2}$, \texttt{m\_sigma} is $m_{\sigma U2}$, \texttt{U''} is the diagonal
+matrix of Eq.~\eqref{eq:R}, \texttt{Pi} is $\Pi_{U2}$, \texttt{T\_sigma} is $\mathcal V^\sigma_{U2}$,
+\texttt{m\_B} is $m_{BU2}$, \texttt{G7(r)} is $V^{\rm C}_{U2}(\varrho_{U2})$ and \texttt{phi} is
+$\phi^{\rm Y}_{U2}$, \texttt{T\_1.T\_2} is $\tfrac14\boldsymbol\tau^{(1)}_{U2}\cdot\boldsymbol\tau^{(2)}_{U2}$,
+\texttt{Y} in R3-B2 is twice the charge, and \texttt{x} in R3-G7 is $m_{BU2}\varrho_{U2}$. In
+R3-A6, R3-A12 and R3-B2 the letters \texttt{S} and \texttt{K} are a generator and a bilinear form,
+$\Sigma^{AC}_{1671}$ (up to the factor $\tfrac14$) and $\mathsf K$.
+
+{\footnotesize
+\begin{longtable}{p{0.08\textwidth}p{0.80\textwidth}p{0.06\textwidth}}
+\caption{All machine checks of this paper, as the programs print them.}\label{tab:checks}\\
+\toprule
+label & statement and decisive numbers & result\\
+\midrule
+\endfirsthead
+\toprule
+label & statement and decisive numbers (continued) & result\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+{{GENRAW:checks_rows_tex}}
+\end{longtable}
+}
+
+\section{Programs, data, and how to reproduce every number}
+\label{app:data}
+
+\subsection{Programs}
+
+All computations are done by the Rust program \texttt{dark\_u2} in the folder
+\texttt{code/dark-u2-rs} of \texttt{Revision\_3}; the figures are drawn by a Python script, and the
+documents are assembled by Python scripts that insert every number from the data files, so that no
+computed number is typed by hand. The program has nine modules: \texttt{algebra} (the Dirac matrices,
+the pairs, the doublet, the anomaly coefficients; exact integer and Gaussian-integer arithmetic, ranks
+modulo the prime $2^{61}-1$), \texttt{gauge} (covariance of $D_{U2A}$ with random fields at a point,
+derivatives by fourth-order central differences; the static potentials), \texttt{bdg} (the
+Bogoliubov--de Gennes matrix, its spectrum and spinors), \texttt{potential} (the effective potential,
+the gap and mass equations, the minima), \texttt{modes} (the random-phase approximation, the
+stiffness), \texttt{integrate} (adaptive Gauss--Legendre quadrature with 20 and 40 nodes, relative
+tolerance $10^{-15}$), \texttt{rsym} (real symmetric matrices and their cyclic Jacobi
+diagonalization), \texttt{checks} (the reports) and \texttt{main}. It uses the library crate
+\texttt{code/spacetimes-rs} of the repository for complex numbers, integer matrices and their rank,
+Gauss--Legendre nodes, Brent's root finder, a parallel map and the writing of data files.
+
+Numerical methods. Near a Fermi surface the integrals over $q$ use the variable
+$\mathrm{arsinh}(\xi^+_{U2}/|\Delta_{U2}|)$, in which the integrands are smooth for every gap however
+small; $E^-_{U2}$ is then computed as $|\Delta_{U2}|\cosh$ of that variable, without rounding error. The
+gap equation is solved by Brent's method in $\ln|\Delta_{U2}|$ (gaps down to $10^{-300}$); the global
+minimum over $M_{U2}$ and $\Delta_{U2}$ is found on the profile $\min_{M_{U2}}\Omega_{U2}$ with the gap
+solved at each $M_{U2}$, by golden-section search and a final solution of the mass equation. The
+polarization uses Gauss--Legendre panels refined around the Fermi momentum, with $\vec q$ along the
+coordinate $x1$ (the integrands depend on the length of $\vec q$ only), and the eigenvectors of the
+$32\times32$ matrix at each node. The mass of $\sigma_{U2}$ is the zero of $\det\mathsf R_{U2}(w_{U2})$
+below the threshold, or the threshold itself.
+
+\subsection{Commands}
+
+From the folder \texttt{Revision\_3} of the repository (a Rust toolchain for the edition 2021,
+Python 3 with NumPy and Matplotlib, and for the documents a TeX distribution with REVTeX 4.2, pandoc
+and XeLaTeX):
+\begin{verbatim}
+cargo run --release --manifest-path code/dark-u2-rs/Cargo.toml -- all
+python3 code/scripts/make_figures.py
+bash code/scripts/check_all.sh
+\end{verbatim}
+The first command writes every data file of the folder \texttt{data} (in a few seconds); the commands \texttt{algebra}, \texttt{gauge}, \texttt{bdg}, \texttt{potential} and
+\texttt{modes} in place of \texttt{all} run one part. The second draws the nine figures. The third
+runs both, then the checks of the symbols and of self-containedness, writes the fragments of the
+documents, and builds this paper and the provenance documents.
+
+\subsection{Data files}
+
+\texttt{r3\_algebra\_checks.txt}, \texttt{r3\_gauge\_checks.txt}, \texttt{r3\_bdg\_checks.txt},
+\texttt{r3\_potential\_checks.txt}, \texttt{r3\_modes\_checks.txt}, \texttt{r3\_symbol\_checks.txt} and
+\texttt{r3\_self\_contained\_checks.txt}: the reports of Table~\ref{tab:checks}.
+\texttt{r3\_gamma\_kron.csv}: the Kronecker factors of Eq.~\eqref{eq:gammas}.
+\texttt{r3\_pairs\_by\_rank.csv}: Table~\ref{tab:pairs}.
+\texttt{r3\_static\_potential.csv}: Fig.~\ref{fig:static}.
+\texttt{r3\_fermi\_surface\_gap.csv} and \texttt{r3\_spectrum.csv}: Fig.~\ref{fig:spectrum}.
+\texttt{r3\_hat\_radial.csv} and \texttt{r3\_hat\_2d.csv}: Fig.~\ref{fig:hat}.
+\texttt{r3\_vacuum\_gap.csv}: Fig.~\ref{fig:gap} and Table~\ref{tab:vacuum}.
+\texttt{r3\_competition.csv}: Fig.~\ref{fig:competition}.
+\texttt{r3\_density\_scan.csv} and \texttt{r3\_bcs\_slope.csv}: Fig.~\ref{fig:density}.
+\texttt{r3\_phase\_map.csv}: Fig.~\ref{fig:phase}.
+\texttt{r3\_transition.csv}: Fig.~\ref{fig:transition}.
+\texttt{r3\_modes\_vacuum.csv}, \texttt{r3\_modes\_mass.csv} and \texttt{r3\_modes\_density.csv}:
+Fig.~\ref{fig:modes} and Tables~\ref{tab:sigma} to~\ref{tab:density}.
+\texttt{r3\_summary\_potential.csv} and \texttt{r3\_summary\_modes.csv}: the key numbers quoted in the
+text. Every data file states its meaning and units in its header lines, and every column name is
+either a descriptive word or one of the names listed in the last column of Table~\ref{tab:symbols}.
+
+\subsection{Checksums}
+
+SHA-256 checksums of the data files, the figures and the programs from which this paper was built:
+{\footnotesize
+\begin{verbatim}
+{{GENRAW:data_sha256}}
+{{GENRAW:figure_sha256}}
+{{GENRAW:code_sha256}}
+\end{verbatim}
+}
+
+\twocolumngrid

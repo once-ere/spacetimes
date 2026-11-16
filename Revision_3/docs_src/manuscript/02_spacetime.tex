@@ -1,0 +1,92 @@
+\section{The 7+1 spacetime and its Dirac matrices}
+\label{sec:spacetime}
+
+\subsection{Coordinates, metric, Dirac matrices}
+
+The eight coordinates are $X=\{x0,\dots,x7\}$; $x4$ is the time and the other seven are
+space-like. The indices $A$ and $C$ take the values $0,\dots,7$, the index $j$ (and a second
+such index $j'$) takes the seven space-like values $0,1,2,3,5,6,7$, and every sum over $j$ in
+this paper runs over all seven. We write $x^A$ for the coordinate with the index $A$,
+$\partial_A=\partial/\partial x^A$, $\vec x$ for the seven space-like coordinates as one vector,
+and sum over an index that occurs twice in a product. The metric is
+\begin{equation}
+\eta_{1671}=\mathrm{diag}(-1,-1,-1,-1,+1,-1,-1,-1),
+\label{eq:metric}
+\end{equation}
+with the entries in the order $A=0,\dots,7$; its inverse $\eta^{AC}_{1671}$ has the same entries,
+and it raises indices, for example $\partial^A=\eta^{AC}_{1671}\partial_C$. The letter $i$ is the
+imaginary unit.
+
+The Dirac matrices $\gamma^A_{1671}$ are eight real $16\times16$ matrices. Each of them is
+$\pm$ a Kronecker product ($\otimes$) of four of the real $2\times2$ matrices
+\begin{equation}
+\begin{aligned}
+\mathsf 1_2&=\begin{pmatrix}1&0\\0&1\end{pmatrix},&
+\mathsf X&=\begin{pmatrix}0&1\\1&0\end{pmatrix},\\
+\mathsf Z&=\begin{pmatrix}1&0\\0&-1\end{pmatrix},&
+\mathsf E&=\begin{pmatrix}0&1\\-1&0\end{pmatrix},
+\end{aligned}
+\label{eq:twobytwo}
+\end{equation}
+namely (check R3-A14 of Appendix~\ref{app:checks} compares all 256 entries of each)
+\begin{equation}
+\begin{aligned}
+{{GENRAW:gamma_kron_aligned}}
+\end{aligned}
+\label{eq:gammas}
+\end{equation}
+The first factor acts on the outermost pair of blocks of eight components, the last on
+neighbouring components. They satisfy the Clifford relation of the metric (check R3-A1),
+\begin{equation}
+\gamma^A_{1671}\gamma^C_{1671}+\gamma^C_{1671}\gamma^A_{1671}=2\,\eta_{1671}^{AC}\,\mathsf 1_{16},
+\label{eq:clifford}
+\end{equation}
+with $\mathsf 1_{16}$ the unit matrix of the 16 components; $\gamma^4_{1671}$ is symmetric with
+square $+\mathsf 1_{16}$, and the seven $\gamma^j_{1671}$ are antisymmetric with square
+$-\mathsf 1_{16}$ (R3-A2). The matrices of the Hamiltonian,
+\begin{equation}
+\beta_{1671}=\gamma^4_{1671},\qquad \alpha^j_{1671}=\gamma^4_{1671}\gamma^j_{1671},
+\label{eq:alphabeta}
+\end{equation}
+are therefore real and symmetric, with
+$\alpha^j_{1671}\alpha^{j'}_{1671}+\alpha^{j'}_{1671}\alpha^j_{1671}=2\delta^{jj'}\mathsf 1_{16}$,
+$\alpha^j_{1671}\beta_{1671}+\beta_{1671}\alpha^j_{1671}=0$ and $\beta_{1671}^2=\mathsf 1_{16}$
+(R3-A13; $\delta^{jj'}$ is 1 for $j=j'$ and 0 otherwise).
+
+The product of all eight, $\omega_{1671}=\gamma^0_{1671}\gamma^1_{1671}\cdots\gamma^7_{1671}$, is
+real, antisymmetric, has the square $-\mathsf 1_{16}$, and anticommutes with every
+$\gamma^A_{1671}$ (R3-A3). The chirality matrix is $\chi_{1671}=i\,\omega_{1671}$ (Hermitian, of
+square $+\mathsf 1_{16}$), and the chiral projectors are
+$P^{L}_{1671}=\tfrac12(\mathsf 1_{16}-\chi_{1671})$ and
+$P^{R}_{1671}=\tfrac12(\mathsf 1_{16}+\chi_{1671})$. Because $\chi_{1671}$ is imaginary, complex
+conjugation exchanges the two chiralities: the complex conjugate of a left-handed spinor is
+right-handed, and vice versa.
+
+\subsection{Spin group and charge conjugation}
+
+The generators of the spin group Spin(7,1) on Dirac spinors are the 28 matrices
+$\Sigma^{AC}_{1671}=\tfrac14(\gamma^A_{1671}\gamma^C_{1671}-\gamma^C_{1671}\gamma^A_{1671})$,
+$A<C$. They are real, so a 16-component field and its complex conjugate transform with the same
+real matrices: in this basis complex conjugation commutes with Lorentz transformations. Let
+$\psi^1_{U2}$ and $\psi^2_{U2}$ be two 16-component fields that transform alike (they will be
+the members of the doublet of Sec.~\ref{sec:pairs}), and let $\mathsf K$ be a real
+$16\times16$ matrix. A Lorentz transformation multiplies each field by the exponential of a real
+linear combination of the 28 generators. The bilinear form $\psi^{1T}_{U2}\mathsf K\psi^2_{U2}$
+(the superscript ${}^T$ denotes the transpose) is therefore a Lorentz scalar if and only if
+\begin{equation}
+(\Sigma^{AC}_{1671})^T\mathsf K+\mathsf K\,\Sigma^{AC}_{1671}=0\quad\text{for all }A<C,
+\label{eq:invariance}
+\end{equation}
+for then the derivative of the transformed form with respect to every parameter of the
+transformation vanishes. The two charge-conjugation matrices
+\begin{equation}
+C^+_{1671}=\gamma^4_{1671},\qquad C^-_{1671}=\gamma^4_{1671}\omega_{1671},
+\label{eq:cpm}
+\end{equation}
+satisfy $C^\pm_{1671}\gamma^A_{1671}=\pm(\gamma^A_{1671})^TC^\pm_{1671}$ for every $A$, hence
+Eq.~\eqref{eq:invariance}: with the upper sign, for instance,
+$(\gamma^A_{1671}\gamma^C_{1671})^TC^+_{1671}=(\gamma^C_{1671})^T(\gamma^A_{1671})^TC^+_{1671}
+=C^+_{1671}\gamma^C_{1671}\gamma^A_{1671}$, and the antisymmetrized combination gives
+$(\Sigma^{AC}_{1671})^TC^+_{1671}=-C^+_{1671}\Sigma^{AC}_{1671}$. Both matrices are real,
+\emph{symmetric}, and of square $\mathsf 1_{16}$ (R3-A4, R3-A5). That they are symmetric is the
+fact on which the next section turns.

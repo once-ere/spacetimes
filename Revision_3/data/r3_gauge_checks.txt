@@ -2,9 +2,9 @@ PROJECT spacetimes, Revision_3, command `gauge`: gauge covariance of the covaria
 7 of 7 checks passed
 
 [PASS] R3-G1  covariance of the covariant derivative: D'_A Psi' = Ups D_A Psi for 4 random field configurations, 8 directions each, at a point X0  -- largest relative deviation 3.02e-12
-[PASS] R3-G2  the transformed connection calW'_A is Hermitian (it lies in the Lie algebra u(2)) and its U(1)_U2 part is B'_A = B_A - (d_A beta)/g'_U2  -- Hermiticity 8.81e-13, U(1) part 2.75e-12
+[PASS] R3-G2  the transformed connection calW'_A is Hermitian (it lies in the Lie algebra u(2)) and its U(1)_U2 part is B'_A = B_A - (d_A Theta^0)/g'_U2  -- Hermiticity 8.81e-13, U(1) part 2.75e-12
 [PASS] R3-G3  the matrix field strength d_A calW_C - d_C calW_A + i[calW_A, calW_C] equals g (tau.W_AC)/2 + g' y B_AC with W_AC = d_A W_C - d_C W_A - g W_A x W_C and B_AC = d_A B_C - d_C B_A  -- largest relative deviation 1.11e-13
 [PASS] R3-G4  [D_A, D_C] Psi = i calF_AC Psi (second derivatives by nested differences)  -- largest relative deviation 5.44e-13
 [PASS] R3-G5  the field strength transforms covariantly: calF'_AC = Ups calF_AC Ups^-1  -- largest relative deviation 3.16e-12
-[PASS] R3-G6  for 6 random gauge transformations Ups: Ups^T E Ups = det(Ups) E and det(Ups) = exp(2 i y_U2 beta): the pair Phi^+_U2 is invariant under SU(2)_U2 and is multiplied by exp(i beta) under U(1)_U2 (charge 2 y_U2 = 1)  -- 0.0e0, 2.3e-16
+[PASS] R3-G6  for 6 random gauge transformations Ups: Ups^T E Ups = det(Ups) E and det(Ups) = exp(2 i y_U2 Theta^0): the pair Phi^+_U2 is invariant under SU(2)_U2 and is multiplied by exp(i Theta^0) under U(1)_U2 (charge 2 y_U2 = 1)  -- 0.0e0, 2.3e-16
 [PASS] R3-G7  the Yukawa potential of a vector boson of mass m in 7 space dimensions, G7(r) phi(m r) with phi(x) = exp(-x)(x^2+3x+3)/3, solves the radial equation Y'' + (6/r) Y' - m^2 Y = 0, and phi(0) = 1 (massless limit: the 7-dimensional Coulomb potential G7(r) = Gamma(5/2)/(4 pi^(7/2) r^5))  -- relative residual 1.0e-8
