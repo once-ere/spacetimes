@@ -194,6 +194,7 @@ pub fn run() -> bool {
                     (0, 2) => "4D scalar, internal 2-form (3,1)+(1,3)",
                     (0, 3) => "4D scalar, internal 3-form (2,2)",
                     (0, 4) => "4D scalar, internal 4-form (1,1)",
+                    (4, _) => "4D scalar containing gamma^1 gamma^2 gamma^3 gamma^4: the same matrix as a row with n4 = 0 of the other family",
                     _ => "4D tensor",
                 };
                 pair_rows.push(vec![
@@ -216,6 +217,19 @@ pub fn run() -> bool {
         got.sort();
         let mut want_s = want.clone();
         want_s.sort();
+        // the two families C+ gamma^K and C- gamma^K contain the same 256 matrices (up to sign)
+        let fam_m: Vec<Vec<i64>> = (0u32..256).map(|mk| s.cm.mul(&s.mono(mk)).flatten()).collect();
+        let same = (0u32..256).all(|mk| {
+            let x = s.cp.mul(&s.mono(mk)).flatten();
+            let nx: Vec<i64> = x.iter().map(|v| -v).collect();
+            fam_m.iter().filter(|y| **y == x || **y == nx).count() == 1
+        });
+        ck.add(
+            &format!("K-4a [{}]", t),
+            "the two families coincide: every C+ gamma^K equals +-C- gamma^K' for exactly one K' (C- = +-C+ omega and omega gamma^K = +-gamma^(complement of K)); the rows with n4 = 4 of the table repeat the rows with n4 = 0 of the other family",
+            same,
+            String::new(),
+        );
         ck.add(
             &format!("K-4 [{}]", t),
             "one-field pairs psi^T X psi (X = C(+-) gamma^K, all 512): C+ and C- are symmetric (no one-field internal-singlet spin-zero pair); the nonzero, four-dimensionally scalar, s-wave, isotropic channels are EXACTLY C- gamma^a (internal vector, 4) and C+ gamma^a gamma^b (internal 2-form, 6); the spin-one channels C- gamma^j (j = 1,2,3) are s-wave but anisotropic",
@@ -306,6 +320,23 @@ pub fn run() -> bool {
         proj_rank(&st_mixed) == 3 && pure_space == 0 && pure_int == 3,
         format!("projection rank {}, pure space {}, pure internal {}", proj_rank(&st_mixed), pure_space, pure_int),
     );
+    write_csv(
+        "ng_g2_locking.csv",
+        &[
+            ("content", "G2 locking on 7+1: dimensions of Lie algebras inside so(3) (space rotations, Im H) + so(4) (internal rotations, H l)".to_string()),
+            ("rows", "1 = so(3) + so(4); 2 = stabiliser of the 3-form phi; 3 = stabiliser of the mixed part of phi; 4 = rank of its projection onto so(3); 5 = its pure space rotations; 6 = its pure internal rotations".to_string()),
+        ],
+        &["row", "dimension"],
+        &[
+            vec![1.0, 9.0],
+            vec![2.0, st_full.len() as f64],
+            vec![3.0, st_mixed.len() as f64],
+            vec![4.0, proj_rank(&st_mixed) as f64],
+            vec![5.0, pure_space as f64],
+            vec![6.0, pure_int as f64],
+        ],
+    )
+    .expect("csv");
     // the same from the derivation algebra Der(O) = g2
     let (der, _) = derivations(&o);
     // block-diagonal elements of Der(O): off-block entries (Im H <-> H l) vanish

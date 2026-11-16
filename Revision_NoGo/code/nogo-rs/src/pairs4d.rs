@@ -555,8 +555,8 @@ pub fn run() -> bool {
     let gc1m = g_crit_vacuum(0.2, NU1);
     let mut rows_g: Vec<Vec<f64>> = Vec::new();
     let mut ok_thr = true;
-    for k in 0..=60 {
-        let x = 0.5 + 2.5 * k as f64 / 60.0; // G / G_crit(m = 0, one field)
+    for k in 0..=64 {
+        let x = 0.4 + 1.6 * k as f64 / 64.0; // G / G_crit(m = 0, one field)
         let g = x * gc1;
         let d1 = solve_gap(0.0, 0.0, g, NU1);
         let d2 = solve_gap(0.0, 0.0, g, NU2);

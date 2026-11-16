@@ -31,6 +31,13 @@ mod superalg;
 mod triality;
 
 fn main() {
+    // Every output goes to ./data; refuse to run from any folder other than
+    // Revision_NoGo (the folder that contains code/nogo-rs/Cargo.toml), so that the
+    // data files can never land in another folder of the project.
+    if !std::path::Path::new("code/nogo-rs/Cargo.toml").exists() {
+        eprintln!("nogo: run this program from the folder Revision_NoGo (the folder that contains code/nogo-rs)");
+        std::process::exit(2);
+    }
     let args: Vec<String> = std::env::args().collect();
     let cmd = args.get(1).map(|s| s.as_str()).unwrap_or("help");
     let t0 = std::time::Instant::now();
