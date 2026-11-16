@@ -1,0 +1,24 @@
+[package]
+name = "spacetimes-dark-u2"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes, Revision_3: a new gauged symmetry U(2)_U2 of a doublet of 16-component Dirac fields on the 7+1 spacetime, the self-interacting Dirac equations, the effective potential of the spin-zero pair condensate, the spontaneous breaking U(2)_U2 -> SU(2)_U2, and the collective modes"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# The only dependency is the Rust program of the main project (two folders up),
+# which supplies the real 16x16 Dirac matrices gamma1671[A], exact integer and
+# Gaussian-integer matrices, ranks modulo a prime, Gauss-Legendre rules, Brent's
+# root finder and the CSV writer.  No crate is downloaded: the program builds
+# offline with a Rust toolchain alone.
+[dependencies]
+spacetimes = { path = "../../../code/spacetimes-rs" }
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true     # exact integer arithmetic must never wrap silently
+
+[[bin]]
+name = "dark_u2"
+path = "src/main.rs"
