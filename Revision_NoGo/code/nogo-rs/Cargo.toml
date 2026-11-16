@@ -1,0 +1,24 @@
+[package]
+name = "spacetimes-nogo"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes, Revision_NoGo: the no-go theorems for combining Lorentz and internal symmetries, the places where their hypotheses fail in eight dimensions (7+1 octonions, 4+4 split octonions, triality, non-associativity, supersymmetry, Kaluza-Klein), the spin-zero superfluid on the combined manifolds M(3,1) x K(4), and power counting"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# The only dependency is the Rust program of the main project (two folders up),
+# which supplies the real 16x16 Dirac matrices gamma1671[A] and gamma1644[A], exact
+# integer matrices, ranks modulo a prime, complex Hermitian diagonalisation,
+# Gauss-Legendre rules, Brent's root finder and the CSV writer.  No crate is
+# downloaded: the program builds offline with a Rust toolchain alone.
+[dependencies]
+spacetimes = { path = "../../../code/spacetimes-rs" }
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true     # exact integer arithmetic must never wrap silently
+
+[[bin]]
+name = "nogo"
+path = "src/main.rs"
