@@ -1,18 +1,25 @@
-//! Command `malcev`: exact, exhaustive verification of the classification of Lorentz-covariant
+//! Command `malcev`: exact, exhaustive verification of the classification of the Lorentz-covariant
 //! extensions of the Lorentz and Poincare algebras by spinor charges.
 //!
-//! The script code/scripts/malcev_groebner.py derives the NECESSARY conditions (Groebner
-//! bases of the Jacobi and Malcev constraint ideals); this command checks, with exact integer
+//! The script code/scripts/malcev_groebner.py derives the NECESSARY conditions (Groebner bases of
+//! the ideals of the Jacobi and Malcev constraints); this command checks, with exact integer
 //! arithmetic on ALL basis triples (Jacobi) and ALL basis 4-tuples (linearized Malcev identity),
-//! that each solution family found there really satisfies the identity (sufficiency), and it
-//! exhibits explicit failing 4-tuples for the excluded combinations.
+//! that each solution found there really satisfies the identity (sufficiency), and it exhibits
+//! explicit failing 4-tuples for the excluded combinations.
 //!
-//! The brackets are those of the script (see its docstring); parameters are integers here:
-//!   [q, b] = lam (-b q),  [x, y] = a (x ybar - y xbar),  [x, b] = beta (b^* xbar),
-//!   [b, b'] = c (bbar b' - b'bar b) + k i (bbar b'^* - b'bar b^*) + Re[d (b b'bar - b' bbar)],
-//!   [t, t'] = kT (t t' - t' t),  [t, b] = tau (t b),
-//! on so(3,1) (q in C (x) Im H, 6), R^(3,1) (x Hermitian bi-quaternion, 4), su(2)_v (t in Im H,
-//! 3) and the spinor charges (b in C (x) H, 8).
+//! The brackets are those of the script (see its docstring); the coefficients are integers or
+//! Gaussian integers here (uL, uL' in l_LL = C (x) Im H; rP, rP' Hermitian bi-quaternions, the
+//! translations p_LL; tI, tI' in Im H, the isospin algebra su(2); bS e4, bS' e4 spinor charges):
+//!   [uL, bS e4]     = c_tw (-bS uL) e4                       (the twist; c_tw = 1: Lie action)
+//!   [rP, rP']       = c_PP (rP rP'bar - rP' rPbar)            (curvature of the translations)
+//!   [rP, bS e4]     = c_Ps (bS^* rPbar) e4                    (spinor charges that do not commute with p_LL)
+//!   [bS e4, bS' e4] = c_sl (bSbar bS' - bS'bar bS)            (into l_LL)
+//!                   + c_sP i (bSbar bS'^* - bS'bar bS^*)      (into p_LL)
+//!                   + Re[c_sT (bS bS'bar - bS' bSbar)]        (into su(2))
+//!   [tI, tI']       = c_TT (tI tI' - tI' tI),  [tI, bS e4] = c_Ts (tI bS) e4,
+//! on l_LL (6), p_LL (4), su(2) (3) and s_LL = (C (x) H) e4 (8); the brackets of l_LL with itself
+//! and with p_LL are fixed: [uL, uL'] = uL uL' - uL' uL, [uL, rP] = uL rP + rP uL^dag.
+//! Families: F_A = l_LL + s_LL, F_B = l_LL + p_LL + s_LL, F_C = l_LL + su(2) + s_LL.
 //! Data: sl_malcev_families.csv; report sl_malcev_checks.txt.
 
 use crate::bioct::*;
@@ -26,7 +33,8 @@ fn g(re: i128, im: i128) -> GInt {
     GInt { re, im }
 }
 
-/// Parameters of a family member (complex parameters as Gaussian integers).
+/// Coefficients of a family member (complex ones as Gaussian integers):
+/// lam = c_tw, a = c_PP, beta = c_Ps, c = c_sl, k = c_sP, d = c_sT, kt = c_TT, tau = c_Ts.
 #[derive(Clone, Copy, Debug)]
 pub struct Par {
     pub lam: GInt,
@@ -45,7 +53,7 @@ impl Par {
     }
 }
 
-/// Which sectors are present: q (6), x (4), t (3), b (8).
+/// Which sectors are present: l_LL (q, 6), p_LL (x, 4), su(2) (t, 3), s_LL (b, 8).
 #[derive(Clone, Copy)]
 pub struct Layout {
     pub has_x: bool,
@@ -139,10 +147,10 @@ fn bracket(l: &Layout, p: &Par, u: &[i128], w: &[i128]) -> Vec<i128> {
     let mut q = qsub(&qmul(&a.q, &c.q), &qmul(&c.q, &a.q));
     let mut x = qzero::<GInt>();
     let mut t = qzero::<GInt>();
-    // twist: [q1, b2] - [q2, b1] with [q, b] = lam (-b q)
+    // twist: [q1, b2] - [q2, b1] with [uL, bS e4] = c_tw (-bS uL) e4
     let s = qadd(&qscale(&qmul(&c.b, &a.q), g(-1, 0)), &qmul(&a.b, &c.q));
     let mut b = qscale(&s, p.lam);
-    // [b, b'] -> Lorentz
+    // [bS e4, bS' e4] -> l_LL
     let m = qsub(&qmul(&qconj(&a.b), &c.b), &qmul(&qconj(&c.b), &a.b));
     q = qadd(&q, &qscale(&m, p.c));
     if l.has_x {
@@ -289,17 +297,17 @@ impl Algebra {
 fn describe(l: &Layout, p: &Par) -> String {
     let mut s = Vec::new();
     let c = |z: GInt| if z.im == 0 { format!("{}", z.re) } else { format!("{}{:+}i", z.re, z.im) };
-    s.push(format!("lam={}", c(p.lam)));
+    s.push(format!("c_tw={}", c(p.lam)));
     if l.has_x {
-        s.push(format!("a={}", c(p.a)));
-        s.push(format!("beta={}", c(p.beta)));
-        s.push(format!("k={}", p.k));
+        s.push(format!("c_PP={}", c(p.a)));
+        s.push(format!("c_Ps={}", c(p.beta)));
+        s.push(format!("c_sP={}", p.k));
     }
-    s.push(format!("c={}", c(p.c)));
+    s.push(format!("c_sl={}", c(p.c)));
     if l.has_t {
-        s.push(format!("kT={}", p.kt));
-        s.push(format!("tau={}", c(p.tau)));
-        s.push(format!("d={}", c(p.d)));
+        s.push(format!("c_TT={}", p.kt));
+        s.push(format!("c_Ts={}", c(p.tau)));
+        s.push(format!("c_sT={}", c(p.d)));
     }
     s.join(" ")
 }
@@ -316,20 +324,20 @@ pub fn run() -> bool {
         let (lie, jw) = alg.jacobi(&jt);
         let (mal, nf, mw) = alg.malcev(&jt);
         let w = match (jw, mw) {
-            (_, Some(t)) => format!("first failing Malcev 4-tuple (basis indices) {:?}", t),
-            (Some(t), None) => format!("first failing Jacobi triple {:?}", t),
+            (_, Some(t)) => format!("first failing Malcev 4-tuple (positions in the basis) {:?}", t),
+            (Some(t), None) => format!("first failing Jacobi triple (positions in the basis) {:?}", t),
             _ => String::new(),
         };
         rows.push(vec![fam.to_string(), describe(l, p), lie.to_string(), mal.to_string(), nf.to_string()]);
         (lie, mal, nf, w)
     };
 
-    // ---- F_A: so(3,1) + s
+    // ---- F_A: l_LL + s_LL
     let mut p = Par::zero();
     p.lam = g(-2, 0);
     p.c = g(1, 0);
     let (lie, mal, _, _) = eval("F_A", &la, &p);
-    // identical to the bi-octonion commutator?
+    // identical to the commutator of the imaginary bi-octonions?
     let alg = Algebra::new(&la, &p);
     let mut same = true;
     for i in 0..14 {
@@ -338,7 +346,7 @@ pub fn run() -> bool {
             same &= alg.f[i][j] == crate::algebra::mcoords(&bi).to_vec();
         }
     }
-    ck.add("M-1", "F_A with twist lam = -2 and c = 1 is exactly the commutator algebra of the imaginary bi-octonions m (all 196 basis brackets agree); it satisfies the Malcev identity on all 38416 basis 4-tuples and violates the Jacobi identity", same && mal && !lie, String::new());
+    ck.add("M-1", "F_A with the twist c_tw = -2 and c_sl = 1 is exactly the commutator algebra m_LL of the imaginary bi-octonions (all 196 basis brackets agree); it satisfies the Malcev identity on all 38416 basis 4-tuples and violates the Jacobi identity", same && mal && !lie, String::new());
     let mut lie_all = true;
     let mut mal_all = true;
     for lam in [0i128, 1, -2] {
@@ -348,7 +356,7 @@ pub fn run() -> bool {
         mal_all &= mal;
         lie_all &= lie == (lam != -2);
     }
-    ck.add("M-2", "F_A with c = 0: the twists lam = 0, 1, -2 give Malcev algebras (exhaustive); lam = 0 and lam = 1 give Lie algebras, lam = -2 does not (Elduque's non-Lie module of sl(2))", lie_all && mal_all, String::new());
+    ck.add("M-2", "F_A with c_sl = 0: the twists c_tw = 0, 1, -2 give Malcev algebras (exhaustive); c_tw = 0 and c_tw = 1 give Lie algebras, c_tw = -2 does not (Elduque's non-Lie module of sl(2))", lie_all && mal_all, String::new());
     let mut excluded = true;
     let mut wit = String::new();
     for (lam, c) in [(1i128, 1i128), (0, 1), (2, 0), (-1, 0), (3, 0)] {
@@ -361,13 +369,13 @@ pub fn run() -> bool {
             wit = w;
         }
     }
-    ck.add("M-3", "excluded members of F_A fail exhaustively: (lam, c) = (1, 1) [Lie action with spinor charges closing into Lorentz], (0, 1), (2, 0), (-1, 0), (3, 0) violate both identities (in agreement with G-1, G-3, G-4)", excluded, wit);
+    ck.add("M-3", "excluded members of F_A fail exhaustively: (c_tw, c_sl) = (1, 1) [Lie action and spinor charges closing into Lorentz], (0, 1), (2, 0), (-1, 0), (3, 0) violate both identities (in agreement with G-1, G-3, G-4)", excluded, wit);
 
-    // ---- F_B: Poincare / (A)dS + s
+    // ---- F_B: Poincare / (anti-)de Sitter + s_LL
     let mut p = Par::zero();
     p.lam = g(-2, 0);
     let (lie, mal, _, w) = eval("F_B", &lb, &p);
-    ck.add("M-4", "F_B with twist lam = -2 and all other parameters 0 (the abelian twisted module of the Poincare algebra) satisfies the Malcev identity on all 104976 basis 4-tuples and violates the Jacobi identity: internal spinor charges, commuting with the translations, with the non-Lie Lorentz action", mal && !lie, w);
+    ck.add("M-4", "F_B with the twist c_tw = -2 and all other coefficients 0 (the abelian twisted module of the Poincare algebra) satisfies the Malcev identity on all 104976 basis 4-tuples and violates the Jacobi identity: internal spinor charges, commuting with the translations p_LL, with the non-Lie Lorentz action", mal && !lie, w);
     let mut lie_sol = true;
     let mut p1 = Par::zero();
     p1.lam = g(1, 0);
@@ -387,8 +395,8 @@ pub fn run() -> bool {
     p4.beta = g(1, 1);
     let (l4, _, _, _) = eval("F_B", &lb, &p4);
     lie_sol &= l1 && l2 && l3 && l4;
-    ck.add("M-5", "the Lie solutions of F_B found by G-6 are Lie algebras (exhaustive): Poincare with abelian spinor charges (lam = 1), Poincare with [s, s] = k P (lam = 1, k = 1: bosonic spinor charges squaring to translations), and curved space-time with a = |beta|^2 (lam = 1, a = 1, beta = 1 and a = 2, beta = 1 + i): spinor charges that do not commute with the translations", lie_sol, String::new());
-    // signature of the Killing form of the space-time part for a = 1 (dS or AdS?)
+    ck.add("M-5", "the Lie solutions of F_B found by G-6 are Lie algebras (exhaustive): Poincare with abelian spinor charges (c_tw = 1), Poincare with [s_LL, s_LL] in p_LL (c_tw = 1, c_sP = 1: bosonic spinor charges whose brackets are translations), and curved space-time with c_PP = |c_Ps|^2 (c_tw = 1, c_PP = 1, c_Ps = 1 and c_PP = 2, c_Ps = 1 + i): spinor charges that do not commute with the translations", lie_sol, String::new());
+    // signature of the Killing form of the space-time part for c_PP = 1 (de Sitter or anti-de Sitter?)
     let alg = Algebra::new(&lb, &p3);
     let ad = |k: usize| -> Vec<Vec<i128>> {
         let mut m = vec![vec![0i128; 10]; 10];
@@ -413,7 +421,7 @@ pub fn run() -> bool {
         }
     }
     let sig = signature(&kil);
-    ck.add("M-6", "for a > 0 the space-time part (so(3,1) + translations with [P, P] = a M) has a Killing form of signature (4 positive, 6 negative): it is so(4,1), the de Sitter algebra; the spinor charges with [P, s] != 0 form its real 8-dimensional spinor representation", sig == (4, 6, 0), format!("signature {:?}", sig));
+    ck.add("M-6", "for c_PP > 0 the space-time part l_LL + p_LL (with [p_LL, p_LL] = c_PP x Lorentz generator) has a Killing form of signature (4 positive, 6 negative): it is so(4,1), the de Sitter algebra; the spinor charges with [p_LL, s_LL] != 0 form its real 8-dimensional spinor representation", sig == (4, 6, 0), format!("signature {:?}", sig));
     let mut excl_b = true;
     let mut wb = String::new();
     for (lam, c, k, a) in [(-2i128, 1i128, 0i128, 0i128), (1, 1, 0, 0), (1, 1, 1, 0), (-2, 0, 1, 0), (-2, 0, 0, 1)] {
@@ -428,9 +436,9 @@ pub fn run() -> bool {
             wb = w;
         }
     }
-    ck.add("M-7", "excluded members of F_B fail exhaustively: the bi-octonion bracket together with translations (lam = -2, c = 1), the Lie action with c = 1 (with or without k = 1), and the twist together with k = 1 or with curvature a = 1: with translations present, spinor charges never close into the Lorentz algebra (G-7, G-9)", excl_b, wb);
+    ck.add("M-7", "excluded members of F_B fail exhaustively: the bi-octonion bracket together with translations (c_tw = -2, c_sl = 1), the Lie action with c_sl = 1 (with or without c_sP = 1), and the twist together with c_sP = 1 or with the curvature c_PP = 1: with translations present, spinor charges never close into the Lorentz algebra (G-7, G-9)", excl_b, wb);
 
-    // ---- F_C: so(3,1) + su(2) + s
+    // ---- F_C: l_LL + su(2) + s_LL
     let mut p = Par::zero();
     p.lam = g(-2, 0);
     p.c = g(1, 0);
@@ -441,7 +449,7 @@ pub fn run() -> bool {
     q.tau = g(1, 0);
     q.kt = 1;
     let (lie2, mal2, _, _) = eval("F_C", &lc, &q);
-    ck.add("M-8", "F_C: the bi-octonion algebra m with a decoupled isospin algebra su(2) (lam = -2, c = 1, kT = 1, tau = 0, d = 0) is Malcev and not Lie; isospin acting on the spinor charges with the Lie Lorentz action and [s, s] = 0 (lam = 1, tau = 1, kT = 1) is a Lie algebra", mal && !lie && lie2 && mal2, String::new());
+    ck.add("M-8", "F_C: the bi-octonion algebra m_LL with a decoupled isospin algebra su(2) (c_tw = -2, c_sl = 1, c_TT = 1, c_Ts = 0, c_sT = 0) is Malcev and not Lie; isospin acting on the spinor charges with the Lie Lorentz action and [s_LL, s_LL] = 0 (c_tw = 1, c_Ts = 1, c_TT = 1) is a Lie algebra", mal && !lie && lie2 && mal2, String::new());
     let mut excl_c = true;
     let mut wc = String::new();
     for (tau, d) in [(1i128, 0i128), (0, 1), (1, 1)] {
@@ -457,8 +465,8 @@ pub fn run() -> bool {
             wc = w;
         }
     }
-    ck.add("M-9", "isospin cannot act on the spinor charges of m inside a Malcev algebra: adding tau = 1 (isospin acts on s), or d = 1 ([s, s] gets an isospin part), or both, to m + su(2) violates the Malcev identity (exhaustive; G-11): electric charge enters the super-loop as an outer operator (an automorphism), not as an element", excl_c, wc);
+    ck.add("M-9", "isospin cannot act on the spinor charges of m_LL inside a Malcev algebra: adding c_Ts = 1 (isospin acts on s_LL), or c_sT = 1 ([s_LL, s_LL] gets an isospin part), or both, to m_LL + su(2) violates the Malcev identity (exhaustive; G-11): electric charge enters the super-loop as an outer operator (an automorphism), not as an element", excl_c, wc);
 
-    let _ = write_csv_str("sl_malcev_families.csv", &[("content", "members of the covariant families verified exhaustively: Jacobi on all basis triples, linearized Malcev on all basis 4-tuples".to_string()), ("families", "F_A = so(3,1) + s (dim 14), F_B = so(3,1) + R^(3,1) + s (dim 18), F_C = so(3,1) + su(2) + s (dim 17)".to_string())], &["family", "parameters", "Lie", "Malcev", "failing_Malcev_4_tuples"], &rows);
+    let _ = write_csv_str("sl_malcev_families.csv", &[("content", "members of the covariant families verified exhaustively: Jacobi on all basis triples, linearized Malcev on all basis 4-tuples".to_string()), ("families", "F_A = l_LL + s_LL (dimension 14), F_B = l_LL + p_LL + s_LL (dimension 18), F_C = l_LL + su(2) + s_LL (dimension 17); the coefficients not listed in a row are 0".to_string())], &["family", "coefficients", "Lie", "Malcev", "failing_Malcev_4_tuples"], &rows);
     ck.write("sl_malcev_checks.txt")
 }

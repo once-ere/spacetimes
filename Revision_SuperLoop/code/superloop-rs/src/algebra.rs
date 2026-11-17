@@ -1,17 +1,22 @@
-//! Command `algebra`: the bi-octonions, the Lorentz super-loop and its Malcev algebra.
+//! Command `algebra`: the bi-octonions B_LL, the Lorentz super-loop L_LL and its Malcev algebra m_LL.
 //!
 //! Checks (all exact unless marked "double precision"):
-//!   A-1 .. A-7  where associativity enters: alternativity, non-associativity, the norm,
-//!               Moufang identities, Jacobiator = 6 x associator, the Malcev identity, operators
-//!               always obey the Jacobi identity, left multiplication is not a Lie homomorphism.
-//!   L-1 .. L-9  the Lorentz algebra l = C (x) Im H inside m = C (x) Im O, the spinor charges
-//!               s = (C (x) H) l, the twisted action ad_q = -2 sigma(q) on s, [s, s] = l, the
-//!               Lie no-go for the same pattern, the derivations (Lorentz and isospin), the
-//!               derivation algebra g2(C) (real dimension 28), and the automorphisms phi_(u,v).
-//!   Q-1 .. Q-7  the operators and their eigenvalues: electric charge Q, isospin Casimir, Lorentz
-//!               Casimir, chirality, spinor number, twist charge Theta, the twofold inner action.
-//!   C-1 .. C-4  the inversion element l (Chein-type extension of SL(2,C)), parity, and the
-//!               impossibility of an associative (group, Hilbert-space) implementation.
+//!   A-1 .. A-8  where associativity enters: alternativity, non-associativity, the norm N_LL,
+//!               the Moufang identities, Jac = 6 x associator, the Malcev identity, operators
+//!               always obey the Jacobi identity, left multiplication is not a Lie homomorphism,
+//!               and the Jacobiators span m_LL (Theorem R: no realization by operators).
+//!   L-1 .. L-9  the Lorentz part l_LL = C (x) Im H inside m_LL = C (x) Im O, the spinor charges
+//!               s_LL = (C (x) H) e4, the twisted action [uL, .] = -2 W_LL(uL) on s_LL, the bracket
+//!               [s_LL, s_LL] = l_LL, the Lie no-go for the same pattern (Theorem L), the derivations
+//!               D_LL (Lorentz) and Dv_LL (isospin), the derivation algebra g2(C) (real dimension 28),
+//!               and the automorphisms varphi_(gL,vI).
+//!   Q-1 .. Q-6  the operators and their eigenvalues: electric charge Q_LL, isospin Casimir T_LL^2,
+//!               Lorentz Casimir Cas_LL, chirality, spinor number, and the twofold inner action.
+//!   C-1 .. C-4  the unit e4 (a Chein-type extension of SL(2,C)), parity, and the impossibility of
+//!               an associative (group, Hilbert-space) implementation.
+//! Names (plain text): x, y, z, w bi-octonions; aH, bS (and cH, dS) the bi-quaternions of
+//! x = aH + bS e4; uL in l_LL a Lorentz element; tI in Im H an isospin element; gL, hL elements of
+//! SL(2,C); vI a unit quaternion (isospin rotation); e0..e7 the units.
 //! Data: sl_multiplication_table.csv, sl_malcev_structure.csv, sl_quantum_numbers.csv,
 //!       sl_associators.csv, report sl_algebra_checks.txt.
 
@@ -34,9 +39,9 @@ fn gi(re: i128, im: i128) -> GInt {
     GInt { re, im }
 }
 
-/// The real basis of the Malcev algebra m = C (x) Im O (14 elements):
-///   m0..m2 = e1, e2, e3 (twice the rotation generators J_a), m3..m5 = i e1, i e2, i e3 (twice
-///   the boost generators K_a), m6..m9 = e4..e7, m10..m13 = i e4..i e7 (the spinor charges).
+/// The real basis of the Malcev algebra m_LL = C (x) Im O (14 elements), in this order:
+///   e1, e2, e3 (twice the rotation generators J_LL^j), i e1, i e2, i e3 (twice the boost
+///   generators K_LL^j), e4..e7 and i e4..i e7 (the spinor charges, a real basis of s_LL).
 pub fn mbasis(k: usize) -> B {
     match k {
         0..=2 => e(k + 1),
@@ -46,7 +51,7 @@ pub fn mbasis(k: usize) -> B {
     }
 }
 
-/// Coordinates of an element of m in the basis `mbasis` (panics if the e0 part is non-zero).
+/// Coordinates of an element of m_LL in the basis `mbasis` (panics if the e0 part is non-zero).
 pub fn mcoords(x: &B) -> [i128; 14] {
     assert!(x.c[0].re == 0 && x.c[0].im == 0, "element is not imaginary");
     let mut r = [0i128; 14];
@@ -61,8 +66,8 @@ pub fn mcoords(x: &B) -> [i128; 14] {
     r
 }
 
-/// The Lorentz derivation D'_q (q in C (x) Im H, unnormalized: D'_q = 2 D_(q/2)):
-///   a + b l  ->  [q, a] + (-b q) l.
+/// The Lorentz derivation D_LL(uL) (uL in l_LL = C (x) Im H):  aH + bS e4  ->  [uL, aH] + (-bS uL) e4.
+/// It is linear in uL; D_LL(J_LL^j) = D_LL(e_j/2) and D_LL(K_LL^j) = D_LL(i e_j/2).
 pub fn d_lorentz(q: &Quat<GInt>, x: &B) -> B {
     let (a, b) = x.quats();
     let qa = qsub(&qmul(q, &a), &qmul(&a, q));
@@ -70,7 +75,7 @@ pub fn d_lorentz(q: &Quat<GInt>, x: &B) -> B {
     B::from_quats(&qa, &bq)
 }
 
-/// The isospin derivation D'^v_t (t in Im H, real, unnormalized):  a + b l -> (t b) l.
+/// The isospin derivation Dv_LL(tI) (tI in Im H):  aH + bS e4 -> (tI bS) e4.
 pub fn d_isospin(t: &Quat<GInt>, x: &B) -> B {
     let (_a, b) = x.quats();
     B::from_quats(&qzero(), &qmul(t, &b))
@@ -151,15 +156,15 @@ pub fn run() -> bool {
                     nonzero_assoc += 1;
                     if a < b && b < c {
                         let k = (0..8).find(|&k| x.c[k].re != 0).unwrap();
-                        assoc_rows.push(vec![a.to_string(), b.to_string(), c.to_string(), k.to_string(), x.c[k].re.to_string()]);
+                        assoc_rows.push(vec![format!("e{}", a), format!("e{}", b), format!("e{}", c), format!("e{}", k), x.c[k].re.to_string()]);
                     }
                 }
             }
         }
     }
-    ck.add("A-1", "the associator [x,y,z] = (xy)z - x(yz) of the bi-octonions is alternating (changes sign under any exchange of two arguments) on all 512 ordered basis triples: the bi-octonions are an ALTERNATIVE algebra", alt_ok, String::new());
+    ck.add("A-1", "the associator [x,y,z] = (xy)z - x(yz) of the bi-octonions B_LL is alternating (it changes sign under every exchange of two of its arguments) on all 512 ordered triples of the units e0..e7: B_LL is an ALTERNATIVE algebra", alt_ok, String::new());
     let w = e(1).assoc(&e(2), &e(4));
-    ck.add("A-2", "the bi-octonions are NOT associative: exactly 168 of the 512 ordered basis triples (e_A, e_B, e_C) have a non-zero associator (the triples of distinct imaginary units outside the 7 quaternionic triples); example (e1 e2) e4 - e1 (e2 e4) = 2 e7", nonzero_assoc == 168 && w == e(7).scale(gi(2, 0)), format!("non-zero associators: {}; [e1,e2,e4] = {:?}", nonzero_assoc, w.c.iter().map(|z| z.re).collect::<Vec<_>>()));
+    ck.add("A-2", "B_LL is NOT associative: exactly 168 of the 512 ordered triples of units have a non-zero associator (the triples of distinct imaginary units outside the 7 quaternionic triples); example [e1,e2,e4] = (e1 e2) e4 - e1 (e2 e4) = 2 e7", nonzero_assoc == 168 && w == e(7).scale(gi(2, 0)), format!("non-zero associators: {}; coefficients of [e1,e2,e4] on e0..e7: {:?}", nonzero_assoc, w.c.iter().map(|z| z.re).collect::<Vec<_>>()));
 
     // A-3 norm and Moufang identities on random exact elements
     let mut nm_ok = true;
@@ -174,7 +179,7 @@ pub fn run() -> bool {
         let m3 = z.mul(&x).mul(&y.mul(&z)) == z.mul(&x.mul(&y)).mul(&z);
         mf_ok &= m1 && m2 && m3;
     }
-    ck.add("A-3", "on 300 random bi-octonions with Gaussian-integer coefficients the complex norm is multiplicative, N(xy) = N(x) N(y), and the three Moufang identities z(x(zy)) = ((zx)z)y, ((yz)x)z = y(z(xz)), (zx)(yz) = (z(xy))z hold exactly: the unit bi-octonions form a Moufang LOOP", nm_ok && mf_ok, String::new());
+    ck.add("A-3", "on 300 random bi-octonions x, y, z with Gaussian-integer coefficients the complex norm is multiplicative, N_LL(xy) = N_LL(x) N_LL(y), and the three Moufang identities z(x(zy)) = ((zx)z)y, ((yz)x)z = y(z(xz)), (zx)(yz) = (z(xy))z hold exactly: the unit bi-octonions form a Moufang LOOP, the super-loop L_LL", nm_ok && mf_ok, String::new());
 
     // A-4 Jacobiator = 6 x associator on all basis triples (trilinear identity)
     let mut j6_ok = true;
@@ -191,7 +196,7 @@ pub fn run() -> bool {
             }
         }
     }
-    ck.add("A-4", "for the commutator [x,y] = xy - yx of the bi-octonions the Jacobiator equals six times the associator on all 512 basis triples, J(x,y,z) = 6 [x,y,z]; it is non-zero on 168 triples: the Jacobi identity fails exactly because associativity fails", j6_ok && jac_nonzero == 168, format!("non-zero Jacobiators: {}", jac_nonzero));
+    ck.add("A-4", "for the commutator [x,y] = xy - yx of B_LL the Jacobiator Jac(x,y,z) = [[x,y],z] + [[y,z],x] + [[z,x],y] equals six times the associator on all 512 triples of units, Jac(x,y,z) = 6 [x,y,z]; it is non-zero on 168 triples: the Jacobi identity fails exactly where associativity fails", j6_ok && jac_nonzero == 168, format!("non-zero Jacobiators: {}", jac_nonzero));
 
     // A-5 Malcev identity on all 4-tuples of imaginary basis units (multilinear identity)
     let mut mal_ok = true;
@@ -204,7 +209,7 @@ pub fn run() -> bool {
             }
         }
     }
-    ck.add("A-5", "the imaginary bi-octonions m = C (x) Im O with the commutator satisfy the (linearized) Malcev identity J(x,y,[w,z]) + J(w,y,[x,z]) = [J(x,y,z),w] + [J(w,y,z),x] on all 2401 basis 4-tuples: m is a Malcev algebra that is not a Lie algebra", mal_ok, String::new());
+    ck.add("A-5", "the imaginary bi-octonions m_LL = C (x) Im O with the commutator satisfy the linearized Malcev identity Jac(x,y,[w,z]) + Jac(w,y,[x,z]) = [Jac(x,y,z),w] + [Jac(w,y,z),x] on all 2401 4-tuples of imaginary units: m_LL is a Malcev algebra that is not a Lie algebra", mal_ok, String::new());
 
     // A-6 operators always satisfy the Jacobi identity
     let mut op_ok = true;
@@ -214,15 +219,30 @@ pub fn run() -> bool {
         let j = madd(&madd(&comm(&comm(&a, &b), &c), &comm(&comm(&b, &c), &a)), &comm(&comm(&c, &a), &b));
         op_ok &= is_zero(&j);
     }
-    ck.add("A-6", "for 50 random triples of 4x4 integer matrices (operators: an associative product) the Jacobiator of the commutator vanishes exactly; this is the step that every no-go proof uses when it treats the symmetry generators as operators", op_ok, String::new());
+    ck.add("A-6", "for 50 random triples of 4x4 integer matrices (operators, whose product is associative) the Jacobiator of the commutator vanishes exactly; this is the step that every no-go proof takes when it treats the symmetry generators as operators", op_ok, String::new());
 
     // A-7 left multiplication is not a Lie homomorphism
     let l = |x: &B| real_matrix(|y: &B| x.mul(y));
     let defect = msub(&comm(&l(&e(1)), &l(&e(4))), &l(&e(1).comm(&e(4))));
-    ck.add("A-7", "left multiplication x -> L_x is not a representation of the Malcev algebra m: [L_e1, L_e4] - L_[e1,e4] is a non-zero matrix; no operator realization of m on any vector space exists (Theorem R)", !is_zero(&defect), String::new());
+    ck.add("A-7", "left multiplication x -> L_x is not a representation of the Malcev algebra m_LL: [L_e1, L_e4] - L_[e1,e4] is a non-zero matrix", !is_zero(&defect), String::new());
+
+    // A-8 Theorem R: the Jacobiators of the real basis of m_LL span m_LL (rank 14)
+    let mut jrows: Vec<Vec<i128>> = Vec::new();
+    for i in 0..14 {
+        for j in 0..14 {
+            for k in 0..14 {
+                let jac = jacobiator(&mbasis(i), &mbasis(j), &mbasis(k));
+                if !jac.is_zero(0.0) {
+                    jrows.push(mcoords(&jac).to_vec());
+                }
+            }
+        }
+    }
+    let jrank = rank(&jrows);
+    ck.add("A-8", "Theorem R: the Jacobiators of the real basis elements e_p, i e_p (p = 1..7) of m_LL span all of m_LL (real rank 14, exact); because operators obey the Jacobi identity (A-6), every linear map from m_LL to operators on a vector space that turns commutators into commutators maps every Jacobiator to 0 and therefore vanishes: m_LL has no non-zero realization by operators", jrank == 14, format!("rank of the span of the Jacobiators: {}", jrank));
 
     // ---------------- L: the Lorentz super-loop algebra ----------------
-    // L-1 so(3,1): [J_a,J_b] = eps J_c, [J_a,K_b] = eps K_c, [K_a,K_b] = -eps J_c with J = e/2, K = i e/2
+    // L-1 so(3,1): [J^j,J^j'] = eps3 J^j'', [J^j,K^j'] = eps3 K^j'', [K^j,K^j'] = -eps3 J^j'' with J^j = e_j/2, K^j = i e_j/2
     let eps = |a: usize, b: usize, c: usize| -> i128 {
         let p = [(1, 2, 3), (2, 3, 1), (3, 1, 2)];
         let m = [(2, 1, 3), (3, 2, 1), (1, 3, 2)];
@@ -248,9 +268,9 @@ pub fn run() -> bool {
             so31 &= e(a).comm(&e(b)) == jj && e(a).comm(&ie(b)) == jk && ie(a).comm(&ie(b)) == kk;
         }
     }
-    ck.add("L-1", "the Lorentz part l = C (x) Im H (real basis J_a = e_a/2, K_a = i e_a/2, a = 1,2,3) is a Lie subalgebra of m isomorphic to so(3,1): [J_a,J_b] = eps_abc J_c, [J_a,K_b] = eps_abc K_c, [K_a,K_b] = -eps_abc J_c; the unit bi-quaternions SL(2,C) = Spin(3,1)^+ are a subgroup of the super-loop", so31, String::new());
+    ck.add("L-1", "the Lorentz part l_LL = C (x) Im H (real basis J_LL^j = e_j/2, K_LL^j = i e_j/2, j = 1,2,3) is a Lie subalgebra of m_LL isomorphic to so(3,1): [J_LL^j, J_LL^j'] = sum_j'' eps3_(j j' j'') J_LL^j'', [J_LL^j, K_LL^j'] = sum_j'' eps3_(j j' j'') K_LL^j'', [K_LL^j, K_LL^j'] = -sum_j'' eps3_(j j' j'') J_LL^j''; the unit bi-quaternions SL(2,C) = Spin(3,1)^+ form a subgroup of the super-loop L_LL", so31, String::new());
 
-    // L-2 Killing form of l (6x6, in the basis m0..m5): signature (3 positive, 3 negative)
+    // L-2 Killing form of l_LL (6x6, in the basis e1, e2, e3, i e1, i e2, i e3): signature (3 positive, 3 negative)
     let ad6 = |k: usize| -> IM {
         let mut m = vec![vec![0i128; 6]; 6];
         for j in 0..6 {
@@ -269,14 +289,14 @@ pub fn run() -> bool {
         }
     }
     let sig = signature(&kil);
-    ck.add("L-2", "the Killing form of l (6x6, exact) is non-degenerate with signature (3 positive, 3 negative), negative on the rotations and positive on the boosts, as for so(3,1)", sig == (3, 3, 0) && kil[0][0] < 0 && kil[3][3] > 0, format!("signature {:?}, B(e1,e1) = {}, B(ie1,ie1) = {}", sig, kil[0][0], kil[3][3]));
+    ck.add("L-2", "the Killing form Killing(x,y) = tr(ad x ad y) of l_LL (6x6, exact) is non-degenerate with signature (3 positive, 3 negative), negative on the rotations and positive on the boosts, as for so(3,1)", sig == (3, 3, 0) && kil[0][0] < 0 && kil[3][3] > 0, format!("signature {:?}, Killing(e1,e1) = {}, Killing(i e1,i e1) = {}", sig, kil[0][0], kil[3][3]));
 
-    // L-3 twisted action: ad_q on s equals -2 sigma(q), sigma(q) b = -b q a Lie representation
+    // L-3 twisted action: [uL, .] on s_LL equals -2 W_LL(uL), with the Lie representation W_LL(uL) bS = -bS uL
     let mut tw_ok = true;
     let mut sig_rep = true;
     let mut ad_not_rep = true;
     let qs: Vec<Quat<GInt>> = vec![quat_unit(1), quat_unit(2), quat_unit(3), qscale(&quat_unit(1), GInt::iu()), qscale(&quat_unit(2), GInt::iu()), qscale(&quat_unit(3), GInt::iu())];
-    let sigma = |q: &Quat<GInt>, b: &Quat<GInt>| -> Quat<GInt> { qscale(&qmul(b, q), gi(-1, 0)) };
+    let sigma = |q: &Quat<GInt>, b: &Quat<GInt>| -> Quat<GInt> { qscale(&qmul(b, q), gi(-1, 0)) }; // W_LL(q) b = -b q
     for q in &qs {
         for k in 6..14 {
             let s = mbasis(k);
@@ -293,16 +313,16 @@ pub fn run() -> bool {
                 let (_, b) = mbasis(k).quats();
                 let lhs = qsub(&sigma(q1, &sigma(q2, &b)), &sigma(q2, &sigma(q1, &b)));
                 sig_rep &= lhs == sigma(&q12, &b);
-                // the inner action rho = -2 sigma: [rho1, rho2] = 4 sigma([q1,q2]) = -2 rho([q1,q2])
+                // the inner action rho_LL = -2 W_LL: [rho1, rho2] = 4 W_LL([q1,q2]) = -2 rho_LL([q1,q2])
                 let rho = |q: &Quat<GInt>, b: &Quat<GInt>| qscale(&sigma(q, b), gi(-2, 0));
                 let lhs2 = qsub(&rho(q1, &rho(q2, &b)), &rho(q2, &rho(q1, &b)));
                 ad_not_rep &= lhs2 == qscale(&rho(&q12, &b), gi(-2, 0));
             }
         }
     }
-    ck.add("L-3", "the Lorentz algebra acts on the spinor charges s = (C (x) H) l by ad_q (b l) = 2 (b q) l = -2 sigma(q) b, where sigma(q) b = -b q is a Lie representation (the Weyl spinor); the inner action rho = -2 sigma obeys [rho(q1), rho(q2)] = -2 rho([q1,q2]): it is NOT a representation (the twist)", tw_ok && sig_rep && ad_not_rep, String::new());
+    ck.add("L-3", "a Lorentz element uL of l_LL acts on a spinor charge bS e4 of s_LL = (C (x) H) e4 by [uL, bS e4] = 2 (bS uL) e4 = -2 (W_LL(uL) bS) e4, where W_LL(uL) bS = -bS uL is a Lie representation (the Weyl spinor); the inner action rho_LL(uL) = -2 W_LL(uL) obeys [rho_LL(uL1), rho_LL(uL2)] = -2 rho_LL([uL1,uL2]): it is NOT a representation (the twist)", tw_ok && sig_rep && ad_not_rep, String::new());
 
-    // L-4 [s, s] lies in l and spans all of l
+    // L-4 [s_LL, s_LL] lies in l_LL and spans all of l_LL
     let mut ss_in_l = true;
     let mut rows: Vec<Vec<i128>> = Vec::new();
     for i in 6..14 {
@@ -314,7 +334,7 @@ pub fn run() -> bool {
         }
     }
     let rk = rank(&rows);
-    ck.add("L-4", "the bracket of two spinor charges lies in the Lorentz algebra, [s, s] = 2 Im(bbar b') in l, and these brackets span all of l (rank 6): spinor charges close into Lorentz generators", ss_in_l && rk == 6, format!("rank {}", rk));
+    ck.add("L-4", "the bracket of two spinor charges lies in the Lorentz part, [bS e4, bS' e4] = bSbar bS' - bS'bar bS in l_LL, and these brackets span all of l_LL (rank 6): spinor charges close into Lorentz generators", ss_in_l && rk == 6, format!("rank {}", rk));
 
     // L-5 Jacobiators by sector
     let mut jls_ok = true;
@@ -333,10 +353,10 @@ pub fn run() -> bool {
     }
     let jsss = jacobiator(&mbasis(6), &mbasis(7), &mbasis(8));
     let jlss = jacobiator(&mbasis(0), &mbasis(6), &mbasis(8));
-    ck.add("L-5", "Jacobiators by sector: J(x, y, s) = -6 sigma([x,y]) s = (Theta - Theta^2) sigma([x,y]) s with the twist charge Theta = -2 for x, y in l and s in s (exact on all 288 triples); J(s, s, s) (e.g. J(e4,e5,e6) = -12 e7) and J(l, s, s) (e.g. J(e1,e4,e6)) are non-zero as well", jls_ok && !jsss.is_zero(0.0) && !jlss.is_zero(0.0), String::new());
+    ck.add("L-5", "Jacobiators by sector: Jac(uL1, uL2, bS e4) = -6 (W_LL([uL1,uL2]) bS) e4 = (Theta_LL - Theta_LL^2) (W_LL([uL1,uL2]) bS) e4 with the twist charge Theta_LL = -2 on s_LL (exact on all 288 triples of basis elements); Jac(s_LL, s_LL, s_LL) (e.g. Jac(e4,e5,e6) = -12 e7) and Jac(l_LL, s_LL, s_LL) (e.g. Jac(e1,e4,e6)) are non-zero as well", jls_ok && !jsss.is_zero(0.0) && !jlss.is_zero(0.0), String::new());
 
-    // L-6 the same pattern with the Lie action (lambda = 1) violates the Jacobi identity
-    // bracket on l + s: [q, b] = sigma(q) b (Lie), [b, b'] = bbar b' - b'bar b (as in m)
+    // L-6 the same pattern with the Lie action (twist charge 1) violates the Jacobi identity
+    // bracket on l_LL + s_LL: [uL, bS e4] = (W_LL(uL) bS) e4 (Lie), [bS e4, bS' e4] = bSbar bS' - bS'bar bS (as in m_LL)
     let br_lie = |x: &B, y: &B| -> B {
         let (qx, bx) = x.quats();
         let (qy, by) = y.quats();
@@ -356,9 +376,9 @@ pub fn run() -> bool {
             }
         }
     }
-    ck.add("L-6", "with the Lie action (twist charge 1 instead of -2) and the same non-zero bracket [s, s] in l, the Jacobi identity fails on spinor triples: no Lie algebra extends so(3,1) by bosonic spinor charges that close into so(3,1) (Theorem L; the classification of command `malcev` shows that every Lie algebra of the covariant family has [s, s] = 0 in l)", lie_fails, String::new());
+    ck.add("L-6", "with the Lie action (twist charge 1 instead of -2) and the same non-zero bracket [s_LL, s_LL] in l_LL, the Jacobi identity fails on triples of spinor charges: no Lie algebra extends so(3,1) by bosonic spinor charges that close into so(3,1) (Theorem L; the classification G-1, G-5, G-10, M-3 shows that every Lie algebra of the covariant families has no Lorentz part in [s_LL, s_LL])", lie_fails, String::new());
 
-    // L-7 derivations: Lorentz D'_q and isospin D'^v_t are derivations, commute, and ad_q = D'_q Theta
+    // L-7 derivations: D_LL(uL) and Dv_LL(tI) are derivations, they commute, and [uL, .] = D_LL(uL) o Theta_LL
     let mut der_ok = true;
     let mut commute_ok = true;
     let mut theta_ok = true;
@@ -387,9 +407,9 @@ pub fn run() -> bool {
             theta_ok &= qb.comm(&m) == d_lorentz(q, &m).scale(gi(th, 0));
         }
     }
-    ck.add("L-7", "the Lorentz action by automorphisms, D'_q(a + b l) = [q,a] + (-b q) l, and the isospin action D'^v_t(a + b l) = (t b) l (t in Im H) are derivations of the bi-octonions (100 random pairs), commute with each other, the isospin derivations vanish on C (x) H, and the inner action factors as ad_q = D'_q o Theta with the twist charge Theta = 1 on l and -2 on s", der_ok && commute_ok && theta_ok && iso_fix, String::new());
+    ck.add("L-7", "the Lorentz action by automorphisms, D_LL(uL)(aH + bS e4) = [uL, aH] + (-bS uL) e4, and the isospin action Dv_LL(tI)(aH + bS e4) = (tI bS) e4 (tI in Im H) are derivations of B_LL (100 random pairs), they commute, the isospin derivations vanish on C (x) H, and the inner action factors as [uL, .] = D_LL(uL) o Theta_LL with the twist charge Theta_LL = 1 on l_LL and -2 on s_LL", der_ok && commute_ok && theta_ok && iso_fix, String::new());
 
-    // L-8 the derivation algebra of the bi-octonions has real dimension 28 (g2(C))
+    // L-8 the derivation algebra of B_LL has real dimension 28 (g2(C))
     let mut eqs: Vec<Vec<i128>> = Vec::new();
     let rb = |k: usize| -> B { if k < 8 { e(k) } else { ie(k - 8) } };
     for x in 0..16 {
@@ -417,7 +437,7 @@ pub fn run() -> bool {
         }
     }
     let rk_eq = rank(&eqs);
-    // explicit derivations D_(x,y) = [L_x, L_y] + [L_x, R_y] + [R_x, R_y]
+    // explicit (inner) derivations [L_x, L_y] + [L_x, R_y] + [R_x, R_y]
     let rmat = |x: &B| real_matrix(|y: &B| y.mul(x));
     let mut dspan = ModSpan::new();
     let mut der_explicit_ok = true;
@@ -438,9 +458,9 @@ pub fn run() -> bool {
             }
         }
     }
-    ck.add("L-8", "the real derivations of the bi-octonions form a Lie algebra of real dimension 28 (the complex Lie algebra g2(C)): the linear system has rank 228 of 256 unknowns (so at most 28 solutions), and the inner derivations [L_x,L_y] + [L_x,R_y] + [R_x,R_y] are verified derivations spanning 28 dimensions", rk_eq == 228 && dspan.rank() == 28 && der_explicit_ok, format!("rank of the system {}, explicit derivations span {}", rk_eq, dspan.rank()));
+    ck.add("L-8", "the real derivations of B_LL form a Lie algebra of real dimension 28 (the complex Lie algebra g2(C)): the linear system has rank 228 for 256 unknowns (at most 28 solutions), and the inner derivations [L_x,L_y] + [L_x,R_y] + [R_x,R_y] are verified derivations spanning 28 dimensions", rk_eq == 228 && dspan.rank() == 28 && der_explicit_ok, format!("rank of the system {}, explicit derivations span {}", rk_eq, dspan.rank()));
 
-    // L-9 the automorphisms phi_(u,v): a + b l -> u a ubar + (v b ubar) l for unit u, v
+    // L-9 the automorphisms varphi_(gL,vI): aH + bS e4 -> gL aH gLbar + (vI bS gLbar) e4 for unit gL, vI
     let u: Quat<GInt> = [gi(1, 0), gi(0, 1), gi(1, 0), gi(0, 0)]; // 1 + i e1 + e2, N = 1
     let v: Quat<GInt> = [gi(0, 0), gi(0, 0), gi(0, 0), gi(1, 0)]; // e3 (a real unit quaternion)
     let phi = |x: &B| -> B {
@@ -453,19 +473,19 @@ pub fn run() -> bool {
         let y: B = rng.bi(3);
         aut_ok &= phi(&x.mul(&y)) == phi(&x).mul(&phi(&y));
     }
-    ck.add("L-9", "phi_(u,v)(a + b l) = u a ubar + (v b ubar) l is an automorphism of the bi-octonions for the unit bi-quaternions u = 1 + i e1 + e2 (a Lorentz transformation) and v = e3 (an isospin rotation), on 100 random pairs: SL(2,C)_u x SL(2,C)_v / Z2 = SO(4,C) inside G2(C)", aut_ok, String::new());
+    ck.add("L-9", "varphi_(gL,vI)(aH + bS e4) = gL aH gLbar + (vI bS gLbar) e4 is an automorphism of B_LL for the unit bi-quaternions gL = 1 + i e1 + e2 (a Lorentz transformation) and vI = e3 (an isospin rotation), on 100 random pairs: (SL(2,C) x SL(2,C))/Z2 = SO(4,C) inside G2(C)", aut_ok, String::new());
 
     // ---------------- Q: operators and eigenvalues (double precision) ----------------
     let half = C64::new(0.5, 0.0);
     let t3c = to_c64q(&quat_unit(3));
-    // charge Q = -i D^v_(e3/2)
-    let qop = cmat8(|x| d_isospin_c(&qscale(&t3c, half), x).scale(C64::new(0.0, -1.0)));
+    // electric charge Q_LL = T_LL^3 = i Dv_LL(e3/2)  (T_LL^iota = i Dv_LL(e_iota/2) obey [T^1, T^2] = i T^3)
+    let qop = cmat8(|x| d_isospin_c(&qscale(&t3c, half), x).scale(C64::new(0.0, 1.0)));
     let herm = qop.sub(&qop.dagger()).fro() < 1e-12;
     let q_l = eig_block(&qop, &[0, 1, 2, 3]);
     let q_s = eig_block(&qop, &[4, 5, 6, 7]);
-    ck.add("Q-1", "the electric charge Q = -i D^v_3 (isospin T3 of the automorphisms, D^v_3 = D'^v_(e3)/2) is a Hermitian operator on the bi-octonions with eigenvalues 0 (four times) on C (x) H (the Lorentz part and the scalar) and +1/2, -1/2 (twice each) on the spinor charges (double precision)", herm && q_l.iter().all(|x| x.abs() < 1e-12) && (q_s[0] + 0.5).abs() < 1e-12 && (q_s[1] + 0.5).abs() < 1e-12 && (q_s[2] - 0.5).abs() < 1e-12 && (q_s[3] - 0.5).abs() < 1e-12, format!("on C(x)H: {}; on s: {}", fmt_eigs(&q_l), fmt_eigs(&q_s)));
+    ck.add("Q-1", "the electric charge Q_LL = T_LL^3 = i Dv_LL(e3/2) (the third isospin generator, an automorphism of B_LL) is a Hermitian operator on B_LL with the eigenvalues 0 (four times) on C (x) H (the Lorentz part and the scalar) and +1/2, -1/2 (twice each) on the spinor charges (double precision)", herm && q_l.iter().all(|x| x.abs() < 1e-12) && (q_s[0] + 0.5).abs() < 1e-12 && (q_s[1] + 0.5).abs() < 1e-12 && (q_s[2] - 0.5).abs() < 1e-12 && (q_s[3] - 0.5).abs() < 1e-12, format!("on C (x) H: {}; on s_LL: {}", fmt_eigs(&q_l), fmt_eigs(&q_s)));
 
-    // isospin Casimir T^2 = -sum (D^v_k)^2
+    // isospin Casimir T_LL^2 = -sum_iota Dv_LL(e_iota/2)^2
     let mut t2 = CMat::zeros(8);
     for k in 1..4 {
         let tk = qscale(&to_c64q(&quat_unit(k)), half);
@@ -474,9 +494,9 @@ pub fn run() -> bool {
     }
     let t2_s = eig_block(&t2, &[4, 5, 6, 7]);
     let t2_l = eig_block(&t2, &[0, 1, 2, 3]);
-    ck.add("Q-2", "the isospin Casimir T^2 = -sum_k (D^v_k)^2 equals 0 on C (x) H and 3/4 = (1/2)(1/2 + 1) on the spinor charges: the spinor charges are an isospin doublet (double precision)", t2_l.iter().all(|x| x.abs() < 1e-12) && t2_s.iter().all(|x| (x - 0.75).abs() < 1e-12), format!("on s: {}", fmt_eigs(&t2_s)));
+    ck.add("Q-2", "the isospin Casimir T_LL^2 = sum_iota (T_LL^iota)^2 = -sum_iota Dv_LL(e_iota/2)^2 equals 0 on C (x) H and 3/4 = (1/2)(1/2 + 1) on the spinor charges: the spinor charges form an isospin doublet (double precision)", t2_l.iter().all(|x| x.abs() < 1e-12) && t2_s.iter().all(|x| (x - 0.75).abs() < 1e-12), format!("on s_LL: {}", fmt_eigs(&t2_s)));
 
-    // Lorentz Casimir 4C = -sum (D'_ea)^2 exactly: 0 on e0, 8 on C (x) Im H, 3 on s
+    // Lorentz Casimir: 4 Cas_LL = -sum_j D_LL(e_j)^2 exactly: 0 on e0, 8 on C (x) Im H, 3 on s_LL
     let mut cas = zeros(16);
     for a in 1..4 {
         let d = real_matrix(|x: &B| d_lorentz(&quat_unit(a), x));
@@ -491,9 +511,9 @@ pub fn run() -> bool {
         v[k] = expect;
         cas_ok &= col == v;
     }
-    ck.add("Q-3", "the Lorentz Casimir C = -sum_a (D_(J_a))^2 (exact, 4C is an integer matrix) has the value j(j+1) = 0 on the scalar e0, 2 (j = 1) on the Lorentz part C (x) Im H, and 3/4 (j = 1/2) on the spinor charges", cas_ok, String::new());
+    ck.add("Q-3", "the Lorentz Casimir Cas_LL = -sum_j D_LL(J_LL^j)^2 (exact; 4 Cas_LL is an integer matrix) has the value spin(spin+1) = 0 on the scalar e0, 2 (spin 1) on the Lorentz part C (x) Im H and 3/4 (spin 1/2) on the spinor charges", cas_ok, String::new());
 
-    // chirality: D'_(i e_a) = i D'_(e_a) on all of B (C-linear action with K = i J)
+    // chirality: D_LL(i e_j) = i D_LL(e_j) on all of B_LL (complex-linear action, K_LL^j = i J_LL^j)
     let mut chi_ok = true;
     for a in 1..4 {
         for k in 0..8 {
@@ -502,9 +522,9 @@ pub fn run() -> bool {
             }
         }
     }
-    ck.add("Q-4", "chirality: on every bi-octonion the boost generators act as i times the rotation generators, D(K_a) = i D(J_a); with respect to the complex structure of the bi-octonions every sector is of type (j, 0): l = (1, 0), the spinor charges = (1/2, 0) (left-handed); the complex-conjugate super-loop is of type (0, j)", chi_ok, String::new());
+    ck.add("Q-4", "chirality: on every bi-octonion the boost generators act as i times the rotation generators, D_LL(K_LL^j) = i D_LL(J_LL^j); with respect to the complex structure of B_LL every sector has one chirality, type (spin, 0): l_LL = (1,0), s_LL = (1/2,0); the complex-conjugate super-loop has the other chirality (0, spin)", chi_ok, String::new());
 
-    // spinor number exp(2 pi D(J3)): i D(J3) has integer eigenvalues on C (x) H and half-odd on s
+    // spinor number exp(2 pi D_LL(J_LL^3)): i D_LL(J_LL^3) has integer eigenvalues on C (x) H and half-odd ones on s_LL
     let dj3 = cmat8(|x| d_lorentz_c(&qscale(&t3c, half), x));
     let mut ih3 = CMat::zeros(8);
     for i in 0..8 {
@@ -516,9 +536,9 @@ pub fn run() -> bool {
     let ev_s = eig_block(&ih3, &[4, 5, 6, 7]);
     let int_l = ev_l.iter().all(|x| (x - x.round()).abs() < 1e-12);
     let half_s = ev_s.iter().all(|x| ((x - 0.5) - (x - 0.5).round()).abs() < 1e-12);
-    ck.add("Q-5", "spinor number: the rotation generator iD(J3) has integer eigenvalues {-1, 0, 0, 1} on C (x) H and half-odd eigenvalues {-1/2, -1/2, 1/2, 1/2} on the spinor charges, so the rotation by 2 pi, exp(2 pi D(J3)), is +1 on the Lorentz part and -1 on the spinor charges (double precision)", int_l && half_s, format!("on C(x)H: {}; on s: {}", fmt_eigs(&ev_l), fmt_eigs(&ev_s)));
+    ck.add("Q-5", "spinor number: the rotation generator i D_LL(J_LL^3) has the integer eigenvalues {-1, 0, 0, 1} on C (x) H and the half-odd eigenvalues {-1/2, -1/2, 1/2, 1/2} on the spinor charges, so the rotation by 2 pi, exp(2 pi D_LL(J_LL^3)), is +1 on the Lorentz part and -1 on the spinor charges (double precision)", int_l && half_s, format!("on C (x) H: {}; on s_LL: {}", fmt_eigs(&ev_l), fmt_eigs(&ev_s)));
 
-    // twist charge: ad_q = D'_q o Theta (checked in L-7); here: conjugation by g in SL(2,C) is b -> b g^2
+    // twist charge (L-7: [uL, .] = D_LL(uL) o Theta_LL); here: conjugation by gL in SL(2,C) is bS -> bS gL^2
     let g: Quat<GInt> = u;
     let mut conj_ok = true;
     for _ in 0..50 {
@@ -531,22 +551,22 @@ pub fn run() -> bool {
         let rhs = B::from_quats(&qzero(), &qmul(&qmul(&bq, &g), &g));
         conj_ok &= lhs1 == rhs && lhs2 == rhs;
     }
-    ck.add("Q-6", "inside the loop, conjugation by a Lorentz element g of SL(2,C) acts on a spinor charge as g (b l) gbar = (b g^2) l (both bracketings agree), whereas the Lorentz automorphism acts as b -> b g^-1: the loop's inner action turns a spinor twice as fast and backwards (twist charge -2)", conj_ok, String::new());
+    ck.add("Q-6", "inside the loop, conjugation by an element gL of SL(2,C) acts on a spinor charge as gL (bS e4) gLbar = (bS gL^2) e4 (both bracketings agree), whereas the Lorentz automorphism acts as bS -> bS gL^-1: the loop's inner action turns a spinor twice as fast and backwards (twist charge -2)", conj_ok, String::new());
 
-    // ---------------- C: the inversion element l ----------------
+    // ---------------- C: the inversion element e4 ----------------
     let ell = e(4);
-    let ell_inv = ell.conj(); // N(l) = 1, inverse = conjugate = -l
+    let ell_inv = ell.conj(); // N_LL(e4) = 1, inverse = conjugate = -e4
     let mut c1_ok = ell.mul(&ell) == B::one().neg();
     for _ in 0..100 {
         let qv: Quat<GInt> = [gi(rng.int(3) as i128, rng.int(3) as i128), gi(rng.int(3) as i128, rng.int(3) as i128), gi(rng.int(3) as i128, rng.int(3) as i128), gi(rng.int(3) as i128, rng.int(3) as i128)];
         let qb = B::from_quats(&qv, &qzero());
         c1_ok &= ell.mul(&qb).mul(&ell_inv) == B::from_quats(&qconj(&qv), &qzero());
     }
-    // parity on Hermitian bi-quaternions x0 + i x.e
+    // parity on Hermitian bi-quaternions x_LL^0 + i sum_j x_LL^j e_j
     let xh = B::from_quats(&[gi(3, 0), gi(0, 2), gi(0, -1), gi(0, 5)], &qzero());
     let px = ell.mul(&xh).mul(&ell_inv);
     let parity_ok = px == B::from_quats(&[gi(3, 0), gi(0, -2), gi(0, 1), gi(0, -5)], &qzero());
-    ck.add("C-1", "the element l of the super-loop (l^2 = -1, l^-1 = -l) acts on bi-quaternions by l q l^-1 = qbar (100 random q): on SL(2,C) it is the inversion g -> g^-1, and on Minkowski space (Hermitian bi-quaternions x0 + i x.e) it is the parity x -> (x0, -x)", c1_ok && parity_ok, String::new());
+    ck.add("C-1", "the unit e4 of the super-loop (e4^2 = -1, e4^-1 = -e4) acts on bi-quaternions by e4 aH e4^-1 = aHbar (100 random aH): on SL(2,C) it is the inversion gL -> gL^-1, and on Minkowski space R^(1,3)_LL (Hermitian bi-quaternions) it is the parity (x_LL^0, x_LL^1, x_LL^2, x_LL^3) -> (x_LL^0, -x_LL^1, -x_LL^2, -x_LL^3)", c1_ok && parity_ok, String::new());
 
     let mut chein_ok = true;
     for _ in 0..100 {
@@ -560,13 +580,13 @@ pub fn run() -> bool {
         chein_ok &= gq0.mul(&hl) == B::from_quats(&qzero(), &qmul(&hq, &gq));
         chein_ok &= gl.mul(&hq0) == B::from_quats(&qzero(), &qmul(&gq, &qconj(&hq)));
     }
-    ck.add("C-2", "the set SL(2,C) u SL(2,C) l is closed: (g l)(h l) = -hbar g, g (h l) = (h g) l, (g l) h = (g hbar) l; it is a Moufang loop (Chein-type double of the Lorentz group) inside the super-loop, and it is not associative because SL(2,C) is not commutative", chein_ok, String::new());
+    ck.add("C-2", "the union of SL(2,C) and SL(2,C) e4 is closed under the product: (gL e4)(hL e4) = -hLbar gL, gL (hL e4) = (hL gL) e4, (gL e4) hL = (gL hLbar) e4; it is a Moufang loop (a Chein-type double of the Lorentz group) inside L_LL, and it is not associative because SL(2,C) is not commutative", chein_ok, String::new());
 
     let g1 = e(1);
     let h1 = e(2);
     let inv_gh = g1.mul(&h1).conj();
     let ginv_hinv = g1.conj().mul(&h1.conj());
-    ck.add("C-3", "inversion is not an automorphism of SL(2,C): for g = e1, h = e2, (gh)^-1 = -e3 but g^-1 h^-1 = +e3; hence no operator W on any vector space can satisfy W U(g) W^-1 = U(g^-1) for a faithful representation U (conjugation is multiplicative): the extension by l exists only as a loop", inv_gh == e(3).neg() && ginv_hinv == e(3), String::new());
+    ck.add("C-3", "inversion is not an automorphism of SL(2,C): for gL = e1, hL = e2, (gL hL)^-1 = -e3 but gL^-1 hL^-1 = +e3; hence no operator on any vector space can implement gL -> gL^-1 by conjugation in a faithful representation (conjugation is multiplicative): the extension by e4 exists only as a loop", inv_gh == e(3).neg() && ginv_hinv == e(3), String::new());
 
     let mut not_aut = false;
     for _ in 0..20 {
@@ -579,7 +599,7 @@ pub fn run() -> bool {
             not_aut = true;
         }
     }
-    ck.add("C-4", "the inner map x -> l x l^-1 is not an automorphism of the bi-octonions (it fails on random pairs): inner maps of the loop are not symmetries of its multiplication, another place where associativity is missing", not_aut, String::new());
+    ck.add("C-4", "the inner map x -> e4 x e4^-1 is not an automorphism of B_LL (it fails on random pairs): inner maps of the loop are not symmetries of its multiplication, another place where associativity is missing", not_aut, String::new());
 
     // ---------------- data ----------------
     let names = ["e0", "e1", "e2", "e3", "e4", "e5", "e6", "e7"];
@@ -593,9 +613,9 @@ pub fn run() -> bool {
         }
         rows_t.push(r);
     }
-    let _ = write_csv_str("sl_multiplication_table.csv", &[("content", "product e_A e_B of the octonion units (row A, column B); bi-octonions have complex coefficients and the same table".to_string()), ("rule", "Cayley-Dickson (a + b l)(c + d l) = (ac - dbar b) + (da + b cbar) l with e0..e7 = 1, i_q, j_q, k_q, l, i_q l, j_q l, k_q l".to_string())], &["row", "e0", "e1", "e2", "e3", "e4", "e5", "e6", "e7"], &rows_t);
+    let _ = write_csv_str("sl_multiplication_table.csv", &[("content", "products of the units e0..e7 of B_LL (row: left factor, column: right factor); the bi-octonions are the complex combinations of the units".to_string()), ("rule", "Cayley-Dickson (aH + bS e4)(cH + dS e4) = (aH cH - dSbar bS) + (dS aH + bS cHbar) e4 with e0 = 1, e1, e2, e3 the quaternion units, e5 = e1 e4, e6 = e2 e4, e7 = e3 e4".to_string())], &["left", "e0", "e1", "e2", "e3", "e4", "e5", "e6", "e7"], &rows_t);
     let mut rows_m: Vec<Vec<String>> = Vec::new();
-    let mnames = ["J1x2", "J2x2", "J3x2", "K1x2", "K2x2", "K3x2", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"];
+    let mnames = ["e1", "e2", "e3", "ie1", "ie2", "ie3", "e4", "e5", "e6", "e7", "ie4", "ie5", "ie6", "ie7"];
     for i in 0..14 {
         for j in (i + 1)..14 {
             let r = mcoords(&mbasis(i).comm(&mbasis(j)));
@@ -606,14 +626,14 @@ pub fn run() -> bool {
             }
         }
     }
-    let _ = write_csv_str("sl_malcev_structure.csv", &[("content", "non-zero structure constants [m_i, m_j] = sum_k f_ij^k m_k of the Malcev algebra m = C (x) Im O in the real basis m0..m13 = e1,e2,e3, i e1,i e2,i e3, e4..e7, i e4..i e7".to_string()), ("names", "J1x2..J3x2 = e1..e3 (twice the rotations), K1x2..K3x2 = i e1..i e3 (twice the boosts), s1..s4 = e4..e7, s5..s8 = i e4..i e7 (spinor charges)".to_string())], &["i", "j", "k", "f_ij_k"], &rows_m);
+    let _ = write_csv_str("sl_malcev_structure.csv", &[("content", "non-zero commutators of the real basis elements of the Malcev algebra m_LL = C (x) Im O: [left, right] = coefficient x result (left before right in the basis order e1, e2, e3, ie1, ie2, ie3, e4..e7, ie4..ie7)".to_string()), ("names", "ie1 = i e1 etc.; e1, e2, e3 are twice the rotation generators J_LL^j, ie1, ie2, ie3 twice the boost generators K_LL^j, e4..e7 and ie4..ie7 the spinor charges".to_string())], &["left", "right", "result", "coefficient"], &rows_m);
     let qn = vec![
-        vec!["scalar e0".to_string(), "2".into(), "0".into(), "0".into(), "0".into(), "(0,0)".into(), "+1".into(), "outside m".into()],
-        vec!["Lorentz l = C(x)Im H".to_string(), "6".into(), "0".into(), "0".into(), "2".into(), "(1,0)".into(), "+1".into(), "1".into()],
-        vec!["spinor charges s = (C(x)H) l".to_string(), "8".into(), "+1/2 (x2), -1/2 (x2)".into(), "3/4".into(), "3/4".into(), "(1/2,0)".into(), "-1".into(), "-2".into()],
+        vec!["scalar e0".to_string(), "2".into(), "0".into(), "0".into(), "0".into(), "(0,0)".into(), "+1".into(), "outside m_LL".into()],
+        vec!["Lorentz part l_LL = C (x) Im H".to_string(), "6".into(), "0".into(), "0".into(), "2".into(), "(1,0)".into(), "+1".into(), "1".into()],
+        vec!["spinor charges s_LL = (C (x) H) e4".to_string(), "8".into(), "+1/2 twice, -1/2 twice".into(), "3/4".into(), "3/4".into(), "(1/2,0)".into(), "-1".into(), "-2".into()],
     ];
-    let _ = write_csv_str("sl_quantum_numbers.csv", &[("content", "quantum numbers of the sectors of the bi-octonions under the super-loop's operators (complex eigenvalue multiplicities on the complex sectors)".to_string())], &["sector", "real_dimension", "charge_Q", "isospin_T2", "Lorentz_Casimir_j(j+1)", "Lorentz_type", "spinor_number_exp(2pi_J3)", "twist_charge_Theta"], &qn);
-    let _ = write_csv_str("sl_associators.csv", &[("content", "the non-zero associators [e_a, e_b, e_c] = (e_a e_b) e_c - e_a (e_b e_c) for a < b < c; each equals coefficient * e_k".to_string())], &["a", "b", "c", "k", "coefficient"], &assoc_rows);
+    let _ = write_csv_str("sl_quantum_numbers.csv", &[("content", "quantum numbers of the sectors of B_LL under the operators of the super-loop: Q_LL (eigenvalues with multiplicities), T_LL^2, Cas_LL, Lorentz type, spinor number exp(2 pi D_LL(J_LL^3)), twist charge Theta_LL".to_string())], &["sector", "real_dimension", "Q_LL", "T_LL^2", "Cas_LL", "Lorentz_type", "spinor_number", "Theta_LL"], &qn);
+    let _ = write_csv_str("sl_associators.csv", &[("content", "the non-zero associators [e_p1, e_p2, e_p3] = (e_p1 e_p2) e_p3 - e_p1 (e_p2 e_p3) of three units with p1 < p2 < p3; each equals coefficient x the unit result (all other orders follow by alternativity)".to_string())], &["unit1", "unit2", "unit3", "result", "coefficient"], &assoc_rows);
 
     ck.write("sl_algebra_checks.txt")
 }

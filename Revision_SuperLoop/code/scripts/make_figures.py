@@ -103,7 +103,7 @@ def arrow(ax, x0, y0, x1, y1, text=None, color=INK2, fs=7.0, rad=0.0, dx=0.0, dy
 
 # ---------------------------------------------------------------------------------------------
 def fig_tables():
-    """(a) the multiplication table of the octonion units (data/sl_multiplication_table.csv),
+    """(a) the multiplication table of the units of B_LL (data/sl_multiplication_table.csv),
     (b) the non-zero associators by sector (data/sl_associators.csv; check A-2)."""
     rows = read_rows("sl_multiplication_table.csv")
     names = ["e0", "e1", "e2", "e3", "e4", "e5", "e6", "e7"]
@@ -121,16 +121,16 @@ def fig_tables():
             if unit == 0:
                 col = "#ffffff" if not neg else LIGHT[ORANGE]
             ax.add_patch(plt.Rectangle((j - 0.5, i - 0.5), 1, 1, fc=col, ec="white", lw=1.0))
-            ax.text(j, i, ("-" if neg else "+") + "$\\mathsf{e}_{%d}$" % unit, ha="center", va="center", fontsize=6.6)
+            ax.text(j, i, ("-" if neg else "+") + "$\\mathbf{e}_{%d}$" % unit, ha="center", va="center", fontsize=6.6)
     ax.set_xticks(range(8))
     ax.set_yticks(range(8))
-    ax.set_xticklabels(["$\\mathsf{e}_{%d}$" % k for k in range(8)])
-    ax.set_yticklabels(["$\\mathsf{e}_{%d}$" % k for k in range(8)])
+    ax.set_xticklabels(["$\\mathbf{e}_{%d}$" % k for k in range(8)])
+    ax.set_yticklabels(["$\\mathbf{e}_{%d}$" % k for k in range(8)])
     ax.tick_params(length=0)
     ax.xaxis.tick_top()
     for s in ax.spines.values():
         s.set_visible(False)
-    ax.set_title("product $\\mathsf{e}_A\\mathsf{e}_B$ (row $A$, column $B$)", pad=16)
+    ax.set_title("product $\\mathbf{e}_p\\mathbf{e}_{p'}$ (row: left factor, column: right factor)", pad=16)
     ax.plot([3.5, 3.5], [-0.5, 7.5], color=INK2, lw=0.8)
     ax.plot([-0.5, 7.5], [3.5, 3.5], color=INK2, lw=0.8)
     panel_label(ax, "(a)")
@@ -139,7 +139,7 @@ def fig_tables():
     counts = {0: 0, 1: 0, 2: 0, 3: 0}
     nz = set()
     for t in trip:
-        a, b, c = int(t["a"]), int(t["b"]), int(t["c"])
+        a, b, c = int(t["unit1"][1:]), int(t["unit2"][1:]), int(t["unit3"][1:])
         if a == 0:
             continue
         nz.add((a, b, c))
@@ -151,7 +151,7 @@ def fig_tables():
         if (a, b, c) in nz:
             counts[ns] += 1
     ax = axs[1]
-    labels = ["$\\mathfrak{l}\\,\\mathfrak{l}\\,\\mathfrak{l}$", "$\\mathfrak{l}\\,\\mathfrak{l}\\,\\mathfrak{s}$", "$\\mathfrak{l}\\,\\mathfrak{s}\\,\\mathfrak{s}$", "$\\mathfrak{s}\\,\\mathfrak{s}\\,\\mathfrak{s}$"]
+    labels = ["3 in $\\mathfrak{l}_{\\rm LL}$", "2 in $\\mathfrak{l}_{\\rm LL}$,\n1 in $\\mathfrak{s}_{\\rm LL}$", "1 in $\\mathfrak{l}_{\\rm LL}$,\n2 in $\\mathfrak{s}_{\\rm LL}$", "3 in $\\mathfrak{s}_{\\rm LL}$"]
     x = np.arange(4)
     ax.bar(x - 0.19, [totals[k] for k in range(4)], width=0.36, color=LIGHT[BLUE], edgecolor=BLUE, lw=0.8, label="all triples of units")
     ax.bar(x + 0.19, [counts[k] for k in range(4)], width=0.36, color=ORANGE, edgecolor=ORANGE, lw=0.8, hatch="//", label="non-zero associator")
@@ -162,7 +162,7 @@ def fig_tables():
     ax.set_xticklabels(labels)
     ax.set_ylabel("number of unordered triples")
     ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
-    ax.set_title("non-zero associators by sector ($\\mathfrak{l}$: Lorentz, $\\mathfrak{s}$: spinor)")
+    ax.set_title("non-zero associators of three\nimaginary units, by sector", pad=4)
     ax.set_ylim(0, 22)
     ax.legend(loc="upper left")
     panel_label(ax, "(b)")
@@ -171,76 +171,76 @@ def fig_tables():
 
 
 def fig_superloop():
-    """Diagram of the Lorentz super-loop: the Malcev algebra m = l + s, its brackets and the outer
-    operators (checks L-1 .. L-9, Q-1 .. Q-6, C-1 .. C-4)."""
+    """Diagram of the Lorentz super-loop: the Malcev algebra m_LL = l_LL + s_LL, its brackets and
+    the outer operators (checks L-1 .. L-9, Q-1 .. Q-6, C-1 .. C-4)."""
     fig, ax = plt.subplots(figsize=(7.0, 4.3))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
-    ax.text(0.5, 0.985, "Malcev algebra $\\mathfrak{m}_{\\rm LL}=\\mathfrak{l}_{\\rm LL}\\oplus\\mathfrak{s}_{\\rm LL}$ of the super-loop $\\mathbb{L}_{\\rm LL}=\\{x\\in\\mathbb{B}_{\\rm LL}:N_{\\rm LL}(x)=1\\}$", ha="center", va="top", fontsize=8.2)
+    ax.text(0.5, 0.985, "Malcev algebra $\\mathfrak{m}_{\\rm LL}=\\mathfrak{l}_{\\rm LL}\\oplus\\mathfrak{s}_{\\rm LL}$ of the super-loop $\\mathbb{L}_{\\rm LL}=\\{\\mathbf{w}\\in\\mathbb{B}_{\\rm LL}:N_{\\rm LL}(\\mathbf{w})=1\\}$", ha="center", va="top", fontsize=8.2)
     ax.text(0.5, 0.925, "Jacobiator $=6\\times$ associator (A-4): the Jacobi identity fails exactly where associativity fails", ha="center", va="top", fontsize=7.4, color=INK2)
-    box(ax, 0.02, 0.50, 0.30, 0.34, "Lorentz part\n$\\mathfrak{l}_{\\rm LL}=\\mathbb{C}\\otimes{\\rm Im}\\,\\mathbb{H}\\cong\\mathfrak{so}(3,1)$\n$J^j_{\\rm LL}=\\mathsf{e}_j/2,\\ K^j_{\\rm LL}=i\\,\\mathsf{e}_j/2$\n$[\\mathfrak{l},\\mathfrak{l}]=\\mathfrak{l}$ (L-1, L-2)", BLUE, fs=7.4)
-    box(ax, 0.68, 0.50, 0.30, 0.34, "spinor charges\n$\\mathfrak{s}_{\\rm LL}=(\\mathbb{C}\\otimes\\mathbb{H})\\,\\mathsf{e}_4$\nWeyl spinor $\\otimes$ isodoublet\n$Q_{\\rm LL}=\\pm1/2$, one chirality\n(Q-1 .. Q-5)", ORANGE, fs=7.4)
+    box(ax, 0.02, 0.50, 0.30, 0.34, "Lorentz part\n$\\mathfrak{l}_{\\rm LL}=\\mathbb{C}\\otimes{\\rm Im}\\,\\mathbb{H}\\cong\\mathfrak{so}(3,1)$\n$J^j_{\\rm LL}=\\mathbf{e}_j/2,\\ K^j_{\\rm LL}=i\\,\\mathbf{e}_j/2$\n$[\\mathfrak{l}_{\\rm LL},\\mathfrak{l}_{\\rm LL}]=\\mathfrak{l}_{\\rm LL}$ (L-1, L-2)", BLUE, fs=7.4)
+    box(ax, 0.68, 0.50, 0.30, 0.34, "spinor charges\n$\\mathfrak{s}_{\\rm LL}=(\\mathbb{C}\\otimes\\mathbb{H})\\,\\mathbf{e}_4$\nWeyl spinor $\\otimes$ isodoublet\n$Q_{\\rm LL}=\\pm1/2$, one chirality\n(Q-1 .. Q-5)", ORANGE, fs=7.4)
     arrow(ax, 0.33, 0.74, 0.67, 0.74)
-    ax.text(0.5, 0.80, "$[\\mathfrak{l},\\mathfrak{s}]\\subset\\mathfrak{s}$: twisted action\n$-2\\,\\sigma_{\\rm LL}$, twist $\\Theta_{\\rm LL}=-2$ (L-3)", ha="center", va="center", fontsize=6.9, color=INK2)
+    ax.text(0.5, 0.80, "$[\\mathfrak{l}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]\\subset\\mathfrak{s}_{\\rm LL}$: twisted action\n$-2\\,W_{\\rm LL}$, twist charge $\\Theta_{\\rm LL}=-2$ (L-3)", ha="center", va="center", fontsize=6.9, color=INK2)
     arrow(ax, 0.67, 0.60, 0.33, 0.60)
-    ax.text(0.5, 0.54, "$[\\mathfrak{s},\\mathfrak{s}]=\\mathfrak{l}$: spinor charges\nclose into Lorentz (L-4)", ha="center", va="center", fontsize=6.9, color=INK2)
+    ax.text(0.5, 0.54, "$[\\mathfrak{s}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]=\\mathfrak{l}_{\\rm LL}$: spinor charges\nclose into Lorentz (L-4)", ha="center", va="center", fontsize=6.9, color=INK2)
     ax.text(0.5, 0.425, "outer operators (they act on the loop by automorphisms; they are not elements of it)", ha="center", fontsize=7.4, color=INK2)
-    box(ax, 0.02, 0.04, 0.30, 0.33, "Lorentz automorphisms $D_{\\mathsf{q}}$\nspin 1 on $\\mathfrak{l}$, spin 1/2 on $\\mathfrak{s}$\n(a representation; L-7)\nrotation by $2\\pi$:\n$+1$ on $\\mathfrak{l}$, $-1$ on $\\mathfrak{s}$ (Q-5)", BLUE, fs=7.1)
-    box(ax, 0.35, 0.04, 0.30, 0.33, "isospin automorphisms $SU(2)_{\\rm v}$\ncharge $Q_{\\rm LL}=T^3$ (L-9, Q-1, Q-2)\nas an element of the\nalgebra: excluded\n(G-11, M-9)", GREEN, fs=7.1)
-    box(ax, 0.68, 0.04, 0.30, 0.33, "inversion element $\\mathsf{e}_4$\n$\\mathsf{e}_4\\,g\\,\\mathsf{e}_4^{-1}=g^{-1}$ on $SL(2,\\mathbb{C})$\nparity on $\\mathbb{R}^{1,3}_{\\rm LL}$ (C-1)\nimpossible in a group (C-3)", MAGENTA, fs=7.1)
+    box(ax, 0.02, 0.04, 0.30, 0.33, "Lorentz automorphisms $D_{\\rm LL}(\\mathbf{u})$\nspin 1 on $\\mathfrak{l}_{\\rm LL}$, spin 1/2 on $\\mathfrak{s}_{\\rm LL}$\n(a representation; L-7)\nrotation by $2\\pi$:\n$+1$ on $\\mathfrak{l}_{\\rm LL}$, $-1$ on $\\mathfrak{s}_{\\rm LL}$ (Q-5)", BLUE, fs=7.1)
+    box(ax, 0.35, 0.04, 0.30, 0.33, "isospin automorphisms $SU(2)_{\\rm v}$\ncharge $Q_{\\rm LL}=T^3_{\\rm LL}$ (L-9, Q-1, Q-2)\nas an element of the\nalgebra: excluded\n(G-11, M-9)", GREEN, fs=7.1)
+    box(ax, 0.68, 0.04, 0.30, 0.33, "inversion element $\\mathbf{e}_4$\n$\\mathbf{e}_4\\mathbf{g}\\,\\mathbf{e}_4^{-1}=\\mathbf{g}^{-1}$ on $SL(2,\\mathbb{C})$\nparity on $\\mathbb{R}^{1,3}_{\\rm LL}$ (C-1)\nimpossible in a group (C-3)", MAGENTA, fs=7.1)
     save(fig, "superloop")
 
 
 def fig_charges():
     """Quantum numbers of the sectors (data/sl_quantum_numbers.csv; checks Q-1 .. Q-6)."""
     rows = read_rows("sl_quantum_numbers.csv")
-    cols = [("real_dimension", "real dim."), ("charge_Q", "charge $Q_{\\rm LL}$"), ("isospin_T2", "isospin $T^2$"), ("Lorentz_Casimir_j(j+1)", "$j(j+1)$"),
-            ("Lorentz_type", "Lorentz type"), ("spinor_number_exp(2pi_J3)", "$e^{2\\pi D(J^3)}$"), ("twist_charge_Theta", "twist $\\Theta_{\\rm LL}$")]
-    secname = {0: "scalar $\\mathsf{e}_0$", 1: "Lorentz part $\\mathfrak{l}_{\\rm LL}$", 2: "spinor charges $\\mathfrak{s}_{\\rm LL}$"}
+    cols = [("real_dimension", "real\ndimension"), ("Q_LL", "charge\n$Q_{\\rm LL}$"), ("T_LL^2", "isospin\n$(T_{\\rm LL})^2$"), ("Cas_LL", "Lorentz\n${\\rm Cas}_{\\rm LL}$"),
+            ("Lorentz_type", "Lorentz\ntype"), ("spinor_number", "spinor number\n$e^{2\\pi D_{\\rm LL}(J^3_{\\rm LL})}$"), ("Theta_LL", "twist charge\n$\\Theta_{\\rm LL}$")]
+    secname = {0: "scalar $\\mathbf{e}_0$", 1: "Lorentz part $\\mathfrak{l}_{\\rm LL}$", 2: "spinor charges $\\mathfrak{s}_{\\rm LL}$"}
     seccol = {0: "#f2f2f0", 1: LIGHT[BLUE], 2: LIGHT[ORANGE]}
-    fig, ax = plt.subplots(figsize=(7.0, 1.55))
+    fig, ax = plt.subplots(figsize=(7.0, 1.75))
     ax.axis("off")
     ncol = len(cols) + 1
     widths = [0.19, 0.08, 0.16, 0.09, 0.08, 0.11, 0.12, 0.16]
     xs = np.cumsum([0] + widths)
     ax.set_xlim(0, xs[-1])
-    ax.set_ylim(0, 4)
+    ax.set_ylim(0, 4.4)
     hdr = ["sector"] + [c[1] for c in cols]
     for k in range(ncol):
-        ax.text((xs[k] + xs[k + 1]) / 2, 3.5, hdr[k], ha="center", va="center", fontsize=7.6, fontweight="bold")
+        ax.text((xs[k] + xs[k + 1]) / 2, 3.7, hdr[k], ha="center", va="center", fontsize=7.4, fontweight="bold", linespacing=1.25)
     for i, r in enumerate(rows):
         y = 2.5 - i
         ax.add_patch(plt.Rectangle((0, y - 0.45), xs[-1], 0.9, fc=seccol[i], ec="white"))
         vals = [secname[i]] + [r[c[0]] for c in cols]
         for k in range(ncol):
-            v = vals[k].replace("+1/2 (x2), -1/2 (x2)", "$\\pm1/2$ (2 each)").replace("outside m", "(not in $\\mathfrak{m}_{\\rm LL}$)")
+            v = vals[k].replace("+1/2 twice, -1/2 twice", "$\\pm1/2$ (2 each)").replace("outside m_LL", "(not in $\\mathfrak{m}_{\\rm LL}$)")
             ax.text((xs[k] + xs[k + 1]) / 2, y, v, ha="center", va="center", fontsize=7.4)
     save(fig, "charges")
 
 
 def fig_classification():
     """The Lie and Malcev classification of the covariant families (data/sl_groebner_checks.txt,
-    data/sl_malcev_checks.txt): what the spinor-charge bracket [s, s] can contain."""
+    data/sl_malcev_checks.txt): what the bracket [s_LL, s_LL] of two spinor charges can contain."""
     fig, ax = plt.subplots(figsize=(7.0, 3.0))
     ax.axis("off")
     ax.set_xlim(0, 1)
     ax.set_ylim(0.08, 1)
     colx = [0.18, 0.455, 0.73]
-    heads = ["$F_{\\rm A}$: $\\mathfrak{so}(3,1)+\\mathfrak{s}$", "$F_{\\rm B}$: $+$ translations (flat or curved)", "$F_{\\rm C}$: $+$ isospin $\\mathfrak{su}(2)$"]
+    heads = ["$\\mathcal{F}^{\\rm A}_{\\rm LL}$: $\\mathfrak{l}_{\\rm LL}+\\mathfrak{s}_{\\rm LL}$", "$\\mathcal{F}^{\\rm B}_{\\rm LL}$: $+$ translations $\\mathfrak{p}_{\\rm LL}$", "$\\mathcal{F}^{\\rm C}_{\\rm LL}$: $+$ isospin $\\mathfrak{su}(2)$"]
     for x, h in zip(colx, heads):
         ax.text(x + 0.125, 0.95, h, ha="center", va="center", fontsize=7.4, fontweight="bold")
     rowsy = [0.62, 0.26]
-    rlab = ["Lie algebras\n(Jacobi identity;\ntwist $\\lambda=1$)", "Malcev algebras\n(non-associative;\ntwist $\\lambda=-2$)"]
+    rlab = ["Lie algebras\n(Jacobi identity;\n$c^{\\rm tw}_{\\rm LL}=0$ or $1$)", "Malcev algebras\n(non-associative;\n$c^{\\rm tw}_{\\rm LL}=-2$)"]
     for y, t in zip(rowsy, rlab):
         ax.text(0.08, y + 0.13, t, ha="center", va="center", fontsize=7.2)
     cells = [
-        [("$[\\mathfrak{s},\\mathfrak{s}]=0$ only\n(G-1, M-3)", "#f2f2f0", INK2),
-         ("$[\\mathfrak{s},\\mathfrak{s}]\\subset$ translations,\nor de Sitter with $[P,\\mathfrak{s}]\\neq0$;\nnever a Lorentz part\n(G-5, G-6, M-5, M-6)", "#f2f2f0", INK2),
-         ("no Lorentz part in $[\\mathfrak{s},\\mathfrak{s}]$\n(G-10)", "#f2f2f0", INK2)],
-        [("$[\\mathfrak{s},\\mathfrak{s}]=\\mathfrak{l}$: the bi-octonion\nalgebra $\\mathfrak{m}_{\\rm LL}$, unique\n(G-3, G-4, M-1)", LIGHT[GREEN], GREEN),
-         ("only $[\\mathfrak{s},\\mathfrak{s}]=0$\n(abelian twisted module);\nLorentz part excluded\n(G-7, G-8, G-9, M-4, M-7)", LIGHT[ORANGE], ORANGE),
-         ("$\\mathfrak{m}_{\\rm LL}\\oplus\\mathfrak{su}(2)$ decoupled;\nisospin acting on $\\mathfrak{s}$\nexcluded\n(G-11, G-12, M-8, M-9)", LIGHT[YELLOW], YELLOW)],
+        [("$[\\mathfrak{s}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]=0$ only\n(G-1, M-3)", "#f2f2f0", INK2),
+         ("$[\\mathfrak{s}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]\\subset\\mathfrak{p}_{\\rm LL}$, or de Sitter\nwith $[\\mathfrak{p}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]\\neq0$;\nnever a Lorentz part\n(G-5, G-6, M-5, M-6)", "#f2f2f0", INK2),
+         ("no Lorentz part in\n$[\\mathfrak{s}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]$ (G-10)", "#f2f2f0", INK2)],
+        [("$[\\mathfrak{s}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]=\\mathfrak{l}_{\\rm LL}$: the\nbi-octonion algebra $\\mathfrak{m}_{\\rm LL}$,\nunique (G-3, G-4, M-1)", LIGHT[GREEN], GREEN),
+         ("only $[\\mathfrak{s}_{\\rm LL},\\mathfrak{s}_{\\rm LL}]=0$\n(abelian twisted module);\nLorentz part excluded\n(G-7, G-8, G-9, M-4, M-7)", LIGHT[ORANGE], ORANGE),
+         ("$\\mathfrak{m}_{\\rm LL}\\oplus\\mathfrak{su}(2)$ decoupled;\nisospin acting on $\\mathfrak{s}_{\\rm LL}$\nexcluded\n(G-11, G-12, M-8, M-9)", LIGHT[YELLOW], YELLOW)],
     ]
     for i, y in enumerate(rowsy):
         for j, x in enumerate(colx):
@@ -248,27 +248,27 @@ def fig_classification():
             p = FancyBboxPatch((x, y), 0.25, 0.26, boxstyle="round,pad=0.008,rounding_size=0.015", fc=fc, ec=ec, lw=1.0)
             ax.add_patch(p)
             ax.text(x + 0.125, y + 0.13, t, ha="center", va="center", fontsize=6.6, linespacing=1.3)
-    ax.text(0.5, 0.13, "twist $\\lambda$: $[\\mathsf{q},\\mathsf{b}]=\\lambda\\,\\sigma_{\\rm LL}(\\mathsf{q})\\,\\mathsf{b}$; the Malcev identity allows $\\lambda=0,1,-2$ only (Elduque's module; G-3, M-2)", ha="center", fontsize=7.4, color=INK2)
+    ax.text(0.5, 0.13, "twist: $[\\mathbf{u},\\mathbf{b}\\,\\mathbf{e}_4]=c^{\\rm tw}_{\\rm LL}\\,(W_{\\rm LL}(\\mathbf{u})\\mathbf{b})\\,\\mathbf{e}_4$; the Malcev identity allows $c^{\\rm tw}_{\\rm LL}=0,1,-2$ only (Elduque's module; G-3, M-2)", ha="center", fontsize=7.4, color=INK2)
     save(fig, "classification")
 
 
 def fig_manifolds():
     """The manifolds that carry the super-loop (data/sl_manifolds.csv; checks N-1 .. N-9)."""
-    fig, ax = plt.subplots(figsize=(7.0, 3.6))
+    fig, ax = plt.subplots(figsize=(7.0, 3.8))
     ax.axis("off")
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     box(ax, 0.36, 0.78, 0.28, 0.17, "bi-octonions $\\mathbb{B}_{\\rm LL}=\\mathbb{C}^8$\ncomplex norm $N_{\\rm LL}$", BLUE)
-    box(ax, 0.02, 0.40, 0.29, 0.25, "7+1 manifold $\\mathbb{R}^{1,7}_{\\rm LL}$\n(Hermitian, $x^\\dagger=x$; N-1)\nconjugations generate $\\mathfrak{so}(1,7)$\n(dim 28; N-4)", AQUA)
-    box(ax, 0.355, 0.40, 0.29, 0.25, "4+4 manifold $\\mathbb{O}_{\\rm s}=\\mathbb{H}+(i\\mathbb{H})\\mathsf{e}_4$\n(split octonions; N-2)\nunit loop $S^{3,4}\\supset SL(2,\\mathbb{R})$ (N-9)\nleft mult. $\\to\\mathfrak{so}(4,4)$ (N-6)", ORANGE)
-    box(ax, 0.69, 0.40, 0.29, 0.25, "super-loop manifold $N_{\\rm LL}=1$\ncomplex 7-sphere, real dim. 14\n$=Spin(7,\\mathbb{C})/G_2(\\mathbb{C})$; frames\n$[X_x,X_y]=X_{[x,y]}+2$ assoc. (N-7)", MAGENTA)
+    box(ax, 0.02, 0.37, 0.29, 0.30, "7+1 manifold $\\mathbb{R}^{1,7}_{\\rm LL}$\n(Hermitian, $\\mathbf{x}^\\dagger=\\mathbf{x}$; N-1)\nconjugations generate $\\mathfrak{so}(1,7)$\n(dim 28; N-4)", AQUA)
+    box(ax, 0.355, 0.37, 0.29, 0.30, "4+4 manifold $\\mathbb{O}^{\\rm s}_{\\rm LL}=\\mathbb{H}+(i\\mathbb{H})\\mathbf{e}_4$\n(split octonions; N-2)\nunit loop $S^{3,4}\\supset SL(2,\\mathbb{R})$ (N-9)\nleft mult. $\\to\\mathfrak{so}(4,4)$ (N-6)", ORANGE)
+    box(ax, 0.69, 0.37, 0.29, 0.30, "super-loop $\\mathbb{L}_{\\rm LL}$: $N_{\\rm LL}(\\mathbf{w})=1$\ncomplex 7-sphere, real dim. 14,\n$=Spin(7,\\mathbb{C})/G_2(\\mathbb{C})$; frame fields\n$[X^{\\rm LL}_{\\mathbf{x}},X^{\\rm LL}_{\\mathbf{y}}](\\mathbf{w})=$\n$\\mathbf{w}[\\mathbf{x},\\mathbf{y}]+2[\\mathbf{w},\\mathbf{x},\\mathbf{y}]$ (N-7)", MAGENTA, fs=6.7)
     box(ax, 0.02, 0.02, 0.29, 0.25, "$\\mathbb{R}^{1,3}_{\\rm LL}\\subset\\mathbb{R}^{1,7}_{\\rm LL}$\n(Hermitian bi-quaternions);\nconjugation by $SL(2,\\mathbb{C})\\subset\\mathbb{L}_{\\rm LL}$:\nclosure of dimension 9 (N-5)", AQUA, fs=7.2)
     box(ax, 0.355, 0.02, 0.29, 0.25, "also 4+4: the spinor charges\n$\\mathfrak{s}_{\\rm LL}$ with ${\\rm Re}\\,N_{\\rm LL}$ and ${\\rm Im}\\,N_{\\rm LL}$,\ntwo metrics of signature (4,4)\n(N-3)", ORANGE, fs=7.2)
     box(ax, 0.69, 0.02, 0.29, 0.25, "real form $S^7$ (unit octonions)\n$=Spin(7)/G_2$: 21 $-$ 14 $=$ 7 (N-8)\nleft mult. $\\to\\mathfrak{so}(8)$ (N-6)", MAGENTA)
     for x in (0.165, 0.50, 0.835):
-        arrow(ax, 0.5, 0.78, x, 0.65)
-    arrow(ax, 0.165, 0.40, 0.165, 0.27)
-    arrow(ax, 0.835, 0.40, 0.835, 0.27)
+        arrow(ax, 0.5, 0.78, x, 0.675)
+    arrow(ax, 0.165, 0.365, 0.165, 0.27)
+    arrow(ax, 0.835, 0.365, 0.835, 0.27)
     save(fig, "manifolds")
 
 
@@ -281,11 +281,11 @@ def fig_superfluid():
     fig, axs = plt.subplots(2, 2, figsize=(7.0, 5.0))
     ax = axs[0, 0]
     ser = [("E_minus_polar", "polar $E^-_{\\rm LL}$"), ("E_plus_polar", "polar $E^+_{\\rm LL}$"), ("E_minus_charged_gapped", "charged, gapped branch"),
-           ("E_normal", "normal $|\\varepsilon_{\\rm LL}-\\mu_{\\rm LL}|$"), ("E_minus_pseudo", "pseudoscalar $E^-$")]
+           ("E_normal", "normal $|\\varepsilon_{\\rm LL}-\\mu_{\\rm LL}|$"), ("Etilde_minus", "pseudoscalar $\\tilde E^-_{\\rm LL}$")]
     for k, (c, lab) in enumerate(ser):
         col, ls, mk = STYLES[k]
         ax.plot(d["q"], d[c], color=col, ls=ls, lw=1.4, label=lab)
-    ax.set_xlabel("$|\\vec q\\,|/\\Lambda_{\\rm LL}$")
+    ax.set_xlabel("$q_{\\rm LL}/\\Lambda_{\\rm LL}$")
     ax.set_ylabel("energy$/\\Lambda_{\\rm LL}$")
     ax.set_title("quasi-particles ($G_{\\rm LL}=12$, $\\mu_{\\rm LL}=0.5$, $m_{\\rm LL}=0.2$)")
     ax.set_ylim(0, 1.0)
@@ -304,7 +304,7 @@ def fig_superfluid():
     slope = -math.pi ** 2 / (kf * mu0)
     x0, y0 = 1.0 / g["G"][0], math.log(g["Delta"][0])
     xs = np.array([1.0 / g["G"][-1], x0])
-    ax.plot(xs, y0 + slope * (xs - x0), color=ORANGE, ls="--", label="BCS slope $-\\pi^2/(k_{\\rm F}\\mu_{\\rm LL})$")
+    ax.plot(xs, y0 + slope * (xs - x0), color=ORANGE, ls="--", label="BCS slope $-\\pi^2/(k^{\\rm F}_{\\rm LL}\\mu_{\\rm LL})$")
     ax.set_xlabel("$1/G_{\\rm LL}$ (units $\\Lambda_{\\rm LL}^2$)")
     ax.set_ylabel("$\\ln(\\Delta_{\\rm LL}/\\Lambda_{\\rm LL})$")
     ax.set_title("weak coupling: a Fermi surface always pairs")
@@ -313,8 +313,8 @@ def fig_superfluid():
     ax = axs[1, 1]
     om0 = z["Omega_min"][0]
     ax.plot(z["zeta"], z["Omega_min"] / om0, color=BLUE, marker="o", ms=3.5)
-    ax.set_xlabel("non-unitarity $\\zeta_{\\rm LL}=|\\vec d\\times\\vec d^{\\,*}|/|\\vec d\\,|^2$")
-    ax.set_ylabel("$\\Omega^{\\min}_{\\rm LL}(\\zeta)/\\Omega^{\\min}_{\\rm LL}(0)$")
+    ax.set_xlabel("non-unitarity $\\zeta_{\\rm LL}=|\\vec d_{\\rm LL}\\times\\vec d^{\\,*}_{\\rm LL}|/|\\vec d_{\\rm LL}|^2$")
+    ax.set_ylabel("min of $\\Omega_{\\rm LL}$ at fixed $\\zeta_{\\rm LL}$, rel. to $\\zeta_{\\rm LL}=0$")
     ax.set_title("the unitary (polar) state wins (S-6)")
     ax.set_ylim(0.45, 1.03)
     ax.annotate("fully charged state:\nhalf the condensation energy", xy=(1.0, z["Omega_min"][-1] / om0), xytext=(0.35, 0.58), fontsize=7, arrowprops=dict(arrowstyle="-|>", color=INK2, lw=0.8))
@@ -333,18 +333,18 @@ def fig_renorm():
     ax = axs[0]
     k = 0
     for theory, tname in [(0, "contact"), (1, "Yukawa")]:
-        for dd in [4, 8]:
-            sel = (pc["theory"] == theory) & (pc["d"] == dd)
+        for dd in [3, 7]:
+            sel = (pc["theory"] == theory) & (pc["D"] == dd)
             col, ls, mk = STYLES[k]
-            ax.plot(pc["V"][sel], pc["omega"][sel], color=col, ls=ls, marker=mk, label="%s, $d=%d$" % (tname, dd))
+            ax.plot(pc["nvert"][sel], pc["deg"][sel], color=col, ls=ls, marker=mk, label="%s, $D=%d$" % (tname, dd))
             k += 1
-    ax.set_xlabel("number of vertices")
-    ax.set_ylabel("superficial degree $\\omega$")
+    ax.set_xlabel("number of vertices $n^{\\rm v}_{\\rm LL}$")
+    ax.set_ylabel("superficial degree ${\\rm deg}_{\\rm LL}$")
     ax.set_title("power counting (R-2)")
     ax.legend(fontsize=6.4, loc="upper left")
     panel_label(ax, "(a)")
     ax = axs[1]
-    ax.semilogx(cr["Lambda"], cr["G_Lambda2_over_2pi2"], color=BLUE, marker="o", ms=3.5)
+    ax.semilogx(cr["Lambda"], cr["G_times_Lambda2_over_2pi2"], color=BLUE, marker="o", ms=3.5)
     ax.axhline(1.0, color=INK2, lw=0.8, ls=":")
     ax.set_xlabel("cutoff $\\Lambda_{\\rm LL}$ ($\\mu_{\\rm LL}=0.5$, $\\Delta_{\\rm LL}=0.05$)")
     ax.set_ylabel("$G_{\\rm LL}\\Lambda_{\\rm LL}^2/(2\\pi^2)$")
@@ -352,10 +352,10 @@ def fig_renorm():
     panel_label(ax, "(b)")
     ax = axs[2]
     lnL = np.log(yb["Lambda"])
-    ax.plot(lnL, yb["Jp_minus_J0"] * 16 * math.pi ** 2, color=BLUE, marker="o", ms=3.5, label="$16\\pi^2[J(p)-J(0)]$")
-    ax.plot(lnL, yb["Jp_minus_J0"][0] * 16 * math.pi ** 2 - (lnL - lnL[0]), color=ORANGE, ls="--", label="slope $-p^2$")
+    ax.plot(lnL, yb["Ibub_pE_minus_Ibub_0"] * 16 * math.pi ** 2, color=BLUE, marker="o", ms=3.5, label="computed")
+    ax.plot(lnL, yb["Ibub_pE_minus_Ibub_0"][0] * 16 * math.pi ** 2 - (lnL - lnL[0]), color=ORANGE, ls="--", label="slope $-(p^{\\rm E}_{\\rm LL})^2$")
     ax.set_xlabel("$\\ln\\Lambda_{\\rm LL}$")
-    ax.set_ylabel("$16\\pi^2\\,[J(p)-J(0)]$ ($p=1$)")
+    ax.set_ylabel("$16\\pi^2[I^{\\rm bub}_{\\rm LL}(p^{\\rm E}_{\\rm LL})-I^{\\rm bub}_{\\rm LL}(0)]$\nat $p^{\\rm E}_{\\rm LL}=1$", fontsize=7.4, linespacing=1.2)
     ax.set_title("Yukawa bubble (R-4)")
     ax.legend(fontsize=6.4, loc="lower left")
     panel_label(ax, "(c)")

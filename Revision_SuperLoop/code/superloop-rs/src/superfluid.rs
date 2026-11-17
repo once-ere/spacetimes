@@ -1,20 +1,22 @@
-//! Command `superfluid`: the spin-zero spinor superfluid of the super-loop's spinor charges.
+//! Command `superfluid`: the spin-zero spinor superfluid of the spinor charges of the super-loop.
 //!
-//! Field content.  The spinor charges s = (C (x) H) l of the super-loop are a Weyl spinor that is
-//! an isospin doublet; with the complex-conjugate super-loop (the other chirality) they form a
-//! Dirac isodoublet Psi_(alpha a), alpha = 1..4 (Dirac, chiral basis), a = 1,2 (isospin), with
-//! electric charges Q = T3 = +1/2, -1/2.  Check S-0 derives the Dirac matrices, the Lorentz and
-//! the isospin generators of this field from the bi-octonion product.
+//! Field content.  The spinor charges s_LL = (C (x) H) e4 of the super-loop are a Weyl spinor that
+//! is an isospin doublet; with the complex-conjugate super-loop (the other chirality) they form a
+//! Dirac isodoublet Psi_LL (8 components: Dirac (x) isospin, chiral basis), with the electric
+//! charges Q_LL = T_LL^3 = +1/2, -1/2.  Check S-0 derives the Dirac matrices, the Lorentz and the
+//! isospin generators of this field from the bi-octonion product.
 //!
 //! Hamiltonian (units: momentum cutoff Lambda = 1 unless stated):
-//!   H = sum_q Psi^dag (h(q) - mu) Psi - (G/4) sum_k Pi_k^dag Pi_k,
-//!   h(q) = alpha.q + beta m (x) 1_iso,   Pi_k = Psi^T K_k Psi,
-//! with the spin-zero (Lorentz-scalar) pair channels K_k = C gamma5 (x) eps tau_k (scalar, 0+)
-//! and K'_k = C (x) eps tau_k (pseudoscalar, 0-), k = 1,2,3 (an isospin triplet: Theorem S1).
-//! Mean field: Delta_k = -(G/2) <Pi_k>, P = sum_k Delta_k K_k^dag, Nambu spinor (Psi(q), Psi^*(-q)),
-//!   H_BdG = [[h(q) - mu, P], [P^dag, -(h(-q) - mu)^T]],
-//!   Omega = sum_k |Delta_k|^2 / G - (1/2) int d^3q/(2 pi)^3 sum_(E_n > 0) E_n(q)   (|q| < Lambda).
-//! The order parameter is the isospin vector d = (Delta_1, Delta_2, Delta_3) in C^3.
+//!   H = sum_q Psi_LL^dag (h(q) - mu) Psi_LL - (G/4) sum_iota Pi_iota^dag Pi_iota,
+//!   h(q) = sum_j alpha_LL^j q^j + beta_LL m (x) 1_iso,   Pi_iota = Psi_LL^T Kch_iota Psi_LL,
+//! with the spin-zero (Lorentz-scalar) pair channels Kch_iota = C_LL gamma_ch (x) eps2 tau_iota
+//! (scalar, 0+) and Kch'_iota = C_LL (x) eps2 tau_iota (pseudoscalar, 0-), iota = 1,2,3 (an isospin
+//! triplet: Theorem S1); eps2 = i sigma_2 = [[0,1],[-1,0]] on the isospin index.
+//! Mean field: d_iota = -(G/2) <Pi_iota>, Ppair = sum_iota d_iota Kch_iota^dag, Nambu spinor
+//! (Psi_LL(q), Psi_LL^*(-q)),
+//!   H_BdG = [[h(q) - mu, Ppair], [Ppair^dag, -(h(-q) - mu)^T]],
+//!   Omega = sum_iota |d_iota|^2 / G - (1/2) int d^3q/(2 pi)^3 sum_(positive eigenvalues) (|q| < Lambda).
+//! The order parameter is the isospin vector dvec = (d_1, d_2, d_3) in C^3.
 //! Data: sl_sf_dispersion.csv, sl_sf_gap_vs_coupling.csv, sl_sf_omega_zeta.csv,
 //!       sl_sf_states.csv, sl_sf_channels.csv; report sl_superfluid_checks.txt.
 
@@ -88,11 +90,11 @@ fn close(a: &CMat, b: &CMat, tol: f64) -> bool {
 }
 
 pub struct Dirac {
-    pub sig: [CMat; 4], // 1, sigma1, sigma2, sigma3
-    pub g: [CMat; 4],   // gamma^0..gamma^3 (chiral basis)
-    pub g5: CMat,
-    pub cc: CMat,       // charge conjugation C = i gamma^2 gamma^0
-    pub eps: CMat,      // i sigma2
+    pub sig: [CMat; 4], // 1, sigma_1, sigma_2, sigma_3 (Pauli matrices)
+    pub g: [CMat; 4],   // gamma_LL^0..gamma_LL^3 (chiral basis)
+    pub g5: CMat,       // gamma_ch = i gamma_LL^0 gamma_LL^1 gamma_LL^2 gamma_LL^3
+    pub cc: CMat,       // charge conjugation C_LL = i gamma_LL^2 gamma_LL^0
+    pub eps: CMat,      // eps2 = i sigma_2
 }
 
 impl Dirac {
@@ -117,7 +119,7 @@ impl Dirac {
     }
 }
 
-/// The pair matrices on Dirac (x) isospin (8x8): scalar K_k = C g5 (x) eps tau_k, pseudoscalar K'_k = C (x) eps tau_k.
+/// The pair matrices on Dirac (x) isospin (8x8): scalar Kch_iota = C_LL gamma_ch (x) eps2 tau_iota, pseudoscalar Kch'_iota = C_LL (x) eps2 tau_iota.
 pub fn channels(d: &Dirac) -> (Vec<CMat>, Vec<CMat>) {
     let cg5 = d.cc.mul(&d.g5);
     let mut ks = Vec::new();
@@ -134,14 +136,14 @@ pub fn channels(d: &Dirac) -> (Vec<CMat>, Vec<CMat>) {
 fn hdirac(d: &Dirac, q: &[f64; 3], m: f64, mu: f64) -> CMat {
     let mut h = scal(&d.g[0], c(m, 0.0));
     for k in 0..3 {
-        // alpha_k = gamma^0 gamma^k
+        // alpha_LL^j = gamma_LL^0 gamma_LL^j
         h = h.add(&scal(&d.g[0].mul(&d.g[k + 1]), c(q[k], 0.0)));
     }
     h = h.sub(&scal(&CMat::identity(4), c(mu, 0.0)));
     kron(&h, &CMat::identity(2))
 }
 
-/// BdG matrix (16x16) for pairing matrix P (8x8)
+/// BdG matrix (16x16) for the pairing block Ppair (8x8)
 fn bdg(d: &Dirac, q: &[f64; 3], m: f64, mu: f64, p: &CMat) -> CMat {
     let h = hdirac(d, q, m, mu);
     let mq = [-q[0], -q[1], -q[2]];
@@ -157,31 +159,31 @@ fn pairing(ks: &[CMat], dvec: &[C64; 3]) -> CMat {
     p
 }
 
-/// |d|^2 and zeta = |d x d^*| / |d|^2
+/// |dvec|^2 and zeta = |cross(dvec, dvec^*)| / |dvec|^2
 fn dnorm(dv: &[C64; 3]) -> (f64, f64) {
     let n2: f64 = dv.iter().map(|z| z.norm_sqr()).sum();
-    // w = d x d^*  (purely imaginary vector)
+    // cross(dvec, dvec^*)  (a purely imaginary vector)
     let dc = [dv[0].conj(), dv[1].conj(), dv[2].conj()];
     let w = [dv[1] * dc[2] - dv[2] * dc[1], dv[2] * dc[0] - dv[0] * dc[2], dv[0] * dc[1] - dv[1] * dc[0]];
     let wn = (w.iter().map(|z| z.norm_sqr()).sum::<f64>()).sqrt();
     (n2, if n2 > 0.0 { wn / n2 } else { 0.0 })
 }
 
-/// scalar (0+) channel spectrum: E^pm = sqrt((eps +- mu)^2 + Delta^2), eps = sqrt(q^2 + m^2)
+/// scalar (0+) channel spectrum: E^(+-) = sqrt((eps +- mu)^2 + Delta^2), eps = sqrt(q^2 + m^2)
 fn e_scalar(qn: f64, m: f64, mu: f64, gap2: f64) -> (f64, f64) {
     let eps = (qn * qn + m * m).sqrt();
     (((eps + mu).powi(2) + gap2).sqrt(), ((eps - mu).powi(2) + gap2).sqrt())
 }
 
 /// pseudoscalar (0-) channel spectrum:
-/// E^2 = q^2 + m^2 + mu^2 + Delta^2 +- 2 sqrt(mu^2 (q^2 + m^2) + m^2 Delta^2)
+/// Etilde^(+-)^2 = q^2 + m^2 + mu^2 + Delta^2 +- 2 sqrt(mu^2 (q^2 + m^2) + m^2 Delta^2)
 fn e_pseudo(qn: f64, m: f64, mu: f64, gap2: f64) -> (f64, f64) {
     let a = qn * qn + m * m + mu * mu + gap2;
     let b = 2.0 * (mu * mu * (qn * qn + m * m) + m * m * gap2).sqrt();
     ((a + b).sqrt(), (a - b).max(0.0).sqrt())
 }
 
-/// radial quadrature on [0, lam] with a break at the Fermi momentum
+/// radial quadrature on [0, Lambda] with breaks around the Fermi momentum kF
 struct Radial {
     x: Vec<f64>,
     w: Vec<f64>,
@@ -223,8 +225,9 @@ impl Radial {
     }
 }
 
-/// Omega for a state with gaps squared g1, g2 (each of multiplicity 2 per branch; unitary: g1 = g2)
-/// in the scalar channel: Omega = |d|^2/G - (1/2) int [2 (E1+ + E1-) + 2 (E2+ + E2-)]
+/// Omega for a state with the squared gaps Delta_+^2 = |dvec|^2 (1 + zeta), Delta_-^2 = |dvec|^2 (1 - zeta)
+/// in the scalar channel (each energy twice): Omega = |dvec|^2/G - int [E^+(Delta_+) + E^-(Delta_+) + E^+(Delta_-) + E^-(Delta_-)]
+/// (measured from the normal state)
 fn omega_scalar(rad: &Radial, g: f64, m: f64, mu: f64, d2: f64, zeta: f64) -> f64 {
     let g1 = d2 * (1.0 + zeta);
     let g2 = d2 * (1.0 - zeta);
@@ -246,7 +249,7 @@ fn omega_pseudo(rad: &Radial, g: f64, m: f64, mu: f64, d2: f64) -> f64 {
     d2 / g - i
 }
 
-/// the gap of the unitary scalar state: solves 1/G = int (1/E+ + 1/E-)
+/// the gap of the unitary scalar state: solves 1/G = int (1/E^+ + 1/E^-)
 fn gap_scalar(rad: &Radial, g: f64, m: f64, mu: f64) -> Option<f64> {
     let f = |dl: f64| -> f64 {
         1.0 / g - rad.int3(|q| {
@@ -266,13 +269,14 @@ pub fn run() -> bool {
     let tol = 1e-12;
 
     // ---------------- S-0: the field content from the bi-octonions ----------------
-    // quaternion -> 2x2 matrix: 1 -> I, i_q -> -i sigma1, j_q -> -i sigma2, k_q -> -i sigma3
+    // quaternion -> 2x2 matrix M_LL: 1 -> unit matrix, e_j -> -i sigma_j
     let mq = |k: usize| -> CMat { if k == 0 { d.sig[0].clone() } else { scal(&d.sig[k], c(0.0, -1.0)) } };
     // isomorphism check: the quaternion products are reproduced
     let mut iso_ok = close(&mq(1).mul(&mq(2)), &mq(3), tol) && close(&mq(2).mul(&mq(3)), &mq(1), tol) && close(&mq(1).mul(&mq(1)), &scal(&mq(0), c(-1.0, 0.0)), tol);
-    // Lorentz derivation on s: b -> -b q; isospin: b -> t b.  psi'_a = eps^-1 (row a of B)^T.
-    // Build the 4x4 matrices on the basis psi'_(a alpha) (index 2a + alpha).
-    let eps_inv = d.eps.dagger(); // eps is real orthogonal: eps^-1 = eps^T = eps^dag
+    // Lorentz derivation on s_LL: bS -> -bS uL; isospin: bS -> tI bS.  psi'_LL = eps2^-1 M_LL(bS)^T:
+    // column r of psi'_LL is eps2^-1 (row r of M_LL(bS))^T.  The 4x4 matrices act on the four entries of psi'_LL
+    // (position 2 r + s for column r and row s, r, s = 0, 1).
+    let eps_inv = d.eps.dagger(); // eps2 is real orthogonal: eps2^-1 = eps2^T = eps2^dag
     let to_psi = |bm: &CMat| -> Vec<C64> {
         let mut v = vec![C64::ZERO; 4];
         for a in 0..2 {
@@ -287,7 +291,7 @@ pub fn run() -> bool {
         v
     };
     let from_psi = |v: &[C64]| -> CMat {
-        // invert: row a of B (transposed) = eps psi'_a
+        // invert: (row r of M_LL(bS))^T = eps2 (column r of psi'_LL)
         let mut bm = CMat::zeros(2);
         for a in 0..2 {
             for be in 0..2 {
@@ -312,23 +316,23 @@ pub fn run() -> bool {
         }
         m
     };
-    // generators: D(J_k) = D'_(e_k)/2 : b -> -b e_k / 2 ; D(K_k) = D'_(i e_k)/2 : b -> -b (i e_k)/2
+    // generators: D_LL(J_LL^j): bS -> -bS e_j/2 ; D_LL(K_LL^j): bS -> -bS (i e_j)/2 ; Dv_LL(e_iota/2): bS -> (e_iota/2) bS
     let dj: Vec<CMat> = (1..4).map(|k| op4(&|b: &CMat| scal(&b.mul(&mq(k)), c(-0.5, 0.0)))).collect();
     let dk: Vec<CMat> = (1..4).map(|k| op4(&|b: &CMat| scal(&b.mul(&mq(k)), c(0.0, -0.5)))).collect();
     let dv: Vec<CMat> = (1..4).map(|k| op4(&|b: &CMat| scal(&mq(k).mul(b), c(0.5, 0.0)))).collect();
-    // expected: on psi'_(a alpha) = iso (x) Weyl:  D(J_k) = 1 (x) (-i sigma_k/2), D(K_k) = 1 (x) (sigma_k/2),
-    //           isospin D^v_k = (-i sigma_k/2) (x) 1, i.e. T_k = i D^v_k = sigma_k/2 (x) 1
+    // expected on psi'_LL = isospin (x) Weyl:  D_LL(J_LL^j) = 1 (x) (-i sigma_j/2), D_LL(K_LL^j) = 1 (x) (sigma_j/2),
+    //           Dv_LL(e_iota/2) = (-i tau_iota/2) (x) 1, i.e. T_LL^iota = i Dv_LL(e_iota/2) = (tau_iota/2) (x) 1
     for k in 0..3 {
         iso_ok &= close(&dj[k], &kron(&d.sig[0], &scal(&d.sig[k + 1], c(0.0, -0.5))), tol);
         iso_ok &= close(&dk[k], &kron(&d.sig[0], &scal(&d.sig[k + 1], c(0.5, 0.0))), tol);
         iso_ok &= close(&dv[k], &kron(&scal(&d.sig[k + 1], c(0.0, -0.5)), &d.sig[0]), tol);
     }
-    // Dirac intertwining: chiral blocks upper = conjugate super-loop (D(K) = -sigma/2), lower = s (D(K) = +sigma/2);
-    // the vector action W from the loop's nested conjugation on Hermitian bi-quaternions:
-    // rotation J_k: x -> [e_k/2, x]; boost K_k: x -> (i/2){e_k, x}; components x = x0 + i x^j e_j.
+    // Dirac intertwining: chiral blocks upper = conjugate super-loop (D_LL(K_LL^j) = -sigma_j/2), lower = s_LL (+sigma_j/2);
+    // the vector action V_LL from the loop's conjugations on the Hermitian bi-quaternions:
+    // rotation J_LL^j: x -> [e_j/2, x]; boost K_LL^j: x -> (i/2)(e_j x + x e_j); x = x_LL^0 + i sum_j x_LL^j e_j.
     let wrot = |k: usize| -> [[f64; 4]; 4] {
         let mut w = [[0.0; 4]; 4];
-        // d x^i / d theta = eps_kij x^j  (rotation about k)
+        // d x_LL^i / d theta = eps3_(k j i) x_LL^j  (rotation about the axis k)
         let e = |a: usize, b: usize, cc: usize| -> f64 {
             let p = [(1, 2, 3), (2, 3, 1), (3, 1, 2)];
             let n = [(2, 1, 3), (3, 2, 1), (1, 3, 2)];
@@ -366,7 +370,7 @@ pub fn run() -> bool {
             }
         }
     }
-    // the vector action from the bi-octonion nested conjugation reproduces wrot/wboost
+    // the vector action from the conjugations of B_LL reproduces wrot/wboost
     let mut vec_ok = true;
     {
         use crate::bioct::*;
@@ -390,11 +394,11 @@ pub fn run() -> bool {
             }
         }
     }
-    ck.add("S-0", "field content from the bi-octonions: with the isomorphism C (x) H = M_2(C) (i_q -> -i sigma1, ...) the spinor charges b in s become psi'_(a alpha) = eps^-1 (row a of b)^T, on which the Lorentz derivations are D(J_k) = -i sigma_k/2, D(K_k) = +sigma_k/2 and the isospin derivations give T_k = sigma_k/2 (x) 1; the chiral Dirac matrices intertwine these spinor generators with the vector action of the loop's nested conjugation on Minkowski space (all 24 relations [gamma^mu, D] = W^mu_nu gamma^nu), the spinor charges being the gamma5 = +1 block: Psi = Dirac (x) isodoublet", iso_ok && int_ok && vec_ok, String::new());
+    ck.add("S-0", "field content from the bi-octonions: with the isomorphism C (x) H = M_2(C), e_j -> -i sigma_j (j = 1,2,3), the spinor charge bS, as the 2x2 matrix M_LL(bS), gives the Weyl isodoublet psi'_LL = eps2^-1 M_LL(bS)^T, whose column 1 (isospin up) and column 2 (isospin down) are Weyl spinors; on it the Lorentz derivations are D_LL(J_LL^j) = -i sigma_j/2, D_LL(K_LL^j) = +sigma_j/2 (on each column), and the isospin generators are T_LL^iota = tau_iota/2 (mixing the columns); the chiral Dirac matrices gamma_LL^p (p = 0..3) intertwine these spinor generators with the vector action V_LL of the loop's conjugations on R^(1,3)_LL (all 24 relations [gamma_LL^p, D] = sum_p' V_LL^p_p' gamma_LL^p'), the spinor charges being the gamma_ch = +1 block: Psi_LL = Dirac (x) isodoublet", iso_ok && int_ok && vec_ok, String::new());
 
     // ---------------- S-1: the spin-zero channels ----------------
     let (ks, kp) = channels(&d);
-    // Lorentz generators on Dirac (x) iso and isospin generators
+    // Lorentz generators on Dirac (x) isospin, and the isospin generators Dv_LL(e_iota/2)
     let mut lor: Vec<CMat> = Vec::new();
     for k in 1..4 {
         let djl = scal(&d.sig[k], c(0.0, -0.5));
@@ -409,8 +413,8 @@ pub fn run() -> bool {
     for kk in ks.iter().chain(kp.iter()) {
         ch_ok &= antisym(kk) && invariant(kk, &lor) && unitary(kk);
     }
-    // the space of Lorentz-invariant antisymmetric bilinears: solve X^T K + K X = 0, K^T = -K (complex 8x8)
-    // dimension by real linear algebra (double precision SVD-free: count via Gram-Schmidt on vectorized constraints)
+    // the space of Lorentz-invariant antisymmetric pair matrices: solve X^T K + K X = 0, K^T = -K (complex 8x8)
+    // dimension by real linear algebra (rank of the Gram matrix of the vectorized constraints)
     let mut basis: Vec<Vec<f64>> = Vec::new();
     for i in 0..8 {
         for j in (i + 1)..8 {
@@ -431,7 +435,7 @@ pub fn run() -> bool {
             }
         }
     }
-    // nullity of the linear map K -> constraints on the 56-dim real space of antisymmetric K
+    // nullity of the linear map K -> constraints on the real 56-dimensional space of antisymmetric K
     let rankf = |rows: &Vec<Vec<f64>>| -> usize {
         // rank of the matrix whose COLUMNS are the vectors: Gram matrix eigenvalues
         let n = rows.len();
@@ -447,10 +451,10 @@ pub fn run() -> bool {
         ev.iter().filter(|&&x| x > 1e-10 * mx).count()
     };
     let nullity = basis.len() - rankf(&basis);
-    // isospin content: the isospin Casimir on the channel space is 2 (triplet) for every K_k
+    // isospin content: the isospin Casimir on the channel space is 2 (triplet) for every Kch_iota
     let mut trip = true;
     for kk in ks.iter().chain(kp.iter()) {
-        // action of isospin on a bilinear: K -> X^T K + K X ; Casimir -sum (ad)^2 K = 2 K
+        // action of isospin on a pair matrix: K -> X^T K + K X ; Casimir -sum (ad)^2 K = 2 K
         let mut acc = CMat::zeros(8);
         for x in &isos {
             let a1 = x.transpose().mul(kk).add(&kk.mul(x));
@@ -459,12 +463,12 @@ pub fn run() -> bool {
         }
         trip &= close(&acc, &scal(kk, c(2.0, 0.0)), 1e-11);
     }
-    ck.add("S-1", "Theorem S1 (spin-zero channels): the antisymmetric, Lorentz-invariant pair matrices on Dirac (x) isospin form a complex space of dimension 6, spanned by K_k = C gamma5 (x) eps tau_k (scalar 0+) and K'_k = C (x) eps tau_k (pseudoscalar 0-), k = 1,2,3; every one is unitary and an isospin TRIPLET (Casimir 2): a spin-zero s-wave pair of the spinor charges carries isospin 1 and electric charge Q = +1, 0, -1", ch_ok && nullity == 12 && trip, format!("real nullity {} (= 6 complex)", nullity));
+    ck.add("S-1", "Theorem S1 (spin-zero channels): the antisymmetric, Lorentz-invariant pair matrices on Dirac (x) isospin form a complex space of dimension 6, spanned by Kch_iota = C_LL gamma_ch (x) eps2 tau_iota (scalar 0+) and Kch'_iota = C_LL (x) eps2 tau_iota (pseudoscalar 0-), iota = 1,2,3; each is unitary and an isospin TRIPLET (Casimir 2): a spin-zero s-wave pair of spinor charges carries isospin 1 and electric charge Q_LL = +1, 0, -1", ch_ok && nullity == 12 && trip, format!("real nullity {} (= 6 complex dimensions)", nullity));
 
-    // charges of the channels: Q = T3 total; K_3 pairs (up, down): Q = 0; K_1 -+ i K_2 pair (up,up)/(down,down)
+    // charges of the channels: Q_LL = T_LL^3 summed over the pair; Kch_3 pairs (up, down): 0; Kch_1 -+ i Kch_2 pair (up,up)/(down,down)
     let t3 = kron(&CMat::identity(4), &scal(&d.sig[3], c(0.5, 0.0)));
     let qcharge = |kk: &CMat| -> Option<f64> {
-        // the pair operator Psi^T K Psi has charge q if T3^T K + K T3 = q K  (both fermions annihilated: -q)
+        // the pair operator Psi_LL^T K Psi_LL annihilates the charge q if T3^T K + K T3 = q K
         let a = t3.transpose().mul(kk).add(&kk.mul(&t3));
         for q in [-1.0, 0.0, 1.0] {
             if close(&a, &scal(kk, c(q, 0.0)), 1e-12) {
@@ -476,7 +480,7 @@ pub fn run() -> bool {
     let kplus = ks[0].sub(&scal(&ks[1], c(0.0, 1.0)));
     let kminus = ks[0].add(&scal(&ks[1], c(0.0, 1.0)));
     let qs = (qcharge(&ks[2]), qcharge(&kplus), qcharge(&kminus));
-    ck.add("S-2", "electric charge of the spin-zero channels (charge of the pair operator Psi^T K Psi, which annihilates two spinor charges): K_3 pairs up with down, charge 0; K_1 - i K_2 and K_1 + i K_2 pair up-up and down-down, charges +1 and -1 (in units of the charge of the spinor charge doubled)", qs == (Some(0.0), Some(1.0), Some(-1.0)) || qs == (Some(0.0), Some(-1.0), Some(1.0)), format!("Q(K3) = {:?}, Q(K1 - iK2) = {:?}, Q(K1 + iK2) = {:?}", qs.0, qs.1, qs.2));
+    ck.add("S-2", "electric charge of the spin-zero channels (charge of the pair operator Psi_LL^T Kch Psi_LL, which annihilates two spinor charges): Kch_3 pairs up with down, charge 0; Kch_1 - i Kch_2 and Kch_1 + i Kch_2 pair up-up and down-down, charges +1 and -1", qs == (Some(0.0), Some(1.0), Some(-1.0)) || qs == (Some(0.0), Some(-1.0), Some(1.0)), format!("Q_LL(Kch_3) = {:?}, Q_LL(Kch_1 - i Kch_2) = {:?}, Q_LL(Kch_1 + i Kch_2) = {:?}", qs.0, qs.1, qs.2));
 
     // ---------------- S-3: BdG spectra ----------------
     let mut spec_ok = true;
@@ -525,7 +529,7 @@ pub fn run() -> bool {
         }
     }
     spec_ok &= worst < 1e-10;
-    ck.add("S-3", "Theorem S2 (spectra; 60 random momenta, masses, chemical potentials and order parameters d in C^3, double precision): in the scalar channel the 8 positive BdG energies are E^pm(Delta_1), E^pm(Delta_2) (each twice) with E^pm(Delta) = [(eps +- mu)^2 + Delta^2]^(1/2), eps = (q^2 + m^2)^(1/2), and the two gaps Delta_(1,2)^2 = |d|^2 (1 +- zeta), zeta = |d x d^*| / |d|^2 (unitary states: zeta = 0; non-unitary: two gaps); in the pseudoscalar channel (unitary d) E^2 = q^2 + m^2 + mu^2 + Delta^2 +- 2 [mu^2 (q^2 + m^2) + m^2 Delta^2]^(1/2), each four times", spec_ok, format!("largest deviation {:.2e}", worst));
+    ck.add("S-3", "Theorem S2 (spectra; 60 random momenta, masses, chemical potentials and order parameters dvec in C^3, double precision): in the scalar channel the 8 positive BdG energies are E^+(Delta_+), E^-(Delta_+), E^+(Delta_-), E^-(Delta_-) (each twice) with E^(+-)(Delta) = [(eps +- mu)^2 + Delta^2]^(1/2), eps = (q^2 + m^2)^(1/2), and the two gaps Delta_(+-)^2 = |dvec|^2 (1 +- zeta), zeta = |cross(dvec, dvec^*)| / |dvec|^2 (unitary states: zeta = 0; non-unitary: two gaps); in the pseudoscalar channel (unitary dvec) Etilde^(+-) = [q^2 + m^2 + mu^2 + Delta^2 +- 2 (mu^2 (q^2 + m^2) + m^2 Delta^2)^(1/2)]^(1/2), each four times", spec_ok, format!("largest deviation {:.2e}", worst));
 
     // ---------------- S-4: gap equation and critical coupling ----------------
     let rad0 = Radial::new(1.0, 0.0, 40);
@@ -535,9 +539,9 @@ pub fn run() -> bool {
     let m_ex = 0.2;
     let im = rad0.int3(|q| 2.0 / (q * q + m_ex * m_ex).sqrt());
     let gcrit_m_closed = 2.0 * PI * PI / ((1.0 + m_ex * m_ex).sqrt() - m_ex * m_ex * ((1.0 + (1.0 + m_ex * m_ex).sqrt()) / m_ex).ln());
-    ck.add("S-4", "critical coupling of the scalar channel at mu = 0 (gap equation 1/G = int d^3q/(2 pi)^3 (1/E^+ + 1/E^-), cutoff Lambda): G_crit = 2 pi^2 / Lambda^2 = 19.7392 for m = 0, and G_crit = 2 pi^2 / [Lambda sqrt(Lambda^2 + m^2) - m^2 ln((Lambda + sqrt(Lambda^2 + m^2))/m)] for m > 0 (m = 0.2: numerical quadrature vs closed form)", (gcrit_num - gcrit).abs() < 1e-10 * gcrit && (1.0 / im - gcrit_m_closed).abs() < 1e-10 * gcrit_m_closed, format!("G_crit(m=0) = {:.6}, G_crit(m=0.2) = {:.6}", gcrit_num, 1.0 / im));
+    ck.add("S-4", "critical coupling of the scalar channel at mu = 0 (gap equation 1/G = int d^3q/(2 pi)^3 (1/E^+ + 1/E^-), momentum cutoff Lambda): G_crit = 2 pi^2/Lambda^2 = 19.7392 for m = 0, and G_crit = 2 pi^2/[Lambda (Lambda^2 + m^2)^(1/2) - m^2 ln((Lambda + (Lambda^2 + m^2)^(1/2))/m)] for m > 0 (m = 0.2: quadrature against the closed form)", (gcrit_num - gcrit).abs() < 1e-10 * gcrit && (1.0 / im - gcrit_m_closed).abs() < 1e-10 * gcrit_m_closed, format!("G_crit at m = 0: {:.6}, at m = 0.2: {:.6}", gcrit_num, 1.0 / im));
 
-    // gap vs coupling at mu = 0.5, m = 0.2 (unitary scalar state) and BCS behaviour
+    // gap versus coupling at mu = 0.5, m = 0.2 (unitary scalar state) and BCS behaviour
     let (mu0, mm): (f64, f64) = (0.5, 0.2);
     let kf = (mu0 * mu0 - mm * mm).sqrt();
     let rad = Radial::new(1.0, kf, 40);
@@ -551,14 +555,14 @@ pub fn run() -> bool {
         gaps.push((g, dl));
     }
     let mono = gaps.windows(2).all(|w| w[1].1 > w[0].1);
-    // weak coupling: ln Delta vs 1/G slope -> -2 pi^2 / (N0 ...): compare two weakest couplings with the BCS form
-    // N0 = density of states per unit volume at the Fermi surface for ONE species and spin: kf mu / (2 pi^2)
+    // weak coupling: the slope of ln Delta versus 1/G at the two weakest couplings against the BCS value -1/(2 nuF)
+    // nuF = density of states per unit volume at the Fermi surface for ONE species and spin state: kF mu / (2 pi^2)
     let n0 = kf * mu0 / (2.0 * PI * PI);
     let (g1, d1) = gaps[0];
     let (g2, d2) = gaps[1];
     let slope = (d2.ln() - d1.ln()) / (1.0 / g2 - 1.0 / g1);
     let bcs_slope = -1.0 / (2.0 * n0);
-    ck.add("S-5", "the gap of the unitary scalar state grows monotonically with the coupling (mu = 0.5, m = 0.2, 40 couplings), and at weak coupling ln Delta is linear in 1/G with the BCS slope -1/(2 N0) = -pi^2/(k_F mu), N0 = k_F mu / (2 pi^2) (ratio of slopes within 5 %): a Fermi surface pairs for every G > 0", mono && (slope / bcs_slope - 1.0).abs() < 0.05, format!("slope {:.4}, BCS {:.4}, ratio {:.4}", slope, bcs_slope, slope / bcs_slope));
+    ck.add("S-5", "the gap of the unitary scalar state grows monotonically with the coupling (mu = 0.5, m = 0.2, 40 couplings), and at weak coupling ln Delta is linear in 1/G with the BCS slope -1/(2 nuF) = -pi^2/(kF mu), nuF = kF mu/(2 pi^2) the density of states of one species at the Fermi surface (ratio of the slopes within 5 %): a Fermi surface pairs for every G > 0", mono && (slope / bcs_slope - 1.0).abs() < 0.05, format!("slope {:.4}, BCS value {:.4}, ratio {:.4}", slope, bcs_slope, slope / bcs_slope));
 
     // ---------------- S-6: unitary vs non-unitary states ----------------
     let gsel = 12.0;
@@ -567,7 +571,7 @@ pub fn run() -> bool {
     let mut omins = Vec::new();
     for zi in 0..=10 {
         let zeta = zi as f64 / 10.0;
-        // minimize Omega over |d|^2 at fixed zeta (golden section on |d|)
+        // minimize Omega over |dvec| at fixed zeta (golden section)
         let f = |x: f64| omega_scalar(&rad, gsel, mm, mu0, x * x, zeta);
         let (mut a, mut b) = (0.0, 3.0 * dl);
         let gr = 0.5 * (5f64.sqrt() - 1.0);
@@ -594,7 +598,7 @@ pub fn run() -> bool {
         rows_z.push(vec![zeta, xm, f(xm), omega_scalar(&rad, gsel, mm, mu0, dl * dl, zeta)]);
     }
     let increasing = omins.windows(2).all(|w| w[1] > w[0]);
-    ck.add("S-6", "Theorem S3 (the unitary state wins): at G = 12, mu = 0.5, m = 0.2 the minimum over |d| of Omega increases strictly with zeta = |d x d^*| / |d|^2 from the unitary (polar) state zeta = 0 to the fully charged state zeta = 1 (concavity of E in Delta^2): the ground state is a unitary isospin-triplet condensate", increasing, format!("Omega_min(zeta=0) = {:.6e}, Omega_min(zeta=1) = {:.6e}", omins[0], omins[10]));
+    ck.add("S-6", "Theorem S3 (the unitary state wins): at G = 12, mu = 0.5, m = 0.2 the minimum over |dvec| of Omega increases strictly with zeta from the unitary (polar) state zeta = 0 to the fully charged state zeta = 1 (concavity of E^(+-) in Delta^2): the ground state is a unitary isospin-triplet condensate", increasing, format!("minimum of Omega at zeta = 0: {:.6e}, at zeta = 1: {:.6e}", omins[0], omins[10]));
 
     // ---------------- S-10 (placed here): scalar versus pseudoscalar channel ----------------
     let golden = |f: &dyn Fn(f64) -> f64, hi: f64| -> (f64, f64) {
@@ -627,10 +631,10 @@ pub fn run() -> bool {
     let dl0 = gap_scalar(&rad_m0, gsel, 0.0, mu0).unwrap();
     let (_, om_s0) = golden(&|x: f64| omega_scalar(&rad_m0, gsel, 0.0, mu0, x * x, 0.0), 3.0 * dl0);
     let (_, om_p0) = golden(&|x: f64| omega_pseudo(&rad_m0, gsel, 0.0, mu0, x * x), 3.0 * dl0);
-    ck.add("S-10", "which spin-zero channel condenses: at the same coupling (G = 12, mu = 0.5) the minimum of Omega in the scalar (0+) channel lies below that of the pseudoscalar (0-) channel for m = 0.2, and the two minima coincide for m = 0 (chiral symmetry maps one channel onto the other): for massive spinor charges the scalar isospin-triplet condensate is the ground state", om_s < om_p && (om_s0 - om_p0).abs() < 1e-9 * om_s0.abs(), format!("m = 0.2: {:.6e} (0+) vs {:.6e} (0-); m = 0: {:.6e} vs {:.6e}", om_s, om_p, om_s0, om_p0));
+    ck.add("S-10", "which spin-zero channel condenses: at the same coupling (G = 12, mu = 0.5) the minimum of Omega in the scalar (0+) channel lies below that of the pseudoscalar (0-) channel for m = 0.2, and the two minima coincide for m = 0 (chiral symmetry maps one channel onto the other): for massive spinor charges the scalar isospin-triplet condensate is the ground state", om_s < om_p && (om_s0 - om_p0).abs() < 1e-9 * om_s0.abs(), format!("m = 0.2: {:.6e} (0+) and {:.6e} (0-); m = 0: {:.6e} and {:.6e}", om_s, om_p, om_s0, om_p0));
 
     // ---------------- S-7: stabilizers and Goldstone modes ----------------
-    // group SU(2)_v x U(1)_N acting on d: generators: rotations L_k d = e_k x d (real 3x3 on C^3), N d = 2 i d
+    // group SU(2)_v x U(1)_F_LL acting on dvec: rotations dvec -> cross(e_k, dvec) (real 3x3 on C^3), F_LL: dvec -> 2 i dvec
     let rank_stab = |dv: &[C64; 3]| -> (usize, usize) {
         let mut vecs: Vec<Vec<f64>> = Vec::new();
         for k in 0..3 {
@@ -653,14 +657,14 @@ pub fn run() -> bool {
     let (rf, sf) = rank_stab(&ferro);
     let qpolar = qcharge(&pairing(&ks, &polar).dagger());
     let qferro = qcharge(&pairing(&ks, &[c(1.0, 0.0), c(0.0, -1.0), c(0.0, 0.0)]).dagger());
-    ck.add("S-7", "symmetry breaking by SU(2)_v x U(1)_N (isospin and fermion number, 4 generators): the polar state d = (0,0,1) keeps the rotations about the 3-axis (stabilizer dimension 1, electric charge Q = T3 unbroken: a neutral superfluid), the charged state d = (1, i, 0) keeps one combination of T3 and N (stabilizer 1, the condensate carries charge 1); both break 3 generators", rp == 3 && sp == 1 && rf == 3 && sf == 1 && qpolar == Some(0.0) && qferro.is_some(), format!("polar: broken {}, stabilizer {}, Q = {:?}; charged: broken {}, stabilizer {}, Q = {:?}", rp, sp, qpolar, rf, sf, qferro));
+    ck.add("S-7", "symmetry breaking under SU(2)_v x U(1)_F_LL (isospin and fermion number, 4 generators): the polar state dvec = (0,0,1) keeps the rotations about the 3-axis (stabilizer of dimension 1; the electric charge Q_LL = T_LL^3 stays unbroken: a neutral superfluid), the charged state dvec = (1, i, 0) keeps one combination of T_LL^3 and F_LL (stabilizer 1; the condensate carries charge 1); both break 3 generators", rp == 3 && sp == 1 && rf == 3 && sf == 1 && qpolar == Some(0.0) && qferro.is_some(), format!("polar: broken {}, stabilizer {}, Q_LL = {:?}; charged: broken {}, stabilizer {}, Q_LL = {:?}", rp, sp, qpolar, rf, sf, qferro));
 
     // ---------------- S-8: the octonionic two-species channel ----------------
-    // two isodoublets psi (b) and chi (b'); octonion product (b l)(b' l) = -b'bar b = scalar part + l part
-    // the scalar part -(b'bar b)_0 = -N(b', b) pairs S = 0, T = 0; the imaginary part lies in l (S = 1, T = 0)
+    // two isodoublets bS and bS'; product (bS e4)(bS' e4) = -bS'bar bS = scalar part + part in l_LL
+    // the scalar part -N_LL(bS', bS) pairs spin 0, isospin 0; the imaginary part lies in l_LL (spin 1, isospin 0)
     {
         use crate::bioct::*;
-        // bilinear coefficient matrices on the 4+4 complex components (b, b'): M_A with (b'bar b)_A = b'^T M_A b
+        // coefficient matrices of the bilinear forms (bS'bar bS)_p = bS'^T M_p bS, p = 0..3, on the complex coefficients
         let mut mats: Vec<CMat> = Vec::new();
         for a in 0..4 {
             let mut m = CMat::zeros(4);
@@ -676,7 +680,7 @@ pub fn run() -> bool {
             }
             mats.push(m);
         }
-        // Lorentz and isospin generators on b in the quaternion coefficient basis (4x4 complex)
+        // Lorentz and isospin generators on bS in the basis of the quaternion coefficients (4x4 complex)
         let gen_l: Vec<CMat> = (1..4)
             .flat_map(|k| {
                 let mut out = Vec::new();
@@ -713,25 +717,25 @@ pub fn run() -> bool {
                 m
             })
             .collect();
-        // scalar part M_0: invariant under both (X^T M + M X = 0); imaginary parts: invariant under isospin, rotate under Lorentz
+        // scalar part M_0: invariant under both (X^T M + M X = 0); imaginary parts: invariant under isospin, rotated by Lorentz
         let inv0 = gen_l.iter().chain(gen_v.iter()).all(|x| x.transpose().mul(&mats[0]).add(&mats[0].mul(x)).fro() < 1e-12);
         let invi = (1..4).all(|a| gen_v.iter().all(|x| x.transpose().mul(&mats[a]).add(&mats[a].mul(x)).fro() < 1e-12));
         let rot = (1..4).any(|a| gen_l.iter().any(|x| x.transpose().mul(&mats[a]).add(&mats[a].mul(x)).fro() > 1e-6));
-        // symmetry: M_0 symmetric (distinct species may pair in it), imaginary parts antisymmetric
+        // symmetry: M_0 symmetric (only distinct species pair in it), imaginary parts antisymmetric
         let sym0 = close(&mats[0], &mats[0].transpose(), 1e-14);
         let anti = (1..4).all(|a| close(&mats[a], &scal(&mats[a].transpose(), c(-1.0, 0.0)), 1e-14));
-        ck.add("S-8", "the octonionic Cooper pair of two spinor-charge fields: (b l)(b' l) = -b'bar b splits into the scalar part -N(b', b) (Lorentz scalar AND isospin singlet: S = 0, T = 0, charge 0 -- the super-loop singlet) and the imaginary part, which lies in the Lorentz algebra l (S = 1, T = 0, the Malcev bracket); the scalar part is SYMMETRIC in the two fields, so it vanishes for one fermion field and needs two species psi, chi (Theorem S4)", inv0 && invi && rot && sym0 && anti, String::new());
+        ck.add("S-8", "the octonionic Cooper pair of two spinor-charge fields: (bS e4)(bS' e4) = -bS'bar bS splits into the scalar part -N_LL(bS', bS) (Lorentz scalar AND isospin singlet: spin 0, isospin 0, charge 0: the super-loop singlet) and the imaginary part, which lies in the Lorentz part l_LL (spin 1, isospin 0: the Malcev bracket); the scalar part is SYMMETRIC in the two fields, so it vanishes for one fermion field and needs two species (Theorem S4)", inv0 && invi && rot && sym0 && anti, String::new());
     }
-    // two-species singlet BdG: Psi = (psi, chi), pairing Delta_0 psi^T K_0 chi with K_0 = C gamma5 (x) eps: spectrum E^pm each 8 times
+    // two-species singlet BdG: Psi_LL of two species, pairing matrix Kch_singlet = C_LL gamma_ch (x) eps2 (x) eps2: spectrum E^(+-), each 8 times
     {
         let cg5 = d.cc.mul(&d.g5);
-        // one species: the isospin-singlet scalar C g5 (x) eps_iso is SYMMETRIC, so Psi^T K Psi = 0 for a fermion field
+        // one species: the isospin-singlet scalar C_LL gamma_ch (x) eps2 is SYMMETRIC, so Psi_LL^T K Psi_LL = 0 for a fermion field
         let one = kron(&cg5, &d.eps);
         let sym_one = close(&one, &one.transpose(), 1e-14);
-        // two species: K_singlet = C g5 (x) eps_iso (x) eps_species is antisymmetric
+        // two species: Kch_singlet = C_LL gamma_ch (x) eps2 (isospin) (x) eps2 (species) is antisymmetric
         let ks0 = kron(&kron(&cg5, &d.eps), &d.eps);
         let anti_s0 = close(&ks0, &scal(&ks0.transpose(), c(-1.0, 0.0)), 1e-14);
-        // BdG 32x32 for Psi in Dirac (x) iso (x) species
+        // BdG 32x32 for Psi_LL in Dirac (x) isospin (x) species
         let q = [0.13, -0.21, 0.07];
         let qn = (q[0] * q[0] + q[1] * q[1] + q[2] * q[2]) as f64;
         let qn = qn.sqrt();
@@ -745,12 +749,12 @@ pub fn run() -> bool {
         pos.sort_by(|a, b| a.partial_cmp(b).unwrap());
         let (a, b) = e_scalar(qn, m, mu, dl * dl);
         let ok = pos.len() == 16 && pos[..8].iter().all(|x| (x - b).abs() < 1e-12) && pos[8..].iter().all(|x| (x - a).abs() < 1e-12);
-        ck.add("S-9", "two-species singlet: for one field the isospin-singlet scalar C gamma5 (x) eps_iso is symmetric (the pair vanishes); for two species the pair matrix C gamma5 (x) eps_iso (x) eps_species (S = 0, T = 0, antisymmetric as fermions require) gives the 16 positive BdG energies E^- (8 times) and E^+ (8 times) with E^pm = [(eps +- mu)^2 + Delta^2]^(1/2): a fully gapped super-loop-singlet superfluid that breaks only the relative-plus-total fermion number U(1) and keeps isospin, electric charge and Lorentz invariance", anti_s0 && ok && sym_one, format!("E- = {:.6}, E+ = {:.6}", b, a));
+        ck.add("S-9", "two-species singlet: for one field the isospin-singlet scalar C_LL gamma_ch (x) eps2 is symmetric (the pair vanishes); for two species the pair matrix Kch_singlet = C_LL gamma_ch (x) eps2 (x) eps2 (spin 0, isospin 0, species singlet: the third factor acts on the species index; antisymmetric as fermions require) gives the 16 positive BdG energies E^- (8 times) and E^+ (8 times) with E^(+-) = [(eps +- mu)^2 + Delta^2]^(1/2): a fully gapped super-loop-singlet superfluid that breaks only the fermion number and keeps isospin, electric charge and Lorentz invariance", anti_s0 && ok && sym_one, format!("E^- = {:.6}, E^+ = {:.6}", b, a));
     }
 
     // ---------------- data ----------------
-    let _ = write_csv("sl_sf_gap_vs_coupling.csv", &[("content", "unitary scalar (0+) isospin-triplet state: gap Delta and Omega(Delta) - Omega(0) versus the coupling G (cutoff Lambda = 1, mu = 0.5, m = 0.2)".to_string()), ("G_crit_mu0_m0", format!("{:.10}", gcrit))], &["G", "G_over_Gcrit_m0", "Delta", "Omega_minus_Omega0"], &rows_g);
-    let _ = write_csv("sl_sf_omega_zeta.csv", &[("content", "minimum over |d| of Omega(d) - Omega(0) at fixed zeta = |d x d^*|/|d|^2 (G = 12, mu = 0.5, m = 0.2), and Omega at the polar gap".to_string())], &["zeta", "d_at_min", "Omega_min", "Omega_at_polar_gap"], &rows_z);
+    let _ = write_csv("sl_sf_gap_vs_coupling.csv", &[("content", "unitary scalar (0+) isospin-triplet state: gap Delta and Omega(Delta) - Omega(0) versus the coupling G (cutoff Lambda = 1, mu = 0.5, m = 0.2); G_over_Gcrit_m0 is G divided by G_crit at mu = 0, m = 0".to_string()), ("G_crit_mu0_m0", format!("{:.10}", gcrit))], &["G", "G_over_Gcrit_m0", "Delta", "Omega_minus_Omega0"], &rows_g);
+    let _ = write_csv("sl_sf_omega_zeta.csv", &[("content", "minimum over |dvec| of Omega(dvec) - Omega(0) at fixed zeta = |cross(dvec, dvec^*)|/|dvec|^2 (G = 12, mu = 0.5, m = 0.2), the |dvec| of the minimum, and Omega at |dvec| = the gap of the polar state".to_string())], &["zeta", "abs_dvec_at_min", "Omega_min", "Omega_at_polar_gap"], &rows_z);
     let mut rows_d: Vec<Vec<f64>> = Vec::new();
     let dl12 = gap_scalar(&rad, gsel, mm, mu0).unwrap();
     for i in 0..=200 {
@@ -761,19 +765,19 @@ pub fn run() -> bool {
         let (pa, pb) = e_pseudo(q, mm, mu0, dl12 * dl12);
         rows_d.push(vec![q, b, a, b1, b0, pb, pa]);
     }
-    let _ = write_csv("sl_sf_dispersion.csv", &[("content", "quasiparticle energies versus |q| at G = 12, mu = 0.5, m = 0.2: polar state E^-, E^+; charged state (zeta = 1) gapped branch E^-(sqrt(2) Delta) [its other branch is the normal |eps - mu|]; normal state |eps - mu|; pseudoscalar channel E_-, E_+ at the same Delta".to_string()), ("Delta", format!("{:.10}", dl12))], &["q", "E_minus_polar", "E_plus_polar", "E_minus_charged_gapped", "E_normal", "E_minus_pseudo", "E_plus_pseudo"], &rows_d);
+    let _ = write_csv("sl_sf_dispersion.csv", &[("content", "quasiparticle energies versus q at G = 12, mu = 0.5, m = 0.2: polar state E^-, E^+; charged state (zeta = 1) gapped branch E^-(sqrt(2) Delta) [its other branch is the normal |eps - mu|]; normal state |eps - mu|; pseudoscalar channel Etilde^-, Etilde^+ at the same Delta".to_string()), ("Delta", format!("{:.10}", dl12))], &["q", "E_minus_polar", "E_plus_polar", "E_minus_charged_gapped", "E_normal", "Etilde_minus", "Etilde_plus"], &rows_d);
     let st = vec![
-        vec!["polar (unitary)".to_string(), "(0,0,1)".into(), "0".into(), "1".into(), "3".into(), "0".into(), "Delta".into()],
-        vec!["charged (zeta = 1)".to_string(), "(1,i,0)/sqrt2".into(), "1".into(), "1".into(), "3".into(), "+-1".into(), "sqrt2 Delta and 0".into()],
-        vec!["general non-unitary".to_string(), "d x d* != 0".into(), "0 < zeta < 1".into(), "-".into(), "-".into(), "-".into(), "|d|(1 +- zeta)^(1/2)".into()],
+        vec!["polar (unitary)".to_string(), "(0,0,1) Delta".into(), "0".into(), "1".into(), "3".into(), "0".into(), "Delta (all branches)".into()],
+        vec!["charged (zeta = 1)".to_string(), "(1,i,0) Delta/sqrt2 or (1,-i,0) Delta/sqrt2".into(), "1".into(), "1".into(), "3".into(), "+1 or -1".into(), "Delta_+ = sqrt2 Delta and Delta_- = 0".into()],
+        vec!["general non-unitary".to_string(), "cross(dvec, dvec^*) != 0".into(), "0 < zeta < 1".into(), "-".into(), "-".into(), "-".into(), "Delta_(+-) = |dvec| (1 +- zeta)^(1/2)".into()],
     ];
-    let _ = write_csv_str("sl_sf_states.csv", &[("content", "spin-zero isospin-triplet states of the spinor-charge superfluid".to_string())], &["state", "d", "zeta", "stabilizer_dim", "broken_generators", "pair_charge", "gaps"], &st);
+    let _ = write_csv_str("sl_sf_states.csv", &[("content", "spin-zero isospin-triplet states of the superfluid of the spinor charges: order parameter dvec, zeta, dimension of the stabilizer in SU(2)_v x U(1)_F_LL, broken generators, charge of the condensed pairs, gaps".to_string())], &["state", "dvec", "zeta", "stabilizer_dim", "broken_generators", "pair_charge", "gaps"], &st);
     let chs = vec![
-        vec!["K_k = C g5 (x) eps tau_k".to_string(), "0+".into(), "1 (triplet)".into(), "Q = +1, 0, -1".into(), "one species".into()],
-        vec!["K'_k = C (x) eps tau_k".to_string(), "0-".into(), "1 (triplet)".into(), "Q = +1, 0, -1".into(), "one species".into()],
-        vec!["C g5 (x) eps_iso (x) eps_sp".to_string(), "0+".into(), "0 (singlet)".into(), "0".into(), "two species (scalar part of the octonion product)".into()],
-        vec!["imaginary part of (b l)(b' l)".to_string(), "spin 1 (l)".into(), "0".into(), "0".into(), "Malcev bracket (Lorentz tensor)".into()],
+        vec!["Kch_iota = C_LL gamma_ch (x) eps2 tau_iota".to_string(), "0+".into(), "1 (triplet)".into(), "+1, 0, -1".into(), "one species".into()],
+        vec!["Kch'_iota = C_LL (x) eps2 tau_iota".to_string(), "0-".into(), "1 (triplet)".into(), "+1, 0, -1".into(), "one species".into()],
+        vec!["Kch_singlet = C_LL gamma_ch (x) eps2 (x) eps2".to_string(), "0+".into(), "0 (singlet)".into(), "0".into(), "two species (scalar part of the bi-octonion product)".into()],
+        vec!["imaginary part of (bS e4)(bS' e4)".to_string(), "spin 1 (in l_LL)".into(), "0".into(), "0".into(), "Malcev bracket (a Lorentz tensor)".into()],
     ];
-    let _ = write_csv_str("sl_sf_channels.csv", &[("content", "pair channels of the spinor charges".to_string())], &["pair_matrix", "J_P", "isospin", "charge", "remark"], &chs);
+    let _ = write_csv_str("sl_sf_channels.csv", &[("content", "pair channels of the spinor charges: pair matrix, spin and parity, isospin, charge Q_LL of the pair, remark".to_string())], &["pair_matrix", "spin_parity", "isospin", "pair_charge", "remark"], &chs);
     ck.write("sl_superfluid_checks.txt")
 }

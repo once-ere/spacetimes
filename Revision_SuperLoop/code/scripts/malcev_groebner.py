@@ -1,46 +1,50 @@
 #!/usr/bin/env python3
 """
-PROJECT spacetimes, Revision_SuperLoop -- the classification of Lorentz-covariant extensions
+PROJECT spacetimes, Revision_SuperLoop -- the classification of the Lorentz-covariant extensions
 of the Lorentz and Poincare algebras by spinor charges, as Lie algebras (Jacobi identity) and
 as Malcev algebras (the identity of the commutator algebras of alternative algebras such as
-the octonions).
+the bi-octonions).
 
 Why Python: the classification needs Groebner bases of polynomial ideals (Buchberger's
 algorithm over the rationals), which are available in sympy; the Rust program of this folder
-(command `malcev`) verifies every solution family found here EXHAUSTIVELY on all basis
-4-tuples, and checks the excluded cases with explicit witnesses.  Rule 6 of the project
-prefers Rust; P0 of this folder records this decision.
+(command `malcev`) verifies every solution found here EXHAUSTIVELY on all basis 4-tuples, and
+checks the excluded cases with explicit witnesses.  Hard Rule 6 of the project prefers Rust;
+the provenance document P0 of this folder records this decision.
 
-Families (all brackets are the most general ones allowed by Lorentz covariance; each is
-written with the bi-octonion product, see the docstrings of the functions `fam_*`):
+Families (the most general brackets allowed by covariance under the Lorentz group SL(2,C) and
+the isospin group SU(2)_v; see the provenance document P2 and the manuscript for the proof):
 
-  F_A  so(3,1) + s                 parameters lam1, lam2, c1, c2
-  F_B  so(3,1) + R^(3,1) + s       parameters lam1, lam2, a1, a2, b1, b2, c1, c2, k
-  F_C  so(3,1) + su(2)_v + s       parameters kT, lam1, lam2, tau1, tau2, c1, c2, d1, d2
+  F_A  l_LL + s_LL                 coefficients ctw_re, ctw_im, csl_re, csl_im
+  F_B  l_LL + p_LL + s_LL          coefficients ctw_re, ctw_im, cPP_re, cPP_im, cPs_re, cPs_im,
+                                   csl_re, csl_im, csP
+  F_C  l_LL + su(2) + s_LL         coefficients cTT, ctw_re, ctw_im, cTs_re, cTs_im, csl_re,
+                                   csl_im, csT_re, csT_im
 
-Here s = (C (x) H) l is the space of spinor charges (a Weyl spinor that is an isospin
-doublet, 8 real dimensions), so(3,1) = C (x) Im H, R^(3,1) = Hermitian bi-quaternions.
+Here s_LL = (C (x) H) e4 is the space of spinor charges (a Weyl spinor that is an isospin
+doublet, 8 real dimensions), l_LL = C (x) Im H = so(3,1), p_LL = the Hermitian bi-quaternions
+(the translations), su(2) = Im H (isospin).  Elements: uL, uL' in l_LL; rP, rP' in p_LL;
+tI, tI' in su(2); bS e4, bS' e4 in s_LL; a complex coefficient c_X = cX_re + i cX_im.
 
-  [q, q']  = q q' - q' q                                  (Lorentz; fixed)
-  [q, x]   = q x + x q^dag                                (vector action; fixed)
-  [q, b]   = (lam1 + i lam2) * (-b q)                     (the twist lam: 1 = Lie action)
-  [x, y]   = (a1 + i a2) * (x ybar - y xbar)              (curvature of space-time translations)
-  [x, b]   = (b1 + i b2) * (b^* xbar)                     (spinor charges that do not commute with P)
-  [b, b']  = (c1 + i c2) * (bbar b' - b'bar b)            (spinor charges close into Lorentz)
-           + k * i (bbar b'^* - b'bar b^*)                (spinor charges close into translations)
-           + Re[(d1 + i d2) * (b b'bar - b' bbar)]        (spinor charges close into isospin)
-  [t, t']  = kT * (t t' - t' t)                           (isospin)
-  [t, b]   = (tau1 + i tau2) * (t b)                      (isospin action on the spinor charges)
+  [uL, uL']       = uL uL' - uL' uL                           (Lorentz; fixed)
+  [uL, rP]        = uL rP + rP uL^dag                         (vector action; fixed)
+  [uL, bS e4]     = c_tw (-bS uL) e4                          (the twist; c_tw = 1: Lie action)
+  [rP, rP']       = c_PP (rP rP'bar - rP' rPbar)              (curvature of the translations)
+  [rP, bS e4]     = c_Ps (bS^* rPbar) e4                      (spinor charges that do not commute with p_LL)
+  [bS e4, bS' e4] = c_sl (bSbar bS' - bS'bar bS)              (spinor charges close into l_LL)
+                  + csP i (bSbar bS'^* - bS'bar bS^*)          (spinor charges close into p_LL; csP real)
+                  + Re[c_sT (bS bS'bar - bS' bSbar)]          (spinor charges close into isospin)
+  [tI, tI']       = cTT (tI tI' - tI' tI)                     (isospin; cTT real)
+  [tI, bS e4]     = c_Ts (tI bS) e4                           (isospin acts on the spinor charges)
 
 For every family the script evaluates the Jacobi identity and the linearized Malcev identity
-    J(x,y,[w,z]) + J(w,y,[x,z]) - [J(x,y,z), w] - [J(w,y,z), x] = 0
-on random integer tuples until the span of the resulting polynomials (in the parameters)
+    Jac(x,y,[w,z]) + Jac(w,y,[x,z]) - [Jac(x,y,z), w] - [Jac(w,y,z), x] = 0
+on random integer tuples until the span of the resulting polynomials (in the coefficients)
 stops growing, computes the reduced Groebner basis (grevlex), and tests the statements of the
 classification by ideal membership (sound: every polynomial found is a true consequence).
 
 Output: data/sl_groebner_bases.txt, data/sl_groebner_checks.txt.
 Usage (from the folder Revision_SuperLoop):  python3 code/scripts/malcev_groebner.py
-Run time: about half an hour (the Groebner bases of the Malcev identities are the slow part).
+Run time: a few seconds.
 """
 import itertools
 import os
@@ -181,15 +185,16 @@ def put(dim, sl, q=None, x=None, b=None, t=None):
 
 
 def make_family(kind):
+    # sectors: 'q' = l_LL (uL), 'x' = p_LL (rP), 't' = su(2) (tI), 'b' = s_LL (bS e4)
     if kind == 'A':
         sectors = [('q', 6), ('b', 8)]
-        params = ['lam1', 'lam2', 'c1', 'c2']
+        params = ['ctw_re', 'ctw_im', 'csl_re', 'csl_im']
     elif kind == 'B':
         sectors = [('q', 6), ('x', 4), ('b', 8)]
-        params = ['lam1', 'lam2', 'a1', 'a2', 'b1', 'b2', 'c1', 'c2', 'k']
+        params = ['ctw_re', 'ctw_im', 'cPP_re', 'cPP_im', 'cPs_re', 'cPs_im', 'csl_re', 'csl_im', 'csP']
     else:
         sectors = [('q', 6), ('t', 3), ('b', 8)]
-        params = ['kT', 'lam1', 'lam2', 'tau1', 'tau2', 'c1', 'c2', 'd1', 'd2']
+        params = ['cTT', 'ctw_re', 'ctw_im', 'cTs_re', 'cTs_im', 'csl_re', 'csl_im', 'csT_re', 'csT_im']
     sl = sector_slices(sectors)
     dim = sum(d for _, d in sectors)
     has = {n for n, _ in sectors}
@@ -201,37 +206,37 @@ def make_family(kind):
         b1_ = get_b(u, sl)
         b2_ = get_b(v, sl)
         P['1'] = put(dim, sl, q=qsub(qmul(q1, q2), qmul(q2, q1)))
-        s = qadd(qsc(qmul(b2_, q1), -1), qmul(b1_, q2))      # [q1,b2] - [q2,b1] with [q,b] = -b q
-        P['lam1'] = put(dim, sl, b=s)
-        P['lam2'] = put(dim, sl, b=qsc(s, 1j))
+        s = qadd(qsc(qmul(b2_, q1), -1), qmul(b1_, q2))      # [uL1, bS2 e4] - [uL2, bS1 e4] with (-bS uL) e4
+        P['ctw_re'] = put(dim, sl, b=s)
+        P['ctw_im'] = put(dim, sl, b=qsc(s, 1j))
         m = qsub(qmul(qconj(b1_), b2_), qmul(qconj(b2_), b1_))
-        P['c1'] = put(dim, sl, q=m)
-        P['c2'] = put(dim, sl, q=qsc(m, 1j))
+        P['csl_re'] = put(dim, sl, q=m)
+        P['csl_im'] = put(dim, sl, q=qsc(m, 1j))
         if 'x' in has:
             x1 = get_x(u, sl)
             x2 = get_x(v, sl)
             vx = qsub(qadd(qmul(q1, x2), qmul(x2, qdag(q1))), qadd(qmul(q2, x1), qmul(x1, qdag(q2))))
             P['1'] = [p + r for p, r in zip(P['1'], put(dim, sl, x=vx))]
             mm = qsub(qmul(x1, qconj(x2)), qmul(x2, qconj(x1)))
-            P['a1'] = put(dim, sl, q=mm)
-            P['a2'] = put(dim, sl, q=qsc(mm, 1j))
+            P['cPP_re'] = put(dim, sl, q=mm)
+            P['cPP_im'] = put(dim, sl, q=qsc(mm, 1j))
             tb = qsub(qmul(qcc(b2_), qconj(x1)), qmul(qcc(b1_), qconj(x2)))
-            P['b1'] = put(dim, sl, b=tb)
-            P['b2'] = put(dim, sl, b=qsc(tb, 1j))
+            P['cPs_re'] = put(dim, sl, b=tb)
+            P['cPs_im'] = put(dim, sl, b=qsc(tb, 1j))
             h = qsc(qsub(qmul(qconj(b1_), qcc(b2_)), qmul(qconj(b2_), qcc(b1_))), 1j)
-            P['k'] = put(dim, sl, x=h)
+            P['csP'] = put(dim, sl, x=h)
         if 't' in has:
             t1 = get_t(u, sl)
             t2 = get_t(v, sl)
-            P['kT'] = put(dim, sl, t=qsub(qmul(t1, t2), qmul(t2, t1)))
+            P['cTT'] = put(dim, sl, t=qsub(qmul(t1, t2), qmul(t2, t1)))
             r = qsub(qmul(t1, b2_), qmul(t2, b1_))
-            P['tau1'] = put(dim, sl, b=r)
-            P['tau2'] = put(dim, sl, b=qsc(r, 1j))
+            P['cTs_re'] = put(dim, sl, b=r)
+            P['cTs_im'] = put(dim, sl, b=qsc(r, 1j))
             w = qsub(qmul(b1_, qconj(b2_)), qmul(b2_, qconj(b1_)))
             re_w = (0j,) + tuple(complex(z.real) for z in w[1:])
             re_iw = (0j,) + tuple(complex((1j * z).real) for z in w[1:])
-            P['d1'] = put(dim, sl, t=re_w)
-            P['d2'] = put(dim, sl, t=re_iw)
+            P['csT_re'] = put(dim, sl, t=re_w)
+            P['csT_im'] = put(dim, sl, t=re_iw)
         return P
 
     fam = Family(kind, sectors, params, parts)
@@ -394,9 +399,10 @@ def in_ideal(G, f):
 
 
 def saturate_nonzero(syms, polys, nz):
-    """Groebner basis of the ideal + (nz * w - 1): the points of the variety where nz != 0."""
-    w = sp.Symbol('w_sat')
-    G = sp.groebner(list(polys) + [sp.expand(nz * w - 1)], w, *syms, order='grevlex')
+    """Groebner basis of the ideal + (nz * w_sat - 1): the points of the variety where nz != 0
+    (Rabinowitsch's trick; w_sat is an auxiliary variable)."""
+    w_sat = sp.Symbol('w_sat')
+    G = sp.groebner(list(polys) + [sp.expand(nz * w_sat - 1)], w_sat, *syms, order='grevlex')
     return G
 
 
@@ -426,41 +432,40 @@ def main():
                 lines_basis.append("   " + str(sp.factor(g)))
             print(f"F_{kind} {identity}: {len(polys)} polynomials, {len(G.exprs)} basis elements, {time.time() - t0:.1f} s", flush=True)
 
-    S = {}
     # ---- F_A
     syms, polys, G = results[('A', 'jacobi')]
-    lam1, lam2, c1, c2 = syms
-    check("G-1", "F_A (so(3,1) + spinor charges), Jacobi identity: c1 and c2 lie in the ideal, so every LIE algebra of the family has [s, s] = 0 (no Lorentz part): bosonic spinor charges cannot close into so(3,1) (Theorem L)", in_ideal(G, c1) and in_ideal(G, c2))
-    check("G-2", "F_A, Jacobi identity: Re and Im of z(z - 1) with z = lam1 + i lam2, i.e. lam1^2 - lam1 - lam2^2 and lam2 (2 lam1 - 1), lie in the ideal; their only real common zeros are z = 0 and z = 1: the Lie action of so(3,1) on the spinor charges is 0 or the Weyl representation", in_ideal(G, lam1 ** 2 - lam1 - lam2 ** 2) and in_ideal(G, lam2 * (2 * lam1 - 1)))
+    ctw_re, ctw_im, csl_re, csl_im = syms
+    check("G-1", "F_A (l_LL + s_LL), Jacobi identity: csl_re and csl_im lie in the ideal, so every LIE algebra of the family has [s_LL, s_LL] = 0 (no Lorentz part): bosonic spinor charges cannot close into so(3,1) (Theorem L)", in_ideal(G, csl_re) and in_ideal(G, csl_im))
+    check("G-2", "F_A, Jacobi identity: Re and Im of c_tw (c_tw - 1) with c_tw = ctw_re + i ctw_im, i.e. ctw_re^2 - ctw_re - ctw_im^2 and ctw_im (2 ctw_re - 1), lie in the ideal; their only real common zeros are c_tw = 0 and c_tw = 1: the Lie action of so(3,1) on the spinor charges is 0 or the Weyl representation", in_ideal(G, ctw_re ** 2 - ctw_re - ctw_im ** 2) and in_ideal(G, ctw_im * (2 * ctw_re - 1)))
     syms, polys, G = results[('A', 'malcev')]
-    lam1, lam2, c1, c2 = syms
-    zA = sp.expand(lam1 ** 3 + lam1 ** 2 - 3 * lam1 * lam2 ** 2 - 2 * lam1 - lam2 ** 2)
-    zA2 = sp.expand(lam2 * (3 * lam1 ** 2 + 2 * lam1 - lam2 ** 2 - 2))
-    check("G-3", "F_A, Malcev identity: Re and Im of z(z - 1)(z + 2) with z = lam1 + i lam2 lie in the ideal; the complex polynomial z(z - 1)(z + 2) has only the real roots 0, 1, -2: the twist charge of the spinor charges is 0, 1 (Lie) or -2 (non-Lie), and lam2 = 0", in_ideal(G, zA) and in_ideal(G, zA2))
-    Gs = saturate_nonzero(syms, polys, c1 ** 2 + c2 ** 2)
-    check("G-4", "F_A, Malcev identity: on every real solution with [s, s] != 0 (c1^2 + c2^2 != 0) the twist is lam = -2 (lam1 + 2 and lam2 lie in the saturated ideal): the bi-octonion algebra m is the only non-zero solution (up to the rescaling s -> z s, which maps c to z^2 c)", Gs.contains(lam1 + 2) and Gs.contains(lam2))
+    ctw_re, ctw_im, csl_re, csl_im = syms
+    zA = sp.expand(ctw_re ** 3 + ctw_re ** 2 - 3 * ctw_re * ctw_im ** 2 - 2 * ctw_re - ctw_im ** 2)
+    zA2 = sp.expand(ctw_im * (3 * ctw_re ** 2 + 2 * ctw_re - ctw_im ** 2 - 2))
+    check("G-3", "F_A, Malcev identity: Re and Im of c_tw (c_tw - 1)(c_tw + 2) with c_tw = ctw_re + i ctw_im lie in the ideal; this complex cubic has only the real roots 0, 1, -2: the twist is 0, 1 (Lie) or -2 (non-Lie), and ctw_im = 0", in_ideal(G, zA) and in_ideal(G, zA2))
+    Gs = saturate_nonzero(syms, polys, csl_re ** 2 + csl_im ** 2)
+    check("G-4", "F_A, Malcev identity: on every real solution with [s_LL, s_LL] != 0 (csl_re^2 + csl_im^2 != 0) the twist is c_tw = -2 (ctw_re + 2 and ctw_im lie in the saturated ideal): the bi-octonion algebra m_LL is the only solution with c_sl != 0 (up to the rescaling bS -> lambda_sc bS by a complex number lambda_sc != 0, which maps c_sl to lambda_sc^2 c_sl)", Gs.contains(ctw_re + 2) and Gs.contains(ctw_im))
     # ---- F_B
     syms, polys, G = results[('B', 'jacobi')]
-    lam1, lam2, a1, a2, b1, b2, c1, c2, k = syms
-    check("G-5", "F_B (Poincare or (anti-)de Sitter + spinor charges), Jacobi identity: c1, c2, a2 lie in the ideal; lam2 = 0 and lam1 (lam1 - 1) = 0 on real solutions (lam2 (4 lam2^2 + 1) lies in the ideal)", in_ideal(G, c1) and in_ideal(G, c2) and in_ideal(G, a2) and in_ideal(G, lam2 * (4 * lam2 ** 2 + 1)))
-    check("G-6", "F_B, Jacobi identity: a1 lam1 - (b1^2 + b2^2), k (lam1 - 1), k a1, k b1, k b2 lie in the ideal: the Lie solutions are (i) Poincare with abelian spinor charges, (ii) Poincare with [s, s] in the translations (k != 0, a bosonic analogue of supersymmetry), (iii) curvature a1 = |b|^2 >= 0 with [P, s] != 0 and [s, s] = 0", all(in_ideal(G, f) for f in [a1 * lam1 - b1 ** 2 - b2 ** 2, k * (lam1 - 1), k * a1, k * b1, k * b2]))
+    ctw_re, ctw_im, cPP_re, cPP_im, cPs_re, cPs_im, csl_re, csl_im, csP = syms
+    check("G-5", "F_B (Poincare or (anti-)de Sitter + spinor charges), Jacobi identity: csl_re, csl_im, cPP_im lie in the ideal; ctw_im = 0 and ctw_re (ctw_re - 1) = 0 on real solutions (ctw_im (4 ctw_im^2 + 1) lies in the ideal)", in_ideal(G, csl_re) and in_ideal(G, csl_im) and in_ideal(G, cPP_im) and in_ideal(G, ctw_im * (4 * ctw_im ** 2 + 1)))
+    check("G-6", "F_B, Jacobi identity: cPP_re ctw_re - (cPs_re^2 + cPs_im^2), csP (ctw_re - 1), csP cPP_re, csP cPs_re, csP cPs_im lie in the ideal: the Lie solutions are (i) Poincare with abelian spinor charges, (ii) Poincare with [s_LL, s_LL] in p_LL (csP != 0, a bosonic analogue of supersymmetry), (iii) curvature cPP_re = |c_Ps|^2 >= 0 with [p_LL, s_LL] != 0 and [s_LL, s_LL] = 0", all(in_ideal(G, f) for f in [cPP_re * ctw_re - cPs_re ** 2 - cPs_im ** 2, csP * (ctw_re - 1), csP * cPP_re, csP * cPs_re, csP * cPs_im]))
     syms, polys, G = results[('B', 'malcev')]
-    lam1, lam2, a1, a2, b1, b2, c1, c2, k = syms
-    check("G-7", "F_B, Malcev identity: c1 and c2 lie in the ideal: in the presence of translations (flat or curved) even a MALCEV algebra cannot close spinor charges into the Lorentz algebra", in_ideal(G, c1) and in_ideal(G, c2))
-    zpoly = sp.expand(lam1 ** 3 + lam1 ** 2 - 3 * lam1 * lam2 ** 2 - 2 * lam1 - lam2 ** 2)  # Re[z (z - 1)(z + 2)]
-    zpoly2 = sp.expand(lam2 * (3 * lam1 ** 2 + 2 * lam1 - lam2 ** 2 - 2))                 # Im[z (z - 1)(z + 2)]
-    check("G-8", "F_B, Malcev identity: Re and Im of z(z - 1)(z + 2) with z = lam1 + i lam2 lie in the ideal (z = 0, 1 or -2 on real points), and b1 (lam1 - 1), b2 (lam1 - 1), k (lam1 - 1), a1 lam1 - |b|^2 lie in it: for the twist z = -2 one gets b = 0, k = 0, a1 = 0, c = 0", all(in_ideal(G, f) for f in [zpoly, zpoly2, b1 * (lam1 - 1), b2 * (lam1 - 1), k * (lam1 - 1), a1 * lam1 - b1 ** 2 - b2 ** 2]))
-    Gm2 = sp.groebner(list(polys) + [lam1 + 2], *syms, order='grevlex')
-    check("G-9", "F_B, Malcev identity with the twist lam = -2: the ideal contains lam2, a1, a2, b1, b2, c1, c2, k: the only non-Lie Malcev extension of the Poincare algebra by spinor charges in this family is the ABELIAN twisted module (spinor charges commute with each other and with the translations)", all(Gm2.contains(f) for f in [lam2, a1, a2, b1, b2, c1, c2, k]))
+    ctw_re, ctw_im, cPP_re, cPP_im, cPs_re, cPs_im, csl_re, csl_im, csP = syms
+    check("G-7", "F_B, Malcev identity: csl_re and csl_im lie in the ideal: in the presence of translations (flat or curved) even a MALCEV algebra cannot close spinor charges into the Lorentz algebra", in_ideal(G, csl_re) and in_ideal(G, csl_im))
+    zpoly = sp.expand(ctw_re ** 3 + ctw_re ** 2 - 3 * ctw_re * ctw_im ** 2 - 2 * ctw_re - ctw_im ** 2)  # Re[c_tw (c_tw - 1)(c_tw + 2)]
+    zpoly2 = sp.expand(ctw_im * (3 * ctw_re ** 2 + 2 * ctw_re - ctw_im ** 2 - 2))                       # Im[c_tw (c_tw - 1)(c_tw + 2)]
+    check("G-8", "F_B, Malcev identity: Re and Im of c_tw (c_tw - 1)(c_tw + 2) lie in the ideal (c_tw = 0, 1 or -2 on real points), and cPs_re (ctw_re - 1), cPs_im (ctw_re - 1), csP (ctw_re - 1), cPP_re ctw_re - |c_Ps|^2 lie in it: for the twist c_tw = -2 one gets c_Ps = 0, csP = 0, cPP_re = 0, c_sl = 0", all(in_ideal(G, f) for f in [zpoly, zpoly2, cPs_re * (ctw_re - 1), cPs_im * (ctw_re - 1), csP * (ctw_re - 1), cPP_re * ctw_re - cPs_re ** 2 - cPs_im ** 2]))
+    Gm2 = sp.groebner(list(polys) + [ctw_re + 2], *syms, order='grevlex')
+    check("G-9", "F_B, Malcev identity with the twist c_tw = -2: the ideal contains ctw_im, cPP_re, cPP_im, cPs_re, cPs_im, csl_re, csl_im, csP: the only non-Lie Malcev extension of the Poincare algebra by spinor charges in this family is the ABELIAN twisted module (spinor charges commute with each other and with the translations)", all(Gm2.contains(f) for f in [ctw_im, cPP_re, cPP_im, cPs_re, cPs_im, csl_re, csl_im, csP]))
     # ---- F_C
     syms, polys, G = results[('C', 'jacobi')]
-    kT, lam1, lam2, tau1, tau2, c1, c2, d1, d2 = syms
-    check("G-10", "F_C (so(3,1) + su(2) isospin + spinor charges), Jacobi identity: c1^2 + c2^2 lies in the ideal, so c = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s, s], even when isospin is present", in_ideal(G, c1 ** 2 + c2 ** 2))
+    cTT, ctw_re, ctw_im, cTs_re, cTs_im, csl_re, csl_im, csT_re, csT_im = syms
+    check("G-10", "F_C (l_LL + su(2) isospin + spinor charges), Jacobi identity: csl_re^2 + csl_im^2 lies in the ideal, so c_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s_LL, s_LL], even when isospin is present", in_ideal(G, csl_re ** 2 + csl_im ** 2))
     syms, polys, G = results[('C', 'malcev')]
-    kT, lam1, lam2, tau1, tau2, c1, c2, d1, d2 = syms
-    check("G-11", "F_C, Malcev identity: c1 (tau1^2 + tau2^2), c2 (tau1^2 + tau2^2) and c1 (d1^2 + d2^2), c2 (d1^2 + d2^2) lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c != 0), isospin acts trivially on them (tau = 0) and [s, s] has no isospin part (d = 0) -- isospin can join the super-loop only as an outer automorphism", all(in_ideal(G, f) for f in [c1 * (tau1 ** 2 + tau2 ** 2), c2 * (tau1 ** 2 + tau2 ** 2), c1 * (d1 ** 2 + d2 ** 2), c2 * (d1 ** 2 + d2 ** 2)]))
-    Gs = saturate_nonzero(syms, list(polys) + [tau1, tau2, d1, d2], c1 ** 2 + c2 ** 2)
-    check("G-12", "F_C, Malcev identity: on real solutions with c != 0, G-11 gives tau1^2 + tau2^2 = 0 and d1^2 + d2^2 = 0, hence tau = d = 0; adding tau1, tau2, d1, d2 to the ideal and saturating by c1^2 + c2^2 != 0, the ideal contains lam1 + 2 and lam2: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m, and su(2) isospin decouples (it can act on m only by automorphisms)", Gs.contains(lam1 + 2) and Gs.contains(lam2))
+    cTT, ctw_re, ctw_im, cTs_re, cTs_im, csl_re, csl_im, csT_re, csT_im = syms
+    check("G-11", "F_C, Malcev identity: csl_re |c_Ts|^2, csl_im |c_Ts|^2, csl_re |c_sT|^2, csl_im |c_sT|^2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c_sl != 0), isospin acts trivially on them (c_Ts = 0) and [s_LL, s_LL] has no isospin part (c_sT = 0) -- isospin can join the super-loop only as an outer automorphism", all(in_ideal(G, f) for f in [csl_re * (cTs_re ** 2 + cTs_im ** 2), csl_im * (cTs_re ** 2 + cTs_im ** 2), csl_re * (csT_re ** 2 + csT_im ** 2), csl_im * (csT_re ** 2 + csT_im ** 2)]))
+    Gs = saturate_nonzero(syms, list(polys) + [cTs_re, cTs_im, csT_re, csT_im], csl_re ** 2 + csl_im ** 2)
+    check("G-12", "F_C, Malcev identity: on real solutions with c_sl != 0, G-11 gives |c_Ts|^2 = 0 and |c_sT|^2 = 0, hence c_Ts = c_sT = 0; adding cTs_re, cTs_im, csT_re, csT_im to the ideal and saturating by csl_re^2 + csl_im^2 != 0, the ideal contains ctw_re + 2 and ctw_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m_LL, and su(2) isospin decouples (it can act on m_LL only by automorphisms)", Gs.contains(ctw_re + 2) and Gs.contains(ctw_im))
 
     # ---- write
     os.makedirs("data", exist_ok=True)

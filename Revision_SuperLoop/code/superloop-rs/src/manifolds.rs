@@ -1,16 +1,16 @@
-//! Command `manifolds`: the manifolds that carry the Lorentz super-loop.
+//! Command `manifolds`: the manifolds that carry the Lorentz super-loop L_LL.
 //!
-//!   N-1  R^(1,7) = Hermitian bi-octonions x0 + i x.e (the 7+1 manifold) and R^(1,3) inside it
-//!   N-2  the split octonions O_s = H + (i H) l inside the bi-octonions (the 4+4 manifold)
-//!   N-3  the spinor-charge space s with Re N and Im N: two metrics of signature (4,4)
-//!   N-4  nested conjugations x -> u x u^dag generate so(1,7) on R^(1,7)
-//!   N-5  the loop's own Lorentz subgroup acts on R^(1,7) by conjugation with a closure of
+//!   N-1  R^(1,7)_LL = Hermitian bi-octonions x_LL^0 + i sum_p x_LL^p e_p (the 7+1 manifold) and R^(1,3)_LL in it
+//!   N-2  the split octonions Os = H + (i H) e4 inside B_LL (the 4+4 manifold)
+//!   N-3  the space s_LL of spinor charges with Re N_LL and Im N_LL: two quadratic forms of signature (4,4)
+//!   N-4  the conjugations x -> gL x gL^dag by loop elements generate so(1,7) on R^(1,7)_LL
+//!   N-5  the loop's own Lorentz subgroup acts on R^(1,7)_LL by conjugation with a closure of
 //!        dimension 9 = so(3,1) + so(3): conjugation by the loop is not a group action
-//!   N-6  the Lie closure of the left multiplications: so(8,C) (56), so(8) (28), so(4,4) (28)
-//!   N-7  the loop manifold: frame fields X_x(u) = u x are tangent to N(u) = 1, and
-//!        [X_x, X_y](u) = u [x,y] + 2 [u, x, y]: non-constant structure functions
-//!   N-8  the 7-sphere as Spin(7)/G2: spin(7) = 21, stabilizer of 1 = g2 = 14, orbit 7
-//!   N-9  the split real form: Im O_s contains sl(2,R) = so(2,1) and two Majorana spinors
+//!   N-6  the Lie closures of the left multiplications: so(8,C) (56), so(8) (28), so(4,4) (28)
+//!   N-7  the loop manifold: the frame fields X_x(w) = w x are tangent to N_LL(w) = 1, and
+//!        [X_x, X_y](w) = w [x,y] + 2 [w,x,y]: non-constant structure functions
+//!   N-8  the 7-sphere S^7 as Spin(7)/G2: spin(7) = 21, stabilizer of 1 = g2 = 14, orbit 7
+//!   N-9  the split real form: Im Os contains sl(2,R) = so(2,1)
 //! Data: sl_manifolds.csv; report sl_manifolds_checks.txt.
 
 use crate::algebra::{e, ie};
@@ -25,7 +25,7 @@ fn gi(re: i128, im: i128) -> GInt {
     GInt { re, im }
 }
 
-/// Hermitian bi-octonion basis h0 = 1, h_a = i e_a (a = 1..7)
+/// basis of R^(1,7)_LL: 1 and i e_p (p = 1..7)
 fn herm(a: usize) -> B {
     if a == 0 {
         e(0)
@@ -44,7 +44,7 @@ fn hcoords(x: &B) -> Vec<i128> {
     v
 }
 
-/// polarized complex norm N(x, y) = sum_A x^A y^A
+/// polarized complex norm N_LL(x, y) = sum_p (coefficient p of x)(coefficient p of y)
 fn npol(x: &B, y: &B) -> GInt {
     let mut s = GInt::zero();
     for k in 0..8 {
@@ -102,7 +102,7 @@ pub fn run() -> bool {
     let s4 = signature(&gram(&h4));
     let mut herm_ok = true;
     for _ in 0..50 {
-        // Hermitian elements: x0 real, other coefficients imaginary; N real
+        // Hermitian elements: the coefficient of e0 real, the other coefficients imaginary; N_LL real
         let mut x = B::zero();
         x.c[0] = gi(rng.int(4) as i128, 0);
         for a in 1..8 {
@@ -110,11 +110,11 @@ pub fn run() -> bool {
         }
         herm_ok &= x.dag() == x && x.norm().im == 0;
     }
-    ck.add("N-1", "the Hermitian bi-octonions x = x0 + i x^a e_a (x^dag = x) form the 7+1 Minkowski space R^(1,7): the complex norm is real on them with signature (1 positive, 7 negative); the Hermitian bi-quaternions (a = 1,2,3) form R^(1,3), signature (1,3), on which SL(2,C) acts by x -> g x g^dag", s8 == (1, 7, 0) && s4 == (1, 3, 0) && herm_ok, format!("R^(1,7): {:?}, R^(1,3): {:?}", s8, s4));
-    rows.push(vec!["R^(1,7) = Hermitian bi-octonions".into(), "8".into(), "(1,7)".into(), "the 7+1 manifold; nested conjugations generate SO(1,7)".into()]);
-    rows.push(vec!["R^(1,3) = Hermitian bi-quaternions".into(), "4".into(), "(1,3)".into(), "Minkowski space of the loop's SL(2,C)".into()]);
+    ck.add("N-1", "the Hermitian bi-octonions x = x_LL^0 + i sum_p x_LL^p e_p (x^dag = x, real x_LL^0, x_LL^p, p = 1..7) form the 7+1 Minkowski space R^(1,7)_LL: the complex norm N_LL is real on them, with signature (1 positive, 7 negative); the Hermitian bi-quaternions (p = 1,2,3) form R^(1,3)_LL, signature (1,3), on which SL(2,C) acts by x -> gL x gL^dag", s8 == (1, 7, 0) && s4 == (1, 3, 0) && herm_ok, format!("R^(1,7)_LL: {:?}, R^(1,3)_LL: {:?}", s8, s4));
+    rows.push(vec!["R^(1,7)_LL = Hermitian bi-octonions".into(), "8".into(), "(1,7)".into(), "the 7+1 manifold; the conjugations by loop elements generate SO(1,7)".into()]);
+    rows.push(vec!["R^(1,3)_LL = Hermitian bi-quaternions".into(), "4".into(), "(1,3)".into(), "Minkowski space of the loop's SL(2,C)".into()]);
 
-    // N-2 the split octonions O_s = H + (iH) l
+    // N-2 the split octonions Os = H + (i H) e4
     let os_basis: Vec<B> = (0..8).map(|a| if a < 4 { e(a) } else { ie(a) }).collect();
     let in_os = |x: &B| -> bool { (0..4).all(|a| x.c[a].im == 0) && (4..8).all(|a| x.c[a].re == 0) };
     let mut os_ok = true;
@@ -122,7 +122,7 @@ pub fn run() -> bool {
         for b in 0..8 {
             let p = os_basis[a].mul(&os_basis[b]);
             os_ok &= in_os(&p);
-            // compare with the real split Cayley-Dickson product (s = +1) under (a, b) <-> a + i b l
+            // compare with the real split Cayley-Dickson product (sign +1) under (aH, bS) -> aH + (i bS) e4
             let mut ra = Bi::<GInt>::zero();
             let mut rb = Bi::<GInt>::zero();
             let ea = if a < 4 { a } else { a };
@@ -130,7 +130,7 @@ pub fn run() -> bool {
             ra.c[ea] = GInt::one();
             rb.c[eb] = GInt::one();
             let sp = ra.mul_s(&rb, 1);
-            // map split product (real coefficients) to O_s: coefficient k >= 4 gets a factor i
+            // map the split product (real coefficients) to Os: the coefficients of e4..e7 get a factor i
             let mut mapped = B::zero();
             for k in 0..8 {
                 mapped.c[k] = if k < 4 { sp.c[k] } else { sp.c[k].mul(GInt::iu()) };
@@ -139,10 +139,10 @@ pub fn run() -> bool {
         }
     }
     let sos = signature(&gram(&os_basis));
-    ck.add("N-2", "the split octonions sit inside the bi-octonions as O_s = H + (i H) l: this real 8-dimensional subspace is closed under the product, the map a + b l -> a + (i b) l is an isomorphism from the split Cayley-Dickson algebra (s = +1), and the norm has signature (4,4): the 4+4 manifold is the real form O_s of the super-loop's algebra; its unit elements N = 1 form the pseudo-sphere S^(3,4), a Moufang loop", os_ok && sos == (4, 4, 0), format!("signature {:?}", sos));
-    rows.push(vec!["R^(4,4) = split octonions O_s = H + (iH) l".into(), "8".into(), "(4,4)".into(), "the 4+4 manifold; unit loop S^(3,4)".into()]);
+    ck.add("N-2", "the split octonions sit inside B_LL as Os = H + (i H) e4: this real 8-dimensional subspace is closed under the product, the map from the split Cayley-Dickson algebra (pairs (aH, bS) of real quaternions with the sign +1) to B_LL, (aH, bS) -> aH + (i bS) e4, is an isomorphism onto Os, and N_LL restricted to Os has signature (4,4): the 4+4 manifold is the real form Os of the super-loop's algebra; its unit elements form the pseudo-sphere S^(3,4), a Moufang loop", os_ok && sos == (4, 4, 0), format!("signature {:?}", sos));
+    rows.push(vec!["R^(4,4) = split octonions Os = H + (i H) e4".into(), "8".into(), "(4,4)".into(), "the 4+4 manifold; its unit loop is S^(3,4)".into()]);
 
-    // N-3 the spinor-charge space: Re N and Im N
+    // N-3 the space s_LL of spinor charges: Re N_LL and Im N_LL
     let sb: Vec<B> = (4..8).map(e).chain((4..8).map(ie)).collect();
     let mut gre = zeros(8);
     let mut gim = zeros(8);
@@ -154,10 +154,10 @@ pub fn run() -> bool {
         }
     }
     let (sr, si) = (signature(&gre), signature(&gim));
-    ck.add("N-3", "the space of spinor charges s (real dimension 8) carries the Lorentz- and isospin-invariant quadratic forms Re N and Im N, both of signature (4,4): the base of the fibration of the super-loop over s (x = a + b l -> b, fibre SL(2,C) where det a = 1 - det b != 0) is a 4+4 space", sr == (4, 4, 0) && si == (4, 4, 0), format!("Re N {:?}, Im N {:?}", sr, si));
-    rows.push(vec!["s = spinor charges with Re N, Im N".into(), "8".into(), "(4,4) and (4,4)".into(), "base of the super-loop over its spinor directions".into()]);
+    ck.add("N-3", "the space of spinor charges s_LL (real dimension 8) carries the quadratic forms Re N_LL and Im N_LL (invariant under the Lorentz and isospin automorphisms, because N_LL is multiplicative), both of signature (4,4): the base of the fibration of L_LL over s_LL (aH + bS e4 -> bS, fibre a copy of SL(2,C) wherever N_LL(aH) = 1 - N_LL(bS) is not zero) is a 4+4 space", sr == (4, 4, 0) && si == (4, 4, 0), format!("Re N_LL {:?}, Im N_LL {:?}", sr, si));
+    rows.push(vec!["s_LL = spinor charges with Re N_LL, Im N_LL".into(), "8".into(), "(4,4) and (4,4)".into(), "base of the super-loop over its spinor directions".into()]);
 
-    // N-4 nested conjugations on R^(1,7)
+    // N-4 conjugations by loop elements on R^(1,7)_LL
     let eta8: Vec<i128> = (0..8).map(|a| if a == 0 { 1 } else { -1 }).collect();
     let mut gens: Vec<IM> = Vec::new();
     let mut in_so8 = true;
@@ -171,11 +171,11 @@ pub fn run() -> bool {
         gens.push(bm);
     }
     let (dim17, _) = lie_closure(&gens);
-    ck.add("N-4", "on the 7+1 manifold the one-parameter conjugations x -> u x u^dag by the loop elements u = exp(theta e_a) (rotations) and u = exp(theta i e_a) (boosts), a = 1..7, have generators x -> [e_a, x] and x -> {i e_a, x} that lie in so(1,7), and their Lie closure is all of so(1,7) (dimension 28): the super-loop acts on R^(1,7) through the Lorentz group SO(1,7)", in_so8 && dim17 == 28, format!("closure dimension {}", dim17));
+    ck.add("N-4", "on the 7+1 manifold the one-parameter conjugations x -> gL x gL^dag by the loop elements gL = exp(theta e_p) (rotations) and gL = exp(theta i e_p) (boosts), p = 1..7, have the generators x -> [e_p, x] and x -> i (e_p x + x e_p), which lie in so(1,7), and their Lie closure is all of so(1,7) (dimension 28, exact): the super-loop acts on R^(1,7)_LL through the Lorentz group SO(1,7)", in_so8 && dim17 == 28, format!("closure dimension {}", dim17));
 
-    // N-5 the loop's SL(2,C) acting by conjugation on R^(1,7): closure 9
+    // N-5 the loop's SL(2,C) acting by conjugation on R^(1,7)_LL: closure 9
     let (dim_l, basis_l) = lie_closure(&gens[0..6].to_vec());
-    // restriction to R^(1,3) (first 4 coordinates) has dimension 6
+    // restriction to R^(1,3)_LL (first 4 coordinates) has dimension 6
     let mut span4 = ExactSpan::new();
     for m in &basis_l {
         let mut v = Vec::new();
@@ -186,7 +186,7 @@ pub fn run() -> bool {
         }
         span4.insert(&v);
     }
-    ck.add("N-5", "conjugation by the loop's own Lorentz subgroup (a = 1,2,3) is not a group action on the 7+1 manifold: its six generators preserve R^(1,3) and act on it as so(3,1), but their Lie closure on R^(1,7) has dimension 9 = so(3,1) + so(3), the extra so(3) rotating only the four directions i e4..i e7 (the boosts act trivially there while the rotations act by the twisted spinor action)", dim_l == 9 && span4.rank() == 6, format!("closure on R^(1,7): {}, restricted to R^(1,3): {}", dim_l, span4.rank()));
+    ck.add("N-5", "conjugation by the loop's own Lorentz subgroup (p = 1,2,3) is not a group action on the 7+1 manifold: its six generators preserve R^(1,3)_LL and act on it as so(3,1), but their Lie closure on R^(1,7)_LL has dimension 9 = so(3,1) + so(3) (exact), the extra so(3) rotating only the four directions i e4..i e7 (there the boosts act trivially and the rotations by the twisted spinor action)", dim_l == 9 && span4.rank() == 6, format!("closure on R^(1,7)_LL: {}, restricted to R^(1,3)_LL: {}", dim_l, span4.rank()));
 
     // N-6 Lie closures of left multiplications
     let mut lgens: Vec<IM> = Vec::new();
@@ -194,7 +194,7 @@ pub fn run() -> bool {
         lgens.push(real_matrix(|y: &B| e(a).mul(y)));
         lgens.push(real_matrix(|y: &B| ie(a).mul(y)));
     }
-    // each L_x is C-linear and antisymmetric for Re N (so it preserves the complex bilinear form N)
+    // each L_x is complex-linear and antisymmetric for Re N_LL (so it preserves the complex bilinear form N_LL)
     let jc = real_matrix(|y: &B| y.scale(GInt::iu()));
     let mut gre16 = zeros(16);
     for i in 0..16 {
@@ -237,7 +237,7 @@ pub fn run() -> bool {
     }).collect();
     let s_in = sgens.iter().all(|m| in_so(m, &eta_s));
     let (d44, _) = lie_closure(&sgens);
-    ck.add("N-6", "the left multiplications generate Lie groups (their closures): by imaginary bi-octonions, so(8,C) of real dimension 56 (every L_x is complex-linear and preserves the complex norm N); by imaginary octonions on R^8, so(8) (28); by imaginary split units on O_s = R^(4,4), so(4,4) (28, each generator preserves the split norm): any linear action of the loop is an action of these LIE groups", cl_ok && d56 == 56 && d28 == 28 && d44 == 28 && s_in, format!("{} / {} / {}", d56, d28, d44));
+    ck.add("N-6", "the left multiplications generate Lie groups (their closures, exact): by imaginary bi-octonions, so(8,C) of real dimension 56 (every L_x is complex-linear and preserves the complex norm N_LL); by imaginary octonions on R^8, so(8) (28); by imaginary split units on Os = R^(4,4), so(4,4) (28; each generator preserves the split norm): any linear action of the loop is an action of these LIE groups", cl_ok && d56 == 56 && d28 == 28 && d44 == 28 && s_in, format!("closures {} / {} / {}", d56, d28, d44));
 
     // N-7 frame fields on the loop manifold
     let mut frame_ok = true;
@@ -248,9 +248,9 @@ pub fn run() -> bool {
         let mut y: B = rng.bi(3);
         x.c[0] = GInt::zero();
         y.c[0] = GInt::zero();
-        // tangency: N(u, u x) = N(u) x^0 = 0
+        // tangency: N_LL(w, w x) = N_LL(w) (coefficient of e0 of x) = 0  (the point w is called u in the code)
         frame_ok &= npol(&u, &u.mul(&x)) == GInt::zero();
-        // [X_x, X_y](u) = (ux)y - (uy)x = u[x,y] + 2 [u,x,y]
+        // [X_x, X_y](w) = (wx)y - (wy)x = w[x,y] + 2 [w,x,y]
         let lhs = u.mul(&x).mul(&y).sub(&u.mul(&y).mul(&x));
         let rhs = u.mul(&x.comm(&y)).add(&u.assoc(&x, &y).scale(gi(2, 0)));
         frame_ok &= lhs == rhs;
@@ -264,10 +264,10 @@ pub fn run() -> bool {
         let u = B::one();
         u.mul(&x).mul(&y).sub(&u.mul(&y).mul(&x)) == x.comm(&y)
     };
-    ck.add("N-7", "the super-loop manifold (N(u) = 1, a complex 7-sphere of real dimension 14) is parallelized by the frame fields X_x(u) = u x (x imaginary), which are tangent (N(u, u x) = 0); their Lie brackets are [X_x, X_y](u) = u [x,y] + 2 [u, x, y] (100 random u, x, y): at u = 1 this is the Malcev bracket, elsewhere the associator makes the structure functions non-constant: the manifold is parallelizable but carries no Lie group structure", frame_ok && nonconst && at1, String::new());
-    rows.push(vec!["super-loop manifold N(u) = 1 in C^8".into(), "14 (real)".into(), "complex quadric".into(), "Spin(7,C)/G2(C); real forms S^7 and S^(3,4)".into()]);
+    ck.add("N-7", "the super-loop manifold (N_LL(w) = 1, a complex 7-sphere of real dimension 14) is parallelized by the frame fields X_x(w) = w x (x imaginary), which are tangent (N_LL(w, w x) = 0); their Lie brackets are [X_x, X_y](w) = w [x,y] + 2 [w,x,y] (100 random w, x, y): at w = 1 this is the Malcev bracket, elsewhere the associator makes the structure functions non-constant: the manifold is parallelizable but carries no Lie group structure", frame_ok && nonconst && at1, String::new());
+    rows.push(vec!["super-loop L_LL: N_LL(w) = 1 in C^8".into(), "14".into(), "complex quadric".into(), "Spin(7,C)/G2(C); real forms S^7 and S^(3,4)".into()]);
 
-    // N-8 S^7 = Spin(7)/G2: spin(7) spanned by L_a L_b (a < b) on R^8; stabilizer of 1 is 14-dimensional
+    // N-8 S^7 = Spin(7)/G2: spin(7) spanned by L_(e_p) L_(e_p') (p < p') on R^8; the stabilizer of 1 is 14-dimensional
     let mut sp7: Vec<IM> = Vec::new();
     for a in 0..7 {
         for b in (a + 1)..7 {
@@ -275,14 +275,14 @@ pub fn run() -> bool {
         }
     }
     let (d21, b21) = lie_closure(&sp7);
-    // stabilizer of e0: linear combinations with M e0 = 0 -> nullity of the map c -> sum c_i (M_i e0)
+    // stabilizer of e0: the combinations of the basis matrices that annihilate e0 (nullity of that linear map)
     let cols: Vec<Vec<i128>> = b21.iter().map(|m| (0..8).map(|i| m[i][0]).collect()).collect();
     // rank of the 8 x 21 matrix whose columns are M_i e0
     let rk = rank(&cols);
     let stab = d21 - rk;
-    ck.add("N-8", "the 7-sphere of unit octonions (the compact real form of the super-loop) is the homogeneous space Spin(7)/G2: the products L_(e_a) L_(e_b) (a < b) span spin(7) (dimension 21) acting on R^8, the stabilizer of 1 has dimension 14 (g2) and the orbit of 1 has dimension 7", d21 == 21 && stab == 14 && rk == 7, format!("spin(7): {}, stabilizer: {}, orbit: {}", d21, stab, rk));
+    ck.add("N-8", "the 7-sphere S^7 of unit octonions (the compact real form of the super-loop) is the homogeneous space Spin(7)/G2: the products L_(e_p) L_(e_p') (p < p') span spin(7) (dimension 21, exact) acting on R^8, the stabilizer of 1 has dimension 14 (g2) and the orbit of 1 has dimension 7", d21 == 21 && stab == 14 && rk == 7, format!("spin(7): {}, stabilizer: {}, orbit: {}", d21, stab, rk));
 
-    // N-9 split real form: sl(2,R) = span{e1, i e4, i e5} inside Im O_s and the twisted action on the complement
+    // N-9 split real form: sl(2,R) = span{e1, i e4, i e5} inside Im Os
     let h1 = e(1);
     let h2 = ie(4);
     let h3 = ie(5);

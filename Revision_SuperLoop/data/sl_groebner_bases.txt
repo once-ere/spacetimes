@@ -1,200 +1,200 @@
 Revision_SuperLoop, script code/scripts/malcev_groebner.py: reduced Groebner bases of the constraint ideals
 (sympy 1.14.0); variables and brackets are defined in the docstring of the script
 
-== family F_A, jacobi identity: 6 independent constraint polynomials from 13 random tuples; reduced Groebner basis (grevlex, variables lam1, lam2, c1, c2):
-   lam2*(4*lam2**2 + 1)
-   lam1**2 - lam1 - lam2**2
-   lam2*(2*lam1 - 1)
-   c1
-   c2
-== family F_A, malcev identity: 8 independent constraint polynomials from 13 random tuples; reduced Groebner basis (grevlex, variables lam1, lam2, c1, c2):
-   -lam2*(10*lam1 - 12*lam2**4 - 35*lam2**2 - 13)
-   lam2*(12*lam1*lam2**2 + 7*lam1 + 4*lam2**2 - 1)
-   c2*(2*lam1*lam2**2 - 3*lam1 - lam2**2 - 6)
-   c2*lam2*(5*lam1 + 2*lam2**2 + 7)
-   lam1**3 + lam1**2 - 3*lam1*lam2**2 - 2*lam1 - lam2**2
-   lam2*(3*lam1**2 + 2*lam1 - lam2**2 - 2)
-   c2*(lam1**2 + 4*lam1 + lam2**2 + 4)
-   c1*lam1 + 2*c1 - c2*lam2
-   c1*lam2 + c2*lam1 + 2*c2
-== family F_B, jacobi identity: 19 independent constraint polynomials from 15 random tuples; reduced Groebner basis (grevlex, variables lam1, lam2, a1, a2, b1, b2, c1, c2, k):
-   lam2*(4*lam2**2 + 1)
-   -b1*(a1 - b1**2 - b2**2)
-   -b2*(a1 - b1**2 - b2**2)
-   lam1**2 - lam1 - lam2**2
-   lam2*(2*lam1 - 1)
-   a1*lam1 - b1**2 - b2**2
-   a1*lam2
-   b1*(lam1 - 1)
-   b1*lam2
-   b2*(lam1 - 1)
-   b2*lam2
-   k*(lam1 - 1)
-   k*lam2
-   a1*k
-   b1*k
-   b2*k
-   a2
-   c1
-   c2
-== family F_B, malcev identity: 85 independent constraint polynomials from 20 random tuples; reduced Groebner basis (grevlex, variables lam1, lam2, a1, a2, b1, b2, c1, c2, k):
-   -lam2*(10*lam1 - 12*lam2**4 - 35*lam2**2 - 13)
-   lam2*(12*lam1*lam2**2 + 7*lam1 + 4*lam2**2 - 1)
-   lam1**3 + lam1**2 - 3*lam1*lam2**2 - 2*lam1 - lam2**2
-   lam2*(3*lam1**2 + 2*lam1 - lam2**2 - 2)
-   -b1*(a1 - b1**2 - b2**2)
-   -b2*(a1 - b1**2 - b2**2)
-   a1*lam1 - b1**2 - b2**2
-   a1*lam2
-   b1*(lam1 - 1)
-   b1*lam2
-   b2*(lam1 - 1)
-   b2*lam2
-   k*(lam1 - 1)
-   k*lam2
-   a1*k
-   b1*k
-   b2*k
-   a2
-   c1
-   c2
-== family F_C, jacobi identity: 12 independent constraint polynomials from 15 random tuples; reduced Groebner basis (grevlex, variables kT, lam1, lam2, tau1, tau2, c1, c2, d1, d2):
-   lam2*(4*lam2**2 + 1)
-   tau2*(tau1**2 + tau2**2)
-   -c2*(lam1 - 2*lam2**2 - 1)
-   c2*(lam1*tau1 - lam2*tau2 - tau1)
-   c2*(lam1*tau2 + lam2*tau1 - tau2)
-   c2*(tau1**2 + tau2**2)
-   lam1**2 - lam1 - lam2**2
-   lam2*(2*lam1 - 1)
-   kT*tau1 - tau1**2 + tau2**2
-   tau2*(kT - 2*tau1)
-   c1*kT + 2*c2*tau2
-   c1*lam1 - c1 - c2*lam2
-   c1*lam2 + c2*lam1 - c2
-   c1*tau1 + c2*tau2
-   c1*tau2 - c2*tau1
-   c1**2 + c2**2
-   c2*(kT - 2*tau1)
-   -2*c1 + d1*kT
-   -c1 + d1*tau1
-   -c2 + d1*tau2
-   c1*d1 + c2*d2
-   -c1*d2 + c2*d1
-   -2*c2 + d2*kT
-   -c2 + d2*tau1
-   c1 + d2*tau2
-== family F_C, malcev identity: 43 independent constraint polynomials from 16 random tuples; reduced Groebner basis (grevlex, variables kT, lam1, lam2, tau1, tau2, c1, c2, d1, d2):
-   -lam2*(10*lam1 - 12*lam2**4 - 35*lam2**2 - 13)
-   tau2*(6*kT*lam1*lam2**2 + 3*kT*lam1 + 3*kT*lam2**2 - 10*lam1*lam2*tau2 - 6*lam1*tau1 - 4*lam2**3*tau2 - 12*lam2**2*tau1 + 4*lam2*tau2)
-   -tau2*(kT*lam2 + 6*lam1*tau2)*(lam1 - 2*lam2**2 - 1)
-   tau2*(9*lam1 - 2*lam2**2)*(lam1 - 2*lam2**2 - 1)
-   tau2*(lam1 + 2*lam2**2)*(tau1**2 + tau2**2)
-   tau2*(tau1**2 + tau2**2)*(3*lam1*tau1 - lam2*tau2)
-   tau2*(tau1**2 + tau2**2)*(lam1*tau2 + 3*lam2*tau1)
-   tau2*(tau1**2 + tau2**2)*(9*tau1**2 + tau2**2)
-   c2*(2*kT*lam1*lam2**2 - 3*kT*lam1 - kT*lam2**2 - 6*kT - 6*lam1*lam2*tau2 + 3*lam1*tau1 + 6*lam2*tau2 + 15*tau1)
-   c2*(5*kT*lam1*lam2 + 2*kT*lam2**3 + 7*kT*lam2 - 9*lam1*tau2 - 18*lam2**2*tau2 - 36*lam2*tau1 + 9*tau2)
-   -c2*(lam1 - 2*lam2**2 - 1)*(3*lam1 + 2*lam2**2 + 6)
-   c2*(4*lam1*lam2**2*tau2 + 3*lam1*tau2 + 4*lam2**2*tau2 + 6*lam2*tau1 - 3*tau2)
-   -c2*(8*lam1*lam2*tau2 + 9*lam1*tau1 - 4*lam2**3*tau2 - 14*lam2*tau2 - 9*tau1)
-   c2*(c1*lam2 + 4*c2*lam1*lam2**2 - 5*c2*lam1 - 2*c2*lam2**2 - 10*c2 - 6*d2*lam1*lam2*tau2 + 9*d2*lam2*tau2 + 15*d2*tau1)
-   c2*(12*c1*lam1 + 24*c1 + 10*c2*lam1*lam2 + 4*c2*lam2**3 + 2*c2*lam2 + 27*d2*lam1*tau2 - 18*d2*lam2**2*tau2 + 9*d2*tau2)
-   c1*lam2 - 3*c2*lam1**2 - 4*c2*lam1*lam2**2 - 5*c2*lam1 - c2*lam2**2 + 2*c2 + 6*d2*kT*lam1*lam2**2 + 3*d2*kT*lam1 + 3*d2*kT*lam2**2
-   lam2*(6*c1*lam2 - 4*c2*lam1 - 4*c2*lam2**2 - 2*c2 - 3*d2*kT*lam1 + 6*d2*kT*lam2**2 + 3*d2*kT)
-   d2*(9*lam1 - 2*lam2**2)*(lam1 - 2*lam2**2 - 1)
-   3*c1*lam1 + 3*c1*lam2**2 + 6*c1 + 8*c2*lam1*lam2 + 2*c2*lam2**3 + 10*c2*lam2 + 18*d2*lam1*lam2**2*tau2 + 9*d2*lam1*tau2 + 9*d2*lam2**2*tau2
-   -3*c1*lam2 - c2*lam1**2 - 4*c2*lam1*lam2**2 - c2*lam1 + c2*lam2**2 + 2*c2 - 2*d2*lam1*lam2*tau2 + 4*d2*lam2**3*tau2 + 2*d2*lam2*tau2
-   c2*(6*d1*lam2 + 4*d2*lam1*lam2**2 + 3*d2*lam1 + 4*d2*lam2**2 - 3*d2)
-   -c2*(9*d1*lam1 - 9*d1 + 8*d2*lam1*lam2 - 4*d2*lam2**3 - 14*d2*lam2)
-   c2*(c1*tau2 + 2*c2*lam1*tau1 + 2*c2*lam2*tau2 + 5*c2*tau1 + 4*d2*lam1*tau2**2 + 4*d2*tau2**2)
-   -c2*(c1*tau1 + 2*c2*lam1*tau2 - 2*c2*lam2*tau1 + 3*c2*tau2 - 4*d2*lam2*tau2**2 - 4*d2*tau1*tau2)
-   c2*(c1*d2 + 2*c2*d1*lam1 + 5*c2*d1 + 2*c2*d2*lam2 + 4*d2**2*lam1*tau2 + 4*d2**2*tau2)
-   -c2*(c1*d1 - 2*c2*d1*lam2 + 2*c2*d2*lam1 + 3*c2*d2 - 4*d2**2*lam2*tau2 - 4*d2**2*tau1)
-   lam2*(12*lam1*lam2**2 + 7*lam1 + 4*lam2**2 - 1)
-   -5*lam1**2*tau2 + 12*lam1*lam2**2*tau2 + 5*lam1*tau2 + 4*lam2**3*tau1 - lam2**2*tau2 + lam2*tau1
-   tau2*(kT*lam1**2 + kT*lam2**2 - 4*lam1*lam2*tau2 - 2*lam1*tau1 - 4*lam2**2*tau1 + 2*lam2*tau2)
-   tau2*(kT + 2*tau1)*(tau1**2 + tau2**2)
-   4*c1*lam2**3 + 9*c1*lam2 + c2*lam1**2 + 12*c2*lam1*lam2**2 + c2*lam1 + 5*c2*lam2**2 - 2*c2
-   c2*(kT*lam1**2 + 4*kT*lam1 + kT*lam2**2 + 4*kT - 6*lam1*tau1 - 6*lam2*tau2 - 12*tau1)
-   c2*(lam1*lam2*tau2 + lam1*tau1 + lam2**2*tau1 - 2*lam2*tau2 - tau1)
-   c2*tau2*(kT - 2*tau1)*(lam1 + 1)
-   c2*(lam1**2*tau2 + lam1*tau2 + lam2**2*tau2 + 3*lam2*tau1 - 2*tau2)
-   c2*(kT*lam2*tau2 + kT*tau1 - 2*lam2*tau1*tau2 + 2*tau2**2)
-   c2*(2*c1*lam1 + c1*lam2**2 + 4*c1 + c2*lam1*lam2 + 3*d2*lam1*tau2 + 3*d2*tau2)
-   -c2*(c1*lam2 - c2*lam1**2 - 3*c2*lam1 - c2*lam2**2 - 2*c2 + 6*d2*lam2*tau2 + 6*d2*tau1)
-   4*d1*lam2**3 + d1*lam2 - 5*d2*lam1**2 + 12*d2*lam1*lam2**2 + 5*d2*lam1 - d2*lam2**2
-   c2*(d1*lam1 + d1*lam2**2 - d1 + d2*lam1*lam2 - 2*d2*lam2)
-   4*c1*lam2 - 2*c2*lam1**2 - 4*c2*lam1 - 2*c2*lam2**2 + 3*d2*kT*lam1**2 + 3*d2*kT*lam2**2
-   c1*lam1 + 2*c1*lam2**2 + 2*c1 + 2*c2*lam1*lam2 + 3*c2*lam2 + 3*d2*lam1**2*tau2 + 3*d2*lam2**2*tau2
-   c1**2*tau1 - 2*c1*c2*tau2 + 2*c1*d2*tau1*tau2 - c2**2*tau1 - 2*c2*d2*tau2**2
-   c1**2*tau2 + 2*c1*c2*tau1 + 2*c1*d2*tau2**2 - c2**2*tau2 + 2*c2*d2*tau1*tau2
-   d2*(c1**2 + c2**2)*(kT - 2*tau1)
-   -c2*(2*c1*lam2 + 2*c2*lam1 + 4*c2 - 3*d2*kT*lam1 - 3*d2*kT + 6*d2*lam2*tau2 + 6*d2*tau1)
-   c2*(3*d1*lam2 + d2*lam1**2 + d2*lam1 + d2*lam2**2 - 2*d2)
-   2*c1*c2*lam1 + 4*c1*c2 - 3*c1*d2*kT + 6*c1*d2*tau1 - 2*c2**2*lam2 + 3*c2*d2*kT*lam2 + 6*c2*d2*lam1*tau2
-   -5*c1*d1 + 6*c2*d1*lam2 - 6*c2*d2*lam1 - 7*c2*d2 + 4*d2**2*kT*lam1 + 4*d2**2*lam2*tau2
-   7*c1*d2 - 6*c2*d1*lam1 - 5*c2*d1 - 6*c2*d2*lam2 + 4*d2**2*kT*lam2 - 4*d2**2*lam1*tau2
-   2*c1**2*d1 - c1*c2*d2 + 2*c1*d2**2*kT + c2**2*d1 + 2*c2*d2**2*tau2
-   c1**2*d1 - 2*c1*c2*d2 + 2*c1*d2**2*tau1 - c2**2*d1 - 2*c2*d2**2*tau2
-   c1**2*d2 + 2*c1*c2*d1 + 2*c1*d2**2*tau2 - c2**2*d2 + 2*c2*d2**2*tau1
-   c2*(3*c1*d1 - 3*c2*d2 + 2*d2**2*kT + 2*d2**2*tau1)
-   lam1**3 + lam1**2 - 3*lam1*lam2**2 - 2*lam1 - lam2**2
-   lam2*(3*lam1**2 + 2*lam1 - lam2**2 - 2)
-   2*kT**2*tau1 - kT*tau1**2 + kT*tau2**2 - tau1**3 + 3*tau1*tau2**2
-   kT*lam1*tau1 - kT*lam2*tau2 - lam1*tau1**2 + lam1*tau2**2 + 2*lam2*tau1*tau2
-   lam1**2*tau1 - 2*lam1*lam2*tau2 - lam1*tau1 - lam2**2*tau1 + lam2*tau2
-   kT*lam1*tau2 + kT*lam2*tau1 - 2*lam1*tau1*tau2 - lam2*tau1**2 + lam2*tau2**2
-   lam1**2*tau2 + 2*lam1*lam2*tau1 - lam1*tau2 - lam2**2*tau2 - lam2*tau1
-   tau2*(2*kT**2 - 2*kT*tau1 - 3*tau1**2 + tau2**2)
-   c1*kT*lam1 + 2*c1*kT - 3*c1*tau1 - c2*kT*lam2 + 3*c2*tau2
-   c1*lam1**2 + c1*lam1 - c1*lam2**2 - 2*c1 - 2*c2*lam1*lam2 - c2*lam2
-   c1*kT*lam2 - 3*c1*tau2 + c2*kT*lam1 + 2*c2*kT - 3*c2*tau1
-   2*c1*lam1*lam2 + c1*lam2 + c2*lam1**2 + c2*lam1 - c2*lam2**2 - 2*c2
-   c1*kT*tau1 + 2*c1*tau2**2 - c2*kT*tau2 + 2*c2*tau1*tau2
-   2*c1*lam1*tau1 + c1*tau1 - 2*c2*lam2*tau1 + 3*c2*tau2
-   2*c1*lam2*tau1 - 3*c1*tau2 + 2*c2*lam1*tau1 + c2*tau1
-   c1*(tau1**2 + tau2**2)
-   c1*kT*tau2 - 2*c1*tau1*tau2 + c2*kT*tau1 + 2*c2*tau2**2
-   2*c1*lam1*tau2 + c1*tau2 - 2*c2*lam2*tau2 - 3*c2*tau1
-   2*c1*lam2*tau2 + 3*c1*tau1 + 2*c2*lam1*tau2 + c2*tau2
-   c1**2*lam1 + 2*c1**2 - 2*c1*c2*lam2 + 3*c1*d2*tau2 - c2**2*lam1 - 2*c2**2 + 3*c2*d2*tau1
-   c1**2*lam2 + 2*c1*c2*lam1 + 4*c1*c2 - 3*c1*d2*tau1 - c2**2*lam2 + 3*c2*d2*tau2
-   c2*(tau1**2 + tau2**2)
-   -3*c1*tau1 + 3*c2*tau2 + 2*d1*kT**2 + 2*d2*tau1*tau2
-   -2*c1*lam1 - 4*c1 + 2*c2*lam2 + 3*d1*kT*lam1 - 3*d2*kT*lam2
-   d1*lam1**2 - d1*lam1 - d1*lam2**2 - 2*d2*lam1*lam2 + d2*lam2
-   -2*c1*lam2 - 2*c2*lam1 - 4*c2 + 3*d1*kT*lam2 + 3*d2*kT*lam1
-   2*d1*lam1*lam2 - d1*lam2 + d2*lam1**2 - d2*lam1 - d2*lam2**2
-   -3*c1*tau1 + 3*c2*tau2 + 2*d1*kT*tau1 - 2*d2*tau1*tau2
-   lam1*(d1*tau1 + d2*tau2)
-   lam2*(d1*tau1 + d2*tau2)
-   tau1*(d1*tau1 + d2*tau2)
-   -3*c1*tau2 - 3*c2*tau1 + 2*d1*kT*tau2 - 2*d2*tau2**2
-   -c1*lam2 - c2*lam1 - 2*c2 + 3*d1*lam1*tau2 - 3*d2*lam2*tau2
-   c1*lam1 + 2*c1 - c2*lam2 + 3*d1*lam2*tau2 + 3*d2*lam1*tau2
-   tau2*(d1*tau1 + d2*tau2)
-   tau2*(d1*tau2 - d2*tau1)
-   c1*d1*kT + 2*c1*d2*tau2 - c2*d2*kT + 2*c2*d2*tau1
-   2*c1*d1*lam1 + c1*d1 - 2*c2*d1*lam2 + 3*c2*d2
-   2*c1*d1*lam2 - 3*c1*d2 + 2*c2*d1*lam1 + c2*d1
-   c1*(d1*tau1 + d2*tau2)
-   c1*(d1*tau2 - d2*tau1)
-   c1*d2*kT - 2*c1*d2*tau1 + c2*d1*kT + 2*c2*d2*tau2
-   c2*(d1*tau1 + d2*tau2)
-   c2*(d1*tau2 - d2*tau1)
-   kT*(d1**2 + d2**2)
-   tau1*(d1**2 + d2**2)
-   tau2*(d1**2 + d2**2)
-   c1*(d1**2 + d2**2)
-   c2*(d1**2 + d2**2)
-   -3*c1*tau2 - 3*c2*tau1 + 2*d2*kT**2 + 2*d2*tau2**2
-   -3*c1*tau2 - 3*c2*tau1 + 2*d2*kT*tau1 - 2*d2*tau2**2
-   -c1*lam2 - c2*lam1 - 2*c2 + 3*d2*lam1*tau1 - 3*d2*lam2*tau2
-   c1*lam1 + 2*c1 - c2*lam2 + 3*d2*lam1*tau2 + 3*d2*lam2*tau1
-   d2*(tau1**2 + tau2**2)
-   3*c1*tau1 - 3*c2*tau2 + 2*d2*kT*tau2 + 2*d2*tau1*tau2
-   2*c1*d2*lam1 + c1*d2 - 3*c2*d1 - 2*c2*d2*lam2
-   3*c1*d1 + 2*c1*d2*lam2 + 2*c2*d2*lam1 + c2*d2
-   -3*c1*d2 - 3*c2*d1 + 2*d1*d2*kT + d1*d2*tau1 - d2**2*tau2
-   3*c1*d1 - 3*c2*d2 + d1*d2*tau2 + 2*d2**2*kT + d2**2*tau1
+== family F_A, jacobi identity: 6 independent constraint polynomials from 13 random tuples; reduced Groebner basis (grevlex, variables ctw_re, ctw_im, csl_re, csl_im):
+   ctw_im*(4*ctw_im**2 + 1)
+   -ctw_im**2 + ctw_re**2 - ctw_re
+   ctw_im*(2*ctw_re - 1)
+   csl_re
+   csl_im
+== family F_A, malcev identity: 8 independent constraint polynomials from 13 random tuples; reduced Groebner basis (grevlex, variables ctw_re, ctw_im, csl_re, csl_im):
+   ctw_im*(12*ctw_im**4 + 35*ctw_im**2 - 10*ctw_re + 13)
+   ctw_im*(12*ctw_im**2*ctw_re + 4*ctw_im**2 + 7*ctw_re - 1)
+   csl_im*(2*ctw_im**2*ctw_re - ctw_im**2 - 3*ctw_re - 6)
+   csl_im*ctw_im*(2*ctw_im**2 + 5*ctw_re + 7)
+   -3*ctw_im**2*ctw_re - ctw_im**2 + ctw_re**3 + ctw_re**2 - 2*ctw_re
+   -ctw_im*(ctw_im**2 - 3*ctw_re**2 - 2*ctw_re + 2)
+   csl_im*(ctw_im**2 + ctw_re**2 + 4*ctw_re + 4)
+   -csl_im*ctw_im + csl_re*ctw_re + 2*csl_re
+   csl_im*ctw_re + 2*csl_im + csl_re*ctw_im
+== family F_B, jacobi identity: 19 independent constraint polynomials from 15 random tuples; reduced Groebner basis (grevlex, variables ctw_re, ctw_im, cPP_re, cPP_im, cPs_re, cPs_im, csl_re, csl_im, csP):
+   ctw_im*(4*ctw_im**2 + 1)
+   -cPs_re*(cPP_re - cPs_im**2 - cPs_re**2)
+   -cPs_im*(cPP_re - cPs_im**2 - cPs_re**2)
+   -ctw_im**2 + ctw_re**2 - ctw_re
+   ctw_im*(2*ctw_re - 1)
+   cPP_re*ctw_re - cPs_im**2 - cPs_re**2
+   cPP_re*ctw_im
+   cPs_re*(ctw_re - 1)
+   cPs_re*ctw_im
+   cPs_im*(ctw_re - 1)
+   cPs_im*ctw_im
+   csP*(ctw_re - 1)
+   csP*ctw_im
+   cPP_re*csP
+   cPs_re*csP
+   cPs_im*csP
+   cPP_im
+   csl_re
+   csl_im
+== family F_B, malcev identity: 85 independent constraint polynomials from 20 random tuples; reduced Groebner basis (grevlex, variables ctw_re, ctw_im, cPP_re, cPP_im, cPs_re, cPs_im, csl_re, csl_im, csP):
+   ctw_im*(12*ctw_im**4 + 35*ctw_im**2 - 10*ctw_re + 13)
+   ctw_im*(12*ctw_im**2*ctw_re + 4*ctw_im**2 + 7*ctw_re - 1)
+   -3*ctw_im**2*ctw_re - ctw_im**2 + ctw_re**3 + ctw_re**2 - 2*ctw_re
+   -ctw_im*(ctw_im**2 - 3*ctw_re**2 - 2*ctw_re + 2)
+   -cPs_re*(cPP_re - cPs_im**2 - cPs_re**2)
+   -cPs_im*(cPP_re - cPs_im**2 - cPs_re**2)
+   cPP_re*ctw_re - cPs_im**2 - cPs_re**2
+   cPP_re*ctw_im
+   cPs_re*(ctw_re - 1)
+   cPs_re*ctw_im
+   cPs_im*(ctw_re - 1)
+   cPs_im*ctw_im
+   csP*(ctw_re - 1)
+   csP*ctw_im
+   cPP_re*csP
+   cPs_re*csP
+   cPs_im*csP
+   cPP_im
+   csl_re
+   csl_im
+== family F_C, jacobi identity: 12 independent constraint polynomials from 15 random tuples; reduced Groebner basis (grevlex, variables cTT, ctw_re, ctw_im, cTs_re, cTs_im, csl_re, csl_im, csT_re, csT_im):
+   ctw_im*(4*ctw_im**2 + 1)
+   cTs_im*(cTs_im**2 + cTs_re**2)
+   csl_im*(2*ctw_im**2 - ctw_re + 1)
+   -csl_im*(cTs_im*ctw_im - cTs_re*ctw_re + cTs_re)
+   csl_im*(cTs_im*ctw_re - cTs_im + cTs_re*ctw_im)
+   csl_im*(cTs_im**2 + cTs_re**2)
+   -ctw_im**2 + ctw_re**2 - ctw_re
+   ctw_im*(2*ctw_re - 1)
+   cTT*cTs_re + cTs_im**2 - cTs_re**2
+   cTs_im*(cTT - 2*cTs_re)
+   cTT*csl_re + 2*cTs_im*csl_im
+   -csl_im*ctw_im + csl_re*ctw_re - csl_re
+   csl_im*ctw_re - csl_im + csl_re*ctw_im
+   cTs_im*csl_im + cTs_re*csl_re
+   cTs_im*csl_re - cTs_re*csl_im
+   csl_im**2 + csl_re**2
+   csl_im*(cTT - 2*cTs_re)
+   cTT*csT_re - 2*csl_re
+   cTs_re*csT_re - csl_re
+   cTs_im*csT_re - csl_im
+   csT_im*csl_im + csT_re*csl_re
+   -csT_im*csl_re + csT_re*csl_im
+   cTT*csT_im - 2*csl_im
+   cTs_re*csT_im - csl_im
+   cTs_im*csT_im + csl_re
+== family F_C, malcev identity: 43 independent constraint polynomials from 16 random tuples; reduced Groebner basis (grevlex, variables cTT, ctw_re, ctw_im, cTs_re, cTs_im, csl_re, csl_im, csT_re, csT_im):
+   ctw_im*(12*ctw_im**4 + 35*ctw_im**2 - 10*ctw_re + 13)
+   cTs_im*(6*cTT*ctw_im**2*ctw_re + 3*cTT*ctw_im**2 + 3*cTT*ctw_re - 4*cTs_im*ctw_im**3 - 10*cTs_im*ctw_im*ctw_re + 4*cTs_im*ctw_im - 12*cTs_re*ctw_im**2 - 6*cTs_re*ctw_re)
+   cTs_im*(cTT*ctw_im + 6*cTs_im*ctw_re)*(2*ctw_im**2 - ctw_re + 1)
+   cTs_im*(2*ctw_im**2 - 9*ctw_re)*(2*ctw_im**2 - ctw_re + 1)
+   cTs_im*(cTs_im**2 + cTs_re**2)*(2*ctw_im**2 + ctw_re)
+   -cTs_im*(cTs_im**2 + cTs_re**2)*(cTs_im*ctw_im - 3*cTs_re*ctw_re)
+   cTs_im*(cTs_im**2 + cTs_re**2)*(cTs_im*ctw_re + 3*cTs_re*ctw_im)
+   cTs_im*(cTs_im**2 + cTs_re**2)*(cTs_im**2 + 9*cTs_re**2)
+   csl_im*(2*cTT*ctw_im**2*ctw_re - cTT*ctw_im**2 - 3*cTT*ctw_re - 6*cTT - 6*cTs_im*ctw_im*ctw_re + 6*cTs_im*ctw_im + 3*cTs_re*ctw_re + 15*cTs_re)
+   csl_im*(2*cTT*ctw_im**3 + 5*cTT*ctw_im*ctw_re + 7*cTT*ctw_im - 18*cTs_im*ctw_im**2 - 9*cTs_im*ctw_re + 9*cTs_im - 36*cTs_re*ctw_im)
+   csl_im*(2*ctw_im**2 - ctw_re + 1)*(2*ctw_im**2 + 3*ctw_re + 6)
+   csl_im*(4*cTs_im*ctw_im**2*ctw_re + 4*cTs_im*ctw_im**2 + 3*cTs_im*ctw_re - 3*cTs_im + 6*cTs_re*ctw_im)
+   csl_im*(4*cTs_im*ctw_im**3 - 8*cTs_im*ctw_im*ctw_re + 14*cTs_im*ctw_im - 9*cTs_re*ctw_re + 9*cTs_re)
+   -csl_im*(6*cTs_im*csT_im*ctw_im*ctw_re - 9*cTs_im*csT_im*ctw_im - 15*cTs_re*csT_im - 4*csl_im*ctw_im**2*ctw_re + 2*csl_im*ctw_im**2 + 5*csl_im*ctw_re + 10*csl_im - csl_re*ctw_im)
+   -csl_im*(18*cTs_im*csT_im*ctw_im**2 - 27*cTs_im*csT_im*ctw_re - 9*cTs_im*csT_im - 4*csl_im*ctw_im**3 - 10*csl_im*ctw_im*ctw_re - 2*csl_im*ctw_im - 12*csl_re*ctw_re - 24*csl_re)
+   6*cTT*csT_im*ctw_im**2*ctw_re + 3*cTT*csT_im*ctw_im**2 + 3*cTT*csT_im*ctw_re - 4*csl_im*ctw_im**2*ctw_re - csl_im*ctw_im**2 - 3*csl_im*ctw_re**2 - 5*csl_im*ctw_re + 2*csl_im + csl_re*ctw_im
+   ctw_im*(6*cTT*csT_im*ctw_im**2 - 3*cTT*csT_im*ctw_re + 3*cTT*csT_im - 4*csl_im*ctw_im**2 - 4*csl_im*ctw_re - 2*csl_im + 6*csl_re*ctw_im)
+   csT_im*(2*ctw_im**2 - 9*ctw_re)*(2*ctw_im**2 - ctw_re + 1)
+   18*cTs_im*csT_im*ctw_im**2*ctw_re + 9*cTs_im*csT_im*ctw_im**2 + 9*cTs_im*csT_im*ctw_re + 2*csl_im*ctw_im**3 + 8*csl_im*ctw_im*ctw_re + 10*csl_im*ctw_im + 3*csl_re*ctw_im**2 + 3*csl_re*ctw_re + 6*csl_re
+   4*cTs_im*csT_im*ctw_im**3 - 2*cTs_im*csT_im*ctw_im*ctw_re + 2*cTs_im*csT_im*ctw_im - 4*csl_im*ctw_im**2*ctw_re + csl_im*ctw_im**2 - csl_im*ctw_re**2 - csl_im*ctw_re + 2*csl_im - 3*csl_re*ctw_im
+   csl_im*(4*csT_im*ctw_im**2*ctw_re + 4*csT_im*ctw_im**2 + 3*csT_im*ctw_re - 3*csT_im + 6*csT_re*ctw_im)
+   csl_im*(4*csT_im*ctw_im**3 - 8*csT_im*ctw_im*ctw_re + 14*csT_im*ctw_im - 9*csT_re*ctw_re + 9*csT_re)
+   csl_im*(4*cTs_im**2*csT_im*ctw_re + 4*cTs_im**2*csT_im + 2*cTs_im*csl_im*ctw_im + cTs_im*csl_re + 2*cTs_re*csl_im*ctw_re + 5*cTs_re*csl_im)
+   csl_im*(4*cTs_im**2*csT_im*ctw_im + 4*cTs_im*cTs_re*csT_im - 2*cTs_im*csl_im*ctw_re - 3*cTs_im*csl_im + 2*cTs_re*csl_im*ctw_im - cTs_re*csl_re)
+   csl_im*(4*cTs_im*csT_im**2*ctw_re + 4*cTs_im*csT_im**2 + 2*csT_im*csl_im*ctw_im + csT_im*csl_re + 2*csT_re*csl_im*ctw_re + 5*csT_re*csl_im)
+   csl_im*(4*cTs_im*csT_im**2*ctw_im + 4*cTs_re*csT_im**2 - 2*csT_im*csl_im*ctw_re - 3*csT_im*csl_im + 2*csT_re*csl_im*ctw_im - csT_re*csl_re)
+   ctw_im*(12*ctw_im**2*ctw_re + 4*ctw_im**2 + 7*ctw_re - 1)
+   12*cTs_im*ctw_im**2*ctw_re - cTs_im*ctw_im**2 - 5*cTs_im*ctw_re**2 + 5*cTs_im*ctw_re + 4*cTs_re*ctw_im**3 + cTs_re*ctw_im
+   cTs_im*(cTT*ctw_im**2 + cTT*ctw_re**2 - 4*cTs_im*ctw_im*ctw_re + 2*cTs_im*ctw_im - 4*cTs_re*ctw_im**2 - 2*cTs_re*ctw_re)
+   cTs_im*(cTT + 2*cTs_re)*(cTs_im**2 + cTs_re**2)
+   12*csl_im*ctw_im**2*ctw_re + 5*csl_im*ctw_im**2 + csl_im*ctw_re**2 + csl_im*ctw_re - 2*csl_im + 4*csl_re*ctw_im**3 + 9*csl_re*ctw_im
+   csl_im*(cTT*ctw_im**2 + cTT*ctw_re**2 + 4*cTT*ctw_re + 4*cTT - 6*cTs_im*ctw_im - 6*cTs_re*ctw_re - 12*cTs_re)
+   csl_im*(cTs_im*ctw_im*ctw_re - 2*cTs_im*ctw_im + cTs_re*ctw_im**2 + cTs_re*ctw_re - cTs_re)
+   cTs_im*csl_im*(cTT - 2*cTs_re)*(ctw_re + 1)
+   csl_im*(cTs_im*ctw_im**2 + cTs_im*ctw_re**2 + cTs_im*ctw_re - 2*cTs_im + 3*cTs_re*ctw_im)
+   csl_im*(cTT*cTs_im*ctw_im + cTT*cTs_re + 2*cTs_im**2 - 2*cTs_im*cTs_re*ctw_im)
+   csl_im*(3*cTs_im*csT_im*ctw_re + 3*cTs_im*csT_im + csl_im*ctw_im*ctw_re + csl_re*ctw_im**2 + 2*csl_re*ctw_re + 4*csl_re)
+   -csl_im*(6*cTs_im*csT_im*ctw_im + 6*cTs_re*csT_im - csl_im*ctw_im**2 - csl_im*ctw_re**2 - 3*csl_im*ctw_re - 2*csl_im + csl_re*ctw_im)
+   12*csT_im*ctw_im**2*ctw_re - csT_im*ctw_im**2 - 5*csT_im*ctw_re**2 + 5*csT_im*ctw_re + 4*csT_re*ctw_im**3 + csT_re*ctw_im
+   csl_im*(csT_im*ctw_im*ctw_re - 2*csT_im*ctw_im + csT_re*ctw_im**2 + csT_re*ctw_re - csT_re)
+   3*cTT*csT_im*ctw_im**2 + 3*cTT*csT_im*ctw_re**2 - 2*csl_im*ctw_im**2 - 2*csl_im*ctw_re**2 - 4*csl_im*ctw_re + 4*csl_re*ctw_im
+   3*cTs_im*csT_im*ctw_im**2 + 3*cTs_im*csT_im*ctw_re**2 + 2*csl_im*ctw_im*ctw_re + 3*csl_im*ctw_im + 2*csl_re*ctw_im**2 + csl_re*ctw_re + 2*csl_re
+   -2*cTs_im**2*csT_im*csl_im + 2*cTs_im*cTs_re*csT_im*csl_re - 2*cTs_im*csl_im*csl_re - cTs_re*csl_im**2 + cTs_re*csl_re**2
+   2*cTs_im**2*csT_im*csl_re + 2*cTs_im*cTs_re*csT_im*csl_im - cTs_im*csl_im**2 + cTs_im*csl_re**2 + 2*cTs_re*csl_im*csl_re
+   csT_im*(cTT - 2*cTs_re)*(csl_im**2 + csl_re**2)
+   csl_im*(3*cTT*csT_im*ctw_re + 3*cTT*csT_im - 6*cTs_im*csT_im*ctw_im - 6*cTs_re*csT_im - 2*csl_im*ctw_re - 4*csl_im - 2*csl_re*ctw_im)
+   csl_im*(csT_im*ctw_im**2 + csT_im*ctw_re**2 + csT_im*ctw_re - 2*csT_im + 3*csT_re*ctw_im)
+   3*cTT*csT_im*csl_im*ctw_im - 3*cTT*csT_im*csl_re + 6*cTs_im*csT_im*csl_im*ctw_re + 6*cTs_re*csT_im*csl_re - 2*csl_im**2*ctw_im + 2*csl_im*csl_re*ctw_re + 4*csl_im*csl_re
+   4*cTT*csT_im**2*ctw_re + 4*cTs_im*csT_im**2*ctw_im - 6*csT_im*csl_im*ctw_re - 7*csT_im*csl_im + 6*csT_re*csl_im*ctw_im - 5*csT_re*csl_re
+   4*cTT*csT_im**2*ctw_im - 4*cTs_im*csT_im**2*ctw_re - 6*csT_im*csl_im*ctw_im + 7*csT_im*csl_re - 6*csT_re*csl_im*ctw_re - 5*csT_re*csl_im
+   2*cTT*csT_im**2*csl_re + 2*cTs_im*csT_im**2*csl_im - csT_im*csl_im*csl_re + csT_re*csl_im**2 + 2*csT_re*csl_re**2
+   -2*cTs_im*csT_im**2*csl_im + 2*cTs_re*csT_im**2*csl_re - 2*csT_im*csl_im*csl_re - csT_re*csl_im**2 + csT_re*csl_re**2
+   2*cTs_im*csT_im**2*csl_re + 2*cTs_re*csT_im**2*csl_im - csT_im*csl_im**2 + csT_im*csl_re**2 + 2*csT_re*csl_im*csl_re
+   csl_im*(2*cTT*csT_im**2 + 2*cTs_re*csT_im**2 - 3*csT_im*csl_im + 3*csT_re*csl_re)
+   -3*ctw_im**2*ctw_re - ctw_im**2 + ctw_re**3 + ctw_re**2 - 2*ctw_re
+   -ctw_im*(ctw_im**2 - 3*ctw_re**2 - 2*ctw_re + 2)
+   2*cTT**2*cTs_re + cTT*cTs_im**2 - cTT*cTs_re**2 + 3*cTs_im**2*cTs_re - cTs_re**3
+   -cTT*cTs_im*ctw_im + cTT*cTs_re*ctw_re + cTs_im**2*ctw_re + 2*cTs_im*cTs_re*ctw_im - cTs_re**2*ctw_re
+   -2*cTs_im*ctw_im*ctw_re + cTs_im*ctw_im - cTs_re*ctw_im**2 + cTs_re*ctw_re**2 - cTs_re*ctw_re
+   cTT*cTs_im*ctw_re + cTT*cTs_re*ctw_im + cTs_im**2*ctw_im - 2*cTs_im*cTs_re*ctw_re - cTs_re**2*ctw_im
+   -cTs_im*ctw_im**2 + cTs_im*ctw_re**2 - cTs_im*ctw_re + 2*cTs_re*ctw_im*ctw_re - cTs_re*ctw_im
+   cTs_im*(2*cTT**2 - 2*cTT*cTs_re + cTs_im**2 - 3*cTs_re**2)
+   -cTT*csl_im*ctw_im + cTT*csl_re*ctw_re + 2*cTT*csl_re + 3*cTs_im*csl_im - 3*cTs_re*csl_re
+   -2*csl_im*ctw_im*ctw_re - csl_im*ctw_im - csl_re*ctw_im**2 + csl_re*ctw_re**2 + csl_re*ctw_re - 2*csl_re
+   cTT*csl_im*ctw_re + 2*cTT*csl_im + cTT*csl_re*ctw_im - 3*cTs_im*csl_re - 3*cTs_re*csl_im
+   -csl_im*ctw_im**2 + csl_im*ctw_re**2 + csl_im*ctw_re - 2*csl_im + 2*csl_re*ctw_im*ctw_re + csl_re*ctw_im
+   -cTT*cTs_im*csl_im + cTT*cTs_re*csl_re + 2*cTs_im**2*csl_re + 2*cTs_im*cTs_re*csl_im
+   3*cTs_im*csl_im - 2*cTs_re*csl_im*ctw_im + 2*cTs_re*csl_re*ctw_re + cTs_re*csl_re
+   -3*cTs_im*csl_re + 2*cTs_re*csl_im*ctw_re + cTs_re*csl_im + 2*cTs_re*csl_re*ctw_im
+   csl_re*(cTs_im**2 + cTs_re**2)
+   cTT*cTs_im*csl_re + cTT*cTs_re*csl_im + 2*cTs_im**2*csl_im - 2*cTs_im*cTs_re*csl_re
+   -2*cTs_im*csl_im*ctw_im + 2*cTs_im*csl_re*ctw_re + cTs_im*csl_re - 3*cTs_re*csl_im
+   2*cTs_im*csl_im*ctw_re + cTs_im*csl_im + 2*cTs_im*csl_re*ctw_im + 3*cTs_re*csl_re
+   3*cTs_im*csT_im*csl_re + 3*cTs_re*csT_im*csl_im - csl_im**2*ctw_re - 2*csl_im**2 - 2*csl_im*csl_re*ctw_im + csl_re**2*ctw_re + 2*csl_re**2
+   3*cTs_im*csT_im*csl_im - 3*cTs_re*csT_im*csl_re - csl_im**2*ctw_im + 2*csl_im*csl_re*ctw_re + 4*csl_im*csl_re + csl_re**2*ctw_im
+   csl_im*(cTs_im**2 + cTs_re**2)
+   2*cTT**2*csT_re + 2*cTs_im*cTs_re*csT_im + 3*cTs_im*csl_im - 3*cTs_re*csl_re
+   -3*cTT*csT_im*ctw_im + 3*cTT*csT_re*ctw_re + 2*csl_im*ctw_im - 2*csl_re*ctw_re - 4*csl_re
+   -2*csT_im*ctw_im*ctw_re + csT_im*ctw_im - csT_re*ctw_im**2 + csT_re*ctw_re**2 - csT_re*ctw_re
+   3*cTT*csT_im*ctw_re + 3*cTT*csT_re*ctw_im - 2*csl_im*ctw_re - 4*csl_im - 2*csl_re*ctw_im
+   -csT_im*ctw_im**2 + csT_im*ctw_re**2 - csT_im*ctw_re + 2*csT_re*ctw_im*ctw_re - csT_re*ctw_im
+   2*cTT*cTs_re*csT_re - 2*cTs_im*cTs_re*csT_im + 3*cTs_im*csl_im - 3*cTs_re*csl_re
+   ctw_re*(cTs_im*csT_im + cTs_re*csT_re)
+   ctw_im*(cTs_im*csT_im + cTs_re*csT_re)
+   cTs_re*(cTs_im*csT_im + cTs_re*csT_re)
+   2*cTT*cTs_im*csT_re - 2*cTs_im**2*csT_im - 3*cTs_im*csl_re - 3*cTs_re*csl_im
+   -3*cTs_im*csT_im*ctw_im + 3*cTs_im*csT_re*ctw_re - csl_im*ctw_re - 2*csl_im - csl_re*ctw_im
+   3*cTs_im*csT_im*ctw_re + 3*cTs_im*csT_re*ctw_im - csl_im*ctw_im + csl_re*ctw_re + 2*csl_re
+   cTs_im*(cTs_im*csT_im + cTs_re*csT_re)
+   cTs_im*(cTs_im*csT_re - cTs_re*csT_im)
+   -cTT*csT_im*csl_im + cTT*csT_re*csl_re + 2*cTs_im*csT_im*csl_re + 2*cTs_re*csT_im*csl_im
+   3*csT_im*csl_im - 2*csT_re*csl_im*ctw_im + 2*csT_re*csl_re*ctw_re + csT_re*csl_re
+   -3*csT_im*csl_re + 2*csT_re*csl_im*ctw_re + csT_re*csl_im + 2*csT_re*csl_re*ctw_im
+   csl_re*(cTs_im*csT_im + cTs_re*csT_re)
+   csl_re*(cTs_im*csT_re - cTs_re*csT_im)
+   cTT*csT_im*csl_re + cTT*csT_re*csl_im + 2*cTs_im*csT_im*csl_im - 2*cTs_re*csT_im*csl_re
+   csl_im*(cTs_im*csT_im + cTs_re*csT_re)
+   csl_im*(cTs_im*csT_re - cTs_re*csT_im)
+   cTT*(csT_im**2 + csT_re**2)
+   cTs_re*(csT_im**2 + csT_re**2)
+   cTs_im*(csT_im**2 + csT_re**2)
+   csl_re*(csT_im**2 + csT_re**2)
+   csl_im*(csT_im**2 + csT_re**2)
+   2*cTT**2*csT_im + 2*cTs_im**2*csT_im - 3*cTs_im*csl_re - 3*cTs_re*csl_im
+   2*cTT*cTs_re*csT_im - 2*cTs_im**2*csT_im - 3*cTs_im*csl_re - 3*cTs_re*csl_im
+   -3*cTs_im*csT_im*ctw_im + 3*cTs_re*csT_im*ctw_re - csl_im*ctw_re - 2*csl_im - csl_re*ctw_im
+   3*cTs_im*csT_im*ctw_re + 3*cTs_re*csT_im*ctw_im - csl_im*ctw_im + csl_re*ctw_re + 2*csl_re
+   csT_im*(cTs_im**2 + cTs_re**2)
+   2*cTT*cTs_im*csT_im + 2*cTs_im*cTs_re*csT_im - 3*cTs_im*csl_im + 3*cTs_re*csl_re
+   -2*csT_im*csl_im*ctw_im + 2*csT_im*csl_re*ctw_re + csT_im*csl_re - 3*csT_re*csl_im
+   2*csT_im*csl_im*ctw_re + csT_im*csl_im + 2*csT_im*csl_re*ctw_im + 3*csT_re*csl_re
+   2*cTT*csT_im*csT_re - cTs_im*csT_im**2 + cTs_re*csT_im*csT_re - 3*csT_im*csl_re - 3*csT_re*csl_im
+   2*cTT*csT_im**2 + cTs_im*csT_im*csT_re + cTs_re*csT_im**2 - 3*csT_im*csl_im + 3*csT_re*csl_re
