@@ -41,6 +41,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md   # the table of the keys of the input file
 python3 test2/python/t2_examples_check.py test2/data/t2_py                   # checks EX-1 .. EX-7
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done   # item [4]: Figures 7 to 13
+(cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_solve --selftest test2/data/t2_rs_selftest_checks.txt test2/examples   # item [5]
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
+python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py   # checks EX-1 .. EX-8 of the Rust solutions
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -49,7 +52,7 @@ bash code/scripts/check_all.sh                                           # every
 the program of the examples of the explanation and its figures; the program of the document on the
 $3+1$ manifold and its figures; the programs of the folder `test2` (`t2_fields` for item [1] and `t2_analytic` for
 item [2] of Test 2) and their figures; the Python solver of item [3] (its self-test, the seven examples, the table of the
-keys) and the checks of its examples; the plots of item [4]; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+keys) and the checks of its examples; the plots of item [4]; the Rust solver of item [5], its examples and the comparison of the two sets of solutions; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -649,7 +652,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [4]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python solver and its plots (folder `test2`)
+# 11. Test 2, items [1] to [5]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and the plots (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -931,6 +934,55 @@ draws the predictions of EX-1 to EX-7 with the functions of `t2_examples_check.p
 (shifted to the centre) and the first-order Wilson shift, and a sinusoid with the frequency of the amplitude mode of the
 linearized equations (amplitude and phase fitted by least squares). The figures are `test2/figures/fig_t2_py_<example>.pdf`
 and `.png` for the seven examples.
+
+## Item [5]: the Rust solver
+
+The member `t2solve` of the workspace `test2/rust` (binary `t2_solve`; `src/input.rs` the keys, the examples and the reading of
+input files, `src/ops.rs` the lattice, the gauge fields, the pair field, the sparse operator (2.36) in compressed rows, the
+packet with its branch projection by the discrete Fourier transform, and the numerical tools, `src/main.rs` the tasks, the
+outputs, the self-test and the dialogue) implements the methods of the Python solver of item [3] step by step and writes the same
+files. Its self-test compares the sparse operator with `Lattice::apply` of `t2core` on a $3\times4\times2$ lattice with random
+fields (to $10^{-13}$), checks Hermiticity, the links against the matrix exponential of `t2core`, the 256 plane-wave eigenvalues of
+check AS-1, and that its seven examples are identical to the files `test2/examples/*.t2in`. The program `t2_examples_check.py`
+applies EX-1 to EX-7 to its outputs and adds EX-8, the comparison of the 18 output files of the two solvers: the solutions,
+spectra and time series must agree to $10^{-7}$, the histories of the Anderson iterations (the same number of iterations) to
+$10^{-5}$. The reports of the last run (the self-test, the seven summaries, the checks):
+
+```
+{{FILE:test2/data/t2_rs_selftest_checks.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_packet_free_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_cyclotron_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_andreev_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_kink_spectrum_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_ground_state_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_kink_ground_state_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_quench_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_rs_examples_checks.txt}}
+```
 
 # 12. The checks of the documents
 

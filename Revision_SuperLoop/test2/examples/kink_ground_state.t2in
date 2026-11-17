@@ -1,5 +1,5 @@
 # example 'kink_ground_state' of the Test 2 solver: a self-consistent kink of the pair field between two walls (massless charges)
-# every key is explained by: python3 t2_solve.py --guide
+# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
 format = t2in 1
 title = a self-consistent kink of the pair field
 task = ground_state

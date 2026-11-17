@@ -4,7 +4,7 @@
 # Build everything (from this folder):   cargo build --release
 # The binaries are then in target/release/.
 [workspace]
-members = ["t2core", "t2fields", "t2analytic"]
+members = ["t2core", "t2fields", "t2analytic", "t2solve"]
 resolver = "2"
 
 [profile.release]

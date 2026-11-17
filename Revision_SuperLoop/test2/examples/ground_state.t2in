@@ -1,5 +1,5 @@
 # example 'ground_state' of the Test 2 solver: the self-consistent uniform superfluid of a chain (compare with the lattice gap equation)
-# every key is explained by: python3 t2_solve.py --guide
+# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
 format = t2in 1
 title = the self-consistent uniform polar superfluid of a chain
 task = ground_state

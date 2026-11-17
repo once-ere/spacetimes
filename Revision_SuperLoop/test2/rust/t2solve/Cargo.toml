@@ -1,0 +1,12 @@
+[package]
+name = "t2solve"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2, item [5]: the Rust solver of the gauge-covariant mean-field field equations of the spinor field (the same input files and output files as test2/python/t2_solve.py)"
+
+[[bin]]
+name = "t2_solve"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

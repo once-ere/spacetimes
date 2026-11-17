@@ -1,5 +1,5 @@
 # example 'packet_free' of the Test 2 solver: a free Gaussian packet of positive energy on a ring (group velocity)
-# every key is explained by: python3 t2_solve.py --guide
+# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
 format = t2in 1
 title = a free Gaussian wave packet on a ring
 task = evolve

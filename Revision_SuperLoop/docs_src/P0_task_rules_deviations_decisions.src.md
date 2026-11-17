@@ -204,7 +204,8 @@ the test, and is committed and carried to the author's computer after each item 
 | [2] | Section 3 of the document: the analysis of the equations (each mode keeps its norm; the fermion number is conserved exactly when the pair field is self-consistent; constant potentials are pure gauge except for their holonomy on a ring; plane waves reduce the equations to matrices; the square of the covariant Dirac Hamiltonian and the Pauli equation of slow spinor charges, with the gyromagnetic factor 2 for both kinds of charge) and four cases solved exactly: free spinor charges in constant gauge potentials (momentum and energy shifts, the isospin precession); the uniform polar superfluid (Bogoliubov modes, the particle-hole oscillation, the gap equation in closed form for massless charges and its BCS limit, an exact self-consistent lattice solution); a domain wall of the pair field (bound states at exactly $\pm m_{\rm LL}$, the square of the operator and the complete spectrum of the bound states, the first-order Wilson shift on the lattice); the Landau levels; checks AS-1 to AS-10 of the new program `t2_analytic`; four figures | answered (stage 7) |
 | [3] | Section 4 of the document: the Python solver `test2/python/t2_solve.py` (guidance, the question for the input file, the input file of lines `key = value` with 50 checked keys, the tasks evolve, spectrum, ground_state and quench), its numerical methods with their conservation properties, and seven examples with known answers checked by `t2_examples_check.py` | answered |
 | [4] | Section 5 of the document: the plotter `test2/python/t2_plot.py` (one figure per solution, its panels chosen by the task; for the seven examples the predictions of the checks EX-1 to EX-7 drawn with the solutions) and Figures 7 to 13 | answered |
-| [5] to [11] | Sections 6 to 13 of the document | to follow, in this order |
+| [5] | Section 6 of the document: the Rust solver `t2_solve` (member `t2solve` of the Cargo workspace `test2/rust`), with the instructions for installing Rust, building with cargo and using it; the same input and output files as the Python solver; the comparison EX-8 of the two sets of solutions | answered |
+| [6] to [11] | Sections 7 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -294,6 +295,11 @@ expression and compares it with the matrix that it describes (check GS-12).
 11. **Stage 9 — Test 2, item [4]** (Section 2.8): the plotter `test2/python/t2_plot.py`, Figures 7 to 13 (the seven
    examples with their predictions), Section 5 of the document of Test 2, and `check_all.sh` extended by the plots; the
    solver now also writes the change of the fermion number in full precision (Section 11, entry E53).
+12. **Stage 10 — Test 2, item [5]** (Section 2.8): the Rust solver `t2_solve` in the new member `t2solve` of the workspace
+   `test2/rust` (no external crate), its self-test against `Lattice::apply` of `t2core`, the seven examples solved by it, the
+   comparison EX-8 with the Python solutions, Section 6 of the document of Test 2, and `check_all.sh` extended; the Python
+   solver now makes random pair fields with the generator SplitMix64 of `t2core` (so that both solvers make the same field) and
+   writes the densities of degenerate eigenvectors summed over each group (Section 11, entries E54 and E55).
 
 # 6. The results in brief
 
@@ -566,8 +572,8 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [5] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains items [1] to [4]. The solver of item [3] treats the gauge fields as external (their field
+* Items [6] to [11] of Test 2 are answered in the following stages; this version of the document of the
+  answers contains items [1] to [5]. The solver of item [3] treats the gauge fields as external (their field
   equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
@@ -646,6 +652,8 @@ evaluated numerically, as in the earlier stages.
 | E51 | the first form of the self-test report replaced the name of the print function inside the function, which Python rejects |
 | E52 | the first draft of Section 4 used letters without the suffix LL in formulas (the coefficients of a two-level state, the number of steps, a lattice index, the potential of the pulse, the Landau energies), and its key table and one formula were wider than the page |
 | E53 | the first quench output wrote the fermion number with twelve significant digits only, so that its change ($2\times10^{-11}$ of 96) was invisible in the data file and in the first figure; the solver now writes the change itself (`N_F_change`), and the figure legends were moved where they cover no data |
+| E54 | the first comparison of the two solvers failed for the task `spectrum`: the densities of single eigenvectors inside a degenerate eigenspace depend on the basis that each eigensolver chooses; the solvers now write the densities summed over each group of degenerate eigenvalues, which are independent of the basis |
+| E55 | the first comparison also failed for the history of the Anderson iteration of the uniform example (difference $2\times10^{-7}$ at an intermediate iterate, with the same fixed point to $10^{-15}$); the histories are now compared with the tolerance $10^{-5}$ and the solutions with $10^{-7}$, for the reason stated in check EX-8 |
 
 # 12. The symbols
 

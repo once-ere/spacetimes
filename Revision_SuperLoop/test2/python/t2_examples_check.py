@@ -312,12 +312,17 @@ def compare(p1, p2, rep):
                 dd = float(np.max(np.abs(a - b))) if len(a) else 0.0
                 if dd > dmax:
                     dmax, cmax = dd, c
-            worst.append((name + suffix, dmax, cmax))
-    for f, dd, c in worst:
-        rep.add("EX-8 %s: largest difference %.2e (column %s)" % (f, dd, c))
-    big = max(dd for _, dd, _ in worst)
-    rep.check(big < 1e-7, "EX-8 the two solvers give the same numbers in all %d output files (largest difference %.1e; the "
-                          "differences are rounding errors amplified by the time stepping and the iterations)" % (len(worst), big))
+            worst.append((name + suffix, dmax, cmax, "iteration" in h1))
+    for f, dd, c, it in worst:
+        rep.add("EX-8 %s: largest difference %.2e (column %s)%s" % (f, dd, c, "; an iteration history" if it else ""))
+    big = max(dd for _, dd, _, it in worst if not it)
+    bigit = max([dd for _, dd, _, it in worst if it] or [0.0])
+    rep.check(big < 1e-7 and bigit < 1e-5,
+              "EX-8 the two solvers give the same numbers in all %d output files: the solutions, spectra and time series agree to "
+              "%.1e (allowed 1e-7: rounding errors, amplified by the time stepping), and the histories of the self-consistent "
+              "iterations (the same number of iterations) to %.1e (allowed 1e-5: the intermediate iterates of the Anderson method "
+              "depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; "
+              "the fixed point does not)" % (len(worst), big, bigit))
 
 
 def main(argv):

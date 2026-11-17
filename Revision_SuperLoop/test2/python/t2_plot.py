@@ -312,8 +312,10 @@ def plot_spectrum(d, pred):
         for a, r in zip(xf[pos], rho[pos]):
             tot[np.searchsorted(ux, a)] += r
         tot /= tot.sum() * float(d.meta["dx"])
+        mult = d.col("fields", "multiplicity", int)
+        nvec = sum(m for k, m, p_ in zip(*np.unique(np.stack([kk, mult, pos.astype(int)]), axis=1)) if p_)
         bx.plot(ux, tot, color=ORANGE, lw=1.6, label="summed density of the %d positive eigenvectors in the window\n"
-                "(normalized to the integral 1)" % len(np.unique(kk[pos])))
+                "(normalized to the integral 1)" % nvec)
     style(bx, X1, "pair field; density")
     bx.legend(fontsize=8.5, loc="lower center", bbox_to_anchor=(0.5, 0.16))
     letter(bx, "(b) the pair field and the bound states")

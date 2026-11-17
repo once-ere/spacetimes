@@ -1,5 +1,5 @@
 # example 'andreev' of the Test 2 solver: a particle hitting a superfluid region: Andreev reflection into a hole
-# every key is explained by: python3 t2_solve.py --guide
+# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
 format = t2in 1
 title = Andreev reflection of a particle at a normal-superfluid interface
 task = evolve

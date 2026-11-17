@@ -83,6 +83,10 @@ a wall of the pair field is unstable unless the pair field is held real along on
 Its fourth answer (item [4]) is the plotter `test2/python/t2_plot.py`, which draws any solution of the solvers (one figure per
 solution, the panels chosen by the task) and, for the seven examples, the predictions they are checked against (Figures 7 to
 13 of the document).
+Its fifth answer (item [5]) is the Rust solver `t2_solve` (the member `t2solve` of the Cargo workspace `test2/rust`, built with
+`cargo build --release`): the same input files, methods, checks and output files as the Python solver, checked against the
+operator of the library `t2core`; for the seven examples its solutions agree with the Python solutions to rounding
+(11 checks, among them the comparison EX-8).
 
 # 2. Where to start reading
 
@@ -120,7 +124,7 @@ solution, the panels chosen by the task) and, for the seven examples, the predic
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-16, item [1]) and the program `t2_analytic` (checks AS-1 to AS-10, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-16, item [1]) and the program `t2_analytic` (checks AS-1 to AS-10, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]) |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -155,6 +159,12 @@ python3 test2/python/t2_examples_check.py test2/data/t2_py
 # Test 2, item [4]: Figures 7 to 13, the plots of the seven solutions:
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done
+# Test 2, item [5]: the Rust solver, its self-test, the seven examples and the comparison with the Python solutions:
+(cd test2/rust && cargo build --release)
+./test2/rust/target/release/t2_solve --selftest test2/data/t2_rs_selftest_checks.txt test2/examples
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
+python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```
@@ -183,6 +193,8 @@ files); no crate is downloaded. The Rust programs of the folder `test2` use no e
 | `test2/data/t2_fields_checks.txt` | `t2_fields` | 16 of 16 |
 | `test2/data/t2_py_examples_checks.txt` | `t2_examples_check.py` | 10 of 10 |
 | `test2/data/t2_py_selftest_checks.txt` | `t2_solve.py` | 4 of 4 |
+| `test2/data/t2_rs_examples_checks.txt` | `t2_examples_check.py` | 11 of 11 |
+| `test2/data/t2_rs_selftest_checks.txt` | `t2_solve` | 5 of 5 |
 
 # 6. Conventions in one place
 

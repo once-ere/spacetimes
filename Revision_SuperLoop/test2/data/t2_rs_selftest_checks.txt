@@ -1,0 +1,9 @@
+Revision_SuperLoop, folder test2, program `t2_solve` (Test 2, item 5): the self-test of the lattice operator of the Rust solver
+5 of 5 checks passed
+self-test of t2_solve
+[PASS] the sparse lattice operator equals the site-by-site operator Lattice::apply of t2core (3 x 4 x 2 sites, random links, potentials and pair field, periodic and wall directions): largest deviation 3.0e-15
+[PASS] it is Hermitian: largest deviation 0.0e+00
+[PASS] the closed form of the links equals the matrix exponential exp(-i dx (g_v a.tau/2 + g_F b)) (20 random potentials): largest deviation 6.5e-16
+[PASS] plane waves in constant potentials: the 256 eigenvalues of a ring of 16 sites are the energies of check AS-1 (largest deviation 2.2e-14)
+[PASS] the 7 examples of this program are identical to the input files of the folder test2/examples (7 of 7)
+self-test: ALL PASS

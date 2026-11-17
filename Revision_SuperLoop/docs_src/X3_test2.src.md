@@ -20,7 +20,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [2] | analyze the field equations and give analytic solutions for at least three simple cases | Section 3 | answered |
 | [3] | a Python script that guides the user in defining initial and boundary conditions, asks for the name of a file of such conditions, reads it and solves the field equations numerically | Section 4 | answered |
 | [4] | a Python script that plots these numerical solutions | Section 5 | answered |
-| [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | to follow |
+| [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | answered |
 | [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | to follow |
 | [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | to follow |
 | [8] | the effective field equations of the SFBS | Section 9 | to follow |
@@ -30,7 +30,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] to [4]; the sections of the other items are added to this same document, in this order, as they
+items [1] to [5]; the sections of the other items are added to this same document, in this order, as they
 are completed.
 
 ## 1.2 How to read this document
@@ -1985,6 +1985,177 @@ without drift (the second-order error of the midpoint rule). (c) The pair field 
   the density summed over $x^3_{\rm LL}$ in the plane of the first two coordinates (the full fields are in the data files); the
   profiles of the self-consistent pair field are drawn along $x^1_{\rm LL}$.
 
+# 6. Item [5]: a Rust program that solves the field equations
+
+## 6.0 The answer in brief
+
+The program `t2_solve` is the member `t2solve` of the Cargo workspace `test2/rust` (pure Rust: the standard library and the
+library `t2core` of the workspace, no downloaded crate; about 2700 commented lines in three files). It is built with
+`cargo build --release` and does everything the Python solver of item [3] does, in the same way: it guides the user (a short
+guide at the start, the complete guide with `--guide`, seven examples written on request), asks for the name of the input
+file, reads the same input files (format `t2in 1`, the 50 keys of Section 4.2, with the same checks and the same error
+messages), solves the four tasks with the same methods (RK4 for `evolve`, the dense eigensolver for `spectrum`, Anderson
+acceleration for `ground_state`, the implicit midpoint rule for `quench`), checks every run in the same way, and writes the
+same output files with the same columns. Its self-test compares its sparse lattice operator with the operator `Lattice::apply`
+of `t2core`, which was written independently for items [1] and [2] ({{GEN:nchecks_t2_rs_selftest}} checks). For the seven
+examples, the Rust and the Python solutions agree number by number: the solutions, spectra and time series to $10^{-9}$, which
+is rounding (check EX-8), and the checks EX-1 to EX-7 pass for the Rust solutions as well
+({{GEN:nchecks_t2_rs_examples}} checks in all).
+
+## 6.1 Installing Rust and building the program
+
+**Step 1: install the Rust toolchain** (once per computer). On macOS or Linux, in a terminal:
+
+```
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# answer 1 (the default installation), then open a new terminal window, or type:
+source "$HOME/.cargo/env"
+# check: both commands print a version number
+rustc --version
+cargo --version
+```
+
+On Windows the installer `rustup-init.exe` from the web page of the Rust project does the same; the commands below are then
+typed in PowerShell (with `\` in the paths, and `t2_solve.exe` for the program).
+
+**Step 2: build.** From the folder Revision_SuperLoop of the repository:
+
+```
+cd test2/rust
+cargo build --release
+```
+
+Cargo compiles the library `t2core` and the three programs of the workspace (`t2_fields`, `t2_analytic`, `t2_solve`) with
+full optimization; the first build takes about a minute, later builds only recompile what changed. No network access is
+needed, because the workspace uses no external crate. The program is then the file `test2/rust/target/release/t2_solve`.
+
+**Step 3: check the build** (from the folder Revision_SuperLoop):
+
+```
+./test2/rust/target/release/t2_solve --selftest
+```
+
+It prints five lines `[PASS] ...` and `self-test: ALL PASS` (with the folder `test2/examples` as a further argument it also
+compares its examples with the input files of that folder).
+
+## 6.2 Using the program
+
+The commands are those of the Python solver, with `./test2/rust/target/release/t2_solve` in place of
+`python3 test2/python/t2_solve.py` (all from the folder Revision_SuperLoop):
+
+```
+# the complete guide: what is solved, the boundary and initial conditions, every key
+./test2/rust/target/release/t2_solve --guide
+# the examples, and one of them written as an input file to start from
+./test2/rust/target/release/t2_solve --examples
+./test2/rust/target/release/t2_solve --example andreev my_problem.t2in
+# solve an input file (the output files are named after it, in its folder)
+./test2/rust/target/release/t2_solve my_problem.t2in
+# the same with another name for the output files
+./test2/rust/target/release/t2_solve my_problem.t2in --out results/run1
+# without arguments: a short guide, then the question for the name of the input file
+./test2/rust/target/release/t2_solve
+# plot a solution with the Python plotter of item [4]
+python3 test2/python/t2_plot.py my_problem
+```
+
+In the dialogue the program answers `?` with the complete guide, `examples` with the list of examples, `example NAME` by
+writing the example as `NAME.t2in`, and a file name by solving that file; `q` (or an empty line) ends it. An input file written
+for one solver runs unchanged with the other, and both write the files `NAME_summary.txt`, `NAME_series.csv`,
+`NAME_fields.csv` and, for some tasks, `NAME_spectrum.csv` and `NAME_iterations.csv` (Sections 4.3 and A.3). The exit status
+is 0 when every check of the run passes, 1 when a check fails, and 2 when the input is wrong.
+
+**What the messages mean, and what to do.**
+
+| message | meaning | what to do |
+|------------------------|------------------------------|------------------------------|
+| `unknown key 'pair_widht' (did you mean pair_width?)` | a misspelt key | correct the name |
+| `the task 'quench' needs the key 'quench_coupling'` | a key that the task requires is missing | add it (Section 4.2) |
+| `dt Hbound = 3.1 exceeds 2.5: choose time_step below 0.4` | the time step is too long for RK4 to be stable | use a smaller `time_step` |
+| `dt Hbound = 1.3 exceeds 1: ...` (quench) | the fixed-point iteration of the implicit midpoint rule would not converge | use a smaller `time_step` |
+| `... must not exceed 6000` | the dense diagonalization of `spectrum`, `ground_state` and `quench` is limited to 375 sites | use fewer sites |
+| `a magnetic field needs 'wall' in direction 1` | the Landau gauge grows along $x^1_{\rm LL}$ | make direction 1 a wall |
+| `[FAIL] the self-consistent ... converged` | the iteration did not reach `tolerance` | raise `max_iterations`, lower `mixing`, or start from a better `pair` |
+
+## 6.3 How the program is built
+
+Three source files in `test2/rust/t2solve/src`:
+
+- `input.rs`: the table of the 50 keys (name, kind, default, meaning), the keys that each task requires, and the seven examples,
+  all copied from the Python solver (the self-test checks that the examples written by both programs are identical), the
+  reading and checking of an input file, and the guide;
+- `ops.rs`: the lattice and the coordinates of the sites; the gauge potentials of each site (constant, from the gauge file,
+  the Landau gauge, the pulse) and from them the link matrices (2.34) and the potential matrices, with the closed forms
+  `link` and `potential` of `t2core`; the pair field of the key `pair` (the random field with the generator SplitMix64 of
+  `t2core`, which the Python solver reproduces exactly); the sparse lattice operator (2.36) in compressed rows, assembled
+  from the same $8\times8$ blocks as in Section 4.3 (blocks between the same pair of sites are added); the pair expectation
+  of (4.1); the wave packet (4.2) with the projection on its branch through the discrete Fourier transform along each periodic
+  direction; the exact mean velocity of a free packet; the centre of a density; the root of the gap equation (3.21); the
+  frequency fit; and a small linear solver for the Anderson step;
+- `main.rs`: the four tasks, the summary and the data files, the self-test, the dialogue and the command line.
+
+The methods are those of Section 4.3, step by step: RK4 with the stages at the times $x^0_{\rm LL}$,
+$x^0_{\rm LL}+\ell^{\rm t}_{\rm LL}/2$ and $x^0_{\rm LL}+\ell^{\rm t}_{\rm LL}$; the Anderson iteration (4.4) with the memory 6, the
+normal equations with the regularization $10^{-12}$ times their trace, and Gaussian elimination with partial pivoting; the
+implicit midpoint rule (4.6) with the explicit Euler start and the stopping change $10^{-14}$. The dense eigenproblems are solved
+by the eigensolver of `t2core` (Householder reduction and the implicit QL algorithm, check GS-11 of item [1]). Two things
+necessarily differ from the Python solver, and neither changes a result:
+
+- *The eigenvectors inside a degenerate eigenspace.* Two eigensolvers choose different bases of an eigenspace of a repeated
+  eigenvalue (for example the four bound states of each wall at the same energy). Every quantity that the solvers compute from
+  eigenvectors is independent of that choice: the pair expectation of (4.1) and the fermion number are sums over all occupied
+  modes (unchanged by a unitary mixing of them), the self-consistent evolution (4.6) acts on each mode separately and computes
+  the pair field from the sum, and the task `spectrum` writes the densities summed over each group of degenerate eigenvalues.
+  (The only exception is `initial = eigenmode` with a degenerate eigenvalue, whose initial mode depends on the eigensolver; the
+  guide says so.)
+- *The arithmetic.* The sums are formed in a different order, so the last digits differ by rounding; in the time stepping and in
+  the iterations these differences are carried along but not amplified much.
+
+## 6.4 The results, and the comparison with the Python solver
+
+The program solves the seven examples of Section 4.4; all checks of its runs pass, and the program `t2_examples_check.py`, applied
+to its outputs (prefix `t2_rs_` in `test2/data`), confirms EX-1 to EX-7 with the same numbers as for the Python solutions (Appendix
+A.2d). The check **EX-8** compares the 18 output files of the two solvers column by column:
+
+| quantities | largest difference | origin |
+|------------------------------|----------|------------------------------|
+| densities, pair fields, spectra (all examples) | $10^{-14}$ or less | rounding in the operator and the eigensolvers |
+| time series of `evolve` (norm, energy, probabilities, centre) | $10^{-11}$ | rounding, carried through 600 to 1200 RK4 steps |
+| time series of `quench` ($\lvert\vec d_{\rm LL}\rvert$, $N^{\rm F}_{\rm LL}$, $E^{\rm MF}_{\rm LL}$, orthonormality) | $10^{-9}$ (in $E^{\rm MF}_{\rm LL}\approx491$, relative $2\times10^{-12}$) | rounding, carried through 600 steps of (4.6) |
+| histories of the Anderson iteration | $2\times10^{-7}$ (the same numbers of iterations) | rounding, amplified by the least-squares step near convergence |
+
+The allowed differences are $10^{-7}$ for the solutions and $10^{-5}$ for the iteration histories: the intermediate iterates of
+the Anderson method depend on rounding through its least-squares step, whose matrix becomes nearly singular when the residuals
+become small, but the fixed point, which is what the iteration computes, agrees to $10^{-15}$ (the self-consistent pair fields of
+the files `_fields.csv`). The two programs were written independently in the sense that matters: the Rust program assembles the
+operator from the formulas of (2.36) and is checked against `Lattice::apply` of `t2core`, while the Python program assembles it in
+NumPy and is checked against its own site-by-site loop; their agreement to $10^{-14}$ on the same problems tests both.
+
+Computing times on one processor core (the computer that built this document), in seconds:
+
+| example | Python | Rust |
+|------|------|------|
+| `packet_free` | 0.10 | 0.06 |
+| `andreev` | 0.33 | 0.27 |
+| `cyclotron` | 1.6 | 1.4 |
+| `kink_spectrum` | 0.9 | 2.7 |
+| `ground_state` | 1.7 | 5.0 |
+| `kink_ground_state` | 7.4 | 24 |
+| `quench` (time stepping) | 50 | 25 |
+
+The Rust program is faster where the work is its own loops (the time stepping), and slower for the dense eigenproblems, where
+NumPy calls the optimized LAPACK library; the eigensolver of `t2core` is a plain implementation of the textbook method.
+
+## 6.5 Discussion
+
+- **Why a second solver.** Two programs in two languages, with two eigensolvers and two independent checks of the lattice
+  operator, that agree to rounding on every example, make an error in the formulation or in the code very unlikely: an error would
+  have to be made in the same way twice.
+- **What the Rust program adds.** It runs without Python and without any library outside the repository, and it is the faster of
+  the two for long time evolutions.
+- **Limits.** The same as those of the Python solver (Section 4.5): external gauge fields, and the dense diagonalization of the
+  self-consistent tasks (here also its speed).
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -2007,12 +2178,19 @@ python3 test2/python/t2_examples_check.py test2/data/t2_py
 # 5. item [4]: Figures 7 to 13, the plots of the seven solutions (test2/figures/fig_t2_py_*.pdf and .png)
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done
-# 6. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 6. item [5]: the Rust solver (build, self-test, the seven examples) and the comparison with the Python solutions (EX-8)
+cd test2/rust && cargo build --release && cd ../..
+./test2/rust/target/release/t2_solve --selftest test2/data/t2_rs_selftest_checks.txt test2/examples
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
+python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
+# 7. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 ```
 
 The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
-together in about 70 seconds (the quench 50 seconds), all on one processor core.
+together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, all on one processor
+core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; for the documents pandoc
 (2.11 or later), XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font. The Rust programs of the
@@ -2020,7 +2198,7 @@ folder test2 use no external crate.
 
 ## A.2 The programs of items [1] and [2]
 
-The Cargo workspace `test2/rust` has three members:
+The Cargo workspace `test2/rust` has four members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d):
 
 - `t2core` (library): complex numbers and matrices, the Hermitian eigensolver, the super-loop operators as matrices
   (`model.rs`: $M_{\rm LL}$, the frame, the Dirac matrices, $\mathsf S_{\rm LL}$, $\mathsf s_{\rm LL}$,
@@ -2150,6 +2328,65 @@ The checks EX-1 to EX-7 of the examples, verbatim (`test2/data/t2_py_examples_ch
 equation of EX-5, the continuum kink and the Wilson shift of EX-6, and the frequency of (4.11) of EX-7). It writes no report: its
 output is Figures 7 to 13.
 
+## A.2d The program of item [5]
+
+The member `t2solve` of the Cargo workspace `test2/rust` (`Cargo.toml`; `src/input.rs`, `src/ops.rs`, `src/main.rs`), binary
+`t2_solve`; it uses only the standard library and `t2core`. Its reports use the plain names of A.2 and A.2b. The self-test,
+verbatim (`test2/data/t2_rs_selftest_checks.txt`):
+
+```
+{{FILE:test2/data/t2_rs_selftest_checks.txt}}
+```
+
+The summary of the example `packet_free` solved by the Rust program, verbatim (`test2/data/t2_rs_packet_free_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_packet_free_summary.txt}}
+```
+
+The summary of the example `cyclotron` solved by the Rust program, verbatim (`test2/data/t2_rs_cyclotron_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_cyclotron_summary.txt}}
+```
+
+The summary of the example `andreev` solved by the Rust program, verbatim (`test2/data/t2_rs_andreev_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_andreev_summary.txt}}
+```
+
+The summary of the example `kink_spectrum` solved by the Rust program, verbatim (`test2/data/t2_rs_kink_spectrum_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_kink_spectrum_summary.txt}}
+```
+
+The summary of the example `ground_state` solved by the Rust program, verbatim (`test2/data/t2_rs_ground_state_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_ground_state_summary.txt}}
+```
+
+The summary of the example `kink_ground_state` solved by the Rust program, verbatim (`test2/data/t2_rs_kink_ground_state_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_kink_ground_state_summary.txt}}
+```
+
+The summary of the example `quench` solved by the Rust program, verbatim (`test2/data/t2_rs_quench_summary.txt`):
+
+```
+{{FILE:test2/data/t2_rs_quench_summary.txt}}
+```
+
+The checks EX-1 to EX-7 of the Rust solutions and the comparison EX-8 with the Python solutions, verbatim
+(`test2/data/t2_rs_examples_checks.txt`):
+
+```
+{{FILE:test2/data/t2_rs_examples_checks.txt}}
+```
+
 ## A.3 Data files and figures
 
 | file | content | columns |
@@ -2185,6 +2422,7 @@ output is Figures 7 to 13.
 | `t2_py_quench_iterations.csv` | the iteration of the initial ground state | `iteration`, `change`, `abs_d_mean`, `E_GS` |
 | `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `N_F_change`, `E_MF`, `ortho_error` |
 | `t2_py_quench_fields.csv` | the pair field on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
+| `test2/data/t2_rs_*` | the same files written by the Rust solver of item [5] for the seven examples, with the same columns; `t2_rs_selftest_checks.txt` and `t2_rs_examples_checks.txt` its self-test and the checks EX-1 to EX-8 | as the files `t2_py_*` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
 $\varepsilon^{\rm lat}_{\rm LL}$; `E_times_dt` is $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$ and `rk4_modulus` the modulus of
@@ -2202,7 +2440,7 @@ energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$, `x_mean_1` to `x_mean_3` t
 `density_p`, `density_h`, `density_up` the densities of the particle part, of the hole part and of the particle part with
 isospin up on a site, `d1_re` to `d3_im` the real and imaginary parts of $d^1_{\rm LL}$, $d^2_{\rm LL}$, $d^3_{\rm LL}$,
 `abs_d` the modulus $\lvert\vec d_{\rm LL}\rvert$ on a site, `abs_d_mean` its mean over the sites and `abs_d_site0` its value on the
-first site, `stage` the guess (`initial`) or the result (`final`), `change` the largest component of the residual of the
+first site, `stage` the guess (`initial`) or the result (`final`), `multiplicity` the number of equal eigenvalues in a group, `change` the largest component of the residual of the
 Anderson iteration, `E_GS` the energy (4.5) per site measured from the normal state, `N_F` and `E_MF` are $N^{\rm F}_{\rm LL}$ and
 $E^{\rm MF}_{\rm LL}$, `N_F_change` the change of $N^{\rm F}_{\rm LL}$ since $x^0_{\rm LL}=0$ in full precision, and `ortho_error` the largest modulus of the entries of
 $(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$. Every data file states its content in a line `# content:` and
@@ -2232,7 +2470,7 @@ parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ 
 
 ## A.4 Checksums
 
-SHA-256 checksums of the sources and data of items [1] to [4] at the time this document was built:
+SHA-256 checksums of the sources and data of items [1] to [5] at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -2267,6 +2505,39 @@ SHA-256 checksums of the sources and data of items [1] to [4] at the time this d
 {{SHA256:test2/python/t2_solve.py}}  test2/python/t2_solve.py
 {{SHA256:test2/python/t2_examples_check.py}}  test2/python/t2_examples_check.py
 {{SHA256:test2/python/t2_plot.py}}  test2/python/t2_plot.py
+{{SHA256:test2/rust/t2solve/Cargo.toml}}  test2/rust/t2solve/Cargo.toml
+{{SHA256:test2/rust/t2solve/src/input.rs}}  test2/rust/t2solve/src/input.rs
+{{SHA256:test2/rust/t2solve/src/ops.rs}}  test2/rust/t2solve/src/ops.rs
+{{SHA256:test2/rust/t2solve/src/main.rs}}  test2/rust/t2solve/src/main.rs
+{{SHA256:test2/data/t2_rs_andreev_fields.csv}}  test2/data/t2_rs_andreev_fields.csv
+{{SHA256:test2/data/t2_rs_andreev_series.csv}}  test2/data/t2_rs_andreev_series.csv
+{{SHA256:test2/data/t2_rs_andreev_summary.txt}}  test2/data/t2_rs_andreev_summary.txt
+{{SHA256:test2/data/t2_rs_cyclotron_fields.csv}}  test2/data/t2_rs_cyclotron_fields.csv
+{{SHA256:test2/data/t2_rs_cyclotron_series.csv}}  test2/data/t2_rs_cyclotron_series.csv
+{{SHA256:test2/data/t2_rs_cyclotron_summary.txt}}  test2/data/t2_rs_cyclotron_summary.txt
+{{SHA256:test2/data/t2_rs_examples_checks.txt}}  test2/data/t2_rs_examples_checks.txt
+{{SHA256:test2/data/t2_rs_ground_state_fields.csv}}  test2/data/t2_rs_ground_state_fields.csv
+{{SHA256:test2/data/t2_rs_ground_state_iterations.csv}}  test2/data/t2_rs_ground_state_iterations.csv
+{{SHA256:test2/data/t2_rs_ground_state_series.csv}}  test2/data/t2_rs_ground_state_series.csv
+{{SHA256:test2/data/t2_rs_ground_state_spectrum.csv}}  test2/data/t2_rs_ground_state_spectrum.csv
+{{SHA256:test2/data/t2_rs_ground_state_summary.txt}}  test2/data/t2_rs_ground_state_summary.txt
+{{SHA256:test2/data/t2_rs_kink_ground_state_fields.csv}}  test2/data/t2_rs_kink_ground_state_fields.csv
+{{SHA256:test2/data/t2_rs_kink_ground_state_iterations.csv}}  test2/data/t2_rs_kink_ground_state_iterations.csv
+{{SHA256:test2/data/t2_rs_kink_ground_state_series.csv}}  test2/data/t2_rs_kink_ground_state_series.csv
+{{SHA256:test2/data/t2_rs_kink_ground_state_spectrum.csv}}  test2/data/t2_rs_kink_ground_state_spectrum.csv
+{{SHA256:test2/data/t2_rs_kink_ground_state_summary.txt}}  test2/data/t2_rs_kink_ground_state_summary.txt
+{{SHA256:test2/data/t2_rs_kink_spectrum_fields.csv}}  test2/data/t2_rs_kink_spectrum_fields.csv
+{{SHA256:test2/data/t2_rs_kink_spectrum_series.csv}}  test2/data/t2_rs_kink_spectrum_series.csv
+{{SHA256:test2/data/t2_rs_kink_spectrum_spectrum.csv}}  test2/data/t2_rs_kink_spectrum_spectrum.csv
+{{SHA256:test2/data/t2_rs_kink_spectrum_summary.txt}}  test2/data/t2_rs_kink_spectrum_summary.txt
+{{SHA256:test2/data/t2_rs_packet_free_fields.csv}}  test2/data/t2_rs_packet_free_fields.csv
+{{SHA256:test2/data/t2_rs_packet_free_series.csv}}  test2/data/t2_rs_packet_free_series.csv
+{{SHA256:test2/data/t2_rs_packet_free_summary.txt}}  test2/data/t2_rs_packet_free_summary.txt
+{{SHA256:test2/data/t2_rs_quench_fields.csv}}  test2/data/t2_rs_quench_fields.csv
+{{SHA256:test2/data/t2_rs_quench_iterations.csv}}  test2/data/t2_rs_quench_iterations.csv
+{{SHA256:test2/data/t2_rs_quench_series.csv}}  test2/data/t2_rs_quench_series.csv
+{{SHA256:test2/data/t2_rs_quench_spectrum.csv}}  test2/data/t2_rs_quench_spectrum.csv
+{{SHA256:test2/data/t2_rs_quench_summary.txt}}  test2/data/t2_rs_quench_summary.txt
 {{SHA256:test2/examples/packet_free.t2in}}  test2/examples/packet_free.t2in
 {{SHA256:test2/examples/cyclotron.t2in}}  test2/examples/cyclotron.t2in
 {{SHA256:test2/examples/andreev.t2in}}  test2/examples/andreev.t2in

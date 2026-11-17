@@ -530,7 +530,12 @@ answered \\
 \texttt{test2/python/t2\_plot.py} (one figure per solution, its panels
 chosen by the task; for the seven examples the predictions of the checks
 EX-1 to EX-7 drawn with the solutions) and Figures 7 to 13 & answered \\
-{[}5{]} to {[}11{]} & Sections 6 to 13 of the document & to follow, in
+{[}5{]} & Section 6 of the document: the Rust solver \texttt{t2\_solve}
+(member \texttt{t2solve} of the Cargo workspace \texttt{test2/rust}),
+with the instructions for installing Rust, building with cargo and using
+it; the same input and output files as the Python solver; the comparison
+EX-8 of the two sets of solutions & answered \\
+{[}6{]} to {[}11{]} & Sections 7 to 13 of the document & to follow, in
 this order \\
 \end{longtable}
 
@@ -786,6 +791,17 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   \texttt{check\_all.sh} extended by the plots; the solver now also
   writes the change of the fermion number in full precision (Section 11,
   entry E53).
+\item
+  \textbf{Stage 10 --- Test 2, item {[}5{]}} (Section 2.8): the Rust
+  solver \texttt{t2\_solve} in the new member \texttt{t2solve} of the
+  workspace \texttt{test2/rust} (no external crate), its self-test
+  against \texttt{Lattice::apply} of \texttt{t2core}, the seven examples
+  solved by it, the comparison EX-8 with the Python solutions, Section 6
+  of the document of Test 2, and \texttt{check\_all.sh} extended; the
+  Python solver now makes random pair fields with the generator
+  SplitMix64 of \texttt{t2core} (so that both solvers make the same
+  field) and writes the densities of degenerate eigenvectors summed over
+  each group (Section 11, entries E54 and E55).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1232,9 +1248,9 @@ author's}\label{decisions-that-are-the-authors}}
   corrections, no finite temperature, no dispersions of the Goldstone
   modes, no other interactions.
 \item
-  Items {[}5{]} to {[}11{]} of Test 2 are answered in the following
+  Items {[}6{]} to {[}11{]} of Test 2 are answered in the following
   stages; this version of the document of the answers contains items
-  {[}1{]} to {[}4{]}. The solver of item {[}3{]} treats the gauge fields
+  {[}1{]} to {[}5{]}. The solver of item {[}3{]} treats the gauge fields
   as external (their field equations (2.29) are not solved), and its
   self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item {[}2{]} the domain wall was solved for walls
@@ -1607,6 +1623,16 @@ significant digits only, so that its change (\(2\times10^{-11}\) of 96)
 was invisible in the data file and in the first figure; the solver now
 writes the change itself (\texttt{N\_F\_change}), and the figure legends
 were moved where they cover no data & & \\
+E54 & the first comparison of the two solvers failed for the task
+\texttt{spectrum}: the densities of single eigenvectors inside a
+degenerate eigenspace depend on the basis that each eigensolver chooses;
+the solvers now write the densities summed over each group of degenerate
+eigenvalues, which are independent of the basis & & \\
+E55 & the first comparison also failed for the history of the Anderson
+iteration of the uniform example (difference \(2\times10^{-7}\) at an
+intermediate iterate, with the same fixed point to \(10^{-15}\)); the
+histories are now compared with the tolerance \(10^{-5}\) and the
+solutions with \(10^{-7}\), for the reason stated in check EX-8 & & \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%

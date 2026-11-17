@@ -131,6 +131,7 @@ DESCRIPTIVE = {
     "E_GS": "the energy of the self-consistent state per site, measured from the normal state of the same lattice",
     "ortho_error": "the largest modulus of an entry of W^dag W minus the unit matrix (W the matrix of the modes)",
     "N_F_change": "the change of the fermion number since x^0 = 0, computed in full precision",
+    "multiplicity": "the number of eigenvalues in a group of equal eigenvalues (within 1e-9)",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL

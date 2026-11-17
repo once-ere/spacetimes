@@ -1,5 +1,5 @@
 # example 'quench' of the Test 2 solver: a quench of the coupling: the amplitude (Higgs) oscillation of the pair field
-# every key is explained by: python3 t2_solve.py --guide
+# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
 format = t2in 1
 title = a quench of the coupling of the uniform superfluid
 task = quench

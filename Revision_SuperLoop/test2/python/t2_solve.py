@@ -161,7 +161,8 @@ SPEC = {
                                 "'re im' in the order of the components"),
     "spectrum_window": ("floats2", "-1 1", "the energy window of the eigenvectors whose densities are written "
                                           "(spectrum)"),
-    "spectrum_max_states": ("int+", "32", "at most this many eigenvectors are written (spectrum)"),
+    "spectrum_max_states": ("int+", "32", "at most this many eigenvectors of the window are written (spectrum), summed "
+                                         "over each group of degenerate eigenvalues"),
     "coupling": ("float+", None, "the coupling G of the self-consistency condition (ground_state, quench)"),
     "pair_constraint": ("choice:none,line", "none", "line: the self-consistent iteration keeps the pair field a real "
                                                     "multiple of exp(i pair_phase) along pair_direction (for walls of "
@@ -660,6 +661,25 @@ class Gauge:
         return self.static and not np.any(self.A != 0)
 
 
+class SplitMix64:
+    """The pseudo-random generator SplitMix64 of t2core/src/rng.rs (64-bit arithmetic modulo 2^64)."""
+    MASK = (1 << 64) - 1
+
+    def __init__(self, seed):
+        self.state = int(seed) & self.MASK
+
+    def next_u64(self):
+        self.state = (self.state + 0x9E3779B97F4A7C15) & self.MASK
+        z = self.state
+        z = ((z ^ (z >> 30)) * 0xBF58476D1CE4E5B9) & self.MASK
+        z = ((z ^ (z >> 27)) * 0x94D049BB133111EB) & self.MASK
+        return z ^ (z >> 31)
+
+    def unit(self):
+        """uniform in [-1, 1)"""
+        return (self.next_u64() >> 11) / float(1 << 53) * 2.0 - 1.0
+
+
 def pair_profile(cfg, lat):
     """The pair field d[site, iota] (complex) of the key 'pair'."""
     ns = lat.ns
@@ -676,9 +696,15 @@ def pair_profile(cfg, lat):
             raise InputError("the pair file must have %d lines of 6 numbers" % ns)
         return arr[:, 0::2] + 1j * arr[:, 1::2]
     if kind == "random":
-        rng = np.random.default_rng(cfg["pair_seed"])
+        # SplitMix64 (as t2core/src/rng.rs), so that the Rust solver makes the same field: for each site and each
+        # isospin direction first the real, then the imaginary part, each uniform in [-1, 1), times the amplitude
+        rng = SplitMix64(cfg["pair_seed"])
         amp = cfg["pair_amplitude"]
-        return amp * (rng.uniform(-1, 1, (ns, 3)) + 1j * rng.uniform(-1, 1, (ns, 3)))
+        for s in range(ns):
+            for i in range(3):
+                re = rng.unit()
+                d[s, i] = amp * complex(re, rng.unit())
+        return d
     i = cfg["pair_direction"] - 1
     amp = cfg["pair_amplitude"] * complex(math.cos(cfg["pair_phase"]), math.sin(cfg["pair_phase"]))
     x1 = lat.x[:, 0]
@@ -1148,6 +1174,18 @@ def task_evolve(cfg, lat, gauge, d, rep, base):
               ["x_LL^0", "x_LL^1", "x_LL^2", "x_LL^3", "density_p", "density_h", "density_up"], fields)
 
 
+def degenerate_groups(ev, sel):
+    """The selected eigenvalues (indices in ascending order) in groups of equal values (within 1e-9): a list of
+    (first index, [indices])."""
+    groups = []
+    for k in sel:
+        if groups and abs(ev[k] - ev[groups[-1][1][-1]]) < 1e-9:
+            groups[-1][1].append(k)
+        else:
+            groups.append((k, [k]))
+    return groups
+
+
 def task_spectrum(cfg, lat, gauge, d, rep, base):
     if 16 * lat.ns > 6000:
         raise InputError("the task spectrum diagonalizes a dense matrix: 16 x (number of sites) must not exceed 6000")
@@ -1171,13 +1209,15 @@ def task_spectrum(cfg, lat, gauge, d, rep, base):
               ["index", "E_qp"], [(k, ev[k]) for k in range(len(ev))])
     rows = []
     ns = lat.ns
-    for k in sel:
-        w2 = np.abs(vec[:, k].reshape(ns, 16)) ** 2
+    for k0, kk in degenerate_groups(ev, sel):
+        w2 = sum(np.abs(vec[:, k].reshape(ns, 16)) ** 2 for k in kk)
+        e = float(np.mean(ev[kk]))
         for s in range(ns):
-            rows.append((k, ev[k], lat.x[s, 0], lat.x[s, 1], lat.x[s, 2], w2[s, :8].sum(), w2[s, 8:].sum()))
-    write_csv(base + "_fields.csv", "the densities of the eigenvectors in the energy window (task spectrum, %s)" % PROGRAM,
-              meta + [("spectrum_window", "%g %g" % (lo, hi))],
-              ["index", "E_qp", "x_LL^1", "x_LL^2", "x_LL^3", "density_p", "density_h"], rows)
+            rows.append((k0, e, len(kk), lat.x[s, 0], lat.x[s, 1], lat.x[s, 2], w2[s, :8].sum(), w2[s, 8:].sum()))
+    write_csv(base + "_fields.csv", "the densities of the eigenvectors in the energy window, summed over each group of "
+              "degenerate eigenvalues (equal within 1e-9; the sum does not depend on the basis that the eigensolver chooses "
+              "in a degenerate eigenspace) (task spectrum, %s)" % PROGRAM, meta + [("spectrum_window", "%g %g" % (lo, hi))],
+              ["index", "E_qp", "multiplicity", "x_LL^1", "x_LL^2", "x_LL^3", "density_p", "density_h"], rows)
     write_csv(base + "_series.csv", "the pair field on the sites (task spectrum, %s)" % PROGRAM, meta,
               ["x_LL^1", "x_LL^2", "x_LL^3", "d1_re", "d1_im", "d2_re", "d2_im", "d3_re", "d3_im", "abs_d"],
               [(lat.x[s, 0], lat.x[s, 1], lat.x[s, 2], d[s, 0].real, d[s, 0].imag, d[s, 1].real, d[s, 1].imag,
@@ -1669,7 +1709,7 @@ def write_example(name, path=None):
     path = path or (name + ".t2in")
     with open(path, "w", encoding="utf-8") as f:
         f.write("# example '%s' of the Test 2 solver: %s\n" % (name, EXAMPLES[name][0]))
-        f.write("# every key is explained by: python3 t2_solve.py --guide\n")
+        f.write("# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide\n")
         f.write(EXAMPLES[name][1])
     print("wrote the example input file %s" % path)
     return path

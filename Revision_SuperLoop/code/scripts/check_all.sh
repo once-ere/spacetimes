@@ -60,6 +60,13 @@ run "t2_examples_check.py, Python solutions (test2, item 3)" python3 test2/pytho
 t2pyplot() { for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
                python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e || return 1; done; }
 run "t2_plot.py, Figures 7 to 13 (test2, item 4)" t2pyplot
+# Test 2, item [5]: the Rust solver (self-test, the seven examples) and the checks of its solutions with the comparison EX-8
+t2rs() { (cd test2/rust && cargo build --release --quiet) || return 1
+         ./test2/rust/target/release/t2_solve --selftest test2/data/t2_rs_selftest_checks.txt test2/examples || return 1
+         for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+           ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e || return 1; done; }
+run "t2_solve (Rust): self-test and the seven examples (test2, item 5)" t2rs
+run "t2_examples_check.py, Rust solutions and EX-8 (test2, item 5)" python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
 
 # 2. documents, two passes
 for pass in 1 2; do
