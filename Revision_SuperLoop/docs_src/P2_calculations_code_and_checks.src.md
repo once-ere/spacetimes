@@ -34,12 +34,16 @@ python3 code/scripts/make_figures.py                                     # the s
 python3 explanations/code/make_explain_figures.py                        # the three figures of the explanation
 (cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)      # checks Z-1 .. Z-8
 python3 explanations/code/make_r13_figures.py                            # the four figures of the 3+1 document
+(cd test2/rust && cargo build --release && ./target/release/t2_fields)   # Test 2, item [1]: checks GS-1 .. GS-{{GEN:nchecks_t2_fields}}
+(cd test2/rust && cargo build --release && ./target/release/t2_analytic) # Test 2, item [2]: checks AS-1 .. AS-{{GEN:nchecks_t2_analytic}}
+python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
 
 `check_all.sh` runs, in this order: the program (all five commands); the Gröbner script; the figures;
 the program of the examples of the explanation and its figures; the program of the document on the
-$3+1$ manifold and its figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+$3+1$ manifold and its figures; the programs of the folder `test2` (`t2_fields` for item [1] and `t2_analytic` for
+item [2] of Test 2) and their figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -639,12 +643,13 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, item [1]: the gauge-covariant field equations of the spinor field (folder `test2`)
+# 11. Test 2, items [1] and [2]: the gauge-covariant field equations of the spinor field and their analytic solutions (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
-every statement is computed or checked by the Rust program `t2_fields` of the Cargo workspace `test2/rust`
-({{GEN:n_t2_rust_lines}} lines in {{GEN:n_t2_rust_files}} files; no external crate). The workspace has two members:
+every statement is computed or checked by the Rust program `t2_fields` of the Cargo workspace `test2/rust`, and for
+item [2] every analytic solution by the program `t2_analytic` of the same workspace ({{GEN:n_t2_rust_lines}} lines in
+{{GEN:n_t2_rust_files}} files; no external crate). The workspace has three members:
 
 * the library `t2core`: `c64.rs` (complex numbers), `cmat.rs` (dense complex matrices, the matrix
   exponential by scaling and squaring, and the Hermitian eigensolver: Householder reduction to a real
@@ -654,11 +659,14 @@ every statement is computed or checked by the Rust program `t2_fields` of the Ca
   $\mathsf L_{\rm LL}$, $T^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$, $\mathsf P_{\rm LL}$, $\psi'_{\rm LL}$, the
   Cayley-Dickson product), `lattice.rs` (the links, the lattice operator $\mathcal H^{\rm lat}_{\rm LL}$ applied
   to a mode, its dense matrix, the bound $B^{\rm H}_{\rm LL}$, the free lattice energy
-  $\varepsilon^{\rm lat}_{\rm LL}$) and `sym.rs` (exact linear forms with Gaussian-rational coefficients, each
+  $\varepsilon^{\rm lat}_{\rm LL}$, the RK4 step of the lattice equations and the matrix of the free lattice operator on a
+  plane wave) and `sym.rs` (exact linear forms with Gaussian-rational coefficients, each
   monomial carrying a numerical value, so that a printed formula can be evaluated and compared);
 * the program `t2_fields` (`t2fields/src/main.rs`), which writes the report `test2/data/t2_fields_checks.txt`,
   the LaTeX fragments `test2/data/t2_fragments.md` (the explicit matrices and component equations that the
-  document prints) and the data files of the two figures.
+  document prints) and the data files of Figures 1 and 2;
+* the program `t2_analytic` (`t2analytic/src/main.rs`), which writes the report `test2/data/t2_analytic_checks.txt`
+  and the data files of Figures 3 to 6 (item [2], below).
 
 Build and run, from the folder `Revision_SuperLoop`:
 
@@ -709,6 +717,99 @@ and `fig_t2_rk4_stability` (.pdf and .png). The output of the last run:
 
 ```
 {{FILE:test2/data/t2_fields_checks.txt}}
+```
+
+**Item [2]: the analytic solutions (program `t2_analytic`).** Build and run, from the folder `Revision_SuperLoop`:
+
+```
+cd test2/rust && cargo build --release && ./target/release/t2_analytic && cd ../..
+python3 test2/python/make_t2_figures.py
+```
+
+The program applies the lattice operator of `t2core` (the routine of the solvers) to the analytic solutions of item
+[2] of Test 2, which treat four cases: free spinor charges in constant gauge potentials (A), the uniform polar
+superfluid (B), a domain wall of the pair field (C) and constant magnetic fields (D). The parameters are
+$m_{\rm LL}=0.4$, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$, $r^{\rm W}_{\rm LL}=1$, and the random numbers come from SplitMix64
+with the seed 2026111708. The formulas of the checks:
+
+* **AS-1 (case A, constant potentials).** Plane waves $\exp(iq^1_{\rm LL}x^1_{\rm LL})$ on a periodic chain of 32 sites
+  ($\ell^{\rm x}_{\rm LL}=0.5$, $\mu_{\rm LL}=0.2$) with $A^3_{{\rm LL},1}=0.8$, $A^{\rm F}_{{\rm LL},1}=0.6$ in the links and
+  $A^3_{{\rm LL},0}=0.5$, $A^{\rm F}_{{\rm LL},0}=0.3$ in the potential matrix; the image of each of the 16 unit vectors times the
+  plane wave is read off at the site 0, which gives a $16\times16$ matrix. Its eigenvalues must be
+  $\pm\varepsilon^{\rm lat}_{\rm LL}(q^1_{\rm LL}-\mathsf A^\uparrow_{{\rm LL},1})-\mathsf A^\uparrow_{{\rm LL},0}-\mu_{\rm LL}$ for the particles and
+  $\mp\varepsilon^{\rm lat}_{\rm LL}(q^1_{\rm LL}+\mathsf A^\uparrow_{{\rm LL},1})+\mathsf A^\uparrow_{{\rm LL},0}+\mu_{\rm LL}$ for the holes of isospin up,
+  with $\mathsf A^\uparrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}+\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}$, and the same with
+  $\mathsf A^\downarrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}-\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}$ for isospin down, each twice;
+  the particle block restricted to each isospin component is checked separately.
+* **AS-2 and AS-4 (time evolution).** RK4 steps of the lattice equations against the exact solutions: in a constant
+  isospin potential $A^1_{{\rm LL},0}=1.5$ a particle of isospin up has the probability
+  $P^\uparrow_{\rm LL}=\cos^2(\omega^{\rm pr}_{\rm LL}x^0_{\rm LL}/2)$ of isospin up, $\omega^{\rm pr}_{\rm LL}=g^{\rm v}_{\rm LL}A^1_{{\rm LL},0}$
+  ($\ell^{\rm t}_{\rm LL}=0.004$, 4000 steps); in the uniform pair field $d^\iota_{\rm LL}=(0,0,0.3)$ ($\mu_{\rm LL}=0.6$) an injected
+  particle has the probability $P^{\rm h}_{\rm LL}=(\Delta_{\rm LL}/E^-_{\rm LL})^2\sin^2(E^-_{\rm LL}x^0_{\rm LL})$ of the hole
+  ($\ell^{\rm t}_{\rm LL}=0.02$, 1000 steps). The relative deviation of the whole state is compared with $10^{-8}$, and its
+  expected size, the summed RK4 phase error (the number of steps times the fifth power of the product of the largest
+  energy of the state and the time step, divided by 120), is printed.
+* **AS-3 (case B, Bogoliubov modes).** The identity
+  $\mathsf K^3_{\rm LL}\mathsf h_{\rm LL}(\vec q_{\rm LL})=\mathsf h_{\rm LL}(-\vec q_{\rm LL})^*\mathsf K^3_{\rm LL}$ and the eigenvectors
+  $(\cos\vartheta^{\rm B}_{\rm LL}\,\chi^{\rm pw}_{\rm LL},\sin\vartheta^{\rm B}_{\rm LL}\,\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})$ with
+  $\cos^2\vartheta^{\rm B}_{\rm LL}=\tfrac12(1+(\pm\varepsilon_{\rm LL}-\mu_{\rm LL})/E^\mp_{\rm LL})$ and the energies $E^\mp_{\rm LL}$ of the
+  $16\times16$ matrix $\mathsf H_{\rm LL}(\vec q_{\rm LL})$, for 50 random momenta (components uniform in $(-2,2)$), chemical
+  potentials (in $[0,1)$) and gaps (in $[0.1,1)$); and the lattice spectrum $\pm E^-_{\rm LL}$, $\pm E^+_{\rm LL}$ (with
+  $\varepsilon^{\rm lat}_{\rm LL}$, each four times) on a chain of 32 sites with $\mu_{\rm LL}=0.6$, $\Delta_{\rm LL}=0.3$.
+* **AS-5 (case B, gap equation).** For massless charges the integral of the gap equation
+  $1/G_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$ has the closed form
+  $(4\pi^2)^{-1}[(\Lambda_{\rm LL}-3\mu_{\rm LL})E^+_{\rm LL}(\Lambda_{\rm LL})+(\Lambda_{\rm LL}+3\mu_{\rm LL})E^-_{\rm LL}(\Lambda_{\rm LL})+(2\mu_{\rm LL}^2-\Delta_{\rm LL}^2)(\mathrm{arsinh}((\Lambda_{\rm LL}+\mu_{\rm LL})/\Delta_{\rm LL})+\mathrm{arsinh}((\Lambda_{\rm LL}-\mu_{\rm LL})/\Delta_{\rm LL}))]$;
+  it is compared with composite Gauss-Legendre quadrature (32 nodes per panel; panels refined geometrically towards the
+  Fermi momentum, the smallest of the size $\Delta_{\rm LL}/4$) for six pairs $(\mu_{\rm LL},\Delta_{\rm LL})$; its limit
+  $\Delta_{\rm LL}\to0$ at $\mu_{\rm LL}=0$ gives $G^{\rm crit}_{\rm LL}=2\pi^2/\Lambda_{\rm LL}^2$; its roots are found by bisection (200
+  halvings of $[10^{-12},20]$) and checked by quadrature; and for $\mu_{\rm LL}>0$ at weak coupling the root is compared with
+  $\Delta_{\rm LL}=2(\Lambda_{\rm LL}^2-\mu_{\rm LL}^2)^{1/2}\exp(-\tfrac32)\exp(-(\pi^2/\mu_{\rm LL}^2)(1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}))$, whose
+  relative error is $-(\Delta_{\rm LL}^2/(2\mu_{\rm LL}^2))\ln(\Lambda_{\rm LL}/\Delta_{\rm LL})$ to leading order ($\Lambda_{\rm LL}=1$).
+* **AS-6 (case B, self-consistent lattice state).** The dense $256\times256$ lattice operator of a chain of 16 sites
+  with $d^\iota_{\rm LL}=(0,0,0.3)$, all its eigenvectors, the mode sum of the solvers (`lattice::anomalous`), which must be
+  $-2\Delta_{\rm LL}(n^{\rm x}_{\rm LL})^{-1}\sum_{q^1_{\rm LL}}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$ on every site, and the fixed point of the
+  self-consistency condition for
+  $1/G_{\rm LL}=(n^{\rm x}_{\rm LL}\ell^{\rm x}_{\rm LL})^{-1}\sum_{q^1_{\rm LL}}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$.
+* **AS-7 and AS-8 (case C, the domain wall in the continuum).** For the kink
+  $d^\iota_{\rm LL}=(0,0,\Delta^\infty_{\rm LL}\tanh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL}))$ at $\mu_{\rm LL}=0$: the matrix facts
+  $((\mathsf K^3_{\rm LL})^\dagger)^2=-\mathsf 1_8$, $\alpha^1_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger\alpha^1_{\rm LL}=-(\mathsf K^3_{\rm LL})^\dagger$,
+  $\beta_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger\alpha^1_{\rm LL}=-(\mathsf K^3_{\rm LL})^\dagger\alpha^1_{\rm LL}\beta_{\rm LL}$; the bound states
+  $(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})=(\varphi^{\rm K}_{\rm LL}\chi^{\rm K}_{\rm LL},i(\mathsf K^3_{\rm LL})^\dagger\alpha^1_{\rm LL}\varphi^{\rm K}_{\rm LL}\chi^{\rm K}_{\rm LL})$
+  of the energy $\pm m_{\rm LL}$, at 50 random points with random spinors in the eigenspaces of $\beta_{\rm LL}$; the square of
+  the operator,
+  $-d^2/d(x^1_{\rm LL})^2+(q^2_{\rm LL})^2+(q^3_{\rm LL})^2+m_{\rm LL}^2+\Delta_{\rm LL}^2+(d\Delta_{\rm LL}/dx^1_{\rm LL})\mathsf Q^{\rm K}_{\rm LL}$, with exact
+  derivatives of a Gaussian times a random 16-component vector, for random kinks; and the bound states
+  $(\Delta^\infty_{\rm LL})^2-(\Delta^\infty_{\rm LL}-k^{\rm K}_{\rm LL}/\ell^{\rm K}_{\rm LL})^2$ of the scalar operators
+  $-d^2/d(x^1_{\rm LL})^2+\Delta_{\rm LL}^2\mp d\Delta_{\rm LL}/dx^1_{\rm LL}$, by second-order finite differences on $(-20,20)$ with 4000 and
+  8001 interior points, the eigenvalues found by Sturm-sequence bisection and extrapolated by Richardson's rule (four
+  times the eigenvalue at the half spacing, minus the eigenvalue at the full spacing, divided by three).
+* **AS-9 (case C on the lattice).** The dense $960\times960$ operator of a ring of 60 sites with a kink and an antikink,
+  $\Delta_{\rm LL}=\tanh(x^1_{\rm LL}-6)\tanh(18-x^1_{\rm LL})$; the count of the eigenvalues inside 0.8 times the continuum threshold;
+  the summed densities against the analytic profile (Bhattacharyya coefficient); the Rayleigh quotient
+  $E^{\rm R}_{\rm LL}=m_{\rm LL}+(r^{\rm W}_{\rm LL}/(2\ell^{\rm x}_{\rm LL}))\sum_{s^1_{\rm LL}}(\varphi^{\rm K}_{\rm LL}((s^1_{\rm LL}+1)\ell^{\rm x}_{\rm LL})-\varphi^{\rm K}_{\rm LL}(s^1_{\rm LL}\ell^{\rm x}_{\rm LL}))^2/\sum_{s^1_{\rm LL}}\varphi^{\rm K}_{\rm LL}(s^1_{\rm LL}\ell^{\rm x}_{\rm LL})^2$
+  for 60, 120, 240 and 480 sites, which tends to $m_{\rm LL}+r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$; and the bounds of Kato-Temple and
+  Davis-Kahan, computed from the relative residual of the analytic state and the distance of its Rayleigh quotient from
+  the rest of the spectrum.
+* **AS-10 (case D, Landau levels).** The $480\times480$ matrix of $h^\nabla_{\rm LL}$ at $q^2_{\rm LL}=q^3_{\rm LL}=0$ in 120 oscillator
+  states of the frequency $\lvert B^\uparrow_{\rm LL}\rvert$ (and $\lvert B^\downarrow_{\rm LL}\rvert$), with
+  $B^\uparrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}+\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}=0.89$ and
+  $B^\downarrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}-\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}=0.19$; the energies must be
+  $\pm(m_{\rm LL}^2+2n^{\rm L}_{\rm LL}\lvert B^\uparrow_{\rm LL}\rvert)^{1/2}$ (once each for $n^{\rm L}_{\rm LL}=0$, twice for $n^{\rm L}_{\rm LL}\ge1$); the
+  states with a weight above $10^{-8}$ on the ten highest oscillator states are artefacts of the truncation and are
+  discarded.
+
+The data files (in `test2/data`) and their columns: `t2_A_dispersion_curves.csv` (`q`, `Q_LL`, `branch`, `E_qp`),
+`t2_A_dispersion_lattice.csv` (`q`, `Q_LL`, `E_qp`), `t2_A_precession.csv` (`x_LL^0`, `P_up_rk4`, `P_up_exact`),
+`t2_B_bogoliubov_curves.csv` (`q`, `eps_lat`, `E_minus_polar`, `E_plus_polar`), `t2_B_bogoliubov_lattice.csv` (`q`,
+`E_qp`), `t2_B_rabi.csv` (`x_LL^0`, `P_hole_rk4`, `P_hole_exact`), `t2_B_gap.csv` (`mu`, `G_over_Gcrit_m0`, `Delta`,
+`source`), `t2_C_kink_profile.csv` (`x_LL^1`, `Delta`, `density_lattice`, `density_exact`), `t2_C_kink_spectrum.csv`
+(`index`, `E_qp`), `t2_C_kink_convergence.csv` (`dx`, `E_R`, `relative_residual`) and `t2_D_landau.csv` (`Q_LL`,
+`n_L`, `E_qp`, `source`). Each states its content in a line `# content:` and its parameters in lines `# name: value`.
+The figure script draws `test2/figures/fig_t2_case_A` (from the files `t2_A_*`), `fig_t2_case_B` (`t2_B_*`),
+`fig_t2_case_C` (`t2_C_*`) and `fig_t2_case_D` (`t2_D_landau.csv`), each as .pdf and .png. The output of the last run:
+
+```
+{{FILE:test2/data/t2_analytic_checks.txt}}
 ```
 
 # 12. The checks of the documents
@@ -773,11 +874,17 @@ block: the folder `explanations`; the third block: the folder `test2`):
 {{SHA256:test2/rust/t2core/src/cmat.rs}}  test2/rust/t2core/src/cmat.rs
 {{SHA256:test2/rust/t2core/src/sym.rs}}  test2/rust/t2core/src/sym.rs
 {{SHA256:test2/rust/t2fields/src/main.rs}}  test2/rust/t2fields/src/main.rs
+{{SHA256:test2/rust/t2analytic/src/main.rs}}  test2/rust/t2analytic/src/main.rs
 {{SHA256:test2/python/make_t2_figures.py}}  test2/python/make_t2_figures.py
 {{SHA256:test2/data/t2_fields_checks.txt}}  test2/data/t2_fields_checks.txt
+{{SHA256:test2/data/t2_analytic_checks.txt}}  test2/data/t2_analytic_checks.txt
 {{SHA256:test2/data/t2_fragments.md}}  test2/data/t2_fragments.md
 {{SHA256:test2/figures/fig_t2_lattice_dispersion.png}}  test2/figures/fig_t2_lattice_dispersion.png
 {{SHA256:test2/figures/fig_t2_rk4_stability.png}}  test2/figures/fig_t2_rk4_stability.png
+{{SHA256:test2/figures/fig_t2_case_A.png}}  test2/figures/fig_t2_case_A.png
+{{SHA256:test2/figures/fig_t2_case_B.png}}  test2/figures/fig_t2_case_B.png
+{{SHA256:test2/figures/fig_t2_case_C.png}}  test2/figures/fig_t2_case_C.png
+{{SHA256:test2/figures/fig_t2_case_D.png}}  test2/figures/fig_t2_case_D.png
 ```
 
 # 15. The symbols

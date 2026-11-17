@@ -9,8 +9,9 @@
 #      spin-zero superfluid) and its three figures, which read two data files of superloop; and
 #      the program explanations/code/r13-rs (the 3+1 manifold and the renormalizability of the
 #      Yukawa form) and its four figures; then the programs of the folder test2 (the answers to
-#      Test 2): t2_fields (the gauge-covariant field equations of the spinor field) and the figures
-#      of item [1] (test2/python/make_t2_figures.py);
+#      Test 2): t2_fields (the gauge-covariant field equations of the spinor field, item [1]),
+#      t2_analytic (the analytic solutions of item [2]) and the figures of items [1] and [2]
+#      (test2/python/make_t2_figures.py);
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
@@ -45,6 +46,8 @@ run "r13_yukawa (explanations)" r13
 run "make_r13_figures.py (explanations)" python3 explanations/code/make_r13_figures.py
 t2fields() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_fields); }
 run "t2_fields (test2)" t2fields
+t2analytic() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_analytic); }
+run "t2_analytic (test2)" t2analytic
 run "make_t2_figures.py (test2)" python3 test2/python/make_t2_figures.py
 
 # 2. documents, two passes

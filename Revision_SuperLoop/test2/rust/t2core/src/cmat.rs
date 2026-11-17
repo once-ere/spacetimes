@@ -222,17 +222,17 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
         return (vec![], CMat::zeros(0));
     }
     // ---------------------------------------------------------------- Householder reduction
-    // work on a copy, column-major access through get/set; q accumulates the transformations
-    let mut a = m.clone();
-    // symmetrize numerically: a = (a + a^dag)/2
+    // a: a symmetrized copy (row-major, index i*n + j); q accumulates the reflections (row-major)
+    let mut a: Vec<C64> = vec![C64::ZERO; n * n];
     for i in 0..n {
-        for j in i..n {
-            let v = (a.get(i, j) + a.get(j, i).conj()).scale(0.5);
-            a.set(i, j, v);
-            a.set(j, i, v.conj());
+        for j in 0..n {
+            a[i * n + j] = (m.a[i * n + j] + m.a[j * n + i].conj()).scale(0.5);
         }
     }
-    let mut q = CMat::identity(n);
+    let mut q: Vec<C64> = vec![C64::ZERO; n * n];
+    for i in 0..n {
+        q[i * n + i] = C64::ONE;
+    }
     let mut vv = vec![C64::ZERO; n];
     let mut p = vec![C64::ZERO; n];
     let mut w = vec![C64::ZERO; n];
@@ -240,21 +240,21 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
         // x = a[k+1.., k]
         let mut xnorm2 = 0.0;
         for i in (k + 1)..n {
-            xnorm2 += a.get(i, k).norm_sqr();
+            xnorm2 += a[i * n + k].norm_sqr();
         }
         let xnorm = xnorm2.sqrt();
         if xnorm < 1e-300 {
             continue;
         }
-        let x0 = a.get(k + 1, k);
+        let x0 = a[(k + 1) * n + k];
         let phase = if x0.abs() > 0.0 { x0.scale(1.0 / x0.abs()) } else { C64::ONE };
         let alpha = -(phase.scale(xnorm));
-        // v = x - alpha e1, normalized
+        // v = x - alpha e1, normalized (zero in the positions 0..=k)
         for i in 0..n {
             vv[i] = C64::ZERO;
         }
         for i in (k + 1)..n {
-            vv[i] = a.get(i, k);
+            vv[i] = a[i * n + k];
         }
         vv[k + 1] = vv[k + 1] - alpha;
         let vn = vv.iter().map(|z| z.norm_sqr()).sum::<f64>().sqrt();
@@ -270,9 +270,10 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
             p[i] = C64::ZERO;
         }
         for i in k..n {
+            let row = &a[i * n..(i + 1) * n];
             let mut s = C64::ZERO;
             for j in (k + 1)..n {
-                s += a.get(i, j) * vv[j];
+                s += row[j] * vv[j];
             }
             p[i] = s;
         }
@@ -285,36 +286,36 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
         }
         // rows and columns before k are not touched (v and w vanish there)
         for i in k..n {
+            let vi2 = vv[i].scale(2.0);
+            let wi2 = w[i].scale(2.0);
+            let row = &mut a[i * n..(i + 1) * n];
             for j in k..n {
-                let upd = (vv[i] * w[j].conj() + w[i] * vv[j].conj()).scale(2.0);
-                if upd.re != 0.0 || upd.im != 0.0 {
-                    let cur = a.get(i, j);
-                    a.set(i, j, cur - upd);
-                }
+                row[j] -= vi2 * w[j].conj() + wi2 * vv[j].conj();
             }
         }
-        // q <- q H
+        // q <- q H (row by row)
         for i in 0..n {
+            let row = &mut q[i * n..(i + 1) * n];
             let mut s = C64::ZERO;
             for j in (k + 1)..n {
-                s += q.get(i, j) * vv[j];
+                s += row[j] * vv[j];
             }
+            let s2 = s.scale(2.0);
             for j in (k + 1)..n {
-                let cur = q.get(i, j);
-                q.set(i, j, cur - s * vv[j].conj().scale(2.0));
+                row[j] -= s2 * vv[j].conj();
             }
         }
     }
-    // tridiagonal: diagonal d (real), subdiagonal e_c (complex); remove the phases with a
-    // diagonal unitary D: T_real = D^dag T D, q <- q D
+    // tridiagonal: diagonal d (real), subdiagonal (complex); remove the phases with a diagonal
+    // unitary D: T_real = D^dag T D, q <- q D
     let mut d = vec![0.0; n];
     let mut e = vec![0.0; n];
     let mut ph = vec![C64::ONE; n];
     for i in 0..n {
-        d[i] = a.get(i, i).re;
+        d[i] = a[i * n + i].re;
     }
     for i in 1..n {
-        let sub = a.get(i, i - 1); // T[i][i-1]
+        let sub = a[i * n + i - 1]; // T[i][i-1]
         // choose ph[i] so that conj(ph[i]) sub ph[i-1] is real and >= 0
         let r = sub.abs();
         if r > 0.0 {
@@ -326,12 +327,18 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
         e[i] = r;
     }
     for i in 0..n {
+        let row = &mut q[i * n..(i + 1) * n];
         for j in 0..n {
-            let cur = q.get(i, j);
-            q.set(i, j, cur * ph[j]);
+            row[j] = row[j] * ph[j];
         }
     }
     // ---------------------------------------------------------------- implicit QL (tqli)
+    // The rotations act on a real matrix Z (the eigenvectors of the real tridiagonal matrix), stored
+    // transposed (zt: row c = column c of Z) so that each rotation touches two contiguous rows.
+    let mut zt: Vec<f64> = vec![0.0; n * n];
+    for i in 0..n {
+        zt[i * n + i] = 1.0;
+    }
     // e[i] is the subdiagonal element between i-1 and i; shift to the tqli convention
     for i in 1..n {
         e[i - 1] = e[i];
@@ -380,12 +387,15 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
                 pp = s * r;
                 d[iu + 1] = g + pp;
                 g = cc * r - b;
-                // rotate the eigenvector columns iu, iu+1
+                // rotate the columns iu, iu+1 of Z (rows iu, iu+1 of zt)
+                let (lo, hi) = zt.split_at_mut((iu + 1) * n);
+                let z0 = &mut lo[iu * n..(iu + 1) * n];
+                let z1 = &mut hi[..n];
                 for k in 0..n {
-                    let z1 = q.get(k, iu + 1);
-                    let z0 = q.get(k, iu);
-                    q.set(k, iu + 1, z0.scale(s) + z1.scale(cc));
-                    q.set(k, iu, z0.scale(cc) - z1.scale(s));
+                    let a1 = z1[k];
+                    let a0 = z0[k];
+                    z1[k] = a0 * s + a1 * cc;
+                    z0[k] = a0 * cc - a1 * s;
                 }
                 i -= 1;
             }
@@ -397,15 +407,23 @@ pub fn eigh(m: &CMat) -> (Vec<f64>, CMat) {
             e[mm] = 0.0;
         }
     }
-    // sort ascending
+    // sort ascending; the eigenvectors are the columns of q Z: vec_c[k] = sum_i q[k][i] Z[i][c]
     let mut idx: Vec<usize> = (0..n).collect();
     idx.sort_by(|&x, &y| d[x].partial_cmp(&d[y]).unwrap());
     let mut vals = vec![0.0; n];
     let mut vecs = CMat::zeros(n);
     for (newc, &oldc) in idx.iter().enumerate() {
         vals[newc] = d[oldc];
+        let zrow = &zt[oldc * n..(oldc + 1) * n];
         for k in 0..n {
-            vecs.set(k, newc, q.get(k, oldc));
+            let qrow = &q[k * n..(k + 1) * n];
+            let mut sr = 0.0;
+            let mut si = 0.0;
+            for i in 0..n {
+                sr += qrow[i].re * zrow[i];
+                si += qrow[i].im * zrow[i];
+            }
+            vecs.a[k * n + newc] = c(sr, si);
         }
     }
     (vals, vecs)

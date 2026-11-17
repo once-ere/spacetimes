@@ -109,6 +109,12 @@ DESCRIPTIVE = {
     "symmetric_states": "number of those states that are symmetric under that exchange", "allowed_in_s_wave": "yes if the Pauli principle allows the states in a relative s-wave",
     # the data files of the folder test2
     "E_times_dt": "the product of an energy and the time step of the lattice equations", "rk4_modulus": "the modulus of the factor by which one step of the Runge-Kutta method of fourth order multiplies an eigencomponent",
+    "branch": "the branch of a dispersion relation: positive or negative energy",
+    "source": "the origin of a value: a formula, a closed form, a quadrature, or a numerical diagonalization",
+    "index": "the position of an eigenvalue in the ascending list of the eigenvalues",
+    "density_lattice": "the density of eigenvectors of the lattice operator, normalized to the integral 1",
+    "density_exact": "the density of the analytic solution, normalized to the integral 1",
+    "relative_residual": "the norm of the residual of a trial mode (the lattice operator applied to the mode, minus its Rayleigh quotient times the mode) divided by the norm of the mode",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL

@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "t2analytic"
+version = "0.1.0"
+dependencies = [
+ "t2core",
+]
+
+[[package]]
 name = "t2core"
 version = "0.1.0"
 

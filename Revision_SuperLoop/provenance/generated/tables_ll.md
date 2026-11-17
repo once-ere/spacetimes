@@ -64,6 +64,7 @@
 | `sl_self_contained_checks.txt` | `check_self_contained.py` | 1 of 1 |
 | `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
 | `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | 8 of 8 |
+| `test2/data/t2_analytic_checks.txt` | `t2_analytic` | 10 of 10 |
 | `test2/data/t2_fields_checks.txt` | `t2_fields` | 16 of 16 |
 <!-- END checks_table_all -->
 
@@ -142,15 +143,15 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (120 entries) and every plain-text name of the programs, figures and data files belongs to one entry (394 names) & PASS\\
-LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 263 items of the 118 new entries is an item of either master registry (503 items compared); the 23 items that the registry of Revision\_NoGo also contains are exactly the 23 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 26 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (125 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 120 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 3738 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 4502 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
-LL-S7 & every one of the 3832 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (60 registered styled letters) & PASS\\
-LL-S8 & every one of the 3429 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 37 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 639 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-S1 & every symbol text is registered once (129 entries) and every plain-text name of the programs, figures and data files belongs to one entry (422 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 280 items of the 127 new entries is an item of either master registry (503 items compared); the 23 items that the registry of Revision\_NoGo also contains are exactly the 23 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 37 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (140 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 129 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 4414 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 5237 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 4058 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (61 registered styled letters) & PASS\\
+LL-S8 & every one of the 3534 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 49 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
+LL-S9 & the 1197 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
 LL-H1 & none of the 30 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
@@ -451,14 +452,14 @@ f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/a
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
 465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-894af702924318f3250064cb2ab62c967ffe11245f1b86a069d20b77e2f08294  code/scripts/check_symbols.py
+827af56c3e9d92b256553a207f9fe77d37f704ba2e1990c29532a6bb3a9d1abc  code/scripts/check_symbols.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 9b0462d8c61a715384a6ff68e0a31d5ebb3e28b345bb3dceab3d7a5127f999ca  code/scripts/write_doc_tables.py
-cda8b7a6a2fba11fdcb77272c33b431e394e567befb4597f4f047a9c0dce2934  code/scripts/write_symbol_registry.py
+2176ae2ec45bfea5497ebaea678f25c543b6da710f3b973b3836f2296e209d83  code/scripts/write_symbol_registry.py
 e6f3025b7f959977a1075cda0e0c34f51e208d9e28db50bc5d4fffcef189a6ab  code/scripts/build_docs.sh
-b3a0e28fd569ea270cd776a5e9c5960833b1d123b2f424c5c23ee6a9e2e4cda5  code/scripts/check_all.sh
+d6f4360fcac77efdfd0b7a03221b0eb5105a526cceda75d3bfda2ababac78525  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
 
@@ -526,10 +527,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-d9c38b85b085a51cfbd28f3401bd8586ae752fe3fe456dada6cd881cf0ca3d4c  explanations/figures/fig_ex_r13_bubble.pdf
-2c781ae9ce85cea11e56d6dd1ffeb4cb00ed490d96079c577eadaa8cbf0bfd8b  explanations/figures/fig_ex_r13_coordinates.pdf
-f3f7bb5a51514c7ba7c67ed6a7d17982701485b14db5612b542e13eb45391485  explanations/figures/fig_ex_r13_divergences.pdf
-29330728056aaabaa0e638f8d441bea826f8af226c2aee8b0c183aa9bf2f80c9  explanations/figures/fig_ex_r13_lorentz.pdf
+596a4d708abef3a3310716281ef9ab949c6bd4e40fba1883ad2dd28adf037879  explanations/figures/fig_ex_r13_bubble.pdf
+50b6c4f6f7ed11304ff2912168f667a631ce539e87d5fe054be4dd76a9c28d45  explanations/figures/fig_ex_r13_coordinates.pdf
+fe90f7e92724dd1f8b422183bb036e6b3570d620fec464daf2091cd60bd8b173  explanations/figures/fig_ex_r13_divergences.pdf
+eb22455a485b377456e12a05dce05cab1e26c8fa220f7d9a432a548c8fa6e11e  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1005,14 +1006,18 @@ i\partial_0\Psi_{{\rm LL},8}&=-i\,(\nabla^{\rm LL}_1\Psi_{\rm LL})_6+(\nabla^{\r
 $$M_{\rm LL}(\mathbf D_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0+\nabla^{\rm LL}_3&\nabla^{\rm LL}_1-i\,\nabla^{\rm LL}_2\\\nabla^{\rm LL}_1+i\,\nabla^{\rm LL}_2&\nabla^{\rm LL}_0-\nabla^{\rm LL}_3\end{pmatrix},\qquad M_{\rm LL}(\bar{\mathbf D}_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0-\nabla^{\rm LL}_3&-\nabla^{\rm LL}_1+i\,\nabla^{\rm LL}_2\\-\nabla^{\rm LL}_1-i\,\nabla^{\rm LL}_2&\nabla^{\rm LL}_0+\nabla^{\rm LL}_3\end{pmatrix}.$$
 <!-- END t2_weyl_blocks -->
 
+<!-- BEGIN nchecks_t2_analytic -->
+10
+<!-- END nchecks_t2_analytic -->
+
 <!-- BEGIN nchecks_t2_fields -->
 16
 <!-- END nchecks_t2_fields -->
 
 <!-- BEGIN n_t2_rust_lines -->
-3216
+4455
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->
-8
+9
 <!-- END n_t2_rust_files -->

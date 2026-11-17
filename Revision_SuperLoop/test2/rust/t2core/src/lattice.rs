@@ -351,3 +351,54 @@ pub fn anomalous(nsites: usize, modes: &[Vec<C64>], k: &[CMat; 3]) -> Vec<[C64; 
     }
     out
 }
+
+// ------------------------------------------------------------------ time stepping
+
+impl Lattice {
+    /// One step of the classical Runge-Kutta method of fourth order (RK4) for i dw/dx^0 = H_lat w with
+    /// time-independent fields: k1 = -i H w, k2 = -i H (w + dt/2 k1), k3 = -i H (w + dt/2 k2),
+    /// k4 = -i H (w + dt k3), w <- w + dt/6 (k1 + 2 k2 + 2 k3 + k4).
+    pub fn rk4_step(&self, fl: &Fields, mats: &Mats, w: &mut Vec<C64>, dt: f64) {
+        let n = w.len();
+        let mi = C64 { re: 0.0, im: -1.0 };
+        let mut tmp = vec![C64::ZERO; n];
+        let mut k1 = vec![C64::ZERO; n];
+        let mut k2 = vec![C64::ZERO; n];
+        let mut k3 = vec![C64::ZERO; n];
+        let mut k4 = vec![C64::ZERO; n];
+        self.apply(fl, mats, w, &mut k1);
+        for i in 0..n {
+            k1[i] = mi * k1[i];
+            tmp[i] = w[i] + k1[i].scale(0.5 * dt);
+        }
+        self.apply(fl, mats, &tmp, &mut k2);
+        for i in 0..n {
+            k2[i] = mi * k2[i];
+            tmp[i] = w[i] + k2[i].scale(0.5 * dt);
+        }
+        self.apply(fl, mats, &tmp, &mut k3);
+        for i in 0..n {
+            k3[i] = mi * k3[i];
+            tmp[i] = w[i] + k3[i].scale(dt);
+        }
+        self.apply(fl, mats, &tmp, &mut k4);
+        for i in 0..n {
+            k4[i] = mi * k4[i];
+            w[i] = w[i] + (k1[i] + k2[i].scale(2.0) + k3[i].scale(2.0) + k4[i]).scale(dt / 6.0);
+        }
+    }
+}
+
+/// the 4 x 4 Dirac matrix of the free lattice operator on the plane wave exp(i q.x) (no gauge fields):
+/// sum_j alpha^j sin(q_j ell)/ell + beta (m + (r/ell) sum_j (1 - cos q_j ell)), over the active directions
+pub fn h_lat_plane(q: &[f64; 3], ell: f64, m: f64, r: f64, active: &[bool; 3]) -> CMat {
+    let mut w = 0.0;
+    let mut h = CMat::zeros(4);
+    for j in 0..3 {
+        if active[j] {
+            h = h.add(&model::alpha(j + 1).scale_r((q[j] * ell).sin() / ell));
+            w += 1.0 - (q[j] * ell).cos();
+        }
+    }
+    h.add(&model::beta().scale_r(m + r / ell * w))
+}

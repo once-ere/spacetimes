@@ -64,7 +64,15 @@ with the gauge-covariant derivative of the gauge group $SL(2,\mathbb C)\times SU
 explicitly, shows that the Dirac operator is the right multiplication of the spinor charges by the frame
 bi-quaternions, and formulates the mean-field (Dirac-Bogoliubov-de Gennes) equations and their gauge-covariant
 lattice discretization for numerical solution, with its own Rust programs and {{GEN:nchecks_t2_fields}} further
-checks.
+checks. Its second answer (item [2]) analyzes these equations (each mode keeps its norm; the fermion number is
+conserved exactly when the pair field is self-consistent; constant potentials are pure gauge except for their
+holonomy on a ring; the square of the covariant Dirac Hamiltonian gives the Pauli equation with the gyromagnetic
+factor 2 for both kinds of charge) and solves four cases exactly: free spinor charges in constant gauge
+potentials, the uniform polar superfluid (Bogoliubov modes, the particle-hole oscillation, the gap equation in
+closed form and its BCS limit, an exact self-consistent lattice solution), a domain wall of the pair field with
+its bound states at exactly $\pm m_{\rm LL}$ and their complete spectrum, and the Landau levels; every solution is
+checked against the lattice operator of the solvers by the program `t2_analytic` ({{GEN:nchecks_t2_analytic}}
+checks).
 
 # 2. Where to start reading
 
@@ -102,7 +110,7 @@ checks.
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -122,8 +130,11 @@ python3 explanations/code/make_explain_figures.py
 # the examples and checks of the document on the 3+1 manifold (checks Z-1 to Z-8) and its four figures:
 (cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)
 python3 explanations/code/make_r13_figures.py
-# Test 2, item [1]: the checks GS-1 to GS-16, the explicit matrices and equations, and its two figures:
+# Test 2, item [1]: the checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, the explicit matrices and equations (Figures 1 and 2):
 (cd test2/rust && cargo build --release && ./target/release/t2_fields)
+# Test 2, item [2]: the analytic solutions, checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} (Figures 3 to 6):
+(cd test2/rust && cargo build --release && ./target/release/t2_analytic)
+# the six figures of Test 2:
 python3 test2/python/make_t2_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh

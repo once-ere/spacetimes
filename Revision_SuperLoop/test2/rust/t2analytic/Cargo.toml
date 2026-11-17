@@ -1,0 +1,12 @@
+[package]
+name = "t2analytic"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2, item [2]: analytic solutions of the gauge-covariant field equations of the spinor field, checked against their lattice form"
+
+[[bin]]
+name = "t2_analytic"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

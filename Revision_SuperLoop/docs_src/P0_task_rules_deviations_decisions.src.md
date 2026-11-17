@@ -201,7 +201,8 @@ the test, and is committed and carried to the author's computer after each item 
 | item | answer | state |
 |------|------------------------------------------------------------|----------------|
 | [1] | Section 2 of the document: the spinor field of the spinor charges on $\mathbb R^{1,3}_{\rm LL}$; the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ with $SL(2,\mathbb C)$ as Lord's change of representation of the frame; the covariant derivative with every matrix written out; the field strengths; why the Lorentz connection is pure gauge on the flat manifold; the Lagrangian; the exact field equations (operator form, Hamiltonian form, component form, super-loop form: right multiplication of the spinor charges by the frame); the gauge-field equations; the mean-field (Dirac-Bogoliubov-de Gennes) equations with all sixteen components written out; the gauge-covariant lattice discretization, the time stepping and their properties; checks GS-1 to GS-16 of the new program `t2_fields`; two figures | answered (stage 6) |
-| [2] to [11] | Sections 3 to 13 of the document | to follow, in this order |
+| [2] | Section 3 of the document: the analysis of the equations (each mode keeps its norm; the fermion number is conserved exactly when the pair field is self-consistent; constant potentials are pure gauge except for their holonomy on a ring; plane waves reduce the equations to matrices; the square of the covariant Dirac Hamiltonian and the Pauli equation of slow spinor charges, with the gyromagnetic factor 2 for both kinds of charge) and four cases solved exactly: free spinor charges in constant gauge potentials (momentum and energy shifts, the isospin precession); the uniform polar superfluid (Bogoliubov modes, the particle-hole oscillation, the gap equation in closed form for massless charges and its BCS limit, an exact self-consistent lattice solution); a domain wall of the pair field (bound states at exactly $\pm m_{\rm LL}$, the square of the operator and the complete spectrum of the bound states, the first-order Wilson shift on the lattice); the Landau levels; checks AS-1 to AS-10 of the new program `t2_analytic`; four figures | answered (stage 7) |
+| [3] to [11] | Sections 4 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -270,6 +271,15 @@ expression and compares it with the matrix that it describes (check GS-12).
    registry group 9 (the gauge fields, the covariant derivative, the mean-field and lattice equations), the
    new check LL-S9, and the extension of the checks and of `check_all.sh` to the folder `test2` (Section 11,
    entries E25 to E36).
+9. **Stage 7 — Test 2, item [2]** (Section 2.7): the program `t2_analytic` (checks AS-1 to AS-10) in the
+   workspace `test2/rust`, which applies the lattice operator of the solvers to four exactly solvable cases;
+   additions to the library `t2core` (the RK4 step of the lattice equations, the matrix of the free lattice
+   operator on a plane wave, a faster form of the Hermitian eigensolver); four figures; Section 3 of the
+   document of Test 2; eleven new registry entries of group 9 (the potentials and magnetic fields felt by the two
+   isospin components, the precession frequency, the probabilities of isospin up and of the hole, the constant
+   spinor of a plane wave and the Bogoliubov angle, the domain wall and its bound states, the matrix of the square
+   of its operator, the Rayleigh quotient, the number of a Landau level), six new descriptive column words, and
+   `check_all.sh` extended by the new program (Section 11, entries E37 to E43).
 
 # 6. The results in brief
 
@@ -349,6 +359,24 @@ expression and compares it with the matrix that it describes (check GS-12).
   $(i\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p-m_{\rm LL}+\mu_{\rm LL}\gamma^0_{\rm LL})\Psi_{\rm LL}+\tfrac12G_{\rm LL}\sum_\iota\gamma^0_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger\Psi^*_{\rm LL}\Pi^\iota_{\rm LL}=0$
   has no classical limit, and its mean-field form, the gauge-covariant Dirac-Bogoliubov-de Gennes equations,
   reproduces the gap equation of the superfluid; the lattice form keeps the gauge covariance exactly.
+* **Test 2, item [2]** (stage 7): each mode of the mean-field equations keeps its norm, and the fermion number is
+  conserved exactly when the pair field is self-consistent (its source is $(2/G_{\rm LL})\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$, a
+  real number); the square of the covariant Dirac Hamiltonian is
+  $m_{\rm LL}^2+\sum_j(-i\nabla^{\rm LL}_j)^2-2\sum_{\rm cyclic}i\,\mathsf s_{\rm LL}(J^{j''}_{\rm LL})(g^{\rm v}_{\rm LL}\sum_\iota\mathsf F^\iota_{{\rm LL},jj'}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},jj'})$,
+  so slow spinor charges obey a Pauli equation with the gyromagnetic factor 2 for both kinds of charge. Four cases are
+  solved exactly and checked against the lattice operator of the solvers: constant potentials shift the momentum by
+  $\mathsf A^\uparrow_{{\rm LL},j}$ and the energy by $\mathsf A^\uparrow_{{\rm LL},0}$, and a constant isospin potential turns the isospin
+  with $\omega^{\rm pr}_{\rm LL}=g^{\rm v}_{\rm LL}(\sum_\iota(A^\iota_{{\rm LL},0})^2)^{1/2}$; in the uniform polar superfluid the
+  quasi-particles have the energies $\pm E^\pm_{\rm LL}$, an injected particle turns into a hole with the probability
+  $(\Delta_{\rm LL}/E^-_{\rm LL})^2\sin^2(E^-_{\rm LL}x^0_{\rm LL})$, the gap equation of massless charges has a closed form with the
+  critical coupling $2\pi^2/\Lambda_{\rm LL}^2$ and the BCS limit
+  $\Delta_{\rm LL}=2(\Lambda_{\rm LL}^2-\mu_{\rm LL}^2)^{1/2}\exp(-\tfrac32)\exp(-(\pi^2/\mu_{\rm LL}^2)(1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}))$, and the
+  uniform state is an exact fixed point of the self-consistent lattice equations; a domain wall of the pair field
+  binds states at exactly $\pm m_{\rm LL}$ (four of each per wall; the energies
+  $\pm(m_{\rm LL}^2+2k^{\rm K}_{\rm LL}\Delta^\infty_{\rm LL}/\ell^{\rm K}_{\rm LL}-(k^{\rm K}_{\rm LL}/\ell^{\rm K}_{\rm LL})^2)^{1/2}$ give all bound states), which the
+  Wilson term shifts by $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$ on the lattice; and the Landau levels are
+  $\pm(m_{\rm LL}^2+(q^3_{\rm LL})^2+2n^{\rm L}_{\rm LL}\lvert B^\uparrow_{\rm LL}\rvert)^{1/2}$, with different fields for the two isospin
+  components.
 
 # 7. Deviations from the wording of the task, with their reasons
 
@@ -455,6 +483,14 @@ in every gauge, and the numerical formulation uses the canonical gauge, in which
 **D13. "push to repo after each item is completed".** Each item is committed and carried to the author's
 computer as soon as it is complete; the push itself can only be made by the author (rule 2, Section 3).
 
+**D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
+they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
+uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
+is solved in the continuum and then checked against the lattice operator that the solvers of items [3] and [5] use,
+so that the analytic solutions also serve as test problems with known answers. The gap equation is solved in closed
+form only for massless spinor charges ($m_{\rm LL}=0$), where the integral is elementary; for $m_{\rm LL}>0$ it is
+evaluated numerically, as in the earlier stages.
+
 # 8. Decisions that are the author's
 
 1. **The super-loop as the "super-group"** (D2). If a group is required, the only consistent choices are
@@ -491,8 +527,10 @@ computer as soon as it is complete; the push itself can only be made by the auth
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [2] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains item [1].
+* Items [3] to [11] of Test 2 are answered in the following stages; this version of the document of the
+  answers contains items [1] and [2]. In item [2] the domain wall was solved for walls along one coordinate only, and
+  the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
+  of the square of the operator, not on the lattice.
 * The Yukawa completion was not renormalized explicitly to all orders (D8). The document on the $3+1$
   manifold proves renormalizability by power counting, by the completeness of the Lagrangian and by the
   one-loop bubble, and states what the standard renormalization theorem adds; the counterterms beyond one
@@ -550,6 +588,13 @@ computer as soon as it is complete; the push itself can only be made by the auth
 | E34 | the new check LL-S9 counted the letters of the line spacing of the printed equations (a layout command) as symbols | the check (stage 6) | the check removes this layout command before it reads the letters |
 | E35 | in the first drawing of Figure 1 of the document of Test 2 the legend and two labels covered curves and points | inspection of the figure (stage 6) | legend below the panel, labels moved into empty regions |
 | E36 | an editing script wrote parts of this provenance document with escape sequences of the scripting language in place of backslashes of the formulas | a scan of the sources for control characters (stage 6) | the document was restored from the repository and edited again; every source of the folder is scanned for control characters |
+| E37 | the first time step of check AS-2 (0.02, 800 steps) would have given an RK4 phase error of about $8\times10^{-7}$, above the tolerance $10^{-8}$; the error was estimated before the first run | the estimate of the summed phase error (stage 7) | the time step 0.004 with 4000 steps (expected error $1.2\times10^{-9}$), and the expected size printed with every RK4 check |
+| E38 | the first statements of the checks of item [2] used single letters without the suffix LL, several of which the registry gives other meanings: for the width of the wall and for the precession frequency, for $\varepsilon_{\rm LL}-\mu_{\rm LL}$, for the profile and the spinor of a bound state, for $(\mathsf K^3_{\rm LL})^\dagger$, for the third isospin component, and two Greek letters for the parameter of a wall | review against rule 5 (stage 7) | new registry entries ($\ell^{\rm K}_{\rm LL}$, $\omega^{\rm pr}_{\rm LL}$, $\varphi^{\rm K}_{\rm LL}$, $\chi^{\rm K}_{\rm LL}$, $k^{\rm K}_{\rm LL}$, ...), $Q_{\rm LL}$ for the charge of a component, and $(\mathsf K^3_{\rm LL})^\dagger$ and $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}$ written out |
+| E39 | the first tolerance of the density comparison of check AS-9 (0.999 for the Bhattacharyya coefficient) was a guess, and it failed (0.99888) | the check (stage 7) | the tolerances of AS-9 are now the second-order bounds of Kato-Temple and Davis-Kahan, computed from the residual and the spectral distance |
+| E40 | in the first figure of case B the arrow for the gap pointed at the momentum 0 (a local maximum of $E^-_{\rm LL}$) instead of the Fermi momentum, and in the first figure of case C a label covered the curve | inspection of the figures (stage 7) | the arrow is placed at the computed minimum of $E^-_{\rm LL}$; the label moved |
+| E41 | the first output of check AS-8 labelled the two sectors of $\mathsf Q^{\rm K}_{\rm LL}$ with the opposite sign | review of the report (stage 7) | the label printed with the sign of the operator $\mp d\Delta_{\rm LL}/dx^1_{\rm LL}$ |
+| E42 | the first draft of Section 3 of the document of Test 2 used unregistered letters in formulas (a name for the $2\times2$ matrix of the particle-hole oscillation, bare letters for a profile, a residual and a distance, bold units for the components of a spinor) and the first draft of Section 11 of this provenance document cited equation numbers of the document of Test 2 | the checks LL-S6, LL-S7 and review against rule 7 (stage 7) | written out in words or with registered symbols; Section 11 states every formula itself |
+| E43 | the labels of the figures of item [2] first used notation that the formula renderer of the plotting library does not accept (a sans-serif letter without braces, a fraction without braces) | the figure script stopped (stage 7) | braces added |
 
 # 12. The symbols
 
