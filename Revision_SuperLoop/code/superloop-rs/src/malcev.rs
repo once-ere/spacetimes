@@ -356,7 +356,7 @@ pub fn run() -> bool {
         mal_all &= mal;
         lie_all &= lie == (lam != -2);
     }
-    ck.add("M-2", "F_A with c_sl = 0: the twists c_tw = 0, 1, -2 give Malcev algebras (exhaustive); c_tw = 0 and c_tw = 1 give Lie algebras, c_tw = -2 does not (Elduque's non-Lie module of sl(2))", lie_all && mal_all, String::new());
+    ck.add("M-2", "F_A with c_sl = 0: the twists c_tw = 0, 1, -2 give Malcev algebras (exhaustive); c_tw = 0 and c_tw = 1 give Lie algebras, c_tw = -2 does not (Carlsson's non-Lie Malcev module of sl(2))", lie_all && mal_all, String::new());
     let mut excluded = true;
     let mut wit = String::new();
     for (lam, c) in [(1i128, 1i128), (0, 1), (2, 0), (-1, 0), (3, 0)] {

@@ -248,7 +248,7 @@ def fig_classification():
             p = FancyBboxPatch((x, y), 0.25, 0.26, boxstyle="round,pad=0.008,rounding_size=0.015", fc=fc, ec=ec, lw=1.0)
             ax.add_patch(p)
             ax.text(x + 0.125, y + 0.13, t, ha="center", va="center", fontsize=6.6, linespacing=1.3)
-    ax.text(0.5, 0.13, "twist: $[\\mathbf{u},\\mathbf{b}\\,\\mathbf{e}_4]=c^{\\rm tw}_{\\rm LL}\\,(W_{\\rm LL}(\\mathbf{u})\\mathbf{b})\\,\\mathbf{e}_4$; the Malcev identity allows $c^{\\rm tw}_{\\rm LL}=0,1,-2$ only (Elduque's module; G-3, M-2)", ha="center", fontsize=7.4, color=INK2)
+    ax.text(0.5, 0.13, "twist: $[\\mathbf{u},\\mathbf{b}\\,\\mathbf{e}_4]=c^{\\rm tw}_{\\rm LL}\\,(W_{\\rm LL}(\\mathbf{u})\\mathbf{b})\\,\\mathbf{e}_4$; the Malcev identity allows $c^{\\rm tw}_{\\rm LL}=0,1,-2$ only (Carlsson's module; G-3, M-2)", ha="center", fontsize=7.4, color=INK2)
     save(fig, "classification")
 
 
