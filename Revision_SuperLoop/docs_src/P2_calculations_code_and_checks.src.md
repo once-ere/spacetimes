@@ -655,7 +655,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [7]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, and the superfluid boson singlet state (folder `test2`)
+# 11. Test 2, items [1] to [8]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state and its effective field equations (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -1016,6 +1016,28 @@ with a Fermi sea at six momenta each: its energy, its annihilation by the sixtee
 numerically diagonalized $32\times32$ Bogoliubov matrix, its pair amplitude, and the comparison with the ground state found
 independently by the Lanczos method. The gaps are computed from the gap equation (closed form at $\mu_{\rm LL}=0$, quadrature
 with a break point at the Fermi momentum otherwise). Figure 21 is drawn by `test2/python/make_t2_sfbs_figures.py`.
+
+## Item [8]: the effective field equations of the SFBS
+
+The same program verifies Section 9. SB-6: the gauge-covariant derivative $\nabla^{\rm B}_{{\rm LL},p}$ of the SFBS: the Leibniz rule
+for 50 random pairs of fields (linear in one coordinate) with random potentials and random Lorentz connections (real
+combinations of the six generators), the covariance under 50 random local transformations (derivatives by central differences),
+and the commutator of two covariant derivatives for all 16 pairs of directions with potentials linear in the coordinates. The
+fragments `t2s_Avec`, `t2s_nablaB` and `t2s_fieldeq` print the matrix $\mathcal A^{\rm v}_{{\rm LL},p}$, the components of the covariant
+derivative and of the effective field equation as exact symbolic expressions, each compared numerically with the vector formula
+before it is written. SB-7: the pair susceptibility (9.16) against the second-order change of the sum of the positive eigenvalues
+of the $16\times16$ Bogoliubov matrices with a modulated pair field at the chemical potential $\omega^{\rm B}_{\rm LL}/2$ (pair fields
+$10^{-3}$ and $2\times10^{-3}$, Richardson extrapolation, the same quadrature nodes), and the closed forms of $1/G^{\rm crit}_{\rm LL}$,
+$Z^{\rm t}_{\rm LL}(0)$, $Z^{\rm s}_{\rm LL}(0)$ against numerical second derivatives. The integrals over $\vec q_{\rm LL}$ use composite
+Gauss-Legendre quadrature in the modulus (40 panels of 16 points) and Gauss-Legendre quadrature in the cosine of the angle with
+$\vec k^{\rm B}_{\rm LL}$ (32 points). SB-8: $1/G^{\rm bd}_{\rm LL}$, the pole of the SFBS propagator by bisection between 0 and the threshold,
+its limits, the approach of the Ginzburg-Landau mass, the pole from the Bogoliubov matrices, and the small-wave-number slope of the
+dispersion against the derivatives of the susceptibility at the pole. SB-9: the currents of the SFBS against numerical
+derivatives of the effective Lagrangian. SB-10: the uniform time-dependent mean-field equations (9.30) in the normal vacuum at
+$G_{\rm LL}=20$ (320 radial nodes, the classical fourth-order Runge-Kutta method with the step 0.02 up to $x^0_{\rm LL}=1500$): the
+frequency of the line of the pair field below $2m_{\rm LL}$ (maximum of the Hann-windowed Fourier power, found by a scan and a
+golden-section search) against the pole on the same nodes, the conservation of the mean-field energy and the reality of the pair
+field. Figure 22 is drawn by `test2/python/make_t2_sfbs_figures.py`.
 
 # 12. The checks of the documents
 

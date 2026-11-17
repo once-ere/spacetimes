@@ -300,9 +300,20 @@ the spinor field: the spin-zero pairs of two spinor charges (spin
 singlet, isospin triplet, fermion number 2, charges \(+1\), \(0\),
 \(-1\)), their super-loop form, their Bose character, and the SFBS state
 as a coherent state of pairs, proved to be the mean-field ground state
-and checked in the exact many-body space of one pair of momenta; the
-checks SB-1 to SB-5 of the program \texttt{t2\_sfbs} (member
-\texttt{t2sfbs} of the workspace) and Figure 21 of the document.
+and checked in the exact many-body space of one pair of momenta (Figure
+21 of the document). Its eighth answer (the first item {[}8{]}) derives
+the effective field equations of the SFBS: the exact
+Hubbard-Stratonovich field of the SFBS, its gauge-covariant derivative
+inherited from the spinor field, the effective action and its derivative
+expansion (the Lagrangian of a charged scalar field), the pair
+susceptibility of the vacuum with its coefficients in closed form, the
+effective field equations with the currents of the SFBS as sources of
+the gauge fields, and the SFBS boson of the normal vacuum (a bound state
+for \(G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}\), unstable
+beyond \(G^{\rm crit}_{\rm LL}\)), confirmed by the time-dependent
+mean-field equations (Figure 22). Items {[}7{]} and {[}8{]} are verified
+by the checks SB-1 to SB-10 of the program \texttt{t2\_sfbs} (member
+\texttt{t2sfbs} of the workspace).
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -517,7 +528,8 @@ of 9 \\
 \texttt{t2\_examples\_check.py} & 11 of 11 \\
 \texttt{test2/data/t2\_rs\_selftest\_checks.txt} & \texttt{t2\_solve} &
 5 of 5 \\
-\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 5 of 5 \\
+\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 10 of
+10 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -1927,6 +1939,109 @@ charge in an eigenstate of \(\mathsf h_{\rm LL}(\vec q_{\rm LL})\) and
 in its partner state of the momentum \(-\vec q_{\rm LL}\) (the complex
 conjugate of \(\mathsf K^3_{\rm LL}\) times the eigenvector) & new &
 \texttt{Yproj} \texttt{f\_state} \texttt{f\_partner} \\
+\(\mathcal L^{\rm HS}_{\rm LL}\) & the Lagrangian density of Test 2
+after the Hubbard-Stratonovich identity: the Lagrangian
+\(\mathcal L^\nabla_{\rm LL}\) with its pairing term replaced by
+\(-\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\sum_\iota\big((d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}+d^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\big)\),
+in which \(\vec d_{\rm LL}\) is an independent complex isovector field &
+new & \texttt{Lagr\_HS} \\
+\(\nabla^{\rm B}_{{\rm LL},p}\) & the gauge-covariant derivative of the
+SFBS field,
+\(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}=\partial_p\vec d_{\rm LL}-2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\vec d_{\rm LL}+g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}\)
+(fermion number 2, isospin vector, Lorentz scalar) & new &
+\texttt{nablaB} \texttt{nablaB\_p} \\
+\(\mathcal A^{\rm v}_{{\rm LL},p}\), \(\vec A^{\rm v}_{{\rm LL},p}\) &
+the isospin potential of the direction \(p\) in the vector
+representation: the vector
+\(\vec A^{\rm v}_{{\rm LL},p}=(A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p})\)
+and the real antisymmetric \(3\times3\) matrix with the entries
+\((\mathcal A^{\rm v}_{{\rm LL},p})_{\iota\iota''}=\sum_{\iota'}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}\),
+so that
+\(\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}=\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL}\)
+& new & \texttt{Avec\_matrix} \texttt{Avec\_p} \\
+\(\Psi^{\rm a}_{\rm LL}\), \(\Psi^{\rm b}_{\rm LL}\) & two arbitrary
+eight-component fields that transform like \(\Psi_{\rm LL}\); used in
+the Leibniz rule of the covariant derivative of the SFBS & new &
+\texttt{Psi\_a} \texttt{Psi\_b} \\
+\(\mathcal S^{\rm B}_{\rm LL}\) & the effective action of the SFBS:
+\(\exp(i\mathcal S^{\rm B}_{\rm LL})\) is the functional integral over
+the spinor field of
+\(\exp(i\int d^4x_{\rm LL}\,\mathcal L^{\rm HS}_{\rm LL})\) at given
+\(\vec d_{\rm LL}\) and given gauge fields & new & \texttt{S\_B} \\
+\(\mathcal L^{\rm B}_{\rm LL}\); \(Z^{\rm t}_{\rm LL}\),
+\(Z^{\rm s}_{\rm LL}\) & the effective Lagrangian density of the SFBS to
+second order in the derivatives,
+\(Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2-\Omega_{\rm LL}(\vec d_{\rm LL})\),
+and its stiffness coefficients of the time derivatives and of the space
+derivatives; they depend on the vacuum about which the expansion is
+made, written as the argument: \(Z^{\rm t}_{\rm LL}(0)\),
+\(Z^{\rm s}_{\rm LL}(0)\) in the normal vacuum (plain text
+\texttt{Z\_t0}, \texttt{Z\_s0}) & new & \texttt{Lagr\_B} \texttt{Z\_t}
+\texttt{Z\_s} \texttt{Z\_t0} \texttt{Z\_s0} \\
+\(\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})\) &
+the pair susceptibility of the vacuum: the coefficient of
+\(\lvert\vec d_{\rm LL}\rvert^2\) that the spinor field contributes to
+the effective action, per duration and volume, of a plane wave of the
+SFBS field with the frequency \(\omega^{\rm B}_{\rm LL}\) and the wave
+number \(k^{\rm B}_{\rm LL}\) (plain text \texttt{chi\_pr\_GL}: its
+derivative expansion to second order) & new & \texttt{chi\_pr}
+\texttt{chi\_pr\_GL} \\
+\(\omega^{\rm B}_{\rm LL}\), \(\vec k^{\rm B}_{\rm LL}\),
+\(k^{\rm B}_{\rm LL}\) & the frequency, the wave vector and the wave
+number of a plane wave of the SFBS field (plain text
+\texttt{omega\_B\_KG}: the frequency of the Klein-Gordon form of the
+effective field equation) & new & \texttt{omega\_B} \texttt{k\_B}
+\texttt{omega\_B\_KG} \\
+\(M^{\rm pr}_{\rm LL}(\vec q_{\rm LL},\vec k^{\rm B}_{\rm LL})\);
+\(\varepsilon_{\rm LL}(+)\), \(\varepsilon_{\rm LL}(-)\) & the pair
+matrix element
+\({\rm tr}\big(\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)\big)\)
+of two spinor charges with the relative momentum \(\vec q_{\rm LL}\) and
+the total momentum \(\vec k^{\rm B}_{\rm LL}\), and the energies
+\(\varepsilon_{\rm LL}(\pm)=(\lvert\vec q_{\rm LL}\pm\vec k^{\rm B}_{\rm LL}/2\rvert^2+m_{\rm LL}^2)^{1/2}\)
+of the two charges & new & \texttt{M\_pr} \texttt{eps(+)}
+\texttt{eps(-)} \\
+\(\mathsf H^{\rm mod}_{\rm LL}(\vec q_{\rm LL})\) & the \(16\times16\)
+Bogoliubov matrix of the static pair field
+\((0,0,d^3_{\rm LL}\exp(i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL}))\)
+for the relative momentum \(\vec q_{\rm LL}\), acting on the Nambu pair
+\((\Psi_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2),\Psi_{\rm LL}(\vec k^{\rm B}_{\rm LL}/2-\vec q_{\rm LL})^*)\)
+& new & \texttt{H\_mod} \\
+\(G^{\rm bd}_{\rm LL}\) & the binding coupling,
+\(1/G^{\rm bd}_{\rm LL}=\chi^{\rm pr}_{\rm LL}(2m_{\rm LL},0)\): for
+\(G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}\) the SFBS of the
+normal vacuum is a bound state of two spinor charges & new &
+\texttt{G\_bind} \\
+\(M^{\rm B}_{\rm LL}\) & the mass of the SFBS boson of the normal
+vacuum: the frequency \(\omega^{\rm B}_{\rm LL}\) below the threshold
+\(2m_{\rm LL}\) with
+\(\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},0)=1/G_{\rm LL}\)
+(plain text \texttt{M\_B\_GL}: the Ginzburg-Landau mass
+\((a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}\);
+\texttt{line\_MB}: a fitted oscillation with this frequency) & new &
+\texttt{M\_B} \texttt{M\_B\_GL} \texttt{line\_MB} \\
+\(a^{\rm GL}_{\rm LL}\) & the Ginzburg-Landau coefficient of
+\(\lvert\vec d_{\rm LL}\rvert^2\) in the effective potential of the
+normal vacuum, \(1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}\) & new &
+\texttt{a\_GL} \\
+\(\vec P^{\rm B}_{\rm LL}\) & the canonical momentum of the SFBS field,
+\(\vec P^{\rm B}_{\rm LL}=Z^{\rm t}_{\rm LL}\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}\),
+the derivative of \(\mathcal L^{\rm B}_{\rm LL}\) with respect to
+\(\partial_0\vec d^{\,*}_{\rm LL}\) & new & \texttt{P\_B} \\
+\(\mathcal J^{\iota,p}_{{\rm B},{\rm LL}}\),
+\(\mathcal J^{{\rm F},p}_{{\rm B},{\rm LL}}\) & the currents of the
+SFBS: the derivatives of \(\mathcal L^{\rm B}_{\rm LL}\) with respect to
+\(A^\iota_{{\rm LL},p}\) and \(A^{\rm F}_{{\rm LL},p}\), the sources of
+the gauge fields in the effective theory & new & \texttt{Jv\_B}
+\texttt{JF\_B} \\
+\(u^{\rm pl}_{{\rm LL},\pm}\), \(v^{\rm pl}_{{\rm LL},\pm}\) & the two
+components of a mode of the uniform polar mean-field dynamics in the
+plane spanned by \((\chi^{\rm pw}_{\rm LL},0)\) and
+\((0,\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})\), for an eigenvector
+\(\chi^{\rm pw}_{\rm LL}\) of the energy \(\pm\varepsilon_{\rm LL}\);
+functions of the time, with
+\(\lvert u^{\rm pl}_{{\rm LL},\pm}\rvert^2+\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2=1\)
+& new & \texttt{u\_pl} \texttt{v\_pl} \\
 \end{longtable}
 
 \end{document}

@@ -207,7 +207,8 @@ the test, and is committed and carried to the author's computer after each item 
 | [5] | Section 6 of the document: the Rust solver `t2_solve` (member `t2solve` of the Cargo workspace `test2/rust`), with the instructions for installing Rust, building with cargo and using it; the same input and output files as the Python solver; the comparison EX-8 of the two sets of solutions | answered |
 | [6] | Section 7 of the document: the Rust plotter `t2_plot` (member `t2plot` of the workspace `test2/rust`), which writes Scalable Vector Graphics with its own small plotting library and draws the predictions of the examples computed in Rust; Figures 14 to 20 | answered |
 | [7] | Section 8 of the document: the construction of the superfluid boson singlet state (SFBS) from the spinor field: the 28 pairs of two spinor charges at one point, the six spin-zero pairs (spin singlet, isospin triplet by the Pauli principle), the scalar channel selected by the interaction and by parity, the charges, the super-loop form (the imaginary part of the product of a spinor charge's bi-quaternion with its conjugate), the Bose character with Pauli blocking, and the SFBS state as a coherent state of particle and antiparticle pairs, proved to be the mean-field ground state; checks SB-1 to SB-5 of the new program `t2_sfbs` (member `t2sfbs`; exact many-body computations in Fock spaces of 256 and 65536 states); Figure 21 | answered |
-| [8] to [11] | Sections 9 to 13 of the document | to follow, in this order |
+| [8] | Section 9 of the document: the effective field equations of the SFBS: the Hubbard-Stratonovich field $\vec d_{\rm LL}$ (the SFBS times $-\tfrac12G_{\rm LL}$, its transformation law), its gauge-covariant derivative $\nabla^{\rm B}_{{\rm LL},p}$ inherited from the spinor field by the Leibniz rule (covariance and commutator), the effective action and its derivative expansion $\mathcal L^{\rm B}_{\rm LL}$, the pair susceptibility of the vacuum with $1/G^{\rm crit}_{\rm LL}$, $Z^{\rm t}_{\rm LL}(0)$, $Z^{\rm s}_{\rm LL}(0)$ and $1/G^{\rm bd}_{\rm LL}$ in closed form, the effective field equations written out and in first-order form, the gauge-field equations with the currents of the SFBS, and the SFBS boson of the normal vacuum (Klein-Gordon form, exact pole, instability beyond $G^{\rm crit}_{\rm LL}$), confirmed by the time-dependent mean-field equations; checks SB-6 to SB-10, Figure 22 | answered |
+| [8] (second), [9] to [11] | Sections 10 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -309,6 +310,10 @@ expression and compares it with the matrix that it describes (check GS-12).
    `test2/rust` (a fermionic Fock space with the Lanczos method, Gauss-Legendre quadrature; checks SB-1 to SB-5), Section 8 of
    the document of Test 2 with Figure 21 (`test2/python/make_t2_sfbs_figures.py`), the new symbols, and `check_all.sh` extended
    (decision D17, Section 11, entry E57).
+15. **Stage 13 — Test 2, item [8], the effective field equations** (Section 2.8): the checks SB-6 to SB-10 in `t2_sfbs` (the
+   covariant derivative of the SFBS, the pair susceptibility against the Bogoliubov matrices, the SFBS boson of the normal vacuum,
+   the currents, and the time-dependent mean-field evolution of a uniform pair field), the explicit component equations printed by
+   the program, Section 9 of the document of Test 2 with Figure 22, and the new symbols (decision D18, Section 11, entry E58).
 
 # 6. The results in brief
 
@@ -550,6 +555,14 @@ isospin gauge field massless, so that items [9] to [11] (spontaneous breaking, m
 $U(1)$ of the electric charge and the massless photon) could not be answered with it. Section 8.8 of the document states this
 reading.
 
+**D18. "the effective field equations for superfluid boson singlet".** The effective field equations are derived, not
+postulated: the SFBS field is introduced by the exact Hubbard-Stratonovich identity, the spinor field is integrated out, and the
+resulting effective action is expanded in derivatives to second order (the Ginzburg-Landau form). The coefficients are computed
+from the spinor field in closed form in the normal vacuum (Section 9.4); those of the condensed vacuum are the subject of item
+[10] (Section 12). The momentum cutoff, inherited from the gap equation (2.33) and applied to the relative momentum of a pair, breaks
+Lorentz invariance, and the stiffness coefficients of the time and the space derivatives differ ($Z^{\rm s}_{\rm LL}\neq Z^{\rm t}_{\rm LL}$);
+the document keeps both and states the consequence (a dispersion that is not exactly relativistic) rather than imposing equality.
+
 **D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
 they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
 uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
@@ -594,8 +607,10 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [8] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains items [1] to [7]. The solver of item [3] treats the gauge fields as external (their field
+* Items [8] (second, the effective potential) to [11] of Test 2 are answered in the following stages; this version of the
+  document of the answers contains items [1] to [7] and the first item [8]. The effective field equations of item [8] keep the
+  SFBS field at its stationary point (mean field): its own fluctuations (loops of the SFBS) are not included, and the derivative
+  expansion is truncated at second order. The solver of item [3] treats the gauge fields as external (their field
   equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
@@ -678,6 +693,7 @@ evaluated numerically, as in the earlier stages.
 | E55 | the first comparison also failed for the history of the Anderson iteration of the uniform example (difference $2\times10^{-7}$ at an intermediate iterate, with the same fixed point to $10^{-15}$); the histories are now compared with the tolerance $10^{-5}$ and the solutions with $10^{-7}$, for the reason stated in check EX-8 |
 | E56 | in the first drawings of the Rust plotter three legends covered data (the crossing of the probabilities of the Andreev reflection, the curves of the self-consistent kink and some eigenvalues), and in the two-dimensional figure the axis labels of the second column of panels overlapped the first; the legends and panels were moved |
 | E57 | the first draft of Section 8 used letters without the suffix LL for auxiliary quantities of its proofs (a small parameter, the entries of a $2\times2$ matrix, a rapidity, the operators of two states, an index condition); the proofs were rewritten with registered symbols, with particular Lorentz transformations, and with index conditions stated in words |
+| E58 | in the first draft of Section 9, auxiliary letters without the suffix LL appeared in derivations (a generic stiffness coefficient, the modulus of an integration variable, a unit vector and two generic isovectors, a Kronecker symbol), the plain-text names of the two pair energies clashed with an existing name, and three displays were wider than the page; the derivations were rewritten with the registered symbols ($Z^{\rm t}_{\rm LL}$, $-Z^{\rm s}_{\rm LL}$, $\vec A^{\rm v}_{{\rm LL},p}$, Fresnel integrals of the real and imaginary parts), the names were changed to `eps(+)`, `eps(-)`, and the displays were split; the first version of check SB-10 asked the energy of the time stepping to be conserved to $10^{-10}$, below the truncation error of the fourth-order method ($1.5\times10^{-8}$), and was corrected to $10^{-6}$ |
 
 # 12. The symbols
 

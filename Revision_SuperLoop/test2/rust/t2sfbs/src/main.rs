@@ -23,6 +23,24 @@
 //!         Hamiltonian: it is annihilated by all sixteen quasi-particle operators, its energy is the predicted one,
 //!         its pair amplitude is the predicted one, and an independent Lanczos computation finds the same state.
 //!
+//! Item [8], the effective field equations of the SFBS (Section 9 of the document):
+//!   SB-6  the gauge-covariant derivative of the SFBS, nablaB_p d = d_p d - 2i g_F AF_LL_p d + g_v Av_LL_p x d: the Leibniz
+//!         rule nablaB_p (Psi_a^T Kch_iota Psi_b) = (nabla_LL_p Psi_a)^T Kch_iota Psi_b + Psi_a^T Kch_iota (nabla_LL_p Psi_b) (with a
+//!         random real combination of the six Lorentz generators as the Lorentz connection), the covariance under local
+//!         gauge transformations, and the commutator
+//!         [nablaB_p, nablaB_p'] d = -2i g_F FF_LL d + g_v Fv_LL x d;
+//!   SB-7  the pair susceptibility chi_pr(omega, k) of the normal vacuum: the closed integrand against the second-order
+//!         change of the sum of the positive Bogoliubov energies (16 x 16 matrices) with a small modulated pair field, at
+//!         several frequencies and wave numbers; chi_pr(0, 0) = 1/G_crit; the coefficients Z_t0 and Z_s0 of omega^2 and k^2
+//!         against numerical derivatives;
+//!   SB-8  the SFBS boson of the normal vacuum (G_bind < G < G_crit): the pole of 1/(chi_pr - 1/G), its limits (2m at
+//!         G_bind, 0 at G_crit), the Ginzburg-Landau mass (a_GL/Z_t0)^(1/2) and the dispersion relation;
+//!   SB-9  the currents of the SFBS (the sources of the gauge fields) against numerical derivatives of the Lagrangian;
+//!   SB-10 the microscopic check of the effective field equation: the time-dependent mean-field (Bogoliubov-de Gennes)
+//!         evolution of a small uniform pair field in the normal vacuum (G = 20) oscillates with the frequency M_B of the
+//!         pole of the SFBS propagator (the mass in the effective Klein-Gordon equation), and the conserved functional of
+//!         the evolution stays constant.
+//!
 //! Output (folder test2/data): the report t2_sfbs_checks.txt, the fragments t2_sfbs_fragments.md (explicit matrices
 //! for the document) and the data files t2_sfbs_*.csv of the figures.
 //!
@@ -47,7 +65,7 @@ use std::path::PathBuf;
 
 use t2core::c64::{c, C64};
 use t2core::cmat::{eigh, CMat};
-use t2core::model::{alpha, beta, bq_conj, bq_from, bq_mul, cconj, dirac_from_charges, eps2, gamma, gamma_ch, jgen, kgen, kpair, kpair_ps, lift2, lift4, rand_sl2c, sigma, spin_gen, tiso};
+use t2core::model::{adjoint, alpha, beta, bq_conj, bq_from, bq_mul, cconj, dirac_from_charges, eps2, eps3, gamma, gamma_ch, jgen, kgen, kpair, kpair_ps, lift2, lift4, rand_sl2c, sigma, spin_gen, su2, tiso};
 use t2core::rng::Rng;
 use t2core::sym::{tex_matrix, Lin, SymMat, GR};
 
@@ -886,6 +904,841 @@ fn sb5(ch: &mut Checks, dir: &PathBuf, d_vac: f64, d_fs: f64) {
     }
 }
 
+// ================================================================== item [8]
+
+/// the 3 x 3 antisymmetric matrix of an isospin vector a in the vector representation: Avec(a) d = a x d
+fn avec(a: &[f64; 3]) -> [[f64; 3]; 3] {
+    [[0.0, -a[2], a[1]], [a[2], 0.0, -a[0]], [-a[1], a[0], 0.0]]
+}
+
+fn cross_c(a: &[f64; 3], d: &[C64; 3]) -> [C64; 3] {
+    [d[2].scale(a[1]) - d[1].scale(a[2]), d[0].scale(a[2]) - d[2].scale(a[0]), d[1].scale(a[0]) - d[0].scale(a[1])]
+}
+
+/// the covariant derivative of the SFBS at a point: nablaB d = (derivative of d) - 2i g_F AF d + g_v Av x d
+fn nabla_b(dd: &[C64; 3], d: &[C64; 3], af: f64, av: &[f64; 3], gf: f64, gv: f64) -> [C64; 3] {
+    let x = cross_c(av, d);
+    let mut r = [C64::ZERO; 3];
+    for i in 0..3 {
+        r[i] = dd[i] + d[i] * c(0.0, -2.0 * gf * af) + x[i].scale(gv);
+    }
+    r
+}
+
+fn rnd_c(rng: &mut Rng) -> C64 {
+    c(rng.unit(), rng.unit())
+}
+
+/// SB-6: the gauge-covariant derivative of the SFBS
+fn sb6(ch: &mut Checks, fr: &mut Frags) {
+    let mut rng = Rng(8086);
+    let (gv, gf) = (0.83, 0.57);
+    // (i) the Leibniz rule with linear test fields phi(x) = phi0 + phi1 x^p, psi(x) = psi0 + psi1 x^p at x = 0, random
+    // potentials and a random Lorentz connection Gamma_p = sgen_LL(uLw) (x) sigma_0
+    let mut leib = 0.0f64;
+    for _ in 0..50 {
+        let phi0: Vec<C64> = (0..8).map(|_| rnd_c(&mut rng)).collect();
+        let phi1: Vec<C64> = (0..8).map(|_| rnd_c(&mut rng)).collect();
+        let psi0: Vec<C64> = (0..8).map(|_| rnd_c(&mut rng)).collect();
+        let psi1: Vec<C64> = (0..8).map(|_| rnd_c(&mut rng)).collect();
+        let av = [rng.unit(), rng.unit(), rng.unit()];
+        let af = rng.unit();
+        // a random Lorentz connection: a real combination of the six generators (rotations jgen, boosts kgen)
+        let mut gam = CMat::zeros(8);
+        for j in 1..4 {
+            gam = gam.add(&lift4(&spin_gen(&jgen(j))).scale_r(rng.unit()));
+            gam = gam.add(&lift4(&spin_gen(&kgen(j))).scale_r(rng.unit()));
+        }
+        let mut acal = CMat::identity(8).scale_r(gf * af);
+        for i in 0..3 {
+            acal = acal.add(&tiso(i + 1).scale_r(gv * av[i]));
+        }
+        let nab = |f0: &Vec<C64>, f1: &Vec<C64>| -> Vec<C64> {
+            let g = gam.matvec(f0);
+            let a = acal.matvec(f0);
+            (0..8).map(|k| f1[k] + g[k] - C64::I * a[k]).collect()
+        };
+        let nphi = nab(&phi0, &phi1);
+        let npsi = nab(&psi0, &psi1);
+        let bil = |x: &Vec<C64>, km: &CMat, y: &Vec<C64>| -> C64 {
+            let ky = km.matvec(y);
+            x.iter().zip(&ky).fold(C64::ZERO, |s, (a, b)| s + *a * *b)
+        };
+        let mut f = [C64::ZERO; 3];
+        let mut df = [C64::ZERO; 3];
+        let mut rhs = [C64::ZERO; 3];
+        for i in 0..3 {
+            let km = kpair(i + 1);
+            f[i] = bil(&phi0, &km, &psi0);
+            df[i] = bil(&phi1, &km, &psi0) + bil(&phi0, &km, &psi1);
+            rhs[i] = bil(&nphi, &km, &psi0) + bil(&phi0, &km, &npsi);
+        }
+        let lhs = nabla_b(&df, &f, af, &av, gf, gv);
+        for i in 0..3 {
+            leib = leib.max((lhs[i] - rhs[i]).abs());
+        }
+    }
+    // (ii) covariance under a local gauge transformation exp(i thF(x)) U(x), along one direction x of length t:
+    // thF(t) = a0 + a1 t, U(t) = su2(b0 + b1 t), d(t) = d0 + d1 t + d2 t^2; derivatives by central differences (step h)
+    let mut cov = 0.0f64;
+    let h = 1e-5;
+    for _ in 0..50 {
+        let a0 = rng.unit();
+        let a1 = rng.unit();
+        let b0 = [rng.unit(), rng.unit(), rng.unit()];
+        let b1 = [rng.unit(), rng.unit(), rng.unit()];
+        let d0 = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+        let d1 = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+        let d2 = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+        let av = [rng.unit(), rng.unit(), rng.unit()];
+        let af = rng.unit();
+        let dat = |t: f64| -> [C64; 3] { [d0[0] + d1[0].scale(t) + d2[0].scale(t * t), d0[1] + d1[1].scale(t) + d2[1].scale(t * t), d0[2] + d1[2].scale(t) + d2[2].scale(t * t)] };
+        let uat = |t: f64| su2(&[b0[0] + b1[0] * t, b0[1] + b1[1] * t, b0[2] + b1[2] * t]);
+        let transformed = |t: f64| -> [C64; 3] {
+            let r = adjoint(&uat(t));
+            let d = dat(t);
+            let ph = C64::cis(2.0 * (a0 + a1 * t));
+            let mut out = [C64::ZERO; 3];
+            for i in 0..3 {
+                let mut z = C64::ZERO;
+                for k in 0..3 {
+                    z += d[k].scale(r[i][k]);
+                }
+                out[i] = ph * z;
+            }
+            out
+        };
+        // the transformed potentials at t = 0: AF' = AF + a1/g_F;  atau' = U atau U^-1 - (i/g_v) (dU) U^-1
+        let atau = {
+            let mut m = CMat::zeros(2);
+            for i in 0..3 {
+                m = m.add(&sigma(i + 1).scale_r(0.5 * av[i]));
+            }
+            m
+        };
+        let u0 = uat(0.0);
+        let du = uat(h).sub(&uat(-h)).scale_r(0.5 / h);
+        let ap = u0.mul(&atau).mul(&u0.dagger()).sub(&du.mul(&u0.dagger()).scale(c(0.0, 1.0 / gv)));
+        let avp = [sigma(1).mul(&ap).trace().re, sigma(2).mul(&ap).trace().re, sigma(3).mul(&ap).trace().re];
+        let afp = af + a1 / gf;
+        // left: the covariant derivative of the transformed field with the transformed potentials
+        let tp = transformed(h);
+        let tm = transformed(-h);
+        let dtr: [C64; 3] = [(tp[0] - tm[0]).scale(0.5 / h), (tp[1] - tm[1]).scale(0.5 / h), (tp[2] - tm[2]).scale(0.5 / h)];
+        let lhs = nabla_b(&dtr, &transformed(0.0), afp, &avp, gf, gv);
+        // right: the transformed covariant derivative
+        let nb = nabla_b(&d1, &d0, af, &av, gf, gv);
+        let r = adjoint(&u0);
+        let ph = C64::cis(2.0 * a0);
+        for i in 0..3 {
+            let mut z = C64::ZERO;
+            for k in 0..3 {
+                z += nb[k].scale(r[i][k]);
+            }
+            cov = cov.max((lhs[i] - ph * z).abs());
+        }
+    }
+    // (iii) the commutator of two covariant derivatives with potentials linear in the coordinates
+    let mut commu = 0.0f64;
+    for _ in 0..50 {
+        // A_p(x) = a_p + sum_p' b[p][p'] x^p' (isospin and fermion number), d(x) quadratic
+        let a: Vec<[f64; 3]> = (0..4).map(|_| [rng.unit(), rng.unit(), rng.unit()]).collect();
+        let b: Vec<Vec<[f64; 3]>> = (0..4).map(|_| (0..4).map(|_| [rng.unit(), rng.unit(), rng.unit()]).collect()).collect();
+        let afa: Vec<f64> = (0..4).map(|_| rng.unit()).collect();
+        let afb: Vec<Vec<f64>> = (0..4).map(|_| (0..4).map(|_| rng.unit()).collect()).collect();
+        let d0 = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+        let d1: Vec<[C64; 3]> = (0..4).map(|_| [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)]).collect();
+        let mut d2 = vec![vec![[C64::ZERO; 3]; 4]; 4];
+        for p in 0..4 {
+            for q in p..4 {
+                let v = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+                d2[p][q] = v;
+                d2[q][p] = v;
+            }
+        }
+        // nablaB_q d at 0, and its derivative along p at 0
+        let nb_q = |q: usize| nabla_b(&d1[q], &d0, afa[q], &a[q], gf, gv);
+        let d_p_nb_q = |p: usize, q: usize| -> [C64; 3] {
+            let x1 = cross_c(&b[q][p], &d0);
+            let x2 = cross_c(&a[q], &d1[p]);
+            let mut r = [C64::ZERO; 3];
+            for i in 0..3 {
+                r[i] = d2[p][q][i] + (d0[i].scale(afb[q][p]) + d1[p][i].scale(afa[q])) * c(0.0, -2.0 * gf) + (x1[i] + x2[i]).scale(gv);
+            }
+            r
+        };
+        let nn = |p: usize, q: usize| -> [C64; 3] { nabla_b(&d_p_nb_q(p, q), &nb_q(q), afa[p], &a[p], gf, gv) };
+        for p in 0..4 {
+            for q in 0..4 {
+                let l1 = nn(p, q);
+                let l2 = nn(q, p);
+                let ff = afb[q][p] - afb[p][q];
+                let mut fv = [0.0; 3];
+                for i in 0..3 {
+                    fv[i] = b[q][p][i] - b[p][q][i];
+                }
+                let axa = [a[p][1] * a[q][2] - a[p][2] * a[q][1], a[p][2] * a[q][0] - a[p][0] * a[q][2], a[p][0] * a[q][1] - a[p][1] * a[q][0]];
+                for i in 0..3 {
+                    fv[i] += gv * axa[i];
+                }
+                let fx = cross_c(&fv, &d0);
+                for i in 0..3 {
+                    let want = d0[i] * c(0.0, -2.0 * gf * ff) + fx[i].scale(gv);
+                    commu = commu.max((l1[i] - l2[i] - want).abs());
+                }
+            }
+        }
+    }
+    let ok = leib < 1e-13 && cov < 1e-8 && commu < 1e-13;
+    ch.add(
+        "SB-6",
+        "the gauge-covariant derivative of the SFBS, nablaB_p d = d_p d - 2i g_F AF_LL_p d + g_v (Av_LL_p x d): for 50 random linear test fields Psi_a, Psi_b, potentials and Lorentz connections, nablaB_p (Psi_a^T Kch_iota Psi_b) = (nabla_LL_p Psi_a)^T Kch_iota Psi_b + Psi_a^T Kch_iota (nabla_LL_p Psi_b) (tol 1e-13); for 50 random local transformations exp(i thF) U and quadratic fields, the covariant derivative of the transformed field with the transformed potentials equals exp(2i thF) Rv(U) times the covariant derivative (central differences, tol 1e-8); for 50 random linear potentials, [nablaB_p, nablaB_p'] d = -2i g_F FF_LL_pp' d + g_v Fv_LL_pp' x d for all 16 pairs (p, p') (tol 1e-13)",
+        ok,
+        format!("largest deviations: Leibniz rule {}, covariance {}, commutator {}", sci(leib), sci(cov), sci(commu)),
+    );
+    // fragments: the matrix of the isospin potential in the vector representation and the covariant derivative written out
+    let mut am = SymMat::zeros(3, 3);
+    let avt = [0.37, -0.61, 0.29];
+    for i in 0..3 {
+        let mut e = [0.0; 3];
+        e[i] = 1.0;
+        let mm = avec(&e);
+        let mut cm = CMat::zeros(3);
+        for r in 0..3 {
+            for cc in 0..3 {
+                cm.set(r, cc, c(mm[r][cc], 0.0));
+            }
+        }
+        am.add_scaled(&cm, &Lin::mono(&format!("A^{}_{{{{\\rm LL}},p}}", i + 1), c(avt[i], 0.0)));
+    }
+    let mut dev = 0.0f64;
+    let want = avec(&avt);
+    for r in 0..3 {
+        for cc in 0..3 {
+            dev = dev.max((am.get(r, cc).eval() - c(want[r][cc], 0.0)).abs());
+        }
+    }
+    assert!(dev < 1e-15, "printed matrix of the isospin potential");
+    fr.add("t2s_Avec", format!("$$\\mathcal A^{{\\rm v}}_{{{{\\rm LL}},p}}={}$$", am.tex()));
+}
+
+/// the integrand weight: integral over |q| < Lambda of d^3q/(2 pi)^3 of a function of (|q|, cos(angle between q and k)):
+/// composite Gauss-Legendre nodes in |q| (panels x points) and in the cosine; returns (q, cos, weight) triples
+fn sphere_nodes(panels: usize, nq: usize, nc: usize, cuts: &[f64]) -> Vec<(f64, f64, f64)> {
+    let (qx, qw) = quad::composite(0.0, LAMBDA, cuts, panels, nq);
+    let (cx, cw) = quad::gauss_legendre(nc);
+    let mut v = vec![];
+    for (q, wq) in qx.iter().zip(&qw) {
+        for (ct, wc) in cx.iter().zip(&cw) {
+            v.push((*q, *ct, wq * wc * q * q / (4.0 * PI * PI)));
+        }
+    }
+    v
+}
+
+/// the pair susceptibility of the normal vacuum (mu = 0, mass m) at the frequency omega and the wave number k (along x^3):
+/// chi_pr = int d^3q/(2 pi)^3 M_pr (eps(+) + eps(-))/((eps(+) + eps(-))^2 - omega^2), M_pr = 2 (1 + (p1.p2 + m^2)/(eps(+) eps(-))),
+/// p1 = q + k/2, p2 = q - k/2 (the cutoff acts on the relative momentum q)
+fn chi_pr(omega: f64, k: f64, m: f64, nodes: &[(f64, f64, f64)]) -> f64 {
+    let mut s = 0.0;
+    for &(q, ct, w) in nodes {
+        let st = (1.0 - ct * ct).max(0.0).sqrt();
+        let p1 = [q * st, 0.0, q * ct + 0.5 * k];
+        let p2 = [q * st, 0.0, q * ct - 0.5 * k];
+        let e1 = (p1[0] * p1[0] + p1[2] * p1[2] + m * m).sqrt();
+        let e2 = (p2[0] * p2[0] + p2[2] * p2[2] + m * m).sqrt();
+        let dot = p1[0] * p2[0] + p1[2] * p2[2];
+        let mm = 2.0 * (1.0 + (dot + m * m) / (e1 * e2));
+        let sum = e1 + e2;
+        s += w * mm * sum / (sum * sum - omega * omega);
+    }
+    s
+}
+
+/// the same susceptibility from the Bogoliubov matrices: the pair field d exp(i k x^3) (direction 3, small d) at the
+/// chemical potential omega/2 (a pair field that rotates with the frequency omega is gauge-equivalent to a static one at
+/// the chemical potential shifted by omega/2); chi = (sum of the positive eigenvalues with d - without d)/(2 d^2),
+/// integrated; Richardson extrapolation from d and 2d removes the term of order d^4
+fn chi_bdg(omega: f64, k: f64, m: f64, d: f64, nodes: &[(f64, f64, f64)]) -> f64 {
+    let mu = 0.5 * omega;
+    let k3 = kpair(3);
+    let pos_sum = |q: f64, ct: f64, dd: f64| -> f64 {
+        let st = (1.0 - ct * ct).max(0.0).sqrt();
+        let p1 = [q * st, 0.0, q * ct + 0.5 * k];
+        let mp2 = [-q * st, 0.0, -(q * ct - 0.5 * k)];
+        let hp = h8(&p1, m).sub(&CMat::identity(8).scale_r(mu));
+        let hh = h8(&mp2, m).conj().sub(&CMat::identity(8).scale_r(mu)).scale_r(-1.0);
+        let mut big = CMat::zeros(16);
+        big.put(0, 0, &hp);
+        big.put(0, 8, &k3.dagger().scale_r(dd));
+        big.put(8, 0, &k3.scale_r(dd));
+        big.put(8, 8, &hh);
+        let (ev, _) = eigh(&big);
+        ev.iter().filter(|&&e| e > 0.0).sum()
+    };
+    let mut s1 = 0.0;
+    let mut s2 = 0.0;
+    for &(q, ct, w) in nodes {
+        let base = pos_sum(q, ct, 0.0);
+        s1 += w * (pos_sum(q, ct, d) - base);
+        s2 += w * (pos_sum(q, ct, 2.0 * d) - base);
+    }
+    let c1 = s1 / (2.0 * d * d);
+    let c2 = s2 / (8.0 * d * d);
+    (4.0 * c1 - c2) / 3.0
+}
+
+/// 1/G_crit = (Lambda eps_Lambda - m^2 arsinh(Lambda/m))/(2 pi^2) at mu = 0
+fn inv_gcrit(m: f64) -> f64 {
+    (LAMBDA * (LAMBDA * LAMBDA + m * m).sqrt() - m * m * (LAMBDA / m).asinh()) / (2.0 * PI * PI)
+}
+
+/// Z_t(M) = (1/2) int_{q<Lambda} d^3q/(2 pi)^3 (q^2 + M^2)^(-3/2) = (arsinh(Lambda/M) - Lambda/(Lambda^2 + M^2)^(1/2))/(4 pi^2)
+fn z_t(mm: f64) -> f64 {
+    ((LAMBDA / mm).asinh() - LAMBDA / (LAMBDA * LAMBDA + mm * mm).sqrt()) / (4.0 * PI * PI)
+}
+
+/// Z_s0(m) = Z_t(m) + Lambda^3/(24 pi^2 eps_Lambda^3): the coefficient of k^2 of the normal-state susceptibility
+fn z_s0(m: f64) -> f64 {
+    let el = (LAMBDA * LAMBDA + m * m).sqrt();
+    z_t(m) + LAMBDA.powi(3) / (24.0 * PI * PI * el.powi(3))
+}
+
+/// 1/G_bind = chi_pr(2m, 0) = (Lambda eps_Lambda + m^2 arsinh(Lambda/m))/(2 pi^2)
+fn inv_gbind(m: f64) -> f64 {
+    (LAMBDA * (LAMBDA * LAMBDA + m * m).sqrt() + m * m * (LAMBDA / m).asinh()) / (2.0 * PI * PI)
+}
+
+/// the pole of the SFBS propagator of the normal vacuum: the frequency in (0, 2m) where chi_pr(omega, k) = 1/G
+/// (chi_pr increases with omega there); None if there is none
+fn boson_pole(g: f64, k: f64, m: f64, nodes: &[(f64, f64, f64)]) -> Option<f64> {
+    let top = 2.0 * (m * m + 0.25 * k * k).sqrt(); // the two-particle threshold at the wave number k
+    let f = |w: f64| chi_pr(w, k, m, nodes) - 1.0 / g;
+    let (mut lo, mut hi) = (0.0, top * (1.0 - 1e-12));
+    if f(lo) > 0.0 || f(hi) < 0.0 {
+        return None;
+    }
+    for _ in 0..80 {
+        let mid = 0.5 * (lo + hi);
+        if f(mid) < 0.0 {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    Some(0.5 * (lo + hi))
+}
+
+/// SB-7: the pair susceptibility of the normal vacuum
+fn sb7(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let nodes = sphere_nodes(40, 16, 32, &[]);
+    // the formula against the Bogoliubov matrices at several (omega, k)
+    let pts: [(f64, f64); 6] = [(0.0, 0.0), (0.0, 0.3), (0.0, 0.8), (0.25, 0.0), (0.3, 0.4), (0.38, 0.1)];
+    let coarse = sphere_nodes(20, 12, 16, &[]);
+    let mut worst = 0.0f64;
+    let mut lines = vec![];
+    for &(w, k) in &pts {
+        let a = chi_pr(w, k, m, &coarse);
+        let b = chi_bdg(w, k, m, 1e-3, &coarse);
+        worst = worst.max(((a - b) / a).abs());
+        lines.push(format!("({}, {}): {:.10} against {:.10}", w, k, a, b));
+    }
+    // chi_pr(0, 0) = 1/G_crit, and the coefficients of omega^2 and k^2
+    let c00 = chi_pr(0.0, 0.0, m, &nodes);
+    let crit = ((c00 - inv_gcrit(m)) / inv_gcrit(m)).abs();
+    let h = 0.01;
+    let zt_num = (4.0 * (chi_pr(h, 0.0, m, &nodes) - c00) / (h * h) - (chi_pr(2.0 * h, 0.0, m, &nodes) - c00) / (4.0 * h * h)) / 3.0;
+    let zs_num = -(4.0 * (chi_pr(0.0, h, m, &nodes) - c00) / (h * h) - (chi_pr(0.0, 2.0 * h, m, &nodes) - c00) / (4.0 * h * h)) / 3.0;
+    let zt = z_t(m);
+    let zs = z_s0(m);
+    let ezt = ((zt_num - zt) / zt).abs();
+    let ezs = ((zs_num - zs) / zs).abs();
+    let ok = worst < 1e-7 && crit < 1e-10 && ezt < 1e-6 && ezs < 1e-6;
+    ch.add(
+        "SB-7",
+        "the pair susceptibility of the normal vacuum (m = 0.2, mu = 0, Lambda = 1), chi_pr(omega, k) = int d^3q/(2 pi)^3 M_pr (eps(+) + eps(-))/((eps(+) + eps(-))^2 - omega^2), M_pr = 2 (1 + (q^2 - k^2/4 + m^2)/(eps(+) eps(-))), eps(+-) = (|q +- k/2|^2 + m^2)^(1/2): against the second-order change of the sum of the positive Bogoliubov energies of the 16 x 16 matrices with the pair field d exp(i k x^3) at the chemical potential omega/2 (d = 1e-3 and 2e-3, Richardson extrapolation) at six points (omega, k) (relative tol 1e-7); chi_pr(0, 0) = 1/G_crit (tol 1e-10); the coefficient of omega^2 is Z_t0 = (arsinh(Lambda/m) - Lambda/eps_Lambda)/(4 pi^2) and minus the coefficient of k^2 is Z_s0 = Z_t0 + Lambda^3/(24 pi^2 eps_Lambda^3) (numerical second derivatives with Richardson extrapolation, relative tol 1e-6)",
+        ok,
+        format!(
+            "largest relative deviation formula/Bogoliubov {}; |chi_pr(0,0) G_crit - 1| {}; Z_t0 = {:.10} (numerical {:.10}), Z_s0 = {:.10} (numerical {:.10}); points: {}",
+            sci(worst),
+            sci(crit),
+            zt,
+            zt_num,
+            zs,
+            zs_num,
+            lines.join("; ")
+        ),
+    );
+    // data of Figure 22(a): the susceptibility against omega^2 and against k^2, with its quadratic approximations
+    let mut csv = Csv::new(
+        "the pair susceptibility chi_pr of the normal vacuum as a function of the frequency (at k = 0) and of the wave number (at omega = 0), the formula and its Ginzburg-Landau approximation 1/G_crit + Z_t0 omega^2 - Z_s0 k^2 (Test 2, item 8, Figure 22(a), lines), and the values from the Bogoliubov matrices (points)",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G_crit", format!("{:.10}", 1.0 / inv_gcrit(m))), ("Z_t0", format!("{:.10}", zt)), ("Z_s0", format!("{:.10}", zs))],
+        "variable,omega_B,k_B,chi_pr,chi_pr_GL,source",
+    );
+    for i in 0..=60 {
+        let w = 0.39 * i as f64 / 60.0;
+        csv.row(&["omega".into(), format!("{:.6}", w), "0".into(), format!("{:.12}", chi_pr(w, 0.0, m, &nodes)), format!("{:.12}", inv_gcrit(m) + zt * w * w), "formula".into()]);
+    }
+    for i in 0..=60 {
+        let k = 1.0 * i as f64 / 60.0;
+        csv.row(&["k".into(), "0".into(), format!("{:.6}", k), format!("{:.12}", chi_pr(0.0, k, m, &nodes)), format!("{:.12}", inv_gcrit(m) - zs * k * k), "formula".into()]);
+    }
+    for &w in &[0.1, 0.2, 0.3, 0.37] {
+        csv.row(&["omega".into(), format!("{}", w), "0".into(), format!("{:.12}", chi_bdg(w, 0.0, m, 1e-3, &coarse)), "".into(), "Bogoliubov".into()]);
+    }
+    for &k in &[0.25, 0.5, 0.75, 1.0] {
+        csv.row(&["k".into(), "0".into(), format!("{}", k), format!("{:.12}", chi_bdg(0.0, k, m, 1e-3, &coarse)), "".into(), "Bogoliubov".into()]);
+    }
+    csv.write(dir, "t2_sfbs_susceptibility.csv");
+}
+
+/// SB-8: the SFBS boson of the normal vacuum
+fn sb8(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let nodes = sphere_nodes(40, 16, 32, &[]);
+    let gcrit = 1.0 / inv_gcrit(m);
+    let gbind = 1.0 / inv_gbind(m);
+    let zt = z_t(m);
+    let zs = z_s0(m);
+    // chi_pr(2m, 0) by quadrature against the closed form 1/G_bind
+    let cb = chi_pr(2.0 * m * (1.0 - 1e-13), 0.0, m, &nodes);
+    let ebind = ((cb - inv_gbind(m)) / inv_gbind(m)).abs();
+    // the mass against the coupling
+    let mut csv = Csv::new(
+        "the mass of the SFBS boson of the normal vacuum (the pole of its propagator, chi_pr(M_B, 0) = 1/G) and its Ginzburg-Landau approximation ((1/G - 1/G_crit)/Z_t0)^(1/2), as functions of the coupling between G_bind and G_crit (Test 2, item 8, Figure 22(b))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G_crit", format!("{:.10}", gcrit)), ("G_bind", format!("{:.10}", gbind)), ("Z_t0", format!("{:.10}", zt))],
+        "G,M_B,M_B_GL",
+    );
+    let mut near = 0.0f64;
+    let mut prev = f64::INFINITY;
+    let mut monotone = true;
+    for i in 1..=80 {
+        // G = G_crit - (G_crit - G_bind)(1 - u)^2: dense near G_crit, where M_B ~ (G_crit - G)^(1/2)
+        let u = i as f64 / 80.0;
+        let g = (gcrit - (gcrit - gbind) * (1.0 - u) * (1.0 - u)).min(gcrit * (1.0 - 1e-9));
+        let mb = boson_pole(g, 0.0, m, &nodes).unwrap_or(f64::NAN);
+        let gl = ((1.0 / g - 1.0 / gcrit) / zt).max(0.0).sqrt();
+        if !(mb < prev) {
+            monotone = false;
+        }
+        prev = mb;
+        csv.row(&[format!("{:.8}", g), format!("{:.12}", mb), format!("{:.12}", gl)]);
+    }
+    csv.write(dir, "t2_sfbs_boson_mass.csv");
+    // near the critical coupling the Ginzburg-Landau mass is exact to leading order: relative error at small a_GL
+    let mut rel = vec![];
+    for &eps in &[1e-2, 1e-3, 1e-4] {
+        let g = gcrit * (1.0 - eps);
+        let mb = boson_pole(g, 0.0, m, &nodes).unwrap();
+        let gl = ((1.0 / g - 1.0 / gcrit) / zt).sqrt();
+        rel.push(((mb - gl) / gl).abs());
+    }
+    near = near.max(rel[2]);
+    let lim_bind = boson_pole(gbind * (1.0 + 1e-6), 0.0, m, &nodes).unwrap_or(f64::NAN);
+    let lim_crit = boson_pole(gcrit * (1.0 - 1e-8), 0.0, m, &nodes).unwrap_or(f64::NAN);
+    // the dispersion relation at G = 21 (near the critical coupling) and at G = 20: the pole at the wave number k against
+    // the Klein-Gordon form omega^2 = (a_GL + Z_s0 k^2)/Z_t0 of the effective field equation
+    let mut csv2 = Csv::new(
+        "the dispersion relation of the SFBS boson of the normal vacuum at G = 21 and G = 20: the pole of its propagator at the wave number k (the frequency where chi_pr(omega, k) = 1/G), the Klein-Gordon form ((a_GL + Z_s0 k^2)/Z_t0)^(1/2) of the effective field equation with a_GL = 1/G - 1/G_crit, and the threshold 2 (m^2 + k^2/4)^(1/2) of two free spinor charges (Test 2, item 8, Figure 22(c))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("Z_t0", format!("{:.10}", zt)), ("Z_s0", format!("{:.10}", zs))],
+        "G,k_B,omega_B,omega_B_KG,threshold",
+    );
+    for &gd in &[21.0, 20.0] {
+        let a_gl = 1.0 / gd - 1.0 / gcrit;
+        for i in 0..=40 {
+            let k = 0.8 * i as f64 / 40.0;
+            let w = boson_pole(gd, k, m, &nodes).unwrap_or(f64::NAN);
+            let kg = ((a_gl + zs * k * k) / zt).sqrt();
+            csv2.row(&[format!("{}", gd), format!("{:.6}", k), format!("{:.12}", w), format!("{:.12}", kg), format!("{:.12}", 2.0 * (m * m + 0.25 * k * k).sqrt())]);
+        }
+    }
+    csv2.write(dir, "t2_sfbs_boson_dispersion.csv");
+    // the small-k slope of M_B(k)^2 at G = 20 from the poles, against the exact slope -(dchi/dk^2)/(dchi/domega^2) at the
+    // pole and against the Ginzburg-Landau value Z_s0/Z_t0
+    let g = 20.0;
+    let hk = 0.02;
+    let w0 = boson_pole(g, 0.0, m, &nodes).unwrap();
+    let w1 = boson_pole(g, hk, m, &nodes).unwrap();
+    let w2 = boson_pole(g, 2.0 * hk, m, &nodes).unwrap();
+    let slope = (4.0 * (w1 * w1 - w0 * w0) / (hk * hk) - (w2 * w2 - w0 * w0) / (4.0 * hk * hk)) / 3.0;
+    let c0 = chi_pr(w0, 0.0, m, &nodes);
+    let hw = 1e-4;
+    let dchi_dw2 = (chi_pr((w0 * w0 + hw).sqrt(), 0.0, m, &nodes) - chi_pr((w0 * w0 - hw).sqrt(), 0.0, m, &nodes)) / (2.0 * hw);
+    let hq = 0.01;
+    let dchi_dk2 = (4.0 * (chi_pr(w0, hq, m, &nodes) - c0) / (hq * hq) - (chi_pr(w0, 2.0 * hq, m, &nodes) - c0) / (4.0 * hq * hq)) / 3.0;
+    let slope_exact = -dchi_dk2 / dchi_dw2;
+    // at the pole, the susceptibility from the Bogoliubov matrices also equals 1/G
+    let coarse = sphere_nodes(20, 12, 16, &[]);
+    let pole_bdg = (chi_bdg(w0, 0.0, m, 1e-3, &coarse) * g - 1.0).abs();
+    let c_kg = zs / zt;
+    let eslope = ((slope - slope_exact) / slope_exact).abs();
+    let ok = ebind < 1e-8 && monotone && (lim_bind - 2.0 * m).abs() < 1e-3 && lim_crit < 1e-2 && rel[0] > rel[1] && rel[1] > rel[2] && near < 2e-3 && pole_bdg < 1e-6 && eslope < 1e-4;
+    ch.add(
+        "SB-8",
+        "the SFBS boson of the normal vacuum (m = 0.2, mu = 0, Lambda = 1): chi_pr(2m, 0) by quadrature equals 1/G_bind = (Lambda eps_Lambda + m^2 arsinh(Lambda/m))/(2 pi^2) (tol 1e-8); for G_bind < G < G_crit the propagator has one pole M_B in (0, 2m), decreasing with G, with M_B -> 2m at G_bind and M_B -> 0 at G_crit; the Ginzburg-Landau mass ((1/G - 1/G_crit)/Z_t0)^(1/2) approaches it as G -> G_crit (relative errors decreasing, below 2e-3 at 1 - G/G_crit = 1e-4); at G = 20 the Bogoliubov matrices give chi(M_B, 0) = 1/G (tol 1e-6), and the small-k slope of M_B(k)^2 from the poles equals -(dchi_pr/dk^2)/(dchi_pr/domega^2) at the pole (relative tol 1e-4; the Ginzburg-Landau value Z_s0/Z_t0 is reported for comparison)",
+        ok,
+        format!(
+            "G_bind = {:.6}, G_crit = {:.6}; |chi_pr(2m,0) G_bind - 1| {}; M_B at G_bind(1 + 1e-6): {:.6}; at G_crit(1 - 1e-8): {:.3e}; relative error of the GL mass at 1 - G/G_crit = 1e-2, 1e-3, 1e-4: {}, {}, {}; at G = 20: M_B = {:.8}, |chi_Bogoliubov(M_B) G - 1| {}, slope of omega^2 against k^2 {:.6} (from the poles) and {:.6} (from the derivatives at the pole), Ginzburg-Landau Z_s0/Z_t0 = {:.6}",
+            gbind,
+            gcrit,
+            sci(ebind),
+            lim_bind,
+            lim_crit,
+            sci(rel[0]),
+            sci(rel[1]),
+            sci(rel[2]),
+            w0,
+            sci(pole_bdg),
+            slope,
+            slope_exact,
+            c_kg
+        ),
+    );
+}
+
+/// SB-9: the currents of the SFBS, the sources of the gauge fields: the derivatives of the kinetic Lagrangian
+/// L_B = Z_t |nablaB_0 d|^2 - Z_s sum_j |nablaB_j d|^2 with respect to the potentials
+fn sb9(ch: &mut Checks) {
+    let mut rng = Rng(4242);
+    let (gv, gf) = (0.83, 0.57);
+    let (zt, zs) = (0.31, 0.37);
+    let mut worst = 0.0f64;
+    for _ in 0..50 {
+        let d = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+        let dd: Vec<[C64; 3]> = (0..4).map(|_| [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)]).collect();
+        let av: Vec<[f64; 3]> = (0..4).map(|_| [rng.unit(), rng.unit(), rng.unit()]).collect();
+        let af: Vec<f64> = (0..4).map(|_| rng.unit()).collect();
+        let lag = |av: &Vec<[f64; 3]>, af: &Vec<f64>| -> f64 {
+            let mut l = 0.0;
+            for p in 0..4 {
+                let nb = nabla_b(&dd[p], &d, af[p], &av[p], gf, gv);
+                let sq: f64 = nb.iter().map(|z| z.norm_sqr()).sum();
+                l += if p == 0 { zt * sq } else { -zs * sq };
+            }
+            l
+        };
+        let h = 1e-6;
+        for p in 0..4 {
+            let nb = nabla_b(&dd[p], &d, af[p], &av[p], gf, gv);
+            let zp = if p == 0 { zt } else { -zs };
+            // the formulas: dL/dAv^iota_p = 2 Z g_v Re[(d^* x nablaB_p d)^iota], dL/dAF_p = -4 Z g_F Im(d^* . nablaB_p d) (Z with its sign)
+            let dstar = [d[0].conj(), d[1].conj(), d[2].conj()];
+            let cr = [
+                dstar[1] * nb[2] - dstar[2] * nb[1],
+                dstar[2] * nb[0] - dstar[0] * nb[2],
+                dstar[0] * nb[1] - dstar[1] * nb[0],
+            ];
+            let dot = dstar.iter().zip(&nb).fold(C64::ZERO, |s, (a, b)| s + *a * *b);
+            for i in 0..3 {
+                let mut ap = av.clone();
+                let mut am = av.clone();
+                ap[p][i] += h;
+                am[p][i] -= h;
+                let num = (lag(&ap, &af) - lag(&am, &af)) / (2.0 * h);
+                let formula = 2.0 * zp * gv * cr[i].re;
+                worst = worst.max((num - formula).abs());
+            }
+            let mut fp = af.clone();
+            let mut fm = af.clone();
+            fp[p] += h;
+            fm[p] -= h;
+            let num = (lag(&av, &fp) - lag(&av, &fm)) / (2.0 * h);
+            let formula = -4.0 * zp * gf * dot.im;
+            worst = worst.max((num - formula).abs());
+        }
+    }
+    let ok = worst < 1e-7;
+    ch.add(
+        "SB-9",
+        "the currents of the SFBS: for 50 random fields, derivatives and potentials, the derivatives of L_B = Z_t |nablaB_0 d|^2 - Z_s sum_j |nablaB_j d|^2 with respect to Av_LL^iota_p and AF_LL_p (central differences) equal 2 Z g_v Re[(d^* x nablaB_p d)^iota] and -4 Z g_F Im(d^* . nablaB_p d), with Z = Z_t for p = 0 and -Z_s for p = 1, 2, 3 (tol 1e-7)",
+        ok,
+        format!("largest deviation {}", sci(worst)),
+    );
+    let _ = eps3(0, 1, 2);
+}
+
+/// the fragments of item [8]: the components of the covariant derivative of the SFBS and of its effective field
+/// equation, generated as linear combinations of symbols and compared numerically with the vector formulas
+fn frags_item8(fr: &mut Frags) {
+    let mut rng = Rng(1789);
+    let (gv, gf) = (0.83, 0.57);
+    let d = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+    let dd = [rnd_c(&mut rng), rnd_c(&mut rng), rnd_c(&mut rng)];
+    let av = [rng.unit(), rng.unit(), rng.unit()];
+    let af = rng.unit();
+    let want = nabla_b(&dd, &d, af, &av, gf, gv);
+    // (nablaB_p d)^iota = d_p d^iota - 2i g_F AF_p d^iota + g_v sum eps_{iota kappa lambda} A^kappa_p d^lambda
+    let mut lines = vec![];
+    for i in 0..3 {
+        let mut l = Lin::mono(&format!("\\partial_pd^{}_{{\\rm LL}}", i + 1), dd[i]);
+        l.add_term(&format!("g^{{\\rm F}}_{{\\rm LL}}A^{{\\rm F}}_{{{{\\rm LL}},p}}d^{}_{{\\rm LL}}", i + 1), GR::imag(-2, 1), d[i].scale(gf * af));
+        for k in 0..3 {
+            for j in 0..3 {
+                let e = eps3(i, k, j);
+                if e != 0.0 {
+                    l.add_term(&format!("g^{{\\rm v}}_{{\\rm LL}}A^{}_{{{{\\rm LL}},p}}d^{}_{{\\rm LL}}", k + 1, j + 1), GR::int(e as i64), d[j].scale(gv * av[k]));
+                }
+            }
+        }
+        assert!((l.eval() - want[i]).abs() < 1e-14, "printed component of the covariant derivative");
+        lines.push(format!("(\\nabla^{{\\rm B}}_{{{{\\rm LL}},p}}\\vec d_{{\\rm LL}})^{}&={}", i + 1, l.tex()));
+    }
+    fr.add("t2s_nablaB", format!("$$\\begin{{aligned}}{}\\end{{aligned}}$$", lines.join("\\\\\n")));
+    // the components of the field equation: Z_t nablaB_0 (nablaB_0 d) - Z_s sum_j nablaB_j (nablaB_j d) + dOmega/dd^* = 0,
+    // written with the components (nablaB_p d)^iota (symbols) of the first covariant derivative: the second covariant
+    // derivative applies the rule of t2s_nablaB to the vector nablaB_p d
+    let zt = 0.31;
+    let zs = 0.37;
+    let mut lhs_lines = vec![];
+    for i in 0..3 {
+        let mut rng2 = Rng(77 + i as u64);
+        let mut parts = vec![];
+        let mut total = C64::ZERO;
+        let mut formula = C64::ZERO;
+        for (p, pidx) in [(0usize, "0"), (1usize, "j")] {
+            // numerical test data for the direction p: the vector v = nablaB_p d, its derivative dv, the potentials
+            let v = [rnd_c(&mut rng2), rnd_c(&mut rng2), rnd_c(&mut rng2)];
+            let dv = [rnd_c(&mut rng2), rnd_c(&mut rng2), rnd_c(&mut rng2)];
+            let ap = [rng2.unit(), rng2.unit(), rng2.unit()];
+            let afp = rng2.unit();
+            let nn = nabla_b(&dv, &v, afp, &ap, gf, gv);
+            let vname = |c: usize| format!("(\\nabla^{{\\rm B}}_{{{{\\rm LL}},{}}}\\vec d_{{\\rm LL}})^{}", pidx, c + 1);
+            let mut l = Lin::mono(&format!("\\partial_{}{}", pidx, vname(i)), dv[i]);
+            l.add_term(&format!("g^{{\\rm F}}_{{\\rm LL}}A^{{\\rm F}}_{{{{\\rm LL}},{}}}{}", pidx, vname(i)), GR::imag(-2, 1), v[i].scale(gf * afp));
+            for k in 0..3 {
+                for j in 0..3 {
+                    let e = eps3(i, k, j);
+                    if e != 0.0 {
+                        l.add_term(&format!("g^{{\\rm v}}_{{\\rm LL}}A^{}_{{{{\\rm LL}},{}}}{}", k + 1, pidx, vname(j)), GR::int(e as i64), v[j].scale(gv * ap[k]));
+                    }
+                }
+            }
+            let zp = if p == 0 { zt } else { -zs };
+            total += nn[i].scale(zp);
+            formula += l.eval().scale(zp);
+            parts.push(l.tex_broken(2));
+        }
+        assert!((formula - total).abs() < 1e-13, "printed component of the field equation");
+        lhs_lines.push(format!(
+            "&Z^{{\\rm t}}_{{\\rm LL}}\\big[{}\\big]\\\\\n&\\quad-Z^{{\\rm s}}_{{\\rm LL}}\\sum_j\\big[{}\\big]\\\\\n&\\quad+\\frac{{\\partial\\Omega_{{\\rm LL}}}}{{\\partial(d^{}_{{\\rm LL}})^*}}=0",
+            parts[0],
+            parts[1],
+            i + 1
+        ));
+    }
+    fr.add("t2s_fieldeq", format!("$$\\begin{{aligned}}{}\\end{{aligned}}$$", lhs_lines.join("\\\\[4pt]\n")));
+}
+
+/// the uniform time-dependent mean-field (Bogoliubov-de Gennes) evolution of the polar pair field d^3(t) = d(t) without
+/// gauge fields: for each momentum shell (node q_i with the weight w_i of int d^3q/(2 pi)^3) and each sign s = +-1 of the
+/// energy s eps, the mode (u, v) in the plane of (3.12) obeys i d/dt (u, v) = [[xi, d], [d^*, -xi]] (u, v), xi = s eps - mu,
+/// and d(t) = 2G sum_i w_i sum_s u_s v_s^* (the four degenerate modes of each plane included); the start is the
+/// positive-energy mode of the matrix with the trial gap delta_trial (real). RK4 with the step dt. Returns the pair field
+/// at every step (including t = 0) and the largest relative change of the conserved mean-field energy per volume
+/// E = sum_i w_i sum_s 4 xi |v|^2 - |d|^2/G (|v|^2 is the occupation of the state of energy s eps; relative to the scale
+/// sum_i w_i sum_s 4 |xi|).
+fn uniform_tdbdg(g: f64, m: f64, mu: f64, delta_trial: f64, qn: &[f64], qw: &[f64], dt: f64, nsteps: usize) -> (Vec<C64>, f64) {
+    let n = qn.len();
+    let xi: Vec<[f64; 2]> = qn.iter().map(|&q| {
+        let e = (q * q + m * m).sqrt();
+        [e - mu, -e - mu]
+    }).collect();
+    // state y = [u_+, v_+, u_-, v_-] for each node
+    let mut y = vec![C64::ZERO; 4 * n];
+    for i in 0..n {
+        for s in 0..2 {
+            let x = xi[i][s];
+            let e = (x * x + delta_trial * delta_trial).sqrt();
+            y[4 * i + 2 * s] = c(((1.0 + x / e) / 2.0).sqrt(), 0.0);
+            y[4 * i + 2 * s + 1] = c(((1.0 - x / e) / 2.0).sqrt() * delta_trial.signum(), 0.0);
+        }
+    }
+    let pair = |y: &[C64]| -> C64 {
+        let mut s = C64::ZERO;
+        for i in 0..n {
+            s += (y[4 * i] * y[4 * i + 1].conj() + y[4 * i + 2] * y[4 * i + 3].conj()).scale(qw[i]);
+        }
+        s.scale(2.0 * g)
+    };
+    let functional = |y: &[C64]| -> (f64, f64) {
+        let mut kin = 0.0;
+        let mut scale = 0.0;
+        for i in 0..n {
+            for s in 0..2 {
+                kin += 4.0 * qw[i] * xi[i][s] * y[4 * i + 2 * s + 1].norm_sqr();
+                scale += 4.0 * qw[i] * xi[i][s].abs();
+            }
+        }
+        let d = pair(y);
+        (kin - d.norm_sqr() / g, scale)
+    };
+    let deriv = |y: &[C64]| -> Vec<C64> {
+        let d = pair(y);
+        let mut r = vec![C64::ZERO; 4 * n];
+        for i in 0..n {
+            for s in 0..2 {
+                let (u, v) = (y[4 * i + 2 * s], y[4 * i + 2 * s + 1]);
+                let x = xi[i][s];
+                // -i H (u, v)
+                r[4 * i + 2 * s] = (u.scale(x) + d * v) * c(0.0, -1.0);
+                r[4 * i + 2 * s + 1] = (u * d.conj() - v.scale(x)) * c(0.0, -1.0);
+            }
+        }
+        r
+    };
+    let (f0, fscale) = functional(&y);
+    let mut out = vec![pair(&y)];
+    let mut fdev = 0.0f64;
+    for step in 0..nsteps {
+        let k1 = deriv(&y);
+        let y2: Vec<C64> = y.iter().zip(&k1).map(|(a, b)| *a + b.scale(0.5 * dt)).collect();
+        let k2 = deriv(&y2);
+        let y3: Vec<C64> = y.iter().zip(&k2).map(|(a, b)| *a + b.scale(0.5 * dt)).collect();
+        let k3 = deriv(&y3);
+        let y4: Vec<C64> = y.iter().zip(&k3).map(|(a, b)| *a + b.scale(dt)).collect();
+        let k4 = deriv(&y4);
+        for j in 0..4 * n {
+            y[j] += (k1[j] + k2[j].scale(2.0) + k3[j].scale(2.0) + k4[j]).scale(dt / 6.0);
+        }
+        out.push(pair(&y));
+        if step % 100 == 99 || step + 1 == nsteps {
+            fdev = fdev.max(((functional(&y).0 - f0) / fscale).abs());
+        }
+    }
+    (out, fdev)
+}
+
+/// the frequency of the strongest spectral line of a sampled complex signal in the interval (wlo, whi): the maximum over
+/// omega > 0 of |sum_n h_n x_n exp(i omega t_n)|^2 + |sum_n h_n x_n exp(-i omega t_n)|^2 with the Hann window h_n (the mean
+/// removed), found by a scan with the step dw and a golden-section refinement
+fn line_frequency(x: &[C64], dt: f64, wlo: f64, whi: f64, dw: f64) -> f64 {
+    let nn = x.len();
+    let mean = x.iter().fold(C64::ZERO, |s, z| s + *z).scale(1.0 / nn as f64);
+    let hx: Vec<C64> = x.iter().enumerate().map(|(i, z)| (*z - mean).scale(0.5 - 0.5 * (2.0 * PI * i as f64 / (nn - 1) as f64).cos())).collect();
+    let power = |w: f64| -> f64 {
+        let mut a = C64::ZERO;
+        let mut b = C64::ZERO;
+        for (i, z) in hx.iter().enumerate() {
+            let ph = C64::cis(w * dt * i as f64);
+            a += *z * ph;
+            b += *z * ph.conj();
+        }
+        a.norm_sqr() + b.norm_sqr()
+    };
+    let mut best = (wlo, -1.0);
+    let mut w = wlo;
+    while w <= whi {
+        let pw = power(w);
+        if pw > best.1 {
+            best = (w, pw);
+        }
+        w += dw;
+    }
+    let (mut a, mut b) = (best.0 - dw, best.0 + dw);
+    let gr = (5f64.sqrt() - 1.0) / 2.0;
+    let mut x1 = b - gr * (b - a);
+    let mut x2 = a + gr * (b - a);
+    let (mut f1, mut f2) = (power(x1), power(x2));
+    for _ in 0..60 {
+        if f1 > f2 {
+            b = x2;
+            x2 = x1;
+            f2 = f1;
+            x1 = b - gr * (b - a);
+            f1 = power(x1);
+        } else {
+            a = x1;
+            x1 = x2;
+            f1 = f2;
+            x2 = a + gr * (b - a);
+            f2 = power(x2);
+        }
+    }
+    0.5 * (a + b)
+}
+
+/// SB-10: the microscopic time evolution of a small uniform pair field in the normal vacuum
+fn sb10(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let g = 20.0;
+    let (qn, qw0) = quad::composite(0.0, LAMBDA, &[], 40, 8);
+    let qw: Vec<f64> = qn.iter().zip(&qw0).map(|(q, w)| w * q * q / (2.0 * PI * PI)).collect();
+    // the pole of the propagator with the same radial nodes: chi_pr(omega, 0) = sum w 8 eps/(4 eps^2 - omega^2)
+    let chi_k0 = |w: f64| -> f64 { qn.iter().zip(&qw).map(|(q, wt)| { let e = (q * q + m * m).sqrt(); wt * 8.0 * e / (4.0 * e * e - w * w) }).sum() };
+    let (mut lo, mut hi) = (0.0, 2.0 * m * (1.0 - 1e-12));
+    for _ in 0..100 {
+        let mid = 0.5 * (lo + hi);
+        if chi_k0(mid) < 1.0 / g {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    let mb_nodes = 0.5 * (lo + hi);
+    let nodes3 = sphere_nodes(40, 16, 32, &[]);
+    let mb = boson_pole(g, 0.0, m, &nodes3).unwrap();
+    let dt = 0.02;
+    let nsteps = 75000;
+    let delta_trial = 1e-5;
+    let (sig, fdev) = uniform_tdbdg(g, m, 0.0, delta_trial, &qn, &qw, dt, nsteps);
+    let w_meas = line_frequency(&sig, dt, 0.02, 0.398, 0.0005);
+    let rel = ((w_meas - mb_nodes) / mb_nodes).abs();
+    let rel_cont = ((mb_nodes - mb) / mb).abs();
+    // the amplitude of the bound-state line: least-squares fit of a cos(M_B t) + b sin(M_B t) to Re d(t), Im d(t) on the last
+    // two thirds of the run
+    let d0 = sig[0];
+    let fit = |part: &dyn Fn(C64) -> f64| -> (f64, f64) {
+        let (mut scc, mut sss, mut scs, mut syc, mut sys) = (0.0, 0.0, 0.0, 0.0, 0.0);
+        for (i, z) in sig.iter().enumerate().skip(nsteps / 3) {
+            let t = i as f64 * dt;
+            let (cc, ss) = ((mb_nodes * t).cos(), (mb_nodes * t).sin());
+            let yv = part(*z) / d0.re;
+            scc += cc * cc;
+            sss += ss * ss;
+            scs += cc * ss;
+            syc += yv * cc;
+            sys += yv * ss;
+        }
+        let det = scc * sss - scs * scs;
+        ((syc * sss - sys * scs) / det, (sys * scc - syc * scs) / det)
+    };
+    let (are, bre) = fit(&|z: C64| z.re);
+    // the imaginary part stays zero: at mu = 0 a real start gives a real pair field for all times
+    let im_max = sig.iter().fold(0.0f64, |a, z| a.max(z.im.abs())) / d0.re;
+    let mut csv = Csv::new(
+        "the microscopic time evolution of a small uniform pair field in the normal vacuum (time-dependent mean-field equations of Section 2.10 for a uniform polar pair field, G = 20): the pair field d^3(t) divided by d^3(0) (it stays real), and the line of the bound SFBS boson with the frequency M_B of the effective field equation (amplitude and phase fitted on the last two thirds of the run) (Test 2, item 8, Figure 22(d))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("M_B", format!("{:.10}", mb_nodes)), ("dt", format!("{}", dt)), ("delta_trial", format!("{}", delta_trial)), ("d0", format!("{:.6e}", d0.re))],
+        "x_LL^0,d_over_d0,line_MB",
+    );
+    for (i, z) in sig.iter().enumerate() {
+        if i % 10 != 0 || i as f64 * dt > 400.0 {
+            continue;
+        }
+        let t = i as f64 * dt;
+        let (cc, ss) = ((mb_nodes * t).cos(), (mb_nodes * t).sin());
+        csv.row(&[format!("{:.2}", t), format!("{:.10}", z.re / d0.re), format!("{:.10}", are * cc + bre * ss)]);
+    }
+    csv.write(dir, "t2_sfbs_tdbdg_normal.csv");
+    let ok = rel < 1e-6 && rel_cont < 1e-9 && fdev < 1e-6 && im_max < 1e-12;
+    ch.add(
+        "SB-10",
+        "the microscopic check of the effective field equation in the normal vacuum (m = 0.2, mu = 0, Lambda = 1, G = 20): the time-dependent mean-field equations of Section 2.10 for a uniform polar pair field (the modes of the planes (3.12) on 320 radial nodes, RK4 with the step 0.02 up to x_LL^0 = 1500), started from the trial gap 1e-5, give a pair field d^3(x_LL^0) whose spectral line below the two-particle threshold 2m lies at the pole M_B of the SFBS propagator, chi_pr(M_B, 0) = 1/G, computed with the same nodes (relative tol 1e-6); that pole equals the one of SB-8 (relative tol 1e-9); the pair field stays real (tol 1e-12 of d^3(0)); the mean-field energy per volume, which the equations conserve, changes by less than 1e-6 of the scale sum 4 |+-eps - mu| (the RK4 truncation error)",
+        ok,
+        format!(
+            "line of d^3(x_LL^0) at {:.9}, pole M_B {:.9} (same nodes; relative deviation {}), M_B of SB-8 {:.9} (relative deviation {}); largest change of the mean-field energy {}; largest imaginary part {}; fitted line amplitude {:.4} of d^3(0)",
+            w_meas,
+            mb_nodes,
+            sci(rel),
+            mb,
+            sci(rel_cont),
+            sci(fdev),
+            sci(im_max),
+            (are * are + bre * bre).sqrt()
+        ),
+    );
+}
+
 fn main() {
     let dir = data_dir();
     let mut ch = Checks { title: "Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)".into(), items: vec![] };
@@ -904,6 +1757,13 @@ fn main() {
     sb3(&mut ch);
     sb4(&mut ch, &dir);
     sb5(&mut ch, &dir, d_vac, d_fs);
+    // item [8]
+    sb6(&mut ch, &mut fr);
+    sb7(&mut ch, &dir);
+    sb8(&mut ch, &dir);
+    sb9(&mut ch);
+    frags_item8(&mut fr);
+    sb10(&mut ch, &dir);
     let _ = (lift2, LAMBDA, d_vac_q);
     fr.write(&dir.join("t2_sfbs_fragments.md"));
     let ok = ch.write(&dir.join("t2_sfbs_checks.txt"));

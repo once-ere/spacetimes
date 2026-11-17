@@ -23,15 +23,15 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | answered |
 | [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | answered |
 | [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | answered |
-| [8] | the effective field equations of the SFBS | Section 9 | to follow |
+| [8] | the effective field equations of the SFBS | Section 9 | answered |
 | [8] | the effective potential of the SFBS, the analogue of the Mexican-hat potential of the Higgs doublet | Section 10 | to follow |
 | [9] | the relative minima of this potential, the spontaneous breaking of the symmetry, and the expansion of the SFBS about a minimum, called SFBSv | Section 11 | to follow |
 | [10] | the kinetic Lagrangian of the SFBS | Section 12 | to follow |
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] to [7]; the sections of the other items are added to this same document, in this order, as they
-are completed.
+items [1] to [7] and the first item [8] (the effective field equations); the sections of the other items are added to
+this same document, in this order, as they are completed.
 
 ## 1.2 How to read this document
 
@@ -47,7 +47,9 @@ are completed.
   folder `test2/rust`: the statements of item [1] by `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}), the
   analytic solutions of item [2] by `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}), the Python solver of
   item [3] by its self-test and by the checks of every run, and its solutions of the seven examples by
-  `t2_examples_check.py` (checks EX-1 to EX-7). The reports are printed verbatim in Appendix A.
+  `t2_examples_check.py` (checks EX-1 to EX-7), the Rust solver of item [5] by its self-test and the comparison EX-8, and
+  the statements of items [7] and [8] about the superfluid boson singlet state by `t2_sfbs` (checks SB-1 to
+  SB-{{GEN:nchecks_t2_sfbs}}). The reports are printed verbatim in Appendix A.
 - **Explicit matrices.** Every matrix of the field equations is written out. The matrices and the long
   component equations are printed by the program itself (no entry is typed by hand), and the program
   evaluates each printed expression numerically and compares it with the matrix it describes (check GS-12).
@@ -2764,6 +2766,603 @@ values lie on the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12). Data: `test2/dat
   without gauge fields. Its fluctuations, the gauge fields and the effective field theory of the SFBS follow in
   items [8] to [11].
 
+# 9. Item [8]: the effective field equations of the SFBS
+
+## 9.0 The answer in brief
+
+1. **The field of the SFBS.** The attractive interaction of (2.24) can be rewritten exactly with an auxiliary complex
+   isovector field $\vec d_{\rm LL}=(d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})$, the Hubbard-Stratonovich field (9.1), (9.2). Its
+   own field equation, $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\Pi^\iota_{\rm LL}$ (9.3), makes it the SFBS (8.6) multiplied by
+   $-\tfrac12G_{\rm LL}$, and its expectation value is the order parameter (2.30). It transforms as the SFBS: twice the phase of a
+   spinor charge, a vector of the isospin group, a scalar of the Lorentz group (9.4).
+2. **Its gauge-covariant derivative** is (9.5),
+   $\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}=\partial_p\vec d_{\rm LL}-2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\vec d_{\rm LL}+g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}$:
+   the fermion number 2 doubles the coupling to $A^{\rm F}_{{\rm LL},p}$, the isospin potential acts by the $3\times3$ matrix
+   $\mathcal A^{\rm v}_{{\rm LL},p}$ of the vector representation, and the Lorentz connection drops out (spin zero). It is inherited
+   from the covariant derivative (2.15) of the spinor field by the Leibniz rule (Theorem 9.1); it is gauge covariant (9.8),
+   and its commutator gives the field strengths (9.9) (check SB-6).
+3. **The effective Lagrangian.** Integrating out the spinor field gives the effective action of the SFBS. For a constant field
+   its value is minus the effective potential $\Omega_{\rm LL}(\vec d_{\rm LL})$ (9.11) (worked out in Section 10), and its expansion
+   in derivatives is (9.12),
+   $\mathcal L^{\rm B}_{\rm LL}=Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2-\Omega_{\rm LL}(\vec d_{\rm LL})$:
+   the Lagrangian of a charged scalar field, the analogue of the Higgs field.
+4. **The coefficients** follow from the pair susceptibility $\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})$ of the
+   vacuum, derived in closed form (9.14) to (9.16) and checked against the exact second-order energies of the Bogoliubov matrices
+   (check SB-7). In the normal vacuum ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$): $\chi^{\rm pr}_{\rm LL}(0,0)=1/G^{\rm crit}_{\rm LL}$
+   with $G^{\rm crit}_{\rm LL}=21.28661$, and $Z^{\rm t}_{\rm LL}(0)=0.0337363$, $Z^{\rm s}_{\rm LL}(0)=0.0377169$ (9.17) to (9.19).
+5. **The effective field equations** (9.23), written out in components and in first-order form for numerical solution (9.25),
+   together with the Yang-Mills and Maxwell equations (9.26) whose sources are now the currents (9.27) of the SFBS (check SB-9);
+   the currents are conserved.
+6. **The SFBS boson.** In the normal vacuum the effective field equation is a Klein-Gordon equation (9.28). For
+   $G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}$ ($17.746<G_{\rm LL}<21.287$) the SFBS is a bound boson with a mass
+   $M^{\rm B}_{\rm LL}$ below the threshold $2m_{\rm LL}$ of two free spinor charges (check SB-8); the exact time evolution of the
+   mean-field equations of Section 2.10 confirms its frequency to $8\times10^{-8}$ (check SB-10, Figure 22). For
+   $G_{\rm LL}>G^{\rm crit}_{\rm LL}$ its squared mass is negative: the normal vacuum is unstable and the SFBS condenses. This is the
+   subject of Sections 10 and 11.
+
+The program `t2_sfbs` (Appendix A.2f) verifies every statement of this section (checks SB-6 to SB-10) and prints the explicit
+matrices and component equations that the section shows.
+
+## 9.1 The field of the SFBS
+
+**The functional integral.** The quantum theory of the Lagrangian density (2.24) can be written as a functional integral: the
+weight $\exp(i\int d^4x_{\rm LL}\,\mathcal L^\nabla_{\rm LL})$, with $d^4x_{\rm LL}=dx^0_{\rm LL}\,dx^1_{\rm LL}\,dx^2_{\rm LL}\,dx^3_{\rm LL}$,
+is integrated over all configurations of the spinor field, whose components are then anticommuting numbers (Grassmann
+numbers) instead of operators. In this form the pair fields $\Pi^\iota_{\rm LL}(x_{\rm LL})$ and their conjugates
+$(\Pi^\iota_{\rm LL})^\dagger=\Psi^\dagger_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger\Psi^*_{\rm LL}$ are products of two anticommuting
+numbers; such products commute with everything, and the pairing term $\tfrac14G_{\rm LL}\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$
+is an ordinary product without a question of operator order.
+
+**The Hubbard-Stratonovich identity.** For one point $x_{\rm LL}$ and one isospin direction $\iota$, completing the square gives,
+for every complex number $d^\iota_{\rm LL}$,
+
+$$-\frac{\lvert d^\iota_{\rm LL}\rvert^2}{G_{\rm LL}}-\frac12\big((d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}+d^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\big)=-\frac1{G_{\rm LL}}\Big(d^\iota_{\rm LL}+\frac{G_{\rm LL}}2\Pi^\iota_{\rm LL}\Big)^*\Big(d^\iota_{\rm LL}+\frac{G_{\rm LL}}2\Pi^\iota_{\rm LL}\Big)+\frac{G_{\rm LL}}4(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$$
+
+(multiply out the product: its cross terms are the second term on the left, and its last term, $(G_{\rm LL}/4)(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$,
+cancels the last term on the right; here $(\Pi^\iota_{\rm LL})^*$ stands for $(\Pi^\iota_{\rm LL})^\dagger$). Multiply by $i$, exponentiate and
+integrate over the complex plane of $d^\iota_{\rm LL}$ (that is, over its real and imaginary parts, with the usual small damping factor
+$\exp(-0^+\lvert d^\iota_{\rm LL}\rvert^2)$ that makes the oscillating Gaussian integral converge). The shift of the variable of
+integration by $-(G_{\rm LL}/2)\Pi^\iota_{\rm LL}$ does not change the integral of $\exp(-i\lvert d^\iota_{\rm LL}\rvert^2/G_{\rm LL})$,
+which is the product of two Fresnel integrals, $\int\exp(-i({\rm Re}\,d^\iota_{\rm LL})^2/G_{\rm LL})\,{\rm d}({\rm Re}\,d^\iota_{\rm LL})=(\pi G_{\rm LL})^{1/2}\exp(-i\pi/4)$
+and the same for the imaginary part, together $-i\pi G_{\rm LL}$. Therefore
+
+$$\exp\Big(\frac i4G_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}\Big)=\frac{i}{\pi G_{\rm LL}}\int_{\mathbb C}\exp\Big(i\Big[-\frac{\lvert d^\iota_{\rm LL}\rvert^2}{G_{\rm LL}}-\frac12\big((d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}+d^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\big)\Big]\Big)\,{\rm d}({\rm Re}\,d^\iota_{\rm LL})\,{\rm d}({\rm Im}\,d^\iota_{\rm LL}).\tag{9.1}$$
+
+Applied at every point and for $\iota=1,2,3$, (9.1) turns the functional integral of (2.24) into a functional integral over the spinor
+field and three new complex fields $d^\iota_{\rm LL}(x_{\rm LL})$, with the Lagrangian density
+
+$$\begin{aligned}\mathcal L^{\rm HS}_{\rm LL}={}&\bar\Psi_{\rm LL}\Big(i\sum_p\gamma^p_{\rm LL}[\mathbf f]\nabla^{\rm LL}_p-m_{\rm LL}\Big)\Psi_{\rm LL}+\mu_{\rm LL}\bar\Psi_{\rm LL}\gamma^0_{\rm LL}[\mathbf f]\Psi_{\rm LL}\\&-\sum_\iota\frac{\lvert d^\iota_{\rm LL}\rvert^2}{G_{\rm LL}}-\frac12\sum_\iota\big((d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}+d^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\big)\\&-\tfrac14\sum_\iota\sum_{p,p',p'',p'''}\eta^{\rm LL}_{pp''}\eta^{\rm LL}_{p'p'''}\mathsf F^\iota_{{\rm LL},pp'}\mathsf F^\iota_{{\rm LL},p''p'''}-\tfrac14\sum_{p,p',p'',p'''}\eta^{\rm LL}_{pp''}\eta^{\rm LL}_{p'p'''}\mathsf F^{\rm F}_{{\rm LL},pp'}\mathsf F^{\rm F}_{{\rm LL},p''p'''}\end{aligned}\tag{9.2}$$
+
+(the constant factors $i/(\pi G_{\rm LL})$ of all points multiply the integral by a number that cancels in every expectation value).
+The four-fermion term is gone: the spinor field now enters quadratically, coupled to the field $\vec d_{\rm LL}$. Since
+$[\Psi_{\rm LL}]=\tfrac32$ and $[G_{\rm LL}]=-2$, the field $\vec d_{\rm LL}$ has the mass dimension 1, the dimension of a
+boson field in $3+1$ dimensions.
+
+**The field equation of $\vec d_{\rm LL}$.** The field $\vec d_{\rm LL}$ appears in (9.2) without derivatives. Its Euler-Lagrange
+equation, the derivative of (9.2) with respect to $(d^\iota_{\rm LL})^*$ set to zero, is $-d^\iota_{\rm LL}/G_{\rm LL}-\tfrac12\Pi^\iota_{\rm LL}=0$:
+
+$$d^\iota_{\rm LL}(x_{\rm LL})=-\tfrac12G_{\rm LL}\,\Pi^\iota_{\rm LL}(x_{\rm LL}),\qquad\iota=1,2,3.\tag{9.3}$$
+
+Inserted in (9.2), (9.3) gives back (2.24): it is the centre of the completed square. So $\vec d_{\rm LL}$ is the SFBS itself, the
+composite field (8.6), multiplied by $-\tfrac12G_{\rm LL}$. Its expectation value is the pair field (2.30), the order parameter of
+the SFBS state, and the mean-field theory of Section 2.10 is the approximation in which this field is replaced by its expectation
+value. In (9.2) the field has no dynamics of its own; its dynamics come from the spinor field to which it is coupled, and they are
+found by integrating that field out (Section 9.3). This is how the SFBS acquires a field theory of its own.
+
+**The transformation law.** The Lagrangian (9.2) is invariant under the gauge transformations (2.10), (2.16) if $\vec d_{\rm LL}$
+transforms like the SFBS (2.23),
+
+$$\vec d_{\rm LL}\mapsto\exp(2i\theta^{\rm F}_{\rm LL})\,\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\,\vec d_{\rm LL},\tag{9.4}$$
+
+because the rotation $\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})$ is real and orthogonal and the phases cancel: $\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$
+and $\sum_\iota(d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}$ are invariant. The field $\vec d_{\rm LL}$ is a Lorentz scalar, an isospin vector,
+and it carries the fermion number 2.
+
+## 9.2 The gauge-covariant derivative of the SFBS
+
+**Definition.** For a complex isovector field $\vec d_{\rm LL}(x_{\rm LL})$ with the transformation law (9.4), the gauge-covariant
+derivative is
+
+$$\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}=\partial_p\vec d_{\rm LL}-2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\vec d_{\rm LL}+g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL},\qquad(\mathcal A^{\rm v}_{{\rm LL},p})_{\iota\iota''}=\sum_{\iota'}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p},\tag{9.5}$$
+
+where $\mathcal A^{\rm v}_{{\rm LL},p}$ is the isospin potential of the direction $p$ in the vector representation of the isospin group:
+the real antisymmetric $3\times3$ matrix (rows $\iota$, columns $\iota''$)
+
+{{GEN:t2s_Avec}}
+
+Applied to $\vec d_{\rm LL}$, it is the cross product $\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}=\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL}$
+with the isospin potential written as the vector $\vec A^{\rm v}_{{\rm LL},p}=(A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p})$ (the
+component $\iota$ of $\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL}$ is $\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}d^{\iota''}_{\rm LL}$).
+The three components of (9.5) are
+
+{{GEN:t2s_nablaB}}
+
+Compared with the covariant derivative (2.15) of the spinor field: the coupling to the fermion-number potential is doubled (the SFBS
+carries the fermion number 2), the isospin potential acts by the vector representation instead of the doublet representation
+$\tau^{\rm LL}_\iota/2$, and there is no Lorentz connection (the SFBS is a Lorentz scalar).
+
+**Theorem 9.1 (the Leibniz rule).** Let $\Psi^{\rm a}_{\rm LL}$ and $\Psi^{\rm b}_{\rm LL}$ be two eight-component fields that transform
+like $\Psi_{\rm LL}$ under (2.10). Then the isovector of their pair, with the components
+$(\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi^{\rm b}_{\rm LL}$ ($\iota=1,2,3$), has the covariant derivative
+
+$$\Big(\nabla^{\rm B}_{{\rm LL},p}\big((\Psi^{\rm a}_{\rm LL})^T\mathsf K^{\iota'}_{\rm LL}\Psi^{\rm b}_{\rm LL}\big)_{\iota'=1,2,3}\Big)^\iota=(\nabla^{\rm LL}_p\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi^{\rm b}_{\rm LL}+(\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\nabla^{\rm LL}_p\Psi^{\rm b}_{\rm LL}.\tag{9.6}$$
+
+The same holds for the quantum field with the order of the factors kept: $\nabla^{\rm B}_{{\rm LL},p}$ applied to $(\Pi^1_{\rm LL},\Pi^2_{\rm LL},\Pi^3_{\rm LL})$
+gives $(\nabla^{\rm LL}_p\Psi_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}+\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\nabla^{\rm LL}_p\Psi_{\rm LL}$ in the
+component $\iota$, and by (9.3) the covariant derivative of the SFBS field is the one inherited from its two constituents.
+
+*Proof.* (i) The ordinary derivative obeys the product rule:
+$\partial_p((\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi^{\rm b}_{\rm LL})=(\partial_p\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi^{\rm b}_{\rm LL}+(\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\partial_p\Psi^{\rm b}_{\rm LL}$.
+(ii) By (2.15), $\nabla^{\rm LL}_p-\partial_p=\Gamma^{\rm LL}_p-i\,\mathsf A_{{\rm LL},p}$. The right side of (9.6) therefore exceeds the derivative of
+step (i) by $(\Psi^{\rm a}_{\rm LL})^T\big((\Gamma^{\rm LL}_p-i\mathsf A_{{\rm LL},p})^T\mathsf K^\iota_{\rm LL}+\mathsf K^\iota_{\rm LL}(\Gamma^{\rm LL}_p-i\mathsf A_{{\rm LL},p})\big)\Psi^{\rm b}_{\rm LL}$.
+(iii) The Lorentz connection is $\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0$ with $\mathbf u^\omega_{{\rm LL},p}$
+a real combination of the six generators $J^j_{\rm LL}$, $K^j_{\rm LL}$ (Section 2.6). The pair matrices satisfy the condition (8.3)
+for each generator (Theorem 8.1), hence $(\Gamma^{\rm LL}_p)^T\mathsf K^\iota_{\rm LL}+\mathsf K^\iota_{\rm LL}\Gamma^{\rm LL}_p=0$: the Lorentz
+connection drops out. (iv) The internal potentials are $\mathsf A_{{\rm LL},p}=g^{\rm v}_{\rm LL}\sum_{\iota'}A^{\iota'}_{{\rm LL},p}T^{\iota'}_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathsf 1_8$.
+The unit matrix gives $\mathsf 1_8^T\mathsf K^\iota_{\rm LL}+\mathsf K^\iota_{\rm LL}\mathsf 1_8=2\mathsf K^\iota_{\rm LL}$, and with the factor $-i$ the
+term $-2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}(\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi^{\rm b}_{\rm LL}$. For the isospin generators,
+
+$$(T^{\iota'}_{\rm LL})^T\mathsf K^\iota_{\rm LL}+\mathsf K^\iota_{\rm LL}T^{\iota'}_{\rm LL}=i\sum_{\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}\mathsf K^{\iota''}_{\rm LL}.\tag{9.7}$$
+
+To derive (9.7): $T^{\iota'}_{\rm LL}=\mathsf 1_4\otimes\tau^{\rm LL}_{\iota'}/2$ acts on the isospin index only, and
+$\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$, so the left side of (9.7) is
+$C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\tfrac12\big((\tau^{\rm LL}_{\iota'})^T\mathsf E_{\rm LL}\tau^{\rm LL}_\iota+\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\tau^{\rm LL}_{\iota'}\big)$.
+The relation $\mathsf E_{\rm LL}\tau^{\rm LL}_{\iota'}\mathsf E^{-1}_{\rm LL}=-(\tau^{\rm LL}_{\iota'})^T$ (used in step (iv) of the proof of Theorem 8.2) gives
+$(\tau^{\rm LL}_{\iota'})^T\mathsf E_{\rm LL}=-\mathsf E_{\rm LL}\tau^{\rm LL}_{\iota'}$, so the bracket is
+$\tfrac12\mathsf E_{\rm LL}(\tau^{\rm LL}_\iota\tau^{\rm LL}_{\iota'}-\tau^{\rm LL}_{\iota'}\tau^{\rm LL}_\iota)=i\sum_{\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}\mathsf E_{\rm LL}\tau^{\rm LL}_{\iota''}$,
+by the commutation relations $\tau^{\rm LL}_\iota\tau^{\rm LL}_{\iota'}-\tau^{\rm LL}_{\iota'}\tau^{\rm LL}_\iota=2i\sum_{\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}\tau^{\rm LL}_{\iota''}$ of
+the Pauli matrices. With the factor $-i\,g^{\rm v}_{\rm LL}A^{\iota'}_{{\rm LL},p}$ and the sum over $\iota'$, the isospin potentials contribute
+$-i\,g^{\rm v}_{\rm LL}\sum_{\iota'}A^{\iota'}_{{\rm LL},p}\cdot i\sum_{\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}(\Psi^{\rm a}_{\rm LL})^T\mathsf K^{\iota''}_{\rm LL}\Psi^{\rm b}_{\rm LL}=g^{\rm v}_{\rm LL}\sum_{\iota''}(\mathcal A^{\rm v}_{{\rm LL},p})_{\iota\iota''}(\Psi^{\rm a}_{\rm LL})^T\mathsf K^{\iota''}_{\rm LL}\Psi^{\rm b}_{\rm LL}$.
+(v) Adding (i) to (iv) gives the definition (9.5) applied to the isovector of the pair. $\square$
+
+Check SB-6 verifies (9.6) for 50 random fields $\Psi^{\rm a}_{\rm LL}$, $\Psi^{\rm b}_{\rm LL}$ (linear functions of one coordinate), random
+potentials and random Lorentz connections; the largest deviation is $2.0\times10^{-15}$.
+
+**Covariance.** Under (2.10) with the transformed potentials (2.16), and with $\nabla'^{\rm B}_{{\rm LL},p}$ denoting (9.5) with the
+transformed potentials,
+
+$$\nabla'^{\rm B}_{{\rm LL},p}\big(\exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec d_{\rm LL}\big)=\exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\,\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}.\tag{9.8}$$
+
+*Proof.* First let $\vec d_{\rm LL}$ be the isovector of a pair, $d^\iota_{\rm LL}=(\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi^{\rm b}_{\rm LL}$. The
+transformed isovector is the pair of the transformed fields $\mathcal U_{\rm LL}\Psi^{\rm a}_{\rm LL}$ and $\mathcal U_{\rm LL}\Psi^{\rm b}_{\rm LL}$
+(Section 2.8: $\mathcal U^T_{\rm LL}\mathsf K^\iota_{\rm LL}\mathcal U_{\rm LL}=\exp(2i\theta^{\rm F}_{\rm LL})\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota\iota'}\mathsf K^{\iota'}_{\rm LL}$,
+because the pair matrices are Lorentz invariant and an isospin vector). By Theorem 9.1 with the transformed fields and potentials, the left
+side of (9.8) is the sum of the two pairs formed with $\nabla'^{\rm LL}_p(\mathcal U_{\rm LL}\Psi^{\rm a}_{\rm LL})=\mathcal U_{\rm LL}\nabla^{\rm LL}_p\Psi^{\rm a}_{\rm LL}$
+and $\nabla'^{\rm LL}_p(\mathcal U_{\rm LL}\Psi^{\rm b}_{\rm LL})=\mathcal U_{\rm LL}\nabla^{\rm LL}_p\Psi^{\rm b}_{\rm LL}$ (by (2.17)); by the same
+transformation property of the pair matrices this is $\exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})$ times the
+right side of (9.6), which is the right side of (9.8). For a general field: at a point, both sides of (9.8) depend only, and linearly,
+on the value of $\vec d_{\rm LL}$ and of its four derivatives $\partial_p\vec d_{\rm LL}$ there; and every such set of values is the
+value of a pair: take for $\Psi^{\rm a}_{\rm LL}$ the constant column whose components 1 and 4 are 1 and whose other components are 0
+(its three rows $(\Psi^{\rm a}_{\rm LL})^T\mathsf K^\iota_{\rm LL}$ are linearly independent, as one reads off from the matrices of Section
+2.8), and for $\Psi^{\rm b}_{\rm LL}$ a column that is a linear function of the coordinates. $\square$
+
+Check SB-6 verifies (9.8) directly, with the transformation law (2.16) of the potentials, for 50 random local transformations
+($\theta^{\rm F}_{\rm LL}$ and the three angles of $\mathsf U_{\rm LL}$ linear in one coordinate) and fields quadratic in that coordinate,
+with the derivatives by central differences: the largest deviation is $7\times10^{-10}$, the size of the error of the differences.
+
+**The commutator of two covariant derivatives.** For every field $\vec d_{\rm LL}$,
+
+$$\nabla^{\rm B}_{{\rm LL},p}\nabla^{\rm B}_{{\rm LL},p'}\vec d_{\rm LL}-\nabla^{\rm B}_{{\rm LL},p'}\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}=-2i\,g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},pp'}\vec d_{\rm LL}+g^{\rm v}_{\rm LL}\big(\mathsf F^1_{{\rm LL},pp'},\mathsf F^2_{{\rm LL},pp'},\mathsf F^3_{{\rm LL},pp'}\big)\times\vec d_{\rm LL},\tag{9.9}$$
+
+with the field strengths (2.20). *Derivation.* With $\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}=\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL}$,
+expanding (9.5) twice gives
+$\nabla^{\rm B}_{{\rm LL},p}\nabla^{\rm B}_{{\rm LL},p'}\vec d_{\rm LL}=\partial_p\partial_{p'}\vec d_{\rm LL}-2ig^{\rm F}_{\rm LL}\big((\partial_pA^{\rm F}_{{\rm LL},p'})\vec d_{\rm LL}+A^{\rm F}_{{\rm LL},p'}\partial_p\vec d_{\rm LL}+A^{\rm F}_{{\rm LL},p}\partial_{p'}\vec d_{\rm LL}\big)+g^{\rm v}_{\rm LL}\big((\partial_p\vec A^{\rm v}_{{\rm LL},p'})\times\vec d_{\rm LL}+\vec A^{\rm v}_{{\rm LL},p'}\times\partial_p\vec d_{\rm LL}+\vec A^{\rm v}_{{\rm LL},p}\times\partial_{p'}\vec d_{\rm LL}\big)$
+$-4(g^{\rm F}_{\rm LL})^2A^{\rm F}_{{\rm LL},p}A^{\rm F}_{{\rm LL},p'}\vec d_{\rm LL}-2ig^{\rm F}_{\rm LL}g^{\rm v}_{\rm LL}\big(A^{\rm F}_{{\rm LL},p}\vec A^{\rm v}_{{\rm LL},p'}+A^{\rm F}_{{\rm LL},p'}\vec A^{\rm v}_{{\rm LL},p}\big)\times\vec d_{\rm LL}+(g^{\rm v}_{\rm LL})^2\vec A^{\rm v}_{{\rm LL},p}\times(\vec A^{\rm v}_{{\rm LL},p'}\times\vec d_{\rm LL})$.
+In the difference with $p$ and $p'$ exchanged, every term that is symmetric in $p,p'$ cancels; what remains is
+$-2ig^{\rm F}_{\rm LL}(\partial_pA^{\rm F}_{{\rm LL},p'}-\partial_{p'}A^{\rm F}_{{\rm LL},p})\vec d_{\rm LL}+g^{\rm v}_{\rm LL}(\partial_p\vec A^{\rm v}_{{\rm LL},p'}-\partial_{p'}\vec A^{\rm v}_{{\rm LL},p})\times\vec d_{\rm LL}+(g^{\rm v}_{\rm LL})^2\big(\vec A^{\rm v}_{{\rm LL},p}\times(\vec A^{\rm v}_{{\rm LL},p'}\times\vec d_{\rm LL})-\vec A^{\rm v}_{{\rm LL},p'}\times(\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL})\big)$,
+and the Jacobi identity of the cross product turns the last bracket into $(\vec A^{\rm v}_{{\rm LL},p}\times\vec A^{\rm v}_{{\rm LL},p'})\times\vec d_{\rm LL}$, whose component
+$\iota$ of $\vec A^{\rm v}_{{\rm LL},p}\times\vec A^{\rm v}_{{\rm LL},p'}$ is $\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}A^{\iota''}_{{\rm LL},p'}$, the
+non-abelian term of $\mathsf F^\iota_{{\rm LL},pp'}$ in (2.20). Collecting gives (9.9). The SFBS feels the field strength of
+$U(1)^{\rm F}_{\rm LL}$ with twice the charge of a spinor charge and the isospin field strength in the vector representation, and no
+curvature (spin zero). Check SB-6 verifies (9.9) for all 16 pairs $(p,p')$ with potentials linear in the coordinates and fields quadratic
+in them (largest deviation $9\times10^{-16}$).
+
+## 9.3 The effective action and the effective Lagrangian of the SFBS
+
+**Integrating out the spinor field.** In (9.2) the spinor field enters quadratically. For fixed fields $\vec d_{\rm LL}(x_{\rm LL})$ and
+fixed gauge fields, the functional integral over the spinor field is therefore a Gaussian integral of anticommuting numbers. Its value
+defines the effective action $\mathcal S^{\rm B}_{\rm LL}[\vec d_{\rm LL}]$ of the SFBS (at the given gauge fields, on which it also depends):
+
+$$\exp\big(i\,\mathcal S^{\rm B}_{\rm LL}[\vec d_{\rm LL}]\big)=\int\big(\text{over the configurations of }\Psi_{\rm LL}\text{ and }\bar\Psi_{\rm LL}\big)\,\exp\Big(i\int d^4x_{\rm LL}\,\mathcal L^{\rm HS}_{\rm LL}\Big).\tag{9.10}$$
+
+The complete theory is the remaining functional integral over $\vec d_{\rm LL}$ with the weight $\exp(i\mathcal S^{\rm B}_{\rm LL})$. Its stationary
+point is the mean-field theory of Section 2.10: the derivative of $\mathcal S^{\rm B}_{\rm LL}$ with respect to $(d^\iota_{\rm LL}(x_{\rm LL}))^*$
+is $-d^\iota_{\rm LL}/G_{\rm LL}-\tfrac12\langle\Pi^\iota_{\rm LL}(x_{\rm LL})\rangle$, the expectation value taken in the Gaussian theory of the
+spinor field in the background $\vec d_{\rm LL}$, and it vanishes exactly when (2.30) holds. The **effective field equations of the SFBS**
+are these stationarity conditions; this section and Section 9.5 bring them into the form of local differential equations for slowly
+varying fields. (The fluctuations of $\vec d_{\rm LL}$ about the stationary point, the loops of the SFBS, are not part of the mean-field
+theory and are not included.)
+
+**Three properties of the effective action.**
+
+(a) *Gauge invariance.* $\mathcal S^{\rm B}_{\rm LL}$ does not change when $\vec d_{\rm LL}$ transforms by (9.4) and the gauge fields by
+(2.16): the Lagrangian (9.2) is invariant, and the change of the integration variables $\Psi_{\rm LL}\mapsto\mathcal U_{\rm LL}\Psi_{\rm LL}$,
+$\bar\Psi_{\rm LL}\mapsto\bar\Psi_{\rm LL}\mathcal U^{-1}_{\rm LL}$ has a Jacobian 1 for the isospin and fermion-number transformations, because they
+act on both Weyl blocks in the same way (a transformation of this kind has no anomaly). The derivative expansion below is required to
+keep this invariance; a regularization of the momentum integrals that respects it is assumed.
+
+(b) *Constant fields.* For a constant $\vec d_{\rm LL}$ without gauge fields, the action is time independent, and over a long duration the
+Gaussian integral is dominated by the ground state of the corresponding quadratic Hamiltonian, whose weight is $\exp(-i\times$ ground-state
+energy $\times$ duration$)$. That ground state is the quasi-particle vacuum of the mean-field Hamiltonian of Section 2.10, with the energy
+per volume $\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2/G_{\rm LL}$ plus half the trace of the one-particle part minus half the sum of the
+positive Bogoliubov energies (step (v) of the proof of Theorem 8.3). Measured from its value at $\vec d_{\rm LL}=0$ (the normal state),
+this energy per volume is the effective potential
+
+$$\begin{aligned}\Omega_{\rm LL}(\vec d_{\rm LL})={}&\frac{\lvert\vec d_{\rm LL}\rvert^2}{G_{\rm LL}}-\frac12\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}\Big[\sum\big(\text{positive eigenvalues of }\mathsf H_{\rm LL}(\vec q_{\rm LL})\big)\\&-\sum\big(\text{the same at }\vec d_{\rm LL}=0\big)\Big],\end{aligned}\tag{9.11}$$
+
+with $\lvert\vec d_{\rm LL}\rvert^2=\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$ and the $16\times16$ Bogoliubov matrix of a plane wave (the
+matrix (2.31) for the momentum $\vec q_{\rm LL}$ without gauge fields)
+$\mathsf H_{\rm LL}(\vec q_{\rm LL})=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P^\dagger_{\rm LL}&-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})^*\end{pmatrix}$,
+$\mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$. Hence $\mathcal S^{\rm B}_{\rm LL}=-\Omega_{\rm LL}(\vec d_{\rm LL})\times$
+(duration) $\times$ (volume), up to a constant. (The factor $\tfrac12$ compensates the double counting of the Nambu form, in which
+every mode appears once as a particle and once as a hole.) For the polar field $\vec d_{\rm LL}=(0,0,\Delta_{\rm LL})$ the positive
+eigenvalues are $E^+_{\rm LL}$ and $E^-_{\rm LL}$, four times each (3.13), so that
+$\Omega_{\rm LL}=\Delta_{\rm LL}^2/G_{\rm LL}-2\int\!d^3q_{\rm LL}(2\pi)^{-3}\big(E^+_{\rm LL}+E^-_{\rm LL}-\lvert\varepsilon_{\rm LL}+\mu_{\rm LL}\rvert-\lvert\varepsilon_{\rm LL}-\mu_{\rm LL}\rvert\big)$;
+its derivative with respect to $\Delta_{\rm LL}^2$ is $1/G_{\rm LL}-\int\!d^3q_{\rm LL}(2\pi)^{-3}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$, which vanishes
+exactly when the gap equation (2.33) holds: the uniform mean-field states are the stationary points of $\Omega_{\rm LL}$. Section 10 works
+out $\Omega_{\rm LL}$ completely.
+
+(c) *Slowly varying fields: the derivative expansion.* When $\vec d_{\rm LL}$ and the gauge fields change slowly on the scale of the size
+of a pair, $\mathcal S^{\rm B}_{\rm LL}$ is the integral of a local Lagrangian density that depends on the field and its derivatives at the
+same point. By (a) the derivatives can enter only through the covariant derivative (9.5) (and the field strengths); the momentum cutoff
+$q_{\rm LL}<\Lambda_{\rm LL}$ is invariant under rotations of space, so the three space directions enter only through sums over $j$; at
+$\mu_{\rm LL}=0$ the theory is invariant under the exchange of particles and antiparticles (charge conjugation), so the action is even in
+the frequency and contains no term with a single time derivative. To second order in the derivatives, the effective Lagrangian of the
+SFBS is therefore
+
+$$\mathcal L^{\rm B}_{\rm LL}=Z^{\rm t}_{\rm LL}\sum_\iota\big\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\big\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\big\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\big\rvert^2-\Omega_{\rm LL}(\vec d_{\rm LL}),\tag{9.12}$$
+
+with two positive numbers, the stiffness coefficients $Z^{\rm t}_{\rm LL}$ (of the time derivatives) and $Z^{\rm s}_{\rm LL}$ (of the space
+derivatives). They depend on the vacuum about which the expansion is made, which is written as the argument: $Z^{\rm t}_{\rm LL}(0)$,
+$Z^{\rm s}_{\rm LL}(0)$ in the normal vacuum (this section) and $Z^{\rm t}_{\rm LL}(\Delta_{\rm LL})$, $Z^{\rm s}_{\rm LL}(\Delta_{\rm LL})$ in a
+condensed vacuum of gap $\Delta_{\rm LL}$ (Section 12). In the normal vacuum, to second order in $\vec d_{\rm LL}$, (9.12) is the most general
+form allowed by (a) and by the invariances just listed, so that it is exact there to second order in the field and in the derivatives;
+about a condensed vacuum, (9.12) with constant coefficients is the Ginzburg-Landau form of the derivative expansion, examined in Section
+12. Lorentz invariance would require $Z^{\rm t}_{\rm LL}=Z^{\rm s}_{\rm LL}$; the momentum cutoff, which is imposed in one frame, breaks it,
+and the two coefficients differ (9.19). (For $0<\lvert\mu_{\rm LL}\rvert<m_{\rm LL}$ a term of first order in the time derivative,
+$-\tfrac12(\partial\chi^{\rm pr}_{\rm LL}(0,0)/\partial\mu_{\rm LL})\,{\rm Im}\big(\sum_\iota(d^\iota_{\rm LL})^*(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\big)$,
+is added, with the susceptibility (9.14) below; it vanishes at $\mu_{\rm LL}=0$. From here on $\mu_{\rm LL}=0$: the vacuum of the theory.)
+
+## 9.4 The coefficients in the normal vacuum: the pair susceptibility
+
+**Definition.** In the normal vacuum ($\vec d_{\rm LL}=0$, no gauge fields) the part of the effective action of second order in the field is
+diagonal in the frequency and the wave number (the vacuum is uniform and stationary) and in the isospin index (it is invariant under
+isospin rotations, which rotate the three components of $\vec d_{\rm LL}$ into each other, and under the phase of $U(1)^{\rm F}_{\rm LL}$,
+which forbids products of two $d^\iota_{\rm LL}$ without conjugation). For the plane wave
+$\vec d_{\rm LL}(x_{\rm LL})=\vec d_{\rm LL}\exp(-i\omega^{\rm B}_{\rm LL}x^0_{\rm LL}+i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL})$, with a constant
+complex amplitude $\vec d_{\rm LL}$, the frequency $\omega^{\rm B}_{\rm LL}$ and the wave vector $\vec k^{\rm B}_{\rm LL}$ (length $k^{\rm B}_{\rm LL}$),
+it therefore has the form
+
+$$\frac{\mathcal S^{\rm B}_{\rm LL}}{(\text{duration})\times(\text{volume})}=\Big(\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})-\frac1{G_{\rm LL}}\Big)\lvert\vec d_{\rm LL}\rvert^2+\big(\text{terms of fourth order in }\vec d_{\rm LL}\big),\tag{9.13}$$
+
+which defines the **pair susceptibility** $\chi^{\rm pr}_{\rm LL}$ of the vacuum: the response of the spinor field to a pair field. The term
+$-1/G_{\rm LL}$ is the explicit $-\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}$ of (9.2); $\chi^{\rm pr}_{\rm LL}$ comes from the spinor field.
+
+**The static susceptibility.** For $\omega^{\rm B}_{\rm LL}=0$, (9.13) is minus the energy per volume of the static field
+$\vec d_{\rm LL}\exp(i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL})$, by property (b). By the isospin invariance one component suffices: take
+$\vec d_{\rm LL}=(0,0,d^3_{\rm LL})$. The pair field with the wave vector $\vec k^{\rm B}_{\rm LL}$ joins a spinor charge of momentum
+$\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2$ to one of momentum $\vec k^{\rm B}_{\rm LL}/2-\vec q_{\rm LL}$ (the total momentum of the
+pair is $\vec k^{\rm B}_{\rm LL}$, and $\vec q_{\rm LL}$ is the relative momentum). For each $\vec q_{\rm LL}$ the Bogoliubov matrix is therefore
+the $16\times16$ matrix
+
+$$\mathsf H^{\rm mod}_{\rm LL}(\vec q_{\rm LL})=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)-\mu_{\rm LL}&d^3_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger\\(d^3_{\rm LL})^*\mathsf K^3_{\rm LL}&-\big(\mathsf h_{\rm LL}(\vec k^{\rm B}_{\rm LL}/2-\vec q_{\rm LL})^*-\mu_{\rm LL}\big)\end{pmatrix},$$
+
+acting on the Nambu pair $(\Psi_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2),\Psi_{\rm LL}(\vec k^{\rm B}_{\rm LL}/2-\vec q_{\rm LL})^*)$, and the
+energy per volume is (9.11) with $\mathsf H^{\rm mod}_{\rm LL}$ in place of $\mathsf H_{\rm LL}$. The cutoff restricts the relative momentum,
+$q_{\rm LL}<\Lambda_{\rm LL}$, as in the gap equation (2.33), of which this is the natural continuation to pairs that move.
+
+*The second-order energy.* Write $\varepsilon_{\rm LL}(\vec q_{\rm LL})=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$ for the energy of the momentum given as
+argument, and abbreviate $\varepsilon_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)$ and $\varepsilon_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)$
+(which equals $\varepsilon_{\rm LL}(\vec k^{\rm B}_{\rm LL}/2-\vec q_{\rm LL})$) as $\varepsilon_{\rm LL}(+)$ and $\varepsilon_{\rm LL}(-)$. Let
+$\lvert\mu_{\rm LL}\rvert<m_{\rm LL}$, so that no level crosses zero. Without the pair field the upper block has the eigenvalues
+$\pm\varepsilon_{\rm LL}(+)-\mu_{\rm LL}$, with the projectors $\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)$ of Section 8.7; by the
+key identity (3.11), $\mathsf h_{\rm LL}(\vec k^{\rm B}_{\rm LL}/2-\vec q_{\rm LL})^*=\mathsf K^3_{\rm LL}\mathsf h_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)(\mathsf K^3_{\rm LL})^\dagger$,
+so the lower block has the eigenvalues $-(\pm\varepsilon_{\rm LL}(-)-\mu_{\rm LL})$ with the projectors
+$\mathsf K^3_{\rm LL}\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)(\mathsf K^3_{\rm LL})^\dagger$. The positive eigenvalues are
+$\varepsilon_{\rm LL}(+)-\mu_{\rm LL}$ (upper block) and $\varepsilon_{\rm LL}(-)+\mu_{\rm LL}$ (lower block); the negative ones
+$-\varepsilon_{\rm LL}(+)-\mu_{\rm LL}$ and $\mu_{\rm LL}-\varepsilon_{\rm LL}(-)$. The pair field couples only the two blocks. In second-order
+perturbation theory an eigenvalue moves by the sum, over the eigenvalues of the other block, of the squared coupling divided by the
+difference of the two eigenvalues; in the sum of the positive eigenvalues the contributions of two positive eigenvalues cancel in pairs
+(equal and opposite), and only the couplings between a positive and a negative eigenvalue remain. With
+$d^3_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger\mathsf K^3_{\rm LL}=d^3_{\rm LL}\mathsf 1_8$ (the matrix $\mathsf K^3_{\rm LL}$ is unitary), the squared couplings summed
+over the degenerate eigenvectors are $\lvert d^3_{\rm LL}\rvert^2{\rm tr}\big(\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)\big)$,
+and the sum of the positive eigenvalues grows by
+$\lvert d^3_{\rm LL}\rvert^2M^{\rm pr}_{\rm LL}\big(1/(\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)-2\mu_{\rm LL})+1/(\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)+2\mu_{\rm LL})\big)$
+(the first term from the upper positive and the lower negative eigenvalue, the second from the lower positive and the upper negative one),
+with the **pair matrix element**
+
+$$M^{\rm pr}_{\rm LL}(\vec q_{\rm LL},\vec k^{\rm B}_{\rm LL})={\rm tr}\big(\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}+\tfrac12\vec k^{\rm B}_{\rm LL})\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}-\tfrac12\vec k^{\rm B}_{\rm LL})\big)=2\Big(1+\frac{q_{\rm LL}^2-(k^{\rm B}_{\rm LL})^2/4+m_{\rm LL}^2}{\varepsilon_{\rm LL}(+)\,\varepsilon_{\rm LL}(-)}\Big).\tag{9.14}$$
+
+The trace is evaluated with $\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL})=\tfrac12(\mathsf 1_8\pm\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL})$:
+${\rm tr}\,\mathsf h_{\rm LL}=0$, and ${\rm tr}(\mathsf h_{\rm LL}(\vec q_{\rm LL})\mathsf h_{\rm LL}(\vec q'_{\rm LL}))=8(\vec q_{\rm LL}\cdot\vec q'_{\rm LL}+m_{\rm LL}^2)$
+(the matrices $\alpha^j_{\rm LL}$ and $\beta_{\rm LL}$ anticommute with each other and square to the unit matrix, on eight components), with
+$(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)\cdot(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)=q_{\rm LL}^2-(k^{\rm B}_{\rm LL})^2/4$; the trace of
+$\mathsf Y^-_{\rm LL}\mathsf Y^-_{\rm LL}$ is the same. (Here $\vec q'_{\rm LL}$ denotes a second momentum.) Halving the integral of this growth, as in (9.11),
+gives the energy $(1/G_{\rm LL}-\chi^{\rm pr}_{\rm LL}(0,k^{\rm B}_{\rm LL}))\lvert d^3_{\rm LL}\rvert^2$ per volume, with the static susceptibility
+
+$$\begin{aligned}\chi^{\rm pr}_{\rm LL}(0,k^{\rm B}_{\rm LL})={}&\frac12\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}M^{\rm pr}_{\rm LL}\Big(\frac1{\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)-2\mu_{\rm LL}}\\&+\frac1{\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)+2\mu_{\rm LL}}\Big)\qquad(\lvert\mu_{\rm LL}\rvert<m_{\rm LL}).\end{aligned}\tag{9.15}$$
+
+**The frequency.** A pair field that rotates with the frequency $\omega^{\rm B}_{\rm LL}$ is gauge-equivalent to a static one at a shifted
+chemical potential. Apply the gauge transformation (2.10) with $\theta^{\rm F}_{\rm LL}=\omega^{\rm B}_{\rm LL}x^0_{\rm LL}/2$ (and no isospin or
+Lorentz part): by (9.4) the field $\vec d_{\rm LL}\exp(-i\omega^{\rm B}_{\rm LL}x^0_{\rm LL}+i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL})$ becomes the static
+field $\vec d_{\rm LL}\exp(i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL})$, and by (2.16) $g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}$ grows by
+$\omega^{\rm B}_{\rm LL}/2$. The chemical potential enters (2.24) only in the combination $\mu_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}$
+(Section 2.8), so the transformed problem is the static one at the chemical potential $\mu_{\rm LL}+\omega^{\rm B}_{\rm LL}/2$. The effective
+action is gauge invariant (property (a)), and the normal vacuum, with all negative-energy states filled, remains the ground state of the
+transformed problem as long as $\lvert\mu_{\rm LL}+\omega^{\rm B}_{\rm LL}/2\rvert<m_{\rm LL}$. At $\mu_{\rm LL}=0$, therefore,
+$\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})$ is (9.15) with $\mu_{\rm LL}$ replaced by $\omega^{\rm B}_{\rm LL}/2$:
+
+$$\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})=\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}\,\frac{M^{\rm pr}_{\rm LL}(\vec q_{\rm LL},\vec k^{\rm B}_{\rm LL})\,\big(\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)\big)}{\big(\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)\big)^2-(\omega^{\rm B}_{\rm LL})^2}\qquad(\lvert\omega^{\rm B}_{\rm LL}\rvert<2m_{\rm LL}).\tag{9.16}$$
+
+The denominator vanishes where the frequency equals the energy $\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)$ of two free spinor charges with the
+total momentum $\vec k^{\rm B}_{\rm LL}$; the lowest such energy, $2(m_{\rm LL}^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}$, is the **two-particle threshold**.
+Check SB-7 compares (9.16) with the exact second-order change of the sum of the positive eigenvalues of $\mathsf H^{\rm mod}_{\rm LL}$ at the
+chemical potential $\omega^{\rm B}_{\rm LL}/2$ (computed with the pair fields $10^{-3}$ and $2\times10^{-3}$ and extrapolated to zero, on the same
+quadrature nodes) at six points $(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})$: the largest relative deviation is $1.3\times10^{-8}$ (Figure 22(a),
+circles).
+
+**Closed forms in the normal vacuum.** At $\mu_{\rm LL}=0$, with $\varepsilon_{\rm LL}(\Lambda_{\rm LL})=(\Lambda_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$ and
+$\int\!d^3q_{\rm LL}(2\pi)^{-3}=(2\pi^2)^{-1}\int_0^{\Lambda_{\rm LL}}q_{\rm LL}^2\,dq_{\rm LL}$ for integrands that depend only on $q_{\rm LL}$:
+
+(i) *At $\omega^{\rm B}_{\rm LL}=0$, $k^{\rm B}_{\rm LL}=0$*, where $\varepsilon_{\rm LL}(\pm)=\varepsilon_{\rm LL}$ and $M^{\rm pr}_{\rm LL}=4$:
+
+$$\chi^{\rm pr}_{\rm LL}(0,0)=\int\frac{d^3q_{\rm LL}}{(2\pi)^3}\frac2{\varepsilon_{\rm LL}}=\frac{\Lambda_{\rm LL}\varepsilon_{\rm LL}(\Lambda_{\rm LL})-m_{\rm LL}^2\,\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL})}{2\pi^2}=\frac1{G^{\rm crit}_{\rm LL}},\tag{9.17}$$
+
+using $\int_0^{\Lambda_{\rm LL}}q_{\rm LL}^2(q_{\rm LL}^2+m_{\rm LL}^2)^{-1/2}dq_{\rm LL}=\tfrac12(\Lambda_{\rm LL}\varepsilon_{\rm LL}(\Lambda_{\rm LL})-m_{\rm LL}^2\,\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL}))$.
+This is the right side of the gap equation (2.33) at $\mu_{\rm LL}=0$ and $\Delta_{\rm LL}\to0$, that is $1/G^{\rm crit}_{\rm LL}$: the
+critical coupling of the vacuum (Section 3.3, here with $m_{\rm LL}>0$). For $m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$: $G^{\rm crit}_{\rm LL}=21.286610$.
+
+(ii) *The frequency dependence at $k^{\rm B}_{\rm LL}=0$*:
+$\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},0)=\int8\varepsilon_{\rm LL}/(4\varepsilon_{\rm LL}^2-(\omega^{\rm B}_{\rm LL})^2)=\int(2/\varepsilon_{\rm LL})\big(1+(\omega^{\rm B}_{\rm LL})^2/(4\varepsilon_{\rm LL}^2)+(\omega^{\rm B}_{\rm LL})^4/(16\varepsilon_{\rm LL}^4)+\dots\big)$
+(the integrals over $d^3q_{\rm LL}(2\pi)^{-3}$), so the coefficient of $(\omega^{\rm B}_{\rm LL})^2$ is
+
+$$Z^{\rm t}_{\rm LL}(0)=\int\frac{d^3q_{\rm LL}}{(2\pi)^3}\frac1{2\varepsilon_{\rm LL}^3}=\frac{\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL})-\Lambda_{\rm LL}/\varepsilon_{\rm LL}(\Lambda_{\rm LL})}{4\pi^2},\tag{9.18}$$
+
+using $\int_0^{\Lambda_{\rm LL}}q_{\rm LL}^2(q_{\rm LL}^2+m_{\rm LL}^2)^{-3/2}dq_{\rm LL}=\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL})-\Lambda_{\rm LL}/\varepsilon_{\rm LL}(\Lambda_{\rm LL})$
+(differentiate the right side). The next coefficient is $\int1/(8\varepsilon_{\rm LL}^5)=\Lambda_{\rm LL}^3/(48\pi^2m_{\rm LL}^2\varepsilon_{\rm LL}(\Lambda_{\rm LL})^3)$,
+using $\int_0^{\Lambda_{\rm LL}}q_{\rm LL}^2(q_{\rm LL}^2+m_{\rm LL}^2)^{-5/2}dq_{\rm LL}=\Lambda_{\rm LL}^3/(3m_{\rm LL}^2\varepsilon_{\rm LL}(\Lambda_{\rm LL})^3)$.
+
+(iii) *The wave-number dependence at $\omega^{\rm B}_{\rm LL}=0$.* With $\varepsilon_{\rm LL}(\pm)^2=\varepsilon_{\rm LL}^2\pm\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL}+(k^{\rm B}_{\rm LL})^2/4$,
+the expansion to second order in $\vec k^{\rm B}_{\rm LL}$ gives
+$\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-)=2\varepsilon_{\rm LL}+(k^{\rm B}_{\rm LL})^2/(4\varepsilon_{\rm LL})-(\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL})^2/(4\varepsilon_{\rm LL}^3)$,
+$\varepsilon_{\rm LL}(+)\varepsilon_{\rm LL}(-)=((\varepsilon_{\rm LL}^2+(k^{\rm B}_{\rm LL})^2/4)^2-(\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL})^2)^{1/2}=\varepsilon_{\rm LL}^2+(k^{\rm B}_{\rm LL})^2/4-(\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL})^2/(2\varepsilon_{\rm LL}^2)$,
+hence, with $q_{\rm LL}^2+m_{\rm LL}^2=\varepsilon_{\rm LL}^2$ in (9.14),
+$M^{\rm pr}_{\rm LL}=4-(k^{\rm B}_{\rm LL})^2/\varepsilon_{\rm LL}^2+(\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL})^2/\varepsilon_{\rm LL}^4$ and
+$M^{\rm pr}_{\rm LL}/(\varepsilon_{\rm LL}(+)+\varepsilon_{\rm LL}(-))=2/\varepsilon_{\rm LL}-3(k^{\rm B}_{\rm LL})^2/(4\varepsilon_{\rm LL}^3)+3(\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL})^2/(4\varepsilon_{\rm LL}^5)$,
+all up to terms of fourth order. Averaged over the directions of $\vec q_{\rm LL}$, $(\vec q_{\rm LL}\cdot\vec k^{\rm B}_{\rm LL})^2$ becomes
+$q_{\rm LL}^2(k^{\rm B}_{\rm LL})^2/3$. So $\chi^{\rm pr}_{\rm LL}(0,k^{\rm B}_{\rm LL})=1/G^{\rm crit}_{\rm LL}-Z^{\rm s}_{\rm LL}(0)(k^{\rm B}_{\rm LL})^2+\dots$
+with $Z^{\rm s}_{\rm LL}(0)=\int(3/(4\varepsilon_{\rm LL}^3)-q_{\rm LL}^2/(4\varepsilon_{\rm LL}^5))$. The identity
+$d(q_{\rm LL}^3/\varepsilon_{\rm LL}^3)/dq_{\rm LL}=3q_{\rm LL}^2/\varepsilon_{\rm LL}^3-3q_{\rm LL}^4/\varepsilon_{\rm LL}^5$ turns the radial integrand
+$\tfrac34q_{\rm LL}^2/\varepsilon_{\rm LL}^3-\tfrac14q_{\rm LL}^4/\varepsilon_{\rm LL}^5$ into $\tfrac12q_{\rm LL}^2/\varepsilon_{\rm LL}^3+\tfrac1{12}d(q_{\rm LL}^3/\varepsilon_{\rm LL}^3)/dq_{\rm LL}$, and
+
+$$Z^{\rm s}_{\rm LL}(0)=Z^{\rm t}_{\rm LL}(0)+\frac{\Lambda_{\rm LL}^3}{24\pi^2\varepsilon_{\rm LL}(\Lambda_{\rm LL})^3}.\tag{9.19}$$
+
+The second term comes from the edge of the momentum integral: it is the breaking of Lorentz invariance by the cutoff. It does not vanish
+for $\Lambda_{\rm LL}\to\infty$ (it tends to $1/(24\pi^2)$), but $Z^{\rm t}_{\rm LL}(0)$ grows like $\ln(2\Lambda_{\rm LL}/m_{\rm LL})/(4\pi^2)$, so the
+relative difference falls like $1/\ln(\Lambda_{\rm LL}/m_{\rm LL})$. For $m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$: $Z^{\rm t}_{\rm LL}(0)=0.0337363$,
+$Z^{\rm s}_{\rm LL}(0)=0.0377169$, $Z^{\rm s}_{\rm LL}(0)/Z^{\rm t}_{\rm LL}(0)=1.11799$.
+
+(iv) *At the threshold*, $\omega^{\rm B}_{\rm LL}=2m_{\rm LL}$, $k^{\rm B}_{\rm LL}=0$: $4\varepsilon_{\rm LL}^2-4m_{\rm LL}^2=4q_{\rm LL}^2$, and the factor
+$q_{\rm LL}^2$ of the volume element cancels the zero of the denominator:
+$\chi^{\rm pr}_{\rm LL}(2m_{\rm LL},0)=\int2\varepsilon_{\rm LL}/q_{\rm LL}^2=\pi^{-2}\int_0^{\Lambda_{\rm LL}}\varepsilon_{\rm LL}\,dq_{\rm LL}$, finite:
+
+$$\chi^{\rm pr}_{\rm LL}(2m_{\rm LL},0)=\frac{\Lambda_{\rm LL}\varepsilon_{\rm LL}(\Lambda_{\rm LL})+m_{\rm LL}^2\,\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL})}{2\pi^2}=\frac1{G^{\rm bd}_{\rm LL}},\tag{9.20}$$
+
+which defines the **binding coupling** $G^{\rm bd}_{\rm LL}$ ($=17.746276$ for $m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$), using
+$\int_0^{\Lambda_{\rm LL}}(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}dq_{\rm LL}=\tfrac12(\Lambda_{\rm LL}\varepsilon_{\rm LL}(\Lambda_{\rm LL})+m_{\rm LL}^2\,\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL}))$.
+
+Check SB-7 confirms (9.17) to $1.3\times10^{-15}$ and the coefficients (9.18) and (9.19) against numerical second derivatives of (9.16) to
+$1.6\times10^{-7}$ (relative); check SB-8 confirms (9.20) to $6\times10^{-11}$.
+
+**The derivative expansion.** To second order in the frequency and the wave number,
+
+$$\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})=\frac1{G^{\rm crit}_{\rm LL}}+Z^{\rm t}_{\rm LL}(0)(\omega^{\rm B}_{\rm LL})^2-Z^{\rm s}_{\rm LL}(0)(k^{\rm B}_{\rm LL})^2+\dots\tag{9.21}$$
+
+For the plane wave of (9.13), $\sum_\iota\lvert(\partial_0\vec d_{\rm LL})^\iota\rvert^2=(\omega^{\rm B}_{\rm LL})^2\lvert\vec d_{\rm LL}\rvert^2$ and
+$\sum_j\sum_\iota\lvert(\partial_j\vec d_{\rm LL})^\iota\rvert^2=(k^{\rm B}_{\rm LL})^2\lvert\vec d_{\rm LL}\rvert^2$, and the effective potential of
+second order is $\Omega_{\rm LL}=(1/G_{\rm LL}-\chi^{\rm pr}_{\rm LL}(0,0))\lvert\vec d_{\rm LL}\rvert^2=a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2$
+with the **Ginzburg-Landau coefficient**
+
+$$a^{\rm GL}_{\rm LL}=\frac1{G_{\rm LL}}-\frac1{G^{\rm crit}_{\rm LL}}.\tag{9.22}$$
+
+So (9.12) reproduces (9.13) to second order exactly when its coefficients in the normal vacuum are $Z^{\rm t}_{\rm LL}(0)$ and
+$Z^{\rm s}_{\rm LL}(0)$ of (9.18) and (9.19). Figure 22(a) shows (9.16) against the frequency and against the wave number, with (9.21).
+
+## 9.5 The effective field equations
+
+**The equation of the SFBS.** The Euler-Lagrange equation of (9.12) for $(d^\iota_{\rm LL})^*$ (treated as independent of $d^\iota_{\rm LL}$) is
+$\partial\mathcal L^{\rm B}_{\rm LL}/\partial(d^\iota_{\rm LL})^*-\sum_p\partial_p\big(\partial\mathcal L^{\rm B}_{\rm LL}/\partial(\partial_p(d^\iota_{\rm LL})^*)\big)=0$.
+With $(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL})^*=\partial_p\vec d^{\,*}_{\rm LL}+2ig^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\vec d^{\,*}_{\rm LL}+g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},p}\vec d^{\,*}_{\rm LL}$
+(the potentials are real), the derivative with respect to $\partial_0(d^\iota_{\rm LL})^*$ is $Z^{\rm t}_{\rm LL}(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota$
+and that with respect to $\partial_j(d^\iota_{\rm LL})^*$ is $-Z^{\rm s}_{\rm LL}(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota$, and the derivative with respect to $(d^\iota_{\rm LL})^*$ at fixed derivatives is,
+for each direction $p$, the same coefficient ($Z^{\rm t}_{\rm LL}$ or $-Z^{\rm s}_{\rm LL}$) times $2ig^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL})^\iota+g^{\rm v}_{\rm LL}\sum_{\iota'}(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL})^{\iota'}(\mathcal A^{\rm v}_{{\rm LL},p})_{\iota'\iota}$,
+minus $\partial\Omega_{\rm LL}/\partial(d^\iota_{\rm LL})^*$. Since $\mathcal A^{\rm v}_{{\rm LL},p}$ is antisymmetric, $(\mathcal A^{\rm v}_{{\rm LL},p})_{\iota'\iota}=-(\mathcal A^{\rm v}_{{\rm LL},p})_{\iota\iota'}$,
+and the two pieces combine into the covariant derivative of the vector $\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}$. The **effective field equation
+of the SFBS** is
+
+$$Z^{\rm t}_{\rm LL}\nabla^{\rm B}_{{\rm LL},0}\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}-Z^{\rm s}_{\rm LL}\sum_j\nabla^{\rm B}_{{\rm LL},j}\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL}+\frac{\partial\Omega_{\rm LL}}{\partial\vec d^{\,*}_{\rm LL}}=0,\tag{9.23}$$
+
+where $\partial\Omega_{\rm LL}/\partial\vec d^{\,*}_{\rm LL}$ is the column of the three derivatives $\partial\Omega_{\rm LL}/\partial(d^\iota_{\rm LL})^*$. Written out with the components of the first covariant derivative (the
+second covariant derivative applies the rule (9.5) to the vector $\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}$):
+
+{{GEN:t2s_fieldeq}}
+
+with $(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL})^\iota$ from the components of (9.5) above. The effective potential depends on $\vec d_{\rm LL}$
+only through the two invariants of the group $U(1)^{\rm F}_{\rm LL}\times SU(2)_{\rm v}$ acting by (9.4): $\lvert\vec d_{\rm LL}\rvert^2$ and
+$\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2$, with $\vec d_{\rm LL}\cdot\vec d_{\rm LL}=(d^1_{\rm LL})^2+(d^2_{\rm LL})^2+(d^3_{\rm LL})^2$ (Section 10
+proves this). Its derivatives are therefore
+
+$$\frac{\partial\Omega_{\rm LL}}{\partial(d^\iota_{\rm LL})^*}=\frac{\partial\Omega_{\rm LL}}{\partial\lvert\vec d_{\rm LL}\rvert^2}\,d^\iota_{\rm LL}+2\frac{\partial\Omega_{\rm LL}}{\partial\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2}\,(\vec d_{\rm LL}\cdot\vec d_{\rm LL})\,(d^\iota_{\rm LL})^*,\qquad\iota=1,2,3,\tag{9.24}$$
+
+because $\partial\lvert\vec d_{\rm LL}\rvert^2/\partial(d^\iota_{\rm LL})^*=d^\iota_{\rm LL}$ and
+$\partial\big((\vec d_{\rm LL}\cdot\vec d_{\rm LL})(\vec d^{\,*}_{\rm LL}\cdot\vec d^{\,*}_{\rm LL})\big)/\partial(d^\iota_{\rm LL})^*=2(\vec d_{\rm LL}\cdot\vec d_{\rm LL})(d^\iota_{\rm LL})^*$.
+In the normal vacuum, to first order in the field, $\partial\Omega_{\rm LL}/\partial(d^\iota_{\rm LL})^*=a^{\rm GL}_{\rm LL}d^\iota_{\rm LL}$.
+
+**First-order form for numerical solution.** With the canonical momentum of the SFBS,
+$\vec P^{\rm B}_{\rm LL}=\partial\mathcal L^{\rm B}_{\rm LL}/\partial(\partial_0\vec d^{\,*}_{\rm LL})=Z^{\rm t}_{\rm LL}\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}$,
+(9.23) becomes a system of first order in time, ready for a time-stepping method:
+
+$$\begin{aligned}\partial_0\vec d_{\rm LL}&=\frac{\vec P^{\rm B}_{\rm LL}}{Z^{\rm t}_{\rm LL}}+2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\vec d_{\rm LL}-g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},0}\vec d_{\rm LL},\\\partial_0\vec P^{\rm B}_{\rm LL}&=2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\vec P^{\rm B}_{\rm LL}-g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},0}\vec P^{\rm B}_{\rm LL}+Z^{\rm s}_{\rm LL}\sum_j\nabla^{\rm B}_{{\rm LL},j}\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL}-\frac{\partial\Omega_{\rm LL}}{\partial\vec d^{\,*}_{\rm LL}}.\end{aligned}\tag{9.25}$$
+
+*Derivation.* The first line is the definition of $\vec P^{\rm B}_{\rm LL}$ solved for $\partial_0\vec d_{\rm LL}$ with (9.5). The second line is (9.23)
+with $Z^{\rm t}_{\rm LL}\nabla^{\rm B}_{{\rm LL},0}\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}=\nabla^{\rm B}_{{\rm LL},0}\vec P^{\rm B}_{\rm LL}$ and (9.5) applied to
+$\vec P^{\rm B}_{\rm LL}$. The unknowns are six complex fields, the three components of $\vec d_{\rm LL}$ and of $\vec P^{\rm B}_{\rm LL}$; given them at one
+time (and the gauge fields), the right sides involve only space derivatives at that time.
+
+**The gauge fields.** The effective Lagrangian (9.12) replaces the spinor field as the source of the gauge fields. Adding the Yang-Mills and
+Maxwell terms of (9.2) and varying with respect to the potentials gives, in the same way as (2.29) (the derivative of the field-strength
+terms with respect to $\partial_p$ of a potential of the direction $p'$ is minus the field strength with the raised indices $p,p'$, and the
+non-abelian term gives the second term on the left),
+
+$$\begin{aligned}\sum_p\Big(\partial_p\mathsf F^{\iota,p'p}_{\rm LL}+g^{\rm v}_{\rm LL}\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}\mathsf F^{\iota'',p'p}_{\rm LL}\Big)&=\mathcal J^{\iota,p'}_{{\rm B},{\rm LL}},\\\sum_p\partial_p\mathsf F^{{\rm F},p'p}_{\rm LL}&=\mathcal J^{{\rm F},p'}_{{\rm B},{\rm LL}},\end{aligned}\tag{9.26}$$
+
+with the **currents of the SFBS**, $\mathcal J^{\iota,p}_{{\rm B},{\rm LL}}=\partial\mathcal L^{\rm B}_{\rm LL}/\partial A^\iota_{{\rm LL},p}$ and
+$\mathcal J^{{\rm F},p}_{{\rm B},{\rm LL}}=\partial\mathcal L^{\rm B}_{\rm LL}/\partial A^{\rm F}_{{\rm LL},p}$:
+
+$$\begin{aligned}\mathcal J^{\iota,0}_{{\rm B},{\rm LL}}&=2Z^{\rm t}_{\rm LL}g^{\rm v}_{\rm LL}\,{\rm Re}\big(\vec d^{\,*}_{\rm LL}\times\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}\big)^\iota,&\mathcal J^{\iota,j}_{{\rm B},{\rm LL}}&=-2Z^{\rm s}_{\rm LL}g^{\rm v}_{\rm LL}\,{\rm Re}\big(\vec d^{\,*}_{\rm LL}\times\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL}\big)^\iota,\\\mathcal J^{{\rm F},0}_{{\rm B},{\rm LL}}&=-4Z^{\rm t}_{\rm LL}g^{\rm F}_{\rm LL}\,{\rm Im}\big(\vec d^{\,*}_{\rm LL}\cdot\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}\big),&\mathcal J^{{\rm F},j}_{{\rm B},{\rm LL}}&=4Z^{\rm s}_{\rm LL}g^{\rm F}_{\rm LL}\,{\rm Im}\big(\vec d^{\,*}_{\rm LL}\cdot\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL}\big).\end{aligned}\tag{9.27}$$
+
+*Derivation.* The potentials enter (9.12) only through the covariant derivatives. For the time term,
+$Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2$, the derivative with respect to $A^{\rm F}_{{\rm LL},0}$ is
+$2Z^{\rm t}_{\rm LL}\,{\rm Re}\big((\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^*\cdot(-2ig^{\rm F}_{\rm LL}\vec d_{\rm LL})\big)=-4Z^{\rm t}_{\rm LL}g^{\rm F}_{\rm LL}{\rm Im}(\vec d^{\,*}_{\rm LL}\cdot\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})$
+(the real part of $-i$ times a number is its imaginary part, and the imaginary part of the conjugate is minus the imaginary part). The derivative of
+$g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},0}\vec d_{\rm LL}$ with respect to $A^\iota_{{\rm LL},0}$ is the column with the components
+$g^{\rm v}_{\rm LL}\sum_{\iota''}\epsilon^{\rm LL}_{\iota'\iota\iota''}d^{\iota''}_{\rm LL}$ ($\iota'=1,2,3$), so the derivative of the time term with respect to
+$A^\iota_{{\rm LL},0}$ is $2Z^{\rm t}_{\rm LL}g^{\rm v}_{\rm LL}{\rm Re}\big(\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota'\iota\iota''}((\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^{\iota'})^*d^{\iota''}_{\rm LL}\big)$;
+with $\epsilon^{\rm LL}_{\iota'\iota\iota''}=\epsilon^{\rm LL}_{\iota\iota''\iota'}$ this is $2Z^{\rm t}_{\rm LL}g^{\rm v}_{\rm LL}{\rm Re}\big(\vec d_{\rm LL}\times(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^*\big)^\iota$,
+and since a number and its conjugate have the same real part, $2Z^{\rm t}_{\rm LL}g^{\rm v}_{\rm LL}{\rm Re}\big(\vec d^{\,*}_{\rm LL}\times\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}\big)^\iota$.
+The space terms, $-Z^{\rm s}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2$, give the same with $-Z^{\rm s}_{\rm LL}$ in place of
+$Z^{\rm t}_{\rm LL}$ and $j$ in place of 0. Written out, with $(\iota,\iota',\iota'')$ a cyclic permutation of $(1,2,3)$:
+$\mathcal J^{\iota,0}_{{\rm B},{\rm LL}}=2Z^{\rm t}_{\rm LL}g^{\rm v}_{\rm LL}{\rm Re}\big((d^{\iota'}_{\rm LL})^*(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^{\iota''}-(d^{\iota''}_{\rm LL})^*(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^{\iota'}\big)$
+and $\mathcal J^{{\rm F},0}_{{\rm B},{\rm LL}}=-4Z^{\rm t}_{\rm LL}g^{\rm F}_{\rm LL}{\rm Im}\big(\sum_\iota(d^\iota_{\rm LL})^*(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\big)$, and
+the same with $j$ and $-Z^{\rm s}_{\rm LL}$. Check SB-9 compares (9.27) with numerical derivatives of (9.12) for 50 random fields, derivatives and
+potentials: largest deviation $1.0\times10^{-9}$. For a uniform condensate that rotates as $\exp(-i\omega^{\rm B}_{\rm LL}x^0_{\rm LL})$ without
+gauge fields, $\mathcal J^{{\rm F},0}_{{\rm B},{\rm LL}}=4Z^{\rm t}_{\rm LL}g^{\rm F}_{\rm LL}\omega^{\rm B}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2$: the density
+of fermion number carried by the SFBS, $4Z^{\rm t}_{\rm LL}\omega^{\rm B}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2$, two units per boson.
+
+**Conservation laws.** From the invariance of (9.12) under (9.4) with (2.16): the fermion-number current of the SFBS is conserved,
+$\sum_p\partial_p\mathcal J^{{\rm F},p}_{{\rm B},{\rm LL}}=0$, and the isovector current is covariantly conserved,
+$\sum_p\big(\partial_p\mathcal J^{\iota,p}_{{\rm B},{\rm LL}}+g^{\rm v}_{\rm LL}\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}\mathcal J^{\iota'',p}_{{\rm B},{\rm LL}}\big)=0$,
+for every solution of (9.23). *Derivation* (for $U(1)^{\rm F}_{\rm LL}$; the isospin case is the same with the generators of (9.5)). For a phase
+$\theta^{\rm F}_{\rm LL}(x_{\rm LL})$ close to zero, (9.4) and (2.16) change $\vec d_{\rm LL}$ by $2i\theta^{\rm F}_{\rm LL}\vec d_{\rm LL}$ and
+$A^{\rm F}_{{\rm LL},p}$ by $\partial_p\theta^{\rm F}_{\rm LL}/g^{\rm F}_{\rm LL}$, and $\mathcal L^{\rm B}_{\rm LL}$ does not change. The terms of this
+statement proportional to $\theta^{\rm F}_{\rm LL}$ vanish by themselves (a constant phase is a symmetry without changing the potential); the terms
+proportional to $\partial_p\theta^{\rm F}_{\rm LL}$ give the identity
+$\mathcal J^{{\rm F},p}_{{\rm B},{\rm LL}}=-2ig^{\rm F}_{\rm LL}\sum_\iota\big(d^\iota_{\rm LL}\,\partial\mathcal L^{\rm B}_{\rm LL}/\partial(\partial_pd^\iota_{\rm LL})-(d^\iota_{\rm LL})^*\,\partial\mathcal L^{\rm B}_{\rm LL}/\partial(\partial_p(d^\iota_{\rm LL})^*)\big)$.
+Take the divergence, and replace $\sum_p\partial_p\big(\partial\mathcal L^{\rm B}_{\rm LL}/\partial(\partial_pd^\iota_{\rm LL})\big)$ by $\partial\mathcal L^{\rm B}_{\rm LL}/\partial d^\iota_{\rm LL}$
+and the conjugate term likewise (the field equation and its conjugate): the result is a multiple of the coefficient of $\theta^{\rm F}_{\rm LL}$ in
+the statement above, which vanishes. The
+left sides of (9.26) satisfy the same laws identically (the field strengths are antisymmetric), so (9.23) and (9.26) are consistent.
+
+## 9.6 The SFBS boson of the normal vacuum
+
+**The Klein-Gordon equation.** In the normal vacuum without gauge fields, (9.23) to first order in the field, with the coefficients of
+Section 9.4 and $\partial\Omega_{\rm LL}/\partial(d^\iota_{\rm LL})^*=a^{\rm GL}_{\rm LL}d^\iota_{\rm LL}$, is a Klein-Gordon equation for each component:
+
+$$Z^{\rm t}_{\rm LL}(0)\,\partial_0\partial_0d^\iota_{\rm LL}-Z^{\rm s}_{\rm LL}(0)\sum_j\partial_j\partial_jd^\iota_{\rm LL}+a^{\rm GL}_{\rm LL}d^\iota_{\rm LL}=0,\qquad(\omega^{\rm B}_{\rm LL})^2=\frac{a^{\rm GL}_{\rm LL}+Z^{\rm s}_{\rm LL}(0)(k^{\rm B}_{\rm LL})^2}{Z^{\rm t}_{\rm LL}(0)}\tag{9.28}$$
+
+(the second form for the plane waves $\exp(-i\omega^{\rm B}_{\rm LL}x^0_{\rm LL}+i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL})$). Three regimes follow.
+
+- $G_{\rm LL}<G^{\rm crit}_{\rm LL}$, $a^{\rm GL}_{\rm LL}>0$: the SFBS is a boson of the mass $(a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}$ (the
+  Ginzburg-Landau mass; valid for couplings close to $G^{\rm crit}_{\rm LL}$, where this mass is small, the exact statement being (9.29)
+  below), an isospin triplet (with the electric charges $+1$, $0$, $-1$ for the combinations of (8.7)); the group velocity of the
+  Klein-Gordon form tends to $(Z^{\rm s}_{\rm LL}(0)/Z^{\rm t}_{\rm LL}(0))^{1/2}=1.0574$ at large wave numbers.
+- $G_{\rm LL}=G^{\rm crit}_{\rm LL}$: the boson is massless.
+- $G_{\rm LL}>G^{\rm crit}_{\rm LL}$, $a^{\rm GL}_{\rm LL}<0$: the squared mass is negative. For $(k^{\rm B}_{\rm LL})^2<-a^{\rm GL}_{\rm LL}/Z^{\rm s}_{\rm LL}(0)$ the
+  frequency is imaginary, and a small pair field grows like
+  $\exp\big(((-a^{\rm GL}_{\rm LL}-Z^{\rm s}_{\rm LL}(0)(k^{\rm B}_{\rm LL})^2)/Z^{\rm t}_{\rm LL}(0))^{1/2}x^0_{\rm LL}\big)$: the normal vacuum is unstable, and the SFBS
+  condenses until the terms of fourth order of $\Omega_{\rm LL}$ stop the growth. This is the analogue of the negative squared mass of the Higgs
+  field; Sections 10 and 11 find the condensed vacuum.
+
+**The exact pole.** Beyond the derivative expansion, a plane wave solves the stationarity condition of the quadratic action (9.13) exactly when
+
+$$\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})=\frac1{G_{\rm LL}}:\tag{9.29}$$
+
+the pole of the propagator of the SFBS. At $k^{\rm B}_{\rm LL}=0$ the integrand of (9.16), $8\varepsilon_{\rm LL}/(4\varepsilon_{\rm LL}^2-(\omega^{\rm B}_{\rm LL})^2)$,
+grows with $\omega^{\rm B}_{\rm LL}$ on $[0,2m_{\rm LL})$, so $\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},0)$ grows from $1/G^{\rm crit}_{\rm LL}$ (9.17) to
+$1/G^{\rm bd}_{\rm LL}$ (9.20). Hence (9.29) has exactly one solution $\omega^{\rm B}_{\rm LL}=M^{\rm B}_{\rm LL}$ below the threshold $2m_{\rm LL}$ if and
+only if $G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}$: the SFBS is then a **bound state** of two spinor charges, with the mass
+$M^{\rm B}_{\rm LL}<2m_{\rm LL}$ and the binding energy $2m_{\rm LL}-M^{\rm B}_{\rm LL}$. Its mass falls from $2m_{\rm LL}$ at $G^{\rm bd}_{\rm LL}$ to 0 at
+$G^{\rm crit}_{\rm LL}$. For $G_{\rm LL}<G^{\rm bd}_{\rm LL}$ the attraction is too weak to bind two spinor charges: there is no SFBS particle below the
+threshold, only unbound pairs. Check SB-8 finds the pole by bisection of (9.16): $M^{\rm B}_{\rm LL}=0.4000$ at $G_{\rm LL}=G^{\rm bd}_{\rm LL}(1+10^{-6})$
+and $1.2\times10^{-4}$ at $G_{\rm LL}=G^{\rm crit}_{\rm LL}(1-10^{-8})$, decreasing in between; $M^{\rm B}_{\rm LL}=0.135923$ at $G_{\rm LL}=21$ and
+$0.279252$ at $G_{\rm LL}=20$; and at $G_{\rm LL}=20$ the Bogoliubov matrices give $\chi^{\rm pr}_{\rm LL}(M^{\rm B}_{\rm LL},0)G_{\rm LL}=1$ to
+$1.4\times10^{-10}$. The Ginzburg-Landau mass approaches the pole as $G_{\rm LL}\to G^{\rm crit}_{\rm LL}$: inserting the next term of (ii) of Section
+9.4 into (9.29) gives the relative error $\Lambda_{\rm LL}^3a^{\rm GL}_{\rm LL}/(96\pi^2m_{\rm LL}^2\varepsilon_{\rm LL}(\Lambda_{\rm LL})^3Z^{\rm t}_{\rm LL}(0)^2)$
+to leading order, about $1.03(1-G_{\rm LL}/G^{\rm crit}_{\rm LL})$ for $m_{\rm LL}=0.2$; check SB-8 finds $1.0\times10^{-2}$, $1.0\times10^{-3}$ and
+$1.0\times10^{-4}$ at $1-G_{\rm LL}/G^{\rm crit}_{\rm LL}=10^{-2}$, $10^{-3}$, $10^{-4}$. At $G_{\rm LL}=21$ the Ginzburg-Landau mass, 0.137859, is 1.4%
+too high; at $G_{\rm LL}=20$, 0.299300, 7.2% too high (Figure 22(b)).
+
+**The dispersion relation** (Figure 22(c)): the pole (9.29) at the wave number $k^{\rm B}_{\rm LL}$ lies below the threshold
+$2(m_{\rm LL}^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}$ at all computed wave numbers ($k^{\rm B}_{\rm LL}\le0.8$). At $G_{\rm LL}=21$ it follows the
+Klein-Gordon form (9.28) closely; at $G_{\rm LL}=20$ the form is shifted upward by the error of the Ginzburg-Landau mass. At small wave numbers
+$(\omega^{\rm B}_{\rm LL})^2$ grows with the slope $1.08929$ against $(k^{\rm B}_{\rm LL})^2$ at $G_{\rm LL}=20$, both from the poles and from the
+derivatives of $\chi^{\rm pr}_{\rm LL}$ at the pole, $-(\partial\chi^{\rm pr}_{\rm LL}/\partial(k^{\rm B}_{\rm LL})^2)/(\partial\chi^{\rm pr}_{\rm LL}/\partial(\omega^{\rm B}_{\rm LL})^2)$
+(check SB-8), against $Z^{\rm s}_{\rm LL}(0)/Z^{\rm t}_{\rm LL}(0)=1.11799$ of the Ginzburg-Landau form. A Lorentz-invariant theory would give the slope 1
+exactly; the excess is the breaking of Lorentz invariance by the momentum cutoff, (9.19). It is not small here: at $G_{\rm LL}=21$ the slope of
+$\omega^{\rm B}_{\rm LL}$ against $k^{\rm B}_{\rm LL}$ (the group velocity) reaches 1.024 near $k^{\rm B}_{\rm LL}=0.75$, above the speed of light, while at
+$G_{\rm LL}=20$ it reaches 0.970 at $k^{\rm B}_{\rm LL}=0.8$. The regularized model is a low-energy model; its statements about frequencies and wave numbers comparable to
+the cutoff are not physical.
+
+**The microscopic check.** The effective field equation is a statement about the mean-field dynamics of the spinor field. Check SB-10 tests it
+directly against the time-dependent mean-field equations (2.31), (2.32), without any expansion. For a uniform pair field along the third
+isospin direction, $\vec d_{\rm LL}=(0,0,d^3_{\rm LL}(x^0_{\rm LL}))$, without gauge fields, each positive-energy mode stays in the plane (3.12) of its
+eigenvector $\chi^{\rm pw}_{\rm LL}$ of $\mathsf h_{\rm LL}(\vec q_{\rm LL})$, $(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})=(u^{\rm pl}_{{\rm LL},\pm}\chi^{\rm pw}_{\rm LL},v^{\rm pl}_{{\rm LL},\pm}\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})$
+times the plane wave, where the sign $\pm$ is that of the energy $\pm\varepsilon_{\rm LL}$ of $\chi^{\rm pw}_{\rm LL}$ and
+$\lvert u^{\rm pl}_{{\rm LL},\pm}\rvert^2+\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2=1$. By (3.12) with the complex $d^3_{\rm LL}$ in place of $\Delta_{\rm LL}$
+(upper right) and $(d^3_{\rm LL})^*$ (lower left), each plane evolves by a $2\times2$ matrix. In (2.32) such a mode contributes
+$(u^{\rm pl}_{{\rm LL},\pm}\chi^{\rm pw}_{\rm LL})^T\mathsf K^3_{\rm LL}(v^{\rm pl}_{{\rm LL},\pm}\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})^*=u^{\rm pl}_{{\rm LL},\pm}(v^{\rm pl}_{{\rm LL},\pm})^*(\chi^{\rm pw}_{\rm LL})^T(\mathsf K^3_{\rm LL})^2(\chi^{\rm pw}_{\rm LL})^*=-u^{\rm pl}_{{\rm LL},\pm}(v^{\rm pl}_{{\rm LL},\pm})^*$
+($\mathsf K^3_{\rm LL}$ is real, $(\mathsf K^3_{\rm LL})^2=-\mathsf 1_8$, and $\chi^{\rm pw}_{\rm LL}$ is normalized); the sum over the modes becomes
+$\int\!d^3q_{\rm LL}(2\pi)^{-3}$ times the sum over the eight eigenvectors, as in (2.33), and the four eigenvectors of each energy evolve
+alike. So
+
+$$\begin{aligned}i\partial_0\begin{pmatrix}u^{\rm pl}_{{\rm LL},\pm}\\v^{\rm pl}_{{\rm LL},\pm}\end{pmatrix}&=\begin{pmatrix}\pm\varepsilon_{\rm LL}-\mu_{\rm LL}&d^3_{\rm LL}\\(d^3_{\rm LL})^*&-(\pm\varepsilon_{\rm LL}-\mu_{\rm LL})\end{pmatrix}\begin{pmatrix}u^{\rm pl}_{{\rm LL},\pm}\\v^{\rm pl}_{{\rm LL},\pm}\end{pmatrix},\\d^3_{\rm LL}&=2G_{\rm LL}\int\frac{d^3q_{\rm LL}}{(2\pi)^3}\big(u^{\rm pl}_{{\rm LL},+}(v^{\rm pl}_{{\rm LL},+})^*+u^{\rm pl}_{{\rm LL},-}(v^{\rm pl}_{{\rm LL},-})^*\big).\end{aligned}\tag{9.30}$$
+
+These equations conserve the mean-field energy per volume, $4\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum_\pm(\pm\varepsilon_{\rm LL}-\mu_{\rm LL})\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2-\lvert d^3_{\rm LL}\rvert^2/G_{\rm LL}$
+($\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2$ is the occupation of the state of energy $\pm\varepsilon_{\rm LL}$): by (9.30) the time derivative of its first
+term is $8\int\sum_\pm(\pm\varepsilon_{\rm LL}-\mu_{\rm LL}){\rm Im}\big((d^3_{\rm LL})^*u^{\rm pl}_{{\rm LL},\pm}(v^{\rm pl}_{{\rm LL},\pm})^*\big)$, and that of
+$\lvert d^3_{\rm LL}\rvert^2/G_{\rm LL}$ is the same. The program solves (9.30) at $\mu_{\rm LL}=0$, $G_{\rm LL}=20$ on 320 radial nodes (Gauss-Legendre) with
+the classical Runge-Kutta method of the fourth order (time step 0.02, up to $x^0_{\rm LL}=1500$), starting from the positive-energy eigenvectors (3.14)
+of the plane matrices with the small gap $10^{-5}$ in place of $\Delta_{\rm LL}$. The pair field oscillates (Figure 22(d)); its spectral line below
+the threshold $2m_{\rm LL}$ lies at the frequency 0.279251576, and the pole (9.29) on the same nodes is $M^{\rm B}_{\rm LL}=0.279251554$: relative
+deviation $8\times10^{-8}$, the accuracy with which a line is located in a record of finite length. The line carries 0.908 of the initial pair field; the rest belongs to unbound pairs
+(frequencies above $2m_{\rm LL}$), which dephase. The energy is conserved to $1.5\times10^{-8}$ of its scale (the error of the time stepping), and the
+pair field stays real. The reason is a mirror symmetry of $\mu_{\rm LL}=0$: when $d^3_{\rm LL}$ is real, the pair
+$(v^{\rm pl}_{{\rm LL},-},u^{\rm pl}_{{\rm LL},-})$ obeys the equation of $(u^{\rm pl}_{{\rm LL},+},v^{\rm pl}_{{\rm LL},+})$ and starts equal to it, so that the
+integrand of $d^3_{\rm LL}$ is $u^{\rm pl}_{{\rm LL},+}(v^{\rm pl}_{{\rm LL},+})^*$ plus its conjugate, a real number; this real solution
+satisfies (9.30) and the initial values, so it is the solution.
+The SFBS boson predicted by the effective field equation is the oscillation of the microscopic mean-field dynamics.
+
+![](figures/fig_t2_sfbs_effective.png){width=100%}
+
+**Figure 22.** The effective field theory of the SFBS in the normal vacuum ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$, $\mu_{\rm LL}=0$). (a) The pair
+susceptibility (9.16) against the frequency at $k^{\rm B}_{\rm LL}=0$ (blue) and against the wave number at $\omega^{\rm B}_{\rm LL}=0$ (orange), with the
+derivative expansion (9.21) (dashed) and the values from the exact second-order energies of the $16\times16$ Bogoliubov matrices (circles); the
+frequency curve rises from $1/G^{\rm crit}_{\rm LL}$ toward $1/G^{\rm bd}_{\rm LL}$ at the threshold $2m_{\rm LL}$, and its crossing with $1/G_{\rm LL}$ is the
+mass of the SFBS boson (diamond, $G_{\rm LL}=20$). (b) The mass $M^{\rm B}_{\rm LL}$ of the SFBS boson against the coupling: the pole (9.29) (solid) and the
+Ginzburg-Landau mass $(a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}$ of (9.28) (dashed); the bound state exists between $G^{\rm bd}_{\rm LL}$ and
+$G^{\rm crit}_{\rm LL}$. (c) The dispersion relation at $G_{\rm LL}=21$ (blue) and $G_{\rm LL}=20$ (orange): the pole (solid), the Klein-Gordon form (9.28)
+(dashed) and the two-particle threshold (dotted). (d) The time evolution of a small uniform pair field by the mean-field equations (9.30) (green)
+and the line of the frequency $M^{\rm B}_{\rm LL}$ of the effective field equation, with amplitude and phase fitted on the last two thirds of the run
+(black, dashed). Data: `test2/data/t2_sfbs_susceptibility.csv`, `t2_sfbs_boson_mass.csv`, `t2_sfbs_boson_dispersion.csv`, `t2_sfbs_tdbdg_normal.csv`.
+
+## 9.7 Discussion
+
+- **What was derived.** The SFBS has a field of its own, $\vec d_{\rm LL}$, introduced exactly (9.1); its gauge-covariant derivative is inherited
+  from the spinor field (Theorem 9.1); integrating out the spinor field gives its effective action, whose derivative expansion (9.12) is the
+  Lagrangian of a charged scalar field, and whose field equations are (9.23) with the gauge-field equations (9.26). Nothing in (9.12) is
+  postulated: the potential is the vacuum energy (9.11), and the coefficients are response functions of the spinor field, (9.17) to (9.20).
+- **The analogy with the Higgs field.** Like the Higgs field, $\vec d_{\rm LL}$ is a Lorentz scalar with gauge charges and a coefficient of
+  $\lvert\vec d_{\rm LL}\rvert^2$, $a^{\rm GL}_{\rm LL}$, whose sign decides between a symmetric vacuum and a condensate. The differences: $\vec d_{\rm LL}$ is
+  an isospin triplet with fermion number 2 (the Higgs field of the electroweak theory is a doublet), it is composite, and its parameters are
+  computed rather than chosen.
+- **Approximations.** (1) The field $\vec d_{\rm LL}$ is treated at its stationary point, the mean-field approximation of Section 2.10. (2) The
+  derivative expansion holds for frequencies and wave numbers small compared with the scale of pair breaking, $2m_{\rm LL}$ in the normal vacuum:
+  near $G^{\rm crit}_{\rm LL}$, where the boson is light, it is accurate; at $G_{\rm LL}=20$ its mass is 7% off (Figure 22(b)). (3) About a condensed
+  vacuum the coefficients change (Section 12). (4) The cutoff breaks Lorentz invariance, $Z^{\rm s}_{\rm LL}\neq Z^{\rm t}_{\rm LL}$; with a covariant
+  regularization the two would be equal.
+- **What follows.** For $G_{\rm LL}>G^{\rm crit}_{\rm LL}$ the coefficient $a^{\rm GL}_{\rm LL}$ is negative and the normal vacuum is unstable. The effective
+  potential $\Omega_{\rm LL}(\vec d_{\rm LL})$ beyond second order, the Mexican hat of the SFBS, is the subject of Section 10.
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -2797,9 +3396,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e
   rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg
   rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg; done
-# 8. items [7] to [11]: the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of the superfluid boson singlet state, its explicit matrices and the data of Figure 21
+# 8. items [7] to [11]: the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of the superfluid boson singlet state, its explicit matrices and the data of Figures 21 and 22
 cd test2/rust && cargo build --release && ./target/release/t2_sfbs && cd ../..
-# 9. Figure 21 (test2/figures/fig_t2_sfbs_*.pdf and .png)
+# 9. Figures 21 and 22 (test2/figures/fig_t2_sfbs_*.pdf and .png)
 python3 test2/python/make_t2_sfbs_figures.py
 # 10. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
@@ -2807,7 +3406,8 @@ bash code/scripts/check_all.sh
 
 The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
 together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, `t2_sfbs` in about
-15 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states), all on one processor core.
+25 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states and the $16\times16$ Bogoliubov
+matrices of checks SB-7 and SB-8), all on one processor core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; rsvg-convert (librsvg) for the
 conversion of the SVG figures of item [6]; for the documents pandoc
@@ -3033,7 +3633,20 @@ $\epsilon^{\rm LL}_{\iota\iota'\iota''}$; `SF` and `Dirac sea` for $\lvert\Phi^{
 $(\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*$, and `chi'_n`, `w'_n` for those of energy $-\varepsilon_{\rm LL}$; `b^dag(..)`, `b(..)` for the
 creation and annihilation of a charge in a state; `t_p`, `t_a` for $t^{\rm p}_{\rm LL}$, $t^{\rm a}_{\rm LL}$; `H` and `E_0` for
 $\hat H^{\rm q}_{\rm LL}$ and its ground-state energy; `gamma_n` for the quasi-particle annihilation operators; `Pi_3` for the pair
-operator of the two momenta.
+operator of the two momenta. For item [8] (checks SB-6 to SB-10) the report uses in addition: `nablaB_p` for
+$\nabla^{\rm B}_{{\rm LL},p}$; `d`, `d^*` and `d^3` for $\vec d_{\rm LL}$, $\vec d^{\,*}_{\rm LL}$ and $d^3_{\rm LL}$; `d_p` for $\partial_p$;
+`g_F`, `g_v` for $g^{\rm F}_{\rm LL}$, $g^{\rm v}_{\rm LL}$; `AF_LL_p`, `Av_LL_p` and `Av_LL^iota_p` for $A^{\rm F}_{{\rm LL},p}$,
+$\vec A^{\rm v}_{{\rm LL},p}$ and $A^\iota_{{\rm LL},p}$; `x` and `.` for the cross and the dot product of isovectors; `Psi_a`, `Psi_b` for
+$\Psi^{\rm a}_{\rm LL}$, $\Psi^{\rm b}_{\rm LL}$; `nabla_LL_p` for $\nabla^{\rm LL}_p$; `thF`, `U`, `Rv(U)` for $\theta^{\rm F}_{\rm LL}$,
+$\mathsf U_{\rm LL}$, $\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})$; `FF_LL_pp'` for $\mathsf F^{\rm F}_{{\rm LL},pp'}$ and `Fv_LL_pp'` for the isovector
+$(\mathsf F^1_{{\rm LL},pp'},\mathsf F^2_{{\rm LL},pp'},\mathsf F^3_{{\rm LL},pp'})$; `chi_pr(omega, k)`, `chi` for
+$\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},k^{\rm B}_{\rm LL})$; `omega`, `k`, `q` for $\omega^{\rm B}_{\rm LL}$, $k^{\rm B}_{\rm LL}$, $\vec q_{\rm LL}$;
+`M_pr`, `eps(+)`, `eps(-)`, `eps(+-)` for $M^{\rm pr}_{\rm LL}$ and $\varepsilon_{\rm LL}(\pm)$; `eps_Lambda` for
+$\varepsilon_{\rm LL}(\Lambda_{\rm LL})$; `G_bind` for $G^{\rm bd}_{\rm LL}$; `Z_t0`, `Z_s0` for $Z^{\rm t}_{\rm LL}(0)$, $Z^{\rm s}_{\rm LL}(0)$;
+`Z_t`, `Z_s` and `Z` for $Z^{\rm t}_{\rm LL}$, $Z^{\rm s}_{\rm LL}$ and their signed value ($Z^{\rm t}_{\rm LL}$ for the time direction,
+$-Z^{\rm s}_{\rm LL}$ for the space directions); `L_B` for $\mathcal L^{\rm B}_{\rm LL}$; `M_B` and `M_B(k)` for $M^{\rm B}_{\rm LL}$ and the pole
+at the wave number $k^{\rm B}_{\rm LL}$; `chi_Bogoliubov` for the susceptibility from the Bogoliubov matrices; `Re`, `Im` for the real and
+imaginary parts; `x_LL^0` for the time $x^0_{\rm LL}$; `eps` for $\varepsilon_{\rm LL}$.
 
 ```
 {{FILE:test2/data/t2_sfbs_checks.txt}}
@@ -3080,6 +3693,10 @@ operator of the two momenta.
 | `test2/data/t2_sfbs_pair_weights.csv` | the predicted weights (8.16) and occupations of the SFBS state (Figure 21(a), (b), lines) | `state`, `mu`, `Delta`, `q`, `t_p`, `t_a`, `occupation_particles`, `occupation_antiparticles` |
 | `test2/data/t2_sfbs_pair_weights_fock.csv` | the same quantities of the Lanczos ground states in the Fock space of one pair of momenta (Figure 21(a), (b), circles) | `state`, `mu`, `Delta`, `q`, `t_p`, `t_a`, `occupation_particles`, `occupation_antiparticles`, `source` |
 | `test2/data/t2_sfbs_site_commutator.csv` | the commutator of the pair operator of one site with its conjugate on the 256 states of the site (Figure 21(c)) | `n_F_site`, `commutator_33` |
+| `test2/data/t2_sfbs_susceptibility.csv` | the pair susceptibility (9.16) of the normal vacuum against the frequency and the wave number, its derivative expansion (9.21), and the values from the Bogoliubov matrices (Figure 22(a)) | `variable`, `omega_B`, `k_B`, `chi_pr`, `chi_pr_GL`, `source` |
+| `test2/data/t2_sfbs_boson_mass.csv` | the mass of the SFBS boson of the normal vacuum (the pole (9.29)) and its Ginzburg-Landau value against the coupling (Figure 22(b)) | `G`, `M_B`, `M_B_GL` |
+| `test2/data/t2_sfbs_boson_dispersion.csv` | the dispersion relation of the SFBS boson at $G_{\rm LL}=21$ and 20: the pole, the Klein-Gordon form (9.28) and the two-particle threshold (Figure 22(c)) | `G`, `k_B`, `omega_B`, `omega_B_KG`, `threshold` |
+| `test2/data/t2_sfbs_tdbdg_normal.csv` | the uniform mean-field evolution (9.30) of a small pair field in the normal vacuum and the fitted line of the frequency $M^{\rm B}_{\rm LL}$ (Figure 22(d)) | `x_LL^0`, `d_over_d0`, `line_MB` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
 $\varepsilon^{\rm lat}_{\rm LL}$; `E_times_dt` is $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$ and `rk4_modulus` the modulus of
@@ -3104,8 +3721,13 @@ $(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$. In t
 $\mu_{\rm LL}=0$; `Fermi_sea`: $\mu_{\rm LL}=0.5$), `t_p` and `t_a` are $t^{\rm p}_{\rm LL}$ and $t^{\rm a}_{\rm LL}$,
 `occupation_particles` is the probability that a state of energy $+\varepsilon_{\rm LL}$ is occupied and `occupation_antiparticles` the
 probability that a state of energy $-\varepsilon_{\rm LL}$ is empty, `n_F_site` is $\hat n^{\rm F}_{\rm LL}$ and `commutator_33` an
-eigenvalue of $[\hat\Pi^3_{\rm LL},(\hat\Pi^3_{\rm LL})^\dagger]$. Every data file states its content in a line `# content:` and
-its parameters in lines `# name: value`.
+eigenvalue of $[\hat\Pi^3_{\rm LL},(\hat\Pi^3_{\rm LL})^\dagger]$. In the files of item [8], `variable` names the variable of a row
+(`omega`: the frequency $\omega^{\rm B}_{\rm LL}$ at $k^{\rm B}_{\rm LL}=0$; `k`: the wave number $k^{\rm B}_{\rm LL}$ at $\omega^{\rm B}_{\rm LL}=0$),
+`omega_B`, `k_B` and `chi_pr` are $\omega^{\rm B}_{\rm LL}$, $k^{\rm B}_{\rm LL}$ and $\chi^{\rm pr}_{\rm LL}$, `chi_pr_GL` is the right side of (9.21),
+`M_B` is $M^{\rm B}_{\rm LL}$ and `M_B_GL` the Ginzburg-Landau mass $(a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}$, `omega_B_KG` the frequency of the
+Klein-Gordon form (9.28), `threshold` the two-particle threshold $2(m_{\rm LL}^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}$, `d_over_d0` the pair field
+$d^3_{\rm LL}(x^0_{\rm LL})/d^3_{\rm LL}(0)$ of (9.30), and `line_MB` the fitted oscillation of the frequency $M^{\rm B}_{\rm LL}$. Every data file states
+its content in a line `# content:` and its parameters in lines `# name: value`.
 
 | figure | file (.pdf and .png) | data | checks |
 |------|--------------------|------------------------------|------|
@@ -3124,9 +3746,11 @@ its parameters in lines `# name: value`.
 | 13 | `test2/figures/fig_t2_py_quench` | `t2_py_quench_series.csv`, `_fields.csv` | EX-7 |
 | 14 to 20 | `test2/figures/fig_t2_rs_<example>` (.svg, .pdf, .png) | the files `t2_rs_<example>_*` | EX-1 to EX-7 |
 | 21 | `test2/figures/fig_t2_sfbs_state` | `t2_sfbs_pair_weights.csv`, `t2_sfbs_pair_weights_fock.csv`, `t2_sfbs_site_commutator.csv` | SB-4, SB-5 |
+| 22 | `test2/figures/fig_t2_sfbs_effective` | `t2_sfbs_susceptibility.csv`, `t2_sfbs_boson_mass.csv`, `t2_sfbs_boson_dispersion.csv`, `t2_sfbs_tdbdg_normal.csv` | SB-7, SB-8, SB-10 |
 
-Figure 21 is drawn by `test2/python/make_t2_sfbs_figures.py` from the data files of `t2_sfbs`; besides the data it draws only
-the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12) and marks the Fermi momentum. Figures 1 to 6 are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
+Figures 21 and 22 are drawn by `test2/python/make_t2_sfbs_figures.py` from the data files of `t2_sfbs`; besides the data it draws only
+the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12), and it marks the Fermi momentum and, in Figure 22, the reference values $1/G_{\rm LL}$,
+$1/G^{\rm crit}_{\rm LL}$, $2m_{\rm LL}$, $G^{\rm bd}_{\rm LL}$ and $G^{\rm crit}_{\rm LL}$ (taken from the parameter lines of the data files). Figures 1 to 6 are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
 $\pm m_{\rm LL}$ and the line $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$), the relative deviation of Figure 1(b) from two columns of a
 data file, the normal-state energy $\lvert\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}\rvert$ of Figure 4(a) from a column and a
@@ -3134,7 +3758,7 @@ parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ 
 
 ## A.4 Checksums
 
-SHA-256 checksums of the sources and data of items [1] to [7] at the time this document was built:
+SHA-256 checksums of the sources and data of items [1] to [8] at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -3158,6 +3782,10 @@ SHA-256 checksums of the sources and data of items [1] to [7] at the time this d
 {{SHA256:test2/data/t2_sfbs_pair_weights.csv}}  test2/data/t2_sfbs_pair_weights.csv
 {{SHA256:test2/data/t2_sfbs_pair_weights_fock.csv}}  test2/data/t2_sfbs_pair_weights_fock.csv
 {{SHA256:test2/data/t2_sfbs_site_commutator.csv}}  test2/data/t2_sfbs_site_commutator.csv
+{{SHA256:test2/data/t2_sfbs_susceptibility.csv}}  test2/data/t2_sfbs_susceptibility.csv
+{{SHA256:test2/data/t2_sfbs_boson_mass.csv}}  test2/data/t2_sfbs_boson_mass.csv
+{{SHA256:test2/data/t2_sfbs_boson_dispersion.csv}}  test2/data/t2_sfbs_boson_dispersion.csv
+{{SHA256:test2/data/t2_sfbs_tdbdg_normal.csv}}  test2/data/t2_sfbs_tdbdg_normal.csv
 {{SHA256:test2/python/make_t2_figures.py}}  test2/python/make_t2_figures.py
 {{SHA256:test2/data/t2_fields_checks.txt}}  test2/data/t2_fields_checks.txt
 {{SHA256:test2/data/t2_fragments.md}}  test2/data/t2_fragments.md
@@ -3297,6 +3925,11 @@ SHA-256 checksums of the sources and data of items [1] to [7] at the time this d
 * C. Lanczos, An iteration method for the solution of the eigenvalue problem of linear differential and integral
   operators, J. Res. Natl. Bur. Stand. 45, 255 (1950).
 * D. J. Thouless, Stability conditions and nuclear rotations in the Hartree-Fock theory, Nucl. Phys. 21, 225 (1960).
+* R. L. Stratonovich, On a method of calculating quantum distribution functions, Sov. Phys. Dokl. 2, 416 (1957); J. Hubbard,
+  Calculation of partition functions, Phys. Rev. Lett. 3, 77 (1959).
+* V. L. Ginzburg and L. D. Landau, On the theory of superconductivity, Zh. Eksp. Teor. Fiz. 20, 1064 (1950).
+* L. P. Gor'kov, Microscopic derivation of the Ginzburg-Landau equations in the theory of superconductivity, Sov. Phys. JETP 9,
+  1364 (1959).
 
 These works are cited for the general methods and results only (the gauge principle, the mean-field equations of a
 superfluid, the lattice with link variables and the Wilson term, the Pauli equation, the Landau levels, the wells of
@@ -3306,7 +3939,8 @@ bisection for tridiagonal matrices; for item [3] the Anderson acceleration of fi
 midpoint rule and its conservation of quadratic invariants, Andreev reflection, the self-consistent kink of the
 Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change; for
 item [7] the representation of fermion operators by matrices on the states of a few modes, the Lanczos method, and the
-form of a quasi-particle vacuum as the exponential of a pair operator). Everything this document uses from them is stated, and where it is a result,
+form of a quasi-particle vacuum as the exponential of a pair operator; for item [8] the Hubbard-Stratonovich identity, the
+Ginzburg-Landau form of an effective theory and its derivation from the microscopic theory). Everything this document uses from them is stated, and where it is a result,
 derived or checked, in it.
 
 # Appendix C. The symbols

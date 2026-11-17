@@ -94,8 +94,14 @@ Scalable Vector Graphics with a small plotting library of its own, with the pred
 Its seventh answer (item [7]) constructs the superfluid boson singlet state (SFBS) from the spinor field: the spin-zero pairs
 of two spinor charges (spin singlet, isospin triplet, fermion number 2, charges $+1$, $0$, $-1$), their super-loop form, their
 Bose character, and the SFBS state as a coherent state of pairs, proved to be the mean-field ground state and checked in the
-exact many-body space of one pair of momenta; the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member
-`t2sfbs` of the workspace) and Figure 21 of the document.
+exact many-body space of one pair of momenta (Figure 21 of the document).
+Its eighth answer (the first item [8]) derives the effective field equations of the SFBS: the exact Hubbard-Stratonovich field of
+the SFBS, its gauge-covariant derivative inherited from the spinor field, the effective action and its derivative expansion (the
+Lagrangian of a charged scalar field), the pair susceptibility of the vacuum with its coefficients in closed form, the effective
+field equations with the currents of the SFBS as sources of the gauge fields, and the SFBS boson of the normal vacuum (a bound
+state for $G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}$, unstable beyond $G^{\rm crit}_{\rm LL}$), confirmed by the
+time-dependent mean-field equations (Figure 22). Items [7] and [8] are verified by the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of
+the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
 # 2. Where to start reading
 
