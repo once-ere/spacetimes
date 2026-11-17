@@ -3,7 +3,7 @@
 title: "Revision_SuperLoop: the Lorentz super-loop of the bi-octonions, non-associative counterexamples to the no-go theorems, and a spin-zero spinor superfluid"
 subtitle: "PROJECT spacetimes — README of the folder Revision_SuperLoop"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 16, 2026"
+date: "November 17, 2026"
 ---
 
 <!-- This file is generated from docs_src/README.src.md by code/scripts/assemble_docs.py; edit the source. -->
@@ -55,6 +55,17 @@ like Cartesian coordinates, derives its Lorentz group from the super-loop, works
 proves the statement by power counting, by the completeness of the Lagrangian and by the explicit one-loop
 bubble, with its own program and {{GEN:nchecks_r13}} further checks.
 
+The folder `test2` contains the answers to Test 2: one document,
+`Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state`
+(.pdf, .tex, .md), which grows item by item. Its first answer (item [1]) writes out, derives and discusses
+the field equations of the self-interacting spinor field of the spinor charges on $\mathbb R^{1,3}_{\rm LL}$
+with the gauge-covariant derivative of the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$
+($SL(2,\mathbb C)$ as the change of representation of the frame, after E. A. Lord), gives every matrix
+explicitly, shows that the Dirac operator is the right multiplication of the spinor charges by the frame
+bi-quaternions, and formulates the mean-field (Dirac-Bogoliubov-de Gennes) equations and their gauge-covariant
+lattice discretization for numerical solution, with its own Rust programs and {{GEN:nchecks_t2_fields}} further
+checks.
+
 # 2. Where to start reading
 
 1. The manuscript, `manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative
@@ -77,6 +88,8 @@ bubble, with its own program and {{GEN:nchecks_r13}} further checks.
    examples; its Lorentz group from the super-loop; the spinor charges as spinors on it; and the proof
    that the Yukawa form of the theory of the spinor charges is renormalizable on it and not on the
    eight-dimensional manifolds.
+7. `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state`
+   (.pdf, .tex, .md): the answers to Test 2, item by item, each with its programs, checks and provenance.
 
 # 3. Contents
 
@@ -89,6 +102,7 @@ bubble, with its own program and {{GEN:nchecks_r13}} further checks.
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -108,6 +122,9 @@ python3 explanations/code/make_explain_figures.py
 # the examples and checks of the document on the 3+1 manifold (checks Z-1 to Z-8) and its four figures:
 (cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)
 python3 explanations/code/make_r13_figures.py
+# Test 2, item [1]: the checks GS-1 to GS-16, the explicit matrices and equations, and its two figures:
+(cd test2/rust && cargo build --release && ./target/release/t2_fields)
+python3 test2/python/make_t2_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```
@@ -116,7 +133,7 @@ Requirements: a Rust toolchain for the edition 2021; Python 3 with SymPy, NumPy 
 the documents TeX Live with REVTeX 4.2, XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math
 font, and pandoc. The program uses the library crate `code/spacetimes-rs` of the repository (complex
 numbers, Hermitian diagonalization, Gauss-Legendre rules, Brent's root finder, the writer of data
-files); no crate is downloaded.
+files); no crate is downloaded. The Rust programs of the folder `test2` use no external crate at all.
 
 # 5. The checks, in numbers
 

@@ -17,9 +17,9 @@ the symbol text of an entry is split at the formula signs into its items (for ex
          a new entry that is also an item of the registry of the sibling folder Revision_NoGo
          is declared in the list SHARED of write_symbol_registry.py (both folders use it for the
          same object), and every declared item really occurs in both registries;
-  LL-S3  every column of every data file data/sl_*.csv and explanations/data/ex_*.csv is a
-         registered plain-text name or one of the descriptive words listed below, and every
-         data file states its content in a line "# content:";
+  LL-S3  every column of every data file data/sl_*.csv, explanations/data/ex_*.csv and
+         test2/data/t2_*.csv is a registered plain-text name or one of the descriptive words
+         listed below, and every data file states its content in a line "# content:";
   LL-S4  every document of Revision_SuperLoop (the sources docs_src/*.src.md and the manuscript
          sources docs_src/manuscript/*.tex) contains the complete table of symbols, so that
          every symbol it uses is defined in the document itself (Hard Rule 7);
@@ -39,8 +39,12 @@ the symbol text of an entry is split at the formula signs into its items (for ex
          without a definition;
   LL-S8  every name with the suffix _LL, every name of an algebra element (uL, tI, gL, hL, vI,
          aH, bS, cH, dS, rP and their variants), every coefficient c_.. and every pair matrix
-         Kch.. that occurs in a report or a data file of the folder (data/sl_* and
-         explanations/data/ex_*) is a registered plain-text name.
+         Kch.. that occurs in a report or a data file of the folder (data/sl_*,
+         explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name;
+  LL-S9  the built documents of the folder test2 (the answers to Test 2), in which the explicit
+         matrices and component equations written by the programs are inserted, satisfy the
+         rules LL-S5, LL-S6 and LL-S7 in all their formulas, the inserted ones included (the
+         inserted table of the symbols is the registry itself, checked by LL-S1 to LL-S7).
 
 Run from the folder Revision_SuperLoop:   python3 code/scripts/check_symbols.py
 Output: data/sl_symbol_checks.txt.  Exit status 0 if every check passes.
@@ -103,6 +107,8 @@ DESCRIPTIVE = {
     "species_pair": "one kind of particle, or two species with the stated total species isospin", "number_of_states": "number of two-particle states of the row",
     "antisymmetric_states": "number of those states that are antisymmetric under the exchange of the two particles' spin, isospin and species labels",
     "symmetric_states": "number of those states that are symmetric under that exchange", "allowed_in_s_wave": "yes if the Pauli principle allows the states in a relative s-wave",
+    # the data files of the folder test2
+    "E_times_dt": "the product of an energy and the time step of the lattice equations", "rk4_modulus": "the modulus of the factor by which one step of the Runge-Kutta method of fourth order multiplies an eigencomponent",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL
@@ -126,6 +132,8 @@ DROP_WITH_ARG = ("mathrm", "text", "textrm", "operatorname", "label", "ref", "eq
 def bare_letters(formula):
     """Letters of a formula that stand without the script that their Revision_SuperLoop meaning requires."""
     f = formula
+    # a line break with extra spacing, \\[2pt], is layout, not a symbol
+    f = re.sub(r"\\\\\[[0-9.]+(?:pt|em|ex|mm)\]", " ", f)
     f = re.sub(r"(?<![A-Za-z\\])(?:S?U|SO|SL|Sp|O|Spin)\(\s*\d[\d,\s]*(?:,\s*\\mathbb\s*[CR])?\)(?:\^\+)?(?:_\{\\rm v\})?", " ", f)
     f = re.sub(r"(?<![A-Za-z\\])(?:S?U|SO|SL|Spin)\(\s*\d[\d,\s]*,\s*\\mathbb\{?[CR]\}?\s*\)", " ", f)
     for cmd in DROP_WITH_ARG:
@@ -310,7 +318,8 @@ def main():
           not bad and len(nogo) > 0, " | ".join(bad[:12]))
 
     # ------------------------------------------------------------------ LL-S3
-    files = sorted(glob.glob(os.path.join(ROOT, "data", "sl_*.csv"))) + sorted(glob.glob(os.path.join(ROOT, "explanations", "data", "ex_*.csv")))
+    files = sorted(glob.glob(os.path.join(ROOT, "data", "sl_*.csv"))) + sorted(glob.glob(os.path.join(ROOT, "explanations", "data", "ex_*.csv"))) \
+        + sorted(glob.glob(os.path.join(ROOT, "test2", "data", "t2_*.csv")))
     unknown = []
     no_content = []
     cols_all = set()
@@ -324,7 +333,7 @@ def main():
             cols_all.add(c)
             if c not in owner and c not in DESCRIPTIVE:
                 unknown.append("%s[%s]" % (c, os.path.basename(path)))
-    check("LL-S3", "every column of the %d data files data/sl_*.csv and explanations/data/ex_*.csv is a registered plain-text name or a descriptive word (%d different columns), and every file states its content in a line '# content:'"
+    check("LL-S3", "every column of the %d data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (%d different columns), and every file states its content in a line '# content:'"
           % (len(files), len(cols_all)), not unknown and not no_content and len(files) > 0, " ".join(unknown + no_content))
 
     # ------------------------------------------------------------------ LL-S4
@@ -411,6 +420,8 @@ def main():
         texts.append((os.path.basename(path), open(path, encoding="utf-8").read()))
     for path in sorted(glob.glob(os.path.join(ROOT, "explanations", "data", "ex_*"))):
         texts.append(("explanations/data/" + os.path.basename(path), open(path, encoding="utf-8").read()))
+    for path in sorted(glob.glob(os.path.join(ROOT, "test2", "data", "t2_*"))):
+        texts.append(("test2/data/" + os.path.basename(path), open(path, encoding="utf-8").read()))
     unreg8 = set()
     n8 = 0
     for name, text in texts:
@@ -419,8 +430,36 @@ def main():
             tok = m.group(1)
             if tok not in owner:
                 unreg8.add("%s (%s)" % (tok, name))
-    check("LL-S8", "every one of the %d occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the %d reports and data files (data/sl_* and explanations/data/ex_*) is a registered plain-text name" % (n8, len(texts)),
+    check("LL-S8", "every one of the %d occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the %d reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name" % (n8, len(texts)),
           not unreg8 and n8 > 0, "; ".join(sorted(unreg8)[:25]))
+
+    # ------------------------------------------------------------------ LL-S9
+    built = sorted(glob.glob(os.path.join(ROOT, "test2", "*.md")))
+    hits9 = []
+    n9 = 0
+    # the inserted table of the symbols is checked as the registry itself (LL-S1 to LL-S7; the meanings of the
+    # entries taken from a master registry keep the conventions of that registry), so it is removed here
+    symtab = open(os.path.join(ROOT, "provenance", "generated", "symbols_ll.md"), encoding="utf-8").read()
+    mt = re.search(r"<!-- BEGIN symbols_ll_table -->\n(.*?)\n<!-- END symbols_ll_table -->", symtab, re.S)
+    for path in built:
+        text = open(path, encoding="utf-8").read()
+        if mt:
+            text = text.replace(mt.group(1), " ")
+        for fm in formulas(text):
+            n9 += 1
+            for pat in SUFFIXED:
+                for m in re.finditer(pat, fm):
+                    rest = re.sub(r"^\^(\{[^{}]*\}|\\[A-Za-z]+|[^{\\])", "", fm[m.end():])
+                    if not re.match(SUFFIX_RE, rest):
+                        hits9.append("S5 %s: ...%s" % (os.path.basename(path), fm[max(0, m.start() - 12):m.end() + 12]))
+            for h in bare_letters(fm):
+                hits9.append("S6 %s: %s in ...%s" % (os.path.basename(path), h, fm[:60]))
+            for st, arg in styled_symbols(fm):
+                if (st, arg) not in reg_styled:
+                    hits9.append("S7 %s: \\%s{%s}" % (os.path.basename(path), st, arg))
+    hits9 = sorted(set(hits9))
+    check("LL-S9", "the %d formulas of the %d built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7" % (n9, len(built)),
+          not hits9, "; ".join(hits9[:25]))
 
     # ------------------------------------------------------------------ report
     ok = all(r[2] for r in results)

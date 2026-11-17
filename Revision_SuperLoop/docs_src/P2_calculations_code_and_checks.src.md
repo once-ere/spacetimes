@@ -17,8 +17,9 @@ describes the programs; Sections 4 to 8 go through the computations (the algebra
 the manifolds, the superfluid, renormalizability); Section 9 describes the program of the examples of the
 explanation of the sentence on the superfluid (folder `explanations`) and gives its output; Section 10
 does the same for the program of the document on the $3+1$ manifold and the renormalizability of the
-Yukawa form (folder `explanations`); Section 11 reproduces the checks of the documents; Section 12 lists
-the data files and the figures; Section 13 gives the checksums; Section 14 is the complete table of the
+Yukawa form (folder `explanations`); Section 11 describes the programs of the answers to Test 2 (folder
+`test2`) and gives their output; Section 12 reproduces the checks of the documents; Section 13 lists the
+data files and the figures; Section 14 gives the checksums; Section 15 is the complete table of the
 symbols, which defines every symbol used here.
 
 # 2. How to reproduce everything
@@ -81,7 +82,7 @@ drawn by `code/scripts/make_figures.py` from the data files.
 
 **How to read the reports.** Each check prints one line: its label, the statement, and, after two dashes,
 the numbers that decide it. The reports write formulas in plain text, with the names listed in the last
-column of the table of symbols (Section 12). The following conventions complete that column.
+column of the table of symbols (Section 15). The following conventions complete that column.
 
 * **Elements of the algebras**: `x`, `y`, `z`, `w` are the bi-octonions $\mathbf x$, $\mathbf y$, $\mathbf z$,
   $\mathbf w$; `aH`, `bS`, `cH`, `dS`, `bS'` are the bi-quaternions $\mathbf a$, $\mathbf b$, $\mathbf c$,
@@ -638,19 +639,93 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. The checks of the documents
+# 11. Test 2, item [1]: the gauge-covariant field equations of the spinor field (folder `test2`)
 
-The script `check_symbols.py` verifies eight statements on the symbols: LL-S1, no symbol and no
+The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
+singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
+every statement is computed or checked by the Rust program `t2_fields` of the Cargo workspace `test2/rust`
+({{GEN:n_t2_rust_lines}} lines in {{GEN:n_t2_rust_files}} files; no external crate). The workspace has two members:
+
+* the library `t2core`: `c64.rs` (complex numbers), `cmat.rs` (dense complex matrices, the matrix
+  exponential by scaling and squaring, and the Hermitian eigensolver: Householder reduction to a real
+  tridiagonal matrix and the implicit QL algorithm), `rng.rs` (the generator SplitMix64 with a fixed seed),
+  `model.rs` (the super-loop operators as matrices: $M_{\rm LL}$, the frame, $\gamma^p_{\rm LL}[\mathbf f]$,
+  $\gamma^{\rm ch}_{\rm LL}$, $C_{\rm LL}$, $\alpha^j_{\rm LL}$, $\beta_{\rm LL}$, $\mathsf s_{\rm LL}$, $\mathsf S_{\rm LL}$,
+  $\mathsf L_{\rm LL}$, $T^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$, $\mathsf P_{\rm LL}$, $\psi'_{\rm LL}$, the
+  Cayley-Dickson product), `lattice.rs` (the links, the lattice operator $\mathcal H^{\rm lat}_{\rm LL}$ applied
+  to a mode, its dense matrix, the bound $B^{\rm H}_{\rm LL}$, the free lattice energy
+  $\varepsilon^{\rm lat}_{\rm LL}$) and `sym.rs` (exact linear forms with Gaussian-rational coefficients, each
+  monomial carrying a numerical value, so that a printed formula can be evaluated and compared);
+* the program `t2_fields` (`t2fields/src/main.rs`), which writes the report `test2/data/t2_fields_checks.txt`,
+  the LaTeX fragments `test2/data/t2_fragments.md` (the explicit matrices and component equations that the
+  document prints) and the data files of the two figures.
+
+Build and run, from the folder `Revision_SuperLoop`:
+
+```
+cd test2/rust && cargo build --release && ./target/release/t2_fields && cd ../..
+python3 test2/python/make_t2_figures.py
+```
+
+The formulas of the checks:
+
+* **GS-1 to GS-4 (the matrices and the gauge group).** $\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}$
+  with the canonical frame; the Clifford relations; $\mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))$
+  and the 27 relations of $\mathfrak{so}(3,1)$; the intertwining
+  $\gamma^p_{\rm LL}\mathsf s_{\rm LL}(\mathbf u)-\mathsf s_{\rm LL}(\mathbf u)\gamma^p_{\rm LL}=\sum_{p'}\mathcal V_{\rm LL}(\mathbf u)^p{}_{p'}\gamma^{p'}_{\rm LL}$;
+  $\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}$
+  and the change of representation of random Hermitian frames; the isospin generators, the antisymmetry, Lorentz
+  invariance and isovector property of $\mathsf K^\iota_{\rm LL}$, and the vanishing of
+  $\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}$ for commuting numbers. Random elements of $SL(2,\mathbb C)$
+  are made as in check Z-3 of Section 10; random elements of $SU(2)$ are the exponentials of $i$ times random
+  real combinations of the three matrices $\tau^{\rm LL}_\iota/2$.
+* **GS-5 and GS-6 (covariance and curvature).** Fields linear in the coordinates; the gauge functions
+  $\mathbf g(x_{\rm LL})$, $\mathsf U_{\rm LL}(x_{\rm LL})$, $\theta^{\rm F}_{\rm LL}(x_{\rm LL})$ are exponentials of linear
+  functions; the derivatives of the gauge functions and the outer derivatives of the commutator are central
+  differences with the steps $10^{-5}$ and $10^{-4}$; the relative tolerances are $10^{-7}$ and $10^{-6}$.
+* **GS-7 (the Weyl form)** and **GS-14 (the super-loop form):** the block structure of
+  $\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p$, the second-order operator, and the five statements on the spinor charges
+  $\mathbf b^\pm_{\rm LL}\mathbf e_4$ (right multiplication by the frame, the automorphisms, the derivations
+  $D_{\rm LL}$ and $D^{\rm v}_{\rm LL}$), evaluated for random bi-quaternions and fields.
+* **GS-8, GS-9 (the mean-field equations):** the $16\times16$ matrix $\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})$ of a
+  plane wave with constant fields; Hermiticity, particle-hole symmetry, the spectrum of the polar state, and the
+  mode sum $\sum(\psi^{\rm p}_{\rm LL})^T\mathsf K^3_{\rm LL}(\psi^{\rm h}_{\rm LL})^*=-2\Delta_{\rm LL}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$
+  over the eight positive eigenvectors, from which the gap equation follows.
+* **GS-10, GS-11, GS-13, GS-16 (the numerical method):** the dense lattice operator on a $3\times2\times4$
+  lattice with random links, potentials and pair fields (Hermiticity, particle-hole symmetry, exact gauge
+  covariance, the bound $B^{\rm H}_{\rm LL}$), the free dispersion and the doubler, the eigensolver for the
+  dimensions 7, 64 and 200, the RK4 factor, and the eigenvalues of the operator of the solvers on plane waves.
+* **GS-12 (the printed formulas):** every explicit matrix and every component equation is built from the exact
+  linear forms of `sym.rs`; each monomial carries a numerical value (a plane wave with constant fields, or random
+  numbers); the value of the printed expression is compared with the matrix computation.
+* **GS-15 (the Lorentz connection is fixed by the frame):** a frame $\tilde{\mathbf g}\mathbf f_p\tilde{\mathbf g}^\dagger$
+  of an $x_{\rm LL}$-dependent $\mathbf g$ and its connection $-(\partial_p\mathsf S_{\rm LL}(\mathbf g))\mathsf S_{\rm LL}(\mathbf g)^{-1}$;
+  covariant constancy and zero curvature by central differences, and the rank 6 of the commutator map.
+
+The data files of the figures are `test2/data/t2_dispersion_curves.csv` (columns `r_W`, `q`, `eps`, `eps_lat`),
+`test2/data/t2_dispersion_lattice.csv` (`r_W`, `q`, `eps_lat`) and `test2/data/t2_rk4_stability.csv`
+(`E_times_dt`, `rk4_modulus`); the script `test2/python/make_t2_figures.py` draws `test2/figures/fig_t2_lattice_dispersion`
+and `fig_t2_rk4_stability` (.pdf and .png). The output of the last run:
+
+```
+{{FILE:test2/data/t2_fields_checks.txt}}
+```
+
+# 12. The checks of the documents
+
+The script `check_symbols.py` verifies nine statements on the symbols: LL-S1, no symbol and no
 plain-text name is registered twice; LL-S2, the taken entries carry the meanings of the master registries,
 no new symbol coincides with a symbol of a master registry, and the symbols shared with the folder
 `Revision_NoGo` are declared and denote the same objects there; LL-S3, every column of every data file
-(`data/sl_*.csv` and `explanations/data/ex_*.csv`) is a registered name or a descriptive word; LL-S4, every document contains the complete table of symbols;
+(`data/sl_*.csv`, `explanations/data/ex_*.csv` and `test2/data/t2_*.csv`) is a registered name or a descriptive word; LL-S4, every document contains the complete table of symbols;
 LL-S5, the symbols of the superfluid $\mu_{\rm LL}$, $\Lambda_{\rm LL}$, $\Omega_{\rm LL}$, $\nu^{\rm F}_{\rm LL}$,
 $\Delta_{\rm LL}$, $\zeta_{\rm LL}$, $\varepsilon_{\rm LL}$ always carry their suffix; LL-S6, no letter that the project
 uses with another meaning occurs in a formula without the suffix LL; LL-S7, every letter in bold,
 sans-serif, calligraphic, blackboard or fraktur type in a formula is registered; LL-S8, every name with the
 suffix `_LL`, every name of an algebra element, every coefficient and every pair matrix in a report or data
-file (`data/sl_*` and `explanations/data/ex_*`) is registered. The script `check_self_contained.py` searches every document for the wordings by
+file (`data/sl_*`, `explanations/data/ex_*` and `test2/data/t2_*`) is registered; LL-S9, the built documents of
+the folder `test2`, with the explicit matrices and equations of the programs inserted, satisfy LL-S5 to LL-S7 in
+all their formulas. The script `check_self_contained.py` searches every document for the wordings by
 which a text sends its reader to another document (LL-H1). Their output:
 
 ```
@@ -661,7 +736,7 @@ which a text sends its reader to another document (LL-H1). Their output:
 {{FILE:data/sl_self_contained_checks.txt}}
 ```
 
-# 12. Data files and figures
+# 13. Data files and figures
 
 {{GEN:data_files_table}}
 
@@ -675,10 +750,12 @@ which a text sends its reader to another document (LL-H1). Their output:
 | `fig_sl_superfluid` | (a) quasi-particle energies; (b) the gap versus the coupling; (c) the weak-coupling law; (d) the minimum of $\Omega_{\rm LL}$ versus $\zeta_{\rm LL}$ | `sl_sf_dispersion.csv`, `sl_sf_gap_vs_coupling.csv`, `sl_sf_omega_zeta.csv` |
 | `fig_sl_renorm` | (a) the superficial degree of divergence; (b) the contact coupling versus the cutoff; (c) the bubble | `sl_power_counting.csv`, `sl_contact_running.csv`, `sl_yukawa_bubble.csv` |
 
-# 13. Checksums
+The data files and figures of the folders `explanations` and `test2` are listed in Sections 9, 10 and 11.
 
-SHA-256 of the data files, the figures and the programs from which the documents were built (the last
-block: the folder `explanations`):
+# 14. Checksums
+
+SHA-256 of the data files, the figures and the programs from which the documents were built (the second
+block: the folder `explanations`; the third block: the folder `test2`):
 
 ```
 {{GEN:data_sha256}}
@@ -690,6 +767,19 @@ block: the folder `explanations`):
 {{GEN:ex_sha256}}
 ```
 
-# 14. The symbols
+```
+{{SHA256:test2/rust/t2core/src/model.rs}}  test2/rust/t2core/src/model.rs
+{{SHA256:test2/rust/t2core/src/lattice.rs}}  test2/rust/t2core/src/lattice.rs
+{{SHA256:test2/rust/t2core/src/cmat.rs}}  test2/rust/t2core/src/cmat.rs
+{{SHA256:test2/rust/t2core/src/sym.rs}}  test2/rust/t2core/src/sym.rs
+{{SHA256:test2/rust/t2fields/src/main.rs}}  test2/rust/t2fields/src/main.rs
+{{SHA256:test2/python/make_t2_figures.py}}  test2/python/make_t2_figures.py
+{{SHA256:test2/data/t2_fields_checks.txt}}  test2/data/t2_fields_checks.txt
+{{SHA256:test2/data/t2_fragments.md}}  test2/data/t2_fragments.md
+{{SHA256:test2/figures/fig_t2_lattice_dispersion.png}}  test2/figures/fig_t2_lattice_dispersion.png
+{{SHA256:test2/figures/fig_t2_rk4_stability.png}}  test2/figures/fig_t2_rk4_stability.png
+```
+
+# 15. The symbols
 
 {{GEN:symbols_ll_table}}

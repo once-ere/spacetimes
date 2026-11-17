@@ -1,0 +1,7 @@
+[package]
+name = "t2core"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2 core: complex numbers, matrices, the super-loop operators, the gauge-covariant lattice Dirac-Bogoliubov operator (pure Rust)"
+
+[dependencies]

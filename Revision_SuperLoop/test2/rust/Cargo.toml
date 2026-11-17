@@ -1,0 +1,12 @@
+# Cargo workspace of PROJECT spacetimes, Revision_SuperLoop, folder test2.
+# Pure Rust: no crate is downloaded; every member uses only the standard library and t2core.
+#
+# Build everything (from this folder):   cargo build --release
+# The binaries are then in target/release/.
+[workspace]
+members = ["t2core", "t2fields"]
+resolver = "2"
+
+[profile.release]
+opt-level = 3
+debug = false

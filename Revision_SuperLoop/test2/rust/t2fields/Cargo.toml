@@ -1,0 +1,12 @@
+[package]
+name = "t2fields"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2: the gauge-covariant field equations of the self-interacting spinor field on R^(1,3)_LL - matrices, checks and the explicit equations"
+
+[[bin]]
+name = "t2_fields"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

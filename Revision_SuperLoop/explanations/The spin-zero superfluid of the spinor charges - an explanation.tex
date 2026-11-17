@@ -1935,10 +1935,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-a7f08ad3abfac08855badb197d1c818e5b163670e840dacc76c9f1bd497cadb1  explanations/figures/fig_ex_r13_bubble.pdf
-ca9deee3ab200422dbc8d0b8e88b333d6a84c5779a8a5b66382da7d71adf8222  explanations/figures/fig_ex_r13_coordinates.pdf
-7cc9977ce308777e49e1725690cb8e2c5bd9bf49f9019233e8c5d3116029b871  explanations/figures/fig_ex_r13_divergences.pdf
-84f38351c97118e63c15738abd0f8b6c4ac825ed7b3a8eaefd429ee200498a56  explanations/figures/fig_ex_r13_lorentz.pdf
+d9c38b85b085a51cfbd28f3401bd8586ae752fe3fe456dada6cd881cf0ca3d4c  explanations/figures/fig_ex_r13_bubble.pdf
+2c781ae9ce85cea11e56d6dd1ffeb4cb00ed490d96079c577eadaa8cbf0bfd8b  explanations/figures/fig_ex_r13_coordinates.pdf
+f3f7bb5a51514c7ba7c67ed6a7d17982701485b14db5612b542e13eb45391485  explanations/figures/fig_ex_r13_divergences.pdf
+29330728056aaabaa0e638f8d441bea826f8af226c2aee8b0c183aa9bf2f80c9  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -2082,7 +2082,8 @@ an isodoublet) & new & \texttt{tau\_iota} \texttt{tau\_1}
 \(\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}\); it
 acts on a Weyl, isospin or species index, as stated at each place & new
 & \texttt{eps2} \\
-\(\mathsf 1_4\) & the \(4\times4\) unit matrix & new & \\
+\(\mathsf 1_4\), \(\mathsf 1_8\) & the \(4\times4\) and the \(8\times8\)
+unit matrices & new & \\
 \end{longtable}
 
 \textbf{2 The bi-octonions and the super-loop}
@@ -2166,7 +2167,7 @@ conjugate; \(\mathbf x^\dagger=(\bar{\mathbf x})^*\) (plain text:
 \texttt{bS\textquotesingle{}bar} \texttt{cHbar} \texttt{dSbar}
 \texttt{gLbar} \texttt{hLbar} \texttt{rPbar}
 \texttt{rP\textquotesingle{}bar} \texttt{bS\^{}*}
-\texttt{bS\textquotesingle{}\^{}*} \texttt{gL\^{}dag}
+\texttt{bS\textquotesingle{}\^{}*} \texttt{gL\^{}*} \texttt{gL\^{}dag}
 \texttt{uL\^{}dag} \\
 \(N_{\rm LL}(\mathbf x)\), \(N_{\rm LL}(\mathbf x,\mathbf y)\) & the
 complex norm
@@ -2308,7 +2309,9 @@ on the spinor charges & new & \texttt{Q\_LL} \\
 Hermitian, \([T^1_{\rm LL},T^2_{\rm LL}]=iT^3_{\rm LL}\) and cyclically,
 and the isospin Casimir
 \((T_{\rm LL})^2=\sum_\iota(T^\iota_{\rm LL})^2\) & new &
-\texttt{T\_LL\^{}iota} \texttt{T\_LL\^{}3} \texttt{T\_LL\^{}2} \\
+\texttt{T\_LL\^{}iota} \texttt{T\_LL\^{}iota\textquotesingle{}}
+\texttt{T\_LL\^{}iota\textquotesingle{}\textquotesingle{}}
+\texttt{T\_LL\^{}3} \texttt{T\_LL\^{}2} \\
 \(\mathrm{Cas}_{\rm LL}\) & the Casimir operator of the rotations,
 \(\mathrm{Cas}_{\rm LL}=-\sum_jD_{\rm LL}(J^j_{\rm LL})^2\); its
 eigenvalue is 0 for spin 0, 3/4 for spin 1/2 and 2 for spin 1 & new &
@@ -2515,8 +2518,12 @@ the charge-conjugation matrix
 \(\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}\),
 \(\beta_{\rm LL}=\gamma^0_{\rm LL}\) (on Dirac \(\otimes\) isospin each
 acts as \(\otimes\sigma^{\rm LL}_0\)) & new & \texttt{gamma\_LL\^{}p}
-\texttt{gamma\_LL\^{}p\textquotesingle{}} \texttt{gamma\_ch}
-\texttt{C\_LL} \texttt{alpha\_LL\^{}j} \texttt{beta\_LL} \\
+\texttt{gamma\_LL\^{}p\textquotesingle{}} \texttt{gamma\_LL\^{}0}
+\texttt{gamma\_LL\^{}1} \texttt{gamma\_LL\^{}2} \texttt{gamma\_LL\^{}3}
+\texttt{gamma\_LL\^{}j} \texttt{gamma\_LL\^{}j\textquotesingle{}}
+\texttt{gamma\_LL\^{}j\textquotesingle{}\textquotesingle{}}
+\texttt{gamma\_ch} \texttt{C\_LL} \texttt{alpha\_LL\^{}j}
+\texttt{beta\_LL} \\
 \(\mathsf K^\iota_{\rm LL}\), \(\mathsf K'^\iota_{\rm LL}\),
 \(\mathsf K^{\rm s}_{\rm LL}\) & the \(8\times8\) pair matrices of the
 spin-zero channels: scalar
@@ -2531,7 +2538,8 @@ explanation of the folder explanations), stand for any pair matrix
 (\(8\times8\) for one field, \(16\times16\) for two species), the pair
 of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
 \(\mathsf K_{12}\) is the entry of \(\mathsf K\) in row 1 and column 2 &
-new & \texttt{Kch} \texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2}
+new & \texttt{Kch} \texttt{Kch\_iota}
+\texttt{Kch\_iota\textquotesingle{}} \texttt{Kch\_1} \texttt{Kch\_2}
 \texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
 \texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
@@ -2785,6 +2793,294 @@ no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie
 algebra (H-Lie) or a Lie superalgebra (H-gr), and the dynamical
 hypotheses on the scattering matrix (H-dyn) & new & \\
+\end{longtable}
+
+\textbf{9 Test 2: the gauge-covariant field equations of the spinor
+field and their numerical solution}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0800}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\eta^{\rm LL}_{pp'}\) & the Minkowski metric of
+\(\mathbb R^{1,3}_{\rm LL}\) in the coordinates \(x^p_{\rm LL}\):
+\(\eta^{\rm LL}_{00}=1\),
+\(\eta^{\rm LL}_{11}=\eta^{\rm LL}_{22}=\eta^{\rm LL}_{33}=-1\) and
+\(\eta^{\rm LL}_{pp'}=0\) for \(p\neq p'\); it is its own inverse and
+raises and lowers the indices \(p\), \(p'\) & new & \texttt{eta} \\
+\(x_{\rm LL}\), \(\vec x_{\rm LL}\); \(\partial_p\) & a point of
+\(\mathbb R^{1,3}_{\rm LL}\) given by its coordinates,
+\(x_{\rm LL}=(x^0_{\rm LL},x^1_{\rm LL},x^2_{\rm LL},x^3_{\rm LL})\)
+(its Hermitian bi-quaternion is
+\(x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j\)), and its
+space part \(\vec x_{\rm LL}=(x^1_{\rm LL},x^2_{\rm LL},x^3_{\rm LL})\);
+\(x^0_{\rm LL}\) is the time; \(\partial_p\) is the partial derivative
+with respect to \(x^p_{\rm LL}\) (plain text \texttt{d\_p}) & new &
+\texttt{x\_LL} \texttt{xvec} \texttt{d\_p} \\
+\(\mathbf f_p\) & the frame of \(\mathbb R^{1,3}_{\rm LL}\): four
+Hermitian bi-quaternions \(\mathbf f_0,\dots,\mathbf f_3\) with
+\(N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})=\eta^{\rm LL}_{pp'}\), possibly
+depending on the point \(x_{\rm LL}\) (a vierbein); the canonical frame
+is \(\mathbf f_0=\mathbf e_0\), \(\mathbf f_j=i\,\mathbf e_j\), for
+which \(M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p\),
+\(M_{\rm LL}(\bar{\mathbf f}_0)=\sigma^{\rm LL}_0\) and
+\(M_{\rm LL}(\bar{\mathbf f}_j)=-\sigma^{\rm LL}_j\) & new &
+\texttt{f\_p} \texttt{f\_0} \texttt{f\_j} \\
+\(\gamma^p_{\rm LL}[\mathbf f]\) & the Dirac matrices of a frame, the
+\(4\times4\) matrices with the \(2\times2\) blocks
+\(\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}\);
+they satisfy
+\(\gamma^p_{\rm LL}[\mathbf f]\gamma^{p'}_{\rm LL}[\mathbf f]+\gamma^{p'}_{\rm LL}[\mathbf f]\gamma^p_{\rm LL}[\mathbf f]=2N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})\,\mathsf 1_4\);
+for the canonical frame they are the matrices \(\gamma^p_{\rm LL}\) &
+new & \texttt{gamma\_LL\^{}p{[}f{]}} \\
+\(\tilde{\mathbf g}\) & for a unit bi-quaternion \(\mathbf g\):
+\(\tilde{\mathbf g}=(\mathbf g^\dagger)^{-1}\), which equals the complex
+conjugate \(\mathbf g^*\);
+\(M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}\);
+the change of representation of the Dirac matrices by \(\mathbf g\)
+changes the frame by
+\(\mathbf f_p\mapsto\tilde{\mathbf g}\,\mathbf f_p\,\tilde{\mathbf g}^\dagger\)
+& new & \texttt{gLt} \texttt{gLt\^{}dag} \\
+\(\mathsf S_{\rm LL}(\mathbf g)\) & the spinor matrix of the Lorentz
+transformation \(\mathbf g\): the \(4\times4\) matrix
+\(\mathsf S_{\rm LL}(\mathbf g)=\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))\)
+of \(2\times2\) blocks (on the eight components of \(\Psi_{\rm LL}\):
+\(\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0\), plain text
+\texttt{Sspin});
+\(\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}\),
+where \([\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\) is the entry in row
+\(p\) and column \(p'\) & new & \texttt{Sspin\_LL} \texttt{Sspin} \\
+\(\mathsf s_{\rm LL}(\mathbf u)\) & a Lorentz generator \(\mathbf u\) of
+\(\mathfrak l_{\rm LL}\) acting on the Dirac spinor: the \(4\times4\)
+matrix
+\(\mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))\),
+the derivative of \(\mathsf S_{\rm LL}\) at the unit;
+\(\mathsf s_{\rm LL}(J^j_{\rm LL})=\tfrac12\gamma^{j'}_{\rm LL}\gamma^{j''}_{\rm LL}\)
+for cyclic \((j,j',j'')\) and
+\(\mathsf s_{\rm LL}(K^j_{\rm LL})=\tfrac12\gamma^0_{\rm LL}\gamma^j_{\rm LL}\)
+& new & \texttt{sgen\_LL} \\
+\(\mathbf b^+_{\rm LL}\), \(\mathbf b^-_{\rm LL}\) & the two spinor
+charges \(\mathbf b^\pm_{\rm LL}\mathbf e_4\) of which the Dirac
+isodoublet is made: the upper block (chirality \(-1\)) of
+\(\Psi_{\rm LL}\) is \(\psi'_{\rm LL}(\mathbf b^-_{\rm LL})\) and the
+lower block (chirality \(+1\)) is
+\(\psi'_{\rm LL}(\mathbf b^+_{\rm LL})\), where
+\(\psi'_{\rm LL}(\mathbf y)=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf y)^T\)
+for a bi-quaternion \(\mathbf y\);
+\(\Psi_{\rm LL}[\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}]\) is
+\(\Psi_{\rm LL}\) written with them (plain text
+\texttt{Psi(bSm,\ bSp)}); under the gauge group
+\(\mathbf b^+_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\,\mathbf v\,\mathbf b^+_{\rm LL}\,\bar{\mathbf g}\),
+the automorphism \(\varphi^{\rm LL}_{\mathbf g,\mathbf v}\) on the
+spinor charge times a phase, and
+\(\mathbf b^-_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\,\mathbf v\,\mathbf b^-_{\rm LL}\,\mathbf g^\dagger\),
+its complex conjugate & new & \texttt{bSp} \texttt{bSm} \\
+\(\theta^{\rm F}_{\rm LL}\) & the phase of a local transformation of the
+fermion number,
+\(\Psi_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\Psi_{\rm LL}\), a
+real function of \(x_{\rm LL}\) & new & \texttt{thF} \\
+\(\mathsf U_{\rm LL}\),
+\(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\) & a local isospin
+rotation: a matrix \(\mathsf U_{\rm LL}\) of \(SU(2)\), a function of
+\(x_{\rm LL}\), that acts on the isospin index of \(\Psi_{\rm LL}\)
+(\(\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)\) for a unit real quaternion
+\(\mathbf v\)); \(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\) is
+the real orthogonal \(3\times3\) matrix with
+\(\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota'\iota}\tau^{\rm LL}_{\iota'}\),
+the rotation of an isospin vector & new & \texttt{U\_LL}
+\texttt{U\_LL\^{}dag} \texttt{Rv} \\
+\(\mathcal U_{\rm LL}\) & a local gauge transformation of
+\(\Psi_{\rm LL}\) by the gauge group
+\(SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\):
+\(\mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}\),
+with \(\mathbf g\), \(\mathsf U_{\rm LL}\) and
+\(\theta^{\rm F}_{\rm LL}\) functions of \(x_{\rm LL}\) & new &
+\texttt{Ucal} \\
+\(A^\iota_{{\rm LL},p}\), \(A^{\rm F}_{{\rm LL},p}\);
+\(g^{\rm v}_{\rm LL}\), \(g^{\rm F}_{\rm LL}\) & the gauge potentials,
+real fields on \(\mathbb R^{1,3}_{\rm LL}\): \(A^\iota_{{\rm LL},p}\) of
+the isospin group \(SU(2)_{\rm v}\) (three fields for each direction
+\(p\)) and \(A^{\rm F}_{{\rm LL},p}\) of the fermion number
+\(U(1)^{\rm F}_{\rm LL}\); \(g^{\rm v}_{\rm LL}\) and
+\(g^{\rm F}_{\rm LL}\) are their couplings (real numbers); a constant
+\(g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\) acts like a chemical
+potential & new & \texttt{Av\_LL} \texttt{Av\_LL\^{}iota}
+\texttt{Av\_LL\^{}iota\textquotesingle{}}
+\texttt{Av\_LL\^{}iota\textquotesingle{}\textquotesingle{}}
+\texttt{AF\_LL} \texttt{g\_v} \texttt{g\_F} \\
+\(\mathsf a_{{\rm LL},p}\) & the isospin potential as a Hermitian
+\(2\times2\) matrix on the isospin index,
+\(\mathsf a_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2\)
+& new & \texttt{atau\_LL} \\
+\(\mathbf t^{\rm A}_{{\rm LL},p}\) & the isospin potential as a real
+imaginary quaternion,
+\(\mathbf t^{\rm A}_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\mathbf e_\iota/2\)
+(an element of \({\rm Im}\,\mathbb H\), like \(\mathbf t\)), with
+\(M_{\rm LL}(\mathbf t^{\rm A}_{{\rm LL},p})=-i\,\mathsf a_{{\rm LL},p}\);
+it acts on the spinor charges through the isospin derivation
+\(D^{\rm v}_{\rm LL}\) & new & \texttt{tA} \texttt{tA\_p} \\
+\(\mathbf u^\omega_{{\rm LL},p}\); \(\omega^j_{{\rm LL},p}\),
+\(\varpi^j_{{\rm LL},p}\) & the Lorentz connection: for each direction
+\(p\) an element of \(\mathfrak l_{\rm LL}\),
+\(\mathbf u^\omega_{{\rm LL},p}=\sum_j(\omega^j_{{\rm LL},p}J^j_{\rm LL}+\varpi^j_{{\rm LL},p}K^j_{\rm LL})\),
+with the real rotation components \(\omega^j_{{\rm LL},p}\) and the real
+boost components \(\varpi^j_{{\rm LL},p}\);
+\(\mathbf u^{\omega*}_{{\rm LL},p}\) is its complex conjugate (plain
+text \texttt{uLw\_p\^{}*}) & new & \texttt{uLw} \texttt{uLw\_p}
+\texttt{uLw\^{}*} \texttt{omega\_LL} \texttt{varpi\_LL} \\
+\(\Gamma^{\rm LL}_p\) & the spin connection, the \(8\times8\) matrix
+\(\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0\)
+(it acts on the Dirac index and leaves the isospin index alone) & new &
+\texttt{Gamma\_LL} \\
+\(\mathsf A_{{\rm LL},p}\) & the gauge matrix of the internal symmetries
+on the eight components of \(\Psi_{\rm LL}\),
+\(\mathsf A_{{\rm LL},p}=g^{\rm v}_{\rm LL}\sum_\iota A^\iota_{{\rm LL},p}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathsf 1_8\),
+Hermitian (\(\mathsf 1_8\) because the fermion number of
+\(\Psi_{\rm LL}\) is 1) & new & \texttt{Acal} \texttt{Acal\_0}
+\texttt{Acal\_j} \texttt{Acal\_p} \\
+\(\nabla^{\rm LL}_p\), \(\nabla^{{\rm LL}*}_p\) & the gauge-covariant
+derivative of \(\Psi_{\rm LL}\), the \(8\times8\) matrix of differential
+operators
+\(\nabla^{\rm LL}_p=\partial_p+\Gamma^{\rm LL}_p-i\,\mathsf A_{{\rm LL},p}\),
+and the covariant derivative of a field that transforms like
+\(\Psi^*_{\rm LL}\) (the hole component),
+\(\nabla^{{\rm LL}*}_p=\partial_p+(\Gamma^{\rm LL}_p)^*+i\,(\mathsf A_{{\rm LL},p})^*\)
+& new & \texttt{nabla\_LL} \texttt{nabla*\_LL} \\
+\(\mathbf D_{\rm LL}\) & the bi-quaternion of covariant derivatives,
+\(\mathbf D_{\rm LL}=\sum_p\mathbf f_p\nabla^{\rm LL}_p\) (bold upright
+like every bi-quaternion of this folder; it is not the Lorentz
+derivation \(D_{\rm LL}(\mathbf u)\), which is italic and has an
+argument), with
+\(\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p=\begin{pmatrix}0&M_{\rm LL}(\mathbf D_{\rm LL})\\M_{\rm LL}(\bar{\mathbf D}_{\rm LL})&0\end{pmatrix}\)
+& new & \texttt{Dbq\_LL} \\
+\(\mathsf F^\iota_{{\rm LL},pp'}\),
+\(\mathsf F^{\rm F}_{{\rm LL},pp'}\), \(\mathsf R^{\rm LL}_{pp'}\) & the
+field strengths and the curvature:
+\(\mathsf F^\iota_{{\rm LL},pp'}=\partial_pA^\iota_{{\rm LL},p'}-\partial_{p'}A^\iota_{{\rm LL},p}+g^{\rm v}_{\rm LL}\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}A^{\iota''}_{{\rm LL},p'}\),
+\(\mathsf F^{\rm F}_{{\rm LL},pp'}=\partial_pA^{\rm F}_{{\rm LL},p'}-\partial_{p'}A^{\rm F}_{{\rm LL},p}\),
+and the \(8\times8\) curvature of the spin connection,
+\(\mathsf R^{\rm LL}_{pp'}=\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+\Gamma^{\rm LL}_p\Gamma^{\rm LL}_{p'}-\Gamma^{\rm LL}_{p'}\Gamma^{\rm LL}_p\);
+the commutator of two covariant derivatives is
+\(\mathsf R^{\rm LL}_{pp'}-i\,g^{\rm v}_{\rm LL}\sum_\iota\mathsf F^\iota_{{\rm LL},pp'}T^\iota_{\rm LL}-i\,g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},pp'}\)
+& new & \texttt{Fv\_LL} \texttt{FF\_LL} \texttt{Rc\_LL} \\
+\(\Psi_{{\rm LL},1},\dots,\Psi_{{\rm LL},8}\); \(\Psi^\pm_{\rm LL}\);
+\(\bar\Psi_{\rm LL}\) & the eight components of \(\Psi_{\rm LL}\):
+components 1 and 2 are the first Dirac component with isospin up and
+down, 3 and 4 the second, 5 and 6 the third, 7 and 8 the fourth;
+\(\Psi^-_{\rm LL}\) (components 1 to 4, chirality \(-1\)) and
+\(\Psi^+_{\rm LL}\) (components 5 to 8, chirality \(+1\)) are the two
+Weyl isodoublets;
+\(\bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)\)
+is the Dirac adjoint & new & \texttt{Psi\_LL\^{}+}
+\texttt{Psi\_LL\^{}-} \\
+\(\psi^{\rm p}_{\rm LL}\), \(\psi^{\rm h}_{\rm LL}\) & the particle and
+the hole component (eight complex functions each, in the order of the
+components of \(\Psi_{\rm LL}\)) of a mode of the mean-field equations:
+\(\psi^{\rm p}_{\rm LL}\) transforms like \(\Psi_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) like \(\Psi^*_{\rm LL}\); a component is
+written \(\psi^{\rm p}_{{\rm LL},k}\), and a numbered mode
+\((\psi^{\rm p}_{{\rm LL},n},\psi^{\rm h}_{{\rm LL},n})\) & new &
+\texttt{psi\_p} \texttt{psi\_h} \\
+\(\mathcal H^{\rm DB}_{\rm LL}\), \(h^\nabla_{\rm LL}\) & the
+Dirac-Bogoliubov-de Gennes operator of the mean-field equations: the
+\(2\times2\) block matrix (blocks of \(8\times8\)) with the upper left
+block
+\(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}\),
+the upper right block \(\mathsf P_{\rm LL}\), the lower left block
+\(\mathsf P_{\rm LL}^\dagger\) and the lower right block
+\(-(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL})^*\),
+with the covariant Dirac Hamiltonian
+\(h^\nabla_{\rm LL}=-i\sum_j\alpha^j_{\rm LL}\nabla^{\rm LL}_j+\beta_{\rm LL}m_{\rm LL}\)
+(\(\alpha^j_{\rm LL}\) and \(\beta_{\rm LL}\) acting on the Dirac
+index); on a plane wave \(\exp(i\sum_jq^j_{\rm LL}x^j_{\rm LL})\) with
+constant fields it is a \(16\times16\) matrix
+\(\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})\) (plain text
+\texttt{H\_DB(q)}), which without gauge fields equals
+\(\mathsf H_{\rm LL}(\vec q_{\rm LL})\) & new & \texttt{H\_DB}
+\texttt{h\_nabla} \\
+\(\hat a^{\rm qp}_{{\rm LL},n}\) & the annihilation operator of the
+quasi-particle of a numbered mode of the mean-field equations (constant
+in time):
+\(\Psi_{\rm LL}=\sum_n(\psi^{\rm p}_{{\rm LL},n}\hat a^{\rm qp}_{{\rm LL},n}+(\psi^{\rm h}_{{\rm LL},n})^*(\hat a^{\rm qp}_{{\rm LL},n})^\dagger)\);
+the quasi-particle vacuum is annihilated by every
+\(\hat a^{\rm qp}_{{\rm LL},n}\) & new & \texttt{a\_qp} \\
+\(E^{\rm qp}_{{\rm LL},n}\) & the energy of a numbered mode of the
+mean-field equations in a stationary state, an eigenvalue of
+\(\mathcal H^{\rm DB}_{\rm LL}\); the mean-field ground state is the
+vacuum of the quasi-particles of the modes with
+\(E^{\rm qp}_{{\rm LL},n}>0\) & new & \texttt{E\_qp} \\
+\(\Pi^\iota_{\rm LL}(x_{\rm LL})\) & the local pair operator
+\(\Pi^\iota_{\rm LL}(x_{\rm LL})=\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(x_{\rm LL})\),
+which annihilates two spinor charges at the point \(x_{\rm LL}\); its
+integral over space, with the plane waves normalized in a box, is the
+operator \(\Pi^\iota_{\rm LL}\) of the momenta & new &
+\texttt{Pi\_iota(x)} \\
+\(\mathcal J^{{\rm F},p}_{\rm LL}\), \(\mathcal J^{\iota,p}_{\rm LL}\) &
+the currents that are the sources of the gauge fields,
+\(\mathcal J^{{\rm F},p}_{\rm LL}=g^{\rm F}_{\rm LL}\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}\)
+and
+\(\mathcal J^{\iota,p}_{\rm LL}=g^{\rm v}_{\rm LL}\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}\)
+(\(\gamma^p_{\rm LL}\) acting on the Dirac index) & new &
+\texttt{JF\_LL} \texttt{Jv\_LL} \\
+\(\mathcal L^\nabla_{\rm LL}\) & the gauge-invariant Lagrangian density
+of Test 2: the contact form \(\mathcal L^{\rm c}_{\rm LL}\) with the
+covariant derivative \(\nabla^{\rm LL}_p\) in place of \(\partial_p\),
+plus the Lagrangian density of the gauge fields & new &
+\texttt{Lagr\_nabla} \\
+\(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
+\(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
+directions), the time step and the coefficient of the Wilson term of the
+lattice equations & new & \texttt{dx} \texttt{dt} \texttt{r\_W} \\
+\(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
+\(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
+sites in the directions \(x^1_{\rm LL}\), \(x^2_{\rm LL}\),
+\(x^3_{\rm LL}\); a lattice site
+\(\vec s_{\rm LL}=(s^1_{\rm LL},s^2_{\rm LL},s^3_{\rm LL})\), whose
+integer coordinates \(s^j_{\rm LL}\) run from 0 to the number of sites
+of their direction minus 1, at the point
+\(x^j_{\rm LL}=s^j_{\rm LL}\ell^{\rm x}_{\rm LL}\); and the step to the
+next site in the direction \(j\), the unit vector
+\(\vec\delta^j_{\rm LL}\) & new & \texttt{nx} \texttt{ny} \texttt{nz}
+\texttt{site} \texttt{delta\_j} \\
+\(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\) & the link matrix
+of the lattice from the site \(\vec s_{\rm LL}\) to the site
+\(\vec s_{\rm LL}+\vec\delta^j_{\rm LL}\), the \(2\times2\) isospin
+matrix
+\(\exp(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0))\)
+of the potentials at the site: the parallel transport of the isospin and
+of the phase over one lattice step & new & \texttt{Ulink}
+\texttt{Ulink\_j} \\
+\(\mathcal H^{\rm lat}_{\rm LL}\), \(\varepsilon^{\rm lat}_{\rm LL}\),
+\(B^{\rm H}_{\rm LL}\) & the lattice form of
+\(\mathcal H^{\rm DB}_{\rm LL}\) (a matrix of 16 rows per site), the
+energy of a free particle on the lattice, and the bound on the largest
+eigenvalue magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) from which the
+time step is chosen & new & \texttt{H\_lat} \texttt{eps\_lat}
+\texttt{Hbound} \\
+\(\mathsf G^{\rm site}_{\rm LL}\), \(\mathsf X^{\rm ph}_{\rm LL}\) & the
+gauge transformation of the lattice equations, which acts at each site
+as \(\exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}\) on the isospin
+index of the particle component and as its complex conjugate on the hole
+component; and the exchange of the particle and the hole component,
+\(\mathsf X^{\rm ph}_{\rm LL}=\begin{pmatrix}0&\mathsf 1_8\\\mathsf 1_8&0\end{pmatrix}\),
+with which the particle-hole symmetry reads
+\(\mathsf X^{\rm ph}_{\rm LL}(\mathcal H^{\rm DB}_{\rm LL})^*\mathsf X^{\rm ph}_{\rm LL}=-\mathcal H^{\rm DB}_{\rm LL}\)
+& new & \texttt{Gsite} \texttt{Xph} \\
 \end{longtable}
 
 \end{document}

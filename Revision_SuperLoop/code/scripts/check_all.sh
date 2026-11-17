@@ -8,13 +8,15 @@
 #      explanations (explanations/code/explain-rs: the examples of the explanation of the
 #      spin-zero superfluid) and its three figures, which read two data files of superloop; and
 #      the program explanations/code/r13-rs (the 3+1 manifold and the renormalizability of the
-#      Yukawa form) and its four figures;
+#      Yukawa form) and its four figures; then the programs of the folder test2 (the answers to
+#      Test 2): t2_fields (the gauge-covariant field equations of the spinor field) and the figures
+#      of item [1] (test2/python/make_t2_figures.py);
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
 #      because the reports of the checks, which the documents print, count the built documents
 #      that the first pass creates; after the second pass every printed report is current;
-#   3. the verdicts: every report in data/ and explanations/data/ must pass, no built document may
+#   3. the verdicts: every report in data/, explanations/data/ and test2/data/ must pass, no built document may
 #      contain an unresolved
 #      placeholder, every report printed in a document must be the current one, no formula may end
 #      directly before a digit, every document must exist as .md, .tex and .pdf, and no document
@@ -41,6 +43,9 @@ run "make_explain_figures.py (explanations)" python3 explanations/code/make_expl
 r13() { (cd explanations && cargo run --release --quiet --manifest-path code/r13-rs/Cargo.toml); }
 run "r13_yukawa (explanations)" r13
 run "make_r13_figures.py (explanations)" python3 explanations/code/make_r13_figures.py
+t2fields() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_fields); }
+run "t2_fields (test2)" t2fields
+run "make_t2_figures.py (test2)" python3 test2/python/make_t2_figures.py
 
 # 2. documents, two passes
 for pass in 1 2; do
@@ -55,7 +60,7 @@ for pass in 1 2; do
 done
 
 # 3. verdicts
-for f in data/sl_*_checks.txt explanations/data/ex_*_checks.txt; do
+for f in data/sl_*_checks.txt explanations/data/ex_*_checks.txt test2/data/t2_*_checks.txt; do
     if grep -q '^\[FAIL\]' "$f"; then line FAIL "$f (contains a failed check)"; fail=1; continue; fi
     c=$(grep -m1 -oE '[0-9]+ of [0-9]+ checks passed' "$f" || true)
     if [ -n "$c" ]; then
@@ -65,8 +70,8 @@ for f in data/sl_*_checks.txt explanations/data/ex_*_checks.txt; do
     fi
 done
 
-if grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex ./README.md ./README.tex 2>/dev/null | grep -q .; then
-    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex ./README.md ./README.tex 2>/dev/null | tr '\n' ' ')"; fail=1
+if grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex test2/*.md test2/*.tex ./README.md ./README.tex 2>/dev/null | grep -q .; then
+    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex test2/*.md test2/*.tex ./README.md ./README.tex 2>/dev/null | tr '\n' ' ')"; fail=1
 else
     line PASS "no unresolved placeholder in the built documents"
 fi
@@ -93,7 +98,7 @@ else line PASS "every report printed in a document is the current report"; fi
 bad=$(python3 - <<'PY'
 import glob, re
 out = []
-for f in sorted(glob.glob("*.md") + glob.glob("provenance/*.md") + glob.glob("manuscript/*.md") + glob.glob("explanations/*.md")):
+for f in sorted(glob.glob("*.md") + glob.glob("provenance/*.md") + glob.glob("manuscript/*.md") + glob.glob("explanations/*.md") + glob.glob("test2/*.md")):
     text = open(f, encoding="utf-8").read()
     text = re.sub(r"(?s)```.*?```", " ", text)
     text = re.sub(r"`[^`\n]*`", " ", text)
@@ -114,7 +119,8 @@ missing=""
 for b in README provenance/P0_task_rules_deviations_decisions provenance/P1_symbols_LL provenance/P2_calculations_code_and_checks \
          "manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative Counterexamples to the No-Go Theorems and a Spin-Zero Spinor Superfluid" \
          "explanations/The spin-zero superfluid of the spinor charges - an explanation" \
-         "explanations/The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form"; do
+         "explanations/The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" \
+         "test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state"; do
     for ext in md tex pdf; do
         [ -s "$b.$ext" ] || missing="$missing $b.$ext"
     done
@@ -123,7 +129,8 @@ if [ -n "$missing" ]; then line FAIL "missing document versions:$missing"; fail=
 else line PASS "every document exists as .md, .tex and .pdf"; fi
 
 tools=$(grep -n -i -E '\b(claude|anthropic|chatgpt|openai|gemini|copilot|language model|AI[- ]generated|artificial intelligence)\b' \
-        manuscript/*.tex manuscript/*.md provenance/*.md provenance/*.tex explanations/*.md explanations/*.tex README.md README.tex docs_src/*.src.md docs_src/manuscript/*.tex 2>/dev/null | head -5)
+        manuscript/*.tex manuscript/*.md provenance/*.md provenance/*.tex explanations/*.md explanations/*.tex README.md README.tex docs_src/*.src.md docs_src/manuscript/*.tex \
+        test2/*.md test2/*.tex test2/rust/*/src/*.rs test2/rust/Cargo.toml test2/rust/*/Cargo.toml $(ls test2/python/*.py 2>/dev/null) 2>/dev/null | head -5)
 if [ -n "$tools" ]; then line FAIL "a document names a tool used to prepare it: $tools"; fail=1
 else line PASS "no document names a tool used to prepare it"; fi
 

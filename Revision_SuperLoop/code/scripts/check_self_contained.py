@@ -6,8 +6,8 @@ another manuscript, document, provenance or symbol file?
 Hard Rule 7 of the author: every equation, symbol and definition that a document uses stands
 in that very document; the reader is never referred to another one.  This script reads the
 sources of all documents of the folder (docs_src/*.src.md and docs_src/manuscript/*.tex) and
-the documents built from them (in the folder itself, in provenance/, manuscript/ and
-explanations/), and searches them for the wordings by which a text sends its reader elsewhere.
+the documents built from them (in the folder itself, in provenance/, manuscript/,
+explanations/ and test2/), and searches them for the wordings by which a text sends its reader elsewhere.
 It reports every hit with its file and line.
 
 What is searched for (case is ignored): "see the document/manuscript/provenance/registry ...",
@@ -54,7 +54,7 @@ ALLOWED_IN = [
 def documents():
     srcs = sorted(glob.glob(os.path.join(ROOT, "docs_src", "*.src.md"))) + sorted(glob.glob(os.path.join(ROOT, "docs_src", "manuscript", "*.tex")))
     built = sorted(glob.glob(os.path.join(ROOT, "*.md"))) + sorted(glob.glob(os.path.join(ROOT, "provenance", "*.md"))) + sorted(glob.glob(os.path.join(ROOT, "manuscript", "*.md"))) \
-        + sorted(glob.glob(os.path.join(ROOT, "explanations", "*.md")))
+        + sorted(glob.glob(os.path.join(ROOT, "explanations", "*.md"))) + sorted(glob.glob(os.path.join(ROOT, "test2", "*.md")))
     return srcs + built
 
 

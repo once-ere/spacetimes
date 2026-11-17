@@ -120,6 +120,12 @@ def main():
             a2, b2 = (int(x) for x in one(r"(\d+) of (\d+) checks passed", open(r13rep, encoding="utf-8").read(), "ex_r13_checks.txt"))
             extra.append("| `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | %d of %d |" % (a2, b2))
             add("nchecks_r13", "%d" % b2)
+        # the reports of the folder test2 (the answers to Test 2); the program is named in the first line of each
+        for rep in sorted(glob.glob(os.path.join(ROOT, "test2", "data", "t2_*_checks.txt"))):
+            txt2 = open(rep, encoding="utf-8").read()
+            a3, b3 = (int(x) for x in one(r"(\d+) of (\d+) checks passed", txt2, os.path.basename(rep)))
+            prog = one(r"program `([^`]+)`", txt2.splitlines()[0], os.path.basename(rep))[0]
+            extra.append("| `test2/data/%s` | `%s` | %d of %d |" % (os.path.basename(rep), prog, a3, b3))
         add("checks_table_all", "\n".join(table + extra))
     add("checks_rows_tex", "\n".join(crow))
     add("nchecks_rust", "%d" % rust)
@@ -250,6 +256,9 @@ def main():
     exdata = os.path.join(ROOT, "explanations", "data")
     if os.path.exists(os.path.join(exdata, "ex_states.csv")):
         explanation_fragments(exdata)
+
+    # ------------------------------------------------------------------ the folder test2 (Test 2)
+    test2_fragments()
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
@@ -409,6 +418,27 @@ def r13_fragments(exdata, here):
                                                     tex_num(r["dIbub_dlnLambda"]), tex_num(r["Iren"]), "—" if ch == "-" else tex_num(ch)))
     add("ex_r13_bubble_table", "\n".join(t))
     add("n_r13_lines", "%d" % sum(1 for _ in open(os.path.join(here, "code", "r13-rs", "src", "main.rs"), encoding="utf-8")))
+
+
+def test2_fragments():
+    """The explicit matrices and component equations of Test 2, which the program t2_fields (folder test2/rust)
+    writes into test2/data/t2_fragments.md, are taken over unchanged; the numbers of checks of the reports of
+    the folder test2 and the size of its Rust code are added."""
+    t2 = os.path.join(ROOT, "test2", "data")
+    path = os.path.join(t2, "t2_fragments.md")
+    if not os.path.exists(path):
+        return
+    text = open(path, encoding="utf-8").read()
+    for m in re.finditer(r"<!-- BEGIN (\S+) -->\n(.*?)\n<!-- END \1 -->", text, re.S):
+        add(m.group(1), m.group(2))
+    for rep in sorted(glob.glob(os.path.join(t2, "t2_*_checks.txt"))):
+        a, b = (int(x) for x in one(r"(\d+) of (\d+) checks passed", open(rep, encoding="utf-8").read(), os.path.basename(rep)))
+        if a != b:
+            print("WARNING: %s: %d of %d checks pass" % (os.path.basename(rep), a, b))
+        add("nchecks_" + os.path.basename(rep)[:-len("_checks.txt")], "%d" % b)
+    rs = sorted(glob.glob(os.path.join(ROOT, "test2", "rust", "*", "src", "*.rs")))
+    add("n_t2_rust_lines", "%d" % sum(sum(1 for _ in open(q, encoding="utf-8")) for q in rs))
+    add("n_t2_rust_files", "%d" % len(rs))
 
 
 def rows_at(path):

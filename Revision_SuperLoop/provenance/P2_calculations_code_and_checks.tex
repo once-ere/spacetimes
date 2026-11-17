@@ -175,10 +175,12 @@ Section 9 describes the program of the examples of the explanation of
 the sentence on the superfluid (folder \texttt{explanations}) and gives
 its output; Section 10 does the same for the program of the document on
 the \(3+1\) manifold and the renormalizability of the Yukawa form
-(folder \texttt{explanations}); Section 11 reproduces the checks of the
-documents; Section 12 lists the data files and the figures; Section 13
-gives the checksums; Section 14 is the complete table of the symbols,
-which defines every symbol used here.
+(folder \texttt{explanations}); Section 11 describes the programs of the
+answers to Test 2 (folder \texttt{test2}) and gives their output;
+Section 12 reproduces the checks of the documents; Section 13 lists the
+data files and the figures; Section 14 gives the checksums; Section 15
+is the complete table of the symbols, which defines every symbol used
+here.
 
 \hypertarget{how-to-reproduce-everything}{%
 \section{2. How to reproduce
@@ -290,7 +292,7 @@ algorithm over the rationals, Section 5). The figures are drawn by
 \textbf{How to read the reports.} Each check prints one line: its label,
 the statement, and, after two dashes, the numbers that decide it. The
 reports write formulas in plain text, with the names listed in the last
-column of the table of symbols (Section 12). The following conventions
+column of the table of symbols (Section 15). The following conventions
 complete that column.
 
 \begin{itemize}
@@ -1591,58 +1593,215 @@ Revision_SuperLoop, folder explanations, program `r13_yukawa`: the 3+1 manifold 
 [PASS] Z-8  the one-loop bubble of the Yukawa form, Ibub(pE) = int_(|kE| < Lambda) d^4kE/(2 pi)^4 [kE.(kE+pE) + m^2]/((kE^2 + m^2)((kE+pE)^2 + m^2)) (pE = 1, m = 0.5, Lambda = 4 to 2048; the angular average of the integrand at pE = 0 equals 1/(kE^2 + m^2) within 1e-14): Ibub(0) equals the closed form (Lambda^2 - m^2 ln(1 + Lambda^2/m^2))/(16 pi^2) (relative tolerance 1e-10) and grows like Lambda^2 (ratio at 2048/1024 within 1e-3 of 4; absorbed by the mass counterterm of the pair field); the cutoff derivative of the momentum-dependent part, computed on the sphere |kE| = Lambda, tends to -pE^2/(16 pi^2) (relative tolerance 1e-5 at Lambda = 2048; a logarithmic divergence, absorbed by the wave-function counterterm); the renormalized bubble Iren = Ibub(pE) - Ibub(0) - pE^2 dIbub/d(pE^2) at pE = 0 converges as Lambda grows: power counting guarantees a remainder falling at least like Lambda^-2 (a factor 4 per doubling); here the term of order pE^4 of the angular average of the integrand is pE^4 m^4/(kE^2 + m^2)^5 (verified at kE = 1, 2, 4 with pE = 0.05, relative tolerance 1e-2), so each doubling divides the change by about 64 (each of the first three ratios between 56 and 72), and from Lambda = 32 on Iren is constant within the rounding errors (relative changes below 1e-8): after the two counterterms nothing depends on the cutoff  -- Ibub(0) ratio at 2048/1024: 4.000011; slope at Lambda = 2048: -6.332574e-3 (target -6.332574e-3); changes of Iren per doubling from Lambda = 4: 3.208453e-8, 4.968769e-10, 7.745994e-12, 1.200301e-13 (ratios 64.572, 64.146, 64.534); Iren at 2048: 1.560666e-3; largest relative deviation from it for Lambda >= 32: 1.1e-9; pE^4 term verified: true
 \end{verbatim}
 
+\hypertarget{test-2-item-1-the-gauge-covariant-field-equations-of-the-spinor-field-folder-test2}{%
+\section{\texorpdfstring{11. Test 2, item {[}1{]}: the gauge-covariant
+field equations of the spinor field (folder
+\texttt{test2})}{11. Test 2, item {[}1{]}: the gauge-covariant field equations of the spinor field (folder test2)}}\label{test-2-item-1-the-gauge-covariant-field-equations-of-the-spinor-field-folder-test2}}
+
+The document
+\texttt{test2/Test\ 2\ -\ the\ gauge-covariant\ spinor\ field\ on\ the\ 3+1\ manifold\ and\ the\ superfluid\ boson\ singlet\ state}
+answers the items of Test 2. For item {[}1{]} every matrix, every
+printed component equation and every statement is computed or checked by
+the Rust program \texttt{t2\_fields} of the Cargo workspace
+\texttt{test2/rust} (3216 lines in 8 files; no external crate). The
+workspace has two members:
+
+\begin{itemize}
+\tightlist
+\item
+  the library \texttt{t2core}: \texttt{c64.rs} (complex numbers),
+  \texttt{cmat.rs} (dense complex matrices, the matrix exponential by
+  scaling and squaring, and the Hermitian eigensolver: Householder
+  reduction to a real tridiagonal matrix and the implicit QL algorithm),
+  \texttt{rng.rs} (the generator SplitMix64 with a fixed seed),
+  \texttt{model.rs} (the super-loop operators as matrices:
+  \(M_{\rm LL}\), the frame, \(\gamma^p_{\rm LL}[\mathbf f]\),
+  \(\gamma^{\rm ch}_{\rm LL}\), \(C_{\rm LL}\), \(\alpha^j_{\rm LL}\),
+  \(\beta_{\rm LL}\), \(\mathsf s_{\rm LL}\), \(\mathsf S_{\rm LL}\),
+  \(\mathsf L_{\rm LL}\), \(T^\iota_{\rm LL}\),
+  \(\mathsf K^\iota_{\rm LL}\), \(\mathsf P_{\rm LL}\),
+  \(\psi'_{\rm LL}\), the Cayley-Dickson product), \texttt{lattice.rs}
+  (the links, the lattice operator \(\mathcal H^{\rm lat}_{\rm LL}\)
+  applied to a mode, its dense matrix, the bound \(B^{\rm H}_{\rm LL}\),
+  the free lattice energy \(\varepsilon^{\rm lat}_{\rm LL}\)) and
+  \texttt{sym.rs} (exact linear forms with Gaussian-rational
+  coefficients, each monomial carrying a numerical value, so that a
+  printed formula can be evaluated and compared);
+\item
+  the program \texttt{t2\_fields} (\texttt{t2fields/src/main.rs}), which
+  writes the report \texttt{test2/data/t2\_fields\_checks.txt}, the
+  LaTeX fragments \texttt{test2/data/t2\_fragments.md} (the explicit
+  matrices and component equations that the document prints) and the
+  data files of the two figures.
+\end{itemize}
+
+Build and run, from the folder \texttt{Revision\_SuperLoop}:
+
+\begin{verbatim}
+cd test2/rust && cargo build --release && ./target/release/t2_fields && cd ../..
+python3 test2/python/make_t2_figures.py
+\end{verbatim}
+
+The formulas of the checks:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{GS-1 to GS-4 (the matrices and the gauge group).}
+  \(\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}\)
+  with the canonical frame; the Clifford relations;
+  \(\mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))\)
+  and the 27 relations of \(\mathfrak{so}(3,1)\); the intertwining
+  \(\gamma^p_{\rm LL}\mathsf s_{\rm LL}(\mathbf u)-\mathsf s_{\rm LL}(\mathbf u)\gamma^p_{\rm LL}=\sum_{p'}\mathcal V_{\rm LL}(\mathbf u)^p{}_{p'}\gamma^{p'}_{\rm LL}\);
+  \(\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}\)
+  and the change of representation of random Hermitian frames; the
+  isospin generators, the antisymmetry, Lorentz invariance and isovector
+  property of \(\mathsf K^\iota_{\rm LL}\), and the vanishing of
+  \(\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}\) for commuting
+  numbers. Random elements of \(SL(2,\mathbb C)\) are made as in check
+  Z-3 of Section 10; random elements of \(SU(2)\) are the exponentials
+  of \(i\) times random real combinations of the three matrices
+  \(\tau^{\rm LL}_\iota/2\).
+\item
+  \textbf{GS-5 and GS-6 (covariance and curvature).} Fields linear in
+  the coordinates; the gauge functions \(\mathbf g(x_{\rm LL})\),
+  \(\mathsf U_{\rm LL}(x_{\rm LL})\),
+  \(\theta^{\rm F}_{\rm LL}(x_{\rm LL})\) are exponentials of linear
+  functions; the derivatives of the gauge functions and the outer
+  derivatives of the commutator are central differences with the steps
+  \(10^{-5}\) and \(10^{-4}\); the relative tolerances are \(10^{-7}\)
+  and \(10^{-6}\).
+\item
+  \textbf{GS-7 (the Weyl form)} and \textbf{GS-14 (the super-loop
+  form):} the block structure of
+  \(\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p\), the second-order
+  operator, and the five statements on the spinor charges
+  \(\mathbf b^\pm_{\rm LL}\mathbf e_4\) (right multiplication by the
+  frame, the automorphisms, the derivations \(D_{\rm LL}\) and
+  \(D^{\rm v}_{\rm LL}\)), evaluated for random bi-quaternions and
+  fields.
+\item
+  \textbf{GS-8, GS-9 (the mean-field equations):} the \(16\times16\)
+  matrix \(\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})\) of a plane
+  wave with constant fields; Hermiticity, particle-hole symmetry, the
+  spectrum of the polar state, and the mode sum
+  \(\sum(\psi^{\rm p}_{\rm LL})^T\mathsf K^3_{\rm LL}(\psi^{\rm h}_{\rm LL})^*=-2\Delta_{\rm LL}(1/E^+_{\rm LL}+1/E^-_{\rm LL})\)
+  over the eight positive eigenvectors, from which the gap equation
+  follows.
+\item
+  \textbf{GS-10, GS-11, GS-13, GS-16 (the numerical method):} the dense
+  lattice operator on a \(3\times2\times4\) lattice with random links,
+  potentials and pair fields (Hermiticity, particle-hole symmetry, exact
+  gauge covariance, the bound \(B^{\rm H}_{\rm LL}\)), the free
+  dispersion and the doubler, the eigensolver for the dimensions 7, 64
+  and 200, the RK4 factor, and the eigenvalues of the operator of the
+  solvers on plane waves.
+\item
+  \textbf{GS-12 (the printed formulas):} every explicit matrix and every
+  component equation is built from the exact linear forms of
+  \texttt{sym.rs}; each monomial carries a numerical value (a plane wave
+  with constant fields, or random numbers); the value of the printed
+  expression is compared with the matrix computation.
+\item
+  \textbf{GS-15 (the Lorentz connection is fixed by the frame):} a frame
+  \(\tilde{\mathbf g}\mathbf f_p\tilde{\mathbf g}^\dagger\) of an
+  \(x_{\rm LL}\)-dependent \(\mathbf g\) and its connection
+  \(-(\partial_p\mathsf S_{\rm LL}(\mathbf g))\mathsf S_{\rm LL}(\mathbf g)^{-1}\);
+  covariant constancy and zero curvature by central differences, and the
+  rank 6 of the commutator map.
+\end{itemize}
+
+The data files of the figures are
+\texttt{test2/data/t2\_dispersion\_curves.csv} (columns \texttt{r\_W},
+\texttt{q}, \texttt{eps}, \texttt{eps\_lat}),
+\texttt{test2/data/t2\_dispersion\_lattice.csv} (\texttt{r\_W},
+\texttt{q}, \texttt{eps\_lat}) and
+\texttt{test2/data/t2\_rk4\_stability.csv} (\texttt{E\_times\_dt},
+\texttt{rk4\_modulus}); the script
+\texttt{test2/python/make\_t2\_figures.py} draws
+\texttt{test2/figures/fig\_t2\_lattice\_dispersion} and
+\texttt{fig\_t2\_rk4\_stability} (.pdf and .png). The output of the last
+run:
+
+\begin{verbatim}
+Revision_SuperLoop, folder test2, program `t2_fields`: the gauge-covariant field equations of the self-interacting spinor field Psi_LL on R^(1,3)_LL (Test 2, item 1)
+16 of 16 checks passed
+
+[PASS] GS-1  the Dirac matrices are built from the frame of R^(1,3)_LL: gamma_LL^p = [[0, M_LL(f_p)], [M_LL(conj f_p), 0]] with the canonical frame f_0 = e0, f_j = i e_j (M_LL(f_p) = sigma_p; M_LL(conj f_0) = sigma_0, M_LL(conj f_j) = -sigma_j); they satisfy {gamma_LL^p, gamma_LL^p'} = 2 diag(1,-1,-1,-1)[p][p'] times the 4 x 4 unit matrix; gamma_ch = i gamma_LL^0 gamma_LL^1 gamma_LL^2 gamma_LL^3 = diag(-1,-1,1,1), C_LL = i gamma_LL^2 gamma_LL^0 = diag(eps2, -eps2), alpha_LL^j = gamma_LL^0 gamma_LL^j = diag(-sigma_j, sigma_j), and eps2 = i sigma_2 = M_LL(-e2) (tolerance 1e-12)  -- largest deviation of the Clifford relations 0.0e0
+[PASS] GS-2  the Lorentz generators of the super-loop act on the Dirac spinor as sgen_LL(uL) = diag(-M_LL(uL)^dag, M_LL(uL)): sgen_LL(J_LL^j) = diag(-i sigma_j/2, -i sigma_j/2) = gamma_LL^j' gamma_LL^j''/2 ((j, j', j'') cyclic) and sgen_LL(K_LL^j) = diag(-sigma_j/2, sigma_j/2) = gamma_LL^0 gamma_LL^j/2 (the lower block carries the spinor charges); they satisfy the 27 relations of so(3,1), and [gamma_LL^p, sgen_LL(uL)] = sum_p' V_LL(uL)[p][p'] gamma_LL^p' for the six generators (24 relations: the Dirac matrices intertwine the spinor action with the vector action of the super-loop; tolerance 1e-12)  -- 27 commutation relations, 24 intertwining relations
+[PASS] GS-3  the gauge group SL(2,C) as a change of representation: for 200 random unit bi-quaternions gL (random M_LL(gL) in SL(2,C) as in Z-3) the spinor matrix Sspin_LL(gL) = diag((M_LL(gL)^dag)^-1, M_LL(gL)) satisfies Sspin_LL(gL)^-1 gamma_LL^p Sspin_LL(gL) = sum_p' Lmat(gL)[p][p'] gamma_LL^p' (the Dirac equation is Lorentz covariant), and for random Hermitian frames f_p: Sspin_LL(gL) gamma_LL^p[f] Sspin_LL(gL)^-1 = gamma_LL^p[gLt f gLt^dag] with the unit bi-quaternion gLt = (gL^dag)^-1, M_LL(gLt) = (M_LL(gL)^dag)^-1 (Lord's change of representation: the frame matrices M_LL(f_p) change with M_LL(gLt), the upper block of the spinor with M_LL(gLt) and the lower block with (M_LL(gLt)^dag)^-1 = M_LL(gL)); tolerance 1e-10  -- largest deviations 5.8e-14 and 6.6e-14
+[PASS] GS-4  isospin T_LL^iota = (4 x 4 unit matrix) (x) tau_iota/2 obeys [T_LL^iota, T_LL^iota'] = i sum_iota'' eps3 T_LL^iota'' and commutes with the Lorentz generators; Q_LL = T_LL^3; the pair matrices Kch_iota = (C_LL gamma_ch) (x) (eps2 tau_iota) are antisymmetric, Lorentz invariant (Sspin^T Kch_iota Sspin = Kch_iota for Sspin = Sspin_LL(gL) (x) (2 x 2 unit matrix), 100 random gL), an isospin vector ((1 (x) U_LL)^T Kch_iota (1 (x) U_LL) = sum_iota' Rv(U_LL)[iota][iota'] Kch_iota' with the rotation Rv(U_LL) of U_LL tau U_LL^dag, 100 random U_LL in SU(2)) and carry the fermion number 2; for a c-number (commuting) spinor, Psi_LL^T Kch_iota Psi_LL = 0 identically (100 random spinors): the pairing self-interaction has no classical (c-number) limit (tolerance 1e-10)  -- largest deviation 5.2e-15; largest |Psi^T Kch_iota Psi| of a c-number spinor 3.0e-16
+[PASS] GS-5  gauge covariance of the covariant derivative nabla_LL_p = d_p + Gamma_LL_p - i Acal_p, Acal_p = g_v Av_LL^iota_p T_LL^iota + g_F AF_LL_p (Gamma_LL_p = sgen_LL(uLw_p) (x) (2 x 2 unit matrix) with the Lorentz connection uLw_p = sum_j (omega_LL^j_p J_LL^j + varpi_LL^j_p K_LL^j), an element of l_LL for each p): for fields linear in the coordinates, a spinor of three plane waves and a gauge transformation Ucal(x) = exp(i thF(x)) Sspin_LL(gL(x)) (x) U_LL(x) with an x-dependent unit bi-quaternion gL(x), U_LL(x) in SU(2) and phase thF(x), the transformed fields AF_LL' = AF_LL + (d thF)/g_F, atau_LL' = U_LL atau_LL U_LL^-1 - (i/g_v) (d U_LL) U_LL^-1 for the 2 x 2 matrix atau_LL_p = sum_iota Av_LL^iota_p tau_iota/2 (Hermitian again), Gamma_LL' = Sspin_LL(gL) Gamma_LL Sspin_LL(gL)^-1 - (d Sspin_LL(gL)) Sspin_LL(gL)^-1 give nabla_LL_p' (Ucal Psi_LL) = Ucal nabla_LL_p Psi_LL at 20 random points for p = 0..3 (derivatives of the gauge functions by central differences with the step 1e-5; relative tolerance 1e-7)  -- largest relative deviation 1.4e-10
+[PASS] GS-6  the commutator of two covariant derivatives is the curvature of the gauge group: [nabla_LL_p, nabla_LL_p'] Psi_LL = (Rc_LL_pp' - i g_v Fv_LL^iota_pp' T_LL^iota - i g_F FF_LL_pp') Psi_LL with Rc_LL_pp' = d_p Gamma_LL_p' - d_p' Gamma_LL_p + [Gamma_LL_p, Gamma_LL_p'], Fv_LL^iota_pp' = d_p Av_LL^iota_p' - d_p' Av_LL^iota_p + g_v sum eps3 Av_LL^iota'_p Av_LL^iota''_p', FF_LL_pp' = d_p AF_LL_p' - d_p' AF_LL_p (fields linear in the coordinates; 20 random points, all 12 ordered pairs p != p'; the outer derivative by central differences with the step 1e-4; relative tolerance 1e-6)  -- largest relative deviation 2.1e-9
+[PASS] GS-7  the super-loop form of the Dirac operator: gamma_LL^p nabla_LL_p has the Weyl blocks M_LL(Dbq_LL) = sum_p (M_LL(f_p) (x) (2 x 2 unit matrix)) nabla_LL_p (acting on the lower block, the spinor charges) and M_LL(conj Dbq_LL) = sum_p (M_LL(conj f_p) (x) (2 x 2 unit matrix)) nabla_LL_p (acting on the upper block), and no diagonal blocks; (gamma_LL^p nabla_LL_p)^2 = diag(1,-1,-1,-1)[p][p'] nabla_LL_p nabla_LL_p' + (1/4) [gamma_LL^p, gamma_LL^p'] [nabla_LL_p, nabla_LL_p']; for a free plane wave M_LL(Dbq_LL) M_LL(conj Dbq_LL) = -N_LL(k) sigma_0 (50 random momenta and constant non-abelian gauge fields; tolerance 1e-12)  -- largest deviation 1.6e-15
+[PASS] GS-8  the Dirac-Bogoliubov-de Gennes operator H_DB on a plane wave exp(i q.x) with constant gauge fields, H_DB(q) = [[h(q - Acal) - Acal_0 - mu, Ppair], [Ppair^dag, -(h(-q - Acal) - Acal_0 - mu)^*]] (h(k) = sum_j alpha_LL^j k_j + beta_LL m for a matrix-valued k_j, here k_j = q_j - Acal_j and k_j = -q_j - Acal_j, Acal_j = g_v Av_LL^iota_j T_LL^iota + g_F AF_LL_j, Acal_0 likewise, Ppair = sum_iota d_iota Kch_iota^dag), is Hermitian and particle-hole symmetric, Xph conj(H_DB(q)) Xph = -H_DB(-q) with Xph the exchange of the particle and hole blocks (50 random momenta, gauge fields and order parameters); for the polar order parameter dvec = (0, 0, Delta) without gauge fields its spectrum is +-E^(+-) (E^(+-) = ((eps +- mu)^2 + Delta^2)^(1/2)), each four times (30 random momenta; m = 0.4, mu = 0.3; tolerance 1e-10)  -- largest deviations 0.0e0 and 6.7e-15
+[PASS] GS-9  the self-consistency of the mean field: for the polar order parameter dvec = (0, 0, Delta) the sum over the eight positive-energy eigenvectors (psi_p, psi_h) of H_DB(q) (without gauge fields H_DB(q) = H_BdG(q)) of psi_p^T Kch_3 conj(psi_h) equals -2 Delta (1/E^+ + 1/E^-) at every momentum (30 random momenta); hence d_iota = -(G/2) <Psi_LL^T Kch_iota Psi_LL>, with the expectation value the sum over the positive modes integrated with d^3q/(2 pi)^3, is the gap equation 1/G = int d^3q/(2 pi)^3 (1/E^+ + 1/E^-) of the manuscript: the mode-sum form of the mean-field equations used by the solvers has the right normalization (tolerance 1e-10)  -- largest deviation 1.4e-15
+[PASS] GS-10  the lattice Dirac-Bogoliubov-de Gennes operator H_lat (covariant central differences with the links Ulink_j = exp(-i dx (g_v Av_LL^iota_j tau_iota/2 + g_F AF_LL_j)), Wilson term r_W, Dirichlet or periodic boundaries): on a 3 x 2 x 4 lattice (dx = 0.7, r_W = 1, periodic in x and z, Dirichlet in y) with random links, potentials and order parameters it is Hermitian, particle-hole symmetric (Xph conj(H_lat) Xph = -H_lat), and exactly gauge covariant: H_lat[Ulink', Acal_0', dvec'] = Gsite H_lat[Ulink, Acal_0, dvec] Gsite^dag for random site transformations Gsite = diag(exp(i thF) U_LL, conj(exp(i thF) U_LL)) with Ulink_j(site) -> Gsite(site) Ulink_j(site) Gsite(site + delta_j)^dag, Acal_0 -> Gsite Acal_0 Gsite^dag, dvec -> exp(2 i thF) Rv(U_LL) dvec; on a free periodic one-dimensional lattice (12 sites, dx = 0.5) the spectrum is +-eps_lat(q), eps_lat^2 = sum_j sin^2(q_j dx)/dx^2 + (m + (r_W/dx) sum_j (1 - cos q_j dx))^2, each eight times; the Wilson term lifts the doubler at q = pi/dx to m + 2 r_W/dx; the spectral radius of H_lat stays below the bound Hbound used for the time step, Hbound = (number of active directions) (1 + 2 r_W)/dx + m + |mu| + max ||Acal_0|| + max sum_iota |d_iota| (tolerance 1e-10)  -- Hermiticity 0.0e0, particle-hole 0.0e0, gauge covariance 1.8e-13, dispersion 1.4e-14; spectral radius 8.4349 <= bound 17.5474
+[PASS] GS-11  the Hermitian eigensolver of t2core (Householder reduction to a real tridiagonal matrix and the implicit QL algorithm), used by the solvers for the self-consistent ground state: for random Hermitian matrices of the dimensions 7, 64 and 200 the eigenvectors are orthonormal and reproduce the matrix, V diag(E) V^dag = H (relative tolerance 1e-11)  -- largest relative residual 5.8e-14
+[PASS] GS-12  the printed formulas agree with the matrices that they describe: the explicit entries of Ppair (symbolic d_iota), of the blocks of sgen_LL(uLw_p) and of the 8 x 8 matrix Gamma_LL_p (symbolic omega_LL^j_p, varpi_LL^j_p), the expansions of the covariant derivatives (nabla_LL_j psi_p)_k, (nabla*_LL_j psi_h)_k and (nabla_LL_j Psi_LL)_k with the spin connection and the gauge potentials, the sixteen component equations of the Dirac-Bogoliubov-de Gennes system (with Gamma_LL_0 and Acal_0), the three pair operators Pi_iota(x) and the eight component equations of the exact operator equation; each is evaluated for numbers assigned to its symbols (a plane wave exp(i q.x) with constant fields for the first ones; independent random numbers for the components, the conjugate components and the pair operators of the exact equation) and compared with the 8 x 8 and 16 x 16 matrix computation (tolerance 1e-12)  -- largest deviations 0.0e0, 4.0e-16, 3.4e-16, 0.0e0, 5.0e-16
+[PASS] GS-13  time stepping: one step of the classical Runge-Kutta method (RK4) multiplies the component of an eigenvector with the energy E by 1 - i x - x^2/2 + i x^3/6 + x^4/24 with x = E dt; its modulus is at most 1 for |x| <= 2 sqrt(2) and exceeds 1 beyond (x = 2.9); with the bound Hbound of GS-10 the time step dt <= 2.5/Hbound is therefore stable, and the modulus decreases per step by about x^6/144 (its square is 1 - x^6/72 + x^8/576; at x = 0.1 the decrease is 6.9e-9)  -- modulus at x = 2.5: 0.508186; at 2.9: 1.193063; loss at x = 0.1: 6.9e-9
+[PASS] GS-14  the super-loop form of the Dirac isodoublet and of its field equations; psi'_LL(y) = eps2^-1 M_LL(y)^T is the Weyl isodoublet of a spinor charge y e4 (rows: Weyl index, columns: isospin): (a) M_LL(x) psi'_LL(y) = psi'_LL(y conj x) for all bi-quaternions x and y, and the bi-octonion product (the Cayley-Dickson rule of the folder) gives (y e4) x = (y conj x) e4 = R_x (y e4): a 2 x 2 frame matrix acting on a Weyl isodoublet is the right multiplication of the spinor charge by a bi-quaternion (50 random pairs); (b) writing Psi_LL = Psi(bSm, bSp) with the upper block psi'_LL(bSm) and the lower block psi'_LL(bSp) of two spinor charges bSm e4 and bSp e4, the Dirac matrices of a Hermitian frame act as gamma_LL^p[f] Psi(bSm, bSp) = Psi(bSp conj f_p, bSm f_p) (the canonical frame and 19 random Hermitian frames); (c) the gauge transformation exp(i thF) Sspin_LL(gL) (x) M_LL(vI) maps Psi(bSm, bSp) to exp(i thF) Psi(vI bSm gL^dag, vI bSp gLbar): on bSp e4 it is the automorphism varphi of the super-loop, on bSm e4 its complex conjugate, and gLt = (gL^dag)^-1 is the complex conjugate gL^* of gL (50 random gL in SL(2,C), unit real quaternions vI and phases thF); (d) the covariant derivative is nabla_LL_p Psi(bSm, bSp) = Psi(nabla_p bSm, nabla_p bSp) with nabla_p (bSp e4) = d_p (bSp e4) + D_LL(uLw_p)(bSp e4) + g_v Dv_LL(tA_p)(bSp e4) - i g_F AF_LL_p bSp e4 (tA_p = sum_iota Av_LL^iota_p e_iota/2), and the same for bSm with the complex conjugate uLw_p^* in place of uLw_p: the gauge fields act through the derivations of B_LL (30 random points with random spinor charges, derivatives and fields); (e) hence gamma_LL^p nabla_LL_p Psi(bSm, bSp) = Psi(sum_p (nabla_p bSp) conj f_p, sum_p (nabla_p bSm) f_p): the Dirac operator is the right multiplication by the frame, sum_p R_(f_p) nabla_p on bSp e4 and sum_p R_(conj f_p) nabla_p on bSm e4 (canonical frame; tolerance 1e-12)  -- largest deviations 3.2e-16, 4.1e-16, 3.1e-15, 8.8e-16, 2.1e-15
+[PASS] GS-15  the Lorentz connection is fixed by the frame: for an x-dependent Lorentz transformation gL(x) with M_LL(gL(x)) = exp(sum_p x_LL^p M_LL(uL_p) + M_LL(uL)) (five random Lorentz generators), the frame f_p[x] = gLt(x) f_p gLt(x)^dag, whose Dirac matrices are gamma_LL^p'[f] = Sspin_LL(gL) gamma_LL^p' Sspin_LL(gL)^-1 (GS-3), and the connection Gamma_LL_p = -(d_p Sspin_LL(gL)) Sspin_LL(gL)^-1, the gauge transform of the canonical gauge (canonical frame, Gamma_LL_p = 0), satisfy at 20 random points: Gamma_LL_p = sgen_LL(uL) for an element uL of l_LL (block diagonal, upper block = -(lower block)^dag, lower block traceless), the Dirac matrices are covariantly constant, d_p gamma_LL^p'[f] + [Gamma_LL_p, gamma_LL^p'[f]] = 0, and the curvature Rc_LL_pp' vanishes (derivatives by central differences with the step 1e-4; tolerance 1e-6); the 24 commutators [sgen_LL(J_LL^j), gamma_LL^p'] and [sgen_LL(K_LL^j), gamma_LL^p'] have the rank 6 over the real numbers (the smallest eigenvalue of their Gram matrix exceeds 1e-6), so that covariant constancy determines the connection uniquely from the frame: on the flat manifold the Lorentz connection is not an independent field, and in the canonical frame it is zero  -- largest deviations 1.0e-9, 3.6e-8, 8.0e-9; smallest Gram eigenvalue 8.000
+[PASS] GS-16  the lattice operator of the solvers on plane waves: on a periodic chain of 24 sites along x_LL^1 (dx = 0.5, m = 0.4, mu = 0, no gauge fields, no pairing) the operator H_lat, applied by the routine of the solvers to exp(i q x_LL^1) times any of the 16 unit vectors, gives again a plane wave of the same momentum, and the 16 x 16 matrix of these images has the eigenvalues -eps_lat(q) (eightfold) and +eps_lat(q) (eightfold) at all 24 allowed momenta q = 2 pi k/(24 dx), for the Wilson coefficients r_W = 0 and r_W = 1 (tolerance 1e-12); these are the points of Figure 1, whose curves are the formula eps_lat  -- largest deviation 1.4e-14
+\end{verbatim}
+
 \hypertarget{the-checks-of-the-documents}{%
-\section{11. The checks of the
+\section{12. The checks of the
 documents}\label{the-checks-of-the-documents}}
 
-The script \texttt{check\_symbols.py} verifies eight statements on the
+The script \texttt{check\_symbols.py} verifies nine statements on the
 symbols: LL-S1, no symbol and no plain-text name is registered twice;
 LL-S2, the taken entries carry the meanings of the master registries, no
 new symbol coincides with a symbol of a master registry, and the symbols
 shared with the folder \texttt{Revision\_NoGo} are declared and denote
 the same objects there; LL-S3, every column of every data file
-(\texttt{data/sl\_*.csv} and \texttt{explanations/data/ex\_*.csv}) is a
-registered name or a descriptive word; LL-S4, every document contains
-the complete table of symbols; LL-S5, the symbols of the superfluid
-\(\mu_{\rm LL}\), \(\Lambda_{\rm LL}\), \(\Omega_{\rm LL}\),
-\(\nu^{\rm F}_{\rm LL}\), \(\Delta_{\rm LL}\), \(\zeta_{\rm LL}\),
-\(\varepsilon_{\rm LL}\) always carry their suffix; LL-S6, no letter
-that the project uses with another meaning occurs in a formula without
-the suffix LL; LL-S7, every letter in bold, sans-serif, calligraphic,
-blackboard or fraktur type in a formula is registered; LL-S8, every name
-with the suffix \texttt{\_LL}, every name of an algebra element, every
-coefficient and every pair matrix in a report or data file
-(\texttt{data/sl\_*} and \texttt{explanations/data/ex\_*}) is
-registered. The script \texttt{check\_self\_contained.py} searches every
-document for the wordings by which a text sends its reader to another
-document (LL-H1). Their output:
+(\texttt{data/sl\_*.csv}, \texttt{explanations/data/ex\_*.csv} and
+\texttt{test2/data/t2\_*.csv}) is a registered name or a descriptive
+word; LL-S4, every document contains the complete table of symbols;
+LL-S5, the symbols of the superfluid \(\mu_{\rm LL}\),
+\(\Lambda_{\rm LL}\), \(\Omega_{\rm LL}\), \(\nu^{\rm F}_{\rm LL}\),
+\(\Delta_{\rm LL}\), \(\zeta_{\rm LL}\), \(\varepsilon_{\rm LL}\) always
+carry their suffix; LL-S6, no letter that the project uses with another
+meaning occurs in a formula without the suffix LL; LL-S7, every letter
+in bold, sans-serif, calligraphic, blackboard or fraktur type in a
+formula is registered; LL-S8, every name with the suffix \texttt{\_LL},
+every name of an algebra element, every coefficient and every pair
+matrix in a report or data file (\texttt{data/sl\_*},
+\texttt{explanations/data/ex\_*} and \texttt{test2/data/t2\_*}) is
+registered; LL-S9, the built documents of the folder \texttt{test2},
+with the explicit matrices and equations of the programs inserted,
+satisfy LL-S5 to LL-S7 in all their formulas. The script
+\texttt{check\_self\_contained.py} searches every document for the
+wordings by which a text sends its reader to another document (LL-H1).
+Their output:
 
 \begin{verbatim}
 PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenance/symbols_ll.csv)
-8 of 8 checks passed
+9 of 9 checks passed
 
-[PASS] LL-S1  every symbol text is registered once (87 entries) and every plain-text name of the programs, figures and data files belongs to one entry (310 names)
-[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 203 items of the 85 new entries is an item of either master registry (503 items compared); the 22 items that the registry of Revision_NoGo also contains are exactly the 22 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\otimes$, $i$, $p$, ${}^T$)
-[PASS] LL-S3  every column of the 23 data files data/sl_*.csv and explanations/data/ex_*.csv is a registered plain-text name or a descriptive word (120 different columns), and every file states its content in a line '# content:'
-[PASS] LL-S4  each of the 6 documents of Revision_SuperLoop and the manuscript contains the complete table of the 87 registered symbols, so that every symbol it uses is defined in the document itself
-[PASS] LL-S5  in the 3098 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
-[PASS] LL-S6  in the 3620 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
-[PASS] LL-S7  every one of the 3010 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (47 registered styled letters)
-[PASS] LL-S8  every one of the 3158 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 32 reports and data files (data/sl_* and explanations/data/ex_*) is a registered plain-text name
+[PASS] LL-S1  every symbol text is registered once (120 entries) and every plain-text name of the programs, figures and data files belongs to one entry (394 names)
+[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 263 items of the 118 new entries is an item of either master registry (503 items compared); the 23 items that the registry of Revision_NoGo also contains are exactly the 23 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\mathsf 1_8$, $\otimes$, $i$, $p$, ${}^T$)
+[PASS] LL-S3  every column of the 26 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (125 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S4  each of the 7 documents of Revision_SuperLoop and the manuscript contains the complete table of the 120 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] LL-S5  in the 3738 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 4502 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 3832 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (60 registered styled letters)
+[PASS] LL-S8  every one of the 3429 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 37 reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name
+[PASS] LL-S9  the 639 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
 \end{verbatim}
 
 \begin{verbatim}
 PROJECT spacetimes, Revision_SuperLoop: does any document send its reader to another document? (Hard Rule 7)
 1 of 1 checks passed
 
-[PASS] LL-H1  none of the 28 documents and document sources of Revision_SuperLoop refers its reader to another document for an equation, a symbol or a definition
+[PASS] LL-H1  none of the 30 documents and document sources of Revision_SuperLoop refers its reader to another document for an equation, a symbol or a definition
 
 Allowed exceptions:
   README: a provenance document named as a place to read (the README is the list of contents of the folder: naming its documents is its purpose)
 \end{verbatim}
 
 \hypertarget{data-files-and-figures}{%
-\section{12. Data files and figures}\label{data-files-and-figures}}
+\section{13. Data files and figures}\label{data-files-and-figures}}
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
@@ -1775,11 +1934,15 @@ the contact coupling versus the cutoff; (c) the bubble &
 \texttt{sl\_yukawa\_bubble.csv} \\
 \end{longtable}
 
+The data files and figures of the folders \texttt{explanations} and
+\texttt{test2} are listed in Sections 9, 10 and 11.
+
 \hypertarget{checksums}{%
-\section{13. Checksums}\label{checksums}}
+\section{14. Checksums}\label{checksums}}
 
 SHA-256 of the data files, the figures and the programs from which the
-documents were built (the last block: the folder \texttt{explanations}):
+documents were built (the second block: the folder
+\texttt{explanations}; the third block: the folder \texttt{test2}):
 
 \begin{verbatim}
 280787dfd4c8336cb63a314a332559cdb91ab4de4aacfa9f3547ab748d1d9a22  sl_algebra_checks.txt
@@ -1823,15 +1986,15 @@ b0097ad508f55fe34ce5d8ad72c4ac7a3d7cf7d919661ca1422d1dbc6b747d88  code/superloop
 f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/assemble_docs.py
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
 465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
-864b86dfce7e615b250577659cda8226f4e1bea4e843e01fe05c75565943f353  code/scripts/check_self_contained.py
-c2ab05157dbe7984d93e48c6de4a7d06a0ed80285c92d1df1d2278cf8cb8d235  code/scripts/check_symbols.py
+4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
+894af702924318f3250064cb2ab62c967ffe11245f1b86a069d20b77e2f08294  code/scripts/check_symbols.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
-ac90dfe506b51836429d6a76c798e846cdc8646293675015af0e49baab506303  code/scripts/write_doc_tables.py
-d97abaf12df2b47dd67550b98d865d5e08b8b8a95d9199a5666c78c708dca02d  code/scripts/write_symbol_registry.py
-783183f2a23f1fb50b3b430d6243f2f214e6e40d7b1e4ec971a59ad0a9f161f9  code/scripts/build_docs.sh
-3252f0a1d90606c4d1255d917ee7d5856541f44f8513b89cdd7ea010dbd67d6e  code/scripts/check_all.sh
+9b0462d8c61a715384a6ff68e0a31d5ebb3e28b345bb3dceab3d7a5127f999ca  code/scripts/write_doc_tables.py
+cda8b7a6a2fba11fdcb77272c33b431e394e567befb4597f4f047a9c0dce2934  code/scripts/write_symbol_registry.py
+e6f3025b7f959977a1075cda0e0c34f51e208d9e28db50bc5d4fffcef189a6ab  code/scripts/build_docs.sh
+b3a0e28fd569ea270cd776a5e9c5960833b1d123b2f424c5c23ee6a9e2e4cda5  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 \end{verbatim}
 
@@ -1850,10 +2013,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-a7f08ad3abfac08855badb197d1c818e5b163670e840dacc76c9f1bd497cadb1  explanations/figures/fig_ex_r13_bubble.pdf
-ca9deee3ab200422dbc8d0b8e88b333d6a84c5779a8a5b66382da7d71adf8222  explanations/figures/fig_ex_r13_coordinates.pdf
-7cc9977ce308777e49e1725690cb8e2c5bd9bf49f9019233e8c5d3116029b871  explanations/figures/fig_ex_r13_divergences.pdf
-84f38351c97118e63c15738abd0f8b6c4ac825ed7b3a8eaefd429ee200498a56  explanations/figures/fig_ex_r13_lorentz.pdf
+d9c38b85b085a51cfbd28f3401bd8586ae752fe3fe456dada6cd881cf0ca3d4c  explanations/figures/fig_ex_r13_bubble.pdf
+2c781ae9ce85cea11e56d6dd1ffeb4cb00ed490d96079c577eadaa8cbf0bfd8b  explanations/figures/fig_ex_r13_coordinates.pdf
+f3f7bb5a51514c7ba7c67ed6a7d17982701485b14db5612b542e13eb45391485  explanations/figures/fig_ex_r13_divergences.pdf
+29330728056aaabaa0e638f8d441bea826f8af226c2aee8b0c183aa9bf2f80c9  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1862,8 +2025,21 @@ d8a9fe9245e9b5b4d9eff79eca49fbd9d81ceaafd966face6a9b7ea47aa35da8  explanations/c
 d8a96a63b09fba62c1ef5900a690cd5993fc8138068aeee7f870fd69148c2952  explanations/code/make_r13_figures.py
 \end{verbatim}
 
+\begin{verbatim}
+aecd9e01a40e211133cc8ff2c4697ec62e0370b46e0d7ea2d31fb19613a9eeb4  test2/rust/t2core/src/model.rs
+fa54684430bc9e238070618057e5ca132a008c06ad5c6dfbd8277788e75252ce  test2/rust/t2core/src/lattice.rs
+d0e23cdf8b762d96bbf94d22029ffa64344517c1233e1bbfe9fa90857814a39e  test2/rust/t2core/src/cmat.rs
+790b8758ce9bf919ffd93eb7f3afdaf66b4b4abb640a1fbf205146feeae6a8c7  test2/rust/t2core/src/sym.rs
+d7ed53e0635b63e4f84d23a7280bf8d3581086a6a64dd3df7cb6632f49063939  test2/rust/t2fields/src/main.rs
+8edc1c8e30e52ecb37a63b22dc573647029243f6fffeb796fd7c9d54fccd24b9  test2/python/make_t2_figures.py
+ed94a97c9b448f13d603154b574177c0c505323a470f53ea8001aa199aa3edb3  test2/data/t2_fields_checks.txt
+8c4df29029536ec9c488a68fa2cc2d5551a177f1911c22a461a7aa19f635e1ae  test2/data/t2_fragments.md
+e19e88b3b92407c7f0e1c7135ec5f26816be6bca9b43a394e341a08b53794479  test2/figures/fig_t2_lattice_dispersion.png
+8e35b75efdfaa22fde3428779690fe11cecc6f7a48bc4693ceafb31bbcbdfc20  test2/figures/fig_t2_rk4_stability.png
+\end{verbatim}
+
 \hypertarget{the-symbols}{%
-\section{14. The symbols}\label{the-symbols}}
+\section{15. The symbols}\label{the-symbols}}
 
 \textbf{1 Indices, conventions and number sets}
 
@@ -1959,7 +2135,8 @@ an isodoublet) & new & \texttt{tau\_iota} \texttt{tau\_1}
 \(\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}\); it
 acts on a Weyl, isospin or species index, as stated at each place & new
 & \texttt{eps2} \\
-\(\mathsf 1_4\) & the \(4\times4\) unit matrix & new & \\
+\(\mathsf 1_4\), \(\mathsf 1_8\) & the \(4\times4\) and the \(8\times8\)
+unit matrices & new & \\
 \end{longtable}
 
 \textbf{2 The bi-octonions and the super-loop}
@@ -2043,7 +2220,7 @@ conjugate; \(\mathbf x^\dagger=(\bar{\mathbf x})^*\) (plain text:
 \texttt{bS\textquotesingle{}bar} \texttt{cHbar} \texttt{dSbar}
 \texttt{gLbar} \texttt{hLbar} \texttt{rPbar}
 \texttt{rP\textquotesingle{}bar} \texttt{bS\^{}*}
-\texttt{bS\textquotesingle{}\^{}*} \texttt{gL\^{}dag}
+\texttt{bS\textquotesingle{}\^{}*} \texttt{gL\^{}*} \texttt{gL\^{}dag}
 \texttt{uL\^{}dag} \\
 \(N_{\rm LL}(\mathbf x)\), \(N_{\rm LL}(\mathbf x,\mathbf y)\) & the
 complex norm
@@ -2185,7 +2362,9 @@ on the spinor charges & new & \texttt{Q\_LL} \\
 Hermitian, \([T^1_{\rm LL},T^2_{\rm LL}]=iT^3_{\rm LL}\) and cyclically,
 and the isospin Casimir
 \((T_{\rm LL})^2=\sum_\iota(T^\iota_{\rm LL})^2\) & new &
-\texttt{T\_LL\^{}iota} \texttt{T\_LL\^{}3} \texttt{T\_LL\^{}2} \\
+\texttt{T\_LL\^{}iota} \texttt{T\_LL\^{}iota\textquotesingle{}}
+\texttt{T\_LL\^{}iota\textquotesingle{}\textquotesingle{}}
+\texttt{T\_LL\^{}3} \texttt{T\_LL\^{}2} \\
 \(\mathrm{Cas}_{\rm LL}\) & the Casimir operator of the rotations,
 \(\mathrm{Cas}_{\rm LL}=-\sum_jD_{\rm LL}(J^j_{\rm LL})^2\); its
 eigenvalue is 0 for spin 0, 3/4 for spin 1/2 and 2 for spin 1 & new &
@@ -2392,8 +2571,12 @@ the charge-conjugation matrix
 \(\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}\),
 \(\beta_{\rm LL}=\gamma^0_{\rm LL}\) (on Dirac \(\otimes\) isospin each
 acts as \(\otimes\sigma^{\rm LL}_0\)) & new & \texttt{gamma\_LL\^{}p}
-\texttt{gamma\_LL\^{}p\textquotesingle{}} \texttt{gamma\_ch}
-\texttt{C\_LL} \texttt{alpha\_LL\^{}j} \texttt{beta\_LL} \\
+\texttt{gamma\_LL\^{}p\textquotesingle{}} \texttt{gamma\_LL\^{}0}
+\texttt{gamma\_LL\^{}1} \texttt{gamma\_LL\^{}2} \texttt{gamma\_LL\^{}3}
+\texttt{gamma\_LL\^{}j} \texttt{gamma\_LL\^{}j\textquotesingle{}}
+\texttt{gamma\_LL\^{}j\textquotesingle{}\textquotesingle{}}
+\texttt{gamma\_ch} \texttt{C\_LL} \texttt{alpha\_LL\^{}j}
+\texttt{beta\_LL} \\
 \(\mathsf K^\iota_{\rm LL}\), \(\mathsf K'^\iota_{\rm LL}\),
 \(\mathsf K^{\rm s}_{\rm LL}\) & the \(8\times8\) pair matrices of the
 spin-zero channels: scalar
@@ -2408,7 +2591,8 @@ explanation of the folder explanations), stand for any pair matrix
 (\(8\times8\) for one field, \(16\times16\) for two species), the pair
 of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
 \(\mathsf K_{12}\) is the entry of \(\mathsf K\) in row 1 and column 2 &
-new & \texttt{Kch} \texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2}
+new & \texttt{Kch} \texttt{Kch\_iota}
+\texttt{Kch\_iota\textquotesingle{}} \texttt{Kch\_1} \texttt{Kch\_2}
 \texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
 \texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
@@ -2662,6 +2846,294 @@ no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie
 algebra (H-Lie) or a Lie superalgebra (H-gr), and the dynamical
 hypotheses on the scattering matrix (H-dyn) & new & \\
+\end{longtable}
+
+\textbf{9 Test 2: the gauge-covariant field equations of the spinor
+field and their numerical solution}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2200}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0800}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\eta^{\rm LL}_{pp'}\) & the Minkowski metric of
+\(\mathbb R^{1,3}_{\rm LL}\) in the coordinates \(x^p_{\rm LL}\):
+\(\eta^{\rm LL}_{00}=1\),
+\(\eta^{\rm LL}_{11}=\eta^{\rm LL}_{22}=\eta^{\rm LL}_{33}=-1\) and
+\(\eta^{\rm LL}_{pp'}=0\) for \(p\neq p'\); it is its own inverse and
+raises and lowers the indices \(p\), \(p'\) & new & \texttt{eta} \\
+\(x_{\rm LL}\), \(\vec x_{\rm LL}\); \(\partial_p\) & a point of
+\(\mathbb R^{1,3}_{\rm LL}\) given by its coordinates,
+\(x_{\rm LL}=(x^0_{\rm LL},x^1_{\rm LL},x^2_{\rm LL},x^3_{\rm LL})\)
+(its Hermitian bi-quaternion is
+\(x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j\)), and its
+space part \(\vec x_{\rm LL}=(x^1_{\rm LL},x^2_{\rm LL},x^3_{\rm LL})\);
+\(x^0_{\rm LL}\) is the time; \(\partial_p\) is the partial derivative
+with respect to \(x^p_{\rm LL}\) (plain text \texttt{d\_p}) & new &
+\texttt{x\_LL} \texttt{xvec} \texttt{d\_p} \\
+\(\mathbf f_p\) & the frame of \(\mathbb R^{1,3}_{\rm LL}\): four
+Hermitian bi-quaternions \(\mathbf f_0,\dots,\mathbf f_3\) with
+\(N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})=\eta^{\rm LL}_{pp'}\), possibly
+depending on the point \(x_{\rm LL}\) (a vierbein); the canonical frame
+is \(\mathbf f_0=\mathbf e_0\), \(\mathbf f_j=i\,\mathbf e_j\), for
+which \(M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p\),
+\(M_{\rm LL}(\bar{\mathbf f}_0)=\sigma^{\rm LL}_0\) and
+\(M_{\rm LL}(\bar{\mathbf f}_j)=-\sigma^{\rm LL}_j\) & new &
+\texttt{f\_p} \texttt{f\_0} \texttt{f\_j} \\
+\(\gamma^p_{\rm LL}[\mathbf f]\) & the Dirac matrices of a frame, the
+\(4\times4\) matrices with the \(2\times2\) blocks
+\(\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}\);
+they satisfy
+\(\gamma^p_{\rm LL}[\mathbf f]\gamma^{p'}_{\rm LL}[\mathbf f]+\gamma^{p'}_{\rm LL}[\mathbf f]\gamma^p_{\rm LL}[\mathbf f]=2N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})\,\mathsf 1_4\);
+for the canonical frame they are the matrices \(\gamma^p_{\rm LL}\) &
+new & \texttt{gamma\_LL\^{}p{[}f{]}} \\
+\(\tilde{\mathbf g}\) & for a unit bi-quaternion \(\mathbf g\):
+\(\tilde{\mathbf g}=(\mathbf g^\dagger)^{-1}\), which equals the complex
+conjugate \(\mathbf g^*\);
+\(M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}\);
+the change of representation of the Dirac matrices by \(\mathbf g\)
+changes the frame by
+\(\mathbf f_p\mapsto\tilde{\mathbf g}\,\mathbf f_p\,\tilde{\mathbf g}^\dagger\)
+& new & \texttt{gLt} \texttt{gLt\^{}dag} \\
+\(\mathsf S_{\rm LL}(\mathbf g)\) & the spinor matrix of the Lorentz
+transformation \(\mathbf g\): the \(4\times4\) matrix
+\(\mathsf S_{\rm LL}(\mathbf g)=\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))\)
+of \(2\times2\) blocks (on the eight components of \(\Psi_{\rm LL}\):
+\(\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0\), plain text
+\texttt{Sspin});
+\(\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}\),
+where \([\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\) is the entry in row
+\(p\) and column \(p'\) & new & \texttt{Sspin\_LL} \texttt{Sspin} \\
+\(\mathsf s_{\rm LL}(\mathbf u)\) & a Lorentz generator \(\mathbf u\) of
+\(\mathfrak l_{\rm LL}\) acting on the Dirac spinor: the \(4\times4\)
+matrix
+\(\mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))\),
+the derivative of \(\mathsf S_{\rm LL}\) at the unit;
+\(\mathsf s_{\rm LL}(J^j_{\rm LL})=\tfrac12\gamma^{j'}_{\rm LL}\gamma^{j''}_{\rm LL}\)
+for cyclic \((j,j',j'')\) and
+\(\mathsf s_{\rm LL}(K^j_{\rm LL})=\tfrac12\gamma^0_{\rm LL}\gamma^j_{\rm LL}\)
+& new & \texttt{sgen\_LL} \\
+\(\mathbf b^+_{\rm LL}\), \(\mathbf b^-_{\rm LL}\) & the two spinor
+charges \(\mathbf b^\pm_{\rm LL}\mathbf e_4\) of which the Dirac
+isodoublet is made: the upper block (chirality \(-1\)) of
+\(\Psi_{\rm LL}\) is \(\psi'_{\rm LL}(\mathbf b^-_{\rm LL})\) and the
+lower block (chirality \(+1\)) is
+\(\psi'_{\rm LL}(\mathbf b^+_{\rm LL})\), where
+\(\psi'_{\rm LL}(\mathbf y)=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf y)^T\)
+for a bi-quaternion \(\mathbf y\);
+\(\Psi_{\rm LL}[\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}]\) is
+\(\Psi_{\rm LL}\) written with them (plain text
+\texttt{Psi(bSm,\ bSp)}); under the gauge group
+\(\mathbf b^+_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\,\mathbf v\,\mathbf b^+_{\rm LL}\,\bar{\mathbf g}\),
+the automorphism \(\varphi^{\rm LL}_{\mathbf g,\mathbf v}\) on the
+spinor charge times a phase, and
+\(\mathbf b^-_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\,\mathbf v\,\mathbf b^-_{\rm LL}\,\mathbf g^\dagger\),
+its complex conjugate & new & \texttt{bSp} \texttt{bSm} \\
+\(\theta^{\rm F}_{\rm LL}\) & the phase of a local transformation of the
+fermion number,
+\(\Psi_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\Psi_{\rm LL}\), a
+real function of \(x_{\rm LL}\) & new & \texttt{thF} \\
+\(\mathsf U_{\rm LL}\),
+\(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\) & a local isospin
+rotation: a matrix \(\mathsf U_{\rm LL}\) of \(SU(2)\), a function of
+\(x_{\rm LL}\), that acts on the isospin index of \(\Psi_{\rm LL}\)
+(\(\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)\) for a unit real quaternion
+\(\mathbf v\)); \(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\) is
+the real orthogonal \(3\times3\) matrix with
+\(\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota'\iota}\tau^{\rm LL}_{\iota'}\),
+the rotation of an isospin vector & new & \texttt{U\_LL}
+\texttt{U\_LL\^{}dag} \texttt{Rv} \\
+\(\mathcal U_{\rm LL}\) & a local gauge transformation of
+\(\Psi_{\rm LL}\) by the gauge group
+\(SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\):
+\(\mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}\),
+with \(\mathbf g\), \(\mathsf U_{\rm LL}\) and
+\(\theta^{\rm F}_{\rm LL}\) functions of \(x_{\rm LL}\) & new &
+\texttt{Ucal} \\
+\(A^\iota_{{\rm LL},p}\), \(A^{\rm F}_{{\rm LL},p}\);
+\(g^{\rm v}_{\rm LL}\), \(g^{\rm F}_{\rm LL}\) & the gauge potentials,
+real fields on \(\mathbb R^{1,3}_{\rm LL}\): \(A^\iota_{{\rm LL},p}\) of
+the isospin group \(SU(2)_{\rm v}\) (three fields for each direction
+\(p\)) and \(A^{\rm F}_{{\rm LL},p}\) of the fermion number
+\(U(1)^{\rm F}_{\rm LL}\); \(g^{\rm v}_{\rm LL}\) and
+\(g^{\rm F}_{\rm LL}\) are their couplings (real numbers); a constant
+\(g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\) acts like a chemical
+potential & new & \texttt{Av\_LL} \texttt{Av\_LL\^{}iota}
+\texttt{Av\_LL\^{}iota\textquotesingle{}}
+\texttt{Av\_LL\^{}iota\textquotesingle{}\textquotesingle{}}
+\texttt{AF\_LL} \texttt{g\_v} \texttt{g\_F} \\
+\(\mathsf a_{{\rm LL},p}\) & the isospin potential as a Hermitian
+\(2\times2\) matrix on the isospin index,
+\(\mathsf a_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2\)
+& new & \texttt{atau\_LL} \\
+\(\mathbf t^{\rm A}_{{\rm LL},p}\) & the isospin potential as a real
+imaginary quaternion,
+\(\mathbf t^{\rm A}_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\mathbf e_\iota/2\)
+(an element of \({\rm Im}\,\mathbb H\), like \(\mathbf t\)), with
+\(M_{\rm LL}(\mathbf t^{\rm A}_{{\rm LL},p})=-i\,\mathsf a_{{\rm LL},p}\);
+it acts on the spinor charges through the isospin derivation
+\(D^{\rm v}_{\rm LL}\) & new & \texttt{tA} \texttt{tA\_p} \\
+\(\mathbf u^\omega_{{\rm LL},p}\); \(\omega^j_{{\rm LL},p}\),
+\(\varpi^j_{{\rm LL},p}\) & the Lorentz connection: for each direction
+\(p\) an element of \(\mathfrak l_{\rm LL}\),
+\(\mathbf u^\omega_{{\rm LL},p}=\sum_j(\omega^j_{{\rm LL},p}J^j_{\rm LL}+\varpi^j_{{\rm LL},p}K^j_{\rm LL})\),
+with the real rotation components \(\omega^j_{{\rm LL},p}\) and the real
+boost components \(\varpi^j_{{\rm LL},p}\);
+\(\mathbf u^{\omega*}_{{\rm LL},p}\) is its complex conjugate (plain
+text \texttt{uLw\_p\^{}*}) & new & \texttt{uLw} \texttt{uLw\_p}
+\texttt{uLw\^{}*} \texttt{omega\_LL} \texttt{varpi\_LL} \\
+\(\Gamma^{\rm LL}_p\) & the spin connection, the \(8\times8\) matrix
+\(\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0\)
+(it acts on the Dirac index and leaves the isospin index alone) & new &
+\texttt{Gamma\_LL} \\
+\(\mathsf A_{{\rm LL},p}\) & the gauge matrix of the internal symmetries
+on the eight components of \(\Psi_{\rm LL}\),
+\(\mathsf A_{{\rm LL},p}=g^{\rm v}_{\rm LL}\sum_\iota A^\iota_{{\rm LL},p}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathsf 1_8\),
+Hermitian (\(\mathsf 1_8\) because the fermion number of
+\(\Psi_{\rm LL}\) is 1) & new & \texttt{Acal} \texttt{Acal\_0}
+\texttt{Acal\_j} \texttt{Acal\_p} \\
+\(\nabla^{\rm LL}_p\), \(\nabla^{{\rm LL}*}_p\) & the gauge-covariant
+derivative of \(\Psi_{\rm LL}\), the \(8\times8\) matrix of differential
+operators
+\(\nabla^{\rm LL}_p=\partial_p+\Gamma^{\rm LL}_p-i\,\mathsf A_{{\rm LL},p}\),
+and the covariant derivative of a field that transforms like
+\(\Psi^*_{\rm LL}\) (the hole component),
+\(\nabla^{{\rm LL}*}_p=\partial_p+(\Gamma^{\rm LL}_p)^*+i\,(\mathsf A_{{\rm LL},p})^*\)
+& new & \texttt{nabla\_LL} \texttt{nabla*\_LL} \\
+\(\mathbf D_{\rm LL}\) & the bi-quaternion of covariant derivatives,
+\(\mathbf D_{\rm LL}=\sum_p\mathbf f_p\nabla^{\rm LL}_p\) (bold upright
+like every bi-quaternion of this folder; it is not the Lorentz
+derivation \(D_{\rm LL}(\mathbf u)\), which is italic and has an
+argument), with
+\(\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p=\begin{pmatrix}0&M_{\rm LL}(\mathbf D_{\rm LL})\\M_{\rm LL}(\bar{\mathbf D}_{\rm LL})&0\end{pmatrix}\)
+& new & \texttt{Dbq\_LL} \\
+\(\mathsf F^\iota_{{\rm LL},pp'}\),
+\(\mathsf F^{\rm F}_{{\rm LL},pp'}\), \(\mathsf R^{\rm LL}_{pp'}\) & the
+field strengths and the curvature:
+\(\mathsf F^\iota_{{\rm LL},pp'}=\partial_pA^\iota_{{\rm LL},p'}-\partial_{p'}A^\iota_{{\rm LL},p}+g^{\rm v}_{\rm LL}\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}A^{\iota''}_{{\rm LL},p'}\),
+\(\mathsf F^{\rm F}_{{\rm LL},pp'}=\partial_pA^{\rm F}_{{\rm LL},p'}-\partial_{p'}A^{\rm F}_{{\rm LL},p}\),
+and the \(8\times8\) curvature of the spin connection,
+\(\mathsf R^{\rm LL}_{pp'}=\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+\Gamma^{\rm LL}_p\Gamma^{\rm LL}_{p'}-\Gamma^{\rm LL}_{p'}\Gamma^{\rm LL}_p\);
+the commutator of two covariant derivatives is
+\(\mathsf R^{\rm LL}_{pp'}-i\,g^{\rm v}_{\rm LL}\sum_\iota\mathsf F^\iota_{{\rm LL},pp'}T^\iota_{\rm LL}-i\,g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},pp'}\)
+& new & \texttt{Fv\_LL} \texttt{FF\_LL} \texttt{Rc\_LL} \\
+\(\Psi_{{\rm LL},1},\dots,\Psi_{{\rm LL},8}\); \(\Psi^\pm_{\rm LL}\);
+\(\bar\Psi_{\rm LL}\) & the eight components of \(\Psi_{\rm LL}\):
+components 1 and 2 are the first Dirac component with isospin up and
+down, 3 and 4 the second, 5 and 6 the third, 7 and 8 the fourth;
+\(\Psi^-_{\rm LL}\) (components 1 to 4, chirality \(-1\)) and
+\(\Psi^+_{\rm LL}\) (components 5 to 8, chirality \(+1\)) are the two
+Weyl isodoublets;
+\(\bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)\)
+is the Dirac adjoint & new & \texttt{Psi\_LL\^{}+}
+\texttt{Psi\_LL\^{}-} \\
+\(\psi^{\rm p}_{\rm LL}\), \(\psi^{\rm h}_{\rm LL}\) & the particle and
+the hole component (eight complex functions each, in the order of the
+components of \(\Psi_{\rm LL}\)) of a mode of the mean-field equations:
+\(\psi^{\rm p}_{\rm LL}\) transforms like \(\Psi_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) like \(\Psi^*_{\rm LL}\); a component is
+written \(\psi^{\rm p}_{{\rm LL},k}\), and a numbered mode
+\((\psi^{\rm p}_{{\rm LL},n},\psi^{\rm h}_{{\rm LL},n})\) & new &
+\texttt{psi\_p} \texttt{psi\_h} \\
+\(\mathcal H^{\rm DB}_{\rm LL}\), \(h^\nabla_{\rm LL}\) & the
+Dirac-Bogoliubov-de Gennes operator of the mean-field equations: the
+\(2\times2\) block matrix (blocks of \(8\times8\)) with the upper left
+block
+\(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}\),
+the upper right block \(\mathsf P_{\rm LL}\), the lower left block
+\(\mathsf P_{\rm LL}^\dagger\) and the lower right block
+\(-(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL})^*\),
+with the covariant Dirac Hamiltonian
+\(h^\nabla_{\rm LL}=-i\sum_j\alpha^j_{\rm LL}\nabla^{\rm LL}_j+\beta_{\rm LL}m_{\rm LL}\)
+(\(\alpha^j_{\rm LL}\) and \(\beta_{\rm LL}\) acting on the Dirac
+index); on a plane wave \(\exp(i\sum_jq^j_{\rm LL}x^j_{\rm LL})\) with
+constant fields it is a \(16\times16\) matrix
+\(\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})\) (plain text
+\texttt{H\_DB(q)}), which without gauge fields equals
+\(\mathsf H_{\rm LL}(\vec q_{\rm LL})\) & new & \texttt{H\_DB}
+\texttt{h\_nabla} \\
+\(\hat a^{\rm qp}_{{\rm LL},n}\) & the annihilation operator of the
+quasi-particle of a numbered mode of the mean-field equations (constant
+in time):
+\(\Psi_{\rm LL}=\sum_n(\psi^{\rm p}_{{\rm LL},n}\hat a^{\rm qp}_{{\rm LL},n}+(\psi^{\rm h}_{{\rm LL},n})^*(\hat a^{\rm qp}_{{\rm LL},n})^\dagger)\);
+the quasi-particle vacuum is annihilated by every
+\(\hat a^{\rm qp}_{{\rm LL},n}\) & new & \texttt{a\_qp} \\
+\(E^{\rm qp}_{{\rm LL},n}\) & the energy of a numbered mode of the
+mean-field equations in a stationary state, an eigenvalue of
+\(\mathcal H^{\rm DB}_{\rm LL}\); the mean-field ground state is the
+vacuum of the quasi-particles of the modes with
+\(E^{\rm qp}_{{\rm LL},n}>0\) & new & \texttt{E\_qp} \\
+\(\Pi^\iota_{\rm LL}(x_{\rm LL})\) & the local pair operator
+\(\Pi^\iota_{\rm LL}(x_{\rm LL})=\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(x_{\rm LL})\),
+which annihilates two spinor charges at the point \(x_{\rm LL}\); its
+integral over space, with the plane waves normalized in a box, is the
+operator \(\Pi^\iota_{\rm LL}\) of the momenta & new &
+\texttt{Pi\_iota(x)} \\
+\(\mathcal J^{{\rm F},p}_{\rm LL}\), \(\mathcal J^{\iota,p}_{\rm LL}\) &
+the currents that are the sources of the gauge fields,
+\(\mathcal J^{{\rm F},p}_{\rm LL}=g^{\rm F}_{\rm LL}\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}\)
+and
+\(\mathcal J^{\iota,p}_{\rm LL}=g^{\rm v}_{\rm LL}\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}\)
+(\(\gamma^p_{\rm LL}\) acting on the Dirac index) & new &
+\texttt{JF\_LL} \texttt{Jv\_LL} \\
+\(\mathcal L^\nabla_{\rm LL}\) & the gauge-invariant Lagrangian density
+of Test 2: the contact form \(\mathcal L^{\rm c}_{\rm LL}\) with the
+covariant derivative \(\nabla^{\rm LL}_p\) in place of \(\partial_p\),
+plus the Lagrangian density of the gauge fields & new &
+\texttt{Lagr\_nabla} \\
+\(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
+\(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
+directions), the time step and the coefficient of the Wilson term of the
+lattice equations & new & \texttt{dx} \texttt{dt} \texttt{r\_W} \\
+\(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
+\(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
+sites in the directions \(x^1_{\rm LL}\), \(x^2_{\rm LL}\),
+\(x^3_{\rm LL}\); a lattice site
+\(\vec s_{\rm LL}=(s^1_{\rm LL},s^2_{\rm LL},s^3_{\rm LL})\), whose
+integer coordinates \(s^j_{\rm LL}\) run from 0 to the number of sites
+of their direction minus 1, at the point
+\(x^j_{\rm LL}=s^j_{\rm LL}\ell^{\rm x}_{\rm LL}\); and the step to the
+next site in the direction \(j\), the unit vector
+\(\vec\delta^j_{\rm LL}\) & new & \texttt{nx} \texttt{ny} \texttt{nz}
+\texttt{site} \texttt{delta\_j} \\
+\(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\) & the link matrix
+of the lattice from the site \(\vec s_{\rm LL}\) to the site
+\(\vec s_{\rm LL}+\vec\delta^j_{\rm LL}\), the \(2\times2\) isospin
+matrix
+\(\exp(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0))\)
+of the potentials at the site: the parallel transport of the isospin and
+of the phase over one lattice step & new & \texttt{Ulink}
+\texttt{Ulink\_j} \\
+\(\mathcal H^{\rm lat}_{\rm LL}\), \(\varepsilon^{\rm lat}_{\rm LL}\),
+\(B^{\rm H}_{\rm LL}\) & the lattice form of
+\(\mathcal H^{\rm DB}_{\rm LL}\) (a matrix of 16 rows per site), the
+energy of a free particle on the lattice, and the bound on the largest
+eigenvalue magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) from which the
+time step is chosen & new & \texttt{H\_lat} \texttt{eps\_lat}
+\texttt{Hbound} \\
+\(\mathsf G^{\rm site}_{\rm LL}\), \(\mathsf X^{\rm ph}_{\rm LL}\) & the
+gauge transformation of the lattice equations, which acts at each site
+as \(\exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}\) on the isospin
+index of the particle component and as its complex conjugate on the hole
+component; and the exchange of the particle and the hole component,
+\(\mathsf X^{\rm ph}_{\rm LL}=\begin{pmatrix}0&\mathsf 1_8\\\mathsf 1_8&0\end{pmatrix}\),
+with which the particle-hole symmetry reads
+\(\mathsf X^{\rm ph}_{\rm LL}(\mathcal H^{\rm DB}_{\rm LL})^*\mathsf X^{\rm ph}_{\rm LL}=-\mathcal H^{\rm DB}_{\rm LL}\)
+& new & \texttt{Gsite} \texttt{Xph} \\
 \end{longtable}
 
 \end{document}

@@ -16,17 +16,20 @@ symbols, whose symbols are then used everywhere. This document is the symbol fil
 `Revision_SuperLoop`: it explains how the registry `provenance/symbols_ll.csv` was built (Section 2),
 lists the collisions that were found and how each was resolved (Section 3), names the symbols that this
 folder shares with the folder `Revision_NoGo` (Section 4), states the meaning of the plain-text names
-that the programs, the figures and the data files use (Section 5), reproduces the eight machine checks
+that the programs, the figures and the data files use (Section 5), reproduces the nine machine checks
 of the symbols with their output (Section 6), and contains the complete table of the
 {{GEN:symbols_ll_count}} registered symbols (Section 7). Every symbol that occurs in this document is
 defined in Section 7.
 
 # 2. How the registry is built
 
-The script `code/scripts/write_symbol_registry.py` writes the registry, in eight groups: indices,
+The script `code/scripts/write_symbol_registry.py` writes the registry, in nine groups: indices,
 conventions and number sets; the bi-octonions and the super-loop; the operators and their eigenvalues;
 the covariant families and their classification; the manifolds; the spin-zero superfluid; power
-counting; groups, Lie algebras, operations and labels. It has two kinds of entries.
+counting; groups, Lie algebras, operations and labels; and (group 9, new with Test 2) the gauge-covariant
+field equations of the spinor field and their numerical solution: the frame, the gauge transformations,
+the gauge potentials and the connection, the covariant derivative, the field strengths, the components of
+the field and its two spinor charges, the mean-field equations and the lattice. It has two kinds of entries.
 
 * **Taken** ({{GEN:symbols_ll_count_taken}} entries): symbols of the two master registries of the
   project — `provenance/symbols.csv` of the main project and
@@ -154,14 +157,14 @@ last column of the table of Section 7. The following conventions complete that c
 
 # 6. The machine checks of the symbols
 
-The script `code/scripts/check_symbols.py` verifies eight statements:
+The script `code/scripts/check_symbols.py` verifies nine statements:
 
 * **LL-S1** no symbol text is registered twice, and no plain-text name belongs to two entries;
 * **LL-S2** every taken entry has exactly the meaning of the master registry from which it is taken; no
   item of a new entry is an item of either master registry (an item is one formula of a symbol text,
   for example $\mathbf x$ in "$\mathbf x$, $\mathbf y$"); and the items that the registry of
   `Revision_NoGo` also contains are exactly the declared shared ones (Section 4);
-* **LL-S3** every column of every data file `data/sl_*.csv` and `explanations/data/ex_*.csv` is a
+* **LL-S3** every column of every data file `data/sl_*.csv`, `explanations/data/ex_*.csv` and `test2/data/t2_*.csv` is a
   registered plain-text name or a descriptive word, and every data file states its content in a header
   line `# content:`;
 * **LL-S4** every document of the folder (and the manuscript) contains the complete table of symbols;
@@ -177,10 +180,15 @@ The script `code/scripts/check_symbols.py` verifies eight statements:
   formula of a document is registered;
 * **LL-S8** every name with the suffix `_LL`, every name of an algebra element (`uL`, `tI`, `gL`, `hL`,
   `vI`, `aH`, `bS`, `cH`, `dS`, `rP` and their variants), every coefficient (`c_tw`, ...) and every pair
-  matrix (`Kch`...) that occurs in a report or a data file of the folder (`data/sl_*` and
-  `explanations/data/ex_*`) is a registered plain-text name.
+  matrix (`Kch`...) that occurs in a report or a data file of the folder (`data/sl_*`,
+  `explanations/data/ex_*` and `test2/data/t2_*`) is a registered plain-text name;
+* **LL-S9** the built documents of the folder `test2` (the answers to Test 2), into which the programs'
+  explicit matrices and component equations are inserted, satisfy LL-S5, LL-S6 and LL-S7 in every formula,
+  the inserted ones included (the inserted table of the symbols, which is the registry itself, is checked by
+  LL-S1 to LL-S7).
 
-A line break inside a formula counts as a space, as for LaTeX. The output of the last run:
+A line break inside a formula counts as a space, as for LaTeX, and a line break with extra spacing (a
+layout command of the printed equations) is not read as letters. The output of the last run:
 
 ```
 {{FILE:data/sl_symbol_checks.txt}}

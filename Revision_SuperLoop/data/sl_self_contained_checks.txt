@@ -1,7 +1,7 @@
 PROJECT spacetimes, Revision_SuperLoop: does any document send its reader to another document? (Hard Rule 7)
 1 of 1 checks passed
 
-[PASS] LL-H1  none of the 28 documents and document sources of Revision_SuperLoop refers its reader to another document for an equation, a symbol or a definition
+[PASS] LL-H1  none of the 30 documents and document sources of Revision_SuperLoop refers its reader to another document for an equation, a symbol or a definition
 
 Allowed exceptions:
   README: a provenance document named as a place to read (the README is the list of contents of the folder: naming its documents is its purpose)
