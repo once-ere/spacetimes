@@ -21,6 +21,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "t2plot"
+version = "0.1.0"
+dependencies = [
+ "t2core",
+]
+
+[[package]]
 name = "t2solve"
 version = "0.1.0"
 dependencies = [

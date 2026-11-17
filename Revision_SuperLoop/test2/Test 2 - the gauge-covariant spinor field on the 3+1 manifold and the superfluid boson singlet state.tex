@@ -221,7 +221,7 @@ answered \\
 {[}5{]} & the same solver as a pure Rust program built with cargo, with
 instructions for use & Section 6 & answered \\
 {[}6{]} & a pure Rust program that plots the solutions of the Rust
-solver & Section 7 & to follow \\
+solver & Section 7 & answered \\
 {[}7{]} & the construction of the superfluid boson singlet (spin-zero)
 state, SFBS, from the spinor field & Section 8 & to follow \\
 {[}8{]} & the effective field equations of the SFBS & Section 9 & to
@@ -241,7 +241,7 @@ follow \\
 \end{longtable}
 
 Each item is pushed to the repository as soon as it is answered. This
-version of the document answers items {[}1{]} to {[}5{]}; the sections
+version of the document answers items {[}1{]} to {[}6{]}; the sections
 of the other items are added to this same document, in this order, as
 they are completed.
 
@@ -3971,8 +3971,9 @@ Revision\_SuperLoop):
 ./test2/rust/target/release/t2_solve my_problem.t2in --out results/run1
 # without arguments: a short guide, then the question for the name of the input file
 ./test2/rust/target/release/t2_solve
-# plot a solution with the Python plotter of item [4]
+# plot a solution with the Python plotter of item [4], or with the Rust plotter of item [6] (Section 7)
 python3 test2/python/t2_plot.py my_problem
+./test2/rust/target/release/t2_plot my_problem
 \end{verbatim}
 
 In the dialogue the program answers \texttt{?} with the complete guide,
@@ -4191,6 +4192,178 @@ implementation of the textbook method.
   self-consistent tasks (here also its speed).
 \end{itemize}
 
+\hypertarget{item-6-a-rust-program-that-plots-the-rust-solutions}{%
+\section{7. Item {[}6{]}: a Rust program that plots the Rust
+solutions}\label{item-6-a-rust-program-that-plots-the-rust-solutions}}
+
+\hypertarget{the-answer-in-brief-5}{%
+\subsection{7.0 The answer in brief}\label{the-answer-in-brief-5}}
+
+The program \texttt{t2\_plot} is the member \texttt{t2plot} of the Cargo
+workspace \texttt{test2/rust} (pure Rust, about 1200 commented lines in
+two files; no external crate). It reads the output files of a solution
+of the Rust solver of item {[}5{]} (or of the Python solver, which
+writes the same files), chooses the panels by the task, as the Python
+plotter of item {[}4{]} does, and writes the figure as Scalable Vector
+Graphics (\texttt{.svg}), a text format of lines, shapes and labels that
+every web browser displays and that can be enlarged without loss. For
+the seven examples it draws the predictions of the checks EX-1 to EX-7,
+computed by the program itself in Rust from the formulas of this
+document: the mean group velocity of (4.7), the Rayleigh quotient (3.29)
+of the bound states, the root of the gap equation (3.21), the continuum
+kink and the first-order Wilson shift, and the frequency of the
+amplitude mode (4.11). Figures 14 to 20 are its output for the seven
+Rust solutions (converted to PDF and PNG for this document).
+
+\hypertarget{building-and-using-the-program}{%
+\subsection{7.1 Building and using the
+program}\label{building-and-using-the-program}}
+
+It is built together with the solver (Section 6.1):
+
+\begin{verbatim}
+cd test2/rust && cargo build --release && cd ../..
+\end{verbatim}
+
+and used from the folder Revision\_SuperLoop:
+
+\begin{verbatim}
+# solve an example with the Rust solver, then plot it: writes t2_rs_andreev_plot.svg next to the data
+./test2/rust/target/release/t2_solve test2/examples/andreev.t2in --out t2_rs_andreev
+./test2/rust/target/release/t2_plot t2_rs_andreev
+# choose the name of the figure, or leave out the predictions of the examples
+./test2/rust/target/release/t2_plot t2_rs_andreev --out my_figures/andreev
+./test2/rust/target/release/t2_plot t2_rs_andreev --no-predictions
+# without arguments: the program lists the solutions in the current folder and asks for a base name
+./test2/rust/target/release/t2_plot
+# open the figure in a web browser (macOS; on Linux: xdg-open)
+open t2_rs_andreev_plot.svg
+# optional: PDF and PNG files (needs the program rsvg-convert of the librsvg package)
+rsvg-convert -f pdf -o andreev.pdf t2_rs_andreev_plot.svg
+rsvg-convert -f png -z 1.6 -o andreev.png t2_rs_andreev_plot.svg
+\end{verbatim}
+
+\hypertarget{how-the-program-is-built-1}{%
+\subsection{7.2 How the program is
+built}\label{how-the-program-is-built-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{svg.rs}, a small plotting library: a figure is a set of
+  panels; a panel maps its data ranges (linear, or logarithmic for the
+  errors) to pixels, chooses tick values that are multiples of 1, 2, 2.5
+  or 5 times a power of ten, and collects its contents as SVG elements:
+  lines (broken where a value is missing or, on a logarithmic axis, not
+  positive), dots, horizontal and vertical reference lines, shaded
+  bands, colour maps of one hue from white to dark blue, and a legend
+  with a white background placed where it covers no data. Labels use a
+  small markup, \texttt{x\^{}\{1\}\_\{LL\}} for \(x^1_{\rm LL}\), which
+  becomes raised and lowered text. The colours are those of the Python
+  plotter (Section 5.2).
+\item
+  \texttt{main.rs}: the reading of the data files (the lines
+  \texttt{\#\ key:\ value} and the columns), the four kinds of figure,
+  the predictions of the examples, the dialogue and the command line.
+  The predictions use the dispersion (2.37) through the function
+  \texttt{eps\_lat} of \texttt{t2core}, the group velocity (4.7),
+  bisection for (3.21) and (4.11), and a least-squares fit for the
+  sinusoid with the predicted frequency. For the bound states of the
+  kink and the antikink (EX-4) it uses the profile
+  \(\cosh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})^{-\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}}\)
+  of each wall from the parameters in the summary; for the
+  self-consistent kink (EX-6), the zero mode of the computed profile.
+\end{itemize}
+
+The figures of the Rust program show the same content as Figures 7 to 13
+of the Python program, drawn from the Rust solutions; the numbers in
+their legends (the predictions) are computed independently of the Python
+checks and agree with them to the digits shown.
+
+\hypertarget{the-figures-of-the-rust-solutions}{%
+\subsection{7.3 The figures of the Rust
+solutions}\label{the-figures-of-the-rust-solutions}}
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_packet_free.png}
+
+\textbf{Figure 14.} The free wave packet, Rust solution (example
+\texttt{packet\_free}): (a) the density in space and time with its
+centre and the predicted motion with the mean group velocity (dashed);
+(b) the density at four times; (c) the probabilities of the hole part
+and of isospin up; (d) the changes of norm and energy. Data:
+\texttt{test2/data/t2\_rs\_packet\_free\_*}.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_cyclotron.png}
+
+\textbf{Figure 15.} The packet in the magnetic field, Rust solution
+(example \texttt{cyclotron}): (a) to (d) the density at four times with
+the path of its centre; (e) the whole path; (f) the conservation of norm
+and energy. Data: \texttt{test2/data/t2\_rs\_cyclotron\_*}.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_andreev.png}
+
+\textbf{Figure 16.} Andreev reflection, Rust solution (example
+\texttt{andreev}): (a) the density in space and time, the step of the
+pair field (dotted); (b) the particle part (solid) and the hole part
+(dashed) at four times; (c) the conversion of the particle into a hole;
+(d) the errors of the time stepping. Data:
+\texttt{test2/data/t2\_rs\_andreev\_*}.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_kink_spectrum.png}
+
+\textbf{Figure 17.} The kink and the antikink, Rust solution (example
+\texttt{kink\_spectrum}): (a) all eigenvalues, the 16 bound states in
+the window, the predicted energies \(\pm E^{\rm R}_{\rm LL}\) (dashed)
+and the edges of the continuum (dotted); (b) the pair field and the
+summed density of the bound states of positive energy. Data:
+\texttt{test2/data/t2\_rs\_kink\_spectrum\_*}.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_ground_state.png}
+
+\textbf{Figure 18.} The self-consistent uniform superfluid, Rust
+solution (example \texttt{ground\_state}): (a) the guess, the
+self-consistent pair field and the root of (3.21) (dotted); (b) the
+convergence of the Anderson iteration; (c) the spectrum near zero. Data:
+\texttt{test2/data/t2\_rs\_ground\_state\_*}.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_kink_ground_state.png}
+
+\textbf{Figure 19.} The self-consistent kink, Rust solution (example
+\texttt{kink\_ground\_state}): (a) the guess, the self-consistent pair
+field and the continuum kink (dotted); (b) the convergence; (c) the
+eight bound states and the predicted Wilson shift (dashed). Data:
+\texttt{test2/data/t2\_rs\_kink\_ground\_state\_*}.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_rs_quench.png}
+
+\textbf{Figure 20.} The quench, Rust solution (example \texttt{quench}):
+(a) the amplitude of the pair field with a sinusoid of the predicted
+frequency of (4.11) (dashed; amplitude and phase fitted); (b) the
+conserved quantities; (c) the pair field on the sites at four times.
+Data: \texttt{test2/data/t2\_rs\_quench\_*}.
+
+\hypertarget{discussion-5}{%
+\subsection{7.4 Discussion}\label{discussion-5}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Agreement.} Figures 14 to 20 and Figures 7 to 13 show the same
+  solutions to rounding (check EX-8), drawn by two independent programs,
+  with predictions computed twice, in Python by
+  \texttt{t2\_examples\_check.py} and in Rust by \texttt{t2\_plot}.
+\item
+  \textbf{Why SVG.} A plotting program without external libraries cannot
+  produce pixel images with good text without implementing a font
+  renderer; SVG leaves the rendering to the browser (or to
+  \texttt{rsvg-convert}), keeps the figures sharp at every size, and is
+  plain text that can be inspected and edited.
+\item
+  \textbf{Limits.} As for the Python plotter (Section 5.4): one solution
+  per figure, panels chosen by the task, three-dimensional densities
+  summed over \(x^3_{\rm LL}\).
+\end{itemize}
+
 \hypertarget{appendix-a.-provenance-programs-commands-reports-data-figures}{%
 \section{Appendix A. Provenance: programs, commands, reports, data,
 figures}\label{appendix-a.-provenance-programs-commands-reports-data-figures}}
@@ -4223,7 +4396,12 @@ cd test2/rust && cargo build --release && cd ../..
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
 python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
-# 7. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 7. item [6]: Figures 14 to 20, the plots of the Rust solutions (SVG, converted to PDF and PNG with rsvg-convert)
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e
+  rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg
+  rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg; done
+# 8. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 \end{verbatim}
 
@@ -4233,16 +4411,18 @@ The program \texttt{t2\_fields} runs in about 20 seconds,
 solver of item {[}5{]} in about 60 seconds, all on one processor core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy,
-SciPy and Matplotlib; for the documents pandoc (2.11 or later), XeLaTeX
-and latexmk, the DejaVu fonts and the Latin Modern Math font. The Rust
-programs of the folder test2 use no external crate.
+SciPy and Matplotlib; rsvg-convert (librsvg) for the conversion of the
+SVG figures of item {[}6{]}; for the documents pandoc (2.11 or later),
+XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font.
+The Rust programs of the folder test2 use no external crate.
 
 \hypertarget{a.2-the-programs-of-items-1-and-2}{%
 \subsection{A.2 The programs of items {[}1{]} and
 {[}2{]}}\label{a.2-the-programs-of-items-1-and-2}}
 
-The Cargo workspace \texttt{test2/rust} has four members (the fourth,
-\texttt{t2solve}, is the solver of item {[}5{]}, Appendix A.2d):
+The Cargo workspace \texttt{test2/rust} has five members (the fourth,
+\texttt{t2solve}, is the solver of item {[}5{]}, Appendix A.2d; the
+fifth, \texttt{t2plot}, the plotter of item {[}6{]}, Appendix A.2e):
 
 \begin{itemize}
 \tightlist
@@ -4273,7 +4453,7 @@ The Cargo workspace \texttt{test2/rust} has four members (the fourth,
   still passes).
 \end{itemize}
 
-Together they have 7135 lines of commented Rust in 12 files. Arithmetic:
+Together they have 8358 lines of commented Rust in 14 files. Arithmetic:
 double precision; each check names its tolerance; random numbers from a
 fixed seed, so that every run gives the same output.
 
@@ -4454,7 +4634,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.56 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.50 s
 output files: t2_py_cyclotron_summary.txt, t2_py_cyclotron_series.csv, t2_py_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4476,7 +4656,7 @@ pair field: step, direction 3, amplitude 0.6, phase 0, width 1, positions [60.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 1200, output every 40 steps, Hbound = 8, dt Hbound = 0.4 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [30.0, 0.0, 0.0], width 4, momentum [0.917, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 1.073085668
-results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.34 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.32 s
 output files: t2_py_andreev_summary.txt, t2_py_andreev_series.csv, t2_py_andreev_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4496,7 +4676,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.88 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.83 s
 output files: t2_py_kink_spectrum_summary.txt, t2_py_kink_spectrum_series.csv, t2_py_kink_spectrum_fields.csv, t2_py_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4516,7 +4696,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.75 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.52 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_py_ground_state_summary.txt, t2_py_ground_state_series.csv, t2_py_ground_state_fields.csv, t2_py_ground_state_spectrum.csv, t2_py_ground_state_iterations.csv
 checks:
@@ -4540,7 +4720,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 7.37 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 6.93 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_py_kink_ground_state_summary.txt, t2_py_kink_ground_state_series.csv, t2_py_kink_ground_state_fields.csv, t2_py_kink_ground_state_spectrum.csv, t2_py_kink_ground_state_iterations.csv
 checks:
@@ -4567,7 +4747,7 @@ ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.05
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 49.75 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 49.03 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_py_quench_summary.txt, t2_py_quench_series.csv, t2_py_quench_fields.csv, t2_py_quench_spectrum.csv, t2_py_quench_iterations.csv
 checks:
@@ -4654,7 +4834,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.06 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.07 s
 output files: t2_rs_packet_free_summary.txt, t2_rs_packet_free_series.csv, t2_rs_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4677,7 +4857,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.35 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.73 s
 output files: t2_rs_cyclotron_summary.txt, t2_rs_cyclotron_series.csv, t2_rs_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4699,7 +4879,7 @@ pair field: step, direction 3, amplitude 0.6, phase 0, width 1, positions [60.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 1200, output every 40 steps, Hbound = 8, dt Hbound = 0.4 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [30.0, 0.0, 0.0], width 4, momentum [0.917, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 1.073085668
-results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.25 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.28 s
 output files: t2_rs_andreev_summary.txt, t2_rs_andreev_series.csv, t2_rs_andreev_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4720,7 +4900,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 2.68 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 2.83 s
 output files: t2_rs_kink_spectrum_summary.txt, t2_rs_kink_spectrum_series.csv, t2_rs_kink_spectrum_fields.csv, t2_rs_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4741,7 +4921,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 5.17 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 5.23 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_rs_ground_state_summary.txt, t2_rs_ground_state_series.csv, t2_rs_ground_state_fields.csv, t2_rs_ground_state_spectrum.csv, t2_rs_ground_state_iterations.csv
 checks:
@@ -4766,7 +4946,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 24.31 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 23.76 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_rs_kink_ground_state_summary.txt, t2_rs_kink_ground_state_series.csv, t2_rs_kink_ground_state_fields.csv, t2_rs_kink_ground_state_spectrum.csv, t2_rs_kink_ground_state_iterations.csv
 checks:
@@ -4789,11 +4969,11 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.44 s
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.39 s
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 24.33 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 25.03 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_rs_quench_summary.txt, t2_rs_quench_series.csv, t2_rs_quench_fields.csv, t2_rs_quench_spectrum.csv, t2_rs_quench_iterations.csv
 checks:
@@ -4849,6 +5029,18 @@ checks:
 [PASS] EX-7 the fermion number is constant along the whole evolution (largest change 2.4e-11)
 [PASS] EX-8 the two solvers give the same numbers in all 18 output files: the solutions, spectra and time series agree to 1.0e-09 (allowed 1e-7: rounding errors, amplified by the time stepping), and the histories of the self-consistent iterations (the same number of iterations) to 1.8e-07 (allowed 1e-5: the intermediate iterates of the Anderson method depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; the fixed point does not)
 \end{verbatim}
+
+\hypertarget{a.2e-the-program-of-item-6}{%
+\subsection{A.2e The program of item
+{[}6{]}}\label{a.2e-the-program-of-item-6}}
+
+The member \texttt{t2plot} of the Cargo workspace \texttt{test2/rust}
+(\texttt{Cargo.toml}; \texttt{src/svg.rs}, the plotting library;
+\texttt{src/main.rs}, the figures and the predictions), binary
+\texttt{t2\_plot}; it uses only the standard library and \texttt{t2core}
+(the function \texttt{eps\_lat}). It writes no report: its output is
+Figures 14 to 20 (the \texttt{.svg} files; the \texttt{.pdf} and
+\texttt{.png} versions are made from them by \texttt{rsvg-convert}).
 
 \hypertarget{a.3-data-files-and-figures}{%
 \subsection{A.3 Data files and
@@ -5086,6 +5278,10 @@ EX-1 \\
 \texttt{\_iterations.csv}, \texttt{\_spectrum.csv} & EX-6 \\
 13 & \texttt{test2/figures/fig\_t2\_py\_quench} &
 \texttt{t2\_py\_quench\_series.csv}, \texttt{\_fields.csv} & EX-7 \\
+14 to 20 &
+\texttt{test2/figures/fig\_t2\_rs\_\textless{}example\textgreater{}}
+(.svg, .pdf, .png) & the files
+\texttt{t2\_rs\_\textless{}example\textgreater{}\_*} & EX-1 to EX-7 \\
 \end{longtable}
 
 The figures are drawn by \texttt{test2/python/make\_t2\_figures.py} from
@@ -5101,11 +5297,11 @@ of Figure 1(b) from two columns of a data file, the normal-state energy
 \hypertarget{a.4-checksums}{%
 \subsection{A.4 Checksums}\label{a.4-checksums}}
 
-SHA-256 checksums of the sources and data of items {[}1{]} to {[}5{]} at
+SHA-256 checksums of the sources and data of items {[}1{]} to {[}6{]} at
 the time this document was built:
 
 \begin{verbatim}
-79bfa0426a86c198821094e82851139a0617d6a9ca470426c023fb8057f8c855  test2/rust/Cargo.toml
+3f27aed74b4d250822a43b84fcdc5772779f5c4c8d89ca44c7d6de80d9cf03b4  test2/rust/Cargo.toml
 26e7cc6bb7ac393f83bfaa222eeb0f2e0639f3ab878fbbd9e6e67d20c1376f68  test2/rust/t2core/src/lib.rs
 8c412f5703dc49c7ba51fb86ff9a4fd4bcc3ce4667a11216884a4e2e2b6a43a3  test2/rust/t2core/src/c64.rs
 ace63b498d0e0fcbca02f1b659aa6249343f1b9ef9b16a113349bb9023915447  test2/rust/t2core/src/cmat.rs
@@ -5141,35 +5337,38 @@ adb6223ae6c17289309d8669399bb4660e9839e72953a04f5d63e3a67705e6e4  test2/rust/t2s
 a91fdc749be01b904f4fe83fb7cf31ba3e10031c77bb48f9ef9d85c5f2b64b17  test2/rust/t2solve/src/input.rs
 c1a70b2a3f7bf425464593606e7581c9ac5e7b9ca27527affdf3f4fe7774bcb5  test2/rust/t2solve/src/ops.rs
 0f78441e9b1323db1859ff83c7ff1378a1dd2577e10160d40963767131adb760  test2/rust/t2solve/src/main.rs
+1752f728bbace8dc36110d4455450108f3536010bf72fe6d1caf4ab62be76e0a  test2/rust/t2plot/Cargo.toml
+7911eac5078a9d453c5eeb625fa927e4ba6ee55e57d020d06f32002d10ecfda7  test2/rust/t2plot/src/svg.rs
+844e0b5a1787c371f37c3b2dd9cbaf31ebe42cb568cf63ac3ecd122eb96a57cc  test2/rust/t2plot/src/main.rs
 38cd49ba650c9f94687ecd849d28c32151f20f1ce77e72182ee010b9d4a7ecb5  test2/data/t2_rs_andreev_fields.csv
 75046efc5af959ef475d7cda76ac2e9753130b36a942904d2f64af9332bc6631  test2/data/t2_rs_andreev_series.csv
-8f3edf7c5b588c7499a8c455fb0aa61f0fe9c527ccee03d2fc320181b1719286  test2/data/t2_rs_andreev_summary.txt
+ec4ed742a177ecee31db80ecb2cb88ea766c395f2382ceccd3a417ef79af187e  test2/data/t2_rs_andreev_summary.txt
 04a8e62cbfd2fff9644da9accac1714440590c927bce60139d590e2ef6ea516f  test2/data/t2_rs_cyclotron_fields.csv
 970742322a9f43a0e61a077fb39609032b7955a5ab8a555777b06d9d8ed1f267  test2/data/t2_rs_cyclotron_series.csv
-1185e548eb9c258af0da44333674199020f9d8bc84adfb0976563a9bb9f946cc  test2/data/t2_rs_cyclotron_summary.txt
+1c4305e347100e675ba4640a5bd9e063d09e375ab22e60c1d84a47d4fb865c66  test2/data/t2_rs_cyclotron_summary.txt
 b17782e98ff2d24e7c784e045dff43a0a023ac0d1373b40cf758bb53cc027413  test2/data/t2_rs_examples_checks.txt
 4af9aca2902d550082d9040f9ba0f788503010bd9a1635743e4e5c8e436a6081  test2/data/t2_rs_ground_state_fields.csv
 5600d8cead9f2c297e84910df83397b903feccf77b2f60e9bc3960fad207c05e  test2/data/t2_rs_ground_state_iterations.csv
 8059ddb396c0cc90b4b75627ce04144db8f5921208268e046b4ff5ec28718642  test2/data/t2_rs_ground_state_series.csv
 08ca4f334aa91e29939c225abb148881818c376b50e5712090ce917d0509d7e0  test2/data/t2_rs_ground_state_spectrum.csv
-af3f50db1b6b8d9772f58e5e43145df729bbf6731623dc13a50e8b3ce2bf5328  test2/data/t2_rs_ground_state_summary.txt
+3a74c9eabb470b2f37148a25540a3af093f09a51506bd1bdb6bc8b3246036550  test2/data/t2_rs_ground_state_summary.txt
 e9733585ece915da77428e05d346a0b8912e10f804cccfaab0e4d3b33f65b5cb  test2/data/t2_rs_kink_ground_state_fields.csv
 8adfa332cbf6ee0548241c712cba691ceecbfb8cfec2fc9c5d5bbc843fe091b3  test2/data/t2_rs_kink_ground_state_iterations.csv
 e66b4bf33e348772e022d4d9eed1eca3bf88f82e30ca722c9ab1b998dbc2d73b  test2/data/t2_rs_kink_ground_state_series.csv
 72db22d2e9e76347c4b93d0ae718558ac782b1b48c30eca7124c78421ba22a6d  test2/data/t2_rs_kink_ground_state_spectrum.csv
-6c51487d0455cfbf9b1c07633f29e5a399594635619d0f0184cf74eb1d6c0832  test2/data/t2_rs_kink_ground_state_summary.txt
+6b46e704d0ccaa7a054137f7ec8db20324b7874415fe29cb072e80455f8cfa79  test2/data/t2_rs_kink_ground_state_summary.txt
 9867541d67f16e32c59cd4d99c5857e52511fa128f5c8d91b462d592db184faa  test2/data/t2_rs_kink_spectrum_fields.csv
 027f653b04b5c3a26e0668f198373cee275f47fd4892b849b13a0b0db605e375  test2/data/t2_rs_kink_spectrum_series.csv
 5c20876704a3c42eaca1cdbef98a4ec0077a31329ebe06d50ea67963f363dd5c  test2/data/t2_rs_kink_spectrum_spectrum.csv
-13ba98c14ae94c17474ea1454f1a7907c68cc83c47e421e64f294cd1c9b1f441  test2/data/t2_rs_kink_spectrum_summary.txt
+d315935341cfb9da2de1d363b745dcf15432757b2d7dfff5af8326d988e6de6f  test2/data/t2_rs_kink_spectrum_summary.txt
 7add614bbf4b78e0760c9c037398b19077ae5945b77c8ffe062c6a33b38604ef  test2/data/t2_rs_packet_free_fields.csv
 f4018aff09f8dfbcffc97de41876aec54cbf3acf4d9058be49e5814f4a87792e  test2/data/t2_rs_packet_free_series.csv
-16d0ea69aef3e0410d8ba307accebe2fda1a888c2120fe0f2e72f14b20be0e91  test2/data/t2_rs_packet_free_summary.txt
+813c8fd799c118c8d7ed94577d748dbc353d164adf848a2f062c8fa1eb282bfe  test2/data/t2_rs_packet_free_summary.txt
 e5da7d79a6a9ebd00be90b5ecdd919891c0d00166ab2aba0a2cd46fd73ca3bc7  test2/data/t2_rs_quench_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  test2/data/t2_rs_quench_iterations.csv
 9af01479530a8e6c0a8c1bfce0f89acf66569dc4a97957983c63733b741b8ab3  test2/data/t2_rs_quench_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  test2/data/t2_rs_quench_spectrum.csv
-56cdb4347ee1d4a5fe901dd9cc841484febc1ed84f24aff44194a7065c796e2c  test2/data/t2_rs_quench_summary.txt
+4c8f7b182817a574597840a5981cffbdcbea3344896eee6682d11eb367e7d7c1  test2/data/t2_rs_quench_summary.txt
 cbaf79f05f214d82eea76f2f4857a611e2ea8612bfe3fd4c93bc14a79b9646b2  test2/examples/packet_free.t2in
 6d25a57a1e3e944fc69ca061f7a712a6b5456c5a1635e9aae16603dfd09d7d2a  test2/examples/cyclotron.t2in
 6898e720c6ed17512407d884cd189d2c588e2edd4eeacf6836eea41dc3ff03d8  test2/examples/andreev.t2in
@@ -5179,26 +5378,26 @@ db17d3e736a379ffef1d250131431ad808ecd59e5e03eb2af7020f9fdd62900d  test2/examples
 40e4e6205936b3b8fb26274bf49ca4eabf72cff4ce23bacd639220da7393beac  test2/examples/quench.t2in
 cd1107ddc2782ed03146cacd37fbb96b441114fcaad1ac73f5d465bf0f6a8d54  test2/data/t2_py_andreev_fields.csv
 c83fbceb6cdd0573b2456c5a57bfb5593f6da6c3c3c1665242dc5e502de4214f  test2/data/t2_py_andreev_series.csv
-e1827f22356ded9bee8b93d27d95f9cd7d300a957797464bef15ef57accce54e  test2/data/t2_py_andreev_summary.txt
+0be1301d2dea9f0ba7f0a3900d0a1008f97163cfd6a1f039204611a73fb3a2bd  test2/data/t2_py_andreev_summary.txt
 24da15309d10d8ad365eb20020b1736d99df4be6d91f069f8f3d3c25bf2def63  test2/data/t2_py_cyclotron_fields.csv
 94d23809e68eaffd91856aaae37831221665e535f290852490ec22b14b16c35a  test2/data/t2_py_cyclotron_series.csv
-66109ce99c4722ee78feaa728a2cd5219e4b8f359812646cbd50cc9201ef8e8f  test2/data/t2_py_cyclotron_summary.txt
+e9f1fbb14395a16b695280223b88355838aace77c4ad17688778e44a0869e3bf  test2/data/t2_py_cyclotron_summary.txt
 5e12b6d2ff68774d18c9a0974d17c77ed1aef422bd2e0f1ae46867d8379a3370  test2/data/t2_py_examples_checks.txt
 8b6393611ecac9ff8356a01c27eb65d4ee43391cc062c57137926b16fe930b76  test2/data/t2_py_fragments.md
 9d4b29b04b3ff0676a9f9c3c6f78c79b956718e123b24ae2c1db4534dc00c83c  test2/data/t2_py_ground_state_fields.csv
 880af932345b388ced88215c6d1e40249f7e6ec1d44f99752509c6589ac8598a  test2/data/t2_py_ground_state_iterations.csv
 1f67870777717eb2699170da2fcdd939ad4c30fad6ebe44fae99d1b2049becb8  test2/data/t2_py_ground_state_series.csv
 85c66e6bd698089ae41947061567c62ca9fd65cbebd2ec209e64bd143e97617b  test2/data/t2_py_ground_state_spectrum.csv
-e9ebc8bcc2aa357f59b66f09b6a59203d704fab8edd2f9c1ec3c6fcad341b542  test2/data/t2_py_ground_state_summary.txt
+c27ae80b6f5628ef4597589b762d4ba0ce7d86ce808ff63b016c846a9511f4ab  test2/data/t2_py_ground_state_summary.txt
 a444457b6ccef8cc17a8bfa306bfd8a7470d5e08bc209d2da890362a6b84b5da  test2/data/t2_py_kink_ground_state_fields.csv
 fd8278836575842aef92a703ae238a0bc750dbc75d314360fad40b92b382c490  test2/data/t2_py_kink_ground_state_iterations.csv
 3585ffa2e04091411515e8a87087f87752eaa37b8035aacad7219d0a860fe3b8  test2/data/t2_py_kink_ground_state_series.csv
 9236d8326b7fa87012b3294c4a317624d81122c56bcc2cd96e6dafa41cc1e827  test2/data/t2_py_kink_ground_state_spectrum.csv
-03880dd89e765d59aa3e6f39033108caa72060bc4b7e001c09e507443e654235  test2/data/t2_py_kink_ground_state_summary.txt
+45d2adc37fe306b9c11467bcf22ab2b1a3a9b38cae5109b63a7b615b7b480671  test2/data/t2_py_kink_ground_state_summary.txt
 adbf2770790ced9e216b615bbb3eb431572cf1585a617eae074145f6630a3d17  test2/data/t2_py_kink_spectrum_fields.csv
 59782576f999b3eb87dd8a148c832689f21a430826ad4364291fd21288330ee4  test2/data/t2_py_kink_spectrum_series.csv
 2940378aec823ec8982f3441f64e8daa6b3552ff71b6bd68e9d2bc2290c63674  test2/data/t2_py_kink_spectrum_spectrum.csv
-befb5c34679d756e92c582dd40d6d1d7cf4fb4b2860dc27b59fa3378c98edd3a  test2/data/t2_py_kink_spectrum_summary.txt
+5f812f725d789896b034db60279c8aec36fc4e541821b857f939aedc4c37ac39  test2/data/t2_py_kink_spectrum_summary.txt
 5d1ee70ca2be6ae05ca36f4a221976a8e22fb1c7efd9ad493f9474d516afa7f5  test2/data/t2_py_packet_free_fields.csv
 815fb1893240734931c0191364ec2d4dc61168cf852f4072355717e8ee3e20d6  test2/data/t2_py_packet_free_series.csv
 25d5111526dd7b74cc2ed15036659c3b9bc0dd0c58743ba1784575e98f1b7f15  test2/data/t2_py_packet_free_summary.txt
@@ -5206,7 +5405,7 @@ befb5c34679d756e92c582dd40d6d1d7cf4fb4b2860dc27b59fa3378c98edd3a  test2/data/t2_
 5470f40e63a043a54379e9988a4cb7ede587ddc706ff7ebac4db9ac91d05f2f1  test2/data/t2_py_quench_iterations.csv
 b8121988fb419aaa9a714db949924caeec7fba1b94d3b1bd2b03435264f98747  test2/data/t2_py_quench_series.csv
 2233cd5c04499b0e33c4379dd6f7e05a6763fb7c0003f2ab06fecf67e6068784  test2/data/t2_py_quench_spectrum.csv
-999761ccede657568d92a5ea80631656db4141199513202415fe609f5bfd8fe4  test2/data/t2_py_quench_summary.txt
+baa0b103a39c34d685be786f4f8395a2f86194352df5031779b1d60dea3fd2b5  test2/data/t2_py_quench_summary.txt
 f348c21507ffcdacc86d5afcda73d40eb776963c730523db163c03bc4f049612  test2/data/t2_py_selftest_checks.txt
 \end{verbatim}
 

@@ -1,0 +1,12 @@
+[package]
+name = "t2plot"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2, item [6]: a pure Rust program that plots the solutions of the Rust solver t2_solve (SVG figures)"
+
+[[bin]]
+name = "t2_plot"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

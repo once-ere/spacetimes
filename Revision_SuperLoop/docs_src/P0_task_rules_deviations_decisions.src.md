@@ -205,7 +205,8 @@ the test, and is committed and carried to the author's computer after each item 
 | [3] | Section 4 of the document: the Python solver `test2/python/t2_solve.py` (guidance, the question for the input file, the input file of lines `key = value` with 50 checked keys, the tasks evolve, spectrum, ground_state and quench), its numerical methods with their conservation properties, and seven examples with known answers checked by `t2_examples_check.py` | answered |
 | [4] | Section 5 of the document: the plotter `test2/python/t2_plot.py` (one figure per solution, its panels chosen by the task; for the seven examples the predictions of the checks EX-1 to EX-7 drawn with the solutions) and Figures 7 to 13 | answered |
 | [5] | Section 6 of the document: the Rust solver `t2_solve` (member `t2solve` of the Cargo workspace `test2/rust`), with the instructions for installing Rust, building with cargo and using it; the same input and output files as the Python solver; the comparison EX-8 of the two sets of solutions | answered |
-| [6] to [11] | Sections 7 to 13 of the document | to follow, in this order |
+| [6] | Section 7 of the document: the Rust plotter `t2_plot` (member `t2plot` of the workspace `test2/rust`), which writes Scalable Vector Graphics with its own small plotting library and draws the predictions of the examples computed in Rust; Figures 14 to 20 | answered |
+| [7] to [11] | Sections 8 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -300,6 +301,9 @@ expression and compares it with the matrix that it describes (check GS-12).
    comparison EX-8 with the Python solutions, Section 6 of the document of Test 2, and `check_all.sh` extended; the Python
    solver now makes random pair fields with the generator SplitMix64 of `t2core` (so that both solvers make the same field) and
    writes the densities of degenerate eigenvectors summed over each group (Section 11, entries E54 and E55).
+13. **Stage 11 — Test 2, item [6]** (Section 2.8): the Rust plotter `t2_plot` in the new member `t2plot` of the workspace
+   `test2/rust` (no external crate; Scalable Vector Graphics), Figures 14 to 20 (converted to PDF and PNG with `rsvg-convert`),
+   Section 7 of the document of Test 2, and `check_all.sh` extended (Section 11, entry E56).
 
 # 6. The results in brief
 
@@ -528,6 +532,11 @@ corrected accordingly, together with its normalization of the modes in fewer tha
 fields are offered as a uniform pulse of given shape, and site-dependent ones through a file; general functions of
 space and time would need program code from the user, which the input file avoids.
 
+**D16. "a full pure rust program that plots these rust numerical solutions".** A pure Rust program (no external crate) cannot
+rasterize text without a font renderer of its own; the plotter therefore writes Scalable Vector Graphics, which every web browser
+displays and which are converted to PDF and PNG for the documents by the program `rsvg-convert` (outside the Rust program). The
+figures are complete plots (axes, ticks, labels, legends, colour maps), drawn entirely by the Rust program.
+
 **D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
 they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
 uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
@@ -572,8 +581,8 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [6] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains items [1] to [5]. The solver of item [3] treats the gauge fields as external (their field
+* Items [7] to [11] of Test 2 are answered in the following stages; this version of the document of the
+  answers contains items [1] to [6]. The solver of item [3] treats the gauge fields as external (their field
   equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
@@ -654,6 +663,7 @@ evaluated numerically, as in the earlier stages.
 | E53 | the first quench output wrote the fermion number with twelve significant digits only, so that its change ($2\times10^{-11}$ of 96) was invisible in the data file and in the first figure; the solver now writes the change itself (`N_F_change`), and the figure legends were moved where they cover no data |
 | E54 | the first comparison of the two solvers failed for the task `spectrum`: the densities of single eigenvectors inside a degenerate eigenspace depend on the basis that each eigensolver chooses; the solvers now write the densities summed over each group of degenerate eigenvalues, which are independent of the basis |
 | E55 | the first comparison also failed for the history of the Anderson iteration of the uniform example (difference $2\times10^{-7}$ at an intermediate iterate, with the same fixed point to $10^{-15}$); the histories are now compared with the tolerance $10^{-5}$ and the solutions with $10^{-7}$, for the reason stated in check EX-8 |
+| E56 | in the first drawings of the Rust plotter three legends covered data (the crossing of the probabilities of the Andreev reflection, the curves of the self-consistent kink and some eigenvalues), and in the two-dimensional figure the axis labels of the second column of panels overlapped the first; the legends and panels were moved |
 
 # 12. The symbols
 

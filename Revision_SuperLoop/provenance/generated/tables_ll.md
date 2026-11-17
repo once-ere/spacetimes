@@ -151,11 +151,11 @@ LL-S1 & every symbol text is registered once (139 entries) and every plain-text 
 LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 311 items of the 137 new entries is an item of either master registry (503 items compared); the 23 items that the registry of Revision\_NoGo also contains are exactly the 23 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
 LL-S3 & every column of the 79 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (168 different columns), and every file states its content in a line '\# content:' & PASS\\
 LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 139 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 4841 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 5725 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S5 & in the 4851 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 5735 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
 LL-S7 & every one of the 4155 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (64 registered styled letters) & PASS\\
 LL-S8 & every one of the 3598 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 110 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 1572 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-S9 & the 1576 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
 LL-H1 & none of the 30 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
@@ -463,7 +463,7 @@ cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/t
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
 227ad40b219115f62a295292d0c6d6d00bf0e5dd11b96ad2acf208b69dae345d  code/scripts/write_symbol_registry.py
 e6f3025b7f959977a1075cda0e0c34f51e208d9e28db50bc5d4fffcef189a6ab  code/scripts/build_docs.sh
-a094fa86c4192bfd9cb2f0c42296e0993b12a2bf96720fa84f6fbccae91c3b37  code/scripts/check_all.sh
+dea23f45b1b789f307229b0ec39e4302f6cf6093064a3986abe9b898fbb9d5f1  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
 
@@ -531,10 +531,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-eb4de6d2fc3bdbbd09142445d51bf72949cbfa35c4722f06fa1ac42eb058e7f9  explanations/figures/fig_ex_r13_bubble.pdf
-3fc40c31d989eb8443206992d7392cc9f9f5d495c297c620c46ed77e2649bff2  explanations/figures/fig_ex_r13_coordinates.pdf
-e33351c6bab5bf2009f88e3f27e2eb070fbc64cd3892c0fa2a22fca035e8ff33  explanations/figures/fig_ex_r13_divergences.pdf
-b52f5d034cba03ae48618be13f78b90fb248e22c7034eaca432cc15c9475234b  explanations/figures/fig_ex_r13_lorentz.pdf
+1da874159c623748dba5798c89c3f404d3574f08878212f8f59713614ea9e927  explanations/figures/fig_ex_r13_bubble.pdf
+1eefa59662f0a0ebe7f4d9ba92f62525e7fe8cd532d78b484a29b68c7d45b840  explanations/figures/fig_ex_r13_coordinates.pdf
+552ba98784024343f32cb8123a385f3d75364d5d5d52d3781670fa45c185eb31  explanations/figures/fig_ex_r13_divergences.pdf
+3e22ed7acbedc65559ebe7eda8994a9b5fd14d0f225c2dbf359bbd08db20098f  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1090,9 +1090,9 @@ $$M_{\rm LL}(\mathbf D_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0+\nabla^{\rm LL
 <!-- END nchecks_t2_rs_selftest -->
 
 <!-- BEGIN n_t2_rust_lines -->
-7135
+8358
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->
-12
+14
 <!-- END n_t2_rust_files -->

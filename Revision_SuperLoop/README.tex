@@ -290,7 +290,11 @@ Cargo workspace \texttt{test2/rust}, built with
 checks and output files as the Python solver, checked against the
 operator of the library \texttt{t2core}; for the seven examples its
 solutions agree with the Python solutions to rounding (11 checks, among
-them the comparison EX-8).
+them the comparison EX-8). Its sixth answer (item {[}6{]}) is the Rust
+plotter \texttt{t2\_plot} (the member \texttt{t2plot} of the same
+workspace): it draws any solution as Scalable Vector Graphics with a
+small plotting library of its own, with the predictions of the examples
+computed in Rust (Figures 14 to 20 of the document).
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -390,7 +394,9 @@ solver \texttt{python/t2\_solve.py} with the seven input files of
 \texttt{examples/} and the checks of the examples
 \texttt{python/t2\_examples\_check.py} (item {[}3{]}); the plotter
 \texttt{python/t2\_plot.py} (item {[}4{]}); the Rust solver
-\texttt{rust/t2solve} (binary \texttt{t2\_solve}, item {[}5{]}) \\
+\texttt{rust/t2solve} (binary \texttt{t2\_solve}, item {[}5{]}); the
+Rust plotter \texttt{rust/t2plot} (binary \texttt{t2\_plot}, item
+{[}6{]}) \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -434,6 +440,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
 python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
+# Test 2, item [6]: Figures 14 to 20, the Rust plots of the Rust solutions (SVG; PDF and PNG with rsvg-convert):
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}

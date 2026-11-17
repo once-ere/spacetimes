@@ -87,6 +87,9 @@ Its fifth answer (item [5]) is the Rust solver `t2_solve` (the member `t2solve` 
 `cargo build --release`): the same input files, methods, checks and output files as the Python solver, checked against the
 operator of the library `t2core`; for the seven examples its solutions agree with the Python solutions to rounding
 (11 checks, among them the comparison EX-8).
+Its sixth answer (item [6]) is the Rust plotter `t2_plot` (the member `t2plot` of the same workspace): it draws any solution as
+Scalable Vector Graphics with a small plotting library of its own, with the predictions of the examples computed in Rust
+(Figures 14 to 20 of the document).
 
 # 2. Where to start reading
 
@@ -124,7 +127,7 @@ operator of the library `t2core`; for the seven examples its solutions agree wit
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-16, item [1]) and the program `t2_analytic` (checks AS-1 to AS-10, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-16, item [1]) and the program `t2_analytic` (checks AS-1 to AS-10, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]) |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -165,6 +168,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
 python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
+# Test 2, item [6]: Figures 14 to 20, the Rust plots of the Rust solutions (SVG; PDF and PNG with rsvg-convert):
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```

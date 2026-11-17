@@ -21,7 +21,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [3] | a Python script that guides the user in defining initial and boundary conditions, asks for the name of a file of such conditions, reads it and solves the field equations numerically | Section 4 | answered |
 | [4] | a Python script that plots these numerical solutions | Section 5 | answered |
 | [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | answered |
-| [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | to follow |
+| [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | answered |
 | [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | to follow |
 | [8] | the effective field equations of the SFBS | Section 9 | to follow |
 | [8] | the effective potential of the SFBS, the analogue of the Mexican-hat potential of the Higgs doublet | Section 10 | to follow |
@@ -30,7 +30,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] to [5]; the sections of the other items are added to this same document, in this order, as they
+items [1] to [6]; the sections of the other items are added to this same document, in this order, as they
 are completed.
 
 ## 1.2 How to read this document
@@ -2055,8 +2055,9 @@ The commands are those of the Python solver, with `./test2/rust/target/release/t
 ./test2/rust/target/release/t2_solve my_problem.t2in --out results/run1
 # without arguments: a short guide, then the question for the name of the input file
 ./test2/rust/target/release/t2_solve
-# plot a solution with the Python plotter of item [4]
+# plot a solution with the Python plotter of item [4], or with the Rust plotter of item [6] (Section 7)
 python3 test2/python/t2_plot.py my_problem
+./test2/rust/target/release/t2_plot my_problem
 ```
 
 In the dialogue the program answers `?` with the complete guide, `examples` with the list of examples, `example NAME` by
@@ -2156,6 +2157,117 @@ NumPy calls the optimized LAPACK library; the eigensolver of `t2core` is a plain
 - **Limits.** The same as those of the Python solver (Section 4.5): external gauge fields, and the dense diagonalization of the
   self-consistent tasks (here also its speed).
 
+# 7. Item [6]: a Rust program that plots the Rust solutions
+
+## 7.0 The answer in brief
+
+The program `t2_plot` is the member `t2plot` of the Cargo workspace `test2/rust` (pure Rust, about 1200 commented lines in two
+files; no external crate). It reads the output files of a solution of the Rust solver of item [5] (or of the Python solver,
+which writes the same files), chooses the panels by the task, as the Python plotter of item [4] does, and writes the figure as
+Scalable Vector Graphics (`.svg`), a text format of lines, shapes and labels that every web browser displays and that can be
+enlarged without loss. For the seven examples it draws the predictions of the checks EX-1 to EX-7, computed by the program itself
+in Rust from the formulas of this document: the mean group velocity of (4.7), the Rayleigh quotient (3.29) of the bound states,
+the root of the gap equation (3.21), the continuum kink and the first-order Wilson shift, and the frequency of the amplitude mode
+(4.11). Figures 14 to 20 are its output for the seven Rust solutions (converted to PDF and PNG for this document).
+
+## 7.1 Building and using the program
+
+It is built together with the solver (Section 6.1):
+
+```
+cd test2/rust && cargo build --release && cd ../..
+```
+
+and used from the folder Revision_SuperLoop:
+
+```
+# solve an example with the Rust solver, then plot it: writes t2_rs_andreev_plot.svg next to the data
+./test2/rust/target/release/t2_solve test2/examples/andreev.t2in --out t2_rs_andreev
+./test2/rust/target/release/t2_plot t2_rs_andreev
+# choose the name of the figure, or leave out the predictions of the examples
+./test2/rust/target/release/t2_plot t2_rs_andreev --out my_figures/andreev
+./test2/rust/target/release/t2_plot t2_rs_andreev --no-predictions
+# without arguments: the program lists the solutions in the current folder and asks for a base name
+./test2/rust/target/release/t2_plot
+# open the figure in a web browser (macOS; on Linux: xdg-open)
+open t2_rs_andreev_plot.svg
+# optional: PDF and PNG files (needs the program rsvg-convert of the librsvg package)
+rsvg-convert -f pdf -o andreev.pdf t2_rs_andreev_plot.svg
+rsvg-convert -f png -z 1.6 -o andreev.png t2_rs_andreev_plot.svg
+```
+
+## 7.2 How the program is built
+
+- `svg.rs`, a small plotting library: a figure is a set of panels; a panel maps its data ranges (linear, or logarithmic for the
+  errors) to pixels, chooses tick values that are multiples of 1, 2, 2.5 or 5 times a power of ten, and collects its contents as
+  SVG elements: lines (broken where a value is missing or, on a logarithmic axis, not positive), dots, horizontal and vertical
+  reference lines, shaded bands, colour maps of one hue from white to dark blue, and a legend with a white background placed
+  where it covers no data. Labels use a small markup, `x^{1}_{LL}` for $x^1_{\rm LL}$, which becomes raised and lowered text.
+  The colours are those of the Python plotter (Section 5.2).
+- `main.rs`: the reading of the data files (the lines `# key: value` and the columns), the four kinds of figure, the predictions
+  of the examples, the dialogue and the command line. The predictions use the dispersion (2.37) through the function `eps_lat`
+  of `t2core`, the group velocity (4.7), bisection for (3.21) and (4.11), and a least-squares fit for the sinusoid with the
+  predicted frequency. For the bound states of the kink and the antikink (EX-4) it uses the profile
+  $\cosh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})^{-\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}}$ of each wall from the parameters in the
+  summary; for the self-consistent kink (EX-6), the zero mode of the computed profile.
+
+The figures of the Rust program show the same content as Figures 7 to 13 of the Python program, drawn from the Rust solutions;
+the numbers in their legends (the predictions) are computed independently of the Python checks and agree with them to the digits
+shown.
+
+## 7.3 The figures of the Rust solutions
+
+![](figures/fig_t2_rs_packet_free.png){width=100%}
+
+**Figure 14.** The free wave packet, Rust solution (example `packet_free`): (a) the density in space and time with its centre and
+the predicted motion with the mean group velocity (dashed); (b) the density at four times; (c) the probabilities of the hole part
+and of isospin up; (d) the changes of norm and energy. Data: `test2/data/t2_rs_packet_free_*`.
+
+![](figures/fig_t2_rs_cyclotron.png){width=100%}
+
+**Figure 15.** The packet in the magnetic field, Rust solution (example `cyclotron`): (a) to (d) the density at four times with the
+path of its centre; (e) the whole path; (f) the conservation of norm and energy. Data: `test2/data/t2_rs_cyclotron_*`.
+
+![](figures/fig_t2_rs_andreev.png){width=100%}
+
+**Figure 16.** Andreev reflection, Rust solution (example `andreev`): (a) the density in space and time, the step of the pair field
+(dotted); (b) the particle part (solid) and the hole part (dashed) at four times; (c) the conversion of the particle into a hole;
+(d) the errors of the time stepping. Data: `test2/data/t2_rs_andreev_*`.
+
+![](figures/fig_t2_rs_kink_spectrum.png){width=100%}
+
+**Figure 17.** The kink and the antikink, Rust solution (example `kink_spectrum`): (a) all eigenvalues, the 16 bound states in the
+window, the predicted energies $\pm E^{\rm R}_{\rm LL}$ (dashed) and the edges of the continuum (dotted); (b) the pair field and the
+summed density of the bound states of positive energy. Data: `test2/data/t2_rs_kink_spectrum_*`.
+
+![](figures/fig_t2_rs_ground_state.png){width=100%}
+
+**Figure 18.** The self-consistent uniform superfluid, Rust solution (example `ground_state`): (a) the guess, the self-consistent
+pair field and the root of (3.21) (dotted); (b) the convergence of the Anderson iteration; (c) the spectrum near zero. Data:
+`test2/data/t2_rs_ground_state_*`.
+
+![](figures/fig_t2_rs_kink_ground_state.png){width=100%}
+
+**Figure 19.** The self-consistent kink, Rust solution (example `kink_ground_state`): (a) the guess, the self-consistent pair field
+and the continuum kink (dotted); (b) the convergence; (c) the eight bound states and the predicted Wilson shift (dashed). Data:
+`test2/data/t2_rs_kink_ground_state_*`.
+
+![](figures/fig_t2_rs_quench.png){width=100%}
+
+**Figure 20.** The quench, Rust solution (example `quench`): (a) the amplitude of the pair field with a sinusoid of the predicted
+frequency of (4.11) (dashed; amplitude and phase fitted); (b) the conserved quantities; (c) the pair field on the sites at four
+times. Data: `test2/data/t2_rs_quench_*`.
+
+## 7.4 Discussion
+
+- **Agreement.** Figures 14 to 20 and Figures 7 to 13 show the same solutions to rounding (check EX-8), drawn by two independent
+  programs, with predictions computed twice, in Python by `t2_examples_check.py` and in Rust by `t2_plot`.
+- **Why SVG.** A plotting program without external libraries cannot produce pixel images with good text without implementing a
+  font renderer; SVG leaves the rendering to the browser (or to `rsvg-convert`), keeps the figures sharp at every size, and is
+  plain text that can be inspected and edited.
+- **Limits.** As for the Python plotter (Section 5.4): one solution per figure, panels chosen by the task, three-dimensional
+  densities summed over $x^3_{\rm LL}$.
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -2184,7 +2296,12 @@ cd test2/rust && cargo build --release && cd ../..
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
 python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
-# 7. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 7. item [6]: Figures 14 to 20, the plots of the Rust solutions (SVG, converted to PDF and PNG with rsvg-convert)
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e
+  rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg
+  rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg; done
+# 8. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 ```
 
@@ -2192,13 +2309,14 @@ The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 secon
 together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, all on one processor
 core.
 
-Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; for the documents pandoc
+Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; rsvg-convert (librsvg) for the
+conversion of the SVG figures of item [6]; for the documents pandoc
 (2.11 or later), XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font. The Rust programs of the
 folder test2 use no external crate.
 
 ## A.2 The programs of items [1] and [2]
 
-The Cargo workspace `test2/rust` has four members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d):
+The Cargo workspace `test2/rust` has five members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e):
 
 - `t2core` (library): complex numbers and matrices, the Hermitian eigensolver, the super-loop operators as matrices
   (`model.rs`: $M_{\rm LL}$, the frame, the Dirac matrices, $\mathsf S_{\rm LL}$, $\mathsf s_{\rm LL}$,
@@ -2387,6 +2505,12 @@ The checks EX-1 to EX-7 of the Rust solutions and the comparison EX-8 with the P
 {{FILE:test2/data/t2_rs_examples_checks.txt}}
 ```
 
+## A.2e The program of item [6]
+
+The member `t2plot` of the Cargo workspace `test2/rust` (`Cargo.toml`; `src/svg.rs`, the plotting library; `src/main.rs`, the
+figures and the predictions), binary `t2_plot`; it uses only the standard library and `t2core` (the function `eps_lat`). It writes
+no report: its output is Figures 14 to 20 (the `.svg` files; the `.pdf` and `.png` versions are made from them by `rsvg-convert`).
+
 ## A.3 Data files and figures
 
 | file | content | columns |
@@ -2461,6 +2585,7 @@ its parameters in lines `# name: value`.
 | 11 | `test2/figures/fig_t2_py_ground_state` | `t2_py_ground_state_fields.csv`, `_iterations.csv`, `_spectrum.csv` | EX-5 |
 | 12 | `test2/figures/fig_t2_py_kink_ground_state` | `t2_py_kink_ground_state_fields.csv`, `_iterations.csv`, `_spectrum.csv` | EX-6 |
 | 13 | `test2/figures/fig_t2_py_quench` | `t2_py_quench_series.csv`, `_fields.csv` | EX-7 |
+| 14 to 20 | `test2/figures/fig_t2_rs_<example>` (.svg, .pdf, .png) | the files `t2_rs_<example>_*` | EX-1 to EX-7 |
 
 The figures are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
@@ -2470,7 +2595,7 @@ parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ 
 
 ## A.4 Checksums
 
-SHA-256 checksums of the sources and data of items [1] to [5] at the time this document was built:
+SHA-256 checksums of the sources and data of items [1] to [6] at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -2509,6 +2634,9 @@ SHA-256 checksums of the sources and data of items [1] to [5] at the time this d
 {{SHA256:test2/rust/t2solve/src/input.rs}}  test2/rust/t2solve/src/input.rs
 {{SHA256:test2/rust/t2solve/src/ops.rs}}  test2/rust/t2solve/src/ops.rs
 {{SHA256:test2/rust/t2solve/src/main.rs}}  test2/rust/t2solve/src/main.rs
+{{SHA256:test2/rust/t2plot/Cargo.toml}}  test2/rust/t2plot/Cargo.toml
+{{SHA256:test2/rust/t2plot/src/svg.rs}}  test2/rust/t2plot/src/svg.rs
+{{SHA256:test2/rust/t2plot/src/main.rs}}  test2/rust/t2plot/src/main.rs
 {{SHA256:test2/data/t2_rs_andreev_fields.csv}}  test2/data/t2_rs_andreev_fields.csv
 {{SHA256:test2/data/t2_rs_andreev_series.csv}}  test2/data/t2_rs_andreev_series.csv
 {{SHA256:test2/data/t2_rs_andreev_summary.txt}}  test2/data/t2_rs_andreev_summary.txt

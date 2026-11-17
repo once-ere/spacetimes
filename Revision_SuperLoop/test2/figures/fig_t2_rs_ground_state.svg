@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="480" viewBox="0 0 1480 480" font-family="DejaVu Sans, Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="white"/>
+<text x="740" y="26" font-size="16" fill="#1f1f1f" text-anchor="middle">the self-consistent uniform polar superfluid of a chain</text>
+<clipPath id="c0"><rect x="90" y="80" width="360" height="320"/></clipPath>
+<line x1="90.00" y1="80" x2="90.00" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="90.00" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">0</text>
+<line x1="206.13" y1="80" x2="206.13" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="206.13" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">5</text>
+<line x1="322.26" y1="80" x2="322.26" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="322.26" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">10</text>
+<line x1="438.39" y1="80" x2="438.39" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="438.39" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">15</text>
+<line x1="90" y1="388.15" x2="450" y2="388.15" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="85.00" y="392.15" font-size="11" fill="#5f5e5a" text-anchor="end">0.2</text>
+<line x1="90" y1="315.63" x2="450" y2="315.63" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="85.00" y="319.63" font-size="11" fill="#5f5e5a" text-anchor="end">0.25</text>
+<line x1="90" y1="243.11" x2="450" y2="243.11" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="85.00" y="247.11" font-size="11" fill="#5f5e5a" text-anchor="end">0.3</text>
+<line x1="90" y1="170.58" x2="450" y2="170.58" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="85.00" y="174.58" font-size="11" fill="#5f5e5a" text-anchor="end">0.35</text>
+<line x1="90" y1="98.06" x2="450" y2="98.06" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="85.00" y="102.06" font-size="11" fill="#5f5e5a" text-anchor="end">0.4</text>
+<g clip-path="url(#c0)">
+<path d="M90.00,388.15 L101.61,388.15 L113.23,388.15 L124.84,388.15 L136.45,388.15 L148.06,388.15 L159.68,388.15 L171.29,388.15 L182.90,388.15 L194.52,388.15 L206.13,388.15 L217.74,388.15 L229.35,388.15 L240.97,388.15 L252.58,388.15 L264.19,388.15 L275.81,388.15 L287.42,388.15 L299.03,388.15 L310.65,388.15 L322.26,388.15 L333.87,388.15 L345.48,388.15 L357.10,388.15 L368.71,388.15 L380.32,388.15 L391.94,388.15 L403.55,388.15 L415.16,388.15 L426.77,388.15 L438.39,388.15 L450.00,388.15 " fill="none" stroke="#8a8984" stroke-width="1.6" stroke-linejoin="round" stroke-dasharray="5,3"/>
+<path d="M90.00,91.85 L101.61,91.85 L113.23,91.85 L124.84,91.85 L136.45,91.85 L148.06,91.85 L159.68,91.85 L171.29,91.85 L182.90,91.85 L194.52,91.85 L206.13,91.85 L217.74,91.85 L229.35,91.85 L240.97,91.85 L252.58,91.85 L264.19,91.85 L275.81,91.85 L287.42,91.85 L299.03,91.85 L310.65,91.85 L322.26,91.85 L333.87,91.85 L345.48,91.85 L357.10,91.85 L368.71,91.85 L380.32,91.85 L391.94,91.85 L403.55,91.85 L415.16,91.85 L426.77,91.85 L438.39,91.85 L450.00,91.85 " fill="none" stroke="#2a78d6" stroke-width="1.7" stroke-linejoin="round"/>
+<path d="M90.00,91.85 L450.00,91.85 " fill="none" stroke="#1f1f1f" stroke-width="1" stroke-linejoin="round" stroke-dasharray="2,3"/>
+</g>
+<line x1="90" y1="400" x2="450" y2="400" stroke="#5f5e5a" stroke-width="1"/>
+<line x1="90" y1="80" x2="90" y2="400" stroke="#5f5e5a" stroke-width="1"/>
+<text x="270.00" y="434.00" font-size="12" fill="#1f1f1f" text-anchor="middle">x<tspan dy="-0.64em" font-size="70%">1</tspan><tspan dy="1.07em" font-size="70%">LL</tspan></text>
+<text transform="translate(38.00,240.00) rotate(-90)" font-size="12" fill="#1f1f1f" text-anchor="middle">pair field</text>
+<text x="90" y="72" font-size="12.5" fill="#1f1f1f">(a) the pair field</text>
+<rect x="198.00" y="330.00" width="345.64" height="54.00" fill="white" fill-opacity="0.85" stroke="none"/>
+<line x1="202.00" y1="342.00" x2="224.00" y2="342.00" stroke="#8a8984" stroke-width="1.6" stroke-dasharray="5,3"/>
+<text x="230.00" y="346.00" font-size="10.5" fill="#1f1f1f">|d<tspan dy="0.43em" font-size="70%">LL</tspan><tspan dy="-0.30em">|, initial guess</tspan></text>
+<line x1="202.00" y1="358.00" x2="224.00" y2="358.00" stroke="#2a78d6" stroke-width="1.7"/>
+<text x="230.00" y="362.00" font-size="10.5" fill="#1f1f1f">|d<tspan dy="0.43em" font-size="70%">LL</tspan><tspan dy="-0.30em">|, self-consistent</tspan></text>
+<line x1="202.00" y1="374.00" x2="224.00" y2="374.00" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2,3"/>
+<text x="230.00" y="378.00" font-size="10.5" fill="#1f1f1f">prediction: root of the gap equation (3.21), 0.404282</text>
+<clipPath id="c1"><rect x="580" y="80" width="360" height="320"/></clipPath>
+<line x1="710.91" y1="80" x2="710.91" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="710.91" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">5</text>
+<line x1="874.55" y1="80" x2="874.55" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="874.55" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">10</text>
+<line x1="580" y1="400.00" x2="940" y2="400.00" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="575.00" y="404.00" font-size="11" fill="#5f5e5a" text-anchor="end">10<tspan dy="-0.64em" font-size="70%">-14</tspan></text>
+<line x1="580" y1="326.15" x2="940" y2="326.15" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="575.00" y="330.15" font-size="11" fill="#5f5e5a" text-anchor="end">10<tspan dy="-0.64em" font-size="70%">-11</tspan></text>
+<line x1="580" y1="252.31" x2="940" y2="252.31" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="575.00" y="256.31" font-size="11" fill="#5f5e5a" text-anchor="end">10<tspan dy="-0.64em" font-size="70%">-8</tspan></text>
+<line x1="580" y1="178.46" x2="940" y2="178.46" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="575.00" y="182.46" font-size="11" fill="#5f5e5a" text-anchor="end">10<tspan dy="-0.64em" font-size="70%">-5</tspan></text>
+<line x1="580" y1="104.62" x2="940" y2="104.62" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="575.00" y="108.62" font-size="11" fill="#5f5e5a" text-anchor="end">0.01</text>
+<g clip-path="url(#c1)">
+<path d="M580.00,88.00 L612.73,89.09 L645.45,93.65 L678.18,111.80 L710.91,140.34 L743.64,166.53 L776.36,192.87 L809.09,219.20 L841.82,245.86 L874.55,276.99 L907.27,321.77 L940.00,397.11 " fill="none" stroke="#2a78d6" stroke-width="1.5" stroke-linejoin="round"/>
+<circle cx="580.00" cy="88.00" r="3" fill="#2a78d6"/>
+<circle cx="612.73" cy="89.09" r="3" fill="#2a78d6"/>
+<circle cx="645.45" cy="93.65" r="3" fill="#2a78d6"/>
+<circle cx="678.18" cy="111.80" r="3" fill="#2a78d6"/>
+<circle cx="710.91" cy="140.34" r="3" fill="#2a78d6"/>
+<circle cx="743.64" cy="166.53" r="3" fill="#2a78d6"/>
+<circle cx="776.36" cy="192.87" r="3" fill="#2a78d6"/>
+<circle cx="809.09" cy="219.20" r="3" fill="#2a78d6"/>
+<circle cx="841.82" cy="245.86" r="3" fill="#2a78d6"/>
+<circle cx="874.55" cy="276.99" r="3" fill="#2a78d6"/>
+<circle cx="907.27" cy="321.77" r="3" fill="#2a78d6"/>
+<circle cx="940.00" cy="397.11" r="3" fill="#2a78d6"/>
+</g>
+<line x1="580" y1="400" x2="940" y2="400" stroke="#5f5e5a" stroke-width="1"/>
+<line x1="580" y1="80" x2="580" y2="400" stroke="#5f5e5a" stroke-width="1"/>
+<text x="760.00" y="434.00" font-size="12" fill="#1f1f1f" text-anchor="middle">iteration</text>
+<text transform="translate(528.00,240.00) rotate(-90)" font-size="12" fill="#1f1f1f" text-anchor="middle">change of the pair field</text>
+<text x="580" y="72" font-size="12.5" fill="#1f1f1f">(b) convergence of the Anderson iteration</text>
+<rect x="688.00" y="115.60" width="228.04" height="22.00" fill="white" fill-opacity="0.85" stroke="none"/>
+<line x1="692.00" y1="127.60" x2="714.00" y2="127.60" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="720.00" y="131.60" font-size="10.5" fill="#1f1f1f">largest component of the residual</text>
+<clipPath id="c2"><rect x="1070" y="80" width="360" height="320"/></clipPath>
+<line x1="1088.23" y1="80" x2="1088.23" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1088.23" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">220</text>
+<line x1="1179.37" y1="80" x2="1179.37" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1179.37" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">240</text>
+<line x1="1270.51" y1="80" x2="1270.51" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1270.51" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">260</text>
+<line x1="1361.65" y1="80" x2="1361.65" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1361.65" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">280</text>
+<line x1="1070" y1="364.04" x2="1430" y2="364.04" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1065.00" y="368.04" font-size="11" fill="#5f5e5a" text-anchor="end">-1</text>
+<line x1="1070" y1="240.00" x2="1430" y2="240.00" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1065.00" y="244.00" font-size="11" fill="#5f5e5a" text-anchor="end">0</text>
+<line x1="1070" y1="115.96" x2="1430" y2="115.96" stroke="#e6e5e0" stroke-width="0.7"/>
+<text x="1065.00" y="119.96" font-size="11" fill="#5f5e5a" text-anchor="end">1</text>
+<g clip-path="url(#c2)">
+<circle cx="1070.00" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1074.56" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1079.11" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1083.67" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1088.23" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1092.78" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1097.34" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1101.90" cy="388.15" r="2.6" fill="#2a78d6"/>
+<circle cx="1106.46" cy="373.79" r="2.6" fill="#2a78d6"/>
+<circle cx="1111.01" cy="373.79" r="2.6" fill="#2a78d6"/>
+<circle cx="1115.57" cy="373.79" r="2.6" fill="#2a78d6"/>
+<circle cx="1120.13" cy="373.79" r="2.6" fill="#2a78d6"/>
+<circle cx="1124.68" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1129.24" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1133.80" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1138.35" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1142.91" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1147.47" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1152.03" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1156.58" cy="343.87" r="2.6" fill="#2a78d6"/>
+<circle cx="1161.14" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1165.70" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1170.25" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1174.81" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1179.37" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1183.92" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1188.48" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1193.04" cy="305.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1197.59" cy="295.95" r="2.6" fill="#2a78d6"/>
+<circle cx="1202.15" cy="295.95" r="2.6" fill="#2a78d6"/>
+<circle cx="1206.71" cy="295.95" r="2.6" fill="#2a78d6"/>
+<circle cx="1211.27" cy="295.95" r="2.6" fill="#2a78d6"/>
+<circle cx="1215.82" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1220.38" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1224.94" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1229.49" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1234.05" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1238.61" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1243.16" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1247.72" cy="290.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1252.28" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1256.84" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1261.39" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1265.95" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1270.51" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1275.06" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1279.62" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1284.18" cy="189.83" r="2.6" fill="#2a78d6"/>
+<circle cx="1288.73" cy="184.05" r="2.6" fill="#2a78d6"/>
+<circle cx="1293.29" cy="184.05" r="2.6" fill="#2a78d6"/>
+<circle cx="1297.85" cy="184.05" r="2.6" fill="#2a78d6"/>
+<circle cx="1302.41" cy="184.05" r="2.6" fill="#2a78d6"/>
+<circle cx="1306.96" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1311.52" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1316.08" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1320.63" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1325.19" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1329.75" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1334.30" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1338.86" cy="174.17" r="2.6" fill="#2a78d6"/>
+<circle cx="1343.42" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1347.97" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1352.53" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1357.09" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1361.65" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1366.20" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1370.76" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1375.32" cy="136.13" r="2.6" fill="#2a78d6"/>
+<circle cx="1379.87" cy="106.21" r="2.6" fill="#2a78d6"/>
+<circle cx="1384.43" cy="106.21" r="2.6" fill="#2a78d6"/>
+<circle cx="1388.99" cy="106.21" r="2.6" fill="#2a78d6"/>
+<circle cx="1393.54" cy="106.21" r="2.6" fill="#2a78d6"/>
+<circle cx="1398.10" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1402.66" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1407.22" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1411.77" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1416.33" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1420.89" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1425.44" cy="91.85" r="2.6" fill="#2a78d6"/>
+<circle cx="1430.00" cy="91.85" r="2.6" fill="#2a78d6"/>
+</g>
+<line x1="1070" y1="400" x2="1430" y2="400" stroke="#5f5e5a" stroke-width="1"/>
+<line x1="1070" y1="80" x2="1070" y2="400" stroke="#5f5e5a" stroke-width="1"/>
+<text x="1250.00" y="434.00" font-size="12" fill="#1f1f1f" text-anchor="middle">number of the eigenvalue (ascending)</text>
+<text transform="translate(1018.00,240.00) rotate(-90)" font-size="12" fill="#1f1f1f" text-anchor="middle">E<tspan dy="-0.64em" font-size="70%">qp</tspan><tspan dy="1.07em" font-size="70%">LL,n</tspan></text>
+<text x="1070" y="72" font-size="12.5" fill="#1f1f1f">(c) the spectrum in the self-consistent field</text>
+<rect x="1221.20" y="365.20" width="157.48" height="22.00" fill="white" fill-opacity="0.85" stroke="none"/>
+<circle cx="1236.20" cy="377.20" r="3.5" fill="#2a78d6"/>
+<text x="1253.20" y="381.20" font-size="10.5" fill="#1f1f1f">eigenvalues near zero</text>
+</svg>

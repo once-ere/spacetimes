@@ -67,6 +67,12 @@ t2rs() { (cd test2/rust && cargo build --release --quiet) || return 1
            ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e || return 1; done; }
 run "t2_solve (Rust): self-test and the seven examples (test2, item 5)" t2rs
 run "t2_examples_check.py, Rust solutions and EX-8 (test2, item 5)" python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
+# Test 2, item [6]: the Rust plotter draws Figures 14 to 20 (SVG), converted to PDF and PNG with rsvg-convert
+t2rsplot() { for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+               ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e || return 1
+               rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg || return 1
+               rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg || return 1; done; }
+run "t2_plot (Rust), Figures 14 to 20 (test2, item 6)" t2rsplot
 
 # 2. documents, two passes
 for pass in 1 2; do

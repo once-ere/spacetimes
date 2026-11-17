@@ -44,6 +44,7 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 (cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_solve --selftest test2/data/t2_rs_selftest_checks.txt test2/examples   # item [5]
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
 python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py   # checks EX-1 .. EX-8 of the Rust solutions
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done   # item [6]: Figures 14 to 20 (SVG)
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -52,7 +53,7 @@ bash code/scripts/check_all.sh                                           # every
 the program of the examples of the explanation and its figures; the program of the document on the
 $3+1$ manifold and its figures; the programs of the folder `test2` (`t2_fields` for item [1] and `t2_analytic` for
 item [2] of Test 2) and their figures; the Python solver of item [3] (its self-test, the seven examples, the table of the
-keys) and the checks of its examples; the plots of item [4]; the Rust solver of item [5], its examples and the comparison of the two sets of solutions; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+keys) and the checks of its examples; the plots of item [4]; the Rust solver of item [5], its examples and the comparison of the two sets of solutions; the Rust plots of item [6]; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -652,7 +653,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [5]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and the plots (folder `test2`)
+# 11. Test 2, items [1] to [6]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -983,6 +984,19 @@ $10^{-5}$. The reports of the last run (the self-test, the seven summaries, the 
 ```
 {{FILE:test2/data/t2_rs_examples_checks.txt}}
 ```
+
+## Item [6]: the Rust plotter
+
+The member `t2plot` of the workspace `test2/rust` (binary `t2_plot`; `src/svg.rs` a plotting library that writes Scalable Vector
+Graphics: panels with linear or logarithmic axes, tick values $1$, $2$, $2.5$ or $5$ times a power of ten, lines, dots, reference
+lines, bands, colour maps of one hue, legends and labels with raised and lowered text; `src/main.rs` the figures of the four tasks
+and the predictions of the examples) reads the data files of a solution and writes one `.svg` figure. The predictions are computed
+in Rust: the mean group velocity $\sum_{q^1_{\rm LL}}\exp(-2(w^{\rm pk}_{\rm LL})^2(q^1_{\rm LL}-q^{{\rm pk},1}_{\rm LL})^2)v^{\rm g}_{\rm LL}(q^1_{\rm LL})$
+divided by the sum of the weights, the Rayleigh quotient (3.29) with the profile
+$\cosh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})^{-\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}}$ of each wall, the roots of (3.21) and of the equation of the
+amplitude mode by bisection, the continuum kink, the Wilson shift of the computed self-consistent kink, and the least-squares
+sinusoid with the predicted frequency. Figures `test2/figures/fig_t2_rs_<example>.svg`, with `.pdf` and `.png` made by
+`rsvg-convert`.
 
 # 12. The checks of the documents
 
