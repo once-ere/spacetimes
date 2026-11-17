@@ -109,6 +109,12 @@ def main():
             if m:
                 crow.append("%s & %s & %s\\\\" % (tex_text(m.group(2)), tex_text(m.group(3)), m.group(1)))
     add("checks_table", "\n".join(table))
+    # the README lists also the report of the program of the folder explanations
+    exrep = os.path.join(ROOT, "explanations", "data", "ex_superfluid_checks.txt")
+    if os.path.exists(exrep):
+        a, b = (int(x) for x in one(r"(\d+) of (\d+) checks passed", open(exrep, encoding="utf-8").read(), "ex_superfluid_checks.txt"))
+        add("checks_table_all", "\n".join(table + ["| `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | %d of %d |" % (a, b)]))
+        add("nchecks_explain", "%d" % b)
     add("checks_rows_tex", "\n".join(crow))
     add("nchecks_rust", "%d" % rust)
     add("nchecks_physics", "%d" % phys)
@@ -234,10 +240,103 @@ def main():
         t.append("%s  %s" % (hashlib.sha256(open(path, "rb").read()).hexdigest(), os.path.relpath(path, ROOT)))
     add("code_sha256", "\n".join(t))
 
+    # ------------------------------------------------------------------ the folder explanations
+    exdata = os.path.join(ROOT, "explanations", "data")
+    if os.path.exists(os.path.join(exdata, "ex_states.csv")):
+        explanation_fragments(exdata)
+
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("\n\n".join(frags) + "\n")
     print("wrote provenance/generated/tables_ll.md (%d fragments; %d of %d checks of the computation pass)" % (len(frags), phys_pass, phys))
+
+
+# plain-text names of the explanation's data files and their formulas (registered symbols)
+PLAIN_TO_TEX = [
+    (" = Kch_singlet", r"=\mathsf K^{\rm s}_{\rm LL}"),
+    ("Kch_1 - i Kch_2", r"\mathsf K^1_{\rm LL}-i\,\mathsf K^2_{\rm LL}"),
+    ("Kch_1 + i Kch_2", r"\mathsf K^1_{\rm LL}+i\,\mathsf K^2_{\rm LL}"),
+    ("Kch_3", r"\mathsf K^3_{\rm LL}"),
+    ("C_LL gamma_ch", r"C_{\rm LL}\gamma^{\rm ch}_{\rm LL}"),
+    ("C_LL", r"C_{\rm LL}"),
+    ("eps2 tau_1", r"\mathsf E_{\rm LL}\tau^{\rm LL}_1"),
+    ("eps2 tau_2", r"\mathsf E_{\rm LL}\tau^{\rm LL}_2"),
+    ("eps2 tau_3", r"\mathsf E_{\rm LL}\tau^{\rm LL}_3"),
+    ("eps2", r"\mathsf E_{\rm LL}"),
+    ("sigma_0", r"\sigma^{\rm LL}_0"),
+    (" (x) ", r"\otimes "),
+]
+
+
+def plain_to_tex(name):
+    """A pair matrix of the explanation's data files as a formula."""
+    out = name
+    for a, b in PLAIN_TO_TEX:
+        out = out.replace(a, "\x00%d\x01" % PLAIN_TO_TEX.index((a, b)))
+    for k, (a, b) in enumerate(PLAIN_TO_TEX):
+        out = out.replace("\x00%d\x01" % k, b)
+    return "$" + out + "$"
+
+
+def dvec_to_tex(s):
+    """The definition of an order parameter (plain text of ex_states.csv) as a formula."""
+    t = s.replace("exp(i pi/4) ", r"\exp(i\pi/4)\,").replace("sqrt(5/4)", r"\sqrt{5/4}").replace("sqrt2", r"\sqrt2").replace(", ", ",")
+    return "$" + t + "$"
+
+
+def generator_to_tex(s):
+    s = s.replace("F_LL/2 - T_LL^3", r"$\tfrac12F_{\rm LL}-T^3_{\rm LL}$").replace("F_LL/2 + T_LL^3", r"$\tfrac12F_{\rm LL}+T^3_{\rm LL}$")
+    return s.replace("T_LL^3 = Q_LL", r"$T^3_{\rm LL}=Q_{\rm LL}$").replace("T_LL^3", r"$T^3_{\rm LL}$").replace("F_LL", r"$F_{\rm LL}$")
+
+
+def sign_tex(x):
+    return {"+1": "$+1$", "-1": "$-1$", "-": "none"}.get(x.strip(), x)
+
+
+def explanation_fragments(exdata):
+    """Tables of the document of the folder explanations, from its data files."""
+    pm = rows_at(os.path.join(exdata, "ex_pair_matrices.csv"))
+    # the number of dashes of each column sets its relative width in the .tex and .pdf versions
+    t = ["| pair matrix | spin and parity | isospin | species | exchange signs of the Dirac, isospin and species factors | sign of the whole matrix | terms that survive | charge of the pair |",
+         "|" + "|".join("-" * w for w in (31, 6, 9, 12, 13, 7, 7, 11)) + "|"]
+    for r in pm:
+        signs = ", ".join(sign_tex(r[k]) for k in ("exchange_sign_Dirac", "exchange_sign_isospin", "exchange_sign_species"))
+        charge = r["pair_charge"].replace("mixture of +1 and -1", "mixture of $+1$ and $-1$")
+        charge = {"+1": "$+1$", "-1": "$-1$", "0": "0"}.get(charge, charge)
+        t.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (plain_to_tex(r["pair_matrix"]), r["spin_parity"].replace("+", "$^+$").replace("-", "$^-$"),
+                                                               r["isospin"], r["species"], signs, sign_tex(r["exchange_sign_total"]), r["nonzero_pair_terms"], charge))
+    add("ex_pair_matrices_table", "\n".join(t))
+    st = rows_at(os.path.join(exdata, "ex_states.csv"))
+    t = ["| example | $\\vec d_{\\rm LL}$ | fractions of pairs with charge $+1$, 0, $-1$ | average charge of a pair | $\\zeta_{\\rm LL}$ | gaps $\\Delta^+_{\\rm LL}$, $\\Delta^-_{\\rm LL}$ in units of $\\lvert\\vec d_{\\rm LL}\\rvert$ | unpaired | unbroken generator |",
+         "|" + "|".join("-" * w for w in (12, 23, 13, 8, 5, 10, 9, 20)) + "|"]
+    for r in st:
+        frac = ", ".join("%s" % r[k] for k in ("pairs_charge_plus1", "pairs_charge_0", "pairs_charge_minus1"))
+        q = r["average_pair_charge"]
+        q = "$%s$" % q if q.startswith("-") else q
+        t.append("| %s | %s | %s | %s | %s | %s, %s | %s | %s |" % (r["state"], dvec_to_tex(r["dvec_definition"]), frac, q, r["zeta"], r["Delta_+"], r["Delta_-"],
+                                                               r["unpaired"].replace("-", "none") if r["unpaired"] == "-" else "isospin " + r["unpaired"],
+                                                               generator_to_tex(r["unbroken_generator"])))
+    add("ex_states_table", "\n".join(t))
+    ct = rows_at(os.path.join(exdata, "ex_two_particle_counting.csv"))
+    t = ["| total spin | total isospin | species | states | antisymmetric | symmetric | allowed in an s-wave |",
+         "|" + "|".join("-" * w for w in (7, 8, 18, 6, 10, 9, 10)) + "|"]
+    for r in ct:
+        t.append("| %s | %s | %s | %s | %s | %s | %s |" % (r["total_spin"], r["total_isospin"], r["species_pair"], r["number_of_states"], r["antisymmetric_states"], r["symmetric_states"], r["allowed_in_s_wave"]))
+    add("ex_counting_table", "\n".join(t))
+    # checksums of the files of the folder explanations
+    here = os.path.dirname(exdata)
+    t = []
+    files = sorted(glob.glob(os.path.join(exdata, "ex_*"))) + sorted(glob.glob(os.path.join(here, "figures", "fig_ex_*.pdf"))) \
+        + sorted(glob.glob(os.path.join(here, "code", "explain-rs", "src", "*.rs"))) + [os.path.join(here, "code", "explain-rs", "Cargo.toml"), os.path.join(here, "code", "make_explain_figures.py")]
+    for path in files:
+        t.append("%s  %s" % (hashlib.sha256(open(path, "rb").read()).hexdigest(), os.path.relpath(path, ROOT)))
+    add("ex_sha256", "\n".join(t))
+    add("n_explain_lines", "%d" % sum(1 for _ in open(os.path.join(here, "code", "explain-rs", "src", "main.rs"), encoding="utf-8")))
+
+
+def rows_at(path):
+    with open(path, encoding="utf-8") as f:
+        return list(csv.DictReader(line for line in f if not line.startswith("#")))
 
 
 if __name__ == "__main__":

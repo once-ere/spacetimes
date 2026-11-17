@@ -1,0 +1,22 @@
+[package]
+name = "spacetimes-superloop-explain"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes, Revision_SuperLoop, folder explanations: the computed examples of the explanation of the sentence of the manuscript on the spin-zero superfluid of the spinor charges (exchange symmetry of the pair matrices, isospin triplet and singlet, the charges of the pairs of example condensates, unitary and non-unitary states, the singlet of the whole super-loop and its two species, and the two-particle counting of the nucleon analogy)"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# The only dependency is the Rust program of the main project (four folders up), which
+# supplies complex numbers, the diagonalization of complex Hermitian matrices and the CSV
+# writer.  No crate is downloaded: the program builds offline with a Rust toolchain alone.
+[dependencies]
+spacetimes = { path = "../../../../code/spacetimes-rs" }
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true
+
+[[bin]]
+name = "explain_superfluid"
+path = "src/main.rs"

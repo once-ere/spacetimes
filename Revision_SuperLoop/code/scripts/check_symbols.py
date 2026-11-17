@@ -17,9 +17,9 @@ the symbol text of an entry is split at the formula signs into its items (for ex
          a new entry that is also an item of the registry of the sibling folder Revision_NoGo
          is declared in the list SHARED of write_symbol_registry.py (both folders use it for the
          same object), and every declared item really occurs in both registries;
-  LL-S3  every column of every data file data/sl_*.csv is a registered plain-text name or one
-         of the descriptive words listed below, and every data file states its content in a
-         line "# content:";
+  LL-S3  every column of every data file data/sl_*.csv and explanations/data/ex_*.csv is a
+         registered plain-text name or one of the descriptive words listed below, and every
+         data file states its content in a line "# content:";
   LL-S4  every document of Revision_SuperLoop (the sources docs_src/*.src.md and the manuscript
          sources docs_src/manuscript/*.tex) contains the complete table of symbols, so that
          every symbol it uses is defined in the document itself (Hard Rule 7);
@@ -39,8 +39,8 @@ the symbol text of an entry is split at the formula signs into its items (for ex
          without a definition;
   LL-S8  every name with the suffix _LL, every name of an algebra element (uL, tI, gL, hL, vI,
          aH, bS, cH, dS, rP and their variants), every coefficient c_.. and every pair matrix
-         Kch.. that occurs in a report or a data file of the folder is a registered plain-text
-         name.
+         Kch.. that occurs in a report or a data file of the folder (data/sl_* and
+         explanations/data/ex_*) is a registered plain-text name.
 
 Run from the folder Revision_SuperLoop:   python3 code/scripts/check_symbols.py
 Output: data/sl_symbol_checks.txt.  Exit status 0 if every check passes.
@@ -70,6 +70,21 @@ DESCRIPTIVE = {
     "E_normal": "energy |eps - mu| of the normal state", "state": "name of a superfluid state", "stabilizer_dim": "dimension of the stabilizer",
     "broken_generators": "number of broken generators", "pair_charge": "charge Q_LL of the condensed pairs", "gaps": "the gaps of the state",
     "pair_matrix": "a pair matrix", "spin_parity": "spin and parity of the pair", "isospin": "isospin of the pair", "remark": "remark",
+    # the data files of the folder explanations
+    "species": "the species content of a pair: one field, or two species paired as a species singlet or each species with itself",
+    "exchange_sign_Dirac": "the sign by which the Dirac factor of a pair matrix changes under transposition (+1 symmetric, -1 antisymmetric)",
+    "exchange_sign_isospin": "the sign by which the isospin factor of a pair matrix changes under transposition",
+    "exchange_sign_species": "the sign by which the species factor of a pair matrix changes under transposition ('-' if there is no species factor)",
+    "exchange_sign_total": "the sign of the whole pair matrix under transposition, the product of the signs of its factors",
+    "nonzero_pair_terms": "the number of products of two different field components that survive in the pair (Pauli principle)",
+    "dvec_definition": "the order parameter as it is written in the text", "pairs_charge_plus1": "fraction of the condensed pairs of charge +1 (up with up)",
+    "pairs_charge_0": "fraction of the condensed pairs of charge 0 (up with down)", "pairs_charge_minus1": "fraction of the condensed pairs of charge -1 (down with down)",
+    "average_pair_charge": "the average electric charge of a condensed pair", "average_pair_isospin": "the average isospin vector of a condensed pair",
+    "unpaired": "the isospin direction that stays without a gap ('-' if none)", "unbroken_generator": "the generator of SU(2)_v x U(1)_F that leaves the state unchanged",
+    "total_spin": "total spin of two particles", "total_isospin": "total isospin of two particles",
+    "species_pair": "one kind of particle, or two species with the stated total species isospin", "number_of_states": "number of two-particle states of the row",
+    "antisymmetric_states": "number of those states that are antisymmetric under the exchange of the two particles' spin, isospin and species labels",
+    "symmetric_states": "number of those states that are symmetric under that exchange", "allowed_in_s_wave": "yes if the Pauli principle allows the states in a relative s-wave",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL
@@ -277,7 +292,7 @@ def main():
           not bad and len(nogo) > 0, " | ".join(bad[:12]))
 
     # ------------------------------------------------------------------ LL-S3
-    files = sorted(glob.glob(os.path.join(ROOT, "data", "sl_*.csv")))
+    files = sorted(glob.glob(os.path.join(ROOT, "data", "sl_*.csv"))) + sorted(glob.glob(os.path.join(ROOT, "explanations", "data", "ex_*.csv")))
     unknown = []
     no_content = []
     cols_all = set()
@@ -291,7 +306,7 @@ def main():
             cols_all.add(c)
             if c not in owner and c not in DESCRIPTIVE:
                 unknown.append("%s[%s]" % (c, os.path.basename(path)))
-    check("LL-S3", "every column of the %d data files data/sl_*.csv is a registered plain-text name or a descriptive word (%d different columns), and every file states its content in a line '# content:'"
+    check("LL-S3", "every column of the %d data files data/sl_*.csv and explanations/data/ex_*.csv is a registered plain-text name or a descriptive word (%d different columns), and every file states its content in a line '# content:'"
           % (len(files), len(cols_all)), not unknown and not no_content and len(files) > 0, " ".join(unknown + no_content))
 
     # ------------------------------------------------------------------ LL-S4
@@ -376,6 +391,8 @@ def main():
         if os.path.basename(path) in ("sl_symbol_checks.txt", "sl_self_contained_checks.txt"):
             continue
         texts.append((os.path.basename(path), open(path, encoding="utf-8").read()))
+    for path in sorted(glob.glob(os.path.join(ROOT, "explanations", "data", "ex_*"))):
+        texts.append(("explanations/data/" + os.path.basename(path), open(path, encoding="utf-8").read()))
     unreg8 = set()
     n8 = 0
     for name, text in texts:
@@ -384,7 +401,7 @@ def main():
             tok = m.group(1)
             if tok not in owner:
                 unreg8.add("%s (%s)" % (tok, name))
-    check("LL-S8", "every one of the %d occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the %d reports and data files is a registered plain-text name" % (n8, len(texts)),
+    check("LL-S8", "every one of the %d occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the %d reports and data files (data/sl_* and explanations/data/ex_*) is a registered plain-text name" % (n8, len(texts)),
           not unreg8 and n8 > 0, "; ".join(sorted(unreg8)[:25]))
 
     # ------------------------------------------------------------------ report

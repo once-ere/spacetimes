@@ -4,13 +4,16 @@
 #
 # Steps:
 #   1. the program superloop (all five commands; about one second), the Groebner-basis
-#      classification (a few seconds) and the seven figures;
+#      classification (a few seconds) and the seven figures; then the program of the folder
+#      explanations (explanations/code/explain-rs: the examples of the explanation of the
+#      spin-zero superfluid) and its three figures, which read two data files of superloop;
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
 #      because the reports of the checks, which the documents print, count the built documents
 #      that the first pass creates; after the second pass every printed report is current;
-#   3. the verdicts: every report in data/ must pass, no built document may contain an unresolved
+#   3. the verdicts: every report in data/ and explanations/data/ must pass, no built document may
+#      contain an unresolved
 #      placeholder, every report printed in a document must be the current one, no formula may end
 #      directly before a digit, every document must exist as .md, .tex and .pdf, and no document
 #      may name a tool used to prepare it.
@@ -30,6 +33,9 @@ run() {  # run a step quietly; print PASS or FAIL with its name; keep its output
 run "superloop all" cargo run --release --quiet --manifest-path code/superloop-rs/Cargo.toml -- all
 run "malcev_groebner.py" python3 code/scripts/malcev_groebner.py
 run "make_figures.py" python3 code/scripts/make_figures.py
+explain() { (cd explanations && cargo run --release --quiet --manifest-path code/explain-rs/Cargo.toml); }
+run "explain_superfluid (explanations)" explain
+run "make_explain_figures.py (explanations)" python3 explanations/code/make_explain_figures.py
 
 # 2. documents, two passes
 for pass in 1 2; do
@@ -44,7 +50,7 @@ for pass in 1 2; do
 done
 
 # 3. verdicts
-for f in data/sl_*_checks.txt; do
+for f in data/sl_*_checks.txt explanations/data/ex_*_checks.txt; do
     if grep -q '^\[FAIL\]' "$f"; then line FAIL "$f (contains a failed check)"; fail=1; continue; fi
     c=$(grep -m1 -oE '[0-9]+ of [0-9]+ checks passed' "$f" || true)
     if [ -n "$c" ]; then
@@ -54,8 +60,8 @@ for f in data/sl_*_checks.txt; do
     fi
 done
 
-if grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex ./README.md ./README.tex 2>/dev/null | grep -q .; then
-    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex ./README.md ./README.tex 2>/dev/null | tr '\n' ' ')"; fail=1
+if grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex ./README.md ./README.tex 2>/dev/null | grep -q .; then
+    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex ./README.md ./README.tex 2>/dev/null | tr '\n' ' ')"; fail=1
 else
     line PASS "no unresolved placeholder in the built documents"
 fi
@@ -82,7 +88,7 @@ else line PASS "every report printed in a document is the current report"; fi
 bad=$(python3 - <<'PY'
 import glob, re
 out = []
-for f in sorted(glob.glob("*.md") + glob.glob("provenance/*.md") + glob.glob("manuscript/*.md")):
+for f in sorted(glob.glob("*.md") + glob.glob("provenance/*.md") + glob.glob("manuscript/*.md") + glob.glob("explanations/*.md")):
     text = open(f, encoding="utf-8").read()
     text = re.sub(r"(?s)```.*?```", " ", text)
     text = re.sub(r"`[^`\n]*`", " ", text)
@@ -101,7 +107,8 @@ else line PASS "no formula ends directly before a digit"; fi
 
 missing=""
 for b in README provenance/P0_task_rules_deviations_decisions provenance/P1_symbols_LL provenance/P2_calculations_code_and_checks \
-         "manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative Counterexamples to the No-Go Theorems and a Spin-Zero Spinor Superfluid"; do
+         "manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative Counterexamples to the No-Go Theorems and a Spin-Zero Spinor Superfluid" \
+         "explanations/The spin-zero superfluid of the spinor charges - an explanation"; do
     for ext in md tex pdf; do
         [ -s "$b.$ext" ] || missing="$missing $b.$ext"
     done
@@ -110,7 +117,7 @@ if [ -n "$missing" ]; then line FAIL "missing document versions:$missing"; fail=
 else line PASS "every document exists as .md, .tex and .pdf"; fi
 
 tools=$(grep -n -i -E '\b(claude|anthropic|chatgpt|openai|gemini|copilot|language model|AI[- ]generated|artificial intelligence)\b' \
-        manuscript/*.tex manuscript/*.md provenance/*.md provenance/*.tex README.md README.tex docs_src/*.src.md docs_src/manuscript/*.tex 2>/dev/null | head -5)
+        manuscript/*.tex manuscript/*.md provenance/*.md provenance/*.tex explanations/*.md explanations/*.tex README.md README.tex docs_src/*.src.md docs_src/manuscript/*.tex 2>/dev/null | head -5)
 if [ -n "$tools" ]; then line FAIL "a document names a tool used to prepare it: $tools"; fail=1
 else line PASS "no document names a tool used to prepare it"; fi
 

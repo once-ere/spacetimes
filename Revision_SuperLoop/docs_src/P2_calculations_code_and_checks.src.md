@@ -14,9 +14,11 @@ This document states, for every computation of the folder `Revision_SuperLoop`, 
 programs evaluate, how they evaluate them, the command that runs them, and the complete output of every
 check, as the programs printed it in the last run. Section 2 says how to reproduce everything; Section 3
 describes the programs; Sections 4 to 8 go through the computations (the algebra, the classification,
-the manifolds, the superfluid, renormalizability); Section 9 reproduces the checks of the documents;
-Section 10 lists the data files and the figures; Section 11 gives the checksums; Section 12 is the
-complete table of the symbols, which defines every symbol used here.
+the manifolds, the superfluid, renormalizability); Section 9 describes the program of the examples of the
+explanation of the sentence on the superfluid (folder `explanations`) and gives its output; Section 10
+reproduces the checks of the documents; Section 11 lists the data files and the figures; Section 12
+gives the checksums; Section 13 is the complete table of the symbols, which defines every symbol used
+here.
 
 # 2. How to reproduce everything
 
@@ -26,11 +28,13 @@ From the folder `Revision_SuperLoop` of the repository:
 cargo run --release --manifest-path code/superloop-rs/Cargo.toml -- all   # data files and checks of the program
 python3 code/scripts/malcev_groebner.py                                  # Groebner bases, checks G-1 .. G-12
 python3 code/scripts/make_figures.py                                     # the seven figures
+(cd explanations && cargo run --release --manifest-path code/explain-rs/Cargo.toml)   # checks X-1 .. X-10
+python3 explanations/code/make_explain_figures.py                        # the three figures of the explanation
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
 
 `check_all.sh` runs, in this order: the program (all five commands); the Gröbner script; the figures;
-twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+the program of the examples of the explanation and its figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -508,19 +512,63 @@ forms are, in both cases, the two-dimensional space of $\mathrm{Re}\,N_{\rm LL}$
 {{FILE:data/sl_renorm_checks.txt}}
 ```
 
-# 9. The checks of the documents
+# 9. The examples of the explanation (folder `explanations`)
+
+The document `explanations/The spin-zero superfluid of the spinor charges - an explanation` explains,
+word by word, the sentence of the conclusions of the manuscript on the spin-zero superfluid. Every
+example in it is computed by the Rust program `explanations/code/explain-rs` (binary
+`explain_superfluid`, {{GEN:n_explain_lines}} lines in `src/main.rs`; it uses the complex numbers, the
+Hermitian diagonalization and the writer of data files of the library crate `code/spacetimes-rs`). It
+must be started in the folder `explanations`, into whose `data/` it writes. It builds the Pauli matrices,
+$\mathsf E_{\rm LL}$, the chiral Dirac matrices, $C_{\rm LL}$ and $\gamma^{\rm ch}_{\rm LL}$, the generators of the
+Lorentz group and of isospin on the field $\Psi_{\rm LL}$ (and on two species), the spin-zero pair
+matrices, seven example order parameters and 200 random ones, and the bi-quaternions with the
+Cayley-Dickson product, and verifies:
+
+* X-1 the exchange signs of the Dirac, isospin and species factors, and that the sign of every Kronecker
+  product is the product of the signs of its factors; X-2 that a pair of anticommuting components keeps
+  only the antisymmetric part $\tfrac12(\mathsf K-\mathsf K^T)$ of its matrix, and the number of surviving terms
+  of every spin-zero pair of one field; X-3 the Lorentz invariance and the isospin (Casimir 2 or 0) of
+  the eight spin-zero pair matrices; X-4 the charges $+1$, 0, $-1$ of the triplet pairs;
+* X-5 that the isospin wavefunction of the condensed pairs is
+  $\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger$, the fractions of pairs
+  of each charge, the average charge, and the average isospin
+  $i\,\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}/\lvert\vec d_{\rm LL}\rvert^2$ of length $\zeta_{\rm LL}$; X-6 the two gaps
+  $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$ and the unpaired direction of the charged
+  states;
+* X-7 the action of the four generators of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ on $\vec d_{\rm LL}$, derived
+  from their action on the pair matrices, and the unbroken generators of the examples;
+* X-8 the matrix $M_{\rm LL}$ of a bi-quaternion, the non-associativity, the multiplicative norm, the
+  automorphisms $\varphi^{\rm LL}_{\mathbf g,\mathbf v}$, the product of two spinor charges, the singlet
+  $N_{\rm LL}(\mathbf b',\mathbf b)=\tfrac12\mathrm{tr}(M_{\rm LL}(\mathbf b)^T\mathsf E_{\rm LL}M_{\rm LL}(\mathbf b')\mathsf E_{\rm LL}^T)$,
+  its symmetry and its invariance; X-9 the pairs of two species, among them
+  $\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}$; X-10 the
+  counting of the two-particle states of spin $\tfrac12$ and isospin $\tfrac12$ (one kind and two species)
+  by the traces of projectors.
+
+Equalities are tested with the tolerance $10^{-12}$; the random numbers come from fixed seeds. The data
+files are `explanations/data/ex_pair_matrices.csv`, `ex_states.csv` and `ex_two_particle_counting.csv`;
+the script `explanations/code/make_explain_figures.py` draws the figures `explanations/figures/fig_ex_bookkeeping`,
+`fig_ex_pairs` and `fig_ex_energy` (.pdf and .png), the last from `data/sl_sf_omega_zeta.csv` and
+`data/sl_sf_dispersion.csv` of the command `superfluid`. The output of the last run:
+
+```
+{{FILE:explanations/data/ex_superfluid_checks.txt}}
+```
+
+# 10. The checks of the documents
 
 The script `check_symbols.py` verifies eight statements on the symbols: LL-S1, no symbol and no
 plain-text name is registered twice; LL-S2, the taken entries carry the meanings of the master registries,
 no new symbol coincides with a symbol of a master registry, and the symbols shared with the folder
-`Revision_NoGo` are declared and denote the same objects there; LL-S3, every column of every data file is
-a registered name or a descriptive word; LL-S4, every document contains the complete table of symbols;
+`Revision_NoGo` are declared and denote the same objects there; LL-S3, every column of every data file
+(`data/sl_*.csv` and `explanations/data/ex_*.csv`) is a registered name or a descriptive word; LL-S4, every document contains the complete table of symbols;
 LL-S5, the symbols of the superfluid $\mu_{\rm LL}$, $\Lambda_{\rm LL}$, $\Omega_{\rm LL}$, $\nu^{\rm F}_{\rm LL}$,
 $\Delta_{\rm LL}$, $\zeta_{\rm LL}$, $\varepsilon_{\rm LL}$ always carry their suffix; LL-S6, no letter that the project
 uses with another meaning occurs in a formula without the suffix LL; LL-S7, every letter in bold,
 sans-serif, calligraphic, blackboard or fraktur type in a formula is registered; LL-S8, every name with the
 suffix `_LL`, every name of an algebra element, every coefficient and every pair matrix in a report or data
-file is registered. The script `check_self_contained.py` searches every document for the wordings by
+file (`data/sl_*` and `explanations/data/ex_*`) is registered. The script `check_self_contained.py` searches every document for the wordings by
 which a text sends its reader to another document (LL-H1). Their output:
 
 ```
@@ -531,7 +579,7 @@ which a text sends its reader to another document (LL-H1). Their output:
 {{FILE:data/sl_self_contained_checks.txt}}
 ```
 
-# 10. Data files and figures
+# 11. Data files and figures
 
 {{GEN:data_files_table}}
 
@@ -545,9 +593,10 @@ which a text sends its reader to another document (LL-H1). Their output:
 | `fig_sl_superfluid` | (a) quasi-particle energies; (b) the gap versus the coupling; (c) the weak-coupling law; (d) the minimum of $\Omega_{\rm LL}$ versus $\zeta_{\rm LL}$ | `sl_sf_dispersion.csv`, `sl_sf_gap_vs_coupling.csv`, `sl_sf_omega_zeta.csv` |
 | `fig_sl_renorm` | (a) the superficial degree of divergence; (b) the contact coupling versus the cutoff; (c) the bubble | `sl_power_counting.csv`, `sl_contact_running.csv`, `sl_yukawa_bubble.csv` |
 
-# 11. Checksums
+# 12. Checksums
 
-SHA-256 of the data files, the figures and the programs from which the documents were built:
+SHA-256 of the data files, the figures and the programs from which the documents were built (the last
+block: the folder `explanations`):
 
 ```
 {{GEN:data_sha256}}
@@ -555,6 +604,10 @@ SHA-256 of the data files, the figures and the programs from which the documents
 {{GEN:code_sha256}}
 ```
 
-# 12. The symbols
+```
+{{GEN:ex_sha256}}
+```
+
+# 13. The symbols
 
 {{GEN:symbols_ll_table}}

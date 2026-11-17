@@ -44,6 +44,12 @@ contact form needs a cutoff), on the eight-dimensional manifolds it is not, and 
 neither causes nor cures this. Every statement is checked by machine: {{GEN:nchecks_physics}} checks
 of the computation, all passing.
 
+The folder `explanations` contains a document written for readers who know nothing of this work: it
+explains, word by word and with worked examples, the sentence of the conclusions "The spin-zero
+superfluid of its spinor charges condenses in an isospin-triplet, unitary, electrically neutral state,
+and the pair that is a singlet of the whole super-loop requires two species", with its own program
+and {{GEN:nchecks_explain}} further checks.
+
 # 2. Where to start reading
 
 1. The manuscript, `manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative
@@ -57,6 +63,10 @@ of the computation, all passing.
    names, and the checks of the symbols.
 4. `provenance/P2_calculations_code_and_checks`: the formulas that the programs evaluate, the
    commands, the complete output of every check, the Gröbner bases, the data files and the figures.
+5. `explanations/The spin-zero superfluid of the spinor charges - an explanation` (.pdf, .tex, .md):
+   the sentence on the superfluid explained for a reader who does not know the solution — the rule of
+   Pauli as a rule of signs, the isospin triplet, condensation, unitarity, electric neutrality and the
+   singlet of the whole super-loop — with examples from atoms, nuclei, helium 3 and quark matter.
 
 # 3. Contents
 
@@ -68,6 +78,7 @@ of the computation, all passing.
 | `code/scripts/` | the Gröbner-basis classification `malcev_groebner.py`, the figures, the registry and the checks of the symbols, the check of self-containedness, the fragments, the builds of the documents, `check_all.sh` |
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
+| `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf); its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py`, its data files and report in `data/`, its three figures in `figures/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -81,6 +92,9 @@ cargo run --release --manifest-path code/superloop-rs/Cargo.toml -- all
 python3 code/scripts/malcev_groebner.py
 # the seven figures:
 python3 code/scripts/make_figures.py
+# the examples of the explanation (checks X-1 to X-10) and its three figures:
+(cd explanations && cargo run --release --manifest-path code/explain-rs/Cargo.toml)
+python3 explanations/code/make_explain_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```
@@ -93,7 +107,7 @@ files); no crate is downloaded.
 
 # 5. The checks, in numbers
 
-{{GEN:checks_table}}
+{{GEN:checks_table_all}}
 
 # 6. Conventions in one place
 

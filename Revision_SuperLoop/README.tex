@@ -222,6 +222,14 @@ form needs a cutoff), on the eight-dimensional manifolds it is not, and
 the non-associativity neither causes nor cures this. Every statement is
 checked by machine: 74 checks of the computation, all passing.
 
+The folder \texttt{explanations} contains a document written for readers
+who know nothing of this work: it explains, word by word and with worked
+examples, the sentence of the conclusions ``The spin-zero superfluid of
+its spinor charges condenses in an isospin-triplet, unitary,
+electrically neutral state, and the pair that is a singlet of the whole
+super-loop requires two species'', with its own program and 10 further
+checks.
+
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
 
@@ -248,6 +256,13 @@ checked by machine: 74 checks of the computation, all passing.
   \texttt{provenance/P2\_calculations\_code\_and\_checks}: the formulas
   that the programs evaluate, the commands, the complete output of every
   check, the Gröbner bases, the data files and the figures.
+\item
+  \texttt{explanations/The\ spin-zero\ superfluid\ of\ the\ spinor\ charges\ -\ an\ explanation}
+  (.pdf, .tex, .md): the sentence on the superfluid explained for a
+  reader who does not know the solution --- the rule of Pauli as a rule
+  of signs, the isospin triplet, condensation, unitarity, electric
+  neutrality and the singlet of the whole super-loop --- with examples
+  from atoms, nuclei, helium 3 and quark matter.
 \end{enumerate}
 
 \hypertarget{contents}{%
@@ -282,6 +297,11 @@ builds of the documents, \texttt{check\_all.sh} \\
 \texttt{data/} & the data files written by the programs, and the reports
 of all checks \\
 \texttt{figures/} & seven figures, each as .pdf and .png \\
+\texttt{explanations/} & the explanation of the sentence on the
+superfluid (.md, .tex, .pdf); its Rust program \texttt{code/explain-rs}
+(binary \texttt{explain\_superfluid}, checks X-1 to X-10), its figure
+script \texttt{code/make\_explain\_figures.py}, its data files and
+report in \texttt{data/}, its three figures in \texttt{figures/} \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -298,6 +318,9 @@ cargo run --release --manifest-path code/superloop-rs/Cargo.toml -- all
 python3 code/scripts/malcev_groebner.py
 # the seven figures:
 python3 code/scripts/make_figures.py
+# the examples of the explanation (checks X-1 to X-10) and its three figures:
+(cd explanations && cargo run --release --manifest-path code/explain-rs/Cargo.toml)
+python3 explanations/code/make_explain_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}
@@ -313,9 +336,18 @@ the writer of data files); no crate is downloaded.
 \hypertarget{the-checks-in-numbers}{%
 \section{5. The checks, in numbers}\label{the-checks-in-numbers}}
 
-\begin{longtable}[]{@{}lll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
-report (data/) & written by & checks passed \\
+\begin{minipage}[b]{\linewidth}\raggedright
+report (data/)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+written by
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+checks passed
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -333,6 +365,8 @@ of 9 \\
 \texttt{sl\_symbol\_checks.txt} & \texttt{check\_symbols.py} & 8 of 8 \\
 \texttt{sl\_self\_contained\_checks.txt} &
 \texttt{check\_self\_contained.py} & 1 of 1 \\
+\texttt{explanations/data/ex\_superfluid\_checks.txt} &
+\texttt{explain\_superfluid} & 10 of 10 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -909,11 +943,14 @@ spin-zero channels: scalar
 (\(0^-\)), and the \(16\times16\) singlet of two species
 \(\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}\)
 (the last factor on the species index); the plain-text name Kch alone,
-and the letter \(\mathsf K\) without scripts in Theorem SF1, stand for
-any \(8\times8\) pair matrix, the pair of two spinor charges being
-\(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\) & new & \texttt{Kch}
-\texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2} \texttt{Kch\_3}
-\texttt{Kch\textquotesingle{}\_iota} \texttt{Kch\_singlet} \\
+and the letter \(\mathsf K\) without scripts (in Theorem SF1 and in the
+explanation of the folder explanations), stand for any pair matrix
+(\(8\times8\) for one field, \(16\times16\) for two species), the pair
+of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
+\(\mathsf K_{12}\) is the entry of \(\mathsf K\) in row 1 and column 2 &
+new & \texttt{Kch} \texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2}
+\texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
+\texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
 \(\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\),
 which annihilate two spinor charges of opposite momenta & new &
@@ -980,8 +1017,11 @@ on which it acts & new & \texttt{Ppair} \texttt{H\_BdG} \\
 scalar channel, the \(2\times2\) matrix
 \(\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger\),
 so that
-\(\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}\)
-& new & \\
+\(\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}\);
+it is also the isospin wavefunction of the condensed pairs (rows and
+columns: isospin up, down); plain text \texttt{Dpair} (not
+\texttt{D\_LL}, which is the Lorentz derivation) & new &
+\texttt{Dpair} \\
 \(\Omega_{\rm LL}\) & the grand potential per volume at zero
 temperature, measured from the normal state:
 \(\Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})\)
@@ -1135,13 +1175,15 @@ integral, the set of real linear combinations, a dimension & new &
 \(\otimes\)); composition of maps; expectation value in the ground
 state; the Hermitian conjugate of the preceding terms & new &
 \texttt{(x)} \texttt{\^{}T} \texttt{o} \\
-A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; Theorems R,
-L, M, SF1, \ldots, SF4 & the identifiers of the machine checks (letters:
-A associativity, L Lorentz super-loop, Q operators and eigenvalues, C
-the inversion element, M Malcev classification, G Groebner bases, N
-manifolds, S superfluid, R renormalizability, LL-S symbols, LL-H
-self-containedness) and the labels of the theorems proved in the
-manuscript & new & \\
+A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; X-1, \ldots,
+X-10; Theorems R, L, M, SF1, \ldots, SF4 & the identifiers of the
+machine checks (letters: A associativity, L Lorentz super-loop, Q
+operators and eigenvalues, C the inversion element, M Malcev
+classification, G Groebner bases, N manifolds, S superfluid, R
+renormalizability, LL-S symbols, LL-H self-containedness, X the examples
+of the explanation of the spin-zero superfluid in the folder
+explanations) and the labels of the theorems proved in the manuscript &
+new & \\
 H-grp, H-op, H-Lie, H-gr, H-dyn & the labels of the hypotheses of the
 no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie

@@ -170,7 +170,8 @@ This document is the account of the work in the folder
 \begin{itemize}
 \tightlist
 \item
-  the task, verbatim, and what it asks for (Section 2);
+  the task, verbatim, and what it asks for, and the later request for an
+  explanation of one sentence of the manuscript (Section 2);
 \item
   each of the author's hard rules and how it is met (Section 3);
 \item
@@ -264,6 +265,62 @@ was not modified; this one is new. Its registry of symbols was read in
 order to verify that the symbols shared by both folders denote the same
 objects (check LL-S2).
 
+\hypertarget{the-request-of-november-16-2026-1932-verbatim}{%
+\subsection{2.3 The request of November 16, 2026, 19:32
+(verbatim)}\label{the-request-of-november-16-2026-1932-verbatim}}
+
+``explain for an ignorant exactly what your manuscript comment''The
+spin-zero superfluid of its spinor charges condenses in an
+isospin-triplet, unitary, electrically neutral state, and the pair that
+is a singlet of the whole super-loop re- quires two species. '' means.
+Explain clearly, correctly, and in entirety. create a pdf file for this
+answer; give examples''
+
+During the work on it, at 20:21, the author added: ``when complete, push
+everything to repo''.
+
+\hypertarget{what-the-second-request-asks-for-and-how-it-is-answered}{%
+\subsection{2.4 What the second request asks for, and how it is
+answered}\label{what-the-second-request-asks-for-and-how-it-is-answered}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{What the sentence means, exactly, for a reader who does not
+  know the solution.} The sentence stands in the conclusions of the
+  manuscript. The answer is the document
+  \texttt{explanations/The\ spin-zero\ superfluid\ of\ the\ spinor\ charges\ -\ an\ explanation}
+  (.md, .tex, .pdf). It splits the sentence into seven statements and
+  explains each: the particles (the spinor charges as a fermion field),
+  ``spin-zero'', ``superfluid'' and ``condenses'', ``isospin-triplet'',
+  ``unitary'', ``electrically neutral'', and ``the pair that is a
+  singlet of the whole super-loop requires two species''.
+\item
+  \textbf{Clearly, correctly and in entirety.} Every term is defined
+  before it is used, every claim is proved in the document, and the
+  document is self-contained (it contains the complete table of the
+  symbols). Where the sentence is shorter than the facts, the document
+  says so: ``electrically neutral'' holds for every unitary condensate
+  in the sense that the pairs have the average charge 0, and in the
+  strict sense (every pair neutral, the charge unbroken) for the
+  representative along the third isospin axis that the manuscript names;
+  the model, which is exactly isospin invariant, does not choose among
+  the equivalent directions (Section 8.4 of that document).
+\item
+  \textbf{A PDF file.} By Hard Rule 1 the document exists as .md, .tex
+  and .pdf.
+\item
+  \textbf{Examples.} Worked examples from atoms (helium), nuclei (the
+  spin-zero isospin-triplet pairs of nucleons, the deuteron), helium 3
+  and quark matter; seven example condensates computed in full; the
+  counting of two-particle states; three figures. Every example is
+  computed by the new Rust program \texttt{explain\_superfluid} (folder
+  \texttt{explanations/code/explain-rs}, checks X-1 to X-10), and the
+  numbers of the superfluid that the document quotes are those of the
+  command \texttt{superfluid} of \texttt{superloop}.
+\end{enumerate}
+
 \hypertarget{the-hard-rules-and-how-each-is-met}{%
 \section{3. The hard rules, and how each is
 met}\label{the-hard-rules-and-how-each-is-met}}
@@ -291,13 +348,17 @@ alternative algebra, loop, Moufang loop, Malcev algebra, derivation,
 automorphism, twist charge, Gröbner basis, saturation, unitary state,
 Bogoliubov-de Gennes matrix, superficial degree of divergence, \ldots),
 proves its seven theorems in the text, and states what is not
-established & manuscript, Secs. I--XI \\
+established; the explanation of the sentence on the superfluid is
+written for a reader who knows nothing of the solution, with worked
+examples & manuscript, Secs. I--XI; the explanation in
+\texttt{explanations/} \\
 1. Every documentation, symbol and provenance file in .md, .tex and .pdf
-& \texttt{README}, \texttt{P0}, \texttt{P1}, \texttt{P2} and the
-manuscript exist in all three formats; \texttt{check\_all.sh} builds
-them and fails if one is missing & \texttt{check\_all.sh}, Section 4 \\
+& \texttt{README}, \texttt{P0}, \texttt{P1}, \texttt{P2}, the manuscript
+and the explanation exist in all three formats; \texttt{check\_all.sh}
+builds them and fails if one is missing & \texttt{check\_all.sh},
+Section 4 \\
 2. Push to the repository as soon as anything is updated & the work was
-committed in five stages (Section 5), each carried to the author's
+committed in six stages (Section 5), each carried to the author's
 computer at once; the push itself can only be made by the author, with
 the command block given at the end of each stage & the git log \\
 3. Working directory \texttt{/Users/nsh/Developer/github/spacetimes} &
@@ -320,9 +381,11 @@ prediction & the Rust program \texttt{superloop} computes every result
 except the Gröbner bases (62 checks, all passing); the Gröbner bases are
 computed in Python (deviation D3) and every solution found there is
 verified exhaustively by the Rust program; a Python script draws the
-seven figures from the data files; every number in the documents is
-inserted from the data files by a script & \texttt{P2},
-\texttt{code/} \\
+seven figures from the data files; the Rust program
+\texttt{explain\_superfluid} computes every example of the explanation
+(10 checks, all passing), and a Python script draws its three figures;
+every number in the documents is inserted from the data files by a
+script & \texttt{P2}, \texttt{code/}, \texttt{explanations/code/} \\
 7. Every equation, symbol and definition in the very file that uses it;
 never refer the reader elsewhere & every document contains the complete
 table of the symbols and the formulas it uses; the check LL-H1 searches
@@ -372,6 +435,11 @@ commands \texttt{algebra}, \texttt{malcev}, \texttt{manifolds},
 \texttt{data/} & 14 data files, the reports of all checks and the
 Gröbner bases \\
 \texttt{figures/} & 7 figures, .pdf and .png \\
+\texttt{explanations/} & the document ``The spin-zero superfluid of the
+spinor charges - an explanation'' (.md, .tex, .pdf); its program
+\texttt{code/explain-rs} (binary \texttt{explain\_superfluid}) and
+figure script \texttt{code/make\_explain\_figures.py}; its data files
+and report in \texttt{data/}; its three figures in \texttt{figures/} \\
 \texttt{docs\_src/} & the sources of the documents \\
 \end{longtable}
 
@@ -409,6 +477,14 @@ Gröbner bases \\
   \textbf{Stage 3c --- the documents}: the manuscript, the provenance
   documents, the builds, and the repairs that the builds required
   (Section 11, entries E9 to E13).
+\item
+  \textbf{Stage 4 --- the explanation} of the sentence on the superfluid
+  (request of 19:32, Section 2.3): the program
+  \texttt{explain\_superfluid} with the checks X-1 to X-10, three
+  figures, the document in \texttt{explanations/}, and the extension of
+  the checks of the symbols, of self-containedness and of
+  \texttt{check\_all.sh} to the new folder (Section 11, entries E14 to
+  E17).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -486,6 +562,23 @@ Gröbner bases \\
   charges; the law of Bardeen, Cooper and Schrieffer at a Fermi surface;
   the unitary, electrically neutral polar state wins (Theorem SF3); the
   singlet of the whole super-loop needs two species (Theorem SF4).
+\item
+  \textbf{The sentence on the superfluid, explained} (stage 4): a
+  spin-zero pair matrix has an antisymmetric Dirac factor, so the rule
+  of Pauli forces a symmetric isospin factor (isospin 1); the condensed
+  pairs have the isospin wavefunction \(\mathsf D_{\rm LL}\), the
+  fractions of pairs of the charges \(+1\), 0, \(-1\) follow from it,
+  and the average isospin of a pair is
+  \(i\,\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}/\lvert\vec d_{\rm LL}\rvert^2\),
+  of length \(\zeta_{\rm LL}\): unitary condensates are exactly those
+  whose pairs have the average isospin, and hence the average charge, 0;
+  the unbroken generator of a unitary condensate is the isospin rotation
+  about its real direction (\(Q_{\rm LL}=T^3_{\rm LL}\) for the polar
+  condensate along the third axis), that of the charged up-up condensate
+  is the number of down particles \(\tfrac12F_{\rm LL}-T^3_{\rm LL}\);
+  the singlet of the whole super-loop is the scalar part of the product
+  of two spinor charges, one half of a trace with two antisymmetric
+  contractions, symmetric and therefore zero for one fermion field.
 \item
   \textbf{Renormalizability}: in \(3+1\) dimensions the Yukawa form is
   renormalizable and the contact form is not; on the \(7+1\) and \(4+4\)
@@ -635,6 +728,16 @@ author's}\label{decisions-that-are-the-authors}}
 \item
   \textbf{Whether to pursue a non-associative quantum mechanics} in
   which the super-loop could act as a symmetry of states.
+\item
+  \textbf{The wording ``electrically neutral'' in the manuscript.} The
+  explanation shows that the exactly isospin-invariant model has a
+  family of equivalent unitary ground states; all have pairs of average
+  charge 0, and only the one along the third isospin axis keeps the
+  electric charge unbroken. The manuscript names that representative
+  (``up to an isospin rotation''). Whether to add a sentence on this
+  degeneracy to the manuscript, or an isospin-breaking interaction that
+  selects the third axis, is the author's decision; the manuscript was
+  not changed.
 \end{enumerate}
 
 \hypertarget{what-has-not-been-done}{%
@@ -787,6 +890,34 @@ E13 & the generic pair matrix \(\mathsf K\) of Theorem SF1, and the
 coordinates \texttt{x5}, \texttt{x6}, \texttt{x7} in the meaning of the
 taken symbol \(D\), were not explained in the registry & review of the
 table of symbols & both are now explained in their entries \\
+E14 & the first version of the program \texttt{explain\_superfluid}
+typed in the action of the isospin generators on \(\vec d_{\rm LL}\) as
+a rotation with the opposite sense to the one that follows from the pair
+matrices; with the factor \(2i\) of \(F_{\rm LL}\) this would have named
+the number of up particles, not of down particles, as the unbroken
+generator of the up-up condensate (the report then said only ``one
+combination of \(T^3_{\rm LL}\) and \(F_{\rm LL}\)'') & deriving the
+statement of the explanation by hand (stage 4) & the action of every
+generator on \(\vec d_{\rm LL}\) is now derived from its action on the
+pair matrices (check X-7), and the unbroken generator of each charged
+condensate is named and checked \\
+E15 & in the first drafts of the program of the explanation the report
+used \texttt{q} (the momentum) for the charge of a pair, an unregistered
+name for a unit vector, and a condition of check X-9 that did not test
+what its statement says & checks LL-S8 and review (stage 4) &
+\texttt{Q\_LL(Kch)}, words, and the condition rewritten (the species
+Casimir is 0 for \(\mathsf E_{\rm LL}\) and 2 for
+\(\sigma^{\rm LL}_0\)) \\
+E16 & the explanation placed computed numbers directly after a formula
+instead of inside it; the Markdown converter then did not recognize the
+formula, and three Greek letters were set in a text font without these
+glyphs; the explanation also used bare Latin letters for the isospin
+quantum number and for two amplitudes & the layout check of the build
+and check LL-S6 (stage 4) & the numbers stand inside their formulas; the
+letters were replaced by words \\
+E17 & three cells of the table of the example condensates were wider
+than their columns & the layout check of the build (stage 4) & the
+column widths were changed \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -1314,11 +1445,14 @@ spin-zero channels: scalar
 (\(0^-\)), and the \(16\times16\) singlet of two species
 \(\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}\)
 (the last factor on the species index); the plain-text name Kch alone,
-and the letter \(\mathsf K\) without scripts in Theorem SF1, stand for
-any \(8\times8\) pair matrix, the pair of two spinor charges being
-\(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\) & new & \texttt{Kch}
-\texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2} \texttt{Kch\_3}
-\texttt{Kch\textquotesingle{}\_iota} \texttt{Kch\_singlet} \\
+and the letter \(\mathsf K\) without scripts (in Theorem SF1 and in the
+explanation of the folder explanations), stand for any pair matrix
+(\(8\times8\) for one field, \(16\times16\) for two species), the pair
+of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
+\(\mathsf K_{12}\) is the entry of \(\mathsf K\) in row 1 and column 2 &
+new & \texttt{Kch} \texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2}
+\texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
+\texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
 \(\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\),
 which annihilate two spinor charges of opposite momenta & new &
@@ -1385,8 +1519,11 @@ on which it acts & new & \texttt{Ppair} \texttt{H\_BdG} \\
 scalar channel, the \(2\times2\) matrix
 \(\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger\),
 so that
-\(\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}\)
-& new & \\
+\(\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}\);
+it is also the isospin wavefunction of the condensed pairs (rows and
+columns: isospin up, down); plain text \texttt{Dpair} (not
+\texttt{D\_LL}, which is the Lorentz derivation) & new &
+\texttt{Dpair} \\
 \(\Omega_{\rm LL}\) & the grand potential per volume at zero
 temperature, measured from the normal state:
 \(\Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})\)
@@ -1540,13 +1677,15 @@ integral, the set of real linear combinations, a dimension & new &
 \(\otimes\)); composition of maps; expectation value in the ground
 state; the Hermitian conjugate of the preceding terms & new &
 \texttt{(x)} \texttt{\^{}T} \texttt{o} \\
-A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; Theorems R,
-L, M, SF1, \ldots, SF4 & the identifiers of the machine checks (letters:
-A associativity, L Lorentz super-loop, Q operators and eigenvalues, C
-the inversion element, M Malcev classification, G Groebner bases, N
-manifolds, S superfluid, R renormalizability, LL-S symbols, LL-H
-self-containedness) and the labels of the theorems proved in the
-manuscript & new & \\
+A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; X-1, \ldots,
+X-10; Theorems R, L, M, SF1, \ldots, SF4 & the identifiers of the
+machine checks (letters: A associativity, L Lorentz super-loop, Q
+operators and eigenvalues, C the inversion element, M Malcev
+classification, G Groebner bases, N manifolds, S superfluid, R
+renormalizability, LL-S symbols, LL-H self-containedness, X the examples
+of the explanation of the spin-zero superfluid in the folder
+explanations) and the labels of the theorems proved in the manuscript &
+new & \\
 H-grp, H-op, H-Lie, H-gr, H-dyn & the labels of the hypotheses of the
 no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie

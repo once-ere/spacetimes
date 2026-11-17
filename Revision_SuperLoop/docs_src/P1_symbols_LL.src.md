@@ -125,6 +125,10 @@ last column of the table of Section 7. The following conventions complete that c
   of the two spinor charges that the pair operator with the matrix `Kch` annihilates; `0+` and `0-` are
   spin zero with positive and negative parity; `spin(spin+1)` in check Q-3 is the spin quantum number
   times itself plus one, the value 0, 2 or $\tfrac34$ of the Casimir for the spins 0, 1 and $\tfrac12$.
+  In the folder `explanations`: `Dpair` is the isospin part $\mathsf D_{\rm LL}$ of the pairing block (not
+  `D_LL`, which is the Lorentz derivation); `F_LL/2 - T_LL^3` and `F_LL/2 + T_LL^3` are
+  $\tfrac12F_{\rm LL}-T^3_{\rm LL}$ and $\tfrac12F_{\rm LL}+T^3_{\rm LL}$, the numbers of the isospin-down and of
+  the isospin-up particles; `fraction(+1)` is the fraction of the condensed pairs of the charge $+1$.
 * **Abbreviations**: `BdG` is Bogoliubov-de Gennes, `BCS` Bardeen-Cooper-Schrieffer; `M_2(C)` the complex
   $2\times2$ matrices; `R^8`, `C^3`, `C^8` the real or complex vector spaces of that dimension; `Im H`,
   `Im O` and `C (x) H` are ${\rm Im}\,\mathbb H$, ${\rm Im}\,\mathbb O$ and $\mathbb C\otimes\mathbb H$; the groups
@@ -144,8 +148,9 @@ The script `code/scripts/check_symbols.py` verifies eight statements:
   item of a new entry is an item of either master registry (an item is one formula of a symbol text,
   for example $\mathbf x$ in "$\mathbf x$, $\mathbf y$"); and the items that the registry of
   `Revision_NoGo` also contains are exactly the declared shared ones (Section 4);
-* **LL-S3** every column of every data file `data/sl_*.csv` is a registered plain-text name or a
-  descriptive word, and every data file states its content in a header line `# content:`;
+* **LL-S3** every column of every data file `data/sl_*.csv` and `explanations/data/ex_*.csv` is a
+  registered plain-text name or a descriptive word, and every data file states its content in a header
+  line `# content:`;
 * **LL-S4** every document of the folder (and the manuscript) contains the complete table of symbols;
 * **LL-S5** in the formulas of the documents, the symbols of the superfluid $\mu_{\rm LL}$,
   $\Lambda_{\rm LL}$, $\Omega_{\rm LL}$, $\nu^{\rm F}_{\rm LL}$, $\Delta_{\rm LL}$, $\zeta_{\rm LL}$,
@@ -159,7 +164,8 @@ The script `code/scripts/check_symbols.py` verifies eight statements:
   formula of a document is registered;
 * **LL-S8** every name with the suffix `_LL`, every name of an algebra element (`uL`, `tI`, `gL`, `hL`,
   `vI`, `aH`, `bS`, `cH`, `dS`, `rP` and their variants), every coefficient (`c_tw`, ...) and every pair
-  matrix (`Kch`...) that occurs in a report or a data file of the folder is a registered plain-text name.
+  matrix (`Kch`...) that occurs in a report or a data file of the folder (`data/sl_*` and
+  `explanations/data/ex_*`) is a registered plain-text name.
 
 A line break inside a formula counts as a space, as for LaTeX. The output of the last run:
 

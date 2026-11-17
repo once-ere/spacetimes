@@ -43,6 +43,24 @@
 | `sl_self_contained_checks.txt` | `check_self_contained.py` | 1 of 1 |
 <!-- END checks_table -->
 
+<!-- BEGIN checks_table_all -->
+| report (data/) | written by | checks passed |
+|---|---|---|
+| `sl_algebra_checks.txt` | `superloop algebra` | 27 of 27 |
+| `sl_malcev_checks.txt` | `superloop malcev` | 9 of 9 |
+| `sl_manifolds_checks.txt` | `superloop manifolds` | 9 of 9 |
+| `sl_superfluid_checks.txt` | `superloop superfluid` | 11 of 11 |
+| `sl_renorm_checks.txt` | `superloop renorm` | 6 of 6 |
+| `sl_groebner_checks.txt` | `malcev_groebner.py` | 12 of 12 |
+| `sl_symbol_checks.txt` | `check_symbols.py` | 8 of 8 |
+| `sl_self_contained_checks.txt` | `check_self_contained.py` | 1 of 1 |
+| `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
+<!-- END checks_table_all -->
+
+<!-- BEGIN nchecks_explain -->
+10
+<!-- END nchecks_explain -->
+
 <!-- BEGIN checks_rows_tex -->
 A-1 & the associator [x,y,z] = (xy)z - x(yz) of the bi-octonions B\_LL is alternating (it changes sign under every exchange of two of its arguments) on all 512 ordered triples of the units e0..e7: B\_LL is an ALTERNATIVE algebra & PASS\\
 A-2 & B\_LL is NOT associative: exactly 168 of the 512 ordered triples of units have a non-zero associator (the triples of distinct imaginary units outside the 7 quaternionic triples); example [e1,e2,e4] = (e1 e2) e4 - e1 (e2 e4) = 2 e7  -- non-zero associators: 168; coefficients of [e1,e2,e4] on e0..e7: [0, 0, 0, 0, 0, 0, 0, 2] & PASS\\
@@ -118,15 +136,15 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (297 names) & PASS\\
+LL-S1 & every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (298 names) & PASS\\
 LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 196 items of the 80 new entries is an item of either master registry (503 items compared); the 21 items that the registry of Revision\_NoGo also contains are exactly the 21 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 14 data files data/sl\_*.csv is a registered plain-text name or a descriptive word (68 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 4 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 1743 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 2235 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
-LL-S7 & every one of the 2130 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters) & PASS\\
-LL-S8 & every one of the 2099 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 21 reports and data files is a registered plain-text name & PASS\\
-LL-H1 & none of the 24 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
+LL-S3 & every column of the 17 data files data/sl\_*.csv and explanations/data/ex\_*.csv is a registered plain-text name or a descriptive word (91 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 5 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 2352 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 2847 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 2561 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters) & PASS\\
+LL-S8 & every one of the 2222 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 25 reports and data files (data/sl\_* and explanations/data/ex\_*) is a registered plain-text name & PASS\\
+LL-H1 & none of the 26 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
 <!-- BEGIN nchecks_rust -->
@@ -425,14 +443,80 @@ b0097ad508f55fe34ce5d8ad72c4ac7a3d7cf7d919661ca1422d1dbc6b747d88  code/superloop
 f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/assemble_docs.py
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
 465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
-4dd6d3b2f3dcf6a9c3597eee5e4c5f4f9ab35215b7bde005911a50ada6abc1b1  code/scripts/check_self_contained.py
-d50f8cf3a5128d80868342fd115c548521dbeec504e361018d545b280c17d1f1  code/scripts/check_symbols.py
+864b86dfce7e615b250577659cda8226f4e1bea4e843e01fe05c75565943f353  code/scripts/check_self_contained.py
+1297fc970b3699e6f2a9e78c5f1d8a02cb6e21d627f8792cc05da3a76271c29e  code/scripts/check_symbols.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
-e356ad8888d52fcdfb4fd3d2f4428db576ac3684cdae67f1bf817224208eacbe  code/scripts/write_doc_tables.py
-cf348ee5716421843779cd389f8e1cfedf3da3ee63840d3ca29ee72b41d482f3  code/scripts/write_symbol_registry.py
+cf91b09c7f382d9ac6b4b4065bde2e214d192657fb30a034866dc64bcf953f29  code/scripts/write_doc_tables.py
+228dfd6a8af0a29068e79fa2944e73ba5a4d0e4f2887da1d104202fb9f671820  code/scripts/write_symbol_registry.py
 783183f2a23f1fb50b3b430d6243f2f214e6e40d7b1e4ec971a59ad0a9f161f9  code/scripts/build_docs.sh
-37ef30d8faa3b60e33c77655ad2fe4fc30563aac76fc921788f09112bca5df6a  code/scripts/check_all.sh
+037c6322b83c4baaf136a0c7f2973452b7c83e6a35a94227aab3c853af1d1005  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
+
+<!-- BEGIN ex_pair_matrices_table -->
+| pair matrix | spin and parity | isospin | species | exchange signs of the Dirac, isospin and species factors | sign of the whole matrix | terms that survive | charge of the pair |
+|-------------------------------|------|---------|------------|-------------|-------|-------|-----------|
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_1$ | 0$^+$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | mixture of $+1$ and $-1$ |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_2$ | 0$^+$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | mixture of $+1$ and $-1$ |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_3$ | 0$^+$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | 0 |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}$ | 0$^+$ | 0 (singlet) | one field | $-1$, $-1$, none | $+1$ | 0 | 0 |
+| $C_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_1$ | 0$^-$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | mixture of $+1$ and $-1$ |
+| $C_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_2$ | 0$^-$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | mixture of $+1$ and $-1$ |
+| $C_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_3$ | 0$^-$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | 0 |
+| $C_{\rm LL}\otimes \mathsf E_{\rm LL}$ | 0$^-$ | 0 (singlet) | one field | $-1$, $-1$, none | $+1$ | 0 | 0 |
+| $\mathsf K^1_{\rm LL}-i\,\mathsf K^2_{\rm LL}$ | 0$^+$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 2 | $+1$ |
+| $\mathsf K^3_{\rm LL}$ | 0$^+$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 4 | 0 |
+| $\mathsf K^1_{\rm LL}+i\,\mathsf K^2_{\rm LL}$ | 0$^+$ | 1 (triplet) | one field | $-1$, $+1$, none | $-1$ | 2 | $-1$ |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\otimes \mathsf E_{\rm LL}=\mathsf K^{\rm s}_{\rm LL}$ | 0$^+$ | 0 (singlet) | two species, species singlet | $-1$, $-1$, $-1$ | $-1$ | 8 | 0 |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_3\otimes \mathsf E_{\rm LL}$ | 0$^+$ | 1 (triplet) | two species, species singlet | $-1$, $+1$, $-1$ | $+1$ | 0 | 0 |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\otimes \sigma^{\rm LL}_0$ | 0$^+$ | 0 (singlet) | two species, each with itself | $-1$, $-1$, $+1$ | $+1$ | 0 | 0 |
+| $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes \mathsf E_{\rm LL}\tau^{\rm LL}_3\otimes \sigma^{\rm LL}_0$ | 0$^+$ | 1 (triplet) | two species, each with itself | $-1$, $+1$, $+1$ | $-1$ | 8 | 0 |
+<!-- END ex_pair_matrices_table -->
+
+<!-- BEGIN ex_states_table -->
+| example | $\vec d_{\rm LL}$ | fractions of pairs with charge $+1$, 0, $-1$ | average charge of a pair | $\zeta_{\rm LL}$ | gaps $\Delta^+_{\rm LL}$, $\Delta^-_{\rm LL}$ in units of $\lvert\vec d_{\rm LL}\rvert$ | unpaired | unbroken generator |
+|------------|-----------------------|-------------|--------|-----|----------|---------|--------------------|
+| polar along the third axis | $(0,0,1)$ | 0, 1, 0 | 0 | 0 | 1, 1 | none | isospin rotation about the axis (0, 0, 1): $T^3_{\rm LL}=Q_{\rm LL}$ |
+| polar along the first axis | $(1,0,0)$ | 0.5, 0, 0.5 | 0 | 0 | 1, 1 | none | isospin rotation about the axis (1, 0, 0) |
+| polar along (1,2,2)/3 | $(1,2,2)/3$ | 0.277778, 0.444444, 0.277778 | 0 | 0 | 1, 1 | none | isospin rotation about the axis (0.333333, 0.666667, 0.666667) |
+| unitary with a phase | $\exp(i\pi/4)\,(0,0.6,0.8)$ | 0.18, 0.64, 0.18 | 0 | 0 | 1, 1 | none | isospin rotation about the axis (0, 0.6, 0.8) |
+| partly non-unitary | $(1,i/2,0)/\sqrt{5/4}$ | 0.9, 0, 0.1 | 0.8 | 0.8 | 1.341641, 0.447214 | none | none |
+| charged, up-up pairs | $(1,i,0)/\sqrt2$ | 1, 0, 0 | 1 | 1 | 1.414214, 0 | isospin down | $\tfrac12F_{\rm LL}-T^3_{\rm LL}$, the number of isospin-down particles |
+| charged, down-down pairs | $(1,-i,0)/\sqrt2$ | 0, 0, 1 | $-1$ | 1 | 1.414214, 0 | isospin up | $\tfrac12F_{\rm LL}+T^3_{\rm LL}$, the number of isospin-up particles |
+<!-- END ex_states_table -->
+
+<!-- BEGIN ex_counting_table -->
+| total spin | total isospin | species | states | antisymmetric | symmetric | allowed in an s-wave |
+|-------|--------|------------------|------|----------|---------|----------|
+| 0 | 0 | one kind | 1 | 0 | 1 | no |
+| 0 | 1 | one kind | 3 | 3 | 0 | yes |
+| 1 | 0 | one kind | 3 | 3 | 0 | yes |
+| 1 | 1 | one kind | 9 | 0 | 9 | no |
+| 0 | 0 | two species, 0 (singlet) | 1 | 1 | 0 | yes |
+| 0 | 0 | two species, 1 (triplet) | 3 | 0 | 3 | no |
+| 0 | 1 | two species, 0 (singlet) | 3 | 0 | 3 | no |
+| 0 | 1 | two species, 1 (triplet) | 9 | 9 | 0 | yes |
+| 1 | 0 | two species, 0 (singlet) | 3 | 0 | 3 | no |
+| 1 | 0 | two species, 1 (triplet) | 9 | 9 | 0 | yes |
+| 1 | 1 | two species, 0 (singlet) | 9 | 9 | 0 | yes |
+| 1 | 1 | two species, 1 (triplet) | 27 | 0 | 27 | no |
+<!-- END ex_counting_table -->
+
+<!-- BEGIN ex_sha256 -->
+3c4366a5d11a44c8b8dd21d05fceb379646f55db407cc41321c5501e595fe4d8  explanations/data/ex_pair_matrices.csv
+0cd9ab8b4b09768f58ef444cb11ad65eb16a065b33946369472e26f6bc9a859d  explanations/data/ex_states.csv
+68f5badc7b9182d2226e6f8d36650eb324462eed9ddfa65e039a16f3b0b2978a  explanations/data/ex_superfluid_checks.txt
+77cdbabb5afa005bc90d98735c371a595858e22e79c1a8d5c9689c9a4c9361af  explanations/data/ex_two_particle_counting.csv
+5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
+f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
+e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
+9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
+ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
+d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
+<!-- END ex_sha256 -->
+
+<!-- BEGIN n_explain_lines -->
+977
+<!-- END n_explain_lines -->

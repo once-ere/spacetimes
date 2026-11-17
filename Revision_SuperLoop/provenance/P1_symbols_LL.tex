@@ -423,7 +423,15 @@ text, with the names listed in the last column of the table of Section
   \texttt{0+} and \texttt{0-} are spin zero with positive and negative
   parity; \texttt{spin(spin+1)} in check Q-3 is the spin quantum number
   times itself plus one, the value 0, 2 or \(\tfrac34\) of the Casimir
-  for the spins 0, 1 and \(\tfrac12\).
+  for the spins 0, 1 and \(\tfrac12\). In the folder
+  \texttt{explanations}: \texttt{Dpair} is the isospin part
+  \(\mathsf D_{\rm LL}\) of the pairing block (not \texttt{D\_LL}, which
+  is the Lorentz derivation); \texttt{F\_LL/2\ -\ T\_LL\^{}3} and
+  \texttt{F\_LL/2\ +\ T\_LL\^{}3} are
+  \(\tfrac12F_{\rm LL}-T^3_{\rm LL}\) and
+  \(\tfrac12F_{\rm LL}+T^3_{\rm LL}\), the numbers of the isospin-down
+  and of the isospin-up particles; \texttt{fraction(+1)} is the fraction
+  of the condensed pairs of the charge \(+1\).
 \item
   \textbf{Abbreviations}: \texttt{BdG} is Bogoliubov-de Gennes,
   \texttt{BCS} Bardeen-Cooper-Schrieffer; \texttt{M\_2(C)} the complex
@@ -466,8 +474,9 @@ statements:
   exactly the declared shared ones (Section 4);
 \item
   \textbf{LL-S3} every column of every data file \texttt{data/sl\_*.csv}
-  is a registered plain-text name or a descriptive word, and every data
-  file states its content in a header line \texttt{\#\ content:};
+  and \texttt{explanations/data/ex\_*.csv} is a registered plain-text
+  name or a descriptive word, and every data file states its content in
+  a header line \texttt{\#\ content:};
 \item
   \textbf{LL-S4} every document of the folder (and the manuscript)
   contains the complete table of symbols;
@@ -495,8 +504,9 @@ statements:
   \texttt{hL}, \texttt{vI}, \texttt{aH}, \texttt{bS}, \texttt{cH},
   \texttt{dS}, \texttt{rP} and their variants), every coefficient
   (\texttt{c\_tw}, \ldots) and every pair matrix (\texttt{Kch}\ldots)
-  that occurs in a report or a data file of the folder is a registered
-  plain-text name.
+  that occurs in a report or a data file of the folder
+  (\texttt{data/sl\_*} and \texttt{explanations/data/ex\_*}) is a
+  registered plain-text name.
 \end{itemize}
 
 A line break inside a formula counts as a space, as for LaTeX. The
@@ -506,14 +516,14 @@ output of the last run:
 PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenance/symbols_ll.csv)
 8 of 8 checks passed
 
-[PASS] LL-S1  every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (297 names)
+[PASS] LL-S1  every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (298 names)
 [PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 196 items of the 80 new entries is an item of either master registry (503 items compared); the 21 items that the registry of Revision_NoGo also contains are exactly the 21 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\otimes$, $i$, $p$, ${}^T$)
-[PASS] LL-S3  every column of the 14 data files data/sl_*.csv is a registered plain-text name or a descriptive word (68 different columns), and every file states its content in a line '# content:'
-[PASS] LL-S4  each of the 4 documents of Revision_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself
-[PASS] LL-S5  in the 1743 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
-[PASS] LL-S6  in the 2235 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
-[PASS] LL-S7  every one of the 2130 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters)
-[PASS] LL-S8  every one of the 2099 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 21 reports and data files is a registered plain-text name
+[PASS] LL-S3  every column of the 17 data files data/sl_*.csv and explanations/data/ex_*.csv is a registered plain-text name or a descriptive word (91 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S4  each of the 5 documents of Revision_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] LL-S5  in the 2352 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 2847 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 2561 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters)
+[PASS] LL-S8  every one of the 2222 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 25 reports and data files (data/sl_* and explanations/data/ex_*) is a registered plain-text name
 \end{verbatim}
 
 \hypertarget{the-complete-table-of-the-symbols}{%
@@ -1042,11 +1052,14 @@ spin-zero channels: scalar
 (\(0^-\)), and the \(16\times16\) singlet of two species
 \(\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}\)
 (the last factor on the species index); the plain-text name Kch alone,
-and the letter \(\mathsf K\) without scripts in Theorem SF1, stand for
-any \(8\times8\) pair matrix, the pair of two spinor charges being
-\(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\) & new & \texttt{Kch}
-\texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2} \texttt{Kch\_3}
-\texttt{Kch\textquotesingle{}\_iota} \texttt{Kch\_singlet} \\
+and the letter \(\mathsf K\) without scripts (in Theorem SF1 and in the
+explanation of the folder explanations), stand for any pair matrix
+(\(8\times8\) for one field, \(16\times16\) for two species), the pair
+of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
+\(\mathsf K_{12}\) is the entry of \(\mathsf K\) in row 1 and column 2 &
+new & \texttt{Kch} \texttt{Kch\_iota} \texttt{Kch\_1} \texttt{Kch\_2}
+\texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
+\texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
 \(\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\),
 which annihilate two spinor charges of opposite momenta & new &
@@ -1113,8 +1126,11 @@ on which it acts & new & \texttt{Ppair} \texttt{H\_BdG} \\
 scalar channel, the \(2\times2\) matrix
 \(\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger\),
 so that
-\(\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}\)
-& new & \\
+\(\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}\);
+it is also the isospin wavefunction of the condensed pairs (rows and
+columns: isospin up, down); plain text \texttt{Dpair} (not
+\texttt{D\_LL}, which is the Lorentz derivation) & new &
+\texttt{Dpair} \\
 \(\Omega_{\rm LL}\) & the grand potential per volume at zero
 temperature, measured from the normal state:
 \(\Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})\)
@@ -1268,13 +1284,15 @@ integral, the set of real linear combinations, a dimension & new &
 \(\otimes\)); composition of maps; expectation value in the ground
 state; the Hermitian conjugate of the preceding terms & new &
 \texttt{(x)} \texttt{\^{}T} \texttt{o} \\
-A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; Theorems R,
-L, M, SF1, \ldots, SF4 & the identifiers of the machine checks (letters:
-A associativity, L Lorentz super-loop, Q operators and eigenvalues, C
-the inversion element, M Malcev classification, G Groebner bases, N
-manifolds, S superfluid, R renormalizability, LL-S symbols, LL-H
-self-containedness) and the labels of the theorems proved in the
-manuscript & new & \\
+A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; X-1, \ldots,
+X-10; Theorems R, L, M, SF1, \ldots, SF4 & the identifiers of the
+machine checks (letters: A associativity, L Lorentz super-loop, Q
+operators and eigenvalues, C the inversion element, M Malcev
+classification, G Groebner bases, N manifolds, S superfluid, R
+renormalizability, LL-S symbols, LL-H self-containedness, X the examples
+of the explanation of the spin-zero superfluid in the folder
+explanations) and the labels of the theorems proved in the manuscript &
+new & \\
 H-grp, H-op, H-Lie, H-gr, H-dyn & the labels of the hypotheses of the
 no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie

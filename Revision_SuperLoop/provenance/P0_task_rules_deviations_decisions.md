@@ -11,7 +11,8 @@ date: "November 16, 2026"
 
 This document is the account of the work in the folder `Revision_SuperLoop`. It states
 
-* the task, verbatim, and what it asks for (Section 2);
+* the task, verbatim, and what it asks for, and the later request for an explanation of one sentence
+  of the manuscript (Section 2);
 * each of the author's hard rules and how it is met (Section 3);
 * what the folder contains (Section 4) and what was done, in order (Section 5);
 * the results in brief (Section 6);
@@ -66,17 +67,49 @@ which treated the no-go theorems in eight dimensions with octonions and triality
 modified; this one is new. Its registry of symbols was read in order to verify that the symbols shared
 by both folders denote the same objects (check LL-S2).
 
+## 2.3 The request of November 16, 2026, 19:32 (verbatim)
+
+"explain for an ignorant exactly what your manuscript comment "The spin-zero superfluid of its spinor
+charges condenses in an isospin-triplet, unitary, electrically neutral state, and the pair that is a
+singlet of the whole super-loop re- quires two species. " means. Explain clearly, correctly, and in
+entirety. create a pdf file for this answer; give examples"
+
+During the work on it, at 20:21, the author added: "when complete, push everything to repo".
+
+## 2.4 What the second request asks for, and how it is answered
+
+1. **What the sentence means, exactly, for a reader who does not know the solution.** The sentence
+   stands in the conclusions of the manuscript. The answer is the document
+   `explanations/The spin-zero superfluid of the spinor charges - an explanation` (.md, .tex, .pdf). It
+   splits the sentence into seven statements and explains each: the particles (the spinor charges as
+   a fermion field), "spin-zero", "superfluid" and "condenses", "isospin-triplet", "unitary",
+   "electrically neutral", and "the pair that is a singlet of the whole super-loop requires two
+   species".
+2. **Clearly, correctly and in entirety.** Every term is defined before it is used, every claim is
+   proved in the document, and the document is self-contained (it contains the complete table of the
+   symbols). Where the sentence is shorter than the facts, the document says so: "electrically neutral"
+   holds for every unitary condensate in the sense that the pairs have the average charge 0, and in the
+   strict sense (every pair neutral, the charge unbroken) for the representative along the third
+   isospin axis that the manuscript names; the model, which is exactly isospin invariant, does not
+   choose among the equivalent directions (Section 8.4 of that document).
+3. **A PDF file.** By Hard Rule 1 the document exists as .md, .tex and .pdf.
+4. **Examples.** Worked examples from atoms (helium), nuclei (the spin-zero isospin-triplet pairs of
+   nucleons, the deuteron), helium 3 and quark matter; seven example condensates computed in full; the
+   counting of two-particle states; three figures. Every example is computed by the new Rust program
+   `explain_superfluid` (folder `explanations/code/explain-rs`, checks X-1 to X-10), and the numbers of
+   the superfluid that the document quotes are those of the command `superfluid` of `superloop`.
+
 # 3. The hard rules, and how each is met
 
 | rule (in the words of this provenance) | how it is met | where to verify |
 |---|---|---|
-| 0. Write for clever physics Ph.D. students who do not know the solution; they must be able to learn from it and teach it | the manuscript defines every term before it uses it (generator, Jacobiator, associator, alternative algebra, loop, Moufang loop, Malcev algebra, derivation, automorphism, twist charge, Gröbner basis, saturation, unitary state, Bogoliubov-de Gennes matrix, superficial degree of divergence, ...), proves its seven theorems in the text, and states what is not established | manuscript, Secs. I–XI |
-| 1. Every documentation, symbol and provenance file in .md, .tex and .pdf | `README`, `P0`, `P1`, `P2` and the manuscript exist in all three formats; `check_all.sh` builds them and fails if one is missing | `check_all.sh`, Section 4 |
-| 2. Push to the repository as soon as anything is updated | the work was committed in five stages (Section 5), each carried to the author's computer at once; the push itself can only be made by the author, with the command block given at the end of each stage | the git log |
+| 0. Write for clever physics Ph.D. students who do not know the solution; they must be able to learn from it and teach it | the manuscript defines every term before it uses it (generator, Jacobiator, associator, alternative algebra, loop, Moufang loop, Malcev algebra, derivation, automorphism, twist charge, Gröbner basis, saturation, unitary state, Bogoliubov-de Gennes matrix, superficial degree of divergence, ...), proves its seven theorems in the text, and states what is not established; the explanation of the sentence on the superfluid is written for a reader who knows nothing of the solution, with worked examples | manuscript, Secs. I–XI; the explanation in `explanations/` |
+| 1. Every documentation, symbol and provenance file in .md, .tex and .pdf | `README`, `P0`, `P1`, `P2`, the manuscript and the explanation exist in all three formats; `check_all.sh` builds them and fails if one is missing | `check_all.sh`, Section 4 |
+| 2. Push to the repository as soon as anything is updated | the work was committed in six stages (Section 5), each carried to the author's computer at once; the push itself can only be made by the author, with the command block given at the end of each stage | the git log |
 | 3. Working directory `/Users/nsh/Developer/github/spacetimes` | the folder `Revision_SuperLoop` of that repository | — |
 | 4. Repository `https://github.com/once-ere/spacetimes.git` | as stated | — |
 | 5. One symbol, one object, in the whole project; a master provenance of the symbols, and its symbols used everywhere | the registry `provenance/symbols_ll.csv` takes 2 symbols of the master registries with their meanings and adds 80 new ones, all with the suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur) that marks them as algebra elements, matrices, number sets or Lie algebras; the plain-text names of the programs, figures and data files are registered as well; eight machine checks (LL-S1 to LL-S8) | `P1`, data file `sl_symbol_checks.txt` |
-| 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases (62 checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; every number in the documents is inserted from the data files by a script | `P2`, `code/` |
+| 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases (62 checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; the Rust program `explain_superfluid` computes every example of the explanation (10 checks, all passing), and a Python script draws its three figures; every number in the documents is inserted from the data files by a script | `P2`, `code/`, `explanations/code/` |
 | 7. Every equation, symbol and definition in the very file that uses it; never refer the reader elsewhere | every document contains the complete table of the symbols and the formulas it uses; the check LL-H1 searches all documents for referrals | data file `sl_self_contained_checks.txt` |
 | 8. Follow the instructions exactly, or explain in a provenance why not and pause | Section 7 explains every place where the wording of the task cannot be followed literally (a counterexample to a proved theorem whose hypotheses hold, a "group" that is not associative) and what is provided instead; the work did not pause, because every instruction could be carried out in full on that basis | Section 7 |
 
@@ -90,6 +123,7 @@ by both folders denote the same objects (check LL-S2).
 | `code/scripts/` | `malcev_groebner.py`, `make_figures.py`, `write_symbol_registry.py`, `check_symbols.py`, `check_self_contained.py`, `write_doc_tables.py`, `assemble_docs.py`, `build_manuscript.py`, `tex2md.py`, `build_docs.sh`, `check_layout.py`, `doc_header.tex`, `check_all.sh` |
 | `data/` | 14 data files, the reports of all checks and the Gröbner bases |
 | `figures/` | 7 figures, .pdf and .png |
+| `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf); its program `code/explain-rs` (binary `explain_superfluid`) and figure script `code/make_explain_figures.py`; its data files and report in `data/`; its three figures in `figures/` |
 | `docs_src/` | the sources of the documents |
 
 # 5. What was done, in order
@@ -109,6 +143,10 @@ by both folders denote the same objects (check LL-S2).
    the superfluid (Section 11, entries E3 to E5).
 5. **Stage 3c — the documents**: the manuscript, the provenance documents, the builds, and the repairs
    that the builds required (Section 11, entries E9 to E13).
+6. **Stage 4 — the explanation** of the sentence on the superfluid (request of 19:32, Section 2.3): the
+   program `explain_superfluid` with the checks X-1 to X-10, three figures, the document in
+   `explanations/`, and the extension of the checks of the symbols, of self-containedness and of
+   `check_all.sh` to the new folder (Section 11, entries E14 to E17).
 
 # 6. The results in brief
 
@@ -152,6 +190,17 @@ by both folders denote the same objects (check LL-S2).
   SF2); the critical coupling $G^{\rm crit}_{\rm LL}=2\pi^2/\Lambda_{\rm LL}^2$ for massless charges; the law of
   Bardeen, Cooper and Schrieffer at a Fermi surface; the unitary, electrically neutral polar state wins
   (Theorem SF3); the singlet of the whole super-loop needs two species (Theorem SF4).
+* **The sentence on the superfluid, explained** (stage 4): a spin-zero pair matrix has an antisymmetric
+  Dirac factor, so the rule of Pauli forces a symmetric isospin factor (isospin 1); the condensed pairs
+  have the isospin wavefunction $\mathsf D_{\rm LL}$, the fractions of pairs of the charges $+1$, 0, $-1$
+  follow from it, and the average isospin of a pair is
+  $i\,\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}/\lvert\vec d_{\rm LL}\rvert^2$, of length $\zeta_{\rm LL}$: unitary
+  condensates are exactly those whose pairs have the average isospin, and hence the average charge, 0;
+  the unbroken generator of a unitary condensate is the isospin rotation about its real direction
+  ($Q_{\rm LL}=T^3_{\rm LL}$ for the polar condensate along the third axis), that of the charged up-up
+  condensate is the number of down particles $\tfrac12F_{\rm LL}-T^3_{\rm LL}$; the singlet of the whole
+  super-loop is the scalar part of the product of two spinor charges, one half of a trace with two
+  antisymmetric contractions, symmetric and therefore zero for one fermion field.
 * **Renormalizability**: in $3+1$ dimensions the Yukawa form is renormalizable and the contact form is
   not; on the $7+1$ and $4+4$ manifolds every form is non-renormalizable; invariance under the loop's
   linear action equals invariance under its Lie closure, so non-associativity changes nothing in power
@@ -249,6 +298,12 @@ because non-renormalizability is a statement about the growth of the divergences
    super-loop singlet of two species.
 7. **Whether to pursue a non-associative quantum mechanics** in which the super-loop could act as a
    symmetry of states.
+8. **The wording "electrically neutral" in the manuscript.** The explanation shows that the exactly
+   isospin-invariant model has a family of equivalent unitary ground states; all have pairs of average
+   charge 0, and only the one along the third isospin axis keeps the electric charge unbroken. The
+   manuscript names that representative ("up to an isospin rotation"). Whether to add a sentence on this
+   degeneracy to the manuscript, or an isospin-breaking interaction that selects the third axis, is the
+   author's decision; the manuscript was not changed.
 
 # 9. What has not been done
 
@@ -291,6 +346,10 @@ because non-renormalizability is a statement about the growth of the divergences
 | E11 | a page of the long table of the symbols ran 3.4 pt beyond its height: TeX lets the last line of a page hang below it, and the closing rule of the table was added after that line | the log check of the build | the largest allowed depth is zero inside the long tables and restored after them |
 | E12 | two comments in the program were outdated: a theorem label `S1` in the module of the superfluid, and the statement in `Cargo.toml` that the library crate supplies the exact ranks (the module `exact.rs` of the program computes them) | review of the source before the description of the programs was written | both comments corrected |
 | E13 | the generic pair matrix $\mathsf K$ of Theorem SF1, and the coordinates `x5`, `x6`, `x7` in the meaning of the taken symbol $D$, were not explained in the registry | review of the table of symbols | both are now explained in their entries |
+| E14 | the first version of the program `explain_superfluid` typed in the action of the isospin generators on $\vec d_{\rm LL}$ as a rotation with the opposite sense to the one that follows from the pair matrices; with the factor $2i$ of $F_{\rm LL}$ this would have named the number of up particles, not of down particles, as the unbroken generator of the up-up condensate (the report then said only "one combination of $T^3_{\rm LL}$ and $F_{\rm LL}$") | deriving the statement of the explanation by hand (stage 4) | the action of every generator on $\vec d_{\rm LL}$ is now derived from its action on the pair matrices (check X-7), and the unbroken generator of each charged condensate is named and checked |
+| E15 | in the first drafts of the program of the explanation the report used `q` (the momentum) for the charge of a pair, an unregistered name for a unit vector, and a condition of check X-9 that did not test what its statement says | checks LL-S8 and review (stage 4) | `Q_LL(Kch)`, words, and the condition rewritten (the species Casimir is 0 for $\mathsf E_{\rm LL}$ and 2 for $\sigma^{\rm LL}_0$) |
+| E16 | the explanation placed computed numbers directly after a formula instead of inside it; the Markdown converter then did not recognize the formula, and three Greek letters were set in a text font without these glyphs; the explanation also used bare Latin letters for the isospin quantum number and for two amplitudes | the layout check of the build and check LL-S6 (stage 4) | the numbers stand inside their formulas; the letters were replaced by words |
+| E17 | three cells of the table of the example condensates were wider than their columns | the layout check of the build (stage 4) | the column widths were changed |
 
 # 12. The symbols
 
@@ -378,7 +437,7 @@ because non-renormalizability is a statement about the growth of the divergences
 | $\psi'_{\rm LL}$ | the Weyl isodoublet of a spinor charge $\mathbf b\mathbf e_4$: the $2\times2$ matrix $\psi'_{\rm LL}=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf b)^T$, whose first column (isospin up) and second column (isospin down) are Weyl spinors | new | `psi'_LL` |
 | $\Psi_{\rm LL}$ | the Dirac isodoublet of the spinor charges: a field of 8 complex Grassmann components (Dirac $\otimes$ isospin), whose $\gamma^{\rm ch}_{\rm LL}=+1$ half is built from $\mathfrak s_{\rm LL}$ and whose other half from the complex-conjugate super-loop | new | `Psi_LL` `Psi_LL^T` `Psi_LL^dag` |
 | $\gamma^p_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$, $C_{\rm LL}$, $\alpha^j_{\rm LL}$, $\beta_{\rm LL}$ | the $4\times4$ Dirac matrices of $\mathbb R^{1,3}_{\rm LL}$ in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on Dirac $\otimes$ isospin each acts as $\otimes\sigma^{\rm LL}_0$) | new | `gamma_LL^p` `gamma_LL^p'` `gamma_ch` `C_LL` `alpha_LL^j` `beta_LL` |
-| $\mathsf K^\iota_{\rm LL}$, $\mathsf K'^\iota_{\rm LL}$, $\mathsf K^{\rm s}_{\rm LL}$ | the $8\times8$ pair matrices of the spin-zero channels: scalar $\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ ($0^+$), pseudoscalar $\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ ($0^-$), and the $16\times16$ singlet of two species $\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}$ (the last factor on the species index); the plain-text name Kch alone, and the letter $\mathsf K$ without scripts in Theorem SF1, stand for any $8\times8$ pair matrix, the pair of two spinor charges being $\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}$ | new | `Kch` `Kch_iota` `Kch_1` `Kch_2` `Kch_3` `Kch'_iota` `Kch_singlet` |
+| $\mathsf K^\iota_{\rm LL}$, $\mathsf K'^\iota_{\rm LL}$, $\mathsf K^{\rm s}_{\rm LL}$ | the $8\times8$ pair matrices of the spin-zero channels: scalar $\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ ($0^+$), pseudoscalar $\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ ($0^-$), and the $16\times16$ singlet of two species $\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}$ (the last factor on the species index); the plain-text name Kch alone, and the letter $\mathsf K$ without scripts (in Theorem SF1 and in the explanation of the folder explanations), stand for any pair matrix ($8\times8$ for one field, $16\times16$ for two species), the pair of two spinor charges being $\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}$; $\mathsf K_{12}$ is the entry of $\mathsf K$ in row 1 and column 2 | new | `Kch` `Kch_iota` `Kch_1` `Kch_2` `Kch_3` `Kch'_iota` `Kch_singlet` |
 | $\Pi^\iota_{\rm LL}$ | the pair operators $\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})$, which annihilate two spinor charges of opposite momenta | new | `Pi_iota` |
 | $\vec q_{\rm LL}$, $q_{\rm LL}$, $q^j_{\rm LL}$ | the momentum of a particle in the space of $\mathbb R^{1,3}_{\rm LL}$, its length and its components | new | `q` |
 | $m_{\rm LL}$, $\mu_{\rm LL}$, $\Lambda_{\rm LL}$ | the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units, except where it varies) | new | `m` `mu` `Lambda` |
@@ -389,7 +448,7 @@ because non-renormalizability is a statement about the growth of the divergences
 | $\vec d_{\rm LL}$, $d^\iota_{\rm LL}$; $\zeta_{\rm LL}$ | the order parameter, the isospin vector $\vec d_{\rm LL}=(d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})\in\mathbb C^3$ with $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2\in[0,1]$ (plain text `cross(dvec, dvec^*)`: the cross product) | new | `dvec` `d_iota` `abs_dvec_at_min` `zeta` |
 | $\Delta_{\rm LL}$, $\Delta^\pm_{\rm LL}$ | the gap: $\Delta_{\rm LL}=\lvert\vec d_{\rm LL}\rvert$ for a unitary state, and the two gaps $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$ of a general state | new | `Delta` `Delta_+` `Delta_-` `Delta_(+-)` |
 | $\mathsf P_{\rm LL}$; $\mathsf H_{\rm LL}(\vec q_{\rm LL})$; $\mathcal N_{\rm LL}(\vec q_{\rm LL})$ | the pairing block $\mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$, the $16\times16$ Bogoliubov-de Gennes matrix $\mathsf H_{\rm LL}=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P_{\rm LL}^\dagger&-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})^T\end{pmatrix}$ and the Nambu spinor $\mathcal N_{\rm LL}=(\Psi_{\rm LL}(\vec q_{\rm LL}),\Psi_{\rm LL}^{*}(-\vec q_{\rm LL}))$ on which it acts | new | `Ppair` `H_BdG` |
-| $\mathsf D_{\rm LL}$ | the isospin part of the pairing block of the scalar channel, the $2\times2$ matrix $\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger$, so that $\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}$ | new |  |
+| $\mathsf D_{\rm LL}$ | the isospin part of the pairing block of the scalar channel, the $2\times2$ matrix $\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger$, so that $\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}$; it is also the isospin wavefunction of the condensed pairs (rows and columns: isospin up, down); plain text `Dpair` (not `D_LL`, which is the Lorentz derivation) | new | `Dpair` |
 | $\Omega_{\rm LL}$ | the grand potential per volume at zero temperature, measured from the normal state: $\Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})$ minus its value at $\vec d_{\rm LL}=0$ | new | `Omega` `Omega_min` `Omega_minus_Omega0` `Omega_at_polar_gap` |
 | $k^{\rm F}_{\rm LL}$, $\nu^{\rm F}_{\rm LL}$ | the Fermi momentum $(\mu_{\rm LL}^2-m_{\rm LL}^2)^{1/2}$ and the density of states of one species and one spin state at the Fermi surface, $\nu^{\rm F}_{\rm LL}=k^{\rm F}_{\rm LL}\mu_{\rm LL}/(2\pi^2)$ | new | `kF` `nuF` |
 | $F_{\rm LL}$; $U(1)^{\rm F}_{\rm LL}$; $SU(2)_{\rm v}$ | the generator of the fermion number $\Psi_{\rm LL}\to e^{i\theta_{\rm LL}}\Psi_{\rm LL}$ (it multiplies $\vec d_{\rm LL}$ by $2i$) and its group; the isospin group, which rotates the isospin index of $\Psi_{\rm LL}$ and $\vec d_{\rm LL}$ as a vector | new | `F_LL` `U(1)_F_LL` `SU(2)_v` |
@@ -413,5 +472,5 @@ because non-renormalizability is a statement about the growth of the divergences
 | $\mathfrak{so}(3,1)$, $\mathfrak{so}(1,7)$, $\mathfrak{so}(4,1)$, $\mathfrak{so}(8)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{so}(3)$, $\mathfrak{so}(2,1)$, $\mathfrak{sl}(2,\mathbb R)$, $\mathfrak{sl}(2)$, $\mathfrak{su}(2)$, $\mathfrak{spin}(7)$, $\mathfrak g_2$, $\mathfrak g_2(\mathbb C)$ | Lie algebras: of the Lorentz groups of $3+1$ and $7+1$ dimensions; of the de Sitter group (signature of the Killing form: 4 positive, 6 negative); of the linear maps that preserve a definite real, a $(4,4)$ and a complex quadratic form in eight dimensions; of the rotations of three-dimensional space; of the Lorentz group of $2+1$ dimensions, equal to $\mathfrak{sl}(2,\mathbb R)$; $\mathfrak{sl}(2)$ the simple Lie algebra of dimension 3 over any field; $\mathfrak{su}(2)$ isospin; $\mathfrak{spin}(7)$ of dimension 21; the exceptional Lie algebra $\mathfrak g_2$ (compact, dimension 14) and its complex form (real dimension 28) | new | `so(3,1)` `so(1,7)` `so(4,1)` `so(8)` `so(4,4)` `so(8,C)` `so(3)` `so(2,1)` `sl(2,R)` `sl(2)` `su(2)` `spin(7)` `g2` `g2(C)` |
 | $\mathrm{tr}$, $\det$, $\mathrm{diag}$, $\mathrm{Re}$, $\mathrm{Im}$ | trace, determinant, the diagonal matrix with the listed entries, real part, imaginary part (also: the imaginary part of an algebra, the span of its imaginary units); plain text `exp`, `ln`, `sqrt`, `sum`, `int`, `span`, `dim`: the exponential, natural logarithm, square root, a sum, an integral, the set of real linear combinations, a dimension | new | `tr` `det` `diag` `Re` `Im` `exp` `ln` `sqrt` `sum` `int` `span` `dim` |
 | ${}^T$; $\otimes$, $\oplus$; $\circ$; $\langle\ \rangle$; h.c. | transpose; tensor product and direct sum (plain text `(x)` for $\otimes$); composition of maps; expectation value in the ground state; the Hermitian conjugate of the preceding terms | new | `(x)` `^T` `o` |
-| A-1, ..., R-6; G-1, ..., G-12; LL-S1, ..., LL-H1; Theorems R, L, M, SF1, ..., SF4 | the identifiers of the machine checks (letters: A associativity, L Lorentz super-loop, Q operators and eigenvalues, C the inversion element, M Malcev classification, G Groebner bases, N manifolds, S superfluid, R renormalizability, LL-S symbols, LL-H self-containedness) and the labels of the theorems proved in the manuscript | new |  |
+| A-1, ..., R-6; G-1, ..., G-12; LL-S1, ..., LL-H1; X-1, ..., X-10; Theorems R, L, M, SF1, ..., SF4 | the identifiers of the machine checks (letters: A associativity, L Lorentz super-loop, Q operators and eigenvalues, C the inversion element, M Malcev classification, G Groebner bases, N manifolds, S superfluid, R renormalizability, LL-S symbols, LL-H self-containedness, X the examples of the explanation of the spin-zero superfluid in the folder explanations) and the labels of the theorems proved in the manuscript | new |  |
 | H-grp, H-op, H-Lie, H-gr, H-dyn | the labels of the hypotheses of the no-go theorems: the symmetries form a group (H-grp), act as linear operators on the space of states (H-op), have generators that form a Lie algebra (H-Lie) or a Lie superalgebra (H-gr), and the dynamical hypotheses on the scattering matrix (H-dyn) | new |  |
