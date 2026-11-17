@@ -7,11 +7,11 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.39 s
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.52 s
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 25.03 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 24.80 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_rs_quench_summary.txt, t2_rs_quench_series.csv, t2_rs_quench_fields.csv, t2_rs_quench_spectrum.csv, t2_rs_quench_iterations.csv
 checks:

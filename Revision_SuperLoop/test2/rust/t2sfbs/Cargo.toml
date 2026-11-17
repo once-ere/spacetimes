@@ -1,0 +1,12 @@
+[package]
+name = "t2sfbs"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2, items [7] to [11]: the superfluid boson singlet state (SFBS) of the spinor field, its effective field theory and the Higgs mechanism, with machine checks"
+
+[[bin]]
+name = "t2_sfbs"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

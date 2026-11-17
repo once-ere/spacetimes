@@ -22,7 +22,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [4] | a Python script that plots these numerical solutions | Section 5 | answered |
 | [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | answered |
 | [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | answered |
-| [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | to follow |
+| [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | answered |
 | [8] | the effective field equations of the SFBS | Section 9 | to follow |
 | [8] | the effective potential of the SFBS, the analogue of the Mexican-hat potential of the Higgs doublet | Section 10 | to follow |
 | [9] | the relative minima of this potential, the spontaneous breaking of the symmetry, and the expansion of the SFBS about a minimum, called SFBSv | Section 11 | to follow |
@@ -30,7 +30,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] to [6]; the sections of the other items are added to this same document, in this order, as they
+items [1] to [7]; the sections of the other items are added to this same document, in this order, as they
 are completed.
 
 ## 1.2 How to read this document
@@ -2268,6 +2268,502 @@ times. Data: `test2/data/t2_rs_quench_*`.
 - **Limits.** As for the Python plotter (Section 5.4): one solution per figure, panels chosen by the task, three-dimensional
   densities summed over $x^3_{\rm LL}$.
 
+# 8. Item [7]: the construction of the superfluid boson singlet state (SFBS) from the spinor field
+
+## 8.0 The answer in brief
+
+1. **Two spinor charges at one point.** The simplest boson that the spinor field can form is a pair of two of its
+   spinor charges at the same point: the operator $\Psi^T_{\rm LL}\mathsf K^{\rm g}_{\rm LL}\Psi_{\rm LL}$ with an
+   $8\times8$ pair matrix $\mathsf K^{\rm g}_{\rm LL}$. Because the components anticommute, only antisymmetric pair
+   matrices count; there are 28 independent ones.
+2. **Spin zero.** The pair is a Lorentz scalar (spin $S^{\rm sp}_{\rm LL}=0$) exactly when its pair matrix lies in a
+   six-dimensional space, spanned by $\mathsf K^\iota_{\rm LL}$ (scalar, parity $+$) and $\mathsf K'^\iota_{\rm LL}$
+   (pseudoscalar, parity $-$), $\iota=1,2,3$ (Section 8.2, check SB-1). In each Weyl block the pair matrix contains the
+   antisymmetric matrix $\mathsf E_{\rm LL}$: the two spins form the **spin singlet** $\uparrow\downarrow-\downarrow\uparrow$.
+   The Pauli principle then forces the isospin factor to be symmetric: the pair is an **isospin triplet**
+   ($I^{\rm v}_{\rm LL}=1$).
+3. **The SFBS.** The attractive interaction of (2.24) acts in the scalar channel. The superfluid boson singlet is
+   therefore the triplet of composite scalar fields $\Pi^\iota_{\rm LL}=\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}$:
+   spin 0, parity $+$, isospin 1, fermion number 2, electric charges $+1$, $0$, $-1$ (Sections 8.3 and 8.4, check SB-2).
+   "Singlet" means spin singlet; a pair that is also an isospin singlet is forbidden for one field by the Pauli principle.
+4. **Super-loop form.** In terms of the bi-quaternions $\mathbf b^\pm_{\rm LL}$ of the two spinor charges of which
+   $\Psi_{\rm LL}$ is made, the SFBS is $\Pi^\iota_{\rm LL}=-2i\big({\rm Im}_\iota(\mathbf b^-_{\rm LL}\bar{\mathbf b}^-_{\rm LL})+{\rm Im}_\iota(\mathbf b^+_{\rm LL}\bar{\mathbf b}^+_{\rm LL})\big)$:
+   the imaginary part of the product of each spinor charge's bi-quaternion with its own conjugate, which the
+   super-loop's automorphisms rotate as an isospin vector and leave unchanged under Lorentz transformations
+   (Section 8.5, check SB-3).
+5. **A composite boson.** The pair operators commute with each other, and on one lattice site
+   $[\hat\Pi^3_{\rm LL},(\hat\Pi^3_{\rm LL})^\dagger]=16-4\hat n^{\rm F}_{\rm LL}$: a boson whose constituents block each
+   other by the Pauli principle when the site fills up (Section 8.6, check SB-4).
+6. **The SFBS state.** The mean-field ground state of the attractive interaction is a coherent state of these pairs,
+   built from the Dirac sea by adding pairs of particles and pairs of antiparticles with the weights
+   $t^{\rm p}_{\rm LL}=\Delta_{\rm LL}/(E^-_{\rm LL}+\varepsilon_{\rm LL}-\mu_{\rm LL})$ and
+   $t^{\rm a}_{\rm LL}=\Delta_{\rm LL}/(E^+_{\rm LL}+\varepsilon_{\rm LL}+\mu_{\rm LL})$ (Section 8.7). The exact many-body
+   computation in the Fock space of one pair of momenta (65536 states) confirms that this state is the ground state
+   (check SB-5, Figure 21). Its pair field $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$ is the
+   order parameter of the superfluid; the effective field theory of this field is the subject of items [8] to [11].
+
+The program `t2_sfbs` (member `t2sfbs` of the workspace `test2/rust`, Appendix A.2f) verifies every statement of this
+section (checks SB-1 to SB-5) and prints the explicit matrices that the section shows.
+
+## 8.1 Two spinor charges at one point
+
+**The pair operator.** Let $\mathsf K^{\rm g}_{\rm LL}$ be a complex $8\times8$ matrix, the pair matrix. The operator
+
+$$\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^{\rm g}_{\rm LL}\Psi_{\rm LL}(x_{\rm LL})=\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\Psi_{{\rm LL},k}(x_{\rm LL})\Psi_{{\rm LL},k'}(x_{\rm LL})\tag{8.1}$$
+
+(the sums run over the eight components) is a product of two annihilation operators: it removes two spinor charges at
+the point $x_{\rm LL}$, and its Hermitian conjugate creates two. Because
+$\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}=-\Psi_{{\rm LL},k'}\Psi_{{\rm LL},k}$, the symmetric part of the pair matrix drops out:
+exchanging the summation indices in (8.1) gives
+$\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}=-\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{k'k}\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}$,
+so (8.1) equals $\Psi^T_{\rm LL}\tfrac12(\mathsf K^{\rm g}_{\rm LL}-(\mathsf K^{\rm g}_{\rm LL})^T)\Psi_{\rm LL}$. From now on every
+pair matrix is antisymmetric, $(\mathsf K^{\rm g}_{\rm LL})^T=-\mathsf K^{\rm g}_{\rm LL}$. The antisymmetric $8\times8$ matrices form
+a complex vector space of dimension $8\cdot7/2=28$: there are 28 independent pairs of two spinor charges at one point.
+This is the Pauli principle for two fermions in the same place: a pair state must be antisymmetric under the exchange of
+the two charges.
+
+**How the gauge group acts on a pair.** Under the gauge transformation (2.10), $\Psi_{\rm LL}\mapsto\mathcal U_{\rm LL}\Psi_{\rm LL}$, the
+pair (8.1) becomes $\Psi^T_{\rm LL}\,\mathcal U^T_{\rm LL}\mathsf K^{\rm g}_{\rm LL}\mathcal U_{\rm LL}\,\Psi_{\rm LL}$: the pair matrix changes to
+$\mathcal U^T_{\rm LL}\mathsf K^{\rm g}_{\rm LL}\mathcal U_{\rm LL}$. For a transformation close to the unit, generated by one of the
+generators of Section 2.4 (for example an isospin rotation by a small angle about the direction $\iota$, which changes
+$\Psi_{\rm LL}$ by that angle times $iT^\iota_{\rm LL}\Psi_{\rm LL}$), the pair matrix changes by the same small number times $i$ times
+
+$$(T^\iota_{\rm LL})^T\mathsf K^{\rm g}_{\rm LL}+\mathsf K^{\rm g}_{\rm LL}T^\iota_{\rm LL}\tag{8.2}$$
+
+(to first order): the transposed generator acts on the first charge of the pair and the generator on the second, and the
+two actions add. The same rule holds for every generator: for the Lorentz generators with $\mathsf s_{\rm LL}(\mathbf u)\otimes\sigma^{\rm LL}_0$
+in place of $T^\iota_{\rm LL}$, and for the fermion number with $\mathsf 1_8$.
+
+## 8.2 Spin zero: the Lorentz-invariant pairs
+
+**The condition.** A pair has spin zero when it does not change under Lorentz transformations, that is, under the
+$SL(2,\mathbb C)$ part of (2.10): $(\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0)^T\mathsf K^{\rm g}_{\rm LL}(\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0)=\mathsf K^{\rm g}_{\rm LL}$
+for every unit bi-quaternion $\mathbf g$. Near the unit, $\mathsf S_{\rm LL}(\mathbf g)=\mathsf 1_4+\mathsf s_{\rm LL}(\mathbf u)$ with the
+generators of Section 2.4, and the condition becomes
+
+$$(\mathsf s_{\rm LL}(\mathbf u)\otimes\sigma^{\rm LL}_0)^T\mathsf K^{\rm g}_{\rm LL}+\mathsf K^{\rm g}_{\rm LL}(\mathsf s_{\rm LL}(\mathbf u)\otimes\sigma^{\rm LL}_0)=0\quad\text{for }\mathbf u=J^1_{\rm LL},J^2_{\rm LL},J^3_{\rm LL},K^1_{\rm LL},K^2_{\rm LL},K^3_{\rm LL}.\tag{8.3}$$
+
+(For a connected group such as $SL(2,\mathbb C)$ the infinitesimal condition for its generators implies the condition for
+all its elements.)
+
+**Theorem 8.1 (the spin-zero pairs; Theorem SF1 of the manuscript).** The antisymmetric solutions of (8.3) form a complex
+vector space of dimension 6, spanned by the three scalar pair matrices
+$\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ of (2.22) and the three pseudoscalar
+pair matrices $\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$. Every solution pairs each Weyl block
+with itself:
+
+$$\mathsf K^{\rm g}_{\rm LL}=\begin{pmatrix}\mathsf E_{\rm LL}\otimes\mathsf V^-_{\rm LL}&0\\0&\mathsf E_{\rm LL}\otimes\mathsf V^+_{\rm LL}\end{pmatrix}\tag{8.4}$$
+
+(blocks of $4\times4$: the rows and columns 1 to 4 belong to $\Psi^-_{\rm LL}$, 5 to 8 to $\Psi^+_{\rm LL}$; in each block the
+first factor acts on the Weyl index and the second on the isospin index), with two **symmetric** complex $2\times2$
+isospin matrices $\mathsf V^\pm_{\rm LL}$.
+
+*Proof.* Write $\mathsf K^{\rm g}_{\rm LL}$ in the four $4\times4$ blocks of the two Weyl spinors, and write each block as a sum of
+four terms (Weyl factor)$\otimes$(isospin factor), with the four $2\times2$ isospin matrices that have a single entry 1 as the
+isospin factors. Since $\mathsf S_{\rm LL}(\mathbf g)=\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))$ by (2.7) acts on the Weyl index
+only, the finite form of (8.3) splits into one condition for each Weyl factor $\mathsf B^{\rm W}_{\rm LL}$ (a complex $2\times2$
+matrix) of each block:
+
+$$\begin{aligned}M_{\rm LL}(\tilde{\mathbf g})^T\mathsf B^{\rm W}_{\rm LL}M_{\rm LL}(\tilde{\mathbf g})&=\mathsf B^{\rm W}_{\rm LL}\quad\text{(upper left block)},\\M_{\rm LL}(\tilde{\mathbf g})^T\mathsf B^{\rm W}_{\rm LL}M_{\rm LL}(\mathbf g)&=\mathsf B^{\rm W}_{\rm LL}\quad\text{(upper right block)},\\M_{\rm LL}(\mathbf g)^T\mathsf B^{\rm W}_{\rm LL}M_{\rm LL}(\mathbf g)&=\mathsf B^{\rm W}_{\rm LL}\quad\text{(lower right block)},\end{aligned}$$
+
+for every unit bi-quaternion $\mathbf g$ (the lower left block is minus the transpose of the upper right one). Four
+particular Lorentz transformations decide everything: the rotation by $\pi/2$ about $x^3_{\rm LL}$, the rotation by $\pi/2$ about
+$x^2_{\rm LL}$, and the boost along $x^3_{\rm LL}$ with the rapidity $\ln2$, which by (2.1) and Section 2.4 have
+
+$$M_{\rm LL}(\mathbf g)=\begin{pmatrix}\exp(-i\pi/4)&0\\0&\exp(i\pi/4)\end{pmatrix},\qquad M_{\rm LL}(\mathbf g)=\frac1{\sqrt2}\begin{pmatrix}1&-1\\1&1\end{pmatrix},\qquad M_{\rm LL}(\mathbf g)=\begin{pmatrix}\sqrt2&0\\0&1/\sqrt2\end{pmatrix},$$
+
+together with the unit bi-quaternion $\mathbf g=\mathbf e_0+\tfrac i2\mathbf e_1-\tfrac12\mathbf e_2$, for which (2.2) gives
+$M_{\rm LL}(\mathbf g)=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ (a null rotation). For the rotations
+$M_{\rm LL}(\tilde{\mathbf g})=M_{\rm LL}(\mathbf g)$ (unitary matrices), for the boost $M_{\rm LL}(\tilde{\mathbf g})=M_{\rm LL}(\mathbf g)^{-1}$.
+
+(a) *The diagonal blocks.* The identity
+$M_{\rm LL}(\mathbf g)^T\mathsf E_{\rm LL}M_{\rm LL}(\mathbf g)=\det(M_{\rm LL}(\mathbf g))\,\mathsf E_{\rm LL}$, which holds for every complex
+$2\times2$ matrix in place of $M_{\rm LL}(\mathbf g)$ (multiply out with $\mathsf E_{\rm LL}=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$), and the
+same identity for $M_{\rm LL}(\tilde{\mathbf g})$ show that $\mathsf B^{\rm W}_{\rm LL}=\mathsf E_{\rm LL}$ satisfies both diagonal conditions
+for every $\mathbf g$ (the determinant is 1). Conversely, the boost multiplies the entry $(\mathsf B^{\rm W}_{\rm LL})_{11}$ by 2 and the
+entry $(\mathsf B^{\rm W}_{\rm LL})_{22}$ by $\tfrac12$ (in both diagonal conditions), so both vanish; and the null rotation turns
+$\begin{pmatrix}0&(\mathsf B^{\rm W}_{\rm LL})_{12}\\(\mathsf B^{\rm W}_{\rm LL})_{21}&0\end{pmatrix}$ into
+$\begin{pmatrix}0&(\mathsf B^{\rm W}_{\rm LL})_{12}\\(\mathsf B^{\rm W}_{\rm LL})_{21}&(\mathsf B^{\rm W}_{\rm LL})_{12}+(\mathsf B^{\rm W}_{\rm LL})_{21}\end{pmatrix}$, so
+$(\mathsf B^{\rm W}_{\rm LL})_{21}=-(\mathsf B^{\rm W}_{\rm LL})_{12}$: the Weyl factor is a multiple of $\mathsf E_{\rm LL}$.
+
+(b) *The blocks between the two Weyl spinors.* For the two rotations the upper right condition is the same as a diagonal
+one. The rotation about $x^3_{\rm LL}$ multiplies $(\mathsf B^{\rm W}_{\rm LL})_{11}$ by $\exp(-i\pi/2)=-i$ and $(\mathsf B^{\rm W}_{\rm LL})_{22}$
+by $i$, so both vanish. The rotation about $x^2_{\rm LL}$ leaves $\mathsf E_{\rm LL}$ unchanged (its determinant is 1) but turns
+$\sigma^{\rm LL}_1$ into $\sigma^{\rm LL}_3$ (multiply out), so the symmetric part of
+$\begin{pmatrix}0&(\mathsf B^{\rm W}_{\rm LL})_{12}\\(\mathsf B^{\rm W}_{\rm LL})_{21}&0\end{pmatrix}$, which is a multiple of $\sigma^{\rm LL}_1$, must vanish: the
+Weyl factor is a multiple of $\mathsf E_{\rm LL}$. Finally the boost turns $\mathsf E_{\rm LL}$ into
+$\mathrm{diag}(1/\sqrt2,\sqrt2)\,\mathsf E_{\rm LL}\,\mathrm{diag}(\sqrt2,1/\sqrt2)=\begin{pmatrix}0&\tfrac12\\-2&0\end{pmatrix}\neq\mathsf E_{\rm LL}$, so the
+multiple is zero. The blocks between the two Weyl spinors vanish: a Lorentz-invariant pair never joins a left-handed with a
+right-handed charge.
+
+(c) *Antisymmetry.* With the diagonal blocks $\mathsf E_{\rm LL}\otimes\mathsf V^\pm_{\rm LL}$, the transposed block is
+$\mathsf E^T_{\rm LL}\otimes(\mathsf V^\pm_{\rm LL})^T=-\mathsf E_{\rm LL}\otimes(\mathsf V^\pm_{\rm LL})^T$, and antisymmetry requires
+$(\mathsf V^\pm_{\rm LL})^T=\mathsf V^\pm_{\rm LL}$. The symmetric complex $2\times2$ matrices form a space of dimension 3, with the basis
+
+$$\mathsf E_{\rm LL}\tau^{\rm LL}_1=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_2=\begin{pmatrix}i&0\\0&i\end{pmatrix},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_3=\begin{pmatrix}0&-1\\-1&0\end{pmatrix},\tag{8.5}$$
+
+while the fourth $2\times2$ matrix, $\mathsf E_{\rm LL}$ itself, is antisymmetric. So $\mathsf V^-_{\rm LL}$ and $\mathsf V^+_{\rm LL}$ have three
+free coefficients each: six in all. With $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}=\mathrm{diag}(-\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$ and
+$C_{\rm LL}=\mathrm{diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$ (Section 2.3), $\mathsf K^\iota_{\rm LL}$ is (8.4) with
+$\mathsf V^-_{\rm LL}=\mathsf V^+_{\rm LL}=-\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ and $\mathsf K'^\iota_{\rm LL}$ is (8.4) with
+$\mathsf V^-_{\rm LL}=-\mathsf V^+_{\rm LL}=\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$; these six matrices span the solutions. $\square$
+
+Check SB-1 computes the solution space of (8.3) directly: on the 28 antisymmetric matrices the six conditions (8.3) leave
+exactly a six-dimensional space, which coincides with the span of $\mathsf K^\iota_{\rm LL}$ and $\mathsf K'^\iota_{\rm LL}$ (difference of
+the two projectors $1.8\times10^{-15}$); the six matrices are mutually orthogonal, $\mathrm{tr}((\mathsf K^\iota_{\rm LL})^\dagger\mathsf K^{\iota'}_{\rm LL})$
+is 8 for $\iota=\iota'$ and 0 otherwise. The scalar matrices are written out in Section 2.8; the pseudoscalar ones are
+
+{{GEN:t2s_Kps}}
+
+**Why "singlet": the spin of the pair.** In each Weyl block the pair matrix (8.4) has the factor $\mathsf E_{\rm LL}$ on the Weyl
+index. The first Weyl component has the spin $+\tfrac12$ along $x^3_{\rm LL}$ and the second the spin $-\tfrac12$ (the rotation
+generators act on a Weyl block as $\sigma^{\rm LL}_j/2$, Section 3.1). The entries $(\mathsf E_{\rm LL})_{12}=1$ and
+$(\mathsf E_{\rm LL})_{21}=-1$ therefore combine "first charge with spin up, second with spin down" with the weight $+1$ and the
+reverse with the weight $-1$: the pair is $\uparrow\downarrow-\downarrow\uparrow$, the **spin singlet** of two spin-$\tfrac12$ particles,
+$S^{\rm sp}_{\rm LL}=0$. (The written-out pair operators of Section 8.4 show it directly: every term joins the Dirac index 1
+with the Dirac index 2, or 3 with 4, that is, spin up with spin down in the same Weyl block.) The total spin acts on the pair matrix of a Weyl block as
+$\mathsf E_{\rm LL}\mapsto(\sigma^{\rm LL}_j/2)^T\mathsf E_{\rm LL}+\mathsf E_{\rm LL}\sigma^{\rm LL}_j/2$, which vanishes for $j=1,2,3$ (check SB-2):
+no rotation changes the pair. Boosts do not change it either, because $M_{\rm LL}(\mathbf g)^T\mathsf E_{\rm LL}M_{\rm LL}(\mathbf g)=\mathsf E_{\rm LL}$
+for every unit bi-quaternion $\mathbf g$ (step (a)): the pair is a Lorentz scalar, a particle of spin zero.
+
+**The isospin of the pair.** The isospin factors (8.5) are the symmetric $2\times2$ matrices. Written as states of two
+isospin-$\tfrac12$ charges they are $\uparrow\uparrow$, $\downarrow\downarrow$ and $\uparrow\downarrow+\downarrow\uparrow$ (in combinations): the symmetric
+states, the **isospin triplet**, $I^{\rm v}_{\rm LL}=1$. Check SB-2 computes the isospin Casimir of the pairs: the sum over
+$\iota'$ of the action of $T^{\iota'}_{\rm LL}$ applied twice to $\mathsf K^\iota_{\rm LL}$ gives $2\,\mathsf K^\iota_{\rm LL}=I^{\rm v}_{\rm LL}(I^{\rm v}_{\rm LL}+1)\mathsf K^\iota_{\rm LL}$ with
+$I^{\rm v}_{\rm LL}=1$, and the spin Casimir gives 0.
+
+**The Pauli principle decides.** Two charges at the same point are in a relative s-wave (symmetric in space). The
+whole pair state must be antisymmetric. The spin singlet is antisymmetric, so the isospin part must be symmetric: spin 0
+goes with isospin 1. A pair that is a singlet in spin *and* in isospin would be symmetric and vanishes identically for
+one field; such a complete singlet of the super-loop needs two different species of spinor fields (Theorem SF4 of the
+manuscript). The word *singlet* in "superfluid boson singlet" therefore means the **spin singlet**; the boson carries
+isospin 1.
+
+| pair matrix | spin $S^{\rm sp}_{\rm LL}$ | parity | isospin $I^{\rm v}_{\rm LL}$ | fermion number | electric charges | present in (2.24) |
+|----------------|------|------|------|------|------------|------|
+| $\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ | 0 | $+$ | 1 | 2 | $+1$, $0$, $-1$ | yes: the SFBS |
+| $\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ | 0 | $-$ | 1 | 2 | $+1$, $0$, $-1$ | no |
+
+## 8.3 Parity: the interaction selects the scalar channel
+
+The parity transformation reflects space and exchanges the two Weyl blocks:
+$\Psi_{\rm LL}(x^0_{\rm LL},\vec x_{\rm LL})\mapsto(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)\Psi_{\rm LL}(x^0_{\rm LL},-\vec x_{\rm LL})$. A pair matrix
+changes to $(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)^T\mathsf K^{\rm g}_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)$. Since $\gamma^0_{\rm LL}$ exchanges the
+two blocks, it exchanges $\mathsf V^-_{\rm LL}$ and $\mathsf V^+_{\rm LL}$ in (8.4): the scalar matrices ($\mathsf V^-_{\rm LL}=\mathsf V^+_{\rm LL}$)
+stay unchanged, parity $+1$, and the pseudoscalar matrices ($\mathsf V^-_{\rm LL}=-\mathsf V^+_{\rm LL}$) change sign, parity $-1$
+(check SB-2). The self-interaction of (2.24) is $\tfrac14G_{\rm LL}\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$ with
+$\Pi^\iota_{\rm LL}=\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}$: the spinor charges attract each other in the scalar channel and
+only there. The bosons that this attraction binds and condenses are the scalar pairs.
+
+**Definition.** The **superfluid boson singlet (SFBS)** of the spinor field is the isospin triplet of composite scalar
+fields
+
+$$\Pi^\iota_{\rm LL}(x_{\rm LL})=\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(x_{\rm LL}),\qquad\iota=1,2,3,\tag{8.6}$$
+
+with spin 0, parity $+$, isospin 1 and fermion number 2; its condensate, the expectation value of (8.6) in the ground
+state, is the order parameter $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$ of (2.30), and the **SFBS state** is
+the ground state in which this condensate is not zero (Section 8.7). Written out with the components (Section 2.8),
+$\Pi^1_{\rm LL}=-2\Psi_{{\rm LL},1}\Psi_{{\rm LL},3}+2\Psi_{{\rm LL},2}\Psi_{{\rm LL},4}-2\Psi_{{\rm LL},5}\Psi_{{\rm LL},7}+2\Psi_{{\rm LL},6}\Psi_{{\rm LL},8}$,
+and similarly for $\iota=2,3$.
+
+## 8.4 The charges of the SFBS
+
+**Electric charge.** The electric charge is $Q_{\rm LL}=T^3_{\rm LL}$ (Section 2.4): $+\tfrac12$ on the isospin-up components
+(the odd components 1, 3, 5, 7) and $-\tfrac12$ on the isospin-down components (2, 4, 6, 8). The total charge operator
+is $\int d^3\vec x_{\rm LL}\,\Psi^\dagger_{\rm LL}T^3_{\rm LL}\Psi_{\rm LL}$; from the anticommutation relations its commutator with a
+component is $-\sum_{k'}(T^3_{\rm LL})_{kk'}\Psi_{{\rm LL},k'}$, and with a pair (8.1) it is
+$-\Psi^T_{\rm LL}((T^3_{\rm LL})^T\mathsf K^{\rm g}_{\rm LL}+\mathsf K^{\rm g}_{\rm LL}T^3_{\rm LL})\Psi_{\rm LL}$, the action (8.2) of the charge. A pair
+whose matrix satisfies $(T^3_{\rm LL})^T\mathsf K^{\rm g}_{\rm LL}+\mathsf K^{\rm g}_{\rm LL}T^3_{\rm LL}=+\mathsf K^{\rm g}_{\rm LL}$, $=0$ or
+$=-\mathsf K^{\rm g}_{\rm LL}$ therefore removes the electric charge $+1$, $0$ or $-1$. The combinations
+
+$$\mathsf K^{(+1)}_{\rm LL}=\frac{\mathsf K^1_{\rm LL}-i\mathsf K^2_{\rm LL}}{\sqrt2},\qquad\mathsf K^{(0)}_{\rm LL}=\mathsf K^3_{\rm LL},\qquad\mathsf K^{(-1)}_{\rm LL}=\frac{\mathsf K^1_{\rm LL}+i\mathsf K^2_{\rm LL}}{\sqrt2}\tag{8.7}$$
+
+have the charges $+1$, $0$, $-1$ (check SB-2; the derivation: on the isospin factor,
+$\tfrac12(\tau^{\rm LL}_3\mathsf E_{\rm LL}\tau^{\rm LL}_\iota+\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\tau^{\rm LL}_3)=\tfrac12\mathsf E_{\rm LL}(\tau^{\rm LL}_\iota\tau^{\rm LL}_3-\tau^{\rm LL}_3\tau^{\rm LL}_\iota)$,
+because $\tau^{\rm LL}_3$ anticommutes with $\mathsf E_{\rm LL}$; this is $-i\mathsf E_{\rm LL}\tau^{\rm LL}_2$ for $\iota=1$, $+i\mathsf E_{\rm LL}\tau^{\rm LL}_1$ for
+$\iota=2$ and 0 for $\iota=3$, so the generator maps $\mathsf K^1_{\rm LL}\mapsto-i\mathsf K^2_{\rm LL}$, $\mathsf K^2_{\rm LL}\mapsto i\mathsf K^1_{\rm LL}$,
+$\mathsf K^3_{\rm LL}\mapsto0$, and (8.7) are its eigenvectors). Evaluated:
+
+{{GEN:t2s_Kcharge}}
+
+and the corresponding pair operators $\Pi^{(q)}_{\rm LL}=\Psi^T_{\rm LL}\mathsf K^{(q)}_{\rm LL}\Psi_{\rm LL}$ are
+
+{{GEN:t2s_Pi_charge}}
+
+They show the charges directly: $\Pi^{(+1)}_{\rm LL}$ annihilates two isospin-up charges (components 1 and 3, or 5 and 7),
+$\Pi^{(-1)}_{\rm LL}$ two isospin-down charges, and $\Pi^{(0)}_{\rm LL}$ one up and one down charge. In every term both charges
+belong to the same Weyl block, and within the block they have opposite spin projections (Dirac indices 1 and 2, or
+3 and 4): the spin singlet of Section 8.2.
+
+**Fermion number.** The generator of $U(1)^{\rm F}_{\rm LL}$ is $\mathsf 1_8$, and
+$\mathsf 1_8^T\mathsf K^\iota_{\rm LL}+\mathsf K^\iota_{\rm LL}\mathsf 1_8=2\,\mathsf K^\iota_{\rm LL}$: the SFBS carries the fermion number 2 (it is a pair).
+
+**The transformation law.** Collecting the results: under (2.10) the SFBS transforms as (2.23),
+$\Pi^\iota_{\rm LL}\mapsto\exp(2i\theta^{\rm F}_{\rm LL})\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota\iota'}\Pi^{\iota'}_{\rm LL}$: it
+does not feel the Lorentz part of the gauge group at all (a Lorentz scalar needs no spin connection), it is rotated
+by the isospin group as a vector, and it carries twice the phase of a spinor charge.
+
+## 8.5 The super-loop form of the SFBS
+
+By (2.11) the Dirac field is made of two spinor charges of the super-loop: the upper block is
+$\Psi^-_{\rm LL}=\psi'_{\rm LL}(\mathbf b^-_{\rm LL})$, the lower block $\Psi^+_{\rm LL}=\psi'_{\rm LL}(\mathbf b^+_{\rm LL})$, with
+$\psi'_{\rm LL}(\mathbf b)=\mathsf E^{-1}_{\rm LL}M_{\rm LL}(\mathbf b)^T$ (rows: Weyl index; columns: isospin). For the quantum field the
+four coefficients $\xi^{\rm LL}_p(\mathbf b^\pm_{\rm LL})$ of each bi-quaternion are anticommuting operators.
+
+**Theorem 8.2 (the SFBS in the super-loop).** As bilinear expressions in the anticommuting coefficients,
+
+$$\Pi^\iota_{\rm LL}=-2i\Big({\rm Im}_\iota\big(\mathbf b^-_{\rm LL}\bar{\mathbf b}^-_{\rm LL}\big)+{\rm Im}_\iota\big(\mathbf b^+_{\rm LL}\bar{\mathbf b}^+_{\rm LL}\big)\Big),\tag{8.8}$$
+
+where ${\rm Im}_\iota(\mathbf x)$ is the coefficient of $\mathbf e_\iota$ in the bi-quaternion $\mathbf x$. With
+$\xi^{\rm LL}_p=\xi^{\rm LL}_p(\mathbf b)$ and $(\iota,\iota',\iota'')$ cyclic, the product of a bi-quaternion with its own conjugate is
+
+$$\mathbf b\bar{\mathbf b}=-2\sum_\iota\big(\xi^{\rm LL}_0\xi^{\rm LL}_\iota+\xi^{\rm LL}_{\iota'}\xi^{\rm LL}_{\iota''}\big)\mathbf e_\iota,\tag{8.9}$$
+
+purely imaginary: its scalar part $N_{\rm LL}(\mathbf b,\mathbf b)=\sum_p\xi^{\rm LL}_p\xi^{\rm LL}_p$ vanishes, because the square of an
+anticommuting operator is zero.
+
+*Proof.* (i) In one Weyl block the pair matrix is $(-\mathsf E_{\rm LL})\otimes(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)$, so the block contributes
+$\sum_{a,a',k,k'}(\psi'_{\rm LL}(\mathbf b))_{ak}(-\mathsf E_{\rm LL})_{aa'}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)_{kk'}(\psi'_{\rm LL}(\mathbf b))_{a'k'}=\mathrm{tr}\big((\psi'_{\rm LL}(\mathbf b)^T(-\mathsf E_{\rm LL})\psi'_{\rm LL}(\mathbf b))(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^T\big)$,
+where the first index of $\psi'_{\rm LL}(\mathbf b)$ is the Weyl index and the second the isospin index (the sums run over both
+values of each); the order of the two anticommuting factors is kept. (ii) With $\mathsf E^{-1}_{\rm LL}=-\mathsf E_{\rm LL}$ and
+$(\mathsf E^{-1}_{\rm LL})^T=\mathsf E_{\rm LL}$,
+$\psi'_{\rm LL}(\mathbf b)^T(-\mathsf E_{\rm LL})\psi'_{\rm LL}(\mathbf b)=M_{\rm LL}(\mathbf b)\mathsf E_{\rm LL}(-\mathsf E_{\rm LL})(-\mathsf E_{\rm LL})M_{\rm LL}(\mathbf b)^T=-M_{\rm LL}(\mathbf b)\mathsf E_{\rm LL}M_{\rm LL}(\mathbf b)^T$,
+using $\mathsf E_{\rm LL}^2=-\sigma^{\rm LL}_0$. (iii) The relation $\mathsf E_{\rm LL}M_{\rm LL}(\mathbf x)\mathsf E^{-1}_{\rm LL}=M_{\rm LL}(\bar{\mathbf x})^T$ of
+the derivation of (2.12), applied to $\mathbf x=\bar{\mathbf b}$, gives $M_{\rm LL}(\mathbf b)^T=\mathsf E_{\rm LL}M_{\rm LL}(\bar{\mathbf b})\mathsf E^{-1}_{\rm LL}$,
+hence $M_{\rm LL}(\mathbf b)\mathsf E_{\rm LL}M_{\rm LL}(\mathbf b)^T=-M_{\rm LL}(\mathbf b\bar{\mathbf b})\mathsf E^{-1}_{\rm LL}=M_{\rm LL}(\mathbf b\bar{\mathbf b})\mathsf E_{\rm LL}$
+($M_{\rm LL}$ is multiplicative, and the steps are linear in each factor, so they hold with anticommuting coefficients as
+long as the order of the factors is kept). (iv) The block is therefore
+$-\mathrm{tr}\big(M_{\rm LL}(\mathbf b\bar{\mathbf b})\mathsf E_{\rm LL}(\tau^{\rm LL}_\iota)^T\mathsf E^T_{\rm LL}\big)=\mathrm{tr}\big(M_{\rm LL}(\mathbf b\bar{\mathbf b})\mathsf E_{\rm LL}(\tau^{\rm LL}_\iota)^T\mathsf E_{\rm LL}\big)$,
+and $\mathsf E_{\rm LL}(\tau^{\rm LL}_\iota)^T\mathsf E_{\rm LL}=\tau^{\rm LL}_\iota$ (because $\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\mathsf E^{-1}_{\rm LL}=-(\tau^{\rm LL}_\iota)^T$),
+so the block is $\mathrm{tr}(M_{\rm LL}(\mathbf b\bar{\mathbf b})\tau^{\rm LL}_\iota)$. (v) By (2.1),
+$M_{\rm LL}(\mathbf b\bar{\mathbf b})=\xi^{\rm LL}_0(\mathbf b\bar{\mathbf b})\sigma^{\rm LL}_0-i\sum_j\xi^{\rm LL}_j(\mathbf b\bar{\mathbf b})\sigma^{\rm LL}_j$, and
+$\mathrm{tr}(\sigma^{\rm LL}_j\tau^{\rm LL}_\iota)$ is 2 for $j=\iota$ and 0 otherwise ($\mathrm{tr}\,\tau^{\rm LL}_\iota=0$): the block is
+$-2i\,{\rm Im}_\iota(\mathbf b\bar{\mathbf b})$. Both Weyl blocks of $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$ are $-\mathsf E_{\rm LL}$, which gives (8.8).
+(vi) For (8.9) multiply out $\mathbf b\bar{\mathbf b}=(\xi^{\rm LL}_0+\sum_j\xi^{\rm LL}_j\mathbf e_j)(\xi^{\rm LL}_0-\sum_{j'}\xi^{\rm LL}_{j'}\mathbf e_{j'})$ with
+$\mathbf e_j\mathbf e_j=-1$ and $\mathbf e_1\mathbf e_2=-\mathbf e_2\mathbf e_1=\mathbf e_3$ (cyclically), keeping the order of the coefficients:
+$\xi^{\rm LL}_0\xi^{\rm LL}_0=0$; the mixed terms give $-\xi^{\rm LL}_0\xi^{\rm LL}_j+\xi^{\rm LL}_j\xi^{\rm LL}_0=-2\xi^{\rm LL}_0\xi^{\rm LL}_j$ in front of
+$\mathbf e_j$; the products of two imaginary units give $\sum_j\xi^{\rm LL}_j\xi^{\rm LL}_j=0$ and, in front of $\mathbf e_\iota$,
+$-(\xi^{\rm LL}_{\iota'}\xi^{\rm LL}_{\iota''}-\xi^{\rm LL}_{\iota''}\xi^{\rm LL}_{\iota'})=-2\xi^{\rm LL}_{\iota'}\xi^{\rm LL}_{\iota''}$. $\square$
+
+Check SB-3 verifies (8.8) and (8.9) as identities between the coefficient matrices of the bilinear forms (the matrix of
+$\Pi^\iota_{\rm LL}$ in the eight coefficients of $\mathbf b^-_{\rm LL}$ and $\mathbf b^+_{\rm LL}$ against the matrix of the right side): they agree
+exactly. Written out, (8.8) and (8.9) give
+$\Pi^\iota_{\rm LL}=4i\sum_{\mathbf b=\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}}\big(\xi^{\rm LL}_0(\mathbf b)\xi^{\rm LL}_\iota(\mathbf b)+\xi^{\rm LL}_{\iota'}(\mathbf b)\xi^{\rm LL}_{\iota''}(\mathbf b)\big)$.
+
+**What the super-loop form shows.** The product $\mathbf b\bar{\mathbf b}$ is a product of the super-loop: by (2.12), the spinor
+charge $\mathbf b\mathbf e_4$ multiplied from the right by its own bi-quaternion is $(\mathbf b\mathbf e_4)\mathbf b=(\mathbf b\bar{\mathbf b})\mathbf e_4$. The
+automorphisms (2.14) act on the spinor charges as $\mathbf b^+_{\rm LL}\mapsto\mathbf v\mathbf b^+_{\rm LL}\bar{\mathbf g}$ and
+$\mathbf b^-_{\rm LL}\mapsto\mathbf v\mathbf b^-_{\rm LL}\mathbf g^\dagger$, and so
+
+$$\mathbf b^+_{\rm LL}\bar{\mathbf b}^+_{\rm LL}\mapsto\mathbf v\mathbf b^+_{\rm LL}\bar{\mathbf g}\mathbf g\bar{\mathbf b}^+_{\rm LL}\bar{\mathbf v}=\mathbf v(\mathbf b^+_{\rm LL}\bar{\mathbf b}^+_{\rm LL})\bar{\mathbf v},\qquad\mathbf b^-_{\rm LL}\bar{\mathbf b}^-_{\rm LL}\mapsto\mathbf v\mathbf b^-_{\rm LL}\mathbf g^\dagger\overline{\mathbf g^\dagger}\bar{\mathbf b}^-_{\rm LL}\bar{\mathbf v}=\mathbf v(\mathbf b^-_{\rm LL}\bar{\mathbf b}^-_{\rm LL})\bar{\mathbf v},\tag{8.10}$$
+
+because $\bar{\mathbf g}\mathbf g=N_{\rm LL}(\mathbf g)=1$ and $\mathbf g^\dagger\overline{\mathbf g^\dagger}=N_{\rm LL}(\mathbf g)^*=1$: the Lorentz part of the
+automorphism cancels (spin zero), and the isospin part acts by $\mathbf x\mapsto\mathbf v\mathbf x\bar{\mathbf v}$, which rotates the imaginary
+part of $\mathbf x$ as a vector (isospin 1). A phase $\exp(i\theta^{\rm F}_{\rm LL})$ of the spinor charges multiplies the product by
+$\exp(2i\theta^{\rm F}_{\rm LL})$ (fermion number 2). Check SB-3 confirms (8.10) for 200 random bi-quaternions and transformations. The
+contrast with the product of two spinor charges in the loop, $(\mathbf b\mathbf e_4)(\mathbf b'\mathbf e_4)=-\bar{\mathbf b}'\mathbf b$ (Theorem SF4 of the
+manuscript), is instructive: there the conjugate stands on the left, the Lorentz transformation acts on the
+imaginary part (spin 1) and only the scalar part is a Lorentz scalar, and that scalar part is the complete singlet,
+which vanishes for one field. In $\mathbf b\bar{\mathbf b}$ the conjugate stands on the right, the Lorentz transformations cancel, and
+the imaginary part is the spin-zero isospin vector: the SFBS.
+
+## 8.6 The SFBS is a composite boson
+
+On the lattice of Section 2.11 (cells of the volume $(\ell^{\rm x}_{\rm LL})^3$), the operators
+$\hat c_{{\rm LL},k}(\vec s_{\rm LL})=(\ell^{\rm x}_{\rm LL})^{3/2}\Psi_{{\rm LL},k}(\vec s_{\rm LL})$ of a site obey the canonical anticommutation
+relations: $\hat c_{{\rm LL},k}\hat c^\dagger_{{\rm LL},k'}+\hat c^\dagger_{{\rm LL},k'}\hat c_{{\rm LL},k}$ is 1 for the same component on the same site and 0
+otherwise, and two annihilation operators anticommute. The SFBS of a site is
+$\hat\Pi^\iota_{\rm LL}(\vec s_{\rm LL})=\sum_{k,k'}(\mathsf K^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}$; the number of spinor charges on
+the site is $\hat n^{\rm F}_{\rm LL}=\sum_k\hat c^\dagger_{{\rm LL},k}\hat c_{{\rm LL},k}$ and its isospin
+$\hat n^\iota_{\rm LL}=\sum_{k,k'}\hat c^\dagger_{{\rm LL},k}(T^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k'}$ (all on the same site).
+
+**Pairs commute.** A pair operator is a product of two anticommuting operators. Moving one pair past another
+changes the sign four times: pair operators at different sites, and the three pair operators of one site, commute with
+each other. This is the defining property of Bose fields.
+
+**The commutator with the conjugate pair.** For two antisymmetric pair matrices $\mathsf K^{\rm g}_{\rm LL}$ and $\mathsf K^{\rm g'}_{\rm LL}$
+on one site,
+
+$$\begin{aligned}&\Big[\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'},\ \Big(\sum_{k,k'}(\mathsf K^{\rm g'}_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}\Big)^\dagger\Big]\\&\qquad=2\,\mathrm{tr}\big(\mathsf K^{\rm g}_{\rm LL}(\mathsf K^{\rm g'}_{\rm LL})^\dagger\big)-4\sum_{k,k'}\big(\mathsf K^{\rm g}_{\rm LL}(\mathsf K^{\rm g'}_{\rm LL})^\dagger\big)_{k'k}\hat c^\dagger_{{\rm LL},k}\hat c_{{\rm LL},k'}.\end{aligned}\tag{8.11}$$
+
+*Derivation.* (i) Moving the creation operator $\hat c^\dagger_{{\rm LL},k''}$ from the right of $\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}$ to
+its left changes the sign at each of the two factors; in addition, where it passes a factor of its own component, the
+anticommutator 1 of the two leaves the other factor behind. For the pair of an antisymmetric matrix the two kinds of
+leftover terms are equal, and
+
+$$\Big[\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'},\ \hat c^\dagger_{{\rm LL},k''}\Big]=-2\sum_{k'}(\mathsf K^{\rm g}_{\rm LL})_{k''k'}\hat c_{{\rm LL},k'}.$$
+
+(ii) The conjugate pair is $\sum_{k'',k'''}((\mathsf K^{\rm g'}_{\rm LL})^\dagger)_{k''k'''}\hat c^\dagger_{{\rm LL},k''}\hat c^\dagger_{{\rm LL},k'''}$. The
+commutator with a product of two creation operators is the commutator with the first, times the second, plus the
+first times the commutator with the second; step (i) turns each into a sum. (iii) In the first sum an annihilation
+operator stands to the left of a creation operator; reordering them with the anticommutation relations gives minus the
+reordered product and, for equal components, the number 1. These numbers add up to the trace in (8.11). (iv) The operator
+terms of both sums, collected with $(\mathsf K^{\rm g}_{\rm LL})^T=-\mathsf K^{\rm g}_{\rm LL}$ and $((\mathsf K^{\rm g'}_{\rm LL})^\dagger)^T=-(\mathsf K^{\rm g'}_{\rm LL})^*$,
+are equal, each $-2\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL}(\mathsf K^{\rm g'}_{\rm LL})^\dagger)_{k'k}\hat c^\dagger_{{\rm LL},k}\hat c_{{\rm LL},k'}$; together they are
+the last term of (8.11).
+
+**For the SFBS.** With $\mathsf K^\iota_{\rm LL}(\mathsf K^{\iota'}_{\rm LL})^\dagger=\mathsf 1_4\otimes(\tau^{\rm LL}_{\iota'}\tau^{\rm LL}_\iota)^T$ (from
+$C_{\rm LL}\gamma^{\rm ch}_{\rm LL}(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger=\mathsf 1_4$ and
+$\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\tau^{\rm LL}_{\iota'}\mathsf E^{-1}_{\rm LL}=(\tau^{\rm LL}_{\iota'}\tau^{\rm LL}_\iota)^T$) and
+$\tau^{\rm LL}_{\iota'}\tau^{\rm LL}_\iota=\sigma^{\rm LL}_0$ for $\iota=\iota'$ and $i\sum_{\iota''}\epsilon^{\rm LL}_{\iota'\iota\iota''}\tau^{\rm LL}_{\iota''}$ otherwise,
+(8.11) becomes
+
+$$\big[\hat\Pi^\iota_{\rm LL},(\hat\Pi^\iota_{\rm LL})^\dagger\big]=16-4\,\hat n^{\rm F}_{\rm LL},\qquad\big[\hat\Pi^\iota_{\rm LL},(\hat\Pi^{\iota'}_{\rm LL})^\dagger\big]=8i\sum_{\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}\hat n^{\iota''}_{\rm LL}\quad(\iota\neq\iota'),\tag{8.12}$$
+
+together with $[\hat n^{\rm F}_{\rm LL},\hat\Pi^\iota_{\rm LL}]=-2\hat\Pi^\iota_{\rm LL}$ (the pair removes two charges). Check SB-4 verifies (8.11) and
+(8.12) as operator identities on all 256 states of one site (eight fermion modes, built with the Jordan-Wigner
+representation): the deviations are exactly zero.
+
+**Meaning.** For the normalized pair operator $\tfrac14\hat\Pi^\iota_{\rm LL}$, (8.12) reads
+$[\tfrac14\hat\Pi^\iota_{\rm LL},\tfrac14(\hat\Pi^\iota_{\rm LL})^\dagger]=1-\hat n^{\rm F}_{\rm LL}/4$. A canonical Bose operator would give 1. The
+SFBS is a boson as long as the site holds few spinor charges, and the correction $-\hat n^{\rm F}_{\rm LL}/4$ is the Pauli
+principle: the charges already present block the states into which a new pair would go. A site has eight states; with
+eight charges it is full, and the commutator is $16-32=-16$. Figure 21(c) shows the 256 eigenvalues of the commutator:
+on the states with a given number of charges on the site it has the single value $16-4\hat n^{\rm F}_{\rm LL}$. The effective field theory of items [8] to [11] treats the
+SFBS as a Bose field; this is accurate when the pairs are dilute on the scale of the pair size.
+
+## 8.7 The SFBS state: a coherent state of pairs
+
+**The many-body problem of one pair of momenta.** In a uniform polar state, $d^\iota_{\rm LL}=(0,0,\Delta_{\rm LL})$ without gauge
+fields, the mean-field Hamiltonian couples the spinor charges of the momentum $\vec q_{\rm LL}$ only to those of
+$-\vec q_{\rm LL}$. With the annihilation operators $\Psi_{\rm LL}(\vec q_{\rm LL})$ of the plane waves in a box (canonical
+anticommutation relations; the eight components as a column), the part of the mean-field Hamiltonian of one pair of
+momenta is
+
+$$\begin{aligned}\hat H^{\rm q}_{\rm LL}={}&\Psi_{\rm LL}(\vec q_{\rm LL})^\dagger(\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL})\Psi_{\rm LL}(\vec q_{\rm LL})+\Psi_{\rm LL}(-\vec q_{\rm LL})^\dagger(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})\Psi_{\rm LL}(-\vec q_{\rm LL})\\&+\Big(\Psi_{\rm LL}(\vec q_{\rm LL})^\dagger\mathsf P_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})^*+\text{h.c.}\Big),\end{aligned}\tag{8.13}$$
+
+with $\mathsf P_{\rm LL}=\Delta_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger$ (Section 2.10; h.c. is the Hermitian conjugate of the preceding term) and the
+plane-wave Hamiltonian $\mathsf h_{\rm LL}(\vec q_{\rm LL})$, whose Dirac part is
+
+{{GEN:t2s_h4}}
+
+(on the eight components it acts as this matrix $\otimes\sigma^{\rm LL}_0$). It has the eigenvalues $\pm\varepsilon_{\rm LL}$, four times each;
+the projectors on the two eigenspaces are $\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL})=\tfrac12(\mathsf 1_8\pm\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL})$. Let
+$\chi^{\rm pw}_{{\rm LL},1},\dots,\chi^{\rm pw}_{{\rm LL},8}$ be orthonormal eigenvectors, the first four with the energy $-\varepsilon_{\rm LL}$
+and the last four with $+\varepsilon_{\rm LL}$. By the key identity (3.11), $\mathsf K^3_{\rm LL}\mathsf h_{\rm LL}(\vec q_{\rm LL})=\mathsf h_{\rm LL}(-\vec q_{\rm LL})^*\mathsf K^3_{\rm LL}$, the
+**partner** vectors $(\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*$ are orthonormal eigenvectors of $\mathsf h_{\rm LL}(-\vec q_{\rm LL})$ with the same
+energies. The operator $\Psi_{\rm LL}(\vec q_{\rm LL})^\dagger\chi^{\rm pw}_{{\rm LL},n}=\sum_k(\chi^{\rm pw}_{{\rm LL},n})_k\Psi_{{\rm LL},k}(\vec q_{\rm LL})^\dagger$ creates a
+spinor charge in the state $\chi^{\rm pw}_{{\rm LL},n}$ of the momentum $\vec q_{\rm LL}$.
+
+**The Dirac sea.** The normal state $\lvert\Phi^{\rm N}_{\rm LL}\rangle$ has the four states of energy $-\varepsilon_{\rm LL}$ of each of the two momenta
+filled and the states of energy $+\varepsilon_{\rm LL}$ empty: the Dirac vacuum of these 16 modes. (At $\mu_{\rm LL}>m_{\rm LL}$ the normal
+ground state also fills the positive-energy states below the Fermi momentum; the construction below starts from the Dirac
+sea in every case and produces the Fermi sea itself through the weights.)
+
+**The pair operators.** The SFBS pair of the momenta $\vec q_{\rm LL}$, $-\vec q_{\rm LL}$, restricted to positive energies, is created by
+(the sums over the last four and over the first four eigenvectors)
+
+$$\begin{aligned}\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger&=\sum_{n=5}^8\big(\Psi_{\rm LL}(\vec q_{\rm LL})^\dagger\chi^{\rm pw}_{{\rm LL},n}\big)\big(\Psi_{\rm LL}(-\vec q_{\rm LL})^\dagger(\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*\big)\\&=\sum_{k,k'}\big(\mathsf Y^+_{\rm LL}(\vec q_{\rm LL})(\mathsf K^3_{\rm LL})^\dagger\big)_{kk'}\Psi_{{\rm LL},k}(\vec q_{\rm LL})^\dagger\Psi_{{\rm LL},k'}(-\vec q_{\rm LL})^\dagger,\end{aligned}\tag{8.14}$$
+
+(the second form follows from $\sum_{n=5}^8\chi^{\rm pw}_{{\rm LL},n}(\chi^{\rm pw}_{{\rm LL},n})^\dagger=\mathsf Y^+_{\rm LL}(\vec q_{\rm LL})$ and the reality of
+$\mathsf K^3_{\rm LL}$; it does not depend on the choice of the eigenvectors), the projection on positive energies of the
+conjugate of the SFBS pair operator $\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^3_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})$. In the same way the antiparticle
+pair, the removal of two charges from the negative-energy states, is created by
+$\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})^\dagger=\sum_{n=1}^4\big((\chi^{\rm pw}_{{\rm LL},n})^\dagger\Psi_{\rm LL}(\vec q_{\rm LL})\big)\big(((\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*)^\dagger\Psi_{\rm LL}(-\vec q_{\rm LL})\big)$.
+Each term of these sums creates two charges (or two vacancies) in partner states; the four terms commute, and each
+squares to zero.
+
+**Theorem 8.3 (the SFBS state).** The ground state of (8.13) is the coherent pair state
+
+$$\lvert\Phi^{\rm SF}_{\rm LL}\rangle\propto\prod_{n=5}^8\big(1-t^{\rm p}_{\rm LL}(\ldots)_n\big)\prod_{n=1}^4\big(1+t^{\rm a}_{\rm LL}(\ldots)_n\big)\lvert\Phi^{\rm N}_{\rm LL}\rangle=\exp\big(-t^{\rm p}_{\rm LL}\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger+t^{\rm a}_{\rm LL}\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})^\dagger\big)\lvert\Phi^{\rm N}_{\rm LL}\rangle,\tag{8.15}$$
+
+where $(\ldots)_n$ is the term of $\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger$ or of $\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})^\dagger$ that belongs to the
+eigenvector $\chi^{\rm pw}_{{\rm LL},n}$, and
+
+$$t^{\rm p}_{\rm LL}=\frac{\Delta_{\rm LL}}{E^-_{\rm LL}+\varepsilon_{\rm LL}-\mu_{\rm LL}},\qquad t^{\rm a}_{\rm LL}=\frac{\Delta_{\rm LL}}{E^+_{\rm LL}+\varepsilon_{\rm LL}+\mu_{\rm LL}}.\tag{8.16}$$
+
+Its energy is $-8\mu_{\rm LL}-4(E^+_{\rm LL}+E^-_{\rm LL})$, and its pair amplitude is
+$\langle\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^3_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\rangle=-2\Delta_{\rm LL}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$.
+
+*Proof.* (i) *Equality of the two forms.* The terms of the exponents commute with each other and each squares to zero, so
+the exponential of a number times their sum is the product of the exponentials of the single terms, and the exponential
+of a number times a single term is 1 plus that number times the term. (ii) *The quasi-particles.*
+By Section 3.3, the positive-energy Bogoliubov mode built on $\chi^{\rm pw}_{{\rm LL},n}$ is
+$(\cos\vartheta^{\rm B}_{\rm LL}\chi^{\rm pw}_{{\rm LL},n},\sin\vartheta^{\rm B}_{\rm LL}\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})$ in the Nambu basis
+$(\Psi_{\rm LL}(\vec q_{\rm LL}),\Psi_{\rm LL}(-\vec q_{\rm LL})^*)$, and its quasi-particle annihilation operator is
+$\cos\vartheta^{\rm B}_{\rm LL}\,(\chi^{\rm pw}_{{\rm LL},n})^\dagger\Psi_{\rm LL}(\vec q_{\rm LL})+\sin\vartheta^{\rm B}_{\rm LL}\,\Psi_{\rm LL}(-\vec q_{\rm LL})^\dagger(\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*$:
+for the last four eigenvectors it removes a particle from the state $\chi^{\rm pw}_{{\rm LL},n}$ and adds one to its partner state.
+Let $\hat f_{\rm LL}$ remove a charge from $\chi^{\rm pw}_{{\rm LL},n}$ and $\hat f'_{\rm LL}$ remove one from its partner state; the
+quasi-particle operator is $\cos\vartheta^{\rm B}_{\rm LL}\hat f_{\rm LL}+\sin\vartheta^{\rm B}_{\rm LL}\hat f'^\dagger_{\rm LL}$, and both states are empty in the
+Dirac sea. Applied to $(1-t^{\rm p}_{\rm LL}\hat f^\dagger_{\rm LL}\hat f'^\dagger_{\rm LL})$ times a state in which both are empty, it gives
+$(\sin\vartheta^{\rm B}_{\rm LL}-t^{\rm p}_{\rm LL}\cos\vartheta^{\rm B}_{\rm LL})\hat f'^\dagger_{\rm LL}$ times that state (because
+$\hat f_{\rm LL}\hat f^\dagger_{\rm LL}\hat f'^\dagger_{\rm LL}=\hat f'^\dagger_{\rm LL}$ on such a state), which vanishes exactly when
+$t^{\rm p}_{\rm LL}=\tan\vartheta^{\rm B}_{\rm LL}$. For the branch $E^-_{\rm LL}$,
+$\tan\vartheta^{\rm B}_{\rm LL}=(E^-_{\rm LL}-(\varepsilon_{\rm LL}-\mu_{\rm LL}))/\Delta_{\rm LL}=\Delta_{\rm LL}/(E^-_{\rm LL}+\varepsilon_{\rm LL}-\mu_{\rm LL})$ (Section 3.3, using
+$(E^-_{\rm LL})^2-(\varepsilon_{\rm LL}-\mu_{\rm LL})^2=\Delta_{\rm LL}^2$), which is (8.16). (iii) For the first four eigenvectors both states are
+filled in the Dirac sea; the quasi-particle operator of the mode (branch $E^+_{\rm LL}$) is again
+$\cos\vartheta^{\rm B}_{\rm LL}\hat f_{\rm LL}+\sin\vartheta^{\rm B}_{\rm LL}\hat f'^\dagger_{\rm LL}$, and applied to $(1+t^{\rm a}_{\rm LL}\hat f_{\rm LL}\hat f'_{\rm LL})$ times a
+state in which both are filled it gives $(\cos\vartheta^{\rm B}_{\rm LL}-t^{\rm a}_{\rm LL}\sin\vartheta^{\rm B}_{\rm LL})\hat f_{\rm LL}$ times that state,
+which vanishes exactly when $t^{\rm a}_{\rm LL}=\cot\vartheta^{\rm B}_{\rm LL}=\Delta_{\rm LL}/(E^+_{\rm LL}+\varepsilon_{\rm LL}+\mu_{\rm LL})$, which is (8.16). (iv) The eight modes of the momentum
+$-\vec q_{\rm LL}$ give the remaining eight annihilation operators, with the roles of the two members of each pair exchanged,
+and the same conditions. (v) A state annihilated by all sixteen quasi-particle annihilation operators is the
+quasi-particle vacuum, the ground state of (8.13), with the energy $\tfrac12\mathrm{tr}$ of the one-particle part minus half
+the sum of the 16 positive Bogoliubov energies, $-8\mu_{\rm LL}-\tfrac12(8E^+_{\rm LL}+8E^-_{\rm LL})$. (vi) The pair amplitude is the sum
+over the eight positive modes of $(\cos\vartheta^{\rm B}_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^T\mathsf K^3_{\rm LL}(\sin\vartheta^{\rm B}_{\rm LL}\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*=-\cos\vartheta^{\rm B}_{\rm LL}\sin\vartheta^{\rm B}_{\rm LL}$
+($(\mathsf K^3_{\rm LL})^2=-\mathsf 1_8$, $\mathsf K^3_{\rm LL}$ real), with $\cos\vartheta^{\rm B}_{\rm LL}\sin\vartheta^{\rm B}_{\rm LL}=\Delta_{\rm LL}/(2E^\mp_{\rm LL})$ on the
+two branches. $\square$
+
+**The check in the many-body space.** Check SB-5 builds (8.13) as an operator on the Fock space of the 16 modes of one
+pair of momenta (65536 states), for the condensed vacuum ($\mu_{\rm LL}=0$, $G_{\rm LL}=22.5$, $\Delta_{\rm LL}=0.2094933$) and for
+the superfluid with a Fermi sea ($\mu_{\rm LL}=0.5$, $G_{\rm LL}=12$, $\Delta_{\rm LL}=0.0904166$), both with $m_{\rm LL}=0.2$ and
+$\Lambda_{\rm LL}=1$ (the gaps from the gap equation (2.33)), at six momenta each. It constructs (8.15) from the Dirac sea and finds:
+$\hat H^{\rm q}_{\rm LL}\lvert\Phi^{\rm SF}_{\rm LL}\rangle$ equals the predicted energy times $\lvert\Phi^{\rm SF}_{\rm LL}\rangle$ to $2\times10^{-15}$; the
+sixteen quasi-particle operators of the numerically diagonalized $32\times32$ Bogoliubov matrix annihilate
+$\lvert\Phi^{\rm SF}_{\rm LL}\rangle$ to $1.3\times10^{-15}$; the pair amplitude agrees to $10^{-13}$. An independent computation that knows
+nothing of (8.15) (the Lanczos method for the lowest eigenvalue of $\hat H^{\rm q}_{\rm LL}$, from a random start vector, 120 steps)
+finds the same energy and a state whose overlap with $\lvert\Phi^{\rm SF}_{\rm LL}\rangle$ is 1 to $2\times10^{-14}$; the weights read off
+from it agree with (8.16) to $5\times10^{-12}$ (Figure 21(a), (b), circles).
+
+**What the SFBS state looks like.** The occupation of a positive-energy state is
+$(t^{\rm p}_{\rm LL})^2/(1+(t^{\rm p}_{\rm LL})^2)=\sin^2\vartheta^{\rm B}_{\rm LL}$ and the vacancy of a negative-energy state is
+$(t^{\rm a}_{\rm LL})^2/(1+(t^{\rm a}_{\rm LL})^2)$. In the condensed vacuum ($\mu_{\rm LL}=0$) the two weights are equal,
+$t^{\rm p}_{\rm LL}=t^{\rm a}_{\rm LL}=\Delta_{\rm LL}/(E^\pm_{\rm LL}+\varepsilon_{\rm LL})$: the Dirac vacuum itself is filled with SFBS pairs of
+particles and of antiparticles in equal numbers (0.42 at small momenta, Figure 21(a)), so the vacuum carries no fermion
+number but a pair condensate. With a Fermi sea the particle pairs dominate: $t^{\rm p}_{\rm LL}$ is large below the Fermi momentum
+$k^{\rm F}_{\rm LL}$, where the states are nearly filled, passes 1 at $k^{\rm F}_{\rm LL}$, and is small above it; the occupation falls from 1
+to 0 across the Fermi surface over a width of the order of $\Delta_{\rm LL}$ (Figure 21(b)), the familiar picture of Bardeen, Cooper
+and Schrieffer, whose ground state is the special case of (8.15) without antiparticles. In both cases the state is a
+superposition of states with different numbers of pairs; it is the product over all pairs of momenta of the factors
+(8.15), and its pair amplitude, summed over the momenta, gives
+$\langle\Pi^3_{\rm LL}\rangle=-2\Delta_{\rm LL}\int\!d^3q_{\rm LL}(2\pi)^{-3}(1/E^+_{\rm LL}+1/E^-_{\rm LL})$, so that the pair field
+$d^3_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^3_{\rm LL}\rangle$ is again $\Delta_{\rm LL}$ exactly when the gap equation (2.33) holds. A coherent
+state of a boson field is the field-theoretic form of a condensate: the SFBS state is the Bose condensate of the SFBS.
+
+![](figures/fig_t2_sfbs_state.png){width=100%}
+
+**Figure 21.** The SFBS state ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$). (a) The weights (8.16) of the particle pairs ($t^{\rm p}_{\rm LL}$,
+solid) and of the antiparticle pairs ($t^{\rm a}_{\rm LL}$, dashed) as functions of the momentum, for the condensed vacuum
+($\mu_{\rm LL}=0$, $G_{\rm LL}=22.5$; the two weights coincide) and for the superfluid with a Fermi sea ($\mu_{\rm LL}=0.5$,
+$G_{\rm LL}=12$), on a logarithmic scale; the circles and squares are the weights of the ground states found by the
+Lanczos method in the Fock space of one pair of momenta (65536 states), which know nothing of (8.16). The dotted line marks
+the Fermi momentum. (b) The occupation of a state of energy $+\varepsilon_{\rm LL}$ and the vacancy of a state of energy $-\varepsilon_{\rm LL}$ in
+the same states. (c) The commutator $[\hat\Pi^3_{\rm LL},(\hat\Pi^3_{\rm LL})^\dagger]$ of one lattice site on its 256 states, against the
+number $\hat n^{\rm F}_{\rm LL}$ of spinor charges on the site (the number of states with each value is written next to the circle); all
+values lie on the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12). Data: `test2/data/t2_sfbs_pair_weights.csv`, `t2_sfbs_pair_weights_fock.csv`,
+`t2_sfbs_site_commutator.csv`.
+
+## 8.8 Discussion
+
+- **What was constructed.** From the spinor field alone: the pair operators (8.1); the selection of the spin-zero pairs
+  (Theorem 8.1), which forces isospin 1 by the Pauli principle; the selection of the scalar channel by the interaction and
+  by parity; the charges $+1$, $0$, $-1$ and the fermion number 2; the super-loop form (8.8), in which the SFBS is the
+  imaginary part of the product of a spinor charge's bi-quaternion with its conjugate; the Bose character (8.12); and
+  the SFBS state (8.15), proved to be the mean-field ground state and checked in the exact many-body space of one pair of
+  momenta.
+- **Which singlet.** The SFBS is a singlet of the Lorentz group (spin zero). It cannot also be an isospin singlet: for one
+  field that pair vanishes. Because the SFBS is an isospin triplet with electric charges, its condensate can break the
+  isospin group and leave the electric charge unbroken, which is what items [9] to [11] work out. (A complete singlet of
+  the super-loop would need a second species; its condensate would break only $U(1)^{\rm F}_{\rm LL}$ and leave all isospin
+  gauge fields massless.)
+- **Which state condenses.** Among the condensates $d^\iota_{\rm LL}$ the polar state (a real isospin vector up to a phase)
+  has the lowest energy (Theorem SF3 of the manuscript; derived in item [9]); in it only the neutral pair
+  $\Pi^{(0)}_{\rm LL}$ (one up and one down charge) condenses when the vector points along the third isospin direction. This
+  is why (8.13) uses $d^\iota_{\rm LL}=(0,0,\Delta_{\rm LL})$; any other polar direction follows by an isospin rotation.
+- **Limits.** The construction of the state uses the mean-field approximation of Section 2.10 (exact for the
+  Hamiltonian (8.13), an approximation for the full interaction), one species of spinor field, and a uniform condensate
+  without gauge fields. Its fluctuations, the gauge fields and the effective field theory of the SFBS follow in
+  items [8] to [11].
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -2301,13 +2797,17 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e
   rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg
   rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg; done
-# 8. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 8. items [7] to [11]: the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of the superfluid boson singlet state, its explicit matrices and the data of Figure 21
+cd test2/rust && cargo build --release && ./target/release/t2_sfbs && cd ../..
+# 9. Figure 21 (test2/figures/fig_t2_sfbs_*.pdf and .png)
+python3 test2/python/make_t2_sfbs_figures.py
+# 10. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 ```
 
 The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
-together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, all on one processor
-core.
+together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, `t2_sfbs` in about
+15 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states), all on one processor core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; rsvg-convert (librsvg) for the
 conversion of the SVG figures of item [6]; for the documents pandoc
@@ -2316,7 +2816,7 @@ folder test2 use no external crate.
 
 ## A.2 The programs of items [1] and [2]
 
-The Cargo workspace `test2/rust` has five members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e):
+The Cargo workspace `test2/rust` has six members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e; the sixth, `t2sfbs`, the checks of items [7] to [11], Appendix A.2f):
 
 - `t2core` (library): complex numbers and matrices, the Hermitian eigensolver, the super-loop operators as matrices
   (`model.rs`: $M_{\rm LL}$, the frame, the Dirac matrices, $\mathsf S_{\rm LL}$, $\mathsf s_{\rm LL}$,
@@ -2511,6 +3011,34 @@ The member `t2plot` of the Cargo workspace `test2/rust` (`Cargo.toml`; `src/svg.
 figures and the predictions), binary `t2_plot`; it uses only the standard library and `t2core` (the function `eps_lat`). It writes
 no report: its output is Figures 14 to 20 (the `.svg` files; the `.pdf` and `.png` versions are made from them by `rsvg-convert`).
 
+## A.2f The program of items [7] to [11]
+
+The member `t2sfbs` of the Cargo workspace `test2/rust` (`Cargo.toml`; `src/main.rs`, the checks and the output;
+`src/fock.rs`, a fermionic Fock space of up to 20 modes in the Jordan-Wigner representation, with the Lanczos method for
+the lowest eigenvalue; `src/quad.rs`, Gauss-Legendre quadrature), binary `t2_sfbs`; it uses only the standard library and
+`t2core` (the matrices of `model.rs`, the eigensolver, the exact printing of `sym.rs`). It writes the report
+`test2/data/t2_sfbs_checks.txt`, the explicit matrices of the sections of items [7] to [11]
+(`test2/data/t2_sfbs_fragments.md`, from which this document takes them) and the data files `test2/data/t2_sfbs_*.csv` of the
+figures, drawn by `test2/python/make_t2_sfbs_figures.py`.
+
+The report uses, besides the names listed in A.2: `Kch'_iota`, `Kch'_1`, `Kch'_2`, `Kch'_3` for $\mathsf K'^\iota_{\rm LL}$;
+`Kgen`, `Kgen'` for $\mathsf K^{\rm g}_{\rm LL}$, $\mathsf K^{\rm g'}_{\rm LL}$; `K(+1)`, `K(0)`, `K(-1)` for $\mathsf K^{(+1)}_{\rm LL}$,
+$\mathsf K^{(0)}_{\rm LL}$, $\mathsf K^{(-1)}_{\rm LL}$; `S` and `G(X)` for a Lorentz generator $\mathsf s_{\rm LL}(\mathbf u)\otimes\sigma^{\rm LL}_0$ and
+for the action (8.2) of a generator on a pair matrix; `S_j` and `T_iota` for the spin generators $i\mathsf s_{\rm LL}(J^j_{\rm LL})$ and
+the isospin generators $T^\iota_{\rm LL}$; `gamma0` for $\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0$; `xi_p` for $\xi^{\rm LL}_p$;
+`Im_iota(b conj(b))` for ${\rm Im}_\iota(\mathbf b\bar{\mathbf b})$; `c_site`, `Pi_site^iota`, `n_F_site`, `n_iota_site` for
+$\hat c_{{\rm LL},k}$, $\hat\Pi^\iota_{\rm LL}$, $\hat n^{\rm F}_{\rm LL}$, $\hat n^\iota_{\rm LL}$; `eps(iota, iota', iota'')` for
+$\epsilon^{\rm LL}_{\iota\iota'\iota''}$; `SF` and `Dirac sea` for $\lvert\Phi^{\rm SF}_{\rm LL}\rangle$ and $\lvert\Phi^{\rm N}_{\rm LL}\rangle$;
+`chi_n`, `w_n` for the eigenvectors $\chi^{\rm pw}_{{\rm LL},n}$ of energy $+\varepsilon_{\rm LL}$ and their partners
+$(\mathsf K^3_{\rm LL}\chi^{\rm pw}_{{\rm LL},n})^*$, and `chi'_n`, `w'_n` for those of energy $-\varepsilon_{\rm LL}$; `b^dag(..)`, `b(..)` for the
+creation and annihilation of a charge in a state; `t_p`, `t_a` for $t^{\rm p}_{\rm LL}$, $t^{\rm a}_{\rm LL}$; `H` and `E_0` for
+$\hat H^{\rm q}_{\rm LL}$ and its ground-state energy; `gamma_n` for the quasi-particle annihilation operators; `Pi_3` for the pair
+operator of the two momenta.
+
+```
+{{FILE:test2/data/t2_sfbs_checks.txt}}
+```
+
 ## A.3 Data files and figures
 
 | file | content | columns |
@@ -2547,6 +3075,11 @@ no report: its output is Figures 14 to 20 (the `.svg` files; the `.pdf` and `.pn
 | `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `N_F_change`, `E_MF`, `ortho_error` |
 | `t2_py_quench_fields.csv` | the pair field on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 | `test2/data/t2_rs_*` | the same files written by the Rust solver of item [5] for the seven examples, with the same columns; `t2_rs_selftest_checks.txt` and `t2_rs_examples_checks.txt` its self-test and the checks EX-1 to EX-8 | as the files `t2_py_*` |
+| `test2/data/t2_sfbs_checks.txt` | the report of the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of `t2_sfbs` (items [7] to [11]) | — |
+| `test2/data/t2_sfbs_fragments.md` | the explicit matrices and expressions of the sections of items [7] to [11], in LaTeX | — |
+| `test2/data/t2_sfbs_pair_weights.csv` | the predicted weights (8.16) and occupations of the SFBS state (Figure 21(a), (b), lines) | `state`, `mu`, `Delta`, `q`, `t_p`, `t_a`, `occupation_particles`, `occupation_antiparticles` |
+| `test2/data/t2_sfbs_pair_weights_fock.csv` | the same quantities of the Lanczos ground states in the Fock space of one pair of momenta (Figure 21(a), (b), circles) | `state`, `mu`, `Delta`, `q`, `t_p`, `t_a`, `occupation_particles`, `occupation_antiparticles`, `source` |
+| `test2/data/t2_sfbs_site_commutator.csv` | the commutator of the pair operator of one site with its conjugate on the 256 states of the site (Figure 21(c)) | `n_F_site`, `commutator_33` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
 $\varepsilon^{\rm lat}_{\rm LL}$; `E_times_dt` is $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$ and `rk4_modulus` the modulus of
@@ -2567,7 +3100,11 @@ isospin up on a site, `d1_re` to `d3_im` the real and imaginary parts of $d^1_{\
 first site, `stage` the guess (`initial`) or the result (`final`), `multiplicity` the number of equal eigenvalues in a group, `change` the largest component of the residual of the
 Anderson iteration, `E_GS` the energy (4.5) per site measured from the normal state, `N_F` and `E_MF` are $N^{\rm F}_{\rm LL}$ and
 $E^{\rm MF}_{\rm LL}$, `N_F_change` the change of $N^{\rm F}_{\rm LL}$ since $x^0_{\rm LL}=0$ in full precision, and `ortho_error` the largest modulus of the entries of
-$(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$. Every data file states its content in a line `# content:` and
+$(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$. In the files of item [7], `state` names the state (`vacuum`:
+$\mu_{\rm LL}=0$; `Fermi_sea`: $\mu_{\rm LL}=0.5$), `t_p` and `t_a` are $t^{\rm p}_{\rm LL}$ and $t^{\rm a}_{\rm LL}$,
+`occupation_particles` is the probability that a state of energy $+\varepsilon_{\rm LL}$ is occupied and `occupation_antiparticles` the
+probability that a state of energy $-\varepsilon_{\rm LL}$ is empty, `n_F_site` is $\hat n^{\rm F}_{\rm LL}$ and `commutator_33` an
+eigenvalue of $[\hat\Pi^3_{\rm LL},(\hat\Pi^3_{\rm LL})^\dagger]$. Every data file states its content in a line `# content:` and
 its parameters in lines `# name: value`.
 
 | figure | file (.pdf and .png) | data | checks |
@@ -2586,8 +3123,10 @@ its parameters in lines `# name: value`.
 | 12 | `test2/figures/fig_t2_py_kink_ground_state` | `t2_py_kink_ground_state_fields.csv`, `_iterations.csv`, `_spectrum.csv` | EX-6 |
 | 13 | `test2/figures/fig_t2_py_quench` | `t2_py_quench_series.csv`, `_fields.csv` | EX-7 |
 | 14 to 20 | `test2/figures/fig_t2_rs_<example>` (.svg, .pdf, .png) | the files `t2_rs_<example>_*` | EX-1 to EX-7 |
+| 21 | `test2/figures/fig_t2_sfbs_state` | `t2_sfbs_pair_weights.csv`, `t2_sfbs_pair_weights_fock.csv`, `t2_sfbs_site_commutator.csv` | SB-4, SB-5 |
 
-The figures are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
+Figure 21 is drawn by `test2/python/make_t2_sfbs_figures.py` from the data files of `t2_sfbs`; besides the data it draws only
+the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12) and marks the Fermi momentum. Figures 1 to 6 are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
 $\pm m_{\rm LL}$ and the line $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$), the relative deviation of Figure 1(b) from two columns of a
 data file, the normal-state energy $\lvert\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}\rvert$ of Figure 4(a) from a column and a
@@ -2595,7 +3134,7 @@ parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ 
 
 ## A.4 Checksums
 
-SHA-256 checksums of the sources and data of items [1] to [6] at the time this document was built:
+SHA-256 checksums of the sources and data of items [1] to [7] at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -2609,6 +3148,16 @@ SHA-256 checksums of the sources and data of items [1] to [6] at the time this d
 {{SHA256:test2/rust/t2fields/src/main.rs}}  test2/rust/t2fields/src/main.rs
 {{SHA256:test2/rust/t2analytic/Cargo.toml}}  test2/rust/t2analytic/Cargo.toml
 {{SHA256:test2/rust/t2analytic/src/main.rs}}  test2/rust/t2analytic/src/main.rs
+{{SHA256:test2/rust/t2sfbs/Cargo.toml}}  test2/rust/t2sfbs/Cargo.toml
+{{SHA256:test2/rust/t2sfbs/src/main.rs}}  test2/rust/t2sfbs/src/main.rs
+{{SHA256:test2/rust/t2sfbs/src/fock.rs}}  test2/rust/t2sfbs/src/fock.rs
+{{SHA256:test2/rust/t2sfbs/src/quad.rs}}  test2/rust/t2sfbs/src/quad.rs
+{{SHA256:test2/python/make_t2_sfbs_figures.py}}  test2/python/make_t2_sfbs_figures.py
+{{SHA256:test2/data/t2_sfbs_checks.txt}}  test2/data/t2_sfbs_checks.txt
+{{SHA256:test2/data/t2_sfbs_fragments.md}}  test2/data/t2_sfbs_fragments.md
+{{SHA256:test2/data/t2_sfbs_pair_weights.csv}}  test2/data/t2_sfbs_pair_weights.csv
+{{SHA256:test2/data/t2_sfbs_pair_weights_fock.csv}}  test2/data/t2_sfbs_pair_weights_fock.csv
+{{SHA256:test2/data/t2_sfbs_site_commutator.csv}}  test2/data/t2_sfbs_site_commutator.csv
 {{SHA256:test2/python/make_t2_figures.py}}  test2/python/make_t2_figures.py
 {{SHA256:test2/data/t2_fields_checks.txt}}  test2/data/t2_fields_checks.txt
 {{SHA256:test2/data/t2_fragments.md}}  test2/data/t2_fragments.md
@@ -2744,6 +3293,10 @@ SHA-256 checksums of the sources and data of items [1] to [6] at the time this d
 * P. W. Anderson, Random-phase approximation in the theory of superconductivity, Phys. Rev. 112, 1900 (1958).
 * A. F. Volkov and Sh. M. Kogan, Collisionless relaxation of the energy gap in superconductors, Sov. Phys. JETP 38,
   1018 (1974).
+* P. Jordan and E. Wigner, Über das Paulische Äquivalenzverbot, Z. Phys. 47, 631 (1928).
+* C. Lanczos, An iteration method for the solution of the eigenvalue problem of linear differential and integral
+  operators, J. Res. Natl. Bur. Stand. 45, 255 (1950).
+* D. J. Thouless, Stability conditions and nuclear rotations in the Hartree-Fock theory, Nucl. Phys. 21, 225 (1960).
 
 These works are cited for the general methods and results only (the gauge principle, the mean-field equations of a
 superfluid, the lattice with link variables and the Wilson term, the Pauli equation, the Landau levels, the wells of
@@ -2751,7 +3304,9 @@ Pöschl and Teller, the Rabi oscillation, the theory of Bardeen, Cooper and Schr
 bound states of Jackiw and Rebbi, the bounds of perturbation theory, Richardson extrapolation and the Sturm-sequence
 bisection for tridiagonal matrices; for item [3] the Anderson acceleration of fixed-point iterations, the implicit
 midpoint rule and its conservation of quadratic invariants, Andreev reflection, the self-consistent kink of the
-Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change). Everything this document uses from them is stated, and where it is a result,
+Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change; for
+item [7] the representation of fermion operators by matrices on the states of a few modes, the Lanczos method, and the
+form of a quasi-particle vacuum as the exponential of a pair operator). Everything this document uses from them is stated, and where it is a result,
 derived or checked, in it.
 
 # Appendix C. The symbols

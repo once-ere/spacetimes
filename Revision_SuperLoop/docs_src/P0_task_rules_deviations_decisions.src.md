@@ -206,7 +206,8 @@ the test, and is committed and carried to the author's computer after each item 
 | [4] | Section 5 of the document: the plotter `test2/python/t2_plot.py` (one figure per solution, its panels chosen by the task; for the seven examples the predictions of the checks EX-1 to EX-7 drawn with the solutions) and Figures 7 to 13 | answered |
 | [5] | Section 6 of the document: the Rust solver `t2_solve` (member `t2solve` of the Cargo workspace `test2/rust`), with the instructions for installing Rust, building with cargo and using it; the same input and output files as the Python solver; the comparison EX-8 of the two sets of solutions | answered |
 | [6] | Section 7 of the document: the Rust plotter `t2_plot` (member `t2plot` of the workspace `test2/rust`), which writes Scalable Vector Graphics with its own small plotting library and draws the predictions of the examples computed in Rust; Figures 14 to 20 | answered |
-| [7] to [11] | Sections 8 to 13 of the document | to follow, in this order |
+| [7] | Section 8 of the document: the construction of the superfluid boson singlet state (SFBS) from the spinor field: the 28 pairs of two spinor charges at one point, the six spin-zero pairs (spin singlet, isospin triplet by the Pauli principle), the scalar channel selected by the interaction and by parity, the charges, the super-loop form (the imaginary part of the product of a spinor charge's bi-quaternion with its conjugate), the Bose character with Pauli blocking, and the SFBS state as a coherent state of particle and antiparticle pairs, proved to be the mean-field ground state; checks SB-1 to SB-5 of the new program `t2_sfbs` (member `t2sfbs`; exact many-body computations in Fock spaces of 256 and 65536 states); Figure 21 | answered |
+| [8] to [11] | Sections 9 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -304,6 +305,10 @@ expression and compares it with the matrix that it describes (check GS-12).
 13. **Stage 11 — Test 2, item [6]** (Section 2.8): the Rust plotter `t2_plot` in the new member `t2plot` of the workspace
    `test2/rust` (no external crate; Scalable Vector Graphics), Figures 14 to 20 (converted to PDF and PNG with `rsvg-convert`),
    Section 7 of the document of Test 2, and `check_all.sh` extended (Section 11, entry E56).
+14. **Stage 12 — Test 2, item [7]** (Section 2.8): the program `t2_sfbs` in the new member `t2sfbs` of the workspace
+   `test2/rust` (a fermionic Fock space with the Lanczos method, Gauss-Legendre quadrature; checks SB-1 to SB-5), Section 8 of
+   the document of Test 2 with Figure 21 (`test2/python/make_t2_sfbs_figures.py`), the new symbols, and `check_all.sh` extended
+   (decision D17, Section 11, entry E57).
 
 # 6. The results in brief
 
@@ -537,6 +542,14 @@ rasterize text without a font renderer of its own; the plotter therefore writes 
 displays and which are converted to PDF and PNG for the documents by the program `rsvg-convert` (outside the Rust program). The
 figures are complete plots (axes, ticks, labels, legends, colour maps), drawn entirely by the Rust program.
 
+**D17. "the new superfluid boson singlet (S=0) state (SFBS)".** The word singlet is read as the spin singlet, $S^{\rm sp}_{\rm LL}=0$, as
+the request itself states: the SFBS is the triplet of scalar pairs $\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}$ of one spinor field, a
+singlet of the Lorentz group and an isospin triplet. A pair that is also an isospin singlet vanishes for one field by the Pauli principle (it
+needs a second species, Theorem SF4 of the manuscript), and its condensate would break only the fermion number, leaving every
+isospin gauge field massless, so that items [9] to [11] (spontaneous breaking, masses of the gauge bosons, the surviving
+$U(1)$ of the electric charge and the massless photon) could not be answered with it. Section 8.8 of the document states this
+reading.
+
 **D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
 they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
 uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
@@ -581,8 +594,8 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [7] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains items [1] to [6]. The solver of item [3] treats the gauge fields as external (their field
+* Items [8] to [11] of Test 2 are answered in the following stages; this version of the document of the
+  answers contains items [1] to [7]. The solver of item [3] treats the gauge fields as external (their field
   equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
@@ -664,6 +677,7 @@ evaluated numerically, as in the earlier stages.
 | E54 | the first comparison of the two solvers failed for the task `spectrum`: the densities of single eigenvectors inside a degenerate eigenspace depend on the basis that each eigensolver chooses; the solvers now write the densities summed over each group of degenerate eigenvalues, which are independent of the basis |
 | E55 | the first comparison also failed for the history of the Anderson iteration of the uniform example (difference $2\times10^{-7}$ at an intermediate iterate, with the same fixed point to $10^{-15}$); the histories are now compared with the tolerance $10^{-5}$ and the solutions with $10^{-7}$, for the reason stated in check EX-8 |
 | E56 | in the first drawings of the Rust plotter three legends covered data (the crossing of the probabilities of the Andreev reflection, the curves of the self-consistent kink and some eigenvalues), and in the two-dimensional figure the axis labels of the second column of panels overlapped the first; the legends and panels were moved |
+| E57 | the first draft of Section 8 used letters without the suffix LL for auxiliary quantities of its proofs (a small parameter, the entries of a $2\times2$ matrix, a rapidity, the operators of two states, an index condition); the proofs were rewritten with registered symbols, with particular Lorentz transformations, and with index conditions stated in words |
 
 # 12. The symbols
 

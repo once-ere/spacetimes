@@ -294,7 +294,15 @@ them the comparison EX-8). Its sixth answer (item {[}6{]}) is the Rust
 plotter \texttt{t2\_plot} (the member \texttt{t2plot} of the same
 workspace): it draws any solution as Scalable Vector Graphics with a
 small plotting library of its own, with the predictions of the examples
-computed in Rust (Figures 14 to 20 of the document).
+computed in Rust (Figures 14 to 20 of the document). Its seventh answer
+(item {[}7{]}) constructs the superfluid boson singlet state (SFBS) from
+the spinor field: the spin-zero pairs of two spinor charges (spin
+singlet, isospin triplet, fermion number 2, charges \(+1\), \(0\),
+\(-1\)), their super-loop form, their Bose character, and the SFBS state
+as a coherent state of pairs, proved to be the mean-field ground state
+and checked in the exact many-body space of one pair of momenta; the
+checks SB-1 to SB-5 of the program \texttt{t2\_sfbs} (member
+\texttt{t2sfbs} of the workspace) and Figure 21 of the document.
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -396,7 +404,9 @@ solver \texttt{python/t2\_solve.py} with the seven input files of
 \texttt{python/t2\_plot.py} (item {[}4{]}); the Rust solver
 \texttt{rust/t2solve} (binary \texttt{t2\_solve}, item {[}5{]}); the
 Rust plotter \texttt{rust/t2plot} (binary \texttt{t2\_plot}, item
-{[}6{]}) \\
+{[}6{]}); the checks of the superfluid boson singlet state
+\texttt{rust/t2sfbs} (binary \texttt{t2\_sfbs}, items {[}7{]} to
+{[}11{]}) \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -443,6 +453,9 @@ python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
 # Test 2, item [6]: Figures 14 to 20, the Rust plots of the Rust solutions (SVG; PDF and PNG with rsvg-convert):
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done
+# Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state, and its figures:
+(cd test2/rust && cargo build --release && ./target/release/t2_sfbs)
+python3 test2/python/make_t2_sfbs_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}
@@ -504,6 +517,7 @@ of 9 \\
 \texttt{t2\_examples\_check.py} & 11 of 11 \\
 \texttt{test2/data/t2\_rs\_selftest\_checks.txt} & \texttt{t2\_solve} &
 5 of 5 \\
+\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 5 of 5 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -1112,7 +1126,8 @@ of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
 new & \texttt{Kch} \texttt{Kch\_iota}
 \texttt{Kch\_iota\textquotesingle{}} \texttt{Kch\_1} \texttt{Kch\_2}
 \texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
-\texttt{Kch\_singlet} \\
+\texttt{Kch\textquotesingle{}\_1} \texttt{Kch\textquotesingle{}\_2}
+\texttt{Kch\textquotesingle{}\_3} \texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
 \(\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\),
 which annihilate two spinor charges of opposite momenta & new &
@@ -1825,6 +1840,93 @@ matrices, about which it precesses; their small deviations from the
 ground state in the linearized equations: the deviation of the Bloch
 vector and of the gap & new & \texttt{u\_Bl} \texttt{v\_Bl}
 \texttt{b\_Bl} \texttt{h\_Bl} \texttt{b\_fl} \texttt{Delta\_fl} \\
+\(\mathsf K^{\rm g}_{\rm LL}\), \(\mathsf K^{\rm g'}_{\rm LL}\) & two
+general pair matrices: complex \(8\times8\) matrices with which
+\(\Psi^T_{\rm LL}\mathsf K^{\rm g}_{\rm LL}\Psi_{\rm LL}=\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}\)
+annihilates two spinor charges at one point; only the antisymmetric part
+of a pair matrix contributes, because the components of
+\(\Psi_{\rm LL}\) anticommute & new & \texttt{Kgen}
+\texttt{Kgen\textquotesingle{}} \\
+\(\mathsf V^\pm_{\rm LL}\); \(\mathsf B^{\rm W}_{\rm LL}\) & the isospin
+factors of the two Weyl blocks of a Lorentz-invariant pair matrix, which
+is
+\(\mathrm{diag}(\mathsf E_{\rm LL}\otimes\mathsf V^-_{\rm LL},\mathsf E_{\rm LL}\otimes\mathsf V^+_{\rm LL})\)
+with two symmetric complex \(2\times2\) matrices
+\(\mathsf V^\pm_{\rm LL}\) on the isospin index; and a complex
+\(2\times2\) matrix on the Weyl index, the Weyl factor of a term of a
+\(4\times4\) block of a pair matrix (in the proof that the
+Lorentz-invariant pairs have this form) & new & \texttt{Vblock}
+\texttt{BW} \\
+\(\mathsf K^{(+1)}_{\rm LL}\), \(\mathsf K^{(0)}_{\rm LL}\),
+\(\mathsf K^{(-1)}_{\rm LL}\); \(\Pi^{(+1)}_{\rm LL}\),
+\(\Pi^{(0)}_{\rm LL}\), \(\Pi^{(-1)}_{\rm LL}\) & the scalar pair
+matrices of definite electric charge,
+\(\mathsf K^{(\pm1)}_{\rm LL}=(\mathsf K^1_{\rm LL}\mp i\mathsf K^2_{\rm LL})/\sqrt2\)
+and \(\mathsf K^{(0)}_{\rm LL}=\mathsf K^3_{\rm LL}\), and the pair
+operators \(\Pi^{(+1)}_{\rm LL}\), \(\Pi^{(0)}_{\rm LL}\),
+\(\Pi^{(-1)}_{\rm LL}\) made with them, which annihilate a pair of the
+electric charge \(+1\) (two isospin-up charges), \(0\) (one isospin-up
+and one isospin-down charge) and \(-1\) (two isospin-down charges) & new
+& \texttt{K(+1)} \texttt{K(0)} \texttt{K(-1)} \texttt{Pi(+1)}
+\texttt{Pi(0)} \texttt{Pi(-1)} \\
+\(S^{\rm sp}_{\rm LL}\), \(I^{\rm v}_{\rm LL}\) & the spin and the
+isospin of a state of two spinor charges: the sums of the squares of the
+three total spin generators and of the three total isospin generators
+have the eigenvalues \(S^{\rm sp}_{\rm LL}(S^{\rm sp}_{\rm LL}+1)\) and
+\(I^{\rm v}_{\rm LL}(I^{\rm v}_{\rm LL}+1)\); the superfluid boson
+singlet has \(S^{\rm sp}_{\rm LL}=0\) (spin singlet) and
+\(I^{\rm v}_{\rm LL}=1\) (isospin triplet) & new & \texttt{S\_sp}
+\texttt{I\_v} \\
+\(\hat c_{{\rm LL},k}(\vec s_{\rm LL})\);
+\(\hat\Pi^\iota_{\rm LL}(\vec s_{\rm LL})\),
+\(\hat n^{\rm F}_{\rm LL}(\vec s_{\rm LL})\),
+\(\hat n^\iota_{\rm LL}(\vec s_{\rm LL})\) & operators of one lattice
+site \(\vec s_{\rm LL}\) (a cell of the volume
+\((\ell^{\rm x}_{\rm LL})^3\)): the annihilation operators
+\(\hat c_{{\rm LL},k}(\vec s_{\rm LL})=(\ell^{\rm x}_{\rm LL})^{3/2}\Psi_{{\rm LL},k}(\vec s_{\rm LL})\)
+of the eight components, which obey the canonical anticommutation
+relations; the pair operator of the site
+\(\hat\Pi^\iota_{\rm LL}=\sum_{k,k'}(\mathsf K^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}\);
+the number of spinor charges on the site
+\(\hat n^{\rm F}_{\rm LL}=\sum_k\hat c^\dagger_{{\rm LL},k}\hat c_{{\rm LL},k}\);
+and the isospin of the site
+\(\hat n^\iota_{\rm LL}=\sum_{k,k'}\hat c^\dagger_{{\rm LL},k}(T^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k'}\)
+& new & \texttt{c\_site} \texttt{Pi\_site} \texttt{n\_F\_site}
+\texttt{n\_iota\_site} \\
+\(\hat H^{\rm q}_{\rm LL}\); \(\lvert\Phi^{\rm SF}_{\rm LL}\rangle\),
+\(\lvert\Phi^{\rm N}_{\rm LL}\rangle\) & the part of the mean-field
+Hamiltonian of the uniform polar state that belongs to one pair of
+momenta \(\vec q_{\rm LL}\), \(-\vec q_{\rm LL}\) (an operator on 16
+fermion modes); the superfluid boson singlet state, its ground state, a
+coherent state of pairs; and the normal state from which it is built,
+the Dirac sea of these modes (every state of energy
+\(-\varepsilon_{\rm LL}\) filled, every state of energy
+\(+\varepsilon_{\rm LL}\) empty) & new & \texttt{H\_q}
+\texttt{SF\_state} \texttt{Dirac\_sea} \\
+\(\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})\),
+\(\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})\); \(t^{\rm p}_{\rm LL}\),
+\(t^{\rm a}_{\rm LL}\) & the pair operators of the momenta
+\(\vec q_{\rm LL}\) and \(-\vec q_{\rm LL}\) in the scalar isospin
+channel of \(\mathsf K^3_{\rm LL}\):
+\(\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger\) creates a pair of
+spinor charges of positive energy (particles),
+\(\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})^\dagger\) removes a pair from
+the states of negative energy (creates a pair of antiparticles); and
+their weights
+\(t^{\rm p}_{\rm LL}=\Delta_{\rm LL}/(E^-_{\rm LL}+\varepsilon_{\rm LL}-\mu_{\rm LL})\)
+and
+\(t^{\rm a}_{\rm LL}=\Delta_{\rm LL}/(E^+_{\rm LL}+\varepsilon_{\rm LL}+\mu_{\rm LL})\)
+in the superfluid boson singlet state & new & \texttt{B\_p}
+\texttt{B\_a} \texttt{t\_p} \texttt{t\_a} \\
+\(\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL})\); \(\hat f_{\rm LL}\),
+\(\hat f'_{\rm LL}\) & the projectors
+\(\tfrac12(\mathsf 1_8\pm\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL})\)
+on the states of energy \(\pm\varepsilon_{\rm LL}\) of the plane-wave
+Hamiltonian (rank 4 each); and the annihilation operators of a spinor
+charge in an eigenstate of \(\mathsf h_{\rm LL}(\vec q_{\rm LL})\) and
+in its partner state of the momentum \(-\vec q_{\rm LL}\) (the complex
+conjugate of \(\mathsf K^3_{\rm LL}\) times the eigenvector) & new &
+\texttt{Yproj} \texttt{f\_state} \texttt{f\_partner} \\
 \end{longtable}
 
 \end{document}

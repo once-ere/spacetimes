@@ -45,6 +45,8 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_solve test2/examples/$e.t2in --out test2/data/t2_rs_$e; done
 python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py   # checks EX-1 .. EX-8 of the Rust solutions
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done   # item [6]: Figures 14 to 20 (SVG)
+(cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_sfbs   # items [7] to [11]: checks SB-*, fragments, data
+python3 test2/python/make_t2_sfbs_figures.py                             # Figure 21 and the following figures of items [7] to [11]
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -53,7 +55,7 @@ bash code/scripts/check_all.sh                                           # every
 the program of the examples of the explanation and its figures; the program of the document on the
 $3+1$ manifold and its figures; the programs of the folder `test2` (`t2_fields` for item [1] and `t2_analytic` for
 item [2] of Test 2) and their figures; the Python solver of item [3] (its self-test, the seven examples, the table of the
-keys) and the checks of its examples; the plots of item [4]; the Rust solver of item [5], its examples and the comparison of the two sets of solutions; the Rust plots of item [6]; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+keys) and the checks of its examples; the plots of item [4]; the Rust solver of item [5], its examples and the comparison of the two sets of solutions; the Rust plots of item [6]; the checks of the superfluid boson singlet state of items [7] to [11] and their figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -653,7 +655,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [6]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots (folder `test2`)
+# 11. Test 2, items [1] to [7]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, and the superfluid boson singlet state (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -997,6 +999,23 @@ $\cosh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})^{-\Delta^\infty_{\rm LL}\ell^{\rm K}_
 amplitude mode by bisection, the continuum kink, the Wilson shift of the computed self-consistent kink, and the least-squares
 sinusoid with the predicted frequency. Figures `test2/figures/fig_t2_rs_<example>.svg`, with `.pdf` and `.png` made by
 `rsvg-convert`.
+
+## Item [7]: the construction of the superfluid boson singlet state
+
+The member `t2sfbs` of the workspace `test2/rust` (binary `t2_sfbs`; `src/main.rs` the checks, the fragments and the data;
+`src/fock.rs` a fermionic Fock space of up to 20 modes in the Jordan-Wigner order, with the Lanczos method for the lowest
+eigenvalue; `src/quad.rs` Gauss-Legendre quadrature) verifies Section 8 of the document of Test 2. SB-1: the Lorentz-invariant
+antisymmetric pair matrices form a space of dimension 6 (the null space of the six conditions on the 28 antisymmetric matrices,
+compared with the span of $\mathsf K^\iota_{\rm LL}$ and $\mathsf K'^\iota_{\rm LL}$ through their projectors). SB-2: the spin Casimir 0,
+the isospin Casimir 2, the charges of $\mathsf K^{(+1)}_{\rm LL}$, $\mathsf K^{(0)}_{\rm LL}$, $\mathsf K^{(-1)}_{\rm LL}$, the fermion number 2 and
+the parities. SB-3: the super-loop form of the pair as an identity of the coefficient matrices of bilinear forms in the eight
+anticommuting coefficients of $\mathbf b^-_{\rm LL}$ and $\mathbf b^+_{\rm LL}$, and its transformation law for 200 random elements. SB-4:
+the commutators of the pair operators of one lattice site as operator identities on its 256 states. SB-5: the coherent pair
+state of one pair of momenta in the Fock space of 16 modes (65536 states), for the condensed vacuum and for the superfluid
+with a Fermi sea at six momenta each: its energy, its annihilation by the sixteen quasi-particle operators of the
+numerically diagonalized $32\times32$ Bogoliubov matrix, its pair amplitude, and the comparison with the ground state found
+independently by the Lanczos method. The gaps are computed from the gap equation (closed form at $\mu_{\rm LL}=0$, quadrature
+with a break point at the Fermi momentum otherwise). Figure 21 is drawn by `test2/python/make_t2_sfbs_figures.py`.
 
 # 12. The checks of the documents
 

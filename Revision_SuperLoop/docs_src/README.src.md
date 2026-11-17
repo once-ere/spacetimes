@@ -91,6 +91,11 @@ operator of the library `t2core`; for the seven examples its solutions agree wit
 Its sixth answer (item [6]) is the Rust plotter `t2_plot` (the member `t2plot` of the same workspace): it draws any solution as
 Scalable Vector Graphics with a small plotting library of its own, with the predictions of the examples computed in Rust
 (Figures 14 to 20 of the document).
+Its seventh answer (item [7]) constructs the superfluid boson singlet state (SFBS) from the spinor field: the spin-zero pairs
+of two spinor charges (spin singlet, isospin triplet, fermion number 2, charges $+1$, $0$, $-1$), their super-loop form, their
+Bose character, and the SFBS state as a coherent state of pairs, proved to be the mean-field ground state and checked in the
+exact many-body space of one pair of momenta; the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member
+`t2sfbs` of the workspace) and Figure 21 of the document.
 
 # 2. Where to start reading
 
@@ -128,7 +133,7 @@ Scalable Vector Graphics with a small plotting library of its own, with the pred
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]) |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -172,6 +177,9 @@ python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py
 # Test 2, item [6]: Figures 14 to 20, the Rust plots of the Rust solutions (SVG; PDF and PNG with rsvg-convert):
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done
+# Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state, and its figures:
+(cd test2/rust && cargo build --release && ./target/release/t2_sfbs)
+python3 test2/python/make_t2_sfbs_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```

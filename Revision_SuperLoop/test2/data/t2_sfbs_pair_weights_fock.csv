@@ -1,0 +1,11 @@
+# content: the weights t_p of the particle pairs and t_a of the antiparticle pairs, and the occupation of a positive-energy state and the vacancy of a negative-energy state, of the ground state of the mean-field Hamiltonian of one pair of momenta (q, -q), found by the Lanczos method in the Fock space of the 16 modes (65536 states), next to the predicted values (Test 2, item 7, Figure 21(a), (b), points)
+# m: 0.2
+# Lambda: 1
+# direction: (2, 3, 6)/7
+state,mu,Delta,q,t_p,t_a,occupation_particles,occupation_antiparticles,source
+vacuum,0,0.2094933033,0.05,0.418925701743,0.418925701743,0.149297261728,0.149297261728,Lanczos
+vacuum,0,0.2094933033,0.35,0.244332208665,0.244332208665,0.056335121267,0.056335121267,Lanczos
+vacuum,0,0.2094933033,0.6,0.161309468560,0.161309468560,0.025360836789,0.025360836789,Lanczos
+Fermi_sea,0.5,0.0904165695,0.05,6.650170092222,0.063760052075,0.977888219857,0.004048884133,Lanczos
+Fermi_sea,0.5,0.0904165695,0.35,2.537254219118,0.049933474777,0.865549092301,0.002487150562,Lanczos
+Fermi_sea,0.5,0.0904165695,0.6,0.308769260472,0.039857165141,0.087040179838,0.001586073986,Lanczos

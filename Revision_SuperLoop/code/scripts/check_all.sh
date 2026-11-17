@@ -73,6 +73,10 @@ t2rsplot() { for e in packet_free cyclotron andreev kink_spectrum ground_state k
                rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg || return 1
                rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg || return 1; done; }
 run "t2_plot (Rust), Figures 14 to 20 (test2, item 6)" t2rsplot
+# Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state (t2_sfbs) and their figures
+t2sfbs() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_sfbs); }
+run "t2_sfbs (test2, items 7 to 11)" t2sfbs
+run "make_t2_sfbs_figures.py (test2, items 7 to 11)" python3 test2/python/make_t2_sfbs_figures.py
 
 # 2. documents, two passes
 for pass in 1 2; do

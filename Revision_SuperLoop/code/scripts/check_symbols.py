@@ -132,6 +132,10 @@ DESCRIPTIVE = {
     "ortho_error": "the largest modulus of an entry of W^dag W minus the unit matrix (W the matrix of the modes)",
     "N_F_change": "the change of the fermion number since x^0 = 0, computed in full precision",
     "multiplicity": "the number of eigenvalues in a group of equal eigenvalues (within 1e-9)",
+    # the data files of t2_sfbs (items [7] to [11])
+    "occupation_particles": "the probability that a state of positive energy +eps of a momentum is occupied",
+    "occupation_antiparticles": "the probability that a state of negative energy -eps of a momentum is empty",
+    "commutator_33": "an eigenvalue of the commutator of the pair operator Pi_3 of one lattice site with its Hermitian conjugate",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL

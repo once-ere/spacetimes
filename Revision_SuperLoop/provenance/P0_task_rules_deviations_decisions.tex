@@ -540,7 +540,18 @@ EX-8 of the two sets of solutions & answered \\
 writes Scalable Vector Graphics with its own small plotting library and
 draws the predictions of the examples computed in Rust; Figures 14 to 20
 & answered \\
-{[}7{]} to {[}11{]} & Sections 8 to 13 of the document & to follow, in
+{[}7{]} & Section 8 of the document: the construction of the superfluid
+boson singlet state (SFBS) from the spinor field: the 28 pairs of two
+spinor charges at one point, the six spin-zero pairs (spin singlet,
+isospin triplet by the Pauli principle), the scalar channel selected by
+the interaction and by parity, the charges, the super-loop form (the
+imaginary part of the product of a spinor charge's bi-quaternion with
+its conjugate), the Bose character with Pauli blocking, and the SFBS
+state as a coherent state of particle and antiparticle pairs, proved to
+be the mean-field ground state; checks SB-1 to SB-5 of the new program
+\texttt{t2\_sfbs} (member \texttt{t2sfbs}; exact many-body computations
+in Fock spaces of 256 and 65536 states); Figure 21 & answered \\
+{[}8{]} to {[}11{]} & Sections 9 to 13 of the document & to follow, in
 this order \\
 \end{longtable}
 
@@ -602,7 +613,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 137 new ones, all with the
+registries with their meanings and adds 145 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -814,6 +825,15 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   Graphics), Figures 14 to 20 (converted to PDF and PNG with
   \texttt{rsvg-convert}), Section 7 of the document of Test 2, and
   \texttt{check\_all.sh} extended (Section 11, entry E56).
+\item
+  \textbf{Stage 12 --- Test 2, item {[}7{]}} (Section 2.8): the program
+  \texttt{t2\_sfbs} in the new member \texttt{t2sfbs} of the workspace
+  \texttt{test2/rust} (a fermionic Fock space with the Lanczos method,
+  Gauss-Legendre quadrature; checks SB-1 to SB-5), Section 8 of the
+  document of Test 2 with Figure 21
+  (\texttt{test2/python/make\_t2\_sfbs\_figures.py}), the new symbols,
+  and \texttt{check\_all.sh} extended (decision D17, Section 11, entry
+  E57).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1186,6 +1206,19 @@ converted to PDF and PNG for the documents by the program
 complete plots (axes, ticks, labels, legends, colour maps), drawn
 entirely by the Rust program.
 
+\textbf{D17. ``the new superfluid boson singlet (S=0) state (SFBS)''.}
+The word singlet is read as the spin singlet, \(S^{\rm sp}_{\rm LL}=0\),
+as the request itself states: the SFBS is the triplet of scalar pairs
+\(\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}\) of one spinor
+field, a singlet of the Lorentz group and an isospin triplet. A pair
+that is also an isospin singlet vanishes for one field by the Pauli
+principle (it needs a second species, Theorem SF4 of the manuscript),
+and its condensate would break only the fermion number, leaving every
+isospin gauge field massless, so that items {[}9{]} to {[}11{]}
+(spontaneous breaking, masses of the gauge bosons, the surviving
+\(U(1)\) of the electric charge and the massless photon) could not be
+answered with it. Section 8.8 of the document states this reading.
+
 \textbf{D14. ``analytical solutions for at least 3 simple cases''.} Item
 {[}2{]} gives four cases, chosen so that together they exercise every
 term of the field equations: the covariant derivative with space and
@@ -1269,9 +1302,9 @@ author's}\label{decisions-that-are-the-authors}}
   corrections, no finite temperature, no dispersions of the Goldstone
   modes, no other interactions.
 \item
-  Items {[}7{]} to {[}11{]} of Test 2 are answered in the following
+  Items {[}8{]} to {[}11{]} of Test 2 are answered in the following
   stages; this version of the document of the answers contains items
-  {[}1{]} to {[}6{]}. The solver of item {[}3{]} treats the gauge fields
+  {[}1{]} to {[}7{]}. The solver of item {[}3{]} treats the gauge fields
   as external (their field equations (2.29) are not solved), and its
   self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item {[}2{]} the domain wall was solved for walls
@@ -1659,6 +1692,12 @@ data (the crossing of the probabilities of the Andreev reflection, the
 curves of the self-consistent kink and some eigenvalues), and in the
 two-dimensional figure the axis labels of the second column of panels
 overlapped the first; the legends and panels were moved & & \\
+E57 & the first draft of Section 8 used letters without the suffix LL
+for auxiliary quantities of its proofs (a small parameter, the entries
+of a \(2\times2\) matrix, a rapidity, the operators of two states, an
+index condition); the proofs were rewritten with registered symbols,
+with particular Lorentz transformations, and with index conditions
+stated in words & & \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -2218,7 +2257,8 @@ of two spinor charges being \(\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}\);
 new & \texttt{Kch} \texttt{Kch\_iota}
 \texttt{Kch\_iota\textquotesingle{}} \texttt{Kch\_1} \texttt{Kch\_2}
 \texttt{Kch\_3} \texttt{Kch\textquotesingle{}\_iota}
-\texttt{Kch\_singlet} \\
+\texttt{Kch\textquotesingle{}\_1} \texttt{Kch\textquotesingle{}\_2}
+\texttt{Kch\textquotesingle{}\_3} \texttt{Kch\_singlet} \\
 \(\Pi^\iota_{\rm LL}\) & the pair operators
 \(\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\),
 which annihilate two spinor charges of opposite momenta & new &
@@ -2931,6 +2971,93 @@ matrices, about which it precesses; their small deviations from the
 ground state in the linearized equations: the deviation of the Bloch
 vector and of the gap & new & \texttt{u\_Bl} \texttt{v\_Bl}
 \texttt{b\_Bl} \texttt{h\_Bl} \texttt{b\_fl} \texttt{Delta\_fl} \\
+\(\mathsf K^{\rm g}_{\rm LL}\), \(\mathsf K^{\rm g'}_{\rm LL}\) & two
+general pair matrices: complex \(8\times8\) matrices with which
+\(\Psi^T_{\rm LL}\mathsf K^{\rm g}_{\rm LL}\Psi_{\rm LL}=\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}\)
+annihilates two spinor charges at one point; only the antisymmetric part
+of a pair matrix contributes, because the components of
+\(\Psi_{\rm LL}\) anticommute & new & \texttt{Kgen}
+\texttt{Kgen\textquotesingle{}} \\
+\(\mathsf V^\pm_{\rm LL}\); \(\mathsf B^{\rm W}_{\rm LL}\) & the isospin
+factors of the two Weyl blocks of a Lorentz-invariant pair matrix, which
+is
+\(\mathrm{diag}(\mathsf E_{\rm LL}\otimes\mathsf V^-_{\rm LL},\mathsf E_{\rm LL}\otimes\mathsf V^+_{\rm LL})\)
+with two symmetric complex \(2\times2\) matrices
+\(\mathsf V^\pm_{\rm LL}\) on the isospin index; and a complex
+\(2\times2\) matrix on the Weyl index, the Weyl factor of a term of a
+\(4\times4\) block of a pair matrix (in the proof that the
+Lorentz-invariant pairs have this form) & new & \texttt{Vblock}
+\texttt{BW} \\
+\(\mathsf K^{(+1)}_{\rm LL}\), \(\mathsf K^{(0)}_{\rm LL}\),
+\(\mathsf K^{(-1)}_{\rm LL}\); \(\Pi^{(+1)}_{\rm LL}\),
+\(\Pi^{(0)}_{\rm LL}\), \(\Pi^{(-1)}_{\rm LL}\) & the scalar pair
+matrices of definite electric charge,
+\(\mathsf K^{(\pm1)}_{\rm LL}=(\mathsf K^1_{\rm LL}\mp i\mathsf K^2_{\rm LL})/\sqrt2\)
+and \(\mathsf K^{(0)}_{\rm LL}=\mathsf K^3_{\rm LL}\), and the pair
+operators \(\Pi^{(+1)}_{\rm LL}\), \(\Pi^{(0)}_{\rm LL}\),
+\(\Pi^{(-1)}_{\rm LL}\) made with them, which annihilate a pair of the
+electric charge \(+1\) (two isospin-up charges), \(0\) (one isospin-up
+and one isospin-down charge) and \(-1\) (two isospin-down charges) & new
+& \texttt{K(+1)} \texttt{K(0)} \texttt{K(-1)} \texttt{Pi(+1)}
+\texttt{Pi(0)} \texttt{Pi(-1)} \\
+\(S^{\rm sp}_{\rm LL}\), \(I^{\rm v}_{\rm LL}\) & the spin and the
+isospin of a state of two spinor charges: the sums of the squares of the
+three total spin generators and of the three total isospin generators
+have the eigenvalues \(S^{\rm sp}_{\rm LL}(S^{\rm sp}_{\rm LL}+1)\) and
+\(I^{\rm v}_{\rm LL}(I^{\rm v}_{\rm LL}+1)\); the superfluid boson
+singlet has \(S^{\rm sp}_{\rm LL}=0\) (spin singlet) and
+\(I^{\rm v}_{\rm LL}=1\) (isospin triplet) & new & \texttt{S\_sp}
+\texttt{I\_v} \\
+\(\hat c_{{\rm LL},k}(\vec s_{\rm LL})\);
+\(\hat\Pi^\iota_{\rm LL}(\vec s_{\rm LL})\),
+\(\hat n^{\rm F}_{\rm LL}(\vec s_{\rm LL})\),
+\(\hat n^\iota_{\rm LL}(\vec s_{\rm LL})\) & operators of one lattice
+site \(\vec s_{\rm LL}\) (a cell of the volume
+\((\ell^{\rm x}_{\rm LL})^3\)): the annihilation operators
+\(\hat c_{{\rm LL},k}(\vec s_{\rm LL})=(\ell^{\rm x}_{\rm LL})^{3/2}\Psi_{{\rm LL},k}(\vec s_{\rm LL})\)
+of the eight components, which obey the canonical anticommutation
+relations; the pair operator of the site
+\(\hat\Pi^\iota_{\rm LL}=\sum_{k,k'}(\mathsf K^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}\);
+the number of spinor charges on the site
+\(\hat n^{\rm F}_{\rm LL}=\sum_k\hat c^\dagger_{{\rm LL},k}\hat c_{{\rm LL},k}\);
+and the isospin of the site
+\(\hat n^\iota_{\rm LL}=\sum_{k,k'}\hat c^\dagger_{{\rm LL},k}(T^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k'}\)
+& new & \texttt{c\_site} \texttt{Pi\_site} \texttt{n\_F\_site}
+\texttt{n\_iota\_site} \\
+\(\hat H^{\rm q}_{\rm LL}\); \(\lvert\Phi^{\rm SF}_{\rm LL}\rangle\),
+\(\lvert\Phi^{\rm N}_{\rm LL}\rangle\) & the part of the mean-field
+Hamiltonian of the uniform polar state that belongs to one pair of
+momenta \(\vec q_{\rm LL}\), \(-\vec q_{\rm LL}\) (an operator on 16
+fermion modes); the superfluid boson singlet state, its ground state, a
+coherent state of pairs; and the normal state from which it is built,
+the Dirac sea of these modes (every state of energy
+\(-\varepsilon_{\rm LL}\) filled, every state of energy
+\(+\varepsilon_{\rm LL}\) empty) & new & \texttt{H\_q}
+\texttt{SF\_state} \texttt{Dirac\_sea} \\
+\(\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})\),
+\(\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})\); \(t^{\rm p}_{\rm LL}\),
+\(t^{\rm a}_{\rm LL}\) & the pair operators of the momenta
+\(\vec q_{\rm LL}\) and \(-\vec q_{\rm LL}\) in the scalar isospin
+channel of \(\mathsf K^3_{\rm LL}\):
+\(\hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger\) creates a pair of
+spinor charges of positive energy (particles),
+\(\hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})^\dagger\) removes a pair from
+the states of negative energy (creates a pair of antiparticles); and
+their weights
+\(t^{\rm p}_{\rm LL}=\Delta_{\rm LL}/(E^-_{\rm LL}+\varepsilon_{\rm LL}-\mu_{\rm LL})\)
+and
+\(t^{\rm a}_{\rm LL}=\Delta_{\rm LL}/(E^+_{\rm LL}+\varepsilon_{\rm LL}+\mu_{\rm LL})\)
+in the superfluid boson singlet state & new & \texttt{B\_p}
+\texttt{B\_a} \texttt{t\_p} \texttt{t\_a} \\
+\(\mathsf Y^\pm_{\rm LL}(\vec q_{\rm LL})\); \(\hat f_{\rm LL}\),
+\(\hat f'_{\rm LL}\) & the projectors
+\(\tfrac12(\mathsf 1_8\pm\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL})\)
+on the states of energy \(\pm\varepsilon_{\rm LL}\) of the plane-wave
+Hamiltonian (rank 4 each); and the annihilation operators of a spinor
+charge in an eigenstate of \(\mathsf h_{\rm LL}(\vec q_{\rm LL})\) and
+in its partner state of the momentum \(-\vec q_{\rm LL}\) (the complex
+conjugate of \(\mathsf K^3_{\rm LL}\) times the eigenvector) & new &
+\texttt{Yproj} \texttt{f\_state} \texttt{f\_partner} \\
 \end{longtable}
 
 \end{document}
