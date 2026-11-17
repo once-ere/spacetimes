@@ -202,6 +202,7 @@ python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
 python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md   # the table of the keys of the input file
 python3 test2/python/t2_examples_check.py test2/data/t2_py                   # checks EX-1 .. EX-7
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done   # item [4]: Figures 7 to 13
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 \end{verbatim}
@@ -213,22 +214,23 @@ of the explanation and its figures; the program of the document on the
 \texttt{test2} (\texttt{t2\_fields} for item {[}1{]} and
 \texttt{t2\_analytic} for item {[}2{]} of Test 2) and their figures; the
 Python solver of item {[}3{]} (its self-test, the seven examples, the
-table of the keys) and the checks of its examples; twice in a row the
-registry of the symbols, the fragments of the documents, the checks of
-the symbols and of self-containedness, the assembly of the Markdown
-documents, the manuscript (.tex, .pdf, .md) and the provenance documents
-(.tex, .pdf) (the second pass makes every document contain the reports
-of the first); then it verifies that every report passes, that no
-placeholder is left unresolved, that every report printed in a document
-is the current one, that no formula ends directly before a digit, that
-every document exists as .md, .tex and .pdf, and that no document names
-a software tool that does not belong in a manuscript, and prints one
-verdict, ``ALL PASS'' or the list of failures. Requirements: a Rust
-toolchain for the edition 2021; Python 3 with SymPy, NumPy and
-Matplotlib; TeX Live with REVTeX 4.2, XeLaTeX and latexmk, the DejaVu
-fonts and the Latin Modern Math font; pandoc. The program refuses to run
-unless it is started in the folder \texttt{Revision\_SuperLoop} (it
-writes its data files into \texttt{data/} of that folder).
+table of the keys) and the checks of its examples; the plots of item
+{[}4{]}; twice in a row the registry of the symbols, the fragments of
+the documents, the checks of the symbols and of self-containedness, the
+assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
+the provenance documents (.tex, .pdf) (the second pass makes every
+document contain the reports of the first); then it verifies that every
+report passes, that no placeholder is left unresolved, that every report
+printed in a document is the current one, that no formula ends directly
+before a digit, that every document exists as .md, .tex and .pdf, and
+that no document names a software tool that does not belong in a
+manuscript, and prints one verdict, ``ALL PASS'' or the list of
+failures. Requirements: a Rust toolchain for the edition 2021; Python 3
+with SymPy, NumPy and Matplotlib; TeX Live with REVTeX 4.2, XeLaTeX and
+latexmk, the DejaVu fonts and the Latin Modern Math font; pandoc. The
+program refuses to run unless it is started in the folder
+\texttt{Revision\_SuperLoop} (it writes its data files into
+\texttt{data/} of that folder).
 
 \hypertarget{the-programs}{%
 \section{3. The programs}\label{the-programs}}
@@ -1604,11 +1606,11 @@ Revision_SuperLoop, folder explanations, program `r13_yukawa`: the 3+1 manifold 
 [PASS] Z-8  the one-loop bubble of the Yukawa form, Ibub(pE) = int_(|kE| < Lambda) d^4kE/(2 pi)^4 [kE.(kE+pE) + m^2]/((kE^2 + m^2)((kE+pE)^2 + m^2)) (pE = 1, m = 0.5, Lambda = 4 to 2048; the angular average of the integrand at pE = 0 equals 1/(kE^2 + m^2) within 1e-14): Ibub(0) equals the closed form (Lambda^2 - m^2 ln(1 + Lambda^2/m^2))/(16 pi^2) (relative tolerance 1e-10) and grows like Lambda^2 (ratio at 2048/1024 within 1e-3 of 4; absorbed by the mass counterterm of the pair field); the cutoff derivative of the momentum-dependent part, computed on the sphere |kE| = Lambda, tends to -pE^2/(16 pi^2) (relative tolerance 1e-5 at Lambda = 2048; a logarithmic divergence, absorbed by the wave-function counterterm); the renormalized bubble Iren = Ibub(pE) - Ibub(0) - pE^2 dIbub/d(pE^2) at pE = 0 converges as Lambda grows: power counting guarantees a remainder falling at least like Lambda^-2 (a factor 4 per doubling); here the term of order pE^4 of the angular average of the integrand is pE^4 m^4/(kE^2 + m^2)^5 (verified at kE = 1, 2, 4 with pE = 0.05, relative tolerance 1e-2), so each doubling divides the change by about 64 (each of the first three ratios between 56 and 72), and from Lambda = 32 on Iren is constant within the rounding errors (relative changes below 1e-8): after the two counterterms nothing depends on the cutoff  -- Ibub(0) ratio at 2048/1024: 4.000011; slope at Lambda = 2048: -6.332574e-3 (target -6.332574e-3); changes of Iren per doubling from Lambda = 4: 3.208453e-8, 4.968769e-10, 7.745994e-12, 1.200301e-13 (ratios 64.572, 64.146, 64.534); Iren at 2048: 1.560666e-3; largest relative deviation from it for Lambda >= 32: 1.1e-9; pE^4 term verified: true
 \end{verbatim}
 
-\hypertarget{test-2-items-1-to-3-the-gauge-covariant-field-equations-of-the-spinor-field-their-analytic-solutions-and-the-python-solver-folder-test2}{%
-\section{\texorpdfstring{11. Test 2, items {[}1{]} to {[}3{]}: the
+\hypertarget{test-2-items-1-to-4-the-gauge-covariant-field-equations-of-the-spinor-field-their-analytic-solutions-the-python-solver-and-its-plots-folder-test2}{%
+\section{\texorpdfstring{11. Test 2, items {[}1{]} to {[}4{]}: the
 gauge-covariant field equations of the spinor field, their analytic
-solutions, and the Python solver (folder
-\texttt{test2})}{11. Test 2, items {[}1{]} to {[}3{]}: the gauge-covariant field equations of the spinor field, their analytic solutions, and the Python solver (folder test2)}}\label{test-2-items-1-to-3-the-gauge-covariant-field-equations-of-the-spinor-field-their-analytic-solutions-and-the-python-solver-folder-test2}}
+solutions, the Python solver and its plots (folder
+\texttt{test2})}{11. Test 2, items {[}1{]} to {[}4{]}: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python solver and its plots (folder test2)}}\label{test-2-items-1-to-4-the-gauge-covariant-field-equations-of-the-spinor-field-their-analytic-solutions-the-python-solver-and-its-plots-folder-test2}}
 
 The document
 \texttt{test2/Test\ 2\ -\ the\ gauge-covariant\ spinor\ field\ on\ the\ 3+1\ manifold\ and\ the\ superfluid\ boson\ singlet\ state}
@@ -2097,7 +2099,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.68 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.61 s
 output files: t2_py_cyclotron_summary.txt, t2_py_cyclotron_series.csv, t2_py_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -2119,7 +2121,7 @@ pair field: step, direction 3, amplitude 0.6, phase 0, width 1, positions [60.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 1200, output every 40 steps, Hbound = 8, dt Hbound = 0.4 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [30.0, 0.0, 0.0], width 4, momentum [0.917, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 1.073085668
-results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.40 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.32 s
 output files: t2_py_andreev_summary.txt, t2_py_andreev_series.csv, t2_py_andreev_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -2139,7 +2141,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.87 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.82 s
 output files: t2_py_kink_spectrum_summary.txt, t2_py_kink_spectrum_series.csv, t2_py_kink_spectrum_fields.csv, t2_py_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -2159,7 +2161,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.91 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.65 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_py_ground_state_summary.txt, t2_py_ground_state_series.csv, t2_py_ground_state_fields.csv, t2_py_ground_state_spectrum.csv, t2_py_ground_state_iterations.csv
 checks:
@@ -2183,7 +2185,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 7.50 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 7.48 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_py_kink_ground_state_summary.txt, t2_py_kink_ground_state_series.csv, t2_py_kink_ground_state_fields.csv, t2_py_kink_ground_state_spectrum.csv, t2_py_kink_ground_state_iterations.csv
 checks:
@@ -2210,7 +2212,7 @@ ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.05
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 50.03 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 50.66 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_py_quench_summary.txt, t2_py_quench_series.csv, t2_py_quench_fields.csv, t2_py_quench_spectrum.csv, t2_py_quench_iterations.csv
 checks:
@@ -2241,8 +2243,32 @@ checks:
 [PASS] EX-5 the self-consistent pair field is the root of the lattice gap equation (3.21) (deviation 2.6e-13), and the gap of the spectrum is min_q E^-(q) (deviation 4.0e-13)
 [PASS] EX-6 the self-consistent kink carries 8 bound states (four at each sign, as (3.28) gives for one wall) at the energy 0.03404, within 2.5 per cent of the first-order Wilson shift 0.03321 (the next order is of relative size r_W dx Delta_0 = 0.30; allowed 25 per cent)
 [PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 4.56e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
-[PASS] EX-7 the fermion number is constant along the whole evolution (largest change 0.0e+00)
+[PASS] EX-7 the fermion number is constant along the whole evolution (largest change 2.4e-11)
 \end{verbatim}
+
+\hypertarget{item-4-the-plotter}{%
+\subsection{Item {[}4{]}: the plotter}\label{item-4-the-plotter}}
+
+\texttt{test2/python/t2\_plot.py} reads the data files of one solution
+and draws one figure as .pdf and .png: for the task \texttt{evolve} the
+density of the mode in space and time (or at four times in two
+dimensions) with the path of its centre, the particle and hole parts,
+the probabilities \(P^{\rm h}_{\rm LL}\) and \(P^\uparrow_{\rm LL}\),
+and the changes of the norm and of the energy; for \texttt{spectrum} all
+eigenvalues and the densities in the window; for \texttt{ground\_state}
+the pair field, the convergence and the spectrum near zero; for
+\texttt{quench} the amplitude of the pair field, the conserved
+quantities and the pair field on the sites. For the seven examples it
+draws the predictions of EX-1 to EX-7 with the functions of
+\texttt{t2\_examples\_check.py}: the mean group velocity, the Rayleigh
+quotient (3.29) of the bound states, the root of the gap equation
+(3.21), the continuum kink
+\(\Delta_{\rm LL}\tanh(\Delta_{\rm LL}x^1_{\rm LL})\) (shifted to the
+centre) and the first-order Wilson shift, and a sinusoid with the
+frequency of the amplitude mode of the linearized equations (amplitude
+and phase fitted by least squares). The figures are
+\texttt{test2/figures/fig\_t2\_py\_\textless{}example\textgreater{}.pdf}
+and \texttt{.png} for the seven examples.
 
 \hypertarget{the-checks-of-the-documents}{%
 \section{12. The checks of the
@@ -2280,13 +2306,13 @@ PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenan
 
 [PASS] LL-S1  every symbol text is registered once (139 entries) and every plain-text name of the programs, figures and data files belongs to one entry (453 names)
 [PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 311 items of the 137 new entries is an item of either master registry (503 items compared); the 23 items that the registry of Revision_NoGo also contains are exactly the 23 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\mathsf 1_8$, $\otimes$, $i$, $p$, ${}^T$)
-[PASS] LL-S3  every column of the 58 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (166 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S3  every column of the 58 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (167 different columns), and every file states its content in a line '# content:'
 [PASS] LL-S4  each of the 7 documents of Revision_SuperLoop and the manuscript contains the complete table of the 139 registered symbols, so that every symbol it uses is defined in the document itself
-[PASS] LL-S5  in the 4768 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
-[PASS] LL-S6  in the 5652 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
-[PASS] LL-S7  every one of the 4153 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (64 registered styled letters)
+[PASS] LL-S5  in the 4812 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 5696 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 4155 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (64 registered styled letters)
 [PASS] LL-S8  every one of the 3566 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 80 reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name
-[PASS] LL-S9  the 1511 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
+[PASS] LL-S9  the 1551 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
 \end{verbatim}
 
 \begin{verbatim}
@@ -2486,14 +2512,14 @@ f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/a
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
 465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-25bbf1e7f3ea332e3235a6e11dbc1d429e7844a25fff0526d8eabb06499929bf  code/scripts/check_symbols.py
+48ddeab74cd41abd4446893cd79f81a40c2d93988a0d2bdb4f2e9091699fa963  code/scripts/check_symbols.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
 227ad40b219115f62a295292d0c6d6d00bf0e5dd11b96ad2acf208b69dae345d  code/scripts/write_symbol_registry.py
 e6f3025b7f959977a1075cda0e0c34f51e208d9e28db50bc5d4fffcef189a6ab  code/scripts/build_docs.sh
-f8a76056d33a676a115194ec3e081aad782a39f7540200bb68802b91eb2b3677  code/scripts/check_all.sh
+393402f394240503bc6a518fc55444d30e8b6538bd5b27806a5c2e986270d0ab  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 \end{verbatim}
 
@@ -2512,10 +2538,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-25aefafbc77440b98c1350a3dc9230ede097c63b4a8fb7e334770da5726965af  explanations/figures/fig_ex_r13_bubble.pdf
-6a2572966961a3c78e098d95569e350d43252bcba0bdaa419500b0fca1b99fb5  explanations/figures/fig_ex_r13_coordinates.pdf
-37b4c37b0b04311be7fd4d8dddd7039896b3687ab0317a1c27d7870a459bde02  explanations/figures/fig_ex_r13_divergences.pdf
-13f416712f32dd64fd8beb3fcf3f93ab01f48be2d7a560e64cdadc975047cdfa  explanations/figures/fig_ex_r13_lorentz.pdf
+e988f29ecb379c45c0484378160f5e8cca5267177fe1af76fac9674e4868811c  explanations/figures/fig_ex_r13_bubble.pdf
+62fb45c4bf8b0d21bd54718142cff4e26da32c18e55fa70c6f717893397adb69  explanations/figures/fig_ex_r13_coordinates.pdf
+693b8c555d9fdf83542cbc119743522f34484fd41751f8fefc385c66da34d252  explanations/figures/fig_ex_r13_divergences.pdf
+6f5f589be0d282ded52192027c4775ae11452c89236ee503776e29409003c2b5  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py

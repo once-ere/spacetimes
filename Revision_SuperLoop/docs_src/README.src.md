@@ -81,6 +81,9 @@ examples with known answers (the group velocity, a bounded orbit in a magnetic f
 states of a kink, the gap equation, a self-consistent kink, and the amplitude mode of the pair field) are checked by
 `test2/python/t2_examples_check.py` ({{GEN:nchecks_t2_py_examples}} checks); the free self-consistent iteration shows that
 a wall of the pair field is unstable unless the pair field is held real along one isospin direction.
+Its fourth answer (item [4]) is the plotter `test2/python/t2_plot.py`, which draws any solution of the solvers (one figure per
+solution, the panels chosen by the task) and, for the seven examples, the predictions they are checked against (Figures 7 to
+13 of the document).
 
 # 2. Where to start reading
 
@@ -118,7 +121,7 @@ a wall of the pair field is unstable unless the pair field is held real along on
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]) |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -150,6 +153,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
 python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md
 python3 test2/python/t2_examples_check.py test2/data/t2_py
+# Test 2, item [4]: Figures 7 to 13, the plots of the seven solutions:
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```

@@ -1395,7 +1395,7 @@ def task_quench(cfg, lat, gauge, d0, rep, base):
         """the series at every step; the pair field on the sites at the output steps"""
         dd, nf, emf, orth = diagnostics(W, t)
         absd = np.sqrt(np.sum(np.abs(dd) ** 2, axis=1))
-        series.append((t, float(absd.mean()), float(absd[0]), nf, emf, orth))
+        series.append((t, float(absd.mean()), float(absd[0]), nf, nf - nf0, emf, orth))
         if with_fields:
             for s in range(ns):
                 fields.append((t, lat.x[s, 0], lat.x[s, 1], lat.x[s, 2], dd[s, 0].real, dd[s, 0].imag, dd[s, 1].real,
@@ -1450,8 +1450,9 @@ def task_quench(cfg, lat, gauge, d0, rep, base):
     write_csv(base + "_spectrum.csv", "the eigenvalues of the lattice operator in the initial ground state (task quench, %s)"
               % PROGRAM, meta, ["index", "E_qp"], [(k, ev[k]) for k in range(len(ev))])
     write_csv(base + "_series.csv", "time series after the quench: the mean of |d| over the sites, |d| at the first site, the "
-              "fermion number, the conserved functional E_MF and the largest deviation from orthonormality (task quench, %s)"
-              % PROGRAM, meta, ["x_LL^0", "abs_d_mean", "abs_d_site0", "N_F", "E_MF", "ortho_error"], series)
+              "fermion number and its change since x^0 = 0, the conserved functional E_MF and the largest deviation from "
+              "orthonormality (task quench, %s)"
+              % PROGRAM, meta, ["x_LL^0", "abs_d_mean", "abs_d_site0", "N_F", "N_F_change", "E_MF", "ortho_error"], series)
     write_csv(base + "_fields.csv", "the pair field on the sites at the output times (task quench, %s)" % PROGRAM, meta,
               ["x_LL^0", "x_LL^1", "x_LL^2", "x_LL^3", "d1_re", "d1_im", "d2_re", "d2_im", "d3_re", "d3_im", "abs_d"], fields)
 

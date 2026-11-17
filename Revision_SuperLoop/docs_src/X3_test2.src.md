@@ -19,7 +19,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [1] | write out, explain and discuss the field equations of a self-interacting spinor field on the $3+1$ manifold of the super-loop: a Dirac equation of that manifold, built with super-loop operators and with a gauge-covariant derivative for the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$; every matrix written out; formulated completely for numerical solution | Section 2 | answered |
 | [2] | analyze the field equations and give analytic solutions for at least three simple cases | Section 3 | answered |
 | [3] | a Python script that guides the user in defining initial and boundary conditions, asks for the name of a file of such conditions, reads it and solves the field equations numerically | Section 4 | answered |
-| [4] | a Python script that plots these numerical solutions | Section 5 | to follow |
+| [4] | a Python script that plots these numerical solutions | Section 5 | answered |
 | [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | to follow |
 | [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | to follow |
 | [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | to follow |
@@ -30,7 +30,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] to [3]; the sections of the other items are added to this same document, in this order, as they
+items [1] to [4]; the sections of the other items are added to this same document, in this order, as they
 are completed.
 
 ## 1.2 How to read this document
@@ -1442,7 +1442,7 @@ diagonalization (circles; each level $n^{\rm L}_{\rm LL}\ge1$ is a pair of coinc
 
 ## 4.0 The answer in brief
 
-1. **The program.** `test2/python/t2_solve.py` (Python 3 with NumPy and SciPy, about 1600 commented lines) solves the
+1. **The program.** `test2/python/t2_solve.py` (Python 3 with NumPy and SciPy, about 1750 commented lines) solves the
    mean-field field equations (2.31), (2.32) of the self-interacting spinor field on the lattice of Section 2.11,
    with the gauge-covariant central difference (2.35) (the link matrices (2.34)), the Wilson term, constant or
    site-dependent gauge potentials, constant magnetic fields, a pulse of a gauge field in time, and a prescribed or
@@ -1848,6 +1848,143 @@ from the effective theory of the pair field.
 - **The Rust program of item [5]** solves the same input files and writes the same output files; the two are compared number
   by number (Section 6).
 
+# 5. Item [4]: a Python program that plots the numerical solutions
+
+## 5.0 The answer in brief
+
+The program `test2/python/t2_plot.py` (Python 3 with NumPy and Matplotlib, about 550 commented lines) draws the solution
+of any input file solved by the Python solver of item [3] or by the Rust solver of item [5] (they write the same files).
+It asks for the base name of a solution (or takes it from the command line), reads the task from the data files, and draws
+one figure with the panels that fit the task, as .pdf and .png. For the seven examples of Section 4.4 it also draws the
+predictions of the checks EX-1 to EX-7 (dashed or dotted lines), so that every figure shows the computed solution next to
+what it is compared with. Figures 7 to 13 are its output for the seven examples.
+
+## 5.1 How to use the program
+
+```
+# draw one solution: the files test2/data/t2_py_andreev_* give test2/data/t2_py_andreev_plot.pdf and .png
+python3 test2/python/t2_plot.py test2/data/t2_py_andreev
+# choose the name of the figure
+python3 test2/python/t2_plot.py test2/data/t2_py_andreev --out my_figures/andreev
+# without the predictions of the examples, or with a window on the screen as well
+python3 test2/python/t2_plot.py test2/data/t2_py_andreev --no-predictions
+python3 test2/python/t2_plot.py test2/data/t2_py_andreev --show
+# without arguments the program lists the solutions in the current folder and asks for a base name
+python3 test2/python/t2_plot.py
+```
+
+The base name is the name of the output files without the endings `_summary.txt`, `_series.csv`, `_fields.csv`,
+`_spectrum.csv` and `_iterations.csv` (a name with one of these endings is accepted as well). For a problem of one's own,
+the usual sequence is: write an input file (Section 4.1), solve it with `t2_solve.py`, and draw it with `t2_plot.py` with
+the same base name. The program needs only the data files; it never runs the solver.
+
+## 5.2 What the figures show
+
+The panels depend on the task of the solution (the line `# task:` of its data files):
+
+- **`evolve`, one active direction** (four panels): (a) the density of the mode, the sum of the squared moduli of its 16
+  components on each site, as a colour map over the position $x^1_{\rm LL}$ and the time $x^0_{\rm LL}$, with the path of its
+  centre (orange) and the position of a step or wall of the pair field (red, dotted); (b) the densities of the particle part
+  (solid) and of the hole part (dashed) at four times, from light to dark; (c) the probabilities $P^{\rm h}_{\rm LL}$ of the hole
+  part and $P^\uparrow_{\rm LL}$ of the particle part with isospin up; (d) the changes of the norm and of the energy
+  $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$ since the start, on a logarithmic scale, which show the size of the errors of the
+  time stepping.
+- **`evolve`, two active directions** (six panels): (a) to (d) the density at four times as colour maps over the plane
+  $x^1_{\rm LL}$, $x^2_{\rm LL}$, with the path of the centre up to that time; (e) the whole path; (f) the conservation of the norm
+  and of the energy.
+- **`spectrum`** (two panels): (a) all eigenvalues in ascending order, the energy window shaded and the eigenvalues in it
+  marked; (b) the pair field and the summed density of the eigenvectors of positive energy in the window, normalized to the
+  integral 1.
+- **`ground_state`** (three panels): (a) the initial guess and the self-consistent pair field (the modulus
+  $\lvert\vec d_{\rm LL}\rvert$, and for walls of the pair field also the component $\mathrm{Re}\,d^3_{\rm LL}$); (b) the largest
+  component of the residual against the number of the Anderson iteration (logarithmic); (c) the eigenvalues near zero in the
+  self-consistent field.
+- **`quench`** (three panels): (a) the mean of $\lvert\vec d_{\rm LL}\rvert$ over the sites against the time, with its mean after
+  the quench; (b) the changes of $N^{\rm F}_{\rm LL}$, of the orthonormality of the modes and of $E^{\rm MF}_{\rm LL}$ (relative)
+  since the start (logarithmic; a change that is exactly zero is drawn at $10^{-17}$); (c) the pair field on the sites at four
+  times.
+
+The design follows four rules: one colour per quantity, the same in every figure (blue for the main computed quantity, orange
+for the second, aqua for the third, grey for reference values, black dashed lines for predictions); colour maps of one hue
+from white (zero) to dark blue (the largest value), so that the density can be read from the lightness alone; a logarithmic
+scale wherever errors are shown, because their size, not their shape, is the information; and a legend in every panel with
+more than one curve, placed where it covers no data.
+
+## 5.3 The figures of the seven examples
+
+![](figures/fig_t2_py_packet_free.png){width=100%}
+
+**Figure 7.** The free wave packet (example `packet_free`, check EX-1). (a) The packet moves through the ring without
+changing its shape much; its centre (orange) lies on the dashed line of the predicted mean group velocity 0.96406, the
+average of (4.7) over the momenta of the packet; the two lines cannot be told apart (the difference is $8\times10^{-5}$ of the
+velocity). (b) The density at four times: the packet broadens slowly by dispersion. (c) It stays a particle with isospin up
+($P^{\rm h}_{\rm LL}=0$, $P^\uparrow_{\rm LL}=1$): without fields nothing turns it. (d) The norm and the energy change by less than
+$2\times10^{-7}$, the size of the RK4 error for the energies of the packet. Data: `test2/data/t2_py_packet_free_*`.
+
+![](figures/fig_t2_py_cyclotron.png){width=100%}
+
+**Figure 8.** The packet in the magnetic field $\mathsf F^{\rm F}_{{\rm LL},12}=0.4$ (example `cyclotron`, check EX-2). (a) to (d)
+The density at four times and the path of the centre so far: the packet turns, spreads around a ring, and part of it comes back;
+it is a superposition of the Landau levels 0 to 3 of (3.32), whose energy differences set the turning (Section 4.4). (e) The
+path of the centre: bounded, far from the walls. (f) The norm and the energy are conserved to $4\times10^{-7}$. Data:
+`test2/data/t2_py_cyclotron_*`.
+
+![](figures/fig_t2_py_andreev.png){width=100%}
+
+**Figure 9.** Andreev reflection (example `andreev`, check EX-3). (a) A particle of energy 0.074, inside the gap 0.6 of the
+superfluid region to the right of the dotted line, runs to the right, turns before the interface and runs back. (b) At the times
+20 and 40 the incoming particle part (solid) and the outgoing hole part (dashed); at 60 only the hole part is left, with a small
+reflected particle part. (c) The conversion: $P^{\rm h}_{\rm LL}$ rises from 0 to 0.978 while the packet is at the interface, and the
+particle part with isospin up falls to 0.022. (d) The errors of the time stepping stay below $3\times10^{-9}$. Data:
+`test2/data/t2_py_andreev_*`.
+
+![](figures/fig_t2_py_kink_spectrum.png){width=100%}
+
+**Figure 10.** The kink and the antikink of the pair field on a ring (example `kink_spectrum`, check EX-4). (a) All 960
+eigenvalues; inside the gap of the continuum (dotted, $\pm(m_{\rm LL}^2+(\Delta^\infty_{\rm LL})^2)^{1/2}$) lie exactly 16, on the
+predicted energies $\pm E^{\rm R}_{\rm LL}$ of (3.29) (dashed) within the bound of perturbation theory. (b) The pair field and the
+summed density of the eight bound states of positive energy: they sit on the two walls. Data:
+`test2/data/t2_py_kink_spectrum_*`.
+
+![](figures/fig_t2_py_ground_state.png){width=100%}
+
+**Figure 11.** The self-consistent uniform superfluid (example `ground_state`, check EX-5). (a) From the guess 0.2 (grey, dashed)
+the iteration reaches the uniform $\lvert\vec d_{\rm LL}\rvert$ (blue) on the root of the lattice gap equation (3.21) (dotted). (b) The
+Anderson iteration converges in 12 steps to $10^{-14}$. (c) The eigenvalues near zero: the gap opens around zero energy. Data:
+`test2/data/t2_py_ground_state_*`.
+
+![](figures/fig_t2_py_kink_ground_state.png){width=100%}
+
+**Figure 12.** The self-consistent kink between two walls (example `kink_ground_state`, check EX-6). (a) The guess (grey, dashed),
+the self-consistent $\mathrm{Re}\,d^3_{\rm LL}$ (aqua) and $\lvert\vec d_{\rm LL}\rvert$ (blue), and the continuum kink of the
+Gross-Neveu model with the uniform gap of the same coupling (dotted): the lattice kink is slightly steeper (the Wilson term), and
+the pair field rises near the hard walls. (b) The convergence of the constrained Anderson iteration. (c) The eight bound states,
+four at each sign, at the energies $\pm0.034$, next to the predicted first-order Wilson shift (dashed); the continuum begins at
+0.61. Data: `test2/data/t2_py_kink_ground_state_*`.
+
+![](figures/fig_t2_py_quench.png){width=100%}
+
+**Figure 13.** The quench of the coupling from 0.45 to 0.455 (example `quench`, check EX-7). (a) The amplitude of the pair field
+jumps at $x^0_{\rm LL}=0$ (by the factor $G'_{\rm LL}/G_{\rm LL}$) and then oscillates about its mean (grey); the dashed curve is a
+sinusoid with the predicted frequency $\omega^{\rm H}_{\rm LL}$ of (4.11) (amplitude and phase fitted): the dominant oscillation
+follows it, and weaker modes at other frequencies are visible as well. (b) The fermion number changes by at most $2.4\times10^{-11}$
+and the orthonormality of the modes by $1.2\times10^{-12}$ (rounding errors), while $E^{\rm MF}_{\rm LL}$ varies by a few parts in $10^{6}$
+without drift (the second-order error of the midpoint rule). (c) The pair field stays uniform on all 24 sites. Data:
+`test2/data/t2_py_quench_*`.
+
+## 5.4 Discussion
+
+- **What the plots prove.** Each figure puts the computed solution next to an independent prediction drawn from a different
+  formula: the mean group velocity, the energies of the bound states, the root of the gap equation, the continuum kink and the
+  Wilson shift, the frequency of the amplitude mode. Agreement is visible at a glance, and the numbers are in the reports of
+  Appendix A.
+- **What the plots show beyond the checks.** The time scale of the Andreev conversion (the packet stays near the interface for
+  a time of order $1/\Delta_{\rm LL}$), the spreading of the packet in the magnetic field into its Landau levels, the rise of the
+  pair field near hard walls, and the weaker modes in the quench, which the single-frequency check does not test.
+- **Limits.** The program draws one solution at a time and chooses its panels by the task. For three active directions it draws
+  the density summed over $x^3_{\rm LL}$ in the plane of the first two coordinates (the full fields are in the data files); the
+  profiles of the self-consistent pair field are drawn along $x^1_{\rm LL}$.
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -1867,7 +2004,10 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
 python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md
 python3 test2/python/t2_examples_check.py test2/data/t2_py
-# 5. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 5. item [4]: Figures 7 to 13, the plots of the seven solutions (test2/figures/fig_t2_py_*.pdf and .png)
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done
+# 6. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 ```
 
@@ -2003,6 +2143,13 @@ The checks EX-1 to EX-7 of the examples, verbatim (`test2/data/t2_py_examples_ch
 {{FILE:test2/data/t2_py_examples_checks.txt}}
 ```
 
+## A.2c The program of item [4]
+
+`test2/python/t2_plot.py` reads the data files of a solution and draws one figure (Section 5); for the seven examples it imports
+`t2_examples_check.py` for the predictions (the mean group velocity of EX-1, the Rayleigh quotient of EX-4, the root of the gap
+equation of EX-5, the continuum kink and the Wilson shift of EX-6, and the frequency of (4.11) of EX-7). It writes no report: its
+output is Figures 7 to 13.
+
 ## A.3 Data files and figures
 
 | file | content | columns |
@@ -2036,7 +2183,7 @@ The checks EX-1 to EX-7 of the examples, verbatim (`test2/data/t2_py_examples_ch
 | `t2_py_ground_state_*`, `t2_py_kink_ground_state_*`: `_iterations.csv` and `_series.csv` | the Anderson iteration | `iteration`, `change`, `abs_d_mean`, `E_GS` |
 | `t2_py_ground_state_fields.csv`, `t2_py_kink_ground_state_fields.csv` | the initial guess and the self-consistent pair field | `stage`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 | `t2_py_quench_iterations.csv` | the iteration of the initial ground state | `iteration`, `change`, `abs_d_mean`, `E_GS` |
-| `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `E_MF`, `ortho_error` |
+| `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `N_F_change`, `E_MF`, `ortho_error` |
 | `t2_py_quench_fields.csv` | the pair field on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
@@ -2048,14 +2195,16 @@ $G_{\rm LL}/G^{\rm crit}_{\rm LL}$ for $m_{\rm LL}=0$, `E_R` is $E^{\rm R}_{\rm 
 `P_up_exact`, `P_hole_rk4`, `P_hole_exact` are $P^\uparrow_{\rm LL}$ and $P^{\rm h}_{\rm LL}$ from the RK4 integration and from
 the exact solution; `branch` (positive or negative energy), `source` (the origin of a value), `index` (the number of an
 eigenvalue in ascending order), `density_lattice`, `density_exact` (densities normalized to the integral 1) and
-`relative_residual` are descriptive words. In the files of item [3], `norm` is the squared norm of the mode, `E_expect` its
+`relative_residual` are descriptive words. Figures 7 to 13 are drawn by `test2/python/t2_plot.py` (item [4]) from the
+data files named in the table; besides the data it draws only the predictions of the checks EX-1 to EX-7, computed by the
+functions of `t2_examples_check.py`. In the files of item [3], `norm` is the squared norm of the mode, `E_expect` its
 energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$, `x_mean_1` to `x_mean_3` the centre of its density (Section 4.3),
 `density_p`, `density_h`, `density_up` the densities of the particle part, of the hole part and of the particle part with
 isospin up on a site, `d1_re` to `d3_im` the real and imaginary parts of $d^1_{\rm LL}$, $d^2_{\rm LL}$, $d^3_{\rm LL}$,
 `abs_d` the modulus $\lvert\vec d_{\rm LL}\rvert$ on a site, `abs_d_mean` its mean over the sites and `abs_d_site0` its value on the
 first site, `stage` the guess (`initial`) or the result (`final`), `change` the largest component of the residual of the
 Anderson iteration, `E_GS` the energy (4.5) per site measured from the normal state, `N_F` and `E_MF` are $N^{\rm F}_{\rm LL}$ and
-$E^{\rm MF}_{\rm LL}$, and `ortho_error` the largest modulus of the entries of
+$E^{\rm MF}_{\rm LL}$, `N_F_change` the change of $N^{\rm F}_{\rm LL}$ since $x^0_{\rm LL}=0$ in full precision, and `ortho_error` the largest modulus of the entries of
 $(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$. Every data file states its content in a line `# content:` and
 its parameters in lines `# name: value`.
 
@@ -2067,6 +2216,13 @@ its parameters in lines `# name: value`.
 | 4 | `test2/figures/fig_t2_case_B` | `t2_B_bogoliubov_curves.csv`, `t2_B_bogoliubov_lattice.csv`, `t2_B_rabi.csv`, `t2_B_gap.csv` | AS-3 to AS-5 |
 | 5 | `test2/figures/fig_t2_case_C` | `t2_C_kink_profile.csv`, `t2_C_kink_spectrum.csv`, `t2_C_kink_convergence.csv` | AS-9 |
 | 6 | `test2/figures/fig_t2_case_D` | `t2_D_landau.csv` | AS-10 |
+| 7 | `test2/figures/fig_t2_py_packet_free` | `t2_py_packet_free_series.csv`, `_fields.csv` | EX-1 |
+| 8 | `test2/figures/fig_t2_py_cyclotron` | `t2_py_cyclotron_series.csv`, `_fields.csv` | EX-2 |
+| 9 | `test2/figures/fig_t2_py_andreev` | `t2_py_andreev_series.csv`, `_fields.csv` | EX-3 |
+| 10 | `test2/figures/fig_t2_py_kink_spectrum` | `t2_py_kink_spectrum_spectrum.csv`, `_fields.csv`, `_series.csv` | EX-4 |
+| 11 | `test2/figures/fig_t2_py_ground_state` | `t2_py_ground_state_fields.csv`, `_iterations.csv`, `_spectrum.csv` | EX-5 |
+| 12 | `test2/figures/fig_t2_py_kink_ground_state` | `t2_py_kink_ground_state_fields.csv`, `_iterations.csv`, `_spectrum.csv` | EX-6 |
+| 13 | `test2/figures/fig_t2_py_quench` | `t2_py_quench_series.csv`, `_fields.csv` | EX-7 |
 
 The figures are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
@@ -2076,7 +2232,7 @@ parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ 
 
 ## A.4 Checksums
 
-SHA-256 checksums of the sources and data of items [1] to [3] at the time this document was built:
+SHA-256 checksums of the sources and data of items [1] to [4] at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -2110,6 +2266,7 @@ SHA-256 checksums of the sources and data of items [1] to [3] at the time this d
 {{SHA256:test2/data/t2_D_landau.csv}}  test2/data/t2_D_landau.csv
 {{SHA256:test2/python/t2_solve.py}}  test2/python/t2_solve.py
 {{SHA256:test2/python/t2_examples_check.py}}  test2/python/t2_examples_check.py
+{{SHA256:test2/python/t2_plot.py}}  test2/python/t2_plot.py
 {{SHA256:test2/examples/packet_free.t2in}}  test2/examples/packet_free.t2in
 {{SHA256:test2/examples/cyclotron.t2in}}  test2/examples/cyclotron.t2in
 {{SHA256:test2/examples/andreev.t2in}}  test2/examples/andreev.t2in

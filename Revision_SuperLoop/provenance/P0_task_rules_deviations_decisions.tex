@@ -526,7 +526,11 @@ keys, the tasks evolve, spectrum, ground\_state and quench), its
 numerical methods with their conservation properties, and seven examples
 with known answers checked by \texttt{t2\_examples\_check.py} &
 answered \\
-{[}4{]} to {[}11{]} & Sections 5 to 13 of the document & to follow, in
+{[}4{]} & Section 5 of the document: the plotter
+\texttt{test2/python/t2\_plot.py} (one figure per solution, its panels
+chosen by the task; for the seven examples the predictions of the checks
+EX-1 to EX-7 drawn with the solutions) and Figures 7 to 13 & answered \\
+{[}5{]} to {[}11{]} & Sections 6 to 13 of the document & to follow, in
 this order \\
 \end{longtable}
 
@@ -775,6 +779,13 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   vectors of the linearized equations), nineteen new descriptive column
   words, and \texttt{check\_all.sh} extended by the solver, its examples
   and their checks (Section 11, entries E44 to E52).
+\item
+  \textbf{Stage 9 --- Test 2, item {[}4{]}} (Section 2.8): the plotter
+  \texttt{test2/python/t2\_plot.py}, Figures 7 to 13 (the seven examples
+  with their predictions), Section 5 of the document of Test 2, and
+  \texttt{check\_all.sh} extended by the plots; the solver now also
+  writes the change of the fermion number in full precision (Section 11,
+  entry E53).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1221,9 +1232,9 @@ author's}\label{decisions-that-are-the-authors}}
   corrections, no finite temperature, no dispersions of the Goldstone
   modes, no other interactions.
 \item
-  Items {[}4{]} to {[}11{]} of Test 2 are answered in the following
+  Items {[}5{]} to {[}11{]} of Test 2 are answered in the following
   stages; this version of the document of the answers contains items
-  {[}1{]} to {[}3{]}. The solver of item {[}3{]} treats the gauge fields
+  {[}1{]} to {[}4{]}. The solver of item {[}3{]} treats the gauge fields
   as external (their field equations (2.29) are not solved), and its
   self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item {[}2{]} the domain wall was solved for walls
@@ -1591,6 +1602,11 @@ E52 & the first draft of Section 4 used letters without the suffix LL in
 formulas (the coefficients of a two-level state, the number of steps, a
 lattice index, the potential of the pulse, the Landau energies), and its
 key table and one formula were wider than the page & & \\
+E53 & the first quench output wrote the fermion number with twelve
+significant digits only, so that its change (\(2\times10^{-11}\) of 96)
+was invisible in the data file and in the first figure; the solver now
+writes the change itself (\texttt{N\_F\_change}), and the figure legends
+were moved where they cover no data & & \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%

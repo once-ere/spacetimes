@@ -271,7 +271,7 @@ def ex_quench(prefix, rep):
     the linearized self-consistent equations around the time-averaged gap; the fermion number is conserved."""
     cfg, lat = lattice_of("quench")
     _, h, r = load(prefix + "_quench_series.csv")
-    t, a, nf = col(h, r, "x_LL^0"), col(h, r, "abs_d_mean"), col(h, r, "N_F")
+    t, a, dnf = col(h, r, "x_LL^0"), col(h, r, "abs_d_mean"), col(h, r, "N_F_change")
     wfit, amp = T.fit_frequency(t[1:], a[1:], 0.2, 6.0, 5801)
     Dbar = float(a[1:].mean())
     w_rpa, E1 = rpa_frequency(lat, Dbar)
@@ -283,8 +283,8 @@ def ex_quench(prefix, rep):
     rep.check(abs(wfit - w_rpa) < 0.01 * w_rpa, "EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) "
               "mode of the linearized equations: relative deviation %.2e (allowed 1e-2: terms of second order in the "
               "amplitude and the weaker modes)" % (abs(wfit - w_rpa) / w_rpa))
-    rep.check(np.max(np.abs(nf - nf[0])) < 1e-9, "EX-7 the fermion number is constant along the whole evolution (largest "
-                                                 "change %.1e)" % np.max(np.abs(nf - nf[0])))
+    rep.check(np.max(np.abs(dnf)) < 1e-9, "EX-7 the fermion number is constant along the whole evolution (largest change "
+                                          "%.1e)" % np.max(np.abs(dnf)))
 
 
 def compare(p1, p2, rep):

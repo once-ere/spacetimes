@@ -279,7 +279,11 @@ equation, a self-consistent kink, and the amplitude mode of the pair
 field) are checked by \texttt{test2/python/t2\_examples\_check.py} (10
 checks); the free self-consistent iteration shows that a wall of the
 pair field is unstable unless the pair field is held real along one
-isospin direction.
+isospin direction. Its fourth answer (item {[}4{]}) is the plotter
+\texttt{test2/python/t2\_plot.py}, which draws any solution of the
+solvers (one figure per solution, the panels chosen by the task) and,
+for the seven examples, the predictions they are checked against
+(Figures 7 to 13 of the document).
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -377,7 +381,8 @@ figure script \texttt{python/make\_t2\_figures.py}, the data files and
 reports in \texttt{data/}, the figures in \texttt{figures/} ; the Python
 solver \texttt{python/t2\_solve.py} with the seven input files of
 \texttt{examples/} and the checks of the examples
-\texttt{python/t2\_examples\_check.py} (item {[}3{]}) \\
+\texttt{python/t2\_examples\_check.py} (item {[}3{]}); the plotter
+\texttt{python/t2\_plot.py} (item {[}4{]}) \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -412,6 +417,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
 python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md
 python3 test2/python/t2_examples_check.py test2/data/t2_py
+# Test 2, item [4]: Figures 7 to 13, the plots of the seven solutions:
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}

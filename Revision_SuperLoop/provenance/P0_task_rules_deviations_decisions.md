@@ -202,7 +202,8 @@ the test, and is committed and carried to the author's computer after each item 
 | [1] | Section 2 of the document: the spinor field of the spinor charges on $\mathbb R^{1,3}_{\rm LL}$; the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ with $SL(2,\mathbb C)$ as Lord's change of representation of the frame; the covariant derivative with every matrix written out; the field strengths; why the Lorentz connection is pure gauge on the flat manifold; the Lagrangian; the exact field equations (operator form, Hamiltonian form, component form, super-loop form: right multiplication of the spinor charges by the frame); the gauge-field equations; the mean-field (Dirac-Bogoliubov-de Gennes) equations with all sixteen components written out; the gauge-covariant lattice discretization, the time stepping and their properties; checks GS-1 to GS-16 of the new program `t2_fields`; two figures | answered (stage 6) |
 | [2] | Section 3 of the document: the analysis of the equations (each mode keeps its norm; the fermion number is conserved exactly when the pair field is self-consistent; constant potentials are pure gauge except for their holonomy on a ring; plane waves reduce the equations to matrices; the square of the covariant Dirac Hamiltonian and the Pauli equation of slow spinor charges, with the gyromagnetic factor 2 for both kinds of charge) and four cases solved exactly: free spinor charges in constant gauge potentials (momentum and energy shifts, the isospin precession); the uniform polar superfluid (Bogoliubov modes, the particle-hole oscillation, the gap equation in closed form for massless charges and its BCS limit, an exact self-consistent lattice solution); a domain wall of the pair field (bound states at exactly $\pm m_{\rm LL}$, the square of the operator and the complete spectrum of the bound states, the first-order Wilson shift on the lattice); the Landau levels; checks AS-1 to AS-10 of the new program `t2_analytic`; four figures | answered (stage 7) |
 | [3] | Section 4 of the document: the Python solver `test2/python/t2_solve.py` (guidance, the question for the input file, the input file of lines `key = value` with 50 checked keys, the tasks evolve, spectrum, ground_state and quench), its numerical methods with their conservation properties, and seven examples with known answers checked by `t2_examples_check.py` | answered |
-| [4] to [11] | Sections 5 to 13 of the document | to follow, in this order |
+| [4] | Section 5 of the document: the plotter `test2/python/t2_plot.py` (one figure per solution, its panels chosen by the task; for the seven examples the predictions of the checks EX-1 to EX-7 drawn with the solutions) and Figures 7 to 13 | answered |
+| [5] to [11] | Sections 6 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -289,6 +290,9 @@ expression and compares it with the matrix that it describes (check GS-12).
    of the free lattice operator on a plane wave, the group velocity, the magnetic length, the quench and the amplitude mode,
    and the Bloch vectors of the linearized equations), nineteen new descriptive column words, and `check_all.sh` extended
    by the solver, its examples and their checks (Section 11, entries E44 to E52).
+11. **Stage 9 — Test 2, item [4]** (Section 2.8): the plotter `test2/python/t2_plot.py`, Figures 7 to 13 (the seven
+   examples with their predictions), Section 5 of the document of Test 2, and `check_all.sh` extended by the plots; the
+   solver now also writes the change of the fermion number in full precision (Section 11, entry E53).
 
 # 6. The results in brief
 
@@ -561,8 +565,8 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [4] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains items [1] to [3]. The solver of item [3] treats the gauge fields as external (their field
+* Items [5] to [11] of Test 2 are answered in the following stages; this version of the document of the
+  answers contains items [1] to [4]. The solver of item [3] treats the gauge fields as external (their field
   equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
   diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
@@ -640,6 +644,7 @@ evaluated numerically, as in the earlier stages.
 | E50 | the first check EX-3 required less than $10^{-6}$ inside the superfluid region, but the part of the packet above the gap passes the interface ($7\times10^{-6}$); the first check EX-6 expected 16 bound states, but one wall has eight (3.28) |
 | E51 | the first form of the self-test report replaced the name of the print function inside the function, which Python rejects |
 | E52 | the first draft of Section 4 used letters without the suffix LL in formulas (the coefficients of a two-level state, the number of steps, a lattice index, the potential of the pulse, the Landau energies), and its key table and one formula were wider than the page |
+| E53 | the first quench output wrote the fermion number with twelve significant digits only, so that its change ($2\times10^{-11}$ of 96) was invisible in the data file and in the first figure; the solver now writes the change itself (`N_F_change`), and the figure legends were moved where they cover no data |
 
 # 12. The symbols
 

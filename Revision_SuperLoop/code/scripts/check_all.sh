@@ -56,6 +56,10 @@ t2py() { for e in packet_free cyclotron andreev kink_spectrum ground_state kink_
          python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md; }
 run "t2_solve.py, the seven examples (test2, item 3)" t2py
 run "t2_examples_check.py, Python solutions (test2, item 3)" python3 test2/python/t2_examples_check.py test2/data/t2_py
+# Test 2, item [4]: the Python plotter draws Figures 7 to 13 from the seven solutions
+t2pyplot() { for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+               python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e || return 1; done; }
+run "t2_plot.py, Figures 7 to 13 (test2, item 4)" t2pyplot
 
 # 2. documents, two passes
 for pass in 1 2; do

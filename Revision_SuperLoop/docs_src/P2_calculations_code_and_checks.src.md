@@ -40,6 +40,7 @@ python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
 python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md   # the table of the keys of the input file
 python3 test2/python/t2_examples_check.py test2/data/t2_py                   # checks EX-1 .. EX-7
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_plot.py test2/data/t2_py_$e --out test2/figures/fig_t2_py_$e; done   # item [4]: Figures 7 to 13
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -48,7 +49,7 @@ bash code/scripts/check_all.sh                                           # every
 the program of the examples of the explanation and its figures; the program of the document on the
 $3+1$ manifold and its figures; the programs of the folder `test2` (`t2_fields` for item [1] and `t2_analytic` for
 item [2] of Test 2) and their figures; the Python solver of item [3] (its self-test, the seven examples, the table of the
-keys) and the checks of its examples; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+keys) and the checks of its examples; the plots of item [4]; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -648,7 +649,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [3]: the gauge-covariant field equations of the spinor field, their analytic solutions, and the Python solver (folder `test2`)
+# 11. Test 2, items [1] to [4]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python solver and its plots (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -917,6 +918,19 @@ The summary of the example `quench` (`test2/data/t2_py_quench_summary.txt`):
 ```
 {{FILE:test2/data/t2_py_examples_checks.txt}}
 ```
+
+## Item [4]: the plotter
+
+`test2/python/t2_plot.py` reads the data files of one solution and draws one figure as .pdf and .png: for the task `evolve` the
+density of the mode in space and time (or at four times in two dimensions) with the path of its centre, the particle and hole
+parts, the probabilities $P^{\rm h}_{\rm LL}$ and $P^\uparrow_{\rm LL}$, and the changes of the norm and of the energy; for `spectrum`
+all eigenvalues and the densities in the window; for `ground_state` the pair field, the convergence and the spectrum near zero;
+for `quench` the amplitude of the pair field, the conserved quantities and the pair field on the sites. For the seven examples it
+draws the predictions of EX-1 to EX-7 with the functions of `t2_examples_check.py`: the mean group velocity, the Rayleigh quotient
+(3.29) of the bound states, the root of the gap equation (3.21), the continuum kink $\Delta_{\rm LL}\tanh(\Delta_{\rm LL}x^1_{\rm LL})$
+(shifted to the centre) and the first-order Wilson shift, and a sinusoid with the frequency of the amplitude mode of the
+linearized equations (amplitude and phase fitted by least squares). The figures are `test2/figures/fig_t2_py_<example>.pdf`
+and `.png` for the seven examples.
 
 # 12. The checks of the documents
 
