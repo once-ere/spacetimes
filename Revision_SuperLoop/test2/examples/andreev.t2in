@@ -1,0 +1,26 @@
+# example 'andreev' of the Test 2 solver: a particle hitting a superfluid region: Andreev reflection into a hole
+# every key is explained by: python3 t2_solve.py --guide
+format = t2in 1
+title = Andreev reflection of a particle at a normal-superfluid interface
+task = evolve
+sites = 240 1 1
+spacing = 0.5
+boundary = wall periodic periodic
+mass = 0.4
+mu = 1.0
+pair = step
+pair_direction = 3
+pair_amplitude = 0.6
+pair_width = 1.0
+pair_position = 60
+initial = packet
+packet_center = 30 0 0
+packet_width = 4.0
+packet_momentum = 0.917 0 0
+packet_branch = positive
+packet_spin = up
+packet_isospin = up
+packet_part = particle
+time_step = 0.05
+steps = 1200
+output_every = 40

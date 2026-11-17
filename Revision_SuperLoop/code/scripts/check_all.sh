@@ -49,6 +49,13 @@ run "t2_fields (test2)" t2fields
 t2analytic() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_analytic); }
 run "t2_analytic (test2)" t2analytic
 run "make_t2_figures.py (test2)" python3 test2/python/make_t2_figures.py
+# Test 2, item [3]: the Python solver (self-test, the seven examples, the table of the keys) and the checks of the examples
+run "t2_solve.py self-test (test2, item 3)" python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt
+t2py() { for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+           python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e || return 1; done
+         python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md; }
+run "t2_solve.py, the seven examples (test2, item 3)" t2py
+run "t2_examples_check.py, Python solutions (test2, item 3)" python3 test2/python/t2_examples_check.py test2/data/t2_py
 
 # 2. documents, two passes
 for pass in 1 2; do

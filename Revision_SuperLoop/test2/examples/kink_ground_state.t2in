@@ -1,0 +1,19 @@
+# example 'kink_ground_state' of the Test 2 solver: a self-consistent kink of the pair field between two walls (massless charges)
+# every key is explained by: python3 t2_solve.py --guide
+format = t2in 1
+title = a self-consistent kink of the pair field
+task = ground_state
+sites = 40 1 1
+spacing = 0.5
+boundary = wall periodic periodic
+mass = 0.0
+mu = 0.0
+coupling = 0.48
+pair = kink
+pair_direction = 3
+pair_amplitude = 0.6
+pair_width = 1.7
+pair_constraint = line
+mixing = 0.5
+tolerance = 1e-10
+max_iterations = 400

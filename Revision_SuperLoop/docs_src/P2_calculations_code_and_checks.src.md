@@ -36,6 +36,10 @@ python3 explanations/code/make_explain_figures.py                        # the t
 python3 explanations/code/make_r13_figures.py                            # the four figures of the 3+1 document
 (cd test2/rust && cargo build --release && ./target/release/t2_fields)   # Test 2, item [1]: checks GS-1 .. GS-{{GEN:nchecks_t2_fields}}
 (cd test2/rust && cargo build --release && ./target/release/t2_analytic) # Test 2, item [2]: checks AS-1 .. AS-{{GEN:nchecks_t2_analytic}}
+python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt   # Test 2, item [3]: the self-test of the solver
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
+python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md   # the table of the keys of the input file
+python3 test2/python/t2_examples_check.py test2/data/t2_py                   # checks EX-1 .. EX-7
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -43,7 +47,8 @@ bash code/scripts/check_all.sh                                           # every
 `check_all.sh` runs, in this order: the program (all five commands); the Gröbner script; the figures;
 the program of the examples of the explanation and its figures; the program of the document on the
 $3+1$ manifold and its figures; the programs of the folder `test2` (`t2_fields` for item [1] and `t2_analytic` for
-item [2] of Test 2) and their figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+item [2] of Test 2) and their figures; the Python solver of item [3] (its self-test, the seven examples, the table of the
+keys) and the checks of its examples; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -643,7 +648,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] and [2]: the gauge-covariant field equations of the spinor field and their analytic solutions (folder `test2`)
+# 11. Test 2, items [1] to [3]: the gauge-covariant field equations of the spinor field, their analytic solutions, and the Python solver (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -810,6 +815,107 @@ The figure script draws `test2/figures/fig_t2_case_A` (from the files `t2_A_*`),
 
 ```
 {{FILE:test2/data/t2_analytic_checks.txt}}
+```
+
+## Item [3]: the Python solver
+
+The program `test2/python/t2_solve.py` (Python 3, NumPy, SciPy) solves the mean-field equations of the spinor field on the
+lattice for the problem described in an input file of lines `key = value`. It builds the lattice operator
+$\mathcal H^{\rm lat}_{\rm LL}$ as a sparse matrix from $8\times8$ blocks: on each site
+$(m_{\rm LL}+r^{\rm W}_{\rm LL}n^{\rm act}_{\rm LL}/\ell^{\rm x}_{\rm LL})\beta_{\rm LL}\otimes\sigma^{\rm LL}_0-\mathsf 1_4\otimes(\mathsf A_{{\rm LL},0}+\mu_{\rm LL}\sigma^{\rm LL}_0)$;
+to the forward neighbour in an active direction $j$
+$(-i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})\otimes\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})$, to the backward
+neighbour $(i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})\otimes\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger$
+($n^{\rm act}_{\rm LL}$ the number of directions with more than one site); the hole components receive the complex
+conjugate blocks with the opposite sign, and the pair field the blocks $\mathsf P_{\rm LL}$ and $\mathsf P^\dagger_{\rm LL}$. The tasks:
+`evolve` (one mode, RK4), `spectrum` (dense diagonalization), `ground_state` (the fixed point of
+$d^\iota_{\rm LL}=-G_{\rm LL}(\ell^{\rm x}_{\rm LL})^{-n^{\rm act}_{\rm LL}}\sum_n(\psi^{\rm p}_{{\rm LL},n})^T\mathsf K^\iota_{\rm LL}(\psi^{\rm h}_{{\rm LL},n})^*/2$
+over the positive-energy unit eigenvectors, found by Anderson acceleration with memory 6) and `quench` (all modes,
+the implicit midpoint rule solved by fixed-point iteration to a change below $10^{-14}$). Its self-test compares the sparse
+operator with a site-by-site evaluation of the same formulas on a $3\times4\times2$ lattice with random fields (to
+$10^{-13}$), checks Hermiticity, the closed form of the links against the general matrix exponential, and the 256
+eigenvalues of a ring in constant potentials against the formula of check AS-1. Every run checks its own result:
+Hermiticity, the conservation of the norm and of the energy within the RK4 bound (the number of steps times
+$(\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL})^6/144$), the particle-hole symmetry of a spectrum, the convergence and the full
+self-consistency condition, the conservation of $N^{\rm F}_{\rm LL}$ (to $10^{-10}$) and of the orthonormality of the modes (to
+$10^{-11}$) in a quench, and, for a free packet on a periodic lattice, its velocity against the exact mean group velocity of
+its Fourier components (to $10^{-5}$).
+
+The program `test2/python/t2_examples_check.py` compares the outputs of the seven examples with predictions that the
+solver does not compute: EX-1 the velocity of the free packet against the derivative of $\varepsilon^{\rm lat}_{\rm LL}$
+averaged with the Gaussian weights $\exp(-2(w^{\rm pk}_{\rm LL})^2(q^1_{\rm LL}-q^{{\rm pk},1}_{\rm LL})^2)$ (to $10^{-3}$); EX-2 the
+conservation of norm and energy in the magnetic field and the bounded orbit; EX-3 the total reflection of a packet with an
+energy inside the gap (at most $10^{-4}$ left inside the superfluid) and its conversion into a hole (more than 0.9); EX-4
+the 16 bound states of a kink and an antikink within the Kato-Temple bound 0.023 of the Rayleigh quotient $E^{\rm R}_{\rm LL}$
+of the analytic bound state; EX-5 the uniform pair field against the root of the lattice gap equation found by Brent's
+method (to $10^{-9}$); EX-6 the eight bound states of the self-consistent kink against the first-order Wilson shift
+(the Rayleigh quotient of the zero mode of the computed profile, within 25 per cent); and EX-7 the frequency of the
+oscillation of $\lvert\vec d_{\rm LL}\rvert$ after a quench (a least-squares fit of a sinusoid) against the root of
+$((\omega^{\rm H}_{\rm LL})^2/4-\Delta_{\rm LL}^2)\sum_{q^1_{\rm LL}\neq0}1/(E^\pm_{\rm LL}((E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2/4))=1/\Delta_{\rm LL}$
+with the time-averaged gap, the amplitude mode of the linearized self-consistent equations (within 1 per cent), and the
+constancy of the fermion number. With a second set of outputs (item [5]) it also compares the two sets number by number.
+
+The output files of the solver (in `test2/data`, prefix `t2_py_`): for each example `<example>_summary.txt`,
+`<example>_series.csv`, `<example>_fields.csv`, and for some `<example>_spectrum.csv` and `<example>_iterations.csv`;
+their columns are `x_LL^0` (the time $x^0_{\rm LL}$), `x_LL^1` to `x_LL^3` (the coordinates), `norm`, `E_expect`, `P_hole`,
+`P_up`, `x_mean_1` to `x_mean_3`, `density_p`, `density_h`, `density_up`, `index`, `E_qp`, `d1_re` to `d3_im`, `abs_d`,
+`abs_d_mean`, `abs_d_site0`, `stage`, `iteration`, `change`, `E_GS`, `N_F` ($N^{\rm F}_{\rm LL}$), `E_MF` ($E^{\rm MF}_{\rm LL}$) and
+`ortho_error`: `norm` is the squared norm of the mode, `E_expect` its energy, `x_mean_1` to `x_mean_3` the centre of its
+density, `density_p`, `density_h`, `density_up` the densities of the particle part, the hole part and the particle part
+with isospin up on a site, `d1_re` to `d3_im` the real and imaginary parts of $d^1_{\rm LL}$ to $d^3_{\rm LL}$, `abs_d` the
+modulus of the pair field on a site, `abs_d_mean` its mean over the sites, `abs_d_site0` its value on the first site, `stage`
+the guess or the result of an iteration, `change` the largest residual of the iteration, `E_GS` the energy per site
+measured from the normal state, and `ortho_error` the largest deviation of the modes from orthonormality. The reports of
+the last run:
+
+```
+{{FILE:test2/data/t2_py_selftest_checks.txt}}
+```
+
+The summary of the example `packet_free` (`test2/data/t2_py_packet_free_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_packet_free_summary.txt}}
+```
+
+The summary of the example `cyclotron` (`test2/data/t2_py_cyclotron_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_cyclotron_summary.txt}}
+```
+
+The summary of the example `andreev` (`test2/data/t2_py_andreev_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_andreev_summary.txt}}
+```
+
+The summary of the example `kink_spectrum` (`test2/data/t2_py_kink_spectrum_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_kink_spectrum_summary.txt}}
+```
+
+The summary of the example `ground_state` (`test2/data/t2_py_ground_state_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_ground_state_summary.txt}}
+```
+
+The summary of the example `kink_ground_state` (`test2/data/t2_py_kink_ground_state_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_kink_ground_state_summary.txt}}
+```
+
+The summary of the example `quench` (`test2/data/t2_py_quench_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_quench_summary.txt}}
+```
+
+```
+{{FILE:test2/data/t2_py_examples_checks.txt}}
 ```
 
 # 12. The checks of the documents

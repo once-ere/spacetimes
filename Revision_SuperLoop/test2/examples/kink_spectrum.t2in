@@ -1,0 +1,17 @@
+# example 'kink_spectrum' of the Test 2 solver: the spectrum of a ring with a kink and an antikink of the pair field (bound states)
+# every key is explained by: python3 t2_solve.py --guide
+format = t2in 1
+title = bound states of a kink and an antikink of the pair field
+task = spectrum
+sites = 60 1 1
+spacing = 0.4
+boundary = periodic periodic periodic
+mass = 0.4
+mu = 0.0
+pair = kink_antikink
+pair_direction = 3
+pair_amplitude = 1.0
+pair_width = 1.0
+pair_position = 6 18
+spectrum_window = -0.8 0.8
+spectrum_max_states = 16

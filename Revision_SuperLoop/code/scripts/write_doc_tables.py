@@ -428,9 +428,12 @@ def test2_fragments():
     path = os.path.join(t2, "t2_fragments.md")
     if not os.path.exists(path):
         return
-    text = open(path, encoding="utf-8").read()
-    for m in re.finditer(r"<!-- BEGIN (\S+) -->\n(.*?)\n<!-- END \1 -->", text, re.S):
-        add(m.group(1), m.group(2))
+    # the fragments of t2_fields (t2_fragments.md) and of the solvers (t2_py_fragments.md: the table of the keys of the
+    # input file, written by t2_solve.py --keys-md)
+    for fp in [path] + sorted(glob.glob(os.path.join(t2, "t2_*_fragments.md"))):
+        text = open(fp, encoding="utf-8").read()
+        for m in re.finditer(r"<!-- BEGIN (\S+) -->\n(.*?)\n<!-- END \1 -->", text, re.S):
+            add(m.group(1), m.group(2))
     for rep in sorted(glob.glob(os.path.join(t2, "t2_*_checks.txt"))):
         a, b = (int(x) for x in one(r"(\d+) of (\d+) checks passed", open(rep, encoding="utf-8").read(), os.path.basename(rep)))
         if a != b:

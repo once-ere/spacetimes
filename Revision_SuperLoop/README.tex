@@ -264,7 +264,22 @@ and its BCS limit, an exact self-consistent lattice solution), a domain
 wall of the pair field with its bound states at exactly
 \(\pm m_{\rm LL}\) and their complete spectrum, and the Landau levels;
 every solution is checked against the lattice operator of the solvers by
-the program \texttt{t2\_analytic} (10 checks).
+the program \texttt{t2\_analytic} (10 checks). Its third answer (item
+{[}3{]}) is the Python solver \texttt{test2/python/t2\_solve.py}: it
+guides the user in defining the initial and the boundary conditions,
+asks for the name of an input file, reads the conditions from it, and
+solves the gauge-covariant mean-field equations on the lattice (the time
+evolution of a mode by RK4, the spectrum, the self-consistent ground
+state by Anderson-accelerated iteration, and the self-consistent
+evolution after a quench by the implicit midpoint rule, which conserves
+the orthonormality of the modes and the fermion number exactly). Seven
+examples with known answers (the group velocity, a bounded orbit in a
+magnetic field, Andreev reflection, the bound states of a kink, the gap
+equation, a self-consistent kink, and the amplitude mode of the pair
+field) are checked by \texttt{test2/python/t2\_examples\_check.py} (10
+checks); the free self-consistent iteration shows that a wall of the
+pair field is unstable unless the pair field is held real along one
+isospin direction.
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -359,7 +374,10 @@ workspace \texttt{rust/} with the library \texttt{t2core} and the
 program \texttt{t2\_fields} (checks GS-1 to GS-16, item {[}1{]}) and the
 program \texttt{t2\_analytic} (checks AS-1 to AS-10, item {[}2{]}), the
 figure script \texttt{python/make\_t2\_figures.py}, the data files and
-reports in \texttt{data/}, the figures in \texttt{figures/} \\
+reports in \texttt{data/}, the figures in \texttt{figures/} ; the Python
+solver \texttt{python/t2\_solve.py} with the seven input files of
+\texttt{examples/} and the checks of the examples
+\texttt{python/t2\_examples\_check.py} (item {[}3{]}) \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -388,6 +406,12 @@ python3 explanations/code/make_r13_figures.py
 (cd test2/rust && cargo build --release && ./target/release/t2_analytic)
 # the six figures of Test 2:
 python3 test2/python/make_t2_figures.py
+# Test 2, item [3]: the Python solver (self-test, the seven examples, the table of the keys) and the checks EX-1 to EX-7:
+python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
+python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md
+python3 test2/python/t2_examples_check.py test2/data/t2_py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}
@@ -441,6 +465,10 @@ of 9 \\
 10 of 10 \\
 \texttt{test2/data/t2\_fields\_checks.txt} & \texttt{t2\_fields} & 16 of
 16 \\
+\texttt{test2/data/t2\_py\_examples\_checks.txt} &
+\texttt{t2\_examples\_check.py} & 10 of 10 \\
+\texttt{test2/data/t2\_py\_selftest\_checks.txt} & \texttt{t2\_solve.py}
+& 4 of 4 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -1678,6 +1706,90 @@ and
 \(\pm\big(m_{\rm LL}^2+(q^3_{\rm LL})^2+2n^{\rm L}_{\rm LL}\lvert B^\uparrow_{\rm LL}\rvert\big)^{1/2}\)
 for isospin up and likewise with \(B^\downarrow_{\rm LL}\) for isospin
 down & new & \texttt{B\_up} \texttt{B\_down} \texttt{n\_L} \\
+\(n^{\rm act}_{\rm LL}\) & the number of active directions of a lattice
+problem, the directions with more than one site (1, 2 or 3); the mode
+functions of a problem with \(n^{\rm act}_{\rm LL}\) active directions
+are normalized to
+\(\sum_{\vec s_{\rm LL}}(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)=1\)
+& new & \texttt{n\_act} \\
+\(N^{\rm F}_{\rm LL}\), \(E^{\rm MF}_{\rm LL}\) & the fermion number of
+a self-consistent lattice state, the sum over its modes and over the
+sites of the squared hole components
+\(\lvert\psi^{\rm h}_{\rm LL}\rvert^2\) (conserved by the
+self-consistent evolution), and the mean-field energy functional, the
+sum over the modes of the expectation values of
+\(\mathcal H^{\rm lat}_{\rm LL}\) without the pair field plus
+\(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G_{\rm LL}\) times the
+sum over the sites of \(\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2\)
+(conserved in time-independent gauge fields) & new & \texttt{N\_F}
+\texttt{E\_MF} \\
+\(\mathsf W^{\rm m}_{\rm LL}\) & the matrix whose columns are the modes
+of a self-consistent lattice state (unit vectors with 16 components per
+site); the self-consistent evolution moves all columns together & new &
+\texttt{W\_modes} \\
+\(\mathcal M^{\rm sc}_{\rm LL}\); \(y^{\rm A}_{\rm LL}\),
+\(r^{\rm A}_{\rm LL}\), \(Y^{\rm A}_{\rm LL}\), \(R^{\rm A}_{\rm LL}\),
+\(c^{\rm A}_{\rm LL}\), \(a^{\rm A}_{\rm LL}\); \(n^{\rm it}_{\rm LL}\)
+& the self-consistency map, which takes a pair field to
+\(-\tfrac12G_{\rm LL}\) times the pair expectation of the
+positive-energy eigenvectors of \(\mathcal H^{\rm lat}_{\rm LL}\) with
+that pair field, divided by
+\((\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}\); the quantities of
+the Anderson iteration for its fixed point: the iterate (the real and
+imaginary parts of all \(d^\iota_{\rm LL}\) on all sites, as one real
+vector), its residual (the map applied to the iterate, minus the
+iterate), the matrices whose columns are the differences of successive
+iterates and of successive residuals, the coefficients of the
+least-squares combination, the damping factor, and the number of the
+iteration & new & \texttt{M\_sc} \texttt{y\_A} \texttt{r\_A}
+\texttt{Y\_A} \texttt{R\_A} \texttt{c\_A} \texttt{a\_A}
+\texttt{n\_it} \\
+\(\vec x^{\rm c}_{\rm LL}\), \(w^{\rm pk}_{\rm LL}\),
+\(\vec q^{\rm pk}_{\rm LL}\), \(\chi^{\rm pk}_{\rm LL}\),
+\(s^{\rm br}_{\rm LL}\), \(\mathsf Z^\pm_{\rm LL}(\vec q_{\rm LL})\) &
+the Gaussian wave packet of the solvers: its centre, its width (the
+standard deviation of its density), its central momentum, its
+8-component spinor (the projection of a reference spinor of definite
+spin and isospin on the chosen branch at the central momentum), the sign
+\(\pm1\) of the chosen branch \(\pm\varepsilon^{\rm lat}_{\rm LL}\), and
+the projectors
+\(\tfrac12(\mathsf 1_4\pm\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})/\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL}))\)
+on the two branches of the free lattice operator at the momentum
+\(\vec q_{\rm LL}\) & new & \texttt{x\_c} \texttt{w\_pk} \texttt{q\_pk}
+\texttt{chi\_pk} \texttt{s\_br} \texttt{Zproj} \\
+\(\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})\) & the \(4\times4\)
+matrix of the free lattice operator (without isospin) on the plane wave
+\(\exp(i\vec q_{\rm LL}\cdot\vec x_{\rm LL})\):
+\(\sum_j\alpha^j_{\rm LL}\sin(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/\ell^{\rm x}_{\rm LL}+\beta_{\rm LL}\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)\),
+the sums over the active directions; its square is
+\(\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})^2\) times
+\(\mathsf 1_4\) & new & \texttt{h\_lat\_q} \\
+\(\vec v^{\rm g}_{\rm LL}\), \(\bar v^{\rm g}_{\rm LL}\) & the group
+velocity, the gradient of \(\varepsilon^{\rm lat}_{\rm LL}\) with
+respect to \(\vec q_{\rm LL}\), and its mean over the distribution of
+momenta of a wave packet & new & \texttt{v\_g} \texttt{v\_g\_mean} \\
+\(\ell^{\rm B}_{\rm LL}\) & the magnetic length
+\(\lvert B^\uparrow_{\rm LL}\rvert^{-1/2}\) of the isospin-up component
+in a constant magnetic field & new & \texttt{l\_B} \\
+\(G'_{\rm LL}\); \(\bar\Delta_{\rm LL}\); \(\omega^{\rm H}_{\rm LL}\) &
+the coupling after a quench (the coupling is changed from \(G_{\rm LL}\)
+to \(G'_{\rm LL}\) at \(x^0_{\rm LL}=0\)); the mean over the time of the
+gap \(\lvert\vec d_{\rm LL}\rvert\) after the quench; and the angular
+frequency of the amplitude oscillation of the pair field (the amplitude
+mode, the analogue of the Higgs boson) & new & \texttt{G\_quench}
+\texttt{Delta\_mean} \texttt{omega\_H} \\
+\(u^{\rm Bl}_{\rm LL}\), \(v^{\rm Bl}_{\rm LL}\);
+\(\vec b^{\rm Bl}_{\rm LL}\), \(\vec h^{\rm Bl}_{\rm LL}\);
+\(\vec b^{\rm fl}_{\rm LL}\), \(\Delta^{\rm fl}_{\rm LL}\) & the two
+complex coefficients of a state of the plane (3.12) (of the particle
+vector and of the hole vector that span it); the Bloch vector of that
+state, the expectation values of \(\sigma^{\rm LL}_1\),
+\(\sigma^{\rm LL}_2\), \(\sigma^{\rm LL}_3\) in it, and the vector of
+the coefficients of the \(2\times2\) matrix (3.12) in the Pauli
+matrices, about which it precesses; their small deviations from the
+ground state in the linearized equations: the deviation of the Bloch
+vector and of the gap & new & \texttt{u\_Bl} \texttt{v\_Bl}
+\texttt{b\_Bl} \texttt{h\_Bl} \texttt{b\_fl} \texttt{Delta\_fl} \\
 \end{longtable}
 
 \end{document}

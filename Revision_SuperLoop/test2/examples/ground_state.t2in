@@ -1,0 +1,17 @@
+# example 'ground_state' of the Test 2 solver: the self-consistent uniform superfluid of a chain (compare with the lattice gap equation)
+# every key is explained by: python3 t2_solve.py --guide
+format = t2in 1
+title = the self-consistent uniform polar superfluid of a chain
+task = ground_state
+sites = 32 1 1
+spacing = 0.5
+boundary = periodic periodic periodic
+mass = 0.4
+mu = 0.6
+coupling = 0.46
+pair = uniform
+pair_direction = 3
+pair_amplitude = 0.2
+mixing = 0.6
+tolerance = 1e-11
+max_iterations = 400

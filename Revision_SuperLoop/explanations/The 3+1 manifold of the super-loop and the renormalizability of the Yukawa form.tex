@@ -2124,10 +2124,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-596a4d708abef3a3310716281ef9ab949c6bd4e40fba1883ad2dd28adf037879  explanations/figures/fig_ex_r13_bubble.pdf
-50b6c4f6f7ed11304ff2912168f667a631ce539e87d5fe054be4dd76a9c28d45  explanations/figures/fig_ex_r13_coordinates.pdf
-fe90f7e92724dd1f8b422183bb036e6b3570d620fec464daf2091cd60bd8b173  explanations/figures/fig_ex_r13_divergences.pdf
-eb22455a485b377456e12a05dce05cab1e26c8fa220f7d9a432a548c8fa6e11e  explanations/figures/fig_ex_r13_lorentz.pdf
+25aefafbc77440b98c1350a3dc9230ede097c63b4a8fb7e334770da5726965af  explanations/figures/fig_ex_r13_bubble.pdf
+6a2572966961a3c78e098d95569e350d43252bcba0bdaa419500b0fca1b99fb5  explanations/figures/fig_ex_r13_coordinates.pdf
+37b4c37b0b04311be7fd4d8dddd7039896b3687ab0317a1c27d7870a459bde02  explanations/figures/fig_ex_r13_divergences.pdf
+13f416712f32dd64fd8beb3fcf3f93ab01f48be2d7a560e64cdadc975047cdfa  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -3361,6 +3361,90 @@ and
 \(\pm\big(m_{\rm LL}^2+(q^3_{\rm LL})^2+2n^{\rm L}_{\rm LL}\lvert B^\uparrow_{\rm LL}\rvert\big)^{1/2}\)
 for isospin up and likewise with \(B^\downarrow_{\rm LL}\) for isospin
 down & new & \texttt{B\_up} \texttt{B\_down} \texttt{n\_L} \\
+\(n^{\rm act}_{\rm LL}\) & the number of active directions of a lattice
+problem, the directions with more than one site (1, 2 or 3); the mode
+functions of a problem with \(n^{\rm act}_{\rm LL}\) active directions
+are normalized to
+\(\sum_{\vec s_{\rm LL}}(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)=1\)
+& new & \texttt{n\_act} \\
+\(N^{\rm F}_{\rm LL}\), \(E^{\rm MF}_{\rm LL}\) & the fermion number of
+a self-consistent lattice state, the sum over its modes and over the
+sites of the squared hole components
+\(\lvert\psi^{\rm h}_{\rm LL}\rvert^2\) (conserved by the
+self-consistent evolution), and the mean-field energy functional, the
+sum over the modes of the expectation values of
+\(\mathcal H^{\rm lat}_{\rm LL}\) without the pair field plus
+\(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G_{\rm LL}\) times the
+sum over the sites of \(\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2\)
+(conserved in time-independent gauge fields) & new & \texttt{N\_F}
+\texttt{E\_MF} \\
+\(\mathsf W^{\rm m}_{\rm LL}\) & the matrix whose columns are the modes
+of a self-consistent lattice state (unit vectors with 16 components per
+site); the self-consistent evolution moves all columns together & new &
+\texttt{W\_modes} \\
+\(\mathcal M^{\rm sc}_{\rm LL}\); \(y^{\rm A}_{\rm LL}\),
+\(r^{\rm A}_{\rm LL}\), \(Y^{\rm A}_{\rm LL}\), \(R^{\rm A}_{\rm LL}\),
+\(c^{\rm A}_{\rm LL}\), \(a^{\rm A}_{\rm LL}\); \(n^{\rm it}_{\rm LL}\)
+& the self-consistency map, which takes a pair field to
+\(-\tfrac12G_{\rm LL}\) times the pair expectation of the
+positive-energy eigenvectors of \(\mathcal H^{\rm lat}_{\rm LL}\) with
+that pair field, divided by
+\((\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}\); the quantities of
+the Anderson iteration for its fixed point: the iterate (the real and
+imaginary parts of all \(d^\iota_{\rm LL}\) on all sites, as one real
+vector), its residual (the map applied to the iterate, minus the
+iterate), the matrices whose columns are the differences of successive
+iterates and of successive residuals, the coefficients of the
+least-squares combination, the damping factor, and the number of the
+iteration & new & \texttt{M\_sc} \texttt{y\_A} \texttt{r\_A}
+\texttt{Y\_A} \texttt{R\_A} \texttt{c\_A} \texttt{a\_A}
+\texttt{n\_it} \\
+\(\vec x^{\rm c}_{\rm LL}\), \(w^{\rm pk}_{\rm LL}\),
+\(\vec q^{\rm pk}_{\rm LL}\), \(\chi^{\rm pk}_{\rm LL}\),
+\(s^{\rm br}_{\rm LL}\), \(\mathsf Z^\pm_{\rm LL}(\vec q_{\rm LL})\) &
+the Gaussian wave packet of the solvers: its centre, its width (the
+standard deviation of its density), its central momentum, its
+8-component spinor (the projection of a reference spinor of definite
+spin and isospin on the chosen branch at the central momentum), the sign
+\(\pm1\) of the chosen branch \(\pm\varepsilon^{\rm lat}_{\rm LL}\), and
+the projectors
+\(\tfrac12(\mathsf 1_4\pm\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})/\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL}))\)
+on the two branches of the free lattice operator at the momentum
+\(\vec q_{\rm LL}\) & new & \texttt{x\_c} \texttt{w\_pk} \texttt{q\_pk}
+\texttt{chi\_pk} \texttt{s\_br} \texttt{Zproj} \\
+\(\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})\) & the \(4\times4\)
+matrix of the free lattice operator (without isospin) on the plane wave
+\(\exp(i\vec q_{\rm LL}\cdot\vec x_{\rm LL})\):
+\(\sum_j\alpha^j_{\rm LL}\sin(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/\ell^{\rm x}_{\rm LL}+\beta_{\rm LL}\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)\),
+the sums over the active directions; its square is
+\(\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})^2\) times
+\(\mathsf 1_4\) & new & \texttt{h\_lat\_q} \\
+\(\vec v^{\rm g}_{\rm LL}\), \(\bar v^{\rm g}_{\rm LL}\) & the group
+velocity, the gradient of \(\varepsilon^{\rm lat}_{\rm LL}\) with
+respect to \(\vec q_{\rm LL}\), and its mean over the distribution of
+momenta of a wave packet & new & \texttt{v\_g} \texttt{v\_g\_mean} \\
+\(\ell^{\rm B}_{\rm LL}\) & the magnetic length
+\(\lvert B^\uparrow_{\rm LL}\rvert^{-1/2}\) of the isospin-up component
+in a constant magnetic field & new & \texttt{l\_B} \\
+\(G'_{\rm LL}\); \(\bar\Delta_{\rm LL}\); \(\omega^{\rm H}_{\rm LL}\) &
+the coupling after a quench (the coupling is changed from \(G_{\rm LL}\)
+to \(G'_{\rm LL}\) at \(x^0_{\rm LL}=0\)); the mean over the time of the
+gap \(\lvert\vec d_{\rm LL}\rvert\) after the quench; and the angular
+frequency of the amplitude oscillation of the pair field (the amplitude
+mode, the analogue of the Higgs boson) & new & \texttt{G\_quench}
+\texttt{Delta\_mean} \texttt{omega\_H} \\
+\(u^{\rm Bl}_{\rm LL}\), \(v^{\rm Bl}_{\rm LL}\);
+\(\vec b^{\rm Bl}_{\rm LL}\), \(\vec h^{\rm Bl}_{\rm LL}\);
+\(\vec b^{\rm fl}_{\rm LL}\), \(\Delta^{\rm fl}_{\rm LL}\) & the two
+complex coefficients of a state of the plane (3.12) (of the particle
+vector and of the hole vector that span it); the Bloch vector of that
+state, the expectation values of \(\sigma^{\rm LL}_1\),
+\(\sigma^{\rm LL}_2\), \(\sigma^{\rm LL}_3\) in it, and the vector of
+the coefficients of the \(2\times2\) matrix (3.12) in the Pauli
+matrices, about which it precesses; their small deviations from the
+ground state in the linearized equations: the deviation of the Bloch
+vector and of the gap & new & \texttt{u\_Bl} \texttt{v\_Bl}
+\texttt{b\_Bl} \texttt{h\_Bl} \texttt{b\_fl} \texttt{Delta\_fl} \\
 \end{longtable}
 
 \end{document}

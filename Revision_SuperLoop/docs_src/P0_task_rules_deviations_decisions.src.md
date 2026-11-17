@@ -202,7 +202,8 @@ the test, and is committed and carried to the author's computer after each item 
 |------|------------------------------------------------------------|----------------|
 | [1] | Section 2 of the document: the spinor field of the spinor charges on $\mathbb R^{1,3}_{\rm LL}$; the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ with $SL(2,\mathbb C)$ as Lord's change of representation of the frame; the covariant derivative with every matrix written out; the field strengths; why the Lorentz connection is pure gauge on the flat manifold; the Lagrangian; the exact field equations (operator form, Hamiltonian form, component form, super-loop form: right multiplication of the spinor charges by the frame); the gauge-field equations; the mean-field (Dirac-Bogoliubov-de Gennes) equations with all sixteen components written out; the gauge-covariant lattice discretization, the time stepping and their properties; checks GS-1 to GS-16 of the new program `t2_fields`; two figures | answered (stage 6) |
 | [2] | Section 3 of the document: the analysis of the equations (each mode keeps its norm; the fermion number is conserved exactly when the pair field is self-consistent; constant potentials are pure gauge except for their holonomy on a ring; plane waves reduce the equations to matrices; the square of the covariant Dirac Hamiltonian and the Pauli equation of slow spinor charges, with the gyromagnetic factor 2 for both kinds of charge) and four cases solved exactly: free spinor charges in constant gauge potentials (momentum and energy shifts, the isospin precession); the uniform polar superfluid (Bogoliubov modes, the particle-hole oscillation, the gap equation in closed form for massless charges and its BCS limit, an exact self-consistent lattice solution); a domain wall of the pair field (bound states at exactly $\pm m_{\rm LL}$, the square of the operator and the complete spectrum of the bound states, the first-order Wilson shift on the lattice); the Landau levels; checks AS-1 to AS-10 of the new program `t2_analytic`; four figures | answered (stage 7) |
-| [3] to [11] | Sections 4 to 13 of the document | to follow, in this order |
+| [3] | Section 4 of the document: the Python solver `test2/python/t2_solve.py` (guidance, the question for the input file, the input file of lines `key = value` with 50 checked keys, the tasks evolve, spectrum, ground_state and quench), its numerical methods with their conservation properties, and seven examples with known answers checked by `t2_examples_check.py` | answered |
+| [4] to [11] | Sections 5 to 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -280,6 +281,15 @@ expression and compares it with the matrix that it describes (check GS-12).
    spinor of a plane wave and the Bogoliubov angle, the domain wall and its bound states, the matrix of the square
    of its operator, the Rayleigh quotient, the number of a Landau level), six new descriptive column words, and
    `check_all.sh` extended by the new program (Section 11, entries E37 to E43).
+10. **Stage 8 — Test 2, item [3]** (Section 2.8): the Python solver `test2/python/t2_solve.py` with its self-test, seven
+   example input files in `test2/examples`, the program `test2/python/t2_examples_check.py` (checks EX-1 to EX-7 of the
+   examples), Section 4 of the document of Test 2 (and the corrections of Section 2.11 that it required: the
+   normalization in fewer than three dimensions, and the methods of the self-consistent tasks), twelve new registry
+   entries of group 9 (the number of active directions, the fermion number and the mean-field energy of a lattice state,
+   the matrix of the modes, the quantities of the Anderson iteration, the wave packet and the branch projectors, the matrix
+   of the free lattice operator on a plane wave, the group velocity, the magnetic length, the quench and the amplitude mode,
+   and the Bloch vectors of the linearized equations), nineteen new descriptive column words, and `check_all.sh` extended
+   by the solver, its examples and their checks (Section 11, entries E44 to E52).
 
 # 6. The results in brief
 
@@ -377,6 +387,18 @@ expression and compares it with the matrix that it describes (check GS-12).
   Wilson term shifts by $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$ on the lattice; and the Landau levels are
   $\pm(m_{\rm LL}^2+(q^3_{\rm LL})^2+2n^{\rm L}_{\rm LL}\lvert B^\uparrow_{\rm LL}\rvert)^{1/2}$, with different fields for the two isospin
   components.
+* **Test 2, item [3]** (stage 8): the Python solver reproduces every known answer it was given: a free packet moves with
+  the group velocity of the lattice dispersion averaged over its momenta (to $8\times10^{-5}$); a particle inside the gap
+  is reflected completely at a superfluid region, 97.8 per cent as a hole (Andreev reflection); the ring with a kink and
+  an antikink has exactly 16 bound states at the Rayleigh quotient of the analytic state within the perturbative bound;
+  the self-consistent uniform state is the root of the lattice gap equation (to $3\times10^{-13}$); the self-consistent
+  kink carries eight bound states at the first-order Wilson shift (within 2.5 per cent); and after a quench the pair
+  field oscillates with the frequency of the amplitude mode, the root of
+  $((\omega^{\rm H}_{\rm LL})^2/4-\Delta_{\rm LL}^2)\sum_{q^1_{\rm LL}\neq0}1/(E^\pm_{\rm LL}((E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2/4))=1/\Delta_{\rm LL}$ derived
+  from the linearized self-consistent equations (to 0.46 per cent), while the fermion number stays constant to
+  $2\times10^{-11}$. A finding: a wall of the pair field is a stationary but unstable solution of the full mean-field
+  equations; the pair field unwinds by turning through the other isospin directions or through complex values,
+  because the order parameters of the polar state form a connected set.
 
 # 7. Deviations from the wording of the task, with their reasons
 
@@ -483,6 +505,19 @@ in every gauge, and the numerical formulation uses the canonical gauge, in which
 **D13. "push to repo after each item is completed".** Each item is committed and carried to the author's
 computer as soon as it is complete; the push itself can only be made by the author (rule 2, Section 3).
 
+**D15. "a python script that provides guidance ... reads initial and boundary conditions from a user file (query for
+file name)".** The guidance is given in three ways: a short guide printed when the program starts without arguments
+(with the question for the file name), the complete guide (`--guide`, every key with its meaning, kind and default), and
+seven ready examples that the program writes as commented input files. The input file is a plain text file of lines
+`key = value` rather than a programming-language file, so that the user needs no programming and the same file can be read
+by the Rust solver of item [5]. Two numerical methods differ from what Section 2.11 of the document first said, for
+reasons given in its Section 4.3: the self-consistent evolution uses the implicit midpoint rule instead of RK4 (it keeps
+the modes orthonormal and the fermion number constant exactly), and the self-consistent iteration uses Anderson
+acceleration instead of plain repetition (12 iterations instead of 117 in the uniform example). Section 2.11 was
+corrected accordingly, together with its normalization of the modes in fewer than three dimensions. Time-dependent gauge
+fields are offered as a uniform pulse of given shape, and site-dependent ones through a file; general functions of
+space and time would need program code from the user, which the input file avoids.
+
 **D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
 they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
 uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
@@ -527,8 +562,10 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [3] to [11] of Test 2 are answered in the following stages; this version of the document of the
-  answers contains items [1] and [2]. In item [2] the domain wall was solved for walls along one coordinate only, and
+* Items [4] to [11] of Test 2 are answered in the following stages; this version of the document of the
+  answers contains items [1] to [3]. The solver of item [3] treats the gauge fields as external (their field
+  equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
+  diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
   of the square of the operator, not on the lattice.
 * The Yukawa completion was not renormalized explicitly to all orders (D8). The document on the $3+1$
@@ -595,6 +632,15 @@ evaluated numerically, as in the earlier stages.
 | E41 | the first output of check AS-8 labelled the two sectors of $\mathsf Q^{\rm K}_{\rm LL}$ with the opposite sign | review of the report (stage 7) | the label printed with the sign of the operator $\mp d\Delta_{\rm LL}/dx^1_{\rm LL}$ |
 | E42 | the first draft of Section 3 of the document of Test 2 used unregistered letters in formulas (a name for the $2\times2$ matrix of the particle-hole oscillation, bare letters for a profile, a residual and a distance, bold units for the components of a spinor) and the first draft of Section 11 of this provenance document cited equation numbers of the document of Test 2 | the checks LL-S6, LL-S7 and review against rule 7 (stage 7) | written out in words or with registered symbols; Section 11 states every formula itself |
 | E43 | the labels of the figures of item [2] first used notation that the formula renderer of the plotting library does not accept (a sans-serif letter without braces, a fraction without braces) | the figure script stopped (stage 7) | braces added |
+| E44 | the first couplings of the self-consistent examples (2.0 and 1.6) gave gaps larger than the band width of the lattice (7.4 for the uniform example); the couplings were then chosen by solving the lattice gap equation (3.21) for gaps of 0.4 to 0.6 |
+| E45 | the first self-consistent kink did not converge in 400 iterations: the pair field turned out of its isospin direction; the analysis showed that a wall of the pair field is unstable, and the option `pair_constraint = line` with the check of the full condition (4.1) was added |
+| E46 | the first check of the group velocity of the free packet failed (deviation 1.6e-3, allowed first 2e-2, then 2e-3) because the packet contained the other branch at its other momenta (Zitterbewegung); the packet is now projected on its branch at every momentum, and the deviation is 4e-7 |
+| E47 | the first expected velocity of a hole packet had the wrong sign (a hole of the branch $+\varepsilon^{\rm lat}_{\rm LL}$ moves with $+d\varepsilon^{\rm lat}_{\rm LL}/dq^1_{\rm LL}$) |
+| E48 | the first cyclotron example put the centre of the orbit below the packet, so that the orbit reached the wall, and compared the motion with a classical orbit, although the packet consists of the lowest Landau levels; the packet was moved and the comparison is made with the Landau levels |
+| E49 | the first quench was integrated with RK4, which would not conserve the orthonormality and the fermion number (estimated change $10^{-4}$); the first quench was also too large for the linear prediction, which was first taken as twice the gap instead of the root of the linearized equations of the finite ring (4.11) |
+| E50 | the first check EX-3 required less than $10^{-6}$ inside the superfluid region, but the part of the packet above the gap passes the interface ($7\times10^{-6}$); the first check EX-6 expected 16 bound states, but one wall has eight (3.28) |
+| E51 | the first form of the self-test report replaced the name of the print function inside the function, which Python rejects |
+| E52 | the first draft of Section 4 used letters without the suffix LL in formulas (the coefficients of a two-level state, the number of steps, a lattice index, the potential of the pulse, the Landau energies), and its key table and one formula were wider than the page |
 
 # 12. The symbols
 

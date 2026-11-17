@@ -18,7 +18,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 |------|------------------------------------------------------------|---------|------------|
 | [1] | write out, explain and discuss the field equations of a self-interacting spinor field on the $3+1$ manifold of the super-loop: a Dirac equation of that manifold, built with super-loop operators and with a gauge-covariant derivative for the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$; every matrix written out; formulated completely for numerical solution | Section 2 | answered |
 | [2] | analyze the field equations and give analytic solutions for at least three simple cases | Section 3 | answered |
-| [3] | a Python script that guides the user in defining initial and boundary conditions, asks for the name of a file of such conditions, reads it and solves the field equations numerically | Section 4 | to follow |
+| [3] | a Python script that guides the user in defining initial and boundary conditions, asks for the name of a file of such conditions, reads it and solves the field equations numerically | Section 4 | answered |
 | [4] | a Python script that plots these numerical solutions | Section 5 | to follow |
 | [5] | the same solver as a pure Rust program built with cargo, with instructions for use | Section 6 | to follow |
 | [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | to follow |
@@ -30,7 +30,7 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] and [2]; the sections of the other items are added to this same document, in this order, as they
+items [1] to [3]; the sections of the other items are added to this same document, in this order, as they
 are completed.
 
 ## 1.2 How to read this document
@@ -45,8 +45,9 @@ are completed.
   first used, and the complete table of all symbols is Appendix C.
 - **Machine checks.** Every statement of this document that can be computed is checked by a program of the
   folder `test2/rust`: the statements of item [1] by `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}), the
-  analytic solutions of item [2] by `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}). The reports are
-  printed verbatim in Appendix A.
+  analytic solutions of item [2] by `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}), the Python solver of
+  item [3] by its self-test and by the checks of every run, and its solutions of the seven examples by
+  `t2_examples_check.py` (checks EX-1 to EX-7). The reports are printed verbatim in Appendix A.
 - **Explicit matrices.** Every matrix of the field equations is written out. The matrices and the long
   component equations are printed by the program itself (no entry is typed by hand), and the program
   evaluates each printed expression numerically and compares it with the matrix it describes (check GS-12).
@@ -813,16 +814,21 @@ $(\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL})^6/144$ (orange, das
 
 **The stationary ground state.** For the self-consistent use the initial modes are the eigenvectors of
 $\mathcal H^{\rm lat}_{\rm LL}$ with positive energy, normalized to
-$\sum_{\vec s_{\rm LL}}(\ell^{\rm x}_{\rm LL})^3(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)=1$.
-They are computed by the Hermitian eigensolver of the library `t2core` (Householder reduction to a real tridiagonal
-matrix and the implicit QL algorithm; check GS-11), and (2.32) is iterated until $d^\iota_{\rm LL}$ no longer
-changes. This is practical for small lattices (the matrix has $16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}$
+$\sum_{\vec s_{\rm LL}}(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)=1$,
+where $n^{\rm act}_{\rm LL}$ is the number of directions with more than one site (3 for a three-dimensional lattice; in
+problems of fewer dimensions the densities are per unit length or area of the absent directions, Section 4.3).
+They are computed by a Hermitian eigensolver (in the Rust programs the one of the library `t2core`: Householder
+reduction to a real tridiagonal matrix and the implicit QL algorithm, check GS-11; in the Python program the routine
+`eigh` of NumPy), and (2.32) is iterated until $d^\iota_{\rm LL}$ no longer changes (with the Anderson acceleration of
+Section 4.3). The self-consistent evolution of all modes uses the implicit midpoint rule instead of RK4, because it
+keeps the modes orthonormal and the fermion number constant exactly (Section 4.3). This is practical for small lattices (the matrix has $16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}$
 rows), which is the scale of the solvers of items [3] and [5].
 
 **What the user must specify** (the solvers of items [3] and [5] ask for exactly these): the lattice
 ($n^{\rm x}_{\rm LL}$, $n^{\rm y}_{\rm LL}$, $n^{\rm z}_{\rm LL}$, $\ell^{\rm x}_{\rm LL}$, $r^{\rm W}_{\rm LL}$); the boundary
 condition of each direction; the parameters $m_{\rm LL}$, $\mu_{\rm LL}$, $G_{\rm LL}$, $g^{\rm v}_{\rm LL}$,
-$g^{\rm F}_{\rm LL}$; the gauge potentials as functions of position and time; the pair field (prescribed or
+$g^{\rm F}_{\rm LL}$; the gauge potentials as functions of position (constant, given on every site, or the Landau gauge of
+a constant magnetic field) and of time (a uniform pulse); the pair field (prescribed or
 self-consistent); the initial modes (a wave packet, a plane wave, an eigenmode, or values read from a file); the
 time step and the duration; and what is written out.
 
@@ -1432,6 +1438,416 @@ diagonalization (circles; each level $n^{\rm L}_{\rm LL}\ge1$ is a pair of coinc
   time-dependent gauge fields and the self-consistent dynamics of the pair field need the numerical solution of
   items [3] to [6].
 
+# 4. Item [3]: a Python program that solves the field equations
+
+## 4.0 The answer in brief
+
+1. **The program.** `test2/python/t2_solve.py` (Python 3 with NumPy and SciPy, about 1600 commented lines) solves the
+   mean-field field equations (2.31), (2.32) of the self-interacting spinor field on the lattice of Section 2.11,
+   with the gauge-covariant central difference (2.35) (the link matrices (2.34)), the Wilson term, constant or
+   site-dependent gauge potentials, constant magnetic fields, a pulse of a gauge field in time, and a prescribed or
+   self-consistent pair field. Its lattice operator is the operator (2.36) of Section 2.11, built as a sparse matrix;
+   a self-test compares it with an independent site-by-site implementation.
+2. **Guidance and input.** Started without arguments, the program explains how to define the initial and the boundary
+   conditions, offers ready examples, and asks for the name of an input file. The input file is a plain text file of
+   lines `key = value`; every key is listed in Section 4.2 (the table is written by the program itself). The program
+   checks every value and stops with a precise message if a key is unknown, misspelt, given twice, or out of range.
+3. **Four tasks.** `evolve` (the time evolution of one mode in prescribed fields, by RK4), `spectrum` (all eigenvalues
+   and the bound states), `ground_state` (the self-consistent pair field, by Anderson-accelerated iteration) and
+   `quench` (the self-consistent evolution of all modes after a change of the coupling, by the implicit midpoint rule,
+   which conserves the orthonormality of the modes and the fermion number exactly).
+4. **Seven examples** (folder `test2/examples`), each with a known answer: a free wave packet (it moves with the group
+   velocity of (2.37)); a packet in a magnetic field (a bounded orbit); a particle hitting a superfluid region (Andreev
+   reflection into a hole); the bound states of a kink and an antikink (Section 3.4); the self-consistent uniform
+   superfluid (the gap equation (3.21)); a self-consistent kink; and a quench of the coupling (the amplitude mode of the
+   pair field, the analogue of the Higgs boson). All checks of the program ({{GEN:nchecks_t2_py_selftest}} in the
+   self-test, 3 to 5 per example) and all {{GEN:nchecks_t2_py_examples}} independent checks EX-1 to EX-7 of the program
+   `t2_examples_check.py` pass. The numerical results are plotted by the program of item [4] (Section 5).
+
+## 4.1 How to use the program
+
+**Requirements.** Python 3.8 or later with NumPy and SciPy (`python3 -m pip install numpy scipy`). The program runs
+from any folder; the commands below are given from the folder Revision_SuperLoop of the repository.
+
+**Step by step.**
+
+```
+# 1. read the guide: what is solved, how the initial and boundary conditions are defined, and every key
+python3 test2/python/t2_solve.py --guide
+# 2. list the examples, and write one of them as a commented input file to start from
+python3 test2/python/t2_solve.py --examples
+python3 test2/python/t2_solve.py --example andreev my_problem.t2in
+# 3. edit my_problem.t2in with any text editor, then solve it
+python3 test2/python/t2_solve.py my_problem.t2in
+# 4. or start the program without arguments: it prints a short guide and asks for the name of the input file
+python3 test2/python/t2_solve.py
+# 5. optional: check the lattice operator of the program (self-test)
+python3 test2/python/t2_solve.py --selftest
+```
+
+In the dialogue of step 4 the program answers `?` with the complete guide, `examples` with the list of examples,
+`example NAME` by writing that example as `NAME.t2in`, and a file name by solving that file; `q` ends it. The output
+files are named after the input file (`my_problem_summary.txt` and so on) and are written into the folder of the input
+file, unless the key `output` or the option `--out BASE` (for example `--out results/run1`) names another base.
+
+**How to define the boundary conditions.** The key `sites` gives the numbers of sites
+$n^{\rm x}_{\rm LL}$, $n^{\rm y}_{\rm LL}$, $n^{\rm z}_{\rm LL}$ along $x^1_{\rm LL}$, $x^2_{\rm LL}$, $x^3_{\rm LL}$, and
+`spacing` the spacing $\ell^{\rm x}_{\rm LL}$; the coordinates $x^j_{\rm LL}$ of the sites are the multiples of
+$\ell^{\rm x}_{\rm LL}$ from 0 to $\ell^{\rm x}_{\rm LL}$ times the number of sites of that direction minus 1. A direction with one site is absent: the fields do not depend on
+that coordinate (one- and two-dimensional problems). The key `boundary` gives three words, one per direction:
+`periodic` (the last site is the neighbour of the first; the lattice is a ring or a torus, and a constant potential acts
+through its holonomy) or `wall` (the field vanishes beyond the last site: a hard wall, the Dirichlet condition of Section
+2.11).
+
+**How to define the initial conditions.** For the task `evolve` the key `initial` chooses the initial mode: `packet` (a
+Gaussian wave packet, defined by `packet_center`, `packet_width`, `packet_momentum`, `packet_branch`, `packet_spin`,
+`packet_isospin` and `packet_part`; Section 4.3), `eigenmode` (an eigenvector of the lattice operator, chosen by its
+number in the ascending list) or `file` (all $16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}$ complex components
+from a file, one line `re im` each, in the order of the components of Section 2.11). For `ground_state` and `quench` the
+initial condition is the initial guess of the pair field, given by the key `pair`; the quench starts from the converged
+ground state.
+
+**How to define the fields.** Constant potentials with `potential_0` to `potential_3` (each four numbers
+$A^1_{{\rm LL},p}$, $A^2_{{\rm LL},p}$, $A^3_{{\rm LL},p}$, $A^{\rm F}_{{\rm LL},p}$); potentials that depend on the site from
+a file (`gauge_file`: one line per site with 16 numbers, the four potentials of $p=0,1,2,3$ in this order); constant
+magnetic fields along $x^3_{\rm LL}$ with `magnetic` ($\mathsf F^{\rm F}_{{\rm LL},12}$ and $\mathsf F^3_{{\rm LL},12}$, in the
+Landau gauge of Section 3.5, centred on the lattice); and a uniform pulse in time of the four potentials of one index $p$
+(`pulse_direction`, `pulse_potential`, `pulse_time`). All contributions are added, and the links (2.34) of a site use
+the potentials at that site. The pair field is chosen by `pair`: `none`, `uniform`, `kink`, `kink_antikink`, `step`,
+`random` or `file`, with its isospin direction, amplitude, phase, width and the positions of its walls (Section 4.2).
+
+## 4.2 The input file
+
+The file is plain text. Each line holds one entry `key = value`; the character `#` starts a comment; empty lines are
+ignored; the order of the keys is free. The first entry must be `format = t2in 1`. A key that the program does not know
+is an error (with a suggestion of the key that was probably meant), so that a misspelt key cannot be ignored silently.
+A key that is not given takes its default. The table lists every key; it is written by the program from the very
+table that it uses to read the file (`python3 test2/python/t2_solve.py --keys-md FILE`), so that it cannot differ from
+the program.
+
+{{GEN:t2_py_keys}}
+
+In the table, `dx` is $\ell^{\rm x}_{\rm LL}$, `dt` is $\ell^{\rm t}_{\rm LL}$, `r_W` is $r^{\rm W}_{\rm LL}$, `m` is
+$m_{\rm LL}$, `mu` is $\mu_{\rm LL}$, `g_v` and `g_F` are $g^{\rm v}_{\rm LL}$ and $g^{\rm F}_{\rm LL}$, `G` is $G_{\rm LL}$,
+`Delta` and `Delta_inf` are $\Delta_{\rm LL}$ and $\Delta^\infty_{\rm LL}$, `ell_K` is $\ell^{\rm K}_{\rm LL}$, `d^iota` is
+$d^\iota_{\rm LL}$, `A^1_p` to `A^F_p` are $A^1_{{\rm LL},p}$ to $A^{\rm F}_{{\rm LL},p}$, `F^F_12` and `F^3_12` are
+$\mathsf F^{\rm F}_{{\rm LL},12}$ and $\mathsf F^3_{{\rm LL},12}$, `eps_lat(q)` is $\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})$,
+`Hbound` is $B^{\rm H}_{\rm LL}$, and `x^0`, `x^1` are $x^0_{\rm LL}$, $x^1_{\rm LL}$. The pulse adds to the potential of
+the direction `pulse_direction` the four amplitudes of `pulse_potential` times the factor
+`exp(-(x^0 - t_c)^2/(2 t_w^2)) cos(w_p (x^0 - t_c))`, where `t_c`, `t_w`, `w_p` are the three numbers of `pulse_time` (the
+centre, the duration and the angular frequency of the pulse), uniformly on all sites.
+
+## 4.3 What the program computes
+
+**The lattice operator.** The program builds $\mathcal H^{\rm lat}_{\rm LL}$ of (2.36) as a sparse matrix from $8\times8$
+blocks: on each site the block $(m_{\rm LL}+r^{\rm W}_{\rm LL}n^{\rm act}_{\rm LL}/\ell^{\rm x}_{\rm LL})\beta_{\rm LL}\otimes\sigma^{\rm LL}_0-\mathsf 1_4\otimes(\mathsf A_{{\rm LL},0}+\mu_{\rm LL}\sigma^{\rm LL}_0)$
+(the mass, the diagonal part of the Wilson term, the potential and the chemical potential), where $n^{\rm act}_{\rm LL}$
+is the number of active directions (the directions with more than one site); for each active direction $j$ the block
+$(-i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})\otimes\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})$
+from the site $\vec s_{\rm LL}$ to its forward neighbour and the block
+$(i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})\otimes\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger$
+to its backward neighbour (a missing neighbour at a wall gives no block). These blocks act on the particle components; the
+hole components receive the complex conjugate blocks with the opposite sign, and the pair field the blocks
+$\mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$ and $\mathsf P^\dagger_{\rm LL}$ on each site. This is
+(2.36) term by term. The self-test applies the matrix to five random vectors on a lattice of $3\times4\times2$ sites
+with random links, potentials and pair field, periodic and wall directions, and compares with a direct site-by-site
+evaluation of (2.36): the largest difference is $7\times10^{-15}$. It also checks that the matrix is Hermitian, that the
+closed form (2.34) of the links equals the exponential of the generator computed by the general matrix exponential
+of SciPy (to $2\times10^{-16}$), and that the 256 eigenvalues of a ring of 16 sites in constant potentials are the
+energies of case A, check AS-1 (to $1.4\times10^{-14}$).
+
+**The normalization in fewer than three dimensions.** A problem with $n^{\rm act}_{\rm LL}$ active directions describes
+fields that do not depend on the other coordinates; the densities are then per unit length (or area) of the absent
+directions. The eigenvectors of the program are unit vectors; the mode functions of (2.32) are these divided by
+$(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}/2}$, so that $\sum_{\vec s_{\rm LL}}(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)=1$,
+and the self-consistency condition reads
+
+$$d^\iota_{\rm LL}(\vec s_{\rm LL})=-\frac{G_{\rm LL}}{2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}}\sum_n\psi^{\rm p}_{{\rm LL},n}(\vec s_{\rm LL})^T\,\mathsf K^\iota_{\rm LL}\,\psi^{\rm h}_{{\rm LL},n}(\vec s_{\rm LL})^*\tag{4.1}$$
+
+with the unit vectors on the right (the sum over the modes of the state). For $n^{\rm act}_{\rm LL}=3$ this is (2.32); for one
+active direction it is the condition that leads to the gap equation (3.21) of a chain, whose coupling $G_{\rm LL}$ has the
+dimension of a length.
+
+**Task `evolve`.** One mode is advanced with the Runge-Kutta method of fourth order of Section 2.11. If a pulse is given,
+the links and $\mathsf A_{{\rm LL},0}$ are recomputed at the times of the stages (the start, the middle and the end of each
+step). The program requires $\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le2.5$ (with (2.38)) and checks after the run that the norm
+of the mode changed by less than the number of steps times $(\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL})^6/144$ (the bound of the loss
+per step of Section 2.11), and, for
+time-independent fields, that the energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$ of the mode is conserved within that bound
+times $B^{\rm H}_{\rm LL}$.
+
+**The wave packet.** The initial packet of `initial = packet` is
+
+$$\begin{pmatrix}\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})\\\psi^{\rm h}_{\rm LL}(\vec s_{\rm LL})\end{pmatrix}\propto\exp\Big(-\sum_j\frac{(x^j_{\rm LL}-x^{{\rm c},j}_{\rm LL})^2}{4(w^{\rm pk}_{\rm LL})^2}+i\sum_jq^{{\rm pk},j}_{\rm LL}(x^j_{\rm LL}-x^{{\rm c},j}_{\rm LL})\Big)\begin{pmatrix}\chi^{\rm pk}_{\rm LL}\\0\end{pmatrix}\tag{4.2}$$
+
+for a particle (and with the two parts exchanged for a hole), the sums over the active directions, with the distance to
+the centre $\vec x^{\rm c}_{\rm LL}$ taken across the boundary of a periodic direction where that is shorter, normalized to 1.
+The width $w^{\rm pk}_{\rm LL}$ is the standard deviation of the density, and $\vec q^{\rm pk}_{\rm LL}$ the central momentum.
+The spinor $\chi^{\rm pk}_{\rm LL}$ is the projection $\mathsf Z^+_{\rm LL}(\vec q^{\rm pk}_{\rm LL})$ (for the branch
+$s^{\rm br}_{\rm LL}=+1$) or $\mathsf Z^-_{\rm LL}(\vec q^{\rm pk}_{\rm LL})$ (for $s^{\rm br}_{\rm LL}=-1$) of a reference Dirac spinor with spin up (components $(1,0,1,0)/\sqrt2$) or down
+($(0,1,0,1)/\sqrt2$) along $x^3_{\rm LL}$, normalized, times the chosen isospin component. The projectors
+
+$$\begin{aligned}\mathsf Z^\pm_{\rm LL}(\vec q_{\rm LL})&=\tfrac12\Big(\mathsf 1_4\pm\frac{\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})}{\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})}\Big),\\\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})&=\sum_j\alpha^j_{\rm LL}\frac{\sin(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})}{\ell^{\rm x}_{\rm LL}}+\beta_{\rm LL}\Big(m_{\rm LL}+\frac{r^{\rm W}_{\rm LL}}{\ell^{\rm x}_{\rm LL}}\sum_j\big(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})\big)\Big),\end{aligned}\tag{4.3}$$
+
+project on the eigenvalues $\pm\varepsilon^{\rm lat}_{\rm LL}$ of the free lattice operator on plane waves, because
+$\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})^2=\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})^2\mathsf 1_4$ (the $\alpha^j_{\rm LL}$ and
+$\beta_{\rm LL}$ anticommute and square to $\mathsf 1_4$; this is (2.37)). For the hole part $\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})$
+is replaced by $-\mathsf h^{\rm lat}_{\rm LL}(-\vec q_{\rm LL})^*$, the hole block of (2.36) on plane waves. A packet built only
+with the spinor at the central momentum still contains a small admixture of the other branch at the other momenta of the
+packet, and the interference of the two branches makes its centre oscillate (Zitterbewegung; with the example of Section
+4.4 the oscillation changes the apparent velocity by 0.2 per cent). Therefore, when every active direction is periodic,
+the program transforms (4.2) to the allowed momenta of the lattice by the discrete Fourier transform, applies the
+projector of the chosen branch, $\mathsf Z^+_{\rm LL}(\vec q_{\rm LL})$ or $\mathsf Z^-_{\rm LL}(\vec q_{\rm LL})$, at every momentum
+$\vec q_{\rm LL}$, and transforms back: the packet then
+contains the chosen branch only, and its centre moves exactly uniformly in the absence of fields. With a wall the plane
+waves are not the modes, and the program keeps (4.2) as it is.
+
+**Task `spectrum`.** The matrix is diagonalized completely (NumPy's routine `eigh`, which calls the Hermitian
+eigensolver of LAPACK); the program checks the particle-hole symmetry of the spectrum (Section 2.10) and writes the
+densities of the eigenvectors in an energy window. The dense diagonalization limits the size to
+$16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}\le6000$.
+
+**Task `ground_state`: the self-consistent iteration.** Let $\mathcal M^{\rm sc}_{\rm LL}$ be the map that takes a pair field
+to the right side of (4.1), evaluated with the positive-energy eigenvectors of $\mathcal H^{\rm lat}_{\rm LL}$ for that pair
+field. The self-consistent ground state is a fixed point of $\mathcal M^{\rm sc}_{\rm LL}$. Simple iteration with linear
+mixing converges slowly when the map is close to marginal: the uniform example of Section 4.4 needs 117 iterations. The
+program uses the Anderson method instead. The iterate $y^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})$ is the real vector of the real
+and imaginary parts of all $d^\iota_{\rm LL}$ on all sites ($n^{\rm it}_{\rm LL}$ counts the iterations), its residual is
+$r^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})=\mathcal M^{\rm sc}_{\rm LL}(y^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL}))-y^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})$,
+and $Y^{\rm A}_{\rm LL}$, $R^{\rm A}_{\rm LL}$ are the matrices whose columns are the differences of the last (up to seven)
+successive iterates and residuals. The next iterate is
+
+$$y^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL}+1)=y^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})+a^{\rm A}_{\rm LL}\,r^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})-\big(Y^{\rm A}_{\rm LL}+a^{\rm A}_{\rm LL}R^{\rm A}_{\rm LL}\big)c^{\rm A}_{\rm LL},\qquad c^{\rm A}_{\rm LL}=\mathrm{argmin}\,\big\lVert r^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})-R^{\rm A}_{\rm LL}c^{\rm A}_{\rm LL}\big\rVert,\tag{4.4}$$
+
+with the damping factor $a^{\rm A}_{\rm LL}$ (the key `mixing`). The minimizing coefficients $c^{\rm A}_{\rm LL}$ solve the normal
+equations $(R^{\rm A}_{\rm LL})^TR^{\rm A}_{\rm LL}c^{\rm A}_{\rm LL}=(R^{\rm A}_{\rm LL})^Tr^{\rm A}_{\rm LL}(n^{\rm it}_{\rm LL})$, with
+$10^{-12}$ times the trace of the matrix added to its diagonal against rounding. The combination
+$y^{\rm A}_{\rm LL}-Y^{\rm A}_{\rm LL}c^{\rm A}_{\rm LL}$ is the point of the span of the recent iterates whose linearly predicted residual
+is smallest; (4.4) is a secant (quasi-Newton) method, and it converges in 12 iterations where the linear mixing needs 117.
+The iteration stops when the largest component of the residual is below `tolerance`; the program then checks the full
+condition (4.1) once more, for all three isospin components and their real and imaginary parts, and computes the energy
+per site
+
+$$\frac1{n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}}\Big(-\frac12\sum_{E^{\rm qp}_{{\rm LL},n}>0}E^{\rm qp}_{{\rm LL},n}+\frac{(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}}{G_{\rm LL}}\sum_{\vec s_{\rm LL}}\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2\Big)\tag{4.5}$$
+
+minus the same quantity of the normal state (all $d^\iota_{\rm LL}=0$).
+
+**A wall of the pair field is unstable, and the constraint `pair_constraint = line`.** A kink of a real pair field along
+one isospin direction is a stationary point of the iteration: for $d^\iota_{\rm LL}=(0,0,\Delta_{\rm LL}(x^1_{\rm LL}))$ with real
+$\Delta_{\rm LL}$, the program finds that the right side of (4.1) has vanishing components $\iota=1,2$ and a real component 3 (to
+$5\times10^{-16}$ and $3\times10^{-15}$). The reason for the first: such a state is invariant under the isospin rotations about
+the third axis, which rotate the components 1 and 2 into each other, so their expectation values vanish. But the stationary
+point is unstable. Started from a kink, the iteration without the constraint (linear mixing, 400 iterations in a test run)
+drifts away from it: the rounding errors grow, $\lvert\vec d_{\rm LL}\rvert$ becomes nearly constant (about 0.599 away from the
+walls, also at the centre, where the kink had its zero), and the component 3 changes sign smoothly because the pair field rotates out of the third isospin direction and
+back. The order parameter of the polar state can turn continuously from $+\Delta_{\rm LL}$ to $-\Delta_{\rm LL}$ through
+complex values or through the other isospin directions, so the sign change does not need a zero of
+$\lvert\vec d_{\rm LL}\rvert$, and a zero costs condensation energy. (The space of polar order parameters,
+$\exp(i\theta^{\rm F}_{\rm LL})$ times a unit isospin vector, is connected; a kink, which joins $+\Delta_{\rm LL}$ to
+$-\Delta_{\rm LL}$ through zero, is not protected by topology.) The kink of Section 3.4 is therefore stable only where the
+pair field is held real along one isospin direction, for example by an external field that fixes its phase and direction. The
+option `pair_constraint = line` imposes exactly this: after each application of $\mathcal M^{\rm sc}_{\rm LL}$ only the real
+multiple of $\exp(i\,\text{pair\_phase})$ along `pair_direction` is kept. Because the map leaves this set invariant (as just
+shown), a fixed point found with the constraint is a fixed point of the full map; the program verifies this by the full
+check of (4.1).
+
+**Task `quench`: the self-consistent evolution.** All positive-energy modes of the ground state at the coupling
+$G_{\rm LL}$ form the columns of the matrix $\mathsf W^{\rm m}_{\rm LL}$, and at $x^0_{\rm LL}=0$ the coupling is changed to
+$G'_{\rm LL}$. The pair field follows from the modes by (4.1) with $G'_{\rm LL}$ at every moment, so the evolution
+$i\partial_0\mathsf W^{\rm m}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}[\mathsf W^{\rm m}_{\rm LL}]\mathsf W^{\rm m}_{\rm LL}$ is non-linear
+(the brackets indicate the dependence of the operator on the modes through the pair field). The program integrates it with
+the **implicit midpoint rule**
+
+$$\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL}+\ell^{\rm t}_{\rm LL})=\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL})-i\ell^{\rm t}_{\rm LL}\,\mathcal H^{\rm lat}_{\rm LL}[\bar{\mathsf W}^{\rm m}_{\rm LL}]\,\bar{\mathsf W}^{\rm m}_{\rm LL},\qquad\bar{\mathsf W}^{\rm m}_{\rm LL}=\tfrac12\big(\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL})+\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL}+\ell^{\rm t}_{\rm LL})\big),\tag{4.6}$$
+
+with the gauge fields at the middle of the step. Two exact properties make it the right method:
+
+- *The modes stay orthonormal (the Pauli principle).* Write $\mathsf W_0$, $\mathsf W_1$ for the matrices of the modes at the
+  start and at the end of a step and $\bar{\mathsf W}^{\rm m}_{\rm LL}=(\mathsf W_0+\mathsf W_1)/2$ (here the subscripts 0 and 1
+  only distinguish the two times). The algebraic identity
+  $\mathsf W_1^\dagger\mathsf W_1-\mathsf W_0^\dagger\mathsf W_0=(\bar{\mathsf W}^{\rm m}_{\rm LL})^\dagger(\mathsf W_1-\mathsf W_0)+(\mathsf W_1-\mathsf W_0)^\dagger\bar{\mathsf W}^{\rm m}_{\rm LL}$
+  and (4.6) give
+  $-i\ell^{\rm t}_{\rm LL}(\bar{\mathsf W}^{\rm m}_{\rm LL})^\dagger\mathcal H^{\rm lat}_{\rm LL}\bar{\mathsf W}^{\rm m}_{\rm LL}+i\ell^{\rm t}_{\rm LL}(\bar{\mathsf W}^{\rm m}_{\rm LL})^\dagger\mathcal H^{\rm lat}_{\rm LL}\bar{\mathsf W}^{\rm m}_{\rm LL}=0$,
+  because $\mathcal H^{\rm lat}_{\rm LL}$ is Hermitian, whatever pair field it contains. So
+  $\mathsf W^\dagger\mathsf W$ is the same at the end as at the start of every step.
+- *The fermion number is constant.* Let $N^{\rm F}_{\rm LL}$ be the sum over the modes and the sites of $\lvert\psi^{\rm h}_{\rm LL}\rvert^2$
+  (the fermion number (2.32) counts the hole components). By the same identity restricted to the hole components, its
+  change in one step is $2\ell^{\rm t}_{\rm LL}$ times the imaginary part of the sum over the modes and sites of the hole part of
+  the midpoint modes (the columns of $\bar{\mathsf W}^{\rm m}_{\rm LL}$), conjugated and transposed, times the hole row of (2.36)
+  applied to the midpoint modes. The diagonal block contributes a real number (it is Hermitian), and the pair term contributes
+  the complex conjugate of $\sum_n(\psi^{\rm p}_{{\rm LL},n})^\dagger\mathsf P_{\rm LL}\psi^{\rm h}_{{\rm LL},n}$, evaluated with the
+  midpoint modes. With the pair field computed from the same midpoint modes
+  by (4.1), this sum is $(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G'_{\rm LL})\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$ on each site,
+  real, as in (3.3) (the antisymmetry of $\mathsf K^\iota_{\rm LL}$ turns it into $-\sum_\iota d^\iota_{\rm LL}$ times the complex
+  conjugate of the pair expectation). Hence $N^{\rm F}_{\rm LL}$ does not change at all.
+
+The explicit RK4 does not have these properties: it would change both by about $(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^6/144$
+per step for the modes of the highest energies, in the example about $10^{-4}$ over the run. The rule (4.6) is implicit: the
+program solves it by the fixed-point iteration that inserts the latest estimate of $\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL}+\ell^{\rm t}_{\rm LL})$
+into the right side, starting from the explicit Euler step. One pass changes the error by a factor of about
+$\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}/2$, so the program requires $\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le1$ (with $B^{\rm H}_{\rm LL}$ evaluated with
+the pair field enlarged by one half) and iterates until the largest change is below $10^{-14}$. Orthonormality and
+$N^{\rm F}_{\rm LL}$ are then conserved to the rounding errors. The mean-field energy
+$E^{\rm MF}_{\rm LL}=\sum_n\langle\mathcal H^{\rm lat}_{\rm LL}\rangle_{\mathsf P_{\rm LL}=0}+(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G'_{\rm LL})\sum_{\vec s_{\rm LL}}\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$
+(the sum over the modes of the expectation values of the operator without the pair field, plus the condensation term) is
+the conserved energy of the exact evolution in time-independent fields. The rule (4.6) conserves it only to second order in
+$\ell^{\rm t}_{\rm LL}$, without drift, because it is a symplectic method; the program reports its largest change.
+
+**The output files.** For an input file `NAME.t2in` the program writes `NAME_summary.txt` (the problem, the checks with
+PASS or FAIL, and the results), `NAME_series.csv` (quantities against the time, written at every step, or against the
+iteration), `NAME_fields.csv` (fields on the sites at the output times, or the densities of selected eigenvectors), and for
+some tasks `NAME_spectrum.csv` and `NAME_iterations.csv`. Every data file states its content in a line `# content:` and
+its parameters in lines `# name: value`; the columns are listed in Appendix A.3. The program ends with the exit status 0
+if every check passes.
+
+## 4.4 The seven examples and what they show
+
+The examples are in `test2/examples` (written by `--example NAME`); their outputs, with the prefix `t2_py_`, are in
+`test2/data`. All use $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ and $r^{\rm W}_{\rm LL}=1$. The program
+`test2/python/t2_examples_check.py` compares each solution with a prediction that the solver does not compute itself (checks
+EX-1 to EX-7; the report is printed in Appendix A). The figures of all examples are drawn by the program of item [4]
+(Section 5).
+
+| example | task, lattice | fields | what is predicted | result |
+|----------|----------|----------|--------------------------|------------------|
+| `packet_free` | evolve, ring of 128 sites, $\ell^{\rm x}_{\rm LL}=0.5$ | none; $m_{\rm LL}=0.4$ | the centre moves uniformly with the group velocity of (2.37), averaged over the momenta of the packet | velocity 0.964138 against 0.964059 (EX-1) |
+| `cyclotron` | evolve, $40\times40$ sites, walls | $\mathsf F^{\rm F}_{{\rm LL},12}=0.4$ | a bounded orbit made of the Landau levels (3.32) | orbit within the lattice, energy conserved (EX-2) |
+| `andreev` | evolve, 240 sites, walls | step of the pair field, $\Delta_{\rm LL}=0.6$, $\mu_{\rm LL}=1$ | total reflection below the gap, mostly as a hole | hole probability 0.978 (EX-3) |
+| `kink_spectrum` | spectrum, ring of 60 sites, $\ell^{\rm x}_{\rm LL}=0.4$ | kink and antikink, $\Delta^\infty_{\rm LL}=\ell^{\rm K}_{\rm LL}=1$ | 16 bound states at $\pm E^{\rm R}_{\rm LL}$ of (3.29) | $\pm0.46232$ against $\pm0.46544$, within the bound 0.023 (EX-4) |
+| `ground_state` | ground_state, ring of 32 sites | $m_{\rm LL}=0.4$, $\mu_{\rm LL}=0.6$, $G_{\rm LL}=0.46$ | the root of the gap equation (3.21) | $\Delta_{\rm LL}=0.4042817351$ to $3\times10^{-13}$ (EX-5) |
+| `kink_ground_state` | ground_state, 40 sites, walls | $m_{\rm LL}=\mu_{\rm LL}=0$, $G_{\rm LL}=0.48$, constrained | the Wilson shift of the bound states | 0.03404 against 0.03321 (EX-6) |
+| `quench` | quench, ring of 24 sites | $m_{\rm LL}=\mu_{\rm LL}=0$, $G_{\rm LL}=0.45\to0.455$ | the frequency of the amplitude mode, (4.11) | 1.18449 against 1.18991 (EX-7) |
+
+**`packet_free` (EX-1).** The packet (4.2) with $\vec q^{\rm pk}_{\rm LL}=(0.8,0,0)$, $w^{\rm pk}_{\rm LL}=3$, contains the positive
+branch only. Its centre must move with the mean group velocity
+$\bar v^{\rm g}_{\rm LL}=\sum_{q^1_{\rm LL}}\exp\big(-2(w^{\rm pk}_{\rm LL})^2(q^1_{\rm LL}-q^{{\rm pk},1}_{\rm LL})^2\big)v^{\rm g}_{\rm LL}(q^1_{\rm LL})\big/\sum_{q^1_{\rm LL}}\exp\big(-2(w^{\rm pk}_{\rm LL})^2(q^1_{\rm LL}-q^{{\rm pk},1}_{\rm LL})^2\big)$
+(the squared modulus of the Fourier transform of the envelope of (4.2) is the Gaussian weight), with the group velocity
+
+$$v^{\rm g}_{\rm LL}(q^1_{\rm LL})=\frac{d\varepsilon^{\rm lat}_{\rm LL}}{dq^1_{\rm LL}}=\frac1{\varepsilon^{\rm lat}_{\rm LL}}\Big(\frac{\sin(q^1_{\rm LL}\ell^{\rm x}_{\rm LL})\cos(q^1_{\rm LL}\ell^{\rm x}_{\rm LL})}{\ell^{\rm x}_{\rm LL}}+r^{\rm W}_{\rm LL}\sin(q^1_{\rm LL}\ell^{\rm x}_{\rm LL})\Big(m_{\rm LL}+\frac{r^{\rm W}_{\rm LL}}{\ell^{\rm x}_{\rm LL}}\big(1-\cos(q^1_{\rm LL}\ell^{\rm x}_{\rm LL})\big)\Big)\Big)\tag{4.7}$$
+
+(the derivative of (2.37)), the sums over the 128 allowed momenta. The fitted velocity 0.964138 agrees with 0.964059 to
+$8\times10^{-5}$; the remaining difference comes from the small variation of the spinor of the packet across its momenta,
+which the Gaussian weight ignores. The solver's own check, with the exact weights of the projected packet, agrees to
+$4\times10^{-7}$. The group velocity at the central momentum alone, 0.97555, would be wrong by 1.2 per cent: a packet moves
+with the average over its momenta.
+
+**`cyclotron` (EX-2).** In the field $\mathsf F^{\rm F}_{{\rm LL},12}=0.4$ the isospin-up component feels
+$B^\uparrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}=0.18$ (3.30). The magnetic length
+$\ell^{\rm B}_{\rm LL}=\lvert B^\uparrow_{\rm LL}\rvert^{-1/2}=2.36$ is larger than the width 1.5 of the packet, and its energy 0.807
+corresponds to the Landau index $((0.807)^2-m_{\rm LL}^2)/(2B^\uparrow_{\rm LL})=1.36$: the packet is a superposition of the lowest
+Landau levels $n^{\rm L}_{\rm LL}=0,1,2,3$ of (3.32) (energies 0.400, 0.721, 0.938, 1.114), not a classical particle. Its centre
+therefore does not run on a circle of the classical radius but oscillates with the differences of these energies ($2\pi$
+divided by the differences of neighbouring levels gives the periods 19.6, 29.0 and 35.8; the centre returns closest to its
+start after 31.1). What the example shows exactly: the orbit is bounded by the field (the centre stays more than 2 away from
+the walls), and the norm and the energy are conserved to $3\times10^{-7}$ and $4\times10^{-7}$, the RK4 errors. The quantitative
+test of the magnetic field remains check AS-10 of Section 3.5.
+
+**`andreev` (EX-3).** The pair field rises from 0 to $\Delta_{\rm LL}=0.6$ around $x^1_{\rm LL}=60$ (a step of width 1); at
+$\mu_{\rm LL}=1$ a particle of momentum 0.917 has the energy $\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}=0.0736$, deep inside the gap.
+It cannot enter the superfluid as a quasi-particle (there are no states inside the gap); in the superfluid region the pair
+field converts it into a hole, which runs back (the reflection is a retro-reflection: the hole of energy
+$-\varepsilon^{\rm lat}_{\rm LL}+\mu_{\rm LL}$ near the Fermi momentum has the opposite group velocity). The run shows exactly this: the
+centre turns at $x^1_{\rm LL}=57.5$, a coherence length $1/\Delta_{\rm LL}$ before the interface, returns with the velocity $-0.86$,
+and leaves the hole probability $P^{\rm h}_{\rm LL}=0.978$; the remaining 0.022 is normal reflection as a particle, which is not
+small because $\Delta_{\rm LL}/\mu_{\rm LL}=0.6$ is not small. Less than $10^{-5}$ is left inside the superfluid (the part of the packet
+with energies above the gap, more than four standard deviations of its energy distribution away). This is the Andreev
+reflection of the spinor charges, the process by which a current of single charges is converted into a current of pairs.
+
+**`kink_spectrum` (EX-4).** The configuration of Section 3.4: exactly 16 eigenvalues lie inside the gap, eight at $+0.46232$
+and eight at $-0.46232$, against the Rayleigh quotient $E^{\rm R}_{\rm LL}=0.465441$ of (3.29) on this lattice; the difference
+0.0031 lies within the Kato-Temple bound 0.023 of check AS-9.
+
+**`ground_state` (EX-5).** With $m_{\rm LL}=0.4$, $\mu_{\rm LL}=0.6$, $G_{\rm LL}=0.46$ on a ring of 32 sites, the Anderson iteration
+converges in 12 iterations to a uniform polar pair field $\lvert\vec d_{\rm LL}\rvert=0.4042817351$, which is the root of the gap
+equation (3.21) found by bisection in the checking program, to $3\times10^{-13}$; the smallest quasi-particle energy is the
+minimum of $E^-_{\rm LL}$ over the allowed momenta, to $4\times10^{-13}$.
+
+**`kink_ground_state` (EX-6).** Massless charges at $\mu_{\rm LL}=0$ between two walls, with the constraint
+`pair_constraint = line`: the iteration converges in 29 iterations to a kink of $d^3_{\rm LL}$ through zero at the centre. In the
+continuum the mean-field equations of massless charges at $\mu_{\rm LL}=0$ have the same structure as the Gross-Neveu model
+(the squared operator (3.25) with $m_{\rm LL}=0$), whose self-consistent kink is $\Delta_{\rm LL}\tanh(\Delta_{\rm LL}x^1_{\rm LL})$ with the
+uniform gap $\Delta_{\rm LL}$ (Dashen, Hasslacher and Neveu). The computed profile is close to it but steeper by up to 0.054 in
+the inner half: the Wilson term, of first order in $\ell^{\rm x}_{\rm LL}$, breaks the structure at $\ell^{\rm x}_{\rm LL}\Delta_{\rm LL}=0.3$,
+and near the walls the pair field rises to 0.75. The bound states are a sharper test. By (3.24) the kink carries four bound
+states at each sign, at zero energy for massless charges; on the lattice the Wilson term shifts them, by (3.29) with
+$m_{\rm LL}=0$, to the Rayleigh quotient
+$(r^{\rm W}_{\rm LL}/(2\ell^{\rm x}_{\rm LL}))\sum_{\vec s_{\rm LL}}\big(\varphi^{\rm K}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^1_{\rm LL})-\varphi^{\rm K}_{\rm LL}(\vec s_{\rm LL})\big)^2\big/\sum_{\vec s_{\rm LL}}\varphi^{\rm K}_{\rm LL}(\vec s_{\rm LL})^2$,
+where $\varphi^{\rm K}_{\rm LL}$ solves $d\varphi^{\rm K}_{\rm LL}/dx^1_{\rm LL}=-\Delta_{\rm LL}(x^1_{\rm LL})\varphi^{\rm K}_{\rm LL}$ for the computed profile
+(integrated by the trapezoidal rule; the sums run over the sites, with the neighbour missing at the last site). The program finds the eight bound
+states at $\pm0.03404$ against the predicted 0.03321, a difference of 2.5 per cent, as expected from the next order (relative
+size $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}\Delta_{\rm LL}=0.3$, squared 0.09; the allowed difference is 25 per cent).
+
+**`quench` (EX-7): the amplitude mode.** The ground state of a ring of 24 sites ($m_{\rm LL}=\mu_{\rm LL}=0$) at $G_{\rm LL}=0.45$ has
+$\Delta_{\rm LL}=0.484762$. At $x^0_{\rm LL}=0$ the coupling becomes $G'_{\rm LL}=0.455$; the modes have not changed yet, so (4.1)
+multiplies the pair field by $G'_{\rm LL}/G_{\rm LL}$, to 0.490148. Then the pair field oscillates between 0.4902 and 0.5093 about the
+mean $\bar\Delta_{\rm LL}=0.500877$, while $N^{\rm F}_{\rm LL}=96$ stays constant (the largest change is $2\times10^{-11}$) and the modes
+stay orthonormal to $1.2\times10^{-12}$. The prediction of the frequency follows from the linearized self-consistent equations.
+At $m_{\rm LL}=\mu_{\rm LL}=0$ the uniform evolution never leaves the planes of (3.12): for each allowed momentum and each branch
+$s^{\rm br}_{\rm LL}\varepsilon^{\rm lat}_{\rm LL}$ ($s^{\rm br}_{\rm LL}=\pm1$), each of the four degenerate modes has the particle part
+$u^{\rm Bl}_{\rm LL}\chi^{\rm pw}_{\rm LL}$ and the hole part $v^{\rm Bl}_{\rm LL}\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL}$ (times the plane wave),
+with two complex coefficients that obey
+$i\partial_0(u^{\rm Bl}_{\rm LL},v^{\rm Bl}_{\rm LL})^T=(h^{\rm Bl}_{{\rm LL},1}\sigma^{\rm LL}_1+h^{\rm Bl}_{{\rm LL},2}\sigma^{\rm LL}_2+h^{\rm Bl}_{{\rm LL},3}\sigma^{\rm LL}_3)(u^{\rm Bl}_{\rm LL},v^{\rm Bl}_{\rm LL})^T$,
+where, by (3.12) with a complex pair field,
+
+$$\vec h^{\rm Bl}_{\rm LL}=\big(\mathrm{Re}\,d^3_{\rm LL},\,-\mathrm{Im}\,d^3_{\rm LL},\,s^{\rm br}_{\rm LL}\varepsilon^{\rm lat}_{\rm LL}\big).\tag{4.8}$$
+
+The Bloch vector $\vec b^{\rm Bl}_{\rm LL}$, whose components are the expectation values of $\sigma^{\rm LL}_1$, $\sigma^{\rm LL}_2$,
+$\sigma^{\rm LL}_3$ in the state $(u^{\rm Bl}_{\rm LL},v^{\rm Bl}_{\rm LL})$, then precesses,
+$\partial_0\vec b^{\rm Bl}_{\rm LL}=2\vec h^{\rm Bl}_{\rm LL}\times\vec b^{\rm Bl}_{\rm LL}$ (the derivative of the expectation value of a Pauli
+matrix is $i$ times the expectation value of its commutator with the matrix of the equation, and
+$[\sigma^{\rm LL}_1,\sigma^{\rm LL}_2]=2i\sigma^{\rm LL}_3$ with its cyclic permutations). The contribution of the mode to the pair
+expectation of (4.1) is $u^{\rm Bl}_{\rm LL}(v^{\rm Bl}_{\rm LL})^*$ times
+$(\chi^{\rm pw}_{\rm LL})^T\mathsf K^3_{\rm LL}(\mathsf K^3_{\rm LL})^*(\chi^{\rm pw}_{\rm LL})^*=-1$ (by (3.10)), divided by $n^{\rm x}_{\rm LL}$ (the
+plane wave has the weight $1/n^{\rm x}_{\rm LL}$ on each site), and
+$u^{\rm Bl}_{\rm LL}(v^{\rm Bl}_{\rm LL})^*=(b^{\rm Bl}_{{\rm LL},1}-i\,b^{\rm Bl}_{{\rm LL},2})/2$. With the four degenerate modes, (4.1) becomes
+
+$$d^3_{\rm LL}=\frac{G'_{\rm LL}}{n^{\rm x}_{\rm LL}\ell^{\rm x}_{\rm LL}}\sum_{q^1_{\rm LL}}\sum_{s^{\rm br}_{\rm LL}=\pm1}\big(b^{\rm Bl}_{{\rm LL},1}-i\,b^{\rm Bl}_{{\rm LL},2}\big),\tag{4.9}$$
+
+and in the ground state $\vec b^{\rm Bl}_{\rm LL}=\vec h^{\rm Bl}_{\rm LL}/E^\pm_{\rm LL}$ (the positive-energy eigenvector, with
+$E^+_{\rm LL}=E^-_{\rm LL}=((\varepsilon^{\rm lat}_{\rm LL})^2+\Delta_{\rm LL}^2)^{1/2}$ at $\mu_{\rm LL}=0$), so that (4.9) is the gap
+equation (3.21). Now let the gap be
+$\Delta_{\rm LL}+\Delta^{\rm fl}_{\rm LL}(x^0_{\rm LL})$ with a small real deviation (the amplitude channel; the phase channel decouples
+because the spectrum is symmetric under $s^{\rm br}_{\rm LL}\to-s^{\rm br}_{\rm LL}$), and the Bloch vector
+$\vec h^{\rm Bl}_{\rm LL}/E^\pm_{\rm LL}+\vec b^{\rm fl}_{\rm LL}(x^0_{\rm LL})$. To first order, with the time dependence
+$\exp(-i\omega^{\rm H}_{\rm LL}x^0_{\rm LL})$ of all deviations, the three components of the precession equation give
+
+$$b^{\rm fl}_{{\rm LL},1}=-\frac{2i\,s^{\rm br}_{\rm LL}\varepsilon^{\rm lat}_{\rm LL}}{\omega^{\rm H}_{\rm LL}}\,b^{\rm fl}_{{\rm LL},2},\qquad b^{\rm fl}_{{\rm LL},3}=\frac{2i\Delta_{\rm LL}}{\omega^{\rm H}_{\rm LL}}\,b^{\rm fl}_{{\rm LL},2},\qquad b^{\rm fl}_{{\rm LL},2}=\frac{2i\,\omega^{\rm H}_{\rm LL}s^{\rm br}_{\rm LL}\varepsilon^{\rm lat}_{\rm LL}\Delta^{\rm fl}_{\rm LL}}{E^\pm_{\rm LL}\big(4(E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2\big)},\tag{4.10}$$
+
+hence $b^{\rm fl}_{{\rm LL},1}=4(\varepsilon^{\rm lat}_{\rm LL})^2\Delta^{\rm fl}_{\rm LL}/\big(E^\pm_{\rm LL}(4(E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2)\big)$.
+(The first and third follow from the first and third components of the equation, which do not contain $\Delta^{\rm fl}_{\rm LL}$;
+the second component contains the term $-2\Delta^{\rm fl}_{\rm LL}s^{\rm br}_{\rm LL}\varepsilon^{\rm lat}_{\rm LL}/E^\pm_{\rm LL}$ from the change of
+$\vec h^{\rm Bl}_{\rm LL}$, and inserting the first two gives the third relation.) Inserting $b^{\rm fl}_{{\rm LL},1}$ into the
+linearized (4.9) and subtracting the gap equation (3.21), the momenta with $\varepsilon^{\rm lat}_{\rm LL}=0$ (here
+$q^1_{\rm LL}=0$, where $E^\pm_{\rm LL}=\Delta_{\rm LL}$) drop out of the first and contribute $2/\Delta_{\rm LL}$ to the second; the result is
+
+$$\Big(\frac{(\omega^{\rm H}_{\rm LL})^2}4-\Delta_{\rm LL}^2\Big)\sum_{q^1_{\rm LL}\neq0}\frac1{E^\pm_{\rm LL}\big((E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2/4\big)}=\frac1{\Delta_{\rm LL}}.\tag{4.11}$$
+
+Its left side is zero at $\omega^{\rm H}_{\rm LL}=2\Delta_{\rm LL}$ and tends to $+\infty$ as $\omega^{\rm H}_{\rm LL}$ approaches twice the smallest
+$E^\pm_{\rm LL}$ with $q^1_{\rm LL}\neq0$ from below, so (4.11) has exactly one root between these two values: the amplitude mode,
+the oscillation of $\lvert\vec d_{\rm LL}\rvert$ (in an infinite system the root moves to $2\Delta_{\rm LL}$, the edge of the
+continuum of pair breaking). With $\Delta_{\rm LL}=\bar\Delta_{\rm LL}$, (4.11) gives 1.18991; the least-squares fit of a sinusoid to the
+computed $\lvert\vec d_{\rm LL}\rvert$ gives 1.18449, a difference of 0.46 per cent (the allowed difference is 1 per cent; the terms of
+second order in the amplitude, relative $(0.0096/0.50)^2$, and the weaker modes at the other roots of the full linear problem
+make up the difference). This is the amplitude (Higgs) mode of the superfluid of the spinor charges; item [11] obtains its mass
+from the effective theory of the pair field.
+
+## 4.5 Discussion
+
+- **What the program does and does not do.** It solves the mean-field equations exactly as formulated in Section 2.11, with
+  the gauge-covariant lattice derivative in every equation, for any lattice that fits in memory (the tasks `evolve` use
+  sparse matrices: the $40\times40$ example has 25600 complex unknowns and runs in 2 seconds); the self-consistent tasks
+  diagonalize dense matrices and are limited to about 375 sites. The gauge fields are external (prescribed); their own field
+  equations (2.29) are not solved.
+- **Why the checks are trustworthy.** Every example has an answer that the program does not compute: a dispersion formula,
+  a gap equation solved by a different method, the analytic bound states of Section 3.4, a perturbative formula for the
+  Wilson shift, and the linearized self-consistent equations. Conservation laws are checked in every run, and their tolerances
+  come from the error formulas of the methods, not from experience.
+- **A finding.** The free self-consistent iteration shows that a wall of the pair field is unstable; Section 3.4 holds for a
+  pair field that is held real along one isospin direction, and the option `pair_constraint = line` reproduces that
+  situation. This is a property of the polar superfluid of the spinor charges, not of the numerical method.
+- **The Rust program of item [5]** solves the same input files and writes the same output files; the two are compared number
+  by number (Section 6).
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -1445,13 +1861,20 @@ cd test2/rust && cargo build --release && ./target/release/t2_fields && cd ../..
 cd test2/rust && cargo build --release && ./target/release/t2_analytic && cd ../..
 # 3. Figures 1 to 6 (test2/figures/fig_t2_*.pdf and .png)
 python3 test2/python/make_t2_figures.py
-# 4. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 4. item [3]: the self-test of the Python solver, the seven examples, the table of the keys, the checks EX-1 to EX-7
+python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt
+for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
+  python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
+python3 test2/python/t2_solve.py --keys-md test2/data/t2_py_fragments.md
+python3 test2/python/t2_examples_check.py test2/data/t2_py
+# 5. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 ```
 
-The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds (one processor core).
+The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
+together in about 70 seconds (the quench 50 seconds), all on one processor core.
 
-Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy and Matplotlib; for the documents pandoc
+Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; for the documents pandoc
 (2.11 or later), XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font. The Rust programs of the
 folder test2 use no external crate.
 
@@ -1509,6 +1932,77 @@ $\Lambda_{\rm LL}$; and `p_1`, `p_2`, `p_3` for the momentum operators $-i\parti
 {{FILE:test2/data/t2_analytic_checks.txt}}
 ```
 
+## A.2b The program of item [3]
+
+`test2/python/t2_solve.py` (the solver, Section 4) and `test2/python/t2_examples_check.py` (the checks EX-1 to EX-7 of the
+examples, and the comparison of two sets of outputs used in item [5]); the seven input files `test2/examples/*.t2in`.
+Python 3 with NumPy and SciPy; double precision; the only random numbers (in the self-test) come from a fixed seed, so
+that every run gives the same output.
+
+The reports use, besides the names listed in A.2: `N_F` and `E_MF` for $N^{\rm F}_{\rm LL}$ and $E^{\rm MF}_{\rm LL}$; `D`
+(in "active directions D") for $n^{\rm act}_{\rm LL}$; `G` for $G_{\rm LL}$ (and the coupling after a quench for
+$G'_{\rm LL}$); `m`, `mu`, `g_v`, `g_F` for $m_{\rm LL}$, $\mu_{\rm LL}$, $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$; `d^iota`
+and `|d|` for $d^\iota_{\rm LL}$ and $\lvert\vec d_{\rm LL}\rvert$; `Pi` for the pair expectation of (4.1); `W` for
+$\mathsf W^{\rm m}_{\rm LL}$; `E_GS` for the energy per site (4.5) measured from the normal state; `E_R` for $E^{\rm R}_{\rm LL}$;
+`B_up` for $B^\uparrow_{\rm LL}$; `xi` for the coherence length $1/\Delta_{\rm LL}$ (in units in which the velocity at the
+Fermi surface is about 1); `Delta_0` for the uniform gap $\Delta_{\rm LL}$ of the periodic chain; `w` for
+$\omega^{\rm H}_{\rm LL}$; and `q`, `k` for momenta $q^1_{\rm LL}$. In the lines `gauge fields:` the four lists are the constant
+potentials $(A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p},A^{\rm F}_{{\rm LL},p})$ for $p=0,1,2,3$.
+
+The self-test, verbatim (`test2/data/t2_py_selftest_checks.txt`):
+
+```
+{{FILE:test2/data/t2_py_selftest_checks.txt}}
+```
+
+The summary of the example `packet_free`, verbatim (`test2/data/t2_py_packet_free_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_packet_free_summary.txt}}
+```
+
+The summary of the example `cyclotron`, verbatim (`test2/data/t2_py_cyclotron_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_cyclotron_summary.txt}}
+```
+
+The summary of the example `andreev`, verbatim (`test2/data/t2_py_andreev_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_andreev_summary.txt}}
+```
+
+The summary of the example `kink_spectrum`, verbatim (`test2/data/t2_py_kink_spectrum_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_kink_spectrum_summary.txt}}
+```
+
+The summary of the example `ground_state`, verbatim (`test2/data/t2_py_ground_state_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_ground_state_summary.txt}}
+```
+
+The summary of the example `kink_ground_state`, verbatim (`test2/data/t2_py_kink_ground_state_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_kink_ground_state_summary.txt}}
+```
+
+The summary of the example `quench`, verbatim (`test2/data/t2_py_quench_summary.txt`):
+
+```
+{{FILE:test2/data/t2_py_quench_summary.txt}}
+```
+
+The checks EX-1 to EX-7 of the examples, verbatim (`test2/data/t2_py_examples_checks.txt`):
+
+```
+{{FILE:test2/data/t2_py_examples_checks.txt}}
+```
+
 ## A.3 Data files and figures
 
 | file | content | columns |
@@ -1530,6 +2024,20 @@ $\Lambda_{\rm LL}$; and `p_1`, `p_2`, `p_3` for the momentum operators $-i\parti
 | `test2/data/t2_C_kink_spectrum.csv` | all eigenvalues of the lattice operator of the ring (Figure 5(c)) | `index`, `E_qp` |
 | `test2/data/t2_C_kink_convergence.csv` | the Rayleigh quotient (3.29) and the residual of the analytic bound state (Figure 5(d)) | `dx`, `E_R`, `relative_residual` |
 | `test2/data/t2_D_landau.csv` | the Landau levels (3.32), formula and oscillator basis (Figure 6) | `Q_LL`, `n_L`, `E_qp`, `source` |
+| `test2/examples/<example>.t2in` | the input files of the seven examples of Section 4.4 | — |
+| `test2/data/t2_py_<example>_summary.txt` | the summary of the solution of an example by `t2_solve.py` (Appendix A.2b) | — |
+| `test2/data/t2_py_selftest_checks.txt`, `t2_py_examples_checks.txt` | the self-test of `t2_solve.py`, the checks EX-1 to EX-7 | — |
+| `test2/data/t2_py_fragments.md` | the table of the keys of the input file (Section 4.2), written by `t2_solve.py --keys-md` | — |
+| `t2_py_packet_free_series.csv`, `t2_py_cyclotron_series.csv`, `t2_py_andreev_series.csv` | task `evolve`: the mode at every step | `x_LL^0`, `norm`, `E_expect`, `P_hole`, `P_up`, `x_mean_1`, `x_mean_2`, `x_mean_3` |
+| `t2_py_packet_free_fields.csv`, `t2_py_cyclotron_fields.csv`, `t2_py_andreev_fields.csv` | task `evolve`: the densities on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `density_p`, `density_h`, `density_up` |
+| `t2_py_kink_spectrum_spectrum.csv`, and the files `_spectrum.csv` of the self-consistent examples | all eigenvalues | `index`, `E_qp` |
+| `t2_py_kink_spectrum_fields.csv` | the densities of the eigenvectors in the energy window | `index`, `E_qp`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `density_p`, `density_h` |
+| `t2_py_kink_spectrum_series.csv` | the prescribed pair field on the sites | `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
+| `t2_py_ground_state_*`, `t2_py_kink_ground_state_*`: `_iterations.csv` and `_series.csv` | the Anderson iteration | `iteration`, `change`, `abs_d_mean`, `E_GS` |
+| `t2_py_ground_state_fields.csv`, `t2_py_kink_ground_state_fields.csv` | the initial guess and the self-consistent pair field | `stage`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
+| `t2_py_quench_iterations.csv` | the iteration of the initial ground state | `iteration`, `change`, `abs_d_mean`, `E_GS` |
+| `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `E_MF`, `ortho_error` |
+| `t2_py_quench_fields.csv` | the pair field on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
 $\varepsilon^{\rm lat}_{\rm LL}$; `E_times_dt` is $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$ and `rk4_modulus` the modulus of
@@ -1540,8 +2048,16 @@ $G_{\rm LL}/G^{\rm crit}_{\rm LL}$ for $m_{\rm LL}=0$, `E_R` is $E^{\rm R}_{\rm 
 `P_up_exact`, `P_hole_rk4`, `P_hole_exact` are $P^\uparrow_{\rm LL}$ and $P^{\rm h}_{\rm LL}$ from the RK4 integration and from
 the exact solution; `branch` (positive or negative energy), `source` (the origin of a value), `index` (the number of an
 eigenvalue in ascending order), `density_lattice`, `density_exact` (densities normalized to the integral 1) and
-`relative_residual` are descriptive words. Every data file states its content in a line `# content:` and its parameters
-in lines `# name: value`.
+`relative_residual` are descriptive words. In the files of item [3], `norm` is the squared norm of the mode, `E_expect` its
+energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$, `x_mean_1` to `x_mean_3` the centre of its density (Section 4.3),
+`density_p`, `density_h`, `density_up` the densities of the particle part, of the hole part and of the particle part with
+isospin up on a site, `d1_re` to `d3_im` the real and imaginary parts of $d^1_{\rm LL}$, $d^2_{\rm LL}$, $d^3_{\rm LL}$,
+`abs_d` the modulus $\lvert\vec d_{\rm LL}\rvert$ on a site, `abs_d_mean` its mean over the sites and `abs_d_site0` its value on the
+first site, `stage` the guess (`initial`) or the result (`final`), `change` the largest component of the residual of the
+Anderson iteration, `E_GS` the energy (4.5) per site measured from the normal state, `N_F` and `E_MF` are $N^{\rm F}_{\rm LL}$ and
+$E^{\rm MF}_{\rm LL}$, and `ortho_error` the largest modulus of the entries of
+$(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$. Every data file states its content in a line `# content:` and
+its parameters in lines `# name: value`.
 
 | figure | file (.pdf and .png) | data | checks |
 |------|--------------------|------------------------------|------|
@@ -1560,7 +2076,7 @@ parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ 
 
 ## A.4 Checksums
 
-SHA-256 checksums of the sources and data of items [1] and [2] at the time this document was built:
+SHA-256 checksums of the sources and data of items [1] to [3] at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -1592,6 +2108,46 @@ SHA-256 checksums of the sources and data of items [1] and [2] at the time this 
 {{SHA256:test2/data/t2_C_kink_spectrum.csv}}  test2/data/t2_C_kink_spectrum.csv
 {{SHA256:test2/data/t2_C_kink_convergence.csv}}  test2/data/t2_C_kink_convergence.csv
 {{SHA256:test2/data/t2_D_landau.csv}}  test2/data/t2_D_landau.csv
+{{SHA256:test2/python/t2_solve.py}}  test2/python/t2_solve.py
+{{SHA256:test2/python/t2_examples_check.py}}  test2/python/t2_examples_check.py
+{{SHA256:test2/examples/packet_free.t2in}}  test2/examples/packet_free.t2in
+{{SHA256:test2/examples/cyclotron.t2in}}  test2/examples/cyclotron.t2in
+{{SHA256:test2/examples/andreev.t2in}}  test2/examples/andreev.t2in
+{{SHA256:test2/examples/kink_spectrum.t2in}}  test2/examples/kink_spectrum.t2in
+{{SHA256:test2/examples/ground_state.t2in}}  test2/examples/ground_state.t2in
+{{SHA256:test2/examples/kink_ground_state.t2in}}  test2/examples/kink_ground_state.t2in
+{{SHA256:test2/examples/quench.t2in}}  test2/examples/quench.t2in
+{{SHA256:test2/data/t2_py_andreev_fields.csv}}  test2/data/t2_py_andreev_fields.csv
+{{SHA256:test2/data/t2_py_andreev_series.csv}}  test2/data/t2_py_andreev_series.csv
+{{SHA256:test2/data/t2_py_andreev_summary.txt}}  test2/data/t2_py_andreev_summary.txt
+{{SHA256:test2/data/t2_py_cyclotron_fields.csv}}  test2/data/t2_py_cyclotron_fields.csv
+{{SHA256:test2/data/t2_py_cyclotron_series.csv}}  test2/data/t2_py_cyclotron_series.csv
+{{SHA256:test2/data/t2_py_cyclotron_summary.txt}}  test2/data/t2_py_cyclotron_summary.txt
+{{SHA256:test2/data/t2_py_examples_checks.txt}}  test2/data/t2_py_examples_checks.txt
+{{SHA256:test2/data/t2_py_fragments.md}}  test2/data/t2_py_fragments.md
+{{SHA256:test2/data/t2_py_ground_state_fields.csv}}  test2/data/t2_py_ground_state_fields.csv
+{{SHA256:test2/data/t2_py_ground_state_iterations.csv}}  test2/data/t2_py_ground_state_iterations.csv
+{{SHA256:test2/data/t2_py_ground_state_series.csv}}  test2/data/t2_py_ground_state_series.csv
+{{SHA256:test2/data/t2_py_ground_state_spectrum.csv}}  test2/data/t2_py_ground_state_spectrum.csv
+{{SHA256:test2/data/t2_py_ground_state_summary.txt}}  test2/data/t2_py_ground_state_summary.txt
+{{SHA256:test2/data/t2_py_kink_ground_state_fields.csv}}  test2/data/t2_py_kink_ground_state_fields.csv
+{{SHA256:test2/data/t2_py_kink_ground_state_iterations.csv}}  test2/data/t2_py_kink_ground_state_iterations.csv
+{{SHA256:test2/data/t2_py_kink_ground_state_series.csv}}  test2/data/t2_py_kink_ground_state_series.csv
+{{SHA256:test2/data/t2_py_kink_ground_state_spectrum.csv}}  test2/data/t2_py_kink_ground_state_spectrum.csv
+{{SHA256:test2/data/t2_py_kink_ground_state_summary.txt}}  test2/data/t2_py_kink_ground_state_summary.txt
+{{SHA256:test2/data/t2_py_kink_spectrum_fields.csv}}  test2/data/t2_py_kink_spectrum_fields.csv
+{{SHA256:test2/data/t2_py_kink_spectrum_series.csv}}  test2/data/t2_py_kink_spectrum_series.csv
+{{SHA256:test2/data/t2_py_kink_spectrum_spectrum.csv}}  test2/data/t2_py_kink_spectrum_spectrum.csv
+{{SHA256:test2/data/t2_py_kink_spectrum_summary.txt}}  test2/data/t2_py_kink_spectrum_summary.txt
+{{SHA256:test2/data/t2_py_packet_free_fields.csv}}  test2/data/t2_py_packet_free_fields.csv
+{{SHA256:test2/data/t2_py_packet_free_series.csv}}  test2/data/t2_py_packet_free_series.csv
+{{SHA256:test2/data/t2_py_packet_free_summary.txt}}  test2/data/t2_py_packet_free_summary.txt
+{{SHA256:test2/data/t2_py_quench_fields.csv}}  test2/data/t2_py_quench_fields.csv
+{{SHA256:test2/data/t2_py_quench_iterations.csv}}  test2/data/t2_py_quench_iterations.csv
+{{SHA256:test2/data/t2_py_quench_series.csv}}  test2/data/t2_py_quench_series.csv
+{{SHA256:test2/data/t2_py_quench_spectrum.csv}}  test2/data/t2_py_quench_spectrum.csv
+{{SHA256:test2/data/t2_py_quench_summary.txt}}  test2/data/t2_py_quench_summary.txt
+{{SHA256:test2/data/t2_py_selftest_checks.txt}}  test2/data/t2_py_selftest_checks.txt
 ```
 
 # Appendix B. Published works on the methods used here
@@ -1621,12 +2177,25 @@ SHA-256 checksums of the sources and data of items [1] and [2] at the time this 
   differential equations, with an application to the stresses in a masonry dam, Phil. Trans. R. Soc. Lond. A 210,
   307 (1911).
 * J. H. Wilkinson, The Algebraic Eigenvalue Problem (Clarendon Press, Oxford, 1965).
+* D. G. Anderson, Iterative procedures for nonlinear integral equations, J. ACM 12, 547 (1965); H. F. Walker and
+  P. Ni, Anderson acceleration for fixed-point iterations, SIAM J. Numer. Anal. 49, 1715 (2011).
+* E. Hairer, C. Lubich and G. Wanner, Geometric Numerical Integration, 2nd ed. (Springer, Berlin, 2006).
+* A. F. Andreev, The thermal conductivity of the intermediate state in superconductors, Sov. Phys. JETP 19, 1228
+  (1964).
+* D. J. Gross and A. Neveu, Dynamical symmetry breaking in asymptotically free field theories, Phys. Rev. D 10, 3235
+  (1974); R. F. Dashen, B. Hasslacher and A. Neveu, Semiclassical bound states in an asymptotically free theory,
+  Phys. Rev. D 12, 2443 (1975).
+* P. W. Anderson, Random-phase approximation in the theory of superconductivity, Phys. Rev. 112, 1900 (1958).
+* A. F. Volkov and Sh. M. Kogan, Collisionless relaxation of the energy gap in superconductors, Sov. Phys. JETP 38,
+  1018 (1974).
 
 These works are cited for the general methods and results only (the gauge principle, the mean-field equations of a
 superfluid, the lattice with link variables and the Wilson term, the Pauli equation, the Landau levels, the wells of
 Pöschl and Teller, the Rabi oscillation, the theory of Bardeen, Cooper and Schrieffer, the Aharonov-Bohm effect, the
 bound states of Jackiw and Rebbi, the bounds of perturbation theory, Richardson extrapolation and the Sturm-sequence
-bisection for tridiagonal matrices). Everything this document uses from them is stated, and where it is a result,
+bisection for tridiagonal matrices; for item [3] the Anderson acceleration of fixed-point iterations, the implicit
+midpoint rule and its conservation of quadratic invariants, Andreev reflection, the self-consistent kink of the
+Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change). Everything this document uses from them is stated, and where it is a result,
 derived or checked, in it.
 
 # Appendix C. The symbols

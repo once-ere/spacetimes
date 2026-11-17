@@ -115,6 +115,21 @@ DESCRIPTIVE = {
     "density_lattice": "the density of eigenvectors of the lattice operator, normalized to the integral 1",
     "density_exact": "the density of the analytic solution, normalized to the integral 1",
     "relative_residual": "the norm of the residual of a trial mode (the lattice operator applied to the mode, minus its Rayleigh quotient times the mode) divided by the norm of the mode",
+    # the output files of the solvers of items [3] and [5]
+    "norm": "the squared norm of a mode (the sum of the squared moduli of its components)",
+    "E_expect": "the expectation value of the lattice operator in a mode",
+    "x_mean_1": "the centre of the density of a mode along x^1 (circular mean, then the mean in the window around it, on a ring)",
+    "x_mean_2": "the centre of the density along x^2", "x_mean_3": "the centre of the density along x^3",
+    "density_p": "the density of the particle part of a mode on a site", "density_h": "the density of the hole part of a mode on a site",
+    "density_up": "the density of the particle part with isospin up on a site",
+    "d1_re": "real part of the pair field d^1 on a site", "d1_im": "imaginary part of d^1", "d2_re": "real part of d^2",
+    "d2_im": "imaginary part of d^2", "d3_re": "real part of d^3", "d3_im": "imaginary part of d^3",
+    "abs_d": "the modulus of the pair field, (|d^1|^2 + |d^2|^2 + |d^3|^2)^(1/2), on a site",
+    "abs_d_mean": "the mean of the modulus of the pair field over the sites", "abs_d_site0": "the modulus of the pair field on the first site",
+    "stage": "initial (the guess) or final (the self-consistent result)", "iteration": "the number of an iteration",
+    "change": "the largest change of the pair field in an iteration (the largest modulus of the residual)",
+    "E_GS": "the energy of the self-consistent state per site, measured from the normal state of the same lattice",
+    "ortho_error": "the largest modulus of an entry of W^dag W minus the unit matrix (W the matrix of the modes)",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL
