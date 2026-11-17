@@ -1,0 +1,11 @@
+PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenance/symbols_ll.csv)
+8 of 8 checks passed
+
+[PASS] LL-S1  every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (297 names)
+[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 196 items of the 80 new entries is an item of either master registry (503 items compared); the 21 items that the registry of Revision_NoGo also contains are exactly the 21 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\otimes$, $i$, $p$, ${}^T$)
+[PASS] LL-S3  every column of the 14 data files data/sl_*.csv is a registered plain-text name or a descriptive word (68 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S4  each of the 4 documents of Revision_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] LL-S5  in the 1743 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 2235 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 2130 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters)
+[PASS] LL-S8  every one of the 2099 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 21 reports and data files is a registered plain-text name

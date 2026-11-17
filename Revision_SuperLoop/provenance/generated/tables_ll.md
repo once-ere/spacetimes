@@ -1,0 +1,438 @@
+<!-- BEGIN nchecks_algebra -->
+27
+<!-- END nchecks_algebra -->
+
+<!-- BEGIN nchecks_malcev -->
+9
+<!-- END nchecks_malcev -->
+
+<!-- BEGIN nchecks_manifolds -->
+9
+<!-- END nchecks_manifolds -->
+
+<!-- BEGIN nchecks_superfluid -->
+11
+<!-- END nchecks_superfluid -->
+
+<!-- BEGIN nchecks_renorm -->
+6
+<!-- END nchecks_renorm -->
+
+<!-- BEGIN nchecks_groebner -->
+12
+<!-- END nchecks_groebner -->
+
+<!-- BEGIN nchecks_symbol -->
+8
+<!-- END nchecks_symbol -->
+
+<!-- BEGIN nchecks_self_contained -->
+1
+<!-- END nchecks_self_contained -->
+
+<!-- BEGIN checks_table -->
+| report (data/) | written by | checks passed |
+|---|---|---|
+| `sl_algebra_checks.txt` | `superloop algebra` | 27 of 27 |
+| `sl_malcev_checks.txt` | `superloop malcev` | 9 of 9 |
+| `sl_manifolds_checks.txt` | `superloop manifolds` | 9 of 9 |
+| `sl_superfluid_checks.txt` | `superloop superfluid` | 11 of 11 |
+| `sl_renorm_checks.txt` | `superloop renorm` | 6 of 6 |
+| `sl_groebner_checks.txt` | `malcev_groebner.py` | 12 of 12 |
+| `sl_symbol_checks.txt` | `check_symbols.py` | 8 of 8 |
+| `sl_self_contained_checks.txt` | `check_self_contained.py` | 1 of 1 |
+<!-- END checks_table -->
+
+<!-- BEGIN checks_rows_tex -->
+A-1 & the associator [x,y,z] = (xy)z - x(yz) of the bi-octonions B\_LL is alternating (it changes sign under every exchange of two of its arguments) on all 512 ordered triples of the units e0..e7: B\_LL is an ALTERNATIVE algebra & PASS\\
+A-2 & B\_LL is NOT associative: exactly 168 of the 512 ordered triples of units have a non-zero associator (the triples of distinct imaginary units outside the 7 quaternionic triples); example [e1,e2,e4] = (e1 e2) e4 - e1 (e2 e4) = 2 e7  -- non-zero associators: 168; coefficients of [e1,e2,e4] on e0..e7: [0, 0, 0, 0, 0, 0, 0, 2] & PASS\\
+A-3 & on 300 random bi-octonions x, y, z with Gaussian-integer coefficients the complex norm is multiplicative, N\_LL(xy) = N\_LL(x) N\_LL(y), and the three Moufang identities z(x(zy)) = ((zx)z)y, ((yz)x)z = y(z(xz)), (zx)(yz) = (z(xy))z hold exactly: the unit bi-octonions form a Moufang LOOP, the super-loop L\_LL & PASS\\
+A-4 & for the commutator [x,y] = xy - yx of B\_LL the Jacobiator Jac(x,y,z) = [[x,y],z] + [[y,z],x] + [[z,x],y] equals six times the associator on all 512 triples of units, Jac(x,y,z) = 6 [x,y,z]; it is non-zero on 168 triples: the Jacobi identity fails exactly where associativity fails  -- non-zero Jacobiators: 168 & PASS\\
+A-5 & the imaginary bi-octonions m\_LL = C (x) Im O with the commutator satisfy the linearized Malcev identity Jac(x,y,[w,z]) + Jac(w,y,[x,z]) = [Jac(x,y,z),w] + [Jac(w,y,z),x] on all 2401 4-tuples of imaginary units: m\_LL is a Malcev algebra that is not a Lie algebra & PASS\\
+A-6 & for 50 random triples of 4x4 integer matrices (operators, whose product is associative) the Jacobiator of the commutator vanishes exactly; this is the step that every no-go proof takes when it treats the symmetry generators as operators & PASS\\
+A-7 & left multiplication x -$>$ L\_x is not a representation of the Malcev algebra m\_LL: [L\_e1, L\_e4] - L\_[e1,e4] is a non-zero matrix & PASS\\
+A-8 & Theorem R: the Jacobiators of the real basis elements e\_p, i e\_p (p = 1..7) of m\_LL span all of m\_LL (real rank 14, exact); because operators obey the Jacobi identity (A-6), every linear map from m\_LL to operators on a vector space that turns commutators into commutators maps every Jacobiator to 0 and therefore vanishes: m\_LL has no non-zero realization by operators  -- rank of the span of the Jacobiators: 14 & PASS\\
+L-1 & the Lorentz part l\_LL = C (x) Im H (real basis J\_LL\^{}j = e\_j/2, K\_LL\^{}j = i e\_j/2, j = 1,2,3) is a Lie subalgebra of m\_LL isomorphic to so(3,1): [J\_LL\^{}j, J\_LL\^{}j'] = sum\_j'' eps3\_(j j' j'') J\_LL\^{}j'', [J\_LL\^{}j, K\_LL\^{}j'] = sum\_j'' eps3\_(j j' j'') K\_LL\^{}j'', [K\_LL\^{}j, K\_LL\^{}j'] = -sum\_j'' eps3\_(j j' j'') J\_LL\^{}j''; the unit bi-quaternions SL(2,C) = Spin(3,1)\^{}+ form a subgroup of the super-loop L\_LL & PASS\\
+L-2 & the Killing form Killing(x,y) = tr(ad x ad y) of l\_LL (6x6, exact) is non-degenerate with signature (3 positive, 3 negative), negative on the rotations and positive on the boosts, as for so(3,1)  -- signature (3, 3, 0), Killing(e1,e1) = -16, Killing(i e1,i e1) = 16 & PASS\\
+L-3 & a Lorentz element uL of l\_LL acts on a spinor charge bS e4 of s\_LL = (C (x) H) e4 by [uL, bS e4] = 2 (bS uL) e4 = -2 (W\_LL(uL) bS) e4, where W\_LL(uL) bS = -bS uL is a Lie representation (the Weyl spinor); the inner action rho\_LL(uL) = -2 W\_LL(uL) obeys [rho\_LL(uL1), rho\_LL(uL2)] = -2 rho\_LL([uL1,uL2]): it is NOT a representation (the twist) & PASS\\
+L-4 & the bracket of two spinor charges lies in the Lorentz part, [bS e4, bS' e4] = bSbar bS' - bS'bar bS in l\_LL, and these brackets span all of l\_LL (rank 6): spinor charges close into Lorentz generators  -- rank 6 & PASS\\
+L-5 & Jacobiators by sector: Jac(uL1, uL2, bS e4) = -6 (W\_LL([uL1,uL2]) bS) e4 = (Theta\_LL - Theta\_LL\^{}2) (W\_LL([uL1,uL2]) bS) e4 with the twist charge Theta\_LL = -2 on s\_LL (exact on all 288 triples of basis elements); Jac(s\_LL, s\_LL, s\_LL) (e.g. Jac(e4,e5,e6) = -12 e7) and Jac(l\_LL, s\_LL, s\_LL) (e.g. Jac(e1,e4,e6)) are non-zero as well & PASS\\
+L-6 & with the Lie action (twist charge 1 instead of -2) and the same non-zero bracket [s\_LL, s\_LL] in l\_LL, the Jacobi identity fails on triples of spinor charges: no Lie algebra extends so(3,1) by bosonic spinor charges that close into so(3,1) (Theorem L; the classification G-1, G-5, G-10, M-3 shows that every Lie algebra of the covariant families has no Lorentz part in [s\_LL, s\_LL]) & PASS\\
+L-7 & the Lorentz action by automorphisms, D\_LL(uL)(aH + bS e4) = [uL, aH] + (-bS uL) e4, and the isospin action Dv\_LL(tI)(aH + bS e4) = (tI bS) e4 (tI in Im H) are derivations of B\_LL (100 random pairs), they commute, the isospin derivations vanish on C (x) H, and the inner action factors as [uL, .] = D\_LL(uL) o Theta\_LL with the twist charge Theta\_LL = 1 on l\_LL and -2 on s\_LL & PASS\\
+L-8 & the real derivations of B\_LL form a Lie algebra of real dimension 28 (the complex Lie algebra g2(C)): the linear system has rank 228 for 256 unknowns (at most 28 solutions), and the inner derivations [L\_x,L\_y] + [L\_x,R\_y] + [R\_x,R\_y] are verified derivations spanning 28 dimensions  -- rank of the system 228, explicit derivations span 28 & PASS\\
+L-9 & varphi\_(gL,vI)(aH + bS e4) = gL aH gLbar + (vI bS gLbar) e4 is an automorphism of B\_LL for the unit bi-quaternions gL = 1 + i e1 + e2 (a Lorentz transformation) and vI = e3 (an isospin rotation), on 100 random pairs: (SL(2,C) x SL(2,C))/Z2 = SO(4,C) inside G2(C) & PASS\\
+Q-1 & the electric charge Q\_LL = T\_LL\^{}3 = i Dv\_LL(e3/2) (the third isospin generator, an automorphism of B\_LL) is a Hermitian operator on B\_LL with the eigenvalues 0 (four times) on C (x) H (the Lorentz part and the scalar) and +1/2, -1/2 (twice each) on the spinor charges (double precision)  -- on C (x) H: +0.000000 +0.000000 +0.000000 +0.000000; on s\_LL: -0.500000 -0.500000 +0.500000 +0.500000 & PASS\\
+Q-2 & the isospin Casimir T\_LL\^{}2 = sum\_iota (T\_LL\^{}iota)\^{}2 = -sum\_iota Dv\_LL(e\_iota/2)\^{}2 equals 0 on C (x) H and 3/4 = (1/2)(1/2 + 1) on the spinor charges: the spinor charges form an isospin doublet (double precision)  -- on s\_LL: +0.750000 +0.750000 +0.750000 +0.750000 & PASS\\
+Q-3 & the Lorentz Casimir Cas\_LL = -sum\_j D\_LL(J\_LL\^{}j)\^{}2 (exact; 4 Cas\_LL is an integer matrix) has the value spin(spin+1) = 0 on the scalar e0, 2 (spin 1) on the Lorentz part C (x) Im H and 3/4 (spin 1/2) on the spinor charges & PASS\\
+Q-4 & chirality: on every bi-octonion the boost generators act as i times the rotation generators, D\_LL(K\_LL\^{}j) = i D\_LL(J\_LL\^{}j); with respect to the complex structure of B\_LL every sector has one chirality, type (spin, 0): l\_LL = (1,0), s\_LL = (1/2,0); the complex-conjugate super-loop has the other chirality (0, spin) & PASS\\
+Q-5 & spinor number: the rotation generator i D\_LL(J\_LL\^{}3) has the integer eigenvalues \{-1, 0, 0, 1\} on C (x) H and the half-odd eigenvalues \{-1/2, -1/2, 1/2, 1/2\} on the spinor charges, so the rotation by 2 pi, exp(2 pi D\_LL(J\_LL\^{}3)), is +1 on the Lorentz part and -1 on the spinor charges (double precision)  -- on C (x) H: -1.000000 +0.000000 +0.000000 +1.000000; on s\_LL: -0.500000 -0.500000 +0.500000 +0.500000 & PASS\\
+Q-6 & inside the loop, conjugation by an element gL of SL(2,C) acts on a spinor charge as gL (bS e4) gLbar = (bS gL\^{}2) e4 (both bracketings agree), whereas the Lorentz automorphism acts as bS -$>$ bS gL\^{}-1: the loop's inner action turns a spinor twice as fast and backwards (twist charge -2) & PASS\\
+C-1 & the unit e4 of the super-loop (e4\^{}2 = -1, e4\^{}-1 = -e4) acts on bi-quaternions by e4 aH e4\^{}-1 = aHbar (100 random aH): on SL(2,C) it is the inversion gL -$>$ gL\^{}-1, and on Minkowski space R\^{}(1,3)\_LL (Hermitian bi-quaternions) it is the parity (x\_LL\^{}0, x\_LL\^{}1, x\_LL\^{}2, x\_LL\^{}3) -$>$ (x\_LL\^{}0, -x\_LL\^{}1, -x\_LL\^{}2, -x\_LL\^{}3) & PASS\\
+C-2 & the union of SL(2,C) and SL(2,C) e4 is closed under the product: (gL e4)(hL e4) = -hLbar gL, gL (hL e4) = (hL gL) e4, (gL e4) hL = (gL hLbar) e4; it is a Moufang loop (a Chein-type double of the Lorentz group) inside L\_LL, and it is not associative because SL(2,C) is not commutative & PASS\\
+C-3 & inversion is not an automorphism of SL(2,C): for gL = e1, hL = e2, (gL hL)\^{}-1 = -e3 but gL\^{}-1 hL\^{}-1 = +e3; hence no operator on any vector space can implement gL -$>$ gL\^{}-1 by conjugation in a faithful representation (conjugation is multiplicative): the extension by e4 exists only as a loop & PASS\\
+C-4 & the inner map x -$>$ e4 x e4\^{}-1 is not an automorphism of B\_LL (it fails on random pairs): inner maps of the loop are not symmetries of its multiplication, another place where associativity is missing & PASS\\
+M-1 & F\_A with the twist c\_tw = -2 and c\_sl = 1 is exactly the commutator algebra m\_LL of the imaginary bi-octonions (all 196 basis brackets agree); it satisfies the Malcev identity on all 38416 basis 4-tuples and violates the Jacobi identity & PASS\\
+M-2 & F\_A with c\_sl = 0: the twists c\_tw = 0, 1, -2 give Malcev algebras (exhaustive); c\_tw = 0 and c\_tw = 1 give Lie algebras, c\_tw = -2 does not (Carlsson's non-Lie Malcev module of sl(2)) & PASS\\
+M-3 & excluded members of F\_A fail exhaustively: (c\_tw, c\_sl) = (1, 1) [Lie action and spinor charges closing into Lorentz], (0, 1), (2, 0), (-1, 0), (3, 0) violate both identities (in agreement with G-1, G-3, G-4)  -- first failing Malcev 4-tuple (positions in the basis) (0, 6, 6, 8) & PASS\\
+M-4 & F\_B with the twist c\_tw = -2 and all other coefficients 0 (the abelian twisted module of the Poincare algebra) satisfies the Malcev identity on all 104976 basis 4-tuples and violates the Jacobi identity: internal spinor charges, commuting with the translations p\_LL, with the non-Lie Lorentz action  -- first failing Jacobi triple (positions in the basis) (0, 1, 10) & PASS\\
+M-5 & the Lie solutions of F\_B found by G-6 are Lie algebras (exhaustive): Poincare with abelian spinor charges (c\_tw = 1), Poincare with [s\_LL, s\_LL] in p\_LL (c\_tw = 1, c\_sP = 1: bosonic spinor charges whose brackets are translations), and curved space-time with c\_PP = $|$c\_Ps$|$\^{}2 (c\_tw = 1, c\_PP = 1, c\_Ps = 1 and c\_PP = 2, c\_Ps = 1 + i): spinor charges that do not commute with the translations & PASS\\
+M-6 & for c\_PP $>$ 0 the space-time part l\_LL + p\_LL (with [p\_LL, p\_LL] = c\_PP x Lorentz generator) has a Killing form of signature (4 positive, 6 negative): it is so(4,1), the de Sitter algebra; the spinor charges with [p\_LL, s\_LL] != 0 form its real 8-dimensional spinor representation  -- signature (4, 6, 0) & PASS\\
+M-7 & excluded members of F\_B fail exhaustively: the bi-octonion bracket together with translations (c\_tw = -2, c\_sl = 1), the Lie action with c\_sl = 1 (with or without c\_sP = 1), and the twist together with c\_sP = 1 or with the curvature c\_PP = 1: with translations present, spinor charges never close into the Lorentz algebra (G-7, G-9)  -- first failing Malcev 4-tuple (positions in the basis) (0, 6, 10, 14) & PASS\\
+M-8 & F\_C: the bi-octonion algebra m\_LL with a decoupled isospin algebra su(2) (c\_tw = -2, c\_sl = 1, c\_TT = 1, c\_Ts = 0, c\_sT = 0) is Malcev and not Lie; isospin acting on the spinor charges with the Lie Lorentz action and [s\_LL, s\_LL] = 0 (c\_tw = 1, c\_Ts = 1, c\_TT = 1) is a Lie algebra & PASS\\
+M-9 & isospin cannot act on the spinor charges of m\_LL inside a Malcev algebra: adding c\_Ts = 1 (isospin acts on s\_LL), or c\_sT = 1 ([s\_LL, s\_LL] gets an isospin part), or both, to m\_LL + su(2) violates the Malcev identity (exhaustive; G-11): electric charge enters the super-loop as an outer operator (an automorphism), not as an element  -- first failing Malcev 4-tuple (positions in the basis) (0, 1, 6, 9) & PASS\\
+N-1 & the Hermitian bi-octonions x = x\_LL\^{}0 + i sum\_p x\_LL\^{}p e\_p (x\^{}dag = x, real x\_LL\^{}0, x\_LL\^{}p, p = 1..7) form the 7+1 Minkowski space R\^{}(1,7)\_LL: the complex norm N\_LL is real on them, with signature (1 positive, 7 negative); the Hermitian bi-quaternions (p = 1,2,3) form R\^{}(1,3)\_LL, signature (1,3), on which SL(2,C) acts by x -$>$ gL x gL\^{}dag  -- R\^{}(1,7)\_LL: (1, 7, 0), R\^{}(1,3)\_LL: (1, 3, 0) & PASS\\
+N-2 & the split octonions sit inside B\_LL as Os = H + (i H) e4: this real 8-dimensional subspace is closed under the product, the map from the split Cayley-Dickson algebra (pairs (aH, bS) of real quaternions with the sign +1) to B\_LL, (aH, bS) -$>$ aH + (i bS) e4, is an isomorphism onto Os, and N\_LL restricted to Os has signature (4,4): the 4+4 manifold is the real form Os of the super-loop's algebra; its unit elements form the pseudo-sphere S\^{}(3,4), a Moufang loop  -- signature (4, 4, 0) & PASS\\
+N-3 & the space of spinor charges s\_LL (real dimension 8) carries the quadratic forms Re N\_LL and Im N\_LL (invariant under the Lorentz and isospin automorphisms, because N\_LL is multiplicative), both of signature (4,4): the base of the fibration of L\_LL over s\_LL (aH + bS e4 -$>$ bS, fibre a copy of SL(2,C) wherever N\_LL(aH) = 1 - N\_LL(bS) is not zero) is a 4+4 space  -- Re N\_LL (4, 4, 0), Im N\_LL (4, 4, 0) & PASS\\
+N-4 & on the 7+1 manifold the one-parameter conjugations x -$>$ gL x gL\^{}dag by the loop elements gL = exp(theta e\_p) (rotations) and gL = exp(theta i e\_p) (boosts), p = 1..7, have the generators x -$>$ [e\_p, x] and x -$>$ i (e\_p x + x e\_p), which lie in so(1,7), and their Lie closure is all of so(1,7) (dimension 28, exact): the super-loop acts on R\^{}(1,7)\_LL through the Lorentz group SO(1,7)  -- closure dimension 28 & PASS\\
+N-5 & conjugation by the loop's own Lorentz subgroup (p = 1,2,3) is not a group action on the 7+1 manifold: its six generators preserve R\^{}(1,3)\_LL and act on it as so(3,1), but their Lie closure on R\^{}(1,7)\_LL has dimension 9 = so(3,1) + so(3) (exact), the extra so(3) rotating only the four directions i e4..i e7 (there the boosts act trivially and the rotations by the twisted spinor action)  -- closure on R\^{}(1,7)\_LL: 9, restricted to R\^{}(1,3)\_LL: 6 & PASS\\
+N-6 & the left multiplications generate Lie groups (their closures, exact): by imaginary bi-octonions, so(8,C) of real dimension 56 (every L\_x is complex-linear and preserves the complex norm N\_LL); by imaginary octonions on R\^{}8, so(8) (28); by imaginary split units on Os = R\^{}(4,4), so(4,4) (28; each generator preserves the split norm): any linear action of the loop is an action of these LIE groups  -- closures 56 / 28 / 28 & PASS\\
+N-7 & the super-loop manifold (N\_LL(w) = 1, a complex 7-sphere of real dimension 14) is parallelized by the frame fields X\_x(w) = w x (x imaginary), which are tangent (N\_LL(w, w x) = 0); their Lie brackets are [X\_x, X\_y](w) = w [x,y] + 2 [w,x,y] (100 random w, x, y): at w = 1 this is the Malcev bracket, elsewhere the associator makes the structure functions non-constant: the manifold is parallelizable but carries no Lie group structure & PASS\\
+N-8 & the 7-sphere S\^{}7 of unit octonions (the compact real form of the super-loop) is the homogeneous space Spin(7)/G2: the products L\_(e\_p) L\_(e\_p') (p $<$ p') span spin(7) (dimension 21, exact) acting on R\^{}8, the stabilizer of 1 has dimension 14 (g2) and the orbit of 1 has dimension 7  -- spin(7): 21, stabilizer: 14, orbit: 7 & PASS\\
+N-9 & the split real form: inside the imaginary split octonions the elements e1, i e4, i e5 span a Lie subalgebra whose Killing form has signature (2 positive, 1 negative): sl(2,R) = so(2,1), the Lorentz algebra of 2+1 dimensions; the unit split octonions S\^{}(3,4) contain SL(2,R) = Spin(2,1): on the real 4+4 manifold the super-loop's Lorentz part is the 2+1 Lorentz group, and SO(3,1) requires the complex form  -- signature (2, 1, 0) & PASS\\
+S-0 & field content from the bi-octonions: with the isomorphism C (x) H = M\_2(C), e\_j -$>$ -i sigma\_j (j = 1,2,3), the spinor charge bS, as the 2x2 matrix M\_LL(bS), gives the Weyl isodoublet psi'\_LL = eps2\^{}-1 M\_LL(bS)\^{}T, whose column 1 (isospin up) and column 2 (isospin down) are Weyl spinors; on it the Lorentz derivations are D\_LL(J\_LL\^{}j) = -i sigma\_j/2, D\_LL(K\_LL\^{}j) = +sigma\_j/2 (on each column), and the isospin generators are T\_LL\^{}iota = tau\_iota/2 (mixing the columns); the chiral Dirac matrices gamma\_LL\^{}p (p = 0..3) intertwine these spinor generators with the vector action V\_LL of the loop's conjugations on R\^{}(1,3)\_LL (all 24 relations [gamma\_LL\^{}p, D] = sum\_p' V\_LL\^{}p\_p' gamma\_LL\^{}p'), the spinor charges being the gamma\_ch = +1 block: Psi\_LL = Dirac (x) isodoublet & PASS\\
+S-1 & Theorem SF1 (spin-zero channels): the antisymmetric, Lorentz-invariant pair matrices on Dirac (x) isospin form a complex space of dimension 6, spanned by Kch\_iota = C\_LL gamma\_ch (x) eps2 tau\_iota (scalar 0+) and Kch'\_iota = C\_LL (x) eps2 tau\_iota (pseudoscalar 0-), iota = 1,2,3; each is unitary and an isospin TRIPLET (Casimir 2): a spin-zero s-wave pair of spinor charges carries isospin 1 and electric charge Q\_LL = +1, 0, -1  -- real nullity 12 (= 6 complex dimensions) & PASS\\
+S-2 & electric charge of the spin-zero channels (charge of the pair operator Psi\_LL\^{}T Kch Psi\_LL, which annihilates two spinor charges): Kch\_3 pairs up with down, charge 0; Kch\_1 - i Kch\_2 and Kch\_1 + i Kch\_2 pair up-up and down-down, charges +1 and -1  -- Q\_LL(Kch\_3) = 0, Q\_LL(Kch\_1 - i Kch\_2) = +1, Q\_LL(Kch\_1 + i Kch\_2) = -1 & PASS\\
+S-3 & Theorem SF2 (spectra; 60 random momenta, masses, chemical potentials and order parameters dvec in C\^{}3, double precision): in the scalar channel the 8 positive BdG energies are E\^{}+(Delta\_+), E\^{}-(Delta\_+), E\^{}+(Delta\_-), E\^{}-(Delta\_-) (each twice) with E\^{}(+-)(Delta) = [(eps +- mu)\^{}2 + Delta\^{}2]\^{}(1/2), eps = (q\^{}2 + m\^{}2)\^{}(1/2), and the two gaps Delta\_(+-)\^{}2 = $|$dvec$|$\^{}2 (1 +- zeta), zeta = $|$cross(dvec, dvec\^{}*)$|$ / $|$dvec$|$\^{}2 (unitary states: zeta = 0; non-unitary: two gaps); in the pseudoscalar channel (unitary dvec) Etilde\^{}(+-) = [q\^{}2 + m\^{}2 + mu\^{}2 + Delta\^{}2 +- 2 (mu\^{}2 (q\^{}2 + m\^{}2) + m\^{}2 Delta\^{}2)\^{}(1/2)]\^{}(1/2), each four times  -- largest deviation 7.11e-15 & PASS\\
+S-4 & critical coupling of the scalar channel at mu = 0 (gap equation 1/G = int d\^{}3q/(2 pi)\^{}3 (1/E\^{}+ + 1/E\^{}-), momentum cutoff Lambda): G\_crit = 2 pi\^{}2/Lambda\^{}2 = 19.7392 for m = 0, and G\_crit = 2 pi\^{}2/[Lambda (Lambda\^{}2 + m\^{}2)\^{}(1/2) - m\^{}2 ln((Lambda + (Lambda\^{}2 + m\^{}2)\^{}(1/2))/m)] for m $>$ 0 (m = 0.2: quadrature against the closed form)  -- G\_crit at m = 0: 19.739209, at m = 0.2: 21.286610 & PASS\\
+S-5 & the gap of the unitary scalar state grows monotonically with the coupling (mu = 0.5, m = 0.2, 40 couplings), and at weak coupling ln Delta is linear in 1/G with the BCS slope -1/(2 nuF) = -pi\^{}2/(kF mu), nuF = kF mu/(2 pi\^{}2) the density of states of one species at the Fermi surface (ratio of the slopes within 5 \%): a Fermi surface pairs for every G $>$ 0  -- slope -43.0637, BCS value -43.0745, ratio 0.9997 & PASS\\
+S-6 & Theorem SF3 (the unitary state wins): at G = 12, mu = 0.5, m = 0.2 the minimum over $|$dvec$|$ of Omega increases strictly with zeta from the unitary (polar) state zeta = 0 to the fully charged state zeta = 1 (concavity of E\^{}(+-) in Delta\^{}2): the ground state is a unitary isospin-triplet condensate  -- minimum of Omega at zeta = 0: -9.720605e-5, at zeta = 1: -4.860303e-5 & PASS\\
+S-10 & which spin-zero channel condenses: at the same coupling (G = 12, mu = 0.5) the minimum of Omega in the scalar (0+) channel lies below that of the pseudoscalar (0-) channel for m = 0.2, and the two minima coincide for m = 0 (chiral symmetry maps one channel onto the other): for massive spinor charges the scalar isospin-triplet condensate is the ground state  -- m = 0.2: -9.720605e-5 (0+) and -4.685258e-5 (0-); m = 0: -1.384064e-4 and -1.384064e-4 & PASS\\
+S-7 & symmetry breaking under SU(2)\_v x U(1)\_F\_LL (isospin and fermion number, 4 generators): the polar state dvec = (0,0,1) keeps the rotations about the 3-axis (stabilizer of dimension 1; the electric charge Q\_LL = T\_LL\^{}3 stays unbroken: a neutral superfluid), the charged state dvec = (1, i, 0) keeps one combination of T\_LL\^{}3 and F\_LL (stabilizer 1; its condensed pairs Psi\_LL\^{}T (Kch\_1 - i Kch\_2) Psi\_LL consist of two isospin-up spinor charges, charge Q\_LL = +1); both break 3 generators  -- polar: broken 3, stabilizer 1, pair charge 0; charged: broken 3, stabilizer 1, pair charge +1 & PASS\\
+S-8 & the octonionic Cooper pair of two spinor-charge fields: (bS e4)(bS' e4) = -bS'bar bS splits into the scalar part -N\_LL(bS', bS) (Lorentz scalar AND isospin singlet: spin 0, isospin 0, charge 0: the super-loop singlet) and the imaginary part, which lies in the Lorentz part l\_LL (spin 1, isospin 0: the Malcev bracket); the scalar part is SYMMETRIC in the two fields, so it vanishes for one fermion field and needs two species (Theorem SF4) & PASS\\
+S-9 & two-species singlet: for one field the isospin-singlet scalar C\_LL gamma\_ch (x) eps2 is symmetric (the pair vanishes); for two species the pair matrix Kch\_singlet = C\_LL gamma\_ch (x) eps2 (x) eps2 (spin 0, isospin 0, species singlet: the third factor acts on the species index; antisymmetric as fermions require) gives the 16 positive BdG energies E\^{}- (8 times) and E\^{}+ (8 times) with E\^{}(+-) = [(eps +- mu)\^{}2 + Delta\^{}2]\^{}(1/2): a fully gapped super-loop-singlet superfluid that breaks only the fermion number and keeps isospin, electric charge and Lorentz invariance  -- E\^{}- = 0.347098, E\^{}+ = 0.878250 & PASS\\
+R-1 & mass dimensions in D + 1 space-time dimensions (D = number of space dimensions): [Psi\_LL] = D/2, [phi] = (D-1)/2, contact coupling [G] = 1 - D, Yukawa [g\_Y] = (3-D)/2, quartic [lam4] = 3 - D; D = 3: [G] = -2 (non-renormalizable), [g\_Y] = [lam4] = 0 (renormalizable); D = 7 (7+1, and 4+4, where power counting sees the total dimension 8): [G] = -6, [g\_Y] = -2, [lam4] = -4 (all non-renormalizable)  -- twice ([Psi\_LL], [phi], [G], [g\_Y], [lam4]): D = 3 (3, 2, -4, 0, 0), D = 7 (7, 6, -12, -4, -8) & PASS\\
+R-2 & superficial degree of divergence deg (topological counting nloop = nint\_F + nint\_B - nvert + 1, deg = (D+1) nloop - nint\_F - 2 nint\_B, compared with the formulas on all diagrams with up to 6 vertices): contact theory deg = (D+1) - D next\_F/2 + (D-1) nvert, Yukawa-quartic theory deg = (D+1) - D next\_F/2 - (D-1) next\_B/2 + (D-3)(nvert\_Y/2 + nvert\_4); for D = 3 the contact theory's deg grows by 2 per vertex (non-renormalizable) and the Yukawa theory's does not depend on the vertices (renormalizable); for D = 7 both grow (non-renormalizable) & PASS\\
+R-3 & the contact coupling must depend on the cutoff like Lambda\^{}-2: at a fixed physical gap (Delta = 0.05, mu = 0.5, m = 0.2) the bare coupling solving the gap equation obeys G Lambda\^{}2/(2 pi\^{}2) -$>$ 1 (within 2 \% at Lambda = 128): the cutoff cannot be removed with a finite number of logarithmic counterterms  -- G Lambda\^{}2/(2 pi\^{}2) at Lambda = 128: 0.99981 & PASS\\
+R-4 & Yukawa completion (pair field phi coupled to Psi\_LL\^{}T Kch Psi\_LL): the one-loop bubble Ibub(pE) = int d\^{}4kE/(2 pi)\^{}4 [kE.(kE+pE) + m\^{}2]/((kE\^{}2 + m\^{}2)((kE+pE)\^{}2 + m\^{}2)) (Euclidean, four-dimensional cutoff Lambda; pE = 1, m = 0.5) has a quadratically growing part Ibub(0) (absorbed by the mass counterterm) and a logarithmic momentum dependence: d[Ibub(pE) - Ibub(0)]/d ln Lambda -$>$ -pE\^{}2/(16 pi\^{}2) (absorbed by the wave-function counterterm); no new structure is needed  -- slope -6.332440e-3, -pE\^{}2/(16 pi\^{}2) = -6.332574e-3 & PASS\\
+R-5 & the renormalizable completion has finitely many couplings: the quartic polynomials of a complex isospin-triplet pair field phi (degree 2 in phi and 2 in phi\^{}*) invariant under the isospin rotations form a space of dimension exactly 2, spanned by (phi\^{}dag phi)\^{}2 and $|$phi\^{}T phi$|$\^{}2 (exact; with the Yukawa coupling and the masses this is the complete list)  -- dimension 2 & PASS\\
+R-6 & invariance under the loop's linear action equals invariance under its Lie closure: the quadratic forms on the real 16-dimensional B\_LL invariant under the 14 left multiplications L\_x and those invariant under the 56-dimensional closure so(8,C) form the same 2-dimensional space (Re N\_LL and Im N\_LL, verified exactly): every counterterm allowed by the closure is allowed by the loop and conversely, so the super-loop pattern of a Lagrangian is as stable under renormalization as the closure symmetry  -- closure 56, invariant forms 2 / 2 & PASS\\
+G-1 & F\_A (l\_LL + s\_LL), Jacobi identity: csl\_re and csl\_im lie in the ideal, so every LIE algebra of the family has [s\_LL, s\_LL] = 0 (no Lorentz part): bosonic spinor charges cannot close into so(3,1) (Theorem L) & PASS\\
+G-2 & F\_A, Jacobi identity: Re and Im of c\_tw (c\_tw - 1) with c\_tw = ctw\_re + i ctw\_im, i.e. ctw\_re\^{}2 - ctw\_re - ctw\_im\^{}2 and ctw\_im (2 ctw\_re - 1), lie in the ideal; their only real common zeros are c\_tw = 0 and c\_tw = 1: the Lie action of so(3,1) on the spinor charges is 0 or the Weyl representation & PASS\\
+G-3 & F\_A, Malcev identity: Re and Im of c\_tw (c\_tw - 1)(c\_tw + 2) with c\_tw = ctw\_re + i ctw\_im lie in the ideal; this complex cubic has only the real roots 0, 1, -2: the twist is 0, 1 (Lie) or -2 (non-Lie), and ctw\_im = 0 & PASS\\
+G-4 & F\_A, Malcev identity: on every real solution with [s\_LL, s\_LL] != 0 (csl\_re\^{}2 + csl\_im\^{}2 != 0) the twist is c\_tw = -2 (ctw\_re + 2 and ctw\_im lie in the saturated ideal): the bi-octonion algebra m\_LL is the only solution with c\_sl != 0 (up to the rescaling bS -$>$ lambda\_sc bS by a complex number lambda\_sc != 0, which maps c\_sl to lambda\_sc\^{}2 c\_sl) & PASS\\
+G-5 & F\_B (Poincare or (anti-)de Sitter + spinor charges), Jacobi identity: csl\_re, csl\_im, cPP\_im lie in the ideal; ctw\_im = 0 and ctw\_re (ctw\_re - 1) = 0 on real solutions (ctw\_im (4 ctw\_im\^{}2 + 1) lies in the ideal) & PASS\\
+G-6 & F\_B, Jacobi identity: cPP\_re ctw\_re - (cPs\_re\^{}2 + cPs\_im\^{}2), csP (ctw\_re - 1), csP cPP\_re, csP cPs\_re, csP cPs\_im lie in the ideal: the Lie solutions are (i) Poincare with abelian spinor charges, (ii) Poincare with [s\_LL, s\_LL] in p\_LL (csP != 0, a bosonic analogue of supersymmetry), (iii) curvature cPP\_re = $|$c\_Ps$|$\^{}2 $>$= 0 with [p\_LL, s\_LL] != 0 and [s\_LL, s\_LL] = 0 & PASS\\
+G-7 & F\_B, Malcev identity: csl\_re and csl\_im lie in the ideal: in the presence of translations (flat or curved) even a MALCEV algebra cannot close spinor charges into the Lorentz algebra & PASS\\
+G-8 & F\_B, Malcev identity: Re and Im of c\_tw (c\_tw - 1)(c\_tw + 2) lie in the ideal (c\_tw = 0, 1 or -2 on real points), and cPs\_re (ctw\_re - 1), cPs\_im (ctw\_re - 1), csP (ctw\_re - 1), cPP\_re ctw\_re - $|$c\_Ps$|$\^{}2 lie in it: for the twist c\_tw = -2 one gets c\_Ps = 0, csP = 0, cPP\_re = 0, c\_sl = 0 & PASS\\
+G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_im, cPP\_re, cPP\_im, cPs\_re, cPs\_im, csl\_re, csl\_im, csP: the only non-Lie Malcev extension of the Poincare algebra by spinor charges in this family is the ABELIAN twisted module (spinor charges commute with each other and with the translations) & PASS\\
+G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
+G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
+G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
+LL-S1 & every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (297 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 196 items of the 80 new entries is an item of either master registry (503 items compared); the 21 items that the registry of Revision\_NoGo also contains are exactly the 21 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 14 data files data/sl\_*.csv is a registered plain-text name or a descriptive word (68 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 4 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 1743 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 2235 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 2130 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters) & PASS\\
+LL-S8 & every one of the 2099 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 21 reports and data files is a registered plain-text name & PASS\\
+LL-H1 & none of the 24 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
+<!-- END checks_rows_tex -->
+
+<!-- BEGIN nchecks_rust -->
+62
+<!-- END nchecks_rust -->
+
+<!-- BEGIN nchecks_physics -->
+74
+<!-- END nchecks_physics -->
+
+<!-- BEGIN assoc_nonzero -->
+168
+<!-- END assoc_nonzero -->
+
+<!-- BEGIN assoc_zero -->
+344
+<!-- END assoc_zero -->
+
+<!-- BEGIN jac_rank -->
+14
+<!-- END jac_rank -->
+
+<!-- BEGIN killing_e1 -->
+$-16$
+<!-- END killing_e1 -->
+
+<!-- BEGIN killing_ie1 -->
+$16$
+<!-- END killing_ie1 -->
+
+<!-- BEGIN der_rank -->
+228
+<!-- END der_rank -->
+
+<!-- BEGIN der_span -->
+28
+<!-- END der_span -->
+
+<!-- BEGIN n_assoc_rows -->
+28
+<!-- END n_assoc_rows -->
+
+<!-- BEGIN groebner_FA_jacobi -->
+ctw_im*(4*ctw_im**2 + 1)
+-ctw_im**2 + ctw_re**2 - ctw_re
+ctw_im*(2*ctw_re - 1)
+csl_re
+csl_im
+<!-- END groebner_FA_jacobi -->
+
+<!-- BEGIN groebner_FA_malcev -->
+ctw_im*(12*ctw_im**4 + 35*ctw_im**2 - 10*ctw_re + 13)
+ctw_im*(12*ctw_im**2*ctw_re + 4*ctw_im**2 + 7*ctw_re - 1)
+csl_im*(2*ctw_im**2*ctw_re - ctw_im**2 - 3*ctw_re - 6)
+csl_im*ctw_im*(2*ctw_im**2 + 5*ctw_re + 7)
+-3*ctw_im**2*ctw_re - ctw_im**2 + ctw_re**3 + ctw_re**2 - 2*ctw_re
+-ctw_im*(ctw_im**2 - 3*ctw_re**2 - 2*ctw_re + 2)
+csl_im*(ctw_im**2 + ctw_re**2 + 4*ctw_re + 4)
+-csl_im*ctw_im + csl_re*ctw_re + 2*csl_re
+csl_im*ctw_re + 2*csl_im + csl_re*ctw_im
+<!-- END groebner_FA_malcev -->
+
+<!-- BEGIN groebner_table -->
+| family | identity | independent constraint polynomials | random tuples used | elements of the reduced Groebner basis |
+|---|---|---|---|---|
+| $\mathcal F^{\rm A}_{\rm LL}$ | Jacobi | 6 | 13 | 5 |
+| $\mathcal F^{\rm A}_{\rm LL}$ | Malcev | 8 | 13 | 9 |
+| $\mathcal F^{\rm B}_{\rm LL}$ | Jacobi | 19 | 15 | 19 |
+| $\mathcal F^{\rm B}_{\rm LL}$ | Malcev | 85 | 20 | 20 |
+| $\mathcal F^{\rm C}_{\rm LL}$ | Jacobi | 12 | 15 | 25 |
+| $\mathcal F^{\rm C}_{\rm LL}$ | Malcev | 43 | 16 | 113 |
+<!-- END groebner_table -->
+
+<!-- BEGIN n_family_members -->
+24
+<!-- END n_family_members -->
+
+<!-- BEGIN spectra_dev -->
+$7.11\times10^{-15}$
+<!-- END spectra_dev -->
+
+<!-- BEGIN gcrit_m0 -->
+$19.739209$
+<!-- END gcrit_m0 -->
+
+<!-- BEGIN gcrit_m02 -->
+$21.286610$
+<!-- END gcrit_m02 -->
+
+<!-- BEGIN bcs_slope -->
+$-43.0637$
+<!-- END bcs_slope -->
+
+<!-- BEGIN bcs_value -->
+$-43.0745$
+<!-- END bcs_value -->
+
+<!-- BEGIN bcs_ratio -->
+$0.9997$
+<!-- END bcs_ratio -->
+
+<!-- BEGIN omega_min_z0 -->
+$-9.720605\times10^{-5}$
+<!-- END omega_min_z0 -->
+
+<!-- BEGIN omega_min_z1 -->
+$-4.860303\times10^{-5}$
+<!-- END omega_min_z1 -->
+
+<!-- BEGIN omega_ratio_z1 -->
+$0.500000$
+<!-- END omega_ratio_z1 -->
+
+<!-- BEGIN omega_scalar_m02 -->
+$-9.720605\times10^{-5}$
+<!-- END omega_scalar_m02 -->
+
+<!-- BEGIN omega_pseudo_m02 -->
+$-4.685258\times10^{-5}$
+<!-- END omega_pseudo_m02 -->
+
+<!-- BEGIN omega_m0 -->
+$-1.384064\times10^{-4}$
+<!-- END omega_m0 -->
+
+<!-- BEGIN singlet_Em -->
+$0.347098$
+<!-- END singlet_Em -->
+
+<!-- BEGIN singlet_Ep -->
+$0.878250$
+<!-- END singlet_Ep -->
+
+<!-- BEGIN gap_G12 -->
+$0.090417$
+<!-- END gap_G12 -->
+
+<!-- BEGIN gcrit_formula_value -->
+$19.7392088022$
+<!-- END gcrit_formula_value -->
+
+<!-- BEGIN n_couplings -->
+40
+<!-- END n_couplings -->
+
+<!-- BEGIN G_first -->
+$6$
+<!-- END G_first -->
+
+<!-- BEGIN G_last -->
+$29.4$
+<!-- END G_last -->
+
+<!-- BEGIN gap_first -->
+$2.568874\times10^{-3}$
+<!-- END gap_first -->
+
+<!-- BEGIN gap_last -->
+$0.688144$
+<!-- END gap_last -->
+
+<!-- BEGIN contact_running_128 -->
+$0.99981$
+<!-- END contact_running_128 -->
+
+<!-- BEGIN bubble_slope -->
+$-6.332440\times10^{-3}$
+<!-- END bubble_slope -->
+
+<!-- BEGIN bubble_target -->
+$-6.332574\times10^{-3}$
+<!-- END bubble_target -->
+
+<!-- BEGIN bubble_ratio -->
+$0.99998$
+<!-- END bubble_ratio -->
+
+<!-- BEGIN contact_running_table -->
+| $\Lambda_{\rm LL}$ | $G_{\rm LL}$ | $G_{\rm LL}\Lambda_{\rm LL}^2/(2\pi^2)$ |
+|---|---|---|
+| 1 | 10.258986 | 0.519726 |
+| 2 | 3.737871 | 0.757451 |
+| 4 | 1.121104 | 0.908732 |
+| 8 | 0.299414 | 0.970782 |
+| 16 | 0.076436 | 0.991311 |
+| 32 | 0.019228 | 0.997505 |
+| 64 | 0.004816 | 0.999298 |
+| 128 | 0.001205 | 0.999805 |
+<!-- END contact_running_table -->
+
+<!-- BEGIN bubble_table -->
+| $\Lambda_{\rm LL}$ | $I^{\rm bub}_{\rm LL}(0)$ | $I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)$ |
+|---|---|---|
+| 10 | 0.62376810 | -0.01583480 |
+| 20 | 2.52134855 | -0.02021827 |
+| 40 | 10.11824336 | -0.02460619 |
+| 80 | 40.51240394 | -0.02899523 |
+| 160 | 162.09562965 | -0.03338454 |
+<!-- END bubble_table -->
+
+<!-- BEGIN data_files_table -->
+| data file | content (header line of the file) | columns |
+|---|---|---|
+| `sl_associators.csv` | the non-zero associators [e_p1, e_p2, e_p3] = (e_p1 e_p2) e_p3 - e_p1 (e_p2 e_p3) of three units with p1 < p2 < p3; each equals coefficient x the unit result (all other orders follow by alternativity) | `unit1` `unit2` `unit3` `result` `coefficient` |
+| `sl_contact_running.csv` | bare contact coupling G versus the cutoff Lambda at the fixed gap Delta = 0.05 (mu = 0.5, m = 0.2) | `Lambda` `G` `G_times_Lambda2` `G_times_Lambda2_over_2pi2` |
+| `sl_malcev_families.csv` | members of the covariant families verified exhaustively: Jacobi on all basis triples, linearized Malcev on all basis 4-tuples | `family` `coefficients` `Lie` `Malcev` `failing_Malcev_4_tuples` |
+| `sl_malcev_structure.csv` | non-zero commutators of the real basis elements of the Malcev algebra m_LL = C (x) Im O: [left, right] = coefficient x result (left before right in the basis order e1, e2, e3, ie1, ie2, ie3, e4..e7, ie4..ie7) | `left` `right` `result` `coefficient` |
+| `sl_manifolds.csv` | manifolds that carry the Lorentz super-loop | `manifold` `real_dimension` `signature` `role` |
+| `sl_multiplication_table.csv` | products of the units e0..e7 of B_LL (row: left factor, column: right factor); the bi-octonions are the complex combinations of the units | `left` `e0` `e1` `e2` `e3` `e4` `e5` `e6` `e7` |
+| `sl_power_counting.csv` | superficial degree of divergence deg: theory 0 = contact (next_F = 4), theory 1 = Yukawa (next_F = 2, next_B = 0), versus the number of vertices nvert, for D = 3 and D = 7 space dimensions | `D` `theory` `nvert` `next_F` `next_B` `deg` |
+| `sl_quantum_numbers.csv` | quantum numbers of the sectors of B_LL under the operators of the super-loop: Q_LL (eigenvalues with multiplicities), T_LL^2, Cas_LL, Lorentz type, spinor number exp(2 pi D_LL(J_LL^3)), twist charge Theta_LL | `sector` `real_dimension` `Q_LL` `T_LL^2` `Cas_LL` `Lorentz_type` `spinor_number` `Theta_LL` |
+| `sl_sf_channels.csv` | pair channels of the spinor charges: pair matrix, spin and parity, isospin, charge Q_LL of the pair, remark | `pair_matrix` `spin_parity` `isospin` `pair_charge` `remark` |
+| `sl_sf_dispersion.csv` | quasiparticle energies versus q at G = 12, mu = 0.5, m = 0.2: polar state E^-, E^+; charged state (zeta = 1) gapped branch E^-(sqrt(2) Delta) [its other branch is the normal \|eps - mu\|]; normal state \|eps - mu\|; pseudoscalar channel Etilde^-, Etilde^+ at the same Delta | `q` `E_minus_polar` `E_plus_polar` `E_minus_charged_gapped` `E_normal` `Etilde_minus` `Etilde_plus` |
+| `sl_sf_gap_vs_coupling.csv` | unitary scalar (0+) isospin-triplet state: gap Delta and Omega(Delta) - Omega(0) versus the coupling G (cutoff Lambda = 1, mu = 0.5, m = 0.2); G_over_Gcrit_m0 is G divided by G_crit at mu = 0, m = 0 | `G` `G_over_Gcrit_m0` `Delta` `Omega_minus_Omega0` |
+| `sl_sf_omega_zeta.csv` | minimum over \|dvec\| of Omega(dvec) - Omega(0) at fixed zeta = \|cross(dvec, dvec^*)\|/\|dvec\|^2 (G = 12, mu = 0.5, m = 0.2), the \|dvec\| of the minimum, and Omega at \|dvec\| = the gap of the polar state | `zeta` `abs_dvec_at_min` `Omega_min` `Omega_at_polar_gap` |
+| `sl_sf_states.csv` | spin-zero isospin-triplet states of the superfluid of the spinor charges: order parameter dvec, zeta, dimension of the stabilizer in SU(2)_v x U(1)_F_LL, broken generators, charge of the condensed pairs, gaps | `state` `dvec` `zeta` `stabilizer_dim` `broken_generators` `pair_charge` `gaps` |
+| `sl_yukawa_bubble.csv` | Euclidean bubble Ibub of the Yukawa completion versus the cutoff Lambda at pE = 1, m = 0.5; Ibub(0) grows like Lambda^2, Ibub(pE) - Ibub(0) like -(pE^2/16 pi^2) ln Lambda | `Lambda` `Ibub_0` `Ibub_pE` `Ibub_pE_minus_Ibub_0` |
+<!-- END data_files_table -->
+
+<!-- BEGIN data_files_tex -->
+\texttt{sl\_associators.csv}: the non-zero associators [e\_p1, e\_p2, e\_p3] = (e\_p1 e\_p2) e\_p3 - e\_p1 (e\_p2 e\_p3) of three units with p1 $<$ p2 $<$ p3; each equals coefficient x the unit result (all other orders follow by alternativity).
+\texttt{sl\_contact\_running.csv}: bare contact coupling G versus the cutoff Lambda at the fixed gap Delta = 0.05 (mu = 0.5, m = 0.2).
+\texttt{sl\_malcev\_families.csv}: members of the covariant families verified exhaustively: Jacobi on all basis triples, linearized Malcev on all basis 4-tuples.
+\texttt{sl\_malcev\_structure.csv}: non-zero commutators of the real basis elements of the Malcev algebra m\_LL = C (x) Im O: [left, right] = coefficient x result (left before right in the basis order e1, e2, e3, ie1, ie2, ie3, e4..e7, ie4..ie7).
+\texttt{sl\_manifolds.csv}: manifolds that carry the Lorentz super-loop.
+\texttt{sl\_multiplication\_table.csv}: products of the units e0..e7 of B\_LL (row: left factor, column: right factor); the bi-octonions are the complex combinations of the units.
+\texttt{sl\_power\_counting.csv}: superficial degree of divergence deg: theory 0 = contact (next\_F = 4), theory 1 = Yukawa (next\_F = 2, next\_B = 0), versus the number of vertices nvert, for D = 3 and D = 7 space dimensions.
+\texttt{sl\_quantum\_numbers.csv}: quantum numbers of the sectors of B\_LL under the operators of the super-loop: Q\_LL (eigenvalues with multiplicities), T\_LL\^{}2, Cas\_LL, Lorentz type, spinor number exp(2 pi D\_LL(J\_LL\^{}3)), twist charge Theta\_LL.
+\texttt{sl\_sf\_channels.csv}: pair channels of the spinor charges: pair matrix, spin and parity, isospin, charge Q\_LL of the pair, remark.
+\texttt{sl\_sf\_dispersion.csv}: quasiparticle energies versus q at G = 12, mu = 0.5, m = 0.2: polar state E\^{}-, E\^{}+; charged state (zeta = 1) gapped branch E\^{}-(sqrt(2) Delta) [its other branch is the normal $|$eps - mu$|$]; normal state $|$eps - mu$|$; pseudoscalar channel Etilde\^{}-, Etilde\^{}+ at the same Delta.
+\texttt{sl\_sf\_gap\_vs\_coupling.csv}: unitary scalar (0+) isospin-triplet state: gap Delta and Omega(Delta) - Omega(0) versus the coupling G (cutoff Lambda = 1, mu = 0.5, m = 0.2); G\_over\_Gcrit\_m0 is G divided by G\_crit at mu = 0, m = 0.
+\texttt{sl\_sf\_omega\_zeta.csv}: minimum over $|$dvec$|$ of Omega(dvec) - Omega(0) at fixed zeta = $|$cross(dvec, dvec\^{}*)$|$/$|$dvec$|$\^{}2 (G = 12, mu = 0.5, m = 0.2), the $|$dvec$|$ of the minimum, and Omega at $|$dvec$|$ = the gap of the polar state.
+\texttt{sl\_sf\_states.csv}: spin-zero isospin-triplet states of the superfluid of the spinor charges: order parameter dvec, zeta, dimension of the stabilizer in SU(2)\_v x U(1)\_F\_LL, broken generators, charge of the condensed pairs, gaps.
+\texttt{sl\_yukawa\_bubble.csv}: Euclidean bubble Ibub of the Yukawa completion versus the cutoff Lambda at pE = 1, m = 0.5; Ibub(0) grows like Lambda\^{}2, Ibub(pE) - Ibub(0) like -(pE\^{}2/16 pi\^{}2) ln Lambda.
+\texttt{sl\_groebner\_bases.txt}: the reduced Groebner bases of the six constraint ideals.
+\texttt{sl\_algebra\_checks.txt}, \texttt{sl\_malcev\_checks.txt}, \texttt{sl\_manifolds\_checks.txt}, \texttt{sl\_superfluid\_checks.txt}, \texttt{sl\_renorm\_checks.txt}, \texttt{sl\_groebner\_checks.txt}, \texttt{sl\_symbol\_checks.txt}, \texttt{sl\_self\_contained\_checks.txt}: the reports of Table~\ref{tab:checks}.
+<!-- END data_files_tex -->
+
+<!-- BEGIN n_rust_lines -->
+3305
+<!-- END n_rust_lines -->
+
+<!-- BEGIN n_rust_files -->
+9
+<!-- END n_rust_files -->
+
+<!-- BEGIN n_groebner_lines -->
+486
+<!-- END n_groebner_lines -->
+
+<!-- BEGIN data_sha256 -->
+280787dfd4c8336cb63a314a332559cdb91ab4de4aacfa9f3547ab748d1d9a22  sl_algebra_checks.txt
+b0c7312ba54c997c485492d313dcba905f2e4fb09ed9cb1222382579acd5f3e3  sl_associators.csv
+290e26ae38ad95f39199a10c75264cb0f326a75cb8973254aad5a0ba32da9073  sl_contact_running.csv
+3239d96fd7eeafb436fea956d6ad4e73760b7f205a701b05ddfb5ebce9131008  sl_groebner_bases.txt
+b4d99fc5fd7eefce05bbac017563ab864e787b80663915c5cbf50574cff318a6  sl_groebner_checks.txt
+e26d9914e9d7a30eb9e75ea3e8776b9f87516ccaae225631666ad23e511e238d  sl_malcev_checks.txt
+dff39dffa2f958ca1d0c2d5944393b5756db4b2816c5043334ab1af0a60d86f4  sl_malcev_families.csv
+34e8d33fc5e375bcb35f4023ba732d622db74b530e651caea7e9603b6ada941a  sl_malcev_structure.csv
+ab062b4a66b8a38abe410ffafdb0a95521cf30ba4e095eca6053d625627c323d  sl_manifolds.csv
+13336d96de70487a043d6c5f06d5536f16269b1e19157ee445189847321ec16c  sl_manifolds_checks.txt
+b1cfd3dfc2434a613909e50cc3a23ca0edfb7b16007129f6137e53c3755f53a0  sl_multiplication_table.csv
+1892ba5e74d6afc965fce4dfd36b5b8d8e28f715e4e57b4b8f533c5dd42912d4  sl_power_counting.csv
+4014ea2dd2f73847097be883f5ee73a6329f08e689f6e6784be3161c93cdf18f  sl_quantum_numbers.csv
+4e18b556b2e26a20b3946694e192780fcafabdca0c92da4ede8835cb23960014  sl_renorm_checks.txt
+0f3635dcb9d1f5156c2cb2183192a9600bcb34430f1285f28c8c7dac7a40b4f5  sl_sf_channels.csv
+dea8b2c8284a70334768cc492bdd32d9d0ac7c723abcb31a1f2e95c8e3459495  sl_sf_dispersion.csv
+8bd27baccf82bd3fe666951b10ee99e81b6de1d1299a1362bf774bc1fb83527b  sl_sf_gap_vs_coupling.csv
+6dbce6906928d983723928c990f61e9fe9aab72c52de96dfe7bca9f2d7f6edd3  sl_sf_omega_zeta.csv
+27d74793da4c0e42cbc1f0cf7a4bb0ef39f5b2e8dfc52bb7c836303bca86cb8a  sl_sf_states.csv
+f6692aa0efd3b52ef97406c4f0853f0ea2163434526398653004f979f4657c62  sl_superfluid_checks.txt
+171af3b33706ea76db8b74c266d31f86674d8e34ac0f3d61e244287cb7ae1508  sl_yukawa_bubble.csv
+<!-- END data_sha256 -->
+
+<!-- BEGIN figure_sha256 -->
+2bc7a676537fa73fd08c8d30cc057d2055ebf53df2f813ed4e72d6cc71afe205  fig_sl_charges.pdf
+ac70bdd826a0d65c59fb79b94d300393fc68015bbb4d0189fc053fe8e0802980  fig_sl_classification.pdf
+aa7132242af09217d639b821c1c4acd1e79eb49085c8db55628ad08051db21bf  fig_sl_manifolds.pdf
+e0f3c69f58033cc4248d9dee033dd0ebc19e2e520d0a2e243ce93f33f1725497  fig_sl_renorm.pdf
+0a76d5ed9e6d22ddd2e0ab0c615562514220623621094a885f19a600e68481ed  fig_sl_superfluid.pdf
+e02fc2cb28f14725fc0605e0ee87b6d85b3e99fc5fc8403722cf7ab6633a6e24  fig_sl_superloop.pdf
+4f73b86dd47fe47973a6cc16e0ba68e9f50049c7510c484cacd75fbe0b52240d  fig_sl_tables.pdf
+<!-- END figure_sha256 -->
+
+<!-- BEGIN code_sha256 -->
+bd886920b5c69449d0bfed2064654e91f6b6b8bcf98c75eeb2dec38a9538ed67  code/superloop-rs/src/algebra.rs
+01e0867bd3f3bad05b555249fe79732fb71cdcb909fe16b9885f3dca734fcdea  code/superloop-rs/src/bioct.rs
+ecc3d05e48b6a49eefe1fae96dcf340d7c54ca275d995db30ad018e7d651e2cd  code/superloop-rs/src/checks.rs
+cc2abe0ad40727da94e17b2cc78891b41b564bde4ba56f460a5f7319f2ad6e78  code/superloop-rs/src/exact.rs
+124f653bbc959e6d591e693dcbbb3812cd564dbd00047652029255c65ced70d9  code/superloop-rs/src/main.rs
+def7dbfc144559e324d3337cd16d851fa0b0d8a17114fe81eadf830581af1a0e  code/superloop-rs/src/malcev.rs
+d9f46fbb4a2bcbccfd2107fd6fbf41091e78352c1346d943a9ce6385423dba04  code/superloop-rs/src/manifolds.rs
+b0097ad508f55fe34ce5d8ad72c4ac7a3d7cf7d919661ca1422d1dbc6b747d88  code/superloop-rs/src/renorm.rs
+61a6fb93c9591631e820c538d003a551447945a2bafe2ae84652dcd056383765  code/superloop-rs/src/superfluid.rs
+84ce114dda4a896f3a7286572de3301961e6f1d82cd208379b093187e64a4c4c  code/superloop-rs/Cargo.toml
+f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/assemble_docs.py
+fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
+465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
+4dd6d3b2f3dcf6a9c3597eee5e4c5f4f9ab35215b7bde005911a50ada6abc1b1  code/scripts/check_self_contained.py
+d50f8cf3a5128d80868342fd115c548521dbeec504e361018d545b280c17d1f1  code/scripts/check_symbols.py
+d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
+cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
+cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
+e356ad8888d52fcdfb4fd3d2f4428db576ac3684cdae67f1bf817224208eacbe  code/scripts/write_doc_tables.py
+cf348ee5716421843779cd389f8e1cfedf3da3ee63840d3ca29ee72b41d482f3  code/scripts/write_symbol_registry.py
+783183f2a23f1fb50b3b430d6243f2f214e6e40d7b1e4ec971a59ad0a9f161f9  code/scripts/build_docs.sh
+37ef30d8faa3b60e33c77655ad2fe4fc30563aac76fc921788f09112bca5df6a  code/scripts/check_all.sh
+cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
+<!-- END code_sha256 -->

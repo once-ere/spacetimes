@@ -7,8 +7,9 @@ authors = ["Patrick Lee Nash"]
 license = "GPL-3.0-or-later"
 
 # The only dependency is the Rust program of the main project (two folders up), which
-# supplies complex numbers, complex Hermitian diagonalisation, exact integer ranks
-# modulo a prime, Gauss-Legendre rules, Brent's root finder and the CSV writer.
+# supplies complex numbers, complex Hermitian diagonalization, Gauss-Legendre rules,
+# Brent's root finder and the CSV writer (the exact ranks, spans, Lie closures and
+# signatures are computed by the module exact.rs of this program).
 # No crate is downloaded: the program builds offline with a Rust toolchain alone.
 [dependencies]
 spacetimes = { path = "../../../code/spacetimes-rs" }

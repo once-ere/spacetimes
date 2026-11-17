@@ -1,0 +1,72 @@
+\section{Introduction}
+\label{sec:intro}
+
+A \emph{symmetry} of a physical system is a transformation that maps solutions (or states) to
+solutions and leaves the laws unchanged. Two kinds are familiar. \emph{Space-time} symmetries act on
+the coordinates: rotations, boosts (together the Lorentz transformations) and translations.
+\emph{Internal} symmetries act on the components of the fields at each point and commute with every
+space-time transformation, like the isospin rotations of a doublet of fields or the phase rotations
+whose generator is the electric charge. In the 1960s it was hoped that the two kinds could be united
+in one larger symmetry, in which an internal multiplet would also be a Lorentz multiplet. A series of
+theorems---McGlinn~\cite{McGlinn1964}, O'Raifeartaigh~\cite{ORaifeartaigh1965} and Coleman and
+Mandula~\cite{ColemanMandula1967}---showed that this is impossible under hypotheses that seemed
+harmless, and Haag, {\L}opusza\'nski and Sohnius~\cite{HLS1975} showed that the only way out within
+operator algebras is to admit generators that \emph{anticommute}: supersymmetry. Pelc and Horwitz
+extended the theorem of Coleman and Mandula to any number of space dimensions~\cite{PelcHorwitz1997}.
+
+A theorem cannot have a counterexample in which all its hypotheses hold. What can exist is a
+structure in which a hypothesis fails and the conclusion of the theorem fails with it: a
+\emph{counterexample to the conclusion}. This paper constructs such structures by giving up one
+hypothesis that every proof uses and none states as a physical assumption: \emph{associativity}.
+The symmetries are assumed to compose like the elements of a group (associatively: three
+transformations performed in succession give a result that does not depend on which two are combined
+first), to act by linear operators, whose products are associative, and therefore to have generators
+that obey the Jacobi identity. We show in Sec.~\ref{sec:nogo} exactly where these assumptions enter.
+
+The non-associative object we use is the algebra of \emph{bi-octonions} $\mathbb B_{\rm LL}$, the
+octonions with complex coefficients. Its unit elements form a \emph{Moufang loop}, a set with a
+product that has a unit element and inverses but is not associative, which we call the
+\emph{Lorentz super-loop} $\mathbb L_{\rm LL}$. It contains the group $SL(2,\mathbb C)$, the double cover of the
+Lorentz group, and eight further directions, the \emph{spinor charges}, which transform as a Weyl
+spinor of one chirality and form an isospin doublet with electric charges $\pm\tfrac12$. In its
+algebra of infinitesimal elements, a Malcev algebra $\mathfrak m_{\rm LL}$, two spinor charges have a
+Lorentz generator as their bracket. We prove (Theorem~L) that no Lie algebra can do this, that the
+super-loop is the only solution among all Lorentz- and isospin-covariant brackets (Theorem~M), and
+that its non-associativity is irreducible: it has no realization by operators (Theorem~R). These are
+the requested counterexamples: Lorentz and internal degrees of freedom combined in one structure, with
+operators whose eigenvalues are the electric charge, the chirality, the spinor number, and a new
+quantity, the \emph{twist charge}, which takes the value $-2$ on the spinor charges and measures by how
+much the Lorentz action on them fails to be a representation.
+
+We then ask which manifolds carry the super-loop (Sec.~\ref{sec:manifolds}): the Minkowski spaces of
+$7+1$ and $3+1$ dimensions inside the bi-octonions, the split octonions of signature $4+4$, the
+seven-sphere and the super-loop itself, a parallelizable manifold that is not a Lie group. We analyze
+the spin-zero superfluid of the spinor charges (Sec.~\ref{sec:superfluid}): the field content follows
+from the bi-octonion product, the spin-zero pairs of one field are isospin triplets, the unitary state
+wins, and the pair that is a singlet of the whole super-loop needs two species of fields. Finally we
+decide whether these theories are renormalizable (Sec.~\ref{sec:renorm}).
+
+Every statement of this paper is verified by a machine check, labelled as in Appendix~\ref{app:checks}
+(for example A-2 or S-5); exact statements are checked in exact integer or rational arithmetic. The
+programs, the data files and the commands that reproduce every number are listed in
+Appendix~\ref{app:data}, and every symbol is defined in Appendix~\ref{app:notation}. Units: $\hbar$ and
+the speed of light are 1; in Secs.~\ref{sec:superfluid} and~\ref{sec:renorm} the momentum cutoff
+$\Lambda_{\rm LL}=1$ unless a unit is shown.
+
+\begin{table}[t]
+\caption{The theorems proved in this paper and the machine checks on which they rest.}
+\label{tab:theorems}
+\begin{ruledtabular}
+\begin{tabular}{p{0.11\columnwidth}p{0.62\columnwidth}p{0.17\columnwidth}}
+label & statement (short form) & checks\\
+\hline
+R & $\mathfrak m_{\rm LL}$ has no realization by operators; $\mathbb L_{\rm LL}$ is not a group of operators & A-6, A-7, A-8\\
+L & no Lie algebra extends $\mathfrak{so}(3,1)$ by spinor charges whose brackets contain Lorentz generators & L-6, G-1, G-5, G-10\\
+M & among all covariant brackets, the bi-octonion algebra $\mathfrak m_{\rm LL}$ is the unique such Malcev algebra; with translations or with isospin acting on the spinor charges there is none & G-3, G-4, G-7 to G-12, M-1 to M-9\\
+SF1 & the spin-zero pairs of one field are isospin triplets & S-1, S-2\\
+SF2 & the spectra of the superfluid & S-3\\
+SF3 & the unitary state has the lowest energy & S-6\\
+SF4 & the super-loop singlet pair needs two species & S-8, S-9\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}

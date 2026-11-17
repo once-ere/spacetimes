@@ -1,0 +1,252 @@
+\appendix
+\onecolumngrid
+
+\section{Notation}
+\label{app:notation}
+
+Table~\ref{tab:symbols} defines every symbol of this paper, by group, with the plain-text names under
+which the programs, the figures and the data files write it. Two entries are taken from the master
+registries of the symbols of PROJECT spacetimes and keep exactly the meaning that they have in the
+rest of the project, followed by a note on their use here: the index $j$ (registered in the project as
+$i,j$, the index of the space-like coordinates; here only $j$ is an index, and $i$ is the imaginary
+unit) and the number $D$ of space dimensions. All other entries are new. Every new symbol carries the
+suffix LL (for \emph{Lorentz super-loop}), written as a subscript ($Q_{\rm LL}$) or, where the lower
+position holds an index, as a superscript ($\sigma^{\rm LL}_j$), except the following, which cannot be
+read as anything else: the bi-octonions and their parts in bold upright type ($\mathbf x$, $\mathbf
+e_p$, $\mathbf u$, $\mathbf b$, \dots), the unit matrix $\mathsf 1_4$ and the operators $\mathsf O_1$,
+$\mathsf O_2$, $\mathsf O_3$ of Sec.~\ref{sec:nogo}, the number sets and algebras in blackboard type
+($\mathbb R$, $\mathbb C$, $\mathbb H$, $\mathbb O$), the groups and Lie algebras ($SL(2,\mathbb C)$,
+$\mathfrak{so}(3,1)$, \dots), operation signs, and the plain symbols $i$ (the imaginary unit), $p$ (an
+index over the basis of an algebra) and $\iota$ (the isospin index). The letter $\mathsf K$ without
+scripts in Theorem~SF1 is any $8\times8$ pair matrix.
+
+The machine checks LL-S1 to LL-S8 (Appendix~\ref{app:checks}) verify that the symbols obey these rules:
+no symbol and no plain-text name is registered twice (LL-S1); the taken entries carry the meanings of
+the master registries, no new symbol coincides with a symbol of a master registry, and the symbols that
+this paper shares with the sibling folder \texttt{Revision\_NoGo} of the repository are declared and
+denote the same objects there (LL-S2); every column of every data file is a registered name or a
+descriptive word (LL-S3); every document of this revision contains the complete table of symbols
+(LL-S4); the symbols of the superfluid, $\mu_{\rm LL}$, $\Lambda_{\rm LL}$, $\Omega_{\rm LL}$,
+$\nu^{\rm F}_{\rm LL}$, $\Delta_{\rm LL}$, $\zeta_{\rm LL}$, $\varepsilon_{\rm LL}$, always carry their suffix
+(LL-S5); no letter that the project uses with another meaning occurs in a formula without the suffix
+LL (LL-S6); every letter in bold, sans-serif, calligraphic, blackboard or fraktur type is registered
+(LL-S7); and every name with the suffix \texttt{\_LL}, every name of an algebra element, every
+coefficient and every pair matrix that occurs in a report or data file is registered (LL-S8). Units:
+$\hbar$ and the speed of light are 1; in Secs.~\ref{sec:superfluid} and~\ref{sec:renorm} the momentum
+cutoff $\Lambda_{\rm LL}=1$ unless a unit is shown.
+
+{\small\longtabledepth
+\begin{longtable}{p{0.24\textwidth}p{0.54\textwidth}>{\raggedright\arraybackslash\footnotesize}p{0.16\textwidth}}
+\caption{The symbols of this paper, by group, with the plain-text names under which the programs, the
+figures and the data files write them.}\label{tab:symbols}\\
+\toprule
+symbol & meaning & plain-text names\\
+\midrule
+\endfirsthead
+\toprule
+symbol & meaning (continued) & plain-text names\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+{{GENRAW:symbols_ll_texrows}}
+\end{longtable}
+}\longtabledepthrestore
+
+\emph{Plain-text names.} The programs, the figures and the data files write formulas in plain text,
+with the names of the last column of Table~\ref{tab:symbols}. The following conventions complete
+that column.
+\begin{itemize}
+\item Elements of the algebras: \texttt{x}, \texttt{y}, \texttt{z}, \texttt{w} are the bi-octonions
+$\mathbf x$, $\mathbf y$, $\mathbf z$, $\mathbf w$; \texttt{aH}, \texttt{bS}, \texttt{cH}, \texttt{dS},
+\texttt{bS'} are the bi-quaternions $\mathbf a$, $\mathbf b$, $\mathbf c$, $\mathbf d$, $\mathbf b'$ of
+the form $\mathbf a+\mathbf b\,\mathbf e_4$ (the letter H recalls that the element lies in $\mathbb
+C\otimes\mathbb H$, the letter S that it multiplies $\mathbf e_4$ to give a spinor charge);
+\texttt{uL}, \texttt{uL'}, \texttt{uL1}, \texttt{uL2} are $\mathbf u$, $\mathbf u'$, $\mathbf u_1$,
+$\mathbf u_2$ (Lorentz part); \texttt{tI}, \texttt{tI'} are $\mathbf t$, $\mathbf t'$ (isospin);
+\texttt{gL}, \texttt{hL} are $\mathbf g$, $\mathbf h$ (elements of $SL(2,\mathbb C)$); \texttt{vI} is
+$\mathbf v$ (a unit quaternion, an isospin rotation); \texttt{rP}, \texttt{rP'} are $\mathbf r$,
+$\mathbf r'$ (translations). \texttt{e0}, \dots, \texttt{e7} are the units $\mathbf e_0,\dots,\mathbf
+e_7$ (and \texttt{1} in \texttt{gL = 1 + i e1 + e2} is $\mathbf e_0$); \texttt{ie1}, \dots, \texttt{ie7}
+are $i\mathbf e_1,\dots,i\mathbf e_7$; \texttt{e\_p}, \texttt{e\_j}, \texttt{e\_iota} are $\mathbf e_p$,
+$\mathbf e_j$, $\mathbf e_\iota$.
+\item Operations: a final \texttt{bar} (\texttt{xbar}, \texttt{bSbar}, \texttt{gLbar}) is the
+conjugation $\bar{\mathbf x}$; \texttt{\^{}*} the complex conjugation; \texttt{\^{}dag} the Hermitian
+conjugation; \texttt{\^{}T} the transpose; \texttt{\^{}-1} the inverse; \texttt{(x)} the tensor product
+$\otimes$; \texttt{o} the composition $\circ$; \texttt{[x,y]} the commutator and \texttt{[x,y,z]} the
+associator; \texttt{Jac} the Jacobiator; \texttt{L\_x}, \texttt{R\_x} the left and right multiplications
+$L^{\rm LL}_{\mathbf x}$, $R^{\rm LL}_{\mathbf x}$, and \texttt{L\_[e1,e4]} the left multiplication by the
+commutator $[\mathbf e_1,\mathbf e_4]$; \texttt{cross(a, b)} is the cross product of two complex
+three-component vectors; \texttt{|...|} an absolute value or the length of a vector; the dot in
+\texttt{kE.(kE+pE)} the Euclidean scalar product; \texttt{x -> y} a map; \texttt{x(y)} a product
+or a function value, as the context of the formula shows.
+\item Coefficients of the families: \texttt{c\_tw}, \texttt{c\_sl}, \texttt{c\_PP}, \texttt{c\_Ps},
+\texttt{c\_sP}, \texttt{c\_TT}, \texttt{c\_Ts}, \texttt{c\_sT} are $c^{\rm tw}_{\rm LL}$, \dots,
+$c^{\rm sT}_{\rm LL}$; a complex one is split as \texttt{ctw\_re + i ctw\_im} into its real and imaginary
+parts (and so for the others); \texttt{csP} and \texttt{cTT} are real. In checks M-3, M-4, M-7 and M-9
+a failing triple or 4-tuple is given by the positions of its elements in the basis of the family:
+positions 0, 1, 2 are $\mathbf e_1$, $\mathbf e_2$, $\mathbf e_3$ and 3, 4, 5 are $i\mathbf e_1$,
+$i\mathbf e_2$, $i\mathbf e_3$ (the Lorentz part); in $\mathcal F^{\rm B}_{\rm LL}$ positions 6 to 9 are the
+translations $\mathbf e_0$, $i\mathbf e_1$, $i\mathbf e_2$, $i\mathbf e_3$, and in $\mathcal F^{\rm C}_{\rm
+LL}$ positions 6 to 8 are the isospin elements $\mathbf e_1$, $\mathbf e_2$, $\mathbf e_3$; the last eight
+positions are the spinor charges $\mathbf e_4,\dots,\mathbf e_7$, $i\mathbf e_4,\dots,i\mathbf e_7$.
+\item The superfluid: \texttt{dvec} is $\vec d_{\rm LL}$ and \texttt{d\_iota} its components;
+\texttt{eps2} is $\mathsf E_{\rm LL}$, \texttt{eps3} the Levi-Civita symbol; \texttt{E\^{}(+-)} stands
+for $E^+_{\rm LL}$ and $E^-_{\rm LL}$, and \texttt{E\^{}(+-)(Delta)} for these energies with the gap
+\texttt{Delta} in place of $\Delta_{\rm LL}$; \texttt{Delta\_(+-)} are the gaps $\Delta^\pm_{\rm LL}$;
+\texttt{Etilde\^{}(+-)} are $\tilde E^\pm_{\rm LL}$; \texttt{eps} is $\varepsilon_{\rm LL}$, \texttt{q} the
+momentum $\vec q_{\rm LL}$ or its length; \texttt{Q\_LL(Kch)} is the electric charge of the two spinor
+charges that the pair operator $\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}$ annihilates; \texttt{0+} and
+\texttt{0-} are spin zero with positive and negative parity; \texttt{spin(spin+1)} in check Q-3 is the
+spin quantum number times itself plus one, the value 0, 2 or $\tfrac34$ of the Casimir for the spins 0,
+1 and $\tfrac12$.
+\item Abbreviations: \texttt{BdG} is Bogoliubov-de Gennes, \texttt{BCS} Bardeen-Cooper-Schrieffer;
+\texttt{M\_2(C)} the complex $2\times2$ matrices; \texttt{R\^{}8}, \texttt{C\^{}3}, \texttt{C\^{}8} the
+real or complex vector spaces of that dimension; \texttt{Im H}, \texttt{Im O} and \texttt{C (x) H} are
+${\rm Im}\,\mathbb H$, ${\rm Im}\,\mathbb O$ and $\mathbb C\otimes\mathbb H$; the groups and algebras
+(\texttt{SL(2,C)}, \texttt{so(3,1)}, \texttt{g2(C)}, \texttt{SU(2)\_v}, \texttt{U(1)\_F\_LL},
+\texttt{Z2}, \dots) are written as in the text; \texttt{4x4} means four by four; ``exact'' in a check
+means integer or rational arithmetic, ``double precision'' floating-point arithmetic with 53-bit
+mantissas.
+\end{itemize}
+In the comments of the source code the quaternion units $\mathbf e_1$, $\mathbf e_2$, $\mathbf e_3$ are
+also called \texttt{i\_q}, \texttt{j\_q}, \texttt{k\_q}, and the unit $\mathbf e_4$ of the Cayley-Dickson
+construction \texttt{l}; these names do not occur in the reports, the data files or the figures.
+
+\section{The machine checks}
+\label{app:checks}
+
+The program \texttt{superloop} (Appendix~\ref{app:data}) verifies {{GEN:nchecks_rust}} statements, the
+script \texttt{malcev\_groebner.py} the {{GEN:nchecks_groebner}} statements G-1 to G-12 of the
+classification; the script \texttt{check\_symbols.py} verifies the eight statements LL-S1 to LL-S8 on the
+symbols (Appendix~\ref{app:notation}), and \texttt{check\_self\_contained.py} the statement LL-H1, that
+no document of this revision sends its reader to another document for an equation, a symbol or a
+definition. Each check prints one line: its label, the statement, and, after two dashes, the numbers
+that decide it. A statement marked ``exact'' is decided in exact integer or rational arithmetic, one
+marked ``double precision'' with a tolerance far above the rounding errors and far below the effect
+that it tests. Table~\ref{tab:checks} reproduces these lines as the programs print them, in plain text
+(Appendix~\ref{app:notation} explains the names).
+
+{\footnotesize\longtabledepth
+\begin{longtable}{p{0.08\textwidth}p{0.80\textwidth}p{0.06\textwidth}}
+\caption{All machine checks of this paper, as the programs print them.}\label{tab:checks}\\
+\toprule
+label & statement and decisive numbers & result\\
+\midrule
+\endfirsthead
+\toprule
+label & statement and decisive numbers (continued) & result\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+{{GENRAW:checks_rows_tex}}
+\end{longtable}
+}\longtabledepthrestore
+
+\section{Programs, data, and how to reproduce every number}
+\label{app:data}
+
+\subsection{Programs}
+
+All computations except the Gr\"obner bases are done by the Rust program \texttt{superloop} in the
+folder \texttt{code/superloop-rs} of \texttt{Revision\_SuperLoop} ({{GEN:n_rust_files}} source files,
+{{GEN:n_rust_lines}} lines); the Gr\"obner bases are computed by the Python script
+\texttt{code/scripts/malcev\_groebner.py} ({{GEN:n_groebner_lines}} lines) with Buchberger's algorithm
+over the rationals, as implemented in the computer-algebra library SymPy. The figures are drawn by the
+Python script \texttt{code/scripts/make\_figures.py} from the data files, and the documents are
+assembled by Python scripts that insert every number from the data files, so that no computed number
+is typed by hand.
+
+The program has nine modules. \texttt{bioct}: quaternions with complex coefficients and the
+Cayley-Dickson product of Eq.~(\ref{eq:cd}) (and, with the opposite sign of the term $\bar{\mathbf
+d}\mathbf b$, the split octonions), the conjugations, the norm $N_{\rm LL}$, the commutator, the
+associator, the Jacobiator and the linearized Malcev expression~(\ref{eq:malcev}), the left and right
+multiplications as real $16\times16$ integer matrices, and a deterministic pseudo-random generator
+(SplitMix64) for the random tests; the coefficients are exact Gaussian integers (real and imaginary
+parts are 128-bit integers, and an overflow stops the program) or double-precision complex numbers.
+\texttt{exact}: exact linear algebra on integer matrices---spans and ranks over the rationals by
+fraction-free Gaussian elimination (each row divided by the greatest common divisor of its entries),
+Lie closures (commutators are added until the exact span stops growing), the signature of a symmetric
+matrix by symmetric elimination in exact rational arithmetic, and ranks modulo the prime $2^{61}-1$ for
+the large systems (a rank modulo a prime can only be smaller than the rank over the rationals, so the
+dimension of a solution space computed from it is an upper bound; each such bound is matched by the
+same number of explicitly verified solutions). \texttt{algebra} (command \texttt{algebra}: checks A, L,
+Q and C), \texttt{malcev} (command \texttt{malcev}: the brackets of Eq.~(\ref{eq:families}) with
+integer or Gaussian-integer coefficients, the Jacobi identity on all basis triples and the linearized
+Malcev identity on all basis 4-tuples, $14^4=38416$ for $\mathcal F^{\rm A}_{\rm LL}$, $18^4=104976$ for
+$\mathcal F^{\rm B}_{\rm LL}$ and $17^4=83521$ for $\mathcal F^{\rm C}_{\rm LL}$; checks M),
+\texttt{manifolds} (command \texttt{manifolds}: checks N), \texttt{superfluid} (command
+\texttt{superfluid}: the Dirac matrices, the pair channels, the Bogoliubov-de Gennes matrices, the
+grand potential and the gap equation; checks S), \texttt{renorm} (command \texttt{renorm}: power
+counting, the contact coupling, the bubble, the invariants; checks R), \texttt{checks} (the reports) and
+\texttt{main} (the commands, and a guard that lets the program run only in the folder
+\texttt{Revision\_SuperLoop}, into whose folder \texttt{data} it writes). The library crate
+\texttt{code/spacetimes-rs} of the repository supplies complex numbers, the diagonalization of complex
+Hermitian matrices, Gauss-Legendre nodes and weights, Brent's root finder and the writing of data files.
+
+\emph{Numerical methods.} The statements of the checks A, L, C, M, N, Q-3, Q-4, Q-6, R-1, R-2, R-5
+and R-6 are decided in exact integer or rational arithmetic. The other checks use double precision:
+the eigenvalues of checks Q-1, Q-2 and Q-5; the structural checks of the superfluid, S-0, S-1, S-2,
+S-7, S-8 and S-9, whose matrices have the entries 0, $\pm1$, $\pm i$ and $\pm\tfrac12$, so that their
+products are exact or rounded at the level $10^{-15}$, compared with tolerances between $10^{-14}$ and
+$10^{-10}$ (a rank is counted as the number of eigenvalues of the Gram matrix of the vectors that exceed
+$10^{-10}$ times the largest); the spectra of check S-3, from the diagonalization of the $16\times16$
+Bogoliubov-de Gennes matrices at 60 random points, with random momenta, masses, chemical potentials and
+order parameters; and the integrals of checks S-4 to S-6, S-10, R-3 and R-4. The momentum integrals of Sec.~\ref{sec:superfluid} use Gauss-Legendre rules of 40 points on panels whose
+end points are 0, the cutoff, and 0.5, 0.9, 0.99, 1, 1.01, 1.1 and 1.5 times the Fermi momentum $k^{\rm
+F}_{\rm LL}$ (where these lie inside the cutoff); those of check R-3 use rules of 24 points with end points
+at 0.5, 0.9, 0.99, 1, 1.01, 1.1 and 2 times $k^{\rm F}_{\rm LL}$ and further panels whose lengths double
+up to the cutoff. The gap equation~(\ref{eq:gapeq}) is solved for $\Delta_{\rm LL}$ by Brent's method
+between $10^{-9}$ and 20 with the tolerance $10^{-13}$; the minimum of $\Omega_{\rm LL}$ over
+$\lvert\vec d_{\rm LL}\rvert$ is found by golden-section search (120 or 150 steps) on an interval from 0 to
+three times the gap. The slope of check S-5 is taken from the two weakest couplings of the grid of 40
+couplings, the slope of check R-4 from the two largest cutoffs. The bubble~(\ref{eq:bubble}) is
+integrated in four-dimensional spherical coordinates: the length of the loop momentum on panels whose
+lengths grow by the factor 1.5 from 0.25 up to the cutoff, and the angle between the loop momentum and
+the external momentum from 0 to $\pi$ with the weight $4\pi$ times the square of its sine (the volume of
+the three-sphere of directions), each with Gauss-Legendre rules of 48 points.
+
+\subsection{Commands}
+
+From the folder \texttt{Revision\_SuperLoop} of the repository (a Rust toolchain for the edition 2021,
+Python 3 with SymPy, NumPy and Matplotlib, and for the documents a TeX distribution with REVTeX 4.2,
+pandoc and XeLaTeX):
+\begin{verbatim}
+cargo run --release --manifest-path code/superloop-rs/Cargo.toml -- all
+python3 code/scripts/malcev_groebner.py
+python3 code/scripts/make_figures.py
+bash code/scripts/check_all.sh
+\end{verbatim}
+The first command writes the data files of the program and the reports of its checks into the folder
+\texttt{data} (in about one second); the commands \texttt{algebra}, \texttt{malcev},
+\texttt{manifolds}, \texttt{superfluid} and \texttt{renorm} in place of \texttt{all} run one part. The
+second computes the Gr\"obner bases and the checks G-1 to G-12 (a few seconds). The third draws the
+seven figures. The fourth runs all three, then the checks of the symbols and of self-containedness,
+writes the fragments of the documents, builds this paper and the provenance documents, and ends with
+one verdict.
+
+\subsection{Data files}
+
+{{GENRAW:data_files_tex}}
+Every data file states its content and units in its header lines (\texttt{\# content:}), and every
+column name is either a descriptive word or one of the names listed in the last column of
+Table~\ref{tab:symbols}. The reports \texttt{sl\_algebra\_checks.txt}, \texttt{sl\_malcev\_checks.txt},
+\texttt{sl\_manifolds\_checks.txt}, \texttt{sl\_superfluid\_checks.txt}, \texttt{sl\_renorm\_checks.txt},
+\texttt{sl\_groebner\_checks.txt}, \texttt{sl\_symbol\_checks.txt} and
+\texttt{sl\_self\_contained\_checks.txt} contain the lines of Table~\ref{tab:checks}, and
+\texttt{sl\_groebner\_bases.txt} the reduced Gr\"obner bases of all six ideals of
+Table~\ref{tab:groebner}.
+
+\subsection{Checksums}
+
+SHA-256 checksums of the data files, the figures and the programs from which this paper was built:
+{\footnotesize
+\begin{verbatim}
+{{GENRAW:data_sha256}}
+{{GENRAW:figure_sha256}}
+{{GENRAW:code_sha256}}
+\end{verbatim}
+}
+
+\twocolumngrid

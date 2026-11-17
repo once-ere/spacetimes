@@ -11,7 +11,7 @@
 //!   h(q) = sum_j alpha_LL^j q^j + beta_LL m (x) 1_iso,   Pi_iota = Psi_LL^T Kch_iota Psi_LL,
 //! with the spin-zero (Lorentz-scalar) pair channels Kch_iota = C_LL gamma_ch (x) eps2 tau_iota
 //! (scalar, 0+) and Kch'_iota = C_LL (x) eps2 tau_iota (pseudoscalar, 0-), iota = 1,2,3 (an isospin
-//! triplet: Theorem S1); eps2 = i sigma_2 = [[0,1],[-1,0]] on the isospin index.
+//! triplet: Theorem SF1); eps2 = i sigma_2 = [[0,1],[-1,0]] on the isospin index.
 //! Mean field: d_iota = -(G/2) <Pi_iota>, Ppair = sum_iota d_iota Kch_iota^dag, Nambu spinor
 //! (Psi_LL(q), Psi_LL^*(-q)),
 //!   H_BdG = [[h(q) - mu, Ppair], [Ppair^dag, -(h(-q) - mu)^T]],

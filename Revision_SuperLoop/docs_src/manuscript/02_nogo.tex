@@ -1,0 +1,88 @@
+\section{The no-go theorems and where associativity enters}
+\label{sec:nogo}
+
+\subsection{What the theorems say}
+
+A \emph{generator} of a continuous symmetry is the infinitesimal transformation: the derivative, at
+the identity, of a one-parameter family of transformations. The generators of a group of
+transformations form a vector space with a \emph{bracket}, the generator of the commutator of two
+infinitesimal transformations; for a Lie group this is a \emph{Lie algebra}: the bracket is bilinear,
+antisymmetric, and obeys the Jacobi identity, i.e.\ its \emph{Jacobiator}
+\begin{equation}
+\mathrm{Jac}_{\rm LL}(\mathbf x,\mathbf y,\mathbf z)=[[\mathbf x,\mathbf y],\mathbf z]+[[\mathbf y,\mathbf z],\mathbf x]+[[\mathbf z,\mathbf x],\mathbf y]
+\label{eq:jacobiator}
+\end{equation}
+vanishes for all generators $\mathbf x$, $\mathbf y$, $\mathbf z$. (In this section $\mathbf x$,
+$\mathbf y$, $\mathbf z$ stand for generators; from Sec.~\ref{sec:bioct} on they are bi-octonions.)
+The Lorentz algebra $\mathfrak{so}(3,1)$ has six generators, three rotations and three boosts; adding
+the four translations gives the Poincar\'e algebra.
+
+The no-go theorems state, under hypotheses listed below, that a symmetry algebra containing the
+Poincar\'e algebra and an internal algebra is their direct sum:
+\begin{itemize}
+\item McGlinn~\cite{McGlinn1964}: in a Lie algebra that contains the Poincar\'e algebra and an
+internal algebra, and in which the translations act nilpotently, the internal generators commute with
+the Poincar\'e generators.
+\item O'Raifeartaigh~\cite{ORaifeartaigh1965}: if a finite-dimensional Lie algebra contains the
+Poincar\'e algebra and acts by a unitary representation in which the squared mass has an isolated
+eigenvalue, the members of a multiplet all have the same mass; the algebra cannot split masses.
+\item Coleman and Mandula~\cite{ColemanMandula1967} (in any number of space dimensions with one time,
+Pelc and Horwitz~\cite{PelcHorwitz1997}): the most general Lie group of symmetries of a non-trivial
+scattering matrix of a relativistic theory with finitely many particles below any mass, analytic
+amplitudes and a mass gap is, locally, the direct product of the Poincar\'e group and a compact
+internal group.
+\item Haag, {\L}opusza\'nski and Sohnius~\cite{HLS1975} (see also~\cite{WeinbergQFT3}): if the
+generators are allowed to form a \emph{Lie superalgebra}, in which some generators (called odd) have
+an anticommutator instead of a commutator, the odd generators are spinors whose anticommutators are
+translations (and central charges): supersymmetry.
+\end{itemize}
+
+\subsection{The hypotheses}
+
+We label the hypotheses that the proofs use:
+\begin{itemize}
+\item[H-grp.] The symmetry transformations form a group: their composition is associative, there is
+an identity, and every transformation has an inverse.
+\item[H-op.] They act on the states by linear (unitary or antiunitary) operators, so that the
+composition of transformations is the product of operators; particles are irreducible unitary
+representations of the Poincar\'e group~\cite{Wigner1939}.
+\item[H-Lie.] The group is a Lie group; its generators form a Lie algebra.
+\item[H-gr.] (Haag, {\L}opusza\'nski and Sohnius only) The generators form a Lie superalgebra, whose
+graded Jacobi identity is the Jacobi identity with the signs of the anticommutators.
+\item[H-dyn.] The dynamical hypotheses on the scattering matrix: it is non-trivial, the amplitudes are
+analytic, there are finitely many particles below any mass, and there is a mass gap.
+\end{itemize}
+Every theorem above uses H-Lie (or H-gr), and the theorems on the scattering matrix use H-op and
+H-dyn as well.
+
+\subsection{Where associativity enters}
+
+H-grp states associativity. H-op implies it, because the product of operators is associative. And
+H-Lie follows from either. Take any three elements $\mathsf O_1$, $\mathsf O_2$, $\mathsf O_3$ of an
+algebra (for example operators), their commutator $[\mathsf O_1,\mathsf O_2]=\mathsf O_1\mathsf
+O_2-\mathsf O_2\mathsf O_1$, and their \emph{associator}
+$[\mathsf O_1,\mathsf O_2,\mathsf O_3]=(\mathsf O_1\mathsf O_2)\mathsf O_3-\mathsf O_1(\mathsf O_2\mathsf O_3)$.
+Expanding the twelve products of the Jacobiator and sorting them by the order of the factors gives
+\begin{align}
+&\mathrm{Jac}_{\rm LL}(\mathsf O_1,\mathsf O_2,\mathsf O_3)\nonumber\\
+&\quad=[\mathsf O_1,\mathsf O_2,\mathsf O_3]+[\mathsf O_2,\mathsf O_3,\mathsf O_1]+[\mathsf O_3,\mathsf O_1,\mathsf O_2]\nonumber\\
+&\quad\phantom{=}-[\mathsf O_2,\mathsf O_1,\mathsf O_3]-[\mathsf O_1,\mathsf O_3,\mathsf O_2]-[\mathsf O_3,\mathsf O_2,\mathsf O_1]:
+\label{eq:jacassoc}
+\end{align}
+the associators of the even orderings of the three elements minus those of the odd orderings. For an
+associative product (operators) every associator vanishes, so the Jacobi identity holds identically (check A-6 verifies Eq.~(\ref{eq:jacassoc}) for random integer
+matrices). Equation~(\ref{eq:jacassoc}) holds for any product, associative or not, and it is the hinge
+of this paper: in a non-associative algebra the commutator need not obey the Jacobi identity, and the
+generators of its symmetries need not form a Lie algebra.
+
+\subsection{What a counterexample can be}
+
+A counterexample in which all hypotheses of a theorem hold does not exist; a search for one would end
+in an error. We therefore construct structures in which H-grp, H-op and H-Lie (and H-gr) fail
+\emph{because associativity fails}, while Lorentz covariance is kept exactly, and in which the
+conclusion of the theorems---no non-trivial union of Lorentz and internal symmetry---fails. The
+dynamical hypotheses H-dyn concern the scattering matrix of a quantum theory; because our structures
+have no realization by operators (Theorem~R, Sec.~\ref{sec:bioct}), they cannot act on the states of an
+ordinary quantum theory, and H-dyn is not tested. A quantum mechanics over non-associative algebras has
+been studied since Jordan, von Neumann and Wigner~\cite{JordanNeumannWigner1934} and, for the octonions,
+by G\"unaydin, Piron and Ruegg~\cite{GunaydinPironRuegg1978}; we do not use it.
