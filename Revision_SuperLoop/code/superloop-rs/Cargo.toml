@@ -1,0 +1,23 @@
+[package]
+name = "spacetimes-superloop"
+version = "0.1.0"
+edition = "2021"
+description = "PROJECT spacetimes, Revision_SuperLoop: the places where the no-go theorems for combining Lorentz and internal symmetries use associativity, the Lorentz super-loop of unit bi-octonions (a Moufang loop that contains SL(2,C) and closes spinor charges into the Lorentz algebra), the classification of Lorentz-covariant Malcev extensions of the Lorentz and Poincare algebras, the manifolds that carry the super-loop (the complex 7-sphere, S^7, S^(3,4), the 7+1 and 4+4 slices), the spin-zero spinor superfluid of the super-loop's spinor charges, and power counting"
+authors = ["Patrick Lee Nash"]
+license = "GPL-3.0-or-later"
+
+# The only dependency is the Rust program of the main project (two folders up), which
+# supplies complex numbers, complex Hermitian diagonalisation, exact integer ranks
+# modulo a prime, Gauss-Legendre rules, Brent's root finder and the CSV writer.
+# No crate is downloaded: the program builds offline with a Rust toolchain alone.
+[dependencies]
+spacetimes = { path = "../../../code/spacetimes-rs" }
+
+[profile.release]
+opt-level = 3
+debug = false
+overflow-checks = true     # exact integer arithmetic must never wrap silently
+
+[[bin]]
+name = "superloop"
+path = "src/main.rs"
