@@ -43,6 +43,14 @@
 | `sl_self_contained_checks.txt` | `check_self_contained.py` | 1 of 1 |
 <!-- END checks_table -->
 
+<!-- BEGIN nchecks_explain -->
+10
+<!-- END nchecks_explain -->
+
+<!-- BEGIN nchecks_r13 -->
+8
+<!-- END nchecks_r13 -->
+
 <!-- BEGIN checks_table_all -->
 | report (data/) | written by | checks passed |
 |---|---|---|
@@ -55,11 +63,8 @@
 | `sl_symbol_checks.txt` | `check_symbols.py` | 8 of 8 |
 | `sl_self_contained_checks.txt` | `check_self_contained.py` | 1 of 1 |
 | `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
+| `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | 8 of 8 |
 <!-- END checks_table_all -->
-
-<!-- BEGIN nchecks_explain -->
-10
-<!-- END nchecks_explain -->
 
 <!-- BEGIN checks_rows_tex -->
 A-1 & the associator [x,y,z] = (xy)z - x(yz) of the bi-octonions B\_LL is alternating (it changes sign under every exchange of two of its arguments) on all 512 ordered triples of the units e0..e7: B\_LL is an ALTERNATIVE algebra & PASS\\
@@ -136,15 +141,15 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (298 names) & PASS\\
-LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 196 items of the 80 new entries is an item of either master registry (503 items compared); the 21 items that the registry of Revision\_NoGo also contains are exactly the 21 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 17 data files data/sl\_*.csv and explanations/data/ex\_*.csv is a registered plain-text name or a descriptive word (91 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 5 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 2352 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 2847 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
-LL-S7 & every one of the 2561 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters) & PASS\\
-LL-S8 & every one of the 2222 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 25 reports and data files (data/sl\_* and explanations/data/ex\_*) is a registered plain-text name & PASS\\
-LL-H1 & none of the 26 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
+LL-S1 & every symbol text is registered once (87 entries) and every plain-text name of the programs, figures and data files belongs to one entry (310 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 203 items of the 85 new entries is an item of either master registry (503 items compared); the 22 items that the registry of Revision\_NoGo also contains are exactly the 22 declared shared ones, each with the same object (\$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 23 data files data/sl\_*.csv and explanations/data/ex\_*.csv is a registered plain-text name or a descriptive word (120 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 6 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 87 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 3098 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 3620 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 3010 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (47 registered styled letters) & PASS\\
+LL-S8 & every one of the 3158 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 32 reports and data files (data/sl\_* and explanations/data/ex\_*) is a registered plain-text name & PASS\\
+LL-H1 & none of the 28 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
 <!-- BEGIN nchecks_rust -->
@@ -444,14 +449,14 @@ f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/a
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
 465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
 864b86dfce7e615b250577659cda8226f4e1bea4e843e01fe05c75565943f353  code/scripts/check_self_contained.py
-1297fc970b3699e6f2a9e78c5f1d8a02cb6e21d627f8792cc05da3a76271c29e  code/scripts/check_symbols.py
+c2ab05157dbe7984d93e48c6de4a7d06a0ed80285c92d1df1d2278cf8cb8d235  code/scripts/check_symbols.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
-cf91b09c7f382d9ac6b4b4065bde2e214d192657fb30a034866dc64bcf953f29  code/scripts/write_doc_tables.py
-228dfd6a8af0a29068e79fa2944e73ba5a4d0e4f2887da1d104202fb9f671820  code/scripts/write_symbol_registry.py
+ac90dfe506b51836429d6a76c798e846cdc8646293675015af0e49baab506303  code/scripts/write_doc_tables.py
+d97abaf12df2b47dd67550b98d865d5e08b8b8a95d9199a5666c78c708dca02d  code/scripts/write_symbol_registry.py
 783183f2a23f1fb50b3b430d6243f2f214e6e40d7b1e4ec971a59ad0a9f161f9  code/scripts/build_docs.sh
-037c6322b83c4baaf136a0c7f2973452b7c83e6a35a94227aab3c853af1d1005  code/scripts/check_all.sh
+3252f0a1d90606c4d1255d917ee7d5856541f44f8513b89cdd7ea010dbd67d6e  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
 
@@ -506,17 +511,87 @@ cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/d
 
 <!-- BEGIN ex_sha256 -->
 3c4366a5d11a44c8b8dd21d05fceb379646f55db407cc41321c5501e595fe4d8  explanations/data/ex_pair_matrices.csv
+f35b57b83de79a1de0b45f6f1d73c8be77ddf5ba0f13799460fb62039572687e  explanations/data/ex_r13_bubble.csv
+71bc8ac7fb68d7be2ea856bb01d377bd41daf1d79d158b421542bd6bd6ed12f6  explanations/data/ex_r13_checks.txt
+50cb49b9704a94ca75ae079a7ceba2500701094c050f9e568a196f53e0ef35c0  explanations/data/ex_r13_dimensions.csv
+60ee44d86bc281eec7760086a5e8daeeed8bb09addd5cb5e2751e8003fa36f81  explanations/data/ex_r13_divergent_counts.csv
+3798cda1fd127c65e1f28a1a2642469dc8c8e6ceb70326c10f446244a5da76ce  explanations/data/ex_r13_orbits.csv
+6c90420cdc8456ee62b29f52deaf8b5effff9b090e19a101699212a916090ef9  explanations/data/ex_r13_points.csv
+d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/data/ex_r13_power_counting.csv
 0cd9ab8b4b09768f58ef444cb11ad65eb16a065b33946369472e26f6bc9a859d  explanations/data/ex_states.csv
 68f5badc7b9182d2226e6f8d36650eb324462eed9ddfa65e039a16f3b0b2978a  explanations/data/ex_superfluid_checks.txt
 77cdbabb5afa005bc90d98735c371a595858e22e79c1a8d5c9689c9a4c9361af  explanations/data/ex_two_particle_counting.csv
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
+a7f08ad3abfac08855badb197d1c818e5b163670e840dacc76c9f1bd497cadb1  explanations/figures/fig_ex_r13_bubble.pdf
+ca9deee3ab200422dbc8d0b8e88b333d6a84c5779a8a5b66382da7d71adf8222  explanations/figures/fig_ex_r13_coordinates.pdf
+7cc9977ce308777e49e1725690cb8e2c5bd9bf49f9019233e8c5d3116029b871  explanations/figures/fig_ex_r13_divergences.pdf
+84f38351c97118e63c15738abd0f8b6c4ac825ed7b3a8eaefd429ee200498a56  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
+d8a9fe9245e9b5b4d9eff79eca49fbd9d81ceaafd966face6a9b7ea47aa35da8  explanations/code/r13-rs/src/main.rs
+563167b8f4074b5576af1fda712b23ac00695b3e1866377b0213eae834902a4e  explanations/code/r13-rs/Cargo.toml
+d8a96a63b09fba62c1ef5900a690cd5993fc8138068aeee7f870fd69148c2952  explanations/code/make_r13_figures.py
 <!-- END ex_sha256 -->
 
 <!-- BEGIN n_explain_lines -->
 977
 <!-- END n_explain_lines -->
+
+<!-- BEGIN ex_r13_points_table -->
+| example | $x^0_{\rm LL}$ | $x^1_{\rm LL}$ | $x^2_{\rm LL}$ | $x^3_{\rm LL}$ | $N_{\rm LL}(\mathbf x)$ | kind |
+|--------------------------------|---------|---------|---------|---------|------------|--------------------|
+| the sample point | 2.000000 | 1.200000 | 1.500000 | 1.000000 | $-0.690000$ | spacelike |
+| the event $(1,0,0,0)$ | 1.000000 | 0 | 0 | 0 | 1.000000 | timelike |
+| after the boost along $x^1_{\rm LL}$ with the rapidity 0.8 | 1.337435 | 0.888106 | 0 | 0 | 1.000000 | timelike |
+| the event $(0,1,0,0)$ | 0 | 1.000000 | 0 | 0 | $-1.000000$ | spacelike |
+| after the rotation about $x^3_{\rm LL}$ by the angle $\pi/3$ | 0 | 0.500000 | 0.866025 | 0 | $-1.000000$ | spacelike |
+| the point $\chi_{\rm LL}\chi_{\rm LL}^\dagger$ of $\chi_{\rm LL}=(1,0)$ | 0.500000 | 0 | 0 | 0.500000 | 0 | null (on the light cone) |
+| after the boost of $\chi_{\rm LL}$ along $x^3_{\rm LL}$ with the rapidity 0.8 | 1.112770 | 0 | 0 | 1.112770 | 0 | null (on the light cone) |
+<!-- END ex_r13_points_table -->
+
+<!-- BEGIN ex_r13_dimensions_table -->
+| space dimensions $D$ | space-time dimension | $[\Psi_{\rm LL}]$ | $[\phi_{\rm LL}]$ | $[G_{\rm LL}]$ | $[g^{\rm Y}_{\rm LL}]$ | $[\lambda^{(1)}_{\rm LL}]=[\lambda^{(2)}_{\rm LL}]$ | renormalizable by power counting |
+|----------|----------|--------|--------|--------|--------|--------------|--------------------------|
+| 3 | 4 | $\tfrac{3}{2}$ | 1 | $-2$ | 0 | 0 | contact form: no; Yukawa form: yes |
+| 7 | 8 | $\tfrac{7}{2}$ | 3 | $-6$ | $-2$ | $-4$ | contact form: no; Yukawa form: no |
+<!-- END ex_r13_dimensions_table -->
+
+<!-- BEGIN ex_r13_divergent_table -->
+| function | $n^{\rm ext,F}_{\rm LL}$ | $n^{\rm ext,B}_{\rm LL}$ | $\deg_{\rm LL}$ | the term of $\mathcal L^{\rm Y}_{\rm LL}$ that absorbs it |
+|--------------------------|--------|--------|--------|----------------------------------------|
+| self-energy of the pair field | 0 | 2 | 2 | $(m^\phi_{\rm LL})^2\lvert\phi_{\rm LL}\rvert^2$ and the kinetic term of $\phi_{\rm LL}$ |
+| four pair fields | 0 | 4 | 0 | $\lambda^{(1)}_{\rm LL}$, $\lambda^{(2)}_{\rm LL}$ |
+| self-energy of the fermions | 2 | 0 | 1 | $m_{\rm LL}\bar\Psi_{\rm LL}\Psi_{\rm LL}$ and the kinetic term of $\Psi_{\rm LL}$ |
+| Yukawa vertex | 2 | 1 | 0 | $g^{\rm Y}_{\rm LL}$ |
+<!-- END ex_r13_divergent_table -->
+
+<!-- BEGIN ex_r13_counts_table -->
+| form, dimensions | 1 | 2 | 3 | 4 | 5 | 6 |
+|------------------------|----|----|----|----|----|----|
+| Yukawa form, 3+1 | 1 | 4 | 4 | 4 | 4 | 4 |
+| contact form, 3+1 | 1 | 2 | 3 | 4 | 4 | 5 |
+| Yukawa form, 7+1 | 1 | 4 | 8 | 13 | 13 | 20 |
+| contact form, 7+1 | 1 | 2 | 3 | 4 | 5 | 6 |
+<!-- END ex_r13_counts_table -->
+
+<!-- BEGIN ex_r13_bubble_table -->
+| $\Lambda_{\rm LL}$ | $I^{\rm bub}_{\rm LL}(0)$ computed | $I^{\rm bub}_{\rm LL}(0)$ closed form | $d[I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)]/d\ln\Lambda_{\rm LL}$ | $I^{\rm ren}_{\rm LL}$ | change of $I^{\rm ren}_{\rm LL}$ from $\Lambda_{\rm LL}/2$ |
+|------|--------------|--------------|------------------|--------------|----------------|
+| 4 | $9.471253\times10^{-2}$ | $9.471253\times10^{-2}$ | $-6.233478\times10^{-3}$ | $1.560633\times10^{-3}$ | — |
+| 8 | $3.964998\times10^{-1}$ | $3.964998\times10^{-1}$ | $-6.307835\times10^{-3}$ | $1.560665\times10^{-3}$ | $3.208453\times10^{-8}$ |
+| 16 | $1.610164$ | $1.610164$ | $-6.326390\times10^{-3}$ | $1.560666\times10^{-3}$ | $4.968769\times10^{-10}$ |
+| 32 | $6.471387$ | $6.471387$ | $-6.331028\times10^{-3}$ | $1.560666\times10^{-3}$ | $7.745994\times10^{-12}$ |
+| 64 | $2.592286\times10^{1}$ | $2.592286\times10^{1}$ | $-6.332187\times10^{-3}$ | $1.560666\times10^{-3}$ | $1.200301\times10^{-13}$ |
+| 128 | $1.037353\times10^{2}$ | $1.037353\times10^{2}$ | $-6.332477\times10^{-3}$ | $1.560666\times10^{-3}$ | $6.415875\times10^{-15}$ |
+| 256 | $4.149918\times10^{2}$ | $4.149918\times10^{2}$ | $-6.332550\times10^{-3}$ | $1.560666\times10^{-3}$ | $2.449018\times10^{-14}$ |
+| 512 | $1.660024\times10^{3}$ | $1.660024\times10^{3}$ | $-6.332568\times10^{-3}$ | $1.560666\times10^{-3}$ | $1.993965\times10^{-13}$ |
+| 1024 | $6.640161\times10^{3}$ | $6.640161\times10^{3}$ | $-6.332572\times10^{-3}$ | $1.560666\times10^{-3}$ | $3.827856\times10^{-13}$ |
+| 2048 | $2.656071\times10^{4}$ | $2.656071\times10^{4}$ | $-6.332574\times10^{-3}$ | $1.560666\times10^{-3}$ | $1.132425\times10^{-12}$ |
+<!-- END ex_r13_bubble_table -->
+
+<!-- BEGIN n_r13_lines -->
+923
+<!-- END n_r13_lines -->

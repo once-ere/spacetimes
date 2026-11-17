@@ -175,7 +175,7 @@ lists the collisions that were found and how each was resolved (Section
 \texttt{Revision\_NoGo} (Section 4), states the meaning of the
 plain-text names that the programs, the figures and the data files use
 (Section 5), reproduces the eight machine checks of the symbols with
-their output (Section 6), and contains the complete table of the 82
+their output (Section 6), and contains the complete table of the 87
 registered symbols (Section 7). Every symbol that occurs in this
 document is defined in Section 7.
 
@@ -206,7 +206,7 @@ and labels. It has two kinds of entries.
   four-dimensional world and \(D=7\) for the eight-dimensional
   manifolds).
 \item
-  \textbf{New} (80 entries): every new symbol carries the suffix LL (for
+  \textbf{New} (85 entries): every new symbol carries the suffix LL (for
   \emph{Lorentz super-loop}), written as a subscript (\(Q_{\rm LL}\)),
   or, when the lower position holds an index, as a superscript
   (\(\sigma^{\rm LL}_j\), \(L^{\rm LL}_{\mathbf x}\)). The exceptions
@@ -317,6 +317,23 @@ a hyphen and a number \\
 plain-text names inside the meanings of the registry (\texttt{R\^{}8},
 \texttt{M\_2(C)}, \ldots) that broke the LaTeX table & registry &
 written as code; the LaTeX table sets them in typewriter type \\
+the letter P: a generator in the registry of the main project, and the
+first name of the sample point of the document on the \(3+1\) manifold &
+program, data, figure & the words ``sample point'' \\
+the letter G: the contact coupling \(G_{\rm LL}\) (\texttt{G}), and the
+first name of the generator matrices in a report, with \texttt{R\_j} and
+\texttt{B\_j} & program & the vector action
+\(\mathcal V_{\rm LL}(\mathbf u)\) (\texttt{V\_LL}), an existing
+entry \\
+the name \texttt{chi}: the spinor \(\chi_{\rm LL}\), and an angle
+variable of the quadrature of the bubble & program & the angle variable
+is called \texttt{ang} \\
+letters without suffix in the report, the comments and the figures of
+the first version of the program \texttt{r13\_yukawa} (\texttt{X},
+\texttt{M}, \texttt{x\^{}0}, \texttt{e\^{}}, the parameter
+\(\theta_{\rm LL}\) written without its suffix, \texttt{k}) & program,
+figures & the registered names \texttt{M\_LL(x)}, \texttt{x\_LL\^{}p},
+\texttt{exp}, \texttt{theta}, \texttt{kE} \\
 \end{longtable}
 
 \hypertarget{symbols-shared-with-the-folder-revision_nogo}{%
@@ -331,12 +348,12 @@ complex numbers), \(p\) (an index over the basis of an algebra),
 \(\mathfrak g_2\), \(\mathrm G_2\) (the compact exceptional Lie algebra
 and group), \(\mathfrak{so}(8)\), \(\mathfrak{so}(4,4)\),
 \(\mathfrak{so}(8,\mathbb C)\), \(\mathfrak{so}(3,1)\),
-\(\mathfrak{so}(3)\), \(\mathfrak{su}(2)\), \(SU(2)\), \(U(1)\) (Lie
-algebras and groups), \(\mathrm{tr}\), \(\det\), \(\mathrm{Re}\),
-\(\mathrm{diag}\), \({}^T\), \(\otimes\) and \(\langle\ \rangle\)
-(operations). The script declares them in its list \texttt{SHARED}, and
-check LL-S2 verifies that the shared symbols are exactly the declared
-ones.
+\(\mathfrak{so}(3)\), \(\mathfrak{so}(4)\), \(\mathfrak{su}(2)\),
+\(SU(2)\), \(U(1)\) (Lie algebras and groups), \(\mathrm{tr}\),
+\(\det\), \(\mathrm{Re}\), \(\mathrm{diag}\), \({}^T\), \(\otimes\) and
+\(\langle\ \rangle\) (operations). The script declares them in its list
+\texttt{SHARED}, and check LL-S2 verifies that the shared symbols are
+exactly the declared ones.
 
 \hypertarget{plain-text-names-whose-meaning-needs-a-word}{%
 \section{5. Plain-text names whose meaning needs a
@@ -431,7 +448,26 @@ text, with the names listed in the last column of the table of Section
   \(\tfrac12F_{\rm LL}-T^3_{\rm LL}\) and
   \(\tfrac12F_{\rm LL}+T^3_{\rm LL}\), the numbers of the isospin-down
   and of the isospin-up particles; \texttt{fraction(+1)} is the fraction
-  of the condensed pairs of the charge \(+1\).
+  of the condensed pairs of the charge \(+1\). In the program
+  \texttt{r13\_yukawa} of the folder \texttt{explanations}:
+  \texttt{Lmat} is \(\mathsf L_{\rm LL}(\mathbf g)\) and
+  \texttt{Lmat{[}0{]}{[}0{]}} its time-time entry; \texttt{V\_LL(uL)} is
+  the vector action \(\mathcal V_{\rm LL}(\mathbf u)\), for example
+  \texttt{V\_LL(J\_LL\^{}j)}; \texttt{chi} is \(\chi_{\rm LL}\);
+  \texttt{theta} is \(\theta_{\rm LL}\) and \texttt{exp(theta)} its
+  exponential; \texttt{xi\_p} is \(\xi^{\rm LL}_p\);
+  \texttt{eps3\_jj\textquotesingle{}j\textquotesingle{}\textquotesingle{}}
+  is \(\epsilon^{\rm LL}_{jj'j''}\) and
+  \texttt{sum\_j\textquotesingle{}\textquotesingle{}} a sum over
+  \(j''\); \texttt{{[}{[}a,\ b{]},\ {[}c,\ d{]}{]}} with numbers in
+  place of the letters is a \(2\times2\) matrix written row by row;
+  \texttt{sqrt3} is \(\sqrt3\);
+  \texttt{int\_(\textbar{}kE\textbar{}\ \textless{}\ Lambda)\ d\^{}4kE}
+  is the integral over the four-dimensional ball of radius
+  \(\Lambda_{\rm LL}\); \texttt{dIbub/d(pE\^{}2)} is the derivative of
+  \(I^{\rm bub}_{\rm LL}\) with respect to \((p^{\rm E}_{\rm LL})^2\);
+  \texttt{1e-12} is \(10^{-12}\); ``the sample point'' is the point with
+  the coordinates \((2,1.2,1.5,1.0)\).
 \item
   \textbf{Abbreviations}: \texttt{BdG} is Bogoliubov-de Gennes,
   \texttt{BCS} Bardeen-Cooper-Schrieffer; \texttt{M\_2(C)} the complex
@@ -516,14 +552,14 @@ output of the last run:
 PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenance/symbols_ll.csv)
 8 of 8 checks passed
 
-[PASS] LL-S1  every symbol text is registered once (82 entries) and every plain-text name of the programs, figures and data files belongs to one entry (298 names)
-[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 196 items of the 80 new entries is an item of either master registry (503 items compared); the 21 items that the registry of Revision_NoGo also contains are exactly the 21 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\otimes$, $i$, $p$, ${}^T$)
-[PASS] LL-S3  every column of the 17 data files data/sl_*.csv and explanations/data/ex_*.csv is a registered plain-text name or a descriptive word (91 different columns), and every file states its content in a line '# content:'
-[PASS] LL-S4  each of the 5 documents of Revision_SuperLoop and the manuscript contains the complete table of the 82 registered symbols, so that every symbol it uses is defined in the document itself
-[PASS] LL-S5  in the 2352 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
-[PASS] LL-S6  in the 2847 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
-[PASS] LL-S7  every one of the 2561 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (45 registered styled letters)
-[PASS] LL-S8  every one of the 2222 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 25 reports and data files (data/sl_* and explanations/data/ex_*) is a registered plain-text name
+[PASS] LL-S1  every symbol text is registered once (87 entries) and every plain-text name of the programs, figures and data files belongs to one entry (310 names)
+[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 203 items of the 85 new entries is an item of either master registry (503 items compared); the 22 items that the registry of Revision_NoGo also contains are exactly the 22 declared shared ones, each with the same object ($SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\otimes$, $i$, $p$, ${}^T$)
+[PASS] LL-S3  every column of the 23 data files data/sl_*.csv and explanations/data/ex_*.csv is a registered plain-text name or a descriptive word (120 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S4  each of the 6 documents of Revision_SuperLoop and the manuscript contains the complete table of the 87 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] LL-S5  in the 3098 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 3620 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 3010 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (47 registered styled letters)
+[PASS] LL-S8  every one of the 3158 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 32 reports and data files (data/sl_* and explanations/data/ex_*) is a registered plain-text name
 \end{verbatim}
 
 \hypertarget{the-complete-table-of-the-symbols}{%
@@ -680,7 +716,8 @@ quaternion unit labelled by the isospin index; plain text \texttt{ie1},
 \texttt{ie1} \texttt{ie2} \texttt{ie3} \texttt{ie4} \texttt{ie5}
 \texttt{ie6} \texttt{ie7} \\
 \(\xi^{\rm LL}_p(\mathbf x)\) & the complex coefficient of the unit
-\(\mathbf e_p\) in the bi-octonion \(\mathbf x\) & new & \\
+\(\mathbf e_p\) in the bi-octonion \(\mathbf x\) & new & \texttt{xi\_p}
+\texttt{xi\_0} \texttt{xi\_1} \texttt{xi\_2} \texttt{xi\_3} \\
 \(\mathbf x\), \(\mathbf y\), \(\mathbf z\), \(\mathbf w\) & elements of
 \(\mathbb B_{\rm LL}\) (bi-octonions); \(\mathbf w\) is also a point of
 the super-loop manifold \(\mathbb L_{\rm LL}\) & new & \texttt{x}
@@ -977,6 +1014,21 @@ of \(\mathbb L_{\rm LL}\), both Moufang loops & new & \texttt{S\^{}7}
 velocity of the curve \(\mathbf w(\theta_{\rm LL})\) with
 \(d\mathbf w/d\theta_{\rm LL}=\mathbf w\mathbf x\)) & new &
 \texttt{X\_x} \texttt{X\_y} \\
+\(\mathsf L_{\rm LL}(\mathbf g)\) & the real \(4\times4\) matrix of the
+Lorentz transformation
+\(\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger\) of
+\(\mathbb R^{1,3}_{\rm LL}\) in the coordinates
+\(x^0_{\rm LL},\dots,x^3_{\rm LL}\), for a unit bi-quaternion
+\(\mathbf g\): its entry in row \(p\) and column \(p'\)
+(\(p,p'=0,\dots,3\)) is
+\(\tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)\),
+with \(\sigma^{\rm LL}_0\) the unit matrix & new & \texttt{Lmat} \\
+\(\chi_{\rm LL}\) & a two-component spinor (a column of two complex
+numbers) on which a unit bi-quaternion \(\mathbf g\) acts by
+\(\chi_{\rm LL}\mapsto M_{\rm LL}(\mathbf g)\chi_{\rm LL}\); the
+Hermitian matrix \(\chi_{\rm LL}\chi_{\rm LL}^\dagger\) is the matrix
+\(M_{\rm LL}(\mathbf x)\) of a point \(\mathbf x\) of the future light
+cone of \(\mathbb R^{1,3}_{\rm LL}\) & new & \texttt{chi} \\
 \(\theta_{\rm LL}\) & the real parameter of a one-parameter family of
 transformations or of a curve (an angle, a rapidity) & new &
 \texttt{theta} \\
@@ -1191,6 +1243,16 @@ terms \((\phi^\dagger_{\rm LL}\phi_{\rm LL})^2\) and
 \(\lvert\phi^T_{\rm LL}\phi_{\rm LL}\rvert^2\) (plain text
 \texttt{lam4}: either of them) & new & \texttt{phi} \texttt{g\_Y}
 \texttt{lam4} \texttt{lam4\_1} \texttt{lam4\_2} \\
+\(\mathcal L^{\rm Y}_{\rm LL}\), \(\mathcal L^{\rm c}_{\rm LL}\) & the
+Lagrangian densities of the Yukawa form and of the contact form of the
+field theory of the spinor charges on \(\mathbb R^{1,3}_{\rm LL}\) & new
+& \texttt{Lagr\_Y} \texttt{Lagr\_c} \\
+\(m^\phi_{\rm LL}\) & the mass of the pair field \(\phi_{\rm LL}\) in
+the Yukawa form & new & \texttt{m\_phi} \\
+\(I^{\rm ren}_{\rm LL}\) & the renormalized one-loop bubble,
+\(I^{\rm ren}_{\rm LL}(p^{\rm E}_{\rm LL})=I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)-(p^{\rm E}_{\rm LL})^2\,\partial I^{\rm bub}_{\rm LL}/\partial(p^{\rm E}_{\rm LL})^2\)
+(the derivative taken at \(p^{\rm E}_{\rm LL}=0\)): the bubble minus its
+mass and wave-function counterterms & new & \texttt{Iren} \\
 \(\deg_{\rm LL}\) & the superficial degree of divergence of a
 one-particle-irreducible graph: the power of the cutoff with which it
 grows when all its loop momenta grow together & new & \texttt{deg} \\
@@ -1253,22 +1315,24 @@ dimensions; the phases; the group of two elements & new &
 \(\mathfrak{so}(3,1)\), \(\mathfrak{so}(1,7)\), \(\mathfrak{so}(4,1)\),
 \(\mathfrak{so}(8)\), \(\mathfrak{so}(4,4)\),
 \(\mathfrak{so}(8,\mathbb C)\), \(\mathfrak{so}(3)\),
-\(\mathfrak{so}(2,1)\), \(\mathfrak{sl}(2,\mathbb R)\),
-\(\mathfrak{sl}(2)\), \(\mathfrak{su}(2)\), \(\mathfrak{spin}(7)\),
-\(\mathfrak g_2\), \(\mathfrak g_2(\mathbb C)\) & Lie algebras: of the
-Lorentz groups of \(3+1\) and \(7+1\) dimensions; of the de Sitter group
-(signature of the Killing form: 4 positive, 6 negative); of the linear
-maps that preserve a definite real, a \((4,4)\) and a complex quadratic
-form in eight dimensions; of the rotations of three-dimensional space;
-of the Lorentz group of \(2+1\) dimensions, equal to
-\(\mathfrak{sl}(2,\mathbb R)\); \(\mathfrak{sl}(2)\) the simple Lie
-algebra of dimension 3 over any field; \(\mathfrak{su}(2)\) isospin;
-\(\mathfrak{spin}(7)\) of dimension 21; the exceptional Lie algebra
-\(\mathfrak g_2\) (compact, dimension 14) and its complex form (real
-dimension 28) & new & \texttt{so(3,1)} \texttt{so(1,7)} \texttt{so(4,1)}
-\texttt{so(8)} \texttt{so(4,4)} \texttt{so(8,C)} \texttt{so(3)}
-\texttt{so(2,1)} \texttt{sl(2,R)} \texttt{sl(2)} \texttt{su(2)}
-\texttt{spin(7)} \texttt{g2} \texttt{g2(C)} \\
+\(\mathfrak{so}(4)\), \(\mathfrak{so}(2,1)\),
+\(\mathfrak{sl}(2,\mathbb R)\), \(\mathfrak{sl}(2)\),
+\(\mathfrak{su}(2)\), \(\mathfrak{spin}(7)\), \(\mathfrak g_2\),
+\(\mathfrak g_2(\mathbb C)\) & Lie algebras: of the Lorentz groups of
+\(3+1\) and \(7+1\) dimensions; of the de Sitter group (signature of the
+Killing form: 4 positive, 6 negative); of the linear maps that preserve
+a definite real, a \((4,4)\) and a complex quadratic form in eight
+dimensions; of the rotations of three-dimensional space and of
+four-dimensional Euclidean space; of the Lorentz group of \(2+1\)
+dimensions, equal to \(\mathfrak{sl}(2,\mathbb R)\);
+\(\mathfrak{sl}(2)\) the simple Lie algebra of dimension 3 over any
+field; \(\mathfrak{su}(2)\) isospin; \(\mathfrak{spin}(7)\) of dimension
+21; the exceptional Lie algebra \(\mathfrak g_2\) (compact, dimension
+14) and its complex form (real dimension 28) & new & \texttt{so(3,1)}
+\texttt{so(1,7)} \texttt{so(4,1)} \texttt{so(8)} \texttt{so(4,4)}
+\texttt{so(8,C)} \texttt{so(3)} \texttt{so(4)} \texttt{so(2,1)}
+\texttt{sl(2,R)} \texttt{sl(2)} \texttt{su(2)} \texttt{spin(7)}
+\texttt{g2} \texttt{g2(C)} \\
 \(\mathrm{tr}\), \(\det\), \(\mathrm{diag}\), \(\mathrm{Re}\),
 \(\mathrm{Im}\) & trace, determinant, the diagonal matrix with the
 listed entries, real part, imaginary part (also: the imaginary part of
@@ -1285,14 +1349,15 @@ integral, the set of real linear combinations, a dimension & new &
 state; the Hermitian conjugate of the preceding terms & new &
 \texttt{(x)} \texttt{\^{}T} \texttt{o} \\
 A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; X-1, \ldots,
-X-10; Theorems R, L, M, SF1, \ldots, SF4 & the identifiers of the
-machine checks (letters: A associativity, L Lorentz super-loop, Q
-operators and eigenvalues, C the inversion element, M Malcev
-classification, G Groebner bases, N manifolds, S superfluid, R
+X-10; Z-1, \ldots, Z-8; Theorems R, L, M, SF1, \ldots, SF4 & the
+identifiers of the machine checks (letters: A associativity, L Lorentz
+super-loop, Q operators and eigenvalues, C the inversion element, M
+Malcev classification, G Groebner bases, N manifolds, S superfluid, R
 renormalizability, LL-S symbols, LL-H self-containedness, X the examples
 of the explanation of the spin-zero superfluid in the folder
-explanations) and the labels of the theorems proved in the manuscript &
-new & \\
+explanations, Z the 3+1 manifold and the renormalizability of the Yukawa
+form in the folder explanations) and the labels of the theorems proved
+in the manuscript & new & \\
 H-grp, H-op, H-Lie, H-gr, H-dyn & the labels of the hypotheses of the
 no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie

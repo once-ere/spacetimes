@@ -1922,15 +1922,29 @@ explanations at the time this document was built:
 
 \begin{verbatim}
 3c4366a5d11a44c8b8dd21d05fceb379646f55db407cc41321c5501e595fe4d8  explanations/data/ex_pair_matrices.csv
+f35b57b83de79a1de0b45f6f1d73c8be77ddf5ba0f13799460fb62039572687e  explanations/data/ex_r13_bubble.csv
+71bc8ac7fb68d7be2ea856bb01d377bd41daf1d79d158b421542bd6bd6ed12f6  explanations/data/ex_r13_checks.txt
+50cb49b9704a94ca75ae079a7ceba2500701094c050f9e568a196f53e0ef35c0  explanations/data/ex_r13_dimensions.csv
+60ee44d86bc281eec7760086a5e8daeeed8bb09addd5cb5e2751e8003fa36f81  explanations/data/ex_r13_divergent_counts.csv
+3798cda1fd127c65e1f28a1a2642469dc8c8e6ceb70326c10f446244a5da76ce  explanations/data/ex_r13_orbits.csv
+6c90420cdc8456ee62b29f52deaf8b5effff9b090e19a101699212a916090ef9  explanations/data/ex_r13_points.csv
+d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/data/ex_r13_power_counting.csv
 0cd9ab8b4b09768f58ef444cb11ad65eb16a065b33946369472e26f6bc9a859d  explanations/data/ex_states.csv
 68f5badc7b9182d2226e6f8d36650eb324462eed9ddfa65e039a16f3b0b2978a  explanations/data/ex_superfluid_checks.txt
 77cdbabb5afa005bc90d98735c371a595858e22e79c1a8d5c9689c9a4c9361af  explanations/data/ex_two_particle_counting.csv
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
+a7f08ad3abfac08855badb197d1c818e5b163670e840dacc76c9f1bd497cadb1  explanations/figures/fig_ex_r13_bubble.pdf
+ca9deee3ab200422dbc8d0b8e88b333d6a84c5779a8a5b66382da7d71adf8222  explanations/figures/fig_ex_r13_coordinates.pdf
+7cc9977ce308777e49e1725690cb8e2c5bd9bf49f9019233e8c5d3116029b871  explanations/figures/fig_ex_r13_divergences.pdf
+84f38351c97118e63c15738abd0f8b6c4ac825ed7b3a8eaefd429ee200498a56  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
+d8a9fe9245e9b5b4d9eff79eca49fbd9d81ceaafd966face6a9b7ea47aa35da8  explanations/code/r13-rs/src/main.rs
+563167b8f4074b5576af1fda712b23ac00695b3e1866377b0213eae834902a4e  explanations/code/r13-rs/Cargo.toml
+d8a96a63b09fba62c1ef5900a690cd5993fc8138068aeee7f870fd69148c2952  explanations/code/make_r13_figures.py
 \end{verbatim}
 
 \hypertarget{published-works-on-the-physics-used-here}{%
@@ -2124,7 +2138,8 @@ quaternion unit labelled by the isospin index; plain text \texttt{ie1},
 \texttt{ie1} \texttt{ie2} \texttt{ie3} \texttt{ie4} \texttt{ie5}
 \texttt{ie6} \texttt{ie7} \\
 \(\xi^{\rm LL}_p(\mathbf x)\) & the complex coefficient of the unit
-\(\mathbf e_p\) in the bi-octonion \(\mathbf x\) & new & \\
+\(\mathbf e_p\) in the bi-octonion \(\mathbf x\) & new & \texttt{xi\_p}
+\texttt{xi\_0} \texttt{xi\_1} \texttt{xi\_2} \texttt{xi\_3} \\
 \(\mathbf x\), \(\mathbf y\), \(\mathbf z\), \(\mathbf w\) & elements of
 \(\mathbb B_{\rm LL}\) (bi-octonions); \(\mathbf w\) is also a point of
 the super-loop manifold \(\mathbb L_{\rm LL}\) & new & \texttt{x}
@@ -2421,6 +2436,21 @@ of \(\mathbb L_{\rm LL}\), both Moufang loops & new & \texttt{S\^{}7}
 velocity of the curve \(\mathbf w(\theta_{\rm LL})\) with
 \(d\mathbf w/d\theta_{\rm LL}=\mathbf w\mathbf x\)) & new &
 \texttt{X\_x} \texttt{X\_y} \\
+\(\mathsf L_{\rm LL}(\mathbf g)\) & the real \(4\times4\) matrix of the
+Lorentz transformation
+\(\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger\) of
+\(\mathbb R^{1,3}_{\rm LL}\) in the coordinates
+\(x^0_{\rm LL},\dots,x^3_{\rm LL}\), for a unit bi-quaternion
+\(\mathbf g\): its entry in row \(p\) and column \(p'\)
+(\(p,p'=0,\dots,3\)) is
+\(\tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)\),
+with \(\sigma^{\rm LL}_0\) the unit matrix & new & \texttt{Lmat} \\
+\(\chi_{\rm LL}\) & a two-component spinor (a column of two complex
+numbers) on which a unit bi-quaternion \(\mathbf g\) acts by
+\(\chi_{\rm LL}\mapsto M_{\rm LL}(\mathbf g)\chi_{\rm LL}\); the
+Hermitian matrix \(\chi_{\rm LL}\chi_{\rm LL}^\dagger\) is the matrix
+\(M_{\rm LL}(\mathbf x)\) of a point \(\mathbf x\) of the future light
+cone of \(\mathbb R^{1,3}_{\rm LL}\) & new & \texttt{chi} \\
 \(\theta_{\rm LL}\) & the real parameter of a one-parameter family of
 transformations or of a curve (an angle, a rapidity) & new &
 \texttt{theta} \\
@@ -2635,6 +2665,16 @@ terms \((\phi^\dagger_{\rm LL}\phi_{\rm LL})^2\) and
 \(\lvert\phi^T_{\rm LL}\phi_{\rm LL}\rvert^2\) (plain text
 \texttt{lam4}: either of them) & new & \texttt{phi} \texttt{g\_Y}
 \texttt{lam4} \texttt{lam4\_1} \texttt{lam4\_2} \\
+\(\mathcal L^{\rm Y}_{\rm LL}\), \(\mathcal L^{\rm c}_{\rm LL}\) & the
+Lagrangian densities of the Yukawa form and of the contact form of the
+field theory of the spinor charges on \(\mathbb R^{1,3}_{\rm LL}\) & new
+& \texttt{Lagr\_Y} \texttt{Lagr\_c} \\
+\(m^\phi_{\rm LL}\) & the mass of the pair field \(\phi_{\rm LL}\) in
+the Yukawa form & new & \texttt{m\_phi} \\
+\(I^{\rm ren}_{\rm LL}\) & the renormalized one-loop bubble,
+\(I^{\rm ren}_{\rm LL}(p^{\rm E}_{\rm LL})=I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)-(p^{\rm E}_{\rm LL})^2\,\partial I^{\rm bub}_{\rm LL}/\partial(p^{\rm E}_{\rm LL})^2\)
+(the derivative taken at \(p^{\rm E}_{\rm LL}=0\)): the bubble minus its
+mass and wave-function counterterms & new & \texttt{Iren} \\
 \(\deg_{\rm LL}\) & the superficial degree of divergence of a
 one-particle-irreducible graph: the power of the cutoff with which it
 grows when all its loop momenta grow together & new & \texttt{deg} \\
@@ -2697,22 +2737,24 @@ dimensions; the phases; the group of two elements & new &
 \(\mathfrak{so}(3,1)\), \(\mathfrak{so}(1,7)\), \(\mathfrak{so}(4,1)\),
 \(\mathfrak{so}(8)\), \(\mathfrak{so}(4,4)\),
 \(\mathfrak{so}(8,\mathbb C)\), \(\mathfrak{so}(3)\),
-\(\mathfrak{so}(2,1)\), \(\mathfrak{sl}(2,\mathbb R)\),
-\(\mathfrak{sl}(2)\), \(\mathfrak{su}(2)\), \(\mathfrak{spin}(7)\),
-\(\mathfrak g_2\), \(\mathfrak g_2(\mathbb C)\) & Lie algebras: of the
-Lorentz groups of \(3+1\) and \(7+1\) dimensions; of the de Sitter group
-(signature of the Killing form: 4 positive, 6 negative); of the linear
-maps that preserve a definite real, a \((4,4)\) and a complex quadratic
-form in eight dimensions; of the rotations of three-dimensional space;
-of the Lorentz group of \(2+1\) dimensions, equal to
-\(\mathfrak{sl}(2,\mathbb R)\); \(\mathfrak{sl}(2)\) the simple Lie
-algebra of dimension 3 over any field; \(\mathfrak{su}(2)\) isospin;
-\(\mathfrak{spin}(7)\) of dimension 21; the exceptional Lie algebra
-\(\mathfrak g_2\) (compact, dimension 14) and its complex form (real
-dimension 28) & new & \texttt{so(3,1)} \texttt{so(1,7)} \texttt{so(4,1)}
-\texttt{so(8)} \texttt{so(4,4)} \texttt{so(8,C)} \texttt{so(3)}
-\texttt{so(2,1)} \texttt{sl(2,R)} \texttt{sl(2)} \texttt{su(2)}
-\texttt{spin(7)} \texttt{g2} \texttt{g2(C)} \\
+\(\mathfrak{so}(4)\), \(\mathfrak{so}(2,1)\),
+\(\mathfrak{sl}(2,\mathbb R)\), \(\mathfrak{sl}(2)\),
+\(\mathfrak{su}(2)\), \(\mathfrak{spin}(7)\), \(\mathfrak g_2\),
+\(\mathfrak g_2(\mathbb C)\) & Lie algebras: of the Lorentz groups of
+\(3+1\) and \(7+1\) dimensions; of the de Sitter group (signature of the
+Killing form: 4 positive, 6 negative); of the linear maps that preserve
+a definite real, a \((4,4)\) and a complex quadratic form in eight
+dimensions; of the rotations of three-dimensional space and of
+four-dimensional Euclidean space; of the Lorentz group of \(2+1\)
+dimensions, equal to \(\mathfrak{sl}(2,\mathbb R)\);
+\(\mathfrak{sl}(2)\) the simple Lie algebra of dimension 3 over any
+field; \(\mathfrak{su}(2)\) isospin; \(\mathfrak{spin}(7)\) of dimension
+21; the exceptional Lie algebra \(\mathfrak g_2\) (compact, dimension
+14) and its complex form (real dimension 28) & new & \texttt{so(3,1)}
+\texttt{so(1,7)} \texttt{so(4,1)} \texttt{so(8)} \texttt{so(4,4)}
+\texttt{so(8,C)} \texttt{so(3)} \texttt{so(4)} \texttt{so(2,1)}
+\texttt{sl(2,R)} \texttt{sl(2)} \texttt{su(2)} \texttt{spin(7)}
+\texttt{g2} \texttt{g2(C)} \\
 \(\mathrm{tr}\), \(\det\), \(\mathrm{diag}\), \(\mathrm{Re}\),
 \(\mathrm{Im}\) & trace, determinant, the diagonal matrix with the
 listed entries, real part, imaginary part (also: the imaginary part of
@@ -2729,14 +2771,15 @@ integral, the set of real linear combinations, a dimension & new &
 state; the Hermitian conjugate of the preceding terms & new &
 \texttt{(x)} \texttt{\^{}T} \texttt{o} \\
 A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; X-1, \ldots,
-X-10; Theorems R, L, M, SF1, \ldots, SF4 & the identifiers of the
-machine checks (letters: A associativity, L Lorentz super-loop, Q
-operators and eigenvalues, C the inversion element, M Malcev
-classification, G Groebner bases, N manifolds, S superfluid, R
+X-10; Z-1, \ldots, Z-8; Theorems R, L, M, SF1, \ldots, SF4 & the
+identifiers of the machine checks (letters: A associativity, L Lorentz
+super-loop, Q operators and eigenvalues, C the inversion element, M
+Malcev classification, G Groebner bases, N manifolds, S superfluid, R
 renormalizability, LL-S symbols, LL-H self-containedness, X the examples
 of the explanation of the spin-zero superfluid in the folder
-explanations) and the labels of the theorems proved in the manuscript &
-new & \\
+explanations, Z the 3+1 manifold and the renormalizability of the Yukawa
+form in the folder explanations) and the labels of the theorems proved
+in the manuscript & new & \\
 H-grp, H-op, H-Lie, H-gr, H-dyn & the labels of the hypotheses of the
 no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie

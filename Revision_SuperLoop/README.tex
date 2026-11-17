@@ -228,7 +228,15 @@ examples, the sentence of the conclusions ``The spin-zero superfluid of
 its spinor charges condenses in an isospin-triplet, unitary,
 electrically neutral state, and the pair that is a singlet of the whole
 super-loop requires two species'', with its own program and 10 further
-checks.
+checks. A second document of that folder answers a test on the sentence
+that follows it, ``In \(3+1\) dimensions its Yukawa form is
+renormalizable''. It defines the \(3+1\) manifold
+\(\mathbb R^{1,3}_{\rm LL}\) of the super-loop (the Hermitian
+bi-quaternions), draws its coordinates like Cartesian coordinates,
+derives its Lorentz group from the super-loop, works through examples,
+and proves the statement by power counting, by the completeness of the
+Lagrangian and by the explicit one-loop bubble, with its own program and
+8 further checks.
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -263,6 +271,13 @@ checks.
   of signs, the isospin triplet, condensation, unitarity, electric
   neutrality and the singlet of the whole super-loop --- with examples
   from atoms, nuclei, helium 3 and quark matter.
+\item
+  \texttt{explanations/The\ 3+1\ manifold\ of\ the\ super-loop\ and\ the\ renormalizability\ of\ the\ Yukawa\ form}
+  (.pdf, .tex, .md): the \(3+1\) manifold \(\mathbb R^{1,3}_{\rm LL}\)
+  defined, drawn and worked through with examples; its Lorentz group
+  from the super-loop; the spinor charges as spinors on it; and the
+  proof that the Yukawa form of the theory of the spinor charges is
+  renormalizable on it and not on the eight-dimensional manifolds.
 \end{enumerate}
 
 \hypertarget{contents}{%
@@ -298,10 +313,15 @@ builds of the documents, \texttt{check\_all.sh} \\
 of all checks \\
 \texttt{figures/} & seven figures, each as .pdf and .png \\
 \texttt{explanations/} & the explanation of the sentence on the
-superfluid (.md, .tex, .pdf); its Rust program \texttt{code/explain-rs}
-(binary \texttt{explain\_superfluid}, checks X-1 to X-10), its figure
-script \texttt{code/make\_explain\_figures.py}, its data files and
-report in \texttt{data/}, its three figures in \texttt{figures/} \\
+superfluid (.md, .tex, .pdf), with its Rust program
+\texttt{code/explain-rs} (binary \texttt{explain\_superfluid}, checks
+X-1 to X-10), its figure script \texttt{code/make\_explain\_figures.py}
+and its three figures; the document on the \(3+1\) manifold and the
+renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust
+program \texttt{code/r13-rs} (binary \texttt{r13\_yukawa}, checks Z-1 to
+Z-8), its figure script \texttt{code/make\_r13\_figures.py} and its four
+figures; the data files and reports of both programs in \texttt{data/},
+the figures in \texttt{figures/} \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -321,6 +341,9 @@ python3 code/scripts/make_figures.py
 # the examples of the explanation (checks X-1 to X-10) and its three figures:
 (cd explanations && cargo run --release --manifest-path code/explain-rs/Cargo.toml)
 python3 explanations/code/make_explain_figures.py
+# the examples and checks of the document on the 3+1 manifold (checks Z-1 to Z-8) and its four figures:
+(cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)
+python3 explanations/code/make_r13_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}
@@ -367,6 +390,8 @@ of 9 \\
 \texttt{check\_self\_contained.py} & 1 of 1 \\
 \texttt{explanations/data/ex\_superfluid\_checks.txt} &
 \texttt{explain\_superfluid} & 10 of 10 \\
+\texttt{explanations/data/ex\_r13\_checks.txt} & \texttt{r13\_yukawa} &
+8 of 8 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -571,7 +596,8 @@ quaternion unit labelled by the isospin index; plain text \texttt{ie1},
 \texttt{ie1} \texttt{ie2} \texttt{ie3} \texttt{ie4} \texttt{ie5}
 \texttt{ie6} \texttt{ie7} \\
 \(\xi^{\rm LL}_p(\mathbf x)\) & the complex coefficient of the unit
-\(\mathbf e_p\) in the bi-octonion \(\mathbf x\) & new & \\
+\(\mathbf e_p\) in the bi-octonion \(\mathbf x\) & new & \texttt{xi\_p}
+\texttt{xi\_0} \texttt{xi\_1} \texttt{xi\_2} \texttt{xi\_3} \\
 \(\mathbf x\), \(\mathbf y\), \(\mathbf z\), \(\mathbf w\) & elements of
 \(\mathbb B_{\rm LL}\) (bi-octonions); \(\mathbf w\) is also a point of
 the super-loop manifold \(\mathbb L_{\rm LL}\) & new & \texttt{x}
@@ -868,6 +894,21 @@ of \(\mathbb L_{\rm LL}\), both Moufang loops & new & \texttt{S\^{}7}
 velocity of the curve \(\mathbf w(\theta_{\rm LL})\) with
 \(d\mathbf w/d\theta_{\rm LL}=\mathbf w\mathbf x\)) & new &
 \texttt{X\_x} \texttt{X\_y} \\
+\(\mathsf L_{\rm LL}(\mathbf g)\) & the real \(4\times4\) matrix of the
+Lorentz transformation
+\(\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger\) of
+\(\mathbb R^{1,3}_{\rm LL}\) in the coordinates
+\(x^0_{\rm LL},\dots,x^3_{\rm LL}\), for a unit bi-quaternion
+\(\mathbf g\): its entry in row \(p\) and column \(p'\)
+(\(p,p'=0,\dots,3\)) is
+\(\tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)\),
+with \(\sigma^{\rm LL}_0\) the unit matrix & new & \texttt{Lmat} \\
+\(\chi_{\rm LL}\) & a two-component spinor (a column of two complex
+numbers) on which a unit bi-quaternion \(\mathbf g\) acts by
+\(\chi_{\rm LL}\mapsto M_{\rm LL}(\mathbf g)\chi_{\rm LL}\); the
+Hermitian matrix \(\chi_{\rm LL}\chi_{\rm LL}^\dagger\) is the matrix
+\(M_{\rm LL}(\mathbf x)\) of a point \(\mathbf x\) of the future light
+cone of \(\mathbb R^{1,3}_{\rm LL}\) & new & \texttt{chi} \\
 \(\theta_{\rm LL}\) & the real parameter of a one-parameter family of
 transformations or of a curve (an angle, a rapidity) & new &
 \texttt{theta} \\
@@ -1082,6 +1123,16 @@ terms \((\phi^\dagger_{\rm LL}\phi_{\rm LL})^2\) and
 \(\lvert\phi^T_{\rm LL}\phi_{\rm LL}\rvert^2\) (plain text
 \texttt{lam4}: either of them) & new & \texttt{phi} \texttt{g\_Y}
 \texttt{lam4} \texttt{lam4\_1} \texttt{lam4\_2} \\
+\(\mathcal L^{\rm Y}_{\rm LL}\), \(\mathcal L^{\rm c}_{\rm LL}\) & the
+Lagrangian densities of the Yukawa form and of the contact form of the
+field theory of the spinor charges on \(\mathbb R^{1,3}_{\rm LL}\) & new
+& \texttt{Lagr\_Y} \texttt{Lagr\_c} \\
+\(m^\phi_{\rm LL}\) & the mass of the pair field \(\phi_{\rm LL}\) in
+the Yukawa form & new & \texttt{m\_phi} \\
+\(I^{\rm ren}_{\rm LL}\) & the renormalized one-loop bubble,
+\(I^{\rm ren}_{\rm LL}(p^{\rm E}_{\rm LL})=I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)-(p^{\rm E}_{\rm LL})^2\,\partial I^{\rm bub}_{\rm LL}/\partial(p^{\rm E}_{\rm LL})^2\)
+(the derivative taken at \(p^{\rm E}_{\rm LL}=0\)): the bubble minus its
+mass and wave-function counterterms & new & \texttt{Iren} \\
 \(\deg_{\rm LL}\) & the superficial degree of divergence of a
 one-particle-irreducible graph: the power of the cutoff with which it
 grows when all its loop momenta grow together & new & \texttt{deg} \\
@@ -1144,22 +1195,24 @@ dimensions; the phases; the group of two elements & new &
 \(\mathfrak{so}(3,1)\), \(\mathfrak{so}(1,7)\), \(\mathfrak{so}(4,1)\),
 \(\mathfrak{so}(8)\), \(\mathfrak{so}(4,4)\),
 \(\mathfrak{so}(8,\mathbb C)\), \(\mathfrak{so}(3)\),
-\(\mathfrak{so}(2,1)\), \(\mathfrak{sl}(2,\mathbb R)\),
-\(\mathfrak{sl}(2)\), \(\mathfrak{su}(2)\), \(\mathfrak{spin}(7)\),
-\(\mathfrak g_2\), \(\mathfrak g_2(\mathbb C)\) & Lie algebras: of the
-Lorentz groups of \(3+1\) and \(7+1\) dimensions; of the de Sitter group
-(signature of the Killing form: 4 positive, 6 negative); of the linear
-maps that preserve a definite real, a \((4,4)\) and a complex quadratic
-form in eight dimensions; of the rotations of three-dimensional space;
-of the Lorentz group of \(2+1\) dimensions, equal to
-\(\mathfrak{sl}(2,\mathbb R)\); \(\mathfrak{sl}(2)\) the simple Lie
-algebra of dimension 3 over any field; \(\mathfrak{su}(2)\) isospin;
-\(\mathfrak{spin}(7)\) of dimension 21; the exceptional Lie algebra
-\(\mathfrak g_2\) (compact, dimension 14) and its complex form (real
-dimension 28) & new & \texttt{so(3,1)} \texttt{so(1,7)} \texttt{so(4,1)}
-\texttt{so(8)} \texttt{so(4,4)} \texttt{so(8,C)} \texttt{so(3)}
-\texttt{so(2,1)} \texttt{sl(2,R)} \texttt{sl(2)} \texttt{su(2)}
-\texttt{spin(7)} \texttt{g2} \texttt{g2(C)} \\
+\(\mathfrak{so}(4)\), \(\mathfrak{so}(2,1)\),
+\(\mathfrak{sl}(2,\mathbb R)\), \(\mathfrak{sl}(2)\),
+\(\mathfrak{su}(2)\), \(\mathfrak{spin}(7)\), \(\mathfrak g_2\),
+\(\mathfrak g_2(\mathbb C)\) & Lie algebras: of the Lorentz groups of
+\(3+1\) and \(7+1\) dimensions; of the de Sitter group (signature of the
+Killing form: 4 positive, 6 negative); of the linear maps that preserve
+a definite real, a \((4,4)\) and a complex quadratic form in eight
+dimensions; of the rotations of three-dimensional space and of
+four-dimensional Euclidean space; of the Lorentz group of \(2+1\)
+dimensions, equal to \(\mathfrak{sl}(2,\mathbb R)\);
+\(\mathfrak{sl}(2)\) the simple Lie algebra of dimension 3 over any
+field; \(\mathfrak{su}(2)\) isospin; \(\mathfrak{spin}(7)\) of dimension
+21; the exceptional Lie algebra \(\mathfrak g_2\) (compact, dimension
+14) and its complex form (real dimension 28) & new & \texttt{so(3,1)}
+\texttt{so(1,7)} \texttt{so(4,1)} \texttt{so(8)} \texttt{so(4,4)}
+\texttt{so(8,C)} \texttt{so(3)} \texttt{so(4)} \texttt{so(2,1)}
+\texttt{sl(2,R)} \texttt{sl(2)} \texttt{su(2)} \texttt{spin(7)}
+\texttt{g2} \texttt{g2(C)} \\
 \(\mathrm{tr}\), \(\det\), \(\mathrm{diag}\), \(\mathrm{Re}\),
 \(\mathrm{Im}\) & trace, determinant, the diagonal matrix with the
 listed entries, real part, imaginary part (also: the imaginary part of
@@ -1176,14 +1229,15 @@ integral, the set of real linear combinations, a dimension & new &
 state; the Hermitian conjugate of the preceding terms & new &
 \texttt{(x)} \texttt{\^{}T} \texttt{o} \\
 A-1, \ldots, R-6; G-1, \ldots, G-12; LL-S1, \ldots, LL-H1; X-1, \ldots,
-X-10; Theorems R, L, M, SF1, \ldots, SF4 & the identifiers of the
-machine checks (letters: A associativity, L Lorentz super-loop, Q
-operators and eigenvalues, C the inversion element, M Malcev
-classification, G Groebner bases, N manifolds, S superfluid, R
+X-10; Z-1, \ldots, Z-8; Theorems R, L, M, SF1, \ldots, SF4 & the
+identifiers of the machine checks (letters: A associativity, L Lorentz
+super-loop, Q operators and eigenvalues, C the inversion element, M
+Malcev classification, G Groebner bases, N manifolds, S superfluid, R
 renormalizability, LL-S symbols, LL-H self-containedness, X the examples
 of the explanation of the spin-zero superfluid in the folder
-explanations) and the labels of the theorems proved in the manuscript &
-new & \\
+explanations, Z the 3+1 manifold and the renormalizability of the Yukawa
+form in the folder explanations) and the labels of the theorems proved
+in the manuscript & new & \\
 H-grp, H-op, H-Lie, H-gr, H-dyn & the labels of the hypotheses of the
 no-go theorems: the symmetries form a group (H-grp), act as linear
 operators on the space of states (H-op), have generators that form a Lie

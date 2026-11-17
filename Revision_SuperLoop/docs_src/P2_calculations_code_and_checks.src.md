@@ -16,9 +16,10 @@ check, as the programs printed it in the last run. Section 2 says how to reprodu
 describes the programs; Sections 4 to 8 go through the computations (the algebra, the classification,
 the manifolds, the superfluid, renormalizability); Section 9 describes the program of the examples of the
 explanation of the sentence on the superfluid (folder `explanations`) and gives its output; Section 10
-reproduces the checks of the documents; Section 11 lists the data files and the figures; Section 12
-gives the checksums; Section 13 is the complete table of the symbols, which defines every symbol used
-here.
+does the same for the program of the document on the $3+1$ manifold and the renormalizability of the
+Yukawa form (folder `explanations`); Section 11 reproduces the checks of the documents; Section 12 lists
+the data files and the figures; Section 13 gives the checksums; Section 14 is the complete table of the
+symbols, which defines every symbol used here.
 
 # 2. How to reproduce everything
 
@@ -30,11 +31,14 @@ python3 code/scripts/malcev_groebner.py                                  # Groeb
 python3 code/scripts/make_figures.py                                     # the seven figures
 (cd explanations && cargo run --release --manifest-path code/explain-rs/Cargo.toml)   # checks X-1 .. X-10
 python3 explanations/code/make_explain_figures.py                        # the three figures of the explanation
+(cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)      # checks Z-1 .. Z-8
+python3 explanations/code/make_r13_figures.py                            # the four figures of the 3+1 document
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
 
 `check_all.sh` runs, in this order: the program (all five commands); the Gröbner script; the figures;
-the program of the examples of the explanation and its figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
+the program of the examples of the explanation and its figures; the program of the document on the
+$3+1$ manifold and its figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
 first); then it verifies that every report passes, that no placeholder is left unresolved, that every
@@ -556,7 +560,85 @@ the script `explanations/code/make_explain_figures.py` draws the figures `explan
 {{FILE:explanations/data/ex_superfluid_checks.txt}}
 ```
 
-# 10. The checks of the documents
+# 10. The $3+1$ manifold and the renormalizability of the Yukawa form (folder `explanations`)
+
+The document `explanations/The 3+1 manifold of the super-loop and the renormalizability of the Yukawa
+form` answers the test of the sentence of the conclusions "In $3+1$ dimensions its Yukawa form is
+renormalizable". Every number and curve in it is computed by the Rust program
+`explanations/code/r13-rs` (binary `r13_yukawa`, {{GEN:n_r13_lines}} lines in `src/main.rs`). It uses the
+complex numbers, the complex matrices, the Gauss-Legendre rules and the writer of data files of the
+library crate `code/spacetimes-rs`. It must be started in the folder `explanations`, into whose `data/` it
+writes. Its formulas:
+
+* **The manifold (Z-1, Z-2).** A bi-quaternion $\mathbf b=\sum_{p=0}^3\xi^{\rm LL}_p(\mathbf b)\,\mathbf e_p$ has the
+  matrix $M_{\rm LL}(\mathbf b)=\xi^{\rm LL}_0(\mathbf b)\,\sigma^{\rm LL}_0-i\sum_j\xi^{\rm LL}_j(\mathbf b)\,\sigma^{\rm LL}_j$.
+  A point $\mathbf x=x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j$ of $\mathbb R^{1,3}_{\rm LL}$ has
+  $M_{\rm LL}(\mathbf x)=\sum_px^p_{\rm LL}\sigma^{\rm LL}_p$. Z-1 compares the two matrices, tests Hermiticity,
+  $\det M_{\rm LL}(\mathbf x)=N_{\rm LL}(\mathbf x)=(x^0_{\rm LL})^2-\sum_j(x^j_{\rm LL})^2$ and the inverse formulas
+  $x^p_{\rm LL}=\tfrac12\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf x))$, for the four basis elements and 200
+  random points. Z-2 computes the matrix of the quadratic form by polarization: the entry $(p,p')$ is half
+  the difference between $N_{\rm LL}$ of the sum of the basis points $p$ and $p'$ and the two values
+  $N_{\rm LL}$ of the basis points alone.
+* **The Lorentz group (Z-3).** For a unit bi-quaternion $\mathbf g$, $\mathsf L_{\rm LL}(\mathbf g)$ has the
+  entry $\tfrac12\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)$
+  in row $p$ and column $p'$. A random $M_{\rm LL}(\mathbf g)$ has four entries whose real and imaginary parts
+  are uniform in $[-1,1)$. It is accepted if the modulus of its determinant exceeds 0.1, and is then
+  divided by a square root of the determinant. The check tests 200 such matrices: preservation of the
+  metric, determinant 1, the time-time entry at least 1, $\mathsf L_{\rm LL}(\mathbf g)=\mathsf L_{\rm LL}(-\mathbf g)$,
+  the action on the coordinates, and $\mathsf L_{\rm LL}(\mathbf g\mathbf h)=\mathsf L_{\rm LL}(\mathbf g)\mathsf L_{\rm LL}(\mathbf h)$.
+* **The generators (Z-4).** For $\mathbf u=J^j_{\rm LL}=\tfrac12\mathbf e_j$ and $\mathbf u=K^j_{\rm LL}=\tfrac12i\mathbf e_j$
+  the program computes the matrix $\mathcal V_{\rm LL}(\mathbf u)$ of
+  $M_{\rm LL}(\mathbf x)\mapsto M_{\rm LL}(\mathbf u)M_{\rm LL}(\mathbf x)+M_{\rm LL}(\mathbf x)M_{\rm LL}(\mathbf u)^\dagger$.
+  It compares $\mathcal V_{\rm LL}(\mathbf u)$ with the central difference
+  $[\mathsf L_{\rm LL}(\exp(10^{-5}\mathbf u))-\mathsf L_{\rm LL}(\exp(-10^{-5}\mathbf u))]/(2\cdot10^{-5})$, and tests the
+  preservation of the metric, the 27 commutation relations of $\mathfrak{so}(3,1)$, and the rank 6 of the
+  Gram matrix of the six matrices.
+* **The examples (Z-5).** The sample point $(2,1.2,1.5,1.0)$; the boost along $x^1_{\rm LL}$ with the
+  rapidity 0.8 of $(1,0,0,0)$; the rotation about $x^3_{\rm LL}$ by $\pi/3$ of $(0,1,0,0)$; the rotation by
+  $2\pi$; the null point $\chi_{\rm LL}\chi_{\rm LL}^\dagger$ of $\chi_{\rm LL}=(1,0)$ and its boost; 200 random
+  spinors; and 200 random unit bi-quaternions $\mathbf g$ for the identity
+  $\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\bar{\mathbf g})^T\mathsf E_{\rm LL}=M_{\rm LL}(\mathbf g)$, which makes each column of
+  $\psi'_{\rm LL}$ a two-component spinor.
+* **Mass dimensions (Z-6).** Twice the dimensions, as integers, follow from the condition that every term
+  has the dimension $D+1$: $2[\Psi_{\rm LL}]=D$, $2[\phi_{\rm LL}]=D-1$, $2[G_{\rm LL}]=2(D+1)-8[\Psi_{\rm LL}]$,
+  $2[g^{\rm Y}_{\rm LL}]=2(D+1)-2[\phi_{\rm LL}]-4[\Psi_{\rm LL}]$, $2[\lambda^{(1)}_{\rm LL}]=2(D+1)-8[\phi_{\rm LL}]$, for
+  $D=3$ and $D=7$. They are compared with the closed forms, and with $[G_{\rm LL}]=2[g^{\rm Y}_{\rm LL}]-2$, which
+  follows from $G_{\rm LL}=4(g^{\rm Y}_{\rm LL})^2/(m^\phi_{\rm LL})^2$.
+* **Power counting (Z-7).** For the Yukawa form the program enumerates every class of graphs: every number
+  $n^{\rm v,Y}_{\rm LL}$ of Yukawa vertices and $n^{\rm v,4}_{\rm LL}$ of quartic vertices with
+  $1\le n^{\rm v}_{\rm LL}\le6$, every even $n^{\rm ext,F}_{\rm LL}\le2n^{\rm v,Y}_{\rm LL}$, and every
+  $n^{\rm ext,B}_{\rm LL}\le n^{\rm v,Y}_{\rm LL}+4n^{\rm v,4}_{\rm LL}$ for which the difference is even. The internal
+  lines are $n^{\rm int,F}_{\rm LL}=(2n^{\rm v,Y}_{\rm LL}-n^{\rm ext,F}_{\rm LL})/2$ and
+  $n^{\rm int,B}_{\rm LL}=(n^{\rm v,Y}_{\rm LL}+4n^{\rm v,4}_{\rm LL}-n^{\rm ext,B}_{\rm LL})/2$; classes with no loop or no
+  external line are skipped. For the contact form it enumerates $1\le n^{\rm v}_{\rm LL}\le6$ and every even
+  $n^{\rm ext,F}_{\rm LL}$ from 2 to $4n^{\rm v}_{\rm LL}$. It compares the direct count
+  $\deg_{\rm LL}=(D+1)n^{\rm loop}_{\rm LL}-n^{\rm int,F}_{\rm LL}-2n^{\rm int,B}_{\rm LL}$ with the closed formulas, in
+  doubled integers, for $D=3$ and $D=7$. A function with $n^{\rm ext,F}_{\rm LL}$ fermion lines (fermion number
+  $\pm1$ each) and $n^{\rm ext,B}_{\rm LL}$ pair-field lines ($\pm2$ each) is allowed by the fermion number if
+  some choice of the signs adds up to zero.
+* **The bubble (Z-8).** The integrand of $I^{\rm bub}_{\rm LL}$ is averaged over the directions of the loop
+  momentum by a 48-point Gauss-Legendre rule in the angle between the two momenta, with the weight
+  $\tfrac2\pi\sin^2$ of that angle. The average is then integrated over the length of the loop momentum,
+  with the measure $\lvert k^{\rm E}_{\rm LL}\rvert^3/(8\pi^2)$, by the same rule on panels between the points
+  0, 0.25, 0.375, ... (each point 1.5 times the previous one), up to the cutoff. The slope is
+  $\Lambda_{\rm LL}^4/(8\pi^2)$ times the difference of the averages at $p^{\rm E}_{\rm LL}$ and at 0, on the
+  sphere $\lvert k^{\rm E}_{\rm LL}\rvert=\Lambda_{\rm LL}$. The renormalized bubble subtracts, under the integral,
+  the average at 0, $1/[(k^{\rm E}_{\rm LL})^2+m_{\rm LL}^2]$, and the term
+  $-(p^{\rm E}_{\rm LL})^2[(k^{\rm E}_{\rm LL})^2+2m_{\rm LL}^2]/(2[(k^{\rm E}_{\rm LL})^2+m_{\rm LL}^2]^3)$.
+
+Equalities are tested with the tolerance $10^{-12}$ unless the statement of a check names another; the
+power counting uses exact integers; the random numbers come from a fixed seed. The data files are
+`explanations/data/ex_r13_points.csv`, `ex_r13_orbits.csv`, `ex_r13_dimensions.csv`,
+`ex_r13_power_counting.csv`, `ex_r13_divergent_counts.csv` and `ex_r13_bubble.csv`. The script
+`explanations/code/make_r13_figures.py` draws the figures `explanations/figures/fig_ex_r13_coordinates`,
+`fig_ex_r13_lorentz`, `fig_ex_r13_divergences` and `fig_ex_r13_bubble` (.pdf and .png) from them. The
+output of the last run:
+
+```
+{{FILE:explanations/data/ex_r13_checks.txt}}
+```
+
+# 11. The checks of the documents
 
 The script `check_symbols.py` verifies eight statements on the symbols: LL-S1, no symbol and no
 plain-text name is registered twice; LL-S2, the taken entries carry the meanings of the master registries,
@@ -579,7 +661,7 @@ which a text sends its reader to another document (LL-H1). Their output:
 {{FILE:data/sl_self_contained_checks.txt}}
 ```
 
-# 11. Data files and figures
+# 12. Data files and figures
 
 {{GEN:data_files_table}}
 
@@ -593,7 +675,7 @@ which a text sends its reader to another document (LL-H1). Their output:
 | `fig_sl_superfluid` | (a) quasi-particle energies; (b) the gap versus the coupling; (c) the weak-coupling law; (d) the minimum of $\Omega_{\rm LL}$ versus $\zeta_{\rm LL}$ | `sl_sf_dispersion.csv`, `sl_sf_gap_vs_coupling.csv`, `sl_sf_omega_zeta.csv` |
 | `fig_sl_renorm` | (a) the superficial degree of divergence; (b) the contact coupling versus the cutoff; (c) the bubble | `sl_power_counting.csv`, `sl_contact_running.csv`, `sl_yukawa_bubble.csv` |
 
-# 12. Checksums
+# 13. Checksums
 
 SHA-256 of the data files, the figures and the programs from which the documents were built (the last
 block: the folder `explanations`):
@@ -608,6 +690,6 @@ block: the folder `explanations`):
 {{GEN:ex_sha256}}
 ```
 
-# 13. The symbols
+# 14. The symbols
 
 {{GEN:symbols_ll_table}}

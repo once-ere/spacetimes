@@ -6,7 +6,9 @@
 #   1. the program superloop (all five commands; about one second), the Groebner-basis
 #      classification (a few seconds) and the seven figures; then the program of the folder
 #      explanations (explanations/code/explain-rs: the examples of the explanation of the
-#      spin-zero superfluid) and its three figures, which read two data files of superloop;
+#      spin-zero superfluid) and its three figures, which read two data files of superloop; and
+#      the program explanations/code/r13-rs (the 3+1 manifold and the renormalizability of the
+#      Yukawa form) and its four figures;
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
@@ -36,6 +38,9 @@ run "make_figures.py" python3 code/scripts/make_figures.py
 explain() { (cd explanations && cargo run --release --quiet --manifest-path code/explain-rs/Cargo.toml); }
 run "explain_superfluid (explanations)" explain
 run "make_explain_figures.py (explanations)" python3 explanations/code/make_explain_figures.py
+r13() { (cd explanations && cargo run --release --quiet --manifest-path code/r13-rs/Cargo.toml); }
+run "r13_yukawa (explanations)" r13
+run "make_r13_figures.py (explanations)" python3 explanations/code/make_r13_figures.py
 
 # 2. documents, two passes
 for pass in 1 2; do
@@ -108,7 +113,8 @@ else line PASS "no formula ends directly before a digit"; fi
 missing=""
 for b in README provenance/P0_task_rules_deviations_decisions provenance/P1_symbols_LL provenance/P2_calculations_code_and_checks \
          "manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative Counterexamples to the No-Go Theorems and a Spin-Zero Spinor Superfluid" \
-         "explanations/The spin-zero superfluid of the spinor charges - an explanation"; do
+         "explanations/The spin-zero superfluid of the spinor charges - an explanation" \
+         "explanations/The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form"; do
     for ext in md tex pdf; do
         [ -s "$b.$ext" ] || missing="$missing $b.$ext"
     done

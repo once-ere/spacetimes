@@ -73,6 +73,10 @@ LL-S1), and every column of every data file is such a name or a descriptive word
 | the labels of the theorems of the superfluid, first `S1` to `S4`, which are the labels of provenance documents of the main project | text | SF1 to SF4 |
 | letters of several objects that differ by type or suffix: $C_{\rm LL}$, $\mathbb C$ and the checks C-1 to C-4; $L^{\rm LL}_{\mathbf x}$, $\mathbb L_{\rm LL}$ and the checks L; $R^{\rm LL}_{\mathbf x}$, $\mathbb R$, Theorem R and the checks R; $G_{\rm LL}$, $\mathrm G_2$ and the checks G; $N_{\rm LL}$ and the checks N; $Q_{\rm LL}$ and the checks Q; $S^7_{\rm LL}$ and the checks S; $T^\iota_{\rm LL}$ and the transpose ${}^T$; $F_{\rm LL}$ and $\mathcal F^{\rm A}_{\rm LL}$ | text | each is a separate entry of the registry; a label of a check is always followed by a hyphen and a number |
 | plain-text names inside the meanings of the registry (`R^8`, `M_2(C)`, ...) that broke the LaTeX table | registry | written as code; the LaTeX table sets them in typewriter type |
+| the letter P: a generator in the registry of the main project, and the first name of the sample point of the document on the $3+1$ manifold | program, data, figure | the words "sample point" |
+| the letter G: the contact coupling $G_{\rm LL}$ (`G`), and the first name of the generator matrices in a report, with `R_j` and `B_j` | program | the vector action $\mathcal V_{\rm LL}(\mathbf u)$ (`V_LL`), an existing entry |
+| the name `chi`: the spinor $\chi_{\rm LL}$, and an angle variable of the quadrature of the bubble | program | the angle variable is called `ang` |
+| letters without suffix in the report, the comments and the figures of the first version of the program `r13_yukawa` (`X`, `M`, `x^0`, `e^`, the parameter $\theta_{\rm LL}$ written without its suffix, `k`) | program, figures | the registered names `M_LL(x)`, `x_LL^p`, `exp`, `theta`, `kE` |
 
 # 4. Symbols shared with the folder Revision_NoGo
 
@@ -81,7 +85,7 @@ The following symbols occur in both registries and denote the same object in bot
 imaginary unit), $\mathbb R$, $\mathbb C$ (the real and complex numbers), $p$ (an index over the basis of
 an algebra), $\mathfrak g_2$, $\mathrm G_2$ (the compact exceptional Lie algebra and group),
 $\mathfrak{so}(8)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(3)$,
-$\mathfrak{su}(2)$, $SU(2)$, $U(1)$ (Lie algebras and groups), $\mathrm{tr}$, $\det$, $\mathrm{Re}$,
+$\mathfrak{so}(4)$, $\mathfrak{su}(2)$, $SU(2)$, $U(1)$ (Lie algebras and groups), $\mathrm{tr}$, $\det$, $\mathrm{Re}$,
 $\mathrm{diag}$, ${}^T$, $\otimes$ and $\langle\ \rangle$ (operations). The script declares them in its list
 `SHARED`, and check LL-S2 verifies that the shared symbols are exactly the declared ones.
 
@@ -129,6 +133,15 @@ last column of the table of Section 7. The following conventions complete that c
   `D_LL`, which is the Lorentz derivation); `F_LL/2 - T_LL^3` and `F_LL/2 + T_LL^3` are
   $\tfrac12F_{\rm LL}-T^3_{\rm LL}$ and $\tfrac12F_{\rm LL}+T^3_{\rm LL}$, the numbers of the isospin-down and of
   the isospin-up particles; `fraction(+1)` is the fraction of the condensed pairs of the charge $+1$.
+  In the program `r13_yukawa` of the folder `explanations`: `Lmat` is $\mathsf L_{\rm LL}(\mathbf g)$ and
+  `Lmat[0][0]` its time-time entry; `V_LL(uL)` is the vector action $\mathcal V_{\rm LL}(\mathbf u)$, for
+  example `V_LL(J_LL^j)`; `chi` is $\chi_{\rm LL}$; `theta` is $\theta_{\rm LL}$ and `exp(theta)` its
+  exponential; `xi_p` is $\xi^{\rm LL}_p$; `eps3_jj'j''` is $\epsilon^{\rm LL}_{jj'j''}$ and `sum_j''` a sum over
+  $j''$; `[[a, b], [c, d]]` with numbers in place of the letters is a $2\times2$ matrix written row by
+  row; `sqrt3` is $\sqrt3$; `int_(|kE| < Lambda) d^4kE` is the integral over the four-dimensional ball of
+  radius $\Lambda_{\rm LL}$; `dIbub/d(pE^2)` is the derivative of $I^{\rm bub}_{\rm LL}$ with respect to
+  $(p^{\rm E}_{\rm LL})^2$; `1e-12` is $10^{-12}$; "the sample point" is the point with the coordinates
+  $(2,1.2,1.5,1.0)$.
 * **Abbreviations**: `BdG` is Bogoliubov-de Gennes, `BCS` Bardeen-Cooper-Schrieffer; `M_2(C)` the complex
   $2\times2$ matrices; `R^8`, `C^3`, `C^8` the real or complex vector spaces of that dimension; `Im H`,
   `Im O` and `C (x) H` are ${\rm Im}\,\mathbb H$, ${\rm Im}\,\mathbb O$ and $\mathbb C\otimes\mathbb H$; the groups

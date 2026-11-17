@@ -12,8 +12,8 @@ date: "November 16, 2026"
 
 This document is the account of the work in the folder `Revision_SuperLoop`. It states
 
-* the task, verbatim, and what it asks for, and the later request for an explanation of one sentence
-  of the manuscript (Section 2);
+* the task, verbatim, and what it asks for; the later request for an explanation of one sentence
+  of the manuscript; and the test of the sentence that follows it (Section 2);
 * each of the author's hard rules and how it is met (Section 3);
 * what the folder contains (Section 4) and what was done, in order (Section 5);
 * the results in brief (Section 6);
@@ -100,17 +100,61 @@ During the work on it, at 20:21, the author added: "when complete, push everythi
    `explain_superfluid` (folder `explanations/code/explain-rs`, checks X-1 to X-10), and the numbers of
    the superfluid that the document quotes are those of the command `superfluid` of `superloop`.
 
+## 2.5 The requests of November 17, 2026 (their operative parts, verbatim)
+
+At 05:34 the author asked for a test of the sentence of the conclusions that follows the one explained
+in stage 4. The operative part of the request, verbatim:
+
+"Immediately after the sentence cited in your previous task, you state 'In 3 + 1 dimensions its Yukawa
+form is renormalizable ...' [...] So You must clearly mathematically define , discuss, give examples
+(with figures) of your 3+1 supporting manifold for this statement 'In 3 + 1 dimensions its Yukawa form
+is renormalizable'; you must do this in 240 seconds or less, and NOT HOURS."
+
+At 05:36, verbatim: "none of the figures are new! what are you doing. sketch the coordinates , similar
+to sketching x-y-z- Cartesian coordinates"
+
+At 05:42 the author asked for the work to be done without shortcuts, and ended, verbatim: "Put your
+test answers in a new, Well-Organized pdf file that is precise, correct and COMPLETE!"
+
+## 2.6 What these requests ask for, and how they are answered
+
+The answer is the document `explanations/The 3+1 manifold of the super-loop and the renormalizability
+of the Yukawa form` (.md, .tex, .pdf), new in stage 5.
+
+1. **Define the $3+1$ manifold mathematically.** Its Section 2: the manifold $\mathbb R^{1,3}_{\rm LL}$ of
+   the Hermitian bi-quaternions, its coordinates, the matrix $M_{\rm LL}(\mathbf x)$ of a point, and the
+   metric $N_{\rm LL}=\det M_{\rm LL}(\mathbf x)$ of signature $(1,3)$.
+2. **Discuss it, for the statement.** Its Sections 3 to 5:
+   - the Lorentz group of the manifold from the unit bi-quaternions of the super-loop (double cover,
+     generators, all proper orthochronous transformations reached);
+   - the spinor charges as two-component spinors on it;
+   - the contact and Yukawa forms of the field theory on it;
+   - the proof of the statement: mass dimensions, power counting, the four divergent functions and the
+     terms that absorb them, the completeness of the Lagrangian, the one-loop bubble, why the contact form
+     and the eight-dimensional manifolds fail, and what the standard theorem adds.
+3. **Examples with figures.** Worked examples (a sample point, a boost, a rotation, the rotation by
+   $2\pi$, a spinor and its null point, the spinor charges, the bubble at ten cutoffs) and four new
+   figures. Figure 1 draws the coordinates like Cartesian axes, as the request of 05:36 asks.
+4. **A new, well-organized PDF that is precise, correct and complete.**
+   - The document answers each question of the test in a section of its own and collects the answers in
+     one table (its Section 6).
+   - Every number is computed by the new Rust program `r13_yukawa` (folder `explanations/code/r13-rs`,
+     checks Z-1 to Z-8) and inserted from its data files.
+   - The document is self-contained: it contains the complete table of the symbols, the reports of its
+     checks, and the reports of the checks of `superloop` that it quotes.
+5. **The time limit of 240 seconds** could not be met together with the other requirements (D9).
+
 # 3. The hard rules, and how each is met
 
 | rule (in the words of this provenance) | how it is met | where to verify |
 |---|---|---|
-| 0. Write for clever physics Ph.D. students who do not know the solution; they must be able to learn from it and teach it | the manuscript defines every term before it uses it (generator, Jacobiator, associator, alternative algebra, loop, Moufang loop, Malcev algebra, derivation, automorphism, twist charge, Gröbner basis, saturation, unitary state, Bogoliubov-de Gennes matrix, superficial degree of divergence, ...), proves its seven theorems in the text, and states what is not established; the explanation of the sentence on the superfluid is written for a reader who knows nothing of the solution, with worked examples | manuscript, Secs. I–XI; the explanation in `explanations/` |
-| 1. Every documentation, symbol and provenance file in .md, .tex and .pdf | `README`, `P0`, `P1`, `P2`, the manuscript and the explanation exist in all three formats; `check_all.sh` builds them and fails if one is missing | `check_all.sh`, Section 4 |
-| 2. Push to the repository as soon as anything is updated | the work was committed in six stages (Section 5), each carried to the author's computer at once; the push itself can only be made by the author, with the command block given at the end of each stage | the git log |
+| 0. Write for clever physics Ph.D. students who do not know the solution; they must be able to learn from it and teach it | the manuscript defines every term before it uses it (generator, Jacobiator, associator, alternative algebra, loop, Moufang loop, Malcev algebra, derivation, automorphism, twist charge, Gröbner basis, saturation, unitary state, Bogoliubov-de Gennes matrix, superficial degree of divergence, ...), proves its seven theorems in the text, and states what is not established; the explanation of the sentence on the superfluid, and the document on the $3+1$ manifold and the Yukawa form, are written for a reader who knows nothing of the solution, with worked examples | manuscript, Secs. I–XI; the two documents in `explanations/` |
+| 1. Every documentation, symbol and provenance file in .md, .tex and .pdf | `README`, `P0`, `P1`, `P2`, the manuscript and the two documents of `explanations/` exist in all three formats; `check_all.sh` builds them and fails if one is missing | `check_all.sh`, Section 4 |
+| 2. Push to the repository as soon as anything is updated | the work was committed in seven stages (Section 5), each carried to the author's computer at once; the push itself can only be made by the author, with the command block given at the end of each stage | the git log |
 | 3. Working directory `/Users/nsh/Developer/github/spacetimes` | the folder `Revision_SuperLoop` of that repository | — |
 | 4. Repository `https://github.com/once-ere/spacetimes.git` | as stated | — |
 | 5. One symbol, one object, in the whole project; a master provenance of the symbols, and its symbols used everywhere | the registry `provenance/symbols_ll.csv` takes {{GEN:symbols_ll_count_taken}} symbols of the master registries with their meanings and adds {{GEN:symbols_ll_count_new}} new ones, all with the suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur) that marks them as algebra elements, matrices, number sets or Lie algebras; the plain-text names of the programs, figures and data files are registered as well; eight machine checks (LL-S1 to LL-S8) | `P1`, data file `sl_symbol_checks.txt` |
-| 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases ({{GEN:nchecks_rust}} checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; the Rust program `explain_superfluid` computes every example of the explanation ({{GEN:nchecks_explain}} checks, all passing), and a Python script draws its three figures; every number in the documents is inserted from the data files by a script | `P2`, `code/`, `explanations/code/` |
+| 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases ({{GEN:nchecks_rust}} checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; the Rust program `explain_superfluid` computes every example of the explanation ({{GEN:nchecks_explain}} checks, all passing), and a Python script draws its three figures; the Rust program `r13_yukawa` computes every number of the document on the $3+1$ manifold ({{GEN:nchecks_r13}} checks, all passing), and a Python script draws its four figures; every number in the documents is inserted from the data files by a script | `P2`, `code/`, `explanations/code/` |
 | 7. Every equation, symbol and definition in the very file that uses it; never refer the reader elsewhere | every document contains the complete table of the symbols and the formulas it uses; the check LL-H1 searches all documents for referrals | data file `sl_self_contained_checks.txt` |
 | 8. Follow the instructions exactly, or explain in a provenance why not and pause | Section 7 explains every place where the wording of the task cannot be followed literally (a counterexample to a proved theorem whose hypotheses hold, a "group" that is not associative) and what is provided instead; the work did not pause, because every instruction could be carried out in full on that basis | Section 7 |
 
@@ -124,7 +168,7 @@ During the work on it, at 20:21, the author added: "when complete, push everythi
 | `code/scripts/` | `malcev_groebner.py`, `make_figures.py`, `write_symbol_registry.py`, `check_symbols.py`, `check_self_contained.py`, `write_doc_tables.py`, `assemble_docs.py`, `build_manuscript.py`, `tex2md.py`, `build_docs.sh`, `check_layout.py`, `doc_header.tex`, `check_all.sh` |
 | `data/` | 14 data files, the reports of all checks and the Gröbner bases |
 | `figures/` | 7 figures, .pdf and .png |
-| `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf); its program `code/explain-rs` (binary `explain_superfluid`) and figure script `code/make_explain_figures.py`; its data files and report in `data/`; its three figures in `figures/` |
+| `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf), with its program `code/explain-rs` (binary `explain_superfluid`), its figure script `code/make_explain_figures.py` and its three figures; the document "The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" (.md, .tex, .pdf), with its program `code/r13-rs` (binary `r13_yukawa`), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
 | `docs_src/` | the sources of the documents |
 
 # 5. What was done, in order
@@ -148,6 +192,12 @@ During the work on it, at 20:21, the author added: "when complete, push everythi
    program `explain_superfluid` with the checks X-1 to X-10, three figures, the document in
    `explanations/`, and the extension of the checks of the symbols, of self-containedness and of
    `check_all.sh` to the new folder (Section 11, entries E14 to E17).
+7. **Stage 5 — the $3+1$ manifold and the renormalizability of the Yukawa form** (requests of November
+   17, Section 2.5): the program `r13_yukawa` with the checks Z-1 to Z-8, four new figures, the document
+   in `explanations/`, new registry entries ($\mathsf L_{\rm LL}(\mathbf g)$, $\chi_{\rm LL}$,
+   $\theta_{\rm LL}$, $\mathcal L^{\rm Y}_{\rm LL}$ and $\mathcal L^{\rm c}_{\rm LL}$, $m^\phi_{\rm LL}$,
+   $I^{\rm ren}_{\rm LL}$, $\mathfrak{so}(4)$), and the extension of the checks and of `check_all.sh` to the
+   new document (Section 11, entries E18 to E24).
 
 # 6. The results in brief
 
@@ -202,6 +252,16 @@ During the work on it, at 20:21, the author added: "when complete, push everythi
   condensate is the number of down particles $\tfrac12F_{\rm LL}-T^3_{\rm LL}$; the singlet of the whole
   super-loop is the scalar part of the product of two spinor charges, one half of a trace with two
   antisymmetric contractions, symmetric and therefore zero for one fermion field.
+* **The $3+1$ manifold and the Yukawa form** (stage 5): $\mathbb R^{1,3}_{\rm LL}$, the Hermitian
+  bi-quaternions $x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j$, is Minkowski space,
+  $N_{\rm LL}=\det M_{\rm LL}(\mathbf x)=(x^0_{\rm LL})^2-\sum_j(x^j_{\rm LL})^2$; the unit bi-quaternions of the
+  super-loop act on it as all proper orthochronous Lorentz transformations, each from exactly two
+  elements; the spinor charges are two-component spinors on it. In $3+1$ dimensions the superficial
+  degree of divergence of the Yukawa form is
+  $\deg_{\rm LL}=4-\tfrac32n^{\rm ext,F}_{\rm LL}-n^{\rm ext,B}_{\rm LL}$ at every order; exactly four functions
+  diverge, each absorbed by a term of the Lagrangian; after the mass and wave-function counterterms the
+  one-loop bubble no longer depends on the cutoff (its changes per doubling fall by a factor of about 64,
+  faster than the power-counting bound of 4).
 * **Renormalizability**: in $3+1$ dimensions the Yukawa form is renormalizable and the contact form is
   not; on the $7+1$ and $4+4$ manifolds every form is non-renormalizable; invariance under the loop's
   linear action equals invariance under its Lie closure, so non-associativity changes nothing in power
@@ -282,6 +342,13 @@ cutoff; renormalizability is decided by power counting and by the one-loop diver
 Yukawa completion, not by a renormalization to all orders. Power counting decides the question asked,
 because non-renormalizability is a statement about the growth of the divergences.
 
+**D9. "you must do this in 240 seconds or less" (request of 05:34).** The request also asks for a
+mathematical definition, a discussion, examples and figures, and the later request of 05:42 asks for a
+new PDF that is precise, correct and complete. With Hard Rules 1, 6 and 7 that means a new program whose
+results are checked, new figures drawn from its data, and a self-contained document in three formats.
+This cannot be done in 240 seconds without giving up correctness or completeness. The work followed the
+request of 05:42 and gave up the time limit; this is the explanation that Hard Rule 8 requires.
+
 # 8. Decisions that are the author's
 
 1. **The super-loop as the "super-group"** (D2). If a group is required, the only consistent choices are
@@ -316,7 +383,10 @@ because non-renormalizability is a statement about the growth of the divergences
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* The Yukawa completion was not renormalized explicitly to all orders (D8).
+* The Yukawa completion was not renormalized explicitly to all orders (D8). The document on the $3+1$
+  manifold proves renormalizability by power counting, by the completeness of the Lagrangian and by the
+  one-loop bubble, and states what the standard renormalization theorem adds; the counterterms beyond one
+  loop and the running of the couplings were not computed.
 
 # 10. Inputs
 
@@ -351,6 +421,13 @@ because non-renormalizability is a statement about the growth of the divergences
 | E15 | in the first drafts of the program of the explanation the report used `q` (the momentum) for the charge of a pair, an unregistered name for a unit vector, and a condition of check X-9 that did not test what its statement says | checks LL-S8 and review (stage 4) | `Q_LL(Kch)`, words, and the condition rewritten (the species Casimir is 0 for $\mathsf E_{\rm LL}$ and 2 for $\sigma^{\rm LL}_0$) |
 | E16 | the explanation placed computed numbers directly after a formula instead of inside it; the Markdown converter then did not recognize the formula, and three Greek letters were set in a text font without these glyphs; the explanation also used bare Latin letters for the isospin quantum number and for two amplitudes | the layout check of the build and check LL-S6 (stage 4) | the numbers stand inside their formulas; the letters were replaced by words |
 | E17 | three cells of the table of the example condensates were wider than their columns | the layout check of the build (stage 4) | the column widths were changed |
+| E18 | the first draft of check Z-6 (the mass dimensions) contained unfinished code | review of the program before its first run (stage 5) | rewritten: the dimensions follow, in doubled integers, from the condition that every term of the Lagrangian density has the dimension $D+1$, and are compared with the closed forms |
+| E19 | the first version of check Z-8 required that each doubling of the cutoff divide the change of the renormalized bubble by about 4, the power-counting bound; the computed factor was about 64 | the check failed (stage 5) | the term of order $(p^{\rm E}_{\rm LL})^4$ of the directional average was derived, $m_{\rm LL}^4/[(k^{\rm E}_{\rm LL})^2+m_{\rm LL}^2]^5$, and is now verified numerically; the check requires the factor 64 and states the bound 4 separately |
+| E20 | figure labels with the abbreviated fractions `\frac12` and `\frac32` stopped the figure script, and several labels overlapped curves, axes or the frame | the script and inspection of every figure (stage 5) | fractions written in full; labels moved, given white backgrounds, or placed in free corners; the four curves of Figure 3(b) shifted sideways so that equal values stay visible |
+| E21 | the report, the comments and the figures used letters without their suffix or with a second meaning: `X` and `M` for matrices, `x^0` for coordinates, `e^` for the exponential, the parameter of the transformations without its suffix, `P` for the sample point (the letter P is a symbol of the main project, a generator), `R_j`, `B_j` and `G` for the generator matrices (`G` is the contact coupling), `k` for the loop momentum, and the angle variable of the quadrature named `chi` like the spinor | review against the registry (stage 5) | the registered names `M_LL(x)`, `x_LL^p`, `exp`, `theta`, `V_LL` and `kE`; the words "sample point"; the angle variable renamed |
+| E22 | the report of check Z-7 called the enumerated sets of numbers "one-particle-irreducible graph classes"; such a class need not contain an irreducible graph | review of the statement against the code (stage 5) | the classes are defined in the report and in the document, which explains why the list of divergent classes bounds the irreducible divergent functions; the check now covers every largest number of vertices from 2 to 6, as the data show |
+| E23 | the comment at the head of the program said that every tolerance other than $10^{-12}$ is stated in the check, but checks Z-3, Z-4, Z-5 and Z-8 did not state theirs, and a comment in Z-8 described the factor 4 of the first version | review of the program (stage 5) | the statements of the checks name their tolerances; the comment corrected |
+| E24 | the first draft of the document quoted the conclusions with an omission, called the six spin-zero pair matrices "of the scalar channel" (three are scalar, three pseudoscalar), and had one equation and one table column wider than the page | review and the layout check of the build (stage 5) | the three sentences quoted in full; the pair matrices described correctly; the equation split into two lines and the column widened |
 
 # 12. The symbols
 

@@ -113,8 +113,14 @@ def main():
     exrep = os.path.join(ROOT, "explanations", "data", "ex_superfluid_checks.txt")
     if os.path.exists(exrep):
         a, b = (int(x) for x in one(r"(\d+) of (\d+) checks passed", open(exrep, encoding="utf-8").read(), "ex_superfluid_checks.txt"))
-        add("checks_table_all", "\n".join(table + ["| `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | %d of %d |" % (a, b)]))
+        extra = ["| `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | %d of %d |" % (a, b)]
         add("nchecks_explain", "%d" % b)
+        r13rep = os.path.join(ROOT, "explanations", "data", "ex_r13_checks.txt")
+        if os.path.exists(r13rep):
+            a2, b2 = (int(x) for x in one(r"(\d+) of (\d+) checks passed", open(r13rep, encoding="utf-8").read(), "ex_r13_checks.txt"))
+            extra.append("| `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | %d of %d |" % (a2, b2))
+            add("nchecks_r13", "%d" % b2)
+        add("checks_table_all", "\n".join(table + extra))
     add("checks_rows_tex", "\n".join(crow))
     add("nchecks_rust", "%d" % rust)
     add("nchecks_physics", "%d" % phys)
@@ -327,11 +333,82 @@ def explanation_fragments(exdata):
     here = os.path.dirname(exdata)
     t = []
     files = sorted(glob.glob(os.path.join(exdata, "ex_*"))) + sorted(glob.glob(os.path.join(here, "figures", "fig_ex_*.pdf"))) \
-        + sorted(glob.glob(os.path.join(here, "code", "explain-rs", "src", "*.rs"))) + [os.path.join(here, "code", "explain-rs", "Cargo.toml"), os.path.join(here, "code", "make_explain_figures.py")]
+        + sorted(glob.glob(os.path.join(here, "code", "explain-rs", "src", "*.rs"))) + [os.path.join(here, "code", "explain-rs", "Cargo.toml"), os.path.join(here, "code", "make_explain_figures.py")] \
+        + sorted(glob.glob(os.path.join(here, "code", "r13-rs", "src", "*.rs"))) + [os.path.join(here, "code", "r13-rs", "Cargo.toml"), os.path.join(here, "code", "make_r13_figures.py")]
     for path in files:
         t.append("%s  %s" % (hashlib.sha256(open(path, "rb").read()).hexdigest(), os.path.relpath(path, ROOT)))
     add("ex_sha256", "\n".join(t))
     add("n_explain_lines", "%d" % sum(1 for _ in open(os.path.join(here, "code", "explain-rs", "src", "main.rs"), encoding="utf-8")))
+    if os.path.exists(os.path.join(exdata, "ex_r13_points.csv")):
+        r13_fragments(exdata, here)
+
+
+def tex_num(x):
+    """A number of a data file as a formula: 6.640161e3 -> 6.640161\\times10^{3}."""
+    x = x.strip()
+    m = re.fullmatch(r"(-?[0-9.]+)e(-?[0-9]+)", x)
+    if m:
+        mant, ex = m.group(1), int(m.group(2))
+        return "$%s$" % mant if ex == 0 else "$%s\\times10^{%d}$" % (mant, ex)
+    return "$%s$" % x if x.startswith("-") else x
+
+
+def r13_fragments(exdata, here):
+    """Tables of the document on the 3+1 manifold and the renormalizability of the Yukawa form."""
+    pts = rows_at(os.path.join(exdata, "ex_r13_points.csv"))
+    names = {"the sample point": "the sample point",
+             "the event (1, 0, 0, 0)": "the event $(1,0,0,0)$",
+             "the same event after the boost along x_LL^1 with the rapidity 0.8": "after the boost along $x^1_{\\rm LL}$ with the rapidity 0.8",
+             "the event (0, 1, 0, 0)": "the event $(0,1,0,0)$",
+             "the same event after the rotation about x_LL^3 by the angle pi/3": "after the rotation about $x^3_{\\rm LL}$ by the angle $\\pi/3$",
+             "the null point of the spinor chi = (1, 0)": "the point $\\chi_{\\rm LL}\\chi_{\\rm LL}^\\dagger$ of $\\chi_{\\rm LL}=(1,0)$",
+             "the same after the boost of chi along x_LL^3 with the rapidity 0.8": "after the boost of $\\chi_{\\rm LL}$ along $x^3_{\\rm LL}$ with the rapidity 0.8"}
+    t = ["| example | $x^0_{\\rm LL}$ | $x^1_{\\rm LL}$ | $x^2_{\\rm LL}$ | $x^3_{\\rm LL}$ | $N_{\\rm LL}(\\mathbf x)$ | kind |",
+         "|" + "|".join("-" * w for w in (32, 9, 9, 9, 9, 12, 20)) + "|"]
+    for r in pts:
+        t.append("| %s | %s | %s | %s | %s | %s | %s |" % (names[r["example"]], tex_num(r["x_LL^0"]), tex_num(r["x_LL^1"]), tex_num(r["x_LL^2"]),
+                                                         tex_num(r["x_LL^3"]), tex_num(r["N_LL"]), r["kind"]))
+    add("ex_r13_points_table", "\n".join(t))
+    dims = rows_at(os.path.join(exdata, "ex_r13_dimensions.csv"))
+    t = ["| space dimensions $D$ | space-time dimension | $[\\Psi_{\\rm LL}]$ | $[\\phi_{\\rm LL}]$ | $[G_{\\rm LL}]$ | $[g^{\\rm Y}_{\\rm LL}]$ | $[\\lambda^{(1)}_{\\rm LL}]=[\\lambda^{(2)}_{\\rm LL}]$ | renormalizable by power counting |",
+         "|" + "|".join("-" * w for w in (10, 10, 8, 8, 8, 8, 14, 26)) + "|"]
+    for r in dims:
+        frac = lambda x: ("$\\tfrac{%s}{%s}$" % tuple(x.split("/"))) if "/" in x else tex_num(x)
+        t.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (r["D"], r["spacetime_dimension"], frac(r["dim_Psi"]), frac(r["dim_phi"]), frac(r["dim_G"]),
+                                                              frac(r["dim_g_Y"]), frac(r["dim_lam4"]), r["renormalizable"]))
+    add("ex_r13_dimensions_table", "\n".join(t))
+    pc = rows_at(os.path.join(exdata, "ex_r13_power_counting.csv"))
+    seen = {}
+    for r in pc:
+        if r["theory"] == "Yukawa form" and r["D"] == "3" and r["allowed_by_fermion_number"] == "yes" and int(r["deg"]) >= 0:
+            seen.setdefault((int(r["next_F"]), int(r["next_B"])), set()).add(int(r["deg"]))
+    label = {(0, 2): ("self-energy of the pair field", "$(m^\\phi_{\\rm LL})^2\\lvert\\phi_{\\rm LL}\\rvert^2$ and the kinetic term of $\\phi_{\\rm LL}$"),
+             (2, 0): ("self-energy of the fermions", "$m_{\\rm LL}\\bar\\Psi_{\\rm LL}\\Psi_{\\rm LL}$ and the kinetic term of $\\Psi_{\\rm LL}$"),
+             (2, 1): ("Yukawa vertex", "$g^{\\rm Y}_{\\rm LL}$"),
+             (0, 4): ("four pair fields", "$\\lambda^{(1)}_{\\rm LL}$, $\\lambda^{(2)}_{\\rm LL}$")}
+    t = ["| function | $n^{\\rm ext,F}_{\\rm LL}$ | $n^{\\rm ext,B}_{\\rm LL}$ | $\\deg_{\\rm LL}$ | the term of $\\mathcal L^{\\rm Y}_{\\rm LL}$ that absorbs it |",
+         "|" + "|".join("-" * w for w in (26, 8, 8, 8, 40)) + "|"]
+    for key in sorted(seen):
+        degs = seen[key]
+        assert len(degs) == 1, (key, degs)
+        t.append("| %s | %d | %d | %d | %s |" % (label[key][0], key[0], key[1], degs.pop(), label[key][1]))
+    add("ex_r13_divergent_table", "\n".join(t))
+    cnt = rows_at(os.path.join(exdata, "ex_r13_divergent_counts.csv"))
+    vmax = sorted({int(r["max_vertices"]) for r in cnt})
+    t = ["| form, dimensions | " + " | ".join("%d" % v for v in vmax) + " |", "|" + "|".join(["-" * 24] + ["-" * 4] * len(vmax)) + "|"]
+    for theory, dd in [("Yukawa form", "3"), ("contact form", "3"), ("Yukawa form", "7"), ("contact form", "7")]:
+        vals = {int(r["max_vertices"]): r["number_of_divergent_functions"] for r in cnt if r["theory"] == theory and r["D"] == dd}
+        t.append("| %s, %d+1 | " % (theory, int(dd) ) + " | ".join(vals[v] for v in vmax) + " |")
+    add("ex_r13_counts_table", "\n".join(t))
+    bub = rows_at(os.path.join(exdata, "ex_r13_bubble.csv"))
+    t = ["| $\\Lambda_{\\rm LL}$ | $I^{\\rm bub}_{\\rm LL}(0)$ computed | $I^{\\rm bub}_{\\rm LL}(0)$ closed form | $d[I^{\\rm bub}_{\\rm LL}(p^{\\rm E}_{\\rm LL})-I^{\\rm bub}_{\\rm LL}(0)]/d\\ln\\Lambda_{\\rm LL}$ | $I^{\\rm ren}_{\\rm LL}$ | change of $I^{\\rm ren}_{\\rm LL}$ from $\\Lambda_{\\rm LL}/2$ |",
+         "|" + "|".join("-" * w for w in (6, 14, 14, 18, 14, 16)) + "|"]
+    for r in bub:
+        ch = r["Iren_change_per_doubling"]
+        t.append("| %s | %s | %s | %s | %s | %s |" % (r["Lambda"].rstrip("0").rstrip("."), tex_num(r["Ibub_0"]), tex_num(r["Ibub_0_closed_form"]),
+                                                    tex_num(r["dIbub_dlnLambda"]), tex_num(r["Iren"]), "—" if ch == "-" else tex_num(ch)))
+    add("ex_r13_bubble_table", "\n".join(t))
+    add("n_r13_lines", "%d" % sum(1 for _ in open(os.path.join(here, "code", "r13-rs", "src", "main.rs"), encoding="utf-8")))
 
 
 def rows_at(path):

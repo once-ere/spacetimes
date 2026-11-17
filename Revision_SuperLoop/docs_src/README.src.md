@@ -48,7 +48,12 @@ The folder `explanations` contains a document written for readers who know nothi
 explains, word by word and with worked examples, the sentence of the conclusions "The spin-zero
 superfluid of its spinor charges condenses in an isospin-triplet, unitary, electrically neutral state,
 and the pair that is a singlet of the whole super-loop requires two species", with its own program
-and {{GEN:nchecks_explain}} further checks.
+and {{GEN:nchecks_explain}} further checks. A second document of that folder answers a test on the
+sentence that follows it, "In $3+1$ dimensions its Yukawa form is renormalizable". It defines the $3+1$
+manifold $\mathbb R^{1,3}_{\rm LL}$ of the super-loop (the Hermitian bi-quaternions), draws its coordinates
+like Cartesian coordinates, derives its Lorentz group from the super-loop, works through examples, and
+proves the statement by power counting, by the completeness of the Lagrangian and by the explicit one-loop
+bubble, with its own program and {{GEN:nchecks_r13}} further checks.
 
 # 2. Where to start reading
 
@@ -67,6 +72,11 @@ and {{GEN:nchecks_explain}} further checks.
    the sentence on the superfluid explained for a reader who does not know the solution — the rule of
    Pauli as a rule of signs, the isospin triplet, condensation, unitarity, electric neutrality and the
    singlet of the whole super-loop — with examples from atoms, nuclei, helium 3 and quark matter.
+6. `explanations/The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form`
+   (.pdf, .tex, .md): the $3+1$ manifold $\mathbb R^{1,3}_{\rm LL}$ defined, drawn and worked through with
+   examples; its Lorentz group from the super-loop; the spinor charges as spinors on it; and the proof
+   that the Yukawa form of the theory of the spinor charges is renormalizable on it and not on the
+   eight-dimensional manifolds.
 
 # 3. Contents
 
@@ -78,7 +88,7 @@ and {{GEN:nchecks_explain}} further checks.
 | `code/scripts/` | the Gröbner-basis classification `malcev_groebner.py`, the figures, the registry and the checks of the symbols, the check of self-containedness, the fragments, the builds of the documents, `check_all.sh` |
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
-| `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf); its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py`, its data files and report in `data/`, its three figures in `figures/` |
+| `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -95,6 +105,9 @@ python3 code/scripts/make_figures.py
 # the examples of the explanation (checks X-1 to X-10) and its three figures:
 (cd explanations && cargo run --release --manifest-path code/explain-rs/Cargo.toml)
 python3 explanations/code/make_explain_figures.py
+# the examples and checks of the document on the 3+1 manifold (checks Z-1 to Z-8) and its four figures:
+(cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)
+python3 explanations/code/make_r13_figures.py
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```
