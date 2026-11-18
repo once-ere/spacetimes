@@ -1,0 +1,30 @@
+PROJECT spacetimes, notebook 3+1super-loop.nb: the names of the program, chapter by chapter
+rule N1: a global name of an earlier chapter is used only if it is declared as shared (the same object)
+rule N2: a global name is not used as a local name, except as a declared argument of a function
+(the names of the library, which begin with t2 or SL31, and the function LL are exempt from N1)
+
+chapter 3+1super-loop.source.wl (Part I): 56 global names defined, 269 names used, 30 local names
+chapter part2_A_core.source.wl: 104 global names defined, 348 names used, 126 local names
+chapter part2_B_item1.source.wl + part2_C_item1b.source.wl: 260 global names defined, 577 names used, 147 local names
+    N2 the same quantity as an argument: gf -- an argument of the function gauge8 of chapter II.2: the coupling g^F_LL
+    N2 the same quantity as an argument: gv -- an argument of the functions gauge8 and nabla of chapter II.2: the coupling g^v_LL
+    N2 the same quantity as an argument: mu -- an argument of the function hq of chapter II.2: the chemical potential mu_LL
+chapter part2_D_item2.source.wl: 266 global names defined, 604 names used, 174 local names
+    N1 shared: aqua (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- a color of the figures of the project (#1baf7a)
+    N1 shared: blue (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- a color of the figures of the project (#2a78d6)
+    N1 shared: ellxSym (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the registered symbol of the lattice spacing as a label of a figure (chapter II.2)
+    N1 shared: epsLatSym (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the registered symbol of the lattice energy as a label of a figure (chapter II.2)
+    N1 shared: fro (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the function of chapter II.2 that returns the Frobenius norm of a matrix
+    N1 shared: gf (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the coupling g^F_LL of the fermion-number potential; both original programs set it to 0.45
+    N1 shared: grey (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- a color of the figures of the project (#8a8984)
+    N1 shared: gv (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the coupling g^v_LL of the isospin potentials; the original programs t2_fields and t2_analytic both set it to 0.7
+    N1 shared: mSym (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the registered symbol m_LL as a label of a figure (chapter II.2)
+    N1 shared: mass (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the mass m_LL of the spinor charges; both original programs set it to 0.4
+    N1 shared: muted (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the color of the texts inside the figures of the project (#5f5e5a)
+    N1 shared: orange (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- a color of the figures of the project (#eb6834)
+    N1 shared: q1Sym (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the registered symbol of the first component of the momentum as a label of a figure (chapter II.2)
+    N1 shared: rWSym (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the registered symbol of the Wilson coefficient as a label of a figure (chapter II.2)
+    N1 shared: upright (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the function of chapter II.2 that keeps the letters of a label of a figure upright
+    N1 shared: x0Sym (first defined in part2_B_item1.source.wl + part2_C_item1b.source.wl) -- the registered symbol of the time x^0_LL as a label of a figure (chapter II.2)
+
+4 chapters, 682 global names, 0 errors

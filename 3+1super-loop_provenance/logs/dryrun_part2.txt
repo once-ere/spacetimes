@@ -1,25 +1,35 @@
-Output of the dry run of Part II (file written by tools/make_dryrun.py from part2_A_core, part2_B_item1 and part2_C_item1b)
-(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 19.7 s; messages on the error stream: none)
+Output of the dry run of Part II (file written by tools/make_dryrun.py from part2_A_core, part2_B_item1, part2_C_item1b and part2_D_item2, with tools/item2_ida_local_errors.wl appended; the lines of that tool are kept in IDA_item2_local_errors.txt)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 58.7 s; messages on the error stream: none)
 
-PASS  T2-RNG  -- {0.7622173776706638, 0.2763122498264816, -0.05217129678912458, 0.4038650534416697}
-PASS  T2-LINALG  -- {5.329070518200751*^-15, 1.242907568273728*^-14}
-PASS  T2-IDA  -- (a) 458 steps, largest ratio of a local error to its tolerance 0.495 (relative regime 0.495, absolute regime 0.315); (b) 910 steps, 1088 evaluations, largest local_error/budget_step 0.471, largest deviation 1.6e-9 <= budget_out 9.4e-8, Hermite polynomials within 1.3e-16
-PASS  GS-1  -- largest deviation of the Clifford relations 0 (original: 0.0e0)
-PASS  GS-2  -- 27 commutation relations, 24 intertwining relations (original: 27 and 24)
-PASS  GS-3  -- largest deviations 5.1331770670859876*^-14 and 7.214775591174576*^-14 (original: 5.8e-14 and 6.6e-14)
-PASS  GS-4  -- largest deviation 5.589392386815262*^-15; largest |Psi^T Kch Psi| 2.9893669801409083*^-16 (original: 5.2e-15; 3.0e-16)
-PASS  GS-5  -- largest relative deviation 1.4548443678620035*^-10 (original: 1.4e-10)
-PASS  GS-6  -- largest relative deviation 2.138222001776378*^-9 (original: 2.1e-9)
-PASS  GS-7  -- largest deviation 1.5237998822478833*^-15 (original: 1.6e-15)
-PASS  GS-8  -- largest deviations 0. and 7.993605777301127*^-15 (original: 0.0e0 and 6.7e-15)
-PASS  GS-9  -- largest deviation 1.3388352569633028*^-15 (original: 1.7e-15)
-PASS  GS-10  -- Hermiticity 0., particle-hole 0., gauge covariance 1.7534941524555997*^-13, dispersion 2.842170943040401*^-14; spectral radius 8.4349 <= bound 17.5474 (original: 0.0e0, 0.0e0, 1.8e-13, 1.4e-14; 8.4349 <= 17.5474)
-PASS  GS-11  -- largest relative residual 6.487073559058029*^-14 (original: 6.0e-14)
-PASS  GS-12  -- largest deviations 0., 3.554447978966673*^-16, 1.5700924586837752*^-16, 1.1102230246251565*^-16, 2.2887833992611187*^-16 (original: 0.0e0, 4.0e-16, 3.4e-16, 0.0e0, 5.0e-16)
-PASS  GS-13  -- for rtol = 1e-8, 1e-10, 1e-12: largest local_error/budget_step 8.3e-1, 3.2e-1, 3.2e-1; largest relative deviations 7.1e-6, 9.3e-8, 4.4e-11 <= budget_out 3.5e-5, 9.4e-7, 5.3e-8 (budget 3.5e-5, 9.3e-7, 5.3e-8); largest norm changes 4.1e-6, 5.4e-8, 9.7e-12; N_steps 2705, 7309, 41111; N_evals 11182, 18096, 54585; largest h_IDA 7.5e-3, 3.2e-3, 5.8e-4; largest deriv_residual 3.0e-7, 2.3e-9, 7.7e-10; Hermite polynomials within 1.1e-16, 1.1e-16, 1.1e-16; E_max 8.4349; computing time 8.5 s (original program, CVODE: largest relative deviations 1.2e-6, 1.7e-7, 1.7e-10, budgets 2.6e-5, 6.2e-7, 6.4e-9, norm changes 5.2e-7, 9.8e-8, 5.9e-11, steps 1528, 3661, 3804)
-PASS  GS-14  -- largest deviations 5.978733960281817*^-16, 5.881301029635769*^-16, 3.4914704890623736*^-15, 9.662767911105659*^-16, 2.0137621733714643*^-15 (original: 3.2e-16, 4.1e-16, 3.1e-15, 8.8e-16, 2.1e-15)
-PASS  GS-15  -- largest deviations 1.0300294709981263*^-9, 3.5530246130527314*^-8, 7.979095997035658*^-9; smallest Gram eigenvalue 8.000 (original: 1.0e-9, 3.6e-8, 8.0e-9; 8.000)
-PASS  GS-16  -- largest deviation 2.7329532850463603*^-14 (original: 1.4e-14)
-PASS  T2-DATA-1  -- largest deviations 4.547739962390551*^-11, 4.999467506650035*^-11; times 0.; largest deviations of CVODE in the file 1.2e-6, 1.7e-7, 1.7e-10 (original report: 1.2e-6, 1.7e-7, 1.7e-10)
-dry run: 20 checks, 20 passed, 18.1 s; failed: {}
-
+PASS  T2-RNG  -- {0.7622173776706638, 0.2763122498264816, -0.05217129678912458, 0.4038650534416697}  [0. s]
+PASS  T2-LINALG  -- {5.329070518200751*^-15, 1.242907568273728*^-14}  [0. s]
+PASS  T2-IDA  -- (a) 458 steps, largest ratio of a local error to its tolerance 0.495 (relative regime 0.495, absolute regime 0.315); (b) 910 steps, 1088 evaluations, largest local_error/budget_step 0.471, largest deviation 1.6e-9 <= budget_out 9.4e-8, Hermite polynomials within 1.3e-16; (c) the same states and bounds: True; sum of the local errors 7.3e-9 <= budget 9.3e-8, largest deviation 1.6e-9 <= bound with the sum 8.3e-9  [0. s]
+PASS  GS-1  -- largest deviation of the Clifford relations 0 (original: 0.0e0)  [0. s]
+PASS  GS-2  -- 27 commutation relations, 24 intertwining relations (original: 27 and 24)  [0. s]
+PASS  GS-3  -- largest deviations 5.13318e-14 and 7.21478e-14 (original: 5.8e-14 and 6.6e-14)  [0.4 s]
+PASS  GS-4  -- largest deviation 5.58939e-15; largest |Psi^T Kch Psi| 2.98937e-16 (original: 5.2e-15; 3.0e-16)  [0.2 s]
+PASS  GS-5  -- largest relative deviation 1.45484e-10 (original: 1.4e-10)  [0.1 s]
+PASS  GS-6  -- largest relative deviation 2.13822e-9 (original: 2.1e-9)  [0.30000000000000004 s]
+PASS  GS-7  -- largest deviation 1.5238e-15 (original: 1.6e-15)  [0.1 s]
+PASS  GS-8  -- largest deviations 0. and 7.99361e-15 (original: 0.0e0 and 6.7e-15)  [0.2 s]
+PASS  GS-9  -- largest deviation 1.33884e-15 (original: 1.7e-15)  [0.1 s]
+PASS  GS-10  -- Hermiticity 0., particle-hole 0., gauge covariance 1.75349e-13, dispersion 2.84217e-14; spectral radius 8.4349 <= bound 17.5474 (original: 0.0e0, 0.0e0, 1.8e-13, 1.4e-14; 8.4349 <= 17.5474)  [1.5 s]
+PASS  GS-11  -- largest relative residual 6.48707e-14 (original: 6.0e-14)  [3.1 s]
+PASS  GS-12  -- largest deviations 0., 3.55445e-16, 1.57009e-16, 1.11022e-16, 2.28878e-16 (original: 0.0e0, 4.0e-16, 3.4e-16, 0.0e0, 5.0e-16)  [0.1 s]
+PASS  GS-13  -- for rtol = 1e-8, 1e-10, 1e-12: largest local_error/budget_step 8.3e-1, 3.2e-1, 3.2e-1; largest relative deviations 7.1e-6, 9.3e-8, 4.4e-11 <= budget_out 3.5e-5, 9.4e-7, 5.3e-8 (budget 3.5e-5, 9.3e-7, 5.3e-8); largest norm changes 4.1e-6, 5.4e-8, 9.7e-12; N_steps 2705, 7309, 41111; N_evals 11182, 18096, 54585; largest h_IDA 7.5e-3, 3.2e-3, 5.8e-4; largest deriv_residual 3.0e-7, 2.3e-9, 7.7e-10; Hermite polynomials within 1.1e-16, 1.1e-16, 1.1e-16; E_max 8.4349; computing time 8.2 s (original program, CVODE: largest relative deviations 1.2e-6, 1.7e-7, 1.7e-10, budgets 2.6e-5, 6.2e-7, 6.4e-9, norm changes 5.2e-7, 9.8e-8, 5.9e-11, steps 1528, 3661, 3804)  [9.4 s]
+PASS  GS-14  -- largest deviations 5.97873e-16, 5.8813e-16, 3.49147e-15, 9.66277e-16, 2.01376e-15 (original: 3.2e-16, 4.1e-16, 3.1e-15, 8.8e-16, 2.1e-15)  [0.5 s]
+PASS  GS-15  -- largest deviations 1.03003e-9, 3.55302e-8, 7.9791e-9; smallest Gram eigenvalue 8.000 (original: 1.0e-9, 3.6e-8, 8.0e-9; 8.000)  [0.4 s]
+PASS  GS-16  -- largest deviation 2.73295e-14 (original: 1.4e-14)  [0.4 s]
+PASS  T2-DATA-1  -- largest deviations 4.54774e-11, 4.99947e-11; times 0.; largest deviations of CVODE in the file 1.2e-6, 1.7e-7, 1.7e-10 (original report: 1.2e-6, 1.7e-7, 1.7e-10)  [0. s]
+PASS  AS-1  -- largest deviation 1.5e-14; Acal_up_1 = 0.5500, Acal_down_1 = -0.0100, Acal_up_0 = 0.3100, Acal_down_0 = -0.0400 (original: 9.8e-15; 0.5500, -0.0100, 0.3100, -0.0400)  [0.7000000000000001 s]
+PASS  AS-2  -- largest relative deviation 3.4e-10 <= bound/(norm of the state) 1.4e-9; (sum of local_error)/(norm of the state) 3.4e-10; largest local_error/budget_step 1.1e-1; IDA: N_steps 4045, N_evals 15882, largest h_IDA 5.0e-3, largest deriv_residual 4.8e-11, Hermite polynomials within 5.7e-16, E_max 5.1250; omega_pr = 1.0500, eps_lat = 1.723884 (original program, CVODE: largest relative deviation 1.3e-11, 1013 steps, 1494 evaluations of the right side; omega_pr = 1.0500, eps_lat = 1.723884)  [1. s]
+PASS  AS-3  -- largest deviations 6.4e-15 (continuum), 1.2e-14 (lattice) (original: 6.7e-15, 1.2e-14)  [0.4 s]
+PASS  AS-4  -- largest relative deviation 5.8e-11 <= bound/(norm of the state) 1.5e-7; (sum of local_error)/(norm of the state) 5.4e-11; largest local_error/budget_step 9.6e-1; IDA: N_steps 1194, N_evals 9429, largest h_IDA 1.7e-2, largest deriv_residual 5.2e-12, Hermite polynomials within 4.8e-16, E_max 5.0090; eps_lat = 0.943799, E^- = 0.456287, largest P_hole = (Delta/E^-)^2 = 0.432281 (original program, CVODE: largest relative deviation 4.7e-10, 486 steps, 963 evaluations of the right side; eps_lat = 0.943799, E^- = 0.456287, largest P_hole = 0.432281)  [0.6000000000000001 s]
+PASS  AS-5  -- largest deviations 1.8e-15, 0, 1.7e-14 (11 gaps); Delta at G = 1.5 G_crit, mu = 0: 0.675339; weak coupling at mu = 0.3, G/G_crit = 0.3, 0.4, 0.5: Delta = 9.985e-7 (-7.6e-11, scale 7.7e-11), 1.023e-4 (-5.3e-7, scale 5.3e-7), 1.646e-3 (-9.5e-5, scale 9.6e-5) (original: 1.8e-15, 0.0e0, 2.2e-15 (11 gaps); 0.675339; 9.985e-7 (-7.6e-11, scale 7.7e-11), 1.023e-4 (-5.3e-7, scale 5.3e-7), 1.646e-3 (-9.5e-5, scale 9.6e-5))  [0.8 s]
+PASS  AS-6  -- 128 positive modes; largest deviations 2.2e-15 (mode sum), 9.4e-16 (new dvec); G = 0.432159 (original: 128 positive modes; 2.6e-15, 1.1e-15; G = 0.432159)  [0.4 s]
+PASS  AS-7  -- deviations of the identities 0, of the equations 7.8e-17 (original: 0.0e0, 8.3e-17)  [0.1 s]
+PASS  AS-8  -- deviations: Qmat_K 0, relation 0, square 1.1e-15, bound states 9.2e-9; Delta_inf ell_K = 1.0, Qmat_K = -1: 1 bound state; Delta_inf ell_K = 1.0, Qmat_K = +1: 0 bound states; Delta_inf ell_K = 2.5, Qmat_K = -1: 3 bound states; Delta_inf ell_K = 2.5, Qmat_K = +1: 2 bound states (original: 0.0e0, 0.0e0, 9.9e-16, 9.2e-9; 1, 0, 3 and 2 bound states)  [0.6000000000000001 s]
+PASS  AS-9  -- 16 bound states (8 positive); largest | |E| - E_R | = 0.00312 (bound r^2/delta + spread = 0.02260, delta = 0.6139, spread = 4.3e-14); part of the analytic state outside the eight eigenvectors 0.0841 (bound r/delta = 0.1919); 1 - Bhattacharyya coefficient = 1.12e-3 (required below 1.84e-2); E_R = 0.465443, 0.433178, 0.416647, 0.408331; (E_R - m)/dx = 0.16361, 0.16589, 0.16647, 0.16662; residuals 1.18e-1, 5.94e-2, 2.98e-2, 1.49e-2; deviation from the lattice formula 5.6e-16 (original: 16 bound states (8 positive); 0.00312 (bound 0.02260, delta = 0.6139, spread = 3.8e-14); 0.0841 (bound 0.1919); 1.12e-3 (required below 1.84e-2); E_R = 0.465443, 0.433178, 0.416647, 0.408331; (E_R - m)/dx = 0.16361, 0.16589, 0.16647, 0.16662; residuals 1.18e-1, 5.94e-2, 2.98e-2, 1.49e-2; 3.8e-15)  [9. s]
+PASS  AS-10  -- largest deviation 1.8e-14; B_up = 0.890, B_down = 0.190; 84 discarded states, of them 80 at the levels 110 to 119 and 4 artefacts at +-m (original: 1.2e-14; B_up = 0.890, B_down = 0.190; 84 discarded states, of them 80 at the levels 110 to 119 and 4 artefacts at +-m)  [3.7 s]
+PASS  T2-DATA-2  -- 4725 rows; largest deviations of the columns with 10 decimals, file by file: 5.0e-11, 5.0e-11, 5.0e-11, 5.0e-11, 4.7e-11, 5.0e-11, 4.9e-11, 2.0e-11, 5.0e-11, 5.0e-11, 4.6e-11; times 3.6e-15; G/G_crit 0; relative residual 2.4e-7; equal columns: True; P_up of IDA and of CVODE differ by at most 5.5e-11 (bound 1.4e-9), P_hole by at most 4.9e-11 (bound 2.2e-9)  [0. s]
+dry run: 31 checks, 31 passed, 57.2 s; failed: {}

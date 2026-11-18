@@ -23,7 +23,12 @@
      - inserts the content of the file named by a line  (* @@INCLUDE file@@ *)  (relative to
        the source) into the code chunk in which it stands, so that the notebook is complete;
      - replaces a line  (* @@INCLUDECELLS file@@ *)  by a whole file with its own cell markers
-       (the chapters of Part II).
+       (the chapters of Part II);
+     - makes an input cell that is marked  (* ::Input::Closed:: *)  a closed cell (cell option
+       CellOpen -> False): the notebook evaluates a closed cell like every other cell, but shows
+       only a thin cell bracket for it and leaves it out of a printed copy.  This is used for the
+       cells that hold the numbers of the data files of the original programs: they keep the
+       notebook complete without filling many pages with numbers.
    USAGE
      wolframscript -file build_notebook.wls  <source.wl>  <output.nb>  <package.wl> [<package.wl> ...]
    The packages (sl31_core.wl, then sl31_formula.wl) define SL31`Build`symbolBoxes[tex, rules],
@@ -61,8 +66,10 @@ text = StringReplace[text, "(* @@COMPONENTS@@ *)" -> "{" <> StringRiffle[Map["{"
 Print["components: ", Length[SL31Build`components]];
 
 (* ---- 2. split into (style, body) chunks ---- *)
+(* a chunk is {style, tag, body}; the tag is the second word of a marker such as (* ::Input::Closed:: *), or the
+   empty string *)
 chunks = StringCases[text,
-   RegularExpression["(?ms)^\\(\\* ::(\\w+)(?:::\\w+)?:: \\*\\)[ \\t]*\\n(.*?)(?=^\\(\\* ::\\w+(?:::\\w+)?:: \\*\\)|\\z)"] :> {"$1", "$2"}];
+   RegularExpression["(?ms)^\\(\\* ::(\\w+)(?:::(\\w+))?:: \\*\\)[ \\t]*\\n(.*?)(?=^\\(\\* ::\\w+(?:::\\w+)?:: \\*\\)|\\z)"] :> {"$1", "$2", "$3"}];
 
 textStyles = {"Title", "Subtitle", "Subsubtitle", "Chapter", "Section", "Subsection", "Subsubsection",
    "Text", "Item", "Subitem", "ItemNumbered", "SubitemNumbered", "ItemParagraph", "Program"};
@@ -100,8 +107,12 @@ codeCell[code_String] := Module[{k = 0, rep, parsed, boxes},
    boxes = boxes /. s_String /; KeyExistsQ[SL31Build`placeholders, s] :> SL31Build`placeholders[s];
    Cell[boxes, "Input"]];
 
-cellOf[{"Package", _}] := Nothing;
-cellOf[{style_, body_}] := Which[
+SL31Build`closedCount = 0;
+cellOf[{"Package", _, _}] := Nothing;
+cellOf[{style_, tag_, body_}] := Which[
+   (* a closed input cell: the same boxes, with the option CellOpen -> False *)
+   style === "Input" && tag === "Closed", (SL31Build`closedCount++; Append[codeCell[StringTrim[body, "\n" ..]], CellOpen -> False]),
+   tag =!= "", (AppendTo[SL31Build`warnings, "unknown tag " <> tag <> " of a cell of the style " <> style]; Cell[commentText[body], "Text"]),
    style === "Input" || style === "Code", codeCell[StringTrim[body, "\n" ..]],
    style === "DisplayFormula", displayCell[commentText[body]],
    MemberQ[textStyles, style], Cell[textData[commentText[body]], style],
@@ -115,6 +126,7 @@ nb = Notebook[cells, StyleDefinitions -> "Default.nb", WindowSize -> {1000, 900}
    the whole line, so that the typed symbols would no longer be the symbolized boxes *)
 Export[outNB, nb, "NB"];
 Print["cells: ", Length[cells]];
+Print["closed input cells: ", SL31Build`closedCount];
 Print["formulas in text cells: ", SL31Build`formulaCount];
 Print["warnings: ", Length[SL31Build`warnings]];
 Scan[Print, SL31Build`warnings];

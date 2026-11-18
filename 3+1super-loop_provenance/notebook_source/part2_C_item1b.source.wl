@@ -2,7 +2,7 @@
 (*GS-12: the explicit matrices and the component equations*)
 
 (* ::Text:: *)
-(*The original program prints every matrix and every component equation of the field equations in TeX, with its small symbolic algebra, and evaluates each printed expression for numbers assigned to its symbols, comparing it with the $8\times8$ and $16\times16$ matrix computation (check GS-12). Here the same expressions are built from symbols of the Wolfram Language, shown, and evaluated in the same way. The symbols: $d^\iota_{\rm LL}$ (the order parameter), $\omega^j_{{\rm LL},p}$ and $\varpi^j_{{\rm LL},p}$ (the rotation and boost parts of the Lorentz connection in the direction $p$), $A^\iota_{{\rm LL},p}$ and $A^{\rm F}_{{\rm LL},p}$ (the gauge potentials), $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$ (the couplings), $\psi^{\rm p}_{{\rm LL},k}$, $\psi^{\rm h}_{{\rm LL},k}$, $\Psi_{{\rm LL},k}$ ($k=1,\dots,8$, the components), $m_{\rm LL}$, $\mu_{\rm LL}$, $G_{\rm LL}$ and $\Pi^\iota_{\rm LL}$ (the pair operators). They are ordinary symbols with formatting rules, so that they print as in the documents.*)
+(*The original program prints every matrix and every component equation of the field equations in TeX, with its small symbolic algebra, and evaluates each printed expression for numbers assigned to its symbols, comparing it with the $8\times8$ and $16\times16$ matrix computation (check GS-12). Here the same expressions are built from symbols of the Wolfram Language, shown, and evaluated in the same way. The symbols: $d^\iota_{\rm LL}$ (the order parameter), $\omega^j_{{\rm LL},p}$ and $\varpi^j_{{\rm LL},p}$ (the rotation and boost parts of the Lorentz connection in the direction $p$), $A^\iota_{{\rm LL},p}$ and $A^{\rm F}_{{\rm LL},p}$ (the gauge potentials), $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$ (the couplings), $\psi^{\rm p}_{{\rm LL},k}$, $\psi^{\rm h}_{{\rm LL},k}$, $\Psi_{{\rm LL},k}$ (the components; the number of a component, the last letter of the subscript, runs from 1 to 8), $m_{\rm LL}$, $\mu_{\rm LL}$, $G_{\rm LL}$ and $\Pi^\iota_{\rm LL}$ (the pair operators). They are ordinary symbols with formatting rules, so that they print as in the documents.*)
 
 (* ::Input:: *)
 (* the symbols of the formulas and the way they print *)
@@ -14,16 +14,16 @@ Format[afS[idx_]] := Subsuperscript["A", Row[{"LL,", idx}], "F"];
 Format[avS[i_, idx_]] := Subsuperscript["A", Row[{"LL,", idx}], i];
 Format[gvS] := Subsuperscript["g", "LL", "v"];
 Format[gfS] := Subsuperscript["g", "LL", "F"];
-Format[psP[k_]] := Subsuperscript["\[Psi]", Row[{"LL,", k}], "p"];
-Format[psH[k_]] := Subsuperscript["\[Psi]", Row[{"LL,", k}], "h"];
-Format[psiS[k_]] := Subscript["\[CapitalPsi]", Row[{"LL,", k}]];
-Format[psiStarS[k_]] := Subsuperscript["\[CapitalPsi]", Row[{"LL,", k}], "*"];
+Format[psP[kc_]] := Subsuperscript["\[Psi]", Row[{"LL,", kc}], "p"];
+Format[psH[kc_]] := Subsuperscript["\[Psi]", Row[{"LL,", kc}], "h"];
+Format[psiS[kc_]] := Subscript["\[CapitalPsi]", Row[{"LL,", kc}]];
+Format[psiStarS[kc_]] := Subsuperscript["\[CapitalPsi]", Row[{"LL,", kc}], "*"];
 Format[piS[i_]] := Subsuperscript["\[CapitalPi]", "LL", i];
 Format[mS] := Subscript["m", "LL"]; Format[muS] := Subscript["\[Mu]", "LL"]; Format[bigGS] := Subscript["G", "LL"];
 Format[djS[x_]] := Row[{Subscript["\[PartialD]", "j"], x}];
-Format[nabPS[j_, k_]] := Subscript[Row[{"(", Subsuperscript["\[Del]", j, "LL"], Subsuperscript["\[Psi]", "LL", "p"], ")"}], k];
-Format[nabHS[j_, k_]] := Subscript[Row[{"(", Subsuperscript["\[Del]", j, "LL*"], Subsuperscript["\[Psi]", "LL", "h"], ")"}], k];
-Format[nabPsiS[j_, k_]] := Subscript[Row[{"(", Subsuperscript["\[Del]", j, "LL"], Subscript["\[CapitalPsi]", "LL"], ")"}], k];
+Format[nabPS[j_, kc_]] := Subscript[Row[{"(", Subsuperscript["\[Del]", j, "LL"], Subsuperscript["\[Psi]", "LL", "p"], ")"}], kc];
+Format[nabHS[j_, kc_]] := Subscript[Row[{"(", Subsuperscript["\[Del]", j, "LL*"], Subsuperscript["\[Psi]", "LL", "h"], ")"}], kc];
+Format[nabPsiS[j_, kc_]] := Subscript[Row[{"(", Subsuperscript["\[Del]", j, "LL"], Subscript["\[CapitalPsi]", "LL"], ")"}], kc];
 Format[nablaS[p_]] := Subsuperscript["\[Del]", p, "LL"];
 (* the complex conjugate of the explicit numbers of an expression (the symbols are real) *)
 conjC[e_] := e /. Complex[x_, y_] :> Complex[x, -y];
@@ -163,9 +163,9 @@ exact13 = wExact13 /@ touts13;
 rtols13 = {1.*^-8, 1.*^-10, 1.*^-12};
 (* the three integrations by IDA, atol = rtol/100, each with the measurement of the local errors of all its steps *)
 {time13, runs13} = AbsoluteTiming[Table[t2evolveIDA[hl, w0IDA13, touts13, rt, rt/100, t2localErrorsIDA[e13, v13, rt, rt/100]], {rt, rtols13}]];
-dev13 = Table[MapThread[Norm[#1 - #2]/Norm[#2] &, {runs13[[k, "states"]], exact13}], {k, 3}];
+dev13 = Table[MapThread[Norm[#1 - #2]/Norm[#2] &, {runs13[[kt, "states"]], exact13}], {kt, 3}];
 maxdev13 = Max /@ dev13;
-normChange13 = Table[Max[Abs[Norm /@ runs13[[k, "states"]] - 1]], {k, 3}];
+normChange13 = Table[Max[Abs[Norm /@ runs13[[kt, "states"]] - 1]], {kt, 3}];
 steps13 = runs13[[All, "steps"]];
 evals13 = runs13[[All, "evaluations"]];
 hmax13 = runs13[[All, "hmax"]];
@@ -174,9 +174,9 @@ norm13 = runs13[[All, "analysis", "largestNorm"]];
 resid13 = Max /@ runs13[[All, "residualAt"]];
 hermite13 = Max /@ runs13[[All, "hermiteAt"]];
 (* B^loc = rtol (largest norm of a state) + atol sqrt(2 n^cpx); B^err = N^st B^loc; B^out as in chapter II.1.5 *)
-bloc13 = Table[rtols13[[k]] norm13[[k]] + rtols13[[k]]/100 Sqrt[2. t2dim[lat]], {k, 3}];
+bloc13 = Table[rtols13[[kt]] norm13[[kt]] + rtols13[[kt]]/100 Sqrt[2. t2dim[lat]], {kt, 3}];
 berr13 = steps13 bloc13;
-bout13 = Table[(1 + hmax13[[k]] eMax13/4) berr13[[k]] + hmax13[[k]] resid13[[k]]/4 + (hmax13[[k]] eMax13)^4/384 norm13[[k]], {k, 3}];
+bout13 = Table[(1 + hmax13[[kt]] eMax13/4) berr13[[kt]] + hmax13[[kt]] resid13[[kt]]/4 + (hmax13[[kt]] eMax13)^4/384 norm13[[kt]], {kt, 3}];
 sci13[l_List] := Row[Riffle[Map[ScientificForm[#, 2] &, l], ", "]];
 (* the numbers of internal steps of CVODE for the three tolerances, from the report of the original program *)
 cvSteps13 = {1528, 3661, 3804};
@@ -215,17 +215,17 @@ Do[Module[{f, gfr, bsm, bsp, psi},
    Do[devB = Max[devB, Norm[t2lift4[gfr[[p]]] . psi - t2diracFromCharges[t2bqMul[bsp, t2bqConj[f[[p]]]], t2bqMul[bsm, f[[p]]]]]], {p, 4}]],
   {trial, 0, 19}];
 devC = 0.;
-Do[Module[{mg = t2randSL2C[], gq, uu, vq, ph, bsm, bsp, big, lhs, m2, p2, rhs},
+Do[Module[{mg = t2randSL2C[], gq, uu, vq, phase, bsm, bsp, big, lhs, bm2, bp2, rhs},
    gq = t2bqFrom[mg];
    uu = t2su2[Table[3 t2Unit[], {3}]];
    vq = t2bqFrom[uu];
-   ph = Exp[I 3 t2Unit[]];
+   phase = Exp[I 3 t2Unit[]];
    bsm = rbq[]; bsp = rbq[];
-   big = ph KroneckerProduct[t2spinRep[mg], uu];
+   big = phase KroneckerProduct[t2spinRep[mg], uu];
    lhs = big . t2diracFromCharges[bsm, bsp];
-   m2 = t2bqMul[t2bqMul[vq, bsm], t2bqDag[gq]];
-   p2 = t2bqMul[t2bqMul[vq, bsp], t2bqConj[gq]];
-   rhs = ph t2diracFromCharges[m2, p2];
+   bm2 = t2bqMul[t2bqMul[vq, bsm], t2bqDag[gq]];
+   bp2 = t2bqMul[t2bqMul[vq, bsp], t2bqConj[gq]];
+   rhs = phase t2diracFromCharges[bm2, bp2];
    devC = Max[devC, Norm[lhs - rhs], Max[Abs[Im[vq]]], bqDev[t2bqFrom[t2inv2[ConjugateTranspose[mg]]], t2bqStar[gq]]]], {50}];
 devD = 0.; devE = 0.;
 Do[Module[{bsm = rbq[], bsp, psi, nabPsi = {}, nbp = {}, nbm = {}, lhsE, upNew, loNew},
@@ -287,7 +287,7 @@ SL31Check["GS-15", "the Lorentz connection is fixed by the frame: for an x-depen
 (*GS-16: the lattice operator on plane waves*)
 
 (* ::Text:: *)
-(*On a periodic chain of 24 sites along $x^1_{\rm LL}$ ($\ell^{\rm x}_{\rm LL}=0.5$, $m_{\rm LL}=0.4$, $\mu_{\rm LL}=0$, no gauge fields, no pairing) the lattice operator $\mathcal H^{\rm lat}_{\rm LL}$ of the solvers maps a plane wave, $\exp(iq^1_{\rm LL}x^1_{\rm LL})$ times one of the 16 unit vectors of a site, to a plane wave of the same momentum, and the $16\times16$ matrix of these images has the eigenvalues $-\varepsilon^{\rm lat}_{\rm LL}$ and $+\varepsilon^{\rm lat}_{\rm LL}$, each eight times, at all 24 allowed momenta $q^1_{\rm LL}=2\pi\kappa/(24\ell^{\rm x}_{\rm LL})$ (integers $\kappa=-11,\dots,12$), for the Wilson coefficients $r^{\rm W}_{\rm LL}=0$ and $r^{\rm W}_{\rm LL}=1$. The energy of a free particle on the lattice is $\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})=\Big(\sum_j\sin^2(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/(\ell^{\rm x}_{\rm LL})^2+\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)^2\Big)^{1/2}$, the sums running over the directions with more than one site. At $q^1_{\rm LL}\ell^{\rm x}_{\rm LL}=\pm\pi$ the sine vanishes again: without the Wilson term ($r^{\rm W}_{\rm LL}=0$) the energy returns to $m_{\rm LL}$ there (a second, spurious particle, the doubler); with $r^{\rm W}_{\rm LL}=1$ it is lifted to $m_{\rm LL}+2r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL}=4.4$. Figure 1 shows these eigenvalues with the formula and with the continuum energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$ (the figures stand in the subsection after the data files of the original program).*)
+(*On a periodic chain of 24 sites along $x^1_{\rm LL}$ ($\ell^{\rm x}_{\rm LL}=0.5$, $m_{\rm LL}=0.4$, $\mu_{\rm LL}=0$, no gauge fields, no pairing) the lattice operator $\mathcal H^{\rm lat}_{\rm LL}$ of the solvers maps a plane wave, $\exp(iq^1_{\rm LL}x^1_{\rm LL})$ times one of the 16 unit vectors of a site, to a plane wave of the same momentum, and the $16\times16$ matrix of these images has the eigenvalues $-\varepsilon^{\rm lat}_{\rm LL}$ and $+\varepsilon^{\rm lat}_{\rm LL}$, each eight times, at all 24 allowed momenta $q^1_{\rm LL}$ (the integer multiples of $2\pi/(24\ell^{\rm x}_{\rm LL})$, from $-11$ to $12$ times this unit), for the Wilson coefficients $r^{\rm W}_{\rm LL}=0$ and $r^{\rm W}_{\rm LL}=1$. The energy of a free particle on the lattice is $\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})=\Big(\sum_j\sin^2(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/(\ell^{\rm x}_{\rm LL})^2+\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)^2\Big)^{1/2}$, the sums running over the directions with more than one site. At $q^1_{\rm LL}\ell^{\rm x}_{\rm LL}=\pm\pi$ the sine vanishes again: without the Wilson term ($r^{\rm W}_{\rm LL}=0$) the energy returns to $m_{\rm LL}$ there (a second, spurious particle, the doubler); with $r^{\rm W}_{\rm LL}=1$ it is lifted to $m_{\rm LL}+2r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL}=4.4$. Figure 1 shows these eigenvalues with the formula and with the continuum energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$ (the figures stand in the subsection after the data files of the original program).*)
 
 (* ::Input:: *)
 {mFig, dxFig, nFig} = {0.4, 0.5, 24};
@@ -296,13 +296,13 @@ curves = Flatten[Table[With[{q = -Pi/dxFig + 2 Pi/dxFig i/400.}, {rw, q, Sqrt[q^
 (* (2) the points: the largest eigenvalue of the operator on the plane waves of the 24 allowed momenta *)
 dispDev = 0.;
 points = Flatten[Table[
-    Module[{lat1 = <|"n" -> {nFig, 1, 1}, "ell" -> dxFig, "periodic" -> {True, False, False}, "wilson" -> rw, "mass" -> mFig, "mu" -> 0.|>,
+    Module[{latFig = <|"n" -> {nFig, 1, 1}, "ell" -> dxFig, "periodic" -> {True, False, False}, "wilson" -> rw, "mass" -> mFig, "mu" -> 0.|>,
       kk, q, w, out, m16, ev, el},
      kk = If[kq <= nFig/2, kq, kq - nFig];
      q = 2 Pi kk/(nFig dxFig);
      (* the 16 plane waves, one per unit vector b, as the columns of a matrix *)
      w = Table[If[Mod[r - 1, 16] + 1 == b, Exp[I q dxFig Quotient[r - 1, 16]], 0. I], {r, 16 nFig}, {b, 16}];
-     out = t2apply[lat1, t2trivialFields[nFig], w];
+     out = t2apply[latFig, t2trivialFields[nFig], w];
      m16 = out[[1 ;; 16]];
      dispDev = Max[dispDev, Max[Abs[out[[16 (nFig - 1) + 1 ;; 16 nFig]] - m16 Exp[I q dxFig (nFig - 1)]]]];
      ev = First[t2eigh[m16]];
@@ -317,9 +317,9 @@ SL31Check["GS-16", "the lattice operator of the solvers on plane waves: on a per
 (*The data files of the original program*)
 
 (* ::Text:: *)
-(*The original program t2_fields wrote the numbers of its two figures into three data files: t2_dispersion_lattice.csv (the 48 points of Figure 1: for $r^{\rm W}_{\rm LL}=0$ and $r^{\rm W}_{\rm LL}=1$ and each of the 24 momenta, the largest eigenvalue of the lattice operator), t2_dispersion_curves.csv (the 802 points of the curves of Figure 1: for $r^{\rm W}_{\rm LL}=0$ and $r^{\rm W}_{\rm LL}=1$ and each of 401 momenta, the continuum energy $\varepsilon_{\rm LL}$ and the formula of $\varepsilon^{\rm lat}_{\rm LL}$) and t2_cvode_accuracy.csv (the 41 rows of its integrations of GS-13 by CVODE: the output time $x^0_{\rm LL}$; the relative deviations $\delta^{\rm rel}_{\rm LL}$ for $r^{\rm tol}_{\rm LL}=10^{-8},10^{-10},10^{-12}$; and, for the same three tolerances, the length $h^{\rm CV}_{\rm LL}$ and the order $q^{\rm CV}_{\rm LL}$ of the last internal step of CVODE before the output time, 0 in the first row). The first two files print their numbers with 10 decimals, the third with 7 significant digits (its times with 4 decimals). The next cell contains every number of the three files, copied without change, so that the notebook stays complete. The check after it compares the numbers of Figure 1 with the lists `points` and `curves` computed above, row by row and column by column; because the files are rounded, deviations up to half a unit of the last printed decimal, $5\times10^{-11}$, are expected, and larger deviations would mean that the rewritten programs compute different numbers. The integrations by CVODE cannot be repeated in the Wolfram Language; for them the check confirms that the file has the output times of GS-13 and that its numbers show what the original check GS-13 states: the deviations are rounding errors in the first row, stay below $10^{-9}$ for $r^{\rm tol}_{\rm LL}=10^{-12}$, and their largest values decrease from $r^{\rm tol}_{\rm LL}=10^{-8}$ to $10^{-10}$ to $10^{-12}$. Figure 2 shows them together with the deviations of IDA computed in GS-13.*)
+(*The original program t2_fields wrote the numbers of its two figures into three data files: t2_dispersion_lattice.csv (the 48 points of Figure 1: for $r^{\rm W}_{\rm LL}=0$ and $r^{\rm W}_{\rm LL}=1$ and each of the 24 momenta, the largest eigenvalue of the lattice operator), t2_dispersion_curves.csv (the 802 points of the curves of Figure 1: for $r^{\rm W}_{\rm LL}=0$ and $r^{\rm W}_{\rm LL}=1$ and each of 401 momenta, the continuum energy $\varepsilon_{\rm LL}$ and the formula of $\varepsilon^{\rm lat}_{\rm LL}$) and t2_cvode_accuracy.csv (the 41 rows of its integrations of GS-13 by CVODE: the output time $x^0_{\rm LL}$; the relative deviations $\delta^{\rm rel}_{\rm LL}$ for $r^{\rm tol}_{\rm LL}=10^{-8},10^{-10},10^{-12}$; and, for the same three tolerances, the length $h^{\rm CV}_{\rm LL}$ and the order $q^{\rm CV}_{\rm LL}$ of the last internal step of CVODE before the output time, 0 in the first row). The first two files print their numbers with 10 decimals, the third with 7 significant digits (its times with 4 decimals). The next cell contains every number of the three files, copied without change of a digit (a number with an exponent is written in the notation of the Wolfram Language), so that the notebook stays complete. It is a closed cell: the notebook evaluates it like every other cell, but shows only its thin cell bracket, and a printed copy of the notebook leaves it out, so that the notebook does not carry many pages of numbers. To read the numbers, select the bracket of the cell and choose Cell > Cell Properties > Open. Its output, the next cell that is shown, is the list of the numbers of rows of the three lists `t2origPoints`, `t2origCurves` and `t2origCvode`. The check after it compares the numbers of Figure 1 with the lists `points` and `curves` computed above, row by row and column by column; because the files are rounded, deviations up to half a unit of the last printed decimal, $5\times10^{-11}$, are expected, and larger deviations would mean that the rewritten programs compute different numbers. The integrations by CVODE cannot be repeated in the Wolfram Language; for them the check confirms that the file has the output times of GS-13 and that its numbers show what the original check GS-13 states: the deviations are rounding errors in the first row, stay below $10^{-9}$ for $r^{\rm tol}_{\rm LL}=10^{-12}$, and their largest values decrease from $r^{\rm tol}_{\rm LL}=10^{-8}$ to $10^{-10}$ to $10^{-12}$. Figure 2 shows them together with the deviations of IDA computed in GS-13.*)
 
-(* ::Input:: *)
+(* ::Input::Closed:: *)
 (* @@INCLUDE t2_fields_figure_data.wl@@ *)
 
 (* ::Input:: *)
@@ -327,7 +327,7 @@ SL31Check["GS-16", "the lattice operator of the solvers on plane waves: on a per
    of the file and the largest deviations of its three integrations by CVODE *)
 devPts = Max[Abs[points - t2origPoints]];
 devCurves = Max[Abs[curves - t2origCurves]];
-cvMax = Table[Max[t2origCvode[[All, 1 + k]]], {k, 3}];
+cvMax = Table[Max[t2origCvode[[All, 1 + kt]]], {kt, 3}];
 cvTimes = Max[Abs[t2origCvode[[All, 1]] - touts13]];
 SL31Check["T2-DATA-1", "the numbers of the figures agree with the data files written by the original program t2_fields: the 48 eigenvalues of the lattice operator and the 802 points of the curves of Figure 1 (tolerance 5.1e-11, half a unit of the last printed decimal); the file of the integrations by CVODE of Figure 2 has the 41 output times of GS-13 (tolerance 5.1e-5), and its relative deviations from the exact solution are below 1e-13 at x_LL^0 = 0, stay below 1e-9 for rtol = 1e-12, and their largest values decrease from rtol = 1e-8 to 1e-10 to 1e-12, as the original check GS-13 states",
   Dimensions[points] == Dimensions[t2origPoints] && Dimensions[curves] == Dimensions[t2origCurves] && Dimensions[t2origCvode] == {41, 10} &&
@@ -386,22 +386,22 @@ Labeled[Row[{fig1a, fig1b}, "  "], Style["Figure 1. The energy of a free particl
    1e-15, is left out of the logarithmic plot.  The positions of texts in a logarithmic plot are natural logarithms *)
 {x0Sym, rtolSym, deltaRelSym, wExSym, nstSym} = {LL["x^p_{\\rm LL}", "p" -> "0"], LL["r^{\\rm tol}_{\\rm LL}"],
    LL["\\delta^{\\rm rel}_{\\rm LL}"], LL["w^{\\rm ex}_{\\rm LL}"], LL["N^{\\rm st}_{\\rm LL}"]};
-idaDev = Table[Transpose[{Rest[touts13], Rest[dev13[[k]]]}], {k, 3}];
-cvDev = Table[Transpose[{Rest[t2origCvode[[All, 1]]], Rest[t2origCvode[[All, 1 + k]]]}], {k, 3}];
+idaDev = Table[Transpose[{Rest[touts13], Rest[dev13[[kt]]]}], {kt, 3}];
+cvDev = Table[Transpose[{Rest[t2origCvode[[All, 1]]], Rest[t2origCvode[[All, 1 + kt]]]}], {kt, 3}];
 idaStyle = Directive[blue, Thickness[0.004]];
 cvStyle = Directive[orange, Dashed, Thickness[0.004]];
 (* the label of a tolerance, in the muted grey of the texts *)
-tolLabel[k_] := upright[Style[Row[{rtolSym, " = ", Superscript[10, -6 - 2 k]}], 10, muted]];
-tolShort[k_] := Style[Superscript[10, -6 - 2 k], 10, muted];
+tolLabel[kt_] := upright[Style[Row[{rtolSym, " = ", Superscript[10, -6 - 2 kt]}], 10, muted]];
+tolShort[kt_] := Style[Superscript[10, -6 - 2 kt], 10, muted];
 (* the curves end at the time 20.  The two curves of one tolerance are joined, by two thin grey lines from
    their ends, to the label of the tolerance, which stands to the right of the curves at the geometric mean of
    the two last deviations; the time axis is therefore drawn to 26.5, with tick marks up to 20 *)
 endIda = Map[Last, dev13];
-endCv = Table[t2origCvode[[-1, 1 + k]], {k, 3}];
+endCv = Table[t2origCvode[[-1, 1 + kt]], {kt, 3}];
 labelAt = Sqrt[endIda endCv];
 pairLabels = Table[{Directive[muted, Thickness[0.0015]],
-     Line[{{20, Log[endIda[[k]]]}, {21, Log[labelAt[[k]]]}, {20, Log[endCv[[k]]]}}],
-     Text[tolLabel[k], {21.3, Log[labelAt[[k]]]}, {-1, 0}]}, {k, 3}];
+     Line[{{20, Log[endIda[[kt]]]}, {21, Log[labelAt[[kt]]]}, {20, Log[endCv[[kt]]]}}],
+     Text[tolLabel[kt], {21.3, Log[labelAt[[kt]]]}, {-1, 0}]}, {kt, 3}];
 fig2a = ListLogPlot[Join[idaDev, cvDev], Joined -> True, PlotStyle -> Join[ConstantArray[idaStyle, 3], ConstantArray[cvStyle, 3]],
    PlotRange -> {{0, 26.5}, {1*^-13, 1*^-3}}, Frame -> True, FrameTicks -> {{Automatic, None}, {Range[0, 20, 5], None}},
    FrameLabel -> {upright[Row[{x0Sym, " (time)"}]], upright[Row[{deltaRelSym, " (relative deviation from ", wExSym, ")"}]]},
@@ -417,7 +417,7 @@ fig2b = ListLogLogPlot[{idaWork, cvWork}, Joined -> True, PlotStyle -> {idaStyle
    PlotMarkers -> {{"\[FilledCircle]", 10}, {"\[EmptySquare]", 10}}, PlotRange -> {{400, 200000}, {1*^-12, 1*^-4}}, Frame -> True,
    FrameLabel -> {upright[Row[{nstSym, " (number of internal steps)"}]], upright[Row[{"largest ", deltaRelSym}]]},
    GridLines -> Automatic, GridLinesStyle -> Directive[GrayLevel[0.9]], ImageSize -> 470,
-   Epilog -> Join[Table[Text[tolShort[k], Log[idaWork[[k]]], {-1.6, 0}], {k, 3}],
+   Epilog -> Join[Table[Text[tolShort[kt], Log[idaWork[[kt]]], {-1.6, 0}], {kt, 3}],
      MapThread[Text[tolShort[#1], Log[cvWork[[#1]]], #2] &, {{1, 2, 3}, {{1.6, 0}, {1.3, 1.8}, {1.6, 0}}}]],
    PlotLabel -> Style[upright[Row[{"(b) accuracy against work; the labels are ", rtolSym}]], 12]];
 legend2 = LineLegend[{idaStyle, cvStyle}, {"IDA (this notebook)", "CVODE (original program t2_fields)"}, LegendLayout -> "Row"];

@@ -36,8 +36,8 @@ SL31Check["GS-1", "the Dirac matrices are built from the frame of R^(1,3)_LL; Cl
 sj = Table[t2spinGen[t2jgen[j]], {j, 3}];
 sk = Table[t2spinGen[t2kgen[j]], {j, 3}];
 comm[a_, b_] := a . b - b . a;
-genOk = And @@ Flatten[Table[With[{k = Mod[j, 3] + 1, l = Mod[j + 1, 3] + 1},
-      {fro[sj[[j]] - g[[k + 1]] . g[[l + 1]]/2] < tol, fro[sk[[j]] - g[[1]] . g[[j + 1]]/2] < tol,
+genOk = And @@ Flatten[Table[With[{jb = Mod[j, 3] + 1, jc = Mod[j + 1, 3] + 1},
+      {fro[sj[[j]] - g[[jb + 1]] . g[[jc + 1]]/2] < tol, fro[sk[[j]] - g[[1]] . g[[j + 1]]/2] < tol,
        fro[sj[[j]] - ArrayFlatten[{{-I/2 t2sigma[j], 0}, {0, -I/2 t2sigma[j]}}]] < tol,
        fro[sk[[j]] - ArrayFlatten[{{-1/2 t2sigma[j], 0}, {0, 1/2 t2sigma[j]}}]] < tol}], {j, 3}]];
 rel = Flatten[Table[With[{lj = Sum[t2eps3[a, b, c] sj[[c]], {c, 3}], lk = Sum[t2eps3[a, b, c] sk[[c]], {c, 3}]},
@@ -187,7 +187,7 @@ Do[
      dgp = {Table[w1[[j, p + 1, q + 1]], {j, 3}], Table[w1[[3 + j, p + 1, q + 1]], {j, 3}]};
      rr = t2spinGen[lorentzElem @@ dgq] - t2spinGen[lorentzElem @@ dgp] + comm[gammaAt[x, p], gammaAt[x, q]];
      ap = aAt[x, p]; aq = aAt[x, q];
-     fv = Table[a1[[i, q + 1, p + 1]] - a1[[i, p + 1, q + 1]] + Sum[gv t2eps3[i, k3, l3] ap[[k3]] aq[[l3]], {k3, 3}, {l3, 3}], {i, 3}];
+     fv = Table[a1[[i, q + 1, p + 1]] - a1[[i, p + 1, q + 1]] + Sum[gv t2eps3[i, ib, ic] ap[[ib]] aq[[ic]], {ib, 3}, {ic, 3}], {i, 3}];
      ff = f1[[q + 1, p + 1]] - f1[[p + 1, q + 1]];
      curv = t2lift4[rr] - I gauge8[gv, gf, fv, ff];
      rhs = curv . psi;
@@ -247,12 +247,12 @@ Do[
 zero3 = {ConstantArray[0, {8, 8}], ConstantArray[0, {8, 8}], ConstantArray[0, {8, 8}]};
 worst9s = 0.;
 Do[
-  Module[{q = Table[2 t2Unit[], {3}], delta, hm, ev, eps, ep, em, expect},
+  Module[{q = Table[2 t2Unit[], {3}], delta, hm, ev, epsq, ep, em, expect},
    delta = 0.25 + 0.2 t2Unit[];
    hm = hq[q, zero3, ConstantArray[0, {8, 8}], {0, 0, delta}, mu];
    ev = First[t2eigh[hm]];
-   eps = Sqrt[q . q + mass^2];
-   ep = Sqrt[(eps + mu)^2 + delta^2]; em = Sqrt[(eps - mu)^2 + delta^2];
+   epsq = Sqrt[q . q + mass^2];
+   ep = Sqrt[(epsq + mu)^2 + delta^2]; em = Sqrt[(epsq - mu)^2 + delta^2];
    expect = Sort[Join[ConstantArray[-ep, 4], ConstantArray[-em, 4], ConstantArray[em, 4], ConstantArray[ep, 4]]];
    worst9s = Max[worst9s, Max[Abs[ev - expect]]]],
   {30}];
@@ -264,13 +264,13 @@ SL31Check["GS-8", "the Dirac-Bogoliubov-de Gennes operator H_DB(q) with constant
 k3 = t2kpair[3];
 worstGap = 0.;
 Do[
-  Module[{q = Table[2 t2Unit[], {3}], delta, hm, ev, vecs, s, eps, ep, em},
+  Module[{q = Table[2 t2Unit[], {3}], delta, hm, ev, vecs, s, epsq, ep, em},
    delta = 0.25 + 0.2 t2Unit[];
    hm = hq[q, zero3, ConstantArray[0, {8, 8}], {0, 0, delta}, mu];
    {ev, vecs} = t2eigh[hm];
-   s = Sum[If[ev[[n]] > 0, vecs[[1 ;; 8, n]] . k3 . Conjugate[vecs[[9 ;; 16, n]]], 0], {n, 16}];
-   eps = Sqrt[q . q + mass^2];
-   ep = Sqrt[(eps + mu)^2 + delta^2]; em = Sqrt[(eps - mu)^2 + delta^2];
+   s = Sum[If[ev[[col]] > 0, vecs[[1 ;; 8, col]] . k3 . Conjugate[vecs[[9 ;; 16, col]]], 0], {col, 16}];
+   epsq = Sqrt[q . q + mass^2];
+   ep = Sqrt[(epsq + mu)^2 + delta^2]; em = Sqrt[(epsq - mu)^2 + delta^2];
    worstGap = Max[worstGap, Abs[s + 2 delta (1/ep + 1/em)]]],
   {30}];
 SL31Check["GS-9", "the self-consistency of the mean field: for the polar order parameter the sum over the eight positive-energy eigenvectors of psi_p^T Kch_3 conj(psi_h) equals -2 Delta (1/E^+ + 1/E^-), so that the mode-sum form of the mean-field equations gives the gap equation 1/G = int d^3q/(2 pi)^3 (1/E^+ + 1/E^-) (30 random momenta; tolerance 1e-10)",
@@ -297,14 +297,14 @@ ph = fro[xm . Conjugate[hl] . xm + hl];
 (* gauge covariance under random site transformations G(s) = exp(i th) U(s) *)
 gs = {}; fl2 = fl; gbig = SparseArray[{}, {n, n}, 0. I];
 Do[
-  Module[{th = 3 t2Unit[], u2, gm, r, dn, g8},
+  Module[{th = 3 t2Unit[], u2, gsite, r, dn, g8},
    u2 = t2su2[Table[3 t2Unit[], {3}]];
-   gm = Exp[I th] u2;
-   AppendTo[gs, gm];
+   gsite = Exp[I th] u2;
+   AppendTo[gs, gsite];
    r = t2adjoint[u2];
    dn = Table[Sum[fl[["d", s + 1, b]] r[[a, b]], {b, 3}] Exp[2 I th], {a, 3}];
    fl2[["d", s + 1]] = dn;
-   g8 = t2lift2[gm];
+   g8 = t2lift2[gsite];
    gbig[[16 s + 1 ;; 16 s + 8, 16 s + 1 ;; 16 s + 8]] = g8;
    gbig[[16 s + 9 ;; 16 s + 16, 16 s + 9 ;; 16 s + 16]] = Conjugate[g8]],
   {s, 0, ns - 1}];

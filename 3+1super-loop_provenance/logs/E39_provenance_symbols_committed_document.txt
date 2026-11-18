@@ -1,0 +1,8 @@
+PROJECT spacetimes, provenance of the notebook 3+1super-loop.nb: the symbols of the formulas (tools/check_provenance_symbols.py)
+file: prov_committed.md
+section 2 (lines 28 to 223) defines 130 signatures of symbols with the suffix LL; the other sections use 129 signatures
+exception: line 860 uses \gamma_{\rm LL} -- the description of error E18 quotes a label that the first version of Part II printed wrongly (the component gamma^1_LL without its index); it is not a symbol of the document
+FAIL  line 442 uses \vec k^{\rm B}_{\rm LL} (signature \veck^{\rmB}_{\rmLL}), which section 2 does not define
+FAIL  line 581 uses \psi^{\rm h}_{{\rm LL},n} (signature \psi^{\rmh}_{{{\rmLL},#}}), which section 2 does not define
+FAIL  line 684 uses \Psi^T_{\rm LL} (signature \Psi^{T}_{\rmLL}), which section 2 does not define
+FAIL  3 used signatures are not defined in section 2

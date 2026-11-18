@@ -1,0 +1,11 @@
+Output of tools/formula_compare.wls for the formulas of the present notebook (list notebook_source/formula_inventory.wl, written by tools/formula_inventory.py)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 15.7 s; messages on the error stream: none)
+
+formulas: 1083
+time: 13 s
+own reader: formulas with a reported problem: 0
+own = importer+ (alphabets protected): 1040 of 1083; different: 43 (text 22, display 4, meaning 17)
+own = importer (alone): 640 of 1083; different: 443 (text 201, display 16, meaning 226)
+fractions: 77 commands in the TeX, 77 fraction boxes of the own reader, 77 of the importer
+roots: 9 commands in the TeX, 9 root boxes of the own reader
+report: logs/formula_compare_report.txt (1714 lines)

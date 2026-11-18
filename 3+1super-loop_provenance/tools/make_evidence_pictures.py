@@ -2,9 +2,10 @@
 """make_evidence_pictures.py     (PROJECT spacetimes, notebook 3+1super-loop.nb)
 
 PURPOSE
-  Makes the five pictures that the provenance of the notebook shows as evidence for the errors
-  E22 to E25 and E28 of 18 November 2026.  Each picture puts pieces of exported pages one below the other,
-  each group under a caption on a grey bar:
+  Makes the pictures that the provenance of the notebook shows as evidence for the errors E22 to E25,
+  E28, E31 and E32 of 18 November 2026, and the pictures of the figures of the notebook that the
+  provenance prints.  Each picture of evidence puts pieces of exported pages one below the other, each
+  group under a caption on a grey bar:
 
     E22_formulas_importer_and_own_reader.png      one text converted by the notebook's own reader of
                                                   formulas and by the TeX importer of the Wolfram
@@ -18,21 +19,35 @@ PURPOSE
                                                   ways of writing it, and the row of the table of the
                                                   symbols with the coordinates x5, x6, x7 before and
                                                   after the fix
+    E31_check_line_before_and_after_fix.png       the end of the printed line of check AS-10: cut at the
+                                                  right edge of the page, and complete
+    E32_figure3_before_and_after_fix.png          Figure 3: two panels side by side, wider than the page,
+                                                  and the panels one below the other
 
 INPUT
   --old-pdf      the exported pages of the notebook as committed before the reader of formulas
                  (181 pages).  The file is in the history of the repository:
                      git show 213d205:3+1super-loop_provenance/export/3+1super-loop.pdf > old.pdf
-  --new-pdf      the exported pages of the present notebook, export/3+1super-loop.pdf (205 pages)
+  --new-pdf      the exported pages of the present notebook, export/3+1super-loop.pdf.  The pages of
+                 this file are found by words that they contain (function find_page), because every
+                 new chapter of the notebook moves them; the captions give the numbers found
   --render-test  logs/E22_formula_render_test.pdf, written by tools/formula_render_test.wls
   --fig2-before  logs/E25_figure2_before_fix.png: Figure 2 on the exported page of the first
                  evaluation with IDA, before its labels were moved.  This page is kept as a picture
                  only, because every evaluation of the notebook replaces the exported pages.
   --spacing-test logs/E28_letter_digit_spacing_test.pdf, written by tools/letter_digit_spacing_test.wls
   --out          the folder for the five pictures (logs)
-  --figure2      optional: a file for Figure 2 of the present notebook alone (page 201, at twice
-                 the resolution); the provenance shows it in its section on the figures
+  --figure2      optional: a file for Figure 2 of the present notebook alone (at twice the
+                 resolution); the provenance shows it in its section on the figures
                  (figures/notebook_figure2_gs13.png)
+  --line-before  logs/E31_check_line_before_fix.png: the end of the printed line of check AS-10 on the
+                 exported page of the first evaluation of chapter II.3 (kept as a picture, as above;
+                 the red line marks the right edge of the text area, 553.5 points from the left edge)
+  --fig3-before  logs/E32_figure3_before_fix.png: Figure 3 on the exported page of the same evaluation
+  --figures-dir  optional: a folder for the pictures of the Figures 3 to 6 of the present notebook, one
+                 file for every output cell of a figure (notebook_figure3.png, notebook_figure4ab.png,
+                 notebook_figure4c.png, notebook_figure5ab.png, notebook_figure5cd.png,
+                 notebook_figure6.png), at twice the resolution
 
 METHOD
   A page is turned into a picture by the program pdftoppm, and the positions of its words are read
@@ -46,7 +61,9 @@ USAGE
   python3 make_evidence_pictures.py --old-pdf old.pdf --new-pdf export/3+1super-loop.pdf \\
       --render-test logs/E22_formula_render_test.pdf --fig2-before logs/E25_figure2_before_fix.png \\
       --spacing-test logs/E28_letter_digit_spacing_test.pdf --out logs \\
-      --figure2 figures/notebook_figure2_gs13.png
+      --figure2 figures/notebook_figure2_gs13.png \\
+      --line-before logs/E31_check_line_before_fix.png --fig3-before logs/E32_figure3_before_fix.png \\
+      --figures-dir figures
   Needs Python 3 with the packages Pillow and numpy, the Poppler tools, and the font DejaVu Sans.
 """
 import argparse
@@ -118,6 +135,24 @@ class Page:
         """the last row with ink at or after the row `below` (the page number at the top is above it)"""
         rows = np.nonzero((self.gray[int(below):, x0:x1] < 215).sum(axis=1) > 0)[0]
         return int(below) + int(rows[-1])
+
+
+_PAGE_TEXTS = {}
+
+
+def find_page(pdf, phrase, occurrence=1):
+    """the number of the page of `pdf` on which the words of `phrase` stand one after the other: the
+    `occurrence`-th such page, or the last one for occurrence = -1 (the table of the symbols and the output
+    of a figure come after the input cells that hold the same words as data or as code).  The words of all
+    pages are read once with pdftotext."""
+    if pdf not in _PAGE_TEXTS:
+        raw = subprocess.run(["pdftotext", pdf, "-"], check=True, capture_output=True, text=True).stdout
+        _PAGE_TEXTS[pdf] = [" ".join(page.split()) for page in raw.split("\f")]
+    wanted = " ".join(phrase.split())
+    pages = [n for n, text in enumerate(_PAGE_TEXTS[pdf], 1) if wanted in text]
+    if not pages or len(pages) < occurrence:
+        sys.exit(f"{pdf}: no page (occurrence {occurrence}) holds the words '{phrase}'")
+    return pages[-1] if occurrence == -1 else pages[occurrence - 1]
 
 
 def nearest(flags, y, direction):
@@ -219,6 +254,9 @@ def main():
     ap.add_argument("--spacing-test", required=True)
     ap.add_argument("--out", required=True)
     ap.add_argument("--figure2")
+    ap.add_argument("--line-before")
+    ap.add_argument("--fig3-before")
+    ap.add_argument("--figures-dir")
     a = ap.parse_args()
     out = lambda name: os.path.join(a.out, name)
 
@@ -248,7 +286,9 @@ def main():
 
     # ------------------------------------------------------------------ E22, E24: the texts of the notebook
     old111, old112, old117 = Page(a.old_pdf, 111, dpi), Page(a.old_pdf, 112, dpi), Page(a.old_pdf, 117, dpi)
-    new131, new143 = Page(a.new_pdf, 131, dpi), Page(a.new_pdf, 143, dpi)
+    n_link = find_page(a.new_pdf, "The gauge fields live")
+    n_gs3 = find_page(a.new_pdf, "GS-3 is the change")
+    new131, new143 = Page(a.new_pdf, n_link, dpi), Page(a.new_pdf, n_gs3, dpi)
     x0, x1 = (int(f * old111.image.width) for f in xr)
     start = old111.line_of("The gauge fields live")
     before_a = text_piece(old111, xr, start[0], old111.content_bottom(x0, x1, start[0]))
@@ -270,7 +310,7 @@ def main():
          "particle row stands at the end of the first line of the formula (error E24). In the text of GS-3 the "
          "Lorentz matrix is the numerator of a fraction with the denominator 2 Re tr(...).",
          [before_a, before_b, before_c]),
-        ("AFTER the fix (pages 131 and 143 of the present notebook). The cosine and the sine of one half times "
+        (f"AFTER the fix (pages {n_link} and {n_gs3} of the present notebook). The cosine and the sine of one half times "
          "l g |A|; the formula of the particle row is a display formula that ends with its comma; the element of the "
          "Lorentz matrix is one half times Re tr(...).",
          [after_a, after_b])],
@@ -280,7 +320,10 @@ def main():
     dpi = 140
     xt = (0.135, 0.81)                       # the columns of a page that hold the table
     old83, old88, old96 = Page(a.old_pdf, 83, dpi), Page(a.old_pdf, 88, dpi), Page(a.old_pdf, 96, dpi)
-    new102, new107, new116 = Page(a.new_pdf, 102, dpi), Page(a.new_pdf, 107, dpi), Page(a.new_pdf, 116, dpi)
+    n_dim = find_page(a.new_pdf, "the number of space dimensions", -1)
+    n_mass = find_page(a.new_pdf, "the mass dimension of a field", -1)
+    n_fourth = find_page(a.new_pdf, "the fourth derivative of", -1)
+    new102, new107, new116 = Page(a.new_pdf, n_dim, dpi), Page(a.new_pdf, n_mass, dpi), Page(a.new_pdf, n_fourth, dpi)
 
     def rows(page, first_words, last_words, last_occurrence=1):
         """the rows of the table from the entry whose meaning begins with first_words to the entry whose
@@ -301,7 +344,7 @@ def main():
          "set of the bi-octonions and the units e in plain letters. Entry of the mass dimension: no h-bar after "
          "\"units in which\". Entry of the fourth derivative: the fraction -15/(8 times the integral ...).",
          before),
-        ("AFTER the fix (pages 102, 107 and 116 of the present notebook). Every letter in its alphabet; the text of "
+        (f"AFTER the fix (pages {n_dim}, {n_mass} and {n_fourth} of the present notebook). Every letter in its alphabet; the text of "
          "a meaning is set as one paragraph; h-bar is shown; -15/8 times the integral.",
          after)],
         out("E23_table_of_symbols_before_and_after_fix.png"), font_size=15)
@@ -309,7 +352,8 @@ def main():
     # ------------------------------------------------------------------ E25: Figure 2
     dpi = 100
     xf = (0.06, 0.945)
-    new201 = Page(a.new_pdf, 201, dpi)
+    n_fig2 = find_page(a.new_pdf, "CVODE (original program t2_fields)", -1)
+    new201 = Page(a.new_pdf, n_fig2, dpi)
     caption = new201.line_of("Figure 2. The time", 1)
     legend = new201.line_of("CVODE (original program t2_fields)")
     after_fig = text_piece(new201, xf, caption[0], legend[1])
@@ -318,13 +362,13 @@ def main():
         ("BEFORE the fix (the first evaluation with IDA): in panel (a) the labels of the tolerances stand between "
          "the curves; in panel (b) the label of CVODE for 10^-10 lies on a line.",
          [before_fig]),
-        ("AFTER the fix (page 201 of the present notebook): in panel (a) each pair of curves is joined to its label; "
+        (f"AFTER the fix (page {n_fig2} of the present notebook): in panel (a) each pair of curves is joined to its label; "
          "in panel (b) the label stands below and to the left of its point.",
          [after_fig])],
         out("E25_figure2_before_and_after_fix.png"))
 
     if a.figure2:
-        big = Page(a.new_pdf, 201, 200)
+        big = Page(a.new_pdf, n_fig2, 200)
         caption = big.line_of("Figure 2. The time", 1)
         legend = big.line_of("CVODE (original program t2_fields)")
         figure = trimmed(text_piece(big, xf, caption[0], legend[1]))
@@ -344,9 +388,90 @@ def main():
         ("BEFORE the fix (page 83 of the notebook as committed before; the same in the first evaluations of "
          "18 November 2026): the coordinates x5, x6, x7 of the main project are shown as x 5, x 6, x 7, like products.",
          [rows(old83, "the number of space dimensions", "the number of space dimensions")]),
-        ("AFTER the fix (page 102 of the present notebook): x5, x6, x7.",
+        (f"AFTER the fix (page {n_dim} of the present notebook): x5, x6, x7.",
          [rows(new102, "the number of space dimensions", "the number of space dimensions")])],
         out("E28_letter_and_number_before_and_after_fix.png"), font_size=15)
+
+    # ------------------------------------------------------------------ E31: the end of the line of AS-10
+    if a.line_before:
+        dpi = 130
+        n_as10 = find_page(a.new_pdf, "84 discarded states, of them 80 at the levels 110 to 119")
+        page = Page(a.new_pdf, n_as10, dpi)
+        first = page.line_of("n_L = 1 to 10,")
+        last = page.line_of("states, of them 80 at the levels 110 to 119 and 4 artefacts at +-m)")
+        after_line = text_piece(page, (60.0 / PAGE_POINTS[0], 1.0), first[0], last[1])
+        edge = int(round((553.5 - 60.0) * dpi / 72.0))
+        ImageDraw.Draw(after_line).line([(edge, 0), (edge, after_line.height)], fill=(220, 40, 40), width=1)
+        compose([
+            ("BEFORE the fix (page 228 of the first exported pages of chapter II.3): the details of check AS-10 were "
+             "printed as nested rows. The front end indents every continuation line of a nested row a little more and "
+             "does not count this indentation when it breaks the lines: the last line passes the right edge of the text "
+             "area (the red line) and is cut there; the words after \"84 discarded states\" are lost.",
+             [Image.open(a.line_before).convert("RGB")]),
+            (f"AFTER the fix (page {n_as10} of the present notebook): the details are one flat row of texts, with the "
+             "numbers written as text and without indentation of the continuation lines; every line ends before the "
+             "red line and the details are complete.",
+             [after_line])],
+            out("E31_check_line_before_and_after_fix.png"))
+
+    # ------------------------------------------------------------------ E32 and the pictures of the figures
+    xf = (0.06, 0.945)
+
+    FIGURES = [("notebook_figure3.png", "Figure 3. Case A, free spinor", "IDA (this notebook)"),
+               ("notebook_figure4ab.png", "Figure 4, panels (a) and (b). Case B,", "IDA (this notebook)"),
+               ("notebook_figure4c.png", "Figure 4, panel (c). Case B,", "gap checked by quadrature"),
+               ("notebook_figure5ab.png", "Figure 5, panels (a) and (b). Case C,", "lattice, the eight states near"),
+               ("notebook_figure5cd.png", "Figure 5, panels (c) and (d). Case C,", "(first order)"),
+               ("notebook_figure6.png", "Figure 6. Case D, the Landau", "isospin up, oscillator basis")]
+
+    def figure_page(first_words):
+        """the page that holds the OUTPUT cell of a figure: the caption stands there as a line of its own,
+        while the page of the input cell holds it inside the code, after the words asFigure["""
+        k = 1
+        while True:
+            number = find_page(a.new_pdf, first_words, k)
+            page = Page(a.new_pdf, number, 50)
+            texts = [w[0] for w in page.words]
+            tokens = first_words.split()
+            for i in range(len(texts) - len(tokens) + 1):
+                if texts[i:i + len(tokens)] == tokens and (i == 0 or not texts[i - 1].startswith("asFigure[")) \
+                        and not tokens[0].startswith('"'):
+                    return number
+            k += 1
+
+    def figure_cut(dpi, first_words, last_words):
+        number = figure_page(first_words)
+        page = Page(a.new_pdf, number, dpi)
+        top = page.line_of(first_words)[0]
+        last = None
+        for occurrence in range(1, 8):          # the last line of the legend: its last occurrence on the page
+            tokens = last_words.split()
+            texts = [w[0] for w in page.words]
+            hits = [i for i in range(len(texts) - len(tokens) + 1) if texts[i:i + len(tokens)] == tokens]
+            if hits:
+                last = page.words[hits[-1]]
+            break
+        if last is None:
+            sys.exit(f"{a.new_pdf}, page {number}: the words '{last_words}' were not found")
+        return number, trimmed(text_piece(page, xf, top, last[4]))
+
+    if a.fig3_before:
+        n_fig3, after_fig3 = figure_cut(100, FIGURES[0][1], FIGURES[0][2])
+        compose([
+            ("BEFORE the fix (page 234 of the first exported pages of chapter II.3): the two panels of Figure 3 stood "
+             "side by side in one grid, 1000 points wide; the printed page cut the second panel, its legend and the end "
+             "of the caption.",
+             [Image.open(a.fig3_before).convert("RGB")]),
+            (f"AFTER the fix (page {n_fig3} of the present notebook): the panels stand one below the other, each 480 "
+             "points wide, each with its legend.",
+             [after_fig3])],
+            out("E32_figure3_before_and_after_fix.png"))
+
+    if a.figures_dir:
+        for name, first_words, last_words in FIGURES:
+            number, figure = figure_cut(200, first_words, last_words)
+            figure.save(os.path.join(a.figures_dir, name))
+            print(f"{os.path.join(a.figures_dir, name)}: page {number}, {figure.width} x {figure.height} pixels")
 
 
 if __name__ == "__main__":

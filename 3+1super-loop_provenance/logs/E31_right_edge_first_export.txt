@@ -1,0 +1,11 @@
+PROJECT spacetimes, notebook 3+1super-loop.nb: the right edge of the printed pages (tools/check_pdf_right_edge.py)
+file: nb.pdf, 247 pages of the width 612 points, drawn at 150 dots per inch
+limit: 553.5 points from the left edge (the right edge of the text area), allowance 0.6 points; a page is reported
+       if at least 3 rows of the image hold ink beyond the limit; the top margin of 60 points (the running head) is left out
+control of the limit: 44 pages end within 2.5 points to the left of the limit; the rightmost ink of the file is at 557.8 points (page 234)
+pages with one or two rows beyond the limit (a hanging hyphen): 125
+FAIL  page 228: 7 rows hold ink beyond the limit; the rightmost ink is at 555.8 points
+FAIL  page 234: 34 rows hold ink beyond the limit; the rightmost ink is at 557.8 points
+FAIL  page 237: 74 rows hold ink beyond the limit; the rightmost ink is at 557.8 points
+FAIL  page 240: 124 rows hold ink beyond the limit; the rightmost ink is at 557.8 points
+FAIL  4 of the 247 pages hold ink beyond the right edge of the text area

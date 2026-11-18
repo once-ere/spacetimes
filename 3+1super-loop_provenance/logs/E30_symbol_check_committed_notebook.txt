@@ -1,0 +1,37 @@
+PROJECT spacetimes, notebook 3+1super-loop.nb: the symbols in the formulas of the text cells
+385 formulas of text cells and display formulas; 71 registered styled letters; 2 formulas are listed exceptions
+12 formulas break a rule (LL-S5, LL-S6 or LL-S7)
+89 references LL[...] in the input cells (36 different), 452 items in the registry of the notebook; 0 references name no item (LL-REF)
+
+[I.2 The technique: symbolized symbols, created by a program]  $b_{1,p}+2\,b_{2,p}$
+        LL-S6 b{1,p}
+        LL-S6 b{2,p}
+[I.7 Verification tests of the symbols]  $1/G_{\rm LL}=\big(\Lambda_{\rm LL}E_\Lambda-(M^{\rm q}_{\rm LL})^2\,{\rm arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})\big)/(2\pi^2)$
+        LL-S5 a_{\rm LL}E_\Lambda-(M^{\rm q}_
+        LL-S6 E\Lambda
+[I.7 Verification tests of the symbols]  $E_\Lambda=(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}$
+        LL-S5 E_\Lambda=(\Lambda_{\
+        LL-S6 E\Lambda
+[I.7 Verification tests of the symbols]  $\sigma^{\rm LL}_j\sigma^{\rm LL}_{j'}=\delta_{jj'}\mathsf 1_2+i\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\sigma^{\rm LL}_{j''}$
+        LL-S6 \delta{jj'}2
+[I.7 Verification tests of the symbols]  $\big((k^{\rm B}_{\rm LL})^2+(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})M^2\big)\big((\omega^{\rm B}_{\rm LL})^2-M^2\big)-(k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm L...$
+        LL-S6 M2
+[I.7 Verification tests of the symbols]  $M=M^{\rm W}_{\rm LL}$
+        LL-S6 M
+[II.1.4 The lattice operator (t2core/src/lattice.rs)]  $a+bi$
+        LL-S6 a
+        LL-S6 b
+[II.1.4 The lattice operator (t2core/src/lattice.rs)]  $a,b$
+        LL-S6 a
+        LL-S6 b
+[II.1.5 The time integration (t2core/src/cvode.rs): IDA of SU]  $n$
+        LL-S6 n
+[GS-12: the explicit matrices and the component equations]  $k=1,\dots,8$
+        LL-S6 k
+[GS-16: the lattice operator on plane waves]  $q^1_{\rm LL}=2\pi\kappa/(24\ell^{\rm x}_{\rm LL})$
+        LL-S6 \kappa
+[GS-16: the lattice operator on plane waves]  $\kappa=-11,\dots,12$
+        LL-S6 \kappa
+exception: LL["a_{{\rm LL},p}"] -- the example symbol of section I.2, on which the technique is shown before the registry is read; it denotes no object of the physics, and the notebook says so
+exception: $\Delta$ -- section I.1 names this letter WITHOUT a suffix as an example of a symbol that has several meanings in the literature (a gap, a Laplacian, a difference); it is not used as a symbol of the project
+exception: $m$ -- section I.1 names this letter WITHOUT a suffix as an example of a symbol that has several meanings in the literature (a mass, an index); it is not used as a symbol of the project

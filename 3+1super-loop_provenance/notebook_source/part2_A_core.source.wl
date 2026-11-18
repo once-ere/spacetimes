@@ -362,7 +362,7 @@ t2anomalous[ns_, modes_List] := Table[Sum[w[[16 s + 1 ;; 16 s + 8]] . N[t2kpair[
    {s, 0, ns - 1}, {i, 3}];
 
 (* ::Text:: *)
-(*The library module sym.rs is a small symbolic algebra: linear combinations of monomials (TeX strings) with exact coefficients $a+bi$ ($a,b$ rational), used by the programs to print the matrices and the component equations in TeX and to evaluate every printed formula numerically. The Wolfram Language is itself a symbolic algebra with exact Gaussian rationals, so this module needs no rewriting: in check GS-12 below the same formulas are built from symbols and evaluated in the same way. For example, the TeX of $\sigma^{\rm LL}_2$ written by `TeXForm`:*)
+(*The library module sym.rs is a small symbolic algebra: linear combinations of monomials (TeX strings) with exact complex coefficients (the real and the imaginary part of a coefficient are rational numbers), used by the programs to print the matrices and the component equations in TeX and to evaluate every printed formula numerically. The Wolfram Language is itself a symbolic algebra with exact Gaussian rationals, so this module needs no rewriting: in check GS-12 below the same formulas are built from symbols and evaluated in the same way. For example, the TeX of $\sigma^{\rm LL}_2$ written by `TeXForm`:*)
 
 (* ::Input:: *)
 ToString[TeXForm[MatrixForm[t2sigma[2]]]]
@@ -386,7 +386,7 @@ ToString[TeXForm[MatrixForm[t2sigma[2]]]]
 (*B^{\rm out}_{\rm LL}=\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}+\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}+\frac{(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4}{384}*)
 
 (* ::Text:: *)
-(*The deviation at the ends of the steps. The exact evolution is unitary: it changes the norm of no vector. The deviation at the end of a step is therefore the deviation at its beginning, carried along unchanged in size, plus the local error of the step, so that the deviation after $N^{\rm st}_{\rm LL}$ steps is at most the sum of their local errors $\delta^{\rm loc}_{\rm LL}$. If every local error is at most $B^{\rm loc}_{\rm LL}$, the deviation at the end of every step is at most $B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}$, the accumulated local error that the tolerances allow. (The original programs use the same number with the tolerances of CVODE, which weighs the real and the imaginary part of a complex component with the modulus of the component: there $B^{\rm loc}_{\rm LL}$ is the square root of 2 times the sum of $r^{\rm tol}_{\rm LL}$ times the norm of the state and $a^{\rm tol}_{\rm LL}$ times the square root of $n^{\rm cpx}_{\rm LL}$.) The function `t2localErrorsIDA` measures $\delta^{\rm loc}_{\rm LL}$ for every internal step: with the eigenvalues $E^{\rm qp}_{{\rm LL},n}$ and the eigenvectors of the Hermitian matrix, the exact solution that starts from a computed state multiplies the coefficient of the eigenvector number $n$ by the phase factor of the angle $-E^{\rm qp}_{{\rm LL},n}h^{\rm IDA}_{\rm LL}$.*)
+(*The deviation at the ends of the steps. The exact evolution is unitary: it changes the norm of no vector. The deviation at the end of a step is therefore the deviation at its beginning, carried along unchanged in size, plus the local error of the step, so that the deviation after $N^{\rm st}_{\rm LL}$ steps is at most the sum of their local errors $\delta^{\rm loc}_{\rm LL}$. If every local error is at most $B^{\rm loc}_{\rm LL}$, the deviation at the end of every step is at most $B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}$, the accumulated local error that the tolerances allow. (The original programs use the same number with the tolerances of CVODE, which weighs the real and the imaginary part of a complex component with the modulus of the component: there $B^{\rm loc}_{\rm LL}$ is the square root of 2 times the sum of $r^{\rm tol}_{\rm LL}$ times the norm of the state and $a^{\rm tol}_{\rm LL}$ times the square root of $n^{\rm cpx}_{\rm LL}$.) The first statement needs no condition: the sum of the measured local errors is itself a bound of the deviation at the end of every step, whether or not the single errors stay below $B^{\rm loc}_{\rm LL}$ (IDA tests its own estimate of the error, in its weighted norm, not $\delta^{\rm loc}_{\rm LL}$). The checks of chapter II.3 use this sum. The function `t2localErrorsIDA` measures $\delta^{\rm loc}_{\rm LL}$ for every internal step, and their sum: with the eigenvalues $E^{\rm qp}_{{\rm LL},n}$ and the eigenvectors of the Hermitian matrix, the exact solution that starts from a computed state multiplies the coefficient of every eigenvector by the phase factor of the angle $-E^{\rm qp}_{{\rm LL},n}h^{\rm IDA}_{\rm LL}$, with the eigenvalue $E^{\rm qp}_{{\rm LL},n}$ of this eigenvector.*)
 
 (* ::Input:: *)
 (* The time integration of i dw/dx0 = hm . w by IDA of SUNDIALS through NDSolve.
@@ -432,9 +432,9 @@ t2evolveIDA[hm_?MatrixQ, w0_?VectorQ, touts_List, rtol_?NumericQ, atol_?NumericQ
    expanded in the eigenvectors (the rows of coef); the exact solution over a step of the length h multiplies the
    coefficient of the eigenvalue E by exp(-i E h).  The steps are treated in groups of 2000 to save memory.
    The result: the largest delta^loc/B^loc with B^loc = rtol (norm of the state) + atol sqrt(2 n^cpx), the largest
-   delta^loc, and the largest norm of a state at a grid time. *)
+   delta^loc, the largest norm of a state at a grid time, and the sum of delta^loc over all internal steps. *)
 t2localErrorsIDA[ev_List, vv_?MatrixQ, rtol_?NumericQ, atol_?NumericQ][sol_] :=
-  Module[{grid = Flatten[sol["Grid"]], vals = sol["ValuesOnGrid"], nc = Length[ev], npts, ratio = 0., emax = 0., nmax = 0., idx, wgrid, coef, err, nrm},
+  Module[{grid = Flatten[sol["Grid"]], vals = sol["ValuesOnGrid"], nc = Length[ev], npts, ratioMax = 0., emax = 0., nmax = 0., total = 0., idx, wgrid, coef, err, nrm},
    npts = Length[grid];
    Do[
     idx = Range[first, Min[first + 2000, npts]];
@@ -442,14 +442,48 @@ t2localErrorsIDA[ev_List, vv_?MatrixQ, rtol_?NumericQ, atol_?NumericQ][sol_] :=
     coef = wgrid . Conjugate[vv];
     err = Map[Norm, Rest[coef] - Most[coef] Exp[-I Outer[Times, Differences[grid[[idx]]], ev]]];
     nrm = Map[Norm, wgrid];
-    ratio = Max[ratio, Max[err/(rtol Most[nrm] + atol Sqrt[2. nc])]];
+    ratioMax = Max[ratioMax, Max[err/(rtol Most[nrm] + atol Sqrt[2. nc])]];
     emax = Max[emax, Max[err]];
+    total += Total[err];
     nmax = Max[nmax, Max[nrm]],
     {first, 1, npts - 1, 2000}];
-   <|"largestRatio" -> ratio, "largestLocalError" -> emax, "largestNorm" -> nmax|>];
+   <|"largestRatio" -> ratioMax, "largestLocalError" -> emax, "largestNorm" -> nmax, "sumLocalErrors" -> total|>];
+(* An integration by IDA together with the measurements that its checks need (used by the checks of the later
+   chapters).  The eigenvalues and eigenvectors of the Hermitian matrix hm are computed with t2eigh, the equations are
+   integrated with t2evolveIDA, and the exact local error of every internal step is measured with t2localErrorsIDA.
+   The result is the association of t2evolveIDA with these further keys:
+     "emax"      E^max, the largest modulus of an eigenvalue of hm
+     "ratio"     the largest ratio of an exact local error delta^loc to rtol (norm of the state) + atol sqrt(2 n^cpx)
+     "norm"      the largest norm of a state at the end of an internal step
+     "bloc"      B^loc = rtol (largest norm of a state) + atol sqrt(2 n^cpx)
+     "berr"      B^err = N^st B^loc, the bound of the deviation at the end of every internal step
+     "residual"  the largest r^der at the ends of the internal steps that contain the output times
+     "hermite"   the largest difference between a state given by NDSolve and the cubic Hermite polynomial of its step
+     "bout"      B^out = (1 + h^IDA E^max/4) B^err + h^IDA r^der/4 + (h^IDA E^max)^4/384 (largest norm), the bound
+                 of the norm of the deviation of a state at an output time (for a state of any norm), which holds if
+                 every delta^loc is at most B^loc ("ratio" at most 1)
+     "sumloc"    the sum of the measured exact local errors delta^loc of all internal steps: because the evolution is
+                 unitary, the deviation at the end of every internal step is at most this sum, whatever the ratio is
+     "bsum"      the same bound as "bout" with "sumloc" in place of B^err: it holds without any condition *)
+t2evolveIDAChecked[hm_?MatrixQ, w0_?VectorQ, touts_List, rtol_?NumericQ, atol_?NumericQ] :=
+  Module[{evC, vvC, runC, normC, hmaxC, emaxC, blocC, berrC, residC, sumC},
+   {evC, vvC} = t2eigh[hm];
+   emaxC = Max[Abs[evC]];
+   runC = t2evolveIDA[hm, w0, touts, rtol, atol, t2localErrorsIDA[evC, vvC, rtol, atol]];
+   If[runC === $Failed, Return[$Failed, Module]];
+   normC = runC[["analysis", "largestNorm"]];
+   hmaxC = runC["hmax"];
+   residC = Max[runC["residualAt"]];
+   blocC = rtol normC + atol Sqrt[2. Length[w0]];
+   berrC = runC["steps"] blocC;
+   sumC = runC[["analysis", "sumLocalErrors"]];
+   Join[runC, <|"emax" -> emaxC, "ratio" -> runC[["analysis", "largestRatio"]], "norm" -> normC, "bloc" -> blocC, "berr" -> berrC,
+     "residual" -> residC, "hermite" -> Max[runC["hermiteAt"]],
+     "bout" -> (1 + hmaxC emaxC/4) berrC + hmaxC residC/4 + (hmaxC emaxC)^4/384 normC,
+     "sumloc" -> sumC, "bsum" -> (1 + hmaxC emaxC/4) sumC + hmaxC residC/4 + (hmaxC emaxC)^4/384 normC|>]];
 
 (* ::Text:: *)
-(*Check T2-IDA has two parts. Part (a) shows what the two tolerances mean, on the equation whose solution is the decaying exponential function $\exp(-x^0_{\rm LL})$ (the derivative of the unknown is minus the unknown, the initial value is 1), integrated from 0 to 25 with $r^{\rm tol}_{\rm LL}=10^{-8}$ and $a^{\rm tol}_{\rm LL}=10^{-10}$. The solution falls from 1 to about $10^{-11}$. While it is much larger than $a^{\rm tol}_{\rm LL}/r^{\rm tol}_{\rm LL}=10^{-2}$, the tolerance of a step is $r^{\rm tol}_{\rm LL}$ times the modulus of the solution; when it is much smaller, the tolerance is $a^{\rm tol}_{\rm LL}$. The check requires that the exact local error of every internal step is at most the tolerance of the step, and that in each of the two regimes the largest ratio of the local error to the tolerance exceeds 1/128. The second requirement shows that the tolerances are the stated ones and not smaller ones: by its rule for the doubling of a step, IDA at the order 5 doubles the step as soon as its estimate falls below 1/128 of the tolerance. Part (b) tests `t2evolveIDA` and `t2localErrorsIDA` on a Hermitian $2\times2$ matrix, integrated from 0 to 10 with $r^{\rm tol}_{\rm LL}=10^{-10}$ and $a^{\rm tol}_{\rm LL}=10^{-12}$ and compared at 21 output times with the solution by the matrix exponential (`MatrixExp`): every $\delta^{\rm loc}_{\rm LL}$ is at most $B^{\rm loc}_{\rm LL}$, the largest deviation at the output times is at most $B^{\rm out}_{\rm LL}$, and the states of `NDSolve` are the cubic Hermite polynomials of the stored values and derivatives (tolerance $10^{-12}$).*)
+(*Check T2-IDA has three parts. Part (a) shows what the two tolerances mean, on the equation whose solution is the decaying exponential function $\exp(-x^0_{\rm LL})$ (the derivative of the unknown is minus the unknown, the initial value is 1), integrated from 0 to 25 with $r^{\rm tol}_{\rm LL}=10^{-8}$ and $a^{\rm tol}_{\rm LL}=10^{-10}$. The solution falls from 1 to about $10^{-11}$. While it is much larger than $a^{\rm tol}_{\rm LL}/r^{\rm tol}_{\rm LL}=10^{-2}$, the tolerance of a step is $r^{\rm tol}_{\rm LL}$ times the modulus of the solution; when it is much smaller, the tolerance is $a^{\rm tol}_{\rm LL}$. The check requires that the exact local error of every internal step is at most the tolerance of the step, and that in each of the two regimes the largest ratio of the local error to the tolerance exceeds 1/128. The second requirement shows that the tolerances are the stated ones and not smaller ones: by its rule for the doubling of a step, IDA at the order 5 doubles the step as soon as its estimate falls below 1/128 of the tolerance. Part (b) tests `t2evolveIDA` and `t2localErrorsIDA` on a Hermitian $2\times2$ matrix, integrated from 0 to 10 with $r^{\rm tol}_{\rm LL}=10^{-10}$ and $a^{\rm tol}_{\rm LL}=10^{-12}$ and compared at 21 output times with the solution by the matrix exponential (`MatrixExp`): every $\delta^{\rm loc}_{\rm LL}$ is at most $B^{\rm loc}_{\rm LL}$, the largest deviation at the output times is at most $B^{\rm out}_{\rm LL}$, and the states of `NDSolve` are the cubic Hermite polynomials of the stored values and derivatives (tolerance $10^{-12}$). Part (c): the function `t2evolveIDAChecked` puts the integration and these measurements together for the checks of the later chapters. It computes the eigenvalues and the eigenvectors of the matrix itself, and returns the bounds $B^{\rm loc}_{\rm LL}$, $B^{\rm err}_{\rm LL}$ and $B^{\rm out}_{\rm LL}$ for a state of any norm, the sum of the measured local errors, and the bound of the deviation at the output times that is made with this sum in place of $B^{\rm err}_{\rm LL}$. Applied to the problem of part (b) it must give the same states and the same bounds; the sum of the local errors must be at most $B^{\rm err}_{\rm LL}$ (every one of them is at most $B^{\rm loc}_{\rm LL}$), and the largest deviation must be at most the bound made with the sum.*)
 
 (* ::Input:: *)
 (* T2-IDA (a): the local errors that IDA accepts on the decaying exponential, rtol = 1e-8, atol = 1e-10 *)
@@ -479,9 +513,15 @@ blocTwo = rtolTwo runTwo[["analysis", "largestNorm"]] + atolTwo Sqrt[2. 2];
 berrTwo = runTwo["steps"] blocTwo;
 boutTwo = (1 + runTwo["hmax"] Max[Abs[evTwo]]/4) berrTwo + runTwo["hmax"] Max[runTwo["residualAt"]]/4 +
    (runTwo["hmax"] Max[Abs[evTwo]])^4/384 runTwo[["analysis", "largestNorm"]];
-SL31Check["T2-IDA", "the integrator IDA of SUNDIALS, used through NDSolve with Method -> \"IDA\": (a) on the decaying exponential (rtol = 1e-8, atol = 1e-10, x_LL^0 from 0 to 25) the exact local error of every internal step is at most the tolerance rtol |value| + atol of the step, and the largest ratio of the local error to this tolerance exceeds 1/128 both while the solution is above 10 atol/rtol and after it has fallen below atol/(10 rtol): the tolerances of IDA are 10^-PrecisionGoal and 10^-AccuracyGoal; (b) on a Hermitian 2 x 2 matrix (rtol = 1e-10, atol = 1e-12, 21 output times up to 10) every local error is at most budget_step = rtol (norm of the state) + atol sqrt(4), the largest deviation from the solution by MatrixExp is at most budget_out, and the states of NDSolve are the cubic Hermite polynomials of the stored values and derivatives (tolerance 1e-12)",
-  Max[ratioDecay] <= 1 && relDecay > 1/128 && absDecay > 1/128 && runTwo[["analysis", "largestRatio"]] <= 1 && devTwo <= boutTwo && Max[runTwo["hermiteAt"]] < 1*^-12,
+(* T2-IDA (c): the function t2evolveIDAChecked repeats the integration of (b) and must give the same states and bounds *)
+checkedTwo = t2evolveIDAChecked[hmTwo, w0Two, toutsTwo, rtolTwo, atolTwo];
+sameTwo = checkedTwo["states"] == runTwo["states"] && checkedTwo["steps"] == runTwo["steps"] && checkedTwo["bloc"] == blocTwo &&
+   checkedTwo["berr"] == berrTwo && checkedTwo["bout"] == boutTwo && checkedTwo["ratio"] == runTwo[["analysis", "largestRatio"]];
+sumTwo = checkedTwo["sumloc"] <= berrTwo && devTwo <= checkedTwo["bsum"] <= boutTwo;
+SL31Check["T2-IDA", "the integrator IDA of SUNDIALS, used through NDSolve with Method -> \"IDA\": (a) on the decaying exponential (rtol = 1e-8, atol = 1e-10, x_LL^0 from 0 to 25) the exact local error of every internal step is at most the tolerance rtol |value| + atol of the step, and the largest ratio of the local error to this tolerance exceeds 1/128 both while the solution is above 10 atol/rtol and after it has fallen below atol/(10 rtol): the tolerances of IDA are 10^-PrecisionGoal and 10^-AccuracyGoal; (b) on a Hermitian 2 x 2 matrix (rtol = 1e-10, atol = 1e-12, 21 output times up to 10) every local error is at most budget_step = rtol (norm of the state) + atol sqrt(4), the largest deviation from the solution by MatrixExp is at most budget_out, and the states of NDSolve are the cubic Hermite polynomials of the stored values and derivatives (tolerance 1e-12); (c) the function t2evolveIDAChecked, which makes these measurements for the checks of the later chapters, gives the same states and the same bounds as (b); the sum of its measured local errors is at most budget, and the largest deviation is at most the bound made with this sum in place of budget, which is at most budget_out",
+  Max[ratioDecay] <= 1 && relDecay > 1/128 && absDecay > 1/128 && runTwo[["analysis", "largestRatio"]] <= 1 && devTwo <= boutTwo && Max[runTwo["hermiteAt"]] < 1*^-12 && sameTwo && sumTwo,
   Row[{"(a) ", Length[localDecay], " steps, largest ratio of a local error to its tolerance ", NumberForm[Max[ratioDecay], {4, 3}], " (relative regime ", NumberForm[relDecay, {4, 3}],
     ", absolute regime ", NumberForm[absDecay, {4, 3}], "); (b) ", runTwo["steps"], " steps, ", runTwo["evaluations"], " evaluations, largest local_error/budget_step ",
     NumberForm[runTwo[["analysis", "largestRatio"]], {4, 3}], ", largest deviation ", ScientificForm[devTwo, 2], " <= budget_out ", ScientificForm[boutTwo, 2],
-    ", Hermite polynomials within ", ScientificForm[Max[runTwo["hermiteAt"]], 2]}]]
+    ", Hermite polynomials within ", ScientificForm[Max[runTwo["hermiteAt"]], 2], "; (c) the same states and bounds: ", sameTwo, "; sum of the local errors ", ScientificForm[checkedTwo["sumloc"], 2], " <= budget ", ScientificForm[berrTwo, 2],
+    ", largest deviation ", ScientificForm[devTwo, 2], " <= bound with the sum ", ScientificForm[checkedTwo["bsum"], 2]}]]

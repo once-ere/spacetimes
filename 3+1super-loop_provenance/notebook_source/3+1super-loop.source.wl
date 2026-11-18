@@ -37,7 +37,7 @@
 (*The option `WorkingForm -> StandardForm` is essential here. Without it the package asks the front end for the format of the notebook in which the input was typed (`InputNotebook[]`). When a notebook is evaluated by a program, or when no notebook is selected, there is no such notebook, the answer is `$Failed`, and the package stores its reading rule for the format `$Failed`: the symbol is created but the input box is never recognized. This was found while this notebook was being prepared: the tests below failed until the option was given explicitly.*)
 
 (* ::Text:: *)
-(*The next cell loads the package and symbolizes one example, $a_{\rm LL}$. The cells after it show that the two-dimensional input is now one symbol, that it can receive a value, and how a program reaches the symbol from its box: `MakeExpression[box, StandardForm]` reads a box the same way the notebook reads input, and returns the result wrapped in `HoldComplete` (so that it is not evaluated).*)
+(*The next cell loads the package and symbolizes one example, $a_{\rm LL}$ (this symbol and the symbol $a_{{\rm LL},p}$ of a later cell serve only as examples of the technique: they are not entries of the registry and denote no object of the physics). The cells after it show that the two-dimensional input is now one symbol, that it can receive a value, and how a program reaches the symbol from its box: `MakeExpression[box, StandardForm]` reads a box the same way the notebook reads input, and returns the result wrapped in `HoldComplete` (so that it is not evaluated).*)
 
 (* ::Input:: *)
 (* load the Notation package (it ships with every Wolfram installation) *)
@@ -73,7 +73,7 @@ With[{s = MakeExpression[SubscriptBox["a", "LL"], StandardForm]}, Clear @@ s];
 ReleaseHold[MakeExpression[SubscriptBox["a", "LL"], StandardForm]]
 
 (* ::Text:: *)
-(*A symbolized symbol is one indivisible atom: the letters inside its scripts are not separate symbols. The next cell shows this with the symbol $a_{{\rm LL},p}$, whose subscript holds the label LL and the index letter $p$. In a sum whose summation variable is also called `LL`, the whole symbol is multiplied by the summation variable, so that $\sum_{{\rm LL}=1}^{2}{\rm LL}\,a_{{\rm LL},p}=3\,a_{{\rm LL},p}$: the LL inside the subscript is untouched. For comparison, the ordinary subscripted expression `Subscript[b, LL, p]`, which is not symbolized, is a compound expression in which `LL` is replaced: its sum is $b_{1,p}+2\,b_{2,p}$.*)
+(*A symbolized symbol is one indivisible atom: the letters inside its scripts are not separate symbols. The next cell shows this with the symbol $a_{{\rm LL},p}$, whose subscript holds the label LL and the index letter $p$. In a sum whose summation variable is also called `LL`, the whole symbol is multiplied by the summation variable, so that $\sum_{{\rm LL}=1}^{2}{\rm LL}\,a_{{\rm LL},p}=3\,a_{{\rm LL},p}$: the LL inside the subscript is untouched. For comparison, the ordinary subscripted expression `Subscript[b, LL, p]`, which is not symbolized, is a compound expression in which `LL` is replaced: its sum is `Subscript[b, 1, p] + 2 Subscript[b, 2, p]`.*)
 
 (* ::Text:: *)
 (*One rule must be observed when a box is symbolized by a program: the box must be exactly the box that the front end sends to the kernel when the symbol is typed. Before an input cell is evaluated, the front end reads every string of its boxes again, as typed text, and cuts it into tokens: names (a letter followed by letters and digits), numbers and single other characters. The subscript of a typed $a_{{\rm LL},p}$ therefore arrives as `RowBox[{"LL", ",", "p"}]`, three tokens. A box written by hand as `SubscriptBox["a", "LL,p"]`, with the whole subscript in one string, is never matched by typed input, because the front end never sends that string. This was found while the notebook was prepared (a test notebook, evaluated in the front end, showed exactly this), and the converter of section I.3 builds the cut form.*)
@@ -228,15 +228,36 @@ Grid[Prepend[Map[{RawBoxes[#["boxes"]], #["kind"], Replace[#["symbol"], HoldComp
 (*I.7 Verification tests of the symbols*)
 
 (* ::Text:: *)
-(*Every test below has a name (S-1, S-2, ...), states in words what it checks, computes it, and records PASS or FAIL with the numbers that decide it in the list ``SL31`Test`$Results``. The function `SL31Check[name, statement, condition, details]` does the recording and prints one line.*)
+(*Every test below has a name (S-1, S-2, ...), states in words what it checks, computes it, and records PASS or FAIL with the numbers that decide it in the list ``SL31`Test`$Results``. The function `SL31Check[name, statement, condition, details]` does the recording and prints one line: PASS or FAIL, the name, the statement and, after two hyphens, the details. The numbers of the details are written as text, so that the front end breaks the line only at spaces: an integer in full; a number given as `ScientificForm[x, n]` with n significant digits in the notation `1.5e-14`, which means $1.5\times10^{-14}$; a number given as `NumberForm[x, {w, d}]` with d decimals; every other machine number with six significant digits. A row of parts (`Row`) is replaced by its parts, and neighbouring texts are joined. Every other expression (a list, a symbol, a formula, a number of higher precision) is printed in its typeset form. The parts are printed as one row whose continuation lines are not indented (the option `LineIndent -> 0`): with the indentation that the front end gives to the lines of nested rows, a line of a check was seen to pass the right edge of the printed page.*)
 
 (* ::Input:: *)
 SL31`Test`$Results = {};
-SL31Check[name_String, statement_String, ok_, details_ : ""] := (
+(* a number as text: with a given number of significant digits in the notation 1.5e-14 (the digits are padded
+   with zeros, 5.0e-3); with a given number of decimals; a machine number without a format with six
+   significant digits *)
+SL31`Test`sci[x_?NumericQ, digits_Integer] := If[x == 0, "0",
+   ToString[ScientificForm[N[x], digits, NumberFormat -> (SequenceForm[
+        StringPadRight[#1, digits + 1 + If[StringStartsQ[#1, "-"], 1, 0], "0"], "e", If[#3 === "", "0", #3]] &)]]];
+SL31`Test`fix[x_?NumericQ, decimals_Integer] := ToString[NumberForm[N[x], {30, decimals}, ExponentFunction -> (Null &)]];
+SL31`Test`real[x_Real] := ToString[NumberForm[x, 6, NumberFormat -> (If[#3 === "", #1, SequenceForm[#1, "e", #3]] &)]];
+(* the parts of the details of a check: a row is replaced by its parts, a number and a truth value by their
+   text; every other expression stays as it is and is printed in its typeset form *)
+SL31`Test`parts[s_String] := {s};
+SL31`Test`parts[n_Integer] := {ToString[n]};
+SL31`Test`parts[b : (True | False)] := {ToString[b]};
+SL31`Test`parts[x_Real?MachineNumberQ] := {SL31`Test`real[x]};
+SL31`Test`parts[ScientificForm[x_?NumericQ, digits_Integer]] := {SL31`Test`sci[x, digits]};
+SL31`Test`parts[NumberForm[x_?NumericQ, {_Integer, decimals_Integer}]] := {SL31`Test`fix[x, decimals]};
+SL31`Test`parts[Row[l_List]] := Join @@ Map[SL31`Test`parts, l];
+SL31`Test`parts[Row[l_List, sep_]] := Join @@ Riffle[Map[SL31`Test`parts, l], {SL31`Test`parts[sep]}];
+SL31`Test`parts[e_] := {e};
+SL31Check[name_String, statement_String, ok_, details_ : ""] := Module[{line},
    AppendTo[SL31`Test`$Results, <|"name" -> name, "pass" -> TrueQ[ok], "statement" -> statement, "details" -> details|>];
-   (* the details are printed as an expression, so that the symbols appear in their printed form *)
-   Print[Style[If[TrueQ[ok], "PASS  ", "FAIL  "], Bold, If[TrueQ[ok], Darker[Green], Red]], name, ": ", statement,
-     If[details === "", "", Row[{"  -- ", details}]]]);
+   (* the parts of the details, after two hyphens; neighbouring texts are joined into one text *)
+   line = If[details === "", {}, Prepend[SL31`Test`parts[details], "  -- "]];
+   line = Map[If[StringQ[First[#]], StringJoin[#], Sequence @@ #] &, Split[line, StringQ[#1] && StringQ[#2] &]];
+   Print[Style[Row[Join[{Style[If[TrueQ[ok], "PASS  ", "FAIL  "], Bold, If[TrueQ[ok], Darker[Green], Red]], name <> ": ", statement}, line]],
+     LineIndent -> 0]]];
 
 (* ::Text:: *)
 (*S-1 and S-2: every TeX item was converted into boxes (no item failed), and every symbolized box is now read as one atomic symbol.*)
@@ -298,7 +319,7 @@ SL31Check["S-5", "the TeX of every symbol is written from its printed form, with
 TableForm[Take[Transpose[{Map[#["tex"] &, symbolTable], texOut}], 8], TableHeadings -> {None, {"registry TeX", "TeXForm of the symbol"}}]
 
 (* ::Text:: *)
-(*S-6, arithmetic with symbols and values: the coupling $G_{\rm LL}$, the mass $m_{\rm LL}$ and the cutoff $\Lambda_{\rm LL}$ of the spinor charges receive the values used throughout Test 2 ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$, $G_{\rm LL}=22.5$, units in which the cutoff is 1). The gap of the condensed vacuum at zero chemical potential solves the gap equation $1/G_{\rm LL}=\big(\Lambda_{\rm LL}E_\Lambda-(M^{\rm q}_{\rm LL})^2\,{\rm arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})\big)/(2\pi^2)$ with $(M^{\rm q}_{\rm LL})^2=m_{\rm LL}^2+(\Delta^{\rm vac}_{\rm LL})^2$ and $E_\Lambda=(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}$. The cell writes this equation with the symbolized symbols, gives them values only inside `Block` (so that they stay free symbols outside), solves for the gap with `FindRoot`, and compares with the value 0.2094933033 found by the Rust program of Test 2. It also checks the derived masses $2\Delta^{\rm vac}_{\rm LL}$ and $2M^{\rm q}_{\rm LL}$.*)
+(*S-6, arithmetic with symbols and values: the coupling $G_{\rm LL}$, the mass $m_{\rm LL}$ and the cutoff $\Lambda_{\rm LL}$ of the spinor charges receive the values used throughout Test 2 ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$, $G_{\rm LL}=22.5$, units in which the cutoff is 1). The gap of the condensed vacuum at zero chemical potential solves the gap equation $1/G_{\rm LL}=\big(\Lambda_{\rm LL}(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}-(M^{\rm q}_{\rm LL})^2\,{\rm arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})\big)/(2\pi^2)$ with $(M^{\rm q}_{\rm LL})^2=m_{\rm LL}^2+(\Delta^{\rm vac}_{\rm LL})^2$. The cell writes this equation with the symbolized symbols, gives them values only inside `Block` (so that they stay free symbols outside), solves for the gap with `FindRoot`, and compares with the value 0.2094933033 found by the Rust program of Test 2. It also checks the derived masses $2\Delta^{\rm vac}_{\rm LL}$ and $2M^{\rm q}_{\rm LL}$.*)
 
 (* ::Input:: *)
 gapEquation = 1/LL["G_{\\rm LL}"] == (LL["\\Lambda_{\\rm LL}"] Sqrt[LL["\\Lambda_{\\rm LL}"]^2 + LL["m_{\\rm LL}"]^2 + LL["\\Delta^{\\rm vac}_{\\rm LL}"]^2] -
@@ -313,7 +334,7 @@ SL31Check["S-6", "the gap equation written with the symbols gives the gap of the
   N[gapValue, 12]];
 
 (* ::Text:: *)
-(*S-7, sums over a family of symbols: the Pauli matrices. The registry symbol $\sigma^{\rm LL}_j$ is a family with the running index $j=1,2,3$. A symbolized symbol is indivisible, so the index letter inside it cannot be replaced by a number in a sum. The components are therefore separate symbols: `LL[tex, "j" -> "1"]` (written in the input cells as the printed component $\sigma^{\rm LL}_1$) symbolizes and returns the component with $j=1$. The cell gives the three components the Pauli matrices as values, together with the identity $\mathsf 1_2$, and checks two identities that involve sums over the index: $\sum_j\sigma^{\rm LL}_j\sigma^{\rm LL}_j=3\,\mathsf 1_2$, and the product rule $\sigma^{\rm LL}_j\sigma^{\rm LL}_{j'}=\delta_{jj'}\mathsf 1_2+i\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\sigma^{\rm LL}_{j''}$, in which the 27 components of the symbol $\epsilon^{\rm LL}_{jj'j''}$ (the totally antisymmetric symbol with $\epsilon^{\rm LL}_{123}=1$) are symbolized and given their values.*)
+(*S-7, sums over a family of symbols: the Pauli matrices. The registry symbol $\sigma^{\rm LL}_j$ is a family with the running index $j=1,2,3$. A symbolized symbol is indivisible, so the index letter inside it cannot be replaced by a number in a sum. The components are therefore separate symbols: `LL[tex, "j" -> "1"]` (written in the input cells as the printed component $\sigma^{\rm LL}_1$) symbolizes and returns the component with $j=1$. The cell gives the three components the Pauli matrices as values, together with the identity $\mathsf 1_2$, and checks two identities that involve sums over the index: $\sum_j\sigma^{\rm LL}_j\sigma^{\rm LL}_j=3\,\mathsf 1_2$, and the product rule: $\sigma^{\rm LL}_j\sigma^{\rm LL}_{j'}=i\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\sigma^{\rm LL}_{j''}$ for $j\neq j'$, and $\sigma^{\rm LL}_j\sigma^{\rm LL}_j=\mathsf 1_2$ (in the code the two cases are one formula, written with the function `KroneckerDelta`, which is 1 for equal and 0 for different arguments), in which the 27 components of the symbol $\epsilon^{\rm LL}_{jj'j''}$ (the totally antisymmetric symbol with $\epsilon^{\rm LL}_{123}=1$) are symbolized and given their values.*)
 
 (* ::Input:: *)
 (* symbolize the components sigma^LL_1, sigma^LL_2, sigma^LL_3 and epsilon^LL_{j j' j''} (j, j', j'' = 1, 2, 3) *)
@@ -367,7 +388,7 @@ SL31Check["S-9", "(M^F_LL / M^W_LL)^2 = 4 (g^F_LL / g^v_LL)^2 and the gap follow
   Simplify[ratio - 4 LL["g^{\\rm F}_{\\rm LL}"]^2/LL["g^{\\rm v}_{\\rm LL}"]^2] === 0 && Length[gapFromMass] == 2, ratio];
 
 (* ::Text:: *)
-(*S-10, the longitudinal vector boson. For a plane wave of wave number $k^{\rm B}_{\rm LL}$ and frequency $\omega^{\rm B}_{\rm LL}$ the time component and the longitudinal component of a massive vector field obey two linear equations; their determinant is $\big((k^{\rm B}_{\rm LL})^2+(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})M^2\big)\big((\omega^{\rm B}_{\rm LL})^2-M^2\big)-(k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm LL})^2$ with $M=M^{\rm W}_{\rm LL}$. The cell checks with `Factor` and `Solve` that it vanishes exactly for $(\omega^{\rm B}_{\rm LL})^2=(M^{\rm W}_{\rm LL})^2+(Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})(k^{\rm B}_{\rm LL})^2$: the absorbed Goldstone boson moves with the velocity $(Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})^{1/2}$.*)
+(*S-10, the longitudinal vector boson. For a plane wave of wave number $k^{\rm B}_{\rm LL}$ and frequency $\omega^{\rm B}_{\rm LL}$ the time component and the longitudinal component of a massive vector field obey two linear equations; their determinant is $\big((k^{\rm B}_{\rm LL})^2+(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})(M^{\rm W}_{\rm LL})^2\big)\big((\omega^{\rm B}_{\rm LL})^2-(M^{\rm W}_{\rm LL})^2\big)-(k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm LL})^2$, with the mass $M^{\rm W}_{\rm LL}$ of the vector boson. The cell checks with `Factor` and `Solve` that it vanishes exactly for $(\omega^{\rm B}_{\rm LL})^2=(M^{\rm W}_{\rm LL})^2+(Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})(k^{\rm B}_{\rm LL})^2$: the absorbed Goldstone boson moves with the velocity $(Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})^{1/2}$.*)
 
 (* ::Input:: *)
 det = (LL["k^{\\rm B}_{\\rm LL}"]^2 + LL["Z^{\\rm t}_{\\rm LL}"]/LL["Z^{\\rm s}_{\\rm LL}"] LL["M^{\\rm W}_{\\rm LL}"]^2) (LL["\\omega^{\\rm B}_{\\rm LL}"]^2 - LL["M^{\\rm W}_{\\rm LL}"]^2) -
@@ -498,3 +519,4 @@ Grid[Prepend[Map[{#["name"], If[#["pass"], "PASS", "FAIL"], #["statement"]} &, S
 (* @@INCLUDECELLS part2_A_core.source.wl@@ *)
 (* @@INCLUDECELLS part2_B_item1.source.wl@@ *)
 (* @@INCLUDECELLS part2_C_item1b.source.wl@@ *)
+(* @@INCLUDECELLS part2_D_item2.source.wl@@ *)

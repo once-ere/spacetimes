@@ -1,0 +1,8 @@
+PROJECT spacetimes, notebook 3+1super-loop.nb: the symbols in the formulas of the text cells
+917 formulas of text cells and display formulas; 71 registered styled letters; 2 formulas are listed exceptions
+0 formulas break a rule (LL-S5, LL-S6 or LL-S7)
+110 references LL[...] in the input cells (53 different), 452 items in the registry of the notebook; 0 references name no item (LL-REF)
+
+exception: LL["a_{{\rm LL},p}"] -- the example symbol of section I.2, on which the technique is shown before the registry is read; it denotes no object of the physics, and the notebook says so
+exception: $\Delta$ -- section I.1 names this letter WITHOUT a suffix as an example of a symbol that has several meanings in the literature (a gap, a Laplacian, a difference); it is not used as a symbol of the project
+exception: $m$ -- section I.1 names this letter WITHOUT a suffix as an example of a symbol that has several meanings in the literature (a mass, an index); it is not used as a symbol of the project

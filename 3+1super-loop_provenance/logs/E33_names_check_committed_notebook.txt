@@ -1,0 +1,25 @@
+PROJECT spacetimes, notebook 3+1super-loop.nb: the names of the program, chapter by chapter
+rule N1: a global name of an earlier chapter is used only if it is declared as shared (the same object)
+rule N2: a global name is not used as a local name, except as a declared argument of a function
+(the names of the library, which begin with t2 or SL31, and the function LL are exempt from N1)
+
+chapter 3+1super-loop.source.wl (Part I): 56 global names defined, 241 names used, 24 local names
+chapter part2_A_core.source.wl: 100 global names defined, 333 names used, 115 local names
+    N1 ERROR: ratio is a global name of 3+1super-loop.source.wl (Part I) and is used here without a declaration
+    N2 ERROR: ratio is a global name (of 3+1super-loop.source.wl (Part I)) and is used here as a local name
+chapter part2_B_item1.source.wl + part2_C_item1b.source.wl: 260 global names defined, 569 names used, 145 local names
+    N1 ERROR: eps is a global name of 3+1super-loop.source.wl (Part I) and is used here without a declaration
+    N1 ERROR: p2 is a global name of 3+1super-loop.source.wl (Part I) and is used here without a declaration
+    N2 ERROR: eps is a global name (of 3+1super-loop.source.wl (Part I)) and is used here as a local name
+    N2 the same quantity as an argument: gf -- an argument of the function gauge8 of chapter II.2: the coupling g^F_LL
+    N2 ERROR: gm is a global name (of this chapter) and is used here as a local name
+    N2 the same quantity as an argument: gv -- an argument of the functions gauge8 and nabla of chapter II.2: the coupling g^v_LL
+    N2 ERROR: k is a global name (of this chapter) and is used here as a local name
+    N2 ERROR: k3 is a global name (of this chapter) and is used here as a local name
+    N2 ERROR: lat1 is a global name (of this chapter) and is used here as a local name
+    N2 the same quantity as an argument: mu -- an argument of the function hq of chapter II.2: the chemical potential mu_LL
+    N2 ERROR: n is a global name (of this chapter) and is used here as a local name
+    N2 ERROR: p2 is a global name (of 3+1super-loop.source.wl (Part I)) and is used here as a local name
+    N2 ERROR: ph is a global name (of this chapter) and is used here as a local name
+
+3 chapters, 415 global names, 12 errors

@@ -1,7 +1,8 @@
 Output of tools/build_notebook.wls (the build of notebook_source/3+1super-loop.unevaluated.nb from the sources, with the packages sl31_core.wl and sl31_formula.wl)
-(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 3.6 s; messages on the error stream: none)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 4.6 s; messages on the error stream: none)
 
-components: 11
-cells: 194
-formulas in text cells: 385
+components: 17
+cells: 294
+closed input cells: 2
+formulas in text cells: 917
 warnings: 0

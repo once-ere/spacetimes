@@ -1,5 +1,5 @@
 Output of the dry run of the cells of Part I that concern the reader of formulas (file written by tools/make_dryrun_part1.py)
-(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 3.6 s; messages on the error stream: none)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 3.5 s; messages on the error stream: none)
 
 PASS  S-15  -- {18, 18, 620, 0, {26, 26, 7, 7}, 3}
 readings of the examples: {frac{1}{2}\[ScriptL]_{LL}^{x}g_{LL}^{v}, cos(frac{1}{2}\[CurlyTheta]_{LL}^{B}), sqrt{2}\[ScriptL]_{LL}^{x}, -frac{15}{8}\[Integral]_{q_{LL}<\[CapitalLambda]_{LL}}d^{3}q_{LL}, <bf:b>=\[Sum]_{p=0}^{3}\[Xi]_{p}^{LL}(<bf:b>)<bf:e>_{p}, |over{d}{\[RightVector]}_{LL}|^{2}/G_{LL}, \[Sigma]_{2}^{LL}=(grid[0&-i;i&0])}
