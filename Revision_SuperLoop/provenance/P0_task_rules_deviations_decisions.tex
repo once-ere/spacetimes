@@ -724,6 +724,20 @@ answered}\label{what-these-requests-ask-for-and-how-they-are-answered-1}}
   \textbf{Remember the errors.} The error is entry E63 of Section 11,
   and the rule that prevents it is rule 9 of Section 3: a time
   integration is never done with a fixed-step method written by hand.
+\item
+  \textbf{The notebook of Test 2.} The notebook
+  \texttt{3+1super-loop.nb} in the top folder of the repository rewrites
+  the programs of Test 2 in the Wolfram Language. A notebook cannot call
+  the Rust translation of CVODE; it integrates in time with IDA, the
+  solver of differential-algebraic equations of the same suite SUNDIALS,
+  which the Wolfram Language contains (function \texttt{NDSolve} with
+  the option \texttt{Method\ -\textgreater{}\ "IDA"}; backward
+  differentiation formulas of the orders 1 to 5 with control of the
+  local error). The registry of this folder therefore defines the
+  tolerances, the internal step and the error bounds for both
+  integrators (the entries of \(r^{\rm tol}_{\rm LL}\),
+  \(h^{\rm IDA}_{\rm LL}\), \(B^{\rm err}_{\rm LL}\) and
+  \(B^{\rm loc}_{\rm LL}\) in Section 12).
 \end{enumerate}
 
 \hypertarget{the-hard-rules-and-how-each-is-met}{%
@@ -775,7 +789,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 201 new ones, all with the
+registries with their meanings and adds 202 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -793,17 +807,33 @@ seven figures from the data files; the Rust program
 (10 checks, all passing), and a Python script draws its three figures;
 the Rust program \texttt{r13\_yukawa} computes every number of the
 document on the \(3+1\) manifold (8 checks, all passing), and a Python
-script draws its four figures; the pure Rust program \texttt{t2\_fields}
-(folder \texttt{test2/rust}) computes and checks every matrix and
-equation of item {[}1{]} of Test 2 (16 checks, all passing), and a
-Python script draws its two figures; every number in the documents is
-inserted from the data files by a script & \texttt{P2}, \texttt{code/},
-\texttt{explanations/code/}, \texttt{test2/} \\
+script draws its four figures; the pure Rust programs of the workspace
+\texttt{test2/rust} compute and check every matrix, equation and number
+of Test 2: \texttt{t2\_fields} for item {[}1{]} (16 checks, all
+passing), \texttt{t2\_analytic} for item {[}2{]} (10 checks), the solver
+\texttt{t2\_solve} for item {[}5{]} (a self-test of 6 checks and seven
+examples with 11 checks of their solutions, among them the comparison
+EX-8 with the Python solver), the plotter \texttt{t2\_plot} for item
+{[}6{]}, \texttt{t2\_sfbs} for items {[}7{]} to {[}11{]} (17 checks) and
+\texttt{t2\_cvcmp} for the comparison of CVODE with the fixed-step
+methods of the first version; the Python solver \texttt{t2\_solve.py}
+for item {[}3{]} (a self-test of 6 checks, the same seven examples with
+10 checks) and the Python plotter \texttt{t2\_plot.py} for item {[}4{]};
+Python scripts draw the figures of the documents from the data files;
+every number in the documents is inserted from the data files by a
+script & \texttt{P2}, \texttt{code/}, \texttt{explanations/code/},
+\texttt{test2/} \\
 7. Every equation, symbol and definition in the very file that uses it;
 never refer the reader elsewhere & every document contains the complete
 table of the symbols and the formulas it uses; the check LL-H1 searches
 all documents for referrals & data file
 \texttt{sl\_self\_contained\_checks.txt} \\
+8. Follow the instructions exactly, or explain in a provenance why not
+and pause & Section 7 explains every place where the wording of the task
+cannot be followed literally (a counterexample to a proved theorem whose
+hypotheses hold, a ``group'' that is not associative) and what is
+provided instead; the work did not pause, because every instruction
+could be carried out in full on that basis & Section 7 \\
 9. (the request of November 18, 2026) Time integrations with SUNDIALS,
 never with a fixed-step method written by hand & every time-dependent
 calculation of the folder (the tasks \texttt{evolve} and \texttt{quench}
@@ -812,14 +842,10 @@ CVODE of the vendored pure-Rust SUNDIALS 7.8.0 through
 \texttt{t2core::cvode} (the Python solver through \texttt{libt2cvode});
 the only remaining copy of the RK4 step is the one inside the comparison
 program \texttt{t2\_cvcmp}, which measures the errors of the first
-version & \texttt{test2/rust/t2core/src/cvode.rs}; the reports of the
-checks; \texttt{test2/cvode\_vs\_rk4/data/cmp\_report.txt} \\
-8. Follow the instructions exactly, or explain in a provenance why not
-and pause & Section 7 explains every place where the wording of the task
-cannot be followed literally (a counterexample to a proved theorem whose
-hypotheses hold, a ``group'' that is not associative) and what is
-provided instead; the work did not pause, because every instruction
-could be carried out in full on that basis & Section 7 \\
+version; the notebook of Test 2 in the Wolfram Language, which cannot
+call the Rust code, integrates with IDA of SUNDIALS (Section 2.10) &
+\texttt{test2/rust/t2core/src/cvode.rs}; the reports of the checks;
+\texttt{test2/cvode\_vs\_rk4/data/cmp\_report.txt} \\
 \end{longtable}
 
 \hypertarget{what-the-folder-contains}{%
@@ -868,11 +894,32 @@ program \texttt{code/r13-rs} (binary \texttt{r13\_yukawa}), its figure
 script \texttt{code/make\_r13\_figures.py} and its four figures; the
 data files and reports of both programs in \texttt{data/}, the figures
 in \texttt{figures/} \\
-\texttt{test2/} & the answers to Test 2 (.md, .tex, .pdf), the Cargo
-workspace \texttt{rust/} (library \texttt{t2core}, program
-\texttt{t2\_fields}), the figure script
-\texttt{python/make\_t2\_figures.py}, the data files and reports in
-\texttt{data/}, the figures in \texttt{figures/} \\
+\texttt{test2/} & the answers to Test 2 (.md, .tex, .pdf); the Cargo
+workspace \texttt{rust/} with the library \texttt{t2core} (random
+numbers, complex matrices, the super-loop operators, the lattice
+operator, the symbolic algebra, and the module \texttt{cvode} that calls
+CVODE), the programs \texttt{t2\_fields} (item {[}1{]}),
+\texttt{t2\_analytic} (item {[}2{]}), \texttt{t2\_solve} (item {[}5{]}),
+\texttt{t2\_plot} (item {[}6{]}), \texttt{t2\_sfbs} (items {[}7{]} to
+{[}11{]}) and \texttt{t2\_cvcmp} (the comparison of CVODE with the first
+version), and the shared library \texttt{t2cvode\_c}
+(\texttt{libt2cvode}, the interface of the Python solver to CVODE);
+\texttt{python/} with the solver \texttt{t2\_solve.py} (item {[}3{]}),
+the plotter \texttt{t2\_plot.py} (item {[}4{]}), the checks of the
+examples \texttt{t2\_examples\_check.py} and the figure scripts
+\texttt{make\_t2\_figures.py}, \texttt{make\_t2\_sfbs\_figures.py}; the
+seven example input files in \texttt{examples/}; the data files and
+reports in \texttt{data/}; the figures in \texttt{figures/};
+\texttt{rk4\_reference/}, the data files of the first version
+(fixed-step methods), kept for the comparison; \texttt{cvode\_vs\_rk4/},
+the comparison of CVODE with the first version (the provenance
+\texttt{P\_CVODE\_vs\_RK4}, .md, .tex, .pdf, its data, figures and
+scripts) \\
+\texttt{vendor/} (in the top folder of the repository, beside
+\texttt{Revision\_SuperLoop}) & \texttt{sundials\_rs-7.8.0}, the
+pure-Rust translation of SUNDIALS 7.8.0 of the author's repository,
+unchanged (Section 10), and its provenance
+\texttt{P\_sundials\_rs-7.8.0} (.md, .tex, .pdf) \\
 \texttt{docs\_src/} & the sources of the documents \\
 \end{longtable}
 
@@ -1082,6 +1129,16 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   \(B^{\rm err}_{\rm LL}\), \(\delta^{\rm rel}_{\rm LL}\),
   \(w^{\rm ex}_{\rm LL}\)); the documents of Test 2 corrected (decision
   D22, Section 11, entries E63 and E64).
+\item
+  \textbf{Stage 19 --- the registry extended to the integrator of the
+  notebook, and this document completed} (2026-11-18): the entries of
+  \(r^{\rm tol}_{\rm LL}\), \(h^{\rm CV}_{\rm LL}\) and
+  \(B^{\rm err}_{\rm LL}\) extended to IDA (with the new symbol
+  \(h^{\rm IDA}_{\rm LL}\)), one new entry (\(B^{\rm loc}_{\rm LL}\),
+  \(\delta^{\rm loc}_{\rm LL}\), \(E^{\rm max}_{\rm LL}\),
+  \(r^{\rm der}_{\rm LL}\), \(B^{\rm out}_{\rm LL}\)), the meaning of
+  \(B^{\rm H}_{\rm LL}\) corrected; Sections 2.10, 3, 4, 6 and 7 of this
+  document completed (Section 11, entry E65).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1268,6 +1325,75 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   turning through the other isospin directions or through complex
   values, because the order parameters of the polar state form a
   connected set.
+\item
+  \textbf{Test 2, items {[}4{]} to {[}6{]}} (stages 9 to 11): the Python
+  plotter draws every solution together with the prediction of its
+  check; the Rust solver reads the same input files and writes the same
+  output files as the Python solver, and the two sets of solutions agree
+  in all 18 output files (check EX-8: the solutions, spectra and time
+  series to \(10^{-9}\), the histories of the self-consistent iterations
+  to \(1.8\times10^{-7}\)); the Rust plotter draws the solutions as
+  Scalable Vector Graphics.
+\item
+  \textbf{Test 2, item {[}7{]}} (stage 12): two spinor charges at one
+  point form 28 pairs; six of them have spin zero, and by the Pauli
+  principle these are isospin triplets (three scalar and three
+  pseudoscalar pairs); the interaction and parity select the scalar
+  channel; the superfluid boson singlet state (SFBS) is a coherent state
+  of pairs of particles and of antiparticles, and it is the ground state
+  of the mean-field Hamiltonian.
+\item
+  \textbf{Test 2, item {[}8{]}} (stages 13 and 14): the field of the
+  SFBS is the Hubbard-Stratonovich field \(\vec d_{\rm LL}\),
+  \(-\tfrac12G_{\rm LL}\) times the pair expectation; its
+  gauge-covariant derivative \(\nabla^{\rm B}_{{\rm LL},p}\) follows
+  from that of the spinor field; the effective Lagrangian
+  \(\mathcal L^{\rm B}_{\rm LL}\) has the coefficients
+  \(Z^{\rm t}_{\rm LL}\), \(Z^{\rm s}_{\rm LL}\) in closed form in the
+  normal vacuum; the SFBS boson of the normal vacuum becomes unstable
+  beyond \(G^{\rm crit}_{\rm LL}\); the effective potential depends on
+  two invariants, has the Ginzburg-Landau coefficients
+  \(a^{\rm GL}_{\rm LL}=1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}\) and
+  \(b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)\), and for
+  \(G_{\rm LL}>G^{\rm crit}_{\rm LL}\) the form of a Mexican hat.
+\item
+  \textbf{Test 2, item {[}9{]}} (stage 15): every relative minimum of
+  the effective potential is a global one, on the vacuum manifold
+  \(\mathcal V^{\rm vac}_{\rm LL}\) of the polar fields of modulus
+  \(\Delta^{\rm vac}_{\rm LL}\); at \(\mu_{\rm LL}=0\) the only other
+  stationary points are the maximum at the zero field and the
+  non-unitary saddle points; the vacuum
+  \((0,0,\Delta^{\rm vac}_{\rm LL})\) breaks \(F_{\rm LL}\),
+  \(T^1_{\rm LL}\) and \(T^2_{\rm LL}\) and keeps the electric charge
+  \(Q_{\rm LL}=T^3_{\rm LL}\); SFBSv is the parametrization of the field
+  by three Goldstone fields, the amplitude field and two non-unitary
+  fields.
+\item
+  \textbf{Test 2, item {[}10{]}} (stage 16): the kinetic Lagrangian of
+  the SFBS has, in the condensed vacuum, stiffness coefficients in
+  closed form, derived exactly from the energy of the vacuum in constant
+  gauge potentials; at zero wave number the three Goldstone fields have
+  the mass 0, and the amplitude field and the two non-unitary fields the
+  mass \(2\Delta^{\rm vac}_{\rm LL}\).
+\item
+  \textbf{Test 2, item {[}11{]}} (stage 17): in the unitary gauge the
+  three Goldstone fields disappear from the Lagrangian exactly; the
+  charged vector fields \(W^\pm_{{\rm LL},p}\) and the fermion-number
+  vector field \(V^{\rm F}_{{\rm LL},p}\) receive the rest masses
+  \(M^{\rm W}_{\rm LL}\) and \(M^{\rm F}_{\rm LL}\); the surviving group
+  is \(O(2)\), whose connected part \(U(1)^{\rm Q}_{\rm LL}\) is
+  generated by the electric charge and is identified with the group of
+  electromagnetism; its gauge field, the photon \(V^3_{{\rm LL},p}\), is
+  the only massless gauge field.
+\item
+  \textbf{The change to CVODE} (stage 18): with CVODE at
+  \(r^{\rm tol}_{\rm LL}=10^{-12}\) every check of a time-dependent
+  result of Test 2 passes with bounds derived from the error budget
+  \(B^{\rm err}_{\rm LL}\); the comparison with the first version shows
+  that its quench was wrong in the third decimal (the mean of the gap
+  0.500877 instead of 0.503125, the frequency 1.18449 instead of
+  1.18898), and that its rule for the fixed time step allowed steps with
+  large errors on random lattice problems (Section 2.10).
 \end{itemize}
 
 \hypertarget{deviations-from-the-wording-of-the-task-with-their-reasons}{%
@@ -1423,6 +1549,18 @@ is committed and carried to the author's computer as soon as it is
 complete; the push itself can only be made by the author (rule 2,
 Section 3).
 
+\textbf{D14. ``analytical solutions for at least 3 simple cases''.} Item
+{[}2{]} gives four cases, chosen so that together they exercise every
+term of the field equations: the covariant derivative with space and
+time potentials (A), the uniform pair field and the self-consistency
+(B), a non-uniform pair field (C), and the field strengths (D). Each
+case is solved in the continuum and then checked against the lattice
+operator that the solvers of items {[}3{]} and {[}5{]} use, so that the
+analytic solutions also serve as test problems with known answers. The
+gap equation is solved in closed form only for massless spinor charges
+(\(m_{\rm LL}=0\)), where the integral is elementary; for
+\(m_{\rm LL}>0\) it is evaluated numerically, as in the earlier stages.
+
 \textbf{D15. ``a python script that provides guidance \ldots{} reads
 initial and boundary conditions from a user file (query for file
 name)''.} The guidance is given in three ways: a short guide printed
@@ -1572,18 +1710,6 @@ the space components are computed, as in check SB-15, with the cutoff on
 the canonical momentum; the entry of the third-axis potential then
 contains the surface term of Section 12.3, which the prediction includes
 and Figure 26(a) shows separately.
-
-\textbf{D14. ``analytical solutions for at least 3 simple cases''.} Item
-{[}2{]} gives four cases, chosen so that together they exercise every
-term of the field equations: the covariant derivative with space and
-time potentials (A), the uniform pair field and the self-consistency
-(B), a non-uniform pair field (C), and the field strengths (D). Each
-case is solved in the continuum and then checked against the lattice
-operator that the solvers of items {[}3{]} and {[}5{]} use, so that the
-analytic solutions also serve as test problems with known answers. The
-gap equation is solved in closed form only for massless spinor charges
-(\(m_{\rm LL}=0\)), where the integral is elementary; for
-\(m_{\rm LL}>0\) it is evaluated numerically, as in the earlier stages.
 
 \textbf{D22. ``Use the pure rust version of cvode on my repo \ldots{}
 (or some other applicable SUNDIALS algorithm)''.} CVODE with the
@@ -2237,6 +2363,24 @@ now write \texttt{w\_lat} and \texttt{W\_modes}; the report of check
 GS-13 first named the complex components \texttt{w\_k} and the
 eigenpairs \texttt{E\_n}, \texttt{v\_n}, and now uses \texttt{w\_cmp},
 \texttt{E\_qp} and words & & \\
+E65 & found in the verification of 2026-11-18, before the work on the
+notebook of Test 2 was continued: this document had not been completed
+after stage 8. Its Section 3 (rule 6) named only the program
+\texttt{t2\_fields} of Test 2, its Section 4 listed only the library
+\texttt{t2core}, the program \texttt{t2\_fields} and one figure script
+as the content of the folder \texttt{test2} (the folder then held six
+programs, a shared library, the Python solver and plotter, the examples,
+the kept data of the first version and the comparison of CVODE with it),
+and its Section 6 ended with item {[}3{]} of Test 2; in Section 3 the
+row of rule 9 stood before the row of rule 8, and in Section 7 the
+deviation D14 stood after D21. The registry still said that the time
+step is chosen from \(B^{\rm H}_{\rm LL}\), which was true only of the
+first version & reading the whole document against the content of the
+folder & Sections 3, 4 and 6 completed (rule 6 with the numbers of the
+checks of all programs, the content of \texttt{test2} and of
+\texttt{vendor}, the results of the items {[}4{]} to {[}11{]} and of the
+change to CVODE), the rows and the deviations put in their order, the
+meaning of \(B^{\rm H}_{\rm LL}\) corrected \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -3305,8 +3449,8 @@ plus the Lagrangian density of the gauge fields & new &
 \(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
 directions), a time step of the lattice equations (a fixed step of the
 first version of Test 2, or the interval between the output times of an
-integration by CVODE, which chooses its own internal steps), and the
-coefficient of the Wilson term of the lattice equations & new &
+integration by CVODE or by IDA, which choose their own internal steps),
+and the coefficient of the Wilson term of the lattice equations & new &
 \texttt{dx} \texttt{dt} \texttt{r\_W} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
@@ -3331,9 +3475,10 @@ of the phase over one lattice step & new & \texttt{Ulink}
 \(B^{\rm H}_{\rm LL}\) & the lattice form of
 \(\mathcal H^{\rm DB}_{\rm LL}\) (a matrix of 16 rows per site), the
 energy of a free particle on the lattice, and the bound on the largest
-eigenvalue magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) from which the
-time step is chosen & new & \texttt{H\_lat} \texttt{eps\_lat}
-\texttt{Hbound} \\
+eigenvalue magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) (the first
+version of Test 2 chose its fixed time step from it; the solvers now use
+it in the bounds of their checks of the energy) & new & \texttt{H\_lat}
+\texttt{eps\_lat} \texttt{Hbound} \\
 \(\mathsf G^{\rm site}_{\rm LL}\), \(\mathsf X^{\rm ph}_{\rm LL}\) & the
 gauge transformation of the lattice equations, which acts at each site
 as \(\exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}\) on the isospin
@@ -3987,32 +4132,76 @@ component of it; and the number of its complex components, \(16\) times
 the number of sites (times the number of modes) & new & \texttt{w\_lat}
 \texttt{w\_cmp} \texttt{n\_complex} \\
 \(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
-the absolute tolerance of the time integration by CVODE: the estimated
-local error of every internal step is accepted only if its weighted
-root-mean-square norm is at most 1, with the weight
+the absolute tolerance of a time integration by CVODE (the programs of
+Test 2) or by IDA (the notebook of Test 2 in the Wolfram Language, which
+calls it through the function \texttt{NDSolve}), two integrators of the
+suite SUNDIALS: the estimated local error of every internal step is
+accepted only if its weighted root-mean-square norm is at most 1 (the
+square root of the mean, over the real unknowns, of the squares of the
+estimated errors, each multiplied by the weight of its unknown). The
+programs of Test 2 give CVODE the weight
 \(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
 for the real and for the imaginary part of every complex component
-\(w^{\rm cmp}_{\rm LL}\) of the state & new & \texttt{rtol}
-\texttt{atol} \\
+\(w^{\rm cmp}_{\rm LL}\) of the state; IDA has for every real unknown
+the weight 1 divided by the sum of \(r^{\rm tol}_{\rm LL}\) times the
+modulus of this unknown and \(a^{\rm tol}_{\rm LL}\) & new &
+\texttt{rtol} \texttt{atol} \\
 \(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\);
-\(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\) & the size and the
-order of an internal step of CVODE (both chosen by CVODE, the order from
-1 to 12 for the Adams-Moulton formulas); the number of internal steps of
-an integration and the number of evaluations of its right side
+\(h^{\rm IDA}_{\rm LL}\); \(N^{\rm st}_{\rm LL}\),
+\(N^{\rm ev}_{\rm LL}\) & the size and the order of an internal step of
+CVODE (both chosen by CVODE, the order from 1 to 12 for the
+Adams-Moulton formulas); the size of an internal step of IDA (chosen by
+IDA, which uses the backward differentiation formulas of the orders 1 to
+5 and lengthens a step only by doubling it); the number of internal
+steps of an integration and the number of evaluations of its right side
 \(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) (the cost; one
 step of the classical Runge-Kutta method of fourth order needs 4
-evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{N\_steps}
-\texttt{N\_evals} \\
+evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{h\_IDA}
+\texttt{N\_steps} \texttt{N\_evals} \\
 \(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
-\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the error
-test of CVODE permits,
-\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
-for a state of the norm \(\lVert w^{\rm lat}_{\rm LL}\rVert\), the
-expected size of the global error of a unitary evolution; and the
-relative deviation of a computed state from the exact solution,
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the
+tolerances of an integration allow,
+\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}\), which
+is
+\(N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+with the weights of CVODE for a state of the norm
+\(\lVert w^{\rm lat}_{\rm LL}\rVert\), the expected size of the global
+error of a unitary evolution; and the relative deviation of a computed
+state from the exact solution,
 \(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\),
 with the exact solution \(w^{\rm ex}_{\rm LL}\) of the same equations &
 new & \texttt{budget} \texttt{max\_deviation} \texttt{w\_exact} \\
+\(B^{\rm loc}_{\rm LL}\), \(\delta^{\rm loc}_{\rm LL}\);
+\(E^{\rm max}_{\rm LL}\), \(r^{\rm der}_{\rm LL}\),
+\(B^{\rm out}_{\rm LL}\) & the local error that the tolerances allow in
+one internal step: if the error of every real unknown equals its
+tolerance (the inverse of its weight), the norm of the error is the norm
+of the vector of the tolerances, which by the triangle inequality is at
+most
+\(\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+with the weights of CVODE and at most
+\(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}\)
+with the weights of IDA, and these two numbers are
+\(B^{\rm loc}_{\rm LL}\); the exact local error of an internal step, the
+norm of the difference between the computed state at the end of the step
+and the exact solution that starts from the computed state at its
+beginning (a unitary evolution changes the norm of no vector, so the
+deviation after \(N^{\rm st}_{\rm LL}\) steps is at most the sum of the
+local errors of the steps, and at most \(B^{\rm err}_{\rm LL}\) if no
+\(\delta^{\rm loc}_{\rm LL}\) exceeds \(B^{\rm loc}_{\rm LL}\)); the
+largest modulus of the eigenvalues \(E^{\rm qp}_{{\rm LL},n}\) of
+\(\mathcal H^{\rm lat}_{\rm LL}\); the norm of the difference, at the
+end of an internal step of IDA, between the derivative that
+\texttt{NDSolve} stores and \(-i\mathcal H^{\rm lat}_{\rm LL}\) applied
+to the stored state (it is not zero, because the iteration that solves
+the equations of a step stops at a tolerance); and the bound of the
+deviation from the exact solution of a state of the norm 1 that
+\texttt{NDSolve} returns between the ends of an internal step of IDA, by
+the polynomial of the third degree with the stored values and
+derivatives at the two ends,
+\(B^{\rm out}_{\rm LL}=(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})B^{\rm err}_{\rm LL}+\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}+(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4/384\)
+& new & \texttt{budget\_step} \texttt{local\_error} \texttt{E\_max}
+\texttt{deriv\_residual} \texttt{budget\_out} \\
 \end{longtable}
 
 \end{document}

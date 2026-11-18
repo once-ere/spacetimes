@@ -263,6 +263,12 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
    `t2cvode_c` and `t2cvcmp` of the workspace `test2/rust`.
 4. **Remember the errors.** The error is entry E63 of Section 11, and the rule that prevents it is rule 9 of Section 3: a time
    integration is never done with a fixed-step method written by hand.
+5. **The notebook of Test 2.** The notebook `3+1super-loop.nb` in the top folder of the repository rewrites the programs of
+   Test 2 in the Wolfram Language. A notebook cannot call the Rust translation of CVODE; it integrates in time with IDA, the
+   solver of differential-algebraic equations of the same suite SUNDIALS, which the Wolfram Language contains (function
+   `NDSolve` with the option `Method -> "IDA"`; backward differentiation formulas of the orders 1 to 5 with control of the local
+   error). The registry of this folder therefore defines the tolerances, the internal step and the error bounds for both
+   integrators (the entries of $r^{\rm tol}_{\rm LL}$, $h^{\rm IDA}_{\rm LL}$, $B^{\rm err}_{\rm LL}$ and $B^{\rm loc}_{\rm LL}$ in Section 12).
 
 # 3. The hard rules, and how each is met
 
@@ -274,10 +280,10 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
 | 3. Working directory `/Users/nsh/Developer/github/spacetimes` | the folder `Revision_SuperLoop` of that repository | — |
 | 4. Repository `https://github.com/once-ere/spacetimes.git` | as stated | — |
 | 5. One symbol, one object, in the whole project; a master provenance of the symbols, and its symbols used everywhere | the registry `provenance/symbols_ll.csv` takes {{GEN:symbols_ll_count_taken}} symbols of the master registries with their meanings and adds {{GEN:symbols_ll_count_new}} new ones, all with the suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur) that marks them as algebra elements, matrices, number sets or Lie algebras; the plain-text names of the programs, figures and data files are registered as well; nine machine checks (LL-S1 to LL-S9) | `P1`, data file `sl_symbol_checks.txt` |
-| 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases ({{GEN:nchecks_rust}} checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; the Rust program `explain_superfluid` computes every example of the explanation ({{GEN:nchecks_explain}} checks, all passing), and a Python script draws its three figures; the Rust program `r13_yukawa` computes every number of the document on the $3+1$ manifold ({{GEN:nchecks_r13}} checks, all passing), and a Python script draws its four figures; the pure Rust program `t2_fields` (folder `test2/rust`) computes and checks every matrix and equation of item [1] of Test 2 ({{GEN:nchecks_t2_fields}} checks, all passing), and a Python script draws its two figures; every number in the documents is inserted from the data files by a script | `P2`, `code/`, `explanations/code/`, `test2/` |
+| 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases ({{GEN:nchecks_rust}} checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; the Rust program `explain_superfluid` computes every example of the explanation ({{GEN:nchecks_explain}} checks, all passing), and a Python script draws its three figures; the Rust program `r13_yukawa` computes every number of the document on the $3+1$ manifold ({{GEN:nchecks_r13}} checks, all passing), and a Python script draws its four figures; the pure Rust programs of the workspace `test2/rust` compute and check every matrix, equation and number of Test 2: `t2_fields` for item [1] ({{GEN:nchecks_t2_fields}} checks, all passing), `t2_analytic` for item [2] ({{GEN:nchecks_t2_analytic}} checks), the solver `t2_solve` for item [5] (a self-test of {{GEN:nchecks_t2_rs_selftest}} checks and seven examples with {{GEN:nchecks_t2_rs_examples}} checks of their solutions, among them the comparison EX-8 with the Python solver), the plotter `t2_plot` for item [6], `t2_sfbs` for items [7] to [11] ({{GEN:nchecks_t2_sfbs}} checks) and `t2_cvcmp` for the comparison of CVODE with the fixed-step methods of the first version; the Python solver `t2_solve.py` for item [3] (a self-test of {{GEN:nchecks_t2_py_selftest}} checks, the same seven examples with {{GEN:nchecks_t2_py_examples}} checks) and the Python plotter `t2_plot.py` for item [4]; Python scripts draw the figures of the documents from the data files; every number in the documents is inserted from the data files by a script | `P2`, `code/`, `explanations/code/`, `test2/` |
 | 7. Every equation, symbol and definition in the very file that uses it; never refer the reader elsewhere | every document contains the complete table of the symbols and the formulas it uses; the check LL-H1 searches all documents for referrals | data file `sl_self_contained_checks.txt` |
-| 9. (the request of November 18, 2026) Time integrations with SUNDIALS, never with a fixed-step method written by hand | every time-dependent calculation of the folder (the tasks `evolve` and `quench` of both solvers, the checks AS-2, AS-4, GS-13, SB-10 and SB-16) calls CVODE of the vendored pure-Rust SUNDIALS 7.8.0 through `t2core::cvode` (the Python solver through `libt2cvode`); the only remaining copy of the RK4 step is the one inside the comparison program `t2_cvcmp`, which measures the errors of the first version | `test2/rust/t2core/src/cvode.rs`; the reports of the checks; `test2/cvode_vs_rk4/data/cmp_report.txt` |
 | 8. Follow the instructions exactly, or explain in a provenance why not and pause | Section 7 explains every place where the wording of the task cannot be followed literally (a counterexample to a proved theorem whose hypotheses hold, a "group" that is not associative) and what is provided instead; the work did not pause, because every instruction could be carried out in full on that basis | Section 7 |
+| 9. (the request of November 18, 2026) Time integrations with SUNDIALS, never with a fixed-step method written by hand | every time-dependent calculation of the folder (the tasks `evolve` and `quench` of both solvers, the checks AS-2, AS-4, GS-13, SB-10 and SB-16) calls CVODE of the vendored pure-Rust SUNDIALS 7.8.0 through `t2core::cvode` (the Python solver through `libt2cvode`); the only remaining copy of the RK4 step is the one inside the comparison program `t2_cvcmp`, which measures the errors of the first version; the notebook of Test 2 in the Wolfram Language, which cannot call the Rust code, integrates with IDA of SUNDIALS (Section 2.10) | `test2/rust/t2core/src/cvode.rs`; the reports of the checks; `test2/cvode_vs_rk4/data/cmp_report.txt` |
 
 # 4. What the folder contains
 
@@ -290,7 +296,8 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
 | `data/` | 14 data files, the reports of all checks and the Gröbner bases |
 | `figures/` | 7 figures, .pdf and .png |
 | `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf), with its program `code/explain-rs` (binary `explain_superfluid`), its figure script `code/make_explain_figures.py` and its three figures; the document "The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" (.md, .tex, .pdf), with its program `code/r13-rs` (binary `r13_yukawa`), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf), the Cargo workspace `rust/` (library `t2core`, program `t2_fields`), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), and the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
+| `vendor/` (in the top folder of the repository, beside `Revision_SuperLoop`) | `sundials_rs-7.8.0`, the pure-Rust translation of SUNDIALS 7.8.0 of the author's repository, unchanged (Section 10), and its provenance `P_sundials_rs-7.8.0` (.md, .tex, .pdf) |
 | `docs_src/` | the sources of the documents |
 
 # 5. What was done, in order
@@ -393,6 +400,11 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
    ($w^{\rm lat}_{\rm LL}$, $w^{\rm cmp}_{\rm LL}$, $n^{\rm cpx}_{\rm LL}$; $r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$; $h^{\rm CV}_{\rm LL}$,
    $q^{\rm CV}_{\rm LL}$, $N^{\rm st}_{\rm LL}$, $N^{\rm ev}_{\rm LL}$; $B^{\rm err}_{\rm LL}$, $\delta^{\rm rel}_{\rm LL}$, $w^{\rm ex}_{\rm LL}$); the
    documents of Test 2 corrected (decision D22, Section 11, entries E63 and E64).
+21. **Stage 19 — the registry extended to the integrator of the notebook, and this document completed** (2026-11-18): the
+   entries of $r^{\rm tol}_{\rm LL}$, $h^{\rm CV}_{\rm LL}$ and $B^{\rm err}_{\rm LL}$ extended to IDA (with the new symbol
+   $h^{\rm IDA}_{\rm LL}$), one new entry ($B^{\rm loc}_{\rm LL}$, $\delta^{\rm loc}_{\rm LL}$, $E^{\rm max}_{\rm LL}$, $r^{\rm der}_{\rm LL}$,
+   $B^{\rm out}_{\rm LL}$), the meaning of $B^{\rm H}_{\rm LL}$ corrected; Sections 2.10, 3, 4, 6 and 7 of this document completed
+   (Section 11, entry E65).
 
 # 6. The results in brief
 
@@ -502,6 +514,37 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
   $2\times10^{-11}$. A finding: a wall of the pair field is a stationary but unstable solution of the full mean-field
   equations; the pair field unwinds by turning through the other isospin directions or through complex values,
   because the order parameters of the polar state form a connected set.
+* **Test 2, items [4] to [6]** (stages 9 to 11): the Python plotter draws every solution together with the prediction of its
+  check; the Rust solver reads the same input files and writes the same output files as the Python solver, and the two sets of
+  solutions agree in all 18 output files (check EX-8: the solutions, spectra and time series to $10^{-9}$, the histories of the
+  self-consistent iterations to $1.8\times10^{-7}$); the Rust plotter draws the solutions as Scalable Vector Graphics.
+* **Test 2, item [7]** (stage 12): two spinor charges at one point form 28 pairs; six of them have spin zero, and by the Pauli
+  principle these are isospin triplets (three scalar and three pseudoscalar pairs); the interaction and parity select the
+  scalar channel; the superfluid boson singlet state (SFBS) is a coherent state of pairs of particles and of antiparticles, and
+  it is the ground state of the mean-field Hamiltonian.
+* **Test 2, item [8]** (stages 13 and 14): the field of the SFBS is the Hubbard-Stratonovich field $\vec d_{\rm LL}$, $-\tfrac12G_{\rm LL}$
+  times the pair expectation; its gauge-covariant derivative $\nabla^{\rm B}_{{\rm LL},p}$ follows from that of the spinor field;
+  the effective Lagrangian $\mathcal L^{\rm B}_{\rm LL}$ has the coefficients $Z^{\rm t}_{\rm LL}$, $Z^{\rm s}_{\rm LL}$ in closed
+  form in the normal vacuum; the SFBS boson of the normal vacuum becomes unstable beyond $G^{\rm crit}_{\rm LL}$; the effective
+  potential depends on two invariants, has the Ginzburg-Landau coefficients $a^{\rm GL}_{\rm LL}=1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}$
+  and $b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)$, and for $G_{\rm LL}>G^{\rm crit}_{\rm LL}$ the form of a Mexican hat.
+* **Test 2, item [9]** (stage 15): every relative minimum of the effective potential is a global one, on the vacuum manifold
+  $\mathcal V^{\rm vac}_{\rm LL}$ of the polar fields of modulus $\Delta^{\rm vac}_{\rm LL}$; at $\mu_{\rm LL}=0$ the only other
+  stationary points are the maximum at the zero field and the non-unitary saddle points; the vacuum $(0,0,\Delta^{\rm vac}_{\rm LL})$
+  breaks $F_{\rm LL}$, $T^1_{\rm LL}$ and $T^2_{\rm LL}$ and keeps the electric charge $Q_{\rm LL}=T^3_{\rm LL}$; SFBSv is the
+  parametrization of the field by three Goldstone fields, the amplitude field and two non-unitary fields.
+* **Test 2, item [10]** (stage 16): the kinetic Lagrangian of the SFBS has, in the condensed vacuum, stiffness coefficients in
+  closed form, derived exactly from the energy of the vacuum in constant gauge potentials; at zero wave number the three
+  Goldstone fields have the mass 0, and the amplitude field and the two non-unitary fields the mass $2\Delta^{\rm vac}_{\rm LL}$.
+* **Test 2, item [11]** (stage 17): in the unitary gauge the three Goldstone fields disappear from the Lagrangian exactly; the
+  charged vector fields $W^\pm_{{\rm LL},p}$ and the fermion-number vector field $V^{\rm F}_{{\rm LL},p}$ receive the rest masses
+  $M^{\rm W}_{\rm LL}$ and $M^{\rm F}_{\rm LL}$; the surviving group is $O(2)$, whose connected part $U(1)^{\rm Q}_{\rm LL}$ is generated
+  by the electric charge and is identified with the group of electromagnetism; its gauge field, the photon $V^3_{{\rm LL},p}$,
+  is the only massless gauge field.
+* **The change to CVODE** (stage 18): with CVODE at $r^{\rm tol}_{\rm LL}=10^{-12}$ every check of a time-dependent result of
+  Test 2 passes with bounds derived from the error budget $B^{\rm err}_{\rm LL}$; the comparison with the first version shows that its quench was wrong
+  in the third decimal (the mean of the gap 0.500877 instead of 0.503125, the frequency 1.18449 instead of 1.18898), and that its
+  rule for the fixed time step allowed steps with large errors on random lattice problems (Section 2.10).
 
 # 7. Deviations from the wording of the task, with their reasons
 
@@ -608,6 +651,14 @@ in every gauge, and the numerical formulation uses the canonical gauge, in which
 **D13. "push to repo after each item is completed".** Each item is committed and carried to the author's
 computer as soon as it is complete; the push itself can only be made by the author (rule 2, Section 3).
 
+**D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
+they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
+uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
+is solved in the continuum and then checked against the lattice operator that the solvers of items [3] and [5] use,
+so that the analytic solutions also serve as test problems with known answers. The gap equation is solved in closed
+form only for massless spinor charges ($m_{\rm LL}=0$), where the integral is elementary; for $m_{\rm LL}>0$ it is
+evaluated numerically, as in the earlier stages.
+
 **D15. "a python script that provides guidance ... reads initial and boundary conditions from a user file (query for
 file name)".** The guidance is given in three ways: a short guide printed when the program starts without arguments
 (with the question for the file name), the complete guide (`--guide`, every key with its meaning, kind and default), and
@@ -688,14 +739,6 @@ properties that define electrodynamics (the generator is the electric charge of 
 only massless one, it couples to every field with one constant times the charge, and it gives the law of Coulomb), not by a comparison of
 names. In check SB-17 the space components are computed, as in check SB-15, with the cutoff on the canonical momentum; the entry of the
 third-axis potential then contains the surface term of Section 12.3, which the prediction includes and Figure 26(a) shows separately.
-
-**D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
-they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
-uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
-is solved in the continuum and then checked against the lattice operator that the solvers of items [3] and [5] use,
-so that the analytic solutions also serve as test problems with known answers. The gap equation is solved in closed
-form only for massless spinor charges ($m_{\rm LL}=0$), where the integral is elementary; for $m_{\rm LL}>0$ it is
-evaluated numerically, as in the earlier stages.
 
 **D22. "Use the pure rust version of cvode on my repo ... (or some other applicable SUNDIALS algorithm)".** CVODE with the
 Adams-Moulton formulas and the fixed-point iteration is the method of SUNDIALS for nonstiff equations, and the equations of Test 2
@@ -852,6 +895,7 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
 | E62 | in the first draft of Section 13 the mass matrices were written with a styled letter that was not yet registered (check LL-S7); it was registered as $\mathsf M^{\rm t}_{\rm LL}$, $\mathsf M^{\rm s}_{\rm LL}$ together with the other new symbols of item [11]. After the equations of Section 13 were renumbered, the report of check SB-17 and the legend of Figure 26(c) still named the dispersion relation of the longitudinal mode by its old number (13.7); they were corrected to (13.9). The first version of the first-order test of check SB-17 used potentials of the size 0.3, for which the rotation of the potentials by the Goldstone angles, a product of an angle and a potential, is not small, and the test failed its tolerance; it now uses fields and potentials of the size $10^{-4}$, with the tolerance $10^{-3}$ relative to their size. In Figure 26(c) the first legend covered the curves; it was moved and framed, and the frequency axis was limited to 1.08. In the report of check SB-17 the eigenvalues were first written with `Delta^2`, which names $\Delta_{\rm LL}$, for the square of the gap of the vacuum; it is now `Delta_vac^2`. The first labels of Figure 26 wrote the potentials without the index $p$ and named the photon by the potential $A^3_{{\rm LL},p}$ instead of the field $V^3_{{\rm LL},p}$ of the unitary gauge; they were corrected |
 | E63 | from the first version on, every time integration of Test 2 (the task `evolve` of both solvers, the checks AS-2, AS-4, SB-10 and SB-16 by RK4 with a fixed step; the task `quench` by the implicit midpoint rule with a fixed step) was done with a fixed-step method written by hand, although the author's repository provides CVODE of SUNDIALS in pure Rust. The author stopped the work on 2026-11-18 (Section 2.9). The consequences, measured by the program `t2_cvcmp`: the quench was wrong in the third decimal (mean of the gap 0.500877 instead of 0.503125, frequency 1.18449 instead of 1.18898, amplitude 0.00587 instead of 0.00708; the conserved functional $E^{\rm MF}_{\rm LL}$ changed by $2\times10^{-3}$ of its value), the norm of the evolve examples was conserved only to $3\times10^{-7}$, and the stability rule $\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le2.5$ of the first version allows steps that give the relative error 0.37 on a random lattice problem. All these calculations were redone with CVODE (stage 18), and rule 9 of Section 3 now forbids fixed-step methods written by hand |
 | E64 | during the change to CVODE: the first test of the module `t2core::cvode` (one oscillator over 100 periods) used the standard error weights of CVODE for every real unknown and needed 36591 steps for the deviation $1.8\times10^{-8}$; with the error weights of complex components (decision D22) it needs 13643 steps for $3.3\times10^{-9}$; the first version of check GS-13 asked that the error fall by a factor of 10 from one tolerance to the next, which the stability-limited steps of the Adams-Moulton formulas do not give (1.2e-6 to 1.7e-7), and it now compares each error with the error budget $B^{\rm err}_{\rm LL}$; the first conservation check of the solver compared the change of the norm with the number of steps times $r^{\rm tol}_{\rm LL}$, which is not a bound (2.56e-9 against 2.3e-9 in the example `cyclotron`), and it now uses $10B^{\rm err}_{\rm LL}$ with the factor $\sqrt2$ and the term of $a^{\rm tol}_{\rm LL}$; the reports of the solvers first wrote the mode as `w` and the mode matrix as `W`, which are the names of the bi-octonion $\mathbf w$ and of nothing registered, and now write `w_lat` and `W_modes`; the report of check GS-13 first named the complex components `w_k` and the eigenpairs `E_n`, `v_n`, and now uses `w_cmp`, `E_qp` and words |
+| E65 | found in the verification of 2026-11-18, before the work on the notebook of Test 2 was continued: this document had not been completed after stage 8. Its Section 3 (rule 6) named only the program `t2_fields` of Test 2, its Section 4 listed only the library `t2core`, the program `t2_fields` and one figure script as the content of the folder `test2` (the folder then held six programs, a shared library, the Python solver and plotter, the examples, the kept data of the first version and the comparison of CVODE with it), and its Section 6 ended with item [3] of Test 2; in Section 3 the row of rule 9 stood before the row of rule 8, and in Section 7 the deviation D14 stood after D21. The registry still said that the time step is chosen from $B^{\rm H}_{\rm LL}$, which was true only of the first version | reading the whole document against the content of the folder | Sections 3, 4 and 6 completed (rule 6 with the numbers of the checks of all programs, the content of `test2` and of `vendor`, the results of the items [4] to [11] and of the change to CVODE), the rows and the deviations put in their order, the meaning of $B^{\rm H}_{\rm LL}$ corrected |
 
 # 12. The symbols
 

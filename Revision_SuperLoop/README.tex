@@ -1727,8 +1727,8 @@ plus the Lagrangian density of the gauge fields & new &
 \(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
 directions), a time step of the lattice equations (a fixed step of the
 first version of Test 2, or the interval between the output times of an
-integration by CVODE, which chooses its own internal steps), and the
-coefficient of the Wilson term of the lattice equations & new &
+integration by CVODE or by IDA, which choose their own internal steps),
+and the coefficient of the Wilson term of the lattice equations & new &
 \texttt{dx} \texttt{dt} \texttt{r\_W} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
@@ -1753,9 +1753,10 @@ of the phase over one lattice step & new & \texttt{Ulink}
 \(B^{\rm H}_{\rm LL}\) & the lattice form of
 \(\mathcal H^{\rm DB}_{\rm LL}\) (a matrix of 16 rows per site), the
 energy of a free particle on the lattice, and the bound on the largest
-eigenvalue magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) from which the
-time step is chosen & new & \texttt{H\_lat} \texttt{eps\_lat}
-\texttt{Hbound} \\
+eigenvalue magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) (the first
+version of Test 2 chose its fixed time step from it; the solvers now use
+it in the bounds of their checks of the energy) & new & \texttt{H\_lat}
+\texttt{eps\_lat} \texttt{Hbound} \\
 \(\mathsf G^{\rm site}_{\rm LL}\), \(\mathsf X^{\rm ph}_{\rm LL}\) & the
 gauge transformation of the lattice equations, which acts at each site
 as \(\exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}\) on the isospin
@@ -2409,32 +2410,76 @@ component of it; and the number of its complex components, \(16\) times
 the number of sites (times the number of modes) & new & \texttt{w\_lat}
 \texttt{w\_cmp} \texttt{n\_complex} \\
 \(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
-the absolute tolerance of the time integration by CVODE: the estimated
-local error of every internal step is accepted only if its weighted
-root-mean-square norm is at most 1, with the weight
+the absolute tolerance of a time integration by CVODE (the programs of
+Test 2) or by IDA (the notebook of Test 2 in the Wolfram Language, which
+calls it through the function \texttt{NDSolve}), two integrators of the
+suite SUNDIALS: the estimated local error of every internal step is
+accepted only if its weighted root-mean-square norm is at most 1 (the
+square root of the mean, over the real unknowns, of the squares of the
+estimated errors, each multiplied by the weight of its unknown). The
+programs of Test 2 give CVODE the weight
 \(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
 for the real and for the imaginary part of every complex component
-\(w^{\rm cmp}_{\rm LL}\) of the state & new & \texttt{rtol}
-\texttt{atol} \\
+\(w^{\rm cmp}_{\rm LL}\) of the state; IDA has for every real unknown
+the weight 1 divided by the sum of \(r^{\rm tol}_{\rm LL}\) times the
+modulus of this unknown and \(a^{\rm tol}_{\rm LL}\) & new &
+\texttt{rtol} \texttt{atol} \\
 \(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\);
-\(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\) & the size and the
-order of an internal step of CVODE (both chosen by CVODE, the order from
-1 to 12 for the Adams-Moulton formulas); the number of internal steps of
-an integration and the number of evaluations of its right side
+\(h^{\rm IDA}_{\rm LL}\); \(N^{\rm st}_{\rm LL}\),
+\(N^{\rm ev}_{\rm LL}\) & the size and the order of an internal step of
+CVODE (both chosen by CVODE, the order from 1 to 12 for the
+Adams-Moulton formulas); the size of an internal step of IDA (chosen by
+IDA, which uses the backward differentiation formulas of the orders 1 to
+5 and lengthens a step only by doubling it); the number of internal
+steps of an integration and the number of evaluations of its right side
 \(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) (the cost; one
 step of the classical Runge-Kutta method of fourth order needs 4
-evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{N\_steps}
-\texttt{N\_evals} \\
+evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{h\_IDA}
+\texttt{N\_steps} \texttt{N\_evals} \\
 \(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
-\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the error
-test of CVODE permits,
-\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
-for a state of the norm \(\lVert w^{\rm lat}_{\rm LL}\rVert\), the
-expected size of the global error of a unitary evolution; and the
-relative deviation of a computed state from the exact solution,
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the
+tolerances of an integration allow,
+\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}\), which
+is
+\(N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+with the weights of CVODE for a state of the norm
+\(\lVert w^{\rm lat}_{\rm LL}\rVert\), the expected size of the global
+error of a unitary evolution; and the relative deviation of a computed
+state from the exact solution,
 \(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\),
 with the exact solution \(w^{\rm ex}_{\rm LL}\) of the same equations &
 new & \texttt{budget} \texttt{max\_deviation} \texttt{w\_exact} \\
+\(B^{\rm loc}_{\rm LL}\), \(\delta^{\rm loc}_{\rm LL}\);
+\(E^{\rm max}_{\rm LL}\), \(r^{\rm der}_{\rm LL}\),
+\(B^{\rm out}_{\rm LL}\) & the local error that the tolerances allow in
+one internal step: if the error of every real unknown equals its
+tolerance (the inverse of its weight), the norm of the error is the norm
+of the vector of the tolerances, which by the triangle inequality is at
+most
+\(\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+with the weights of CVODE and at most
+\(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}\)
+with the weights of IDA, and these two numbers are
+\(B^{\rm loc}_{\rm LL}\); the exact local error of an internal step, the
+norm of the difference between the computed state at the end of the step
+and the exact solution that starts from the computed state at its
+beginning (a unitary evolution changes the norm of no vector, so the
+deviation after \(N^{\rm st}_{\rm LL}\) steps is at most the sum of the
+local errors of the steps, and at most \(B^{\rm err}_{\rm LL}\) if no
+\(\delta^{\rm loc}_{\rm LL}\) exceeds \(B^{\rm loc}_{\rm LL}\)); the
+largest modulus of the eigenvalues \(E^{\rm qp}_{{\rm LL},n}\) of
+\(\mathcal H^{\rm lat}_{\rm LL}\); the norm of the difference, at the
+end of an internal step of IDA, between the derivative that
+\texttt{NDSolve} stores and \(-i\mathcal H^{\rm lat}_{\rm LL}\) applied
+to the stored state (it is not zero, because the iteration that solves
+the equations of a step stops at a tolerance); and the bound of the
+deviation from the exact solution of a state of the norm 1 that
+\texttt{NDSolve} returns between the ends of an internal step of IDA, by
+the polynomial of the third degree with the stored values and
+derivatives at the two ends,
+\(B^{\rm out}_{\rm LL}=(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})B^{\rm err}_{\rm LL}+\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}+(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4/384\)
+& new & \texttt{budget\_step} \texttt{local\_error} \texttt{E\_max}
+\texttt{deriv\_residual} \texttt{budget\_out} \\
 \end{longtable}
 
 \end{document}
