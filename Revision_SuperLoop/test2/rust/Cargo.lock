@@ -28,6 +28,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "t2cvcmp"
+version = "0.1.0"
+dependencies = [
+ "t2core",
+]
+
+[[package]]
 name = "t2fields"
 version = "0.1.0"
 dependencies = [

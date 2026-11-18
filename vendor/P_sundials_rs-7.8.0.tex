@@ -284,15 +284,17 @@ content
 point, Newton), the mathematical functions (pure-Rust libm) \\
 \texttt{cvode\_rs} & 34 & 33 & 26256 & CVODE: variable-order,
 variable-step linear multistep integrator (Adams-Moulton, BDF) for
-\(\dot y=f(t,y)\) \\
+differential equations of the first order solved for the time
+derivative \\
 \texttt{cvodes\_rs} & 47 & 46 & 55022 & CVODES: CVODE with forward and
 adjoint sensitivity analysis \\
-\texttt{ida\_rs} & 20 & 19 & 18425 & IDA: differential-algebraic systems
-\(F(t,y,\dot y)=0\) (BDF) \\
+\texttt{ida\_rs} & 20 & 19 & 18425 & IDA: differential-algebraic
+systems, implicit equations in the unknowns and their time derivatives
+(BDF) \\
 \texttt{idas\_rs} & 30 & 29 & 40547 & IDAS: IDA with sensitivity
 analysis \\
 \texttt{kinsol\_rs} & 20 & 19 & 14818 & KINSOL: nonlinear algebraic
-systems \(F(u)=0\) \\
+systems of equations \\
 \texttt{arkode\_rs} & 70 & 69 & 86766 & ARKODE: additive Runge-Kutta
 methods, including the symplectic SPRK methods \\
 \end{longtable}
@@ -346,32 +348,47 @@ functions of SUNDIALS: \texttt{SUNContext\_Create},
 \texttt{SUNNonlinSolFree}, \texttt{N\_VDestroy} and
 \texttt{SUNContext\_Free}.
 
-\textbf{The method, in brief} (so that this document can be read alone).
-CVODE solves \(\dot y=f(t,y)\) for a real vector \(y\) of \(N\)
-components with the linear multistep formulas
-\[\sum_{i=0}^{K_1}\alpha_{n,i}\,y^{n-i}+h_n\sum_{i=0}^{K_2}\beta_{n,i}\,\dot y^{\,n-i}=0 ,\]
-where \(y^n\) approximates \(y(t_n)\), \(h_n=t_n-t_{n-1}\) is the step
-size, and the coefficients \(\alpha_{n,i}\), \(\beta_{n,i}\) follow from
-the order \(q\) and from the recent step sizes. The Adams-Moulton
-formulas (for nonstiff problems, orders \(q=1,\dots,12\)) have
-\(K_1=1\), \(K_2=q-1\); the backward differentiation formulas (BDF,
-stiff problems, orders 1 to 5) have \(K_1=q\), \(K_2=0\). The formula is
-implicit in \(y^n\); with the fixed-point (functional) iteration of
-\texttt{SUNNonlinSol\_FixedPoint} the corrector is found by repeating
-\(y^{n(m+1)}=a_n+h_n\beta_{n,0}f(t_n,y^{n(m)})\), where \(a_n\) collects
-the terms of the earlier steps. Every step is accepted only if the
-estimated local error \(E_n\) satisfies
-\(\lVert E_n\rVert_{\rm WRMS}\le 1\) in the weighted root-mean-square
-norm
-\(\lVert v\rVert_{\rm WRMS}=\big(N^{-1}\sum_i (v_i\,w_i)^2\big)^{1/2}\)
-with the error weights \(w_i\); otherwise the step is repeated with a
-smaller step size. CVODE changes the step size and the order so that the
-steps are as large as this test allows. The programs of Test 2 give the
-weights through their own function (\texttt{CVodeWFtolerances}): for a
-complex unknown \(w_k\) stored as the two real components
-\(\mathrm{Re}\,w_k\), \(\mathrm{Im}\,w_k\), both weights are
-\(1/(\mathrm{rtol}\,|w_k|+\mathrm{atol})\), with the relative tolerance
-rtol and the absolute tolerance atol.
+\textbf{The method, in brief} (so that this document can be read alone;
+the symbols are those of the registry of the folder Revision\_SuperLoop,
+where they are defined: \(x^0_{\rm LL}\) the time,
+\(w^{\rm lat}_{\rm LL}\) a Nambu mode on the lattice as one complex
+vector, \(w^{\rm cmp}_{\rm LL}\) one of its complex components,
+\(n^{\rm cpx}_{\rm LL}\) their number, \(\mathcal H^{\rm lat}_{\rm LL}\)
+the lattice operator, \(h^{\rm CV}_{\rm LL}\) and
+\(q^{\rm CV}_{\rm LL}\) the size and the order of an internal step of
+CVODE, \(r^{\rm tol}_{\rm LL}\) and \(a^{\rm tol}_{\rm LL}\) its
+relative and absolute tolerance). CVODE integrates real systems of
+differential equations of the first order in the time. The programs of
+Test 2 store the complex vector \(w^{\rm lat}_{\rm LL}\) as the real
+vector of the real and imaginary parts of its components and give CVODE
+the right side \(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\)
+of
+\(i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\)
+in the same form. CVODE advances the solution with linear multistep
+formulas: a step of the size \(h^{\rm CV}_{\rm LL}\) computes the new
+state from the right side at the new time and from the states and right
+sides at earlier step times, with coefficients that follow from the
+order \(q^{\rm CV}_{\rm LL}\) and from the recent step sizes. The
+Adams-Moulton formulas (for nonstiff problems, orders 1 to 12) use the
+new right side and the right sides at the \(q^{\rm CV}_{\rm LL}-1\)
+preceding step times; the backward differentiation formulas (BDF, stiff
+problems, orders 1 to 5) use the new right side and the states at the
+\(q^{\rm CV}_{\rm LL}\) preceding step times. The formula is implicit in
+the new state; with the fixed-point (functional) iteration of
+\texttt{SUNNonlinSol\_FixedPoint} the new state is found by repeated
+evaluation of the right side. Every step is accepted only if the
+estimated local error passes the test
+\[\Big(\frac{1}{2n^{\rm cpx}_{\rm LL}}\sum_{w^{\rm cmp}_{\rm LL}}\frac{\lvert\text{estimated local error of }w^{\rm cmp}_{\rm LL}\rvert^2}{\big(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL}\big)^2}\Big)^{1/2}\le1\]
+(the weighted root-mean-square norm of SUNDIALS over the
+\(2n^{\rm cpx}_{\rm LL}\) real components, with the weight
+\(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+for the real and for the imaginary part of every complex component,
+which the programs of Test 2 give to CVODE through their own
+error-weight function, \texttt{CVodeWFtolerances}); otherwise the step
+is repeated with a smaller \(h^{\rm CV}_{\rm LL}\). CVODE changes
+\(h^{\rm CV}_{\rm LL}\) and \(q^{\rm CV}_{\rm LL}\) so that the steps
+are as large as this test allows, and returns the state at requested
+output times \(x^0_{\rm LL}\) from its interpolating polynomial.
 
 \hypertarget{the-verification-that-was-performed}{%
 \section{5. The verification that was
@@ -442,12 +459,14 @@ its reference output, is
 \tightlist
 \item
   \textbf{The use in Test 2.} The unit test of \texttt{t2core::cvode}
-  integrates one oscillator \(i\,\dot w=Ew\) over 100 periods with rtol
-  \(=10^{-12}\), atol \(=10^{-14}\) and compares with \(e^{-iEt}\)
-  (deviation below \(10^{-8}\)); the check GS-13 of the program
-  \texttt{t2\_fields} compares CVODE on a lattice with random gauge and
-  pair fields with the exact spectral solution (relative deviation
-  \(1.7\times10^{-10}\) at rtol \(=10^{-12}\)).
+  integrates one complex component that oscillates with a fixed energy
+  (the energy 1.7, over 100 periods, with
+  \(r^{\rm tol}_{\rm LL}=10^{-12}\) and
+  \(a^{\rm tol}_{\rm LL}=10^{-14}\)) and compares it with the exact
+  oscillation (deviation below \(10^{-8}\)); the check GS-13 of the
+  program \texttt{t2\_fields} compares CVODE on a lattice with random
+  gauge and pair fields with the exact spectral solution (relative
+  deviation \(1.7\times10^{-10}\) at \(r^{\rm tol}_{\rm LL}=10^{-12}\)).
 \end{enumerate}
 
 \textbf{Running the examples writes files.} Some examples write their

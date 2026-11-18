@@ -1,0 +1,24 @@
+# content: the largest differences between the time series of the first version (RK4, implicit midpoint rule; test2/rk4_reference/data) and of CVODE with rtol = 1e-12 (test2/data), and between CVODE with rtol = 1e-10 or 1e-13 (test2/cvode_vs_rk4/data/conv) and CVODE with rtol = 1e-12, column by column (program t2_cvcmp)
+example,column,old_minus_cvode12,cvode10_minus_cvode12,cvode13_minus_cvode12
+packet_free,norm,1.499410e-7,1.763810e-7,3.000000e-11
+packet_free,E_expect,1.661260e-7,1.955250e-7,3.400003e-11
+packet_free,P_hole,0.000000e0,0.000000e0,0.000000e0
+packet_free,P_up,0.000000e0,0.000000e0,0.000000e0
+packet_free,x_mean_1,7.745400e-6,8.630000e-8,2.000036e-10
+cyclotron,norm,2.919890e-7,7.200001e-10,2.524000e-9
+cyclotron,E_expect,3.591880e-7,7.709999e-10,3.104000e-9
+cyclotron,P_up,0.000000e0,0.000000e0,0.000000e0
+cyclotron,x_mean_1,4.952600e-6,1.180000e-8,3.350001e-9
+cyclotron,x_mean_2,4.524100e-6,1.360000e-8,6.270000e-9
+andreev,norm,1.455000e-9,5.599998e-11,9.000023e-12
+andreev,E_expect,2.788500e-9,1.290000e-10,1.610001e-11
+andreev,P_hole,1.395000e-9,6.200007e-11,6.000089e-12
+andreev,P_up,1.394600e-9,6.150000e-11,6.000006e-12
+andreev,x_mean_1,5.060000e-8,1.700002e-9,4.000000e-10
+quench,abs_d_mean,4.108302e-3,4.419000e-9,4.199996e-11
+quench,abs_d_site0,4.108302e-3,4.419000e-9,4.199996e-11
+quench,N_F,1.270000e-8,5.071000e-7,4.900002e-9
+quench,E_MF,1.921176e-3,3.860000e-6,3.700001e-8
+quench,ortho_error,4.843776e-10,2.086561e-8,1.883289e-10
+t2_sfbs_tdbdg_normal.csv,d_over_d0,2.947200e-6,,
+t2_sfbs_tdbdg_higgs.csv,d_over_dvac,3.150940e-5,,

@@ -1,0 +1,12 @@
+[package]
+name = "t2cvcmp"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2: the comparison of CVODE with RK4 and the implicit midpoint rule of the first version (pure Rust)"
+
+[[bin]]
+name = "t2_cvcmp"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

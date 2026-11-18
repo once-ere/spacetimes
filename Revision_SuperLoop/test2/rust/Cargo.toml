@@ -1,10 +1,11 @@
 # Cargo workspace of PROJECT spacetimes, Revision_SuperLoop, folder test2.
-# Pure Rust: no crate is downloaded; every member uses only the standard library and t2core.
+# Pure Rust: no crate is downloaded; every member uses only the standard library and t2core, and t2core uses the
+# pure-Rust SUNDIALS 7.8.0 vendored in the folder vendor/sundials_rs-7.8.0 of PROJECT spacetimes (CVODE).
 #
 # Build everything (from this folder):   cargo build --release
 # The binaries are then in target/release/.
 [workspace]
-members = ["t2core", "t2fields", "t2analytic", "t2solve", "t2plot", "t2sfbs"]
+members = ["t2core", "t2fields", "t2analytic", "t2solve", "t2plot", "t2sfbs", "t2cvcmp"]
 resolver = "2"
 
 [profile.release]

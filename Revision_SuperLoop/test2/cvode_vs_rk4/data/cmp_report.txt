@@ -1,0 +1,76 @@
+Revision_SuperLoop, folder test2/cvode_vs_rk4, program `t2_cvcmp`: CVODE (SUNDIALS 7.8.0, pure Rust) against RK4 and the implicit midpoint rule of the first version of Test 2
+problem LAT: spectral radius of H_lat 8.439966, the bound Hbound 17.669604; the time-step rule of the first version, dt Hbound <= 2.5, allowed dt <= 0.141486
+problem AS-2: isospin precession of a lattice plane wave in the constant isospin potential Av_LL^1_0 = 1.5 (periodic chain of 16 sites, dx = 0.5, m = 0.4, mu = 0.2; 256 complex unknowns; outputs every 0.16 up to x^0 = 16)
+  RK4   dt = 0.016        4000 evaluations    1000 steps  largest deviation 2.23e-7  at the end 2.23e-7  relative norm change 4.37e-9
+  RK4   dt = 0.008        8000 evaluations    2000 steps  largest deviation 1.39e-8  at the end 1.39e-8  relative norm change 1.36e-10
+  RK4   dt = 0.004       16000 evaluations    4000 steps  largest deviation 8.72e-10  at the end 8.72e-10  relative norm change 4.27e-12  (the step of the first version)
+  RK4   dt = 0.002       32000 evaluations    8000 steps  largest deviation 5.45e-11  at the end 5.45e-11  relative norm change 1.34e-13
+  RK4   dt = 0.001       64000 evaluations   16000 steps  largest deviation 3.41e-12  at the end 3.41e-12  relative norm change 4.11e-15
+  CVODE rtol = 1e-6        443 evaluations     246 steps  largest deviation 3.14e-6  at the end 3.14e-6  relative norm change 1.47e-6
+  CVODE rtol = 1e-8        641 evaluations     406 steps  largest deviation 1.99e-7  at the end 1.99e-7  relative norm change 1.09e-7
+  CVODE rtol = 1e-10       807 evaluations     459 steps  largest deviation 5.11e-9  at the end 5.11e-9  relative norm change 3.34e-9
+  CVODE rtol = 1e-12      1494 evaluations    1013 steps  largest deviation 1.26e-11  at the end 1.26e-11  relative norm change 7.85e-12  (the setting of the programs)
+  CVODE rtol = 1e-13      1907 evaluations    1368 steps  largest deviation 1.34e-12  at the end 1.34e-12  relative norm change 9.26e-13
+problem AS-4: particle-hole (Rabi) oscillation of a particle injected into the uniform polar superfluid dvec = (0, 0, 0.3) (periodic chain of 16 sites, dx = 0.5, m = 0.4, mu = 0.6; 256 complex unknowns; outputs every 0.2 up to x^0 = 20)
+  RK4   dt = 0.1           800 evaluations     200 steps  largest deviation 3.30e-7  at the end 3.30e-7  relative norm change 1.25e-8
+  RK4   dt = 0.05         1600 evaluations     400 steps  largest deviation 2.06e-8  at the end 2.06e-8  relative norm change 3.92e-10
+  RK4   dt = 0.02         4000 evaluations    1000 steps  largest deviation 5.27e-10  at the end 5.27e-10  relative norm change 4.01e-12  (the step of the first version)
+  RK4   dt = 0.01         8000 evaluations    2000 steps  largest deviation 3.30e-11  at the end 3.30e-11  relative norm change 1.25e-13
+  RK4   dt = 0.005       16000 evaluations    4000 steps  largest deviation 2.07e-12  at the end 2.07e-12  relative norm change 4.44e-15
+  CVODE rtol = 1e-6        358 evaluations     208 steps  largest deviation 7.35e-6  at the end 6.46e-6  relative norm change 5.62e-6
+  CVODE rtol = 1e-8        388 evaluations     197 steps  largest deviation 2.63e-7  at the end 3.89e-8  relative norm change 2.63e-7
+  CVODE rtol = 1e-10       466 evaluations     237 steps  largest deviation 2.05e-8  at the end 2.05e-8  relative norm change 2.05e-8
+  CVODE rtol = 1e-12       963 evaluations     486 steps  largest deviation 4.72e-10  at the end 4.72e-10  relative norm change 4.72e-10  (the setting of the programs)
+  CVODE rtol = 1e-13       853 evaluations     445 steps  largest deviation 4.63e-12  at the end 4.10e-12  relative norm change 4.63e-12
+problem LAT: the lattice operator with random links, potentials and pair fields on 3 x 2 x 4 sites (dx = 0.7, periodic in x^1 and x^3, walls in x^2, m = 0.4, mu = 0.3; 384 complex unknowns; random normalized initial state; outputs every 0.5 up to x^0 = 20; exact solution: the spectral sum)
+  RK4   dt = 0.125         640 evaluations     160 steps  largest deviation 3.67e-1  at the end 3.67e-1  relative norm change 1.48e-1  (the step of the first version)
+  RK4   dt = 0.1           800 evaluations     200 steps  largest deviation 1.92e-1  at the end 1.92e-1  relative norm change 6.53e-2
+  RK4   dt = 0.05         1600 evaluations     400 steps  largest deviation 1.39e-2  at the end 1.39e-2  relative norm change 2.54e-3
+  RK4   dt = 0.025        3200 evaluations     800 steps  largest deviation 8.76e-4  at the end 8.76e-4  relative norm change 8.10e-5
+  RK4   dt = 0.0125       6400 evaluations    1600 steps  largest deviation 5.48e-5  at the end 5.48e-5  relative norm change 2.54e-6
+  RK4   dt = 0.00625     12800 evaluations    3200 steps  largest deviation 3.42e-6  at the end 3.42e-6  relative norm change 7.94e-8
+  CVODE rtol = 1e-6       1375 evaluations    1085 steps  largest deviation 1.59e-4  at the end 1.59e-4  relative norm change 1.86e-5
+  CVODE rtol = 1e-8       3465 evaluations    1730 steps  largest deviation 8.76e-6  at the end 8.76e-6  relative norm change 4.98e-6
+  CVODE rtol = 1e-10      7523 evaluations    3760 steps  largest deviation 1.71e-7  at the end 1.71e-7  relative norm change 9.81e-8
+  CVODE rtol = 1e-12      4856 evaluations    3892 steps  largest deviation 1.82e-10  at the end 1.82e-10  relative norm change 6.05e-11  (the setting of the programs)
+  CVODE rtol = 1e-13      5715 evaluations    5274 steps  largest deviation 2.03e-11  at the end 2.03e-11  relative norm change 7.58e-12
+AS-2: RK4 with the step of the first version (dt = 0.004): deviation 8.72e-10 with 16000 evaluations; CVODE as the programs use it (rtol = 1e-12): deviation 1.26e-11 with 1494 evaluations
+AS-4: RK4 with the step of the first version (dt = 0.02): deviation 5.27e-10 with 4000 evaluations; CVODE as the programs use it (rtol = 1e-12): deviation 4.72e-10 with 963 evaluations
+LAT: RK4 with the step of the first version (dt = 0.125): deviation 3.67e-1 with 640 evaluations; CVODE as the programs use it (rtol = 1e-12): deviation 1.82e-10 with 4856 evaluations
+[PASS] the RK4 run of AS-2 with dt = 0.004 reproduces the column P_up_rk4 of the archived file t2_A_precession.csv at its 101 times (largest difference 4.95e-11, allowed 5.1e-11: half a unit of the 10th decimal)
+[PASS] the RK4 run of AS-4 with dt = 0.02 reproduces the column P_hole_rk4 of the archived file t2_B_rabi.csv at its 101 times (largest difference 4.98e-11, allowed 5.1e-11)
+the probabilities of Figures 3(b) and 4(b): largest |P_up - exact| RK4 5.00e-10, CVODE 1.00e-10; largest |P_hole - exact| RK4 2.00e-10, CVODE 0.00e0 (both files print 10 decimals)
+[PASS] example packet_free: the four time series have the same 601 output times
+  packet_free norm: first version - CVODE 1.50e-7; CVODE 1e-10 - 1e-12 1.76e-7; CVODE 1e-13 - 1e-12 3.00e-11
+  packet_free E_expect: first version - CVODE 1.66e-7; CVODE 1e-10 - 1e-12 1.96e-7; CVODE 1e-13 - 1e-12 3.40e-11
+  packet_free P_hole: first version - CVODE 0.00e0; CVODE 1e-10 - 1e-12 0.00e0; CVODE 1e-13 - 1e-12 0.00e0
+  packet_free P_up: first version - CVODE 0.00e0; CVODE 1e-10 - 1e-12 0.00e0; CVODE 1e-13 - 1e-12 0.00e0
+  packet_free x_mean_1: first version - CVODE 7.75e-6; CVODE 1e-10 - 1e-12 8.63e-8; CVODE 1e-13 - 1e-12 2.00e-10
+[PASS] example cyclotron: the four time series have the same 721 output times
+  cyclotron norm: first version - CVODE 2.92e-7; CVODE 1e-10 - 1e-12 7.20e-10; CVODE 1e-13 - 1e-12 2.52e-9
+  cyclotron E_expect: first version - CVODE 3.59e-7; CVODE 1e-10 - 1e-12 7.71e-10; CVODE 1e-13 - 1e-12 3.10e-9
+  cyclotron P_up: first version - CVODE 0.00e0; CVODE 1e-10 - 1e-12 0.00e0; CVODE 1e-13 - 1e-12 0.00e0
+  cyclotron x_mean_1: first version - CVODE 4.95e-6; CVODE 1e-10 - 1e-12 1.18e-8; CVODE 1e-13 - 1e-12 3.35e-9
+  cyclotron x_mean_2: first version - CVODE 4.52e-6; CVODE 1e-10 - 1e-12 1.36e-8; CVODE 1e-13 - 1e-12 6.27e-9
+[PASS] example andreev: the four time series have the same 1201 output times
+  andreev norm: first version - CVODE 1.46e-9; CVODE 1e-10 - 1e-12 5.60e-11; CVODE 1e-13 - 1e-12 9.00e-12
+  andreev E_expect: first version - CVODE 2.79e-9; CVODE 1e-10 - 1e-12 1.29e-10; CVODE 1e-13 - 1e-12 1.61e-11
+  andreev P_hole: first version - CVODE 1.40e-9; CVODE 1e-10 - 1e-12 6.20e-11; CVODE 1e-13 - 1e-12 6.00e-12
+  andreev P_up: first version - CVODE 1.39e-9; CVODE 1e-10 - 1e-12 6.15e-11; CVODE 1e-13 - 1e-12 6.00e-12
+  andreev x_mean_1: first version - CVODE 5.06e-8; CVODE 1e-10 - 1e-12 1.70e-9; CVODE 1e-13 - 1e-12 4.00e-10
+[PASS] example quench: the four time series have the same 601 output times
+  quench abs_d_mean: first version - CVODE 4.11e-3; CVODE 1e-10 - 1e-12 4.42e-9; CVODE 1e-13 - 1e-12 4.20e-11
+  quench abs_d_site0: first version - CVODE 4.11e-3; CVODE 1e-10 - 1e-12 4.42e-9; CVODE 1e-13 - 1e-12 4.20e-11
+  quench N_F: first version - CVODE 1.27e-8; CVODE 1e-10 - 1e-12 5.07e-7; CVODE 1e-13 - 1e-12 4.90e-9
+  quench E_MF: first version - CVODE 1.92e-3; CVODE 1e-10 - 1e-12 3.86e-6; CVODE 1e-13 - 1e-12 3.70e-8
+  quench ortho_error: first version - CVODE 4.84e-10; CVODE 1e-10 - 1e-12 2.09e-8; CVODE 1e-13 - 1e-12 1.88e-10
+[PASS] the CVODE results are converged: for every compared column the change between rtol = 1e-12 and rtol = 1e-13 is smaller than the difference from the first version (or below 1e-9)
+quench: frequency 1.184485 (implicit midpoint) / 1.188975, 1.188975, 1.188975 (CVODE 1e-10, 1e-12, 1e-13); mean of |d| 0.5008765642 / 0.5031251098, 0.5031251078, 0.5031251078; amplitude 0.00586681 / 0.00707867, 0.00707867, 0.00707867; largest change of E_MF 1.92e-3 / 3.96e-6, 9.69e-8, 6.00e-8
+[PASS] quench: the frequency agrees to 1e-6 and the mean of |d| to 1e-8 between the three CVODE tolerances (converged), while the implicit midpoint rule differs from them
+the examples check of the first version: amplitude mode of the linearized equations at the mean of the first version 1.18991; relative deviation of the implicit midpoint frequency 4.56e-3; of the CVODE frequency from the same prediction 7.86e-4
+packet_free: norm change RK4 1.50e-7 / CVODE 1.07e-10; energy change RK4 1.66e-7 / CVODE 1.23e-10; evaluations RK4 2400 / CVODE 1406
+cyclotron: norm change RK4 2.95e-7 / CVODE 2.56e-9; energy change RK4 3.62e-7 / CVODE 3.15e-9; evaluations RK4 2880 / CVODE 4570
+andreev: norm change RK4 1.46e-9 / CVODE 9.81e-12; energy change RK4 2.80e-9 / CVODE 1.88e-11; evaluations RK4 4800 / CVODE 3514
+SB-10: line 0.279251576 (RK4) / 0.279251552 (CVODE), pole 0.279251554; energy 1.50e-8 / 2.30e-9. SB-16: lines 0.41888388, 0.41895942 (RK4) / 0.41888608, 0.41896162 (CVODE); energy 6.80e-7 / 9.60e-10
+t2_sfbs_tdbdg_normal.csv: same 2001 times (largest difference of the times 0.00e0); largest difference of d_over_d0 between RK4 and CVODE 2.95e-6
+t2_sfbs_tdbdg_higgs.csv: same 3001 times (largest difference of the times 0.00e0); largest difference of d_over_dvac between RK4 and CVODE 3.15e-5

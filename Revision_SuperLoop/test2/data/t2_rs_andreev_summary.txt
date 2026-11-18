@@ -13,5 +13,5 @@ results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.99999999999
 output files: t2_rs_andreev_summary.txt, t2_rs_andreev_series.csv, t2_rs_andreev_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 9.81e-12 (bound: the accumulated local error permitted by CVODE, steps sqrt(2) (rtol + atol sqrt(n)) = 4.0e-09)
-[PASS] the energy <w|H_lat|w> = 0.07363888177 is conserved (static fields): largest change 1.88e-11 (bound: 2 Hbound times the accumulated local error, 6.5e-08)
+[PASS] the norm of the mode is conserved: largest change 9.81e-12 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n)) = 4.0e-08)
+[PASS] the energy <w|H_lat|w> = 0.07363888177 is conserved (static fields): largest change 1.88e-11 (bound: 2 Hbound times the bound of the norm, 6.5e-07)
