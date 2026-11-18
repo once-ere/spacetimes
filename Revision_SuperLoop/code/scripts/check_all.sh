@@ -17,7 +17,12 @@
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
 #      because the reports of the checks, which the documents print, count the built documents
-#      that the first pass creates; after the second pass every printed report is current;
+#      that the first pass creates; after the second pass every printed report is current.
+#      The two checks of the symbols and of self-containedness also read BUILT documents; in
+#      the first pass these are the documents of the earlier build, which can disagree with a
+#      registry or a source that was changed since.  A failure of these two checks in the first
+#      pass is therefore reported as a NOTE and does not count; the second pass, which reads the
+#      documents that the first pass has just built, decides;
 #   3. the verdicts: every report in data/, explanations/data/ and test2/data/ must pass, no built document may
 #      contain an unresolved
 #      placeholder, every report printed in a document must be the current one, no formula may end
@@ -87,11 +92,17 @@ run "t2_cvcmp (test2/cvode_vs_rk4)" ./test2/rust/target/release/t2_cvcmp
 run "make_cmp_figures.py (test2/cvode_vs_rk4)" python3 test2/cvode_vs_rk4/python/make_cmp_figures.py
 
 # 2. documents, two passes
+soft() {  # a check that reads built documents: in the first pass its failure is a note, in the second it counts
+    local pass="$1" name="$2"; shift 2
+    if [ "$pass" -eq 2 ]; then run "pass $pass: $name" "$@"
+    elif "$@" > /tmp/sl_step.log 2>&1; then line PASS "pass $pass: $name"
+    else line NOTE "pass $pass: $name fails on the documents of the earlier build; the second pass decides"; fi
+}
 for pass in 1 2; do
     run "pass $pass: write_symbol_registry.py" python3 code/scripts/write_symbol_registry.py
     run "pass $pass: write_doc_tables.py (before the checks)" python3 code/scripts/write_doc_tables.py
-    run "pass $pass: check_symbols.py" python3 code/scripts/check_symbols.py
-    run "pass $pass: check_self_contained.py" python3 code/scripts/check_self_contained.py
+    soft "$pass" "check_symbols.py" python3 code/scripts/check_symbols.py
+    soft "$pass" "check_self_contained.py" python3 code/scripts/check_self_contained.py
     run "pass $pass: write_doc_tables.py (with the reports)" python3 code/scripts/write_doc_tables.py
     run "pass $pass: assemble_docs.py" python3 code/scripts/assemble_docs.py
     run "pass $pass: build_manuscript.py" python3 code/scripts/build_manuscript.py

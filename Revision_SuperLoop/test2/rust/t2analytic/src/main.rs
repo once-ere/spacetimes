@@ -695,6 +695,9 @@ fn main() {
         "mu,G_over_Gcrit_m0,Delta,source",
     );
     let mut dev_root = 0.0f64;
+    // the number of the cases (mu, G/G_crit) of the second list that have a gap: 11 of the 12 (at mu = 0 and
+    // G = 0.6 G_crit there is none)
+    let mut nroots = 0usize;
     for &mu in &[0.0, 0.3, 0.6] {
         for i in 0..=280 {
             let r = 0.2 + 2.8 * i as f64 / 280.0;
@@ -704,6 +707,7 @@ fn main() {
         for &r in &[0.6, 1.2, 1.8, 2.4] {
             let del = solve_gap(r * gcrit, lam, mu);
             if del > 0.0 {
+                nroots += 1;
                 let ig = gap_integral_quad(lam, mu, del, 0.0, &gl);
                 dev_root = dev_root.max((ig * r * gcrit - 1.0).abs());
                 gapc.row(&[format!("{}", mu), format!("{:.5}", r), f10(del), "quadrature".into()]);
@@ -729,9 +733,9 @@ fn main() {
     }
     ck.add(
         "AS-5",
-        "the gap equation (2.33) in closed form for massless spinor charges (case B): int_(q<Lambda) d^3q/(2 pi)^3 (1/E^+ + 1/E^-) with E^(+-) = ((q +- mu)^2 + Delta^2)^(1/2) equals (1/(4 pi^2)) [(Lambda - 3 mu) E^+(Lambda) + (Lambda + 3 mu) E^-(Lambda) + (2 mu^2 - Delta^2) (asinh((Lambda + mu)/Delta) + asinh((Lambda - mu)/Delta))] for six pairs (mu, Delta) (relative deviation from composite Gauss-Legendre quadrature with 32 nodes per panel, tolerance 1e-10); its limit Delta -> 0 at mu = 0 is Lambda^2/(2 pi^2), so that G_crit = 2 pi^2/Lambda^2 (tolerance 1e-8); the gaps Delta(G) found from the closed form by bisection satisfy G int(...) = 1 with the integral computed by quadrature (12 couplings, tolerance 1e-9); and for mu > 0 and weak coupling (G < G_crit) the gap approaches the BCS form Delta = 2 (Lambda^2 - mu^2)^(1/2) exp(-3/2) exp(-(pi^2/mu^2) (1/G - 1/G_crit)), the relative deviation being smaller than twice the size (Delta^2/(2 mu^2)) ln(1/Delta) of the leading correction (mu = 0.3, G/G_crit = 0.3, 0.4, 0.5); Lambda = 1",
-        dev_b3 < 1e-10 && gcrit_dev < 1e-8 && dev_root < 1e-9 && bcs_ok,
-        format!("largest deviations {}, {}, {}; Delta at G = 1.5 G_crit, mu = 0: {:.6}; weak coupling at mu = 0.3, G/G_crit = 0.3, 0.4, 0.5: Delta = {}", sci(dev_b3), sci(gcrit_dev), sci(dev_root), d_mu0, bcs_txt.join(", ")),
+        "the gap equation (2.33) in closed form for massless spinor charges (case B): int_(q<Lambda) d^3q/(2 pi)^3 (1/E^+ + 1/E^-) with E^(+-) = ((q +- mu)^2 + Delta^2)^(1/2) equals (1/(4 pi^2)) [(Lambda - 3 mu) E^+(Lambda) + (Lambda + 3 mu) E^-(Lambda) + (2 mu^2 - Delta^2) (asinh((Lambda + mu)/Delta) + asinh((Lambda - mu)/Delta))] for six pairs (mu, Delta) (relative deviation from composite Gauss-Legendre quadrature with 32 nodes per panel, tolerance 1e-10); its limit Delta -> 0 at mu = 0 is Lambda^2/(2 pi^2), so that G_crit = 2 pi^2/Lambda^2 (tolerance 1e-8); the gaps Delta(G) found from the closed form by bisection satisfy G int(...) = 1 with the integral computed by quadrature (the 11 of the 12 cases mu = 0, 0.3, 0.6 with G/G_crit = 0.6, 1.2, 1.8, 2.4 that have a gap, tolerance 1e-9); and for mu > 0 and weak coupling (G < G_crit) the gap approaches the BCS form Delta = 2 (Lambda^2 - mu^2)^(1/2) exp(-3/2) exp(-(pi^2/mu^2) (1/G - 1/G_crit)), the relative deviation being smaller than twice the size (Delta^2/(2 mu^2)) ln(1/Delta) of the leading correction (mu = 0.3, G/G_crit = 0.3, 0.4, 0.5); Lambda = 1",
+        dev_b3 < 1e-10 && gcrit_dev < 1e-8 && dev_root < 1e-9 && nroots == 11 && bcs_ok,
+        format!("largest deviations {}, {}, {} ({} gaps); Delta at G = 1.5 G_crit, mu = 0: {:.6}; weak coupling at mu = 0.3, G/G_crit = 0.3, 0.4, 0.5: Delta = {}", sci(dev_b3), sci(gcrit_dev), sci(dev_root), nroots, d_mu0, bcs_txt.join(", ")),
     );
 
     // ================================================================ Case B, AS-6: the exact self-consistent uniform state on the lattice
@@ -924,7 +928,7 @@ fn main() {
             for (a, b) in found.iter().zip(&expect) {
                 dev_pt = dev_pt.max((a - b).abs());
             }
-            pt_txt.push(format!("Delta_inf ell_K = {}, Qmat_K = {:+}: {} bound states", lamk, sgn, found.len()));
+            pt_txt.push(format!("Delta_inf ell_K = {}, Qmat_K = {:+}: {} bound state{}", lamk, sgn, found.len(), if found.len() == 1 { "" } else { "s" }));
         }
     }
     ck.add(
@@ -1013,6 +1017,9 @@ fn main() {
     );
     let mut eq = vec![];
     let mut dev_formula = 0.0f64;
+    // the norm of the part of the normalized analytic state of the ring of 60 sites outside the space of the eight
+    // eigenvectors near +m (the square root of 1 minus the sum of its squared scalar products with them)
+    let mut outside60 = f64::NAN;
     for &ns in &[60usize, 120, 240, 480] {
         let ell = lring / ns as f64;
         let lat = Lattice { n: [ns, 1, 1], ell, periodic: [true, false, false], wilson: 1.0, mass, mu: 0.0 };
@@ -1035,6 +1042,14 @@ fn main() {
         let er = num.re / den;
         let res: Vec<C64> = hw.iter().zip(&w).map(|(h, x)| *h - x.scale(er)).collect();
         let rres = vnorm(&res) / den.sqrt();
+        if ns == nk {
+            let inside_part: f64 = plus
+                .iter()
+                .map(|&i| (0..16 * ns).fold(C64::ZERO, |acc, row| acc + veck.get(row, i).conj() * w[row]).norm_sqr())
+                .sum::<f64>()
+                / den;
+            outside60 = (1.0 - inside_part).max(0.0).sqrt();
+        }
         // the exact lattice formula
         let s1: f64 = (0..ns).map(|s| (phis[(s + 1) % ns] - phis[s]).powi(2)).sum();
         let s0: f64 = phis.iter().map(|p| p * p).sum();
@@ -1049,24 +1064,40 @@ fn main() {
     let errs: Vec<f64> = ratios.iter().map(|r| 1.0 / 6.0 - r).collect();
     let first_order = (ratios[3] - 1.0 / 6.0).abs() < 0.01 / 6.0 && errs.windows(2).all(|p| p[0] / p[1] > 3.5 && p[0] / p[1] < 4.5);
     let res_dec = eq.windows(2).all(|p| p[1].2 < 0.6 * p[0].2);
-    // The bound states of the dense spectrum (dx = 0.4) and the analytic states differ at second order in the
-    // relative residual r of the analytic state: |E - E_R| <= r^2/delta (Kato-Temple) and, for the summed
-    // densities, 1 - (Bhattacharyya coefficient) <= (1/2) (r/delta)^2 (Davis-Kahan, with
-    // (|psi| - |w|)^2 <= |psi - w|^2 site by site), where delta is the distance from E_R to the nearest
-    // eigenvalue outside the cluster of the eight positive bound states.
+    // The bound states of the dense spectrum (dx = 0.4) and the analytic state are compared at second order in the
+    // relative residual r of the analytic state.  Let delta be the distance from its Rayleigh quotient E_R to the
+    // nearest eigenvalue outside the cluster of the eight positive bound states, and let E_R lie between the nearest
+    // eigenvalue below the cluster and the nearest one above it.  Two theorems hold:
+    //   (Kato and Temple)  one eigenvalue of the cluster lies at most r^2/delta above E_R, and one at most
+    //                      r^2/delta below.  All 16 moduli |E| of the bound states therefore lie within
+    //                      r^2/delta + spread of E_R, where spread is the largest minus the smallest of the 16 moduli.
+    //   (Davis and Kahan)  the part of the normalized analytic state outside the space of the eigenvectors of the
+    //                      cluster has at most the norm r/delta (on that part the operator minus E_R is at least
+    //                      delta in magnitude, and the whole image of the state has the norm r).
+    // The check verifies both.  For the summed density of the eight eigenvectors it REQUIRES the agreement at second
+    // order, 1 - (Bhattacharyya coefficient) < (1/2) (r/delta)^2, the leading term of 1 - cos of the angle whose
+    // sine is r/delta; this is a requirement on the scale of the second theorem, not a theorem (the analytic state
+    // of the check is one state of one wall).
     let er04 = eq[0].1;
     let r04 = eq[0].2;
     let worst_bound = inside.iter().map(|&i| (evk[i].abs() - er04).abs()).fold(0.0, f64::max);
     let delta04 = (0..evk.len()).filter(|i| !plus.contains(i)).map(|i| (evk[i] - er04).abs()).fold(f64::INFINITY, f64::min);
-    let tol_e = r04 * r04 / delta04;
+    // the spread of the 16 moduli, and the position of E_R between the neighbours of the cluster (the eigenvalues
+    // are in ascending order, and the cluster is a run of them)
+    let moduli: Vec<f64> = inside.iter().map(|&i| evk[i].abs()).collect();
+    let spread = moduli.iter().cloned().fold(0.0, f64::max) - moduli.iter().cloned().fold(f64::INFINITY, f64::min);
+    let (first, last) = (plus[0], plus[plus.len() - 1]);
+    let between = last - first + 1 == plus.len() && first > 0 && last + 1 < evk.len() && evk[first - 1] < er04 && er04 < evk[last + 1];
+    let tol_e = r04 * r04 / delta04 + spread;
+    let tol_out = r04 / delta04;
     let tol_bc = 0.5 * (r04 / delta04).powi(2);
     ck.add(
         "AS-9",
-        "the bound states of the domain wall on the lattice (case C): on a ring of length 24 (60 sites, dx = 0.4, r_W = 1, m = 0.4, mu = 0) with the kink-antikink profile Delta(x_LL^1) = tanh(x_LL^1 - 6) tanh(18 - x_LL^1), the lattice operator has exactly 16 eigenvalues inside 0.8 times the continuum threshold (m^2 + Delta_inf^2)^(1/2), eight positive and eight negative (four per wall and sign); with the relative residual r of the analytic bound state at dx = 0.4 and the distance delta from its Rayleigh quotient E_R to the nearest eigenvalue outside the cluster of the eight positive bound states, these eigenvalues lie within r^2/delta of +-E_R (the Kato-Temple bound), and the summed density of the eight states near +m agrees with the analytic density of the bound states of the two walls to second order, 1 - (Bhattacharyya coefficient of the two normalized densities) < (1/2) (r/delta)^2 (the Davis-Kahan bound); for the analytic bound state of the kink (chi_K with the components 1 and 5 equal to 1/sqrt 2 and the others zero, beta_LL chi_K = chi_K) on rings with dx = 0.4, 0.2, 0.1, 0.05 the Rayleigh quotient E_R equals the exact lattice formula m + (r_W/(2 dx)) sum (phi_K(s+1) - phi_K(s))^2 / sum phi_K(s)^2 (tolerance 1e-12), (E_R - m)/(r_W dx) tends to 1/6 (within 1 per cent at dx = 0.05, the difference decreasing by a factor between 3.5 and 4.5 at each halving of dx: the Wilson term shifts the bound state at first order in dx, by r_W dx/6, with a correction of order dx^3), and the relative residual decreases at least by the factor 0.6 at each halving of dx",
-        nbound == 16 && nplus == 8 && worst_bound < tol_e && 1.0 - bc < tol_bc && dev_formula < 1e-12 && first_order && res_dec && beta_dev < 1e-15,
+        "the bound states of the domain wall on the lattice (case C): on a ring of length 24 (60 sites, dx = 0.4, r_W = 1, m = 0.4, mu = 0) with the kink-antikink profile Delta(x_LL^1) = tanh(x_LL^1 - 6) tanh(18 - x_LL^1), the lattice operator has exactly 16 eigenvalues inside 0.8 times the continuum threshold (m^2 + Delta_inf^2)^(1/2), eight positive and eight negative (four per wall and sign); with the relative residual r of the analytic bound state at dx = 0.4 and the distance delta from its Rayleigh quotient E_R to the nearest eigenvalue outside the cluster of the eight positive bound states, which lies between the neighbours of the cluster: (1) the moduli of the 16 eigenvalues lie within r^2/delta + spread of E_R, where spread is the largest minus the smallest of the 16 moduli (the theorem of Kato and Temple: one eigenvalue of the cluster lies at most r^2/delta above E_R and one at most r^2/delta below); (2) the part of the normalized analytic state outside the space of the eight eigenvectors near +m has at most the norm r/delta (the theorem of Davis and Kahan); (3) the summed density of the eight states near +m agrees with the analytic density of the bound states of the two walls at second order in r, 1 - (Bhattacharyya coefficient of the two normalized densities) < (1/2) (r/delta)^2 (a requirement of the check on the scale of (2), not a theorem; the Bhattacharyya coefficient is the sum over the sites of the square root of the product of the two densities, each normalized to the sum 1); for the analytic bound state of the kink (chi_K with the components 1 and 5 equal to 1/sqrt 2 and the others zero, beta_LL chi_K = chi_K) on rings with dx = 0.4, 0.2, 0.1, 0.05 the Rayleigh quotient E_R equals the exact lattice formula m + (r_W/(2 dx)) sum (phi_K(s+1) - phi_K(s))^2 / sum phi_K(s)^2 (tolerance 1e-12), (E_R - m)/(r_W dx) tends to 1/6 (within 1 per cent at dx = 0.05, the difference decreasing by a factor between 3.5 and 4.5 at each halving of dx: the Wilson term shifts the bound state at first order in dx, by r_W dx/6, with a correction of order dx^3), and the relative residual decreases at least by the factor 0.6 at each halving of dx",
+        nbound == 16 && nplus == 8 && between && worst_bound <= tol_e && outside60 <= tol_out && 1.0 - bc < tol_bc && dev_formula < 1e-12 && first_order && res_dec && beta_dev < 1e-15,
         format!(
-            "{} bound states ({} positive); largest | |E| - E_R | = {:.5} (bound r^2/delta = {:.5}, delta = {:.4}); 1 - Bhattacharyya coefficient = {:.2e} (bound {:.2e}); E_R = {:.6}, {:.6}, {:.6}, {:.6}; (E_R - m)/dx = {:.5}, {:.5}, {:.5}, {:.5}; residuals {:.2e}, {:.2e}, {:.2e}, {:.2e}; deviation from the lattice formula {}",
-            nbound, nplus, worst_bound, tol_e, delta04, 1.0 - bc, tol_bc, eq[0].1, eq[1].1, eq[2].1, eq[3].1, ratios[0], ratios[1], ratios[2], ratios[3], eq[0].2, eq[1].2, eq[2].2, eq[3].2, sci(dev_formula)
+            "{} bound states ({} positive); largest | |E| - E_R | = {:.5} (bound r^2/delta + spread = {:.5}, delta = {:.4}, spread = {}); part of the analytic state outside the eight eigenvectors {:.4} (bound r/delta = {:.4}); 1 - Bhattacharyya coefficient = {:.2e} (required below {:.2e}); E_R = {:.6}, {:.6}, {:.6}, {:.6}; (E_R - m)/dx = {:.5}, {:.5}, {:.5}, {:.5}; residuals {:.2e}, {:.2e}, {:.2e}, {:.2e}; deviation from the lattice formula {}",
+            nbound, nplus, worst_bound, tol_e, delta04, sci(spread), outside60, tol_out, 1.0 - bc, tol_bc, eq[0].1, eq[1].1, eq[2].1, eq[3].1, ratios[0], ratios[1], ratios[2], ratios[3], eq[0].2, eq[1].2, eq[2].2, eq[3].2, sci(dev_formula)
         ),
     );
 
@@ -1076,8 +1107,13 @@ fn main() {
     // feels Acal_2 = B x^1 with B = B_up = g_F FF_LL_12 + g_v Fv_LL^3_12/2 or B = B_down = g_F FF_LL_12 - g_v Fv_LL^3_12/2.
     // At p_2 = p_3 = 0: h = alpha^1 p_1 + alpha^2 (-B x^1) + beta m.  Oscillator basis of the frequency |B|:
     // x^1 = (a + a^dag)/sqrt(2|B|), p_1 = i sqrt(|B|/2) (a^dag - a).  Exact energies: +m and -m once each,
-    // +-(m^2 + 2 n_L |B|)^(1/2) twice each, n_L = 1, 2, ...  The truncated basis gives spurious states that live
-    // on the highest oscillator states; they are recognized by their weight there and discarded.
+    // +-(m^2 + 2 n_L |B|)^(1/2) twice each, n_L = 1, 2, ...  The exact eigenstates of the level n_L contain only the
+    // oscillator states n_L - 1 and n_L, so the basis of the states 0 to 119 represents the levels 0 to 119 exactly.
+    // The oscillator state 119 with the antiparallel spin has lost its partner (the state 120): the truncated matrix
+    // has, instead of the level 120, two states with the energies +m and -m that live on the oscillator state 119.
+    // These two states are artefacts of the truncation.  The check discards every eigenvector with a weight above
+    // 1e-8 on the ten highest oscillator states: for each isospin component the two artefacts and the 40 states of
+    // the levels 110 to 119, which it does not use; it counts both kinds.
     let (ff12, fv12) = (1.2, 1.0);
     let nosc = 120usize;
     let alpha1 = model::alpha(1);
@@ -1092,6 +1128,9 @@ fn main() {
     let mut dev_d = 0.0f64;
     let mut count_ok = true;
     let mut nspur = 0usize;
+    // of the discarded states: those at a level 110 to 119, and the artefacts with the energy +m or -m
+    let mut nspur_levels = 0usize;
+    let mut nspur_mass = 0usize;
     for &qq in &[0.5f64, -0.5] {
         let b = gf * ff12 + qq * gv * fv12;
         let ab = b.abs();
@@ -1119,6 +1158,13 @@ fn main() {
                 kept.push(ev[i]);
             } else {
                 nspur += 1;
+                let e = ev[i].abs();
+                if (nosc - 10..nosc).any(|n| (e - (mass * mass + 2.0 * n as f64 * ab).sqrt()).abs() < 1e-8) {
+                    nspur_levels += 1;
+                }
+                if (e - mass).abs() < 1e-8 {
+                    nspur_mass += 1;
+                }
             }
         }
         for sign in [1.0f64, -1.0] {
@@ -1153,9 +1199,9 @@ fn main() {
     landau.write(&dd, "t2_D_landau.csv");
     ck.add(
         "AS-10",
-        "Landau levels (case D): for one isospin component (Q_LL = +1/2 or -1/2) in the constant magnetic fields FF_LL_12 = 1.2 of U(1)_F and Fv_LL^3_12 = 1.0 of the third isospin direction (Landau gauge AF_LL_2 = FF_LL_12 x_LL^1, Av_LL^3_2 = Fv_LL^3_12 x_LL^1; g_v = 0.7, g_F = 0.45), the component feels the magnetic field B_up = g_F FF_LL_12 + g_v Fv_LL^3_12/2 or B_down = g_F FF_LL_12 - g_v Fv_LL^3_12/2; the Dirac Hamiltonian alpha_LL^1 p_1 + alpha_LL^2 (p_2 - B_up x_LL^1) + beta_LL m at p_2 = p_3 = 0 (and the same with B_down), with the momentum operators p_j = -i d_j, diagonalized in a basis of 120 oscillator states of the frequency |B_up| (or |B_down|) (the states with a weight above 1e-8 on the ten highest oscillator states are artefacts of the truncation and are discarded), has the energies +m and -m once each and +-(m^2 + 2 n_L |B_up|)^(1/2) (or with |B_down|) twice each for n_L = 1 to 10, and no other energy below the level 10 (m = 0.4; tolerance 1e-10)",
-        dev_d < 1e-10 && count_ok,
-        format!("largest deviation {}; B_up = {:.3}, B_down = {:.3}; {} discarded truncation states", sci(dev_d), gf * ff12 + 0.5 * gv * fv12, gf * ff12 - 0.5 * gv * fv12, nspur),
+        "Landau levels (case D): for one isospin component (Q_LL = +1/2 or -1/2) in the constant magnetic fields FF_LL_12 = 1.2 of U(1)_F and Fv_LL^3_12 = 1.0 of the third isospin direction (Landau gauge AF_LL_2 = FF_LL_12 x_LL^1, Av_LL^3_2 = Fv_LL^3_12 x_LL^1; g_v = 0.7, g_F = 0.45), the component feels the magnetic field B_up = g_F FF_LL_12 + g_v Fv_LL^3_12/2 or B_down = g_F FF_LL_12 - g_v Fv_LL^3_12/2; the Dirac Hamiltonian alpha_LL^1 p_1 + alpha_LL^2 (p_2 - B_up x_LL^1) + beta_LL m at p_2 = p_3 = 0 (and the same with B_down), with the momentum operators p_j = -i d_j, diagonalized in a basis of 120 oscillator states of the frequency |B_up| (or |B_down|) (the states with a weight above 1e-8 on the ten highest oscillator states are discarded: for each isospin component they are the 40 states of the levels 110 to 119, which the check does not use, and the two artefacts of the truncation, which have the energies +m and -m and live on the highest oscillator state), has the energies +m and -m once each and +-(m^2 + 2 n_L |B_up|)^(1/2) (or with |B_down|) twice each for n_L = 1 to 10, and no other energy below the level 10 (m = 0.4; tolerance 1e-10)",
+        dev_d < 1e-10 && count_ok && nspur == 84 && nspur_levels == 80 && nspur_mass == 4,
+        format!("largest deviation {}; B_up = {:.3}, B_down = {:.3}; {} discarded states, of them {} at the levels 110 to 119 and {} artefacts at +-m", sci(dev_d), gf * ff12 + 0.5 * gv * fv12, gf * ff12 - 0.5 * gv * fv12, nspur, nspur_levels, nspur_mass),
     );
 
     // ================================================================ output

@@ -810,16 +810,27 @@ with the seed 2026111708. The formulas of the checks:
   $\Delta_{\rm LL}=\tanh(x^1_{\rm LL}-6)\tanh(18-x^1_{\rm LL})$; the count of the eigenvalues inside 0.8 times the continuum threshold;
   the summed densities against the analytic profile (Bhattacharyya coefficient); the Rayleigh quotient
   $E^{\rm R}_{\rm LL}=m_{\rm LL}+(r^{\rm W}_{\rm LL}/(2\ell^{\rm x}_{\rm LL}))\sum_{s^1_{\rm LL}}(\varphi^{\rm K}_{\rm LL}((s^1_{\rm LL}+1)\ell^{\rm x}_{\rm LL})-\varphi^{\rm K}_{\rm LL}(s^1_{\rm LL}\ell^{\rm x}_{\rm LL}))^2/\sum_{s^1_{\rm LL}}\varphi^{\rm K}_{\rm LL}(s^1_{\rm LL}\ell^{\rm x}_{\rm LL})^2$
-  for 60, 120, 240 and 480 sites, which tends to $m_{\rm LL}+r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$; and the bounds of Kato-Temple and
-  Davis-Kahan, computed from the relative residual of the analytic state and the distance of its Rayleigh quotient from
-  the rest of the spectrum.
+  for 60, 120, 240 and 480 sites, which tends to $m_{\rm LL}+r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$; and the bounds of the theorems of
+  Kato and Temple and of Davis and Kahan for a group of eigenvalues, computed from the relative residual of the analytic
+  state (the norm of the operator applied to the normalized state minus the Rayleigh quotient times the state) and the
+  distance of its Rayleigh quotient from the nearest eigenvalue outside the group of the eight positive bound states:
+  the moduli of the 16 eigenvalues inside the gap must lie within the square of the relative residual divided by the
+  distance, plus the largest difference between two of the moduli, of $E^{\rm R}_{\rm LL}$ (first theorem), and the part of
+  the analytic state outside the space of the eight eigenvectors must have at most the norm of the relative residual
+  divided by the distance (second theorem); the check verifies that $E^{\rm R}_{\rm LL}$ lies between the neighbours of
+  the group, which the first theorem presupposes. For the densities it requires one minus the Bhattacharyya coefficient
+  (the sum over the sites of the square root of the product of the two densities, each normalized to the sum 1) to be
+  smaller than half the square of the second bound, which is a requirement on the scale of the second theorem and not
+  a theorem.
 * **AS-10 (case D, Landau levels).** The $480\times480$ matrix of $h^\nabla_{\rm LL}$ at $q^2_{\rm LL}=q^3_{\rm LL}=0$ in 120 oscillator
   states of the frequency $\lvert B^\uparrow_{\rm LL}\rvert$ (and $\lvert B^\downarrow_{\rm LL}\rvert$), with
   $B^\uparrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}+\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}=0.89$ and
   $B^\downarrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}-\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}=0.19$; the energies must be
   $\pm(m_{\rm LL}^2+2n^{\rm L}_{\rm LL}\lvert B^\uparrow_{\rm LL}\rvert)^{1/2}$ (once each for $n^{\rm L}_{\rm LL}=0$, twice for $n^{\rm L}_{\rm LL}\ge1$); the
-  states with a weight above $10^{-8}$ on the ten highest oscillator states are artefacts of the truncation and are
-  discarded.
+  eigenvectors with a weight above $10^{-8}$ on the ten highest oscillator states are discarded and counted: for each
+  isospin component the forty exact states of the levels 110 to 119, which the check does not need, and the two
+  artefacts of the truncation, which have the energies $+m_{\rm LL}$ and $-m_{\rm LL}$ and live on the oscillator state 119
+  (84 discarded states in all, 80 and 4).
 
 The data files (in `test2/data`) and their columns: `t2_A_dispersion_curves.csv` (`q`, `Q_LL`, `branch`, `E_qp`),
 `t2_A_dispersion_lattice.csv` (`q`, `Q_LL`, `E_qp`), `t2_A_precession.csv` (`x_LL^0`, `P_up_cvode`, `P_up_exact`),
@@ -870,8 +881,8 @@ solver does not compute: EX-1 the velocity of the free packet against the deriva
 averaged with the Gaussian weights $\exp(-2(w^{\rm pk}_{\rm LL})^2(q^1_{\rm LL}-q^{{\rm pk},1}_{\rm LL})^2)$ (to $10^{-3}$); EX-2 the
 conservation of norm and energy in the magnetic field and the bounded orbit; EX-3 the total reflection of a packet with an
 energy inside the gap (at most $10^{-4}$ left inside the superfluid) and its conversion into a hole (more than 0.9); EX-4
-the 16 bound states of a kink and an antikink within the Kato-Temple bound 0.023 of the Rayleigh quotient $E^{\rm R}_{\rm LL}$
-of the analytic bound state; EX-5 the uniform pair field against the root of the lattice gap equation found by Brent's
+the 16 bound states of a kink and an antikink within the bound 0.023, which check AS-9 computes from the theorem of Kato
+and Temple, of the Rayleigh quotient $E^{\rm R}_{\rm LL}$ of the analytic bound state; EX-5 the uniform pair field against the root of the lattice gap equation found by Brent's
 method (to $10^{-9}$); EX-6 the eight bound states of the self-consistent kink against the first-order Wilson shift
 (the Rayleigh quotient of the zero mode of the computed profile, within 25 per cent); and EX-7 the frequency of the
 oscillation of $\lvert\vec d_{\rm LL}\rvert$ after a quench (a least-squares fit of a sinusoid) against the root of

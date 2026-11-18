@@ -9,7 +9,7 @@ gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0,
 time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-13, atol = 1e-15; output every 0.05 up to x^0 = 60 (1200 outputs), fields every 40 outputs; Hbound = 8
 initial mode: Gaussian packet, centre [30.0, 0.0, 0.0], width 4, momentum [0.917, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 1.073085668
 CVODE: 2655 steps, 4742 evaluations of the right side, 4 rejected steps, 4739 corrector iterations (0 convergence failures), last order 7, last step 2.6903e-02
-results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.073638881768; final norm 0.999999999999; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 1.28 s
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.073638881768; final norm 0.999999999999; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 1.25 s
 output files: andreev_rtol1e-13_summary.txt, andreev_rtol1e-13_series.csv, andreev_rtol1e-13_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)

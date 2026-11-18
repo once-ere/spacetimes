@@ -1139,6 +1139,26 @@ unchanged (Section 10), and its provenance
   \(r^{\rm der}_{\rm LL}\), \(B^{\rm out}_{\rm LL}\)), the meaning of
   \(B^{\rm H}_{\rm LL}\) corrected; Sections 2.10, 3, 4, 6 and 7 of this
   document completed (Section 11, entry E65).
+\item
+  \textbf{Stage 20 --- corrections found while the program
+  \texttt{t2\_analytic} was rewritten for the notebook of Test 2}
+  (2026-11-18): every statement of the program was derived again when
+  the chapter of the notebook was written, and four statements were
+  found to be wrong or imprecise. Corrected in the program, in its
+  report and in the documents: the number of the gaps of check AS-5 (11
+  of 12 cases, now counted and required); the kinds of the discarded
+  states of check AS-10 (80 states of the levels 110 to 119 and 4
+  artefacts of the truncation, now counted and required); the two
+  theorems behind the tolerances of check AS-9, which are now stated for
+  a group of eigenvalues and proved in the document of Test 2 (Section
+  3.4), with the spread of the eigenvalues of the group, the position of
+  the Rayleigh quotient and the bound of Davis and Kahan verified by the
+  check itself, and the comparison of the densities declared a
+  requirement; the wording of check EX-4 and of the document of the
+  calculations; the numbers of the checks in the descriptions of two
+  figures; and the script \texttt{check\_all.sh}, in which a failure of
+  the first pass on documents of an earlier build no longer counts. No
+  number of a data file changed (Section 11, entries E66 to E71).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -2381,6 +2401,67 @@ checks of all programs, the content of \texttt{test2} and of
 \texttt{vendor}, the results of the items {[}4{]} to {[}11{]} and of the
 change to CVODE), the rows and the deviations put in their order, the
 meaning of \(B^{\rm H}_{\rm LL}\) corrected \\
+E66 & the statement of check AS-5 said that the gaps found by bisection
+were checked by quadrature for ``12 couplings''; of the 12 cases (the
+chemical potentials 0, 0.3, 0.6 with the ratios 0.6, 1.2, 1.8, 2.4 of
+the coupling to the critical coupling) only 11 have a gap (at the
+chemical potential 0 and the ratio 0.6 there is none), and the check did
+not count them & the rewriting of the program in the Wolfram Language
+for the notebook of Test 2, which counted the roots (2026-11-18) & the
+statement names the 11 of the 12 cases; the check counts the gaps,
+requires 11 and prints the number \\
+E67 & the statement of check AS-10, a comment of the program and Section
+3.5 of the document of Test 2 called every discarded eigenvector an
+artefact of the truncation of the oscillator basis (``spurious states on
+the highest oscillator states''). Of the 84 discarded eigenvectors only
+4 are artefacts (for each isospin component two states with the energies
+\(+m_{\rm LL}\) and \(-m_{\rm LL}\) on the oscillator state 119, which
+has lost its partner 120); the other 80 are the exact states of the
+levels 110 to 119, which the check discards because they have a weight
+on the ten highest oscillator states and which it does not need & the
+rewriting for the notebook: the energies of the discarded eigenvectors
+were classified & statement, comment and Section 3.5 corrected (the
+basis represents the levels 0 to 119 exactly); the check counts the two
+kinds and requires 80 and 4 \\
+E68 & check AS-9 and Section 3.4 of the document of Test 2 named the
+bounds of Kato and Temple and of Davis and Kahan as bounds for every
+eigenvalue of the group of the eight positive bound states and for the
+densities. The first theorem, for a group of eigenvalues, bounds one
+eigenvalue of the group on each side of the Rayleigh quotient; all
+eigenvalues of the group are bounded only together with their spread,
+and only if the Rayleigh quotient lies between the neighbours of the
+group, which the check did not verify. The second theorem bounds the
+part of the trial state outside the eigenvectors of the group; the
+comparison of the summed densities with the analytic density of two
+walls does not follow from it. The document also did not say what the
+relative residual is, and nowhere defined the Bhattacharyya coefficient
+& every statement of the chapter of the notebook was derived again when
+its text was written & Section 3.4 states both theorems for a group and
+proves them; the check computes the spread of the 16 moduli
+(\(3.8\times10^{-14}\)) and adds it to the first bound, verifies that
+\(E^{\rm R}_{\rm LL}\) lies between the neighbours of the group,
+verifies the second bound directly (the part of the analytic state
+outside the eight eigenvectors has the norm 0.0841, bound 0.1919), and
+declares the comparison of the densities a requirement on the scale of
+the second bound; the Bhattacharyya coefficient is defined in the
+statement and in the document; the statement of check EX-4 and the
+document of the calculations name the bound correctly \\
+E69 & the details of check AS-8 printed ``1 bound states'' & reading of
+the report during the rewriting & singular and plural \\
+E70 & the description of the figures in
+\texttt{test2/python/make\_t2\_figures.py} named check AS-8 for Figure 5
+and check AS-9 for Figure 6; the figures show the results of the checks
+AS-9 and AS-10 (the checks were renumbered when check AS-8 was added,
+and the two descriptions were not) & reading of the script during the
+rewriting of the figures for the notebook & the four places corrected \\
+E71 & \texttt{check\_all.sh} counted a failure of the checks of the
+symbols and of self-containedness in its first pass, although these
+checks also read built documents, which in the first pass are those of
+the earlier build: after a change of the registry the first run ended
+with ``SOME CHECK FAILS'' while the second pass, on the rebuilt
+documents, passed (seen in stage 19) & the run of stage 19 & a failure
+of these two checks in the first pass is printed as a note and does not
+count; the second pass decides (a real error fails there as well) \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%

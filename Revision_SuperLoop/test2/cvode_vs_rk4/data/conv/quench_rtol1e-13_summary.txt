@@ -11,7 +11,7 @@ ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.05
 time integration of the 192 modes (the self-consistent mean-field equations, 73728 complex unknowns): CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-13, atol = 1e-15; output every 0.04 up to x^0 = 24 (600 outputs), fields every 25 outputs
 CVODE: 2514 steps, 5021 evaluations of the right side, 4 rejected steps, 5018 corrector iterations (0 convergence failures), last order 7, last step 9.6519e-03
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 6.005e-08 (CVODE keeps it up to its accumulated local errors)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5031251078; smallest and largest |d| after the quench 0.4902257679 and 0.513432343; computing time 36.29 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5031251078; smallest and largest |d| after the quench 0.4902257679 and 0.513432343; computing time 38.48 s
 the amplitude of the pair field oscillates with the angular frequency 1.188975 (least-squares fit of a constant plus a cosine and a sine of that angular frequency of x^0 to |d| for x^0 > 0, the angular frequency scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00707867); twice the mean of |d| after the quench is 1.006250
 output files: quench_rtol1e-13_summary.txt, quench_rtol1e-13_series.csv, quench_rtol1e-13_fields.csv, quench_rtol1e-13_spectrum.csv, quench_rtol1e-13_iterations.csv
 checks:

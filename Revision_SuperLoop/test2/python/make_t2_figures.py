@@ -29,11 +29,11 @@ test2/figures, each as .pdf and .png:
                               of the uniform polar superfluid on the lattice; (b) the particle-hole
                               oscillation of an injected particle, CVODE against the exact solution;
                               (c) the gap as a function of the coupling (closed form and quadrature)
-  fig_t2_case_C               item 2, case C (AS-8): (a) the pair field of a ring with a kink and an
+  fig_t2_case_C               item 2, case C (AS-9): (a) the pair field of a ring with a kink and an
                               antikink; (b) the density of the bound states, lattice against the
                               analytic profile; (c) the spectrum with the sixteen bound states;
                               (d) the convergence of the Rayleigh quotient of the analytic state
-  fig_t2_case_D               item 2, case D (AS-9): the Landau levels of the two isospin components
+  fig_t2_case_D               item 2, case D (AS-10): the Landau levels of the two isospin components
 
 Colors: the categorical colors of the project (blue, orange, aqua, green, red) in a fixed order;
 every curve is also named in a legend or a label, so that no information is carried by color alone.
@@ -305,7 +305,7 @@ def fig_case_b():
 
 
 def fig_case_c():
-    """Figure 5: case C, the domain wall (kink) of the pair field (check AS-8)."""
+    """Figure 5: case C, the domain wall (kink) of the pair field (check AS-9)."""
     pr = rows("t2_C_kink_profile.csv")
     sp = rows("t2_C_kink_spectrum.csv")
     cv = rows("t2_C_kink_convergence.csv")
@@ -366,7 +366,7 @@ def fig_case_c():
 
 
 def fig_case_d():
-    """Figure 6: case D, Landau levels (check AS-9)."""
+    """Figure 6: case D, Landau levels (check AS-10)."""
     name = "t2_D_landau.csv"
     ld = rows(name)
     bup, bdn = meta(name, "B_up"), meta(name, "B_down")

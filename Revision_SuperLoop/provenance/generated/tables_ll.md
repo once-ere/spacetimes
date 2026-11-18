@@ -152,11 +152,11 @@ LL-S1 & every symbol text is registered once (204 entries) and every plain-text 
 LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 450 items of the 202 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
 LL-S3 & every column of the 105 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (237 different columns), and every file states its content in a line '\# content:' & PASS\\
 LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 204 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 8392 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 9659 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S5 & in the 8404 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 9671 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
 LL-S7 & every one of the 5184 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters) & PASS\\
 LL-S8 & every one of the 3642 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 139 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 4821 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-S9 & the 4825 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
 LL-H1 & none of the 30 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
@@ -464,7 +464,7 @@ cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/t
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
 47495d2d8a0c86059b233ea532af506c5a1b875e9935f98c14ae78688750c65b  code/scripts/write_symbol_registry.py
 a0ec1bd5f42e9f4d44fa248789d0d9fcc77213790580132f6e2b0b0467be274f  code/scripts/build_docs.sh
-2b66d600b16ccec75c07b35e374dd3f9149dc3c699a10bb1409301776095383e  code/scripts/check_all.sh
+182ba7ed89bdb964f0f7c7925ae5e492aa287bc936e4996bb46e33cb1837cc40  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
 
@@ -532,10 +532,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-7482f7eae3f929777ce8dbc2386ddf67af846cb2315036feaaa95fc83ac30c64  explanations/figures/fig_ex_r13_bubble.pdf
-39b8a67dba57d7833387493050e0fdf65f918186101c28bfce6d4ffe2131f60b  explanations/figures/fig_ex_r13_coordinates.pdf
-c858c00ffa266c356ac5a46b0f7f8c9c2e6f862b21b90f47e48feba47487f8c4  explanations/figures/fig_ex_r13_divergences.pdf
-6d9e53f754efff67dabe994af8293cfa07f6bf891443f346d0e4f805e9a0d045  explanations/figures/fig_ex_r13_lorentz.pdf
+082b5c203c2fc5c5f91511d176073f7a736733b4a08ebdbbc093f3f9d4a9c2e8  explanations/figures/fig_ex_r13_bubble.pdf
+a58b93b4d1bcef6fb18781fc93790021960e74bdef2f8f59a0723bf994e38fe3  explanations/figures/fig_ex_r13_coordinates.pdf
+c22e4c5ae1608ceca6b2b85c6d2c5422e56afedf3d17428117cf70eb012584b7  explanations/figures/fig_ex_r13_divergences.pdf
+46fa60e38e10778a123d8c3761241f7a0890ab4f55578ce7cddba38bb5f9d43d  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1023,13 +1023,13 @@ $$M_{\rm LL}(\mathbf D_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0+\nabla^{\rm LL
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.28 | 0.36 |
-| `cyclotron` | 8.87 | 8.26 |
-| `andreev` | 1.29 | 0.95 |
-| `kink_spectrum` | 1.08 | 3.14 |
-| `ground_state` | 2.21 | 6.16 |
-| `kink_ground_state` | 8.80 | 28.41 |
-| `quench` (the time evolution) | 46.28 | 32.69 |
+| `packet_free` | 0.27 | 0.19 |
+| `cyclotron` | 8.68 | 7.30 |
+| `andreev` | 1.27 | 0.91 |
+| `kink_spectrum` | 1.02 | 3.29 |
+| `ground_state` | 2.03 | 5.89 |
+| `kink_ground_state` | 8.03 | 27.55 |
+| `quench` (the time evolution) | 41.45 | 29.87 |
 <!-- END t2_times_table -->
 
 <!-- BEGIN t2_py_keys -->
@@ -1170,7 +1170,7 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_sfbs -->
 
 <!-- BEGIN n_t2_rust_lines -->
-14012
+14058
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->

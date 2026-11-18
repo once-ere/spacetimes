@@ -1412,12 +1412,46 @@ spacing, by $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$; this is the price for r
 the lattice formula (3.29) exactly (to $4\times10^{-15}$) for $\ell^{\rm x}_{\rm LL}=0.4,0.2,0.1,0.05$, the convergence of
 $(E^{\rm R}_{\rm LL}-m_{\rm LL})/(r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL})$ to $1/6$ (0.16662 at $\ell^{\rm x}_{\rm LL}=0.05$, with an error that falls by a
 factor 4 per halving), and the agreement of the eigenvalues and densities of the dense spectrum with the analytic
-state within the second-order bounds of perturbation theory. These bounds say: an eigenvalue lies within the square
-of the relative residual of a trial state, divided by the distance of its Rayleigh quotient from the rest of the
-spectrum, of that Rayleigh quotient (Kato and Temple); and the eigenvector differs from the trial state by at most the
-relative residual divided by that distance (Davis and Kahan). Here the relative residual is 0.118 and the distance
-0.614; the eigenvalues differ from $E^{\rm R}_{\rm LL}=0.4654$ by at most 0.003 (bound 0.023), and the densities agree to
-$1.1\times10^{-3}$ in the Bhattacharyya coefficient (bound $1.8\times10^{-2}$).
+state at second order in the residual of that state, by two theorems of perturbation theory.
+
+Take a normalized trial state. Its Rayleigh quotient is its scalar product with the operator applied to it, and its
+relative residual is the norm of the operator applied to the state minus the Rayleigh quotient times the state. Written
+in the eigenvectors of the operator, the state has components whose squared moduli are weights with the sum 1; with
+these weights the mean of the eigenvalues is the Rayleigh quotient, and the mean of the squared differences between
+the eigenvalues and the Rayleigh quotient is the square of the relative residual. Now let a group of eigenvalues be
+given, let the Rayleigh quotient lie between the nearest eigenvalue below the group and the nearest one above it, and
+call *the distance* the smallest difference between the Rayleigh quotient and an eigenvalue outside the group.
+
+*The theorem of Kato and Temple, for a group.* An eigenvalue of the group is not larger than the Rayleigh quotient
+plus the square of the relative residual divided by the distance, and an eigenvalue of the group is not smaller than
+the Rayleigh quotient minus the same amount. Proof of the first half: suppose that every eigenvalue of the group
+exceeded the Rayleigh quotient by more than this amount. For every eigenvalue of the operator form the product of two
+differences: the eigenvalue minus the nearest eigenvalue below the group, and the eigenvalue minus the Rayleigh
+quotient minus the amount. For an eigenvalue at or below that neighbour both differences are negative or zero, and for
+every other eigenvalue both are positive, so no product is negative. But the mean of the products with the weights is
+the square of the relative residual, minus the amount times the difference between the Rayleigh quotient and the
+neighbour (the terms of first order in the differences from the Rayleigh quotient have the mean zero); this is zero
+or negative, because that difference is at least the distance. A mean of numbers that are not negative can be zero or
+negative only if every number with a weight is zero, that is, if the state lies in the eigenvectors of the neighbour;
+then its Rayleigh quotient would be the neighbour and not a number above it. This contradiction proves the first
+half; the second half follows in the same way with the nearest eigenvalue above the group.
+
+*The theorem of Davis and Kahan, for a group.* The part of the trial state outside the space of the eigenvectors of
+the group has at most the norm of the relative residual divided by the distance. Proof: the operator minus the
+Rayleigh quotient multiplies every component of that part by a number of magnitude at least the distance, and the
+image of that part is a part of the image of the whole state, whose norm is the relative residual.
+
+Here the group consists of the eight positive bound states. The relative residual of the analytic state is 0.118 and
+the distance is 0.614, so that the two bounds are 0.023 and 0.192. The moduli of the 16 eigenvalues inside the gap
+differ among themselves by at most $4\times10^{-14}$, and by the first theorem all of them therefore lie within 0.023
+(plus this spread) of $E^{\rm R}_{\rm LL}=0.4654$; the largest difference found is 0.003. The part of the analytic state
+outside the space of the eight eigenvectors has the norm 0.084, within the second bound. For the densities the check
+makes a requirement on the scale of the second theorem: the summed density of the eight eigenvectors and the analytic
+density of the two walls, each normalized to the sum 1 over the sites, are compared by their Bhattacharyya coefficient
+(the sum over the sites of the square root of their product, which is 1 for equal densities and smaller otherwise),
+and one minus this coefficient must be smaller than half the square of the second bound, $1.8\times10^{-2}$ (the leading
+term of one minus the cosine of the angle whose sine is that bound). This is not a consequence of the theorem, because
+the analytic state of the check is one state of one wall; the value found is $1.1\times10^{-3}$.
 
 ![](figures/fig_t2_case_C.png){width=100%}
 
@@ -1467,10 +1501,15 @@ slow charges (3.32) gives $m_{\rm LL}+(q^3_{\rm LL})^2/(2m_{\rm LL})+n^{\rm L}_{
 spaced levels with the cyclotron frequency $\lvert B^\uparrow_{\rm LL}\rvert/m_{\rm LL}$. Check AS-10 diagonalizes
 $h^\nabla_{\rm LL}$ at $q^2_{\rm LL}=q^3_{\rm LL}=0$ in a basis of 120 oscillator states for both isospin components
 ($\mathsf F^{\rm F}_{{\rm LL},12}=1.2$, $\mathsf F^3_{{\rm LL},12}=1.0$, so $B^\uparrow_{\rm LL}=0.89$ and $B^\downarrow_{\rm LL}=0.19$) and finds
-(3.32) with these multiplicities to $10^{-14}$ for $n^{\rm L}_{\rm LL}=0$ to 10. (The exact eigenstates of the level
-$n^{\rm L}_{\rm LL}$ contain the oscillator states $n^{\rm L}_{\rm LL}-1$ and $n^{\rm L}_{\rm LL}$ only, so the truncated basis represents
-them exactly; the truncation creates spurious states on the highest oscillator states, which the check recognizes
-by their weight there and discards.)
+(3.32) with these multiplicities to $10^{-14}$ for $n^{\rm L}_{\rm LL}=0$ to 10. The exact eigenstates of the level
+$n^{\rm L}_{\rm LL}$ contain the oscillator states with the numbers $n^{\rm L}_{\rm LL}-1$ and $n^{\rm L}_{\rm LL}$ only, so the basis,
+whose states have the numbers 0 to 119, represents the levels 0 to 119 exactly. It has no state with the number 120:
+the oscillator state 119 with the antiparallel spin has lost its partner, and the truncated matrix has, instead of
+the level 120, two states with the energies $+m_{\rm LL}$ and $-m_{\rm LL}$ that live on the oscillator state 119. Only
+these two states are artefacts of the truncation. The check discards every eigenvector with a weight above $10^{-8}$
+on the ten highest oscillator states (the numbers 110 to 119): for each isospin component the two artefacts and the
+forty states of the levels 110 to 119, which it does not need; it counts both kinds (84 discarded states in all, 80
+of the levels and 4 artefacts).
 
 ![](figures/fig_t2_case_D.png){width=80%}
 
@@ -1842,7 +1881,7 @@ reflection of the spinor charges, the process by which a current of single charg
 
 **`kink_spectrum` (EX-4).** The configuration of Section 3.4: exactly 16 eigenvalues lie inside the gap, eight at $+0.46232$
 and eight at $-0.46232$, against the Rayleigh quotient $E^{\rm R}_{\rm LL}=0.465441$ of (3.29) on this lattice; the difference
-0.0031 lies within the Kato-Temple bound 0.023 of check AS-9.
+0.0031 lies within the bound 0.023 of the theorem of Kato and Temple, computed in check AS-9 (Section 3.4).
 
 **`ground_state` (EX-5).** With $m_{\rm LL}=0.4$, $\mu_{\rm LL}=0.6$, $G_{\rm LL}=0.46$ on a ring of 32 sites, the Anderson iteration
 converges in 12 iterations to a uniform polar pair field $\lvert\vec d_{\rm LL}\rvert=0.4042817351$, which is the root of the gap
@@ -5119,7 +5158,10 @@ $\Delta^\infty_{\rm LL}$, $\ell^{\rm K}_{\rm LL}$, $\varphi^{\rm K}_{\rm LL}$, $
 $\mathsf Q^{\rm K}_{\rm LL}$; `E_R` for $E^{\rm R}_{\rm LL}$; `B_up`, `B_down`, `n_L` for $B^\uparrow_{\rm LL}$,
 $B^\downarrow_{\rm LL}$, $n^{\rm L}_{\rm LL}$; `G`, `G_crit`, `Lambda` for $G_{\rm LL}$, $G^{\rm crit}_{\rm LL}$,
 $\Lambda_{\rm LL}$; `rtol`, `atol` for $r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$; and `p_1`, `p_2`, `p_3` for the momentum
-operators $-i\partial_1$, $-i\partial_2$, $-i\partial_3$.
+operators $-i\partial_1$, $-i\partial_2$, $-i\partial_3$. The statement of check AS-9 defines three names for itself:
+`r` (the relative residual of the analytic state), `delta` (the distance of its Rayleigh quotient from the nearest
+eigenvalue outside the group of the eight positive bound states) and `spread` (the largest minus the smallest modulus
+of the 16 eigenvalues inside the gap); Section 3.4 states the two theorems that use them.
 
 ```
 {{FILE:test2/data/t2_analytic_checks.txt}}

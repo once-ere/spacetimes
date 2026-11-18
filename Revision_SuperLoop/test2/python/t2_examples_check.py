@@ -166,7 +166,9 @@ def ex_andreev(prefix, rep):
 def ex_kink_spectrum(prefix, rep):
     """EX-4: the spectrum of the ring with a kink and an antikink: exactly 16 eigenvalues inside the gap of the
     continuum, eight near +E_R and eight near -E_R, with E_R the Rayleigh quotient (3.29) of the analytic bound state,
-    within the Kato-Temple bound of check AS-9."""
+    within the bound 0.023 that check AS-9 of the program t2_analytic computes from the theorem of Kato and Temple
+    (the square of the relative residual of the analytic state divided by the distance of E_R from the nearest
+    eigenvalue outside the group of the eight positive bound states, plus the spread of the moduli)."""
     cfg, lat = lattice_of("kink_spectrum")
     _, h, r = load(prefix + "_kink_spectrum_spectrum.csv")
     E = col(h, r, "E_qp")
@@ -185,8 +187,8 @@ def ex_kink_spectrum(prefix, rep):
             "(3.29) of the analytic bound state on this lattice is E_R = %.6f" % (len(ingap), 0.9 * cont,
                                                                                " ".join("%.5f" % v for v in ingap), ER))
     rep.check(len(ingap) == 16 and np.sum(ingap > 0) == 8 and dev < 0.023,
-              "EX-4 exactly 16 bound states (8 at positive, 8 at negative energy), within %.4f of +-E_R (the Kato-Temple bound "
-              "0.023 of check AS-9)" % dev)
+              "EX-4 exactly 16 bound states (8 at positive, 8 at negative energy), within %.4f of +-E_R (the bound 0.023 of the "
+              "theorem of Kato and Temple, computed in check AS-9)" % dev)
 
 
 def gap_root(lat, G):
