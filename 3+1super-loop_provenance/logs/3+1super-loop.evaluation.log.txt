@@ -1,0 +1,86 @@
+evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
+notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/in/3+1super-loop.nb
+saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/out/3+1super-loop.nb
+seconds:  56
+kernel:   {0, 72558}   last In line: 152
+counts:   <|"inputs" -> 43, "evaluated" -> 43, "outputs" -> 30, "prints" -> 15, "messages" -> 0|>
+--- messages (0) ---
+--- printed lines (15) ---
+during In[93]:=  PASS  S-1: every one of the TeX items of the registry is converted into a box structure  -- 449
+during In[93]:=  PASS  S-2: every symbolized box is read as one atomic symbol (head Symbol)  -- 422
+during In[95]:=  PASS  S-0: every string inside the symbolized boxes is one token for the front end, so that typed symbols reach the kernel unchanged  -- {201,{}}
+during In[100]:=  PASS  S-14: every symbol typed in its printed form is read as one atomic symbol, the one created from its registry TeX  -- {422,422,422}
+during In[102]:=  PASS  S-3: different boxes give different symbols, and the boxes stay different after the removal of style boxes  -- {422,422,422}
+during In[105]:=  PASS  S-4: every symbol prints as the box it was made from  -- 422
+during In[107]:=  PASS  S-5: the TeX of every symbol is written from its printed form, without the internal name  -- 422
+during In[111]:=  PASS  S-6: the gap equation written with the symbols gives the gap of the condensed vacuum 0.2094933033 at G = 22.5, m = 0.2, cutoff 1; 2 Delta_vac = 0.4189866 and 2 M_q = 0.5792666  -- 0.209493303270
+during In[116]:=  PASS  S-7: sum over j of sigma^LL_j sigma^LL_j = 3 times the unit matrix, and sigma_j sigma_j' = delta_jj' + i sum_j'' epsilon_jj'j'' sigma_j'' for all nine pairs (components as symbolized symbols)  -- {0,0}
+during In[124]:=  PASS  S-8: the double sum of eta^LL_pp' x^p x^p' over p, p' = 0..3 (16 + 4 symbolized components) is (x^0)^2 - (x^1)^2 - (x^2)^2 - (x^3)^2  -- (Subsuperscript[x, LL, 0])^2-(Subsuperscript[x, LL, 1])^2-(Subsuperscript[x, LL, 2])^2-(Subsuperscript[x, LL, 3])^2
+during In[128]:=  PASS  S-9: (M^F_LL / M^W_LL)^2 = 4 (g^F_LL / g^v_LL)^2 and the gap follows from M^W_LL (algebra with symbolized symbols)  -- (4 (Subsuperscript[g, LL, F])^2)/(Subsuperscript[g, LL, v])^2
+during In[131]:=  PASS  S-10: the determinant of the time and longitudinal equations vanishes exactly at omega_B^2 = M_W^2 + (Z_s/Z_t) k_B^2  -- -(((Subsuperscript[M, LL, W])^2 ((Subsuperscript[k, LL, B])^2 Subsuperscript[Z, LL, s]+(Subsuperscript[M, LL, W])^2 Subsuperscript[Z, LL, t]-\!\(
+\*SubsuperscriptBox[\(Z\), \(LL\), \(t\)]\ 
+\*SuperscriptBox[\((
+\*SubsuperscriptBox[\(\[Omega]\), \(LL\), \(B\)])\), \(2\)]\)))/Subsuperscript[Z, LL, s])
+during In[132]:=  PASS  S-11: the sum over iota of T^iota_LL T^iota_LL (with T = tau/2 for the symbolized components) is 3/4 times the unit matrix  -- {{3/4,0},{0,3/4}}
+during In[136]:=  PASS  S-12: no plain-text name is registered for two different entries  -- {592,{}}
+during In[139]:=  PASS  S-13: the imaginary unit, the number sets and the operators correspond to I, Reals, Complexes, Tr, Det, DiagonalMatrix, Re, Im, KroneckerProduct, Transpose  -- {True,True,True,True,True,True,True,True,True,True,True}
+--- input cells (label, beginning) ---
+In[1]:=  (* load the Notation package (it ships with every Wolfram installation) *) Needs["Notation
+In[4]:=  (* the box of a_LL, read as input, is now ONE symbol: its head is Symbol and it is an atom
+In[5]:=  (* the text input Subscript[a, LL] is a compound expression, not the symbol *) {Head[Subsc
+In[6]:=  (* assign the value 42 to the symbol a_LL through its box, then read it back:    Join[Hold
+In[8]:=  (* remove the value again, so that a_LL is a free symbol for the rest of the notebook:    
+In[10]:=  (* symbolize a_{LL,p}: the subscript "LL, p" exactly as the front end stores it, three tok
+In[14]:=  (* the name LL is used later for the function LL of the package of section I.3; the summat
+In[16]:=  (* ---------------------------------------------------------------------------------------
+In[73]:=  examples = {"\\Delta^{\\rm vac}_{\\rm LL}", "A^\\iota_{{\\rm LL},p}", "\\mathsf N^{\\rm g}
+In[75]:=  (* The registry of the symbols of the super-loop revision: 199 entries (group, TeX of the 
+In[77]:=  (* the number of entries in each of the nine groups *) KeySort[Counts[Map[#["group"] &, SL
+In[78]:=  (* every TeX segment of every entry: {entry number, segment} *) segments = Flatten[Map[Fun
+In[83]:=  (* how many items of each kind *) ReverseSort[Counts[Map[#["kind"] &, items]]]
+In[84]:=  (* the items that are symbolized, each TeX item once *) toSymbolize = DeleteDuplicatesBy[S
+In[89]:=  Grid[Prepend[Map[{RawBoxes[#["boxes"]], Column[#["texAll"]], #["entries"]} &, Select[symbo
+In[90]:=  Grid[Prepend[Map[{RawBoxes[#["boxes"]], #["kind"], Replace[#["symbol"], HoldComplete[s_] :
+In[91]:=  SL31`Test`$Results = {}; SL31Check[name_String, statement_String, ok_, details_ : ""] := (
+In[93]:=  SL31Check["S-1", "every one of the TeX items of the registry is converted into a box struc
+In[95]:=  (* the strings inside a box: TagBox and StyleBox wrappers are opened first *) boxStrings[b
+In[100]:=  (* every symbolized symbol of the registry (422), typed in its printed form *) typed = {  
+In[102]:=  strip[b_] := b //. {StyleBox[x_, ___] :> x, AdjustmentBox[x_, ___] :> x, FrameBox[x_, ___]
+In[105]:=  roundTrip = Map[Function[r, Replace[r["symbol"], HoldComplete[s_] :> (ToBoxes[Unevaluated[
+In[107]:=  texOut = Map[Function[r, Replace[r["symbol"], HoldComplete[s_] :> ToString[TeXForm[Unevalu
+In[110]:=  gapEquation = 1/Subscript[G, LL] == (Subscript[\[CapitalLambda], LL] Sqrt[Subscript[\[Capi
+In[111]:=  (* exact values (45/2, 1/5, 1), so that FindRoot can work with 30 digits *) gapValue = Blo
+In[113]:=  (* symbolize the components sigma^LL_1, sigma^LL_2, sigma^LL_3 and epsilon^LL_{j j' j''} (
+In[116]:=  (* the values: inside Block only, so that the symbols stay free elsewhere *) pauliValues =
+In[119]:=  xs = Table[ReleaseHold[SL31Instance[SL31SymbolBoxes["x^p_{\\rm LL}"], {"p" -> ToString[k]}
+In[124]:=  SL31Check["S-8", "the double sum of eta^LL_pp' x^p x^p' over p, p' = 0..3 (16 + 4 symboliz
+In[125]:=  massRules = {\!\( \*SubsuperscriptBox[\(M\), \(LL\), \(W\)]\  -> \ \(Sqrt[2\  \*Subsupersc
+In[127]:=  gapFromMass = Solve[\!\( \*SubsuperscriptBox[\(M\), \(LL\), \(W\)]^2\) == 2 Subsuperscript
+In[128]:=  SL31Check["S-9", "(M^F_LL / M^W_LL)^2 = 4 (g^F_LL / g^v_LL)^2 and the gap follows from M^W
+In[129]:=  det = (\!\( \*SubsuperscriptBox[\(k\), \(LL\), \(B\)]^2\) + \!\( \*SubsuperscriptBox[\(Z\)
+In[131]:=  SL31Check["S-10", "the determinant of the time and longitudinal equations vanishes exactly
+In[132]:=  taus = Table[ReleaseHold[SL31Instance[SL31SymbolBoxes["\\tau^{\\rm LL}_\\iota"], {"\[Iota]
+In[136]:=  nameToEntries = GroupBy[Flatten[Map[Function[e, Map[# -> e["entry"] &, e["names"]]], SL31R
+In[139]:=  p1 = pauliValues[[1]]; p2 = pauliValues[[2]]; p3 = pauliValues[[3]]; correspondences = {I^
+In[142]:=  (* the meaning as text with formulas: TeX between dollar signs is converted by the Wolfram
+In[147]:=  Column[Map[Column[{Style[#, Bold, 12], groupTable[#]}] &, groups[[1 ;; 3]]], Spacings -> 2
+In[148]:=  Column[Map[Column[{Style[#, Bold, 12], groupTable[#]}] &, groups[[4 ;; 8]]], Spacings -> 2
+In[149]:=  Column[{Style[groups[[9]], Bold, 12], groupTable[groups[[9]]]}]
+In[150]:=  Grid[Prepend[Map[{#["name"], If[#["pass"], "PASS", "FAIL"], #["statement"]} &, SL31`Test`$
+In[151]:=  {"tests" -> Length[SL31`Test`$Results], "passed" -> Count[SL31`Test`$Results, r_ /; r["pas
+--- tests ---
+<|"name" -> "S-1", "pass" -> True, "statement" -> "every one of the TeX items of the registry is converted into a box structure", "details" -> 449|>
+<|"name" -> "S-2", "pass" -> True, "statement" -> "every symbolized box is read as one atomic symbol (head Symbol)", "details" -> 422|>
+<|"name" -> "S-0", "pass" -> True, "statement" -> "every string inside the symbolized boxes is one token for the front end, so that typed symbols reach the kernel unchanged", "details" -> {201, {}}|>
+<|"name" -> "S-14", "pass" -> True, "statement" -> "every symbol typed in its printed form is read as one atomic symbol, the one created from its registry TeX", "details" -> {422, 422, 422}|>
+<|"name" -> "S-3", "pass" -> True, "statement" -> "different boxes give different symbols, and the boxes stay different after the removal of style boxes", "details" -> {422, 422, 422}|>
+<|"name" -> "S-4", "pass" -> True, "statement" -> "every symbol prints as the box it was made from", "details" -> 422|>
+<|"name" -> "S-5", "pass" -> True, "statement" -> "the TeX of every symbol is written from its printed form, without the internal name", "details" -> 422|>
+<|"name" -> "S-6", "pass" -> True, "statement" -> "the gap equation written with the symbols gives the gap of the condensed vacuum 0.2094933033 at G = 22.5, m = 0.2, cutoff 1; 2 Delta_vac = 0.4189866 and 2 M_q = 0.5792666", "details" -> 0.20949330326994829539714623230134206044`12.|>
+<|"name" -> "S-7", "pass" -> True, "statement" -> "sum over j of sigma^LL_j sigma^LL_j = 3 times the unit matrix, and sigma_j sigma_j' = delta_jj' + i sum_j'' epsilon_jj'j'' sigma_j'' for all nine pairs (components as symbolized symbols)", "details" -> {0, 0}|>
+<|"name" -> "S-8", "pass" -> True, "statement" -> "the double sum of eta^LL_pp' x^p x^p' over p, p' = 0..3 (16 + 4 symbolized components) is (x^0)^2 - (x^1)^2 - (x^2)^2 - (x^3)^2", "details" -> x⎵Sub⎵LL⎵Sup⎵0^2 - x⎵Sub⎵LL⎵Sup⎵1^2 - x⎵Sub⎵LL⎵Sup⎵2^2 - x⎵Sub⎵LL⎵Sup⎵3^2|>
+<|"name" -> "S-9", "pass" -> True, "statement" -> "(M^F_LL / M^W_LL)^2 = 4 (g^F_LL / g^v_LL)^2 and the gap follows from M^W_LL (algebra with symbolized symbols)", "details" -> (4*g⎵Sub⎵LL⎵Sup⎵F^2)/g⎵Sub⎵LL⎵Sup⎵v^2|>
+<|"name" -> "S-10", "pass" -> True, "statement" -> "the determinant of the time and longitudinal equations vanishes exactly at omega_B^2 = M_W^2 + (Z_s/Z_t) k_B^2", "details" -> -((M⎵Sub⎵LL⎵Sup⎵W^2*(k⎵Sub⎵LL⎵Sup⎵B^2*Z⎵Sub⎵LL⎵Sup⎵s + M⎵Sub⎵LL⎵Sup⎵W^2*Z⎵Sub⎵LL⎵Sup⎵t - Z⎵Sub⎵LL⎵Sup⎵t*ω⎵Sub⎵LL⎵Sup⎵B^2))/Z⎵Sub⎵LL⎵Sup⎵s)|>
+<|"name" -> "S-11", "pass" -> True, "statement" -> "the sum over iota of T^iota_LL T^iota_LL (with T = tau/2 for the symbolized components) is 3/4 times the unit matrix", "details" -> {{3/4, 0}, {0, 3/4}}|>
+<|"name" -> "S-12", "pass" -> True, "statement" -> "no plain-text name is registered for two different entries", "details" -> {592, {}}|>
+<|"name" -> "S-13", "pass" -> True, "statement" -> "the imaginary unit, the number sets and the operators correspond to I, Reals, Complexes, Tr, Det, DiagonalMatrix, Re, Im, KroneckerProduct, Transpose", "details" -> {True, True, True, True, True, True, True, True, True, True, True}|>

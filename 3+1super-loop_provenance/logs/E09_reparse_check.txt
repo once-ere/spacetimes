@@ -1,0 +1,41 @@
+exit 0
+status finished
+seconds 3.1
+command /Applications/Wolfram.app/Contents/MacOS/wolframscript -file /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/tools/reparse_check.wls
+--- stdout ---
+
+FrontEndObject::notavail: A front end is not available; certain operations require a front end.
+
+unicodeCharacters::missing: It appears that the file 'UnicodeCharacters.tr' has not been included in your installation of Mathematica. The file 'UnicodeCharacters.tr' is necessary for Notation to determine the precedences of characters. Unfortunately Notation will not run without this file. This sometimes occurs in installations inside WRI.
+
+StringToStream::string: String expected at position 1 in StringToStream[$Failed].
+
+Close::stream: $Failed is not a string, SocketObject, InputStream[ ] or OutputStream[ ].
+
+FrontEndObject::notavail: A front end is not available; certain operations require a front end.
+
+Select::normal: Nonatomic expression expected at position 1 in Select[$Failed, System`FEDump`notebookNameMatchQ[#1, Notation Palette] & ].
+
+Options::optnf: InputAliases is not a known option for Null.
+
+Part::partw: Part 1 of {} does not exist.
+
+SetOptions::optnf: InputAliases is not a known option for Null.
+
+Options::optnf: InputAliases is not a known option for Null.
+
+Part::partw: Part 1 of {} does not exist.
+
+Join::heads: Heads Part and List at positions 1 and 2 are expected to be the same.
+
+Part::pkspec1: The expression {notation -> RowBox[{Notation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag],  , <==>,  , TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], notation> -> RowBox[{Notation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag],  , ==>,  , TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], notation< -> RowBox[{Notation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag],  , <==,  , TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], symb -> RowBox[{Symbolize, [, TemplateBox[{[*]}, NotationTemplateTag], ]}], infixnotation -> RowBox[{InfixNotation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag], ,, [ ]}], ]}], addia -> RowBox[{AddInputAlias, [, RowBox[{"[*]", ->, TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], pattwraper -> TemplateBox[{[*]}, NotationPatternTag], madeboxeswraper -> TemplateBox[{[*]}, NotationMadeBoxesTag]} cannot be used as a part specification.
+
+SetOptions::optnf: InputAliases is not a known option for Null.
+
+FrontEndObject::notavail: A front end is not available; certain operations require a front end.
+
+General::stop: Further output of FrontEndObject::notavail will be suppressed during this calculation.
+symbols: 422   regrouped by the front end (plain box): 0
+regrouped after wrapping with SyntaxForm -> symbol: 0
+
+--- stderr ---

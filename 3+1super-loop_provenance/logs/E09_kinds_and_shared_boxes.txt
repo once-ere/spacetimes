@@ -1,0 +1,56 @@
+exit 0
+status finished
+seconds 2.6
+command /Applications/Wolfram.app/Contents/MacOS/wolframscript -file /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/tools/canon2_build.wls
+--- stdout ---
+
+FrontEndObject::notavail: A front end is not available; certain operations require a front end.
+
+unicodeCharacters::missing: It appears that the file 'UnicodeCharacters.tr' has not been included in your installation of Mathematica. The file 'UnicodeCharacters.tr' is necessary for Notation to determine the precedences of characters. Unfortunately Notation will not run without this file. This sometimes occurs in installations inside WRI.
+
+StringToStream::string: String expected at position 1 in StringToStream[$Failed].
+
+Close::stream: $Failed is not a string, SocketObject, InputStream[ ] or OutputStream[ ].
+
+FrontEndObject::notavail: A front end is not available; certain operations require a front end.
+
+Select::normal: Nonatomic expression expected at position 1 in Select[$Failed, System`FEDump`notebookNameMatchQ[#1, Notation Palette] & ].
+
+Options::optnf: InputAliases is not a known option for Null.
+
+Part::partw: Part 1 of {} does not exist.
+
+SetOptions::optnf: InputAliases is not a known option for Null.
+
+Options::optnf: InputAliases is not a known option for Null.
+
+Part::partw: Part 1 of {} does not exist.
+
+Join::heads: Heads Part and List at positions 1 and 2 are expected to be the same.
+
+Part::pkspec1: The expression {notation -> RowBox[{Notation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag],  , <==>,  , TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], notation> -> RowBox[{Notation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag],  , ==>,  , TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], notation< -> RowBox[{Notation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag],  , <==,  , TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], symb -> RowBox[{Symbolize, [, TemplateBox[{[*]}, NotationTemplateTag], ]}], infixnotation -> RowBox[{InfixNotation, [, RowBox[{TemplateBox[{[*]}, NotationTemplateTag], ,, [ ]}], ]}], addia -> RowBox[{AddInputAlias, [, RowBox[{"[*]", ->, TemplateBox[{[ ]}, NotationTemplateTag]}], ]}], pattwraper -> TemplateBox[{[*]}, NotationPatternTag], madeboxeswraper -> TemplateBox[{[*]}, NotationMadeBoxesTag]} cannot be used as a part specification.
+
+SetOptions::optnf: InputAliases is not a known option for Null.
+
+FrontEndObject::notavail: A front end is not available; certain operations require a front end.
+
+General::stop: Further output of FrontEndObject::notavail will be suppressed during this calculation.
+symbolized TeX items: 427
+kinds: <|"symbol" -> 289, "family" -> 56, "function" -> 37, "group" -> 30, "operator" -> 13, "function family" -> 7, "set" -> 4, "index" -> 3, "primed index" -> 3, "imaginary unit" -> 2, "expression" -> 2, "ket" -> 2, "letter" -> 1|>
+boxes made by more than one TeX item: 4
+  SubscriptBox["N", "LL"]
+     entry 19  N_{\rm LL}(\mathbf x)  the complex norm $N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2$, with $\mathbf x\bar{\mathbf x}=\bar{\mathbf x}\mathbf x=N_{\rm LL}(\mathbf
+     entry 19  N_{\rm LL}(\mathbf x,\mathbf y)  the complex norm $N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2$, with $\mathbf x\bar{\mathbf x}=\bar{\mathbf x}\mathbf x=N_{\rm LL}(\mathbf
+  SubsuperscriptBox["\[CapitalPi]", "LL", "\[Iota]"]
+     entry 59  \Pi^\iota_{\rm LL}  the pair operators $\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})$,
+     entry 113  \Pi^\iota_{\rm LL}(x_{\rm LL})  the local pair operator $\Pi^\iota_{\rm LL}(x_{\rm LL})=\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(x_{\rm LL})$, which annihilat
+  SubscriptBox["\[CurlyEpsilon]", "LL"]
+     entry 62  \varepsilon_{\rm LL}  the energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$, the quasi-particle energies of the scalar channel $E^\pm_{\rm LL}=[(\varepsilon_{
+     entry 156  \varepsilon_{\rm LL}(+)  the pair matrix element ${\rm tr}\big(\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm 
+     entry 156  \varepsilon_{\rm LL}(-)  the pair matrix element ${\rm tr}\big(\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm 
+  SubscriptBox["\[GothicG]", "2"]
+     entry 83  \mathfrak g_2  Lie algebras: of the Lorentz groups of $3+1$ and $7+1$ dimensions; of the de Sitter group (signature of the Killing form: 4 positive, 6 negative); of 
+     entry 83  \mathfrak g_2(\mathbb C)  Lie algebras: of the Lorentz groups of $3+1$ and $7+1$ dimensions; of the de Sitter group (signature of the Killing form: 4 positive, 6 negative); of 
+cells: 856
+
+--- stderr ---

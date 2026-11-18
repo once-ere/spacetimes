@@ -1,0 +1,20 @@
+exit 0
+status finished
+seconds 2.6
+command /Applications/Wolfram.app/Contents/MacOS/wolframscript -file /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/tools/leaf_check.wls
+--- stdout ---
+distinct strings: 213
+read as one token by the front end: 204
+read as several tokens:
+   "ext,B"  ->  BoxData[RowBox[{"ext", ",", "B"}]]
+   "ext,F"  ->  BoxData[RowBox[{"ext", ",", "F"}]]
+   "int,B"  ->  BoxData[RowBox[{"int", ",", "B"}]]
+   "int,F"  ->  BoxData[RowBox[{"int", ",", "F"}]]
+   "s(2)"  ->  BoxData[RowBox[{"s", RowBox[{"(", "2", ")"}]}]]
+   "s(3)"  ->  BoxData[RowBox[{"s", RowBox[{"(", "3", ")"}]}]]
+   "s(4)"  ->  BoxData[RowBox[{"s", RowBox[{"(", "4", ")"}]}]]
+   "v,4"  ->  BoxData[RowBox[{"v", ",", "4"}]]
+   "v,Y"  ->  BoxData[RowBox[{"v", ",", "Y"}]]
+all strings: {"^", "*", "(", ")", "_", "-", "+", "~", "[", "]", "|", ",", "0", "1", "16", "2", "3", "4", "5", "6", "7", "8", "a", "A", "act", "b", "B", "bd", "Bl", "Bold", "br", "bub", "c", "C", "Cas", "ch", "crit", "d", "D", "DB", "deg", "e", "E", "ext,B", "ext,F", "f", "F", "fl", "f,", "g", "G", "GL", "g,", "h", "H", "Helvetica", "HS", "i", "I", "int,B", "int,F", "it", "j", "J", "Jac", "k", "K", "Kil", "kin", "L", "lat", "link", "LL", "loop", "m", "M", "Mal", "MF", "min", "mix", "mod", "n", "N", "nf", "O", "p", "P", "ph", "pk", "pl", "Plain", "PP", "pr", "Ps", "pw", "q", "Q", "qp", "r", "R", "ren", "s", "S", "s(2)", "s(3)", "s(4)", "sat", "sc", "sf", "SF", "site", "sl", "SL31Bold", "sp", "sP", "st", "sT", "t", "T", "tr", "Ts", "TT", "tw", "u", "U", "v", "V", "v,4", "vac", "v,Y", "w", "W", "x", "X", "y", "Y", "z", "Z", "\[ScriptCapitalA]", "\[ScriptCapitalD]", "\[ScriptCapitalF]", "\[ScriptCapitalH]", "\[ScriptCapitalI]", "\[ScriptCapitalJ]", "\[ScriptL]", "\[ScriptCapitalL]", "\[ScriptCapitalM]", "\[ScriptCapitalN]", "\[ScriptCapitalS]", "\[ScriptCapitalU]", "\[ScriptCapitalV]", "\[GothicG]", "\[GothicL]", "\[GothicM]", "\[GothicP]", "\[GothicS]", "\[GothicS]\[GothicL]", "\[GothicS]\[GothicO]", "\[GothicS]\[GothicP]\[GothicI]\[GothicN]", "\[GothicS]\[GothicU]", "\[DoubleStruckCapitalB]", "\[DoubleStruckCapitalC]", "\[DoubleStruckCapitalL]", "\[DoubleStruckCapitalO]", "\[DoubleStruckCapitalR]", "\[DoubleStruckCapitalZ]", "\[Alpha]", "\[Beta]", "\[Gamma]", "\[CapitalGamma]", "\[Delta]", "\[CapitalDelta]", "\[Epsilon]", "\[CurlyEpsilon]", "\[Zeta]", "\[Eta]", "\[Theta]", "\[CurlyTheta]", "\[CapitalTheta]", "\[Iota]", "\[Kappa]", "\[Lambda]", "\[CapitalLambda]", "\[Mu]", "\[Nu]", "\[Xi]", "\[CapitalXi]", "\[CurlyPi]", "\[CapitalPi]", "\[Rho]", "\[CurlyRho]", "\[Sigma]", "\[Tau]", "\[CapitalUpsilon]", "\[Phi]", "\[CurlyPhi]", "\[CapitalPhi]", "\[Chi]", "\[Psi]", "\[CapitalPsi]", "\[Omega]", "\[CapitalOmega]", "\[Dagger]", "Infinity", ",", ",,", ">", "\[DownArrow]", "\[UpArrow]", "\[Del]", "\[PartialD]", "+-", "\[RightVector]"}
+
+--- stderr ---

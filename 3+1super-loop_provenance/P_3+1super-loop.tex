@@ -1,0 +1,1508 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion of the provenance of the notebook 3+1super-loop.nb.
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, notebook 3+1super-loop.nb}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Provenance P\_3+1super-loop: the Wolfram Language notebook 3+1super-loop.nb, Part I (the symbols)},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Provenance P\_3+1super-loop: the Wolfram Language notebook
+3+1super-loop.nb, Part I (the symbols)}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{PROJECT spacetimes, prepared for Patrick Lee Nash, Ph.D.}
+\author{}
+\date{17 November 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is}{%
+\section{0. What this document is}\label{what-this-document-is}}
+
+This is the provenance of the notebook \texttt{3+1super-loop.nb}, which
+stands in the top folder of the repository of PROJECT spacetimes. A
+\textbf{provenance} is the record of where every part of a piece of work
+comes from: what was asked, what was done, how it was done, what was
+computed, which errors were met and how they were removed, and which
+files hold the evidence. This document describes \textbf{Part I} of the
+notebook, the Wolfram Language form of every symbol of the project. Part
+II of the notebook (the encyclopedia of the programs of Test 2) is added
+in later stages; its provenance will be added to this document then.
+
+The document is written for a physics student who has not seen the work
+before. Every term and every symbol is defined in words in section 2
+before it is used. Nothing in this document depends on any other
+document: every equation, symbol and definition that it uses is written
+here.
+
+\textbf{Status of Part I (17 November 2026).} The notebook was evaluated
+in Wolfram 15.0.1 (Mac, Apple silicon), in the front end of the
+application Wolfram.app, by the menu command Evaluation \textgreater{}
+Evaluate Notebook, in a fresh kernel: 43 input cells, 30 output cells,
+15 printed test lines, \textbf{0 messages} (no error or warning of any
+kind), \textbf{15 of 15 tests passed}, evaluation time 56 seconds.
+
+\hypertarget{the-task}{%
+\section{1. The task}\label{the-task}}
+
+The author asked for one stand-alone Wolfram Language notebook, named
+\texttt{3+1super-loop.nb}, extremely well organized, clearly written and
+thoughtfully commented for a student who is learning the work, with
+provenance, using only the Wolfram Language, and evaluated in
+Mathematica (on his own computer, in
+\texttt{/Applications/Wolfram.app}). In his words, restated here:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  First, read and understand the author's note on how a symbolized
+  variable is created by a program (the technique of section 5).
+\item
+  Then port every unique symbol of the Test 2 sub-project, that is,
+  every symbol of the symbol registry of Test 2 (the registry is
+  described in section 7), to the notebook, using only the Wolfram
+  Language.
+\item
+  Create non-trivial verification tests that include sums, arithmetic
+  and algebra, and execute them in Mathematica. If errors occur, find
+  out why (also with the help of the internet), fix them, and document
+  the fixes with provenance.
+\item
+  Then append to the notebook, as an ``encyclopedia'', the entire code
+  of Test 2 with all its tests and verifications, ported to the Wolfram
+  Language (Part II, later stages).
+\item
+  Evaluate the notebook after every addition, fix every error at once,
+  describe and discuss the fixes in the provenance, and push every
+  finished item to the repository.
+\end{enumerate}
+
+Section 12 lists the decisions that were taken where the task left a
+choice.
+
+\hypertarget{terms-and-symbols-used-in-this-document}{%
+\section{2. Terms and symbols used in this
+document}\label{terms-and-symbols-used-in-this-document}}
+
+\hypertarget{terms-of-the-wolfram-language}{%
+\subsection{2.1 Terms of the Wolfram
+Language}\label{terms-of-the-wolfram-language}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Wolfram Language}: the programming language of the system
+  Mathematica; on the author's computer the application is
+  \texttt{/Applications/Wolfram.app}, version 15.0.1.
+\item
+  \textbf{Kernel}: the program that evaluates Wolfram Language
+  expressions.
+\item
+  \textbf{Front end}: the program that shows notebooks on the screen,
+  lets one type input, sends the input to the kernel and shows the
+  results. The front end and the kernel are separate programs that talk
+  to each other.
+\item
+  \textbf{Notebook} (\texttt{.nb} file): a document made of
+  \textbf{cells}: input cells (code, evaluated by the kernel), output
+  cells (results), text cells, section headings, printed lines and
+  message cells (errors and warnings).
+\item
+  \textbf{Evaluate Notebook}: the menu command Evaluation \textgreater{}
+  Evaluate Notebook, which evaluates every input cell of a notebook in
+  order.
+\item
+  \textbf{Expression}, \textbf{symbol}, \textbf{atom}: every object of
+  the Wolfram Language is an expression. A \textbf{symbol} is a name
+  such as \texttt{x} or \texttt{Sum}. An \textbf{atom} is an expression
+  without parts (a symbol, a number or a string); \texttt{AtomQ{[}e{]}}
+  is \texttt{True} exactly for atoms. \texttt{Subscript{[}a,\ LL{]}} is
+  not an atom: it is the function \texttt{Subscript} applied to the two
+  symbols \texttt{a} and \texttt{LL}.
+\item
+  \textbf{Context}: the name space of a symbol, written before the name
+  with the context mark \texttt{\textasciigrave{}}; symbols typed by the
+  user belong to the context \texttt{Global\textasciigrave{}}; the
+  symbols of this notebook's package belong to
+  \texttt{SL31\textasciigrave{}}.
+\item
+  \textbf{Box}, \textbf{box structure}: the description of how an
+  expression looks on the screen. A string such as \texttt{"a"} is a
+  box; \texttt{SubscriptBox{[}"a",\ "LL"{]}} is the box of \(a\) with
+  the subscript LL; \texttt{SuperscriptBox}, \texttt{SubsuperscriptBox},
+  \texttt{OverscriptBox} (an accent over a letter) and
+  \texttt{RowBox{[}\{...\}{]}} (several boxes in a row) are other boxes.
+  \texttt{StyleBox{[}box,\ options{]}} changes the style (font, weight);
+  \texttt{TagBox{[}box,\ tag{]}} carries a hidden tag and does not
+  change the appearance.
+\item
+  \textbf{StandardForm}: the two-dimensional form in which the Wolfram
+  Language reads input and shows output. \textbf{TraditionalForm}: the
+  form of printed mathematics. \textbf{TeXForm}: the conversion of an
+  expression into TeX, which the Wolfram Language makes from the
+  TraditionalForm boxes.
+\item
+  \textbf{Parsing}: reading boxes as an expression.
+  \texttt{MakeExpression{[}boxes,\ StandardForm{]}} parses boxes exactly
+  as input is parsed and returns the result held,
+  \texttt{HoldComplete{[}expression{]}} (\texttt{HoldComplete} keeps its
+  contents from being evaluated).
+  \texttt{MakeBoxes{[}expression,\ form{]}} makes the boxes of an
+  expression; \texttt{ToBoxes} does the same after evaluating.
+\item
+  \textbf{The Notation package}: a package that comes with every Wolfram
+  installation (loaded with
+  \texttt{Needs{[}"Notation\textasciigrave{}"{]}}). Its command
+  \textbf{\texttt{Symbolize{[}ParsedBoxWrapper{[}box{]},\ options{]}}}
+  declares that the box, wherever it is met in input, is read as ONE new
+  symbol, and that this symbol is printed as the box. The wrapper
+  \texttt{ParsedBoxWrapper} marks its argument as a box structure. The
+  option \textbf{\texttt{WorkingForm}} names the form (StandardForm) for
+  which the reading rule is made; the option
+  \textbf{\texttt{SymbolizeRootName}} gives the name of the new symbol.
+\item
+  \textbf{Symbolized symbol}: a symbol created by \texttt{Symbolize}. It
+  behaves like any symbol: it can be added, multiplied, differentiated,
+  given a value, and it is an atom.
+\item
+  \textbf{\texttt{Set}}, \textbf{\texttt{Clear}},
+  \textbf{\texttt{Apply}}: \texttt{Set{[}x,\ v{]}} (written
+  \texttt{x\ =\ v}) gives the value \texttt{v} to \texttt{x};
+  \texttt{Clear{[}x{]}} removes it; \texttt{Apply{[}f,\ h{[}a,\ b{]}{]}}
+  (written \texttt{f\ @@\ h{[}a,\ b{]}}) replaces the head \texttt{h} by
+  \texttt{f}.
+\item
+  \textbf{\texttt{Block}}: \texttt{Block{[}\{x\ =\ v\},\ body{]}}
+  evaluates \texttt{body} while \texttt{x} has the value \texttt{v}, and
+  restores \texttt{x} afterwards.
+\item
+  \textbf{\texttt{Sum}}, \textbf{\texttt{FindRoot}},
+  \textbf{\texttt{Solve}}, \textbf{\texttt{Simplify}},
+  \textbf{\texttt{Factor}}, \textbf{\texttt{Expand}}: summation;
+  numerical root finding; exact solution of equations; algebraic
+  simplification; factorization; multiplication of products.
+\item
+  \textbf{\texttt{\$PreRead}}: a global variable; if it holds a
+  function, the kernel applies it to the boxes of every input before
+  parsing. It is used in section 11 to record exactly which boxes the
+  front end sends.
+\item
+  \textbf{\texttt{SyntaxForm}}: an option of \texttt{TagBox} that tells
+  the front end how the box takes part in the grammar of the surrounding
+  input; \texttt{SyntaxForm\ -\textgreater{}\ "symbol"} makes the front
+  end treat the whole box as one operand, like a symbol.
+\item
+  \textbf{\texttt{FrontEndTokenExecute{[}nb,\ "EvaluateNotebook"{]}}}: a
+  command, sent from the kernel to the front end, that performs the menu
+  command Evaluate Notebook for the notebook \texttt{nb}.
+\item
+  \texttt{FrontEnd\textasciigrave{}UndocumentedTestFEParserPacket{[}string,\ True{]}}:
+  an internal command of the front end (not part of the documented
+  language) that reads a string exactly as typed input is read when a
+  cell is evaluated, and returns the boxes.
+\item
+  \textbf{wolframscript}: the program that runs a Wolfram Language
+  script (a \texttt{.wls} file) in a kernel without the window of the
+  application. \textbf{\texttt{UsingFrontEnd{[}expr{]}}} evaluates
+  \texttt{expr} with a front end that has no window.
+\item
+  \textbf{Evaluator} (of a notebook): the kernel to which a notebook
+  sends its input; a front end can run several kernels with different
+  names.
+\end{itemize}
+
+\hypertarget{symbols-of-the-physics-that-appear-in-the-tests}{%
+\subsection{2.2 Symbols of the physics that appear in the
+tests}\label{symbols-of-the-physics-that-appear-in-the-tests}}
+
+All of them carry the label LL (the label of the super-loop revision of
+the project; section 7).
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(G_{\rm LL}\) & the coupling constant of the contact interaction of the
+spinor charges \\
+\(m_{\rm LL}\) & the mass of the spinor charges \\
+\(\Lambda_{\rm LL}\) & the momentum cutoff (the unit of the numbers
+below) \\
+\(\Delta^{\rm vac}_{\rm LL}\) & the gap of the condensed vacuum at zero
+chemical potential \\
+\(M^{\rm q}_{\rm LL}\) & the mass of the quasi-particles of the
+condensed vacuum,
+\((M^{\rm q}_{\rm LL})^2=m_{\rm LL}^2+(\Delta^{\rm vac}_{\rm LL})^2\) \\
+\(\sigma^{\rm LL}_j\), \(j=1,2,3\) & the Pauli matrices
+\(\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}\),
+\(\sigma^{\rm LL}_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix}\),
+\(\sigma^{\rm LL}_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}\) \\
+\(\mathsf 1_2\) & the \(2\times2\) unit matrix \\
+\(\epsilon^{\rm LL}_{jj'j''}\) & the totally antisymmetric symbol:
+\(\epsilon^{\rm LL}_{123}=1\), \(-1\) for an odd permutation of
+\((1,2,3)\), \(0\) if two indices are equal \\
+\(\delta_{jj'}\) & the Kronecker symbol: \(1\) for \(j=j'\), \(0\)
+otherwise (used only in this document and in the notebook as the Wolfram
+function \texttt{KroneckerDelta}) \\
+\(i\) & the imaginary unit, \(i^2=-1\) \\
+\(x^p_{\rm LL}\), \(p=0,1,2,3\) & the coordinates of space-time
+(\(p=0\): time) \\
+\(\eta^{\rm LL}_{pp'}\) & the Minkowski metric:
+\(\eta^{\rm LL}_{00}=1\),
+\(\eta^{\rm LL}_{11}=\eta^{\rm LL}_{22}=\eta^{\rm LL}_{33}=-1\), zero
+for \(p\neq p'\) \\
+\(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\) & the rest masses of the
+two charged vector bosons and of the vector boson of the fermion number,
+in the superfluid boson singlet state \\
+\(Z^{\rm s}_{\rm LL}\), \(Z^{\rm t}_{\rm LL}\) & the stiffness
+coefficients of the space derivatives and of the time derivatives in the
+kinetic Lagrangian of the order parameter \\
+\(g^{\rm v}_{\rm LL}\), \(g^{\rm F}_{\rm LL}\) & the gauge couplings of
+the isospin vector field and of the vector field of the fermion
+number \\
+\(k^{\rm B}_{\rm LL}\), \(\omega^{\rm B}_{\rm LL}\) & the wave number
+and the frequency of a plane wave of a massive vector field \\
+\(\tau^{\rm LL}_\iota\), \(\iota=1,2,3\) & the Pauli matrices acting on
+the isospin index \(\iota\) (the same matrices as
+\(\sigma^{\rm LL}_j\)) \\
+\(T^\iota_{\rm LL}\) & the isospin generators
+\(T^\iota_{\rm LL}=\tau^{\rm LL}_\iota/2\);
+\((T_{\rm LL})^2=\sum_\iota T^\iota_{\rm LL}T^\iota_{\rm LL}\) is the
+isospin Casimir \\
+\({\rm arsinh}\) & the inverse hyperbolic sine,
+\({\rm arsinh}\,y=\ln\big(y+\sqrt{y^2+1}\big)\) \\
+\end{longtable}
+
+\hypertarget{words-used-for-the-registry}{%
+\subsection{2.3 Words used for the
+registry}\label{words-used-for-the-registry}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Registry}: the table of all symbols of the super-loop revision
+  of the project; every row is an \textbf{entry} with a number, a
+  \textbf{group} (one of nine topics), the \textbf{printed forms} of its
+  symbols written in TeX between dollar signs, the \textbf{plain-text
+  names} under which programs and data files write the symbols, the
+  \textbf{meaning}, and the \textbf{origin}.
+\item
+  \textbf{TeX item}: one single symbol written in TeX, for example
+  \texttt{\textbackslash{}Delta\^{}\{\textbackslash{}rm\ vac\}\_\{\textbackslash{}rm\ LL\}};
+  an entry may list several TeX items.
+\item
+  \textbf{Kind} of a TeX item: symbol, family (a symbol with a running
+  index), function (a symbol followed by its argument in parentheses),
+  function family, letter, index, primed index, set, group, ket,
+  operator, expression, imaginary unit (section 7).
+\item
+  \textbf{Label entry}: an entry whose symbol field contains no TeX
+  (names of checks and hypotheses).
+\end{itemize}
+
+\hypertarget{further-symbols-named-in-this-document-as-examples}{%
+\subsection{2.4 Further symbols named in this document as
+examples}\label{further-symbols-named-in-this-document-as-examples}}
+
+These symbols appear below only as examples of the forms of symbols;
+their full meanings are in the registry inside the notebook.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathbb R\), \(\mathbb C\), \(\mathbb H\), \(\mathbb O\) & the real
+numbers, the complex numbers, the quaternions, the octonions (an
+eight-dimensional real algebra) \\
+\(\mathbb B_{\rm LL}\), bi-octonion & the complex octonions
+\(\mathbb C\otimes\mathbb O\); an element is a bi-octonion, written in
+bold, for example \(\mathbf x\), \(\mathbf y\), \(\mathbf u\),
+\(\mathbf b\) \\
+\(\mathbf e_0\) & the unit element 1 of \(\mathbb B_{\rm LL}\) (the
+first of the eight units \(\mathbf e_0,\dots,\mathbf e_7\)) \\
+\(D\) & the number of space dimensions \\
+\(p\), \(p'\); \(j\); \(\iota\), \(\iota'\), \(\iota''\) & indices:
+\(p=0,1,2,3\) over the directions of space-time (and over a basis of an
+algebra), \(j=1,2,3\) over the directions of space, \(\iota=1,2,3\) over
+the isospin; a primed letter is a second or third index of the same
+kind \\
+\(\partial_p\) & the partial derivative with respect to
+\(x^p_{\rm LL}\) \\
+\(\nabla^{\rm LL}_p\), \(\nabla^{{\rm LL}*}_p\) & the gauge-covariant
+derivative of the spinor field, and the covariant derivative of a field
+that transforms like the complex-conjugate spinor field \\
+\(\nabla^{\rm B}_{{\rm LL},p}\) & the gauge-covariant derivative of the
+field of the superfluid boson singlet state \\
+\(A^\iota_{{\rm LL},p}\) & the gauge potentials of the isospin group,
+three real fields for each direction \(p\) \\
+\(\mathsf N^{\rm g}_{\rm LL}\) & the contact matrix, a real symmetric
+\(4\times4\) matrix of the terms of the kinetic Lagrangian that are
+quadratic in the gauge potentials (an example of a sans-serif symbol) \\
+\(W_{\rm LL}(\mathbf u)\) & a function symbol: the linear map
+\(W_{\rm LL}(\mathbf u)\mathbf b=-\mathbf b\,\mathbf u\) that depends on
+the argument \(\mathbf u\) \\
+\({\rm SU}(2)_{\rm v}\), \(\mathfrak{so}(3,1)\) & the isospin group; the
+Lie algebra of the Lorentz group of \(3+1\) dimensions \\
+\(\lvert\Phi^{\rm SF}_{\rm LL}\rangle\),
+\(\lvert\Phi^{\rm N}_{\rm LL}\rangle\) & the superfluid boson singlet
+state (the ground state of the spin-zero superfluid) and the normal
+state from which it is built \\
+\({\rm tr}\), \(\det\), \({\rm diag}\), \({\rm Re}\), \({\rm Im}\),
+\({}^T\) & trace, determinant, diagonal matrix, real part, imaginary
+part, transpose \\
+\(\otimes\), \(\oplus\), \(\circ\) & tensor product, direct sum,
+composition of maps \\
+\([\mathbf x,\mathbf y]\), \([\mathbf x,\mathbf y,\mathbf z]\) & the
+commutator \(\mathbf x\mathbf y-\mathbf y\mathbf x\) and the associator
+\((\mathbf x\mathbf y)\mathbf z-\mathbf x(\mathbf y\mathbf z)\) \\
+\([\ \cdot\ ]\), \(\langle\ \rangle\) & the mass dimension of a field or
+coupling; the expectation value in the ground state \\
+\(a_{\rm LL}\), \(a_{{\rm LL},p}\), \(b_{{\rm LL},p}\) & symbols of the
+demonstrations of section I.2 of the notebook (not part of the
+registry) \\
+\end{longtable}
+
+\hypertarget{results-in-brief}{%
+\section{3. Results in brief}\label{results-in-brief}}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+quantity & value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+entries of the registry & 199, in 9 groups \\
+TeX segments (text between two dollar signs) & 434 \\
+TeX items (single symbols) & 449 \\
+label entries (no TeX) & 2 (entries 86 and 87) \\
+TeX items of a symbolized kind & 427 \\
+different boxes, i.e.~symbolized symbols & 422 \\
+tests & 15 (S-0 to S-14), all passed \\
+messages during the evaluation & 0 \\
+evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 56 s \\
+\end{longtable}
+
+\hypertarget{how-to-use-the-notebook}{%
+\section{4. How to use the notebook}\label{how-to-use-the-notebook}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Open \texttt{3+1super-loop.nb} in Wolfram (version 15 or later; the
+  notebook was evaluated with 15.0.1).
+\item
+  Choose Evaluation \textgreater{} Evaluate Notebook. Every cell is
+  evaluated in order. Nothing outside the notebook is read: the
+  registry, the converter and all tests are inside it.
+\item
+  Every test prints one line that begins with PASS (green) or FAIL
+  (red), its name, the statement that it checks, and the numbers that
+  decide it. Section I.9 of the notebook lists all tests in a table, and
+  its last cell gives
+  \texttt{\{"tests"\ -\textgreater{}\ 15,\ "passed"\ -\textgreater{}\ 15\}}.
+\item
+  After the evaluation every registered symbol can be typed in its
+  printed form; \texttt{?symbol} prints its meaning.
+\end{enumerate}
+
+The notebook as stored in the repository is already evaluated, so its
+results can be read without evaluating it. The folder
+\texttt{3+1super-loop\_provenance/export} holds the printed form of the
+evaluated notebook as a PDF file (100 pages).
+
+\hypertarget{the-technique-symbolized-symbols-created-by-a-program}{%
+\section{5. The technique: symbolized symbols created by a
+program}\label{the-technique-symbolized-symbols-created-by-a-program}}
+
+\hypertarget{the-basic-call}{%
+\subsection{5.1 The basic call}\label{the-basic-call}}
+
+The author's note on creating a symbolized variable by a program
+describes the technique that the notebook uses: the Notation package is
+loaded, and \texttt{Symbolize} is called with the box of the symbol
+wrapped in \texttt{ParsedBoxWrapper}:
+
+\begin{verbatim}
+Needs["Notation`"];
+Symbolize[ParsedBoxWrapper[SubscriptBox["a", "LL"]], WorkingForm -> StandardForm];
+\end{verbatim}
+
+After this call the two-dimensional input \(a_{\rm LL}\) is one new
+symbol (its internal name is
+\texttt{a\textbackslash{}{[}UnderBracket{]}Subscript\textbackslash{}{[}UnderBracket{]}LL},
+where \texttt{\textbackslash{}{[}UnderBracket{]}} is the separator
+character that the package puts into names). The notebook checks:
+\texttt{MakeExpression{[}SubscriptBox{[}"a",\ "LL"{]},\ StandardForm{]}}
+gives \texttt{HoldComplete{[}a\_LL{]}} (displayed with the printed
+form), its head is \texttt{Symbol} and it is an atom; the text input
+\texttt{Subscript{[}a,\ LL{]}}, in contrast, is a compound expression
+with head \texttt{Subscript}.
+
+\hypertarget{the-working-form-must-be-given-explicitly}{%
+\subsection{5.2 The working form must be given
+explicitly}\label{the-working-form-must-be-given-explicitly}}
+
+Without the option \texttt{WorkingForm\ -\textgreater{}\ StandardForm}
+the package asks the front end for the format of the notebook in which
+the input was typed (\texttt{InputNotebook{[}{]}}). When a notebook is
+evaluated by a program, or when no notebook is selected, the answer is
+\texttt{\$Failed}, and the package stores its reading rule for the
+format \texttt{\$Failed}: the symbol is created but its box is never
+recognized in input. This was found from the source code of the package
+(the default value is taken from
+\texttt{AbsoluteCurrentValue{[}InputNotebook{[}{]},\ \{CommonDefaultFormatTypes,\ "Output"\}{]}})
+and is error E1 of section 11.
+
+\hypertarget{the-name-of-every-symbol-is-given-explicitly}{%
+\subsection{5.3 The name of every symbol is given
+explicitly}\label{the-name-of-every-symbol-is-given-explicitly}}
+
+The package builds the name of a new symbol from the letters and scripts
+of the box, after removing \texttt{StyleBox} and \texttt{TagBox}
+wrappers. Three symbols that differ only in the alphabet of their
+letter, for example a bold \(\mathbf e_0\), a sans-serif \(\mathsf e_0\)
+and an ordinary \(e_0\) (a letter e with the subscript 0, written in the
+three alphabets), would therefore all receive one name and become ONE
+symbol. The notebook gives every symbol its own name with the option
+\texttt{SymbolizeRootName} (section 8). Error E5.
+
+\hypertarget{reaching-a-symbol-from-a-program}{%
+\subsection{5.4 Reaching a symbol from a
+program}\label{reaching-a-symbol-from-a-program}}
+
+A program reaches a symbolized symbol through its box:
+\texttt{MakeExpression{[}box,\ StandardForm{]}} returns
+\texttt{HoldComplete{[}symbol{]}}. To give it a value, the held symbol
+is put into an assignment with \texttt{Apply}:
+
+\begin{verbatim}
+With[{s = MakeExpression[SubscriptBox["a", "LL"], StandardForm]},
+  Set @@ Join[s, HoldComplete[42]]];        (* a_LL = 42 *)
+With[{s = MakeExpression[SubscriptBox["a", "LL"], StandardForm]}, Clear @@ s]   (* Clear[a_LL] *)
+\end{verbatim}
+
+\texttt{Join{[}HoldComplete{[}a\_LL{]},\ HoldComplete{[}42{]}{]}} is
+\texttt{HoldComplete{[}a\_LL,\ 42{]}}, and \texttt{Set\ @@} replaces the
+head \texttt{HoldComplete} by \texttt{Set}. Because \texttt{Set} does
+not evaluate its first argument, the symbol itself (and not its old
+value) receives the new value. An earlier form,
+\texttt{ReleaseHold{[}Hold{[}Clear{]}\ @@\ s{]}}, evaluated the symbol
+before \texttt{Clear} received it and failed with the message
+\texttt{Clear::ssym:\ 42\ is\ not\ a\ symbol} (error E10).
+
+\hypertarget{a-symbolized-symbol-is-one-atom-the-authors-example}{%
+\subsection{5.5 A symbolized symbol is one atom: the author's
+example}\label{a-symbolized-symbol-is-one-atom-the-authors-example}}
+
+The author showed, with the symbol \(a_{{\rm LL},p}\), that a sum whose
+summation variable is called LL multiplies the whole symbol and leaves
+the LL inside the subscript untouched. The notebook (section I.2)
+contains this example:
+
+\begin{verbatim}
+Symbolize[ParsedBoxWrapper[SubscriptBox["a", RowBox[{"LL", ",", "p"}]]], WorkingForm -> StandardForm];
+Sum[LL a_{LL,p}, {LL, 1, 2}]                          (* gives 3 a_{LL,p} *)
+3 a_{LL,p} === Sum[LL a_{LL,p}, {LL, 1, 2}]           (* gives True *)
+Sum[LL Subscript[b, LL, p], {LL, 1, 2}]               (* gives b_{1,p} + 2 b_{2,p} *)
+\end{verbatim}
+
+(here \texttt{a\_\{LL,p\}} stands for the two-dimensional input
+\(a_{{\rm LL},p}\)). In formulas:
+\(\sum_{{\rm LL}=1}^{2}{\rm LL}\,a_{{\rm LL},p}=1\cdot a_{{\rm LL},p}+2\cdot a_{{\rm LL},p}=3\,a_{{\rm LL},p}\),
+while for the ordinary subscripted expression the summation variable is
+replaced inside the subscript:
+\(\sum_{{\rm LL}=1}^{2}{\rm LL}\,b_{{\rm LL},p}=b_{1,p}+2\,b_{2,p}\).
+After the example the symbols \texttt{LL} and \texttt{b} of the context
+\texttt{Global\textasciigrave{}} are removed with
+\texttt{Remove{[}LL,\ b{]}}, because the name \texttt{LL} is used
+afterwards for the function \texttt{LL} of the package of the notebook.
+
+\hypertarget{the-symbolized-box-must-be-the-box-that-the-front-end-sends}{%
+\subsection{5.6 The symbolized box must be the box that the front end
+sends}\label{the-symbolized-box-must-be-the-box-that-the-front-end-sends}}
+
+The Notation package recognizes an input only if its boxes are EXACTLY
+the symbolized boxes. Before an input cell is evaluated, the front end
+reads every string of its boxes again, as typed text, and cuts it into
+tokens: names (a letter followed by letters and digits), numbers and
+single other characters. The subscript LL,p of a typed
+\(a_{{\rm LL},p}\) therefore arrives as
+\texttt{RowBox{[}\{"LL",\ ",",\ "p"\}{]}}. A box written by a program as
+\texttt{SubscriptBox{[}"a",\ "LL,p"{]}} (the whole subscript as one
+string) is never matched by typed input. A test notebook, evaluated in
+the front end, showed exactly this (folder \texttt{experiments}: the sum
+gave \(a_{1,p}+2\,a_{2,p}\), \texttt{AtomQ} gave \texttt{False}); for
+the registry, 9 symbols were affected (error E7). In the same way, a box
+that the front end reads as an operator must be protected (error E9).
+Section 6 describes how the converter builds boxes that the front end
+sends unchanged, and the tests S-0 and S-14 verify it.
+
+\hypertarget{the-converter-from-tex-to-boxes}{%
+\section{6. The converter from TeX to
+boxes}\label{the-converter-from-tex-to-boxes}}
+
+The registry stores every symbol in TeX. The notebook contains a reader
+of exactly this kind of TeX (function \texttt{SL31TeXToBoxes} of the
+package \texttt{SL31\textasciigrave{}}), written in the Wolfram
+Language. The Wolfram TeX importer
+(\texttt{ImportString{[}...,\ "TeX"{]}}) was not used for symbols
+because it loses the alphabets of styled letters (error E4). The rules
+of the reader:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+TeX
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+box
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+a letter or digit & the string itself; neighbouring digits are joined
+into one number \\
+\texttt{\textbackslash{}Delta}, \texttt{\textbackslash{}alpha}, \ldots{}
+(Greek letters and other commands) & the Wolfram character, for example
+\texttt{"\textbackslash{}{[}CapitalDelta{]}"} \\
+\texttt{x\^{}\{...\}}, \texttt{x\_\{...\}}, both &
+\texttt{SuperscriptBox}, \texttt{SubscriptBox},
+\texttt{SubsuperscriptBox} (a prime \texttt{\textquotesingle{}} is a
+superscript \texttt{"\textbackslash{}{[}Prime{]}"}) \\
+\texttt{\{\textbackslash{}rm\ text\}} & the text, cut into tokens as the
+front end cuts typed text: \texttt{\{\textbackslash{}rm\ vac\}} gives
+\texttt{"vac"}, \texttt{\{\textbackslash{}rm\ int,F\}} gives
+\texttt{RowBox{[}\{"int",\ ",",\ "F"\}{]}},
+\texttt{\{\textbackslash{}rm\ s(2)\}} gives
+\texttt{RowBox{[}\{"s",\ RowBox{[}\{"(",\ "2",\ ")"\}{]}\}{]}} \\
+\texttt{\textbackslash{}mathbb\ R}, \texttt{\textbackslash{}mathcal\ L},
+\texttt{\textbackslash{}mathfrak\ m} & the double-struck, script and
+Gothic characters (separate characters of the Wolfram Language) \\
+\texttt{\textbackslash{}mathsf\ N}, \texttt{\textbackslash{}mathbf\ x} &
+\texttt{TagBox{[}StyleBox{[}"N",\ FontFamily\ -\textgreater{}\ "Helvetica",\ FontSlant\ -\textgreater{}\ "Plain"{]},\ "SL31SansSerif"{]}},
+\texttt{TagBox{[}StyleBox{[}"x",\ FontWeight\ -\textgreater{}\ "Bold",\ FontSlant\ -\textgreater{}\ "Plain"{]},\ "SL31Bold"{]}} \\
+\texttt{\textbackslash{}vec\ d}, \texttt{\textbackslash{}hat\ x},
+\texttt{\textbackslash{}tilde\ x}, \texttt{\textbackslash{}bar\ x} &
+\texttt{OverscriptBox} with
+\texttt{"\textbackslash{}{[}RightVector{]}"}, \texttt{"\^{}"},
+\texttt{"\textasciitilde{}"}, \texttt{"\_"} \\
+\texttt{(...)\^{}2} & a script after a closing parenthesis belongs to
+the whole group:
+\texttt{SuperscriptBox{[}RowBox{[}\{"(",\ ...,\ ")"\}{]},\ "2"{]}}, the
+box that the front end makes of typed input \\
+\end{longtable}
+
+The \texttt{TagBox} of the sans-serif and bold letters is kept by the
+Notation package when it compares boxes (it removes only
+\texttt{StyleBox}, \texttt{AdjustmentBox} and \texttt{FrameBox}), so
+that a bold, a sans-serif and an ordinary letter with the same scripts
+remain three different symbols.
+
+The boxes that are symbolized depend on the kind of the TeX item
+(function \texttt{SL31SymbolBoxes}):
+
+\begin{itemize}
+\tightlist
+\item
+  a single letter (\(D\), the number of space dimensions) is wrapped in
+  \texttt{TagBox{[}..,\ "SL31Plain"{]}}, so that the ordinary letter
+  \texttt{D} keeps its meaning in the Wolfram Language (it is the
+  derivative function there);
+\item
+  a function symbol \(W_{\rm LL}(\mathbf u)\) gives the box of its head
+  \(W_{\rm LL}\);
+\item
+  a group name, a ket, an expression, and a symbol whose base is an
+  operator sign (\(\partial_p\), \(\nabla^{\rm LL}_p\),
+  \(\nabla^{{\rm LL}*}_p\), \(\nabla^{\rm B}_{{\rm LL},p}\)) is wrapped
+  in
+  \texttt{TagBox{[}..,\ "SL31Name",\ SyntaxForm\ -\textgreater{}\ "symbol"{]}},
+  so that the front end treats it as ONE operand wherever it stands (37
+  symbols);
+\item
+  every other symbol gives its box unchanged.
+\end{itemize}
+
+\hypertarget{the-registry-inside-the-notebook}{%
+\section{7. The registry inside the
+notebook}\label{the-registry-inside-the-notebook}}
+
+The registry of the symbols of the super-loop revision has 199 entries
+in nine groups:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+group
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entries
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 Indices, conventions and number sets & 11 \\
+2 The bi-octonions and the super-loop & 26 \\
+3 Operators on the super-loop and their eigenvalues & 3 \\
+4 The covariant families and their classification & 5 \\
+5 The manifolds & 8 \\
+6 The spin-zero superfluid & 20 \\
+7 Power counting and renormalizability & 8 \\
+8 Groups, Lie algebras, operations and labels & 6 \\
+9 Test 2: the gauge-covariant field equations of the spinor field and
+their solutions & 112 \\
+\end{longtable}
+
+The registry is stored in the repository as the file
+\texttt{Revision\_SuperLoop/provenance/symbols\_ll.csv} (columns group,
+symbol, names\_in\_files, meaning, origin). The script
+\texttt{tools/registry\_to\_wl.wls} converts it into the Wolfram
+Language file \texttt{notebook\_source/registry\_data.wl} (a list
+\texttt{SL31Registry} of 199 associations with the keys ``entry'',
+``group'', ``symbol'', ``names'', ``meaning'', ``meaningEdited'',
+``origin''), and the notebook contains this file in full in one input
+cell. In 16 entries (2, 36, 58, 86, 115, 123, 139, 148, 169, 174, 176,
+177, 178, 179, 192, 199) the meaning was restated (file
+\texttt{notebook\_source/meaning\_edits.wl}, key ``meaningEdited''
+-\textgreater{} True), because its original wording pointed to
+equations, theorems, sections or files of other texts; for example, one
+restated meaning writes out a transformation of the order parameter of
+the superfluid in full, where the original text only gave the number of
+the equation that defines it.
+
+Every TeX segment (the text between two dollar signs) is split at the
+commas that stand outside braces, parentheses and brackets; a list
+\texttt{a,\ \textbackslash{}dots,\ b} of numbered symbols is expanded.
+This gives 449 TeX items in 434 segments; the 2 label entries (86: the
+names of the machine checks and theorems; 87: the hypothesis labels
+H-grp, H-op, H-Lie, H-gr, H-dyn) are names, not symbols, and are kept as
+text. The kinds of the 449 items:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+kind
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+items
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+symbolized
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+examples
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+symbol & 289 & yes & \(\Delta^{\rm vac}_{\rm LL}\), \(G_{\rm LL}\) \\
+family (running index) & 56 & yes & \(\tau^{\rm LL}_\iota\),
+\(x^p_{\rm LL}\) \\
+function & 37 & yes (its head) & \(W_{\rm LL}(\mathbf u)\) \\
+group & 30 & yes & \({\rm SU}(2)_{\rm v}\), \(\mathfrak{so}(3,1)\) \\
+operator & 13 & no (Wolfram functions) & tr, det, diag, Re, Im,
+\({}^T\), \(\otimes\), \(\oplus\), \(\circ\), \([\mathbf x,\mathbf y]\),
+\([\mathbf x,\mathbf y,\mathbf z]\), \([\ \cdot\ ]\),
+\(\langle\ \rangle\) \\
+function family & 7 & yes (its head) & \\
+set & 4 & no (Wolfram domains) & \(\mathbb R\), \(\mathbb C\),
+\(\mathbb H\), \(\mathbb O\) \\
+index & 3 & no & \(j\), \(p\), \(\iota\) \\
+primed index & 3 & yes & \(p'\), \(\iota'\), \(\iota''\) \\
+imaginary unit & 2 & no (the Wolfram symbol \texttt{I}) & \(i\) \\
+expression & 2 & yes & \((T_{\rm LL})^2\) \\
+ket & 2 & yes & \(\lvert\Phi^{\rm SF}_{\rm LL}\rangle\),
+\(\lvert\Phi^{\rm N}_{\rm LL}\rangle\) \\
+letter & 1 & yes & \(D\) \\
+\end{longtable}
+
+The 427 TeX items of the symbolized kinds give 422 different boxes, so
+422 symbolized symbols. Four boxes are shared by several TeX items,
+always a function symbol written with different arguments; they are ONE
+symbol, as the head \(f\) of \(f(x)\) and \(f(x,y)\) is one symbol:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+TeX items
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+entries
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(N_{\rm LL}\) &
+\texttt{N\_\{\textbackslash{}rm\ LL\}(\textbackslash{}mathbf\ x)},
+\texttt{N\_\{\textbackslash{}rm\ LL\}(\textbackslash{}mathbf\ x,\textbackslash{}mathbf\ y)}
+& 19 \\
+\(\Pi^\iota_{\rm LL}\) &
+\texttt{\textbackslash{}Pi\^{}\textbackslash{}iota\_\{\textbackslash{}rm\ LL\}},
+\texttt{\textbackslash{}Pi\^{}\textbackslash{}iota\_\{\textbackslash{}rm\ LL\}(x\_\{\textbackslash{}rm\ LL\})}
+& 59, 113 \\
+\(\varepsilon_{\rm LL}\) &
+\texttt{\textbackslash{}varepsilon\_\{\textbackslash{}rm\ LL\}},
+\texttt{\textbackslash{}varepsilon\_\{\textbackslash{}rm\ LL\}(+)},
+\texttt{\textbackslash{}varepsilon\_\{\textbackslash{}rm\ LL\}(-)} & 62,
+156 \\
+\(\mathfrak g_2\) & \texttt{\textbackslash{}mathfrak\ g\_2},
+\texttt{\textbackslash{}mathfrak\ g\_2(\textbackslash{}mathbb\ C)} &
+83 \\
+\end{longtable}
+
+The meanings show that each group is one object:
+\(N_{\rm LL}(\mathbf x)\) is the complex norm and
+\(N_{\rm LL}(\mathbf x,\mathbf y)\) its polarization;
+\(\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\)
+is the pair operator and \(\Pi^\iota_{\rm LL}(x_{\rm LL})\) the same
+operator at the point \(x_{\rm LL}\);
+\(\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}\) is the energy
+of a spinor charge and
+\(\varepsilon_{\rm LL}(\pm)=(\lvert\vec q_{\rm LL}\pm\vec k^{\rm B}_{\rm LL}/2\rvert^2+m_{\rm LL}^2)^{1/2}\)
+the same energy at the two momenta of a pair; \(\mathfrak g_2\) is the
+Lie algebra of the exceptional group \(G_2\) and
+\(\mathfrak g_2(\mathbb C)\) its complexification. (In these meanings
+\(\Psi_{\rm LL}\) is the spinor field, the isospin doublet of Dirac
+spinors of the spinor charges; \(\mathsf K^\iota_{\rm LL}\) are the
+\(8\times8\) pair matrices of the scalar channel; \({}^T\) is the
+transpose; \(\vec q_{\rm LL}\) is a momentum and \(q_{\rm LL}\) its
+length; \(\vec k^{\rm B}_{\rm LL}\) is the total momentum of a pair,
+whose length is the wave number \(k^{\rm B}_{\rm LL}\) of section 2.2;
+\(x_{\rm LL}\) is a point of space-time, with the coordinates
+\(x^p_{\rm LL}\); the complex norm \(N_{\rm LL}(\mathbf x)\) of a
+bi-octonion \(\mathbf x\) is the sum of the squares of its eight complex
+coefficients; \(G_2\) is the exceptional Lie group of the automorphisms
+of the octonions.) Symbolizing one box twice would only replace the
+first symbolization, with the warning \texttt{Symbolize::bsymbexs}
+(error E11).
+
+Components of a family, for example \(\sigma^{\rm LL}_1\) of
+\(\sigma^{\rm LL}_j\), are separate symbols. A symbolized symbol is an
+atom, so the index letter inside it cannot be replaced by a number in a
+sum; the function
+\texttt{SL31Instance{[}box,\ \{index\ -\textgreater{}\ value\}{]}}
+replaces the index in the scripts of the box, symbolizes the new box and
+returns its symbol. The tests use the components
+\(\sigma^{\rm LL}_{1,2,3}\), the 27 components of
+\(\epsilon^{\rm LL}_{jj'j''}\), \(x^{0,1,2,3}_{\rm LL}\), the 16
+components of \(\eta^{\rm LL}_{pp'}\), \(\tau^{\rm LL}_{1,2,3}\) and
+\(T^{1,2,3}_{\rm LL}\).
+
+\hypertarget{the-names-of-the-symbols}{%
+\section{8. The names of the symbols}\label{the-names-of-the-symbols}}
+
+The name of a symbol (function \texttt{SL31NameOf}) is built from its
+box: the letters are kept, every character that may not stand in a
+symbol name is replaced by its character name, and the separator
+\texttt{\textbackslash{}{[}UnderBracket{]}} marks the parts:
+\texttt{Sub} and \texttt{Sup} before a subscript and a superscript,
+\texttt{Over} before an accent, \texttt{Bold}, \texttt{SansSerif},
+\texttt{Plain} and \texttt{Name} for the four kinds of \texttt{TagBox};
+a name that would not begin with a letter is prefixed with \texttt{Sym}.
+Examples (TeX on the left, the name of the symbol, as the Wolfram
+Language writes it, on the right):
+
+\begin{verbatim}
+\Delta^{\rm vac}_{\rm LL}    \[CapitalDelta]\[UnderBracket]Sub\[UnderBracket]LL\[UnderBracket]Sup\[UnderBracket]vac
+A^\iota_{{\rm LL},p}         A\[UnderBracket]Sub\[UnderBracket]LL\[UnderBracket]RawComma\[UnderBracket]p\[UnderBracket]Sup\[UnderBracket]\[Iota]
+\mathsf N^{\rm g}_{\rm LL}    SansSerif\[UnderBracket]N\[UnderBracket]Sub\[UnderBracket]LL\[UnderBracket]Sup\[UnderBracket]g
+\mathbf e_0                  Bold\[UnderBracket]e\[UnderBracket]Sub\[UnderBracket]0
+D                            Plain\[UnderBracket]D
+\partial_p                   Name\[UnderBracket]\[UnderBracket]PartialD\[UnderBracket]\[UnderBracket]Sub\[UnderBracket]p
+\end{verbatim}
+
+The internal names never appear in the notebook's output: every symbol
+is printed with its box, and (with a rule for \texttt{TraditionalForm})
+written in TeX from its box.
+
+\hypertarget{the-tests-of-part-i}{%
+\section{9. The tests of Part I}\label{the-tests-of-part-i}}
+
+Every test is recorded by the function
+\texttt{SL31Check{[}name,\ statement,\ condition,\ details{]}} in the
+list \texttt{SL31\textasciigrave{}Test\textasciigrave{}\$Results} and
+prints one line. All 15 tests passed in the evaluation of 17 November
+2026; the numbers below are the numbers of that evaluation.
+
+\textbf{S-0 (the strings as the front end reads them).} Every string
+inside every symbolized box (the tags of \texttt{TagBox} and the options
+of \texttt{StyleBox} excepted) must be one token for the front end; the
+test reads each with
+\texttt{FrontEnd\textasciigrave{}UndocumentedTestFEParserPacket{[}string,\ True{]}}
+and requires that the result is the string itself. Result: 201 different
+strings, none cut.
+
+\textbf{S-1.} Every one of the 449 TeX items is converted into a box
+structure (no \texttt{\$Failed}, no \texttt{Null}). Result: 449.
+
+\textbf{S-2.} Every one of the 422 symbolized boxes is read by
+\texttt{MakeExpression} as one atomic symbol. Result: 422.
+
+\textbf{S-14 (the typed symbols).} One input cell contains all 422
+symbols, each in its printed form, as a reader would type them. When the
+cell is evaluated, the front end sends the boxes to the kernel; every
+one must be one atomic symbol, and it must be the very symbol created
+from its registry TeX. Result: 422 of 422.
+
+\textbf{S-3 (uniqueness).} Different boxes give different symbols, and
+the boxes stay different after the removal of \texttt{StyleBox},
+\texttt{AdjustmentBox} and \texttt{FrameBox} (the comparison that the
+Notation package makes). Result: 422 boxes, 422 symbols, 422 boxes after
+the removal.
+
+\textbf{S-4 (round trip).} Every symbol printed again gives exactly its
+box: \texttt{ToBoxes{[}symbol,\ StandardForm{]}\ ===\ box}. Result: 422
+of 422.
+
+\textbf{S-5 (TeX).} \texttt{TeXForm} of every symbol is written from its
+printed form; the internal name with its separator does not appear.
+Result: 422 of 422.
+
+\textbf{S-6 (arithmetic: the gap equation).} The gap of the condensed
+vacuum solves
+\[\frac{1}{G_{\rm LL}}=\frac{1}{2\pi^2}\Big[\Lambda_{\rm LL}\big(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2\big)^{1/2}-(M^{\rm q}_{\rm LL})^2\,{\rm arsinh}\frac{\Lambda_{\rm LL}}{M^{\rm q}_{\rm LL}}\Big],\qquad (M^{\rm q}_{\rm LL})^2=m_{\rm LL}^2+(\Delta^{\rm vac}_{\rm LL})^2 .\]
+The notebook writes this equation with the symbolized symbols, gives
+them the values \(G_{\rm LL}=45/2\), \(m_{\rm LL}=1/5\),
+\(\Lambda_{\rm LL}=1\) only inside \texttt{Block}, and solves for
+\(\Delta^{\rm vac}_{\rm LL}\) with \texttt{FindRoot} (30 digits, start
+value 0.2). Result: \(\Delta^{\rm vac}_{\rm LL}=0.209493303270\); the
+conditions
+\(\lvert\Delta^{\rm vac}_{\rm LL}-0.2094933033\rvert<10^{-10}\) (the
+value found by the Rust program of Test 2),
+\(\lvert2\Delta^{\rm vac}_{\rm LL}-0.4189866\rvert<10^{-7}\) and
+\(\lvert2M^{\rm q}_{\rm LL}-0.5792666\rvert<10^{-7}\) hold.
+
+\textbf{S-7 (sums over a family: the Pauli matrices).} With the three
+symbolized components \(\sigma^{\rm LL}_{1,2,3}\) and the 27 symbolized
+components of \(\epsilon^{\rm LL}_{jj'j''}\), given their values inside
+\texttt{Block}:
+\[\sum_{j=1}^3\sigma^{\rm LL}_j\sigma^{\rm LL}_j-3\,\mathsf 1_2=0,\qquad \sigma^{\rm LL}_j\sigma^{\rm LL}_{j'}-\Big(\delta_{jj'}\mathsf 1_2+i\sum_{j''=1}^3\epsilon^{\rm LL}_{jj'j''}\sigma^{\rm LL}_{j''}\Big)=0\quad\text{for all nine pairs }(j,j').\]
+Result: the largest absolute value of all matrix elements of both
+left-hand sides is 0 and 0 (exact).
+
+\textbf{S-8 (a double sum with a metric).} With the 4 components
+\(x^p_{\rm LL}\) and the 16 components \(\eta^{\rm LL}_{pp'}\) as free
+symbols,
+\(Q=\sum_{p,p'=0}^{3}\eta^{\rm LL}_{pp'}x^p_{\rm LL}x^{p'}_{\rm LL}\)
+has 16 terms; after the metric receives its values, \texttt{Expand}
+gives
+\[Q=(x^0_{\rm LL})^2-(x^1_{\rm LL})^2-(x^2_{\rm LL})^2-(x^3_{\rm LL})^2,\]
+with the coordinate components still free symbols. Result: equal (the
+difference expands to 0).
+
+\textbf{S-9 (algebra: the Higgs mechanism).} With
+\((M^{\rm W}_{\rm LL})^2=2Z^{\rm s}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+and
+\((M^{\rm F}_{\rm LL})^2=8Z^{\rm s}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\),
+\texttt{Simplify} gives
+\[\Big(\frac{M^{\rm F}_{\rm LL}}{M^{\rm W}_{\rm LL}}\Big)^2=4\Big(\frac{g^{\rm F}_{\rm LL}}{g^{\rm v}_{\rm LL}}\Big)^2,\]
+independent of the stiffness and of the gap, and \texttt{Solve} recovers
+the gap from \(M^{\rm W}_{\rm LL}\):
+\(\Delta^{\rm vac}_{\rm LL}=\pm M^{\rm W}_{\rm LL}/\big(\sqrt2\,g^{\rm v}_{\rm LL}(Z^{\rm s}_{\rm LL})^{1/2}\big)\)
+(two solutions). Result: as stated.
+
+\textbf{S-10 (algebra: the longitudinal vector boson).} For a plane wave
+the time component and the longitudinal component of a massive vector
+field obey two linear equations with the determinant
+\[\det=\Big((k^{\rm B}_{\rm LL})^2+\frac{Z^{\rm t}_{\rm LL}}{Z^{\rm s}_{\rm LL}}M^2\Big)\big((\omega^{\rm B}_{\rm LL})^2-M^2\big)-(k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm LL})^2,\qquad M=M^{\rm W}_{\rm LL}.\]
+\texttt{Factor} gives
+\(\det=-\dfrac{M^2}{Z^{\rm s}_{\rm LL}}\Big(Z^{\rm s}_{\rm LL}(k^{\rm B}_{\rm LL})^2+Z^{\rm t}_{\rm LL}M^2-Z^{\rm t}_{\rm LL}(\omega^{\rm B}_{\rm LL})^2\Big)\),
+and \texttt{Solve} (for the unknown \(w=(\omega^{\rm B}_{\rm LL})^2\))
+gives the single root
+\(w=M^2+(Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})(k^{\rm B}_{\rm LL})^2\):
+the absorbed Goldstone boson moves with the velocity
+\((Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})^{1/2}\). Result: one root,
+equal to the stated one.
+
+\textbf{S-11 (a sum over the isospin index: the Casimir).} With the
+symbolized components \(T^\iota_{\rm LL}\) and \(\tau^{\rm LL}_\iota\)
+and the rule \(T^\iota_{\rm LL}=\tau^{\rm LL}_\iota/2\):
+\[(T_{\rm LL})^2=\sum_{\iota=1}^3T^\iota_{\rm LL}T^\iota_{\rm LL}=\tfrac34\,\mathsf 1_2 .\]
+Result: \(\{\{3/4,0\},\{0,3/4\}\}\).
+
+\textbf{S-12 (plain-text names).} No plain-text name of the registry
+belongs to two different entries. Result: 592 different names, none
+shared.
+
+\textbf{S-13 (the kinds that are not symbolized).} The imaginary unit
+\(i\) is the Wolfram symbol \texttt{I}; \(\mathbb R\) and \(\mathbb C\)
+are the domains \texttt{Reals} and \texttt{Complexes}; tr, det, diag,
+Re, Im, \(\otimes\) and \({}^T\) are \texttt{Tr}, \texttt{Det},
+\texttt{DiagonalMatrix}, \texttt{Re}, \texttt{Im},
+\texttt{KroneckerProduct} and \texttt{Transpose}. The test checks eleven
+statements on the Pauli matrices: \(i^2=-1\); \(\sqrt2\in\mathbb R\);
+\(i\in\mathbb C\); \(i\notin\mathbb R\);
+\({\rm tr}\,\sigma^{\rm LL}_3=0\); \(\det\sigma^{\rm LL}_1=-1\);
+\({\rm diag}(1,-1)=\sigma^{\rm LL}_3\);
+\({\rm Re}\,\sigma^{\rm LL}_2=0\);
+\({\rm Im}\,\sigma^{\rm LL}_2=\begin{pmatrix}0&-1\\1&0\end{pmatrix}\);
+\((\sigma^{\rm LL}_1\otimes\sigma^{\rm LL}_3)^2=\mathsf 1_4\)
+(\(\mathsf 1_4\): the \(4\times4\) unit matrix);
+\((\sigma^{\rm LL}_2)^T=-\sigma^{\rm LL}_2\). Result: all eleven
+\texttt{True}.
+
+\hypertarget{how-the-notebook-was-built-and-evaluated}{%
+\section{10. How the notebook was built and
+evaluated}\label{how-the-notebook-was-built-and-evaluated}}
+
+\textbf{The source.} The notebook is written as a text file in the
+Wolfram package format,
+\texttt{notebook\_source/3+1super-loop.source.wl}: every cell is
+introduced by a marker line such as \texttt{(*\ ::Section::\ *)},
+\texttt{(*\ ::Text::\ *)} or \texttt{(*\ ::Input::\ *)}. Inside an input
+cell a symbol is written as \texttt{LL{[}"tex"{]}} (for example
+\texttt{LL{[}"G\_\{\textbackslash{}\textbackslash{}rm\ LL\}"{]}}), and a
+line \texttt{(*\ @@INCLUDE\ file@@\ *)} inserts a file: the package
+\texttt{sl31\_core.wl}, the registry \texttt{registry\_data.wl}, and the
+list \texttt{all\_symbols.wl} of all 422 symbols for test S-14 (written
+by \texttt{tools/gen\_all\_symbols.wls}).
+
+\textbf{The builder} \texttt{tools/build\_notebook.wls} (run by
+wolframscript) turns the source into the notebook
+\texttt{notebook\_source/3+1super-loop.unevaluated.nb}: the code of
+every input cell is parsed into boxes by the front end itself (so
+comments, line breaks and indentation are kept), every
+\texttt{LL{[}"tex"{]}} is replaced by the two-dimensional box of the
+symbol, and text cells receive inline formulas (TeX between dollar
+signs, converted by the Wolfram TeX importer), code font and bold. The
+notebook is written by the kernel, not through the front end (error E9).
+
+\textbf{The evaluation} is done by the front end of Wolfram.app, exactly
+as Evaluation \textgreater{} Evaluate Notebook does it (file
+\texttt{tools/guirun.wl}): the notebook is opened (visible), its
+evaluator is set to a kernel named \texttt{SL31Run} that is declared for
+the running session only
+(\texttt{SetOptions{[}\$FrontEndSession,\ EvaluatorNames\ -\textgreater{}\ ...{]}},
+so the preferences of Wolfram.app are not changed), and
+\texttt{FrontEndTokenExecute{[}nb,\ "EvaluateNotebook"{]}} starts the
+evaluation. A hidden one-cell notebook, queued after it in the same
+kernel, writes the test list of the kernel to a file and then quits the
+kernel, so that every run starts with a fresh kernel. Afterwards the
+evaluated notebook is saved (with its evaluator reset to the default),
+exported to PDF, and a log lists every message and every printed line
+with the label of its input cell
+(\texttt{logs/3+1super-loop.evaluation.log.txt}). The commands of
+\texttt{guirun.wl} are sent to the kernel of the running Wolfram.app
+session through a small file-request mechanism
+(\texttt{tools/watcher.wl}, \texttt{tools/handler.wl}): a scheduled task
+looks every 3 seconds for request files in a scratch folder.
+
+\textbf{To reproduce} without any of these tools: open
+\texttt{notebook\_source/3+1super-loop.unevaluated.nb} (or the evaluated
+\texttt{3+1super-loop.nb}) in Wolfram and choose Evaluation
+\textgreater{} Evaluate Notebook; the result must be the same 15 PASS
+lines and no message. To rebuild the unevaluated notebook from the
+source:
+
+\begin{verbatim}
+wolframscript -file tools/build_notebook.wls notebook_source/3+1super-loop.source.wl \
+    notebook_source/3+1super-loop.unevaluated.nb notebook_source/sl31_core.wl
+\end{verbatim}
+
+(the source includes its files relative to its own folder;
+\texttt{registry\_data.wl} is made by
+\texttt{tools/registry\_to\_wl.wls} from the CSV file of the registry,
+and \texttt{all\_symbols.wl} by \texttt{tools/gen\_all\_symbols.wls};
+the absolute paths inside these two scripts name the scratch folder of
+the author's Mac and must be adapted elsewhere).
+
+\hypertarget{errors-found-their-causes-and-their-fixes}{%
+\section{11. Errors found, their causes and their
+fixes}\label{errors-found-their-causes-and-their-fixes}}
+
+Every error below was met while the notebook was prepared and evaluated;
+each is fixed in the final notebook.
+
+\textbf{E1. The symbolized box was never recognized when the notebook
+was evaluated by a program.} Cause: the Notation package takes the
+default of the option \texttt{WorkingForm} from
+\texttt{AbsoluteCurrentValue{[}InputNotebook{[}{]},\ \{CommonDefaultFormatTypes,\ "Output"\}{]}};
+without a selected input notebook this is \texttt{\$Failed}, and the
+reading rule was stored for the form \texttt{\$Failed} (found by reading
+the source code of the package, \texttt{Notation.m}, in the
+installation). Fix: \texttt{WorkingForm\ -\textgreater{}\ StandardForm}
+is given explicitly in every call of \texttt{Symbolize}. Evidence: the
+tests S-2 and S-14.
+
+\textbf{E2. Results in plain text.}
+\texttt{NotebookEvaluate{[}nb,\ InsertResults\ -\textgreater{}\ True{]}},
+run by wolframscript, inserted the results as plain-text output form
+instead of typeset boxes. A first remedy was a custom cell-by-cell
+evaluator (\texttt{tools/run\_notebook.wls}); it was replaced by the
+evaluation in the front end of Wolfram.app (E6).
+
+\textbf{E3. Code shown in linear syntax.} Input cells written as plain
+strings showed the symbols as linear syntax (for example
+\texttt{\textbackslash{}!\textbackslash{}(\textbackslash{}*SubscriptBox{[}...{]}\textbackslash{})}).
+Fix: the builder parses the code into boxes with the front end and
+inserts the boxes of the symbols.
+
+\textbf{E4. The TeX importer loses alphabets.}
+\texttt{ImportString{[}"\$...\$",\ "TeX"{]}} turns
+\texttt{\textbackslash{}mathbb}, \texttt{\textbackslash{}mathsf},
+\texttt{\textbackslash{}mathfrak} and \texttt{\textbackslash{}mathbf}
+letters into plain letters, so different symbols would coincide. Fix:
+the notebook's own converter (section 6); the TeX importer is used only
+for formulas in text.
+
+\textbf{E5. Equal names for styled letters.} The Notation package builds
+names after removing \texttt{StyleBox} and \texttt{TagBox}, so
+\(\mathbf e_0\), \(\mathsf e_0\) and \(e_0\) would become one symbol.
+Fix: \texttt{SymbolizeRootName} with names that record the alphabet
+(section 8). Evidence: S-3.
+
+\textbf{E6. The evaluator run by wolframscript failed.} Two full runs
+stopped without a result; a diagnostic run showed that a cell with
+several statements on separate lines was read by \texttt{ToExpression}
+as ONE product of the statements (the output of a 52-statement cell was
+\texttt{Null\^{}52}), and that cells stored as lists of boxes returned
+unevaluated \texttt{HoldComplete{[}...{]}} results. In the front end the
+statements of a cell are separated at its line breaks before they are
+sent to the kernel. Fix: the evaluation was moved into the front end of
+Wolfram.app (section 10), which also answered the author's request to
+execute the notebook in his Wolfram.app;
+\texttt{tools/run\_notebook.wls} is kept, marked as superseded.
+
+\textbf{E7. Nine symbols were not recognized in typed input.} A test
+notebook in the front end showed that
+\texttt{Symbolize{[}ParsedBoxWrapper{[}SubscriptBox{[}"a",\ "LL,p"{]}{]}{]}}
+is not matched by the typed \(a_{{\rm LL},p}\): the sum
+\(\sum_{{\rm LL}=1}^2{\rm LL}\,a_{{\rm LL},p}\) gave
+\(a_{1,p}+2\,a_{2,p}\) and \texttt{AtomQ} gave \texttt{False}, and the
+saved input cell held
+\texttt{SubscriptBox{[}"a",\ RowBox{[}\{"LL",\ ",",\ "p"\}{]}{]}}
+(folder \texttt{experiments}). To find every affected symbol, a notebook
+with one cell for each of the 430 boxes then symbolized was evaluated in
+the front end with \texttt{\$PreRead} recording the boxes that the
+kernel received (\texttt{tools/canon\_build.wls},
+\texttt{tools/canon\_compare.wls}): 9 differed, all strings of roman
+text with several tokens (\texttt{"int,F"}, \texttt{"int,B"},
+\texttt{"ext,F"}, \texttt{"ext,B"}, \texttt{"v,Y"}, \texttt{"v,4"},
+\texttt{"s(2)"}, \texttt{"s(3)"}, \texttt{"s(4)"}), which the front end
+had cut into \texttt{RowBox}es
+(\texttt{logs/E07\_front\_end\_boxes\_before\_fix.txt}). The front end's
+own parser confirmed exactly these 9 among the 213 strings then present
+(\texttt{tools/leaf\_check.wls},
+\texttt{logs/E07\_leaf\_check\_front\_end\_parser.txt}). Cause: before
+evaluation the front end reads every string of the boxes again as typed
+text (the reference page of \texttt{StripBoxes} states that the front
+end strips boxes ``using a more extensive process'' when it sends them
+to the kernel). Fix: the converter cuts roman text into tokens as the
+front end does (section 6); after the fix the same comparison found 0
+differences (\texttt{logs/E07\_front\_end\_boxes\_after\_fix.txt}). The
+test S-0 repeats the check in every evaluation.
+
+\textbf{E8. Three operators were symbolized as letters.} The tensor
+product \(\otimes\), the direct sum \(\oplus\) and the composition
+\(\circ\) are single characters and were classified as letters before
+the test for operators was reached. In an input cell the front end read
+them as operators and regrouped the whole line around them. Fix: the
+test for operators comes first; these three are operators and correspond
+to Wolfram functions (S-13). The number of symbolized TeX items fell
+from 430 to 427.
+
+\textbf{E9. The cell of test S-14 was not evaluated.} In the first full
+evaluation the input cell that lists all symbols received an input label
+but no evaluation: no result, no message, and the next cell received the
+same input number. The stored cell showed a regrouped line: the
+partial-derivative sign with a subscript, \(\partial_p\), had been read
+as an operator applied to everything after it (a \texttt{RowBox} that
+begins with a comma followed it). An experiment that split the list into
+cells of ten symbols (\texttt{tools/s14\_build.wls},
+\texttt{logs/E09\_s14\_chunk\_experiment.log.txt}) located the problem
+in the part with \(\otimes\), \(\oplus\), \(\circ\) and \(\partial_p\).
+Evaluated alone in cells of the form \texttt{\{b,\ 1\}}, every symbol
+box reached the kernel unchanged (\texttt{tools/canon2\_build.wls},
+\texttt{tools/canon2\_compare.wls},
+\texttt{logs/E09\_operand\_check\_in\_kernel\_input.txt}), and writing
+and reading the cells through the front end with \texttt{NotebookPut}
+and \texttt{NotebookGet} changed none of them either
+(\texttt{tools/reparse\_check.wls},
+\texttt{logs/E09\_reparse\_check.txt}); the regrouping had been made
+when the builder wrote the notebook file through the front end
+(\texttt{Export{[}file,\ notebook,\ "NB"{]}} inside
+\texttt{UsingFrontEnd}). Fix (three changes, made together, so that the
+evaluation does not separate their effects): (a) the builder writes the
+notebook expression with the kernel itself; (b) every symbol whose base
+is an operator sign, and every group name, ket and expression, is
+wrapped in
+\texttt{TagBox{[}box,\ "SL31Name",\ SyntaxForm\ -\textgreater{}\ "symbol"{]}},
+which tells the front end to treat the box as one operand wherever it
+stands (the reference page of \texttt{SyntaxForm} describes the option;
+the value \texttt{"symbol"} for a box that should act as a standalone
+thing was recommended by the front-end developer J. Fultz on the
+MathGroup mailing list in January 2014); (c) a script on a closing
+parenthesis is attached to the whole group, the form that the front end
+makes of typed input. After the three changes the built notebook
+contains no regrouped line, and the test S-14 passes for all 422
+symbols.
+
+\textbf{E10.
+\texttt{Clear::ssym:\ 42\ is\ not\ a\ symbol\ or\ a\ valid\ string\ pattern.}}
+The demonstration of section I.2 cleared the value of \(a_{\rm LL}\)
+with \texttt{ReleaseHold{[}Hold{[}Clear{]}\ @@\ s{]}};
+\texttt{Hold{[}Clear{]}{[}a\_LL{]}} evaluates its argument before
+\texttt{ReleaseHold} acts, so \texttt{Clear} received 42. Fix:
+\texttt{Clear\ @@\ s} and
+\texttt{Set\ @@\ Join{[}s,\ HoldComplete{[}42{]}{]}} (section 5.4).
+
+\textbf{E11. Warnings \texttt{Symbolize::bsymbexs}} (``the box structure
+attempting to be symbolized has a similar or identical symbol already
+defined''). Cause: TeX items with the same box (the four groups of
+section 7) were symbolized once each. Fix: the items are gathered by
+their boxes (\texttt{GatherBy}), and each box is symbolized once. The
+test S-3 was rewritten to compare boxes and symbols (it had compared TeX
+items with symbols and reported 430 against 425 as a failure).
+
+\textbf{E12. TeX of the symbols showed the internal names.} A rule
+\texttt{Format{[}s,\ TeXForm{]}\ =\ ...} had no effect, because
+\texttt{TeXForm} converts the \texttt{TraditionalForm} boxes of an
+expression, and the Notation package defines only the
+\texttt{StandardForm} boxes. Fix:
+\texttt{MakeBoxes{[}s,\ TraditionalForm{]}\ =\ box} for every symbol.
+Evidence: S-5 (422 of 422).
+
+\textbf{E13. Plain-text names ``Missing{[}NotAvailable{]}''.} The CSV
+import of Wolfram 15 gives \texttt{Missing{[}"NotAvailable"{]}} for an
+empty field; \texttt{ToString} made the name
+``Missing{[}NotAvailable{]}'' for 14 entries, and the test S-12 reported
+it as a name shared by 14 entries. Fix:
+\texttt{tools/registry\_to\_wl.wls} turns every field into a string and
+an empty field into ``\,'' (no name).
+
+\textbf{E14. Code spans with a context mark.} In text cells the builder
+marks code with backquotes; code that itself contains the context mark
+\texttt{\textasciigrave{}} (for example
+\texttt{SL31\textasciigrave{}Test\textasciigrave{}\$Results}) broke the
+code span. Fix: such code is marked with double backquotes.
+
+\hypertarget{decisions}{%
+\section{12. Decisions}\label{decisions}}
+
+\begin{itemize}
+\tightlist
+\item
+  ``./'' of the task is the top folder of the repository, so the
+  notebook is \texttt{3+1super-loop.nb} there; ``./test'' is the
+  author's folder of the Test 2 documents, whose symbols are the
+  complete registry (section 7). The author's folders \texttt{test} and
+  \texttt{mathematica\_symbols} are private and are not part of the
+  repository.
+\item
+  Function symbols are symbolized by their heads:
+  \(W_{\rm LL}(\mathbf u)\) is the head \(W_{\rm LL}\) applied to
+  \(\mathbf u\), written \texttt{W\_LL{[}u{]}} in the Wolfram Language.
+\item
+  Indices (\(p\), \(j\), \(\iota\)) are not symbolized: they are the
+  running letters inside the scripts; their components are symbolized on
+  demand (\texttt{SL31Instance}). Primed indices are symbolized, because
+  they also appear alone.
+\item
+  Operators, number sets and the imaginary unit are not symbolized: they
+  are Wolfram functions, domains and the symbol \texttt{I} (S-13).
+\item
+  The single letter \(D\) is symbolized in the box
+  \texttt{TagBox{[}"D",\ "SL31Plain"{]}}, so that the letter \texttt{D},
+  typed plainly, keeps its meaning (the derivative) in the Wolfram
+  Language.
+\item
+  Values are given to symbols only inside \texttt{Block}, so that after
+  every test the symbols are free again.
+\item
+  The registry is contained in the notebook as data (one input cell of
+  about 133 000 characters) and also shown as formatted tables, group by
+  group (section I.8).
+\end{itemize}
+
+\hypertarget{files}{%
+\section{13. Files}\label{files}}
+
+All paths are relative to the top folder of the repository.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+file
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+content
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{3+1super-loop.nb} & the notebook, evaluated (Part I) \\
+\texttt{3+1super-loop\_provenance/notebook\_source/3+1super-loop.source.wl}
+& the source of the notebook (cells marked in the Wolfram package
+format) \\
+\texttt{3+1super-loop\_provenance/notebook\_source/sl31\_core.wl} & the
+package
+SL31\texttt{(TeX\ reader,\ kinds,\ names,\ symbolization),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/registry\_data.wl\texttt{\textbar{}\ the\ registry\ as\ Wolfram\ Language\ data\ (199\ entries),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/meaning\_edits.wl\texttt{\textbar{}\ the\ 16\ restated\ meanings\ applied\ by\ registry\_to\_wl.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/all\_symbols.wl\texttt{\textbar{}\ the\ 422\ symbols\ as\ LL{[}tex{]}\ references,\ included\ in\ the\ cell\ of\ test\ S-14\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/3+1super-loop.unevaluated.nb\texttt{\textbar{}\ the\ notebook\ as\ built,\ before\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/export/3+1super-loop.pdf\texttt{\textbar{}\ the\ evaluated\ notebook\ printed\ to\ PDF\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/3+1super-loop.evaluation.log.txt\texttt{\textbar{}\ the\ log\ of\ the\ final\ evaluation:\ messages,\ printed\ lines,\ input\ labels,\ tests\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/symbolization\_one\_by\_one.txt\texttt{\textbar{}\ diagnostic:\ every\ item\ symbolized\ alone,\ with\ its\ result\ (no\ item\ failed\ or\ hung)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_before\_fix.txt\texttt{\textbar{}\ E7:\ the\ 9\ boxes\ changed\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_leaf\_check\_front\_end\_parser.txt\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ all\ 213\ strings\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_after\_fix.txt\texttt{\textbar{}\ E7:\ 0\ boxes\ changed\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_kinds\_and\_shared\_boxes.txt\texttt{\textbar{}\ E9,\ E11:\ kinds\ and\ the\ TeX\ items\ with\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_operand\_check\_in\_kernel\_input.txt\texttt{\textbar{}\ E9:\ every\ box\ reaches\ the\ kernel\ unchanged\ in\ the\ cell\ \{b,\ 1\}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_reparse\_check.txt\texttt{\textbar{}\ E9:\ NotebookPut\ and\ NotebookGet\ change\ no\ box\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_s14\_chunk\_experiment.log.txt\texttt{\textbar{}\ E9:\ the\ list\ of\ symbols\ evaluated\ in\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.unevaluated.nb\texttt{\textbar{}\ E7:\ the\ test\ notebook\ with\ SubscriptBox{[}"a",\ "LL,p"{]}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluated.nb\texttt{\textbar{}\ E7:\ the\ same\ notebook\ evaluated\ in\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluation.log.txt\texttt{\textbar{}\ E7:\ its\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_notebook.wls\texttt{\textbar{}\ the\ builder:\ source\ to\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/registry\_to\_wl.wls\texttt{\textbar{}\ the\ registry\ CSV\ file\ to\ registry\_data.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/gen\_all\_symbols.wls\texttt{\textbar{}\ writes\ all\_symbols.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/guirun.wl\texttt{\textbar{}\ evaluation\ of\ a\ notebook\ in\ the\ front\ end\ of\ Wolfram.app\ in\ a\ fresh\ kernel;\ saving,\ PDF\ export\ and\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/start\_main.wl\texttt{\textbar{}\ starts\ the\ evaluation\ of\ the\ notebook\ with\ guirun.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/status.wl\texttt{\textbar{}\ asks\ guirun.wl\ for\ the\ state\ of\ the\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/watcher.wl\texttt{\textbar{}\ the\ scheduled\ task\ in\ the\ Wolfram.app\ session\ that\ reads\ request\ files\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/handler.wl\texttt{\textbar{}\ the\ handler\ of\ the\ request\ files\ (scripts,\ and\ files\ evaluated\ in\ the\ session)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/run\_notebook.wls\texttt{\textbar{}\ the\ superseded\ evaluator\ run\ by\ wolframscript\ (E2,\ E6)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_build.wls\texttt{\textbar{}\ E7:\ notebook\ with\ one\ cell\ per\ symbol\ box\ and\ a\ \$PreRead\ recorder\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_compare.wls\texttt{\textbar{}\ E7:\ compares\ recorded\ and\ built\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/leaf\_check.wls\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ every\ string\ of\ the\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_build.wls\texttt{\textbar{}\ E9,\ E11:\ cells\ \{b,\ 1\}\ with\ and\ without\ the\ SyntaxForm\ wrapper;\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_compare.wls\texttt{\textbar{}\ E9:\ compares\ the\ recorded\ cells\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/reparse\_check.wls\texttt{\textbar{}\ E9:\ writes\ and\ reads\ every\ cell\ \{x,\ b,\ y\}\ through\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/s14\_build.wls\texttt{\textbar{}\ E9:\ the\ list\ of\ all\ symbols\ split\ into\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_provenance\_docs.sh\texttt{\textbar{}\ makes\ the\ .tex\ and\ .pdf\ versions\ of\ this\ document\ from\ the\ .md\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/doc\_header.tex` \\
+\end{longtable}
+
+The SHA-256 digests of these files, as committed (output of
+\texttt{sha256sum}; the three versions of this document cannot list
+their own digests):
+
+\begin{verbatim}
+5f4be4b35b3a5d0d7924316093ce88f5d9e8df2a134a539ce1b12efefd7f29ad  3+1super-loop.nb
+279ee2b1bb26e80f38c3ae40a251f2e5c231f432ac103503d4b6e9c2826bfa15  3+1super-loop_provenance/notebook_source/3+1super-loop.source.wl
+36cf048620323e4ac04d5ebf285576e2e191404791ac666a780e1165791357ef  3+1super-loop_provenance/notebook_source/sl31_core.wl
+e3c8cbaa0005577b0d984daaea939c8ceffabc7479dde57e32e11714f7be48f1  3+1super-loop_provenance/notebook_source/registry_data.wl
+5b5f96ef59e2057b284b362e7e49e67423b3d122bf1e0db37abd3df81a550fde  3+1super-loop_provenance/notebook_source/meaning_edits.wl
+d35c3bf0c6d80a1c8d95b71e6602871755caed36e0551ec9639694fa81a83f87  3+1super-loop_provenance/notebook_source/all_symbols.wl
+7b0866795ea2cab0d775def713ea1cf222ab8656e570b96c775ff0979c52d6d9  3+1super-loop_provenance/notebook_source/3+1super-loop.unevaluated.nb
+79cdf95395a15de2ca7c9e9ce73511595d5a28364dc851516fd169cc7963de4c  3+1super-loop_provenance/export/3+1super-loop.pdf
+8dec9d78df5cf305d4d7a812172f52a4257cff34ceaaec7964ac09bd739dd8d1  3+1super-loop_provenance/logs/3+1super-loop.evaluation.log.txt
+664d1e799a0aa5114b03f9b10db89b7ec45f66897d40601b7970fa5db426dae6  3+1super-loop_provenance/logs/symbolization_one_by_one.txt
+fe4de274da007c4ae06a5ede22c05776f1279f1515225b904d693b1f02ea7ed8  3+1super-loop_provenance/logs/E07_front_end_boxes_before_fix.txt
+94a1d676722de723e6ec58c2c2b1489df566a457955d33b46b594802ca7554cc  3+1super-loop_provenance/logs/E07_leaf_check_front_end_parser.txt
+a5361540c3674a70cc39b2bb16019591ca32a75a0ba94e90a94b45c90ea99907  3+1super-loop_provenance/logs/E07_front_end_boxes_after_fix.txt
+c5b7e2c3f40e10c02df896742ac1e1eecc5d2589d68bf29bcc88ef2046a3bac9  3+1super-loop_provenance/logs/E09_kinds_and_shared_boxes.txt
+6cc8a6be8f70c3910140d5ed17872d240b7d44e98709a23e5508b7b52a33469e  3+1super-loop_provenance/logs/E09_operand_check_in_kernel_input.txt
+557a7c3dbb539ac1f7607509942374dc4373bc41657c3eb25d8d9c41ccd27d3c  3+1super-loop_provenance/logs/E09_reparse_check.txt
+747754b20292e9f1427b0249f86964ac9dd74380da26ec2f0b13ecac05925341  3+1super-loop_provenance/logs/E09_s14_chunk_experiment.log.txt
+7aee2310fa163ab02afe2881a46ba51f08590e3e4ced458c8986fdee17cdd955  3+1super-loop_provenance/experiments/gui_test.unevaluated.nb
+cb0bc845dd86a23fd7bbd1fd5b18d6d9a2a2caf4b26a0ab58d1c136f5ccd42bc  3+1super-loop_provenance/experiments/gui_test.evaluated.nb
+de33e81f087369495076880b88f0ad3e2eb83cdeacd9f346b04180e21fa8e66d  3+1super-loop_provenance/experiments/gui_test.evaluation.log.txt
+2df443b245f174cbcbb9d205bce0d673cb705945c1c3c893e007635c060a8996  3+1super-loop_provenance/tools/build_notebook.wls
+42767cd1ebc43492c95d19c5d67507a6a2450da9f0893f41f367f681a9ce5bd5  3+1super-loop_provenance/tools/registry_to_wl.wls
+46211d0b974221fb90e02b5459c3fc84577b35fb7ce732b565aa428ae1c5c604  3+1super-loop_provenance/tools/gen_all_symbols.wls
+6a7d810350cfcd4f69cc12b7d4bbc92ca1d57dcafd4a6ce6a1ecef4b37beef8d  3+1super-loop_provenance/tools/guirun.wl
+9083afbd62a52895d166dbb1e7efcae9820834ca503cd5f21e6863336785a37c  3+1super-loop_provenance/tools/start_main.wl
+d08e464e906ef6b296b3c6b27a89cded6a447551df3faeb77f96d34ecbe2029c  3+1super-loop_provenance/tools/status.wl
+a20ca599120a23107d27a7c4f024b3a137303d68868a11293032f4f76f3f5436  3+1super-loop_provenance/tools/watcher.wl
+3511e534722ca460f99dfc5e6479ae51eeb33a1f89fb9a41f440689a26c492bc  3+1super-loop_provenance/tools/handler.wl
+24ca3f2b9246b58759f4c1f7a1d447ad9bf6003d5a838e88ede0b503dc1de871  3+1super-loop_provenance/tools/run_notebook.wls
+33da3e6e322c6c184900c25167bddba499c5a9c2dbeee0d65ec760bc7aee7d92  3+1super-loop_provenance/tools/canon_build.wls
+049fd2e57dc8a5551fc90f12ca64e0bdfa0d12e64926a8b4e7584b6dadbfcc11  3+1super-loop_provenance/tools/canon_compare.wls
+7e1e688b9d26606103d84ff246aaa8834a55b53cbdbae1d0fc0bb71480f54d6a  3+1super-loop_provenance/tools/leaf_check.wls
+a79915c5253a7cdd9b162eda7b9e466ec3b57a63d670f614f1890c983bdc28e7  3+1super-loop_provenance/tools/canon2_build.wls
+05faf4a855ce53e514a34a2966ae43345df7e613a5e10fe459a99292437011ed  3+1super-loop_provenance/tools/canon2_compare.wls
+7803f4410097cbf0af6a7cd557bdc54cb0c75c9fe26411dc20eb51a3fa6640f3  3+1super-loop_provenance/tools/reparse_check.wls
+ddd7824acd0e8c1746ec4548d8912f9cf1d179438f18b69e47a90978687881a1  3+1super-loop_provenance/tools/s14_build.wls
+518fc0768f4da0aa5528e11f5207be50dbe453051b96dc03917352296cb0670b  3+1super-loop_provenance/tools/build_provenance_docs.sh
+00d3e3c225b60acac822b408deed88744968de7f8ef78467f6799ea1b68a3d30  3+1super-loop_provenance/tools/doc_header.tex
+\end{verbatim}
+
+\hypertarget{sources-consulted}{%
+\section{14. Sources consulted}\label{sources-consulted}}
+
+\begin{itemize}
+\tightlist
+\item
+  The source code of the Notation package in the Wolfram 15.0.1
+  installation (\texttt{Notation.m}): the default of
+  \texttt{WorkingForm}, the removal of \texttt{StyleBox},
+  \texttt{AdjustmentBox} and \texttt{FrameBox} before comparison, the
+  conversion of strings that end in an underscore into patterns, the
+  warning \texttt{Symbolize::bsymbexs} (E1, E5, E11).
+\item
+  The Wolfram Language reference page of \texttt{SyntaxForm}: an option
+  of \texttt{TagBox}, \texttt{InterpretationBox} and
+  \texttt{TemplateBox} that specifies how a box takes part in the
+  grammar of the surrounding input; by default the front end treats a
+  box as an operand (E9).
+  \url{https://reference.wolfram.com/language/ref/SyntaxForm.html}
+\item
+  The reference page of \texttt{TagBox}: its options
+  \texttt{StripWrapperBoxes} and \texttt{SyntaxForm} (E9).
+  \url{https://reference.wolfram.com/language/ref/TagBox.html}
+\item
+  The reference page of \texttt{StripBoxes}: when boxes are sent by the
+  front end to the kernel for evaluation, the front end strips them with
+  a more extensive process (E7).
+  \url{https://reference.wolfram.com/language/ref/StripBoxes.html}
+\item
+  The Notation package tutorial ``Complex Patterns and Advanced
+  Features'': tag boxes and the option \texttt{SyntaxForm} in notations
+  (E9).
+  \url{https://reference.wolfram.com/language/Notation/tutorial/ComplexPatternsAndAdvancedFeatures.html}
+\item
+  J. Fultz, answers on Mathematica Stack Exchange about the internal
+  command of the front end that reads a string as typed input (its
+  second argument \texttt{True} makes the stripping that is made at
+  evaluation time) (E7).
+\item
+  J. Fultz, MathGroup mailing list, 21 January 2014, ``Re: Unnecessary
+  parentheses around TagBox for MakeBoxes?'': the value
+  \texttt{SyntaxForm\ -\textgreater{}\ "symbol"} for a box that should
+  act as a standalone thing (E9).
+\end{itemize}
+
+\end{document}

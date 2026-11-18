@@ -1,0 +1,36 @@
+exit 0
+status finished
+seconds 1.5
+command /Applications/Wolfram.app/Contents/MacOS/wolframscript -file /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/tools/canon_compare.wls
+--- stdout ---
+items 430  received 431
+differences 9
+n^{\rm int,F}_{\rm LL}
+   mine: SubsuperscriptBox["n", "LL", "int,F"]
+   fe:   SubsuperscriptBox["n", "LL", RowBox[{"int", ",", "F"}]]
+n^{\rm int,B}_{\rm LL}
+   mine: SubsuperscriptBox["n", "LL", "int,B"]
+   fe:   SubsuperscriptBox["n", "LL", RowBox[{"int", ",", "B"}]]
+n^{\rm ext,F}_{\rm LL}
+   mine: SubsuperscriptBox["n", "LL", "ext,F"]
+   fe:   SubsuperscriptBox["n", "LL", RowBox[{"ext", ",", "F"}]]
+n^{\rm ext,B}_{\rm LL}
+   mine: SubsuperscriptBox["n", "LL", "ext,B"]
+   fe:   SubsuperscriptBox["n", "LL", RowBox[{"ext", ",", "B"}]]
+n^{\rm v,Y}_{\rm LL}
+   mine: SubsuperscriptBox["n", "LL", "v,Y"]
+   fe:   SubsuperscriptBox["n", "LL", RowBox[{"v", ",", "Y"}]]
+n^{\rm v,4}_{\rm LL}
+   mine: SubsuperscriptBox["n", "LL", "v,4"]
+   fe:   SubsuperscriptBox["n", "LL", RowBox[{"v", ",", "4"}]]
+\Omega^{\rm s(2)}_{\rm LL}
+   mine: SubsuperscriptBox["\[CapitalOmega]", "LL", "s(2)"]
+   fe:   SubsuperscriptBox["\[CapitalOmega]", "LL", RowBox[{"s", RowBox[{"(", "2", ")"}]}]]
+\Omega^{\rm s(3)}_{\rm LL}
+   mine: SubsuperscriptBox["\[CapitalOmega]", "LL", "s(3)"]
+   fe:   SubsuperscriptBox["\[CapitalOmega]", "LL", RowBox[{"s", RowBox[{"(", "3", ")"}]}]]
+\Omega^{\rm s(4)}_{\rm LL}
+   mine: SubsuperscriptBox["\[CapitalOmega]", "LL", "s(4)"]
+   fe:   SubsuperscriptBox["\[CapitalOmega]", "LL", RowBox[{"s", RowBox[{"(", "4", ")"}]}]]
+
+--- stderr ---

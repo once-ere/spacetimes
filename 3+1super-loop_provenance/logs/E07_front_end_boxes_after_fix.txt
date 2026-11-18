@@ -1,0 +1,9 @@
+exit 0
+status finished
+seconds 1.5
+command /Applications/Wolfram.app/Contents/MacOS/wolframscript -file /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/tools/canon_compare.wls
+--- stdout ---
+items 430  received 431
+differences 0
+
+--- stderr ---

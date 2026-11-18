@@ -1,0 +1,57 @@
+evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
+notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/in/s14.nb
+saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/out/s14.nb
+seconds:  27
+kernel:   {0, 72355}   last In line: 50
+counts:   <|"inputs" -> 43, "evaluated" -> 43, "outputs" -> 41, "prints" -> 0, "messages" -> 4|>
+--- messages (4) ---
+during In[1]:=  Symbolize::bsymbexs: Warning: The box structure attempting to be symbolized has a similar or identical symbol already defined, possibly overriding previously symbolized box structure.
+during In[1]:=  Symbolize::bsymbexs: Warning: The box structure attempting to be symbolized has a similar or identical symbol already defined, possibly overriding previously symbolized box structure.
+during In[1]:=  Symbolize::bsymbexs: Warning: The box structure attempting to be symbolized has a similar or identical symbol already defined, possibly overriding previously symbolized box structure.
+during In[1]:=  General::stop: Further output of Symbolize::bsymbexs will be suppressed during this calculation.
+--- printed lines (0) ---
+--- input cells (label, beginning) ---
+In[1]:=  Needs["Notation`"]; Get["/Users/nsh/Developer/github/spacetimes/.git-transfer/mma/source/s
+In[10]:=  (* every symbolized symbol of the registry (430), typed in its printed form *) typed = {  
+In[10]:=  {ValueQ[typed], If[ValueQ[typed], {Length[typed], Count[typed, _?AtomQ]}, "no value"], $Li
+In[11]:=  chunk[1]={D,p^\[Prime],\[Iota]^\[Prime],\[Iota]^\[Prime]\[Prime],Subsuperscript[\[Epsilon]
+In[12]:=  {1,Length[chunk[1]],Count[chunk[1],_?AtomQ]}
+In[13]:=  chunk[2]={Subscript[1, 4],Subscript[1, 8],Subscript[1, 16],Subscript[\[DoubleStruckCapital
+In[14]:=  {2,Length[chunk[2]],Count[chunk[2],_?AtomQ]}
+In[15]:=  chunk[3]={Subscript[e, 6],Subscript[e, 7],Subscript[e, p],Subscript[e, j],Subscript[e, \[I
+In[16]:=  {3,Length[chunk[3]],Count[chunk[3],_?AtomQ]}
+In[17]:=  chunk[4]={a,b,c,d,b^\[Prime],Overscript[x, _],x^*,x^\[Dagger],Subscript[N, LL],Subscript[N
+In[18]:=  {4,Length[chunk[4]],Count[chunk[4],_?AtomQ]}
+In[19]:=  chunk[5]={Subscript[Jac, LL],Subsuperscript[L, x, LL],Subsuperscript[R, x, LL],Subscript[\
+In[20]:=  {5,Length[chunk[5]],Count[chunk[5],_?AtomQ]}
+In[21]:=  chunk[6]={\!\( \*SubsuperscriptBox[\(J\), \(LL\), \(j\)],  \*SubsuperscriptBox[\(K\), \(LL
+In[22]:=  {6,Length[chunk[6]],Count[chunk[6],_?AtomQ]}
+In[23]:=  chunk[7]={Subscript[\[CapitalTheta], LL],Subscript[D, LL],Subsuperscript[D, LL, v],Subscri
+In[24]:=  {7,Length[chunk[7]],Count[chunk[7],_?AtomQ]}
+In[25]:=  chunk[8]={ad,Subscript[Q, LL],Subsuperscript[T, LL, \[Iota]],(Subscript[T, LL] )^2,Subscri
+In[26]:=  {8,Length[chunk[8]],Count[chunk[8],_?AtomQ]}
+In[27]:=  chunk[9]={r^\[Prime],Subsuperscript[c, LL, tw],Subsuperscript[c, LL, sl],Subsuperscript[c,
+In[28]:=  {9,Length[chunk[9]],Count[chunk[9],_?AtomQ]}
+In[29]:=  chunk[10]={\!\( \*SubsuperscriptBox[\(\[ScriptCapitalI]\), \(LL\), \(Jac\)],  \*Subsupersc
+In[30]:=  {10,Length[chunk[10]],Count[chunk[10],_?AtomQ]}
+In[31]:=  chunk[11]={Subscript[L, LL],Subscript[\[Chi], LL],Subscript[\[Theta], LL],Subscript[\[Scri
+In[32]:=  {11,Length[chunk[11]],Count[chunk[11],_?AtomQ]}
+In[33]:=  chunk[12]={\!\( \*SubsuperscriptBox[\(\[Alpha]\), \(LL\), \(j\)],  \*SubscriptBox[\(\[Beta
+In[34]:=  {12,Length[chunk[12]],Count[chunk[12],_?AtomQ]}
+In[35]:=  chunk[13]={Subscript[\[Mu], LL],Subscript[\[CapitalLambda], LL],Subscript[\[CurlyEpsilon],
+In[36]:=  {13,Length[chunk[13]],Count[chunk[13],_?AtomQ]}
+In[37]:=  chunk[14]={\!\( \*SubsuperscriptBox[\(d\), \(LL\), \(\[Iota]\)],  \*SubscriptBox[\(\[Zeta]
+In[38]:=  {14,Length[chunk[14]],Count[chunk[14],_?AtomQ]}
+In[39]:=  chunk[15]={\!\( \*SubsuperscriptBox[\(\[Nu]\), \(LL\), \(F\)],  \*SubscriptBox[\(F\), \(LL
+In[40]:=  {15,Length[chunk[15]],Count[chunk[15],_?AtomQ]}
+In[41]:=  chunk[16]={\!\( \*SubsuperscriptBox[\(\[ScriptCapitalL]\), \(LL\), \(Y\)],  \*Subsuperscri
+In[42]:=  {16,Length[chunk[16]],Count[chunk[16],_?AtomQ]}
+In[43]:=  chunk[17]={\!\( \*SubsuperscriptBox[\(n\), \(LL\), \(v\)],  \*SubsuperscriptBox[\(n\), \(L
+In[44]:=  {17,Length[chunk[17]],Count[chunk[17],_?AtomQ]}
+In[45]:=  chunk[18]={Subscript[G, 2](\[DoubleStruckCapitalC]),S O(1,7),S p i n(7),S p i n(7,\[Double
+In[46]:=  {18,Length[chunk[18]],Count[chunk[18],_?AtomQ]}
+In[47]:=  chunk[19]={\[GothicS]\[GothicO](1,7),\[GothicS]\[GothicO](4,1),\[GothicS]\[GothicO](8),\[G
+In[48]:=  {19,Length[chunk[19]],Count[chunk[19],_?AtomQ]}
+In[49]:=  chunk[20]={\[GothicS]\[GothicU](2),\[GothicS]\[GothicP]\[GothicI]\[GothicN](7),Subscript[\
+In[49]:=  {20,Length[chunk[20]],Count[chunk[20],_?AtomQ]}
+--- tests ---

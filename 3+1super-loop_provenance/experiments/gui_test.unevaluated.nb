@@ -1,0 +1,10 @@
+Notebook[{
+Cell["Test of the evaluation in the front end of Wolfram.app, in the separate kernel SL31Run.", "Text"],
+Cell[BoxData[RowBox[{"{", RowBox[{"$KernelID", ",", "$ProcessID", ",", "$Version"}], "}"}]], "Input"],
+Cell[BoxData[RowBox[{"Needs", "[", "\"Notation`\"", "]"}]], "Input"],
+Cell[BoxData[RowBox[{"Symbolize", "[", RowBox[{"ParsedBoxWrapper", "[", RowBox[{"SubscriptBox", "[", RowBox[{"\"a\"", ",", "\"LL,p\""}], "]"}], "]"}], "]"}]], "Input"],
+Cell[BoxData[RowBox[{"Sum", "[", RowBox[{RowBox[{"LL", "*", SubscriptBox["a", "LL,p"]}], ",", RowBox[{"{", RowBox[{"LL", ",", "1", ",", "2"}], "}"}]}], "]"}]], "Input"],
+Cell[BoxData[RowBox[{RowBox[{"3", " ", SubscriptBox["a", "LL,p"]}], "===", RowBox[{"Sum", "[", RowBox[{RowBox[{"LL", "*", SubscriptBox["a", "LL,p"]}], ",", RowBox[{"{", RowBox[{"LL", ",", "1", ",", "2"}], "}"}]}], "]"}]}]], "Input"],
+Cell[BoxData[RowBox[{RowBox[{"{", RowBox[{RowBox[{"AtomQ", "[", SubscriptBox["a", "LL,p"], "]"}], ",", RowBox[{"Head", "[", SubscriptBox["a", "LL,p"], "]"}], ",", RowBox[{"Names", "[", "\"Global`a*\"", "]"}]}], "}"}]}]], "Input"],
+Cell[BoxData[RowBox[{RowBox[{"b", "=", "1"}], "\n", RowBox[{"b", "+", "1"}]}]], "Input"]
+}, StyleDefinitions -> "Default.nb"]

@@ -1,0 +1,10 @@
+exit 0
+status finished
+seconds 1.5
+command /Applications/Wolfram.app/Contents/MacOS/wolframscript -file /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/tools/canon2_compare.wls
+--- stdout ---
+items 427  received 855
+not kept as an operand (plain box): 0
+not kept as an operand (wrapped with SyntaxForm -> symbol): 0
+
+--- stderr ---
