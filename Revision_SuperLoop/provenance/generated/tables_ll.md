@@ -463,7 +463,7 @@ cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/m
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
 983adf088e0243ee6612bce14b59700b83e28038005836b3235d714ba766b5a7  code/scripts/write_symbol_registry.py
-10d4904b83e1a07268eb8c27bbf43b3ac1fb2693ac993bdb2ffa3ef52f2d8903  code/scripts/build_docs.sh
+a0ec1bd5f42e9f4d44fa248789d0d9fcc77213790580132f6e2b0b0467be274f  code/scripts/build_docs.sh
 2b66d600b16ccec75c07b35e374dd3f9149dc3c699a10bb1409301776095383e  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
@@ -532,10 +532,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-0a683b6d26f09d369f31e86bef89a07252fcd66542126c75896db312631821f1  explanations/figures/fig_ex_r13_bubble.pdf
-1daa90eeba247b1da6e398400a1f23e3dc8e50f55e7d3df4c02b0cce4b7081ef  explanations/figures/fig_ex_r13_coordinates.pdf
-9f6956c4d71a45923e7d261fb8fcb40a07ba3a1033bf3045263cf7956834031e  explanations/figures/fig_ex_r13_divergences.pdf
-13ad0ef1bc53d1faf7ade2810523c78bfcc332e923550ea7888758a5d483ba45  explanations/figures/fig_ex_r13_lorentz.pdf
+4c46d6bd7217ea6dd41bec3b4bf3dcc8369129d4cb80ade697c2836b7e438b00  explanations/figures/fig_ex_r13_bubble.pdf
+99a13227cede733b3009004842fe15ac8aebc94cf8a75958611f8c8f0efae851  explanations/figures/fig_ex_r13_coordinates.pdf
+3cd549578f797ea93b86091428abf2c9504527bdd1f36939f3043f903d6ca090  explanations/figures/fig_ex_r13_divergences.pdf
+b20376d8789b294bb1adfeb0e9021b12314bfeb3482e1e055726f3fc77084faf  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1023,13 +1023,13 @@ $$M_{\rm LL}(\mathbf D_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0+\nabla^{\rm LL
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.53 | 0.15 |
-| `cyclotron` | 9.27 | 7.26 |
-| `andreev` | 1.28 | 0.85 |
-| `kink_spectrum` | 1.01 | 3.09 |
-| `ground_state` | 1.70 | 6.04 |
-| `kink_ground_state` | 8.69 | 28.92 |
-| `quench` (the time evolution) | 43.06 | 29.09 |
+| `packet_free` | 0.28 | 0.29 |
+| `cyclotron` | 9.47 | 8.32 |
+| `andreev` | 1.32 | 0.90 |
+| `kink_spectrum` | 1.11 | 3.64 |
+| `ground_state` | 2.36 | 5.86 |
+| `kink_ground_state` | 8.90 | 28.16 |
+| `quench` (the time evolution) | 43.38 | 30.43 |
 <!-- END t2_times_table -->
 
 <!-- BEGIN t2_py_keys -->
