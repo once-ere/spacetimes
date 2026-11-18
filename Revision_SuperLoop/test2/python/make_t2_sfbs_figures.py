@@ -34,6 +34,10 @@ Fermi momentum (mu^2 - m^2)^(1/2) that marks a position on an axis).  Output, in
                       SFBSv potential along the amplitude field and along the non-unitary field, exact, quadratic,
                       quartic, and the Higgs form with the same curvature; (c) the convergence of the minimizations; (d) the eigenvalues of the Hessian at the
                       three kinds of stationary points
+  fig_t2_sfbs_kinetic item [10] (checks SB-15, SB-16): (a) the energy of the condensed vacuum in constant gauge
+                      potentials; (b) Z_t and Z_s against the gap; (c) the kernels of the six directions at zero wave
+                      number; (d) the time-dependent mean-field evolution of the gap; (e) its spectrum; (f) the masses
+                      of the massive fields against the coupling
 
 Colors: the categorical colors of the project in a fixed order (Figure 21: blue for the vacuum, orange for the Fermi
 sea; Figure 22: blue for the frequency dependence or the coupling G = 21, orange for the wave-number dependence or
@@ -423,11 +427,119 @@ def fig_minima():
     save(fig, "fig_t2_sfbs_minima")
 
 
+def fig_kinetic():
+    """Figure 25: the kinetic Lagrangian in the condensed vacuum (item [10])."""
+    resp = rows("t2_sfbs_gauge_response.csv")
+    stf = rows("t2_sfbs_stiffness.csv")
+    kc = rows("t2_sfbs_kernels.csv")
+    kb = rows("t2_sfbs_kernels_bdg.csv")
+    ms = rows("t2_sfbs_masses.csv")
+    th = rows("t2_sfbs_tdbdg_higgs.csv")
+    spc = rows("t2_sfbs_higgs_spectrum.csv")
+    dvac = meta("t2_sfbs_kernels.csv", "Delta_vac")
+    mq = meta("t2_sfbs_kernels.csv", "M_q")
+    fig, axs = plt.subplots(2, 3, figsize=(18.0, 10.8))
+    (ax, bx, cx), (dx, ex, fx) = axs
+    # (a) the energy of the condensed vacuum in constant gauge potentials
+    styles = (("F_time", BLUE, "-", "fermion number, time: $-4Z^{\\rm t}_{\\rm LL}\\Delta_{\\rm LL}^2$"),
+              ("F_space", BLUE, "--", "fermion number, space: $4Z^{\\rm s}_{\\rm LL}\\Delta_{\\rm LL}^2$"),
+              ("T1_time", ORANGE, "-", "isospin axis 1, time: $-Z^{\\rm t}_{\\rm LL}\\Delta_{\\rm LL}^2$"),
+              ("T1_space", ORANGE, "--", "isospin axis 1, space: $Z^{\\rm s}_{\\rm LL}\\Delta_{\\rm LL}^2$"),
+              ("T3_time", GREEN, "-", "isospin axis 3 (the charge), time: 0"),
+              ("T3_space_canonical", GREY, ":", "axis 3, space, canonical cutoff: surface term"))
+    sc = 1e6
+    for key, colr, ls, lab in styles:
+        sel = [r for r in resp if r["case"] == key]
+        x = col(sel, "potential")
+        ax.plot(x, [sc * v for v in col(sel, "Omega_change_pred")], color=colr, ls=ls, lw=1.6, label=lab)
+        ax.plot(x, [sc * v for v in col(sel, "Omega_change")], "o", ms=5, color=colr, mec=INK, mew=0.5)
+    ax.axhline(0, color=GREY, lw=0.8)
+    ax.set_xlabel("constant potential (coupling times potential)")
+    ax.set_ylabel("$\\Omega_{\\rm LL}$ with potential minus without, units of $10^{-6}$")
+    ax.set_title("(a) the condensed vacuum in constant gauge potentials", fontsize=11, color=INK)
+    ax.legend(loc="lower left", fontsize=7.6, frameon=False)
+    ax.grid(color=GRID, lw=0.6)
+    # (b) Z_t and Z_s against the gap
+    cf = [r for r in stf if r["source"] == "closed_form" and float(r["Delta"]) > 0]
+    bd = [r for r in stf if r["source"] == "bogoliubov"]
+    z0 = [r for r in stf if r["source"] == "closed_form" and float(r["Delta"]) == 0]
+    bx.plot(col(cf, "Delta"), col(cf, "Z_t"), color=BLUE, lw=2.0, label="$Z^{\\rm t}_{\\rm LL}(\\Delta_{\\rm LL})$ (12.6)")
+    bx.plot(col(cf, "Delta"), col(cf, "Z_s"), color=ORANGE, lw=2.0, label="$Z^{\\rm s}_{\\rm LL}(\\Delta_{\\rm LL})$ (12.6)")
+    bx.plot(col(bd, "Delta"), col(bd, "Z_t"), "o", ms=7, color=BLUE, mec=INK, label="from the Bogoliubov matrices")
+    bx.plot(col(bd, "Delta"), col(bd, "Z_s"), "o", ms=7, color=ORANGE, mec=INK)
+    bx.plot([0, 0], [float(z0[0]["Z_t"]), float(z0[0]["Z_s"])], "s", ms=7, color=GREY, mec=INK, clip_on=False, label="normal vacuum (9.18), (9.19)")
+    bx.axvline(dvac, color=GREY, lw=1.0, ls="--")
+    bx.text(dvac + 0.005, 0.0355, "$\\Delta^{\\rm vac}_{\\rm LL}$ at $G_{\\rm LL}=22.5$", color=MUTED, fontsize=9)
+    bx.set_xlim(0, 0.4)
+    bx.set_xlabel("gap $\\Delta_{\\rm LL}$ of the condensed vacuum")
+    bx.set_ylabel("stiffness coefficient")
+    bx.set_title("(b) the coefficients of the kinetic Lagrangian", fontsize=11, color=INK)
+    bx.legend(loc="lower left", fontsize=8.4, frameon=False)
+    bx.grid(color=GRID, lw=0.6)
+    # (c) the kernels at zero wave number
+    w = col(kc, "omega_B")
+    s3 = 1e3
+    cx.plot(w, [s3 * v for v in col(kc, "Gamma_G")], color=BLUE, lw=2.0, label="$\\Gamma^{\\rm G}_{\\rm LL}=-(\\omega^{\\rm B}_{\\rm LL})^2\\Upsilon_{\\rm LL}$ (12.8)")
+    cx.plot(w, [s3 * v for v in col(kc, "Gamma_m")], color=ORANGE, lw=2.0, label="$\\Gamma^{\\rm m}_{\\rm LL}=(4\\Delta_{\\rm LL}^2-(\\omega^{\\rm B}_{\\rm LL})^2)\\Upsilon_{\\rm LL}$ (12.8)")
+    gold = ("Re_d1", "Re_d2", "Im_d3")
+    for k, (key, mk) in enumerate((("Re_d1", "o"), ("Re_d2", "s"), ("Im_d3", "^"), ("Im_d1", "o"), ("Re_d3", "^"), ("Im_d2", "s"))):
+        sel = [r for r in kb if r["direction"] == key]
+        colr = BLUE if key in gold else ORANGE
+        cx.plot(col(sel, "omega_B"), [s3 * v for v in col(sel, "Gamma_bdg")], mk, ms=6 + (2 - k % 3), mfc="none", mec=colr, mew=1.3)
+    cx.plot([], [], "o", ms=6, mfc="none", mec=INK, label="the six directions, Bogoliubov matrices")
+    cx.axhline(0, color=GREY, lw=0.8)
+    cx.axvline(2 * dvac, color=ORANGE, lw=1.0, ls="--")
+    cx.axvline(2 * mq, color=GREY, lw=1.0, ls=":")
+    cx.text(2 * dvac - 0.016, -10.5, "$2\\Delta^{\\rm vac}_{\\rm LL}$: zero of $\\Gamma^{\\rm m}_{\\rm LL}$", color=ORANGE, fontsize=9.5, rotation=90, va="center")
+    cx.text(2 * mq - 0.016, 1.5, "threshold $2M^{\\rm q}_{\\rm LL}$", color=MUTED, fontsize=9.5, rotation=90, va="center")
+    cx.set_xlim(0, 0.6)
+    cx.set_xlabel("frequency $\\omega^{\\rm B}_{\\rm LL}$")
+    cx.set_ylabel("kernel, units of $10^{-3}$")
+    cx.set_title("(c) the kernels of the six directions at zero wave number", fontsize=11, color=INK)
+    cx.legend(loc="lower left", fontsize=8.4, frameon=False)
+    cx.grid(color=GRID, lw=0.6)
+    # (d) the time-dependent mean-field evolution
+    dx.plot(col(th, "x_LL^0"), col(th, "d_over_dvac"), color=BLUE, lw=0.8, label="$d^3_{\\rm LL}/\\Delta^{\\rm vac}_{\\rm LL}$, start $1.02$")
+    dx.plot(col(th, "x_LL^0"), col(th, "line_2Dvac"), color=ORANGE, lw=0.9, ls="--", label="fitted oscillation of the frequency $2\\Delta^{\\rm vac}_{\\rm LL}$")
+    dx.set_xlim(0, 150)
+    dx.set_xlabel("time $x^0_{\\rm LL}$ (the first quarter of the run)")
+    dx.set_ylabel("$d^3_{\\rm LL}/\\Delta^{\\rm vac}_{\\rm LL}$")
+    dx.set_title("(d) the gap after a small displacement: the massive mode", fontsize=11, color=INK)
+    dx.legend(loc="upper right", fontsize=8.4, frameon=True, facecolor="white", framealpha=0.9)
+    dx.grid(color=GRID, lw=0.6)
+    # (e) the power spectrum
+    ex.semilogy(col(spc, "omega_B"), [max(v, 1e-12) for v in col(spc, "power")], color=BLUE, lw=1.2)
+    ex.axvline(2 * dvac, color=ORANGE, lw=1.0, ls="--")
+    ex.axvline(2 * mq, color=GREY, lw=1.0, ls=":")
+    ex.text(2 * dvac + 0.01, 0.2, "$2\\Delta^{\\rm vac}_{\\rm LL}$", color=ORANGE, fontsize=10)
+    ex.text(2 * mq + 0.01, 0.2, "$2M^{\\rm q}_{\\rm LL}$", color=MUTED, fontsize=10)
+    ex.set_xlim(0, 1.0)
+    ex.set_ylim(1e-10, 3)
+    ex.set_xlabel("frequency $\\omega^{\\rm B}_{\\rm LL}$")
+    ex.set_ylabel("power of $d^3_{\\rm LL}(x^0_{\\rm LL})$, normalized")
+    ex.set_title("(e) its spectrum: one line below the pair-breaking continuum", fontsize=11, color=INK)
+    ex.grid(color=GRID, lw=0.6, which="both")
+    # (f) the masses against the coupling
+    gg = col(ms, "G")
+    fx.plot(gg, col(ms, "mass_massive"), color=ORANGE, lw=2.2, label="$2\\Delta^{\\rm vac}_{\\rm LL}$: mass of $h^{\\rm a}_{\\rm LL}$, $c^{\\rm n}_{{\\rm LL},1}$, $c^{\\rm n}_{{\\rm LL},2}$ (12.9)")
+    fx.plot(gg, col(ms, "threshold"), color=GREY, lw=1.6, ls=":", label="pair-breaking threshold $2M^{\\rm q}_{\\rm LL}$")
+    fx.plot(gg, col(ms, "mass_strict"), color=BLUE, lw=1.5, ls="--", label="strict expansion to second order (12.10)")
+    fx.axvline(22.5, color=GREY, lw=0.9, ls="--")
+    fx.set_xlabel("coupling $G_{\\rm LL}$")
+    fx.set_ylabel("mass")
+    fx.set_title("(f) the masses of the massive fields of SFBSv", fontsize=11, color=INK)
+    fx.legend(loc="upper left", fontsize=8.4, frameon=False)
+    fx.grid(color=GRID, lw=0.6)
+    fig.tight_layout()
+    save(fig, "fig_t2_sfbs_kinetic")
+
+
 def main():
     fig_state()
     fig_effective()
     fig_potential()
     fig_minima()
+    fig_kinetic()
 
 
 if __name__ == "__main__":

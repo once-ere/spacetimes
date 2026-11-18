@@ -596,8 +596,25 @@ independent of the Goldstone fields; its expansion to the fourth order
 with coefficients in closed form; the charges of the fields; the
 comparison with a potential of the Higgs form); checks SB-13 and SB-14,
 Figure 24 & answered \\
-{[}10{]} and {[}11{]} & Sections 12 and 13 of the document & to follow,
-in this order \\
+{[}10{]} & Section 12 of the document: the kinetic Lagrangian of the
+SFBS (its definition with the gauge-covariant derivative and the reasons
+for its form; written out with the couplings to the currents and the
+contact matrix \(\mathsf N^{\rm g}_{\rm LL}\) of the four potentials,
+which in the vacuum does not contain the potential of the electric
+charge; Theorem 12.1: the stiffness coefficients
+\(Z^{\rm t}_{\rm LL}(\Delta_{\rm LL})\),
+\(Z^{\rm s}_{\rm LL}(\Delta_{\rm LL})\) of the condensed vacuum in
+closed form, derived exactly from the energy of the vacuum in constant
+gauge potentials, the same for the fermion-number and the isospin
+directions, exact for the Goldstone fields by gauge invariance; Theorem
+12.2: the exact kernels of the six directions at zero wave number, with
+the masses 0 of the Goldstone fields and \(2\Delta^{\rm vac}_{\rm LL}\)
+of the amplitude field and the non-unitary fields, below the
+pair-breaking threshold; the quadratic Lagrangian of SFBSv; the
+time-dependent mean-field oscillation at \(2\Delta^{\rm vac}_{\rm LL}\);
+the surface term of the cutoff and dimensional regularization); checks
+SB-15 and SB-16, Figure 25 & answered \\
+{[}11{]} & Section 13 of the document & to follow \\
 \end{longtable}
 
 The demand of 06:45 is met in every field equation of the document: the
@@ -658,7 +675,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 182 new ones, all with the
+registries with their meanings and adds 190 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -908,6 +925,18 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   unbroken group, and the curvatures computed directly from the
   Bogoliubov matrices), Section 11 of the document of Test 2 with Figure
   24, and the new symbols (decision D19, Section 11, entry E60).
+\item
+  \textbf{Stage 16 --- Test 2, item {[}10{]}, the kinetic Lagrangian of
+  the SFBS} (Section 2.8): the checks SB-15 and SB-16 in
+  \texttt{t2\_sfbs} (the expansion of the squared covariant derivative
+  with the contact matrix, the Bogoliubov eigenvalues of the condensed
+  vacuum in a constant vector potential, the energy of the vacuum in six
+  constant potentials against the kinetic Lagrangian, the stiffness
+  coefficients against their closed forms, the kernels of the six
+  directions against their closed forms, the masses, and the
+  time-dependent mean-field oscillation of the gap), Section 12 of the
+  document of Test 2 with Figure 25, and the new symbols (decision D20,
+  Section 11, entry E61).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1333,6 +1362,35 @@ discarded. The curvatures are not called masses in item {[}9{]}, because
 a mass needs the coefficient of the time derivatives in the condensed
 vacuum, which is item {[}10{]}.
 
+\textbf{D20. ``Derive, explain and discuss the kinetic Lagrangian for
+the superfluid boson singlet (S=0) state''.} The kinetic Lagrangian is
+the part of the effective Lagrangian of item {[}8{]} that contains the
+derivatives, with the gauge-covariant derivative of the SFBS (the demand
+of 06:45). Its form is fixed by gauge invariance, the rotations of space
+and charge conjugation; its two coefficients are derived from the spinor
+field in the condensed vacuum, which is the vacuum about which item
+{[}11{]} expands. They are not obtained by expanding a general
+fluctuation determinant in the derivatives, but exactly, from the energy
+of the vacuum in constant gauge potentials (Theorem 12.1): by gauge
+invariance this gives the exact terms of the second order in the
+derivatives of the three Goldstone fields, which are the ones the gauge
+fields absorb in item {[}11{]}. For the three massive directions the
+exact kernels at zero wave number are computed (Theorem 12.2); the
+kinetic Lagrangian with the common time coefficient reproduces their
+exact masses \(2\Delta^{\rm vac}_{\rm LL}\), while a strict expansion to
+the second order in the frequency would not (it overestimates the mass
+by 9 per cent at \(G_{\rm LL}=22.5\)); the document keeps (12.1) and
+states this. The space coefficient of the massive directions is taken to
+be the same \(Z^{\rm s}_{\rm LL}\); it was not computed separately. The
+momentum cutoff is applied to the gauge-covariant relative momentum of a
+pair, so that constant gauge transformations remain a symmetry of the
+regularized theory; the cutoff on the canonical momentum, which would
+give the potential of the electric charge a spurious mass, is computed
+only for comparison. The difference
+\(Z^{\rm s}_{\rm LL}\neq Z^{\rm t}_{\rm LL}\) is shown to be a surface
+term of the cutoff, absent in dimensional regularization; as in D18, the
+cutoff values are kept for consistency with the gap equation.
+
 \textbf{D14. ``analytical solutions for at least 3 simple cases''.} Item
 {[}2{]} gives four cases, chosen so that together they exercise every
 term of the field equations: the covariant derivative with space and
@@ -1416,21 +1474,25 @@ author's}\label{decisions-that-are-the-authors}}
   corrections, no finite temperature, no dispersions of the Goldstone
   modes, no other interactions.
 \item
-  Items {[}10{]} and {[}11{]} of Test 2 are answered in the following
-  stages; this version of the document of the answers contains items
-  {[}1{]} to {[}9{]}. The minima, the stationary points and the
-  expansion of item {[}9{]} are those of the mean-field potential;
-  Theorem 11.2 and all numbers of item {[}9{]} are for
-  \(\mu_{\rm LL}=0\). The effective potential of item {[}8{]} is that of
-  the mean-field approximation. The effective field equations of item
-  {[}8{]} keep the SFBS field at its stationary point (mean field): its
-  own fluctuations (loops of the SFBS) are not included, and the
-  derivative expansion is truncated at second order. The solver of item
-  {[}3{]} treats the gauge fields as external (their field equations
-  (2.29) are not solved), and its self-consistent tasks are limited to
-  about 375 sites by the dense diagonalization. In item {[}2{]} the
-  domain wall was solved for walls along one coordinate only, and the
-  bound states of walls of the width
+  Item {[}11{]} of Test 2 is answered in the following stage; this
+  version of the document of the answers contains items {[}1{]} to
+  {[}10{]}. The kinetic Lagrangian of item {[}10{]} has the coefficients
+  of the Gaussian fluctuations about the mean field, at
+  \(\mu_{\rm LL}=0\); the space coefficient of the massive directions is
+  taken equal to that of the Goldstone directions, and the space
+  coefficient depends on the regularization (a surface term of the
+  cutoff). The minima, the stationary points and the expansion of item
+  {[}9{]} are those of the mean-field potential; Theorem 11.2 and all
+  numbers of item {[}9{]} are for \(\mu_{\rm LL}=0\). The effective
+  potential of item {[}8{]} is that of the mean-field approximation. The
+  effective field equations of item {[}8{]} keep the SFBS field at its
+  stationary point (mean field): its own fluctuations (loops of the
+  SFBS) are not included, and the derivative expansion is truncated at
+  second order. The solver of item {[}3{]} treats the gauge fields as
+  external (their field equations (2.29) are not solved), and its
+  self-consistent tasks are limited to about 375 sites by the dense
+  diagonalization. In item {[}2{]} the domain wall was solved for walls
+  along one coordinate only, and the bound states of walls of the width
   \(\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1\) were checked through
   the two scalar operators of the square of the operator, not on the
   lattice.
@@ -1863,6 +1925,34 @@ and are now Richardson-extrapolated; the minimizer first ran to its
 iteration limit because its stopping test asked for a gradient below the
 noise of the numerical gradient, and it now stops at \(10^{-10}\) or
 when a step no longer lowers the potential & & \\
+E61 & the first draft of Section 12 used letters without the suffix LL
+in derivations (three generic complex vectors in the expansion of a
+squared length, two generic real vectors in Lagrange's identity, two
+abbreviations in the expansion of the square roots of (12.7), the shift
+of the momentum by the third-axis potential, the amplitude of a
+deviation of the field, and a positive number in the closed form of the
+kernel, written with the letter of the registered twist charge
+\(\Theta_{\rm LL}\)), the frequency without its scripts, and a reference
+to the decision D18 of this document, which the document of Test 2 may
+not make (its reasons must stand in it); they were replaced by words, by
+the registered symbols \(\delta^{\rm f}_{\rm LL}\),
+\(\vec u^{\rm f}_{\rm LL}\), \(c^{\rm w}_{\rm LL}\),
+\(\vec a^{\rm F}_{\rm LL}\), by the real and the imaginary part of
+\(\vec d_{\rm LL}\), and by \(\omega^{\rm B}_{\rm LL}\). In the report
+of check SB-16 the plain-text name \texttt{eps} was used for the
+relative displacement of the starting gap, which clashed with
+\texttt{eps} for \(\varepsilon_{\rm LL}\); it was renamed \texttt{disp},
+the contact matrix \texttt{N} was renamed \texttt{N\_g}, and the
+momentum and the potential of the eigenvalue formula, first written
+\texttt{p} and \texttt{a}, are now \texttt{q} and \texttt{a\_F}. The
+labels of Figure 25(c) first used the frequency without its scripts. One
+display of the proof of Theorem 12.2 was wider than the page and was
+split. The check of the energy in constant potentials first failed its
+tolerance (relative deviations \(2.6\times10^{-6}\) and
+\(1.8\times10^{-5}\) from the terms of the fourth order at the potential
+0.02); the second differences are now taken at 0.005 and 0.01 and
+extrapolated. The \(16\times16\) unit matrix, also used by the folder
+Revision\_NoGo, was declared shared & & \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -1914,7 +2004,9 @@ the eight-dimensional manifolds (on \(4+4\) power counting sees the
 total dimension 8 as well); the value 4, the coordinates \(x5,x6,x7\) of
 the eight-dimensional spacetime of the project (on which such fields do
 not depend), and the volume and the area of the unit ball do not occur.
-& taken & \texttt{D} \\
+Section 12.5 of the document of Test 2 continues \(D\) away from 3, in
+dimensional regularization (the momentum integrals taken in \(D\) space
+dimensions). & taken & \texttt{D} \\
 \(i\) & the imaginary unit, \(i^2=-1\); in \(\mathbb B_{\rm LL}\) it is
 the imaginary unit of the complex coefficients: it commutes and
 associates with every bi-octonion and is not one of the units
@@ -1962,8 +2054,9 @@ an isodoublet) & new & \texttt{tau\_iota} \texttt{tau\_1}
 \(\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}\); it
 acts on a Weyl, isospin or species index, as stated at each place & new
 & \texttt{eps2} \\
-\(\mathsf 1_4\), \(\mathsf 1_8\) & the \(4\times4\) and the \(8\times8\)
-unit matrices & new & \\
+\(\mathsf 1_2\), \(\mathsf 1_4\), \(\mathsf 1_8\), \(\mathsf 1_{16}\) &
+the \(2\times2\), the \(4\times4\), the \(8\times8\) and the
+\(16\times16\) unit matrices & new & \\
 \end{longtable}
 
 \textbf{2 The bi-octonions and the super-loop}
@@ -3460,6 +3553,87 @@ used for comparison; its coupling
 \(\lambda^{\rm H}_{\rm LL}=\Omega^{\rm s(2)}_{\rm LL}/(4(\Delta^{\rm vac}_{\rm LL})^2)\)
 gives it the curvature of the computed potential along
 \(h^{\rm a}_{\rm LL}\) & new & \texttt{Omega\_H} \texttt{lambda\_H} \\
+\(\mathcal L^{\rm kin}_{\rm LL}\) & the kinetic Lagrangian of the SFBS,
+the part of \(\mathcal L^{\rm B}_{\rm LL}\) that contains the
+derivatives,
+\(Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2\),
+so that
+\(\mathcal L^{\rm B}_{\rm LL}=\mathcal L^{\rm kin}_{\rm LL}-\Omega_{\rm LL}(\vec d_{\rm LL})\)
+& new & \texttt{Lagr\_kin} \\
+\(\mathsf N^{\rm g}_{\rm LL}(\vec d_{\rm LL})\),
+\(\mathsf N^{\rm v}_{\rm LL}(\vec d_{\rm LL})\);
+\(\vec w^{\rm n}_{\rm LL}\) & the contact matrix: the real symmetric
+\(4\times4\) matrix of the terms of
+\(\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL})^\iota\rvert^2\)
+that are quadratic in the potentials
+\((A^{\rm F}_{{\rm LL},p},A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p})\),
+with the corner entry
+\(4(g^{\rm F}_{\rm LL})^2\lvert\vec d_{\rm LL}\rvert^2\), the first row
+and column
+\(4g^{\rm F}_{\rm LL}g^{\rm v}_{\rm LL}(w^{\rm n}_{\rm LL})^\iota\) and
+the isospin block \((g^{\rm v}_{\rm LL})^2\mathsf N^{\rm v}_{\rm LL}\),
+whose entries are
+\(\lvert\vec d_{\rm LL}\rvert^2-\lvert d^\iota_{\rm LL}\rvert^2\) on the
+diagonal and \(-{\rm Re}(d^\iota_{\rm LL}(d^{\iota'}_{\rm LL})^*)\) off
+it; and the real vector
+\(\vec w^{\rm n}_{\rm LL}={\rm Re}\,\vec d_{\rm LL}\times{\rm Im}\,\vec d_{\rm LL}\),
+zero for the polar fields & new & \texttt{N\_g} \texttt{N\_v}
+\texttt{w\_n} \\
+\(E^{\rm c}_{\rm LL}\) & the quasi-particle energy of the condensed
+vacuum \((0,0,\Delta_{\rm LL})\) at \(\mu_{\rm LL}=0\),
+\(E^{\rm c}_{\rm LL}=(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}\), an
+eigenvalue of \(\mathsf H_{\rm LL}(\vec q_{\rm LL})\) eight times with
+each sign; \(E^{\rm c}_{\rm LL}(\Lambda_{\rm LL})\) is its value at
+\(q_{\rm LL}=\Lambda_{\rm LL}\) (plain text \texttt{E\_Lambda}) & new &
+\texttt{E\_c} \texttt{E\_Lambda} \\
+\(\vec a^{\rm F}_{\rm LL}\) & the fermion-number coupling times the
+space components of a constant fermion-number potential,
+\(\vec a^{\rm F}_{\rm LL}=g^{\rm F}_{\rm LL}(A^{\rm F}_{{\rm LL},1},A^{\rm F}_{{\rm LL},2},A^{\rm F}_{{\rm LL},3})\):
+the shift of the kinetic momentum of both members of a pair & new &
+\texttt{a\_F} \\
+\(\vec u^{\rm f}_{\rm LL}\), \(\vec u^{\rm f'}_{\rm LL}\);
+\(\delta^{\rm f}_{\rm LL}\) & a fixed complex unit vector, the direction
+of a deviation
+\(\delta^{\rm f}_{\rm LL}(x_{\rm LL})\,\vec u^{\rm f}_{\rm LL}\) of the
+field from the vacuum \((0,0,\Delta_{\rm LL})\), one of the six
+directions \((1,0,0)\), \((0,1,0)\), \((0,0,i)\) (Goldstone) and
+\((i,0,0)\), \((0,i,0)\), \((0,0,1)\) (massive); a second such
+direction; and the small real amplitude of the deviation, a function of
+space and time & new & \texttt{u\_f} \texttt{delta\_f} \\
+\(\mathsf H^{\rm f}_{\rm LL}\), \(\mathsf H^{\rm f'}_{\rm LL}\) & the
+change of the \(16\times16\) Bogoliubov matrix per unit of
+\(\delta^{\rm f}_{\rm LL}\),
+\(\begin{pmatrix}0&\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})\\\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})^\dagger&0\end{pmatrix}\),
+where \(\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})\) is the pairing
+block with \(\vec u^{\rm f}_{\rm LL}\) in place of \(\vec d_{\rm LL}\);
+and the same for \(\vec u^{\rm f'}_{\rm LL}\) & new & \texttt{H\_f} \\
+\(\chi^{\rm f}_{\rm LL}(\omega^{\rm B}_{\rm LL})\),
+\(\Gamma^{\rm f}_{\rm LL}(\omega^{\rm B}_{\rm LL})\);
+\(\Gamma^{\rm G}_{\rm LL}\), \(\Gamma^{\rm m}_{\rm LL}\) & the pair
+susceptibility of a direction \(\vec u^{\rm f}_{\rm LL}\) of the
+condensed vacuum at the frequency \(\omega^{\rm B}_{\rm LL}\) and zero
+wave number, and the kernel of the direction,
+\(\Gamma^{\rm f}_{\rm LL}=\lvert\vec u^{\rm f}_{\rm LL}\rvert^2/G_{\rm LL}-\chi^{\rm f}_{\rm LL}\):
+minus the coefficient of the time average of
+\((\delta^{\rm f}_{\rm LL})^2\) in the effective action per duration and
+volume (plain text \texttt{Gamma\_bdg}: the kernel computed from the
+Bogoliubov matrices); the kernels of the three Goldstone directions and
+of the three massive directions,
+\(\Gamma^{\rm G}_{\rm LL}=-(\omega^{\rm B}_{\rm LL})^2\Upsilon_{\rm LL}\)
+and
+\(\Gamma^{\rm m}_{\rm LL}=(4\Delta_{\rm LL}^2-(\omega^{\rm B}_{\rm LL})^2)\Upsilon_{\rm LL}\)
+& new & \texttt{chi\_f} \texttt{Gamma\_f} \texttt{Gamma\_bdg}
+\texttt{Gamma\_G} \texttt{Gamma\_m} \\
+\(\Upsilon_{\rm LL}(\omega^{\rm B}_{\rm LL})\),
+\(\Upsilon^{(1)}_{\rm LL}\); \(c^{\rm w}_{\rm LL}\) & the common factor
+of the kernels of the condensed vacuum,
+\(\Upsilon_{\rm LL}=2\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}\big(E^{\rm c}_{\rm LL}(4(E^{\rm c}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2)\big)^{-1}\),
+with \(\Upsilon_{\rm LL}(0)=Z^{\rm t}_{\rm LL}(\Delta_{\rm LL})\); its
+derivative with respect to \((\omega^{\rm B}_{\rm LL})^2\) at zero; and
+the positive number
+\(c^{\rm w}_{\rm LL}=(M^{\rm q}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2/4\)
+of the proof of Theorem 12.2 of the document of Test 2 & new &
+\texttt{Upsilon} \texttt{Upsilon\_1} \\
 \end{longtable}
 
 \end{document}

@@ -333,9 +333,24 @@ charge-reversing reflection to the group \(O(2)\); and SFBSv, the field
 written with three Goldstone fields, an amplitude field and two charged
 non-unitary fields, has a potential that does not depend on the
 Goldstone fields at all, given exactly and expanded to the fourth order
-(Figure 24). Items {[}7{]} to {[}9{]} are verified by the checks SB-1 to
-SB-14 of the program \texttt{t2\_sfbs} (member \texttt{t2sfbs} of the
-workspace).
+(Figure 24). Its eleventh answer (item {[}10{]}) derives the kinetic
+Lagrangian of the SFBS: the stiffness of the time derivatives times the
+squared covariant time derivative minus the stiffness of the space
+derivatives times the squared covariant space derivatives, written out
+with its couplings to the currents and its contact matrix of the four
+gauge potentials, from which the potential of the electric charge is
+absent in the vacuum; the two stiffness coefficients of the condensed
+vacuum are derived exactly, in closed form, from the energy of the
+vacuum in constant gauge potentials; the kernels of the six directions
+of the field are computed exactly at zero wave number, so that the three
+Goldstone fields are massless and the amplitude field and the two
+non-unitary fields have the mass \(2\Delta^{\rm vac}_{\rm LL}\), below
+the pair-breaking threshold, confirmed by the time-dependent mean-field
+equations; and the difference of the two coefficients is traced to a
+surface term of the momentum cutoff, which a Lorentz-invariant
+regularization removes (Figure 25). Items {[}7{]} to {[}10{]} are
+verified by the checks SB-1 to SB-16 of the program \texttt{t2\_sfbs}
+(member \texttt{t2sfbs} of the workspace).
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -550,8 +565,8 @@ of 9 \\
 \texttt{t2\_examples\_check.py} & 11 of 11 \\
 \texttt{test2/data/t2\_rs\_selftest\_checks.txt} & \texttt{t2\_solve} &
 5 of 5 \\
-\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 14 of
-14 \\
+\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 16 of
+16 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -652,7 +667,9 @@ the eight-dimensional manifolds (on \(4+4\) power counting sees the
 total dimension 8 as well); the value 4, the coordinates \(x5,x6,x7\) of
 the eight-dimensional spacetime of the project (on which such fields do
 not depend), and the volume and the area of the unit ball do not occur.
-& taken & \texttt{D} \\
+Section 12.5 of the document of Test 2 continues \(D\) away from 3, in
+dimensional regularization (the momentum integrals taken in \(D\) space
+dimensions). & taken & \texttt{D} \\
 \(i\) & the imaginary unit, \(i^2=-1\); in \(\mathbb B_{\rm LL}\) it is
 the imaginary unit of the complex coefficients: it commutes and
 associates with every bi-octonion and is not one of the units
@@ -700,8 +717,9 @@ an isodoublet) & new & \texttt{tau\_iota} \texttt{tau\_1}
 \(\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}\); it
 acts on a Weyl, isospin or species index, as stated at each place & new
 & \texttt{eps2} \\
-\(\mathsf 1_4\), \(\mathsf 1_8\) & the \(4\times4\) and the \(8\times8\)
-unit matrices & new & \\
+\(\mathsf 1_2\), \(\mathsf 1_4\), \(\mathsf 1_8\), \(\mathsf 1_{16}\) &
+the \(2\times2\), the \(4\times4\), the \(8\times8\) and the
+\(16\times16\) unit matrices & new & \\
 \end{longtable}
 
 \textbf{2 The bi-octonions and the super-loop}
@@ -2198,6 +2216,87 @@ used for comparison; its coupling
 \(\lambda^{\rm H}_{\rm LL}=\Omega^{\rm s(2)}_{\rm LL}/(4(\Delta^{\rm vac}_{\rm LL})^2)\)
 gives it the curvature of the computed potential along
 \(h^{\rm a}_{\rm LL}\) & new & \texttt{Omega\_H} \texttt{lambda\_H} \\
+\(\mathcal L^{\rm kin}_{\rm LL}\) & the kinetic Lagrangian of the SFBS,
+the part of \(\mathcal L^{\rm B}_{\rm LL}\) that contains the
+derivatives,
+\(Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2\),
+so that
+\(\mathcal L^{\rm B}_{\rm LL}=\mathcal L^{\rm kin}_{\rm LL}-\Omega_{\rm LL}(\vec d_{\rm LL})\)
+& new & \texttt{Lagr\_kin} \\
+\(\mathsf N^{\rm g}_{\rm LL}(\vec d_{\rm LL})\),
+\(\mathsf N^{\rm v}_{\rm LL}(\vec d_{\rm LL})\);
+\(\vec w^{\rm n}_{\rm LL}\) & the contact matrix: the real symmetric
+\(4\times4\) matrix of the terms of
+\(\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL})^\iota\rvert^2\)
+that are quadratic in the potentials
+\((A^{\rm F}_{{\rm LL},p},A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p})\),
+with the corner entry
+\(4(g^{\rm F}_{\rm LL})^2\lvert\vec d_{\rm LL}\rvert^2\), the first row
+and column
+\(4g^{\rm F}_{\rm LL}g^{\rm v}_{\rm LL}(w^{\rm n}_{\rm LL})^\iota\) and
+the isospin block \((g^{\rm v}_{\rm LL})^2\mathsf N^{\rm v}_{\rm LL}\),
+whose entries are
+\(\lvert\vec d_{\rm LL}\rvert^2-\lvert d^\iota_{\rm LL}\rvert^2\) on the
+diagonal and \(-{\rm Re}(d^\iota_{\rm LL}(d^{\iota'}_{\rm LL})^*)\) off
+it; and the real vector
+\(\vec w^{\rm n}_{\rm LL}={\rm Re}\,\vec d_{\rm LL}\times{\rm Im}\,\vec d_{\rm LL}\),
+zero for the polar fields & new & \texttt{N\_g} \texttt{N\_v}
+\texttt{w\_n} \\
+\(E^{\rm c}_{\rm LL}\) & the quasi-particle energy of the condensed
+vacuum \((0,0,\Delta_{\rm LL})\) at \(\mu_{\rm LL}=0\),
+\(E^{\rm c}_{\rm LL}=(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}\), an
+eigenvalue of \(\mathsf H_{\rm LL}(\vec q_{\rm LL})\) eight times with
+each sign; \(E^{\rm c}_{\rm LL}(\Lambda_{\rm LL})\) is its value at
+\(q_{\rm LL}=\Lambda_{\rm LL}\) (plain text \texttt{E\_Lambda}) & new &
+\texttt{E\_c} \texttt{E\_Lambda} \\
+\(\vec a^{\rm F}_{\rm LL}\) & the fermion-number coupling times the
+space components of a constant fermion-number potential,
+\(\vec a^{\rm F}_{\rm LL}=g^{\rm F}_{\rm LL}(A^{\rm F}_{{\rm LL},1},A^{\rm F}_{{\rm LL},2},A^{\rm F}_{{\rm LL},3})\):
+the shift of the kinetic momentum of both members of a pair & new &
+\texttt{a\_F} \\
+\(\vec u^{\rm f}_{\rm LL}\), \(\vec u^{\rm f'}_{\rm LL}\);
+\(\delta^{\rm f}_{\rm LL}\) & a fixed complex unit vector, the direction
+of a deviation
+\(\delta^{\rm f}_{\rm LL}(x_{\rm LL})\,\vec u^{\rm f}_{\rm LL}\) of the
+field from the vacuum \((0,0,\Delta_{\rm LL})\), one of the six
+directions \((1,0,0)\), \((0,1,0)\), \((0,0,i)\) (Goldstone) and
+\((i,0,0)\), \((0,i,0)\), \((0,0,1)\) (massive); a second such
+direction; and the small real amplitude of the deviation, a function of
+space and time & new & \texttt{u\_f} \texttt{delta\_f} \\
+\(\mathsf H^{\rm f}_{\rm LL}\), \(\mathsf H^{\rm f'}_{\rm LL}\) & the
+change of the \(16\times16\) Bogoliubov matrix per unit of
+\(\delta^{\rm f}_{\rm LL}\),
+\(\begin{pmatrix}0&\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})\\\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})^\dagger&0\end{pmatrix}\),
+where \(\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})\) is the pairing
+block with \(\vec u^{\rm f}_{\rm LL}\) in place of \(\vec d_{\rm LL}\);
+and the same for \(\vec u^{\rm f'}_{\rm LL}\) & new & \texttt{H\_f} \\
+\(\chi^{\rm f}_{\rm LL}(\omega^{\rm B}_{\rm LL})\),
+\(\Gamma^{\rm f}_{\rm LL}(\omega^{\rm B}_{\rm LL})\);
+\(\Gamma^{\rm G}_{\rm LL}\), \(\Gamma^{\rm m}_{\rm LL}\) & the pair
+susceptibility of a direction \(\vec u^{\rm f}_{\rm LL}\) of the
+condensed vacuum at the frequency \(\omega^{\rm B}_{\rm LL}\) and zero
+wave number, and the kernel of the direction,
+\(\Gamma^{\rm f}_{\rm LL}=\lvert\vec u^{\rm f}_{\rm LL}\rvert^2/G_{\rm LL}-\chi^{\rm f}_{\rm LL}\):
+minus the coefficient of the time average of
+\((\delta^{\rm f}_{\rm LL})^2\) in the effective action per duration and
+volume (plain text \texttt{Gamma\_bdg}: the kernel computed from the
+Bogoliubov matrices); the kernels of the three Goldstone directions and
+of the three massive directions,
+\(\Gamma^{\rm G}_{\rm LL}=-(\omega^{\rm B}_{\rm LL})^2\Upsilon_{\rm LL}\)
+and
+\(\Gamma^{\rm m}_{\rm LL}=(4\Delta_{\rm LL}^2-(\omega^{\rm B}_{\rm LL})^2)\Upsilon_{\rm LL}\)
+& new & \texttt{chi\_f} \texttt{Gamma\_f} \texttt{Gamma\_bdg}
+\texttt{Gamma\_G} \texttt{Gamma\_m} \\
+\(\Upsilon_{\rm LL}(\omega^{\rm B}_{\rm LL})\),
+\(\Upsilon^{(1)}_{\rm LL}\); \(c^{\rm w}_{\rm LL}\) & the common factor
+of the kernels of the condensed vacuum,
+\(\Upsilon_{\rm LL}=2\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}\big(E^{\rm c}_{\rm LL}(4(E^{\rm c}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2)\big)^{-1}\),
+with \(\Upsilon_{\rm LL}(0)=Z^{\rm t}_{\rm LL}(\Delta_{\rm LL})\); its
+derivative with respect to \((\omega^{\rm B}_{\rm LL})^2\) at zero; and
+the positive number
+\(c^{\rm w}_{\rm LL}=(M^{\rm q}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2/4\)
+of the proof of Theorem 12.2 of the document of Test 2 & new &
+\texttt{Upsilon} \texttt{Upsilon\_1} \\
 \end{longtable}
 
 \end{document}

@@ -655,7 +655,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [9]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations, its effective potential, its minima, the breaking of the symmetry and SFBSv (folder `test2`)
+# 11. Test 2, items [1] to [10]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations, its effective potential, its minima, the breaking of the symmetry and SFBSv, and its kinetic Lagrangian (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -1067,6 +1067,30 @@ extrapolation for the third and the fourth), the order of the remainder of the e
 the unbroken group, and the curvatures at the vacuum computed directly from the Bogoliubov matrices (function `omega_bdg`). Figure 24 is
 drawn by `test2/python/make_t2_sfbs_figures.py` (panel (a) with the streamline routine of Matplotlib from the velocities of the gradient
 flow written by the program).
+
+## Item [10]: the kinetic Lagrangian of the SFBS
+
+The same program verifies Section 12. SB-15: the expansion (12.2) of the squared covariant derivative into the derivative term, the two
+currents and the contact matrix (12.3) against the squared length computed directly, for 50 random fields, derivatives, couplings and
+potentials; the eigenvalue formula (12.7) against the eigenvalues of the $16\times16$ Bogoliubov matrices with a constant fermion-number
+vector potential (function `bdg16_pot`: the particle block with the potentials, the hole block minus the complex conjugate of the particle
+block at $-\vec q_{\rm LL}$) for 30 random momenta, potentials and gaps; the energy of the condensed vacuum at $G_{\rm LL}=22.5$ in six
+constant potentials (function `omega_pot`, the sum of the positive eigenvalues on 300 radial nodes, 30 panels of 10 Gauss-Legendre points,
+times 12 nodes in the cosine of the polar angle for the space components and one for the time components, whose integrand does not
+depend on the direction; the integration variable is the relative momentum, which for the fermion-number potential and the first isospin
+axis is also the gauge-covariant one, while for the case `T3_space_canonical` it is the canonical momentum), whose coefficient of
+the second order is taken from second differences at the potentials 0.005 and 0.01 with Richardson extrapolation (function `second_coeff`),
+against (12.5) with (12.6); and $Z^{\rm t}_{\rm LL}$, $Z^{\rm s}_{\rm LL}$ from the Bogoliubov matrices against the closed forms (12.6) at the
+gaps 0.1, $\Delta^{\rm vac}_{\rm LL}$ and 0.3 (function `z_s_cond`). SB-16: the $6\times6$ matrix of the kernels of the six directions about
+the vacuum from the eigenvectors of the Bogoliubov matrices (function `kernels_bdg`, the sum over the pairs of a positive and a negative
+eigenvalue, its parts even and odd in the frequency) at five frequencies, against (12.8) (functions `upsilon`, `upsilon_d1`); the closed
+form of $\Upsilon_{\rm LL}$ against quadrature; the mass of (12.9) against $2\Delta^{\rm vac}_{\rm LL}$; (12.10) against a difference quotient;
+and the uniform time-dependent mean-field equations (9.30) (function `uniform_tdbdg`, the classical Runge-Kutta method of the fourth
+order, time step 0.05, 12000 steps, 800 radial nodes) started from the ground state of the gap $\Delta^{\rm vac}_{\rm LL}$ times 1.02 and 1.01,
+whose strongest spectral line (function `line_frequency`, Hann window, scan and golden-section refinement) is compared with
+$2\Delta^{\rm vac}_{\rm LL}$, with the amplitude of the oscillation in the second and the last quarter of the run, the imaginary part of the pair
+field and the conservation of the mean-field energy. The spectrum of Figure 25(e) is computed by the function `power_at` on a grid of
+500 frequencies. Figure 25 is drawn by `test2/python/make_t2_sfbs_figures.py`.
 
 # 12. The checks of the documents
 

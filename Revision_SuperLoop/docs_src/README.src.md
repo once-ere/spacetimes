@@ -111,8 +111,16 @@ only other stationary points are the maximum at zero field and saddle points); c
 the fermion number and the isospin rotations about the first two axes and keeps the group of the electric charge $Q_{\rm LL}=T^3_{\rm LL}$,
 extended by a charge-reversing reflection to the group $O(2)$; and SFBSv, the field written with three Goldstone fields, an amplitude
 field and two charged non-unitary fields, has a potential that does not depend on the Goldstone fields at all, given exactly and
-expanded to the fourth order (Figure 24). Items [7] to [9] are verified by the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of
-the program `t2_sfbs` (member `t2sfbs` of the workspace).
+expanded to the fourth order (Figure 24). Its eleventh answer (item [10]) derives the kinetic Lagrangian of the SFBS: the stiffness
+of the time derivatives times the squared covariant time derivative minus the stiffness of the space derivatives times the squared
+covariant space derivatives, written out with its couplings to the currents and its contact matrix of the four gauge potentials,
+from which the potential of the electric charge is absent in the vacuum; the two stiffness coefficients of the condensed vacuum are
+derived exactly, in closed form, from the energy of the vacuum in constant gauge potentials; the kernels of the six directions of
+the field are computed exactly at zero wave number, so that the three Goldstone fields are massless and the amplitude field and the
+two non-unitary fields have the mass $2\Delta^{\rm vac}_{\rm LL}$, below the pair-breaking threshold, confirmed by the
+time-dependent mean-field equations; and the difference of the two coefficients is traced to a surface term of the momentum
+cutoff, which a Lorentz-invariant regularization removes (Figure 25). Items [7] to [10] are verified by the checks SB-1 to
+SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
 # 2. Where to start reading
 

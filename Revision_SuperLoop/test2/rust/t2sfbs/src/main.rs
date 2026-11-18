@@ -2804,6 +2804,552 @@ fn sb14(ch: &mut Checks, dir: &PathBuf) {
     sl.write(dir, "t2_sfbs_sfbsv_slices.csv");
 }
 
+// ------------------------------------------------------------------ item [10]: the kinetic Lagrangian of the SFBS
+
+/// constant gauge potentials (couplings included, g^F = g^v = 1): the fermion-number potential and the three isospin potentials,
+/// each with a time component and a space component along x^3
+#[derive(Clone, Copy)]
+struct Pot {
+    f0: f64,
+    f3: f64,
+    i0: [f64; 3],
+    i3: [f64; 3],
+}
+
+const POT0: Pot = Pot { f0: 0.0, f3: 0.0, i0: [0.0; 3], i3: [0.0; 3] };
+
+/// the 16 x 16 Bogoliubov matrix of the field d at the canonical momentum qv with constant gauge potentials: the particle block
+/// sum_j alpha^j (q^j - A_j) + beta m - A_0 - mu with A_p = A^F_p 1_8 + sum_iota A^iota_p T^iota (p = 0 and p = 3 only), and the
+/// hole block minus the complex conjugate of the same at the canonical momentum -q (the partner feels the same potentials)
+fn bdg16_pot(d: &[C64; 3], qv: &[f64; 3], m: f64, mu: f64, pot: &Pot) -> CMat {
+    let mut a0 = CMat::identity(8).scale_r(pot.f0);
+    let mut a3 = CMat::identity(8).scale_r(pot.f3);
+    for i in 0..3 {
+        a0 = a0.add(&tiso(i + 1).scale_r(pot.i0[i]));
+        a3 = a3.add(&tiso(i + 1).scale_r(pot.i3[i]));
+    }
+    let al3 = lift4(&alpha(3));
+    let kin = |q: &[f64; 3]| -> CMat { h8(q, m).sub(&al3.mul(&a3)).sub(&a0).sub(&CMat::identity(8).scale_r(mu)) };
+    let p = pair_potential(d);
+    let mq = [-qv[0], -qv[1], -qv[2]];
+    let mut big = CMat::zeros(16);
+    big.put(0, 0, &kin(qv));
+    big.put(0, 8, &p);
+    big.put(8, 0, &p.dagger());
+    big.put(8, 8, &kin(&mq).conj().scale_r(-1.0));
+    big
+}
+
+/// Omega of the field d with constant gauge potentials, from the Bogoliubov matrices: |d|^2/G - (1/2) int over the ball q < Lambda
+/// of the canonical momentum (nodes q, cos theta, weight) of [sum of the positive eigenvalues - the same at d = 0]
+fn omega_pot(d: &[C64; 3], g: f64, m: f64, pot: &Pot, nodes: &[(f64, f64, f64)]) -> f64 {
+    let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+    let zero = [C64::ZERO; 3];
+    let mut s = 0.0;
+    for &(q, ct, w) in nodes {
+        let st = (1.0 - ct * ct).max(0.0).sqrt();
+        let qv = [q * st, 0.0, q * ct];
+        let (e1, _) = eigh(&bdg16_pot(d, &qv, m, 0.0, pot));
+        let (e0, _) = eigh(&bdg16_pot(&zero, &qv, m, 0.0, pot));
+        let p1: f64 = e1.iter().filter(|&&x| x > 0.0).sum();
+        let p0: f64 = e0.iter().filter(|&&x| x > 0.0).sum();
+        s += w * (p1 - p0);
+    }
+    n2 / g - 0.5 * s
+}
+
+/// the coefficient c2 of Omega(x) - Omega(0) = c2 x^2 + c4 x^4 + ..., from x and 2x (Richardson)
+fn second_coeff(f: &dyn Fn(f64) -> f64, x: f64) -> f64 {
+    let f0 = f(0.0);
+    let r1 = (f(x) - f0) / (x * x);
+    let r2 = (f(2.0 * x) - f0) / (4.0 * x * x);
+    (4.0 * r1 - r2) / 3.0
+}
+
+/// Z_s(Delta) of the condensed vacuum: Z_t(M_q) + Lambda^3 (1/eps_Lambda - 1/E_Lambda)/(12 pi^2 Delta^2)
+fn z_s_cond(delta: f64, m: f64) -> f64 {
+    let mq = (m * m + delta * delta).sqrt();
+    let el = (LAMBDA * LAMBDA + m * m).sqrt();
+    let eel = (LAMBDA * LAMBDA + mq * mq).sqrt();
+    z_t(mq) + LAMBDA.powi(3) * (1.0 / el - 1.0 / eel) / (12.0 * PI * PI * delta * delta)
+}
+
+/// the function Upsilon(omega) = 2 int d^3q/(2 pi)^3 1/(E (4 E^2 - omega^2)), E = (q^2 + M^2)^(1/2), in closed form for omega < 2 M:
+/// (arsinh(Lambda/M) - (2 b/omega) arctan(omega Lambda/(2 b E_Lambda)))/(4 pi^2), b = (M^2 - omega^2/4)^(1/2); Upsilon(0) = Z_t(M)
+fn upsilon(omega: f64, mq: f64) -> f64 {
+    if omega.abs() < 1e-12 {
+        return z_t(mq);
+    }
+    let b = (mq * mq - 0.25 * omega * omega).sqrt();
+    let eel = (LAMBDA * LAMBDA + mq * mq).sqrt();
+    ((LAMBDA / mq).asinh() - (2.0 * b / omega) * (omega * LAMBDA / (2.0 * b * eel)).atan()) / (4.0 * PI * PI)
+}
+
+/// d Upsilon/d(omega^2) at omega = 0: (1/8) int d^3q/(2 pi)^3 E^-5 = Lambda^3/(48 pi^2 M^2 E_Lambda^3)
+fn upsilon_d1(mq: f64) -> f64 {
+    let eel = (LAMBDA * LAMBDA + mq * mq).sqrt();
+    LAMBDA.powi(3) / (48.0 * PI * PI * mq * mq * eel.powi(3))
+}
+
+/// the kernels of the effective action for real fluctuations x_a(t) along the complex directions dirs[a] about the condensed
+/// vacuum (0, 0, Delta) at mu = 0, from the Bogoliubov matrices (the second-order change of the sum of the positive eigenvalues,
+/// generalized to the frequency omega): K_ab(omega) = Re(dir_a* . dir_b)/G - (1/2) int d^3q/(2 pi)^3 sum_{n > 0 > n'}
+/// [Re(V^a_nn' conj(V^b_nn')) (E_n - E_n') + i omega Im(V^a_nn' conj(V^b_nn'))]/((E_n - E_n')^2 - omega^2); returns the symmetric
+/// part and the largest modulus of the antisymmetric part (the coefficient of i omega)
+fn kernels_bdg(dirs: &[[C64; 3]], omega: f64, dvac: f64, g: f64, m: f64, qn: &[f64], qw: &[f64]) -> (Vec<Vec<f64>>, f64) {
+    let na = dirs.len();
+    let d0 = [C64::ZERO, C64::ZERO, c(dvac, 0.0)];
+    let vs: Vec<CMat> = dirs
+        .iter()
+        .map(|dir| {
+            let pv = pair_potential(dir);
+            let mut vv = CMat::zeros(16);
+            vv.put(0, 8, &pv);
+            vv.put(8, 0, &pv.dagger());
+            vv
+        })
+        .collect();
+    let mut sym = vec![vec![0.0; na]; na];
+    let mut anti = vec![vec![0.0; na]; na];
+    for (q, w) in qn.iter().zip(qw) {
+        let (e, u) = eigh(&bdg16(&d0, &[0.0, 0.0, *q], m, 0.0));
+        let ud = u.dagger();
+        let ve: Vec<CMat> = vs.iter().map(|v| ud.mul(v).mul(&u)).collect();
+        for a in 0..16 {
+            if e[a] <= 0.0 {
+                continue;
+            }
+            for b in 0..16 {
+                if e[b] >= 0.0 {
+                    continue;
+                }
+                let de = e[a] - e[b];
+                let den = de * de - omega * omega;
+                for x in 0..na {
+                    for y in 0..na {
+                        let z = ve[x].get(a, b) * ve[y].get(a, b).conj();
+                        sym[x][y] += w * z.re * de / den;
+                        anti[x][y] += w * z.im * omega / den;
+                    }
+                }
+            }
+        }
+    }
+    let mut out = vec![vec![0.0; na]; na];
+    let mut amax = 0.0f64;
+    for x in 0..na {
+        for y in 0..na {
+            let dot: f64 = (0..3).map(|i| (dirs[x][i].conj() * dirs[y][i]).re).sum();
+            out[x][y] = dot / g - 0.5 * sym[x][y];
+            amax = amax.max((0.5 * anti[x][y]).abs());
+        }
+    }
+    (out, amax)
+}
+
+/// the power of the Hann-windowed signal (mean removed) at the angular frequency w (as in line_frequency)
+fn power_at(x: &[C64], dt: f64, w: f64) -> f64 {
+    let nn = x.len();
+    let mean = x.iter().fold(C64::ZERO, |s, z| s + *z).scale(1.0 / nn as f64);
+    let mut a = C64::ZERO;
+    let mut b = C64::ZERO;
+    for (i, z) in x.iter().enumerate() {
+        let h = 0.5 - 0.5 * (2.0 * PI * i as f64 / (nn - 1) as f64).cos();
+        let ph = C64::cis(w * dt * i as f64);
+        a += (*z - mean).scale(h) * ph;
+        b += (*z - mean).scale(h) * ph.conj();
+    }
+    a.norm_sqr() + b.norm_sqr()
+}
+
+/// SB-15: the kinetic Lagrangian written out, and its coefficients in the condensed vacuum from the energy of the vacuum in
+/// constant gauge potentials
+fn sb15(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let g = G_VAC;
+    let dvac = gap_mu0(g, m);
+    let mut rng = Rng(27182);
+    // (i) the expansion (12.2): |nabla d|^2 = |dd|^2 + 4 gF AF Im((dd)*.d) + 2 gv sum_iota A^iota Re((dd)*.(e_iota x d)) + A^T N A
+    let mut exp_dev = 0.0f64;
+    for _ in 0..50 {
+        let d = rand_d(&mut rng, 1.0);
+        let dd = rand_d(&mut rng, 1.0);
+        let (gf, gv) = (rng.unit(), rng.unit());
+        let af = rng.unit();
+        let av = [rng.unit(), rng.unit(), rng.unit()];
+        let cr = cross_c(&av, &d);
+        let mut lhs = 0.0;
+        for i in 0..3 {
+            lhs += (dd[i] - d[i] * c(0.0, 2.0 * gf * af) + cr[i].scale(gv)).norm_sqr();
+        }
+        let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+        let ddn: f64 = dd.iter().map(|z| z.norm_sqr()).sum();
+        let im_term: f64 = (0..3).map(|i| (dd[i].conj() * d[i]).im).sum();
+        // (e_iota x d) for iota = 1, 2, 3: (0, -d3, d2), (d3, 0, -d1), (-d2, d1, 0)
+        let ex = [[C64::ZERO, -d[2], d[1]], [d[2], C64::ZERO, -d[0]], [-d[1], d[0], C64::ZERO]];
+        let mut cur = 0.0;
+        for i in 0..3 {
+            let z: C64 = (0..3).fold(C64::ZERO, |s, k| s + dd[k].conj() * ex[i][k]);
+            cur += av[i] * z.re;
+        }
+        // the 4 x 4 matrix N (order F, 1, 2, 3)
+        let w = [
+            d[1].re * d[2].im - d[2].re * d[1].im,
+            d[2].re * d[0].im - d[0].re * d[2].im,
+            d[0].re * d[1].im - d[1].re * d[0].im,
+        ];
+        let mut nm = [[0.0f64; 4]; 4];
+        nm[0][0] = 4.0 * gf * gf * n2;
+        for i in 0..3 {
+            nm[0][i + 1] = 4.0 * gf * gv * w[i];
+            nm[i + 1][0] = nm[0][i + 1];
+            for k in 0..3 {
+                let delta = if i == k { n2 } else { 0.0 };
+                nm[i + 1][k + 1] = gv * gv * (delta - (d[i] * d[k].conj()).re);
+            }
+        }
+        let av4 = [af, av[0], av[1], av[2]];
+        let mut quad = 0.0;
+        for a in 0..4 {
+            for b in 0..4 {
+                quad += av4[a] * nm[a][b] * av4[b];
+            }
+        }
+        let rhs = ddn + 4.0 * gf * af * im_term + 2.0 * gv * cur + quad;
+        exp_dev = exp_dev.max((lhs - rhs).abs());
+    }
+    // (ii) the exact Bogoliubov eigenvalues with a constant fermion-number vector potential a along x^3 at the vacuum (0, 0, Delta):
+    // +-(q^2 + |a_F|^2 + M_q^2 +- 2 ((q.a_F)^2 + Delta^2 |a_F|^2)^(1/2))^(1/2), each four times
+    let mut lam_dev = 0.0f64;
+    for _ in 0..30 {
+        let delta = 0.1 + 0.3 * rng.unit().abs();
+        let d0 = [C64::ZERO, C64::ZERO, c(delta, 0.0)];
+        let pv = [rng.unit(), rng.unit(), rng.unit()];
+        let a = 0.3 * rng.unit();
+        let pot = Pot { f3: a, ..POT0 };
+        let (ev, _) = eigh(&bdg16_pot(&d0, &pv, m, 0.0, &pot));
+        let p2 = pv[0] * pv[0] + pv[1] * pv[1] + pv[2] * pv[2];
+        let rt = ((pv[2] * a).powi(2) + delta * delta * a * a).sqrt();
+        let base = p2 + a * a + m * m + delta * delta;
+        let (lp, lm) = ((base + 2.0 * rt).sqrt(), (base - 2.0 * rt).sqrt());
+        let mut pred = vec![lp, lp, lp, lp, lm, lm, lm, lm, -lp, -lp, -lp, -lp, -lm, -lm, -lm, -lm];
+        pred.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        let mut evs = ev.clone();
+        evs.sort_by(|x, y| x.partial_cmp(y).unwrap());
+        for i in 0..16 {
+            lam_dev = lam_dev.max((evs[i] - pred[i]).abs());
+        }
+    }
+    // (iii) the energy of the condensed vacuum in constant potentials, against the kinetic Lagrangian (12.1) with Z_t(Delta), Z_s(Delta)
+    let nodes_iso = sphere_nodes(30, 10, 1, &[]);
+    let nodes_sph = sphere_nodes(30, 10, 12, &[]);
+    let d0 = [C64::ZERO, C64::ZERO, c(dvac, 0.0)];
+    let mq = (m * m + dvac * dvac).sqrt();
+    let zt = z_t(mq);
+    let zs = z_s_cond(dvac, m);
+    let el = (LAMBDA * LAMBDA + m * m).sqrt();
+    let eel = (LAMBDA * LAMBDA + mq * mq).sqrt();
+    let surf = LAMBDA.powi(3) * (1.0 / el - 1.0 / eel) / (12.0 * PI * PI);
+    let d2 = dvac * dvac;
+    struct Case {
+        name: &'static str,
+        pred: f64,
+        spatial: bool,
+    }
+    let cases = [
+        Case { name: "F_time", pred: -4.0 * zt * d2, spatial: false },
+        Case { name: "F_space", pred: 4.0 * zs * d2, spatial: true },
+        Case { name: "T1_time", pred: -zt * d2, spatial: false },
+        Case { name: "T1_space", pred: zs * d2, spatial: true },
+        Case { name: "T3_time", pred: 0.0, spatial: false },
+        Case { name: "T3_space_canonical", pred: surf, spatial: true },
+    ];
+    let make = |name: &str, x: f64| -> Pot {
+        match name {
+            "F_time" => Pot { f0: x, ..POT0 },
+            "F_space" => Pot { f3: x, ..POT0 },
+            "T1_time" => Pot { i0: [x, 0.0, 0.0], ..POT0 },
+            "T1_space" => Pot { i3: [x, 0.0, 0.0], ..POT0 },
+            "T3_time" => Pot { i0: [0.0, 0.0, x], ..POT0 },
+            _ => Pot { i3: [0.0, 0.0, x], ..POT0 },
+        }
+    };
+    let mut resp = Csv::new(
+        "the energy of the condensed vacuum (0, 0, Delta_vac) at mu = 0, G = 22.5 in a constant gauge potential (couplings set to 1): the time or the space component (along x^3) of the fermion-number potential (F), of the isospin potential of the first axis (T1) and of the third axis (T3; for its space component the cutoff on the canonical momentum, which the gauge-covariant cutoff replaces); Omega minus its value without potential, from the Bogoliubov matrices, and the prediction c2 x^2 of the kinetic Lagrangian (Test 2, item 10, Figure 25(a))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("Z_t", format!("{:.10e}", zt)), ("Z_s", format!("{:.10e}", zs))],
+        "case,potential,Omega_change,Omega_change_pred",
+    );
+    let mut resp_dev = 0.0f64;
+    let mut resp_txt = vec![];
+    for cs in &cases {
+        let nodes = if cs.spatial { &nodes_sph } else { &nodes_iso };
+        let base = omega_pot(&d0, g, m, &POT0, nodes);
+        let f = |x: f64| -> f64 { if x == 0.0 { base } else { omega_pot(&d0, g, m, &make(cs.name, x), nodes) } };
+        let c2 = second_coeff(&f, 0.005);
+        let dev = if cs.pred.abs() > 0.0 { ((c2 - cs.pred) / cs.pred).abs() } else { c2.abs() / (zt * d2) };
+        resp_dev = resp_dev.max(dev);
+        resp_txt.push(format!("{} {:.8e} (predicted {:.8e})", cs.name, c2, cs.pred));
+        for i in 0..=6 {
+            let x = 0.01 * i as f64;
+            let val = if i == 0 { 0.0 } else { f(x) - base };
+            resp.row(&[cs.name.to_string(), format!("{:.4}", x), format!("{:.10e}", val), format!("{:.10e}", cs.pred * x * x)]);
+        }
+    }
+    resp.write(dir, "t2_sfbs_gauge_response.csv");
+    // (iv) Z_t(Delta) and Z_s(Delta) against Delta: the closed forms and the values from the Bogoliubov matrices
+    let mut st = Csv::new(
+        "the stiffness coefficients Z_t(Delta) and Z_s(Delta) of the kinetic Lagrangian in a condensed vacuum of gap Delta at mu = 0 (m = 0.2, Lambda = 1): the closed forms (12.6) and the values from the energy of the vacuum in a constant fermion-number potential (Bogoliubov matrices); the closed-form row at Delta = 0 holds the values Z_t(0), Z_s(0) of the normal vacuum (Test 2, item 10, Figure 25(b))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("Delta_vac", format!("{:.10}", dvac))],
+        "Delta,Z_t,Z_s,source",
+    );
+    st.row(&["0".into(), format!("{:.10e}", z_t(m)), format!("{:.10e}", z_s0(m)), "closed_form".into()]);
+    for i in 1..=80 {
+        let dl = 0.005 * i as f64;
+        st.row(&[format!("{:.4}", dl), format!("{:.10e}", z_t((m * m + dl * dl).sqrt())), format!("{:.10e}", z_s_cond(dl, m)), "closed_form".into()]);
+    }
+    let mut z_dev = 0.0f64;
+    let mut z_txt = vec![];
+    for &dl in &[0.1, dvac, 0.3] {
+        let dd0 = [C64::ZERO, C64::ZERO, c(dl, 0.0)];
+        let bt = omega_pot(&dd0, g, m, &POT0, &nodes_iso);
+        let ft = |x: f64| -> f64 { if x == 0.0 { bt } else { omega_pot(&dd0, g, m, &Pot { f0: x, ..POT0 }, &nodes_iso) } };
+        let bs = omega_pot(&dd0, g, m, &POT0, &nodes_sph);
+        let fs = |x: f64| -> f64 { if x == 0.0 { bs } else { omega_pot(&dd0, g, m, &Pot { f3: x, ..POT0 }, &nodes_sph) } };
+        let zt_b = -second_coeff(&ft, 0.005) / (4.0 * dl * dl);
+        let zs_b = second_coeff(&fs, 0.005) / (4.0 * dl * dl);
+        let (zt_c, zs_c) = (z_t((m * m + dl * dl).sqrt()), z_s_cond(dl, m));
+        z_dev = z_dev.max(((zt_b - zt_c) / zt_c).abs()).max(((zs_b - zs_c) / zs_c).abs());
+        z_txt.push(format!("Delta = {:.6}: Z_t {:.8e} (closed form {:.8e}), Z_s {:.8e} (closed form {:.8e})", dl, zt_b, zt_c, zs_b, zs_c));
+        st.row(&[format!("{:.10}", dl), format!("{:.10e}", zt_b), format!("{:.10e}", zs_b), "bogoliubov".into()]);
+    }
+    st.write(dir, "t2_sfbs_stiffness.csv");
+    let ok = exp_dev < 1e-13 && lam_dev < 1e-12 && resp_dev < 1e-6 && z_dev < 1e-6;
+    ch.add(
+        "SB-15",
+        "the kinetic Lagrangian: the expansion (12.2) of |nabla_B d|^2 into the derivative term, the two currents and the contact matrix N_g (12.3) holds for 50 random fields, derivatives, couplings and potentials (tol 1e-13); the 16 Bogoliubov eigenvalues of the condensed vacuum with a constant fermion-number vector potential are +-(q^2 + |a_F|^2 + M_q^2 +- 2((q.a_F)^2 + Delta^2 |a_F|^2)^(1/2))^(1/2), four times each (q the momentum, a_F the coupling times the vector potential) (30 random cases, tol 1e-12); the energy of the condensed vacuum at G = 22.5 in constant potentials (time and space components of the fermion-number potential and of the isospin potentials of the first and the third axis; second differences at 0.005 and 0.01, Richardson) equals the kinetic Lagrangian (12.1) with Z_t(Delta_vac) and Z_s(Delta_vac) of (12.6): -4 Z_t Delta^2, 4 Z_s Delta^2, -Z_t Delta^2, Z_s Delta^2 and 0 (relative tol 1e-6; the space component of the third-axis potential with the cutoff on the canonical momentum gives the surface term Lambda^3 (1/eps_Lambda - 1/E_Lambda)/(12 pi^2), which the gauge-covariant cutoff removes); Z_t and Z_s from the Bogoliubov matrices equal the closed forms at Delta = 0.1, Delta_vac and 0.3 (relative tol 1e-6)",
+        ok,
+        format!(
+            "expansion {}; eigenvalue formula {}; Delta_vac = {:.10}, M_q = {:.10}, Z_t = {:.10e}, Z_s = {:.10e}, Z_s/Z_t = {:.8}, velocity of the Goldstone fields (Z_s/Z_t)^(1/2) = {:.8}; responses: {}; largest relative deviation {}; {}; largest relative deviation {}",
+            sci(exp_dev),
+            sci(lam_dev),
+            dvac,
+            mq,
+            zt,
+            zs,
+            zs / zt,
+            (zs / zt).sqrt(),
+            resp_txt.join(", "),
+            sci(resp_dev),
+            z_txt.join("; "),
+            sci(z_dev)
+        ),
+    );
+    let _ = eel;
+}
+
+/// SB-16: the fluctuations of the condensed vacuum at zero wave number: the kernels of the six directions, the masses, and the
+/// oscillation of the gap in the time-dependent mean-field equations
+fn sb16(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let g = G_VAC;
+    let dvac = gap_mu0(g, m);
+    let mq = (m * m + dvac * dvac).sqrt();
+    let (qn, qw) = radial_nodes(m, 0.0, 0.05);
+    // the six real directions: the Goldstone directions Re d^1, Re d^2, Im d^3 and the massive directions Im d^1, Im d^2, Re d^3
+    let dirs = [
+        [c(1.0, 0.0), C64::ZERO, C64::ZERO],
+        [C64::ZERO, c(1.0, 0.0), C64::ZERO],
+        [C64::ZERO, C64::ZERO, c(0.0, 1.0)],
+        [c(0.0, 1.0), C64::ZERO, C64::ZERO],
+        [C64::ZERO, c(0.0, 1.0), C64::ZERO],
+        [C64::ZERO, C64::ZERO, c(1.0, 0.0)],
+    ];
+    let names = ["Re_d1", "Re_d2", "Im_d3", "Im_d1", "Im_d2", "Re_d3"];
+    let mut kb = Csv::new(
+        "the kernels Gamma(omega) of the six real directions of the field about the condensed vacuum (0, 0, Delta_vac) at mu = 0, G = 22.5, zero wave number, from the Bogoliubov matrices (second-order change of the sum of the positive eigenvalues, generalized to the frequency) (Test 2, item 10, Figure 25(c), circles)",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac))],
+        "omega_B,direction,Gamma_bdg",
+    );
+    let mut k_dev = 0.0f64;
+    let mut off_dev = 0.0f64;
+    let mut anti_dev = 0.0f64;
+    let mut k_txt = vec![];
+    for &w in &[0.0, 0.1, 0.25, 2.0 * dvac, 0.5] {
+        let (km, amax) = kernels_bdg(&dirs, w, dvac, g, m, &qn, &qw);
+        anti_dev = anti_dev.max(amax);
+        let up = upsilon(w, mq);
+        let pg = -w * w * up;
+        let pm = (4.0 * dvac * dvac - w * w) * up;
+        for x in 0..6 {
+            let pred = if x < 3 { pg } else { pm };
+            k_dev = k_dev.max((km[x][x] - pred).abs() / z_t(mq));
+            for y in 0..6 {
+                if y != x {
+                    off_dev = off_dev.max(km[x][y].abs() / z_t(mq));
+                }
+            }
+            kb.row(&[format!("{:.10}", w), names[x].to_string(), format!("{:.12e}", km[x][x])]);
+        }
+        k_txt.push(format!("omega = {:.6}: Goldstone {:.8e} {:.8e} {:.8e} (closed form {:.8e}), massive {:.8e} {:.8e} {:.8e} (closed form {:.8e})", w, km[0][0], km[1][1], km[2][2], pg, km[3][3], km[4][4], km[5][5], pm));
+    }
+    kb.write(dir, "t2_sfbs_kernels_bdg.csv");
+    // the closed forms on a grid (Figure 25(c), lines), and Upsilon against quadrature
+    let mut kc = Csv::new(
+        "the closed forms of the kernels about the condensed vacuum at mu = 0, G = 22.5, zero wave number: Upsilon(omega), Gamma_G = -omega^2 Upsilon (the Goldstone directions) and Gamma_m = (4 Delta_vac^2 - omega^2) Upsilon (the massive directions), below the pair-breaking threshold 2 M_q (Test 2, item 10, Figure 25(c), lines)",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("M_q", format!("{:.10}", mq))],
+        "omega_B,Upsilon,Gamma_G,Gamma_m",
+    );
+    let mut ups_dev = 0.0f64;
+    for i in 0..=114 {
+        let w = 0.005 * i as f64;
+        if w >= 2.0 * mq {
+            break;
+        }
+        let up = upsilon(w, mq);
+        // quadrature of 2 int d^3q/(2 pi)^3 1/(E (4E^2 - omega^2))
+        let quad: f64 = qn.iter().zip(&qw).map(|(q, wq)| {
+            let e = (q * q + mq * mq).sqrt();
+            2.0 * wq / (e * (4.0 * e * e - w * w))
+        }).sum();
+        ups_dev = ups_dev.max(((quad - up) / up).abs());
+        kc.row(&[format!("{:.4}", w), format!("{:.12e}", up), format!("{:.12e}", -w * w * up), format!("{:.12e}", (4.0 * dvac * dvac - w * w) * up)]);
+    }
+    kc.write(dir, "t2_sfbs_kernels.csv");
+    // the masses: the zero of Gamma_m at 2 Delta_vac, the curvature 2 Omega_s^(2) = 8 Delta_vac^2 Z_t, the strict derivative expansion
+    let zt = z_t(mq);
+    let om2 = omega_s_derivs(dvac, g, m)[1];
+    let mass_kin = (om2 / zt).sqrt();
+    let u1 = upsilon_d1(mq);
+    let mass_strict = (4.0 * dvac * dvac * zt / (zt - 4.0 * dvac * dvac * u1)).sqrt();
+    let u1_num = (upsilon(1e-3, mq) - upsilon(0.0, mq)) / 1e-6;
+    let mut ms = Csv::new(
+        "the masses of the massive fields of SFBSv at mu = 0 (m = 0.2, Lambda = 1) against the coupling: 2 Delta_vac (the zero of the kernel Gamma_m, and the mass of the kinetic Lagrangian with the potential), the pair-breaking threshold 2 M_q, and the mass of the strict expansion of the kernel to second order in the frequency (Test 2, item 10, Figure 25(f))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G_crit", format!("{:.8}", 1.0 / inv_gcrit(m)))],
+        "G,Delta_vac,mass_massive,threshold,mass_strict",
+    );
+    let gc = 1.0 / inv_gcrit(m);
+    for i in 0..=60 {
+        let gg = gc * (1.0 + 0.0005) + (30.0 - gc * 1.0005) * i as f64 / 60.0;
+        let dl = gap_mu0(gg, m);
+        let mm = (m * m + dl * dl).sqrt();
+        let z0 = z_t(mm);
+        let strict = (4.0 * dl * dl * z0 / (z0 - 4.0 * dl * dl * upsilon_d1(mm))).sqrt();
+        ms.row(&[format!("{:.6}", gg), format!("{:.10}", dl), format!("{:.10}", 2.0 * dl), format!("{:.10}", 2.0 * mm), format!("{:.10}", strict)]);
+    }
+    ms.write(dir, "t2_sfbs_masses.csv");
+    // (iii) the time-dependent mean-field equations: start from the ground state of the gap Delta_vac (1 + disp), evolve with the
+    // coupling G; the gap oscillates with the frequency 2 Delta_vac (the massive mode below the threshold 2 M_q)
+    let dt = 0.05;
+    let nsteps = 12000;
+    let mut freqs = vec![];
+    let mut tser = None;
+    let mut fdev_max = 0.0f64;
+    let mut amp_txt = vec![];
+    for &eps in &[0.02, 0.01] {
+        let (series, fdev) = uniform_tdbdg(g, m, 0.0, dvac * (1.0 + eps), &qn, &qw, dt, nsteps);
+        fdev_max = fdev_max.max(fdev);
+        let wl = line_frequency(&series, dt, 0.25, 0.55, 0.002);
+        freqs.push(wl);
+        // the oscillation amplitude in the second and in the last quarter of the run, and the largest imaginary part
+        let n = series.len();
+        let span = |a: usize, b: usize| -> f64 {
+            let (mut lo, mut hi) = (f64::MAX, f64::MIN);
+            for z in &series[a..b] {
+                lo = lo.min(z.re);
+                hi = hi.max(z.re);
+            }
+            0.5 * (hi - lo)
+        };
+        let imax = series.iter().fold(0.0f64, |a, z| a.max(z.im.abs()));
+        amp_txt.push(format!("disp = {}: line {:.8}, half the range of Re d in the second quarter {:.4e} and in the last quarter {:.4e}, largest |Im d| {}", eps, wl, span(n / 4, n / 2), span(3 * n / 4, n), sci(imax)));
+        if tser.is_none() {
+            tser = Some(series);
+        }
+    }
+    let series = tser.unwrap();
+    let mut ts = Csv::new(
+        "the time-dependent mean-field evolution (uniform, mu = 0, G = 22.5) from the ground state of the gap Delta_vac (1 + 0.02): the pair field d^3 divided by Delta_vac, and the line of the frequency 2 Delta_vac fitted to it (Test 2, item 10, Figure 25(d))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("dt", format!("{}", dt)), ("line", format!("{:.10}", freqs[0]))],
+        "x_LL^0,d_over_dvac,line_2Dvac",
+    );
+    // the line: least squares of Re d - mean on cos and sin of 2 Delta_vac t over the second half of the run
+    let n = series.len();
+    let mean: f64 = series[n / 2..].iter().map(|z| z.re).sum::<f64>() / (n - n / 2) as f64;
+    let w2 = 2.0 * dvac;
+    let (mut scc, mut sss, mut scs, mut sxc, mut sxs) = (0.0, 0.0, 0.0, 0.0, 0.0);
+    for (i, z) in series.iter().enumerate().skip(n / 2) {
+        let t = i as f64 * dt;
+        let (cc, ss) = ((w2 * t).cos(), (w2 * t).sin());
+        let x = z.re - mean;
+        scc += cc * cc;
+        sss += ss * ss;
+        scs += cc * ss;
+        sxc += x * cc;
+        sxs += x * ss;
+    }
+    let det = scc * sss - scs * scs;
+    let ca = (sxc * sss - sxs * scs) / det;
+    let sa = (sxs * scc - sxc * scs) / det;
+    for (i, z) in series.iter().enumerate() {
+        if i % 4 != 0 {
+            continue;
+        }
+        let t = i as f64 * dt;
+        ts.row(&[format!("{:.4}", t), format!("{:.10}", z.re / dvac), format!("{:.10}", (mean + ca * (w2 * t).cos() + sa * (w2 * t).sin()) / dvac)]);
+    }
+    ts.write(dir, "t2_sfbs_tdbdg_higgs.csv");
+    let mut sp = Csv::new(
+        "the power spectrum (Hann window, mean removed, normalized to its largest value) of the pair field of the time-dependent mean-field evolution from Delta_vac (1 + 0.02) at mu = 0, G = 22.5 (Test 2, item 10, Figure 25(e))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("M_q", format!("{:.10}", mq))],
+        "omega_B,power",
+    );
+    let grid: Vec<f64> = (1..=500).map(|i| 0.002 * i as f64).collect();
+    let pw: Vec<f64> = grid.iter().map(|&w| power_at(&series, dt, w)).collect();
+    let pmax = pw.iter().cloned().fold(0.0f64, f64::max);
+    for (w, p) in grid.iter().zip(&pw) {
+        sp.row(&[format!("{:.4}", w), format!("{:.10e}", p / pmax)]);
+    }
+    sp.write(dir, "t2_sfbs_higgs_spectrum.csv");
+    let fr_dev = [((freqs[0] - 2.0 * dvac) / (2.0 * dvac)).abs(), ((freqs[1] - 2.0 * dvac) / (2.0 * dvac)).abs()];
+    let pole_zero = (4.0 * dvac * dvac - (2.0 * dvac) * (2.0 * dvac)) * upsilon(2.0 * dvac, mq);
+    let ok = k_dev < 1e-9
+        && off_dev < 1e-9
+        && anti_dev < 1e-9
+        && ups_dev < 1e-12
+        && ((mass_kin - 2.0 * dvac) / (2.0 * dvac)).abs() < 1e-12
+        && ((u1_num - u1) / u1).abs() < 1e-4
+        && fr_dev[0] < 2e-3
+        && fr_dev[1] < 1e-3
+        && fdev_max < 1e-6
+        && 2.0 * dvac < 2.0 * mq;
+    ch.add(
+        "SB-16",
+        "the fluctuations of the condensed vacuum (0, 0, Delta_vac) at mu = 0, G = 22.5, zero wave number: the kernels of the six real directions from the Bogoliubov matrices equal -omega^2 Upsilon(omega) (Re d^1, Re d^2, Im d^3: the Goldstone directions) and (4 Delta_vac^2 - omega^2) Upsilon(omega) (Im d^1, Im d^2, Re d^3) at five frequencies below the threshold, and the kernel matrix has no off-diagonal entries and no antisymmetric part (tol 1e-9, relative to Z_t); the closed form of Upsilon equals the quadrature (tol 1e-12); the mass of the kinetic Lagrangian with the potential, (Omega_s^(2)/Z_t)^(1/2), equals 2 Delta_vac, the zero of the kernel (tol 1e-12), below the pair-breaking threshold 2 M_q; the closed form of dUpsilon/d(omega^2) at 0 equals a difference quotient (tol 1e-4); in the time-dependent mean-field equations (uniform, RK4, dt = 0.05, 12000 steps) the gap started at Delta_vac (1 + disp) oscillates with the frequency 2 Delta_vac (relative tol 2e-3 for the displacement disp = 0.02 and 1e-3 for disp = 0.01), the energy being conserved to 1e-6",
+        ok,
+        format!(
+            "{}; largest deviation of the diagonal {}, of the off-diagonal entries {}, of the antisymmetric part {} (relative to Z_t = {:.8e}); Upsilon {}; Gamma_m(2 Delta_vac) = {:.3e}; mass of the kinetic Lagrangian {:.10} = 2 Delta_vac {:.10}; threshold 2 M_q = {:.10}; dUpsilon/d(omega^2) = {:.8e} (difference quotient {:.8e}); strict expansion: Z_t - 4 Delta_vac^2 dUpsilon/d(omega^2) = {:.8e}, mass {:.8}; time-dependent mean field: {}; relative deviations of the lines from 2 Delta_vac {}, {}; energy {}",
+            k_txt.join("; "),
+            sci(k_dev),
+            sci(off_dev),
+            sci(anti_dev),
+            zt,
+            sci(ups_dev),
+            pole_zero,
+            mass_kin,
+            2.0 * dvac,
+            2.0 * mq,
+            u1,
+            u1_num,
+            zt - 4.0 * dvac * dvac * u1,
+            mass_strict,
+            amp_txt.join("; "),
+            sci(fr_dev[0]),
+            sci(fr_dev[1]),
+            sci(fdev_max)
+        ),
+    );
+}
+
 fn main() {
     let dir = data_dir();
     let mut ch = Checks { title: "Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)".into(), items: vec![] };
@@ -2835,6 +3381,9 @@ fn main() {
     // item [9]
     sb13(&mut ch, &dir);
     sb14(&mut ch, &dir);
+    // item [10]
+    sb15(&mut ch, &dir);
+    sb16(&mut ch, &dir);
     let _ = (lift2, LAMBDA, d_vac_q);
     fr.write(&dir.join("t2_sfbs_fragments.md"));
     let ok = ch.write(&dir.join("t2_sfbs_checks.txt"));
