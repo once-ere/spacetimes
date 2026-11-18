@@ -655,7 +655,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [8]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations and its effective potential (folder `test2`)
+# 11. Test 2, items [1] to [9]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations, its effective potential, its minima, the breaking of the symmetry and SFBSv (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -1051,6 +1051,22 @@ SB-12: the closed form (10.9) and its derivatives against quadrature and numeric
 on a grid at $\mu_{\rm LL}=0$ and $0.5$, $b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)$, the order of the remainder of the Ginzburg-Landau form and of the
 massless form (10.11), and the stationarity (10.10) at the gap of $G_{\rm LL}=22.5$ (found by bisection of the closed form). Figure 23 is drawn by
 `test2/python/make_t2_sfbs_figures.py` (the surface of panel (b) with the three-dimensional axes of Matplotlib).
+
+## Item [9]: the minima, the breaking of the symmetry and SFBSv
+
+The same program verifies Section 11. SB-13: 40 minimizations of the closed form of the potential at $\mu_{\rm LL}=0$, $G_{\rm LL}=22.5$
+(function `omega_cl`, the sum of the two sector potentials `omega_s`) from random fields in the six real coordinates, by the quasi-Newton
+method of Broyden, Fletcher, Goldfarb and Shanno (`bfgs6`, numerical gradients `grad6`); the gradient and the Hessian (`hess6`, central
+differences) at the vacuum, at the non-unitary field $(\Delta^{\rm vac}_{\rm LL}/2)(1,i,0)$ and at $\vec d_{\rm LL}=0$; the Gram matrices of the
+vectors by which the four generators move the vacuum and the non-unitary field (rank and null vector); the reflection of the stabilizer;
+the gradient on the plane of the normal form; the typed matrices of the generators (11.6) and of the stabilizer (11.8) against the
+definition of $\mathsf R^{\rm v}_{\rm LL}$. SB-14: the parametrization SFBSv against its explicit matrices (11.10), (11.11) and components (11.12),
+its linear order (11.13), its exact potential (11.14) for random values of the six fields, the closed forms of $\Xi^{(3)}_{\rm LL}$ and
+$\Xi^{(4)}_{\rm LL}$ against quadrature, the derivatives (11.15) of the potential of one sector against numerical derivatives (Richardson
+extrapolation for the third and the fourth), the order of the remainder of the expansion (11.16), the transformation (11.17) of the fields under
+the unbroken group, and the curvatures at the vacuum computed directly from the Bogoliubov matrices (function `omega_bdg`). Figure 24 is
+drawn by `test2/python/make_t2_sfbs_figures.py` (panel (a) with the streamline routine of Matplotlib from the velocities of the gradient
+flow written by the program).
 
 # 12. The checks of the documents
 

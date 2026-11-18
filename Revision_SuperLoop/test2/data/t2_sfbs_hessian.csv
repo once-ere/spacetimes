@@ -1,0 +1,25 @@
+# content: the eigenvalues of the Hessian (second derivatives with respect to the real and imaginary parts of d^1, d^2, d^3) of the effective potential at its three kinds of stationary points, mu = 0, G = 22.5: the vacuum Delta_vac e_3, the non-unitary field (Delta_vac/2)(1, i, 0), and d = 0 (where the Hessian is 2 a_GL times the unit matrix) (Test 2, item 9, Figure 24(d))
+# m: 0.2
+# Lambda: 1
+# G: 22.5
+# Delta_vac: 0.2094933033
+# a_GL: -2.533445012062e-3
+point,index,eigenvalue
+vacuum,0,9.5409791179e-10
+vacuum,1,9.5409791179e-10
+vacuum,2,9.5409791179e-10
+vacuum,3,8.8232395999e-3
+vacuum,4,8.8232395999e-3
+vacuum,5,8.8232395999e-3
+non_unitary,0,-5.0668877929e-3
+non_unitary,1,-5.0668876340e-3
+non_unitary,2,-4.2554935270e-10
+non_unitary,3,-4.2554935270e-10
+non_unitary,4,1.1243515342e-9
+non_unitary,5,8.8232396092e-3
+origin,0,-5.0668900241e-3
+origin,1,-5.0668900241e-3
+origin,2,-5.0668900241e-3
+origin,3,-5.0668900241e-3
+origin,4,-5.0668900241e-3
+origin,5,-5.0668900241e-3

@@ -209,7 +209,8 @@ the test, and is committed and carried to the author's computer after each item 
 | [7] | Section 8 of the document: the construction of the superfluid boson singlet state (SFBS) from the spinor field: the 28 pairs of two spinor charges at one point, the six spin-zero pairs (spin singlet, isospin triplet by the Pauli principle), the scalar channel selected by the interaction and by parity, the charges, the super-loop form (the imaginary part of the product of a spinor charge's bi-quaternion with its conjugate), the Bose character with Pauli blocking, and the SFBS state as a coherent state of particle and antiparticle pairs, proved to be the mean-field ground state; checks SB-1 to SB-5 of the new program `t2_sfbs` (member `t2sfbs`; exact many-body computations in Fock spaces of 256 and 65536 states); Figure 21 | answered |
 | [8] | Section 9 of the document: the effective field equations of the SFBS: the Hubbard-Stratonovich field $\vec d_{\rm LL}$ (the SFBS times $-\tfrac12G_{\rm LL}$, its transformation law), its gauge-covariant derivative $\nabla^{\rm B}_{{\rm LL},p}$ inherited from the spinor field by the Leibniz rule (covariance and commutator), the effective action and its derivative expansion $\mathcal L^{\rm B}_{\rm LL}$, the pair susceptibility of the vacuum with $1/G^{\rm crit}_{\rm LL}$, $Z^{\rm t}_{\rm LL}(0)$, $Z^{\rm s}_{\rm LL}(0)$ and $1/G^{\rm bd}_{\rm LL}$ in closed form, the effective field equations written out and in first-order form, the gauge-field equations with the currents of the SFBS, and the SFBS boson of the normal vacuum (Klein-Gordon form, exact pole, instability beyond $G^{\rm crit}_{\rm LL}$), confirmed by the time-dependent mean-field equations; checks SB-6 to SB-10, Figure 22 | answered |
 | [8] (second) | Section 10 of the document: the effective potential of the SFBS: its two invariants (the normal form of a pair field, Theorem 10.1), the splitting of the Bogoliubov matrix into two sectors with the gaps $\Delta^\pm_{\rm LL}$, the potential as the cost of the field minus the condensation energies $W^{\rm g}_{\rm LL}$ of the sectors (increasing and strictly concave), the Ginzburg-Landau form with $a^{\rm GL}_{\rm LL}=1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}$ and $b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)$, the closed form at $\mu_{\rm LL}=0$ with the gap equation as its stationarity, the massless form with its logarithm, the next term, and the Mexican hat; checks SB-11 and SB-12, Figure 23 | answered |
-| [9] to [11] | Sections 11 to 13 of the document | to follow, in this order |
+| [9] | Section 11 of the document: the minima of the effective potential (the two-sector form with the potential $\Omega^{\rm s}_{\rm LL}$ of one sector, strictly convex in the squared gap; Theorem 11.1: every relative minimum is a global one, on the vacuum manifold of the polar fields of modulus $\Delta^{\rm vac}_{\rm LL}$; Theorem 11.2: at $\mu_{\rm LL}=0$ the only stationary points are the maximum $\vec d_{\rm LL}=0$, the minima and the non-unitary saddle points, with their Hessians; the gradient flow), the spontaneous breaking of the symmetry (the vacuum $(0,0,\Delta^{\rm vac}_{\rm LL})$, the generators acting on the field written out, the broken generators $F_{\rm LL}$, $T^1_{\rm LL}$, $T^2_{\rm LL}$, the unbroken electric charge $Q_{\rm LL}=T^3_{\rm LL}$, the stabilizer $O(2)$ written out, Goldstone's theorem), and SFBSv (the parametrization by three Goldstone fields, the amplitude field and two non-unitary fields, with its matrices and components written out; the exact potential of SFBSv, independent of the Goldstone fields; its expansion to the fourth order with coefficients in closed form; the charges of the fields; the comparison with a potential of the Higgs form); checks SB-13 and SB-14, Figure 24 | answered |
+| [10] and [11] | Sections 12 and 13 of the document | to follow, in this order |
 
 The demand of 06:45 is met in every field equation of the document: the derivatives enter only through the
 covariant derivative $\nabla^{\rm LL}_p$, through its lattice form (the link matrices), or, in the gauge-field
@@ -319,6 +320,12 @@ expression and compares it with the matrix that it describes (check GS-12).
    structure of the potential against the eigenvalues of the Bogoliubov matrices, its closed form at $\mu_{\rm LL}=0$ and the
    Ginzburg-Landau expansion), the matrix $\mathsf D_{\rm LL}$ printed by the program, Section 10 of the document of Test 2 with Figure 23,
    and the new symbols (Section 11, entry E59).
+17. **Stage 15 — Test 2, item [9], the minima, the breaking of the symmetry and SFBSv** (Section 2.8): the checks SB-13 and SB-14
+   in `t2_sfbs` (40 minimizations from random fields, the Hessians at the stationary points, the generators and the stabilizer of the
+   vacuum, the gradient flow on the plane of the normal form, the parametrization SFBSv with its explicit matrices, its exact potential,
+   the derivatives of the potential of one sector in closed form, the expansion about the vacuum, the transformation of the fields under
+   the unbroken group, and the curvatures computed directly from the Bogoliubov matrices), Section 11 of the document of Test 2 with
+   Figure 24, and the new symbols (decision D19, Section 11, entry E60).
 
 # 6. The results in brief
 
@@ -568,6 +575,19 @@ from the spinor field in closed form in the normal vacuum (Section 9.4); those o
 Lorentz invariance, and the stiffness coefficients of the time and the space derivatives differ ($Z^{\rm s}_{\rm LL}\neq Z^{\rm t}_{\rm LL}$);
 the document keeps both and states the consequence (a dispersion that is not exactly relativistic) rather than imposing equality.
 
+**D19. "find the relative minima of this effective potential; spontaneously break the symmetry, following the example of the Higgs
+boson; expand the SFBS about this minimum, call this approximation SFBSv".** The relative minima are determined for every field and
+every chemical potential (Theorem 11.1), and all stationary points are classified with their Hessians at $\mu_{\rm LL}=0$ (Theorem 11.2),
+so that "relative" is answered in full: there are no relative minima besides the global ones. The symmetry is broken by the choice of
+the vacuum $(0,0,\Delta^{\rm vac}_{\rm LL})$, the polar field along the third isospin axis, made of the neutral pairs of $\mathsf K^{(0)}_{\rm LL}$
+(the analogue of the choice of the lower component of the Higgs doublet); every other minimum is a transformation of it. SFBSv is the
+parametrization (11.9) of the field by three Goldstone fields, an amplitude field and two non-unitary fields, the analogue of the
+parametrization of the Higgs doublet by an $SU(2)$ matrix of Goldstone fields applied to the vacuum value plus the Higgs field, together
+with the expansion of the Lagrangian about the vacuum: the potential to the fourth order in item [9], the kinetic terms in items [10]
+and [11]. Since the SFBS field has six real components, two more than the Higgs doublet, SFBSv has two more fields with a curvature, the
+charged non-unitary fields; they are kept, not discarded. The curvatures are not called masses in item [9], because a mass needs the
+coefficient of the time derivatives in the condensed vacuum, which is item [10].
+
 **D14. "analytical solutions for at least 3 simple cases".** Item [2] gives four cases, chosen so that together
 they exercise every term of the field equations: the covariant derivative with space and time potentials (A), the
 uniform pair field and the self-consistency (B), a non-uniform pair field (C), and the field strengths (D). Each case
@@ -612,8 +632,9 @@ evaluated numerically, as in the earlier stages.
   classified (D7).
 * The superfluid was not treated beyond mean field: no fluctuation corrections, no finite temperature,
   no dispersions of the Goldstone modes, no other interactions.
-* Items [9] to [11] of Test 2 are answered in the following stages; this version of the document of the answers contains items
-  [1] to [8] (both parts). The effective potential of item [8] is that of the mean-field approximation. The effective field equations of item [8] keep the
+* Items [10] and [11] of Test 2 are answered in the following stages; this version of the document of the answers contains items
+  [1] to [9]. The minima, the stationary points and the expansion of item [9] are those of the mean-field potential; Theorem 11.2 and
+  all numbers of item [9] are for $\mu_{\rm LL}=0$. The effective potential of item [8] is that of the mean-field approximation. The effective field equations of item [8] keep the
   SFBS field at its stationary point (mean field): its own fluctuations (loops of the SFBS) are not included, and the derivative
   expansion is truncated at second order. The solver of item [3] treats the gauge fields as external (their field
   equations (2.29) are not solved), and its self-consistent tasks are limited to about 375 sites by the dense
@@ -700,6 +721,7 @@ evaluated numerically, as in the earlier stages.
 | E57 | the first draft of Section 8 used letters without the suffix LL for auxiliary quantities of its proofs (a small parameter, the entries of a $2\times2$ matrix, a rapidity, the operators of two states, an index condition); the proofs were rewritten with registered symbols, with particular Lorentz transformations, and with index conditions stated in words |
 | E58 | in the first draft of Section 9, auxiliary letters without the suffix LL appeared in derivations (a generic stiffness coefficient, the modulus of an integration variable, a unit vector and two generic isovectors, a Kronecker symbol), the plain-text names of the two pair energies clashed with an existing name, and three displays were wider than the page; the derivations were rewritten with the registered symbols ($Z^{\rm t}_{\rm LL}$, $-Z^{\rm s}_{\rm LL}$, $\vec A^{\rm v}_{{\rm LL},p}$, Fresnel integrals of the real and imaginary parts), the names were changed to `eps(+)`, `eps(-)`, and the displays were split; the first version of check SB-10 asked the energy of the time stepping to be conserved to $10^{-10}$, below the truncation error of the fourth-order method ($1.5\times10^{-8}$), and was corrected to $10^{-6}$ |
 | E59 | the first draft of Section 10 used the big-O notation (a bare letter) in formulas, primes on $\Xi_{\rm LL}$ for its derivatives, a symbol for the $4\times4$ Dirac part of the plane-wave Hamiltonian, and two abbreviations of numbers; they were replaced by words, by the superscripts $(1)$, $(2)$, $(3)$, by the Dirac matrices written out, and by the derivatives stated in words; in Figure 23 the first drawing of the Mexican hat on a square grid had ragged edges and hid the profile, and it was redrawn on a polar grid with a quarter cut away |
+| E60 | the first draft of Section 11 used letters without the suffix LL in proofs and formulas (a parameter of a line of fields, the six real coordinates of the field and a matrix of a generator in the proof of Goldstone's theorem, the symbol of a variation, a charge number, the variable of a figure), and the derivatives of the potential of one sector were written with nested braces in the superscript, which the check LL-S5 does not read as a suffixed symbol; they were replaced by the registered $\kappa^{\rm st}_{\rm LL}$, by the real and imaginary parts of $d^\iota_{\rm LL}$ and the first-order change $\vec d^{\rm tr}_{\rm LL}$, by words, and by the superscripts ${\rm s(2)}$, ${\rm s(3)}$, ${\rm s(4)}$. In Figure 24(a) the first drawing of the 40 minimization paths, projected from six dimensions on the plane of the two gaps, was a tangle of lines, partly outside the window; it was replaced by the lines of the exact gradient flow on the invariant plane of the normal form (11.5), and the paths are shown by their convergence in panel (c). The third and fourth numerical derivatives of check SB-14 first had errors larger than their tolerance and are now Richardson-extrapolated; the minimizer first ran to its iteration limit because its stopping test asked for a gradient below the noise of the numerical gradient, and it now stops at $10^{-10}$ or when a step no longer lowers the potential |
 
 # 12. The symbols
 

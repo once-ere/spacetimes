@@ -104,7 +104,14 @@ time-dependent mean-field equations (Figure 22). Its ninth answer (the second it
 SFBS: it depends on two invariants of the pair field, the gaps of two decoupled sectors; it is the cost of the field minus the
 condensation energies of the sectors; its Ginzburg-Landau form is the analogue of the potential of the Higgs doublet, with a quartic
 term that prefers the polar fields; it is given in closed form at zero chemical potential; and it has the shape of a Mexican hat for
-couplings above the critical one (Figure 23). Items [7] and [8] are verified by the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of
+couplings above the critical one (Figure 23). Its tenth answer (item [9]) finds the relative minima of the effective potential and
+breaks the symmetry: the potential is the sum of the potentials of the two sectors, each strictly convex in its squared gap, so every
+relative minimum is a global one, and the minima form the vacuum manifold of the polar fields of modulus $\Delta^{\rm vac}_{\rm LL}$ (the
+only other stationary points are the maximum at zero field and saddle points); choosing the vacuum $(0,0,\Delta^{\rm vac}_{\rm LL})$ breaks
+the fermion number and the isospin rotations about the first two axes and keeps the group of the electric charge $Q_{\rm LL}=T^3_{\rm LL}$,
+extended by a charge-reversing reflection to the group $O(2)$; and SFBSv, the field written with three Goldstone fields, an amplitude
+field and two charged non-unitary fields, has a potential that does not depend on the Goldstone fields at all, given exactly and
+expanded to the fourth order (Figure 24). Items [7] to [9] are verified by the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of
 the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
 # 2. Where to start reading

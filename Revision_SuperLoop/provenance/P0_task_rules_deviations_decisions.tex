@@ -576,8 +576,28 @@ sectors (increasing and strictly concave), the Ginzburg-Landau form with
 \(\mu_{\rm LL}=0\) with the gap equation as its stationarity, the
 massless form with its logarithm, the next term, and the Mexican hat;
 checks SB-11 and SB-12, Figure 23 & answered \\
-{[}9{]} to {[}11{]} & Sections 11 to 13 of the document & to follow, in
-this order \\
+{[}9{]} & Section 11 of the document: the minima of the effective
+potential (the two-sector form with the potential
+\(\Omega^{\rm s}_{\rm LL}\) of one sector, strictly convex in the
+squared gap; Theorem 11.1: every relative minimum is a global one, on
+the vacuum manifold of the polar fields of modulus
+\(\Delta^{\rm vac}_{\rm LL}\); Theorem 11.2: at \(\mu_{\rm LL}=0\) the
+only stationary points are the maximum \(\vec d_{\rm LL}=0\), the minima
+and the non-unitary saddle points, with their Hessians; the gradient
+flow), the spontaneous breaking of the symmetry (the vacuum
+\((0,0,\Delta^{\rm vac}_{\rm LL})\), the generators acting on the field
+written out, the broken generators \(F_{\rm LL}\), \(T^1_{\rm LL}\),
+\(T^2_{\rm LL}\), the unbroken electric charge
+\(Q_{\rm LL}=T^3_{\rm LL}\), the stabilizer \(O(2)\) written out,
+Goldstone's theorem), and SFBSv (the parametrization by three Goldstone
+fields, the amplitude field and two non-unitary fields, with its
+matrices and components written out; the exact potential of SFBSv,
+independent of the Goldstone fields; its expansion to the fourth order
+with coefficients in closed form; the charges of the fields; the
+comparison with a potential of the Higgs form); checks SB-13 and SB-14,
+Figure 24 & answered \\
+{[}10{]} and {[}11{]} & Sections 12 and 13 of the document & to follow,
+in this order \\
 \end{longtable}
 
 The demand of 06:45 is met in every field equation of the document: the
@@ -638,7 +658,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 166 new ones, all with the
+registries with their meanings and adds 182 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -876,6 +896,18 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   Ginzburg-Landau expansion), the matrix \(\mathsf D_{\rm LL}\) printed
   by the program, Section 10 of the document of Test 2 with Figure 23,
   and the new symbols (Section 11, entry E59).
+\item
+  \textbf{Stage 15 --- Test 2, item {[}9{]}, the minima, the breaking of
+  the symmetry and SFBSv} (Section 2.8): the checks SB-13 and SB-14 in
+  \texttt{t2\_sfbs} (40 minimizations from random fields, the Hessians
+  at the stationary points, the generators and the stabilizer of the
+  vacuum, the gradient flow on the plane of the normal form, the
+  parametrization SFBSv with its explicit matrices, its exact potential,
+  the derivatives of the potential of one sector in closed form, the
+  expansion about the vacuum, the transformation of the fields under the
+  unbroken group, and the curvatures computed directly from the
+  Bogoliubov matrices), Section 11 of the document of Test 2 with Figure
+  24, and the new symbols (decision D19, Section 11, entry E60).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1276,6 +1308,31 @@ time and the space derivatives differ
 and states the consequence (a dispersion that is not exactly
 relativistic) rather than imposing equality.
 
+\textbf{D19. ``find the relative minima of this effective potential;
+spontaneously break the symmetry, following the example of the Higgs
+boson; expand the SFBS about this minimum, call this approximation
+SFBSv''.} The relative minima are determined for every field and every
+chemical potential (Theorem 11.1), and all stationary points are
+classified with their Hessians at \(\mu_{\rm LL}=0\) (Theorem 11.2), so
+that ``relative'' is answered in full: there are no relative minima
+besides the global ones. The symmetry is broken by the choice of the
+vacuum \((0,0,\Delta^{\rm vac}_{\rm LL})\), the polar field along the
+third isospin axis, made of the neutral pairs of
+\(\mathsf K^{(0)}_{\rm LL}\) (the analogue of the choice of the lower
+component of the Higgs doublet); every other minimum is a transformation
+of it. SFBSv is the parametrization (11.9) of the field by three
+Goldstone fields, an amplitude field and two non-unitary fields, the
+analogue of the parametrization of the Higgs doublet by an \(SU(2)\)
+matrix of Goldstone fields applied to the vacuum value plus the Higgs
+field, together with the expansion of the Lagrangian about the vacuum:
+the potential to the fourth order in item {[}9{]}, the kinetic terms in
+items {[}10{]} and {[}11{]}. Since the SFBS field has six real
+components, two more than the Higgs doublet, SFBSv has two more fields
+with a curvature, the charged non-unitary fields; they are kept, not
+discarded. The curvatures are not called masses in item {[}9{]}, because
+a mass needs the coefficient of the time derivatives in the condensed
+vacuum, which is item {[}10{]}.
+
 \textbf{D14. ``analytical solutions for at least 3 simple cases''.} Item
 {[}2{]} gives four cases, chosen so that together they exercise every
 term of the field equations: the covariant derivative with space and
@@ -1359,18 +1416,21 @@ author's}\label{decisions-that-are-the-authors}}
   corrections, no finite temperature, no dispersions of the Goldstone
   modes, no other interactions.
 \item
-  Items {[}9{]} to {[}11{]} of Test 2 are answered in the following
+  Items {[}10{]} and {[}11{]} of Test 2 are answered in the following
   stages; this version of the document of the answers contains items
-  {[}1{]} to {[}8{]} (both parts). The effective potential of item
-  {[}8{]} is that of the mean-field approximation. The effective field
-  equations of item {[}8{]} keep the SFBS field at its stationary point
-  (mean field): its own fluctuations (loops of the SFBS) are not
-  included, and the derivative expansion is truncated at second order.
-  The solver of item {[}3{]} treats the gauge fields as external (their
-  field equations (2.29) are not solved), and its self-consistent tasks
-  are limited to about 375 sites by the dense diagonalization. In item
-  {[}2{]} the domain wall was solved for walls along one coordinate
-  only, and the bound states of walls of the width
+  {[}1{]} to {[}9{]}. The minima, the stationary points and the
+  expansion of item {[}9{]} are those of the mean-field potential;
+  Theorem 11.2 and all numbers of item {[}9{]} are for
+  \(\mu_{\rm LL}=0\). The effective potential of item {[}8{]} is that of
+  the mean-field approximation. The effective field equations of item
+  {[}8{]} keep the SFBS field at its stationary point (mean field): its
+  own fluctuations (loops of the SFBS) are not included, and the
+  derivative expansion is truncated at second order. The solver of item
+  {[}3{]} treats the gauge fields as external (their field equations
+  (2.29) are not solved), and its self-consistent tasks are limited to
+  about 375 sites by the dense diagonalization. In item {[}2{]} the
+  domain wall was solved for walls along one coordinate only, and the
+  bound states of walls of the width
   \(\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1\) were checked through
   the two scalar operators of the square of the operator, not on the
   lattice.
@@ -1782,6 +1842,27 @@ out, and by the derivatives stated in words; in Figure 23 the first
 drawing of the Mexican hat on a square grid had ragged edges and hid the
 profile, and it was redrawn on a polar grid with a quarter cut away &
 & \\
+E60 & the first draft of Section 11 used letters without the suffix LL
+in proofs and formulas (a parameter of a line of fields, the six real
+coordinates of the field and a matrix of a generator in the proof of
+Goldstone's theorem, the symbol of a variation, a charge number, the
+variable of a figure), and the derivatives of the potential of one
+sector were written with nested braces in the superscript, which the
+check LL-S5 does not read as a suffixed symbol; they were replaced by
+the registered \(\kappa^{\rm st}_{\rm LL}\), by the real and imaginary
+parts of \(d^\iota_{\rm LL}\) and the first-order change
+\(\vec d^{\rm tr}_{\rm LL}\), by words, and by the superscripts
+\({\rm s(2)}\), \({\rm s(3)}\), \({\rm s(4)}\). In Figure 24(a) the
+first drawing of the 40 minimization paths, projected from six
+dimensions on the plane of the two gaps, was a tangle of lines, partly
+outside the window; it was replaced by the lines of the exact gradient
+flow on the invariant plane of the normal form (11.5), and the paths are
+shown by their convergence in panel (c). The third and fourth numerical
+derivatives of check SB-14 first had errors larger than their tolerance
+and are now Richardson-extrapolated; the minimizer first ran to its
+iteration limit because its stopping test asked for a gradient below the
+noise of the numerical gradient, and it now stops at \(10^{-10}\) or
+when a step no longer lowers the potential & & \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -3276,6 +3357,109 @@ solution of the gap equation (plain text \texttt{Delta\_vac\_GL}: its
 Ginzburg-Landau value
 \((-a^{\rm GL}_{\rm LL}/(2b^{\rm GL}_{\rm LL}))^{1/2}\)) & new &
 \texttt{Delta\_vac} \texttt{Delta\_vac\_GL} \\
+\(\Omega^{\rm s}_{\rm LL}(\Delta_{\rm LL})\);
+\(\Omega^{\rm s(2)}_{\rm LL}\), \(\Omega^{\rm s(3)}_{\rm LL}\),
+\(\Omega^{\rm s(4)}_{\rm LL}\) & the potential of one sector,
+\(\Omega^{\rm s}_{\rm LL}(\Delta_{\rm LL})=\Delta_{\rm LL}^2/(2G_{\rm LL})-W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)\),
+an even function of its real argument, with
+\(\Omega_{\rm LL}=\Omega^{\rm s}_{\rm LL}(\Delta^+_{\rm LL})+\Omega^{\rm s}_{\rm LL}(\Delta^-_{\rm LL})\);
+and its derivatives of the orders 2, 3 and 4 at
+\(\Delta^{\rm vac}_{\rm LL}\), the coefficients of the expansion of the
+potential about the vacuum (plain text:
+\texttt{Omega\_s\textquotesingle{}} and \texttt{Omega\_s\^{}(1)} the
+first derivative, \texttt{Omega\_s2} to \texttt{Omega\_s4} the parameter
+names of the data files) & new & \texttt{Omega\_s}
+\texttt{Omega\_s\textquotesingle{}} \texttt{Omega\_s\^{}(1)}
+\texttt{Omega\_s\^{}(2)} \texttt{Omega\_s\^{}(3)}
+\texttt{Omega\_s\^{}(4)} \texttt{Omega\_s2} \texttt{Omega\_s3}
+\texttt{Omega\_s4} \\
+\(\Omega^{\rm min}_{\rm LL}\) & the smallest value of the effective
+potential, \(2\,\Omega^{\rm s}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})\),
+taken on the vacuum manifold (plain text \texttt{Omega\_min}, listed
+with \(\Omega_{\rm LL}\)) & new & \\
+\(\Xi^{(4)}_{\rm LL}\) & the fourth derivative of \(\Xi_{\rm LL}\) with
+respect to its argument \((M^{\rm q}_{\rm LL})^2\),
+\(-\tfrac{15}8\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-7/2}\)
+& new & \texttt{Xi\_4} \\
+\(y^+_{\rm LL}\), \(y^-_{\rm LL}\);
+\(\vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})\) & the two real
+coordinates of the plane of the normal form and its fields,
+\(\vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})=(0,\tfrac i2(y^+_{\rm LL}-y^-_{\rm LL}),\tfrac12(y^+_{\rm LL}+y^-_{\rm LL}))\),
+on which
+\(\Omega_{\rm LL}=\Omega^{\rm s}_{\rm LL}(y^+_{\rm LL})+\Omega^{\rm s}_{\rm LL}(y^-_{\rm LL})\);
+for \(y^+_{\rm LL}\ge y^-_{\rm LL}\ge0\) the normal form with the gaps
+\(y^\pm_{\rm LL}\) & new & \texttt{y\_+} \texttt{y\_-} \texttt{d\_nf} \\
+\(t^{\rm fl}_{\rm LL}\) & the parameter of the gradient flow of the
+effective potential (a fictitious time): along the flow the six real
+coordinates of \(\vec d_{\rm LL}\) change with the rates minus the
+derivatives of \(\Omega_{\rm LL}\) with respect to them & new & \\
+\(\kappa^{\rm st}_{\rm LL}\) & a real parameter along a straight line of
+fields, used in the proof of Theorem 11.2 of the document of Test 2 &
+new & \\
+\(\mathcal V^{\rm vac}_{\rm LL}\) & the vacuum manifold: the set of the
+minima of the effective potential, the polar fields of modulus
+\(\Delta^{\rm vac}_{\rm LL}\),
+\(\exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})(0,0,\Delta^{\rm vac}_{\rm LL})\);
+a manifold of dimension 3 & new & \texttt{V\_vac} \\
+\(\theta^\iota_{\rm LL}\) & the three angles of an isospin rotation,
+\(\mathsf U_{\rm LL}=\exp(i\sum_\iota\theta^\iota_{\rm LL}\tau^{\rm LL}_\iota/2)\);
+\(\theta^3_{\rm LL}\) alone gives the rotations
+\(\exp(i\theta^3_{\rm LL}Q_{\rm LL})\) of the electric charge (plain
+text \texttt{al} in the report of check SB-14) & new & \texttt{th\^{}1}
+\texttt{th\^{}2} \texttt{th\^{}3} \texttt{th\^{}iota} \texttt{al} \\
+\(\vec d^{\rm tr}_{\rm LL}\) & the first-order change of the field
+\(\vec d_{\rm LL}\) under the transformation (9.4) with the small angles
+\(\theta^{\rm F}_{\rm LL}\), \(\theta^\iota_{\rm LL}\):
+\(2i\theta^{\rm F}_{\rm LL}\vec d_{\rm LL}-(\theta^1_{\rm LL},\theta^2_{\rm LL},\theta^3_{\rm LL})\times\vec d_{\rm LL}\)
+& new & \\
+\(H^{\rm vac}_{\rm LL}\); \(U(1)^{\rm Q}_{\rm LL}\) & the stabilizer of
+the vacuum \((0,0,\Delta^{\rm vac}_{\rm LL})\): the transformations
+(9.4) that leave it unchanged, a group \(O(2)\) formed by the group
+\(U(1)^{\rm Q}_{\rm LL}\) of the electric charge (the rotations
+\(\exp(i\theta^3_{\rm LL}Q_{\rm LL})\) about the third isospin axis) and
+the reflection \(\theta^{\rm F}_{\rm LL}=\pi/2\),
+\(\mathsf U_{\rm LL}=i\tau^{\rm LL}_1\), which reverses the charge & new
+& \texttt{H\_vac} \texttt{U(1)\^{}Q} \\
+\(SO(3)\), \(O(2)\) & the group of the rotations of three-dimensional
+space (here: of the isospin space; on the field \(\vec d_{\rm LL}\) the
+transformations (9.4) act as the phases times \(SO(3)\)), and the group
+of the rotations and reflections of a plane & new & \texttt{SO(3)}
+\texttt{O(2)} \\
+\(\vartheta^{\rm G}_{{\rm LL},0}\), \(\vartheta^{\rm G}_{{\rm LL},1}\),
+\(\vartheta^{\rm G}_{{\rm LL},2}\); \(\vartheta^{\rm G}_{\rm LL}\),
+\(\varphi^{\rm G}_{\rm LL}\) & the three Goldstone fields of SFBSv: the
+phase \(\vartheta^{\rm G}_{{\rm LL},0}\) (the angle of the broken
+fermion number) and the angles \(\vartheta^{\rm G}_{{\rm LL},1}\),
+\(\vartheta^{\rm G}_{{\rm LL},2}\) of the broken isospin rotations about
+the first two axes;
+\(\vartheta^{\rm G}_{{\rm LL},1}+i\vartheta^{\rm G}_{{\rm LL},2}=\vartheta^{\rm G}_{\rm LL}\exp(i\varphi^{\rm G}_{\rm LL})\)
+with \(\vartheta^{\rm G}_{\rm LL}\ge0\) & new & \texttt{thG0}
+\texttt{thG1} \texttt{thG2} \texttt{thG} \texttt{phiG} \\
+\(\mathsf U^{\rm G}_{\rm LL}\) & the isospin rotation of the Goldstone
+fields of SFBSv,
+\(\exp\big(\tfrac i2(\vartheta^{\rm G}_{{\rm LL},1}\tau^{\rm LL}_1+\vartheta^{\rm G}_{{\rm LL},2}\tau^{\rm LL}_2)\big)\),
+a matrix of \(SU(2)\) whose rotation turns the third isospin axis by the
+angle \(\vartheta^{\rm G}_{\rm LL}\) & new & \texttt{UG}
+\texttt{U(thG1,thG2)} \\
+\(h^{\rm a}_{\rm LL}\) & the amplitude field of SFBSv: the change of the
+length of the real part of the field from \(\Delta^{\rm vac}_{\rm LL}\),
+the analogue of the Higgs field; electrically neutral & new &
+\texttt{h\_a} \\
+\(c^{\rm n}_{{\rm LL},1}\), \(c^{\rm n}_{{\rm LL},2}\);
+\(\varrho^{\rm n}_{\rm LL}\) & the two non-unitary fields of SFBSv, the
+components of an imaginary part orthogonal to the real part of the field
+(\(c^{\rm n}_{{\rm LL},1}\mp i\,c^{\rm n}_{{\rm LL},2}\) carry the
+electric charge \(\pm1\)), and their modulus
+\(\varrho^{\rm n}_{\rm LL}=((c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2)^{1/2}\)
+& new & \texttt{c\_n1} \texttt{c\_n2} \texttt{rho\_n} \\
+\(\Omega^{\rm H}_{\rm LL}(\vec d_{\rm LL})\),
+\(\lambda^{\rm H}_{\rm LL}\) & the potential of the Higgs form with the
+minimum on \(\mathcal V^{\rm vac}_{\rm LL}\),
+\(\lambda^{\rm H}_{\rm LL}(\lvert\vec d_{\rm LL}\rvert^2-(\Delta^{\rm vac}_{\rm LL})^2)^2\),
+used for comparison; its coupling
+\(\lambda^{\rm H}_{\rm LL}=\Omega^{\rm s(2)}_{\rm LL}/(4(\Delta^{\rm vac}_{\rm LL})^2)\)
+gives it the curvature of the computed potential along
+\(h^{\rm a}_{\rm LL}\) & new & \texttt{Omega\_H} \texttt{lambda\_H} \\
 \end{longtable}
 
 \end{document}

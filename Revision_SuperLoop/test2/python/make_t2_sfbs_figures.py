@@ -29,6 +29,11 @@ Fermi momentum (mu^2 - m^2)^(1/2) that marks a position on an axis).  Output, in
                       plane of the polar component d^3 at G = 22.5, with the circle of minima; (c) Omega at fixed |d| against
                       the non-unitarity zeta; (d) the gap of the condensed vacuum against the coupling, exact and
                       Ginzburg-Landau
+  fig_t2_sfbs_minima  item [9] (checks SB-13, SB-14): (a) the potential in the plane of the two gaps with the lines
+                      of its gradient flow, the minimum, the saddles and the maximum; (b) the
+                      SFBSv potential along the amplitude field and along the non-unitary field, exact, quadratic,
+                      quartic, and the Higgs form with the same curvature; (c) the convergence of the minimizations; (d) the eigenvalues of the Hessian at the
+                      three kinds of stationary points
 
 Colors: the categorical colors of the project in a fixed order (Figure 21: blue for the vacuum, orange for the Fermi
 sea; Figure 22: blue for the frequency dependence or the coupling G = 21, orange for the wave-number dependence or
@@ -326,10 +331,103 @@ def fig_potential():
     save(fig, "fig_t2_sfbs_potential")
 
 
+def fig_minima():
+    """Figure 24: the minima of the effective potential, the stationary points and SFBSv (item [9])."""
+    import numpy as np
+    land = rows("t2_sfbs_landscape.csv")
+    paths = rows("t2_sfbs_minimization_paths.csv")
+    sl = rows("t2_sfbs_sfbsv_slices.csv")
+    hes = rows("t2_sfbs_hessian.csv")
+    dvac = meta("t2_sfbs_landscape.csv", "Delta_vac")
+    fig, axs = plt.subplots(2, 2, figsize=(14.2, 11.6))
+    (ax, bx), (cx, dx) = axs
+    sc = 1e4
+    # (a) the landscape in the plane of the two gaps and the lines of the gradient flow (velocities from the data file)
+    xs = sorted(set(float(r["Delta_+"]) for r in land))
+    ys = sorted(set(float(r["Delta_-"]) for r in land))
+    zz = {(float(r["Delta_+"]), float(r["Delta_-"])): (float(r["Omega"]), float(r["flow_+"]), float(r["flow_-"])) for r in land}
+    # arrays indexed [row = Delta^-, column = Delta^+], as contourf and streamplot expect
+    zg = np.array([[zz[(x, y)][0] * sc for x in xs] for y in ys])
+    ug = np.array([[zz[(x, y)][1] for x in xs] for y in ys])
+    vg = np.array([[zz[(x, y)][2] for x in xs] for y in ys])
+    levels = np.arange(-0.55, 1.2001, 0.05)
+    cs = ax.contourf(xs, ys, zg, levels=levels, cmap="viridis", extend="max")
+    ax.contour(xs, ys, zg, levels=levels, colors="white", linewidths=0.3, alpha=0.45)
+    cb = fig.colorbar(cs, ax=ax, shrink=0.85, ticks=[-0.5, -0.25, 0.0, 0.25, 0.5, 0.75, 1.0])
+    cb.set_label("$\\Omega_{\\rm LL}$ in units of $10^{-4}$")
+    ax.streamplot(np.array(xs), np.array(ys), ug, vg, color="white", linewidth=0.9, density=1.1, arrowsize=1.1)
+    ax.plot([0, 0.35], [0, 0.35], color=GREY, lw=1.0, ls="--", label="polar fields $\\Delta^+_{\\rm LL}=\\Delta^-_{\\rm LL}$")
+    ax.plot([], [], color="white", lw=0.9, label="lines of the gradient flow (11.5)")
+    ax.plot([dvac], [dvac], "*", ms=18, color=ORANGE, mec=INK, label="minimum: the vacuum $(0,0,\\Delta^{\\rm vac}_{\\rm LL})$")
+    ax.plot([dvac, 0], [0, dvac], "D", ms=9, color=RED, mec=INK, clip_on=False, label="saddle points: non-unitary fields")
+    ax.plot([0], [0], "s", ms=9, color=BLUE, mec=INK, clip_on=False, label="maximum: $\\vec d_{\\rm LL}=0$")
+    ax.set_xlim(0, 0.35)
+    ax.set_ylim(0, 0.35)
+    ax.set_aspect("equal")
+    ax.set_xlabel("gap $\\Delta^+_{\\rm LL}$ of the sector $\\tau^{\\rm LL}_1=-1$")
+    ax.set_ylabel("gap $\\Delta^-_{\\rm LL}$ of the sector $\\tau^{\\rm LL}_1=+1$")
+    ax.set_title("(a) the potential in the plane of the two gaps, $G_{\\rm LL}=22.5$", fontsize=11, color=INK)
+    ax.legend(loc="upper left", fontsize=8.0, frameon=True, facecolor="#2b2b45", edgecolor="white", framealpha=0.88, labelcolor="white")
+    # (b) the SFBSv potential along h and along rho: exact, the common quadratic term, the quartic expansion
+    hh = [r for r in sl if r["variable"] == "h_a"]
+    rr = [r for r in sl if r["variable"] == "rho_n"]
+    bx.plot(col(hh, "amplitude"), [sc * v for v in col(hh, "Omega_quad")], color=GREY, lw=1.4, ls=":", label="quadratic term of (11.16), the same for both fields")
+    bx.plot(col(hh, "amplitude"), [sc * v for v in col(hh, "Omega_above_min")], color=BLUE, lw=2.2, label="amplitude field $h^{\\rm a}_{\\rm LL}$: exact (11.14)")
+    bx.plot(col(hh, "amplitude"), [sc * v for v in col(hh, "Omega_quartic")], color=BLUE, lw=1.5, ls="--", label="$h^{\\rm a}_{\\rm LL}$: quartic expansion (11.16)")
+    bx.plot(col(hh, "amplitude"), [sc * v for v in col(hh, "Omega_H")], color=BLUE, lw=1.2, ls="-.", label="$h^{\\rm a}_{\\rm LL}$: Higgs form (11.18)")
+    bx.plot(col(rr, "amplitude"), [sc * v for v in col(rr, "Omega_above_min")], color=ORANGE, lw=2.2, label="non-unitary field $\\varrho^{\\rm n}_{\\rm LL}$: exact (11.14)")
+    bx.plot(col(rr, "amplitude"), [sc * v for v in col(rr, "Omega_quartic")], color=ORANGE, lw=1.5, ls="--", label="$\\varrho^{\\rm n}_{\\rm LL}$: quartic expansion (11.16)")
+    bx.plot(col(rr, "amplitude"), [sc * v for v in col(rr, "Omega_H")], color=ORANGE, lw=1.2, ls="-.", label="$\\varrho^{\\rm n}_{\\rm LL}$: Higgs form (11.18)")
+    bx.axvline(-dvac, color=GREY, lw=1.0, ls="-.")
+    bx.text(-dvac + 0.004, 0.06, "$h^{\\rm a}_{\\rm LL}=-\\Delta^{\\rm vac}_{\\rm LL}$, where $\\vec d_{\\rm LL}=0$", fontsize=9.0, color=MUTED)
+    bx.set_xlim(-0.25, 0.25)
+    bx.set_ylim(0, 2.0)
+    bx.set_xlabel("the field: $h^{\\rm a}_{\\rm LL}$ (blue) or $\\varrho^{\\rm n}_{\\rm LL}$ (orange)")
+    bx.set_ylabel("$\\Omega_{\\rm LL}-\\Omega^{\\rm min}_{\\rm LL}$ in units of $10^{-4}$")
+    bx.set_title("(b) SFBSv: the potential about the minimum", fontsize=11, color=INK)
+    bx.legend(loc="upper center", fontsize=7.8, frameon=False)
+    bx.grid(color=GRID, lw=0.6)
+    # (c) the convergence of the minimizations
+    runs = sorted(set(int(r["run"]) for r in paths))
+    for k in runs:
+        sel = [r for r in paths if int(r["run"]) == k]
+        cx.plot(col(sel, "iteration"), [max(v, 1e-20) for v in col(sel, "Omega_above_min")], color=BLUE, lw=0.9, alpha=0.6)
+    cx.set_yscale("log")
+    cx.set_ylim(1e-20, 1e-3)
+    cx.set_xlabel("iteration")
+    cx.set_ylabel("$\\Omega_{\\rm LL}-\\Omega^{\\rm min}_{\\rm LL}$")
+    cx.set_title("(c) 40 minimizations from random fields all reach the minimum", fontsize=11, color=INK)
+    cx.grid(color=GRID, lw=0.6, which="both")
+    # (d) the eigenvalues of the Hessian at the three stationary points
+    pts = (("vacuum", "the vacuum $(0,0,\\Delta^{\\rm vac}_{\\rm LL})$"), ("non_unitary", "non-unitary field\n$(\\Delta^{\\rm vac}_{\\rm LL}/2)(1,i,0)$"), ("origin", "$\\vec d_{\\rm LL}=0$"))
+    for xpos, (key, lab) in enumerate(pts):
+        ev = sorted(col([r for r in hes if r["point"] == key], "eigenvalue"))
+        for j, v in enumerate(ev):
+            colr = GREEN if abs(v) < 1e-6 else (ORANGE if v > 0 else BLUE)
+            dx.plot([xpos + 0.08 * (j - 2.5)], [v * 1e3], "o", ms=9, color=colr, mec=INK, mew=0.6)
+    dx.plot([], [], "o", ms=9, color=GREEN, mec=INK, mew=0.6, label="zero: a direction along the orbit of the group")
+    om2 = meta("t2_sfbs_sfbsv_slices.csv", "Omega_s2")
+    agl = meta("t2_sfbs_hessian.csv", "a_GL")
+    dx.plot([], [], "o", ms=9, color=ORANGE, mec=INK, mew=0.6, label="positive: $2\\Omega^{\\rm s(2)}_{\\rm LL}=%.3f\\times10^{-3}$" % (2e3 * om2))
+    dx.plot([], [], "o", ms=9, color=BLUE, mec=INK, mew=0.6, label="negative: $2a^{\\rm GL}_{\\rm LL}=%.3f\\times10^{-3}$" % (2e3 * agl))
+    dx.axhline(0, color=GREY, lw=0.9)
+    dx.set_xticks([0, 1, 2])
+    dx.set_xticklabels([q[1] for q in pts], fontsize=9.5)
+    dx.set_xlim(-0.6, 2.6)
+    dx.set_ylim(-7, 14)
+    dx.set_ylabel("eigenvalue of the Hessian, in units of $10^{-3}$")
+    dx.set_title("(d) the curvatures at the three kinds of stationary points (Theorem 11.2)", fontsize=11, color=INK)
+    dx.legend(loc="upper center", fontsize=8.8, frameon=False)
+    dx.grid(color=GRID, lw=0.6, axis="y")
+    fig.tight_layout()
+    save(fig, "fig_t2_sfbs_minima")
+
+
 def main():
     fig_state()
     fig_effective()
     fig_potential()
+    fig_minima()
 
 
 if __name__ == "__main__":

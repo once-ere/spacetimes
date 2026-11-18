@@ -46,6 +46,18 @@
 //!         Xi(m^2), the concavity of W_g in Delta^2 (also with a Fermi sea), the Ginzburg-Landau coefficients a_GL and
 //!         b_GL = -Xi''(m^2) = Z_t0, the order |d|^6 of the remainder of the Ginzburg-Landau form, the massless form with
 //!         its logarithm, and the gap equation as the stationarity of Omega.
+//! Item [9], the minima, the breaking of the symmetry and SFBSv (Section 11 of the document):
+//!   SB-13 the minima and the other stationary points of Omega at mu = 0, G = 22.5: 40 minimizations (BFGS with numerical
+//!         gradients) from random fields end on the vacuum manifold |d| = Delta_vac, zeta = 0; the Hessian (6 x 6, in the
+//!         real and imaginary parts) at the vacuum has three zero and three equal positive eigenvalues, at the non-unitary
+//!         stationary field (Delta_vac/2)(1, i, 0) two negative, three zero and one positive, at d = 0 six equal negative;
+//!         the generators of U(1)_F x SU(2)_v that leave the vacuum unchanged: only T^3 (and for the non-unitary field
+//!         T^3 - F/2); the discrete element (thF = pi/2, U = i tau_1) of the stabilizer;
+//!   SB-14 SFBSv: the parametrization d = exp(2i thG0) Rv(U(thG1, thG2)) ((Delta_vac + h_a) e_3 + i (c_n1 e_1 + c_n2 e_2)),
+//!         the exact potential Omega_s(Delta_vac + h_a + rho_n) + Omega_s(Delta_vac + h_a - rho_n) for random fields, its
+//!         Taylor coefficients (second, third, fourth derivatives of the sector potential) in closed form against numerical
+//!         derivatives, the order of the remainder of the quartic expansion, and the curvatures of Omega at the vacuum from
+//!         the Bogoliubov matrices directly (finite differences), independent of the sector formula.
 //!   SB-10 the microscopic check of the effective field equation: the time-dependent mean-field (Bogoliubov-de Gennes)
 //!         evolution of a small uniform pair field in the normal vacuum (G = 20) oscillates with the frequency M_B of the
 //!         pole of the SFBS propagator (the mass in the effective Klein-Gordon equation), and the conserved functional of
@@ -2139,6 +2151,659 @@ fn sb12(ch: &mut Checks, dir: &PathBuf) {
     csv.write(dir, "t2_sfbs_vacuum_gap.csv");
 }
 
+// ================================================================== item [9]: minima, symmetry breaking, SFBSv
+
+/// d^3Xi/d(M^2)^3 = (3/4) int d^3q/(2 pi)^3 (q^2 + M^2)^(-5/2) = Lambda^3/(8 pi^2 M^2 (Lambda^2 + M^2)^(3/2))
+fn xi_cl_d3(m2: f64) -> f64 {
+    LAMBDA.powi(3) / (8.0 * PI * PI * m2 * (LAMBDA * LAMBDA + m2).powf(1.5))
+}
+
+/// d^4Xi/d(M^2)^4 = -(15/8) int d^3q/(2 pi)^3 (q^2 + M^2)^(-7/2), with
+/// int_0^Lambda q^2 (q^2 + M^2)^(-7/2) dq = Lambda^3 (2 Lambda^2 + 5 M^2)/(15 M^4 (Lambda^2 + M^2)^(5/2))
+fn xi_cl_d4(m2: f64) -> f64 {
+    let el2 = LAMBDA * LAMBDA + m2;
+    -(15.0 / 8.0) * LAMBDA.powi(3) * (2.0 * LAMBDA * LAMBDA + 5.0 * m2) / (30.0 * PI * PI * m2 * m2 * el2.powf(2.5))
+}
+
+/// the potential of one sector as a function of its gap y at mu = 0: Omega_s(y) = y^2/(2G) - (Xi(m^2 + y^2) - Xi(m^2));
+/// the effective potential is Omega_s(Delta^+) + Omega_s(Delta^-)
+fn omega_s(y: f64, g: f64, m: f64) -> f64 {
+    y * y / (2.0 * g) - (xi_cl(m * m + y * y) - xi_cl(m * m))
+}
+
+/// the derivatives of Omega_s with respect to y (orders 1 to 4), from the derivatives of Xi by the chain rule
+fn omega_s_derivs(y: f64, g: f64, m: f64) -> [f64; 4] {
+    let a = m * m + y * y;
+    let (x1, x2, x3, x4) = (xi_cl_d1(a), xi_cl_d2(a), xi_cl_d3(a), xi_cl_d4(a));
+    let d1 = y / g - 2.0 * y * x1;
+    let d2 = 1.0 / g - 2.0 * x1 - 4.0 * y * y * x2;
+    let d3 = -12.0 * y * x2 - 8.0 * y.powi(3) * x3;
+    let d4 = -12.0 * x2 - 48.0 * y * y * x3 - 16.0 * y.powi(4) * x4;
+    [d1, d2, d3, d4]
+}
+
+/// the effective potential at mu = 0 from the invariants (closed form): Omega_s(Delta^+) + Omega_s(Delta^-)
+fn omega_cl(d: &[C64; 3], g: f64, m: f64) -> f64 {
+    let (dp2, dm2) = two_gaps2(d);
+    omega_s(dp2.sqrt(), g, m) + omega_s(dm2.sqrt(), g, m)
+}
+
+fn to_r6(d: &[C64; 3]) -> [f64; 6] {
+    [d[0].re, d[0].im, d[1].re, d[1].im, d[2].re, d[2].im]
+}
+
+fn from_r6(x: &[f64; 6]) -> [C64; 3] {
+    [c(x[0], x[1]), c(x[2], x[3]), c(x[4], x[5])]
+}
+
+/// numerical gradient (central differences) of a function on R^6
+fn grad6(f: &dyn Fn(&[f64; 6]) -> f64, x: &[f64; 6], h: f64) -> [f64; 6] {
+    let mut gv = [0.0; 6];
+    for i in 0..6 {
+        let mut xp = *x;
+        let mut xm = *x;
+        xp[i] += h;
+        xm[i] -= h;
+        gv[i] = (f(&xp) - f(&xm)) / (2.0 * h);
+    }
+    gv
+}
+
+/// numerical Hessian (central differences) of a function on R^6
+fn hess6(f: &dyn Fn(&[f64; 6]) -> f64, x: &[f64; 6], h: f64) -> CMat {
+    let mut hm = CMat::zeros(6);
+    let f0 = f(x);
+    for i in 0..6 {
+        for j in i..6 {
+            let v = if i == j {
+                let mut xp = *x;
+                let mut xm = *x;
+                xp[i] += h;
+                xm[i] -= h;
+                (f(&xp) - 2.0 * f0 + f(&xm)) / (h * h)
+            } else {
+                let mut pp = *x;
+                let mut pm = *x;
+                let mut mp = *x;
+                let mut mm = *x;
+                pp[i] += h;
+                pp[j] += h;
+                pm[i] += h;
+                pm[j] -= h;
+                mp[i] -= h;
+                mp[j] += h;
+                mm[i] -= h;
+                mm[j] -= h;
+                (f(&pp) - f(&pm) - f(&mp) + f(&mm)) / (4.0 * h * h)
+            };
+            hm.set(i, j, c(v, 0.0));
+            hm.set(j, i, c(v, 0.0));
+        }
+    }
+    hm
+}
+
+/// BFGS minimization of a function on R^6 with numerical gradients and a backtracking line search (Armijo condition);
+/// returns the path of the iterates, the start included
+fn bfgs6(f: &dyn Fn(&[f64; 6]) -> f64, x0: &[f64; 6], maxit: usize) -> Vec<[f64; 6]> {
+    let mut x = *x0;
+    let mut path = vec![x];
+    let mut hinv = [[0.0f64; 6]; 6];
+    for i in 0..6 {
+        hinv[i][i] = 100.0; // the inverse of a curvature of about 0.01, the scale of the potential
+    }
+    let mut gx = grad6(f, &x, 1e-7);
+    for _ in 0..maxit {
+        let gn = gx.iter().map(|v| v * v).sum::<f64>().sqrt();
+        if gn < 1e-10 {
+            // the numerical gradient has a noise of about 1e-11: stop when it is below 1e-10
+            break;
+        }
+        let mut p = [0.0; 6];
+        for i in 0..6 {
+            for j in 0..6 {
+                p[i] -= hinv[i][j] * gx[j];
+            }
+        }
+        if p.iter().zip(&gx).map(|(a, b)| a * b).sum::<f64>() >= 0.0 {
+            // not a descent direction: restart with the scaled gradient
+            for i in 0..6 {
+                for j in 0..6 {
+                    hinv[i][j] = if i == j { 100.0 } else { 0.0 };
+                }
+                p[i] = -100.0 * gx[i];
+            }
+        }
+        let slope: f64 = p.iter().zip(&gx).map(|(a, b)| a * b).sum();
+        let fx = f(&x);
+        let mut t = 1.0;
+        let mut xn = x;
+        for _ in 0..60 {
+            for i in 0..6 {
+                xn[i] = x[i] + t * p[i];
+            }
+            if f(&xn) <= fx + 1e-4 * t * slope {
+                break;
+            }
+            t *= 0.5;
+        }
+        let gnew = grad6(f, &xn, 1e-7);
+        let sv: Vec<f64> = (0..6).map(|i| xn[i] - x[i]).collect();
+        let yv: Vec<f64> = (0..6).map(|i| gnew[i] - gx[i]).collect();
+        let sy: f64 = sv.iter().zip(&yv).map(|(a, b)| a * b).sum();
+        if sy > 1e-30 {
+            let mut hy = [0.0; 6];
+            for i in 0..6 {
+                for j in 0..6 {
+                    hy[i] += hinv[i][j] * yv[j];
+                }
+            }
+            let yhy: f64 = yv.iter().zip(&hy).map(|(a, b)| a * b).sum();
+            for i in 0..6 {
+                for j in 0..6 {
+                    hinv[i][j] += (sy + yhy) * sv[i] * sv[j] / (sy * sy) - (hy[i] * sv[j] + sv[i] * hy[j]) / sy;
+                }
+            }
+        }
+        let stalled = f(&xn) >= fx - 1e-21;
+        x = xn;
+        gx = gnew;
+        path.push(x);
+        if stalled {
+            // no further decrease at the precision of the potential (about 1e-21 at its size 5e-5)
+            break;
+        }
+    }
+    path
+}
+
+/// SB-13: the minima, the other stationary points and the stabilizer
+fn sb13(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let g = G_VAC;
+    let dvac = gap_mu0(g, m);
+    let om_min = 2.0 * omega_s(dvac, g, m);
+    let f = |x: &[f64; 6]| omega_cl(&from_r6(x), g, m);
+    // (i) minimizations from 40 random fields
+    let mut rng = Rng(271828);
+    let mut worst_abs = 0.0f64;
+    let mut worst_zeta = 0.0f64;
+    let mut worst_om = 0.0f64;
+    let mut paths = Csv::new(
+        "the paths of 40 minimizations (BFGS) of the effective potential at mu = 0, G = 22.5 from random pair fields, in the plane of the two gaps (Delta^+, Delta^-), with the potential minus its minimum (Test 2, item 9, Figure 24(a), (c))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("Omega_min", format!("{:.12e}", om_min))],
+        "run,iteration,Delta_+,Delta_-,Omega_above_min",
+    );
+    let mut iters = vec![];
+    for run in 0..40 {
+        let x0 = [0.3 * rng.unit(), 0.3 * rng.unit(), 0.3 * rng.unit(), 0.3 * rng.unit(), 0.3 * rng.unit(), 0.3 * rng.unit()];
+        let path = bfgs6(&f, &x0, 400);
+        iters.push(path.len() - 1);
+        for (it, x) in path.iter().enumerate() {
+            let (dp2, dm2) = two_gaps2(&from_r6(x));
+            paths.row(&[format!("{}", run), format!("{}", it), format!("{:.10}", dp2.sqrt()), format!("{:.10}", dm2.sqrt()), format!("{:.6e}", (f(x) - om_min).max(1e-30))]);
+        }
+        let xf = path.last().unwrap();
+        let d = from_r6(xf);
+        let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+        let (dp2, dm2) = two_gaps2(&d);
+        let zeta = (dp2 - dm2) / (dp2 + dm2);
+        worst_abs = worst_abs.max((n2.sqrt() - dvac).abs());
+        worst_zeta = worst_zeta.max(zeta);
+        worst_om = worst_om.max((f(xf) - om_min).abs());
+    }
+    paths.write(dir, "t2_sfbs_minimization_paths.csv");
+    // (ii) the Hessians at the three kinds of stationary points
+    let hstep = 1e-4;
+    let vac = [0.0, 0.0, 0.0, 0.0, dvac, 0.0];
+    let sad = [0.5 * dvac, 0.0, 0.0, 0.5 * dvac, 0.0, 0.0]; // (Delta_vac/2)(1, i, 0)
+    let gvac = grad6(&f, &vac, 1e-6);
+    let gsad = grad6(&f, &sad, 1e-6);
+    let grad_max = gvac.iter().chain(gsad.iter()).fold(0.0f64, |a, v| a.max(v.abs()));
+    let (ev_vac, _) = eigh(&hess6(&f, &vac, hstep));
+    let (ev_sad, _) = eigh(&hess6(&f, &sad, hstep));
+    // at d = 0 the potential is a_GL |d|^2 + b_GL |d|^4 along a polar line (Section 10.3); the radial Richardson second
+    // difference (16 Omega(r) - Omega(2r))/(12 r^2) removes the quartic term and gives a_GL
+    let a_gl = 1.0 / g - inv_gcrit(m);
+    let rad = {
+        let h = 1e-3;
+        let x1 = [h, 0.0, 0.0, 0.0, 0.0, 0.0];
+        let x2 = [2.0 * h, 0.0, 0.0, 0.0, 0.0, 0.0];
+        (16.0 * f(&x1) - f(&x2)) / (12.0 * h * h)
+    };
+    // the predicted curvatures at the vacuum: 0 (three times) and 2 Omega_s^(2)(Delta_vac) (three times)
+    let ds = omega_s_derivs(dvac, g, m);
+    let v_pred = 2.0 * ds[1];
+    let vac_ok = ev_vac[0].abs() < 1e-6 && ev_vac[1].abs() < 1e-6 && ev_vac[2].abs() < 1e-6 && ev_vac[3..].iter().all(|v| ((v - v_pred) / v_pred).abs() < 1e-6);
+    let neg_sad = ev_sad.iter().filter(|&&v| v < -1e-6).count();
+    let zero_sad = ev_sad.iter().filter(|&&v| v.abs() <= 1e-6).count();
+    let pos_sad = ev_sad.iter().filter(|&&v| v > 1e-6).count();
+    let om_sad = f(&sad);
+    let sad_ok = neg_sad == 2 && zero_sad == 3 && pos_sad == 1 && ((om_sad - 0.5 * om_min) / om_min).abs() < 1e-12;
+    let zero_ok = ((rad - a_gl) / a_gl).abs() < 1e-5 && a_gl < 0.0;
+    // the data of Figure 24(d): the eigenvalues at the three stationary points
+    let mut hcsv = Csv::new(
+        "the eigenvalues of the Hessian (second derivatives with respect to the real and imaginary parts of d^1, d^2, d^3) of the effective potential at its three kinds of stationary points, mu = 0, G = 22.5: the vacuum Delta_vac e_3, the non-unitary field (Delta_vac/2)(1, i, 0), and d = 0 (where the Hessian is 2 a_GL times the unit matrix) (Test 2, item 9, Figure 24(d))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("a_GL", format!("{:.12e}", a_gl))],
+        "point,index,eigenvalue",
+    );
+    for (name, ev) in [("vacuum", ev_vac.clone()), ("non_unitary", ev_sad.clone()), ("origin", vec![2.0 * a_gl; 6])] {
+        for (i, v) in ev.iter().enumerate() {
+            hcsv.row(&[name.to_string(), format!("{}", i), format!("{:.10e}", v)]);
+        }
+    }
+    hcsv.write(dir, "t2_sfbs_hessian.csv");
+    // (iii) the generators that leave a field unchanged: the Gram matrix (4 x 4) of the actions of F (d -> 2i d) and of
+    // T^iota (d -> -e_iota x d), seen as vectors of R^6
+    let gram = |d: &[C64; 3]| -> CMat {
+        let mut cols: Vec<[C64; 3]> = vec![[d[0] * c(0.0, 2.0), d[1] * c(0.0, 2.0), d[2] * c(0.0, 2.0)]];
+        for i in 0..3 {
+            let mut e = [0.0; 3];
+            e[i] = 1.0;
+            let x = cross_c(&e, d);
+            cols.push([-x[0], -x[1], -x[2]]);
+        }
+        let mut mtx = CMat::zeros(4);
+        for a in 0..4 {
+            for b in 0..4 {
+                let ra = to_r6(&cols[a]);
+                let rb = to_r6(&cols[b]);
+                mtx.set(a, b, c(ra.iter().zip(&rb).map(|(x, y)| x * y).sum(), 0.0));
+            }
+        }
+        mtx
+    };
+    let (evg, vecg) = eigh(&gram(&from_r6(&vac)));
+    let (evs, vecs) = eigh(&gram(&from_r6(&sad)));
+    // the null vector at the vacuum is T^3 = (0, 0, 0, 1); at the non-unitary field it is proportional to T^3 - F/2
+    let nv: Vec<f64> = (0..4).map(|i| vecg.get(i, 0).re).collect();
+    let ns: Vec<f64> = (0..4).map(|i| vecs.get(i, 0).re).collect();
+    let nv_dev = (nv[3].abs() - 1.0).abs() + nv[0].abs() + nv[1].abs() + nv[2].abs();
+    let ns_ratio = ns[0] / ns[3];
+    let stab_ok = evg[0].abs() < 1e-14 && evg[1] > 1e-3 && nv_dev < 1e-12 && evs[0].abs() < 1e-14 && evs[1] > 1e-3 && (ns_ratio + 0.5).abs() < 1e-12;
+    // (iv) the discrete element of the stabilizer: thF = pi/2, U = i tau_1 maps the vacuum to itself and reverses e_3
+    let u = sigma(1).scale(c(0.0, 1.0));
+    let r = adjoint(&u);
+    let ph = C64::cis(2.0 * PI / 2.0);
+    let dv = from_r6(&vac);
+    let mut dimg = [C64::ZERO; 3];
+    for i in 0..3 {
+        let mut z = C64::ZERO;
+        for k in 0..3 {
+            z += dv[k].scale(r[i][k]);
+        }
+        dimg[i] = ph * z;
+    }
+    let disc_dev = (0..3).fold(0.0f64, |a, i| a.max((dimg[i] - dv[i]).abs()));
+    let r33 = r[2][2];
+    // (v) the plane of the normal form, d = (0, i x2, x1), is kept by the gradient flow (11.4): at 20 random points of the
+    // plane the gradient has no component along Re d^1, Im d^1, Re d^2, Im d^3, and its components along Re d^3 and Im d^2
+    // are Omega_s'(x1 + x2) + Omega_s'(x1 - x2) and Omega_s'(x1 + x2) - Omega_s'(x1 - x2)
+    let mut plane_dev = 0.0f64;
+    for _ in 0..20 {
+        let x1 = 0.05 + 0.3 * rng.unit().abs();
+        let x2 = 0.3 * rng.unit().abs();
+        let x = [0.0, 0.0, 0.0, x2, x1, 0.0];
+        let gr = grad6(&f, &x, 1e-6);
+        let du = omega_s_derivs(x1 + x2, g, m)[0];
+        let dw = omega_s_derivs(x1 - x2, g, m)[0];
+        plane_dev = plane_dev.max(gr[0].abs()).max(gr[1].abs()).max(gr[2].abs()).max(gr[5].abs());
+        plane_dev = plane_dev.max((gr[4] - (du + dw)).abs()).max((gr[3] - (du - dw)).abs());
+    }
+    // (vi) the typed matrices of (11.6) and (11.8): the first-order change of a random field under the transformation with the
+    // angles t thF, t th^1, t th^2, t th^3 (central difference in t, step 1e-5) equals the sum of the four matrices of (11.6)
+    // applied to the field; and the two families of (11.8) equal exp(2i thF) Rv(U) computed from the definition, and keep (0, 0, 1)
+    let mut gen_dev = 0.0f64;
+    let mut stab_dev = 0.0f64;
+    for _ in 0..20 {
+        let dd = [c(rng.unit(), rng.unit()), c(rng.unit(), rng.unit()), c(rng.unit(), rng.unit())];
+        let (tf, t1, t2, t3) = (rng.unit(), rng.unit(), rng.unit(), rng.unit());
+        let tr = |tt: f64| -> [C64; 3] {
+            let r = adjoint(&su2(&[tt * t1, tt * t2, tt * t3]));
+            let ph = C64::cis(2.0 * tt * tf);
+            let mut o = [C64::ZERO; 3];
+            for i in 0..3 {
+                for k in 0..3 {
+                    o[i] += ph * dd[k].scale(r[i][k]);
+                }
+            }
+            o
+        };
+        let hs = 1e-5;
+        let (ap, am) = (tr(hs), tr(-hs));
+        // the matrices of (11.6): 2i thF 1 + th^1 [[0,0,0],[0,0,1],[0,-1,0]] + th^2 [[0,0,-1],[0,0,0],[1,0,0]] + th^3 [[0,1,0],[-1,0,0],[0,0,0]]
+        let pred = [
+            c(0.0, 2.0 * tf) * dd[0] - dd[2].scale(t2) + dd[1].scale(t3),
+            c(0.0, 2.0 * tf) * dd[1] + dd[2].scale(t1) - dd[0].scale(t3),
+            c(0.0, 2.0 * tf) * dd[2] - dd[1].scale(t1) + dd[0].scale(t2),
+        ];
+        for i in 0..3 {
+            gen_dev = gen_dev.max(((ap[i] - am[i]).scale(0.5 / hs) - pred[i]).abs());
+        }
+        // (11.8)
+        let th3 = 3.0 * t3;
+        let (co, si) = (th3.cos(), th3.sin());
+        let m1 = [[co, si, 0.0], [-si, co, 0.0], [0.0, 0.0, 1.0]];
+        let m2 = [[-co, -si, 0.0], [-si, co, 0.0], [0.0, 0.0, 1.0]];
+        let r1 = adjoint(&su2(&[0.0, 0.0, th3]));
+        let r2 = adjoint(&sigma(1).scale(c(0.0, 1.0)).mul(&su2(&[0.0, 0.0, th3])));
+        for i in 0..3 {
+            for k in 0..3 {
+                stab_dev = stab_dev.max((r1[i][k] - m1[i][k]).abs());
+                stab_dev = stab_dev.max((-r2[i][k] - m2[i][k]).abs());
+            }
+        }
+        stab_dev = stab_dev.max((m1[2][2] - 1.0).abs()).max((m2[2][2] - 1.0).abs()).max(m1[0][2].abs()).max(m2[1][2].abs());
+    }
+    let ok = plane_dev < 1e-11
+        && gen_dev < 1e-9
+        && stab_dev < 1e-14
+        && worst_abs < 1e-6 && worst_zeta < 1e-6 && worst_om < 1e-14 && grad_max < 1e-10 && vac_ok && sad_ok && zero_ok && stab_ok && disc_dev < 1e-15 && (r33 + 1.0).abs() < 1e-15;
+    ch.add(
+        "SB-13",
+        "the stationary points of the effective potential at mu = 0, G = 22.5 (m = 0.2, Lambda = 1; closed form of Section 10.4): 40 minimizations (BFGS, numerical gradients) from random fields in the six real dimensions end at |d| = Delta_vac and zeta = 0 (tol 1e-6) with Omega = Omega_min (tol 1e-14); the gradient vanishes at the vacuum Delta_vac e_3 and at the non-unitary field (Delta_vac/2)(1, i, 0) (tol 1e-10); the Hessian at the vacuum has three zero eigenvalues and three equal to 2 Omega_s^(2)(Delta_vac) (relative tol 1e-6), at the non-unitary field two negative, three zero and one positive eigenvalue, with Omega = Omega_min/2 there (tol 1e-12), and at d = 0 it is 2 a_GL < 0 times the unit matrix (radial Richardson second difference, relative tol 1e-5); the Gram matrix of the actions of F, T^1, T^2, T^3 on the vacuum has rank 3 with the null vector T^3, on the non-unitary field rank 3 with the null vector T^3 - F/2 (tol 1e-12); thF = pi/2, U = i tau_1 leaves the vacuum unchanged and reverses the third isospin axis; at 20 random points of the plane d = (0, i x2, x1) the gradient lies in the plane and equals (Omega_s'(x1 + x2) + Omega_s'(x1 - x2), Omega_s'(x1 + x2) - Omega_s'(x1 - x2)) in the coordinates (x1, x2) (tol 1e-11); the four matrices of the generators (11.6) give the first-order change of 20 random fields under random transformations (central differences, tol 1e-9), and the two families of the stabilizer (11.8) equal exp(2i thF) Rv(U) from its definition for 20 random angles th^3 (tol 1e-14)",
+        ok,
+        format!(
+            "minimizations: largest ||d| - Delta_vac| {}, largest zeta {}, largest |Omega - Omega_min| {}, iterations {} to {}; largest gradient at the two stationary fields {}; Hessian eigenvalues at the vacuum {}, predicted 2 Omega_s^(2) = {:.8e}; at the non-unitary field {}; Omega there {:.8e} = {:.12} Omega_min; at d = 0: 2 a_GL = {:.8e} (radial second difference gives a_GL = {:.8e}); Gram eigenvalues at the vacuum {}, at the non-unitary field {}; null vector at the non-unitary field: F component / T^3 component = {:.12}; discrete element: deviation {}, Rv(i tau_1)_33 = {}; plane of the normal form: largest deviation of the gradient {}; generators (11.6) {}; stabilizer (11.8) {}",
+            sci(worst_abs),
+            sci(worst_zeta),
+            sci(worst_om),
+            iters.iter().min().unwrap(),
+            iters.iter().max().unwrap(),
+            sci(grad_max),
+            ev_vac.iter().map(|v| format!("{:.6e}", v)).collect::<Vec<_>>().join(", "),
+            v_pred,
+            ev_sad.iter().map(|v| format!("{:.6e}", v)).collect::<Vec<_>>().join(", "),
+            om_sad,
+            om_sad / om_min,
+            2.0 * a_gl,
+            rad,
+            evg.iter().map(|v| format!("{:.3e}", v)).collect::<Vec<_>>().join(", "),
+            evs.iter().map(|v| format!("{:.3e}", v)).collect::<Vec<_>>().join(", "),
+            ns_ratio,
+            sci(disc_dev),
+            r33,
+            sci(plane_dev),
+            sci(gen_dev),
+            sci(stab_dev)
+        ),
+    );
+    // the landscape in the plane of the two gaps and the velocity of the gradient flow in that plane (Figure 24(a)):
+    // on the plane of the normal form, d = (0, i x2, x1), Omega = Omega_s(x1 + x2) + Omega_s(x1 - x2), and the gradient
+    // flow dx/dt = -grad Omega of the six real dimensions stays in the plane and moves the gaps Delta^+- = x1 +- x2 with
+    // the velocities -2 Omega_s'(Delta^+) and -2 Omega_s'(Delta^-)
+    let mut land = Csv::new(
+        "the effective potential at mu = 0, G = 22.5 as a function of the two gaps, Omega_s(Delta^+) + Omega_s(Delta^-), on a grid of the plane (Delta^+, Delta^-) (the fields have Delta^+ >= Delta^-; the function is symmetric), with the two components -2 Omega_s'(Delta^+), -2 Omega_s'(Delta^-) of the velocity of the gradient flow in that plane (Test 2, item 9, Figure 24(a))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("Omega_min", format!("{:.12e}", om_min))],
+        "Delta_+,Delta_-,Omega,flow_+,flow_-",
+    );
+    for i in 0..=70 {
+        for j in 0..=70 {
+            let (x, y) = (0.35 * i as f64 / 70.0, 0.35 * j as f64 / 70.0);
+            land.row(&[
+                format!("{:.6}", x),
+                format!("{:.6}", y),
+                format!("{:.12e}", omega_s(x, g, m) + omega_s(y, g, m)),
+                format!("{:.12e}", -2.0 * omega_s_derivs(x, g, m)[0]),
+                format!("{:.12e}", -2.0 * omega_s_derivs(y, g, m)[0]),
+            ]);
+        }
+    }
+    land.write(dir, "t2_sfbs_landscape.csv");
+}
+
+/// SB-14: SFBSv, the expansion about the minimum
+fn sb14(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let g = G_VAC;
+    let dvac = gap_mu0(g, m);
+    let mut rng = Rng(16180);
+    // (i) the parametrization and the invariance: for random SFBSv fields, Omega(d) equals the sector form
+    let sfbsv = |t0: f64, t1: f64, t2: f64, h: f64, c1: f64, c2: f64| -> [C64; 3] {
+        let base = [c(0.0, c1), c(0.0, c2), c(dvac + h, 0.0)];
+        let r = adjoint(&su2(&[t1, t2, 0.0]));
+        let ph = C64::cis(2.0 * t0);
+        let mut out = [C64::ZERO; 3];
+        for i in 0..3 {
+            let mut z = C64::ZERO;
+            for k in 0..3 {
+                z += base[k].scale(r[i][k]);
+            }
+            out[i] = ph * z;
+        }
+        out
+    };
+    let mut par_dev = 0.0f64;
+    for _ in 0..50 {
+        let (t0, t1, t2) = (3.0 * rng.unit(), 3.0 * rng.unit(), 3.0 * rng.unit());
+        let (h, c1, c2) = (0.08 * rng.unit(), 0.08 * rng.unit(), 0.08 * rng.unit());
+        let d = sfbsv(t0, t1, t2, h, c1, c2);
+        let rho = (c1 * c1 + c2 * c2).sqrt();
+        let a = omega_cl(&d, g, m);
+        let b = omega_s(dvac + h + rho, g, m) + omega_s(dvac + h - rho, g, m);
+        par_dev = par_dev.max((a - b).abs());
+    }
+    // (i-b) the explicit forms (11.8), (11.9), (11.10) of SFBSv: the 2 x 2 matrix U_G, the 3 x 3 rotation Rv(U_G) and the
+    // three components of d, against the matrix exponential, the adjoint map and the product computed by sfbsv
+    let mut expl_dev = 0.0f64;
+    for _ in 0..50 {
+        let (t0, t1, t2) = (3.0 * rng.unit(), 3.0 * rng.unit(), 3.0 * rng.unit());
+        let (h, c1, c2) = (0.08 * rng.unit(), 0.08 * rng.unit(), 0.08 * rng.unit());
+        let th = (t1 * t1 + t2 * t2).sqrt();
+        let (n1, n2) = (t1 / th, t2 / th);
+        let (co, si) = (th.cos(), th.sin());
+        let (chh, shh) = ((0.5 * th).cos(), (0.5 * th).sin());
+        // (11.8): U_G = [[cos(th/2), i sin(th/2) (n1 - i n2)], [i sin(th/2) (n1 + i n2), cos(th/2)]]
+        let ug = CMat::m2(c(chh, 0.0), c(0.0, shh) * c(n1, -n2), c(0.0, shh) * c(n1, n2), c(chh, 0.0));
+        expl_dev = expl_dev.max(ug.sub(&su2(&[t1, t2, 0.0])).max_abs());
+        // (11.9): Rv(U_G), the rotation by the angle th about the axis -(n1, n2, 0)
+        let rx = [
+            [co + (1.0 - co) * n1 * n1, (1.0 - co) * n1 * n2, -si * n2],
+            [(1.0 - co) * n1 * n2, co + (1.0 - co) * n2 * n2, si * n1],
+            [si * n2, -si * n1, co],
+        ];
+        let ra = adjoint(&su2(&[t1, t2, 0.0]));
+        for i in 0..3 {
+            for k in 0..3 {
+                expl_dev = expl_dev.max((rx[i][k] - ra[i][k]).abs());
+            }
+        }
+        // (11.10): the three components of d
+        let ph = C64::cis(2.0 * t0);
+        let a = dvac + h;
+        let dx = [
+            ph * c(-si * n2 * a, (co + (1.0 - co) * n1 * n1) * c1 + (1.0 - co) * n1 * n2 * c2),
+            ph * c(si * n1 * a, (1.0 - co) * n1 * n2 * c1 + (co + (1.0 - co) * n2 * n2) * c2),
+            ph * c(co * a, si * n2 * c1 - si * n1 * c2),
+        ];
+        let d = sfbsv(t0, t1, t2, h, c1, c2);
+        for i in 0..3 {
+            expl_dev = expl_dev.max((dx[i] - d[i]).abs());
+        }
+    }
+    // (i-c) the linear order (11.11): the derivatives of the SFBSv field at the vacuum with respect to thG0, thG1, thG2,
+    // h_a, c_n1, c_n2 (central differences with the step 1e-6)
+    let e6 = 1e-6;
+    let pred: [[C64; 3]; 6] = [
+        [C64::ZERO, C64::ZERO, c(0.0, 2.0 * dvac)],
+        [C64::ZERO, c(dvac, 0.0), C64::ZERO],
+        [c(-dvac, 0.0), C64::ZERO, C64::ZERO],
+        [C64::ZERO, C64::ZERO, c(1.0, 0.0)],
+        [c(0.0, 1.0), C64::ZERO, C64::ZERO],
+        [C64::ZERO, c(0.0, 1.0), C64::ZERO],
+    ];
+    let mut lin_dev = 0.0f64;
+    for k in 0..6 {
+        let mut p = [0.0; 6];
+        p[k] = e6;
+        let dp = sfbsv(p[0], p[1], p[2], p[3], p[4], p[5]);
+        let dm = sfbsv(-p[0], -p[1], -p[2], -p[3], -p[4], -p[5]);
+        for i in 0..3 {
+            lin_dev = lin_dev.max(((dp[i] - dm[i]).scale(0.5 / e6) - pred[k][i]).abs());
+        }
+    }
+    // (i-d) the residual symmetry (11.15): the rotation Rv(exp(i al tau_3/2)) of U(1)^Q maps the SFBSv field to the SFBSv
+    // field with thG1 - i thG2 and c_n1 - i c_n2 multiplied by exp(i al) (charge +1) and thG0, h_a unchanged; the element
+    // thF = pi/2, U = i tau_1 (which acts on d as -Rv(i tau_1)) maps it to the field with thG2 -> -thG2, c_n1 -> -c_n1
+    let rot3 = |z: &[C64; 3], r: &[[f64; 3]; 3]| -> [C64; 3] {
+        let mut o = [C64::ZERO; 3];
+        for i in 0..3 {
+            for k in 0..3 {
+                o[i] += z[k].scale(r[i][k]);
+            }
+        }
+        o
+    };
+    let mut chg_dev = 0.0f64;
+    let rz = adjoint(&sigma(1).scale(c(0.0, 1.0)));
+    for _ in 0..30 {
+        let (t0, t1, t2) = (rng.unit(), rng.unit(), rng.unit());
+        let (h, c1, c2) = (0.08 * rng.unit(), 0.08 * rng.unit(), 0.08 * rng.unit());
+        let al = 3.0 * rng.unit();
+        let d = sfbsv(t0, t1, t2, h, c1, c2);
+        let lhs = rot3(&d, &adjoint(&su2(&[0.0, 0.0, al])));
+        let tq = c(t1, -t2) * C64::cis(al);
+        let cq = c(c1, -c2) * C64::cis(al);
+        let rhs = sfbsv(t0, tq.re, -tq.im, h, cq.re, -cq.im);
+        let lz = rot3(&d, &rz);
+        let rhs2 = sfbsv(t0, t1, -t2, h, -c1, c2);
+        for i in 0..3 {
+            chg_dev = chg_dev.max((lhs[i] - rhs[i]).abs());
+            chg_dev = chg_dev.max((-lz[i] - rhs2[i]).abs());
+        }
+    }
+    // (ii) the derivatives of Omega_s at Delta_vac in closed form against numerical derivatives
+    let ds = omega_s_derivs(dvac, g, m);
+    let f = |y: f64| omega_s(y, g, m);
+    let hh = 1e-3;
+    let n2 = (f(dvac + hh) - 2.0 * f(dvac) + f(dvac - hh)) / (hh * hh);
+    // third and fourth derivatives by central differences with the steps 0.02 and 0.01, Richardson-extrapolated (the
+    // error of each difference is proportional to the square of the step)
+    let d3 = |h: f64| (f(dvac + 2.0 * h) - 2.0 * f(dvac + h) + 2.0 * f(dvac - h) - f(dvac - 2.0 * h)) / (2.0 * h.powi(3));
+    let d4 = |h: f64| (f(dvac + 2.0 * h) - 4.0 * f(dvac + h) + 6.0 * f(dvac) - 4.0 * f(dvac - h) + f(dvac - 2.0 * h)) / h.powi(4);
+    let n3 = (4.0 * d3(0.01) - d3(0.02)) / 3.0;
+    let n4 = (4.0 * d4(0.01) - d4(0.02)) / 3.0;
+    let der_dev = [((n2 - ds[1]) / ds[1]).abs(), ((n3 - ds[2]) / ds[2]).abs(), ((n4 - ds[3]) / ds[3]).abs()];
+    // (ii-b) the third and fourth derivatives of Xi in closed form against quadrature, at M_q^2 and at m^2; and the closed
+    // form (11.13) of the curvature, Omega_s^(2) = -4 Delta_vac^2 Xi^(2)(m^2 + Delta_vac^2), which follows from the gap equation
+    let (qn0, qw0) = radial_nodes(m, 0.0, 0.05);
+    let mut xi_dev = 0.0f64;
+    for &mm2 in &[m * m + dvac * dvac, m * m] {
+        let q3: f64 = qn0.iter().zip(&qw0).map(|(q, w)| 0.75 * w * (q * q + mm2).powf(-2.5)).sum();
+        let q4: f64 = qn0.iter().zip(&qw0).map(|(q, w)| -1.875 * w * (q * q + mm2).powf(-3.5)).sum();
+        xi_dev = xi_dev.max(((q3 - xi_cl_d3(mm2)) / xi_cl_d3(mm2)).abs());
+        xi_dev = xi_dev.max(((q4 - xi_cl_d4(mm2)) / xi_cl_d4(mm2)).abs());
+    }
+    let mq2 = m * m + dvac * dvac;
+    let curv_cf = -4.0 * dvac * dvac * xi_cl_d2(mq2);
+    let curv_dev = ((curv_cf - ds[1]) / ds[1]).abs();
+    // the potential of the Higgs form with the same minimum and the same curvature along h_a (11.16):
+    // lambda_H (|d|^2 - Delta_vac^2)^2 with 4 lambda_H Delta_vac^2 = Omega_s^(2)
+    let lam_h = ds[1] / (4.0 * dvac * dvac);
+    // (iii) the quartic expansion
+    let om_min = 2.0 * omega_s(dvac, g, m);
+    let quartic = |h: f64, rho: f64| -> f64 {
+        om_min + ds[1] * (h * h + rho * rho) + ds[2] / 3.0 * (h.powi(3) + 3.0 * h * rho * rho) + ds[3] / 12.0 * (h.powi(4) + 6.0 * h * h * rho * rho + rho.powi(4))
+    };
+    let mut rem = vec![];
+    for &s in &[0.02, 0.01, 0.005] {
+        let (h, rho) = (0.6 * s, 0.8 * s);
+        let exact = omega_s(dvac + h + rho, g, m) + omega_s(dvac + h - rho, g, m);
+        rem.push((exact - quartic(h, rho)).abs() / s.powi(5));
+    }
+    // a remainder of the fifth order: the ratio to s^5 settles (its changes shrink when s is halved)
+    let rem_ok = (rem[2] - rem[1]).abs() < 0.6 * (rem[1] - rem[0]).abs() + 0.05 * rem[2];
+    // (iv) the curvatures at the vacuum from the Bogoliubov matrices directly, independent of the sector formula
+    let (qn, qw) = radial_nodes(m, 0.0, 0.05);
+    let ob = |d: &[C64; 3]| omega_bdg(d, g, m, 0.0, &qn, &qw, &[0.0, 0.0, 1.0]);
+    let hb = 2e-3;
+    let d0 = [C64::ZERO, C64::ZERO, c(dvac, 0.0)];
+    let o0 = ob(&d0);
+    let second = |dir6: [f64; 6]| -> f64 {
+        let mut dp = d0;
+        let mut dm = d0;
+        let dd = from_r6(&dir6);
+        for i in 0..3 {
+            dp[i] += dd[i].scale(hb);
+            dm[i] -= dd[i].scale(hb);
+        }
+        (ob(&dp) - 2.0 * o0 + ob(&dm)) / (hb * hb)
+    };
+    let v_h = second([0.0, 0.0, 0.0, 0.0, 1.0, 0.0]);
+    let v_c = second([0.0, 1.0, 0.0, 0.0, 0.0, 0.0]);
+    let v_g = second([1.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+    let v_ph = second([0.0, 0.0, 0.0, 0.0, 0.0, 1.0]);
+    let v_pred = 2.0 * ds[1];
+    let bdg_ok = ((v_h - v_pred) / v_pred).abs() < 1e-3 && ((v_c - v_pred) / v_pred).abs() < 1e-3 && v_g.abs() < 1e-3 * v_pred && v_ph.abs() < 1e-3 * v_pred;
+    let ok = par_dev < 1e-15
+        && expl_dev < 1e-14
+        && lin_dev < 1e-8
+        && chg_dev < 1e-14
+        && der_dev.iter().all(|&e| e < 1e-4)
+        && xi_dev < 1e-10
+        && curv_dev < 1e-10
+        && rem_ok
+        && bdg_ok
+        && ds[0].abs() < 1e-15;
+    ch.add(
+        "SB-14",
+        "SFBSv, the expansion about the vacuum Delta_vac e_3 (mu = 0, G = 22.5, m = 0.2, Lambda = 1): for 50 random fields d = exp(2i thG0) Rv(U(thG1, thG2)) ((Delta_vac + h_a) e_3 + i (c_n1 e_1 + c_n2 e_2)), Omega(d) = Omega_s(Delta_vac + h_a + rho_n) + Omega_s(Delta_vac + h_a - rho_n) with rho_n = (c_n1^2 + c_n2^2)^(1/2), whatever the Goldstone fields thG0, thG1, thG2 (tol 1e-15); the explicit 2 x 2 matrix U(thG1, thG2), the explicit rotation Rv(U(thG1, thG2)) and the explicit three components of d equal the matrix exponential, the adjoint map and the product (50 random fields, tol 1e-14); the derivatives of d at the vacuum with respect to thG0, thG1, thG2, h_a, c_n1, c_n2 are (0, 0, 2i Delta_vac), (0, Delta_vac, 0), (-Delta_vac, 0, 0), (0, 0, 1), (i, 0, 0), (0, i, 0) (central differences, tol 1e-8); the rotation of U(1)^Q by the angle al multiplies thG1 - i thG2 and c_n1 - i c_n2 by exp(i al) and leaves thG0, h_a unchanged, and the element thF = pi/2, U = i tau_1 changes the signs of thG2 and c_n1 (30 random fields and angles, tol 1e-14); the second, third and fourth derivatives of the sector potential Omega_s at Delta_vac in closed form equal numerical derivatives (central differences, Richardson-extrapolated for the third and fourth; relative tol 1e-4), and the first vanishes (tol 1e-15); the remainder of the quartic expansion falls like the fifth power of the fields; the second derivatives of Omega at the vacuum computed from the Bogoliubov matrices directly (finite differences, step 2e-3) are 2 Omega_s^(2) along Re d^3 (h_a) and Im d^1 (c_n1) and zero along Re d^1 and Im d^3 (Goldstone directions) (relative tol 1e-3); the closed forms of Xi^(3) and Xi^(4) equal quadrature at M_q^2 and m^2 (relative tol 1e-10), and Omega_s^(2) = -4 Delta_vac^2 Xi^(2)(m^2 + Delta_vac^2) (relative tol 1e-10)",
+        ok,
+        format!(
+            "parametrization {}; explicit matrices and components {}; linear order {}; charges and discrete element {}; Xi^(3), Xi^(4) against quadrature {}; Omega_s^(2) from (11.13) {:.10e} (deviation {}); the Higgs form with the same curvature: lambda_H = {:.8e}, cubic coefficient 4 lambda_H Delta_vac = {:.8e} against Omega_s^(3)/3 = {:.8e}, quartic coefficient lambda_H against Omega_s^(4)/12 = {:.8e}, depth -lambda_H Delta_vac^4 = {:.8e} against Omega_min = {:.8e}; Omega_s^(1) = {:.3e}, Omega_s^(2) = {:.10e} (numerical {:.10e}), Omega_s^(3) = {:.8e} (numerical {:.8e}), Omega_s^(4) = {:.8e} (numerical {:.8e}); remainder/s^5 at s = 0.02, 0.01, 0.005: {:.6e}, {:.6e}, {:.6e}; from the Bogoliubov matrices: Re d^3 {:.8e}, Im d^1 {:.8e}, Re d^1 {:.3e}, Im d^3 {:.3e} against 2 Omega_s^(2) = {:.8e}",
+            sci(par_dev),
+            sci(expl_dev),
+            sci(lin_dev),
+            sci(chg_dev),
+            sci(xi_dev),
+            curv_cf,
+            sci(curv_dev),
+            lam_h,
+            4.0 * lam_h * dvac,
+            ds[2] / 3.0,
+            ds[3] / 12.0,
+            -lam_h * dvac.powi(4),
+            om_min,
+            ds[0],
+            ds[1],
+            n2,
+            ds[2],
+            n3,
+            ds[3],
+            n4,
+            rem[0],
+            rem[1],
+            rem[2],
+            v_h,
+            v_c,
+            v_g,
+            v_ph,
+            v_pred
+        ),
+    );
+    // slices of the SFBSv potential (Figure 24(b))
+    let mut sl = Csv::new(
+        "the SFBSv potential at mu = 0, G = 22.5 along the amplitude field h_a (rho_n = 0) and along the non-unitary field rho_n (h_a = 0), minus its minimum: exact, quadratic Omega_s^(2) x^2, quartic expansion, and the potential of the Higgs form lambda_H (|d|^2 - Delta_vac^2)^2 with the same curvature along h_a (Test 2, item 9, Figure 24(b))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("Omega_s2", format!("{:.10e}", ds[1])), ("Omega_s3", format!("{:.10e}", ds[2])), ("Omega_s4", format!("{:.10e}", ds[3])), ("lambda_H", format!("{:.10e}", lam_h))],
+        "variable,amplitude,Omega_above_min,Omega_quad,Omega_quartic,Omega_H",
+    );
+    // h_a from -0.25 to 0.25 (h_a = -Delta_vac is the field d = 0), rho_n from 0 to 0.25; the sector form holds for all
+    // values because Omega_s is even
+    for var in ["h_a", "rho_n"] {
+        let npts = if var == "h_a" { 100 } else { 50 };
+        for i in 0..=npts {
+            let x = if var == "h_a" { -0.25 + 0.5 * i as f64 / 100.0 } else { 0.25 * i as f64 / 50.0 };
+            let (h, rho) = if var == "h_a" { (x, 0.0) } else { (0.0, x) };
+            let exact = omega_s(dvac + h + rho, g, m) + omega_s(dvac + h - rho, g, m) - om_min;
+            // the Higgs form (11.16): |d|^2 = (Delta_vac + h_a)^2 + rho_n^2
+            let dd2 = (dvac + h) * (dvac + h) + rho * rho;
+            let higgs = lam_h * (dd2 - dvac * dvac).powi(2);
+            sl.row(&[var.to_string(), format!("{:.6}", x), format!("{:.12e}", exact), format!("{:.12e}", ds[1] * x * x), format!("{:.12e}", quartic(h, rho) - om_min), format!("{:.12e}", higgs)]);
+        }
+    }
+    sl.write(dir, "t2_sfbs_sfbsv_slices.csv");
+}
+
 fn main() {
     let dir = data_dir();
     let mut ch = Checks { title: "Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)".into(), items: vec![] };
@@ -2167,6 +2832,9 @@ fn main() {
     // item [8], the effective potential
     sb11(&mut ch, &mut fr);
     sb12(&mut ch, &dir);
+    // item [9]
+    sb13(&mut ch, &dir);
+    sb14(&mut ch, &dir);
     let _ = (lift2, LAMBDA, d_vac_q);
     fr.write(&dir.join("t2_sfbs_fragments.md"));
     let ok = ch.write(&dir.join("t2_sfbs_checks.txt"));
