@@ -449,8 +449,8 @@ of the time \(x^0_{\rm LL}\) (in the data files the suffix
 \texttt{\_cvode} marks the values of the integration of the lattice
 equations by CVODE, \texttt{\_rk4} those of the integration by the
 fixed-step Runge-Kutta method of the first version of Test 2, kept in
-the folder test2/rk4\_reference for the comparison, and \texttt{\_exact}
-those of the exact solution) \\
+the folder \texttt{test2/rk4\_reference} for the comparison, and
+\texttt{\_exact} those of the exact solution) \\
 \(N^{\rm F}_{\rm LL}\), \(E^{\rm MF}_{\rm LL}\) & \texttt{N\_F}
 \texttt{E\_MF} & the fermion number of a self-consistent lattice state,
 the sum over its modes and over the sites of the squared hole components
@@ -696,6 +696,7 @@ present version
 \endlastfoot
 \texttt{t2core} (library) & \texttt{Lattice::rk4\_step} & removed; new
 module \texttt{t2core::cvode} (\texttt{integrate},
+\texttt{integrate\_status} for a right side that can fail,
 \texttt{evolve\_lattice}, settings, counters, error weights, error
 budget); dependency \texttt{cvode\_rs} (path into
 \texttt{vendor/sundials\_rs-7.8.0}) \\
@@ -723,7 +724,22 @@ signal is kept) \\
 \texttt{t2\_plot} & the titles ``RK4 errors'', ``what the implicit
 midpoint rule conserves'' & ``CVODE errors'', ``the conserved quantities
 (CVODE errors)'' \\
-new & & the program \texttt{t2\_cvcmp} and the scripts of the folder
+\texttt{t2\_solve.py} (Python solver of item {[}3{]}) & RK4
+(\texttt{evolve}) and the implicit midpoint rule (\texttt{quench}) in
+Python & the same CVODE as the Rust programs, called through the new
+shared library \texttt{libt2cvode} (crate \texttt{t2cvode\_c}, the C
+interface of \texttt{t2core::cvode}) with the module \texttt{ctypes};
+format \texttt{t2in\ 2}; the same checks and reports as the Rust
+solver \\
+\texttt{t2\_plot.py}, \texttt{make\_t2\_figures.py},
+\texttt{t2\_examples\_check.py} & the titles and labels of RK4 and the
+midpoint rule; Figure 2 of Test 2 the RK4 factor; the fermion number of
+EX-7 checked against \(10^{-9}\) & the titles and labels of CVODE;
+Figure 2 of Test 2 the accuracy of CVODE (GS-13); EX-7 against the bound
+of the solvers; the tables of Section 6.4 of Test 2 written as
+fragments \\
+new & & the program \texttt{t2\_cvcmp}, the shared library
+\texttt{libt2cvode} and the scripts of the folder
 \texttt{test2/cvode\_vs\_rk4} (this comparison) \\
 \end{longtable}
 
@@ -731,9 +747,9 @@ All programs were run again on Linux x86-64 (rustc 1.97.0); every check
 passes. The data files of the first version are kept unchanged in
 \texttt{test2/rk4\_reference/data} (106 files, SHA-256 digests in
 \texttt{test2/rk4\_reference/SHA256SUMS\_data.txt}). The Python solver
-of item {[}3{]}, the plots of Test 2, the document of Test 2 and the
-notebook \texttt{3+1super-loop.nb} are brought to CVODE in the following
-steps of the same work (Section 7).
+of item {[}3{]} and the plots and documents of Test 2 were brought to
+CVODE in the same work; the notebook \texttt{3+1super-loop.nb} follows
+(Section 7).
 
 \hypertarget{the-comparison}{%
 \section{5. The comparison}\label{the-comparison}}
@@ -783,14 +799,14 @@ The cost is the number \(N^{\rm ev}_{\rm LL}\) of evaluations of the
 right side (one RK4 step needs 4).
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0652}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1739}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1957}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1196}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0978}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1087}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1087}}
-  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1304}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0947}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1684}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1895}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1158}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0947}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1053}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1053}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1263}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 problem
@@ -1225,17 +1241,17 @@ before.
 \section{7. Status of the work and how to reproduce
 it}\label{status-of-the-work-and-how-to-reproduce-it}}
 
-\textbf{Done in this step:} the vendored SUNDIALS;
-\texttt{t2core::cvode}; the Rust programs \texttt{t2\_analytic},
-\texttt{t2\_fields}, \texttt{t2\_solve}, \texttt{t2\_sfbs},
-\texttt{t2\_plot} with CVODE; all their data files; the comparison
-program \texttt{t2\_cvcmp}, the convergence runs and the figures of this
+\textbf{Done:} the vendored SUNDIALS; \texttt{t2core::cvode}; the Rust
+programs \texttt{t2\_analytic}, \texttt{t2\_fields}, \texttt{t2\_solve},
+\texttt{t2\_sfbs}, \texttt{t2\_plot} with CVODE; the Python solver
+\texttt{t2\_solve.py} with the same CVODE through the shared library
+\texttt{libt2cvode}; all data files and figures of Test 2; the documents
+of Test 2 and of the folder Revision\_SuperLoop; the comparison program
+\texttt{t2\_cvcmp}, the convergence runs and the figures of this
 document; the registry entries of the new symbols. \textbf{Following
-steps:} the Python solver \texttt{t2\_solve.py} of item {[}3{]} and its
-examples check (with the SUNDIALS CVODE through the Python package
-scikit-sundae), the figures of Test 2, the document of Test 2 and its
-provenance, and the notebook \texttt{3+1super-loop.nb}; then the older
-code.
+steps:} the notebook \texttt{3+1super-loop.nb} (its time integrations
+with a SUNDIALS method of the Wolfram Language), then the older code of
+the repository that integrates in time with a fixed-step method.
 
 On the Mac (Terminal), from the folder of the repository:
 
@@ -1247,6 +1263,7 @@ On the Mac (Terminal), from the folder of the repository:
 \BuiltInTok{cd}\NormalTok{ ..}
 \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in}\NormalTok{ packet\_free cyclotron andreev kink\_spectrum ground\_state kink\_ground\_state quench}\KeywordTok{;} \ControlFlowTok{do}
   \ExtensionTok{./rust/target/release/t2\_solve}\NormalTok{ examples/}\VariableTok{$n}\NormalTok{.t2in }\AttributeTok{{-}{-}out}\NormalTok{ data/t2\_rs\_}\VariableTok{$n}
+  \ExtensionTok{python3}\NormalTok{ python/t2\_solve.py examples/}\VariableTok{$n}\NormalTok{.t2in }\AttributeTok{{-}{-}out}\NormalTok{ data/t2\_py\_}\VariableTok{$n}
 \ControlFlowTok{done}
 \FunctionTok{bash}\NormalTok{ cvode\_vs\_rk4/run\_convergence.sh }\StringTok{"}\VariableTok{$PWD}\StringTok{/rust/target/release/t2\_solve"}
 \ExtensionTok{./rust/target/release/t2\_cvcmp}
@@ -1254,9 +1271,10 @@ On the Mac (Terminal), from the folder of the repository:
 \end{Highlighting}
 \end{Shaded}
 
-The first two lines build every program of Test 2 (the vendored SUNDIALS
-is compiled with them); the loop runs the three check programs, the next
-loop the seven examples of the solver; \texttt{run\_convergence.sh}
+The first two lines build every program of Test 2 and the shared library
+\texttt{libt2cvode} of the Python solver (the vendored SUNDIALS is
+compiled with them); the loop runs the three check programs, the next
+loop the seven examples of both solvers; \texttt{run\_convergence.sh}
 solves the four time-dependent examples at the tolerances \(10^{-10}\)
 and \(10^{-13}\); \texttt{t2\_cvcmp} writes the comparison (it exits
 with status 1 if one of its checks fails); the last line draws the five
@@ -1305,6 +1323,17 @@ with CVODE) \\
 \texttt{rust/t2plot/src/main.rs} & the plotting program t2\_plot \\
 \texttt{rust/Cargo.toml} & the manifest of the workspace of Test 2 \\
 \texttt{rust/Cargo.lock} & the locked versions of the crates \\
+\texttt{rust/t2cvode\_c/Cargo.toml} & the manifest of the shared library
+libt2cvode \\
+\texttt{rust/t2cvode\_c/src/lib.rs} & the C interface of t2core::cvode
+(the shared library libt2cvode of the Python solver) \\
+\texttt{python/t2\_solve.py} & the Python solver (tasks evolve and
+quench with CVODE through libt2cvode) \\
+\texttt{python/t2\_examples\_check.py} & the checks EX-1 to EX-8 of the
+examples \\
+\texttt{python/t2\_plot.py} & the Python plotter of the solutions \\
+\texttt{python/make\_t2\_figures.py} & the figures of items {[}1{]} and
+{[}2{]} of Test 2 (Figure 2: CVODE, check GS-13) \\
 \texttt{../../vendor/sundials\_rs-7.8.0/SHA256SUMS.txt} & the digests of
 the 283 vendored files of SUNDIALS 7.8.0 in Rust \\
 \texttt{rust/t2cvcmp/src/main.rs} & the comparison program t2\_cvcmp \\
@@ -1346,30 +1375,36 @@ macOS, run in that folder with these lines as input, checks them):
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{bf1d83079b61aa5cb391a41795875362809b741c97df550cb817d429189ce169  cvode\_vs\_rk4/P\_CVODE\_vs\_RK4.src.md}
-\NormalTok{f6f0cb39609353c0c2e17c435a4d5a9d4fb908ce115b38f595cd9e4805dfe4eb  rust/t2core/src/cvode.rs}
+\NormalTok{9daa10d19e02cdde6717421969fbab4272f7545d7a9eb553879c58f6e81b9bea  cvode\_vs\_rk4/P\_CVODE\_vs\_RK4.src.md}
+\NormalTok{4d1f93b147745574fd24b0713b0fb1619c14e7b3274980ba05ed1474343e08e5  rust/t2core/src/cvode.rs}
 \NormalTok{5ffa38243c640b9a0c56f599bd823d009f100d766827241d5bb916b2aa062489  rust/t2core/src/lib.rs}
-\NormalTok{d449fe150621cfab0913a976aff8d747d7999298ebdd897aa53ac2cea58f6c48  rust/t2core/src/lattice.rs}
+\NormalTok{dab79f76867469c867f54f7596f5afe3541ff13ac20055e213fc1485b6770783  rust/t2core/src/lattice.rs}
 \NormalTok{4e8d8ca5c485c44a0dbf8392db86f98b4b3539ad4c6dae7cc9e4e1146c5423c1  rust/t2core/Cargo.toml}
-\NormalTok{1077988cb1a33923a95ef633b49a392843afe6882577d6b82431b1e847a3867d  rust/t2analytic/src/main.rs}
-\NormalTok{02c45596bfc66df143a71b84b7d7a9b764294ded3778639d9f64290b0f6beea9  rust/t2fields/src/main.rs}
-\NormalTok{86d1f4b21808a898eb9f9216cd17d4ae5e181bbada95abb9ae0d0c478818aebd  rust/t2solve/src/main.rs}
-\NormalTok{917b70cb9e53bcbbec624fa3c8fcd12db6611fbc5c0f7f5a1a290bf659551ea0  rust/t2solve/src/input.rs}
+\NormalTok{bef7ed8be2baf4796483d9931e278e9c56bc086a2fdf98eef507b53cca1884b1  rust/t2analytic/src/main.rs}
+\NormalTok{50b9903c673b420ba4ff1ef52d12fd4ba0b147628a01b9be687a26d182d0dbcf  rust/t2fields/src/main.rs}
+\NormalTok{51ece54663942a06f2d506cc703e821c2e9d6398fe3557ba2448c1415ef14435  rust/t2solve/src/main.rs}
+\NormalTok{496582dcac974a071fcdf5f512d6d6541c54168576433bafbec7fa34c6f77109  rust/t2solve/src/input.rs}
 \NormalTok{ffbf4d84fc45f3b37efa79167881d99ec83557ad646beebd07da78eafcfa13da  rust/t2solve/src/ops.rs}
-\NormalTok{aaa0f3edcc5e4ecb95856ec81797464b285a5ceef1c9cbc06849c13949204b82  rust/t2sfbs/src/main.rs}
+\NormalTok{e45d9db743d3954fe9ea282fbd5505b7c74bf6974842c6500e035e6a1fddb787  rust/t2sfbs/src/main.rs}
 \NormalTok{aa740ea0100c9dfc5b8e9986c5d3caf28f84d558a199b3275133b879f06f063f  rust/t2plot/src/main.rs}
-\NormalTok{9117d4eaffeb6d6ab537ce2d9e0d5ece763dd9e7f7907a63ee09d2f3f1b90629  rust/Cargo.toml}
-\NormalTok{a8077f126abf1ff75cb114d00e88fc94c5d2c92a4ad4982e07b63da4d8cc41aa  rust/Cargo.lock}
+\NormalTok{0ff87a48b052eff6d5a8ec48d62b89a117fd354ce88d43d1600ca8088f92237a  rust/Cargo.toml}
+\NormalTok{b74a42a7acf5ce394fb82e5fa379fd7b839fdcb6665f7a4a63cc9966b9d15109  rust/Cargo.lock}
+\NormalTok{c8ef47dadc0f3a764969e9078d291b56d1fda6214c5b287dd3701478a546381e  rust/t2cvode\_c/Cargo.toml}
+\NormalTok{01c1d1ba6b299c3cab31973e2406850af688a900e3f439c2833529ac000462bb  rust/t2cvode\_c/src/lib.rs}
+\NormalTok{331b07273d2479c125d98ae081d3fd111abac02a82c81cc1c089a6633e8b1d58  python/t2\_solve.py}
+\NormalTok{9a32200f44eaa3e8d774a9d130157b91c3b16c2b07e2871889be2550b1458d50  python/t2\_examples\_check.py}
+\NormalTok{e5ec0c5d264889a06265e021bbf5ce540bb56a011f005fa2f4453e89ef0d70e6  python/t2\_plot.py}
+\NormalTok{41ef78fcc861f5f2e4f9e51b47a1818cd46b26f0b38d3b586dd39716034410a2  python/make\_t2\_figures.py}
 \NormalTok{a062365c7cc9f0e4bad502b9d5fc0a51d16dee868ef2edfee9bfd92ded3de94c  ../../vendor/sundials\_rs{-}7.8.0/SHA256SUMS.txt}
-\NormalTok{755689884335c34ce0069c59adb86721ba48982430392dade50ab4b80b97f412  rust/t2cvcmp/src/main.rs}
+\NormalTok{11ac2ecd6a36d5b8f5323e7a3e13b9ad476cdd2b72c89099a0015e8ee352dc54  rust/t2cvcmp/src/main.rs}
 \NormalTok{bb6ec652913d355b2857746b223c186278923f631428b2633444156be19e9dd9  rust/t2cvcmp/Cargo.toml}
 \NormalTok{74ab8cda1fe469b7d71651cd2847fcb2a41076cf7cae08a957de19b45e40bd34  cvode\_vs\_rk4/run\_convergence.sh}
 \NormalTok{3a48b57f9f6a5b69ce2c6d507107a93f87f23b446308091dd3a5c705cbe25537  cvode\_vs\_rk4/python/make\_cmp\_figures.py}
-\NormalTok{a0a29f051e786cef6041883b27fedb01c704b84cc10489126d3a63bf9a3a8389  cvode\_vs\_rk4/tools/assemble\_provenance.py}
-\NormalTok{b6ae9a16fb00220144aa73dc08c1a5a1488eaacb5ff6281037858bd540df31f4  cvode\_vs\_rk4/tools/build\_docs.sh}
+\NormalTok{3a5f7205f573fdae845c1f4cec3768bef74bf9d996b6750e2efa20a74589c33f  cvode\_vs\_rk4/tools/assemble\_provenance.py}
+\NormalTok{f5e38096826890c64580c3c5964c7db643e17611a08a1b87c48771dbcdf4d421  cvode\_vs\_rk4/tools/build\_docs.sh}
 \NormalTok{d7ca078f2469605306af331e68a8f2526149a197441f15230b00cc6f35395320  cvode\_vs\_rk4/tools/doc\_header.tex}
 \NormalTok{48e69b803c0d8b8a1d8f3bc93960b986d8c1a8c0fdb0f05166b99cca84f980ee  cvode\_vs\_rk4/data/cmp\_report.txt}
-\NormalTok{8e3710fa01784f83a8a613bbfa924ebb7e9cffdba7873f868dbe2d143630dd9e  cvode\_vs\_rk4/data/cmp\_tables.md}
+\NormalTok{372e72ad62dd5e7ec5dff3955edde2585c5a9edce9bfcfc3d76aa7ac9474f562  cvode\_vs\_rk4/data/cmp\_tables.md}
 \NormalTok{fea0faf35475c6e7318668dd0db6642e6e328d8fe26e68ed12c7375f1425deae  cvode\_vs\_rk4/data/cmp\_work\_precision.csv}
 \NormalTok{4d15f7c94146c14ec1773e5db089ee2428a3d1b70dd8b7824f7fed1570df590e  cvode\_vs\_rk4/data/cmp\_lat\_deviation.csv}
 \NormalTok{41c24ed19df3a6dd1179b6b31bd3985d7a87acde295ef372905fe03e766c6520  cvode\_vs\_rk4/data/cmp\_series\_differences.csv}
@@ -1377,48 +1412,48 @@ macOS, run in that folder with these lines as input, checks them):
 \NormalTok{46310bbd846f8501e686c0200c9cd7324ddf36c4d462dab754e716c38eecf17e  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10.t2in}
 \NormalTok{0f885e0bcea41ec0fc24769b8ea16b6f5828b4d49e5c31124a14a041acd08877  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_fields.csv}
 \NormalTok{bc1419cdcdab70e2497efbcf66d457676b8f297cd4fd37b266f107f428b38214  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_series.csv}
-\NormalTok{75fe573a34584099b5191621d901f4e699745ae7658aaa20e62f5730d81aef0f  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_summary.txt}
+\NormalTok{3ed7d74598f2104c0b34776112970e29a731a2dea2ee7d833b608f0325330a75  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_summary.txt}
 \NormalTok{e4375430cf22436d49cb358490f63f2559954274a5fa77fb6eaaf98514a94269  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13.t2in}
 \NormalTok{61a91f729af99e943678a3fc00ebbde53b2f5d125b3f0ccfa8fde70162cfe15b  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_fields.csv}
 \NormalTok{c62eb09c720f50376daf0805240ef64da25b94adb1992e0bd599e0fc69416cf3  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_series.csv}
-\NormalTok{f190c80d29548b56cb551935c0d31268c7c3c57edbe5b051f0172248942ace43  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_summary.txt}
+\NormalTok{c0e5e9bb5218bde97de747596f99b237a27cae93085bffde1c949d29667967e0  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_summary.txt}
 \NormalTok{0c25103622adf74bca4870389031dd4bec37dbb5ea2a9d1ed36d84f77d8e8a0e  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10.t2in}
 \NormalTok{32e11f6ec6875b94e3ccca982cf9e4273845b22e6f838035583d8d8bcd27b639  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_fields.csv}
 \NormalTok{4517cc1238bd38857f81f4967fb998bd6f836dd829a4ef8f434a8fba900300bc  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_series.csv}
-\NormalTok{3c0996275d5423e4db42b8327a0c20652132e3648075012f63c5fced636d6a74  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_summary.txt}
+\NormalTok{7ccf2bafe663f195475ee3c3605db3a5728ce5af9c6378a6145abe9681db0c51  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_summary.txt}
 \NormalTok{edce3fed5a9445b220b8f013a7e2f1d4663b8aebbc2689ed823729f75d6a2a66  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13.t2in}
 \NormalTok{45881806e19f3b98615fabf762baefe8bcb8ecdf9cece6f9392c7589290579d2  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_fields.csv}
 \NormalTok{7038c61df1a3b4a3217f4acfa8df1bb62e610d793cd96f2bbb11662699aaff7c  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_series.csv}
-\NormalTok{bdf2b59fd9549b9da19786a2d58b9961b6e8404b66e2a4cadf0139fe8c56ae40  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_summary.txt}
+\NormalTok{567788ca8dd8d4bb673d293ee7318a7eb2ff1ac6d2da389cf5cad275e47d164d  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_summary.txt}
 \NormalTok{4f529989b9fada4f1dd6e4d2c5e84cbff3b867e4ca5d44e474c634953bcf8ce6  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10.t2in}
 \NormalTok{12a56df2793143cceb307518c1d7a951c89331c3f10db9b99e26702e940aee56  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_fields.csv}
 \NormalTok{5d3e6de60bd827055f738a3cf1a8171e98fbe22c20498e5d1e537e0bc2e88f47  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_series.csv}
-\NormalTok{ffcb5ebd83827a3644b51406d51e45612f277aba8faff4307d14ea1be32f88cf  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_summary.txt}
+\NormalTok{0fd7f0ca3037ca6ed7450755436ec301259bd0164926f2484fdf9d77be932bd1  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_summary.txt}
 \NormalTok{3de6b714810579af5f23778b941c3cbd6976ae6b0d817f8823cd0f548eb38cd3  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13.t2in}
 \NormalTok{03ac0010bfa50139ce34fa7b2e6d6508ad0732a9992c2da4b7c03318fcf7d56c  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_fields.csv}
 \NormalTok{1e032e75564f3fc0f4e2b159d2c752d8c5b9e21382edf2dc1807f9675bd7e3c4  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_series.csv}
-\NormalTok{7c9804d44ac4f94e7bcc17405a04cb82c935dc7485f6d53c24d3e0a4c8052504  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_summary.txt}
+\NormalTok{eb8fd30fef49c66c59ad81d6c5bfb9dfdd0606dc8a8993d37eba8db78ec18b8f  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_summary.txt}
 \NormalTok{2f92bbf302825e10e8d26c4e2e86ad785dc6dd73907c786aeb04c6fba4193679  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10.t2in}
 \NormalTok{a9a67107b4d3bcc73a2e068071b2f27ee1229210ed86e075149d8e943412e31b  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_fields.csv}
 \NormalTok{fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_iterations.csv}
 \NormalTok{2e755102bae80ec636a04d65e4fea75b689f141b421854662fe2ba113c93424c  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_series.csv}
 \NormalTok{9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_spectrum.csv}
-\NormalTok{5f4a163e0d026dc180fbc00749c965a55af59552cdc06de864bccaace60ed18d  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_summary.txt}
+\NormalTok{cac8418360993394c8f054c333f5d84c34c76bc7345c7adb125e0565000620fc  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_summary.txt}
 \NormalTok{1fc4629bc3d0ad5d895397ff147de6b63ba7412fecc665fe13c89a8771767ca8  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13.t2in}
 \NormalTok{ab787e259c9fb52450d27f347a8c43a8b35e07f76a4e789e200ce5bb0c7b7f99  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_fields.csv}
 \NormalTok{fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_iterations.csv}
 \NormalTok{c25e8c26476f8963c6c6dbbe0d2afe13ba5816e214dd99d36cd98f075be0a8bd  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_series.csv}
 \NormalTok{9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_spectrum.csv}
-\NormalTok{8adad090ac5bdeaaae655118692f34814552572fd0a77cad53a2d0b483076598  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_summary.txt}
-\NormalTok{e26c8782f46d1b6657276851513e43fe5170fdfbb864189266638e936ef60f05  cvode\_vs\_rk4/figures/fig\_cmp\_conservation.pdf}
+\NormalTok{eb581e7f77e3fece6bf612d50822f0d1f0d4ff66391f02116b164455263bc1e4  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_summary.txt}
+\NormalTok{5a79e610ff601ab481fc37d7981224e78233936ee00e7997c59f5a2ab3105561  cvode\_vs\_rk4/figures/fig\_cmp\_conservation.pdf}
 \NormalTok{9764badfd131b386853c3c5301eb62155cb038f5caab81b7e8ba2d4a852625af  cvode\_vs\_rk4/figures/fig\_cmp\_conservation.png}
-\NormalTok{e02e17b1db3e3dcc81709a28b66f5474002937b7c1de612258f1d3d46f36d70b  cvode\_vs\_rk4/figures/fig\_cmp\_lat\_time.pdf}
+\NormalTok{b40d56e548c628e5d6b0f18b85eae21f69535c38315c0350a5518790435f1ee9  cvode\_vs\_rk4/figures/fig\_cmp\_lat\_time.pdf}
 \NormalTok{5ab90d13d08e79585a679043ac6aa4ec379f723fcb074737982a4b1514ddf7df  cvode\_vs\_rk4/figures/fig\_cmp\_lat\_time.png}
-\NormalTok{b1c40393286213a91facd9e38861415978f156e6dd4fedbab47b34574894e65f  cvode\_vs\_rk4/figures/fig\_cmp\_quench.pdf}
+\NormalTok{8c57afa40cf100b9d3c5223db3e9fdb0ea10b0e3d073b94605cf2f2877d0c4b6  cvode\_vs\_rk4/figures/fig\_cmp\_quench.pdf}
 \NormalTok{4ce9a92498c1f9b8287576a7d642d4802aecacf11ea489815c3bb634a70f8c84  cvode\_vs\_rk4/figures/fig\_cmp\_quench.png}
-\NormalTok{a3a99eee48d07e5976ef65a253109c8d588612b6154fa29e6f250f5843984c4c  cvode\_vs\_rk4/figures/fig\_cmp\_sfbs.pdf}
+\NormalTok{319f37b2f4e1dd2459c040111cb0f5b096da74d24dc6de02863dbf2b263002d9  cvode\_vs\_rk4/figures/fig\_cmp\_sfbs.pdf}
 \NormalTok{92014e585daf58b90a637f85f151e7660475208d93ba78c722ac251044f1b1c0  cvode\_vs\_rk4/figures/fig\_cmp\_sfbs.png}
-\NormalTok{5d1a397fffb9cf53133f2741c96d0176130e825af709315b1d102059e8f37bdc  cvode\_vs\_rk4/figures/fig\_cmp\_work\_precision.pdf}
+\NormalTok{67271e489c0ddc3ce10dfc796a1bf814a14ac495a2e94e201b452723483cc624  cvode\_vs\_rk4/figures/fig\_cmp\_work\_precision.pdf}
 \NormalTok{26b322a6384a9d5c74c2b3b73f93742c918762dd3cb0c5c9771213223f6c9c84  cvode\_vs\_rk4/figures/fig\_cmp\_work\_precision.png}
 \end{Highlighting}
 \end{Shaded}
@@ -1562,6 +1597,13 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
 \CommentTok{//! OUTPUT.  \textasciigrave{}integrate\textasciigrave{} returns the solution at a list of output times t\_1 \textless{} t\_2 \textless{} ...; CVODE steps}
 \CommentTok{//! past each output time with its own step sizes and returns the value of its interpolating}
 \CommentTok{//! polynomial at the output time (itask CV\_NORMAL), which has the accuracy of the method.}
+\CommentTok{//!}
+\CommentTok{//! FAILING RIGHT SIDES.  \textasciigrave{}integrate\_status\textasciigrave{} is the same integration for a right side that reports a}
+\CommentTok{//! status (0 success, positive: a recoverable failure, after which CVODE retries the step with a smaller}
+\CommentTok{//! step size; negative: an unrecoverable failure, which stops the integration) and an output function}
+\CommentTok{//! that can stop the integration.  The C interface of the crate t2cvode\_c, through which the Python}
+\CommentTok{//! solver t2\_solve.py uses this module, needs it: a right side computed in another language can fail.}
+\CommentTok{//! \textasciigrave{}integrate\textasciigrave{} is \textasciigrave{}integrate\_status\textasciigrave{} with a right side that always succeeds.}
 \KeywordTok{use} \KeywordTok{crate}\PreprocessorTok{::c64::}\NormalTok{C64}\OperatorTok{;}
 \KeywordTok{use} \KeywordTok{crate}\PreprocessorTok{::lattice::}\OperatorTok{\{}\NormalTok{Fields}\OperatorTok{,}\NormalTok{ Lattice}\OperatorTok{,}\NormalTok{ Mats}\OperatorTok{\};}
 \KeywordTok{use} \PreprocessorTok{cvode\_rs::prelude::}\OperatorTok{*;}
@@ -1668,10 +1710,15 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
 \CommentTok{/// the complex right side F(t, w, dw) (it writes dw/dt = F into dw); it owns everything it needs}
 \KeywordTok{pub} \KeywordTok{type}\NormalTok{ ComplexRhs }\OperatorTok{=} \DataTypeTok{Box}\OperatorTok{\textless{}}\KeywordTok{dyn} \BuiltInTok{FnMut}\NormalTok{(}\DataTypeTok{f64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ [C64])}\OperatorTok{\textgreater{};}
 
+\CommentTok{/// a complex right side that reports a status: it writes dw/dt = F(t, w) into dw and returns 0 (success),}
+\CommentTok{/// a positive number (a recoverable failure: CVODE retries the step with a smaller step size) or a}
+\CommentTok{/// negative number (an unrecoverable failure: the integration stops with an error)}
+\KeywordTok{pub} \KeywordTok{type}\NormalTok{ ComplexRhsStatus }\OperatorTok{=} \DataTypeTok{Box}\OperatorTok{\textless{}}\KeywordTok{dyn} \BuiltInTok{FnMut}\NormalTok{(}\DataTypeTok{f64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ [C64]) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{i32}\OperatorTok{\textgreater{};}
+
 \CommentTok{/// the user data that CVODE hands to the callbacks: the right side, two work vectors and the tolerances}
 \CommentTok{/// of the error{-}weight function}
 \KeywordTok{struct}\NormalTok{ RhsData }\OperatorTok{\{}
-\NormalTok{    f}\OperatorTok{:}\NormalTok{ ComplexRhs}\OperatorTok{,}
+\NormalTok{    f}\OperatorTok{:}\NormalTok{ ComplexRhsStatus}\OperatorTok{,}
 \NormalTok{    w}\OperatorTok{:} \DataTypeTok{Vec}\OperatorTok{\textless{}}\NormalTok{C64}\OperatorTok{\textgreater{},}
 \NormalTok{    dw}\OperatorTok{:} \DataTypeTok{Vec}\OperatorTok{\textless{}}\NormalTok{C64}\OperatorTok{\textgreater{},}
 \NormalTok{    rtol}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
@@ -1699,8 +1746,9 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
     \DecValTok{0}
 \OperatorTok{\}}
 
-\CommentTok{/// the callback of CVODE: y (real, interleaved) {-}\textgreater{} w (complex), dw = F(t, w), dw {-}\textgreater{} ydot.}
-\CommentTok{/// A failed downcast of the user data returns {-}1, the flag of an unrecoverable failure.}
+\CommentTok{/// the callback of CVODE: y (real, interleaved) {-}\textgreater{} w (complex), dw = F(t, w), dw {-}\textgreater{} ydot; it returns the}
+\CommentTok{/// status of the right side (0 success, positive recoverable, negative unrecoverable), and ydot is written}
+\CommentTok{/// only on success.  A failed downcast of the user data returns {-}1, the flag of an unrecoverable failure.}
 \KeywordTok{fn}\NormalTok{ rhs\_trampoline(t}\OperatorTok{:}\NormalTok{ sunrealtype}\OperatorTok{,}\NormalTok{ y}\OperatorTok{:} \OperatorTok{\&}\NormalTok{N\_Vector}\OperatorTok{,}\NormalTok{ ydot}\OperatorTok{:} \OperatorTok{\&}\NormalTok{N\_Vector}\OperatorTok{,}\NormalTok{ user\_data}\OperatorTok{:} \OperatorTok{\&}\KeywordTok{mut} \DataTypeTok{Option}\OperatorTok{\textless{}}\DataTypeTok{Box}\OperatorTok{\textless{}}\KeywordTok{dyn} \BuiltInTok{Any}\OperatorTok{\textgreater{}\textgreater{}}\NormalTok{) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{i32} \OperatorTok{\{}
     \KeywordTok{let}\NormalTok{ data }\OperatorTok{=} \ControlFlowTok{match}\NormalTok{ user\_data}\OperatorTok{.}\NormalTok{as\_mut()}\OperatorTok{.}\NormalTok{and\_then(}\OperatorTok{|}\NormalTok{b}\OperatorTok{|}\NormalTok{ b}\OperatorTok{.}\PreprocessorTok{downcast\_mut::}\OperatorTok{\textless{}}\NormalTok{RhsData}\OperatorTok{\textgreater{}}\NormalTok{()) }\OperatorTok{\{}
         \ConstantTok{Some}\NormalTok{(d) }\OperatorTok{=\textgreater{}}\NormalTok{ d}\OperatorTok{,}
@@ -1713,7 +1761,10 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
 \NormalTok{            z}\OperatorTok{.}\NormalTok{im }\OperatorTok{=}\NormalTok{ yd[}\DecValTok{2} \OperatorTok{*}\NormalTok{ k }\OperatorTok{+} \DecValTok{1}\NormalTok{]}\OperatorTok{;}
         \OperatorTok{\}}
     \OperatorTok{\}}
-\NormalTok{    (data}\OperatorTok{.}\NormalTok{f)(t}\OperatorTok{,} \OperatorTok{\&}\NormalTok{data}\OperatorTok{.}\NormalTok{w}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ data}\OperatorTok{.}\NormalTok{dw)}\OperatorTok{;}
+    \KeywordTok{let}\NormalTok{ status }\OperatorTok{=}\NormalTok{ (data}\OperatorTok{.}\NormalTok{f)(t}\OperatorTok{,} \OperatorTok{\&}\NormalTok{data}\OperatorTok{.}\NormalTok{w}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ data}\OperatorTok{.}\NormalTok{dw)}\OperatorTok{;}
+    \ControlFlowTok{if}\NormalTok{ status }\OperatorTok{!=} \DecValTok{0} \OperatorTok{\{}
+        \ControlFlowTok{return}\NormalTok{ status}\OperatorTok{;}
+    \OperatorTok{\}}
     \KeywordTok{let} \KeywordTok{mut}\NormalTok{ dd }\OperatorTok{=}\NormalTok{ NV\_DATA\_S(ydot)}\OperatorTok{;}
     \ControlFlowTok{for}\NormalTok{ (k}\OperatorTok{,}\NormalTok{ z) }\KeywordTok{in}\NormalTok{ data}\OperatorTok{.}\NormalTok{dw}\OperatorTok{.}\NormalTok{iter()}\OperatorTok{.}\NormalTok{enumerate() }\OperatorTok{\{}
 \NormalTok{        dd[}\DecValTok{2} \OperatorTok{*}\NormalTok{ k] }\OperatorTok{=}\NormalTok{ z}\OperatorTok{.}\NormalTok{re}\OperatorTok{;}
@@ -1730,8 +1781,30 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
 \NormalTok{    t0}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
 \NormalTok{    touts}\OperatorTok{:} \OperatorTok{\&}\NormalTok{[}\DataTypeTok{f64}\NormalTok{]}\OperatorTok{,}
 \NormalTok{    settings}\OperatorTok{:} \OperatorTok{\&}\NormalTok{CvodeSettings}\OperatorTok{,}
-\NormalTok{    f}\OperatorTok{:}\NormalTok{ ComplexRhs}\OperatorTok{,}
+    \KeywordTok{mut}\NormalTok{ f}\OperatorTok{:}\NormalTok{ ComplexRhs}\OperatorTok{,}
     \KeywordTok{mut}\NormalTok{ out}\OperatorTok{:} \KeywordTok{impl} \BuiltInTok{FnMut}\NormalTok{(}\DataTypeTok{usize}\OperatorTok{,} \DataTypeTok{f64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[C64])}\OperatorTok{,}
+\NormalTok{) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{Result}\OperatorTok{\textless{}}\NormalTok{CvodeStats}\OperatorTok{,} \DataTypeTok{String}\OperatorTok{\textgreater{}} \OperatorTok{\{}
+    \KeywordTok{let}\NormalTok{ g}\OperatorTok{:}\NormalTok{ ComplexRhsStatus }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\KeywordTok{move} \OperatorTok{|}\NormalTok{t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{        f(t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw)}\OperatorTok{;}
+        \DecValTok{0}
+    \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+\NormalTok{    integrate\_status(w0}\OperatorTok{,}\NormalTok{ t0}\OperatorTok{,}\NormalTok{ touts}\OperatorTok{,}\NormalTok{ settings}\OperatorTok{,}\NormalTok{ g}\OperatorTok{,} \OperatorTok{|}\NormalTok{i}\OperatorTok{,}\NormalTok{ t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{        out(i}\OperatorTok{,}\NormalTok{ t}\OperatorTok{,}\NormalTok{ w)}\OperatorTok{;}
+        \ConstantTok{true}
+    \OperatorTok{\}}\NormalTok{)}
+\OperatorTok{\}}
+
+\CommentTok{/// The integration of \textasciigrave{}integrate\textasciigrave{} for a right side that reports a status (see \textasciigrave{}ComplexRhsStatus\textasciigrave{}) and an}
+\CommentTok{/// output function \textasciigrave{}out(i, t\_i, w(t\_i))\textasciigrave{} that returns true to continue and false to stop the integration}
+\CommentTok{/// (the function then returns an error).  A failure of the right side makes CVODE return a negative flag,}
+\CommentTok{/// which is returned as an error.}
+\KeywordTok{pub} \KeywordTok{fn}\NormalTok{ integrate\_status(}
+\NormalTok{    w0}\OperatorTok{:} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,}
+\NormalTok{    t0}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+\NormalTok{    touts}\OperatorTok{:} \OperatorTok{\&}\NormalTok{[}\DataTypeTok{f64}\NormalTok{]}\OperatorTok{,}
+\NormalTok{    settings}\OperatorTok{:} \OperatorTok{\&}\NormalTok{CvodeSettings}\OperatorTok{,}
+\NormalTok{    f}\OperatorTok{:}\NormalTok{ ComplexRhsStatus}\OperatorTok{,}
+    \KeywordTok{mut}\NormalTok{ out}\OperatorTok{:} \KeywordTok{impl} \BuiltInTok{FnMut}\NormalTok{(}\DataTypeTok{usize}\OperatorTok{,} \DataTypeTok{f64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[C64]) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{bool}\OperatorTok{,}
 \NormalTok{) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{Result}\OperatorTok{\textless{}}\NormalTok{CvodeStats}\OperatorTok{,} \DataTypeTok{String}\OperatorTok{\textgreater{}} \OperatorTok{\{}
     \KeywordTok{let}\NormalTok{ n }\OperatorTok{=}\NormalTok{ w0}\OperatorTok{.}\NormalTok{len()}\OperatorTok{;}
     \CommentTok{// the SUNDIALS context, the state vector y (2n real numbers) and the integrator memory}
@@ -1775,7 +1848,9 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
     \KeywordTok{let} \KeywordTok{mut}\NormalTok{ trace }\OperatorTok{=} \DataTypeTok{Vec}\PreprocessorTok{::}\NormalTok{with\_capacity(touts}\OperatorTok{.}\NormalTok{len())}\OperatorTok{;}
     \ControlFlowTok{for}\NormalTok{ (i}\OperatorTok{,} \OperatorTok{\&}\NormalTok{tout) }\KeywordTok{in}\NormalTok{ touts}\OperatorTok{.}\NormalTok{iter()}\OperatorTok{.}\NormalTok{enumerate() }\OperatorTok{\{}
         \ControlFlowTok{if}\NormalTok{ tout }\OperatorTok{==}\NormalTok{ t0 }\OperatorTok{\{}
-\NormalTok{            out(i}\OperatorTok{,}\NormalTok{ t0}\OperatorTok{,}\NormalTok{ w0)}\OperatorTok{;}
+            \ControlFlowTok{if} \OperatorTok{!}\NormalTok{out(i}\OperatorTok{,}\NormalTok{ t0}\OperatorTok{,}\NormalTok{ w0) }\OperatorTok{\{}
+                \ControlFlowTok{return} \ConstantTok{Err}\NormalTok{(}\PreprocessorTok{format!}\NormalTok{(}\StringTok{"the output function stopped the integration at the output time \{\}"}\OperatorTok{,}\NormalTok{ tout))}\OperatorTok{;}
+            \OperatorTok{\}}
             \ControlFlowTok{continue}\OperatorTok{;}
         \OperatorTok{\}}
         \KeywordTok{let}\NormalTok{ r }\OperatorTok{=}\NormalTok{ CVode(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,}\NormalTok{ tout}\OperatorTok{,} \OperatorTok{\&}\NormalTok{y}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ t}\OperatorTok{,}\NormalTok{ CV\_NORMAL)}\OperatorTok{;}
@@ -1794,7 +1869,9 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
 \NormalTok{        CVodeGetLastOrder(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ tp}\OperatorTok{.}\NormalTok{qlast)}\OperatorTok{;}
 \NormalTok{        CVodeGetNumSteps(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ tp}\OperatorTok{.}\NormalTok{nsteps)}\OperatorTok{;}
 \NormalTok{        trace}\OperatorTok{.}\NormalTok{push(tp)}\OperatorTok{;}
-\NormalTok{        out(i}\OperatorTok{,}\NormalTok{ t}\OperatorTok{,} \OperatorTok{\&}\NormalTok{w)}\OperatorTok{;}
+        \ControlFlowTok{if} \OperatorTok{!}\NormalTok{out(i}\OperatorTok{,}\NormalTok{ t}\OperatorTok{,} \OperatorTok{\&}\NormalTok{w) }\OperatorTok{\{}
+            \ControlFlowTok{return} \ConstantTok{Err}\NormalTok{(}\PreprocessorTok{format!}\NormalTok{(}\StringTok{"the output function stopped the integration at the output time \{\}"}\OperatorTok{,}\NormalTok{ tout))}\OperatorTok{;}
+        \OperatorTok{\}}
     \OperatorTok{\}}
     \KeywordTok{let} \KeywordTok{mut}\NormalTok{ st }\OperatorTok{=}\NormalTok{ CvodeStats }\OperatorTok{\{}\NormalTok{ trace}\OperatorTok{,} \OperatorTok{..}\BuiltInTok{Default}\PreprocessorTok{::}\KeywordTok{default}\NormalTok{() }\OperatorTok{\};}
 \NormalTok{    CVodeGetNumSteps(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{nsteps)}\OperatorTok{;}
@@ -1863,6 +1940,31 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
         \OperatorTok{.}\NormalTok{unwrap()}\OperatorTok{;}
         \PreprocessorTok{assert!}\NormalTok{(worst }\OperatorTok{\textless{}} \DecValTok{1e{-}8}\OperatorTok{,} \StringTok{"deviation \{\} (\{\})"}\OperatorTok{,}\NormalTok{ worst}\OperatorTok{,}\NormalTok{ st}\OperatorTok{.}\NormalTok{describe())}\OperatorTok{;}
         \PreprocessorTok{assert!}\NormalTok{(st}\OperatorTok{.}\NormalTok{nsteps }\OperatorTok{\textgreater{}} \DecValTok{0} \OperatorTok{\&\&}\NormalTok{ st}\OperatorTok{.}\NormalTok{qlast }\OperatorTok{\textgreater{}=} \DecValTok{1}\NormalTok{)}\OperatorTok{;}
+    \OperatorTok{\}}
+
+    \CommentTok{/// a right side that fails unrecoverably after 50 evaluations stops the integration with an error, and an}
+    \CommentTok{/// output function that returns false stops it as well}
+    \AttributeTok{\#[}\NormalTok{test}\AttributeTok{]}
+    \KeywordTok{fn}\NormalTok{ failures\_stop\_the\_integration() }\OperatorTok{\{}
+        \KeywordTok{let}\NormalTok{ touts }\OperatorTok{=}\NormalTok{ uniform\_times(}\DecValTok{0.0}\OperatorTok{,} \DecValTok{1.0}\OperatorTok{,} \DecValTok{20}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let} \KeywordTok{mut}\NormalTok{ calls }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ f}\OperatorTok{:}\NormalTok{ ComplexRhsStatus }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\KeywordTok{move} \OperatorTok{|}\NormalTok{\_t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{            calls }\OperatorTok{+=} \DecValTok{1}\OperatorTok{;}
+\NormalTok{            dw[}\DecValTok{0}\NormalTok{] }\OperatorTok{=}\NormalTok{ c(}\DecValTok{0.0}\OperatorTok{,} \OperatorTok{{-}}\DecValTok{1.0}\NormalTok{) }\OperatorTok{*}\NormalTok{ w[}\DecValTok{0}\NormalTok{]}\OperatorTok{;}
+            \ControlFlowTok{if}\NormalTok{ calls }\OperatorTok{\textgreater{}} \DecValTok{50} \OperatorTok{\{}
+                \OperatorTok{{-}}\DecValTok{1}
+            \OperatorTok{\}} \ControlFlowTok{else} \OperatorTok{\{}
+                \DecValTok{0}
+            \OperatorTok{\}}
+        \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ r }\OperatorTok{=}\NormalTok{ integrate\_status(}\OperatorTok{\&}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ONE]}\OperatorTok{,} \DecValTok{0.0}\OperatorTok{,} \OperatorTok{\&}\NormalTok{touts}\OperatorTok{,} \OperatorTok{\&}\PreprocessorTok{CvodeSettings::}\NormalTok{adams(}\DecValTok{1e{-}12}\OperatorTok{,} \DecValTok{1e{-}14}\NormalTok{)}\OperatorTok{,}\NormalTok{ f}\OperatorTok{,} \OperatorTok{|}\NormalTok{\_i}\OperatorTok{,}\NormalTok{ \_t}\OperatorTok{,}\NormalTok{ \_w}\OperatorTok{|} \ConstantTok{true}\NormalTok{)}\OperatorTok{;}
+        \PreprocessorTok{assert!}\NormalTok{(r}\OperatorTok{.}\NormalTok{is\_err()}\OperatorTok{,} \StringTok{"the failure of the right side was not reported"}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ g}\OperatorTok{:}\NormalTok{ ComplexRhsStatus }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\OperatorTok{|}\NormalTok{\_t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{            dw[}\DecValTok{0}\NormalTok{] }\OperatorTok{=}\NormalTok{ c(}\DecValTok{0.0}\OperatorTok{,} \OperatorTok{{-}}\DecValTok{1.0}\NormalTok{) }\OperatorTok{*}\NormalTok{ w[}\DecValTok{0}\NormalTok{]}\OperatorTok{;}
+            \DecValTok{0}
+        \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ r }\OperatorTok{=}\NormalTok{ integrate\_status(}\OperatorTok{\&}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ONE]}\OperatorTok{,} \DecValTok{0.0}\OperatorTok{,} \OperatorTok{\&}\NormalTok{touts}\OperatorTok{,} \OperatorTok{\&}\PreprocessorTok{CvodeSettings::}\NormalTok{adams(}\DecValTok{1e{-}12}\OperatorTok{,} \DecValTok{1e{-}14}\NormalTok{)}\OperatorTok{,}\NormalTok{ g}\OperatorTok{,} \OperatorTok{|}\NormalTok{i}\OperatorTok{,}\NormalTok{ \_t}\OperatorTok{,}\NormalTok{ \_w}\OperatorTok{|}\NormalTok{ i }\OperatorTok{\textless{}} \DecValTok{3}\NormalTok{)}\OperatorTok{;}
+        \PreprocessorTok{assert!}\NormalTok{(r}\OperatorTok{.}\NormalTok{is\_err()}\OperatorTok{,} \StringTok{"the stop of the output function was not reported"}\NormalTok{)}\OperatorTok{;}
     \OperatorTok{\}}
 \OperatorTok{\}}
 \end{Highlighting}
@@ -2267,7 +2369,7 @@ program)}{B.2 test2/rust/t2cvcmp/src/main.rs (the comparison program)}}\label{b.
 \NormalTok{    md }\OperatorTok{+=} \StringTok{"\textless{}!{-}{-} generated by t2\_cvcmp: the table of the runs on the three problems with an exact solution {-}{-}\textgreater{}}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{;}
 \NormalTok{    md }\OperatorTok{+=} \StringTok{"| problem | method | $}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{ell\^{}\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm t\}\_\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm LL\}$ or $r\^{}\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm tol\}\_\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm LL\}$ | evaluations $N\^{}\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm ev\}\_\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm LL\}$ | steps $N\^{}\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm st\}\_\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm LL\}$ | largest $}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{delta\^{}\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm rel\}\_\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm LL\}$ | $}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{delta\^{}\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm rel\}\_\{}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{rm LL\}$ at the end | largest relative change of the norm |}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{;}
     \CommentTok{// the numbers of dashes give the relative widths of the columns in the typeset table}
-\NormalTok{    md }\OperatorTok{+=} \StringTok{"|:{-}{-}{-}{-}{-}|:{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}|{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}:|}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{;}
+\NormalTok{    md }\OperatorTok{+=} \StringTok{"|:{-}{-}{-}{-}{-}{-}{-}{-}|:{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}|{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}:|{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}:|}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\OperatorTok{;}
     \ControlFlowTok{for}\NormalTok{ (p}\OperatorTok{,}\NormalTok{ dts}\OperatorTok{,}\NormalTok{ dt\_old) }\KeywordTok{in} \OperatorTok{\&}\NormalTok{plans }\OperatorTok{\{}
 \NormalTok{        rep}\OperatorTok{.}\NormalTok{add(}\PreprocessorTok{format!}\NormalTok{(}\StringTok{"problem \{\}: \{\}"}\OperatorTok{,}\NormalTok{ p}\OperatorTok{.}\NormalTok{name}\OperatorTok{,}\NormalTok{ p}\OperatorTok{.}\NormalTok{text))}\OperatorTok{;}
         \ControlFlowTok{for} \OperatorTok{\&}\NormalTok{dt }\KeywordTok{in}\NormalTok{ dts }\OperatorTok{\{}

@@ -37,8 +37,11 @@ PROBLEMS=0   # number of documents with layout problems
 # ---------------------------------------------------------------------------
 # Which documents?  Either the ones named on the command line, or every
 # Markdown file of the repository except the generated manuscript Markdown,
-# the document sources (docs_src/) and the generated fragments
-# (provenance/generated/ and test2/data/), which are not documents.
+# the document sources (docs_src/ and every file *.src.md), the generated
+# fragments (provenance/generated/ and test2/data/) and the kept first-version
+# data in test2/rk4_reference/, which are not documents, and the folder
+# test2/cvode_vs_rk4/, whose provenance has its own builder
+# (test2/cvode_vs_rk4/tools/build_docs.sh, with the same layout check).
 # The list is read line by line so that file names with spaces survive.
 # ---------------------------------------------------------------------------
 DOCS=()
@@ -49,7 +52,8 @@ else
     find . -name '*.md' -not -path './.git/*' -not -path './manuscript/*' \
            -not -path '*/target/*' -not -path './.git-transfer/*' \
            -not -path './docs_src/*' -not -path './provenance/generated/*' \
-           -not -path './test2/data/*' | sed 's|^\./||' | sort)
+           -not -path './test2/data/*' -not -path './test2/cvode_vs_rk4/*' \
+           -not -path './test2/rk4_reference/*' -not -name '*.src.md' | sed 's|^\./||' | sort)
 fi
 
 for md in "${DOCS[@]}"; do
@@ -72,6 +76,33 @@ for md in "${DOCS[@]}"; do
     -V mathfont="Latin Modern Math" \
     -V colorlinks=true -V linkcolor=blue -V urlcolor=blue -V citecolor=blue \
     --include-in-header="$HEADER"
+  # 1b. A code line of more than about 3000 characters cannot be typeset at all: the width of its unbroken box
+  #    exceeds the largest dimension of TeX (16383.99 pt; one character of the code font is 5.4 pt wide), and
+  #    LaTeX stops with "Dimension too large" before it can wrap the line.  Such lines (in the reports printed
+  #    verbatim) are therefore split in the .tex, inside the verbatim environments only, at a space into pieces
+  #    of at most 2400 characters; the PDF wraps every piece as usual.  The .md is not changed.
+  python3 - "$dir/$base.tex" <<'PYSPLIT'
+import re, sys
+path = sys.argv[1]
+lines = open(path, encoding="utf-8").read().split("\n")
+out, inside, nsplit = [], False, 0
+for line in lines:
+    if re.match(r"\\begin\{(verbatim|Highlighting)\}", line):
+        inside = True
+    elif re.match(r"\\end\{(verbatim|Highlighting)\}", line):
+        inside = False
+    while inside and len(line) > 2400:
+        k = line.rfind(" ", 0, 2400)
+        if k <= 0:
+            break
+        out.append(line[:k])
+        line = line[k + 1:]
+        nsplit += 1
+    out.append(line)
+open(path, "w", encoding="utf-8").write("\n".join(out))
+if nsplit:
+    print("[docs]   note: %d split(s) of code lines longer than 2400 characters" % nsplit)
+PYSPLIT
   # 2. LaTeX -> PDF (XeLaTeX via latexmk), run inside the document's directory
   #    so that relative figure paths resolve exactly as in the Markdown source.
   pushd "$dir" > /dev/null

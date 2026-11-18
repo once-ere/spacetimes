@@ -1631,7 +1631,7 @@ answers the items of Test 2. For item {[}1{]} every matrix, every
 printed component equation and every statement is computed or checked by
 the Rust program \texttt{t2\_fields} of the Cargo workspace
 \texttt{test2/rust}, and for item {[}2{]} every analytic solution by the
-program \texttt{t2\_analytic} of the same workspace (12615 lines in 17
+program \texttt{t2\_analytic} of the same workspace (14012 lines in 20
 files; no external crate). The workspace has three members:
 
 \begin{itemize}
@@ -1651,11 +1651,24 @@ files; no external crate). The workspace has three members:
   \(\psi'_{\rm LL}\), the Cayley-Dickson product), \texttt{lattice.rs}
   (the links, the lattice operator \(\mathcal H^{\rm lat}_{\rm LL}\)
   applied to a mode, its dense matrix, the bound \(B^{\rm H}_{\rm LL}\),
-  the free lattice energy \(\varepsilon^{\rm lat}_{\rm LL}\), the RK4
-  step of the lattice equations and the matrix of the free lattice
-  operator on a plane wave) and \texttt{sym.rs} (exact linear forms with
-  Gaussian-rational coefficients, each monomial carrying a numerical
-  value, so that a printed formula can be evaluated and compared);
+  the free lattice energy \(\varepsilon^{\rm lat}_{\rm LL}\) and the
+  matrix of the free lattice operator on a plane wave),
+  \texttt{cvode.rs} (the time integration with CVODE, the
+  variable-order, variable-step Adams-Moulton integrator of SUNDIALS
+  7.8.0 in the pure-Rust translation vendored in PROJECT spacetimes,
+  folder \texttt{vendor/sundials\_rs-7.8.0}: the functions
+  \texttt{integrate}, \texttt{integrate\_status} and
+  \texttt{evolve\_lattice}, the error weights
+  \(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+  of the complex components \(w^{\rm cmp}_{\rm LL}\) of the state, for
+  the real and the imaginary part alike, and the error budget
+  \(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\),
+  the accumulated local error that the error test of CVODE permits after
+  \(N^{\rm st}_{\rm LL}\) steps for a state \(w^{\rm lat}_{\rm LL}\) of
+  \(n^{\rm cpx}_{\rm LL}\) complex components) and \texttt{sym.rs}
+  (exact linear forms with Gaussian-rational coefficients, each monomial
+  carrying a numerical value, so that a printed formula can be evaluated
+  and compared);
 \item
   the program \texttt{t2\_fields} (\texttt{t2fields/src/main.rs}), which
   writes the report \texttt{test2/data/t2\_fields\_checks.txt}, the
@@ -1727,8 +1740,14 @@ The formulas of the checks:
   potentials and pair fields (Hermiticity, particle-hole symmetry, exact
   gauge covariance, the bound \(B^{\rm H}_{\rm LL}\)), the free
   dispersion and the doubler, the eigensolver for the dimensions 7, 64
-  and 200, the RK4 factor, and the eigenvalues of the operator of the
-  solvers on plane waves.
+  and 200, the time integration with CVODE against the exact spectral
+  solution \(w^{\rm ex}_{\rm LL}\) for the tolerances
+  \(r^{\rm tol}_{\rm LL}=10^{-8}\), \(10^{-10}\), \(10^{-12}\) (the
+  relative deviation
+  \(\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\)
+  below \(B^{\rm err}_{\rm LL}\), and below \(10^{-9}\) at
+  \(10^{-12}\)), and the eigenvalues of the operator of the solvers on
+  plane waves.
 \item
   \textbf{GS-12 (the printed formulas):} every explicit matrix and every
   component equation is built from the exact linear forms of
@@ -1749,12 +1768,15 @@ The data files of the figures are
 \texttt{q}, \texttt{eps}, \texttt{eps\_lat}),
 \texttt{test2/data/t2\_dispersion\_lattice.csv} (\texttt{r\_W},
 \texttt{q}, \texttt{eps\_lat}) and
-\texttt{test2/data/t2\_rk4\_stability.csv} (\texttt{E\_times\_dt},
-\texttt{rk4\_modulus}); the script
+\texttt{test2/data/t2\_cvode\_accuracy.csv} (\texttt{x\_LL\^{}0}, and
+\texttt{dev\_rtol\_*}, \texttt{h\_rtol\_*}, \texttt{q\_rtol\_*}:
+\(\delta^{\rm rel}_{\rm LL}\) and the size \(h^{\rm CV}_{\rm LL}\) and
+the order \(q^{\rm CV}_{\rm LL}\) of the last internal step of CVODE,
+for the tolerance named at the end); the script
 \texttt{test2/python/make\_t2\_figures.py} draws
 \texttt{test2/figures/fig\_t2\_lattice\_dispersion} and
-\texttt{fig\_t2\_rk4\_stability} (.pdf and .png). The output of the last
-run:
+\texttt{fig\_t2\_cvode\_accuracy} (.pdf and .png). The output of the
+last run:
 
 \begin{verbatim}
 Revision_SuperLoop, folder test2, program `t2_fields`: the gauge-covariant field equations of the self-interacting spinor field Psi_LL on R^(1,3)_LL (Test 2, item 1)
@@ -1769,10 +1791,10 @@ Revision_SuperLoop, folder test2, program `t2_fields`: the gauge-covariant field
 [PASS] GS-7  the super-loop form of the Dirac operator: gamma_LL^p nabla_LL_p has the Weyl blocks M_LL(Dbq_LL) = sum_p (M_LL(f_p) (x) (2 x 2 unit matrix)) nabla_LL_p (acting on the lower block, the spinor charges) and M_LL(conj Dbq_LL) = sum_p (M_LL(conj f_p) (x) (2 x 2 unit matrix)) nabla_LL_p (acting on the upper block), and no diagonal blocks; (gamma_LL^p nabla_LL_p)^2 = diag(1,-1,-1,-1)[p][p'] nabla_LL_p nabla_LL_p' + (1/4) [gamma_LL^p, gamma_LL^p'] [nabla_LL_p, nabla_LL_p']; for a free plane wave M_LL(Dbq_LL) M_LL(conj Dbq_LL) = -N_LL(k) sigma_0 (50 random momenta and constant non-abelian gauge fields; tolerance 1e-12)  -- largest deviation 1.6e-15
 [PASS] GS-8  the Dirac-Bogoliubov-de Gennes operator H_DB on a plane wave exp(i q.x) with constant gauge fields, H_DB(q) = [[h(q - Acal) - Acal_0 - mu, Ppair], [Ppair^dag, -(h(-q - Acal) - Acal_0 - mu)^*]] (h(k) = sum_j alpha_LL^j k_j + beta_LL m for a matrix-valued k_j, here k_j = q_j - Acal_j and k_j = -q_j - Acal_j, Acal_j = g_v Av_LL^iota_j T_LL^iota + g_F AF_LL_j, Acal_0 likewise, Ppair = sum_iota d_iota Kch_iota^dag), is Hermitian and particle-hole symmetric, Xph conj(H_DB(q)) Xph = -H_DB(-q) with Xph the exchange of the particle and hole blocks (50 random momenta, gauge fields and order parameters); for the polar order parameter dvec = (0, 0, Delta) without gauge fields its spectrum is +-E^(+-) (E^(+-) = ((eps +- mu)^2 + Delta^2)^(1/2)), each four times (30 random momenta; m = 0.4, mu = 0.3; tolerance 1e-10)  -- largest deviations 0.0e0 and 6.7e-15
 [PASS] GS-9  the self-consistency of the mean field: for the polar order parameter dvec = (0, 0, Delta) the sum over the eight positive-energy eigenvectors (psi_p, psi_h) of H_DB(q) (without gauge fields H_DB(q) = H_BdG(q)) of psi_p^T Kch_3 conj(psi_h) equals -2 Delta (1/E^+ + 1/E^-) at every momentum (30 random momenta); hence d_iota = -(G/2) <Psi_LL^T Kch_iota Psi_LL>, with the expectation value the sum over the positive modes integrated with d^3q/(2 pi)^3, is the gap equation 1/G = int d^3q/(2 pi)^3 (1/E^+ + 1/E^-) of the manuscript: the mode-sum form of the mean-field equations used by the solvers has the right normalization (tolerance 1e-10)  -- largest deviation 1.7e-15
-[PASS] GS-10  the lattice Dirac-Bogoliubov-de Gennes operator H_lat (covariant central differences with the links Ulink_j = exp(-i dx (g_v Av_LL^iota_j tau_iota/2 + g_F AF_LL_j)), Wilson term r_W, Dirichlet or periodic boundaries): on a 3 x 2 x 4 lattice (dx = 0.7, r_W = 1, periodic in x and z, Dirichlet in y) with random links, potentials and order parameters it is Hermitian, particle-hole symmetric (Xph conj(H_lat) Xph = -H_lat), and exactly gauge covariant: H_lat[Ulink', Acal_0', dvec'] = Gsite H_lat[Ulink, Acal_0, dvec] Gsite^dag for random site transformations Gsite = diag(exp(i thF) U_LL, conj(exp(i thF) U_LL)) with Ulink_j(site) -> Gsite(site) Ulink_j(site) Gsite(site + delta_j)^dag, Acal_0 -> Gsite Acal_0 Gsite^dag, dvec -> exp(2 i thF) Rv(U_LL) dvec; on a free periodic one-dimensional lattice (12 sites, dx = 0.5) the spectrum is +-eps_lat(q), eps_lat^2 = sum_j sin^2(q_j dx)/dx^2 + (m + (r_W/dx) sum_j (1 - cos q_j dx))^2, each eight times; the Wilson term lifts the doubler at q = pi/dx to m + 2 r_W/dx; the spectral radius of H_lat stays below the bound Hbound used for the time step, Hbound = (number of active directions) (1 + 2 r_W)/dx + m + |mu| + max ||Acal_0|| + max sum_iota |d_iota| (tolerance 1e-10)  -- Hermiticity 0.0e0, particle-hole 0.0e0, gauge covariance 1.8e-13, dispersion 1.4e-14; spectral radius 8.4349 <= bound 17.5474
+[PASS] GS-10  the lattice Dirac-Bogoliubov-de Gennes operator H_lat (covariant central differences with the links Ulink_j = exp(-i dx (g_v Av_LL^iota_j tau_iota/2 + g_F AF_LL_j)), Wilson term r_W, Dirichlet or periodic boundaries): on a 3 x 2 x 4 lattice (dx = 0.7, r_W = 1, periodic in x and z, Dirichlet in y) with random links, potentials and order parameters it is Hermitian, particle-hole symmetric (Xph conj(H_lat) Xph = -H_lat), and exactly gauge covariant: H_lat[Ulink', Acal_0', dvec'] = Gsite H_lat[Ulink, Acal_0, dvec] Gsite^dag for random site transformations Gsite = diag(exp(i thF) U_LL, conj(exp(i thF) U_LL)) with Ulink_j(site) -> Gsite(site) Ulink_j(site) Gsite(site + delta_j)^dag, Acal_0 -> Gsite Acal_0 Gsite^dag, dvec -> exp(2 i thF) Rv(U_LL) dvec; on a free periodic one-dimensional lattice (12 sites, dx = 0.5) the spectrum is +-eps_lat(q), eps_lat^2 = sum_j sin^2(q_j dx)/dx^2 + (m + (r_W/dx) sum_j (1 - cos q_j dx))^2, each eight times; the Wilson term lifts the doubler at q = pi/dx to m + 2 r_W/dx; the spectral radius of H_lat stays below the bound Hbound of the eigenvalue magnitudes, Hbound = (number of active directions) (1 + 2 r_W)/dx + m + |mu| + max ||Acal_0|| + max sum_iota |d_iota| (tolerance 1e-10)  -- Hermiticity 0.0e0, particle-hole 0.0e0, gauge covariance 1.8e-13, dispersion 1.4e-14; spectral radius 8.4349 <= bound 17.5474
 [PASS] GS-11  the Hermitian eigensolver of t2core (Householder reduction to a real tridiagonal matrix and the implicit QL algorithm), used by the solvers for the self-consistent ground state: for random Hermitian matrices of the dimensions 7, 64 and 200 the eigenvectors are orthonormal and reproduce the matrix, V diag(E) V^dag = H (relative tolerance 1e-11)  -- largest relative residual 6.0e-14
 [PASS] GS-12  the printed formulas agree with the matrices that they describe: the explicit entries of Ppair (symbolic d_iota), of the blocks of sgen_LL(uLw_p) and of the 8 x 8 matrix Gamma_LL_p (symbolic omega_LL^j_p, varpi_LL^j_p), the expansions of the covariant derivatives (nabla_LL_j psi_p)_k, (nabla*_LL_j psi_h)_k and (nabla_LL_j Psi_LL)_k with the spin connection and the gauge potentials, the sixteen component equations of the Dirac-Bogoliubov-de Gennes system (with Gamma_LL_0 and Acal_0), the three pair operators Pi_iota(x) and the eight component equations of the exact operator equation; each is evaluated for numbers assigned to its symbols (a plane wave exp(i q.x) with constant fields for the first ones; independent random numbers for the components, the conjugate components and the pair operators of the exact equation) and compared with the 8 x 8 and 16 x 16 matrix computation (tolerance 1e-12)  -- largest deviations 0.0e0, 4.0e-16, 3.4e-16, 0.0e0, 5.0e-16
-[PASS] GS-13  time stepping: one step of the classical Runge-Kutta method (RK4) multiplies the component of an eigenvector with the energy E by 1 - i x - x^2/2 + i x^3/6 + x^4/24 with x = E dt; its modulus is at most 1 for |x| <= 2 sqrt(2) and exceeds 1 beyond (x = 2.9); with the bound Hbound of GS-10 the time step dt <= 2.5/Hbound is therefore stable, and the modulus decreases per step by about x^6/144 (its square is 1 - x^6/72 + x^8/576; at x = 0.1 the decrease is 6.9e-9)  -- modulus at x = 2.5: 0.508186; at 2.9: 1.193063; loss at x = 0.1: 6.9e-9
+[PASS] GS-13  time integration: the lattice equations (i times the derivative of the Nambu mode w_lat with respect to the time x_LL^0 equals H_lat w_lat) are integrated by CVODE (SUNDIALS 7.8.0 in pure Rust, Adams-Moulton formulas of the orders 1 to 12 with local error control, fixed-point iteration, error weights 1/(rtol |w_cmp| + atol) of the complex components w_cmp); on the 3 x 2 x 4 lattice of GS-10 with random links, potentials and pair fields (384 complex components) and a random normalized initial state w_lat(0), the CVODE solution agrees at the 41 output times x_LL^0 = 0, 0.5, ..., 20 with the exact spectral solution w_exact, the sum over the eigenpairs of H_lat of exp(-i E_qp x_LL^0) times the eigenvector times its scalar product with w_lat(0): for rtol = 1e-12 (atol = 1e-14) the relative deviation stays below 1e-9 and the norm of the state, which the Hermitian H_lat conserves, changes by less than 1e-10; for each of rtol = 1e-8, 1e-10, 1e-12 (atol = rtol/100) the largest deviation stays below the accumulated local error that the error test of CVODE permits, (number of steps) sqrt(2) (rtol + atol sqrt(384)), and it decreases from rtol = 1e-8 to 1e-10 to 1e-12  -- largest relative deviations 1.2e-6, 1.7e-7, 1.7e-10 (bounds: accumulated local errors 2.6e-5, 6.2e-7, 6.4e-9) and largest norm changes 5.2e-7, 9.8e-8, 5.9e-11 for rtol = 1e-8, 1e-10, 1e-12; CVODE steps 1528, 3661, 3804; CVODE at rtol = 1e-12: 3804 steps, 4812 evaluations of the right side, 4 rejected steps, 4809 corrector iterations (0 convergence failures), last order 7, last step 5.2896e-3
 [PASS] GS-14  the super-loop form of the Dirac isodoublet and of its field equations; psi'_LL(y) = eps2^-1 M_LL(y)^T is the Weyl isodoublet of a spinor charge y e4 (rows: Weyl index, columns: isospin): (a) M_LL(x) psi'_LL(y) = psi'_LL(y conj x) for all bi-quaternions x and y, and the bi-octonion product (the Cayley-Dickson rule of the folder) gives (y e4) x = (y conj x) e4 = R_x (y e4): a 2 x 2 frame matrix acting on a Weyl isodoublet is the right multiplication of the spinor charge by a bi-quaternion (50 random pairs); (b) writing Psi_LL = Psi(bSm, bSp) with the upper block psi'_LL(bSm) and the lower block psi'_LL(bSp) of two spinor charges bSm e4 and bSp e4, the Dirac matrices of a Hermitian frame act as gamma_LL^p[f] Psi(bSm, bSp) = Psi(bSp conj f_p, bSm f_p) (the canonical frame and 19 random Hermitian frames); (c) the gauge transformation exp(i thF) Sspin_LL(gL) (x) M_LL(vI) maps Psi(bSm, bSp) to exp(i thF) Psi(vI bSm gL^dag, vI bSp gLbar): on bSp e4 it is the automorphism varphi of the super-loop, on bSm e4 its complex conjugate, and gLt = (gL^dag)^-1 is the complex conjugate gL^* of gL (50 random gL in SL(2,C), unit real quaternions vI and phases thF); (d) the covariant derivative is nabla_LL_p Psi(bSm, bSp) = Psi(nabla_p bSm, nabla_p bSp) with nabla_p (bSp e4) = d_p (bSp e4) + D_LL(uLw_p)(bSp e4) + g_v Dv_LL(tA_p)(bSp e4) - i g_F AF_LL_p bSp e4 (tA_p = sum_iota Av_LL^iota_p e_iota/2), and the same for bSm with the complex conjugate uLw_p^* in place of uLw_p: the gauge fields act through the derivations of B_LL (30 random points with random spinor charges, derivatives and fields); (e) hence gamma_LL^p nabla_LL_p Psi(bSm, bSp) = Psi(sum_p (nabla_p bSp) conj f_p, sum_p (nabla_p bSm) f_p): the Dirac operator is the right multiplication by the frame, sum_p R_(f_p) nabla_p on bSp e4 and sum_p R_(conj f_p) nabla_p on bSm e4 (canonical frame; tolerance 1e-12)  -- largest deviations 3.2e-16, 4.1e-16, 3.1e-15, 8.8e-16, 2.1e-15
 [PASS] GS-15  the Lorentz connection is fixed by the frame: for an x-dependent Lorentz transformation gL(x) with M_LL(gL(x)) = exp(sum_p x_LL^p M_LL(uL_p) + M_LL(uL)) (five random Lorentz generators), the frame f_p[x] = gLt(x) f_p gLt(x)^dag, whose Dirac matrices are gamma_LL^p'[f] = Sspin_LL(gL) gamma_LL^p' Sspin_LL(gL)^-1 (GS-3), and the connection Gamma_LL_p = -(d_p Sspin_LL(gL)) Sspin_LL(gL)^-1, the gauge transform of the canonical gauge (canonical frame, Gamma_LL_p = 0), satisfy at 20 random points: Gamma_LL_p = sgen_LL(uL) for an element uL of l_LL (block diagonal, upper block = -(lower block)^dag, lower block traceless), the Dirac matrices are covariantly constant, d_p gamma_LL^p'[f] + [Gamma_LL_p, gamma_LL^p'[f]] = 0, and the curvature Rc_LL_pp' vanishes (derivatives by central differences with the step 1e-4; tolerance 1e-6); the 24 commutators [sgen_LL(J_LL^j), gamma_LL^p'] and [sgen_LL(K_LL^j), gamma_LL^p'] have the rank 6 over the real numbers (the smallest eigenvalue of their Gram matrix exceeds 1e-6), so that covariant constancy determines the connection uniquely from the frame: on the flat manifold the Lorentz connection is not an independent field, and in the canonical frame it is zero  -- largest deviations 1.0e-9, 3.6e-8, 8.0e-9; smallest Gram eigenvalue 8.000
 [PASS] GS-16  the lattice operator of the solvers on plane waves: on a periodic chain of 24 sites along x_LL^1 (dx = 0.5, m = 0.4, mu = 0, no gauge fields, no pairing) the operator H_lat, applied by the routine of the solvers to exp(i q x_LL^1) times any of the 16 unit vectors, gives again a plane wave of the same momentum, and the 16 x 16 matrix of these images has the eigenvalues -eps_lat(q) (eightfold) and +eps_lat(q) (eightfold) at all 24 allowed momenta q = 2 pi k/(24 dx), for the Wilson coefficients r_W = 0 and r_W = 1 (tolerance 1e-12); these are the points of Figure 1, whose curves are the formula eps_lat  -- largest deviation 1.4e-14
@@ -1818,21 +1840,21 @@ the checks:
   for isospin down, each twice; the particle block restricted to each
   isospin component is checked separately.
 \item
-  \textbf{AS-2 and AS-4 (time evolution).} RK4 steps of the lattice
-  equations against the exact solutions: in a constant isospin potential
+  \textbf{AS-2 and AS-4 (time evolution).} The CVODE integration of the
+  lattice equations (\(r^{\rm tol}_{\rm LL}=10^{-12}\),
+  \(a^{\rm tol}_{\rm LL}=10^{-14}\), module \texttt{t2core::cvode})
+  against the exact solutions: in a constant isospin potential
   \(A^1_{{\rm LL},0}=1.5\) a particle of isospin up has the probability
   \(P^\uparrow_{\rm LL}=\cos^2(\omega^{\rm pr}_{\rm LL}x^0_{\rm LL}/2)\)
   of isospin up,
-  \(\omega^{\rm pr}_{\rm LL}=g^{\rm v}_{\rm LL}A^1_{{\rm LL},0}\)
-  (\(\ell^{\rm t}_{\rm LL}=0.004\), 4000 steps); in the uniform pair
-  field \(d^\iota_{\rm LL}=(0,0,0.3)\) (\(\mu_{\rm LL}=0.6\)) an
-  injected particle has the probability
+  \(\omega^{\rm pr}_{\rm LL}=g^{\rm v}_{\rm LL}A^1_{{\rm LL},0}\) (101
+  output times up to \(x^0_{\rm LL}=16\)); in the uniform pair field
+  \(d^\iota_{\rm LL}=(0,0,0.3)\) (\(\mu_{\rm LL}=0.6\)) an injected
+  particle has the probability
   \(P^{\rm h}_{\rm LL}=(\Delta_{\rm LL}/E^-_{\rm LL})^2\sin^2(E^-_{\rm LL}x^0_{\rm LL})\)
-  of the hole (\(\ell^{\rm t}_{\rm LL}=0.02\), 1000 steps). The relative
-  deviation of the whole state is compared with \(10^{-8}\), and its
-  expected size, the summed RK4 phase error (the number of steps times
-  the fifth power of the product of the largest energy of the state and
-  the time step, divided by 120), is printed.
+  of the hole (101 output times up to \(x^0_{\rm LL}=20\)). The relative
+  deviation of the whole state is compared with \(10^{-9}\), and the
+  numbers of steps and evaluations of CVODE are printed.
 \item
   \textbf{AS-3 (case B, Bogoliubov modes).} The identity
   \(\mathsf K^3_{\rm LL}\mathsf h_{\rm LL}(\vec q_{\rm LL})=\mathsf h_{\rm LL}(-\vec q_{\rm LL})^*\mathsf K^3_{\rm LL}\)
@@ -1934,11 +1956,11 @@ The data files (in \texttt{test2/data}) and their columns:
 \texttt{branch}, \texttt{E\_qp}),
 \texttt{t2\_A\_dispersion\_lattice.csv} (\texttt{q}, \texttt{Q\_LL},
 \texttt{E\_qp}), \texttt{t2\_A\_precession.csv} (\texttt{x\_LL\^{}0},
-\texttt{P\_up\_rk4}, \texttt{P\_up\_exact}),
+\texttt{P\_up\_cvode}, \texttt{P\_up\_exact}),
 \texttt{t2\_B\_bogoliubov\_curves.csv} (\texttt{q}, \texttt{eps\_lat},
 \texttt{E\_minus\_polar}, \texttt{E\_plus\_polar}),
 \texttt{t2\_B\_bogoliubov\_lattice.csv} (\texttt{q}, \texttt{E\_qp}),
-\texttt{t2\_B\_rabi.csv} (\texttt{x\_LL\^{}0}, \texttt{P\_hole\_rk4},
+\texttt{t2\_B\_rabi.csv} (\texttt{x\_LL\^{}0}, \texttt{P\_hole\_cvode},
 \texttt{P\_hole\_exact}), \texttt{t2\_B\_gap.csv} (\texttt{mu},
 \texttt{G\_over\_Gcrit\_m0}, \texttt{Delta}, \texttt{source}),
 \texttt{t2\_C\_kink\_profile.csv} (\texttt{x\_LL\^{}1}, \texttt{Delta},
@@ -1960,11 +1982,11 @@ Revision_SuperLoop, folder test2, program `t2_analytic`: analytic solutions of t
 10 of 10 checks passed
 
 [PASS] AS-1  free spinor charges in constant gauge potentials (case A): on a periodic chain of 32 sites along x_LL^1 (dx = 0.5, r_W = 1, m = 0.4, mu = 0.2, g_v = 0.7, g_F = 0.45) with the constant potentials Av_LL^3_1 = 0.8 and AF_LL_1 = 0.6 (in the links) and Av_LL^3_0 = 0.5 and AF_LL_0 = 0.3 (in the potential matrix), and no pair field, the 16 eigenvalues of the lattice operator on the plane wave of each allowed momentum q are, for each isospin component (Q_LL = +1/2 with Acal_up_p = g_F AF_LL_p + g_v Av_LL^3_p/2, Q_LL = -1/2 with Acal_down_p = g_F AF_LL_p - g_v Av_LL^3_p/2), +-eps_lat(q - Acal_1) - Acal_0 - mu (particles) and -(+-eps_lat(q + Acal_1) - Acal_0 - mu) (holes), each twice: the potential of the space direction shifts the momentum (minimal coupling q -> q - Acal_1) and the potential of the time direction shifts the energy; the particle block does not mix the two isospin components, and its restriction to each component has the eigenvalues +-eps_lat(q - Acal_1) - Acal_0 - mu (tolerance 1e-12)  -- largest deviation 9.8e-15; Acal_up_1 = 0.5500, Acal_down_1 = -0.0100, Acal_up_0 = 0.3100, Acal_down_0 = -0.0400
-[PASS] AS-2  isospin precession in a constant isospin potential (case A): in the potential Av_LL^1_0 = 1.5 (along tau_1, no other field) the positive-energy lattice plane wave chi_pw (x) (isospin up) evolves as exp(-i (eps_lat - mu) x_LL^0) chi_pw (x) (cos(omega_pr x_LL^0/2), i sin(omega_pr x_LL^0/2)) with omega_pr = g_v Av_LL^1_0, so that P_up = cos^2(omega_pr x_LL^0/2); the RK4 integration of the lattice equations (periodic chain of 16 sites, dx = 0.5, r_W = 1, m = 0.4, mu = 0.2, momentum 2 pi 2/(16 dx), dt = 0.004, 4000 steps) agrees with this exact solution at every 40th step (relative deviation of the whole state, tolerance 1e-8; the expected size, the summed RK4 phase error N (E dt)^5/120 for the largest energy E, is stated)  -- largest relative deviation 8.7e-10 (expected about 1.2e-9); omega_pr = 1.0500, eps_lat = 1.723884
+[PASS] AS-2  isospin precession in a constant isospin potential (case A): in the potential Av_LL^1_0 = 1.5 (along tau_1, no other field) the positive-energy lattice plane wave chi_pw (x) (isospin up) evolves as exp(-i (eps_lat - mu) x_LL^0) chi_pw (x) (cos(omega_pr x_LL^0/2), i sin(omega_pr x_LL^0/2)) with omega_pr = g_v Av_LL^1_0, so that P_up = cos^2(omega_pr x_LL^0/2); the CVODE integration of the lattice equations (Adams-Moulton formulas with local error control, rtol = 1e-12, atol = 1e-14; periodic chain of 16 sites, dx = 0.5, r_W = 1, m = 0.4, mu = 0.2, momentum 2 pi 2/(16 dx)) agrees with this exact solution at the 101 output times x_LL^0 = 0, 0.16, ..., 16 (relative deviation of the whole state, tolerance 1e-9; the numbers of steps and evaluations of CVODE are stated)  -- largest relative deviation 1.3e-11; CVODE: 1013 steps, 1494 evaluations of the right side, 3 rejected steps, 1492 corrector iterations (0 convergence failures), last order 7, last step 1.6200e-2; omega_pr = 1.0500, eps_lat = 1.723884
 [PASS] AS-3  the Bogoliubov modes of the uniform polar superfluid dvec = (0, 0, Delta) (case B): Kch_3 h(q) = conj(h(-q)) Kch_3, so that for an eigenvector chi_pw of h(q) with the energy +eps or -eps the hole vector Kch_3 chi_pw is an eigenvector of conj(h(-q)) with the same energy; Ppair = Delta Kch_3^dag couples (chi_pw, 0) only to (0, Kch_3 chi_pw), and (cos theta_B chi_pw, sin theta_B Kch_3 chi_pw) with cos^2 theta_B = (1 + (+-eps - mu)/E)/2, sin^2 theta_B = (1 - (+-eps - mu)/E)/2, E = ((+-eps - mu)^2 + Delta^2)^(1/2), is an eigenvector of H_BdG(q) with the energy E, which is E^- for the positive branch +eps and E^+ for the negative branch -eps (50 random momenta, chemical potentials and gaps, m = 0.4; tolerance 1e-12); on the lattice (periodic chain of 32 sites, dx = 0.5, r_W = 1, m = 0.4, mu = 0.6, Delta = 0.3) the 16 eigenvalues of the lattice operator on the plane wave of each allowed momentum are +-E^- and +-E^+ with eps_lat in place of eps, each four times (tolerance 1e-12)  -- largest deviations 6.7e-15 (continuum), 1.2e-14 (lattice)
-[PASS] AS-4  the particle-hole (Rabi) oscillation of a particle injected into the uniform polar superfluid (case B): on a periodic chain of 16 sites (dx = 0.5, r_W = 1, m = 0.4, mu = 0.6) with the pair field dvec = (0, 0, 0.3), the positive-energy lattice plane wave chi_pw of isospin up at the momentum 2 pi/(16 dx) evolves as (cos(E^- x_LL^0) - i ((eps_lat - mu)/E^-) sin(E^- x_LL^0)) (chi_pw, 0) - i (Delta/E^-) sin(E^- x_LL^0) (0, Kch_3 chi_pw), with E^- = ((eps_lat - mu)^2 + Delta^2)^(1/2): the probability of the hole is P_hole = (Delta/E^-)^2 sin^2(E^- x_LL^0); the RK4 integration of the lattice equations (dt = 0.02, 1000 steps) agrees with this exact solution at every 10th step (relative deviation of the whole state, tolerance 1e-8; the expected size N (E dt)^5/120 is stated)  -- largest relative deviation 5.3e-10 (expected about 5.3e-10); eps_lat = 0.943799, E^- = 0.456287, largest P_hole = (Delta/E^-)^2 = 0.432281
+[PASS] AS-4  the particle-hole (Rabi) oscillation of a particle injected into the uniform polar superfluid (case B): on a periodic chain of 16 sites (dx = 0.5, r_W = 1, m = 0.4, mu = 0.6) with the pair field dvec = (0, 0, 0.3), the positive-energy lattice plane wave chi_pw of isospin up at the momentum 2 pi/(16 dx) evolves as (cos(E^- x_LL^0) - i ((eps_lat - mu)/E^-) sin(E^- x_LL^0)) (chi_pw, 0) - i (Delta/E^-) sin(E^- x_LL^0) (0, Kch_3 chi_pw), with E^- = ((eps_lat - mu)^2 + Delta^2)^(1/2): the probability of the hole is P_hole = (Delta/E^-)^2 sin^2(E^- x_LL^0); the CVODE integration of the lattice equations (Adams-Moulton formulas with local error control, rtol = 1e-12, atol = 1e-14) agrees with this exact solution at the 101 output times x_LL^0 = 0, 0.2, ..., 20 (relative deviation of the whole state, tolerance 1e-9; the numbers of steps and evaluations of CVODE are stated)  -- largest relative deviation 4.7e-10; CVODE: 486 steps, 963 evaluations of the right side, 2 rejected steps, 961 corrector iterations (0 convergence failures), last order 5, last step 4.2598e-2; eps_lat = 0.943799, E^- = 0.456287, largest P_hole = (Delta/E^-)^2 = 0.432281
 [PASS] AS-5  the gap equation (2.33) in closed form for massless spinor charges (case B): int_(q<Lambda) d^3q/(2 pi)^3 (1/E^+ + 1/E^-) with E^(+-) = ((q +- mu)^2 + Delta^2)^(1/2) equals (1/(4 pi^2)) [(Lambda - 3 mu) E^+(Lambda) + (Lambda + 3 mu) E^-(Lambda) + (2 mu^2 - Delta^2) (asinh((Lambda + mu)/Delta) + asinh((Lambda - mu)/Delta))] for six pairs (mu, Delta) (relative deviation from composite Gauss-Legendre quadrature with 32 nodes per panel, tolerance 1e-10); its limit Delta -> 0 at mu = 0 is Lambda^2/(2 pi^2), so that G_crit = 2 pi^2/Lambda^2 (tolerance 1e-8); the gaps Delta(G) found from the closed form by bisection satisfy G int(...) = 1 with the integral computed by quadrature (12 couplings, tolerance 1e-9); and for mu > 0 and weak coupling (G < G_crit) the gap approaches the BCS form Delta = 2 (Lambda^2 - mu^2)^(1/2) exp(-3/2) exp(-(pi^2/mu^2) (1/G - 1/G_crit)), the relative deviation being smaller than twice the size (Delta^2/(2 mu^2)) ln(1/Delta) of the leading correction (mu = 0.3, G/G_crit = 0.3, 0.4, 0.5); Lambda = 1  -- largest deviations 1.8e-15, 0.0e0, 2.2e-15; Delta at G = 1.5 G_crit, mu = 0: 0.675339; weak coupling at mu = 0.3, G/G_crit = 0.3, 0.4, 0.5: Delta = 9.985e-7 (-7.6e-11, scale 7.7e-11), 1.023e-4 (-5.3e-7, scale 5.3e-7), 1.646e-3 (-9.5e-5, scale 9.6e-5)
-[PASS] AS-6  the uniform polar state is an exact self-consistent solution of the lattice mean-field equations (case B): on a periodic chain of 16 sites (dx = 0.5, r_W = 1, m = 0.4, mu = 0.6) with dvec = (0, 0, 0.3), the sum over the 128 positive-energy eigenvectors w of the lattice operator (unit vectors) of w_p^T Kch_iota conj(w_h), computed at every site by the routine of the solvers, is 0 for iota = 1, 2 and -2 Delta (1/16) sum_q (1/E^+ + 1/E^-) (eps_lat in place of eps, the 16 allowed momenta) for iota = 3 (tolerance 1e-12); with Pi_iota = dx^(-1) times this sum (the continuum normalization of a chain) and the coupling G given by the lattice gap equation 1/G = (1/(16 dx)) sum_q (1/E^+ + 1/E^-), the self-consistency condition d_iota = -(G/2) Pi_iota gives back dvec = (0, 0, Delta) on every site (tolerance 1e-12): a fixed point that the self-consistent solvers must reproduce  -- 128 positive modes; largest deviations 2.6e-15 (mode sum), 1.1e-15 (new dvec); G = 0.432159
+[PASS] AS-6  the uniform polar state is an exact self-consistent solution of the lattice mean-field equations (case B): on a periodic chain of 16 sites (dx = 0.5, r_W = 1, m = 0.4, mu = 0.6) with dvec = (0, 0, 0.3), the sum over the 128 positive-energy eigenvectors of the lattice operator (unit vectors, with the particle part psi_p and the hole part psi_h) of psi_p^T Kch_iota conj(psi_h), computed at every site by the routine of the solvers, is 0 for iota = 1, 2 and -2 Delta (1/16) sum_q (1/E^+ + 1/E^-) (eps_lat in place of eps, the 16 allowed momenta) for iota = 3 (tolerance 1e-12); with Pi_iota = dx^(-1) times this sum (the continuum normalization of a chain) and the coupling G given by the lattice gap equation 1/G = (1/(16 dx)) sum_q (1/E^+ + 1/E^-), the self-consistency condition d_iota = -(G/2) Pi_iota gives back dvec = (0, 0, Delta) on every site (tolerance 1e-12): a fixed point that the self-consistent solvers must reproduce  -- 128 positive modes; largest deviations 2.6e-15 (mode sum), 1.1e-15 (new dvec); G = 0.432159
 [PASS] AS-7  the bound states of a domain wall (kink) of the pair field (case C), in the continuum: the 8 x 8 matrices (Dirac (x) isospin) satisfy (Kch_3^dag)^2 = -1, (Kch_3^dag)^dag = -Kch_3^dag, alpha_LL^1 Kch_3^dag alpha_LL^1 = -Kch_3^dag and beta_LL Kch_3^dag alpha_LL^1 = -Kch_3^dag alpha_LL^1 beta_LL, and alpha_LL^1 and beta_LL are real (tolerance 1e-13); for the kink dvec = (0, 0, Delta(x_LL^1)) with Delta(x_LL^1) = Delta_inf tanh(x_LL^1/ell_K) (Delta_inf = 1, ell_K = 1) and mu = 0, the mode psi_p = phi_K chi_K, psi_h = i Kch_3^dag alpha_LL^1 phi_K chi_K with phi_K = cosh(x_LL^1/ell_K)^(-Delta_inf ell_K) (so that d phi_K/d x_LL^1 = -Delta phi_K) and a constant chi_K with beta_LL chi_K = +chi_K or -chi_K satisfies the sixteen component equations with the energy +m or -m at 50 random points (m = 0.4, random chi_K; tolerance 1e-12)  -- deviations of the identities 0.0e0, of the equations 8.3e-17
 [PASS] AS-8  the square of the operator and the complete spectrum of the bound states of a wall (case C): with mu = 0, no gauge fields, dvec = (0, 0, Delta(x_LL^1)) real and the plane wave exp(i (q^2 x_LL^2 + q^3 x_LL^3)) along the wall, H_DB^2 = (-d^2/d(x_LL^1)^2 + (q^2)^2 + (q^3)^2 + m^2 + Delta^2) 1_16 + (d Delta/d x_LL^1) Qmat_K with the constant matrix Qmat_K = [[0, -i alpha_LL^1 Kch_3^dag], [-i alpha_LL^1 Kch_3, 0]], which is Hermitian, squares to the unit matrix and has the trace 0 (tolerance 1e-13), because alpha_LL^j Kch_3^dag = -Kch_3^dag conj(alpha_LL^j) for j = 1, 2, 3 (tolerance 1e-13); the identity is checked by applying H_DB twice to a Gaussian times a random 16-component vector, with exact derivatives, for 50 random kinks Delta = Delta_inf tanh(x_LL^1/ell_K), points and momenta (m = 0.4; tolerance 1e-11); the bound states of the two scalar operators -d^2/d(x_LL^1)^2 + Delta^2 - d Delta/d x_LL^1 (the eigenvalue -1 of Qmat_K) and -d^2/d(x_LL^1)^2 + Delta^2 + d Delta/d x_LL^1 (the eigenvalue +1) are those of Poeschl-Teller wells, Delta_inf^2 - (Delta_inf - k_K/ell_K)^2 for the integers k_K with 0 <= k_K < Delta_inf ell_K (eigenvalue -1) and 1 <= k_K < Delta_inf ell_K (eigenvalue +1): finite differences with 4000 and 8001 points on (-20, 20), extrapolated, give exactly these bound states, and no others below the threshold Delta_inf^2, for Delta_inf ell_K = 1 and 2.5 (ell_K = 1; tolerance 1e-6); hence the bound states of the wall have the energies +-(m^2 + (q^2)^2 + (q^3)^2 + 2 k_K Delta_inf/ell_K - k_K^2/ell_K^2)^(1/2)  -- deviations: Qmat_K 0.0e0, relation 0.0e0, square 9.9e-16, bound states 9.2e-9; Delta_inf ell_K = 1, Qmat_K = -1: 1 bound states; Delta_inf ell_K = 1, Qmat_K = +1: 0 bound states; Delta_inf ell_K = 2.5, Qmat_K = -1: 3 bound states; Delta_inf ell_K = 2.5, Qmat_K = +1: 2 bound states
 [PASS] AS-9  the bound states of the domain wall on the lattice (case C): on a ring of length 24 (60 sites, dx = 0.4, r_W = 1, m = 0.4, mu = 0) with the kink-antikink profile Delta(x_LL^1) = tanh(x_LL^1 - 6) tanh(18 - x_LL^1), the lattice operator has exactly 16 eigenvalues inside 0.8 times the continuum threshold (m^2 + Delta_inf^2)^(1/2), eight positive and eight negative (four per wall and sign); with the relative residual r of the analytic bound state at dx = 0.4 and the distance delta from its Rayleigh quotient E_R to the nearest eigenvalue outside the cluster of the eight positive bound states, these eigenvalues lie within r^2/delta of +-E_R (the Kato-Temple bound), and the summed density of the eight states near +m agrees with the analytic density of the bound states of the two walls to second order, 1 - (Bhattacharyya coefficient of the two normalized densities) < (1/2) (r/delta)^2 (the Davis-Kahan bound); for the analytic bound state of the kink (chi_K with the components 1 and 5 equal to 1/sqrt 2 and the others zero, beta_LL chi_K = chi_K) on rings with dx = 0.4, 0.2, 0.1, 0.05 the Rayleigh quotient E_R equals the exact lattice formula m + (r_W/(2 dx)) sum (phi_K(s+1) - phi_K(s))^2 / sum phi_K(s)^2 (tolerance 1e-12), (E_R - m)/(r_W dx) tends to 1/6 (within 1 per cent at dx = 0.05, the difference decreasing by a factor between 3.5 and 4.5 at each halving of dx: the Wilson term shifts the bound state at first order in dx, by r_W dx/6, with a correction of order dx^3), and the relative residual decreases at least by the factor 0.6 at each halving of dx  -- 16 bound states (8 positive); largest | |E| - E_R | = 0.00312 (bound r^2/delta = 0.02260, delta = 0.6139); 1 - Bhattacharyya coefficient = 1.12e-3 (bound 1.84e-2); E_R = 0.465443, 0.433178, 0.416647, 0.408331; (E_R - m)/dx = 0.16361, 0.16589, 0.16647, 0.16662; residuals 1.18e-1, 5.94e-2, 2.98e-2, 1.49e-2; deviation from the lattice formula 3.8e-15
@@ -1975,11 +1997,15 @@ Revision_SuperLoop, folder test2, program `t2_analytic`: analytic solutions of t
 \subsection{Item {[}3{]}: the Python
 solver}\label{item-3-the-python-solver}}
 
-The program \texttt{test2/python/t2\_solve.py} (Python 3, NumPy, SciPy)
-solves the mean-field equations of the spinor field on the lattice for
-the problem described in an input file of lines \texttt{key\ =\ value}.
-It builds the lattice operator \(\mathcal H^{\rm lat}_{\rm LL}\) as a
-sparse matrix from \(8\times8\) blocks: on each site
+The program \texttt{test2/python/t2\_solve.py} (Python 3, NumPy, SciPy;
+for the time integration the shared library \texttt{libt2cvode} of the
+Rust workspace, member \texttt{t2cvode\_c}, which it calls through the
+standard module \texttt{ctypes} and which integrates with
+\texttt{t2core::cvode}) solves the mean-field equations of the spinor
+field on the lattice for the problem described in an input file of lines
+\texttt{key\ =\ value}. It builds the lattice operator
+\(\mathcal H^{\rm lat}_{\rm LL}\) as a sparse matrix from \(8\times8\)
+blocks: on each site
 \((m_{\rm LL}+r^{\rm W}_{\rm LL}n^{\rm act}_{\rm LL}/\ell^{\rm x}_{\rm LL})\beta_{\rm LL}\otimes\sigma^{\rm LL}_0-\mathsf 1_4\otimes(\mathsf A_{{\rm LL},0}+\mu_{\rm LL}\sigma^{\rm LL}_0)\);
 to the forward neighbour in an active direction \(j\)
 \((-i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})\otimes\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\),
@@ -1989,26 +2015,37 @@ to the backward neighbour
 site); the hole components receive the complex conjugate blocks with the
 opposite sign, and the pair field the blocks \(\mathsf P_{\rm LL}\) and
 \(\mathsf P^\dagger_{\rm LL}\). The tasks: \texttt{evolve} (one mode,
-RK4), \texttt{spectrum} (dense diagonalization), \texttt{ground\_state}
-(the fixed point of
+CVODE), \texttt{spectrum} (dense diagonalization),
+\texttt{ground\_state} (the fixed point of
 \(d^\iota_{\rm LL}=-G_{\rm LL}(\ell^{\rm x}_{\rm LL})^{-n^{\rm act}_{\rm LL}}\sum_n(\psi^{\rm p}_{{\rm LL},n})^T\mathsf K^\iota_{\rm LL}(\psi^{\rm h}_{{\rm LL},n})^*/2\)
 over the positive-energy unit eigenvectors, found by Anderson
-acceleration with memory 6) and \texttt{quench} (all modes, the implicit
-midpoint rule solved by fixed-point iteration to a change below
-\(10^{-14}\)). Its self-test compares the sparse operator with a
-site-by-site evaluation of the same formulas on a \(3\times4\times2\)
-lattice with random fields (to \(10^{-13}\)), checks Hermiticity, the
-closed form of the links against the general matrix exponential, and the
-256 eigenvalues of a ring in constant potentials against the formula of
-check AS-1. Every run checks its own result: Hermiticity, the
-conservation of the norm and of the energy within the RK4 bound (the
-number of steps times
-\((\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL})^6/144\)), the particle-hole
-symmetry of a spectrum, the convergence and the full self-consistency
-condition, the conservation of \(N^{\rm F}_{\rm LL}\) (to \(10^{-10}\))
-and of the orthonormality of the modes (to \(10^{-11}\)) in a quench,
-and, for a free packet on a periodic lattice, its velocity against the
-exact mean group velocity of its Fourier components (to \(10^{-5}\)).
+acceleration with memory 6) and \texttt{quench} (all modes at once by
+CVODE, the pair field computed from the modes at every evaluation of the
+right side). Both time-dependent tasks use
+\(r^{\rm tol}_{\rm LL}=10^{-12}\), \(a^{\rm tol}_{\rm LL}=10^{-14}\)
+(input keys \texttt{rtol}, \texttt{atol}) and write the state at the
+output times \(0\), \(\ell^{\rm t}_{\rm LL}\),
+\(2\ell^{\rm t}_{\rm LL}\), \ldots{} (keys \texttt{output\_step},
+\texttt{outputs}; input format \texttt{t2in\ 2}). Its self-test compares
+the sparse operator with a site-by-site evaluation of the same formulas
+on a \(3\times4\times2\) lattice with random fields (to \(10^{-13}\)),
+checks Hermiticity, the closed form of the links against the general
+matrix exponential, the 256 eigenvalues of a ring in constant potentials
+against the formula of check AS-1, the time integration through
+\texttt{libt2cvode} (an eigenvector of the random operator evolves as
+\(\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})\) times itself, within
+\(10B^{\rm err}_{\rm LL}\)), and that its seven examples are the input
+files of the folder \texttt{test2/examples}. Every run checks its own
+result: Hermiticity, the conservation of the norm (within
+\(10B^{\rm err}_{\rm LL}\)) and of the energy (within
+\(2B^{\rm H}_{\rm LL}\) times that), the particle-hole symmetry of a
+spectrum, the convergence and the full self-consistency condition, the
+conservation of \(N^{\rm F}_{\rm LL}\) (within
+\(20\lVert\mathsf W^{\rm m}_{\rm LL}\rVert B^{\rm err}_{\rm LL}\)) and
+of the orthonormality of the modes (within \(20B^{\rm err}_{\rm LL}\))
+in a quench, and, for a free packet on a periodic lattice, its velocity
+against the exact mean group velocity of its Fourier components (to
+\(10^{-5}\)).
 
 The program \texttt{test2/python/t2\_examples\_check.py} compares the
 outputs of the seven examples with predictions that the solver does not
@@ -2031,8 +2068,10 @@ sinusoid) against the root of
 \(((\omega^{\rm H}_{\rm LL})^2/4-\Delta_{\rm LL}^2)\sum_{q^1_{\rm LL}\neq0}1/(E^\pm_{\rm LL}((E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2/4))=1/\Delta_{\rm LL}\)
 with the time-averaged gap, the amplitude mode of the linearized
 self-consistent equations (within 1 per cent), and the constancy of the
-fermion number. With a second set of outputs (item {[}5{]}) it also
-compares the two sets number by number.
+fermion number (within the bound of the solver's check). With a second
+set of outputs (item {[}5{]}) it also compares the two sets number by
+number and writes the tables of Section 6.4 of the document of Test 2
+into \texttt{test2/data/t2\_cmp\_fragments.md}.
 
 The output files of the solver (in \texttt{test2/data}, prefix
 \texttt{t2\_py\_}): for each example
@@ -2065,13 +2104,15 @@ from the normal state, and \texttt{ortho\_error} the largest deviation
 of the modes from orthonormality. The reports of the last run:
 
 \begin{verbatim}
-Revision_SuperLoop, folder test2, program `t2_solve.py` (Test 2, item 3): the self-test of the lattice operator of the Python solver
-4 of 4 checks passed
+Revision_SuperLoop, folder test2, program `t2_solve.py` (Test 2, item 3): the self-test of the lattice operator, of the time integration and of the examples of the Python solver
+6 of 6 checks passed
 self-test of t2_solve.py
 [PASS] the sparse lattice operator equals the site-by-site implementation (3 x 4 x 2 sites, random links, potentials and pair field, periodic and wall directions): largest deviation 7.2e-15
 [PASS] it is Hermitian: largest deviation 0.0e+00
 [PASS] the closed form of the links equals the matrix exponential exp(-i dx (g_v a.tau/2 + g_F b)) (20 random potentials): largest deviation 2.2e-16
 [PASS] plane waves in constant potentials: the 256 eigenvalues of a ring of 16 sites are the energies of check AS-1 (largest deviation 1.4e-14)
+[PASS] the time integration with CVODE: the eigenvector of the largest eigenvalue E = 7.258866 of the operator of check 1 evolves as exp(-i E x^0) up to x^0 = 20: largest deviation 1.1e-09 (bound: 10 times the accumulated local error permitted by CVODE, 5.1e-08; 3009 steps)
+[PASS] the 7 examples of this program are identical to the input files of the folder test2/examples (7 of 7)
 self-test: ALL PASS
 \end{verbatim}
 
@@ -2087,15 +2128,16 @@ lattice: sites 128 1 1, dx = 0.5, boundary periodic periodic periodic, r_W = 1, 
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 30 (600 outputs), fields every 20 outputs; Hbound = 6.4
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.11 s
+CVODE: 803 steps, 1406 evaluations of the right side, 4 rejected steps, 1403 corrector iterations (0 convergence failures), last order 7, last step 3.8610e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.960712721889; final norm 1.00000000011; final P_hole = 0; final P_up = 1; final centre of the density (44.9242, 0, 0); computing time 0.53 s
 output files: t2_py_packet_free_summary.txt, t2_py_packet_free_series.csv, t2_py_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 1.50e-07 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 4.5e-03)
-[PASS] the energy <w|H_lat|w> = 0.9607127219 is conserved (static fields): largest change 1.66e-07 (bound 2.9e-02)
-[PASS] the free packet moves with its mean group velocity: expected ['0.96413786', '0.00000000', '0.00000000'] (the group velocity at the central momentum is ['0.97555149', '0.00000000', '0.00000000']), measured ['0.96413827', '0.00000000', '0.00000000']; deviation 4.11e-07 (allowed: 1e-5 of the velocity)
+[PASS] the norm of the mode is conserved: largest change 1.07e-10 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 1.6e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.9607127219 is conserved (static fields): largest change 1.23e-10 (bound: 2 Hbound times the bound of the norm, 2.1e-07)
+[PASS] the free packet moves with its mean group velocity: expected ['0.96413786', '0.00000000', '0.00000000'] (the group velocity at the central momentum is ['0.97555149', '0.00000000', '0.00000000']), measured ['0.96413853', '0.00000000', '0.00000000']; deviation 6.69e-07 (allowed: 1e-5 of the velocity)
 \end{verbatim}
 
 The summary of the example \texttt{cyclotron}
@@ -2110,14 +2152,15 @@ lattice: sites 40 40 1, dx = 0.5, boundary wall wall periodic, r_W = 1, active d
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 36 (720 outputs), fields every 80 outputs; Hbound = 12.4
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.88 s
+CVODE: 2283 steps, 4570 evaluations of the right side, 4 rejected steps, 4567 corrector iterations (0 convergence failures), last order 5, last step 1.5861e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.806852665402; final norm 0.999999997436; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 9.27 s
 output files: t2_py_cyclotron_summary.txt, t2_py_cyclotron_series.csv, t2_py_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 2.95e-07 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 2.8e-01)
-[PASS] the energy <w|H_lat|w> = 0.8068526654 is conserved (static fields): largest change 3.62e-07 (bound 3.5e+00)
+[PASS] the norm of the mode is conserved: largest change 2.56e-09 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 8.4e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.8068526654 is conserved (static fields): largest change 3.15e-09 (bound: 2 Hbound times the bound of the norm, 2.1e-06)
 \end{verbatim}
 
 The summary of the example \texttt{andreev}
@@ -2132,14 +2175,15 @@ lattice: sites 240 1 1, dx = 0.5, boundary wall periodic periodic, r_W = 1, acti
 parameters: m = 0.4, mu = 1, g_v = 0.7, g_F = 0.45
 pair field: step, direction 3, amplitude 0.6, phase 0, width 1, positions [60.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 1200, output every 40 steps, Hbound = 8, dt Hbound = 0.4 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 60 (1200 outputs), fields every 40 outputs; Hbound = 8
 initial mode: Gaussian packet, centre [30.0, 0.0, 0.0], width 4, momentum [0.917, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 1.073085668
-results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.28 s
+CVODE: 1763 steps, 3514 evaluations of the right side, 4 rejected steps, 3511 corrector iterations (0 convergence failures), last order 7, last step 3.9994e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.073638881768; final norm 0.999999999994; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 1.28 s
 output files: t2_py_andreev_summary.txt, t2_py_andreev_series.csv, t2_py_andreev_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 1.46e-09 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 3.4e-02)
-[PASS] the energy <w|H_lat|w> = 0.07363888177 is conserved (static fields): largest change 2.80e-09 (bound 2.7e-01)
+[PASS] the norm of the mode is conserved: largest change 9.81e-12 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 4.0e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.07363888177 is conserved (static fields): largest change 1.88e-11 (bound: 2 Hbound times the bound of the norm, 6.5e-07)
 \end{verbatim}
 
 The summary of the example \texttt{kink\_spectrum}
@@ -2154,7 +2198,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.88 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 1.01 s
 output files: t2_py_kink_spectrum_summary.txt, t2_py_kink_spectrum_series.csv, t2_py_kink_spectrum_fields.csv, t2_py_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -2174,7 +2218,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.91 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.70 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_py_ground_state_summary.txt, t2_py_ground_state_series.csv, t2_py_ground_state_fields.csv, t2_py_ground_state_spectrum.csv, t2_py_ground_state_iterations.csv
 checks:
@@ -2198,7 +2242,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 8.41 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 8.69 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_py_kink_ground_state_summary.txt, t2_py_kink_ground_state_series.csv, t2_py_kink_ground_state_fields.csv, t2_py_kink_ground_state_spectrum.csv, t2_py_kink_ground_state_iterations.csv
 checks:
@@ -2221,42 +2265,42 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107906; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 0.47 s
-time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
-the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
-the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 48.06 s
-the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107906; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 0.44 s
+time integration of the 192 modes (the self-consistent mean-field equations, 73728 complex unknowns): CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.04 up to x^0 = 24 (600 outputs), fields every 25 outputs
+CVODE: 2290 steps, 2826 evaluations of the right side, 4 rejected steps, 2823 corrector iterations (0 convergence failures), last order 7, last step 1.0595e-02
+the conserved mean-field functional E_MF = 490.857953373 changes by at most 9.672e-08 (CVODE keeps it up to its accumulated local errors)
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5031251078; smallest and largest |d| after the quench 0.4902257679 and 0.513432343; computing time 43.06 s
+the amplitude of the pair field oscillates with the angular frequency 1.188975 (least-squares fit of a constant plus a cosine and a sine of that angular frequency of x^0 to |d| for x^0 > 0, the angular frequency scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00707867); twice the mean of |d| after the quench is 1.006250
 output files: t2_py_quench_summary.txt, t2_py_quench_series.csv, t2_py_quench_fields.csv, t2_py_quench_spectrum.csv, t2_py_quench_iterations.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
 [PASS] the self-consistent (Anderson) iteration converged: 8 iterations, last change of d^iota 1.62e-14 (tolerance 1e-12, damping 0.6)
 [PASS] the result satisfies the full self-consistency condition d = -(G/2) Pi/dx^D (all three isospin components, real and imaginary parts): largest residual 1.14e-14
-[PASS] the fermion number N_F = 96 is conserved by the self-consistent evolution: largest change 2.41e-11
-[PASS] the modes stay orthonormal (the Pauli principle): largest |W^dag W - 1| = 1.18e-12
+[PASS] the fermion number N_F = 96 is conserved by the self-consistent evolution: largest change 1.27e-08 (bound: 2 ||W_modes|| times 10 times the accumulated local error permitted by CVODE, 1.5e-05)
+[PASS] the modes stay orthonormal (the Pauli principle): largest |W_modes^dag W_modes - 1| = 4.85e-10 (bound: 2 times 10 times the accumulated local error permitted by CVODE, 1.1e-06)
 \end{verbatim}
 
 \begin{verbatim}
 Revision_SuperLoop, folder test2, program `t2_examples_check.py` (Test 2, items 3 and 5): checks of the solutions of the seven examples by the Python solver against independent predictions
 10 of 10 checks passed
-EX-1 packet_free: fitted velocity 0.96413792; group velocity of (2.37) averaged over the Gaussian distribution of momenta 0.96405883; at the central momentum 0.97555149; largest deviation of the centre from the straight line 1.34e-05
+EX-1 packet_free: fitted velocity 0.96413818; group velocity of (2.37) averaged over the Gaussian distribution of momenta 0.96405883; at the central momentum 0.97555149; largest deviation of the centre from the straight line 1.34e-05
 EX-2 cyclotron: B_up = 0.1800, magnetic length 2.3570, energy 0.806853, mean Landau index (E^2 - m^2)/(2 B_up) = 1.364; Landau levels (3.32) ['0.4000', '0.7211', '0.9381', '1.1136', '1.2649', '1.4000']; the centre returns closest to its start at x^0 = 31.10 (distance 1.280); the spacings 2 pi/(E_(n+1) - E_n) of the neighbouring levels are ['19.57', '28.96', '35.81']; the centre stays within x^1 in [8.75, 12.56], x^2 in [7.98, 13.30]
 EX-3 andreev: energy of the packet 0.073639, gap 0.600; the centre turns at x^0 = 31.15 (x^1 = 57.520) and then moves with -0.8606; final hole probability (Andreev reflection) 0.978457, particle probability (normal reflection) 0.021543; probability beyond x_s + 4 xi at the end 6.83e-06
 EX-4 kink_spectrum: 16 eigenvalues with |E| < 0.9 (m^2 + Delta_inf^2)^(1/2) = 0.9693: -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232; the Rayleigh quotient (3.29) of the analytic bound state on this lattice is E_R = 0.465441
 EX-5 ground_state: |d| = 0.404281735110 on all sites (spread 0.0e+00); root of (3.21) 0.404281735110; smallest quasi-particle energy 0.4044936525, predicted min_q E^-(q) = 0.4044936525
 EX-6 kink_ground_state: the 12 smallest |E| are 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.61324 0.61324 0.61324 0.61324; the first-order Wilson shift of (3.29) for the computed profile is 0.033215; the uniform gap of the periodic chain at the same G is Delta_0 = 0.598960; largest deviation of the profile from Delta_0 tanh(Delta_0 (x - x_c)) in the inner half 0.0538
-EX-7 quench: Delta before 0.484762 (root of (3.21) at G = 0.45), Delta of the ground state at the new coupling 0.503114; |d| jumps to 0.490148 at x^0 = 0 (the factor G'/G) and oscillates about the mean 0.500877 with the amplitude 0.00587 and the fitted angular frequency 1.18449; amplitude mode of the linearized equations at the mean: 1.18991 (between 2 Delta = 1.00175 and 2 E_1 = 1.44703)
+EX-7 quench: Delta before 0.484762 (root of (3.21) at G = 0.45), Delta of the ground state at the new coupling 0.503114; |d| jumps to 0.490148 at x^0 = 0 (the factor G'/G) and oscillates about the mean 0.503125 with the amplitude 0.00708 and the fitted angular frequency 1.18898; amplitude mode of the linearized equations at the mean: 1.19341 (between 2 Delta = 1.00625 and 2 E_1 = 1.45014)
 checks:
 [PASS] EX-1 the free packet moves uniformly with the averaged group velocity of the lattice dispersion (2.37): relative deviation 8.2e-05 (allowed 1e-3: the spinor of the packet varies slightly across its momenta)
-[PASS] EX-2 norm and energy of the packet in the magnetic field are conserved (largest changes 2.9e-07, 3.6e-07)
+[PASS] EX-2 norm and energy of the packet in the magnetic field are conserved (largest changes 2.6e-09, 3.2e-09)
 [PASS] EX-2 the orbit is bounded by the magnetic field and stays away from the walls (more than 2 from each wall)
 [PASS] EX-3 below the gap (|E| = 0.0736 < 0.60) the packet is reflected: it moves back (velocity -0.8606), and only 6.8e-06 of it is found inside the superfluid region (allowed 1e-4: the components of the packet with energies above the gap, more than four standard deviations of its energy distribution away, pass the interface)
 [PASS] EX-3 the reflection is mainly Andreev reflection: the reflected packet is a hole with probability 0.9785
 [PASS] EX-4 exactly 16 bound states (8 at positive, 8 at negative energy), within 0.0031 of +-E_R (the Kato-Temple bound 0.023 of check AS-9)
 [PASS] EX-5 the self-consistent pair field is the root of the lattice gap equation (3.21) (deviation 2.6e-13), and the gap of the spectrum is min_q E^-(q) (deviation 4.0e-13)
 [PASS] EX-6 the self-consistent kink carries 8 bound states (four at each sign, as (3.28) gives for one wall) at the energy 0.03404, within 2.5 per cent of the first-order Wilson shift 0.03321 (the next order is of relative size r_W dx Delta_0 = 0.30; allowed 25 per cent)
-[PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 4.56e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
-[PASS] EX-7 the fermion number is constant along the whole evolution (largest change 2.4e-11)
+[PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 3.71e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
+[PASS] EX-7 the fermion number is constant along the whole evolution up to the accumulated local error of CVODE: largest change 1.3e-08 (bound 1.5e-05: 2 ||W_modes|| x 10 x steps sqrt(2) (rtol ||W_modes|| + atol sqrt(n_complex)) with ||W_modes|| = sqrt(192) for the 192 orthonormal modes of 384 components, n_complex = 73728, 2290 steps)
 \end{verbatim}
 
 \hypertarget{item-4-the-plotter}{%
@@ -2309,13 +2353,14 @@ histories of the Anderson iterations (the same number of iterations) to
 summaries, the checks):
 
 \begin{verbatim}
-Revision_SuperLoop, folder test2, program `t2_solve` (Test 2, item 5): the self-test of the lattice operator of the Rust solver
-5 of 5 checks passed
+Revision_SuperLoop, folder test2, program `t2_solve` (Test 2, item 5): the self-test of the lattice operator, of the time integration and of the examples of the Rust solver
+6 of 6 checks passed
 self-test of t2_solve
 [PASS] the sparse lattice operator equals the site-by-site operator Lattice::apply of t2core (3 x 4 x 2 sites, random links, potentials and pair field, periodic and wall directions): largest deviation 3.0e-15
 [PASS] it is Hermitian: largest deviation 0.0e+00
 [PASS] the closed form of the links equals the matrix exponential exp(-i dx (g_v a.tau/2 + g_F b)) (20 random potentials): largest deviation 6.5e-16
 [PASS] plane waves in constant potentials: the 256 eigenvalues of a ring of 16 sites are the energies of check AS-1 (largest deviation 2.2e-14)
+[PASS] the time integration with CVODE: the eigenvector of the largest eigenvalue E = 7.296737 of the operator of check 1 evolves as exp(-i E x^0) up to x^0 = 20: largest deviation 1.1e-09 (bound: 10 times the accumulated local error permitted by CVODE, 5.1e-08; 3033 steps)
 [PASS] the 7 examples of this program are identical to the input files of the folder test2/examples (7 of 7)
 self-test: ALL PASS
 \end{verbatim}
@@ -2329,15 +2374,16 @@ lattice: sites 128 1 1, dx = 0.5, boundary periodic periodic periodic, r_W = 1, 
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 30 (600 outputs), fields every 20 outputs; Hbound = 6.4
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.05 s
+CVODE: 803 steps, 1406 evaluations of the right side, 4 rejected steps, 1403 corrector iterations (0 convergence failures), last order 7, last step 3.8610e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.960712721889; final norm 1.00000000011; final P_hole = 0; final P_up = 1; final centre of the density (44.9242, 0, 0); computing time 0.15 s
 output files: t2_rs_packet_free_summary.txt, t2_rs_packet_free_series.csv, t2_rs_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 1.50e-07 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 4.5e-03)
-[PASS] the energy <w|H_lat|w> = 0.9607127219 is conserved (static fields): largest change 1.66e-07 (bound 2.9e-02)
-[PASS] the free packet moves with its mean group velocity: expected [0.96413786, 0.00000000, 0.00000000] (the group velocity at the central momentum is [0.97555149, 0.00000000, 0.00000000]), measured [0.96413827, 0.00000000, 0.00000000]; deviation 4.11e-07 (allowed: 1e-05 of the velocity)
+[PASS] the norm of the mode is conserved: largest change 1.07e-10 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 1.6e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.9607127219 is conserved (static fields): largest change 1.23e-10 (bound: 2 Hbound times the bound of the norm, 2.1e-07)
+[PASS] the free packet moves with its mean group velocity: expected [0.96413786, 0.00000000, 0.00000000] (the group velocity at the central momentum is [0.97555149, 0.00000000, 0.00000000]), measured [0.96413853, 0.00000000, 0.00000000]; deviation 6.69e-07 (allowed: 1e-05 of the velocity)
 \end{verbatim}
 
 \begin{verbatim}
@@ -2349,14 +2395,15 @@ lattice: sites 40 40 1, dx = 0.5, boundary wall wall periodic, r_W = 1, active d
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 36 (720 outputs), fields every 80 outputs; Hbound = 12.4
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.46 s
+CVODE: 2283 steps, 4570 evaluations of the right side, 4 rejected steps, 4567 corrector iterations (0 convergence failures), last order 5, last step 1.5861e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.806852665402; final norm 0.999999997436; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 7.26 s
 output files: t2_rs_cyclotron_summary.txt, t2_rs_cyclotron_series.csv, t2_rs_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 2.95e-07 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 2.8e-01)
-[PASS] the energy <w|H_lat|w> = 0.8068526654 is conserved (static fields): largest change 3.62e-07 (bound 3.5e+00)
+[PASS] the norm of the mode is conserved: largest change 2.56e-09 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 8.4e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.8068526654 is conserved (static fields): largest change 3.15e-09 (bound: 2 Hbound times the bound of the norm, 2.1e-06)
 \end{verbatim}
 
 \begin{verbatim}
@@ -2368,14 +2415,15 @@ lattice: sites 240 1 1, dx = 0.5, boundary wall periodic periodic, r_W = 1, acti
 parameters: m = 0.4, mu = 1, g_v = 0.7, g_F = 0.45
 pair field: step, direction 3, amplitude 0.6, phase 0, width 1, positions [60.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 1200, output every 40 steps, Hbound = 8, dt Hbound = 0.4 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 60 (1200 outputs), fields every 40 outputs; Hbound = 8
 initial mode: Gaussian packet, centre [30.0, 0.0, 0.0], width 4, momentum [0.917, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 1.073085668
-results: energy <w|H_lat|w> at x^0 = 0: 0.073638881768; final norm 0.999999998539; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.25 s
+CVODE: 1763 steps, 3514 evaluations of the right side, 4 rejected steps, 3511 corrector iterations (0 convergence failures), last order 7, last step 3.9994e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.073638881768; final norm 0.999999999994; final P_hole = 0.978457; final P_up = 0.0215426; final centre of the density (32.6924, 0, 0); computing time 0.85 s
 output files: t2_rs_andreev_summary.txt, t2_rs_andreev_series.csv, t2_rs_andreev_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 1.46e-09 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 3.4e-02)
-[PASS] the energy <w|H_lat|w> = 0.07363888177 is conserved (static fields): largest change 2.80e-09 (bound 2.7e-01)
+[PASS] the norm of the mode is conserved: largest change 9.81e-12 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 4.0e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.07363888177 is conserved (static fields): largest change 1.88e-11 (bound: 2 Hbound times the bound of the norm, 6.5e-07)
 \end{verbatim}
 
 \begin{verbatim}
@@ -2387,7 +2435,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 3.24 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 3.09 s
 output files: t2_rs_kink_spectrum_summary.txt, t2_rs_kink_spectrum_series.csv, t2_rs_kink_spectrum_fields.csv, t2_rs_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -2404,7 +2452,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 5.72 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 6.04 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_rs_ground_state_summary.txt, t2_rs_ground_state_series.csv, t2_rs_ground_state_fields.csv, t2_rs_ground_state_spectrum.csv, t2_rs_ground_state_iterations.csv
 checks:
@@ -2425,7 +2473,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 26.19 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 28.92 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_rs_kink_ground_state_summary.txt, t2_rs_kink_ground_state_series.csv, t2_rs_kink_ground_state_fields.csv, t2_rs_kink_ground_state_spectrum.csv, t2_rs_kink_ground_state_iterations.csv
 checks:
@@ -2445,37 +2493,37 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.37 s
-time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
-the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
-the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 21.10 s
-the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.47 s
+time integration of the 192 modes (the self-consistent mean-field equations, 73728 complex unknowns): CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.04 up to x^0 = 24 (600 outputs), fields every 25 outputs
+CVODE: 2289 steps, 2820 evaluations of the right side, 4 rejected steps, 2817 corrector iterations (0 convergence failures), last order 7, last step 1.0600e-02
+the conserved mean-field functional E_MF = 490.857953373 changes by at most 9.692e-08 (CVODE keeps it up to its accumulated local errors)
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5031251078; smallest and largest |d| after the quench 0.4902257679 and 0.513432343; computing time 29.09 s
+the amplitude of the pair field oscillates with the angular frequency 1.188975 (least-squares fit of a constant plus a cosine and a sine of that angular frequency of x^0 to |d| for x^0 > 0, the angular frequency scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00707867); twice the mean of |d| after the quench is 1.006250
 output files: t2_rs_quench_summary.txt, t2_rs_quench_series.csv, t2_rs_quench_fields.csv, t2_rs_quench_spectrum.csv, t2_rs_quench_iterations.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
 [PASS] the self-consistent (Anderson) iteration converged: 8 iterations, last change of d^iota 1.51e-14 (tolerance 1e-12, damping 0.6)
 [PASS] the result satisfies the full self-consistency condition d = -(G/2) Pi/dx^D (all three isospin components, real and imaginary parts): largest residual 8.72e-15
-[PASS] the fermion number N_F = 96 is conserved by the self-consistent evolution: largest change 2.44e-11
-[PASS] the modes stay orthonormal (the Pauli principle): largest |W^dag W - 1| = 1.19e-12
+[PASS] the fermion number N_F = 96 is conserved by the self-consistent evolution: largest change 1.27e-08 (bound: 2 ||W_modes|| times 10 times the accumulated local error permitted by CVODE, 1.5e-05)
+[PASS] the modes stay orthonormal (the Pauli principle): largest |W_modes^dag W_modes - 1| = 4.86e-10 (bound: 2 times 10 times the accumulated local error permitted by CVODE, 1.1e-06)
 \end{verbatim}
 
 \begin{verbatim}
 Revision_SuperLoop, folder test2, program `t2_examples_check.py` (Test 2, items 3 and 5): checks of the solutions of the seven examples by the Rust solver against independent predictions
 11 of 11 checks passed
-EX-1 packet_free: fitted velocity 0.96413792; group velocity of (2.37) averaged over the Gaussian distribution of momenta 0.96405883; at the central momentum 0.97555149; largest deviation of the centre from the straight line 1.34e-05
+EX-1 packet_free: fitted velocity 0.96413818; group velocity of (2.37) averaged over the Gaussian distribution of momenta 0.96405883; at the central momentum 0.97555149; largest deviation of the centre from the straight line 1.34e-05
 EX-2 cyclotron: B_up = 0.1800, magnetic length 2.3570, energy 0.806853, mean Landau index (E^2 - m^2)/(2 B_up) = 1.364; Landau levels (3.32) ['0.4000', '0.7211', '0.9381', '1.1136', '1.2649', '1.4000']; the centre returns closest to its start at x^0 = 31.10 (distance 1.280); the spacings 2 pi/(E_(n+1) - E_n) of the neighbouring levels are ['19.57', '28.96', '35.81']; the centre stays within x^1 in [8.75, 12.56], x^2 in [7.98, 13.30]
 EX-3 andreev: energy of the packet 0.073639, gap 0.600; the centre turns at x^0 = 31.15 (x^1 = 57.520) and then moves with -0.8606; final hole probability (Andreev reflection) 0.978457, particle probability (normal reflection) 0.021543; probability beyond x_s + 4 xi at the end 6.83e-06
 EX-4 kink_spectrum: 16 eigenvalues with |E| < 0.9 (m^2 + Delta_inf^2)^(1/2) = 0.9693: -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232; the Rayleigh quotient (3.29) of the analytic bound state on this lattice is E_R = 0.465441
 EX-5 ground_state: |d| = 0.404281735110 on all sites (spread 0.0e+00); root of (3.21) 0.404281735110; smallest quasi-particle energy 0.4044936525, predicted min_q E^-(q) = 0.4044936525
 EX-6 kink_ground_state: the 12 smallest |E| are 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.61324 0.61324 0.61324 0.61324; the first-order Wilson shift of (3.29) for the computed profile is 0.033215; the uniform gap of the periodic chain at the same G is Delta_0 = 0.598960; largest deviation of the profile from Delta_0 tanh(Delta_0 (x - x_c)) in the inner half 0.0538
-EX-7 quench: Delta before 0.484762 (root of (3.21) at G = 0.45), Delta of the ground state at the new coupling 0.503114; |d| jumps to 0.490148 at x^0 = 0 (the factor G'/G) and oscillates about the mean 0.500877 with the amplitude 0.00587 and the fitted angular frequency 1.18449; amplitude mode of the linearized equations at the mean: 1.18991 (between 2 Delta = 1.00175 and 2 E_1 = 1.44703)
-EX-8 packet_free_series.csv: largest difference 0.00e+00 (column )
-EX-8 packet_free_fields.csv: largest difference 1.00e-15 (column density_p)
-EX-8 cyclotron_series.csv: largest difference 1.00e-11 (column x_mean_1)
+EX-7 quench: Delta before 0.484762 (root of (3.21) at G = 0.45), Delta of the ground state at the new coupling 0.503114; |d| jumps to 0.490148 at x^0 = 0 (the factor G'/G) and oscillates about the mean 0.503125 with the amplitude 0.00708 and the fitted angular frequency 1.18898; amplitude mode of the linearized equations at the mean: 1.19341 (between 2 Delta = 1.00625 and 2 E_1 = 1.45014)
+EX-8 packet_free_series.csv: largest difference 1.00e-12 (column E_expect)
+EX-8 packet_free_fields.csv: largest difference 5.00e-13 (column density_p)
+EX-8 cyclotron_series.csv: largest difference 1.00e-10 (column x_mean_1)
 EX-8 cyclotron_fields.csv: largest difference 1.00e-14 (column density_p)
-EX-8 andreev_series.csv: largest difference 1.00e-12 (column norm)
-EX-8 andreev_fields.csv: largest difference 1.00e-16 (column density_p)
+EX-8 andreev_series.csv: largest difference 1.00e-10 (column x_mean_1)
+EX-8 andreev_fields.csv: largest difference 1.00e-13 (column density_p)
 EX-8 kink_spectrum_series.csv: largest difference 0.00e+00 (column )
 EX-8 kink_spectrum_fields.csv: largest difference 1.00e-16 (column density_p)
 EX-8 kink_spectrum_spectrum.csv: largest difference 0.00e+00 (column )
@@ -2486,20 +2534,20 @@ EX-8 kink_ground_state_series.csv: largest difference 2.01e-12 (column change); 
 EX-8 kink_ground_state_fields.csv: largest difference 0.00e+00 (column )
 EX-8 kink_ground_state_spectrum.csv: largest difference 0.00e+00 (column )
 EX-8 quench_series.csv: largest difference 1.00e-09 (column E_MF)
-EX-8 quench_fields.csv: largest difference 7.28e-15 (column d2_re)
+EX-8 quench_fields.csv: largest difference 1.00e-12 (column d3_re)
 EX-8 quench_spectrum.csv: largest difference 0.00e+00 (column )
 checks:
 [PASS] EX-1 the free packet moves uniformly with the averaged group velocity of the lattice dispersion (2.37): relative deviation 8.2e-05 (allowed 1e-3: the spinor of the packet varies slightly across its momenta)
-[PASS] EX-2 norm and energy of the packet in the magnetic field are conserved (largest changes 2.9e-07, 3.6e-07)
+[PASS] EX-2 norm and energy of the packet in the magnetic field are conserved (largest changes 2.6e-09, 3.2e-09)
 [PASS] EX-2 the orbit is bounded by the magnetic field and stays away from the walls (more than 2 from each wall)
 [PASS] EX-3 below the gap (|E| = 0.0736 < 0.60) the packet is reflected: it moves back (velocity -0.8606), and only 6.8e-06 of it is found inside the superfluid region (allowed 1e-4: the components of the packet with energies above the gap, more than four standard deviations of its energy distribution away, pass the interface)
 [PASS] EX-3 the reflection is mainly Andreev reflection: the reflected packet is a hole with probability 0.9785
 [PASS] EX-4 exactly 16 bound states (8 at positive, 8 at negative energy), within 0.0031 of +-E_R (the Kato-Temple bound 0.023 of check AS-9)
 [PASS] EX-5 the self-consistent pair field is the root of the lattice gap equation (3.21) (deviation 2.6e-13), and the gap of the spectrum is min_q E^-(q) (deviation 4.0e-13)
 [PASS] EX-6 the self-consistent kink carries 8 bound states (four at each sign, as (3.28) gives for one wall) at the energy 0.03404, within 2.5 per cent of the first-order Wilson shift 0.03321 (the next order is of relative size r_W dx Delta_0 = 0.30; allowed 25 per cent)
-[PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 4.56e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
-[PASS] EX-7 the fermion number is constant along the whole evolution (largest change 2.4e-11)
-[PASS] EX-8 the two solvers give the same numbers in all 18 output files: the solutions, spectra and time series agree to 1.0e-09 (allowed 1e-7: rounding errors, amplified by the time stepping), and the histories of the self-consistent iterations (the same number of iterations) to 1.8e-07 (allowed 1e-5: the intermediate iterates of the Anderson method depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; the fixed point does not)
+[PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 3.71e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
+[PASS] EX-7 the fermion number is constant along the whole evolution up to the accumulated local error of CVODE: largest change 1.3e-08 (bound 1.5e-05: 2 ||W_modes|| x 10 x steps sqrt(2) (rtol ||W_modes|| + atol sqrt(n_complex)) with ||W_modes|| = sqrt(192) for the 192 orthonormal modes of 384 components, n_complex = 73728, 2289 steps)
+[PASS] EX-8 the two solvers give the same numbers in all 18 output files: the solutions, spectra and time series agree to 1.0e-09 (allowed 1e-7: rounding errors, amplified by the adaptive time integration), and the histories of the self-consistent iterations (the same number of iterations) to 1.8e-07 (allowed 1e-5: the intermediate iterates of the Anderson method depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; the fixed point does not)
 \end{verbatim}
 
 \hypertarget{item-6-the-rust-plotter}{%
@@ -2594,10 +2642,11 @@ small-wave-number slope of the dispersion against the derivatives of the
 susceptibility at the pole. SB-9: the currents of the SFBS against
 numerical derivatives of the effective Lagrangian. SB-10: the uniform
 time-dependent mean-field equations (9.30) in the normal vacuum at
-\(G_{\rm LL}=20\) (320 radial nodes, the classical fourth-order
-Runge-Kutta method with the step 0.02 up to \(x^0_{\rm LL}=1500\)): the
-frequency of the line of the pair field below \(2m_{\rm LL}\) (maximum
-of the Hann-windowed Fourier power, found by a scan and a golden-section
+\(G_{\rm LL}=20\) (320 radial nodes, CVODE with
+\(r^{\rm tol}_{\rm LL}=10^{-12}\), \(a^{\rm tol}_{\rm LL}=10^{-14}\),
+sampled every 0.02 up to \(x^0_{\rm LL}=1500\)): the frequency of the
+line of the pair field below \(2m_{\rm LL}\) (maximum of the
+Hann-windowed Fourier power, found by a scan and a golden-section
 search) against the pole on the same nodes, the conservation of the
 mean-field energy and the reality of the pair field. Figure 22 is drawn
 by \texttt{test2/python/make\_t2\_sfbs\_figures.py}.
@@ -2696,12 +2745,13 @@ five frequencies, against (12.8) (functions \texttt{upsilon},
 \texttt{upsilon\_d1}); the closed form of \(\Upsilon_{\rm LL}\) against
 quadrature; the mass of (12.9) against \(2\Delta^{\rm vac}_{\rm LL}\);
 (12.10) against a difference quotient; and the uniform time-dependent
-mean-field equations (9.30) (function \texttt{uniform\_tdbdg}, the
-classical Runge-Kutta method of the fourth order, time step 0.05, 12000
-steps, 800 radial nodes) started from the ground state of the gap
-\(\Delta^{\rm vac}_{\rm LL}\) times 1.02 and 1.01, whose strongest
-spectral line (function \texttt{line\_frequency}, Hann window, scan and
-golden-section refinement) is compared with
+mean-field equations (9.30) (function \texttt{uniform\_tdbdg}, CVODE
+with \(r^{\rm tol}_{\rm LL}=10^{-12}\),
+\(a^{\rm tol}_{\rm LL}=10^{-14}\), sampled every 0.05 up to
+\(x^0_{\rm LL}=600\), 800 radial nodes) started from the ground state of
+the gap \(\Delta^{\rm vac}_{\rm LL}\) times 1.02 and 1.01, whose
+strongest spectral line (function \texttt{line\_frequency}, Hann window,
+scan and golden-section refinement) is compared with
 \(2\Delta^{\rm vac}_{\rm LL}\), with the amplitude of the oscillation in
 the second and the last quarter of the run, the imaginary part of the
 pair field and the conservation of the mean-field energy. The spectrum
@@ -2818,15 +2868,15 @@ Their output:
 PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenance/symbols_ll.csv)
 9 of 9 checks passed
 
-[PASS] LL-S1  every symbol text is registered once (199 entries) and every plain-text name of the programs, figures and data files belongs to one entry (592 names)
-[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 432 items of the 197 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision_NoGo also contains are exactly the 25 declared shared ones, each with the same object ($SO(3)$, $SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\mathsf 1_8$, $\mathsf 1_{16}$, $\otimes$, $i$, $p$, ${}^T$)
-[PASS] LL-S3  every column of the 105 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (230 different columns), and every file states its content in a line '# content:'
-[PASS] LL-S4  each of the 7 documents of Revision_SuperLoop and the manuscript contains the complete table of the 199 registered symbols, so that every symbol it uses is defined in the document itself
-[PASS] LL-S5  in the 8169 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
-[PASS] LL-S6  in the 9392 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
-[PASS] LL-S7  every one of the 5176 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters)
-[PASS] LL-S8  every one of the 3634 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 138 reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name
-[PASS] LL-S9  the 4700 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
+[PASS] LL-S1  every symbol text is registered once (203 entries) and every plain-text name of the programs, figures and data files belongs to one entry (606 names)
+[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 444 items of the 201 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision_NoGo also contains are exactly the 25 declared shared ones, each with the same object ($SO(3)$, $SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\mathsf 1_8$, $\mathsf 1_{16}$, $\otimes$, $i$, $p$, ${}^T$)
+[PASS] LL-S3  every column of the 105 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (237 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S4  each of the 7 documents of Revision_SuperLoop and the manuscript contains the complete table of the 203 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] LL-S5  in the 8346 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 9593 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 5182 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters)
+[PASS] LL-S8  every one of the 3642 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 139 reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name
+[PASS] LL-S9  the 4821 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
 \end{verbatim}
 
 \begin{verbatim}
@@ -3026,14 +3076,14 @@ f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/a
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
 465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-31f0e13c29fca3954ba1d425984b7b20445f0457a5aaa5162521169eeca183a4  code/scripts/check_symbols.py
+b08318bee2dd37941e042758eec0fa7ca054a2bec76a570eb4d698375ac0d8e1  code/scripts/check_symbols.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
-509456b28fbc59ee8fe11ab25042dfa0799010bc3da554aa39afd624454688ad  code/scripts/write_symbol_registry.py
-e6f3025b7f959977a1075cda0e0c34f51e208d9e28db50bc5d4fffcef189a6ab  code/scripts/build_docs.sh
-fbe2871bcdeaff8a54036e20a2c4dce52c856725df4b4f9aa324ffe65e90dc7d  code/scripts/check_all.sh
+983adf088e0243ee6612bce14b59700b83e28038005836b3235d714ba766b5a7  code/scripts/write_symbol_registry.py
+10d4904b83e1a07268eb8c27bbf43b3ac1fb2693ac993bdb2ffa3ef52f2d8903  code/scripts/build_docs.sh
+2b66d600b16ccec75c07b35e374dd3f9149dc3c699a10bb1409301776095383e  code/scripts/check_all.sh
 cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
 \end{verbatim}
 
@@ -3052,10 +3102,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-877f4cad949fa5eebd15434b778435b8c409ed5410b9599bce2b64980eb08b9c  explanations/figures/fig_ex_r13_bubble.pdf
-864dc87da96e7165f121827d494e1cd898b083d247bd4a2f3f3e8841341289e7  explanations/figures/fig_ex_r13_coordinates.pdf
-219a5be5888e23c75963802d76c5a785712c2a59a511b9d4bdd5ac63a2722470  explanations/figures/fig_ex_r13_divergences.pdf
-a2bf80802b51a22499d82193dd7d071bc09d52dab33d85368a222ff2a0ce39d8  explanations/figures/fig_ex_r13_lorentz.pdf
+0a683b6d26f09d369f31e86bef89a07252fcd66542126c75896db312631821f1  explanations/figures/fig_ex_r13_bubble.pdf
+1daa90eeba247b1da6e398400a1f23e3dc8e50f55e7d3df4c02b0cce4b7081ef  explanations/figures/fig_ex_r13_coordinates.pdf
+9f6956c4d71a45923e7d261fb8fcb40a07ba3a1033bf3045263cf7956834031e  explanations/figures/fig_ex_r13_divergences.pdf
+13ad0ef1bc53d1faf7ade2810523c78bfcc332e923550ea7888758a5d483ba45  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -3066,19 +3116,21 @@ d8a96a63b09fba62c1ef5900a690cd5993fc8138068aeee7f870fd69148c2952  explanations/c
 
 \begin{verbatim}
 aecd9e01a40e211133cc8ff2c4697ec62e0370b46e0d7ea2d31fb19613a9eeb4  test2/rust/t2core/src/model.rs
-046298ecaff5d17bcfe0c0747c34b4447ebef19291330757ee4058d5424b1ae7  test2/rust/t2core/src/lattice.rs
+dab79f76867469c867f54f7596f5afe3541ff13ac20055e213fc1485b6770783  test2/rust/t2core/src/lattice.rs
+4d1f93b147745574fd24b0713b0fb1619c14e7b3274980ba05ed1474343e08e5  test2/rust/t2core/src/cvode.rs
+01c1d1ba6b299c3cab31973e2406850af688a900e3f439c2833529ac000462bb  test2/rust/t2cvode_c/src/lib.rs
 ace63b498d0e0fcbca02f1b659aa6249343f1b9ef9b16a113349bb9023915447  test2/rust/t2core/src/cmat.rs
 790b8758ce9bf919ffd93eb7f3afdaf66b4b4abb640a1fbf205146feeae6a8c7  test2/rust/t2core/src/sym.rs
-d7ed53e0635b63e4f84d23a7280bf8d3581086a6a64dd3df7cb6632f49063939  test2/rust/t2fields/src/main.rs
-60fa560f18e32b1db49681e7e9c00948d98f3c1a7278b8694e4451f1d0627911  test2/rust/t2analytic/src/main.rs
-c007640a15263f598651fcb021109d8af045c23141f5b036d452366554acfef7  test2/python/make_t2_figures.py
-033ddabf96d8a2e2e6fbf4d9bbd95ca32ea102b15c003848e9ee52ce8aabe0a7  test2/data/t2_fields_checks.txt
-4b8cdc50cbcd70e68def51311558297f5f3fad980b846939a12bd6c2f098805d  test2/data/t2_analytic_checks.txt
+50b9903c673b420ba4ff1ef52d12fd4ba0b147628a01b9be687a26d182d0dbcf  test2/rust/t2fields/src/main.rs
+bef7ed8be2baf4796483d9931e278e9c56bc086a2fdf98eef507b53cca1884b1  test2/rust/t2analytic/src/main.rs
+41ef78fcc861f5f2e4f9e51b47a1818cd46b26f0b38d3b586dd39716034410a2  test2/python/make_t2_figures.py
+d7cf9c2d7e2d29f7e6e2e85fb076d35c89860cf92524e598ae2193ff30ba30c6  test2/data/t2_fields_checks.txt
+c9244070e63a54cc05a335e40aa253d93ec8584592aa41b16201de9ffd2ede89  test2/data/t2_analytic_checks.txt
 8c4df29029536ec9c488a68fa2cc2d5551a177f1911c22a461a7aa19f635e1ae  test2/data/t2_fragments.md
 e19e88b3b92407c7f0e1c7135ec5f26816be6bca9b43a394e341a08b53794479  test2/figures/fig_t2_lattice_dispersion.png
-8e35b75efdfaa22fde3428779690fe11cecc6f7a48bc4693ceafb31bbcbdfc20  test2/figures/fig_t2_rk4_stability.png
-10dbb97e902ee9b470ad80c109175af630cecbbf33bb8656280eba2c89e46e42  test2/figures/fig_t2_case_A.png
-9fb715bf727b434b17fa2b47887f29602205f6238625ab9489303571004ef19e  test2/figures/fig_t2_case_B.png
+685b38acabc3406f5150314e221b823a662533c4a1dff9d0ea0d97e9de474016  test2/figures/fig_t2_cvode_accuracy.png
+c9bdf844175360f1a70a71fec52006643fb2be9483ffe5c06491053a23250860  test2/figures/fig_t2_case_A.png
+a7b9683e1937a022115139b2fa66b8f6c160ed01fc4921899e2524e7e33b6ea4  test2/figures/fig_t2_case_B.png
 06694a4148460c91393d19f1310e13e9b9ba17195454921854c881839ce0235c  test2/figures/fig_t2_case_C.png
 527296614ac5fb4dc32bd8e0a5f84f11281a4e4b40abe3e1b41843edee981105  test2/figures/fig_t2_case_D.png
 \end{verbatim}
@@ -4147,8 +4199,11 @@ plus the Lagrangian density of the gauge fields & new &
 \texttt{Lagr\_nabla} \\
 \(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
 \(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
-directions), the time step and the coefficient of the Wilson term of the
-lattice equations & new & \texttt{dx} \texttt{dt} \texttt{r\_W} \\
+directions), a time step of the lattice equations (a fixed step of the
+first version of Test 2, or the interval between the output times of an
+integration by CVODE, which chooses its own internal steps), and the
+coefficient of the Wilson term of the lattice equations & new &
+\texttt{dx} \texttt{dt} \texttt{r\_W} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
 sites in the directions \(x^1_{\rm LL}\), \(x^2_{\rm LL}\),
@@ -4208,10 +4263,14 @@ isospin up of a mode, the fraction of its norm
 that lies in the isospin-up components, and the probability of the hole,
 the fraction that lies in \(\psi^{\rm h}_{\rm LL}\); both are functions
 of the time \(x^0_{\rm LL}\) (in the data files the suffix
-\texttt{\_rk4} marks the values of the integration of the lattice
-equations and \texttt{\_exact} those of the exact solution) & new &
-\texttt{P\_up} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
-\texttt{P\_hole} \texttt{P\_hole\_rk4} \texttt{P\_hole\_exact} \\
+\texttt{\_cvode} marks the values of the integration of the lattice
+equations by CVODE, \texttt{\_rk4} those of the integration by the
+fixed-step Runge-Kutta method of the first version of Test 2, kept in
+the folder \texttt{test2/rk4\_reference} for the comparison, and
+\texttt{\_exact} those of the exact solution) & new & \texttt{P\_up}
+\texttt{P\_up\_cvode} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
+\texttt{P\_hole} \texttt{P\_hole\_cvode} \texttt{P\_hole\_rk4}
+\texttt{P\_hole\_exact} \\
 \(\chi^{\rm pw}_{\rm LL}\), \(\vartheta^{\rm B}_{\rm LL}\) & the
 constant 8-component spinor (Dirac index and isospin) of a plane-wave
 solution, a normalized eigenvector of
@@ -4812,6 +4871,44 @@ saddle point, and the prediction) & new & \texttt{theta\_mix}
 fields of SFBSv and the gauge potentials, of the Lagrangian (13.1) of
 Test 2 (the effective Lagrangian of the SFBS with the Yang-Mills and
 Maxwell terms) & new & \\
+\(w^{\rm lat}_{\rm LL}\), \(w^{\rm cmp}_{\rm LL}\);
+\(n^{\rm cpx}_{\rm LL}\) & a Nambu mode on the lattice written as one
+complex vector, the 16 components of \(\psi^{\rm p}_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) on every site, the sites one after the other,
+so that the lattice equations read
+\(i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\)
+(for the self-consistent evolution the columns of
+\(\mathsf W^{\rm m}_{\rm LL}\) one after the other); one complex
+component of it; and the number of its complex components, \(16\) times
+the number of sites (times the number of modes) & new & \texttt{w\_lat}
+\texttt{w\_cmp} \texttt{n\_complex} \\
+\(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
+the absolute tolerance of the time integration by CVODE: the estimated
+local error of every internal step is accepted only if its weighted
+root-mean-square norm is at most 1, with the weight
+\(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+for the real and for the imaginary part of every complex component
+\(w^{\rm cmp}_{\rm LL}\) of the state & new & \texttt{rtol}
+\texttt{atol} \\
+\(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\);
+\(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\) & the size and the
+order of an internal step of CVODE (both chosen by CVODE, the order from
+1 to 12 for the Adams-Moulton formulas); the number of internal steps of
+an integration and the number of evaluations of its right side
+\(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) (the cost; one
+step of the classical Runge-Kutta method of fourth order needs 4
+evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{N\_steps}
+\texttt{N\_evals} \\
+\(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the error
+test of CVODE permits,
+\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+for a state of the norm \(\lVert w^{\rm lat}_{\rm LL}\rVert\), the
+expected size of the global error of a unitary evolution; and the
+relative deviation of a computed state from the exact solution,
+\(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\),
+with the exact solution \(w^{\rm ex}_{\rm LL}\) of the same equations &
+new & \texttt{budget} \texttt{max\_deviation} \texttt{w\_exact} \\
 \end{longtable}
 
 \end{document}

@@ -27,8 +27,13 @@ for md in "$@"; do
       --include-in-header="$TMPH"
     latexmk -xelatex -interaction=nonstopmode -halt-on-error -quiet "$base.tex" > /dev/null 2>&1 \
       || { echo "[docs] LaTeX failed for $md; the error is in $dir/$base.log"; exit 1; }
+    # the layout check of the project (Revision_SuperLoop/code/scripts/check_layout.py): every line, table cell or
+    # formula wider than its box by more than 1 pt, and every character missing from the fonts, is listed and the
+    # build fails; the .log is then kept for inspection
+    python3 "$TOOLS/../../../code/scripts/check_layout.py" "$base.log" \
+      || { echo "[docs] layout problems in $md (listed above); the log is $dir/$base.log"; exit 1; }
     latexmk -c -quiet "$base.tex" > /dev/null 2>&1 || true
     rm -f "$base.xdv" )
 done
 rm -f "$TMPH"
-echo "[docs] done"
+echo "[docs] done; no line, table cell or formula is wider than its box"

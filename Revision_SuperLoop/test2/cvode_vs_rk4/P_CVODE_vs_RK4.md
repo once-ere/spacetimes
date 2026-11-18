@@ -86,7 +86,7 @@ Lawrence Livermore National Laboratory); AS-2, AS-4 and LAT name the three test 
 | $E^{\rm qp}_{{\rm LL},n}$ | `E_qp` | the energy of a numbered mode of the mean-field equations in a stationary state, an eigenvalue of $\mathcal H^{\rm DB}_{\rm LL}$; the mean-field ground state is the vacuum of the quasi-particles of the modes with $E^{\rm qp}_{{\rm LL},n}>0$ |
 | $\ell^{\rm x}_{\rm LL}$, $\ell^{\rm t}_{\rm LL}$, $r^{\rm W}_{\rm LL}$ | `dx` `dt` `r_W` | the lattice spacing (the same in the three directions), a time step of the lattice equations (a fixed step of the first version of Test 2, or the interval between the output times of an integration by CVODE, which chooses its own internal steps), and the coefficient of the Wilson term of the lattice equations |
 | $\mathcal H^{\rm lat}_{\rm LL}$, $\varepsilon^{\rm lat}_{\rm LL}$, $B^{\rm H}_{\rm LL}$ | `H_lat` `eps_lat` `Hbound` | the lattice form of $\mathcal H^{\rm DB}_{\rm LL}$ (a matrix of 16 rows per site), the energy of a free particle on the lattice, and the bound on the largest eigenvalue magnitude of $\mathcal H^{\rm lat}_{\rm LL}$ from which the time step is chosen |
-| $P^\uparrow_{\rm LL}$, $P^{\rm h}_{\rm LL}$ | `P_up` `P_up_cvode` `P_up_rk4` `P_up_exact` `P_hole` `P_hole_cvode` `P_hole_rk4` `P_hole_exact` | the probability of isospin up of a mode, the fraction of its norm $\int d^3\vec x_{\rm LL}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)$ that lies in the isospin-up components, and the probability of the hole, the fraction that lies in $\psi^{\rm h}_{\rm LL}$; both are functions of the time $x^0_{\rm LL}$ (in the data files the suffix `_cvode` marks the values of the integration of the lattice equations by CVODE, `_rk4` those of the integration by the fixed-step Runge-Kutta method of the first version of Test 2, kept in the folder test2/rk4_reference for the comparison, and `_exact` those of the exact solution) |
+| $P^\uparrow_{\rm LL}$, $P^{\rm h}_{\rm LL}$ | `P_up` `P_up_cvode` `P_up_rk4` `P_up_exact` `P_hole` `P_hole_cvode` `P_hole_rk4` `P_hole_exact` | the probability of isospin up of a mode, the fraction of its norm $\int d^3\vec x_{\rm LL}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)$ that lies in the isospin-up components, and the probability of the hole, the fraction that lies in $\psi^{\rm h}_{\rm LL}$; both are functions of the time $x^0_{\rm LL}$ (in the data files the suffix `_cvode` marks the values of the integration of the lattice equations by CVODE, `_rk4` those of the integration by the fixed-step Runge-Kutta method of the first version of Test 2, kept in the folder `test2/rk4_reference` for the comparison, and `_exact` those of the exact solution) |
 | $N^{\rm F}_{\rm LL}$, $E^{\rm MF}_{\rm LL}$ | `N_F` `E_MF` | the fermion number of a self-consistent lattice state, the sum over its modes and over the sites of the squared hole components $\lvert\psi^{\rm h}_{\rm LL}\rvert^2$ (conserved by the self-consistent evolution), and the mean-field energy functional, the sum over the modes of the expectation values of $\mathcal H^{\rm lat}_{\rm LL}$ without the pair field plus $2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G_{\rm LL}$ times the sum over the sites of $\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$ (conserved in time-independent gauge fields) |
 | $\mathsf W^{\rm m}_{\rm LL}$ | `W_modes` | the matrix whose columns are the modes of a self-consistent lattice state (unit vectors with 16 components per site); the self-consistent evolution moves all columns together |
 | $M^{\rm B}_{\rm LL}$ | `M_B` `M_B_GL` `line_MB` | the mass of the SFBS boson of the normal vacuum: the frequency $\omega^{\rm B}_{\rm LL}$ below the threshold $2m_{\rm LL}$ with $\chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},0)=1/G_{\rm LL}$ (plain text `M_B_GL`: the Ginzburg-Landau mass $(a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}$; `line_MB`: a fitted oscillation with this frequency) |
@@ -185,19 +185,21 @@ its components, the right side $-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm 
 
 | item | first version | present version |
 |:----------|:------------------------------|:------------------------------|
-| `t2core` (library) | `Lattice::rk4_step` | removed; new module `t2core::cvode` (`integrate`, `evolve_lattice`, settings, counters, error weights, error budget); dependency `cvode_rs` (path into `vendor/sundials_rs-7.8.0`) |
+| `t2core` (library) | `Lattice::rk4_step` | removed; new module `t2core::cvode` (`integrate`, `integrate_status` for a right side that can fail, `evolve_lattice`, settings, counters, error weights, error budget); dependency `cvode_rs` (path into `vendor/sundials_rs-7.8.0`) |
 | `t2_analytic` AS-2, AS-4 | RK4, $\ell^{\rm t}_{\rm LL}=0.004$ and 0.02; tolerance of the checks $10^{-8}$ | CVODE at 101 output times; tolerance of the checks $10^{-9}$; counters reported; data columns `P_up_cvode`, `P_hole_cvode` |
 | `t2_fields` GS-13 | the stability of the RK4 factor (a statement about the method); data `t2_rk4_stability.csv`, Figure 2 of Test 2 | CVODE against the exact spectral solution on the lattice of GS-10, for three tolerances, with the error budget; data `t2_cvode_accuracy.csv` |
 | `t2_solve`, task `evolve` | RK4 with the keys `time_step`, `steps`, `output_every` (input format `t2in 1`) | CVODE with `output_step`, `outputs`, `fields_every`, `rtol`, `atol` (format `t2in 2`; the format `t2in 1` is refused with an explanation); conservation checked against $10B^{\rm err}_{\rm LL}$ |
 | `t2_solve`, task `quench` | implicit midpoint rule | CVODE for all modes at once, the pair field computed from the modes at every evaluation |
 | `t2_sfbs` SB-10, SB-16 | RK4, $\ell^{\rm t}_{\rm LL}=0.02$ and 0.05 | CVODE, sampled at the same times (the sampling interval of the signal is kept) |
 | `t2_plot` | the titles "RK4 errors", "what the implicit midpoint rule conserves" | "CVODE errors", "the conserved quantities (CVODE errors)" |
-| new | | the program `t2_cvcmp` and the scripts of the folder `test2/cvode_vs_rk4` (this comparison) |
+| `t2_solve.py` (Python solver of item [3]) | RK4 (`evolve`) and the implicit midpoint rule (`quench`) in Python | the same CVODE as the Rust programs, called through the new shared library `libt2cvode` (crate `t2cvode_c`, the C interface of `t2core::cvode`) with the module `ctypes`; format `t2in 2`; the same checks and reports as the Rust solver |
+| `t2_plot.py`, `make_t2_figures.py`, `t2_examples_check.py` | the titles and labels of RK4 and the midpoint rule; Figure 2 of Test 2 the RK4 factor; the fermion number of EX-7 checked against $10^{-9}$ | the titles and labels of CVODE; Figure 2 of Test 2 the accuracy of CVODE (GS-13); EX-7 against the bound of the solvers; the tables of Section 6.4 of Test 2 written as fragments |
+| new | | the program `t2_cvcmp`, the shared library `libt2cvode` and the scripts of the folder `test2/cvode_vs_rk4` (this comparison) |
 
 All programs were run again on Linux x86-64 (rustc 1.97.0); every check passes.  The data files of the first version
 are kept unchanged in `test2/rk4_reference/data` (106 files, SHA-256 digests in `test2/rk4_reference/SHA256SUMS_data.txt`).
-The Python solver of item [3], the plots of Test 2, the document of Test 2 and the notebook `3+1super-loop.nb` are
-brought to CVODE in the following steps of the same work (Section 7).
+The Python solver of item [3] and the plots and documents of Test 2 were brought to CVODE in the same work; the notebook
+`3+1super-loop.nb` follows (Section 7).
 
 # 5. The comparison
 
@@ -224,7 +226,7 @@ $\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert
 The cost is the number $N^{\rm ev}_{\rm LL}$ of evaluations of the right side (one RK4 step needs 4).
 
 | problem | method | $\ell^{\rm t}_{\rm LL}$ or $r^{\rm tol}_{\rm LL}$ | evaluations $N^{\rm ev}_{\rm LL}$ | steps $N^{\rm st}_{\rm LL}$ | largest $\delta^{\rm rel}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}$ at the end | largest relative change of the norm |
-|:-----|:---------------|-----------------:|----------:|--------:|---------:|---------:|-----------:|
+|:--------|:---------------|-----------------:|----------:|--------:|---------:|---------:|-----------:|
 | AS-2 | RK4 | $\ell^{\rm t}_{\rm LL}=0.016$ | 4000 | 1000 | 2.23e-7 | 2.23e-7 | 4.37e-9 |
 | AS-2 | RK4 | $\ell^{\rm t}_{\rm LL}=0.008$ | 8000 | 2000 | 1.39e-8 | 1.39e-8 | 1.36e-10 |
 | AS-2 | RK4 (first version) | $\ell^{\rm t}_{\rm LL}=0.004$ | 16000 | 4000 | 8.72e-10 | 8.72e-10 | 4.27e-12 |
@@ -422,12 +424,12 @@ $2\times10^{-6}$, and both checks pass as before.
 
 # 7. Status of the work and how to reproduce it
 
-**Done in this step:** the vendored SUNDIALS; `t2core::cvode`; the Rust programs `t2_analytic`, `t2_fields`,
-`t2_solve`, `t2_sfbs`, `t2_plot` with CVODE; all their data files; the comparison program `t2_cvcmp`, the convergence
-runs and the figures of this document; the registry entries of the new symbols.
-**Following steps:** the Python solver `t2_solve.py` of item [3] and its examples check (with the SUNDIALS CVODE
-through the Python package scikit-sundae), the figures of Test 2, the document of Test 2 and its provenance, and the
-notebook `3+1super-loop.nb`; then the older code.
+**Done:** the vendored SUNDIALS; `t2core::cvode`; the Rust programs `t2_analytic`, `t2_fields`, `t2_solve`, `t2_sfbs`,
+`t2_plot` with CVODE; the Python solver `t2_solve.py` with the same CVODE through the shared library `libt2cvode`; all
+data files and figures of Test 2; the documents of Test 2 and of the folder Revision_SuperLoop; the comparison program
+`t2_cvcmp`, the convergence runs and the figures of this document; the registry entries of the new symbols.
+**Following steps:** the notebook `3+1super-loop.nb` (its time integrations with a SUNDIALS method of the Wolfram
+Language), then the older code of the repository that integrates in time with a fixed-step method.
 
 On the Mac (Terminal), from the folder of the repository:
 
@@ -438,14 +440,16 @@ for p in t2_fields t2_analytic t2_sfbs; do ./target/release/$p; done
 cd ..
 for n in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./rust/target/release/t2_solve examples/$n.t2in --out data/t2_rs_$n
+  python3 python/t2_solve.py examples/$n.t2in --out data/t2_py_$n
 done
 bash cvode_vs_rk4/run_convergence.sh "$PWD/rust/target/release/t2_solve"
 ./rust/target/release/t2_cvcmp
 cd .. && python3 test2/cvode_vs_rk4/python/make_cmp_figures.py
 ```
 
-The first two lines build every program of Test 2 (the vendored SUNDIALS is compiled with them); the loop runs the
-three check programs, the next loop the seven examples of the solver; `run_convergence.sh` solves the four
+The first two lines build every program of Test 2 and the shared library `libt2cvode` of the Python solver (the vendored
+SUNDIALS is compiled with them); the loop runs the three check programs, the next loop the seven examples of both
+solvers; `run_convergence.sh` solves the four
 time-dependent examples at the tolerances $10^{-10}$ and $10^{-13}$; `t2_cvcmp` writes the comparison (it exits with
 status 1 if one of its checks fails); the last line draws the five figures.  The programs write their outputs into the
 folders named in the text.
@@ -468,6 +472,12 @@ folders named in the text.
 | `rust/t2plot/src/main.rs` | the plotting program t2_plot |
 | `rust/Cargo.toml` | the manifest of the workspace of Test 2 |
 | `rust/Cargo.lock` | the locked versions of the crates |
+| `rust/t2cvode_c/Cargo.toml` | the manifest of the shared library libt2cvode |
+| `rust/t2cvode_c/src/lib.rs` | the C interface of t2core::cvode (the shared library libt2cvode of the Python solver) |
+| `python/t2_solve.py` | the Python solver (tasks evolve and quench with CVODE through libt2cvode) |
+| `python/t2_examples_check.py` | the checks EX-1 to EX-8 of the examples |
+| `python/t2_plot.py` | the Python plotter of the solutions |
+| `python/make_t2_figures.py` | the figures of items [1] and [2] of Test 2 (Figure 2: CVODE, check GS-13) |
 | `../../vendor/sundials_rs-7.8.0/SHA256SUMS.txt` | the digests of the 283 vendored files of SUNDIALS 7.8.0 in Rust |
 | `rust/t2cvcmp/src/main.rs` | the comparison program t2_cvcmp |
 | `rust/t2cvcmp/Cargo.toml` | its manifest |
@@ -488,30 +498,36 @@ folders named in the text.
 The SHA-256 digests of these files (each line: the digest, two spaces, the path in the folder `Revision_SuperLoop/test2`; the command `sha256sum -c` on Linux, or `shasum -a 256 -c` on macOS, run in that folder with these lines as input, checks them):
 
 ```text
-bf1d83079b61aa5cb391a41795875362809b741c97df550cb817d429189ce169  cvode_vs_rk4/P_CVODE_vs_RK4.src.md
-f6f0cb39609353c0c2e17c435a4d5a9d4fb908ce115b38f595cd9e4805dfe4eb  rust/t2core/src/cvode.rs
+9daa10d19e02cdde6717421969fbab4272f7545d7a9eb553879c58f6e81b9bea  cvode_vs_rk4/P_CVODE_vs_RK4.src.md
+4d1f93b147745574fd24b0713b0fb1619c14e7b3274980ba05ed1474343e08e5  rust/t2core/src/cvode.rs
 5ffa38243c640b9a0c56f599bd823d009f100d766827241d5bb916b2aa062489  rust/t2core/src/lib.rs
-d449fe150621cfab0913a976aff8d747d7999298ebdd897aa53ac2cea58f6c48  rust/t2core/src/lattice.rs
+dab79f76867469c867f54f7596f5afe3541ff13ac20055e213fc1485b6770783  rust/t2core/src/lattice.rs
 4e8d8ca5c485c44a0dbf8392db86f98b4b3539ad4c6dae7cc9e4e1146c5423c1  rust/t2core/Cargo.toml
-1077988cb1a33923a95ef633b49a392843afe6882577d6b82431b1e847a3867d  rust/t2analytic/src/main.rs
-02c45596bfc66df143a71b84b7d7a9b764294ded3778639d9f64290b0f6beea9  rust/t2fields/src/main.rs
-86d1f4b21808a898eb9f9216cd17d4ae5e181bbada95abb9ae0d0c478818aebd  rust/t2solve/src/main.rs
-917b70cb9e53bcbbec624fa3c8fcd12db6611fbc5c0f7f5a1a290bf659551ea0  rust/t2solve/src/input.rs
+bef7ed8be2baf4796483d9931e278e9c56bc086a2fdf98eef507b53cca1884b1  rust/t2analytic/src/main.rs
+50b9903c673b420ba4ff1ef52d12fd4ba0b147628a01b9be687a26d182d0dbcf  rust/t2fields/src/main.rs
+51ece54663942a06f2d506cc703e821c2e9d6398fe3557ba2448c1415ef14435  rust/t2solve/src/main.rs
+496582dcac974a071fcdf5f512d6d6541c54168576433bafbec7fa34c6f77109  rust/t2solve/src/input.rs
 ffbf4d84fc45f3b37efa79167881d99ec83557ad646beebd07da78eafcfa13da  rust/t2solve/src/ops.rs
-aaa0f3edcc5e4ecb95856ec81797464b285a5ceef1c9cbc06849c13949204b82  rust/t2sfbs/src/main.rs
+e45d9db743d3954fe9ea282fbd5505b7c74bf6974842c6500e035e6a1fddb787  rust/t2sfbs/src/main.rs
 aa740ea0100c9dfc5b8e9986c5d3caf28f84d558a199b3275133b879f06f063f  rust/t2plot/src/main.rs
-9117d4eaffeb6d6ab537ce2d9e0d5ece763dd9e7f7907a63ee09d2f3f1b90629  rust/Cargo.toml
-a8077f126abf1ff75cb114d00e88fc94c5d2c92a4ad4982e07b63da4d8cc41aa  rust/Cargo.lock
+0ff87a48b052eff6d5a8ec48d62b89a117fd354ce88d43d1600ca8088f92237a  rust/Cargo.toml
+b74a42a7acf5ce394fb82e5fa379fd7b839fdcb6665f7a4a63cc9966b9d15109  rust/Cargo.lock
+c8ef47dadc0f3a764969e9078d291b56d1fda6214c5b287dd3701478a546381e  rust/t2cvode_c/Cargo.toml
+01c1d1ba6b299c3cab31973e2406850af688a900e3f439c2833529ac000462bb  rust/t2cvode_c/src/lib.rs
+331b07273d2479c125d98ae081d3fd111abac02a82c81cc1c089a6633e8b1d58  python/t2_solve.py
+9a32200f44eaa3e8d774a9d130157b91c3b16c2b07e2871889be2550b1458d50  python/t2_examples_check.py
+e5ec0c5d264889a06265e021bbf5ce540bb56a011f005fa2f4453e89ef0d70e6  python/t2_plot.py
+41ef78fcc861f5f2e4f9e51b47a1818cd46b26f0b38d3b586dd39716034410a2  python/make_t2_figures.py
 a062365c7cc9f0e4bad502b9d5fc0a51d16dee868ef2edfee9bfd92ded3de94c  ../../vendor/sundials_rs-7.8.0/SHA256SUMS.txt
-755689884335c34ce0069c59adb86721ba48982430392dade50ab4b80b97f412  rust/t2cvcmp/src/main.rs
+11ac2ecd6a36d5b8f5323e7a3e13b9ad476cdd2b72c89099a0015e8ee352dc54  rust/t2cvcmp/src/main.rs
 bb6ec652913d355b2857746b223c186278923f631428b2633444156be19e9dd9  rust/t2cvcmp/Cargo.toml
 74ab8cda1fe469b7d71651cd2847fcb2a41076cf7cae08a957de19b45e40bd34  cvode_vs_rk4/run_convergence.sh
 3a48b57f9f6a5b69ce2c6d507107a93f87f23b446308091dd3a5c705cbe25537  cvode_vs_rk4/python/make_cmp_figures.py
-a0a29f051e786cef6041883b27fedb01c704b84cc10489126d3a63bf9a3a8389  cvode_vs_rk4/tools/assemble_provenance.py
-b6ae9a16fb00220144aa73dc08c1a5a1488eaacb5ff6281037858bd540df31f4  cvode_vs_rk4/tools/build_docs.sh
+3a5f7205f573fdae845c1f4cec3768bef74bf9d996b6750e2efa20a74589c33f  cvode_vs_rk4/tools/assemble_provenance.py
+f5e38096826890c64580c3c5964c7db643e17611a08a1b87c48771dbcdf4d421  cvode_vs_rk4/tools/build_docs.sh
 d7ca078f2469605306af331e68a8f2526149a197441f15230b00cc6f35395320  cvode_vs_rk4/tools/doc_header.tex
 48e69b803c0d8b8a1d8f3bc93960b986d8c1a8c0fdb0f05166b99cca84f980ee  cvode_vs_rk4/data/cmp_report.txt
-8e3710fa01784f83a8a613bbfa924ebb7e9cffdba7873f868dbe2d143630dd9e  cvode_vs_rk4/data/cmp_tables.md
+372e72ad62dd5e7ec5dff3955edde2585c5a9edce9bfcfc3d76aa7ac9474f562  cvode_vs_rk4/data/cmp_tables.md
 fea0faf35475c6e7318668dd0db6642e6e328d8fe26e68ed12c7375f1425deae  cvode_vs_rk4/data/cmp_work_precision.csv
 4d15f7c94146c14ec1773e5db089ee2428a3d1b70dd8b7824f7fed1570df590e  cvode_vs_rk4/data/cmp_lat_deviation.csv
 41c24ed19df3a6dd1179b6b31bd3985d7a87acde295ef372905fe03e766c6520  cvode_vs_rk4/data/cmp_series_differences.csv
@@ -519,48 +535,48 @@ fea0faf35475c6e7318668dd0db6642e6e328d8fe26e68ed12c7375f1425deae  cvode_vs_rk4/d
 46310bbd846f8501e686c0200c9cd7324ddf36c4d462dab754e716c38eecf17e  cvode_vs_rk4/data/conv/andreev_rtol1e-10.t2in
 0f885e0bcea41ec0fc24769b8ea16b6f5828b4d49e5c31124a14a041acd08877  cvode_vs_rk4/data/conv/andreev_rtol1e-10_fields.csv
 bc1419cdcdab70e2497efbcf66d457676b8f297cd4fd37b266f107f428b38214  cvode_vs_rk4/data/conv/andreev_rtol1e-10_series.csv
-75fe573a34584099b5191621d901f4e699745ae7658aaa20e62f5730d81aef0f  cvode_vs_rk4/data/conv/andreev_rtol1e-10_summary.txt
+3ed7d74598f2104c0b34776112970e29a731a2dea2ee7d833b608f0325330a75  cvode_vs_rk4/data/conv/andreev_rtol1e-10_summary.txt
 e4375430cf22436d49cb358490f63f2559954274a5fa77fb6eaaf98514a94269  cvode_vs_rk4/data/conv/andreev_rtol1e-13.t2in
 61a91f729af99e943678a3fc00ebbde53b2f5d125b3f0ccfa8fde70162cfe15b  cvode_vs_rk4/data/conv/andreev_rtol1e-13_fields.csv
 c62eb09c720f50376daf0805240ef64da25b94adb1992e0bd599e0fc69416cf3  cvode_vs_rk4/data/conv/andreev_rtol1e-13_series.csv
-f190c80d29548b56cb551935c0d31268c7c3c57edbe5b051f0172248942ace43  cvode_vs_rk4/data/conv/andreev_rtol1e-13_summary.txt
+c0e5e9bb5218bde97de747596f99b237a27cae93085bffde1c949d29667967e0  cvode_vs_rk4/data/conv/andreev_rtol1e-13_summary.txt
 0c25103622adf74bca4870389031dd4bec37dbb5ea2a9d1ed36d84f77d8e8a0e  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10.t2in
 32e11f6ec6875b94e3ccca982cf9e4273845b22e6f838035583d8d8bcd27b639  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_fields.csv
 4517cc1238bd38857f81f4967fb998bd6f836dd829a4ef8f434a8fba900300bc  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_series.csv
-3c0996275d5423e4db42b8327a0c20652132e3648075012f63c5fced636d6a74  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_summary.txt
+7ccf2bafe663f195475ee3c3605db3a5728ce5af9c6378a6145abe9681db0c51  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_summary.txt
 edce3fed5a9445b220b8f013a7e2f1d4663b8aebbc2689ed823729f75d6a2a66  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13.t2in
 45881806e19f3b98615fabf762baefe8bcb8ecdf9cece6f9392c7589290579d2  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_fields.csv
 7038c61df1a3b4a3217f4acfa8df1bb62e610d793cd96f2bbb11662699aaff7c  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_series.csv
-bdf2b59fd9549b9da19786a2d58b9961b6e8404b66e2a4cadf0139fe8c56ae40  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_summary.txt
+567788ca8dd8d4bb673d293ee7318a7eb2ff1ac6d2da389cf5cad275e47d164d  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_summary.txt
 4f529989b9fada4f1dd6e4d2c5e84cbff3b867e4ca5d44e474c634953bcf8ce6  cvode_vs_rk4/data/conv/packet_free_rtol1e-10.t2in
 12a56df2793143cceb307518c1d7a951c89331c3f10db9b99e26702e940aee56  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_fields.csv
 5d3e6de60bd827055f738a3cf1a8171e98fbe22c20498e5d1e537e0bc2e88f47  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_series.csv
-ffcb5ebd83827a3644b51406d51e45612f277aba8faff4307d14ea1be32f88cf  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_summary.txt
+0fd7f0ca3037ca6ed7450755436ec301259bd0164926f2484fdf9d77be932bd1  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_summary.txt
 3de6b714810579af5f23778b941c3cbd6976ae6b0d817f8823cd0f548eb38cd3  cvode_vs_rk4/data/conv/packet_free_rtol1e-13.t2in
 03ac0010bfa50139ce34fa7b2e6d6508ad0732a9992c2da4b7c03318fcf7d56c  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_fields.csv
 1e032e75564f3fc0f4e2b159d2c752d8c5b9e21382edf2dc1807f9675bd7e3c4  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_series.csv
-7c9804d44ac4f94e7bcc17405a04cb82c935dc7485f6d53c24d3e0a4c8052504  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_summary.txt
+eb8fd30fef49c66c59ad81d6c5bfb9dfdd0606dc8a8993d37eba8db78ec18b8f  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_summary.txt
 2f92bbf302825e10e8d26c4e2e86ad785dc6dd73907c786aeb04c6fba4193679  cvode_vs_rk4/data/conv/quench_rtol1e-10.t2in
 a9a67107b4d3bcc73a2e068071b2f27ee1229210ed86e075149d8e943412e31b  cvode_vs_rk4/data/conv/quench_rtol1e-10_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode_vs_rk4/data/conv/quench_rtol1e-10_iterations.csv
 2e755102bae80ec636a04d65e4fea75b689f141b421854662fe2ba113c93424c  cvode_vs_rk4/data/conv/quench_rtol1e-10_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode_vs_rk4/data/conv/quench_rtol1e-10_spectrum.csv
-5f4a163e0d026dc180fbc00749c965a55af59552cdc06de864bccaace60ed18d  cvode_vs_rk4/data/conv/quench_rtol1e-10_summary.txt
+cac8418360993394c8f054c333f5d84c34c76bc7345c7adb125e0565000620fc  cvode_vs_rk4/data/conv/quench_rtol1e-10_summary.txt
 1fc4629bc3d0ad5d895397ff147de6b63ba7412fecc665fe13c89a8771767ca8  cvode_vs_rk4/data/conv/quench_rtol1e-13.t2in
 ab787e259c9fb52450d27f347a8c43a8b35e07f76a4e789e200ce5bb0c7b7f99  cvode_vs_rk4/data/conv/quench_rtol1e-13_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode_vs_rk4/data/conv/quench_rtol1e-13_iterations.csv
 c25e8c26476f8963c6c6dbbe0d2afe13ba5816e214dd99d36cd98f075be0a8bd  cvode_vs_rk4/data/conv/quench_rtol1e-13_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode_vs_rk4/data/conv/quench_rtol1e-13_spectrum.csv
-8adad090ac5bdeaaae655118692f34814552572fd0a77cad53a2d0b483076598  cvode_vs_rk4/data/conv/quench_rtol1e-13_summary.txt
-e26c8782f46d1b6657276851513e43fe5170fdfbb864189266638e936ef60f05  cvode_vs_rk4/figures/fig_cmp_conservation.pdf
+eb581e7f77e3fece6bf612d50822f0d1f0d4ff66391f02116b164455263bc1e4  cvode_vs_rk4/data/conv/quench_rtol1e-13_summary.txt
+5a79e610ff601ab481fc37d7981224e78233936ee00e7997c59f5a2ab3105561  cvode_vs_rk4/figures/fig_cmp_conservation.pdf
 9764badfd131b386853c3c5301eb62155cb038f5caab81b7e8ba2d4a852625af  cvode_vs_rk4/figures/fig_cmp_conservation.png
-e02e17b1db3e3dcc81709a28b66f5474002937b7c1de612258f1d3d46f36d70b  cvode_vs_rk4/figures/fig_cmp_lat_time.pdf
+b40d56e548c628e5d6b0f18b85eae21f69535c38315c0350a5518790435f1ee9  cvode_vs_rk4/figures/fig_cmp_lat_time.pdf
 5ab90d13d08e79585a679043ac6aa4ec379f723fcb074737982a4b1514ddf7df  cvode_vs_rk4/figures/fig_cmp_lat_time.png
-b1c40393286213a91facd9e38861415978f156e6dd4fedbab47b34574894e65f  cvode_vs_rk4/figures/fig_cmp_quench.pdf
+8c57afa40cf100b9d3c5223db3e9fdb0ea10b0e3d073b94605cf2f2877d0c4b6  cvode_vs_rk4/figures/fig_cmp_quench.pdf
 4ce9a92498c1f9b8287576a7d642d4802aecacf11ea489815c3bb634a70f8c84  cvode_vs_rk4/figures/fig_cmp_quench.png
-a3a99eee48d07e5976ef65a253109c8d588612b6154fa29e6f250f5843984c4c  cvode_vs_rk4/figures/fig_cmp_sfbs.pdf
+319f37b2f4e1dd2459c040111cb0f5b096da74d24dc6de02863dbf2b263002d9  cvode_vs_rk4/figures/fig_cmp_sfbs.pdf
 92014e585daf58b90a637f85f151e7660475208d93ba78c722ac251044f1b1c0  cvode_vs_rk4/figures/fig_cmp_sfbs.png
-5d1a397fffb9cf53133f2741c96d0176130e825af709315b1d102059e8f37bdc  cvode_vs_rk4/figures/fig_cmp_work_precision.pdf
+67271e489c0ddc3ce10dfc796a1bf814a14ac495a2e94e201b452723483cc624  cvode_vs_rk4/figures/fig_cmp_work_precision.pdf
 26b322a6384a9d5c74c2b3b73f93742c918762dd3cb0c5c9771213223f6c9c84  cvode_vs_rk4/figures/fig_cmp_work_precision.png
 ```
 
@@ -694,6 +710,13 @@ t2_sfbs_tdbdg_higgs.csv: same 3001 times (largest difference of the times 0.00e0
 //! OUTPUT.  `integrate` returns the solution at a list of output times t_1 < t_2 < ...; CVODE steps
 //! past each output time with its own step sizes and returns the value of its interpolating
 //! polynomial at the output time (itask CV_NORMAL), which has the accuracy of the method.
+//!
+//! FAILING RIGHT SIDES.  `integrate_status` is the same integration for a right side that reports a
+//! status (0 success, positive: a recoverable failure, after which CVODE retries the step with a smaller
+//! step size; negative: an unrecoverable failure, which stops the integration) and an output function
+//! that can stop the integration.  The C interface of the crate t2cvode_c, through which the Python
+//! solver t2_solve.py uses this module, needs it: a right side computed in another language can fail.
+//! `integrate` is `integrate_status` with a right side that always succeeds.
 use crate::c64::C64;
 use crate::lattice::{Fields, Lattice, Mats};
 use cvode_rs::prelude::*;
@@ -800,10 +823,15 @@ impl CvodeStats {
 /// the complex right side F(t, w, dw) (it writes dw/dt = F into dw); it owns everything it needs
 pub type ComplexRhs = Box<dyn FnMut(f64, &[C64], &mut [C64])>;
 
+/// a complex right side that reports a status: it writes dw/dt = F(t, w) into dw and returns 0 (success),
+/// a positive number (a recoverable failure: CVODE retries the step with a smaller step size) or a
+/// negative number (an unrecoverable failure: the integration stops with an error)
+pub type ComplexRhsStatus = Box<dyn FnMut(f64, &[C64], &mut [C64]) -> i32>;
+
 /// the user data that CVODE hands to the callbacks: the right side, two work vectors and the tolerances
 /// of the error-weight function
 struct RhsData {
-    f: ComplexRhs,
+    f: ComplexRhsStatus,
     w: Vec<C64>,
     dw: Vec<C64>,
     rtol: f64,
@@ -831,8 +859,9 @@ fn ewt_complex(y: &N_Vector, ewt: &N_Vector, user_data: &mut Option<Box<dyn Any>
     0
 }
 
-/// the callback of CVODE: y (real, interleaved) -> w (complex), dw = F(t, w), dw -> ydot.
-/// A failed downcast of the user data returns -1, the flag of an unrecoverable failure.
+/// the callback of CVODE: y (real, interleaved) -> w (complex), dw = F(t, w), dw -> ydot; it returns the
+/// status of the right side (0 success, positive recoverable, negative unrecoverable), and ydot is written
+/// only on success.  A failed downcast of the user data returns -1, the flag of an unrecoverable failure.
 fn rhs_trampoline(t: sunrealtype, y: &N_Vector, ydot: &N_Vector, user_data: &mut Option<Box<dyn Any>>) -> i32 {
     let data = match user_data.as_mut().and_then(|b| b.downcast_mut::<RhsData>()) {
         Some(d) => d,
@@ -845,7 +874,10 @@ fn rhs_trampoline(t: sunrealtype, y: &N_Vector, ydot: &N_Vector, user_data: &mut
             z.im = yd[2 * k + 1];
         }
     }
-    (data.f)(t, &data.w, &mut data.dw);
+    let status = (data.f)(t, &data.w, &mut data.dw);
+    if status != 0 {
+        return status;
+    }
     let mut dd = NV_DATA_S(ydot);
     for (k, z) in data.dw.iter().enumerate() {
         dd[2 * k] = z.re;
@@ -862,8 +894,30 @@ pub fn integrate(
     t0: f64,
     touts: &[f64],
     settings: &CvodeSettings,
-    f: ComplexRhs,
+    mut f: ComplexRhs,
     mut out: impl FnMut(usize, f64, &[C64]),
+) -> Result<CvodeStats, String> {
+    let g: ComplexRhsStatus = Box::new(move |t, w, dw| {
+        f(t, w, dw);
+        0
+    });
+    integrate_status(w0, t0, touts, settings, g, |i, t, w| {
+        out(i, t, w);
+        true
+    })
+}
+
+/// The integration of `integrate` for a right side that reports a status (see `ComplexRhsStatus`) and an
+/// output function `out(i, t_i, w(t_i))` that returns true to continue and false to stop the integration
+/// (the function then returns an error).  A failure of the right side makes CVODE return a negative flag,
+/// which is returned as an error.
+pub fn integrate_status(
+    w0: &[C64],
+    t0: f64,
+    touts: &[f64],
+    settings: &CvodeSettings,
+    f: ComplexRhsStatus,
+    mut out: impl FnMut(usize, f64, &[C64]) -> bool,
 ) -> Result<CvodeStats, String> {
     let n = w0.len();
     // the SUNDIALS context, the state vector y (2n real numbers) and the integrator memory
@@ -907,7 +961,9 @@ pub fn integrate(
     let mut trace = Vec::with_capacity(touts.len());
     for (i, &tout) in touts.iter().enumerate() {
         if tout == t0 {
-            out(i, t0, w0);
+            if !out(i, t0, w0) {
+                return Err(format!("the output function stopped the integration at the output time {}", tout));
+            }
             continue;
         }
         let r = CVode(&mem, tout, &y, &mut t, CV_NORMAL);
@@ -926,7 +982,9 @@ pub fn integrate(
         CVodeGetLastOrder(&mem, &mut tp.qlast);
         CVodeGetNumSteps(&mem, &mut tp.nsteps);
         trace.push(tp);
-        out(i, t, &w);
+        if !out(i, t, &w) {
+            return Err(format!("the output function stopped the integration at the output time {}", tout));
+        }
     }
     let mut st = CvodeStats { trace, ..Default::default() };
     CVodeGetNumSteps(&mem, &mut st.nsteps);
@@ -995,6 +1053,31 @@ mod tests {
         .unwrap();
         assert!(worst < 1e-8, "deviation {} ({})", worst, st.describe());
         assert!(st.nsteps > 0 && st.qlast >= 1);
+    }
+
+    /// a right side that fails unrecoverably after 50 evaluations stops the integration with an error, and an
+    /// output function that returns false stops it as well
+    #[test]
+    fn failures_stop_the_integration() {
+        let touts = uniform_times(0.0, 1.0, 20);
+        let mut calls = 0;
+        let f: ComplexRhsStatus = Box::new(move |_t, w, dw| {
+            calls += 1;
+            dw[0] = c(0.0, -1.0) * w[0];
+            if calls > 50 {
+                -1
+            } else {
+                0
+            }
+        });
+        let r = integrate_status(&[C64::ONE], 0.0, &touts, &CvodeSettings::adams(1e-12, 1e-14), f, |_i, _t, _w| true);
+        assert!(r.is_err(), "the failure of the right side was not reported");
+        let g: ComplexRhsStatus = Box::new(|_t, w, dw| {
+            dw[0] = c(0.0, -1.0) * w[0];
+            0
+        });
+        let r = integrate_status(&[C64::ONE], 0.0, &touts, &CvodeSettings::adams(1e-12, 1e-14), g, |i, _t, _w| i < 3);
+        assert!(r.is_err(), "the stop of the output function was not reported");
     }
 }
 ```
@@ -1394,7 +1477,7 @@ fn main() {
     md += "<!-- generated by t2_cvcmp: the table of the runs on the three problems with an exact solution -->\n";
     md += "| problem | method | $\\ell^{\\rm t}_{\\rm LL}$ or $r^{\\rm tol}_{\\rm LL}$ | evaluations $N^{\\rm ev}_{\\rm LL}$ | steps $N^{\\rm st}_{\\rm LL}$ | largest $\\delta^{\\rm rel}_{\\rm LL}$ | $\\delta^{\\rm rel}_{\\rm LL}$ at the end | largest relative change of the norm |\n";
     // the numbers of dashes give the relative widths of the columns in the typeset table
-    md += "|:-----|:---------------|-----------------:|----------:|--------:|---------:|---------:|-----------:|\n";
+    md += "|:--------|:---------------|-----------------:|----------:|--------:|---------:|---------:|-----------:|\n";
     for (p, dts, dt_old) in &plans {
         rep.add(format!("problem {}: {}", p.name, p.text));
         for &dt in dts {

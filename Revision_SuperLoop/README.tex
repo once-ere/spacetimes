@@ -269,13 +269,15 @@ the program \texttt{t2\_analytic} (10 checks). Its third answer (item
 guides the user in defining the initial and the boundary conditions,
 asks for the name of an input file, reads the conditions from it, and
 solves the gauge-covariant mean-field equations on the lattice (the time
-evolution of a mode by RK4, the spectrum, the self-consistent ground
-state by Anderson-accelerated iteration, and the self-consistent
-evolution after a quench by the implicit midpoint rule, which conserves
-the orthonormality of the modes and the fermion number exactly). Seven
-examples with known answers (the group velocity, a bounded orbit in a
-magnetic field, Andreev reflection, the bound states of a kink, the gap
-equation, a self-consistent kink, and the amplitude mode of the pair
+evolution of a mode, the spectrum, the self-consistent ground state by
+Anderson-accelerated iteration, and the self-consistent evolution after
+a quench; both time evolutions are integrated by CVODE of SUNDIALS
+7.8.0, in the pure-Rust translation vendored in the repository, folder
+\texttt{vendor/sundials\_rs-7.8.0}, which the Python solver calls
+through the shared library \texttt{libt2cvode} of the Rust workspace).
+Seven examples with known answers (the group velocity, a bounded orbit
+in a magnetic field, Andreev reflection, the bound states of a kink, the
+gap equation, a self-consistent kink, and the amplitude mode of the pair
 field) are checked by \texttt{test2/python/t2\_examples\_check.py} (10
 checks); the free self-consistent iteration shows that a wall of the
 pair field is unstable unless the pair field is held real along one
@@ -290,19 +292,25 @@ Cargo workspace \texttt{test2/rust}, built with
 checks and output files as the Python solver, checked against the
 operator of the library \texttt{t2core}; for the seven examples its
 solutions agree with the Python solutions to rounding (11 checks, among
-them the comparison EX-8). Its sixth answer (item {[}6{]}) is the Rust
-plotter \texttt{t2\_plot} (the member \texttt{t2plot} of the same
-workspace): it draws any solution as Scalable Vector Graphics with a
-small plotting library of its own, with the predictions of the examples
-computed in Rust (Figures 14 to 20 of the document). Its seventh answer
-(item {[}7{]}) constructs the superfluid boson singlet state (SFBS) from
-the spinor field: the spin-zero pairs of two spinor charges (spin
-singlet, isospin triplet, fermion number 2, charges \(+1\), \(0\),
-\(-1\)), their super-loop form, their Bose character, and the SFBS state
-as a coherent state of pairs, proved to be the mean-field ground state
-and checked in the exact many-body space of one pair of momenta (Figure
-21 of the document). Its eighth answer (the first item {[}8{]}) derives
-the effective field equations of the SFBS: the exact
+them the comparison EX-8). The folder \texttt{test2/cvode\_vs\_rk4}
+holds the comparison of CVODE with the fixed-step methods of the first
+version of the programs (the classical Runge-Kutta method of the fourth
+order and the implicit midpoint rule), the document
+\texttt{P\_CVODE\_vs\_RK4} (.md, .tex, .pdf) with its program
+\texttt{t2\_cvcmp}, data and figures; the data of the first version are
+kept in \texttt{test2/rk4\_reference}. Its sixth answer (item {[}6{]})
+is the Rust plotter \texttt{t2\_plot} (the member \texttt{t2plot} of the
+same workspace): it draws any solution as Scalable Vector Graphics with
+a small plotting library of its own, with the predictions of the
+examples computed in Rust (Figures 14 to 20 of the document). Its
+seventh answer (item {[}7{]}) constructs the superfluid boson singlet
+state (SFBS) from the spinor field: the spin-zero pairs of two spinor
+charges (spin singlet, isospin triplet, fermion number 2, charges
+\(+1\), \(0\), \(-1\)), their super-loop form, their Bose character, and
+the SFBS state as a coherent state of pairs, proved to be the mean-field
+ground state and checked in the exact many-body space of one pair of
+momenta (Figure 21 of the document). Its eighth answer (the first item
+{[}8{]}) derives the effective field equations of the SFBS: the exact
 Hubbard-Stratonovich field of the SFBS, its gauge-covariant derivative
 inherited from the spinor field, the effective action and its derivative
 expansion (the Lagrangian of a charged scalar field), the pair
@@ -471,7 +479,14 @@ solver \texttt{python/t2\_solve.py} with the seven input files of
 Rust plotter \texttt{rust/t2plot} (binary \texttt{t2\_plot}, item
 {[}6{]}); the checks of the superfluid boson singlet state
 \texttt{rust/t2sfbs} (binary \texttt{t2\_sfbs}, items {[}7{]} to
-{[}11{]}) \\
+{[}11{]}); the time integration with CVODE in
+\texttt{rust/t2core/src/cvode.rs} and, for the Python solver, the shared
+library \texttt{libt2cvode} of \texttt{rust/t2cvode\_c}; the comparison
+of CVODE with the fixed-step methods of the first version in
+\texttt{cvode\_vs\_rk4/} (the document \texttt{P\_CVODE\_vs\_RK4}, .md,
+.tex, .pdf, its program \texttt{rust/t2cvcmp}, binary
+\texttt{t2\_cvcmp}, its scripts, data and figures) and the data of the
+first version in \texttt{rk4\_reference/} \\
 \texttt{docs\_src/} & the sources of the documents (Markdown with
 placeholders; the manuscript in REVTeX) \\
 \end{longtable}
@@ -521,6 +536,12 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 # Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state, and its figures:
 (cd test2/rust && cargo build --release && ./target/release/t2_sfbs)
 python3 test2/python/make_t2_sfbs_figures.py
+# the comparison of CVODE with the fixed-step methods of the first version, and its document:
+bash test2/cvode_vs_rk4/run_convergence.sh "$PWD/test2/rust/target/release/t2_solve"
+./test2/rust/target/release/t2_cvcmp
+python3 test2/cvode_vs_rk4/python/make_cmp_figures.py
+python3 test2/cvode_vs_rk4/tools/assemble_provenance.py
+(cd test2/cvode_vs_rk4 && bash tools/build_docs.sh "PROJECT spacetimes, Test 2: CVODE compared with RK4" P_CVODE_vs_RK4.md)
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 \end{verbatim}
@@ -532,7 +553,12 @@ and pandoc. The program uses the library crate
 \texttt{code/spacetimes-rs} of the repository (complex numbers,
 Hermitian diagonalization, Gauss-Legendre rules, Brent's root finder,
 the writer of data files); no crate is downloaded. The Rust programs of
-the folder \texttt{test2} use no external crate at all.
+the folder \texttt{test2} use no downloaded crate either: their time
+integrator CVODE is the pure-Rust translation of SUNDIALS 7.8.0 that the
+repository contains (folder \texttt{vendor/sundials\_rs-7.8.0}, next to
+this folder), and the Python solver needs the shared library
+\texttt{libt2cvode} that \texttt{cargo\ build\ -\/-release} in
+\texttt{test2/rust} builds.
 
 \hypertarget{the-checks-in-numbers}{%
 \section{5. The checks, in numbers}\label{the-checks-in-numbers}}
@@ -577,11 +603,11 @@ of 9 \\
 \texttt{test2/data/t2\_py\_examples\_checks.txt} &
 \texttt{t2\_examples\_check.py} & 10 of 10 \\
 \texttt{test2/data/t2\_py\_selftest\_checks.txt} & \texttt{t2\_solve.py}
-& 4 of 4 \\
+& 6 of 6 \\
 \texttt{test2/data/t2\_rs\_examples\_checks.txt} &
 \texttt{t2\_examples\_check.py} & 11 of 11 \\
 \texttt{test2/data/t2\_rs\_selftest\_checks.txt} & \texttt{t2\_solve} &
-5 of 5 \\
+6 of 6 \\
 \texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 17 of
 17 \\
 \end{longtable}
@@ -1699,8 +1725,11 @@ plus the Lagrangian density of the gauge fields & new &
 \texttt{Lagr\_nabla} \\
 \(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
 \(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
-directions), the time step and the coefficient of the Wilson term of the
-lattice equations & new & \texttt{dx} \texttt{dt} \texttt{r\_W} \\
+directions), a time step of the lattice equations (a fixed step of the
+first version of Test 2, or the interval between the output times of an
+integration by CVODE, which chooses its own internal steps), and the
+coefficient of the Wilson term of the lattice equations & new &
+\texttt{dx} \texttt{dt} \texttt{r\_W} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
 sites in the directions \(x^1_{\rm LL}\), \(x^2_{\rm LL}\),
@@ -1760,10 +1789,14 @@ isospin up of a mode, the fraction of its norm
 that lies in the isospin-up components, and the probability of the hole,
 the fraction that lies in \(\psi^{\rm h}_{\rm LL}\); both are functions
 of the time \(x^0_{\rm LL}\) (in the data files the suffix
-\texttt{\_rk4} marks the values of the integration of the lattice
-equations and \texttt{\_exact} those of the exact solution) & new &
-\texttt{P\_up} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
-\texttt{P\_hole} \texttt{P\_hole\_rk4} \texttt{P\_hole\_exact} \\
+\texttt{\_cvode} marks the values of the integration of the lattice
+equations by CVODE, \texttt{\_rk4} those of the integration by the
+fixed-step Runge-Kutta method of the first version of Test 2, kept in
+the folder \texttt{test2/rk4\_reference} for the comparison, and
+\texttt{\_exact} those of the exact solution) & new & \texttt{P\_up}
+\texttt{P\_up\_cvode} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
+\texttt{P\_hole} \texttt{P\_hole\_cvode} \texttt{P\_hole\_rk4}
+\texttt{P\_hole\_exact} \\
 \(\chi^{\rm pw}_{\rm LL}\), \(\vartheta^{\rm B}_{\rm LL}\) & the
 constant 8-component spinor (Dirac index and isospin) of a plane-wave
 solution, a normalized eigenvector of
@@ -2364,6 +2397,44 @@ saddle point, and the prediction) & new & \texttt{theta\_mix}
 fields of SFBSv and the gauge potentials, of the Lagrangian (13.1) of
 Test 2 (the effective Lagrangian of the SFBS with the Yang-Mills and
 Maxwell terms) & new & \\
+\(w^{\rm lat}_{\rm LL}\), \(w^{\rm cmp}_{\rm LL}\);
+\(n^{\rm cpx}_{\rm LL}\) & a Nambu mode on the lattice written as one
+complex vector, the 16 components of \(\psi^{\rm p}_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) on every site, the sites one after the other,
+so that the lattice equations read
+\(i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\)
+(for the self-consistent evolution the columns of
+\(\mathsf W^{\rm m}_{\rm LL}\) one after the other); one complex
+component of it; and the number of its complex components, \(16\) times
+the number of sites (times the number of modes) & new & \texttt{w\_lat}
+\texttt{w\_cmp} \texttt{n\_complex} \\
+\(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
+the absolute tolerance of the time integration by CVODE: the estimated
+local error of every internal step is accepted only if its weighted
+root-mean-square norm is at most 1, with the weight
+\(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+for the real and for the imaginary part of every complex component
+\(w^{\rm cmp}_{\rm LL}\) of the state & new & \texttt{rtol}
+\texttt{atol} \\
+\(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\);
+\(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\) & the size and the
+order of an internal step of CVODE (both chosen by CVODE, the order from
+1 to 12 for the Adams-Moulton formulas); the number of internal steps of
+an integration and the number of evaluations of its right side
+\(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) (the cost; one
+step of the classical Runge-Kutta method of fourth order needs 4
+evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{N\_steps}
+\texttt{N\_evals} \\
+\(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the error
+test of CVODE permits,
+\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+for a state of the norm \(\lVert w^{\rm lat}_{\rm LL}\rVert\), the
+expected size of the global error of a unitary evolution; and the
+relative deviation of a computed state from the exact solution,
+\(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\),
+with the exact solution \(w^{\rm ex}_{\rm LL}\) of the same equations &
+new & \texttt{budget} \texttt{max\_deviation} \texttt{w\_exact} \\
 \end{longtable}
 
 \end{document}

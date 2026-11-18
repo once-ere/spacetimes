@@ -647,6 +647,85 @@ printing every matrix and every component equation from the program,
 which evaluates each printed expression and compares it with the matrix
 that it describes (check GS-12).
 
+\hypertarget{the-requests-of-november-18-2026-0533-and-0535-verbatim}{%
+\subsection{2.9 The requests of November 18, 2026, 05:33 and 05:35
+(verbatim)}\label{the-requests-of-november-18-2026-0533-and-0535-verbatim}}
+
+The request of 05:33, verbatim:
+
+\begin{verbatim}
+STOP everything NOW. I do not want you to use the sophomoric RK4 solver. INSTEAD, Use the pure rust
+version of cvode on my repo https://github.com/once-ere/rustSolveIt_macos-silicon_SUNDIALS_7_8_0.git.
+Redo every calculation that you performed and use cvode instead (or some other applicable SUNDIALS
+algorithm). Create a provenance that compares the cvode result with the RK4 result; REMEMBER these
+errors, and do NOT do this again!
+\end{verbatim}
+
+The request of 05:35, verbatim:
+
+\begin{verbatim}
+include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
+\end{verbatim}
+
+\hypertarget{what-these-requests-ask-for-and-how-they-are-answered-1}{%
+\subsection{2.10 What these requests ask for, and how they are
+answered}\label{what-these-requests-ask-for-and-how-they-are-answered-1}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{CVODE instead of the fixed-step methods.} The first version of
+  the programs of Test 2 integrated the time-dependent equations with
+  two methods written by hand: the classical Runge-Kutta method of the
+  fourth order (RK4) with a fixed step (the task \texttt{evolve} of both
+  solvers, the checks AS-2, AS-4 of \texttt{t2\_analytic}, SB-10 and
+  SB-16 of \texttt{t2\_sfbs}) and the implicit midpoint rule with a
+  fixed step (the task \texttt{quench}). Every one of these integrations
+  now uses CVODE of SUNDIALS 7.8.0 in the pure-Rust translation of the
+  author's repository: the variable-order, variable-step Adams-Moulton
+  formulas with control of the local error
+  (\(r^{\rm tol}_{\rm LL}=10^{-12}\), \(a^{\rm tol}_{\rm LL}=10^{-14}\),
+  error weights of the complex components; Section 2.11 of the document
+  of Test 2). The Rust programs call it through the new module
+  \texttt{t2core::cvode}; the Python solver calls the same module
+  through the new shared library \texttt{libt2cvode} (crate
+  \texttt{test2/rust/t2cvode\_c}), so that there is one integrator
+  (decision D22). Every calculation that used a fixed-step method was
+  run again: the checks AS-2, AS-4, GS-13 (now a test of CVODE against
+  an exact solution), SB-10 and SB-16, the seven examples of both
+  solvers, the examples checks EX-1 to EX-8, and all figures that show
+  their results.
+\item
+  \textbf{The comparison.} The new program \texttt{t2\_cvcmp} (crate
+  \texttt{test2/rust/t2cvcmp}), with its own copy of the RK4 step of the
+  first version, compares the two kinds of integration on three problems
+  with exact solutions and on the four time-dependent examples of the
+  solvers; the data of the first version are kept in
+  \texttt{test2/rk4\_reference/data} (106 files, with SHA-256 digests).
+  The comparison is written up, with its figures, in
+  \texttt{test2/cvode\_vs\_rk4/P\_CVODE\_vs\_RK4} (.md, .tex, .pdf); the
+  document of Test 2 contains its program, its report and its findings
+  in its Appendix A.2g. The main finding: the quench of the first
+  version was wrong in the third decimal (the mean of the gap 0.500877
+  instead of 0.503125, the frequency 1.18449 instead of 1.18898), and
+  the stability rule of the first version allowed steps that give large
+  errors on random lattice problems.
+\item
+  \textbf{The code in the project.} The pure-Rust translation of
+  SUNDIALS 7.8.0 is part of PROJECT spacetimes, in the folder
+  \texttt{vendor/sundials\_rs-7.8.0} (its seven crates, unchanged, with
+  the digests of its 283 files and its own provenance
+  \texttt{vendor/P\_sundials\_rs-7.8.0}, .md, .tex, .pdf); the new Rust
+  code of Test 2 is in the members \texttt{t2core} (\texttt{cvode.rs}),
+  \texttt{t2cvode\_c} and \texttt{t2cvcmp} of the workspace
+  \texttt{test2/rust}.
+\item
+  \textbf{Remember the errors.} The error is entry E63 of Section 11,
+  and the rule that prevents it is rule 9 of Section 3: a time
+  integration is never done with a fixed-step method written by hand.
+\end{enumerate}
+
 \hypertarget{the-hard-rules-and-how-each-is-met}{%
 \section{3. The hard rules, and how each is
 met}\label{the-hard-rules-and-how-each-is-met}}
@@ -696,7 +775,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 197 new ones, all with the
+registries with their meanings and adds 201 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -725,6 +804,16 @@ never refer the reader elsewhere & every document contains the complete
 table of the symbols and the formulas it uses; the check LL-H1 searches
 all documents for referrals & data file
 \texttt{sl\_self\_contained\_checks.txt} \\
+9. (the request of November 18, 2026) Time integrations with SUNDIALS,
+never with a fixed-step method written by hand & every time-dependent
+calculation of the folder (the tasks \texttt{evolve} and \texttt{quench}
+of both solvers, the checks AS-2, AS-4, GS-13, SB-10 and SB-16) calls
+CVODE of the vendored pure-Rust SUNDIALS 7.8.0 through
+\texttt{t2core::cvode} (the Python solver through \texttt{libt2cvode});
+the only remaining copy of the RK4 step is the one inside the comparison
+program \texttt{t2\_cvcmp}, which measures the errors of the first
+version & \texttt{test2/rust/t2core/src/cvode.rs}; the reports of the
+checks; \texttt{test2/cvode\_vs\_rk4/data/cmp\_report.txt} \\
 8. Follow the instructions exactly, or explain in a provenance why not
 and pause & Section 7 explains every place where the wording of the task
 cannot be followed literally (a counterexample to a proved theorem whose
@@ -971,6 +1060,28 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   the longitudinal dispersion relation), Section 13 of the document of
   Test 2 with Figure 26, and the new symbols (decision D21, Section 11,
   entry E62).
+\item
+  \textbf{Stage 18 --- CVODE replaces the fixed-step methods} (Section
+  2.10; 2026-11-18): the vendored pure-Rust SUNDIALS 7.8.0 (folder
+  \texttt{vendor/sundials\_rs-7.8.0} of the repository, with its
+  provenance); the module \texttt{t2core::cvode}; CVODE in
+  \texttt{t2\_analytic} (AS-2, AS-4), \texttt{t2\_fields} (GS-13, a new
+  test against an exact solution, with Figure 2), \texttt{t2\_solve}
+  (input format \texttt{t2in\ 2} with the keys \texttt{output\_step},
+  \texttt{outputs}, \texttt{fields\_every}, \texttt{rtol},
+  \texttt{atol}), \texttt{t2\_sfbs} (SB-10, SB-16) and, through the new
+  shared library \texttt{libt2cvode}, the Python solver; all
+  calculations of Test 2 that integrate in time run again; the
+  comparison program \texttt{t2\_cvcmp}, the convergence runs and the
+  comparison document \texttt{test2/cvode\_vs\_rk4/P\_CVODE\_vs\_RK4};
+  the four new registry entries of group 9 (\(w^{\rm lat}_{\rm LL}\),
+  \(w^{\rm cmp}_{\rm LL}\), \(n^{\rm cpx}_{\rm LL}\);
+  \(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\);
+  \(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\),
+  \(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\);
+  \(B^{\rm err}_{\rm LL}\), \(\delta^{\rm rel}_{\rm LL}\),
+  \(w^{\rm ex}_{\rm LL}\)); the documents of Test 2 corrected (decision
+  D22, Section 11, entries E63 and E64).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1321,16 +1432,18 @@ meaning, kind and default), and seven ready examples that the program
 writes as commented input files. The input file is a plain text file of
 lines \texttt{key\ =\ value} rather than a programming-language file, so
 that the user needs no programming and the same file can be read by the
-Rust solver of item {[}5{]}. Two numerical methods differ from what
-Section 2.11 of the document first said, for reasons given in its
-Section 4.3: the self-consistent evolution uses the implicit midpoint
-rule instead of RK4 (it keeps the modes orthonormal and the fermion
-number constant exactly), and the self-consistent iteration uses
-Anderson acceleration instead of plain repetition (12 iterations instead
-of 117 in the uniform example). Section 2.11 was corrected accordingly,
-together with its normalization of the modes in fewer than three
-dimensions. Time-dependent gauge fields are offered as a uniform pulse
-of given shape, and site-dependent ones through a file; general
+Rust solver of item {[}5{]}. Two numerical methods of the first version
+differed from what Section 2.11 of the document first said: the
+self-consistent evolution used the implicit midpoint rule instead of RK4
+(it keeps the modes orthonormal and the fermion number constant
+exactly), and the self-consistent iteration uses Anderson acceleration
+instead of plain repetition (12 iterations instead of 117 in the uniform
+example). On 2026-11-18 both fixed-step methods were replaced by CVODE
+(Section 2.10, decision D22), which keeps the orthonormality and the
+fermion number up to its error budget. Section 2.11 was corrected
+accordingly, together with its normalization of the modes in fewer than
+three dimensions. Time-dependent gauge fields are offered as a uniform
+pulse of given shape, and site-dependent ones through a file; general
 functions of space and time would need program code from the user, which
 the input file avoids.
 
@@ -1472,6 +1585,30 @@ gap equation is solved in closed form only for massless spinor charges
 (\(m_{\rm LL}=0\)), where the integral is elementary; for
 \(m_{\rm LL}>0\) it is evaluated numerically, as in the earlier stages.
 
+\textbf{D22. ``Use the pure rust version of cvode on my repo \ldots{}
+(or some other applicable SUNDIALS algorithm)''.} CVODE with the
+Adams-Moulton formulas and the fixed-point iteration is the method of
+SUNDIALS for nonstiff equations, and the equations of Test 2 are not
+stiff (the eigenvalues of \(-i\mathcal H^{\rm lat}_{\rm LL}\) lie on the
+imaginary axis). Three choices were made. (1) The error weights: CVODE
+weighs every real unknown with the inverse of \(r^{\rm tol}_{\rm LL}\)
+times its own modulus plus \(a^{\rm tol}_{\rm LL}\); for the real and
+the imaginary part of an oscillating complex component this weight jumps
+whenever the part passes through zero, and the steps become needlessly
+small (the first test needed 36591 steps for one oscillator over 100
+periods). The module \texttt{t2core::cvode} therefore gives CVODE its
+own error-weight function,
+\(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+for both parts of a complex component \(w^{\rm cmp}_{\rm LL}\). (2) The
+checks of the conservation laws compare with \(10B^{\rm err}_{\rm LL}\),
+ten times the accumulated local error that the error test permits,
+because the local error of CVODE is an estimate. (3) The Python solver
+does not use a SUNDIALS package of Python but the same pure-Rust CVODE,
+through the shared library \texttt{libt2cvode} and the standard module
+\texttt{ctypes}: the request names the pure-Rust CVODE of the author's
+repository, and with one integrator the two solvers can be compared
+number by number (check EX-8).
+
 \hypertarget{decisions-that-are-the-authors}{%
 \section{8. Decisions that are the
 author's}\label{decisions-that-are-the-authors}}
@@ -1601,6 +1738,18 @@ author's}\label{decisions-that-are-the-authors}}
   \texttt{provenance/symbols\_ng.csv} (read only), for the symbols that
   both folders share, and the build scripts of that folder, which were
   adapted.
+\item
+  The pure-Rust translation of SUNDIALS 7.8.0 of the author's repository
+  \texttt{https://github.com/once-ere/rustSolveIt\_macos-silicon\_SUNDIALS\_7\_8\_0.git}
+  (folder \texttt{sundials\_rs}, commit \texttt{f656982}), vendored
+  unchanged in \texttt{vendor/sundials\_rs-7.8.0} with the SHA-256
+  digests of its 283 files (only its crates \texttt{sundials\_core} and
+  \texttt{cvode\_rs} are compiled for Test 2).
+\item
+  The data files of the first version of Test 2, kept in
+  \texttt{test2/rk4\_reference/data} for the comparison (106 files, with
+  their SHA-256 digests in
+  \texttt{test2/rk4\_reference/SHA256SUMS\_data.txt}).
 \item
   The published literature listed in the manuscript; the attribution of
   the non-Lie Malcev module of \(\mathfrak{sl}(2)\) to Carlsson (1976)
@@ -2050,6 +2199,44 @@ The first labels of Figure 26 wrote the potentials without the index
 \(p\) and named the photon by the potential \(A^3_{{\rm LL},p}\) instead
 of the field \(V^3_{{\rm LL},p}\) of the unitary gauge; they were
 corrected & & \\
+E63 & from the first version on, every time integration of Test 2 (the
+task \texttt{evolve} of both solvers, the checks AS-2, AS-4, SB-10 and
+SB-16 by RK4 with a fixed step; the task \texttt{quench} by the implicit
+midpoint rule with a fixed step) was done with a fixed-step method
+written by hand, although the author's repository provides CVODE of
+SUNDIALS in pure Rust. The author stopped the work on 2026-11-18
+(Section 2.9). The consequences, measured by the program
+\texttt{t2\_cvcmp}: the quench was wrong in the third decimal (mean of
+the gap 0.500877 instead of 0.503125, frequency 1.18449 instead of
+1.18898, amplitude 0.00587 instead of 0.00708; the conserved functional
+\(E^{\rm MF}_{\rm LL}\) changed by \(2\times10^{-3}\) of its value), the
+norm of the evolve examples was conserved only to \(3\times10^{-7}\),
+and the stability rule \(\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le2.5\)
+of the first version allows steps that give the relative error 0.37 on a
+random lattice problem. All these calculations were redone with CVODE
+(stage 18), and rule 9 of Section 3 now forbids fixed-step methods
+written by hand & & \\
+E64 & during the change to CVODE: the first test of the module
+\texttt{t2core::cvode} (one oscillator over 100 periods) used the
+standard error weights of CVODE for every real unknown and needed 36591
+steps for the deviation \(1.8\times10^{-8}\); with the error weights of
+complex components (decision D22) it needs 13643 steps for
+\(3.3\times10^{-9}\); the first version of check GS-13 asked that the
+error fall by a factor of 10 from one tolerance to the next, which the
+stability-limited steps of the Adams-Moulton formulas do not give
+(1.2e-6 to 1.7e-7), and it now compares each error with the error budget
+\(B^{\rm err}_{\rm LL}\); the first conservation check of the solver
+compared the change of the norm with the number of steps times
+\(r^{\rm tol}_{\rm LL}\), which is not a bound (2.56e-9 against 2.3e-9
+in the example \texttt{cyclotron}), and it now uses
+\(10B^{\rm err}_{\rm LL}\) with the factor \(\sqrt2\) and the term of
+\(a^{\rm tol}_{\rm LL}\); the reports of the solvers first wrote the
+mode as \texttt{w} and the mode matrix as \texttt{W}, which are the
+names of the bi-octonion \(\mathbf w\) and of nothing registered, and
+now write \texttt{w\_lat} and \texttt{W\_modes}; the report of check
+GS-13 first named the complex components \texttt{w\_k} and the
+eigenpairs \texttt{E\_n}, \texttt{v\_n}, and now uses \texttt{w\_cmp},
+\texttt{E\_qp} and words & & \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -3116,8 +3303,11 @@ plus the Lagrangian density of the gauge fields & new &
 \texttt{Lagr\_nabla} \\
 \(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
 \(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
-directions), the time step and the coefficient of the Wilson term of the
-lattice equations & new & \texttt{dx} \texttt{dt} \texttt{r\_W} \\
+directions), a time step of the lattice equations (a fixed step of the
+first version of Test 2, or the interval between the output times of an
+integration by CVODE, which chooses its own internal steps), and the
+coefficient of the Wilson term of the lattice equations & new &
+\texttt{dx} \texttt{dt} \texttt{r\_W} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
 sites in the directions \(x^1_{\rm LL}\), \(x^2_{\rm LL}\),
@@ -3177,10 +3367,14 @@ isospin up of a mode, the fraction of its norm
 that lies in the isospin-up components, and the probability of the hole,
 the fraction that lies in \(\psi^{\rm h}_{\rm LL}\); both are functions
 of the time \(x^0_{\rm LL}\) (in the data files the suffix
-\texttt{\_rk4} marks the values of the integration of the lattice
-equations and \texttt{\_exact} those of the exact solution) & new &
-\texttt{P\_up} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
-\texttt{P\_hole} \texttt{P\_hole\_rk4} \texttt{P\_hole\_exact} \\
+\texttt{\_cvode} marks the values of the integration of the lattice
+equations by CVODE, \texttt{\_rk4} those of the integration by the
+fixed-step Runge-Kutta method of the first version of Test 2, kept in
+the folder \texttt{test2/rk4\_reference} for the comparison, and
+\texttt{\_exact} those of the exact solution) & new & \texttt{P\_up}
+\texttt{P\_up\_cvode} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
+\texttt{P\_hole} \texttt{P\_hole\_cvode} \texttt{P\_hole\_rk4}
+\texttt{P\_hole\_exact} \\
 \(\chi^{\rm pw}_{\rm LL}\), \(\vartheta^{\rm B}_{\rm LL}\) & the
 constant 8-component spinor (Dirac index and isospin) of a plane-wave
 solution, a normalized eigenvector of
@@ -3781,6 +3975,44 @@ saddle point, and the prediction) & new & \texttt{theta\_mix}
 fields of SFBSv and the gauge potentials, of the Lagrangian (13.1) of
 Test 2 (the effective Lagrangian of the SFBS with the Yang-Mills and
 Maxwell terms) & new & \\
+\(w^{\rm lat}_{\rm LL}\), \(w^{\rm cmp}_{\rm LL}\);
+\(n^{\rm cpx}_{\rm LL}\) & a Nambu mode on the lattice written as one
+complex vector, the 16 components of \(\psi^{\rm p}_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) on every site, the sites one after the other,
+so that the lattice equations read
+\(i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\)
+(for the self-consistent evolution the columns of
+\(\mathsf W^{\rm m}_{\rm LL}\) one after the other); one complex
+component of it; and the number of its complex components, \(16\) times
+the number of sites (times the number of modes) & new & \texttt{w\_lat}
+\texttt{w\_cmp} \texttt{n\_complex} \\
+\(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
+the absolute tolerance of the time integration by CVODE: the estimated
+local error of every internal step is accepted only if its weighted
+root-mean-square norm is at most 1, with the weight
+\(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+for the real and for the imaginary part of every complex component
+\(w^{\rm cmp}_{\rm LL}\) of the state & new & \texttt{rtol}
+\texttt{atol} \\
+\(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\);
+\(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\) & the size and the
+order of an internal step of CVODE (both chosen by CVODE, the order from
+1 to 12 for the Adams-Moulton formulas); the number of internal steps of
+an integration and the number of evaluations of its right side
+\(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) (the cost; one
+step of the classical Runge-Kutta method of fourth order needs 4
+evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{N\_steps}
+\texttt{N\_evals} \\
+\(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the error
+test of CVODE permits,
+\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+for a state of the norm \(\lVert w^{\rm lat}_{\rm LL}\rVert\), the
+expected size of the global error of a unitary evolution; and the
+relative deviation of a computed state from the exact solution,
+\(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\),
+with the exact solution \(w^{\rm ex}_{\rm LL}\) of the same equations &
+new & \texttt{budget} \texttt{max\_deviation} \texttt{w\_exact} \\
 \end{longtable}
 
 \end{document}

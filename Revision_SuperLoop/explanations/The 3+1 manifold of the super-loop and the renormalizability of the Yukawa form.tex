@@ -2124,10 +2124,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-877f4cad949fa5eebd15434b778435b8c409ed5410b9599bce2b64980eb08b9c  explanations/figures/fig_ex_r13_bubble.pdf
-864dc87da96e7165f121827d494e1cd898b083d247bd4a2f3f3e8841341289e7  explanations/figures/fig_ex_r13_coordinates.pdf
-219a5be5888e23c75963802d76c5a785712c2a59a511b9d4bdd5ac63a2722470  explanations/figures/fig_ex_r13_divergences.pdf
-a2bf80802b51a22499d82193dd7d071bc09d52dab33d85368a222ff2a0ce39d8  explanations/figures/fig_ex_r13_lorentz.pdf
+0a683b6d26f09d369f31e86bef89a07252fcd66542126c75896db312631821f1  explanations/figures/fig_ex_r13_bubble.pdf
+1daa90eeba247b1da6e398400a1f23e3dc8e50f55e7d3df4c02b0cce4b7081ef  explanations/figures/fig_ex_r13_coordinates.pdf
+9f6956c4d71a45923e7d261fb8fcb40a07ba3a1033bf3045263cf7956834031e  explanations/figures/fig_ex_r13_divergences.pdf
+13ad0ef1bc53d1faf7ade2810523c78bfcc332e923550ea7888758a5d483ba45  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -3239,8 +3239,11 @@ plus the Lagrangian density of the gauge fields & new &
 \texttt{Lagr\_nabla} \\
 \(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
 \(r^{\rm W}_{\rm LL}\) & the lattice spacing (the same in the three
-directions), the time step and the coefficient of the Wilson term of the
-lattice equations & new & \texttt{dx} \texttt{dt} \texttt{r\_W} \\
+directions), a time step of the lattice equations (a fixed step of the
+first version of Test 2, or the interval between the output times of an
+integration by CVODE, which chooses its own internal steps), and the
+coefficient of the Wilson term of the lattice equations & new &
+\texttt{dx} \texttt{dt} \texttt{r\_W} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\); \(\vec\delta^j_{\rm LL}\) & the numbers of lattice
 sites in the directions \(x^1_{\rm LL}\), \(x^2_{\rm LL}\),
@@ -3300,10 +3303,14 @@ isospin up of a mode, the fraction of its norm
 that lies in the isospin-up components, and the probability of the hole,
 the fraction that lies in \(\psi^{\rm h}_{\rm LL}\); both are functions
 of the time \(x^0_{\rm LL}\) (in the data files the suffix
-\texttt{\_rk4} marks the values of the integration of the lattice
-equations and \texttt{\_exact} those of the exact solution) & new &
-\texttt{P\_up} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
-\texttt{P\_hole} \texttt{P\_hole\_rk4} \texttt{P\_hole\_exact} \\
+\texttt{\_cvode} marks the values of the integration of the lattice
+equations by CVODE, \texttt{\_rk4} those of the integration by the
+fixed-step Runge-Kutta method of the first version of Test 2, kept in
+the folder \texttt{test2/rk4\_reference} for the comparison, and
+\texttt{\_exact} those of the exact solution) & new & \texttt{P\_up}
+\texttt{P\_up\_cvode} \texttt{P\_up\_rk4} \texttt{P\_up\_exact}
+\texttt{P\_hole} \texttt{P\_hole\_cvode} \texttt{P\_hole\_rk4}
+\texttt{P\_hole\_exact} \\
 \(\chi^{\rm pw}_{\rm LL}\), \(\vartheta^{\rm B}_{\rm LL}\) & the
 constant 8-component spinor (Dirac index and isospin) of a plane-wave
 solution, a normalized eigenvector of
@@ -3904,6 +3911,44 @@ saddle point, and the prediction) & new & \texttt{theta\_mix}
 fields of SFBSv and the gauge potentials, of the Lagrangian (13.1) of
 Test 2 (the effective Lagrangian of the SFBS with the Yang-Mills and
 Maxwell terms) & new & \\
+\(w^{\rm lat}_{\rm LL}\), \(w^{\rm cmp}_{\rm LL}\);
+\(n^{\rm cpx}_{\rm LL}\) & a Nambu mode on the lattice written as one
+complex vector, the 16 components of \(\psi^{\rm p}_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) on every site, the sites one after the other,
+so that the lattice equations read
+\(i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\)
+(for the self-consistent evolution the columns of
+\(\mathsf W^{\rm m}_{\rm LL}\) one after the other); one complex
+component of it; and the number of its complex components, \(16\) times
+the number of sites (times the number of modes) & new & \texttt{w\_lat}
+\texttt{w\_cmp} \texttt{n\_complex} \\
+\(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
+the absolute tolerance of the time integration by CVODE: the estimated
+local error of every internal step is accepted only if its weighted
+root-mean-square norm is at most 1, with the weight
+\(1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})\)
+for the real and for the imaginary part of every complex component
+\(w^{\rm cmp}_{\rm LL}\) of the state & new & \texttt{rtol}
+\texttt{atol} \\
+\(h^{\rm CV}_{\rm LL}\), \(q^{\rm CV}_{\rm LL}\);
+\(N^{\rm st}_{\rm LL}\), \(N^{\rm ev}_{\rm LL}\) & the size and the
+order of an internal step of CVODE (both chosen by CVODE, the order from
+1 to 12 for the Adams-Moulton formulas); the number of internal steps of
+an integration and the number of evaluations of its right side
+\(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) (the cost; one
+step of the classical Runge-Kutta method of fourth order needs 4
+evaluations) & new & \texttt{h\_CV} \texttt{q\_CV} \texttt{N\_steps}
+\texttt{N\_evals} \\
+\(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the error
+test of CVODE permits,
+\(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+for a state of the norm \(\lVert w^{\rm lat}_{\rm LL}\rVert\), the
+expected size of the global error of a unitary evolution; and the
+relative deviation of a computed state from the exact solution,
+\(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\),
+with the exact solution \(w^{\rm ex}_{\rm LL}\) of the same equations &
+new & \texttt{budget} \texttt{max\_deviation} \texttt{w\_exact} \\
 \end{longtable}
 
 \end{document}
