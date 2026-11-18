@@ -9,10 +9,10 @@
 //!   Case A  free spinor charges in constant gauge potentials:
 //!           AS-1  the spectrum: the momentum is shifted by the potential of each isospin component
 //!                 (minimal coupling q -> q - Acal_up_1) and the energy by its scalar potential;
-//!           AS-2  a constant isospin potential along tau_1 rotates the isospin (time evolution, RK4);
+//!           AS-2  a constant isospin potential along tau_1 rotates the isospin (time evolution, CVODE);
 //!   Case B  the uniform polar superfluid dvec = (0, 0, Delta):
 //!           AS-3  the Bogoliubov modes (continuum identity and lattice spectrum);
-//!           AS-4  the particle-hole (Rabi) oscillation of an injected particle (RK4);
+//!           AS-4  the particle-hole (Rabi) oscillation of an injected particle (CVODE);
 //!           AS-5  the gap equation (2.33) in closed form for massless spinor charges;
 //!           AS-6  the uniform state is an exact self-consistent solution of the lattice equations;
 //!   Case C  a domain wall (kink) of the pair field:
@@ -25,15 +25,22 @@
 //! Output (folder test2/data): the report t2_analytic_checks.txt and the data files t2_A_*.csv,
 //! t2_B_*.csv, t2_C_*.csv and t2_D_*.csv of the Figures 3 to 6 of the document.
 //!
+//! Time integration (AS-2, AS-4): CVODE of SUNDIALS 7.8.0 in pure Rust (vendored in the folder
+//! vendor/sundials_rs-7.8.0 of PROJECT spacetimes), Adams-Moulton formulas of the orders 1 to 12 with
+//! local error control, fixed-point iteration of the corrector, error weights 1/(rtol |w_k| + atol) of the
+//! complex components w_k with rtol = 1e-12 and atol = 1e-14 (module t2core::cvode).  CVODE chooses its
+//! steps itself and returns the state at the requested output times by interpolation.
+//!
 //! Build and run (from the folder Revision_SuperLoop/test2/rust):
 //!     cargo build --release && ./target/release/t2_analytic
 //! The program exits with status 1 if a check fails.  Arithmetic: double precision; every check names
 //! its tolerance; random numbers from a fixed seed, so that every run gives the same numbers.
 //!
 //! Names in the comments and in the output (the plain-text names of the registry of the folder):
-//!   m, mu, Delta, dvec, q, eps_lat, dx, dt, r_W     mass, chemical potential, gap, order parameter,
-//!                                                   momentum, lattice energy, lattice spacing, time step,
+//!   m, mu, Delta, dvec, q, eps_lat, dx, r_W         mass, chemical potential, gap, order parameter,
+//!                                                   momentum, lattice energy, lattice spacing,
 //!                                                   Wilson coefficient
+//!   rtol, atol                                      relative and absolute tolerance of CVODE
 //!   g_v, g_F, Av_LL^iota_p, AF_LL_p, Acal_p         couplings and gauge potentials of SU(2)_v and U(1)_F,
 //!                                                   Acal_p = g_v Av_LL^iota_p T_LL^iota + g_F AF_LL_p
 //!   Acal_up_p, Acal_down_p                          the eigenvalues of Acal_p on the isospin-up and
@@ -53,6 +60,7 @@ use std::path::PathBuf;
 
 use t2core::c64::{c, C64};
 use t2core::cmat::{eigh, CMat};
+use t2core::cvode::{self, CvodeSettings};
 use t2core::lattice::{self, Fields, Lattice, Mats};
 use t2core::model::{self, kpair, lift4};
 use t2core::rng::Rng;
@@ -480,13 +488,16 @@ fn main() {
         }
         w
     };
-    let mut w = exact_a2(0.0);
-    let (dt_a, nsteps_a, every_a) = (0.004, 4000usize, 40usize);
+    // CVODE settings of every time evolution of this program (AS-2 and AS-4)
+    let cv = CvodeSettings::adams(1e-12, 1e-14);
+    let w0_a2 = exact_a2(0.0);
+    // the 101 output times x^0 = 0, 0.16, ..., 16
+    let touts_a2 = cvode::uniform_times(0.0, 0.16, 100);
     let mut dev_a2 = 0.0f64;
     let mut prec = Csv::new(
-        "the probability P_up of isospin up of a plane wave in a constant isospin potential along tau_1, from the RK4 integration of the lattice equations and from the exact solution cos^2(omega_pr x_LL^0/2), omega_pr = g_v Av_LL^1_0 (Test 2, item 2, Figure 3(b))",
-        &[("m", format!("{}", mass)), ("dx", format!("{}", ellp)), ("dt", format!("{}", dt_a)), ("r_W", "1".into()), ("mu", format!("{}", mu_p)), ("Av_LL^1_0", format!("{}", apre)), ("g_v", format!("{}", gv)), ("q", f10(qp)), ("omega_pr", f10(omega_pr))],
-        "x_LL^0,P_up_rk4,P_up_exact",
+        "the probability P_up of isospin up of a plane wave in a constant isospin potential along tau_1, from the CVODE integration of the lattice equations and from the exact solution cos^2(omega_pr x_LL^0/2), omega_pr = g_v Av_LL^1_0 (Test 2, item 2, Figure 3(b))",
+        &[("m", format!("{}", mass)), ("dx", format!("{}", ellp)), ("integrator", "CVODE (SUNDIALS 7.8.0) Adams-Moulton".into()), ("rtol", format!("{:e}", cv.rtol)), ("atol", format!("{:e}", cv.atol)), ("r_W", "1".into()), ("mu", format!("{}", mu_p)), ("Av_LL^1_0", format!("{}", apre)), ("g_v", format!("{}", gv)), ("q", f10(qp)), ("omega_pr", f10(omega_pr))],
+        "x_LL^0,P_up_cvode,P_up_exact",
     );
     let p_up = |w: &[C64]| -> f64 {
         let tot: f64 = w.iter().map(|z| z.norm_sqr()).sum();
@@ -498,27 +509,18 @@ fn main() {
         }
         u / tot
     };
-    for step in 0..=nsteps_a {
-        let t = step as f64 * dt_a;
-        if step % every_a == 0 {
-            let ex = exact_a2(t);
-            dev_a2 = dev_a2.max(vdiff(&w, &ex) / vnorm(&ex));
-            prec.row(&[format!("{:.4}", t), f10(p_up(&w)), f10((0.5 * omega_pr * t).cos().powi(2))]);
-        }
-        if step < nsteps_a {
-            lat_p.rk4_step(&fl_p, &mats, &mut w, dt_a);
-        }
-    }
+    let st_a2 = cvode::evolve_lattice(&lat_p, &fl_p, &w0_a2, &touts_a2, &cv, |_i, t, w| {
+        let ex = exact_a2(t);
+        dev_a2 = dev_a2.max(vdiff(w, &ex) / vnorm(&ex));
+        prec.row(&[format!("{:.4}", t), f10(p_up(w)), f10((0.5 * omega_pr * t).cos().powi(2))]);
+    })
+    .expect("CVODE integration of AS-2");
     prec.write(&dd, "t2_A_precession.csv");
-    // the expected size of the RK4 error: the phase error (E dt)^5/120 per step, summed over the steps,
-    // for the largest energy |E| = eps_lat - mu + omega_pr/2 of the two components
-    let emax_a2 = eps_p - mu_p + 0.5 * omega_pr;
-    let rk4_est_a2 = nsteps_a as f64 * (emax_a2 * dt_a).powi(5) / 120.0;
     ck.add(
         "AS-2",
-        "isospin precession in a constant isospin potential (case A): in the potential Av_LL^1_0 = 1.5 (along tau_1, no other field) the positive-energy lattice plane wave chi_pw (x) (isospin up) evolves as exp(-i (eps_lat - mu) x_LL^0) chi_pw (x) (cos(omega_pr x_LL^0/2), i sin(omega_pr x_LL^0/2)) with omega_pr = g_v Av_LL^1_0, so that P_up = cos^2(omega_pr x_LL^0/2); the RK4 integration of the lattice equations (periodic chain of 16 sites, dx = 0.5, r_W = 1, m = 0.4, mu = 0.2, momentum 2 pi 2/(16 dx), dt = 0.004, 4000 steps) agrees with this exact solution at every 40th step (relative deviation of the whole state, tolerance 1e-8; the expected size, the summed RK4 phase error N (E dt)^5/120 for the largest energy E, is stated)",
-        dev_a2 < 1e-8,
-        format!("largest relative deviation {} (expected about {}); omega_pr = {:.4}, eps_lat = {:.6}", sci(dev_a2), sci(rk4_est_a2), omega_pr, eps_p),
+        "isospin precession in a constant isospin potential (case A): in the potential Av_LL^1_0 = 1.5 (along tau_1, no other field) the positive-energy lattice plane wave chi_pw (x) (isospin up) evolves as exp(-i (eps_lat - mu) x_LL^0) chi_pw (x) (cos(omega_pr x_LL^0/2), i sin(omega_pr x_LL^0/2)) with omega_pr = g_v Av_LL^1_0, so that P_up = cos^2(omega_pr x_LL^0/2); the CVODE integration of the lattice equations (Adams-Moulton formulas with local error control, rtol = 1e-12, atol = 1e-14; periodic chain of 16 sites, dx = 0.5, r_W = 1, m = 0.4, mu = 0.2, momentum 2 pi 2/(16 dx)) agrees with this exact solution at the 101 output times x_LL^0 = 0, 0.16, ..., 16 (relative deviation of the whole state, tolerance 1e-9; the numbers of steps and evaluations of CVODE are stated)",
+        dev_a2 < 1e-9,
+        format!("largest relative deviation {}; CVODE: {}; omega_pr = {:.4}, eps_lat = {:.6}", sci(dev_a2), st_a2.describe(), omega_pr, eps_p),
     );
 
     // ================================================================ Case B, AS-3: Bogoliubov modes
@@ -642,13 +644,14 @@ fn main() {
         }
         w
     };
-    let mut w = exact_b2(0.0);
-    let (dt_b, nsteps_b, every_b) = (0.02, 1000usize, 10usize);
+    let w0_b2 = exact_b2(0.0);
+    // the 101 output times x^0 = 0, 0.2, ..., 20
+    let touts_b2 = cvode::uniform_times(0.0, 0.2, 100);
     let mut dev_b2 = 0.0f64;
     let mut rabi = Csv::new(
-        "the probability P_hole of the hole part of a particle injected into the uniform polar superfluid, from the RK4 integration of the lattice equations and from the exact solution (Delta/E^-)^2 sin^2(E^- x_LL^0) (Test 2, item 2, Figure 4(b))",
-        &[("m", format!("{}", mass)), ("dx", format!("{}", ellb)), ("dt", format!("{}", dt_b)), ("r_W", "1".into()), ("mu", format!("{}", mu_b)), ("Delta", format!("{}", del_b)), ("q", f10(qb)), ("eps_lat", f10(eps_b)), ("E^-", f10(e_b))],
-        "x_LL^0,P_hole_rk4,P_hole_exact",
+        "the probability P_hole of the hole part of a particle injected into the uniform polar superfluid, from the CVODE integration of the lattice equations and from the exact solution (Delta/E^-)^2 sin^2(E^- x_LL^0) (Test 2, item 2, Figure 4(b))",
+        &[("m", format!("{}", mass)), ("dx", format!("{}", ellb)), ("integrator", "CVODE (SUNDIALS 7.8.0) Adams-Moulton".into()), ("rtol", format!("{:e}", cv.rtol)), ("atol", format!("{:e}", cv.atol)), ("r_W", "1".into()), ("mu", format!("{}", mu_b)), ("Delta", format!("{}", del_b)), ("q", f10(qb)), ("eps_lat", f10(eps_b)), ("E^-", f10(e_b))],
+        "x_LL^0,P_hole_cvode,P_hole_exact",
     );
     let p_hole = |w: &[C64]| -> f64 {
         let tot: f64 = w.iter().map(|z| z.norm_sqr()).sum();
@@ -660,24 +663,18 @@ fn main() {
         }
         h / tot
     };
-    for step in 0..=nsteps_b {
-        let t = step as f64 * dt_b;
-        if step % every_b == 0 {
-            let ex = exact_b2(t);
-            dev_b2 = dev_b2.max(vdiff(&w, &ex) / vnorm(&ex));
-            rabi.row(&[format!("{:.4}", t), f10(p_hole(&w)), f10((del_b / e_b).powi(2) * (e_b * t).sin().powi(2))]);
-        }
-        if step < nsteps_b {
-            lat_b.rk4_step(&fl_b, &mats, &mut w, dt_b);
-        }
-    }
+    let st_b2 = cvode::evolve_lattice(&lat_b, &fl_b, &w0_b2, &touts_b2, &cv, |_i, t, w| {
+        let ex = exact_b2(t);
+        dev_b2 = dev_b2.max(vdiff(w, &ex) / vnorm(&ex));
+        rabi.row(&[format!("{:.4}", t), f10(p_hole(w)), f10((del_b / e_b).powi(2) * (e_b * t).sin().powi(2))]);
+    })
+    .expect("CVODE integration of AS-4");
     rabi.write(&dd, "t2_B_rabi.csv");
-    let rk4_est_b2 = nsteps_b as f64 * (e_b * dt_b).powi(5) / 120.0;
     ck.add(
         "AS-4",
-        "the particle-hole (Rabi) oscillation of a particle injected into the uniform polar superfluid (case B): on a periodic chain of 16 sites (dx = 0.5, r_W = 1, m = 0.4, mu = 0.6) with the pair field dvec = (0, 0, 0.3), the positive-energy lattice plane wave chi_pw of isospin up at the momentum 2 pi/(16 dx) evolves as (cos(E^- x_LL^0) - i ((eps_lat - mu)/E^-) sin(E^- x_LL^0)) (chi_pw, 0) - i (Delta/E^-) sin(E^- x_LL^0) (0, Kch_3 chi_pw), with E^- = ((eps_lat - mu)^2 + Delta^2)^(1/2): the probability of the hole is P_hole = (Delta/E^-)^2 sin^2(E^- x_LL^0); the RK4 integration of the lattice equations (dt = 0.02, 1000 steps) agrees with this exact solution at every 10th step (relative deviation of the whole state, tolerance 1e-8; the expected size N (E dt)^5/120 is stated)",
-        dev_b2 < 1e-8,
-        format!("largest relative deviation {} (expected about {}); eps_lat = {:.6}, E^- = {:.6}, largest P_hole = (Delta/E^-)^2 = {:.6}", sci(dev_b2), sci(rk4_est_b2), eps_b, e_b, (del_b / e_b).powi(2)),
+        "the particle-hole (Rabi) oscillation of a particle injected into the uniform polar superfluid (case B): on a periodic chain of 16 sites (dx = 0.5, r_W = 1, m = 0.4, mu = 0.6) with the pair field dvec = (0, 0, 0.3), the positive-energy lattice plane wave chi_pw of isospin up at the momentum 2 pi/(16 dx) evolves as (cos(E^- x_LL^0) - i ((eps_lat - mu)/E^-) sin(E^- x_LL^0)) (chi_pw, 0) - i (Delta/E^-) sin(E^- x_LL^0) (0, Kch_3 chi_pw), with E^- = ((eps_lat - mu)^2 + Delta^2)^(1/2): the probability of the hole is P_hole = (Delta/E^-)^2 sin^2(E^- x_LL^0); the CVODE integration of the lattice equations (Adams-Moulton formulas with local error control, rtol = 1e-12, atol = 1e-14) agrees with this exact solution at the 101 output times x_LL^0 = 0, 0.2, ..., 20 (relative deviation of the whole state, tolerance 1e-9; the numbers of steps and evaluations of CVODE are stated)",
+        dev_b2 < 1e-9,
+        format!("largest relative deviation {}; CVODE: {}; eps_lat = {:.6}, E^- = {:.6}, largest P_hole = (Delta/E^-)^2 = {:.6}", sci(dev_b2), st_b2.describe(), eps_b, e_b, (del_b / e_b).powi(2)),
     );
 
     // ================================================================ Case B, AS-5: the gap equation in closed form

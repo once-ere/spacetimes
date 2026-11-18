@@ -1,6 +1,6 @@
 # example 'andreev' of the Test 2 solver: a particle hitting a superfluid region: Andreev reflection into a hole
 # every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
-format = t2in 1
+format = t2in 2
 title = Andreev reflection of a particle at a normal-superfluid interface
 task = evolve
 sites = 240 1 1
@@ -21,6 +21,6 @@ packet_branch = positive
 packet_spin = up
 packet_isospin = up
 packet_part = particle
-time_step = 0.05
-steps = 1200
-output_every = 40
+output_step = 0.05
+outputs = 1200
+fields_every = 40

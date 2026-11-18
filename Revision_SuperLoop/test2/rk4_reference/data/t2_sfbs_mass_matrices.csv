@@ -1,0 +1,56 @@
+# content: the 4 x 4 matrices of the second derivatives of Omega with respect to four constant potentials (in the variables g_F AF, g_v Av^1, g_v Av^2, g_v Av^3; rows and columns 0 to 3) from the Bogoliubov matrices, and the prediction of the kinetic Lagrangian: time components at the vacuum (-2 Z_t N_g), space components at the vacuum (2 Z_s N_g, with the cutoff on the canonical momentum, whose surface term appears in the entry (3, 3)), and time components at the non-unitary saddle point (prediction -2 Z_t N_g of the saddle field, exact for the entries of AF and Av^3) (Test 2, item 11, Figure 26(a))
+# m: 0.2
+# Lambda: 1
+# G: 22.5
+# Delta_vac: 0.2094933033
+# Z_t: 2.5130308687e-2
+# Z_s: 2.8989112360e-2
+matrix,row,column,from_bdg,predicted
+time_vacuum,0,0,-8.8232400529e-3,-8.8232401446e-3
+time_vacuum,0,1,1.3733227518e-14,-0.0000000000e0
+time_vacuum,0,2,0.0000000000e0,-0.0000000000e0
+time_vacuum,0,3,-1.2432184911e-13,-0.0000000000e0
+time_vacuum,1,0,1.3733227518e-14,-0.0000000000e0
+time_vacuum,1,1,-2.2058100346e-3,-2.2058100361e-3
+time_vacuum,1,2,0.0000000000e0,0.0000000000e0
+time_vacuum,1,3,-1.1564823173e-14,0.0000000000e0
+time_vacuum,2,0,0.0000000000e0,-0.0000000000e0
+time_vacuum,2,1,0.0000000000e0,0.0000000000e0
+time_vacuum,2,2,-2.2058100349e-3,-2.2058100361e-3
+time_vacuum,2,3,0.0000000000e0,0.0000000000e0
+time_vacuum,3,0,-1.2432184911e-13,-0.0000000000e0
+time_vacuum,3,1,-1.1564823173e-14,0.0000000000e0
+time_vacuum,3,2,0.0000000000e0,0.0000000000e0
+time_vacuum,3,3,4.0043200237e-13,-0.0000000000e0
+space_vacuum_canonical,0,0,1.0178064296e-2,1.0178064389e-2
+space_vacuum_canonical,0,1,0.0000000000e0,0.0000000000e0
+space_vacuum_canonical,0,2,0.0000000000e0,0.0000000000e0
+space_vacuum_canonical,0,3,3.9754079658e-15,0.0000000000e0
+space_vacuum_canonical,1,0,0.0000000000e0,0.0000000000e0
+space_vacuum_canonical,1,1,2.5445160961e-3,2.5445160973e-3
+space_vacuum_canonical,1,2,0.0000000000e0,-0.0000000000e0
+space_vacuum_canonical,1,3,3.6140072416e-16,-0.0000000000e0
+space_vacuum_canonical,2,0,0.0000000000e0,0.0000000000e0
+space_vacuum_canonical,2,1,0.0000000000e0,-0.0000000000e0
+space_vacuum_canonical,2,2,2.5445160961e-3,2.5445160973e-3
+space_vacuum_canonical,2,3,0.0000000000e0,-0.0000000000e0
+space_vacuum_canonical,3,0,3.9754079658e-15,0.0000000000e0
+space_vacuum_canonical,3,1,3.6140072416e-16,-0.0000000000e0
+space_vacuum_canonical,3,2,0.0000000000e0,-0.0000000000e0
+space_vacuum_canonical,3,3,3.3870606100e-4,3.3870606113e-4
+time_saddle,0,0,-4.4116200263e-3,-4.4116200723e-3
+time_saddle,0,1,2.2226144536e-14,-0.0000000000e0
+time_saddle,0,2,0.0000000000e0,-0.0000000000e0
+time_saddle,0,3,-2.2058099060e-3,-2.2058100361e-3
+time_saddle,1,0,2.2226144536e-14,-0.0000000000e0
+time_saddle,1,1,-6.0250137530e-4,-5.5145250904e-4
+time_saddle,1,2,0.0000000000e0,0.0000000000e0
+time_saddle,1,3,1.8070036208e-16,0.0000000000e0
+time_saddle,2,0,0.0000000000e0,-0.0000000000e0
+time_saddle,2,1,0.0000000000e0,0.0000000000e0
+time_saddle,2,2,-6.0250137539e-4,-5.5145250904e-4
+time_saddle,2,3,0.0000000000e0,0.0000000000e0
+time_saddle,3,0,-2.2058099060e-3,-2.2058100361e-3
+time_saddle,3,1,1.8070036208e-16,0.0000000000e0
+time_saddle,3,2,0.0000000000e0,0.0000000000e0
+time_saddle,3,3,-1.1029050167e-3,-1.1029050181e-3

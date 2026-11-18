@@ -5,7 +5,7 @@
 //!   * builds every matrix of the field equations from the super-loop (module t2core::model);
 //!   * checks every statement that the document makes about them (checks GS-1 to GS-16);
 //!   * writes the data of the figures of item [1] (test2/data/t2_dispersion_curves.csv,
-//!     t2_dispersion_lattice.csv, t2_rk4_stability.csv);
+//!     t2_dispersion_lattice.csv, t2_cvode_accuracy.csv);
 //!   * writes the explicit matrices and the explicit component equations in LaTeX
 //!     (test2/data/t2_fragments.md), each of them evaluated numerically and compared with the
 //!     matrix computation it describes, so that no printed formula is typed by hand;
@@ -24,6 +24,7 @@ use std::path::PathBuf;
 
 use t2core::c64::{c, C64};
 use t2core::cmat::{eigh, CMat};
+use t2core::cvode::{self, CvodeSettings};
 use t2core::lattice::{self, Fields, Lattice, Mats, M2};
 use t2core::model::{self, eta, kpair, lift2, lift4, sigma, tiso};
 use t2core::rng::Rng;
@@ -1361,17 +1362,84 @@ fn main() {
         format!("largest deviations {}, {}, {}, {}, {}", sci(pdev), sci(eqdev), sci(eqdev2), sci(pidev), sci(eqdev3)),
     );
 
-    // ================================================================ GS-13 time-step stability of RK4 on the lattice
-    // one RK4 step multiplies an eigencomponent with energy E by 1 - i x - x^2/2 + i x^3/6 + x^4/24 (x = E dt);
-    // its modulus is <= 1 for |x| <= 2 sqrt(2); the solvers use dt <= c_safe / bound with c_safe = 2.5
-    let rk4 = |x: f64| -> f64 { c(1.0 - x * x / 2.0 + x.powi(4) / 24.0, -x + x.powi(3) / 6.0).abs() };
-    let stable_ok = rk4(2.5) <= 1.0 && rk4(2.0 * 2.0f64.sqrt()) <= 1.0 + 1e-12 && rk4(2.9) > 1.0;
-    let drift = 1.0 - rk4(0.1);
+    // ================================================================ GS-13 the time integration of the lattice equations (CVODE)
+    // The programs of Test 2 integrate i dw/dx^0 = H_lat w with CVODE (module t2core::cvode: SUNDIALS 7.8.0 in pure
+    // Rust, Adams-Moulton formulas of the orders 1 to 12 with local error control, error weights 1/(rtol |w_k| + atol)
+    // of the complex components).  On the lattice of GS-10 (3 x 2 x 4 sites, random links, potentials and pair fields;
+    // 384 complex components) the exact solution is the spectral sum
+    //     w(x^0) = sum_n exp(-i E_n x^0) v_n (v_n^dag w0)
+    // over the eigenpairs (E_n, v_n) of the Hermitian matrix H_lat (eigensolver of GS-11).  CVODE is run from a random
+    // normalized state w0 (own generator, seed 2026111713, so that the random numbers of the later checks are not
+    // shifted) up to x^0 = 20 with the relative tolerances rtol = 1e-8, 1e-10, 1e-12 (atol = rtol/100) and compared
+    // with the spectral sum at the 41 output times x^0 = 0, 0.5, ..., 20.
+    let mut rng13 = Rng(2026111713);
+    let n13 = lat.dim();
+    let mut w0_13 = rnd_vec(&mut rng13, n13);
+    let nrm13 = vnorm(&w0_13);
+    for z in w0_13.iter_mut() {
+        *z = z.scale(1.0 / nrm13);
+    }
+    let (e13, v13) = eigh(&hl);
+    // the coefficients c_n = v_n^dag w0 of the initial state
+    let coef13: Vec<C64> = (0..n13).map(|k| (0..n13).fold(C64::ZERO, |acc, r| acc + v13.get(r, k).conj() * w0_13[r])).collect();
+    let exact13 = |t: f64| -> Vec<C64> {
+        let mut w = vec![C64::ZERO; n13];
+        for k in 0..n13 {
+            let a = coef13[k] * C64::cis(-e13[k] * t);
+            for r in 0..n13 {
+                w[r] += v13.get(r, k) * a;
+            }
+        }
+        w
+    };
+    let touts13 = cvode::uniform_times(0.0, 0.5, 40);
+    let exact_at: Vec<Vec<C64>> = touts13.iter().map(|&t| exact13(t)).collect();
+    let rtols13 = [1e-8, 1e-10, 1e-12];
+    // per tolerance: the relative deviation and the norm change at every output time, the counters
+    let mut dev13 = vec![vec![0.0f64; touts13.len()]; 3];
+    let mut ndev13 = [0.0f64; 3];
+    let mut st13 = vec![];
+    for (ir, &rt) in rtols13.iter().enumerate() {
+        let set = CvodeSettings::adams(rt, rt / 100.0);
+        let st = cvode::evolve_lattice(&lat, &fl, &w0_13, &touts13, &set, |i, _t, w| {
+            dev13[ir][i] = vnorm(&vsub(w, &exact_at[i])) / vnorm(&exact_at[i]);
+            ndev13[ir] = ndev13[ir].max((vnorm(w) - 1.0).abs());
+        })
+        .expect("CVODE integration of GS-13");
+        st13.push(st);
+    }
+    let maxdev13: Vec<f64> = dev13.iter().map(|d| d.iter().fold(0.0f64, |m, x| m.max(*x))).collect();
+    // the data of Figure 2: the deviation from the spectral sum, and the size and the order of the last step of CVODE,
+    // at every output time, for the three tolerances
+    let mut acc = String::from("# content: the time integration of the lattice equations i dw/dx_LL^0 = H_lat w by CVODE (SUNDIALS 7.8.0, Adams-Moulton formulas with local error control) on the 3 x 2 x 4 lattice of check GS-10 (dx = 0.7, r_W = 1, m = 0.4, mu = 0.3, random links, potentials and pair fields; 384 complex components) from a random normalized state: the relative deviation from the exact spectral solution, and the size h and the order q of the last internal step before each output time, for rtol = 1e-8, 1e-10, 1e-12 (atol = rtol/100) (Test 2, item 1, Figure 2)\n# rtol: 1e-8, 1e-10, 1e-12\nx_LL^0,dev_rtol_1e-8,dev_rtol_1e-10,dev_rtol_1e-12,h_rtol_1e-8,h_rtol_1e-10,h_rtol_1e-12,q_rtol_1e-8,q_rtol_1e-10,q_rtol_1e-12\n");
+    for (i, &t) in touts13.iter().enumerate() {
+        let (h, q): (Vec<String>, Vec<String>) = if i == 0 {
+            (vec!["0".into(); 3], vec!["0".into(); 3])
+        } else {
+            ((0..3).map(|ir| format!("{:.6e}", st13[ir].trace[i - 1].hlast)).collect(), (0..3).map(|ir| format!("{}", st13[ir].trace[i - 1].qlast)).collect())
+        };
+        acc.push_str(&format!(
+            "{:.4},{:.6e},{:.6e},{:.6e},{},{},{},{},{},{}\n",
+            t, dev13[0][i], dev13[1][i], dev13[2][i], h[0], h[1], h[2], q[0], q[1], q[2]
+        ));
+    }
+    fs::write(dd.join("t2_cvode_accuracy.csv"), acc).expect("write t2_cvode_accuracy.csv");
+    // the global error of a unitary evolution with local error control stays below the accumulated local error that the
+    // error test of CVODE permits, steps sqrt(2) (rtol ||w|| + atol sqrt(n)) (t2core::cvode::CvodeSettings::error_budget,
+    // ||w|| = 1, n = 384), and it decreases with rtol
+    let budgets13: Vec<f64> = (0..3).map(|ir| CvodeSettings::adams(rtols13[ir], rtols13[ir] / 100.0).error_budget(st13[ir].nsteps, n13, 1.0)).collect();
+    let within_sum = (0..3).all(|ir| maxdev13[ir] < budgets13[ir]);
+    let improving = maxdev13[0] > maxdev13[1] && maxdev13[1] > maxdev13[2];
     ck.add(
         "GS-13",
-        "time stepping: one step of the classical Runge-Kutta method (RK4) multiplies the component of an eigenvector with the energy E by 1 - i x - x^2/2 + i x^3/6 + x^4/24 with x = E dt; its modulus is at most 1 for |x| <= 2 sqrt(2) and exceeds 1 beyond (x = 2.9); with the bound Hbound of GS-10 the time step dt <= 2.5/Hbound is therefore stable, and the modulus decreases per step by about x^6/144 (its square is 1 - x^6/72 + x^8/576; at x = 0.1 the decrease is 6.9e-9)",
-        stable_ok && (drift - 0.1f64.powi(6) / 144.0).abs() < 1e-11,
-        format!("modulus at x = 2.5: {:.6}; at 2.9: {:.6}; loss at x = 0.1: {}", rk4(2.5), rk4(2.9), sci(drift)),
+        "time integration: the lattice equations i dw/dx_LL^0 = H_lat w are integrated by CVODE (SUNDIALS 7.8.0 in pure Rust, Adams-Moulton formulas of the orders 1 to 12 with local error control, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components); on the 3 x 2 x 4 lattice of GS-10 with random links, potentials and pair fields (384 complex components) and a random normalized initial state w0, the CVODE solution agrees at the 41 output times x_LL^0 = 0, 0.5, ..., 20 with the exact spectral solution sum_n exp(-i E_n x_LL^0) v_n (v_n^dag w0) of the eigenpairs of H_lat: for rtol = 1e-12 (atol = 1e-14) the relative deviation stays below 1e-9 and the norm of the state, which the Hermitian H_lat conserves, changes by less than 1e-10; for each of rtol = 1e-8, 1e-10, 1e-12 (atol = rtol/100) the largest deviation stays below the accumulated local error that the error test of CVODE permits, (number of steps) sqrt(2) (rtol + atol sqrt(384)), and it decreases from rtol = 1e-8 to 1e-10 to 1e-12",
+        maxdev13[2] < 1e-9 && ndev13[2] < 1e-10 && within_sum && improving,
+        format!(
+            "largest relative deviations {}, {}, {} (bounds: accumulated local errors {}, {}, {}) and largest norm changes {}, {}, {} for rtol = 1e-8, 1e-10, 1e-12; CVODE steps {}, {}, {}; CVODE at rtol = 1e-12: {}",
+            sci(maxdev13[0]), sci(maxdev13[1]), sci(maxdev13[2]),
+            sci(budgets13[0]), sci(budgets13[1]), sci(budgets13[2]),
+            sci(ndev13[0]), sci(ndev13[1]), sci(ndev13[2]), st13[0].nsteps, st13[1].nsteps, st13[2].nsteps, st13[2].describe()
+        ),
     );
 
     // ================================================================ GS-14 the super-loop form of the field equations
@@ -1629,13 +1697,6 @@ fn main() {
         }
     }
     fs::write(dd.join("t2_dispersion_lattice.csv"), pts).expect("write t2_dispersion_lattice.csv");
-    // (2) the modulus of the RK4 factor
-    let mut rk = String::from("# content: the modulus of the factor by which one step of the classical Runge-Kutta method (RK4) multiplies the component of an eigenvector with the energy E, as a function of E dt (Test 2, item 1, Figure 2)\nE_times_dt,rk4_modulus\n");
-    for i in 0..=640 {
-        let x = 3.2 * i as f64 / 640.0;
-        rk.push_str(&format!("{:.6},{:.12}\n", x, rk4(x)));
-    }
-    fs::write(dd.join("t2_rk4_stability.csv"), rk).expect("write t2_rk4_stability.csv");
     ck.add(
         "GS-16",
         "the lattice operator of the solvers on plane waves: on a periodic chain of 24 sites along x_LL^1 (dx = 0.5, m = 0.4, mu = 0, no gauge fields, no pairing) the operator H_lat, applied by the routine of the solvers to exp(i q x_LL^1) times any of the 16 unit vectors, gives again a plane wave of the same momentum, and the 16 x 16 matrix of these images has the eigenvalues -eps_lat(q) (eightfold) and +eps_lat(q) (eightfold) at all 24 allowed momenta q = 2 pi k/(24 dx), for the Wilson coefficients r_W = 0 and r_W = 1 (tolerance 1e-12); these are the points of Figure 1, whose curves are the formula eps_lat",

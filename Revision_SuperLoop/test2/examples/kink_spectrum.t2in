@@ -1,6 +1,6 @@
 # example 'kink_spectrum' of the Test 2 solver: the spectrum of a ring with a kink and an antikink of the pair field (bound states)
 # every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
-format = t2in 1
+format = t2in 2
 title = bound states of a kink and an antikink of the pair field
 task = spectrum
 sites = 60 1 1

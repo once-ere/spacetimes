@@ -1,6 +1,7 @@
 //! t2core -- the core library of Test 2 (PROJECT spacetimes, Revision_SuperLoop, folder test2).
 //!
-//! Pure Rust (standard library only).  It contains everything that the programs of Test 2 share,
+//! Pure Rust (the standard library and the pure-Rust translation of SUNDIALS 7.8.0 vendored in the folder
+//! vendor/sundials_rs-7.8.0 of PROJECT spacetimes).  It contains everything that the programs of Test 2 share,
 //! so that the matrices, the field equations and the numerical scheme are defined in ONE place:
 //!
 //!   c64      complex numbers in double precision
@@ -14,6 +15,8 @@
 //!            that writes the matrices and the component equations in LaTeX
 //!   lattice  the gauge-covariant lattice Dirac-Bogoliubov-de Gennes operator (the discretized
 //!            mean-field field equations), used by the checks and by the solver
+//!   cvode    the time integration of the mean-field equations with CVODE (SUNDIALS 7.8.0, Adams-Moulton
+//!            formulas with error control), used by every program that evolves in time
 //!
 //! Conventions (those of the manuscript of Revision_SuperLoop):
 //!   * a bi-quaternion b = sum_p xi_p e_p (p = 0..3, complex xi_p) has the 2 x 2 matrix
@@ -24,6 +27,7 @@
 //!     Kronecker products are (Dirac matrix) (x) (isospin matrix).
 pub mod c64;
 pub mod cmat;
+pub mod cvode;
 pub mod lattice;
 pub mod model;
 pub mod rng;

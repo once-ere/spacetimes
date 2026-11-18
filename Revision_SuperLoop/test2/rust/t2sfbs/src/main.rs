@@ -104,6 +104,7 @@ use std::path::PathBuf;
 
 use t2core::c64::{c, C64};
 use t2core::cmat::{eigh, CMat};
+use t2core::cvode::{self, ComplexRhs, CvodeSettings, CvodeStats};
 use t2core::model::{adjoint, alpha, beta, bq_conj, bq_from, bq_mul, cconj, dirac_from_charges, eps2, eps3, gamma, gamma_ch, jgen, kgen, kpair, kpair_ps, lift2, lift4, pair_potential, rand_sl2c, sigma, spin_gen, su2, tiso};
 use t2core::rng::Rng;
 use t2core::sym::{tex_matrix, Lin, SymMat, GR};
@@ -1573,11 +1574,14 @@ fn frags_item8(fr: &mut Frags) {
 /// gauge fields: for each momentum shell (node q_i with the weight w_i of int d^3q/(2 pi)^3) and each sign s = +-1 of the
 /// energy s eps, the mode (u, v) in the plane of (3.12) obeys i d/dt (u, v) = [[xi, d], [d^*, -xi]] (u, v), xi = s eps - mu,
 /// and d(t) = 2G sum_i w_i sum_s u_s v_s^* (the four degenerate modes of each plane included); the start is the
-/// positive-energy mode of the matrix with the trial gap delta_trial (real). RK4 with the step dt. Returns the pair field
-/// at every step (including t = 0) and the largest relative change of the conserved mean-field energy per volume
-/// E = sum_i w_i sum_s 4 xi |v|^2 - |d|^2/G (|v|^2 is the occupation of the state of energy s eps; relative to the scale
-/// sum_i w_i sum_s 4 |xi|).
-fn uniform_tdbdg(g: f64, m: f64, mu: f64, delta_trial: f64, qn: &[f64], qw: &[f64], dt: f64, nsteps: usize) -> (Vec<C64>, f64) {
+/// positive-energy mode of the matrix with the trial gap delta_trial (real).  The equations are integrated by CVODE
+/// (SUNDIALS 7.8.0 in pure Rust, module t2core::cvode: Adams-Moulton formulas with local error control, rtol = 1e-12,
+/// atol = 1e-14), which returns the state at the sampling times t_k = k dt, k = 0 .. nsteps (dt is the sampling
+/// interval of the signal, not a step of the integrator).  Returns the pair field at the sampling times, the largest
+/// relative change of the conserved mean-field energy per volume E = sum_i w_i sum_s 4 xi |v|^2 - |d|^2/G (|v|^2 is the
+/// occupation of the state of energy s eps; relative to the scale sum_i w_i sum_s 4 |xi|), checked at every 100th sample
+/// and at the last one, and the counters of CVODE.
+fn uniform_tdbdg(g: f64, m: f64, mu: f64, delta_trial: f64, qn: &[f64], qw: &[f64], dt: f64, nsteps: usize) -> (Vec<C64>, f64, CvodeStats) {
     let n = qn.len();
     let xi: Vec<[f64; 2]> = qn.iter().map(|&q| {
         let e = (q * q + m * m).sqrt();
@@ -1593,9 +1597,9 @@ fn uniform_tdbdg(g: f64, m: f64, mu: f64, delta_trial: f64, qn: &[f64], qw: &[f6
             y[4 * i + 2 * s + 1] = c(((1.0 - x / e) / 2.0).sqrt() * delta_trial.signum(), 0.0);
         }
     }
-    let pair = |y: &[C64]| -> C64 {
+    let pair = |y: &[C64], qw: &[f64]| -> C64 {
         let mut s = C64::ZERO;
-        for i in 0..n {
+        for i in 0..qw.len() {
             s += (y[4 * i] * y[4 * i + 1].conj() + y[4 * i + 2] * y[4 * i + 3].conj()).scale(qw[i]);
         }
         s.scale(2.0 * g)
@@ -1609,43 +1613,40 @@ fn uniform_tdbdg(g: f64, m: f64, mu: f64, delta_trial: f64, qn: &[f64], qw: &[f6
                 scale += 4.0 * qw[i] * xi[i][s].abs();
             }
         }
-        let d = pair(y);
+        let d = pair(y, qw);
         (kin - d.norm_sqr() / g, scale)
     };
-    let deriv = |y: &[C64]| -> Vec<C64> {
-        let d = pair(y);
-        let mut r = vec![C64::ZERO; 4 * n];
-        for i in 0..n {
+    // the right side of CVODE, d/dt (u, v) = -i H (u, v) for every plane, with the pair field of the current state;
+    // the closure owns copies of the energies and of the weights
+    let (xi_c, qw_c) = (xi.clone(), qw.to_vec());
+    let f: ComplexRhs = Box::new(move |_t, y, r| {
+        let mut sacc = C64::ZERO;
+        for i in 0..qw_c.len() {
+            sacc += (y[4 * i] * y[4 * i + 1].conj() + y[4 * i + 2] * y[4 * i + 3].conj()).scale(qw_c[i]);
+        }
+        let d = sacc.scale(2.0 * g);
+        for i in 0..qw_c.len() {
             for s in 0..2 {
                 let (u, v) = (y[4 * i + 2 * s], y[4 * i + 2 * s + 1]);
-                let x = xi[i][s];
+                let x = xi_c[i][s];
                 // -i H (u, v)
                 r[4 * i + 2 * s] = (u.scale(x) + d * v) * c(0.0, -1.0);
                 r[4 * i + 2 * s + 1] = (u * d.conj() - v.scale(x)) * c(0.0, -1.0);
             }
         }
-        r
-    };
+    });
     let (f0, fscale) = functional(&y);
-    let mut out = vec![pair(&y)];
+    let mut out = Vec::with_capacity(nsteps + 1);
     let mut fdev = 0.0f64;
-    for step in 0..nsteps {
-        let k1 = deriv(&y);
-        let y2: Vec<C64> = y.iter().zip(&k1).map(|(a, b)| *a + b.scale(0.5 * dt)).collect();
-        let k2 = deriv(&y2);
-        let y3: Vec<C64> = y.iter().zip(&k2).map(|(a, b)| *a + b.scale(0.5 * dt)).collect();
-        let k3 = deriv(&y3);
-        let y4: Vec<C64> = y.iter().zip(&k3).map(|(a, b)| *a + b.scale(dt)).collect();
-        let k4 = deriv(&y4);
-        for j in 0..4 * n {
-            y[j] += (k1[j] + k2[j].scale(2.0) + k3[j].scale(2.0) + k4[j]).scale(dt / 6.0);
+    let touts = cvode::uniform_times(0.0, dt, nsteps);
+    let st = cvode::integrate(&y, 0.0, &touts, &CvodeSettings::adams(1e-12, 1e-14), f, |k, _t, yk| {
+        out.push(pair(yk, qw));
+        if k > 0 && (k % 100 == 0 || k == nsteps) {
+            fdev = fdev.max(((functional(yk).0 - f0) / fscale).abs());
         }
-        out.push(pair(&y));
-        if step % 100 == 99 || step + 1 == nsteps {
-            fdev = fdev.max(((functional(&y).0 - f0) / fscale).abs());
-        }
-    }
-    (out, fdev)
+    })
+    .expect("CVODE integration of the uniform mean-field equations");
+    (out, fdev, st)
 }
 
 /// the frequency of the strongest spectral line of a sampled complex signal in the interval (wlo, whi): the maximum over
@@ -1720,7 +1721,7 @@ fn sb10(ch: &mut Checks, dir: &PathBuf) {
     let dt = 0.02;
     let nsteps = 75000;
     let delta_trial = 1e-5;
-    let (sig, fdev) = uniform_tdbdg(g, m, 0.0, delta_trial, &qn, &qw, dt, nsteps);
+    let (sig, fdev, st10) = uniform_tdbdg(g, m, 0.0, delta_trial, &qn, &qw, dt, nsteps);
     let w_meas = line_frequency(&sig, dt, 0.02, 0.398, 0.0005);
     let rel = ((w_meas - mb_nodes) / mb_nodes).abs();
     let rel_cont = ((mb_nodes - mb) / mb).abs();
@@ -1747,7 +1748,7 @@ fn sb10(ch: &mut Checks, dir: &PathBuf) {
     let im_max = sig.iter().fold(0.0f64, |a, z| a.max(z.im.abs())) / d0.re;
     let mut csv = Csv::new(
         "the microscopic time evolution of a small uniform pair field in the normal vacuum (time-dependent mean-field equations of Section 2.10 for a uniform polar pair field, G = 20): the pair field d^3(t) divided by d^3(0) (it stays real), and the line of the bound SFBS boson with the frequency M_B of the effective field equation (amplitude and phase fitted on the last two thirds of the run) (Test 2, item 8, Figure 22(d))",
-        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("M_B", format!("{:.10}", mb_nodes)), ("dt", format!("{}", dt)), ("delta_trial", format!("{}", delta_trial)), ("d0", format!("{:.6e}", d0.re))],
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("M_B", format!("{:.10}", mb_nodes)), ("integrator", "CVODE (SUNDIALS 7.8.0) Adams-Moulton, rtol 1e-12, atol 1e-14".into()), ("sampling_interval", format!("{}", dt)), ("delta_trial", format!("{}", delta_trial)), ("d0", format!("{:.6e}", d0.re))],
         "x_LL^0,d_over_d0,line_MB",
     );
     for (i, z) in sig.iter().enumerate() {
@@ -1762,10 +1763,10 @@ fn sb10(ch: &mut Checks, dir: &PathBuf) {
     let ok = rel < 1e-6 && rel_cont < 1e-9 && fdev < 1e-6 && im_max < 1e-12;
     ch.add(
         "SB-10",
-        "the microscopic check of the effective field equation in the normal vacuum (m = 0.2, mu = 0, Lambda = 1, G = 20): the time-dependent mean-field equations of Section 2.10 for a uniform polar pair field (the modes of the planes (3.12) on 320 radial nodes, RK4 with the step 0.02 up to x_LL^0 = 1500), started from the trial gap 1e-5, give a pair field d^3(x_LL^0) whose spectral line below the two-particle threshold 2m lies at the pole M_B of the SFBS propagator, chi_pr(M_B, 0) = 1/G, computed with the same nodes (relative tol 1e-6); that pole equals the one of SB-8 (relative tol 1e-9); the pair field stays real (tol 1e-12 of d^3(0)); the mean-field energy per volume, which the equations conserve, changes by less than 1e-6 of the scale sum 4 |+-eps - mu| (the RK4 truncation error)",
+        "the microscopic check of the effective field equation in the normal vacuum (m = 0.2, mu = 0, Lambda = 1, G = 20): the time-dependent mean-field equations of Section 2.10 for a uniform polar pair field (the modes of the planes (3.12) on 320 radial nodes, integrated by CVODE (Adams-Moulton formulas with local error control, rtol = 1e-12, atol = 1e-14) and sampled every 0.02 up to x_LL^0 = 1500), started from the trial gap 1e-5, give a pair field d^3(x_LL^0) whose spectral line below the two-particle threshold 2m lies at the pole M_B of the SFBS propagator, chi_pr(M_B, 0) = 1/G, computed with the same nodes (relative tol 1e-6); that pole equals the one of SB-8 (relative tol 1e-9); the pair field stays real (tol 1e-12 of d^3(0)); the mean-field energy per volume, which the equations conserve, changes by less than 1e-6 of the scale sum 4 |+-eps - mu| (the numbers of steps and evaluations of CVODE are stated)",
         ok,
         format!(
-            "line of d^3(x_LL^0) at {:.9}, pole M_B {:.9} (same nodes; relative deviation {}), M_B of SB-8 {:.9} (relative deviation {}); largest change of the mean-field energy {}; largest imaginary part {}; fitted line amplitude {:.4} of d^3(0)",
+            "line of d^3(x_LL^0) at {:.9}, pole M_B {:.9} (same nodes; relative deviation {}), M_B of SB-8 {:.9} (relative deviation {}); largest change of the mean-field energy {}; largest imaginary part {}; fitted line amplitude {:.4} of d^3(0); CVODE: {}",
             w_meas,
             mb_nodes,
             sci(rel),
@@ -1773,7 +1774,8 @@ fn sb10(ch: &mut Checks, dir: &PathBuf) {
             sci(rel_cont),
             sci(fdev),
             sci(im_max),
-            (are * are + bre * bre).sqrt()
+            (are * are + bre * bre).sqrt(),
+            st10.describe()
         ),
     );
 }
@@ -3262,9 +3264,11 @@ fn sb16(ch: &mut Checks, dir: &PathBuf) {
     let mut tser = None;
     let mut fdev_max = 0.0f64;
     let mut amp_txt = vec![];
+    let mut cv_txt = vec![];
     for &eps in &[0.02, 0.01] {
-        let (series, fdev) = uniform_tdbdg(g, m, 0.0, dvac * (1.0 + eps), &qn, &qw, dt, nsteps);
+        let (series, fdev, st) = uniform_tdbdg(g, m, 0.0, dvac * (1.0 + eps), &qn, &qw, dt, nsteps);
         fdev_max = fdev_max.max(fdev);
+        cv_txt.push(format!("disp = {}: {}", eps, st.describe()));
         let wl = line_frequency(&series, dt, 0.25, 0.55, 0.002);
         freqs.push(wl);
         // the oscillation amplitude in the second and in the last quarter of the run, and the largest imaginary part
@@ -3286,7 +3290,7 @@ fn sb16(ch: &mut Checks, dir: &PathBuf) {
     let series = tser.unwrap();
     let mut ts = Csv::new(
         "the time-dependent mean-field evolution (uniform, mu = 0, G = 22.5) from the ground state of the gap Delta_vac (1 + 0.02): the pair field d^3 divided by Delta_vac, and the line of the frequency 2 Delta_vac fitted to it (Test 2, item 10, Figure 25(d))",
-        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("dt", format!("{}", dt)), ("line", format!("{:.10}", freqs[0]))],
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("integrator", "CVODE (SUNDIALS 7.8.0) Adams-Moulton, rtol 1e-12, atol 1e-14".into()), ("sampling_interval", format!("{}", dt)), ("line", format!("{:.10}", freqs[0]))],
         "x_LL^0,d_over_dvac,line_2Dvac",
     );
     // the line: least squares of Re d - mean on cos and sin of 2 Delta_vac t over the second half of the run
@@ -3341,10 +3345,10 @@ fn sb16(ch: &mut Checks, dir: &PathBuf) {
         && 2.0 * dvac < 2.0 * mq;
     ch.add(
         "SB-16",
-        "the fluctuations of the condensed vacuum (0, 0, Delta_vac) at mu = 0, G = 22.5, zero wave number: the kernels of the six real directions from the Bogoliubov matrices equal -omega^2 Upsilon(omega) (Re d^1, Re d^2, Im d^3: the Goldstone directions) and (4 Delta_vac^2 - omega^2) Upsilon(omega) (Im d^1, Im d^2, Re d^3) at five frequencies below the threshold, and the kernel matrix has no off-diagonal entries and no antisymmetric part (tol 1e-9, relative to Z_t); the closed form of Upsilon equals the quadrature (tol 1e-12); the mass of the kinetic Lagrangian with the potential, (Omega_s^(2)/Z_t)^(1/2), equals 2 Delta_vac, the zero of the kernel (tol 1e-12), below the pair-breaking threshold 2 M_q; the closed form of dUpsilon/d(omega^2) at 0 equals a difference quotient (tol 1e-4); in the time-dependent mean-field equations (uniform, RK4, dt = 0.05, 12000 steps) the gap started at Delta_vac (1 + disp) oscillates with the frequency 2 Delta_vac (relative tol 2e-3 for the displacement disp = 0.02 and 1e-3 for disp = 0.01), the energy being conserved to 1e-6",
+        "the fluctuations of the condensed vacuum (0, 0, Delta_vac) at mu = 0, G = 22.5, zero wave number: the kernels of the six real directions from the Bogoliubov matrices equal -omega^2 Upsilon(omega) (Re d^1, Re d^2, Im d^3: the Goldstone directions) and (4 Delta_vac^2 - omega^2) Upsilon(omega) (Im d^1, Im d^2, Re d^3) at five frequencies below the threshold, and the kernel matrix has no off-diagonal entries and no antisymmetric part (tol 1e-9, relative to Z_t); the closed form of Upsilon equals the quadrature (tol 1e-12); the mass of the kinetic Lagrangian with the potential, (Omega_s^(2)/Z_t)^(1/2), equals 2 Delta_vac, the zero of the kernel (tol 1e-12), below the pair-breaking threshold 2 M_q; the closed form of dUpsilon/d(omega^2) at 0 equals a difference quotient (tol 1e-4); in the time-dependent mean-field equations (uniform, integrated by CVODE with rtol = 1e-12, atol = 1e-14 and sampled every 0.05 up to x_LL^0 = 600) the gap started at Delta_vac (1 + disp) oscillates with the frequency 2 Delta_vac (relative tol 2e-3 for the displacement disp = 0.02 and 1e-3 for disp = 0.01), the energy being conserved to 1e-6 (the numbers of steps and evaluations of CVODE are stated)",
         ok,
         format!(
-            "{}; largest deviation of the diagonal {}, of the off-diagonal entries {}, of the antisymmetric part {} (relative to Z_t = {:.8e}); Upsilon {}; Gamma_m(2 Delta_vac) = {:.3e}; mass of the kinetic Lagrangian {:.10} = 2 Delta_vac {:.10}; threshold 2 M_q = {:.10}; dUpsilon/d(omega^2) = {:.8e} (difference quotient {:.8e}); strict expansion: Z_t - 4 Delta_vac^2 dUpsilon/d(omega^2) = {:.8e}, mass {:.8}; time-dependent mean field: {}; relative deviations of the lines from 2 Delta_vac {}, {}; energy {}",
+            "{}; largest deviation of the diagonal {}, of the off-diagonal entries {}, of the antisymmetric part {} (relative to Z_t = {:.8e}); Upsilon {}; Gamma_m(2 Delta_vac) = {:.3e}; mass of the kinetic Lagrangian {:.10} = 2 Delta_vac {:.10}; threshold 2 M_q = {:.10}; dUpsilon/d(omega^2) = {:.8e} (difference quotient {:.8e}); strict expansion: Z_t - 4 Delta_vac^2 dUpsilon/d(omega^2) = {:.8e}, mass {:.8}; time-dependent mean field: {}; relative deviations of the lines from 2 Delta_vac {}, {}; energy {}; CVODE: {}",
             k_txt.join("; "),
             sci(k_dev),
             sci(off_dev),
@@ -3362,7 +3366,8 @@ fn sb16(ch: &mut Checks, dir: &PathBuf) {
             amp_txt.join("; "),
             sci(fr_dev[0]),
             sci(fr_dev[1]),
-            sci(fdev_max)
+            sci(fdev_max),
+            cv_txt.join("; ")
         ),
     );
 }

@@ -1,4 +1,4 @@
-//! The input file of the solvers of Test 2 (format "t2in 1"): the table of the keys, the guide, the seven examples, and
+//! The input file of the solvers of Test 2 (format "t2in 2"): the table of the keys, the guide, the seven examples, and
 //! the reading and checking of a file.  The table and the examples are the same as in test2/python/t2_solve.py (the
 //! self-test of this program compares its examples with the files test2/examples/*.t2in written by the Python solver).
 use std::collections::HashMap;
@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 
 // the seven examples (the same text as in t2_solve.py; the self-test compares them with test2/examples/*.t2in)
 pub const EXAMPLES: &[(&str, &str, &str)] = &[
-    ("packet_free", "a free Gaussian packet of positive energy on a ring (group velocity)", r#"format = t2in 1
+    ("packet_free", "a free Gaussian packet of positive energy on a ring (group velocity)", r#"format = t2in 2
 title = a free Gaussian wave packet on a ring
 task = evolve
 sites = 128 1 1
@@ -23,11 +23,11 @@ packet_branch = positive
 packet_spin = up
 packet_isospin = up
 packet_part = particle
-time_step = 0.05
-steps = 600
-output_every = 20
+output_step = 0.05
+outputs = 600
+fields_every = 20
 "#),
-    ("cyclotron", "a packet in a magnetic field on a 40 x 40 lattice with walls (cyclotron orbit)", r#"format = t2in 1
+    ("cyclotron", "a packet in a magnetic field on a 40 x 40 lattice with walls (cyclotron orbit)", r#"format = t2in 2
 title = a wave packet in a constant magnetic field (cyclotron motion)
 task = evolve
 sites = 40 40 1
@@ -43,11 +43,11 @@ packet_momentum = 0.6 0 0
 packet_branch = positive
 packet_spin = up
 packet_isospin = up
-time_step = 0.05
-steps = 720
-output_every = 80
+output_step = 0.05
+outputs = 720
+fields_every = 80
 "#),
-    ("andreev", "a particle hitting a superfluid region: Andreev reflection into a hole", r#"format = t2in 1
+    ("andreev", "a particle hitting a superfluid region: Andreev reflection into a hole", r#"format = t2in 2
 title = Andreev reflection of a particle at a normal-superfluid interface
 task = evolve
 sites = 240 1 1
@@ -68,11 +68,11 @@ packet_branch = positive
 packet_spin = up
 packet_isospin = up
 packet_part = particle
-time_step = 0.05
-steps = 1200
-output_every = 40
+output_step = 0.05
+outputs = 1200
+fields_every = 40
 "#),
-    ("kink_spectrum", "the spectrum of a ring with a kink and an antikink of the pair field (bound states)", r#"format = t2in 1
+    ("kink_spectrum", "the spectrum of a ring with a kink and an antikink of the pair field (bound states)", r#"format = t2in 2
 title = bound states of a kink and an antikink of the pair field
 task = spectrum
 sites = 60 1 1
@@ -88,7 +88,7 @@ pair_position = 6 18
 spectrum_window = -0.8 0.8
 spectrum_max_states = 16
 "#),
-    ("ground_state", "the self-consistent uniform superfluid of a chain (compare with the lattice gap equation)", r#"format = t2in 1
+    ("ground_state", "the self-consistent uniform superfluid of a chain (compare with the lattice gap equation)", r#"format = t2in 2
 title = the self-consistent uniform polar superfluid of a chain
 task = ground_state
 sites = 32 1 1
@@ -104,7 +104,7 @@ mixing = 0.6
 tolerance = 1e-11
 max_iterations = 400
 "#),
-    ("kink_ground_state", "a self-consistent kink of the pair field between two walls (massless charges)", r#"format = t2in 1
+    ("kink_ground_state", "a self-consistent kink of the pair field between two walls (massless charges)", r#"format = t2in 2
 title = a self-consistent kink of the pair field
 task = ground_state
 sites = 40 1 1
@@ -122,7 +122,7 @@ mixing = 0.5
 tolerance = 1e-10
 max_iterations = 400
 "#),
-    ("quench", "a quench of the coupling: the amplitude (Higgs) oscillation of the pair field", r#"format = t2in 1
+    ("quench", "a quench of the coupling: the amplitude (Higgs) oscillation of the pair field", r#"format = t2in 2
 title = a quench of the coupling of the uniform superfluid
 task = quench
 sites = 24 1 1
@@ -138,15 +138,15 @@ pair_amplitude = 0.5
 mixing = 0.6
 tolerance = 1e-12
 max_iterations = 400
-time_step = 0.04
-steps = 600
-output_every = 25
+output_step = 0.04
+outputs = 600
+fields_every = 25
 "#),
 ];
 
 // the input keys: (name, kind, default, meaning); the same table as SPEC of t2_solve.py
 pub const SPEC: &[(&str, &str, Option<&str>, &str)] = &[
-    ("format", "str", None, "the format of the file; must be 't2in 1'"),
+    ("format", "str", None, "the format of the file; must be 't2in 2'"),
     ("title", "str", Some(""), "a free title of the problem"),
     ("task", "choice:evolve,spectrum,ground_state,quench", None, "what to solve (see the guide)"),
     ("output", "str", Some(""), "the base name of the output files, relative to the folder of the input file (default: the name of the input file without its extension)"),
@@ -175,9 +175,11 @@ pub const SPEC: &[(&str, &str, Option<&str>, &str)] = &[
     ("pair_position", "floatlist", Some(""), "the positions along x^1 of the walls (kink: one value, default the centre; kink_antikink: two values, default 1/4 and 3/4 of the length; step: one value, default the centre)"),
     ("pair_seed", "int", Some("1"), "the seed of the random pair field (pair = random)"),
     ("pair_file", "str", Some(""), "a file with the pair field (pair = file): one line per site, in the order of the sites, with d1_re d1_im d2_re d2_im d3_re d3_im"),
-    ("time_step", "float+", None, "the time step dt (evolve, quench)"),
-    ("steps", "int+", None, "the number of time steps (evolve, quench)"),
-    ("output_every", "int+", Some("0"), "write the fields on the sites every this many steps (0: about 50 outputs); the time series is written at every step"),
+    ("output_step", "float+", None, "the interval of the time series: the state is written at x^0 = k output_step, k = 0 .. outputs (evolve, quench); CVODE chooses its own internal steps between these times"),
+    ("outputs", "int+", None, "the number of output intervals: the evolution ends at x^0 = outputs x output_step (evolve, quench)"),
+    ("fields_every", "int+", Some("0"), "write the fields on the sites every this many outputs (0: about 50 times); the time series is written at every output"),
+    ("rtol", "float+", Some("1e-12"), "the relative tolerance of CVODE: the error weight of a complex component w_k is 1/(rtol |w_k| + atol) (evolve, quench)"),
+    ("atol", "float+", Some("1e-14"), "the absolute tolerance of CVODE: components smaller than this count as zero in the error test (evolve, quench)"),
     ("initial", "choice:packet,eigenmode,file", Some("packet"), "the initial mode of the task evolve"),
     ("packet_center", "floats3", Some(""), "the centre of the Gaussian packet (x^1 x^2 x^3; default the centre of the lattice)"),
     ("packet_width", "float+", Some("2.0"), "the width of the packet (standard deviation of the density)"),
@@ -199,16 +201,16 @@ pub const SPEC: &[(&str, &str, Option<&str>, &str)] = &[
 ];
 
 pub const TASK_KEYS: &[(&str, &[&str])] = &[
-    ("evolve", &["steps", "time_step"]),
+    ("evolve", &["outputs", "output_step"]),
     ("spectrum", &[]),
     ("ground_state", &["coupling"]),
-    ("quench", &["coupling", "quench_coupling", "steps", "time_step"]),
+    ("quench", &["coupling", "quench_coupling", "outputs", "output_step"]),
 ];
 
-pub const FORMAT: &str = "t2in 1";
+pub const FORMAT: &str = "t2in 2";
 
 pub const GUIDE: &str = r#"
-THE TEST 2 SOLVER (Rust) -- GUIDE TO THE INPUT FILE (format t2in 1)
+THE TEST 2 SOLVER (Rust) -- GUIDE TO THE INPUT FILE (format t2in 2)
 
 What is solved.  The mean-field field equations of the self-interacting spinor field on the lattice:
     i dw/dx^0 = H_lat w,     H_lat = [[h_lat - V0 - mu, P], [P^dag, -conj(h_lat - V0 - mu)]],
@@ -252,12 +254,20 @@ The pair field.  'pair = none | uniform | kink | kink_antikink | step | random |
 Delta_inf tanh((x^1 - x_w)/ell_K); kink_antikink is Delta_inf tanh((x^1 - x_1)/ell_K) tanh((x_2 - x^1)/ell_K);
 step is Delta (1 + tanh((x^1 - x_s)/ell_K))/2 (a superfluid on the right, a normal region on the left).
 
-Time stepping.  'time_step' dt and 'steps'.  Hbound = (number of active directions)(1 + 2 r_W)/dx + |m| + |mu|
-+ max|V0| + max sum|d^iota| is an upper bound of the eigenvalue magnitudes of H_lat.  The task evolve uses
-RK4, which is stable for dt Hbound < 2.83; the program requires dt Hbound <= 2.5.  The error per step of a
-component of energy E is about (E dt)^5/120 in the phase and (E dt)^6/144 in the modulus.  The task quench
-uses the implicit midpoint rule, solved by a fixed-point iteration that contracts by about dt Hbound/2 per
-pass; the program requires dt Hbound <= 1 (Hbound with the pair field allowed to grow by one half).
+Time integration.  Both tasks that evolve in time (evolve, quench) integrate the equations with CVODE, the
+variable-order, variable-step integrator of SUNDIALS 7.8.0 (in pure Rust, vendored in PROJECT spacetimes):
+Adams-Moulton formulas of the orders 1 to 12, the corrector solved by fixed-point iteration, and a test of the
+estimated local error e of every step,
+    sqrt( (1/(2n)) sum_k |e_k|^2 / (rtol |w_k| + atol)^2 ) <= 1
+(n complex unknowns w_k, the real and imaginary parts of every component weighted alike).  CVODE chooses its
+step sizes and orders itself; 'output_step' and 'outputs' only give the times x^0 = k output_step at which the
+state is written (by the interpolating polynomial of CVODE), and 'rtol' (default 1e-12) and 'atol' (default
+1e-14) the accuracy.  The quench integrates all modes at once, with the pair field computed from the modes at
+every evaluation of the right side.  The exact equations conserve the norm of a mode (evolve), the fermion
+number and the orthonormality of the modes (quench); CVODE keeps them up to the sum of its allowed local errors,
+(number of steps) x rtol, which the program checks.  Hbound = (number of active directions)(1 + 2 r_W)/dx + |m|
++ |mu| + max|V0| + max sum|d^iota|, an upper bound of the eigenvalue magnitudes of H_lat, is reported.
+The format t2in 1 (with the keys time_step, steps and output_every of a fixed-step method) is not accepted.
 
 Output.  'output = NAME' (default: the name of the input file), or '--out NAME' on the command line.  The
 program writes NAME_summary.txt (the problem, the checks and the results), NAME_series.csv (quantities
@@ -381,7 +391,7 @@ pub fn parse_value(key: &str, kind: &str, text: &str) -> Result<Val, String> {
         "int" => Ok(Val::I(int(t)?)),
         "int+" => {
             let v = int(t)?;
-            if v < 0 || (v == 0 && key != "output_every") {
+            if v < 0 || (v == 0 && key != "fields_every") {
                 return Err(format!("'{}' must be a positive integer", key));
             }
             Ok(Val::I(v))
@@ -448,6 +458,13 @@ pub fn read_input(path: &str) -> Result<Cfg, String> {
         return Err(format!("there is no file '{}'", path));
     }
     let text = fs::read_to_string(p).map_err(|e| format!("cannot read '{}': {}", path, e))?;
+    // the old format of a fixed-step method is refused with an explanation
+    if text.lines().any(|l| {
+        let s = l.split('#').next().unwrap_or("").trim();
+        s.split_once('=').map(|(k, v)| k.trim() == "format" && v.trim() == "t2in 1").unwrap_or(false)
+    }) {
+        return Err("the format 't2in 1' (with the keys time_step, steps and output_every of a fixed-step method) is no longer accepted: the time integration is done by CVODE; write 'format = t2in 2' and replace time_step by output_step, steps by outputs and output_every by fields_every (optional: rtol, atol)".into());
+    }
     let mut raw: HashMap<String, String> = HashMap::new();
     for (no, line) in text.lines().enumerate() {
         let s = line.split('#').next().unwrap_or("").trim();

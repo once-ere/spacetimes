@@ -1,10 +1,11 @@
 //! t2_solve -- PROJECT spacetimes, Revision_SuperLoop, folder test2, Test 2, item [5].
 //!
 //! The Rust solver of the gauge-covariant mean-field field equations of the self-interacting spinor field on the
-//! lattice of Section 2.11 of the document of Test 2: the same input files (format "t2in 1"), the same four tasks
+//! lattice of Section 2.11 of the document of Test 2: the same input files (format "t2in 2"), the same four tasks
 //! (evolve, spectrum, ground_state, quench), the same methods and the same output files as the Python solver
 //! test2/python/t2_solve.py of item [3].  Pure Rust: only the standard library and the library t2core of the workspace
-//! (the matrices of the super-loop, the lattice operator, the Hermitian eigensolver).
+//! (the matrices of the super-loop, the lattice operator, the Hermitian eigensolver, the time integrator CVODE of
+//! SUNDIALS 7.8.0 in pure Rust).
 //!
 //! Build (from the folder test2/rust):   cargo build --release
 //! Use:
@@ -28,6 +29,7 @@ use std::path::Path;
 use std::time::Instant;
 use t2core::c64::{c, C64};
 use t2core::cmat::{eigh, CMat};
+use t2core::cvode::{self, ComplexRhs, CvodeSettings};
 use t2core::lattice::{link, potential, Fields, Lattice, Mats};
 use t2core::rng::Rng;
 
@@ -244,21 +246,21 @@ fn task_evolve(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d: &[[C64; 3]], m: &M, rep: 
     let h_static = build(None);
     let herm = h_static.hermiticity();
     rep.check(herm < 1e-13, format!("the lattice operator H_lat is Hermitian (largest deviation {:.1e})", herm));
-    let dt = cfg.f("time_step");
-    let steps = cfg.i("steps") as usize;
-    let mut every = cfg.i("output_every") as usize;
+    // the output grid: the time series at x^0 = k output_step (k = 0 .. outputs), the fields every fields_every outputs;
+    // CVODE chooses its own internal steps between the output times
+    let ostep = cfg.f("output_step");
+    let nout = cfg.i("outputs") as usize;
+    let mut every = cfg.i("fields_every") as usize;
     if every == 0 {
-        every = (steps / 50).max(1);
+        every = (nout / 50).max(1);
     }
+    let set = CvodeSettings::adams(cfg.f("rtol"), cfg.f("atol"));
     let hb = norm_bound(lat, gauge.vmax(), d, 1.0);
     rep.add(format!(
-        "time stepping: RK4, dt = {}, steps = {}, output every {} steps, Hbound = {}, dt Hbound = {} (RK4 is stable below 2.83; required <= 2.5)",
-        g6(dt), steps, every, g6(hb), fmt_g(dt * hb, 4)
+        "time integration: {}; output every {} up to x^0 = {} ({} outputs), fields every {} outputs; Hbound = {}",
+        set.describe(), g6(ostep), g6(ostep * nout as f64), nout, every, g6(hb)
     ));
-    if dt * hb > 2.5 {
-        return Err(format!("dt Hbound = {} exceeds 2.5: choose time_step below {}", fmt_g(dt * hb, 3), fmt_g(2.5 / hb, 4)));
-    }
-    let mut w: Vec<C64> = match cfg.s("initial").as_str() {
+    let w: Vec<C64> = match cfg.s("initial").as_str() {
         "packet" => {
             let q = cfg.v("packet_momentum");
             rep.add(format!(
@@ -362,61 +364,37 @@ fn task_evolve(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d: &[[C64; 3]], m: &M, rep: 
         de = de.max((e - e0).abs());
     };
     let t0 = Instant::now();
-    record(0.0, &w, &h0, true, &mut series, &mut fields, &mut hw);
-    let mut k1 = vec![C64::ZERO; n];
-    let mut k2 = vec![C64::ZERO; n];
-    let mut k3 = vec![C64::ZERO; n];
-    let mut k4 = vec![C64::ZERO; n];
-    let mut tmp = vec![C64::ZERO; n];
-    let mi = c(0.0, -1.0);
-    for step in 1..=steps {
-        let t = (step - 1) as f64 * dt;
-        let (ha, hm, hb2);
-        let (ra, rm, rb): (&Csr, &Csr, &Csr) = if gauge.is_static {
-            (&h0, &h0, &h0)
+    // the right side of CVODE, dw/dx^0 = -i H_lat(x^0) w: for static fields the operator is built once, with a pulse it is
+    // built at the time of every evaluation; the closure owns copies of what it needs (CVODE keeps it)
+    let (lat_c, gauge_c, d_c, m_c, h0_c) = (lat.clone(), gauge.clone(), d.to_vec(), m.clone(), h0.clone());
+    let f: ComplexRhs = Box::new(move |t, wv, dw| {
+        let h_t;
+        let h: &Csr = if gauge_c.is_static {
+            &h0_c
         } else {
-            ha = get(t);
-            hm = get(t + 0.5 * dt);
-            hb2 = get(t + dt);
-            (&ha, &hm, &hb2)
+            h_t = build_h(&lat_c, &gauge_c.fields_at(Some(t)), &m_c, Some(&d_c));
+            &h_t
         };
-        ra.matvec(&w, &mut k1);
-        for v in k1.iter_mut() {
-            *v = mi * *v;
+        h.matvec(wv, dw);
+        for z in dw.iter_mut() {
+            *z = c(z.im, -z.re);
         }
-        for i in 0..n {
-            tmp[i] = w[i] + k1[i].scale(0.5 * dt);
-        }
-        rm.matvec(&tmp, &mut k2);
-        for v in k2.iter_mut() {
-            *v = mi * *v;
-        }
-        for i in 0..n {
-            tmp[i] = w[i] + k2[i].scale(0.5 * dt);
-        }
-        rm.matvec(&tmp, &mut k3);
-        for v in k3.iter_mut() {
-            *v = mi * *v;
-        }
-        for i in 0..n {
-            tmp[i] = w[i] + k3[i].scale(dt);
-        }
-        rb.matvec(&tmp, &mut k4);
-        for v in k4.iter_mut() {
-            *v = mi * *v;
-        }
-        for i in 0..n {
-            w[i] += (k1[i] + k2[i].scale(2.0) + k3[i].scale(2.0) + k4[i]).scale(dt / 6.0);
-        }
-        let hnow = if gauge.is_static { None } else { Some(get(step as f64 * dt)) };
-        record(step as f64 * dt, &w, hnow.as_ref().unwrap_or(&h0), step % every == 0 || step == steps, &mut series, &mut fields, &mut hw);
-    }
+    });
+    let touts = cvode::uniform_times(0.0, ostep, nout);
+    let st = cvode::integrate(&w, 0.0, &touts, &set, f, |i, t, wv| {
+        let hnow = if gauge.is_static { None } else { Some(get(t)) };
+        record(t, wv, hnow.as_ref().unwrap_or(&h0), i % every == 0 || i == nout, &mut series, &mut fields, &mut hw);
+    })?;
     let el = t0.elapsed().as_secs_f64();
-    let loss = steps as f64 * (hb * dt).powi(6) / 144.0;
-    rep.check(dn < loss.max(1e-10), format!("the norm of the mode is conserved: largest change {:.2e} (the bound of the RK4 loss, steps (Hbound dt)^6/144, is {:.1e})", dn, loss));
+    rep.add(format!("CVODE: {}", st.describe()));
+    // the accumulated local error that the error test of CVODE permits, steps sqrt(2) (rtol ||w|| + atol sqrt(n)) with
+    // ||w|| = 1 and n complex unknowns (t2core::cvode::CvodeSettings::error_budget): the norm of the mode, which the exact
+    // evolution conserves, may change by at most that much, the energy <w|H_lat|w> (static fields) by 2 Hbound times it
+    let budget = set.error_budget(st.nsteps, n, 1.0);
+    rep.check(dn < budget, format!("the norm of the mode is conserved: largest change {:.2e} (bound: the accumulated local error permitted by CVODE, steps sqrt(2) (rtol + atol sqrt(n)) = {:.1e})", dn, budget));
     if gauge.is_static {
-        let tol = loss.max(1e-9) * 1f64.max(e0.abs()).max(hb);
-        rep.check(de < tol, format!("the energy <w|H_lat|w> = {} is conserved (static fields): largest change {:.2e} (bound {:.1e})", fmt_g(e0, 10), de, tol));
+        let tol = 2.0 * hb * budget;
+        rep.check(de < tol, format!("the energy <w|H_lat|w> = {} is conserved (static fields): largest change {:.2e} (bound: 2 Hbound times the accumulated local error, {:.1e})", fmt_g(e0, 10), de, tol));
     }
     let last = series.last().unwrap();
     let val = |k: usize| match last[k] {
@@ -835,35 +813,25 @@ fn task_quench(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d0: &[[C64; 3]], m: &M, rep:
     rep.check(herm < 1e-13, format!("the lattice operator H_lat is Hermitian (largest deviation {:.1e})", herm));
     rep.add(format!("quench: the ground state at G = {} is evolved with G = {} after x^0 = 0", g6(g), g6(g2)));
     let gs = ground_state(cfg, lat, gauge, d0, m, rep, g)?;
-    let (mut w, mm) = positive_modes(&gs.ev, &gs.vec);
+    let (w, mm) = positive_modes(&gs.ev, &gs.vec);
     let n = 16 * ns;
-    let dt = cfg.f("time_step");
-    let steps = cfg.i("steps") as usize;
-    let mut every = cfg.i("output_every") as usize;
+    // the output grid: the time series at x^0 = k output_step (k = 0 .. outputs), the fields every fields_every outputs;
+    // CVODE chooses its own internal steps between the output times
+    let ostep = cfg.f("output_step");
+    let nout = cfg.i("outputs") as usize;
+    let mut every = cfg.i("fields_every") as usize;
     if every == 0 {
-        every = (steps / 50).max(1);
+        every = (nout / 50).max(1);
     }
-    let hb = norm_bound(lat, gauge.vmax(), &gs.d, 1.5);
+    let set = CvodeSettings::adams(cfg.f("rtol"), cfg.f("atol"));
     rep.add(format!(
-        "time stepping: implicit midpoint rule, dt = {}, steps = {}, output every {} steps, {} modes; Hbound (with the pair field allowed to grow by one half) = {}, dt Hbound = {} (required <= 1)",
-        g6(dt), steps, every, mm, g6(hb), fmt_g(dt * hb, 4)
+        "time integration of the {} modes (the self-consistent mean-field equations, {} complex unknowns): {}; output every {} up to x^0 = {} ({} outputs), fields every {} outputs",
+        mm, n * mm, set.describe(), g6(ostep), g6(ostep * nout as f64), nout, every
     ));
-    if dt * hb > 1.0 {
-        return Err(format!("dt Hbound = {} exceeds 1: choose time_step below {}", fmt_g(dt * hb, 3), fmt_g(1.0 / hb, 4)));
-    }
     let h0_at = |t: f64| -> Csr { build_h(lat, &gauge.fields_at(if gauge.is_static { None } else { Some(t) }), m, None) };
     let h_static = h0_at(0.0);
     let pair_of = |w: &[C64]| -> Vec<[C64; 3]> {
         anomalous(m, ns, w, mm).iter().map(|p| [p[0].scale(-0.5 * g2 / norm), p[1].scale(-0.5 * g2 / norm), p[2].scale(-0.5 * g2 / norm)]).collect()
-    };
-    // -i H_lat(d(W)) W
-    let force = |h0: &Csr, w: &[C64], out: &mut Vec<C64>| {
-        h0.matmat(w, out, mm);
-        let dd = pair_of(w);
-        apply_pair(m, &dd, w, out, mm);
-        for v in out.iter_mut() {
-            *v = c(v.im, -v.re);
-        }
     };
     let mut hw = vec![C64::ZERO; n * mm];
     let diagnostics = |w: &[C64], h0: &Csr, hw: &mut Vec<C64>| -> (Vec<[C64; 3]>, f64, f64, f64) {
@@ -911,68 +879,52 @@ fn task_quench(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d0: &[[C64; 3]], m: &M, rep:
         morth = morth.max(orth);
     };
     let t0 = Instant::now();
-    record(0.0, &w, &h_static, true, &mut series, &mut fields, &mut hw);
-    let mut fx = vec![C64::ZERO; n * mm];
-    let mut x = vec![C64::ZERO; n * mm];
-    let mut mid = vec![C64::ZERO; n * mm];
-    let (mut maxit, mut itsum) = (0usize, 0usize);
-    for step in 1..=steps {
-        let t = (step - 1) as f64 * dt;
-        let h0m_owned;
-        let h0m: &Csr = if gauge.is_static {
-            &h_static
+    // the right side of CVODE for all modes at once, dW/dx^0 = -i H_lat(d(W)) W, with the pair field d(W) computed from
+    // the modes at every evaluation (the self-consistency of the mean field); the closure owns copies of what it needs
+    let (lat_c, gauge_c, m_c, hs_c) = (lat.clone(), gauge.clone(), m.clone(), h_static.clone());
+    let f: ComplexRhs = Box::new(move |t, wv, out| {
+        let h_t;
+        let h0: &Csr = if gauge_c.is_static {
+            &hs_c
         } else {
-            h0m_owned = h0_at(t + 0.5 * dt);
-            &h0m_owned
+            h_t = build_h(&lat_c, &gauge_c.fields_at(Some(t)), &m_c, None);
+            &h_t
         };
-        // the implicit midpoint rule (4.6) by fixed-point iteration from the explicit Euler step
-        force(h0m, &w, &mut fx);
-        for i in 0..n * mm {
-            x[i] = w[i] + fx[i].scale(dt);
+        h0.matmat(wv, out, mm);
+        let dd: Vec<[C64; 3]> = anomalous(&m_c, ns, wv, mm)
+            .iter()
+            .map(|p| [p[0].scale(-0.5 * g2 / norm), p[1].scale(-0.5 * g2 / norm), p[2].scale(-0.5 * g2 / norm)])
+            .collect();
+        apply_pair(&m_c, &dd, wv, out, mm);
+        for v in out.iter_mut() {
+            *v = c(v.im, -v.re);
         }
-        let mut k = 0;
-        loop {
-            k += 1;
-            for i in 0..n * mm {
-                mid[i] = (w[i] + x[i]).scale(0.5);
-            }
-            force(h0m, &mid, &mut fx);
-            let mut ch = 0.0f64;
-            for i in 0..n * mm {
-                let xn = w[i] + fx[i].scale(dt);
-                ch = ch.max((xn - x[i]).abs());
-                x[i] = xn;
-            }
-            if ch < 1e-14 {
-                break;
-            }
-            if k >= 100 {
-                return Err(format!("the implicit midpoint iteration did not converge at step {} (change {:.1e}): reduce time_step", step, ch));
-            }
-        }
-        maxit = maxit.max(k);
-        itsum += k;
-        w.copy_from_slice(&x);
+    });
+    let touts = cvode::uniform_times(0.0, ostep, nout);
+    let st = cvode::integrate(&w, 0.0, &touts, &set, f, |i, t, wv| {
         let hnow_owned;
         let hnow: &Csr = if gauge.is_static {
             &h_static
         } else {
-            hnow_owned = h0_at(step as f64 * dt);
+            hnow_owned = h0_at(t);
             &hnow_owned
         };
-        record(step as f64 * dt, &w, hnow, step % every == 0 || step == steps, &mut series, &mut fields, &mut hw);
-    }
+        record(t, wv, hnow, i % every == 0 || i == nout, &mut series, &mut fields, &mut hw);
+    })?;
     let el = t0.elapsed().as_secs_f64();
-    rep.add(format!(
-        "the fixed-point iteration of the implicit midpoint rule needed at most {} and on average {:.2} passes per step (stopping when the largest change is below 1e-14)",
-        maxit,
-        itsum as f64 / steps as f64
-    ));
-    rep.check(mnf < 1e-10 * nf0.max(1.0), format!("the fermion number N_F = {} is conserved by the self-consistent evolution: largest change {:.2e}", g12(nf0), mnf));
-    rep.check(morth < 1e-11, format!("the modes stay orthonormal (the Pauli principle): largest |W^dag W - 1| = {:.2e}", morth));
+    rep.add(format!("CVODE: {}", st.describe()));
+    // the exact equations conserve the fermion number, the orthonormality of the modes and (for static gauge fields) the
+    // functional E_MF; CVODE keeps them up to its accumulated local error, budget = steps sqrt(2) (rtol ||W|| + atol
+    // sqrt(n mm)) with ||W|| = sqrt(mm) for mm orthonormal modes (t2core::cvode::CvodeSettings::error_budget).  A change
+    // dW of the modes changes N_F (a sum of squared moduli) by at most 2 ||W|| ||dW|| and an entry of W^dag W by at most
+    // 2 ||dW||.
+    let budget = set.error_budget(st.nsteps, n * mm, (mm as f64).sqrt());
+    let nf_tol = 2.0 * (mm as f64).sqrt() * budget;
+    rep.check(mnf < nf_tol, format!("the fermion number N_F = {} is conserved by the self-consistent evolution: largest change {:.2e} (bound: 2 ||W|| times the accumulated local error permitted by CVODE, {:.1e})", g12(nf0), mnf, nf_tol));
+    rep.check(morth < 2.0 * budget, format!("the modes stay orthonormal (the Pauli principle): largest |W^dag W - 1| = {:.2e} (bound: twice the accumulated local error permitted by CVODE, {:.1e})", morth, 2.0 * budget));
     if gauge.is_static {
         rep.add(format!(
-            "the conserved mean-field functional E_MF = {} changes by at most {:.3e} (the implicit midpoint rule keeps it to second order in dt, without drift)",
+            "the conserved mean-field functional E_MF = {} changes by at most {:.3e} (CVODE keeps it up to its accumulated local errors)",
             g12(emf0),
             memf
         ));

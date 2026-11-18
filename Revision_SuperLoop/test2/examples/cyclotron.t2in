@@ -1,6 +1,6 @@
 # example 'cyclotron' of the Test 2 solver: a packet in a magnetic field on a 40 x 40 lattice with walls (cyclotron orbit)
 # every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide
-format = t2in 1
+format = t2in 2
 title = a wave packet in a constant magnetic field (cyclotron motion)
 task = evolve
 sites = 40 40 1
@@ -16,6 +16,6 @@ packet_momentum = 0.6 0 0
 packet_branch = positive
 packet_spin = up
 packet_isospin = up
-time_step = 0.05
-steps = 720
-output_every = 80
+output_step = 0.05
+outputs = 720
+fields_every = 80

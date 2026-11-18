@@ -376,12 +376,12 @@ fn plot_evolve(d: &Data, pred: Option<&str>) -> Figure {
     c.xlabel = "x^{0}_{LL}".into();
     c.ylabel = "probability".into();
     fig.axes.push(c);
-    fig.axes.push(conservation(d, 700.0, 500.0, 460.0, 300.0, "(d) conservation of the norm and of the energy (RK4 errors)"));
+    fig.axes.push(conservation(d, 700.0, 500.0, 460.0, 300.0, "(d) conservation of the norm and of the energy (CVODE errors)"));
     fig
 }
 
 /// a panel with the changes |norm - 1| and |<H^lat_LL> - <H^lat_LL> at the start| over time, on a logarithmic axis (an exact
-/// zero is drawn at 1e-17); RK4 conserves both only up to its truncation error, which these curves show
+/// zero is drawn at 1e-17); CVODE conserves both only up to its accumulated local errors, which these curves show
 fn conservation(d: &Data, x0: f64, y0: f64, w: f64, h: f64, title: &str) -> Axes {
     let t = d.series.f("x_LL^0");
     let nrm: Vec<f64> = d.series.f("norm").iter().map(|v| (v - 1.0).abs().max(1e-17)).collect();
@@ -663,7 +663,7 @@ fn plot_ground_state(d: &Data, pred: Option<&str>) -> Figure {
 
 /// the task quench (three panels): (a) |d_LL| averaged over the sites, with its mean after the quench and, for the example
 /// quench, the least-squares sinusoid with the frequency (4.11) of the amplitude mode (only its amplitude, phase and offset
-/// are fitted; the frequency is predicted); (b) the quantities the implicit midpoint rule conserves; (c) |d_LL| on the sites
+/// are fitted; the frequency is predicted); (b) the quantities that the exact equations conserve, as CVODE keeps them; (c) |d_LL| on the sites
 /// at four times (the field stays uniform)
 fn plot_quench(d: &Data, pred: Option<&str>) -> Figure {
     let t = d.series.f("x_LL^0");
@@ -707,7 +707,7 @@ fn plot_quench(d: &Data, pred: Option<&str>) -> Figure {
     q.add_key(Key::Line(AQUA.into(), 1.4, String::new()), "orthonormality error of the modes");
     q.add_key(Key::Line(ORANGE.into(), 1.4, String::new()), "relative change of E^{MF}_{LL}");
     q.legend_at = (0.3, 0.06);
-    q.title = "(b) what the implicit midpoint rule conserves".into();
+    q.title = "(b) the conserved quantities (CVODE errors)".into();
     q.xlabel = "x^{0}_{LL}".into();
     q.ylabel = "change since the start (0 drawn at 10^{-17})".into();
     fig.axes.push(q);

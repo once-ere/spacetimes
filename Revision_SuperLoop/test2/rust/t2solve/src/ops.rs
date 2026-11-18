@@ -9,6 +9,7 @@ use t2core::model;
 use t2core::rng::Rng;
 
 /// the lattice of a problem: the geometry (t2core's Lattice) and the coordinates of the sites
+#[derive(Clone)]
 pub struct Lat {
     pub l: Lattice,
     pub ns: usize,
@@ -44,6 +45,7 @@ impl Lat {
 }
 
 /// the gauge potentials A[site][p][c] (c = 1, 2, 3, F as 0..3), with the pulse
+#[derive(Clone)]
 pub struct Gauge {
     pub gv: f64,
     pub gf: f64,
@@ -243,6 +245,7 @@ pub fn pair_profile(cfg: &Cfg, lat: &Lat) -> Result<Vec<[C64; 3]>, String> {
 }
 
 /// the fixed 4 x 4 and 8 x 8 matrices: alpha^j, beta, Kch_iota and Kch_iota^dag (from t2core::model)
+#[derive(Clone)]
 pub struct M {
     pub alpha: Vec<CMat>,
     pub beta: CMat,
@@ -259,6 +262,7 @@ impl M {
 }
 
 /// a sparse matrix in compressed rows
+#[derive(Clone)]
 pub struct Csr {
     pub n: usize,
     pub rowptr: Vec<usize>,

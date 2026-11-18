@@ -3,6 +3,17 @@
 version = 4
 
 [[package]]
+name = "cvode_rs"
+version = "7.8.0"
+dependencies = [
+ "sundials_core",
+]
+
+[[package]]
+name = "sundials_core"
+version = "7.8.0"
+
+[[package]]
 name = "t2analytic"
 version = "0.1.0"
 dependencies = [
@@ -12,6 +23,9 @@ dependencies = [
 [[package]]
 name = "t2core"
 version = "0.1.0"
+dependencies = [
+ "cvode_rs",
+]
 
 [[package]]
 name = "t2fields"

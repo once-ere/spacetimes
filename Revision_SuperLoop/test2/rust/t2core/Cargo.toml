@@ -2,6 +2,8 @@
 name = "t2core"
 version = "0.1.0"
 edition = "2021"
-description = "Test 2 core: complex numbers, matrices, the super-loop operators, the gauge-covariant lattice Dirac-Bogoliubov operator (pure Rust)"
+description = "Test 2 core: complex numbers, matrices, the super-loop operators, the gauge-covariant lattice Dirac-Bogoliubov operator, time integration with CVODE (pure Rust)"
 
 [dependencies]
+# CVODE of SUNDIALS 7.8.0 in pure Rust, vendored in PROJECT spacetimes (vendor/sundials_rs-7.8.0): the time integrator
+cvode_rs = { path = "../../../../vendor/sundials_rs-7.8.0/crates/cvode_rs" }

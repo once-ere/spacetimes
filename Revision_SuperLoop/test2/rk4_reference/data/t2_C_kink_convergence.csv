@@ -1,0 +1,10 @@
+# content: the Rayleigh quotient E_R of the analytic bound state (energy +m) of the kink on rings of length 24 with the lattice spacings 0.4, 0.2, 0.1, 0.05, and the relative residual of the state (Test 2, item 2, Figure 5(d))
+# m: 0.4
+# Delta_inf: 1
+# ell_K: 1
+# r_W: 1
+dx,E_R,relative_residual
+0.4000000000,0.4654428830,1.177743e-1
+0.2000000000,0.4331784312,5.944108e-2
+0.1000000000,0.4166472427,2.979075e-2
+0.0500000000,0.4083309034,1.490419e-2
