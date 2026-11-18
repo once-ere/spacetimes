@@ -14,11 +14,14 @@
      - replaces every reference LL["tex"] or LL["tex", "index" -> "value", ...] in the code by
        the two-dimensional box of that registered symbol (or of its component), so that the
        notebook shows the symbols as they are printed in the documents;
-     - turns $...$ in text into inline formulas (TeX converted by the Wolfram TeX importer),
+     - turns $...$ in text into inline formulas (TeX converted by the Wolfram TeX importer; the
+       alphabets of bold, sans-serif, double-struck, script and Gothic letters are kept),
        `...` (or ``...`` for code that contains the character `) into code font and **...** into
        bold;
      - inserts the content of the file named by a line  (* @@INCLUDE file@@ *)  (relative to
-       the source) into the code chunk in which it stands, so that the notebook is complete.
+       the source) into the code chunk in which it stands, so that the notebook is complete;
+     - replaces a line  (* @@INCLUDECELLS file@@ *)  by a whole file with its own cell markers
+       (the chapters of Part II).
    USAGE
      wolframscript -file build_notebook.wls  <source.wl>  <output.nb>  [<boxes-definitions.wl>]
    The optional third file defines SL31`Build`symbolBoxes[tex, rules], used for LL[...].
@@ -33,10 +36,23 @@ boxesDefinedQ = Length[DownValues[SL31`Build`symbolBoxes]] > 0;
 
 (* ---- 1. read the source and resolve the includes ---- *)
 text = ReadString[src];
+(* a line  (* @@INCLUDECELLS file@@ *)  is replaced by the whole file, with its own cell markers (used for
+   the chapters of Part II, each kept in its own source file) *)
+text = StringReplace[text,
+   RegularExpression["(?m)^\\(\\* @@INCLUDECELLS ([^@]+)@@ \\*\\)[ \\t]*$"] :> ReadString[FileNameJoin[{srcDir, "$1"}]]];
 (* an included file is inserted without its own cell markers (lines such as (* ::Package:: *)) *)
 text = StringReplace[text,
    RegularExpression["\\(\\* @@INCLUDE ([^@]+)@@ \\*\\)"] :>
      StringReplace[ReadString[FileNameJoin[{srcDir, "$1"}]], RegularExpression["(?m)^\\(\\* ::\\w+:: \\*\\)[ \\t]*\\n"] -> ""]];
+
+(* ---- 1b. the components of families typed in the source ----
+   every reference LL["tex", "index" -> "value", ...] with at least one index value names a component of a
+   registered family; the line  (* @@COMPONENTS@@ *)  is replaced by the list of all of them, as
+   {"tex", "index" -> "value", ...}, so that a cell of the notebook can create them before they are read *)
+componentRE = RegularExpression["LL\\[(\"(?:[^\"\\\\]|\\\\.)*\"(?:\\s*,\\s*\"(?:[^\"\\\\]|\\\\.)*\"\\s*->\\s*\"(?:[^\"\\\\]|\\\\.)*\")+)\\]"];
+SL31Build`components = DeleteDuplicates[StringCases[text, componentRE :> "$1"]];
+text = StringReplace[text, "(* @@COMPONENTS@@ *)" -> "{" <> StringRiffle[Map["{" <> # <> "}" &, SL31Build`components], ", "] <> "}"];
+Print["components: ", Length[SL31Build`components]];
 
 (* ---- 2. split into (style, body) chunks ---- *)
 chunks = StringCases[text,
@@ -49,11 +65,43 @@ textStyles = {"Title", "Subtitle", "Subsubtitle", "Chapter", "Section", "Subsect
 commentText[body_String] := StringTrim[StringReplace[StringTrim[body],
     RegularExpression["(?s)^\\(\\*(.*)\\*\\)$"] :> "$1"]];
 
-(* inline TeX -> an InlineFormula cell (Wolfram TeX importer); on failure keep the TeX *)
-SL31Build`inline[tex_String] := Module[{nb = Quiet[ImportString["$" <> tex <> "$", "TeX"]], c},
+(* The alphabets of letters in text formulas.  The Wolfram TeX importer loses them: \mathbf b gives
+   StyleBox["b", FontSlant -> "Bold"] (an invalid value, shown as a plain letter), \mathsf N and \mathbb R give
+   plain letters, \mathcal L and \mathfrak g give italic letters.  A bold b and a plain b, or the set R of the real
+   numbers and a letter R, would then look the same.  Therefore every styled letter is first replaced by a
+   placeholder word inside \mathrm{...}, which the importer keeps as ONE string (for example \mathbb R becomes
+   \mathrm{QZbbQRZQ}), and after the import the placeholder is replaced by the box that the converter of the
+   notebook (sl31_core.wl) uses for the same letter: double-struck, script and Gothic characters, and bold or
+   sans-serif upright letters.  The importer also writes \varepsilon as the lunate epsilon (the character of
+   \epsilon, used for the Levi-Civita symbol); \varepsilon is therefore protected in the same way and becomes the
+   curly epsilon, as in the converter of the notebook. *)
+SL31Build`alphaCode = <|"mathbf" -> "bf", "mathsf" -> "sf", "mathbb" -> "bb", "mathcal" -> "cal", "mathfrak" -> "frak"|>;
+SL31Build`protectAlphabets[tex_String] := StringReplace[StringReplace[tex,
+    RegularExpression["\\\\(mathbf|mathsf|mathbb|mathcal|mathfrak)\\s*(?:\\{([A-Za-z0-9]+)\\}|([A-Za-z0-9]))"] :>
+      "\\mathrm{QZ" <> SL31Build`alphaCode["$1"] <> "Q" <> "$2" <> "$3" <> "ZQ}"],
+   RegularExpression["\\\\varepsilon(?![A-Za-z])"] -> "\\mathrm{QZgrQvarepsilonZQ}"];
+(* one character of a special alphabet: capital and small letters have their own character names; digits stay *)
+SL31Build`special[kind_String, ch_String] := Which[
+   DigitQ[ch], ch,
+   UpperCaseQ[ch], ToExpression["\"\\[" <> kind <> "Capital" <> ch <> "]\""],
+   True, ToExpression["\"\\[" <> kind <> ToUpperCase[ch] <> "]\""]];
+SL31Build`alphaBox["bf", x_] := StyleBox[x, FontWeight -> "Bold", FontSlant -> "Plain"];
+SL31Build`alphaBox["sf", x_] := StyleBox[x, FontFamily -> "Helvetica", FontSlant -> "Plain"];
+SL31Build`alphaBox["bb", x_] := StyleBox[StringJoin[SL31Build`special["DoubleStruck", #] & /@ Characters[x]], FontSlant -> "Plain"];
+SL31Build`alphaBox["cal", x_] := StyleBox[StringJoin[SL31Build`special["Script", #] & /@ Characters[x]], FontSlant -> "Plain"];
+SL31Build`alphaBox["frak", x_] := StyleBox[StringJoin[SL31Build`special["Gothic", #] & /@ Characters[x]], FontSlant -> "Plain"];
+SL31Build`alphaBox["gr", "varepsilon"] := "\[CurlyEpsilon]";
+SL31Build`placeholderRE = RegularExpression["QZ(bf|sf|bb|cal|frak|gr)Q([A-Za-z0-9]+)ZQ"];
+SL31Build`placeholderBox[s_String] := SL31Build`alphaBox @@ First[StringCases[s, SL31Build`placeholderRE :> {"$1", "$2"}]];
+SL31Build`restoreAlphabets[boxes_] := boxes /. {
+    StyleBox[s_String /; StringMatchQ[s, SL31Build`placeholderRE], ___] :> SL31Build`placeholderBox[s],
+    s_String /; StringMatchQ[s, SL31Build`placeholderRE] :> SL31Build`placeholderBox[s]};
+
+(* inline TeX -> an InlineFormula cell (Wolfram TeX importer, with the alphabets kept); on failure keep the TeX *)
+SL31Build`inline[tex_String] := Module[{nb = Quiet[ImportString["$" <> SL31Build`protectAlphabets[tex] <> "$", "TeX"]], c},
    c = Cases[nb, Cell[BoxData[f_FormBox], "InlineFormula", ___], Infinity];
    If[c === {}, AppendTo[SL31Build`warnings, "TeX not converted: " <> tex]; "$" <> tex <> "$",
-     Cell[BoxData[First[c]], "InlineFormula"]]];
+     Cell[BoxData[SL31Build`restoreAlphabets[First[c]]], "InlineFormula"]]];
 SL31Build`warnings = {};
 
 (* text with $math$, `code` and **bold** -> TextData; StringReplace returns a StringExpression
@@ -68,11 +116,11 @@ textData[t_String] := Module[{r},
    TextData[If[Head[r] === StringExpression, List @@ r, {r}]]];
 
 (* display formula: the whole body is TeX *)
-displayCell[t_String] := Module[{nb = Quiet[ImportString["$$" <> t <> "$$", "TeX"]], c},
+displayCell[t_String] := Module[{nb = Quiet[ImportString["$$" <> SL31Build`protectAlphabets[t] <> "$$", "TeX"]], c},
    c = Cases[nb, Cell[BoxData[f_FormBox], ___], Infinity];
    If[c === {}, AppendTo[SL31Build`warnings, "display TeX not converted: " <> t];
      Cell["$$" <> t <> "$$", "Text"],
-     Cell[BoxData[First[c]], "DisplayFormula"]]];
+     Cell[BoxData[SL31Build`restoreAlphabets[First[c]]], "DisplayFormula"]]];
 
 (* code: replace LL["..."] references by placeholders, parse with the front end, substitute boxes *)
 SL31Build`placeholders = <||>;

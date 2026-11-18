@@ -423,3 +423,7 @@ Grid[Prepend[Map[{#["name"], If[#["pass"], "PASS", "FAIL"], #["statement"]} &, S
 
 (* ::Input:: *)
 {"tests" -> Length[SL31`Test`$Results], "passed" -> Count[SL31`Test`$Results, r_ /; r["pass"]]}
+
+(* @@INCLUDECELLS part2_A_core.source.wl@@ *)
+(* @@INCLUDECELLS part2_B_item1.source.wl@@ *)
+(* @@INCLUDECELLS part2_C_item1b.source.wl@@ *)

@@ -136,7 +136,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={Provenance P\_3+1super-loop: the Wolfram Language notebook 3+1super-loop.nb, Part I (the symbols)},
+  pdftitle={Provenance P\_3+1super-loop: the Wolfram Language notebook 3+1super-loop.nb, Part I (the symbols) and Part II (the encyclopedia of Test 2): the library and item {[}1{]}},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -145,7 +145,8 @@
   pdfcreator={LaTeX via pandoc}}
 
 \title{Provenance P\_3+1super-loop: the Wolfram Language notebook
-3+1super-loop.nb, Part I (the symbols)}
+3+1super-loop.nb, Part I (the symbols) and Part II (the encyclopedia of
+Test 2): the library and item {[}1{]}}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -154,7 +155,7 @@
 \makeatother
 \subtitle{PROJECT spacetimes, prepared for Patrick Lee Nash, Ph.D.}
 \author{}
-\date{17 November 2026}
+\date{18 November 2026}
 
 \begin{document}
 \maketitle
@@ -168,9 +169,13 @@ stands in the top folder of the repository of PROJECT spacetimes. A
 comes from: what was asked, what was done, how it was done, what was
 computed, which errors were met and how they were removed, and which
 files hold the evidence. This document describes \textbf{Part I} of the
-notebook, the Wolfram Language form of every symbol of the project. Part
-II of the notebook (the encyclopedia of the programs of Test 2) is added
-in later stages; its provenance will be added to this document then.
+notebook, the Wolfram Language form of every symbol of the project
+(sections 5 to 9), and the finished chapters of \textbf{Part II}, the
+encyclopedia of the programs of Test 2 (sections 10 to 12): chapter
+II.1, the library of the programs, and chapter II.2, item {[}1{]} of
+Test 2. The remaining items of Part II are added to the notebook in
+later stages; their provenance will be added to this document at the
+same time.
 
 The document is written for a physics student who has not seen the work
 before. Every term and every symbol is defined in words in section 2
@@ -178,12 +183,13 @@ before it is used. Nothing in this document depends on any other
 document: every equation, symbol and definition that it uses is written
 here.
 
-\textbf{Status of Part I (17 November 2026).} The notebook was evaluated
-in Wolfram 15.0.1 (Mac, Apple silicon), in the front end of the
-application Wolfram.app, by the menu command Evaluation \textgreater{}
-Evaluate Notebook, in a fresh kernel: 43 input cells, 30 output cells,
-15 printed test lines, \textbf{0 messages} (no error or warning of any
-kind), \textbf{15 of 15 tests passed}, evaluation time 56 seconds.
+\textbf{Status (18 November 2026).} The notebook was evaluated in
+Wolfram 15.0.1 (Mac, Apple silicon), in the front end of the application
+Wolfram.app, by the menu command Evaluation \textgreater{} Evaluate
+Notebook, in a fresh kernel: 82 input cells, 42 output cells, 35 printed
+test lines, \textbf{0 messages} (no error or warning of any kind),
+\textbf{35 of 35 tests passed} (15 of Part I, 20 of Part II), evaluation
+time 71 seconds.
 
 \hypertarget{the-task}{%
 \section{1. The task}\label{the-task}}
@@ -214,14 +220,15 @@ Mathematica (on his own computer, in
 \item
   Then append to the notebook, as an ``encyclopedia'', the entire code
   of Test 2 with all its tests and verifications, ported to the Wolfram
-  Language (Part II, later stages).
+  Language (Part II; done in this stage: the library and item {[}1{]};
+  the items {[}2{]} to {[}11{]} follow).
 \item
   Evaluate the notebook after every addition, fix every error at once,
   describe and discuss the fixes in the provenance, and push every
   finished item to the repository.
 \end{enumerate}
 
-Section 12 lists the decisions that were taken where the task left a
+Section 15 lists the decisions that were taken where the task left a
 choice.
 
 \hypertarget{terms-and-symbols-used-in-this-document}{%
@@ -328,7 +335,7 @@ Language}\label{terms-of-the-wolfram-language}}
 \item
   \textbf{\texttt{\$PreRead}}: a global variable; if it holds a
   function, the kernel applies it to the boxes of every input before
-  parsing. It is used in section 11 to record exactly which boxes the
+  parsing. It is used in section 14 to record exactly which boxes the
   front end sends.
 \item
   \textbf{\texttt{SyntaxForm}}: an option of \texttt{TagBox} that tells
@@ -353,6 +360,56 @@ Language}\label{terms-of-the-wolfram-language}}
   \textbf{Evaluator} (of a notebook): the kernel to which a notebook
   sends its input; a front end can run several kernels with different
   names.
+\item
+  \textbf{\texttt{.} (\texttt{Dot})}: the product of matrices and
+  vectors, \texttt{a\ .\ b}. In the grammar of the Wolfram Language the
+  operator \texttt{.} binds more strongly than the product written by
+  placing two expressions side by side (\texttt{Times}):
+  \texttt{x\ y\ .\ z} is read as \texttt{x\ (y\ .\ z)}. \texttt{Dot} of
+  a number and a matrix is not defined and stays unevaluated (error
+  E15).
+\item
+  \textbf{\texttt{KroneckerProduct}},
+  \textbf{\texttt{ConjugateTranspose}}, \textbf{\texttt{ArrayFlatten}}:
+  the Kronecker product of matrices; the complex conjugate of the
+  transpose (the dagger); a matrix assembled from blocks.
+\item
+  \textbf{\texttt{BitXor}}, \textbf{\texttt{BitShiftRight}},
+  \textbf{\texttt{Mod}}: the exclusive or of the bits of two integers;
+  the shift of the bits to the right (division by a power of 2, rounded
+  down); the remainder of a division.
+\item
+  \textbf{\texttt{MatrixExp}}, \textbf{\texttt{Eigenvalues}},
+  \textbf{\texttt{Norm{[}m,\ "Frobenius"{]}}}: the matrix exponential;
+  the eigenvalues; the square root of the sum of the squared moduli of
+  all entries of a matrix (the Frobenius norm).
+\item
+  \textbf{\texttt{SparseArray}}: a matrix stored by its nonzero entries.
+  \textbf{\texttt{Signature}}: the sign of a permutation, 0 if two
+  entries are equal (\texttt{Signature{[}\{i,\ j,\ k\}{]}} is the
+  Levi-Civita symbol).
+\item
+  \textbf{\texttt{Format}},
+  \textbf{\texttt{MessageName{[}s,\ "usage"{]}}} (written
+  \texttt{s::usage}): a rule for printing an expression; the usage
+  message that \texttt{?s} prints.
+\item
+  \textbf{\texttt{ListLinePlot}}, \textbf{\texttt{ListPlot}},
+  \textbf{\texttt{ListLogLogPlot}}, \textbf{\texttt{Show}},
+  \textbf{\texttt{Graphics}}, \textbf{\texttt{Text}},
+  \textbf{\texttt{LineLegend}}, \textbf{\texttt{Labeled}}: plots of
+  lists of points (joined, as points, on logarithmic axes); the
+  combination of plots; graphics and text placed at coordinates; a
+  legend; a caption.
+\item
+  \textbf{\texttt{SingleLetterItalics}}: an option of the front end; in
+  \texttt{TraditionalForm}, the form in which the labels of graphics are
+  typeset, a name of one letter is printed in italics unless the option
+  is \texttt{False}.
+\item
+  \textbf{\texttt{ImportString{[}text,\ "TeX"{]}}}: the TeX importer of
+  the Wolfram Language, which turns TeX into a notebook with boxes; the
+  builder uses it for the formulas in text cells (errors E4 and E17).
 \end{itemize}
 
 \hypertarget{symbols-of-the-physics-that-appear-in-the-tests}{%
@@ -523,12 +580,354 @@ demonstrations of section I.2 of the notebook (not part of the
 registry) \\
 \end{longtable}
 
+\hypertarget{symbols-of-part-ii-item-1}{%
+\subsection{2.5 Symbols of Part II, item
+{[}1{]}}\label{symbols-of-part-ii-item-1}}
+
+Every symbol in this table is a registered symbol of the project (Part I
+of the notebook symbolizes all of them; the registry is described in
+section 7). The meanings are those of the registry, written out here in
+full, with the formulas used by the programs. The name in the last
+column is the function or variable of Part II of the notebook that
+computes the object (code font). Indices: \(p,p'=0,1,2,3\) (space-time
+directions), \(j,j',j''=1,2,3\) (space directions),
+\(\iota,\iota',\iota''=1,2,3\) (isospin directions), \(k=1,\dots,8\)
+(the components of the spinor field), \(n\) (the number of a mode).
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+in Part II
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\sigma^{\rm LL}_0\), \(\sigma^{\rm LL}_j\) & the \(2\times2\) unit
+matrix and the Pauli matrices of section 2.2 & \texttt{t2sigma{[}0{]}}
+\ldots{} \texttt{t2sigma{[}3{]}} \\
+\(\tau^{\rm LL}_\iota\) & the same Pauli matrices acting on the isospin
+index (isospin up, down) & \texttt{t2sigma{[}i{]}} \\
+\(\mathsf E_{\rm LL}\) & the real antisymmetric \(2\times2\) matrix
+\(i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}\) &
+\texttt{t2eps2} \\
+\(\mathsf 1_2\), \(\mathsf 1_4\), \(\mathsf 1_8\), \(\mathsf 1_{16}\) &
+the unit matrices of the dimensions 2, 4, 8, 16 &
+\texttt{IdentityMatrix} \\
+\(\epsilon^{\rm LL}_{\iota\iota'\iota''}\) & the Levi-Civita symbol of
+section 2.2, also for isospin indices & \texttt{t2eps3} \\
+\(\eta^{\rm LL}_{pp'}\) & the Minkowski metric of section 2.2 &
+\texttt{t2eta{[}p{]}} (its diagonal) \\
+\(\mathbb B_{\rm LL}\); \(\mathbf e_0,\dots,\mathbf e_7\) & the
+bi-octonions, the complex combinations of the eight units
+\(\mathbf e_0=1,\mathbf e_1,\dots,\mathbf e_7\) & \\
+\(\mathbf a\), \(\mathbf b\), \(\mathbf c\), \(\mathbf d\);
+\(\mathbf x\), \(\mathbf y\) & bi-quaternions, the complex combinations
+of \(\mathbf e_0,\dots,\mathbf e_3\) (a bi-quaternion is also a
+bi-octonion, so the letters \(\mathbf x\), \(\mathbf y\) of bi-octonions
+are used for bi-quaternions as well); a bi-octonion is written
+\(\mathbf a+\mathbf b\,\mathbf e_4\) (Cayley-Dickson form) & lists of 4
+complex numbers \\
+\(\xi^{\rm LL}_p(\mathbf b)\) & the complex coefficient of
+\(\mathbf e_p\) in \(\mathbf b\):
+\(\mathbf b=\sum_{p=0}^3\xi^{\rm LL}_p(\mathbf b)\mathbf e_p\) & the
+entries of the list \\
+\(\bar{\mathbf b}\), \(\mathbf b^*\), \(\mathbf b^\dagger\) & the
+conjugations: \(\bar{\mathbf b}\) changes the signs of the coefficients
+of \(\mathbf e_1,\mathbf e_2,\mathbf e_3\); \(\mathbf b^*\) takes the
+complex conjugate of every coefficient;
+\(\mathbf b^\dagger=(\bar{\mathbf b})^*\) & \texttt{t2bqConj},
+\texttt{t2bqStar}, \texttt{t2bqDag} \\
+\(M_{\rm LL}(\mathbf b)\) & the \(2\times2\) matrix of a bi-quaternion,
+\(M_{\rm LL}(\mathbf b)=\xi^{\rm LL}_0(\mathbf b)\sigma^{\rm LL}_0-i\sum_j\xi^{\rm LL}_j(\mathbf b)\sigma^{\rm LL}_j\),
+so that \(M_{\rm LL}(\mathbf e_0)=\sigma^{\rm LL}_0\),
+\(M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j\); it is multiplicative,
+\(M_{\rm LL}(\mathbf b\mathbf b')=M_{\rm LL}(\mathbf b)M_{\rm LL}(\mathbf b')\),
+with \(M_{\rm LL}(\mathbf b^\dagger)=M_{\rm LL}(\mathbf b)^\dagger\) and
+\(\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)\) & \texttt{t2mq};
+inverse \texttt{t2bqFrom}; product \texttt{t2bqMul} \\
+\(N_{\rm LL}(\mathbf x)\) & the complex norm,
+\(N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2\) & \\
+\(R^{\rm LL}_{\mathbf x}\) & the right multiplication
+\(\mathbf y\mapsto\mathbf y\mathbf x\) & \\
+\(\mathbb R^{1,3}_{\rm LL}\); \(x^p_{\rm LL}\); \(x_{\rm LL}\);
+\(\partial_p\) & Minkowski space of \(3+1\) dimensions, the Hermitian
+bi-quaternions
+\(x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j\) with real
+coordinates \(x^p_{\rm LL}\); a point
+\(x_{\rm LL}=(x^0_{\rm LL},\dots,x^3_{\rm LL})\); the partial derivative
+with respect to \(x^p_{\rm LL}\). The coordinates of a Hermitian
+bi-quaternion \(\mathbf x\) are
+\(x^p_{\rm LL}=\tfrac12{\rm tr}\big(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf x)\big)\)
+& \texttt{t2coords} \\
+\(\mathbf f_p\) & a frame: four Hermitian bi-quaternions
+\(\mathbf f_0,\dots,\mathbf f_3\) (with
+\(N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})=\eta^{\rm LL}_{pp'}\) for an
+orthonormal frame); the canonical frame is \(\mathbf f_0=\mathbf e_0\),
+\(\mathbf f_j=i\,\mathbf e_j\), with
+\(M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p\),
+\(M_{\rm LL}(\bar{\mathbf f}_0)=\sigma^{\rm LL}_0\),
+\(M_{\rm LL}(\bar{\mathbf f}_j)=-\sigma^{\rm LL}_j\) &
+\texttt{t2canonicalFrame} \\
+\(\gamma^p_{\rm LL}[\mathbf f]\) & the Dirac matrices of a frame,
+\(\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}\)
+(\(4\times4\), blocks of \(2\times2\)) & \texttt{t2gammasFromFrame} \\
+\(\gamma^p_{\rm LL}\), \(\gamma^{\rm ch}_{\rm LL}\), \(C_{\rm LL}\),
+\(\alpha^j_{\rm LL}\), \(\beta_{\rm LL}\) & the Dirac matrices of the
+canonical frame (chiral basis),
+\(\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}\),
+\(\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}\);
+the chirality matrix
+\(\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)\);
+the charge-conjugation matrix
+\(C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}\);
+\(\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}\);
+\(\beta_{\rm LL}=\gamma^0_{\rm LL}\) & \texttt{t2gamma{[}p{]}},
+\texttt{t2gammaCh}, \texttt{t2cconj}, \texttt{t2alpha{[}j{]}},
+\texttt{t2beta} \\
+\(\mathfrak l_{\rm LL}\); \(J^j_{\rm LL}\), \(K^j_{\rm LL}\);
+\(\mathbf u\), \(\mathbf u_1,\dots,\mathbf u_5\) & the Lorentz part of
+the Malcev algebra of the super-loop (the imaginary bi-quaternions); its
+rotation and boost generators \(J^j_{\rm LL}=\mathbf e_j/2\),
+\(K^j_{\rm LL}=i\,\mathbf e_j/2\); elements of \(\mathfrak l_{\rm LL}\)
+(Lorentz generators; the registry lists \(\mathbf u\), \(\mathbf u'\),
+\(\mathbf u_1\), \(\mathbf u_2\), and GS-15 numbers five random
+generators in the same way) & \texttt{t2jgen{[}j{]}},
+\texttt{t2kgen{[}j{]}} \\
+\(\mathsf s_{\rm LL}(\mathbf u)\) & a Lorentz generator acting on the
+Dirac spinor,
+\(\mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}\big(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u)\big)\)
+& \texttt{t2spinGen} \\
+\(\mathbf g\); \(\tilde{\mathbf g}\) & a unit bi-quaternion
+(\(N_{\rm LL}(\mathbf g)=1\)), an element of \(SL(2,\mathbb C)\);
+\(\tilde{\mathbf g}=(\mathbf g^\dagger)^{-1}=\mathbf g^*\), with
+\(M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}\) &
+\texttt{t2randSL2C} (a random one) \\
+\(\mathsf S_{\rm LL}(\mathbf g)\) & the spinor matrix of the Lorentz
+transformation \(\mathbf g\),
+\(\mathrm{diag}\big(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g)\big)\)
+& \texttt{t2spinRep} \\
+\(\mathsf L_{\rm LL}(\mathbf g)\) & the real \(4\times4\) Lorentz matrix
+of \(\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger\):
+\([\mathsf L_{\rm LL}(\mathbf g)]_{pp'}=\tfrac12{\rm Re}\,{\rm tr}\big(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger\big)\)
+& \texttt{t2lmat} \\
+\(\mathcal V_{\rm LL}(\mathbf u)\) & the vector action of a Lorentz
+generator,
+\(\mathbf x\mapsto\mathbf u\mathbf x+\mathbf x\mathbf u^\dagger\), a
+real \(4\times4\) matrix with the entries
+\(\mathcal V_{\rm LL}(\mathbf u)^p{}_{p'}\) & \texttt{t2vecAction} \\
+\(\Psi_{\rm LL}\); \(\Psi_{{\rm LL},k}\) & the Dirac isodoublet of the
+spinor charges, 8 components: components 1 and 2 are the first Dirac
+component with isospin up and down, 3 and 4 the second, 5 and 6 the
+third, 7 and 8 the fourth; a \(4\times4\) Dirac matrix acts as its
+Kronecker product with \(\sigma^{\rm LL}_0\) on the right, a
+\(2\times2\) isospin matrix as the Kronecker product of \(\mathsf 1_4\)
+with it & \texttt{t2lift4}, \texttt{t2lift2} \\
+\(T^\iota_{\rm LL}\) & the isospin generators on the eight components,
+\(\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2\) & \texttt{t2tiso{[}i{]}} \\
+\(\mathsf K^\iota_{\rm LL}\), \(\mathsf K'^\iota_{\rm LL}\) & the
+\(8\times8\) pair matrices of the spin-zero channels: scalar
+\(\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\),
+pseudoscalar
+\(\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\)
+& \texttt{t2kpair{[}i{]}}, \texttt{t2kpairPs{[}i{]}} \\
+\(\vec d_{\rm LL}\), \(d^\iota_{\rm LL}\); \(\Delta_{\rm LL}\) & the
+order parameter, a complex isospin vector
+\((d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})\); the gap
+\(\Delta_{\rm LL}=\lvert\vec d_{\rm LL}\rvert\) of a unitary state & \\
+\(\mathsf P_{\rm LL}\) & the pairing block
+\(\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger\) &
+\texttt{t2pairPotential} \\
+\(\mathsf U_{\rm LL}\); \(\theta^\iota_{\rm LL}\);
+\(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\); \(\mathbf v\) & an
+isospin rotation, a matrix of \(SU(2)\),
+\(\mathsf U_{\rm LL}=\exp\big(i\sum_\iota\theta^\iota_{\rm LL}\tau^{\rm LL}_\iota/2\big)\)
+with the three angles \(\theta^\iota_{\rm LL}\); the rotation of an
+isospin vector,
+\(\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota'\iota}\tau^{\rm LL}_{\iota'}\);
+the unit real quaternion with
+\(\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)\) & \texttt{t2su2},
+\texttt{t2adjoint} \\
+\(\theta^{\rm F}_{\rm LL}\) & the phase of a transformation of the
+fermion number,
+\(\Psi_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\Psi_{\rm LL}\) & \\
+\(\mathcal U_{\rm LL}\) & a local gauge transformation by
+\(SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\),
+\(\mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}\),
+with \(\mathbf g\), \(\mathsf U_{\rm LL}\), \(\theta^{\rm F}_{\rm LL}\)
+functions of \(x_{\rm LL}\) & \texttt{caluAt} \\
+\(A^\iota_{{\rm LL},p}\), \(A^{\rm F}_{{\rm LL},p}\);
+\(g^{\rm v}_{\rm LL}\), \(g^{\rm F}_{\rm LL}\) & the gauge potentials of
+the isospin group and of the fermion number (real fields); their
+couplings & \texttt{aAt}, \texttt{afAt}; \texttt{gv}, \texttt{gf} \\
+\(\mathsf a_{{\rm LL},p}\); \(\vec A^{\rm v}_{{\rm LL},p}\);
+\(\mathbf t^{\rm A}_{{\rm LL},p}\) & the isospin potential as a
+Hermitian \(2\times2\) matrix,
+\(\sum_\iota A^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2\); as a vector
+\((A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p})\); as a real
+imaginary quaternion,
+\(\sum_\iota A^\iota_{{\rm LL},p}\mathbf e_\iota/2\), with
+\(M_{\rm LL}(\mathbf t^{\rm A}_{{\rm LL},p})=-i\,\mathsf a_{{\rm LL},p}\)
+& \\
+\(\mathbf u^\omega_{{\rm LL},p}\); \(\omega^j_{{\rm LL},p}\),
+\(\varpi^j_{{\rm LL},p}\) & the Lorentz connection,
+\(\mathbf u^\omega_{{\rm LL},p}=\sum_j\big(\omega^j_{{\rm LL},p}J^j_{\rm LL}+\varpi^j_{{\rm LL},p}K^j_{\rm LL}\big)\),
+with real rotation and boost components;
+\(\mathbf u^{\omega*}_{{\rm LL},p}\) is its complex conjugate &
+\texttt{lorentzElem} \\
+\(\Gamma^{\rm LL}_p\) & the spin connection,
+\(\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0\)
+& \texttt{gammaAt} (its \(4\times4\) part) \\
+\(\mathsf A_{{\rm LL},p}\) & the gauge matrix of the internal
+symmetries,
+\(g^{\rm v}_{\rm LL}\sum_\iota A^\iota_{{\rm LL},p}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathsf 1_8\)
+(Hermitian) & \texttt{gauge8} \\
+\(\nabla^{\rm LL}_p\), \(\nabla^{{\rm LL}*}_p\) & the gauge-covariant
+derivative \(\partial_p+\Gamma^{\rm LL}_p-i\mathsf A_{{\rm LL},p}\), and
+that of a field that transforms like \(\Psi^*_{\rm LL}\),
+\(\partial_p+(\Gamma^{\rm LL}_p)^*+i(\mathsf A_{{\rm LL},p})^*\) &
+\texttt{nabla} \\
+\(\mathbf D_{\rm LL}\) & the bi-quaternion of covariant derivatives
+\(\sum_p\mathbf f_p\nabla^{\rm LL}_p\);
+\(\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p=\begin{pmatrix}0&M_{\rm LL}(\mathbf D_{\rm LL})\\M_{\rm LL}(\bar{\mathbf D}_{\rm LL})&0\end{pmatrix}\)
+& \\
+\(\mathsf F^\iota_{{\rm LL},pp'}\),
+\(\mathsf F^{\rm F}_{{\rm LL},pp'}\), \(\mathsf R^{\rm LL}_{pp'}\) & the
+field strengths and the curvature:
+\(\mathsf F^\iota_{{\rm LL},pp'}=\partial_pA^\iota_{{\rm LL},p'}-\partial_{p'}A^\iota_{{\rm LL},p}+g^{\rm v}_{\rm LL}\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}A^{\iota''}_{{\rm LL},p'}\),
+\(\mathsf F^{\rm F}_{{\rm LL},pp'}=\partial_pA^{\rm F}_{{\rm LL},p'}-\partial_{p'}A^{\rm F}_{{\rm LL},p}\),
+\(\mathsf R^{\rm LL}_{pp'}=\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+\Gamma^{\rm LL}_p\Gamma^{\rm LL}_{p'}-\Gamma^{\rm LL}_{p'}\Gamma^{\rm LL}_p\)
+& \\
+\(\psi'_{\rm LL}(\mathbf y)\) & the Weyl isodoublet of a spinor charge
+\(\mathbf y\mathbf e_4\), the \(2\times2\) matrix
+\(\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf y)^T\) (rows: Weyl index;
+columns: isospin up, down) & \texttt{t2psiPrime} \\
+\(\mathbf b^+_{\rm LL}\), \(\mathbf b^-_{\rm LL}\);
+\(\Psi_{\rm LL}[\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}]\) & the two
+spinor charges \(\mathbf b^\pm_{\rm LL}\mathbf e_4\) of the Dirac
+isodoublet: its upper block (components 1 to 4, chirality \(-1\)) is
+\(\psi'_{\rm LL}(\mathbf b^-_{\rm LL})\), its lower block (components 5
+to 8, chirality \(+1\)) is \(\psi'_{\rm LL}(\mathbf b^+_{\rm LL})\) &
+\texttt{t2diracFromCharges} \\
+\(\psi^{\rm p}_{\rm LL}\), \(\psi^{\rm h}_{\rm LL}\);
+\(\psi^{\rm p}_{{\rm LL},k}\) & the particle and the hole component of a
+mode of the mean-field equations, eight complex functions each;
+\(\psi^{\rm p}_{\rm LL}\) transforms like \(\Psi_{\rm LL}\),
+\(\psi^{\rm h}_{\rm LL}\) like \(\Psi^*_{\rm LL}\); a component & \\
+\(\vec q_{\rm LL}\), \(q_{\rm LL}\), \(q^j_{\rm LL}\); \(m_{\rm LL}\),
+\(\mu_{\rm LL}\), \(G_{\rm LL}\) & a momentum, its length and its
+components; the mass of the spinor charges, the chemical potential, the
+coupling of the contact interaction & \texttt{q}; \texttt{mass},
+\texttt{mu} \\
+\(\varepsilon_{\rm LL}\), \(E^\pm_{\rm LL}\) & the energy
+\((q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}\); the quasi-particle energies of
+the scalar channel,
+\(E^\pm_{\rm LL}=\big((\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2\big)^{1/2}\)
+& \\
+\(\mathsf h_{\rm LL}(\vec q_{\rm LL})\);
+\(\mathsf H_{\rm LL}(\vec q_{\rm LL})\) & the Hamiltonian matrix of a
+plane wave,
+\(\sum_j\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL}\); the
+\(16\times16\) Bogoliubov-de Gennes matrix of section 12.1 without gauge
+fields & \\
+\(\mathcal H^{\rm DB}_{\rm LL}\), \(h^\nabla_{\rm LL}\);
+\(\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})\) & the
+Dirac-Bogoliubov-de Gennes operator (section 12.1) and the covariant
+Dirac Hamiltonian
+\(h^\nabla_{\rm LL}=-i\sum_j\alpha^j_{\rm LL}\nabla^{\rm LL}_j+\beta_{\rm LL}m_{\rm LL}\);
+its \(16\times16\) matrix on a plane wave with constant fields &
+\texttt{hq} \\
+\(E^{\rm qp}_{{\rm LL},n}\) & the energy of a numbered mode, an
+eigenvalue of \(\mathcal H^{\rm DB}_{\rm LL}\) & \\
+\(\Pi^\iota_{\rm LL}\), \(\Pi^\iota_{\rm LL}(x_{\rm LL})\) & the pair
+operators, \(\Psi_{\rm LL}^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}\) (at
+a point) & \texttt{t2anomalous} (lattice) \\
+\(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
+\(r^{\rm W}_{\rm LL}\) & the lattice spacing, the time step, the
+coefficient of the Wilson term & \texttt{"ell"}, \texttt{dt},
+\texttt{"wilson"} \\
+\(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
+\(\vec s_{\rm LL}\), \(s^j_{\rm LL}\); \(\vec\delta^j_{\rm LL}\);
+\(n^{\rm act}_{\rm LL}\) & the numbers of lattice sites in the three
+directions; a site and its integer coordinates (counted from 0); the
+step to the next site in the direction \(j\); the number of directions
+with more than one site & \texttt{"n"}; \texttt{t2siteCoords} \\
+\(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\) & the link matrix
+from \(\vec s_{\rm LL}\) to \(\vec s_{\rm LL}+\vec\delta^j_{\rm LL}\),
+\(\exp\big(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0)\big)\)
+& \texttt{t2link} \\
+\(\mathcal H^{\rm lat}_{\rm LL}\), \(\varepsilon^{\rm lat}_{\rm LL}\),
+\(B^{\rm H}_{\rm LL}\) & the lattice form of
+\(\mathcal H^{\rm DB}_{\rm LL}\) (16 rows per site), the energy of a
+free particle on the lattice, and the bound on the largest eigenvalue
+magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) & \texttt{t2apply},
+\texttt{t2dense}; \texttt{t2epsLat}; \texttt{t2normBound} \\
+\(\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})\) & the \(4\times4\)
+free lattice operator on a plane wave,
+\(\sum_j\alpha^j_{\rm LL}\sin(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/\ell^{\rm x}_{\rm LL}+\beta_{\rm LL}\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)\),
+sums over the active directions & \texttt{t2hLatPlane} \\
+\(\mathsf G^{\rm site}_{\rm LL}\), \(\mathsf X^{\rm ph}_{\rm LL}\) & the
+gauge transformation of the lattice equations,
+\(\exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}\) at each site on the
+isospin index of the particle component and its complex conjugate on the
+hole component; the exchange of the particle and the hole component,
+\(\begin{pmatrix}0&\mathsf 1_8\\\mathsf 1_8&0\end{pmatrix}\) &
+\texttt{gbig}; \texttt{swap}, \texttt{xm} \\
+\(SL(2,\mathbb C)\), \(SU(2)_{\rm v}\), \(U(1)^{\rm F}_{\rm LL}\),
+\(\mathfrak{so}(3,1)\) & the Lorentz group (unit bi-quaternions), the
+isospin group, the group of the fermion number, the Lie algebra of the
+Lorentz group & \\
+\end{longtable}
+
+\hypertarget{abbreviations-of-this-document-that-are-not-registered-symbols}{%
+\subsection{2.6 Abbreviations of this document that are not registered
+symbols}\label{abbreviations-of-this-document-that-are-not-registered-symbols}}
+
+Two letters are used, in a few places only, as abbreviations; each is
+defined where it is used and none of them coincides with a registered
+symbol (the registry has no symbol written with these letters alone):
+
+\begin{itemize}
+\tightlist
+\item
+  \(z\) (section 12.2, checks GS-13 and T2-DATA-1, section 12.3, and
+  Figure 2 of the notebook): the product
+  \(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\) of the energy of a
+  mode and the time step.
+\item
+  \(\kappa\) (sections 12.2 GS-10 and GS-16, and the notebook text of
+  GS-16): the integer that labels the allowed momenta of a periodic
+  chain:
+  \(q^1_{\rm LL}=2\pi\kappa/(n^{\rm x}_{\rm LL}\ell^{\rm x}_{\rm LL})\)
+  for a chain of \(n^{\rm x}_{\rm LL}\) sites along \(x^1_{\rm LL}\),
+  and
+  \(q^3_{\rm LL}=2\pi\kappa/(n^{\rm z}_{\rm LL}\ell^{\rm x}_{\rm LL})\)
+  for a chain along \(x^3_{\rm LL}\).
+\item
+  Variables of the programs are written in code font (for example
+  \texttt{kv}, \texttt{waves}, \texttt{ulist}, \texttt{w}); they are
+  names of the Wolfram Language code, not symbols of the physics.
+\end{itemize}
+
 \hypertarget{results-in-brief}{%
 \section{3. Results in brief}\label{results-in-brief}}
 
-\begin{longtable}[]{@{}ll@{}}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
 \toprule\noalign{}
-quantity & value \\
+\begin{minipage}[b]{\linewidth}\raggedright
+quantity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+value
+\end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -539,9 +938,17 @@ TeX items (single symbols) & 449 \\
 label entries (no TeX) & 2 (entries 86 and 87) \\
 TeX items of a symbolized kind & 427 \\
 different boxes, i.e.~symbolized symbols & 422 \\
-tests & 15 (S-0 to S-14), all passed \\
+tests of Part I & 15 (S-0 to S-14), all passed \\
+original programs rewritten in Part II so far & the library t2core
+(rng.rs, c64.rs, cmat.rs, model.rs, lattice.rs) and the program
+t2\_fields (item {[}1{]} of Test 2) \\
+checks of Part II so far & 20 (T2-SYM, T2-RNG, T2-LINALG, GS-1 to GS-16,
+T2-DATA-1), all passed \\
+components of families typed in the notebook & 10, all atomic symbols
+(T2-SYM) \\
 messages during the evaluation & 0 \\
-evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 56 s \\
+evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 71 s \\
+printed form of the evaluated notebook & 181 pages \\
 \end{longtable}
 
 \hypertarget{how-to-use-the-notebook}{%
@@ -560,9 +967,12 @@ evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 56 s \\
 \item
   Every test prints one line that begins with PASS (green) or FAIL
   (red), its name, the statement that it checks, and the numbers that
-  decide it. Section I.9 of the notebook lists all tests in a table, and
-  its last cell gives
-  \texttt{\{"tests"\ -\textgreater{}\ 15,\ "passed"\ -\textgreater{}\ 15\}}.
+  decide it. Section I.9 of the notebook lists the tests of Part I in a
+  table, and its last cell gives
+  \texttt{\{"tests"\ -\textgreater{}\ 15,\ "passed"\ -\textgreater{}\ 15\}};
+  the subsection ``Summary of item {[}1{]}'' at the end of chapter II.2
+  lists the 20 checks of Part II. In Part II the numbers of a check are
+  followed, in parentheses, by those of the original report.
 \item
   After the evaluation every registered symbol can be typed in its
   printed form; \texttt{?symbol} prints its meaning.
@@ -571,7 +981,9 @@ evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 56 s \\
 The notebook as stored in the repository is already evaluated, so its
 results can be read without evaluating it. The folder
 \texttt{3+1super-loop\_provenance/export} holds the printed form of the
-evaluated notebook as a PDF file (100 pages).
+evaluated notebook as a PDF file (181 pages; about 30 of them are the
+input cell with the numbers of the data files of item {[}1{]}, decision
+of section 15).
 
 \hypertarget{the-technique-symbolized-symbols-created-by-a-program}{%
 \section{5. The technique: symbolized symbols created by a
@@ -614,7 +1026,7 @@ format \texttt{\$Failed}: the symbol is created but its box is never
 recognized in input. This was found from the source code of the package
 (the default value is taken from
 \texttt{AbsoluteCurrentValue{[}InputNotebook{[}{]},\ \{CommonDefaultFormatTypes,\ "Output"\}{]}})
-and is error E1 of section 11.
+and is error E1 of section 14.
 
 \hypertarget{the-name-of-every-symbol-is-given-explicitly}{%
 \subsection{5.3 The name of every symbol is given
@@ -1115,8 +1527,757 @@ statements on the Pauli matrices: \(i^2=-1\); \(\sqrt2\in\mathbb R\);
 \((\sigma^{\rm LL}_2)^T=-\sigma^{\rm LL}_2\). Result: all eleven
 \texttt{True}.
 
+\hypertarget{part-ii-the-encyclopedia-of-the-programs-of-test-2}{%
+\section{10. Part II: the encyclopedia of the programs of Test
+2}\label{part-ii-the-encyclopedia-of-the-programs-of-test-2}}
+
+\hypertarget{what-part-ii-contains}{%
+\subsection{10.1 What Part II contains}\label{what-part-ii-contains}}
+
+Test 2 of the super-loop revision of the project asks eleven questions,
+called items {[}1{]} to {[}11{]}: the gauge-covariant field equations of
+the self-interacting spinor field \(\Psi_{\rm LL}\) on
+\(\mathbb R^{1,3}_{\rm LL}\) and their checks (item {[}1{]}); their
+analysis and analytic solutions (item {[}2{]}); a solver of the field
+equations and a plotter of its solutions, written twice, in Python and
+in Rust (items {[}3{]} to {[}6{]}); the construction and the physics of
+the superfluid boson singlet state, SFBS (items {[}7{]} to {[}11{]}).
+The original programs are in the folder
+\texttt{Revision\_SuperLoop/test2} of the repository:
+
+\begin{itemize}
+\tightlist
+\item
+  the Rust library \texttt{t2core} (files \texttt{rng.rs},
+  \texttt{c64.rs}, \texttt{cmat.rs}, \texttt{model.rs},
+  \texttt{lattice.rs}, \texttt{sym.rs}, \texttt{lib.rs}) and the Rust
+  programs \texttt{t2\_fields} (item {[}1{]}), \texttt{t2\_analytic}
+  (item {[}2{]}), \texttt{t2\_solve} (items {[}3{]}, {[}5{]}),
+  \texttt{t2\_plot} (items {[}4{]}, {[}6{]}) and \texttt{t2\_sfbs}
+  (items {[}7{]} to {[}11{]}), 12 615 lines in all;
+\item
+  the Python programs \texttt{t2\_solve.py}, \texttt{t2\_plot.py},
+  \texttt{t2\_examples\_check.py}, \texttt{make\_t2\_figures.py} and
+  \texttt{make\_t2\_sfbs\_figures.py}.
+\end{itemize}
+
+Part II of the notebook rewrites all of them, item by item, in the
+Wolfram Language, with every check of the original programs.
+\textbf{This stage} contains chapter II.1 (the library \texttt{t2core})
+and chapter II.2 (item {[}1{]}, the program \texttt{t2\_fields}: the
+checks GS-1 to GS-16, the two figures and the data files of the
+figures). The items {[}2{]} to {[}11{]} follow in the next stages; each
+will be added to this document when it is added to the notebook.
+
+\hypertarget{names-indices-and-numbers}{%
+\subsection{10.2 Names, indices and
+numbers}\label{names-indices-and-numbers}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Names.} Every function of Part II begins with \texttt{t2} and
+  keeps the name of the original function in the style of the Wolfram
+  Language (for example the Rust function \texttt{model::gamma\_ch} is
+  \texttt{t2gammaCh}). Every name stands for one object only (section
+  15).
+\item
+  \textbf{Indices.} The indices keep the values of the physics,
+  \(p=0,\dots,3\) and \(j,\iota=1,2,3\); because the lists of the
+  Wolfram Language begin at position 1, the code writes the entry of
+  \(p\) at position \(p+1\).
+\item
+  \textbf{Numbers.} The original programs compute in double precision
+  (about 16 decimal digits). Part II does the same. Exact objects (the
+  Dirac matrices, the generators, the pair matrices) are computed
+  exactly, with integers and the imaginary unit.
+\item
+  \textbf{Results compared with the original report.} Every printed
+  check line ends with the numbers of the Wolfram Language and, in
+  parentheses, those of the original report (the file
+  \texttt{Revision\_SuperLoop/test2/data/t2\_fields\_checks.txt},
+  written by the Rust program). Results that are fixed by the random
+  numbers alone (the spectral radius 8.4349 and its bound 17.5474 of
+  GS-10, the factors of GS-13, the smallest Gram eigenvalue 8.000 of
+  GS-15) agree to all printed digits. Results that measure rounding
+  errors (the largest deviation of an exact identity, of the size
+  \(10^{-16}\) to \(10^{-13}\)) agree in their order of magnitude but
+  not in their digits: a sum of floating-point numbers depends in its
+  last bits on the order of the terms, and the matrix products of the
+  Wolfram Language add the terms in a different order than the loops of
+  the Rust code. Such a deviation is the accumulated rounding error of
+  the computation and has no further meaning; what matters is that it
+  stays far below the tolerance of the check.
+\end{itemize}
+
+\hypertarget{random-numbers}{%
+\subsection{10.3 Random numbers}\label{random-numbers}}
+
+The original programs draw their random matrices, fields and momenta
+from the generator SplitMix64, whose state is one unsigned integer with
+64 bits. One step, written with the names of the program (all arithmetic
+modulo \(2^{64}\); \texttt{XOR} is the exclusive or of the bits,
+\texttt{\textgreater{}\textgreater{}} the shift of the bits to the
+right; the constants are hexadecimal):
+
+\begin{verbatim}
+state  = state + 0x9E3779B97F4A7C15
+t      = state
+t      = (t XOR (t >> 30)) * 0xBF58476D1CE4E5B9
+t      = (t XOR (t >> 27)) * 0x94D049BB133111EB
+output = t XOR (t >> 31)
+\end{verbatim}
+
+A uniform number in \([-1,1)\) is
+\texttt{2\ (output\ \textgreater{}\textgreater{}\ 11)/2\^{}53\ -\ 1};
+the division and the subtraction are exact in double precision, so the
+Wolfram Language (\texttt{t2Seed}, \texttt{t2NextU64}, \texttt{t2Unit};
+the integer operations \texttt{Mod}, \texttt{BitXor},
+\texttt{BitShiftRight}) produces exactly the numbers of the Rust code. A
+random complex number is drawn as real part, then imaginary part
+(\texttt{t2UnitC}). Part II uses the seeds of the original programs
+(2026111707 for \texttt{t2\_fields}) and draws the numbers in the same
+order, so that every random object is the same as in the original
+program. The check T2-RNG compares the first three integers and the
+first four uniform numbers for the seed 2026111707 with the values of
+the same algorithm computed independently in Python 3 (script
+\texttt{tools/splitmix64\_reference.py}, output
+\texttt{logs/T2-RNG\_reference\_values.txt}): 16253586484067153034,
+11771902715344777314, 8742176756923514478 and 0.7622173776706638,
+0.2763122498264816, \(-0.05217129678912458\), 0.4038650534416697; all
+are equal.
+
+\hypertarget{components-of-families}{%
+\subsection{10.4 Components of families}\label{components-of-families}}
+
+A component of a registered family, for example \(\gamma^0_{\rm LL}\) of
+\(\gamma^p_{\rm LL}\), is a symbol of its own, made from the box of the
+family with the index replaced by its value (\texttt{SL31Instance},
+section 7). When an input cell is evaluated, the front end sends the
+whole cell to the kernel, which reads all of it before it evaluates its
+first line; a component typed in the cell must therefore be a symbol
+before the cell is evaluated. The builder collects every component that
+is typed anywhere in the notebook (every reference
+\texttt{LL{[}"tex",\ "index"\ -\textgreater{}\ "value",\ ...{]}} of the
+source) and writes the list into the first input cell of Part II, which
+makes the components that Part I has not made, gives them their
+\texttt{TraditionalForm} boxes and usage messages, and checks them
+(T2-SYM): 10 components are typed in the notebook
+(\(\sigma^{\rm LL}_0,\dots,\sigma^{\rm LL}_3\),
+\(\gamma^0_{\rm LL},\dots,\gamma^3_{\rm LL}\),
+\(\mathsf A_{{\rm LL},j}\), \(q^1_{\rm LL}\)), 6 of them are made in
+this cell, and all 10 are read as atomic symbols whose TeX contains no
+internal name. Error E18 (section 14) describes what happened before
+this cell existed.
+
+\hypertarget{part-ii-chapter-ii.1-the-library-t2core-in-the-wolfram-language}{%
+\section{11. Part II, chapter II.1: the library t2core in the Wolfram
+Language}\label{part-ii-chapter-ii.1-the-library-t2core-in-the-wolfram-language}}
+
+\hypertarget{complex-numbers-and-matrices-c64.rs-cmat.rs}{%
+\subsection{11.1 Complex numbers and matrices (c64.rs,
+cmat.rs)}\label{complex-numbers-and-matrices-c64.rs-cmat.rs}}
+
+The Rust library defines its own complex numbers and dense complex
+matrices; the Wolfram Language has both built in (section 2.1). Three
+routines of \texttt{cmat.rs} are rewritten because the programs and
+their checks use them:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{t2det2}, \texttt{t2inv2}: the determinant and the inverse of a
+  \(2\times2\) matrix by the explicit formulas: for the matrix
+  \texttt{\{\{m11,\ m12\},\ \{m21,\ m22\}\}} the determinant is
+  \texttt{m11\ m22\ -\ m12\ m21} and the inverse is
+  \texttt{\{\{m22,\ -m12\},\ \{-m21,\ m11\}\}} divided by the
+  determinant. \texttt{t2csqrt}: the principal square root of a complex
+  number, the square root of its modulus times the phase factor of half
+  its argument.
+\item
+  \texttt{t2expm}: the matrix exponential by scaling and squaring. The
+  matrix is halved \texttt{s} times, until its Frobenius norm is at most
+  \(1/4\); the Taylor series of the exponential of the halved matrix
+  \texttt{x} (the sum of its powers divided by the factorials) is summed
+  until a term has a Frobenius norm below \(10^{-18}\) (at most 29
+  terms); the sum is then squared \texttt{s} times, because the
+  exponential of twice a matrix is the square of the exponential of the
+  matrix.
+\item
+  \texttt{t2eigh}: all eigenvalues and eigenvectors of a complex
+  Hermitian matrix, in two stages. Stage 1, Householder reduction: for
+  every column \texttt{k} a reflection (the unit matrix minus twice the
+  projector on a complex unit vector \texttt{vv}) is chosen that sets to
+  zero the entries of the column below the subdiagonal; applied from
+  both sides it keeps the eigenvalues, and after all columns the matrix
+  is tridiagonal; the product of the reflections is accumulated in the
+  matrix \texttt{q}. The complex subdiagonal entries are then made real
+  and non-negative by a diagonal unitary matrix of phases. Stage 2, the
+  implicit QL algorithm with Wilkinson shifts (\texttt{tqli}): plane
+  rotations drive the off-diagonal entries of the real tridiagonal
+  matrix to zero; the diagonal then holds the eigenvalues, and the
+  accumulated rotations, multiplied by \texttt{q}, give the
+  eigenvectors. The eigenvalues are sorted in ascending order.
+\end{itemize}
+
+Check \textbf{T2-LINALG} (seed 12345): for a random \(9\times9\)
+Hermitian matrix (\texttt{z\ +\ ConjugateTranspose{[}z{]}} with a random
+complex matrix \texttt{z}) the eigenvalues of \texttt{t2eigh} differ
+from those of the built-in \texttt{Eigenvalues} by at most
+\(5.33\times10^{-15}\) (tolerance \(10^{-12}\)), the eigenvectors
+reproduce the matrix (Frobenius norm of the difference below
+\(10^{-12}\)), and for a random \(3\times3\) matrix \texttt{t2expm}
+differs from the built-in \texttt{MatrixExp} by \(1.24\times10^{-14}\)
+in the Frobenius norm (tolerance \(10^{-13}\)). The full test of the
+eigensolver is GS-11.
+
+\hypertarget{the-super-loop-operators-as-matrices-model.rs}{%
+\subsection{11.2 The super-loop operators as matrices
+(model.rs)}\label{the-super-loop-operators-as-matrices-model.rs}}
+
+Every function of \texttt{model.rs} is rewritten, in the same order; the
+formulas are those of section 2.5. In particular: \texttt{t2mq} is
+\(M_{\rm LL}\); \texttt{t2bqFrom} is its inverse, which gives for a
+\(2\times2\) matrix \texttt{m} the coefficients
+\(\xi^{\rm LL}_0=(\)\texttt{m11}\(+\)\texttt{m22}\()/2\),
+\(\xi^{\rm LL}_1=i(\)\texttt{m12}\(+\)\texttt{m21}\()/2\),
+\(\xi^{\rm LL}_2=(\)\texttt{m21}\(-\)\texttt{m12}\()/2\),
+\(\xi^{\rm LL}_3=i(\)\texttt{m11}\(-\)\texttt{m22}\()/2\) (these follow
+from
+\(M_{\rm LL}(\mathbf b)=\begin{pmatrix}\xi^{\rm LL}_0-i\xi^{\rm LL}_3&-i\xi^{\rm LL}_1-\xi^{\rm LL}_2\\-i\xi^{\rm LL}_1+\xi^{\rm LL}_2&\xi^{\rm LL}_0+i\xi^{\rm LL}_3\end{pmatrix}\));
+\texttt{t2bqMul} multiplies two bi-quaternions through their matrices;
+\texttt{t2bioctMul} multiplies two bi-octonions in Cayley-Dickson form,
+
+\[(\mathbf a+\mathbf b\,\mathbf e_4)(\mathbf c+\mathbf d\,\mathbf e_4)=(\mathbf a\mathbf c-\bar{\mathbf d}\mathbf b)+(\mathbf d\mathbf a+\mathbf b\bar{\mathbf c})\mathbf e_4 ;\]
+
+\texttt{t2randSL2C} draws a random element of \(SL(2,\mathbb C)\): four
+random complex entries (in the order \texttt{m11}, \texttt{m12},
+\texttt{m21}, \texttt{m22}), accepted if the modulus of the determinant
+exceeds 0.1, then divided by the principal square root of the
+determinant, so that the determinant is 1; \texttt{t2su2} is
+\(\mathsf U_{\rm LL}=\exp\big(i\sum_\iota\theta^\iota_{\rm LL}\tau^{\rm LL}_\iota/2\big)\)
+(with \texttt{t2expm}); \texttt{t2adjoint} is
+\(\mathsf R^{\rm v}_{\rm LL}\), with
+\([\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota'\iota}=\tfrac12{\rm Re}\,{\rm tr}\big(\tau^{\rm LL}_{\iota'}\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger\big)\);
+\texttt{t2eps3} is the Levi-Civita symbol (\texttt{Signature}). The
+notebook shows the matrices
+\(\sigma^{\rm LL}_0,\dots,\sigma^{\rm LL}_3\),
+\(\gamma^0_{\rm LL},\dots,\gamma^3_{\rm LL}\),
+\(\gamma^{\rm ch}_{\rm LL}\), \(C_{\rm LL}\), \(\beta_{\rm LL}\) and
+\(\mathsf E_{\rm LL}\), each labelled with its registered symbol.
+
+\hypertarget{the-lattice-operator-lattice.rs}{%
+\subsection{11.3 The lattice operator
+(lattice.rs)}\label{the-lattice-operator-lattice.rs}}
+
+The solvers discretize space on a lattice of
+\(n^{\rm x}_{\rm LL}\times n^{\rm y}_{\rm LL}\times n^{\rm z}_{\rm LL}\)
+sites with the spacing \(\ell^{\rm x}_{\rm LL}\). A site
+\(\vec s_{\rm LL}\) has the number
+\(s^1_{\rm LL}+n^{\rm x}_{\rm LL}(s^2_{\rm LL}+n^{\rm y}_{\rm LL}s^3_{\rm LL})\)
+in the code (\texttt{t2siteOf}, \texttt{t2siteCoords}); a lattice is an
+association with the keys \texttt{"n"}, \texttt{"ell"},
+\texttt{"periodic"} (periodic or Dirichlet boundary in each direction),
+\texttt{"wilson"}, \texttt{"mass"}, \texttt{"mu"}. On every site a mode
+has 16 components, \(\psi^{\rm p}_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\). The link matrix (\texttt{t2link}) has the
+closed form
+
+\[\mathsf U^{\rm link}_{{\rm LL},j}=e^{-i\ell^{\rm x}_{\rm LL}g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}}\Big(\cos\big(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\big)\sigma^{\rm LL}_0-i\sin\big(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\big)\frac{\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota}{\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert}\Big),\]
+
+because
+\(\big(\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota\big)^2=\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert^2\sigma^{\rm LL}_0\).
+The potential of the time direction at a site (\texttt{t2potential}) is
+the \(2\times2\) matrix
+\(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},0}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\sigma^{\rm LL}_0\),
+which acts on the eight components as \(\mathsf A_{{\rm LL},0}\). The
+particle row of \(\mathcal H^{\rm lat}_{\rm LL}\) is
+
+\[\sum_j\Big[-\frac{i\alpha^j_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})-\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})\big)\]
+\[-\frac{r^{\rm W}_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\beta_{\rm LL}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})+\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})-2\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})\big)\Big]\]
+\[+m_{\rm LL}\beta_{\rm LL}\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})-\big(\mathsf A_{{\rm LL},0}(\vec s_{\rm LL})+\mu_{\rm LL}\big)\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})+\mathsf P_{\rm LL}(\vec s_{\rm LL})\psi^{\rm h}_{\rm LL}(\vec s_{\rm LL}),\]
+
+where \(\alpha^j_{\rm LL}\) and \(\beta_{\rm LL}\) act on the Dirac
+index and the link matrices on the isospin index; a direction without a
+neighbour (a Dirichlet boundary, or a direction with one site)
+contributes zero (\texttt{t2neighbour} returns \texttt{None} there). The
+hole row is
+\(\mathsf P_{\rm LL}(\vec s_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})\)
+minus the complex conjugate of the same expression without the pair
+term, applied to \((\psi^{\rm h}_{\rm LL})^*\) (\texttt{t2hMinusV},
+\texttt{t2apply}). \texttt{t2apply} applies
+\(\mathcal H^{\rm lat}_{\rm LL}\) to a vector or, column by column, to a
+matrix; \texttt{t2dense} applies it to the unit matrix and returns the
+whole matrix. Further functions: \texttt{t2normBound}, the bound
+
+\[B^{\rm H}_{\rm LL}=n^{\rm act}_{\rm LL}\frac{1+2r^{\rm W}_{\rm LL}}{\ell^{\rm x}_{\rm LL}}+\lvert m_{\rm LL}\rvert+\lvert\mu_{\rm LL}\rvert+\max_{\vec s_{\rm LL}}\lVert g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},0}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\sigma^{\rm LL}_0\rVert_{\rm F}+\max_{\vec s_{\rm LL}}\sum_\iota\lvert d^\iota_{\rm LL}(\vec s_{\rm LL})\rvert\]
+
+(\(\lVert\cdot\rVert_{\rm F}\): the Frobenius norm); \texttt{t2epsLat},
+the energy \(\varepsilon^{\rm lat}_{\rm LL}\) of section 12.2 (GS-16);
+\texttt{t2hLatPlane}, \(\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})\);
+\texttt{t2anomalous}, the lattice pair densities
+\(\Pi^\iota_{\rm LL}(\vec s_{\rm LL})=\sum_n\psi^{\rm p}_{{\rm LL},n}(\vec s_{\rm LL})^T\mathsf K^\iota_{\rm LL}\psi^{\rm h}_{{\rm LL},n}(\vec s_{\rm LL})^*\)
+of a set of modes; \texttt{t2rk4Step}, one step of the Runge-Kutta
+method of fourth order for
+\(i\partial_0\)\texttt{w}\(=\mathcal H^{\rm lat}_{\rm LL}\)\texttt{w}
+with the time step \(\ell^{\rm t}_{\rm LL}\) (\texttt{k1\ =\ -i\ H\ w},
+\texttt{k2\ =\ -i\ H\ (w\ +\ dt\ k1/2)},
+\texttt{k3\ =\ -i\ H\ (w\ +\ dt\ k2/2)},
+\texttt{k4\ =\ -i\ H\ (w\ +\ dt\ k3)}, new
+\texttt{w\ =\ w\ +\ dt\ (k1\ +\ 2\ k2\ +\ 2\ k3\ +\ k4)/6}, with
+\texttt{dt} \(=\ell^{\rm t}_{\rm LL}\)).
+
+\hypertarget{the-symbolic-algebra-sym.rs}{%
+\subsection{11.4 The symbolic algebra
+(sym.rs)}\label{the-symbolic-algebra-sym.rs}}
+
+\texttt{sym.rs} is a small symbolic algebra of the Rust library (linear
+combinations of monomials written in TeX, with exact coefficients
+\(a+bi\), \(a\) and \(b\) rational), used to print matrices and
+component equations in TeX and to evaluate every printed formula
+numerically. The Wolfram Language is itself a symbolic algebra with
+exact Gaussian rationals; the module is therefore not rewritten, and
+check GS-12 builds and evaluates the same formulas with symbols of the
+Wolfram Language.
+
+\hypertarget{part-ii-item-1-the-field-equations-on-the-31-manifold-program-t2_fields}{%
+\section{12. Part II, item {[}1{]}: the field equations on the 3+1
+manifold (program
+t2\_fields)}\label{part-ii-item-1-the-field-equations-on-the-31-manifold-program-t2_fields}}
+
+\hypertarget{the-physics-of-item-1}{%
+\subsection{12.1 The physics of item
+{[}1{]}}\label{the-physics-of-item-1}}
+
+The covariant derivative of the spinor field is
+\(\nabla^{\rm LL}_p=\partial_p+\Gamma^{\rm LL}_p-i\mathsf A_{{\rm LL},p}\),
+with the spin connection
+\(\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0\)
+and the gauge matrix \(\mathsf A_{{\rm LL},p}\) (section 2.5). The
+mean-field equations of a mode
+\((\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})\) are
+\(i\partial_0(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})=\mathcal H^{\rm DB}_{\rm LL}(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})\)
+with the Dirac-Bogoliubov-de Gennes operator
+
+\[\mathcal H^{\rm DB}_{\rm LL}=\begin{pmatrix}h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P_{\rm LL}^\dagger&-\big(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}\big)^*\end{pmatrix},\]
+
+with the covariant Dirac Hamiltonian
+
+\[h^\nabla_{\rm LL}=-i\sum_j\alpha^j_{\rm LL}\nabla^{\rm LL}_j+\beta_{\rm LL}m_{\rm LL},\]
+
+and the order parameter is fixed by the self-consistency
+\(d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle\).
+On a plane wave \(\exp(i\sum_jq^j_{\rm LL}x^j_{\rm LL})\) with constant
+fields and without the spin connection, \(\mathcal H^{\rm DB}_{\rm LL}\)
+becomes the \(16\times16\) matrix
+\(\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})\) (code: \texttt{hq})
+with the upper left block
+
+\[\sum_j\alpha^j_{\rm LL}\big(q^j_{\rm LL}\mathsf 1_8-\mathsf A_{{\rm LL},j}\big)+\beta_{\rm LL}m_{\rm LL}-\mathsf A_{{\rm LL},0}-\mu_{\rm LL},\]
+
+the off-diagonal blocks \(\mathsf P_{\rm LL}\) and
+\(\mathsf P_{\rm LL}^\dagger\), and the lower right block
+
+\[-\Big(-\sum_j\alpha^j_{\rm LL}\big(q^j_{\rm LL}\mathsf 1_8+\mathsf A_{{\rm LL},j}\big)+\beta_{\rm LL}m_{\rm LL}-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}\Big)^*\]
+
+(the hole component carries the momentum \(-\vec q_{\rm LL}\) and is
+complex conjugated); without gauge fields it is the matrix
+\(\mathsf H_{\rm LL}(\vec q_{\rm LL})\) of the registry.
+
+\hypertarget{the-checks-gs-1-to-gs-16}{%
+\subsection{12.2 The checks GS-1 to
+GS-16}\label{the-checks-gs-1-to-gs-16}}
+
+The constants of the program: \(g^{\rm v}_{\rm LL}=0.7\),
+\(g^{\rm F}_{\rm LL}=0.45\), \(m_{\rm LL}=0.4\), \(\mu_{\rm LL}=0.3\)
+(from GS-8 on). ``Random'' means drawn from the generator of section
+10.3 in the order of the program, uniform in \([-1,1)\) unless another
+range is given. The tolerances are those of the original program; the
+tolerance of an exact identity is \(10^{-12}\).
+
+\textbf{GS-1 (the Dirac matrices of the frame).} For the canonical
+frame: \(M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p\),
+\(M_{\rm LL}(\bar{\mathbf f}_0)=\sigma^{\rm LL}_0\),
+\(M_{\rm LL}(\bar{\mathbf f}_j)=-\sigma^{\rm LL}_j\),
+\(\mathsf E_{\rm LL}=M_{\rm LL}(-\mathbf e_2)\); the Clifford relations
+\(\gamma^p_{\rm LL}\gamma^{p'}_{\rm LL}+\gamma^{p'}_{\rm LL}\gamma^p_{\rm LL}=2\eta^{\rm LL}_{pp'}\mathsf 1_4\);
+\(\gamma^{\rm ch}_{\rm LL}=\mathrm{diag}(-1,-1,1,1)\);
+\(C_{\rm LL}=\mathrm{diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL})\);
+\(\alpha^j_{\rm LL}=\mathrm{diag}(-\sigma^{\rm LL}_j,\sigma^{\rm LL}_j)\)
+(\(2\times2\) blocks). Result: the largest deviation of the Clifford
+relations is 0 (exact integers; original 0).
+
+\textbf{GS-2 (the Lorentz generators on the Dirac spinor).}
+\(\mathsf s_{\rm LL}(J^j_{\rm LL})=\mathrm{diag}(-\tfrac i2\sigma^{\rm LL}_j,-\tfrac i2\sigma^{\rm LL}_j)=\tfrac12\gamma^{j'}_{\rm LL}\gamma^{j''}_{\rm LL}\)
+for cyclic \((j,j',j'')\),
+\(\mathsf s_{\rm LL}(K^j_{\rm LL})=\mathrm{diag}(-\tfrac12\sigma^{\rm LL}_j,\tfrac12\sigma^{\rm LL}_j)=\tfrac12\gamma^0_{\rm LL}\gamma^j_{\rm LL}\);
+the 27 relations of \(\mathfrak{so}(3,1)\),
+\[[\mathsf s(J^j),\mathsf s(J^{j'})]=\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\mathsf s(J^{j''}),\]
+\[[\mathsf s(J^j),\mathsf s(K^{j'})]=\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\mathsf s(K^{j''}),\]
+\[[\mathsf s(K^j),\mathsf s(K^{j'})]=-\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\mathsf s(J^{j''})\]
+(\(\mathsf s\) for \(\mathsf s_{\rm LL}\), the subscripts LL of the
+generators omitted; 9 pairs \((j,j')\), three relations each); and the
+24 intertwining relations
+\([\gamma^p_{\rm LL},\mathsf s_{\rm LL}(\mathbf u)]=\sum_{p'}\mathcal V_{\rm LL}(\mathbf u)^p{}_{p'}\gamma^{p'}_{\rm LL}\)
+for the six generators and the four values of \(p\). Result: all 27 and
+all 24 hold within \(10^{-12}\) (original: 27 and 24).
+
+\textbf{GS-3 (the gauge group as a change of representation).} For 200
+random \(\mathbf g\):
+\(\mathsf S_{\rm LL}(\mathbf g)\mathsf S_{\rm LL}(\mathbf g)^{-1}=\mathsf 1_4\)
+with
+\(\mathsf S_{\rm LL}(\mathbf g)^{-1}=\mathrm{diag}(M_{\rm LL}(\mathbf g)^\dagger,M_{\rm LL}(\mathbf g)^{-1})\);
+\(\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}\);
+and, for four random Hermitian bi-quaternions
+\(\mathbf f_0,\dots,\mathbf f_3\), each with four random real
+coordinates (the relation holds for any four Hermitian bi-quaternions,
+not only for orthonormal frames),
+\(\mathsf S_{\rm LL}(\mathbf g)\gamma^p_{\rm LL}[\mathbf f]\mathsf S_{\rm LL}(\mathbf g)^{-1}=\gamma^p_{\rm LL}[\tilde{\mathbf g}\mathbf f\tilde{\mathbf g}^\dagger]\),
+where the transformed bi-quaternions are computed from the coordinates
+of
+\(M_{\rm LL}(\tilde{\mathbf g})M_{\rm LL}(\mathbf f_p)M_{\rm LL}(\tilde{\mathbf g})^\dagger\).
+Tolerance \(10^{-10}\). Result: \(5.13\times10^{-14}\) and
+\(7.21\times10^{-14}\) (original \(5.8\times10^{-14}\) and
+\(6.6\times10^{-14}\)).
+
+\textbf{GS-4 (isospin and the pair matrices).}
+\([T^\iota_{\rm LL},T^{\iota'}_{\rm LL}]=i\sum_{\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}T^{\iota''}_{\rm LL}\);
+\(T^\iota_{\rm LL}\) commutes with
+\(\mathsf s_{\rm LL}(J^j_{\rm LL})\otimes\sigma^{\rm LL}_0\) and
+\(\mathsf s_{\rm LL}(K^j_{\rm LL})\otimes\sigma^{\rm LL}_0\);
+\((\mathsf K^\iota_{\rm LL})^T=-\mathsf K^\iota_{\rm LL}\); for 100
+random \(\mathbf g\) and \(\mathsf U_{\rm LL}\) (angles
+\(\theta^\iota_{\rm LL}\) uniform in \([-3,3)\)):
+\((\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0)^T\mathsf K^\iota_{\rm LL}(\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0)=\mathsf K^\iota_{\rm LL}\)
+(Lorentz invariance; the transpose appears because the pair operator is
+\(\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}\)) and
+\((\mathsf 1_4\otimes\mathsf U_{\rm LL})^T\mathsf K^\iota_{\rm LL}(\mathsf 1_4\otimes\mathsf U_{\rm LL})=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota\iota'}\mathsf K^{\iota'}_{\rm LL}\)
+(an isospin vector); and
+\(\Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}=0\) for a random
+commuting (c-number) \(\Psi_{\rm LL}\), because the matrix is
+antisymmetric. Tolerances \(10^{-10}\) and \(10^{-12}\). Result:
+\(5.59\times10^{-15}\) and \(2.99\times10^{-16}\) (original
+\(5.2\times10^{-15}\) and \(3.0\times10^{-16}\)).
+
+\textbf{GS-5 (gauge covariance of the covariant derivative).} Random
+fields linear in \(x_{\rm LL}\): \(A^\iota_{{\rm LL},p}\) and
+\(A^{\rm F}_{{\rm LL},p}\) (constant parts in \([-1,1)\), slopes in
+\([-0.5,0.5)\)), \(\omega^j_{{\rm LL},p}\) and \(\varpi^j_{{\rm LL},p}\)
+(constant parts in \([-0.5,0.5)\), slopes in \([-0.3,0.3)\)); a spinor
+field made of three plane waves (\texttt{waves}: four random numbers and
+a random 8-component amplitude each); a gauge transformation
+\(\mathcal U_{\rm LL}\) whose \(\theta^{\rm F}_{\rm LL}\) and
+\(\theta^\iota_{\rm LL}\) are linear in \(x_{\rm LL}\) (coefficients in
+\([-1,1)\)) and whose \(\mathbf g\) has
+\(M_{\rm LL}(\mathbf g)=\exp M_{\rm LL}(\mathbf u)\) with a Lorentz
+generator \(\mathbf u\) linear in \(x_{\rm LL}\) (coefficients in
+\([-0.5,0.5)\)). The transformed fields are
+\(A^{\rm F}_{{\rm LL},p}+\partial_p\theta^{\rm F}_{\rm LL}/g^{\rm F}_{\rm LL}\),
+\(\mathsf U_{\rm LL}\mathsf a_{{\rm LL},p}\mathsf U_{\rm LL}^{-1}-(i/g^{\rm v}_{\rm LL})(\partial_p\mathsf U_{\rm LL})\mathsf U_{\rm LL}^{-1}\)
+and
+\(\mathsf S_{\rm LL}(\mathbf g)\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\mathsf S_{\rm LL}(\mathbf g)^{-1}-(\partial_p\mathsf S_{\rm LL}(\mathbf g))\mathsf S_{\rm LL}(\mathbf g)^{-1}\).
+At 20 random points and for every \(p\), the covariant derivative made
+of the transformed fields applied to
+\(\mathcal U_{\rm LL}\Psi_{\rm LL}\) is compared with
+\(\mathcal U_{\rm LL}\nabla^{\rm LL}_p\Psi_{\rm LL}\); the derivatives
+of the gauge functions and of \(\mathcal U_{\rm LL}\Psi_{\rm LL}\) are
+central differences with the step \(10^{-5}\), so the comparison is
+limited by the error of the differences. The relative deviation
+\(\lvert{\rm lhs}-{\rm rhs}\rvert/(1+\lvert{\rm rhs}\rvert)\) must stay
+below \(10^{-7}\), and the transformed isospin potential must be
+Hermitian within \(10^{-9}\). Result: \(1.45\times10^{-10}\) (original
+\(1.4\times10^{-10}\)).
+
+\textbf{GS-6 (the curvature).} At 20 random points and for all 12
+ordered pairs \(p\neq p'\):
+\([\nabla^{\rm LL}_p,\nabla^{\rm LL}_{p'}]\Psi_{\rm LL}=\big(\mathsf R^{\rm LL}_{pp'}-ig^{\rm v}_{\rm LL}\sum_\iota\mathsf F^\iota_{{\rm LL},pp'}T^\iota_{\rm LL}-ig^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},pp'}\big)\Psi_{\rm LL}\),
+with the fields of GS-5; the outer derivative of the left side is a
+central difference with the step \(10^{-4}\), the derivatives of the
+linear fields on the right side are exact. Relative tolerance
+\(10^{-6}\). Result: \(2.14\times10^{-9}\) (original
+\(2.1\times10^{-9}\)).
+
+\textbf{GS-7 (the super-loop form of the Dirac operator).} For 50 random
+plane waves with four random numbers \texttt{kv} and random constant
+fields, \(\nabla^{\rm LL}_p\) acts as the matrix
+\(i\)\texttt{kv}\(_p\mathsf 1_8-i\mathsf A_{{\rm LL},p}\). Checked:
+\(\sum_p(\gamma^p_{\rm LL}\otimes\sigma^{\rm LL}_0)\nabla^{\rm LL}_p\)
+has no diagonal blocks and its off-diagonal blocks are
+\(M_{\rm LL}(\mathbf D_{\rm LL})\) and
+\(M_{\rm LL}(\bar{\mathbf D}_{\rm LL})\);
+\(\big(\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p\big)^2=\sum_p\eta^{\rm LL}_{pp}\nabla^{\rm LL}_p\nabla^{\rm LL}_p+\tfrac14\sum_{p,p'}[\gamma^p_{\rm LL},\gamma^{p'}_{\rm LL}][\nabla^{\rm LL}_p,\nabla^{\rm LL}_{p'}]\);
+and for a free plane wave
+\(M_{\rm LL}(\mathbf D_{\rm LL})M_{\rm LL}(\bar{\mathbf D}_{\rm LL})=-N_{\rm LL}\,\sigma^{\rm LL}_0\),
+where \(N_{\rm LL}\) is the norm of the Hermitian bi-quaternion with the
+coordinates \texttt{kv}, the first of the four numbers squared minus the
+squares of the other three (the product of the two \(2\times2\) matrices
+is this difference of squares times \(\sigma^{\rm LL}_0\), because the
+Pauli matrices anticommute with each other and square to
+\(\sigma^{\rm LL}_0\)). Result: \(1.52\times10^{-15}\) (original
+\(1.6\times10^{-15}\)).
+
+\textbf{GS-8 (the Dirac-Bogoliubov-de Gennes matrix).} For 50 random
+momenta \(\vec q_{\rm LL}\in[-2,2)^3\), random constant fields and
+random complex \(\vec d_{\rm LL}\):
+\(\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})\) is Hermitian, and it
+is particle-hole symmetric,
+\(\mathsf X^{\rm ph}_{\rm LL}\mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})^*\mathsf X^{\rm ph}_{\rm LL}=-\mathcal H^{\rm DB}_{\rm LL}(-\vec q_{\rm LL})\).
+For the polar order parameter \(\vec d_{\rm LL}=(0,0,\Delta_{\rm LL})\)
+with \(\Delta_{\rm LL}=0.25+0.2\times{}\)(a random number in
+\([-1,1)\)), so \(\Delta_{\rm LL}\in[0.05,0.45)\), and without gauge
+fields, the 16 eigenvalues (from \texttt{t2eigh}) are
+\(\pm E^+_{\rm LL}\) and \(\pm E^-_{\rm LL}\), each four times (30
+random momenta). Tolerance \(10^{-10}\). Result: 0 and
+\(7.99\times10^{-15}\) (original 0 and \(6.7\times10^{-15}\)).
+
+\textbf{GS-9 (the self-consistency).} For the polar state of GS-8 and 30
+random momenta, the sum over the eight eigenvectors with positive
+energy,
+\(\sum_{n:E^{\rm qp}_{{\rm LL},n}>0}(\psi^{\rm p}_{{\rm LL},n})^T\mathsf K^3_{\rm LL}(\psi^{\rm h}_{{\rm LL},n})^*=-2\Delta_{\rm LL}\big(1/E^+_{\rm LL}+1/E^-_{\rm LL}\big)\).
+With \(d^3_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^3_{\rm LL}\rangle\)
+and \(\langle\Pi^3_{\rm LL}\rangle\) the sum of this expression over the
+momenta,
+\(\Delta_{\rm LL}=G_{\rm LL}\Delta_{\rm LL}\sum_{\vec q_{\rm LL}}(1/E^+_{\rm LL}+1/E^-_{\rm LL})\),
+which per volume is the gap equation
+\(1/G_{\rm LL}=\int d^3q_{\rm LL}(2\pi)^{-3}(1/E^+_{\rm LL}+1/E^-_{\rm LL})\).
+Tolerance \(10^{-10}\). Result: \(1.34\times10^{-15}\) (original
+\(1.7\times10^{-15}\)).
+
+\textbf{GS-10 (the lattice operator).} A lattice of \(3\times2\times4\)
+sites, \(\ell^{\rm x}_{\rm LL}=0.7\), periodic in the directions 1 and
+3, Dirichlet in the direction 2, \(r^{\rm W}_{\rm LL}=1\), with random
+links, potentials and order parameters on every site; the dense matrix
+of \(\mathcal H^{\rm lat}_{\rm LL}\) has \(16\cdot24=384\) rows.
+Checked: Hermiticity; particle-hole symmetry,
+\(\mathsf X(\mathcal H^{\rm lat}_{\rm LL})^*\mathsf X=-\mathcal H^{\rm lat}_{\rm LL}\)
+with \(\mathsf X\) the exchange \(\mathsf X^{\rm ph}_{\rm LL}\) at every
+site; exact gauge covariance under random site transformations
+\(\mathsf G^{\rm site}_{\rm LL}\) with
+\(\exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}\) at each site
+(angles in \([-3,3)\)): links
+\(\mathsf G\,\mathsf U^{\rm link}\,\mathsf G(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})^\dagger\)
+(the unit matrix in place of the second factor at a Dirichlet boundary),
+potentials \(\mathsf G\,(\cdot)\,\mathsf G^\dagger\), order parameters
+\(\exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec d_{\rm LL}\),
+and the operator transformed by the block-diagonal matrix of
+\(\mathsf 1_4\otimes\mathsf G\) (particles) and its complex conjugate
+(holes); on a free periodic chain of 12 sites along \(x^3_{\rm LL}\)
+(\(\ell^{\rm x}_{\rm LL}=0.5\), \(\mu_{\rm LL}=0\)) the spectrum is
+\(\pm\varepsilon^{\rm lat}_{\rm LL}\), each eight times, at the momenta
+\(q^3_{\rm LL}=2\pi\kappa/(12\cdot0.5)\), \(\kappa=0,\dots,11\); the
+Wilson term lifts the doubler,
+\(\varepsilon^{\rm lat}_{\rm LL}=m_{\rm LL}+2r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL}\)
+at \(q^3_{\rm LL}\ell^{\rm x}_{\rm LL}=\pi\); and the spectral radius
+stays below \(B^{\rm H}_{\rm LL}\). Tolerance \(10^{-10}\). Result: 0,
+0, \(1.75\times10^{-13}\), \(2.84\times10^{-14}\); spectral radius
+\(8.4349\le B^{\rm H}_{\rm LL}=17.5474\) (original 0, 0,
+\(1.8\times10^{-13}\), \(1.4\times10^{-14}\); \(8.4349\le17.5474\)).
+
+\textbf{GS-11 (the eigensolver).} For random Hermitian matrices of the
+dimensions 7, 64 and 200 (real diagonal and complex off-diagonal
+entries, drawn row by row), the larger of the relative residual of the
+reconstruction and the deviation of the eigenvectors from orthonormality
+stays below \(10^{-11}\). Result: \(6.49\times10^{-14}\) (original
+\(6.0\times10^{-14}\)).
+
+\textbf{GS-12 (the printed formulas).} The formulas that the original
+program prints are built from symbols of the Wolfram Language (ordinary
+symbols such as \texttt{dS{[}i{]}} for \(d^\iota_{\rm LL}\), with
+formatting rules so that they print as the registered symbols), shown,
+and evaluated for numbers assigned to the symbols; each value is
+compared with the matrix computation: (a) \(\mathsf P_{\rm LL}\) with
+symbolic \(d^\iota_{\rm LL}\) (block-diagonal with two equal
+\(4\times4\) blocks; values
+\(\vec d_{\rm LL}=(0.31-0.2i,-0.17+0.4i,0.52+0.11i)\)); (b)
+\(\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\) with symbolic
+\(\omega^j_{{\rm LL},p}\), \(\varpi^j_{{\rm LL},p}\), and its blocks
+\(-M_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})^\dagger\) and
+\(M_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\); (c) the \(8\times8\)
+matrix \(\Gamma^{\rm LL}_p\) and the gauge matrix
+\(\mathsf A_{{\rm LL},p}\); (d) the component expansions of
+\(\nabla^{\rm LL}_j\psi^{\rm p}_{\rm LL}\),
+\(\nabla^{{\rm LL}*}_j\psi^{\rm h}_{\rm LL}\) and
+\(\nabla^{\rm LL}_j\Psi_{\rm LL}\) for a plane wave; (e) the sixteen
+component equations \(i\partial_0\psi^{\rm p}_{{\rm LL},k}=\dots\),
+\(i\partial_0\psi^{\rm h}_{{\rm LL},k}=\dots\) of
+\(\mathcal H^{\rm DB}_{\rm LL}\), compared with the \(16\times16\)
+matrix applied to a random vector; (f)
+\(\Pi^\iota_{\rm LL}=\sum_{k<k'}\big((\mathsf K^\iota_{\rm LL})_{kk'}-(\mathsf K^\iota_{\rm LL})_{k'k}\big)\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}\)
+(only \(k<k'\), because the components anticommute); (g) the eight
+component equations of the operator equation
+\(i\partial_0\Psi_{\rm LL}=\big(m_{\rm LL}\beta_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}\big)\Psi_{\rm LL}-i\sum_j\alpha^j_{\rm LL}\nabla^{\rm LL}_j\Psi_{\rm LL}-\tfrac12G_{\rm LL}\sum_\iota(\mathsf K^\iota_{\rm LL})^\dagger\Psi^*_{\rm LL}\Pi^\iota_{\rm LL}\),
+with independent random values for \(\Psi_{\rm LL}\),
+\(\Psi^*_{\rm LL}\), \(\Pi^\iota_{\rm LL}\),
+\(\nabla^{\rm LL}_j\Psi_{\rm LL}\) and \(G_{\rm LL}=1.3\). The notebook
+also shows the Weyl blocks \(M_{\rm LL}(\mathbf D_{\rm LL})\) and
+\(M_{\rm LL}(\bar{\mathbf D}_{\rm LL})\) as \(2\times2\) matrices of
+operators. Tolerance \(10^{-12}\). Result: 0, \(3.6\times10^{-16}\),
+\(1.6\times10^{-16}\), \(1.1\times10^{-16}\), \(2.3\times10^{-16}\) for
+(a)-(c), (e), (d), (f), (g) (original 0, \(4.0\times10^{-16}\),
+\(3.4\times10^{-16}\), 0, \(5.0\times10^{-16}\)).
+
+\textbf{GS-13 (the time step).} One RK4 step multiplies the component of
+an eigenvector with the energy \(E^{\rm qp}_{{\rm LL},n}\) by
+\(1-iz-z^2/2+iz^3/6+z^4/24\),
+\(z=E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\) (the Taylor
+polynomial of degree 4 of \(e^{-iz}\)). Its squared modulus is
+\((1-z^2/2+z^4/24)^2+(z-z^3/6)^2=1-z^6/72+z^8/576\), so the modulus is
+at most 1 exactly for \(z^2\le8\), that is \(\lvert z\rvert\le2\sqrt2\),
+and \(1-\lvert\cdot\rvert=z^6/144+O(z^8)\) for small \(z\). The solvers
+use \(\ell^{\rm t}_{\rm LL}\le2.5/B^{\rm H}_{\rm LL}\). The printed
+check line keeps the wording of the original report, in which this
+abbreviation is called x. Result: modulus 0.508186 at
+\(\lvert z\rvert=2.5\) and 1.193063 at 2.9; \(1-{}\)modulus at \(z=0.1\)
+is \(6.93576\times10^{-9}\), within \(10^{-11}\) of \(0.1^6/144\)
+(original 0.508186; 1.193063; \(6.9\times10^{-9}\)).
+
+\textbf{GS-14 (the super-loop form of the field equations).} With random
+bi-quaternions: (a)
+\(M_{\rm LL}(\mathbf x)\psi'_{\rm LL}(\mathbf y)=\psi'_{\rm LL}(\mathbf y\bar{\mathbf x})\),
+and the Cayley-Dickson product gives
+\((\mathbf y\mathbf e_4)\mathbf x=(\mathbf y\bar{\mathbf x})\mathbf e_4\)
+(50 trials); (b)
+\(\gamma^p_{\rm LL}[\mathbf f]\Psi_{\rm LL}[\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}]=\Psi_{\rm LL}[\mathbf b^+_{\rm LL}\bar{\mathbf f}_p,\mathbf b^-_{\rm LL}\mathbf f_p]\)
+for the canonical frame and 19 sets of random Hermitian bi-quaternions;
+(c) \(\mathcal U_{\rm LL}\) with
+\(\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)\) replaces
+\(\mathbf b^+_{\rm LL}\) by
+\(e^{i\theta^{\rm F}_{\rm LL}}\mathbf v\mathbf b^+_{\rm LL}\bar{\mathbf g}\)
+and \(\mathbf b^-_{\rm LL}\) by
+\(e^{i\theta^{\rm F}_{\rm LL}}\mathbf v\mathbf b^-_{\rm LL}\mathbf g^\dagger\);
+\(\mathbf v\) is a real quaternion and \(\tilde{\mathbf g}=\mathbf g^*\)
+(50 trials); (d) \(\nabla^{\rm LL}_p\) acts on \(\mathbf b^+_{\rm LL}\)
+as
+\(\partial_p\mathbf b^+_{\rm LL}-\mathbf b^+_{\rm LL}\mathbf u^\omega_{{\rm LL},p}+g^{\rm v}_{\rm LL}\mathbf t^{\rm A}_{{\rm LL},p}\mathbf b^+_{\rm LL}-ig^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathbf b^+_{\rm LL}\)
+and on \(\mathbf b^-_{\rm LL}\) in the same way with
+\(\mathbf u^{\omega*}_{{\rm LL},p}\) (30 trials, four directions each);
+(e)
+\(\sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p\Psi_{\rm LL}=\Psi_{\rm LL}\big[\sum_p(\nabla^{\rm LL}_p\mathbf b^+_{\rm LL})\bar{\mathbf f}_p,\sum_p(\nabla^{\rm LL}_p\mathbf b^-_{\rm LL})\mathbf f_p\big]\),
+the right multiplications \(R^{\rm LL}_{\bar{\mathbf f}_p}\),
+\(R^{\rm LL}_{\mathbf f_p}\) applied to the covariant derivatives of the
+charges. Tolerances \(10^{-12}\) (\(10^{-10}\) for (c)). Result:
+\(6.0\times10^{-16}\), \(5.9\times10^{-16}\), \(3.5\times10^{-15}\),
+\(9.7\times10^{-16}\), \(2.0\times10^{-15}\) (original
+\(3.2\times10^{-16}\), \(4.1\times10^{-16}\), \(3.1\times10^{-15}\),
+\(8.8\times10^{-16}\), \(2.1\times10^{-15}\)).
+
+\textbf{GS-15 (the Lorentz connection is fixed by the frame).} Five
+random Lorentz generators \(\mathbf u_1,\dots,\mathbf u_5\) define
+\(M_{\rm LL}(\mathbf g(x_{\rm LL}))=\exp\big(M_{\rm LL}(\mathbf u_5)+\sum_{p=0}^3x^p_{\rm LL}M_{\rm LL}(\mathbf u_{p+1})\big)\)
+and the connection
+\(\Gamma_p=-(\partial_p\mathsf S_{\rm LL}(\mathbf g))\mathsf S_{\rm LL}(\mathbf g)^{-1}\)
+(a \(4\times4\) matrix; central differences with the step \(10^{-4}\)).
+At 20 random points: \(\Gamma_p\) has the form
+\(\mathsf s_{\rm LL}(\mathbf u)\) (no off-diagonal blocks, upper block
+\(=-\)(lower block)\(^\dagger\), traceless lower block); the Dirac
+matrices of the transformed frame,
+\(\mathsf S_{\rm LL}(\mathbf g)\gamma^{p'}_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)^{-1}\),
+are covariantly constant, \(\partial_p(\cdot)+[\Gamma_p,\cdot]=0\); the
+curvature
+\(\partial_p\Gamma_{p'}-\partial_{p'}\Gamma_p+[\Gamma_p,\Gamma_{p'}]\)
+vanishes. Uniqueness: the real-linear map
+\(\mathbf u\mapsto\big([\mathsf s_{\rm LL}(\mathbf u),\gamma^{p'}_{\rm LL}]\big)_{p'=0,\dots,3}\)
+has the rank 6 on the six generators \(J^j_{\rm LL}\), \(K^j_{\rm LL}\):
+the smallest eigenvalue of the \(6\times6\) Gram matrix of the real and
+imaginary parts of all entries of the commutators exceeds \(10^{-6}\).
+Tolerance \(10^{-6}\) (limited by the finite differences). Result:
+\(1.03\times10^{-9}\), \(3.55\times10^{-8}\), \(7.98\times10^{-9}\);
+smallest Gram eigenvalue 8.000 (original \(1.0\times10^{-9}\),
+\(3.6\times10^{-8}\), \(8.0\times10^{-9}\); 8.000). (The first
+evaluation failed this check because of error E15.)
+
+\textbf{GS-16 (the lattice operator on plane waves).} On a periodic
+chain of 24 sites along \(x^1_{\rm LL}\) (\(\ell^{\rm x}_{\rm LL}=0.5\),
+\(m_{\rm LL}=0.4\), \(\mu_{\rm LL}=0\), no gauge fields, no pairing),
+\(\mathcal H^{\rm lat}_{\rm LL}\), applied by \texttt{t2apply} to
+\(\exp(iq^1_{\rm LL}x^1_{\rm LL})\) times each of the 16 unit vectors of
+a site, gives a plane wave of the same momentum, and the \(16\times16\)
+matrix of the images has the eigenvalues
+\(\pm\varepsilon^{\rm lat}_{\rm LL}\), each eight times, at all 24
+momenta \(q^1_{\rm LL}=2\pi\kappa/(24\ell^{\rm x}_{\rm LL})\),
+\(\kappa=-11,\dots,12\), for \(r^{\rm W}_{\rm LL}=0\) and \(1\), where
+
+\[\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})=\Big(\sum_j\frac{\sin^2(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})}{(\ell^{\rm x}_{\rm LL})^2}+\Big(m_{\rm LL}+\frac{r^{\rm W}_{\rm LL}}{\ell^{\rm x}_{\rm LL}}\sum_j\big(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})\big)\Big)^2\Big)^{1/2}\]
+
+(sums over the directions with more than one site). Tolerance
+\(10^{-12}\). Result: \(2.73\times10^{-14}\) (original
+\(1.4\times10^{-14}\)).
+
+\textbf{T2-DATA-1 (the data of the figures).} The original program wrote
+the numbers of its two figures into three files of
+\texttt{Revision\_SuperLoop/test2/data}:
+\texttt{t2\_dispersion\_lattice.csv} (48 rows: \(r^{\rm W}_{\rm LL}\),
+\(q^1_{\rm LL}\), the largest eigenvalue of GS-16),
+\texttt{t2\_dispersion\_curves.csv} (802 rows: \(r^{\rm W}_{\rm LL}\),
+\(q^1_{\rm LL}\), \(\varepsilon_{\rm LL}\),
+\(\varepsilon^{\rm lat}_{\rm LL}\) on 401 momenta) and
+\texttt{t2\_rk4\_stability.csv} (641 rows:
+\(\lvert z\rvert=0,0.005,\dots,3.2\) and the modulus of the RK4 factor),
+printed with 10 decimals (12 for the RK4 factor). Every number of the
+three files is copied into the notebook (file
+\texttt{notebook\_source/t2\_fields\_figure\_data.wl}, written by
+\texttt{tools/make\_fig\_data\_cell.py} from the files, included in one
+input cell), and the check compares them, entry by entry, with the
+numbers computed in the notebook. Tolerances: half a unit of the last
+printed decimal, \(5.1\times10^{-11}\) and \(5.1\times10^{-13}\).
+Result: \(4.55\times10^{-11}\), \(5.00\times10^{-11}\),
+\(4.99\times10^{-13}\), as expected from the rounding of the files; so
+the rewritten programs compute the numbers of the original program.
+
+\hypertarget{the-figures-of-item-1}{%
+\subsection{12.3 The figures of item
+{[}1{]}}\label{the-figures-of-item-1}}
+
+\textbf{Figure 1} (data: \texttt{points} and \texttt{curves} of GS-16).
+Panel (a): the energy of a free particle on the lattice as a function of
+\(q^1_{\rm LL}\ell^{\rm x}_{\rm LL}\in[-\pi,\pi]\) for
+\(m_{\rm LL}=0.4\), \(\ell^{\rm x}_{\rm LL}=0.5\): the continuum energy
+\(\varepsilon_{\rm LL}\) (grey, dashed),
+\(\varepsilon^{\rm lat}_{\rm LL}\) for \(r^{\rm W}_{\rm LL}=0\) (orange)
+and for \(r^{\rm W}_{\rm LL}=1\) (blue), and, as open circles, the
+largest eigenvalues of the lattice operator at the 24 allowed momenta,
+which lie on the curves. Without the Wilson term the energy returns to
+\(m_{\rm LL}\) at \(q^1_{\rm LL}\ell^{\rm x}_{\rm LL}=\pm\pi\) (a
+second, spurious particle, the doubler); with \(r^{\rm W}_{\rm LL}=1\)
+the doubler is lifted to
+\(m_{\rm LL}+2r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL}=4.4\). Panel (b):
+the relative deviation
+\((\varepsilon^{\rm lat}_{\rm LL}-\varepsilon_{\rm LL})/\varepsilon_{\rm LL}\)
+for \(\lvert q^1_{\rm LL}\ell^{\rm x}_{\rm LL}\rvert\le\pi/2\): it is of
+second order in \(q^1_{\rm LL}\ell^{\rm x}_{\rm LL}\), negative without
+the Wilson term and positive (at most 0.07) with it.
+
+\textbf{Figure 2} (data: \texttt{rkData} of GS-13). Panel (a): the
+modulus of the RK4 factor against \(\lvert z\rvert\), with the line of
+modulus 1 (grey, dashed), the stability limit
+\(\lvert z\rvert=2\sqrt2=2.83\) (red, dotted) and the largest value used
+by the solvers, \(\lvert z\rvert=2.5\) (green, dash-dotted); the modulus
+has its minimum 0.5 near \(\lvert z\rvert=2.45\) and exceeds 1 beyond
+the stability limit. Panel (b): on logarithmic axes, \(1-{}\)modulus
+(blue) and \(z^6/144\) (orange, dashed) for \(0.02<\lvert z\rvert<1.5\);
+the two agree, which shows the small loss of norm per step.
+
+\textbf{How the figures are drawn.} The figures are made with
+\texttt{ListLinePlot}, \texttt{ListPlot}, \texttt{ListLogLogPlot} and
+\texttt{Show} from the computed lists, so every point of a figure is a
+number of the notebook (and, by T2-DATA-1, of the original data files).
+The colors are those of the project's figures: blue \texttt{\#2a78d6}
+and orange \texttt{\#eb6834} for the two series, grey \texttt{\#8a8984}
+for the continuum and the line of modulus 1, a muted grey
+\texttt{\#5f5e5a} for the text of labels. The two series colors were
+checked for readers with color-vision deficiencies: their color
+difference in the perceptual color space OKLab (times 100) is 33.6 for
+normal vision and at least 24.7 under simulated protanopia, deuteranopia
+and tritanopia (8 is the usual threshold of distinctness), and both have
+a contrast of at least 3:1 against the white page; in addition, every
+series is named in a legend or in a direct label, so that no information
+depends on color alone. Labels are placed in empty regions of the plots
+(checked on the exported page, error E16), the panel with a single curve
+has no legend, and all labels use the registered symbols, printed with
+upright letters as in the cells of the notebook (error E18).
+
 \hypertarget{how-the-notebook-was-built-and-evaluated}{%
-\section{10. How the notebook was built and
+\section{13. How the notebook was built and
 evaluated}\label{how-the-notebook-was-built-and-evaluated}}
 
 \textbf{The source.} The notebook is written as a text file in the
@@ -1131,6 +2292,19 @@ line \texttt{(*\ @@INCLUDE\ file@@\ *)} inserts a file: the package
 list \texttt{all\_symbols.wl} of all 422 symbols for test S-14 (written
 by \texttt{tools/gen\_all\_symbols.wls}).
 
+\textbf{The source of Part II} is kept in separate files, one or two per
+chapter (\texttt{notebook\_source/part2\_A\_core.source.wl},
+\texttt{part2\_B\_item1.source.wl},
+\texttt{part2\_C\_item1b.source.wl}); a line
+\texttt{(*\ @@INCLUDECELLS\ file@@\ *)} at the end of the main source
+inserts such a file with its own cell markers. A line
+\texttt{(*\ @@INCLUDE\ t2\_fields\_figure\_data.wl@@\ *)} inserts the
+numbers of the data files of item {[}1{]} (made by
+\texttt{tools/make\_fig\_data\_cell.py}), and the line
+\texttt{(*\ @@COMPONENTS@@\ *)} of the first cell of Part II is replaced
+by the builder with the list of all components of families typed in the
+notebook (section 10.4).
+
 \textbf{The builder} \texttt{tools/build\_notebook.wls} (run by
 wolframscript) turns the source into the notebook
 \texttt{notebook\_source/3+1super-loop.unevaluated.nb}: the code of
@@ -1138,8 +2312,9 @@ every input cell is parsed into boxes by the front end itself (so
 comments, line breaks and indentation are kept), every
 \texttt{LL{[}"tex"{]}} is replaced by the two-dimensional box of the
 symbol, and text cells receive inline formulas (TeX between dollar
-signs, converted by the Wolfram TeX importer), code font and bold. The
-notebook is written by the kernel, not through the front end (error E9).
+signs, converted by the Wolfram TeX importer, with the alphabets of the
+letters kept, error E17), code font and bold. The notebook is written by
+the kernel, not through the front end (error E9).
 
 \textbf{The evaluation} is done by the front end of Wolfram.app, exactly
 as Evaluation \textgreater{} Evaluate Notebook does it (file
@@ -1164,7 +2339,7 @@ looks every 3 seconds for request files in a scratch folder.
 \textbf{To reproduce} without any of these tools: open
 \texttt{notebook\_source/3+1super-loop.unevaluated.nb} (or the evaluated
 \texttt{3+1super-loop.nb}) in Wolfram and choose Evaluation
-\textgreater{} Evaluate Notebook; the result must be the same 15 PASS
+\textgreater{} Evaluate Notebook; the result must be the same 35 PASS
 lines and no message. To rebuild the unevaluated notebook from the
 source:
 
@@ -1180,12 +2355,32 @@ and \texttt{all\_symbols.wl} by \texttt{tools/gen\_all\_symbols.wls};
 the absolute paths inside these two scripts name the scratch folder of
 the author's Mac and must be adapted elsewhere).
 
+(the files of Part II and \texttt{t2\_fields\_figure\_data.wl} stand in
+the same folder as the source). The data cell is remade from the data
+files of the original program with
+
+\begin{verbatim}
+python3 tools/make_fig_data_cell.py Revision_SuperLoop/test2/data \
+    3+1super-loop_provenance/notebook_source/t2_fields_figure_data.wl
+\end{verbatim}
+
+\textbf{Copies to the author's computer.} The files are written in a
+workspace and copied into the scratch folder of the author's Mac before
+each evaluation. A copy can deliver an earlier version of a file whose
+name was used for a copy shortly before; this happened twice during this
+stage (a test script and the builder arrived in their previous
+versions). Every copied file is therefore compared with its MD5 digest
+on both sides before an evaluation; for the final evaluation of this
+stage the digests of all sources, of the package and of the builder
+agreed.
+
 \hypertarget{errors-found-their-causes-and-their-fixes}{%
-\section{11. Errors found, their causes and their
+\section{14. Errors found, their causes and their
 fixes}\label{errors-found-their-causes-and-their-fixes}}
 
 Every error below was met while the notebook was prepared and evaluated;
-each is fixed in the final notebook.
+each is fixed in the final notebook. E1 to E14 belong to Part I, E15 to
+E19 to Part II.
 
 \textbf{E1. The symbolized box was never recognized when the notebook
 was evaluated by a program.} Cause: the Notation package takes the
@@ -1233,7 +2428,7 @@ as ONE product of the statements (the output of a 52-statement cell was
 unevaluated \texttt{HoldComplete{[}...{]}} results. In the front end the
 statements of a cell are separated at its line breaks before they are
 sent to the kernel. Fix: the evaluation was moved into the front end of
-Wolfram.app (section 10), which also answered the author's request to
+Wolfram.app (section 13), which also answered the author's request to
 execute the notebook in his Wolfram.app;
 \texttt{tools/run\_notebook.wls} is kept, marked as superseded.
 
@@ -1350,8 +2545,143 @@ marks code with backquotes; code that itself contains the context mark
 \texttt{SL31\textasciigrave{}Test\textasciigrave{}\$Results}) broke the
 code span. Fix: such code is marked with double backquotes.
 
+\textbf{E15. GS-15 failed in the first evaluation of Part II (32 of 33
+checks passed).} The connection was written
+\texttt{conn15{[}x\_,\ p\_{]}\ :=\ -(Sp\ -\ Sm)\ (0.5/h15)\ .\ Sinv},
+where \texttt{Sp} and \texttt{Sm} stand here for the spinor matrices at
+the two shifted points and \texttt{Sinv} for the inverse spinor matrix
+at the point. In the grammar of the Wolfram Language the matrix product
+\texttt{.} (\texttt{Dot}) binds more strongly than the product written
+by placing two expressions side by side (\texttt{Times}): in the table
+of the operators in order of decreasing precedence (tutorial ``Operator
+Input Forms'') \texttt{.} stands above the implicit product. The
+expression was therefore read as
+\texttt{-(Sp\ -\ Sm)\ *\ ((0.5/h15)\ .\ Sinv)}. \texttt{Dot} of a number
+and a matrix is not defined; it stays unevaluated without a message, so
+the ``connection'' was a matrix whose entries contained the unevaluated
+product, and the comparisons of the check could not give \texttt{True}.
+The evaluation gave no message, so only the check itself revealed the
+error. Evidence: \texttt{tools/e15\_dot\_precedence.wls} with its output
+\texttt{logs/E15\_dot\_precedence.txt}: the parsed form of
+\texttt{-(a\ -\ b)\ (s)\ .\ c} is
+\texttt{Times{[}Times{[}-1,\ Plus{[}a,\ Times{[}-1,\ b{]}{]}{]},\ Dot{[}s,\ c{]}{]}};
+\texttt{0.5\ .\ \{\{1.,\ 2.\},\ \{3.,\ 4.\}\}} stays unevaluated (head
+\texttt{Dot}); the faulty form applied to numbers gives a matrix of
+unevaluated products; the corrected form
+\texttt{(-(0.5)\ (A\ -\ B))\ .\ m} gives the expected matrix. Fix: the
+number multiplies the difference first, inside parentheses,
+\texttt{conn15{[}x\_,\ p\_{]}\ :=\ (-(0.5/h15)\ (Sp\ -\ Sm))\ .\ Sinv},
+with a comment in the code. After the fix GS-15 passes with the
+deviations of the original program (section 12.2).
+
+\textbf{E16. Labels of the figures covered curves; a label and the
+summary table were cut at the edge of the page.} Found by looking at the
+exported PDF (\texttt{logs/E16\_figures\_and\_table\_before\_fix.png}):
+in Figure 1(a) a label crossed the vertical axis line at
+\(q^1_{\rm LL}=0\), the label of the doubler for
+\(r^{\rm W}_{\rm LL}=0\) lay on the orange curve, and the label
+\(m_{\rm LL}=0.4\) touched the same curve; in Figure 1(b) the vertical
+axis line crossed the legend; in Figure 2(a) the label of the stability
+limit was cut at the right edge of the plot and the label of the largest
+step lay on the curve; and the summary table of item {[}1{]} had fixed
+column widths (81 character widths in all), wider than the page, so it
+was cut at the right edge. Fix: no axis lines inside the framed plots
+(only the horizontal line of zero deviation in Figure 1(b)); the labels
+moved into empty regions and written in the muted grey of the text; the
+horizontal range of Figure 2(a) extended to 4, so that the label fits to
+the right of its line; no legend for the single curve of Figure 2(a),
+which its title names; the summary table without fixed widths, so that
+the front end wraps the statements at the width of the page, as in the
+table of section I.9. Evidence after the fix:
+\texttt{logs/E16\_figures\_and\_table\_after\_fix.png}.
+
+\textbf{E17. Formulas in text cells lost the alphabets of their
+letters.} The Wolfram TeX importer, which the builder uses for formulas
+in text cells (error E4), turns \texttt{\textbackslash{}mathbf\ b} into
+\texttt{StyleBox{[}"b",\ FontSlant\ -\textgreater{}\ "Bold"{]}}, an
+invalid option value that the front end ignores, so that the letter is
+printed plain; it turns \texttt{\textbackslash{}mathsf\ N} and
+\texttt{\textbackslash{}mathbb\ R} into plain letters,
+\texttt{\textbackslash{}mathcal\ L} and
+\texttt{\textbackslash{}mathfrak\ g} into italic letters, and
+\texttt{\textbackslash{}varepsilon} into the lunate epsilon of
+\texttt{\textbackslash{}epsilon}. In the texts of Part II the bold
+bi-quaternions \(\mathbf b\), \(\mathbf e_p\), \(\mathbf f_p\) were
+therefore printed as plain letters and \(\mathbb R^{1,3}_{\rm LL}\) with
+a plain R
+(\texttt{logs/E17\_text\_formulas\_before\_and\_after\_fix.png}), and
+the energy \(\varepsilon_{\rm LL}\) was printed with the character of
+the Levi-Civita symbol \(\epsilon^{\rm LL}_{jj'j''}\); the texts of Part
+I were affected in the same way. Evidence:
+\texttt{tools/e17\_tex\_importer.wls} with its output
+\texttt{logs/E17\_tex\_importer.txt}. Fix (in the builder): before the
+import every styled letter is replaced by a placeholder word inside
+\texttt{\textbackslash{}mathrm\{...\}} (for example
+\texttt{\textbackslash{}mathbb\ R} by
+\texttt{\textbackslash{}mathrm\{QZbbQRZQ\}}), which the importer keeps
+as one string, and \texttt{\textbackslash{}varepsilon} by the
+placeholder of the curly epsilon; after the import each placeholder is
+replaced by the box that the converter of the notebook uses for the same
+letter (section 6): double-struck, script and Gothic characters, bold
+and sans-serif upright letters, and the curly epsilon. In the built
+notebook the 588 formulas of the text cells then contain 270 bold
+letters, 116 sans-serif letters, 76 double-struck, script and Gothic
+characters, 12 curly and 8 lunate epsilons, no invalid bold option and
+no placeholder (\texttt{logs/E17\_tex\_importer.txt}).
+
+\textbf{E18. Components of families typed in input cells were not
+symbols.} In the table of the basic matrices (section II.1.3 of the
+notebook) the label \(\gamma^0_{\rm LL}\) was printed as 1 and
+\(\gamma^1_{\rm LL}\) as \(\gamma_{\rm LL}\), and the axis label
+\(q^1_{\rm LL}\) of Figure 1 lost its superscript
+(\texttt{logs/E18\_components\_before\_fix.png}). Cause: the builder
+writes the box of a component into the input cell, but the component had
+never been symbolized, so the kernel read the box \(\gamma^0_{\rm LL}\)
+as the power 0 of the expression \(\gamma_{\rm LL}\), which is 1, and
+\(q^1_{\rm LL}\) as the first power of \(q_{\rm LL}\). No check had
+caught this, because these results were only displayed. Fix (section
+10.4): the builder collects all components typed in the notebook, the
+first cell of Part II makes those that do not yet exist, and the check
+T2-SYM verifies all of them. An intermediate state showed the internal
+name of \(q^1_{\rm LL}\) in the label of the graphics, because labels of
+graphics are typeset in \texttt{TraditionalForm}, for which the new
+component had no rule (the same cause as E12); the cell now gives every
+component its \texttt{TraditionalForm} box and a usage message, and
+T2-SYM also checks that the TeX of every component contains no internal
+name. Evidence after the fix:
+\texttt{logs/E18\_components\_after\_fix.png}.
+
+\textbf{E19. Notations of Part II that were not registered symbols.} The
+first version of the texts and the labels of Part II wrote some objects
+with the short notations of the original program instead of the
+registered symbols: \(\Delta x\) for the lattice spacing
+\(\ell^{\rm x}_{\rm LL}\), \(\Delta t\) for the time step
+\(\ell^{\rm t}_{\rm LL}\), \(r_W\) for \(r^{\rm W}_{\rm LL}\),
+\(U_j(s)\) for \(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\),
+\(V_0\) for \(\mathsf A_{{\rm LL},0}\), \(P\) for
+\(\mathsf P_{\rm LL}\), \(\xi_p\) for \(\xi^{\rm LL}_p(\mathbf b)\),
+\(S\) and \(L\) for \(\mathsf S_{\rm LL}(\mathbf g)\) and
+\(\mathsf L_{\rm LL}(\mathbf g)\), \(E\) for
+\(E^{\rm qp}_{{\rm LL},n}\), a plain \(x\) for the product of an energy
+and the time step, and \(m\), \(\varepsilon\), \(\varepsilon_{\rm lat}\)
+without the label LL. A plain \(x\), for example, could be taken for the
+coordinates \(x^p_{\rm LL}\). This contradicts the rule of the project
+that every object has one unique, registered symbol. Fix: all texts and
+all labels of Part II use the registered symbols; in the labels of
+graphics they are the symbolized symbols themselves, printed with
+upright letters, as in the cells of the notebook (option
+\texttt{SingleLetterItalics\ -\textgreater{}\ False}; the reference page
+of the option states that it is typically \texttt{True} in cells of
+\texttt{TraditionalForm}); the one abbreviation that is not registered,
+\(z=E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\), is defined where it
+is used (section 2.6). The printed lines of the checks keep the
+plain-text wording of the original report, whose names (for example
+\texttt{dx}, \texttt{r\_W}, \texttt{Sspin}, \texttt{Kch}) are the
+plain-text names of the registry; only the abbreviation x of GS-13 is
+not a registered name, and section 12.2 states its meaning.
+
 \hypertarget{decisions}{%
-\section{12. Decisions}\label{decisions}}
+\section{15. Decisions}\label{decisions}}
 
 \begin{itemize}
 \tightlist
@@ -1386,10 +2716,46 @@ code span. Fix: such code is marked with double backquotes.
   The registry is contained in the notebook as data (one input cell of
   about 133 000 characters) and also shown as formatted tables, group by
   group (section I.8).
+\item
+  Part II rewrites the original programs in the order of their code and
+  draws the random numbers in the same order with the same seeds, so
+  that every random object of a check equals the one of the original
+  program; results that are pure rounding errors are reported next to
+  the values of the original report (section 10.2).
+\item
+  The numbers of the three data files of the figures of item {[}1{]} are
+  copied into the notebook (about 60 000 characters in one input cell)
+  instead of being read from the files, so that the notebook is complete
+  and stand-alone; they are used only by the check T2-DATA-1. The cell
+  makes the printed notebook about 30 pages longer.
+\item
+  The symbolic algebra \texttt{sym.rs} of the original library is not
+  rewritten, because the Wolfram Language is itself a symbolic algebra
+  (section 11.4); GS-12 uses symbols of the Wolfram Language instead.
+\item
+  Every name of Part II stands for one object only. For example, the
+  variable of the sum over the plane waves of GS-5 is called
+  \texttt{wave}, because the name \texttt{wv} belongs to the random
+  vector of GS-12.
+\item
+  Labels of graphics are built from expressions (\texttt{Row},
+  \texttt{Subscript}, \texttt{Superscript} and the registered symbols),
+  not from strings in linear syntax, so that the source stays readable
+  and the labels are typeset in the same way in the notebook and in the
+  PDF.
+\item
+  The checks T2-SYM, T2-RNG, T2-LINALG and T2-DATA-1 are checks of the
+  rewriting itself and are not in the original report; GS-1 to GS-16
+  keep the names, the statements and the tolerances of the original
+  report.
+\item
+  The components of families are collected by the builder from the
+  source rather than listed by hand, so that a component typed in a
+  later item of Part II is made automatically (section 10.4).
 \end{itemize}
 
 \hypertarget{files}{%
-\section{13. Files}\label{files}}
+\section{16. Files}\label{files}}
 
 All paths are relative to the top folder of the repository.
 
@@ -1406,13 +2772,14 @@ content
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\texttt{3+1super-loop.nb} & the notebook, evaluated (Part I) \\
+\texttt{3+1super-loop.nb} & the notebook, evaluated (Part I; Part II:
+the library and item {[}1{]}) \\
 \texttt{3+1super-loop\_provenance/notebook\_source/3+1super-loop.source.wl}
 & the source of the notebook (cells marked in the Wolfram package
 format) \\
 \texttt{3+1super-loop\_provenance/notebook\_source/sl31\_core.wl} & the
 package
-SL31\texttt{(TeX\ reader,\ kinds,\ names,\ symbolization),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/registry\_data.wl\texttt{\textbar{}\ the\ registry\ as\ Wolfram\ Language\ data\ (199\ entries),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/meaning\_edits.wl\texttt{\textbar{}\ the\ 16\ restated\ meanings\ applied\ by\ registry\_to\_wl.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/all\_symbols.wl\texttt{\textbar{}\ the\ 422\ symbols\ as\ LL{[}tex{]}\ references,\ included\ in\ the\ cell\ of\ test\ S-14\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/3+1super-loop.unevaluated.nb\texttt{\textbar{}\ the\ notebook\ as\ built,\ before\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/export/3+1super-loop.pdf\texttt{\textbar{}\ the\ evaluated\ notebook\ printed\ to\ PDF\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/3+1super-loop.evaluation.log.txt\texttt{\textbar{}\ the\ log\ of\ the\ final\ evaluation:\ messages,\ printed\ lines,\ input\ labels,\ tests\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/symbolization\_one\_by\_one.txt\texttt{\textbar{}\ diagnostic:\ every\ item\ symbolized\ alone,\ with\ its\ result\ (no\ item\ failed\ or\ hung)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_before\_fix.txt\texttt{\textbar{}\ E7:\ the\ 9\ boxes\ changed\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_leaf\_check\_front\_end\_parser.txt\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ all\ 213\ strings\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_after\_fix.txt\texttt{\textbar{}\ E7:\ 0\ boxes\ changed\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_kinds\_and\_shared\_boxes.txt\texttt{\textbar{}\ E9,\ E11:\ kinds\ and\ the\ TeX\ items\ with\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_operand\_check\_in\_kernel\_input.txt\texttt{\textbar{}\ E9:\ every\ box\ reaches\ the\ kernel\ unchanged\ in\ the\ cell\ \{b,\ 1\}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_reparse\_check.txt\texttt{\textbar{}\ E9:\ NotebookPut\ and\ NotebookGet\ change\ no\ box\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_s14\_chunk\_experiment.log.txt\texttt{\textbar{}\ E9:\ the\ list\ of\ symbols\ evaluated\ in\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.unevaluated.nb\texttt{\textbar{}\ E7:\ the\ test\ notebook\ with\ SubscriptBox{[}"a",\ "LL,p"{]}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluated.nb\texttt{\textbar{}\ E7:\ the\ same\ notebook\ evaluated\ in\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluation.log.txt\texttt{\textbar{}\ E7:\ its\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_notebook.wls\texttt{\textbar{}\ the\ builder:\ source\ to\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/registry\_to\_wl.wls\texttt{\textbar{}\ the\ registry\ CSV\ file\ to\ registry\_data.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/gen\_all\_symbols.wls\texttt{\textbar{}\ writes\ all\_symbols.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/guirun.wl\texttt{\textbar{}\ evaluation\ of\ a\ notebook\ in\ the\ front\ end\ of\ Wolfram.app\ in\ a\ fresh\ kernel;\ saving,\ PDF\ export\ and\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/start\_main.wl\texttt{\textbar{}\ starts\ the\ evaluation\ of\ the\ notebook\ with\ guirun.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/status.wl\texttt{\textbar{}\ asks\ guirun.wl\ for\ the\ state\ of\ the\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/watcher.wl\texttt{\textbar{}\ the\ scheduled\ task\ in\ the\ Wolfram.app\ session\ that\ reads\ request\ files\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/handler.wl\texttt{\textbar{}\ the\ handler\ of\ the\ request\ files\ (scripts,\ and\ files\ evaluated\ in\ the\ session)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/run\_notebook.wls\texttt{\textbar{}\ the\ superseded\ evaluator\ run\ by\ wolframscript\ (E2,\ E6)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_build.wls\texttt{\textbar{}\ E7:\ notebook\ with\ one\ cell\ per\ symbol\ box\ and\ a\ \$PreRead\ recorder\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_compare.wls\texttt{\textbar{}\ E7:\ compares\ recorded\ and\ built\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/leaf\_check.wls\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ every\ string\ of\ the\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_build.wls\texttt{\textbar{}\ E9,\ E11:\ cells\ \{b,\ 1\}\ with\ and\ without\ the\ SyntaxForm\ wrapper;\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_compare.wls\texttt{\textbar{}\ E9:\ compares\ the\ recorded\ cells\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/reparse\_check.wls\texttt{\textbar{}\ E9:\ writes\ and\ reads\ every\ cell\ \{x,\ b,\ y\}\ through\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/s14\_build.wls\texttt{\textbar{}\ E9:\ the\ list\ of\ all\ symbols\ split\ into\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_provenance\_docs.sh\texttt{\textbar{}\ makes\ the\ .tex\ and\ .pdf\ versions\ of\ this\ document\ from\ the\ .md\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/doc\_header.tex` \\
+SL31\texttt{(TeX\ reader,\ kinds,\ names,\ symbolization),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/registry\_data.wl\texttt{\textbar{}\ the\ registry\ as\ Wolfram\ Language\ data\ (199\ entries),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/meaning\_edits.wl\texttt{\textbar{}\ the\ 16\ restated\ meanings\ applied\ by\ registry\_to\_wl.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/all\_symbols.wl\texttt{\textbar{}\ the\ 422\ symbols\ as\ LL{[}tex{]}\ references,\ included\ in\ the\ cell\ of\ test\ S-14\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/3+1super-loop.unevaluated.nb\texttt{\textbar{}\ the\ notebook\ as\ built,\ before\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/export/3+1super-loop.pdf\texttt{\textbar{}\ the\ evaluated\ notebook\ printed\ to\ PDF\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/3+1super-loop.evaluation.log.txt\texttt{\textbar{}\ the\ log\ of\ the\ final\ evaluation:\ messages,\ printed\ lines,\ input\ labels,\ tests\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/symbolization\_one\_by\_one.txt\texttt{\textbar{}\ diagnostic:\ every\ item\ symbolized\ alone,\ with\ its\ result\ (no\ item\ failed\ or\ hung)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_before\_fix.txt\texttt{\textbar{}\ E7:\ the\ 9\ boxes\ changed\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_leaf\_check\_front\_end\_parser.txt\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ all\ 213\ strings\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_after\_fix.txt\texttt{\textbar{}\ E7:\ 0\ boxes\ changed\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_kinds\_and\_shared\_boxes.txt\texttt{\textbar{}\ E9,\ E11:\ kinds\ and\ the\ TeX\ items\ with\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_operand\_check\_in\_kernel\_input.txt\texttt{\textbar{}\ E9:\ every\ box\ reaches\ the\ kernel\ unchanged\ in\ the\ cell\ \{b,\ 1\}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_reparse\_check.txt\texttt{\textbar{}\ E9:\ NotebookPut\ and\ NotebookGet\ change\ no\ box\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_s14\_chunk\_experiment.log.txt\texttt{\textbar{}\ E9:\ the\ list\ of\ symbols\ evaluated\ in\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.unevaluated.nb\texttt{\textbar{}\ E7:\ the\ test\ notebook\ with\ SubscriptBox{[}"a",\ "LL,p"{]}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluated.nb\texttt{\textbar{}\ E7:\ the\ same\ notebook\ evaluated\ in\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluation.log.txt\texttt{\textbar{}\ E7:\ its\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_notebook.wls\texttt{\textbar{}\ the\ builder:\ source\ to\ notebook\ (includes,\ components\ of\ families,\ alphabets\ of\ text\ formulas)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/registry\_to\_wl.wls\texttt{\textbar{}\ the\ registry\ CSV\ file\ to\ registry\_data.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/gen\_all\_symbols.wls\texttt{\textbar{}\ writes\ all\_symbols.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/guirun.wl\texttt{\textbar{}\ evaluation\ of\ a\ notebook\ in\ the\ front\ end\ of\ Wolfram.app\ in\ a\ fresh\ kernel;\ saving,\ PDF\ export\ and\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/start\_main.wl\texttt{\textbar{}\ starts\ the\ evaluation\ of\ the\ notebook\ with\ guirun.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/status.wl\texttt{\textbar{}\ asks\ guirun.wl\ for\ the\ state\ of\ the\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/watcher.wl\texttt{\textbar{}\ the\ scheduled\ task\ in\ the\ Wolfram.app\ session\ that\ reads\ request\ files\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/handler.wl\texttt{\textbar{}\ the\ handler\ of\ the\ request\ files\ (scripts,\ and\ files\ evaluated\ in\ the\ session)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/run\_notebook.wls\texttt{\textbar{}\ the\ superseded\ evaluator\ run\ by\ wolframscript\ (E2,\ E6)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_build.wls\texttt{\textbar{}\ E7:\ notebook\ with\ one\ cell\ per\ symbol\ box\ and\ a\ \$PreRead\ recorder\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_compare.wls\texttt{\textbar{}\ E7:\ compares\ recorded\ and\ built\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/leaf\_check.wls\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ every\ string\ of\ the\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_build.wls\texttt{\textbar{}\ E9,\ E11:\ cells\ \{b,\ 1\}\ with\ and\ without\ the\ SyntaxForm\ wrapper;\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_compare.wls\texttt{\textbar{}\ E9:\ compares\ the\ recorded\ cells\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/reparse\_check.wls\texttt{\textbar{}\ E9:\ writes\ and\ reads\ every\ cell\ \{x,\ b,\ y\}\ through\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/s14\_build.wls\texttt{\textbar{}\ E9:\ the\ list\ of\ all\ symbols\ split\ into\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_provenance\_docs.sh\texttt{\textbar{}\ makes\ the\ .tex\ and\ .pdf\ versions\ of\ this\ document\ from\ the\ .md\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/doc\_header.tex\texttt{\textbar{}\ the\ LaTeX\ header\ used\ by\ build\_provenance\_docs.sh\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/part2\_A\_core.source.wl\texttt{\textbar{}\ the\ source\ of\ the\ introduction\ of\ Part\ II,\ of\ its\ first\ cell\ (the\ components\ of\ families)\ and\ of\ chapter\ II.1\ (the\ library\ t2core)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/part2\_B\_item1.source.wl\texttt{\textbar{}\ the\ source\ of\ item\ {[}1{]},\ checks\ GS-1\ to\ GS-11\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/part2\_C\_item1b.source.wl\texttt{\textbar{}\ the\ source\ of\ item\ {[}1{]},\ checks\ GS-12\ to\ GS-16,\ the\ figures,\ T2-DATA-1\ and\ the\ summary\ of\ the\ item\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/t2\_fields\_figure\_data.wl\texttt{\textbar{}\ the\ numbers\ of\ the\ three\ data\ files\ of\ the\ figures\ of\ t2\_fields,\ included\ in\ the\ notebook\ (T2-DATA-1)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/make\_fig\_data\_cell.py\texttt{\textbar{}\ writes\ t2\_fields\_figure\_data.wl\ from\ the\ data\ files\ of\ the\ original\ program\ (Python\ 3)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/splitmix64\_reference.py\texttt{\textbar{}\ the\ reference\ values\ of\ the\ check\ T2-RNG,\ computed\ in\ Python\ 3\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/e15\_dot\_precedence.wls\texttt{\textbar{}\ E15:\ the\ parsed\ form\ of\ the\ faulty\ expression\ and\ the\ behaviour\ of}Dot\texttt{with\ a\ number\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/e17\_tex\_importer.wls\texttt{\textbar{}\ E17:\ what\ the\ TeX\ importer\ makes\ of\ styled\ letters,\ and\ the\ boxes\ of\ the\ text\ formulas\ of\ the\ built\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/T2-RNG\_reference\_values.txt\texttt{\textbar{}\ the\ output\ of\ splitmix64\_reference.py\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E15\_dot\_precedence.txt\texttt{\textbar{}\ E15:\ the\ output\ of\ e15\_dot\_precedence.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E17\_tex\_importer.txt\texttt{\textbar{}\ E17:\ the\ output\ of\ e17\_tex\_importer.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E16\_figures\_and\_table\_before\_fix.png\texttt{\textbar{}\ E16:\ the\ pages\ of\ the\ figures\ and\ of\ the\ summary\ table\ before\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E16\_figures\_and\_table\_after\_fix.png\texttt{\textbar{}\ E16:\ the\ same\ pages\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E17\_text\_formulas\_before\_and\_after\_fix.png\texttt{\textbar{}\ E17:\ a\ text\ of\ section\ II.1.3\ before\ and\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E18\_components\_before\_fix.png\texttt{\textbar{}\ E18:\ the\ table\ of\ the\ basic\ matrices\ and\ the\ axis\ label\ of\ Figure\ 1\ before\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E18\_components\_after\_fix.png` \\
 \end{longtable}
 
 The SHA-256 digests of these files, as committed (output of
@@ -1420,15 +2787,15 @@ The SHA-256 digests of these files, as committed (output of
 their own digests):
 
 \begin{verbatim}
-5f4be4b35b3a5d0d7924316093ce88f5d9e8df2a134a539ce1b12efefd7f29ad  3+1super-loop.nb
-279ee2b1bb26e80f38c3ae40a251f2e5c231f432ac103503d4b6e9c2826bfa15  3+1super-loop_provenance/notebook_source/3+1super-loop.source.wl
+1bf6e439ad07e37444696b5f661059398a5450f0410ae0cdc96925b5e1cdf3ae  3+1super-loop.nb
+ee5ad6db199bed6dcc39c84bb5cfe5755e55efdfc0b4bc2c4ab02e62b688edb5  3+1super-loop_provenance/notebook_source/3+1super-loop.source.wl
 36cf048620323e4ac04d5ebf285576e2e191404791ac666a780e1165791357ef  3+1super-loop_provenance/notebook_source/sl31_core.wl
 e3c8cbaa0005577b0d984daaea939c8ceffabc7479dde57e32e11714f7be48f1  3+1super-loop_provenance/notebook_source/registry_data.wl
 5b5f96ef59e2057b284b362e7e49e67423b3d122bf1e0db37abd3df81a550fde  3+1super-loop_provenance/notebook_source/meaning_edits.wl
 d35c3bf0c6d80a1c8d95b71e6602871755caed36e0551ec9639694fa81a83f87  3+1super-loop_provenance/notebook_source/all_symbols.wl
-7b0866795ea2cab0d775def713ea1cf222ab8656e570b96c775ff0979c52d6d9  3+1super-loop_provenance/notebook_source/3+1super-loop.unevaluated.nb
-79cdf95395a15de2ca7c9e9ce73511595d5a28364dc851516fd169cc7963de4c  3+1super-loop_provenance/export/3+1super-loop.pdf
-8dec9d78df5cf305d4d7a812172f52a4257cff34ceaaec7964ac09bd739dd8d1  3+1super-loop_provenance/logs/3+1super-loop.evaluation.log.txt
+f56b422c9514bf956cc3f4d72bf51206effa8373d3a78ebc048a89a189a0f026  3+1super-loop_provenance/notebook_source/3+1super-loop.unevaluated.nb
+8e0f6f1e85e7898904c121e2da3fe690e723c5a9b68573f64a0d973a4b1b800f  3+1super-loop_provenance/export/3+1super-loop.pdf
+38defe45b116d23adc9577fe2d869d0652569d0554bfbb1fd63a7ff4e3877677  3+1super-loop_provenance/logs/3+1super-loop.evaluation.log.txt
 664d1e799a0aa5114b03f9b10db89b7ec45f66897d40601b7970fa5db426dae6  3+1super-loop_provenance/logs/symbolization_one_by_one.txt
 fe4de274da007c4ae06a5ede22c05776f1279f1515225b904d693b1f02ea7ed8  3+1super-loop_provenance/logs/E07_front_end_boxes_before_fix.txt
 94a1d676722de723e6ec58c2c2b1489df566a457955d33b46b594802ca7554cc  3+1super-loop_provenance/logs/E07_leaf_check_front_end_parser.txt
@@ -1440,7 +2807,7 @@ c5b7e2c3f40e10c02df896742ac1e1eecc5d2589d68bf29bcc88ef2046a3bac9  3+1super-loop_
 7aee2310fa163ab02afe2881a46ba51f08590e3e4ced458c8986fdee17cdd955  3+1super-loop_provenance/experiments/gui_test.unevaluated.nb
 cb0bc845dd86a23fd7bbd1fd5b18d6d9a2a2caf4b26a0ab58d1c136f5ccd42bc  3+1super-loop_provenance/experiments/gui_test.evaluated.nb
 de33e81f087369495076880b88f0ad3e2eb83cdeacd9f346b04180e21fa8e66d  3+1super-loop_provenance/experiments/gui_test.evaluation.log.txt
-2df443b245f174cbcbb9d205bce0d673cb705945c1c3c893e007635c060a8996  3+1super-loop_provenance/tools/build_notebook.wls
+5f659852270513081501df3aa23d66699e702364cc27bd242006c3b37256f7dc  3+1super-loop_provenance/tools/build_notebook.wls
 42767cd1ebc43492c95d19c5d67507a6a2450da9f0893f41f367f681a9ce5bd5  3+1super-loop_provenance/tools/registry_to_wl.wls
 46211d0b974221fb90e02b5459c3fc84577b35fb7ce732b565aa428ae1c5c604  3+1super-loop_provenance/tools/gen_all_symbols.wls
 6a7d810350cfcd4f69cc12b7d4bbc92ca1d57dcafd4a6ce6a1ecef4b37beef8d  3+1super-loop_provenance/tools/guirun.wl
@@ -1458,10 +2825,26 @@ a79915c5253a7cdd9b162eda7b9e466ec3b57a63d670f614f1890c983bdc28e7  3+1super-loop_
 ddd7824acd0e8c1746ec4548d8912f9cf1d179438f18b69e47a90978687881a1  3+1super-loop_provenance/tools/s14_build.wls
 518fc0768f4da0aa5528e11f5207be50dbe453051b96dc03917352296cb0670b  3+1super-loop_provenance/tools/build_provenance_docs.sh
 00d3e3c225b60acac822b408deed88744968de7f8ef78467f6799ea1b68a3d30  3+1super-loop_provenance/tools/doc_header.tex
+131f786bf2b89cf4ba2f219320dd75ed5202dd6481500a21545e0dc9844fae26  3+1super-loop_provenance/notebook_source/part2_A_core.source.wl
+3c323752b0e34c0775f6041104bc8479b196647e4ea0ae098bb545e93a04c833  3+1super-loop_provenance/notebook_source/part2_B_item1.source.wl
+97ea97f6302be0b554d3fb9c4ce285047f3f287c14f53b7fe5a6695c3cebdac0  3+1super-loop_provenance/notebook_source/part2_C_item1b.source.wl
+277b1e4817587d9a5f5aa80620d94910edc32b423c23a5888d79150f80923334  3+1super-loop_provenance/notebook_source/t2_fields_figure_data.wl
+7a46cd1d8efcd05bc2839e9abd62dce628753a7a75269f44a65b2976407a0a18  3+1super-loop_provenance/tools/make_fig_data_cell.py
+06be9891ca81c88602943cabdca85f971193481d5f669207352b1a18bc53dca5  3+1super-loop_provenance/tools/splitmix64_reference.py
+f28f35adb6abc25e59f0e6f389e4566632631d238d20e044c27ba23247ff437b  3+1super-loop_provenance/tools/e15_dot_precedence.wls
+f34de46eaa0bbb6a7261868c62dc076e3927185bfcc0fdea91c0403770d172cb  3+1super-loop_provenance/tools/e17_tex_importer.wls
+ceafb181fbec77e8efb288b8f2c25ee73aba60c5121779d12da90840b1e2ad19  3+1super-loop_provenance/logs/T2-RNG_reference_values.txt
+c64f1a909b9d008365fd5707547547cceb6f0df78b314099c676ba7d1e711f16  3+1super-loop_provenance/logs/E15_dot_precedence.txt
+0b051cae79f44a26285ece8d21c4c46994342dd7a0f529d2358c35b621358647  3+1super-loop_provenance/logs/E17_tex_importer.txt
+c719036debc776aab97c49fe2cb07f56e0e5bc7f14c0b4ee334f6e429265521b  3+1super-loop_provenance/logs/E16_figures_and_table_before_fix.png
+dfe1af9e06b087239047f4f4ed05fea6bb9d27b0e14f4b738296b64df81e9298  3+1super-loop_provenance/logs/E16_figures_and_table_after_fix.png
+8d1981333fc22357b76b79d9b6d30ef86579a24425067578d8fde2b48c67399a  3+1super-loop_provenance/logs/E17_text_formulas_before_and_after_fix.png
+95f9e2e5adde8e72e471cd7a0bb0b81cf491c25a80e7b3857ca949c25e6eb82a  3+1super-loop_provenance/logs/E18_components_before_fix.png
+87c29f8d4a0fedc884dce45f905201f9ac1a95c1b2b2052c35d02896d442c6f7  3+1super-loop_provenance/logs/E18_components_after_fix.png
 \end{verbatim}
 
 \hypertarget{sources-consulted}{%
-\section{14. Sources consulted}\label{sources-consulted}}
+\section{17. Sources consulted}\label{sources-consulted}}
 
 \begin{itemize}
 \tightlist
@@ -1503,6 +2886,39 @@ ddd7824acd0e8c1746ec4548d8912f9cf1d179438f18b69e47a90978687881a1  3+1super-loop_
   parentheses around TagBox for MakeBoxes?'': the value
   \texttt{SyntaxForm\ -\textgreater{}\ "symbol"} for a box that should
   act as a standalone thing (E9).
+\item
+  The Wolfram Language tutorial ``Operator Input Forms'': the table of
+  the operators in order of decreasing precedence, in which
+  \texttt{expr1\ .\ expr2} (\texttt{Dot}) stands above the implicit
+  product \texttt{expr1\ expr2} (\texttt{Times}) (E15).
+  \url{https://reference.wolfram.com/language/tutorial/OperatorInputForms.html}
+\item
+  The reference page of \texttt{SingleLetterItalics}: a cell option that
+  controls whether names of one letter are printed in italics, typically
+  \texttt{True} for cells of \texttt{TraditionalForm} (E18, E19).
+  \url{https://reference.wolfram.com/language/ref/SingleLetterItalics.html}
+\item
+  The original programs of Test 2 in the repository
+  (\texttt{Revision\_SuperLoop/test2/rust}: the library \texttt{t2core}
+  and the program \texttt{t2fields}), which Part II rewrites, and the
+  record of their checks and the data files of their figures
+  (\texttt{Revision\_SuperLoop/test2/data}). Their SHA-256 digests, as
+  used for this stage:
 \end{itemize}
+
+\begin{verbatim}
+4a7beee875494e11a5778aa9bd94fca841bc5ab0abff6a3666a6ad25e72ac731  Revision_SuperLoop/test2/rust/t2core/src/rng.rs
+8c412f5703dc49c7ba51fb86ff9a4fd4bcc3ce4667a11216884a4e2e2b6a43a3  Revision_SuperLoop/test2/rust/t2core/src/c64.rs
+ace63b498d0e0fcbca02f1b659aa6249343f1b9ef9b16a113349bb9023915447  Revision_SuperLoop/test2/rust/t2core/src/cmat.rs
+aecd9e01a40e211133cc8ff2c4697ec62e0370b46e0d7ea2d31fb19613a9eeb4  Revision_SuperLoop/test2/rust/t2core/src/model.rs
+046298ecaff5d17bcfe0c0747c34b4447ebef19291330757ee4058d5424b1ae7  Revision_SuperLoop/test2/rust/t2core/src/lattice.rs
+790b8758ce9bf919ffd93eb7f3afdaf66b4b4abb640a1fbf205146feeae6a8c7  Revision_SuperLoop/test2/rust/t2core/src/sym.rs
+26e7cc6bb7ac393f83bfaa222eeb0f2e0639f3ab878fbbd9e6e67d20c1376f68  Revision_SuperLoop/test2/rust/t2core/src/lib.rs
+d7ed53e0635b63e4f84d23a7280bf8d3581086a6a64dd3df7cb6632f49063939  Revision_SuperLoop/test2/rust/t2fields/src/main.rs
+033ddabf96d8a2e2e6fbf4d9bbd95ca32ea102b15c003848e9ee52ce8aabe0a7  Revision_SuperLoop/test2/data/t2_fields_checks.txt
+5e95b089a62bbb22de0736a71128c6aea361a085aecd83569447cca0462d89d7  Revision_SuperLoop/test2/data/t2_dispersion_lattice.csv
+2f2849f03bb13b8475272648b8ec80617437c28a51afed9b7c2c11fabac2db01  Revision_SuperLoop/test2/data/t2_dispersion_curves.csv
+64544a7caeba4e37eae7f0754093f0e822d222e23ef07ce8663cb4b0e73e402c  Revision_SuperLoop/test2/data/t2_rk4_stability.csv
+\end{verbatim}
 
 \end{document}

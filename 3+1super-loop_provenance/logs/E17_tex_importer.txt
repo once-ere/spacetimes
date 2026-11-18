@@ -1,0 +1,24 @@
+--- stdout ---
+--- the TeX importer alone ---
+\mathbf b  ==>  {FormBox[StyleBox["b", FontSlant -> "Bold"], TraditionalForm]}
+\mathbf{b}  ==>  {FormBox[StyleBox["b", FontSlant -> "Bold"], TraditionalForm]}
+\mathsf N  ==>  {FormBox[StyleBox["N", FontSlant -> "Plain"], TraditionalForm]}
+\mathbb R  ==>  {FormBox[StyleBox["R", FontSlant -> "Plain"], TraditionalForm]}
+\mathcal L  ==>  {FormBox[StyleBox["L", "TI"], TraditionalForm]}
+\mathfrak g  ==>  {FormBox[StyleBox["g", "TI"], TraditionalForm]}
+\varepsilon  ==>  {FormBox["\[Epsilon]", TraditionalForm]}
+\epsilon  ==>  {FormBox["\[Epsilon]", TraditionalForm]}
+\mathbf b=\sum_{p=0}^3\xi^{\rm LL}_p(\mathbf b)\mathbf e_p  ==>  {FormBox[RowBox[{StyleBox["b", FontSlant -> "Bold"], "\[LongEqual]", UnderoverscriptBox["\[Sum]", RowBox[{StyleBox["p", "TI"], "\[LongEqual]", "0"}], "3", LimitsPositioning -> True], SubsuperscriptBox["\[Xi]", StyleBox["p", "TI"], "LL"], RowBox[{"(", StyleBox["b", FontSlant -> "Bold"], ")"}], SubscriptBox[StyleBox["e", FontSlant -> "Bold"], StyleBox["p", "TI"]]}], TraditionalForm]}
+\varepsilon^{\rm lat}_{\rm LL}  ==>  {FormBox[SubsuperscriptBox["\[Epsilon]", "LL", "lat"], TraditionalForm]}
+\mathfrak{so}(3,1)  ==>  {FormBox[RowBox[{RowBox[{StyleBox["s", "TI"], StyleBox["o", "TI"]}], "(", RowBox[{"3", ",", "1"}], ")"}], TraditionalForm]}
+\mathsf 1_2  ==>  {FormBox[SubscriptBox[StyleBox["1", FontSlant -> "Plain"], "2"], TraditionalForm]}
+--- the built notebook /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/in/3+1super-loop.nb ---
+text cells: 88, inline formulas: 588
+bold upright letters (FontWeight -> Bold): 270
+sans-serif letters (FontFamily -> Helvetica): 116
+double-struck, script and Gothic characters: 76
+invalid FontSlant -> Bold left by the importer: 0
+placeholders left: 0
+curly epsilon (from \varepsilon): 12, lunate epsilon (from \epsilon): 8
+
+--- stderr ---

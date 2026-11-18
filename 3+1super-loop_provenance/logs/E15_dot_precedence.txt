@@ -1,0 +1,10 @@
+--- stdout ---
+1. the form that the parser makes of  -(a - b) (s) . c :
+   Hold[Times[Times[-1, Plus[a, Times[-1, b]]], Dot[s, c]]]
+2. the form of  (-(s) (a - b)) . c :
+   Hold[Dot[Times[Times[-1, s], Plus[a, Times[-1, b]]], c]]
+3. 0.5 . {{1., 2.}, {3., 4.}}  gives  0.5 . {{1., 2.}, {3., 4.}}   (head: Dot)
+4. -(A - B) (0.5) . m  gives  {{-1.*0.5 . {{1., 2.}, {3., 4.}}, 1.*0.5 . {{1., 2.}, {3., 4.}}}, {1.*0.5 . {{1., 2.}, {3., 4.}}, -1.*0.5 . {{1., 2.}, {3., 4.}}}}
+5. (-(0.5) (A - B)) . m  gives  {{1., 1.}, {-1., -1.}}
+
+--- stderr ---
