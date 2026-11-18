@@ -1,0 +1,14 @@
+[package]
+name = "t2cvode_c"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2: the C interface of the time integration with CVODE (t2core::cvode), through which the Python solver t2_solve.py uses the pure-Rust SUNDIALS 7.8.0"
+
+# a shared library with the C calling convention: libt2cvode.so (Linux), libt2cvode.dylib (macOS), t2cvode.dll (Windows)
+[lib]
+name = "t2cvode"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

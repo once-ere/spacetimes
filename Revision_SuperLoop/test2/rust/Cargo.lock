@@ -35,6 +35,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "t2cvode_c"
+version = "0.1.0"
+dependencies = [
+ "t2core",
+]
+
+[[package]]
 name = "t2fields"
 version = "0.1.0"
 dependencies = [

@@ -339,7 +339,11 @@ impl Axes {
             let lh = 16.0;
             let wmax = self.legend.iter().map(|(_, l)| text_width(l, fs - 1.5)).fold(0.0, f64::max) + 34.0;
             let hbox = lh * self.legend.len() as f64 + 6.0;
-            let bx = self.x0 + self.legend_at.0 * self.w;
+            let mut bx = self.x0 + self.legend_at.0 * self.w;
+            // keep the box inside the panel: a box that would reach beyond the right edge is moved to the left
+            if bx + wmax > self.x0 + self.w {
+                bx = (self.x0 + self.w - wmax).max(self.x0);
+            }
             let by = self.y0 + (1.0 - self.legend_at.1) * self.h - hbox;
             s += &format!("<rect x=\"{:.2}\" y=\"{:.2}\" width=\"{:.2}\" height=\"{:.2}\" fill=\"white\" fill-opacity=\"0.85\" stroke=\"none\"/>\n", bx, by, wmax, hbox);
             for (k, (key, label)) in self.legend.iter().enumerate() {

@@ -175,10 +175,10 @@ pub const SPEC: &[(&str, &str, Option<&str>, &str)] = &[
     ("pair_position", "floatlist", Some(""), "the positions along x^1 of the walls (kink: one value, default the centre; kink_antikink: two values, default 1/4 and 3/4 of the length; step: one value, default the centre)"),
     ("pair_seed", "int", Some("1"), "the seed of the random pair field (pair = random)"),
     ("pair_file", "str", Some(""), "a file with the pair field (pair = file): one line per site, in the order of the sites, with d1_re d1_im d2_re d2_im d3_re d3_im"),
-    ("output_step", "float+", None, "the interval of the time series: the state is written at x^0 = k output_step, k = 0 .. outputs (evolve, quench); CVODE chooses its own internal steps between these times"),
+    ("output_step", "float+", None, "the interval of the time series: the state is written at the times x^0 = 0, output_step, 2 output_step, ..., outputs x output_step (evolve, quench); CVODE chooses its own internal steps between these times"),
     ("outputs", "int+", None, "the number of output intervals: the evolution ends at x^0 = outputs x output_step (evolve, quench)"),
     ("fields_every", "int+", Some("0"), "write the fields on the sites every this many outputs (0: about 50 times); the time series is written at every output"),
-    ("rtol", "float+", Some("1e-12"), "the relative tolerance of CVODE: the error weight of a complex component w_k is 1/(rtol |w_k| + atol) (evolve, quench)"),
+    ("rtol", "float+", Some("1e-12"), "the relative tolerance of CVODE: the error weight of a complex component w_cmp of the state is the inverse of (rtol times the modulus of w_cmp, plus atol) (evolve, quench)"),
     ("atol", "float+", Some("1e-14"), "the absolute tolerance of CVODE: components smaller than this count as zero in the error test (evolve, quench)"),
     ("initial", "choice:packet,eigenmode,file", Some("packet"), "the initial mode of the task evolve"),
     ("packet_center", "floats3", Some(""), "the centre of the Gaussian packet (x^1 x^2 x^3; default the centre of the lattice)"),
@@ -257,16 +257,20 @@ step is Delta (1 + tanh((x^1 - x_s)/ell_K))/2 (a superfluid on the right, a norm
 Time integration.  Both tasks that evolve in time (evolve, quench) integrate the equations with CVODE, the
 variable-order, variable-step integrator of SUNDIALS 7.8.0 (in pure Rust, vendored in PROJECT spacetimes):
 Adams-Moulton formulas of the orders 1 to 12, the corrector solved by fixed-point iteration, and a test of the
-estimated local error e of every step,
-    sqrt( (1/(2n)) sum_k |e_k|^2 / (rtol |w_k| + atol)^2 ) <= 1
-(n complex unknowns w_k, the real and imaginary parts of every component weighted alike).  CVODE chooses its
-step sizes and orders itself; 'output_step' and 'outputs' only give the times x^0 = k output_step at which the
-state is written (by the interpolating polynomial of CVODE), and 'rtol' (default 1e-12) and 'atol' (default
-1e-14) the accuracy.  The quench integrates all modes at once, with the pair field computed from the modes at
+estimated local error of every step,
+    sqrt( (1/(2 n_complex)) sum over w_cmp of |error of w_cmp|^2 / (rtol |w_cmp| + atol)^2 ) <= 1
+(the sum over the n_complex complex components w_cmp of the state, the real and imaginary parts of every
+component weighted alike).  CVODE chooses its
+step sizes and orders itself; 'output_step' and 'outputs' only give the output times x^0 = 0, output_step,
+2 output_step, ..., at which the state is written (by the interpolating polynomial of CVODE), and 'rtol'
+(default 1e-12) and 'atol' (default 1e-14) the accuracy.  The quench integrates all modes at once, with the pair field computed from the modes at
 every evaluation of the right side.  The exact equations conserve the norm of a mode (evolve), the fermion
-number and the orthonormality of the modes (quench); CVODE keeps them up to the sum of its allowed local errors,
-(number of steps) x rtol, which the program checks.  Hbound = (number of active directions)(1 + 2 r_W)/dx + |m|
-+ |mu| + max|V0| + max sum|d^iota|, an upper bound of the eigenvalue magnitudes of H_lat, is reported.
+number and the orthonormality of the modes (quench); CVODE keeps them up to the accumulated local error that its
+error test permits, (number of steps) sqrt(2) (rtol ||w_lat|| + atol sqrt(n_complex)) for a state w_lat of the
+norm ||w_lat||, and the program checks the change of the norm against 10 times this amount (the change of the
+fermion number against 2 ||W|| times that, of the orthonormality against 2 times that; the true local error may
+exceed the estimate of CVODE by a modest factor).  Hbound = (number of active directions)(1 + 2 r_W)/dx + |m| +
+|mu| + max|V0| + max sum|d^iota|, an upper bound of the eigenvalue magnitudes of H_lat, is reported.
 The format t2in 1 (with the keys time_step, steps and output_every of a fixed-step method) is not accepted.
 
 Output.  'output = NAME' (default: the name of the input file), or '--out NAME' on the command line.  The

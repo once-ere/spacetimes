@@ -6,12 +6,13 @@ lattice: sites 128 1 1, dx = 0.5, boundary periodic periodic periodic, r_W = 1, 
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
+time integration: CVODE (SUNDIALS 7.8.0, pure Rust), Adams-Moulton formulas up to the order 12, fixed-point iteration, error weights 1/(rtol |w_k| + atol) of the complex components with rtol = 1e-12, atol = 1e-14; output every 0.05 up to x^0 = 30 (600 outputs), fields every 20 outputs; Hbound = 6.4
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.11 s
+CVODE: 803 steps, 1406 evaluations of the right side, 4 rejected steps, 1403 corrector iterations (0 convergence failures), last order 7, last step 3.8610e-02
+results: energy <w_lat|H_lat|w_lat> at x^0 = 0: 0.960712721889; final norm 1.00000000011; final P_hole = 0; final P_up = 1; final centre of the density (44.9242, 0, 0); computing time 0.27 s
 output files: t2_py_packet_free_summary.txt, t2_py_packet_free_series.csv, t2_py_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
-[PASS] the norm of the mode is conserved: largest change 1.50e-07 (the bound of the RK4 loss, steps (Hbound dt)^6/144, is 4.5e-03)
-[PASS] the energy <w|H_lat|w> = 0.9607127219 is conserved (static fields): largest change 1.66e-07 (bound 2.9e-02)
-[PASS] the free packet moves with its mean group velocity: expected ['0.96413786', '0.00000000', '0.00000000'] (the group velocity at the central momentum is ['0.97555149', '0.00000000', '0.00000000']), measured ['0.96413827', '0.00000000', '0.00000000']; deviation 4.11e-07 (allowed: 1e-5 of the velocity)
+[PASS] the norm of the mode is conserved: largest change 1.07e-10 (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = 1.6e-08)
+[PASS] the energy <w_lat|H_lat|w_lat> = 0.9607127219 is conserved (static fields): largest change 1.23e-10 (bound: 2 Hbound times the bound of the norm, 2.1e-07)
+[PASS] the free packet moves with its mean group velocity: expected ['0.96413786', '0.00000000', '0.00000000'] (the group velocity at the central momentum is ['0.97555149', '0.00000000', '0.00000000']), measured ['0.96413853', '0.00000000', '0.00000000']; deviation 6.69e-07 (allowed: 1e-5 of the velocity)

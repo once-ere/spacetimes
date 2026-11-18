@@ -228,7 +228,7 @@ def plot_conservation(ax, d, t):
                 label=r"$|\langle\mathcal{H}^{\rm lat}_{\rm LL}\rangle - \langle\mathcal{H}^{\rm lat}_{\rm LL}\rangle_0|$")
     style(ax, X0, "change since the start")
     ax.legend(fontsize=8.5)
-    letter(ax, "(d) conservation of the norm and of the energy (RK4 errors)")
+    letter(ax, "(d) conservation of the norm and of the energy (CVODE errors)")
 
 
 def plot_evolve_2d(d, pred, t, tf, times, n):
@@ -401,7 +401,7 @@ def plot_quench(d, pred):
                 label=r"$|E^{\rm MF}_{\rm LL}-E^{\rm MF}_{\rm LL}(0)|/|E^{\rm MF}_{\rm LL}(0)|$")
     style(bx, X0, "change since the start (0 is drawn at 1e-17)")
     bx.legend(fontsize=8, loc="lower right", bbox_to_anchor=(1.0, 0.06))
-    letter(bx, "(b) what the implicit midpoint rule conserves")
+    letter(bx, "(b) the conserved quantities (CVODE errors)")
     cx = axs[2]
     tf = d.col("fields", "x_LL^0")
     xf = d.col("fields", "x_LL^1")

@@ -1,8 +1,10 @@
-Revision_SuperLoop, folder test2, program `t2_solve.py` (Test 2, item 3): the self-test of the lattice operator of the Python solver
-4 of 4 checks passed
+Revision_SuperLoop, folder test2, program `t2_solve.py` (Test 2, item 3): the self-test of the lattice operator, of the time integration and of the examples of the Python solver
+6 of 6 checks passed
 self-test of t2_solve.py
 [PASS] the sparse lattice operator equals the site-by-site implementation (3 x 4 x 2 sites, random links, potentials and pair field, periodic and wall directions): largest deviation 7.2e-15
 [PASS] it is Hermitian: largest deviation 0.0e+00
 [PASS] the closed form of the links equals the matrix exponential exp(-i dx (g_v a.tau/2 + g_F b)) (20 random potentials): largest deviation 2.2e-16
 [PASS] plane waves in constant potentials: the 256 eigenvalues of a ring of 16 sites are the energies of check AS-1 (largest deviation 1.4e-14)
+[PASS] the time integration with CVODE: the eigenvector of the largest eigenvalue E = 7.258866 of the operator of check 1 evolves as exp(-i E x^0) up to x^0 = 20: largest deviation 1.1e-09 (bound: 10 times the accumulated local error permitted by CVODE, 5.1e-08; 3009 steps)
+[PASS] the 7 examples of this program are identical to the input files of the folder test2/examples (7 of 7)
 self-test: ALL PASS

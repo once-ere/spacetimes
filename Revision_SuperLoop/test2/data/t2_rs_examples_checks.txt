@@ -1,18 +1,18 @@
 Revision_SuperLoop, folder test2, program `t2_examples_check.py` (Test 2, items 3 and 5): checks of the solutions of the seven examples by the Rust solver against independent predictions
 11 of 11 checks passed
-EX-1 packet_free: fitted velocity 0.96413792; group velocity of (2.37) averaged over the Gaussian distribution of momenta 0.96405883; at the central momentum 0.97555149; largest deviation of the centre from the straight line 1.34e-05
+EX-1 packet_free: fitted velocity 0.96413818; group velocity of (2.37) averaged over the Gaussian distribution of momenta 0.96405883; at the central momentum 0.97555149; largest deviation of the centre from the straight line 1.34e-05
 EX-2 cyclotron: B_up = 0.1800, magnetic length 2.3570, energy 0.806853, mean Landau index (E^2 - m^2)/(2 B_up) = 1.364; Landau levels (3.32) ['0.4000', '0.7211', '0.9381', '1.1136', '1.2649', '1.4000']; the centre returns closest to its start at x^0 = 31.10 (distance 1.280); the spacings 2 pi/(E_(n+1) - E_n) of the neighbouring levels are ['19.57', '28.96', '35.81']; the centre stays within x^1 in [8.75, 12.56], x^2 in [7.98, 13.30]
 EX-3 andreev: energy of the packet 0.073639, gap 0.600; the centre turns at x^0 = 31.15 (x^1 = 57.520) and then moves with -0.8606; final hole probability (Andreev reflection) 0.978457, particle probability (normal reflection) 0.021543; probability beyond x_s + 4 xi at the end 6.83e-06
 EX-4 kink_spectrum: 16 eigenvalues with |E| < 0.9 (m^2 + Delta_inf^2)^(1/2) = 0.9693: -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 -0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232 0.46232; the Rayleigh quotient (3.29) of the analytic bound state on this lattice is E_R = 0.465441
 EX-5 ground_state: |d| = 0.404281735110 on all sites (spread 0.0e+00); root of (3.21) 0.404281735110; smallest quasi-particle energy 0.4044936525, predicted min_q E^-(q) = 0.4044936525
 EX-6 kink_ground_state: the 12 smallest |E| are 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.03404 0.61324 0.61324 0.61324 0.61324; the first-order Wilson shift of (3.29) for the computed profile is 0.033215; the uniform gap of the periodic chain at the same G is Delta_0 = 0.598960; largest deviation of the profile from Delta_0 tanh(Delta_0 (x - x_c)) in the inner half 0.0538
-EX-7 quench: Delta before 0.484762 (root of (3.21) at G = 0.45), Delta of the ground state at the new coupling 0.503114; |d| jumps to 0.490148 at x^0 = 0 (the factor G'/G) and oscillates about the mean 0.500877 with the amplitude 0.00587 and the fitted angular frequency 1.18449; amplitude mode of the linearized equations at the mean: 1.18991 (between 2 Delta = 1.00175 and 2 E_1 = 1.44703)
-EX-8 packet_free_series.csv: largest difference 0.00e+00 (column )
-EX-8 packet_free_fields.csv: largest difference 1.00e-15 (column density_p)
-EX-8 cyclotron_series.csv: largest difference 1.00e-11 (column x_mean_1)
+EX-7 quench: Delta before 0.484762 (root of (3.21) at G = 0.45), Delta of the ground state at the new coupling 0.503114; |d| jumps to 0.490148 at x^0 = 0 (the factor G'/G) and oscillates about the mean 0.503125 with the amplitude 0.00708 and the fitted angular frequency 1.18898; amplitude mode of the linearized equations at the mean: 1.19341 (between 2 Delta = 1.00625 and 2 E_1 = 1.45014)
+EX-8 packet_free_series.csv: largest difference 1.00e-12 (column E_expect)
+EX-8 packet_free_fields.csv: largest difference 5.00e-13 (column density_p)
+EX-8 cyclotron_series.csv: largest difference 1.00e-10 (column x_mean_1)
 EX-8 cyclotron_fields.csv: largest difference 1.00e-14 (column density_p)
-EX-8 andreev_series.csv: largest difference 1.00e-12 (column norm)
-EX-8 andreev_fields.csv: largest difference 1.00e-16 (column density_p)
+EX-8 andreev_series.csv: largest difference 1.00e-10 (column x_mean_1)
+EX-8 andreev_fields.csv: largest difference 1.00e-13 (column density_p)
 EX-8 kink_spectrum_series.csv: largest difference 0.00e+00 (column )
 EX-8 kink_spectrum_fields.csv: largest difference 1.00e-16 (column density_p)
 EX-8 kink_spectrum_spectrum.csv: largest difference 0.00e+00 (column )
@@ -23,17 +23,17 @@ EX-8 kink_ground_state_series.csv: largest difference 2.01e-12 (column change); 
 EX-8 kink_ground_state_fields.csv: largest difference 0.00e+00 (column )
 EX-8 kink_ground_state_spectrum.csv: largest difference 0.00e+00 (column )
 EX-8 quench_series.csv: largest difference 1.00e-09 (column E_MF)
-EX-8 quench_fields.csv: largest difference 7.28e-15 (column d2_re)
+EX-8 quench_fields.csv: largest difference 1.00e-12 (column d3_re)
 EX-8 quench_spectrum.csv: largest difference 0.00e+00 (column )
 checks:
 [PASS] EX-1 the free packet moves uniformly with the averaged group velocity of the lattice dispersion (2.37): relative deviation 8.2e-05 (allowed 1e-3: the spinor of the packet varies slightly across its momenta)
-[PASS] EX-2 norm and energy of the packet in the magnetic field are conserved (largest changes 2.9e-07, 3.6e-07)
+[PASS] EX-2 norm and energy of the packet in the magnetic field are conserved (largest changes 2.6e-09, 3.2e-09)
 [PASS] EX-2 the orbit is bounded by the magnetic field and stays away from the walls (more than 2 from each wall)
 [PASS] EX-3 below the gap (|E| = 0.0736 < 0.60) the packet is reflected: it moves back (velocity -0.8606), and only 6.8e-06 of it is found inside the superfluid region (allowed 1e-4: the components of the packet with energies above the gap, more than four standard deviations of its energy distribution away, pass the interface)
 [PASS] EX-3 the reflection is mainly Andreev reflection: the reflected packet is a hole with probability 0.9785
 [PASS] EX-4 exactly 16 bound states (8 at positive, 8 at negative energy), within 0.0031 of +-E_R (the Kato-Temple bound 0.023 of check AS-9)
 [PASS] EX-5 the self-consistent pair field is the root of the lattice gap equation (3.21) (deviation 2.6e-13), and the gap of the spectrum is min_q E^-(q) (deviation 4.0e-13)
 [PASS] EX-6 the self-consistent kink carries 8 bound states (four at each sign, as (3.28) gives for one wall) at the energy 0.03404, within 2.5 per cent of the first-order Wilson shift 0.03321 (the next order is of relative size r_W dx Delta_0 = 0.30; allowed 25 per cent)
-[PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 4.56e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
-[PASS] EX-7 the fermion number is constant along the whole evolution (largest change 2.4e-11)
-[PASS] EX-8 the two solvers give the same numbers in all 18 output files: the solutions, spectra and time series agree to 1.0e-09 (allowed 1e-7: rounding errors, amplified by the time stepping), and the histories of the self-consistent iterations (the same number of iterations) to 1.8e-07 (allowed 1e-5: the intermediate iterates of the Anderson method depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; the fixed point does not)
+[PASS] EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) mode of the linearized equations: relative deviation 3.71e-03 (allowed 1e-2: terms of second order in the amplitude and the weaker modes)
+[PASS] EX-7 the fermion number is constant along the whole evolution up to the accumulated local error of CVODE: largest change 1.3e-08 (bound 1.5e-05: 2 ||W_modes|| x 10 x steps sqrt(2) (rtol ||W_modes|| + atol sqrt(n_complex)) with ||W_modes|| = sqrt(192) for the 192 orthonormal modes of 384 components, n_complex = 73728, 2289 steps)
+[PASS] EX-8 the two solvers give the same numbers in all 18 output files: the solutions, spectra and time series agree to 1.0e-09 (allowed 1e-7: rounding errors, amplified by the adaptive time integration), and the histories of the self-consistent iterations (the same number of iterations) to 1.8e-07 (allowed 1e-5: the intermediate iterates of the Anderson method depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; the fixed point does not)

@@ -14,15 +14,21 @@ operator H_lat with the link matrices (the covariant central difference) and the
 
 Tasks (the key `task` of the input file):
   evolve        the time evolution of one mode in prescribed fields (gauge potentials that may depend on the
-                site and on the time, magnetic fields, a pair field): i dw/dx^0 = H_lat w, integrated with the
-                classical Runge-Kutta method of fourth order (RK4);
+                site and on the time, magnetic fields, a pair field): i dw/dx^0 = H_lat w, integrated with
+                CVODE (SUNDIALS 7.8.0, the variable-order, variable-step Adams-Moulton integrator);
   spectrum      all eigenvalues of H_lat in prescribed fields, and the densities of the eigenvectors in an
                 energy window (bound states);
   ground_state  the self-consistent mean-field ground state: the pair field d^iota(site) that equals
                 -(G/2) Pi^iota(site)/dx^D for the positive-energy eigenvectors of H_lat, found by iteration;
   quench        the self-consistent time evolution of all positive-energy modes of a ground state after the
-                coupling G is changed at x^0 = 0 (and, optionally, a pulse of a gauge field), integrated with the
-                implicit midpoint rule, which keeps the modes orthonormal and the fermion number constant exactly.
+                coupling G is changed at x^0 = 0 (and, optionally, a pulse of a gauge field), integrated with
+                CVODE as well (all modes at once, the pair field computed from the modes at every evaluation).
+
+The time integration.  Both tasks that evolve in time call CVODE of SUNDIALS 7.8.0 in pure Rust (vendored in
+PROJECT spacetimes) through the shared library libt2cvode of the crate test2/rust/t2cvode_c: the same integrator,
+with the same settings and the same error weights of complex components, as the Rust solver t2_solve.  Build the
+library once with 'cargo build --release' in the folder test2/rust; this program looks for it in the environment
+variable T2CVODE_LIB (the path of the file), then in test2/rust/target/release and in $CARGO_TARGET_DIR/release.
 
 Usage:
   python3 t2_solve.py                         guidance, then the program asks for the input file
@@ -37,12 +43,15 @@ Usage:
                                               (and write the result into the file REPORT)
   python3 t2_solve.py --keys-md FILE          write the table of all keys of the input file (Markdown) into FILE
 
-Requirements: Python 3.8 or later, numpy and scipy.  The program and its companions (t2_plot.py, and the Rust
-programs t2_solve and t2_plot of items [5] and [6]) use the same input format and the same output files.
+Requirements: Python 3.8 or later, numpy and scipy, and the shared library libt2cvode (libt2cvode.so on Linux,
+libt2cvode.dylib on macOS) built from test2/rust (see above).  The program and its companions (t2_plot.py, and the
+Rust programs t2_solve and t2_plot of items [5] and [6]) use the same input format and the same output files.
 """
 
+import ctypes
 import math
 import os
+import re
 import sys
 import time
 
@@ -50,7 +59,7 @@ import numpy as np
 import scipy.sparse as sps
 
 PROGRAM = "t2_solve.py"
-FORMAT = "t2in 1"
+FORMAT = "t2in 2"
 
 # ============================================================================ the matrices
 # The conventions of t2core/src/model.rs (and of the document of Test 2, Section 2): the bi-quaternion
@@ -97,7 +106,7 @@ I4 = np.eye(4, dtype=complex)
 # ============================================================================ the input file
 # Each entry: key -> (kind, default, explanation).  The default None means: required (for the tasks that use it).
 SPEC = {
-    "format": ("str", None, "the format of the file; must be 't2in 1'"),
+    "format": ("str", None, "the format of the file; must be 't2in 2'"),
     "title": ("str", "", "a free title of the problem"),
     "task": ("choice:evolve,spectrum,ground_state,quench", None, "what to solve (see the guide)"),
     "output": ("str", "", "the base name of the output files, relative to the folder of the input file "
@@ -141,10 +150,17 @@ SPEC = {
     "pair_seed": ("int", "1", "the seed of the random pair field (pair = random)"),
     "pair_file": ("str", "", "a file with the pair field (pair = file): one line per site, in the order of "
                              "the sites, with d1_re d1_im d2_re d2_im d3_re d3_im"),
-    "time_step": ("float+", None, "the time step dt (evolve, quench)"),
-    "steps": ("int+", None, "the number of time steps (evolve, quench)"),
-    "output_every": ("int+", "0", "write the fields on the sites every this many steps (0: about 50 outputs); the time "
-                                  "series is written at every step"),
+    "output_step": ("float+", None, "the interval of the time series: the state is written at the times x^0 = 0, "
+                                    "output_step, 2 output_step, ..., outputs x output_step (evolve, quench); CVODE "
+                                    "chooses its own internal steps between these times"),
+    "outputs": ("int+", None, "the number of output intervals: the evolution ends at x^0 = outputs x output_step "
+                              "(evolve, quench)"),
+    "fields_every": ("int+", "0", "write the fields on the sites every this many outputs (0: about 50 times); the time "
+                                  "series is written at every output"),
+    "rtol": ("float+", "1e-12", "the relative tolerance of CVODE: the error weight of a complex component w_cmp of the "
+                                "state is the inverse of (rtol times the modulus of w_cmp, plus atol) (evolve, quench)"),
+    "atol": ("float+", "1e-14", "the absolute tolerance of CVODE: components smaller than this count as zero in the "
+                                "error test (evolve, quench)"),
     "initial": ("choice:packet,eigenmode,file", "packet", "the initial mode of the task evolve"),
     "packet_center": ("floats3", "", "the centre of the Gaussian packet (x^1 x^2 x^3; default the centre of "
                                      "the lattice)"),
@@ -174,14 +190,14 @@ SPEC = {
 }
 
 TASK_KEYS = {
-    "evolve": {"time_step", "steps"},
+    "evolve": {"outputs", "output_step"},
     "spectrum": set(),
     "ground_state": {"coupling"},
-    "quench": {"coupling", "quench_coupling", "time_step", "steps"},
+    "quench": {"coupling", "quench_coupling", "outputs", "output_step"},
 }
 
 GUIDE = r"""
-THE TEST 2 SOLVER -- GUIDE TO THE INPUT FILE (format t2in 1)
+THE TEST 2 SOLVER -- GUIDE TO THE INPUT FILE (format t2in 2)
 
 What is solved.  The mean-field field equations of the self-interacting spinor field on the lattice:
     i dw/dx^0 = H_lat w,     H_lat = [[h_lat - V0 - mu, P], [P^dag, -conj(h_lat - V0 - mu)]],
@@ -225,12 +241,25 @@ The pair field.  'pair = none | uniform | kink | kink_antikink | step | random |
 Delta_inf tanh((x^1 - x_w)/ell_K); kink_antikink is Delta_inf tanh((x^1 - x_1)/ell_K) tanh((x_2 - x^1)/ell_K);
 step is Delta (1 + tanh((x^1 - x_s)/ell_K))/2 (a superfluid on the right, a normal region on the left).
 
-Time stepping.  'time_step' dt and 'steps'.  Hbound = (number of active directions)(1 + 2 r_W)/dx + |m| + |mu|
-+ max|V0| + max sum|d^iota| is an upper bound of the eigenvalue magnitudes of H_lat.  The task evolve uses
-RK4, which is stable for dt Hbound < 2.83; the program requires dt Hbound <= 2.5.  The error per step of a
-component of energy E is about (E dt)^5/120 in the phase and (E dt)^6/144 in the modulus.  The task quench
-uses the implicit midpoint rule, solved by a fixed-point iteration that contracts by about dt Hbound/2 per
-pass; the program requires dt Hbound <= 1 (Hbound with the pair field allowed to grow by one half).
+Time integration.  Both tasks that evolve in time (evolve, quench) integrate the equations with CVODE, the
+variable-order, variable-step integrator of SUNDIALS 7.8.0 (in pure Rust, vendored in PROJECT spacetimes; this
+program calls it through the shared library libt2cvode of the crate test2/rust/t2cvode_c): Adams-Moulton
+formulas of the orders 1 to 12, the corrector solved by fixed-point iteration, and a test of the estimated local
+error of every step,
+    sqrt( (1/(2 n_complex)) sum over w_cmp of |error of w_cmp|^2 / (rtol |w_cmp| + atol)^2 ) <= 1
+(the sum over the n_complex complex components w_cmp of the state, the real and imaginary parts of every
+component weighted alike).  CVODE chooses its
+step sizes and orders itself; 'output_step' and 'outputs' only give the output times x^0 = 0, output_step,
+2 output_step, ..., at which the state is written (by the interpolating polynomial of CVODE), and 'rtol'
+(default 1e-12) and 'atol' (default 1e-14) the accuracy.  The quench integrates all modes at once, with the pair field computed from the modes at
+every evaluation of the right side.  The exact equations conserve the norm of a mode (evolve), the fermion
+number and the orthonormality of the modes (quench); CVODE keeps them up to the accumulated local error that its
+error test permits, (number of steps) sqrt(2) (rtol ||w_lat|| + atol sqrt(n_complex)) for a state w_lat of the
+norm ||w_lat||, and the program checks the change of the norm against 10 times this amount (the change of the
+fermion number against 2 ||W|| times that, of the orthonormality against 2 times that; the true local error may
+exceed the estimate of CVODE by a modest factor).  Hbound = (number of active directions)(1 + 2 r_W)/dx + |m| +
+|mu| + max|V0| + max sum|d^iota|, an upper bound of the eigenvalue magnitudes of H_lat, is reported.
+The format t2in 1 (with the keys time_step, steps and output_every of a fixed-step method) is not accepted.
 
 Output.  'output = NAME' (default: the name of the input file), or '--out NAME' on the command line.  The
 program writes NAME_summary.txt (the problem, the checks and the results), NAME_series.csv (quantities
@@ -242,7 +271,7 @@ The keys:
 
 EXAMPLES = {
     "packet_free": ("a free Gaussian packet of positive energy on a ring (group velocity)", """\
-format = t2in 1
+format = t2in 2
 title = a free Gaussian wave packet on a ring
 task = evolve
 sites = 128 1 1
@@ -258,12 +287,12 @@ packet_branch = positive
 packet_spin = up
 packet_isospin = up
 packet_part = particle
-time_step = 0.05
-steps = 600
-output_every = 20
+output_step = 0.05
+outputs = 600
+fields_every = 20
 """),
     "cyclotron": ("a packet in a magnetic field on a 40 x 40 lattice with walls (cyclotron orbit)", """\
-format = t2in 1
+format = t2in 2
 title = a wave packet in a constant magnetic field (cyclotron motion)
 task = evolve
 sites = 40 40 1
@@ -279,12 +308,12 @@ packet_momentum = 0.6 0 0
 packet_branch = positive
 packet_spin = up
 packet_isospin = up
-time_step = 0.05
-steps = 720
-output_every = 80
+output_step = 0.05
+outputs = 720
+fields_every = 80
 """),
     "andreev": ("a particle hitting a superfluid region: Andreev reflection into a hole", """\
-format = t2in 1
+format = t2in 2
 title = Andreev reflection of a particle at a normal-superfluid interface
 task = evolve
 sites = 240 1 1
@@ -305,12 +334,12 @@ packet_branch = positive
 packet_spin = up
 packet_isospin = up
 packet_part = particle
-time_step = 0.05
-steps = 1200
-output_every = 40
+output_step = 0.05
+outputs = 1200
+fields_every = 40
 """),
     "kink_spectrum": ("the spectrum of a ring with a kink and an antikink of the pair field (bound states)", """\
-format = t2in 1
+format = t2in 2
 title = bound states of a kink and an antikink of the pair field
 task = spectrum
 sites = 60 1 1
@@ -327,7 +356,7 @@ spectrum_window = -0.8 0.8
 spectrum_max_states = 16
 """),
     "ground_state": ("the self-consistent uniform superfluid of a chain (compare with the lattice gap equation)", """\
-format = t2in 1
+format = t2in 2
 title = the self-consistent uniform polar superfluid of a chain
 task = ground_state
 sites = 32 1 1
@@ -344,7 +373,7 @@ tolerance = 1e-11
 max_iterations = 400
 """),
     "kink_ground_state": ("a self-consistent kink of the pair field between two walls (massless charges)", """\
-format = t2in 1
+format = t2in 2
 title = a self-consistent kink of the pair field
 task = ground_state
 sites = 40 1 1
@@ -363,7 +392,7 @@ tolerance = 1e-10
 max_iterations = 400
 """),
     "quench": ("a quench of the coupling: the amplitude (Higgs) oscillation of the pair field", """\
-format = t2in 1
+format = t2in 2
 title = a quench of the coupling of the uniform superfluid
 task = quench
 sites = 24 1 1
@@ -379,9 +408,9 @@ pair_amplitude = 0.5
 mixing = 0.6
 tolerance = 1e-12
 max_iterations = 400
-time_step = 0.04
-steps = 600
-output_every = 25
+output_step = 0.04
+outputs = 600
+fields_every = 25
 """),
 }
 
@@ -440,7 +469,7 @@ def parse_value(key, kind, text):
             return int(t)
         if kind == "int+":
             v = int(t)
-            if v < 0 or (v == 0 and key != "output_every"):
+            if v < 0 or (v == 0 and key != "fields_every"):
                 raise InputError("'%s' must be a positive integer" % key)
             return v
         if kind == "int0123":
@@ -482,6 +511,15 @@ def read_input(path):
     """Read an input file into a dictionary of checked values (with the defaults filled in)."""
     if not os.path.isfile(path):
         raise InputError("there is no file '%s'" % path)
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    for line in text.splitlines():
+        s = line.split("#", 1)[0]
+        if "=" in s and s.split("=", 1)[0].strip() == "format" and s.split("=", 1)[1].strip() == "t2in 1":
+            raise InputError("the format 't2in 1' (with the keys time_step, steps and output_every of a fixed-step method) "
+                             "is no longer accepted: the time integration is done by CVODE; write 'format = t2in 2' and "
+                             "replace time_step by output_step, steps by outputs and output_every by fields_every "
+                             "(optional: rtol, atol)")
     raw = {}
     with open(path, encoding="utf-8") as f:
         for no, line in enumerate(f, 1):
@@ -1050,6 +1088,158 @@ def meta_lines(cfg, lat):
             ("mu", "%g" % lat.mu), ("g_v", "%g" % cfg["g_v"]), ("g_F", "%g" % cfg["g_F"])]
 
 
+# ============================================================================ the time integration (CVODE)
+# The tasks evolve and quench integrate dw/dx^0 = F(x^0, w) with CVODE, the variable-order, variable-step linear
+# multistep integrator of SUNDIALS 7.8.0 in pure Rust (vendored in PROJECT spacetimes, vendor/sundials_rs-7.8.0),
+# through the shared library libt2cvode of the crate test2/rust/t2cvode_c.  That library calls the module
+# t2core::cvode of the Rust programs, so that both solvers integrate with the same method, the same settings and the
+# same error test: Adams-Moulton formulas of the orders 1 to 12, the corrector of every step solved by fixed-point
+# iteration, and the estimated local error e of every step bounded by
+#     sqrt( (1/(2n)) sum_k |e_k|^2 / (rtol |w_k| + atol)^2 ) <= 1
+# for the n complex unknowns w_k (the real and the imaginary part of a component carry the same error weight
+# 1/(rtol |w_k| + atol), so that the test does not depend on the phase of w_k).  The functions of the library are
+# called with the standard module ctypes; the state is handed over as 2n doubles (Re w_0, Im w_0, Re w_1, ...), the
+# memory layout of a numpy array of the type complex128, so that numpy views it without copying.
+
+_RHS = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_double, ctypes.POINTER(ctypes.c_double), ctypes.POINTER(ctypes.c_double),
+                        ctypes.c_size_t, ctypes.c_void_p)
+_OUT = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_size_t, ctypes.c_double, ctypes.POINTER(ctypes.c_double), ctypes.c_size_t,
+                        ctypes.c_void_p)
+
+
+class _CvStats(ctypes.Structure):
+    """the counters of one integration (the C structure t2cv_stats of the library)"""
+    _fields_ = [("nsteps", ctypes.c_int64), ("nfevals", ctypes.c_int64), ("netfails", ctypes.c_int64),
+                ("nniters", ctypes.c_int64), ("nncfails", ctypes.c_int64), ("qlast", ctypes.c_int64),
+                ("hlast", ctypes.c_double)]
+
+
+_CVLIB = []  # the loaded library and its path, once found
+
+
+def cvode_library():
+    """The shared library libt2cvode (loaded once): the path in the environment variable T2CVODE_LIB, else
+    test2/rust/target/release, else $CARGO_TARGET_DIR/release.  Returns (library, path)."""
+    if _CVLIB:
+        return _CVLIB[0]
+    name = {"darwin": "libt2cvode.dylib", "win32": "t2cvode.dll"}.get(sys.platform, "libt2cvode.so")
+    here = os.path.dirname(os.path.abspath(__file__))
+    cands = []
+    if os.environ.get("T2CVODE_LIB"):
+        cands.append(os.environ["T2CVODE_LIB"])
+    cands.append(os.path.join(here, "..", "rust", "target", "release", name))
+    if os.environ.get("CARGO_TARGET_DIR"):
+        cands.append(os.path.join(os.environ["CARGO_TARGET_DIR"], "release", name))
+    for path in cands:
+        if os.path.isfile(path):
+            lib = ctypes.CDLL(os.path.abspath(path))
+            dp = ctypes.POINTER(ctypes.c_double)
+            lib.t2cv_integrate.restype = ctypes.c_int
+            lib.t2cv_integrate.argtypes = [ctypes.c_size_t, dp, ctypes.c_double, dp, ctypes.c_size_t, ctypes.c_int,
+                                           ctypes.c_double, ctypes.c_double, ctypes.c_int, ctypes.c_int64, _RHS, _OUT,
+                                           ctypes.c_void_p, ctypes.POINTER(_CvStats), ctypes.c_char_p, ctypes.c_size_t]
+            lib.t2cv_describe.restype = ctypes.c_int
+            lib.t2cv_describe.argtypes = [ctypes.c_int, ctypes.c_double, ctypes.c_double, ctypes.c_int, ctypes.c_char_p,
+                                          ctypes.c_size_t]
+            lib.t2cv_error_budget.restype = ctypes.c_double
+            lib.t2cv_error_budget.argtypes = [ctypes.c_double, ctypes.c_double, ctypes.c_int64, ctypes.c_size_t,
+                                              ctypes.c_double]
+            _CVLIB.append((lib, os.path.abspath(path)))
+            return _CVLIB[0]
+    raise InputError("the shared library %s of the time integration with CVODE was not found (looked for: %s); build it "
+                     "with 'cargo build --release' in the folder test2/rust, or set the environment variable T2CVODE_LIB "
+                     "to the path of the file" % (name, ", ".join(cands)))
+
+
+def py_exponents(text):
+    """The exponents of the Rust format '{:e}' ('1e-12', '1.5e-7', '0.0e0') as Python writes them ('1e-12', '1.5e-07',
+    '0.0e+00'), exactly as the function py_exponents of the Rust solver, so that the reports of the two solvers read
+    alike."""
+    return re.sub(r"(?<=[0-9])e(-?)([0-9]+)(?![0-9A-Za-z])",
+                  lambda m: "e%s%s" % ("-" if m.group(1) else "+", m.group(2).rjust(2, "0")), text)
+
+
+class CvodeSettings:
+    """The settings of one integration with CVODE, as t2core::cvode::CvodeSettings of the Rust programs: the Adams-
+    Moulton formulas up to the order 12 (lmm 0; or BDF up to the order 5, lmm 1) with fixed-point iteration, the
+    tolerances rtol and atol, and at most max_steps internal steps between two output times."""
+
+    def __init__(self, rtol, atol, lmm=0, max_order=None, max_steps=10_000_000):
+        self.rtol, self.atol, self.lmm = float(rtol), float(atol), int(lmm)
+        self.max_order = (12 if self.lmm == 0 else 5) if max_order is None else int(max_order)
+        self.max_steps = int(max_steps)
+
+    def describe(self):
+        """the one-line description that the Rust programs print (CvodeSettings::describe), from the library"""
+        lib, _ = cvode_library()
+        buf = ctypes.create_string_buffer(1024)
+        code = lib.t2cv_describe(self.lmm, self.rtol, self.atol, self.max_order, buf, len(buf))
+        text = buf.value.decode("utf-8")
+        if code != 0:
+            raise InputError("invalid settings of CVODE: %s" % text)
+        return py_exponents(text)
+
+    def error_budget(self, nsteps, n, norm):
+        """the accumulated local error nsteps sqrt(2) (rtol norm + atol sqrt(n)) that the error test of CVODE permits
+        after nsteps steps for a state of n complex unknowns and of the 2-norm norm (CvodeSettings::error_budget)"""
+        lib, _ = cvode_library()
+        return float(lib.t2cv_error_budget(self.rtol, self.atol, int(nsteps), int(n), float(norm)))
+
+
+def cvode_describe_stats(st):
+    """the line of the counters, as CvodeStats::describe of the Rust programs"""
+    return ("%d steps, %d evaluations of the right side, %d rejected steps, %d corrector iterations (%d convergence "
+            "failures), last order %d, last step %.4e" % (st["nsteps"], st["nfevals"], st["netfails"], st["nniters"],
+                                                          st["nncfails"], st["qlast"], st["hlast"]))
+
+
+def cvode_integrate(w0, t0, touts, settings, rhs, out):
+    """Integrates dw/dt = rhs(t, w) with CVODE from w(t0) = w0 and calls out(i, t_i, w(t_i)) for every output time t_i of
+    touts (increasing, not below t0; an output time equal to t0 gives w0 itself).  w0 is a complex array of any shape
+    (a vector for one mode, the matrix components x modes of the quench); rhs(t, w) returns dw/dt as an array of the
+    shape of w.  The arrays handed to rhs and out are views of the memory of the library, valid only during the call.
+    Returns the counters of CVODE (a dictionary).  A failure of CVODE raises InputError; an exception raised in rhs or
+    out stops the integration and is raised again here."""
+    lib, _ = cvode_library()
+    w0 = np.ascontiguousarray(w0, dtype=np.complex128)
+    shape, n = w0.shape, w0.size
+    tv = np.ascontiguousarray(touts, dtype=np.float64)
+    errors = []
+
+    def view(ptr):
+        """the 2n doubles at ptr as a complex array of the shape of w0 (no copy)"""
+        return np.ctypeslib.as_array(ptr, shape=(2 * n,)).view(np.complex128).reshape(shape)
+
+    def c_rhs(t, wp, dwp, nn, user):
+        try:
+            view(dwp)[...] = rhs(t, view(wp))
+            return 0
+        except BaseException as e:  # raised again after the integration
+            errors.append(e)
+            return -1
+
+    def c_out(i, t, wp, nn, user):
+        try:
+            out(int(i), float(t), view(wp))
+            return 0
+        except BaseException as e:  # raised again after the integration
+            errors.append(e)
+            return 1
+
+    f_rhs, f_out = _RHS(c_rhs), _OUT(c_out)  # the callbacks must stay alive during the call
+    st = _CvStats()
+    msg = ctypes.create_string_buffer(2048)
+    dp = ctypes.POINTER(ctypes.c_double)
+    code = lib.t2cv_integrate(n, w0.ctypes.data_as(dp), float(t0), tv.ctypes.data_as(dp), len(tv), settings.lmm,
+                              settings.rtol, settings.atol, settings.max_order, settings.max_steps, f_rhs, f_out, None,
+                              ctypes.byref(st), msg, len(msg))
+    if errors:
+        raise errors[0]
+    if code != 0:
+        raise InputError("the time integration with CVODE failed: %s" % py_exponents(msg.value.decode("utf-8", "replace")))
+    return {k: getattr(st, k) for k, _ in _CvStats._fields_}
+
+
 # ============================================================================ the tasks
 def task_evolve(cfg, lat, gauge, d, rep, base):
     Hp = build_hp(lat, d)
@@ -1068,13 +1258,14 @@ def task_evolve(cfg, lat, gauge, d, rep, base):
     H = H_at(0.0)
     herm = hermiticity(H)
     rep.check(herm < 1e-13, "the lattice operator H_lat is Hermitian (largest deviation %.1e)" % herm)
-    dt, steps = cfg["time_step"], cfg["steps"]
-    every = cfg["output_every"] or max(1, steps // 50)
+    # the output grid: the time series at x^0 = k output_step (k = 0 .. outputs), the fields every fields_every outputs;
+    # CVODE chooses its own internal steps between the output times
+    ostep, nout = cfg["output_step"], cfg["outputs"]
+    every = cfg["fields_every"] or max(1, nout // 50)
+    sett = CvodeSettings(cfg["rtol"], cfg["atol"])
     hb = norm_bound(lat, gauge.vmax(), d)
-    rep.add("time stepping: RK4, dt = %g, steps = %d, output every %d steps, Hbound = %.6g, dt Hbound = %.4g (RK4 is "
-            "stable below 2.83; required <= 2.5)" % (dt, steps, every, hb, dt * hb))
-    if dt * hb > 2.5:
-        raise InputError("dt Hbound = %.3g exceeds 2.5: choose time_step below %.4g" % (dt * hb, 2.5 / hb))
+    rep.add("time integration: %s; output every %g up to x^0 = %g (%d outputs), fields every %d outputs; Hbound = %.6g"
+            % (sett.describe(), ostep, ostep * nout, nout, every, hb))
     if cfg["initial"] == "packet":
         w = packet_mode(cfg, lat)
         q = cfg["packet_momentum"]
@@ -1101,12 +1292,13 @@ def task_evolve(cfg, lat, gauge, d, rep, base):
         w = w / np.linalg.norm(w)
         rep.add("initial mode: from the file %s" % cfg["initial_file"])
     ns = lat.ns
+    n = 16 * ns
     series, fields = [], []
     e0 = float(np.real(np.vdot(w, H @ w)))
     stats = {"dn": 0.0, "de": 0.0}
 
     def record(t, w, with_fields):
-        """the series at every step; the fields on the sites at the output steps"""
+        """the series at every output time; the fields on the sites every fields_every outputs"""
         w2 = np.abs(w.reshape(ns, 16)) ** 2
         rp, rh = w2[:, :8].sum(1), w2[:, 8:].sum(1)
         rup = w2[:, 0:8:2].sum(1)  # the particle components with isospin up
@@ -1120,28 +1312,29 @@ def task_evolve(cfg, lat, gauge, d, rep, base):
         stats["dn"] = max(stats["dn"], abs(nrm - 1.0))
         stats["de"] = max(stats["de"], abs(e - e0))
 
+    def rhs(t, wv):
+        """the right side of CVODE, dw/dx^0 = -i H_lat(x^0) w (one operator for static fields)"""
+        return -1j * (H_at(t) @ wv)
+
+    touts = [0.0 + k * ostep for k in range(nout + 1)]
     t0 = time.time()
-    record(0.0, w, True)
-    for step in range(1, steps + 1):
-        t = (step - 1) * dt
-        Ha, Hm, Hb = H_at(t), H_at(t + 0.5 * dt), H_at(t + dt)
-        k1 = -1j * (Ha @ w)
-        k2 = -1j * (Hm @ (w + 0.5 * dt * k1))
-        k3 = -1j * (Hm @ (w + 0.5 * dt * k2))
-        k4 = -1j * (Hb @ (w + dt * k3))
-        w = w + dt / 6.0 * (k1 + 2 * k2 + 2 * k3 + k4)
-        record(step * dt, w, step % every == 0 or step == steps)
+    st = cvode_integrate(w, 0.0, touts, sett, rhs, lambda i, t, wv: record(t, wv, i % every == 0 or i == nout))
     el = time.time() - t0
-    # the RK4 loss of norm: per step at most about (Hbound dt)^6/144 for the component of the largest energy
-    loss_est = steps * (hb * dt) ** 6 / 144.0
-    rep.check(stats["dn"] < max(loss_est, 1e-10),
-              "the norm of the mode is conserved: largest change %.2e (the bound of the RK4 loss, steps (Hbound dt)^6/144, is "
-              "%.1e)" % (stats["dn"], loss_est))
+    rep.add("CVODE: %s" % cvode_describe_stats(st))
+    # the accumulated local error that the error test of CVODE permits, steps sqrt(2) (rtol ||w|| + atol sqrt(n)) with
+    # ||w|| = 1 and n complex unknowns (CvodeSettings.error_budget).  CVODE estimates the local error of a step from the
+    # difference of the predicted and the corrected solution; the true error may exceed the estimate by a modest factor,
+    # and the checks allow 10 times the budget: the norm of the mode, which the exact evolution conserves, may change by
+    # at most 10 budget, the energy <w_lat|H_lat|w_lat> (static fields) by 2 Hbound times that
+    budget = sett.error_budget(st["nsteps"], n, 1.0)
+    rep.check(stats["dn"] < 10.0 * budget,
+              "the norm of the mode is conserved: largest change %.2e (bound: 10 times the accumulated local error permitted "
+              "by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = %.1e)" % (stats["dn"], 10.0 * budget))
     if gauge.static:
-        tol_e = max(1e-9, loss_est) * max(1.0, abs(e0), hb)
-        rep.check(stats["de"] < tol_e, "the energy <w|H_lat|w> = %.10g is conserved (static fields): largest change %.2e "
-                                       "(bound %.1e)" % (e0, stats["de"], tol_e))
-    rep.add("results: energy <w|H_lat|w> at x^0 = 0: %.12g; final norm %.12g; final P_hole = %.6g; final P_up = %.6g; "
+        tol = 20.0 * hb * budget
+        rep.check(stats["de"] < tol, "the energy <w_lat|H_lat|w_lat> = %.10g is conserved (static fields): largest change %.2e "
+                                     "(bound: 2 Hbound times the bound of the norm, %.1e)" % (e0, stats["de"], tol))
+    rep.add("results: energy <w_lat|H_lat|w_lat> at x^0 = 0: %.12g; final norm %.12g; final P_hole = %.6g; final P_up = %.6g; "
             "final centre of the density (%.6g, %.6g, %.6g); computing time %.2f s"
             % (e0, series[-1][1], series[-1][3], series[-1][4], series[-1][5], series[-1][6], series[-1][7], el))
     if cfg["initial"] == "packet" and cfg["pair"] == "none" and gauge.is_free() and \
@@ -1393,13 +1586,15 @@ def task_quench(cfg, lat, gauge, d0, rep, base):
     d, ev, vec, its, egs = ground_state(cfg, lat, gauge, d0, rep, G)
     W = vec[:, ev > 0].copy()
     M = W.shape[1]
-    dt, steps = cfg["time_step"], cfg["steps"]
-    every = cfg["output_every"] or max(1, steps // 50)
-    hb = norm_bound(lat, gauge.vmax(), 1.5 * d)
-    rep.add("time stepping: implicit midpoint rule, dt = %g, steps = %d, output every %d steps, %d modes; Hbound (with the "
-            "pair field allowed to grow by one half) = %.6g, dt Hbound = %.4g (required <= 1)" % (dt, steps, every, M, hb, dt * hb))
-    if dt * hb > 1.0:
-        raise InputError("dt Hbound = %.3g exceeds 1: choose time_step below %.4g" % (dt * hb, 1.0 / hb))
+    n = 16 * ns
+    # the output grid: the time series at x^0 = k output_step (k = 0 .. outputs), the fields every fields_every outputs;
+    # CVODE chooses its own internal steps between the output times
+    ostep, nout = cfg["output_step"], cfg["outputs"]
+    every = cfg["fields_every"] or max(1, nout // 50)
+    sett = CvodeSettings(cfg["rtol"], cfg["atol"])
+    rep.add("time integration of the %d modes (the self-consistent mean-field equations, %d complex unknowns): %s; output "
+            "every %g up to x^0 = %g (%d outputs), fields every %d outputs" % (M, n * M, sett.describe(), ostep,
+                                                                              ostep * nout, nout, every))
     cacheH = {}
 
     def H0_at(t):
@@ -1429,10 +1624,10 @@ def task_quench(cfg, lat, gauge, d0, rep, base):
 
     series, fields = [], []
     dd, nf0, emf0, orth = diagnostics(W, 0.0)
-    stats = {"nf": 0.0, "emf": 0.0, "orth": orth, "iters": 0, "itsum": 0}
+    stats = {"nf": 0.0, "emf": 0.0, "orth": orth}
 
     def record(t, W, with_fields):
-        """the series at every step; the pair field on the sites at the output steps"""
+        """the series at every output time; the pair field on the sites every fields_every outputs"""
         dd, nf, emf, orth = diagnostics(W, t)
         absd = np.sqrt(np.sum(np.abs(dd) ** 2, axis=1))
         series.append((t, float(absd.mean()), float(absd[0]), nf, nf - nf0, emf, orth))
@@ -1444,46 +1639,42 @@ def task_quench(cfg, lat, gauge, d0, rep, base):
         stats["emf"] = max(stats["emf"], abs(emf - emf0))
         stats["orth"] = max(stats["orth"], orth)
 
+    def rhs(t, Wv):
+        """the right side of CVODE for all modes at once, dW/dx^0 = -i H_lat(d(W)) W, with the pair field d(W) computed
+        from the modes at every evaluation (the self-consistency of the mean field)"""
+        return force(H0_at(t), Wv)
+
+    touts = [0.0 + k * ostep for k in range(nout + 1)]
     t0 = time.time()
-    record(0.0, W, True)
-    for step in range(1, steps + 1):
-        t = (step - 1) * dt
-        H0m = H0_at(t + 0.5 * dt)
-        # the implicit midpoint rule W1 = W - i dt H_lat(d(Wm)) Wm, Wm = (W + W1)/2, solved by fixed-point iteration
-        # from the explicit Euler predictor
-        X = W + dt * force(H0m, W)
-        for k in range(1, 101):
-            Xn = W + dt * force(H0m, 0.5 * (W + X))
-            ch = float(np.max(np.abs(Xn - X)))
-            X = Xn
-            if ch < 1e-14:
-                break
-        else:
-            raise InputError("the implicit midpoint iteration did not converge at step %d (change %.1e): reduce time_step"
-                             % (step, ch))
-        stats["iters"] = max(stats["iters"], k)
-        stats["itsum"] += k
-        W = X
-        record(step * dt, W, step % every == 0 or step == steps)
+    st = cvode_integrate(W, 0.0, touts, sett, rhs, lambda i, t, Wv: record(t, Wv, i % every == 0 or i == nout))
     el = time.time() - t0
-    rep.add("the fixed-point iteration of the implicit midpoint rule needed at most %d and on average %.2f passes per step "
-            "(stopping when the largest change is below 1e-14)" % (stats["iters"], stats["itsum"] / steps))
-    rep.check(stats["nf"] < 1e-10 * max(1.0, nf0), "the fermion number N_F = %.12g is conserved by the self-consistent "
-                                                   "evolution: largest change %.2e" % (nf0, stats["nf"]))
-    rep.check(stats["orth"] < 1e-11, "the modes stay orthonormal (the Pauli principle): largest |W^dag W - 1| = %.2e"
-              % stats["orth"])
+    rep.add("CVODE: %s" % cvode_describe_stats(st))
+    # the exact equations conserve the fermion number, the orthonormality of the modes and (for static gauge fields) the
+    # functional E_MF; CVODE keeps them up to its accumulated local error, budget = steps sqrt(2) (rtol ||W|| + atol
+    # sqrt(n M)) with ||W|| = sqrt(M) for M orthonormal modes (CvodeSettings.error_budget); as in the task evolve, the
+    # checks allow 10 times the budget for the change dW of the modes.  A change dW changes N_F (a sum of squared
+    # moduli) by at most 2 ||W|| ||dW|| and an entry of W^dag W by at most 2 ||dW||.
+    budget = sett.error_budget(st["nsteps"], n * M, math.sqrt(M))
+    nf_tol = 20.0 * math.sqrt(M) * budget
+    rep.check(stats["nf"] < nf_tol, "the fermion number N_F = %.12g is conserved by the self-consistent evolution: largest "
+                                    "change %.2e (bound: 2 ||W_modes|| times 10 times the accumulated local error permitted by "
+                                    "CVODE, %.1e)" % (nf0, stats["nf"], nf_tol))
+    rep.check(stats["orth"] < 20.0 * budget, "the modes stay orthonormal (the Pauli principle): largest |W_modes^dag W_modes - 1| = %.2e "
+                                             "(bound: 2 times 10 times the accumulated local error permitted by CVODE, "
+                                             "%.1e)" % (stats["orth"], 20.0 * budget))
     if gauge.static:
-        rep.add("the conserved mean-field functional E_MF = %.12g changes by at most %.3e (the implicit midpoint rule keeps "
-                "it to second order in dt, without drift)" % (emf0, stats["emf"]))
+        rep.add("the conserved mean-field functional E_MF = %.12g changes by at most %.3e (CVODE keeps it up to its "
+                "accumulated local errors)" % (emf0, stats["emf"]))
     absd = np.array([r[1] for r in series])
     tt = np.array([r[0] for r in series])
     rep.add("results: |d| at x^0 = 0: %.10g; mean of |d| over the run after the quench %.10g; smallest and largest |d| "
             "after the quench %.10g and %.10g; computing time %.2f s"
             % (absd[0], absd[1:].mean(), absd[1:].min(), absd[1:].max(), el))
     wfit, afit = fit_frequency(tt[1:], absd[1:], 0.2, 6.0, 5801)
-    rep.add("the amplitude of the pair field oscillates with the angular frequency %.6f (least-squares fit of "
-            "a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by "
-            "a parabola; fitted amplitude %.6g); twice the mean of |d| after the quench is %.6f" % (wfit, afit, 2 * absd[1:].mean()))
+    rep.add("the amplitude of the pair field oscillates with the angular frequency %.6f (least-squares fit of a constant "
+            "plus a cosine and a sine of that angular frequency of x^0 to |d| for x^0 > 0, the angular frequency scanned from "
+            "0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude %.6g); twice the mean of |d| after the "
+            "quench is %.6f" % (wfit, afit, 2 * absd[1:].mean()))
     meta = meta_lines(cfg, lat) + [("gauge", gauge.desc), ("G", "%g" % G), ("quench_coupling", "%g" % G2)]
     write_csv(base + "_iterations.csv", "the self-consistent iteration of the initial ground state (task quench, %s)"
               % PROGRAM, meta, ["iteration", "change", "abs_d_mean", "E_GS"], its)
@@ -1623,12 +1814,47 @@ def selftest(report=None):
     ok_all &= ok
     say("[%s] plane waves in constant potentials: the 256 eigenvalues of a ring of 16 sites are the energies of check "
           "AS-1 (largest deviation %.1e)" % ("PASS" if ok else "FAIL", dev2))
+    # 4. the time integration with CVODE (through the library libt2cvode): the eigenvector v of the operator of check 1
+    #    that belongs to its largest eigenvalue E evolves as exp(-i E x^0) v; the largest deviation up to x^0 = 20 is
+    #    compared with 10 times the accumulated local error that the error test of CVODE permits
+    Hc = H.tocsr()
+    evs, vecs = np.linalg.eigh(Hc.toarray())
+    e_max, v = float(evs[-1]), vecs[:, -1].copy()
+    sett = CvodeSettings(1e-12, 1e-14)
+    worst = [0.0]
+
+    def deviation(i, t, wv):
+        """the distance of the computed state from the exact state exp(-i E x^0) v at the output time t"""
+        worst[0] = max(worst[0], float(np.linalg.norm(wv - np.exp(-1j * e_max * t) * v)))
+    try:
+        st = cvode_integrate(v, 0.0, [0.0 + k * 0.5 for k in range(41)], sett, lambda t, wv: -1j * (Hc @ wv), deviation)
+        bound = 10.0 * sett.error_budget(st["nsteps"], v.size, 1.0)
+        ok = worst[0] < bound
+        say("[%s] the time integration with CVODE: the eigenvector of the largest eigenvalue E = %.6f of the operator of "
+            "check 1 evolves as exp(-i E x^0) up to x^0 = 20: largest deviation %.1e (bound: 10 times the accumulated local "
+            "error permitted by CVODE, %.1e; %d steps)" % ("PASS" if ok else "FAIL", e_max, worst[0], bound, st["nsteps"]))
+    except InputError as e:
+        ok = False
+        say("[FAIL] the time integration with CVODE failed: %s" % e)
+    ok_all &= ok
+    # 5. the examples of this program are identical to the input files of the folder test2/examples
+    exdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "examples")
+    same = 0
+    for name in EXAMPLES:
+        path = os.path.join(exdir, name + ".t2in")
+        if os.path.isfile(path):
+            with open(path, encoding="utf-8") as f:
+                same += f.read() == example_text(name)
+    ok = same == len(EXAMPLES)
+    ok_all &= ok
+    say("[%s] the %d examples of this program are identical to the input files of the folder test2/examples (%d of %d)"
+        % ("PASS" if ok else "FAIL", len(EXAMPLES), same, len(EXAMPLES)))
     say("self-test: %s" % ("ALL PASS" if ok_all else "FAILED"))
     if report:
         checks = [s for s in lines if s.startswith("[")]
         with open(report, "w", encoding="utf-8") as f:
-            f.write("Revision_SuperLoop, folder test2, program `%s` (Test 2, item 3): the self-test of the lattice operator "
-                    "of the Python solver\n" % PROGRAM)
+            f.write("Revision_SuperLoop, folder test2, program `%s` (Test 2, item 3): the self-test of the lattice operator, "
+                    "of the time integration and of the examples of the Python solver\n" % PROGRAM)
             f.write("%d of %d checks passed\n" % (sum(1 for s in checks if s.startswith("[PASS]")), len(checks)))
             for s in lines:
                 f.write(s + "\n")
@@ -1703,14 +1929,18 @@ def list_examples():
         print("  %-18s %s" % (k, desc))
 
 
+def example_text(name):
+    """the text of the input file of the example NAME (as the function example_text of the Rust solver)"""
+    return ("# example '%s' of the Test 2 solver: %s\n# every key is explained by: python3 t2_solve.py --guide, or by the "
+            "Rust solver: t2_solve --guide\n%s" % (name, EXAMPLES[name][0], EXAMPLES[name][1]))
+
+
 def write_example(name, path=None):
     if name not in EXAMPLES:
         raise InputError("there is no example '%s'" % name)
     path = path or (name + ".t2in")
     with open(path, "w", encoding="utf-8") as f:
-        f.write("# example '%s' of the Test 2 solver: %s\n" % (name, EXAMPLES[name][0]))
-        f.write("# every key is explained by: python3 t2_solve.py --guide, or by the Rust solver: t2_solve --guide\n")
-        f.write(EXAMPLES[name][1])
+        f.write(example_text(name))
     print("wrote the example input file %s" % path)
     return path
 

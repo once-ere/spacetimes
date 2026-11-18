@@ -41,6 +41,13 @@
 //! OUTPUT.  `integrate` returns the solution at a list of output times t_1 < t_2 < ...; CVODE steps
 //! past each output time with its own step sizes and returns the value of its interpolating
 //! polynomial at the output time (itask CV_NORMAL), which has the accuracy of the method.
+//!
+//! FAILING RIGHT SIDES.  `integrate_status` is the same integration for a right side that reports a
+//! status (0 success, positive: a recoverable failure, after which CVODE retries the step with a smaller
+//! step size; negative: an unrecoverable failure, which stops the integration) and an output function
+//! that can stop the integration.  The C interface of the crate t2cvode_c, through which the Python
+//! solver t2_solve.py uses this module, needs it: a right side computed in another language can fail.
+//! `integrate` is `integrate_status` with a right side that always succeeds.
 use crate::c64::C64;
 use crate::lattice::{Fields, Lattice, Mats};
 use cvode_rs::prelude::*;
@@ -147,10 +154,15 @@ impl CvodeStats {
 /// the complex right side F(t, w, dw) (it writes dw/dt = F into dw); it owns everything it needs
 pub type ComplexRhs = Box<dyn FnMut(f64, &[C64], &mut [C64])>;
 
+/// a complex right side that reports a status: it writes dw/dt = F(t, w) into dw and returns 0 (success),
+/// a positive number (a recoverable failure: CVODE retries the step with a smaller step size) or a
+/// negative number (an unrecoverable failure: the integration stops with an error)
+pub type ComplexRhsStatus = Box<dyn FnMut(f64, &[C64], &mut [C64]) -> i32>;
+
 /// the user data that CVODE hands to the callbacks: the right side, two work vectors and the tolerances
 /// of the error-weight function
 struct RhsData {
-    f: ComplexRhs,
+    f: ComplexRhsStatus,
     w: Vec<C64>,
     dw: Vec<C64>,
     rtol: f64,
@@ -178,8 +190,9 @@ fn ewt_complex(y: &N_Vector, ewt: &N_Vector, user_data: &mut Option<Box<dyn Any>
     0
 }
 
-/// the callback of CVODE: y (real, interleaved) -> w (complex), dw = F(t, w), dw -> ydot.
-/// A failed downcast of the user data returns -1, the flag of an unrecoverable failure.
+/// the callback of CVODE: y (real, interleaved) -> w (complex), dw = F(t, w), dw -> ydot; it returns the
+/// status of the right side (0 success, positive recoverable, negative unrecoverable), and ydot is written
+/// only on success.  A failed downcast of the user data returns -1, the flag of an unrecoverable failure.
 fn rhs_trampoline(t: sunrealtype, y: &N_Vector, ydot: &N_Vector, user_data: &mut Option<Box<dyn Any>>) -> i32 {
     let data = match user_data.as_mut().and_then(|b| b.downcast_mut::<RhsData>()) {
         Some(d) => d,
@@ -192,7 +205,10 @@ fn rhs_trampoline(t: sunrealtype, y: &N_Vector, ydot: &N_Vector, user_data: &mut
             z.im = yd[2 * k + 1];
         }
     }
-    (data.f)(t, &data.w, &mut data.dw);
+    let status = (data.f)(t, &data.w, &mut data.dw);
+    if status != 0 {
+        return status;
+    }
     let mut dd = NV_DATA_S(ydot);
     for (k, z) in data.dw.iter().enumerate() {
         dd[2 * k] = z.re;
@@ -209,8 +225,30 @@ pub fn integrate(
     t0: f64,
     touts: &[f64],
     settings: &CvodeSettings,
-    f: ComplexRhs,
+    mut f: ComplexRhs,
     mut out: impl FnMut(usize, f64, &[C64]),
+) -> Result<CvodeStats, String> {
+    let g: ComplexRhsStatus = Box::new(move |t, w, dw| {
+        f(t, w, dw);
+        0
+    });
+    integrate_status(w0, t0, touts, settings, g, |i, t, w| {
+        out(i, t, w);
+        true
+    })
+}
+
+/// The integration of `integrate` for a right side that reports a status (see `ComplexRhsStatus`) and an
+/// output function `out(i, t_i, w(t_i))` that returns true to continue and false to stop the integration
+/// (the function then returns an error).  A failure of the right side makes CVODE return a negative flag,
+/// which is returned as an error.
+pub fn integrate_status(
+    w0: &[C64],
+    t0: f64,
+    touts: &[f64],
+    settings: &CvodeSettings,
+    f: ComplexRhsStatus,
+    mut out: impl FnMut(usize, f64, &[C64]) -> bool,
 ) -> Result<CvodeStats, String> {
     let n = w0.len();
     // the SUNDIALS context, the state vector y (2n real numbers) and the integrator memory
@@ -254,7 +292,9 @@ pub fn integrate(
     let mut trace = Vec::with_capacity(touts.len());
     for (i, &tout) in touts.iter().enumerate() {
         if tout == t0 {
-            out(i, t0, w0);
+            if !out(i, t0, w0) {
+                return Err(format!("the output function stopped the integration at the output time {}", tout));
+            }
             continue;
         }
         let r = CVode(&mem, tout, &y, &mut t, CV_NORMAL);
@@ -273,7 +313,9 @@ pub fn integrate(
         CVodeGetLastOrder(&mem, &mut tp.qlast);
         CVodeGetNumSteps(&mem, &mut tp.nsteps);
         trace.push(tp);
-        out(i, t, &w);
+        if !out(i, t, &w) {
+            return Err(format!("the output function stopped the integration at the output time {}", tout));
+        }
     }
     let mut st = CvodeStats { trace, ..Default::default() };
     CVodeGetNumSteps(&mem, &mut st.nsteps);
@@ -342,5 +384,30 @@ mod tests {
         .unwrap();
         assert!(worst < 1e-8, "deviation {} ({})", worst, st.describe());
         assert!(st.nsteps > 0 && st.qlast >= 1);
+    }
+
+    /// a right side that fails unrecoverably after 50 evaluations stops the integration with an error, and an
+    /// output function that returns false stops it as well
+    #[test]
+    fn failures_stop_the_integration() {
+        let touts = uniform_times(0.0, 1.0, 20);
+        let mut calls = 0;
+        let f: ComplexRhsStatus = Box::new(move |_t, w, dw| {
+            calls += 1;
+            dw[0] = c(0.0, -1.0) * w[0];
+            if calls > 50 {
+                -1
+            } else {
+                0
+            }
+        });
+        let r = integrate_status(&[C64::ONE], 0.0, &touts, &CvodeSettings::adams(1e-12, 1e-14), f, |_i, _t, _w| true);
+        assert!(r.is_err(), "the failure of the right side was not reported");
+        let g: ComplexRhsStatus = Box::new(|_t, w, dw| {
+            dw[0] = c(0.0, -1.0) * w[0];
+            0
+        });
+        let r = integrate_status(&[C64::ONE], 0.0, &touts, &CvodeSettings::adams(1e-12, 1e-14), g, |i, _t, _w| i < 3);
+        assert!(r.is_err(), "the stop of the output function was not reported");
     }
 }

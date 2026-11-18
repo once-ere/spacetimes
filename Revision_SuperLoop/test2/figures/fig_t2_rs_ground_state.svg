@@ -31,13 +31,13 @@
 <text x="270.00" y="434.00" font-size="12" fill="#1f1f1f" text-anchor="middle">x<tspan dy="-0.64em" font-size="70%">1</tspan><tspan dy="1.07em" font-size="70%">LL</tspan></text>
 <text transform="translate(38.00,240.00) rotate(-90)" font-size="12" fill="#1f1f1f" text-anchor="middle">pair field</text>
 <text x="90" y="72" font-size="12.5" fill="#1f1f1f">(a) the pair field</text>
-<rect x="198.00" y="330.00" width="345.64" height="54.00" fill="white" fill-opacity="0.85" stroke="none"/>
-<line x1="202.00" y1="342.00" x2="224.00" y2="342.00" stroke="#8a8984" stroke-width="1.6" stroke-dasharray="5,3"/>
-<text x="230.00" y="346.00" font-size="10.5" fill="#1f1f1f">|d<tspan dy="0.43em" font-size="70%">LL</tspan><tspan dy="-0.30em">|, initial guess</tspan></text>
-<line x1="202.00" y1="358.00" x2="224.00" y2="358.00" stroke="#2a78d6" stroke-width="1.7"/>
-<text x="230.00" y="362.00" font-size="10.5" fill="#1f1f1f">|d<tspan dy="0.43em" font-size="70%">LL</tspan><tspan dy="-0.30em">|, self-consistent</tspan></text>
-<line x1="202.00" y1="374.00" x2="224.00" y2="374.00" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2,3"/>
-<text x="230.00" y="378.00" font-size="10.5" fill="#1f1f1f">prediction: root of the gap equation (3.21), 0.404282</text>
+<rect x="104.36" y="330.00" width="345.64" height="54.00" fill="white" fill-opacity="0.85" stroke="none"/>
+<line x1="108.36" y1="342.00" x2="130.36" y2="342.00" stroke="#8a8984" stroke-width="1.6" stroke-dasharray="5,3"/>
+<text x="136.36" y="346.00" font-size="10.5" fill="#1f1f1f">|d<tspan dy="0.43em" font-size="70%">LL</tspan><tspan dy="-0.30em">|, initial guess</tspan></text>
+<line x1="108.36" y1="358.00" x2="130.36" y2="358.00" stroke="#2a78d6" stroke-width="1.7"/>
+<text x="136.36" y="362.00" font-size="10.5" fill="#1f1f1f">|d<tspan dy="0.43em" font-size="70%">LL</tspan><tspan dy="-0.30em">|, self-consistent</tspan></text>
+<line x1="108.36" y1="374.00" x2="130.36" y2="374.00" stroke="#1f1f1f" stroke-width="1" stroke-dasharray="2,3"/>
+<text x="136.36" y="378.00" font-size="10.5" fill="#1f1f1f">prediction: root of the gap equation (3.21), 0.404282</text>
 <clipPath id="c1"><rect x="580" y="80" width="360" height="320"/></clipPath>
 <line x1="710.91" y1="80" x2="710.91" y2="400" stroke="#e6e5e0" stroke-width="0.7"/>
 <text x="710.91" y="415.00" font-size="11" fill="#5f5e5a" text-anchor="middle">5</text>

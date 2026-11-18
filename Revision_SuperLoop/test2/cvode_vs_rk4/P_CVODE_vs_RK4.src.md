@@ -161,19 +161,21 @@ its components, the right side $-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm 
 
 | item | first version | present version |
 |:----------|:------------------------------|:------------------------------|
-| `t2core` (library) | `Lattice::rk4_step` | removed; new module `t2core::cvode` (`integrate`, `evolve_lattice`, settings, counters, error weights, error budget); dependency `cvode_rs` (path into `vendor/sundials_rs-7.8.0`) |
+| `t2core` (library) | `Lattice::rk4_step` | removed; new module `t2core::cvode` (`integrate`, `integrate_status` for a right side that can fail, `evolve_lattice`, settings, counters, error weights, error budget); dependency `cvode_rs` (path into `vendor/sundials_rs-7.8.0`) |
 | `t2_analytic` AS-2, AS-4 | RK4, $\ell^{\rm t}_{\rm LL}=0.004$ and 0.02; tolerance of the checks $10^{-8}$ | CVODE at 101 output times; tolerance of the checks $10^{-9}$; counters reported; data columns `P_up_cvode`, `P_hole_cvode` |
 | `t2_fields` GS-13 | the stability of the RK4 factor (a statement about the method); data `t2_rk4_stability.csv`, Figure 2 of Test 2 | CVODE against the exact spectral solution on the lattice of GS-10, for three tolerances, with the error budget; data `t2_cvode_accuracy.csv` |
 | `t2_solve`, task `evolve` | RK4 with the keys `time_step`, `steps`, `output_every` (input format `t2in 1`) | CVODE with `output_step`, `outputs`, `fields_every`, `rtol`, `atol` (format `t2in 2`; the format `t2in 1` is refused with an explanation); conservation checked against $10B^{\rm err}_{\rm LL}$ |
 | `t2_solve`, task `quench` | implicit midpoint rule | CVODE for all modes at once, the pair field computed from the modes at every evaluation |
 | `t2_sfbs` SB-10, SB-16 | RK4, $\ell^{\rm t}_{\rm LL}=0.02$ and 0.05 | CVODE, sampled at the same times (the sampling interval of the signal is kept) |
 | `t2_plot` | the titles "RK4 errors", "what the implicit midpoint rule conserves" | "CVODE errors", "the conserved quantities (CVODE errors)" |
-| new | | the program `t2_cvcmp` and the scripts of the folder `test2/cvode_vs_rk4` (this comparison) |
+| `t2_solve.py` (Python solver of item [3]) | RK4 (`evolve`) and the implicit midpoint rule (`quench`) in Python | the same CVODE as the Rust programs, called through the new shared library `libt2cvode` (crate `t2cvode_c`, the C interface of `t2core::cvode`) with the module `ctypes`; format `t2in 2`; the same checks and reports as the Rust solver |
+| `t2_plot.py`, `make_t2_figures.py`, `t2_examples_check.py` | the titles and labels of RK4 and the midpoint rule; Figure 2 of Test 2 the RK4 factor; the fermion number of EX-7 checked against $10^{-9}$ | the titles and labels of CVODE; Figure 2 of Test 2 the accuracy of CVODE (GS-13); EX-7 against the bound of the solvers; the tables of Section 6.4 of Test 2 written as fragments |
+| new | | the program `t2_cvcmp`, the shared library `libt2cvode` and the scripts of the folder `test2/cvode_vs_rk4` (this comparison) |
 
 All programs were run again on Linux x86-64 (rustc 1.97.0); every check passes.  The data files of the first version
 are kept unchanged in `test2/rk4_reference/data` (106 files, SHA-256 digests in `test2/rk4_reference/SHA256SUMS_data.txt`).
-The Python solver of item [3], the plots of Test 2, the document of Test 2 and the notebook `3+1super-loop.nb` are
-brought to CVODE in the following steps of the same work (Section 7).
+The Python solver of item [3] and the plots and documents of Test 2 were brought to CVODE in the same work; the notebook
+`3+1super-loop.nb` follows (Section 7).
 
 # 5. The comparison
 
@@ -320,12 +322,12 @@ $2\times10^{-6}$, and both checks pass as before.
 
 # 7. Status of the work and how to reproduce it
 
-**Done in this step:** the vendored SUNDIALS; `t2core::cvode`; the Rust programs `t2_analytic`, `t2_fields`,
-`t2_solve`, `t2_sfbs`, `t2_plot` with CVODE; all their data files; the comparison program `t2_cvcmp`, the convergence
-runs and the figures of this document; the registry entries of the new symbols.
-**Following steps:** the Python solver `t2_solve.py` of item [3] and its examples check (with the SUNDIALS CVODE
-through the Python package scikit-sundae), the figures of Test 2, the document of Test 2 and its provenance, and the
-notebook `3+1super-loop.nb`; then the older code.
+**Done:** the vendored SUNDIALS; `t2core::cvode`; the Rust programs `t2_analytic`, `t2_fields`, `t2_solve`, `t2_sfbs`,
+`t2_plot` with CVODE; the Python solver `t2_solve.py` with the same CVODE through the shared library `libt2cvode`; all
+data files and figures of Test 2; the documents of Test 2 and of the folder Revision_SuperLoop; the comparison program
+`t2_cvcmp`, the convergence runs and the figures of this document; the registry entries of the new symbols.
+**Following steps:** the notebook `3+1super-loop.nb` (its time integrations with a SUNDIALS method of the Wolfram
+Language), then the older code of the repository that integrates in time with a fixed-step method.
 
 On the Mac (Terminal), from the folder of the repository:
 
@@ -336,14 +338,16 @@ for p in t2_fields t2_analytic t2_sfbs; do ./target/release/$p; done
 cd ..
 for n in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
   ./rust/target/release/t2_solve examples/$n.t2in --out data/t2_rs_$n
+  python3 python/t2_solve.py examples/$n.t2in --out data/t2_py_$n
 done
 bash cvode_vs_rk4/run_convergence.sh "$PWD/rust/target/release/t2_solve"
 ./rust/target/release/t2_cvcmp
 cd .. && python3 test2/cvode_vs_rk4/python/make_cmp_figures.py
 ```
 
-The first two lines build every program of Test 2 (the vendored SUNDIALS is compiled with them); the loop runs the
-three check programs, the next loop the seven examples of the solver; `run_convergence.sh` solves the four
+The first two lines build every program of Test 2 and the shared library `libt2cvode` of the Python solver (the vendored
+SUNDIALS is compiled with them); the loop runs the three check programs, the next loop the seven examples of both
+solvers; `run_convergence.sh` solves the four
 time-dependent examples at the tolerances $10^{-10}$ and $10^{-13}$; `t2_cvcmp` writes the comparison (it exits with
 status 1 if one of its checks fails); the last line draws the five figures.  The programs write their outputs into the
 folders named in the text.

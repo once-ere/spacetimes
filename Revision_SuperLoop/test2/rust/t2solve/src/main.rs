@@ -391,12 +391,12 @@ fn task_evolve(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d: &[[C64; 3]], m: &M, rep: 
     // ||w|| = 1 and n complex unknowns (t2core::cvode::CvodeSettings::error_budget).  CVODE estimates the local error of a
     // step from the difference of the predicted and the corrected solution; the true error may exceed the estimate by a
     // modest factor, and the checks allow 10 times the budget: the norm of the mode, which the exact evolution conserves,
-    // may change by at most 10 budget, the energy <w|H_lat|w> (static fields) by 2 Hbound times that
+    // may change by at most 10 budget, the energy <w_lat|H_lat|w_lat> (static fields) by 2 Hbound times that
     let budget = set.error_budget(st.nsteps, n, 1.0);
-    rep.check(dn < 10.0 * budget, format!("the norm of the mode is conserved: largest change {:.2e} (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n)) = {:.1e})", dn, 10.0 * budget));
+    rep.check(dn < 10.0 * budget, format!("the norm of the mode is conserved: largest change {:.2e} (bound: 10 times the accumulated local error permitted by CVODE, 10 steps sqrt(2) (rtol + atol sqrt(n_complex)) = {:.1e})", dn, 10.0 * budget));
     if gauge.is_static {
         let tol = 20.0 * hb * budget;
-        rep.check(de < tol, format!("the energy <w|H_lat|w> = {} is conserved (static fields): largest change {:.2e} (bound: 2 Hbound times the bound of the norm, {:.1e})", fmt_g(e0, 10), de, tol));
+        rep.check(de < tol, format!("the energy <w_lat|H_lat|w_lat> = {} is conserved (static fields): largest change {:.2e} (bound: 2 Hbound times the bound of the norm, {:.1e})", fmt_g(e0, 10), de, tol));
     }
     let last = series.last().unwrap();
     let val = |k: usize| match last[k] {
@@ -404,7 +404,7 @@ fn task_evolve(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d: &[[C64; 3]], m: &M, rep: 
         _ => 0.0,
     };
     rep.add(format!(
-        "results: energy <w|H_lat|w> at x^0 = 0: {}; final norm {}; final P_hole = {}; final P_up = {}; final centre of the density ({}, {}, {}); computing time {:.2} s",
+        "results: energy <w_lat|H_lat|w_lat> at x^0 = 0: {}; final norm {}; final P_hole = {}; final P_up = {}; final centre of the density ({}, {}, {}); computing time {:.2} s",
         g12(e0), g12(val(1)), g6(val(3)), g6(val(4)), g6(val(5)), g6(val(6)), g6(val(7)), el
     ));
     if cfg.s("initial") == "packet" && cfg.s("pair") == "none" && gauge.is_free() && (0..3).all(|j| !lat.active[j] || lat.l.periodic[j]) {
@@ -846,7 +846,7 @@ fn task_quench(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d0: &[[C64; 3]], m: &M, rep:
         }
         h0.matmat(w, hw, mm);
         let emf = vdot_re(w, hw) + 2.0 * norm / g2 * dd.iter().map(|x| x.iter().map(|z| z.norm_sqr()).sum::<f64>()).sum::<f64>();
-        // the largest |W^dag W - 1| (upper triangle and diagonal)
+        // the largest |W_modes^dag W_modes - 1| (upper triangle and diagonal)
         let mut orth = 0.0f64;
         for p in 0..mm {
             for q in p..mm {
@@ -922,8 +922,8 @@ fn task_quench(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d0: &[[C64; 3]], m: &M, rep:
     // of squared moduli) by at most 2 ||W|| ||dW|| and an entry of W^dag W by at most 2 ||dW||.
     let budget = set.error_budget(st.nsteps, n * mm, (mm as f64).sqrt());
     let nf_tol = 20.0 * (mm as f64).sqrt() * budget;
-    rep.check(mnf < nf_tol, format!("the fermion number N_F = {} is conserved by the self-consistent evolution: largest change {:.2e} (bound: 2 ||W|| times 10 times the accumulated local error permitted by CVODE, {:.1e})", g12(nf0), mnf, nf_tol));
-    rep.check(morth < 20.0 * budget, format!("the modes stay orthonormal (the Pauli principle): largest |W^dag W - 1| = {:.2e} (bound: 2 times 10 times the accumulated local error permitted by CVODE, {:.1e})", morth, 20.0 * budget));
+    rep.check(mnf < nf_tol, format!("the fermion number N_F = {} is conserved by the self-consistent evolution: largest change {:.2e} (bound: 2 ||W_modes|| times 10 times the accumulated local error permitted by CVODE, {:.1e})", g12(nf0), mnf, nf_tol));
+    rep.check(morth < 20.0 * budget, format!("the modes stay orthonormal (the Pauli principle): largest |W_modes^dag W_modes - 1| = {:.2e} (bound: 2 times 10 times the accumulated local error permitted by CVODE, {:.1e})", morth, 20.0 * budget));
     if gauge.is_static {
         rep.add(format!(
             "the conserved mean-field functional E_MF = {} changes by at most {:.3e} (CVODE keeps it up to its accumulated local errors)",
@@ -945,7 +945,7 @@ fn task_quench(cfg: &Cfg, lat: &Lat, gauge: &Gauge, d0: &[[C64; 3]], m: &M, rep:
     ));
     let (wfit, afit) = fit_frequency(&tt[1..], after, 0.2, 6.0, 5801);
     rep.add(format!(
-        "the amplitude of the pair field oscillates with the angular frequency {:.6} (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude {}); twice the mean of |d| after the quench is {:.6}",
+        "the amplitude of the pair field oscillates with the angular frequency {:.6} (least-squares fit of a constant plus a cosine and a sine of that angular frequency of x^0 to |d| for x^0 > 0, the angular frequency scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude {}); twice the mean of |d| after the quench is {:.6}",
         wfit,
         g6(afit),
         2.0 * mean_after
@@ -1080,7 +1080,40 @@ fn selftest(report: Option<&str>, exdir: Option<&str>) -> bool {
     let ok = dev2 < 1e-12 && ev.len() == expect.len();
     ok_all &= ok;
     say(format!("[{}] plane waves in constant potentials: the 256 eigenvalues of a ring of 16 sites are the energies of check AS-1 (largest deviation {:.1e})", if ok { "PASS" } else { "FAIL" }, dev2));
-    // 4. the examples are the same as the files written by the Python solver
+    // 4. the time integration with CVODE: the eigenvector v of the operator of check 1 that belongs to its largest
+    //    eigenvalue E evolves as exp(-i E x^0) v; the largest deviation up to x^0 = 20 is compared with 10 times the
+    //    accumulated local error that the error test of CVODE permits
+    let (evs, vecs) = diagonalize(&h.dense());
+    let kmax = evs.len() - 1;
+    let e_max = evs[kmax];
+    let v: Vec<C64> = (0..16 * ns).map(|r| vecs.get(r, kmax)).collect();
+    let set = CvodeSettings::adams(1e-12, 1e-14);
+    let hc = h.clone();
+    let f: ComplexRhs = Box::new(move |_t, wv, dw| {
+        hc.matvec(wv, dw);
+        for z in dw.iter_mut() {
+            *z = c(z.im, -z.re);
+        }
+    });
+    let mut worst = 0.0f64;
+    let res = cvode::integrate(&v, 0.0, &cvode::uniform_times(0.0, 0.5, 40), &set, f, |_i, t, wv| {
+        let ph = C64::cis(-e_max * t);
+        let d2: f64 = wv.iter().zip(&v).map(|(a, b)| (*a - ph * *b).norm_sqr()).sum();
+        worst = worst.max(d2.sqrt());
+    });
+    match res {
+        Ok(st) => {
+            let bound = 10.0 * set.error_budget(st.nsteps, 16 * ns, 1.0);
+            let ok = worst < bound;
+            ok_all &= ok;
+            say(format!("[{}] the time integration with CVODE: the eigenvector of the largest eigenvalue E = {:.6} of the operator of check 1 evolves as exp(-i E x^0) up to x^0 = 20: largest deviation {:.1e} (bound: 10 times the accumulated local error permitted by CVODE, {:.1e}; {} steps)", if ok { "PASS" } else { "FAIL" }, e_max, worst, bound, st.nsteps));
+        }
+        Err(err) => {
+            ok_all = false;
+            say(format!("[FAIL] the time integration with CVODE failed: {}", err));
+        }
+    }
+    // 5. the examples are the same as the files written by the Python solver
     if let Some(dir) = exdir {
         let mut same = 0;
         for e in EXAMPLES {
@@ -1097,7 +1130,7 @@ fn selftest(report: Option<&str>, exdir: Option<&str>) -> bool {
     if let Some(r) = report {
         let checks: Vec<&String> = lines.iter().filter(|s| s.starts_with('[')).collect();
         let npass = checks.iter().filter(|s| s.starts_with("[PASS]")).count();
-        let mut s = format!("Revision_SuperLoop, folder test2, program `{}` (Test 2, item 5): the self-test of the lattice operator of the Rust solver\n", PROGRAM);
+        let mut s = format!("Revision_SuperLoop, folder test2, program `{}` (Test 2, item 5): the self-test of the lattice operator, of the time integration and of the examples of the Rust solver\n", PROGRAM);
         s += &format!("{} of {} checks passed\n", npass, checks.len());
         for l in &lines {
             s += l;

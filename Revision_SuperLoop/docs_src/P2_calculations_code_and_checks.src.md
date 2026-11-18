@@ -671,8 +671,15 @@ item [2] every analytic solution by the program `t2_analytic` of the same worksp
   $\mathsf L_{\rm LL}$, $T^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$, $\mathsf P_{\rm LL}$, $\psi'_{\rm LL}$, the
   Cayley-Dickson product), `lattice.rs` (the links, the lattice operator $\mathcal H^{\rm lat}_{\rm LL}$ applied
   to a mode, its dense matrix, the bound $B^{\rm H}_{\rm LL}$, the free lattice energy
-  $\varepsilon^{\rm lat}_{\rm LL}$, the RK4 step of the lattice equations and the matrix of the free lattice operator on a
-  plane wave) and `sym.rs` (exact linear forms with Gaussian-rational coefficients, each
+  $\varepsilon^{\rm lat}_{\rm LL}$ and the matrix of the free lattice operator on a plane wave), `cvode.rs` (the time
+  integration with CVODE, the variable-order, variable-step Adams-Moulton integrator of SUNDIALS 7.8.0 in the pure-Rust
+  translation vendored in PROJECT spacetimes, folder `vendor/sundials_rs-7.8.0`: the functions `integrate`,
+  `integrate_status` and `evolve_lattice`, the error weights $1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})$
+  of the complex components $w^{\rm cmp}_{\rm LL}$ of the state, for the real and the imaginary part alike, and the error budget
+  $B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})$,
+  the accumulated local error that the error test of CVODE permits after $N^{\rm st}_{\rm LL}$ steps for a state
+  $w^{\rm lat}_{\rm LL}$ of $n^{\rm cpx}_{\rm LL}$ complex components) and `sym.rs` (exact linear forms with Gaussian-rational
+  coefficients, each
   monomial carrying a numerical value, so that a printed formula can be evaluated and compared);
 * the program `t2_fields` (`t2fields/src/main.rs`), which writes the report `test2/data/t2_fields_checks.txt`,
   the LaTeX fragments `test2/data/t2_fragments.md` (the explicit matrices and component equations that the
@@ -714,7 +721,10 @@ The formulas of the checks:
 * **GS-10, GS-11, GS-13, GS-16 (the numerical method):** the dense lattice operator on a $3\times2\times4$
   lattice with random links, potentials and pair fields (Hermiticity, particle-hole symmetry, exact gauge
   covariance, the bound $B^{\rm H}_{\rm LL}$), the free dispersion and the doubler, the eigensolver for the
-  dimensions 7, 64 and 200, the RK4 factor, and the eigenvalues of the operator of the solvers on plane waves.
+  dimensions 7, 64 and 200, the time integration with CVODE against the exact spectral solution
+  $w^{\rm ex}_{\rm LL}$ for the tolerances $r^{\rm tol}_{\rm LL}=10^{-8}$, $10^{-10}$, $10^{-12}$ (the relative deviation
+  $\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert$ below $B^{\rm err}_{\rm LL}$, and below
+  $10^{-9}$ at $10^{-12}$), and the eigenvalues of the operator of the solvers on plane waves.
 * **GS-12 (the printed formulas):** every explicit matrix and every component equation is built from the exact
   linear forms of `sym.rs`; each monomial carries a numerical value (a plane wave with constant fields, or random
   numbers); the value of the printed expression is compared with the matrix computation.
@@ -723,9 +733,10 @@ The formulas of the checks:
   covariant constancy and zero curvature by central differences, and the rank 6 of the commutator map.
 
 The data files of the figures are `test2/data/t2_dispersion_curves.csv` (columns `r_W`, `q`, `eps`, `eps_lat`),
-`test2/data/t2_dispersion_lattice.csv` (`r_W`, `q`, `eps_lat`) and `test2/data/t2_rk4_stability.csv`
-(`E_times_dt`, `rk4_modulus`); the script `test2/python/make_t2_figures.py` draws `test2/figures/fig_t2_lattice_dispersion`
-and `fig_t2_rk4_stability` (.pdf and .png). The output of the last run:
+`test2/data/t2_dispersion_lattice.csv` (`r_W`, `q`, `eps_lat`) and `test2/data/t2_cvode_accuracy.csv` (`x_LL^0`, and
+`dev_rtol_*`, `h_rtol_*`, `q_rtol_*`: $\delta^{\rm rel}_{\rm LL}$ and the size $h^{\rm CV}_{\rm LL}$ and the order $q^{\rm CV}_{\rm LL}$ of the
+last internal step of CVODE, for the tolerance named at the end); the script `test2/python/make_t2_figures.py` draws
+`test2/figures/fig_t2_lattice_dispersion` and `fig_t2_cvode_accuracy` (.pdf and .png). The output of the last run:
 
 ```
 {{FILE:test2/data/t2_fields_checks.txt}}
@@ -753,14 +764,14 @@ with the seed 2026111708. The formulas of the checks:
   with $\mathsf A^\uparrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}+\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}$, and the same with
   $\mathsf A^\downarrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}-\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}$ for isospin down, each twice;
   the particle block restricted to each isospin component is checked separately.
-* **AS-2 and AS-4 (time evolution).** RK4 steps of the lattice equations against the exact solutions: in a constant
-  isospin potential $A^1_{{\rm LL},0}=1.5$ a particle of isospin up has the probability
+* **AS-2 and AS-4 (time evolution).** The CVODE integration of the lattice equations ($r^{\rm tol}_{\rm LL}=10^{-12}$,
+  $a^{\rm tol}_{\rm LL}=10^{-14}$, module `t2core::cvode`) against the exact solutions: in a constant isospin potential
+  $A^1_{{\rm LL},0}=1.5$ a particle of isospin up has the probability
   $P^\uparrow_{\rm LL}=\cos^2(\omega^{\rm pr}_{\rm LL}x^0_{\rm LL}/2)$ of isospin up, $\omega^{\rm pr}_{\rm LL}=g^{\rm v}_{\rm LL}A^1_{{\rm LL},0}$
-  ($\ell^{\rm t}_{\rm LL}=0.004$, 4000 steps); in the uniform pair field $d^\iota_{\rm LL}=(0,0,0.3)$ ($\mu_{\rm LL}=0.6$) an injected
+  (101 output times up to $x^0_{\rm LL}=16$); in the uniform pair field $d^\iota_{\rm LL}=(0,0,0.3)$ ($\mu_{\rm LL}=0.6$) an injected
   particle has the probability $P^{\rm h}_{\rm LL}=(\Delta_{\rm LL}/E^-_{\rm LL})^2\sin^2(E^-_{\rm LL}x^0_{\rm LL})$ of the hole
-  ($\ell^{\rm t}_{\rm LL}=0.02$, 1000 steps). The relative deviation of the whole state is compared with $10^{-8}$, and its
-  expected size, the summed RK4 phase error (the number of steps times the fifth power of the product of the largest
-  energy of the state and the time step, divided by 120), is printed.
+  (101 output times up to $x^0_{\rm LL}=20$). The relative deviation of the whole state is compared with $10^{-9}$, and the numbers
+  of steps and evaluations of CVODE are printed.
 * **AS-3 (case B, Bogoliubov modes).** The identity
   $\mathsf K^3_{\rm LL}\mathsf h_{\rm LL}(\vec q_{\rm LL})=\mathsf h_{\rm LL}(-\vec q_{\rm LL})^*\mathsf K^3_{\rm LL}$ and the eigenvectors
   $(\cos\vartheta^{\rm B}_{\rm LL}\,\chi^{\rm pw}_{\rm LL},\sin\vartheta^{\rm B}_{\rm LL}\,\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})$ with
@@ -811,9 +822,9 @@ with the seed 2026111708. The formulas of the checks:
   discarded.
 
 The data files (in `test2/data`) and their columns: `t2_A_dispersion_curves.csv` (`q`, `Q_LL`, `branch`, `E_qp`),
-`t2_A_dispersion_lattice.csv` (`q`, `Q_LL`, `E_qp`), `t2_A_precession.csv` (`x_LL^0`, `P_up_rk4`, `P_up_exact`),
+`t2_A_dispersion_lattice.csv` (`q`, `Q_LL`, `E_qp`), `t2_A_precession.csv` (`x_LL^0`, `P_up_cvode`, `P_up_exact`),
 `t2_B_bogoliubov_curves.csv` (`q`, `eps_lat`, `E_minus_polar`, `E_plus_polar`), `t2_B_bogoliubov_lattice.csv` (`q`,
-`E_qp`), `t2_B_rabi.csv` (`x_LL^0`, `P_hole_rk4`, `P_hole_exact`), `t2_B_gap.csv` (`mu`, `G_over_Gcrit_m0`, `Delta`,
+`E_qp`), `t2_B_rabi.csv` (`x_LL^0`, `P_hole_cvode`, `P_hole_exact`), `t2_B_gap.csv` (`mu`, `G_over_Gcrit_m0`, `Delta`,
 `source`), `t2_C_kink_profile.csv` (`x_LL^1`, `Delta`, `density_lattice`, `density_exact`), `t2_C_kink_spectrum.csv`
 (`index`, `E_qp`), `t2_C_kink_convergence.csv` (`dx`, `E_R`, `relative_residual`) and `t2_D_landau.csv` (`Q_LL`,
 `n_L`, `E_qp`, `source`). Each states its content in a line `# content:` and its parameters in lines `# name: value`.
@@ -826,7 +837,9 @@ The figure script draws `test2/figures/fig_t2_case_A` (from the files `t2_A_*`),
 
 ## Item [3]: the Python solver
 
-The program `test2/python/t2_solve.py` (Python 3, NumPy, SciPy) solves the mean-field equations of the spinor field on the
+The program `test2/python/t2_solve.py` (Python 3, NumPy, SciPy; for the time integration the shared library `libt2cvode`
+of the Rust workspace, member `t2cvode_c`, which it calls through the standard module `ctypes` and which integrates with
+`t2core::cvode`) solves the mean-field equations of the spinor field on the
 lattice for the problem described in an input file of lines `key = value`. It builds the lattice operator
 $\mathcal H^{\rm lat}_{\rm LL}$ as a sparse matrix from $8\times8$ blocks: on each site
 $(m_{\rm LL}+r^{\rm W}_{\rm LL}n^{\rm act}_{\rm LL}/\ell^{\rm x}_{\rm LL})\beta_{\rm LL}\otimes\sigma^{\rm LL}_0-\mathsf 1_4\otimes(\mathsf A_{{\rm LL},0}+\mu_{\rm LL}\sigma^{\rm LL}_0)$;
@@ -835,18 +848,22 @@ $(-i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})
 neighbour $(i\alpha^j_{\rm LL}-r^{\rm W}_{\rm LL}\beta_{\rm LL})/(2\ell^{\rm x}_{\rm LL})\otimes\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger$
 ($n^{\rm act}_{\rm LL}$ the number of directions with more than one site); the hole components receive the complex
 conjugate blocks with the opposite sign, and the pair field the blocks $\mathsf P_{\rm LL}$ and $\mathsf P^\dagger_{\rm LL}$. The tasks:
-`evolve` (one mode, RK4), `spectrum` (dense diagonalization), `ground_state` (the fixed point of
+`evolve` (one mode, CVODE), `spectrum` (dense diagonalization), `ground_state` (the fixed point of
 $d^\iota_{\rm LL}=-G_{\rm LL}(\ell^{\rm x}_{\rm LL})^{-n^{\rm act}_{\rm LL}}\sum_n(\psi^{\rm p}_{{\rm LL},n})^T\mathsf K^\iota_{\rm LL}(\psi^{\rm h}_{{\rm LL},n})^*/2$
-over the positive-energy unit eigenvectors, found by Anderson acceleration with memory 6) and `quench` (all modes,
-the implicit midpoint rule solved by fixed-point iteration to a change below $10^{-14}$). Its self-test compares the sparse
-operator with a site-by-site evaluation of the same formulas on a $3\times4\times2$ lattice with random fields (to
-$10^{-13}$), checks Hermiticity, the closed form of the links against the general matrix exponential, and the 256
-eigenvalues of a ring in constant potentials against the formula of check AS-1. Every run checks its own result:
-Hermiticity, the conservation of the norm and of the energy within the RK4 bound (the number of steps times
-$(\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL})^6/144$), the particle-hole symmetry of a spectrum, the convergence and the full
-self-consistency condition, the conservation of $N^{\rm F}_{\rm LL}$ (to $10^{-10}$) and of the orthonormality of the modes (to
-$10^{-11}$) in a quench, and, for a free packet on a periodic lattice, its velocity against the exact mean group velocity of
-its Fourier components (to $10^{-5}$).
+over the positive-energy unit eigenvectors, found by Anderson acceleration with memory 6) and `quench` (all modes at once
+by CVODE, the pair field computed from the modes at every evaluation of the right side). Both time-dependent tasks use
+$r^{\rm tol}_{\rm LL}=10^{-12}$, $a^{\rm tol}_{\rm LL}=10^{-14}$ (input keys `rtol`, `atol`) and write the state at the output times
+$0$, $\ell^{\rm t}_{\rm LL}$, $2\ell^{\rm t}_{\rm LL}$, ... (keys `output_step`, `outputs`; input format `t2in 2`). Its self-test compares
+the sparse operator with a site-by-site evaluation of the same formulas on a $3\times4\times2$ lattice with random fields (to
+$10^{-13}$), checks Hermiticity, the closed form of the links against the general matrix exponential, the 256 eigenvalues of
+a ring in constant potentials against the formula of check AS-1, the time integration through `libt2cvode` (an eigenvector of
+the random operator evolves as $\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})$ times itself, within $10B^{\rm err}_{\rm LL}$), and that its
+seven examples are the input files of the folder `test2/examples`. Every run checks its own result: Hermiticity, the
+conservation of the norm (within $10B^{\rm err}_{\rm LL}$) and of the energy (within $2B^{\rm H}_{\rm LL}$ times that), the
+particle-hole symmetry of a spectrum, the convergence and the full self-consistency condition, the conservation of
+$N^{\rm F}_{\rm LL}$ (within $20\lVert\mathsf W^{\rm m}_{\rm LL}\rVert B^{\rm err}_{\rm LL}$) and of the orthonormality of the modes (within
+$20B^{\rm err}_{\rm LL}$) in a quench, and, for a free packet on a periodic lattice, its velocity against the exact mean group velocity
+of its Fourier components (to $10^{-5}$).
 
 The program `test2/python/t2_examples_check.py` compares the outputs of the seven examples with predictions that the
 solver does not compute: EX-1 the velocity of the free packet against the derivative of $\varepsilon^{\rm lat}_{\rm LL}$
@@ -860,7 +877,9 @@ method (to $10^{-9}$); EX-6 the eight bound states of the self-consistent kink a
 oscillation of $\lvert\vec d_{\rm LL}\rvert$ after a quench (a least-squares fit of a sinusoid) against the root of
 $((\omega^{\rm H}_{\rm LL})^2/4-\Delta_{\rm LL}^2)\sum_{q^1_{\rm LL}\neq0}1/(E^\pm_{\rm LL}((E^\pm_{\rm LL})^2-(\omega^{\rm H}_{\rm LL})^2/4))=1/\Delta_{\rm LL}$
 with the time-averaged gap, the amplitude mode of the linearized self-consistent equations (within 1 per cent), and the
-constancy of the fermion number. With a second set of outputs (item [5]) it also compares the two sets number by number.
+constancy of the fermion number (within the bound of the solver's check). With a second set of outputs (item [5]) it also
+compares the two sets number by number and writes the tables of Section 6.4 of the document of Test 2 into
+`test2/data/t2_cmp_fragments.md`.
 
 The output files of the solver (in `test2/data`, prefix `t2_py_`): for each example `<example>_summary.txt`,
 `<example>_series.csv`, `<example>_fields.csv`, and for some `<example>_spectrum.csv` and `<example>_iterations.csv`;
@@ -1034,7 +1053,8 @@ $\vec k^{\rm B}_{\rm LL}$ (32 points). SB-8: $1/G^{\rm bd}_{\rm LL}$, the pole o
 its limits, the approach of the Ginzburg-Landau mass, the pole from the Bogoliubov matrices, and the small-wave-number slope of the
 dispersion against the derivatives of the susceptibility at the pole. SB-9: the currents of the SFBS against numerical
 derivatives of the effective Lagrangian. SB-10: the uniform time-dependent mean-field equations (9.30) in the normal vacuum at
-$G_{\rm LL}=20$ (320 radial nodes, the classical fourth-order Runge-Kutta method with the step 0.02 up to $x^0_{\rm LL}=1500$): the
+$G_{\rm LL}=20$ (320 radial nodes, CVODE with $r^{\rm tol}_{\rm LL}=10^{-12}$, $a^{\rm tol}_{\rm LL}=10^{-14}$, sampled every 0.02 up to
+$x^0_{\rm LL}=1500$): the
 frequency of the line of the pair field below $2m_{\rm LL}$ (maximum of the Hann-windowed Fourier power, found by a scan and a
 golden-section search) against the pole on the same nodes, the conservation of the mean-field energy and the reality of the pair
 field. Figure 22 is drawn by `test2/python/make_t2_sfbs_figures.py`.
@@ -1085,8 +1105,9 @@ gaps 0.1, $\Delta^{\rm vac}_{\rm LL}$ and 0.3 (function `z_s_cond`). SB-16: the 
 the vacuum from the eigenvectors of the Bogoliubov matrices (function `kernels_bdg`, the sum over the pairs of a positive and a negative
 eigenvalue, its parts even and odd in the frequency) at five frequencies, against (12.8) (functions `upsilon`, `upsilon_d1`); the closed
 form of $\Upsilon_{\rm LL}$ against quadrature; the mass of (12.9) against $2\Delta^{\rm vac}_{\rm LL}$; (12.10) against a difference quotient;
-and the uniform time-dependent mean-field equations (9.30) (function `uniform_tdbdg`, the classical Runge-Kutta method of the fourth
-order, time step 0.05, 12000 steps, 800 radial nodes) started from the ground state of the gap $\Delta^{\rm vac}_{\rm LL}$ times 1.02 and 1.01,
+and the uniform time-dependent mean-field equations (9.30) (function `uniform_tdbdg`, CVODE with $r^{\rm tol}_{\rm LL}=10^{-12}$,
+$a^{\rm tol}_{\rm LL}=10^{-14}$, sampled every 0.05 up to $x^0_{\rm LL}=600$, 800 radial nodes) started from the ground state of the gap
+$\Delta^{\rm vac}_{\rm LL}$ times 1.02 and 1.01,
 whose strongest spectral line (function `line_frequency`, Hann window, scan and golden-section refinement) is compared with
 $2\Delta^{\rm vac}_{\rm LL}$, with the amplitude of the oscillation in the second and the last quarter of the run, the imaginary part of the pair
 field and the conservation of the mean-field energy. The spectrum of Figure 25(e) is computed by the function `power_at` on a grid of
@@ -1186,6 +1207,8 @@ block: the folder `explanations`; the third block: the folder `test2`):
 ```
 {{SHA256:test2/rust/t2core/src/model.rs}}  test2/rust/t2core/src/model.rs
 {{SHA256:test2/rust/t2core/src/lattice.rs}}  test2/rust/t2core/src/lattice.rs
+{{SHA256:test2/rust/t2core/src/cvode.rs}}  test2/rust/t2core/src/cvode.rs
+{{SHA256:test2/rust/t2cvode_c/src/lib.rs}}  test2/rust/t2cvode_c/src/lib.rs
 {{SHA256:test2/rust/t2core/src/cmat.rs}}  test2/rust/t2core/src/cmat.rs
 {{SHA256:test2/rust/t2core/src/sym.rs}}  test2/rust/t2core/src/sym.rs
 {{SHA256:test2/rust/t2fields/src/main.rs}}  test2/rust/t2fields/src/main.rs
@@ -1195,7 +1218,7 @@ block: the folder `explanations`; the third block: the folder `test2`):
 {{SHA256:test2/data/t2_analytic_checks.txt}}  test2/data/t2_analytic_checks.txt
 {{SHA256:test2/data/t2_fragments.md}}  test2/data/t2_fragments.md
 {{SHA256:test2/figures/fig_t2_lattice_dispersion.png}}  test2/figures/fig_t2_lattice_dispersion.png
-{{SHA256:test2/figures/fig_t2_rk4_stability.png}}  test2/figures/fig_t2_rk4_stability.png
+{{SHA256:test2/figures/fig_t2_cvode_accuracy.png}}  test2/figures/fig_t2_cvode_accuracy.png
 {{SHA256:test2/figures/fig_t2_case_A.png}}  test2/figures/fig_t2_case_A.png
 {{SHA256:test2/figures/fig_t2_case_B.png}}  test2/figures/fig_t2_case_B.png
 {{SHA256:test2/figures/fig_t2_case_C.png}}  test2/figures/fig_t2_case_C.png

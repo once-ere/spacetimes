@@ -11,7 +11,8 @@
 #      Yukawa form) and its four figures; then the programs of the folder test2 (the answers to
 #      Test 2): t2_fields (the gauge-covariant field equations of the spinor field, item [1]),
 #      t2_analytic (the analytic solutions of item [2]) and the figures of items [1] and [2]
-#      (test2/python/make_t2_figures.py);
+#      (test2/python/make_t2_figures.py), and the further programs of test2 (the solvers, the plotters, t2_sfbs, and the
+#      comparison of CVODE with the fixed-step methods of the first version in test2/cvode_vs_rk4);
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
@@ -77,6 +78,13 @@ run "t2_plot (Rust), Figures 14 to 20 (test2, item 6)" t2rsplot
 t2sfbs() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_sfbs); }
 run "t2_sfbs (test2, items 7 to 11)" t2sfbs
 run "make_t2_sfbs_figures.py (test2, items 7 to 11)" python3 test2/python/make_t2_sfbs_figures.py
+# Test 2: the comparison of CVODE with the fixed-step methods of the first version (folder test2/cvode_vs_rk4): the four
+# time-dependent examples at two further tolerances, the program t2_cvcmp (it exits with status 1 if one of its checks
+# fails) and its five figures; its document is built after the documents of the folder (it prints the registry)
+t2conv() { bash test2/cvode_vs_rk4/run_convergence.sh "$PWD/test2/rust/target/release/t2_solve"; }
+run "run_convergence.sh (test2/cvode_vs_rk4)" t2conv
+run "t2_cvcmp (test2/cvode_vs_rk4)" ./test2/rust/target/release/t2_cvcmp
+run "make_cmp_figures.py (test2/cvode_vs_rk4)" python3 test2/cvode_vs_rk4/python/make_cmp_figures.py
 
 # 2. documents, two passes
 for pass in 1 2; do
@@ -89,6 +97,9 @@ for pass in 1 2; do
     run "pass $pass: build_manuscript.py" python3 code/scripts/build_manuscript.py
     run "pass $pass: build_docs.sh" bash code/scripts/build_docs.sh
 done
+run "assemble_provenance.py (test2/cvode_vs_rk4)" python3 test2/cvode_vs_rk4/tools/assemble_provenance.py
+cmpdoc() { (cd test2/cvode_vs_rk4 && bash tools/build_docs.sh "PROJECT spacetimes, Test 2: CVODE compared with RK4" P_CVODE_vs_RK4.md); }
+run "build of P_CVODE_vs_RK4 (test2/cvode_vs_rk4)" cmpdoc
 
 # 3. verdicts
 for f in data/sl_*_checks.txt explanations/data/ex_*_checks.txt test2/data/t2_*_checks.txt; do
@@ -101,8 +112,8 @@ for f in data/sl_*_checks.txt explanations/data/ex_*_checks.txt test2/data/t2_*_
     fi
 done
 
-if grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex test2/*.md test2/*.tex ./README.md ./README.tex 2>/dev/null | grep -q .; then
-    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex test2/*.md test2/*.tex ./README.md ./README.tex 2>/dev/null | tr '\n' ' ')"; fail=1
+if grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex test2/*.md test2/*.tex test2/cvode_vs_rk4/P_CVODE_vs_RK4.md test2/cvode_vs_rk4/P_CVODE_vs_RK4.tex ./README.md ./README.tex 2>/dev/null | grep -q .; then
+    line FAIL "unresolved placeholder in: $(grep -l '{{[A-Z]*:' provenance/*.md provenance/*.tex manuscript/*.md manuscript/*.tex explanations/*.md explanations/*.tex test2/*.md test2/*.tex test2/cvode_vs_rk4/P_CVODE_vs_RK4.md test2/cvode_vs_rk4/P_CVODE_vs_RK4.tex ./README.md ./README.tex 2>/dev/null | tr '\n' ' ')"; fail=1
 else
     line PASS "no unresolved placeholder in the built documents"
 fi
@@ -151,7 +162,8 @@ for b in README provenance/P0_task_rules_deviations_decisions provenance/P1_symb
          "manuscript/The Lorentz Super-Loop of the Bi-Octonions - Non-Associative Counterexamples to the No-Go Theorems and a Spin-Zero Spinor Superfluid" \
          "explanations/The spin-zero superfluid of the spinor charges - an explanation" \
          "explanations/The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" \
-         "test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state"; do
+         "test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state" \
+         test2/cvode_vs_rk4/P_CVODE_vs_RK4; do
     for ext in md tex pdf; do
         [ -s "$b.$ext" ] || missing="$missing $b.$ext"
     done
@@ -161,7 +173,9 @@ else line PASS "every document exists as .md, .tex and .pdf"; fi
 
 tools=$(grep -n -i -E '\b(claude|anthropic|chatgpt|openai|gemini|copilot|language model|AI[- ]generated|artificial intelligence)\b' \
         manuscript/*.tex manuscript/*.md provenance/*.md provenance/*.tex explanations/*.md explanations/*.tex README.md README.tex docs_src/*.src.md docs_src/manuscript/*.tex \
-        test2/*.md test2/*.tex test2/rust/*/src/*.rs test2/rust/Cargo.toml test2/rust/*/Cargo.toml $(ls test2/python/*.py 2>/dev/null) 2>/dev/null | head -5)
+        test2/*.md test2/*.tex test2/rust/*/src/*.rs test2/rust/Cargo.toml test2/rust/*/Cargo.toml $(ls test2/python/*.py 2>/dev/null) \
+        test2/cvode_vs_rk4/*.md test2/cvode_vs_rk4/*.tex test2/cvode_vs_rk4/*.sh test2/cvode_vs_rk4/python/*.py test2/cvode_vs_rk4/tools/* \
+        test2/cvode_vs_rk4/data/*.txt test2/cvode_vs_rk4/data/*.md 2>/dev/null | head -5)
 if [ -n "$tools" ]; then line FAIL "a document names a tool used to prepare it: $tools"; fail=1
 else line PASS "no document names a tool used to prepare it"; fi
 

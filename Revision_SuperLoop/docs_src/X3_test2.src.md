@@ -87,7 +87,8 @@ photon); their sections were added to this same document, in this order, as they
    Dirac-Bogoliubov-de Gennes equations for the particle and hole components of each mode, with the
    self-consistent pair field $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$. They are
    discretized on a lattice with link variables, which keeps the gauge covariance exact, a Wilson term,
-   which removes the doublers, and the Runge-Kutta method of fourth order in time.
+   which removes the doublers, and integrated in time by CVODE, the variable-order, variable-step
+   Adams-Moulton integrator of the library SUNDIALS, which controls the local error of every step.
 
 Sixteen machine checks (GS-1 to GS-16) verify every statement. The rest of this section derives these
 results step by step.
@@ -790,32 +791,87 @@ GS-16); they lie on the curves. (b) The relative deviation from the continuum,
 $(\varepsilon^{\rm lat}_{\rm LL}-\varepsilon_{\rm LL})/\varepsilon_{\rm LL}$, for the inner half of the momenta. Data:
 `test2/data/t2_dispersion_curves.csv`, `test2/data/t2_dispersion_lattice.csv`.
 
-**Time stepping.** The equations (2.31) on the lattice are a large system of ordinary differential equations in
-the time $x^0_{\rm LL}$,
-$i\partial_0(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})=\mathcal H^{\rm lat}_{\rm LL}(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})$.
-They are integrated with the classical Runge-Kutta method of fourth order (RK4) and the time step
-$\ell^{\rm t}_{\rm LL}$. For an eigencomponent with the energy $E^{\rm qp}_{{\rm LL},n}$ (an eigenvalue of
-$\mathcal H^{\rm lat}_{\rm LL}$), one step multiplies by
-$1-iE^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}-\tfrac12(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^2+\tfrac{i}{6}(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^3+\tfrac1{24}(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^4$
-instead of $\exp(-iE^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})$. Its modulus does not exceed 1 for
-$\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}\le2\sqrt2$ (stability) and is smaller than 1 by about
-$(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^6/144$ per step (Figure 2; check GS-13); the phase error per step is
-about $(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^5/120$. The energies of the lattice operator are bounded by
+**Time integration.** The equations (2.31) on the lattice are a large system of ordinary differential equations
+in the time $x^0_{\rm LL}$. For one Nambu mode, written as one complex vector $w^{\rm lat}_{\rm LL}$ (the 16 components of
+$\psi^{\rm p}_{\rm LL}$ and $\psi^{\rm h}_{\rm LL}$ on every site, the sites one after the other; its
+$n^{\rm cpx}_{\rm LL}=16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}$ complex components are written
+$w^{\rm cmp}_{\rm LL}$), they read $i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}$. The energies of
+the lattice operator are bounded by
 
 $$B^{\rm H}_{\rm LL}=\sum_{j\ \text{active}}\frac{1+2r^{\rm W}_{\rm LL}}{\ell^{\rm x}_{\rm LL}}+m_{\rm LL}+\lvert\mu_{\rm LL}\rvert+\max_{\vec s_{\rm LL}}\lVert\mathsf A_{{\rm LL},0}\rVert+\max_{\vec s_{\rm LL}}\sum_\iota\lvert d^\iota_{\rm LL}\rvert\tag{2.38}$$
 
 (the sum over the directions with more than one site; $\lVert\cdot\rVert$ the Frobenius norm of the $2\times2$ isospin
-block), so $\ell^{\rm t}_{\rm LL}\le2.5/B^{\rm H}_{\rm LL}$ is always stable; the solvers use this bound, and a
-smaller step where accuracy for the high energies matters. The links and $\mathsf A_{{\rm LL},0}$ of time-dependent
-gauge fields are evaluated at the times of the four stages of each step.
+block): every eigenvalue $E^{\rm qp}_{{\rm LL},n}$ of $\mathcal H^{\rm lat}_{\rm LL}$ satisfies
+$\lvert E^{\rm qp}_{{\rm LL},n}\rvert\le B^{\rm H}_{\rm LL}$ (check GS-10). The exact evolution multiplies the eigencomponent of the energy
+$E^{\rm qp}_{{\rm LL},n}$ by the phase $\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})$; it conserves the norm of the mode.
 
-![](figures/fig_t2_rk4_stability.png){width=100%}
+The solvers integrate these equations with CVODE, the variable-order, variable-step linear multistep integrator of the
+library SUNDIALS (version 7.8.0, of the Lawrence Livermore National Laboratory), in the translation into pure Rust that is
+part of PROJECT spacetimes (folder `vendor/sundials_rs-7.8.0`, next to the folder Revision_SuperLoop). The Rust programs call
+it through the module `t2core::cvode` of their library; the Python solver calls the same module through the shared library
+`libt2cvode` of the crate `t2cvode_c` (Section 4.3), so that both solvers integrate with the same method, the same settings
+and the same error test. CVODE advances the state by internal steps whose size $h^{\rm CV}_{\rm LL}$ and order
+$q^{\rm CV}_{\rm LL}$ it chooses itself:
 
-**Figure 2.** (a) The modulus of the factor of one RK4 step for an eigencomponent with the energy
-$E^{\rm qp}_{{\rm LL},n}$, as a function of $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$, with the exact value 1
-(grey, dashed), the stability limit $2\sqrt2$ (red) and the largest value $2.5$ that the solvers allow (green).
-(b) The loss of modulus per step on logarithmic scales, with the asymptote
-$(\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL})^6/144$ (orange, dashed). Data: `test2/data/t2_rk4_stability.csv`.
+- **The Adams-Moulton formulas.** A step of the size $h^{\rm CV}_{\rm LL}$ and the order $q^{\rm CV}_{\rm LL}$ (between 1 and
+  12) computes the new state as the old state plus $h^{\rm CV}_{\rm LL}$ times a weighted sum of the right side
+  $-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}$ at the new time and at the $q^{\rm CV}_{\rm LL}-1$ preceding step times; the
+  weights follow from the order and the recent step sizes, so that the formula is exact for solutions that are polynomials of
+  the degree $q^{\rm CV}_{\rm LL}$. The formula is implicit (the right side at the new time depends on the new state). CVODE
+  predicts the new state by extrapolation from the preceding steps and corrects it by the fixed-point iteration of SUNDIALS,
+  each iteration one evaluation of the right side; no matrix is factorized. The equations are not stiff: the eigenvalues of
+  $-i\mathcal H^{\rm lat}_{\rm LL}$ lie on the imaginary axis, at most $B^{\rm H}_{\rm LL}$ from zero.
+- **The control of the local error.** The difference between the predicted and the corrected state is an estimate of the
+  local error of the step, and the step is accepted only if
+
+  $$\Big(\frac{1}{2n^{\rm cpx}_{\rm LL}}\sum_{w^{\rm cmp}_{\rm LL}}\frac{\lvert\text{estimated local error of }w^{\rm cmp}_{\rm LL}\rvert^2}{\big(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL}\big)^2}\Big)^{1/2}\le1,\tag{2.39}$$
+
+  the sum running over the $n^{\rm cpx}_{\rm LL}$ complex components of the state, with the relative tolerance
+  $r^{\rm tol}_{\rm LL}$ and the absolute tolerance $a^{\rm tol}_{\rm LL}$ (the solvers use $10^{-12}$ and $10^{-14}$; input keys
+  `rtol`, `atol`). A rejected step is repeated with a smaller $h^{\rm CV}_{\rm LL}$; after every step CVODE chooses the size and
+  the order of the next one, as large as the test allows. The factor 2 appears because SUNDIALS integrates real systems: the
+  real and the imaginary part of every component are two real unknowns. Both carry the same weight
+  $1/(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL})$, set by the modulus of the component, which the
+  module `t2core::cvode` gives to CVODE as its own error-weight function. The standard weights of CVODE, which take every
+  real unknown separately, would measure the error of the real part relative to the real part, which passes through zero twice
+  in every period of the oscillation $\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})$, and would force needlessly small steps.
+- **The output.** The programs ask for the state at the output times $0$, $\ell^{\rm t}_{\rm LL}$, $2\ell^{\rm t}_{\rm LL}$, and so
+  on ($\ell^{\rm t}_{\rm LL}$ is here the interval between two outputs, input key `output_step`, not a step of the method); CVODE
+  steps past each output time and returns the value of its interpolating polynomial there, which has the accuracy of the
+  method. Time-dependent gauge fields are evaluated at the times at which CVODE evaluates the right side.
+- **The error budget.** If the weighted local errors of (2.39) are spread over the components, the 2-norm of the local error
+  of a step is at most $\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})$
+  (the triangle inequality in the space of the components). A unitary evolution does not amplify errors, so the local errors
+  at most add up, and the global error after $N^{\rm st}_{\rm LL}$ steps is expected below
+
+  $$B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}\sqrt2\,\big(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}}\big).\tag{2.40}$$
+
+  The solvers check the conservation laws of every run against $10B^{\rm err}_{\rm LL}$ (Section 4.3): the estimate of the local
+  error is an estimate, and the true error can exceed it by a modest factor. The cost of a run is the number
+  $N^{\rm ev}_{\rm LL}$ of evaluations of the right side, which the solvers report with $N^{\rm st}_{\rm LL}$.
+
+Check GS-13 tests the method against an exact solution. On the lattice of check GS-10 ($3\times2\times4$ sites with random
+links, potentials and pair fields, $n^{\rm cpx}_{\rm LL}=384$) a random normalized state is integrated up to $x^0_{\rm LL}=20$
+with $r^{\rm tol}_{\rm LL}=10^{-8}$, $10^{-10}$ and $10^{-12}$ ($a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100$) and compared at 41
+output times with the exact solution $w^{\rm ex}_{\rm LL}$, the sum over the eigenpairs of $\mathcal H^{\rm lat}_{\rm LL}$ of
+$\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})$ times the eigenvector times its scalar product with the initial state. The relative
+deviation $\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert$ grows slowly
+with the time and stays below $B^{\rm err}_{\rm LL}$ for every tolerance; at the end it is $1.2\times10^{-6}$, $1.7\times10^{-7}$
+and $1.7\times10^{-10}$ (Figure 2(a); report in Appendix A.2). CVODE settles on a step size and an order that do not change
+over the run (Figure 2(b), (c)). The steps are limited not by the accuracy alone but also by the stability of the
+Adams-Moulton formulas on the imaginary axis, whose interval shrinks as the order grows: $h^{\rm CV}_{\rm LL}$ times the spectral
+radius 8.4349 of $\mathcal H^{\rm lat}_{\rm LL}$ (check GS-10) is 0.11, 0.046 and 0.045 for the three tolerances. Therefore the
+cost does not fall in proportion to the tolerance: at $r^{\rm tol}_{\rm LL}=10^{-10}$ CVODE needs 3661 steps, almost as many as
+the 3804 steps at $10^{-12}$ (1528 at $10^{-8}$).
+
+![](figures/fig_t2_cvode_accuracy.png){width=100%}
+
+**Figure 2.** The time integration of the lattice equations with CVODE on the lattice of check GS-10 (check GS-13), for the
+tolerances $r^{\rm tol}_{\rm LL}=10^{-12}$ (blue, the value of the solvers), $10^{-10}$ (orange, dashed) and $10^{-8}$ (aqua,
+dash-dotted), $a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100$. (a) The relative deviation $\delta^{\rm rel}_{\rm LL}$ of the computed
+state from the exact solution against the time. (b) The size $h^{\rm CV}_{\rm LL}$ and (c) the order $q^{\rm CV}_{\rm LL}$ of the
+last internal step before each output time; the numbers at the right are the values at the end. Data:
+`test2/data/t2_cvode_accuracy.csv`.
 
 **The stationary ground state.** For the self-consistent use the initial modes are the eigenvectors of
 $\mathcal H^{\rm lat}_{\rm LL}$ with positive energy, normalized to
@@ -825,8 +881,8 @@ problems of fewer dimensions the densities are per unit length or area of the ab
 They are computed by a Hermitian eigensolver (in the Rust programs the one of the library `t2core`: Householder
 reduction to a real tridiagonal matrix and the implicit QL algorithm, check GS-11; in the Python program the routine
 `eigh` of NumPy), and (2.32) is iterated until $d^\iota_{\rm LL}$ no longer changes (with the Anderson acceleration of
-Section 4.3). The self-consistent evolution of all modes uses the implicit midpoint rule instead of RK4, because it
-keeps the modes orthonormal and the fermion number constant exactly (Section 4.3). This is practical for small lattices (the matrix has $16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}$
+Section 4.3). The self-consistent evolution integrates all modes at once with CVODE, with the pair field computed from the
+modes at every evaluation of the right side (Section 4.3). This is practical for small lattices (the matrix has $16\,n^{\rm x}_{\rm LL}n^{\rm y}_{\rm LL}n^{\rm z}_{\rm LL}$
 rows), which is the scale of the solvers of items [3] and [5].
 
 **What the user must specify** (the solvers of items [3] and [5] ask for exactly these): the lattice
@@ -835,10 +891,11 @@ condition of each direction; the parameters $m_{\rm LL}$, $\mu_{\rm LL}$, $G_{\r
 $g^{\rm F}_{\rm LL}$; the gauge potentials as functions of position (constant, given on every site, or the Landau gauge of
 a constant magnetic field) and of time (a uniform pulse); the pair field (prescribed or
 self-consistent); the initial modes (a wave packet, a plane wave, an eigenmode, or values read from a file); the
-time step and the duration; and what is written out.
+interval $\ell^{\rm t}_{\rm LL}$ between the output times, the number of outputs and the tolerances $r^{\rm tol}_{\rm LL}$,
+$a^{\rm tol}_{\rm LL}$ of the time integration; and what is written out.
 
-**Diagnostics.** The norm of every mode (conserved by (2.31); RK4 loses about
-$(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^6/144$ per step), the orthogonality of the modes, the fermion-number
+**Diagnostics.** The norm of every mode (conserved by (2.31); CVODE keeps it up to the error budget (2.40)), the
+orthogonality of the modes, the fermion-number
 density, the pair field $\lvert\vec d_{\rm LL}\rvert$, and, for time-independent fields, the energy (the sum over the
 modes of the expectation value of $\mathcal H^{\rm lat}_{\rm LL}$).
 
@@ -887,7 +944,7 @@ kinds of charge). Sections 3.2 to 3.5 then solve four cases exactly:
 Every analytic solution is checked twice by the program `t2_analytic` (folder `test2/rust`; checks AS-1 to
 AS-{{GEN:nchecks_t2_analytic}}, report in Appendix A): against the continuum equations (2.31), and against the
 lattice operator (2.36), which is the operator that the solvers of items [3] and [5] integrate. The
-time-dependent solutions are compared with the RK4 integration of the lattice equations. These solutions are
+time-dependent solutions are compared with the CVODE integration of the lattice equations. These solutions are
 therefore also test problems with known answers for the solvers. Figures 3 to 6 show them. All four cases are
 computed in the canonical gauge $\Gamma^{\rm LL}_p=0$ of Section 2.7; the gauge transformation (2.10) carries each
 solution into any other gauge.
@@ -1061,8 +1118,8 @@ therefore not gauge invariant; only its direction relative to other isospin-carr
 relative to a pair field $d^\iota_{\rm LL}$, which the gauge transformation turns as well). The potential acts as an
 isospin chemical potential: the energies of the isospin states along $\tau^{\rm LL}_1$ are
 $\varepsilon_{\rm LL}-\mu_{\rm LL}\mp\omega^{\rm pr}_{\rm LL}/2$. For the solvers this is a sharp test of the isospin structure of
-the potential term: the RK4 integration of the lattice equations reproduces (3.8) with the relative deviation
-$9\times10^{-10}$, the size of the RK4 phase error (Figure 3(b), check AS-2).
+the potential term: the CVODE integration of the lattice equations (Section 2.11, $r^{\rm tol}_{\rm LL}=10^{-12}$) reproduces
+(3.8) with the relative deviation $1.3\times10^{-11}$, in 1013 internal steps of CVODE (Figure 3(b), check AS-2).
 
 ![](figures/fig_t2_case_A.png){width=100%}
 
@@ -1073,8 +1130,8 @@ $r^{\rm W}_{\rm LL}=1$): the curves are (3.7) with $\varepsilon^{\rm lat}_{\rm L
 circles are the eigenvalues of the lattice operator of the solvers on the plane waves of a ring of 32 sites; the
 dotted lines mark the band bottoms at $q^1_{\rm LL}=\mathsf A^\uparrow_{{\rm LL},1}=0.55$ and
 $\mathsf A^\downarrow_{{\rm LL},1}=-0.01$. (b) The probability of isospin up of a particle in the constant isospin potential
-$A^1_{{\rm LL},0}=1.5$: the exact solution (3.8) (line) and the RK4 integration of the lattice equations (circles, every
-second value shown), with $\ell^{\rm t}_{\rm LL}=0.004$. Data: `test2/data/t2_A_dispersion_curves.csv`,
+$A^1_{{\rm LL},0}=1.5$: the exact solution (3.8) (line) and the CVODE integration of the lattice equations (circles, every
+second output shown; outputs every $\ell^{\rm t}_{\rm LL}=0.16$). Data: `test2/data/t2_A_dispersion_curves.csv`,
 `t2_A_dispersion_lattice.csv`, `t2_A_precession.csv`.
 
 ## 3.3 Case B: the uniform polar superfluid
@@ -1153,8 +1210,8 @@ A bare particle is not a stationary state of the superfluid: the pair field conv
 the angular frequency $2E^-_{\rm LL}$ and the largest hole probability $(\Delta_{\rm LL}/E^-_{\rm LL})^2$, which is 1 at the
 Fermi surface and small far from it (the Rabi oscillation of a two-state system). This is the non-conservation of
 the particle content of a mode found in (3.2). In the self-consistent state the fermion number is nevertheless
-conserved, (3.3). Figure 4(b) and check AS-4: the RK4 integration of the lattice equations agrees with (3.15) to
-$5\times10^{-10}$, the predicted size of the RK4 phase error.
+conserved, (3.3). Figure 4(b) and check AS-4: the CVODE integration of the lattice equations agrees with (3.15) to
+$4.7\times10^{-10}$, in 486 internal steps of CVODE.
 
 **The gap equation in closed form.** For massless spinor charges ($m_{\rm LL}=0$, $\varepsilon_{\rm LL}=q_{\rm LL}$) the
 integral of (2.33) can be done. With $d^3q_{\rm LL}/(2\pi)^3=q_{\rm LL}^2\,dq_{\rm LL}/(2\pi^2)$ for an integrand that depends
@@ -1221,8 +1278,8 @@ solvers of items [3] and [5].
 $E^+_{\rm LL}$ (orange) from (3.13) with $\varepsilon^{\rm lat}_{\rm LL}$, the normal-state energy
 $\lvert\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}\rvert$ (grey, dashed), and the eigenvalues of the lattice operator of the solvers
 on the plane waves of a ring of 32 sites (circles); the gap $\Delta_{\rm LL}$ opens at the Fermi momentum. (b) The
-probability of the hole of a particle injected at the momentum $2\pi/(16\ell^{\rm x}_{\rm LL})$: (3.16) (line) and the RK4
-integration of the lattice equations (circles, every second value), $\ell^{\rm t}_{\rm LL}=0.02$. (c) The gap as a function
+probability of the hole of a particle injected at the momentum $2\pi/(16\ell^{\rm x}_{\rm LL})$: (3.16) (line) and the CVODE
+integration of the lattice equations (circles, every second output; outputs every $\ell^{\rm t}_{\rm LL}=0.2$). (c) The gap as a function
 of the coupling for massless charges ($\Lambda_{\rm LL}=1$) at $\mu_{\rm LL}=0$, $0.3$ and $0.6$: the solutions of the closed
 form (3.17) (lines) and their check by numerical quadrature (squares). At $\mu_{\rm LL}=0$ the gap appears at
 $G^{\rm crit}_{\rm LL}$; at $\mu_{\rm LL}>0$ it is non-zero for every coupling, exponentially small at weak coupling (3.20). Data:
@@ -1436,7 +1493,7 @@ diagonalization (circles; each level $n^{\rm L}_{\rm LL}\ge1$ is a pair of coinc
   strengths and $\lvert d^\iota_{\rm LL}\rvert$. The isospin direction of a single mode and the phase of the pair field are not:
   the precession (3.8) disappears in another gauge.
 - **Test problems for the solvers of items [3] and [5].** The time-dependent solutions (3.8) and (3.15) test the
-  RK4 time stepping with gauge potentials and with a pair field; (3.21) is a fixed point of the self-consistent
+  time integration with gauge potentials and with a pair field; (3.21) is a fixed point of the self-consistent
   iteration; the bound states (3.24), (3.29) test non-uniform pair fields; the fermion number (3.3) is conserved in
   every self-consistent evolution.
 - **Limits.** The cases are uniform or depend on one coordinate. General fields, several walls at short distance,
@@ -1447,7 +1504,8 @@ diagonalization (circles; each level $n^{\rm L}_{\rm LL}\ge1$ is a pair of coinc
 
 ## 4.0 The answer in brief
 
-1. **The program.** `test2/python/t2_solve.py` (Python 3 with NumPy and SciPy, about 1750 commented lines) solves the
+1. **The program.** `test2/python/t2_solve.py` (Python 3 with NumPy and SciPy, about 2000 commented lines; for the time
+   integration it calls CVODE through the shared library `libt2cvode` of the Rust workspace `test2/rust`) solves the
    mean-field field equations (2.31), (2.32) of the self-interacting spinor field on the lattice of Section 2.11,
    with the gauge-covariant central difference (2.35) (the link matrices (2.34)), the Wilson term, constant or
    site-dependent gauge potentials, constant magnetic fields, a pulse of a gauge field in time, and a prescribed or
@@ -1457,10 +1515,10 @@ diagonalization (circles; each level $n^{\rm L}_{\rm LL}\ge1$ is a pair of coinc
    conditions, offers ready examples, and asks for the name of an input file. The input file is a plain text file of
    lines `key = value`; every key is listed in Section 4.2 (the table is written by the program itself). The program
    checks every value and stops with a precise message if a key is unknown, misspelt, given twice, or out of range.
-3. **Four tasks.** `evolve` (the time evolution of one mode in prescribed fields, by RK4), `spectrum` (all eigenvalues
-   and the bound states), `ground_state` (the self-consistent pair field, by Anderson-accelerated iteration) and
-   `quench` (the self-consistent evolution of all modes after a change of the coupling, by the implicit midpoint rule,
-   which conserves the orthonormality of the modes and the fermion number exactly).
+3. **Four tasks.** `evolve` (the time evolution of one mode in prescribed fields, by CVODE), `spectrum` (all
+   eigenvalues and the bound states), `ground_state` (the self-consistent pair field, by Anderson-accelerated iteration)
+   and `quench` (the self-consistent evolution of all modes after a change of the coupling, by CVODE, which keeps the
+   orthonormality of the modes and the fermion number up to its error budget (2.40)).
 4. **Seven examples** (folder `test2/examples`), each with a known answer: a free wave packet (it moves with the group
    velocity of (2.37)); a packet in a magnetic field (a bounded orbit); a particle hitting a superfluid region (Andreev
    reflection into a hole); the bound states of a kink and an antikink (Section 3.4); the self-consistent uniform
@@ -1471,12 +1529,18 @@ diagonalization (circles; each level $n^{\rm L}_{\rm LL}\ge1$ is a pair of coinc
 
 ## 4.1 How to use the program
 
-**Requirements.** Python 3.8 or later with NumPy and SciPy (`python3 -m pip install numpy scipy`). The program runs
-from any folder; the commands below are given from the folder Revision_SuperLoop of the repository.
+**Requirements.** Python 3.8 or later with NumPy and SciPy (`python3 -m pip install numpy scipy`), and the shared
+library `libt2cvode` of the time integration (`libt2cvode.so` on Linux, `libt2cvode.dylib` on macOS), which the command
+`cargo build --release` in the folder `test2/rust` builds together with the Rust programs (Section 6.1: install Rust once,
+then build). The program finds the library in `test2/rust/target/release`, or at the path given by the environment
+variable `T2CVODE_LIB`. The program runs from any folder; the commands below are given from the folder Revision_SuperLoop of
+the repository.
 
 **Step by step.**
 
 ```
+# 0. once: build the Rust workspace, which contains the time integrator CVODE (the library libt2cvode)
+(cd test2/rust && cargo build --release)
 # 1. read the guide: what is solved, how the initial and boundary conditions are defined, and every key
 python3 test2/python/t2_solve.py --guide
 # 2. list the examples, and write one of them as a commented input file to start from
@@ -1486,7 +1550,7 @@ python3 test2/python/t2_solve.py --example andreev my_problem.t2in
 python3 test2/python/t2_solve.py my_problem.t2in
 # 4. or start the program without arguments: it prints a short guide and asks for the name of the input file
 python3 test2/python/t2_solve.py
-# 5. optional: check the lattice operator of the program (self-test)
+# 5. optional: check the lattice operator, the time integration and the examples of the program (self-test)
 python3 test2/python/t2_solve.py --selftest
 ```
 
@@ -1524,7 +1588,9 @@ the potentials at that site. The pair field is chosen by `pair`: `none`, `unifor
 ## 4.2 The input file
 
 The file is plain text. Each line holds one entry `key = value`; the character `#` starts a comment; empty lines are
-ignored; the order of the keys is free. The first entry must be `format = t2in 1`. A key that the program does not know
+ignored; the order of the keys is free. The first entry must be `format = t2in 2`. (The format `t2in 1` of the first
+version of the programs, with the keys `time_step`, `steps` and `output_every` of a fixed-step method, is refused with a
+message that names the keys that replace them.) A key that the program does not know
 is an error (with a suggestion of the key that was probably meant), so that a misspelt key cannot be ignored silently.
 A key that is not given takes its default. The table lists every key; it is written by the program from the very
 table that it uses to read the file (`python3 test2/python/t2_solve.py --keys-md FILE`), so that it cannot differ from
@@ -1532,7 +1598,9 @@ the program.
 
 {{GEN:t2_py_keys}}
 
-In the table, `dx` is $\ell^{\rm x}_{\rm LL}$, `dt` is $\ell^{\rm t}_{\rm LL}$, `r_W` is $r^{\rm W}_{\rm LL}$, `m` is
+In the table, `dx` is $\ell^{\rm x}_{\rm LL}$, `output_step` is $\ell^{\rm t}_{\rm LL}$ (the interval between two output
+times), `rtol` and `atol` are $r^{\rm tol}_{\rm LL}$ and $a^{\rm tol}_{\rm LL}$ of (2.39), `w_cmp` is a complex component
+$w^{\rm cmp}_{\rm LL}$ of the state, `r_W` is $r^{\rm W}_{\rm LL}$, `m` is
 $m_{\rm LL}$, `mu` is $\mu_{\rm LL}$, `g_v` and `g_F` are $g^{\rm v}_{\rm LL}$ and $g^{\rm F}_{\rm LL}$, `G` is $G_{\rm LL}$,
 `Delta` and `Delta_inf` are $\Delta_{\rm LL}$ and $\Delta^\infty_{\rm LL}$, `ell_K` is $\ell^{\rm K}_{\rm LL}$, `d^iota` is
 $d^\iota_{\rm LL}$, `A^1_p` to `A^F_p` are $A^1_{{\rm LL},p}$ to $A^{\rm F}_{{\rm LL},p}$, `F^F_12` and `F^3_12` are
@@ -1573,13 +1641,29 @@ with the unit vectors on the right (the sum over the modes of the state). For $n
 active direction it is the condition that leads to the gap equation (3.21) of a chain, whose coupling $G_{\rm LL}$ has the
 dimension of a length.
 
-**Task `evolve`.** One mode is advanced with the Runge-Kutta method of fourth order of Section 2.11. If a pulse is given,
-the links and $\mathsf A_{{\rm LL},0}$ are recomputed at the times of the stages (the start, the middle and the end of each
-step). The program requires $\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le2.5$ (with (2.38)) and checks after the run that the norm
-of the mode changed by less than the number of steps times $(\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL})^6/144$ (the bound of the loss
-per step of Section 2.11), and, for
-time-independent fields, that the energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$ of the mode is conserved within that bound
-times $B^{\rm H}_{\rm LL}$.
+**Task `evolve`.** One mode is integrated with CVODE (Section 2.11): the right side is
+$-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}$, with the operator built once for time-independent fields and rebuilt at
+the time of every evaluation if a pulse is given. The state is written at the output times $0$, $\ell^{\rm t}_{\rm LL}$,
+$2\ell^{\rm t}_{\rm LL}$, and so on (keys `output_step` and `outputs`), the fields on the sites every `fields_every` outputs.
+After the run the program checks that the norm of the mode changed by less than $10B^{\rm err}_{\rm LL}$ of (2.40) (with
+$\lVert w^{\rm lat}_{\rm LL}\rVert=1$ and the number of steps that CVODE reports), and, for time-independent fields, that the
+energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$ of the mode changed by less than $2B^{\rm H}_{\rm LL}$ times that bound (to first
+order, a change of the mode changes the energy by at most $2B^{\rm H}_{\rm LL}$ times the norm of the change). The
+summary reports $N^{\rm st}_{\rm LL}$, $N^{\rm ev}_{\rm LL}$, the rejected steps, the iterations of the corrector and the order
+and the size of the last step.
+
+**How the Python program calls CVODE.** The shared library `libt2cvode` (crate `test2/rust/t2cvode_c`) exports the
+function `t2cv_integrate` with the calling convention of the language C, which the program calls through the standard
+module `ctypes` of Python. It receives the initial state as $2n^{\rm cpx}_{\rm LL}$ double-precision numbers (the real and the
+imaginary part of every component, one after the other: the memory layout of a NumPy array of complex numbers), the output
+times, the settings ($r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$, the Adams-Moulton formulas up to the order 12, at most
+$10^7$ steps between two outputs) and two functions of the program: the right side, which the library calls at every
+evaluation with the current state (the program multiplies it by $-i\mathcal H^{\rm lat}_{\rm LL}$ with its sparse matrix), and the
+output function, which receives the state at every output time. The library integrates with the module `t2core::cvode` of
+the Rust programs (its function `integrate_status`, which stops the integration when a function of the caller reports an
+error); a description of the settings and the error budget (2.40) are taken from the same library, so that the reports of
+the two solvers read alike. The self-test of the program integrates an eigenvector of its random operator through the
+library and compares the result with the exact phase $\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})$ (Appendix A.2b).
 
 **The wave packet.** The initial packet of `initial = packet` is
 
@@ -1661,46 +1745,43 @@ $G_{\rm LL}$ form the columns of the matrix $\mathsf W^{\rm m}_{\rm LL}$, and at
 $G'_{\rm LL}$. The pair field follows from the modes by (4.1) with $G'_{\rm LL}$ at every moment, so the evolution
 $i\partial_0\mathsf W^{\rm m}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}[\mathsf W^{\rm m}_{\rm LL}]\mathsf W^{\rm m}_{\rm LL}$ is non-linear
 (the brackets indicate the dependence of the operator on the modes through the pair field). The program integrates it with
-the **implicit midpoint rule**
+CVODE (Section 2.11), all modes at once: the columns of $\mathsf W^{\rm m}_{\rm LL}$, one after the other, form one vector of
+$n^{\rm cpx}_{\rm LL}$ complex components (16 times the number of sites times the number of modes), and at every evaluation of the
+right side $-i\mathcal H^{\rm lat}_{\rm LL}[\mathsf W^{\rm m}_{\rm LL}]\mathsf W^{\rm m}_{\rm LL}$ the program computes the pair field
+from the current modes by (4.1) with $G'_{\rm LL}$, and the gauge fields at the time of the evaluation. The exact evolution has
+two conservation laws,
 
-$$\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL}+\ell^{\rm t}_{\rm LL})=\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL})-i\ell^{\rm t}_{\rm LL}\,\mathcal H^{\rm lat}_{\rm LL}[\bar{\mathsf W}^{\rm m}_{\rm LL}]\,\bar{\mathsf W}^{\rm m}_{\rm LL},\qquad\bar{\mathsf W}^{\rm m}_{\rm LL}=\tfrac12\big(\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL})+\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL}+\ell^{\rm t}_{\rm LL})\big),\tag{4.6}$$
+$$\partial_0\big((\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}\big)=0,\qquad\partial_0N^{\rm F}_{\rm LL}=0,\tag{4.6}$$
 
-with the gauge fields at the middle of the step. Two exact properties make it the right method:
+with the fermion number $N^{\rm F}_{\rm LL}$ defined below:
 
-- *The modes stay orthonormal (the Pauli principle).* Write $\mathsf W_0$, $\mathsf W_1$ for the matrices of the modes at the
-  start and at the end of a step and $\bar{\mathsf W}^{\rm m}_{\rm LL}=(\mathsf W_0+\mathsf W_1)/2$ (here the subscripts 0 and 1
-  only distinguish the two times). The algebraic identity
-  $\mathsf W_1^\dagger\mathsf W_1-\mathsf W_0^\dagger\mathsf W_0=(\bar{\mathsf W}^{\rm m}_{\rm LL})^\dagger(\mathsf W_1-\mathsf W_0)+(\mathsf W_1-\mathsf W_0)^\dagger\bar{\mathsf W}^{\rm m}_{\rm LL}$
-  and (4.6) give
-  $-i\ell^{\rm t}_{\rm LL}(\bar{\mathsf W}^{\rm m}_{\rm LL})^\dagger\mathcal H^{\rm lat}_{\rm LL}\bar{\mathsf W}^{\rm m}_{\rm LL}+i\ell^{\rm t}_{\rm LL}(\bar{\mathsf W}^{\rm m}_{\rm LL})^\dagger\mathcal H^{\rm lat}_{\rm LL}\bar{\mathsf W}^{\rm m}_{\rm LL}=0$,
-  because $\mathcal H^{\rm lat}_{\rm LL}$ is Hermitian, whatever pair field it contains. So
-  $\mathsf W^\dagger\mathsf W$ is the same at the end as at the start of every step.
+- *The modes stay orthonormal (the Pauli principle).* Because $\mathcal H^{\rm lat}_{\rm LL}$ is Hermitian, whatever pair field it
+  contains,
+  $\partial_0\big((\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}\big)=\big(-i\mathcal H^{\rm lat}_{\rm LL}\mathsf W^{\rm m}_{\rm LL}\big)^\dagger\mathsf W^{\rm m}_{\rm LL}+(\mathsf W^{\rm m}_{\rm LL})^\dagger\big(-i\mathcal H^{\rm lat}_{\rm LL}\mathsf W^{\rm m}_{\rm LL}\big)=i(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathcal H^{\rm lat}_{\rm LL}\mathsf W^{\rm m}_{\rm LL}-i(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathcal H^{\rm lat}_{\rm LL}\mathsf W^{\rm m}_{\rm LL}=0$.
 - *The fermion number is constant.* Let $N^{\rm F}_{\rm LL}$ be the sum over the modes and the sites of $\lvert\psi^{\rm h}_{\rm LL}\rvert^2$
-  (the fermion number (2.32) counts the hole components). By the same identity restricted to the hole components, its
-  change in one step is $2\ell^{\rm t}_{\rm LL}$ times the imaginary part of the sum over the modes and sites of the hole part of
-  the midpoint modes (the columns of $\bar{\mathsf W}^{\rm m}_{\rm LL}$), conjugated and transposed, times the hole row of (2.36)
-  applied to the midpoint modes. The diagonal block contributes a real number (it is Hermitian), and the pair term contributes
-  the complex conjugate of $\sum_n(\psi^{\rm p}_{{\rm LL},n})^\dagger\mathsf P_{\rm LL}\psi^{\rm h}_{{\rm LL},n}$, evaluated with the
-  midpoint modes. With the pair field computed from the same midpoint modes
-  by (4.1), this sum is $(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G'_{\rm LL})\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$ on each site,
-  real, as in (3.3) (the antisymmetry of $\mathsf K^\iota_{\rm LL}$ turns it into $-\sum_\iota d^\iota_{\rm LL}$ times the complex
-  conjugate of the pair expectation). Hence $N^{\rm F}_{\rm LL}$ does not change at all.
+  (the fermion number (2.32) counts the hole components). Its time derivative is twice the imaginary part of the sum over the
+  modes and the sites of the hole part of the modes, conjugated and transposed, times the hole row of (2.36) applied to the
+  modes. The diagonal block contributes a real number (it is Hermitian), and the pair term contributes the complex conjugate
+  of $\sum_n(\psi^{\rm p}_{{\rm LL},n})^\dagger\mathsf P_{\rm LL}\psi^{\rm h}_{{\rm LL},n}$. With the pair field computed from the same
+  modes by (4.1), this sum is $(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G'_{\rm LL})\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$ on each
+  site, real, as in (3.3) (the antisymmetry of $\mathsf K^\iota_{\rm LL}$ turns it into $-\sum_\iota d^\iota_{\rm LL}$ times the complex
+  conjugate of the pair expectation). Hence the time derivative of $N^{\rm F}_{\rm LL}$ is zero.
 
-The explicit RK4 does not have these properties: it would change both by about $(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL})^6/144$
-per step for the modes of the highest energies, in the example about $10^{-4}$ over the run. The rule (4.6) is implicit: the
-program solves it by the fixed-point iteration that inserts the latest estimate of $\mathsf W^{\rm m}_{\rm LL}(x^0_{\rm LL}+\ell^{\rm t}_{\rm LL})$
-into the right side, starting from the explicit Euler step. One pass changes the error by a factor of about
-$\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}/2$, so the program requires $\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le1$ (with $B^{\rm H}_{\rm LL}$ evaluated with
-the pair field enlarged by one half) and iterates until the largest change is below $10^{-14}$. Orthonormality and
-$N^{\rm F}_{\rm LL}$ are then conserved to the rounding errors. The mean-field energy
+CVODE keeps both up to its accumulated local error. The program checks the largest change of $N^{\rm F}_{\rm LL}$ against
+$20\lVert\mathsf W^{\rm m}_{\rm LL}\rVert B^{\rm err}_{\rm LL}$ and the largest entry of
+$(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$ against $20B^{\rm err}_{\rm LL}$, with $B^{\rm err}_{\rm LL}$ of (2.40)
+for $\lVert w^{\rm lat}_{\rm LL}\rVert=\lVert\mathsf W^{\rm m}_{\rm LL}\rVert$, the square root of the number of modes (orthonormal
+columns). To first order, a change of the modes changes $N^{\rm F}_{\rm LL}$, a sum of squared moduli, by at most
+$2\lVert\mathsf W^{\rm m}_{\rm LL}\rVert$ times the norm of the change, and an entry of
+$(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}$ by at most twice the norm of the change; the factor 10 is that of
+the task `evolve`. The mean-field energy
 $E^{\rm MF}_{\rm LL}=\sum_n\langle\mathcal H^{\rm lat}_{\rm LL}\rangle_{\mathsf P_{\rm LL}=0}+(2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G'_{\rm LL})\sum_{\vec s_{\rm LL}}\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2$
-(the sum over the modes of the expectation values of the operator without the pair field, plus the condensation term) is
-the conserved energy of the exact evolution in time-independent fields. The rule (4.6) conserves it only to second order in
-$\ell^{\rm t}_{\rm LL}$, without drift, because it is a symplectic method; the program reports its largest change.
+(the sum over the modes of the expectation values of the operator without the pair field, plus the condensation term) is the
+conserved energy of the exact evolution in time-independent fields; the program reports its largest change.
 
 **The output files.** For an input file `NAME.t2in` the program writes `NAME_summary.txt` (the problem, the checks with
-PASS or FAIL, and the results), `NAME_series.csv` (quantities against the time, written at every step, or against the
-iteration), `NAME_fields.csv` (fields on the sites at the output times, or the densities of selected eigenvectors), and for
+PASS or FAIL, and the results), `NAME_series.csv` (quantities against the time, written at every output time, or against
+the iteration), `NAME_fields.csv` (fields on the sites at the output times, or the densities of selected eigenvectors), and for
 some tasks `NAME_spectrum.csv` and `NAME_iterations.csv`. Every data file states its content in a line `# content:` and
 its parameters in lines `# name: value`; the columns are listed in Appendix A.3. The program ends with the exit status 0
 if every check passes.
@@ -1721,7 +1802,7 @@ EX-1 to EX-7; the report is printed in Appendix A). The figures of all examples 
 | `kink_spectrum` | spectrum, ring of 60 sites, $\ell^{\rm x}_{\rm LL}=0.4$ | kink and antikink, $\Delta^\infty_{\rm LL}=\ell^{\rm K}_{\rm LL}=1$ | 16 bound states at $\pm E^{\rm R}_{\rm LL}$ of (3.29) | $\pm0.46232$ against $\pm0.46544$, within the bound 0.023 (EX-4) |
 | `ground_state` | ground_state, ring of 32 sites | $m_{\rm LL}=0.4$, $\mu_{\rm LL}=0.6$, $G_{\rm LL}=0.46$ | the root of the gap equation (3.21) | $\Delta_{\rm LL}=0.4042817351$ to $3\times10^{-13}$ (EX-5) |
 | `kink_ground_state` | ground_state, 40 sites, walls | $m_{\rm LL}=\mu_{\rm LL}=0$, $G_{\rm LL}=0.48$, constrained | the Wilson shift of the bound states | 0.03404 against 0.03321 (EX-6) |
-| `quench` | quench, ring of 24 sites | $m_{\rm LL}=\mu_{\rm LL}=0$, $G_{\rm LL}=0.45\to0.455$ | the frequency of the amplitude mode, (4.11) | 1.18449 against 1.18991 (EX-7) |
+| `quench` | quench, ring of 24 sites | $m_{\rm LL}=\mu_{\rm LL}=0$, $G_{\rm LL}=0.45\to0.455$ | the frequency of the amplitude mode, (4.11) | 1.18898 against 1.19341 (EX-7) |
 
 **`packet_free` (EX-1).** The packet (4.2) with $\vec q^{\rm pk}_{\rm LL}=(0.8,0,0)$, $w^{\rm pk}_{\rm LL}=3$, contains the positive
 branch only. Its centre must move with the mean group velocity
@@ -1733,7 +1814,7 @@ $$v^{\rm g}_{\rm LL}(q^1_{\rm LL})=\frac{d\varepsilon^{\rm lat}_{\rm LL}}{dq^1_{
 (the derivative of (2.37)), the sums over the 128 allowed momenta. The fitted velocity 0.964138 agrees with 0.964059 to
 $8\times10^{-5}$; the remaining difference comes from the small variation of the spinor of the packet across its momenta,
 which the Gaussian weight ignores. The solver's own check, with the exact weights of the projected packet, agrees to
-$4\times10^{-7}$. The group velocity at the central momentum alone, 0.97555, would be wrong by 1.2 per cent: a packet moves
+$7\times10^{-7}$. The group velocity at the central momentum alone, 0.97555, would be wrong by 1.2 per cent: a packet moves
 with the average over its momenta.
 
 **`cyclotron` (EX-2).** In the field $\mathsf F^{\rm F}_{{\rm LL},12}=0.4$ the isospin-up component feels
@@ -1744,7 +1825,8 @@ Landau levels $n^{\rm L}_{\rm LL}=0,1,2,3$ of (3.32) (energies 0.400, 0.721, 0.9
 therefore does not run on a circle of the classical radius but oscillates with the differences of these energies ($2\pi$
 divided by the differences of neighbouring levels gives the periods 19.6, 29.0 and 35.8; the centre returns closest to its
 start after 31.1). What the example shows exactly: the orbit is bounded by the field (the centre stays more than 2 away from
-the walls), and the norm and the energy are conserved to $3\times10^{-7}$ and $4\times10^{-7}$, the RK4 errors. The quantitative
+the walls), and the norm and the energy are conserved to $2.6\times10^{-9}$ and $3.2\times10^{-9}$, within the error budget
+(2.40) of CVODE. The quantitative
 test of the magnetic field remains check AS-10 of Section 3.5.
 
 **`andreev` (EX-3).** The pair field rises from 0 to $\Delta_{\rm LL}=0.6$ around $x^1_{\rm LL}=60$ (a step of width 1); at
@@ -1784,9 +1866,10 @@ size $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}\Delta_{\rm LL}=0.3$, squared 0.09;
 
 **`quench` (EX-7): the amplitude mode.** The ground state of a ring of 24 sites ($m_{\rm LL}=\mu_{\rm LL}=0$) at $G_{\rm LL}=0.45$ has
 $\Delta_{\rm LL}=0.484762$. At $x^0_{\rm LL}=0$ the coupling becomes $G'_{\rm LL}=0.455$; the modes have not changed yet, so (4.1)
-multiplies the pair field by $G'_{\rm LL}/G_{\rm LL}$, to 0.490148. Then the pair field oscillates between 0.4902 and 0.5093 about the
-mean $\bar\Delta_{\rm LL}=0.500877$, while $N^{\rm F}_{\rm LL}=96$ stays constant (the largest change is $2\times10^{-11}$) and the modes
-stay orthonormal to $1.2\times10^{-12}$. The prediction of the frequency follows from the linearized self-consistent equations.
+multiplies the pair field by $G'_{\rm LL}/G_{\rm LL}$, to 0.490148. Then the pair field oscillates between 0.4902 and 0.5134 about the
+mean $\bar\Delta_{\rm LL}=0.503125$, close to the gap 0.503114 of the ground state at the new coupling, while $N^{\rm F}_{\rm LL}=96$
+changes by at most $1.3\times10^{-8}$ and the modes stay orthonormal to $4.9\times10^{-10}$, both within the error budget (2.40) of
+CVODE. The prediction of the frequency follows from the linearized self-consistent equations.
 At $m_{\rm LL}=\mu_{\rm LL}=0$ the uniform evolution never leaves the planes of (3.12): for each allowed momentum and each branch
 $s^{\rm br}_{\rm LL}\varepsilon^{\rm lat}_{\rm LL}$ ($s^{\rm br}_{\rm LL}=\pm1$), each of the four degenerate modes has the particle part
 $u^{\rm Bl}_{\rm LL}\chi^{\rm pw}_{\rm LL}$ and the hole part $v^{\rm Bl}_{\rm LL}\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL}$ (times the plane wave),
@@ -1830,17 +1913,20 @@ $$\Big(\frac{(\omega^{\rm H}_{\rm LL})^2}4-\Delta_{\rm LL}^2\Big)\sum_{q^1_{\rm 
 Its left side is zero at $\omega^{\rm H}_{\rm LL}=2\Delta_{\rm LL}$ and tends to $+\infty$ as $\omega^{\rm H}_{\rm LL}$ approaches twice the smallest
 $E^\pm_{\rm LL}$ with $q^1_{\rm LL}\neq0$ from below, so (4.11) has exactly one root between these two values: the amplitude mode,
 the oscillation of $\lvert\vec d_{\rm LL}\rvert$ (in an infinite system the root moves to $2\Delta_{\rm LL}$, the edge of the
-continuum of pair breaking). With $\Delta_{\rm LL}=\bar\Delta_{\rm LL}$, (4.11) gives 1.18991; the least-squares fit of a sinusoid to the
-computed $\lvert\vec d_{\rm LL}\rvert$ gives 1.18449, a difference of 0.46 per cent (the allowed difference is 1 per cent; the terms of
-second order in the amplitude, relative $(0.0096/0.50)^2$, and the weaker modes at the other roots of the full linear problem
-make up the difference). This is the amplitude (Higgs) mode of the superfluid of the spinor charges; Section 12.4 (item [10]) obtains
+continuum of pair breaking). With $\Delta_{\rm LL}=\bar\Delta_{\rm LL}$, (4.11) gives 1.19341; the least-squares fit of a sinusoid to the
+computed $\lvert\vec d_{\rm LL}\rvert$ gives 1.18898, a difference of 0.37 per cent (the allowed difference is 1 per cent; the terms of
+second order in the amplitude, relative $(0.0116/0.50)^2$, and the weaker modes at the other roots of the full linear problem
+make up the difference). The first version of the solvers integrated this quench with the implicit midpoint rule and the
+fixed step 0.04; it found the mean 0.500877 and the frequency 1.18449, wrong in the third decimal: the fixed step was too
+long for the fast modes of the operator. The present values are converged: CVODE with $r^{\rm tol}_{\rm LL}=10^{-10}$, $10^{-12}$
+and $10^{-13}$ gives the same frequency to 6 decimals and the same mean to $2\times10^{-9}$ (program `t2_cvcmp`, Appendix A.2g). This is the amplitude (Higgs) mode of the superfluid of the spinor charges; Section 12.4 (item [10]) obtains
 its mass in the vacuum of the theory, $2\Delta^{\rm vac}_{\rm LL}$, from the effective theory of the pair field.
 
 ## 4.5 Discussion
 
 - **What the program does and does not do.** It solves the mean-field equations exactly as formulated in Section 2.11, with
   the gauge-covariant lattice derivative in every equation, for any lattice that fits in memory (the tasks `evolve` use
-  sparse matrices: the $40\times40$ example has 25600 complex unknowns and runs in 2 seconds); the self-consistent tasks
+  sparse matrices: the $40\times40$ example has 25600 complex unknowns and runs in about ten seconds); the self-consistent tasks
   diagonalize dense matrices and are limited to about 375 sites. The gauge fields are external (prescribed); their own field
   equations (2.29) are not solved.
 - **Why the checks are trustworthy.** Every example has an answer that the program does not compute: a dispersion formula,
@@ -1893,7 +1979,7 @@ The panels depend on the task of the solution (the line `# task:` of its data fi
   (solid) and of the hole part (dashed) at four times, from light to dark; (c) the probabilities $P^{\rm h}_{\rm LL}$ of the hole
   part and $P^\uparrow_{\rm LL}$ of the particle part with isospin up; (d) the changes of the norm and of the energy
   $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$ since the start, on a logarithmic scale, which show the size of the errors of the
-  time stepping.
+  time integration (a change that is zero in the printed digits of the data file is drawn at $10^{-17}$).
 - **`evolve`, two active directions** (six panels): (a) to (d) the density at four times as colour maps over the plane
   $x^1_{\rm LL}$, $x^2_{\rm LL}$, with the path of the centre up to that time; (e) the whole path; (f) the conservation of the norm
   and of the energy.
@@ -1924,14 +2010,15 @@ changing its shape much; its centre (orange) lies on the dashed line of the pred
 average of (4.7) over the momenta of the packet; the two lines cannot be told apart (the difference is $8\times10^{-5}$ of the
 velocity). (b) The density at four times: the packet broadens slowly by dispersion. (c) It stays a particle with isospin up
 ($P^{\rm h}_{\rm LL}=0$, $P^\uparrow_{\rm LL}=1$): without fields nothing turns it. (d) The norm and the energy change by less than
-$2\times10^{-7}$, the size of the RK4 error for the energies of the packet. Data: `test2/data/t2_py_packet_free_*`.
+$1.3\times10^{-10}$ (the steps of the curves are the last of the 12 printed decimals of the data file). Data:
+`test2/data/t2_py_packet_free_*`.
 
 ![](figures/fig_t2_py_cyclotron.png){width=100%}
 
 **Figure 8.** The packet in the magnetic field $\mathsf F^{\rm F}_{{\rm LL},12}=0.4$ (example `cyclotron`, check EX-2). (a) to (d)
 The density at four times and the path of the centre so far: the packet turns, spreads around a ring, and part of it comes back;
 it is a superposition of the Landau levels 0 to 3 of (3.32), whose energy differences set the turning (Section 4.4). (e) The
-path of the centre: bounded, far from the walls. (f) The norm and the energy are conserved to $4\times10^{-7}$. Data:
+path of the centre: bounded, far from the walls. (f) The norm and the energy are conserved to $3.2\times10^{-9}$. Data:
 `test2/data/t2_py_cyclotron_*`.
 
 ![](figures/fig_t2_py_andreev.png){width=100%}
@@ -1940,7 +2027,7 @@ path of the centre: bounded, far from the walls. (f) The norm and the energy are
 superfluid region to the right of the dotted line, runs to the right, turns before the interface and runs back. (b) At the times
 20 and 40 the incoming particle part (solid) and the outgoing hole part (dashed); at 60 only the hole part is left, with a small
 reflected particle part. (c) The conversion: $P^{\rm h}_{\rm LL}$ rises from 0 to 0.978 while the packet is at the interface, and the
-particle part with isospin up falls to 0.022. (d) The errors of the time stepping stay below $3\times10^{-9}$. Data:
+particle part with isospin up falls to 0.022. (d) The errors of the time integration stay below $2\times10^{-11}$. Data:
 `test2/data/t2_py_andreev_*`.
 
 ![](figures/fig_t2_py_kink_spectrum.png){width=100%}
@@ -1972,9 +2059,10 @@ four at each sign, at the energies $\pm0.034$, next to the predicted first-order
 **Figure 13.** The quench of the coupling from 0.45 to 0.455 (example `quench`, check EX-7). (a) The amplitude of the pair field
 jumps at $x^0_{\rm LL}=0$ (by the factor $G'_{\rm LL}/G_{\rm LL}$) and then oscillates about its mean (grey); the dashed curve is a
 sinusoid with the predicted frequency $\omega^{\rm H}_{\rm LL}$ of (4.11) (amplitude and phase fitted): the dominant oscillation
-follows it, and weaker modes at other frequencies are visible as well. (b) The fermion number changes by at most $2.4\times10^{-11}$
-and the orthonormality of the modes by $1.2\times10^{-12}$ (rounding errors), while $E^{\rm MF}_{\rm LL}$ varies by a few parts in $10^{6}$
-without drift (the second-order error of the midpoint rule). (c) The pair field stays uniform on all 24 sites. Data:
+follows it, and weaker modes at other frequencies are visible as well. (b) The fermion number changes by at most $1.3\times10^{-8}$,
+the orthonormality of the modes by $4.9\times10^{-10}$ and $E^{\rm MF}_{\rm LL}$ by $2\times10^{-10}$ of its value, all within the error
+budget (2.40) of CVODE; the changes grow slowly with the time, as the local errors add up. (c) The pair field stays uniform on all
+24 sites. Data:
 `test2/data/t2_py_quench_*`.
 
 ## 5.4 Discussion
@@ -1994,13 +2082,14 @@ without drift (the second-order error of the midpoint rule). (c) The pair field 
 
 ## 6.0 The answer in brief
 
-The program `t2_solve` is the member `t2solve` of the Cargo workspace `test2/rust` (pure Rust: the standard library and the
-library `t2core` of the workspace, no downloaded crate; about 2700 commented lines in three files). It is built with
+The program `t2_solve` is the member `t2solve` of the Cargo workspace `test2/rust` (pure Rust: the standard library, the
+library `t2core` of the workspace and, through it, the vendored CVODE of SUNDIALS 7.8.0 in pure Rust; no downloaded crate;
+about 2700 commented lines in three files). It is built with
 `cargo build --release` and does everything the Python solver of item [3] does, in the same way: it guides the user (a short
 guide at the start, the complete guide with `--guide`, seven examples written on request), asks for the name of the input
-file, reads the same input files (format `t2in 1`, the 50 keys of Section 4.2, with the same checks and the same error
-messages), solves the four tasks with the same methods (RK4 for `evolve`, the dense eigensolver for `spectrum`, Anderson
-acceleration for `ground_state`, the implicit midpoint rule for `quench`), checks every run in the same way, and writes the
+file, reads the same input files (format `t2in 2`, the 52 keys of Section 4.2, with the same checks and the same error
+messages), solves the four tasks with the same methods (CVODE for `evolve` and `quench`, the dense eigensolver for
+`spectrum`, Anderson acceleration for `ground_state`), checks every run in the same way, and writes the
 same output files with the same columns. Its self-test compares its sparse lattice operator with the operator `Lattice::apply`
 of `t2core`, which was written independently for items [1] and [2] ({{GEN:nchecks_t2_rs_selftest}} checks). For the seven
 examples, the Rust and the Python solutions agree number by number: the solutions, spectra and time series to $10^{-9}$, which
@@ -2030,9 +2119,11 @@ cd test2/rust
 cargo build --release
 ```
 
-Cargo compiles the library `t2core` and the three programs of the workspace (`t2_fields`, `t2_analytic`, `t2_solve`) with
-full optimization; the first build takes about a minute, later builds only recompile what changed. No network access is
-needed, because the workspace uses no external crate. The program is then the file `test2/rust/target/release/t2_solve`.
+Cargo compiles the vendored crates of CVODE (`sundials_core` and `cvode_rs`, folder `vendor/sundials_rs-7.8.0` of PROJECT
+spacetimes), the library `t2core`, the programs of the workspace (`t2_fields`, `t2_analytic`, `t2_solve`, `t2_plot`,
+`t2_sfbs`, `t2_cvcmp`) and the shared library `libt2cvode` of the Python solver (crate `t2cvode_c`) with full optimization; the
+first build takes about a minute, later builds only recompile what changed. No network access is needed, because the
+workspace uses no downloaded crate. The program is then the file `test2/rust/target/release/t2_solve`.
 
 **Step 3: check the build** (from the folder Revision_SuperLoop):
 
@@ -2077,8 +2168,9 @@ is 0 when every check of the run passes, 1 when a check fails, and 2 when the in
 |------------------------|------------------------------|------------------------------|
 | `unknown key 'pair_widht' (did you mean pair_width?)` | a misspelt key | correct the name |
 | `the task 'quench' needs the key 'quench_coupling'` | a key that the task requires is missing | add it (Section 4.2) |
-| `dt Hbound = 3.1 exceeds 2.5: choose time_step below 0.4` | the time step is too long for RK4 to be stable | use a smaller `time_step` |
-| `dt Hbound = 1.3 exceeds 1: ...` (quench) | the fixed-point iteration of the implicit midpoint rule would not converge | use a smaller `time_step` |
+| `the format 't2in 1' (with the keys time_step, steps and output_every of a fixed-step method) is no longer accepted: ...` | an input file of the first version | write `format = t2in 2` and replace `time_step` by `output_step`, `steps` by `outputs` and `output_every` by `fields_every` |
+| `the time integration with CVODE failed: ...` | CVODE could not satisfy (2.39) within `max_steps` steps or reported an error of the right side | check the fields (a very large potential makes the steps very small), or loosen `rtol` |
+| `the shared library libt2cvode.so of the time integration with CVODE was not found ...` (Python only) | the Rust workspace has not been built | run `cargo build --release` in `test2/rust` (Section 6.1), or set `T2CVODE_LIB` |
 | `... must not exceed 6000` | the dense diagonalization of `spectrum`, `ground_state` and `quench` is limited to 375 sites | use fewer sites |
 | `a magnetic field needs 'wall' in direction 1` | the Landau gauge grows along $x^1_{\rm LL}$ | make direction 1 a wall |
 | `[FAIL] the self-consistent ... converged` | the iteration did not reach `tolerance` | raise `max_iterations`, lower `mixing`, or start from a better `pair` |
@@ -2100,22 +2192,25 @@ Three source files in `test2/rust/t2solve/src`:
   frequency fit; and a small linear solver for the Anderson step;
 - `main.rs`: the four tasks, the summary and the data files, the self-test, the dialogue and the command line.
 
-The methods are those of Section 4.3, step by step: RK4 with the stages at the times $x^0_{\rm LL}$,
-$x^0_{\rm LL}+\ell^{\rm t}_{\rm LL}/2$ and $x^0_{\rm LL}+\ell^{\rm t}_{\rm LL}$; the Anderson iteration (4.4) with the memory 6, the
-normal equations with the regularization $10^{-12}$ times their trace, and Gaussian elimination with partial pivoting; the
-implicit midpoint rule (4.6) with the explicit Euler start and the stopping change $10^{-14}$. The dense eigenproblems are solved
+The methods are those of Section 4.3, step by step: CVODE of Section 2.11 through the module `t2core::cvode` for `evolve`
+and `quench` (the function `integrate`; the Python solver calls the same module through `libt2cvode`); the Anderson
+iteration (4.4) with the memory 6, the normal equations with the regularization $10^{-12}$ times their trace, and Gaussian
+elimination with partial pivoting. The dense eigenproblems are solved
 by the eigensolver of `t2core` (Householder reduction and the implicit QL algorithm, check GS-11 of item [1]). Two things
 necessarily differ from the Python solver, and neither changes a result:
 
 - *The eigenvectors inside a degenerate eigenspace.* Two eigensolvers choose different bases of an eigenspace of a repeated
   eigenvalue (for example the four bound states of each wall at the same energy). Every quantity that the solvers compute from
   eigenvectors is independent of that choice: the pair expectation of (4.1) and the fermion number are sums over all occupied
-  modes (unchanged by a unitary mixing of them), the self-consistent evolution (4.6) acts on each mode separately and computes
+  modes (unchanged by a unitary mixing of them), the self-consistent evolution acts on each mode separately and computes
   the pair field from the sum, and the task `spectrum` writes the densities summed over each group of degenerate eigenvalues.
+  (The error test (2.39) of CVODE weighs the components of all modes together, so that another basis of a degenerate
+  eigenspace can change the steps that CVODE chooses; the results then differ within the tolerance, not more.)
   (The only exception is `initial = eigenmode` with a degenerate eigenvalue, whose initial mode depends on the eigensolver; the
   guide says so.)
-- *The arithmetic.* The sums are formed in a different order, so the last digits differ by rounding; in the time stepping and in
-  the iterations these differences are carried along but not amplified much.
+- *The arithmetic.* The sums are formed in a different order, so the last digits differ by rounding; in the time integration
+  (where they can also change the steps that CVODE chooses, by amounts within its tolerance) and in the iterations these
+  differences are carried along but not amplified much.
 
 ## 6.4 The results, and the comparison with the Python solver
 
@@ -2123,40 +2218,32 @@ The program solves the seven examples of Section 4.4; all checks of its runs pas
 to its outputs (prefix `t2_rs_` in `test2/data`), confirms EX-1 to EX-7 with the same numbers as for the Python solutions (Appendix
 A.2d). The check **EX-8** compares the 18 output files of the two solvers column by column:
 
-| quantities | largest difference | origin |
-|------------------------------|----------|------------------------------|
-| densities, pair fields, spectra (all examples) | $10^{-14}$ or less | rounding in the operator and the eigensolvers |
-| time series of `evolve` (norm, energy, probabilities, centre) | $10^{-11}$ | rounding, carried through 600 to 1200 RK4 steps |
-| time series of `quench` ($\lvert\vec d_{\rm LL}\rvert$, $N^{\rm F}_{\rm LL}$, $E^{\rm MF}_{\rm LL}$, orthonormality) | $10^{-9}$ (in $E^{\rm MF}_{\rm LL}\approx491$, relative $2\times10^{-12}$) | rounding, carried through 600 steps of (4.6) |
-| histories of the Anderson iteration | $2\times10^{-7}$ (the same numbers of iterations) | rounding, amplified by the least-squares step near convergence |
+{{GEN:t2_ex8_table}}
 
 The allowed differences are $10^{-7}$ for the solutions and $10^{-5}$ for the iteration histories: the intermediate iterates of
 the Anderson method depend on rounding through its least-squares step, whose matrix becomes nearly singular when the residuals
 become small, but the fixed point, which is what the iteration computes, agrees to $10^{-15}$ (the self-consistent pair fields of
 the files `_fields.csv`). The two programs were written independently in the sense that matters: the Rust program assembles the
 operator from the formulas of (2.36) and is checked against `Lattice::apply` of `t2core`, while the Python program assembles it in
-NumPy and is checked against its own site-by-site loop; their agreement to $10^{-14}$ on the same problems tests both.
+NumPy and is checked against its own site-by-site loop; their agreement on the same problems (the first row of the table)
+tests both. The time integrator is common to both: the Python program calls CVODE of the Rust library through `libt2cvode`.
+It is tested on its own by check GS-13 (Section 2.11), by checks AS-2 and AS-4 (Section 3) and by the self-tests of both
+solvers.
 
 Computing times on one processor core (the computer that built this document), in seconds:
 
-| example | Python | Rust |
-|------|------|------|
-| `packet_free` | 0.10 | 0.06 |
-| `andreev` | 0.33 | 0.27 |
-| `cyclotron` | 1.6 | 1.4 |
-| `kink_spectrum` | 0.9 | 2.7 |
-| `ground_state` | 1.7 | 5.0 |
-| `kink_ground_state` | 7.4 | 24 |
-| `quench` (time stepping) | 50 | 25 |
+{{GEN:t2_times_table}}
 
-The Rust program is faster where the work is its own loops (the time stepping), and slower for the dense eigenproblems, where
+The Rust program is faster where the work is its own loops (the time integration, which evaluates the right side thousands of
+times), and slower for the dense eigenproblems, where
 NumPy calls the optimized LAPACK library; the eigensolver of `t2core` is a plain implementation of the textbook method.
 
 ## 6.5 Discussion
 
 - **Why a second solver.** Two programs in two languages, with two eigensolvers and two independent checks of the lattice
   operator, that agree to rounding on every example, make an error in the formulation or in the code very unlikely: an error would
-  have to be made in the same way twice.
+  have to be made in the same way twice. (The time integrator, CVODE, is shared; it is tested separately against exact
+  solutions.)
 - **What the Rust program adds.** It runs without Python and without any library outside the repository, and it is the faster of
   the two for long time evolutions.
 - **Limits.** The same as those of the Python solver (Section 4.5): external gauge fields, and the dense diagonalization of the
@@ -2237,7 +2324,7 @@ path of its centre; (e) the whole path; (f) the conservation of norm and energy.
 
 **Figure 16.** Andreev reflection, Rust solution (example `andreev`): (a) the density in space and time, the step of the pair field
 (dotted); (b) the particle part (solid) and the hole part (dashed) at four times; (c) the conversion of the particle into a hole;
-(d) the errors of the time stepping. Data: `test2/data/t2_rs_andreev_*`.
+(d) the errors of the time integration. Data: `test2/data/t2_rs_andreev_*`.
 
 ![](figures/fig_t2_rs_kink_spectrum.png){width=100%}
 
@@ -3324,11 +3411,12 @@ These equations conserve the mean-field energy per volume, $4\int\!d^3q_{\rm LL}
 ($\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2$ is the occupation of the state of energy $\pm\varepsilon_{\rm LL}$): by (9.30) the time derivative of its first
 term is $8\int\sum_\pm(\pm\varepsilon_{\rm LL}-\mu_{\rm LL}){\rm Im}\big((d^3_{\rm LL})^*u^{\rm pl}_{{\rm LL},\pm}(v^{\rm pl}_{{\rm LL},\pm})^*\big)$, and that of
 $\lvert d^3_{\rm LL}\rvert^2/G_{\rm LL}$ is the same. The program solves (9.30) at $\mu_{\rm LL}=0$, $G_{\rm LL}=20$ on 320 radial nodes (Gauss-Legendre) with
-the classical Runge-Kutta method of the fourth order (time step 0.02, up to $x^0_{\rm LL}=1500$), starting from the positive-energy eigenvectors (3.14)
-of the plane matrices with the small gap $10^{-5}$ in place of $\Delta_{\rm LL}$. The pair field oscillates (Figure 22(d)); its spectral line below
-the threshold $2m_{\rm LL}$ lies at the frequency 0.279251576, and the pole (9.29) on the same nodes is $M^{\rm B}_{\rm LL}=0.279251554$: relative
-deviation $8\times10^{-8}$, the accuracy with which a line is located in a record of finite length. The line carries 0.908 of the initial pair field; the rest belongs to unbound pairs
-(frequencies above $2m_{\rm LL}$), which dephase. The energy is conserved to $1.5\times10^{-8}$ of its scale (the error of the time stepping), and the
+CVODE (Section 2.11; $r^{\rm tol}_{\rm LL}=10^{-12}$, $a^{\rm tol}_{\rm LL}=10^{-14}$; 33127 internal steps up to $x^0_{\rm LL}=1500$, the state
+sampled every 0.02), starting from the positive-energy eigenvectors (3.14) of the plane matrices with the small gap $10^{-5}$ in place of
+$\Delta_{\rm LL}$. The pair field oscillates (Figure 22(d)); its spectral line below the threshold $2m_{\rm LL}$ lies at the frequency 0.279251552,
+and the pole (9.29) on the same nodes is $M^{\rm B}_{\rm LL}=0.279251554$: relative deviation $7\times10^{-9}$ (check SB-10 allows $10^{-6}$).
+The line carries 0.908 of the initial pair field; the rest belongs to unbound pairs (frequencies above $2m_{\rm LL}$), which dephase. The
+energy is conserved to $2.3\times10^{-9}$ of its scale (the error of the time integration), and the
 pair field stays real. The reason is a mirror symmetry of $\mu_{\rm LL}=0$: when $d^3_{\rm LL}$ is real, the pair
 $(v^{\rm pl}_{{\rm LL},-},u^{\rm pl}_{{\rm LL},-})$ obeys the equation of $(u^{\rm pl}_{{\rm LL},+},v^{\rm pl}_{{\rm LL},+})$ and starts equal to it, so that the
 integrand of $d^3_{\rm LL}$ is $u^{\rm pl}_{{\rm LL},+}(v^{\rm pl}_{{\rm LL},+})^*$ plus its conjugate, a real number; this real solution
@@ -4484,17 +4572,18 @@ $2\Delta^{\rm vac}_{\rm LL}$ to $10^{-12}$, $\Gamma^{\rm m}_{\rm LL}(2\Delta^{\r
 ($2.22990\times10^{-2}$).
 
 **The oscillation of the gap.** The time-dependent mean-field equations show the massive field directly. Check SB-16 solves (9.30) at
-$\mu_{\rm LL}=0$, $G_{\rm LL}=22.5$ on 800 radial nodes (Gauss-Legendre, 40 intervals of 20 nodes) with the classical Runge-Kutta method of the
-fourth order (time step 0.05, 12000 steps, up to $x^0_{\rm LL}=600$), starting from the positive-energy eigenvectors (3.14) of the plane matrices
+$\mu_{\rm LL}=0$, $G_{\rm LL}=22.5$ on 800 radial nodes (Gauss-Legendre, 40 intervals of 20 nodes) with CVODE (Section 2.11;
+$r^{\rm tol}_{\rm LL}=10^{-12}$, $a^{\rm tol}_{\rm LL}=10^{-14}$; about 13600 internal steps up to $x^0_{\rm LL}=600$, the state sampled every 0.05),
+starting from the positive-energy eigenvectors (3.14) of the plane matrices
 with the gap $1.02\,\Delta^{\rm vac}_{\rm LL}$ in place of $\Delta_{\rm LL}$, and again with $1.01\,\Delta^{\rm vac}_{\rm LL}$: a small displacement of the
 amplitude field $h^{\rm a}_{\rm LL}$. The gap oscillates near $\Delta^{\rm vac}_{\rm LL}$ (Figure 25(d)); the strongest spectral line between the
-frequencies 0.25 and 0.55 (Hann window) lies at 0.4188839 and at 0.4189594, against $2\Delta^{\rm vac}_{\rm LL}=0.4189866$ (relative deviations
-$2.5\times10^{-4}$ and $6.5\times10^{-5}$, falling with the square of the displacement, as the frequency shift of a weakly nonlinear oscillation
-does). The oscillation does not decay: half the range of the gap is $3.4844\times10^{-3}$ in the second quarter of the run and
-$3.4837\times10^{-3}$ in the last quarter (displacement $0.02\,\Delta^{\rm vac}_{\rm LL}$), the behaviour of a mode below the continuum. The spectrum
+frequencies 0.25 and 0.55 (Hann window) lies at 0.4188861 and at 0.4189616, against $2\Delta^{\rm vac}_{\rm LL}=0.4189866$ (relative deviations
+$2.4\times10^{-4}$ and $6.0\times10^{-5}$, falling with the square of the displacement, as the frequency shift of a weakly nonlinear oscillation
+does). The oscillation does not decay: half the range of the gap is $3.4842\times10^{-3}$ in the second quarter of the run and
+$3.4834\times10^{-3}$ in the last quarter (displacement $0.02\,\Delta^{\rm vac}_{\rm LL}$), the behaviour of a mode below the continuum. The spectrum
 (Figure 25(e)) has the line at $2\Delta^{\rm vac}_{\rm LL}$, a weak edge at the threshold $2M^{\rm q}_{\rm LL}$, and the second harmonic at
 $4\Delta^{\rm vac}_{\rm LL}$. The imaginary part of the pair field stays exactly zero: the oscillation does not excite the Goldstone direction
-$(0,0,i)$, as Theorem 12.2 (no mixing) requires. The conserved mean-field energy of Section 9.6 changes by at most $6.8\times10^{-7}$ of
+$(0,0,i)$, as Theorem 12.2 (no mixing) requires. The conserved mean-field energy of Section 9.6 changes by at most $9.6\times10^{-10}$ of
 $8\int\!d^3q_{\rm LL}(2\pi)^{-3}\varepsilon_{\rm LL}$. A displacement of the non-unitary fields gives the same oscillation: the two sectors of Section
 10.2 evolve independently, each like the polar vacuum with its own gap, and by (11.14) such a displacement changes the two gaps by opposite
 amounts.
@@ -4954,38 +5043,48 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 cd test2/rust && cargo build --release && ./target/release/t2_sfbs && cd ../..
 # 9. Figures 21 to 26 (test2/figures/fig_t2_sfbs_*.pdf and .png)
 python3 test2/python/make_t2_sfbs_figures.py
-# 10. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
+# 10. the comparison of CVODE with the fixed-step methods of the first version (Appendix A.2g): the solver examples at two
+#     further tolerances, then the program t2_cvcmp
+bash test2/cvode_vs_rk4/run_convergence.sh "$PWD/test2/rust/target/release/t2_solve"
+./test2/rust/target/release/t2_cvcmp
+# 11. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
 ```
 
 The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
-together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, `t2_sfbs` in about
-75 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states, the $16\times16$ Bogoliubov
-matrices of checks SB-7, SB-8, SB-11 and SB-14 to SB-17, and the time-dependent mean-field runs of check SB-16), all on one
-processor core.
+together in about 70 seconds (the quench 45 seconds), the Rust solver of item [5] in about 80 seconds, `t2_sfbs` in about
+90 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states, the $16\times16$ Bogoliubov
+matrices of checks SB-7, SB-8, SB-11 and SB-14 to SB-17, and the time-dependent mean-field runs of checks SB-10 and SB-16),
+`t2_cvcmp` in about 5 seconds and the convergence runs of step 10 in about 3 minutes, all on one processor core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; rsvg-convert (librsvg) for the
 conversion of the SVG figures of item [6]; for the documents pandoc
 (2.11 or later), XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font. The Rust programs of the
-folder test2 use no external crate.
+folder test2 use no downloaded crate: the time integrator CVODE is the translation of SUNDIALS 7.8.0 into pure Rust that is
+part of PROJECT spacetimes (the crates `sundials_core` and `cvode_rs` of the folder `vendor/sundials_rs-7.8.0`, next to the
+folder Revision_SuperLoop), and the Python solver uses it through the shared library `libt2cvode` built by the same
+`cargo build --release`.
 
 ## A.2 The programs of items [1] and [2]
 
-The Cargo workspace `test2/rust` has six members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e; the sixth, `t2sfbs`, the checks of items [7] to [11], Appendix A.2f):
+The Cargo workspace `test2/rust` has eight members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e; the sixth, `t2sfbs`, the checks of items [7] to [11], Appendix A.2f; the seventh, `t2cvcmp`, the comparison of CVODE with the fixed-step methods of the first version, Appendix A.2g; the eighth, `t2cvode_c`, the shared library `libt2cvode` through which the Python solver calls CVODE, Appendix A.2b):
 
 - `t2core` (library): complex numbers and matrices, the Hermitian eigensolver, the super-loop operators as matrices
   (`model.rs`: $M_{\rm LL}$, the frame, the Dirac matrices, $\mathsf S_{\rm LL}$, $\mathsf s_{\rm LL}$,
   $T^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$, $\mathsf P_{\rm LL}$, $\psi'_{\rm LL}$, the Cayley-Dickson product),
-  the lattice operator (`lattice.rs`) and exact symbolic linear forms for printing formulas (`sym.rs`);
+  the lattice operator (`lattice.rs`), the time integration with CVODE (`cvode.rs`: the functions `integrate`,
+  `integrate_status` and `evolve_lattice`, the settings, the counters, the error weights of complex components of (2.39)
+  and the error budget (2.40); it uses the vendored crate `cvode_rs`) and exact symbolic linear forms for printing formulas
+  (`sym.rs`);
 - `t2fields` (program `t2_fields`): the checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, the explicit matrices and
   component equations of Section 2 (written into `test2/data/t2_fragments.md`, from which this document takes them),
   and the data of Figures 1 and 2;
 - `t2analytic` (program `t2_analytic`): the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} of the analytic solutions of
   Section 3 and the data of Figures 3 to 6. It applies the lattice operator of `t2core` (`lattice.rs`), the routine
-  that the solvers use, to the analytic solutions, so that every analytic solution is also a test of that code. For
-  item [2] the library received the RK4 step of the lattice equations (`Lattice::rk4_step`), the matrix of the free
-  lattice operator on a plane wave (`h_lat_plane`), and a faster form of the Hermitian eigensolver (the same method;
-  check GS-11 still passes).
+  that the solvers use, to the analytic solutions, so that every analytic solution is also a test of that code; the
+  time-dependent solutions AS-2 and AS-4 are integrated with `t2core::cvode`. For item [2] the library received the
+  matrix of the free lattice operator on a plane wave (`h_lat_plane`) and a faster form of the Hermitian eigensolver (the
+  same method; check GS-11 still passes).
 
 Together they have {{GEN:n_t2_rust_lines}} lines of commented Rust in {{GEN:n_t2_rust_files}} files. Arithmetic:
 double precision; each check names its tolerance; random numbers from a fixed seed, so that every run gives the
@@ -5000,7 +5099,9 @@ gauge fields; `Acal`, `Gamma_LL`, `nabla_LL`, `Dbq_LL` for $\mathsf A_{{\rm LL},
 $\nabla^{\rm LL}_p$, $\mathbf D_{\rm LL}$; `Fv_LL`, `FF_LL`, `Rc_LL` for the field strengths and the curvature;
 `Ucal`, `U_LL`, `Rv`, `thF` for the gauge transformations; `bSp`, `bSm`, `psi'_LL` for the spinor charges of
 (2.11); `Kch_iota`, `Ppair`, `dvec`, `d_iota`, `Pi_iota(x)` for the pairing; `psi_p`, `psi_h`, `H_DB`, `Xph`,
-`Gsite`, `H_lat`, `Ulink_j`, `eps_lat`, `Hbound`, `dx`, `dt`, `r_W` for the mean-field and lattice equations.
+`Gsite`, `H_lat`, `Ulink_j`, `eps_lat`, `Hbound`, `dx`, `r_W` for the mean-field and lattice equations; `w_lat`, `w_cmp`,
+`w_exact`, `E_qp`, `rtol`, `atol` for $w^{\rm lat}_{\rm LL}$, $w^{\rm cmp}_{\rm LL}$, $w^{\rm ex}_{\rm LL}$, $E^{\rm qp}_{{\rm LL},n}$,
+$r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$ of the time integration (Section 2.11).
 
 ```
 {{FILE:test2/data/t2_fields_checks.txt}}
@@ -5017,7 +5118,8 @@ $\chi^{\rm pw}_{\rm LL}$, $\vartheta^{\rm B}_{\rm LL}$; `Delta_inf`, `ell_K`, `p
 $\Delta^\infty_{\rm LL}$, $\ell^{\rm K}_{\rm LL}$, $\varphi^{\rm K}_{\rm LL}$, $\chi^{\rm K}_{\rm LL}$, $k^{\rm K}_{\rm LL}$,
 $\mathsf Q^{\rm K}_{\rm LL}$; `E_R` for $E^{\rm R}_{\rm LL}$; `B_up`, `B_down`, `n_L` for $B^\uparrow_{\rm LL}$,
 $B^\downarrow_{\rm LL}$, $n^{\rm L}_{\rm LL}$; `G`, `G_crit`, `Lambda` for $G_{\rm LL}$, $G^{\rm crit}_{\rm LL}$,
-$\Lambda_{\rm LL}$; and `p_1`, `p_2`, `p_3` for the momentum operators $-i\partial_1$, $-i\partial_2$, $-i\partial_3$.
+$\Lambda_{\rm LL}$; `rtol`, `atol` for $r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$; and `p_1`, `p_2`, `p_3` for the momentum
+operators $-i\partial_1$, $-i\partial_2$, $-i\partial_3$.
 
 ```
 {{FILE:test2/data/t2_analytic_checks.txt}}
@@ -5026,18 +5128,27 @@ $\Lambda_{\rm LL}$; and `p_1`, `p_2`, `p_3` for the momentum operators $-i\parti
 ## A.2b The program of item [3]
 
 `test2/python/t2_solve.py` (the solver, Section 4) and `test2/python/t2_examples_check.py` (the checks EX-1 to EX-7 of the
-examples, and the comparison of two sets of outputs used in item [5]); the seven input files `test2/examples/*.t2in`.
-Python 3 with NumPy and SciPy; double precision; the only random numbers (in the self-test) come from a fixed seed, so
-that every run gives the same output.
+examples, and the comparison of two sets of outputs used in item [5], which also writes the two tables of Section 6.4 into
+`test2/data/t2_cmp_fragments.md`); the seven input files `test2/examples/*.t2in`; and the member `t2cvode_c` of the Rust
+workspace (`Cargo.toml`; `src/lib.rs`, with the C declarations of its three functions `t2cv_integrate`, `t2cv_describe` and
+`t2cv_error_budget` in its head comment), the shared library `libt2cvode` through which the solver calls CVODE (Section 4.3);
+its own test integrates an oscillator through the C interface and compares the counters with a direct call of
+`t2core::cvode`. Python 3 with NumPy and SciPy; double precision; the only random numbers (in the self-test) come from a
+fixed seed, so that every run gives the same output.
 
 The reports use, besides the names listed in A.2: `N_F` and `E_MF` for $N^{\rm F}_{\rm LL}$ and $E^{\rm MF}_{\rm LL}$; `D`
 (in "active directions D") for $n^{\rm act}_{\rm LL}$; `G` for $G_{\rm LL}$ (and the coupling after a quench for
 $G'_{\rm LL}$); `m`, `mu`, `g_v`, `g_F` for $m_{\rm LL}$, $\mu_{\rm LL}$, $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$; `d^iota`
-and `|d|` for $d^\iota_{\rm LL}$ and $\lvert\vec d_{\rm LL}\rvert$; `Pi` for the pair expectation of (4.1); `W` for
-$\mathsf W^{\rm m}_{\rm LL}$; `E_GS` for the energy per site (4.5) measured from the normal state; `E_R` for $E^{\rm R}_{\rm LL}$;
+and `|d|` for $d^\iota_{\rm LL}$ and $\lvert\vec d_{\rm LL}\rvert$; `Pi` for the pair expectation of (4.1); `W_modes` for
+$\mathsf W^{\rm m}_{\rm LL}$; `w_lat` for the mode $w^{\rm lat}_{\rm LL}$ of the task `evolve`, so that `<w_lat|H_lat|w_lat>` is its
+energy $\langle\mathcal H^{\rm lat}_{\rm LL}\rangle$; `rtol`, `atol`, `n_complex` for $r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$,
+$n^{\rm cpx}_{\rm LL}$; `Hbound` for $B^{\rm H}_{\rm LL}$; the line `CVODE:` gives $N^{\rm st}_{\rm LL}$ (steps), $N^{\rm ev}_{\rm LL}$
+(evaluations of the right side), the rejected steps, the iterations of the corrector and their convergence failures, and the
+order $q^{\rm CV}_{\rm LL}$ and the size $h^{\rm CV}_{\rm LL}$ of the last step; `E_GS` for the energy per site (4.5) measured from
+the normal state; `E_R` for $E^{\rm R}_{\rm LL}$;
 `B_up` for $B^\uparrow_{\rm LL}$; `xi` for the coherence length $1/\Delta_{\rm LL}$ (in units in which the velocity at the
-Fermi surface is about 1); `Delta_0` for the uniform gap $\Delta_{\rm LL}$ of the periodic chain; `w` for
-$\omega^{\rm H}_{\rm LL}$; and `q`, `k` for momenta $q^1_{\rm LL}$. In the lines `gauge fields:` the four lists are the constant
+Fermi surface is about 1); `Delta_0` for the uniform gap $\Delta_{\rm LL}$ of the periodic chain; and `q`, `k` for momenta
+$q^1_{\rm LL}$. The angular frequency of the amplitude oscillation, $\omega^{\rm H}_{\rm LL}$ of (4.11), is named in words. In the lines `gauge fields:` the four lists are the constant
 potentials $(A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p},A^{\rm F}_{{\rm LL},p})$ for $p=0,1,2,3$.
 
 The self-test, verbatim (`test2/data/t2_py_selftest_checks.txt`):
@@ -5104,7 +5215,8 @@ output is Figures 7 to 13.
 ## A.2d The program of item [5]
 
 The member `t2solve` of the Cargo workspace `test2/rust` (`Cargo.toml`; `src/input.rs`, `src/ops.rs`, `src/main.rs`), binary
-`t2_solve`; it uses only the standard library and `t2core`. Its reports use the plain names of A.2 and A.2b. The self-test,
+`t2_solve`; it uses the standard library and `t2core` (with its module `cvode`, which calls the vendored CVODE). Its reports
+use the plain names of A.2 and A.2b. The self-test,
 verbatim (`test2/data/t2_rs_selftest_checks.txt`):
 
 ```
@@ -5171,7 +5283,8 @@ no report: its output is Figures 14 to 20 (the `.svg` files; the `.pdf` and `.pn
 The member `t2sfbs` of the Cargo workspace `test2/rust` (`Cargo.toml`; `src/main.rs`, the checks and the output;
 `src/fock.rs`, a fermionic Fock space of up to 20 modes in the Jordan-Wigner representation, with the Lanczos method for
 the lowest eigenvalue; `src/quad.rs`, Gauss-Legendre quadrature), binary `t2_sfbs`; it uses only the standard library and
-`t2core` (the matrices of `model.rs`, the eigensolver, the exact printing of `sym.rs`). It writes the report
+`t2core` (the matrices of `model.rs`, the eigensolver, the exact printing of `sym.rs`, and the time integration `cvode.rs` for
+the checks SB-10 and SB-16). It writes the report
 `test2/data/t2_sfbs_checks.txt`, the explicit matrices of the sections of items [7] to [11]
 (`test2/data/t2_sfbs_fragments.md`, from which this document takes them) and the data files `test2/data/t2_sfbs_*.csv` of the
 figures, drawn by `test2/python/make_t2_sfbs_figures.py`.
@@ -5231,7 +5344,8 @@ constant potentials of Section 12.3 (the time or the space component of the ferm
 first and of the third axis; the last with the cutoff on the canonical momentum); `Upsilon(omega)` and `dUpsilon/d(omega^2)` for
 $\Upsilon_{\rm LL}(\omega^{\rm B}_{\rm LL})$ and $\Upsilon^{(1)}_{\rm LL}$; `Gamma_m` for $\Gamma^{\rm m}_{\rm LL}$; `Re d^1`, `Re d^2`, `Im d^3` and
 `Im d^1`, `Im d^2`, `Re d^3` for the six directions $(1,0,0)$, $(0,1,0)$, $(0,0,i)$ and $(i,0,0)$, $(0,i,0)$, $(0,0,1)$; `Goldstone` and
-`massive` for the two kinds of directions; `RK4` for the classical Runge-Kutta method of the fourth order and `dt` for its time step;
+`massive` for the two kinds of directions; `CVODE` for the time integration of Section 2.11, with `rtol`, `atol` for its tolerances
+$r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$ and `sampled every` for the interval between the output times;
 `disp` for the relative displacement of the starting gap (the run starts from the gap $\Delta^{\rm vac}_{\rm LL}$ times 1.02 or 1.01);
 `line` for the frequency of the strongest spectral line between 0.25 and 0.55; `Re d`, `Im d` for the real and the imaginary part of
 $d^3_{\rm LL}$; `energy` for the largest change of the conserved mean-field energy, relative to $8\int\!d^3q_{\rm LL}(2\pi)^{-3}\varepsilon_{\rm LL}$. For item [11] (check SB-17): `L_kin` for $\mathcal L^{\rm kin}_{\rm LL}$ and `|L_kin|` for its absolute value; `V` for the potentials
@@ -5249,6 +5363,43 @@ comparison.
 {{FILE:test2/data/t2_sfbs_checks.txt}}
 ```
 
+## A.2g The comparison of CVODE with the fixed-step methods of the first version
+
+The first version of the programs of Test 2 integrated the time-dependent equations with two fixed-step methods: the classical
+Runge-Kutta method of the fourth order (RK4: one step of the length $\ell^{\rm t}_{\rm LL}$ evaluates the right side four times and
+combines the four values with the weights $1/6$, $1/3$, $1/3$, $1/6$) in the task `evolve`, in checks AS-2, AS-4, SB-10 and SB-16,
+and the implicit midpoint rule (the new state is the old state plus $\ell^{\rm t}_{\rm LL}$ times the right side at the mean of the old
+and the new state) in the task `quench`. The present version uses CVODE everywhere (Section 2.11). The member `t2cvcmp` of the Rust
+workspace (`Cargo.toml`; `src/main.rs`), binary `t2_cvcmp`, measures what the change does. It contains its own copy of the RK4 step
+of the first version and
+
+- integrates three problems with exact solutions both with RK4 (several fixed steps, among them the step of the first version)
+  and with CVODE (the tolerances $r^{\rm tol}_{\rm LL}=10^{-6}$ to $10^{-13}$, $a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100$), and reports the
+  largest relative deviation $\delta^{\rm rel}_{\rm LL}$ from the exact solution and the cost $N^{\rm ev}_{\rm LL}$: AS-2 and AS-4 of
+  Section 3, and a problem LAT, the lattice operator with random links, potentials and pair fields on $3\times2\times4$ sites;
+- reproduces with its RK4 step the archived columns of the first version (folder `test2/rk4_reference/data`, which keeps the 106
+  data files of the first version with their SHA-256 digests in `test2/rk4_reference/SHA256SUMS_data.txt`);
+- compares the time series of the four time-dependent examples of the solver: the first version, CVODE with
+  $r^{\rm tol}_{\rm LL}=10^{-12}$ (`test2/data`), and CVODE with $10^{-10}$ and $10^{-13}$ (the runs of the script
+  `test2/cvode_vs_rk4/run_convergence.sh`, folder `test2/cvode_vs_rk4/data/conv`).
+
+Its findings: where the energies times the step were small, RK4 was accurate (AS-2: $\delta^{\rm rel}_{\rm LL}=8.7\times10^{-10}$
+with 16000 evaluations, against $1.3\times10^{-11}$ with 1494 evaluations of CVODE); on LAT the step 0.125, which the stability
+rule $\ell^{\rm t}_{\rm LL}B^{\rm H}_{\rm LL}\le2.5$ of the first version allowed, gives $\delta^{\rm rel}_{\rm LL}=0.37$, while CVODE reaches
+$1.8\times10^{-10}$; and the quench of the first version was wrong in the third decimal (Section 4.4), while the CVODE results are
+converged. The program writes `test2/cvode_vs_rk4/data/cmp_report.txt` (verbatim below), the tables
+`test2/cvode_vs_rk4/data/cmp_tables.md` and the data files `cmp_work_precision.csv`, `cmp_lat_deviation.csv` and
+`cmp_series_differences.csv` of the same folder. The report uses the plain names of A.2 and A.2b, and: `RK4`, `CVODE` for the two
+methods; `dt` for the fixed step $\ell^{\rm t}_{\rm LL}$ of RK4; `first version` for the archived results; `evaluations` and `steps`
+for $N^{\rm ev}_{\rm LL}$ and $N^{\rm st}_{\rm LL}$; `largest deviation` and `at the end` for $\delta^{\rm rel}_{\rm LL}$, its largest value and
+its value at the last output time; `P_up_rk4`, `P_hole_rk4` for the archived columns of $P^\uparrow_{\rm LL}$ and $P^{\rm h}_{\rm LL}$ of
+the first version; `abs_d_mean`, `abs_d_site0` for the mean of $\lvert\vec d_{\rm LL}\rvert$ over the sites and its value at the first
+site; `ortho_error` for the largest entry of $(\mathsf W^{\rm m}_{\rm LL})^\dagger\mathsf W^{\rm m}_{\rm LL}-\mathsf 1$.
+
+```
+{{FILE:test2/cvode_vs_rk4/data/cmp_report.txt}}
+```
+
 ## A.3 Data files and figures
 
 | file | content | columns |
@@ -5257,14 +5408,14 @@ comparison.
 | `test2/data/t2_fragments.md` | the explicit matrices and component equations of Section 2, in LaTeX | — |
 | `test2/data/t2_dispersion_curves.csv` | the lattice energy (2.37) and the continuum energy (Figure 1) | `r_W`, `q`, `eps`, `eps_lat` |
 | `test2/data/t2_dispersion_lattice.csv` | the eigenvalues of the lattice operator on plane waves (Figure 1, circles) | `r_W`, `q`, `eps_lat` |
-| `test2/data/t2_rk4_stability.csv` | the modulus of the RK4 factor (Figure 2) | `E_times_dt`, `rk4_modulus` |
+| `test2/data/t2_cvode_accuracy.csv` | the time integration with CVODE on the lattice of GS-10 (check GS-13): the relative deviation from the exact solution, and the size and the order of the last internal step, for three tolerances (Figure 2) | `x_LL^0`, `dev_rtol_1e-8`, `dev_rtol_1e-10`, `dev_rtol_1e-12`, `h_rtol_1e-8`, `h_rtol_1e-10`, `h_rtol_1e-12`, `q_rtol_1e-8`, `q_rtol_1e-10`, `q_rtol_1e-12` |
 | `test2/data/t2_analytic_checks.txt` | the report of the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} | — |
 | `test2/data/t2_A_dispersion_curves.csv` | the energies (3.7) on the lattice for both isospin components (Figure 3(a), curves) | `q`, `Q_LL`, `branch`, `E_qp` |
 | `test2/data/t2_A_dispersion_lattice.csv` | the eigenvalues of the lattice operator on plane waves with constant potentials (Figure 3(a), circles) | `q`, `Q_LL`, `E_qp` |
-| `test2/data/t2_A_precession.csv` | the probability of isospin up, RK4 and exact (3.8) (Figure 3(b)) | `x_LL^0`, `P_up_rk4`, `P_up_exact` |
+| `test2/data/t2_A_precession.csv` | the probability of isospin up, CVODE and exact (3.8) (Figure 3(b)) | `x_LL^0`, `P_up_cvode`, `P_up_exact` |
 | `test2/data/t2_B_bogoliubov_curves.csv` | the energies (3.13) on the lattice (Figure 4(a), curves) | `q`, `eps_lat`, `E_minus_polar`, `E_plus_polar` |
 | `test2/data/t2_B_bogoliubov_lattice.csv` | the positive eigenvalues of the lattice operator with the uniform pair field (Figure 4(a), circles) | `q`, `E_qp` |
-| `test2/data/t2_B_rabi.csv` | the probability of the hole, RK4 and exact (3.16) (Figure 4(b)) | `x_LL^0`, `P_hole_rk4`, `P_hole_exact` |
+| `test2/data/t2_B_rabi.csv` | the probability of the hole, CVODE and exact (3.16) (Figure 4(b)) | `x_LL^0`, `P_hole_cvode`, `P_hole_exact` |
 | `test2/data/t2_B_gap.csv` | the gap from the closed form (3.17) and its check by quadrature (Figure 4(c)) | `mu`, `G_over_Gcrit_m0`, `Delta`, `source` |
 | `test2/data/t2_C_kink_profile.csv` | the pair field of the ring and the densities of the bound states (Figure 5(a), (b)) | `x_LL^1`, `Delta`, `density_lattice`, `density_exact` |
 | `test2/data/t2_C_kink_spectrum.csv` | all eigenvalues of the lattice operator of the ring (Figure 5(c)) | `index`, `E_qp` |
@@ -5274,7 +5425,8 @@ comparison.
 | `test2/data/t2_py_<example>_summary.txt` | the summary of the solution of an example by `t2_solve.py` (Appendix A.2b) | — |
 | `test2/data/t2_py_selftest_checks.txt`, `t2_py_examples_checks.txt` | the self-test of `t2_solve.py`, the checks EX-1 to EX-7 | — |
 | `test2/data/t2_py_fragments.md` | the table of the keys of the input file (Section 4.2), written by `t2_solve.py --keys-md` | — |
-| `t2_py_packet_free_series.csv`, `t2_py_cyclotron_series.csv`, `t2_py_andreev_series.csv` | task `evolve`: the mode at every step | `x_LL^0`, `norm`, `E_expect`, `P_hole`, `P_up`, `x_mean_1`, `x_mean_2`, `x_mean_3` |
+| `test2/data/t2_cmp_fragments.md` | the two tables of Section 6.4 (EX-8 by kind of quantity, the computing times), written by `t2_examples_check.py` | — |
+| `t2_py_packet_free_series.csv`, `t2_py_cyclotron_series.csv`, `t2_py_andreev_series.csv` | task `evolve`: the mode at every output time | `x_LL^0`, `norm`, `E_expect`, `P_hole`, `P_up`, `x_mean_1`, `x_mean_2`, `x_mean_3` |
 | `t2_py_packet_free_fields.csv`, `t2_py_cyclotron_fields.csv`, `t2_py_andreev_fields.csv` | task `evolve`: the densities on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `density_p`, `density_h`, `density_up` |
 | `t2_py_kink_spectrum_spectrum.csv`, and the files `_spectrum.csv` of the self-consistent examples | all eigenvalues | `index`, `E_qp` |
 | `t2_py_kink_spectrum_fields.csv` | the densities of the eigenvectors in the energy window | `index`, `E_qp`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `density_p`, `density_h` |
@@ -5282,7 +5434,7 @@ comparison.
 | `t2_py_ground_state_*`, `t2_py_kink_ground_state_*`: `_iterations.csv` and `_series.csv` | the Anderson iteration | `iteration`, `change`, `abs_d_mean`, `E_GS` |
 | `t2_py_ground_state_fields.csv`, `t2_py_kink_ground_state_fields.csv` | the initial guess and the self-consistent pair field | `stage`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 | `t2_py_quench_iterations.csv` | the iteration of the initial ground state | `iteration`, `change`, `abs_d_mean`, `E_GS` |
-| `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `N_F_change`, `E_MF`, `ortho_error` |
+| `t2_py_quench_series.csv` | the quench at every output time | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `N_F_change`, `E_MF`, `ortho_error` |
 | `t2_py_quench_fields.csv` | the pair field on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 | `test2/data/t2_rs_*` | the same files written by the Rust solver of item [5] for the seven examples, with the same columns; `t2_rs_selftest_checks.txt` and `t2_rs_examples_checks.txt` its self-test and the checks EX-1 to EX-8 | as the files `t2_py_*` |
 | `test2/data/t2_sfbs_checks.txt` | the report of the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of `t2_sfbs` (items [7] to [11]) | — |
@@ -5315,12 +5467,13 @@ comparison.
 | `test2/data/t2_sfbs_mixing.csv` | the mixing angle against the ratio of the gauge couplings, in the vacuum and at the non-unitary saddle point, and its prediction (Figure 26(d)) | `ratio_gF_gv`, `theta_mix_vacuum`, `theta_mix_saddle`, `theta_mix_pred` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
-$\varepsilon^{\rm lat}_{\rm LL}$; `E_times_dt` is $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$ and `rk4_modulus` the modulus of
-the factor of one step. In the files of item [2], `Q_LL` is the charge $Q_{\rm LL}=\pm\tfrac12$ of an isospin component,
+$\varepsilon^{\rm lat}_{\rm LL}$; in `t2_cvode_accuracy.csv` the columns `dev_rtol_*`, `h_rtol_*`, `q_rtol_*` are $\delta^{\rm rel}_{\rm LL}$,
+$h^{\rm CV}_{\rm LL}$ and $q^{\rm CV}_{\rm LL}$ for the tolerance $r^{\rm tol}_{\rm LL}$ named at their end. In the files of item [2], `Q_LL` is the
+charge $Q_{\rm LL}=\pm\tfrac12$ of an isospin component,
 `E_qp` an energy $E^{\rm qp}_{{\rm LL},n}$, `E_minus_polar` and `E_plus_polar` are $E^-_{\rm LL}$ and $E^+_{\rm LL}$, `mu`,
 `Delta` and `dx` are $\mu_{\rm LL}$, $\Delta_{\rm LL}$ and $\ell^{\rm x}_{\rm LL}$, `G_over_Gcrit_m0` is
-$G_{\rm LL}/G^{\rm crit}_{\rm LL}$ for $m_{\rm LL}=0$, `E_R` is $E^{\rm R}_{\rm LL}$, `n_L` is $n^{\rm L}_{\rm LL}$, and `P_up_rk4`,
-`P_up_exact`, `P_hole_rk4`, `P_hole_exact` are $P^\uparrow_{\rm LL}$ and $P^{\rm h}_{\rm LL}$ from the RK4 integration and from
+$G_{\rm LL}/G^{\rm crit}_{\rm LL}$ for $m_{\rm LL}=0$, `E_R` is $E^{\rm R}_{\rm LL}$, `n_L` is $n^{\rm L}_{\rm LL}$, and `P_up_cvode`,
+`P_up_exact`, `P_hole_cvode`, `P_hole_exact` are $P^\uparrow_{\rm LL}$ and $P^{\rm h}_{\rm LL}$ from the CVODE integration and from
 the exact solution; `branch` (positive or negative energy), `source` (the origin of a value), `index` (the number of an
 eigenvalue in ascending order), `density_lattice`, `density_exact` (densities normalized to the integral 1) and
 `relative_residual` are descriptive words. Figures 7 to 13 are drawn by `test2/python/t2_plot.py` (item [4]) from the
@@ -5383,7 +5536,7 @@ its content in a line `# content:` and its parameters in lines `# name: value`.
 | figure | file (.pdf and .png) | data | checks |
 |------|--------------------|------------------------------|------|
 | 1 | `test2/figures/fig_t2_lattice_dispersion` | `t2_dispersion_curves.csv`, `t2_dispersion_lattice.csv` | GS-10, GS-16 |
-| 2 | `test2/figures/fig_t2_rk4_stability` | `t2_rk4_stability.csv` | GS-13 |
+| 2 | `test2/figures/fig_t2_cvode_accuracy` | `t2_cvode_accuracy.csv` | GS-13 |
 | 3 | `test2/figures/fig_t2_case_A` | `t2_A_dispersion_curves.csv`, `t2_A_dispersion_lattice.csv`, `t2_A_precession.csv` | AS-1, AS-2 |
 | 4 | `test2/figures/fig_t2_case_B` | `t2_B_bogoliubov_curves.csv`, `t2_B_bogoliubov_lattice.csv`, `t2_B_rabi.csv`, `t2_B_gap.csv` | AS-3 to AS-5 |
 | 5 | `test2/figures/fig_t2_case_C` | `t2_C_kink_profile.csv`, `t2_C_kink_spectrum.csv`, `t2_C_kink_convergence.csv` | AS-9 |
@@ -5428,6 +5581,17 @@ SHA-256 checksums of the sources and data of items [1] to [11] at the time this 
 {{SHA256:test2/rust/t2core/src/cmat.rs}}  test2/rust/t2core/src/cmat.rs
 {{SHA256:test2/rust/t2core/src/model.rs}}  test2/rust/t2core/src/model.rs
 {{SHA256:test2/rust/t2core/src/lattice.rs}}  test2/rust/t2core/src/lattice.rs
+{{SHA256:test2/rust/t2core/src/cvode.rs}}  test2/rust/t2core/src/cvode.rs
+{{SHA256:test2/rust/t2core/Cargo.toml}}  test2/rust/t2core/Cargo.toml
+{{SHA256:test2/rust/Cargo.lock}}  test2/rust/Cargo.lock
+{{SHA256:test2/rust/t2cvode_c/Cargo.toml}}  test2/rust/t2cvode_c/Cargo.toml
+{{SHA256:test2/rust/t2cvode_c/src/lib.rs}}  test2/rust/t2cvode_c/src/lib.rs
+{{SHA256:test2/rust/t2cvcmp/Cargo.toml}}  test2/rust/t2cvcmp/Cargo.toml
+{{SHA256:test2/rust/t2cvcmp/src/main.rs}}  test2/rust/t2cvcmp/src/main.rs
+{{SHA256:test2/cvode_vs_rk4/run_convergence.sh}}  test2/cvode_vs_rk4/run_convergence.sh
+{{SHA256:test2/cvode_vs_rk4/data/cmp_report.txt}}  test2/cvode_vs_rk4/data/cmp_report.txt
+{{SHA256:test2/rk4_reference/SHA256SUMS_data.txt}}  test2/rk4_reference/SHA256SUMS_data.txt
+{{SHA256:../vendor/sundials_rs-7.8.0/SHA256SUMS.txt}}  ../vendor/sundials_rs-7.8.0/SHA256SUMS.txt
 {{SHA256:test2/rust/t2core/src/sym.rs}}  test2/rust/t2core/src/sym.rs
 {{SHA256:test2/rust/t2core/src/rng.rs}}  test2/rust/t2core/src/rng.rs
 {{SHA256:test2/rust/t2fields/src/main.rs}}  test2/rust/t2fields/src/main.rs
@@ -5471,7 +5635,8 @@ SHA-256 checksums of the sources and data of items [1] to [11] at the time this 
 {{SHA256:test2/data/t2_fragments.md}}  test2/data/t2_fragments.md
 {{SHA256:test2/data/t2_dispersion_curves.csv}}  test2/data/t2_dispersion_curves.csv
 {{SHA256:test2/data/t2_dispersion_lattice.csv}}  test2/data/t2_dispersion_lattice.csv
-{{SHA256:test2/data/t2_rk4_stability.csv}}  test2/data/t2_rk4_stability.csv
+{{SHA256:test2/data/t2_cvode_accuracy.csv}}  test2/data/t2_cvode_accuracy.csv
+{{SHA256:test2/data/t2_cmp_fragments.md}}  test2/data/t2_cmp_fragments.md
 {{SHA256:test2/data/t2_analytic_checks.txt}}  test2/data/t2_analytic_checks.txt
 {{SHA256:test2/data/t2_A_dispersion_curves.csv}}  test2/data/t2_A_dispersion_curves.csv
 {{SHA256:test2/data/t2_A_dispersion_lattice.csv}}  test2/data/t2_A_dispersion_lattice.csv
@@ -5593,6 +5758,8 @@ SHA-256 checksums of the sources and data of items [1] to [11] at the time this 
 * D. G. Anderson, Iterative procedures for nonlinear integral equations, J. ACM 12, 547 (1965); H. F. Walker and
   P. Ni, Anderson acceleration for fixed-point iterations, SIAM J. Numer. Anal. 49, 1715 (2011).
 * E. Hairer, C. Lubich and G. Wanner, Geometric Numerical Integration, 2nd ed. (Springer, Berlin, 2006).
+* A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker and C. S. Woodward, SUNDIALS: Suite of
+  nonlinear and differential/algebraic equation solvers, ACM Trans. Math. Softw. 31, 363 (2005).
 * A. F. Andreev, The thermal conductivity of the intermediate state in superconductors, Sov. Phys. JETP 19, 1228
   (1964).
 * D. J. Gross and A. Neveu, Dynamical symmetry breaking in asymptotically free field theories, Phys. Rev. D 10, 3235
@@ -5635,8 +5802,10 @@ These works are cited for the general methods and results only (the gauge princi
 superfluid, the lattice with link variables and the Wilson term, the Pauli equation, the Landau levels, the wells of
 Pöschl and Teller, the Rabi oscillation, the theory of Bardeen, Cooper and Schrieffer, the Aharonov-Bohm effect, the
 bound states of Jackiw and Rebbi, the bounds of perturbation theory, Richardson extrapolation and the Sturm-sequence
-bisection for tridiagonal matrices; for item [3] the Anderson acceleration of fixed-point iterations, the implicit
-midpoint rule and its conservation of quadratic invariants, Andreev reflection, the self-consistent kink of the
+bisection for tridiagonal matrices; for the time integration the variable-order, variable-step Adams-Moulton methods of
+CVODE (SUNDIALS) with their control of the local error, and, for the first version (Appendix A.2g), the implicit midpoint rule
+and its conservation of quadratic invariants; for item [3] the Anderson acceleration of fixed-point iterations, Andreev
+reflection, the self-consistent kink of the
 Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change; for
 item [7] the representation of fermion operators by matrices on the states of a few modes, the Lanczos method, and the
 form of a quasi-particle vacuum as the exponential of a pair operator; for item [8] the Hubbard-Stratonovich identity, the

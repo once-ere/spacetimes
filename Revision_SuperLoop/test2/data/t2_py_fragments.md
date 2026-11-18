@@ -1,7 +1,7 @@
 <!-- BEGIN t2_py_keys -->
 | key | value | default | meaning |
 |-------------|--------|--------|--------------------------------|
-| `format` | text | required | the format of the file; must be 't2in 1' |
+| `format` | text | required | the format of the file; must be 't2in 2' |
 | `title` | text | (see text) | a free title of the problem |
 | `task` | one of: evolve, spectrum, ground_state, quench | required | what to solve (see the guide) |
 | `output` | text | (see text) | the base name of the output files, relative to the folder of the input file (default: the name of the input file without its extension) |
@@ -30,9 +30,11 @@
 | `pair_position` | numbers | (see text) | the positions along x^1 of the walls (kink: one value, default the centre; kink_antikink: two values, default 1/4 and 3/4 of the length; step: one value, default the centre) |
 | `pair_seed` | integer | 1 | the seed of the random pair field (pair = random) |
 | `pair_file` | text | (see text) | a file with the pair field (pair = file): one line per site, in the order of the sites, with d1_re d1_im d2_re d2_im d3_re d3_im |
-| `time_step` | positive number | required for evolve, quench | the time step dt (evolve, quench) |
-| `steps` | positive integer | required for evolve, quench | the number of time steps (evolve, quench) |
-| `output_every` | positive integer | 0 | write the fields on the sites every this many steps (0: about 50 outputs); the time series is written at every step |
+| `output_step` | positive number | required for evolve, quench | the interval of the time series: the state is written at the times x^0 = 0, output_step, 2 output_step, ..., outputs x output_step (evolve, quench); CVODE chooses its own internal steps between these times |
+| `outputs` | positive integer | required for evolve, quench | the number of output intervals: the evolution ends at x^0 = outputs x output_step (evolve, quench) |
+| `fields_every` | positive integer | 0 | write the fields on the sites every this many outputs (0: about 50 times); the time series is written at every output |
+| `rtol` | positive number | 1e-12 | the relative tolerance of CVODE: the error weight of a complex component w_cmp of the state is the inverse of (rtol times the modulus of w_cmp, plus atol) (evolve, quench) |
+| `atol` | positive number | 1e-14 | the absolute tolerance of CVODE: components smaller than this count as zero in the error test (evolve, quench) |
 | `initial` | one of: packet, eigenmode, file | packet | the initial mode of the task evolve |
 | `packet_center` | three numbers | (see text) | the centre of the Gaussian packet (x^1 x^2 x^3; default the centre of the lattice) |
 | `packet_width` | positive number | 2.0 | the width of the packet (standard deviation of the density) |

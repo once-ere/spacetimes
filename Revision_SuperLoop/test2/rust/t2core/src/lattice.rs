@@ -295,7 +295,7 @@ impl Lattice {
         m
     }
 
-    /// an upper bound of the spectral radius of H_DB (used for the stability of the time step):
+    /// an upper bound of the spectral radius of H_DB (the bound Hbound (2.38) of the document, which the solvers report):
     /// sum over the active directions of (1 + 2 r_W)/ell, plus m, |mu|, max ||V0|| and max sum_i |d^i|
     pub fn norm_bound(&self, fl: &Fields) -> f64 {
         let ndir = (0..3).filter(|&j| self.n[j] > 1).count() as f64;
@@ -352,7 +352,7 @@ pub fn anomalous(nsites: usize, modes: &[Vec<C64>], k: &[CMat; 3]) -> Vec<[C64; 
     out
 }
 
-// ------------------------------------------------------------------ time stepping
+// ------------------------------------------------------------------ time integration
 // The time evolution i dw/dx^0 = H_lat w is integrated by CVODE (SUNDIALS 7.8.0, Adams-Moulton formulas with
 // local error control); see the module t2core::cvode and its function evolve_lattice.  The fixed-step classical
 // Runge-Kutta method of the first version of Test 2 was removed from this library.

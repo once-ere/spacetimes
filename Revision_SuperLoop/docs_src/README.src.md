@@ -74,9 +74,11 @@ its bound states at exactly $\pm m_{\rm LL}$ and their complete spectrum, and th
 checked against the lattice operator of the solvers by the program `t2_analytic` ({{GEN:nchecks_t2_analytic}}
 checks). Its third answer (item [3]) is the Python solver `test2/python/t2_solve.py`: it guides the user in defining
 the initial and the boundary conditions, asks for the name of an input file, reads the conditions from it, and solves
-the gauge-covariant mean-field equations on the lattice (the time evolution of a mode by RK4, the spectrum, the
-self-consistent ground state by Anderson-accelerated iteration, and the self-consistent evolution after a quench by
-the implicit midpoint rule, which conserves the orthonormality of the modes and the fermion number exactly). Seven
+the gauge-covariant mean-field equations on the lattice (the time evolution of a mode, the spectrum, the
+self-consistent ground state by Anderson-accelerated iteration, and the self-consistent evolution after a quench; both
+time evolutions are integrated by CVODE of SUNDIALS 7.8.0, in the pure-Rust translation vendored in the repository,
+folder `vendor/sundials_rs-7.8.0`, which the Python solver calls through the shared library `libt2cvode` of the Rust
+workspace). Seven
 examples with known answers (the group velocity, a bounded orbit in a magnetic field, Andreev reflection, the bound
 states of a kink, the gap equation, a self-consistent kink, and the amplitude mode of the pair field) are checked by
 `test2/python/t2_examples_check.py` ({{GEN:nchecks_t2_py_examples}} checks); the free self-consistent iteration shows that
@@ -87,7 +89,10 @@ solution, the panels chosen by the task) and, for the seven examples, the predic
 Its fifth answer (item [5]) is the Rust solver `t2_solve` (the member `t2solve` of the Cargo workspace `test2/rust`, built with
 `cargo build --release`): the same input files, methods, checks and output files as the Python solver, checked against the
 operator of the library `t2core`; for the seven examples its solutions agree with the Python solutions to rounding
-({{GEN:nchecks_t2_rs_examples}} checks, among them the comparison EX-8).
+({{GEN:nchecks_t2_rs_examples}} checks, among them the comparison EX-8). The folder `test2/cvode_vs_rk4` holds the
+comparison of CVODE with the fixed-step methods of the first version of the programs (the classical Runge-Kutta method of
+the fourth order and the implicit midpoint rule), the document `P_CVODE_vs_RK4` (.md, .tex, .pdf) with its program
+`t2_cvcmp`, data and figures; the data of the first version are kept in `test2/rk4_reference`.
 Its sixth answer (item [6]) is the Rust plotter `t2_plot` (the member `t2plot` of the same workspace): it draws any solution as
 Scalable Vector Graphics with a small plotting library of its own, with the predictions of the examples computed in Rust
 (Figures 14 to 20 of the document).
@@ -167,7 +172,7 @@ SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member `t2sfbs` of the work
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]); the time integration with CVODE in `rust/t2core/src/cvode.rs` and, for the Python solver, the shared library `libt2cvode` of `rust/t2cvode_c`; the comparison of CVODE with the fixed-step methods of the first version in `cvode_vs_rk4/` (the document `P_CVODE_vs_RK4`, .md, .tex, .pdf, its program `rust/t2cvcmp`, binary `t2_cvcmp`, its scripts, data and figures) and the data of the first version in `rk4_reference/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -214,6 +219,12 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 # Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state, and its figures:
 (cd test2/rust && cargo build --release && ./target/release/t2_sfbs)
 python3 test2/python/make_t2_sfbs_figures.py
+# the comparison of CVODE with the fixed-step methods of the first version, and its document:
+bash test2/cvode_vs_rk4/run_convergence.sh "$PWD/test2/rust/target/release/t2_solve"
+./test2/rust/target/release/t2_cvcmp
+python3 test2/cvode_vs_rk4/python/make_cmp_figures.py
+python3 test2/cvode_vs_rk4/tools/assemble_provenance.py
+(cd test2/cvode_vs_rk4 && bash tools/build_docs.sh "PROJECT spacetimes, Test 2: CVODE compared with RK4" P_CVODE_vs_RK4.md)
 # everything, in order, with one verdict at the end ("ALL PASS"):
 bash code/scripts/check_all.sh
 ```
@@ -222,7 +233,10 @@ Requirements: a Rust toolchain for the edition 2021; Python 3 with SymPy, NumPy 
 the documents TeX Live with REVTeX 4.2, XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math
 font, and pandoc. The program uses the library crate `code/spacetimes-rs` of the repository (complex
 numbers, Hermitian diagonalization, Gauss-Legendre rules, Brent's root finder, the writer of data
-files); no crate is downloaded. The Rust programs of the folder `test2` use no external crate at all.
+files); no crate is downloaded. The Rust programs of the folder `test2` use no downloaded crate either: their time
+integrator CVODE is the pure-Rust translation of SUNDIALS 7.8.0 that the repository contains (folder
+`vendor/sundials_rs-7.8.0`, next to this folder), and the Python solver needs the shared library `libt2cvode` that
+`cargo build --release` in `test2/rust` builds.
 
 # 5. The checks, in numbers
 

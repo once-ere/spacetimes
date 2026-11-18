@@ -5,29 +5,29 @@ Usage, from the folder Revision_SuperLoop:
     python3 test2/python/make_t2_figures.py
 
 The script draws the numbers that the Rust programs t2_fields (test2/rust/t2fields) and t2_analytic
-(test2/rust/t2analytic) wrote into test2/data.  It computes only reference lines (the value 1, the
-stability limit 2 sqrt(2), the largest value 2.5 that the solvers allow, the asymptote x^6/144 of
-the loss per step, the mass and the doubler energies m + 2 r_W/dx, the energies +-m and the first-order
-shift r_W dx/6 of the bound states of a kink), the relative deviation (eps_lat - eps)/eps of two
-columns of a data file, the normal-state energy |eps_lat - mu| from a column and a header value, and
-the differences E_R - m.  Output, in test2/figures, each as .pdf and .png:
+(test2/rust/t2analytic) wrote into test2/data.  It computes only reference lines (the mass and the
+doubler energies m + 2 r_W/dx, the energies +-m and the first-order shift r_W dx/6 of the bound states
+of a kink), the relative deviation (eps_lat - eps)/eps of two columns of a data file, the normal-state
+energy |eps_lat - mu| from a column and a header value, and the differences E_R - m.  Output, in
+test2/figures, each as .pdf and .png:
 
   fig_t2_lattice_dispersion   item 1: the energy of a free particle on the lattice, eps_lat, along
                               x_LL^1 for the Wilson coefficients r_W = 0 and r_W = 1, with the
                               continuum energy eps; the points are eigenvalues of the lattice
                               operator of the solvers (check GS-16); (a) the whole range of
                               momenta, (b) the relative deviation from the continuum
-  fig_t2_rk4_stability        item 1: the modulus of the factor by which one RK4 step multiplies
-                              an eigencomponent with the energy E, versus E dt; (a) linear scale
-                              with the stability limit, (b) the loss per step on logarithmic
-                              scales with the asymptote x^6/144
+  fig_t2_cvode_accuracy       item 1 (check GS-13): the time integration of the lattice equations
+                              with CVODE on the lattice of check GS-10, for the tolerances
+                              rtol = 1e-8, 1e-10, 1e-12; (a) the relative deviation from the exact
+                              spectral solution against the time, (b) the size and (c) the order of
+                              the last internal step of CVODE before each output time
   fig_t2_case_A               item 2, case A (program t2_analytic, checks AS-1 and AS-2): (a) the
                               energies of free spinor charges in constant gauge potentials, for the
                               isospin components Q_LL = +1/2 and -1/2; (b) the isospin precession
-                              in a constant isospin potential, RK4 against the exact solution
+                              in a constant isospin potential, CVODE against the exact solution
   fig_t2_case_B               item 2, case B (AS-3 to AS-5): (a) the Bogoliubov energies E^- and E^+
                               of the uniform polar superfluid on the lattice; (b) the particle-hole
-                              oscillation of an injected particle, RK4 against the exact solution;
+                              oscillation of an injected particle, CVODE against the exact solution;
                               (c) the gap as a function of the coupling (closed form and quadrature)
   fig_t2_case_C               item 2, case C (AS-8): (a) the pair field of a ring with a kink and an
                               antikink; (b) the density of the bound states, lattice against the
@@ -138,35 +138,56 @@ def fig_dispersion():
     save(fig, "fig_t2_lattice_dispersion")
 
 
-def fig_rk4():
-    rk = rows("t2_rk4_stability.csv")
-    x = np.array([float(r["E_times_dt"]) for r in rk])
-    mod = np.array([float(r["rk4_modulus"]) for r in rk])
-    fig, (ax, bx) = plt.subplots(1, 2, figsize=(11.5, 4.2))
-    ax.plot(x, mod, color=BLUE, lw=2, label="one RK4 step")
-    ax.axhline(1.0, color=GREY, lw=1.5, ls="--", label="exact evolution (modulus 1)")
-    lim = 2.0 * math.sqrt(2.0)
-    ax.axvline(lim, color=RED, lw=1.2, ls=":")
-    ax.text(lim + 0.03, 0.35, "stability limit\n$2\\sqrt{2}$", color=RED, fontsize=9.5)
-    ax.axvline(2.5, color=GREEN, lw=1.2, ls="-.")
-    ax.text(2.5 - 0.05, 0.35, "largest value\nused by the solvers", color=GREEN, fontsize=9.5, ha="right")
-    ax.set_xlim(0, 3.2)
-    ax.set_ylim(0.3, 1.25)
-    ax.set_xlabel("$|E^{\\rm qp}_{{\\rm LL},n}|\\,\\ell^{\\rm t}_{\\rm LL}$ (energy times time step)")
-    ax.set_ylabel("modulus of the factor per step")
-    ax.set_title("(a) the factor of one RK4 step", fontsize=11, color=INK)
-    ax.legend(loc="lower left", fontsize=9, frameon=False)
-    ax.grid(color="#e6e5e0", lw=0.6)
-    sel = (x > 0.02) & (x < 1.5)
-    bx.loglog(x[sel], 1.0 - mod[sel], color=BLUE, lw=2, label="$1-$ modulus (data)")
-    bx.loglog(x[sel], x[sel] ** 6 / 144.0, color=ORANGE, lw=1.5, ls="--", label="$(|E^{\\rm qp}_{{\\rm LL},n}|\\ell^{\\rm t}_{\\rm LL})^6/144$")
-    bx.set_xlabel("$|E^{\\rm qp}_{{\\rm LL},n}|\\,\\ell^{\\rm t}_{\\rm LL}$")
-    bx.set_ylabel("loss of modulus per step")
-    bx.set_title("(b) the small loss per step", fontsize=11, color=INK)
-    bx.legend(loc="upper left", fontsize=9, frameon=False)
+def fig_cvode():
+    """Figure 2: the time integration of the lattice equations with CVODE on the lattice of check GS-10 (check GS-13):
+    (a) the relative deviation from the exact spectral solution against the time, (b) the size and (c) the order of the
+    last internal step of CVODE before each output time, for the three tolerances of the data file."""
+    name = "t2_cvode_accuracy.csv"
+    ac = rows(name)
+    t = np.array([float(r["x_LL^0"]) for r in ac])
+    sel = t > 0  # at x^0 = 0 no step has been taken yet
+    # the tolerance of the programs first (blue), then the two looser ones; each also has its own line style
+    tols = (("1e-12", BLUE, "-"), ("1e-10", ORANGE, "--"), ("1e-8", AQUA, "-."))
+    fig, (ax, bx, cx) = plt.subplots(1, 3, figsize=(15.5, 4.5))
+    for tol, colr, ls in tols:
+        lab = "$r^{\\rm tol}_{\\rm LL}=10^{%d}$" % round(math.log10(float(tol)))
+        if tol == "1e-12":
+            lab += " (the programs)"
+        dev = np.array([float(r["dev_rtol_" + tol]) for r in ac])
+        h = np.array([float(r["h_rtol_" + tol]) for r in ac])
+        q = np.array([float(r["q_rtol_" + tol]) for r in ac])
+        ax.semilogy(t[sel], dev[sel], color=colr, lw=2, ls=ls, label=lab)
+        bx.semilogy(t[sel], h[sel], color=colr, lw=2, ls=ls, label=lab)
+        cx.step(t[sel], q[sel], where="post", color=colr, lw=2, ls=ls, label=lab)
+        # the values at the last output time, written next to the lines (in the ink of the text, the line carries the
+        # identity); the two smaller step sizes lie close together, so their labels stand above and below their lines
+        dy = {"1e-12": -9, "1e-10": 4, "1e-8": 4}[tol]
+        bx.annotate("%.3e" % h[-1], (t[-1], h[-1]), textcoords="offset points", xytext=(-4, dy), ha="right",
+                    va="top" if dy < 0 else "bottom", fontsize=9, color=MUTED)
+        cx.annotate("%d" % q[-1], (t[-1], q[-1]), textcoords="offset points", xytext=(-4, 3), ha="right", va="bottom",
+                    fontsize=9, color=MUTED)
+    ax.set_xlabel("time $x^0_{\\rm LL}$")
+    ax.set_ylabel("relative deviation $\\delta^{\\rm rel}_{\\rm LL}$ from the exact solution")
+    ax.set_title("(a) the error of CVODE", fontsize=11, color=INK)
+    ax.grid(color="#e6e5e0", lw=0.6, which="both")
+    # room above and below the lines for their labels
+    hs = [float(r["h_rtol_" + tol]) for r in ac[1:] for tol, _, _ in tols]
+    bx.set_ylim(min(hs) / 1.6, max(hs) * 1.6)
+    bx.set_xlabel("time $x^0_{\\rm LL}$")
+    bx.set_ylabel("size $h^{\\rm CV}_{\\rm LL}$ of the last internal step")
+    bx.set_title("(b) the step size chosen by CVODE", fontsize=11, color=INK)
     bx.grid(color="#e6e5e0", lw=0.6, which="both")
+    cx.set_xlabel("time $x^0_{\\rm LL}$")
+    cx.set_ylabel("order $q^{\\rm CV}_{\\rm LL}$ of the last internal step")
+    cx.set_ylim(0, 13)
+    cx.set_yticks([1, 3, 5, 7, 9, 11, 12])
+    cx.set_title("(c) the order chosen by CVODE", fontsize=11, color=INK)
+    cx.grid(color="#e6e5e0", lw=0.6)
+    h1, l1 = ax.get_legend_handles_labels()
     fig.tight_layout()
-    save(fig, "fig_t2_rk4_stability")
+    fig.subplots_adjust(bottom=0.24)
+    fig.legend(h1, l1, loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=3, fontsize=9.5, frameon=False)
+    save(fig, "fig_t2_cvode_accuracy")
 
 
 def fig_case_a():
@@ -202,8 +223,8 @@ def fig_case_a():
     t = np.array([float(r["x_LL^0"]) for r in pre])
     om = meta("t2_A_precession.csv", "omega_pr")
     bx.plot(t, [float(r["P_up_exact"]) for r in pre], color=BLUE, lw=2, label="exact: $\\cos^2(\\omega^{\\rm pr}_{\\rm LL}x^0_{\\rm LL}/2)$")
-    bx.plot(t[::2], [float(r["P_up_rk4"]) for r in pre][::2], "o", ms=5, mfc="white", mec=ORANGE, mew=1.5,
-            label="RK4 on the lattice")
+    bx.plot(t[::2], [float(r["P_up_cvode"]) for r in pre][::2], "o", ms=5, mfc="white", mec=ORANGE, mew=1.5,
+            label="CVODE on the lattice")
     bx.axvline(2 * math.pi / om, color=MUTED, lw=0.9, ls=":")
     bx.text(2 * math.pi / om + 0.2, 0.5, "period $2\\pi/\\omega^{\\rm pr}_{\\rm LL}$", color=MUTED, fontsize=9.5)
     bx.set_xlim(0, t[-1])
@@ -252,7 +273,7 @@ def fig_case_b():
     em = meta("t2_B_rabi.csv", "E^-")
     bx.plot(t, [float(r["P_hole_exact"]) for r in rb], color=BLUE, lw=2,
             label="exact: $(\\Delta_{\\rm LL}/E^-_{\\rm LL})^2\\sin^2(E^-_{\\rm LL}x^0_{\\rm LL})$")
-    bx.plot(t[::2], [float(r["P_hole_rk4"]) for r in rb][::2], "o", ms=5, mfc="white", mec=ORANGE, mew=1.5, label="RK4 on the lattice")
+    bx.plot(t[::2], [float(r["P_hole_cvode"]) for r in rb][::2], "o", ms=5, mfc="white", mec=ORANGE, mew=1.5, label="CVODE on the lattice")
     bx.axhline((delta / em) ** 2, color=MUTED, lw=0.9, ls=":")
     bx.text(0.3, (delta / em) ** 2 + 0.02, "$(\\Delta_{\\rm LL}/E^-_{\\rm LL})^2$", color=MUTED, fontsize=9.5)
     bx.set_xlim(0, t[-1])
@@ -375,7 +396,7 @@ def fig_case_d():
 
 if __name__ == "__main__":
     fig_dispersion()
-    fig_rk4()
+    fig_cvode()
     fig_case_a()
     fig_case_b()
     fig_case_c()

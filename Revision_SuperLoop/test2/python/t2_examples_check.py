@@ -18,6 +18,7 @@ Requirements: Python 3, numpy, scipy (brentq).
 import csv
 import math
 import os
+import re
 import sys
 
 import numpy as np
@@ -283,8 +284,22 @@ def ex_quench(prefix, rep):
     rep.check(abs(wfit - w_rpa) < 0.01 * w_rpa, "EX-7 the pair field oscillates with the frequency of the amplitude (Higgs) "
               "mode of the linearized equations: relative deviation %.2e (allowed 1e-2: terms of second order in the "
               "amplitude and the weaker modes)" % (abs(wfit - w_rpa) / w_rpa))
-    rep.check(np.max(np.abs(dnf)) < 1e-9, "EX-7 the fermion number is constant along the whole evolution (largest change "
-                                          "%.1e)" % np.max(np.abs(dnf)))
+    # the fermion number: the exact evolution conserves it, and CVODE keeps it up to its accumulated local error.  The
+    # bound is the one of the check of the solvers, 2 ||W_modes|| x 10 x steps sqrt(2) (rtol ||W_modes|| + atol
+    # sqrt(n_complex)) with ||W_modes|| = sqrt(M) for the M orthonormal modes (the positive eigenvalues of the spectrum
+    # file) of nn = 16 x (number of sites) components and n_complex = nn M, computed here from the number of steps in the
+    # summary of the solver
+    with open(prefix + "_quench_summary.txt", encoding="utf-8") as f:
+        nsteps = int(re.search(r"CVODE: ([0-9]+) steps", f.read()).group(1))
+    _, hs, rs = load(prefix + "_quench_spectrum.csv")
+    M = int(np.sum(col(hs, rs, "E_qp") > 0))
+    nn = 16 * lat.ns
+    budget = nsteps * math.sqrt(2.0) * (cfg["rtol"] * math.sqrt(M) + cfg["atol"] * math.sqrt(nn * M))
+    bound = 20.0 * math.sqrt(M) * budget
+    rep.check(np.max(np.abs(dnf)) < bound, "EX-7 the fermion number is constant along the whole evolution up to the "
+              "accumulated local error of CVODE: largest change %.1e (bound %.1e: 2 ||W_modes|| x 10 x steps sqrt(2) (rtol "
+              "||W_modes|| + atol sqrt(n_complex)) with ||W_modes|| = sqrt(%d) for the %d orthonormal modes of %d components, "
+              "n_complex = %d, %d steps)" % (np.max(np.abs(dnf)), bound, M, M, nn, nn * M, nsteps))
 
 
 def compare(p1, p2, rep):
@@ -317,12 +332,69 @@ def compare(p1, p2, rep):
         rep.add("EX-8 %s: largest difference %.2e (column %s)%s" % (f, dd, c, "; an iteration history" if it else ""))
     big = max(dd for _, dd, _, it in worst if not it)
     bigit = max([dd for _, dd, _, it in worst if it] or [0.0])
+    write_comparison_fragments(p1, p2, worst)
     rep.check(big < 1e-7 and bigit < 1e-5,
               "EX-8 the two solvers give the same numbers in all %d output files: the solutions, spectra and time series agree to "
-              "%.1e (allowed 1e-7: rounding errors, amplified by the time stepping), and the histories of the self-consistent "
+              "%.1e (allowed 1e-7: rounding errors, amplified by the adaptive time integration), and the histories of the self-consistent "
               "iterations (the same number of iterations) to %.1e (allowed 1e-5: the intermediate iterates of the Anderson method "
               "depend on rounding through its least-squares step, whose matrix becomes ill-conditioned as the residuals shrink; "
               "the fixed point does not)" % (len(worst), big, bigit))
+
+
+def write_comparison_fragments(p1, p2, worst):
+    """The two tables of Section 6.4 of the document of Test 2, written into test2/data/t2_cmp_fragments.md (from which
+    the document takes them, so that no number is typed by hand): t2_ex8_table, the largest differences of EX-8 by
+    kind of quantity, and t2_times_table, the computing times of the seven examples that the summaries of the two
+    solvers report (the last line 'computing time' of a summary: for the quench the time evolution)."""
+    def group_max(sel):
+        vals = [dd for f, dd, c, it in worst if sel(f, it)]
+        return max(vals) if vals else 0.0
+    evolve = ("packet_free", "cyclotron", "andreev")
+    timed = ["%s_%s.csv" % (e, k) for e in evolve + ("quench",) for k in ("series", "fields")]
+    rows = [
+        ("spectra, densities of eigenvectors and self-consistent pair fields (`kink_spectrum`, `ground_state`, "
+         "`kink_ground_state`, and the spectrum of the ground state of `quench`)",
+         group_max(lambda f, it: not it and f not in timed),
+         "rounding in the operator and the eigensolvers"),
+        ("time series and fields of `evolve` (norm, energy, probabilities, centre, densities)",
+         group_max(lambda f, it: f in ["%s_%s.csv" % (e, k) for e in evolve for k in ("series", "fields")]),
+         "rounding, carried through the adaptive steps of CVODE; the files print 12 significant digits"),
+        ("time series and fields of `quench` ($\\lvert\\vec d_{\\rm LL}\\rvert$, $N^{\\rm F}_{\\rm LL}$, "
+         "$E^{\\rm MF}_{\\rm LL}$, orthonormality, pair field)",
+         group_max(lambda f, it: f in ("quench_series.csv", "quench_fields.csv")),
+         "rounding, carried through the adaptive steps of CVODE; the files print 12 significant digits"),
+        ("histories of the Anderson iteration", group_max(lambda f, it: it),
+         "rounding, amplified by the least-squares step near convergence (the same numbers of iterations)"),
+    ]
+    t8 = ["| quantities | largest difference | origin |", "|------------------------------|----------|------------------------------|"]
+    for q, v, o in rows:
+        t8.append("| %s | %s | %s |" % (q, tex_sci(v), o))
+    py, rs = (p2, p1) if os.path.basename(p2).startswith("t2_py") else (p1, p2)
+    tt = ["| example | Python | Rust |", "|------|------|------|"]
+    for name in NAMES:
+        times = []
+        for prefix in (py, rs):
+            with open(prefix + "_" + name + "_summary.txt", encoding="utf-8") as f:
+                found = re.findall(r"computing time ([0-9.]+) s", f.read())
+            times.append(float(found[-1]))
+        label = "`%s`" % name + (" (the time evolution)" if name == "quench" else "")
+        tt.append("| %s | %.2f | %.2f |" % (label, times[0], times[1]))
+    path = os.path.join(os.path.dirname(os.path.abspath(p1)), "t2_cmp_fragments.md")
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("<!-- BEGIN t2_ex8_table -->\n%s\n<!-- END t2_ex8_table -->\n" % "\n".join(t8))
+        f.write("<!-- BEGIN t2_times_table -->\n%s\n<!-- END t2_times_table -->\n" % "\n".join(tt))
+    print("wrote %s" % path)
+
+
+def tex_sci(x):
+    """a number for the tables of the document: 0, or m x 10^e with one significant digit of m"""
+    if x == 0:
+        return "0"
+    e = int(math.floor(math.log10(abs(x))))
+    m = x / 10 ** e
+    if round(m) == 10:
+        m, e = 1.0, e + 1
+    return "$10^{%d}$" % e if round(m) == 1 else "$%d\\times10^{%d}$" % (round(m), e)
 
 
 def main(argv):
