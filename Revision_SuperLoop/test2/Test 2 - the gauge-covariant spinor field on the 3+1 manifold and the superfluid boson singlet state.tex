@@ -235,14 +235,15 @@ called SFBSv & Section 11 & answered \\
 {[}11{]} & the masses of the gauge bosons that absorb the Goldstone
 bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the
 diagonalization of the mass terms; the surviving symmetry group, its
-relation to \(U(1)_{\rm em}\) and the massless photon & Section 13 & to
-follow \\
+relation to \(U(1)_{\rm em}\) and the massless photon & Section 13 &
+answered \\
 \end{longtable}
 
 Each item is pushed to the repository as soon as it is answered. This
-version of the document answers items {[}1{]} to {[}10{]} (the last: the
-kinetic Lagrangian of the SFBS); the sections of the other items are
-added to this same document, in this order, as they are completed.
+version of the document answers all eleven items, {[}1{]} to {[}11{]}
+(the last: the masses of the gauge bosons, the surviving symmetry group
+and the photon); their sections were added to this same document, in
+this order, as they were completed.
 
 \hypertarget{how-to-read-this-document}{%
 \subsection{1.2 How to read this
@@ -275,19 +276,19 @@ document}\label{how-to-read-this-document}}
   solutions of the seven examples by \texttt{t2\_examples\_check.py}
   (checks EX-1 to EX-7), the Rust solver of item {[}5{]} by its
   self-test and the comparison EX-8, and the statements of items
-  {[}7{]}, {[}8{]} (both parts), {[}9{]} and {[}10{]} about the
-  superfluid boson singlet state by \texttt{t2\_sfbs} (checks SB-1 to
-  SB-16). The reports are printed verbatim in Appendix A.
+  {[}7{]}, {[}8{]} (both parts), {[}9{]}, {[}10{]} and {[}11{]} about
+  the superfluid boson singlet state by \texttt{t2\_sfbs} (checks SB-1
+  to SB-17). The reports are printed verbatim in Appendix A.
 \item
   \textbf{Explicit matrices.} Every matrix of the field equations is
   written out. The matrices and the long component equations are printed
   by the program itself (no entry is typed by hand), and the program
   evaluates each printed expression numerically and compares it with the
-  matrix it describes (check GS-12). In Sections 10, 11 and 12 a few
-  short matrices and components are typed in the text ((10.3), (11.6),
-  (11.8), (11.10) to (11.13), (12.2) to (12.4), (12.7)); each of them is
-  compared with the matrices computed by the program in the check named
-  next to it.
+  matrix it describes (check GS-12). In Sections 10 to 13 a few short
+  matrices and components are typed in the text ((10.3), (11.6), (11.8),
+  (11.10) to (11.13), (12.2) to (12.4), (12.7), (13.3), (13.4), (13.7),
+  (13.11)); each of them is compared with the matrices computed by the
+  program in the check named next to it.
 \end{itemize}
 
 \hypertarget{item-1-the-field-equations-of-the-self-interacting-spinor-field-on-the-31-manifold}{%
@@ -8826,6 +8827,686 @@ vertical line \(G_{\rm LL}=22.5\). Data:
   (Section 12.5).
 \end{itemize}
 
+\hypertarget{item-11-the-masses-of-the-gauge-bosons-the-surviving-symmetry-and-the-photon}{%
+\section{13. Item {[}11{]}: the masses of the gauge bosons, the
+surviving symmetry and the
+photon}\label{item-11-the-masses-of-the-gauge-bosons-the-surviving-symmetry-and-the-photon}}
+
+\hypertarget{the-answer-in-brief-11}{%
+\subsection{13.0 The answer in brief}\label{the-answer-in-brief-11}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{The Goldstone fields are absorbed.} Inserting SFBSv (11.9)
+  into the kinetic Lagrangian with gauge fields, the gauge
+  transformation (9.4) with
+  \(\theta^{\rm F}_{\rm LL}=-\vartheta^{\rm G}_{{\rm LL},0}\) and
+  \(\mathsf U_{\rm LL}=(\mathsf U^{\rm G}_{\rm LL})^\dagger\) removes
+  the three Goldstone fields exactly (Theorem 13.1, the unitary gauge).
+  They reappear in the vector fields of the unitary gauge (13.2),
+  \(V^{\rm F}_{{\rm LL},p}=A^{\rm F}_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},0}/g^{\rm F}_{\rm LL}\)
+  and, to first order,
+  \(V^\iota_{{\rm LL},p}=A^\iota_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},\iota}/g^{\rm v}_{\rm LL}\)
+  (\(\iota=1,2\)), \(V^3_{{\rm LL},p}=A^3_{{\rm LL},p}\): each Goldstone
+  boson becomes the third (longitudinal) polarization of a vector field,
+  which thereby becomes massive. This is how the Goldstone bosons
+  acquire mass: as the longitudinal modes of the massive vector bosons,
+  with their own velocity (13.9).
+\item
+  \textbf{Expanded} (13.3) to (13.6): the kinetic Lagrangian in the
+  unitary gauge is written out exactly, with its contact matrix (13.4);
+  to the second order it contains the mass terms
+  \((\Delta^{\rm vac}_{\rm LL})^2\big(4(g^{\rm F}_{\rm LL})^2(V^{\rm F}_{{\rm LL},p})^2+(g^{\rm v}_{\rm LL})^2((V^1_{{\rm LL},p})^2+(V^2_{{\rm LL},p})^2)\big)\)
+  times \(Z^{\rm t}_{\rm LL}\) (\(p=0\)) or \(-Z^{\rm s}_{\rm LL}\)
+  (\(p=j\)), and no mass term of \(V^3_{{\rm LL},p}\). In the original
+  fields the quadratic Lagrangian mixes the Goldstone fields with the
+  potentials (13.5); the change of variables (13.2) diagonalizes it. The
+  mass matrices (13.7) are then diagonal: three massive vector fields,
+  the fermion-number field and the two charged fields
+  \(W^\pm_{{\rm LL},p}=(V^1_{{\rm LL},p}\mp iV^2_{{\rm LL},p})/\sqrt2\),
+  and one massless field, \(V^3_{{\rm LL},p}\). The rest masses (13.8)
+  are
+  \((M^{\rm W}_{\rm LL})^2=2Z^{\rm s}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+  and
+  \((M^{\rm F}_{\rm LL})^2=8Z^{\rm s}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\):
+  at \(G_{\rm LL}=22.5\), with unit gauge couplings, 0.0504432 and
+  0.1008864.
+\item
+  \textbf{The surviving group and the photon} (Theorem 13.2). The gauge
+  transformations that leave the vacuum unchanged form the group
+  \(O(2)\) (11.8); its connected part is \(U(1)^{\rm Q}_{\rm LL}\), the
+  rotations \(\exp(i\theta^3_{\rm LL}Q_{\rm LL})\) generated by the
+  electric charge \(Q_{\rm LL}=T^3_{\rm LL}\): this is
+  \(U(1)_{\rm em}\), and its second component, the reflection, acts as
+  charge conjugation. The mass matrix of the gauge fields is the squared
+  length of the change of the vacuum under the gauge transformation of
+  the potentials (13.10); its null vectors are therefore exactly the
+  generators that leave the vacuum unchanged. So exactly one gauge field
+  stays massless: the gauge field of \(U(1)^{\rm Q}_{\rm LL}\), the
+  photon \(V^3_{{\rm LL},p}\), which couples to every field with
+  \(g^{\rm v}_{\rm LL}\) times its electric charge. Unlike in the
+  electroweak theory, the photon is not a mixture: the mixing angle is
+  zero, because the condensed pairs are electrically neutral. At the
+  non-unitary saddle point, whose pairs are charged, the same
+  computation gives a mixture with the angle
+  \(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\).
+\item
+  \textbf{The degrees of freedom} are conserved: \(6+4\times2=14\)
+  before, \(3+3\times3+1\times2=14\) after.
+\item
+  Check SB-17 verifies the unitary gauge, the written-out Lagrangian,
+  and the mass matrices, the photon and the mixing at the saddle point
+  directly from the Bogoliubov matrices of the spinor field. Figure 26
+  shows the results.
+\end{enumerate}
+
+\hypertarget{the-lagrangian-with-the-gauge-fields}{%
+\subsection{13.1 The Lagrangian with the gauge
+fields}\label{the-lagrangian-with-the-gauge-fields}}
+
+The effective Lagrangian of the SFBS (9.12) together with the Yang-Mills
+and Maxwell terms of (2.24) is
+
+\[\begin{aligned}&\mathcal L^{\rm B}_{\rm LL}-\frac14\sum_\iota\sum_{p,p',p'',p'''}\eta^{\rm LL}_{pp''}\eta^{\rm LL}_{p'p'''}\mathsf F^\iota_{{\rm LL},pp'}\mathsf F^\iota_{{\rm LL},p''p'''}-\frac14\sum_{p,p',p'',p'''}\eta^{\rm LL}_{pp''}\eta^{\rm LL}_{p'p'''}\mathsf F^{\rm F}_{{\rm LL},pp'}\mathsf F^{\rm F}_{{\rm LL},p''p'''},\\&\mathcal L^{\rm B}_{\rm LL}=\mathcal L^{\rm kin}_{\rm LL}-\Omega_{\rm LL}(\vec d_{\rm LL}),\end{aligned}\tag{13.1}\]
+
+with the field strengths (2.20), the metric \(\eta^{\rm LL}_{pp'}\) (1
+for \(p=p'=0\), \(-1\) for \(p=p'=j\), 0 otherwise), the kinetic
+Lagrangian (12.1) and the effective potential. Its field equations are
+the effective field equation (9.23) of the SFBS and the gauge-field
+equations (9.26) with the currents of the SFBS as sources. Every term is
+invariant under the gauge transformations (9.4) with (2.16):
+\(\mathcal L^{\rm kin}_{\rm LL}\) because
+\(\nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}\) transforms like
+\(\vec d_{\rm LL}\) (Section 9.2, check SB-6); \(\Omega_{\rm LL}\)
+because it depends only on invariants of the field (Section 10); the
+field-strength terms because the field strengths transform covariantly
+(Section 2.7).
+
+\hypertarget{substituting-sfbsv-the-unitary-gauge}{%
+\subsection{13.2 Substituting SFBSv: the unitary
+gauge}\label{substituting-sfbsv-the-unitary-gauge}}
+
+\textbf{Theorem 13.1 (the unitary gauge).} Let \(\vec d_{\rm LL}\) be
+the SFBSv field (11.9), with the six fields
+\(\vartheta^{\rm G}_{{\rm LL},0}\), \(\vartheta^{\rm G}_{{\rm LL},1}\),
+\(\vartheta^{\rm G}_{{\rm LL},2}\), \(h^{\rm a}_{\rm LL}\),
+\(c^{\rm n}_{{\rm LL},1}\), \(c^{\rm n}_{{\rm LL},2}\) (functions of
+\(x_{\rm LL}\)), and let \(A^{\rm F}_{{\rm LL},p}\),
+\(A^\iota_{{\rm LL},p}\) be any potentials. Define the column of (11.9),
+the field in the unitary gauge,
+\(\vec d^{\rm u}_{\rm LL}=(i\,c^{\rm n}_{{\rm LL},1},\ i\,c^{\rm n}_{{\rm LL},2},\ \Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\),
+and the potentials of the unitary gauge \(V^{\rm F}_{{\rm LL},p}\),
+\(V^\iota_{{\rm LL},p}\) by
+
+\[\begin{aligned}V^{\rm F}_{{\rm LL},p}&=A^{\rm F}_{{\rm LL},p}-\frac{\partial_p\vartheta^{\rm G}_{{\rm LL},0}}{g^{\rm F}_{\rm LL}},\\\sum_\iota V^\iota_{{\rm LL},p}\frac{\tau^{\rm LL}_\iota}2&=(\mathsf U^{\rm G}_{\rm LL})^\dagger\Big(\sum_\iota A^\iota_{{\rm LL},p}\frac{\tau^{\rm LL}_\iota}2\Big)\mathsf U^{\rm G}_{\rm LL}-\frac i{g^{\rm v}_{\rm LL}}\big(\partial_p(\mathsf U^{\rm G}_{\rm LL})^\dagger\big)\mathsf U^{\rm G}_{\rm LL}.\end{aligned}\tag{13.2}\]
+
+Then the kinetic Lagrangian of \(\vec d_{\rm LL}\) with the potentials
+\(A^{\rm F}_{{\rm LL},p}\), \(A^\iota_{{\rm LL},p}\) equals the kinetic
+Lagrangian of \(\vec d^{\rm u}_{\rm LL}\) with the potentials
+\(V^{\rm F}_{{\rm LL},p}\), \(V^\iota_{{\rm LL},p}\);
+\(\Omega_{\rm LL}(\vec d_{\rm LL})=\Omega_{\rm LL}(\vec d^{\rm u}_{\rm LL})\);
+and the field-strength terms of (13.1) are the same for the two sets of
+potentials. The Lagrangian (13.1) depends on the three Goldstone fields
+only through \(V^{\rm F}_{{\rm LL},p}\) and \(V^\iota_{{\rm LL},p}\).
+
+\emph{Proof.} The field (11.9) is the transformation (9.4) of
+\(\vec d^{\rm u}_{\rm LL}\) with
+\(\theta^{\rm F}_{\rm LL}=\vartheta^{\rm G}_{{\rm LL},0}\) and
+\(\mathsf U_{\rm LL}=\mathsf U^{\rm G}_{\rm LL}\). The transformation
+with \(\theta^{\rm F}_{\rm LL}=-\vartheta^{\rm G}_{{\rm LL},0}\) and
+\(\mathsf U_{\rm LL}=(\mathsf U^{\rm G}_{\rm LL})^\dagger\) undoes it:
+the phases cancel, and
+\(\mathsf R^{\rm v}_{\rm LL}((\mathsf U^{\rm G}_{\rm LL})^\dagger)\mathsf R^{\rm v}_{\rm LL}(\mathsf U^{\rm G}_{\rm LL})=\mathsf R^{\rm v}_{\rm LL}(\mathsf 1_2)\),
+the unit matrix, because
+\(\mathsf U_{\rm LL}\mapsto\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\)
+preserves products. By (2.16) this transformation turns
+\(A^{\rm F}_{{\rm LL},p}\) into
+\(A^{\rm F}_{{\rm LL},p}+\partial_p\theta^{\rm F}_{\rm LL}/g^{\rm F}_{\rm LL}=V^{\rm F}_{{\rm LL},p}\),
+and the isospin potential
+\(\mathsf a_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2\)
+into
+\(\mathsf U_{\rm LL}\mathsf a_{{\rm LL},p}\mathsf U^{-1}_{\rm LL}-(i/g^{\rm v}_{\rm LL})(\partial_p\mathsf U_{\rm LL})\mathsf U^{-1}_{\rm LL}\)
+with \(\mathsf U_{\rm LL}=(\mathsf U^{\rm G}_{\rm LL})^\dagger\),
+\(\mathsf U^{-1}_{\rm LL}=\mathsf U^{\rm G}_{\rm LL}\): the right side
+of (13.2). The three terms of (13.1) are invariant under every such
+transformation (Section 13.1). \(\square\)
+
+\textbf{The first order.} For small fields and potentials,
+\((\mathsf U^{\rm G}_{\rm LL})^\dagger=\mathsf 1_2-\tfrac i2(\vartheta^{\rm G}_{{\rm LL},1}\tau^{\rm LL}_1+\vartheta^{\rm G}_{{\rm LL},2}\tau^{\rm LL}_2)\)
+plus terms of the second order, so
+\(-(i/g^{\rm v}_{\rm LL})(\partial_p(\mathsf U^{\rm G}_{\rm LL})^\dagger)\mathsf U^{\rm G}_{\rm LL}=-(\partial_p\vartheta^{\rm G}_{{\rm LL},1}\tau^{\rm LL}_1+\partial_p\vartheta^{\rm G}_{{\rm LL},2}\tau^{\rm LL}_2)/(2g^{\rm v}_{\rm LL})\)
+plus terms of the second order, and the rotation of
+\(\mathsf a_{{\rm LL},p}\) changes it only by products of angles and
+potentials. Hence
+
+\[V^1_{{\rm LL},p}=A^1_{{\rm LL},p}-\frac{\partial_p\vartheta^{\rm G}_{{\rm LL},1}}{g^{\rm v}_{\rm LL}},\qquad V^2_{{\rm LL},p}=A^2_{{\rm LL},p}-\frac{\partial_p\vartheta^{\rm G}_{{\rm LL},2}}{g^{\rm v}_{\rm LL}},\qquad V^3_{{\rm LL},p}=A^3_{{\rm LL},p}\]
+
+up to terms of the second order: each Goldstone field enters as the
+gradient part of the potential of its broken generator. Check SB-17: for
+30 random SFBSv fields with Goldstone angles up to 1.5 (far from the
+linear regime), random first derivatives, potentials and couplings, the
+kinetic Lagrangian of \(\vec d_{\rm LL}\) with the potentials
+\(A^{\rm F}_{{\rm LL},p}\), \(A^\iota_{{\rm LL},p}\) and that of
+\(\vec d^{\rm u}_{\rm LL}\) with \(V^{\rm F}_{{\rm LL},p}\),
+\(V^\iota_{{\rm LL},p}\) agree to \(4.7\times10^{-11}\) relative to the
+size of the Lagrangian (the derivatives of (11.9) by central
+differences), and the first order agrees with the exact (13.2) to
+\(1.3\times10^{-4}\) relative to the size \(10^{-4}\) of the fields (the
+terms of the second order).
+
+\hypertarget{the-kinetic-lagrangian-in-the-unitary-gauge-exactly}{%
+\subsection{13.3 The kinetic Lagrangian in the unitary gauge,
+exactly}\label{the-kinetic-lagrangian-in-the-unitary-gauge-exactly}}
+
+Insert \(\vec d^{\rm u}_{\rm LL}\) into (12.2), (12.3). Its real part is
+\((0,0,\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\) and its imaginary
+part \((c^{\rm n}_{{\rm LL},1},c^{\rm n}_{{\rm LL},2},0)\). The
+fermion-number current term vanishes, because each product
+\((\partial_pd^\iota_{\rm LL})^*d^\iota_{\rm LL}\) is real:
+\((-i\partial_pc^{\rm n}_{{\rm LL},1})(i\,c^{\rm n}_{{\rm LL},1})=c^{\rm n}_{{\rm LL},1}\partial_pc^{\rm n}_{{\rm LL},1}\),
+and the same for the other two. The isospin current terms of the first
+two axes vanish, because their brackets are purely imaginary, for
+example
+\((\partial_pd^3_{\rm LL})^*d^2_{\rm LL}-(\partial_pd^2_{\rm LL})^*d^3_{\rm LL}=i\,c^{\rm n}_{{\rm LL},2}\partial_ph^{\rm a}_{\rm LL}+i(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\partial_pc^{\rm n}_{{\rm LL},2}\).
+The bracket of the third axis is
+\((\partial_pd^2_{\rm LL})^*d^1_{\rm LL}-(\partial_pd^1_{\rm LL})^*d^2_{\rm LL}=c^{\rm n}_{{\rm LL},1}\partial_pc^{\rm n}_{{\rm LL},2}-c^{\rm n}_{{\rm LL},2}\partial_pc^{\rm n}_{{\rm LL},1}\),
+real. And
+\(\vec w^{\rm n}_{\rm LL}=(0,0,\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\times(c^{\rm n}_{{\rm LL},1},c^{\rm n}_{{\rm LL},2},0)=(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})(-c^{\rm n}_{{\rm LL},2},c^{\rm n}_{{\rm LL},1},0)\).
+So, exactly,
+
+\[\begin{aligned}\mathcal L^{\rm kin}_{\rm LL}={}&Z^{\rm t}_{\rm LL}\Big((\partial_0h^{\rm a}_{\rm LL})^2+(\partial_0c^{\rm n}_{{\rm LL},1})^2+(\partial_0c^{\rm n}_{{\rm LL},2})^2\\&\qquad+2g^{\rm v}_{\rm LL}V^3_{{\rm LL},0}\big(c^{\rm n}_{{\rm LL},1}\partial_0c^{\rm n}_{{\rm LL},2}-c^{\rm n}_{{\rm LL},2}\partial_0c^{\rm n}_{{\rm LL},1}\big)\\&\qquad+\big(V^{\rm F}_{{\rm LL},0},V^1_{{\rm LL},0},V^2_{{\rm LL},0},V^3_{{\rm LL},0}\big)\,\mathsf N^{\rm g}_{\rm LL}(\vec d^{\rm u}_{\rm LL})\,\big(V^{\rm F}_{{\rm LL},0},V^1_{{\rm LL},0},V^2_{{\rm LL},0},V^3_{{\rm LL},0}\big)^T\Big)\\&-Z^{\rm s}_{\rm LL}\sum_j\Big(\text{the same with the index }j\text{ in place of }0\Big),\end{aligned}\tag{13.3}\]
+
+with the contact matrix (12.3) of \(\vec d^{\rm u}_{\rm LL}\), written
+out (rows and columns \(V^{\rm F}_{{\rm LL},p}\), \(V^1_{{\rm LL},p}\),
+\(V^2_{{\rm LL},p}\), \(V^3_{{\rm LL},p}\)) by the powers of
+\(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL}\):
+
+\[\begin{aligned}\mathsf N^{\rm g}_{\rm LL}(\vec d^{\rm u}_{\rm LL})={}&(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})^2\begin{pmatrix}4(g^{\rm F}_{\rm LL})^2&0&0&0\\0&(g^{\rm v}_{\rm LL})^2&0&0\\0&0&(g^{\rm v}_{\rm LL})^2&0\\0&0&0&0\end{pmatrix}\\&+4g^{\rm F}_{\rm LL}g^{\rm v}_{\rm LL}(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\begin{pmatrix}0&-c^{\rm n}_{{\rm LL},2}&c^{\rm n}_{{\rm LL},1}&0\\-c^{\rm n}_{{\rm LL},2}&0&0&0\\c^{\rm n}_{{\rm LL},1}&0&0&0\\0&0&0&0\end{pmatrix}\\&+\big((c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2\big)\begin{pmatrix}4(g^{\rm F}_{\rm LL})^2&0&0&0\\0&0&0&0\\0&0&0&0\\0&0&0&(g^{\rm v}_{\rm LL})^2\end{pmatrix}\\&+(g^{\rm v}_{\rm LL})^2\begin{pmatrix}0&0&0&0\\0&(c^{\rm n}_{{\rm LL},2})^2&-c^{\rm n}_{{\rm LL},1}c^{\rm n}_{{\rm LL},2}&0\\0&-c^{\rm n}_{{\rm LL},1}c^{\rm n}_{{\rm LL},2}&(c^{\rm n}_{{\rm LL},1})^2&0\\0&0&0&0\end{pmatrix}.\end{aligned}\tag{13.4}\]
+
+(The entries follow from (12.3) with
+\(\lvert\vec d^{\rm u}_{\rm LL}\rvert^2=(c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2+(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})^2\),
+\(\lvert d^1_{\rm LL}\rvert^2=(c^{\rm n}_{{\rm LL},1})^2\),
+\(\lvert d^2_{\rm LL}\rvert^2=(c^{\rm n}_{{\rm LL},2})^2\),
+\(\lvert d^3_{\rm LL}\rvert^2=(\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})^2\),
+\({\rm Re}(d^1_{\rm LL}(d^2_{\rm LL})^*)=c^{\rm n}_{{\rm LL},1}c^{\rm n}_{{\rm LL},2}\)
+and
+\({\rm Re}(d^1_{\rm LL}(d^3_{\rm LL})^*)={\rm Re}(d^2_{\rm LL}(d^3_{\rm LL})^*)=0\).)
+Check SB-17: (13.3) with (13.4) equals the kinetic Lagrangian computed
+from the covariant derivative to \(2.1\times10^{-16}\), and (13.4)
+equals the contact matrix computed from (12.3) to \(2.8\times10^{-17}\),
+for the 30 random cases above. In the vacuum
+(\(h^{\rm a}_{\rm LL}=c^{\rm n}_{{\rm LL},1}=c^{\rm n}_{{\rm LL},2}=0\))
+only the first matrix of (13.4) survives: it is (12.4).
+
+\textbf{What (13.3) contains.} (a) The kinetic terms of the three
+massive scalar fields. (b) One current: the photon \(V^3_{{\rm LL},p}\)
+couples to the current
+\(c^{\rm n}_{{\rm LL},1}\partial_pc^{\rm n}_{{\rm LL},2}-c^{\rm n}_{{\rm LL},2}\partial_pc^{\rm n}_{{\rm LL},1}\)
+of the charged fields; together with the entry
+\((g^{\rm v}_{\rm LL})^2((c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2)\)
+of (13.4) these terms are
+\(\big\lvert(\partial_p-ig^{\rm v}_{\rm LL}V^3_{{\rm LL},p})(c^{\rm n}_{{\rm LL},1}-i\,c^{\rm n}_{{\rm LL},2})\big\rvert^2\),
+the covariant derivative of a field of the electric charge \(+1\)
+(expand: the real part is
+\(\partial_pc^{\rm n}_{{\rm LL},1}-g^{\rm v}_{\rm LL}V^3_{{\rm LL},p}c^{\rm n}_{{\rm LL},2}\),
+the imaginary part
+\(-\partial_pc^{\rm n}_{{\rm LL},2}-g^{\rm v}_{\rm LL}V^3_{{\rm LL},p}c^{\rm n}_{{\rm LL},1}\),
+and the sum of their squares is
+\((\partial_pc^{\rm n}_{{\rm LL},1})^2+(\partial_pc^{\rm n}_{{\rm LL},2})^2+2g^{\rm v}_{\rm LL}V^3_{{\rm LL},p}(c^{\rm n}_{{\rm LL},1}\partial_pc^{\rm n}_{{\rm LL},2}-c^{\rm n}_{{\rm LL},2}\partial_pc^{\rm n}_{{\rm LL},1})+(g^{\rm v}_{\rm LL}V^3_{{\rm LL},p})^2((c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2)\)):
+the electrodynamics of a charged scalar field with the unit of charge
+\(g^{\rm v}_{\rm LL}\). (c) The mass terms of the vector fields, the
+first matrix of (13.4) at \(h^{\rm a}_{\rm LL}=0\). (d) The couplings of
+the amplitude field to the massive vector fields: the first matrix of
+(13.4) is the mass matrix times
+\((1+h^{\rm a}_{\rm LL}/\Delta^{\rm vac}_{\rm LL})^2\), as in the
+standard model the masses of the charged and the neutral massive vector
+bosons are multiplied by the square of one plus the Higgs field divided
+by its vacuum value. (e) The couplings of the charged fields to two
+vector fields, the second, the third and the fourth matrix.
+
+\hypertarget{the-expansion-to-the-second-order-the-mass-terms-and-their-diagonalization}{%
+\subsection{13.4 The expansion to the second order: the mass terms and
+their
+diagonalization}\label{the-expansion-to-the-second-order-the-mass-terms-and-their-diagonalization}}
+
+\textbf{In the original fields.} Insert the linear order (11.13) of
+SFBSv into (12.2). To the second order in the fields and the potentials,
+the derivative term gives
+\(4(\Delta^{\rm vac}_{\rm LL})^2(\partial_p\vartheta^{\rm G}_{{\rm LL},0})^2+(\Delta^{\rm vac}_{\rm LL})^2((\partial_p\vartheta^{\rm G}_{{\rm LL},1})^2+(\partial_p\vartheta^{\rm G}_{{\rm LL},2})^2)+(\partial_ph^{\rm a}_{\rm LL})^2+(\partial_pc^{\rm n}_{{\rm LL},1})^2+(\partial_pc^{\rm n}_{{\rm LL},2})^2\);
+the fermion-number current term gives
+\(4g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\Delta^{\rm vac}_{\rm LL}\,{\rm Im}\big((\partial_pd^3_{\rm LL})^*\big)=-8g^{\rm F}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})^2A^{\rm F}_{{\rm LL},p}\partial_p\vartheta^{\rm G}_{{\rm LL},0}\);
+the isospin current terms give
+\(-2g^{\rm v}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})^2(A^1_{{\rm LL},p}\partial_p\vartheta^{\rm G}_{{\rm LL},1}+A^2_{{\rm LL},p}\partial_p\vartheta^{\rm G}_{{\rm LL},2})\)
+(the bracket of \(A^1_{{\rm LL},p}\) is
+\(-(\partial_pd^2_{\rm LL})^*\Delta^{\rm vac}_{\rm LL}\) to this order,
+with the real part
+\(-(\Delta^{\rm vac}_{\rm LL})^2\partial_p\vartheta^{\rm G}_{{\rm LL},1}\),
+and that of \(A^2_{{\rm LL},p}\) is
+\((\partial_pd^1_{\rm LL})^*\Delta^{\rm vac}_{\rm LL}\), with the real
+part
+\(-(\Delta^{\rm vac}_{\rm LL})^2\partial_p\vartheta^{\rm G}_{{\rm LL},2}\);
+the bracket of \(A^3_{{\rm LL},p}\) is of the second order, so its term
+is of the third); and the contact terms give (12.4). Completing the
+squares, the quadratic Lagrangian is
+
+\[\begin{aligned}\mathcal L^{(2)}_{\rm LL}={}&-\Omega^{\rm min}_{\rm LL}+Z^{\rm t}_{\rm LL}\Big(4(\Delta^{\rm vac}_{\rm LL})^2\big(\partial_0\vartheta^{\rm G}_{{\rm LL},0}-g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\big)^2\\&\qquad+(\Delta^{\rm vac}_{\rm LL})^2\sum_{\iota=1,2}\big(\partial_0\vartheta^{\rm G}_{{\rm LL},\iota}-g^{\rm v}_{\rm LL}A^\iota_{{\rm LL},0}\big)^2\\&\qquad+(\partial_0h^{\rm a}_{\rm LL})^2+(\partial_0c^{\rm n}_{{\rm LL},1})^2+(\partial_0c^{\rm n}_{{\rm LL},2})^2\Big)\\&-Z^{\rm s}_{\rm LL}\sum_j\Big(\text{the same with }j\text{ in place of }0\Big)\\&-\Omega^{\rm s(2)}_{\rm LL}\big((h^{\rm a}_{\rm LL})^2+(c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2\big)\\&+\big(\text{the Yang-Mills and Maxwell terms of (13.1) to the second order}\big),\end{aligned}\tag{13.5}\]
+
+where \(\mathcal L^{(2)}_{\rm LL}\) denotes the part of the second order
+of (13.1), whose field-strength terms keep only the derivative terms of
+(2.20) (the products of two potentials in
+\(\mathsf F^\iota_{{\rm LL},pp'}\) are of the second order and enter the
+Lagrangian at the third). The Goldstone fields mix with the potentials
+through the cross terms of the squares. The change of variables (13.2),
+to this order
+\(V^{\rm F}_{{\rm LL},p}=A^{\rm F}_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},0}/g^{\rm F}_{\rm LL}\)
+and
+\(V^\iota_{{\rm LL},p}=A^\iota_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},\iota}/g^{\rm v}_{\rm LL}\),
+turns each square into a square of a vector field alone,
+\(4(\Delta^{\rm vac}_{\rm LL})^2(g^{\rm F}_{\rm LL}V^{\rm F}_{{\rm LL},p})^2\)
+and
+\((\Delta^{\rm vac}_{\rm LL})^2(g^{\rm v}_{\rm LL}V^\iota_{{\rm LL},p})^2\),
+and leaves the field strengths unchanged, because the second derivatives
+of each Goldstone field are symmetric,
+\(\partial_p\partial_{p'}\vartheta^{\rm G}_{{\rm LL},0}=\partial_{p'}\partial_p\vartheta^{\rm G}_{{\rm LL},0}\)
+and the same for \(\vartheta^{\rm G}_{{\rm LL},1}\),
+\(\vartheta^{\rm G}_{{\rm LL},2}\). This change of variables
+diagonalizes the quadratic Lagrangian between the scalar and the vector
+fields: the Goldstone fields disappear from it, as Theorem 13.1 states
+exactly. In the unitary gauge,
+
+\[\begin{aligned}\mathcal L^{(2)}_{\rm LL}={}&-\Omega^{\rm min}_{\rm LL}+Z^{\rm t}_{\rm LL}\big((\partial_0h^{\rm a}_{\rm LL})^2+(\partial_0c^{\rm n}_{{\rm LL},1})^2+(\partial_0c^{\rm n}_{{\rm LL},2})^2\big)\\&-Z^{\rm s}_{\rm LL}\sum_j\big((\partial_jh^{\rm a}_{\rm LL})^2+(\partial_jc^{\rm n}_{{\rm LL},1})^2+(\partial_jc^{\rm n}_{{\rm LL},2})^2\big)\\&-\Omega^{\rm s(2)}_{\rm LL}\big((h^{\rm a}_{\rm LL})^2+(c^{\rm n}_{{\rm LL},1})^2+(c^{\rm n}_{{\rm LL},2})^2\big)\\&+\frac12\sum_j\big(\partial_0V^{\rm F}_{{\rm LL},j}-\partial_jV^{\rm F}_{{\rm LL},0}\big)^2-\frac14\sum_{j,j'}\big(\partial_jV^{\rm F}_{{\rm LL},j'}-\partial_{j'}V^{\rm F}_{{\rm LL},j}\big)^2\\&+\big(\text{the same two terms for each of }V^1_{{\rm LL},p},\ V^2_{{\rm LL},p},\ V^3_{{\rm LL},p}\big)\\&+\frac12\big(V^{\rm F}_{{\rm LL},0},V^1_{{\rm LL},0},V^2_{{\rm LL},0},V^3_{{\rm LL},0}\big)\,\mathsf M^{\rm t}_{\rm LL}\,\big(V^{\rm F}_{{\rm LL},0},V^1_{{\rm LL},0},V^2_{{\rm LL},0},V^3_{{\rm LL},0}\big)^T\\&-\frac12\sum_j\big(V^{\rm F}_{{\rm LL},j},V^1_{{\rm LL},j},V^2_{{\rm LL},j},V^3_{{\rm LL},j}\big)\,\mathsf M^{\rm s}_{\rm LL}\,\big(V^{\rm F}_{{\rm LL},j},V^1_{{\rm LL},j},V^2_{{\rm LL},j},V^3_{{\rm LL},j}\big)^T,\end{aligned}\tag{13.6}\]
+
+where the field-strength terms of (13.1) are written out with the
+metric: for each field, the field-strength term is one half of the sum
+of the squares of its components \((0,j)\) minus one quarter of the sum
+of the squares of its components \((j,j')\), as in the second line from
+below for \(V^{\rm F}_{{\rm LL},p}\). The \textbf{mass matrices} of the
+time and of the space components are
+
+\[\mathsf M^{\rm t}_{\rm LL}=2Z^{\rm t}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})^2\begin{pmatrix}4(g^{\rm F}_{\rm LL})^2&0&0&0\\0&(g^{\rm v}_{\rm LL})^2&0&0\\0&0&(g^{\rm v}_{\rm LL})^2&0\\0&0&0&0\end{pmatrix},\qquad\mathsf M^{\rm s}_{\rm LL}=\frac{Z^{\rm s}_{\rm LL}}{Z^{\rm t}_{\rm LL}}\,\mathsf M^{\rm t}_{\rm LL}.\tag{13.7}\]
+
+\textbf{The diagonalization.} The mass matrices are already diagonal in
+the fields \(V^{\rm F}_{{\rm LL},p}\), \(V^1_{{\rm LL},p}\),
+\(V^2_{{\rm LL},p}\), \(V^3_{{\rm LL},p}\): their eigenvectors are these
+four fields, with the eigenvalues
+\(8Z^{\rm t}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\),
+\(2Z^{\rm t}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+twice, and 0 for \(\mathsf M^{\rm t}_{\rm LL}\), and the same with
+\(Z^{\rm s}_{\rm LL}\) for \(\mathsf M^{\rm s}_{\rm LL}\). Nothing has
+to be rotated, because the vacuum is real and lies on the third axis:
+the vector \(\vec w^{\rm n}_{\rm LL}\) of the first row of (12.3) is
+zero, and the isospin block \(\mathsf N^{\rm v}_{\rm LL}\) is diagonal.
+The two equal eigenvalues allow any rotation in the plane of
+\(V^1_{{\rm LL},p}\), \(V^2_{{\rm LL},p}\); the fields of definite
+electric charge are
+
+\[W^\pm_{{\rm LL},p}=\frac{V^1_{{\rm LL},p}\mp i\,V^2_{{\rm LL},p}}{\sqrt2},\qquad(V^1_{{\rm LL},p})^2+(V^2_{{\rm LL},p})^2=2\,W^+_{{\rm LL},p}W^-_{{\rm LL},p}\]
+
+(\(W^-_{{\rm LL},p}\) is the complex conjugate of \(W^+_{{\rm LL},p}\)):
+under the rotation \(\exp(i\theta^3_{\rm LL}Q_{\rm LL})\), which by
+(2.16) rotates the potentials with the first matrix of (11.8),
+\(V^1_{{\rm LL},p}-iV^2_{{\rm LL},p}\) is multiplied by
+\(\exp(i\theta^3_{\rm LL})\) (as
+\(\vartheta^{\rm G}_{{\rm LL},1}-i\vartheta^{\rm G}_{{\rm LL},2}\) in
+(11.17)), so \(W^\pm_{{\rm LL},p}\) carry the electric charges \(\pm1\).
+The diagonalization of the mass terms has two parts: between the scalar
+and the vector fields, the change of variables (13.2), which removes the
+Goldstone fields; among the vector fields, nothing, in the vacuum of
+this theory (see Section 13.5 for a field where a rotation is needed).
+
+\textbf{The masses.} The diagonal entries of
+\(\mathsf M^{\rm s}_{\rm LL}\) define the masses of the vector fields,
+
+\[\begin{aligned}(M^{\rm F}_{\rm LL})^2&=8Z^{\rm s}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\quad\text{for }V^{\rm F}_{{\rm LL},p},\\(M^{\rm W}_{\rm LL})^2&=2Z^{\rm s}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\quad\text{for }W^\pm_{{\rm LL},p},\qquad\text{and 0 for the photon }V^3_{{\rm LL},p};\end{aligned}\tag{13.8}\]
+
+the entries of \(\mathsf M^{\rm t}_{\rm LL}\) are
+\(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL}\) times these.
+
+\textbf{The dispersion relations.} For the field
+\(V^{\rm F}_{{\rm LL},p}\), (13.6) is
+\(\tfrac12\sum_j(\partial_0V^{\rm F}_{{\rm LL},j}-\partial_jV^{\rm F}_{{\rm LL},0})^2-\tfrac14\sum_{j,j'}(\partial_jV^{\rm F}_{{\rm LL},j'}-\partial_{j'}V^{\rm F}_{{\rm LL},j})^2+\tfrac12(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})(M^{\rm F}_{\rm LL})^2(V^{\rm F}_{{\rm LL},0})^2-\tfrac12(M^{\rm F}_{\rm LL})^2\sum_j(V^{\rm F}_{{\rm LL},j})^2\).
+For a plane wave
+\(\exp\big(i(k^{\rm B}_{\rm LL}x^3_{\rm LL}-\omega^{\rm B}_{\rm LL}x^0_{\rm LL})\big)\)
+the two transverse components \(V^{\rm F}_{{\rm LL},1}\),
+\(V^{\rm F}_{{\rm LL},2}\) obey
+\((\omega^{\rm B}_{\rm LL})^2=(k^{\rm B}_{\rm LL})^2+(M^{\rm F}_{\rm LL})^2\).
+The time component and the longitudinal component
+\(V^{\rm F}_{{\rm LL},3}\) obey the two equations
+\(\big((k^{\rm B}_{\rm LL})^2+(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})(M^{\rm F}_{\rm LL})^2\big)V^{\rm F}_{{\rm LL},0}+k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm LL}V^{\rm F}_{{\rm LL},3}=0\)
+(the variation of \(V^{\rm F}_{{\rm LL},0}\), which has no time
+derivative: a constraint) and
+\(k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm LL}V^{\rm F}_{{\rm LL},0}+\big((\omega^{\rm B}_{\rm LL})^2-(M^{\rm F}_{\rm LL})^2\big)V^{\rm F}_{{\rm LL},3}=0\)
+(the variation of \(V^{\rm F}_{{\rm LL},3}\)). Their determinant,
+\(\big((k^{\rm B}_{\rm LL})^2+(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})(M^{\rm F}_{\rm LL})^2\big)\big((\omega^{\rm B}_{\rm LL})^2-(M^{\rm F}_{\rm LL})^2\big)-(k^{\rm B}_{\rm LL}\omega^{\rm B}_{\rm LL})^2\),
+equals
+\((Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})(M^{\rm F}_{\rm LL})^2\big((\omega^{\rm B}_{\rm LL})^2-(M^{\rm F}_{\rm LL})^2\big)-(M^{\rm F}_{\rm LL})^2(k^{\rm B}_{\rm LL})^2\)
+and vanishes for
+
+\[\begin{aligned}(\omega^{\rm B}_{\rm LL})^2&=(k^{\rm B}_{\rm LL})^2+(M^{\rm F}_{\rm LL})^2\qquad\text{(the two transverse modes)},\\(\omega^{\rm B}_{\rm LL})^2&=(M^{\rm F}_{\rm LL})^2+\frac{Z^{\rm s}_{\rm LL}}{Z^{\rm t}_{\rm LL}}(k^{\rm B}_{\rm LL})^2\qquad\text{(the longitudinal mode)},\end{aligned}\tag{13.9}\]
+
+and the same with \(M^{\rm W}_{\rm LL}\) for \(V^1_{{\rm LL},p}\) and
+\(V^2_{{\rm LL},p}\). The longitudinal mode, the absorbed Goldstone
+field, moves with the velocity
+\((Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})^{1/2}\) of the Goldstone
+fields of Section 12.5; the transverse modes move with the speed of
+light. At rest all three polarizations have the frequency
+\(M^{\rm F}_{\rm LL}\) (or \(M^{\rm W}_{\rm LL}\)): these are the
+\textbf{rest masses} of the vector bosons. With a Lorentz-invariant
+regularization \(Z^{\rm s}_{\rm LL}=Z^{\rm t}_{\rm LL}\) (Section 12.5),
+the mass terms become one half of the squared mass times
+\(\sum_{p,p'}\eta^{\rm LL}_{pp'}V^{\rm F}_{{\rm LL},p}V^{\rm F}_{{\rm LL},p'}\),
+the Lagrangian of Proca, and all modes move relativistically. At
+\(G_{\rm LL}=22.5\) with \(g^{\rm F}_{\rm LL}=g^{\rm v}_{\rm LL}=1\):
+\(M^{\rm W}_{\rm LL}=0.0504432\) and \(M^{\rm F}_{\rm LL}=0.1008864\)
+(the time components \(0.0469661\) and \(0.0939321\)), against
+\(2\Delta^{\rm vac}_{\rm LL}=0.4189866\) for the three massive scalar
+fields and the threshold \(2M^{\rm q}_{\rm LL}=0.5792666\): all massive
+bosons lie below the pair-breaking continuum. The vector masses grow
+linearly with the gauge couplings.
+
+\textbf{Static fields.} For a static external charge, the time component
+of a massive vector field obeys
+\(\big(-\sum_j\partial_j^2+(Z^{\rm t}_{\rm LL}/Z^{\rm s}_{\rm LL})(M^{\rm F}_{\rm LL})^2\big)V^{\rm F}_{{\rm LL},0}=\)
+(the source), and the same with \(M^{\rm W}_{\rm LL}\): its field falls
+off exponentially, over the distance
+\((Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})^{1/2}/M^{\rm F}_{\rm LL}\)
+(screening). The photon obeys \(-\sum_j\partial_j^2V^3_{{\rm LL},0}=\)
+(the source), and its field falls off like the inverse of the distance:
+the law of Coulomb. A static magnetic field of a massive vector field is
+screened over the distance \(1/M^{\rm F}_{\rm LL}\) or
+\(1/M^{\rm W}_{\rm LL}\) (the Meissner effect); that of the photon is
+not.
+
+\hypertarget{the-surviving-symmetry-group-u1_em-and-the-massless-photon}{%
+\subsection{13.5 The surviving symmetry group, U(1)\_em and the massless
+photon}\label{the-surviving-symmetry-group-u1_em-and-the-massless-photon}}
+
+\textbf{Theorem 13.2 (the surviving group and the photon).} (i) The
+gauge transformations (9.4) that leave the vacuum
+\((0,0,\Delta^{\rm vac}_{\rm LL})\) unchanged form the group
+\(H^{\rm vac}_{\rm LL}=O(2)\) of (11.8). Its connected part is
+\(U(1)^{\rm Q}_{\rm LL}=\{\exp(i\theta^3_{\rm LL}Q_{\rm LL})\}\),
+generated by the electric charge \(Q_{\rm LL}=T^3_{\rm LL}\); its other
+component is the reflection \(\theta^{\rm F}_{\rm LL}=\pi/2\),
+\(\mathsf U_{\rm LL}=i\tau^{\rm LL}_1\) times the rotations, which acts
+on the fields as charge conjugation. (ii) For every field
+\(\vec d_{\rm LL}\), every direction \(p\) and all values of the
+potentials,
+
+\[\begin{aligned}&\big(A^{\rm F}_{{\rm LL},p},A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p}\big)\,\mathsf N^{\rm g}_{\rm LL}(\vec d_{\rm LL})\,\big(A^{\rm F}_{{\rm LL},p},A^1_{{\rm LL},p},A^2_{{\rm LL},p},A^3_{{\rm LL},p}\big)^T=\big\lvert\vec d^{\rm tr}_{\rm LL}\big\rvert^2\\&\qquad\text{with }\theta^{\rm F}_{\rm LL}=-g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p},\ \ \theta^\iota_{\rm LL}=-g^{\rm v}_{\rm LL}A^\iota_{{\rm LL},p},\end{aligned}\tag{13.10}\]
+
+the squared length of the first-order change (11.6) of
+\(\vec d_{\rm LL}\) under the gauge transformation with these angles. So
+the null vectors of the mass matrices are exactly the potentials of the
+generators that leave the field unchanged, the Lie algebra of its
+stabilizer. (iii) In the vacuum, the mass matrices (13.7) have exactly
+one null vector, the potential of \(T^3_{\rm LL}\): one gauge field
+stays massless, \(V^3_{{\rm LL},p}\), the gauge field of
+\(U(1)^{\rm Q}_{\rm LL}\), the \textbf{photon}; the three others are
+massive (13.8). The photon couples to every field through the term
+\(-ig^{\rm v}_{\rm LL}V^3_{{\rm LL},p}Q_{\rm LL}\) of its covariant
+derivative: to the charged non-unitary fields and to
+\(W^\pm_{{\rm LL},p}\) with the charges \(\pm1\), to the spinor charges
+with \(\pm\tfrac12\), not to \(h^{\rm a}_{\rm LL}\) and
+\(V^{\rm F}_{{\rm LL},p}\); the unit of electric charge is
+\(g^{\rm v}_{\rm LL}\). (iv) Beyond the expansion: for constant
+potentials the energy of the vacuum does not depend on the potential of
+the electric charge at all (Theorem 12.1).
+
+\emph{Proof.} (i) is Section 11.2 with (11.8); the reflection reverses
+\(\theta^3_{\rm LL}\)-rotations, \(Q_{\rm LL}\mapsto-Q_{\rm LL}\): by
+(11.17) it maps \(c^{\rm n}_{{\rm LL},1}-i\,c^{\rm n}_{{\rm LL},2}\) to
+\(-(c^{\rm n}_{{\rm LL},1}+i\,c^{\rm n}_{{\rm LL},2})\), a field of
+charge \(+1\) to one of charge \(-1\), and by (2.16) with the constant
+\(\mathsf U_{\rm LL}=i\tau^{\rm LL}_1\) it maps
+\((V^1_{{\rm LL},p},V^2_{{\rm LL},p},V^3_{{\rm LL},p})\) to
+\((V^1_{{\rm LL},p},-V^2_{{\rm LL},p},-V^3_{{\rm LL},p})\) (the rotation
+by half a turn about the first axis), so
+\(W^+_{{\rm LL},p}\leftrightarrow W^-_{{\rm LL},p}\) and the photon
+changes sign, as under charge conjugation. (ii) By the derivation of
+(12.3) (Section 12.2, terms (1), (2), (5)), the quadratic form of
+\(\mathsf N^{\rm g}_{\rm LL}\) is the squared length of the sum of the
+two potential terms of the covariant derivative,
+\(\lvert-2ig^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\vec d_{\rm LL}+g^{\rm v}_{\rm LL}\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL}\rvert^2\),
+and by (11.6),
+\(\vec d^{\rm tr}_{\rm LL}=2i\theta^{\rm F}_{\rm LL}\vec d_{\rm LL}-(\theta^1_{\rm LL},\theta^2_{\rm LL},\theta^3_{\rm LL})\times\vec d_{\rm LL}\)
+is the same vector for the stated angles. A squared length vanishes only
+if the vector does. (iii) In the vacuum, (11.7) gives
+\(\vec d^{\rm tr}_{\rm LL}=(-\Delta^{\rm vac}_{\rm LL}\theta^2_{\rm LL},\Delta^{\rm vac}_{\rm LL}\theta^1_{\rm LL},2i\Delta^{\rm vac}_{\rm LL}\theta^{\rm F}_{\rm LL})\),
+which vanishes exactly when
+\(\theta^{\rm F}_{\rm LL}=\theta^1_{\rm LL}=\theta^2_{\rm LL}=0\), with
+\(\theta^3_{\rm LL}\) free: the null space of
+\(\mathsf N^{\rm g}_{\rm LL}\), hence of \(\mathsf M^{\rm t}_{\rm LL}\)
+and \(\mathsf M^{\rm s}_{\rm LL}\), is the line of \(A^3_{{\rm LL},p}\).
+The couplings follow from the covariant derivatives (2.15) and (9.5) and
+from the term (b) of Section 13.3; the charges of the fields are those
+of (11.17), of \(W^\pm_{{\rm LL},p}\) above, and \(\pm\tfrac12\) for the
+isospin-up and isospin-down components of \(\Psi_{\rm LL}\). (iv) is
+Theorem 12.1. \(\square\)
+
+\textbf{This is \(U(1)_{\rm em}\).} The group that survives is generated
+by \(Q_{\rm LL}=T^3_{\rm LL}\), the electric charge of the spinor
+charges (Section 8.4: the isospin-up and isospin-down charges have
+\(Q_{\rm LL}=\pm\tfrac12\), the pairs \(\mathsf K^{(+1)}_{\rm LL}\),
+\(\mathsf K^{(0)}_{\rm LL}\), \(\mathsf K^{(-1)}_{\rm LL}\) have \(+1\),
+\(0\), \(-1\)). Its gauge field is the only massless vector field, it
+gives the static law of Coulomb between charges, it couples to all
+fields with one constant times their charge, and its symmetry is exact
+in the vacuum (the vacuum is neutral). These are the defining properties
+of electrodynamics: \(U(1)^{\rm Q}_{\rm LL}\) is \(U(1)_{\rm em}\), and
+\(V^3_{{\rm LL},p}\) is the photon. In the unitary gauge the Lagrangian
+keeps the local invariance under \(U(1)^{\rm Q}_{\rm LL}\): under
+\(\exp(i\theta^3_{\rm LL}(x_{\rm LL})Q_{\rm LL})\) the column
+\(\vec d^{\rm u}_{\rm LL}\) keeps its form (it rotates
+\((c^{\rm n}_{{\rm LL},1},c^{\rm n}_{{\rm LL},2})\)),
+\(V^3_{{\rm LL},p}\) goes into
+\(V^3_{{\rm LL},p}+\partial_p\theta^3_{\rm LL}/g^{\rm v}_{\rm LL}\) and
+\(W^\pm_{{\rm LL},p}\) are multiplied by
+\(\exp(\pm i\theta^3_{\rm LL})\).
+
+\textbf{Comparison with the electroweak theory: no mixing here.} In the
+electroweak theory the vacuum component of the Higgs doublet carries
+both the weak isospin \(-\tfrac12\) and the hypercharge \(+\tfrac12\);
+neither generator alone leaves the vacuum unchanged, only their sum, the
+electric charge. The mass matrix of the two neutral gauge fields (the
+isospin field of the third axis and the hypercharge field) is therefore
+not diagonal, and its null vector, the photon, is a mixture of the two,
+rotated by the Weinberg angle, whose tangent is the ratio of the
+hypercharge coupling to the isospin coupling. Here the condensed pairs
+are those of \(\mathsf K^{(0)}_{\rm LL}\), with \(T^3_{\rm LL}=0\) and
+the fermion number 2: the fermion number alone is broken,
+\(T^3_{\rm LL}\) alone is unbroken, and the photon is
+\(V^3_{{\rm LL},p}\) without mixing: the mixing angle is zero. The
+theorem shows what a charged condensate would do. At the non-unitary
+saddle point \((\Delta^{\rm vac}_{\rm LL}/2)(1,i,0)\) of Theorem 11.2,
+made of the pairs \(\mathsf K^{(+1)}_{\rm LL}\) of charge \(+1\), (12.3)
+gives \(\lvert\vec d_{\rm LL}\rvert^2=(\Delta^{\rm vac}_{\rm LL})^2/2\),
+\(\vec w^{\rm n}_{\rm LL}=((\Delta^{\rm vac}_{\rm LL})^2/4)(0,0,1)\) and
+
+\[\mathsf N^{\rm g}_{\rm LL}\big((\Delta^{\rm vac}_{\rm LL}/2)(1,i,0)\big)=(\Delta^{\rm vac}_{\rm LL})^2\begin{pmatrix}2(g^{\rm F}_{\rm LL})^2&0&0&g^{\rm F}_{\rm LL}g^{\rm v}_{\rm LL}\\0&(g^{\rm v}_{\rm LL})^2/4&0&0\\0&0&(g^{\rm v}_{\rm LL})^2/4&0\\g^{\rm F}_{\rm LL}g^{\rm v}_{\rm LL}&0&0&(g^{\rm v}_{\rm LL})^2/2\end{pmatrix}.\tag{13.11}\]
+
+Its block of \(A^{\rm F}_{{\rm LL},p}\) and \(A^3_{{\rm LL},p}\) has the
+determinant zero and the trace
+\((4(g^{\rm F}_{\rm LL})^2+(g^{\rm v}_{\rm LL})^2)/2\) (times
+\((\Delta^{\rm vac}_{\rm LL})^4\) and
+\((\Delta^{\rm vac}_{\rm LL})^2\)): its eigenvectors are the massless
+mixture
+\((g^{\rm v}_{\rm LL}A^{\rm F}_{{\rm LL},p}-2g^{\rm F}_{\rm LL}A^3_{{\rm LL},p})/((g^{\rm v}_{\rm LL})^2+4(g^{\rm F}_{\rm LL})^2)^{1/2}\),
+the potential of the unbroken generator \(T^3_{\rm LL}-F_{\rm LL}/2\)
+(Section 11.2), and the orthogonal massive mixture. The massless field
+makes the angle \(\theta^{\rm mix}_{\rm LL}\) with the axis of
+\(A^3_{{\rm LL},p}\),
+\(\tan\theta^{\rm mix}_{\rm LL}=g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL})\):
+the analogue of the Weinberg rotation. The saddle point is not a minimum
+(Theorem 11.2), so this mixing is not realized; in the vacuum
+\(\theta^{\rm mix}_{\rm LL}=0\) for all couplings.
+
+\textbf{Counting the degrees of freedom.} Before the breaking: six real
+scalar fields and four massless vector fields with two polarizations
+each, \(6+8=14\). After it: three massive scalar fields
+(\(h^{\rm a}_{\rm LL}\), \(c^{\rm n}_{{\rm LL},1}\),
+\(c^{\rm n}_{{\rm LL},2}\)), three massive vector fields with three
+polarizations each, and the photon with two, \(3+9+2=14\). The three
+Goldstone fields have become the three longitudinal polarizations.
+
+\hypertarget{the-microscopic-verification}{%
+\subsection{13.6 The microscopic
+verification}\label{the-microscopic-verification}}
+
+The mass terms (13.7) were derived from the kinetic Lagrangian, whose
+coefficients Theorem 12.1 obtained from the energy of the vacuum in
+constant potentials. Check SB-17 tests the complete \(4\times4\) mass
+matrices, including all their off-diagonal entries, directly against the
+Bogoliubov matrices of the spinor field: it computes the matrix of the
+second derivatives of \(\Omega_{\rm LL}\) with respect to four constant
+potentials (in the variables
+\(g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\) and
+\(g^{\rm v}_{\rm LL}A^\iota_{{\rm LL},p}\); second differences at 0.005
+and 0.01, extrapolated, the mixed derivatives from four points), for the
+time components and for the space components along \(x^3_{\rm LL}\), at
+\(G_{\rm LL}=22.5\). By (12.5) the predictions are
+\(-2Z^{\rm t}_{\rm LL}\mathsf N^{\rm g}_{\rm LL}\) and
+\(2Z^{\rm s}_{\rm LL}\mathsf N^{\rm g}_{\rm LL}\) with unit couplings,
+that is \(-\mathsf M^{\rm t}_{\rm LL}\) and
+\(\mathsf M^{\rm s}_{\rm LL}\). Found (time): the diagonal
+\(-8.82324005\times10^{-3}\), \(-2.20581003\times10^{-3}\) (twice) and
+\(4.0\times10^{-13}\), against \(-8.82324014\times10^{-3}\),
+\(-2.20581004\times10^{-3}\) and 0; (space) \(1.01780643\times10^{-2}\),
+\(2.54451610\times10^{-3}\) (twice) and \(3.38706061\times10^{-4}\),
+against \(1.01780644\times10^{-2}\), \(2.54451610\times10^{-3}\) and,
+for the photon, the surface term of the cutoff on the canonical
+momentum, \(3.38706061\times10^{-4}\) (zero with the gauge-covariant
+cutoff, Section 12.3); all off-diagonal entries are below
+\(1.2\times10^{-13}\); the largest relative deviation is
+\(1.1\times10^{-8}\). With the couplings \(g^{\rm F}_{\rm LL}=0.7\),
+\(g^{\rm v}_{\rm LL}=1.3\) the time matrix has the eigenvalues
+\(-8Z^{\rm t}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\),
+\(-2Z^{\rm t}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+(twice) and 0 (to \(5\times10^{-9}\) relative), and its null vector is
+\((-2.6\times10^{-11},-5.2\times10^{-12},3.0\times10^{-17},1)\): the
+photon \(A^3_{{\rm LL},p}\). At the non-unitary saddle point the null
+vector is
+\((0.44721359,1.6\times10^{-11},1.6\times10^{-27},-0.89442720)\) in the
+variables, against \((1,0,0,-2)/5^{1/2}\), the unbroken generator
+\(T^3_{\rm LL}-F_{\rm LL}/2\); the entries of the fermion-number and the
+third-axis potentials agree with (13.11) (\(-4.41162003\times10^{-3}\),
+\(-2.20580991\times10^{-3}\), \(-1.10290502\times10^{-3}\) against
+\(-4.41162007\times10^{-3}\), \(-2.20581004\times10^{-3}\),
+\(-1.10290502\times10^{-3}\)), while the entries of the first two
+isospin axes, \(-6.02501375\times10^{-4}\), differ from
+\(-2Z^{\rm t}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})^2/4=-5.51452\times10^{-4}\):
+at the saddle point the two sectors of Section 10.2 have the different
+gaps \(\Delta^{\rm vac}_{\rm LL}\) and 0, and (12.1) with one pair of
+coefficients, exact in the vacuum, is only approximate there; the null
+vector is exact by the symmetry. From the null vectors with 25 ratios of
+the couplings between 0.1 and 10, the mixing angle is
+\(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\) at the saddle
+point (to \(1.5\times10^{-8}\)) and 0 in the vacuum (Figure 26(d)).
+Finally the dispersion (13.9) of the longitudinal mode solves the
+equations of the time and the longitudinal component (to
+\(9\times10^{-13}\)).
+
+\hypertarget{the-figure-2}{%
+\subsection{13.7 The figure}\label{the-figure-2}}
+
+Figure 26 summarizes the Higgs mechanism of the SFBS. (a) The mass terms
+of the four gauge fields from the Bogoliubov matrices agree with the
+kinetic Lagrangian, and the photon has none. (b) The spectrum against
+the coupling: the massive scalar fields at
+\(2\Delta^{\rm vac}_{\rm LL}\), the vector fields at
+\(M^{\rm F}_{\rm LL}\) and \(M^{\rm W}_{\rm LL}\), all below the
+pair-breaking threshold, and the massless photon. (c) The dispersion
+relations: the photon on the light cone, the transverse modes of the
+massive vector fields as relativistic massive particles, their
+longitudinal modes (the absorbed Goldstone fields) with the velocity of
+the Goldstone fields, and the scalar fields. (d) The mixing angle: zero
+in the vacuum, \(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\) at
+the saddle point.
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_t2_sfbs_higgs.png}
+
+\textbf{Figure 26.} The Higgs mechanism of the SFBS at
+\(\mu_{\rm LL}=0\) (\(m_{\rm LL}=0.2\), \(\Lambda_{\rm LL}=1\),
+\(G_{\rm LL}=22.5\) unless stated). (a) The diagonal entries of the mass
+matrices of the four gauge fields in the vacuum, in units of
+\(10^{-3}\), for unit gauge couplings: time components (blue; minus the
+second derivatives of \(\Omega_{\rm LL}\),
+\(\mathsf M^{\rm t}_{\rm LL}\)) and space components (orange;
+\(\mathsf M^{\rm s}_{\rm LL}\)); bars from (13.7), circles from the
+Bogoliubov matrices; for the space component of \(A^3_{{\rm LL},p}\) the
+hatched bar is the surface term of the cutoff on the canonical momentum
+(zero with the gauge-covariant cutoff). (b) Against the coupling, with
+\(g^{\rm F}_{\rm LL}=g^{\rm v}_{\rm LL}=1\):
+\(2\Delta^{\rm vac}_{\rm LL}\) (orange), \(M^{\rm F}_{\rm LL}\) (green),
+\(M^{\rm W}_{\rm LL}\) (blue), the masses of their time components
+(dashed), the photon (black, zero), the threshold
+\(2M^{\rm q}_{\rm LL}\) (grey, dotted); dashed vertical line
+\(G_{\rm LL}=22.5\). (c) The dispersion relations (13.9) and (12.9) at
+\(G_{\rm LL}=22.5\) with unit gauge couplings: photon (black), charged
+vector fields (blue) and fermion-number vector field (green), transverse
+(solid) and longitudinal (dashed), the three massive scalar fields
+(orange), and the threshold
+\(2((M^{\rm q}_{\rm LL})^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}\) (grey,
+dotted). (d) The angle between the massless gauge field and the axis of
+\(A^3_{{\rm LL},p}\) against \(g^{\rm F}_{\rm LL}/g^{\rm v}_{\rm LL}\):
+at the non-unitary saddle point from the null vectors of the mass
+matrices of the Bogoliubov matrices (circles) and
+\(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\) (line); in the
+vacuum (squares), zero. Data:
+\texttt{test2/data/t2\_sfbs\_mass\_matrices.csv},
+\texttt{t2\_sfbs\_vector\_masses.csv},
+\texttt{t2\_sfbs\_higgs\_dispersion.csv}, \texttt{t2\_sfbs\_mixing.csv}.
+
+\hypertarget{discussion-11}{%
+\subsection{13.8 Discussion}\label{discussion-11}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{The Goldstone bosons acquire mass by being absorbed.} In the
+  theory without gauge fields the three Goldstone fields are massless
+  (Section 12.4). With the gauge fields they are not independent fields
+  at all: the gauge transformation (13.2) removes them exactly, and each
+  reappears as the longitudinal polarization of the vector field of its
+  broken generator, which has the mass \(M^{\rm F}_{\rm LL}\) or
+  \(M^{\rm W}_{\rm LL}\). This is the Higgs mechanism, here in a theory
+  in which the scalar field is not elementary but a pair of spinor
+  charges.
+\item
+  \textbf{The masses come from the superfluid stiffness.}
+  \((M^{\rm W}_{\rm LL})^2\) and \((M^{\rm F}_{\rm LL})^2\) are the
+  space coefficient \(Z^{\rm s}_{\rm LL}\) of the condensed vacuum times
+  the squared charges of the pairs under the broken generators times
+  \(2(\Delta^{\rm vac}_{\rm LL})^2\): the same stiffness that makes a
+  superconductor expel magnetic fields (Meissner effect) makes the
+  vector bosons massive.
+\item
+  \textbf{The surviving group} is \(O(2)\), whose connected part
+  \(U(1)^{\rm Q}_{\rm LL}\) is the group of the electric charge,
+  \(U(1)_{\rm em}\); its gauge field is the only massless vector field,
+  the photon, with the unit of charge \(g^{\rm v}_{\rm LL}\). The
+  general reason (13.10): a gauge field gets a mass exactly when its
+  generator moves the vacuum.
+\item
+  \textbf{Differences from the electroweak theory.} The photon is not a
+  mixture (the condensate is neutral), the broken symmetry includes the
+  fermion number (its vector boson is massive), the three massive scalar
+  fields are degenerate (the amplitude field and two charged fields with
+  the same mass \(2\Delta^{\rm vac}_{\rm LL}\), Section 12.4), and with
+  the momentum cutoff the longitudinal modes move with the velocity
+  \((Z^{\rm s}_{\rm LL}/Z^{\rm t}_{\rm LL})^{1/2}\) instead of the speed
+  of light (Section 12.5).
+\item
+  \textbf{Limits.} The gauge fields are treated classically, at the
+  second order of the expansion about the vacuum, with the Gaussian
+  coefficients of Section 12; their own loops, and the loops of the
+  SFBS, are not included. The gauge couplings \(g^{\rm F}_{\rm LL}\),
+  \(g^{\rm v}_{\rm LL}\) are free parameters of the theory; the numbers
+  are given for unit couplings, and the masses scale with them.
+\end{itemize}
+
 \hypertarget{appendix-a.-provenance-programs-commands-reports-data-figures}{%
 \section{Appendix A. Provenance: programs, commands, reports, data,
 figures}\label{appendix-a.-provenance-programs-commands-reports-data-figures}}
@@ -8863,9 +9544,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e
   rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg
   rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg; done
-# 8. items [7] to [11]: the checks SB-1 to SB-16 of the superfluid boson singlet state, its explicit matrices and the data of Figures 21 to 25
+# 8. items [7] to [11]: the checks SB-1 to SB-17 of the superfluid boson singlet state, its explicit matrices and the data of Figures 21 to 26
 cd test2/rust && cargo build --release && ./target/release/t2_sfbs && cd ../..
-# 9. Figures 21 to 25 (test2/figures/fig_t2_sfbs_*.pdf and .png)
+# 9. Figures 21 to 26 (test2/figures/fig_t2_sfbs_*.pdf and .png)
 python3 test2/python/make_t2_sfbs_figures.py
 # 10. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
@@ -8875,9 +9556,9 @@ The program \texttt{t2\_fields} runs in about 20 seconds,
 \texttt{t2\_analytic} in about 5 seconds, the seven examples of item
 {[}3{]} together in about 70 seconds (the quench 50 seconds), the Rust
 solver of item {[}5{]} in about 60 seconds, \texttt{t2\_sfbs} in about
-50 seconds (most of it the Lanczos computations of check SB-5 in the
+75 seconds (most of it the Lanczos computations of check SB-5 in the
 Fock space of 65536 states, the \(16\times16\) Bogoliubov matrices of
-checks SB-7, SB-8, SB-11, SB-14, SB-15 and SB-16, and the time-dependent
+checks SB-7, SB-8, SB-11 and SB-14 to SB-17, and the time-dependent
 mean-field runs of check SB-16), all on one processor core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy,
@@ -8925,7 +9606,7 @@ Appendix A.2f):
   still passes).
 \end{itemize}
 
-Together they have 12047 lines of commented Rust in 17 files.
+Together they have 12615 lines of commented Rust in 17 files.
 Arithmetic: double precision; each check names its tolerance; random
 numbers from a fixed seed, so that every run gives the same output.
 
@@ -9106,7 +9787,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 2.03 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.88 s
 output files: t2_py_cyclotron_summary.txt, t2_py_cyclotron_series.csv, t2_py_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -9148,7 +9829,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 1.35 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.88 s
 output files: t2_py_kink_spectrum_summary.txt, t2_py_kink_spectrum_series.csv, t2_py_kink_spectrum_fields.csv, t2_py_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -9168,7 +9849,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.75 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.91 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_py_ground_state_summary.txt, t2_py_ground_state_series.csv, t2_py_ground_state_fields.csv, t2_py_ground_state_spectrum.csv, t2_py_ground_state_iterations.csv
 checks:
@@ -9192,7 +9873,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 8.36 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 8.41 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_py_kink_ground_state_summary.txt, t2_py_kink_ground_state_series.csv, t2_py_kink_ground_state_fields.csv, t2_py_kink_ground_state_spectrum.csv, t2_py_kink_ground_state_iterations.csv
 checks:
@@ -9215,11 +9896,11 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107906; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 0.52 s
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107906; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 0.47 s
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 50.45 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 48.06 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_py_quench_summary.txt, t2_py_quench_series.csv, t2_py_quench_fields.csv, t2_py_quench_spectrum.csv, t2_py_quench_iterations.csv
 checks:
@@ -9306,7 +9987,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.06 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.05 s
 output files: t2_rs_packet_free_summary.txt, t2_rs_packet_free_series.csv, t2_rs_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -9329,7 +10010,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.32 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.46 s
 output files: t2_rs_cyclotron_summary.txt, t2_rs_cyclotron_series.csv, t2_rs_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -9372,7 +10053,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 3.32 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 3.24 s
 output files: t2_rs_kink_spectrum_summary.txt, t2_rs_kink_spectrum_series.csv, t2_rs_kink_spectrum_fields.csv, t2_rs_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -9393,7 +10074,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 4.61 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 5.72 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_rs_ground_state_summary.txt, t2_rs_ground_state_series.csv, t2_rs_ground_state_fields.csv, t2_rs_ground_state_spectrum.csv, t2_rs_ground_state_iterations.csv
 checks:
@@ -9418,7 +10099,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 26.77 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 26.19 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_rs_kink_ground_state_summary.txt, t2_rs_kink_ground_state_series.csv, t2_rs_kink_ground_state_fields.csv, t2_rs_kink_ground_state_spectrum.csv, t2_rs_kink_ground_state_iterations.csv
 checks:
@@ -9441,11 +10122,11 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.70 s
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.37 s
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 22.20 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 21.10 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_rs_quench_summary.txt, t2_rs_quench_series.csv, t2_rs_quench_fields.csv, t2_rs_quench_spectrum.csv, t2_rs_quench_iterations.csv
 checks:
@@ -9692,11 +10373,36 @@ frequency of the strongest spectral line between 0.25 and 0.55;
 \texttt{Re\ d}, \texttt{Im\ d} for the real and the imaginary part of
 \(d^3_{\rm LL}\); \texttt{energy} for the largest change of the
 conserved mean-field energy, relative to
-\(8\int\!d^3q_{\rm LL}(2\pi)^{-3}\varepsilon_{\rm LL}\).
+\(8\int\!d^3q_{\rm LL}(2\pi)^{-3}\varepsilon_{\rm LL}\). For item
+{[}11{]} (check SB-17): \texttt{L\_kin} for
+\(\mathcal L^{\rm kin}_{\rm LL}\) and
+\texttt{\textbar{}L\_kin\textbar{}} for its absolute value; \texttt{V}
+for the potentials \(V^{\rm F}_{{\rm LL},p}\), \(V^\iota_{{\rm LL},p}\)
+of the unitary gauge (13.2), \texttt{V\^{}iota} and \texttt{V\^{}3} for
+\(V^\iota_{{\rm LL},p}\) and \(V^3_{{\rm LL},p}\); \texttt{A\^{}iota}
+and \texttt{A\^{}3} for \(A^\iota_{{\rm LL},p}\) and
+\(A^3_{{\rm LL},p}\); \texttt{thG\_iota} for
+\(\vartheta^{\rm G}_{{\rm LL},\iota}\), so that \texttt{d\_p\ thG\_iota}
+is \(\partial_p\vartheta^{\rm G}_{{\rm LL},\iota}\); \texttt{iota} for
+the index \(\iota\); \texttt{AF}, \texttt{Av\^{}1}, \texttt{Av\^{}2},
+\texttt{Av\^{}3} for constant potentials \(A^{\rm F}_{{\rm LL},p}\),
+\(A^1_{{\rm LL},p}\), \(A^2_{{\rm LL},p}\), \(A^3_{{\rm LL},p}\) of one
+direction \(p\) (the time direction, or the space direction of
+\(x^3_{\rm LL}\)), the order of the rows and the columns of the
+\(4\times4\) matrices, and \texttt{(g\_F\ AF,\ g\_v\ Av)} for the
+variables of the second derivatives,
+\(g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\) and
+\(g^{\rm v}_{\rm LL}A^\iota_{{\rm LL},p}\); \texttt{(AF\ Av\^{}3)},
+\texttt{(Av\^{}3\ Av\^{}3)} and \texttt{(Av\^{}1,\ Av\^{}2)} for the
+entries of these matrices in the row and the column of the named
+potentials (the last: the two diagonal entries of \(A^1_{{\rm LL},p}\)
+and \(A^2_{{\rm LL},p}\)); \texttt{M\_W}, \texttt{M\_F} for
+\(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\); \texttt{tol} (in all
+reports of \texttt{t2\_sfbs}) for the tolerance of a comparison.
 
 \begin{verbatim}
 Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)
-16 of 16 checks passed
+17 of 17 checks passed
 
 [PASS] SB-1  spin-zero pairs: the antisymmetric 8 x 8 matrices Kgen with S^T Kgen + Kgen S = 0 for the six Lorentz generators S form a space of complex dimension 6, which is the span of Kch_1, Kch_2, Kch_3 (scalar) and Kch'_1, Kch'_2, Kch'_3 (pseudoscalar), mutually orthogonal (tr(Kgen^dag Kgen') = 8 or 0); their blocks between the two Weyl blocks vanish; the isospin singlets (C gamma_ch) (x) eps2 and C (x) eps2 are symmetric and give no pair (tol 1e-10)  -- dimension of the solution space 6 (eigenvalues of the Gram matrix below 1e-12 of the largest; the next is 3.000), |P_null - P_span| = 1.8e-15, largest mixed-block entry 0, largest residual 0.0e0, Gram deviation 0.0e0, antisymmetric part of the singlets 0
 [PASS] SB-2  quantum numbers of the pairs: the spin Casimir sum_j G(S_j)^2 Kgen vanishes (spin 0) and the isospin Casimir sum_iota G(T_iota)^2 Kgen = 2 Kgen (isospin 1) for all six pair matrices, with G(X) Kgen = X^T Kgen + Kgen X; G(T_3) K(q) = q K(q) for K(+1) = (Kch_1 - i Kch_2)/sqrt2, K(0) = Kch_3, K(-1) = (Kch_1 + i Kch_2)/sqrt2; G(1_8) Kgen = 2 Kgen (fermion number 2); gamma0^T Kch_iota gamma0 = Kch_iota and gamma0^T Kch'_iota gamma0 = -Kch'_iota (parity); sigma_j^T eps2 + eps2 sigma_j = 0 (tol 1e-14)  -- spin Casimir 0.0e0, isospin Casimir - 2: 0.0e0, charges 0.0e0, fermion number 0.0e0, parity 0.0e0, singlet 0
@@ -9714,6 +10420,7 @@ Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson single
 [PASS] SB-14  SFBSv, the expansion about the vacuum Delta_vac e_3 (mu = 0, G = 22.5, m = 0.2, Lambda = 1): for 50 random fields d = exp(2i thG0) Rv(U(thG1, thG2)) ((Delta_vac + h_a) e_3 + i (c_n1 e_1 + c_n2 e_2)), Omega(d) = Omega_s(Delta_vac + h_a + rho_n) + Omega_s(Delta_vac + h_a - rho_n) with rho_n = (c_n1^2 + c_n2^2)^(1/2), whatever the Goldstone fields thG0, thG1, thG2 (tol 1e-15); the explicit 2 x 2 matrix U(thG1, thG2), the explicit rotation Rv(U(thG1, thG2)) and the explicit three components of d equal the matrix exponential, the adjoint map and the product (50 random fields, tol 1e-14); the derivatives of d at the vacuum with respect to thG0, thG1, thG2, h_a, c_n1, c_n2 are (0, 0, 2i Delta_vac), (0, Delta_vac, 0), (-Delta_vac, 0, 0), (0, 0, 1), (i, 0, 0), (0, i, 0) (central differences, tol 1e-8); the rotation of U(1)^Q by the angle al multiplies thG1 - i thG2 and c_n1 - i c_n2 by exp(i al) and leaves thG0, h_a unchanged, and the element thF = pi/2, U = i tau_1 changes the signs of thG2 and c_n1 (30 random fields and angles, tol 1e-14); the second, third and fourth derivatives of the sector potential Omega_s at Delta_vac in closed form equal numerical derivatives (central differences, Richardson-extrapolated for the third and fourth; relative tol 1e-4), and the first vanishes (tol 1e-15); the remainder of the quartic expansion falls like the fifth power of the fields; the second derivatives of Omega at the vacuum computed from the Bogoliubov matrices directly (finite differences, step 2e-3) are 2 Omega_s^(2) along Re d^3 (h_a) and Im d^1 (c_n1) and zero along Re d^1 and Im d^3 (Goldstone directions) (relative tol 1e-3); the closed forms of Xi^(3) and Xi^(4) equal quadrature at M_q^2 and m^2 (relative tol 1e-10), and Omega_s^(2) = -4 Delta_vac^2 Xi^(2)(m^2 + Delta_vac^2) (relative tol 1e-10)  -- parametrization 1.7e-17; explicit matrices and components 4.4e-15; linear order 1.0e-12; charges and discrete element 4.4e-16; Xi^(3), Xi^(4) against quadrature 1.6e-15; Omega_s^(2) from (11.13) 4.4116200723e-3 (deviation 1.6e-15); the Higgs form with the same curvature: lambda_H = 2.51303087e-2, cubic coefficient 4 lambda_H Delta_vac = 2.10585255e-2 against Omega_s^(3)/3 = 1.77782057e-2, quartic coefficient lambda_H against Omega_s^(4)/12 = 6.21428961e-3, depth -lambda_H Delta_vac^4 = -4.84036823e-5 against Omega_min = -5.28844911e-5; Omega_s^(1) = -1.735e-18, Omega_s^(2) = 4.4116200723e-3 (numerical 4.4116262833e-3), Omega_s^(3) = 5.33346170e-2 (numerical 5.33346478e-2), Omega_s^(4) = 7.45714754e-2 (numerical 7.45717795e-2); remainder/s^5 at s = 0.02, 0.01, 0.005: 5.636210e-2, 5.726789e-2, 5.773146e-2; from the Bogoliubov matrices: Re d^3 8.82328986e-3, Im d^1 8.82328986e-3, Re d^1 2.010e-7, Im d^3 2.010e-7 against 2 Omega_s^(2) = 8.82324014e-3
 [PASS] SB-15  the kinetic Lagrangian: the expansion (12.2) of |nabla_B d|^2 into the derivative term, the two currents and the contact matrix N_g (12.3) holds for 50 random fields, derivatives, couplings and potentials (tol 1e-13); the 16 Bogoliubov eigenvalues of the condensed vacuum with a constant fermion-number vector potential are +-(q^2 + |a_F|^2 + M_q^2 +- 2((q.a_F)^2 + Delta^2 |a_F|^2)^(1/2))^(1/2), four times each (q the momentum, a_F the coupling times the vector potential) (30 random cases, tol 1e-12); the energy of the condensed vacuum at G = 22.5 in constant potentials (time and space components of the fermion-number potential and of the isospin potentials of the first and the third axis; second differences at 0.005 and 0.01, Richardson) equals the kinetic Lagrangian (12.1) with Z_t(Delta_vac) and Z_s(Delta_vac) of (12.6): -4 Z_t Delta^2, 4 Z_s Delta^2, -Z_t Delta^2, Z_s Delta^2 and 0 (relative tol 1e-6; the space component of the third-axis potential with the cutoff on the canonical momentum gives the surface term Lambda^3 (1/eps_Lambda - 1/E_Lambda)/(12 pi^2), which the gauge-covariant cutoff removes); Z_t and Z_s from the Bogoliubov matrices equal the closed forms at Delta = 0.1, Delta_vac and 0.3 (relative tol 1e-6)  -- expansion 1.8e-15; eigenvalue formula 3.1e-15; Delta_vac = 0.2094933033, M_q = 0.2896332925, Z_t = 2.5130308687e-2, Z_s = 2.8989112360e-2, Z_s/Z_t = 1.15355178, velocity of the Goldstone fields (Z_s/Z_t)^(1/2) = 1.07403528; responses: F_time -4.41162003e-3 (predicted -4.41162007e-3), F_space 5.08903215e-3 (predicted 5.08903219e-3), T1_time -1.10290502e-3 (predicted -1.10290502e-3), T1_space 1.27225805e-3 (predicted 1.27225805e-3), T3_time 1.90819582e-13 (predicted 0.00000000e0), T3_space_canonical 1.69353030e-4 (predicted 1.69353031e-4); largest relative deviation 1.0e-8; Delta = 0.100000: Z_t 3.10900275e-2 (closed form 3.10900296e-2), Z_s 3.50420626e-2 (closed form 3.50420647e-2); Delta = 0.209493: Z_t 2.51303084e-2 (closed form 2.51303087e-2), Z_s 2.89891121e-2 (closed form 2.89891124e-2); Delta = 0.300000: Z_t 2.03543580e-2 (closed form 2.03543581e-2), Z_s 2.40938422e-2 (closed form 2.40938422e-2); largest relative deviation 6.9e-8
 [PASS] SB-16  the fluctuations of the condensed vacuum (0, 0, Delta_vac) at mu = 0, G = 22.5, zero wave number: the kernels of the six real directions from the Bogoliubov matrices equal -omega^2 Upsilon(omega) (Re d^1, Re d^2, Im d^3: the Goldstone directions) and (4 Delta_vac^2 - omega^2) Upsilon(omega) (Im d^1, Im d^2, Re d^3) at five frequencies below the threshold, and the kernel matrix has no off-diagonal entries and no antisymmetric part (tol 1e-9, relative to Z_t); the closed form of Upsilon equals the quadrature (tol 1e-12); the mass of the kinetic Lagrangian with the potential, (Omega_s^(2)/Z_t)^(1/2), equals 2 Delta_vac, the zero of the kernel (tol 1e-12), below the pair-breaking threshold 2 M_q; the closed form of dUpsilon/d(omega^2) at 0 equals a difference quotient (tol 1e-4); in the time-dependent mean-field equations (uniform, RK4, dt = 0.05, 12000 steps) the gap started at Delta_vac (1 + disp) oscillates with the frequency 2 Delta_vac (relative tol 2e-3 for the displacement disp = 0.02 and 1e-3 for disp = 0.01), the energy being conserved to 1e-6  -- omega = 0.000000: Goldstone -2.15105711e-16 1.04083409e-16 6.93889390e-18 (closed form -0.00000000e0), massive 4.41162007e-3 4.41162007e-3 4.41162007e-3 (closed form 4.41162007e-3); omega = 0.100000: Goldstone -2.53563178e-4 -2.53563178e-4 -2.53563178e-4 (closed form -2.53563178e-4), massive 4.19773274e-3 4.19773274e-3 4.19773274e-3 (closed form 4.19773274e-3); omega = 0.250000: Goldstone -1.66588380e-3 -1.66588380e-3 -1.66588380e-3 (closed form -1.66588380e-3), massive 3.01324466e-3 3.01324466e-3 3.01324466e-3 (closed form 3.01324466e-3); omega = 0.418987: Goldstone -5.33567400e-3 -5.33567400e-3 -5.33567400e-3 (closed form -5.33567400e-3), massive 1.38777878e-16 9.71445147e-17 9.02056208e-17 (closed form 0.00000000e0); omega = 0.500000: Goldstone -8.57268921e-3 -8.57268921e-3 -8.57268921e-3 (closed form -8.57268921e-3), massive -2.55295451e-3 -2.55295451e-3 -2.55295451e-3 (closed form -2.55295451e-3); largest deviation of the diagonal 1.5e-14, of the off-diagonal entries 9.9e-17, of the antisymmetric part 1.0e-18 (relative to Z_t = 2.51303087e-2); Upsilon 2.3e-15; Gamma_m(2 Delta_vac) = 0.000e0; mass of the kinetic Lagrangian 0.4189866065 = 2 Delta_vac 0.4189866065; threshold 2 M_q = 0.5792665850; dUpsilon/d(omega^2) = 2.22990200e-2 (difference quotient 2.22990496e-2); strict expansion: Z_t - 4 Delta_vac^2 dUpsilon/d(omega^2) = 2.12157207e-2, mass 0.45600558; time-dependent mean field: disp = 0.02: line 0.41888388, half the range of Re d in the second quarter 3.4844e-3 and in the last quarter 3.4837e-3, largest |Im d| 0.0e0; disp = 0.01: line 0.41895942, half the range of Re d in the second quarter 1.7376e-3 and in the last quarter 1.7372e-3, largest |Im d| 0.0e0; relative deviations of the lines from 2 Delta_vac 2.5e-4, 6.5e-5; energy 6.8e-7
+[PASS] SB-17  the Higgs mechanism: for 30 random SFBSv fields (Goldstone angles up to 1.5), first derivatives, potentials and couplings, the kinetic Lagrangian (12.1) of the field (11.9) with the potentials equals the kinetic Lagrangian of the column (i c_n1, i c_n2, Delta_vac + h_a) with the potentials V of the unitary gauge (13.2) (relative tol 1e-8, central differences), and that equals the written-out form (13.3) with the contact matrix (13.4) (tol 1e-12); to first order in the angles and the potentials V^iota = A^iota - d_p thG_iota/g_v (iota = 1, 2), V^3 = A^3 (tol 1e-3 relative to their size 1e-4); the 4 x 4 matrices of the second derivatives of the vacuum energy with respect to four constant potentials, from the Bogoliubov matrices at G = 22.5, equal -2 Z_t N_g (time) and 2 Z_s N_g (space; the canonical cutoff adds its surface term to the entry of Av^3) (tol 1e-6 and 1e-5 relative to 8 Z_t Delta_vac^2); with the couplings (0.7, 1.3) the time matrix has the eigenvalues -8 Z_t g_F^2 Delta_vac^2, -2 Z_t g_v^2 Delta_vac^2 (twice) and 0, with the null vector Av^3 (the photon) (tol 1e-6); at the non-unitary saddle point (Delta_vac/2)(1, i, 0) the null vector is (1, 0, 0, -2)/5^(1/2) in the variables (g_F AF, g_v Av), the unbroken generator T^3 - F/2, and the corner entry is -4 Z_t Delta_vac^2 (tol 1e-6); the mixing angle of the massless field is 0 at the vacuum and arctan(g_v/(2 g_F)) at the saddle for 25 ratios of the couplings (tol 1e-5); the longitudinal dispersion (13.9) solves the equations of the time and the longitudinal component from (13.6) (tol 1e-10)  -- unitary gauge 4.7e-11 (relative to the largest |L_kin| 0.016); written-out form 2.1e-16; contact matrix (13.4) 2.8e-17; first order of V 1.3e-4; time matrix at the vacuum 1.0e-8; space matrix 1.1e-8; eigenvalues 5.1e-9; photon null vector 2.6e-11 (null vector (-2.62e-11, -5.24e-12, 2.98e-17, 1.0000000000)); time matrix at the vacuum (unit couplings): diagonal -8.82324005e-3 -2.20581003e-3 -2.20581003e-3 4.004e-13 against -8.82324014e-3 -2.20581004e-3 -2.20581004e-3 0; space matrix: diagonal 1.01780643e-2 2.54451610e-3 2.54451610e-3 3.38706061e-4 against 1.01780644e-2 2.54451610e-3 2.54451610e-3 3.38706061e-4 (surface term 3.38706061e-4); largest off-diagonal entries 1.2e-13 (time) 4.0e-15 (space); saddle: null vector (0.44721359, 1.6e-11, 1.6e-27, -0.89442720) against (0.44721360, 0, 0, -0.89442719), its eigenvalue 1.1e-8, corner entry -4.41162003e-3 against -4.41162007e-3, other entries -2.20580991e-3 (AF Av^3), -1.10290502e-3 (Av^3 Av^3), -6.02501375e-4, -6.02501375e-4 (Av^1, Av^2); mixing angle 1.5e-8 (saddle), largest at the vacuum 0.0e0; masses for g_F = g_v = 1: M_W = 0.05044320, M_F = 0.10088639, time components 0.04696605, 0.09393210; 2 Delta_vac = 0.41898661, 2 M_q = 0.57926658; longitudinal dispersion 8.9e-13
 \end{verbatim}
 
 \hypertarget{a.3-data-files-and-figures}{%
@@ -9846,7 +10553,7 @@ solver of item {[}5{]} for the seven examples, with the same columns;
 \texttt{t2\_rs\_examples\_checks.txt} its self-test and the checks EX-1
 to EX-8 & as the files \texttt{t2\_py\_*} \\
 \texttt{test2/data/t2\_sfbs\_checks.txt} & the report of the checks SB-1
-to SB-16 of \texttt{t2\_sfbs} (items {[}7{]} to {[}11{]}) & --- \\
+to SB-17 of \texttt{t2\_sfbs} (items {[}7{]} to {[}11{]}) & --- \\
 \texttt{test2/data/t2\_sfbs\_fragments.md} & the explicit matrices and
 expressions of the sections of items {[}7{]} to {[}11{]}, in LaTeX &
 --- \\
@@ -9949,6 +10656,29 @@ gap, and the fitted oscillation of the frequency
 \texttt{d\_over\_dvac}, \texttt{line\_2Dvac} \\
 \texttt{test2/data/t2\_sfbs\_higgs\_spectrum.csv} & the power spectrum
 of that evolution (Figure 25(e)) & \texttt{omega\_B}, \texttt{power} \\
+\texttt{test2/data/t2\_sfbs\_mass\_matrices.csv} & the \(4\times4\)
+matrices of the second derivatives of the energy of the vacuum with
+respect to four constant potentials, from the Bogoliubov matrices and
+predicted by the kinetic Lagrangian: time and space components in the
+vacuum, time components at the non-unitary saddle point (Figure 26(a)) &
+\texttt{matrix}, \texttt{row}, \texttt{column}, \texttt{from\_bdg},
+\texttt{predicted} \\
+\texttt{test2/data/t2\_sfbs\_vector\_masses.csv} & the masses of the
+spectrum of the Higgs mechanism against the coupling, for unit gauge
+couplings: \(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\), the masses of
+their time components, \(2\Delta^{\rm vac}_{\rm LL}\) and the threshold
+\(2M^{\rm q}_{\rm LL}\) (Figure 26(b)) & \texttt{G},
+\texttt{Delta\_vac}, \texttt{M\_W}, \texttt{M\_F}, \texttt{M\_W\_time},
+\texttt{M\_F\_time}, \texttt{mass\_massive}, \texttt{threshold} \\
+\texttt{test2/data/t2\_sfbs\_higgs\_dispersion.csv} & the dispersion
+relations (13.9) of the vector fields and (12.9) of the scalar fields,
+the photon and the pair-breaking threshold at \(G_{\rm LL}=22.5\)
+(Figure 26(c)) & \texttt{k\_B}, \texttt{mode}, \texttt{omega\_B} \\
+\texttt{test2/data/t2\_sfbs\_mixing.csv} & the mixing angle against the
+ratio of the gauge couplings, in the vacuum and at the non-unitary
+saddle point, and its prediction (Figure 26(d)) &
+\texttt{ratio\_gF\_gv}, \texttt{theta\_mix\_vacuum},
+\texttt{theta\_mix\_saddle}, \texttt{theta\_mix\_pred} \\
 \end{longtable}
 
 In the columns, \texttt{r\_W}, \texttt{q}, \texttt{eps},
@@ -10084,8 +10814,40 @@ strict second-order expansion of \(\Gamma^{\rm m}_{\rm LL}\),
 \texttt{line\_2Dvac} the fitted oscillation of the frequency
 \(2\Delta^{\rm vac}_{\rm LL}\) divided by \(\Delta^{\rm vac}_{\rm LL}\),
 and \texttt{power} the power spectrum normalized to its largest value.
-Every data file states its content in a line \texttt{\#\ content:} and
-its parameters in lines \texttt{\#\ name:\ value}.
+In the files of item {[}11{]}, \texttt{matrix} names a matrix
+(\texttt{time\_vacuum}: the time components in the vacuum;
+\texttt{space\_vacuum\_canonical}: the space components along
+\(x^3_{\rm LL}\) in the vacuum, with the cutoff on the canonical
+momentum, whose surface term appears in the entry of row 3 and column 3;
+\texttt{time\_saddle}: the time components at the non-unitary saddle
+point \((\Delta^{\rm vac}_{\rm LL}/2)(1,i,0)\)), \texttt{row} and
+\texttt{column} number the potentials (0: \(A^{\rm F}_{{\rm LL},p}\), 1
+to 3: \(A^1_{{\rm LL},p}\) to \(A^3_{{\rm LL},p}\); the variables are
+the couplings times the potentials), \texttt{from\_bdg} is the second
+derivative of \(\Omega_{\rm LL}\) from the Bogoliubov matrices and
+\texttt{predicted} the entry of
+\(-2Z^{\rm t}_{\rm LL}\mathsf N^{\rm g}_{\rm LL}\) (time) or
+\(2Z^{\rm s}_{\rm LL}\mathsf N^{\rm g}_{\rm LL}\) (space, with the
+surface term added in its entry) with unit couplings; \texttt{M\_W},
+\texttt{M\_F} are \(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\) (13.8)
+and \texttt{M\_W\_time}, \texttt{M\_F\_time} the masses of the time
+components,
+\((2Z^{\rm t}_{\rm LL})^{1/2}g^{\rm v}_{\rm LL}\Delta^{\rm vac}_{\rm LL}\)
+and
+\(2(2Z^{\rm t}_{\rm LL})^{1/2}g^{\rm F}_{\rm LL}\Delta^{\rm vac}_{\rm LL}\);
+\texttt{mode} names a branch of the spectrum (\texttt{photon};
+\texttt{W\_transverse}, \texttt{W\_longitudinal}: the charged vector
+fields; \texttt{F\_transverse}, \texttt{F\_longitudinal}: the
+fermion-number vector field; \texttt{massive\_scalars}: the three
+massive scalar fields (12.9); \texttt{threshold}:
+\(2((M^{\rm q}_{\rm LL})^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}\));
+\texttt{ratio\_gF\_gv} is \(g^{\rm F}_{\rm LL}/g^{\rm v}_{\rm LL}\), and
+\texttt{theta\_mix\_vacuum}, \texttt{theta\_mix\_saddle},
+\texttt{theta\_mix\_pred} are \(\theta^{\rm mix}_{\rm LL}\) in the
+vacuum, at the saddle point, and
+\(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\). Every data file
+states its content in a line \texttt{\#\ content:} and its parameters in
+lines \texttt{\#\ name:\ value}.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0968}}
@@ -10170,9 +10932,14 @@ EX-1 \\
 \texttt{t2\_sfbs\_kernels\_bdg.csv}, \texttt{t2\_sfbs\_masses.csv},
 \texttt{t2\_sfbs\_tdbdg\_higgs.csv},
 \texttt{t2\_sfbs\_higgs\_spectrum.csv} & SB-15, SB-16 \\
+26 & \texttt{test2/figures/fig\_t2\_sfbs\_higgs} &
+\texttt{t2\_sfbs\_mass\_matrices.csv},
+\texttt{t2\_sfbs\_vector\_masses.csv},
+\texttt{t2\_sfbs\_higgs\_dispersion.csv}, \texttt{t2\_sfbs\_mixing.csv}
+& SB-17 \\
 \end{longtable}
 
-Figures 21 to 25 are drawn by
+Figures 21 to 26 are drawn by
 \texttt{test2/python/make\_t2\_sfbs\_figures.py} from the data files of
 \texttt{t2\_sfbs}; besides the data it draws only the line
 \(16-4\hat n^{\rm F}_{\rm LL}\) of (8.12), and it marks the Fermi
@@ -10188,7 +10955,10 @@ velocity columns of the data file by the streamline routine of
 Matplotlib; in Figure 25 it marks \(\Delta^{\rm vac}_{\rm LL}\),
 \(2\Delta^{\rm vac}_{\rm LL}\) and \(2M^{\rm q}_{\rm LL}\) (taken from
 the parameter lines of the data files) and the coupling
-\(G_{\rm LL}=22.5\) of the checks. Figures 1 to 6 are drawn by
+\(G_{\rm LL}=22.5\) of the checks; in Figure 26 it draws the zero line
+of the photon in (b), marks the coupling \(G_{\rm LL}=22.5\) of the
+checks, converts the mixing angles of (d) from radians to degrees, and
+labels the zero entry of the photon in (a). Figures 1 to 6 are drawn by
 \texttt{test2/python/make\_t2\_figures.py} from the data files; the
 script computes only reference lines (the value 1, \(2\sqrt2\), 2.5, the
 asymptote, the mass and the doubler energy; in Figure 5 the energies
@@ -10202,7 +10972,7 @@ of Figure 1(b) from two columns of a data file, the normal-state energy
 \hypertarget{a.4-checksums}{%
 \subsection{A.4 Checksums}\label{a.4-checksums}}
 
-SHA-256 checksums of the sources and data of items {[}1{]} to {[}10{]}
+SHA-256 checksums of the sources and data of items {[}1{]} to {[}11{]}
 at the time this document was built:
 
 \begin{verbatim}
@@ -10218,11 +10988,11 @@ d7ed53e0635b63e4f84d23a7280bf8d3581086a6a64dd3df7cb6632f49063939  test2/rust/t2f
 07301293d98ebfb58113f2407d6677304711c0a2995a4d9f83b028fb227d4e24  test2/rust/t2analytic/Cargo.toml
 60fa560f18e32b1db49681e7e9c00948d98f3c1a7278b8694e4451f1d0627911  test2/rust/t2analytic/src/main.rs
 30b62675c8c89144f95760920625033ab1ce462fd5fd4249c2e4d7c1e0a51bb3  test2/rust/t2sfbs/Cargo.toml
-f0e9bbc1f852a0041eeecff2a717148bc89c4beb8e6b86e4a2908a096afb5567  test2/rust/t2sfbs/src/main.rs
+17785e6ce11ec7d2062cc6729d6f59f9a75d7d0bf039f58783ed63f47f682978  test2/rust/t2sfbs/src/main.rs
 b1d2fc57c1d4122cb4b5b16782beb76ebc386b1a2b7911266b1045f4e6fc59dc  test2/rust/t2sfbs/src/fock.rs
 6a2bc352f80a89d7f0d946c7b94a6fda87ab3169bc8dcfb305a635d84b6e88e3  test2/rust/t2sfbs/src/quad.rs
-f35c0c69af89298ece4a8056a66d31b0946961172e992f8dee273890c14ef9f1  test2/python/make_t2_sfbs_figures.py
-461d58a219fadf4b87aa5713f45ea6eda8b84827829d1f5640d33184af922b59  test2/data/t2_sfbs_checks.txt
+9b08ee7d24359294dc740247d6142c0973026d953be9f868412889e1655ec6d3  test2/python/make_t2_sfbs_figures.py
+e447bd85bc964fa281c044c8e311cf256c37cb8d641360323c49abec64c86b6b  test2/data/t2_sfbs_checks.txt
 954221e804323f3eb4663555634e4498d1c54f51f23462cbdc374e8b1caa7531  test2/data/t2_sfbs_fragments.md
 2dd935d4220a76ee62e3f3e2c329f163d4a7c17a21620637760ff9fadbc15a0f  test2/data/t2_sfbs_pair_weights.csv
 1ee13d9464557018752e83fc9c0dd869d8630c26b2e2e4026b9dfefd011638f0  test2/data/t2_sfbs_pair_weights_fock.csv
@@ -10246,6 +11016,10 @@ c3a268ae6d47157dfa5b7e09e5902237e7684b8b893152315b33c8027a695608  test2/data/t2_
 cba20f20d42e4f7efdc73a8f7504c9d20029d085337ddd10860f16193bda52ba  test2/data/t2_sfbs_masses.csv
 32d93ed518846c711c531265bf2fb3e40d6e8acf08f10f774e5b73a81381b3da  test2/data/t2_sfbs_tdbdg_higgs.csv
 5b6c27d4cffdc2ffa7208fbec36273837d75e615433ca58dd991445d4abba9fa  test2/data/t2_sfbs_higgs_spectrum.csv
+43de19e80c0315987657d5e26ea5fdc4dd5a02ad2c8cf25ad239dbe7bb50b659  test2/data/t2_sfbs_mass_matrices.csv
+0e012352f0181f05efc11cd156e268d035fe6b6d94a1fa8a2f83cb0f7a9db899  test2/data/t2_sfbs_vector_masses.csv
+dfa019e170d0f1f77b84b91c79b336cb2670f82c3d515e79b9faaf6aed9a5eba  test2/data/t2_sfbs_higgs_dispersion.csv
+96d46d1a4df1b66caf6bc298f4fd1ea144a5e743cd1870abe1009d45cccb3028  test2/data/t2_sfbs_mixing.csv
 c007640a15263f598651fcb021109d8af045c23141f5b036d452366554acfef7  test2/python/make_t2_figures.py
 033ddabf96d8a2e2e6fbf4d9bbd95ca32ea102b15c003848e9ee52ce8aabe0a7  test2/data/t2_fields_checks.txt
 8c4df29029536ec9c488a68fa2cc2d5551a177f1911c22a461a7aa19f635e1ae  test2/data/t2_fragments.md
@@ -10279,30 +11053,30 @@ c1a70b2a3f7bf425464593606e7581c9ac5e7b9ca27527affdf3f4fe7774bcb5  test2/rust/t2s
 8f3edf7c5b588c7499a8c455fb0aa61f0fe9c527ccee03d2fc320181b1719286  test2/data/t2_rs_andreev_summary.txt
 04a8e62cbfd2fff9644da9accac1714440590c927bce60139d590e2ef6ea516f  test2/data/t2_rs_cyclotron_fields.csv
 970742322a9f43a0e61a077fb39609032b7955a5ab8a555777b06d9d8ed1f267  test2/data/t2_rs_cyclotron_series.csv
-5f565c35be7dfa88bba0e45f2702696aa7f9b98baf99262e4e5cc8a8a21e02ab  test2/data/t2_rs_cyclotron_summary.txt
+3e39a9cf96cff790516b77e010366b576499f76f28a572229ff6d706775f3563  test2/data/t2_rs_cyclotron_summary.txt
 b17782e98ff2d24e7c784e045dff43a0a023ac0d1373b40cf758bb53cc027413  test2/data/t2_rs_examples_checks.txt
 4af9aca2902d550082d9040f9ba0f788503010bd9a1635743e4e5c8e436a6081  test2/data/t2_rs_ground_state_fields.csv
 5600d8cead9f2c297e84910df83397b903feccf77b2f60e9bc3960fad207c05e  test2/data/t2_rs_ground_state_iterations.csv
 8059ddb396c0cc90b4b75627ce04144db8f5921208268e046b4ff5ec28718642  test2/data/t2_rs_ground_state_series.csv
 08ca4f334aa91e29939c225abb148881818c376b50e5712090ce917d0509d7e0  test2/data/t2_rs_ground_state_spectrum.csv
-49fc87974ca7530d4cb6dd50357afe373cafe6198dcfaa978efe959c71a52a4a  test2/data/t2_rs_ground_state_summary.txt
+0fde2e132c3dc1ea9b1f668a2c5fd9dbefaf0971beb6f6f77f06f05127417149  test2/data/t2_rs_ground_state_summary.txt
 e9733585ece915da77428e05d346a0b8912e10f804cccfaab0e4d3b33f65b5cb  test2/data/t2_rs_kink_ground_state_fields.csv
 8adfa332cbf6ee0548241c712cba691ceecbfb8cfec2fc9c5d5bbc843fe091b3  test2/data/t2_rs_kink_ground_state_iterations.csv
 e66b4bf33e348772e022d4d9eed1eca3bf88f82e30ca722c9ab1b998dbc2d73b  test2/data/t2_rs_kink_ground_state_series.csv
 72db22d2e9e76347c4b93d0ae718558ac782b1b48c30eca7124c78421ba22a6d  test2/data/t2_rs_kink_ground_state_spectrum.csv
-69c80aef5514e120239ed2cbc2f6f79c3968a352999275fccd851af7d41980c1  test2/data/t2_rs_kink_ground_state_summary.txt
+90653892b3e9e804f4f03bfd5dbfa121e07e1704dcfbf3170e85e42a18e0493d  test2/data/t2_rs_kink_ground_state_summary.txt
 9867541d67f16e32c59cd4d99c5857e52511fa128f5c8d91b462d592db184faa  test2/data/t2_rs_kink_spectrum_fields.csv
 027f653b04b5c3a26e0668f198373cee275f47fd4892b849b13a0b0db605e375  test2/data/t2_rs_kink_spectrum_series.csv
 5c20876704a3c42eaca1cdbef98a4ec0077a31329ebe06d50ea67963f363dd5c  test2/data/t2_rs_kink_spectrum_spectrum.csv
-adc07ce2ef8d33fddf03aa6f835379ccb579e882f56dbb1f536382f17d31395f  test2/data/t2_rs_kink_spectrum_summary.txt
+1dfb0e35888f0a778046355cdd6cee5f80772c80e534bd14d643b71076ea0381  test2/data/t2_rs_kink_spectrum_summary.txt
 7add614bbf4b78e0760c9c037398b19077ae5945b77c8ffe062c6a33b38604ef  test2/data/t2_rs_packet_free_fields.csv
 f4018aff09f8dfbcffc97de41876aec54cbf3acf4d9058be49e5814f4a87792e  test2/data/t2_rs_packet_free_series.csv
-16d0ea69aef3e0410d8ba307accebe2fda1a888c2120fe0f2e72f14b20be0e91  test2/data/t2_rs_packet_free_summary.txt
+afdfda4f8e51ca6fdfb787b43d84484066b54c26c6575a400c9b86dec1e9cb9e  test2/data/t2_rs_packet_free_summary.txt
 e5da7d79a6a9ebd00be90b5ecdd919891c0d00166ab2aba0a2cd46fd73ca3bc7  test2/data/t2_rs_quench_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  test2/data/t2_rs_quench_iterations.csv
 9af01479530a8e6c0a8c1bfce0f89acf66569dc4a97957983c63733b741b8ab3  test2/data/t2_rs_quench_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  test2/data/t2_rs_quench_spectrum.csv
-c881fa7113ae4f6f57d27387b8e71b8198beaa0cbdc7fd18521069f2c6449d64  test2/data/t2_rs_quench_summary.txt
+661c56d892e722150fca342eb91baf71c9d144759215dd2502b1a4905203fae8  test2/data/t2_rs_quench_summary.txt
 cbaf79f05f214d82eea76f2f4857a611e2ea8612bfe3fd4c93bc14a79b9646b2  test2/examples/packet_free.t2in
 6d25a57a1e3e944fc69ca061f7a712a6b5456c5a1635e9aae16603dfd09d7d2a  test2/examples/cyclotron.t2in
 6898e720c6ed17512407d884cd189d2c588e2edd4eeacf6836eea41dc3ff03d8  test2/examples/andreev.t2in
@@ -10315,23 +11089,23 @@ c83fbceb6cdd0573b2456c5a57bfb5593f6da6c3c3c1665242dc5e502de4214f  test2/data/t2_
 8022bf1723831cd3e7f7277cbc0f858d06cd060a4bd12b265e4c0be59cad0290  test2/data/t2_py_andreev_summary.txt
 24da15309d10d8ad365eb20020b1736d99df4be6d91f069f8f3d3c25bf2def63  test2/data/t2_py_cyclotron_fields.csv
 94d23809e68eaffd91856aaae37831221665e535f290852490ec22b14b16c35a  test2/data/t2_py_cyclotron_series.csv
-07f1501a87b7c21cebacbee8c1bac00844581ff06721ac670077742c99a22142  test2/data/t2_py_cyclotron_summary.txt
+f2fb0bd89418da5e517a73e36108ecb3c3a86da44c23fe21e93ef7a4617aea52  test2/data/t2_py_cyclotron_summary.txt
 5e12b6d2ff68774d18c9a0974d17c77ed1aef422bd2e0f1ae46867d8379a3370  test2/data/t2_py_examples_checks.txt
 8b6393611ecac9ff8356a01c27eb65d4ee43391cc062c57137926b16fe930b76  test2/data/t2_py_fragments.md
 9d4b29b04b3ff0676a9f9c3c6f78c79b956718e123b24ae2c1db4534dc00c83c  test2/data/t2_py_ground_state_fields.csv
 880af932345b388ced88215c6d1e40249f7e6ec1d44f99752509c6589ac8598a  test2/data/t2_py_ground_state_iterations.csv
 1f67870777717eb2699170da2fcdd939ad4c30fad6ebe44fae99d1b2049becb8  test2/data/t2_py_ground_state_series.csv
 85c66e6bd698089ae41947061567c62ca9fd65cbebd2ec209e64bd143e97617b  test2/data/t2_py_ground_state_spectrum.csv
-e9ebc8bcc2aa357f59b66f09b6a59203d704fab8edd2f9c1ec3c6fcad341b542  test2/data/t2_py_ground_state_summary.txt
+a2566113040bb8b7a3295130ee4397dbe02f0d11612aebab078cd325cbb7db44  test2/data/t2_py_ground_state_summary.txt
 a444457b6ccef8cc17a8bfa306bfd8a7470d5e08bc209d2da890362a6b84b5da  test2/data/t2_py_kink_ground_state_fields.csv
 fd8278836575842aef92a703ae238a0bc750dbc75d314360fad40b92b382c490  test2/data/t2_py_kink_ground_state_iterations.csv
 3585ffa2e04091411515e8a87087f87752eaa37b8035aacad7219d0a860fe3b8  test2/data/t2_py_kink_ground_state_series.csv
 9236d8326b7fa87012b3294c4a317624d81122c56bcc2cd96e6dafa41cc1e827  test2/data/t2_py_kink_ground_state_spectrum.csv
-491e90b984ff4bc3bdd67fc569c1c80ecc79bf6ac5f579730a0e07be57ae20e9  test2/data/t2_py_kink_ground_state_summary.txt
+ff7cf01d0065b9c20f48d1a1ae85b76ca0c805c70329c21d8e82cb57c2770b64  test2/data/t2_py_kink_ground_state_summary.txt
 adbf2770790ced9e216b615bbb3eb431572cf1585a617eae074145f6630a3d17  test2/data/t2_py_kink_spectrum_fields.csv
 59782576f999b3eb87dd8a148c832689f21a430826ad4364291fd21288330ee4  test2/data/t2_py_kink_spectrum_series.csv
 2940378aec823ec8982f3441f64e8daa6b3552ff71b6bd68e9d2bc2290c63674  test2/data/t2_py_kink_spectrum_spectrum.csv
-c37f1aea78599c9db95b70de6f9297e8a3bb0dd3ac2a0bb68c3637d85a1b1a8d  test2/data/t2_py_kink_spectrum_summary.txt
+befb5c34679d756e92c582dd40d6d1d7cf4fb4b2860dc27b59fa3378c98edd3a  test2/data/t2_py_kink_spectrum_summary.txt
 5d1ee70ca2be6ae05ca36f4a221976a8e22fb1c7efd9ad493f9474d516afa7f5  test2/data/t2_py_packet_free_fields.csv
 815fb1893240734931c0191364ec2d4dc61168cf852f4072355717e8ee3e20d6  test2/data/t2_py_packet_free_series.csv
 46b1b8187263cbf3e9a98b9952fdbc1b1505c3be1cab47b1a890cdc6f24ffa1e  test2/data/t2_py_packet_free_summary.txt
@@ -10339,7 +11113,7 @@ c37f1aea78599c9db95b70de6f9297e8a3bb0dd3ac2a0bb68c3637d85a1b1a8d  test2/data/t2_
 5470f40e63a043a54379e9988a4cb7ede587ddc706ff7ebac4db9ac91d05f2f1  test2/data/t2_py_quench_iterations.csv
 b8121988fb419aaa9a714db949924caeec7fba1b94d3b1bd2b03435264f98747  test2/data/t2_py_quench_series.csv
 2233cd5c04499b0e33c4379dd6f7e05a6763fb7c0003f2ab06fecf67e6068784  test2/data/t2_py_quench_spectrum.csv
-a95a2ca01cd090f61a5db69c91ad1eec6281938ae7a24f8c63133be3c5a70a1f  test2/data/t2_py_quench_summary.txt
+2e1ec440b95eeb18cbbc0748a6fb4092b398159c678df75db89811306d62db36  test2/data/t2_py_quench_summary.txt
 f348c21507ffcdacc86d5afcda73d40eb776963c730523db163c03bc4f049612  test2/data/t2_py_selftest_checks.txt
 \end{verbatim}
 
@@ -10476,6 +11250,24 @@ here}\label{appendix-b.-published-works-on-the-methods-used-here}}
 \item
   G. 't Hooft and M. Veltman, Regularization and renormalization of
   gauge fields, Nucl. Phys. B 44, 189 (1972).
+\item
+  P. W. Anderson, Plasmons, gauge invariance, and mass, Phys. Rev.~130,
+  439 (1963).
+\item
+  T. W. B. Kibble, Symmetry breaking in non-Abelian gauge theories,
+  Phys. Rev.~155, 1554 (1967).
+\item
+  S. Weinberg, General theory of broken local symmetries, Phys. Rev.~D
+  7, 1068 (1973).
+\item
+  S. L. Glashow, Partial-symmetries of weak interactions, Nucl. Phys.
+  22, 579 (1961).
+\item
+  A. Proca, Sur la théorie ondulatoire des électrons positifs et
+  négatifs, J. Phys. Radium 7, 347 (1936).
+\item
+  W. Meissner and R. Ochsenfeld, Ein neuer Effekt bei Eintritt der
+  Supraleitfähigkeit, Naturwissenschaften 21, 787 (1933).
 \end{itemize}
 
 These works are cited for the general methods and results only (the
@@ -10500,8 +11292,13 @@ Goldstone's theorem, the breaking of a gauge symmetry by a scalar field
 and the potential of the Higgs doublet of the electroweak theory, and
 the quasi-Newton minimization; for item {[}10{]} the scalar mode of
 twice the gap of a paired relativistic vacuum and dimensional
-regularization). Everything this document uses from them is stated, and
-where it is a result, derived or checked, in it.
+regularization; for item {[}11{]} the masses of gauge fields in a
+superconductor and in a theory with a broken non-Abelian gauge symmetry,
+the unitary gauge, the mixing of two neutral gauge fields in the
+electroweak theory, the Lagrangian of a massive vector field, and the
+expulsion of magnetic fields from a superconductor). Everything this
+document uses from them is stated, and where it is a result, derived or
+checked, in it.
 
 \hypertarget{appendix-c.-the-symbols}{%
 \section{Appendix C. The symbols}\label{appendix-c.-the-symbols}}
@@ -12112,7 +12909,7 @@ derivatives,
 \(Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2\),
 so that
 \(\mathcal L^{\rm B}_{\rm LL}=\mathcal L^{\rm kin}_{\rm LL}-\Omega_{\rm LL}(\vec d_{\rm LL})\)
-& new & \texttt{Lagr\_kin} \\
+& new & \texttt{Lagr\_kin} \texttt{L\_kin} \\
 \(\mathsf N^{\rm g}_{\rm LL}(\vec d_{\rm LL})\),
 \(\mathsf N^{\rm v}_{\rm LL}(\vec d_{\rm LL})\);
 \(\vec w^{\rm n}_{\rm LL}\) & the contact matrix: the real symmetric
@@ -12187,6 +12984,56 @@ the positive number
 \(c^{\rm w}_{\rm LL}=(M^{\rm q}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2/4\)
 of the proof of Theorem 12.2 of the document of Test 2 & new &
 \texttt{Upsilon} \texttt{Upsilon\_1} \\
+\(\vec d^{\rm u}_{\rm LL}\) & the SFBS field in the unitary gauge, the
+column of the SFBSv parametrization,
+\((i\,c^{\rm n}_{{\rm LL},1},\,i\,c^{\rm n}_{{\rm LL},2},\,\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\):
+the field after the gauge transformation that removes the three
+Goldstone fields & new & \\
+\(V^{\rm F}_{{\rm LL},p}\), \(V^\iota_{{\rm LL},p}\) & the gauge
+potentials in the unitary gauge, the vector fields of definite mass:
+\(V^{\rm F}_{{\rm LL},p}=A^{\rm F}_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},0}/g^{\rm F}_{\rm LL}\)
+and
+\(\sum_\iota V^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2=(\mathsf U^{\rm G}_{\rm LL})^\dagger\mathsf a_{{\rm LL},p}\mathsf U^{\rm G}_{\rm LL}-(i/g^{\rm v}_{\rm LL})(\partial_p(\mathsf U^{\rm G}_{\rm LL})^\dagger)\mathsf U^{\rm G}_{\rm LL}\);
+to first order
+\(V^\iota_{{\rm LL},p}=A^\iota_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},\iota}/g^{\rm v}_{\rm LL}\)
+(\(\iota=1,2\)) and \(V^3_{{\rm LL},p}=A^3_{{\rm LL},p}\), the photon &
+new & \texttt{V} \texttt{V\^{}iota} \texttt{VF} \\
+\(W^\pm_{{\rm LL},p}\) & the charged massive vector fields,
+\((V^1_{{\rm LL},p}\mp iV^2_{{\rm LL},p})/\sqrt2\), of the electric
+charges \(\pm1\) & new & \texttt{W\_+} \texttt{W\_-} \\
+\(\mathsf M^{\rm t}_{\rm LL}\), \(\mathsf M^{\rm s}_{\rm LL}\) & the
+mass matrices of the time and of the space components of the four vector
+fields
+\((V^{\rm F}_{{\rm LL},p},V^1_{{\rm LL},p},V^2_{{\rm LL},p},V^3_{{\rm LL},p})\)
+in the vacuum: \(2Z^{\rm t}_{\rm LL}\) and \(2Z^{\rm s}_{\rm LL}\) times
+the contact matrix of the vacuum,
+\({\rm diag}(4(g^{\rm F}_{\rm LL})^2,(g^{\rm v}_{\rm LL})^2,(g^{\rm v}_{\rm LL})^2,0)(\Delta^{\rm vac}_{\rm LL})^2\);
+the quadratic Lagrangian contains one half of the first and minus one
+half of the second, each between the row and the column of the
+components & new & \\
+\(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\) & the rest masses of the
+charged vector fields \(W^\pm_{{\rm LL},p}\) and of the fermion-number
+vector field \(V^{\rm F}_{{\rm LL},p}\),
+\((M^{\rm W}_{\rm LL})^2=2Z^{\rm s}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+and
+\((M^{\rm F}_{\rm LL})^2=8Z^{\rm s}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+(plain text \texttt{M\_W\_time}, \texttt{M\_F\_time}: the masses of the
+time components, with \(Z^{\rm t}_{\rm LL}\) in place of
+\(Z^{\rm s}_{\rm LL}\)) & new & \texttt{M\_W} \texttt{M\_F}
+\texttt{M\_W\_time} \texttt{M\_F\_time} \\
+\(\theta^{\rm mix}_{\rm LL}\) & the mixing angle: the angle between the
+massless gauge field (the null vector of the mass matrix) and the axis
+of the potential \(A^3_{{\rm LL},p}\) in the plane of
+\(A^{\rm F}_{{\rm LL},p}\) and \(A^3_{{\rm LL},p}\); zero in the vacuum,
+\(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\) at the non-unitary
+saddle point (plain text: the values found at the vacuum and at the
+saddle point, and the prediction) & new & \texttt{theta\_mix}
+\texttt{theta\_mix\_vacuum} \texttt{theta\_mix\_saddle}
+\texttt{theta\_mix\_pred} \\
+\(\mathcal L^{(2)}_{\rm LL}\) & the part of the second order, in the
+fields of SFBSv and the gauge potentials, of the Lagrangian (13.1) of
+Test 2 (the effective Lagrangian of the SFBS with the Yang-Mills and
+Maxwell terms) & new & \\
 \end{longtable}
 
 \end{document}

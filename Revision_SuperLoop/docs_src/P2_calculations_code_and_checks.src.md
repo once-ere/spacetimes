@@ -655,7 +655,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [10]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations, its effective potential, its minima, the breaking of the symmetry and SFBSv, and its kinetic Lagrangian (folder `test2`)
+# 11. Test 2, items [1] to [11]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations, its effective potential, its minima, the breaking of the symmetry and SFBSv, its kinetic Lagrangian, and the Higgs mechanism, the surviving symmetry and the photon (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -1091,6 +1091,41 @@ whose strongest spectral line (function `line_frequency`, Hann window, scan and 
 $2\Delta^{\rm vac}_{\rm LL}$, with the amplitude of the oscillation in the second and the last quarter of the run, the imaginary part of the pair
 field and the conservation of the mean-field energy. The spectrum of Figure 25(e) is computed by the function `power_at` on a grid of
 500 frequencies. Figure 25 is drawn by `test2/python/make_t2_sfbs_figures.py`.
+
+## Item [11]: the masses of the gauge bosons, the surviving symmetry and the photon
+
+The same program verifies Section 13 in the check SB-17 (function `sb17`). (i) The unitary gauge: for 30 random SFBSv fields (11.9) (the
+three Goldstone angles up to 1.5, the amplitude and the two non-unitary fields up to 0.1), random first derivatives of the six fields (up
+to 0.3), random potentials (up to 0.5) and couplings ($g^{\rm F}_{\rm LL}$, $g^{\rm v}_{\rm LL}$ between 0.9 and 1.5), the field (11.9) and its
+derivatives (central differences with the step $10^{-5}$ along the derivatives of the six fields) are inserted into the kinetic Lagrangian
+(12.1) (function `lagr_kin`, which builds the covariant derivative (9.5) with the function `nabla_b` and sums $Z^{\rm t}_{\rm LL}$ times its
+squared length for $p=0$ and $-Z^{\rm s}_{\rm LL}$ times it for $p=j$); the potentials of the unitary gauge (13.2) are computed from their
+definition, $V^{\rm F}_{{\rm LL},p}=A^{\rm F}_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},0}/g^{\rm F}_{\rm LL}$ and the $2\times2$ matrix
+$(\mathsf U^{\rm G}_{\rm LL})^\dagger\mathsf a_{{\rm LL},p}\mathsf U^{\rm G}_{\rm LL}-(i/g^{\rm v}_{\rm LL})(\partial_p(\mathsf U^{\rm G}_{\rm LL})^\dagger)\mathsf U^{\rm G}_{\rm LL}$
+(its derivative by central differences), whose components are the traces with the Pauli matrices; the kinetic Lagrangian of the column
+$\vec d^{\rm u}_{\rm LL}$ with these potentials is compared with the first, and with the written-out form (13.3), whose contact matrix (13.4)
+is typed entry by entry and compared with the contact matrix (12.3) computed by the function `contact_matrix`. The first order of (13.2) is
+tested with 20 random angles, derivatives and potentials of the size $10^{-4}$ and $g^{\rm v}_{\rm LL}=1.1$. (ii) The mass matrices: the
+function `hessian_pot` computes the $4\times4$ matrix of the second derivatives of the energy of the vacuum (the function `omega_pot` of
+item [10]) with respect to four constant potentials, in the variables $g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}$, $g^{\rm v}_{\rm LL}A^\iota_{{\rm LL},p}$:
+the diagonal entries from second differences at the steps 0.005 and 0.01, the mixed entries from the four points at which each of the two potentials is plus or minus the step, at the same
+steps, both extrapolated by Richardson's rule, for the time components (300 radial nodes, one angular node: the integrand does not depend on the
+direction) and for the components along $x^3_{\rm LL}$ (300 radial nodes and 8 nodes in the cosine of the polar angle; the cutoff on the canonical
+momentum). The predictions are $-2Z^{\rm t}_{\rm LL}\mathsf N^{\rm g}_{\rm LL}$ and $2Z^{\rm s}_{\rm LL}\mathsf N^{\rm g}_{\rm LL}$ of the vacuum with unit
+couplings, the second with the surface term $2\Lambda_{\rm LL}^3(1/\varepsilon_{\rm LL}(\Lambda_{\rm LL})-1/E^{\rm c}_{\rm LL}(\Lambda_{\rm LL}))/(12\pi^2)$
+of the canonical cutoff added in the entry of $A^3_{{\rm LL},p}$; the deviations are measured relative to $8Z^{\rm t}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})^2$.
+With the couplings $(0.7,1.3)$ the matrix of the time components in the potentials, the entries of the matrix in the variables times the products
+of the couplings, is diagonalized (function `eig4`: the Hermitian eigensolver of the library, each eigenvector made real by removing its phase), and
+its eigenvalues and its null vector are compared with $-8Z^{\rm t}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2$,
+$-2Z^{\rm t}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2$ (twice), 0 and $(0,0,0,1)$. (iii) The non-unitary saddle point
+$(\Delta^{\rm vac}_{\rm LL}/2)(1,i,0)$: the same matrix of the time components, its null vector against $(1,0,0,-2)/5^{1/2}$ in the variables and
+its corner entry against $-4Z^{\rm t}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})^2$; for 25 ratios $g^{\rm F}_{\rm LL}/g^{\rm v}_{\rm LL}$ from 0.1 to 10
+(logarithmically spaced, $g^{\rm v}_{\rm LL}=1$) the angle between the null vector of the matrix in the potentials and the axis of
+$A^3_{{\rm LL},p}$, in the vacuum (against 0) and at the saddle point (against $\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))$). (iv) The masses
+of Figure 26(b), for 61 couplings from $1.0005$ times the critical coupling to 30, from the closed forms (12.6) of the coefficients and the
+gap (10.10). (v) The dispersion relations of Figure 26(c) at $G_{\rm LL}=22.5$, 61 wave numbers from 0 to 0.6; and the longitudinal relation
+(13.9), compared at ten wave numbers with the root of the determinant of the two equations of the time and the longitudinal component of
+Section 13.4, found by 200 bisections. Figure 26 is drawn by `test2/python/make_t2_sfbs_figures.py`.
 
 # 12. The checks of the documents
 

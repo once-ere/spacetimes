@@ -348,9 +348,26 @@ non-unitary fields have the mass \(2\Delta^{\rm vac}_{\rm LL}\), below
 the pair-breaking threshold, confirmed by the time-dependent mean-field
 equations; and the difference of the two coefficients is traced to a
 surface term of the momentum cutoff, which a Lorentz-invariant
-regularization removes (Figure 25). Items {[}7{]} to {[}10{]} are
-verified by the checks SB-1 to SB-16 of the program \texttt{t2\_sfbs}
-(member \texttt{t2sfbs} of the workspace).
+regularization removes (Figure 25). Its twelfth answer (item {[}11{]})
+gives mass to the Goldstone bosons: inserting SFBSv into the kinetic
+Lagrangian, a gauge transformation (the unitary gauge) removes the three
+Goldstone fields exactly, and each reappears as the longitudinal
+polarization of the gauge field of its broken generator; the kinetic
+Lagrangian in the unitary gauge is written out exactly with its contact
+matrix; to the second order the mass matrices of the four gauge fields
+are diagonal, with the masses \(M^{\rm F}_{\rm LL}\) of the
+fermion-number vector field and \(M^{\rm W}_{\rm LL}\) of the two
+charged vector fields \(W^\pm_{{\rm LL},p}\), and one massless field;
+the surviving group is \(O(2)\), whose connected part is the group
+\(U(1)^{\rm Q}_{\rm LL}\) of the electric charge, \(U(1)_{\rm em}\), and
+it is proved that the mass matrix is the squared length of the change of
+the vacuum under the gauge transformation of the potentials, so that
+exactly the gauge field of \(U(1)^{\rm Q}_{\rm LL}\) stays massless: the
+photon, which here is not a mixture because the condensed pairs are
+neutral; the complete \(4\times4\) mass matrices are confirmed directly
+from the Bogoliubov matrices of the spinor field (Figure 26). Items
+{[}7{]} to {[}11{]} are verified by the checks SB-1 to SB-17 of the
+program \texttt{t2\_sfbs} (member \texttt{t2sfbs} of the workspace).
 
 \hypertarget{where-to-start-reading}{%
 \section{2. Where to start reading}\label{where-to-start-reading}}
@@ -565,8 +582,8 @@ of 9 \\
 \texttt{t2\_examples\_check.py} & 11 of 11 \\
 \texttt{test2/data/t2\_rs\_selftest\_checks.txt} & \texttt{t2\_solve} &
 5 of 5 \\
-\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 16 of
-16 \\
+\texttt{test2/data/t2\_sfbs\_checks.txt} & \texttt{t2\_sfbs} & 17 of
+17 \\
 \end{longtable}
 
 \hypertarget{conventions-in-one-place}{%
@@ -2222,7 +2239,7 @@ derivatives,
 \(Z^{\rm t}_{\rm LL}\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL})^\iota\rvert^2-Z^{\rm s}_{\rm LL}\sum_j\sum_\iota\lvert(\nabla^{\rm B}_{{\rm LL},j}\vec d_{\rm LL})^\iota\rvert^2\),
 so that
 \(\mathcal L^{\rm B}_{\rm LL}=\mathcal L^{\rm kin}_{\rm LL}-\Omega_{\rm LL}(\vec d_{\rm LL})\)
-& new & \texttt{Lagr\_kin} \\
+& new & \texttt{Lagr\_kin} \texttt{L\_kin} \\
 \(\mathsf N^{\rm g}_{\rm LL}(\vec d_{\rm LL})\),
 \(\mathsf N^{\rm v}_{\rm LL}(\vec d_{\rm LL})\);
 \(\vec w^{\rm n}_{\rm LL}\) & the contact matrix: the real symmetric
@@ -2297,6 +2314,56 @@ the positive number
 \(c^{\rm w}_{\rm LL}=(M^{\rm q}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2/4\)
 of the proof of Theorem 12.2 of the document of Test 2 & new &
 \texttt{Upsilon} \texttt{Upsilon\_1} \\
+\(\vec d^{\rm u}_{\rm LL}\) & the SFBS field in the unitary gauge, the
+column of the SFBSv parametrization,
+\((i\,c^{\rm n}_{{\rm LL},1},\,i\,c^{\rm n}_{{\rm LL},2},\,\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})\):
+the field after the gauge transformation that removes the three
+Goldstone fields & new & \\
+\(V^{\rm F}_{{\rm LL},p}\), \(V^\iota_{{\rm LL},p}\) & the gauge
+potentials in the unitary gauge, the vector fields of definite mass:
+\(V^{\rm F}_{{\rm LL},p}=A^{\rm F}_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},0}/g^{\rm F}_{\rm LL}\)
+and
+\(\sum_\iota V^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2=(\mathsf U^{\rm G}_{\rm LL})^\dagger\mathsf a_{{\rm LL},p}\mathsf U^{\rm G}_{\rm LL}-(i/g^{\rm v}_{\rm LL})(\partial_p(\mathsf U^{\rm G}_{\rm LL})^\dagger)\mathsf U^{\rm G}_{\rm LL}\);
+to first order
+\(V^\iota_{{\rm LL},p}=A^\iota_{{\rm LL},p}-\partial_p\vartheta^{\rm G}_{{\rm LL},\iota}/g^{\rm v}_{\rm LL}\)
+(\(\iota=1,2\)) and \(V^3_{{\rm LL},p}=A^3_{{\rm LL},p}\), the photon &
+new & \texttt{V} \texttt{V\^{}iota} \texttt{VF} \\
+\(W^\pm_{{\rm LL},p}\) & the charged massive vector fields,
+\((V^1_{{\rm LL},p}\mp iV^2_{{\rm LL},p})/\sqrt2\), of the electric
+charges \(\pm1\) & new & \texttt{W\_+} \texttt{W\_-} \\
+\(\mathsf M^{\rm t}_{\rm LL}\), \(\mathsf M^{\rm s}_{\rm LL}\) & the
+mass matrices of the time and of the space components of the four vector
+fields
+\((V^{\rm F}_{{\rm LL},p},V^1_{{\rm LL},p},V^2_{{\rm LL},p},V^3_{{\rm LL},p})\)
+in the vacuum: \(2Z^{\rm t}_{\rm LL}\) and \(2Z^{\rm s}_{\rm LL}\) times
+the contact matrix of the vacuum,
+\({\rm diag}(4(g^{\rm F}_{\rm LL})^2,(g^{\rm v}_{\rm LL})^2,(g^{\rm v}_{\rm LL})^2,0)(\Delta^{\rm vac}_{\rm LL})^2\);
+the quadratic Lagrangian contains one half of the first and minus one
+half of the second, each between the row and the column of the
+components & new & \\
+\(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\) & the rest masses of the
+charged vector fields \(W^\pm_{{\rm LL},p}\) and of the fermion-number
+vector field \(V^{\rm F}_{{\rm LL},p}\),
+\((M^{\rm W}_{\rm LL})^2=2Z^{\rm s}_{\rm LL}(g^{\rm v}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+and
+\((M^{\rm F}_{\rm LL})^2=8Z^{\rm s}_{\rm LL}(g^{\rm F}_{\rm LL})^2(\Delta^{\rm vac}_{\rm LL})^2\)
+(plain text \texttt{M\_W\_time}, \texttt{M\_F\_time}: the masses of the
+time components, with \(Z^{\rm t}_{\rm LL}\) in place of
+\(Z^{\rm s}_{\rm LL}\)) & new & \texttt{M\_W} \texttt{M\_F}
+\texttt{M\_W\_time} \texttt{M\_F\_time} \\
+\(\theta^{\rm mix}_{\rm LL}\) & the mixing angle: the angle between the
+massless gauge field (the null vector of the mass matrix) and the axis
+of the potential \(A^3_{{\rm LL},p}\) in the plane of
+\(A^{\rm F}_{{\rm LL},p}\) and \(A^3_{{\rm LL},p}\); zero in the vacuum,
+\(\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))\) at the non-unitary
+saddle point (plain text: the values found at the vacuum and at the
+saddle point, and the prediction) & new & \texttt{theta\_mix}
+\texttt{theta\_mix\_vacuum} \texttt{theta\_mix\_saddle}
+\texttt{theta\_mix\_pred} \\
+\(\mathcal L^{(2)}_{\rm LL}\) & the part of the second order, in the
+fields of SFBSv and the gauge potentials, of the Lagrangian (13.1) of
+Test 2 (the effective Lagrangian of the SFBS with the Yang-Mills and
+Maxwell terms) & new & \\
 \end{longtable}
 
 \end{document}

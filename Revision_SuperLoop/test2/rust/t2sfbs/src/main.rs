@@ -62,6 +62,23 @@
 //!         evolution of a small uniform pair field in the normal vacuum (G = 20) oscillates with the frequency M_B of the
 //!         pole of the SFBS propagator (the mass in the effective Klein-Gordon equation), and the conserved functional of
 //!         the evolution stays constant.
+//! Item [10], the kinetic Lagrangian of the SFBS (Section 12 of the document):
+//!   SB-15 the expansion of |nablaB d|^2 into the derivative term, the two currents and the contact matrix N_g; the 16
+//!         Bogoliubov eigenvalues of the condensed vacuum in a constant fermion-number vector potential a_F; the energy of the
+//!         vacuum in six constant potentials against the kinetic Lagrangian with the coefficients Z_t(Delta), Z_s(Delta) in
+//!         closed form (for the space component of the third isospin axis the surface term of the cutoff on the canonical
+//!         momentum); Z_t and Z_s from the Bogoliubov matrices against their closed forms at three gaps;
+//!   SB-16 the kernels of the six real directions of the field about the vacuum at zero wave number, from the eigenvectors of
+//!         the Bogoliubov matrices, against -omega^2 Upsilon (Goldstone) and (4 Delta^2 - omega^2) Upsilon (massive); no mixing;
+//!         the masses 0 and 2 Delta_vac below the threshold 2 M_q; the strict derivative expansion of the massive kernel; the
+//!         time-dependent mean-field oscillation of the gap at the frequency 2 Delta_vac.
+//! Item [11], the Higgs mechanism (Section 13 of the document):
+//!   SB-17 the unitary gauge: the kinetic Lagrangian of the SFBSv field with the potentials A equals that of the column
+//!         (i c_n1, i c_n2, Delta_vac + h_a) with the potentials V of (13.2), and its written-out form (13.3), (13.4); the
+//!         first order of V; the 4 x 4 mass matrices of the four gauge fields (time and space components) from the
+//!         Bogoliubov matrices against -2 Z_t N_g and 2 Z_s N_g, their eigenvalues and the null vector (the photon Av^3);
+//!         at the non-unitary saddle point the null vector of the unbroken generator T^3 - F/2, and the mixing angle against
+//!         the ratio of the gauge couplings; the longitudinal dispersion (13.9) of the massive vector fields.
 //!
 //! Output (folder test2/data): the report t2_sfbs_checks.txt, the fragments t2_sfbs_fragments.md (explicit matrices
 //! for the document) and the data files t2_sfbs_*.csv of the figures.
@@ -3350,6 +3367,555 @@ fn sb16(ch: &mut Checks, dir: &PathBuf) {
     );
 }
 
+/// the kinetic Lagrangian (12.1) at one point, from the field d, its four derivatives dd[p] = d_p d, the potentials
+/// AF_LL_p (af[p]) and Av_LL_p (av[p]), the couplings and the two stiffness coefficients
+fn lagr_kin(d: &[C64; 3], dd: &[[C64; 3]; 4], af: &[f64; 4], av: &[[f64; 3]; 4], gf: f64, gv: f64, zt: f64, zs: f64) -> f64 {
+    let mut l = 0.0;
+    for p in 0..4 {
+        let nb = nabla_b(&dd[p], d, af[p], &av[p], gf, gv);
+        let s: f64 = nb.iter().map(|z| z.norm_sqr()).sum();
+        l += if p == 0 { zt * s } else { -zs * s };
+    }
+    l
+}
+
+/// the contact matrix N_g (12.3) of a field d (rows and columns AF, Av^1, Av^2, Av^3)
+fn contact_matrix(d: &[C64; 3], gf: f64, gv: f64) -> [[f64; 4]; 4] {
+    let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+    let re = [d[0].re, d[1].re, d[2].re];
+    let im = [d[0].im, d[1].im, d[2].im];
+    // w_n = Re d x Im d
+    let w = [re[1] * im[2] - re[2] * im[1], re[2] * im[0] - re[0] * im[2], re[0] * im[1] - re[1] * im[0]];
+    let mut nm = [[0.0; 4]; 4];
+    nm[0][0] = 4.0 * gf * gf * n2;
+    for i in 0..3 {
+        nm[0][i + 1] = 4.0 * gf * gv * w[i];
+        nm[i + 1][0] = nm[0][i + 1];
+        for k in 0..3 {
+            let v = if i == k { n2 - d[i].norm_sqr() } else { -(d[i] * d[k].conj()).re };
+            nm[i + 1][k + 1] = gv * gv * v;
+        }
+    }
+    nm
+}
+
+/// the 4 x 4 matrix of the second derivatives of Omega(d) with respect to four constant potentials, in the variables
+/// x = (g_F AF, g_v Av^1, g_v Av^2, g_v Av^3) (the couplings times the potentials): their time components (space = false)
+/// or their components along x^3 (space = true; the cutoff on the canonical momentum q < Lambda); second differences at
+/// the steps s and 2s, Richardson
+fn hessian_pot(d: &[C64; 3], g: f64, m: f64, space: bool, nodes: &[(f64, f64, f64)], s: f64) -> [[f64; 4]; 4] {
+    let om = |x: [f64; 4]| -> f64 {
+        let pot = if space { Pot { f3: x[0], i3: [x[1], x[2], x[3]], ..POT0 } } else { Pot { f0: x[0], i0: [x[1], x[2], x[3]], ..POT0 } };
+        omega_pot(d, g, m, &pot, nodes)
+    };
+    let o0 = om([0.0; 4]);
+    let mut hs = [[0.0; 4]; 4];
+    for a in 0..4 {
+        let diag = |t: f64| -> f64 {
+            let mut xp = [0.0; 4];
+            xp[a] = t;
+            let mut xm = [0.0; 4];
+            xm[a] = -t;
+            (om(xp) - 2.0 * o0 + om(xm)) / (t * t)
+        };
+        hs[a][a] = (4.0 * diag(s) - diag(2.0 * s)) / 3.0;
+        for b in (a + 1)..4 {
+            let mixed = |t: f64| -> f64 {
+                let e = |ta: f64, tb: f64| -> f64 {
+                    let mut x = [0.0; 4];
+                    x[a] = ta;
+                    x[b] = tb;
+                    om(x)
+                };
+                (e(t, t) - e(t, -t) - e(-t, t) + e(-t, -t)) / (4.0 * t * t)
+            };
+            let v = (4.0 * mixed(s) - mixed(2.0 * s)) / 3.0;
+            hs[a][b] = v;
+            hs[b][a] = v;
+        }
+    }
+    hs
+}
+
+/// eigenvalues (ascending) and eigenvectors (columns) of a real symmetric 4 x 4 matrix
+fn eig4(hm: &[[f64; 4]; 4]) -> (Vec<f64>, [[f64; 4]; 4]) {
+    let mut cm = CMat::zeros(4);
+    for i in 0..4 {
+        for k in 0..4 {
+            cm.set(i, k, c(hm[i][k], 0.0));
+        }
+    }
+    let (ev, vecs) = eigh(&cm);
+    let mut v = [[0.0; 4]; 4];
+    for col in 0..4 {
+        // make the column real (eigh may return it times a phase)
+        let mut ph = C64::ONE;
+        for i in 0..4 {
+            if vecs.get(i, col).abs() > 0.3 {
+                ph = vecs.get(i, col).conj().scale(1.0 / vecs.get(i, col).abs());
+                break;
+            }
+        }
+        for i in 0..4 {
+            v[i][col] = (vecs.get(i, col) * ph).re;
+        }
+    }
+    (ev, v)
+}
+
+/// SB-17: the Higgs mechanism (item [11], Section 13): SFBSv inserted into the kinetic Lagrangian in the unitary gauge,
+/// the mass matrices of the four gauge fields from the Bogoliubov matrices, the null vector (the photon), the mixing at the
+/// non-unitary saddle point, the masses and the dispersion relations of the spectrum
+fn sb17(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let g = G_VAC;
+    let dvac = gap_mu0(g, m);
+    let mq = (m * m + dvac * dvac).sqrt();
+    let zt = z_t(mq);
+    let zs = z_s_cond(dvac, m);
+    let mut rng = Rng(271828);
+    // (i) the unitary gauge: for random SFBSv fields (large Goldstone angles), random first derivatives, potentials and
+    // couplings, the kinetic Lagrangian of the field (11.9) with the potentials A equals the kinetic Lagrangian of the column
+    // (i c_n1, i c_n2, Delta_vac + h_a) with the transformed potentials V (13.2), and that equals the written-out form (13.3)
+    // with the contact matrix (13.4)
+    let sfbsv = |f: &[f64; 6]| -> [C64; 3] {
+        let base = [c(0.0, f[4]), c(0.0, f[5]), c(dvac + f[3], 0.0)];
+        let r = adjoint(&su2(&[f[1], f[2], 0.0]));
+        let ph = C64::cis(2.0 * f[0]);
+        let mut out = [C64::ZERO; 3];
+        for i in 0..3 {
+            let mut z = C64::ZERO;
+            for k in 0..3 {
+                z += base[k].scale(r[i][k]);
+            }
+            out[i] = ph * z;
+        }
+        out
+    };
+    let eps = 1e-5;
+    let (mut ug_dev, mut form_dev, mut nm_dev, mut lin_dev) = (0.0f64, 0.0f64, 0.0f64, 0.0f64);
+    let mut lscale = 0.0f64;
+    for _ in 0..30 {
+        let gf = 0.9 + 0.6 * rng.unit();
+        let gv = 0.9 + 0.6 * rng.unit();
+        let f = [1.5 * rng.unit(), 1.5 * rng.unit(), 1.5 * rng.unit(), 0.1 * rng.unit(), 0.1 * rng.unit(), 0.1 * rng.unit()];
+        let mut df = [[0.0; 6]; 4];
+        let mut af = [0.0; 4];
+        let mut av = [[0.0; 3]; 4];
+        for p in 0..4 {
+            for k in 0..6 {
+                df[p][k] = 0.3 * rng.unit();
+            }
+            af[p] = 0.5 * rng.unit();
+            for i in 0..3 {
+                av[p][i] = 0.5 * rng.unit();
+            }
+        }
+        let d = sfbsv(&f);
+        let mut dd = [[C64::ZERO; 3]; 4];
+        for p in 0..4 {
+            let mut fp = f;
+            let mut fm = f;
+            for k in 0..6 {
+                fp[k] += eps * df[p][k];
+                fm[k] -= eps * df[p][k];
+            }
+            let (a, b) = (sfbsv(&fp), sfbsv(&fm));
+            for i in 0..3 {
+                dd[p][i] = (a[i] - b[i]).scale(0.5 / eps);
+            }
+        }
+        let l1 = lagr_kin(&d, &dd, &af, &av, gf, gv, zt, zs);
+        // the transformation (9.4) with thF = -thG0 and U = U_G^dag turns d into the column; the potentials go over into
+        // VF = AF - d_p thG0/g_F and v = W a W^dag - (i/g_v) (d_p W) W^dag, W = U_G^dag (2.16)
+        let wmat = |t1: f64, t2: f64| su2(&[t1, t2, 0.0]).dagger();
+        let w0 = wmat(f[1], f[2]);
+        let mut vf = [0.0; 4];
+        let mut vv = [[0.0; 3]; 4];
+        for p in 0..4 {
+            vf[p] = af[p] - df[p][0] / gf;
+            let dw = wmat(f[1] + eps * df[p][1], f[2] + eps * df[p][2]).sub(&wmat(f[1] - eps * df[p][1], f[2] - eps * df[p][2])).scale_r(0.5 / eps);
+            let mut at = CMat::zeros(2);
+            for i in 0..3 {
+                at = at.add(&sigma(i + 1).scale_r(0.5 * av[p][i]));
+            }
+            let vt = w0.mul(&at).mul(&w0.dagger()).sub(&dw.mul(&w0.dagger()).scale(c(0.0, 1.0 / gv)));
+            for i in 0..3 {
+                vv[p][i] = sigma(i + 1).mul(&vt).trace().re;
+            }
+            // to first order in the Goldstone angles the vector fields are A^iota - d_p thG_iota/g_v (iota = 1, 2) and A^3;
+            // compared at the small angles 1e-4 (below)
+        }
+        let du = [c(0.0, f[4]), c(0.0, f[5]), c(dvac + f[3], 0.0)];
+        let mut ddu = [[C64::ZERO; 3]; 4];
+        for p in 0..4 {
+            ddu[p] = [c(0.0, df[p][4]), c(0.0, df[p][5]), c(df[p][3], 0.0)];
+        }
+        let l2 = lagr_kin(&du, &ddu, &vf, &vv, gf, gv, zt, zs);
+        // (13.3): Z_t (...)_0 - Z_s sum_j (...)_j with (d h)^2 + (d c1)^2 + (d c2)^2 + 2 g_v V^3 (c1 d c2 - c2 d c1) + V N_g V
+        let nm = contact_matrix(&du, gf, gv);
+        let (h, c1, c2) = (f[3], f[4], f[5]);
+        let a = dvac + h;
+        let nm13 = [
+            [4.0 * gf * gf * (c1 * c1 + c2 * c2 + a * a), -4.0 * gf * gv * a * c2, 4.0 * gf * gv * a * c1, 0.0],
+            [-4.0 * gf * gv * a * c2, gv * gv * (c2 * c2 + a * a), -gv * gv * c1 * c2, 0.0],
+            [4.0 * gf * gv * a * c1, -gv * gv * c1 * c2, gv * gv * (c1 * c1 + a * a), 0.0],
+            [0.0, 0.0, 0.0, gv * gv * (c1 * c1 + c2 * c2)],
+        ];
+        let mut l3 = 0.0;
+        for p in 0..4 {
+            let x = [vf[p], vv[p][0], vv[p][1], vv[p][2]];
+            let mut quad = 0.0;
+            for i in 0..4 {
+                for k in 0..4 {
+                    quad += x[i] * nm13[i][k] * x[k];
+                    nm_dev = nm_dev.max((nm[i][k] - nm13[i][k]).abs());
+                }
+            }
+            let s = df[p][3].powi(2) + df[p][4].powi(2) + df[p][5].powi(2) + 2.0 * gv * vv[p][2] * (c1 * df[p][5] - c2 * df[p][4]) + quad;
+            l3 += if p == 0 { zt * s } else { -zs * s };
+        }
+        ug_dev = ug_dev.max((l1 - l2).abs());
+        form_dev = form_dev.max((l2 - l3).abs());
+        lscale = lscale.max(l1.abs());
+    }
+    // the first order of the vector fields: for small Goldstone angles and small potentials (both of the first order),
+    // V^iota = A^iota - d_p thG_iota/g_v (iota = 1, 2) and V^3 = A^3, up to terms of the second order
+    for _ in 0..20 {
+        let gv = 1.1;
+        let (t1, t2) = (1e-4 * rng.unit(), 1e-4 * rng.unit());
+        let (d1, d2) = (1e-4 * rng.unit(), 1e-4 * rng.unit());
+        // the potentials are fields of the same (first) order as the angles
+        let av = [1e-4 * rng.unit(), 1e-4 * rng.unit(), 1e-4 * rng.unit()];
+        let wmat = |a1: f64, a2: f64| su2(&[a1, a2, 0.0]).dagger();
+        let w0 = wmat(t1, t2);
+        let h = 1e-5;
+        let dw = wmat(t1 + h * d1, t2 + h * d2).sub(&wmat(t1 - h * d1, t2 - h * d2)).scale_r(0.5 / h);
+        let mut at = CMat::zeros(2);
+        for i in 0..3 {
+            at = at.add(&sigma(i + 1).scale_r(0.5 * av[i]));
+        }
+        let vt = w0.mul(&at).mul(&w0.dagger()).sub(&dw.mul(&w0.dagger()).scale(c(0.0, 1.0 / gv)));
+        let v = [sigma(1).mul(&vt).trace().re, sigma(2).mul(&vt).trace().re, sigma(3).mul(&vt).trace().re];
+        let pred = [av[0] - d1 / gv, av[1] - d2 / gv, av[2]];
+        for i in 0..3 {
+            // relative to the size 1e-4 of the angles: the remainder is of the second order (about 1e-4 relative)
+            lin_dev = lin_dev.max((v[i] - pred[i]).abs() / 1e-4);
+        }
+    }
+    // (ii) the mass matrices from the Bogoliubov matrices at the vacuum: the time components (isotropic integrand: one
+    // angular node) and the space components along x^3 (8 angular nodes), in the variables x (unit couplings), against
+    // -2 Z_t N_g(vacuum) and 2 Z_s N_g(vacuum) (for the space component of the third-axis potential the canonical cutoff
+    // gives the surface term 2 Lambda^3 (1/eps_Lambda - 1/E_Lambda)/(12 pi^2), zero with the gauge-covariant cutoff)
+    let nodes_iso = sphere_nodes(30, 10, 1, &[]);
+    let nodes_sph = sphere_nodes(30, 10, 8, &[]);
+    let d0 = [C64::ZERO, C64::ZERO, c(dvac, 0.0)];
+    let ht = hessian_pot(&d0, g, m, false, &nodes_iso, 0.005);
+    let hsp = hessian_pot(&d0, g, m, true, &nodes_sph, 0.005);
+    let el = (LAMBDA * LAMBDA + m * m).sqrt();
+    let eel = (LAMBDA * LAMBDA + mq * mq).sqrt();
+    let surf = LAMBDA.powi(3) * (1.0 / el - 1.0 / eel) / (12.0 * PI * PI);
+    let n_unit = contact_matrix(&d0, 1.0, 1.0);
+    let mut pt = [[0.0; 4]; 4];
+    let mut ps = [[0.0; 4]; 4];
+    for i in 0..4 {
+        for k in 0..4 {
+            pt[i][k] = -2.0 * zt * n_unit[i][k];
+            ps[i][k] = 2.0 * zs * n_unit[i][k];
+        }
+    }
+    ps[3][3] += 2.0 * surf;
+    let scale_t = 8.0 * zt * dvac * dvac;
+    let mut mt_dev = 0.0f64;
+    let mut ms_dev = 0.0f64;
+    for i in 0..4 {
+        for k in 0..4 {
+            mt_dev = mt_dev.max((ht[i][k] - pt[i][k]).abs() / scale_t);
+            ms_dev = ms_dev.max((hsp[i][k] - ps[i][k]).abs() / scale_t);
+        }
+    }
+    // with the couplings (g_F, g_v) = (0.7, 1.3): the mass matrices in the potentials, H_ab = g_a g_b H0_ab, their
+    // eigenvalues and the null vector of the time matrix (the photon): (0, 0, 0, 1)
+    let (gf_x, gv_x) = (0.7, 1.3);
+    let gvec = [gf_x, gv_x, gv_x, gv_x];
+    let mut htg = [[0.0; 4]; 4];
+    for i in 0..4 {
+        for k in 0..4 {
+            htg[i][k] = gvec[i] * gvec[k] * ht[i][k];
+        }
+    }
+    let (evt, vt) = eig4(&htg);
+    // the eigenvalue closest to zero
+    let mut i0 = 0;
+    for i in 0..4 {
+        if evt[i].abs() < evt[i0].abs() {
+            i0 = i;
+        }
+    }
+    let null_t = [vt[0][i0], vt[1][i0], vt[2][i0], vt[3][i0]];
+    let photon_dev = (1.0 - null_t[3].abs()).abs().max(null_t[0].abs()).max(null_t[1].abs()).max(null_t[2].abs());
+    let mut evt_sorted = evt.clone();
+    evt_sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let pred_t = {
+        let mut v = vec![-8.0 * zt * gf_x * gf_x * dvac * dvac, -2.0 * zt * gv_x * gv_x * dvac * dvac, -2.0 * zt * gv_x * gv_x * dvac * dvac, 0.0];
+        v.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        v
+    };
+    let mut ev_dev = 0.0f64;
+    for i in 0..4 {
+        ev_dev = ev_dev.max((evt_sorted[i] - pred_t[i]).abs() / scale_t);
+    }
+    // (iii) the non-unitary saddle point (Delta_vac/2)(1, i, 0): the time matrix from the Bogoliubov matrices; its null vector
+    // in the variables x is (1, 0, 0, -2)/5^(1/2) (the unbroken generator T^3 - F/2), and its corner entry is -4 Z_t Delta_vac^2
+    let dsad = [c(0.5 * dvac, 0.0), c(0.0, 0.5 * dvac), C64::ZERO];
+    let hsad = hessian_pot(&dsad, g, m, false, &nodes_iso, 0.005);
+    let (evs, vs) = eig4(&hsad);
+    let mut j0 = 0;
+    for i in 0..4 {
+        if evs[i].abs() < evs[j0].abs() {
+            j0 = i;
+        }
+    }
+    let ns = [vs[0][j0], vs[1][j0], vs[2][j0], vs[3][j0]];
+    let sgn = if ns[0] >= 0.0 { 1.0 } else { -1.0 };
+    let pred_ns = [1.0 / 5f64.sqrt(), 0.0, 0.0, -2.0 / 5f64.sqrt()];
+    let mut sad_dev = 0.0f64;
+    for i in 0..4 {
+        sad_dev = sad_dev.max((sgn * ns[i] - pred_ns[i]).abs());
+    }
+    let sad_ff = ((hsad[0][0] + 4.0 * zt * dvac * dvac) / (4.0 * zt * dvac * dvac)).abs();
+    let sad_null = evs[j0].abs() / scale_t;
+    // the mixing angle of the massless field against the ratio g_F/g_v: at the vacuum 0, at the saddle arctan(g_v/(2 g_F));
+    // from the null vectors of the matrices with the couplings, H_ab = g_a g_b H0_ab
+    let mut mix = Csv::new(
+        "the mixing angle theta_mix of the massless gauge field (the angle between it and the axis of Av^3 in the plane of AF and Av^3) against the ratio of the couplings g_F/g_v, from the null vectors of the time mass matrices computed from the Bogoliubov matrices at the vacuum (0, 0, Delta_vac) and at the non-unitary saddle point (Delta_vac/2)(1, i, 0), and the prediction arctan(g_v/(2 g_F)) of the unbroken generator T^3 - F/2 of the saddle (Test 2, item 11, Figure 26(d))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac))],
+        "ratio_gF_gv,theta_mix_vacuum,theta_mix_saddle,theta_mix_pred",
+    );
+    let mut mix_dev = 0.0f64;
+    let mut vac_mix_max = 0.0f64;
+    for i in 0..=24 {
+        let r = 0.1 * 10f64.powf(2.0 * i as f64 / 24.0); // 0.1 to 10, logarithmic
+        let gv1 = 1.0;
+        let gf1 = r * gv1;
+        let gg = [gf1, gv1, gv1, gv1];
+        let angle = |h0: &[[f64; 4]; 4]| -> f64 {
+            let mut hm = [[0.0; 4]; 4];
+            for a in 0..4 {
+                for b in 0..4 {
+                    hm[a][b] = gg[a] * gg[b] * h0[a][b];
+                }
+            }
+            let (ev, v) = eig4(&hm);
+            let mut k0 = 0;
+            for k in 0..4 {
+                if ev[k].abs() < ev[k0].abs() {
+                    k0 = k;
+                }
+            }
+            // the null vector in the potentials (AF, Av^1, Av^2, Av^3); its angle to the Av^3 axis
+            let n = [v[0][k0], v[1][k0], v[2][k0], v[3][k0]];
+            let nrm = (n[0] * n[0] + n[1] * n[1] + n[2] * n[2] + n[3] * n[3]).sqrt();
+            (n[3].abs() / nrm).min(1.0).acos()
+        };
+        let a_vac = angle(&ht);
+        let a_sad = angle(&hsad);
+        let pred = (gv1 / (2.0 * gf1)).atan();
+        mix_dev = mix_dev.max((a_sad - pred).abs());
+        vac_mix_max = vac_mix_max.max(a_vac);
+        mix.row(&[format!("{:.6}", r), format!("{:.10}", a_vac), format!("{:.10}", a_sad), format!("{:.10}", pred)]);
+    }
+    mix.write(dir, "t2_sfbs_mixing.csv");
+    // the mass matrices as a data file (unit couplings, the variables x)
+    let mut mm = Csv::new(
+        "the 4 x 4 matrices of the second derivatives of Omega with respect to four constant potentials (in the variables g_F AF, g_v Av^1, g_v Av^2, g_v Av^3; rows and columns 0 to 3) from the Bogoliubov matrices, and the prediction of the kinetic Lagrangian: time components at the vacuum (-2 Z_t N_g), space components at the vacuum (2 Z_s N_g, with the cutoff on the canonical momentum, whose surface term appears in the entry (3, 3)), and time components at the non-unitary saddle point (prediction -2 Z_t N_g of the saddle field, exact for the entries of AF and Av^3) (Test 2, item 11, Figure 26(a))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("Z_t", format!("{:.10e}", zt)), ("Z_s", format!("{:.10e}", zs))],
+        "matrix,row,column,from_bdg,predicted",
+    );
+    let nsad = contact_matrix(&dsad, 1.0, 1.0);
+    for (name, hmat, pmat) in [("time_vacuum", &ht, pt), ("space_vacuum_canonical", &hsp, ps), ("time_saddle", &hsad, {
+        let mut q = [[0.0; 4]; 4];
+        for i in 0..4 {
+            for k in 0..4 {
+                q[i][k] = -2.0 * zt * nsad[i][k];
+            }
+        }
+        q
+    })] {
+        for i in 0..4 {
+            for k in 0..4 {
+                mm.row(&[name.to_string(), format!("{}", i), format!("{}", k), format!("{:.10e}", hmat[i][k]), format!("{:.10e}", pmat[i][k])]);
+            }
+        }
+    }
+    mm.write(dir, "t2_sfbs_mass_matrices.csv");
+    // (iv) the masses of the vector fields (unit couplings) against the coupling G, with 2 Delta_vac and the threshold 2 M_q
+    let mut vm = Csv::new(
+        "the masses of the spectrum of the Higgs mechanism at mu = 0 (m = 0.2, Lambda = 1) against the coupling G, for the gauge couplings g_F = g_v = 1: the rest masses M_W = (2 Z_s)^(1/2) g_v Delta_vac of the two charged vector fields and M_F = 2 (2 Z_s)^(1/2) g_F Delta_vac of the fermion-number vector field, the masses (2 Z_t)^(1/2) g_v Delta_vac and 2 (2 Z_t)^(1/2) g_F Delta_vac of their time components, the mass 2 Delta_vac of the three massive scalar fields, and the pair-breaking threshold 2 M_q; the photon is massless (Test 2, item 11, Figure 26(b))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("g_F", "1".to_string()), ("g_v", "1".to_string())],
+        "G,Delta_vac,M_W,M_F,M_W_time,M_F_time,mass_massive,threshold",
+    );
+    let gc = 1.0 / inv_gcrit(m);
+    for i in 0..=60 {
+        let gg = gc * 1.0005 + (30.0 - gc * 1.0005) * i as f64 / 60.0;
+        let dl = gap_mu0(gg, m);
+        let mmq = (m * m + dl * dl).sqrt();
+        let (z1, z2) = (z_t(mmq), z_s_cond(dl, m));
+        vm.row(&[
+            format!("{:.6}", gg),
+            format!("{:.10}", dl),
+            format!("{:.10}", (2.0 * z2).sqrt() * dl),
+            format!("{:.10}", 2.0 * (2.0 * z2).sqrt() * dl),
+            format!("{:.10}", (2.0 * z1).sqrt() * dl),
+            format!("{:.10}", 2.0 * (2.0 * z1).sqrt() * dl),
+            format!("{:.10}", 2.0 * dl),
+            format!("{:.10}", 2.0 * mmq),
+        ]);
+    }
+    vm.write(dir, "t2_sfbs_vector_masses.csv");
+    // (v) the dispersion relations at G = 22.5 (g_F = g_v = 1): the photon, the transverse and the longitudinal modes of the
+    // massive vector fields (13.9), the massive scalar fields (12.9) and the pair-breaking threshold
+    let m_w = (2.0 * zs).sqrt() * dvac;
+    let m_f = 2.0 * m_w;
+    let vel2 = zs / zt;
+    let mut dsp = Csv::new(
+        "the dispersion relations of the spectrum of the Higgs mechanism at mu = 0, G = 22.5, g_F = g_v = 1: frequency against wave number for the photon, the transverse and the longitudinal modes of the charged vector fields (W) and of the fermion-number vector field (F), the three massive scalar fields, and the pair-breaking threshold (Test 2, item 11, Figure 26(c))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", format!("{}", g)), ("Delta_vac", format!("{:.10}", dvac)), ("M_W", format!("{:.10}", m_w)), ("M_F", format!("{:.10}", m_f)), ("Z_s_over_Z_t", format!("{:.10}", vel2))],
+        "k_B,mode,omega_B",
+    );
+    for i in 0..=60 {
+        let k = 0.01 * i as f64;
+        let rows = [
+            ("photon", k),
+            ("W_transverse", (k * k + m_w * m_w).sqrt()),
+            ("W_longitudinal", (m_w * m_w + vel2 * k * k).sqrt()),
+            ("F_transverse", (k * k + m_f * m_f).sqrt()),
+            ("F_longitudinal", (m_f * m_f + vel2 * k * k).sqrt()),
+            ("massive_scalars", (4.0 * dvac * dvac + vel2 * k * k).sqrt()),
+            ("threshold", 2.0 * (mq * mq + 0.25 * k * k).sqrt()),
+        ];
+        for (name, w) in rows {
+            dsp.row(&[format!("{:.4}", k), name.to_string(), format!("{:.10}", w)]);
+        }
+    }
+    dsp.write(dir, "t2_sfbs_higgs_dispersion.csv");
+    // the longitudinal dispersion (13.9) from the 2 x 2 equations of the time and the longitudinal component (13.6) at the
+    // wave number k: omega^2 = M_s^2 (k^2 + M_t^2)/M_t^2; compared with a direct solution of the determinant
+    let (ms2, mt2) = (2.0 * zs * dvac * dvac, 2.0 * zt * dvac * dvac);
+    let mut long_dev = 0.0f64;
+    for i in 1..=10 {
+        let k = 0.05 * i as f64;
+        // det [[k^2 + Mt^2, k w], [k w, w^2 - Ms^2]] = 0 for the amplitudes (A0, A) (from (13.6)); bisection in w^2
+        let det = |w2: f64| (k * k + mt2) * (w2 - ms2) - k * k * w2;
+        let (mut lo, mut hi) = (0.0, 10.0);
+        for _ in 0..200 {
+            let mid = 0.5 * (lo + hi);
+            if det(lo) * det(mid) <= 0.0 {
+                hi = mid;
+            } else {
+                lo = mid;
+            }
+        }
+        let w2 = 0.5 * (lo + hi);
+        long_dev = long_dev.max(((w2 - (ms2 + vel2 * k * k)) / ms2).abs());
+    }
+    let ok = ug_dev / lscale.max(1e-30) < 1e-8
+        && form_dev / lscale.max(1e-30) < 1e-12
+        && nm_dev < 1e-14
+        && lin_dev < 1e-3
+        && mt_dev < 1e-6
+        && ms_dev < 1e-5
+        && photon_dev < 1e-6
+        && ev_dev < 1e-6
+        && sad_dev < 1e-6
+        && sad_ff < 1e-6
+        && sad_null < 1e-6
+        && mix_dev < 1e-5
+        && vac_mix_max < 1e-5
+        && long_dev < 1e-10;
+    ch.add(
+        "SB-17",
+        "the Higgs mechanism: for 30 random SFBSv fields (Goldstone angles up to 1.5), first derivatives, potentials and couplings, the kinetic Lagrangian (12.1) of the field (11.9) with the potentials equals the kinetic Lagrangian of the column (i c_n1, i c_n2, Delta_vac + h_a) with the potentials V of the unitary gauge (13.2) (relative tol 1e-8, central differences), and that equals the written-out form (13.3) with the contact matrix (13.4) (tol 1e-12); to first order in the angles and the potentials V^iota = A^iota - d_p thG_iota/g_v (iota = 1, 2), V^3 = A^3 (tol 1e-3 relative to their size 1e-4); the 4 x 4 matrices of the second derivatives of the vacuum energy with respect to four constant potentials, from the Bogoliubov matrices at G = 22.5, equal -2 Z_t N_g (time) and 2 Z_s N_g (space; the canonical cutoff adds its surface term to the entry of Av^3) (tol 1e-6 and 1e-5 relative to 8 Z_t Delta_vac^2); with the couplings (0.7, 1.3) the time matrix has the eigenvalues -8 Z_t g_F^2 Delta_vac^2, -2 Z_t g_v^2 Delta_vac^2 (twice) and 0, with the null vector Av^3 (the photon) (tol 1e-6); at the non-unitary saddle point (Delta_vac/2)(1, i, 0) the null vector is (1, 0, 0, -2)/5^(1/2) in the variables (g_F AF, g_v Av), the unbroken generator T^3 - F/2, and the corner entry is -4 Z_t Delta_vac^2 (tol 1e-6); the mixing angle of the massless field is 0 at the vacuum and arctan(g_v/(2 g_F)) at the saddle for 25 ratios of the couplings (tol 1e-5); the longitudinal dispersion (13.9) solves the equations of the time and the longitudinal component from (13.6) (tol 1e-10)",
+        ok,
+        format!(
+            "unitary gauge {} (relative to the largest |L_kin| {:.3}); written-out form {}; contact matrix (13.4) {}; first order of V {}; time matrix at the vacuum {}; space matrix {}; eigenvalues {}; photon null vector {} (null vector ({:.2e}, {:.2e}, {:.2e}, {:.10})); time matrix at the vacuum (unit couplings): diagonal {:.8e} {:.8e} {:.8e} {:.3e} against {:.8e} {:.8e} {:.8e} 0; space matrix: diagonal {:.8e} {:.8e} {:.8e} {:.8e} against {:.8e} {:.8e} {:.8e} {:.8e} (surface term {:.8e}); largest off-diagonal entries {:.1e} (time) {:.1e} (space); saddle: null vector ({:.8}, {:.1e}, {:.1e}, {:.8}) against ({:.8}, 0, 0, {:.8}), its eigenvalue {}, corner entry {:.8e} against {:.8e}, other entries {:.8e} (AF Av^3), {:.8e} (Av^3 Av^3), {:.8e}, {:.8e} (Av^1, Av^2); mixing angle {} (saddle), largest at the vacuum {}; masses for g_F = g_v = 1: M_W = {:.8}, M_F = {:.8}, time components {:.8}, {:.8}; 2 Delta_vac = {:.8}, 2 M_q = {:.8}; longitudinal dispersion {}",
+            sci(ug_dev / lscale.max(1e-30)),
+            lscale,
+            sci(form_dev / lscale.max(1e-30)),
+            sci(nm_dev),
+            sci(lin_dev),
+            sci(mt_dev),
+            sci(ms_dev),
+            sci(ev_dev),
+            sci(photon_dev),
+            null_t[0],
+            null_t[1],
+            null_t[2],
+            null_t[3],
+            ht[0][0],
+            ht[1][1],
+            ht[2][2],
+            ht[3][3],
+            pt[0][0],
+            pt[1][1],
+            pt[2][2],
+            hsp[0][0],
+            hsp[1][1],
+            hsp[2][2],
+            hsp[3][3],
+            ps[0][0],
+            ps[1][1],
+            ps[2][2],
+            ps[3][3],
+            2.0 * surf,
+            {
+                let mut x = 0.0f64;
+                for i in 0..4 {
+                    for k in 0..4 {
+                        if i != k {
+                            x = x.max(ht[i][k].abs());
+                        }
+                    }
+                }
+                x
+            },
+            {
+                let mut x = 0.0f64;
+                for i in 0..4 {
+                    for k in 0..4 {
+                        if i != k {
+                            x = x.max(hsp[i][k].abs());
+                        }
+                    }
+                }
+                x
+            },
+            sgn * ns[0],
+            sgn * ns[1],
+            sgn * ns[2],
+            sgn * ns[3],
+            pred_ns[0],
+            pred_ns[3],
+            sci(sad_null),
+            hsad[0][0],
+            -4.0 * zt * dvac * dvac,
+            hsad[0][3],
+            hsad[3][3],
+            hsad[1][1],
+            hsad[2][2],
+            sci(mix_dev),
+            sci(vac_mix_max),
+            m_w,
+            m_f,
+            mt2.sqrt(),
+            2.0 * mt2.sqrt(),
+            2.0 * dvac,
+            2.0 * mq,
+            sci(long_dev)
+        ),
+    );
+}
+
 fn main() {
     let dir = data_dir();
     let mut ch = Checks { title: "Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)".into(), items: vec![] };
@@ -3384,6 +3950,8 @@ fn main() {
     // item [10]
     sb15(&mut ch, &dir);
     sb16(&mut ch, &dir);
+    // item [11]
+    sb17(&mut ch, &dir);
     let _ = (lift2, LAMBDA, d_vac_q);
     fr.write(&dir.join("t2_sfbs_fragments.md"));
     let ok = ch.write(&dir.join("t2_sfbs_checks.txt"));

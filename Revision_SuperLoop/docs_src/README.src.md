@@ -119,7 +119,16 @@ derived exactly, in closed form, from the energy of the vacuum in constant gauge
 the field are computed exactly at zero wave number, so that the three Goldstone fields are massless and the amplitude field and the
 two non-unitary fields have the mass $2\Delta^{\rm vac}_{\rm LL}$, below the pair-breaking threshold, confirmed by the
 time-dependent mean-field equations; and the difference of the two coefficients is traced to a surface term of the momentum
-cutoff, which a Lorentz-invariant regularization removes (Figure 25). Items [7] to [10] are verified by the checks SB-1 to
+cutoff, which a Lorentz-invariant regularization removes (Figure 25). Its twelfth answer (item [11]) gives mass to the Goldstone
+bosons: inserting SFBSv into the kinetic Lagrangian, a gauge transformation (the unitary gauge) removes the three Goldstone fields
+exactly, and each reappears as the longitudinal polarization of the gauge field of its broken generator; the kinetic Lagrangian in
+the unitary gauge is written out exactly with its contact matrix; to the second order the mass matrices of the four gauge fields are
+diagonal, with the masses $M^{\rm F}_{\rm LL}$ of the fermion-number vector field and $M^{\rm W}_{\rm LL}$ of the two charged vector fields
+$W^\pm_{{\rm LL},p}$, and one massless field; the surviving group is $O(2)$, whose connected part is the group $U(1)^{\rm Q}_{\rm LL}$ of the
+electric charge, $U(1)_{\rm em}$, and it is proved that the mass matrix is the squared length of the change of the vacuum under the gauge
+transformation of the potentials, so that exactly the gauge field of $U(1)^{\rm Q}_{\rm LL}$ stays massless: the photon, which here is
+not a mixture because the condensed pairs are neutral; the complete $4\times4$ mass matrices are confirmed directly from the Bogoliubov
+matrices of the spinor field (Figure 26). Items [7] to [11] are verified by the checks SB-1 to
 SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
 # 2. Where to start reading

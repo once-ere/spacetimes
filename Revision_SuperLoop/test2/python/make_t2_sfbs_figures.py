@@ -38,6 +38,13 @@ Fermi momentum (mu^2 - m^2)^(1/2) that marks a position on an axis).  Output, in
                       potentials; (b) Z_t and Z_s against the gap; (c) the kernels of the six directions at zero wave
                       number; (d) the time-dependent mean-field evolution of the gap; (e) its spectrum; (f) the masses
                       of the massive fields against the coupling
+  fig_t2_sfbs_higgs   item [11] (check SB-17): (a) the mass terms of the four gauge fields at the vacuum: the diagonal
+                      entries of the matrices of the second derivatives of the vacuum energy with respect to constant
+                      potentials (time components: minus the matrix; space components), from the Bogoliubov matrices
+                      (markers) and from the kinetic Lagrangian (bars); (b) the masses of the spectrum against the
+                      coupling G (gauge couplings 1); (c) the dispersion relations of the spectrum at G = 22.5; (d) the
+                      mixing angle of the massless gauge field against the ratio of the gauge couplings, at the vacuum
+                      and at the non-unitary saddle point
 
 Colors: the categorical colors of the project in a fixed order (Figure 21: blue for the vacuum, orange for the Fermi
 sea; Figure 22: blue for the frequency dependence or the coupling G = 21, orange for the wave-number dependence or
@@ -534,12 +541,105 @@ def fig_kinetic():
     save(fig, "fig_t2_sfbs_kinetic")
 
 
+def fig_higgs():
+    """Figure 26: the Higgs mechanism (item [11])."""
+    mm = rows("t2_sfbs_mass_matrices.csv")
+    vm = rows("t2_sfbs_vector_masses.csv")
+    dsp = rows("t2_sfbs_higgs_dispersion.csv")
+    mx = rows("t2_sfbs_mixing.csv")
+    fig, axs = plt.subplots(2, 2, figsize=(13.0, 10.0))
+    (ax, bx), (cx, dx) = axs
+    # (a) the diagonal entries of the mass matrices (unit couplings), in units of 10^-3
+    names = ["$A^{\\rm F}_{{\\rm LL},p}$", "$A^1_{{\\rm LL},p}$", "$A^2_{{\\rm LL},p}$", "$A^3_{{\\rm LL},p}$"]
+    sc = 1e3
+    def diag(name, key):
+        out = []
+        for i in range(4):
+            r = [x for x in mm if x["matrix"] == name and int(x["row"]) == i and int(x["column"]) == i][0]
+            out.append(float(r[key]))
+        return out
+    t_bdg = [-v for v in diag("time_vacuum", "from_bdg")]
+    t_pre = [-v for v in diag("time_vacuum", "predicted")]
+    s_bdg = diag("space_vacuum_canonical", "from_bdg")
+    s_pre = diag("space_vacuum_canonical", "predicted")
+    xs = list(range(4))
+    w = 0.36
+    ax.bar([x - w / 2 for x in xs], [sc * v for v in t_pre], width=w, color=BLUE, alpha=0.55, edgecolor=BLUE,
+           label="time components: $2Z^{\\rm t}_{\\rm LL}$ times (12.4)")
+    ax.bar([x + w / 2 for x in xs[:3]], [sc * v for v in s_pre[:3]], width=w, color=ORANGE, alpha=0.55, edgecolor=ORANGE,
+           label="space components: $2Z^{\\rm s}_{\\rm LL}$ times (12.4)")
+    ax.bar([3 + w / 2], [sc * s_pre[3]], width=w, color="white", edgecolor=GREY, hatch="///",
+           label="space, $A^3_{{\\rm LL},p}$: surface term of the canonical cutoff")
+    ax.plot([x - w / 2 for x in xs], [sc * v for v in t_bdg], "o", ms=8, color=BLUE, mec=INK, label="from the Bogoliubov matrices")
+    ax.plot([x + w / 2 for x in xs], [sc * v for v in s_bdg], "o", ms=8, color=ORANGE, mec=INK)
+    ax.annotate("the photon: 0", xy=(3 - w / 2, 0.0), xytext=(2.35, 4.2), color=INK, fontsize=10,
+                arrowprops=dict(arrowstyle="->", color=MUTED, lw=1.0))
+    ax.set_xticks(xs)
+    ax.set_xticklabels(names, fontsize=12)
+    ax.set_ylabel("diagonal of $\\mathsf{M}^{\\rm t}_{\\rm LL}$ and $\\mathsf{M}^{\\rm s}_{\\rm LL}$, units of $10^{-3}$")
+    ax.set_title("(a) the mass terms of the four gauge fields in the vacuum", fontsize=11, color=INK)
+    ax.legend(loc="upper right", fontsize=8.6, frameon=False)
+    ax.grid(color=GRID, lw=0.6, axis="y")
+    ax.set_ylim(0, 11.5)
+    # (b) the masses of the spectrum against the coupling
+    gg = col(vm, "G")
+    bx.plot(gg, col(vm, "mass_massive"), color=ORANGE, lw=2.2, label="$2\\Delta^{\\rm vac}_{\\rm LL}$: $h^{\\rm a}_{\\rm LL}$, $c^{\\rm n}_{{\\rm LL},1}$, $c^{\\rm n}_{{\\rm LL},2}$")
+    bx.plot(gg, col(vm, "M_F"), color=AQUA, lw=2.0, label="$M^{\\rm F}_{\\rm LL}$: vector field of the fermion number")
+    bx.plot(gg, col(vm, "M_F_time"), color=AQUA, lw=1.2, ls="--", label="its time component, $(2Z^{\\rm t}_{\\rm LL})^{1/2}2g^{\\rm F}_{\\rm LL}\\Delta^{\\rm vac}_{\\rm LL}$")
+    bx.plot(gg, col(vm, "M_W"), color=BLUE, lw=2.0, label="$M^{\\rm W}_{\\rm LL}$: the two charged vector fields")
+    bx.plot(gg, col(vm, "M_W_time"), color=BLUE, lw=1.2, ls="--", label="their time components")
+    bx.plot(gg, [0.0 for _ in gg], color=INK, lw=2.0, label="the photon $V^3_{{\\rm LL},p}$: 0")
+    bx.plot(gg, col(vm, "threshold"), color=GREY, lw=1.6, ls=":", label="pair-breaking threshold $2M^{\\rm q}_{\\rm LL}$")
+    bx.axvline(22.5, color=GREY, lw=0.9, ls="--")
+    bx.set_xlabel("coupling $G_{\\rm LL}$ (gauge couplings $g^{\\rm F}_{\\rm LL}=g^{\\rm v}_{\\rm LL}=1$)")
+    bx.set_ylabel("mass")
+    bx.set_title("(b) the spectrum of the Higgs mechanism against the coupling", fontsize=11, color=INK)
+    bx.legend(loc="upper left", fontsize=8.4, frameon=False)
+    bx.grid(color=GRID, lw=0.6)
+    bx.set_ylim(-0.03, 1.6)
+    # (c) the dispersion relations at G = 22.5
+    styles = (("photon", INK, "-", "photon: $\\omega^{\\rm B}_{\\rm LL}=k^{\\rm B}_{\\rm LL}$"),
+              ("W_transverse", BLUE, "-", "charged vector fields, transverse"),
+              ("W_longitudinal", BLUE, "--", "charged vector fields, longitudinal (13.9)"),
+              ("F_transverse", AQUA, "-", "fermion-number vector field, transverse"),
+              ("F_longitudinal", AQUA, "--", "fermion-number vector field, longitudinal (13.9)"),
+              ("massive_scalars", ORANGE, "-", "$h^{\\rm a}_{\\rm LL}$, $c^{\\rm n}_{{\\rm LL},1}$, $c^{\\rm n}_{{\\rm LL},2}$ (12.9)"),
+              ("threshold", GREY, ":", "pair-breaking threshold"))
+    for key, colr, ls, lab in styles:
+        sel = [r for r in dsp if r["mode"] == key]
+        cx.plot(col(sel, "k_B"), col(sel, "omega_B"), color=colr, ls=ls, lw=1.8, label=lab)
+    cx.set_xlim(0, 0.6)
+    cx.set_ylim(0, 1.08)
+    cx.set_xlabel("wave number $k^{\\rm B}_{\\rm LL}$")
+    cx.set_ylabel("frequency $\\omega^{\\rm B}_{\\rm LL}$")
+    cx.set_title("(c) the dispersion relations at $G_{\\rm LL}=22.5$", fontsize=11, color=INK)
+    cx.legend(loc="upper left", fontsize=8.4, frameon=True, facecolor="white", edgecolor=GRID, framealpha=0.95)
+    cx.grid(color=GRID, lw=0.6)
+    # (d) the mixing angle of the massless gauge field
+    r = col(mx, "ratio_gF_gv")
+    dx.semilogx(r, [math.degrees(v) for v in col(mx, "theta_mix_pred")], color=ORANGE, lw=2.0,
+                label="saddle point: $\\arctan(g^{\\rm v}_{\\rm LL}/(2g^{\\rm F}_{\\rm LL}))$, from $T^3_{\\rm LL}-F_{\\rm LL}/2$")
+    dx.semilogx(r, [math.degrees(v) for v in col(mx, "theta_mix_saddle")], "o", ms=6, color=ORANGE, mec=INK,
+                label="saddle point, null vector from the Bogoliubov matrices")
+    dx.semilogx(r, [math.degrees(v) for v in col(mx, "theta_mix_vacuum")], "s", ms=6, color=BLUE, mec=INK,
+                label="vacuum, null vector from the Bogoliubov matrices: 0")
+    dx.set_xlabel("ratio of the gauge couplings $g^{\\rm F}_{\\rm LL}/g^{\\rm v}_{\\rm LL}$")
+    dx.set_ylabel("angle of the massless field to the axis of $A^3_{{\\rm LL},p}$ (degrees)")
+    dx.set_title("(d) the mixing angle: zero in the vacuum", fontsize=11, color=INK)
+    dx.legend(loc="upper right", fontsize=8.4, frameon=False)
+    dx.set_ylim(-5, 95)
+    dx.grid(color=GRID, lw=0.6, which="both")
+    fig.tight_layout()
+    save(fig, "fig_t2_sfbs_higgs")
+
+
 def main():
     fig_state()
     fig_effective()
     fig_potential()
     fig_minima()
     fig_kinetic()
+    fig_higgs()
 
 
 if __name__ == "__main__":
