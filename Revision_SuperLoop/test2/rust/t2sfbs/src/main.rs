@@ -36,6 +36,16 @@
 //!   SB-8  the SFBS boson of the normal vacuum (G_bind < G < G_crit): the pole of 1/(chi_pr - 1/G), its limits (2m at
 //!         G_bind, 0 at G_crit), the Ginzburg-Landau mass (a_GL/Z_t0)^(1/2) and the dispersion relation;
 //!   SB-9  the currents of the SFBS (the sources of the gauge fields) against numerical derivatives of the Lagrangian;
+//! Item [8], the effective potential of the SFBS (Section 10 of the document):
+//!   SB-11 the structure of the effective potential: the 16 x 16 Bogoliubov matrix of a general pair field d has the
+//!         eigenvalues +-E^+(Delta^+), +-E^-(Delta^+), +-E^+(Delta^-), +-E^-(Delta^-), twice each, with the two gaps
+//!         (Delta^+-)^2 = |d|^2 (1 +- zeta); hence Omega(d) = |d|^2/G - W_g((Delta^+)^2) - W_g((Delta^-)^2), checked against
+//!         the eigenvalues integrated directly, at mu = 0 and with a Fermi sea; the invariance under exp(2i thF) Rv(U); the
+//!         eigenvalues do not depend on the direction of q; the explicit matrix Dpair of the isospin part;
+//!   SB-12 the closed forms at mu = 0: Xi(M^2) = 2 int (q^2 + M^2)^(1/2) and its two derivatives, W_g = Xi(m^2 + Delta^2) -
+//!         Xi(m^2), the concavity of W_g in Delta^2 (also with a Fermi sea), the Ginzburg-Landau coefficients a_GL and
+//!         b_GL = -Xi''(m^2) = Z_t0, the order |d|^6 of the remainder of the Ginzburg-Landau form, the massless form with
+//!         its logarithm, and the gap equation as the stationarity of Omega.
 //!   SB-10 the microscopic check of the effective field equation: the time-dependent mean-field (Bogoliubov-de Gennes)
 //!         evolution of a small uniform pair field in the normal vacuum (G = 20) oscillates with the frequency M_B of the
 //!         pole of the SFBS propagator (the mass in the effective Klein-Gordon equation), and the conserved functional of
@@ -65,7 +75,7 @@ use std::path::PathBuf;
 
 use t2core::c64::{c, C64};
 use t2core::cmat::{eigh, CMat};
-use t2core::model::{adjoint, alpha, beta, bq_conj, bq_from, bq_mul, cconj, dirac_from_charges, eps2, eps3, gamma, gamma_ch, jgen, kgen, kpair, kpair_ps, lift2, lift4, rand_sl2c, sigma, spin_gen, su2, tiso};
+use t2core::model::{adjoint, alpha, beta, bq_conj, bq_from, bq_mul, cconj, dirac_from_charges, eps2, eps3, gamma, gamma_ch, jgen, kgen, kpair, kpair_ps, lift2, lift4, pair_potential, rand_sl2c, sigma, spin_gen, su2, tiso};
 use t2core::rng::Rng;
 use t2core::sym::{tex_matrix, Lin, SymMat, GR};
 
@@ -1739,6 +1749,396 @@ fn sb10(ch: &mut Checks, dir: &PathBuf) {
     );
 }
 
+// ================================================================== item [8], the effective potential
+
+/// Xi(M^2) = 2 int_{q<Lambda} d^3q/(2 pi)^3 (q^2 + M^2)^(1/2)
+///         = (Lambda (2 Lambda^2 + M^2) (Lambda^2 + M^2)^(1/2) - M^4 arsinh(Lambda/M))/(8 pi^2)
+fn xi_cl(m2: f64) -> f64 {
+    let el = (LAMBDA * LAMBDA + m2).sqrt();
+    let t = if m2 > 0.0 { m2 * m2 * (LAMBDA / m2.sqrt()).asinh() } else { 0.0 };
+    (LAMBDA * (2.0 * LAMBDA * LAMBDA + m2) * el - t) / (8.0 * PI * PI)
+}
+
+/// dXi/dM^2 = int d^3q/(2 pi)^3 (q^2 + M^2)^(-1/2) = (Lambda (Lambda^2 + M^2)^(1/2) - M^2 arsinh(Lambda/M))/(4 pi^2)
+fn xi_cl_d1(m2: f64) -> f64 {
+    let el = (LAMBDA * LAMBDA + m2).sqrt();
+    let t = if m2 > 0.0 { m2 * (LAMBDA / m2.sqrt()).asinh() } else { 0.0 };
+    (LAMBDA * el - t) / (4.0 * PI * PI)
+}
+
+/// d^2Xi/d(M^2)^2 = -(1/2) int d^3q/(2 pi)^3 (q^2 + M^2)^(-3/2) = -(arsinh(Lambda/M) - Lambda/(Lambda^2 + M^2)^(1/2))/(4 pi^2)
+fn xi_cl_d2(m2: f64) -> f64 {
+    let el = (LAMBDA * LAMBDA + m2).sqrt();
+    -((LAMBDA / m2.sqrt()).asinh() - LAMBDA / el) / (4.0 * PI * PI)
+}
+
+/// radial nodes q_i and weights w_i of int_{q<Lambda} d^3q/(2 pi)^3 f(q) = sum_i w_i f(q_i) (the factor q^2/(2 pi^2) included),
+/// composite Gauss-Legendre with break points around the Fermi momentum when mu > m (width: the smallest gap used)
+fn radial_nodes(m: f64, mu: f64, width: f64) -> (Vec<f64>, Vec<f64>) {
+    let kf = if mu > m { (mu * mu - m * m).sqrt() } else { 0.0 };
+    let cuts: Vec<f64> = if kf > 0.0 { vec![kf - 4.0 * width, kf, kf + 4.0 * width] } else { vec![] };
+    let (xs, ws) = quad::composite(0.0, LAMBDA, &cuts, 40, 20);
+    let w: Vec<f64> = xs.iter().zip(&ws).map(|(q, w)| w * q * q / (2.0 * PI * PI)).collect();
+    (xs, w)
+}
+
+/// W_g(Delta^2) = int d^3q/(2 pi)^3 (E^+ + E^- - |eps + mu| - |eps - mu|), E^+- = ((eps +- mu)^2 + Delta^2)^(1/2)
+fn w_gap(delta2: f64, m: f64, mu: f64, qn: &[f64], qw: &[f64]) -> f64 {
+    let mut s = 0.0;
+    for (q, w) in qn.iter().zip(qw) {
+        let e = (q * q + m * m).sqrt();
+        let ep = ((e + mu).powi(2) + delta2).sqrt();
+        let em = ((e - mu).powi(2) + delta2).sqrt();
+        s += w * (ep + em - (e + mu).abs() - (e - mu).abs());
+    }
+    s
+}
+
+/// the two gaps of a pair field: (Delta^+-)^2 = |d|^2 (1 +- zeta), zeta = |d x d^*|/|d|^2; returns ((Delta^+)^2, (Delta^-)^2)
+fn two_gaps2(d: &[C64; 3]) -> (f64, f64) {
+    let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+    if n2 == 0.0 {
+        return (0.0, 0.0);
+    }
+    let dc = [d[0].conj(), d[1].conj(), d[2].conj()];
+    let cr = [d[1] * dc[2] - d[2] * dc[1], d[2] * dc[0] - d[0] * dc[2], d[0] * dc[1] - d[1] * dc[0]];
+    let zeta = (cr.iter().map(|z| z.norm_sqr()).sum::<f64>()).sqrt() / n2;
+    (n2 * (1.0 + zeta), (n2 * (1.0 - zeta)).max(0.0))
+}
+
+/// Omega(d) from the invariants: |d|^2/G - W_g((Delta^+)^2) - W_g((Delta^-)^2)
+fn omega_inv(d: &[C64; 3], g: f64, m: f64, mu: f64, qn: &[f64], qw: &[f64]) -> f64 {
+    let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+    let (dp2, dm2) = two_gaps2(d);
+    n2 / g - w_gap(dp2, m, mu, qn, qw) - w_gap(dm2, m, mu, qn, qw)
+}
+
+/// the 16 x 16 Bogoliubov matrix H(q) = [[h(q) - mu, P], [P^dag, -(h(-q) - mu)^*]] of a uniform pair field d
+fn bdg16(d: &[C64; 3], qv: &[f64; 3], m: f64, mu: f64) -> CMat {
+    let p = pair_potential(d);
+    let h = h8(qv, m).sub(&CMat::identity(8).scale_r(mu));
+    let hm = h8(&[-qv[0], -qv[1], -qv[2]], m).conj().sub(&CMat::identity(8).scale_r(mu));
+    let mut big = CMat::zeros(16);
+    big.put(0, 0, &h);
+    big.put(0, 8, &p);
+    big.put(8, 0, &p.dagger());
+    big.put(8, 8, &hm.scale_r(-1.0));
+    big
+}
+
+/// Omega(d) from the Bogoliubov matrices: |d|^2/G - (1/2) int d^3q/(2 pi)^3 [sum of the positive eigenvalues of H(q) - the
+/// same at d = 0], with q along the unit direction qdir (the eigenvalues depend only on |q|, check SB-11)
+fn omega_bdg(d: &[C64; 3], g: f64, m: f64, mu: f64, qn: &[f64], qw: &[f64], qdir: &[f64; 3]) -> f64 {
+    let n2: f64 = d.iter().map(|z| z.norm_sqr()).sum();
+    let zero = [C64::ZERO; 3];
+    let mut s = 0.0;
+    for (q, w) in qn.iter().zip(qw) {
+        let qv = [q * qdir[0], q * qdir[1], q * qdir[2]];
+        let (e1, _) = eigh(&bdg16(d, &qv, m, mu));
+        let (e0, _) = eigh(&bdg16(&zero, &qv, m, mu));
+        let p1: f64 = e1.iter().filter(|&&x| x > 0.0).sum();
+        let p0: f64 = e0.iter().filter(|&&x| x > 0.0).sum();
+        s += w * (p1 - p0);
+    }
+    n2 / g - 0.5 * s
+}
+
+fn rand_d(rng: &mut Rng, scale: f64) -> [C64; 3] {
+    [c(scale * rng.unit(), scale * rng.unit()), c(scale * rng.unit(), scale * rng.unit()), c(scale * rng.unit(), scale * rng.unit())]
+}
+
+/// SB-11: the structure of the effective potential
+fn sb11(ch: &mut Checks, fr: &mut Frags) {
+    let m = MASS;
+    let mut rng = Rng(31415);
+    // (i) the eigenvalues of H(q) for random pair fields, momenta and chemical potentials
+    let mut eig_dev = 0.0f64;
+    for t in 0..30 {
+        let d = rand_d(&mut rng, 0.4);
+        let qv = [rng.unit(), rng.unit(), rng.unit()];
+        let mu = [0.0, 0.35, 0.6][t % 3];
+        let (ev, _) = eigh(&bdg16(&d, &qv, m, mu));
+        let e = (qv[0] * qv[0] + qv[1] * qv[1] + qv[2] * qv[2] + m * m).sqrt();
+        let (dp2, dm2) = two_gaps2(&d);
+        let mut want = vec![];
+        for &dd in &[dp2, dm2] {
+            for &x in &[((e + mu).powi(2) + dd).sqrt(), ((e - mu).powi(2) + dd).sqrt()] {
+                for _ in 0..2 {
+                    want.push(x);
+                    want.push(-x);
+                }
+            }
+        }
+        want.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        for (a, b) in ev.iter().zip(&want) {
+            eig_dev = eig_dev.max((a - b).abs());
+        }
+    }
+    // (ii) Omega from the Bogoliubov matrices against the invariant form, at mu = 0 and mu = 0.5 (Fermi sea)
+    let g = G_VAC;
+    let mut om_dev = 0.0f64;
+    let mut lines = vec![];
+    for &mu in &[0.0, 0.5] {
+        let (qn, qw) = radial_nodes(m, mu, 0.05);
+        for _ in 0..3 {
+            let d = rand_d(&mut rng, 0.25);
+            let qdir = {
+                let v = [rng.unit(), rng.unit(), rng.unit()];
+                let n = (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt();
+                [v[0] / n, v[1] / n, v[2] / n]
+            };
+            let a = omega_bdg(&d, g, m, mu, &qn, &qw, &qdir);
+            let b = omega_inv(&d, g, m, mu, &qn, &qw);
+            om_dev = om_dev.max((a - b).abs() / b.abs().max(1e-12));
+            lines.push(format!("mu = {}: {:.12} against {:.12}", mu, a, b));
+        }
+    }
+    // (iii) the invariance under exp(2i thF) Rv(U)
+    let (qn, qw) = radial_nodes(m, 0.0, 0.05);
+    let mut inv_dev = 0.0f64;
+    for _ in 0..3 {
+        let d = rand_d(&mut rng, 0.25);
+        let r = adjoint(&su2(&[rng.unit() * 3.0, rng.unit() * 3.0, rng.unit() * 3.0]));
+        let ph = C64::cis(2.0 * rng.unit() * 3.0);
+        let mut dt = [C64::ZERO; 3];
+        for i in 0..3 {
+            let mut z = C64::ZERO;
+            for k in 0..3 {
+                z += d[k].scale(r[i][k]);
+            }
+            dt[i] = ph * z;
+        }
+        let a = omega_bdg(&d, g, m, 0.0, &qn, &qw, &[0.0, 0.0, 1.0]);
+        let b = omega_bdg(&dt, g, m, 0.0, &qn, &qw, &[0.0, 0.0, 1.0]);
+        inv_dev = inv_dev.max((a - b).abs() / a.abs());
+    }
+    // (iv) the sum of the positive eigenvalues does not depend on the direction of q
+    let mut dir_dev = 0.0f64;
+    for _ in 0..10 {
+        let d = rand_d(&mut rng, 0.3);
+        let q = 0.1 + 0.8 * rng.unit().abs();
+        let mut sums = vec![];
+        for _ in 0..3 {
+            let v = [rng.unit(), rng.unit(), rng.unit()];
+            let n = (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]).sqrt();
+            let qv = [q * v[0] / n, q * v[1] / n, q * v[2] / n];
+            let (ev, _) = eigh(&bdg16(&d, &qv, m, 0.3));
+            sums.push(ev.iter().filter(|&&x| x > 0.0).sum::<f64>());
+        }
+        dir_dev = dir_dev.max((sums[0] - sums[1]).abs()).max((sums[0] - sums[2]).abs());
+    }
+    // (v) the isospin part Dpair = sum d^iota (E tau_iota)^dag of the pairing block, P = (C gamma_ch)^dag (x) Dpair
+    let d = rand_d(&mut rng, 0.5);
+    let mut dsym = SymMat::zeros(2, 2);
+    let mut dnum = CMat::zeros(2);
+    for i in 0..3 {
+        let m2 = eps2().mul(&sigma(i + 1)).dagger();
+        dsym.add_scaled(&m2, &Lin::mono(&format!("d^{}_{{\\rm LL}}", i + 1), d[i]));
+        dnum = dnum.add(&m2.scale(d[i]));
+    }
+    let pfull = pair_potential(&d);
+    let pkron = cconj().mul(&gamma_ch()).dagger().kron(&dnum);
+    let kron_dev = pfull.sub(&pkron).max_abs();
+    let mut sym_dev = 0.0f64;
+    for r in 0..2 {
+        for cc in 0..2 {
+            sym_dev = sym_dev.max((dsym.get(r, cc).eval() - dnum.get(r, cc)).abs());
+        }
+    }
+    assert!(sym_dev < 1e-15 && kron_dev < 1e-15, "printed matrix Dpair");
+    fr.add("t2s_Dpair", format!("$$\\mathsf D_{{\\rm LL}}={}$$", dsym.tex()));
+    let ok = eig_dev < 1e-12 && om_dev < 1e-10 && inv_dev < 1e-12 && dir_dev < 1e-12;
+    ch.add(
+        "SB-11",
+        "the structure of the effective potential (m = 0.2, Lambda = 1): for 30 random pair fields d, momenta q and mu = 0, 0.35, 0.6, the 16 eigenvalues of the Bogoliubov matrix H_BdG(q) are +-E^+(Delta^+), +-E^-(Delta^+), +-E^+(Delta^-), +-E^-(Delta^-), each twice, with (Delta^+-)^2 = |d|^2 (1 +- zeta) (tol 1e-12); Omega(d) = |d|^2/G - W_g((Delta^+)^2) - W_g((Delta^-)^2) equals |d|^2/G - (1/2) int [sum of the positive eigenvalues of H_BdG(q) - the same at d = 0] for three random d at mu = 0 and at mu = 0.5 (Fermi sea), G = 22.5 (relative tol 1e-10); Omega is unchanged by exp(2i thF) Rv(U) (relative tol 1e-12); the sum of the positive eigenvalues does not depend on the direction of q (tol 1e-12); the printed Dpair satisfies Ppair = (C gamma_ch)^dag (x) Dpair",
+        ok,
+        format!(
+            "largest deviations: eigenvalues {}, Omega {} ({}), invariance {}, direction of q {}, Dpair {}",
+            sci(eig_dev),
+            sci(om_dev),
+            lines.join("; "),
+            sci(inv_dev),
+            sci(dir_dev),
+            sci(kron_dev)
+        ),
+    );
+}
+
+/// the uniform (polar) effective potential at mu = 0 in closed form: Omega_u(Delta^2) = Delta^2/G - 2 (Xi(m^2 + Delta^2) - Xi(m^2))
+fn omega_u(delta2: f64, g: f64, m: f64) -> f64 {
+    delta2 / g - 2.0 * (xi_cl(m * m + delta2) - xi_cl(m * m))
+}
+
+/// the Ginzburg-Landau form a_GL |d|^2 + b_GL (2 |d|^4 - |d.d|^2) at mu = 0, with a_GL = 1/G - 1/G_crit, b_GL = -Xi''(m^2)
+fn omega_gl(n2: f64, dd2: f64, g: f64, m: f64) -> f64 {
+    let a = 1.0 / g - inv_gcrit(m);
+    let b = -xi_cl_d2(m * m);
+    a * n2 + b * (2.0 * n2 * n2 - dd2)
+}
+
+/// SB-12: the closed forms at mu = 0 and the Ginzburg-Landau expansion
+fn sb12(ch: &mut Checks, dir: &PathBuf) {
+    let m = MASS;
+    let (qn, qw) = radial_nodes(m, 0.0, 0.05);
+    // (i) Xi against quadrature
+    let mut xi_dev = 0.0f64;
+    for &m2 in &[0.04, 0.0839, 0.25, 1.0] {
+        let quad: f64 = qn.iter().zip(&qw).map(|(q, w)| 2.0 * w * (q * q + m2).sqrt()).sum();
+        xi_dev = xi_dev.max(((quad - xi_cl(m2)) / xi_cl(m2)).abs());
+    }
+    // (ii) the derivatives against central differences (Richardson)
+    let mut der_dev = 0.0f64;
+    for &m2 in &[0.04, 0.0839, 0.25] {
+        let h = 1e-4;
+        let d1 = (4.0 * (xi_cl(m2 + h) - xi_cl(m2 - h)) / (2.0 * h) - (xi_cl(m2 + 2.0 * h) - xi_cl(m2 - 2.0 * h)) / (4.0 * h)) / 3.0;
+        let d2 = (4.0 * (xi_cl(m2 + h) - 2.0 * xi_cl(m2) + xi_cl(m2 - h)) / (h * h) - (xi_cl(m2 + 2.0 * h) - 2.0 * xi_cl(m2) + xi_cl(m2 - 2.0 * h)) / (4.0 * h * h)) / 3.0;
+        der_dev = der_dev.max(((d1 - xi_cl_d1(m2)) / xi_cl_d1(m2)).abs()).max(((d2 - xi_cl_d2(m2)) / xi_cl_d2(m2)).abs());
+    }
+    // (iii) W_g at mu = 0 against the closed form
+    let mut w_dev = 0.0f64;
+    for &dl in &[0.05, 0.2094933, 0.4] {
+        let quad = w_gap(dl * dl, m, 0.0, &qn, &qw);
+        let cl = xi_cl(m * m + dl * dl) - xi_cl(m * m);
+        w_dev = w_dev.max(((quad - cl) / cl).abs());
+    }
+    // (iv) concavity of W_g in Delta^2: second differences on a grid, at mu = 0 and with a Fermi sea (mu = 0.5)
+    let mut concave = true;
+    let mut max_second = f64::NEG_INFINITY;
+    for &mu in &[0.0, 0.5] {
+        let (qn2, qw2) = radial_nodes(m, mu, 0.01);
+        let h = 0.002;
+        for i in 1..50 {
+            let x = 0.01 * i as f64 * 0.01 * i as f64; // Delta^2 from 1e-4 to 0.24
+            let sd = w_gap(x + h, m, mu, &qn2, &qw2) - 2.0 * w_gap(x, m, mu, &qn2, &qw2) + w_gap((x - h).max(0.0), m, mu, &qn2, &qw2);
+            if x - h < 0.0 {
+                continue;
+            }
+            max_second = max_second.max(sd);
+            if sd >= 0.0 {
+                concave = false;
+            }
+        }
+    }
+    // (v) b_GL = -Xi''(m^2) = Z_t0 and a_GL
+    let bgl = -xi_cl_d2(m * m);
+    let bz = (bgl - z_t(m)).abs();
+    // (vi) the remainder of the Ginzburg-Landau form is of order |d|^6, for a polar and a non-unitary direction
+    let mut ratios = vec![];
+    let g = G_VAC;
+    for &zeta in &[0.0f64, 0.6] {
+        let mut rr = vec![];
+        for &sc in &[0.04, 0.02, 0.01] {
+            // a field with |d| = sc and non-unitarity zeta: (0, i b, a) with a^2 + b^2 = sc^2, 2ab = zeta sc^2
+            let (dp, dm) = ((sc * sc * (1.0 + zeta)).sqrt(), (sc * sc * (1.0 - zeta)).sqrt());
+            let (a, b) = (0.5 * (dp + dm), 0.5 * (dp - dm));
+            let d = [C64::ZERO, c(0.0, b), c(a, 0.0)];
+            let n2 = sc * sc;
+            let dd = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+            let full = n2 / g - (xi_cl(m * m + dp * dp) - xi_cl(m * m)) - (xi_cl(m * m + dm * dm) - xi_cl(m * m));
+            let gl = omega_gl(n2, dd.norm_sqr(), g, m);
+            rr.push((full - gl) / (n2 * n2 * n2));
+            let _ = &d;
+        }
+        ratios.push(rr);
+    }
+    let conv = ratios.iter().all(|r| (r[2] - r[1]).abs() < 0.3 * (r[1] - r[0]).abs() + 1e-6);
+    // (vii) the massless polar potential: Delta^2 (1/G - Lambda^2/(2 pi^2)) + Delta^4 (ln(2 Lambda/Delta) - 1/4)/(4 pi^2) + O(Delta^6)
+    let mut mz = vec![];
+    for &dl in &[0.04, 0.02, 0.01] {
+        let exact = omega_u(dl * dl, g, 0.0);
+        let approx = dl * dl * (1.0 / g - LAMBDA * LAMBDA / (2.0 * PI * PI)) + dl.powi(4) * ((2.0 * LAMBDA / dl).ln() - 0.25) / (4.0 * PI * PI);
+        mz.push((exact - approx).abs() / dl.powi(4));
+    }
+    let mz_ok = mz[1] < 0.3 * mz[0] && mz[2] < 0.3 * mz[1];
+    // (viii) the gap equation is the stationarity of Omega_u: dOmega_u/dDelta^2 = 1/G - 2 Xi'(m^2 + Delta^2) vanishes at the gap
+    let dv = gap_mu0(g, m);
+    let stat = (1.0 / g - 2.0 * xi_cl_d1(m * m + dv * dv)).abs();
+    let ok = xi_dev < 1e-12 && der_dev < 1e-7 && w_dev < 1e-11 && concave && bz < 1e-15 && conv && mz_ok && stat < 1e-14;
+    ch.add(
+        "SB-12",
+        "the effective potential at mu = 0 (m = 0.2, Lambda = 1): Xi(M^2) = (Lambda (2 Lambda^2 + M^2) (Lambda^2 + M^2)^(1/2) - M^4 arsinh(Lambda/M))/(8 pi^2) equals 2 int d^3q/(2 pi)^3 (q^2 + M^2)^(1/2) by quadrature (relative tol 1e-12); its first and second derivatives in closed form equal numerical derivatives (relative tol 1e-7); W_g(Delta^2) = Xi(m^2 + Delta^2) - Xi(m^2) (relative tol 1e-11); W_g is strictly concave in Delta^2 on a grid of 49 values (second differences negative) at mu = 0 and with a Fermi sea (mu = 0.5); b_GL = -Xi''(m^2) = Z_t0 (tol 1e-15); the remainder of the Ginzburg-Landau form a_GL |d|^2 + b_GL (2 |d|^4 - |d.d|^2) divided by |d|^6 converges as |d| -> 0 (|d| = 0.04, 0.02, 0.01; polar and zeta = 0.6); for m = 0 the remainder of Delta^2 (1/G - Lambda^2/(2 pi^2)) + Delta^4 (ln(2 Lambda/Delta) - 1/4)/(4 pi^2) divided by Delta^4 falls at least by the factor 0.3 when Delta is halved; 1/G - 2 Xi'(m^2 + Delta_vac^2) = 0 at the gap of G = 22.5 (tol 1e-14)",
+        ok,
+        format!(
+            "largest deviations: Xi {}, derivatives {}, W_g {}; largest second difference of W_g {} (negative: concave); b_GL = {:.10} (Z_t0 - b_GL = {}); remainder/|d|^6 at |d| = 0.04, 0.02, 0.01: polar {:.6}, {:.6}, {:.6}, zeta = 0.6 {:.6}, {:.6}, {:.6}; massless remainder/Delta^4 at Delta = 0.04, 0.02, 0.01: {}, {}, {}; stationarity at Delta_vac = {:.10}: {}",
+            sci(xi_dev),
+            sci(der_dev),
+            sci(w_dev),
+            sci(max_second),
+            bgl,
+            sci(bz),
+            ratios[0][0],
+            ratios[0][1],
+            ratios[0][2],
+            ratios[1][0],
+            ratios[1][1],
+            ratios[1][2],
+            sci(mz[0]),
+            sci(mz[1]),
+            sci(mz[2]),
+            dv,
+            sci(stat)
+        ),
+    );
+    // data of Figure 23
+    let gcrit = 1.0 / inv_gcrit(m);
+    let dvac = gap_mu0(G_VAC, m);
+    let mut csv = Csv::new(
+        "the effective potential Omega of the SFBS along the polar direction (|d| = Delta, zeta = 0) at mu = 0 for four couplings, with its Ginzburg-Landau form a_GL Delta^2 + b_GL Delta^4 (Test 2, item 8, Figure 23(a))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G_crit", format!("{:.10}", gcrit)), ("b_GL", format!("{:.10}", bgl))],
+        "G,Delta,Omega,Omega_GL",
+    );
+    for &g in &[18.0, gcrit, 22.5, 24.0] {
+        for i in 0..=140 {
+            let dl = 0.35 * i as f64 / 140.0;
+            csv.row(&[format!("{:.10}", g), format!("{:.6}", dl), format!("{:.12e}", omega_u(dl * dl, g, m)), format!("{:.12e}", omega_gl(dl * dl, dl.powi(4), g, m))]);
+        }
+    }
+    csv.write(dir, "t2_sfbs_potential_polar.csv");
+    let mut csv = Csv::new(
+        "the effective potential Omega of the SFBS on the complex plane of the polar component d^3 (d^1 = d^2 = 0) at mu = 0, G = 22.5, on a polar grid over three quarters of the plane (41 radii from 0 to 0.31, 55 angles from 0 to 3 pi/2, so that the cut shows the profile; the rows run over the angles for each radius): the Mexican hat (Test 2, item 8, Figure 23(b))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", "22.5".into()), ("Delta_vac", format!("{:.10}", dvac)), ("radii", "41".into()), ("angles", "55".into())],
+        "d3_re,d3_im,Omega",
+    );
+    for i in 0..=40 {
+        let r = 0.31 * i as f64 / 40.0;
+        for j in 0..=54 {
+            let th = 1.5 * PI * j as f64 / 54.0;
+            let (x, y) = (r * th.cos(), r * th.sin());
+            csv.row(&[format!("{:.8}", x), format!("{:.8}", y), format!("{:.12e}", omega_u(r * r, G_VAC, m))]);
+        }
+    }
+    csv.write(dir, "t2_sfbs_potential_hat.csv");
+    let mut csv = Csv::new(
+        "the effective potential Omega of the SFBS at fixed |d| as a function of the non-unitarity zeta (the two gaps (Delta^+-)^2 = |d|^2 (1 +- zeta)) at mu = 0, G = 22.5, for |d| = 0.5, 1 and 1.5 times the gap of the vacuum, with the Ginzburg-Landau form (Test 2, item 8, Figure 23(c))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G", "22.5".into()), ("Delta_vac", format!("{:.10}", dvac))],
+        "abs_d,zeta,Omega,Omega_GL",
+    );
+    for &f in &[0.5, 1.0, 1.5] {
+        let a = f * dvac;
+        for i in 0..=50 {
+            let z = i as f64 / 50.0;
+            let (dp2, dm2) = (a * a * (1.0 + z), a * a * (1.0 - z));
+            let om = a * a / G_VAC - (xi_cl(m * m + dp2) - xi_cl(m * m)) - (xi_cl(m * m + dm2) - xi_cl(m * m));
+            let dd2 = a.powi(4) * (1.0 - z * z);
+            csv.row(&[format!("{:.10}", a), format!("{:.4}", z), format!("{:.12e}", om), format!("{:.12e}", omega_gl(a * a, dd2, G_VAC, m))]);
+        }
+    }
+    csv.write(dir, "t2_sfbs_potential_zeta.csv");
+    let mut csv = Csv::new(
+        "the gap of the condensed vacuum (the minimum of the effective potential) at mu = 0 against the coupling: the solution of the gap equation 1/G = 2 Xi'(m^2 + Delta^2) and the Ginzburg-Landau value (-a_GL/(2 b_GL))^(1/2), with a_GL and the depth Omega(Delta_vac) of the minimum (Test 2, item 8, Figure 23(d))",
+        &[("m", format!("{}", m)), ("Lambda", format!("{}", LAMBDA)), ("G_crit", format!("{:.10}", gcrit)), ("b_GL", format!("{:.10}", bgl))],
+        "G,a_GL,Delta_vac,Delta_vac_GL,Omega_min",
+    );
+    for i in 0..=80 {
+        let g = gcrit + (32.0 - gcrit) * (i as f64 / 80.0).powi(2);
+        let a = 1.0 / g - inv_gcrit(m);
+        let dv = if i == 0 { 0.0 } else { gap_mu0(g, m) };
+        let dgl = if a < 0.0 { (-a / (2.0 * bgl)).sqrt() } else { 0.0 };
+        csv.row(&[format!("{:.8}", g), format!("{:.12e}", a), format!("{:.12}", dv), format!("{:.12}", dgl), format!("{:.12e}", omega_u(dv * dv, g, m))]);
+    }
+    csv.write(dir, "t2_sfbs_vacuum_gap.csv");
+}
+
 fn main() {
     let dir = data_dir();
     let mut ch = Checks { title: "Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)".into(), items: vec![] };
@@ -1764,6 +2164,9 @@ fn main() {
     sb9(&mut ch);
     frags_item8(&mut fr);
     sb10(&mut ch, &dir);
+    // item [8], the effective potential
+    sb11(&mut ch, &mut fr);
+    sb12(&mut ch, &dir);
     let _ = (lift2, LAMBDA, d_vac_q);
     fr.write(&dir.join("t2_sfbs_fragments.md"));
     let ok = ch.write(&dir.join("t2_sfbs_checks.txt"));

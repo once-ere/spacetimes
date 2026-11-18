@@ -655,7 +655,7 @@ output of the last run:
 {{FILE:explanations/data/ex_r13_checks.txt}}
 ```
 
-# 11. Test 2, items [1] to [8]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state and its effective field equations (folder `test2`)
+# 11. Test 2, items [1] to [8]: the gauge-covariant field equations of the spinor field, their analytic solutions, the Python and Rust solvers and their plots, the superfluid boson singlet state, its effective field equations and its effective potential (folder `test2`)
 
 The document `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson
 singlet state` answers the items of Test 2. For item [1] every matrix, every printed component equation and
@@ -1038,6 +1038,19 @@ $G_{\rm LL}=20$ (320 radial nodes, the classical fourth-order Runge-Kutta method
 frequency of the line of the pair field below $2m_{\rm LL}$ (maximum of the Hann-windowed Fourier power, found by a scan and a
 golden-section search) against the pole on the same nodes, the conservation of the mean-field energy and the reality of the pair
 field. Figure 22 is drawn by `test2/python/make_t2_sfbs_figures.py`.
+
+## Item [8], second part: the effective potential of the SFBS
+
+The same program verifies Section 10. SB-11: for 30 random pair fields, momenta and chemical potentials (0, 0.35, 0.6), the 16
+eigenvalues of the Bogoliubov matrix $\mathsf H_{\rm LL}(\vec q_{\rm LL})$ (built from `pair_potential` of `t2core`) against the two-sector
+formula (10.5); the effective potential (10.6) against the direct integral of the eigenvalues (radial composite Gauss-Legendre quadrature,
+40 panels of 20 points per segment, with break points around the Fermi momentum at $\mu_{\rm LL}=0.5$) for three random fields at
+$\mu_{\rm LL}=0$ and three at $\mu_{\rm LL}=0.5$; the invariance under three random transformations (9.4); the independence of the eigenvalues
+of the direction of the momentum; and the matrix $\mathsf D_{\rm LL}$ (fragment `t2s_Dpair`) against $\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}$.
+SB-12: the closed form (10.9) and its derivatives against quadrature and numerical derivatives, $W^{\rm g}_{\rm LL}$ against (10.9), its concavity
+on a grid at $\mu_{\rm LL}=0$ and $0.5$, $b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)$, the order of the remainder of the Ginzburg-Landau form and of the
+massless form (10.11), and the stationarity (10.10) at the gap of $G_{\rm LL}=22.5$ (found by bisection of the closed form). Figure 23 is drawn by
+`test2/python/make_t2_sfbs_figures.py` (the surface of panel (b) with the three-dimensional axes of Matplotlib).
 
 # 12. The checks of the documents
 

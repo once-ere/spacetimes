@@ -100,7 +100,11 @@ the SFBS, its gauge-covariant derivative inherited from the spinor field, the ef
 Lagrangian of a charged scalar field), the pair susceptibility of the vacuum with its coefficients in closed form, the effective
 field equations with the currents of the SFBS as sources of the gauge fields, and the SFBS boson of the normal vacuum (a bound
 state for $G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}$, unstable beyond $G^{\rm crit}_{\rm LL}$), confirmed by the
-time-dependent mean-field equations (Figure 22). Items [7] and [8] are verified by the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of
+time-dependent mean-field equations (Figure 22). Its ninth answer (the second item [8]) derives the effective potential of the
+SFBS: it depends on two invariants of the pair field, the gaps of two decoupled sectors; it is the cost of the field minus the
+condensation energies of the sectors; its Ginzburg-Landau form is the analogue of the potential of the Higgs doublet, with a quartic
+term that prefers the polar fields; it is given in closed form at zero chemical potential; and it has the shape of a Mexican hat for
+couplings above the critical one (Figure 23). Items [7] and [8] are verified by the checks SB-1 to SB-{{GEN:nchecks_t2_sfbs}} of
 the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
 # 2. Where to start reading

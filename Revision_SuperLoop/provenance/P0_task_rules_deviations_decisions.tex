@@ -565,8 +565,19 @@ gauge-field equations with the currents of the SFBS, and the SFBS boson
 of the normal vacuum (Klein-Gordon form, exact pole, instability beyond
 \(G^{\rm crit}_{\rm LL}\)), confirmed by the time-dependent mean-field
 equations; checks SB-6 to SB-10, Figure 22 & answered \\
-{[}8{]} (second), {[}9{]} to {[}11{]} & Sections 10 to 13 of the
-document & to follow, in this order \\
+{[}8{]} (second) & Section 10 of the document: the effective potential
+of the SFBS: its two invariants (the normal form of a pair field,
+Theorem 10.1), the splitting of the Bogoliubov matrix into two sectors
+with the gaps \(\Delta^\pm_{\rm LL}\), the potential as the cost of the
+field minus the condensation energies \(W^{\rm g}_{\rm LL}\) of the
+sectors (increasing and strictly concave), the Ginzburg-Landau form with
+\(a^{\rm GL}_{\rm LL}=1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}\) and
+\(b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)\), the closed form at
+\(\mu_{\rm LL}=0\) with the gap equation as its stationarity, the
+massless form with its logarithm, the next term, and the Mexican hat;
+checks SB-11 and SB-12, Figure 23 & answered \\
+{[}9{]} to {[}11{]} & Sections 11 to 13 of the document & to follow, in
+this order \\
 \end{longtable}
 
 The demand of 06:45 is met in every field equation of the document: the
@@ -627,7 +638,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 161 new ones, all with the
+registries with their meanings and adds 166 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -857,6 +868,14 @@ workspace \texttt{rust/} (library \texttt{t2core}, program
   evolution of a uniform pair field), the explicit component equations
   printed by the program, Section 9 of the document of Test 2 with
   Figure 22, and the new symbols (decision D18, Section 11, entry E58).
+\item
+  \textbf{Stage 14 --- Test 2, item {[}8{]}, the effective potential}
+  (Section 2.8): the checks SB-11 and SB-12 in \texttt{t2\_sfbs} (the
+  structure of the potential against the eigenvalues of the Bogoliubov
+  matrices, its closed form at \(\mu_{\rm LL}=0\) and the
+  Ginzburg-Landau expansion), the matrix \(\mathsf D_{\rm LL}\) printed
+  by the program, Section 10 of the document of Test 2 with Figure 23,
+  and the new symbols (Section 11, entry E59).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1340,17 +1359,18 @@ author's}\label{decisions-that-are-the-authors}}
   corrections, no finite temperature, no dispersions of the Goldstone
   modes, no other interactions.
 \item
-  Items {[}8{]} (second, the effective potential) to {[}11{]} of Test 2
-  are answered in the following stages; this version of the document of
-  the answers contains items {[}1{]} to {[}7{]} and the first item
-  {[}8{]}. The effective field equations of item {[}8{]} keep the SFBS
-  field at its stationary point (mean field): its own fluctuations
-  (loops of the SFBS) are not included, and the derivative expansion is
-  truncated at second order. The solver of item {[}3{]} treats the gauge
-  fields as external (their field equations (2.29) are not solved), and
-  its self-consistent tasks are limited to about 375 sites by the dense
-  diagonalization. In item {[}2{]} the domain wall was solved for walls
-  along one coordinate only, and the bound states of walls of the width
+  Items {[}9{]} to {[}11{]} of Test 2 are answered in the following
+  stages; this version of the document of the answers contains items
+  {[}1{]} to {[}8{]} (both parts). The effective potential of item
+  {[}8{]} is that of the mean-field approximation. The effective field
+  equations of item {[}8{]} keep the SFBS field at its stationary point
+  (mean field): its own fluctuations (loops of the SFBS) are not
+  included, and the derivative expansion is truncated at second order.
+  The solver of item {[}3{]} treats the gauge fields as external (their
+  field equations (2.29) are not solved), and its self-consistent tasks
+  are limited to about 375 sites by the dense diagonalization. In item
+  {[}2{]} the domain wall was solved for walls along one coordinate
+  only, and the bound states of walls of the width
   \(\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1\) were checked through
   the two scalar operators of the square of the operator, not on the
   lattice.
@@ -1753,6 +1773,15 @@ imaginary parts), the names were changed to \texttt{eps(+)},
 SB-10 asked the energy of the time stepping to be conserved to
 \(10^{-10}\), below the truncation error of the fourth-order method
 (\(1.5\times10^{-8}\)), and was corrected to \(10^{-6}\) & & \\
+E59 & the first draft of Section 10 used the big-O notation (a bare
+letter) in formulas, primes on \(\Xi_{\rm LL}\) for its derivatives, a
+symbol for the \(4\times4\) Dirac part of the plane-wave Hamiltonian,
+and two abbreviations of numbers; they were replaced by words, by the
+superscripts \((1)\), \((2)\), \((3)\), by the Dirac matrices written
+out, and by the derivatives stated in words; in Figure 23 the first
+drawing of the Mexican hat on a square grid had ragged edges and hid the
+profile, and it was redrawn on a polar grid with a quarter cut away &
+& \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -3216,6 +3245,37 @@ plane spanned by \((\chi^{\rm pw}_{\rm LL},0)\) and
 functions of the time, with
 \(\lvert u^{\rm pl}_{{\rm LL},\pm}\rvert^2+\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2=1\)
 & new & \texttt{u\_pl} \texttt{v\_pl} \\
+\(W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)\) & the condensation function of
+one sector,
+\(W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)=\int\!d^3q_{\rm LL}(2\pi)^{-3}\big(E^+_{\rm LL}+E^-_{\rm LL}-\lvert\varepsilon_{\rm LL}+\mu_{\rm LL}\rvert-\lvert\varepsilon_{\rm LL}-\mu_{\rm LL}\rvert\big)\)
+with the gap \(\Delta_{\rm LL}\) in \(E^\pm_{\rm LL}\); increasing and
+strictly concave in \(\Delta_{\rm LL}^2\); the effective potential is
+\(\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-W^{\rm g}_{\rm LL}((\Delta^+_{\rm LL})^2)-W^{\rm g}_{\rm LL}((\Delta^-_{\rm LL})^2)\)
+& new & \texttt{W\_g} \\
+\(\Xi_{\rm LL}((M^{\rm q}_{\rm LL})^2)\); \(\Xi^{(1)}_{\rm LL}\),
+\(\Xi^{(2)}_{\rm LL}\), \(\Xi^{(3)}_{\rm LL}\) & the function
+\(\Xi_{\rm LL}((M^{\rm q}_{\rm LL})^2)=2\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}\),
+which gives the condensation function at \(\mu_{\rm LL}=0\) in closed
+form, and its first, second and third derivatives with respect to its
+argument & new & \texttt{Xi}
+\texttt{Xi\textquotesingle{}\textquotesingle{}} \texttt{Xi\_1}
+\texttt{Xi\_2} \texttt{Xi\_3} \\
+\(M^{\rm q}_{\rm LL}\) & the quasi-particle mass of the condensed vacuum
+at \(\mu_{\rm LL}=0\), \((m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}\): the
+smallest quasi-particle energy, at zero momentum & new &
+\texttt{M\_q} \\
+\(\Omega^{\rm GL}_{\rm LL}(\vec d_{\rm LL})\); \(b^{\rm GL}_{\rm LL}\) &
+the Ginzburg-Landau form of the effective potential,
+\(a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2+b^{\rm GL}_{\rm LL}(2\lvert\vec d_{\rm LL}\rvert^4-\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2)\),
+and its quartic coefficient, at \(\mu_{\rm LL}=0\) equal to
+\(Z^{\rm t}_{\rm LL}(0)\) & new & \texttt{Omega\_GL} \texttt{b\_GL} \\
+\(\Delta^{\rm vac}_{\rm LL}\) & the gap of the condensed vacuum: the
+radius of the circle of minima of the effective potential at
+\(\mu_{\rm LL}=0\) for \(G_{\rm LL}>G^{\rm crit}_{\rm LL}\), the
+solution of the gap equation (plain text \texttt{Delta\_vac\_GL}: its
+Ginzburg-Landau value
+\((-a^{\rm GL}_{\rm LL}/(2b^{\rm GL}_{\rm LL}))^{1/2}\)) & new &
+\texttt{Delta\_vac} \texttt{Delta\_vac\_GL} \\
 \end{longtable}
 
 \end{document}

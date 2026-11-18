@@ -23,13 +23,13 @@ Test 2 asks for the following. The wording is condensed here; the numbers are th
 | [6] | a pure Rust program that plots the solutions of the Rust solver | Section 7 | answered |
 | [7] | the construction of the superfluid boson singlet (spin-zero) state, SFBS, from the spinor field | Section 8 | answered |
 | [8] | the effective field equations of the SFBS | Section 9 | answered |
-| [8] | the effective potential of the SFBS, the analogue of the Mexican-hat potential of the Higgs doublet | Section 10 | to follow |
+| [8] | the effective potential of the SFBS, the analogue of the Mexican-hat potential of the Higgs doublet | Section 10 | answered |
 | [9] | the relative minima of this potential, the spontaneous breaking of the symmetry, and the expansion of the SFBS about a minimum, called SFBSv | Section 11 | to follow |
 | [10] | the kinetic Lagrangian of the SFBS | Section 12 | to follow |
 | [11] | the masses of the gauge bosons that absorb the Goldstone bosons, obtained by inserting SFBSv into the kinetic Lagrangian; the diagonalization of the mass terms; the surviving symmetry group, its relation to $U(1)_{\rm em}$ and the massless photon | Section 13 | to follow |
 
 Each item is pushed to the repository as soon as it is answered. This version of the document answers
-items [1] to [7] and the first item [8] (the effective field equations); the sections of the other items are added to
+items [1] to [8] (the effective field equations and the effective potential); the sections of the other items are added to
 this same document, in this order, as they are completed.
 
 ## 1.2 How to read this document
@@ -47,8 +47,8 @@ this same document, in this order, as they are completed.
   analytic solutions of item [2] by `t2_analytic` (checks AS-1 to AS-10), the Python solver of
   item [3] by its self-test and by the checks of every run, and its solutions of the seven examples by
   `t2_examples_check.py` (checks EX-1 to EX-7), the Rust solver of item [5] by its self-test and the comparison EX-8, and
-  the statements of items [7] and [8] about the superfluid boson singlet state by `t2_sfbs` (checks SB-1 to
-  SB-10). The reports are printed verbatim in Appendix A.
+  the statements of items [7] and [8] (both parts) about the superfluid boson singlet state by `t2_sfbs` (checks SB-1 to
+  SB-12). The reports are printed verbatim in Appendix A.
 - **Explicit matrices.** Every matrix of the field equations is written out. The matrices and the long
   component equations are printed by the program itself (no entry is typed by hand), and the program
   evaluates each printed expression numerically and compares it with the matrix it describes (check GS-12).
@@ -3756,6 +3756,243 @@ and the line of the frequency $M^{\rm B}_{\rm LL}$ of the effective field equati
 - **What follows.** For $G_{\rm LL}>G^{\rm crit}_{\rm LL}$ the coefficient $a^{\rm GL}_{\rm LL}$ is negative and the normal vacuum is unstable. The effective
   potential $\Omega_{\rm LL}(\vec d_{\rm LL})$ beyond second order, the Mexican hat of the SFBS, is the subject of Section 10.
 
+# 10. Item [8]: the effective potential of the SFBS
+
+## 10.0 The answer in brief
+
+1. **Two invariants.** The effective potential $\Omega_{\rm LL}(\vec d_{\rm LL})$ of (9.11) is invariant under the phase and the isospin
+   rotations (9.4). Every pair field is a phase and a rotation away from the normal form (10.1), fixed by two numbers, the two gaps
+   $\Delta^+_{\rm LL}\ge\Delta^-_{\rm LL}\ge0$ with $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$; equivalently,
+   $\Omega_{\rm LL}$ depends only on $\lvert\vec d_{\rm LL}\rvert^2$ and $\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2$ (Theorem 10.1).
+2. **Two sectors.** In the normal form the isospin part of the pairing block is diagonal in the basis of the eigenvectors of
+   $\tau^{\rm LL}_1$: the $16\times16$ Bogoliubov matrix splits into two decoupled sectors with the gaps $\Delta^+_{\rm LL}$ and
+   $\Delta^-_{\rm LL}$ (10.5) (check SB-11), and
+
+   $\Omega_{\rm LL}(\vec d_{\rm LL})=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-W^{\rm g}_{\rm LL}((\Delta^+_{\rm LL})^2)-W^{\rm g}_{\rm LL}((\Delta^-_{\rm LL})^2)$ (10.6),
+   with the condensation function $W^{\rm g}_{\rm LL}$, increasing and strictly concave in the squared gap (10.7).
+3. **The Ginzburg-Landau form** (10.8): $\Omega_{\rm LL}=a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2+b^{\rm GL}_{\rm LL}(2\lvert\vec d_{\rm LL}\rvert^4-\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2)+\dots$,
+   with $a^{\rm GL}_{\rm LL}=1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}$ and, at $\mu_{\rm LL}=0$, $b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)>0$: the analogue of the
+   potential of the Higgs doublet, with a quartic term that prefers the unitary (polar) fields.
+4. **The closed form at $\mu_{\rm LL}=0$** (10.9), its stationarity condition, which is the gap equation in closed form (10.10), the
+   massless form with its logarithm (10.11), and the next term of the expansion (10.12) (check SB-12).
+5. **The Mexican hat.** For $G_{\rm LL}>G^{\rm crit}_{\rm LL}$ the potential has a maximum at $\vec d_{\rm LL}=0$ and, on every complex line of
+   polar fields, a circle of minima of radius $\Delta^{\rm vac}_{\rm LL}$ (0.2094933 at $G_{\rm LL}=22.5$), Figure 23. The minima and the breaking
+   of the symmetry are item [9] (Section 11).
+
+## 10.1 The invariants of the pair field
+
+**Invariance.** Under (9.4) the pairing block of the Bogoliubov matrix changes by a unitary similarity transformation (the one of the
+transformation (2.10) of the spinor field, applied to the particle and the hole parts), so the eigenvalues of
+$\mathsf H_{\rm LL}(\vec q_{\rm LL})$ and $\lvert\vec d_{\rm LL}\rvert^2$ do not change: $\Omega_{\rm LL}$ is invariant under the phase and the isospin
+rotations (check SB-11, $4\times10^{-13}$).
+
+**Theorem 10.1 (the normal form).** For every $\vec d_{\rm LL}\in\mathbb C^3$ there are a phase $\theta^{\rm F}_{\rm LL}$ and an isospin rotation
+$\mathsf U_{\rm LL}$ such that
+
+$$\exp(2i\theta^{\rm F}_{\rm LL})\,\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\,\vec d_{\rm LL}=\Big(0,\ \frac i2\big(\Delta^+_{\rm LL}-\Delta^-_{\rm LL}\big),\ \frac12\big(\Delta^+_{\rm LL}+\Delta^-_{\rm LL}\big)\Big),\tag{10.1}$$
+
+with the two gaps $\Delta^\pm_{\rm LL}\ge0$, $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$, and the non-unitarity
+$\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2\in[0,1]$. The two gaps are fixed by the two invariants
+
+$$\lvert\vec d_{\rm LL}\rvert^2=\tfrac12\big((\Delta^+_{\rm LL})^2+(\Delta^-_{\rm LL})^2\big),\qquad\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert=\Delta^+_{\rm LL}\Delta^-_{\rm LL},\qquad\zeta_{\rm LL}^2=1-\frac{\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2}{\lvert\vec d_{\rm LL}\rvert^4},\tag{10.2}$$
+
+where $\vec d_{\rm LL}\cdot\vec d_{\rm LL}=(d^1_{\rm LL})^2+(d^2_{\rm LL})^2+(d^3_{\rm LL})^2$ (no complex conjugation). Hence $\Omega_{\rm LL}$ is a function of
+$\lvert\vec d_{\rm LL}\rvert^2$ and $\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2$ only.
+
+*Proof.* Write $\vec d_{\rm LL}={\rm Re}\,\vec d_{\rm LL}+i\,{\rm Im}\,\vec d_{\rm LL}$ with two real vectors. (i) A phase $\exp(2i\theta^{\rm F}_{\rm LL})$
+multiplies $\vec d_{\rm LL}\cdot\vec d_{\rm LL}$ by $\exp(4i\theta^{\rm F}_{\rm LL})$; choose it so that $\vec d_{\rm LL}\cdot\vec d_{\rm LL}$ becomes real and not
+negative. Since $\vec d_{\rm LL}\cdot\vec d_{\rm LL}=\lvert{\rm Re}\,\vec d_{\rm LL}\rvert^2-\lvert{\rm Im}\,\vec d_{\rm LL}\rvert^2+2i\,{\rm Re}\,\vec d_{\rm LL}\cdot{\rm Im}\,\vec d_{\rm LL}$,
+the new real and imaginary parts are orthogonal, and the real part is the longer one. (ii) As $\mathsf U_{\rm LL}$ runs over $SU(2)$,
+$\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})$ runs over all rotations of the isospin space; choose one that turns the real part into the third and the
+imaginary part into the second direction. The field is now $(0,i\lvert{\rm Im}\,\vec d_{\rm LL}\rvert,\lvert{\rm Re}\,\vec d_{\rm LL}\rvert)$, and
+$\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert=\lvert{\rm Re}\,\vec d_{\rm LL}\rvert^2-\lvert{\rm Im}\,\vec d_{\rm LL}\rvert^2$. (iii) The modulus and $\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}$
+do not change (up to a rotation) under (9.4), and for orthogonal real and imaginary parts
+$\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}=-2i\,{\rm Re}\,\vec d_{\rm LL}\times{\rm Im}\,\vec d_{\rm LL}$ has the modulus $2\lvert{\rm Re}\,\vec d_{\rm LL}\rvert\lvert{\rm Im}\,\vec d_{\rm LL}\rvert$.
+So $\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})=(\lvert{\rm Re}\,\vec d_{\rm LL}\rvert\pm\lvert{\rm Im}\,\vec d_{\rm LL}\rvert)^2$, that is
+$\lvert{\rm Re}\,\vec d_{\rm LL}\rvert=(\Delta^+_{\rm LL}+\Delta^-_{\rm LL})/2$ and $\lvert{\rm Im}\,\vec d_{\rm LL}\rvert=(\Delta^+_{\rm LL}-\Delta^-_{\rm LL})/2$, which is (10.1);
+(10.2) follows by squaring and multiplying. $\square$
+
+Two kinds of field are distinguished by $\zeta_{\rm LL}$. The **unitary** or **polar** fields, $\zeta_{\rm LL}=0$: $\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}=0$, the field
+is a real vector times a phase, and $\Delta^+_{\rm LL}=\Delta^-_{\rm LL}=\lvert\vec d_{\rm LL}\rvert$. The **maximally non-unitary** fields,
+$\zeta_{\rm LL}=1$: $\vec d_{\rm LL}\cdot\vec d_{\rm LL}=0$ (for example $(1,i,0)$ times a number), and $\Delta^-_{\rm LL}=0$.
+
+## 10.2 The two sectors and the effective potential
+
+**The isospin part of the pairing block.** The pairing block of (9.11) is
+$\mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}$ with the $2\times2$ isospin matrix
+$\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger$, evaluated with (8.5):
+
+$$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\-d^3_{\rm LL}&-d^1_{\rm LL}-i\,d^2_{\rm LL}\end{pmatrix}$$
+
+(check SB-11 compares $(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}$ with $\mathsf P_{\rm LL}$: equal). For the normal form (10.1) it is
+
+$$\mathsf D_{\rm LL}=\frac12\begin{pmatrix}\Delta^+_{\rm LL}-\Delta^-_{\rm LL}&-(\Delta^+_{\rm LL}+\Delta^-_{\rm LL})\\-(\Delta^+_{\rm LL}+\Delta^-_{\rm LL})&\Delta^+_{\rm LL}-\Delta^-_{\rm LL}\end{pmatrix},\tag{10.3}$$
+
+with the eigenvector $(1,1)/\sqrt2$ of the eigenvalue $-\Delta^-_{\rm LL}$ and the eigenvector $(1,-1)/\sqrt2$ of the eigenvalue $+\Delta^+_{\rm LL}$
+(multiply out); these are the eigenvectors of $\tau^{\rm LL}_1$ with the eigenvalues $+1$ and $-1$, the same for every momentum.
+
+**The two sectors.** In the basis of these two eigenvectors on the isospin index, $\mathsf D_{\rm LL}$ is diagonal, and so is the normal part
+$\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}$, which acts as the unit matrix on the isospin index. The $16\times16$ matrix
+$\mathsf H_{\rm LL}(\vec q_{\rm LL})$ therefore splits into two decoupled $8\times8$ matrices, the **sectors** $\tau^{\rm LL}_1=+1$ and
+$\tau^{\rm LL}_1=-1$, each with the Dirac pairing block $(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger$ times a number, the gap of the sector,
+$-\Delta^-_{\rm LL}$ or $\Delta^+_{\rm LL}$:
+
+$$\begin{aligned}\tau^{\rm LL}_1=+1:&\quad\begin{pmatrix}\sum_j\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL}-\mu_{\rm LL}&-\Delta^-_{\rm LL}(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\\-\Delta^-_{\rm LL}C_{\rm LL}\gamma^{\rm ch}_{\rm LL}&\sum_j(\alpha^j_{\rm LL})^*q^j_{\rm LL}-\beta_{\rm LL}m_{\rm LL}+\mu_{\rm LL}\end{pmatrix},\\\tau^{\rm LL}_1=-1:&\quad\begin{pmatrix}\sum_j\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL}-\mu_{\rm LL}&\Delta^+_{\rm LL}(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\\\Delta^+_{\rm LL}C_{\rm LL}\gamma^{\rm ch}_{\rm LL}&\sum_j(\alpha^j_{\rm LL})^*q^j_{\rm LL}-\beta_{\rm LL}m_{\rm LL}+\mu_{\rm LL}\end{pmatrix},\end{aligned}\tag{10.4}$$
+
+with the $4\times4$ Dirac matrices $\alpha^j_{\rm LL}$, $\beta_{\rm LL}$ (the Dirac part of $\mathsf h_{\rm LL}(\vec q_{\rm LL})$ is written out in Section 8.7; the lower
+right blocks are $-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})^*-\mu_{\rm LL})$ restricted to one isospin component, $\beta_{\rm LL}$ being real). Each sector is the polar
+problem of Section 3.3 for one isospin component, with its own gap; the sign of the gap does not matter, because the unitary matrix that changes the
+sign of the hole part turns the gap $-\Delta^-_{\rm LL}$ into $+\Delta^-_{\rm LL}$ without changing the diagonal blocks. In the polar case
+$\Delta^+_{\rm LL}=\Delta^-_{\rm LL}=\Delta_{\rm LL}$ the two sectors therefore have the same eigenvalues, and together they have $\pm E^\pm_{\rm LL}$ four times each
+(3.13); so each sector has $\pm E^\pm_{\rm LL}$ twice, computed with its own gap. For a general field, therefore, the 16 eigenvalues of
+$\mathsf H_{\rm LL}(\vec q_{\rm LL})$ are
+
+$$\pm E^+_{\rm LL}(\Delta^+_{\rm LL}),\quad\pm E^-_{\rm LL}(\Delta^+_{\rm LL}),\quad\pm E^+_{\rm LL}(\Delta^-_{\rm LL}),\quad\pm E^-_{\rm LL}(\Delta^-_{\rm LL}),\qquad\text{each twice},\tag{10.5}$$
+
+with $E^\pm_{\rm LL}(\Delta^+_{\rm LL})=((\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+(\Delta^+_{\rm LL})^2)^{1/2}$ and the same with $\Delta^-_{\rm LL}$ (the argument names the gap
+that replaces $\Delta_{\rm LL}$ in $E^\pm_{\rm LL}$). Check SB-11 compares (10.5) with the numerically computed eigenvalues for 30 random fields, momenta and chemical potentials (0, 0.35 and
+0.6): largest deviation $2.7\times10^{-15}$; the sum of the positive eigenvalues does not depend on the direction of $\vec q_{\rm LL}$ ($4\times10^{-15}$).
+
+**The effective potential.** Inserting (10.5) in (9.11): the positive eigenvalues sum to
+$2(E^+_{\rm LL}(\Delta^+_{\rm LL})+E^-_{\rm LL}(\Delta^+_{\rm LL})+E^+_{\rm LL}(\Delta^-_{\rm LL})+E^-_{\rm LL}(\Delta^-_{\rm LL}))$, and to
+$4(\lvert\varepsilon_{\rm LL}+\mu_{\rm LL}\rvert+\lvert\varepsilon_{\rm LL}-\mu_{\rm LL}\rvert)$ at $\vec d_{\rm LL}=0$ (where $E^\pm_{\rm LL}=\lvert\varepsilon_{\rm LL}\pm\mu_{\rm LL}\rvert$).
+Half the difference, integrated, gives
+
+$$\begin{aligned}\Omega_{\rm LL}(\vec d_{\rm LL})&=\frac{\lvert\vec d_{\rm LL}\rvert^2}{G_{\rm LL}}-W^{\rm g}_{\rm LL}\big((\Delta^+_{\rm LL})^2\big)-W^{\rm g}_{\rm LL}\big((\Delta^-_{\rm LL})^2\big),\\W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)&=\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}\big(E^+_{\rm LL}+E^-_{\rm LL}-\lvert\varepsilon_{\rm LL}+\mu_{\rm LL}\rvert-\lvert\varepsilon_{\rm LL}-\mu_{\rm LL}\rvert\big),\end{aligned}\tag{10.6}$$
+
+the **condensation function** $W^{\rm g}_{\rm LL}$ of one sector (its argument is the squared gap, which enters $E^\pm_{\rm LL}$). Check SB-11 compares
+(10.6) with the direct integral of the eigenvalues of $\mathsf H_{\rm LL}(\vec q_{\rm LL})$ for three random fields at $\mu_{\rm LL}=0$ and three with a Fermi
+sea ($\mu_{\rm LL}=0.5$), $G_{\rm LL}=22.5$: largest relative deviation $3.2\times10^{-13}$.
+
+**The condensation function is increasing and strictly concave.** With $\partial E^\pm_{\rm LL}/\partial(\Delta_{\rm LL}^2)=1/(2E^\pm_{\rm LL})$,
+
+$$\frac{\partial W^{\rm g}_{\rm LL}}{\partial(\Delta_{\rm LL}^2)}=\frac12\int\frac{d^3q_{\rm LL}}{(2\pi)^3}\Big(\frac1{E^+_{\rm LL}}+\frac1{E^-_{\rm LL}}\Big)>0,\qquad\frac{\partial^2W^{\rm g}_{\rm LL}}{\partial(\Delta_{\rm LL}^2)^2}=-\frac14\int\frac{d^3q_{\rm LL}}{(2\pi)^3}\Big(\frac1{(E^+_{\rm LL})^3}+\frac1{(E^-_{\rm LL})^3}\Big)<0,\tag{10.7}$$
+
+for every chemical potential. The first form, set equal to $1/(2G_{\rm LL})$, is the gap equation (2.33) of one sector. Check SB-12 confirms the
+concavity numerically on a grid of 49 squared gaps at $\mu_{\rm LL}=0$ and $\mu_{\rm LL}=0.5$ (all second differences negative). The meaning:
+a non-unitary field moves gap from one sector to the other at fixed $\lvert\vec d_{\rm LL}\rvert^2$ (the sum $(\Delta^+_{\rm LL})^2+(\Delta^-_{\rm LL})^2$ is fixed),
+and a concave function gains less from the larger gap than it loses from the smaller one; Section 11 turns this into the statement that the
+minima are polar.
+
+## 10.3 The Ginzburg-Landau form
+
+At $\mu_{\rm LL}=0$ and $m_{\rm LL}>0$ the integrand of $W^{\rm g}_{\rm LL}$ is an analytic function of $\Delta_{\rm LL}^2$, and its Taylor series begins
+with the first derivative at zero gap times $\Delta_{\rm LL}^2$ plus half the second derivative times $\Delta_{\rm LL}^4$. By (10.7) with
+$E^\pm_{\rm LL}=\varepsilon_{\rm LL}$ the first derivative at zero gap is $\int\!d^3q_{\rm LL}(2\pi)^{-3}/\varepsilon_{\rm LL}=1/(2G^{\rm crit}_{\rm LL})$ by (9.17), and
+the second is $-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}/\varepsilon_{\rm LL}^3=-Z^{\rm t}_{\rm LL}(0)$ by (9.18). With $(\Delta^+_{\rm LL})^2+(\Delta^-_{\rm LL})^2=2\lvert\vec d_{\rm LL}\rvert^2$ and
+$(\Delta^+_{\rm LL})^4+(\Delta^-_{\rm LL})^4=2\lvert\vec d_{\rm LL}\rvert^4(1+\zeta_{\rm LL}^2)=4\lvert\vec d_{\rm LL}\rvert^4-2\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2$ (by (10.2)),
+(10.6) becomes the **Ginzburg-Landau form**
+
+$$\begin{aligned}\Omega^{\rm GL}_{\rm LL}(\vec d_{\rm LL})&=a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2+b^{\rm GL}_{\rm LL}\big(2\lvert\vec d_{\rm LL}\rvert^4-\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2\big),\\a^{\rm GL}_{\rm LL}&=\frac1{G_{\rm LL}}-\frac1{G^{\rm crit}_{\rm LL}},\qquad b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)=\frac{\mathrm{arsinh}(\Lambda_{\rm LL}/m_{\rm LL})-\Lambda_{\rm LL}/\varepsilon_{\rm LL}(\Lambda_{\rm LL})}{4\pi^2},\end{aligned}\tag{10.8}$$
+
+with $\Omega_{\rm LL}-\Omega^{\rm GL}_{\rm LL}$ of the order $\lvert\vec d_{\rm LL}\rvert^6$ (the next term is (10.12)). At $\mu_{\rm LL}=0$ the quartic coefficient equals the stiffness of
+the time derivatives of Section 9.4: both are $\tfrac12\int1/\varepsilon_{\rm LL}^3$. For $m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$: $b^{\rm GL}_{\rm LL}=0.0337363$.
+
+**The analogy with the Higgs potential.** The potential of the Higgs doublet of the electroweak theory is a coefficient times the squared modulus of
+the field plus a positive coefficient times its fourth power; when the first coefficient is negative, the minima form a sphere and the potential
+has the shape of a Mexican hat. (10.8) has the same two terms, with two differences. First, the coefficient $a^{\rm GL}_{\rm LL}$ is computed: it is
+negative exactly when the attraction exceeds the critical coupling, $G_{\rm LL}>G^{\rm crit}_{\rm LL}$. Second, the quartic term depends on the orientation
+of the field: at fixed $\lvert\vec d_{\rm LL}\rvert$, $2\lvert\vec d_{\rm LL}\rvert^4-\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2=\lvert\vec d_{\rm LL}\rvert^4(1+\zeta_{\rm LL}^2)$ is
+smallest for $\zeta_{\rm LL}=0$, so the quartic term prefers the polar fields; for them $\Omega^{\rm GL}_{\rm LL}=a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2+b^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^4$,
+whose minima for $a^{\rm GL}_{\rm LL}<0$ lie at $\lvert\vec d_{\rm LL}\rvert^2=-a^{\rm GL}_{\rm LL}/(2b^{\rm GL}_{\rm LL})$ with the depth
+$-(a^{\rm GL}_{\rm LL})^2/(4b^{\rm GL}_{\rm LL})$. At $G_{\rm LL}=22.5$: $a^{\rm GL}_{\rm LL}=-0.00253345$, the radius 0.193772 and the depth $-4.7563\times10^{-5}$;
+the exact values (Section 10.4) are 0.2094933 and $-5.2884\times10^{-5}$.
+
+## 10.4 The closed form at $\mu_{\rm LL}=0$
+
+**The function $\Xi_{\rm LL}$.** At $\mu_{\rm LL}=0$, $E^+_{\rm LL}=E^-_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}$ and
+$\lvert\varepsilon_{\rm LL}\pm\mu_{\rm LL}\rvert=\varepsilon_{\rm LL}$, so the integrand of (10.6) is $2(q_{\rm LL}^2+m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}-2(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$.
+The spinor charges paired with the gap $\Delta_{\rm LL}$ behave as free charges of the **quasi-particle mass**
+$M^{\rm q}_{\rm LL}=(m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}$ (the smallest quasi-particle energy, at $q_{\rm LL}=0$), and
+
+$$\begin{aligned}W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)&=\Xi_{\rm LL}(m_{\rm LL}^2+\Delta_{\rm LL}^2)-\Xi_{\rm LL}(m_{\rm LL}^2),\\\Xi_{\rm LL}((M^{\rm q}_{\rm LL})^2)&=2\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}\big(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2\big)^{1/2}\\&=\frac{\Lambda_{\rm LL}\big(2\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2\big)\big(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2\big)^{1/2}-(M^{\rm q}_{\rm LL})^4\,\mathrm{arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})}{8\pi^2},\end{aligned}\tag{10.9}$$
+
+using $\int_0^{\Lambda_{\rm LL}}q_{\rm LL}^2(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}dq_{\rm LL}=\tfrac18\big(\Lambda_{\rm LL}(2\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}-(M^{\rm q}_{\rm LL})^4\mathrm{arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})\big)$
+(differentiate the right side with respect to $\Lambda_{\rm LL}$ to verify). Its first, second and third derivatives with respect to the argument $(M^{\rm q}_{\rm LL})^2$, written
+$\Xi^{(1)}_{\rm LL}$, $\Xi^{(2)}_{\rm LL}$, $\Xi^{(3)}_{\rm LL}$, are the integrals of $(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-1/2}$, of $-\tfrac12(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-3/2}$ and of
+$\tfrac34(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-5/2}$ over $d^3q_{\rm LL}(2\pi)^{-3}$:
+
+$$\begin{aligned}\Xi^{(1)}_{\rm LL}&=\frac{\Lambda_{\rm LL}(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}-(M^{\rm q}_{\rm LL})^2\,\mathrm{arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})}{4\pi^2},\\\Xi^{(2)}_{\rm LL}&=-\frac{\mathrm{arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})-\Lambda_{\rm LL}(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-1/2}}{4\pi^2},\\\Xi^{(3)}_{\rm LL}&=\frac{\Lambda_{\rm LL}^3}{8\pi^2(M^{\rm q}_{\rm LL})^2(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{3/2}}\end{aligned}$$
+
+(the antiderivatives of $q_{\rm LL}^2(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-1/2}$, $q_{\rm LL}^2(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-3/2}$ and
+$q_{\rm LL}^2(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-5/2}$ are those of Section 9.4 with $M^{\rm q}_{\rm LL}$ in place of $m_{\rm LL}$). Check SB-12: (10.9) against
+quadrature to $1.3\times10^{-15}$, the derivatives against numerical derivatives to $8\times10^{-8}$, and $W^{\rm g}_{\rm LL}$ of (10.6) against (10.9) to
+$2\times10^{-14}$.
+
+**The polar potential and the gap equation.** Along the polar fields ($\zeta_{\rm LL}=0$, $\lvert\vec d_{\rm LL}\rvert=\Delta_{\rm LL}$),
+$\Omega_{\rm LL}=\Delta_{\rm LL}^2/G_{\rm LL}-2(\Xi_{\rm LL}(m_{\rm LL}^2+\Delta_{\rm LL}^2)-\Xi_{\rm LL}(m_{\rm LL}^2))$, and its derivative with respect to $\Delta_{\rm LL}^2$
+vanishes exactly when
+
+$$\frac1{G_{\rm LL}}=2\,\Xi^{(1)}_{\rm LL}=\frac{\Lambda_{\rm LL}(\Lambda_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}-(M^{\rm q}_{\rm LL})^2\,\mathrm{arsinh}(\Lambda_{\rm LL}/M^{\rm q}_{\rm LL})}{2\pi^2},\qquad(M^{\rm q}_{\rm LL})^2=m_{\rm LL}^2+\Delta_{\rm LL}^2:\tag{10.10}$$
+
+the gap equation (2.33) at $\mu_{\rm LL}=0$ in closed form (for $m_{\rm LL}=0$ it is (3.18)). The right side decreases as $\Delta_{\rm LL}$ grows (its
+derivative is $2\Xi^{(2)}_{\rm LL}<0$) from $1/G^{\rm crit}_{\rm LL}$ at $\Delta_{\rm LL}=0$, so for $G_{\rm LL}>G^{\rm crit}_{\rm LL}$ it has exactly one solution, the
+**gap of the condensed vacuum** $\Delta^{\rm vac}_{\rm LL}$, and for $G_{\rm LL}\le G^{\rm crit}_{\rm LL}$ none. For $m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$,
+$G_{\rm LL}=22.5$: $\Delta^{\rm vac}_{\rm LL}=0.2094933$, $M^{\rm q}_{\rm LL}=0.2896333$, and the depth of the minimum is
+$\Omega_{\rm LL}=-5.2884\times10^{-5}$ (check SB-12: the derivative vanishes there to $7\times10^{-18}$). The coefficients of (10.8) are
+$a^{\rm GL}_{\rm LL}=1/G_{\rm LL}-2\Xi^{(1)}_{\rm LL}(m_{\rm LL}^2)$ and $b^{\rm GL}_{\rm LL}=-\Xi^{(2)}_{\rm LL}(m_{\rm LL}^2)$, by the expansion of (10.9); SB-12 confirms
+$b^{\rm GL}_{\rm LL}=Z^{\rm t}_{\rm LL}(0)$ exactly.
+
+**Massless spinor charges.** For $m_{\rm LL}=0$ the expansion is not analytic: $b^{\rm GL}_{\rm LL}$ grows like $\ln(\Lambda_{\rm LL}/m_{\rm LL})/(4\pi^2)$ as
+$m_{\rm LL}\to0$. With $\Lambda_{\rm LL}(2\Lambda_{\rm LL}^2+\Delta_{\rm LL}^2)(\Lambda_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}=2\Lambda_{\rm LL}^4+2\Lambda_{\rm LL}^2\Delta_{\rm LL}^2+\Delta_{\rm LL}^4/4$
+plus terms of the order $\Delta_{\rm LL}^6$, and $\mathrm{arsinh}(\Lambda_{\rm LL}/\Delta_{\rm LL})=\ln(2\Lambda_{\rm LL}/\Delta_{\rm LL})$ plus terms of the order
+$\Delta_{\rm LL}^2$, the polar potential is, up to terms of the order $\Delta_{\rm LL}^6$,
+
+$$\Omega_{\rm LL}=\Delta_{\rm LL}^2\Big(\frac1{G_{\rm LL}}-\frac{\Lambda_{\rm LL}^2}{2\pi^2}\Big)+\frac{\Delta_{\rm LL}^4}{4\pi^2}\Big(\ln\frac{2\Lambda_{\rm LL}}{\Delta_{\rm LL}}-\frac14\Big)\qquad(m_{\rm LL}=0):\tag{10.11}$$
+
+a quartic term with a logarithm, as in the effective potential of Coleman and Weinberg. Its derivative with respect to $\Delta_{\rm LL}^2$ set to zero is
+(3.19). Check SB-12: the remainder divided by $\Delta_{\rm LL}^4$ falls by the factor 4 each time $\Delta_{\rm LL}$ is halved ($1.0\times10^{-5}$, $2.5\times10^{-6}$,
+$6.3\times10^{-7}$ at $\Delta_{\rm LL}=0.04$, 0.02, 0.01), as a remainder of the order $\Delta_{\rm LL}^6$ must.
+
+**The next term.** The term of third order of the expansion of (10.9),
+$-\tfrac16\Xi^{(3)}_{\rm LL}(m_{\rm LL}^2)\big((\Delta^+_{\rm LL})^6+(\Delta^-_{\rm LL})^6\big)$ with $(\Delta^+_{\rm LL})^6+(\Delta^-_{\rm LL})^6=\lvert\vec d_{\rm LL}\rvert^6(2+6\zeta_{\rm LL}^2)$, is
+
+$$\Omega_{\rm LL}-\Omega^{\rm GL}_{\rm LL}=-\frac{\Lambda_{\rm LL}^3(1+3\zeta_{\rm LL}^2)}{24\pi^2m_{\rm LL}^2\varepsilon_{\rm LL}(\Lambda_{\rm LL})^3}\lvert\vec d_{\rm LL}\rvert^6\qquad\text{(up to terms of the order }\lvert\vec d_{\rm LL}\rvert^8).\tag{10.12}$$
+
+Its coefficient is $-0.099513$ for polar fields and $-0.207067$ for $\zeta_{\rm LL}=0.6$ ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$); check SB-12 finds the ratio of the
+remainder to $\lvert\vec d_{\rm LL}\rvert^6$ to be $-0.098477$, $-0.099251$, $-0.099437$ (polar) and $-0.203610$, $-0.206127$, $-0.206771$ ($\zeta_{\rm LL}=0.6$)
+at $\lvert\vec d_{\rm LL}\rvert=0.04$, 0.02, 0.01, converging to these values. The negative sixth-order term is why the Ginzburg-Landau form
+underestimates the depth and the radius of the minimum.
+
+## 10.5 The Mexican hat
+
+Figure 23 shows the potential. (a) Along the polar fields, $\Omega_{\rm LL}$ (10.6) and its Ginzburg-Landau form (10.8) for four couplings: below the
+critical coupling ($G_{\rm LL}=18$) the minimum is at $\vec d_{\rm LL}=0$, the normal vacuum, and the curve rises like $a^{\rm GL}_{\rm LL}\Delta_{\rm LL}^2$; at
+$G_{\rm LL}=G^{\rm crit}_{\rm LL}$ the quadratic term vanishes and the curve starts like $b^{\rm GL}_{\rm LL}\Delta_{\rm LL}^4$; above it ($G_{\rm LL}=22.5$, 24)
+$\vec d_{\rm LL}=0$ is a maximum and the minimum moves out, to $\Delta^{\rm vac}_{\rm LL}=0.2094933$ and 0.328268. (b) The Mexican hat itself: $\Omega_{\rm LL}$ on
+the complex plane of the polar component $d^3_{\rm LL}$ ($d^1_{\rm LL}=d^2_{\rm LL}=0$) at $G_{\rm LL}=22.5$, with a quarter cut away to show the profile. It
+depends only on $\lvert d^3_{\rm LL}\rvert$, because the phase of $d^3_{\rm LL}$ is a transformation (9.4) of $U(1)^{\rm F}_{\rm LL}$; the minima form the
+circle $\lvert d^3_{\rm LL}\rvert=\Delta^{\rm vac}_{\rm LL}$. The same picture holds on the complex line of every polar direction, because the isospin
+rotations turn one polar direction into any other. (c) At fixed $\lvert\vec d_{\rm LL}\rvert$, $\Omega_{\rm LL}$ grows with the non-unitarity
+$\zeta_{\rm LL}$: in every cross-section of the six-dimensional space of fields, the polar fields are the lowest. (d) The radius of the circle of minima
+against the coupling: the solution of (10.10) and the Ginzburg-Landau radius $(-a^{\rm GL}_{\rm LL}/(2b^{\rm GL}_{\rm LL}))^{1/2}$, which agree near
+$G^{\rm crit}_{\rm LL}$, where both grow like $(G_{\rm LL}-G^{\rm crit}_{\rm LL})^{1/2}$, and separate at stronger coupling.
+
+![](figures/fig_t2_sfbs_potential.png){width=100%}
+
+**Figure 23.** The effective potential of the SFBS at $\mu_{\rm LL}=0$ ($m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$; in units of $10^{-4}$). (a) Along the polar fields
+($\lvert\vec d_{\rm LL}\rvert=\Delta_{\rm LL}$, $\zeta_{\rm LL}=0$) for $G_{\rm LL}=18$, $G^{\rm crit}_{\rm LL}=21.287$, 22.5 and 24: (10.6) (solid) and the
+Ginzburg-Landau form (10.8) (dashed). (b) The Mexican hat: $\Omega_{\rm LL}$ on the complex plane of $d^3_{\rm LL}$ ($d^1_{\rm LL}=d^2_{\rm LL}=0$) at
+$G_{\rm LL}=22.5$, three quarters drawn; black: the profile along the two edges of the cut; orange: the circle of minima. (c) $\Omega_{\rm LL}$ at fixed
+$\lvert\vec d_{\rm LL}\rvert=0.5$, 1 and 1.5 times $\Delta^{\rm vac}_{\rm LL}$ against the non-unitarity $\zeta_{\rm LL}$, $G_{\rm LL}=22.5$: (10.6) (solid) and (10.8)
+(dashed). (d) The gap $\Delta^{\rm vac}_{\rm LL}$ of the condensed vacuum against the coupling: the solution of (10.10) (solid) and the Ginzburg-Landau value
+(dashed). Data: `test2/data/t2_sfbs_potential_polar.csv`, `t2_sfbs_potential_hat.csv`, `t2_sfbs_potential_zeta.csv`, `t2_sfbs_vacuum_gap.csv`.
+
+## 10.6 Discussion
+
+- **What the potential is.** $\Omega_{\rm LL}(\vec d_{\rm LL})$ is the energy per volume of the vacuum of the spinor field in a uniform pair field,
+  measured from the normal vacuum, plus the cost $\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}$ of the field itself; by (9.11) it is the potential term of
+  the effective Lagrangian (9.12). It is computed exactly in the mean-field sense: (10.6) for every field and chemical potential, (10.9) in closed
+  form at $\mu_{\rm LL}=0$.
+- **Its structure.** The two invariants of the field are the two gaps of the two sectors (10.5); the potential is the sum of the condensation
+  energies of the sectors, and the concavity (10.7) of the condensation function makes the polar fields lowest at fixed modulus.
+- **The Mexican hat** appears for $G_{\rm LL}>G^{\rm crit}_{\rm LL}$, when the attraction is strong enough to condense the vacuum itself (at
+  $\mu_{\rm LL}>m_{\rm LL}$, with a Fermi sea, the first derivative of $W^{\rm g}_{\rm LL}$ at zero gap diverges logarithmically and the condensate exists
+  for every coupling, Section 3.3). Its parameters are not free: $a^{\rm GL}_{\rm LL}$ and $b^{\rm GL}_{\rm LL}$ follow from $G_{\rm LL}$, $m_{\rm LL}$ and
+  $\Lambda_{\rm LL}$.
+- **Limits.** The potential is that of the mean-field approximation: the fluctuations of $\vec d_{\rm LL}$ itself (the loops of the SFBS) would add
+  corrections, which are not computed here. The minima, the breaking of the symmetry, and the expansion about a minimum follow in Section 11.
+
 # Appendix A. Provenance: programs, commands, reports, data, figures
 
 ## A.1 How to reproduce everything
@@ -3789,9 +4026,9 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
   ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e
   rsvg-convert -f pdf -o test2/figures/fig_t2_rs_$e.pdf test2/figures/fig_t2_rs_$e.svg
   rsvg-convert -f png -z 1.6 -o test2/figures/fig_t2_rs_$e.png test2/figures/fig_t2_rs_$e.svg; done
-# 8. items [7] to [11]: the checks SB-1 to SB-10 of the superfluid boson singlet state, its explicit matrices and the data of Figures 21 and 22
+# 8. items [7] to [11]: the checks SB-1 to SB-12 of the superfluid boson singlet state, its explicit matrices and the data of Figures 21 to 23
 cd test2/rust && cargo build --release && ./target/release/t2_sfbs && cd ../..
-# 9. Figures 21 and 22 (test2/figures/fig_t2_sfbs_*.pdf and .png)
+# 9. Figures 21 to 23 (test2/figures/fig_t2_sfbs_*.pdf and .png)
 python3 test2/python/make_t2_sfbs_figures.py
 # 10. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
@@ -3799,8 +4036,8 @@ bash code/scripts/check_all.sh
 
 The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
 together in about 70 seconds (the quench 50 seconds), the Rust solver of item [5] in about 60 seconds, `t2_sfbs` in about
-25 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states and the $16\times16$ Bogoliubov
-matrices of checks SB-7 and SB-8), all on one processor core.
+30 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states and the $16\times16$ Bogoliubov
+matrices of checks SB-7, SB-8 and SB-11), all on one processor core.
 
 Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; rsvg-convert (librsvg) for the
 conversion of the SVG figures of item [6]; for the documents pandoc
@@ -3825,7 +4062,7 @@ The Cargo workspace `test2/rust` has six members (the fourth, `t2solve`, is the 
   lattice operator on a plane wave (`h_lat_plane`), and a faster form of the Hermitian eigensolver (the same method;
   check GS-11 still passes).
 
-Together they have 10427 lines of commented Rust in 17 files. Arithmetic:
+Together they have 10830 lines of commented Rust in 17 files. Arithmetic:
 double precision; each check names its tolerance; random numbers from a fixed seed, so that every run gives the
 same output.
 
@@ -3934,7 +4171,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.11 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.10 s
 output files: t2_py_packet_free_summary.txt, t2_py_packet_free_series.csv, t2_py_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -3956,7 +4193,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.47 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.53 s
 output files: t2_py_cyclotron_summary.txt, t2_py_cyclotron_series.csv, t2_py_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -3996,7 +4233,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.81 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 0.83 s
 output files: t2_py_kink_spectrum_summary.txt, t2_py_kink_spectrum_series.csv, t2_py_kink_spectrum_fields.csv, t2_py_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4015,7 +4252,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.48 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 1.57 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_py_ground_state_summary.txt, t2_py_ground_state_series.csv, t2_py_ground_state_fields.csv, t2_py_ground_state_spectrum.csv, t2_py_ground_state_iterations.csv
 checks:
@@ -4038,7 +4275,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 6.87 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 6.89 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_py_kink_ground_state_summary.txt, t2_py_kink_ground_state_series.csv, t2_py_kink_ground_state_fields.csv, t2_py_kink_ground_state_spectrum.csv, t2_py_kink_ground_state_iterations.csv
 checks:
@@ -4060,11 +4297,11 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107906; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 0.35 s
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107906; number of eigenvalues with |E_qp| < 1e-9: 0; computing time 0.36 s
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 46.36 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 46.58 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_py_quench_summary.txt, t2_py_quench_series.csv, t2_py_quench_fields.csv, t2_py_quench_spectrum.csv, t2_py_quench_iterations.csv
 checks:
@@ -4138,7 +4375,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 600, output every 20 steps, Hbound = 6.4, dt Hbound = 0.32 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [16.0, 0.0, 0.0], width 3, momentum [0.8, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.9580263345
-results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.06 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.960712721889; final norm 0.999999850169; final P_hole = 0; final P_up = 1; final centre of the density (44.9241, 0, 0); computing time 0.05 s
 output files: t2_rs_packet_free_summary.txt, t2_rs_packet_free_series.csv, t2_rs_packet_free_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4160,7 +4397,7 @@ pair field: none, direction 3, amplitude 0, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.4, 0.0], gauge file none, pulse none
 time stepping: RK4, dt = 0.05, steps = 720, output every 80 steps, Hbound = 12.4, dt Hbound = 0.62 (RK4 is stable below 2.83; required <= 2.5)
 initial mode: Gaussian packet, centre [9.75, 13.3, 0.0], width 1.5, momentum [0.6, 0.0, 0.0], branch positive, spin up, isospin up, particle; eps_lat(q) = 0.7673133026
-results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.32 s
+results: energy <w|H_lat|w> at x^0 = 0: 0.806852665402; final norm 0.999999705447; final P_hole = 0; final P_up = 1; final centre of the density (11.7485, 11.0718, 0); computing time 1.27 s
 output files: t2_rs_cyclotron_summary.txt, t2_rs_cyclotron_series.csv, t2_rs_cyclotron_fields.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4200,7 +4437,7 @@ lattice: sites 60 1 1, dx = 0.4, boundary periodic periodic periodic, r_W = 1, a
 parameters: m = 0.4, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink_antikink, direction 3, amplitude 1, phase 0, width 1, positions [6.0, 18.0]
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
-results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 2.69 s
+results: 960 eigenvalues from -5.489974972 to 5.489974972; 16 eigenvalues in the window [-0.8, 0.8]: -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 -0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563 0.4623236563; computing time 2.80 s
 output files: t2_rs_kink_spectrum_summary.txt, t2_rs_kink_spectrum_series.csv, t2_rs_kink_spectrum_fields.csv, t2_rs_kink_spectrum_spectrum.csv
 checks:
 [PASS] the lattice operator H_lat is Hermitian (largest deviation 0.0e+00)
@@ -4219,7 +4456,7 @@ parameters: m = 0.4, mu = 0.6, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.2, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.46, initial pair field 'uniform' (direction 3, amplitude 0.2)
-ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 5.06 s
+ground state at G = 0.46: E_GS per site (measured from the normal state) = -0.0342224808033; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 4.84 s
 results: |d| from 0.4042817351 to 0.4042817351, mean 0.4042817351; lowest positive E_qp = 0.4044936525
 output files: t2_rs_ground_state_summary.txt, t2_rs_ground_state_series.csv, t2_rs_ground_state_fields.csv, t2_rs_ground_state_spectrum.csv, t2_rs_ground_state_iterations.csv
 checks:
@@ -4242,7 +4479,7 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: kink, direction 3, amplitude 0.6, phase 0, width 1.7, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 self-consistency: G = 0.48, initial pair field 'kink' (direction 3, amplitude 0.6)
-ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 23.40 s
+ground state at G = 0.48: E_GS per site (measured from the normal state) = -0.0430721678874; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 23.49 s
 results: |d| from 0.1119642986 to 0.7489855539, mean 0.5552027876; lowest positive E_qp = 0.0340394461
 output files: t2_rs_kink_ground_state_summary.txt, t2_rs_kink_ground_state_series.csv, t2_rs_kink_ground_state_fields.csv, t2_rs_kink_ground_state_spectrum.csv, t2_rs_kink_ground_state_iterations.csv
 checks:
@@ -4264,11 +4501,11 @@ parameters: m = 0, mu = 0, g_v = 0.7, g_F = 0.45
 pair field: uniform, direction 3, amplitude 0.5, phase 0, width 1, positions []
 gauge fields: potentials [[0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0]], magnetic [0.0, 0.0], gauge file none, pulse none
 quench: the ground state at G = 0.45 is evolved with G = 0.455 after x^0 = 0
-ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.38 s
+ground state at G = 0.45: E_GS per site (measured from the normal state) = -0.0519384107907; number of eigenvalues with |E_qp| < 1e-09: 0; computing time 1.33 s
 time stepping: implicit midpoint rule, dt = 0.04, steps = 600, output every 25 steps, 192 modes; Hbound (with the pair field allowed to grow by one half) = 6.72714, dt Hbound = 0.2691 (required <= 1)
 the fixed-point iteration of the implicit midpoint rule needed at most 12 and on average 12.00 passes per step (stopping when the largest change is below 1e-14)
 the conserved mean-field functional E_MF = 490.857953373 changes by at most 1.921e-03 (the implicit midpoint rule keeps it to second order in dt, without drift)
-results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 23.84 s
+results: |d| at x^0 = 0: 0.4901479109; mean of |d| over the run after the quench 0.5008765642; smallest and largest |d| after the quench 0.4902123304 and 0.5093358906; computing time 23.44 s
 the amplitude of the pair field oscillates with the angular frequency 1.184485 (least-squares fit of a + b cos(w x^0) + c sin(w x^0) to |d| for x^0 > 0, w scanned from 0.2 to 6 in steps of 0.001 and refined by a parabola; fitted amplitude 0.00586681); twice the mean of |d| after the quench is 1.001753
 output files: t2_rs_quench_summary.txt, t2_rs_quench_series.csv, t2_rs_quench_fields.csv, t2_rs_quench_spectrum.csv, t2_rs_quench_iterations.csv
 checks:
@@ -4365,11 +4602,16 @@ $\varepsilon_{\rm LL}(\Lambda_{\rm LL})$; `G_bind` for $G^{\rm bd}_{\rm LL}$; `Z
 `Z_t`, `Z_s` and `Z` for $Z^{\rm t}_{\rm LL}$, $Z^{\rm s}_{\rm LL}$ and their signed value ($Z^{\rm t}_{\rm LL}$ for the time direction,
 $-Z^{\rm s}_{\rm LL}$ for the space directions); `L_B` for $\mathcal L^{\rm B}_{\rm LL}$; `M_B` and `M_B(k)` for $M^{\rm B}_{\rm LL}$ and the pole
 at the wave number $k^{\rm B}_{\rm LL}$; `chi_Bogoliubov` for the susceptibility from the Bogoliubov matrices; `Re`, `Im` for the real and
-imaginary parts; `x_LL^0` for the time $x^0_{\rm LL}$; `eps` for $\varepsilon_{\rm LL}$.
+imaginary parts; `x_LL^0` for the time $x^0_{\rm LL}$; `eps` for $\varepsilon_{\rm LL}$. For the second part of item [8] (checks SB-11 and
+SB-12): `H_BdG(q)` for $\mathsf H_{\rm LL}(\vec q_{\rm LL})$; `E^+(Delta^+)` and the like for $E^\pm_{\rm LL}(\Delta^\pm_{\rm LL})$; `Delta^+-`,
+`Delta^+`, `Delta^-` for $\Delta^\pm_{\rm LL}$; `zeta` for $\zeta_{\rm LL}$; `W_g` for $W^{\rm g}_{\rm LL}$; `Omega` for $\Omega_{\rm LL}$; `Xi`, `Xi''` for
+$\Xi_{\rm LL}$ and $\Xi^{(2)}_{\rm LL}$; `M` for $M^{\rm q}_{\rm LL}$; `Ppair`, `Dpair`, `C gamma_ch` for $\mathsf P_{\rm LL}$, $\mathsf D_{\rm LL}$,
+$C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$; `a_GL`, `b_GL` for $a^{\rm GL}_{\rm LL}$, $b^{\rm GL}_{\rm LL}$; `d.d` for $\vec d_{\rm LL}\cdot\vec d_{\rm LL}$; `Delta_vac` for
+$\Delta^{\rm vac}_{\rm LL}$; `Delta` for $\Delta_{\rm LL}$.
 
 ```
 Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson singlet state (SFBS) of the spinor field Psi_LL, its effective field theory and the Higgs mechanism (Test 2, items 7 to 11)
-10 of 10 checks passed
+12 of 12 checks passed
 
 [PASS] SB-1  spin-zero pairs: the antisymmetric 8 x 8 matrices Kgen with S^T Kgen + Kgen S = 0 for the six Lorentz generators S form a space of complex dimension 6, which is the span of Kch_1, Kch_2, Kch_3 (scalar) and Kch'_1, Kch'_2, Kch'_3 (pseudoscalar), mutually orthogonal (tr(Kgen^dag Kgen') = 8 or 0); their blocks between the two Weyl blocks vanish; the isospin singlets (C gamma_ch) (x) eps2 and C (x) eps2 are symmetric and give no pair (tol 1e-10)  -- dimension of the solution space 6 (eigenvalues of the Gram matrix below 1e-12 of the largest; the next is 3.000), |P_null - P_span| = 1.8e-15, largest mixed-block entry 0, largest residual 0.0e0, Gram deviation 0.0e0, antisymmetric part of the singlets 0
 [PASS] SB-2  quantum numbers of the pairs: the spin Casimir sum_j G(S_j)^2 Kgen vanishes (spin 0) and the isospin Casimir sum_iota G(T_iota)^2 Kgen = 2 Kgen (isospin 1) for all six pair matrices, with G(X) Kgen = X^T Kgen + Kgen X; G(T_3) K(q) = q K(q) for K(+1) = (Kch_1 - i Kch_2)/sqrt2, K(0) = Kch_3, K(-1) = (Kch_1 + i Kch_2)/sqrt2; G(1_8) Kgen = 2 Kgen (fermion number 2); gamma0^T Kch_iota gamma0 = Kch_iota and gamma0^T Kch'_iota gamma0 = -Kch'_iota (parity); sigma_j^T eps2 + eps2 sigma_j = 0 (tol 1e-14)  -- spin Casimir 0.0e0, isospin Casimir - 2: 0.0e0, charges 0.0e0, fermion number 0.0e0, parity 0.0e0, singlet 0
@@ -4381,6 +4623,8 @@ Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson single
 [PASS] SB-8  the SFBS boson of the normal vacuum (m = 0.2, mu = 0, Lambda = 1): chi_pr(2m, 0) by quadrature equals 1/G_bind = (Lambda eps_Lambda + m^2 arsinh(Lambda/m))/(2 pi^2) (tol 1e-8); for G_bind < G < G_crit the propagator has one pole M_B in (0, 2m), decreasing with G, with M_B -> 2m at G_bind and M_B -> 0 at G_crit; the Ginzburg-Landau mass ((1/G - 1/G_crit)/Z_t0)^(1/2) approaches it as G -> G_crit (relative errors decreasing, below 2e-3 at 1 - G/G_crit = 1e-4); at G = 20 the Bogoliubov matrices give chi(M_B, 0) = 1/G (tol 1e-6), and the small-k slope of M_B(k)^2 from the poles equals -(dchi_pr/dk^2)/(dchi_pr/domega^2) at the pole (relative tol 1e-4; the Ginzburg-Landau value Z_s0/Z_t0 is reported for comparison)  -- G_bind = 17.746276, G_crit = 21.286610; |chi_pr(2m,0) G_bind - 1| 6.3e-11; M_B at G_bind(1 + 1e-6): 0.400000; at G_crit(1 - 1e-8): 1.180e-4; relative error of the GL mass at 1 - G/G_crit = 1e-2, 1e-3, 1e-4: 1.0e-2, 1.0e-3, 1.0e-4; at G = 20: M_B = 0.27925155, |chi_Bogoliubov(M_B) G - 1| 1.4e-10, slope of omega^2 against k^2 1.089291 (from the poles) and 1.089291 (from the derivatives at the pole), Ginzburg-Landau Z_s0/Z_t0 = 1.117989
 [PASS] SB-9  the currents of the SFBS: for 50 random fields, derivatives and potentials, the derivatives of L_B = Z_t |nablaB_0 d|^2 - Z_s sum_j |nablaB_j d|^2 with respect to Av_LL^iota_p and AF_LL_p (central differences) equal 2 Z g_v Re[(d^* x nablaB_p d)^iota] and -4 Z g_F Im(d^* . nablaB_p d), with Z = Z_t for p = 0 and -Z_s for p = 1, 2, 3 (tol 1e-7)  -- largest deviation 1.0e-9
 [PASS] SB-10  the microscopic check of the effective field equation in the normal vacuum (m = 0.2, mu = 0, Lambda = 1, G = 20): the time-dependent mean-field equations of Section 2.10 for a uniform polar pair field (the modes of the planes (3.12) on 320 radial nodes, RK4 with the step 0.02 up to x_LL^0 = 1500), started from the trial gap 1e-5, give a pair field d^3(x_LL^0) whose spectral line below the two-particle threshold 2m lies at the pole M_B of the SFBS propagator, chi_pr(M_B, 0) = 1/G, computed with the same nodes (relative tol 1e-6); that pole equals the one of SB-8 (relative tol 1e-9); the pair field stays real (tol 1e-12 of d^3(0)); the mean-field energy per volume, which the equations conserve, changes by less than 1e-6 of the scale sum 4 |+-eps - mu| (the RK4 truncation error)  -- line of d^3(x_LL^0) at 0.279251576, pole M_B 0.279251554 (same nodes; relative deviation 8.0e-8), M_B of SB-8 0.279251554 (relative deviation 3.6e-15); largest change of the mean-field energy 1.5e-8; largest imaginary part 0.0e0; fitted line amplitude 0.9079 of d^3(0)
+[PASS] SB-11  the structure of the effective potential (m = 0.2, Lambda = 1): for 30 random pair fields d, momenta q and mu = 0, 0.35, 0.6, the 16 eigenvalues of the Bogoliubov matrix H_BdG(q) are +-E^+(Delta^+), +-E^-(Delta^+), +-E^+(Delta^-), +-E^-(Delta^-), each twice, with (Delta^+-)^2 = |d|^2 (1 +- zeta) (tol 1e-12); Omega(d) = |d|^2/G - W_g((Delta^+)^2) - W_g((Delta^-)^2) equals |d|^2/G - (1/2) int [sum of the positive eigenvalues of H_BdG(q) - the same at d = 0] for three random d at mu = 0 and at mu = 0.5 (Fermi sea), G = 22.5 (relative tol 1e-10); Omega is unchanged by exp(2i thF) Rv(U) (relative tol 1e-12); the sum of the positive eigenvalues does not depend on the direction of q (tol 1e-12); the printed Dpair satisfies Ppair = (C gamma_ch)^dag (x) Dpair  -- largest deviations: eigenvalues 2.7e-15, Omega 3.2e-13 (mu = 0: -0.000001243274 against -0.000001243274; mu = 0: 0.000107674640 against 0.000107674640; mu = 0: 0.000086464703 against 0.000086464703; mu = 0.5: -0.002018634708 against -0.002018634708; mu = 0.5: -0.001621342054 against -0.001621342054; mu = 0.5: -0.001209330507 against -0.001209330507), invariance 4.3e-13, direction of q 3.6e-15, Dpair 0.0e0
+[PASS] SB-12  the effective potential at mu = 0 (m = 0.2, Lambda = 1): Xi(M^2) = (Lambda (2 Lambda^2 + M^2) (Lambda^2 + M^2)^(1/2) - M^4 arsinh(Lambda/M))/(8 pi^2) equals 2 int d^3q/(2 pi)^3 (q^2 + M^2)^(1/2) by quadrature (relative tol 1e-12); its first and second derivatives in closed form equal numerical derivatives (relative tol 1e-7); W_g(Delta^2) = Xi(m^2 + Delta^2) - Xi(m^2) (relative tol 1e-11); W_g is strictly concave in Delta^2 on a grid of 49 values (second differences negative) at mu = 0 and with a Fermi sea (mu = 0.5); b_GL = -Xi''(m^2) = Z_t0 (tol 1e-15); the remainder of the Ginzburg-Landau form a_GL |d|^2 + b_GL (2 |d|^4 - |d.d|^2) divided by |d|^6 converges as |d| -> 0 (|d| = 0.04, 0.02, 0.01; polar and zeta = 0.6); for m = 0 the remainder of Delta^2 (1/G - Lambda^2/(2 pi^2)) + Delta^4 (ln(2 Lambda/Delta) - 1/4)/(4 pi^2) divided by Delta^4 falls at least by the factor 0.3 when Delta is halved; 1/G - 2 Xi'(m^2 + Delta_vac^2) = 0 at the gap of G = 22.5 (tol 1e-14)  -- largest deviations: Xi 1.3e-15, derivatives 7.7e-8, W_g 2.2e-14; largest second difference of W_g -5.2e-8 (negative: concave); b_GL = 0.0337363488 (Z_t0 - b_GL = 0.0e0); remainder/|d|^6 at |d| = 0.04, 0.02, 0.01: polar -0.098477, -0.099251, -0.099437, zeta = 0.6 -0.203610, -0.206127, -0.206771; massless remainder/Delta^4 at Delta = 0.04, 0.02, 0.01: 1.0e-5, 2.5e-6, 6.3e-7; stationarity at Delta_vac = 0.2094933033: 6.9e-18
 ```
 
 ## A.3 Data files and figures
@@ -4419,7 +4663,7 @@ Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson single
 | `t2_py_quench_series.csv` | the quench at every step | `x_LL^0`, `abs_d_mean`, `abs_d_site0`, `N_F`, `N_F_change`, `E_MF`, `ortho_error` |
 | `t2_py_quench_fields.csv` | the pair field on the sites at the output times | `x_LL^0`, `x_LL^1`, `x_LL^2`, `x_LL^3`, `d1_re`, `d1_im`, `d2_re`, `d2_im`, `d3_re`, `d3_im`, `abs_d` |
 | `test2/data/t2_rs_*` | the same files written by the Rust solver of item [5] for the seven examples, with the same columns; `t2_rs_selftest_checks.txt` and `t2_rs_examples_checks.txt` its self-test and the checks EX-1 to EX-8 | as the files `t2_py_*` |
-| `test2/data/t2_sfbs_checks.txt` | the report of the checks SB-1 to SB-10 of `t2_sfbs` (items [7] to [11]) | — |
+| `test2/data/t2_sfbs_checks.txt` | the report of the checks SB-1 to SB-12 of `t2_sfbs` (items [7] to [11]) | — |
 | `test2/data/t2_sfbs_fragments.md` | the explicit matrices and expressions of the sections of items [7] to [11], in LaTeX | — |
 | `test2/data/t2_sfbs_pair_weights.csv` | the predicted weights (8.16) and occupations of the SFBS state (Figure 21(a), (b), lines) | `state`, `mu`, `Delta`, `q`, `t_p`, `t_a`, `occupation_particles`, `occupation_antiparticles` |
 | `test2/data/t2_sfbs_pair_weights_fock.csv` | the same quantities of the Lanczos ground states in the Fock space of one pair of momenta (Figure 21(a), (b), circles) | `state`, `mu`, `Delta`, `q`, `t_p`, `t_a`, `occupation_particles`, `occupation_antiparticles`, `source` |
@@ -4428,6 +4672,10 @@ Revision_SuperLoop, folder test2, program `t2_sfbs`: the superfluid boson single
 | `test2/data/t2_sfbs_boson_mass.csv` | the mass of the SFBS boson of the normal vacuum (the pole (9.29)) and its Ginzburg-Landau value against the coupling (Figure 22(b)) | `G`, `M_B`, `M_B_GL` |
 | `test2/data/t2_sfbs_boson_dispersion.csv` | the dispersion relation of the SFBS boson at $G_{\rm LL}=21$ and 20: the pole, the Klein-Gordon form (9.28) and the two-particle threshold (Figure 22(c)) | `G`, `k_B`, `omega_B`, `omega_B_KG`, `threshold` |
 | `test2/data/t2_sfbs_tdbdg_normal.csv` | the uniform mean-field evolution (9.30) of a small pair field in the normal vacuum and the fitted line of the frequency $M^{\rm B}_{\rm LL}$ (Figure 22(d)) | `x_LL^0`, `d_over_d0`, `line_MB` |
+| `test2/data/t2_sfbs_potential_polar.csv` | the effective potential (10.6) along the polar fields at $\mu_{\rm LL}=0$ for four couplings, with the Ginzburg-Landau form (10.8) (Figure 23(a)) | `G`, `Delta`, `Omega`, `Omega_GL` |
+| `test2/data/t2_sfbs_potential_hat.csv` | the effective potential on the complex plane of $d^3_{\rm LL}$ at $G_{\rm LL}=22.5$, on a polar grid over three quarters of the plane (Figure 23(b)) | `d3_re`, `d3_im`, `Omega` |
+| `test2/data/t2_sfbs_potential_zeta.csv` | the effective potential at fixed $\lvert\vec d_{\rm LL}\rvert$ against the non-unitarity (Figure 23(c)) | `abs_d`, `zeta`, `Omega`, `Omega_GL` |
+| `test2/data/t2_sfbs_vacuum_gap.csv` | the gap of the condensed vacuum from (10.10) and its Ginzburg-Landau value against the coupling, with $a^{\rm GL}_{\rm LL}$ and the depth of the minimum (Figure 23(d)) | `G`, `a_GL`, `Delta_vac`, `Delta_vac_GL`, `Omega_min` |
 
 In the columns, `r_W`, `q`, `eps`, `eps_lat` are $r^{\rm W}_{\rm LL}$, $q^1_{\rm LL}$, $\varepsilon_{\rm LL}$,
 $\varepsilon^{\rm lat}_{\rm LL}$; `E_times_dt` is $\lvert E^{\rm qp}_{{\rm LL},n}\rvert\ell^{\rm t}_{\rm LL}$ and `rk4_modulus` the modulus of
@@ -4457,7 +4705,11 @@ eigenvalue of $[\hat\Pi^3_{\rm LL},(\hat\Pi^3_{\rm LL})^\dagger]$. In the files 
 `omega_B`, `k_B` and `chi_pr` are $\omega^{\rm B}_{\rm LL}$, $k^{\rm B}_{\rm LL}$ and $\chi^{\rm pr}_{\rm LL}$, `chi_pr_GL` is the right side of (9.21),
 `M_B` is $M^{\rm B}_{\rm LL}$ and `M_B_GL` the Ginzburg-Landau mass $(a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}$, `omega_B_KG` the frequency of the
 Klein-Gordon form (9.28), `threshold` the two-particle threshold $2(m_{\rm LL}^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}$, `d_over_d0` the pair field
-$d^3_{\rm LL}(x^0_{\rm LL})/d^3_{\rm LL}(0)$ of (9.30), and `line_MB` the fitted oscillation of the frequency $M^{\rm B}_{\rm LL}$. Every data file states
+$d^3_{\rm LL}(x^0_{\rm LL})/d^3_{\rm LL}(0)$ of (9.30), and `line_MB` the fitted oscillation of the frequency $M^{\rm B}_{\rm LL}$; in the files of the second part of item [8], `Omega` and `Omega_GL`
+are $\Omega_{\rm LL}$ and $\Omega^{\rm GL}_{\rm LL}$, `Delta` the modulus of a polar field, `d3_re`, `d3_im` the real and imaginary parts of
+$d^3_{\rm LL}$, `abs_d` the modulus $\lvert\vec d_{\rm LL}\rvert$, `zeta` the non-unitarity $\zeta_{\rm LL}$, `a_GL` the coefficient $a^{\rm GL}_{\rm LL}$,
+`Delta_vac` and `Delta_vac_GL` the gap $\Delta^{\rm vac}_{\rm LL}$ and its Ginzburg-Landau value, and `Omega_min` the value of $\Omega_{\rm LL}$ at the
+minimum. Every data file states
 its content in a line `# content:` and its parameters in lines `# name: value`.
 
 | figure | file (.pdf and .png) | data | checks |
@@ -4478,10 +4730,12 @@ its content in a line `# content:` and its parameters in lines `# name: value`.
 | 14 to 20 | `test2/figures/fig_t2_rs_<example>` (.svg, .pdf, .png) | the files `t2_rs_<example>_*` | EX-1 to EX-7 |
 | 21 | `test2/figures/fig_t2_sfbs_state` | `t2_sfbs_pair_weights.csv`, `t2_sfbs_pair_weights_fock.csv`, `t2_sfbs_site_commutator.csv` | SB-4, SB-5 |
 | 22 | `test2/figures/fig_t2_sfbs_effective` | `t2_sfbs_susceptibility.csv`, `t2_sfbs_boson_mass.csv`, `t2_sfbs_boson_dispersion.csv`, `t2_sfbs_tdbdg_normal.csv` | SB-7, SB-8, SB-10 |
+| 23 | `test2/figures/fig_t2_sfbs_potential` | `t2_sfbs_potential_polar.csv`, `t2_sfbs_potential_hat.csv`, `t2_sfbs_potential_zeta.csv`, `t2_sfbs_vacuum_gap.csv` | SB-11, SB-12 |
 
-Figures 21 and 22 are drawn by `test2/python/make_t2_sfbs_figures.py` from the data files of `t2_sfbs`; besides the data it draws only
-the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12), and it marks the Fermi momentum and, in Figure 22, the reference values $1/G_{\rm LL}$,
-$1/G^{\rm crit}_{\rm LL}$, $2m_{\rm LL}$, $G^{\rm bd}_{\rm LL}$ and $G^{\rm crit}_{\rm LL}$ (taken from the parameter lines of the data files). Figures 1 to 6 are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
+Figures 21 to 23 are drawn by `test2/python/make_t2_sfbs_figures.py` from the data files of `t2_sfbs`; besides the data it draws only
+the line $16-4\hat n^{\rm F}_{\rm LL}$ of (8.12), and it marks the Fermi momentum, in Figure 22 the reference values $1/G_{\rm LL}$,
+$1/G^{\rm crit}_{\rm LL}$, $2m_{\rm LL}$, $G^{\rm bd}_{\rm LL}$ and $G^{\rm crit}_{\rm LL}$, and in Figure 23 the circle of the radius
+$\Delta^{\rm vac}_{\rm LL}$ (all taken from the parameter lines of the data files). Figures 1 to 6 are drawn by `test2/python/make_t2_figures.py` from the data files; the script computes only reference
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
 $\pm m_{\rm LL}$ and the line $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$), the relative deviation of Figure 1(b) from two columns of a
 data file, the normal-state energy $\lvert\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}\rvert$ of Figure 4(a) from a column and a
@@ -4504,12 +4758,12 @@ d7ed53e0635b63e4f84d23a7280bf8d3581086a6a64dd3df7cb6632f49063939  test2/rust/t2f
 07301293d98ebfb58113f2407d6677304711c0a2995a4d9f83b028fb227d4e24  test2/rust/t2analytic/Cargo.toml
 60fa560f18e32b1db49681e7e9c00948d98f3c1a7278b8694e4451f1d0627911  test2/rust/t2analytic/src/main.rs
 30b62675c8c89144f95760920625033ab1ce462fd5fd4249c2e4d7c1e0a51bb3  test2/rust/t2sfbs/Cargo.toml
-fb58ec9ea74e448a1a02cc0bddcd0173b844f2e3b42ecfe8c091b8c78cfbcfc5  test2/rust/t2sfbs/src/main.rs
+a7991375cd9c4d47b30f99460e3e521a3e5abbd11b2ebc3443027816579683e1  test2/rust/t2sfbs/src/main.rs
 b1d2fc57c1d4122cb4b5b16782beb76ebc386b1a2b7911266b1045f4e6fc59dc  test2/rust/t2sfbs/src/fock.rs
 6a2bc352f80a89d7f0d946c7b94a6fda87ab3169bc8dcfb305a635d84b6e88e3  test2/rust/t2sfbs/src/quad.rs
-1d081d7d61bdde19a218076ee6edde0ed8e9ec875a76e4521e3e7e9b1525a9ac  test2/python/make_t2_sfbs_figures.py
-b4cf8aea9d022642aac001f56a37b9c51e0c78eb0ec6471f586691521ef16093  test2/data/t2_sfbs_checks.txt
-c16c917560255c8288ed0a3a79c3b57d4ff9bbba2e580561bc952ccc4c998969  test2/data/t2_sfbs_fragments.md
+da378942c216e993813c19e7972da420aa0af223a713bc6dabd48df1baf10805  test2/python/make_t2_sfbs_figures.py
+7da285930b891926ea08d1b4c096248d7f5782cded03de8d2599079aba4e3a54  test2/data/t2_sfbs_checks.txt
+954221e804323f3eb4663555634e4498d1c54f51f23462cbdc374e8b1caa7531  test2/data/t2_sfbs_fragments.md
 2dd935d4220a76ee62e3f3e2c329f163d4a7c17a21620637760ff9fadbc15a0f  test2/data/t2_sfbs_pair_weights.csv
 1ee13d9464557018752e83fc9c0dd869d8630c26b2e2e4026b9dfefd011638f0  test2/data/t2_sfbs_pair_weights_fock.csv
 c8b69837705fac4e9223c728f61ab22c96cc2bc1ec1a990e90ca241b894be2fc  test2/data/t2_sfbs_site_commutator.csv
@@ -4517,6 +4771,10 @@ f0fe971aa0ad5764cb126e0a5bbcb345200236416ab2ac2458aed086d26d5dc5  test2/data/t2_
 ce04981e7b350c9f1479a3974e4cc3f762d41ef0ab21b04469fb0b68125f8f51  test2/data/t2_sfbs_boson_mass.csv
 278ae09618a5db88957ab88a37ffcc65c4f22b166091e806ece85a696c02452c  test2/data/t2_sfbs_boson_dispersion.csv
 5c14977df0b2096cff1dc8fc77a83feb4ebe6aaae38061cd650754c47fe1f28e  test2/data/t2_sfbs_tdbdg_normal.csv
+e152334a3dea7279aa6a494ba70cba7664db60b22b70792f093f8438899ce760  test2/data/t2_sfbs_potential_polar.csv
+5e8937d107bec2b7559dfd4bf5e06aa82ef0ec57035a52609c3ee291c356aa19  test2/data/t2_sfbs_potential_hat.csv
+035bbc7a39b829f592b030ed74a7a4ab4325283c1078af5ee255a9081c138c57  test2/data/t2_sfbs_potential_zeta.csv
+8617e8f3765e9fdccc6c2e4aa13caf149d390eeebd0d2726adae7bfd5a79946d  test2/data/t2_sfbs_vacuum_gap.csv
 c007640a15263f598651fcb021109d8af045c23141f5b036d452366554acfef7  test2/python/make_t2_figures.py
 033ddabf96d8a2e2e6fbf4d9bbd95ca32ea102b15c003848e9ee52ce8aabe0a7  test2/data/t2_fields_checks.txt
 8c4df29029536ec9c488a68fa2cc2d5551a177f1911c22a461a7aa19f635e1ae  test2/data/t2_fragments.md
@@ -4550,30 +4808,30 @@ c1a70b2a3f7bf425464593606e7581c9ac5e7b9ca27527affdf3f4fe7774bcb5  test2/rust/t2s
 c29f0d048de79880359df471ea8287e5e84bd9133c74c7a77c2ee8e347531720  test2/data/t2_rs_andreev_summary.txt
 04a8e62cbfd2fff9644da9accac1714440590c927bce60139d590e2ef6ea516f  test2/data/t2_rs_cyclotron_fields.csv
 970742322a9f43a0e61a077fb39609032b7955a5ab8a555777b06d9d8ed1f267  test2/data/t2_rs_cyclotron_series.csv
-5f565c35be7dfa88bba0e45f2702696aa7f9b98baf99262e4e5cc8a8a21e02ab  test2/data/t2_rs_cyclotron_summary.txt
+2083186406e986b0c754f77c85d8fb08b165b9d4a266f3f274cdf6d1d9068250  test2/data/t2_rs_cyclotron_summary.txt
 b17782e98ff2d24e7c784e045dff43a0a023ac0d1373b40cf758bb53cc027413  test2/data/t2_rs_examples_checks.txt
 4af9aca2902d550082d9040f9ba0f788503010bd9a1635743e4e5c8e436a6081  test2/data/t2_rs_ground_state_fields.csv
 5600d8cead9f2c297e84910df83397b903feccf77b2f60e9bc3960fad207c05e  test2/data/t2_rs_ground_state_iterations.csv
 8059ddb396c0cc90b4b75627ce04144db8f5921208268e046b4ff5ec28718642  test2/data/t2_rs_ground_state_series.csv
 08ca4f334aa91e29939c225abb148881818c376b50e5712090ce917d0509d7e0  test2/data/t2_rs_ground_state_spectrum.csv
-a51a0b87a4f0820eb5d23148ac5ab4af92fa7e006935a33e60cac7c047fa5d00  test2/data/t2_rs_ground_state_summary.txt
+c79192cc429f9926632076de8562865b6dd333e4fdd92059fbaacaaac7e9b7f6  test2/data/t2_rs_ground_state_summary.txt
 e9733585ece915da77428e05d346a0b8912e10f804cccfaab0e4d3b33f65b5cb  test2/data/t2_rs_kink_ground_state_fields.csv
 8adfa332cbf6ee0548241c712cba691ceecbfb8cfec2fc9c5d5bbc843fe091b3  test2/data/t2_rs_kink_ground_state_iterations.csv
 e66b4bf33e348772e022d4d9eed1eca3bf88f82e30ca722c9ab1b998dbc2d73b  test2/data/t2_rs_kink_ground_state_series.csv
 72db22d2e9e76347c4b93d0ae718558ac782b1b48c30eca7124c78421ba22a6d  test2/data/t2_rs_kink_ground_state_spectrum.csv
-ea5abf746e59938be79c3acb26f6df388437833312e4a8acacb08f371b2babc2  test2/data/t2_rs_kink_ground_state_summary.txt
+7527e83489e2dbb7eb592c3c61b9f24bab9e74b9f88f6fcbc0f58a1eadc99c3c  test2/data/t2_rs_kink_ground_state_summary.txt
 9867541d67f16e32c59cd4d99c5857e52511fa128f5c8d91b462d592db184faa  test2/data/t2_rs_kink_spectrum_fields.csv
 027f653b04b5c3a26e0668f198373cee275f47fd4892b849b13a0b0db605e375  test2/data/t2_rs_kink_spectrum_series.csv
 5c20876704a3c42eaca1cdbef98a4ec0077a31329ebe06d50ea67963f363dd5c  test2/data/t2_rs_kink_spectrum_spectrum.csv
-cf7ea3178cee3c22f9f598df812edd75ead48c70e6e7600f174b9492e407cb29  test2/data/t2_rs_kink_spectrum_summary.txt
+b2041ec90e69b9ace2eb2e7a303648fa975a0f4a27c2c8edae31f376dadbf4dc  test2/data/t2_rs_kink_spectrum_summary.txt
 7add614bbf4b78e0760c9c037398b19077ae5945b77c8ffe062c6a33b38604ef  test2/data/t2_rs_packet_free_fields.csv
 f4018aff09f8dfbcffc97de41876aec54cbf3acf4d9058be49e5814f4a87792e  test2/data/t2_rs_packet_free_series.csv
-16d0ea69aef3e0410d8ba307accebe2fda1a888c2120fe0f2e72f14b20be0e91  test2/data/t2_rs_packet_free_summary.txt
+afdfda4f8e51ca6fdfb787b43d84484066b54c26c6575a400c9b86dec1e9cb9e  test2/data/t2_rs_packet_free_summary.txt
 e5da7d79a6a9ebd00be90b5ecdd919891c0d00166ab2aba0a2cd46fd73ca3bc7  test2/data/t2_rs_quench_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  test2/data/t2_rs_quench_iterations.csv
 9af01479530a8e6c0a8c1bfce0f89acf66569dc4a97957983c63733b741b8ab3  test2/data/t2_rs_quench_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  test2/data/t2_rs_quench_spectrum.csv
-3269b49bccca9ab388944b0eeb92c5b24de66f7260062d819d02340304ad58d0  test2/data/t2_rs_quench_summary.txt
+f84293b69dfa2665ed51506f9ff17a4dca0c15b4212c85a2b3f59d0646cd63c0  test2/data/t2_rs_quench_summary.txt
 cbaf79f05f214d82eea76f2f4857a611e2ea8612bfe3fd4c93bc14a79b9646b2  test2/examples/packet_free.t2in
 6d25a57a1e3e944fc69ca061f7a712a6b5456c5a1635e9aae16603dfd09d7d2a  test2/examples/cyclotron.t2in
 6898e720c6ed17512407d884cd189d2c588e2edd4eeacf6836eea41dc3ff03d8  test2/examples/andreev.t2in
@@ -4586,31 +4844,31 @@ c83fbceb6cdd0573b2456c5a57bfb5593f6da6c3c3c1665242dc5e502de4214f  test2/data/t2_
 e1827f22356ded9bee8b93d27d95f9cd7d300a957797464bef15ef57accce54e  test2/data/t2_py_andreev_summary.txt
 24da15309d10d8ad365eb20020b1736d99df4be6d91f069f8f3d3c25bf2def63  test2/data/t2_py_cyclotron_fields.csv
 94d23809e68eaffd91856aaae37831221665e535f290852490ec22b14b16c35a  test2/data/t2_py_cyclotron_series.csv
-4b1a1863da643c4ad4645a1f5a88cc6aa271cef64c3428c6fbfce36730feec87  test2/data/t2_py_cyclotron_summary.txt
+70a690e8f91cf4fa9269b40d6c6f5451d881153842989ce7ba27dd8726e718d6  test2/data/t2_py_cyclotron_summary.txt
 5e12b6d2ff68774d18c9a0974d17c77ed1aef422bd2e0f1ae46867d8379a3370  test2/data/t2_py_examples_checks.txt
 8b6393611ecac9ff8356a01c27eb65d4ee43391cc062c57137926b16fe930b76  test2/data/t2_py_fragments.md
 9d4b29b04b3ff0676a9f9c3c6f78c79b956718e123b24ae2c1db4534dc00c83c  test2/data/t2_py_ground_state_fields.csv
 880af932345b388ced88215c6d1e40249f7e6ec1d44f99752509c6589ac8598a  test2/data/t2_py_ground_state_iterations.csv
 1f67870777717eb2699170da2fcdd939ad4c30fad6ebe44fae99d1b2049becb8  test2/data/t2_py_ground_state_series.csv
 85c66e6bd698089ae41947061567c62ca9fd65cbebd2ec209e64bd143e97617b  test2/data/t2_py_ground_state_spectrum.csv
-5cedbb1daecaeecfa65e922e8a7672757f42a8ebb98e11427534fa8e29e7698b  test2/data/t2_py_ground_state_summary.txt
+a69a8bafbee637aff18997ea647fc8085848c18ecdf9544e05a843c6f7fa9531  test2/data/t2_py_ground_state_summary.txt
 a444457b6ccef8cc17a8bfa306bfd8a7470d5e08bc209d2da890362a6b84b5da  test2/data/t2_py_kink_ground_state_fields.csv
 fd8278836575842aef92a703ae238a0bc750dbc75d314360fad40b92b382c490  test2/data/t2_py_kink_ground_state_iterations.csv
 3585ffa2e04091411515e8a87087f87752eaa37b8035aacad7219d0a860fe3b8  test2/data/t2_py_kink_ground_state_series.csv
 9236d8326b7fa87012b3294c4a317624d81122c56bcc2cd96e6dafa41cc1e827  test2/data/t2_py_kink_ground_state_spectrum.csv
-d40606b2f2bb2adc1bdbd75e82457e9f704fd55c9eacc4d43c1f3517886f26f8  test2/data/t2_py_kink_ground_state_summary.txt
+6e49bd4cd2d35184f3119b641e864c03539804e616517f3e45958e12a3e17406  test2/data/t2_py_kink_ground_state_summary.txt
 adbf2770790ced9e216b615bbb3eb431572cf1585a617eae074145f6630a3d17  test2/data/t2_py_kink_spectrum_fields.csv
 59782576f999b3eb87dd8a148c832689f21a430826ad4364291fd21288330ee4  test2/data/t2_py_kink_spectrum_series.csv
 2940378aec823ec8982f3441f64e8daa6b3552ff71b6bd68e9d2bc2290c63674  test2/data/t2_py_kink_spectrum_spectrum.csv
-dc34122fb1f6127107ce68b7bea686df077780f21fa27f8cfbf13e5ea63fdc4d  test2/data/t2_py_kink_spectrum_summary.txt
+5f812f725d789896b034db60279c8aec36fc4e541821b857f939aedc4c37ac39  test2/data/t2_py_kink_spectrum_summary.txt
 5d1ee70ca2be6ae05ca36f4a221976a8e22fb1c7efd9ad493f9474d516afa7f5  test2/data/t2_py_packet_free_fields.csv
 815fb1893240734931c0191364ec2d4dc61168cf852f4072355717e8ee3e20d6  test2/data/t2_py_packet_free_series.csv
-46b1b8187263cbf3e9a98b9952fdbc1b1505c3be1cab47b1a890cdc6f24ffa1e  test2/data/t2_py_packet_free_summary.txt
+25d5111526dd7b74cc2ed15036659c3b9bc0dd0c58743ba1784575e98f1b7f15  test2/data/t2_py_packet_free_summary.txt
 7639a1b4be2d4d1eb73ba6e751e22b8afc847ca8a0e072c9bc1a1815cde4f4f3  test2/data/t2_py_quench_fields.csv
 5470f40e63a043a54379e9988a4cb7ede587ddc706ff7ebac4db9ac91d05f2f1  test2/data/t2_py_quench_iterations.csv
 b8121988fb419aaa9a714db949924caeec7fba1b94d3b1bd2b03435264f98747  test2/data/t2_py_quench_series.csv
 2233cd5c04499b0e33c4379dd6f7e05a6763fb7c0003f2ab06fecf67e6068784  test2/data/t2_py_quench_spectrum.csv
-f78ddab47e7bd016e8be94f787e58ca149ab5479e5633d4e1dae0a30d686569f  test2/data/t2_py_quench_summary.txt
+71a28c33502cc757daca5ab984cffd6e07003e2899f046531cd9d1d0c4e7c812  test2/data/t2_py_quench_summary.txt
 f348c21507ffcdacc86d5afcda73d40eb776963c730523db163c03bc4f049612  test2/data/t2_py_selftest_checks.txt
 ```
 
@@ -4661,6 +4919,7 @@ f348c21507ffcdacc86d5afcda73d40eb776963c730523db163c03bc4f049612  test2/data/t2_
 * V. L. Ginzburg and L. D. Landau, On the theory of superconductivity, Zh. Eksp. Teor. Fiz. 20, 1064 (1950).
 * L. P. Gor'kov, Microscopic derivation of the Ginzburg-Landau equations in the theory of superconductivity, Sov. Phys. JETP 9,
   1364 (1959).
+* S. Coleman and E. Weinberg, Radiative corrections as the origin of spontaneous symmetry breaking, Phys. Rev. D 7, 1888 (1973).
 
 These works are cited for the general methods and results only (the gauge principle, the mean-field equations of a
 superfluid, the lattice with link variables and the Wilson term, the Pauli equation, the Landau levels, the wells of
@@ -4671,7 +4930,8 @@ midpoint rule and its conservation of quadratic invariants, Andreev reflection, 
 Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change; for
 item [7] the representation of fermion operators by matrices on the states of a few modes, the Lanczos method, and the
 form of a quasi-particle vacuum as the exponential of a pair operator; for item [8] the Hubbard-Stratonovich identity, the
-Ginzburg-Landau form of an effective theory and its derivation from the microscopic theory). Everything this document uses from them is stated, and where it is a result,
+Ginzburg-Landau form of an effective theory and its derivation from the microscopic theory, and the logarithm in the quartic term of an
+effective potential). Everything this document uses from them is stated, and where it is a result,
 derived or checked, in it.
 
 # Appendix C. The symbols
@@ -4886,3 +5146,8 @@ plain-text names are the names under which the programs, the figures and the dat
 | $\vec P^{\rm B}_{\rm LL}$ | the canonical momentum of the SFBS field, $\vec P^{\rm B}_{\rm LL}=Z^{\rm t}_{\rm LL}\nabla^{\rm B}_{{\rm LL},0}\vec d_{\rm LL}$, the derivative of $\mathcal L^{\rm B}_{\rm LL}$ with respect to $\partial_0\vec d^{\,*}_{\rm LL}$ | new | `P_B` |
 | $\mathcal J^{\iota,p}_{{\rm B},{\rm LL}}$, $\mathcal J^{{\rm F},p}_{{\rm B},{\rm LL}}$ | the currents of the SFBS: the derivatives of $\mathcal L^{\rm B}_{\rm LL}$ with respect to $A^\iota_{{\rm LL},p}$ and $A^{\rm F}_{{\rm LL},p}$, the sources of the gauge fields in the effective theory | new | `Jv_B` `JF_B` |
 | $u^{\rm pl}_{{\rm LL},\pm}$, $v^{\rm pl}_{{\rm LL},\pm}$ | the two components of a mode of the uniform polar mean-field dynamics in the plane spanned by $(\chi^{\rm pw}_{\rm LL},0)$ and $(0,\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})$, for an eigenvector $\chi^{\rm pw}_{\rm LL}$ of the energy $\pm\varepsilon_{\rm LL}$; functions of the time, with $\lvert u^{\rm pl}_{{\rm LL},\pm}\rvert^2+\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2=1$ | new | `u_pl` `v_pl` |
+| $W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)$ | the condensation function of one sector, $W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)=\int\!d^3q_{\rm LL}(2\pi)^{-3}\big(E^+_{\rm LL}+E^-_{\rm LL}-\lvert\varepsilon_{\rm LL}+\mu_{\rm LL}\rvert-\lvert\varepsilon_{\rm LL}-\mu_{\rm LL}\rvert\big)$ with the gap $\Delta_{\rm LL}$ in $E^\pm_{\rm LL}$; increasing and strictly concave in $\Delta_{\rm LL}^2$; the effective potential is $\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-W^{\rm g}_{\rm LL}((\Delta^+_{\rm LL})^2)-W^{\rm g}_{\rm LL}((\Delta^-_{\rm LL})^2)$ | new | `W_g` |
+| $\Xi_{\rm LL}((M^{\rm q}_{\rm LL})^2)$; $\Xi^{(1)}_{\rm LL}$, $\Xi^{(2)}_{\rm LL}$, $\Xi^{(3)}_{\rm LL}$ | the function $\Xi_{\rm LL}((M^{\rm q}_{\rm LL})^2)=2\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}$, which gives the condensation function at $\mu_{\rm LL}=0$ in closed form, and its first, second and third derivatives with respect to its argument | new | `Xi` `Xi''` `Xi_1` `Xi_2` `Xi_3` |
+| $M^{\rm q}_{\rm LL}$ | the quasi-particle mass of the condensed vacuum at $\mu_{\rm LL}=0$, $(m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}$: the smallest quasi-particle energy, at zero momentum | new | `M_q` |
+| $\Omega^{\rm GL}_{\rm LL}(\vec d_{\rm LL})$; $b^{\rm GL}_{\rm LL}$ | the Ginzburg-Landau form of the effective potential, $a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2+b^{\rm GL}_{\rm LL}(2\lvert\vec d_{\rm LL}\rvert^4-\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2)$, and its quartic coefficient, at $\mu_{\rm LL}=0$ equal to $Z^{\rm t}_{\rm LL}(0)$ | new | `Omega_GL` `b_GL` |
+| $\Delta^{\rm vac}_{\rm LL}$ | the gap of the condensed vacuum: the radius of the circle of minima of the effective potential at $\mu_{\rm LL}=0$ for $G_{\rm LL}>G^{\rm crit}_{\rm LL}$, the solution of the gap equation (plain text `Delta_vac_GL`: its Ginzburg-Landau value $(-a^{\rm GL}_{\rm LL}/(2b^{\rm GL}_{\rm LL}))^{1/2}$) | new | `Delta_vac` `Delta_vac_GL` |

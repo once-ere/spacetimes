@@ -24,6 +24,11 @@ Fermi momentum (mu^2 - m^2)^(1/2) that marks a position on an axis).  Output, in
                       Ginzburg-Landau mass; (c) its dispersion relation at G = 21 and G = 20 with the Klein-Gordon form of the
                       effective field equation and the two-particle threshold; (d) the microscopic time evolution of a
                       small uniform pair field (time-dependent mean-field equations) and the line of frequency M_B
+  fig_t2_sfbs_potential  item [8], the effective potential (checks SB-11, SB-12): (a) Omega along the polar direction at
+                      mu = 0 for four couplings, with the Ginzburg-Landau form; (b) the Mexican hat: Omega on the complex
+                      plane of the polar component d^3 at G = 22.5, with the circle of minima; (c) Omega at fixed |d| against
+                      the non-unitarity zeta; (d) the gap of the condensed vacuum against the coupling, exact and
+                      Ginzburg-Landau
 
 Colors: the categorical colors of the project in a fixed order (Figure 21: blue for the vacuum, orange for the Fermi
 sea; Figure 22: blue for the frequency dependence or the coupling G = 21, orange for the wave-number dependence or
@@ -237,9 +242,94 @@ def fig_effective():
     save(fig, "fig_t2_sfbs_effective")
 
 
+def fig_potential():
+    """Figure 23: the effective potential of the SFBS (item [8], second part)."""
+    from mpl_toolkits.mplot3d import Axes3D  # noqa: F401  (registers the 3d projection)
+    import numpy as np
+    pol = rows("t2_sfbs_potential_polar.csv")
+    hat = rows("t2_sfbs_potential_hat.csv")
+    zet = rows("t2_sfbs_potential_zeta.csv")
+    vac = rows("t2_sfbs_vacuum_gap.csv")
+    gcrit = meta("t2_sfbs_potential_polar.csv", "G_crit")
+    dvac = meta("t2_sfbs_potential_hat.csv", "Delta_vac")
+    fig = plt.figure(figsize=(14.2, 10.8))
+    ax = fig.add_subplot(2, 2, 1)
+    bx = fig.add_subplot(2, 2, 2, projection="3d")
+    cx = fig.add_subplot(2, 2, 3)
+    dx = fig.add_subplot(2, 2, 4)
+    sc = 1e4  # the potential is drawn in units of 1e-4
+    # (a) along the polar direction
+    gs = sorted(set(float(r["G"]) for r in pol))
+    for gval, colr in zip(gs, (BLUE, ORANGE, AQUA, GREEN)):
+        sel = [r for r in pol if float(r["G"]) == gval]
+        lab = "$G_{\\rm LL}=G^{\\rm crit}_{\\rm LL}=%.3f$" % gval if abs(gval - gcrit) < 1e-6 else "$G_{\\rm LL}=%g$" % gval
+        ax.plot(col(sel, "Delta"), [sc * x for x in col(sel, "Omega")], color=colr, lw=2.2, label=lab + ": (10.6)")
+        ax.plot(col(sel, "Delta"), [sc * x for x in col(sel, "Omega_GL")], color=colr, lw=1.5, ls="--", label=lab + ": Ginzburg-Landau (10.8)")
+    ax.axhline(0, color=GREY, lw=0.9)
+    ax.set_xlim(0, 0.35)
+    ax.set_ylim(-3.2, 3.2)
+    ax.set_xlabel("$\\Delta_{\\rm LL}=|\\vec d_{\\rm LL}|$ (polar direction, $\\zeta_{\\rm LL}=0$)")
+    ax.set_ylabel("$\\Omega_{\\rm LL}$ in units of $10^{-4}$")
+    ax.set_title("(a) the effective potential along the polar direction", fontsize=11, color=INK)
+    ax.legend(loc="lower left", fontsize=7.8, frameon=False, ncol=2)
+    ax.grid(color=GRID, lw=0.6)
+    # (b) the Mexican hat on the complex plane of d^3 (the disc of radius 0.3)
+    nr = int(meta("t2_sfbs_potential_hat.csv", "radii"))
+    na = int(meta("t2_sfbs_potential_hat.csv", "angles"))
+    xg = np.array(col(hat, "d3_re")).reshape(nr, na)
+    yg = np.array(col(hat, "d3_im")).reshape(nr, na)
+    zg = np.array(col(hat, "Omega")).reshape(nr, na) * sc
+    bx.plot_surface(xg, yg, zg, cmap="viridis", rstride=1, cstride=1, linewidth=0, antialiased=True, alpha=0.95)
+    tt = np.linspace(0, 2 * np.pi, 200)
+    zmin = float(zg.min())
+    bx.plot(dvac * np.cos(tt), dvac * np.sin(tt), [zmin] * len(tt), color=ORANGE, lw=2.4, zorder=10,
+            label="circle of minima $|d^3_{\\rm LL}|=\\Delta^{\\rm vac}_{\\rm LL}=%.4f$" % dvac)
+    # the profile along the two edges of the cut (the angles 0 and 3 pi/2)
+    for j in (0, na - 1):
+        bx.plot(xg[:, j], yg[:, j], zg[:, j], color=INK, lw=1.6, zorder=11)
+    bx.set_xlabel("${\\rm Re}\\,d^3_{\\rm LL}$", labelpad=6)
+    bx.set_ylabel("${\\rm Im}\\,d^3_{\\rm LL}$", labelpad=6)
+    bx.set_zlabel("$\\Omega_{\\rm LL}$ ($10^{-4}$)", labelpad=6)
+    bx.view_init(elev=26, azim=-35)
+    bx.set_title("(b) the Mexican hat, $G_{\\rm LL}=22.5$, $d^1_{\\rm LL}=d^2_{\\rm LL}=0$", fontsize=11, color=INK)
+    bx.legend(loc="upper left", fontsize=8.6, frameon=False)
+    # (c) against the non-unitarity at fixed |d|
+    for f, colr in zip((0.5, 1.0, 1.5), (BLUE, ORANGE, AQUA)):
+        a = f * dvac
+        sel = [r for r in zet if abs(float(r["abs_d"]) - a) < 1e-9]
+        cx.plot(col(sel, "zeta"), [sc * x for x in col(sel, "Omega")], color=colr, lw=2.2,
+                label="$|\\vec d_{\\rm LL}|=%g\\,\\Delta^{\\rm vac}_{\\rm LL}$: (10.6)" % f)
+        cx.plot(col(sel, "zeta"), [sc * x for x in col(sel, "Omega_GL")], color=colr, lw=1.5, ls="--",
+                label="Ginzburg-Landau (10.8)")
+    cx.set_xlim(0, 1)
+    cx.set_xlabel("non-unitarity $\\zeta_{\\rm LL}=|\\vec d_{\\rm LL}\\times\\vec d^{\\,*}_{\\rm LL}|/|\\vec d_{\\rm LL}|^2$")
+    cx.set_ylabel("$\\Omega_{\\rm LL}$ in units of $10^{-4}$")
+    cx.set_title("(c) at fixed $|\\vec d_{\\rm LL}|$ the polar states ($\\zeta_{\\rm LL}=0$) are lowest, $G_{\\rm LL}=22.5$", fontsize=11, color=INK)
+    cx.legend(loc="upper left", fontsize=8.4, frameon=False)
+    cx.grid(color=GRID, lw=0.6)
+    # (d) the gap of the vacuum against the coupling
+    g = col(vac, "G")
+    dx.plot(g, col(vac, "Delta_vac"), color=BLUE, lw=2.2, label="minimum of (10.6): the gap equation (10.10)")
+    dx.plot(g, col(vac, "Delta_vac_GL"), color=BLUE, lw=1.5, ls="--", label="Ginzburg-Landau $(-a^{\\rm GL}_{\\rm LL}/(2b^{\\rm GL}_{\\rm LL}))^{1/2}$")
+    dx.axvline(gcrit, color=GREY, lw=1.0, ls=":")
+    dx.text(gcrit + 0.12, 0.02, "$G^{\\rm crit}_{\\rm LL}$", color=MUTED, fontsize=10)
+    dx.axvline(22.5, color=GREY, lw=1.0, ls=":")
+    dx.text(22.62, 0.42, "$G_{\\rm LL}=22.5$", color=MUTED, fontsize=10)
+    dx.set_xlim(gcrit - 0.5, 32)
+    dx.set_ylim(0, 0.6)
+    dx.set_xlabel("coupling $G_{\\rm LL}$")
+    dx.set_ylabel("gap $\\Delta^{\\rm vac}_{\\rm LL}$ of the condensed vacuum")
+    dx.set_title("(d) the radius of the circle of minima", fontsize=11, color=INK)
+    dx.legend(loc="upper left", fontsize=8.8, frameon=False)
+    dx.grid(color=GRID, lw=0.6)
+    fig.tight_layout()
+    save(fig, "fig_t2_sfbs_potential")
+
+
 def main():
     fig_state()
     fig_effective()
+    fig_potential()
 
 
 if __name__ == "__main__":
