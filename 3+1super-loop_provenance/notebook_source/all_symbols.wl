@@ -1,4 +1,4 @@
-(* every symbolized symbol of the registry (422), typed in its printed form *)
+(* every symbolized symbol of the registry (440), typed in its printed form *)
 typed = {
   LL["D"], LL["p'"], LL["\\iota'"], LL["\\iota''"], LL["\\epsilon^{\\rm LL}_{jj'j''}"], LL["\\sigma^{\\rm LL}_0"],
   LL["\\sigma^{\\rm LL}_j"], LL["\\tau^{\\rm LL}_\\iota"], LL["\\mathsf E_{\\rm LL}"], LL["\\mathsf 1_2"], LL["\\mathsf 1_4"], LL["\\mathsf 1_8"],
@@ -70,4 +70,7 @@ typed = {
   LL["\\delta^{\\rm f}_{\\rm LL}"], LL["\\mathsf H^{\\rm f}_{\\rm LL}"], LL["\\mathsf H^{\\rm f'}_{\\rm LL}"], LL["\\chi^{\\rm f}_{\\rm LL}(\\omega^{\\rm B}_{\\rm LL})"], LL["\\Gamma^{\\rm f}_{\\rm LL}(\\omega^{\\rm B}_{\\rm LL})"], LL["\\Gamma^{\\rm G}_{\\rm LL}"],
   LL["\\Gamma^{\\rm m}_{\\rm LL}"], LL["\\Upsilon_{\\rm LL}(\\omega^{\\rm B}_{\\rm LL})"], LL["\\Upsilon^{(1)}_{\\rm LL}"], LL["c^{\\rm w}_{\\rm LL}"], LL["\\vec d^{\\rm u}_{\\rm LL}"], LL["V^{\\rm F}_{{\\rm LL},p}"],
   LL["V^\\iota_{{\\rm LL},p}"], LL["W^\\pm_{{\\rm LL},p}"], LL["\\mathsf M^{\\rm t}_{\\rm LL}"], LL["\\mathsf M^{\\rm s}_{\\rm LL}"], LL["M^{\\rm W}_{\\rm LL}"], LL["M^{\\rm F}_{\\rm LL}"],
-  LL["\\theta^{\\rm mix}_{\\rm LL}"], LL["\\mathcal L^{(2)}_{\\rm LL}"]};
+  LL["\\theta^{\\rm mix}_{\\rm LL}"], LL["\\mathcal L^{(2)}_{\\rm LL}"], LL["w^{\\rm lat}_{\\rm LL}"], LL["w^{\\rm cmp}_{\\rm LL}"], LL["n^{\\rm cpx}_{\\rm LL}"], LL["r^{\\rm tol}_{\\rm LL}"],
+  LL["a^{\\rm tol}_{\\rm LL}"], LL["h^{\\rm CV}_{\\rm LL}"], LL["q^{\\rm CV}_{\\rm LL}"], LL["h^{\\rm IDA}_{\\rm LL}"], LL["N^{\\rm st}_{\\rm LL}"], LL["N^{\\rm ev}_{\\rm LL}"],
+  LL["B^{\\rm err}_{\\rm LL}"], LL["\\delta^{\\rm rel}_{\\rm LL}"], LL["w^{\\rm ex}_{\\rm LL}"], LL["B^{\\rm loc}_{\\rm LL}"], LL["\\delta^{\\rm loc}_{\\rm LL}"], LL["E^{\\rm max}_{\\rm LL}"],
+  LL["r^{\\rm der}_{\\rm LL}"], LL["B^{\\rm out}_{\\rm LL}"]};

@@ -1,0 +1,11 @@
+Output of tools/formula_compare.wls for the formulas of the notebook as committed before the reader of formulas (commit 213d205; list logs/E22_formula_inventory_committed_notebook.wl)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 11.2 s; messages on the error stream: none)
+
+formulas: 741
+time: 9 s
+own reader: formulas with a reported problem: 0
+own = importer+ (alphabets protected): 717 of 741; different: 24 (text 2, display 0, meaning 22)
+own = importer (alone): 404 of 741; different: 337 (text 98, display 0, meaning 239)
+fractions: 30 commands in the TeX, 30 fraction boxes of the own reader, 30 of the importer
+roots: 3 commands in the TeX, 3 root boxes of the own reader
+report: logs/E22_formula_compare_report_committed_notebook.txt (1339 lines)

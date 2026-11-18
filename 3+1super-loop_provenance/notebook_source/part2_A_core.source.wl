@@ -284,8 +284,8 @@ Grid[{
 (* ::Text:: *)
 (*The solvers discretize space on a lattice of $n^{\rm x}_{\rm LL}\times n^{\rm y}_{\rm LL}\times n^{\rm z}_{\rm LL}$ sites with the spacing $\ell^{\rm x}_{\rm LL}$ (called ell in the code). A site $\vec s_{\rm LL}=(s^1_{\rm LL},s^2_{\rm LL},s^3_{\rm LL})$ has integer coordinates counted from 0, and the code gives it the number $s^1_{\rm LL}+n^{\rm x}_{\rm LL}(s^2_{\rm LL}+n^{\rm y}_{\rm LL}s^3_{\rm LL})$; $\vec\delta^j_{\rm LL}$ is the step to the next site in the direction $j$. On every site a mode has 16 complex components: the particle part $\psi^{\rm p}_{\rm LL}$ (8 components) and the hole part $\psi^{\rm h}_{\rm LL}$ (8). The gauge fields live on the links: the link from $\vec s_{\rm LL}$ to $\vec s_{\rm LL}+\vec\delta^j_{\rm LL}$ carries the $2\times2$ isospin matrix $\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})=\exp\big(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0)\big)$ with the isospin potential $\mathsf a_{{\rm LL},j}=\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota/2$. Because $(\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota)^2=\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert^2\sigma^{\rm LL}_0$, with the length $\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert$ of the isospin vector $\vec A^{\rm v}_{{\rm LL},j}=(A^1_{{\rm LL},j},A^2_{{\rm LL},j},A^3_{{\rm LL},j})$, the exponential has the closed form $e^{-i\ell^{\rm x}_{\rm LL}g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}}\big(\cos(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\sigma^{\rm LL}_0-i\sin(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota/\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\big)$, which `t2link` evaluates. The particle row of the lattice Dirac-Bogoliubov-de Gennes operator $\mathcal H^{\rm lat}_{\rm LL}$, applied to a mode $(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})$, is*)
 
-(* ::Text:: *)
-(*$\sum_j\Big[-\frac{i\alpha^j_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})-\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})\big)-\frac{r^{\rm W}_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\beta_{\rm LL}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})+\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})-2\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})\big)\Big]+m_{\rm LL}\beta_{\rm LL}\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})-\big(\mathsf A_{{\rm LL},0}(\vec s_{\rm LL})+\mu_{\rm LL}\big)\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})+\mathsf P_{\rm LL}(\vec s_{\rm LL})\psi^{\rm h}_{\rm LL}(\vec s_{\rm LL})$,*)
+(* ::DisplayFormula:: *)
+(*\sum_j\Big[-\frac{i\alpha^j_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})-\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})\big)-\frac{r^{\rm W}_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\beta_{\rm LL}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})+\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})-2\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})\big)\Big]+m_{\rm LL}\beta_{\rm LL}\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})-\big(\mathsf A_{{\rm LL},0}(\vec s_{\rm LL})+\mu_{\rm LL}\big)\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})+\mathsf P_{\rm LL}(\vec s_{\rm LL})\psi^{\rm h}_{\rm LL}(\vec s_{\rm LL}),*)
 
 (* ::Text:: *)
 (*where $\alpha^j_{\rm LL}$ and $\beta_{\rm LL}$ act on the Dirac index and the link matrices on the isospin index (code: `t2hMinusV` without the pair term, and `t2apply`). The hole row is $\mathsf P_{\rm LL}(\vec s_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})$ minus the complex conjugate of the same expression without the pair term, applied to the complex conjugate of $\psi^{\rm h}_{\rm LL}$. Here $r^{\rm W}_{\rm LL}$ is the Wilson coefficient (the term in $r^{\rm W}_{\rm LL}$ removes the doubled fermions of the lattice), $\mathsf A_{{\rm LL},0}(\vec s_{\rm LL})=g^{\rm v}_{\rm LL}\sum_\iota A^\iota_{{\rm LL},0}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\mathsf 1_8$ is the potential of the time direction at the site and $\mathsf P_{\rm LL}(\vec s_{\rm LL})=\sum_\iota d^\iota_{\rm LL}(\vec s_{\rm LL})(\mathsf K^\iota_{\rm LL})^\dagger$ the pairing block; a direction without a neighbour (a Dirichlet boundary) contributes zero. The function `t2apply` applies the operator to a vector, or, column by column, to a matrix whose columns are vectors; `t2dense` applies it to the unit matrix and so returns the whole matrix.*)
@@ -347,7 +347,8 @@ t2apply[lat_, fl_, w_] := Module[{part, holeConj, pmat},
      {s, 0, t2nsites[lat] - 1}]];
 (* the dense matrix of H_DB: the operator applied to the unit matrix *)
 t2dense[lat_, fl_] := t2apply[lat, fl, N[IdentityMatrix[t2dim[lat]]] + 0. I];
-(* the bound of the spectral radius used for the time step *)
+(* the bound B^H of the spectral radius of H_lat (check GS-10); the original solvers use it in the bounds of their
+   checks of the energy *)
 t2normBound[lat_, fl_] := Count[lat["n"], n_ /; n > 1] (1 + 2 lat["wilson"])/lat["ell"] + Abs[lat["mass"]] + Abs[lat["mu"]] +
    Max[Map[Norm[#, "Frobenius"] &, fl["v0"]]] + Max[Map[Total[Abs[#]] &, fl["d"]]];
 (* the free lattice dispersion eps_lat(q)^2 = sum_j sin^2(q_j ell)/ell^2 + (m + (r/ell) sum_j (1 - cos q_j ell))^2 *)
@@ -359,16 +360,128 @@ t2hLatPlane[q_List, ell_, m_, r_, active_List] := Sum[If[active[[j]], t2alpha[j]
 (* the anomalous density Pi^iota(s) = sum_n psi_p,n(s)^T Kch_iota conj(psi_h,n(s)) of a set of mode functions *)
 t2anomalous[ns_, modes_List] := Table[Sum[w[[16 s + 1 ;; 16 s + 8]] . N[t2kpair[i]] . Conjugate[w[[16 s + 9 ;; 16 s + 16]]], {w, modes}],
    {s, 0, ns - 1}, {i, 3}];
-(* one step of the classical Runge-Kutta method RK4 for i dw/dt = H w *)
-t2rk4Step[lat_, fl_, w_, dt_] := Module[{k1, k2, k3, k4},
-   k1 = -I t2apply[lat, fl, w];
-   k2 = -I t2apply[lat, fl, w + 0.5 dt k1];
-   k3 = -I t2apply[lat, fl, w + 0.5 dt k2];
-   k4 = -I t2apply[lat, fl, w + dt k3];
-   w + dt/6 (k1 + 2 k2 + 2 k3 + k4)];
 
 (* ::Text:: *)
 (*The library module sym.rs is a small symbolic algebra: linear combinations of monomials (TeX strings) with exact coefficients $a+bi$ ($a,b$ rational), used by the programs to print the matrices and the component equations in TeX and to evaluate every printed formula numerically. The Wolfram Language is itself a symbolic algebra with exact Gaussian rationals, so this module needs no rewriting: in check GS-12 below the same formulas are built from symbols and evaluated in the same way. For example, the TeX of $\sigma^{\rm LL}_2$ written by `TeXForm`:*)
 
 (* ::Input:: *)
 ToString[TeXForm[MatrixForm[t2sigma[2]]]]
+
+(* ::Subsection:: *)
+(*II.1.5 The time integration (t2core/src/cvode.rs): IDA of SUNDIALS through NDSolve*)
+
+(* ::Text:: *)
+(*The equations and the integrator. The lattice equations of a Nambu mode are $i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}$: the mode is written as one complex vector $w^{\rm lat}_{\rm LL}$ (the 16 components of $\psi^{\rm p}_{\rm LL}$ and $\psi^{\rm h}_{\rm LL}$ on every site, the sites one after the other) with $n^{\rm cpx}_{\rm LL}$ complex components $w^{\rm cmp}_{\rm LL}$. The original programs integrate them in time with CVODE, the solver of ordinary differential equations of the suite SUNDIALS (SUite of Nonlinear and DIfferential/ALgebraic equation Solvers, Lawrence Livermore National Laboratory; version 7.8.0 rewritten in Rust and called through the module cvode.rs of t2core), with the Adams-Moulton formulas of the orders 1 to 12. The first version of the original programs, and of this notebook, used the classical Runge-Kutta method of the fourth order with a fixed step, written by hand; such a method is used nowhere in the project any more. A notebook cannot call the Rust program. The Wolfram Language contains another integrator of the same suite: IDA, the solver of differential-algebraic equations, which `NDSolve` uses with the option `Method -> "IDA"`. An ordinary differential equation is the special case without algebraic equations. Part II uses IDA for every time integration.*)
+
+(* ::Text:: *)
+(*How IDA integrates, and what its tolerances mean. IDA advances the solution in internal steps with the backward differentiation formulas of the orders 1 to 5 (such a formula expresses the derivative at the end of a step by the values at the ends of this step and of the steps before it) and solves the equations of every step by Newton's method. It chooses the length $h^{\rm IDA}_{\rm LL}$ and the order of every step itself, so that an estimate of the local error, the error made in this one step, passes a test: the weighted root-mean-square norm of the estimate must be at most 1. This norm is the square root of the mean, over all real unknowns, of the squares of the estimated errors, each divided by the tolerance of its unknown; the tolerance of a real unknown is $r^{\rm tol}_{\rm LL}$ times the modulus of the unknown plus $a^{\rm tol}_{\rm LL}$, with the relative tolerance $r^{\rm tol}_{\rm LL}$ and the absolute tolerance $a^{\rm tol}_{\rm LL}$. `NDSolve` takes the two tolerances from its options: the relative tolerance is 10 to the power minus the setting of `PrecisionGoal`, the absolute tolerance 10 to the power minus the setting of `AccuracyGoal`; `t2evolveIDA` therefore sets these options to the negative decimal logarithms of $r^{\rm tol}_{\rm LL}$ and $a^{\rm tol}_{\rm LL}$. After a successful step IDA doubles the length of the step if its estimate allows that; otherwise it keeps the length or shortens it. If the error of every real unknown equals its tolerance, the norm of the error of one step is the norm of the vector of the tolerances, which by the triangle inequality is at most $r^{\rm tol}_{\rm LL}$ times the norm of the state plus $a^{\rm tol}_{\rm LL}$ times the square root of the number $2n^{\rm cpx}_{\rm LL}$ of real unknowns. This number is called $B^{\rm loc}_{\rm LL}$. The exact local error of a step, called $\delta^{\rm loc}_{\rm LL}$, is the norm of the difference between the computed state at the end of the step and the exact solution that starts from the computed state at its beginning. IDA tests its estimate, not $\delta^{\rm loc}_{\rm LL}$ itself, so the checks T2-IDA and GS-13 measure $\delta^{\rm loc}_{\rm LL}$ for every internal step and compare it with $B^{\rm loc}_{\rm LL}$.*)
+
+(* ::Text:: *)
+(*The real form. IDA computes with real numbers (`NDSolve` answers a complex equation for this method with the message NDSolveValue::mconly and gives no solution). `t2evolveIDA` therefore writes the state as the real vector of the length $2n^{\rm cpx}_{\rm LL}$ made of the real parts `u` and the imaginary parts `v` of its components, and the Hermitian matrix as `hr` + $i$ `hi` with the real symmetric matrix `hr` and the real antisymmetric matrix `hi`. Then $-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}$ has the real part `hi.u + hr.v` and the imaginary part `-hr.u + hi.v`, so the lattice equations are the real linear system with the matrix `m = {{hi, hr}, {-hr, hi}}` acting on the real vector (`u`, `v`). The matrix `m` is antisymmetric, and the largest length that it gives to a vector of the length 1 is $E^{\rm max}_{\rm LL}$, the largest modulus of the eigenvalues $E^{\rm qp}_{{\rm LL},n}$ of $\mathcal H^{\rm lat}_{\rm LL}$.*)
+
+(* ::Text:: *)
+(*The states between the internal steps. `NDSolve` returns the solution as an `InterpolatingFunction`. Its grid is the list of the times at the ends of the internal steps; with every grid time it stores the value of the solution and the value of the derivative that IDA computed there, and between two neighbouring grid times it gives every real unknown by the polynomial of the third degree that has these values and derivatives at the two ends (cubic Hermite interpolation). An output time lies in general inside an internal step, so a state returned by `t2evolveIDA` is an interpolated one, and its deviation from the exact solution has three sources. (1) The deviations of the stored values at the two ends of the step from the exact solution. The polynomial weighs the two values with numbers between 0 and 1 whose sum is 1, and the two derivatives with numbers whose moduli add up to at most one quarter of $h^{\rm IDA}_{\rm LL}$; the exact derivative is `m` applied to the exact value. If the larger deviation at the two ends is at most $B^{\rm err}_{\rm LL}$, this source gives at most $\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}$. (2) The stored derivatives are not exactly `m` applied to the stored values, because Newton's method stops at a tolerance. The norm of the difference at a grid time is called $r^{\rm der}_{\rm LL}$; it gives at most $\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}$. (3) The interpolation of the exact solution itself. The cubic Hermite polynomial of a function with a continuous fourth derivative deviates from the function, at a time inside the step, by an average of the fourth derivative over the step, taken with a weight that is nowhere negative and whose integral is the product of the squares of the distances of that time from the two ends, divided by 24. The product is at most $(h^{\rm IDA}_{\rm LL})^4/16$, and the fourth derivative of the exact solution is the fourth power of `m` applied to it, a vector of at most $(E^{\rm max}_{\rm LL})^4$ times the norm of the state. This source therefore gives at most $(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4/384$ times the norm of the state. The sum of the three is the bound $B^{\rm out}_{\rm LL}$ of the deviation of a returned state, written here for a state of the norm 1:*)
+
+(* ::DisplayFormula:: *)
+(*B^{\rm out}_{\rm LL}=\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}+\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}+\frac{(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4}{384}*)
+
+(* ::Text:: *)
+(*The deviation at the ends of the steps. The exact evolution is unitary: it changes the norm of no vector. The deviation at the end of a step is therefore the deviation at its beginning, carried along unchanged in size, plus the local error of the step, so that the deviation after $N^{\rm st}_{\rm LL}$ steps is at most the sum of their local errors $\delta^{\rm loc}_{\rm LL}$. If every local error is at most $B^{\rm loc}_{\rm LL}$, the deviation at the end of every step is at most $B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}$, the accumulated local error that the tolerances allow. (The original programs use the same number with the tolerances of CVODE, which weighs the real and the imaginary part of a complex component with the modulus of the component: there $B^{\rm loc}_{\rm LL}$ is the square root of 2 times the sum of $r^{\rm tol}_{\rm LL}$ times the norm of the state and $a^{\rm tol}_{\rm LL}$ times the square root of $n^{\rm cpx}_{\rm LL}$.) The function `t2localErrorsIDA` measures $\delta^{\rm loc}_{\rm LL}$ for every internal step: with the eigenvalues $E^{\rm qp}_{{\rm LL},n}$ and the eigenvectors of the Hermitian matrix, the exact solution that starts from a computed state multiplies the coefficient of the eigenvector number $n$ by the phase factor of the angle $-E^{\rm qp}_{{\rm LL},n}h^{\rm IDA}_{\rm LL}$.*)
+
+(* ::Input:: *)
+(* The time integration of i dw/dx0 = hm . w by IDA of SUNDIALS through NDSolve.
+   hm: a Hermitian matrix that does not depend on the time; w0: the state at x0 = 0; touts: the output times in
+   increasing order, the first of them 0; rtol, atol: the tolerances of the local error test; analysis: optionally a
+   function that is applied to the InterpolatingFunction of the real form before it is discarded.
+   The result is an association with the keys
+     "states"       the complex states at the output times
+     "steps"        the number N^st of internal steps
+     "evaluations"  the number N^ev of evaluations of the right side m . y that NDSolve reports (EvaluationMonitor)
+     "hmax"         the largest internal step h^IDA
+     "stepAt"       for every output time after the first: the length of the internal step that contains it
+     "residualAt"   for the same output times: the larger norm r^der of (stored derivative) - m . (stored value) at
+                    the two ends of that step
+     "hermiteAt"    for the same output times: the norm of the difference between the state given by NDSolve and the
+                    cubic Hermite polynomial built here from the values and the derivatives at the two ends of the step
+     "analysis"     the result of the function analysis, or None.
+   A failed integration (NDSolve then prints a message) gives $Failed. *)
+t2evolveIDA[hm_?MatrixQ, w0_?VectorQ, touts_List, rtol_?NumericQ, atol_?NumericQ, analysis_ : None] :=
+  Module[{nc = Length[w0], m, yIDA, tIDA, sol, dsol, grid, nev = 0, ends, toComplex, hermite},
+   m = Developer`ToPackedArray[N[ArrayFlatten[{{Im[hm], Re[hm]}, {-Re[hm], Im[hm]}}]]];
+   sol = NDSolveValue[{yIDA'[tIDA] == m . yIDA[tIDA], yIDA[0] == N[Join[Re[w0], Im[w0]]]}, yIDA, {tIDA, 0, Max[touts]},
+     Method -> "IDA", PrecisionGoal -> -Log10[rtol], AccuracyGoal -> -Log10[atol], MaxSteps -> 10^7, EvaluationMonitor :> (nev++)];
+   If[Head[sol] =!= InterpolatingFunction, Return[$Failed, Module]];
+   grid = Flatten[sol["Grid"]];
+   If[Last[grid] < Max[touts], Return[$Failed, Module]];
+   dsol = Derivative[1][sol];
+   toComplex[y_] := y[[1 ;; nc]] + I y[[nc + 1 ;; 2 nc]];
+   (* the two ends of the internal step that contains an output time *)
+   ends = Map[Function[tout, With[{k = Min[LengthWhile[grid, # < tout &] + 1, Length[grid]]}, grid[[{k - 1, k}]]]], Rest[touts]];
+   (* the cubic Hermite polynomial of the step from a to b at the time tout, from the values and derivatives at a and b;
+      frac is the fraction of the step that lies before tout *)
+   hermite[tout_, {a_, b_}] := With[{frac = (tout - a)/(b - a)},
+     (2 frac^3 - 3 frac^2 + 1) sol[a] + (3 frac^2 - 2 frac^3) sol[b] + (b - a) ((frac^3 - 2 frac^2 + frac) dsol[a] + (frac^3 - frac^2) dsol[b])];
+   <|"states" -> Map[toComplex[sol[#]] &, touts],
+     "steps" -> Length[grid] - 1, "evaluations" -> nev, "hmax" -> Max[Differences[grid]],
+     "stepAt" -> Map[#[[2]] - #[[1]] &, ends],
+     "residualAt" -> Map[Function[ab, Max[Norm[dsol[ab[[1]]] - m . sol[ab[[1]]]], Norm[dsol[ab[[2]]] - m . sol[ab[[2]]]]]], ends],
+     "hermiteAt" -> MapThread[Norm[sol[#1] - hermite[#1, #2]] &, {Rest[touts], ends}],
+     "analysis" -> If[analysis === None, None, analysis[sol]]|>];
+(* The exact local errors delta^loc of all internal steps of a solution of t2evolveIDA, for the Hermitian matrix with the
+   eigenvalues ev and the eigenvectors in the columns of vv (as t2eigh returns them).  The states at the grid times are
+   expanded in the eigenvectors (the rows of coef); the exact solution over a step of the length h multiplies the
+   coefficient of the eigenvalue E by exp(-i E h).  The steps are treated in groups of 2000 to save memory.
+   The result: the largest delta^loc/B^loc with B^loc = rtol (norm of the state) + atol sqrt(2 n^cpx), the largest
+   delta^loc, and the largest norm of a state at a grid time. *)
+t2localErrorsIDA[ev_List, vv_?MatrixQ, rtol_?NumericQ, atol_?NumericQ][sol_] :=
+  Module[{grid = Flatten[sol["Grid"]], vals = sol["ValuesOnGrid"], nc = Length[ev], npts, ratio = 0., emax = 0., nmax = 0., idx, wgrid, coef, err, nrm},
+   npts = Length[grid];
+   Do[
+    idx = Range[first, Min[first + 2000, npts]];
+    wgrid = vals[[idx, 1 ;; nc]] + I vals[[idx, nc + 1 ;; 2 nc]];
+    coef = wgrid . Conjugate[vv];
+    err = Map[Norm, Rest[coef] - Most[coef] Exp[-I Outer[Times, Differences[grid[[idx]]], ev]]];
+    nrm = Map[Norm, wgrid];
+    ratio = Max[ratio, Max[err/(rtol Most[nrm] + atol Sqrt[2. nc])]];
+    emax = Max[emax, Max[err]];
+    nmax = Max[nmax, Max[nrm]],
+    {first, 1, npts - 1, 2000}];
+   <|"largestRatio" -> ratio, "largestLocalError" -> emax, "largestNorm" -> nmax|>];
+
+(* ::Text:: *)
+(*Check T2-IDA has two parts. Part (a) shows what the two tolerances mean, on the equation whose solution is the decaying exponential function $\exp(-x^0_{\rm LL})$ (the derivative of the unknown is minus the unknown, the initial value is 1), integrated from 0 to 25 with $r^{\rm tol}_{\rm LL}=10^{-8}$ and $a^{\rm tol}_{\rm LL}=10^{-10}$. The solution falls from 1 to about $10^{-11}$. While it is much larger than $a^{\rm tol}_{\rm LL}/r^{\rm tol}_{\rm LL}=10^{-2}$, the tolerance of a step is $r^{\rm tol}_{\rm LL}$ times the modulus of the solution; when it is much smaller, the tolerance is $a^{\rm tol}_{\rm LL}$. The check requires that the exact local error of every internal step is at most the tolerance of the step, and that in each of the two regimes the largest ratio of the local error to the tolerance exceeds 1/128. The second requirement shows that the tolerances are the stated ones and not smaller ones: by its rule for the doubling of a step, IDA at the order 5 doubles the step as soon as its estimate falls below 1/128 of the tolerance. Part (b) tests `t2evolveIDA` and `t2localErrorsIDA` on a Hermitian $2\times2$ matrix, integrated from 0 to 10 with $r^{\rm tol}_{\rm LL}=10^{-10}$ and $a^{\rm tol}_{\rm LL}=10^{-12}$ and compared at 21 output times with the solution by the matrix exponential (`MatrixExp`): every $\delta^{\rm loc}_{\rm LL}$ is at most $B^{\rm loc}_{\rm LL}$, the largest deviation at the output times is at most $B^{\rm out}_{\rm LL}$, and the states of `NDSolve` are the cubic Hermite polynomials of the stored values and derivatives (tolerance $10^{-12}$).*)
+
+(* ::Input:: *)
+(* T2-IDA (a): the local errors that IDA accepts on the decaying exponential, rtol = 1e-8, atol = 1e-10 *)
+{rtolDecay, atolDecay} = {1.*^-8, 1.*^-10};
+solDecay = Module[{yD, tD}, NDSolveValue[{yD'[tD] == -yD[tD], yD[0] == 1.}, yD, {tD, 0, 25}, Method -> "IDA",
+     PrecisionGoal -> -Log10[rtolDecay], AccuracyGoal -> -Log10[atolDecay]]];
+gridDecay = Flatten[solDecay["Grid"]];
+valsDecay = Flatten[solDecay["ValuesOnGrid"]];
+(* the exact local error of every step: the computed value at its end minus the exact solution from the computed value
+   at its beginning; and its ratio to the tolerance rtol |value| + atol of the step *)
+localDecay = Abs[Rest[valsDecay] - Most[valsDecay] Exp[-Differences[gridDecay]]];
+ratioDecay = localDecay/(rtolDecay Abs[Most[valsDecay]] + atolDecay);
+(* the two regimes: the solution above 100 atol/rtol = 1 never holds after the start (the solution is at most 1), so the
+   relative regime is taken as the solution above 10 atol/rtol = 0.1, the absolute regime as the solution below
+   atol/(10 rtol) = 0.001 *)
+relDecay = Max[Pick[ratioDecay, Map[# > 10 atolDecay/rtolDecay &, Abs[Most[valsDecay]]]]];
+absDecay = Max[Pick[ratioDecay, Map[# < atolDecay/(10 rtolDecay) &, Abs[Most[valsDecay]]]]];
+(* T2-IDA (b): t2evolveIDA on a Hermitian 2 x 2 matrix against the matrix exponential *)
+hmTwo = {{0.3, 0.5 - 0.2 I}, {0.5 + 0.2 I, -0.7}};
+w0Two = {0.6, 0.8 I};
+toutsTwo = Range[0., 10., 0.5];
+{evTwo, vvTwo} = t2eigh[hmTwo];
+{rtolTwo, atolTwo} = {1.*^-10, 1.*^-12};
+runTwo = t2evolveIDA[hmTwo, w0Two, toutsTwo, rtolTwo, atolTwo, t2localErrorsIDA[evTwo, vvTwo, rtolTwo, atolTwo]];
+devTwo = Max[MapThread[Norm[#1 - MatrixExp[-I hmTwo #2] . w0Two] &, {runTwo["states"], toutsTwo}]];
+blocTwo = rtolTwo runTwo[["analysis", "largestNorm"]] + atolTwo Sqrt[2. 2];
+berrTwo = runTwo["steps"] blocTwo;
+boutTwo = (1 + runTwo["hmax"] Max[Abs[evTwo]]/4) berrTwo + runTwo["hmax"] Max[runTwo["residualAt"]]/4 +
+   (runTwo["hmax"] Max[Abs[evTwo]])^4/384 runTwo[["analysis", "largestNorm"]];
+SL31Check["T2-IDA", "the integrator IDA of SUNDIALS, used through NDSolve with Method -> \"IDA\": (a) on the decaying exponential (rtol = 1e-8, atol = 1e-10, x_LL^0 from 0 to 25) the exact local error of every internal step is at most the tolerance rtol |value| + atol of the step, and the largest ratio of the local error to this tolerance exceeds 1/128 both while the solution is above 10 atol/rtol and after it has fallen below atol/(10 rtol): the tolerances of IDA are 10^-PrecisionGoal and 10^-AccuracyGoal; (b) on a Hermitian 2 x 2 matrix (rtol = 1e-10, atol = 1e-12, 21 output times up to 10) every local error is at most budget_step = rtol (norm of the state) + atol sqrt(4), the largest deviation from the solution by MatrixExp is at most budget_out, and the states of NDSolve are the cubic Hermite polynomials of the stored values and derivatives (tolerance 1e-12)",
+  Max[ratioDecay] <= 1 && relDecay > 1/128 && absDecay > 1/128 && runTwo[["analysis", "largestRatio"]] <= 1 && devTwo <= boutTwo && Max[runTwo["hermiteAt"]] < 1*^-12,
+  Row[{"(a) ", Length[localDecay], " steps, largest ratio of a local error to its tolerance ", NumberForm[Max[ratioDecay], {4, 3}], " (relative regime ", NumberForm[relDecay, {4, 3}],
+    ", absolute regime ", NumberForm[absDecay, {4, 3}], "); (b) ", runTwo["steps"], " steps, ", runTwo["evaluations"], " evaluations, largest local_error/budget_step ",
+    NumberForm[runTwo[["analysis", "largestRatio"]], {4, 3}], ", largest deviation ", ScientificForm[devTwo, 2], " <= budget_out ", ScientificForm[boutTwo, 2],
+    ", Hermite polynomials within ", ScientificForm[Max[runTwo["hermiteAt"]], 2]}]]

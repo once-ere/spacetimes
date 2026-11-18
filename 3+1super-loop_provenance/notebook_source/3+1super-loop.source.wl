@@ -116,11 +116,43 @@ examples = {"\\Delta^{\\rm vac}_{\\rm LL}", "A^\\iota_{{\\rm LL},p}", "\\mathsf 
 Grid[Prepend[Map[{#, Style[ToString[SL31TeXToBoxes[#], InputForm], FontFamily -> "Source Code Pro", 9], RawBoxes[SL31TeXToBoxes[#]]} &, examples],
    Style[#, Bold] & /@ {"TeX", "boxes", "displayed"}], Frame -> All, Alignment -> Left]
 
+(* ::Text:: *)
+(***Complete formulas.** The texts of this notebook and the meanings of the registry (section I.8) contain complete formulas, written in TeX between dollar signs, for example `B^{\rm out}_{\rm LL}=\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}`. A second reader, defined in the next cell, converts them into boxes. It is built like the reader of symbols (tokens, read from left to right), and it knows what a complete formula needs: fractions and roots, sums and integrals with their limits, accents, matrices, delimiters, the names of functions, and the spaces of TeX. Four properties matter for the correctness of what is shown.*)
+
+(* ::Item:: *)
+(***The arguments of a command.** In TeX an argument that is not written in braces is the single token that follows the command: `\tfrac12\ell^{\rm x}_{\rm LL}` is one half times $\ell^{\rm x}_{\rm LL}$, and `\sqrt2\,\ell^{\rm x}_{\rm LL}` is the square root of 2, times $\ell^{\rm x}_{\rm LL}$. The reader follows this rule. The TeX importer of the Wolfram Language (`ImportString` with the format "TeX") does not: it takes everything up to the end of the group as the denominator and everything before the fraction as part of the numerator, so that it shows `\tfrac12\ell^{\rm x}_{\rm LL}` as the fraction with the numerator 1 and the denominator $2\ell^{\rm x}_{\rm LL}$, and `Q_{\rm LL}=-\tfrac12` as the fraction with the numerator $Q_{\rm LL}=-1$ and the denominator 2; it also shows `\hbar` as nothing. The importer is therefore not used anywhere in this notebook.*)
+
+(* ::Item:: *)
+(***The alphabets.** Every letter is given its alphabet by an explicit style: the letter of a variable is set in italics, text written with `\rm` upright, `\mathbf` bold and upright, `\mathsf` sans-serif (in the typeface Helvetica), and the double-struck, script and Gothic letters are the characters of the Wolfram Language for them. A formula is set in the typeface Times, so that an upright roman letter (the label K of $\ell^{\rm K}_{\rm LL}$) differs visibly from a sans-serif letter (the matrix $\mathsf K^3_{\rm LL}$) and from an italic letter (the generator $K^j_{\rm LL}$); the text around a formula is set in the sans-serif typeface of the text cells.*)
+
+(* ::Item:: *)
+(***Names are not products.** TeX sets neighbouring letters and numbers without a space. The front end of the Wolfram Language puts the thin space of a product between two neighbouring items of a row of boxes, and this notebook keeps that space between the factors of a product, as the Wolfram Language itself shows a product. Inside a name there must be no such space. The reader therefore joins neighbouring letters of one alphabet into one string (the letters `SL` and `SU` in the names of groups), and it puts the character `\[InvisibleSpace]`, which has no width, between a letter and a number that directly follows it: the coordinates `x5`, `x6`, `x7` of the main project (they occur in the meaning of the number of space dimensions, section I.8) are names, not products of a letter and a number.*)
+
+(* ::Item:: *)
+(***Nothing is passed over in silence.** A command that the reader does not know, a missing argument or an unmatched brace is recorded: `SL31TeXFormulaProblems[tex]` lists the problems of a formula, and the list must be empty. The program that builds this notebook stops with a warning for every problem in a text cell, and test S-15 (section I.7) checks every formula of the registry.*)
+
+(* ::Text:: *)
+(*The function `SL31FormulaReading` writes the boxes of a formula on one line (a fraction as `frac{a}{b}`, a root as `sqrt{a}`, scripts as `_{..}` and `^{..}`, a bold or sans-serif letter as `<bf:b>` or `<sf:N>`), without the spaces and without the italic and upright styles. Two conversions of a formula show the same formula exactly if their readings are equal; the tests use this.*)
+
+(* ::Input:: *)
+(* @@INCLUDE sl31_formula.wl@@ *)
+
+(* ::Text:: *)
+(*A first look at the reader of formulas: the TeX of seven formulas, the reading of the boxes on one line, and the formula as it is displayed.*)
+
+(* ::Input:: *)
+formulaExamples = {"\\tfrac12\\ell^{\\rm x}_{\\rm LL}g^{\\rm v}_{\\rm LL}", "\\cos(\\tfrac12\\vartheta^{\\rm B}_{\\rm LL})", "\\sqrt2\\,\\ell^{\\rm x}_{\\rm LL}",
+   "-\\tfrac{15}8\\int_{q_{\\rm LL}<\\Lambda_{\\rm LL}}d^3q_{\\rm LL}", "\\mathbf b=\\sum_{p=0}^3\\xi^{\\rm LL}_p(\\mathbf b)\\mathbf e_p",
+   "\\lvert\\vec d_{\\rm LL}\\rvert^2/G_{\\rm LL}", "\\sigma^{\\rm LL}_2=\\begin{pmatrix}0&-i\\\\i&0\\end{pmatrix}"};
+Grid[Prepend[Map[{Style[#, FontFamily -> "Source Code Pro", 9], Style[SL31FormulaReading[SL31TeXFormula[#]], FontFamily -> "Source Code Pro", 9],
+      RawBoxes[SL31FormulaCell[#]]} &, formulaExamples],
+   Style[#, Bold] & /@ {"TeX", "reading on one line", "displayed"}], Frame -> All, Alignment -> Left]
+
 (* ::Section:: *)
 (*I.4 The registry of the symbols*)
 
 (* ::Text:: *)
-(*The next cell holds the complete registry of the symbols of the super-loop revision: 199 entries. Every entry is an association with the keys "entry" (its number), "group" (one of nine groups), "symbol" (the printed forms, in TeX, between dollar signs), "names" (the plain-text names used by programs and data files), "meaning", "meaningEdited" (True where the meaning was restated so that this notebook is complete in itself: the original wording pointed to equations, theorems or sections of other texts) and "origin".*)
+(*The next cell holds the complete registry of the symbols of the super-loop revision: 204 entries. Every entry is an association with the keys "entry" (its number), "group" (one of nine groups), "symbol" (the printed forms, in TeX, between dollar signs), "names" (the plain-text names used by programs and data files), "meaning", "meaningEdited" (True where the meaning was restated so that this notebook is complete in itself: the original wording pointed to equations, theorems or sections of other texts) and "origin".*)
 
 (* ::Input:: *)
 (* @@INCLUDE registry_data.wl@@ *)
@@ -378,18 +410,57 @@ correspondences = {I^2 == -1, Element[Sqrt[2], Reals], Element[I, Complexes], ! 
 SL31Check["S-13", "the imaginary unit, the number sets and the operators correspond to I, Reals, Complexes, Tr, Det, DiagonalMatrix, Re, Im, KroneckerProduct, Transpose",
   And @@ correspondences, correspondences];
 
+(* ::Text:: *)
+(*S-15, the reader of formulas (section I.3). (a) Eighteen formulas whose reading is known are converted and their readings on one line are compared with the known readings; among them are the cases that the TeX importer of the Wolfram Language reads wrongly (a fraction with arguments without braces, and `\hbar`). (b) Every formula in the meanings of the registry is converted: the reader must report no problem, the number of fraction boxes must equal the number of the commands `\frac` and `\tfrac` in the TeX, the number of root boxes must equal the number of the commands `\sqrt`, and no fraction box may have an empty numerator or denominator. (c) A name is not a product: the boxes of `x5` must be the letter, the character `\[InvisibleSpace]` and the number, and the boxes of `5x` the number and the letter with nothing between them (a product, between whose factors the front end puts its thin space); the last number of the result counts the names of this kind in the meanings of the registry (the three coordinates `x5`, `x6`, `x7`).*)
+
+(* ::Input:: *)
+cases15 = {
+   {"\\tfrac12\\ell^{\\rm x}_{\\rm LL}g^{\\rm v}_{\\rm LL}", "frac{1}{2}\[ScriptL]_{LL}^{x}g_{LL}^{v}"},
+   {"Q_{\\rm LL}=-\\tfrac12", "Q_{LL}=-frac{1}{2}"},
+   {"\\cos(\\tfrac12\\vartheta^{\\rm B}_{\\rm LL})", "cos(frac{1}{2}\[CurlyTheta]_{LL}^{B})"},
+   {"-\\tfrac{15}8\\int_{q_{\\rm LL}<\\Lambda_{\\rm LL}}d^3q_{\\rm LL}", "-frac{15}{8}\[Integral]_{q_{LL}<\[CapitalLambda]_{LL}}d^{3}q_{LL}"},
+   {"\\tfrac i2(y^+_{\\rm LL}-y^-_{\\rm LL})", "frac{i}{2}(y_{LL}^{+}-y_{LL}^{-})"},
+   {"\\frac{r^{\\rm W}_{\\rm LL}}{2\\ell^{\\rm x}_{\\rm LL}}\\beta_{\\rm LL}", "frac{r_{LL}^{W}}{2\[ScriptL]_{LL}^{x}}\[Beta]_{LL}"},
+   {"\\sqrt2\\,\\ell^{\\rm x}_{\\rm LL}", "sqrt{2}\[ScriptL]_{LL}^{x}"},
+   {"\\sqrt{2n^{\\rm cpx}_{\\rm LL}}", "sqrt{2n_{LL}^{cpx}}"},
+   {"5\\times10^{-11}", "5\[Times]10^{-11}"},
+   {"(q_{\\rm LL}^2+(M^{\\rm q}_{\\rm LL})^2)^{-7/2}", "(q_{LL}^{2}+(M_{LL}^{q})^{2})^{-7/2}"},
+   {"\\mathbf e_p", "<bf:e>_{p}"},
+   {"\\mathsf K^3_{\\rm LL}", "<sf:K>_{LL}^{3}"},
+   {"\\bar\\Psi_{\\rm LL}", "over{\[CapitalPsi]}{_}_{LL}"},
+   {"\\lvert\\vec d_{\\rm LL}\\rvert^2", "|over{d}{\[RightVector]}_{LL}|^{2}"},
+   {"\\sum_{p=0}^3\\xi^{\\rm LL}_p(\\mathbf b)\\mathbf e_p", "\[Sum]_{p=0}^{3}\[Xi]_{p}^{LL}(<bf:b>)<bf:e>_{p}"},
+   {"\\begin{pmatrix}0&-i\\\\i&0\\end{pmatrix}", "(grid[0&-i;i&0])"},
+   {"\\hbar", "\[HBar]"},
+   {"x5,x6,x7", "x5,x6,x7"}};
+readings15 = Map[SL31FormulaReading[SL31TeXFormula[First[#]]] &, cases15];
+(* every formula of the meanings of the registry *)
+meaningFormulas = DeleteDuplicates[Flatten[Map[SL31TextFormulas[StringReplace[#["meaning"], "\\_" -> "_"]] &, SL31Registry]]];
+problems15 = Flatten[Map[SL31TeXFormulaProblems, meaningFormulas]];
+boxes15 = Map[SL31TeXFormula, meaningFormulas];
+fractions15 = Cases[boxes15, _FractionBox, Infinity];
+counts15 = {Total[StringCount[meaningFormulas, RegularExpression["\\\\[td]?frac(?![A-Za-z])"]]], Length[fractions15],
+   Total[StringCount[meaningFormulas, RegularExpression["\\\\sqrt(?![A-Za-z])"]]], Count[boxes15, _SqrtBox | _RadicalBox, Infinity]};
+(* a name and a product: the boxes of x5 and of 5x *)
+names15 = SL31TeXFormula["x5"] === RowBox[{StyleBox["x", "TI"], "\[InvisibleSpace]", "5"}] &&
+   SL31TeXFormula["5x"] === RowBox[{"5", StyleBox["x", "TI"]}];
+SL31Check["S-15", "the reader of formulas reads 18 formulas of known reading correctly, converts every formula of the meanings of the registry without a problem, with one fraction box for every fraction command and one root box for every root command, and sets a number that directly follows a letter as part of a name (x5), not as a factor",
+  readings15 === cases15[[All, 2]] && problems15 === {} && counts15[[1]] == counts15[[2]] && counts15[[3]] == counts15[[4]] &&
+   FreeQ[fractions15, FractionBox["", _] | FractionBox[_, ""]] && names15,
+  {Length[cases15], Count[MapThread[SameQ, {readings15, cases15[[All, 2]]}], True], Length[meaningFormulas], Length[problems15], counts15,
+   Count[boxes15, "\[InvisibleSpace]", Infinity]}];
+
 (* ::Section:: *)
 (*I.8 The complete table of the symbols*)
 
 (* ::Text:: *)
-(*The table below shows every entry of the registry, group by group: the printed symbols (as the notebook now displays them), the plain-text names and the meaning. In the meanings the TeX between dollar signs is shown in its printed form.*)
+(*The table below shows every entry of the registry, group by group: the printed symbols (as the notebook now displays them), the plain-text names and the meaning. In the meanings the formulas are shown in their printed form, converted by the reader of formulas of section I.3, and the names of programs and of functions are set in the code typeface.*)
 
 (* ::Input:: *)
-(* the meaning as text with formulas: TeX between dollar signs is converted by the Wolfram TeX importer *)
-textWithMath[t_String] := Module[{r},
-   r = StringReplace[StringReplace[t, "\\_" -> "_"], "$" ~~ Shortest[m__] ~~ "$" :> With[{c = Cases[Quiet[ImportString["$" <> m <> "$", "TeX"]], Cell[BoxData[f_FormBox], "InlineFormula", ___] :> f, Infinity]},
-        If[c === {}, "$" <> m <> "$", RawBoxes[First[c]]]]];
-   If[Head[r] === StringExpression, Row[List @@ r], r]];
+(* the meaning as an inline text cell: the formulas between dollar signs are converted by the
+   reader of formulas (section I.3) and the code between backquotes is set in the code typeface;
+   an underscore written as a backslash and an underscore in the registry is an underscore *)
+textWithMath[t_String] := RawBoxes[SL31TextBoxes[StringReplace[t, "\\_" -> "_"], FontSize -> 9.5, FontFamily -> "Source Sans Pro"]];
 (* one row of the table: the printed symbols (a Pane of fixed width, in which the list of symbols
    may break after a comma), the plain-text names, and the meaning in the text font; the three
    widths (125 + 95 + 290 printer's points) let the table fit the width of a printed page *)
@@ -398,7 +469,7 @@ symbolRow[e_] := {Pane[If[StringContainsQ[e["symbol"], "$"],
         Flatten[Map[SL31SplitTeX, StringCases[e["symbol"], "$" ~~ Shortest[x__] ~~ "$" :> x]]]], ", "]],
       Style[e["symbol"], 9]], 125],
    Pane[Style[StringRiffle[e["names"], " "], FontFamily -> "Source Code Pro", 8], 95],
-   Pane[Style[textWithMath[e["meaning"]], 9.5, FontFamily -> "Source Sans Pro"], 290]};
+   Pane[textWithMath[e["meaning"]], 290]};
 groupTable[g_] := Grid[Prepend[Map[symbolRow, Select[SL31Registry, #["group"] === g &]],
     Style[#, Bold, FontFamily -> "Source Sans Pro"] & /@ {"symbol", "plain-text names", "meaning"}],
    Frame -> All, Alignment -> {Left, Top}, Background -> {None, {LightGray}}, Spacings -> {1, 0.6}];

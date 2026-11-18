@@ -53,6 +53,19 @@
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -186,10 +199,16 @@ here.
 \textbf{Status (18 November 2026).} The notebook was evaluated in
 Wolfram 15.0.1 (Mac, Apple silicon), in the front end of the application
 Wolfram.app, by the menu command Evaluation \textgreater{} Evaluate
-Notebook, in a fresh kernel: 82 input cells, 42 output cells, 35 printed
+Notebook, in a fresh kernel: 87 input cells, 43 output cells, 37 printed
 test lines, \textbf{0 messages} (no error or warning of any kind),
-\textbf{35 of 35 tests passed} (15 of Part I, 20 of Part II), evaluation
-time 71 seconds.
+\textbf{37 of 37 tests passed} (16 of Part I, 21 of Part II), evaluation
+time 125 seconds. Two properties of this version are new: every time
+integration is made by IDA, an integrator of the suite SUNDIALS (section
+11.5; no integrator with a fixed step written by hand is used any more,
+error E20), and every formula that the notebook shows is converted from
+its TeX by the notebook's own reader of formulas (section 6.2; the TeX
+importer of the Wolfram Language, which shows 28 of the formulas of the
+notebook wrongly, is not used any more, error E22).
 
 \hypertarget{the-task}{%
 \section{1. The task}\label{the-task}}
@@ -226,6 +245,14 @@ Mathematica (on his own computer, in
   Evaluate the notebook after every addition, fix every error at once,
   describe and discuss the fixes in the provenance, and push every
   finished item to the repository.
+\item
+  (Instruction of 18 November 2026.) Do not integrate in time with the
+  Runge-Kutta method of the fourth order, or with any other integrator
+  of a fixed step written by hand. Use the integrators of the suite
+  SUNDIALS instead: CVODE in the Rust and Python programs, and IDA in
+  the Wolfram Language. Redo every calculation that was made with the
+  former method, and record the error (errors E20 and E21 of section 14;
+  the terms are defined in section 2.7, the method in section 11.5).
 \end{enumerate}
 
 Section 15 lists the decisions that were taken where the task left a
@@ -240,7 +267,6 @@ document}\label{terms-and-symbols-used-in-this-document}}
 Language}\label{terms-of-the-wolfram-language}}
 
 \begin{itemize}
-\tightlist
 \item
   \textbf{Wolfram Language}: the programming language of the system
   Mathematica; on the author's computer the application is
@@ -397,10 +423,10 @@ Language}\label{terms-of-the-wolfram-language}}
   \textbf{\texttt{ListLinePlot}}, \textbf{\texttt{ListPlot}},
   \textbf{\texttt{ListLogLogPlot}}, \textbf{\texttt{Show}},
   \textbf{\texttt{Graphics}}, \textbf{\texttt{Text}},
-  \textbf{\texttt{LineLegend}}, \textbf{\texttt{Labeled}}: plots of
-  lists of points (joined, as points, on logarithmic axes); the
-  combination of plots; graphics and text placed at coordinates; a
-  legend; a caption.
+  \textbf{\texttt{Line}}, \textbf{\texttt{LineLegend}},
+  \textbf{\texttt{Labeled}}: plots of lists of points (joined, as
+  points, on logarithmic axes); the combination of plots; graphics, text
+  and lines placed at coordinates; a legend; a caption.
 \item
   \textbf{\texttt{SingleLetterItalics}}: an option of the front end; in
   \texttt{TraditionalForm}, the form in which the labels of graphics are
@@ -408,8 +434,72 @@ Language}\label{terms-of-the-wolfram-language}}
   is \texttt{False}.
 \item
   \textbf{\texttt{ImportString{[}text,\ "TeX"{]}}}: the TeX importer of
-  the Wolfram Language, which turns TeX into a notebook with boxes; the
-  builder uses it for the formulas in text cells (errors E4 and E17).
+  the Wolfram Language, which turns TeX into a notebook with boxes. The
+  builder used it for the formulas in text cells until it was found to
+  show some formulas wrongly (errors E4, E17 and E22); the notebook now
+  converts every formula with its own reader (section 6.2), and the
+  importer is used only by the comparison of that section.
+\item
+  \textbf{\texttt{FractionBox{[}a,\ b{]}}},
+  \textbf{\texttt{SqrtBox{[}a{]}}},
+  \textbf{\texttt{RadicalBox{[}a,\ n{]}}},
+  \textbf{\texttt{GridBox{[}rows{]}}}, \textbf{\texttt{UnderscriptBox}},
+  \textbf{\texttt{UnderoverscriptBox}},
+  \textbf{\texttt{FormBox{[}boxes,\ TraditionalForm{]}}}: the boxes of a
+  fraction, of a square root, of a root of the degree \texttt{n}, of a
+  table of boxes (a matrix), of a box with another box below it, or
+  below and above it (the limits of a sum); and the statement that boxes
+  are to be shown in \texttt{TraditionalForm}.
+\item
+  \textbf{Inline cell}, \textbf{\texttt{TextData}},
+  \textbf{\texttt{RawBoxes}}: the content of a text cell is
+  \texttt{TextData{[}\{...\}{]}}, a list of strings, of strings with a
+  style, and of inline cells; an inline cell is a cell that stands
+  inside the text of another cell, for example
+  \texttt{Cell{[}BoxData{[}boxes{]},\ "InlineFormula"{]}}, the cell of a
+  formula. A cell of the style \texttt{DisplayFormula} holds one formula
+  on lines of its own. \texttt{RawBoxes{[}boxes{]}} is an expression
+  that is displayed as the given boxes.
+\item
+  \textbf{\texttt{Pane{[}expr,\ width{]}}}: a region of the given width
+  in which \texttt{expr} is displayed; a text inside it is broken into
+  lines of this width.
+\item
+  \textbf{The space of a product},
+  \textbf{\texttt{\textbackslash{}{[}InvisibleSpace{]}}}: the front end
+  shows two neighbouring items of a \texttt{RowBox} that are not
+  separated by an operator, such as the number 2 and the letter \(x\),
+  with a thin space between them, as it shows a product.
+  \texttt{\textbackslash{}{[}InvisibleSpace{]}} is a character of the
+  Wolfram Language that has no width; if it stands between the two
+  items, the front end adds no space (measured, error E28).
+\item
+  \textbf{\texttt{NDSolve}}, \textbf{\texttt{NDSolveValue}}: the
+  functions that solve differential equations numerically;
+  \texttt{NDSolveValue{[}equations,\ y,\ \{t,\ t0,\ t1\},\ options{]}}
+  returns the solution \texttt{y}. Options used here:
+  \texttt{Method\ -\textgreater{}\ "IDA"} chooses the integrator IDA
+  (section 2.7); \texttt{PrecisionGoal\ -\textgreater{}\ a} and
+  \texttt{AccuracyGoal\ -\textgreater{}\ b} set the relative and the
+  absolute tolerance of the local error to \(10^{-a}\) and \(10^{-b}\)
+  (section 11.5); \texttt{MaxSteps} limits the number of internal steps;
+  \texttt{EvaluationMonitor\ :\textgreater{}\ expr} evaluates
+  \texttt{expr} every time the equations are evaluated (used to count
+  the evaluations).
+\item
+  \textbf{\texttt{InterpolatingFunction}}: the object in which
+  \texttt{NDSolve} returns a solution: the values of the solution and of
+  its derivative at the times of a grid, and a rule of interpolation
+  between them. For a solution \texttt{f}: \texttt{f{[}"Grid"{]}} is the
+  list of the grid times, \texttt{f{[}"ValuesOnGrid"{]}} the values
+  there, \texttt{f{[}t{]}} the interpolated value at the time
+  \texttt{t}, and \texttt{Derivative{[}1{]}{[}f{]}} the derivative.
+\item
+  \textbf{\texttt{ListLogPlot}}, \textbf{\texttt{Epilog}},
+  \textbf{\texttt{FrameTicks}}: a plot with a logarithmic vertical axis
+  (the vertical positions of graphics added to it are natural
+  logarithms); graphics drawn over a plot; the tick marks of a framed
+  plot.
 \end{itemize}
 
 \hypertarget{symbols-of-the-physics-that-appear-in-the-tests}{%
@@ -575,6 +665,25 @@ commutator \(\mathbf x\mathbf y-\mathbf y\mathbf x\) and the associator
 \((\mathbf x\mathbf y)\mathbf z-\mathbf x(\mathbf y\mathbf z)\) \\
 \([\ \cdot\ ]\), \(\langle\ \rangle\) & the mass dimension of a field or
 coupling; the expectation value in the ground state \\
+\(Q_{\rm LL}\) & the electric charge of the model; its eigenvalues are 0
+on the quaternion part \(\mathbb C\otimes\mathbb H\) of
+\(\mathbb B_{\rm LL}\) and \(\pm\tfrac12\) on the spinor charges (in
+this document only an example of a formula with the fraction one half,
+section 6.2) \\
+\(\Gamma_{\rm E}\) & Euler's gamma function; the upright E is a label,
+not an index (an example in error E23) \\
+\(\hbar\) & the reduced Planck constant; the registry uses units in
+which \(\hbar\) and the speed of light are 1 \\
+\(x5\), \(x6\), \(x7\) & the names of three space coordinates of the
+eight-dimensional spacetime of the main project; in the super-loop
+revision they do not occur, and the registry only mentions them in the
+meaning of \(D\) (each is one name, a letter followed by a number, not a
+product; error E28) \\
+\(\ell^{\rm K}_{\rm LL}\) & the width of a domain wall (kink) of the
+pair field (an example of an upright label K) \\
+\(\mathsf K^3_{\rm LL}\) & the third of the pair matrices
+\(\mathsf K^\iota_{\rm LL}\) of section 2.5 (an example of a sans-serif
+letter K) \\
 \(a_{\rm LL}\), \(a_{{\rm LL},p}\), \(b_{{\rm LL},p}\) & symbols of the
 demonstrations of section I.2 of the notebook (not part of the
 registry) \\
@@ -850,9 +959,11 @@ eigenvalue of \(\mathcal H^{\rm DB}_{\rm LL}\) & \\
 operators, \(\Psi_{\rm LL}^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}\) (at
 a point) & \texttt{t2anomalous} (lattice) \\
 \(\ell^{\rm x}_{\rm LL}\), \(\ell^{\rm t}_{\rm LL}\),
-\(r^{\rm W}_{\rm LL}\) & the lattice spacing, the time step, the
-coefficient of the Wilson term & \texttt{"ell"}, \texttt{dt},
-\texttt{"wilson"} \\
+\(r^{\rm W}_{\rm LL}\) & the lattice spacing; a time step of the lattice
+equations (the interval between the output times of an integration by
+CVODE or by IDA, which choose their own internal steps; in the first
+version of Test 2 a fixed step); the coefficient of the Wilson term &
+\texttt{"ell"}; the spacing of \texttt{touts13}; \texttt{"wilson"} \\
 \(n^{\rm x}_{\rm LL}\), \(n^{\rm y}_{\rm LL}\), \(n^{\rm z}_{\rm LL}\);
 \(\vec s_{\rm LL}\), \(s^j_{\rm LL}\); \(\vec\delta^j_{\rm LL}\);
 \(n^{\rm act}_{\rm LL}\) & the numbers of lattice sites in the three
@@ -867,8 +978,9 @@ from \(\vec s_{\rm LL}\) to \(\vec s_{\rm LL}+\vec\delta^j_{\rm LL}\),
 \(B^{\rm H}_{\rm LL}\) & the lattice form of
 \(\mathcal H^{\rm DB}_{\rm LL}\) (16 rows per site), the energy of a
 free particle on the lattice, and the bound on the largest eigenvalue
-magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) & \texttt{t2apply},
-\texttt{t2dense}; \texttt{t2epsLat}; \texttt{t2normBound} \\
+magnitude of \(\mathcal H^{\rm lat}_{\rm LL}\) (formula in section 11.3)
+& \texttt{t2apply}, \texttt{t2dense}; \texttt{t2epsLat};
+\texttt{t2normBound} \\
 \(\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})\) & the \(4\times4\)
 free lattice operator on a plane wave,
 \(\sum_j\alpha^j_{\rm LL}\sin(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/\ell^{\rm x}_{\rm LL}+\beta_{\rm LL}\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)\),
@@ -880,6 +992,58 @@ isospin index of the particle component and its complex conjugate on the
 hole component; the exchange of the particle and the hole component,
 \(\begin{pmatrix}0&\mathsf 1_8\\\mathsf 1_8&0\end{pmatrix}\) &
 \texttt{gbig}; \texttt{swap}, \texttt{xm} \\
+\(x^0_{\rm LL}\) & the time: the component 0 of the coordinates
+\(x^p_{\rm LL}\); \(\partial_0\) is the derivative with respect to it &
+\texttt{touts13}, the argument of \texttt{wExact13} \\
+\(w^{\rm lat}_{\rm LL}\), \(w^{\rm cmp}_{\rm LL}\);
+\(n^{\rm cpx}_{\rm LL}\) & a Nambu mode on the lattice written as one
+complex vector (the 16 components of \(\psi^{\rm p}_{\rm LL}\) and
+\(\psi^{\rm h}_{\rm LL}\) on every site, the sites one after the other),
+so that the lattice equations read
+\(i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\);
+one complex component of it; the number of its complex components, 16
+times the number of sites & \texttt{w0IDA13}, the entries of
+\texttt{"states"}; \texttt{t2dim{[}lat{]}} \\
+\(r^{\rm tol}_{\rm LL}\), \(a^{\rm tol}_{\rm LL}\) & the relative and
+the absolute tolerance of a time integration (section 2.7): the
+tolerance of a real unknown \(y\) of IDA is
+\(r^{\rm tol}_{\rm LL}\lvert y\rvert+a^{\rm tol}_{\rm LL}\); the
+original programs give CVODE the tolerance
+\(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL}\)
+for the real and for the imaginary part of a complex component &
+\texttt{rtol}, \texttt{atol} \\
+\(h^{\rm IDA}_{\rm LL}\); \(N^{\rm st}_{\rm LL}\),
+\(N^{\rm ev}_{\rm LL}\) & the length of an internal step of IDA (chosen
+by IDA); the number of internal steps of an integration and the number
+of evaluations of its right side
+\(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) &
+\texttt{"hmax"}, \texttt{"stepAt"}; \texttt{"steps"},
+\texttt{"evaluations"} \\
+\(B^{\rm loc}_{\rm LL}\), \(\delta^{\rm loc}_{\rm LL}\) & the local
+error that the tolerances allow in one internal step,
+\(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}\)
+for IDA and
+\(\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\)
+for CVODE (\(\lVert\cdot\rVert\): the norm of a vector, the square root
+of the sum of the squared moduli of its components); the exact local
+error of an internal step (section 2.7) & \texttt{bloc13};
+\texttt{t2localErrorsIDA} \\
+\(B^{\rm err}_{\rm LL}\); \(\delta^{\rm rel}_{\rm LL}\),
+\(w^{\rm ex}_{\rm LL}\) & the accumulated local error that the
+tolerances allow, \(N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}\); the
+relative deviation of a computed state from the exact solution,
+\(\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert\);
+the exact solution of the same equations & \texttt{berr13};
+\texttt{dev13}, \texttt{maxdev13}; \texttt{wExact13} \\
+\(E^{\rm max}_{\rm LL}\), \(r^{\rm der}_{\rm LL}\),
+\(B^{\rm out}_{\rm LL}\) & the largest modulus of the eigenvalues
+\(E^{\rm qp}_{{\rm LL},n}\) of \(\mathcal H^{\rm lat}_{\rm LL}\); the
+norm of the difference, at the end of an internal step of IDA, between
+the derivative that \texttt{NDSolve} stores and
+\(-i\mathcal H^{\rm lat}_{\rm LL}\) applied to the stored state; the
+bound of the deviation of a state that \texttt{NDSolve} returns between
+the ends of an internal step (section 11.5) & \texttt{eMax13};
+\texttt{"residualAt"}; \texttt{bout13} \\
 \(SL(2,\mathbb C)\), \(SU(2)_{\rm v}\), \(U(1)^{\rm F}_{\rm LL}\),
 \(\mathfrak{so}(3,1)\) & the Lorentz group (unit bi-quaternions), the
 isospin group, the group of the fermion number, the Lie algebra of the
@@ -890,17 +1054,12 @@ Lorentz group & \\
 \subsection{2.6 Abbreviations of this document that are not registered
 symbols}\label{abbreviations-of-this-document-that-are-not-registered-symbols}}
 
-Two letters are used, in a few places only, as abbreviations; each is
-defined where it is used and none of them coincides with a registered
-symbol (the registry has no symbol written with these letters alone):
+One letter is used, in a few places only, as an abbreviation; it is
+defined where it is used and does not coincide with a registered symbol
+(the registry has no symbol written with this letter alone):
 
 \begin{itemize}
 \tightlist
-\item
-  \(z\) (section 12.2, checks GS-13 and T2-DATA-1, section 12.3, and
-  Figure 2 of the notebook): the product
-  \(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\) of the energy of a
-  mode and the time step.
 \item
   \(\kappa\) (sections 12.2 GS-10 and GS-16, and the notebook text of
   GS-16): the integer that labels the allowed momenta of a periodic
@@ -912,8 +1071,89 @@ symbol (the registry has no symbol written with these letters alone):
   for a chain along \(x^3_{\rm LL}\).
 \item
   Variables of the programs are written in code font (for example
-  \texttt{kv}, \texttt{waves}, \texttt{ulist}, \texttt{w}); they are
-  names of the Wolfram Language code, not symbols of the physics.
+  \texttt{kv}, \texttt{waves}, \texttt{ulist}, \texttt{w}, \texttt{m},
+  \texttt{hr}, \texttt{hi}, \texttt{frac}); they are names of the
+  Wolfram Language code, not symbols of the physics.
+\end{itemize}
+
+\hypertarget{terms-of-the-time-integration}{%
+\subsection{2.7 Terms of the time
+integration}\label{terms-of-the-time-integration}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ordinary differential equation}, \textbf{initial value
+  problem}: an equation that gives the derivative of the unknowns with
+  respect to one variable (here the time \(x^0_{\rm LL}\)) as a function
+  of the unknowns; together with the values of the unknowns at the
+  initial time it fixes the solution. A \textbf{differential-algebraic
+  equation} may contain, in addition, equations without derivatives.
+\item
+  \textbf{Integrator}, \textbf{internal step}, \textbf{output times}: an
+  integrator is a program that computes the solution of an initial value
+  problem step by step in time; an internal step is one such step, whose
+  length the integrator chooses itself; the output times are the times
+  at which the user asks for the solution, and they need not be ends of
+  internal steps.
+\item
+  \textbf{Right side}: the function that gives the derivative, here
+  \(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\); the number of
+  its evaluations measures the cost of an integration.
+\item
+  \textbf{Local error}, \textbf{deviation}: the local error of an
+  internal step is the difference between the computed state at the end
+  of the step and the exact solution that starts from the computed state
+  at the beginning of the step (the error that this one step adds). The
+  deviation (also called the global error) is the difference between the
+  computed state and the exact solution of the initial value problem.
+\item
+  \textbf{Tolerances}, \textbf{weighted root-mean-square norm},
+  \textbf{error control}: a relative tolerance \(r^{\rm tol}_{\rm LL}\)
+  and an absolute tolerance \(a^{\rm tol}_{\rm LL}\) give every real
+  unknown \(y\) the tolerance
+  \(r^{\rm tol}_{\rm LL}\lvert y\rvert+a^{\rm tol}_{\rm LL}\). The
+  weighted root-mean-square norm of a vector of errors is the square
+  root of the mean of the squares of the errors, each divided by the
+  tolerance of its unknown. An integrator with error control computes,
+  in every step, an estimate of the local error and accepts the step
+  only if this norm of the estimate is at most 1; otherwise it repeats
+  the step with a shorter length.
+\item
+  \textbf{SUNDIALS}: the SUite of Nonlinear and DIfferential/ALgebraic
+  equation Solvers of the Lawrence Livermore National Laboratory.
+  \textbf{CVODE} is its integrator of ordinary differential equations;
+  the original programs use it with the \textbf{Adams-Moulton formulas}
+  of the orders 1 to 12 (formulas that express the value at the end of a
+  step by the derivatives at the end of this step and of the steps
+  before it). \textbf{IDA} is its integrator of differential-algebraic
+  equations; the Wolfram Language contains it, and the notebook uses it.
+\item
+  \textbf{Backward differentiation formula} of the order \(k\): a
+  formula that expresses the derivative at the end of a step by the
+  values of the solution at the end of this step and at the \(k\) grid
+  times before it. Because the unknown value at the end of the step
+  enters the formula, every step requires the solution of a system of
+  equations, which IDA solves by an iteration, \textbf{Newton's method};
+  the iteration is stopped when its corrections are small compared with
+  the tolerances.
+\item
+  \textbf{Cubic Hermite interpolation}: between two times, the
+  polynomial of the third degree that has given values and given
+  derivatives at the two times.
+\item
+  \textbf{Unitary evolution}: for a Hermitian matrix
+  \(\mathcal H^{\rm lat}_{\rm LL}\) the exact solution of the lattice
+  equations over a time \(h\) is the initial vector multiplied by the
+  unitary matrix \(\exp(-ih\mathcal H^{\rm lat}_{\rm LL})\); it changes
+  the norm of no vector, and therefore not the norm of the difference of
+  two solutions.
+\item
+  \textbf{Runge-Kutta method of the fourth order} (RK4): a classical
+  method that advances the solution by a step of a fixed length from
+  four evaluations of the right side, without an estimate of the error.
+  The first version of Test 2 and of the notebook used it; it is used
+  nowhere any more (error E20).
 \end{itemize}
 
 \hypertarget{results-in-brief}{%
@@ -932,23 +1172,37 @@ value
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-entries of the registry & 199, in 9 groups \\
-TeX segments (text between two dollar signs) & 434 \\
-TeX items (single symbols) & 449 \\
+entries of the registry & 204, in 9 groups \\
+TeX segments (text between two dollar signs) & 452 \\
+TeX items (single symbols) & 467 \\
 label entries (no TeX) & 2 (entries 86 and 87) \\
-TeX items of a symbolized kind & 427 \\
-different boxes, i.e.~symbolized symbols & 422 \\
-tests of Part I & 15 (S-0 to S-14), all passed \\
+TeX items of a symbolized kind & 445 \\
+different boxes, i.e.~symbolized symbols & 440 \\
+tests of Part I & 16 (S-0 to S-15), all passed \\
+formulas that the notebook shows, all converted by its own reader of
+formulas & 1237: 383 in texts, 2 display formulas, 852 in the meanings
+of the registry; 791 different formulas; no problem reported for any of
+them \\
+formulas that the TeX importer of the Wolfram Language shows wrongly
+(and the own reader correctly) & 28 of the 791; 24 of them stood,
+wrongly shown, in the notebook as committed before 18 November 2026 \\
 original programs rewritten in Part II so far & the library t2core
-(rng.rs, c64.rs, cmat.rs, model.rs, lattice.rs) and the program
-t2\_fields (item {[}1{]} of Test 2) \\
-checks of Part II so far & 20 (T2-SYM, T2-RNG, T2-LINALG, GS-1 to GS-16,
-T2-DATA-1), all passed \\
-components of families typed in the notebook & 10, all atomic symbols
+(rng.rs, c64.rs, cmat.rs, model.rs, lattice.rs; the time integration of
+cvode.rs is made by IDA) and the program t2\_fields (item {[}1{]} of
+Test 2) \\
+checks of Part II so far & 21 (T2-SYM, T2-RNG, T2-LINALG, T2-IDA, GS-1
+to GS-16, T2-DATA-1), all passed \\
+time integration of GS-13 by IDA,
+\(r^{\rm tol}_{\rm LL}=10^{-8},10^{-10},10^{-12}\): largest relative
+deviation from the exact solution & \(7.1\times10^{-6}\),
+\(9.3\times10^{-8}\), \(4.4\times10^{-11}\) (CVODE in the original
+program: \(1.2\times10^{-6}\), \(1.7\times10^{-7}\),
+\(1.7\times10^{-10}\)) \\
+components of families typed in the notebook & 11, all atomic symbols
 (T2-SYM) \\
 messages during the evaluation & 0 \\
-evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 71 s \\
-printed form of the evaluated notebook & 181 pages \\
+evaluation time (Wolfram 15.0.1, Mac, Apple silicon) & 125 s \\
+printed form of the evaluated notebook & 205 pages \\
 \end{longtable}
 
 \hypertarget{how-to-use-the-notebook}{%
@@ -969,9 +1223,9 @@ printed form of the evaluated notebook & 181 pages \\
   (red), its name, the statement that it checks, and the numbers that
   decide it. Section I.9 of the notebook lists the tests of Part I in a
   table, and its last cell gives
-  \texttt{\{"tests"\ -\textgreater{}\ 15,\ "passed"\ -\textgreater{}\ 15\}};
+  \texttt{\{"tests"\ -\textgreater{}\ 16,\ "passed"\ -\textgreater{}\ 16\}};
   the subsection ``Summary of item {[}1{]}'' at the end of chapter II.2
-  lists the 20 checks of Part II. In Part II the numbers of a check are
+  lists the 21 checks of Part II. In Part II the numbers of a check are
   followed, in parentheses, by those of the original report.
 \item
   After the evaluation every registered symbol can be typed in its
@@ -981,9 +1235,9 @@ printed form of the evaluated notebook & 181 pages \\
 The notebook as stored in the repository is already evaluated, so its
 results can be read without evaluating it. The folder
 \texttt{3+1super-loop\_provenance/export} holds the printed form of the
-evaluated notebook as a PDF file (181 pages; about 30 of them are the
-input cell with the numbers of the data files of item {[}1{]}, decision
-of section 15).
+evaluated notebook as a PDF file (205 pages; 22 of them, pages 173 to
+194, are the input cell with the numbers of the data files of item
+{[}1{]}, decision of section 15).
 
 \hypertarget{the-technique-symbolized-symbols-created-by-a-program}{%
 \section{5. The technique: symbolized symbols created by a
@@ -1112,17 +1366,26 @@ that the front end reads as an operator must be protected (error E9).
 Section 6 describes how the converter builds boxes that the front end
 sends unchanged, and the tests S-0 and S-14 verify it.
 
-\hypertarget{the-converter-from-tex-to-boxes}{%
-\section{6. The converter from TeX to
-boxes}\label{the-converter-from-tex-to-boxes}}
+\hypertarget{the-converters-from-tex-to-boxes}{%
+\section{6. The converters from TeX to
+boxes}\label{the-converters-from-tex-to-boxes}}
 
-The registry stores every symbol in TeX. The notebook contains a reader
-of exactly this kind of TeX (function \texttt{SL31TeXToBoxes} of the
-package \texttt{SL31\textasciigrave{}}), written in the Wolfram
-Language. The Wolfram TeX importer
-(\texttt{ImportString{[}...,\ "TeX"{]}}) was not used for symbols
-because it loses the alphabets of styled letters (error E4). The rules
-of the reader:
+The notebook contains two readers of TeX, both written in the Wolfram
+Language: the reader of symbols (section 6.1), which makes the boxes
+that are symbolized, and the reader of formulas (section 6.2), which
+makes the boxes of the complete formulas that the notebook shows in its
+texts. The TeX importer of the Wolfram Language
+(\texttt{ImportString{[}...,\ "TeX"{]}}) is used by neither: it loses
+the alphabets of styled letters (errors E4 and E17) and shows some
+formulas wrongly (error E22).
+
+\hypertarget{the-reader-of-symbols}{%
+\subsection{6.1 The reader of symbols}\label{the-reader-of-symbols}}
+
+The registry stores every symbol in TeX. The reader of exactly this kind
+of TeX is the function \texttt{SL31TeXToBoxes} of the package
+\texttt{SL31\textasciigrave{}} (file
+\texttt{notebook\_source/sl31\_core.wl}). Its rules:
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
@@ -1200,11 +1463,293 @@ The boxes that are symbolized depend on the kind of the TeX item
   every other symbol gives its box unchanged.
 \end{itemize}
 
+\hypertarget{the-reader-of-formulas}{%
+\subsection{6.2 The reader of formulas}\label{the-reader-of-formulas}}
+
+\textbf{Why it exists.} The texts of the notebook, and the meanings of
+the registry that section I.8 of the notebook prints, contain complete
+formulas in TeX, written between dollar signs: 1237 formulas in all, 791
+of them different. In the versions of the notebook before 18 November
+2026 the TeX importer of the Wolfram Language converted them. The
+importer breaks a rule of TeX. In TeX the argument of a command, if it
+is not written in braces, is the single token that follows the command
+(a token is one command or one other character):
+\texttt{\textbackslash{}tfrac12\textbackslash{}ell\^{}\{\textbackslash{}rm\ x\}\_\{\textbackslash{}rm\ LL\}}
+is the fraction one half, times \(\ell^{\rm x}_{\rm LL}\). The importer
+instead takes everything up to the end of the group as the denominator,
+and everything before the fraction as part of the numerator. It shows
+
+\[\tfrac12\ell^{\rm x}_{\rm LL}\ \ \text{as}\ \ \frac{1}{2\ell^{\rm x}_{\rm LL}},\qquad Q_{\rm LL}=-\tfrac12\ \ \text{as}\ \ \frac{Q_{\rm LL}=-1}{2},\qquad \cos\big(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\big)\ \ \text{as}\ \ \cos\Big(\frac{1}{2\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert}\Big),\]
+
+and it shows the command \texttt{\textbackslash{}hbar} (the reduced
+Planck constant) as nothing. A formula that is shown wrongly teaches a
+wrong statement. The importer shows 28 of the 791 formulas of the
+present notebook wrongly; 24 of them stood, wrongly shown, in the
+notebook as it was committed before 18 November 2026 (error E22). The
+notebook therefore converts every formula itself. The reader of formulas
+is the file \texttt{notebook\_source/sl31\_formula.wl}, which section
+I.3 of the notebook contains in one input cell (functions
+\texttt{SL31TeXFormula}, \texttt{SL31TeXFormulaProblems},
+\texttt{SL31FormulaCell}, \texttt{SL31TextData},
+\texttt{SL31TextFormulas}, \texttt{SL31TextBoxes} and
+\texttt{SL31FormulaReading} of the package
+\texttt{SL31\textasciigrave{}}). The builder uses it for every text
+cell, and section I.8 of the notebook uses it for every meaning.
+
+\textbf{The method} is recursive descent, as in the reader of symbols:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The TeX is cut into tokens: a command (\texttt{\textbackslash{}frac},
+  \texttt{\textbackslash{}Delta}), a control symbol (a backslash
+  followed by one character that is not a letter), white space, or one
+  other character. Digits stay single tokens, because an argument
+  without braces is ONE token: \texttt{\textbackslash{}tfrac12} has the
+  numerator 1 and the denominator 2.
+\item
+  A sequence of atoms is read from left to right. An atom is a letter, a
+  digit, the character of a command, a group in braces, a part between
+  matching delimiters, or a command together with its arguments; after
+  the atom come its primes, its superscript and its subscript.
+\item
+  Every letter carries its alphabet. Neighbouring digits form one
+  number, and neighbouring letters of one alphabet one string, so that
+  they are set without a space between them, as TeX sets them. A number
+  that directly follows a letter is joined to the letter by the
+  character \texttt{\textbackslash{}{[}InvisibleSpace{]}}, so that the
+  two are set without a space as well: such a pair is the name of one
+  quantity (the coordinates \(x5\), \(x6\), \(x7\) of the main project),
+  not a product (error E28).
+\item
+  A sign that stands first, or after an operator, a relation, an opening
+  delimiter or a comma, is a prefix sign and is joined to the item after
+  it. The name of a function and a large operator are separated from a
+  neighbouring ordinary item by a thin space, as in TeX.
+\end{enumerate}
+
+The rules in detail:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+TeX
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+box
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+a letter & \texttt{StyleBox{[}"x",\ "TI"{]}} (the style of an italic
+letter); \texttt{SL} gives \texttt{StyleBox{[}"SL",\ "TI"{]}} \\
+digits & where a sequence is read, the whole number
+(\texttt{10\^{}\{-11\}} is the number 10 with a superscript); as an
+argument without braces, the single digit \\
+a letter directly followed by a number, \texttt{x5} &
+\texttt{RowBox{[}\{StyleBox{[}"x",\ "TI"{]},\ "\textbackslash{}{[}InvisibleSpace{]}",\ "5"\}{]}}:
+one name, set without a space; a number before a letter, \texttt{5x},
+stays \texttt{RowBox{[}\{"5",\ StyleBox{[}"x",\ "TI"{]}\}{]}}, a product
+with the thin space of the front end \\
+\texttt{\textbackslash{}frac\{a\}\{b\}},
+\texttt{\textbackslash{}tfrac12}, \texttt{\textbackslash{}tfrac\{15\}8},
+\texttt{\textbackslash{}tfrac\ i2} & \texttt{FractionBox{[}a,\ b{]}};
+each argument is a group in braces or one token \\
+\texttt{\textbackslash{}sqrt\{a\}}, \texttt{\textbackslash{}sqrt2},
+\texttt{\textbackslash{}sqrt{[}n{]}\{a\}} & \texttt{SqrtBox{[}a{]}},
+\texttt{RadicalBox{[}a,\ n{]}} \\
+\texttt{x\^{}\{..\}}, \texttt{x\_\{..\}}, primes &
+\texttt{SuperscriptBox}, \texttt{SubscriptBox},
+\texttt{SubsuperscriptBox}; a prime is the superscript
+\texttt{"\textbackslash{}{[}Prime{]}"} \\
+\texttt{\textbackslash{}sum}, \texttt{\textbackslash{}prod} with scripts
+& \texttt{UnderoverscriptBox} (the scripts are limits);
+\texttt{\textbackslash{}int} keeps its scripts at the side \\
+\texttt{\{\textbackslash{}rm\ text\}},
+\texttt{\textbackslash{}mathrm\{..\}},
+\texttt{\textbackslash{}text\{..\}} &
+\texttt{StyleBox{[}"text",\ FontSlant\ -\textgreater{}\ "Plain"{]}}
+(upright); \texttt{\textbackslash{}rm} holds to the end of its group \\
+\texttt{\textbackslash{}mathbf\ b}, \texttt{\textbackslash{}mathsf\ N} &
+\texttt{StyleBox{[}"b",\ FontWeight\ -\textgreater{}\ "Bold",\ FontSlant\ -\textgreater{}\ "Plain"{]}},
+\texttt{StyleBox{[}"N",\ FontFamily\ -\textgreater{}\ "Helvetica",\ FontSlant\ -\textgreater{}\ "Plain"{]}} \\
+\texttt{\textbackslash{}mathbb\ R}, \texttt{\textbackslash{}mathcal\ L},
+\texttt{\textbackslash{}mathfrak\ m} & the double-struck, script and
+Gothic characters of the Wolfram Language \\
+\texttt{\textbackslash{}vec\ d}, \texttt{\textbackslash{}hat\ x},
+\texttt{\textbackslash{}tilde\ x}, \texttt{\textbackslash{}bar\ x},
+\texttt{\textbackslash{}overline\{..\}} & \texttt{OverscriptBox} with
+the accent character \\
+\texttt{(\ ..\ )}, \texttt{{[}\ ..\ {]}},
+\texttt{\textbackslash{}\{\ ..\ \textbackslash{}\}},
+\texttt{\textbackslash{}lvert\ ..\ \textbackslash{}rvert},
+\texttt{\textbackslash{}lVert\ ..\ \textbackslash{}rVert},
+\texttt{\textbackslash{}langle\ ..\ \textbackslash{}rangle} & a matching
+pair becomes \texttt{RowBox{[}\{open,\ content,\ close\}{]}} and takes
+the scripts that follow it; a delimiter without its partner, as in a
+half-open interval, is an ordinary character \\
+\texttt{\textbackslash{}begin\{pmatrix\}\ a\&b\textbackslash{}\textbackslash{}c\&d\ \textbackslash{}end\{pmatrix\}}
+&
+\texttt{RowBox{[}\{"(",\ GridBox{[}\{\{a,\ b\},\ \{c,\ d\}\}{]},\ ")"\}{]}} \\
+\texttt{\textbackslash{}cos}, \texttt{\textbackslash{}sin},
+\texttt{\textbackslash{}exp}, \ldots{} & the upright name; a thin space
+separates it from a neighbouring ordinary item \\
+\texttt{\textbackslash{},} and the other spaces of TeX & thin, medium
+and thick space characters; the negative thin space gives nothing \\
+\texttt{\textbackslash{}big}, \texttt{\textbackslash{}Big},
+\texttt{\textbackslash{}left}, \texttt{\textbackslash{}right} & left out
+(they only choose the size of a delimiter) \\
+\texttt{\textbackslash{}le}, \texttt{\textbackslash{}in},
+\texttt{\textbackslash{}to}, \texttt{\textbackslash{}mapsto},
+\texttt{\textbackslash{}times}, \texttt{\textbackslash{}otimes},
+\texttt{\textbackslash{}hbar}, \ldots{} & the characters of the Wolfram
+Language \\
+a command that the reader does not know & shown as it is written, and
+reported as a problem \\
+\end{longtable}
+
+\textbf{Names and products.} TeX sets neighbouring letters and numbers
+without a space; the front end puts the thin space of a product between
+two neighbouring items of a row of boxes (section 2.1). The notebook
+keeps this space between the factors of a product (it shows the product
+of 2 and \(\pi\) with a thin space between the two, as the Wolfram
+Language shows a product), but a name must not be torn apart: the
+letters of one alphabet are one string (error E26), and a number that
+directly follows a letter belongs to the letter (error E28). In the 791
+formulas of the notebook the second rule applies to one formula, the
+three coordinates \(x5,x6,x7\) in the meaning of the number of space
+dimensions \(D\).
+
+\textbf{Nothing is passed over in silence.}
+\texttt{SL31TeXFormulaProblems{[}tex{]}} lists every unknown command,
+missing argument and unmatched brace of a formula. The builder turns
+every problem of a text cell into a warning, and a build is accepted
+only with 0 warnings; test S-15 requires the empty list for every
+formula of the registry.
+
+\textbf{The alphabets and the typeface.} Every letter gets its alphabet
+by an explicit style, so that it is shown in the same way in a text cell
+and in an output cell (in an output cell the front end would otherwise
+set every single letter in italics, section 2.1,
+\texttt{SingleLetterItalics}). A formula is set in the typeface Times,
+one tenth larger than the text around it (the letters of Times are
+smaller than those of the typeface of the text cells at the same size).
+In Times an italic letter of a variable, an upright roman letter of a
+label and a sans-serif letter (set in Helvetica) differ visibly: the
+label K of \(\ell^{\rm K}_{\rm LL}\), the matrix
+\(\mathsf K^3_{\rm LL}\) and the generator \(K^j_{\rm LL}\) are three
+different letters. This matters for the project: in the formulas of the
+notebook 16 letters occur both as an upright label and as a sans-serif
+symbol (A, B, E, F, G, H, K, L, N, Q, R, W, Y, a, h, s), and 13 both as
+an upright label and as a bold symbol (a, b, c, f, g, h, t, u, v, w, x,
+y, z). In the earlier versions the builder wrapped the cell that the
+importer returned into a second cell; the formulas of the text cells
+were then set in the monospaced typeface of code, in which an upright
+letter and a sans-serif letter are hard to tell apart.
+
+\textbf{Texts.} \texttt{SL31TextData{[}text{]}} converts a text with
+formulas between dollar signs, code between backquotes and bold text
+between double asterisks into the content of a text cell; the patterns
+are tried from left to right, so that a dollar sign inside code does not
+begin a formula. \texttt{SL31TextBoxes{[}text,\ options{]}} makes an
+inline text cell of it; section I.8 of the notebook uses it for the
+meanings, so that a meaning is one paragraph with its formulas, broken
+into lines by the front end (error E23). A text cell that holds nothing
+but one formula is written in the source as a cell of the style
+\texttt{DisplayFormula} (error E24).
+
+\textbf{The reading on one line.} \texttt{SL31FormulaReading{[}boxes{]}}
+writes boxes on one line: a fraction as \texttt{frac\{a\}\{b\}}, a root
+as \texttt{sqrt\{a\}}, scripts as \texttt{\_\{..\}} and
+\texttt{\^{}\{..\}}, an accent as \texttt{over\{a\}\{accent\}}, a matrix
+as \texttt{grid{[}a\&b;c\&d{]}}, a bold or sans-serif letter as
+\texttt{\textless{}bf:b\textgreater{}} or
+\texttt{\textless{}sf:N\textgreater{}}; spaces, the italic and upright
+styles and the grouping of rows are left out. Two conversions of a
+formula show the same formula exactly if their readings are equal.
+
+\textbf{The comparison with the importer} tests both programs against
+each other (script \texttt{tools/formula\_compare.wls}; the list of the
+formulas, \texttt{notebook\_source/formula\_inventory.wl}, is written by
+\texttt{tools/formula\_inventory.py} from the sources of the notebook
+and from the registry, with the same rules by which the builder finds
+the formulas; output \texttt{logs/E22\_formula\_compare\_report.txt}).
+Every one of the 791 different formulas is converted three times: by the
+own reader, by the importer with the alphabets protected (the way of the
+builder before, error E17), and by the importer alone (the way of
+section I.8 before). Six ways of writing in which the importer differs
+from the own reader without a difference of meaning are made equal first
+(an absolute value or a norm written as a template, the empty item, the
+cross for \texttt{\textbackslash{}times}, another arrow for
+\texttt{\textbackslash{}to}, another small circle for
+\texttt{\textbackslash{}circ}, the negative thin space). The results:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+quantity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+value
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+formulas for which the own reader reports a problem & 0 of 791 \\
+fraction commands in the TeX; fraction boxes of the own reader & 37;
+37 \\
+root commands in the TeX; root boxes of the own reader & 8; 8 \\
+formulas with equal readings, own reader and importer with the alphabets
+protected & 763 of 791 \\
+formulas with different readings (a formula that occurs in several
+places is counted where it occurs first) & 28: 4 in texts, 1 display
+formula, 23 in meanings \\
+of these, a fraction with an argument without braces that the importer
+reads wrongly & 27 \\
+of these, the command \texttt{\textbackslash{}hbar}, which the importer
+shows as nothing & 1 \\
+formulas with different readings, own reader and importer alone & 344:
+101 in texts, 2 display formulas, 241 in meanings \\
+\end{longtable}
+
+So the two programs, which share no code, read 763 formulas in the same
+way, and in each of the 28 others the reading of the own reader is the
+one that the rule of TeX requires (each was looked at; the report lists
+them with both readings). The 344 differences from the importer alone
+are these 28 and 316 formulas in which the importer loses the alphabet
+of a letter (297 formulas with a bold, sans-serif, double-struck, script
+or Gothic letter) or writes \texttt{\textbackslash{}varepsilon} as the
+character of \texttt{\textbackslash{}epsilon} (19 formulas; error E17).
+
+The same comparison was made for the notebook as it was committed before
+the reader of formulas existed (commit 213d205 of the repository; its
+sources contain 1119 formulas, 741 of them different; list
+\texttt{logs/E22\_formula\_inventory\_committed\_notebook.wl}, output
+\texttt{logs/E22\_formula\_compare\_committed\_notebook.txt}, report
+\texttt{logs/E22\_formula\_compare\_report\_committed\_notebook.txt}):
+the own reader reports no problem, 717 of the 741 formulas have equal
+readings, and 24 are read wrongly by the importer (2 in texts, 22 in
+meanings; 23 fractions and the command \texttt{\textbackslash{}hbar}).
+These 24 are the formulas that the committed notebook showed wrongly
+(error E22). The display of the formulas was looked at on a page that
+shows one text converted by both programs (script
+\texttt{tools/formula\_render\_test.wls}, pages
+\texttt{logs/E22\_formula\_render\_test.pdf}, picture
+\texttt{logs/E22\_formulas\_importer\_and\_own\_reader.png}), and on the
+pages of the evaluated notebook
+(\texttt{logs/E22\_notebook\_texts\_before\_and\_after\_fix.png},
+\texttt{logs/E23\_table\_of\_symbols\_before\_and\_after\_fix.png}).
+
 \hypertarget{the-registry-inside-the-notebook}{%
 \section{7. The registry inside the
 notebook}\label{the-registry-inside-the-notebook}}
 
-The registry of the symbols of the super-loop revision has 199 entries
+The registry of the symbols of the super-loop revision has 204 entries
 in nine groups:
 
 \begin{longtable}[]{@{}
@@ -1229,15 +1774,18 @@ entries
 7 Power counting and renormalizability & 8 \\
 8 Groups, Lie algebras, operations and labels & 6 \\
 9 Test 2: the gauge-covariant field equations of the spinor field and
-their solutions & 112 \\
+their solutions & 117 \\
 \end{longtable}
 
 The registry is stored in the repository as the file
 \texttt{Revision\_SuperLoop/provenance/symbols\_ll.csv} (columns group,
-symbol, names\_in\_files, meaning, origin). The script
+symbol, names\_in\_files, meaning, origin). Its last five entries (200
+to 204) are the symbols of the time integration (section 2.5); entry 204
+was added, and the entries 116, 119, 201, 202 and 203 restated, when the
+notebook was changed to IDA (section 11.5). The script
 \texttt{tools/registry\_to\_wl.wls} converts it into the Wolfram
 Language file \texttt{notebook\_source/registry\_data.wl} (a list
-\texttt{SL31Registry} of 199 associations with the keys ``entry'',
+\texttt{SL31Registry} of 204 associations with the keys ``entry'',
 ``group'', ``symbol'', ``names'', ``meaning'', ``meaningEdited'',
 ``origin''), and the notebook contains this file in full in one input
 cell. In 16 entries (2, 36, 58, 86, 115, 123, 139, 148, 169, 174, 176,
@@ -1252,10 +1800,10 @@ the equation that defines it.
 Every TeX segment (the text between two dollar signs) is split at the
 commas that stand outside braces, parentheses and brackets; a list
 \texttt{a,\ \textbackslash{}dots,\ b} of numbered symbols is expanded.
-This gives 449 TeX items in 434 segments; the 2 label entries (86: the
+This gives 467 TeX items in 452 segments; the 2 label entries (86: the
 names of the machine checks and theorems; 87: the hypothesis labels
 H-grp, H-op, H-Lie, H-gr, H-dyn) are names, not symbols, and are kept as
-text. The kinds of the 449 items:
+text. The kinds of the 467 items:
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
@@ -1276,7 +1824,7 @@ examples
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-symbol & 289 & yes & \(\Delta^{\rm vac}_{\rm LL}\), \(G_{\rm LL}\) \\
+symbol & 307 & yes & \(\Delta^{\rm vac}_{\rm LL}\), \(G_{\rm LL}\) \\
 family (running index) & 56 & yes & \(\tau^{\rm LL}_\iota\),
 \(x^p_{\rm LL}\) \\
 function & 37 & yes (its head) & \(W_{\rm LL}(\mathbf u)\) \\
@@ -1297,8 +1845,8 @@ ket & 2 & yes & \(\lvert\Phi^{\rm SF}_{\rm LL}\rangle\),
 letter & 1 & yes & \(D\) \\
 \end{longtable}
 
-The 427 TeX items of the symbolized kinds give 422 different boxes, so
-422 symbolized symbols. Four boxes are shared by several TeX items,
+The 445 TeX items of the symbolized kinds give 440 different boxes, so
+440 symbolized symbols. Four boxes are shared by several TeX items,
 always a function symbol written with different arguments; they are ONE
 symbol, as the head \(f\) of \(f(x)\) and \(f(x,y)\) is one symbol:
 
@@ -1407,7 +1955,7 @@ written in TeX from its box.
 Every test is recorded by the function
 \texttt{SL31Check{[}name,\ statement,\ condition,\ details{]}} in the
 list \texttt{SL31\textasciigrave{}Test\textasciigrave{}\$Results} and
-prints one line. All 15 tests passed in the evaluation of 17 November
+prints one line. All 16 tests passed in the evaluation of 18 November
 2026; the numbers below are the numbers of that evaluation.
 
 \textbf{S-0 (the strings as the front end reads them).} Every string
@@ -1415,34 +1963,34 @@ inside every symbolized box (the tags of \texttt{TagBox} and the options
 of \texttt{StyleBox} excepted) must be one token for the front end; the
 test reads each with
 \texttt{FrontEnd\textasciigrave{}UndocumentedTestFEParserPacket{[}string,\ True{]}}
-and requires that the result is the string itself. Result: 201 different
+and requires that the result is the string itself. Result: 214 different
 strings, none cut.
 
-\textbf{S-1.} Every one of the 449 TeX items is converted into a box
-structure (no \texttt{\$Failed}, no \texttt{Null}). Result: 449.
+\textbf{S-1.} Every one of the 467 TeX items is converted into a box
+structure (no \texttt{\$Failed}, no \texttt{Null}). Result: 467.
 
-\textbf{S-2.} Every one of the 422 symbolized boxes is read by
-\texttt{MakeExpression} as one atomic symbol. Result: 422.
+\textbf{S-2.} Every one of the 440 symbolized boxes is read by
+\texttt{MakeExpression} as one atomic symbol. Result: 440.
 
-\textbf{S-14 (the typed symbols).} One input cell contains all 422
+\textbf{S-14 (the typed symbols).} One input cell contains all 440
 symbols, each in its printed form, as a reader would type them. When the
 cell is evaluated, the front end sends the boxes to the kernel; every
 one must be one atomic symbol, and it must be the very symbol created
-from its registry TeX. Result: 422 of 422.
+from its registry TeX. Result: 440 of 440.
 
 \textbf{S-3 (uniqueness).} Different boxes give different symbols, and
 the boxes stay different after the removal of \texttt{StyleBox},
 \texttt{AdjustmentBox} and \texttt{FrameBox} (the comparison that the
-Notation package makes). Result: 422 boxes, 422 symbols, 422 boxes after
+Notation package makes). Result: 440 boxes, 440 symbols, 440 boxes after
 the removal.
 
 \textbf{S-4 (round trip).} Every symbol printed again gives exactly its
-box: \texttt{ToBoxes{[}symbol,\ StandardForm{]}\ ===\ box}. Result: 422
-of 422.
+box: \texttt{ToBoxes{[}symbol,\ StandardForm{]}\ ===\ box}. Result: 440
+of 440.
 
 \textbf{S-5 (TeX).} \texttt{TeXForm} of every symbol is written from its
 printed form; the internal name with its separator does not appear.
-Result: 422 of 422.
+Result: 440 of 440.
 
 \textbf{S-6 (arithmetic: the gap equation).} The gap of the condensed
 vacuum solves
@@ -1507,7 +2055,7 @@ and the rule \(T^\iota_{\rm LL}=\tau^{\rm LL}_\iota/2\):
 Result: \(\{\{3/4,0\},\{0,3/4\}\}\).
 
 \textbf{S-12 (plain-text names).} No plain-text name of the registry
-belongs to two different entries. Result: 592 different names, none
+belongs to two different entries. Result: 612 different names, none
 shared.
 
 \textbf{S-13 (the kinds that are not symbolized).} The imaginary unit
@@ -1526,6 +2074,43 @@ statements on the Pauli matrices: \(i^2=-1\); \(\sqrt2\in\mathbb R\);
 (\(\mathsf 1_4\): the \(4\times4\) unit matrix);
 \((\sigma^{\rm LL}_2)^T=-\sigma^{\rm LL}_2\). Result: all eleven
 \texttt{True}.
+
+\textbf{S-15 (the reader of formulas, section 6.2).} (a) Eighteen
+formulas whose reading is known are converted, and their readings on one
+line (\texttt{SL31FormulaReading}) are compared with the known readings.
+Among them are the cases that the TeX importer reads wrongly:
+\texttt{\textbackslash{}tfrac12\textbackslash{}ell\^{}\{\textbackslash{}rm\ x\}\_\{\textbackslash{}rm\ LL\}g\^{}\{\textbackslash{}rm\ v\}\_\{\textbackslash{}rm\ LL\}}
+must read \texttt{frac\{1\}\{2\}} followed by the two symbols;
+\texttt{Q\_\{\textbackslash{}rm\ LL\}=-\textbackslash{}tfrac12} must
+read \texttt{Q\_\{LL\}=-frac\{1\}\{2\}};
+\texttt{\textbackslash{}cos(\textbackslash{}tfrac12\textbackslash{}vartheta\^{}\{\textbackslash{}rm\ B\}\_\{\textbackslash{}rm\ LL\})}
+must have the fraction one half inside the parentheses;
+\texttt{-\textbackslash{}tfrac\{15\}8\textbackslash{}int\_\{q\_\{\textbackslash{}rm\ LL\}\textless{}\textbackslash{}Lambda\_\{\textbackslash{}rm\ LL\}\}d\^{}3q\_\{\textbackslash{}rm\ LL\}}
+must read \texttt{-frac\{15\}\{8\}} followed by the integral;
+\texttt{\textbackslash{}tfrac\ i2(y\^{}+\_\{\textbackslash{}rm\ LL\}-y\^{}-\_\{\textbackslash{}rm\ LL\})}
+must read \texttt{frac\{i\}\{2\}(..)}; \texttt{\textbackslash{}hbar}
+must give the character of the reduced Planck constant. The others test
+a fraction with braces, roots with and without braces, a number with a
+script (\texttt{5\textbackslash{}times10\^{}\{-11\}}), a group in
+parentheses with a script, bold and sans-serif letters, an accent, bars
+of an absolute value with a script, a sum with limits, a matrix, and the
+three coordinates \texttt{x5,x6,x7}. (b) Every formula of the meanings
+of the registry is converted (620 different formulas): the reader must
+report no problem; the number of fraction boxes must equal the number of
+the commands \texttt{\textbackslash{}frac} and
+\texttt{\textbackslash{}tfrac} in the TeX, and the number of root boxes
+the number of the commands \texttt{\textbackslash{}sqrt}; no fraction
+box may have an empty numerator or denominator. (c) A name is not a
+product: the boxes of \texttt{x5} must be the italic letter, the
+character \texttt{\textbackslash{}{[}InvisibleSpace{]}} and the number,
+and the boxes of \texttt{5x} the number and the letter with nothing
+between them. Result: 18 of 18 readings equal; 620 formulas, 0 problems;
+26 fraction commands and 26 fraction boxes; 7 root commands and 7 root
+boxes; the two box structures of (c) as required, and 3 names of this
+kind in the meanings of the registry (the three coordinates). (The
+formulas of the text cells are converted when the notebook is built; the
+builder reported 385 formulas and 0 warnings, and the comparison of
+section 6.2 covers them.)
 
 \hypertarget{part-ii-the-encyclopedia-of-the-programs-of-test-2}{%
 \section{10. Part II: the encyclopedia of the programs of Test
@@ -1550,11 +2135,14 @@ The original programs are in the folder
 \item
   the Rust library \texttt{t2core} (files \texttt{rng.rs},
   \texttt{c64.rs}, \texttt{cmat.rs}, \texttt{model.rs},
-  \texttt{lattice.rs}, \texttt{sym.rs}, \texttt{lib.rs}) and the Rust
-  programs \texttt{t2\_fields} (item {[}1{]}), \texttt{t2\_analytic}
-  (item {[}2{]}), \texttt{t2\_solve} (items {[}3{]}, {[}5{]}),
-  \texttt{t2\_plot} (items {[}4{]}, {[}6{]}) and \texttt{t2\_sfbs}
-  (items {[}7{]} to {[}11{]}), 12 615 lines in all;
+  \texttt{lattice.rs}, \texttt{cvode.rs}, \texttt{sym.rs},
+  \texttt{lib.rs}) and the Rust programs \texttt{t2\_fields} (item
+  {[}1{]}), \texttt{t2\_analytic} (item {[}2{]}), \texttt{t2\_solve}
+  (items {[}3{]}, {[}5{]}), \texttt{t2\_plot} (items {[}4{]}, {[}6{]})
+  and \texttt{t2\_sfbs} (items {[}7{]} to {[}11{]}); with the program
+  \texttt{t2\_cvcmp}, which compares CVODE with the fixed-step method of
+  the first version, and the small library \texttt{t2cvode\_c}, through
+  which the Python programs call the same CVODE, 14 012 lines in all;
 \item
   the Python programs \texttt{t2\_solve.py}, \texttt{t2\_plot.py},
   \texttt{t2\_examples\_check.py}, \texttt{make\_t2\_figures.py} and
@@ -1563,11 +2151,12 @@ The original programs are in the folder
 
 Part II of the notebook rewrites all of them, item by item, in the
 Wolfram Language, with every check of the original programs.
-\textbf{This stage} contains chapter II.1 (the library \texttt{t2core})
-and chapter II.2 (item {[}1{]}, the program \texttt{t2\_fields}: the
-checks GS-1 to GS-16, the two figures and the data files of the
-figures). The items {[}2{]} to {[}11{]} follow in the next stages; each
-will be added to this document when it is added to the notebook.
+\textbf{This stage} contains chapter II.1 (the library \texttt{t2core},
+with the time integration by IDA in its section II.1.5) and chapter II.2
+(item {[}1{]}, the program \texttt{t2\_fields}: the checks GS-1 to
+GS-16, the two figures and the data files of the figures). The items
+{[}2{]} to {[}11{]} follow in the next stages; each will be added to
+this document when it is added to the notebook.
 
 \hypertarget{names-indices-and-numbers}{%
 \subsection{10.2 Names, indices and
@@ -1598,16 +2187,20 @@ numbers}\label{names-indices-and-numbers}}
   \texttt{Revision\_SuperLoop/test2/data/t2\_fields\_checks.txt},
   written by the Rust program). Results that are fixed by the random
   numbers alone (the spectral radius 8.4349 and its bound 17.5474 of
-  GS-10, the factors of GS-13, the smallest Gram eigenvalue 8.000 of
-  GS-15) agree to all printed digits. Results that measure rounding
-  errors (the largest deviation of an exact identity, of the size
-  \(10^{-16}\) to \(10^{-13}\)) agree in their order of magnitude but
-  not in their digits: a sum of floating-point numbers depends in its
-  last bits on the order of the terms, and the matrix products of the
-  Wolfram Language add the terms in a different order than the loops of
-  the Rust code. Such a deviation is the accumulated rounding error of
-  the computation and has no further meaning; what matters is that it
-  stays far below the tolerance of the check.
+  GS-10, the smallest Gram eigenvalue 8.000 of GS-15) agree to all
+  printed digits. Results that measure rounding errors (the largest
+  deviation of an exact identity, of the size \(10^{-16}\) to
+  \(10^{-13}\)) agree in their order of magnitude but not in their
+  digits: a sum of floating-point numbers depends in its last bits on
+  the order of the terms, and the matrix products of the Wolfram
+  Language add the terms in a different order than the loops of the Rust
+  code. Such a deviation is the accumulated rounding error of the
+  computation and has no further meaning; what matters is that it stays
+  far below the tolerance of the check. The check GS-13 is different:
+  the notebook integrates in time with another integrator (IDA) than the
+  original program (CVODE), so its numbers are results of their own;
+  both are compared with the same exact solution, and the printed line
+  gives the numbers of both integrators.
 \end{itemize}
 
 \hypertarget{random-numbers}{%
@@ -1662,13 +2255,13 @@ is typed anywhere in the notebook (every reference
 source) and writes the list into the first input cell of Part II, which
 makes the components that Part I has not made, gives them their
 \texttt{TraditionalForm} boxes and usage messages, and checks them
-(T2-SYM): 10 components are typed in the notebook
+(T2-SYM): 11 components are typed in the notebook
 (\(\sigma^{\rm LL}_0,\dots,\sigma^{\rm LL}_3\),
 \(\gamma^0_{\rm LL},\dots,\gamma^3_{\rm LL}\),
-\(\mathsf A_{{\rm LL},j}\), \(q^1_{\rm LL}\)), 6 of them are made in
-this cell, and all 10 are read as atomic symbols whose TeX contains no
-internal name. Error E18 (section 14) describes what happened before
-this cell existed.
+\(\mathsf A_{{\rm LL},j}\), \(q^1_{\rm LL}\) and, for the time axis of
+Figure 2, \(x^0_{\rm LL}\)), 6 of them are made in this cell, and all 11
+are read as atomic symbols whose TeX contains no internal name. Error
+E18 (section 14) describes what happened before this cell existed.
 
 \hypertarget{part-ii-chapter-ii.1-the-library-t2core-in-the-wolfram-language}{%
 \section{11. Part II, chapter II.1: the library t2core in the Wolfram
@@ -1817,15 +2410,10 @@ the energy \(\varepsilon^{\rm lat}_{\rm LL}\) of section 12.2 (GS-16);
 \texttt{t2hLatPlane}, \(\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})\);
 \texttt{t2anomalous}, the lattice pair densities
 \(\Pi^\iota_{\rm LL}(\vec s_{\rm LL})=\sum_n\psi^{\rm p}_{{\rm LL},n}(\vec s_{\rm LL})^T\mathsf K^\iota_{\rm LL}\psi^{\rm h}_{{\rm LL},n}(\vec s_{\rm LL})^*\)
-of a set of modes; \texttt{t2rk4Step}, one step of the Runge-Kutta
-method of fourth order for
-\(i\partial_0\)\texttt{w}\(=\mathcal H^{\rm lat}_{\rm LL}\)\texttt{w}
-with the time step \(\ell^{\rm t}_{\rm LL}\) (\texttt{k1\ =\ -i\ H\ w},
-\texttt{k2\ =\ -i\ H\ (w\ +\ dt\ k1/2)},
-\texttt{k3\ =\ -i\ H\ (w\ +\ dt\ k2/2)},
-\texttt{k4\ =\ -i\ H\ (w\ +\ dt\ k3)}, new
-\texttt{w\ =\ w\ +\ dt\ (k1\ +\ 2\ k2\ +\ 2\ k3\ +\ k4)/6}, with
-\texttt{dt} \(=\ell^{\rm t}_{\rm LL}\)).
+of a set of modes. The first version of the notebook also rewrote the
+step of the Runge-Kutta method of the first version of the original
+library (\texttt{t2rk4Step}); the function was removed (error E20), and
+section 11.5 describes the time integration.
 
 \hypertarget{the-symbolic-algebra-sym.rs}{%
 \subsection{11.4 The symbolic algebra
@@ -1839,6 +2427,311 @@ numerically. The Wolfram Language is itself a symbolic algebra with
 exact Gaussian rationals; the module is therefore not rewritten, and
 check GS-12 builds and evaluates the same formulas with symbols of the
 Wolfram Language.
+
+\hypertarget{the-time-integration-cvode.rs-ida-of-sundials-through-ndsolve}{%
+\subsection{11.5 The time integration (cvode.rs): IDA of SUNDIALS
+through
+NDSolve}\label{the-time-integration-cvode.rs-ida-of-sundials-through-ndsolve}}
+
+The terms of this section are defined in section 2.7, its symbols in
+section 2.5.
+
+\textbf{The equations and the integrator.} The lattice equations of a
+Nambu mode are
+
+\[i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL},\]
+
+with the mode written as one complex vector \(w^{\rm lat}_{\rm LL}\) of
+\(n^{\rm cpx}_{\rm LL}\) components. The original programs integrate
+them in time with CVODE (SUNDIALS 7.8.0 rewritten in Rust, called
+through the module \texttt{cvode.rs} of \texttt{t2core}), with the
+Adams-Moulton formulas of the orders 1 to 12. A notebook that must be
+complete in itself cannot call the Rust program. The Wolfram Language
+contains another integrator of the same suite, IDA, which
+\texttt{NDSolve} uses with the option
+\texttt{Method\ -\textgreater{}\ "IDA"}; an ordinary differential
+equation is the special case of a differential-algebraic equation
+without algebraic equations. Part II uses IDA for every time integration
+(decision of section 15). The first version of the notebook used the
+Runge-Kutta method of the fourth order with a fixed step, written by
+hand (error E20).
+
+\textbf{How IDA integrates.} These facts are taken from the
+documentation of SUNDIALS and of the Wolfram Language (section 17);
+those that can be seen from outside were checked (below).
+
+\begin{itemize}
+\tightlist
+\item
+  IDA advances the solution in internal steps with the backward
+  differentiation formulas of the orders 1 to 5 and solves the equations
+  of every step by Newton's method. In Wolfram 15.0.1,
+  \texttt{Options{[}NDSolve\textasciigrave{}IDA{]}} is
+  \texttt{\{MaxDifferenceOrder\ -\textgreater{}\ 5,\ ImplicitSolver\ -\textgreater{}\ Newton\}}.
+\item
+  IDA chooses the length \(h^{\rm IDA}_{\rm LL}\) and the order of every
+  step itself, so that the weighted root-mean-square norm of its
+  estimate of the local error is at most 1; the tolerance of a real
+  unknown \(y\) is
+  \(r^{\rm tol}_{\rm LL}\lvert y\rvert+a^{\rm tol}_{\rm LL}\).
+\item
+  After a successful step IDA doubles the length of the step if its
+  estimate allows that, and otherwise keeps the length or shortens it
+  (by a factor between 0.5 and 0.9). The estimate of the error of a
+  formula of the order \(k\) changes with the power \(k+1\) of the
+  length, and the rule contains a factor of safety 2, so the length is
+  doubled when the estimate is below \(2^{-(k+2)}\) of the tolerance:
+  \(1/128\) at the order 5.
+\item
+  \texttt{NDSolve} takes the tolerances from its options:
+  \(r^{\rm tol}_{\rm LL}\) is 10 to the power minus the setting of
+  \texttt{PrecisionGoal}, and \(a^{\rm tol}_{\rm LL}\) is 10 to the
+  power minus the setting of \texttt{AccuracyGoal}.
+\item
+  IDA, as \texttt{NDSolve} offers it, computes with real machine numbers
+  only: for a complex equation \texttt{NDSolve} gives the message
+  \texttt{NDSolveValue::mconly} (``only machine real code is
+  available'') and no solution. (This is a measurement,
+  \texttt{logs/IDA\_lattice\_probe.txt}; the documentation does not
+  state it.)
+\end{itemize}
+
+\textbf{What the tolerances allow.} If the error of every real unknown
+equals its tolerance, the norm of the error of one step is the norm of
+the vector of the tolerances. The state has \(2n^{\rm cpx}_{\rm LL}\)
+real unknowns (the real and the imaginary parts of its components),
+whose moduli form a vector of the norm
+\(\lVert w^{\rm lat}_{\rm LL}\rVert\); by the triangle inequality the
+norm of the vector of the tolerances is at most
+
+\[B^{\rm loc}_{\rm LL}=r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}.\]
+
+(The original programs give CVODE the tolerance
+\(r^{\rm tol}_{\rm LL}\lvert w^{\rm cmp}_{\rm LL}\rvert+a^{\rm tol}_{\rm LL}\)
+for the real and for the imaginary part of a complex component; the same
+argument gives there
+\(\sqrt2\,(r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})\).)
+IDA tests its estimate of the local error, not the exact local error
+\(\delta^{\rm loc}_{\rm LL}\). The checks T2-IDA and GS-13 therefore
+measure \(\delta^{\rm loc}_{\rm LL}\) for every internal step and
+compare it with \(B^{\rm loc}_{\rm LL}\).
+
+\textbf{The deviation at the ends of the internal steps.} The exact
+evolution is unitary. The deviation at the end of a step is the sum of
+two vectors: the deviation at the beginning of the step, carried through
+the step by the exact evolution (which does not change its norm), and
+the local error of the step. Its norm is therefore at most the norm of
+the deviation at the beginning plus \(\delta^{\rm loc}_{\rm LL}\), and
+after \(N^{\rm st}_{\rm LL}\) steps the deviation is at most the sum of
+the local errors of the steps. If no local error exceeds
+\(B^{\rm loc}_{\rm LL}\), the deviation at the end of every step is at
+most
+
+\[B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL},\]
+
+the accumulated local error that the tolerances allow (in
+\(B^{\rm loc}_{\rm LL}\) the largest norm of a computed state is used).
+
+\textbf{The real form} (function \texttt{t2evolveIDA}). The state is
+written as the real vector of the length \(2n^{\rm cpx}_{\rm LL}\) made
+of the real parts \texttt{u} and the imaginary parts \texttt{v} of its
+components, and the Hermitian matrix as \texttt{hr} \(+\,i\) \texttt{hi}
+with the real symmetric matrix \texttt{hr} and the real antisymmetric
+matrix \texttt{hi}. Then
+\(-i\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}\) has the real
+part \texttt{hi.u\ +\ hr.v} and the imaginary part
+\texttt{-hr.u\ +\ hi.v}: the lattice equations are the real linear
+system with the matrix \texttt{m\ =\ \{\{hi,\ hr\},\ \{-hr,\ hi\}\}}
+acting on the real vector (\texttt{u}, \texttt{v}). The matrix
+\texttt{m} is antisymmetric, and the largest length that it gives to a
+vector of the length 1 is \(E^{\rm max}_{\rm LL}\). For the lattice of
+GS-10 the measurement gave: \texttt{m} plus its transpose is exactly
+zero, the largest length is 8.4349 (the spectral radius of GS-10), and
+36 864 of the 589 824 entries of \texttt{m} are different from zero
+(\texttt{logs/IDA\_lattice\_probe.txt}).
+
+\textbf{The states between the internal steps.} \texttt{NDSolve} returns
+the solution as an \texttt{InterpolatingFunction}. Its grid is the list
+of the times at the ends of the internal steps; with every grid time it
+stores the value of the solution and the value of the derivative that
+IDA computed there, and between two neighbouring grid times it gives
+every real unknown by cubic Hermite interpolation of these values and
+derivatives. (This was measured, not assumed: T2-IDA and GS-13 rebuild
+the polynomial from the stored values and derivatives and find the
+returned states equal to it within \(1.3\times10^{-16}\).) An output
+time lies in general inside an internal step, so a returned state is an
+interpolated one. Let \texttt{frac}, a number between 0 and 1, be the
+fraction of the step at which the output time lies. The polynomial is
+the sum of
+
+\begin{itemize}
+\tightlist
+\item
+  the stored value at the beginning of the step times
+  \texttt{2\ frac\^{}3\ -\ 3\ frac\^{}2\ +\ 1},
+\item
+  the stored value at the end times
+  \texttt{3\ frac\^{}2\ -\ 2\ frac\^{}3},
+\item
+  \(h^{\rm IDA}_{\rm LL}\) times the stored derivative at the beginning
+  times \texttt{frac\^{}3\ -\ 2\ frac\^{}2\ +\ frac},
+\item
+  \(h^{\rm IDA}_{\rm LL}\) times the stored derivative at the end times
+  \texttt{frac\^{}3\ -\ frac\^{}2}.
+\end{itemize}
+
+The two weights of the values lie between 0 and 1 and their sum is 1.
+The weights of the derivatives are \texttt{frac\ (1\ -\ frac)\^{}2} and
+\texttt{-frac\^{}2\ (1\ -\ frac)}; the sum of their moduli is
+\texttt{frac\ (1\ -\ frac)}, at most \(1/4\). The deviation of a
+returned state from the exact solution has three sources:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{The deviations of the stored values at the two ends.} Compare
+  the polynomial with the cubic Hermite polynomial of the exact
+  solution, whose derivative at an end is \texttt{m} applied to its
+  value there. The values differ by the deviations at the two ends, each
+  at most \(B^{\rm err}_{\rm LL}\); the derivatives differ, as far as
+  this source goes, by \texttt{m} applied to these deviations, of a norm
+  of at most \(E^{\rm max}_{\rm LL}B^{\rm err}_{\rm LL}\). With the
+  weights above this source gives at most
+  \(\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}\).
+\item
+  \textbf{The stored derivatives are not exactly \texttt{m} applied to
+  the stored values,} because Newton's method stops at a tolerance. The
+  norm of the difference at a grid time is \(r^{\rm der}_{\rm LL}\); it
+  enters with the weights of the derivatives and gives at most
+  \(\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}\). (Measured on the
+  lattice of GS-10: up to \(3.0\times10^{-7}\) for
+  \(r^{\rm tol}_{\rm LL}=10^{-8}\). The first draft of the code had
+  assumed this difference to be zero; error E21.)
+\item
+  \textbf{The interpolation of the exact solution itself.} For a
+  function with a continuous fourth derivative, the difference between
+  the function and its cubic Hermite polynomial at a time inside the
+  step is an integral of the fourth derivative over the step, with a
+  weight that is nowhere negative and whose integral is the product of
+  the squares of the distances of that time from the two ends, divided
+  by 24. The product of the two distances is at most a quarter of
+  \((h^{\rm IDA}_{\rm LL})^2\), so the weight integrates to at most
+  \((h^{\rm IDA}_{\rm LL})^4/384\). The fourth derivative of the exact
+  solution is the fourth power of \texttt{m} applied to it, a vector of
+  at most \((E^{\rm max}_{\rm LL})^4\) times the norm of the state. This
+  source gives at most
+  \((h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4/384\) times the norm of
+  the state. (Because the weight is nowhere negative, the bound holds
+  for a vector as it does for a single function.)
+\end{enumerate}
+
+The sum of the three is the bound of the deviation of a returned state,
+written for a state of the norm 1:
+
+\[B^{\rm out}_{\rm LL}=\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}+\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}+\frac{(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4}{384}.\]
+
+In GS-13 the largest values of \(h^{\rm IDA}_{\rm LL}\) and of
+\(r^{\rm der}_{\rm LL}\) are used, so that the bound holds at every
+output time.
+
+\textbf{The functions.}
+\texttt{t2evolveIDA{[}hm,\ w0,\ touts,\ rtol,\ atol,\ analysis{]}}
+integrates the equations with the Hermitian matrix \texttt{hm} from the
+state \texttt{w0} and returns an association: \texttt{"states"} (the
+complex states at the output times \texttt{touts}), \texttt{"steps"}
+(\(N^{\rm st}_{\rm LL}\)), \texttt{"evaluations"}
+(\(N^{\rm ev}_{\rm LL}\), counted with \texttt{EvaluationMonitor}),
+\texttt{"hmax"} (the largest \(h^{\rm IDA}_{\rm LL}\)), and for every
+output time after the first \texttt{"stepAt"} (the length of the
+internal step that contains it), \texttt{"residualAt"} (the larger
+\(r^{\rm der}_{\rm LL}\) of the two ends of that step) and
+\texttt{"hermiteAt"} (the norm of the difference between the returned
+state and the cubic Hermite polynomial rebuilt from the stored values
+and derivatives); \texttt{"analysis"} is the result of the optional
+function \texttt{analysis} applied to the \texttt{InterpolatingFunction}
+before it is discarded.
+\texttt{t2localErrorsIDA{[}eigenvalues,\ eigenvectors,\ rtol,\ atol{]}}
+is such a function: it measures \(\delta^{\rm loc}_{\rm LL}\) of every
+internal step. With the eigenvalues \(E^{\rm qp}_{{\rm LL},n}\) and the
+eigenvectors of the Hermitian matrix, the exact solution that starts
+from a computed state multiplies the coefficient of the eigenvector
+number \(n\) by the phase factor of the angle
+\(-E^{\rm qp}_{{\rm LL},n}h^{\rm IDA}_{\rm LL}\); the function returns
+the largest ratio of \(\delta^{\rm loc}_{\rm LL}\) to
+\(r^{\rm tol}_{\rm LL}\) times the norm of the state at the beginning of
+the step plus \(a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}\), the
+largest \(\delta^{\rm loc}_{\rm LL}\) and the largest norm of a state.
+
+\textbf{Check T2-IDA} has two parts. (a) What the two tolerances mean,
+on the equation whose solution is the decaying exponential function
+\(\exp(-x^0_{\rm LL})\) (the derivative of the unknown is minus the
+unknown; initial value 1), integrated from 0 to 25 with
+\(r^{\rm tol}_{\rm LL}=10^{-8}\) and \(a^{\rm tol}_{\rm LL}=10^{-10}\).
+The solution falls from 1 to about \(10^{-11}\). While it is much larger
+than \(a^{\rm tol}_{\rm LL}/r^{\rm tol}_{\rm LL}=10^{-2}\) the tolerance
+of a step is \(r^{\rm tol}_{\rm LL}\) times the solution; when it is
+much smaller the tolerance is \(a^{\rm tol}_{\rm LL}\). Required: the
+exact local error of every internal step is at most the tolerance of the
+step, and in each of the two regimes (the solution above 0.1; the
+solution below 0.001) the largest ratio of the local error to the
+tolerance exceeds \(1/128\). The second requirement shows that the
+tolerances are the stated ones and not smaller ones: IDA would lengthen
+its steps if its errors stayed below \(1/128\) of its tolerance. (b)
+\texttt{t2evolveIDA} and \texttt{t2localErrorsIDA} on a Hermitian
+\(2\times2\) matrix, integrated from 0 to 10 with
+\(r^{\rm tol}_{\rm LL}=10^{-10}\) and \(a^{\rm tol}_{\rm LL}=10^{-12}\)
+and compared at 21 output times with the solution by the matrix
+exponential (\texttt{MatrixExp}): every \(\delta^{\rm loc}_{\rm LL}\) is
+at most \(B^{\rm loc}_{\rm LL}\), the largest deviation at the output
+times is at most \(B^{\rm out}_{\rm LL}\), and the returned states are
+the cubic Hermite polynomials of the stored values and derivatives
+(tolerance \(10^{-12}\)). Result: (a) 458 internal steps; the largest
+ratio of a local error to its tolerance is 0.495 (0.495 in the relative
+regime, 0.315 in the absolute regime); (b) 910 internal steps, 1088
+evaluations, largest
+\(\delta^{\rm loc}_{\rm LL}/B^{\rm loc}_{\rm LL}=0.471\), largest
+deviation \(1.6\times10^{-9}\le B^{\rm out}_{\rm LL}=9.4\times10^{-8}\),
+Hermite polynomials within \(1.3\times10^{-16}\).
+
+\textbf{Experiments made before the code was written} (scripts in
+\texttt{tools}, outputs in \texttt{logs}):
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{tools/gs13\_ida\_local\_errors.wls} (output
+  \texttt{logs/IDA\_local\_errors\_decay.txt}): the measurement of part
+  (a) for six pairs of settings of \texttt{PrecisionGoal} and
+  \texttt{AccuracyGoal} (6 and 10, 8 and 10, 8 and 12, 10 and 8, 6 and
+  6, 12 and 14). In every case the accepted local errors follow
+  \(10^{-a}\) times the solution while the solution is large and
+  \(10^{-b}\) when it is small (\texttt{a} and \texttt{b} the two
+  settings); no accepted error exceeded its tolerance.
+\item
+  \texttt{tools/gs13\_ida\_tolerances.wls} (output
+  \texttt{logs/IDA\_tolerance\_scaling.txt}): with a negligible absolute
+  tolerance, multiplying the solution of a small linear system by 1024
+  leaves the times of all 1556 internal steps unchanged (largest
+  difference 0): the relative part of the tolerance is proportional to
+  the unknown. Two further comparisons of this script, which used the
+  settings 15 and \texttt{Infinity} to switch one of the two tolerances
+  off, were not conclusive: with these settings IDA took many more
+  steps, and with \texttt{PrecisionGoal\ -\textgreater{}\ Infinity} the
+  integration stopped at the time 7.97 with the message
+  \texttt{NDSolveValue::ndtola}. Such settings are not used in the
+  notebook; the direct measurement of the first script replaced these
+  comparisons.
+\item
+  \texttt{tools/gs13\_ida\_lattice\_probe.wl}, run after the cells of
+  Part II up to GS-11 (output \texttt{logs/IDA\_lattice\_probe.txt}):
+  the integration on the lattice of GS-10 before the check was written.
+  It showed the numbers of GS-13, that the stored derivatives differ
+  from \texttt{m} applied to the stored values, that
+  \texttt{EvaluationMonitor} counts the evaluations (18 096 for
+  \(r^{\rm tol}_{\rm LL}=10^{-10}\)), and that a complex system is
+  refused.
+\end{itemize}
 
 \hypertarget{part-ii-item-1-the-field-equations-on-the-31-manifold-program-t2_fields}{%
 \section{12. Part II, item {[}1{]}: the field equations on the 3+1
@@ -2116,20 +3009,120 @@ operators. Tolerance \(10^{-12}\). Result: 0, \(3.6\times10^{-16}\),
 (a)-(c), (e), (d), (f), (g) (original 0, \(4.0\times10^{-16}\),
 \(3.4\times10^{-16}\), 0, \(5.0\times10^{-16}\)).
 
-\textbf{GS-13 (the time step).} One RK4 step multiplies the component of
-an eigenvector with the energy \(E^{\rm qp}_{{\rm LL},n}\) by
-\(1-iz-z^2/2+iz^3/6+z^4/24\),
-\(z=E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\) (the Taylor
-polynomial of degree 4 of \(e^{-iz}\)). Its squared modulus is
-\((1-z^2/2+z^4/24)^2+(z-z^3/6)^2=1-z^6/72+z^8/576\), so the modulus is
-at most 1 exactly for \(z^2\le8\), that is \(\lvert z\rvert\le2\sqrt2\),
-and \(1-\lvert\cdot\rvert=z^6/144+O(z^8)\) for small \(z\). The solvers
-use \(\ell^{\rm t}_{\rm LL}\le2.5/B^{\rm H}_{\rm LL}\). The printed
-check line keeps the wording of the original report, in which this
-abbreviation is called x. Result: modulus 0.508186 at
-\(\lvert z\rvert=2.5\) and 1.193063 at 2.9; \(1-{}\)modulus at \(z=0.1\)
-is \(6.93576\times10^{-9}\), within \(10^{-11}\) of \(0.1^6/144\)
-(original 0.508186; 1.193063; \(6.9\times10^{-9}\)).
+\textbf{GS-13 (the time integration).} The original program checks its
+time integration on the lattice of GS-10 (\(3\times2\times4\) sites with
+random links, potentials and pair fields; \(n^{\rm cpx}_{\rm LL}=384\)).
+From a random initial state of the norm 1, drawn from a generator of its
+own (seed 2026111713; the state of the main generator is kept and
+restored, so that the random numbers of the later checks are not
+shifted), it integrates the lattice equations with CVODE up to
+\(x^0_{\rm LL}=20\), with
+\(r^{\rm tol}_{\rm LL}=10^{-8},10^{-10},10^{-12}\) and
+\(a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100\), and compares the
+states at the 41 output times \(x^0_{\rm LL}=0,0.5,\dots,20\) with the
+exact solution
+
+\[w^{\rm ex}_{\rm LL}(x^0_{\rm LL})=\sum_n\exp\big(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL}\big)\,(\text{eigenvector }n)\,\big((\text{eigenvector }n)^\dagger w^{\rm lat}_{\rm LL}(0)\big)\]
+
+(the eigenvalues \(E^{\rm qp}_{{\rm LL},n}\) and the eigenvectors of
+\(\mathcal H^{\rm lat}_{\rm LL}\) from \texttt{t2eigh}). The notebook
+repeats the check with IDA in place of CVODE (functions of section
+11.5): the same lattice, the same initial state, the same tolerances,
+the same output times, the same exact solution. The check has four
+parts, for each of the three tolerances:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the exact local error \(\delta^{\rm loc}_{\rm LL}\) of every internal
+  step is at most
+  \(B^{\rm loc}_{\rm LL}=r^{\rm tol}_{\rm LL}\lVert w^{\rm lat}_{\rm LL}\rVert+a^{\rm tol}_{\rm LL}\sqrt{768}\),
+  so that the deviation at the end of every internal step is at most
+  \(B^{\rm err}_{\rm LL}=N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}\);
+\item
+  the states at the output times are the cubic Hermite polynomials of
+  the stored values and derivatives (tolerance \(10^{-12}\)), and their
+  largest relative deviation \(\delta^{\rm rel}_{\rm LL}\) from the
+  exact solution is at most \(B^{\rm out}_{\rm LL}\) (the exact state
+  has the norm 1);
+\item
+  the largest deviation decreases from \(r^{\rm tol}_{\rm LL}=10^{-8}\)
+  to \(10^{-10}\) to \(10^{-12}\);
+\item
+  the two requirements of the original check for
+  \(r^{\rm tol}_{\rm LL}=10^{-12}\): the largest deviation stays below
+  \(10^{-9}\), and the norm of the state, which the exact evolution
+  conserves, changes by less than \(10^{-10}\).
+\end{enumerate}
+
+Result (all four parts hold):
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\(r^{\rm tol}_{\rm LL}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(10^{-8}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(10^{-10}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(10^{-12}\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+largest \(\delta^{\rm loc}_{\rm LL}/B^{\rm loc}_{\rm LL}\) over all
+internal steps & 0.83 & 0.32 & 0.32 \\
+largest \(\delta^{\rm rel}_{\rm LL}\) at the output times &
+\(7.1\times10^{-6}\) & \(9.3\times10^{-8}\) & \(4.4\times10^{-11}\) \\
+\(B^{\rm out}_{\rm LL}\) & \(3.5\times10^{-5}\) & \(9.4\times10^{-7}\) &
+\(5.3\times10^{-8}\) \\
+\(B^{\rm err}_{\rm LL}\) & \(3.5\times10^{-5}\) & \(9.3\times10^{-7}\) &
+\(5.3\times10^{-8}\) \\
+largest change of the norm & \(4.1\times10^{-6}\) & \(5.4\times10^{-8}\)
+& \(9.7\times10^{-12}\) \\
+\(N^{\rm st}_{\rm LL}\) & 2705 & 7309 & 41 111 \\
+\(N^{\rm ev}_{\rm LL}\) & 11 182 & 18 096 & 54 585 \\
+largest \(h^{\rm IDA}_{\rm LL}\) & \(7.5\times10^{-3}\) &
+\(3.2\times10^{-3}\) & \(5.8\times10^{-4}\) \\
+largest \(r^{\rm der}_{\rm LL}\) & \(3.0\times10^{-7}\) &
+\(2.3\times10^{-9}\) & \(7.7\times10^{-10}\) \\
+Hermite polynomials within & \(1.1\times10^{-16}\) &
+\(1.1\times10^{-16}\) & \(1.1\times10^{-16}\) \\
+CVODE (original program): largest \(\delta^{\rm rel}_{\rm LL}\) &
+\(1.2\times10^{-6}\) & \(1.7\times10^{-7}\) & \(1.7\times10^{-10}\) \\
+CVODE: \(B^{\rm err}_{\rm LL}\) with its tolerances &
+\(2.6\times10^{-5}\) & \(6.2\times10^{-7}\) & \(6.4\times10^{-9}\) \\
+CVODE: largest change of the norm & \(5.2\times10^{-7}\) &
+\(9.8\times10^{-8}\) & \(5.9\times10^{-11}\) \\
+CVODE: \(N^{\rm st}_{\rm LL}\) & 1528 & 3661 & 3804 \\
+\end{longtable}
+
+with \(E^{\rm max}_{\rm LL}=8.4349\) and a computing time of 8.2 seconds
+for the three integrations and the measurement of all local errors. What
+the numbers say: both integrators keep the deviation below the
+accumulated local error that their tolerances allow; the deviations of
+IDA are larger than those of CVODE for \(r^{\rm tol}_{\rm LL}=10^{-8}\)
+and smaller for the two tighter tolerances; IDA needs more internal
+steps than CVODE (1.8, 2.0 and 10.8 times as many); its formulas have at
+most the order 5, those of CVODE the order up to 12. The lengths of the
+internal steps show the rule of IDA for the change of a step (section
+11.5): for \(r^{\rm tol}_{\rm LL}=10^{-10}\) the smallest and the
+largest step are \(1.5625\times10^{-6}=10^{-4}/2^6\) and
+\(3.2\times10^{-3}=10^{-4}\cdot2^5\), and for
+\(r^{\rm tol}_{\rm LL}=10^{-12}\) they are
+\(9.765625\times10^{-8}=10^{-4}/2^{10}\) and
+\(5.832\times10^{-4}=10^{-4}\cdot2^3\cdot0.9^3\)
+(\texttt{logs/IDA\_lattice\_probe.txt}), that is, halvings, doublings
+and reductions by the factor 0.9 of a first step of the length
+\(10^{-4}\). The check has no free tolerance of its own: its bounds
+follow from the tolerances of the integration.
 
 \textbf{GS-14 (the super-loop form of the field equations).} With random
 bi-quaternions: (a)
@@ -2211,18 +3204,32 @@ the numbers of its two figures into three files of
 \texttt{t2\_dispersion\_curves.csv} (802 rows: \(r^{\rm W}_{\rm LL}\),
 \(q^1_{\rm LL}\), \(\varepsilon_{\rm LL}\),
 \(\varepsilon^{\rm lat}_{\rm LL}\) on 401 momenta) and
-\texttt{t2\_rk4\_stability.csv} (641 rows:
-\(\lvert z\rvert=0,0.005,\dots,3.2\) and the modulus of the RK4 factor),
-printed with 10 decimals (12 for the RK4 factor). Every number of the
-three files is copied into the notebook (file
+\texttt{t2\_cvode\_accuracy.csv} (the 41 rows of its integrations of
+GS-13 by CVODE: the output time; \(\delta^{\rm rel}_{\rm LL}\) for the
+three tolerances; and, for each tolerance, the length and the order of
+the last internal step of CVODE before the output time). The first two
+files print their numbers with 10 decimals, the third with 7 significant
+digits (its times with 4 decimals). Every number of the three files is
+copied into the notebook (file
 \texttt{notebook\_source/t2\_fields\_figure\_data.wl}, written by
 \texttt{tools/make\_fig\_data\_cell.py} from the files, included in one
-input cell), and the check compares them, entry by entry, with the
-numbers computed in the notebook. Tolerances: half a unit of the last
-printed decimal, \(5.1\times10^{-11}\) and \(5.1\times10^{-13}\).
-Result: \(4.55\times10^{-11}\), \(5.00\times10^{-11}\),
-\(4.99\times10^{-13}\), as expected from the rounding of the files; so
-the rewritten programs compute the numbers of the original program.
+input cell). The check compares the numbers of Figure 1, entry by entry,
+with the numbers computed in the notebook; the tolerance is half a unit
+of the last printed decimal, \(5.1\times10^{-11}\). The integrations by
+CVODE cannot be repeated in the Wolfram Language; for them the check
+confirms that the file has the output times of GS-13 (tolerance
+\(5.1\times10^{-5}\)) and that its numbers show what the original check
+states: the deviations are below \(10^{-13}\) in the first row, stay
+below \(10^{-9}\) for \(r^{\rm tol}_{\rm LL}=10^{-12}\), and their
+largest values decrease with the tolerance. Result:
+\(4.55\times10^{-11}\) and \(5.00\times10^{-11}\) for the two files of
+Figure 1, as expected from the rounding of the files, so the rewritten
+programs compute the numbers of the original program; the times agree
+exactly; the largest deviations of CVODE in the file are
+\(1.2\times10^{-6}\), \(1.7\times10^{-7}\), \(1.7\times10^{-10}\), the
+numbers of the original report. (The first version of the original
+program wrote a third file with the modulus of the factor of a
+Runge-Kutta step; that file and its check went with error E20.)
 
 \hypertarget{the-figures-of-item-1}{%
 \subsection{12.3 The figures of item
@@ -2247,34 +3254,61 @@ for \(\lvert q^1_{\rm LL}\ell^{\rm x}_{\rm LL}\rvert\le\pi/2\): it is of
 second order in \(q^1_{\rm LL}\ell^{\rm x}_{\rm LL}\), negative without
 the Wilson term and positive (at most 0.07) with it.
 
-\textbf{Figure 2} (data: \texttt{rkData} of GS-13). Panel (a): the
-modulus of the RK4 factor against \(\lvert z\rvert\), with the line of
-modulus 1 (grey, dashed), the stability limit
-\(\lvert z\rvert=2\sqrt2=2.83\) (red, dotted) and the largest value used
-by the solvers, \(\lvert z\rvert=2.5\) (green, dash-dotted); the modulus
-has its minimum 0.5 near \(\lvert z\rvert=2.45\) and exceeds 1 beyond
-the stability limit. Panel (b): on logarithmic axes, \(1-{}\)modulus
-(blue) and \(z^6/144\) (orange, dashed) for \(0.02<\lvert z\rvert<1.5\);
-the two agree, which shows the small loss of norm per step.
+\textbf{Figure 2} (data: \texttt{dev13}, \texttt{steps13},
+\texttt{maxdev13} of GS-13 and the file of the integrations by CVODE).
+Panel (a): the relative deviation \(\delta^{\rm rel}_{\rm LL}\) from the
+exact solution against the time \(x^0_{\rm LL}\), on a logarithmic
+vertical axis from \(10^{-13}\) to \(10^{-3}\), for the three
+tolerances: IDA in the notebook (blue, full lines) and CVODE in the
+original program (orange, dashed lines). The output time 0, where the
+deviations are rounding errors of about \(10^{-15}\), is left out. Every
+deviation grows roughly in proportion to the time, as the accumulation
+of local errors by a unitary evolution lets one expect. The two curves
+of one tolerance are joined, by two thin grey lines from their ends, to
+the label of the tolerance, which stands to the right of the curves.
+Panel (b): accuracy against work, on two logarithmic axes: the largest
+\(\delta^{\rm rel}_{\rm LL}\) against the number \(N^{\rm st}_{\rm LL}\)
+of internal steps, three points for each integrator (IDA: blue, full
+line, filled circles; CVODE: orange, dashed line, open squares), each
+labelled with its tolerance. For the same tolerance CVODE needs fewer
+steps; for \(r^{\rm tol}_{\rm LL}=10^{-12}\) IDA reaches a four times
+smaller deviation with eleven times as many steps. The picture below is
+the figure as the evaluated notebook shows it.
+
+\includegraphics[width=0.78\textwidth,height=\textheight]{figures/notebook_figure2_gs13.png}
+
+\textbf{Figure 2 of the notebook (check GS-13), as its evaluated form
+shows it.} The time integration of the lattice equations by IDA in the
+notebook and by CVODE in the original program. (a) The relative
+deviation \(\delta^{\rm rel}_{\rm LL}\) from the exact solution against
+the time \(x^0_{\rm LL}\), for the relative tolerances
+\(r^{\rm tol}_{\rm LL}=10^{-8}\), \(10^{-10}\) and \(10^{-12}\). (b) The
+largest relative deviation against the number \(N^{\rm st}_{\rm LL}\) of
+internal steps.
 
 \textbf{How the figures are drawn.} The figures are made with
-\texttt{ListLinePlot}, \texttt{ListPlot}, \texttt{ListLogLogPlot} and
-\texttt{Show} from the computed lists, so every point of a figure is a
-number of the notebook (and, by T2-DATA-1, of the original data files).
-The colors are those of the project's figures: blue \texttt{\#2a78d6}
-and orange \texttt{\#eb6834} for the two series, grey \texttt{\#8a8984}
-for the continuum and the line of modulus 1, a muted grey
-\texttt{\#5f5e5a} for the text of labels. The two series colors were
-checked for readers with color-vision deficiencies: their color
-difference in the perceptual color space OKLab (times 100) is 33.6 for
-normal vision and at least 24.7 under simulated protanopia, deuteranopia
-and tritanopia (8 is the usual threshold of distinctness), and both have
-a contrast of at least 3:1 against the white page; in addition, every
-series is named in a legend or in a direct label, so that no information
-depends on color alone. Labels are placed in empty regions of the plots
-(checked on the exported page, error E16), the panel with a single curve
-has no legend, and all labels use the registered symbols, printed with
-upright letters as in the cells of the notebook (error E18).
+\texttt{ListLinePlot}, \texttt{ListPlot}, \texttt{ListLogPlot},
+\texttt{ListLogLogPlot} and \texttt{Show} from the computed lists, so
+every point of a figure is a number of the notebook (and, by T2-DATA-1,
+of the original data files; the curves of CVODE in Figure 2 are the
+numbers of the data file). The colors are those of the project's
+figures: blue \texttt{\#2a78d6} and orange \texttt{\#eb6834} for the two
+series, grey \texttt{\#8a8984} for the continuum energy, a muted grey
+\texttt{\#5f5e5a} for the text of labels and for the thin lines that
+join curves to their labels. A color belongs to one object in all panels
+of a figure: in Figure 2 blue is IDA and orange is CVODE, and the two
+also differ by the kind of line (full, dashed) and of marker (filled
+circle, open square). The two series colors were checked for readers
+with color-vision deficiencies: their color difference in the perceptual
+color space OKLab (times 100) is 33.6 for normal vision and at least
+24.7 under simulated protanopia, deuteranopia and tritanopia (8 is the
+usual threshold of distinctness), and both have a contrast of at least
+3:1 against the white page; in addition, every series is named in a
+legend or in a direct label, so that no information depends on color
+alone. Labels are placed in empty regions of the plots (checked on the
+exported page, errors E16 and E25), and all labels use the registered
+symbols, printed with upright letters as in the cells of the notebook
+(error E18).
 
 \hypertarget{how-the-notebook-was-built-and-evaluated}{%
 \section{13. How the notebook was built and
@@ -2287,10 +3321,16 @@ introduced by a marker line such as \texttt{(*\ ::Section::\ *)},
 \texttt{(*\ ::Text::\ *)} or \texttt{(*\ ::Input::\ *)}. Inside an input
 cell a symbol is written as \texttt{LL{[}"tex"{]}} (for example
 \texttt{LL{[}"G\_\{\textbackslash{}\textbackslash{}rm\ LL\}"{]}}), and a
-line \texttt{(*\ @@INCLUDE\ file@@\ *)} inserts a file: the package
-\texttt{sl31\_core.wl}, the registry \texttt{registry\_data.wl}, and the
-list \texttt{all\_symbols.wl} of all 422 symbols for test S-14 (written
-by \texttt{tools/gen\_all\_symbols.wls}).
+line \texttt{(*\ @@INCLUDE\ file@@\ *)} inserts a file: the packages
+\texttt{sl31\_core.wl} (the reader of symbols and the symbolization) and
+\texttt{sl31\_formula.wl} (the reader of formulas), the registry
+\texttt{registry\_data.wl}, and the list \texttt{all\_symbols.wl} of all
+440 symbols for test S-14 (written by
+\texttt{tools/gen\_all\_symbols.wls}). A text cell holds its text with
+formulas in TeX between dollar signs, code between backquotes and bold
+text between double asterisks; a cell
+\texttt{(*\ ::DisplayFormula::\ *)} holds the TeX of one formula that
+stands on lines of its own.
 
 \textbf{The source of Part II} is kept in separate files, one or two per
 chapter (\texttt{notebook\_source/part2\_A\_core.source.wl},
@@ -2311,10 +3351,35 @@ wolframscript) turns the source into the notebook
 every input cell is parsed into boxes by the front end itself (so
 comments, line breaks and indentation are kept), every
 \texttt{LL{[}"tex"{]}} is replaced by the two-dimensional box of the
-symbol, and text cells receive inline formulas (TeX between dollar
-signs, converted by the Wolfram TeX importer, with the alphabets of the
-letters kept, error E17), code font and bold. The notebook is written by
-the kernel, not through the front end (error E9).
+symbol, and every text cell receives its inline formulas, its code font
+and its bold text from the reader of formulas of the notebook itself
+(\texttt{SL31TextData}, section 6.2; until 18 November 2026 from the TeX
+importer, errors E17 and E22). The builder loads the two packages for
+this, counts the formulas, and turns every problem that the reader
+reports for a formula into a warning. The notebook is written by the
+kernel, not through the front end (error E9). The build of the final
+notebook reported 11 components of families, 194 cells, 385 formulas in
+text cells and 0 warnings in 3.6 seconds
+(\texttt{logs/build\_notebook.txt}).
+
+\textbf{Dry runs.} A build, the copy of the notebook, its evaluation in
+the front end (about two minutes) and the export of the pages form a
+long cycle, and an error of the code should be found before it. Before a
+build, the code is therefore evaluated once by wolframscript, without
+the notebook: \texttt{tools/make\_dryrun.py} writes the code of the
+input cells of Part II into one file (all but the first cell, which
+holds the check T2-SYM and needs Part I and the front end), with
+\texttt{SL31Check} replaced by a function that prints one line and with
+every reference \texttt{LL{[}"tex"{]}} replaced by its TeX (in Part II
+the symbols are only labels); \texttt{tools/make\_dryrun\_part1.py}
+writes the cells of Part I that concern the reader of formulas (the
+reader itself, the registry, the examples and test S-15; the package
+\texttt{sl31\_core.wl} is loaded before them). The dry runs of the final
+sources gave 20 of 20 checks of Part II in 18 seconds
+(\texttt{logs/dryrun\_part2.txt}) and the passed test S-15
+(\texttt{logs/dryrun\_part1.txt}). The dry runs are a help for the work
+only: the evaluation of the notebook in the front end stays the evidence
+for every result of this document.
 
 \textbf{The evaluation} is done by the front end of Wolfram.app, exactly
 as Evaluation \textgreater{} Evaluate Notebook does it (file
@@ -2339,13 +3404,15 @@ looks every 3 seconds for request files in a scratch folder.
 \textbf{To reproduce} without any of these tools: open
 \texttt{notebook\_source/3+1super-loop.unevaluated.nb} (or the evaluated
 \texttt{3+1super-loop.nb}) in Wolfram and choose Evaluation
-\textgreater{} Evaluate Notebook; the result must be the same 35 PASS
-lines and no message. To rebuild the unevaluated notebook from the
-source:
+\textgreater{} Evaluate Notebook; the result must be the same 37 PASS
+lines and no message. The commands below are run in the folder
+\texttt{3+1super-loop\_provenance}. To rebuild the unevaluated notebook
+from the source:
 
 \begin{verbatim}
 wolframscript -file tools/build_notebook.wls notebook_source/3+1super-loop.source.wl \
-    notebook_source/3+1super-loop.unevaluated.nb notebook_source/sl31_core.wl
+    notebook_source/3+1super-loop.unevaluated.nb notebook_source/sl31_core.wl \
+    notebook_source/sl31_formula.wl
 \end{verbatim}
 
 (the source includes its files relative to its own folder;
@@ -2360,19 +3427,71 @@ the same folder as the source). The data cell is remade from the data
 files of the original program with
 
 \begin{verbatim}
-python3 tools/make_fig_data_cell.py Revision_SuperLoop/test2/data \
-    3+1super-loop_provenance/notebook_source/t2_fields_figure_data.wl
+python3 tools/make_fig_data_cell.py ../Revision_SuperLoop/test2/data \
+    notebook_source/t2_fields_figure_data.wl
 \end{verbatim}
+
+The comparison of the reader of formulas with the TeX importer (section
+6.2) is repeated with
+
+\begin{verbatim}
+python3 tools/formula_inventory.py notebook_source notebook_source/formula_inventory.wl
+wolframscript -file tools/formula_compare.wls notebook_source/sl31_core.wl \
+    notebook_source/sl31_formula.wl notebook_source/formula_inventory.wl report.txt
+\end{verbatim}
+
+and the dry runs, in a scratch folder, with
+
+\begin{verbatim}
+mkdir -p /tmp/dryrun && cp notebook_source/sl31_core.wl /tmp/dryrun/
+python3 tools/make_dryrun.py /tmp/dryrun/dryrun_part2.wl notebook_source/part2_A_core.source.wl \
+    notebook_source/part2_B_item1.source.wl notebook_source/part2_C_item1b.source.wl
+python3 tools/make_dryrun_part1.py /tmp/dryrun/dryrun_part1.wl notebook_source
+wolframscript -file /tmp/dryrun/dryrun_part2.wl
+wolframscript -file /tmp/dryrun/dryrun_part1.wl
+\end{verbatim}
+
+(the file of the second dry run loads \texttt{sl31\_core.wl} from the
+folder in which it stands, hence the copy).
+
+\textbf{The pictures of the evidence.} The pictures in \texttt{logs}
+that show pages before and after a fix (errors E22 to E25 and E28), and
+the picture of Figure 2 in section 12.3, are made by
+\texttt{tools/make\_evidence\_pictures.py} from the exported pages. The
+script turns a page into a picture with the program pdftoppm and reads
+the positions of the words of the page with the program pdftotext (both
+belong to the Poppler tools); a piece of a page is named in the script
+by words of the page, and its edges are moved to the nearest empty row
+of the picture (or, in the table of the symbols, to the nearest
+horizontal rule), so that no line is cut. The pages before the fixes
+come from the exported file of the notebook as it was committed before
+(commit 213d205 of the repository, 181 pages); Figure 2 before its fix
+is kept as the picture \texttt{logs/E25\_figure2\_before\_fix.png},
+because the exported pages of that evaluation were replaced by the next
+one. The pictures are remade with
+
+\begin{verbatim}
+git show 213d205:3+1super-loop_provenance/export/3+1super-loop.pdf > old.pdf
+python3 tools/make_evidence_pictures.py --old-pdf old.pdf --new-pdf export/3+1super-loop.pdf \
+    --render-test logs/E22_formula_render_test.pdf --fig2-before logs/E25_figure2_before_fix.png \
+    --spacing-test logs/E28_letter_digit_spacing_test.pdf --out logs \
+    --figure2 figures/notebook_figure2_gs13.png
+\end{verbatim}
+
+(Python 3 with the packages Pillow and numpy, and the Poppler tools).
 
 \textbf{Copies to the author's computer.} The files are written in a
 workspace and copied into the scratch folder of the author's Mac before
 each evaluation. A copy can deliver an earlier version of a file whose
-name was used for a copy shortly before; this happened twice during this
-stage (a test script and the builder arrived in their previous
-versions). Every copied file is therefore compared with its MD5 digest
-on both sides before an evaluation; for the final evaluation of this
-stage the digests of all sources, of the package and of the builder
-agreed.
+name was used for a copy shortly before; this happened twice during the
+first stage of Part II (a test script and the builder arrived in their
+previous versions) and once more on 18 November 2026, during the
+experiments with IDA (error E27). Since then every file is copied from a
+staging file whose name begins with the first eight digits of the MD5
+digest of its content, so that a name is never used for two contents,
+and the digest of every copied file is compared on both sides before a
+build or an evaluation; for the final evaluation the digests of all
+sources, of the two packages and of the builder agreed.
 
 \hypertarget{errors-found-their-causes-and-their-fixes}{%
 \section{14. Errors found, their causes and their
@@ -2380,7 +3499,9 @@ fixes}\label{errors-found-their-causes-and-their-fixes}}
 
 Every error below was met while the notebook was prepared and evaluated;
 each is fixed in the final notebook. E1 to E14 belong to Part I, E15 to
-E19 to Part II.
+E19 to the first stage of Part II, and E20 to E29 to the change of 18
+November 2026 (the time integration by IDA, and the reader of formulas;
+E29 is an error of this document itself).
 
 \textbf{E1. The symbolized box was never recognized when the notebook
 was evaluated by a program.} Cause: the Notation package takes the
@@ -2411,8 +3532,9 @@ inserts the boxes of the symbols.
 \texttt{\textbackslash{}mathbb}, \texttt{\textbackslash{}mathsf},
 \texttt{\textbackslash{}mathfrak} and \texttt{\textbackslash{}mathbf}
 letters into plain letters, so different symbols would coincide. Fix:
-the notebook's own converter (section 6); the TeX importer is used only
-for formulas in text.
+the notebook's own converter (section 6.1); the TeX importer was then
+still used for the formulas in text (it is not used at all since error
+E22).
 
 \textbf{E5. Equal names for styled letters.} The Notation package builds
 names after removing \texttt{StyleBox} and \texttt{TagBox}, so
@@ -2503,8 +3625,8 @@ thing was recommended by the front-end developer J. Fultz on the
 MathGroup mailing list in January 2014); (c) a script on a closing
 parenthesis is attached to the whole group, the form that the front end
 makes of typed input. After the three changes the built notebook
-contains no regrouped line, and the test S-14 passes for all 422
-symbols.
+contains no regrouped line, and the test S-14 passes for all symbols
+(422 at that time, 440 now).
 
 \textbf{E10.
 \texttt{Clear::ssym:\ 42\ is\ not\ a\ symbol\ or\ a\ valid\ string\ pattern.}}
@@ -2529,7 +3651,7 @@ items with symbols and reported 430 against 425 as a failure).
 expression, and the Notation package defines only the
 \texttt{StandardForm} boxes. Fix:
 \texttt{MakeBoxes{[}s,\ TraditionalForm{]}\ =\ box} for every symbol.
-Evidence: S-5 (422 of 422).
+Evidence: S-5 (422 of 422 at that time, 440 of 440 now).
 
 \textbf{E13. Plain-text names ``Missing{[}NotAvailable{]}''.} The CSV
 import of Wolfram 15 gives \texttt{Missing{[}"NotAvailable"{]}} for an
@@ -2596,8 +3718,9 @@ table of section I.9. Evidence after the fix:
 \texttt{logs/E16\_figures\_and\_table\_after\_fix.png}.
 
 \textbf{E17. Formulas in text cells lost the alphabets of their
-letters.} The Wolfram TeX importer, which the builder uses for formulas
-in text cells (error E4), turns \texttt{\textbackslash{}mathbf\ b} into
+letters.} The Wolfram TeX importer, which the builder used for formulas
+in text cells at that time (error E4), turns
+\texttt{\textbackslash{}mathbf\ b} into
 \texttt{StyleBox{[}"b",\ FontSlant\ -\textgreater{}\ "Bold"{]}}, an
 invalid option value that the front end ignores, so that the letter is
 printed plain; it turns \texttt{\textbackslash{}mathsf\ N} and
@@ -2627,7 +3750,10 @@ and sans-serif upright letters, and the curly epsilon. In the built
 notebook the 588 formulas of the text cells then contain 270 bold
 letters, 116 sans-serif letters, 76 double-struck, script and Gothic
 characters, 12 curly and 8 lunate epsilons, no invalid bold option and
-no placeholder (\texttt{logs/E17\_tex\_importer.txt}).
+no placeholder (\texttt{logs/E17\_tex\_importer.txt}). (This fix kept
+the importer; error E22 showed that the importer also reads some
+formulas wrongly, and the reader of formulas of section 6.2 replaced
+it.)
 
 \textbf{E18. Components of families typed in input cells were not
 symbols.} In the table of the basic matrices (section II.1.3 of the
@@ -2672,13 +3798,261 @@ graphics they are the symbolized symbols themselves, printed with
 upright letters, as in the cells of the notebook (option
 \texttt{SingleLetterItalics\ -\textgreater{}\ False}; the reference page
 of the option states that it is typically \texttt{True} in cells of
-\texttt{TraditionalForm}); the one abbreviation that is not registered,
-\(z=E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\), is defined where it
-is used (section 2.6). The printed lines of the checks keep the
-plain-text wording of the original report, whose names (for example
-\texttt{dx}, \texttt{r\_W}, \texttt{Sspin}, \texttt{Kch}) are the
-plain-text names of the registry; only the abbreviation x of GS-13 is
-not a registered name, and section 12.2 states its meaning.
+\texttt{TraditionalForm}); the one abbreviation that was not registered,
+\(z\) for the product \(E^{\rm qp}_{{\rm LL},n}\ell^{\rm t}_{\rm LL}\)
+of an energy and the time step, was defined where it was used. The
+printed lines of the checks keep the plain-text wording of the original
+report, whose names (for example \texttt{dx}, \texttt{r\_W},
+\texttt{Sspin}, \texttt{Kch}) are the plain-text names of the registry;
+only the abbreviation x of GS-13 was not a registered name. (The check
+of the Runge-Kutta step, with the abbreviations \(z\) and x, went with
+error E20; the present GS-13 uses registered names only.)
+
+\textbf{E20. The time integration was made with a Runge-Kutta method of
+a fixed step, written by hand.} The first version of Part II followed
+the first version of the original programs, which advanced the lattice
+equations with the Runge-Kutta method of the fourth order, with a fixed
+time step chosen from the bound \(B^{\rm H}_{\rm LL}\) so that the
+method is stable (time step times \(B^{\rm H}_{\rm LL}\) at most 2.5).
+The library of the notebook contained the step of this method for the
+time integrations of the later items (function \texttt{t2rk4Step}; item
+{[}1{]} itself integrates nothing in time), its check GS-13 tested the
+modulus of the factor by which one such step multiplies an eigenvector
+of \(\mathcal H^{\rm lat}_{\rm LL}\), and its Figure 2 showed this
+modulus. Such a method has no control of its error: the step is fixed by
+an argument of stability, the error of the result is not estimated, and
+the norm of the state, which the exact evolution conserves, decays
+slowly. The author rejected the method on 18 November 2026 and required
+the integrators of the suite SUNDIALS instead (item 6 of section 1); the
+original programs had been changed to CVODE in the same way. Fix in the
+notebook: every time integration is made by IDA through \texttt{NDSolve}
+(section 11.5); \texttt{t2rk4Step} was removed; the check GS-13 was
+rewritten as the comparison of the integration with the exact solution
+that the original program now makes with CVODE (section 12.2); the new
+check T2-IDA tests the integrator and the meaning of its tolerances; the
+data cell and the check T2-DATA-1 use the file of the integrations by
+CVODE instead of the file of the Runge-Kutta factor; Figure 2 was
+redrawn; the registry received the entry 204 and restated entries 116,
+119, 201, 202 and 203 (section 7). Rule for all later stages: no
+integrator of a fixed step written by hand, anywhere. Evidence: the
+checks T2-IDA and GS-13 of the final evaluation.
+
+\textbf{E21. Errors of the first draft of the IDA version, found by
+review before the notebook was built.} The draft was read line by line
+against the original check and against measurements
+(\texttt{logs/IDA\_lattice\_probe.txt}) before it was put into the
+notebook. (a) It assumed that the derivative which \texttt{NDSolve}
+stores at a grid time equals the matrix \texttt{m} applied to the stored
+value. The measurement showed that it does not (Newton's method stops at
+a tolerance): the difference was up to \(2.3\times10^{-9}\) at the 41
+grid times that the experiment looked at, and it is up to
+\(3.0\times10^{-7}\) in the check GS-13, which looks at the two ends of
+every internal step that contains an output time. The bound
+\(B^{\rm out}_{\rm LL}\) received the term
+\(\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}\), and
+\texttt{t2evolveIDA} returns the differences (\texttt{"residualAt"}).
+(b) It used \(N^{\rm st}_{\rm LL}B^{\rm loc}_{\rm LL}\) as a bound of
+the deviation without knowing the local errors; IDA controls only its
+estimate of them. The function \texttt{t2localErrorsIDA} now measures
+the exact local error of every internal step, and the bound follows from
+the unitarity of the evolution. (c) It had left out one requirement of
+the original check, the change of the norm below \(10^{-10}\) for
+\(r^{\rm tol}_{\rm LL}=10^{-12}\); restored. (d) Its text said that IDA
+solves the linear equations of Newton's method with a dense direct
+solver; this had not been verified, and the text now states only what
+\texttt{Options{[}NDSolve\textasciigrave{}IDA{]}} shows
+(\texttt{logs/IDA\_tolerance\_scaling.txt}). (e) A local variable of the
+new function had the name of a variable of Part I (\texttt{xs}, the list
+of the coordinate components of test S-8); a local variable does not
+change the other one, but the rule of the notebook is one name for one
+object, so the variables are \texttt{tIDA} and \texttt{yIDA}. (f) The
+weights of the two stored derivatives were bounded by the sum of their
+two largest values, \(8/27\) of the step; the sum of their moduli is at
+most \(1/4\) of the step (section 11.5), which gives the sharper bound.
+(g) Its text said that IDA computes with real numbers only, without
+evidence. The experiment gave IDA a complex equation: \texttt{NDSolve}
+answers with the message \texttt{NDSolveValue::mconly} and returns no
+solution (\texttt{logs/IDA\_lattice\_probe.txt}); the text of the
+notebook quotes the message. (h) Two comparisons of the experiments on
+the meaning of the tolerances, which set one of the two goals to 15
+digits or to \texttt{Infinity} in order to switch one tolerance off,
+decided nothing (with \texttt{PrecisionGoal\ -\textgreater{}\ Infinity}
+the integration stops with the message \texttt{NDSolveValue::ndtola}
+where a component of the solution is essentially zero); the direct
+measurement of the local errors replaced them (section 11.5).
+
+\textbf{E22. The TeX importer showed 28 formulas wrongly.} Found on 18
+November 2026 on the exported page of a new text: the formula
+\(\big(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}\big)B^{\rm err}_{\rm LL}\)
+was shown as
+\(\big(\frac{1+1}{4h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL}}\big)B^{\rm err}_{\rm LL}\).
+Cause: the TeX importer of the Wolfram Language, which the builder used
+for the formulas of text cells and section I.8 of the notebook for the
+meanings of the registry, takes for a fraction whose arguments are
+written without braces everything up to the end of the group as the
+denominator and everything before the fraction as part of the numerator
+(section 6.2); TeX takes the single token that follows. The comparison
+of all 791 different formulas of the present notebook (section 6.2,
+\texttt{logs/E22\_formula\_compare\_report.txt}) found 27 formulas with
+this error and one more error, the command \texttt{\textbackslash{}hbar}
+shown as nothing. The same comparison for the notebook as it was
+committed before (741 different formulas;
+\texttt{logs/E22\_formula\_compare\_report\_committed\_notebook.txt})
+found 24 formulas that this notebook showed wrongly. Two stood in texts
+of Part II: in the link matrix (section 11.3) the argument of the cosine
+and of the sine was shown as
+\(1/(2\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\)
+instead of one half times
+\(\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\),
+and in the text of GS-3 the element of the Lorentz matrix was shown as
+the fraction with the numerator
+\([\mathsf L_{\rm LL}(\mathbf g)]_{pp'}=1\) and the denominator
+\(2\,{\rm Re}\,{\rm tr}(\dots)\) instead of
+\([\mathsf L_{\rm LL}(\mathbf g)]_{pp'}=\tfrac12{\rm Re}\,{\rm tr}(\dots)\).
+The other 22 stood in the meanings of the table of the symbols (section
+I.8 of the notebook), for example \(Q_{\rm LL}=-\tfrac12\) shown as the
+fraction with the numerator \(Q_{\rm LL}=-1\) and the denominator 2,
+\(d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle\)
+with \(G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle\) in the denominator,
+and the units ``in which \(\hbar\) and the speed of light are 1''
+without the \(\hbar\). The four other formulas of the 28 are new
+formulas of 18 November 2026 (three with the bound
+\(B^{\rm out}_{\rm LL}\) and its parts in the texts, one in the meaning
+of the registry entry 204); the first of them made the error visible.
+The numbers of the checks were not affected, because the code does not
+use the importer; what was wrong was what the reader was shown. No check
+had caught it, because the formulas of the texts were not tested at all.
+Fix: the notebook's own reader of formulas (section 6.2) replaces the
+importer in the builder and in section I.8; test S-15 and the warnings
+of the builder test it at every build and every evaluation; the
+comparison with the importer is kept as a tool. Evidence:
+\texttt{logs/E22\_formulas\_importer\_and\_own\_reader.png} (one text
+converted by both programs),
+\texttt{logs/E22\_notebook\_texts\_before\_and\_after\_fix.png} (the two
+texts of the notebook before and after).
+
+\textbf{E23. The table of the symbols (section I.8 of the notebook)
+showed letters in wrong alphabets and broke its lines badly.} Section
+I.8 converted the meanings with the TeX importer alone, without the
+protection of the alphabets that the builder had (error E17): bold,
+sans-serif, double-struck, script and Gothic letters were shown as plain
+letters, and \texttt{\textbackslash{}varepsilon} with the character of
+\texttt{\textbackslash{}epsilon}. The meanings of the committed notebook
+contain 826 formulas, 598 of them different; in the reading of section
+6.2 the importer alone gives 278 of the 598 a reading that differs from
+what their TeX says (351 of the 826 places): the 22 wrong formulas of
+error E22, and 256 formulas with a letter in a wrong alphabet or the
+wrong epsilon (counted from the report
+\texttt{logs/E22\_formula\_compare\_report\_committed\_notebook.txt}).
+In an output cell the front end sets a single letter in italics
+automatically, so the upright E of the gamma function \(\Gamma_{\rm E}\)
+was shown in italics. Code was shown with its backquotes. The meaning
+was a row of pieces of text and formulas, and the lines were broken at
+the boundaries of the pieces. Fix: a meaning is now one inline text cell
+made by \texttt{SL31TextBoxes} (section 6.2), with the formulas of the
+reader of formulas (every letter with an explicit style), code in the
+code typeface, and the lines broken by the front end. Evidence:
+\texttt{logs/E23\_table\_of\_symbols\_before\_and\_after\_fix.png}.
+
+\textbf{E24. The comma after a long formula stood at the end of the
+first line of the formula.} A formula inside a text is an inline cell.
+Where such a formula was too long for one line, it was shown on several
+lines, and the text that follows it, a comma, was shown at the right end
+of its first line. In the notebook as committed before this happened to
+the formula of the link matrix and to the formula of the particle row of
+\(\mathcal H^{\rm lat}_{\rm LL}\) (both of section 11.3; the picture
+shows them). Fix: a formula that needs more than one line is written in
+the source as a cell of the style \texttt{DisplayFormula}, with its
+comma inside the formula: the particle row, and the new formula of the
+bound \(B^{\rm out}_{\rm LL}\), which stood alone in a text cell. The
+formula of the link matrix now fits into one line, because the formulas
+are set in Times and no longer in the wider typeface of code. The
+builder converts a display formula with the reader of formulas and sets
+it in Times at 1.25 times the size of the style. In the style sheet of
+the notebook (\texttt{Default.nb}) the style \texttt{DisplayFormula} has
+14 points and the text has 15 points, so that a display formula has 17.5
+points and a formula inside a text, which is set at 1.1 times the size
+of its text, 16.5 points (\texttt{tools/style\_font\_sizes.wls}, output
+\texttt{logs/E24\_style\_font\_sizes.txt}); at the size of the style
+alone a display formula would be smaller than the formulas of the text
+around it. Evidence:
+\texttt{logs/E22\_notebook\_texts\_before\_and\_after\_fix.png}.
+
+\textbf{E25. Labels of Figure 2 were ambiguous, and one lay on a line.}
+Found on the exported page of the first evaluation with IDA: in panel
+(a) the three labels of the tolerances stood between the six curves, so
+that a reader could not tell to which pair of curves a label belonged;
+in panel (b) the label of CVODE for \(r^{\rm tol}_{\rm LL}=10^{-10}\)
+lay on the dashed line that arrives at its point. Fix: in panel (a) the
+time axis is drawn beyond the last time, and each pair of curves is
+joined by two thin grey lines to its label at the right; in panel (b)
+the label stands below and to the left of its point. Evidence:
+\texttt{logs/E25\_figure2\_before\_and\_after\_fix.png}.
+
+\textbf{E26. The letters of a group name were set apart like the factors
+of a product.} In a formula such as \(SL(2,\mathbb C)\) each letter was
+a box of its own, and the front end puts the space of a product between
+neighbouring boxes; TeX sets neighbouring letters without a space. Fix:
+the reader of formulas joins neighbouring letters of one alphabet into
+one string (section 6.2).
+
+\textbf{E27. A copy to the author's computer delivered an earlier
+version of a file once more.} It happened on 18 November 2026 during the
+experiments with IDA, although the cause was known since the first stage
+of Part II (section 13): the comparison of the digests on both sides
+finds such a copy, but it does not prevent it. Fix: the staging files of
+the copies are named by the digest of their content, so that a staged
+name is never used for two contents (section 13); the comparison of the
+digests is kept. No such copy was seen afterwards.
+
+\textbf{E28. The coordinates x5, x6, x7 were shown like products.} Found
+on 18 November 2026 on the picture of the table of the symbols that was
+made as evidence for error E23: the meaning of the number of space
+dimensions \(D\) names the coordinates \(x5,x6,x7\) of the
+eight-dimensional spacetime of the main project, and the notebook showed
+them as \(x\,5\), \(x\,6\), \(x\,7\), each with the space of a product
+between the letter and the number (the notebook as committed before
+showed them in the same way). Cause: the reader of formulas gave a row
+of two boxes, the letter and the number, and the front end puts the thin
+space of a product between two neighbouring items of a row (section
+2.1); TeX sets them without a space. A test of several ways of writing
+the pair (\texttt{tools/letter\_digit\_spacing\_test.wls}, pages
+\texttt{logs/E28\_letter\_digit\_spacing\_test.pdf}) showed that the
+option \texttt{AutoSpacing\ -\textgreater{}\ False} of a style box does
+not remove the space, and that the character
+\texttt{\textbackslash{}{[}InvisibleSpace{]}} between the two items
+does. Fix: the reader of formulas joins a number that directly follows a
+letter to this letter with \texttt{\textbackslash{}{[}InvisibleSpace{]}}
+(section 6.2); a number before a letter stays a factor. The rule applies
+to one of the 791 formulas of the notebook. Part (c) of test S-15 checks
+the two box structures, section I.3 of the notebook states the rule, and
+the readings of all formulas are unchanged (the comparison of section
+6.2 was repeated: the same 763 equal and 28 different readings).
+Evidence:
+\texttt{logs/E28\_letter\_and\_number\_before\_and\_after\_fix.png} (the
+test, and the row of the table before and after).
+
+\textbf{E29. Three rows of the table of the files were printed as one
+(an error of this document).} Found on 18 November 2026 on the printed
+page of section 16: the row of the file \texttt{sl31\_core.wl} also
+contained the texts of the two rows after it, set in the typeface of
+code, in the version of this document as committed before and again in
+the first print of the present version. Cause: the content of that row
+named the package with its context mark, written with a single
+backquote. In Markdown a single backquote opens a piece of code, which
+for the converter pandoc runs on to the next backquote, here across the
+ends of the rows. The same mistake in a text cell of the notebook had
+been error E14; it was repeated in this document. No check saw it: the
+check of the layout looks for lines that are too wide and for missing
+characters, and a merged row is neither. Fix: the two rows write the
+name of the package between double backquotes. The new script
+\texttt{tools/check\_md\_source.py} reports every line of this document
+with an odd number of single backquotes, and it compares the number of
+rows of every table of this document with the number of rows of the same
+table in the LaTeX file; the script that builds the \texttt{.tex} and
+\texttt{.pdf} versions runs both checks and stops if one of them reports
+something. The present version has 12 tables, each with the same rows in
+both files.
 
 \hypertarget{decisions}{%
 \section{15. Decisions}\label{decisions}}
@@ -2714,7 +4088,7 @@ not a registered name, and section 12.2 states its meaning.
   every test the symbols are free again.
 \item
   The registry is contained in the notebook as data (one input cell of
-  about 133 000 characters) and also shown as formatted tables, group by
+  about 140 000 characters) and also shown as formatted tables, group by
   group (section I.8).
 \item
   Part II rewrites the original programs in the order of their code and
@@ -2724,10 +4098,11 @@ not a registered name, and section 12.2 states its meaning.
   the values of the original report (section 10.2).
 \item
   The numbers of the three data files of the figures of item {[}1{]} are
-  copied into the notebook (about 60 000 characters in one input cell)
+  copied into the notebook (about 46 000 characters in one input cell)
   instead of being read from the files, so that the notebook is complete
-  and stand-alone; they are used only by the check T2-DATA-1. The cell
-  makes the printed notebook about 30 pages longer.
+  and stand-alone; they are used by the check T2-DATA-1 and, for the
+  curves of CVODE, by Figure 2. The cell fills 22 pages of the printed
+  notebook (pages 173 to 194).
 \item
   The symbolic algebra \texttt{sym.rs} of the original library is not
   rewritten, because the Wolfram Language is itself a symbolic algebra
@@ -2752,6 +4127,63 @@ not a registered name, and section 12.2 states its meaning.
   The components of families are collected by the builder from the
   source rather than listed by hand, so that a component typed in a
   later item of Part II is made automatically (section 10.4).
+\item
+  The notebook integrates in time with IDA of SUNDIALS, through
+  \texttt{NDSolve} with \texttt{Method\ -\textgreater{}\ "IDA"}. The
+  original programs use CVODE of the same suite, which a notebook that
+  is complete in itself cannot call; IDA is the integrator of this suite
+  that the Wolfram Language contains. The equations are given to it in
+  real form, because it accepts real equations only (section 11.5).
+\item
+  The checks of the time integration do not trust the error estimate of
+  the integrator: they measure the exact local error of every internal
+  step and derive their bounds from the tolerances of the integration;
+  they have no tolerance of their own that could be adjusted (sections
+  11.5 and 12.2).
+\item
+  The states at the output times are taken from the
+  \texttt{InterpolatingFunction} of \texttt{NDSolve}, as a user of the
+  notebook would take them; the check therefore includes the error of
+  the interpolation between the internal steps (the bound
+  \(B^{\rm out}_{\rm LL}\)), and it verifies that the interpolation is
+  the cubic Hermite polynomial that the bound assumes.
+\item
+  The file of the original program with the modulus of the factor of a
+  Runge-Kutta step, its part of the data cell, its check and its figure
+  were removed with the method itself (error E20); nothing of the
+  removed method is kept in the notebook.
+\item
+  Every formula that the notebook shows is converted by its own reader
+  of formulas (section 6.2). A formula is set in the typeface Times with
+  an explicit style for every letter, so that the alphabets of the
+  project (italic, upright, bold, sans-serif, double-struck, script,
+  Gothic) differ visibly in every kind of cell.
+\item
+  The meanings of the table of the symbols are inline text cells (error
+  E23), and a formula that stands alone is a display formula (error
+  E24).
+\item
+  Between the factors of a product the notebook keeps the thin space
+  that the front end of the Wolfram Language puts there, although TeX
+  sets a product without it: a notebook should show a product as the
+  Wolfram Language shows it. Inside a name there is no space: letters of
+  one alphabet form one string, and a number that directly follows a
+  letter is joined to it (errors E26 and E28).
+\item
+  The pictures that show a page before and after a fix are made by a
+  script from the exported pages, and the pieces of a page are named in
+  the script by words of the page (section 13), so that a reader can see
+  what was cut from where and can make the pictures again.
+\item
+  The comparison of the reader of formulas with the TeX importer is kept
+  as a tool (\texttt{tools/formula\_compare.wls}), although the importer
+  is no longer used: two programs that share no code and agree on 763
+  formulas are a test of the reader that a list of examples could not
+  give.
+\item
+  In Figure 2 the curves are labelled directly, each pair joined to its
+  label, instead of by a legend with six entries; the two integrators
+  keep their colors, kinds of line and markers in both panels.
 \end{itemize}
 
 \hypertarget{files}{%
@@ -2773,29 +4205,246 @@ content
 \bottomrule\noalign{}
 \endlastfoot
 \texttt{3+1super-loop.nb} & the notebook, evaluated (Part I; Part II:
-the library and item {[}1{]}) \\
+the library with the time integration by IDA, and item {[}1{]}) \\
 \texttt{3+1super-loop\_provenance/notebook\_source/3+1super-loop.source.wl}
 & the source of the notebook (cells marked in the Wolfram package
 format) \\
 \texttt{3+1super-loop\_provenance/notebook\_source/sl31\_core.wl} & the
-package
-SL31\texttt{(TeX\ reader,\ kinds,\ names,\ symbolization),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/registry\_data.wl\texttt{\textbar{}\ the\ registry\ as\ Wolfram\ Language\ data\ (199\ entries),\ included\ in\ the\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/meaning\_edits.wl\texttt{\textbar{}\ the\ 16\ restated\ meanings\ applied\ by\ registry\_to\_wl.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/all\_symbols.wl\texttt{\textbar{}\ the\ 422\ symbols\ as\ LL{[}tex{]}\ references,\ included\ in\ the\ cell\ of\ test\ S-14\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/3+1super-loop.unevaluated.nb\texttt{\textbar{}\ the\ notebook\ as\ built,\ before\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/export/3+1super-loop.pdf\texttt{\textbar{}\ the\ evaluated\ notebook\ printed\ to\ PDF\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/3+1super-loop.evaluation.log.txt\texttt{\textbar{}\ the\ log\ of\ the\ final\ evaluation:\ messages,\ printed\ lines,\ input\ labels,\ tests\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/symbolization\_one\_by\_one.txt\texttt{\textbar{}\ diagnostic:\ every\ item\ symbolized\ alone,\ with\ its\ result\ (no\ item\ failed\ or\ hung)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_before\_fix.txt\texttt{\textbar{}\ E7:\ the\ 9\ boxes\ changed\ by\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_leaf\_check\_front\_end\_parser.txt\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ all\ 213\ strings\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_after\_fix.txt\texttt{\textbar{}\ E7:\ 0\ boxes\ changed\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_kinds\_and\_shared\_boxes.txt\texttt{\textbar{}\ E9,\ E11:\ kinds\ and\ the\ TeX\ items\ with\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_operand\_check\_in\_kernel\_input.txt\texttt{\textbar{}\ E9:\ every\ box\ reaches\ the\ kernel\ unchanged\ in\ the\ cell\ \{b,\ 1\}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_reparse\_check.txt\texttt{\textbar{}\ E9:\ NotebookPut\ and\ NotebookGet\ change\ no\ box\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E09\_s14\_chunk\_experiment.log.txt\texttt{\textbar{}\ E9:\ the\ list\ of\ symbols\ evaluated\ in\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.unevaluated.nb\texttt{\textbar{}\ E7:\ the\ test\ notebook\ with\ SubscriptBox{[}"a",\ "LL,p"{]}\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluated.nb\texttt{\textbar{}\ E7:\ the\ same\ notebook\ evaluated\ in\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/experiments/gui\_test.evaluation.log.txt\texttt{\textbar{}\ E7:\ its\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_notebook.wls\texttt{\textbar{}\ the\ builder:\ source\ to\ notebook\ (includes,\ components\ of\ families,\ alphabets\ of\ text\ formulas)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/registry\_to\_wl.wls\texttt{\textbar{}\ the\ registry\ CSV\ file\ to\ registry\_data.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/gen\_all\_symbols.wls\texttt{\textbar{}\ writes\ all\_symbols.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/guirun.wl\texttt{\textbar{}\ evaluation\ of\ a\ notebook\ in\ the\ front\ end\ of\ Wolfram.app\ in\ a\ fresh\ kernel;\ saving,\ PDF\ export\ and\ log\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/start\_main.wl\texttt{\textbar{}\ starts\ the\ evaluation\ of\ the\ notebook\ with\ guirun.wl\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/status.wl\texttt{\textbar{}\ asks\ guirun.wl\ for\ the\ state\ of\ the\ evaluation\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/watcher.wl\texttt{\textbar{}\ the\ scheduled\ task\ in\ the\ Wolfram.app\ session\ that\ reads\ request\ files\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/handler.wl\texttt{\textbar{}\ the\ handler\ of\ the\ request\ files\ (scripts,\ and\ files\ evaluated\ in\ the\ session)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/run\_notebook.wls\texttt{\textbar{}\ the\ superseded\ evaluator\ run\ by\ wolframscript\ (E2,\ E6)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_build.wls\texttt{\textbar{}\ E7:\ notebook\ with\ one\ cell\ per\ symbol\ box\ and\ a\ \$PreRead\ recorder\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon\_compare.wls\texttt{\textbar{}\ E7:\ compares\ recorded\ and\ built\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/leaf\_check.wls\texttt{\textbar{}\ E7:\ the\ front\ end\textquotesingle{}s\ parser\ on\ every\ string\ of\ the\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_build.wls\texttt{\textbar{}\ E9,\ E11:\ cells\ \{b,\ 1\}\ with\ and\ without\ the\ SyntaxForm\ wrapper;\ shared\ boxes\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/canon2\_compare.wls\texttt{\textbar{}\ E9:\ compares\ the\ recorded\ cells\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/reparse\_check.wls\texttt{\textbar{}\ E9:\ writes\ and\ reads\ every\ cell\ \{x,\ b,\ y\}\ through\ the\ front\ end\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/s14\_build.wls\texttt{\textbar{}\ E9:\ the\ list\ of\ all\ symbols\ split\ into\ cells\ of\ ten\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/build\_provenance\_docs.sh\texttt{\textbar{}\ makes\ the\ .tex\ and\ .pdf\ versions\ of\ this\ document\ from\ the\ .md\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/doc\_header.tex\texttt{\textbar{}\ the\ LaTeX\ header\ used\ by\ build\_provenance\_docs.sh\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/part2\_A\_core.source.wl\texttt{\textbar{}\ the\ source\ of\ the\ introduction\ of\ Part\ II,\ of\ its\ first\ cell\ (the\ components\ of\ families)\ and\ of\ chapter\ II.1\ (the\ library\ t2core)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/part2\_B\_item1.source.wl\texttt{\textbar{}\ the\ source\ of\ item\ {[}1{]},\ checks\ GS-1\ to\ GS-11\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/part2\_C\_item1b.source.wl\texttt{\textbar{}\ the\ source\ of\ item\ {[}1{]},\ checks\ GS-12\ to\ GS-16,\ the\ figures,\ T2-DATA-1\ and\ the\ summary\ of\ the\ item\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/notebook\_source/t2\_fields\_figure\_data.wl\texttt{\textbar{}\ the\ numbers\ of\ the\ three\ data\ files\ of\ the\ figures\ of\ t2\_fields,\ included\ in\ the\ notebook\ (T2-DATA-1)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/make\_fig\_data\_cell.py\texttt{\textbar{}\ writes\ t2\_fields\_figure\_data.wl\ from\ the\ data\ files\ of\ the\ original\ program\ (Python\ 3)\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/splitmix64\_reference.py\texttt{\textbar{}\ the\ reference\ values\ of\ the\ check\ T2-RNG,\ computed\ in\ Python\ 3\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/e15\_dot\_precedence.wls\texttt{\textbar{}\ E15:\ the\ parsed\ form\ of\ the\ faulty\ expression\ and\ the\ behaviour\ of}Dot\texttt{with\ a\ number\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/tools/e17\_tex\_importer.wls\texttt{\textbar{}\ E17:\ what\ the\ TeX\ importer\ makes\ of\ styled\ letters,\ and\ the\ boxes\ of\ the\ text\ formulas\ of\ the\ built\ notebook\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/T2-RNG\_reference\_values.txt\texttt{\textbar{}\ the\ output\ of\ splitmix64\_reference.py\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E15\_dot\_precedence.txt\texttt{\textbar{}\ E15:\ the\ output\ of\ e15\_dot\_precedence.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E17\_tex\_importer.txt\texttt{\textbar{}\ E17:\ the\ output\ of\ e17\_tex\_importer.wls\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E16\_figures\_and\_table\_before\_fix.png\texttt{\textbar{}\ E16:\ the\ pages\ of\ the\ figures\ and\ of\ the\ summary\ table\ before\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E16\_figures\_and\_table\_after\_fix.png\texttt{\textbar{}\ E16:\ the\ same\ pages\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E17\_text\_formulas\_before\_and\_after\_fix.png\texttt{\textbar{}\ E17:\ a\ text\ of\ section\ II.1.3\ before\ and\ after\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E18\_components\_before\_fix.png\texttt{\textbar{}\ E18:\ the\ table\ of\ the\ basic\ matrices\ and\ the\ axis\ label\ of\ Figure\ 1\ before\ the\ fix\ \textbar{}\ \textbar{}}3+1super-loop\_provenance/logs/E18\_components\_after\_fix.png` \\
+package \texttt{SL31\textasciigrave{}} (the reader of symbols, kinds,
+names, symbolization), included in the notebook \\
+\texttt{3+1super-loop\_provenance/notebook\_source/sl31\_formula.wl} &
+the reader of formulas of the package \texttt{SL31\textasciigrave{}}
+(section 6.2), included in the notebook \\
+\texttt{3+1super-loop\_provenance/notebook\_source/formula\_inventory.wl}
+& the 791 different formulas that the notebook shows, written by
+formula\_inventory.py \\
+\texttt{3+1super-loop\_provenance/notebook\_source/registry\_data.wl} &
+the registry as Wolfram Language data (204 entries), included in the
+notebook \\
+\texttt{3+1super-loop\_provenance/notebook\_source/meaning\_edits.wl} &
+the 16 restated meanings applied by registry\_to\_wl.wls \\
+\texttt{3+1super-loop\_provenance/notebook\_source/all\_symbols.wl} &
+the 440 symbols as LL{[}tex{]} references, included in the cell of test
+S-14 \\
+\texttt{3+1super-loop\_provenance/notebook\_source/3+1super-loop.unevaluated.nb}
+& the notebook as built, before evaluation \\
+\texttt{3+1super-loop\_provenance/export/3+1super-loop.pdf} & the
+evaluated notebook printed to PDF by the front end \\
+\texttt{3+1super-loop\_provenance/logs/3+1super-loop.evaluation.log.txt}
+& the log of the final evaluation: messages, printed lines, input
+labels, tests \\
+\texttt{3+1super-loop\_provenance/logs/symbolization\_one\_by\_one.txt}
+& diagnostic: every item symbolized alone, with its result (no item
+failed or hung) \\
+\texttt{3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_before\_fix.txt}
+& E7: the 9 boxes changed by the front end \\
+\texttt{3+1super-loop\_provenance/logs/E07\_leaf\_check\_front\_end\_parser.txt}
+& E7: the front end's parser on all 213 strings \\
+\texttt{3+1super-loop\_provenance/logs/E07\_front\_end\_boxes\_after\_fix.txt}
+& E7: 0 boxes changed after the fix \\
+\texttt{3+1super-loop\_provenance/logs/E09\_kinds\_and\_shared\_boxes.txt}
+& E9, E11: kinds and the TeX items with shared boxes \\
+\texttt{3+1super-loop\_provenance/logs/E09\_operand\_check\_in\_kernel\_input.txt}
+& E9: every box reaches the kernel unchanged in the cell \{b, 1\} \\
+\texttt{3+1super-loop\_provenance/logs/E09\_reparse\_check.txt} & E9:
+NotebookPut and NotebookGet change no box \\
+\texttt{3+1super-loop\_provenance/logs/E09\_s14\_chunk\_experiment.log.txt}
+& E9: the list of symbols evaluated in cells of ten \\
+\texttt{3+1super-loop\_provenance/experiments/gui\_test.unevaluated.nb}
+& E7: the test notebook with SubscriptBox{[}``a'', ``LL,p''{]} \\
+\texttt{3+1super-loop\_provenance/experiments/gui\_test.evaluated.nb} &
+E7: the same notebook evaluated in the front end \\
+\texttt{3+1super-loop\_provenance/experiments/gui\_test.evaluation.log.txt}
+& E7: its log \\
+\texttt{3+1super-loop\_provenance/tools/build\_notebook.wls} & the
+builder: source to notebook (includes, components of families, text
+cells and display formulas by the reader of formulas) \\
+\texttt{3+1super-loop\_provenance/tools/registry\_to\_wl.wls} & the
+registry CSV file to registry\_data.wl \\
+\texttt{3+1super-loop\_provenance/tools/gen\_all\_symbols.wls} & writes
+all\_symbols.wl \\
+\texttt{3+1super-loop\_provenance/tools/guirun.wl} & evaluation of a
+notebook in the front end of Wolfram.app in a fresh kernel; saving, PDF
+export and log \\
+\texttt{3+1super-loop\_provenance/tools/start\_main.wl} & starts the
+evaluation of the notebook with guirun.wl \\
+\texttt{3+1super-loop\_provenance/tools/status.wl} & asks guirun.wl for
+the state of the evaluation \\
+\texttt{3+1super-loop\_provenance/tools/watcher.wl} & the scheduled task
+in the Wolfram.app session that reads request files \\
+\texttt{3+1super-loop\_provenance/tools/handler.wl} & the handler of the
+request files (scripts, and files evaluated in the session) \\
+\texttt{3+1super-loop\_provenance/tools/run\_notebook.wls} & the
+superseded evaluator run by wolframscript (E2, E6) \\
+\texttt{3+1super-loop\_provenance/tools/canon\_build.wls} & E7: notebook
+with one cell per symbol box and a \$PreRead recorder \\
+\texttt{3+1super-loop\_provenance/tools/canon\_compare.wls} & E7:
+compares recorded and built boxes \\
+\texttt{3+1super-loop\_provenance/tools/leaf\_check.wls} & E7: the front
+end's parser on every string of the boxes \\
+\texttt{3+1super-loop\_provenance/tools/canon2\_build.wls} & E9, E11:
+cells \{b, 1\} with and without the SyntaxForm wrapper; shared boxes \\
+\texttt{3+1super-loop\_provenance/tools/canon2\_compare.wls} & E9:
+compares the recorded cells \\
+\texttt{3+1super-loop\_provenance/tools/reparse\_check.wls} & E9: writes
+and reads every cell \{x, b, y\} through the front end \\
+\texttt{3+1super-loop\_provenance/tools/s14\_build.wls} & E9: the list
+of all symbols split into cells of ten \\
+\texttt{3+1super-loop\_provenance/tools/build\_provenance\_docs.sh} &
+makes the .tex and .pdf versions of this document from the .md \\
+\texttt{3+1super-loop\_provenance/tools/doc\_header.tex} & the LaTeX
+header used by build\_provenance\_docs.sh \\
+\texttt{3+1super-loop\_provenance/tools/list\_file\_digests.py} & checks
+that this table names every file of the item, and writes the two lists
+of digests of this document (Python 3) \\
+\texttt{3+1super-loop\_provenance/tools/check\_md\_source.py} & E29:
+reports lines of this document with an odd number of single backquotes,
+and tables whose rows differ between the .md and the .tex version; run
+by build\_provenance\_docs.sh (Python 3) \\
+\texttt{3+1super-loop\_provenance/notebook\_source/part2\_A\_core.source.wl}
+& the source of the introduction of Part II, of its first cell (the
+components of families) and of chapter II.1 (the library t2core, with
+the time integration by IDA and the check T2-IDA) \\
+\texttt{3+1super-loop\_provenance/notebook\_source/part2\_B\_item1.source.wl}
+& the source of item {[}1{]}, checks GS-1 to GS-11 \\
+\texttt{3+1super-loop\_provenance/notebook\_source/part2\_C\_item1b.source.wl}
+& the source of item {[}1{]}, checks GS-12 to GS-16, the figures,
+T2-DATA-1 and the summary of the item \\
+\texttt{3+1super-loop\_provenance/notebook\_source/t2\_fields\_figure\_data.wl}
+& the numbers of the three data files of t2\_fields (the two files of
+Figure 1 and the file of the integrations by CVODE), included in the
+notebook (T2-DATA-1) \\
+\texttt{3+1super-loop\_provenance/tools/make\_fig\_data\_cell.py} &
+writes t2\_fields\_figure\_data.wl from the data files of the original
+program (Python 3) \\
+\texttt{3+1super-loop\_provenance/tools/splitmix64\_reference.py} & the
+reference values of the check T2-RNG, computed in Python 3 \\
+\texttt{3+1super-loop\_provenance/tools/e15\_dot\_precedence.wls} & E15:
+the parsed form of the faulty expression and the behaviour of
+\texttt{Dot} with a number \\
+\texttt{3+1super-loop\_provenance/tools/e17\_tex\_importer.wls} & E17:
+what the TeX importer makes of styled letters, and the boxes of the text
+formulas of the notebook as it was built then \\
+\texttt{3+1super-loop\_provenance/tools/formula\_inventory.py} & section
+6.2: lists every formula that the notebook shows (Python 3) \\
+\texttt{3+1super-loop\_provenance/tools/formula\_compare.wls} & section
+6.2, E22: compares the reader of formulas with the TeX importer on every
+formula \\
+\texttt{3+1super-loop\_provenance/tools/formula\_render\_test.wls} &
+section 6.2, E22, E23: a page with one text converted by both programs
+and with rows of the table of the symbols \\
+\texttt{3+1super-loop\_provenance/tools/style\_font\_sizes.wls} & E24:
+prints the font sizes of the cell styles of the style sheet \\
+\texttt{3+1super-loop\_provenance/tools/letter\_digit\_spacing\_test.wls}
+& E28: a page with eight ways of writing a letter followed by a
+number \\
+\texttt{3+1super-loop\_provenance/tools/make\_evidence\_pictures.py} &
+section 13: makes the pictures of the errors E22 to E25 and E28 and the
+picture of Figure 2 from the exported pages (Python 3) \\
+\texttt{3+1super-loop\_provenance/tools/make\_dryrun.py} & section 13:
+writes the dry run of Part II (Python 3) \\
+\texttt{3+1super-loop\_provenance/tools/make\_dryrun\_part1.py} &
+section 13: writes the dry run of the cells of the reader of formulas
+(Python 3) \\
+\texttt{3+1super-loop\_provenance/tools/gs13\_ida\_local\_errors.wls} &
+section 11.5: the local errors that IDA accepts on the decaying
+exponential \\
+\texttt{3+1super-loop\_provenance/tools/gs13\_ida\_tolerances.wls} &
+section 11.5: the times of the internal steps of IDA when the solution
+or the tolerances are scaled \\
+\texttt{3+1super-loop\_provenance/tools/gs13\_ida\_lattice\_probe.wl} &
+section 11.5, E21: IDA on the lattice of GS-10 before the check was
+written (appended to the dry run of Part II up to GS-11) \\
+\texttt{3+1super-loop\_provenance/logs/T2-RNG\_reference\_values.txt} &
+the output of splitmix64\_reference.py \\
+\texttt{3+1super-loop\_provenance/logs/E15\_dot\_precedence.txt} & E15:
+the output of e15\_dot\_precedence.wls \\
+\texttt{3+1super-loop\_provenance/logs/E17\_tex\_importer.txt} & E17:
+the output of e17\_tex\_importer.wls \\
+\texttt{3+1super-loop\_provenance/logs/E16\_figures\_and\_table\_before\_fix.png}
+& E16: the pages of the figures and of the summary table before the
+fix \\
+\texttt{3+1super-loop\_provenance/logs/E16\_figures\_and\_table\_after\_fix.png}
+& E16: the same pages after the fix \\
+\texttt{3+1super-loop\_provenance/logs/E17\_text\_formulas\_before\_and\_after\_fix.png}
+& E17: a text of section II.1.3 before and after the fix \\
+\texttt{3+1super-loop\_provenance/logs/E18\_components\_before\_fix.png}
+& E18: the table of the basic matrices and the axis label of Figure 1
+before the fix \\
+\texttt{3+1super-loop\_provenance/logs/E18\_components\_after\_fix.png}
+& E18: the same after the fix \\
+\texttt{3+1super-loop\_provenance/logs/build\_notebook.txt} & the output
+of the builder for the final notebook \\
+\texttt{3+1super-loop\_provenance/logs/dryrun\_part1.txt} & the output
+of the dry run of the cells of the reader of formulas \\
+\texttt{3+1super-loop\_provenance/logs/dryrun\_part2.txt} & the output
+of the dry run of Part II \\
+\texttt{3+1super-loop\_provenance/logs/IDA\_local\_errors\_decay.txt} &
+the output of gs13\_ida\_local\_errors.wls \\
+\texttt{3+1super-loop\_provenance/logs/IDA\_tolerance\_scaling.txt} &
+the output of gs13\_ida\_tolerances.wls \\
+\texttt{3+1super-loop\_provenance/logs/IDA\_lattice\_probe.txt} & the
+output of the dry run with gs13\_ida\_lattice\_probe.wl \\
+\texttt{3+1super-loop\_provenance/logs/E22\_formula\_compare\_report.txt}
+& E22: the report of formula\_compare.wls: every formula read
+differently, with both readings and both box structures \\
+\texttt{3+1super-loop\_provenance/logs/E22\_formula\_inventory\_committed\_notebook.wl}
+& E22: the 741 different formulas of the notebook as committed before
+the reader of formulas (commit 213d205), written by
+formula\_inventory.py from the sources of that commit \\
+\texttt{3+1super-loop\_provenance/logs/E22\_formula\_compare\_committed\_notebook.txt}
+& E22: the output of formula\_compare.wls for this list \\
+\texttt{3+1super-loop\_provenance/logs/E22\_formula\_compare\_report\_committed\_notebook.txt}
+& E22, E23: its report: the 24 formulas that the committed notebook
+showed wrongly, and the formulas that the importer alone reads
+differently \\
+\texttt{3+1super-loop\_provenance/logs/E22\_formula\_render\_test.pdf} &
+E22, E23: the pages made by formula\_render\_test.wls \\
+\texttt{3+1super-loop\_provenance/logs/E22\_formulas\_importer\_and\_own\_reader.png}
+& E22: one text converted by the reader of formulas and by the TeX
+importer \\
+\texttt{3+1super-loop\_provenance/logs/E22\_notebook\_texts\_before\_and\_after\_fix.png}
+& E22, E24: the texts of the link matrix, of the particle row and of
+GS-3 before and after the fix \\
+\texttt{3+1super-loop\_provenance/logs/E23\_table\_of\_symbols\_before\_and\_after\_fix.png}
+& E23: rows of the table of the symbols before and after the fix \\
+\texttt{3+1super-loop\_provenance/logs/E24\_style\_font\_sizes.txt} &
+E24: the output of style\_font\_sizes.wls \\
+\texttt{3+1super-loop\_provenance/logs/E25\_figure2\_before\_fix.png} &
+E25: Figure 2 on the exported page of the first evaluation with IDA,
+before the fix (input of make\_evidence\_pictures.py) \\
+\texttt{3+1super-loop\_provenance/logs/E25\_figure2\_before\_and\_after\_fix.png}
+& E25: Figure 2 before and after the fix \\
+\texttt{3+1super-loop\_provenance/logs/E28\_letter\_digit\_spacing\_test.pdf}
+& E28: the page made by letter\_digit\_spacing\_test.wls \\
+\texttt{3+1super-loop\_provenance/logs/E28\_letter\_and\_number\_before\_and\_after\_fix.png}
+& E28: the test page, and the row of the table of the symbols with the
+coordinates x5, x6, x7 before and after the fix \\
+\texttt{3+1super-loop\_provenance/figures/notebook\_figure2\_gs13.png} &
+Figure 2 of the evaluated notebook, shown in section 12.3 of this
+document (written by make\_evidence\_pictures.py) \\
 \end{longtable}
 
-The SHA-256 digests of these files, as committed (output of
-\texttt{sha256sum}; the three versions of this document cannot list
-their own digests):
+The SHA-256 digests of these files, as committed (a SHA-256 digest is a
+number of 64 hexadecimal digits computed from the content of a file; the
+list has the format of the program \texttt{sha256sum} and is written by
+\texttt{tools/list\_file\_digests.py}, which first checks that the table
+above names every file of the notebook and of the folder
+\texttt{3+1super-loop\_provenance}, and no other; the three versions of
+this document cannot list their own digests):
 
 \begin{verbatim}
-1bf6e439ad07e37444696b5f661059398a5450f0410ae0cdc96925b5e1cdf3ae  3+1super-loop.nb
-ee5ad6db199bed6dcc39c84bb5cfe5755e55efdfc0b4bc2c4ab02e62b688edb5  3+1super-loop_provenance/notebook_source/3+1super-loop.source.wl
+c3f76e3b09809e6eb7e894e1e3287ffcddd09162a960097c5d7eacffcbf2697e  3+1super-loop.nb
+b3bd44b40804e407a3a98a9bd23407517c7682040660d31771409c21198bacff  3+1super-loop_provenance/notebook_source/3+1super-loop.source.wl
 36cf048620323e4ac04d5ebf285576e2e191404791ac666a780e1165791357ef  3+1super-loop_provenance/notebook_source/sl31_core.wl
-e3c8cbaa0005577b0d984daaea939c8ceffabc7479dde57e32e11714f7be48f1  3+1super-loop_provenance/notebook_source/registry_data.wl
-5b5f96ef59e2057b284b362e7e49e67423b3d122bf1e0db37abd3df81a550fde  3+1super-loop_provenance/notebook_source/meaning_edits.wl
-d35c3bf0c6d80a1c8d95b71e6602871755caed36e0551ec9639694fa81a83f87  3+1super-loop_provenance/notebook_source/all_symbols.wl
-f56b422c9514bf956cc3f4d72bf51206effa8373d3a78ebc048a89a189a0f026  3+1super-loop_provenance/notebook_source/3+1super-loop.unevaluated.nb
-8e0f6f1e85e7898904c121e2da3fe690e723c5a9b68573f64a0d973a4b1b800f  3+1super-loop_provenance/export/3+1super-loop.pdf
-38defe45b116d23adc9577fe2d869d0652569d0554bfbb1fd63a7ff4e3877677  3+1super-loop_provenance/logs/3+1super-loop.evaluation.log.txt
+6a74c3a5e05ed77db013f0b8360e3e05071a9cce149a242b3d9b59d57e51babb  3+1super-loop_provenance/notebook_source/sl31_formula.wl
+76a5c58ad90eba6b7e2d43238920abc5d259960a7e654fe262d629520925cd04  3+1super-loop_provenance/notebook_source/formula_inventory.wl
+4354761805aae40fd9cae8cae6acc60711a3339db786f850249cc11e67195b2d  3+1super-loop_provenance/notebook_source/registry_data.wl
+5edd0eefdf3374e678e0654be8e0be517f702391f6f9f2399f24364e15351487  3+1super-loop_provenance/notebook_source/meaning_edits.wl
+654124ba08b62ebf8739d8c397d65a1a6b9ae983b0651491dc05c5b88a8e16db  3+1super-loop_provenance/notebook_source/all_symbols.wl
+35d000181d18c4b8ad64270e788942e25647962c4801ff645298a5868d72448e  3+1super-loop_provenance/notebook_source/3+1super-loop.unevaluated.nb
+824f10785197145fc6117ab9eb5e949320f9bac814894ec07245e56dc6ea0e9a  3+1super-loop_provenance/export/3+1super-loop.pdf
+a47dcc7cdcc57caf959d9ea2dbdde1eca1d3d185dcaf2f4cb021187b81e0f8ec  3+1super-loop_provenance/logs/3+1super-loop.evaluation.log.txt
 664d1e799a0aa5114b03f9b10db89b7ec45f66897d40601b7970fa5db426dae6  3+1super-loop_provenance/logs/symbolization_one_by_one.txt
 fe4de274da007c4ae06a5ede22c05776f1279f1515225b904d693b1f02ea7ed8  3+1super-loop_provenance/logs/E07_front_end_boxes_before_fix.txt
 94a1d676722de723e6ec58c2c2b1489df566a457955d33b46b594802ca7554cc  3+1super-loop_provenance/logs/E07_leaf_check_front_end_parser.txt
@@ -2807,7 +4456,7 @@ c5b7e2c3f40e10c02df896742ac1e1eecc5d2589d68bf29bcc88ef2046a3bac9  3+1super-loop_
 7aee2310fa163ab02afe2881a46ba51f08590e3e4ced458c8986fdee17cdd955  3+1super-loop_provenance/experiments/gui_test.unevaluated.nb
 cb0bc845dd86a23fd7bbd1fd5b18d6d9a2a2caf4b26a0ab58d1c136f5ccd42bc  3+1super-loop_provenance/experiments/gui_test.evaluated.nb
 de33e81f087369495076880b88f0ad3e2eb83cdeacd9f346b04180e21fa8e66d  3+1super-loop_provenance/experiments/gui_test.evaluation.log.txt
-5f659852270513081501df3aa23d66699e702364cc27bd242006c3b37256f7dc  3+1super-loop_provenance/tools/build_notebook.wls
+5b4d618dc85eb909b58b48b9d846521677c4b54b81597a9b8883ce17a532b96d  3+1super-loop_provenance/tools/build_notebook.wls
 42767cd1ebc43492c95d19c5d67507a6a2450da9f0893f41f367f681a9ce5bd5  3+1super-loop_provenance/tools/registry_to_wl.wls
 46211d0b974221fb90e02b5459c3fc84577b35fb7ce732b565aa428ae1c5c604  3+1super-loop_provenance/tools/gen_all_symbols.wls
 6a7d810350cfcd4f69cc12b7d4bbc92ca1d57dcafd4a6ce6a1ecef4b37beef8d  3+1super-loop_provenance/tools/guirun.wl
@@ -2823,16 +4472,29 @@ a79915c5253a7cdd9b162eda7b9e466ec3b57a63d670f614f1890c983bdc28e7  3+1super-loop_
 05faf4a855ce53e514a34a2966ae43345df7e613a5e10fe459a99292437011ed  3+1super-loop_provenance/tools/canon2_compare.wls
 7803f4410097cbf0af6a7cd557bdc54cb0c75c9fe26411dc20eb51a3fa6640f3  3+1super-loop_provenance/tools/reparse_check.wls
 ddd7824acd0e8c1746ec4548d8912f9cf1d179438f18b69e47a90978687881a1  3+1super-loop_provenance/tools/s14_build.wls
-518fc0768f4da0aa5528e11f5207be50dbe453051b96dc03917352296cb0670b  3+1super-loop_provenance/tools/build_provenance_docs.sh
+9cb66e9653dfac1998fa8bcffa68834c6faea6beefb2db9f9bf188244cc21c42  3+1super-loop_provenance/tools/build_provenance_docs.sh
 00d3e3c225b60acac822b408deed88744968de7f8ef78467f6799ea1b68a3d30  3+1super-loop_provenance/tools/doc_header.tex
-131f786bf2b89cf4ba2f219320dd75ed5202dd6481500a21545e0dc9844fae26  3+1super-loop_provenance/notebook_source/part2_A_core.source.wl
-3c323752b0e34c0775f6041104bc8479b196647e4ea0ae098bb545e93a04c833  3+1super-loop_provenance/notebook_source/part2_B_item1.source.wl
-97ea97f6302be0b554d3fb9c4ce285047f3f287c14f53b7fe5a6695c3cebdac0  3+1super-loop_provenance/notebook_source/part2_C_item1b.source.wl
-277b1e4817587d9a5f5aa80620d94910edc32b423c23a5888d79150f80923334  3+1super-loop_provenance/notebook_source/t2_fields_figure_data.wl
-7a46cd1d8efcd05bc2839e9abd62dce628753a7a75269f44a65b2976407a0a18  3+1super-loop_provenance/tools/make_fig_data_cell.py
+2ebb59a1cb4757d4dd27e22398fb2a924fc435b8c79dba2d2480a505d404289c  3+1super-loop_provenance/tools/list_file_digests.py
+e86a24a38a571b429ecd4905f4ddbe48944923e85e37e062d48d7c9420283567  3+1super-loop_provenance/tools/check_md_source.py
+34e1738617b8ee551ba84a6225384bb22921a3254f03b1cf082d85bd3bb4f389  3+1super-loop_provenance/notebook_source/part2_A_core.source.wl
+6543c2ec27ed15ec291865b39d2d52fa2190e1dbf524b83e05e00d0c9397b99d  3+1super-loop_provenance/notebook_source/part2_B_item1.source.wl
+cdeafaad84993d6607428fdb455fd9c8d217b1848ddaa11e25274ead904a4371  3+1super-loop_provenance/notebook_source/part2_C_item1b.source.wl
+5c7a4e20759c2ff5acb04f58eca538095b8e405996f0671ca3aa9f4c7d7ed302  3+1super-loop_provenance/notebook_source/t2_fields_figure_data.wl
+60f6902082f6f06cc7266643af9affec8e82593f2cc4bae7766628e9fb72ea37  3+1super-loop_provenance/tools/make_fig_data_cell.py
 06be9891ca81c88602943cabdca85f971193481d5f669207352b1a18bc53dca5  3+1super-loop_provenance/tools/splitmix64_reference.py
 f28f35adb6abc25e59f0e6f389e4566632631d238d20e044c27ba23247ff437b  3+1super-loop_provenance/tools/e15_dot_precedence.wls
 f34de46eaa0bbb6a7261868c62dc076e3927185bfcc0fdea91c0403770d172cb  3+1super-loop_provenance/tools/e17_tex_importer.wls
+5d856bb642e225d3cf7512aa6b5481bb61d718337d9cc6ba3c5d2fb4fc4c9fec  3+1super-loop_provenance/tools/formula_inventory.py
+6c587b365b12f09971da94bb1e541f5f48abbec1eb6cc3ce54886ed60e601d1d  3+1super-loop_provenance/tools/formula_compare.wls
+4175362fe6f52a58e69e97b8474e5b29152652025fb34196dfaac338b7aa4eb5  3+1super-loop_provenance/tools/formula_render_test.wls
+ff36dbdb12b8bd2bba60a5f70a59c7cbe6472dde66dcb2ce2e89e03479ba3a71  3+1super-loop_provenance/tools/style_font_sizes.wls
+a8cfea5d9b6c1af1982c91ef34b22d88da8561958380d7b8ba2976dd9f1fa981  3+1super-loop_provenance/tools/letter_digit_spacing_test.wls
+96ea5f9de2ab138aefac05e70249e63f588a5fb739ff93c0a06c769496c06322  3+1super-loop_provenance/tools/make_evidence_pictures.py
+c0cc29db0f86f39510914219fb954bd2b0b15104247af6d1b5a31609f746590d  3+1super-loop_provenance/tools/make_dryrun.py
+bcdef560a2e65808ce3f8b967dbf33e93792ec2947811b72c2d094083b28f8ca  3+1super-loop_provenance/tools/make_dryrun_part1.py
+2f56f3cf7850a1f9b058f5e13d2a3af9809b1857fd719d33bbfe85e489d67b51  3+1super-loop_provenance/tools/gs13_ida_local_errors.wls
+64f69bc4f59d6b86c6de7ee6a334f54474fec4b94b6d82f6548b03a74abdcb6c  3+1super-loop_provenance/tools/gs13_ida_tolerances.wls
+12a60c5c03fa5e0bcd6ed8d9a85a64d0d45e17ce9e633c050a9f92653b17613b  3+1super-loop_provenance/tools/gs13_ida_lattice_probe.wl
 ceafb181fbec77e8efb288b8f2c25ee73aba60c5121779d12da90840b1e2ad19  3+1super-loop_provenance/logs/T2-RNG_reference_values.txt
 c64f1a909b9d008365fd5707547547cceb6f0df78b314099c676ba7d1e711f16  3+1super-loop_provenance/logs/E15_dot_precedence.txt
 0b051cae79f44a26285ece8d21c4c46994342dd7a0f529d2358c35b621358647  3+1super-loop_provenance/logs/E17_tex_importer.txt
@@ -2841,6 +4503,26 @@ dfe1af9e06b087239047f4f4ed05fea6bb9d27b0e14f4b738296b64df81e9298  3+1super-loop_
 8d1981333fc22357b76b79d9b6d30ef86579a24425067578d8fde2b48c67399a  3+1super-loop_provenance/logs/E17_text_formulas_before_and_after_fix.png
 95f9e2e5adde8e72e471cd7a0bb0b81cf491c25a80e7b3857ca949c25e6eb82a  3+1super-loop_provenance/logs/E18_components_before_fix.png
 87c29f8d4a0fedc884dce45f905201f9ac1a95c1b2b2052c35d02896d442c6f7  3+1super-loop_provenance/logs/E18_components_after_fix.png
+b55155f8f8ca859dde1edefc11b68223b4cde4d0cc09d94c92157cacc8b9c393  3+1super-loop_provenance/logs/build_notebook.txt
+47f6c8fb5422550ebb5d372b85e7d8d60663b0bda4b3b31320c8263ad6487d48  3+1super-loop_provenance/logs/dryrun_part1.txt
+9a2614d92cc24297e156984df7dbd9a60dd67d13ca90e9829921b5ca6b157b6b  3+1super-loop_provenance/logs/dryrun_part2.txt
+3c9bd1e72aadc55399c5bcc47f0f5a5f97e50615a83b3e79c36e4ba8aa648439  3+1super-loop_provenance/logs/IDA_local_errors_decay.txt
+8c03a4f5885edfd63ef7a405ce43ca1ba7acb5cc7cc2b57e8a01e860b3c53436  3+1super-loop_provenance/logs/IDA_tolerance_scaling.txt
+394a738c8bf9b2b632145610337efe21f9986f2e7ba9ed587cb2d9cbcc72fc49  3+1super-loop_provenance/logs/IDA_lattice_probe.txt
+abac5b66af2e979c1f0d9ba86e463fde5c38dea5e314967d31c31dd3c2102e3f  3+1super-loop_provenance/logs/E22_formula_compare_report.txt
+cdd35ec9f5cd09a283fcc6aab57c6ba226a002131423cd4422ff00d8c5d0f8ff  3+1super-loop_provenance/logs/E22_formula_inventory_committed_notebook.wl
+a1af3d4a943185c792017966ffe31b7c48b8f138c55597d50cd14ff5894c2a08  3+1super-loop_provenance/logs/E22_formula_compare_committed_notebook.txt
+26ec702c6f3c2f177fe34be9fa260a15d6af1a8c67e91fe5b27147a70dc7d5cf  3+1super-loop_provenance/logs/E22_formula_compare_report_committed_notebook.txt
+397c3cadd58f21c65881bd3274d74573ddaa50e4b6c18a10a546eba4fa0f159a  3+1super-loop_provenance/logs/E22_formula_render_test.pdf
+3eda29c302d6fbb20f9c9c709d50f6bf5768875d6497dec614e0510687f5a832  3+1super-loop_provenance/logs/E22_formulas_importer_and_own_reader.png
+ff0efdd03a8fe51d860e00355e981840c599d2de6d4bd1db00b12648dad569d1  3+1super-loop_provenance/logs/E22_notebook_texts_before_and_after_fix.png
+ef8b12927b5a1bbb45ae992bb9758f369bb1ab334614b25ad2423daf46e3593e  3+1super-loop_provenance/logs/E23_table_of_symbols_before_and_after_fix.png
+475714cc43ca5fbbb5ec8c902ce1eb27db4af6647e5aac2e28e8727be9951abd  3+1super-loop_provenance/logs/E24_style_font_sizes.txt
+8cd0076d7887f5e7736f89f0967735c2b108e63d02e428e8821403d85949e3eb  3+1super-loop_provenance/logs/E25_figure2_before_fix.png
+cb1aa6fd66b12745dd81cddf799056e8f4af69606de5c16ccf532187bfcc1012  3+1super-loop_provenance/logs/E25_figure2_before_and_after_fix.png
+49f12c4894cc62bc118570641b27e3b0c4d30372d3a87902a3717b0f32d55004  3+1super-loop_provenance/logs/E28_letter_digit_spacing_test.pdf
+978af50142059b8bd9765ae33f65229b19a42e9a12bbebe7119f8f860588b060  3+1super-loop_provenance/logs/E28_letter_and_number_before_and_after_fix.png
+a37bd5be8fefbdd4efe4784d7ce13b42f04a57c0c0bd558f66a45363c0322878  3+1super-loop_provenance/figures/notebook_figure2_gs13.png
 \end{verbatim}
 
 \hypertarget{sources-consulted}{%
@@ -2898,12 +4580,57 @@ dfe1af9e06b087239047f4f4ed05fea6bb9d27b0e14f4b738296b64df81e9298  3+1super-loop_
   \texttt{True} for cells of \texttt{TraditionalForm} (E18, E19).
   \url{https://reference.wolfram.com/language/ref/SingleLetterItalics.html}
 \item
+  The documentation of SUNDIALS, chapter ``Mathematical Considerations''
+  of the integrator IDA: the backward differentiation formulas of
+  variable order, 1 to 5; the weighted root-mean-square norm, in which
+  the weight of a real unknown \(y\) is
+  \(1/(r^{\rm tol}_{\rm LL}\lvert y\rvert+a^{\rm tol}_{\rm LL})\), the
+  inverse of its tolerance (section 2.7); the test that the norm of the
+  estimated local error is at most 1; the solution of the equations of a
+  step by Newton's method; and the rule for the length of the next step
+  after a successful step: the length is doubled if the norm of the
+  error estimate of the order \(k\) is at most \(2^{-(k+2)}\), reduced
+  by a factor between 0.5 and 0.9 if this norm is at least \(1/2\), and
+  kept otherwise, so that a step is lengthened only when it can be
+  doubled (section 11.5, E20).
+  \url{https://sundials.readthedocs.io/en/latest/ida/Mathematics_link.html}
+\item
+  The Wolfram Language tutorial ``IDA Method for NDSolve'': IDA of
+  SUNDIALS as a method of \texttt{NDSolve} for differential-algebraic
+  equations, with backward differentiation formulas of the orders 1 to
+  5; the options \texttt{"ImplicitSolver"} (default \texttt{"Newton"})
+  and \texttt{"MaxDifferenceOrder"} (default 5) of the method; the
+  tolerances are taken from the settings of \texttt{PrecisionGoal} and
+  \texttt{AccuracyGoal}; the linear equations of Newton's method are
+  solved by a method that \texttt{NDSolve} chooses (section 11.5, E21).
+  The tutorial does not say that the method accepts real equations only;
+  that is a measurement of this work.
+  \url{https://reference.wolfram.com/language/tutorial/NDSolveIDAMethod.html}
+\item
+  The Wolfram Language tutorial ``Norms in NDSolve'': the relative
+  tolerance of \texttt{NDSolve} is 10 to the power minus the setting of
+  \texttt{PrecisionGoal} and the absolute tolerance 10 to the power
+  minus the setting of \texttt{AccuracyGoal}; the error of a step is
+  scaled with them, and the tolerances are satisfied when the norm of
+  the scaled error is below 1; most methods use the largest component as
+  the norm, the method IDA a norm of the kind of the Euclidean norm
+  (section 11.5; the meaning of the two tolerances was also measured,
+  check T2-IDA).
+  \url{https://reference.wolfram.com/language/tutorial/NDSolveVectorNorm.html}
+\item
+  D. E. Knuth, The TeXbook (Addison-Wesley, 1984), chapter 20: an
+  undelimited argument of a command is the next token, or the next group
+  in braces (section 6.2, E22).
+\item
   The original programs of Test 2 in the repository
   (\texttt{Revision\_SuperLoop/test2/rust}: the library \texttt{t2core}
   and the program \texttt{t2fields}), which Part II rewrites, and the
   record of their checks and the data files of their figures
   (\texttt{Revision\_SuperLoop/test2/data}). Their SHA-256 digests, as
-  used for this stage:
+  used for this stage (the module \texttt{cvode.rs} is the time
+  integration by CVODE of the original programs, and
+  \texttt{t2\_cvode\_accuracy.csv} the file of their check GS-13, which
+  the data cell of the notebook contains):
 \end{itemize}
 
 \begin{verbatim}
@@ -2911,14 +4638,15 @@ dfe1af9e06b087239047f4f4ed05fea6bb9d27b0e14f4b738296b64df81e9298  3+1super-loop_
 8c412f5703dc49c7ba51fb86ff9a4fd4bcc3ce4667a11216884a4e2e2b6a43a3  Revision_SuperLoop/test2/rust/t2core/src/c64.rs
 ace63b498d0e0fcbca02f1b659aa6249343f1b9ef9b16a113349bb9023915447  Revision_SuperLoop/test2/rust/t2core/src/cmat.rs
 aecd9e01a40e211133cc8ff2c4697ec62e0370b46e0d7ea2d31fb19613a9eeb4  Revision_SuperLoop/test2/rust/t2core/src/model.rs
-046298ecaff5d17bcfe0c0747c34b4447ebef19291330757ee4058d5424b1ae7  Revision_SuperLoop/test2/rust/t2core/src/lattice.rs
+dab79f76867469c867f54f7596f5afe3541ff13ac20055e213fc1485b6770783  Revision_SuperLoop/test2/rust/t2core/src/lattice.rs
 790b8758ce9bf919ffd93eb7f3afdaf66b4b4abb640a1fbf205146feeae6a8c7  Revision_SuperLoop/test2/rust/t2core/src/sym.rs
-26e7cc6bb7ac393f83bfaa222eeb0f2e0639f3ab878fbbd9e6e67d20c1376f68  Revision_SuperLoop/test2/rust/t2core/src/lib.rs
-d7ed53e0635b63e4f84d23a7280bf8d3581086a6a64dd3df7cb6632f49063939  Revision_SuperLoop/test2/rust/t2fields/src/main.rs
-033ddabf96d8a2e2e6fbf4d9bbd95ca32ea102b15c003848e9ee52ce8aabe0a7  Revision_SuperLoop/test2/data/t2_fields_checks.txt
+5ffa38243c640b9a0c56f599bd823d009f100d766827241d5bb916b2aa062489  Revision_SuperLoop/test2/rust/t2core/src/lib.rs
+4d1f93b147745574fd24b0713b0fb1619c14e7b3274980ba05ed1474343e08e5  Revision_SuperLoop/test2/rust/t2core/src/cvode.rs
+50b9903c673b420ba4ff1ef52d12fd4ba0b147628a01b9be687a26d182d0dbcf  Revision_SuperLoop/test2/rust/t2fields/src/main.rs
+d7cf9c2d7e2d29f7e6e2e85fb076d35c89860cf92524e598ae2193ff30ba30c6  Revision_SuperLoop/test2/data/t2_fields_checks.txt
 5e95b089a62bbb22de0736a71128c6aea361a085aecd83569447cca0462d89d7  Revision_SuperLoop/test2/data/t2_dispersion_lattice.csv
 2f2849f03bb13b8475272648b8ec80617437c28a51afed9b7c2c11fabac2db01  Revision_SuperLoop/test2/data/t2_dispersion_curves.csv
-64544a7caeba4e37eae7f0754093f0e822d222e23ef07ce8663cb4b0e73e402c  Revision_SuperLoop/test2/data/t2_rk4_stability.csv
+c2c2fcc27332f8317b63377f93cb6a9b49788b1ba1ab39e2d347821dacc8e2b6  Revision_SuperLoop/test2/data/t2_cvode_accuracy.csv
 \end{verbatim}
 
 \end{document}

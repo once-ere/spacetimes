@@ -1,0 +1,29 @@
+Output of the dry run of Part II up to GS-11 followed by tools/gs13_ida_lattice_probe.wl (IDA on the lattice of GS-10: deviations, steps, stored derivatives, evaluations, a complex system)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 16.6 s; messages on the error stream: none)
+
+PASS  T2-RNG  -- {0.7622173776706638, 0.2763122498264816, -0.05217129678912458, 0.4038650534416697}
+PASS  T2-LINALG  -- {5.329070518200751*^-15, 1.242907568273728*^-14}
+PASS  GS-1  -- largest deviation of the Clifford relations 0 (original: 0.0e0)
+PASS  GS-2  -- 27 commutation relations, 24 intertwining relations (original: 27 and 24)
+PASS  GS-3  -- largest deviations 5.1331770670859876*^-14 and 7.214775591174576*^-14 (original: 5.8e-14 and 6.6e-14)
+PASS  GS-4  -- largest deviation 5.589392386815262*^-15; largest |Psi^T Kch Psi| 2.9893669801409083*^-16 (original: 5.2e-15; 3.0e-16)
+PASS  GS-5  -- largest relative deviation 1.4548443678620035*^-10 (original: 1.4e-10)
+PASS  GS-6  -- largest relative deviation 2.138222001776378*^-9 (original: 2.1e-9)
+PASS  GS-7  -- largest deviation 1.5237998822478833*^-15 (original: 1.6e-15)
+PASS  GS-8  -- largest deviations 0. and 7.993605777301127*^-15 (original: 0.0e0 and 6.7e-15)
+PASS  GS-9  -- largest deviation 1.3388352569633028*^-15 (original: 1.7e-15)
+PASS  GS-10  -- Hermiticity 0., particle-hole 0., gauge covariance 1.7534941524555997*^-13, dispersion 2.842170943040401*^-14; spectral radius 8.4349 <= bound 17.5474 (original: 0.0e0, 0.0e0, 1.8e-13, 1.4e-14; 8.4349 <= 17.5474)
+PASS  GS-11  -- largest relative residual 6.487073559058029*^-14 (original: 6.0e-14)
+first components of the initial state: InputForm[{-0.01210624660474572 - 0.03611619341235006*I, -0.032508648076224264 + 0.004282049829408397*I}]
+eigensolver: residual 5.530781189432887*^-13, orthonormality 1.45062585185878*^-13, spectral radius InputForm[8.434913023762656]
+m + transpose(m): 0.; 2-norm of m: InputForm[8.434913023762668]; packed: True; nonzero entries of m: 36864 of 589824
+rtol InputForm[1.*^-8]: seconds 0.59, steps 2705, evaluations not counted, largest deviation at the outputs InputForm[7.125333219739698*^-6], at 20: InputForm[7.125333219739698*^-6], at 0: InputForm[7.194706663750278*^-15], largest norm change InputForm[4.0991317411531725*^-6], largest step InputForm[0.007489190703255488], smallest step InputForm[0.000014627325592295171], largest |y' - m y| on 41 grid points InputForm[1.2878509826636767*^-14], deviations on these grid points: largest InputForm[7.125273581296102*^-6], last InputForm[7.125273581296102*^-6] at InputForm[19.996598482852086], interpolation order {3}
+rtol InputForm[1.*^-10]: seconds 1.1500000000000001, steps 7309, evaluations not counted, largest deviation at the outputs InputForm[9.308767142501674*^-8], at 20: InputForm[9.308767142501674*^-8], at 0: InputForm[7.194706663750278*^-15], largest norm change InputForm[5.365863164907836*^-8], largest step InputForm[0.0032000000000000015], smallest step InputForm[1.5625*^-6], largest |y' - m y| on 41 grid points InputForm[2.28823161358465*^-9], deviations on these grid points: largest InputForm[9.308600530398985*^-8], last InputForm[9.308600530398985*^-8] at InputForm[19.99879315696496], interpolation order {3}
+rtol InputForm[1.*^-12]: seconds 4.88, steps 41111, evaluations not counted, largest deviation at the outputs InputForm[4.378788443188416*^-11], at 20: InputForm[4.378788443188416*^-11], at 0: InputForm[7.194706663750278*^-15], largest norm change InputForm[9.723999383481896*^-12], largest step InputForm[0.0005832000000000003], smallest step InputForm[9.765625*^-8], largest |y' - m y| on 41 grid points InputForm[7.828909840216466*^-10], deviations on these grid points: largest InputForm[4.37884168880651*^-11], last InputForm[4.37884168880651*^-11] at InputForm[19.99996058729621], interpolation order {3}
+rtol InputForm[1.*^-10] (with EvaluationMonitor): seconds 1.17, steps 7309, evaluations 18096, largest deviation at the outputs InputForm[9.308767142501674*^-8], at 20: InputForm[9.308767142501674*^-8], at 0: InputForm[7.194706663750278*^-15], largest norm change InputForm[5.365863164907836*^-8], largest step InputForm[0.0032000000000000015], smallest step InputForm[1.5625*^-6], largest |y' - m y| on 41 grid points InputForm[2.28823161358465*^-9], deviations on these grid points: largest InputForm[9.308600530398985*^-8], last InputForm[9.308600530398985*^-8] at InputForm[19.99879315696496], interpolation order {3}
+
+NDSolveValue::mconly: For the method NDSolve`IDA, only machine real code is available. Unable to continue with complex values or beyond floating-point exceptions.
+complex system: seconds 0.04, head Symbol
+probe 151 done
+dry run: 13 checks, 13 passed, 15.4 s; failed: {}
+

@@ -1,0 +1,1339 @@
+formula_compare.wls: 741 formulas
+own reader, formulas with a reported problem: 0
+different readings, own against importer+ (alphabets protected): 24
+different readings, own against the importer alone: 337
+fractions: 30 in the TeX, 30 own, 30 importer+
+roots: 3 in the TeX, 3 own
+
+==== A. problems reported by the own reader ====
+
+==== B. formulas read differently by the own reader and by importer+ ====
+[text] e^{-i\ell^{\rm x}_{\rm LL}g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}}\big(\cos(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\sigma^{\rm LL}_0-i\sin(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota/\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\big)
+   own      : e^{-iℓ_{LL}^{x}g_{LL}^{F}A_{LL,j}^{F}}(cos(frac{1}{2}ℓ_{LL}^{x}g_{LL}^{v}|over{A}{⇀}_{LL,j}^{v}|)σ_{0}^{LL}-isin(frac{1}{2}ℓ_{LL}^{x}g_{LL}^{v}|over{A}{⇀}_{LL,j}^{v}|)∑_{ι}A_{LL,j}^{ι}τ_{ι}^{LL}/|over{A}{⇀}_{LL,j}^{v}|)
+   importer+: e^{-iℓ_{LL}^{x}g_{LL}^{F}A_{LL,j}^{F}}(cos(frac{1}{2ℓ_{LL}^{x}g_{LL}^{v}|over{A}{⇀}_{LL,j}^{v}|})σ_{0}^{LL}-isin(frac{1}{2ℓ_{LL}^{x}g_{LL}^{v}|over{A}{⇀}_{LL,j}^{v}|})∑_{ι}A_{LL,j}^{ι}τ_{ι}^{LL}/|over{A}{⇀}_{LL,j}^{v}|)
+[text] [\mathsf L_{\rm LL}(\mathbf g)]_{pp'}=\tfrac12{\rm Re}\,{\rm tr}\big(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger\big)
+   own      : [<sf:L>_{LL}(<bf:g>)]_{pp^{′}}=frac{1}{2}Retr(σ_{p}^{LL}M_{LL}(<bf:g>)σ_{p^{′}}^{LL}M_{LL}(<bf:g>)^{†})
+   importer+: frac{[<sf:L>_{LL}(<bf:g>)]_{pp^{′}}=1}{2Retr(σ_{p}^{LL}M_{LL}(<bf:g>)σ_{p^{′}}^{LL}M_{LL}(<bf:g>)^{†})}
+[meaning] \pm\tfrac12
+   own      : ±frac{1}{2}
+   importer+: frac{±1}{2}
+[meaning] \tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)
+   own      : frac{1}{2}Retr(σ_{p}^{LL}M_{LL}(<bf:g>)σ_{p^{′}}^{LL}M_{LL}(<bf:g>)^{†})
+   importer+: frac{1}{2Retr(σ_{p}^{LL}M_{LL}(<bf:g>)σ_{p^{′}}^{LL}M_{LL}(<bf:g>)^{†})}
+[meaning] \sum_{\vec q_{\rm LL}}\Psi^\dagger_{\rm LL}(\mathsf h_{\rm LL}-\mu_{\rm LL})\Psi_{\rm LL}-\tfrac14G_{\rm LL}\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}
+   own      : ∑_{over{q}{⇀}_{LL}}Ψ_{LL}^{†}(<sf:h>_{LL}-μ_{LL})Ψ_{LL}-frac{1}{4}G_{LL}∑_{ι}(Π_{LL}^{ι})^{†}Π_{LL}^{ι}
+   importer+: frac{∑_{over{q}{⇀}_{LL}}Ψ_{LL}^{†}(<sf:h>_{LL}-μ_{LL})Ψ_{LL}-1}{4G_{LL}∑_{ι}(Π_{LL}^{ι})^{†}Π_{LL}^{ι}}
+[meaning] d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle
+   own      : d_{LL}^{ι}=-frac{1}{2}G_{LL}〈Π_{LL}^{ι}〉
+   importer+: frac{d_{LL}^{ι}=-1}{2G_{LL}〈Π_{LL}^{ι}〉}
+[meaning] \Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})
+   own      : Ω_{LL}=|over{d}{⇀}_{LL}|^{2}/G_{LL}-frac{1}{2}∫d^{3}q_{LL}(2π)^{-3}∑(positiveeigenvaluesof<sf:H>_{LL})
+   importer+: frac{Ω_{LL}=|over{d}{⇀}_{LL}|^{2}/G_{LL}-1}{2∫d^{3}q_{LL}(2π)^{-3}∑(positiveeigenvaluesof<sf:H>_{LL})}
+[meaning] \hbar
+   own      : ℏ
+   importer+: 
+[meaning] \mathsf s_{\rm LL}(J^j_{\rm LL})=\tfrac12\gamma^{j'}_{\rm LL}\gamma^{j''}_{\rm LL}
+   own      : <sf:s>_{LL}(J_{LL}^{j})=frac{1}{2}γ_{LL}^{j^{′}}γ_{LL}^{j^{′′}}
+   importer+: frac{<sf:s>_{LL}(J_{LL}^{j})=1}{2γ_{LL}^{j^{′}}γ_{LL}^{j^{′′}}}
+[meaning] \mathsf s_{\rm LL}(K^j_{\rm LL})=\tfrac12\gamma^0_{\rm LL}\gamma^j_{\rm LL}
+   own      : <sf:s>_{LL}(K_{LL}^{j})=frac{1}{2}γ_{LL}^{0}γ_{LL}^{j}
+   importer+: frac{<sf:s>_{LL}(K_{LL}^{j})=1}{2γ_{LL}^{0}γ_{LL}^{j}}
+[meaning] \mathsf A^\uparrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}+\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}
+   own      : <sf:A>_{LL,p}^{↑}=g_{LL}^{F}A_{LL,p}^{F}+frac{1}{2}g_{LL}^{v}A_{LL,p}^{3}
+   importer+: frac{<sf:A>_{LL,p}^{↑}=g_{LL}^{F}A_{LL,p}^{F}+1}{2g_{LL}^{v}A_{LL,p}^{3}}
+[meaning] Q_{\rm LL}=+\tfrac12
+   own      : Q_{LL}=+frac{1}{2}
+   importer+: frac{Q_{LL}=+1}{2}
+[meaning] \mathsf A^\downarrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}-\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}
+   own      : <sf:A>_{LL,p}^{↓}=g_{LL}^{F}A_{LL,p}^{F}-frac{1}{2}g_{LL}^{v}A_{LL,p}^{3}
+   importer+: frac{<sf:A>_{LL,p}^{↓}=g_{LL}^{F}A_{LL,p}^{F}-1}{2g_{LL}^{v}A_{LL,p}^{3}}
+[meaning] Q_{\rm LL}=-\tfrac12
+   own      : Q_{LL}=-frac{1}{2}
+   importer+: frac{Q_{LL}=-1}{2}
+[meaning] \cos^2\vartheta^{\rm B}_{\rm LL}=\tfrac12\big(1+(\pm\varepsilon_{\rm LL}-\mu_{\rm LL})/E^\mp_{\rm LL}\big)
+   own      : cos^{2}ϑ_{LL}^{B}=frac{1}{2}(1+(±ε_{LL}-μ_{LL})/E_{LL}^{∓})
+   importer+: frac{cos^{2}ϑ_{LL}^{B}=1}{2(1+(±ε_{LL}-μ_{LL})/E_{LL}^{∓})}
+[meaning] B^\uparrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}+\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}
+   own      : B_{LL}^{↑}=g_{LL}^{F}<sf:F>_{LL,12}^{F}+frac{1}{2}g_{LL}^{v}<sf:F>_{LL,12}^{3}
+   importer+: frac{B_{LL}^{↑}=g_{LL}^{F}<sf:F>_{LL,12}^{F}+1}{2g_{LL}^{v}<sf:F>_{LL,12}^{3}}
+[meaning] B^\downarrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}-\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}
+   own      : B_{LL}^{↓}=g_{LL}^{F}<sf:F>_{LL,12}^{F}-frac{1}{2}g_{LL}^{v}<sf:F>_{LL,12}^{3}
+   importer+: frac{B_{LL}^{↓}=g_{LL}^{F}<sf:F>_{LL,12}^{F}-1}{2g_{LL}^{v}<sf:F>_{LL,12}^{3}}
+[meaning] -\tfrac12G_{\rm LL}
+   own      : -frac{1}{2}G_{LL}
+   importer+: frac{-1}{2G_{LL}}
+[meaning] \tfrac12(\mathsf 1_4\pm\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})/\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL}))
+   own      : frac{1}{2}(<sf:1>_{4}±<sf:h>_{LL}^{lat}(over{q}{⇀}_{LL})/ε_{LL}^{lat}(over{q}{⇀}_{LL}))
+   importer+: frac{1}{2(<sf:1>_{4}±<sf:h>_{LL}^{lat}(over{q}{⇀}_{LL})/ε_{LL}^{lat}(over{q}{⇀}_{LL}))}
+[meaning] \tfrac12(\mathsf 1_8\pm\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL})
+   own      : frac{1}{2}(<sf:1>_{8}±<sf:h>_{LL}(over{q}{⇀}_{LL})/ε_{LL})
+   importer+: frac{1}{2(<sf:1>_{8}±<sf:h>_{LL}(over{q}{⇀}_{LL})/ε_{LL})}
+[meaning] -\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\sum_\iota\big((d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}+d^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\big)
+   own      : -∑_{ι}|d_{LL}^{ι}|^{2}/G_{LL}-frac{1}{2}∑_{ι}((d_{LL}^{ι})^{*}Π_{LL}^{ι}+d_{LL}^{ι}(Π_{LL}^{ι})^{†})
+   importer+: frac{-∑_{ι}|d_{LL}^{ι}|^{2}/G_{LL}-1}{2∑_{ι}((d_{LL}^{ι})^{*}Π_{LL}^{ι}+d_{LL}^{ι}(Π_{LL}^{ι})^{†})}
+[meaning] -\tfrac{15}8\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-7/2}
+   own      : -frac{15}{8}∫_{q_{LL}<Λ_{LL}}d^{3}q_{LL}(2π)^{-3}(q_{LL}^{2}+(M_{LL}^{q})^{2})^{-7/2}
+   importer+: frac{-15}{8∫_{q_{LL}<Λ_{LL}}d^{3}q_{LL}(2π)^{-3}(q_{LL}^{2}+(M_{LL}^{q})^{2})^{-7/2}}
+[meaning] \vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})=(0,\tfrac i2(y^+_{\rm LL}-y^-_{\rm LL}),\tfrac12(y^+_{\rm LL}+y^-_{\rm LL}))
+   own      : over{d}{⇀}_{LL}^{nf}(y_{LL}^{+},y_{LL}^{-})=(0,frac{i}{2}(y_{LL}^{+}-y_{LL}^{-}),frac{1}{2}(y_{LL}^{+}+y_{LL}^{-}))
+   importer+: over{d}{⇀}_{LL}^{nf}(y_{LL}^{+},y_{LL}^{-})=(frac{frac{0,i}{2(y_{LL}^{+}-y_{LL}^{-}),1}}{2(y_{LL}^{+}+y_{LL}^{-})})
+[meaning] \exp\big(\tfrac i2(\vartheta^{\rm G}_{{\rm LL},1}\tau^{\rm LL}_1+\vartheta^{\rm G}_{{\rm LL},2}\tau^{\rm LL}_2)\big)
+   own      : exp(frac{i}{2}(ϑ_{LL,1}^{G}τ_{1}^{LL}+ϑ_{LL,2}^{G}τ_{2}^{LL}))
+   importer+: exp(frac{i}{2(ϑ_{LL,1}^{G}τ_{1}^{LL}+ϑ_{LL,2}^{G}τ_{2}^{LL})})
+
+==== C. formulas read differently by the own reader and by the importer alone, but equally by importer+ ====
+[text] \mathbb R
+   own     : 
+   importer: R
+[text] \mathcal L
+   own     : ℒ
+   importer: L
+[text] \mathfrak m
+   own     : 
+   importer: m
+[text] \mathsf N
+   own     : <sf:N>
+   importer: N
+[text] \mathbf x
+   own     : <bf:x>
+   importer: x
+[text] W_{\rm LL}(\mathbf u)
+   own     : W_{LL}(<bf:u>)
+   importer: W_{LL}(u)
+[text] \mathbb C
+   own     : 
+   importer: C
+[text] {\rm SL}(2,\mathbb C)
+   own     : SL(2,)
+   importer: SL(2,C)
+[text] N_{\rm LL}(\mathbf x)
+   own     : N_{LL}(<bf:x>)
+   importer: N_{LL}(x)
+[text] N_{\rm LL}(\mathbf x,\mathbf y)
+   own     : N_{LL}(<bf:x>,<bf:y>)
+   importer: N_{LL}(x,y)
+[text] \mathsf 1_2
+   own     : <sf:1>_{2}
+   importer: 1_{2}
+[text] \sum_j\sigma^{\rm LL}_j\sigma^{\rm LL}_j=3\,\mathsf 1_2
+   own     : ∑_{j}σ_{j}^{LL}σ_{j}^{LL}=3<sf:1>_{2}
+   importer: ∑_{j}σ_{j}^{LL}σ_{j}^{LL}=31_{2}
+[text] \sigma^{\rm LL}_j\sigma^{\rm LL}_{j'}=\delta_{jj'}\mathsf 1_2+i\sum_{j''}\epsilon^{\rm LL}_{jj'j''}\sigma^{\rm LL}_{j''}
+   own     : σ_{j}^{LL}σ_{j^{′}}^{LL}=δ_{jj^{′}}<sf:1>_{2}+i∑_{j^{′′}}ϵ_{jj^{′}j^{′′}}^{LL}σ_{j^{′′}}^{LL}
+   importer: σ_{j}^{LL}σ_{j^{′}}^{LL}=δ_{jj^{′}}1_{2}+i∑_{j^{′′}}ϵ_{jj^{′}j^{′′}}^{LL}σ_{j^{′′}}^{LL}
+[text] M_{\rm LL}(\mathbf b)
+   own     : M_{LL}(<bf:b>)
+   importer: M_{LL}(b)
+[text] \mathbf b=\sum_{p=0}^3\xi^{\rm LL}_p(\mathbf b)\mathbf e_p
+   own     : <bf:b>=∑_{p=0}^{3}ξ_{p}^{LL}(<bf:b>)<bf:e>_{p}
+   importer: b=∑_{p=0}^{3}ξ_{p}^{LL}(b)e_{p}
+[text] \xi^{\rm LL}_p(\mathbf b)
+   own     : ξ_{p}^{LL}(<bf:b>)
+   importer: ξ_{p}^{LL}(b)
+[text] M_{\rm LL}(\mathbf b)=\xi^{\rm LL}_0(\mathbf b)\sigma^{\rm LL}_0-i\sum_{j=1}^3\xi^{\rm LL}_j(\mathbf b)\sigma^{\rm LL}_j
+   own     : M_{LL}(<bf:b>)=ξ_{0}^{LL}(<bf:b>)σ_{0}^{LL}-i∑_{j=1}^{3}ξ_{j}^{LL}(<bf:b>)σ_{j}^{LL}
+   importer: M_{LL}(b)=ξ_{0}^{LL}(b)σ_{0}^{LL}-i∑_{j=1}^{3}ξ_{j}^{LL}(b)σ_{j}^{LL}
+[text] M_{\rm LL}(\mathbf e_0)=\sigma^{\rm LL}_0
+   own     : M_{LL}(<bf:e>_{0})=σ_{0}^{LL}
+   importer: M_{LL}(e_{0})=σ_{0}^{LL}
+[text] M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j
+   own     : M_{LL}(<bf:e>_{j})=-iσ_{j}^{LL}
+   importer: M_{LL}(e_{j})=-iσ_{j}^{LL}
+[text] \mathbb R^{1,3}_{\rm LL}
+   own     : _{LL}^{1,3}
+   importer: R_{LL}^{1,3}
+[text] \mathbf f_0=\mathbf e_0
+   own     : <bf:f>_{0}=<bf:e>_{0}
+   importer: f_{0}=e_{0}
+[text] \mathbf f_j=i\mathbf e_j
+   own     : <bf:f>_{j}=i<bf:e>_{j}
+   importer: f_{j}=ie_{j}
+[text] M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p
+   own     : M_{LL}(<bf:f>_{p})=σ_{p}^{LL}
+   importer: M_{LL}(f_{p})=σ_{p}^{LL}
+[text] \gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}
+   own     : γ_{LL}^{p}[<bf:f>]=(grid[0&M_{LL}(<bf:f>_{p});M_{LL}(over{<bf:f>}{_}_{p})&0])
+   importer: γ_{LL}^{p}[f]=(grid[0&M_{LL}(f_{p});M_{LL}(over{f}{_}_{p})&0])
+[text] \bar{\mathbf b}
+   own     : over{<bf:b>}{_}
+   importer: over{b}{_}
+[text] \mathbf e_1,\mathbf e_2,\mathbf e_3
+   own     : <bf:e>_{1},<bf:e>_{2},<bf:e>_{3}
+   importer: e_{1},e_{2},e_{3}
+[text] \mathsf 1_4
+   own     : <sf:1>_{4}
+   importer: 1_{4}
+[text] \mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})=\exp\big(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0)\big)
+   own     : <sf:U>_{LL,j}^{link}(over{s}{⇀}_{LL})=exp(-iℓ_{LL}^{x}(g_{LL}^{v}<sf:a>_{LL,j}+g_{LL}^{F}A_{LL,j}^{F}σ_{0}^{LL}))
+   importer: U_{LL,j}^{link}(over{s}{⇀}_{LL})=exp(-iℓ_{LL}^{x}(g_{LL}^{v}a_{LL,j}+g_{LL}^{F}A_{LL,j}^{F}σ_{0}^{LL}))
+[text] \mathsf a_{{\rm LL},j}=\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota/2
+   own     : <sf:a>_{LL,j}=∑_{ι}A_{LL,j}^{ι}τ_{ι}^{LL}/2
+   importer: a_{LL,j}=∑_{ι}A_{LL,j}^{ι}τ_{ι}^{LL}/2
+[text] \mathcal H^{\rm lat}_{\rm LL}
+   own     : ℋ_{LL}^{lat}
+   importer: H_{LL}^{lat}
+[text] \sum_j\Big[-\frac{i\alpha^j_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})-\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})\big)-\frac{r^{\rm W}_{\rm LL}}{2\ell^{\rm x}_{\rm LL}}\beta_{\rm LL}\big(\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL})\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}+\vec\delta^j_{\rm LL})+\mathsf U^{\rm link}_{{\rm LL},j}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL}-\vec\delta^j_{\rm LL})-2\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})\big)\Big]+m_{\rm LL}\beta_{\rm LL}\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})-\big(\mathsf A_{{\rm LL},0}(\vec s_{\rm LL})+\mu_{\rm LL}\big)\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})+\mathsf P_{\rm LL}(\vec s_{\rm LL})\psi^{\rm h}_{\rm LL}(\vec s_{\rm LL})
+   own     : ∑_{j}[-frac{iα_{LL}^{j}}{2ℓ_{LL}^{x}}(<sf:U>_{LL,j}^{link}(over{s}{⇀}_{LL})ψ_{LL}^{p}(over{s}{⇀}_{LL}+over{δ}{⇀}_{LL}^{j})-<sf:U>_{LL,j}^{link}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j})^{†}ψ_{LL}^{p}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j}))-frac{r_{LL}^{W}}{2ℓ_{LL}^{x}}β_{LL}(<sf:U>_{LL,j}^{link}(over{s}{⇀}_{LL})ψ_{LL}^{p}(over{s}{⇀}_{LL}+over{δ}{⇀}_{LL}^{j})+<sf:U>_{LL,j}^{link}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j})^{†}ψ_{LL}^{p}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j})-2ψ_{LL}^{p}(over{s}{⇀}_{LL}))]+m_{LL}β_{LL}ψ_{LL}^{p}(over{s}{⇀}_{LL})-(<sf:A>_{LL,0}(over{s}{⇀}_{LL})+μ_{LL})ψ_{LL}^{p}(over{s}{⇀}_{LL})+<sf:P>_{LL}(over{s}{⇀}_{LL})ψ_{LL}^{h}(over{s}{⇀}_{LL})
+   importer: ∑_{j}[-frac{iα_{LL}^{j}}{2ℓ_{LL}^{x}}(U_{LL,j}^{link}(over{s}{⇀}_{LL})ψ_{LL}^{p}(over{s}{⇀}_{LL}+over{δ}{⇀}_{LL}^{j})-U_{LL,j}^{link}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j})^{†}ψ_{LL}^{p}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j}))-frac{r_{LL}^{W}}{2ℓ_{LL}^{x}}β_{LL}(U_{LL,j}^{link}(over{s}{⇀}_{LL})ψ_{LL}^{p}(over{s}{⇀}_{LL}+over{δ}{⇀}_{LL}^{j})+U_{LL,j}^{link}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j})^{†}ψ_{LL}^{p}(over{s}{⇀}_{LL}-over{δ}{⇀}_{LL}^{j})-2ψ_{LL}^{p}(over{s}{⇀}_{LL}))]+m_{LL}β_{LL}ψ_{LL}^{p}(over{s}{⇀}_{LL})-(A_{LL,0}(over{s}{⇀}_{LL})+μ_{LL})ψ_{LL}^{p}(over{s}{⇀}_{LL})+P_{LL}(over{s}{⇀}_{LL})ψ_{LL}^{h}(over{s}{⇀}_{LL})
+[text] \mathsf P_{\rm LL}(\vec s_{\rm LL})^\dagger\psi^{\rm p}_{\rm LL}(\vec s_{\rm LL})
+   own     : <sf:P>_{LL}(over{s}{⇀}_{LL})^{†}ψ_{LL}^{p}(over{s}{⇀}_{LL})
+   importer: P_{LL}(over{s}{⇀}_{LL})^{†}ψ_{LL}^{p}(over{s}{⇀}_{LL})
+[text] \mathsf A_{{\rm LL},0}(\vec s_{\rm LL})=g^{\rm v}_{\rm LL}\sum_\iota A^\iota_{{\rm LL},0}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}\mathsf 1_8
+   own     : <sf:A>_{LL,0}(over{s}{⇀}_{LL})=g_{LL}^{v}∑_{ι}A_{LL,0}^{ι}T_{LL}^{ι}+g_{LL}^{F}A_{LL,0}^{F}<sf:1>_{8}
+   importer: A_{LL,0}(over{s}{⇀}_{LL})=g_{LL}^{v}∑_{ι}A_{LL,0}^{ι}T_{LL}^{ι}+g_{LL}^{F}A_{LL,0}^{F}1_{8}
+[text] \mathsf P_{\rm LL}(\vec s_{\rm LL})=\sum_\iota d^\iota_{\rm LL}(\vec s_{\rm LL})(\mathsf K^\iota_{\rm LL})^\dagger
+   own     : <sf:P>_{LL}(over{s}{⇀}_{LL})=∑_{ι}d_{LL}^{ι}(over{s}{⇀}_{LL})(<sf:K>_{LL}^{ι})^{†}
+   importer: P_{LL}(over{s}{⇀}_{LL})=∑_{ι}d_{LL}^{ι}(over{s}{⇀}_{LL})(K_{LL}^{ι})^{†}
+[text] \nabla^{\rm LL}_p=\partial_p+\Gamma^{\rm LL}_p-i\mathsf A_{{\rm LL},p}
+   own     : ∇_{p}^{LL}=∂_{p}+Γ_{p}^{LL}-i<sf:A>_{LL,p}
+   importer: ∇_{p}^{LL}=∂_{p}+Γ_{p}^{LL}-iA_{LL,p}
+[text] \Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0
+   own     : Γ_{p}^{LL}=<sf:s>_{LL}(<bf:u>_{LL,p}^{ω})⊗σ_{0}^{LL}
+   importer: Γ_{p}^{LL}=s_{LL}(u_{LL,p}^{ω})⊗σ_{0}^{LL}
+[text] \mathbf u^\omega_{{\rm LL},p}=\sum_j(\omega^j_{{\rm LL},p}J^j_{\rm LL}+\varpi^j_{{\rm LL},p}K^j_{\rm LL})
+   own     : <bf:u>_{LL,p}^{ω}=∑_{j}(ω_{LL,p}^{j}J_{LL}^{j}+ϖ_{LL,p}^{j}K_{LL}^{j})
+   importer: u_{LL,p}^{ω}=∑_{j}(ω_{LL,p}^{j}J_{LL}^{j}+ϖ_{LL,p}^{j}K_{LL}^{j})
+[text] \mathsf A_{{\rm LL},p}=g^{\rm v}_{\rm LL}\sum_\iota A^\iota_{{\rm LL},p}T^\iota_{\rm LL}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathsf 1_8
+   own     : <sf:A>_{LL,p}=g_{LL}^{v}∑_{ι}A_{LL,p}^{ι}T_{LL}^{ι}+g_{LL}^{F}A_{LL,p}^{F}<sf:1>_{8}
+   importer: A_{LL,p}=g_{LL}^{v}∑_{ι}A_{LL,p}^{ι}T_{LL}^{ι}+g_{LL}^{F}A_{LL,p}^{F}1_{8}
+[text] \mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger
+   own     : <sf:P>_{LL}=∑_{ι}d_{LL}^{ι}(<sf:K>_{LL}^{ι})^{†}
+   importer: P_{LL}=∑_{ι}d_{LL}^{ι}(K_{LL}^{ι})^{†}
+[text] SL(2,\mathbb C)
+   own     : SL(2,)
+   importer: SL(2,C)
+[text] \mathbf g
+   own     : <bf:g>
+   importer: g
+[text] \mathsf S_{\rm LL}(\mathbf g)=\mathrm{diag}\big(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g)\big)
+   own     : <sf:S>_{LL}(<bf:g>)=diag(M_{LL}(over{<bf:g>}{~}),M_{LL}(<bf:g>))
+   importer: S_{LL}(g)=diag(M_{LL}(over{g}{~}),M_{LL}(g))
+[text] \tilde{\mathbf g}=(\mathbf g^\dagger)^{-1}
+   own     : over{<bf:g>}{~}=(<bf:g>^{†})^{-1}
+   importer: over{g}{~}=(g^{†})^{-1}
+[text] M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}
+   own     : M_{LL}(over{<bf:g>}{~})=(M_{LL}(<bf:g>)^{†})^{-1}
+   importer: M_{LL}(over{g}{~})=(M_{LL}(g)^{†})^{-1}
+[text] \mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}
+   own     : <sf:S>_{LL}(<bf:g>)^{-1}γ_{LL}^{p}<sf:S>_{LL}(<bf:g>)=∑_{p^{′}}[<sf:L>_{LL}(<bf:g>)]_{pp^{′}}γ_{LL}^{p^{′}}
+   importer: S_{LL}(g)^{-1}γ_{LL}^{p}S_{LL}(g)=∑_{p^{′}}[L_{LL}(g)]_{pp^{′}}γ_{LL}^{p^{′}}
+[text] \mathsf S_{\rm LL}(\mathbf g)\gamma^p_{\rm LL}[\mathbf f]\mathsf S_{\rm LL}(\mathbf g)^{-1}=\gamma^p_{\rm LL}[\tilde{\mathbf g}\mathbf f\tilde{\mathbf g}^\dagger]
+   own     : <sf:S>_{LL}(<bf:g>)γ_{LL}^{p}[<bf:f>]<sf:S>_{LL}(<bf:g>)^{-1}=γ_{LL}^{p}[over{<bf:g>}{~}<bf:f>over{<bf:g>}{~}^{†}]
+   importer: S_{LL}(g)γ_{LL}^{p}[f]S_{LL}(g)^{-1}=γ_{LL}^{p}[over{g}{~}fover{g}{~}^{†}]
+[text] \mathbf f
+   own     : <bf:f>
+   importer: f
+[text] \mathsf K^\iota_{\rm LL}
+   own     : <sf:K>_{LL}^{ι}
+   importer: K_{LL}^{ι}
+[text] \Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}=0
+   own     : Ψ_{LL}^{T}<sf:K>_{LL}^{ι}Ψ_{LL}=0
+   importer: Ψ_{LL}^{T}K_{LL}^{ι}Ψ_{LL}=0
+[text] \mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}
+   own     : _{LL}=exp(iθ_{LL}^{F})<sf:S>_{LL}(<bf:g>)⊗<sf:U>_{LL}
+   importer: U_{LL}=exp(iθ_{LL}^{F})S_{LL}(g)⊗U_{LL}
+[text] \mathsf U_{\rm LL}=\exp(i\sum_\iota\theta^\iota_{\rm LL}\tau^{\rm LL}_\iota/2)
+   own     : <sf:U>_{LL}=exp(i∑_{ι}θ_{LL}^{ι}τ_{ι}^{LL}/2)
+   importer: U_{LL}=exp(i∑_{ι}θ_{LL}^{ι}τ_{ι}^{LL}/2)
+[text] M_{\rm LL}(\mathbf g)=\exp M_{\rm LL}(\mathbf u)
+   own     : M_{LL}(<bf:g>)=expM_{LL}(<bf:u>)
+   importer: M_{LL}(g)=expM_{LL}(u)
+[text] \mathbf u
+   own     : <bf:u>
+   importer: u
+[text] \mathsf U_{\rm LL}\mathsf a_{{\rm LL},p}\mathsf U_{\rm LL}^{-1}-(i/g^{\rm v}_{\rm LL})(\partial_p\mathsf U_{\rm LL})\mathsf U_{\rm LL}^{-1}
+   own     : <sf:U>_{LL}<sf:a>_{LL,p}<sf:U>_{LL}^{-1}-(i/g_{LL}^{v})(∂_{p}<sf:U>_{LL})<sf:U>_{LL}^{-1}
+   importer: U_{LL}a_{LL,p}U_{LL}^{-1}-(i/g_{LL}^{v})(∂_{p}U_{LL})U_{LL}^{-1}
+[text] \mathsf a_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2
+   own     : <sf:a>_{LL,p}=∑_{ι}A_{LL,p}^{ι}τ_{ι}^{LL}/2
+   importer: a_{LL,p}=∑_{ι}A_{LL,p}^{ι}τ_{ι}^{LL}/2
+[text] \mathsf S_{\rm LL}(\mathbf g)\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\mathsf S_{\rm LL}(\mathbf g)^{-1}-(\partial_p\mathsf S_{\rm LL}(\mathbf g))\mathsf S_{\rm LL}(\mathbf g)^{-1}
+   own     : <sf:S>_{LL}(<bf:g>)<sf:s>_{LL}(<bf:u>_{LL,p}^{ω})<sf:S>_{LL}(<bf:g>)^{-1}-(∂_{p}<sf:S>_{LL}(<bf:g>))<sf:S>_{LL}(<bf:g>)^{-1}
+   importer: S_{LL}(g)s_{LL}(u_{LL,p}^{ω})S_{LL}(g)^{-1}-(∂_{p}S_{LL}(g))S_{LL}(g)^{-1}
+[text] \mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})
+   own     : <sf:s>_{LL}(<bf:u>_{LL,p}^{ω})
+   importer: s_{LL}(u_{LL,p}^{ω})
+[text] \mathcal U_{\rm LL}\Psi_{\rm LL}
+   own     : _{LL}Ψ_{LL}
+   importer: U_{LL}Ψ_{LL}
+[text] \mathcal U_{\rm LL}\nabla^{\rm LL}_p\Psi_{\rm LL}
+   own     : _{LL}∇_{p}^{LL}Ψ_{LL}
+   importer: U_{LL}∇_{p}^{LL}Ψ_{LL}
+[text] [\nabla^{\rm LL}_p,\nabla^{\rm LL}_{p'}]\Psi_{\rm LL}=\big(\mathsf R^{\rm LL}_{pp'}-ig^{\rm v}_{\rm LL}\sum_\iota\mathsf F^\iota_{{\rm LL},pp'}T^\iota_{\rm LL}-ig^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},pp'}\big)\Psi_{\rm LL}
+   own     : [∇_{p}^{LL},∇_{p^{′}}^{LL}]Ψ_{LL}=(<sf:R>_{pp^{′}}^{LL}-ig_{LL}^{v}∑_{ι}<sf:F>_{LL,pp^{′}}^{ι}T_{LL}^{ι}-ig_{LL}^{F}<sf:F>_{LL,pp^{′}}^{F})Ψ_{LL}
+   importer: [∇_{p}^{LL},∇_{p^{′}}^{LL}]Ψ_{LL}=(R_{pp^{′}}^{LL}-ig_{LL}^{v}∑_{ι}F_{LL,pp^{′}}^{ι}T_{LL}^{ι}-ig_{LL}^{F}F_{LL,pp^{′}}^{F})Ψ_{LL}
+[text] \mathsf R^{\rm LL}_{pp'}=\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+\Gamma^{\rm LL}_p\Gamma^{\rm LL}_{p'}-\Gamma^{\rm LL}_{p'}\Gamma^{\rm LL}_p
+   own     : <sf:R>_{pp^{′}}^{LL}=∂_{p}Γ_{p^{′}}^{LL}-∂_{p^{′}}Γ_{p}^{LL}+Γ_{p}^{LL}Γ_{p^{′}}^{LL}-Γ_{p^{′}}^{LL}Γ_{p}^{LL}
+   importer: R_{pp^{′}}^{LL}=∂_{p}Γ_{p^{′}}^{LL}-∂_{p^{′}}Γ_{p}^{LL}+Γ_{p}^{LL}Γ_{p^{′}}^{LL}-Γ_{p^{′}}^{LL}Γ_{p}^{LL}
+[text] \mathsf F^\iota_{{\rm LL},pp'}=\partial_pA^\iota_{{\rm LL},p'}-\partial_{p'}A^\iota_{{\rm LL},p}+g^{\rm v}_{\rm LL}\sum_{\iota',\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}A^{\iota''}_{{\rm LL},p'}
+   own     : <sf:F>_{LL,pp^{′}}^{ι}=∂_{p}A_{LL,p^{′}}^{ι}-∂_{p^{′}}A_{LL,p}^{ι}+g_{LL}^{v}∑_{ι^{′},ι^{′′}}ϵ_{ιι^{′}ι^{′′}}^{LL}A_{LL,p}^{ι^{′}}A_{LL,p^{′}}^{ι^{′′}}
+   importer: F_{LL,pp^{′}}^{ι}=∂_{p}A_{LL,p^{′}}^{ι}-∂_{p^{′}}A_{LL,p}^{ι}+g_{LL}^{v}∑_{ι^{′},ι^{′′}}ϵ_{ιι^{′}ι^{′′}}^{LL}A_{LL,p}^{ι^{′}}A_{LL,p^{′}}^{ι^{′′}}
+[text] \mathsf F^{\rm F}_{{\rm LL},pp'}=\partial_pA^{\rm F}_{{\rm LL},p'}-\partial_{p'}A^{\rm F}_{{\rm LL},p}
+   own     : <sf:F>_{LL,pp^{′}}^{F}=∂_{p}A_{LL,p^{′}}^{F}-∂_{p^{′}}A_{LL,p}^{F}
+   importer: F_{LL,pp^{′}}^{F}=∂_{p}A_{LL,p^{′}}^{F}-∂_{p^{′}}A_{LL,p}^{F}
+[text] i\,\partial_0(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})=\mathcal H^{\rm lat}_{\rm LL}(\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})
+   own     : i∂_{0}(ψ_{LL}^{p},ψ_{LL}^{h})=ℋ_{LL}^{lat}(ψ_{LL}^{p},ψ_{LL}^{h})
+   importer: i∂_{0}(ψ_{LL}^{p},ψ_{LL}^{h})=H_{LL}^{lat}(ψ_{LL}^{p},ψ_{LL}^{h})
+[text] \mathbf y\mathbf e_4
+   own     : <bf:y><bf:e>_{4}
+   importer: ye_{4}
+[text] \mathbf y
+   own     : <bf:y>
+   importer: y
+[text] \psi'_{\rm LL}(\mathbf y)=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf y)^T
+   own     : ψ_{LL}^{′}(<bf:y>)=<sf:E>_{LL}^{-1}M_{LL}(<bf:y>)^{T}
+   importer: ψ_{LL}^{′}(y)=E_{LL}^{-1}M_{LL}(y)^{T}
+[text] \Psi_{\rm LL}[\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}]
+   own     : Ψ_{LL}[<bf:b>_{LL}^{-},<bf:b>_{LL}^{+}]
+   importer: Ψ_{LL}[b_{LL}^{-},b_{LL}^{+}]
+[text] \mathbf b^\pm_{\rm LL}\mathbf e_4
+   own     : <bf:b>_{LL}^{±}<bf:e>_{4}
+   importer: b_{LL}^{±}e_{4}
+[text] \psi'_{\rm LL}(\mathbf b^-_{\rm LL})
+   own     : ψ_{LL}^{′}(<bf:b>_{LL}^{-})
+   importer: ψ_{LL}^{′}(b_{LL}^{-})
+[text] \psi'_{\rm LL}(\mathbf b^+_{\rm LL})
+   own     : ψ_{LL}^{′}(<bf:b>_{LL}^{+})
+   importer: ψ_{LL}^{′}(b_{LL}^{+})
+[text] M_{\rm LL}(\mathbf x)\psi'_{\rm LL}(\mathbf y)=\psi'_{\rm LL}(\mathbf y\bar{\mathbf x})
+   own     : M_{LL}(<bf:x>)ψ_{LL}^{′}(<bf:y>)=ψ_{LL}^{′}(<bf:y>over{<bf:x>}{_})
+   importer: M_{LL}(x)ψ_{LL}^{′}(y)=ψ_{LL}^{′}(yover{x}{_})
+[text] (\mathbf a+\mathbf b\mathbf e_4)(\mathbf c+\mathbf d\mathbf e_4)=(\mathbf a\mathbf c-\bar{\mathbf d}\mathbf b)+(\mathbf d\mathbf a+\mathbf b\bar{\mathbf c})\mathbf e_4
+   own     : (<bf:a>+<bf:b><bf:e>_{4})(<bf:c>+<bf:d><bf:e>_{4})=(<bf:a><bf:c>-over{<bf:d>}{_}<bf:b>)+(<bf:d><bf:a>+<bf:b>over{<bf:c>}{_})<bf:e>_{4}
+   importer: (a+be_{4})(c+de_{4})=(ac-over{d}{_}b)+(da+bover{c}{_})e_{4}
+[text] (\mathbf y\mathbf e_4)\mathbf x=(\mathbf y\bar{\mathbf x})\mathbf e_4
+   own     : (<bf:y><bf:e>_{4})<bf:x>=(<bf:y>over{<bf:x>}{_})<bf:e>_{4}
+   importer: (ye_{4})x=(yover{x}{_})e_{4}
+[text] \gamma^p_{\rm LL}[\mathbf f]\Psi_{\rm LL}[\mathbf b^-_{\rm LL},\mathbf b^+_{\rm LL}]=\Psi_{\rm LL}[\mathbf b^+_{\rm LL}\bar{\mathbf f}_p,\mathbf b^-_{\rm LL}\mathbf f_p]
+   own     : γ_{LL}^{p}[<bf:f>]Ψ_{LL}[<bf:b>_{LL}^{-},<bf:b>_{LL}^{+}]=Ψ_{LL}[<bf:b>_{LL}^{+}over{<bf:f>}{_}_{p},<bf:b>_{LL}^{-}<bf:f>_{p}]
+   importer: γ_{LL}^{p}[f]Ψ_{LL}[b_{LL}^{-},b_{LL}^{+}]=Ψ_{LL}[b_{LL}^{+}over{f}{_}_{p},b_{LL}^{-}f_{p}]
+[text] \mathcal U_{\rm LL}
+   own     : _{LL}
+   importer: U_{LL}
+[text] \mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)
+   own     : <sf:U>_{LL}=M_{LL}(<bf:v>)
+   importer: U_{LL}=M_{LL}(v)
+[text] \mathbf b^+_{\rm LL}
+   own     : <bf:b>_{LL}^{+}
+   importer: b_{LL}^{+}
+[text] e^{i\theta^{\rm F}_{\rm LL}}\mathbf v\mathbf b^+_{\rm LL}\bar{\mathbf g}
+   own     : e^{iθ_{LL}^{F}}<bf:v><bf:b>_{LL}^{+}over{<bf:g>}{_}
+   importer: e^{iθ_{LL}^{F}}vb_{LL}^{+}over{g}{_}
+[text] \mathbf b^-_{\rm LL}
+   own     : <bf:b>_{LL}^{-}
+   importer: b_{LL}^{-}
+[text] e^{i\theta^{\rm F}_{\rm LL}}\mathbf v\mathbf b^-_{\rm LL}\mathbf g^\dagger
+   own     : e^{iθ_{LL}^{F}}<bf:v><bf:b>_{LL}^{-}<bf:g>^{†}
+   importer: e^{iθ_{LL}^{F}}vb_{LL}^{-}g^{†}
+[text] \tilde{\mathbf g}=\mathbf g^*
+   own     : over{<bf:g>}{~}=<bf:g>^{*}
+   importer: over{g}{~}=g^{*}
+[text] \mathbb B_{\rm LL}
+   own     : _{LL}
+   importer: B_{LL}
+[text] \partial_p\mathbf b^+_{\rm LL}-\mathbf b^+_{\rm LL}\mathbf u^\omega_{{\rm LL},p}+g^{\rm v}_{\rm LL}\mathbf t^{\rm A}_{{\rm LL},p}\mathbf b^+_{\rm LL}-ig^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\mathbf b^+_{\rm LL}
+   own     : ∂_{p}<bf:b>_{LL}^{+}-<bf:b>_{LL}^{+}<bf:u>_{LL,p}^{ω}+g_{LL}^{v}<bf:t>_{LL,p}^{A}<bf:b>_{LL}^{+}-ig_{LL}^{F}A_{LL,p}^{F}<bf:b>_{LL}^{+}
+   importer: ∂_{p}b_{LL}^{+}-b_{LL}^{+}u_{LL,p}^{ω}+g_{LL}^{v}t_{LL,p}^{A}b_{LL}^{+}-ig_{LL}^{F}A_{LL,p}^{F}b_{LL}^{+}
+[text] \mathbf t^{\rm A}_{{\rm LL},p}=\sum_\iota A^\iota_{{\rm LL},p}\mathbf e_\iota/2
+   own     : <bf:t>_{LL,p}^{A}=∑_{ι}A_{LL,p}^{ι}<bf:e>_{ι}/2
+   importer: t_{LL,p}^{A}=∑_{ι}A_{LL,p}^{ι}e_{ι}/2
+[text] \mathbf u^{\omega*}_{{\rm LL},p}
+   own     : <bf:u>_{LL,p}^{ω*}
+   importer: u_{LL,p}^{ω*}
+[text] \mathbf u^\omega_{{\rm LL},p}
+   own     : <bf:u>_{LL,p}^{ω}
+   importer: u_{LL,p}^{ω}
+[text] \sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p\Psi_{\rm LL}=\Psi_{\rm LL}\big[\sum_p(\nabla^{\rm LL}_p\mathbf b^+_{\rm LL})\bar{\mathbf f}_p,\sum_p(\nabla^{\rm LL}_p\mathbf b^-_{\rm LL})\mathbf f_p\big]
+   own     : ∑_{p}γ_{LL}^{p}∇_{p}^{LL}Ψ_{LL}=Ψ_{LL}[∑_{p}(∇_{p}^{LL}<bf:b>_{LL}^{+})over{<bf:f>}{_}_{p},∑_{p}(∇_{p}^{LL}<bf:b>_{LL}^{-})<bf:f>_{p}]
+   importer: ∑_{p}γ_{LL}^{p}∇_{p}^{LL}Ψ_{LL}=Ψ_{LL}[∑_{p}(∇_{p}^{LL}b_{LL}^{+})over{f}{_}_{p},∑_{p}(∇_{p}^{LL}b_{LL}^{-})f_{p}]
+[text] R^{\rm LL}_{\bar{\mathbf f}_p}
+   own     : R_{over{<bf:f>}{_}_{p}}^{LL}
+   importer: R_{over{f}{_}_{p}}^{LL}
+[text] R^{\rm LL}_{\mathbf f_p}
+   own     : R_{<bf:f>_{p}}^{LL}
+   importer: R_{f_{p}}^{LL}
+[text] -\varepsilon^{\rm lat}_{\rm LL}
+   own     : -ε_{LL}^{lat}
+   importer: -ϵ_{LL}^{lat}
+[text] +\varepsilon^{\rm lat}_{\rm LL}
+   own     : +ε_{LL}^{lat}
+   importer: +ϵ_{LL}^{lat}
+[text] \varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})=\Big(\sum_j\sin^2(q^j_{\rm LL}\ell^{\rm x}_{\rm LL})/(\ell^{\rm x}_{\rm LL})^2+\big(m_{\rm LL}+(r^{\rm W}_{\rm LL}/\ell^{\rm x}_{\rm LL})\sum_j(1-\cos(q^j_{\rm LL}\ell^{\rm x}_{\rm LL}))\big)^2\Big)^{1/2}
+   own     : ε_{LL}^{lat}(over{q}{⇀}_{LL})=(∑_{j}sin^{2}(q_{LL}^{j}ℓ_{LL}^{x})/(ℓ_{LL}^{x})^{2}+(m_{LL}+(r_{LL}^{W}/ℓ_{LL}^{x})∑_{j}(1-cos(q_{LL}^{j}ℓ_{LL}^{x})))^{2})^{1/2}
+   importer: ϵ_{LL}^{lat}(over{q}{⇀}_{LL})=(∑_{j}sin^{2}(q_{LL}^{j}ℓ_{LL}^{x})/(ℓ_{LL}^{x})^{2}+(m_{LL}+(r_{LL}^{W}/ℓ_{LL}^{x})∑_{j}(1-cos(q_{LL}^{j}ℓ_{LL}^{x})))^{2})^{1/2}
+[text] \varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}
+   own     : ε_{LL}=(q_{LL}^{2}+m_{LL}^{2})^{1/2}
+   importer: ϵ_{LL}=(q_{LL}^{2}+m_{LL}^{2})^{1/2}
+[text] \varepsilon_{\rm LL}
+   own     : ε_{LL}
+   importer: ϵ_{LL}
+[text] \varepsilon^{\rm lat}_{\rm LL}
+   own     : ε_{LL}^{lat}
+   importer: ϵ_{LL}^{lat}
+[meaning] \mathbf e_j
+   own     : <bf:e>_{j}
+   importer: e_{j}
+[meaning] \mathbf e_1,\dots,\mathbf e_7
+   own     : <bf:e>_{1},…,<bf:e>_{7}
+   importer: e_{1},…,e_{7}
+[meaning] \mathbf e_p
+   own     : <bf:e>_{p}
+   importer: e_{p}
+[meaning] \xi^{\rm LL}_p(\mathbf x)
+   own     : ξ_{p}^{LL}(<bf:x>)
+   importer: ξ_{p}^{LL}(x)
+[meaning] \mathbb R^{1,7}_{\rm LL}
+   own     : _{LL}^{1,7}
+   importer: R_{LL}^{1,7}
+[meaning] \mathsf K'^\iota_{\rm LL}
+   own     : <sf:K>_{LL}^{′ι}
+   importer: K_{LL}^{′ι}
+[meaning] \mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}
+   own     : <sf:E>_{LL}^{-1}=<sf:E>_{LL}^{T}=-<sf:E>_{LL}
+   importer: E_{LL}^{-1}=E_{LL}^{T}=-E_{LL}
+[meaning] \mathbf e_0,\dots,\mathbf e_3
+   own     : <bf:e>_{0},…,<bf:e>_{3}
+   importer: e_{0},…,e_{3}
+[meaning] \mathbf e_0,\dots,\mathbf e_7
+   own     : <bf:e>_{0},…,<bf:e>_{7}
+   importer: e_{0},…,e_{7}
+[meaning] {\rm Im}\,\mathbb H
+   own     : Im
+   importer: ImH
+[meaning] {\rm Im}\,\mathbb O
+   own     : Im
+   importer: ImO
+[meaning] \mathbb C\otimes\mathbb H
+   own     : ⊗
+   importer: C⊗H
+[meaning] \mathbb C\otimes\mathbb O
+   own     : ⊗
+   importer: C⊗O
+[meaning] \mathbf x=\sum_{p=0}^7\xi^{\rm LL}_p(\mathbf x)\,\mathbf e_p
+   own     : <bf:x>=∑_{p=0}^{7}ξ_{p}^{LL}(<bf:x>)<bf:e>_{p}
+   importer: x=∑_{p=0}^{7}ξ_{p}^{LL}(x)e_{p}
+[meaning] \mathbb O
+   own     : 
+   importer: O
+[meaning] \mathbb H
+   own     : 
+   importer: H
+[meaning] \mathbf e_0=1
+   own     : <bf:e>_{0}=1
+   importer: e_{0}=1
+[meaning] \mathbf e_j^2=-1
+   own     : <bf:e>_{j}^{2}=-1
+   importer: e_{j}^{2}=-1
+[meaning] \mathbf e_1\mathbf e_2=-\mathbf e_2\mathbf e_1=\mathbf e_3
+   own     : <bf:e>_{1}<bf:e>_{2}=-<bf:e>_{2}<bf:e>_{1}=<bf:e>_{3}
+   importer: e_{1}e_{2}=-e_{2}e_{1}=e_{3}
+[meaning] \mathbf e_4
+   own     : <bf:e>_{4}
+   importer: e_{4}
+[meaning] \mathbf e_4^2=-1
+   own     : <bf:e>_{4}^{2}=-1
+   importer: e_{4}^{2}=-1
+[meaning] \mathbf e_5=\mathbf e_1\mathbf e_4
+   own     : <bf:e>_{5}=<bf:e>_{1}<bf:e>_{4}
+   importer: e_{5}=e_{1}e_{4}
+[meaning] \mathbf e_6=\mathbf e_2\mathbf e_4
+   own     : <bf:e>_{6}=<bf:e>_{2}<bf:e>_{4}
+   importer: e_{6}=e_{2}e_{4}
+[meaning] \mathbf e_7=\mathbf e_3\mathbf e_4
+   own     : <bf:e>_{7}=<bf:e>_{3}<bf:e>_{4}
+   importer: e_{7}=e_{3}e_{4}
+[meaning] \mathbf e_\iota
+   own     : <bf:e>_{ι}
+   importer: e_{ι}
+[meaning] i\mathbf e_1,\dots,i\mathbf e_7
+   own     : i<bf:e>_{1},…,i<bf:e>_{7}
+   importer: ie_{1},…,ie_{7}
+[meaning] \mathbf w
+   own     : <bf:w>
+   importer: w
+[meaning] \mathbb L_{\rm LL}
+   own     : _{LL}
+   importer: L_{LL}
+[meaning] \mathbf e_0,\mathbf e_1,\mathbf e_2,\mathbf e_3
+   own     : <bf:e>_{0},<bf:e>_{1},<bf:e>_{2},<bf:e>_{3}
+   importer: e_{0},e_{1},e_{2},e_{3}
+[meaning] \mathbf x=\mathbf a+\mathbf b\,\mathbf e_4
+   own     : <bf:x>=<bf:a>+<bf:b><bf:e>_{4}
+   importer: x=a+be_{4}
+[meaning] \mathbf b\,\mathbf e_4
+   own     : <bf:b><bf:e>_{4}
+   importer: be_{4}
+[meaning] \mathbf b'\,\mathbf e_4
+   own     : <bf:b>^{′}<bf:e>_{4}
+   importer: b^{′}e_{4}
+[meaning] \bar{\mathbf x}
+   own     : over{<bf:x>}{_}
+   importer: over{x}{_}
+[meaning] \overline{\mathbf x\mathbf y}=\bar{\mathbf y}\,\bar{\mathbf x}
+   own     : over{<bf:x><bf:y>}{_}=over{<bf:y>}{_}over{<bf:x>}{_}
+   importer: over{xy}{_}=over{y}{_}over{x}{_}
+[meaning] \overline{\mathbf a+\mathbf b\mathbf e_4}=\bar{\mathbf a}-\mathbf b\mathbf e_4
+   own     : over{<bf:a>+<bf:b><bf:e>_{4}}{_}=over{<bf:a>}{_}-<bf:b><bf:e>_{4}
+   importer: over{a+be_{4}}{_}=over{a}{_}-be_{4}
+[meaning] \mathbf x^*
+   own     : <bf:x>^{*}
+   importer: x^{*}
+[meaning] \mathbf x^\dagger=(\bar{\mathbf x})^*
+   own     : <bf:x>^{†}=(over{<bf:x>}{_})^{*}
+   importer: x^{†}=(over{x}{_})^{*}
+[meaning] N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2
+   own     : N_{LL}(<bf:x>)=∑_{p}ξ_{p}^{LL}(<bf:x>)^{2}
+   importer: N_{LL}(x)=∑_{p}ξ_{p}^{LL}(x)^{2}
+[meaning] \mathbf x\bar{\mathbf x}=\bar{\mathbf x}\mathbf x=N_{\rm LL}(\mathbf x)\,\mathbf e_0
+   own     : <bf:x>over{<bf:x>}{_}=over{<bf:x>}{_}<bf:x>=N_{LL}(<bf:x>)<bf:e>_{0}
+   importer: xover{x}{_}=over{x}{_}x=N_{LL}(x)e_{0}
+[meaning] N_{\rm LL}(\mathbf x,\mathbf y)=\sum_p\xi^{\rm LL}_p(\mathbf x)\,\xi^{\rm LL}_p(\mathbf y)
+   own     : N_{LL}(<bf:x>,<bf:y>)=∑_{p}ξ_{p}^{LL}(<bf:x>)ξ_{p}^{LL}(<bf:y>)
+   importer: N_{LL}(x,y)=∑_{p}ξ_{p}^{LL}(x)ξ_{p}^{LL}(y)
+[meaning] N_{\rm LL}(\mathbf x,\mathbf x)=N_{\rm LL}(\mathbf x)
+   own     : N_{LL}(<bf:x>,<bf:x>)=N_{LL}(<bf:x>)
+   importer: N_{LL}(x,x)=N_{LL}(x)
+[meaning] \mathbf x\mathbf y-\mathbf y\mathbf x
+   own     : <bf:x><bf:y>-<bf:y><bf:x>
+   importer: xy-yx
+[meaning] (\mathbf x\mathbf y)\mathbf z-\mathbf x(\mathbf y\mathbf z)
+   own     : (<bf:x><bf:y>)<bf:z>-<bf:x>(<bf:y><bf:z>)
+   importer: (xy)z-x(yz)
+[meaning] \mathcal F^{\rm A}_{\rm LL}
+   own     : ℱ_{LL}^{A}
+   importer: F_{LL}^{A}
+[meaning] \mathcal F^{\rm B}_{\rm LL}
+   own     : ℱ_{LL}^{B}
+   importer: F_{LL}^{B}
+[meaning] \mathcal F^{\rm C}_{\rm LL}
+   own     : ℱ_{LL}^{C}
+   importer: F_{LL}^{C}
+[meaning] \mathrm{Jac}_{\rm LL}(\mathbf x,\mathbf y,\mathbf z)=[[\mathbf x,\mathbf y],\mathbf z]+[[\mathbf y,\mathbf z],\mathbf x]+[[\mathbf z,\mathbf x],\mathbf y]
+   own     : Jac_{LL}(<bf:x>,<bf:y>,<bf:z>)=[[<bf:x>,<bf:y>],<bf:z>]+[[<bf:y>,<bf:z>],<bf:x>]+[[<bf:z>,<bf:x>],<bf:y>]
+   importer: Jac_{LL}(x,y,z)=[[x,y],z]+[[y,z],x]+[[z,x],y]
+[meaning] \mathbf y\mapsto\mathbf x\mathbf y
+   own     : <bf:y>↦<bf:x><bf:y>
+   importer: y↦xy
+[meaning] \mathbf y\mapsto\mathbf y\mathbf x
+   own     : <bf:y>↦<bf:y><bf:x>
+   importer: y↦yx
+[meaning] \mathbb O^{\rm s}_{\rm LL}
+   own     : _{LL}^{s}
+   importer: O_{LL}^{s}
+[meaning] \mathbb L_{\rm LL}=\{\mathbf w\in\mathbb B_{\rm LL}:N_{\rm LL}(\mathbf w)=1\}
+   own     : _{LL}={<bf:w>∈_{LL}:N_{LL}(<bf:w>)=1}
+   importer: L_{LL}={w∈B_{LL}:N_{LL}(w)=1}
+[meaning] N_{\rm LL}(\mathbf g)=1
+   own     : N_{LL}(<bf:g>)=1
+   importer: N_{LL}(g)=1
+[meaning] \mathfrak m_{\rm LL}=\mathbb C\otimes{\rm Im}\,\mathbb O
+   own     : _{LL}=⊗Im
+   importer: m_{LL}=C⊗ImO
+[meaning] \mathfrak l_{\rm LL}=\mathbb C\otimes{\rm Im}\,\mathbb H
+   own     : _{LL}=⊗Im
+   importer: l_{LL}=C⊗ImH
+[meaning] \mathfrak{so}(3,1)
+   own     : (3,1)
+   importer: so(3,1)
+[meaning] \mathfrak s_{\rm LL}=(\mathbb C\otimes\mathbb H)\,\mathbf e_4
+   own     : _{LL}=(⊗)<bf:e>_{4}
+   importer: s_{LL}=(C⊗H)e_{4}
+[meaning] \mathfrak m_{\rm LL}=\mathfrak l_{\rm LL}\oplus\mathfrak s_{\rm LL}
+   own     : _{LL}=_{LL}⊕_{LL}
+   importer: m_{LL}=l_{LL}⊕s_{LL}
+[meaning] \mathfrak l_{\rm LL}
+   own     : _{LL}
+   importer: l_{LL}
+[meaning] J^j_{\rm LL}=\mathbf e_j/2
+   own     : J_{LL}^{j}=<bf:e>_{j}/2
+   importer: J_{LL}^{j}=e_{j}/2
+[meaning] K^j_{\rm LL}=i\,\mathbf e_j/2
+   own     : K_{LL}^{j}=i<bf:e>_{j}/2
+   importer: K_{LL}^{j}=ie_{j}/2
+[meaning] W_{\rm LL}(\mathbf u)\mathbf b=-\mathbf b\,\mathbf u
+   own     : W_{LL}(<bf:u>)<bf:b>=-<bf:b><bf:u>
+   importer: W_{LL}(u)b=-bu
+[meaning] [W_{\rm LL}(\mathbf u_1),W_{\rm LL}(\mathbf u_2)]=W_{\rm LL}([\mathbf u_1,\mathbf u_2])
+   own     : [W_{LL}(<bf:u>_{1}),W_{LL}(<bf:u>_{2})]=W_{LL}([<bf:u>_{1},<bf:u>_{2}])
+   importer: [W_{LL}(u_{1}),W_{LL}(u_{2})]=W_{LL}([u_{1},u_{2}])
+[meaning] [\mathbf u,\mathbf b\,\mathbf e_4]=(\rho_{\rm LL}(\mathbf u)\mathbf b)\,\mathbf e_4
+   own     : [<bf:u>,<bf:b><bf:e>_{4}]=(ρ_{LL}(<bf:u>)<bf:b>)<bf:e>_{4}
+   importer: [u,be_{4}]=(ρ_{LL}(u)b)e_{4}
+[meaning] \mathfrak m_{\rm LL}
+   own     : _{LL}
+   importer: m_{LL}
+[meaning] \mathfrak s_{\rm LL}
+   own     : _{LL}
+   importer: s_{LL}
+[meaning] [\mathbf u,\cdot\,]=D_{\rm LL}(\mathbf u)\circ\Theta_{\rm LL}
+   own     : [<bf:u>,·]=D_{LL}(<bf:u>)∘Θ_{LL}
+   importer: [u,·]=D_{LL}(u)∘Θ_{LL}
+[meaning] D_{\rm LL}(\mathbf u)(\mathbf a+\mathbf b\mathbf e_4)=[\mathbf u,\mathbf a]+(-\mathbf b\mathbf u)\mathbf e_4
+   own     : D_{LL}(<bf:u>)(<bf:a>+<bf:b><bf:e>_{4})=[<bf:u>,<bf:a>]+(-<bf:b><bf:u>)<bf:e>_{4}
+   importer: D_{LL}(u)(a+be_{4})=[u,a]+(-bu)e_{4}
+[meaning] D^{\rm v}_{\rm LL}(\mathbf t)(\mathbf a+\mathbf b\mathbf e_4)=(\mathbf t\mathbf b)\mathbf e_4
+   own     : D_{LL}^{v}(<bf:t>)(<bf:a>+<bf:b><bf:e>_{4})=(<bf:t><bf:b>)<bf:e>_{4}
+   importer: D_{LL}^{v}(t)(a+be_{4})=(tb)e_{4}
+[meaning] \mathcal D_{\rm LL}(\mathbf x\mathbf y)=(\mathcal D_{\rm LL}\mathbf x)\mathbf y+\mathbf x(\mathcal D_{\rm LL}\mathbf y)
+   own     : _{LL}(<bf:x><bf:y>)=(_{LL}<bf:x>)<bf:y>+<bf:x>(_{LL}<bf:y>)
+   importer: D_{LL}(xy)=(D_{LL}x)y+x(D_{LL}y)
+[meaning] \mathbf a+\mathbf b\mathbf e_4\mapsto\mathbf g\mathbf a\bar{\mathbf g}+(\mathbf v\mathbf b\bar{\mathbf g})\mathbf e_4
+   own     : <bf:a>+<bf:b><bf:e>_{4}↦<bf:g><bf:a>over{<bf:g>}{_}+(<bf:v><bf:b>over{<bf:g>}{_})<bf:e>_{4}
+   importer: a+be_{4}↦gaover{g}{_}+(vbover{g}{_})e_{4}
+[meaning] \mathbf v
+   own     : <bf:v>
+   importer: v
+[meaning] \varrho_{\rm LL}([\mathbf x,\mathbf y])=\varrho_{\rm LL}(\mathbf x)\varrho_{\rm LL}(\mathbf y)-\varrho_{\rm LL}(\mathbf y)\varrho_{\rm LL}(\mathbf x)
+   own     : ϱ_{LL}([<bf:x>,<bf:y>])=ϱ_{LL}(<bf:x>)ϱ_{LL}(<bf:y>)-ϱ_{LL}(<bf:y>)ϱ_{LL}(<bf:x>)
+   importer: ϱ_{LL}([x,y])=ϱ_{LL}(x)ϱ_{LL}(y)-ϱ_{LL}(y)ϱ_{LL}(x)
+[meaning] \mathsf O_1,\mathsf O_2,\mathsf O_3
+   own     : <sf:O>_{1},<sf:O>_{2},<sf:O>_{3}
+   importer: O_{1},O_{2},O_{3}
+[meaning] \mathrm{Kil}_{\rm LL}(\mathbf x,\mathbf y)=\mathrm{tr}(\mathrm{ad}\,\mathbf x\,\mathrm{ad}\,\mathbf y)
+   own     : Kil_{LL}(<bf:x>,<bf:y>)=tr(ad<bf:x>ad<bf:y>)
+   importer: Kil_{LL}(x,y)=tr(adxady)
+[meaning] \mathrm{ad}\,\mathbf x
+   own     : ad<bf:x>
+   importer: adx
+[meaning] \mathbf y\mapsto[\mathbf x,\mathbf y]
+   own     : <bf:y>↦[<bf:x>,<bf:y>]
+   importer: y↦[x,y]
+[meaning] T^\iota_{\rm LL}=i\,D^{\rm v}_{\rm LL}(\mathbf e_\iota/2)
+   own     : T_{LL}^{ι}=iD_{LL}^{v}(<bf:e>_{ι}/2)
+   importer: T_{LL}^{ι}=iD_{LL}^{v}(e_{ι}/2)
+[meaning] \mathfrak l_{\rm LL}\oplus\mathfrak s_{\rm LL}
+   own     : _{LL}⊕_{LL}
+   importer: l_{LL}⊕s_{LL}
+[meaning] \mathfrak l_{\rm LL}\oplus\mathfrak p_{\rm LL}\oplus\mathfrak s_{\rm LL}
+   own     : _{LL}⊕_{LL}⊕_{LL}
+   importer: l_{LL}⊕p_{LL}⊕s_{LL}
+[meaning] \mathfrak l_{\rm LL}\oplus\mathfrak{su}(2)\oplus\mathfrak s_{\rm LL}
+   own     : _{LL}⊕(2)⊕_{LL}
+   importer: l_{LL}⊕su(2)⊕s_{LL}
+[meaning] \mathbf r=\mathbf r^\dagger
+   own     : <bf:r>=<bf:r>^{†}
+   importer: r=r^{†}
+[meaning] [\mathbf u,\mathbf r]=\mathbf u\mathbf r+\mathbf r\mathbf u^\dagger
+   own     : [<bf:u>,<bf:r>]=<bf:u><bf:r>+<bf:r><bf:u>^{†}
+   importer: [u,r]=ur+ru^{†}
+[meaning] [\mathbf u,\mathbf b\mathbf e_4]=c^{\rm tw}_{\rm LL}(W_{\rm LL}(\mathbf u)\mathbf b)\mathbf e_4
+   own     : [<bf:u>,<bf:b><bf:e>_{4}]=c_{LL}^{tw}(W_{LL}(<bf:u>)<bf:b>)<bf:e>_{4}
+   importer: [u,be_{4}]=c_{LL}^{tw}(W_{LL}(u)b)e_{4}
+[meaning] [\mathbf b\mathbf e_4,\mathbf b'\mathbf e_4]\supset c^{\rm sl}_{\rm LL}(\bar{\mathbf b}\mathbf b'-\bar{\mathbf b}'\mathbf b)
+   own     : [<bf:b><bf:e>_{4},<bf:b>^{′}<bf:e>_{4}]⊃c_{LL}^{sl}(over{<bf:b>}{_}<bf:b>^{′}-over{<bf:b>}{_}^{′}<bf:b>)
+   importer: [be_{4},b^{′}e_{4}]⊃c_{LL}^{sl}(over{b}{_}b^{′}-over{b}{_}^{′}b)
+[meaning] [\mathbf r,\mathbf r']=c^{\rm PP}_{\rm LL}(\mathbf r\bar{\mathbf r}'-\mathbf r'\bar{\mathbf r})
+   own     : [<bf:r>,<bf:r>^{′}]=c_{LL}^{PP}(<bf:r>over{<bf:r>}{_}^{′}-<bf:r>^{′}over{<bf:r>}{_})
+   importer: [r,r^{′}]=c_{LL}^{PP}(rover{r}{_}^{′}-r^{′}over{r}{_})
+[meaning] [\mathbf r,\mathbf b\mathbf e_4]=c^{\rm Ps}_{\rm LL}(\mathbf b^*\bar{\mathbf r})\mathbf e_4
+   own     : [<bf:r>,<bf:b><bf:e>_{4}]=c_{LL}^{Ps}(<bf:b>^{*}over{<bf:r>}{_})<bf:e>_{4}
+   importer: [r,be_{4}]=c_{LL}^{Ps}(b^{*}over{r}{_})e_{4}
+[meaning] [\mathbf b\mathbf e_4,\mathbf b'\mathbf e_4]\supset c^{\rm sP}_{\rm LL}\,i(\bar{\mathbf b}\mathbf b'^*-\bar{\mathbf b}'\mathbf b^*)
+   own     : [<bf:b><bf:e>_{4},<bf:b>^{′}<bf:e>_{4}]⊃c_{LL}^{sP}i(over{<bf:b>}{_}<bf:b>^{′*}-over{<bf:b>}{_}^{′}<bf:b>^{*})
+   importer: [be_{4},b^{′}e_{4}]⊃c_{LL}^{sP}i(over{b}{_}b^{′*}-over{b}{_}^{′}b^{*})
+[meaning] [\mathbf t,\mathbf t']=c^{\rm TT}_{\rm LL}(\mathbf t\mathbf t'-\mathbf t'\mathbf t)
+   own     : [<bf:t>,<bf:t>^{′}]=c_{LL}^{TT}(<bf:t><bf:t>^{′}-<bf:t>^{′}<bf:t>)
+   importer: [t,t^{′}]=c_{LL}^{TT}(tt^{′}-t^{′}t)
+[meaning] [\mathbf t,\mathbf b\mathbf e_4]=c^{\rm Ts}_{\rm LL}(\mathbf t\mathbf b)\mathbf e_4
+   own     : [<bf:t>,<bf:b><bf:e>_{4}]=c_{LL}^{Ts}(<bf:t><bf:b>)<bf:e>_{4}
+   importer: [t,be_{4}]=c_{LL}^{Ts}(tb)e_{4}
+[meaning] [\mathbf b\mathbf e_4,\mathbf b'\mathbf e_4]\supset\mathrm{Re}[c^{\rm sT}_{\rm LL}(\mathbf b\bar{\mathbf b}'-\mathbf b'\bar{\mathbf b})]
+   own     : [<bf:b><bf:e>_{4},<bf:b>^{′}<bf:e>_{4}]⊃Re[c_{LL}^{sT}(<bf:b>over{<bf:b>}{_}^{′}-<bf:b>^{′}over{<bf:b>}{_})]
+   importer: [be_{4},b^{′}e_{4}]⊃Re[c_{LL}^{sT}(bover{b}{_}^{′}-b^{′}over{b}{_})]
+[meaning] \mathbf b\mapsto\lambda^{\rm sc}_{\rm LL}\mathbf b
+   own     : <bf:b>↦λ_{LL}^{sc}<bf:b>
+   importer: b↦λ_{LL}^{sc}b
+[meaning] \mathbf x=\mathbf x^\dagger=x^0_{\rm LL}\mathbf e_0+i\sum_{p=1}^7x^p_{\rm LL}\mathbf e_p
+   own     : <bf:x>=<bf:x>^{†}=x_{LL}^{0}<bf:e>_{0}+i∑_{p=1}^{7}x_{LL}^{p}<bf:e>_{p}
+   importer: x=x^{†}=x_{LL}^{0}e_{0}+i∑_{p=1}^{7}x_{LL}^{p}e_{p}
+[meaning] N_{\rm LL}(\mathbf x)=(x^0_{\rm LL})^2-\sum_p(x^p_{\rm LL})^2
+   own     : N_{LL}(<bf:x>)=(x_{LL}^{0})^{2}-∑_{p}(x_{LL}^{p})^{2}
+   importer: N_{LL}(x)=(x_{LL}^{0})^{2}-∑_{p}(x_{LL}^{p})^{2}
+[meaning] \mathbb H+(i\mathbb H)\mathbf e_4
+   own     : +(i)<bf:e>_{4}
+   importer: H+(iH)e_{4}
+[meaning] \mathbf e_0,\dots,\mathbf e_3,i\mathbf e_4,\dots,i\mathbf e_7
+   own     : <bf:e>_{0},…,<bf:e>_{3},i<bf:e>_{4},…,i<bf:e>_{7}
+   importer: e_{0},…,e_{3},ie_{4},…,ie_{7}
+[meaning] X^{\rm LL}_{\mathbf x}(\mathbf w)=\mathbf w\mathbf x
+   own     : X_{<bf:x>}^{LL}(<bf:w>)=<bf:w><bf:x>
+   importer: X_{x}^{LL}(w)=wx
+[meaning] \mathbf w(\theta_{\rm LL})
+   own     : <bf:w>(θ_{LL})
+   importer: w(θ_{LL})
+[meaning] d\mathbf w/d\theta_{\rm LL}=\mathbf w\mathbf x
+   own     : d<bf:w>/dθ_{LL}=<bf:w><bf:x>
+   importer: dw/dθ_{LL}=wx
+[meaning] \mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger
+   own     : <bf:x>↦<bf:g><bf:x><bf:g>^{†}
+   importer: x↦gxg^{†}
+[meaning] \chi_{\rm LL}\mapsto M_{\rm LL}(\mathbf g)\chi_{\rm LL}
+   own     : χ_{LL}↦M_{LL}(<bf:g>)χ_{LL}
+   importer: χ_{LL}↦M_{LL}(g)χ_{LL}
+[meaning] M_{\rm LL}(\mathbf x)
+   own     : M_{LL}(<bf:x>)
+   importer: M_{LL}(x)
+[meaning] \mathcal V_{\rm LL}(\mathbf u)\mathbf x=\mathbf u\mathbf x+\mathbf x\mathbf u^\dagger
+   own     : _{LL}(<bf:u>)<bf:x>=<bf:u><bf:x>+<bf:x><bf:u>^{†}
+   importer: V_{LL}(u)x=ux+xu^{†}
+[meaning] \mathcal V_{\rm LL}(\mathbf u)^p{}_{p'}
+   own     : _{LL}(<bf:u>)^{p}_{p^{′}}
+   importer: V_{LL}(u)^{p}_{p^{′}}
+[meaning] M_{\rm LL}(\mathbf b\mathbf b')=M_{\rm LL}(\mathbf b)M_{\rm LL}(\mathbf b')
+   own     : M_{LL}(<bf:b><bf:b>^{′})=M_{LL}(<bf:b>)M_{LL}(<bf:b>^{′})
+   importer: M_{LL}(bb^{′})=M_{LL}(b)M_{LL}(b^{′})
+[meaning] \det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)
+   own     : detM_{LL}(<bf:b>)=N_{LL}(<bf:b>)
+   importer: detM_{LL}(b)=N_{LL}(b)
+[meaning] \mathbf b\mathbf e_4
+   own     : <bf:b><bf:e>_{4}
+   importer: be_{4}
+[meaning] \psi'_{\rm LL}=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf b)^T
+   own     : ψ_{LL}^{′}=<sf:E>_{LL}^{-1}M_{LL}(<bf:b>)^{T}
+   importer: ψ_{LL}^{′}=E_{LL}^{-1}M_{LL}(b)^{T}
+[meaning] \mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota
+   own     : <sf:K>_{LL}^{ι}=C_{LL}γ_{LL}^{ch}⊗<sf:E>_{LL}τ_{ι}^{LL}
+   importer: K_{LL}^{ι}=C_{LL}γ_{LL}^{ch}⊗E_{LL}τ_{ι}^{LL}
+[meaning] \mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota
+   own     : <sf:K>_{LL}^{′ι}=C_{LL}⊗<sf:E>_{LL}τ_{ι}^{LL}
+   importer: K_{LL}^{′ι}=C_{LL}⊗E_{LL}τ_{ι}^{LL}
+[meaning] \mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}
+   own     : <sf:K>_{LL}^{s}=C_{LL}γ_{LL}^{ch}⊗<sf:E>_{LL}⊗<sf:E>_{LL}
+   importer: K_{LL}^{s}=C_{LL}γ_{LL}^{ch}⊗E_{LL}⊗E_{LL}
+[meaning] \mathsf K
+   own     : <sf:K>
+   importer: K
+[meaning] \Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}
+   own     : Ψ_{LL}^{T}<sf:K>Ψ_{LL}
+   importer: Ψ_{LL}^{T}KΨ_{LL}
+[meaning] \mathsf K_{12}
+   own     : <sf:K>_{12}
+   importer: K_{12}
+[meaning] \Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})
+   own     : Π_{LL}^{ι}=∑_{over{q}{⇀}_{LL}}Ψ_{LL}(over{q}{⇀}_{LL})^{T}<sf:K>_{LL}^{ι}Ψ_{LL}(-over{q}{⇀}_{LL})
+   importer: Π_{LL}^{ι}=∑_{over{q}{⇀}_{LL}}Ψ_{LL}(over{q}{⇀}_{LL})^{T}K_{LL}^{ι}Ψ_{LL}(-over{q}{⇀}_{LL})
+[meaning] E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}
+   own     : E_{LL}^{±}=[(ε_{LL}±μ_{LL})^{2}+Δ_{LL}^{2}]^{1/2}
+   importer: E_{LL}^{±}=[(ϵ_{LL}±μ_{LL})^{2}+Δ_{LL}^{2}]^{1/2}
+[meaning] (\tilde E^\pm_{\rm LL})^2=\varepsilon_{\rm LL}^2+\mu_{\rm LL}^2+\Delta_{\rm LL}^2\pm2[\mu_{\rm LL}^2\varepsilon_{\rm LL}^2+m_{\rm LL}^2\Delta_{\rm LL}^2]^{1/2}
+   own     : (over{E}{~}_{LL}^{±})^{2}=ε_{LL}^{2}+μ_{LL}^{2}+Δ_{LL}^{2}±2[μ_{LL}^{2}ε_{LL}^{2}+m_{LL}^{2}Δ_{LL}^{2}]^{1/2}
+   importer: (over{E}{~}_{LL}^{±})^{2}=ϵ_{LL}^{2}+μ_{LL}^{2}+Δ_{LL}^{2}±2[μ_{LL}^{2}ϵ_{LL}^{2}+m_{LL}^{2}Δ_{LL}^{2}]^{1/2}
+[meaning] \pm\varepsilon_{\rm LL}
+   own     : ±ε_{LL}
+   importer: ±ϵ_{LL}
+[meaning] \vec d_{\rm LL}=(d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})\in\mathbb C^3
+   own     : over{d}{⇀}_{LL}=(d_{LL}^{1},d_{LL}^{2},d_{LL}^{3})∈^{3}
+   importer: over{d}{⇀}_{LL}=(d_{LL}^{1},d_{LL}^{2},d_{LL}^{3})∈C^{3}
+[meaning] \mathsf H_{\rm LL}=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P_{\rm LL}^\dagger&-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})^T\end{pmatrix}
+   own     : <sf:H>_{LL}=(grid[<sf:h>_{LL}(over{q}{⇀}_{LL})-μ_{LL}&<sf:P>_{LL};<sf:P>_{LL}^{†}&-(<sf:h>_{LL}(-over{q}{⇀}_{LL})-μ_{LL})^{T}])
+   importer: H_{LL}=(grid[h_{LL}(over{q}{⇀}_{LL})-μ_{LL}&P_{LL};P_{LL}^{†}&-(h_{LL}(-over{q}{⇀}_{LL})-μ_{LL})^{T}])
+[meaning] \mathcal N_{\rm LL}=(\Psi_{\rm LL}(\vec q_{\rm LL}),\Psi_{\rm LL}^{*}(-\vec q_{\rm LL}))
+   own     : _{LL}=(Ψ_{LL}(over{q}{⇀}_{LL}),Ψ_{LL}^{*}(-over{q}{⇀}_{LL}))
+   importer: N_{LL}=(Ψ_{LL}(over{q}{⇀}_{LL}),Ψ_{LL}^{*}(-over{q}{⇀}_{LL}))
+[meaning] \mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger
+   own     : <sf:D>_{LL}=∑_{ι}d_{LL}^{ι}(<sf:E>_{LL}τ_{ι}^{LL})^{†}
+   importer: D_{LL}=∑_{ι}d_{LL}^{ι}(E_{LL}τ_{ι}^{LL})^{†}
+[meaning] \mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}
+   own     : <sf:P>_{LL}=(C_{LL}γ_{LL}^{ch})^{†}⊗<sf:D>_{LL}
+   importer: P_{LL}=(C_{LL}γ_{LL}^{ch})^{†}⊗D_{LL}
+[meaning] \Psi^T_{\rm LL}\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}
+   own     : Ψ_{LL}^{T}<sf:K>_{LL}^{ι}Ψ_{LL}
+   importer: Ψ_{LL}^{T}K_{LL}^{ι}Ψ_{LL}
+[meaning] \mathfrak{sl}(2,\mathbb R)
+   own     : (2,)
+   importer: sl(2,R)
+[meaning] \mathfrak{sl}(2)
+   own     : (2)
+   importer: sl(2)
+[meaning] \mathfrak{su}(2)
+   own     : (2)
+   importer: su(2)
+[meaning] \mathfrak{spin}(7)
+   own     : (7)
+   importer: spin(7)
+[meaning] \mathfrak g_2
+   own     : _{2}
+   importer: g_{2}
+[meaning] x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j
+   own     : x_{LL}^{0}<bf:e>_{0}+i∑_{j}x_{LL}^{j}<bf:e>_{j}
+   importer: x_{LL}^{0}e_{0}+i∑_{j}x_{LL}^{j}e_{j}
+[meaning] \mathbf f_0,\dots,\mathbf f_3
+   own     : <bf:f>_{0},…,<bf:f>_{3}
+   importer: f_{0},…,f_{3}
+[meaning] N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})=\eta^{\rm LL}_{pp'}
+   own     : N_{LL}(<bf:f>_{p},<bf:f>_{p^{′}})=η_{pp^{′}}^{LL}
+   importer: N_{LL}(f_{p},f_{p^{′}})=η_{pp^{′}}^{LL}
+[meaning] \mathbf f_j=i\,\mathbf e_j
+   own     : <bf:f>_{j}=i<bf:e>_{j}
+   importer: f_{j}=ie_{j}
+[meaning] M_{\rm LL}(\bar{\mathbf f}_0)=\sigma^{\rm LL}_0
+   own     : M_{LL}(over{<bf:f>}{_}_{0})=σ_{0}^{LL}
+   importer: M_{LL}(over{f}{_}_{0})=σ_{0}^{LL}
+[meaning] M_{\rm LL}(\bar{\mathbf f}_j)=-\sigma^{\rm LL}_j
+   own     : M_{LL}(over{<bf:f>}{_}_{j})=-σ_{j}^{LL}
+   importer: M_{LL}(over{f}{_}_{j})=-σ_{j}^{LL}
+[meaning] \gamma^p_{\rm LL}[\mathbf f]\gamma^{p'}_{\rm LL}[\mathbf f]+\gamma^{p'}_{\rm LL}[\mathbf f]\gamma^p_{\rm LL}[\mathbf f]=2N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})\,\mathsf 1_4
+   own     : γ_{LL}^{p}[<bf:f>]γ_{LL}^{p^{′}}[<bf:f>]+γ_{LL}^{p^{′}}[<bf:f>]γ_{LL}^{p}[<bf:f>]=2N_{LL}(<bf:f>_{p},<bf:f>_{p^{′}})<sf:1>_{4}
+   importer: γ_{LL}^{p}[f]γ_{LL}^{p^{′}}[f]+γ_{LL}^{p^{′}}[f]γ_{LL}^{p}[f]=2N_{LL}(f_{p},f_{p^{′}})1_{4}
+[meaning] \mathbf g^*
+   own     : <bf:g>^{*}
+   importer: g^{*}
+[meaning] \mathbf f_p\mapsto\tilde{\mathbf g}\,\mathbf f_p\,\tilde{\mathbf g}^\dagger
+   own     : <bf:f>_{p}↦over{<bf:g>}{~}<bf:f>_{p}over{<bf:g>}{~}^{†}
+   importer: f_{p}↦over{g}{~}f_{p}over{g}{~}^{†}
+[meaning] \mathsf S_{\rm LL}(\mathbf g)=\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))
+   own     : <sf:S>_{LL}(<bf:g>)=diag(M_{LL}(over{<bf:g>}{~}),M_{LL}(<bf:g>))
+   importer: S_{LL}(g)=diag(M_{LL}(over{g}{~}),M_{LL}(g))
+[meaning] \mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0
+   own     : <sf:S>_{LL}(<bf:g>)⊗σ_{0}^{LL}
+   importer: S_{LL}(g)⊗σ_{0}^{LL}
+[meaning] [\mathsf L_{\rm LL}(\mathbf g)]_{pp'}
+   own     : [<sf:L>_{LL}(<bf:g>)]_{pp^{′}}
+   importer: [L_{LL}(g)]_{pp^{′}}
+[meaning] \mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))
+   own     : <sf:s>_{LL}(<bf:u>)=diag(-M_{LL}(<bf:u>)^{†},M_{LL}(<bf:u>))
+   importer: s_{LL}(u)=diag(-M_{LL}(u)^{†},M_{LL}(u))
+[meaning] \mathsf S_{\rm LL}
+   own     : <sf:S>_{LL}
+   importer: S_{LL}
+[meaning] \mathbf b^+_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\,\mathbf v\,\mathbf b^+_{\rm LL}\,\bar{\mathbf g}
+   own     : <bf:b>_{LL}^{+}↦exp(iθ_{LL}^{F})<bf:v><bf:b>_{LL}^{+}over{<bf:g>}{_}
+   importer: b_{LL}^{+}↦exp(iθ_{LL}^{F})vb_{LL}^{+}over{g}{_}
+[meaning] \varphi^{\rm LL}_{\mathbf g,\mathbf v}
+   own     : φ_{<bf:g>,<bf:v>}^{LL}
+   importer: φ_{g,v}^{LL}
+[meaning] \mathbf b^-_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\,\mathbf v\,\mathbf b^-_{\rm LL}\,\mathbf g^\dagger
+   own     : <bf:b>_{LL}^{-}↦exp(iθ_{LL}^{F})<bf:v><bf:b>_{LL}^{-}<bf:g>^{†}
+   importer: b_{LL}^{-}↦exp(iθ_{LL}^{F})vb_{LL}^{-}g^{†}
+[meaning] \mathsf U_{\rm LL}
+   own     : <sf:U>_{LL}
+   importer: U_{LL}
+[meaning] \mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})
+   own     : <sf:R>_{LL}^{v}(<sf:U>_{LL})
+   importer: R_{LL}^{v}(U_{LL})
+[meaning] \mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota'\iota}\tau^{\rm LL}_{\iota'}
+   own     : <sf:U>_{LL}τ_{ι}^{LL}<sf:U>_{LL}^{†}=∑_{ι^{′}}[<sf:R>_{LL}^{v}(<sf:U>_{LL})]_{ι^{′}ι}τ_{ι^{′}}^{LL}
+   importer: U_{LL}τ_{ι}^{LL}U_{LL}^{†}=∑_{ι^{′}}[R_{LL}^{v}(U_{LL})]_{ι^{′}ι}τ_{ι^{′}}^{LL}
+[meaning] SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}
+   own     : SL(2,)×SU(2)_{v}×U(1)_{LL}^{F}
+   importer: SL(2,C)×SU(2)_{v}×U(1)_{LL}^{F}
+[meaning] \mathbf t
+   own     : <bf:t>
+   importer: t
+[meaning] M_{\rm LL}(\mathbf t^{\rm A}_{{\rm LL},p})=-i\,\mathsf a_{{\rm LL},p}
+   own     : M_{LL}(<bf:t>_{LL,p}^{A})=-i<sf:a>_{LL,p}
+   importer: M_{LL}(t_{LL,p}^{A})=-ia_{LL,p}
+[meaning] \mathsf 1_8
+   own     : <sf:1>_{8}
+   importer: 1_{8}
+[meaning] \nabla^{\rm LL}_p=\partial_p+\Gamma^{\rm LL}_p-i\,\mathsf A_{{\rm LL},p}
+   own     : ∇_{p}^{LL}=∂_{p}+Γ_{p}^{LL}-i<sf:A>_{LL,p}
+   importer: ∇_{p}^{LL}=∂_{p}+Γ_{p}^{LL}-iA_{LL,p}
+[meaning] \nabla^{{\rm LL}*}_p=\partial_p+(\Gamma^{\rm LL}_p)^*+i\,(\mathsf A_{{\rm LL},p})^*
+   own     : ∇_{p}^{LL*}=∂_{p}+(Γ_{p}^{LL})^{*}+i(<sf:A>_{LL,p})^{*}
+   importer: ∇_{p}^{LL*}=∂_{p}+(Γ_{p}^{LL})^{*}+i(A_{LL,p})^{*}
+[meaning] \mathbf D_{\rm LL}=\sum_p\mathbf f_p\nabla^{\rm LL}_p
+   own     : <bf:D>_{LL}=∑_{p}<bf:f>_{p}∇_{p}^{LL}
+   importer: D_{LL}=∑_{p}f_{p}∇_{p}^{LL}
+[meaning] D_{\rm LL}(\mathbf u)
+   own     : D_{LL}(<bf:u>)
+   importer: D_{LL}(u)
+[meaning] \sum_p\gamma^p_{\rm LL}\nabla^{\rm LL}_p=\begin{pmatrix}0&M_{\rm LL}(\mathbf D_{\rm LL})\\M_{\rm LL}(\bar{\mathbf D}_{\rm LL})&0\end{pmatrix}
+   own     : ∑_{p}γ_{LL}^{p}∇_{p}^{LL}=(grid[0&M_{LL}(<bf:D>_{LL});M_{LL}(over{<bf:D>}{_}_{LL})&0])
+   importer: ∑_{p}γ_{LL}^{p}∇_{p}^{LL}=(grid[0&M_{LL}(D_{LL});M_{LL}(over{D}{_}_{LL})&0])
+[meaning] \mathsf R^{\rm LL}_{pp'}-i\,g^{\rm v}_{\rm LL}\sum_\iota\mathsf F^\iota_{{\rm LL},pp'}T^\iota_{\rm LL}-i\,g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},pp'}
+   own     : <sf:R>_{pp^{′}}^{LL}-ig_{LL}^{v}∑_{ι}<sf:F>_{LL,pp^{′}}^{ι}T_{LL}^{ι}-ig_{LL}^{F}<sf:F>_{LL,pp^{′}}^{F}
+   importer: R_{pp^{′}}^{LL}-ig_{LL}^{v}∑_{ι}F_{LL,pp^{′}}^{ι}T_{LL}^{ι}-ig_{LL}^{F}F_{LL,pp^{′}}^{F}
+[meaning] h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL}
+   own     : h_{LL}^{∇}-iΓ_{0}^{LL}-<sf:A>_{LL,0}-μ_{LL}
+   importer: h_{LL}^{∇}-iΓ_{0}^{LL}-A_{LL,0}-μ_{LL}
+[meaning] \mathsf P_{\rm LL}
+   own     : <sf:P>_{LL}
+   importer: P_{LL}
+[meaning] \mathsf P_{\rm LL}^\dagger
+   own     : <sf:P>_{LL}^{†}
+   importer: P_{LL}^{†}
+[meaning] -(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL})^*
+   own     : -(h_{LL}^{∇}-iΓ_{0}^{LL}-<sf:A>_{LL,0}-μ_{LL})^{*}
+   importer: -(h_{LL}^{∇}-iΓ_{0}^{LL}-A_{LL,0}-μ_{LL})^{*}
+[meaning] \mathcal H^{\rm DB}_{\rm LL}(\vec q_{\rm LL})
+   own     : ℋ_{LL}^{DB}(over{q}{⇀}_{LL})
+   importer: H_{LL}^{DB}(over{q}{⇀}_{LL})
+[meaning] \mathsf H_{\rm LL}(\vec q_{\rm LL})
+   own     : <sf:H>_{LL}(over{q}{⇀}_{LL})
+   importer: H_{LL}(over{q}{⇀}_{LL})
+[meaning] \mathcal H^{\rm DB}_{\rm LL}
+   own     : ℋ_{LL}^{DB}
+   importer: H_{LL}^{DB}
+[meaning] \Pi^\iota_{\rm LL}(x_{\rm LL})=\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(x_{\rm LL})
+   own     : Π_{LL}^{ι}(x_{LL})=Ψ_{LL}(x_{LL})^{T}<sf:K>_{LL}^{ι}Ψ_{LL}(x_{LL})
+   importer: Π_{LL}^{ι}(x_{LL})=Ψ_{LL}(x_{LL})^{T}K_{LL}^{ι}Ψ_{LL}(x_{LL})
+[meaning] \mathcal J^{{\rm F},p}_{\rm LL}=g^{\rm F}_{\rm LL}\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}
+   own     : _{LL}^{F,p}=g_{LL}^{F}over{Ψ}{_}_{LL}γ_{LL}^{p}Ψ_{LL}
+   importer: J_{LL}^{F,p}=g_{LL}^{F}over{Ψ}{_}_{LL}γ_{LL}^{p}Ψ_{LL}
+[meaning] \mathcal J^{\iota,p}_{\rm LL}=g^{\rm v}_{\rm LL}\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}
+   own     : _{LL}^{ι,p}=g_{LL}^{v}over{Ψ}{_}_{LL}γ_{LL}^{p}T_{LL}^{ι}Ψ_{LL}
+   importer: J_{LL}^{ι,p}=g_{LL}^{v}over{Ψ}{_}_{LL}γ_{LL}^{p}T_{LL}^{ι}Ψ_{LL}
+[meaning] \mathcal L^{\rm c}_{\rm LL}
+   own     : ℒ_{LL}^{c}
+   importer: L_{LL}^{c}
+[meaning] \exp(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0))
+   own     : exp(-iℓ_{LL}^{x}(g_{LL}^{v}<sf:a>_{LL,j}+g_{LL}^{F}A_{LL,j}^{F}σ_{0}^{LL}))
+   importer: exp(-iℓ_{LL}^{x}(g_{LL}^{v}a_{LL,j}+g_{LL}^{F}A_{LL,j}^{F}σ_{0}^{LL}))
+[meaning] \exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}
+   own     : exp(iθ_{LL}^{F})<sf:U>_{LL}
+   importer: exp(iθ_{LL}^{F})U_{LL}
+[meaning] \mathsf X^{\rm ph}_{\rm LL}=\begin{pmatrix}0&\mathsf 1_8\\\mathsf 1_8&0\end{pmatrix}
+   own     : <sf:X>_{LL}^{ph}=(grid[0&<sf:1>_{8};<sf:1>_{8}&0])
+   importer: X_{LL}^{ph}=(grid[0&1_{8};1_{8}&0])
+[meaning] \mathsf X^{\rm ph}_{\rm LL}(\mathcal H^{\rm DB}_{\rm LL})^*\mathsf X^{\rm ph}_{\rm LL}=-\mathcal H^{\rm DB}_{\rm LL}
+   own     : <sf:X>_{LL}^{ph}(ℋ_{LL}^{DB})^{*}<sf:X>_{LL}^{ph}=-ℋ_{LL}^{DB}
+   importer: X_{LL}^{ph}(H_{LL}^{DB})^{*}X_{LL}^{ph}=-H_{LL}^{DB}
+[meaning] \mathsf A_{{\rm LL},p}
+   own     : <sf:A>_{LL,p}
+   importer: A_{LL,p}
+[meaning] \mathsf h_{\rm LL}(\vec q_{\rm LL})
+   own     : <sf:h>_{LL}(over{q}{⇀}_{LL})
+   importer: h_{LL}(over{q}{⇀}_{LL})
+[meaning] \sin\vartheta^{\rm B}_{\rm LL}\,\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL}
+   own     : sinϑ_{LL}^{B}<sf:K>_{LL}^{3}χ_{LL}^{pw}
+   importer: sinϑ_{LL}^{B}K_{LL}^{3}χ_{LL}^{pw}
+[meaning] (\psi^{\rm p}_{\rm LL},\psi^{\rm h}_{\rm LL})=(\varphi^{\rm K}_{\rm LL}\chi^{\rm K}_{\rm LL},\,i(\mathsf K^3_{\rm LL})^\dagger\alpha^1_{\rm LL}\varphi^{\rm K}_{\rm LL}\chi^{\rm K}_{\rm LL})
+   own     : (ψ_{LL}^{p},ψ_{LL}^{h})=(φ_{LL}^{K}χ_{LL}^{K},i(<sf:K>_{LL}^{3})^{†}α_{LL}^{1}φ_{LL}^{K}χ_{LL}^{K})
+   importer: (ψ_{LL}^{p},ψ_{LL}^{h})=(φ_{LL}^{K}χ_{LL}^{K},i(K_{LL}^{3})^{†}α_{LL}^{1}φ_{LL}^{K}χ_{LL}^{K})
+[meaning] \mathsf Q^{\rm K}_{\rm LL}=\begin{pmatrix}0&-i\alpha^1_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger\\-i\alpha^1_{\rm LL}\mathsf K^3_{\rm LL}&0\end{pmatrix}
+   own     : <sf:Q>_{LL}^{K}=(grid[0&-iα_{LL}^{1}(<sf:K>_{LL}^{3})^{†};-iα_{LL}^{1}<sf:K>_{LL}^{3}&0])
+   importer: Q_{LL}^{K}=(grid[0&-iα_{LL}^{1}(K_{LL}^{3})^{†};-iα_{LL}^{1}K_{LL}^{3}&0])
+[meaning] (\mathsf Q^{\rm K}_{\rm LL})^2
+   own     : (<sf:Q>_{LL}^{K})^{2}
+   importer: (Q_{LL}^{K})^{2}
+[meaning] (\mathcal H^{\rm DB}_{\rm LL})^2=\big(-d^2/d(x^1_{\rm LL})^2+(q^2_{\rm LL})^2+(q^3_{\rm LL})^2+m_{\rm LL}^2+\Delta_{\rm LL}^2\big)+(d\Delta_{\rm LL}/dx^1_{\rm LL})\,\mathsf Q^{\rm K}_{\rm LL}
+   own     : (ℋ_{LL}^{DB})^{2}=(-d^{2}/d(x_{LL}^{1})^{2}+(q_{LL}^{2})^{2}+(q_{LL}^{3})^{2}+m_{LL}^{2}+Δ_{LL}^{2})+(dΔ_{LL}/dx_{LL}^{1})<sf:Q>_{LL}^{K}
+   importer: (H_{LL}^{DB})^{2}=(-d^{2}/d(x_{LL}^{1})^{2}+(q_{LL}^{2})^{2}+(q_{LL}^{3})^{2}+m_{LL}^{2}+Δ_{LL}^{2})+(dΔ_{LL}/dx_{LL}^{1})Q_{LL}^{K}
+[meaning] \mathsf F^{\rm F}_{{\rm LL},12}
+   own     : <sf:F>_{LL,12}^{F}
+   importer: F_{LL,12}^{F}
+[meaning] \mathsf F^3_{{\rm LL},12}
+   own     : <sf:F>_{LL,12}^{3}
+   importer: F_{LL,12}^{3}
+[meaning] \pm\varepsilon^{\rm lat}_{\rm LL}
+   own     : ±ε_{LL}^{lat}
+   importer: ±ϵ_{LL}^{lat}
+[meaning] \varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL})^2
+   own     : ε_{LL}^{lat}(over{q}{⇀}_{LL})^{2}
+   importer: ϵ_{LL}^{lat}(over{q}{⇀}_{LL})^{2}
+[meaning] (0,\mathsf K^3_{\rm LL}\chi^{\rm pw}_{\rm LL})
+   own     : (0,<sf:K>_{LL}^{3}χ_{LL}^{pw})
+   importer: (0,K_{LL}^{3}χ_{LL}^{pw})
+[meaning] (\pm\varepsilon_{\rm LL}-\mu_{\rm LL},\Delta_{\rm LL})
+   own     : (±ε_{LL}-μ_{LL},Δ_{LL})
+   importer: (±ϵ_{LL}-μ_{LL},Δ_{LL})
+[meaning] (\Delta_{\rm LL},-(\pm\varepsilon_{\rm LL}-\mu_{\rm LL}))
+   own     : (Δ_{LL},-(±ε_{LL}-μ_{LL}))
+   importer: (Δ_{LL},-(±ϵ_{LL}-μ_{LL}))
+[meaning] \Psi^T_{\rm LL}\mathsf K^{\rm g}_{\rm LL}\Psi_{\rm LL}=\sum_{k,k'}(\mathsf K^{\rm g}_{\rm LL})_{kk'}\Psi_{{\rm LL},k}\Psi_{{\rm LL},k'}
+   own     : Ψ_{LL}^{T}<sf:K>_{LL}^{g}Ψ_{LL}=∑_{k,k^{′}}(<sf:K>_{LL}^{g})_{kk^{′}}Ψ_{LL,k}Ψ_{LL,k^{′}}
+   importer: Ψ_{LL}^{T}K_{LL}^{g}Ψ_{LL}=∑_{k,k^{′}}(K_{LL}^{g})_{kk^{′}}Ψ_{LL,k}Ψ_{LL,k^{′}}
+[meaning] \mathrm{diag}(\mathsf E_{\rm LL}\otimes\mathsf V^-_{\rm LL},\mathsf E_{\rm LL}\otimes\mathsf V^+_{\rm LL})
+   own     : diag(<sf:E>_{LL}⊗<sf:V>_{LL}^{-},<sf:E>_{LL}⊗<sf:V>_{LL}^{+})
+   importer: diag(E_{LL}⊗V_{LL}^{-},E_{LL}⊗V_{LL}^{+})
+[meaning] \mathsf V^\pm_{\rm LL}
+   own     : <sf:V>_{LL}^{±}
+   importer: V_{LL}^{±}
+[meaning] \mathsf K^{(\pm1)}_{\rm LL}=(\mathsf K^1_{\rm LL}\mp i\mathsf K^2_{\rm LL})/\sqrt2
+   own     : <sf:K>_{LL}^{(±1)}=(<sf:K>_{LL}^{1}∓i<sf:K>_{LL}^{2})/sqrt{2}
+   importer: K_{LL}^{(±1)}=(K_{LL}^{1}∓iK_{LL}^{2})/sqrt{2}
+[meaning] \mathsf K^{(0)}_{\rm LL}=\mathsf K^3_{\rm LL}
+   own     : <sf:K>_{LL}^{(0)}=<sf:K>_{LL}^{3}
+   importer: K_{LL}^{(0)}=K_{LL}^{3}
+[meaning] \hat\Pi^\iota_{\rm LL}=\sum_{k,k'}(\mathsf K^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}
+   own     : over{Π}{^}_{LL}^{ι}=∑_{k,k^{′}}(<sf:K>_{LL}^{ι})_{kk^{′}}over{c}{^}_{LL,k}over{c}{^}_{LL,k^{′}}
+   importer: over{Π}{^}_{LL}^{ι}=∑_{k,k^{′}}(K_{LL}^{ι})_{kk^{′}}over{c}{^}_{LL,k}over{c}{^}_{LL,k^{′}}
+[meaning] -\varepsilon_{\rm LL}
+   own     : -ε_{LL}
+   importer: -ϵ_{LL}
+[meaning] +\varepsilon_{\rm LL}
+   own     : +ε_{LL}
+   importer: +ϵ_{LL}
+[meaning] \mathsf K^3_{\rm LL}
+   own     : <sf:K>_{LL}^{3}
+   importer: K_{LL}^{3}
+[meaning] t^{\rm p}_{\rm LL}=\Delta_{\rm LL}/(E^-_{\rm LL}+\varepsilon_{\rm LL}-\mu_{\rm LL})
+   own     : t_{LL}^{p}=Δ_{LL}/(E_{LL}^{-}+ε_{LL}-μ_{LL})
+   importer: t_{LL}^{p}=Δ_{LL}/(E_{LL}^{-}+ϵ_{LL}-μ_{LL})
+[meaning] t^{\rm a}_{\rm LL}=\Delta_{\rm LL}/(E^+_{\rm LL}+\varepsilon_{\rm LL}+\mu_{\rm LL})
+   own     : t_{LL}^{a}=Δ_{LL}/(E_{LL}^{+}+ε_{LL}+μ_{LL})
+   importer: t_{LL}^{a}=Δ_{LL}/(E_{LL}^{+}+ϵ_{LL}+μ_{LL})
+[meaning] \mathcal L^\nabla_{\rm LL}
+   own     : ℒ_{LL}^{∇}
+   importer: L_{LL}^{∇}
+[meaning] \nabla^{\rm B}_{{\rm LL},p}\vec d_{\rm LL}=\partial_p\vec d_{\rm LL}-2i\,g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}\vec d_{\rm LL}+g^{\rm v}_{\rm LL}\mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}
+   own     : ∇_{LL,p}^{B}over{d}{⇀}_{LL}=∂_{p}over{d}{⇀}_{LL}-2ig_{LL}^{F}A_{LL,p}^{F}over{d}{⇀}_{LL}+g_{LL}^{v}_{LL,p}^{v}over{d}{⇀}_{LL}
+   importer: ∇_{LL,p}^{B}over{d}{⇀}_{LL}=∂_{p}over{d}{⇀}_{LL}-2ig_{LL}^{F}A_{LL,p}^{F}over{d}{⇀}_{LL}+g_{LL}^{v}A_{LL,p}^{v}over{d}{⇀}_{LL}
+[meaning] (\mathcal A^{\rm v}_{{\rm LL},p})_{\iota\iota''}=\sum_{\iota'}\epsilon^{\rm LL}_{\iota\iota'\iota''}A^{\iota'}_{{\rm LL},p}
+   own     : (_{LL,p}^{v})_{ιι^{′′}}=∑_{ι^{′}}ϵ_{ιι^{′}ι^{′′}}^{LL}A_{LL,p}^{ι^{′}}
+   importer: (A_{LL,p}^{v})_{ιι^{′′}}=∑_{ι^{′}}ϵ_{ιι^{′}ι^{′′}}^{LL}A_{LL,p}^{ι^{′}}
+[meaning] \mathcal A^{\rm v}_{{\rm LL},p}\vec d_{\rm LL}=\vec A^{\rm v}_{{\rm LL},p}\times\vec d_{\rm LL}
+   own     : _{LL,p}^{v}over{d}{⇀}_{LL}=over{A}{⇀}_{LL,p}^{v}×over{d}{⇀}_{LL}
+   importer: A_{LL,p}^{v}over{d}{⇀}_{LL}=over{A}{⇀}_{LL,p}^{v}×over{d}{⇀}_{LL}
+[meaning] \exp(i\mathcal S^{\rm B}_{\rm LL})
+   own     : exp(i_{LL}^{B})
+   importer: exp(iS_{LL}^{B})
+[meaning] \exp(i\int d^4x_{\rm LL}\,\mathcal L^{\rm HS}_{\rm LL})
+   own     : exp(i∫d^{4}x_{LL}ℒ_{LL}^{HS})
+   importer: exp(i∫d^{4}x_{LL}L_{LL}^{HS})
+[meaning] {\rm tr}\big(\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}+\vec k^{\rm B}_{\rm LL}/2)\mathsf Y^+_{\rm LL}(\vec q_{\rm LL}-\vec k^{\rm B}_{\rm LL}/2)\big)
+   own     : tr(<sf:Y>_{LL}^{+}(over{q}{⇀}_{LL}+over{k}{⇀}_{LL}^{B}/2)<sf:Y>_{LL}^{+}(over{q}{⇀}_{LL}-over{k}{⇀}_{LL}^{B}/2))
+   importer: tr(Y_{LL}^{+}(over{q}{⇀}_{LL}+over{k}{⇀}_{LL}^{B}/2)Y_{LL}^{+}(over{q}{⇀}_{LL}-over{k}{⇀}_{LL}^{B}/2))
+[meaning] \varepsilon_{\rm LL}(\pm)=(\lvert\vec q_{\rm LL}\pm\vec k^{\rm B}_{\rm LL}/2\rvert^2+m_{\rm LL}^2)^{1/2}
+   own     : ε_{LL}(±)=(|over{q}{⇀}_{LL}±over{k}{⇀}_{LL}^{B}/2|^{2}+m_{LL}^{2})^{1/2}
+   importer: ϵ_{LL}(±)=(|over{q}{⇀}_{LL}±over{k}{⇀}_{LL}^{B}/2|^{2}+m_{LL}^{2})^{1/2}
+[meaning] \mathcal L^{\rm B}_{\rm LL}
+   own     : ℒ_{LL}^{B}
+   importer: L_{LL}^{B}
+[meaning] W^{\rm g}_{\rm LL}(\Delta_{\rm LL}^2)=\int\!d^3q_{\rm LL}(2\pi)^{-3}\big(E^+_{\rm LL}+E^-_{\rm LL}-\lvert\varepsilon_{\rm LL}+\mu_{\rm LL}\rvert-\lvert\varepsilon_{\rm LL}-\mu_{\rm LL}\rvert\big)
+   own     : W_{LL}^{g}(Δ_{LL}^{2})=∫d^{3}q_{LL}(2π)^{-3}(E_{LL}^{+}+E_{LL}^{-}-|ε_{LL}+μ_{LL}|-|ε_{LL}-μ_{LL}|)
+   importer: W_{LL}^{g}(Δ_{LL}^{2})=∫d^{3}q_{LL}(2π)^{-3}(E_{LL}^{+}+E_{LL}^{-}-|ϵ_{LL}+μ_{LL}|-|ϵ_{LL}-μ_{LL}|)
+[meaning] \exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})(0,0,\Delta^{\rm vac}_{\rm LL})
+   own     : exp(2iθ_{LL}^{F})<sf:R>_{LL}^{v}(<sf:U>_{LL})(0,0,Δ_{LL}^{vac})
+   importer: exp(2iθ_{LL}^{F})R_{LL}^{v}(U_{LL})(0,0,Δ_{LL}^{vac})
+[meaning] \vec d_{\rm LL}\mapsto\exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec d_{\rm LL}
+   own     : over{d}{⇀}_{LL}↦exp(2iθ_{LL}^{F})<sf:R>_{LL}^{v}(<sf:U>_{LL})over{d}{⇀}_{LL}
+   importer: over{d}{⇀}_{LL}↦exp(2iθ_{LL}^{F})R_{LL}^{v}(U_{LL})over{d}{⇀}_{LL}
+[meaning] \mathsf U_{\rm LL}=i\tau^{\rm LL}_1
+   own     : <sf:U>_{LL}=iτ_{1}^{LL}
+   importer: U_{LL}=iτ_{1}^{LL}
+[meaning] \mathcal V^{\rm vac}_{\rm LL}
+   own     : _{LL}^{vac}
+   importer: V_{LL}^{vac}
+[meaning] \mathcal L^{\rm B}_{\rm LL}=\mathcal L^{\rm kin}_{\rm LL}-\Omega_{\rm LL}(\vec d_{\rm LL})
+   own     : ℒ_{LL}^{B}=ℒ_{LL}^{kin}-Ω_{LL}(over{d}{⇀}_{LL})
+   importer: L_{LL}^{B}=L_{LL}^{kin}-Ω_{LL}(over{d}{⇀}_{LL})
+[meaning] (g^{\rm v}_{\rm LL})^2\mathsf N^{\rm v}_{\rm LL}
+   own     : (g_{LL}^{v})^{2}<sf:N>_{LL}^{v}
+   importer: (g_{LL}^{v})^{2}N_{LL}^{v}
+[meaning] \begin{pmatrix}0&\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})\\\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})^\dagger&0\end{pmatrix}
+   own     : (grid[0&<sf:P>_{LL}(over{u}{⇀}_{LL}^{f});<sf:P>_{LL}(over{u}{⇀}_{LL}^{f})^{†}&0])
+   importer: (grid[0&P_{LL}(over{u}{⇀}_{LL}^{f});P_{LL}(over{u}{⇀}_{LL}^{f})^{†}&0])
+[meaning] \mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})
+   own     : <sf:P>_{LL}(over{u}{⇀}_{LL}^{f})
+   importer: P_{LL}(over{u}{⇀}_{LL}^{f})
+[meaning] \sum_\iota V^\iota_{{\rm LL},p}\tau^{\rm LL}_\iota/2=(\mathsf U^{\rm G}_{\rm LL})^\dagger\mathsf a_{{\rm LL},p}\mathsf U^{\rm G}_{\rm LL}-(i/g^{\rm v}_{\rm LL})(\partial_p(\mathsf U^{\rm G}_{\rm LL})^\dagger)\mathsf U^{\rm G}_{\rm LL}
+   own     : ∑_{ι}V_{LL,p}^{ι}τ_{ι}^{LL}/2=(<sf:U>_{LL}^{G})^{†}<sf:a>_{LL,p}<sf:U>_{LL}^{G}-(i/g_{LL}^{v})(∂_{p}(<sf:U>_{LL}^{G})^{†})<sf:U>_{LL}^{G}
+   importer: ∑_{ι}V_{LL,p}^{ι}τ_{ι}^{LL}/2=(U_{LL}^{G})^{†}a_{LL,p}U_{LL}^{G}-(i/g_{LL}^{v})(∂_{p}(U_{LL}^{G})^{†})U_{LL}^{G}
+
+==== D. the boxes of the formulas of part B (own, then importer+) ====
+[text] e^{-i\ell^{\rm x}_{\rm LL}g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}}\big(\cos(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\sigma^{\rm LL}_0-i\sin(\tfrac12\ell^{\rm x}_{\rm LL}g^{\rm v}_{\rm LL}\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert)\sum_\iota A^\iota_{{\rm LL},j}\tau^{\rm LL}_\iota/\lvert\vec A^{\rm v}_{{\rm LL},j}\rvert\big)
+   own      : RowBox[{SuperscriptBox[StyleBox["e", "TI"], RowBox[{RowBox[{"-", StyleBox["i", "TI"]}], SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["x", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}], StyleBox["F", FontSlant -> "Plain"]]}]], RowBox[{"(", RowBox[{StyleBox["cos", FontSlant -> "Plain"], RowBox[{"(", RowBox[{FractionBox["1", "2"], SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["x", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[OverscriptBox[StyleBox["A", "TI"], "\[RightVector]"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}], StyleBox["v", FontSlant -> "Plain"]], "\[RightBracketingBar]"}]}], ")"}], SubsuperscriptBox["\[Sigma]", "0", StyleBox["LL", FontSlant -> "Plain"]], "-", StyleBox["i", "TI"], "\[ThinSpace]", StyleBox["sin", FontSlant -> "Plain"], RowBox[{"(", RowBox[{FractionBox["1", "2"], SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["x", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[OverscriptBox[StyleBox["A", "TI"], "\[RightVector]"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}], StyleBox["v", FontSlant -> "Plain"]], "\[RightBracketingBar]"}]}], ")"}], "\[ThinSpace]", UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], "\[ThinSpace]", SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}], "\[Iota]"], SubsuperscriptBox["\[Tau]", "\[Iota]", StyleBox["LL", FontSlant -> "Plain"]], "/", RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[OverscriptBox[StyleBox["A", "TI"], "\[RightVector]"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}], StyleBox["v", FontSlant -> "Plain"]], "\[RightBracketingBar]"}]}], ")"}]}]
+   importer+: FormBox[RowBox[{SuperscriptBox[StyleBox["e", "TI"], RowBox[{"-", StyleBox["i", "TI"], SubsuperscriptBox["\[ScriptL]", "LL", "x"], SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["j", "TI"]}], "F"]}]], "(", RowBox[{"cos", RowBox[{"(", FractionBox["1", RowBox[{"2", SubsuperscriptBox["\[ScriptL]", "LL", "x"], SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], "|", SubsuperscriptBox[OverscriptBox[StyleBox["A", "TI"], "\[RightVector]"], RowBox[{"LL", ",", StyleBox["j", "TI"]}], "v"], "|"}]], ")"}], SubsuperscriptBox["\[Sigma]", "0", "LL"], "-", StyleBox["i", "TI"], "sin", RowBox[{"(", FractionBox["1", RowBox[{"2", SubsuperscriptBox["\[ScriptL]", "LL", "x"], SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], "|", SubsuperscriptBox[OverscriptBox[StyleBox["A", "TI"], "\[RightVector]"], RowBox[{"LL", ",", StyleBox["j", "TI"]}], "v"], "|"}]], ")"}], UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["j", "TI"]}], "\[Iota]"], SubsuperscriptBox["\[Tau]", "\[Iota]", "LL"], "/", "|", SubsuperscriptBox[OverscriptBox[StyleBox["A", "TI"], "\[RightVector]"], RowBox[{"LL", ",", StyleBox["j", "TI"]}], "v"], "|"}], ")"}], TraditionalForm]
+[text] [\mathsf L_{\rm LL}(\mathbf g)]_{pp'}=\tfrac12{\rm Re}\,{\rm tr}\big(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger\big)
+   own      : RowBox[{SubscriptBox[RowBox[{"[", RowBox[{SubscriptBox[StyleBox["L", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}]}], "]"}], RowBox[{StyleBox["p", "TI"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]}]], "\[LongEqual]", FractionBox["1", "2"], StyleBox["Re", FontSlant -> "Plain"], "\[ThinSpace]", StyleBox["tr", FontSlant -> "Plain"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Sigma]", StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"]], SubscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], SubsuperscriptBox["\[Sigma]", SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"], StyleBox["LL", FontSlant -> "Plain"]], SubscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], "\[Dagger]"]}], ")"}]}]
+   importer+: FormBox[FractionBox[RowBox[{SubscriptBox[RowBox[{"[", RowBox[{SubscriptBox[StyleBox["L", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], "(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], "]"}], RowBox[{StyleBox["p", "TI"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]}]], "\[LongEqual]", "1"}], RowBox[{"2", "Re", " ", "tr", RowBox[{"(", RowBox[{SubsuperscriptBox["\[Sigma]", StyleBox["p", "TI"], "LL"], SubscriptBox[StyleBox["M", "TI"], "LL"], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], SubsuperscriptBox["\[Sigma]", SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"], "LL"], SubscriptBox[StyleBox["M", "TI"], "LL"], SuperscriptBox[RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], "\[Dagger]"]}], ")"}]}]], TraditionalForm]
+[meaning] \pm\tfrac12
+   own      : RowBox[{"\[PlusMinus]", FractionBox["1", "2"]}]
+   importer+: FormBox[FractionBox[RowBox[{"\[PlusMinus]", "1"}], "2"], TraditionalForm]
+[meaning] \tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)
+   own      : RowBox[{FractionBox["1", "2"], "\[ThinSpace]", StyleBox["Re", FontSlant -> "Plain"], "\[ThinSpace]", StyleBox["tr", FontSlant -> "Plain"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Sigma]", StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"]], SubscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], "\[ThinSpace]", SubsuperscriptBox["\[Sigma]", SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"], StyleBox["LL", FontSlant -> "Plain"]], SubscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], "\[Dagger]"]}], ")"}]}]
+   importer+: FormBox[FractionBox["1", RowBox[{"2 ", StyleBox["Re", FontSlant -> "Plain"], " ", StyleBox["tr", FontSlant -> "Plain"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Sigma]", StyleBox["p", "TI"], "LL"], SubscriptBox[StyleBox["M", "TI"], "LL"], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], " ", SubsuperscriptBox["\[Sigma]", SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"], "LL"], SubscriptBox[StyleBox["M", "TI"], "LL"], SuperscriptBox[RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], "\[Dagger]"]}], ")"}]}]], TraditionalForm]
+[meaning] \sum_{\vec q_{\rm LL}}\Psi^\dagger_{\rm LL}(\mathsf h_{\rm LL}-\mu_{\rm LL})\Psi_{\rm LL}-\tfrac14G_{\rm LL}\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}
+   own      : RowBox[{UnderscriptBox["\[Sum]", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], LimitsPositioning -> True], "\[ThinSpace]", SubsuperscriptBox["\[CapitalPsi]", StyleBox["LL", FontSlant -> "Plain"], "\[Dagger]"], RowBox[{"(", RowBox[{SubscriptBox[StyleBox["h", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], "-", SubscriptBox["\[Mu]", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}], SubscriptBox["\[CapitalPsi]", StyleBox["LL", FontSlant -> "Plain"]], "-", FractionBox["1", "4"], SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "\[ThinSpace]", UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalPi]", StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], ")"}], "\[Dagger]"], SubsuperscriptBox["\[CapitalPi]", StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"]}]
+   importer+: FormBox[FractionBox[RowBox[{UnderscriptBox["\[Sum]", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], LimitsPositioning -> True], SubsuperscriptBox["\[CapitalPsi]", "LL", "\[Dagger]"], RowBox[{"(", RowBox[{SubscriptBox[StyleBox["h", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], "-", SubscriptBox["\[Mu]", "LL"]}], ")"}], SubscriptBox["\[CapitalPsi]", "LL"], "-", "1"}], RowBox[{"4", SubscriptBox[StyleBox["G", "TI"], "LL"], UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalPi]", "LL", "\[Iota]"], ")"}], "\[Dagger]"], SubsuperscriptBox["\[CapitalPi]", "LL", "\[Iota]"]}]], TraditionalForm]
+[meaning] d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle
+   own      : RowBox[{SubsuperscriptBox[StyleBox["d", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "\[LongEqual]", RowBox[{"-", FractionBox["1", "2"]}], SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"\[LeftAngleBracket]", SubsuperscriptBox["\[CapitalPi]", StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "\[RightAngleBracket]"}]}]
+   importer+: FormBox[FractionBox[RowBox[{SubsuperscriptBox[StyleBox["d", "TI"], "LL", "\[Iota]"], "\[LongEqual]", "-1"}], RowBox[{"2", SubscriptBox[StyleBox["G", "TI"], "LL"], RowBox[{"\[LeftAngleBracket]", SubsuperscriptBox["\[CapitalPi]", "LL", "\[Iota]"], "\[RightAngleBracket]"}]}]], TraditionalForm]
+[meaning] \Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})
+   own      : RowBox[{SubscriptBox["\[CapitalOmega]", StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "-", FractionBox["1", "2"], "\[ThinSpace]", "\[Integral]", SuperscriptBox[StyleBox["d", "TI"], "3"], SubscriptBox[StyleBox["q", "TI"], StyleBox["LL", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", RowBox[{"2", "\[Pi]"}], ")"}], RowBox[{"-", "3"}]], "\[ThinSpace]", "\[Sum]", RowBox[{"(", RowBox[{StyleBox["positive eigenvalues of ", FontSlant -> "Plain"], SubscriptBox[StyleBox["H", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[FractionBox[RowBox[{SubscriptBox["\[CapitalOmega]", "LL"], "\[LongEqual]", "|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"], "/", SubscriptBox[StyleBox["G", "TI"], "LL"], "-", "1"}], RowBox[{"2", "\[Integral]", "\[NegativeThinSpace]", SuperscriptBox[StyleBox["d", "TI"], "3"], SubscriptBox[StyleBox["q", "TI"], "LL"], SuperscriptBox[RowBox[{"(", RowBox[{"2", "\[Pi]"}], ")"}], "-3"], "\[Sum]", RowBox[{"(", RowBox[{"positive eigenvalues of ", SubscriptBox[StyleBox["H", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"]}], ")"}]}]], TraditionalForm]
+[meaning] \hbar
+   own      : "\[HBar]"
+   importer+: FormBox["\[Null]", TraditionalForm]
+[meaning] \mathsf s_{\rm LL}(J^j_{\rm LL})=\tfrac12\gamma^{j'}_{\rm LL}\gamma^{j''}_{\rm LL}
+   own      : RowBox[{SubscriptBox[StyleBox["s", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[StyleBox["J", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], ")"}], "\[LongEqual]", FractionBox["1", "2"], SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], SuperscriptBox[StyleBox["j", "TI"], "\[Prime]"]], SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], SuperscriptBox[StyleBox["j", "TI"], "\[Prime]\[Prime]"]]}]
+   importer+: FormBox[FractionBox[RowBox[{SubscriptBox[StyleBox["s", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], RowBox[{"(", SubsuperscriptBox[StyleBox["J", "TI"], "LL", StyleBox["j", "TI"]], ")"}], "\[LongEqual]", "1"}], RowBox[{"2", SubsuperscriptBox["\[Gamma]", "LL", SuperscriptBox[StyleBox["j", "TI"], "\[Prime]"]], SubsuperscriptBox["\[Gamma]", "LL", SuperscriptBox[StyleBox["j", "TI"], "\[Prime]\[Prime]"]]}]], TraditionalForm]
+[meaning] \mathsf s_{\rm LL}(K^j_{\rm LL})=\tfrac12\gamma^0_{\rm LL}\gamma^j_{\rm LL}
+   own      : RowBox[{SubscriptBox[StyleBox["s", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[StyleBox["K", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], ")"}], "\[LongEqual]", FractionBox["1", "2"], SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], "0"], SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]]}]
+   importer+: FormBox[FractionBox[RowBox[{SubscriptBox[StyleBox["s", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], RowBox[{"(", SubsuperscriptBox[StyleBox["K", "TI"], "LL", StyleBox["j", "TI"]], ")"}], "\[LongEqual]", "1"}], RowBox[{"2", SubsuperscriptBox["\[Gamma]", "LL", "0"], SubsuperscriptBox["\[Gamma]", "LL", StyleBox["j", "TI"]]}]], TraditionalForm]
+[meaning] \mathsf A^\uparrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}+\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["A", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["p", "TI"]}], "\[UpArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["p", "TI"]}], StyleBox["F", FontSlant -> "Plain"]], "+", FractionBox["1", "2"], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["p", "TI"]}], "3"]}]
+   importer+: FormBox[FractionBox[RowBox[{SubsuperscriptBox[StyleBox["A", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", StyleBox["p", "TI"]}], "\[UpArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["p", "TI"]}], "F"], "+", "1"}], RowBox[{"2", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["p", "TI"]}], "3"]}]], TraditionalForm]
+[meaning] Q_{\rm LL}=+\tfrac12
+   own      : RowBox[{SubscriptBox[StyleBox["Q", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", RowBox[{"+", FractionBox["1", "2"]}]}]
+   importer+: FormBox[FractionBox[RowBox[{SubscriptBox[StyleBox["Q", "TI"], "LL"], "\[LongEqual]", "+1"}], "2"], TraditionalForm]
+[meaning] \mathsf A^\downarrow_{{\rm LL},p}=g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},p}-\tfrac12g^{\rm v}_{\rm LL}A^3_{{\rm LL},p}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["A", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["p", "TI"]}], "\[DownArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["p", "TI"]}], StyleBox["F", FontSlant -> "Plain"]], "-", FractionBox["1", "2"], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["p", "TI"]}], "3"]}]
+   importer+: FormBox[FractionBox[RowBox[{SubsuperscriptBox[StyleBox["A", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", StyleBox["p", "TI"]}], "\[DownArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["p", "TI"]}], "F"], "-", "1"}], RowBox[{"2", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["p", "TI"]}], "3"]}]], TraditionalForm]
+[meaning] Q_{\rm LL}=-\tfrac12
+   own      : RowBox[{SubscriptBox[StyleBox["Q", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", RowBox[{"-", FractionBox["1", "2"]}]}]
+   importer+: FormBox[FractionBox[RowBox[{SubscriptBox[StyleBox["Q", "TI"], "LL"], "\[LongEqual]", "-1"}], "2"], TraditionalForm]
+[meaning] \cos^2\vartheta^{\rm B}_{\rm LL}=\tfrac12\big(1+(\pm\varepsilon_{\rm LL}-\mu_{\rm LL})/E^\mp_{\rm LL}\big)
+   own      : RowBox[{SuperscriptBox[StyleBox["cos", FontSlant -> "Plain"], "2"], "\[ThinSpace]", SubsuperscriptBox["\[CurlyTheta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["B", FontSlant -> "Plain"]], "\[LongEqual]", FractionBox["1", "2"], RowBox[{"(", RowBox[{"1", "+", RowBox[{"(", RowBox[{RowBox[{"\[PlusMinus]", SubscriptBox["\[CurlyEpsilon]", StyleBox["LL", FontSlant -> "Plain"]]}], "-", SubscriptBox["\[Mu]", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}], "/", SubsuperscriptBox[StyleBox["E", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[MinusPlus]"]}], ")"}]}]
+   importer+: FormBox[FractionBox[RowBox[{SuperscriptBox["cos", "2"], SubsuperscriptBox["\[CurlyTheta]", "LL", "B"], "\[LongEqual]", "1"}], RowBox[{"2", "(", RowBox[{"1", "+", RowBox[{"(", RowBox[{"\[PlusMinus]", SubscriptBox["\[CurlyEpsilon]", "LL"], "-", SubscriptBox["\[Mu]", "LL"]}], ")"}], "/", SubsuperscriptBox[StyleBox["E", "TI"], "LL", "\[MinusPlus]"]}], ")"}]], TraditionalForm]
+[meaning] B^\uparrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}+\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["B", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[UpArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "12"}], StyleBox["F", FontSlant -> "Plain"]], "+", FractionBox["1", "2"], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "12"}], "3"]}]
+   importer+: FormBox[FractionBox[RowBox[{SubsuperscriptBox[StyleBox["B", "TI"], "LL", "\[UpArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", "12"}], "F"], "+", "1"}], RowBox[{"2", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", "12"}], "3"]}]], TraditionalForm]
+[meaning] B^\downarrow_{\rm LL}=g^{\rm F}_{\rm LL}\mathsf F^{\rm F}_{{\rm LL},12}-\tfrac12g^{\rm v}_{\rm LL}\mathsf F^3_{{\rm LL},12}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["B", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[DownArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "12"}], StyleBox["F", FontSlant -> "Plain"]], "-", FractionBox["1", "2"], SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "12"}], "3"]}]
+   importer+: FormBox[FractionBox[RowBox[{SubsuperscriptBox[StyleBox["B", "TI"], "LL", "\[DownArrow]"], "\[LongEqual]", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", "12"}], "F"], "-", "1"}], RowBox[{"2", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], SubsuperscriptBox[StyleBox["F", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", "12"}], "3"]}]], TraditionalForm]
+[meaning] -\tfrac12G_{\rm LL}
+   own      : RowBox[{RowBox[{"-", FractionBox["1", "2"]}], SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}]
+   importer+: FormBox[FractionBox["-1", RowBox[{"2", SubscriptBox[StyleBox["G", "TI"], "LL"]}]], TraditionalForm]
+[meaning] \tfrac12(\mathsf 1_4\pm\mathsf h^{\rm lat}_{\rm LL}(\vec q_{\rm LL})/\varepsilon^{\rm lat}_{\rm LL}(\vec q_{\rm LL}))
+   own      : RowBox[{FractionBox["1", "2"], RowBox[{"(", RowBox[{SubscriptBox[StyleBox["1", FontFamily -> "Helvetica", FontSlant -> "Plain"], "4"], "\[PlusMinus]", SubsuperscriptBox[StyleBox["h", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["lat", FontSlant -> "Plain"]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], "/", SubsuperscriptBox["\[CurlyEpsilon]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["lat", FontSlant -> "Plain"]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}]}], ")"}]}]
+   importer+: FormBox[FractionBox["1", RowBox[{"2", "(", RowBox[{SubscriptBox[StyleBox["1", FontFamily -> "Helvetica", FontSlant -> "Plain"], "4"], "\[PlusMinus]", SubsuperscriptBox[StyleBox["h", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL", "lat"], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], ")"}], "/", SubsuperscriptBox["\[CurlyEpsilon]", "LL", "lat"], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], ")"}]}], ")"}]], TraditionalForm]
+[meaning] \tfrac12(\mathsf 1_8\pm\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL})
+   own      : RowBox[{FractionBox["1", "2"], RowBox[{"(", RowBox[{SubscriptBox[StyleBox["1", FontFamily -> "Helvetica", FontSlant -> "Plain"], "8"], "\[PlusMinus]", SubscriptBox[StyleBox["h", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], "/", SubscriptBox["\[CurlyEpsilon]", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[FractionBox["1", RowBox[{"2", "(", RowBox[{SubscriptBox[StyleBox["1", FontFamily -> "Helvetica", FontSlant -> "Plain"], "8"], "\[PlusMinus]", SubscriptBox[StyleBox["h", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], ")"}], "/", SubscriptBox["\[CurlyEpsilon]", "LL"]}], ")"}]], TraditionalForm]
+[meaning] -\sum_\iota\lvert d^\iota_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\sum_\iota\big((d^\iota_{\rm LL})^*\Pi^\iota_{\rm LL}+d^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger\big)
+   own      : RowBox[{RowBox[{"-", UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True]}], SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[StyleBox["d", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "\[RightBracketingBar]"}], "2"], "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "-", FractionBox["1", "2"], "\[ThinSpace]", UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], RowBox[{"(", RowBox[{SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["d", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], ")"}], "*"], SubsuperscriptBox["\[CapitalPi]", StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "+", SubsuperscriptBox[StyleBox["d", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalPi]", StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], ")"}], "\[Dagger]"]}], ")"}]}]
+   importer+: FormBox[FractionBox[RowBox[{"-", UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], "|", SubsuperscriptBox[StyleBox["d", "TI"], "LL", "\[Iota]"], SuperscriptBox["|", "2"], "/", SubscriptBox[StyleBox["G", "TI"], "LL"], "-", "1"}], RowBox[{"2", UnderscriptBox["\[Sum]", "\[Iota]", LimitsPositioning -> True], RowBox[{"(", RowBox[{SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["d", "TI"], "LL", "\[Iota]"], ")"}], "*"], SubsuperscriptBox["\[CapitalPi]", "LL", "\[Iota]"], "+", SubsuperscriptBox[StyleBox["d", "TI"], "LL", "\[Iota]"], SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalPi]", "LL", "\[Iota]"], ")"}], "\[Dagger]"]}], ")"}]}]], TraditionalForm]
+[meaning] -\tfrac{15}8\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{-7/2}
+   own      : RowBox[{RowBox[{"-", FractionBox["15", "8"]}], "\[ThinSpace]", SubscriptBox["\[Integral]", RowBox[{SubscriptBox[StyleBox["q", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "<", SubscriptBox["\[CapitalLambda]", StyleBox["LL", FontSlant -> "Plain"]]}]], "\[ThinSpace]", SuperscriptBox[StyleBox["d", "TI"], "3"], SubscriptBox[StyleBox["q", "TI"], StyleBox["LL", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", RowBox[{"2", "\[Pi]"}], ")"}], RowBox[{"-", "3"}]], SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["q", "TI"], StyleBox["LL", FontSlant -> "Plain"], "2"], "+", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["q", FontSlant -> "Plain"]], ")"}], "2"]}], ")"}], RowBox[{RowBox[{"-", "7"}], "/", "2"}]]}]
+   importer+: FormBox[FractionBox["-15", RowBox[{"8", SubscriptBox["\[Integral]", RowBox[{SubscriptBox[StyleBox["q", "TI"], "LL"], "<", SubscriptBox["\[CapitalLambda]", "LL"]}]], SuperscriptBox[StyleBox["d", "TI"], "3"], SubscriptBox[StyleBox["q", "TI"], "LL"], SuperscriptBox[RowBox[{"(", RowBox[{"2", "\[Pi]"}], ")"}], "-3"], SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["q", "TI"], "LL", "2"], "+", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["M", "TI"], "LL", "q"], ")"}], "2"]}], ")"}], RowBox[{"-7", "/", "2"}]]}]], TraditionalForm]
+[meaning] \vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})=(0,\tfrac i2(y^+_{\rm LL}-y^-_{\rm LL}),\tfrac12(y^+_{\rm LL}+y^-_{\rm LL}))
+   own      : RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["nf", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["y", "TI"], StyleBox["LL", FontSlant -> "Plain"], "+"], ",", SubsuperscriptBox[StyleBox["y", "TI"], StyleBox["LL", FontSlant -> "Plain"], "-"]}], ")"}], "\[LongEqual]", RowBox[{"(", RowBox[{"0", ",", FractionBox[StyleBox["i", "TI"], "2"], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["y", "TI"], StyleBox["LL", FontSlant -> "Plain"], "+"], "-", SubsuperscriptBox[StyleBox["y", "TI"], StyleBox["LL", FontSlant -> "Plain"], "-"]}], ")"}], ",", FractionBox["1", "2"], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["y", "TI"], StyleBox["LL", FontSlant -> "Plain"], "+"], "+", SubsuperscriptBox[StyleBox["y", "TI"], StyleBox["LL", FontSlant -> "Plain"], "-"]}], ")"}]}], ")"}]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL", "nf"], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["y", "TI"], "LL", "+"], ",", SubsuperscriptBox[StyleBox["y", "TI"], "LL", "-"]}], ")"}], "\[LongEqual]", RowBox[{"(", FractionBox[FractionBox[RowBox[{"0", ",", StyleBox["i", "TI"]}], RowBox[{"2", RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["y", "TI"], "LL", "+"], "-", SubsuperscriptBox[StyleBox["y", "TI"], "LL", "-"]}], ")"}], ",", "1"}]], RowBox[{"2", "(", RowBox[{SubsuperscriptBox[StyleBox["y", "TI"], "LL", "+"], "+", SubsuperscriptBox[StyleBox["y", "TI"], "LL", "-"]}], ")"}]], ")"}]}], TraditionalForm]
+[meaning] \exp\big(\tfrac i2(\vartheta^{\rm G}_{{\rm LL},1}\tau^{\rm LL}_1+\vartheta^{\rm G}_{{\rm LL},2}\tau^{\rm LL}_2)\big)
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{FractionBox[StyleBox["i", "TI"], "2"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[CurlyTheta]", RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "1"}], StyleBox["G", FontSlant -> "Plain"]], SubsuperscriptBox["\[Tau]", "1", StyleBox["LL", FontSlant -> "Plain"]], "+", SubsuperscriptBox["\[CurlyTheta]", RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "2"}], StyleBox["G", FontSlant -> "Plain"]], SubsuperscriptBox["\[Tau]", "2", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", FractionBox[StyleBox["i", "TI"], RowBox[{"2", "(", RowBox[{SubsuperscriptBox["\[CurlyTheta]", RowBox[{"LL", ",", "1"}], "G"], SubsuperscriptBox["\[Tau]", "1", "LL"], "+", SubsuperscriptBox["\[CurlyTheta]", RowBox[{"LL", ",", "2"}], "G"], SubsuperscriptBox["\[Tau]", "2", "LL"]}], ")"}]], ")"}], TraditionalForm]
+
+==== E. the boxes of sample formulas read equally (own, then importer+) ====
+[meaning] (0,0,d^3_{\rm LL}\exp(i\vec k^{\rm B}_{\rm LL}\cdot\vec x_{\rm LL}))
+   own      : RowBox[{"(", RowBox[{"0", ",", "0", ",", SubsuperscriptBox[StyleBox["d", "TI"], StyleBox["LL", FontSlant -> "Plain"], "3"], "\[ThinSpace]", StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox[OverscriptBox[StyleBox["k", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["B", FontSlant -> "Plain"]], "\[CenterDot]", SubscriptBox[OverscriptBox[StyleBox["x", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}], ")"}]
+   importer+: FormBox[RowBox[{"(", RowBox[{"0", ",", "0", ",", SubsuperscriptBox[StyleBox["d", "TI"], "LL", "3"], "exp", RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox[OverscriptBox[StyleBox["k", "TI"], "\[RightVector]"], "LL", "B"], "\[CenterDot]", SubscriptBox[OverscriptBox[StyleBox["x", "TI"], "\[RightVector]"], "LL"]}], ")"}]}], ")"}], TraditionalForm]
+[meaning] 0,\dots,3
+   own      : RowBox[{"0", ",", "\[Ellipsis]", ",", "3"}]
+   importer+: FormBox[RowBox[{"0", ",", "\[Ellipsis]", ",", "3"}], TraditionalForm]
+[meaning] 0,\dots,7
+   own      : RowBox[{"0", ",", "\[Ellipsis]", ",", "7"}]
+   importer+: FormBox[RowBox[{"0", ",", "\[Ellipsis]", ",", "7"}], TraditionalForm]
+[meaning] 1/G^{\rm bd}_{\rm LL}=\chi^{\rm pr}_{\rm LL}(2m_{\rm LL},0)
+   own      : RowBox[{"1", "/", SubsuperscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["bd", FontSlant -> "Plain"]], "\[LongEqual]", SubsuperscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["pr", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{"2", SubscriptBox[StyleBox["m", "TI"], StyleBox["LL", FontSlant -> "Plain"]], ",", "0"}], ")"}]}]
+   importer+: FormBox[RowBox[{"1", "/", SubsuperscriptBox[StyleBox["G", "TI"], "LL", "bd"], "\[LongEqual]", SubsuperscriptBox["\[Chi]", "LL", "pr"], RowBox[{"(", RowBox[{"2", SubscriptBox[StyleBox["m", "TI"], "LL"], ",", "0"}], ")"}]}], TraditionalForm]
+[meaning] 1/G_{\rm LL}-1/G^{\rm crit}_{\rm LL}
+   own      : RowBox[{"1", "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "-", "1", "/", SubsuperscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["crit", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{"1", "/", SubscriptBox[StyleBox["G", "TI"], "LL"], "-", "1", "/", SubsuperscriptBox[StyleBox["G", "TI"], "LL", "crit"]}], TraditionalForm]
+[meaning] 2(\ell^{\rm x}_{\rm LL})^{n^{\rm act}_{\rm LL}}/G_{\rm LL}
+   own      : RowBox[{"2", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["x", FontSlant -> "Plain"]], ")"}], SubsuperscriptBox[StyleBox["n", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["act", FontSlant -> "Plain"]]], "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{"2", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[ScriptL]", "LL", "x"], ")"}], SubsuperscriptBox[StyleBox["n", "TI"], "LL", "act"]], "/", SubscriptBox[StyleBox["G", "TI"], "LL"]}], TraditionalForm]
+[meaning] 2\,\Omega^{\rm s}_{\rm LL}(\Delta^{\rm vac}_{\rm LL})
+   own      : RowBox[{"2", "\[ThinSpace]", SubsuperscriptBox["\[CapitalOmega]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["s", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["vac", FontSlant -> "Plain"]], ")"}]}]
+   importer+: FormBox[RowBox[{"2 ", SubsuperscriptBox["\[CapitalOmega]", "LL", "s"], RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", "LL", "vac"], ")"}]}], TraditionalForm]
+[meaning] 4(g^{\rm F}_{\rm LL})^2\lvert\vec d_{\rm LL}\rvert^2
+   own      : RowBox[{"4", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], ")"}], "2"], SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"]}]
+   importer+: FormBox[RowBox[{"4", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], ")"}], "2"], "|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"]}], TraditionalForm]
+[meaning] A_D=D\,V_D
+   own      : RowBox[{SubscriptBox[StyleBox["A", "TI"], StyleBox["D", "TI"]], "\[LongEqual]", StyleBox["D", "TI"], "\[ThinSpace]", SubscriptBox[StyleBox["V", "TI"], StyleBox["D", "TI"]]}]
+   importer+: FormBox[RowBox[{SubscriptBox[StyleBox["A", "TI"], StyleBox["D", "TI"]], "\[LongEqual]", StyleBox["D", "TI"], " ", SubscriptBox[StyleBox["V", "TI"], StyleBox["D", "TI"]]}], TraditionalForm]
+[meaning] \arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))
+   own      : RowBox[{StyleBox["arctan", FontSlant -> "Plain"], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], "/", RowBox[{"(", RowBox[{"2", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]]}], ")"}]}], ")"}]}]
+   importer+: FormBox[RowBox[{"arctan", "(", RowBox[{SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], "/", RowBox[{"(", RowBox[{"2", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"]}], ")"}]}], ")"}], TraditionalForm]
+[meaning] (-a^{\rm GL}_{\rm LL}/(2b^{\rm GL}_{\rm LL}))^{1/2}
+   own      : SuperscriptBox[RowBox[{"(", RowBox[{RowBox[{"-", SubsuperscriptBox[StyleBox["a", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["GL", FontSlant -> "Plain"]]}], "/", RowBox[{"(", RowBox[{"2", SubsuperscriptBox[StyleBox["b", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["GL", FontSlant -> "Plain"]]}], ")"}]}], ")"}], RowBox[{"1", "/", "2"}]]
+   importer+: FormBox[SuperscriptBox[RowBox[{"(", RowBox[{"-", SubsuperscriptBox[StyleBox["a", "TI"], "LL", "GL"], "/", RowBox[{"(", RowBox[{"2", SubsuperscriptBox[StyleBox["b", "TI"], "LL", "GL"]}], ")"}]}], ")"}], RowBox[{"1", "/", "2"}]], TraditionalForm]
+[meaning] a^{\rm GL}_{\rm LL}\lvert\vec d_{\rm LL}\rvert^2+b^{\rm GL}_{\rm LL}(2\lvert\vec d_{\rm LL}\rvert^4-\lvert\vec d_{\rm LL}\cdot\vec d_{\rm LL}\rvert^2)
+   own      : RowBox[{SubsuperscriptBox[StyleBox["a", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["GL", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "+", SubsuperscriptBox[StyleBox["b", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["GL", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{"2", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "4"], "-", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", RowBox[{SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[CenterDot]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]]}], "\[RightBracketingBar]"}], "2"]}], ")"}]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["a", "TI"], "LL", "GL"], "|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"], "+", SubsuperscriptBox[StyleBox["b", "TI"], "LL", "GL"], RowBox[{"(", RowBox[{"2|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "4"], "-", "|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], "\[CenterDot]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"]}], ")"}]}], TraditionalForm]
+[meaning] (a^{\rm GL}_{\rm LL}/Z^{\rm t}_{\rm LL}(0))^{1/2}
+   own      : SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["a", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["GL", FontSlant -> "Plain"]], "/", SubsuperscriptBox[StyleBox["Z", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["t", FontSlant -> "Plain"]], RowBox[{"(", "0", ")"}]}], ")"}], RowBox[{"1", "/", "2"}]]
+   importer+: FormBox[SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["a", "TI"], "LL", "GL"], "/", SubsuperscriptBox[StyleBox["Z", "TI"], "LL", "t"], RowBox[{"(", "0", ")"}]}], ")"}], RowBox[{"1", "/", "2"}]], TraditionalForm]
+[meaning] \bar{\mathbf x}
+   own      : OverscriptBox[StyleBox["x", FontWeight -> "Bold", FontSlant -> "Plain"], "_"]
+   importer+: FormBox[OverscriptBox[StyleBox["x", FontWeight -> "Bold", FontSlant -> "Plain"], "_"], TraditionalForm]
+[meaning] \bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)
+   own      : RowBox[{SubscriptBox[OverscriptBox["\[CapitalPsi]", "_"], StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", SubsuperscriptBox["\[CapitalPsi]", StyleBox["LL", FontSlant -> "Plain"], "\[Dagger]"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], "0"], "\[CircleTimes]", SubsuperscriptBox["\[Sigma]", "0", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{SubscriptBox[OverscriptBox["\[CapitalPsi]", "_"], "LL"], "\[LongEqual]", SubsuperscriptBox["\[CapitalPsi]", "LL", "\[Dagger]"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Gamma]", "LL", "0"], "\[CircleTimes]", SubsuperscriptBox["\[Sigma]", "0", "LL"]}], ")"}]}], TraditionalForm]
+[meaning] \begin{pmatrix}0&\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})\\\mathsf P_{\rm LL}(\vec u^{\rm f}_{\rm LL})^\dagger&0\end{pmatrix}
+   own      : RowBox[{"(", "\[NoBreak]", GridBox[{{"0", RowBox[{SubscriptBox[StyleBox["P", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]], ")"}]}]}, {RowBox[{SubscriptBox[StyleBox["P", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]], ")"}], "\[Dagger]"]}], "0"}}, RowSpacings -> 1, ColumnSpacings -> 1, RowAlignments -> Baseline, ColumnAlignments -> Center], "\[NoBreak]", ")"}]
+   importer+: FormBox[RowBox[{"(", Cell[BoxData[FormBox[GridBox[{{Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]], Cell[TextData[{" ", Cell[BoxData[RowBox[{SubscriptBox[StyleBox["P", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], "(", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], "LL", "f"], ")"}]], "InlineFormula"], " "}]]}, {Cell[TextData[{" ", Cell[BoxData[RowBox[{SubscriptBox[StyleBox["P", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], SuperscriptBox[RowBox[{"(", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], "LL", "f"], ")"}], "\[Dagger]"]}]], "InlineFormula"], " "}]], Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]]}}], TraditionalForm]]], ")"}], TraditionalForm]
+[meaning] \chi_{\rm LL}\chi_{\rm LL}^\dagger
+   own      : RowBox[{SubscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"]], SubsuperscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"], "\[Dagger]"]}]
+   importer+: FormBox[RowBox[{SubscriptBox["\[Chi]", "LL"], SubsuperscriptBox["\[Chi]", "LL", "\[Dagger]"]}], TraditionalForm]
+[meaning] \chi_{\rm LL}\mapsto M_{\rm LL}(\mathbf g)\chi_{\rm LL}
+   own      : RowBox[{SubscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"]], "\[RightTeeArrow]", SubscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], SubscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubscriptBox["\[Chi]", "LL"], "\[RightTeeArrow]", SubscriptBox[StyleBox["M", "TI"], "LL"], RowBox[{"(", StyleBox["g", FontWeight -> "Bold", FontSlant -> "Plain"], ")"}], SubscriptBox["\[Chi]", "LL"]}], TraditionalForm]
+[meaning] \chi^{\rm pr}_{\rm LL}(\omega^{\rm B}_{\rm LL},0)=1/G_{\rm LL}
+   own      : RowBox[{SubsuperscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["pr", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Omega]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["B", FontSlant -> "Plain"]], ",", "0"}], ")"}], "\[LongEqual]", "1", "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Chi]", "LL", "pr"], RowBox[{"(", RowBox[{SubsuperscriptBox["\[Omega]", "LL", "B"], ",", "0"}], ")"}], "\[LongEqual]", "1", "/", SubscriptBox[StyleBox["G", "TI"], "LL"]}], TraditionalForm]
+[meaning] \cos\vartheta^{\rm B}_{\rm LL}\,\chi^{\rm pw}_{\rm LL}
+   own      : RowBox[{StyleBox["cos", FontSlant -> "Plain"], "\[ThinSpace]", SubsuperscriptBox["\[CurlyTheta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["B", FontSlant -> "Plain"]], "\[ThinSpace]", SubsuperscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["pw", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{"cos", SubsuperscriptBox["\[CurlyTheta]", "LL", "B"], " ", SubsuperscriptBox["\[Chi]", "LL", "pw"]}], TraditionalForm]
+[meaning] c^{\rm n}_{{\rm LL},1}\mp i\,c^{\rm n}_{{\rm LL},2}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "1"}], StyleBox["n", FontSlant -> "Plain"]], "\[MinusPlus]", StyleBox["i", "TI"], "\[ThinSpace]", SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "2"}], StyleBox["n", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{"LL", ",", "1"}], "n"], "\[MinusPlus]", StyleBox["i", "TI"], " ", SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{"LL", ",", "2"}], "n"]}], TraditionalForm]
+[meaning] c^{\rm w}_{\rm LL}=(M^{\rm q}_{\rm LL})^2-(\omega^{\rm B}_{\rm LL})^2/4
+   own      : RowBox[{SubsuperscriptBox[StyleBox["c", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["w", FontSlant -> "Plain"]], "\[LongEqual]", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["q", FontSlant -> "Plain"]], ")"}], "2"], "-", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[Omega]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["B", FontSlant -> "Plain"]], ")"}], "2"], "/", "4"}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["c", "TI"], "LL", "w"], "\[LongEqual]", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["M", "TI"], "LL", "q"], ")"}], "2"], "-", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[Omega]", "LL", "B"], ")"}], "2"], "/", "4"}], TraditionalForm]
+[meaning] \Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}
+   own      : RowBox[{SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], "\[Infinity]"], SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["K", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[CapitalDelta]", "LL", "\[Infinity]"], SubsuperscriptBox["\[ScriptL]", "LL", "K"]}], TraditionalForm]
+[meaning] (\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})
+   own      : RowBox[{SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], "\[PlusMinus]"], ")"}], "2"], "\[LongEqual]", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], RowBox[{"(", RowBox[{"1", "\[PlusMinus]", SubscriptBox["\[Zeta]", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", "LL", "\[PlusMinus]"], ")"}], "2"], "\[LongEqual]", "|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"], RowBox[{"(", RowBox[{"1", "\[PlusMinus]", SubscriptBox["\[Zeta]", "LL"]}], ")"}]}], TraditionalForm]
+[meaning] \delta^{\rm f}_{\rm LL}(x_{\rm LL})\,\vec u^{\rm f}_{\rm LL}
+   own      : RowBox[{SubsuperscriptBox["\[Delta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]], RowBox[{"(", SubscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], "\[ThinSpace]", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Delta]", "LL", "f"], RowBox[{"(", SubscriptBox[StyleBox["x", "TI"], "LL"], ")"}], " ", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], "LL", "f"]}], TraditionalForm]
+[meaning] \Delta_{\rm LL}=\lvert\vec d_{\rm LL}\rvert
+   own      : RowBox[{SubscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}]}]
+   importer+: FormBox[RowBox[{SubscriptBox["\[CapitalDelta]", "LL"], "\[LongEqual]", "|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], "|"}], TraditionalForm]
+[meaning] \Delta_{\rm LL}(x^1_{\rm LL})=\Delta^\infty_{\rm LL}\tanh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})
+   own      : RowBox[{SubscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"], "1"], ")"}], "\[LongEqual]", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], "\[Infinity]"], "\[ThinSpace]", StyleBox["tanh", FontSlant -> "Plain"], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"], "1"], "/", SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["K", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{SubscriptBox["\[CapitalDelta]", "LL"], RowBox[{"(", SubsuperscriptBox[StyleBox["x", "TI"], "LL", "1"], ")"}], "\[LongEqual]", SubsuperscriptBox["\[CapitalDelta]", "LL", "\[Infinity]"], "tanh", RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["x", "TI"], "LL", "1"], "/", SubsuperscriptBox["\[ScriptL]", "LL", "K"]}], ")"}]}], TraditionalForm]
+[meaning] d\mathbf w/d\theta_{\rm LL}=\mathbf w\mathbf x
+   own      : RowBox[{StyleBox["d", "TI"], StyleBox["w", FontWeight -> "Bold", FontSlant -> "Plain"], "/", StyleBox["d", "TI"], SubscriptBox["\[Theta]", StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", StyleBox["w", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["x", FontWeight -> "Bold", FontSlant -> "Plain"]}]
+   importer+: FormBox[RowBox[{StyleBox["d", "TI"], StyleBox["w", FontWeight -> "Bold", FontSlant -> "Plain"], "/", StyleBox["d", "TI"], SubscriptBox["\[Theta]", "LL"], "\[LongEqual]", StyleBox["w", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["x", FontWeight -> "Bold", FontSlant -> "Plain"]}], TraditionalForm]
+[meaning] d\varphi^{\rm K}_{\rm LL}/dx^1_{\rm LL}=-\Delta_{\rm LL}(x^1_{\rm LL})\varphi^{\rm K}_{\rm LL}
+   own      : RowBox[{StyleBox["d", "TI"], SubsuperscriptBox["\[CurlyPhi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["K", FontSlant -> "Plain"]], "/", StyleBox["d", "TI"], SubsuperscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"], "1"], "\[LongEqual]", RowBox[{"-", SubscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"]]}], RowBox[{"(", SubsuperscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"], "1"], ")"}], SubsuperscriptBox["\[CurlyPhi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["K", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{StyleBox["d", "TI"], SubsuperscriptBox["\[CurlyPhi]", "LL", "K"], "/", StyleBox["d", "TI"], SubsuperscriptBox[StyleBox["x", "TI"], "LL", "1"], "\[LongEqual]", "-", SubscriptBox["\[CapitalDelta]", "LL"], RowBox[{"(", SubsuperscriptBox[StyleBox["x", "TI"], "LL", "1"], ")"}], SubsuperscriptBox["\[CurlyPhi]", "LL", "K"]}], TraditionalForm]
+[meaning] E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["E", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[PlusMinus]"], "\[LongEqual]", SuperscriptBox[RowBox[{"[", RowBox[{SuperscriptBox[RowBox[{"(", RowBox[{SubscriptBox["\[CurlyEpsilon]", StyleBox["LL", FontSlant -> "Plain"]], "\[PlusMinus]", SubscriptBox["\[Mu]", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}], "2"], "+", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], "2"]}], "]"}], RowBox[{"1", "/", "2"}]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["E", "TI"], "LL", "\[PlusMinus]"], "\[LongEqual]", SuperscriptBox[RowBox[{"[", RowBox[{SuperscriptBox[RowBox[{"(", RowBox[{SubscriptBox["\[CurlyEpsilon]", "LL"], "\[PlusMinus]", SubscriptBox["\[Mu]", "LL"]}], ")"}], "2"], "+", SubsuperscriptBox["\[CapitalDelta]", "LL", "2"]}], "]"}], RowBox[{"1", "/", "2"}]]}], TraditionalForm]
+[meaning] \epsilon^{\rm LL}_{\iota\iota'\iota''}
+   own      : SubsuperscriptBox["\[Epsilon]", RowBox[{"\[Iota]", SuperscriptBox["\[Iota]", "\[Prime]"], SuperscriptBox["\[Iota]", "\[Prime]\[Prime]"]}], StyleBox["LL", FontSlant -> "Plain"]]
+   importer+: FormBox[SubsuperscriptBox["\[Epsilon]", RowBox[{SuperscriptBox["\[Iota]\[Iota]", "\[Prime]"], SuperscriptBox["\[Iota]", "\[Prime]\[Prime]"]}], "LL"], TraditionalForm]
+[meaning] E^{\rm c}_{\rm LL}=(q_{\rm LL}^2+(M^{\rm q}_{\rm LL})^2)^{1/2}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["E", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["c", FontSlant -> "Plain"]], "\[LongEqual]", SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["q", "TI"], StyleBox["LL", FontSlant -> "Plain"], "2"], "+", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["M", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["q", FontSlant -> "Plain"]], ")"}], "2"]}], ")"}], RowBox[{"1", "/", "2"}]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["E", "TI"], "LL", "c"], "\[LongEqual]", SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["q", "TI"], "LL", "2"], "+", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["M", "TI"], "LL", "q"], ")"}], "2"]}], ")"}], RowBox[{"1", "/", "2"}]]}], TraditionalForm]
+[meaning] \eta^{\rm LL}_{pp'}=0
+   own      : RowBox[{SubsuperscriptBox["\[Eta]", RowBox[{StyleBox["p", "TI"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]}], StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", "0"}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Eta]", RowBox[{StyleBox["p", "TI"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]}], "LL"], "\[LongEqual]", "0"}], TraditionalForm]
+[meaning] \exp(2i\theta^{\rm F}_{\rm LL})\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})(0,0,\Delta^{\rm vac}_{\rm LL})
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{"2", StyleBox["i", "TI"], SubsuperscriptBox["\[Theta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]]}], ")"}], SubsuperscriptBox[StyleBox["R", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], RowBox[{"(", SubscriptBox[StyleBox["U", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], RowBox[{"(", RowBox[{"0", ",", "0", ",", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["vac", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", RowBox[{"(", RowBox[{"2", StyleBox["i", "TI"], SubsuperscriptBox["\[Theta]", "LL", "F"]}], ")"}], SubsuperscriptBox[StyleBox["R", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL", "v"], RowBox[{"(", SubscriptBox[StyleBox["U", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"], ")"}], RowBox[{"(", RowBox[{"0", ",", "0", ",", SubsuperscriptBox["\[CapitalDelta]", "LL", "vac"]}], ")"}]}], TraditionalForm]
+[meaning] \exp(-i\ell^{\rm x}_{\rm LL}(g^{\rm v}_{\rm LL}\mathsf a_{{\rm LL},j}+g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},j}\sigma^{\rm LL}_0))
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{RowBox[{"-", StyleBox["i", "TI"]}], SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["x", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["v", FontSlant -> "Plain"]], SubscriptBox[StyleBox["a", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}]], "+", SubsuperscriptBox[StyleBox["g", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["j", "TI"]}], StyleBox["F", FontSlant -> "Plain"]], SubsuperscriptBox["\[Sigma]", "0", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", RowBox[{"-", StyleBox["i", "TI"], SubsuperscriptBox["\[ScriptL]", "LL", "x"], RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["g", "TI"], "LL", "v"], SubscriptBox[StyleBox["a", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", StyleBox["j", "TI"]}]], "+", SubsuperscriptBox[StyleBox["g", "TI"], "LL", "F"], SubsuperscriptBox[StyleBox["A", "TI"], RowBox[{"LL", ",", StyleBox["j", "TI"]}], "F"], SubsuperscriptBox["\[Sigma]", "0", "LL"]}], ")"}]}], ")"}], TraditionalForm]
+[meaning] \exp(i\int d^4x_{\rm LL}\,\mathcal L^{\rm HS}_{\rm LL})
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], "\[ThinSpace]", "\[Integral]", "\[ThinSpace]", SuperscriptBox[StyleBox["d", "TI"], "4"], SubscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "\[ThinSpace]", SubsuperscriptBox[StyleBox["\[ScriptCapitalL]", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["HS", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", RowBox[{StyleBox["i", "TI"], "\[Integral]", SuperscriptBox[StyleBox["d", "TI"], "4"], SubscriptBox[StyleBox["x", "TI"], "LL"], " ", SubsuperscriptBox[StyleBox["\[ScriptCapitalL]", FontSlant -> "Plain"], "LL", "HS"]}], ")"}], TraditionalForm]
+[meaning] \exp(i\mathcal S^{\rm B}_{\rm LL})
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox[StyleBox["\[ScriptCapitalS]", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["B", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox[StyleBox["\[ScriptCapitalS]", FontSlant -> "Plain"], "LL", "B"]}], ")"}], TraditionalForm]
+[meaning] \exp(i\sum_jq^j_{\rm LL}x^j_{\rm LL})
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], "\[ThinSpace]", UnderscriptBox["\[Sum]", StyleBox["j", "TI"], LimitsPositioning -> True], "\[ThinSpace]", SubsuperscriptBox[StyleBox["q", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], SubsuperscriptBox[StyleBox["x", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", RowBox[{StyleBox["i", "TI"], UnderscriptBox["\[Sum]", StyleBox["j", "TI"], LimitsPositioning -> True], SubsuperscriptBox[StyleBox["q", "TI"], "LL", StyleBox["j", "TI"]], SubsuperscriptBox[StyleBox["x", "TI"], "LL", StyleBox["j", "TI"]]}], ")"}], TraditionalForm]
+[meaning] \exp(i\theta^3_{\rm LL}Q_{\rm LL})
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox["\[Theta]", StyleBox["LL", FontSlant -> "Plain"], "3"], SubscriptBox[StyleBox["Q", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox["\[Theta]", "LL", "3"], SubscriptBox[StyleBox["Q", "TI"], "LL"]}], ")"}], TraditionalForm]
+[meaning] \exp(i\theta^{\rm F}_{\rm LL})\mathsf U_{\rm LL}
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox["\[Theta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]]}], ")"}], SubscriptBox[StyleBox["U", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{"exp", RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubsuperscriptBox["\[Theta]", "LL", "F"]}], ")"}], SubscriptBox[StyleBox["U", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL"]}], TraditionalForm]
+[meaning] \exp(i\vec q_{\rm LL}\cdot\vec x_{\rm LL})
+   own      : RowBox[{StyleBox["exp", FontSlant -> "Plain"], RowBox[{"(", RowBox[{StyleBox["i", "TI"], SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[CenterDot]", SubscriptBox[OverscriptBox[StyleBox["x", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]]}], ")"}]}]
+   importer+: FormBox[RowBox[{"exp", "(", RowBox[{StyleBox["i", "TI"], SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], "\[CenterDot]", SubscriptBox[OverscriptBox[StyleBox["x", "TI"], "\[RightVector]"], "LL"]}], ")"}], TraditionalForm]
+[meaning] \gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}
+   own      : RowBox[{SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], "0"], "\[LongEqual]", RowBox[{"(", "\[NoBreak]", GridBox[{{"0", SubsuperscriptBox["\[Sigma]", "0", StyleBox["LL", FontSlant -> "Plain"]]}, {SubsuperscriptBox["\[Sigma]", "0", StyleBox["LL", FontSlant -> "Plain"]], "0"}}, RowSpacings -> 1, ColumnSpacings -> 1, RowAlignments -> Baseline, ColumnAlignments -> Center], "\[NoBreak]", ")"}]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Gamma]", "LL", "0"], "\[LongEqual]", RowBox[{"(", Cell[BoxData[FormBox[GridBox[{{Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]], Cell[TextData[{" ", Cell[BoxData[SubsuperscriptBox["\[Sigma]", "0", "LL"]], "InlineFormula"], " "}]]}, {Cell[TextData[{" ", Cell[BoxData[SubsuperscriptBox["\[Sigma]", "0", "LL"]], "InlineFormula"], " "}]], Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]]}}], TraditionalForm]]], ")"}]}], TraditionalForm]
+[meaning] \gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}
+   own      : RowBox[{SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], "\[LongEqual]", RowBox[{"(", "\[NoBreak]", GridBox[{{"0", SubsuperscriptBox["\[Sigma]", StyleBox["j", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}, {RowBox[{"-", SubsuperscriptBox["\[Sigma]", StyleBox["j", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}], "0"}}, RowSpacings -> 1, ColumnSpacings -> 1, RowAlignments -> Baseline, ColumnAlignments -> Center], "\[NoBreak]", ")"}]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Gamma]", "LL", StyleBox["j", "TI"]], "\[LongEqual]", RowBox[{"(", Cell[BoxData[FormBox[GridBox[{{Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]], Cell[TextData[{" ", Cell[BoxData[SubsuperscriptBox["\[Sigma]", StyleBox["j", "TI"], "LL"]], "InlineFormula"], " "}]]}, {Cell[TextData[{" ", Cell[BoxData[RowBox[{"-", SubsuperscriptBox["\[Sigma]", StyleBox["j", "TI"], "LL"]}]], "InlineFormula"], " "}]], Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]]}}], TraditionalForm]]], ")"}]}], TraditionalForm]
+[meaning] \gamma^p_{\rm LL}[\mathbf f]\gamma^{p'}_{\rm LL}[\mathbf f]+\gamma^{p'}_{\rm LL}[\mathbf f]\gamma^p_{\rm LL}[\mathbf f]=2N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})\,\mathsf 1_4
+   own      : RowBox[{SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["p", "TI"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], "+", SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], SubsuperscriptBox["\[Gamma]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["p", "TI"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], "\[LongEqual]", "2", SubscriptBox[StyleBox["N", "TI"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{SubscriptBox[StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["p", "TI"]], ",", SubscriptBox[StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]]}], ")"}], "\[ThinSpace]", SubscriptBox[StyleBox["1", FontFamily -> "Helvetica", FontSlant -> "Plain"], "4"]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Gamma]", "LL", StyleBox["p", "TI"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], SubsuperscriptBox["\[Gamma]", "LL", SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], "+", SubsuperscriptBox["\[Gamma]", "LL", SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], SubsuperscriptBox["\[Gamma]", "LL", StyleBox["p", "TI"]], RowBox[{"[", StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], "]"}], "\[LongEqual]", "2", SubscriptBox[StyleBox["N", "TI"], "LL"], RowBox[{"(", RowBox[{SubscriptBox[StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["p", "TI"]], ",", SubscriptBox[StyleBox["f", FontWeight -> "Bold", FontSlant -> "Plain"], SuperscriptBox[StyleBox["p", "TI"], "\[Prime]"]]}], ")"}], " ", SubscriptBox[StyleBox["1", FontFamily -> "Helvetica", FontSlant -> "Plain"], "4"]}], TraditionalForm]
+[meaning] \Gamma^{\rm f}_{\rm LL}=\lvert\vec u^{\rm f}_{\rm LL}\rvert^2/G_{\rm LL}-\chi^{\rm f}_{\rm LL}
+   own      : RowBox[{SubsuperscriptBox["\[CapitalGamma]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]], "\[LongEqual]", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "-", SubsuperscriptBox["\[Chi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["f", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[CapitalGamma]", "LL", "f"], "\[LongEqual]", "|", SubsuperscriptBox[OverscriptBox[StyleBox["u", "TI"], "\[RightVector]"], "LL", "f"], SuperscriptBox["|", "2"], "/", SubscriptBox[StyleBox["G", "TI"], "LL"], "-", SubsuperscriptBox["\[Chi]", "LL", "f"]}], TraditionalForm]
+[meaning] G^{\rm bd}_{\rm LL}<G_{\rm LL}<G^{\rm crit}_{\rm LL}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["bd", FontSlant -> "Plain"]], "<", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "<", SubsuperscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["crit", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["G", "TI"], "LL", "bd"], "<", SubscriptBox[StyleBox["G", "TI"], "LL"], "<", SubsuperscriptBox[StyleBox["G", "TI"], "LL", "crit"]}], TraditionalForm]
+[meaning] G'_{\rm LL}
+   own      : SubsuperscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Prime]"]
+   importer+: FormBox[SubsuperscriptBox[StyleBox["G", "TI"], "LL", "\[Prime]"], TraditionalForm]
+[meaning] \hat a^{\rm qp}_{{\rm LL},n}
+   own      : SubsuperscriptBox[OverscriptBox[StyleBox["a", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["n", "TI"]}], StyleBox["qp", FontSlant -> "Plain"]]
+   importer+: FormBox[SubsuperscriptBox[OverscriptBox[StyleBox["a", "TI"], "^"], RowBox[{"LL", ",", StyleBox["n", "TI"]}], "qp"], TraditionalForm]
+[meaning] \hat B^{\rm a}_{\rm LL}(\vec q_{\rm LL})^\dagger
+   own      : RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["B", "TI"], "^"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["a", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], "\[Dagger]"]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["B", "TI"], "^"], "LL", "a"], SuperscriptBox[RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], ")"}], "\[Dagger]"]}], TraditionalForm]
+[meaning] \hat B^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger
+   own      : RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["B", "TI"], "^"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["p", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], "\[Dagger]"]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["B", "TI"], "^"], "LL", "p"], SuperscriptBox[RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["q", "TI"], "\[RightVector]"], "LL"], ")"}], "\[Dagger]"]}], TraditionalForm]
+[meaning] \hat c_{{\rm LL},k}(\vec s_{\rm LL})=(\ell^{\rm x}_{\rm LL})^{3/2}\Psi_{{\rm LL},k}(\vec s_{\rm LL})
+   own      : RowBox[{SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["k", "TI"]}]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["s", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}], "\[LongEqual]", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[ScriptL]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["x", FontSlant -> "Plain"]], ")"}], RowBox[{"3", "/", "2"}]], SubscriptBox["\[CapitalPsi]", RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["k", "TI"]}]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["s", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], ")"}]}]
+   importer+: FormBox[RowBox[{SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", StyleBox["k", "TI"]}]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["s", "TI"], "\[RightVector]"], "LL"], ")"}], "\[LongEqual]", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[ScriptL]", "LL", "x"], ")"}], RowBox[{"3", "/", "2"}]], SubscriptBox["\[CapitalPsi]", RowBox[{"LL", ",", StyleBox["k", "TI"]}]], RowBox[{"(", SubscriptBox[OverscriptBox[StyleBox["s", "TI"], "\[RightVector]"], "LL"], ")"}]}], TraditionalForm]
+[meaning] \hat n^\iota_{\rm LL}=\sum_{k,k'}\hat c^\dagger_{{\rm LL},k}(T^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k'}
+   own      : RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["n", "TI"], "^"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "\[LongEqual]", UnderscriptBox["\[Sum]", RowBox[{StyleBox["k", "TI"], ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}], LimitsPositioning -> True], "\[ThinSpace]", SubsuperscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["k", "TI"]}], "\[Dagger]"], SubscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["T", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], ")"}], RowBox[{StyleBox["k", "TI"], SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["n", "TI"], "^"], "LL", "\[Iota]"], "\[LongEqual]", UnderscriptBox["\[Sum]", RowBox[{StyleBox["k", "TI"], ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}], LimitsPositioning -> True], SubsuperscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", StyleBox["k", "TI"]}], "\[Dagger]"], SubscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["T", "TI"], "LL", "\[Iota]"], ")"}], RowBox[{StyleBox["k", "TI"], SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]]}], TraditionalForm]
+[meaning] \hat n^{\rm F}_{\rm LL}=\sum_k\hat c^\dagger_{{\rm LL},k}\hat c_{{\rm LL},k}
+   own      : RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["n", "TI"], "^"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["F", FontSlant -> "Plain"]], "\[LongEqual]", UnderscriptBox["\[Sum]", StyleBox["k", "TI"], LimitsPositioning -> True], "\[ThinSpace]", SubsuperscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["k", "TI"]}], "\[Dagger]"], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["k", "TI"]}]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[OverscriptBox[StyleBox["n", "TI"], "^"], "LL", "F"], "\[LongEqual]", UnderscriptBox["\[Sum]", StyleBox["k", "TI"], LimitsPositioning -> True], SubsuperscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", StyleBox["k", "TI"]}], "\[Dagger]"], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", StyleBox["k", "TI"]}]]}], TraditionalForm]
+[meaning] \hat\Pi^\iota_{\rm LL}=\sum_{k,k'}(\mathsf K^\iota_{\rm LL})_{kk'}\hat c_{{\rm LL},k}\hat c_{{\rm LL},k'}
+   own      : RowBox[{SubsuperscriptBox[OverscriptBox["\[CapitalPi]", "^"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "\[LongEqual]", UnderscriptBox["\[Sum]", RowBox[{StyleBox["k", "TI"], ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}], LimitsPositioning -> True], SubscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["K", FontFamily -> "Helvetica", FontSlant -> "Plain"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], ")"}], RowBox[{StyleBox["k", "TI"], SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", StyleBox["k", "TI"]}]], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[OverscriptBox["\[CapitalPi]", "^"], "LL", "\[Iota]"], "\[LongEqual]", UnderscriptBox["\[Sum]", RowBox[{StyleBox["k", "TI"], ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}], LimitsPositioning -> True], SubscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["K", FontFamily -> "Helvetica", FontSlant -> "Plain"], "LL", "\[Iota]"], ")"}], RowBox[{StyleBox["k", "TI"], SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", StyleBox["k", "TI"]}]], SubscriptBox[OverscriptBox[StyleBox["c", "TI"], "^"], RowBox[{"LL", ",", SuperscriptBox[StyleBox["k", "TI"], "\[Prime]"]}]]}], TraditionalForm]
+[meaning] -(h^\nabla_{\rm LL}-i\Gamma^{\rm LL}_0-\mathsf A_{{\rm LL},0}-\mu_{\rm LL})^*
+   own      : RowBox[{"-", SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["h", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Del]"], "-", StyleBox["i", "TI"], SubsuperscriptBox["\[CapitalGamma]", "0", StyleBox["LL", FontSlant -> "Plain"]], "-", SubscriptBox[StyleBox["A", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "0"}]], "-", SubscriptBox["\[Mu]", StyleBox["LL", FontSlant -> "Plain"]]}], ")"}], "*"]}]
+   importer+: FormBox[RowBox[{"-", SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["h", "TI"], "LL", "\[Del]"], "-", StyleBox["i", "TI"], SubsuperscriptBox["\[CapitalGamma]", "0", "LL"], "-", SubscriptBox[StyleBox["A", FontFamily -> "Helvetica", FontSlant -> "Plain"], RowBox[{"LL", ",", "0"}]], "-", SubscriptBox["\[Mu]", "LL"]}], ")"}], "*"]}], TraditionalForm]
+[meaning] h^\nabla_{\rm LL}=-i\sum_j\alpha^j_{\rm LL}\nabla^{\rm LL}_j+\beta_{\rm LL}m_{\rm LL}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["h", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Del]"], "\[LongEqual]", RowBox[{"-", StyleBox["i", "TI"]}], "\[ThinSpace]", UnderscriptBox["\[Sum]", StyleBox["j", "TI"], LimitsPositioning -> True], "\[ThinSpace]", SubsuperscriptBox["\[Alpha]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], SubsuperscriptBox["\[Del]", StyleBox["j", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "+", SubscriptBox["\[Beta]", StyleBox["LL", FontSlant -> "Plain"]], SubscriptBox[StyleBox["m", "TI"], StyleBox["LL", FontSlant -> "Plain"]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["h", "TI"], "LL", "\[Del]"], "\[LongEqual]", "-", StyleBox["i", "TI"], UnderscriptBox["\[Sum]", StyleBox["j", "TI"], LimitsPositioning -> True], SubsuperscriptBox["\[Alpha]", "LL", StyleBox["j", "TI"]], SubsuperscriptBox["\[Del]", StyleBox["j", "TI"], "LL"], "+", SubscriptBox["\[Beta]", "LL"], SubscriptBox[StyleBox["m", "TI"], "LL"]}], TraditionalForm]
+[meaning] (i\,c^{\rm n}_{{\rm LL},1},\,i\,c^{\rm n}_{{\rm LL},2},\,\Delta^{\rm vac}_{\rm LL}+h^{\rm a}_{\rm LL})
+   own      : RowBox[{"(", RowBox[{StyleBox["i", "TI"], "\[ThinSpace]", SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "1"}], StyleBox["n", FontSlant -> "Plain"]], ",", "\[ThinSpace]", StyleBox["i", "TI"], "\[ThinSpace]", SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "2"}], StyleBox["n", FontSlant -> "Plain"]], ",", "\[ThinSpace]", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["vac", FontSlant -> "Plain"]], "+", SubsuperscriptBox[StyleBox["h", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["a", FontSlant -> "Plain"]]}], ")"}]
+   importer+: FormBox[RowBox[{"(", RowBox[{StyleBox["i", "TI"], " ", SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{"LL", ",", "1"}], "n"], ", ", StyleBox["i", "TI"], " ", SubsuperscriptBox[StyleBox["c", "TI"], RowBox[{"LL", ",", "2"}], "n"], ", ", SubsuperscriptBox["\[CapitalDelta]", "LL", "vac"], "+", SubsuperscriptBox[StyleBox["h", "TI"], "LL", "a"]}], ")"}], TraditionalForm]
+[meaning] i\mathbf e_1,\dots,i\mathbf e_7
+   own      : RowBox[{StyleBox["i", "TI"], SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], "1"], ",", "\[Ellipsis]", ",", StyleBox["i", "TI"], SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], "7"]}]
+   importer+: FormBox[RowBox[{StyleBox["i", "TI"], SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], "1"], ",", "\[Ellipsis]", ",", StyleBox["i", "TI"], SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], "7"]}], TraditionalForm]
+[meaning] \int d^3\vec x_{\rm LL}(\lvert\psi^{\rm p}_{\rm LL}\rvert^2+\lvert\psi^{\rm h}_{\rm LL}\rvert^2)
+   own      : RowBox[{"\[Integral]", "\[ThinSpace]", SuperscriptBox[StyleBox["d", "TI"], "3"], SubscriptBox[OverscriptBox[StyleBox["x", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], RowBox[{"(", RowBox[{SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox["\[Psi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["p", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "+", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox["\[Psi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["h", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"]}], ")"}]}]
+   importer+: FormBox[RowBox[{"\[Integral]", SuperscriptBox[StyleBox["d", "TI"], "3"], SubscriptBox[OverscriptBox[StyleBox["x", "TI"], "\[RightVector]"], "LL"], RowBox[{"(", RowBox[{"|", SubsuperscriptBox["\[Psi]", "LL", "p"], SuperscriptBox["|", "2"], "+", "|", SubsuperscriptBox["\[Psi]", "LL", "h"], SuperscriptBox["|", "2"]}], ")"}]}], TraditionalForm]
+[meaning] I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})=\int_{k^{\rm E}_{\rm LL}<\Lambda_{\rm LL}}\frac{d^4k^{\rm E}_{\rm LL}}{(2\pi)^4}\frac{k^{\rm E}_{\rm LL}\cdot(k^{\rm E}_{\rm LL}+p^{\rm E}_{\rm LL})+m_{\rm LL}^2}{[(k^{\rm E}_{\rm LL})^2+m_{\rm LL}^2][(k^{\rm E}_{\rm LL}+p^{\rm E}_{\rm LL})^2+m_{\rm LL}^2]}
+   own      : RowBox[{SubsuperscriptBox[StyleBox["I", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["bub", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], ")"}], "\[LongEqual]", SubscriptBox["\[Integral]", RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], "<", SubscriptBox["\[CapitalLambda]", StyleBox["LL", FontSlant -> "Plain"]]}]], "\[ThinSpace]", FractionBox[RowBox[{SuperscriptBox[StyleBox["d", "TI"], "4"], SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]]}], SuperscriptBox[RowBox[{"(", RowBox[{"2", "\[Pi]"}], ")"}], "4"]], FractionBox[RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], "\[CenterDot]", RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], "+", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]]}], ")"}], "+", SubsuperscriptBox[StyleBox["m", "TI"], StyleBox["LL", FontSlant -> "Plain"], "2"]}], RowBox[{RowBox[{"[", RowBox[{SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], ")"}], "2"], "+", SubsuperscriptBox[StyleBox["m", "TI"], StyleBox["LL", FontSlant -> "Plain"], "2"]}], "]"}], RowBox[{"[", RowBox[{SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], "+", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]]}], ")"}], "2"], "+", SubsuperscriptBox[StyleBox["m", "TI"], StyleBox["LL", FontSlant -> "Plain"], "2"]}], "]"}]}]]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["I", "TI"], "LL", "bub"], RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"], ")"}], "\[LongEqual]", SubscriptBox["\[Integral]", RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], "LL", "E"], "<", SubscriptBox["\[CapitalLambda]", "LL"]}]], FractionBox[RowBox[{SuperscriptBox[StyleBox["d", "TI"], "4"], SubsuperscriptBox[StyleBox["k", "TI"], "LL", "E"]}], SuperscriptBox[RowBox[{"(", RowBox[{"2", "\[Pi]"}], ")"}], "4"]], FractionBox[RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], "LL", "E"], "\[CenterDot]", RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], "LL", "E"], "+", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"]}], ")"}], "+", SubsuperscriptBox[StyleBox["m", "TI"], "LL", "2"]}], RowBox[{RowBox[{"[", RowBox[{SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["k", "TI"], "LL", "E"], ")"}], "2"], "+", SubsuperscriptBox[StyleBox["m", "TI"], "LL", "2"]}], "]"}], RowBox[{"[", RowBox[{SuperscriptBox[RowBox[{"(", RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], "LL", "E"], "+", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"]}], ")"}], "2"], "+", SubsuperscriptBox[StyleBox["m", "TI"], "LL", "2"]}], "]"}]}]]}], TraditionalForm]
+[meaning] I^{\rm ren}_{\rm LL}(p^{\rm E}_{\rm LL})=I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)-(p^{\rm E}_{\rm LL})^2\,\partial I^{\rm bub}_{\rm LL}/\partial(p^{\rm E}_{\rm LL})^2
+   own      : RowBox[{SubsuperscriptBox[StyleBox["I", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["ren", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], ")"}], "\[LongEqual]", SubsuperscriptBox[StyleBox["I", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["bub", FontSlant -> "Plain"]], RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], ")"}], "-", SubsuperscriptBox[StyleBox["I", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["bub", FontSlant -> "Plain"]], RowBox[{"(", "0", ")"}], "-", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], ")"}], "2"], "\[ThinSpace]", "\[PartialD]", SubsuperscriptBox[StyleBox["I", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["bub", FontSlant -> "Plain"]], "/", "\[PartialD]", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["E", FontSlant -> "Plain"]], ")"}], "2"]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["I", "TI"], "LL", "ren"], RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"], ")"}], "\[LongEqual]", SubsuperscriptBox[StyleBox["I", "TI"], "LL", "bub"], RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"], ")"}], "-", SubsuperscriptBox[StyleBox["I", "TI"], "LL", "bub"], RowBox[{"(", "0", ")"}], "-", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"], ")"}], "2"], " ", "\[PartialD]", SubsuperscriptBox[StyleBox["I", "TI"], "LL", "bub"], "/", "\[PartialD]", SuperscriptBox[RowBox[{"(", SubsuperscriptBox[StyleBox["p", "TI"], "LL", "E"], ")"}], "2"]}], TraditionalForm]
+[meaning] i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}
+   own      : RowBox[{StyleBox["i", "TI"], SubsuperscriptBox["\[Sigma]", "2", StyleBox["LL", FontSlant -> "Plain"]], "\[LongEqual]", RowBox[{"(", "\[NoBreak]", GridBox[{{"0", "1"}, {RowBox[{"-", "1"}], "0"}}, RowSpacings -> 1, ColumnSpacings -> 1, RowAlignments -> Baseline, ColumnAlignments -> Center], "\[NoBreak]", ")"}]}]
+   importer+: FormBox[RowBox[{StyleBox["i", "TI"], SubsuperscriptBox["\[Sigma]", "2", "LL"], "\[LongEqual]", RowBox[{"(", Cell[BoxData[FormBox[GridBox[{{Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]], Cell[TextData[{" ", Cell["1", "InlineFormula"], " "}]]}, {Cell[TextData[{" ", Cell["-1", "InlineFormula"], " "}]], Cell[TextData[{" ", Cell["0", "InlineFormula"], " "}]]}}], TraditionalForm]]], ")"}]}], TraditionalForm]
+[meaning] j'
+   own      : SuperscriptBox[StyleBox["j", "TI"], "\[Prime]"]
+   importer+: FormBox[SuperscriptBox[StyleBox["j", "TI"], "\[Prime]"], TraditionalForm]
+[meaning] j''
+   own      : SuperscriptBox[StyleBox["j", "TI"], "\[Prime]\[Prime]"]
+   importer+: FormBox[SuperscriptBox[StyleBox["j", "TI"], "\[Prime]\[Prime]"], TraditionalForm]
+[meaning] (j,j',j'')
+   own      : RowBox[{"(", RowBox[{StyleBox["j", "TI"], ",", SuperscriptBox[StyleBox["j", "TI"], "\[Prime]"], ",", SuperscriptBox[StyleBox["j", "TI"], "\[Prime]\[Prime]"]}], ")"}]
+   importer+: FormBox[RowBox[{"(", RowBox[{StyleBox["j", "TI"], ",", SuperscriptBox[StyleBox["j", "TI"], "\[Prime]"], ",", SuperscriptBox[StyleBox["j", "TI"], "\[Prime]\[Prime]"]}], ")"}], TraditionalForm]
+[meaning] J^j_{\rm LL}=\mathbf e_j/2
+   own      : RowBox[{SubsuperscriptBox[StyleBox["J", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], "\[LongEqual]", SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["j", "TI"]], "/", "2"}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["J", "TI"], "LL", StyleBox["j", "TI"]], "\[LongEqual]", SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["j", "TI"]], "/", "2"}], TraditionalForm]
+[meaning] K^j_{\rm LL}=i\,\mathbf e_j/2
+   own      : RowBox[{SubsuperscriptBox[StyleBox["K", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["j", "TI"]], "\[LongEqual]", StyleBox["i", "TI"], "\[ThinSpace]", SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["j", "TI"]], "/", "2"}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["K", "TI"], "LL", StyleBox["j", "TI"]], "\[LongEqual]", StyleBox["i", "TI"], " ", SubscriptBox[StyleBox["e", FontWeight -> "Bold", FontSlant -> "Plain"], StyleBox["j", "TI"]], "/", "2"}], TraditionalForm]
+[meaning] k^{\rm K}_{\rm LL}=0,1,2,\dots
+   own      : RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["K", FontSlant -> "Plain"]], "\[LongEqual]", "0", ",", "1", ",", "2", ",", "\[Ellipsis]"}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox[StyleBox["k", "TI"], "LL", "K"], "\[LongEqual]", "0", ",", "1", ",", "2", ",", "\[Ellipsis]"}], TraditionalForm]
+[meaning] \lambda^{\rm H}_{\rm LL}(\lvert\vec d_{\rm LL}\rvert^2-(\Delta^{\rm vac}_{\rm LL})^2)^2
+   own      : RowBox[{SubsuperscriptBox["\[Lambda]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["H", FontSlant -> "Plain"]], SuperscriptBox[RowBox[{"(", RowBox[{SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "-", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["vac", FontSlant -> "Plain"]], ")"}], "2"]}], ")"}], "2"]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Lambda]", "LL", "H"], SuperscriptBox[RowBox[{"(", RowBox[{"|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"], "-", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", "LL", "vac"], ")"}], "2"]}], ")"}], "2"]}], TraditionalForm]
+[meaning] \lambda^{\rm H}_{\rm LL}=\Omega^{\rm s(2)}_{\rm LL}/(4(\Delta^{\rm vac}_{\rm LL})^2)
+   own      : RowBox[{SubsuperscriptBox["\[Lambda]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["H", FontSlant -> "Plain"]], "\[LongEqual]", SubsuperscriptBox["\[CapitalOmega]", StyleBox["LL", FontSlant -> "Plain"], RowBox[{StyleBox["s", FontSlant -> "Plain"], RowBox[{"(", "2", ")"}]}]], "/", RowBox[{"(", RowBox[{"4", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["vac", FontSlant -> "Plain"]], ")"}], "2"]}], ")"}]}]
+   importer+: FormBox[RowBox[{SubsuperscriptBox["\[Lambda]", "LL", "H"], "\[LongEqual]", SubsuperscriptBox["\[CapitalOmega]", "LL", RowBox[{"s", "(", "2", ")"}]], "/", RowBox[{"(", RowBox[{"4", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", "LL", "vac"], ")"}], "2"]}], ")"}]}], TraditionalForm]
+[meaning] \lvert B^\uparrow_{\rm LL}\rvert^{-1/2}
+   own      : SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[StyleBox["B", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[UpArrow]"], "\[RightBracketingBar]"}], RowBox[{RowBox[{"-", "1"}], "/", "2"}]]
+   importer+: FormBox[RowBox[{"|", SubsuperscriptBox[StyleBox["B", "TI"], "LL", "\[UpArrow]"], SuperscriptBox["|", RowBox[{"-1", "/", "2"}]]}], TraditionalForm]
+[meaning] \lvert\phi^T_{\rm LL}\phi_{\rm LL}\rvert^2
+   own      : SuperscriptBox[RowBox[{"\[LeftBracketingBar]", RowBox[{SubsuperscriptBox["\[Phi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["T", "TI"]], SubscriptBox["\[Phi]", StyleBox["LL", FontSlant -> "Plain"]]}], "\[RightBracketingBar]"}], "2"]
+   importer+: FormBox[RowBox[{"|", SubsuperscriptBox["\[Phi]", "LL", StyleBox["T", "TI"]], SubscriptBox["\[Phi]", "LL"], SuperscriptBox["|", "2"]}], TraditionalForm]
+[meaning] \lvert\psi^{\rm h}_{\rm LL}\rvert^2
+   own      : SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox["\[Psi]", StyleBox["LL", FontSlant -> "Plain"], StyleBox["h", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"]
+   importer+: FormBox[RowBox[{"|", SubsuperscriptBox["\[Psi]", "LL", "h"], SuperscriptBox["|", "2"]}], TraditionalForm]
+[meaning] \lvert u^{\rm pl}_{{\rm LL},\pm}\rvert^2+\lvert v^{\rm pl}_{{\rm LL},\pm}\rvert^2=1
+   own      : RowBox[{SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[StyleBox["u", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "\[PlusMinus]"}], StyleBox["pl", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "+", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[StyleBox["v", "TI"], RowBox[{StyleBox["LL", FontSlant -> "Plain"], ",", "\[PlusMinus]"}], StyleBox["pl", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "\[LongEqual]", "1"}]
+   importer+: FormBox[RowBox[{"|", SubsuperscriptBox[StyleBox["u", "TI"], RowBox[{"LL", ",", "\[PlusMinus]"}], "pl"], SuperscriptBox["|", "2"], "+", "|", SubsuperscriptBox[StyleBox["v", "TI"], RowBox[{"LL", ",", "\[PlusMinus]"}], "pl"], SuperscriptBox["|", "2"], "\[LongEqual]", "1"}], TraditionalForm]
+[meaning] \lvert\vec d_{\rm LL}\rvert
+   own      : RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}]
+   importer+: FormBox[TemplateBox[{RowBox[{SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"]}]}, "Abs"], TraditionalForm]
+[meaning] \lvert\vec d_{\rm LL}\rvert^2
+   own      : SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"]
+   importer+: FormBox[RowBox[{"|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"]}], TraditionalForm]
+[meaning] \lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-W^{\rm g}_{\rm LL}((\Delta^+_{\rm LL})^2)-W^{\rm g}_{\rm LL}((\Delta^-_{\rm LL})^2)
+   own      : RowBox[{SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "/", SubscriptBox[StyleBox["G", "TI"], StyleBox["LL", FontSlant -> "Plain"]], "-", SubsuperscriptBox[StyleBox["W", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["g", FontSlant -> "Plain"]], RowBox[{"(", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], "+"], ")"}], "2"], ")"}], "-", SubsuperscriptBox[StyleBox["W", "TI"], StyleBox["LL", FontSlant -> "Plain"], StyleBox["g", FontSlant -> "Plain"]], RowBox[{"(", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", StyleBox["LL", FontSlant -> "Plain"], "-"], ")"}], "2"], ")"}]}]
+   importer+: FormBox[RowBox[{"|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"], "/", SubscriptBox[StyleBox["G", "TI"], "LL"], "-", SubsuperscriptBox[StyleBox["W", "TI"], "LL", "g"], RowBox[{"(", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", "LL", "+"], ")"}], "2"], ")"}], "-", SubsuperscriptBox[StyleBox["W", "TI"], "LL", "g"], RowBox[{"(", SuperscriptBox[RowBox[{"(", SubsuperscriptBox["\[CapitalDelta]", "LL", "-"], ")"}], "2"], ")"}]}], TraditionalForm]
+[meaning] \lvert\vec d_{\rm LL}\rvert^2-\lvert d^\iota_{\rm LL}\rvert^2
+   own      : RowBox[{SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], StyleBox["LL", FontSlant -> "Plain"]], "\[RightBracketingBar]"}], "2"], "-", SuperscriptBox[RowBox[{"\[LeftBracketingBar]", SubsuperscriptBox[StyleBox["d", "TI"], StyleBox["LL", FontSlant -> "Plain"], "\[Iota]"], "\[RightBracketingBar]"}], "2"]}]
+   importer+: FormBox[RowBox[{"|", SubscriptBox[OverscriptBox[StyleBox["d", "TI"], "\[RightVector]"], "LL"], SuperscriptBox["|", "2"], "-", "|", SubsuperscriptBox[StyleBox["d", "TI"], "LL", "\[Iota]"], SuperscriptBox["|", "2"]}], TraditionalForm]
+[meaning] \mathbb C\otimes\mathbb H
+   own      : RowBox[{StyleBox["\[DoubleStruckCapitalC]", FontSlant -> "Plain"], "\[CircleTimes]", StyleBox["\[DoubleStruckCapitalH]", FontSlant -> "Plain"]}]
+   importer+: FormBox[RowBox[{StyleBox["\[DoubleStruckCapitalC]", FontSlant -> "Plain"], "\[CircleTimes]", StyleBox["\[DoubleStruckCapitalH]", FontSlant -> "Plain"]}], TraditionalForm]
+[meaning] \mathbb C\otimes\mathbb O
+   own      : RowBox[{StyleBox["\[DoubleStruckCapitalC]", FontSlant -> "Plain"], "\[CircleTimes]", StyleBox["\[DoubleStruckCapitalO]", FontSlant -> "Plain"]}]
+   importer+: FormBox[RowBox[{StyleBox["\[DoubleStruckCapitalC]", FontSlant -> "Plain"], "\[CircleTimes]", StyleBox["\[DoubleStruckCapitalO]", FontSlant -> "Plain"]}], TraditionalForm]

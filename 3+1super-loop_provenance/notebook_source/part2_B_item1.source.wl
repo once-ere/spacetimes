@@ -321,7 +321,7 @@ ev1 = First[t2eigh[t2dense[lat1, t2trivialFields[12]]]];
 expect1 = Sort[Flatten[Table[With[{e = t2epsLat[{0., 0., 2 Pi kk/(12 0.5)}, 0.5, mass, 1.0, {False, False, True}]}, Table[{e, -e}, {8}]], {kk, 0, 11}]]];
 disp = Max[Abs[ev1 - expect1]];
 doublerOk = Abs[t2epsLat[{0., 0., Pi/0.5}, 0.5, mass, 1.0, {False, False, True}] - (mass + 2/0.5)] < 1*^-12;
-(* the spectral radius and the bound used for the time step *)
+(* the spectral radius of H_lat and its bound B^H *)
 rho = Max[Abs[First[t2eigh[hl]]]];
 bound = t2normBound[lat, fl];
 SL31Check["GS-10", "the lattice operator H_lat on a 3 x 2 x 4 lattice (dx = 0.7, r_W = 1, periodic in x and z) with random links, potentials and order parameters is Hermitian, particle-hole symmetric and exactly gauge covariant; on a free periodic chain of 12 sites its spectrum is +-eps_lat, each eight times; the Wilson term lifts the doubler to m + 2 r_W/dx; the spectral radius stays below the bound Hbound (tolerance 1e-10)",

@@ -1,0 +1,19 @@
+Output of tools/gs13_ida_tolerances.wls (the numbers of steps and the errors of IDA for different settings of PrecisionGoal and AccuracyGoal)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 1.5 s; messages on the error stream: none)
+
+$Version = 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
+Options[NDSolve`IDA] = {MaxDifferenceOrder -> 5, ImplicitSolver -> Newton}
+T1 (prec = 15; acc = 8 against the solution times 1024 with acc = 8 - log10(1024)): steps 14919 and 14919; last times InputForm[30.] and InputForm[30.]; largest difference of the step times InputForm[0.0001525544580047722]; largest relative difference of the step sizes InputForm[0.14882887026176428]
+T2 (acc = 15, prec = 8; the solution against the solution times 1024 with acc = 15 - log10(1024)): steps 1556 and 1556; last times InputForm[30.] and InputForm[30.]; largest difference of the step times InputForm[0.]; largest relative difference of the step sizes InputForm[0.]
+T3 (the solution shifted by 2^20 with prec = 12, acc = 15, against the unshifted solution with prec = 15, acc = 12 - log10(2^20)): steps 7861 and 14515; last times InputForm[30.] and InputForm[30.]; the first 7862 step times differ by at most InputForm[10.722868880493028]
+T3a (as T3, the absolute tolerance of the second run doubled): steps 7861 and 14658; last times InputForm[30.] and InputForm[30.]; the first 7862 step times differ by at most InputForm[10.673852570793851]
+T3b (as T3, the absolute tolerance of the second run halved): steps 7861 and 14264; last times InputForm[30.] and InputForm[30.]; the first 7862 step times differ by at most InputForm[10.682899038294412]
+
+NDSolveValue::ndtola: A component of the solution at s$1523 == 7.9706 is essentially zero, and the tolerance specified by the AccuracyGoal option could not be achieved.
+prec = Infinity, acc = 8: 2197 steps, last time InputForm[7.970597038647152]
+prec = 8, acc = Infinity: 1556 steps, last time InputForm[30.]
+
+NDSolveValue::mconly: For the method NDSolve`IDA, only machine real code is available. Unable to continue with complex values or beyond floating-point exceptions.
+a complex equation given to IDA: no solution (message above)
+done
+

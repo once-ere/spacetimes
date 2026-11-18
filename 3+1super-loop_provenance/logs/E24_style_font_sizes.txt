@@ -1,0 +1,12 @@
+Output of tools/style_font_sizes.wls (the font family and the font size of the cell styles Text, Item, DisplayFormula, InlineFormula and Output in the style sheet Default.nb)
+(run by wolframscript in Wolfram 15.0.1 on the Mac of the author; 2.6 s; messages on the error stream: none)
+
+$Version = 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
+Text: font family Source Sans Pro, font size 15
+Item: font family Source Sans Pro, font size 15
+DisplayFormula: font family Source Sans Pro, font size 14
+InlineFormula: font family Times, font size 1.05*Inherited
+Output: font family Times, font size 13
+a formula inside a text: 1.1 times the size of Text = 16.5
+a display formula: 1.25 times the size of DisplayFormula = 17.5
+done
