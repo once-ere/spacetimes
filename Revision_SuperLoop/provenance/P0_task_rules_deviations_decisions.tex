@@ -805,17 +805,20 @@ answered}\label{what-these-requests-ask-for-and-how-they-are-answered-2}}
   taken apart by a calculation, not by an argument. Both integrators
   were run one internal step at a time (CVODE through a new function of
   the module \texttt{t2core::cvode}; IDA in the open, with the pure-Rust
-  IDA of the vendored translation of SUNDIALS 7.8.0, set up so that it
-  takes exactly the internal steps of the IDA inside \texttt{NDSolve}),
-  every step was measured against the exact solution in the eigenvectors
-  of the lattice operator, and the error of one step of each formula was
-  computed from the formula as the integrator applies it. The result is
-  the new Section 2.12 of the document of Test 2 with sixteen tables and
-  four figures, the new library crate \texttt{t2steps}, the module
-  \texttt{steps.rs} of \texttt{t2\_fields} with the checks GS-17 to
-  GS-20, and the independent Python computation
-  \texttt{t2\_formula\_check.py} (checks FC-1 to FC-6). The findings are
-  in Section 6 of this document.
+  IDA of the vendored translation of SUNDIALS 7.8.0 and the settings of
+  the IDA inside \texttt{NDSolve}: it takes as many internal steps, the
+  same steps up to the settled ones, and settled steps whose size
+  differs from that of the notebook by \(7\times10^{-14}\),
+  \(3.3\times10^{-8}\) and \(3.0\times10^{-8}\) of itself; stage 22 and
+  entry E89 of Section 11), every step was measured against the exact
+  solution in the eigenvectors of the lattice operator, and the error of
+  one step of each formula was computed from the formula as the
+  integrator applies it. The result is the new Section 2.12 of the
+  document of Test 2 with nineteen tables and five figures, the new
+  library crate \texttt{t2steps}, the module \texttt{steps.rs} of
+  \texttt{t2\_fields} with the checks GS-17 to GS-20, and the
+  independent Python computation \texttt{t2\_formula\_check.py} (checks
+  FC-1 to FC-6). The findings are in Section 6 of this document.
 \item
   \textbf{An unsupported sentence removed.} Section 2.11 of the document
   of Test 2 had explained the numbers of steps of check GS-13 by the
@@ -873,7 +876,7 @@ stated & --- \\
 5. One symbol, one object, in the whole project; a master provenance of
 the symbols, and its symbols used everywhere & the registry
 \texttt{provenance/symbols\_ll.csv} takes 2 symbols of the master
-registries with their meanings and adds 212 new ones, all with the
+registries with their meanings and adds 213 new ones, all with the
 suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur)
 that marks them as algebra elements, matrices, number sets or Lie
 algebras; the plain-text names of the programs, figures and data files
@@ -1268,6 +1271,43 @@ unchanged (Section 10), and its provenance
   the analysis; the checks of the registry extended to every single item
   of an entry; \texttt{check\_all.sh} runs the new tests, the new check
   and the new figures (Section 11, entries E72 to E80).
+\item
+  \textbf{Stage 22 --- the last digits of the settled step size of IDA}
+  (2026-11-18; a correction and an extension of stage 21). When the
+  checks GS-17 to GS-20 were rewritten for the notebook
+  \texttt{3+1super-loop.nb}, the step sizes of the IDA of the notebook
+  were compared with those of the program one by one; stage 21 had
+  compared only their number, the largest and the smallest. The steps
+  agree up to the settled ones; the settled step size differs by
+  \(3\times10^{-8}\) of itself at \(10^{-10}\) and \(10^{-12}\). The
+  statement of stage 21 that the program ``takes the steps of the
+  notebook'' was therefore wrong for the settled steps (entry E89). The
+  cause was computed, not assumed: (a) check GS-20 now sorts every
+  change of the step size of IDA up to the first settled step and shows
+  that the settled step size is \(10^{-4}\) times fixed numbers (1/4,
+  0.9, 2) times ONE factor that IDA computes from the error estimate of
+  one step, with the rule and the two coefficients of IDA written out
+  and verified; (b) the three integrations are repeated with the
+  iteration matrix formed by difference quotients, as the notebook forms
+  it (new setting \texttt{dq\_matrix} of the module \texttt{ida}, new
+  counter of these evaluations): same numbers of steps, evaluations and
+  matrices, the same step sizes bit for bit up to that one factor, and
+  the factor differs by 4 and 8 parts in \(10^{9}\); (c) the settled
+  step size of the notebook is read from the grid of its solution by a
+  script that is kept with the notebook
+  (\texttt{3+1super-loop\_provenance/tools/gs13\_ida\_settled\_steps.wl},
+  output in \texttt{3+1super-loop\_provenance/logs/}), and the Rust
+  program reproduces the last settled grid point and the time defect of
+  the notebook from it by its own additions; (d) the time defect of IDA
+  at \(10^{-12}\) is shown to be a function of the last 16 binary digits
+  of the settled step size, with a closed formula, and is computed for
+  all 65536 cases by carrying out the additions. Section 2.12 of the
+  document of Test 2 was corrected (the caption of Table 2.1,
+  observation 4, part (H)) and extended (the equations (2.64) to (2.66),
+  Tables 2.15 to 2.17, Figure 2E; the two later tables are now 2.18 and
+  2.19); two data files (\texttt{t2\_steps\_settled.csv},
+  \texttt{t2\_steps\_last\_digits.csv}); one registry entry with six
+  symbols (Section 11, entries E89 to E92).
 \end{enumerate}
 
 \hypertarget{the-results-in-brief}{%
@@ -1568,7 +1608,26 @@ unchanged (Section 10), and its provenance
     formula. (vi) At \(10^{-12}\), 91 per cent of the deviation of IDA
     is the rounding of the 41111 additions of the step size to its time
     variable; with a matrix that is always current IDA takes steps of
-    twice the size and its deviation is 8 times larger.
+    twice the size and its deviation is 8 times larger. (vii) The
+    rounding of the time is a function of the last 16 binary digits of
+    the settled step size and of nothing else (stage 22). The settled
+    step size is the first step size \(10^{-4}\) times fixed numbers of
+    IDA (1/4, 0.9 and 2) times one factor that IDA computes from the
+    error estimate of a single step, and this estimate changes by parts
+    in \(10^{8}\) of itself when the iteration matrix is formed by
+    difference quotients, as in the notebook, instead of exactly, as in
+    the program. The program with the exact matrix, the program with
+    difference quotients and the notebook therefore have three unrelated
+    time defects at every tolerance, and their deviations differ as
+    these time defects predict: by less than \(6\times10^{-8}\) and
+    \(9\times10^{-6}\) of the deviation at \(10^{-8}\) and \(10^{-10}\),
+    and by 9 and 16 per cent at \(10^{-12}\) (\(4.81\times10^{-11}\),
+    \(4.02\times10^{-11}\) and \(4.38\times10^{-11}\)). Over all 65536
+    cases of the last 16 digits the deviation of IDA at \(10^{-12}\)
+    goes from \(1.98\times10^{-11}\) (the errors of the formulas alone)
+    to \(1.21\times10^{-10}\), with the median \(4.4\times10^{-11}\):
+    the number \(4.4\times10^{-11}\) of the notebook is one case of this
+    distribution, and no setting of the integrator selects the case.
   \end{enumerate}
 \end{itemize}
 
@@ -2817,6 +2876,74 @@ passes of the full check & the reference list of the manuscript begins
 on a new page (\texttt{\textbackslash{}clearpage} before the change of
 the grid in \texttt{docs\_src/manuscript/13\_appendices.tex}); the
 manuscript still has 42 pages; its last two pages were looked at \\
+E89 & stage 21 stated more than it had verified. The caption of Table
+2.1, observation 4 and part (H) of Section 2.12 of the document of Test
+2, the statement of check GS-20 (a), the head comment of the module
+\texttt{steps.rs}, Section 2.12 of this document and the message to the
+author said that the IDA of the program ``takes exactly the internal
+steps'' of the IDA of the notebook (``the same 41111 steps to ten
+digits''). Compared had been the number of steps, the largest and the
+smallest step, the number of evaluations and the deviation; the largest
+and the smallest step are steps BEFORE the settled ones. The settled
+steps, all but about 45 of the steps, differ in size by
+\(7\times10^{-14}\), \(3.3\times10^{-8}\) and \(3.0\times10^{-8}\) of
+their size for the three tolerances & when the checks GS-17 to GS-20
+were rewritten for the notebook \texttt{3+1super-loop.nb}, the step
+sizes read from the grid of \texttt{NDSolve} were compared one by one
+with the file \texttt{t2\_steps\_segments.csv} of the program: every
+step before the settled ones agreed to 13 digits or better, the settled
+steps did not & stage 22: every such statement was replaced by what is
+true (same number of steps, same steps up to the settled ones, the
+measured relative differences of the settled step size). The cause was
+computed: the settled step size contains one factor that IDA computes
+from the error estimate of one step; with the iteration matrix formed by
+difference quotients, as the notebook forms it, the program reproduces a
+difference of the same kind (4 and 8 parts in \(10^{9}\)). Check GS-20
+has three new parts, (e) to (g); the statement of its part (a) no longer
+says ``takes the steps'' \\
+E90 & in the work of stage 22, before it was committed: the first form
+of the closed formula (2.64) for the time defect took the nearest
+multiple of a unit with the rule ``a number half way is rounded away
+from zero''. The machine addition rounds such a sum to the neighbour
+whose last binary digit is 0. For the one step size of the 65536 that
+lies exactly half way between two multiples of the unit \(2^{-49}\) the
+formula was wrong by the whole product of 16432 steps and the unit,
+\(2.9\times10^{-11}\) & the new part of check GS-20 compares the formula
+with the additions carried out for all 65536 step sizes; it failed with
+exactly this difference & the formula uses the rule of the machine
+addition (the even neighbour; the function \texttt{round\_ties\_even}),
+and the text states the rule; the largest difference between formula and
+additions is now \(5.7\times10^{-15}\), below the sum of the units \\
+E91 & same work: the time defect was first rebuilt from the steps before
+the settled ones and the additions of the settled step size alone, with
+the last step taken as the exact difference between 20 and the time
+before it. IDA makes the last step \((20-x^0_{\rm LL})(1-2^{-50})\) long
+and then sets its time to 20; the exact sum of the step sizes is smaller
+than assumed by \(3.4\times10^{-20}\) (5 units in the last place of the
+last step) & the comparison of the rebuilt time defect with the measured
+one of the two integrations by the program failed at the relative level
+\(4\times10^{-9}\), with the same difference \(5\times2^{-67}\) in both
+& the last step is rebuilt as IDA computes it; check GS-20 requires the
+rebuilt time defect to agree with the measured one within \(10^{-12}\)
+of itself, the last grid point bit for bit, and the size of the last
+step bit for bit; the text of part (H) names the three things that
+(2.64) leaves out \\
+E92 & same work: the first version of the script that reads the settled
+steps of the notebook from its grid
+(\texttt{gs13\_ida\_settled\_steps.wl}) printed, for the steps between
+two powers of 2, the smallest and the largest rounding error of an
+addition. In such a range all steps but one have the same rounding
+error; the one step that begins below the power of 2 has another. The
+smallest value was taken for the value of the range, and three wrong
+numbers (\(-0.27\), \(+0.11\), \(+0.06\) units for the times from 4 to
+8, 8 to 16 and 16 to 20 of the notebook at \(10^{-12}\)) were noted as a
+result & the sum of the rounding errors of each range, printed beside
+them, did not equal the number of steps times the noted value (from 16
+to 20: 8216 steps, sum \(-1.29\times10^{-11}\), which is \(-0.443\)
+units per step) & the script prints the median over the steps of a range
+(the value of all steps but one) and the number of steps with another
+value; the values are \(+0.2275\), \(+0.1138\) and \(-0.4431\) units.
+The wrong numbers were in no committed file \\
 \end{longtable}
 
 \hypertarget{the-symbols}{%
@@ -4813,6 +4940,35 @@ derivatives of the earlier steps,
 \(r^{\rm g}_{\rm LL}=g^{\rm st}_{{\rm LL},s}/a^{\rm st}_{{\rm LL},s}\)
 of the stored derivative to the amplitude & new & \texttt{S\_AB}
 \texttt{S\_AM} \texttt{r\_g} \\
+\(\psi^{\rm IDA}_{{\rm LL},m}\), \(\sigma^{\rm IDA}_{\rm LL}\);
+\(\delta^{\rm nxt}_{\rm LL}\), \(\eta^{\rm cmp}_{\rm LL}\);
+\(u^{\rm lp}_{\rm LL}\), \(N^{\rm lp}_{\rm LL}\) & for an internal step
+of IDA: the sum \(\psi^{\rm IDA}_{{\rm LL},m}\) of the sizes of the last
+internal steps, the present one included, as many of them as the last
+subscript says (before its first step IDA assumes a step of the size of
+the first); the coefficient
+\(\sigma^{\rm IDA}_{\rm LL}=1\cdot2\cdots k^{\rm IDA}_{\rm LL}\,(h^{\rm IDA}_{\rm LL})^{k}/(\psi^{\rm IDA}_{{\rm LL},2}\,\psi^{\rm IDA}_{{\rm LL},3}\cdots\psi^{\rm IDA}_{{\rm LL},k+1})\)
+with which IDA multiplies the difference between the accepted and the
+predicted values of a step when it chooses the size of the next step
+(\texttt{sigma} in the source text of IDA; like the coefficient
+\(c^{\rm est}_{\rm LL}\) of its error test it is
+\(1/(k^{\rm IDA}_{\rm LL}+1)\) if the last steps have one size); the
+estimate for the next step,
+\(\delta^{\rm nxt}_{\rm LL}=(\sigma^{\rm IDA}_{\rm LL}/c^{\rm est}_{\rm LL})\,\delta^{\rm est}_{\rm LL}\),
+the weighted root-mean-square norm of that difference times
+\(\sigma^{\rm IDA}_{\rm LL}\); and the factor
+\(\eta^{\rm cmp}_{\rm LL}=(2\,\delta^{\rm nxt}_{\rm LL}+10^{-4})^{-1/(k+1)}\)
+that IDA computes from it after an accepted step (it doubles the step if
+the factor is at least 2 and multiplies the step by the factor, limited
+to the interval from 0.5 to 0.9, if the factor is at most 1). For the
+time variable of an integrator, a double-precision number: a unit in the
+last place \(u^{\rm lp}_{\rm LL}\), the power of 2 of which all times
+between two neighbouring powers of 2 are multiples (\(2^{-52}\) times
+the lower of the two powers); and the number \(N^{\rm lp}_{\rm LL}\) of
+the settled steps of an integration whose end time has a given unit in
+the last place & new & \texttt{psi\_sum} \texttt{ida\_sigma}
+\texttt{next\_estimate} \texttt{computed\_factor}
+\texttt{unit\_last\_place} \texttt{N\_last\_place} \\
 \end{longtable}
 
 \end{document}

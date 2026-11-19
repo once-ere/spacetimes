@@ -37,7 +37,7 @@ python3 explanations/code/make_r13_figures.py                            # the f
 (cd test2/rust && cargo build --release && ./target/release/t2_fields)   # Test 2, item [1]: checks GS-1 .. GS-{{GEN:nchecks_t2_fields}}
 (cd test2/rust && cargo test --release --lib -p t2steps && cargo test --release --lib -p t2core)   # the tests of the two library crates
 python3 test2/python/t2_formula_check.py                                 # the formulas of GS-18 and GS-20 with 40 digits: checks FC-1 .. FC-{{GEN:nchecks_t2_py_formula}}
-python3 test2/python/make_t2_steps_figures.py                            # the four figures of the checks GS-17 .. GS-20
+python3 test2/python/make_t2_steps_figures.py                            # the five figures of the checks GS-17 .. GS-20
 (cd test2/rust && cargo build --release && ./target/release/t2_analytic) # Test 2, item [2]: checks AS-1 .. AS-{{GEN:nchecks_t2_analytic}}
 python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt   # Test 2, item [3]: the self-test of the solver
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
@@ -804,17 +804,47 @@ The formulas of the checks:
   $\lvert1-\rho^{\rm one}_{\rm LL}\rvert$, and the test value of a first iterate is the norm of the first correction divided by
   $k^{\rm IDA}_{\rm LL}+1$. The rounding of the time: the time that IDA reports is the rounded sum of the time before and the step
   size, and between two powers of 2 the rounding of one addition of a fixed step size is a fixed fraction of one unit in the
-  last place.
-  The module `steps.rs` of `t2_fields` runs nine integrations with the analysis of every step (CVODE, IDA, and IDA with a
-  matrix that is computed anew whenever the leading coefficient changes, at $r^{\rm tol}_{\rm LL}=10^{-8}$, $10^{-10}$, $10^{-12}$) and
-  the scan, and writes `test2/data/t2_steps_runs.csv`, `t2_steps_segments.csv`, `t2_steps_trace.csv`, `t2_steps_modes.csv`,
-  `t2_steps_scan.csv`, `t2_steps_formulas.csv`, `t2_steps_roots.csv` and `t2_steps_limits.csv` (each states its content and
-  its columns in its first line). The Python script `test2/python/t2_formula_check.py` computes the formulas of GS-18 and
+  last place. With $u^{\rm lp}_{\rm LL}$ a unit in the last place of the time and $N^{\rm lp}_{\rm LL}$ the number of settled steps that
+  end at a time with this unit, the time defect is the sum over the units of
+  $N^{\rm lp}_{\rm LL}\big(h^{\rm IDA}_{\rm LL}-u^{\rm lp}_{\rm LL}\lfloor h^{\rm IDA}_{\rm LL}/u^{\rm lp}_{\rm LL}\rceil\big)$ (half brackets: the
+  nearest integer, the even one at a tie), up to the steps before the settled ones, the steps that cross a power of 2 and the
+  last step. Every unit divides the largest one, $2^{-48}$, so that this sum depends on the settled step size only through its
+  remainder after division by $2^{-48}$, which has $2^{16}$ values for a step size whose own unit in the last place is
+  $2^{-64}$. The function `add_steps` carries out the additions $x^0_{\rm LL}\mapsto x^0_{\rm LL}+h^{\rm IDA}_{\rm LL}$ in double
+  precision; the rounding error of each one is obtained without error by machine operations (the two-sum of Knuth: from
+  the rounded sum of two machine numbers one forms "the part", the rounded sum minus the first number; the exact sum minus
+  the rounded sum is then the first number minus the difference of the rounded sum and the part, plus the second number
+  minus the part, and each of these operations is exact or its error cancels), and the errors are added as double-double
+  numbers.
+  The history of the step size. IDA shortens a step after an attempt that its test rejects (at the first rejection of a step
+  by 0.9 times the number below, not above 0.9 and not below 1/4; at every further rejection by 1/4), and after an accepted
+  step it computes $\eta^{\rm cmp}_{\rm LL}=(2\,\delta^{\rm nxt}_{\rm LL}+10^{-4})^{-1/(k+1)}$ with the estimate for the next step
+  $\delta^{\rm nxt}_{\rm LL}=(\sigma^{\rm IDA}_{\rm LL}/c^{\rm est}_{\rm LL})\,\delta^{\rm est}_{\rm LL}$; it doubles the step if this number is
+  at least 2 and multiplies the step by it, limited to the interval from 0.5 to 0.9, if it is at most 1. With
+  $\psi^{\rm IDA}_{{\rm LL},m}$ the sum of the sizes of the last *m* steps, the present one included, the two coefficients are
+  $c^{\rm est}_{\rm LL}=\max\big(\lvert h^{\rm IDA}_{\rm LL}/\psi^{\rm IDA}_{{\rm LL},k+1}+\sum_{m=1}^{k}h^{\rm IDA}_{\rm LL}/\psi^{\rm IDA}_{{\rm LL},m}-H^{\rm har}_{\rm LL}\rvert,\ h^{\rm IDA}_{\rm LL}/\psi^{\rm IDA}_{{\rm LL},k+1}\big)$
+  and
+  $\sigma^{\rm IDA}_{\rm LL}=1\cdot2\cdots k^{\rm IDA}_{\rm LL}\,(h^{\rm IDA}_{\rm LL})^{k}/(\psi^{\rm IDA}_{{\rm LL},2}\,\psi^{\rm IDA}_{{\rm LL},3}\cdots\psi^{\rm IDA}_{{\rm LL},k+1})$
+  (function `ida_coefficients`; both are $1/(k^{\rm IDA}_{\rm LL}+1)$ for steps of one size). The function `history` sorts every
+  change of the step size up to the first settled step into the fixed factors 1/4, 0.9 and 2 and the computed ones, and
+  compares each computed factor with the rule applied to the recorded test value. The setting `dq_matrix` of the module `ida`
+  lets IDA form its iteration matrix by difference quotients instead of receiving the exact one.
+  The module `steps.rs` of `t2_fields` runs twelve integrations with the analysis of every step (CVODE; IDA; IDA with a
+  matrix that is computed anew whenever the leading coefficient changes; IDA with the matrix by difference quotients; each at
+  $r^{\rm tol}_{\rm LL}=10^{-8}$, $10^{-10}$, $10^{-12}$), the scan, and the additions for all 65536 cases of the last 16 binary
+  digits of the settled step size of IDA at $10^{-12}$, and writes `test2/data/t2_steps_runs.csv`, `t2_steps_segments.csv`,
+  `t2_steps_trace.csv`, `t2_steps_modes.csv`, `t2_steps_scan.csv`, `t2_steps_formulas.csv`, `t2_steps_roots.csv`,
+  `t2_steps_limits.csv`, `t2_steps_settled.csv` and `t2_steps_last_digits.csv` (each states its content and its columns in
+  its first line). The numbers of the IDA of the notebook `3+1super-loop.nb` are constants of the module; those of its settled
+  steps were read from the grid of its solution by the script `3+1super-loop_provenance/tools/gs13_ida_settled_steps.wl` of
+  PROJECT spacetimes (output: `3+1super-loop_provenance/logs/IDA_settled_steps_probe.txt`), and check GS-20 reproduces the
+  last settled grid point and the time defect of the notebook from them by its own additions. The Python script `test2/python/t2_formula_check.py` computes the formulas of GS-18 and
   GS-20 once more with 40 digits (library mpmath) and by other routes (checks FC-1 to FC-6: the coefficients from their
   series; every number of `t2_steps_formulas.csv`; the factor of a step read off after 400 steps of the recurrences
   themselves; the leading errors; the roots, for CVODE as the eigenvalues of the matrix that advances the stored amplitudes
-  and derivatives by one step; the limits of stability); `test2/python/make_t2_steps_figures.py` draws the four figures
-  `test2/figures/fig_t2_steps_modes`, `fig_t2_steps_stability`, `fig_t2_steps_wave` and `fig_t2_steps_scan` (.pdf and .png).
+  and derivatives by one step; the limits of stability); `test2/python/make_t2_steps_figures.py` draws the five figures
+  `test2/figures/fig_t2_steps_modes`, `fig_t2_steps_stability`, `fig_t2_steps_wave`, `fig_t2_steps_scan` and
+  `fig_t2_steps_last_digits` (.pdf and .png).
 * **GS-12 (the printed formulas):** every explicit matrix and every component equation is built from the exact
   linear forms of `sym.rs`; each monomial carries a numerical value (a plane wave with constant fields, or random
   numbers); the value of the printed expression is compared with the matrix computation.

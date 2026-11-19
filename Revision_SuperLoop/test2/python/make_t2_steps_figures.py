@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Figures 2A to 2D of the answers to Test 2 (PROJECT spacetimes, Revision_SuperLoop, folder test2): the time
+"""Figures 2A to 2E of the answers to Test 2 (PROJECT spacetimes, Revision_SuperLoop, folder test2): the time
 integrations of check GS-13 taken apart step by step (checks GS-17 to GS-20 of the program t2_fields).
 
 Usage, from the folder Revision_SuperLoop:
     python3 test2/python/make_t2_steps_figures.py
 
 The script draws the numbers that the program t2_fields wrote into test2/data/t2_steps_*.csv.  It computes nothing
-but moduli of complex numbers given by their real and imaginary parts, quotients of two columns, and straight
-reference lines.  Output, in test2/figures, each as .pdf and .png:
+but moduli of complex numbers given by their real and imaginary parts, quotients of two columns (also of a column
+and a parameter line of a file), and straight reference lines.  Output, in test2/figures, each as .pdf and .png:
 
   fig_t2_steps_modes      Figure 2A (check GS-18): the relative error of every eigenmode of the lattice operator at the
                           end of the six integrations, measured (points) and predicted from the formulas (lines), against
@@ -21,6 +21,10 @@ reference lines.  Output, in test2/figures, each as .pdf and .png:
   fig_t2_steps_scan       Figure 2D (check GS-19): the scan of 25 relative tolerances; (a) the deviation at the end
                           divided by the tolerance, (b) the median of the value of the local error test over the settled
                           steps, (c) the deviation of IDA divided by that of CVODE
+  fig_t2_steps_last_digits  Figure 2E (check GS-20): IDA at rtol = 1e-12 as a function of the last 16 binary digits of
+                          its settled step size; (a) the time defect, (b) the predicted deviation at the end; in both
+                          panels the three integrations (program with the exact matrix, program with difference
+                          quotients, notebook) are marked with their measured numbers
 
 Colors: the categorical colors of the project (blue, orange, aqua) in a fixed order; every series is also named by a
 direct label or in a legend and has its own kind of line or marker, so that no information is carried by color alone.
@@ -396,8 +400,65 @@ def fig_wave():
     save(fig, "fig_t2_steps_wave")
 
 
+def fig_last_digits():
+    """Figure 2E: the time defect and the predicted deviation of IDA at rtol = 1e-12 over one period of the last 16
+    binary digits of the settled step size, with the three integrations of this tolerance."""
+    scan = rows("t2_steps_last_digits.csv")
+    period = parameter("t2_steps_last_digits.csv", "period")
+    x = np.array([float(r["phase"]) for r in scan]) / period
+    dt = np.array([float(r["time_defect"]) for r in scan])
+    pred = np.array([float(r["predicted_deviation"]) for r in scan])
+    settled = {r["integration"]: r for r in rows("t2_steps_settled.csv")}
+    # the three integrations in the fixed order of the colors; marker, name, and where the name stands in each panel
+    marks = [("ida_1e-12", BLUE, "o", "program, exact matrix"), ("ida_dq_1e-12", ORANGE, "s", "program, difference quotients"),
+             ("notebook_1e-12", AQUA, "D", "notebook")]
+    unit = 1e-11
+    fig, (ax, bx) = plt.subplots(2, 1, figsize=(10.6, 7.6), sharex=True)
+    # the function is drawn piece by piece: a jump (two neighbouring points more than 4e-12 apart) is not connected
+    cuts = [0] + [i + 1 for i in range(len(dt) - 1) if abs(dt[i + 1] - dt[i]) > 4e-12] + [len(dt)]
+    for a, b in zip(cuts[:-1], cuts[1:]):
+        ax.plot(x[a:b], dt[a:b] / unit, "-", color=MUTED, lw=1.5, zorder=2)
+        bx.plot(x[a:b], pred[a:b] / unit, "-", color=MUTED, lw=1.5, zorder=2)
+    ax.axhline(0.0, color=GREY, lw=0.8, zorder=1)
+    formula_alone = min(pred)
+    bx.axhline(formula_alone / unit, color=GREY, lw=0.9, ls=(0, (4, 3)), zorder=1)
+    bx.text(0.995, formula_alone / unit - 0.18, "smallest value: the formulas alone, without rounding of the time", color=MUTED, fontsize=9.3, ha="right", va="top")
+    # every marker carries its number beside it, in a free place below or above the line; the legend of panel (a)
+    # names the three markers (place of the number: x offset, y in panel (a), y in panel (b), alignment)
+    number_at = {"ida_1e-12": (0.014, 0.36, 3.75, "left"), "ida_dq_1e-12": (0.014, -1.08, 5.35, "left"), "notebook_1e-12": (0.014, 0.30, 3.45, "left")}
+    for name, col, marker, label in marks:
+        r = settled[name]
+        xm = float(r["phase"]) / period
+        tm = float(r["time_defect"]) / unit
+        dm = float(r["max_deviation"]) / unit
+        dx, ya, yb, align = number_at[name]
+        ax.plot([xm], [tm], marker, color=col, ms=9, mec="white", mew=1.6, zorder=5, label=label)
+        bx.plot([xm], [dm], marker, color=col, ms=9, mec="white", mew=1.6, zorder=5)
+        ax.text(xm + dx, ya, "$%s$" % sci_tex(tm * unit), color=INK, fontsize=9.5, ha=align, va="center", zorder=4)
+        bx.text(xm + dx, yb, "$%s$" % sci_tex(dm * unit), color=INK, fontsize=9.5, ha=align, va="center", zorder=4)
+    ax.legend(loc="upper right", frameon=False, fontsize=9.5, labelcolor=INK, handletextpad=0.4, borderaxespad=0.3,
+              title="the three integrations at $r^{\\rm tol}_{\\rm LL}=10^{-12}$", title_fontsize=9.5)
+    ax.set_ylabel("$\\delta^{\\rm t}_{\\rm LL}$, time defect (units of $10^{-11}$)")
+    ax.set_title("(a) the rounding of the time: exact sum of the step sizes minus the time that IDA reports", fontsize=11.5, color=INK, loc="left")
+    ax.set_ylim(-2.6, 3.1)
+    bx.set_ylabel("$\\delta^{\\rm pre}_{\\rm LL}$, deviation at the end (units of $10^{-11}$)")
+    bx.set_title("(b) the predicted deviation at the end (line) and the three measured deviations (markers)", fontsize=11.5, color=INK, loc="left")
+    bx.set_ylim(0, 12.8)
+    bx.set_xlim(0, 1)
+    bx.set_xlabel("remainder of the settled step size $h^{\\rm IDA}_{\\rm LL}$ after division by $2^{-48}$, in units of $2^{-48}$  (its last 16 binary digits)")
+    for a in (ax, bx):
+        a.grid(True, which="major", **GRID)
+        a.set_axisbelow(True)
+        a.minorticks_off()
+        for side in ("top", "right"):
+            a.spines[side].set_visible(False)
+    fig.subplots_adjust(hspace=0.22)
+    save(fig, "fig_t2_steps_last_digits")
+
+
 if __name__ == "__main__":
     fig_modes()
     fig_scan()
     fig_stability()
     fig_wave()
+    fig_last_digits()

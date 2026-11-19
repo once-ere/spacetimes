@@ -10,7 +10,13 @@ PURPOSE
       stops with a list of the differences if this is not so.  Then it writes the digests of these
       files, in the order of the table, into the code block that follows the table.
     * Appendix E ("Sources consulted"): the code block at its end lists original programs and data
-      files of Test 2; the script keeps the paths of this block and writes their present digests.
+      files of Test 2; the script keeps the paths of this block and writes their digests.  If the
+      paragraph before the block names a commit of the repository (the words "at the commit" followed
+      by the abbreviated name of the commit in backquotes), the digests are those of the files AT THAT
+      COMMIT, read with "git show": the provenance then states which versions of the original
+      programs the notebook was written from, also after the originals have been changed.  The
+      script reports how many of the files differ from their present versions.  Without such a
+      commit the digests are those of the present files.
   A SHA-256 digest is a number of 64 hexadecimal digits computed from the content of a file; two files
   with the same digest have, for every practical purpose, the same content.
 
@@ -21,6 +27,7 @@ USAGE (in the top folder of the repository)
 import hashlib
 import os
 import re
+import subprocess
 import sys
 
 DOC = "3+1super-loop_provenance/P_3+1super-loop.md"
@@ -72,7 +79,18 @@ def main():
     absent = [p for p in paths17 if not os.path.exists(p)]
     if absent:
         sys.exit("Appendix E lists files that do not exist: " + ", ".join(absent))
-    block17 = "\n".join(f"{sha256(p)}  {p}" for p in paths17)
+    # the commit that the paragraph before the block names, if it names one
+    named = re.search(r"at the commit `([0-9a-f]{7,40})`", sec17[:last.start()].rstrip().rsplit("\n\n", 1)[-1])
+    if named:
+        def digest17(p):
+            data = subprocess.run(["git", "show", named.group(1) + ":" + p], capture_output=True, check=True).stdout
+            return hashlib.sha256(data).hexdigest()
+        changed_since = [p for p in paths17 if digest17(p) != sha256(p)]
+        print(f"Appendix E: digests of the commit {named.group(1)}; {len(changed_since)} of the files differ from their present versions"
+              + (": " + ", ".join(os.path.basename(p) for p in changed_since) if changed_since else ""))
+    else:
+        digest17 = sha256
+    block17 = "\n".join(f"{digest17(p)}  {p}" for p in paths17)
 
     first16 = re.search(r"```\n(.*?)\n```", sec16, flags=re.S)
     changed16 = first16.group(1) != block16

@@ -171,7 +171,7 @@ DESCRIPTIVE = {
     "occupation_antiparticles": "the probability that a state of negative energy -eps of a momentum is empty",
     "commutator_33": "an eigenvalue of the commutator of the pair operator Pi_3 of one lattice site with its Hermitian conjugate",
     # the data files of the checks GS-17 to GS-20 (the time integrations of GS-13 step by step)
-    "integration": "the name of a time integration: cvode_, ida_ or ida_current_ followed by its relative tolerance",
+    "integration": "the name of a time integration: cvode_, ida_, ida_current_, ida_dq_ or notebook_ followed by its relative tolerance",
     "integrator": "CVODE or IDA", "matrix_rule": "when IDA computes its iteration matrix anew: default (when cj/cjJ leaves the interval 0.6 to 5/3), current (whenever cj changes), none (CVODE uses no matrix)",
     "order": "the order of the formula of a step (q_CV for CVODE, k_IDA for IDA)", "main_steps": "the number of steps that have the step size and order of most steps",
     "one_iteration": "the number of the main steps with one iteration of the implicit equation", "two_iterations": "the number of the main steps with two iterations",
@@ -190,6 +190,18 @@ DESCRIPTIVE = {
     "alternating_root": "the root on the negative real axis of the recurrence of a backward differentiation formula with one Newton step and an old matrix (0 where there is none)",
     "other_root": "the largest modulus of a root other than the principal one of the recurrence of a formula as an integrator applies it",
     "limit_low": "the lower end of an interval of stability", "limit_high": "the upper end of an interval of stability",
+    "matrix_source": "how the iteration matrix of IDA is formed: exact (written by the program), difference_quotients (formed by IDA itself), notebook (the IDA inside the Wolfram Language)",
+    "quarter_cuts": "the number of rejected attempts of the first step of IDA; each divides the step size by 4",
+    "tenth_cuts": "the number of times IDA multiplied the step size by its fixed factor 0.9 before the first settled step",
+    "doublings": "the number of times IDA doubled the step size before the first settled step",
+    "factor_step": "the number of the step after which IDA multiplied the step size by the factor that it computed from its estimate",
+    "factor_order": "the order k_IDA of the step with the number factor_step",
+    "fixed_product": "the first step size 1e-4 times the fixed factors 1/4, 0.9 and 2 of the changes of the step size before the first settled step",
+    "h_candidates": "the number of neighbouring machine numbers that reproduce the grid of the settled steps (1 where the step size is read from the integrator)",
+    "first_settled": "the number of the first internal step of the settled size", "settled_steps": "the number of internal steps of the settled size",
+    "phase": "the remainder of a step size after division by 2^-48, in units of 2^-64 (0 to 65535; -1: not given)",
+    "time_defect_spread": "the time defect for the largest candidate of the settled step size minus that for the smallest (0 for a single candidate)",
+    "time_defect_formula": "the time defect from the closed formula: the sum over the units in the last place of N_last_place times (step size minus the nearest multiple of the unit)",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL

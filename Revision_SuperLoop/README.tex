@@ -2683,6 +2683,35 @@ derivatives of the earlier steps,
 \(r^{\rm g}_{\rm LL}=g^{\rm st}_{{\rm LL},s}/a^{\rm st}_{{\rm LL},s}\)
 of the stored derivative to the amplitude & new & \texttt{S\_AB}
 \texttt{S\_AM} \texttt{r\_g} \\
+\(\psi^{\rm IDA}_{{\rm LL},m}\), \(\sigma^{\rm IDA}_{\rm LL}\);
+\(\delta^{\rm nxt}_{\rm LL}\), \(\eta^{\rm cmp}_{\rm LL}\);
+\(u^{\rm lp}_{\rm LL}\), \(N^{\rm lp}_{\rm LL}\) & for an internal step
+of IDA: the sum \(\psi^{\rm IDA}_{{\rm LL},m}\) of the sizes of the last
+internal steps, the present one included, as many of them as the last
+subscript says (before its first step IDA assumes a step of the size of
+the first); the coefficient
+\(\sigma^{\rm IDA}_{\rm LL}=1\cdot2\cdots k^{\rm IDA}_{\rm LL}\,(h^{\rm IDA}_{\rm LL})^{k}/(\psi^{\rm IDA}_{{\rm LL},2}\,\psi^{\rm IDA}_{{\rm LL},3}\cdots\psi^{\rm IDA}_{{\rm LL},k+1})\)
+with which IDA multiplies the difference between the accepted and the
+predicted values of a step when it chooses the size of the next step
+(\texttt{sigma} in the source text of IDA; like the coefficient
+\(c^{\rm est}_{\rm LL}\) of its error test it is
+\(1/(k^{\rm IDA}_{\rm LL}+1)\) if the last steps have one size); the
+estimate for the next step,
+\(\delta^{\rm nxt}_{\rm LL}=(\sigma^{\rm IDA}_{\rm LL}/c^{\rm est}_{\rm LL})\,\delta^{\rm est}_{\rm LL}\),
+the weighted root-mean-square norm of that difference times
+\(\sigma^{\rm IDA}_{\rm LL}\); and the factor
+\(\eta^{\rm cmp}_{\rm LL}=(2\,\delta^{\rm nxt}_{\rm LL}+10^{-4})^{-1/(k+1)}\)
+that IDA computes from it after an accepted step (it doubles the step if
+the factor is at least 2 and multiplies the step by the factor, limited
+to the interval from 0.5 to 0.9, if the factor is at most 1). For the
+time variable of an integrator, a double-precision number: a unit in the
+last place \(u^{\rm lp}_{\rm LL}\), the power of 2 of which all times
+between two neighbouring powers of 2 are multiples (\(2^{-52}\) times
+the lower of the two powers); and the number \(N^{\rm lp}_{\rm LL}\) of
+the settled steps of an integration whose end time has a given unit in
+the last place & new & \texttt{psi\_sum} \texttt{ida\_sigma}
+\texttt{next\_estimate} \texttt{computed\_factor}
+\texttt{unit\_last\_place} \texttt{N\_last\_place} \\
 \end{longtable}
 
 \end{document}

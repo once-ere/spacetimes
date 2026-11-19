@@ -14,8 +14,9 @@
 //!     1e-10     9.3e-8      1.7e-7
 //!     1e-12     4.4e-11     1.7e-10
 //!
-//! (the IDA column is that of the notebook; the IDA of this crate takes the same steps and gives 7.1e-6, 9.3e-8 and
-//! 4.8e-11).  Six numbers without an obvious rule: they are 44 to 1700 times the tolerance, IDA is six times worse than CVODE at
+//! (the IDA column is that of the notebook; the IDA of this crate, set up in the same way, takes as many steps - the
+//! same ones up to its settled steps, whose size differs from that of the notebook by 7e-14, 3e-8 and 3e-8 of itself -
+//! and gives 7.1e-6, 9.3e-8 and 4.8e-11).  Six numbers without an obvious rule: they are 44 to 1700 times the tolerance, IDA is six times worse than CVODE at
 //! the first tolerance and three times better at the last, and the deviation of CVODE falls by a factor 7 from the
 //! first tolerance to the second and by a factor 1000 from the second to the third.  This crate computes where every
 //! one of the six numbers comes from.
@@ -43,7 +44,8 @@
 //!   * `ida`      IDA of SUNDIALS 7.8.0 (the vendored pure-Rust crate `ida_rs`) on the real form of the equations,
 //!                set up as NDSolve of the Wolfram Language sets up its IDA, returning after every internal step
 //!                with the quantities that a closed program does not show (order, value of the error test, age of
-//!                the matrix, number of Newton steps).
+//!                the matrix, number of Newton steps, the two coefficients of the error estimate); the iteration
+//!                matrix is written exactly or, on request, formed by IDA by difference quotients.
 //!   * `anatomy`  the measurements 1 and 3 above for any sequence of steps: local errors, deviation, coherence,
 //!                the time defect, the predicted errors of the modes.
 //!   * `runs`     the two integrators run through `anatomy`, and a small helper that runs several integrations on

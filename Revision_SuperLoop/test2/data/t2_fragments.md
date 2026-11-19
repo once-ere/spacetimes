@@ -474,23 +474,87 @@ ${1.184\times10^{-6}}$, ${1.702\times10^{-7}}$ and ${1.737\times10^{-10}}$
 <!-- END t2_steps_table_constants -->
 <!-- BEGIN t2_steps_table_notebook -->
 | $r^{\rm tol}_{\rm LL}$ | quantity | IDA of the notebook | IDA of the program `t2_fields` |
-|--------------------|---------------------------------------------------------------------------|------------------------------------------------------------|----------------------------------------------------------------------------|
+|------------------|----------------------------------------------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------|
 | $10^{-8}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 2705 | 2705 |
 | $10^{-8}$ | largest internal step | ${7.489190703\times10^{-3}}$ | ${7.489190703\times10^{-3}}$ |
 | $10^{-8}$ | smallest internal step | ${1.462732559\times10^{-5}}$ | ${1.462732559\times10^{-5}}$ |
+| $10^{-8}$ | settled internal step, 16 digits | ${7.489190703255128\times10^{-3}}$ | ${7.489190703255624\times10^{-3}}$ |
 | $10^{-8}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 11182 | $2722+769\times11+1=11182$ |
 | $10^{-8}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${7.125333\times10^{-6}}$ | ${7.125333\times10^{-6}}$ |
 | $10^{-10}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 7309 | 7309 |
 | $10^{-10}$ | largest internal step | ${3.200000000\times10^{-3}}$ | ${3.200000000\times10^{-3}}$ |
 | $10^{-10}$ | smallest internal step | ${1.562500000\times10^{-6}}$ | ${1.562500000\times10^{-6}}$ |
+| $10^{-10}$ | settled internal step, 16 digits | ${2.748978970332666\times10^{-3}}$ | ${2.748979061000419\times10^{-3}}$ |
 | $10^{-10}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 18096 | $7329+769\times14+1=18096$ |
 | $10^{-10}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${9.308767\times10^{-8}}$ | ${9.308778\times10^{-8}}$ |
 | $10^{-12}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 41111 | 41111 |
 | $10^{-12}$ | largest internal step | ${5.832000000\times10^{-4}}$ | ${5.832000000\times10^{-4}}$ |
 | $10^{-12}$ | smallest internal step | ${9.765625000\times10^{-8}}$ | ${9.765625000\times10^{-8}}$ |
+| $10^{-12}$ | settled internal step, 16 digits | ${4.868640374427113\times10^{-4}}$ | ${4.868640521747039\times10^{-4}}$ |
 | $10^{-12}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 54585 | $41511+769\times17+1=54585$ |
 | $10^{-12}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${4.378788\times10^{-11}}$ | ${4.807918\times10^{-11}}$ |
 <!-- END t2_steps_table_notebook -->
+<!-- BEGIN t2_steps_table_history -->
+| quantity | $r^{\rm tol}_{\rm LL}=10^{-8}$ | $10^{-10}$ | $10^{-12}$ |
+|---------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|
+| first step size that IDA tries | $10^{-4}$ | $10^{-4}$ | $10^{-4}$ |
+| attempts of the first step that the test (2.44) rejects; each divides the step size by 4 | 1 | 3 | 5 |
+| size of the first accepted step | ${2.5\times10^{-5}}$ | ${1.5625\times10^{-6}}$ | ${9.765625\times10^{-8}}$ |
+| shortenings by the fixed factor 0.9 after an accepted step | 2 | 0 | 3 |
+| doublings after an accepted step | 9 | 11 | 13 |
+| step after which IDA applies a computed factor | number 1 | number 43 | number 40 |
+| its order $k^{\rm IDA}_{\rm LL}$ | 1 | 5 | 4 |
+| its test value $\delta^{\rm est}_{\rm LL}$ | 0.958225 | 0.736687 | 0.944099 |
+| quotient $\sigma^{\rm IDA}_{\rm LL}/c^{\rm est}_{\rm LL}$ of its two coefficients (2.66) | 1.000000 | 1.688654 | 1.306122 |
+| estimate for the next step, $\delta^{\rm nxt}_{\rm LL}$ | 0.958225 | 1.244010 | 1.233109 |
+| computed factor $\eta^{\rm cmp}_{\rm LL}$ of (2.65) | 0.722337066286 | 0.859055956563 | 0.834814904278 |
+| settled step size: $10^{-4}$ times all factors | ${7.489190703256\times10^{-3}}$ | ${2.748979061000\times10^{-3}}$ | ${4.868640521747\times10^{-4}}$ |
+| number of the first step of this size | 42 | 44 | 41 |
+| number of steps of this size | 2663 | 7265 | 41070 |
+<!-- END t2_steps_table_history -->
+<!-- BEGIN t2_steps_table_realizations -->
+| $r^{\rm tol}_{\rm LL}$ | integration | settled step size / that of the first line, minus 1 | $\delta^{\rm t}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}$ at the end | $\delta^{\rm rel}_{\rm LL}$ / that of the first line, minus 1 | the same, predicted from $\delta^{\rm t}_{\rm LL}$ |
+|--------------|----------------------------------------|--------------------------------|---------------------------------|----------------------------------|------------------------------|------------------------------|
+| $10^{-8}$ | program, exact matrix | 0 | ${-6.31\times10^{-13}}$ | ${7.1253\times10^{-6}}$ | 0 | 0 |
+| $10^{-8}$ | program, difference quotients | ${1.1\times10^{-15}}$ | ${-6.10\times10^{-13}}$ | ${7.1253\times10^{-6}}$ | ${1.36\times10^{-9}}$ | ${1.37\times10^{-9}}$ |
+| $10^{-8}$ | notebook | ${-6.6\times10^{-14}}$ | ${2.15\times10^{-13}}$ | ${7.1253\times10^{-6}}$ | ${5.63\times10^{-8}}$ | ${5.54\times10^{-8}}$ |
+| $10^{-10}$ | program, exact matrix | 0 | ${2.40\times10^{-12}}$ | ${9.3088\times10^{-8}}$ | 0 | 0 |
+| $10^{-10}$ | program, difference quotients | ${-3.80\times10^{-9}}$ | ${-1.67\times10^{-12}}$ | ${9.3087\times10^{-8}}$ | ${-8.40\times10^{-6}}$ | ${-8.32\times10^{-6}}$ |
+| $10^{-10}$ | notebook | ${-3.30\times10^{-8}}$ | ${1.86\times10^{-12}}$ | ${9.3088\times10^{-8}}$ | ${-1.17\times10^{-6}}$ | ${-1.11\times10^{-6}}$ |
+| $10^{-12}$ | program, exact matrix | 0 | ${8.07\times10^{-12}}$ | ${4.8079\times10^{-11}}$ | 0 | 0 |
+| $10^{-12}$ | program, difference quotients | ${-8.22\times10^{-9}}$ | ${-6.79\times10^{-12}}$ | ${4.0170\times10^{-11}}$ | $-0.1645$ | $-0.1365$ |
+| $10^{-12}$ | notebook | ${-3.03\times10^{-8}}$ | ${7.20\times10^{-12}}$ | ${4.3788\times10^{-11}}$ | $-0.0893$ | $-0.0884$ |
+<!-- END t2_steps_table_realizations -->
+<!-- BEGIN t2_steps_table_last_digits -->
+| line | deviation at the end | divided by $r^{\rm tol}_{\rm LL}$ | part of the period with a smaller $\delta^{\rm pre}_{\rm LL}$ |
+|----------------------------------------------------------------------------------------------------|---------------------------------------------|------------------------------------|--------------------------------------------------|
+| $\delta^{\rm pre}_{\rm LL}$: smallest value of the period | ${1.979\times10^{-11}}$ | 19.8 | 0.00 |
+| 5 per cent of the period below | ${2.004\times10^{-11}}$ | 20.0 | 0.05 |
+| a quarter below | ${2.799\times10^{-11}}$ | 28.0 | 0.25 |
+| half below (median) | ${4.428\times10^{-11}}$ | 44.3 | 0.50 |
+| three quarters below | ${6.830\times10^{-11}}$ | 68.3 | 0.75 |
+| 95 per cent below | ${1.021\times10^{-10}}$ | 102.1 | 0.95 |
+| largest value | ${1.206\times10^{-10}}$ | 120.6 | 1.00 |
+| $\delta^{\rm pre}_{\rm LL}$ of the formulas alone ($\delta^{\rm t}_{\rm LL}=0$) | ${1.979\times10^{-11}}$ | 19.8 | 0.00 |
+| measured $\delta^{\rm rel}_{\rm LL}$: program, exact matrix | ${4.808\times10^{-11}}$ | 48.1 | 0.55 |
+| measured: program, difference quotients | ${4.017\times10^{-11}}$ | 40.2 | 0.43 |
+| measured: notebook | ${4.379\times10^{-11}}$ | 43.8 | 0.49 |
+<!-- END t2_steps_table_last_digits -->
+<!-- BEGIN t2_steps_defect_bound -->
+${3.41\times10^{-11}}$
+<!-- END t2_steps_defect_bound -->
+<!-- BEGIN t2_steps_defect_largest -->
+${2.19\times10^{-11}}$
+<!-- END t2_steps_defect_largest -->
+<!-- BEGIN t2_steps_units_12 -->
+13
+<!-- END t2_steps_units_12 -->
+<!-- BEGIN t2_steps_pred12nb -->
+${4.398\times10^{-11}}$
+<!-- END t2_steps_pred12nb -->
+<!-- BEGIN t2_steps_unit_sum -->
+${7.1\times10^{-15}}$
+<!-- END t2_steps_unit_sum -->
 <!-- BEGIN t2_steps_table_origin -->
 | $r^{\rm tol}_{\rm LL}$ | last step with a current matrix | its $h^{\rm IDA}_{\rm LL}$ | its $k^{\rm IDA}_{\rm LL}$ | settled steps: $h^{\rm IDA}_{\rm LL}$ | $k^{\rm IDA}_{\rm LL}$ | quotient of the two $c^{\rm ld}_{\rm LL}=H^{\rm har}_{\rm LL}/h^{\rm IDA}_{\rm LL}$ | $r^{\rm cj}_{\rm LL}$ that IDA reports | steps taken with this matrix |
 |--------------|-------------------------|---------------------------------|-----------|---------------------------------|-----------|------------------------------------|--------------------|------------------|

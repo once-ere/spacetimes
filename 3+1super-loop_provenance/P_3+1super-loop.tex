@@ -2981,6 +2981,124 @@ error E38 takes up.)
   refused.
 \end{itemize}
 
+\textbf{An experiment made afterwards: the sizes of the internal steps
+of IDA, read from its grid} (script
+\texttt{tools/gs13\_ida\_settled\_steps.wl}, run after the cells of Part
+II up to GS-11; output \texttt{logs/IDA\_settled\_steps\_probe.txt}). It
+was made for the open error E38, the explanation of the deviations of
+check GS-13. Five terms first. The \textbf{grid} of a solution of
+\texttt{NDSolve} is the list of the times at the ends of the internal
+steps of IDA; \texttt{NDSolve} returns these times, as machine numbers,
+but not the sizes of the steps. A \textbf{machine number} is a number of
+the double-precision format of the processor (53 binary digits); between
+two neighbouring powers of 2 the machine numbers are the multiples of
+one number, the \textbf{unit in the last place} of these numbers
+(\(2^{-52}\) times the lower of the two powers). The sum of two machine
+numbers is in general not a machine number, and the processor returns
+the machine number nearest to it: the \textbf{rounded sum}. After its
+first steps IDA takes steps of one size, the \textbf{settled step size},
+without interruption to the last step but one, and it advances its time
+by the rounded sum of the time before and the step size. The script uses
+this in four steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{The settled steps.} The exact differences of neighbouring grid
+  points are formed in rational arithmetic (every machine number is an
+  exact fraction of two integers, and the Wolfram Language computes with
+  such fractions without rounding). The settled steps are the longest
+  run of consecutive steps whose differences agree with the median
+  difference within the unit in the last place of the time 20,
+  \(3.6\times10^{-15}\) (two different step sizes of IDA differ by far
+  more).
+\item
+  \emph{The candidates for the settled step size.} Every grid point of
+  the settled steps is the rounded sum of the grid point before it and
+  the settled step size; it therefore confines the step size to an
+  interval of the width of one unit in the last place of that grid
+  point. The machine numbers in the intersection of these intervals are
+  the candidates. A candidate is accepted if its repeated machine
+  addition, started at the grid point before the first settled step,
+  gives every grid point of the settled steps bit for bit.
+\item
+  \emph{The time defect of the settled steps:} the number of settled
+  steps times the candidate, minus the time by which the grid advances
+  over these steps, in exact rational arithmetic. It is the sum of the
+  rounding errors of the additions (each taken as exact sum minus
+  rounded sum).
+\item
+  \emph{The other steps.} The sizes of the steps before the settled ones
+  are printed as the machine numbers nearest to the exact differences of
+  their grid points; for the last step the script confirms that the
+  machine subtraction of its two grid points is exact.
+\end{enumerate}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2560}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2480}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2480}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2480}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+quantity
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(r^{\rm tol}_{\rm LL}=10^{-8}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(10^{-10}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(10^{-12}\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+internal steps & 2705 & 7309 & 41111 \\
+number of the first settled step & 42 & 44 & 41 \\
+settled steps & 2663 & 7265 & 41070 \\
+machine numbers in the interval of step 2 & 5 & 5 & 9 \\
+of these, reproduce the grid bit for bit & 4 & 4 & 8 \\
+settled step size (the smallest of them) & 0.007489190703255128 &
+0.002748978970332666 & 0.0004868640374427113 \\
+time defect of the settled steps for the smallest of them &
+\(2.113\times10^{-13}\) & \(1.856\times10^{-12}\) &
+\(7.192\times10^{-12}\) \\
+the same for the largest of them & \(2.182\times10^{-13}\) &
+\(1.865\times10^{-12}\) & \(7.207\times10^{-12}\) \\
+\end{longtable}
+
+What the experiment shows. (i) The IDA of \texttt{NDSolve} does keep one
+step size over 2663, 7265 and 41070 steps: a single machine number,
+known up to 4, 4 and 8 neighbours, reproduces every one of these grid
+points bit for bit. (ii) The rounding error of one addition is the same
+number for all settled steps whose end times lie between the same two
+powers of 2, as it must be for a fixed step size (at \(10^{-12}\):
+\(+0.2275\), \(+0.1138\) and \(-0.4431\) units in the last place for the
+end times from 4 to 8, from 8 to 16 and from 16 to 20; the one step of
+each range that begins below the power of 2 has another value). (iii)
+The sums of these rounding errors, the time defects of the table, are
+the amounts by which the time that IDA reports differs from the exact
+sum of its step sizes: at \(10^{-12}\) the reported time is
+\(7.2\times10^{-12}\) behind after 41070 steps. A solution of the
+lattice equations that is exact at every step but is attributed to a
+time wrong by this amount deviates from the exact solution by this
+amount times the norm of the lattice operator applied to the state (the
+energies are at most 8.43, and this norm is about 5.4 for the initial
+state of GS-13), about \(4\times10^{-11}\), which is the size of the
+deviation \(4.4\times10^{-11}\) that check GS-13 finds at this
+tolerance. (iv) The steps before the settled ones are, at \(10^{-10}\)
+and \(10^{-12}\), powers of 2 times \(1.5625\times10^{-6}\) and
+\(9.765625\times10^{-8}\) and their multiples by 0.9, followed by one
+last shortening by a factor that is not such a simple number (0.8591 and
+0.8348); at \(10^{-8}\) the factor that is not simple is the first one
+(0.7223). The original program \texttt{t2\_fields} of the folder
+\texttt{Revision\_SuperLoop} contains these numbers as constants of its
+check GS-20, in which the IDA of SUNDIALS, run in the open, is compared
+with them step by step; its own additions reproduce the last settled
+grid point and the time defects of this table. The chapter of the
+notebook that repeats that analysis is in work (error E38).
+
 \hypertarget{part-ii-item-1-the-field-equations-on-the-31-manifold-program-t2_fields}{%
 \section{12. Part II, item {[}1{]}: the field equations on the 3+1
 manifold (program
@@ -5612,8 +5730,9 @@ E20 to E29 to the change of 18 November 2026 (the time integration by
 IDA, and the reader of formulas; E29 is an error of this document
 itself), and E30 to E40 to the stage of item {[}2{]} of the same day
 (E39 and E40 are errors of this document; E36 lists errors of the
-original program that the rewriting found; E38 is open). With the one
-exception of E38, each is fixed in the final notebook.
+original program that the rewriting found; E38 is open); E41 is an error
+of an experiment made for E38. With the one exception of E38, each is
+fixed in the final notebook.
 
 \textbf{E1. The symbolized box was never recognized when the notebook
 was evaluated by a program.} Cause: the Notation package takes the
@@ -6415,6 +6534,24 @@ minute after the end. Since the kernel writes the time after every input
 line (E37), the time of the evaluation itself is known: 37 seconds for
 the 886 input lines of the present notebook.
 
+\textbf{E41. The first version of the experiment on the settled steps
+read a wrong number off its own output (found before anything was
+committed).} The script \texttt{tools/gs13\_ida\_settled\_steps.wl}
+(section 11.5) first printed, for the settled steps whose end times lie
+between two powers of 2, the smallest and the largest rounding error of
+an addition. All steps of such a range but one have the same rounding
+error; the one step that begins below the power of 2 has another. The
+smallest value was taken for the value of the range, and for
+\(r^{\rm tol}_{\rm LL}=10^{-12}\) the values \(-0.27\), \(+0.11\) and
+\(+0.06\) units in the last place were noted for the three ranges. Found
+by: the sum of the rounding errors of a range, printed beside them, was
+not the number of steps times the noted value (from 16 to 20: 8216 steps
+and the sum \(-1.29\times10^{-11}\), which is \(-0.443\) units per step,
+not \(+0.06\)). Fix: the script prints the median over the steps of a
+range, which is the value of all steps but one, and the number of steps
+with another value (0 or 1); the values are \(+0.2275\), \(+0.1138\) and
+\(-0.4431\). The wrong values were in no file of the repository.
+
 \hypertarget{appendix-c.-decisions}{%
 \section{Appendix C. Decisions}\label{appendix-c.-decisions}}
 
@@ -6816,6 +6953,10 @@ or the tolerances are scaled \\
 \texttt{3+1super-loop\_provenance/tools/gs13\_ida\_lattice\_probe.wl} &
 section 11.5, E21: IDA on the lattice of GS-10 before the check was
 written (appended to the dry run of Part II up to GS-11) \\
+\texttt{3+1super-loop\_provenance/tools/gs13\_ida\_settled\_steps.wl} &
+section 11.5, E38, E41: the settled step size of IDA and the time defect
+of its settled steps, read from the grid of the solution (appended to
+the dry run of Part II up to GS-11) \\
 \texttt{3+1super-loop\_provenance/logs/T2-RNG\_reference\_values.txt} &
 the output of splitmix64\_reference.py \\
 \texttt{3+1super-loop\_provenance/logs/E15\_dot\_precedence.txt} & E15:
@@ -6888,6 +7029,8 @@ the output of gs13\_ida\_local\_errors.wls \\
 the output of gs13\_ida\_tolerances.wls \\
 \texttt{3+1super-loop\_provenance/logs/IDA\_lattice\_probe.txt} & the
 output of the dry run with gs13\_ida\_lattice\_probe.wl \\
+\texttt{3+1super-loop\_provenance/logs/IDA\_settled\_steps\_probe.txt} &
+the output of the dry run with gs13\_ida\_settled\_steps.wl \\
 \texttt{3+1super-loop\_provenance/logs/E22\_formula\_compare\_report.txt}
 & E22: the report of formula\_compare.wls for the 791 formulas of the
 stage of item {[}1{]}: every formula read differently, with both
@@ -6992,7 +7135,7 @@ a79915c5253a7cdd9b162eda7b9e466ec3b57a63d670f614f1890c983bdc28e7  3+1super-loop_
 ddd7824acd0e8c1746ec4548d8912f9cf1d179438f18b69e47a90978687881a1  3+1super-loop_provenance/tools/s14_build.wls
 6e6318748154692c5acef73e88912e60b7bf014e0e801e459a9d9a307382e3cf  3+1super-loop_provenance/tools/build_provenance_docs.sh
 00d3e3c225b60acac822b408deed88744968de7f8ef78467f6799ea1b68a3d30  3+1super-loop_provenance/tools/doc_header.tex
-deb255c0152adc9d00b112c563d3cf3841e8ce28ba43ef3b9508f68e77934459  3+1super-loop_provenance/tools/list_file_digests.py
+41617bc2b1270c7f29083d771392e1453c428a8e1a8faba550bd1a50176ed289  3+1super-loop_provenance/tools/list_file_digests.py
 e86a24a38a571b429ecd4905f4ddbe48944923e85e37e062d48d7c9420283567  3+1super-loop_provenance/tools/check_md_source.py
 262b9b00e1919c2e91fe0c75d3f8c2bd56dca373f3bab9d968b5015c268ef499  3+1super-loop_provenance/notebook_source/part2_A_core.source.wl
 9f803b18c6e4f6c5dcf7556fd5ee6314306a0878d7eb861810fd14d1b3787309  3+1super-loop_provenance/notebook_source/part2_B_item1.source.wl
@@ -7022,6 +7165,7 @@ bcdef560a2e65808ce3f8b967dbf33e93792ec2947811b72c2d094083b28f8ca  3+1super-loop_
 2f56f3cf7850a1f9b058f5e13d2a3af9809b1857fd719d33bbfe85e489d67b51  3+1super-loop_provenance/tools/gs13_ida_local_errors.wls
 64f69bc4f59d6b86c6de7ee6a334f54474fec4b94b6d82f6548b03a74abdcb6c  3+1super-loop_provenance/tools/gs13_ida_tolerances.wls
 12a60c5c03fa5e0bcd6ed8d9a85a64d0d45e17ce9e633c050a9f92653b17613b  3+1super-loop_provenance/tools/gs13_ida_lattice_probe.wl
+c6bf47160e1a1aad93255dc7a8544857aacb1ee567b0f2549c9fc73317025e33  3+1super-loop_provenance/tools/gs13_ida_settled_steps.wl
 ceafb181fbec77e8efb288b8f2c25ee73aba60c5121779d12da90840b1e2ad19  3+1super-loop_provenance/logs/T2-RNG_reference_values.txt
 c64f1a909b9d008365fd5707547547cceb6f0df78b314099c676ba7d1e711f16  3+1super-loop_provenance/logs/E15_dot_precedence.txt
 0b051cae79f44a26285ece8d21c4c46994342dd7a0f529d2358c35b621358647  3+1super-loop_provenance/logs/E17_tex_importer.txt
@@ -7038,7 +7182,7 @@ f0ebdef35860ae79e9680ccaaaa32a360b1068c2a0134445e528824a59222ba9  3+1super-loop_
 97e10f58100d6644fb8468849c3283803cc1423a3992c55f4e3f5a58a9f0962d  3+1super-loop_provenance/logs/check_notebook_symbols.txt
 1bb183c1aa865fe725410db143bd3f4a64189bf01bc65c22a0c406ec2d581b8c  3+1super-loop_provenance/logs/check_notebook_names.txt
 621a381736e084ffbdbd3f3b69ccf8cb7c53bd1e99c79bf526e83af6cc8bb850  3+1super-loop_provenance/logs/check_pdf_right_edge.txt
-2abdfb7cc1c6a767af3fe9b7f4bcb57fe6b886ae9b3cc65731038fbc4928d587  3+1super-loop_provenance/logs/check_provenance_symbols.txt
+539a16b7c1d0a0144fc7a854ca49c939b2fc4bbce70e43edae0e1a5e3c4f67df  3+1super-loop_provenance/logs/check_provenance_symbols.txt
 55a4a345275431843751a8df2528ed671580dfad387b6f38d445eac1c296fa91  3+1super-loop_provenance/logs/formula_compare.txt
 cf4fa8353aa3c1dd5d37449b5b7ddf1452209606062c049b655a7143ed09f729  3+1super-loop_provenance/logs/formula_compare_report.txt
 215d9dec39c9a0344e491f74f21a347f1085178e4ce15730ccdfee82beecec63  3+1super-loop_provenance/logs/E30_symbol_check_committed_notebook.txt
@@ -7052,6 +7196,7 @@ d73f82e228b0b33d67492fa03f882ba036b114b2e0aed90ccb36e5ab051908cf  3+1super-loop_
 3c9bd1e72aadc55399c5bcc47f0f5a5f97e50615a83b3e79c36e4ba8aa648439  3+1super-loop_provenance/logs/IDA_local_errors_decay.txt
 8c03a4f5885edfd63ef7a405ce43ca1ba7acb5cc7cc2b57e8a01e860b3c53436  3+1super-loop_provenance/logs/IDA_tolerance_scaling.txt
 394a738c8bf9b2b632145610337efe21f9986f2e7ba9ed587cb2d9cbcc72fc49  3+1super-loop_provenance/logs/IDA_lattice_probe.txt
+9e778d1dec26b57cb2ec581406d3b254fcf46ce9983b80ae847516985d38496a  3+1super-loop_provenance/logs/IDA_settled_steps_probe.txt
 abac5b66af2e979c1f0d9ba86e463fde5c38dea5e314967d31c31dd3c2102e3f  3+1super-loop_provenance/logs/E22_formula_compare_report.txt
 cdd35ec9f5cd09a283fcc6aab57c6ba226a002131423cd4422ff00d8c5d0f8ff  3+1super-loop_provenance/logs/E22_formula_inventory_committed_notebook.wl
 a1af3d4a943185c792017966ffe31b7c48b8f138c55597d50cd14ff5894c2a08  3+1super-loop_provenance/logs/E22_formula_compare_committed_notebook.txt
@@ -7192,7 +7337,14 @@ consulted}\label{appendix-e.-sources-consulted}}
   \texttt{t2\_cvode\_accuracy.csv} the file of their check GS-13, and
   the eleven files \texttt{t2\_A\_...} to \texttt{t2\_D\_...} the data
   files of \texttt{t2\_analytic}; the two data cells of the notebook
-  contain the numbers of these files):
+  contain the numbers of these files). The digests are those of the
+  files at the commit \texttt{5dc688e} of the repository, the state that
+  the notebook of this stage rewrote. Three of the files have changed
+  since: the module \texttt{cvode.rs}, the main program of
+  \texttt{t2fields} and the record of its checks were extended by the
+  step-by-step analysis of check GS-13 (checks GS-17 to GS-20 of the
+  original program), which the notebook does not contain yet (error
+  E38); the parts that the notebook rewrote are unchanged:
 \end{itemize}
 
 \begin{verbatim}

@@ -18,7 +18,8 @@
 //!
 //! THE SETTINGS.
 //!   * scalar tolerances (IDASStolerances): the tolerance of the real unknown y_i is rtol |y_i| + atol;
-//!   * the dense direct linear solver (SUNLinSol_Dense) with the exact matrix cj 1 - M (IDASetJacFn);
+//!   * the dense direct linear solver (SUNLinSol_Dense) with the exact matrix cj 1 - M (IDASetJacFn) - or, for the
+//!     comparison of check GS-20, with the matrix that IDA forms itself by difference quotients (`dq_matrix`);
 //!   * Newton's method of SUNDIALS (the default nonlinear solver of IDA), orders 1 to 5 (the default);
 //!   * the first step size h0 (IDASetInitStep), or the choice of IDA if h0 = 0;
 //!   * a stop time (IDASetStopTime): no step passes the end of the integration;
@@ -45,12 +46,19 @@ pub struct IdaSettings {
     /// the matrix is recomputed when cj/cjJ leaves the interval ((1 - x)/(1 + x), (1 + x)/(1 - x)).  The default of
     /// IDA is x = 0.25, the interval (0.6, 5/3); a small x (1e-9) makes IDA compute the matrix for every new cj.
     pub delta_cj: f64,
+    /// how IDA gets its iteration matrix cj 1 - M: false, from the routine of this module, which writes it exactly;
+    /// true, by its own difference quotients (the default of IDA when no routine is given; routine idaLsDenseDQJac of
+    /// SUNDIALS): for each of the 2n unknowns one more evaluation of the residual, with this unknown changed by an
+    /// increment of about 1.5e-8 (the square root of the rounding unit) times its size, and the column of the matrix
+    /// is the change of the residual divided by the increment.  The residual is linear, so the quotient has no
+    /// truncation error; but every entry carries the rounding errors of two residuals divided by the increment.
+    pub dq_matrix: bool,
 }
 
 impl IdaSettings {
     /// the settings with which the measurements reproduce NDSolve with Method -> "IDA": first step 1e-4, orders 1 to 5
     pub fn like_ndsolve(rtol: f64, atol: f64) -> IdaSettings {
-        IdaSettings { rtol, atol, h0: 1e-4, max_order: 5, max_steps: 10_000_000, delta_cj: 0.25 }
+        IdaSettings { rtol, atol, h0: 1e-4, max_order: 5, max_steps: 10_000_000, delta_cj: 0.25, dq_matrix: false }
     }
 }
 
@@ -117,6 +125,9 @@ pub struct IdaStats {
     pub nncfails: i64,
     /// the number of evaluations of the matrix cj 1 - M
     pub njevals: i64,
+    /// the number of evaluations of the residual that IDA made to form its matrix by difference quotients (0 if the
+    /// matrix is given by a routine); IDA counts them apart from `nrevals` (IDAGetNumLinResEvals)
+    pub nre_dq: i64,
     /// the size of the first step that IDA tried
     pub h0_tried: f64,
 }
@@ -268,7 +279,9 @@ pub fn integrate_steps(
     let a = SUNDenseMatrix(n2 as i64, n2 as i64, &ctx).ok_or("SUNDenseMatrix failed")?;
     let ls = SUNLinSol_Dense(&yy, &a, &ctx).ok_or("SUNLinSol_Dense failed")?;
     check(IDASetLinearSolver(&mem, &ls, Some(&a)), "IDASetLinearSolver")?;
-    check(IDASetJacFn(&mem, Some(jacobian)), "IDASetJacFn")?;
+    if !settings.dq_matrix {
+        check(IDASetJacFn(&mem, Some(jacobian)), "IDASetJacFn")?;
+    }
     check(IDASetMaxOrd(&mem, settings.max_order), "IDASetMaxOrd")?;
     check(IDASetMaxNumSteps(&mem, settings.max_steps), "IDASetMaxNumSteps")?;
     if settings.h0 > 0.0 {
@@ -358,6 +371,7 @@ pub fn integrate_steps(
     IDAGetNumNonlinSolvIters(&mem, &mut stats.nniters);
     IDAGetNumNonlinSolvConvFails(&mem, &mut stats.nncfails);
     IDAGetNumJacEvals(&mem, &mut stats.njevals);
+    IDAGetNumLinResEvals(&mem, &mut stats.nre_dq);
     let mut mem_opt = Some(mem);
     IDAFree(&mut mem_opt);
     let _ = SUNLinSolFree(Some(ls));

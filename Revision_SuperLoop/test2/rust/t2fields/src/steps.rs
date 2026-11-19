@@ -19,14 +19,21 @@
 //!          anywhere in a wide band below 1 (IDA between 0.0078 and 0.5, CVODE between about 0.01 and 1), so that the
 //!          ratio deviation/tolerance changes by more than a factor of ten between neighbouring tolerances; the scan
 //!          of 25 tolerances shows it for both integrators;
-//!   GS-20  IDA run in the open (the pure-Rust IDA of SUNDIALS 7.8.0, module t2steps::ida) takes exactly the steps of
-//!          the IDA inside the Wolfram Language; at rtol = 1e-10 its iteration matrix is 16 per cent out of date, which
-//!          doubles the error of every step; at rtol = 1e-12 it is 31 per cent out of date, beyond the bound 1.305 at
-//!          which one Newton step per step becomes unstable: an error that alternates in sign grows by 1.7 per cent
-//!          per step, keeps the error estimate high and the steps small, and the deviation at the end is mostly the
-//!          rounding of the time variable.  With a matrix that is always current the alternating error is gone, IDA
-//!          takes steps of twice the size - and the deviation at rtol = 1e-12 is 8 times LARGER, because the local
-//!          errors of its steps then add up in phase.
+//!   GS-20  IDA run in the open (the pure-Rust IDA of SUNDIALS 7.8.0, module t2steps::ida) takes as many steps as the
+//!          IDA inside the Wolfram Language, the same steps before the settled ones, and settled steps whose size
+//!          differs from it by 7e-14, 3e-8 and 3e-8 of itself (see the last sentences); at rtol = 1e-10 its iteration
+//!          matrix is 16 per cent out of date, which doubles the error of every step; at rtol = 1e-12 it is 31 per cent out of
+//!          date, beyond the bound 1.305 at which one Newton step per step becomes unstable: an error that alternates
+//!          in sign grows by 1.7 per cent per step, keeps the error estimate high and the steps small, and the
+//!          deviation at the end is mostly the rounding of the time variable.  With a matrix that is always current
+//!          the alternating error is gone, IDA takes steps of twice the size - and the deviation at rtol = 1e-12 is 8
+//!          times LARGER, because the local errors of its steps then add up in phase.  The settled step size is the
+//!          first step size 1e-4 times fixed factors of IDA (1/4, 0.9, 2) times ONE factor that IDA computes from the
+//!          error estimate of one step; this estimate changes by parts in 1e8 when the iteration matrix is formed by
+//!          difference quotients (as the notebook does) instead of exactly, and with it the settled step size.  At
+//!          rtol = 1e-12 the rounding of the time depends on the last 16 binary digits of the settled step size: over
+//!          all 65536 cases the deviation goes from 2.0e-11 to 1.2e-10, and the number of the notebook, 4.4e-11, is
+//!          the median.
 //!
 //! The data of the figures and tables are written to test2/data/t2_steps_*.csv, the tables of the document to the
 //! fragments of t2_fields.
@@ -52,6 +59,63 @@ const NB_EVALS: [i64; 3] = [11182, 18096, 54585];
 const NB_HMAX: [f64; 3] = [0.007489190703255488, 0.0032000000000000015, 0.0005832000000000003];
 const NB_HMIN: [f64; 3] = [1.4627325592295171e-5, 1.5625e-6, 9.765625e-8];
 const NB_DEV: [f64; 3] = [7.125333219739698e-6, 9.308767142501674e-8, 4.378788443188416e-11];
+
+/// The settled steps of the IDA of the notebook, for rtol = 1e-8, 1e-10, 1e-12.  NDSolve returns the times at the ends
+/// of the internal steps of IDA (the grid of the solution), not the step sizes.  The probe
+/// 3+1super-loop_provenance/tools/gs13_ida_settled_steps.wl of PROJECT spacetimes reads from this grid what is listed
+/// here (its output is the file 3+1super-loop_provenance/logs/IDA_settled_steps_probe.txt): the number of the first
+/// step of the settled size and the number of settled steps; the grid point before the first and after the last
+/// settled step; the smallest of the neighbouring machine numbers h for which repeated machine addition t <- t + h,
+/// started at the grid point before the first settled step, reproduces every grid point of the settled steps bit for
+/// bit, and how many such neighbours there are; the time defect of the settled steps (the number of settled steps
+/// times h minus the advance of the grid, in exact arithmetic) for the smallest and for the largest of them; and the
+/// sizes of the steps up to the first settled one (the machine numbers nearest to the exact differences of the grid
+/// points).  A machine number that must be exact is written as the pair (k, e) for k 2^e.
+const NB_FIRST_SETTLED: [i64; 3] = [42, 44, 41];
+const NB_SETTLED: [usize; 3] = [2663, 7265, 41070];
+const NB_T_BEFORE: [(f64, i32); 3] = [(7621335736825744.0, -57), (7915076345103650.0, -58), (5135769006344567.0, -60)];
+const NB_T_AFTER: [f64; 3] = [19.996598482852086, 19.99879315696496, 19.99996058729621];
+const NB_H_LOWEST: [(f64, i32); 3] = [(8634449013884513.0, -60), (6338713941217036.0, -61), (8981056297398640.0, -64)];
+const NB_H_NUMBER: [usize; 3] = [4, 4, 8];
+const NB_DEFECT: [(f64, f64); 3] = [(2.112815131183332e-13, 2.1821086604312256e-13), (1.8559164621789748e-12, 1.8653685367187034e-12), (7.19187990411152e-12, 7.207464768239913e-12)];
+const NB_EARLY_8: [f64; 42] = [
+    0.000025, 0.00001805842665715453, 0.000018058426657154535, 0.00001625258399143909, 0.000016252583991439076,
+    0.000014627325592295171, 0.000014627325592295171, 0.000014627325592295171, 0.000029254651184590342,
+    0.000029254651184590342, 0.000029254651184590342, 0.000058509302369180683, 0.000058509302369180683,
+    0.00011701860473836142, 0.00023403720947672284, 0.00023403720947672273, 0.00023403720947672273,
+    0.00023403720947672273, 0.0004680744189534457, 0.00046807441895344547, 0.00046807441895344547,
+    0.00046807441895344547, 0.0009361488379068914, 0.0009361488379068909, 0.0009361488379068909,
+    0.0009361488379068909, 0.0009361488379068909, 0.0018722976758137819, 0.0018722976758137819,
+    0.0018722976758137819, 0.0018722976758137819, 0.0037445953516275637, 0.0037445953516275637,
+    0.0037445953516275637, 0.0037445953516275637, 0.0037445953516275637, 0.0037445953516275637,
+    0.0037445953516275637, 0.0037445953516275637, 0.0037445953516275637, 0.0037445953516275637,
+    0.0074891907032551275,
+];
+const NB_EARLY_10: [f64; 44] = [
+    1.5625e-6, 1.5625e-6, 1.5625000000000003e-6, 3.1249999999999997e-6, 3.1249999999999997e-6,
+    3.1249999999999997e-6, 3.1250000000000014e-6, 6.2499999999999995e-6, 0.000012499999999999999,
+    0.000024999999999999998, 0.00005000000000000001, 0.000049999999999999996, 0.000049999999999999996,
+    0.000049999999999999996, 0.00009999999999999999, 0.00009999999999999999, 0.00010000000000000005,
+    0.00010000000000000005, 0.00019999999999999998, 0.00019999999999999998, 0.0002000000000000001,
+    0.0002000000000000001, 0.00039999999999999996, 0.0004000000000000002, 0.0004000000000000002,
+    0.0004000000000000002, 0.0004000000000000002, 0.0007999999999999999, 0.0008000000000000004,
+    0.0008000000000000004, 0.0008000000000000004, 0.0016000000000000007, 0.0016000000000000007,
+    0.0016000000000000007, 0.0016000000000000007, 0.0016000000000000007, 0.0016000000000000007,
+    0.0016000000000000007, 0.0016000000000000007, 0.0016000000000000007, 0.0016000000000000007,
+    0.0016000000000000007, 0.0032000000000000015, 0.0027489789703326675,
+];
+const NB_EARLY_12: [f64; 41] = [
+    9.765625e-8, 9.765625e-8, 9.765625000000002e-8, 1.9531249999999998e-7, 1.9531249999999998e-7,
+    1.9531249999999998e-7, 3.9062499999999997e-7, 7.812499999999999e-7, 7.812499999999999e-7, 1.5624999999999999e-6,
+    3.1250000000000006e-6, 6.250000000000001e-6, 0.000012499999999999999, 0.000012499999999999999,
+    0.000012499999999999999, 0.000012499999999999999, 0.000024999999999999998, 0.000024999999999999998,
+    0.00002500000000000001, 0.00002500000000000001, 0.000049999999999999996, 0.00004499999999999998,
+    0.00004500000000000001, 0.00009000000000000002, 0.00009000000000000002, 0.00018000000000000004,
+    0.00016200000000000003, 0.00016199999999999993, 0.00016200000000000003, 0.00016200000000000003,
+    0.00016200000000000003, 0.00032400000000000007, 0.00032399999999999985, 0.00029159999999999993,
+    0.00029159999999999993, 0.00029159999999999993, 0.00029159999999999993, 0.00029159999999999993,
+    0.00029159999999999993, 0.0005832000000000003, 0.0004868640374427113,
+];
 
 /// the end of the integrations of GS-13 and its first output time
 const T_END: f64 = 20.0;
@@ -81,6 +145,14 @@ fn tex_signed(x: f64, decimals: usize, plus: bool) -> String {
     } else {
         format!("{:.*}", decimals, x)
     }
+}
+
+/// A number with the digits that identify it, as mantissa x 10^exponent for a formula of the documents:
+/// 1.5625e-6 -> "{1.5625\times10^{-6}}" (the shortest decimal form that gives the machine number back).
+fn tex_short(x: f64) -> String {
+    let text = format!("{:e}", x);
+    let (m, e) = text.split_once('e').expect("an exponent");
+    format!("{{{}\\times10^{{{}}}}}", m, e)
 }
 
 /// The width, in points, that the columns of a table of the documents share: the text of a page is 498 pt wide
@@ -311,6 +383,134 @@ fn second_newton_rule(ratio: f64, order: i32) -> (f64, f64, f64, f64) {
     (rho_one, rate, ss, 0.33 / ((order + 1) as f64 * ss))
 }
 
+/// the machine number k 2^e (exact: k is an integer below 2^53)
+fn dyadic(x: (f64, i32)) -> f64 {
+    x.0 * 2f64.powi(x.1)
+}
+
+/// `count` additions t <- fl(t + h) in double precision, as IDA advances its time (fl: the rounding to the nearest
+/// machine number).  Returns the time reached and the sum over the additions of (t + h) - fl(t + h), the part of the
+/// time defect that these steps make.  The rounding error of one addition is itself a machine number and is obtained
+/// without error by the three subtractions below (the "two-sum" of Knuth); the errors are added as double-double
+/// numbers.
+fn add_steps(t0: f64, h: f64, count: usize) -> (f64, f64) {
+    let mut t = t0;
+    let mut defect = Dd::ZERO;
+    for _ in 0..count {
+        let sum = t + h;
+        let part = sum - t;
+        let err = (t - (sum - part)) + (h - part);
+        defect = defect + Dd::from_f64(err);
+        t = sum;
+    }
+    (t, defect.to_f64())
+}
+
+/// The two coefficients with which IDA scales its error estimate in the step number n (1, 2, ...) of the order k,
+/// computed from the sizes of the steps: with psi_m = the sum of the sizes of the last m steps, the step n included
+/// (before the first step IDA assumes a step of the size of the first),
+///     ck    = max( | h/psi_(k+1) + sum_(m=1..k) (h/psi_m - 1/m) |,  h/psi_(k+1) )     (the coefficient of the test),
+///     sigma = k! h^k / (psi_2 psi_3 ... psi_(k+1))                                    (the coefficient of the rule
+///                                                                                      for the next step size).
+/// Both are 1/(k + 1) if the last k + 1 steps have the same size.  (ck, sigma and psi are names of the source text of
+/// IDA, routine IDASetCoeffs.)
+fn ida_coefficients(sizes: &[f64], n: usize, k: usize) -> (f64, f64) {
+    let h = sizes[n - 1];
+    let mut psi = Vec::with_capacity(k + 1);
+    let mut sum = 0.0f64;
+    for m in 1..=k + 1 {
+        sum += if n >= m { sizes[n - m] } else { sizes[0] };
+        psi.push(sum);
+    }
+    let mut sigma = 1.0f64;
+    let mut test = h / psi[k];
+    for m in 1..=k {
+        sigma *= m as f64 * h / psi[m];
+        test += h / psi[m - 1] - 1.0 / m as f64;
+    }
+    (test.abs().max(h / psi[k]), sigma)
+}
+
+/// How the settled step size of an integration by IDA comes about: the changes of the step size from the first step
+/// that IDA tries (of the size h0) to the first step of the settled size.  IDA changes the step size
+///   * after an attempt that its local error test rejects: by the factor 0.9 (2 e + 1e-4)^(-1/(k+1)), not above 0.9
+///     and not below 1/4, at the first rejection of a step, and by 1/4 at every further one;
+///   * after an accepted step: with eta = (2 e + 1e-4)^(-1/(k+1)), by the factor 2 if eta >= 2, by the factor eta, not
+///     above 0.9 and not below 0.5, if eta <= 1, and not at all otherwise.
+/// Here k is the order of the next step and e the estimate of IDA for it: if the order stays, the test value of the
+/// step times sigma/ck (function `ida_coefficients`).
+struct History {
+    /// the number of the first step of the settled size, and the number of steps of this size
+    first: i64,
+    settled: usize,
+    /// the rejected attempts of the first step (each divided the step size by 4)
+    quarters: u32,
+    /// the shortenings by the fixed factor 0.9 and the doublings after accepted steps
+    tenths: u32,
+    doublings: u32,
+    /// the changes by a factor that IDA computed from its estimate: (the number of the step after which, the order of
+    /// that step, its test value, the estimate e, the factor)
+    computed: Vec<(i64, i32, f64, f64, f64)>,
+    /// the largest relative difference between such a factor and the rule applied to the recorded numbers
+    rule_defect: f64,
+    /// the changes of the step size that are none of these
+    other: u32,
+    /// h0 times the product of all factors in their order, divided by the settled step size, minus 1
+    product_defect: f64,
+    /// the product of the fixed factors alone: h0 (1/4)^quarters 0.9^tenths 2^doublings
+    fixed_product: f64,
+    /// the time at the end of the last step before the settled ones, and the time defect up to there
+    t_before: f64,
+    defect_before: f64,
+}
+
+fn history(r: &IdaRun, h0: f64) -> History {
+    let st = &r.steps;
+    let main_h = r.run.main_size().0;
+    let first = st.iter().position(|x| x.h.to_bits() == main_h.to_bits()).expect("a settled step");
+    let settled = st.iter().filter(|x| x.h.to_bits() == main_h.to_bits()).count();
+    let quarters = ((h0 / st[0].h).log2() / 2.0).round() as u32;
+    let mut product = h0 * 0.25f64.powi(quarters as i32);
+    let mut out = History { first: st[first].n, settled, quarters, tenths: 0, doublings: 0, computed: Vec::new(), rule_defect: 0.0, other: 0, product_defect: 0.0, fixed_product: 0.0, t_before: 0.0, defect_before: 0.0 };
+    if product.to_bits() != st[0].h.to_bits() || st[0].rejected != quarters as i64 {
+        out.other += 1;
+    }
+    let mut fixed = product;
+    for j in 0..first {
+        let (a, b) = (&st[j], &st[j + 1]);
+        if b.h.to_bits() == a.h.to_bits() {
+            continue;
+        }
+        if b.rejected != 0 || a.h_next.to_bits() != b.h.to_bits() {
+            out.other += 1;
+        } else if b.h.to_bits() == (2.0 * a.h).to_bits() {
+            out.doublings += 1;
+            product *= 2.0;
+            fixed *= 2.0;
+        } else if b.h.to_bits() == (a.h * 0.9).to_bits() {
+            out.tenths += 1;
+            product *= 0.9;
+            fixed *= 0.9;
+        } else if a.k_next == a.k {
+            let estimate = a.err_k();
+            let rule = (2.0 * estimate + 1e-4).powf(-1.0 / (a.k as f64 + 1.0));
+            let factor = b.h / a.h;
+            out.rule_defect = out.rule_defect.max((rule / factor - 1.0).abs());
+            out.computed.push((a.n, a.k, a.test, estimate, factor));
+            product *= factor;
+        } else {
+            out.other += 1;
+        }
+    }
+    out.product_defect = product / main_h - 1.0;
+    out.fixed_product = fixed;
+    if first > 0 {
+        out.t_before = st[first - 1].t;
+        out.defect_before = r.run.records[first - 1].time_defect;
+    }
+    out
+}
+
 /// The checks GS-17 to GS-20.  `gs13_at_20` are the relative deviations that check GS-13 found at its last output time,
 /// 20, for the three tolerances (the solution of CVODE interpolated to that time).
 #[allow(clippy::too_many_arguments)]
@@ -322,21 +522,24 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
 
     // ------------------------------------------------------------------ the integrations
     // the three integrations of GS-13 by CVODE and the same three by IDA set up as NDSolve sets it up, each with the
-    // complete analysis of every step; and IDA with an iteration matrix that is computed anew whenever cj changes
+    // complete analysis of every step; IDA with an iteration matrix that is computed anew whenever cj changes;
     let cv: Vec<CvodeRun> = rtols.iter().map(|&rt| run_cvode(&spec, w0, T_FIRST, T_END, &CvodeSettings::adams(rt, rt / 100.0), lattice_rhs(lat, fl), true).expect("CVODE step by step")).collect();
-    let jobs: Vec<(f64, f64)> = rtols.iter().flat_map(|&rt| [(rt, 0.25), (rt, 1e-9)]).collect();
+    // and IDA with its default rule, but with the matrix that it forms itself by difference quotients
+    let jobs: Vec<(f64, f64, bool)> = rtols.iter().flat_map(|&rt| [(rt, 0.25, false), (rt, 1e-9, false), (rt, 0.25, true)]).collect();
     let mut ida_all: Vec<IdaRun> = in_parallel(jobs.len(), |i| {
         let mut set = IdaSettings::like_ndsolve(jobs[i].0, jobs[i].0 / 100.0);
         set.delta_cj = jobs[i].1;
+        set.dq_matrix = jobs[i].2;
         run_ida(hl, &spec, w0, T_END, &set, true).expect("IDA step by step")
     });
     let mut ida: Vec<IdaRun> = Vec::new();
     let mut idc: Vec<IdaRun> = Vec::new();
+    let mut idq: Vec<IdaRun> = Vec::new();
     for (i, r) in ida_all.drain(..).enumerate() {
-        if i % 2 == 0 {
-            ida.push(r)
-        } else {
-            idc.push(r)
+        match i % 3 {
+            0 => ida.push(r),
+            1 => idc.push(r),
+            _ => idq.push(r),
         }
     }
     let mut sums: Vec<Summary> = Vec::new();
@@ -822,9 +1025,191 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
     let (hc10, _, _) = idc[1].run.main_size();
     let (hd10, _, _) = ida[1].run.main_size();
     let half10_predicted = (hc10 / hd10).powi(6) * (idc[1].run.nsteps as f64 / ida[1].run.nsteps as f64) / factor10;
+    // (e) how the settled step size comes about: the history of the step size of the three integrations (and of the
+    //     same three with the matrix by difference quotients), and the two coefficients of IDA computed from the step
+    //     sizes for every step of all nine integrations by IDA
+    let h_first = 1e-4;
+    let hist: Vec<History> = ida.iter().map(|r| history(r, h_first)).collect();
+    let hist_q: Vec<History> = idq.iter().map(|r| history(r, h_first)).collect();
+    let mut coefficient_defect = 0.0f64;
+    for r in ida.iter().chain(idq.iter()).chain(idc.iter()) {
+        let sizes: Vec<f64> = r.steps.iter().map(|x| x.h).collect();
+        for x in &r.steps {
+            let (c_test, c_next) = ida_coefficients(&sizes, x.n as usize, x.k as usize);
+            coefficient_defect = coefficient_defect.max((c_test / x.ck - 1.0).abs()).max((c_next / x.ida_sigma - 1.0).abs());
+        }
+    }
+    let history_counts: Vec<(u32, u32, u32, i64)> = hist.iter().map(|x| (x.quarters, x.tenths, x.doublings, x.computed.first().map(|c| c.0).unwrap_or(0))).collect();
+    let rule_defect = hist.iter().chain(hist_q.iter()).map(|x| x.rule_defect).fold(0.0f64, f64::max);
+    let product_defect = hist.iter().chain(hist_q.iter()).map(|x| x.product_defect.abs()).fold(0.0f64, f64::max);
+    let history_ok = hist.iter().chain(hist_q.iter()).all(|x| x.other == 0 && x.computed.len() == 1)
+        && rule_defect < 1e-13
+        && product_defect < 1e-14
+        && coefficient_defect < 1e-12
+        && history_counts == vec![(1, 2, 9, 1), (3, 0, 11, 43), (5, 3, 13, 40)]
+        && hist.iter().zip(&hist_q).all(|(a, b)| a.quarters == b.quarters && a.tenths == b.tenths && a.doublings == b.doublings && a.computed[0].0 == b.computed[0].0 && a.first == b.first && a.settled == b.settled);
+    // (f) the matrix by difference quotients, and the IDA of the notebook
+    let mut same_counts = true;
+    let mut first_other = [0i64; 3];
+    let mut factor_rel = [0.0f64; 3];
+    let mut estimate_rel = [0.0f64; 3];
+    let mut sensitivity = [0.0f64; 3];
+    let mut settled_rel_q = [0.0f64; 3];
+    for i in 0..3 {
+        same_counts &= idq[i].stats.nsteps == ida[i].stats.nsteps && idq[i].stats.nrevals == ida[i].stats.nrevals && idq[i].stats.njevals == ida[i].stats.njevals;
+        same_counts &= ida[i].stats.nre_dq == 0 && idq[i].stats.nre_dq == 2 * n as i64 * idq[i].stats.njevals;
+        let (a, b) = (&ida[i].steps, &idq[i].steps);
+        first_other[i] = (0..a.len().min(b.len())).find(|&j| a[j].h.to_bits() != b[j].h.to_bits() || a[j].k != b[j].k).map(|j| a[j].n).unwrap_or(0);
+        let (ca, cb) = (hist[i].computed[0], hist_q[i].computed[0]);
+        factor_rel[i] = cb.4 / ca.4 - 1.0;
+        estimate_rel[i] = cb.3 / ca.3 - 1.0;
+        // the factor is (2 e + 1e-4)^(-1/(k+1)): a relative change x of e changes it by -x (2 e/(2 e + 1e-4))/(k + 1)
+        sensitivity[i] = -(2.0 * ca.3 / (2.0 * ca.3 + 1e-4)) / (ca.1 as f64 + 1.0);
+        settled_rel_q[i] = idq[i].run.main_size().0 / ida[i].run.main_size().0 - 1.0;
+    }
+    //     the errors of the formulas do not notice the change of the settled step size
+    let formula_rel_q = (0..3).map(|i| (idq[i].run.predicted_formula / ida[i].run.predicted_formula - 1.0).abs()).fold(0.0f64, f64::max);
+    let dq_ok = same_counts
+        && formula_rel_q < 1e-6
+        && (0..3).all(|i| first_other[i] == hist[i].computed[0].0 + 1)
+        && factor_rel[0].abs() < 1e-14
+        && (1..3).all(|i| factor_rel[i].abs() > 2e-9 && factor_rel[i].abs() < 2e-8 && (factor_rel[i] / (sensitivity[i] * estimate_rel[i]) - 1.0).abs() < 1e-3 && (settled_rel_q[i] / factor_rel[i] - 1.0).abs() < 1e-6);
+    //     the IDA of the notebook: repeated addition of its settled step size reproduces its grid, and its steps
+    //     before the settled ones are those of the program
+    let nb_early: [&[f64]; 3] = [&NB_EARLY_8, &NB_EARLY_10, &NB_EARLY_12];
+    let mut nb_reproduced = true;
+    let mut nb_defect_ok = true;
+    let mut nb_counts_ok = true;
+    let mut nb_same_start = [false; 3];
+    let mut nb_early_rel = [0.0f64; 3];
+    let mut nb_settled_rel = [0.0f64; 3];
+    for i in 0..3 {
+        let t0 = dyadic(NB_T_BEFORE[i]);
+        for j in 0..NB_H_NUMBER[i] {
+            let (t1, d) = add_steps(t0, dyadic((NB_H_LOWEST[i].0 + j as f64, NB_H_LOWEST[i].1)), NB_SETTLED[i]);
+            nb_reproduced &= t1.to_bits() == NB_T_AFTER[i].to_bits();
+            if j == 0 {
+                nb_defect_ok &= (d / NB_DEFECT[i].0 - 1.0).abs() < 1e-9;
+            }
+            if j + 1 == NB_H_NUMBER[i] {
+                nb_defect_ok &= (d / NB_DEFECT[i].1 - 1.0).abs() < 1e-9;
+            }
+        }
+        nb_counts_ok &= NB_FIRST_SETTLED[i] == hist[i].first && NB_SETTLED[i] == hist[i].settled && nb_early[i].len() == hist[i].first as usize;
+        for st in 0..(hist[i].first as usize - 1).min(nb_early[i].len()) {
+            nb_early_rel[i] = nb_early_rel[i].max((nb_early[i][st] / ida[i].steps[st].h - 1.0).abs());
+        }
+        nb_same_start[i] = hist[i].t_before.to_bits() == t0.to_bits();
+        nb_settled_rel[i] = dyadic(NB_H_LOWEST[i]) / ida[i].run.main_size().0 - 1.0;
+    }
+    let nb_ok = nb_reproduced && nb_defect_ok && nb_counts_ok && nb_same_start == [false, true, true]
+        && nb_early_rel.iter().all(|&x| x < 1e-12) && nb_settled_rel[0].abs() < 1e-12
+        && (1..3).all(|i| nb_settled_rel[i] < -2e-8 && nb_settled_rel[i] > -4e-8);
+    // (g) the consequences.  The time defect of an integration with the settled step size h: the defect of the steps
+    //     before the settled ones, the additions of the settled steps, and the last step, which IDA makes
+    //     (20 - t)(1 - 4 eps) long (eps = 2^-52, the rounding unit) and ends at the stop time 20
+    let last_step = |t1: f64| -> f64 { (T_END - t1) * (1.0 - 4.0 * f64::EPSILON) };
+    let defect_of = |x: &History, h: f64| -> (f64, f64) {
+        let (t1, d) = add_steps(x.t_before, h, x.settled);
+        (t1, x.defect_before + d + (last_step(t1) - (T_END - t1)))
+    };
+    //     the predicted deviation of the integration number i for another time defect: the errors of the formulas of
+    //     the integration with the exact matrix and the phase error -i E dt of the rounded time, for every eigenvector
+    let predicted_with = |i: usize, dt: f64| -> f64 { ida[i].run.modes.iter().map(|m| m.weight * m.weight * (m.formula + C64 { re: 0.0, im: -m.e * dt }).norm_sqr()).sum::<f64>().sqrt() };
+    let mut sim_ok = true;
+    for i in 0..3 {
+        for (r, x) in [(&ida[i], &hist[i]), (&idq[i], &hist_q[i])] {
+            let (t1, d) = defect_of(x, r.run.main_size().0);
+            let last = &r.steps[r.steps.len() - 1];
+            sim_ok &= t1.to_bits() == r.steps[r.steps.len() - 2].t.to_bits() && last.h.to_bits() == last_step(t1).to_bits() && last.t == T_END && (d / r.run.time_defect - 1.0).abs() < 1e-12;
+        }
+        sim_ok &= (predicted_with(i, ida[i].run.time_defect) / ida[i].run.predicted - 1.0).abs() < 1e-12;
+    }
+    //     the differences between the deviations of the three integrations of one tolerance, measured and predicted
+    //     from their time defects (for the notebook the middle of the time defects of its candidates)
+    let nb_defect_mid = |i: usize| 0.5 * (NB_DEFECT[i].0 + NB_DEFECT[i].1);
+    let diff_q: Vec<(f64, f64)> = (0..3).map(|i| (idq[i].run.deviation / ida[i].run.deviation - 1.0, predicted_with(i, idq[i].run.time_defect) / ida[i].run.predicted - 1.0)).collect();
+    let diff_nb: Vec<(f64, f64)> = (0..3).map(|i| (NB_DEV[i] / ida[i].run.deviation - 1.0, predicted_with(i, nb_defect_mid(i)) / ida[i].run.predicted - 1.0)).collect();
+    let pred12q = idq[2].run.predicted / idq[2].run.deviation - 1.0;
+    let pred12nb = predicted_with(2, nb_defect_mid(2)) / NB_DEV[2] - 1.0;
+    //     rtol = 1e-12: every machine number h of one period.  The times from 16 to 32 are multiples of the unit
+    //     u16 = 2^-48, the times of every range below are multiples of a power of 2 that divides u16; the rounding of
+    //     an addition t + h therefore depends on h only through its remainder after division by u16, and the settled
+    //     step size and the 65535 machine numbers after the largest multiple of u16 below it are all cases there are.
+    let h12 = ida[2].run.main_size().0;
+    let u16 = f64::EPSILON * 16.0;
+    let ulp_h = f64::EPSILON * 2f64.powi(h12.log2().floor() as i32);
+    let period = (u16 / ulp_h).round() as usize;
+    let h_base = (h12 / u16).floor() * u16;
+    let phase_of = |h: f64| -> usize { ((h - (h / u16).floor() * u16) / ulp_h).round() as usize };
+    let chunks = 64usize;
+    let per_chunk = period / chunks;
+    let last_digits: Vec<(f64, f64)> = in_parallel(chunks, |c| {
+        (0..per_chunk)
+            .map(|j| {
+                let (_, dt) = defect_of(&hist[2], h_base + (c * per_chunk + j) as f64 * ulp_h);
+                (dt, predicted_with(2, dt))
+            })
+            .collect::<Vec<(f64, f64)>>()
+    })
+    .into_iter()
+    .flatten()
+    .collect();
+    //     the same time defect from the closed formula: for every unit u of the last place, the number of settled
+    //     steps that end at a time with this unit, times the distance of h from the nearest multiple of u.  If h lies
+    //     exactly half way between two multiples of u, the machine addition rounds to the sum whose last binary digit
+    //     is 0; from the second step on the time before has this property too, so that the multiple of u added is the
+    //     even one: `round_ties_even`
+    let mut units: Vec<(f64, usize)> = Vec::new();
+    {
+        let mut t = hist[2].t_before;
+        for _ in 0..hist[2].settled {
+            t += h12;
+            let u = f64::EPSILON * 2f64.powi(t.log2().floor() as i32);
+            match units.iter_mut().find(|x| x.0 == u) {
+                Some(x) => x.1 += 1,
+                None => units.push((u, 1)),
+            }
+        }
+    }
+    let saw_formula = |h: f64| -> f64 { hist[2].defect_before + units.iter().map(|&(u, count)| count as f64 * (h - (h / u).round_ties_even() * u)).sum::<f64>() };
+    let defect_bound: f64 = units.iter().map(|&(u, count)| 0.5 * count as f64 * u).sum();
+    let unit_sum: f64 = units.iter().map(|&(u, _)| u).sum();
+    let saw_defect = (0..period).map(|j| (last_digits[j].0 - saw_formula(h_base + j as f64 * ulp_h)).abs()).fold(0.0f64, f64::max);
+    let mut ld_pred: Vec<f64> = last_digits.iter().map(|x| x.1).collect();
+    ld_pred.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    let ld_q = |q: f64| ld_pred[((ld_pred.len() - 1) as f64 * q).round() as usize];
+    let ld_below = |v: f64| ld_pred.iter().filter(|&&x| x < v).count() as f64 / ld_pred.len() as f64;
+    let ld_defect_max = last_digits.iter().map(|x| x.0.abs()).fold(0.0f64, f64::max);
+    let formula_alone = predicted_with(2, 0.0);
+    //     the three integrations at rtol = 1e-12 are three points of this one function
+    let phase12 = phase_of(h12);
+    let phase12q = phase_of(idq[2].run.main_size().0);
+    let phase12nb = phase_of(dyadic(NB_H_LOWEST[2]));
+    let on_curve = (last_digits[phase12].0 / ida[2].run.time_defect - 1.0).abs() < 1e-12
+        && (last_digits[phase12q].0 - idq[2].run.time_defect).abs() < unit_sum
+        && (last_digits[phase12nb].0 - NB_DEFECT[2].0).abs() < unit_sum
+        && phase12nb + NB_H_NUMBER[2] <= period;
+    let below = [ld_below(ida[2].run.deviation), ld_below(idq[2].run.deviation), ld_below(NB_DEV[2])];
+    //     what the closed formula leaves out: the steps before the settled ones and the shortening of the last step
+    let before_largest = hist.iter().chain(hist_q.iter()).map(|x| x.defect_before.abs()).fold(0.0f64, f64::max);
+    let before_12 = hist[2].defect_before.abs().max(hist_q[2].defect_before.abs());
+    let last_shortening = {
+        let t1 = ida[2].steps[ida[2].steps.len() - 2].t;
+        last_step(t1) - (T_END - t1)
+    };
+    let last_digits_ok = period == 65536 && sim_ok && on_curve && saw_defect < unit_sum && ld_defect_max <= defect_bound
+        && before_largest < 1e-16 && before_12 < 1e-18 && last_shortening < -3.0e-20 && last_shortening > -4.0e-20 && units.len() == 13
+        && units.contains(&(f64::EPSILON * 4.0, 8216)) && units.contains(&(f64::EPSILON * 8.0, 16432)) && units.contains(&(f64::EPSILON * 16.0, 8216))
+        && ld_pred[0] > 0.99 * formula_alone && ld_pred[0] < 1.001 * formula_alone
+        && ld_q(0.5) > 4.0e-11 && ld_q(0.5) < 5.0e-11 && ld_pred[period - 1] > 1.0e-10 && ld_pred[period - 1] < 1.4e-10
+        && below.iter().all(|&x| x > 0.35 && x < 0.65)
+        && pred12q.abs() < 0.05 && pred12nb.abs() < 0.01
+        && (0..2).all(|i| (diff_q[i].0 / diff_q[i].1 - 1.0).abs() < 0.1 && (diff_nb[i].0 / diff_nb[i].1 - 1.0).abs() < 0.1)
+        && (diff_q[2].0 - diff_q[2].1).abs() < 0.04 && (diff_nb[2].0 - diff_nb[2].1).abs() < 0.01;
     ck.add(
         "GS-20",
-        "the time integrations of GS-13 step by step, IDA in the open: (a) IDA of SUNDIALS 7.8.0 in pure Rust, with the tolerance rtol |y| + atol of every real unknown, a first step of 1e-4, the orders 1 to 5 and the dense matrix cj 1 - M, takes the steps of the IDA inside NDSolve of the Wolfram Language: for rtol = 1e-8, 1e-10, 1e-12 the numbers of internal steps are those of the notebook (2705, 7309, 41111), the largest and the smallest step agree with the notebook within 1e-10, and the number of evaluations of the right side that the notebook reports is the number of residual evaluations here plus 769 for every matrix plus 1 (11182, 18096, 54585: the notebook computes its matrix by difference quotients, one evaluation for each of the 768 unknowns and one more); the deviation at the time 20 agrees with the notebook within 1e-4 for rtol = 1e-8 and 1e-10 and within 20 per cent for rtol = 1e-12, where it is a sum of rounding errors. (b) IDA computes its matrix anew only when cj_ratio leaves the interval 0.6 to 5/3; in each of the three integrations the cj_ratio of the settled steps is the quotient of cj = H_har/h_step of the settled steps and of the last step before them that had a current matrix (within 1e-12): the matrix of the settled steps was made for an earlier, larger step size (and at rtol = 1e-12 also for the order 4) and is used unchanged to the end; with one Newton step per step the formula of the order 5 is stable only for cj_ratio between 0.772 and 137/105 = 1.3048. At rtol = 1e-10 the settled steps have cj_ratio = 1.164: one Newton step then overshoots, the error of a step is 1 + 6 ((rho_Newton - 1)/rho_Newton) H_har = 1.97 times that of the formula, and the alternating root is -0.65 (stable). At rtol = 1e-12 they have cj_ratio = 1.313, above the bound 137/105 at which the alternating root passes -1: an error that changes its sign from step to step grows by the factor 1.017 per step, the measured test value grows by this factor per step (within 0.3 per cent). The growth is cut back by the rule of IDA for the convergence of its iteration: IDA makes a second Newton step in a step when the test value of the first iterate exceeds 0.33/((k_IDA + 1) ss), where ss = rate/(1 - rate) and rate = |1 - rho_one| is the factor by which one Newton step with the old matrix multiplies the distance from the exact solution of the formula, rho_one = 2 cj_ratio/(1 + cj_ratio) (ss and rate are names of the source text of IDA); this threshold is 0.352, the test value of the first iterate of every settled step with two Newton steps lies within 3 per cent of it, no settled step with one Newton step has a larger test value, and a step with two Newton steps occurs about every 110 steps (the second Newton step multiplies the distance from the exact solution of the formula by rate, and ln(1/rate)/ln|alternating root| steps of growth lead back to the threshold: within 10 per cent of the measured number); the test value of every settled step lies inside the band of IDA, above 0.0078 and not above the threshold, and nine tenths of the settled steps have a test value between 0.05 and 0.33. (c) At rtol = 1e-12 the rounding of the time variable alone (time_defect = 8.1e-12 after 41111 additions) gives more than 80 per cent of the deviation, and predicted_deviation agrees with the measured deviation within 5 per cent. The time that IDA reports is the rounded sum of the reported time before and the step size in every step but the last; one addition of the settled step size is rounded by the same amount for all times between two powers of 2 (the rounded sum exceeds the exact one by +0.48, -0.26 and -0.13 units in the last place of the time between 4 and 8, 8 and 16, 16 and 20), and these three numbers times the numbers of the steps in the three ranges give the growth of time_defect from the time 4 to the time 20 within 1 per cent. (d) With a matrix that is always current (cj_ratio = 1 in every step) IDA at rtol = 1e-12 takes less than half as many steps of more than twice the size, the local errors add up in phase (coherence above 0.95), and the deviation is more than 5 times LARGER than with the default: the growing error of the default integration keeps its test value high and its steps small - the test value that the formula alone would give at the step size of the default integration, (ratio of the two step sizes)^6 times the median test value of the integration with a current matrix, lies below 0.0078, where IDA doubles a step (the same number computed directly from the formula, for the exact solution at 81 times, agrees within 20 per cent); at rtol = 1e-10 the deviation with a current matrix is 0.64 times the default one, which is (ratio of the step sizes)^6 times the ratio of the numbers of steps divided by the factor 1.97 of the outdated matrix (within 1 per cent)",
+        "the time integrations of GS-13 step by step, IDA in the open: (a) IDA of SUNDIALS 7.8.0 in pure Rust, with the tolerance rtol |y| + atol of every real unknown, a first step of 1e-4, the orders 1 to 5 and the dense matrix cj 1 - M, reproduces the IDA inside NDSolve of the Wolfram Language as far as the rounding of one number allows (parts (e) to (g)): for rtol = 1e-8, 1e-10, 1e-12 the numbers of internal steps are those of the notebook (2705, 7309, 41111), the largest and the smallest step agree with the notebook within 1e-10, and the number of evaluations of the right side that the notebook reports is the number of residual evaluations here plus 769 for every matrix plus 1 (11182, 18096, 54585: the notebook computes its matrix by difference quotients, one evaluation for each of the 768 unknowns and one more); the deviation at the time 20 agrees with the notebook within 1e-4 for rtol = 1e-8 and 1e-10 and within 20 per cent for rtol = 1e-12, where it is a sum of rounding errors. (b) IDA computes its matrix anew only when cj_ratio leaves the interval 0.6 to 5/3; in each of the three integrations the cj_ratio of the settled steps is the quotient of cj = H_har/h_step of the settled steps and of the last step before them that had a current matrix (within 1e-12): the matrix of the settled steps was made for an earlier, larger step size (and at rtol = 1e-12 also for the order 4) and is used unchanged to the end; with one Newton step per step the formula of the order 5 is stable only for cj_ratio between 0.772 and 137/105 = 1.3048. At rtol = 1e-10 the settled steps have cj_ratio = 1.164: one Newton step then overshoots, the error of a step is 1 + 6 ((rho_Newton - 1)/rho_Newton) H_har = 1.97 times that of the formula, and the alternating root is -0.65 (stable). At rtol = 1e-12 they have cj_ratio = 1.313, above the bound 137/105 at which the alternating root passes -1: an error that changes its sign from step to step grows by the factor 1.017 per step, the measured test value grows by this factor per step (within 0.3 per cent). The growth is cut back by the rule of IDA for the convergence of its iteration: IDA makes a second Newton step in a step when the test value of the first iterate exceeds 0.33/((k_IDA + 1) ss), where ss = rate/(1 - rate) and rate = |1 - rho_one| is the factor by which one Newton step with the old matrix multiplies the distance from the exact solution of the formula, rho_one = 2 cj_ratio/(1 + cj_ratio) (ss and rate are names of the source text of IDA); this threshold is 0.352, the test value of the first iterate of every settled step with two Newton steps lies within 3 per cent of it, no settled step with one Newton step has a larger test value, and a step with two Newton steps occurs about every 110 steps (the second Newton step multiplies the distance from the exact solution of the formula by rate, and ln(1/rate)/ln|alternating root| steps of growth lead back to the threshold: within 10 per cent of the measured number); the test value of every settled step lies inside the band of IDA, above 0.0078 and not above the threshold, and nine tenths of the settled steps have a test value between 0.05 and 0.33. (c) At rtol = 1e-12 the rounding of the time variable alone (time_defect = 8.1e-12 after 41111 additions) gives more than 80 per cent of the deviation, and predicted_deviation agrees with the measured deviation within 5 per cent. The time that IDA reports is the rounded sum of the reported time before and the step size in every step but the last; one addition of the settled step size is rounded by the same amount for all times between two powers of 2 (the rounded sum exceeds the exact one by +0.48, -0.26 and -0.13 units in the last place of the time between 4 and 8, 8 and 16, 16 and 20), and these three numbers times the numbers of the steps in the three ranges give the growth of time_defect from the time 4 to the time 20 within 1 per cent. (d) With a matrix that is always current (cj_ratio = 1 in every step) IDA at rtol = 1e-12 takes less than half as many steps of more than twice the size, the local errors add up in phase (coherence above 0.95), and the deviation is more than 5 times LARGER than with the default: the growing error of the default integration keeps its test value high and its steps small - the test value that the formula alone would give at the step size of the default integration, (ratio of the two step sizes)^6 times the median test value of the integration with a current matrix, lies below 0.0078, where IDA doubles a step (the same number computed directly from the formula, for the exact solution at 81 times, agrees within 20 per cent); at rtol = 1e-10 the deviation with a current matrix is 0.64 times the default one, which is (ratio of the step sizes)^6 times the ratio of the numbers of steps divided by the factor 1.97 of the outdated matrix (within 1 per cent). (e) How the settled step size comes about. IDA changes the step size by fixed factors - 1/4 after every rejected attempt of the first step (1, 3, 5 attempts for the three tolerances), 0.9 or 2 after an accepted step (2, 0, 3 times 0.9 and 9, 11, 13 doublings before the first settled step) - with one exception in each integration: after the step number 1, 43, 40 it multiplies the step size by the factor (2 e + 1e-4)^(-1/(k_IDA + 1)) that it computes from its estimate e for the next step, which is the test value of that step times the quotient of two coefficients of IDA; both coefficients follow from the sizes of the last steps, and the formulas of the program give the coefficients that IDA reports in every step of the nine integrations by IDA within 1e-12. The rule gives the factor within 1e-13, and the first step size 1e-4 times the product of all factors is the settled step size within 1e-14. (f) The same three integrations with the matrix that IDA forms itself by difference quotients (768 further evaluations of the right side for every matrix) have the same numbers of steps, of residual evaluations and of matrices, and bit for bit the same step sizes up to that one computed factor. The factor is another number because the test value of that one step is another number (the relative difference of the factor is -1/(k_IDA + 1) times that of the estimate, within 0.1 per cent at rtol = 1e-10 and 1e-12): the settled step sizes differ by less than 1e-14 at rtol = 1e-8 and by 2e-9 to 2e-8 at 1e-10 and 1e-12, and the deviation predicted from the formulas alone changes by less than 1e-6 of itself. The settled step size of the IDA of the notebook is read from the grid of its solution: 4, 4 and 8 neighbouring machine numbers reproduce the grid points of its 2663, 7265 and 41070 settled steps bit for bit by repeated addition (the same additions here end at the same grid point and give the same time defect within 1e-9). It differs from that of this program with the exact matrix by less than 1e-12 at rtol = 1e-8 and by 2e-8 to 4e-8 at 1e-10 and 1e-12; the steps of the notebook before the settled ones are those of this program within 1e-12, and at rtol = 1e-10 and 1e-12 the grid point before the first settled step is the same machine number. (g) The consequence. The time defect of an integration follows from its settled step size: the defect of the steps before, repeated machine addition of the settled step size, and the last step, which IDA makes (20 - t)(1 - 4 eps) long (eps = 2^-52), give the measured time defect of the six integrations (exact matrix and difference quotients) within 1e-12 and their last grid points bit for bit. The deviations of the three integrations of one tolerance (exact matrix, difference quotients, notebook) differ as their time defects say: the relative differences from the integration with the exact matrix, measured and predicted (the errors of the formulas of the integration with the exact matrix and the other time defect), agree within 10 per cent at rtol = 1e-8 and 1e-10 and within 0.04 at rtol = 1e-12. At rtol = 1e-12 the time defect depends on the settled step size only through its last 16 binary digits, its remainder after division by 2^-48 (the unit in the last place of the times from 16 to 32): for all 65536 machine numbers of one such period it is computed by repeated addition; it agrees with the closed formula - the sum over the units u in the last place of the time of (number of settled steps that end at a time with the unit u) x (step size minus the nearest multiple of u) - within the sum of the units, and its modulus stays below half the sum of (number of steps) x (unit). The predicted deviation over the period goes from the value of the formulas alone (within 1 per cent) to more than 1e-10, with a median between 4e-11 and 5e-11; the time defects of the three integrations are the values of this one function at their step sizes, their predicted deviations agree with the measured ones within 5 per cent (difference quotients) and 1 per cent (notebook), and their measured deviations lie between the 35th and the 65th of 100 equal parts of the period ordered by the predicted deviation",
         same_steps && same_evals && dev_rel[0].abs() < 1e-4 && dev_rel[1].abs() < 1e-4 && dev_rel[2].abs() < 0.2
             && (r10 - 1.164).abs() < 1e-3 && (factor10 - 1.97).abs() < 0.01 && (root10 + 0.65).abs() < 0.01
             && (window_lo - 0.772).abs() < 1e-3 && (window_hi - 137.0 / 105.0).abs() < 1e-8 && (bound - window_hi).abs() < 1e-8
@@ -832,7 +1217,8 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
             && second_ok && saw_ok && (second_threshold - 0.352).abs() < 1e-3 && origins_ok
             && time_share > 0.8 && pred12.abs() < 0.05 && rounded_sums + 1 >= ida[2].steps.len() && (defect_from_units / defect_4_to_20 - 1.0).abs() < 0.01
             && (ulp_errors[0] - 0.48).abs() < 0.01 && (ulp_errors[1] + 0.26).abs() < 0.01 && (ulp_errors[2] + 0.13).abs() < 0.01
-            && cur_ok && (half10 - 0.64).abs() < 0.02 && would_double && (half10_predicted / half10 - 1.0).abs() < 0.01,
+            && cur_ok && (half10 - 0.64).abs() < 0.02 && would_double && (half10_predicted / half10 - 1.0).abs() < 0.01
+            && history_ok && dq_ok && nb_ok && last_digits_ok,
         format!(
             "(a) steps {}, {}, {}; residual evaluations + 769 matrices + 1 = {}, {}, {}; deviation here / notebook - 1 = {}, {}, {}; (b) matrix of the settled steps made in the step number {}, {}, {} for the step size {}, {}, {} and the order {}, {}, {}; stable for cj_ratio from {:.4} to {:.4}; rtol = 1e-10: cj_ratio {:.4}, factor {:.3}, alternating root {:.4}; rtol = 1e-12: cj_ratio {:.4}, bound {:.4}, alternating root {:.4}, measured growth of the test value per step {:.4} ({} pairs of steps), {} steps with two Newton steps; rho_one {:.4}, rate {:.4}, ss {:.4}, threshold of the second Newton step {:.4}, test value of the first iterate in the steps with two Newton steps {:.4} to {:.4}, largest test value of a step with one Newton step {:.4}, median number of steps from one step with two Newton steps to the next {:.0} (from rate and root: {:.0}), test value of the settled steps from {:.4} to {:.4}, nine tenths of them between {:.4} and {:.4}; (c) time_defect {}, its share of the deviation {:.3}, predicted/measured - 1 = {}; {} of {} reported times are the rounded sums; rounding of one addition {:.3}, {:.3}, {:.3} units in the last place; growth of time_defect from the time 4 to 20: {} from these numbers, {} measured; (d) current matrix at rtol = 1e-12: {} steps of the size {} (default: {} of {}), coherence {:.3}, deviation {} (default {}), test value of the formula alone at the default step size {} (directly from the formula: {}); at 1e-10: deviation {} = {:.3} of the default, predicted {:.3}",
             ida[0].run.nsteps, ida[1].run.nsteps, ida[2].run.nsteps,
@@ -843,8 +1229,58 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
             rho_one, newton_rate, newton_ss, second_threshold, two_low, two_high, largest_one, period_median, period_predicted, test_low, test_high, test_05, test_95,
             sci(ida[2].run.time_defect), time_share, sci(pred12), rounded_sums, ida[2].steps.len(), ulp_errors[0], ulp_errors[1], ulp_errors[2], sci3(defect_from_units), sci3(defect_4_to_20),
             cur.run.nsteps, sci3(hc), ida[2].run.nsteps, sci3(hd), cur.run.coherence(), sci3(cur.run.deviation), sci3(ida[2].run.deviation), sci(test_formula_alone), sci(test_formula_direct), sci3(idc[1].run.deviation), half10, half10_predicted
+        ) + &format!(
+            "; (e) rejected attempts of the first step {}, {}, {}; shortenings by 0.9: {}, {}, {}; doublings {}, {}, {}; computed factor after the step {}, {}, {} of the order {}, {}, {}: test value {:.6}, {:.6}, {:.6}, estimate for the next step {:.6}, {:.6}, {:.6}, factor {:.12}, {:.12}, {:.12}; rule/factor - 1 at most {}, product of the factors/settled step size - 1 at most {}, coefficients from the step sizes/reported - 1 at most {}; first settled step {}, {}, {}; settled steps {}, {}, {}; (f) difference quotients: evaluations for the matrices {}, {}, {} = 768 x {}, {}, {}; first step of another size {}, {}, {}; factor/factor of the exact matrix - 1 = {}, {}, {}; estimate/estimate - 1 = {}, {}, {}; -1/(k_IDA + 1) with the term 1e-4 of the rule: {:.5}, {:.5}, {:.5}; deviation predicted from the formulas alone/that of the exact matrix - 1 at most {}; notebook: settled step size/here - 1 = {}, {}, {}; largest relative difference of a step before the settled ones {}, {}, {}; grid point before the first settled step the same machine number: {}, {}, {}; (g) time defect: exact matrix {}, {}, {}; difference quotients {}, {}, {}; notebook {} to {}, {} to {}, {} to {}; deviation relative to the exact matrix - 1, measured and predicted: difference quotients {} and {}, {} and {}, {:.4} and {:.4}; notebook {} and {}, {} and {}, {:.4} and {:.4}; rtol = 1e-12: {} machine numbers in the period, phases {} (exact matrix), {} (difference quotients), {} (notebook, smallest candidate); largest |addition - closed formula| {} (sum of the {} units {}; settled steps that end at a time with the unit 2^-50, 2^-49, 2^-48: 8216, 16432, 8216); time defect of the steps before the settled ones at most {} in the six integrations and {} in the two at rtol = 1e-12; the last step is shorter than 20 - t by {}; largest |time defect| {} (bound {}); predicted deviation over the period: smallest {}, 5 per cent below {}, a quarter below {}, median {}, three quarters below {}, 95 per cent below {}, largest {} (formulas alone {}); part of the period with a smaller predicted deviation than the measured one: {:.3} (exact matrix), {:.3} (difference quotients), {:.3} (notebook); predicted/measured - 1: {} (difference quotients), {} (notebook)",
+            hist[0].quarters, hist[1].quarters, hist[2].quarters, hist[0].tenths, hist[1].tenths, hist[2].tenths, hist[0].doublings, hist[1].doublings, hist[2].doublings,
+            hist[0].computed[0].0, hist[1].computed[0].0, hist[2].computed[0].0, hist[0].computed[0].1, hist[1].computed[0].1, hist[2].computed[0].1,
+            hist[0].computed[0].2, hist[1].computed[0].2, hist[2].computed[0].2, hist[0].computed[0].3, hist[1].computed[0].3, hist[2].computed[0].3,
+            hist[0].computed[0].4, hist[1].computed[0].4, hist[2].computed[0].4,
+            sci(rule_defect), sci(product_defect), sci(coefficient_defect), hist[0].first, hist[1].first, hist[2].first, hist[0].settled, hist[1].settled, hist[2].settled,
+            idq[0].stats.nre_dq, idq[1].stats.nre_dq, idq[2].stats.nre_dq, idq[0].stats.njevals, idq[1].stats.njevals, idq[2].stats.njevals,
+            first_other[0], first_other[1], first_other[2], sci(factor_rel[0]), sci3(factor_rel[1]), sci3(factor_rel[2]), sci(estimate_rel[0]), sci3(estimate_rel[1]), sci3(estimate_rel[2]),
+            sensitivity[0], sensitivity[1], sensitivity[2], sci(formula_rel_q),
+            sci(nb_settled_rel[0]), sci3(nb_settled_rel[1]), sci3(nb_settled_rel[2]), sci(nb_early_rel[0]), sci(nb_early_rel[1]), sci(nb_early_rel[2]), nb_same_start[0], nb_same_start[1], nb_same_start[2],
+            sci3(ida[0].run.time_defect), sci3(ida[1].run.time_defect), sci3(ida[2].run.time_defect), sci3(idq[0].run.time_defect), sci3(idq[1].run.time_defect), sci3(idq[2].run.time_defect),
+            sci3(NB_DEFECT[0].0), sci3(NB_DEFECT[0].1), sci3(NB_DEFECT[1].0), sci3(NB_DEFECT[1].1), sci3(NB_DEFECT[2].0), sci3(NB_DEFECT[2].1),
+            sci3(diff_q[0].0), sci3(diff_q[0].1), sci3(diff_q[1].0), sci3(diff_q[1].1), diff_q[2].0, diff_q[2].1,
+            sci3(diff_nb[0].0), sci3(diff_nb[0].1), sci3(diff_nb[1].0), sci3(diff_nb[1].1), diff_nb[2].0, diff_nb[2].1,
+            period, phase12, phase12q, phase12nb, sci(saw_defect), units.len(), sci(unit_sum), sci(before_largest), sci(before_12), sci(-last_shortening), sci3(ld_defect_max), sci3(defect_bound),
+            sci3(ld_pred[0]), sci3(ld_q(0.05)), sci3(ld_q(0.25)), sci3(ld_q(0.5)), sci3(ld_q(0.75)), sci3(ld_q(0.95)), sci3(ld_pred[period - 1]), sci3(formula_alone),
+            below[0], below[1], below[2], sci(pred12q), sci(pred12nb)
         ),
     );
+
+    // the data of the parts (e) to (g): the history of the settled step size and the three integrations of every
+    // tolerance; and the time defect over one period of the last digits of the step size
+    let mut s = String::from("# content: how the settled step size of IDA comes about, and three integrations of every tolerance (check GS-20, parts (e) to (g)): for the relative tolerances 1e-8, 1e-10 and 1e-12 the integration of check GS-13 by IDA set up like NDSolve, with the exact iteration matrix (integration ida_*, the one of the file t2_steps_runs.csv), the same with the matrix that IDA forms itself by difference quotients (ida_dq_*), and the IDA of the notebook 3+1super-loop.nb (notebook_*; its numbers are read from the grid of its solution) - the number of rejected attempts of the first step (each divides the step size by 4), of shortenings by the fixed factor 0.9 and of doublings before the first settled step; the number and the order of the step after which IDA multiplied the step size by a factor that it computed from its estimate, the test value of that step, the estimate for the next step and the factor (nan where the notebook does not show a number; the factor of the notebook is its settled step size divided by fixed_product); fixed_product, the first step size 1e-4 times the fixed factors; the settled step size with 17 digits (for the notebook the smallest of the h_candidates neighbouring machine numbers that reproduce its grid); the number of the first settled step and the number of settled steps; the phase of the settled step size at rtol = 1e-12, its remainder after division by 2^-48 in units of 2^-64 (-1 for the other tolerances); the time defect (for the notebook that of its settled steps for the smallest candidate) and time_defect_spread, the time defect for the largest candidate minus that for the smallest; the number of internal steps; the deviation at the end and the predicted deviation (for the notebook from the errors of the formulas of ida_* and its own time defect)\n");
+    s.push_str("integration,matrix_source,rtol,quarter_cuts,tenth_cuts,doublings,factor_step,factor_order,test_value,next_estimate,computed_factor,fixed_product,h_step,h_candidates,first_settled,settled_steps,phase,time_defect,time_defect_spread,N_steps,max_deviation,predicted_deviation\n");
+    for i in 0..3 {
+        for (name, source, r, x) in [("ida", "exact", &ida[i], &hist[i]), ("ida_dq", "difference_quotients", &idq[i], &hist_q[i])] {
+            let c = x.computed[0];
+            let h = r.run.main_size().0;
+            s.push_str(&format!(
+                "{}_{},{},{:e},{},{},{},{},{},{:.15},{:.15},{:.17},{:.17e},{:.17e},1,{},{},{},{:.9e},0,{},{:.9e},{:.9e}\n",
+                name, tol_label(rtols[i]), source, rtols[i], x.quarters, x.tenths, x.doublings, c.0, c.1, c.2, c.3, c.4, x.fixed_product, h, x.first, x.settled,
+                if i == 2 { phase_of(h) as i64 } else { -1 }, r.run.time_defect, r.run.nsteps, r.run.deviation, r.run.predicted
+            ));
+        }
+        let h = dyadic(NB_H_LOWEST[i]);
+        s.push_str(&format!(
+            "notebook_{},notebook,{:e},{},{},{},{},{},nan,nan,{:.17},{:.17e},{:.17e},{},{},{},{},{:.9e},{:.9e},{},{:.9e},{:.9e}\n",
+            tol_label(rtols[i]), rtols[i], hist[i].quarters, hist[i].tenths, hist[i].doublings, hist[i].computed[0].0, hist[i].computed[0].1, h / hist[i].fixed_product, hist[i].fixed_product, h, NB_H_NUMBER[i],
+            NB_FIRST_SETTLED[i], NB_SETTLED[i], if i == 2 { phase_of(h) as i64 } else { -1 }, NB_DEFECT[i].0, NB_DEFECT[i].1 - NB_DEFECT[i].0, NB_STEPS[i], NB_DEV[i], predicted_with(i, NB_DEFECT[i].0)
+        ));
+    }
+    fs::write(dd.join("t2_steps_settled.csv"), s).expect("write t2_steps_settled.csv");
+
+    let mut s = String::from("# content: the time defect and the predicted deviation of the integration of check GS-13 by IDA at rtol = 1e-12 as functions of the last 16 binary digits of the settled step size (check GS-20, part (g)): the settled step size is replaced by h_base + phase 2^-64 for every 32nd of the 65536 values of the phase (h_base: the largest multiple of 2^-48 that is not larger than the settled step size of the integration ida_1e-12; the phases are all machine numbers of one period); the time defect is computed by repeated machine addition as IDA advances its time (column time_defect) and from the closed formula, the sum over the units in the last place of the time of (number of settled steps that end at a time with this unit) x (step size minus the nearest multiple of the unit) (column time_defect_formula); the predicted deviation from the errors of the formulas of ida_1e-12 and this time defect\n");
+    s.push_str(&format!("# period: {}\n# h_base: {:.17e}\n", period, h_base));
+    s.push_str("phase,h_step,time_defect,time_defect_formula,predicted_deviation\n");
+    for j in (0..period).step_by(32) {
+        let h = h_base + j as f64 * ulp_h;
+        s.push_str(&format!("{},{:.17e},{:.9e},{:.9e},{:.9e}\n", j, h, last_digits[j].0, saw_formula(h), last_digits[j].1));
+    }
+    fs::write(dd.join("t2_steps_last_digits.csv"), s).expect("write t2_steps_last_digits.csv");
 
     // ------------------------------------------------------------------ the tables of the document
     // Every table begins with `table_head`, which states the headings and the width of every column on the printed
@@ -1006,10 +1442,10 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
 
     // Table: IDA here and in the notebook, quantity by quantity
     let mut t = table_head(&[
-        ("$r^{\\rm tol}_{\\rm LL}$", 40),
-        ("quantity", 150),
-        ("IDA of the notebook", 120),
-        ("IDA of the program `t2_fields`", 152),
+        ("$r^{\\rm tol}_{\\rm LL}$", 36),
+        ("quantity", 140),
+        ("IDA of the notebook", 126),
+        ("IDA of the program `t2_fields`", 160),
     ]);
     for i in 0..3 {
         let hs: Vec<f64> = ida[i].steps.iter().map(|s| s.h).collect();
@@ -1017,6 +1453,7 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
         t.push_str(&format!("| {} | internal steps, $N^{{\\rm st}}_{{\\rm LL}}$ | {} | {} |\n", tol, NB_STEPS[i], ida[i].run.nsteps));
         t.push_str(&format!("| {} | largest internal step | ${}$ | ${}$ |\n", tol, tex_sci(NB_HMAX[i], 9), tex_sci(hs.iter().cloned().fold(0.0f64, f64::max), 9)));
         t.push_str(&format!("| {} | smallest internal step | ${}$ | ${}$ |\n", tol, tex_sci(NB_HMIN[i], 9), tex_sci(hs.iter().cloned().fold(f64::INFINITY, f64::min), 9)));
+        t.push_str(&format!("| {} | settled internal step, 16 digits | ${}$ | ${}$ |\n", tol, tex_sci(dyadic(NB_H_LOWEST[i]), 15), tex_sci(ida[i].run.main_size().0, 15)));
         t.push_str(&format!(
             "| {} | evaluations of the right side, $N^{{\\rm ev}}_{{\\rm LL}}$ | {} | ${}+769\\times{}+1={}$ |\n",
             tol, NB_EVALS[i], ida[i].stats.nrevals, ida[i].stats.njevals, ida[i].stats.nrevals + 769 * ida[i].stats.njevals + 1
@@ -1024,6 +1461,75 @@ pub fn run(ck: &mut Checks, fr: &mut Frags, dd: &Path, lat: &Lattice, fl: &Field
         t.push_str(&format!("| {} | $\\delta^{{\\rm rel}}_{{\\rm LL}}$ at $x^0_{{\\rm LL}}=20$ | ${}$ | ${}$ |\n", tol, tex_sci(NB_DEV[i], 6), tex_sci(ida[i].run.deviation, 6)));
     }
     fr.add("t2_steps_table_notebook", t);
+
+    // Table: how the settled step size of IDA comes about (one column per tolerance)
+    let mut t = table_head(&[("quantity", 126), ("$r^{\\rm tol}_{\\rm LL}=10^{-8}$", 112), ("$10^{-10}$", 112), ("$10^{-12}$", 112)]);
+    {
+        let row = |name: &str, f: &dyn Fn(usize) -> String| -> String { format!("| {} | {} | {} | {} |\n", name, f(0), f(1), f(2)) };
+        t.push_str(&row("first step size that IDA tries", &|_| "$10^{-4}$".to_string()));
+        t.push_str(&row("attempts of the first step that the test (2.44) rejects; each divides the step size by 4", &|i| format!("{}", hist[i].quarters)));
+        t.push_str(&row("size of the first accepted step", &|i| format!("${}$", tex_short(ida[i].steps[0].h))));
+        t.push_str(&row("shortenings by the fixed factor 0.9 after an accepted step", &|i| format!("{}", hist[i].tenths)));
+        t.push_str(&row("doublings after an accepted step", &|i| format!("{}", hist[i].doublings)));
+        t.push_str(&row("step after which IDA applies a computed factor", &|i| format!("number {}", hist[i].computed[0].0)));
+        t.push_str(&row("its order $k^{\\rm IDA}_{\\rm LL}$", &|i| format!("{}", hist[i].computed[0].1)));
+        t.push_str(&row("its test value $\\delta^{\\rm est}_{\\rm LL}$", &|i| format!("{:.6}", hist[i].computed[0].2)));
+        t.push_str(&row("quotient $\\sigma^{\\rm IDA}_{\\rm LL}/c^{\\rm est}_{\\rm LL}$ of its two coefficients (2.66)", &|i| format!("{:.6}", hist[i].computed[0].3 / hist[i].computed[0].2)));
+        t.push_str(&row("estimate for the next step, $\\delta^{\\rm nxt}_{\\rm LL}$", &|i| format!("{:.6}", hist[i].computed[0].3)));
+        t.push_str(&row("computed factor $\\eta^{\\rm cmp}_{\\rm LL}$ of (2.65)", &|i| format!("{:.12}", hist[i].computed[0].4)));
+        t.push_str(&row("settled step size: $10^{-4}$ times all factors", &|i| format!("${}$", tex_sci(ida[i].run.main_size().0, 12))));
+        t.push_str(&row("number of the first step of this size", &|i| format!("{}", hist[i].first)));
+        t.push_str(&row("number of steps of this size", &|i| format!("{}", hist[i].settled)));
+    }
+    fr.add("t2_steps_table_history", t);
+
+    // Table: three integrations of every tolerance
+    let mut t = table_head(&[
+        ("$r^{\\rm tol}_{\\rm LL}$", 28),
+        ("integration", 80),
+        ("settled step size / that of the first line, minus 1", 64),
+        ("$\\delta^{\\rm t}_{\\rm LL}$", 66),
+        ("$\\delta^{\\rm rel}_{\\rm LL}$ at the end", 68),
+        ("$\\delta^{\\rm rel}_{\\rm LL}$ / that of the first line, minus 1", 60),
+        ("the same, predicted from $\\delta^{\\rm t}_{\\rm LL}$", 60),
+    ]);
+    for i in 0..3 {
+        let tol = format!("$10^{{{}}}$", rtols[i].log10().round() as i32);
+        let small = |x: f64| -> String {
+            if x.abs() >= 1e-3 {
+                tex_signed(x, 4, false)
+            } else {
+                format!("${}$", tex_sci(x, 2))
+            }
+        };
+        t.push_str(&format!("| {} | program, exact matrix | 0 | ${}$ | ${}$ | 0 | 0 |\n", tol, tex_sci(ida[i].run.time_defect, 2), tex_sci(ida[i].run.deviation, 4)));
+        t.push_str(&format!(
+            "| {} | program, difference quotients | {} | ${}$ | ${}$ | {} | {} |\n",
+            tol, if settled_rel_q[i].abs() < 1e-12 { format!("${}$", tex_sci(settled_rel_q[i], 1)) } else { format!("${}$", tex_sci(settled_rel_q[i], 2)) }, tex_sci(idq[i].run.time_defect, 2), tex_sci(idq[i].run.deviation, 4), small(diff_q[i].0), small(diff_q[i].1)
+        ));
+        t.push_str(&format!(
+            "| {} | notebook | {} | ${}$ | ${}$ | {} | {} |\n",
+            tol, if nb_settled_rel[i].abs() < 1e-12 { format!("${}$", tex_sci(nb_settled_rel[i], 1)) } else { format!("${}$", tex_sci(nb_settled_rel[i], 2)) }, tex_sci(nb_defect_mid(i), 2), tex_sci(NB_DEV[i], 4), small(diff_nb[i].0), small(diff_nb[i].1)
+        ));
+    }
+    fr.add("t2_steps_table_realizations", t);
+
+    // Table: the predicted deviation over one period of the last digits, and the three integrations
+    let mut t = table_head(&[("line", 200), ("deviation at the end", 90), ("divided by $r^{\\rm tol}_{\\rm LL}$", 72), ("part of the period with a smaller $\\delta^{\\rm pre}_{\\rm LL}$", 100)]);
+    for (name, q) in [("$\\delta^{\\rm pre}_{\\rm LL}$: smallest value of the period", 0.0), ("5 per cent of the period below", 0.05), ("a quarter below", 0.25), ("half below (median)", 0.5), ("three quarters below", 0.75), ("95 per cent below", 0.95), ("largest value", 1.0)] {
+        let v = if q == 0.0 { ld_pred[0] } else if q == 1.0 { ld_pred[period - 1] } else { ld_q(q) };
+        t.push_str(&format!("| {} | ${}$ | {:.1} | {:.2} |\n", name, tex_sci(v, 3), v / 1e-12, q));
+    }
+    t.push_str(&format!("| $\\delta^{{\\rm pre}}_{{\\rm LL}}$ of the formulas alone ($\\delta^{{\\rm t}}_{{\\rm LL}}=0$) | ${}$ | {:.1} | {:.2} |\n", tex_sci(formula_alone, 3), formula_alone / 1e-12, ld_below(formula_alone)));
+    for (name, v, b) in [("measured $\\delta^{\\rm rel}_{\\rm LL}$: program, exact matrix", ida[2].run.deviation, below[0]), ("measured: program, difference quotients", idq[2].run.deviation, below[1]), ("measured: notebook", NB_DEV[2], below[2])] {
+        t.push_str(&format!("| {} | ${}$ | {:.1} | {:.2} |\n", name, tex_sci(v, 3), v / 1e-12, b));
+    }
+    fr.add("t2_steps_table_last_digits", t);
+    fr.add("t2_steps_defect_bound", format!("${}$", tex_sci(defect_bound, 2)));
+    fr.add("t2_steps_defect_largest", format!("${}$", tex_sci(ld_defect_max, 2)));
+    fr.add("t2_steps_units_12", format!("{}", units.len()));
+    fr.add("t2_steps_pred12nb", format!("${}$", tex_sci(predicted_with(2, nb_defect_mid(2)), 3)));
+    fr.add("t2_steps_unit_sum", format!("${}$", tex_sci(unit_sum, 1)));
 
     // Table: where the ratio cj/cjJ of the settled steps of IDA comes from
     let mut t = table_head(&[

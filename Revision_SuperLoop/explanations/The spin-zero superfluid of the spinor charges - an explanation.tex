@@ -1952,10 +1952,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-a935ecf2ee5d3d19f84476d021a9573feab187d286e96f89d70864f94b840f40  explanations/figures/fig_ex_r13_bubble.pdf
-14bb116dd8a63094d385a0f0a52f6daa004c9d383db6d0838e98e8100c8bfd67  explanations/figures/fig_ex_r13_coordinates.pdf
-5813bfac75db4fa5b435d866033c5467e260cf40ee3c70ae1a41d18c3ad020a1  explanations/figures/fig_ex_r13_divergences.pdf
-9294dcd7b3f09f22cbd079f2a9929c5f9e0ff5cc07a687ca08edcef675b4b24d  explanations/figures/fig_ex_r13_lorentz.pdf
+8fd92e0521c6bb0ca55e327f6cd10cd6f50c2a43be2713373c0be30972e18a75  explanations/figures/fig_ex_r13_bubble.pdf
+acfca7acd2150ff7571369fa9d492ab2ca5c2c5d5dd524276b71be10603f8923  explanations/figures/fig_ex_r13_coordinates.pdf
+70eb091beb78e79db117066c716b302e61705d3548ef368f0b5ec00790d34aba  explanations/figures/fig_ex_r13_divergences.pdf
+0022777bf7a992849386a0a0bea5586d9250462b4794c732772147d340f78a6d  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -3996,6 +3996,35 @@ derivatives of the earlier steps,
 \(r^{\rm g}_{\rm LL}=g^{\rm st}_{{\rm LL},s}/a^{\rm st}_{{\rm LL},s}\)
 of the stored derivative to the amplitude & new & \texttt{S\_AB}
 \texttt{S\_AM} \texttt{r\_g} \\
+\(\psi^{\rm IDA}_{{\rm LL},m}\), \(\sigma^{\rm IDA}_{\rm LL}\);
+\(\delta^{\rm nxt}_{\rm LL}\), \(\eta^{\rm cmp}_{\rm LL}\);
+\(u^{\rm lp}_{\rm LL}\), \(N^{\rm lp}_{\rm LL}\) & for an internal step
+of IDA: the sum \(\psi^{\rm IDA}_{{\rm LL},m}\) of the sizes of the last
+internal steps, the present one included, as many of them as the last
+subscript says (before its first step IDA assumes a step of the size of
+the first); the coefficient
+\(\sigma^{\rm IDA}_{\rm LL}=1\cdot2\cdots k^{\rm IDA}_{\rm LL}\,(h^{\rm IDA}_{\rm LL})^{k}/(\psi^{\rm IDA}_{{\rm LL},2}\,\psi^{\rm IDA}_{{\rm LL},3}\cdots\psi^{\rm IDA}_{{\rm LL},k+1})\)
+with which IDA multiplies the difference between the accepted and the
+predicted values of a step when it chooses the size of the next step
+(\texttt{sigma} in the source text of IDA; like the coefficient
+\(c^{\rm est}_{\rm LL}\) of its error test it is
+\(1/(k^{\rm IDA}_{\rm LL}+1)\) if the last steps have one size); the
+estimate for the next step,
+\(\delta^{\rm nxt}_{\rm LL}=(\sigma^{\rm IDA}_{\rm LL}/c^{\rm est}_{\rm LL})\,\delta^{\rm est}_{\rm LL}\),
+the weighted root-mean-square norm of that difference times
+\(\sigma^{\rm IDA}_{\rm LL}\); and the factor
+\(\eta^{\rm cmp}_{\rm LL}=(2\,\delta^{\rm nxt}_{\rm LL}+10^{-4})^{-1/(k+1)}\)
+that IDA computes from it after an accepted step (it doubles the step if
+the factor is at least 2 and multiplies the step by the factor, limited
+to the interval from 0.5 to 0.9, if the factor is at most 1). For the
+time variable of an integrator, a double-precision number: a unit in the
+last place \(u^{\rm lp}_{\rm LL}\), the power of 2 of which all times
+between two neighbouring powers of 2 are multiples (\(2^{-52}\) times
+the lower of the two powers); and the number \(N^{\rm lp}_{\rm LL}\) of
+the settled steps of an integration whose end time has a given unit in
+the last place & new & \texttt{psi\_sum} \texttt{ida\_sigma}
+\texttt{next\_estimate} \texttt{computed\_factor}
+\texttt{unit\_last\_place} \texttt{N\_last\_place} \\
 \end{longtable}
 
 \end{document}

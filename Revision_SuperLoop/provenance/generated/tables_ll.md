@@ -149,15 +149,15 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (214 entries), every single item of the entries belongs to one entry (492 items), and every plain-text name of the programs, figures and data files belongs to one entry (653 names) & PASS\\
-LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 490 items of the 212 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 113 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (292 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 214 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 8924 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 10294 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S1 & every symbol text is registered once (215 entries), every single item of the entries belongs to one entry (498 items), and every plain-text name of the programs, figures and data files belongs to one entry (659 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 496 items of the 213 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 115 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (307 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 215 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 9082 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 10468 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
 LL-S7 & every one of the 5200 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters) & PASS\\
-LL-S8 & every one of the 3642 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 148 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 5614 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-S8 & every one of the 3642 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 150 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
+LL-S9 & the 5810 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
 LL-H1 & none of the 30 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
@@ -459,13 +459,13 @@ fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/b
 ca6622b69179666116079c69b010fb6fb45d0f39cb30c1f32503848b459048e9  code/scripts/check_layout.py
 434d6216aaf225bcfd9b88d9a9ea58fba6d3a99b633282ea375ed913385764be  code/scripts/check_pages.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-83d60c3ae64e0e7b3cd9f6a52a67215eda210da308279a84dc9a2f9d4c17f1d2  code/scripts/check_symbols.py
+24e2caff1bd5c6d2f5cd4e5dcf01f2872436102e97a3b32c44088d592c199290  code/scripts/check_symbols.py
 aa5a9dd31707550c713e4f8e066b234f7d7fc53908c4bef049c3bf94d54db56d  code/scripts/keep_tables.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
-001df94351f88875bf940264ac801a9ac8ca18c84168601820c3d3a302666307  code/scripts/write_symbol_registry.py
+1cdabf945879cd329759167a81cced1387c61638ff1e04c2c3bb7f088f409234  code/scripts/write_symbol_registry.py
 5484c962175d1850ad87e734745ba7d9c0f13186368b8032e28d50c4b7fd1e9f  code/scripts/build_docs.sh
 6ed3af86adb62d30c8dfbf0480fffcd9a4c72a24003882a95c097e0e9db3859f  code/scripts/check_all.sh
 ec9d4e63434b533f2fb2ce9650061aaae0c8775503bf131085c7c048c6647d4e  code/scripts/doc_header.tex
@@ -535,10 +535,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-a935ecf2ee5d3d19f84476d021a9573feab187d286e96f89d70864f94b840f40  explanations/figures/fig_ex_r13_bubble.pdf
-14bb116dd8a63094d385a0f0a52f6daa004c9d383db6d0838e98e8100c8bfd67  explanations/figures/fig_ex_r13_coordinates.pdf
-5813bfac75db4fa5b435d866033c5467e260cf40ee3c70ae1a41d18c3ad020a1  explanations/figures/fig_ex_r13_divergences.pdf
-9294dcd7b3f09f22cbd079f2a9929c5f9e0ff5cc07a687ca08edcef675b4b24d  explanations/figures/fig_ex_r13_lorentz.pdf
+8fd92e0521c6bb0ca55e327f6cd10cd6f50c2a43be2713373c0be30972e18a75  explanations/figures/fig_ex_r13_bubble.pdf
+acfca7acd2150ff7571369fa9d492ab2ca5c2c5d5dd524276b71be10603f8923  explanations/figures/fig_ex_r13_coordinates.pdf
+70eb091beb78e79db117066c716b302e61705d3548ef368f0b5ec00790d34aba  explanations/figures/fig_ex_r13_divergences.pdf
+0022777bf7a992849386a0a0bea5586d9250462b4794c732772147d340f78a6d  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1114,23 +1114,95 @@ ${1.184\times10^{-6}}$, ${1.702\times10^{-7}}$ and ${1.737\times10^{-10}}$
 
 <!-- BEGIN t2_steps_table_notebook -->
 | $r^{\rm tol}_{\rm LL}$ | quantity | IDA of the notebook | IDA of the program `t2_fields` |
-|--------------------|---------------------------------------------------------------------------|------------------------------------------------------------|----------------------------------------------------------------------------|
+|------------------|----------------------------------------------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------|
 | $10^{-8}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 2705 | 2705 |
 | $10^{-8}$ | largest internal step | ${7.489190703\times10^{-3}}$ | ${7.489190703\times10^{-3}}$ |
 | $10^{-8}$ | smallest internal step | ${1.462732559\times10^{-5}}$ | ${1.462732559\times10^{-5}}$ |
+| $10^{-8}$ | settled internal step, 16 digits | ${7.489190703255128\times10^{-3}}$ | ${7.489190703255624\times10^{-3}}$ |
 | $10^{-8}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 11182 | $2722+769\times11+1=11182$ |
 | $10^{-8}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${7.125333\times10^{-6}}$ | ${7.125333\times10^{-6}}$ |
 | $10^{-10}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 7309 | 7309 |
 | $10^{-10}$ | largest internal step | ${3.200000000\times10^{-3}}$ | ${3.200000000\times10^{-3}}$ |
 | $10^{-10}$ | smallest internal step | ${1.562500000\times10^{-6}}$ | ${1.562500000\times10^{-6}}$ |
+| $10^{-10}$ | settled internal step, 16 digits | ${2.748978970332666\times10^{-3}}$ | ${2.748979061000419\times10^{-3}}$ |
 | $10^{-10}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 18096 | $7329+769\times14+1=18096$ |
 | $10^{-10}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${9.308767\times10^{-8}}$ | ${9.308778\times10^{-8}}$ |
 | $10^{-12}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 41111 | 41111 |
 | $10^{-12}$ | largest internal step | ${5.832000000\times10^{-4}}$ | ${5.832000000\times10^{-4}}$ |
 | $10^{-12}$ | smallest internal step | ${9.765625000\times10^{-8}}$ | ${9.765625000\times10^{-8}}$ |
+| $10^{-12}$ | settled internal step, 16 digits | ${4.868640374427113\times10^{-4}}$ | ${4.868640521747039\times10^{-4}}$ |
 | $10^{-12}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 54585 | $41511+769\times17+1=54585$ |
 | $10^{-12}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${4.378788\times10^{-11}}$ | ${4.807918\times10^{-11}}$ |
 <!-- END t2_steps_table_notebook -->
+
+<!-- BEGIN t2_steps_table_history -->
+| quantity | $r^{\rm tol}_{\rm LL}=10^{-8}$ | $10^{-10}$ | $10^{-12}$ |
+|---------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|
+| first step size that IDA tries | $10^{-4}$ | $10^{-4}$ | $10^{-4}$ |
+| attempts of the first step that the test (2.44) rejects; each divides the step size by 4 | 1 | 3 | 5 |
+| size of the first accepted step | ${2.5\times10^{-5}}$ | ${1.5625\times10^{-6}}$ | ${9.765625\times10^{-8}}$ |
+| shortenings by the fixed factor 0.9 after an accepted step | 2 | 0 | 3 |
+| doublings after an accepted step | 9 | 11 | 13 |
+| step after which IDA applies a computed factor | number 1 | number 43 | number 40 |
+| its order $k^{\rm IDA}_{\rm LL}$ | 1 | 5 | 4 |
+| its test value $\delta^{\rm est}_{\rm LL}$ | 0.958225 | 0.736687 | 0.944099 |
+| quotient $\sigma^{\rm IDA}_{\rm LL}/c^{\rm est}_{\rm LL}$ of its two coefficients (2.66) | 1.000000 | 1.688654 | 1.306122 |
+| estimate for the next step, $\delta^{\rm nxt}_{\rm LL}$ | 0.958225 | 1.244010 | 1.233109 |
+| computed factor $\eta^{\rm cmp}_{\rm LL}$ of (2.65) | 0.722337066286 | 0.859055956563 | 0.834814904278 |
+| settled step size: $10^{-4}$ times all factors | ${7.489190703256\times10^{-3}}$ | ${2.748979061000\times10^{-3}}$ | ${4.868640521747\times10^{-4}}$ |
+| number of the first step of this size | 42 | 44 | 41 |
+| number of steps of this size | 2663 | 7265 | 41070 |
+<!-- END t2_steps_table_history -->
+
+<!-- BEGIN t2_steps_table_realizations -->
+| $r^{\rm tol}_{\rm LL}$ | integration | settled step size / that of the first line, minus 1 | $\delta^{\rm t}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}$ at the end | $\delta^{\rm rel}_{\rm LL}$ / that of the first line, minus 1 | the same, predicted from $\delta^{\rm t}_{\rm LL}$ |
+|--------------|----------------------------------------|--------------------------------|---------------------------------|----------------------------------|------------------------------|------------------------------|
+| $10^{-8}$ | program, exact matrix | 0 | ${-6.31\times10^{-13}}$ | ${7.1253\times10^{-6}}$ | 0 | 0 |
+| $10^{-8}$ | program, difference quotients | ${1.1\times10^{-15}}$ | ${-6.10\times10^{-13}}$ | ${7.1253\times10^{-6}}$ | ${1.36\times10^{-9}}$ | ${1.37\times10^{-9}}$ |
+| $10^{-8}$ | notebook | ${-6.6\times10^{-14}}$ | ${2.15\times10^{-13}}$ | ${7.1253\times10^{-6}}$ | ${5.63\times10^{-8}}$ | ${5.54\times10^{-8}}$ |
+| $10^{-10}$ | program, exact matrix | 0 | ${2.40\times10^{-12}}$ | ${9.3088\times10^{-8}}$ | 0 | 0 |
+| $10^{-10}$ | program, difference quotients | ${-3.80\times10^{-9}}$ | ${-1.67\times10^{-12}}$ | ${9.3087\times10^{-8}}$ | ${-8.40\times10^{-6}}$ | ${-8.32\times10^{-6}}$ |
+| $10^{-10}$ | notebook | ${-3.30\times10^{-8}}$ | ${1.86\times10^{-12}}$ | ${9.3088\times10^{-8}}$ | ${-1.17\times10^{-6}}$ | ${-1.11\times10^{-6}}$ |
+| $10^{-12}$ | program, exact matrix | 0 | ${8.07\times10^{-12}}$ | ${4.8079\times10^{-11}}$ | 0 | 0 |
+| $10^{-12}$ | program, difference quotients | ${-8.22\times10^{-9}}$ | ${-6.79\times10^{-12}}$ | ${4.0170\times10^{-11}}$ | $-0.1645$ | $-0.1365$ |
+| $10^{-12}$ | notebook | ${-3.03\times10^{-8}}$ | ${7.20\times10^{-12}}$ | ${4.3788\times10^{-11}}$ | $-0.0893$ | $-0.0884$ |
+<!-- END t2_steps_table_realizations -->
+
+<!-- BEGIN t2_steps_table_last_digits -->
+| line | deviation at the end | divided by $r^{\rm tol}_{\rm LL}$ | part of the period with a smaller $\delta^{\rm pre}_{\rm LL}$ |
+|----------------------------------------------------------------------------------------------------|---------------------------------------------|------------------------------------|--------------------------------------------------|
+| $\delta^{\rm pre}_{\rm LL}$: smallest value of the period | ${1.979\times10^{-11}}$ | 19.8 | 0.00 |
+| 5 per cent of the period below | ${2.004\times10^{-11}}$ | 20.0 | 0.05 |
+| a quarter below | ${2.799\times10^{-11}}$ | 28.0 | 0.25 |
+| half below (median) | ${4.428\times10^{-11}}$ | 44.3 | 0.50 |
+| three quarters below | ${6.830\times10^{-11}}$ | 68.3 | 0.75 |
+| 95 per cent below | ${1.021\times10^{-10}}$ | 102.1 | 0.95 |
+| largest value | ${1.206\times10^{-10}}$ | 120.6 | 1.00 |
+| $\delta^{\rm pre}_{\rm LL}$ of the formulas alone ($\delta^{\rm t}_{\rm LL}=0$) | ${1.979\times10^{-11}}$ | 19.8 | 0.00 |
+| measured $\delta^{\rm rel}_{\rm LL}$: program, exact matrix | ${4.808\times10^{-11}}$ | 48.1 | 0.55 |
+| measured: program, difference quotients | ${4.017\times10^{-11}}$ | 40.2 | 0.43 |
+| measured: notebook | ${4.379\times10^{-11}}$ | 43.8 | 0.49 |
+<!-- END t2_steps_table_last_digits -->
+
+<!-- BEGIN t2_steps_defect_bound -->
+${3.41\times10^{-11}}$
+<!-- END t2_steps_defect_bound -->
+
+<!-- BEGIN t2_steps_defect_largest -->
+${2.19\times10^{-11}}$
+<!-- END t2_steps_defect_largest -->
+
+<!-- BEGIN t2_steps_units_12 -->
+13
+<!-- END t2_steps_units_12 -->
+
+<!-- BEGIN t2_steps_pred12nb -->
+${4.398\times10^{-11}}$
+<!-- END t2_steps_pred12nb -->
+
+<!-- BEGIN t2_steps_unit_sum -->
+${7.1\times10^{-15}}$
+<!-- END t2_steps_unit_sum -->
 
 <!-- BEGIN t2_steps_table_origin -->
 | $r^{\rm tol}_{\rm LL}$ | last step with a current matrix | its $h^{\rm IDA}_{\rm LL}$ | its $k^{\rm IDA}_{\rm LL}$ | settled steps: $h^{\rm IDA}_{\rm LL}$ | $k^{\rm IDA}_{\rm LL}$ | quotient of the two $c^{\rm ld}_{\rm LL}=H^{\rm har}_{\rm LL}/h^{\rm IDA}_{\rm LL}$ | $r^{\rm cj}_{\rm LL}$ that IDA reports | steps taken with this matrix |
@@ -1246,13 +1318,13 @@ ${1.184\times10^{-6}}$, ${1.702\times10^{-7}}$ and ${1.737\times10^{-10}}$
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.29 | 0.22 |
-| `cyclotron` | 7.68 | 6.67 |
-| `andreev` | 1.09 | 0.91 |
-| `kink_spectrum` | 0.89 | 2.94 |
-| `ground_state` | 1.67 | 5.39 |
-| `kink_ground_state` | 7.45 | 25.60 |
-| `quench` (the time evolution) | 36.61 | 26.61 |
+| `packet_free` | 0.32 | 0.20 |
+| `cyclotron` | 7.02 | 6.29 |
+| `andreev` | 1.05 | 0.87 |
+| `kink_spectrum` | 0.83 | 2.92 |
+| `ground_state` | 1.60 | 5.10 |
+| `kink_ground_state` | 7.25 | 24.56 |
+| `quench` (the time evolution) | 34.14 | 25.33 |
 <!-- END t2_times_table -->
 
 <!-- BEGIN t2_py_keys -->
@@ -1397,7 +1469,7 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_sfbs -->
 
 <!-- BEGIN n_t2_rust_lines -->
-17502
+18024
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->

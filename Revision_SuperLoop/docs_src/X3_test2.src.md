@@ -922,7 +922,9 @@ the absolute tolerance is $a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100$ in eve
 deviation: it is the bound that the integrator applies to its own estimate of the error of ONE internal step (the test (2.39) of
 CVODE; the test (2.44) of IDA). *Second column:* IDA inside `NDSolve`, as the notebook reports it. *Third column:* the IDA of
 SUNDIALS 7.8.0 in pure Rust (the crate `ida_rs` of the folder `vendor/sundials_rs-7.8.0`), run by the program `t2_fields` with the
-settings that reproduce the internal steps of the notebook one by one (part (H) of this section). *Fourth column:* CVODE in the
+settings of the notebook. It takes as many internal steps as the IDA of the notebook and the same steps up to the settled ones;
+the size of its settled steps differs from that of the notebook by 7 parts in $10^{14}$, by 3.3 parts in $10^{8}$ and by 3.0 parts
+in $10^{8}$ for the three tolerances (part (H) of this section says where the difference comes from). *Fourth column:* CVODE in the
 program `t2_fields`, run as in check GS-13. *Last three columns:* quotients of the columns before them.
 
 *The end of an integration* is, in this section, the end of its last internal step. IDA is told not to step beyond
@@ -939,8 +941,8 @@ At first sight the six numbers of the second and the fourth column follow no rul
    by a factor 7, from $10^{-10}$ to $10^{-12}$ by a factor 980; for IDA the two factors are 77 and 2100;
 3. they do not rank the integrators: IDA is 6 times less accurate than CVODE at the first tolerance, 1.8 times more accurate at
    the second and 4 times more accurate at the third;
-4. the same algorithm, taking the same internal steps in two programs, gives $4.4\times10^{-11}$ and $4.8\times10^{-11}$ at the
-   third tolerance.
+4. the same algorithm with the same settings in two programs gives $4.4\times10^{-11}$ and $4.8\times10^{-11}$ at the third
+   tolerance.
 
 This section computes where each of the six numbers comes from. The method: both integrators are run one internal step at a
 time, and every step is measured against the exact solution. The programs are the library crate `t2steps` and the module
@@ -952,7 +954,7 @@ written by the program.
 1. *The size.* A tolerance bounds the estimated error of one step. An integration has 1500 to 41000 steps, and a unitary
    evolution carries the error of every step along unchanged. If the errors of all steps point in the same direction, the
    deviation at the end is the number of steps times the error of one step: hundreds to thousands of tolerances. This is what the
-   error budget (2.40) says, and all six deviations lie below their budgets (Table 2.16).
+   error budget (2.40) says, and all six deviations lie below their budgets (Table 2.19).
 2. *Three factors.* An identity, (2.42), states that the deviation at the end is the sum of the errors of the single steps. It
    splits each deviation into the product (2.43) of three factors: the number of steps, the mean error of a step, and a number
    between 0 and 1, the coherence, that measures how parallel the errors of the steps are (Table 2.2).
@@ -977,8 +979,13 @@ written by the program.
    then no longer parallel, and they largely cancel: the coherence is 0.36, 0.27 and 0.05 in these three integrations and above
    0.99 in the three others.
 6. *Rounding.* At $10^{-12}$ IDA takes 41111 steps, and the errors of its formula are so small that 91 per cent of the deviation
-   is the rounding of the 41111 additions of the step size to the time variable (Table 2.14). This part depends on the last binary
-   digits of the step size, which two programs need not share: observation 4.
+   is the rounding of the 41111 additions of the step size to the time variable (Table 2.14). This part is a function of the last
+   16 binary digits of the settled step size and of nothing else (Figure 2E). The settled step size is the first step size
+   $10^{-4}$ times fixed factors of IDA times ONE factor that IDA computes from the error estimate of a single step (Table 2.15),
+   and this estimate changes by parts in $10^{8}$ to $10^{7}$ of itself with the way in which the iteration matrix of IDA is
+   formed: exactly, as in the program, or by difference quotients, as in the notebook (Table 2.16). Over all 65536 cases of the last 16 digits the deviation
+   goes from $2.0\times10^{-11}$ to $1.2\times10^{-10}$, with the median $4.4\times10^{-11}$ (Table 2.17); the numbers of the two
+   programs are two cases near the median: observation 4.
 
 In the formulas of this section the number of an internal step, of an eigenvector, and of a coefficient or an iterate appear
 only in subscripts, superscripts and limits of sums, where they are written *s*, *n* and *m*; in the same places *q* and *k* stand
@@ -1424,8 +1431,8 @@ $\lvert\delta^{\rm t}_{\rm LL}\rvert$ up to that time multiplied by the norm of 
 **(G) What fixes the step size (check GS-19).** After every accepted step an integrator decides the size of the next one from the
 value of the local error test.
 
-- *IDA* computes the number $(2\delta^{\rm est}_{\rm LL}+10^{-4})^{-1/(k+1)}$ (for settled steps; in general with an estimate for
-  the order of the next step). If it is at least 2, the next step is twice as long; if it is at most 1, the next step is
+- *IDA* computes the number $(2\delta^{\rm est}_{\rm LL}+10^{-4})^{-1/(k+1)}$ (for settled steps; the general rule is (2.65) of
+  part (H)). If it is at least 2, the next step is twice as long; if it is at most 1, the next step is
   shorter by a factor between 0.5 and 0.9; otherwise the step size stays. IDA never lengthens a step by another factor than 2.
   A settled test value therefore lies between $(2^{-(k+1)}-10^{-4})/2$ and $(1-10^{-4})/2$: between 0.0078 and 0.5 for the order
   5, a factor 64 in the estimated error, which is a factor 2 in the step size.
@@ -1470,12 +1477,16 @@ $x^0_{\rm LL}=20$.
 {{GEN:t2_steps_table_notebook}}
 
 **Table 2.13.** The IDA of the notebook and the IDA of the program `t2_fields`, quantity by quantity: the number of internal
-steps, the largest and the smallest internal step, the number of evaluations of the right side, and the deviation at the end.
+steps, the largest and the smallest internal step, the size of the settled internal steps with 16 digits (for the notebook, which
+shows only the times at the ends of its steps, the smallest of the machine numbers that reproduce these times; see Table 2.16),
+the number of evaluations of the right side, and the deviation at the end.
 The notebook counts more evaluations because its IDA forms the iteration matrix by difference quotients, one evaluation for
 each of the 768 real unknowns and one more, while the program gives IDA the matrix itself. The last column therefore adds to
 the evaluations that the program counts 769 for every matrix that IDA computed (11, 14 and 17 matrices) and 1 for the whole
-integration; the sums are the counts of the notebook. The two programs take the same steps, and their deviations agree to 7
-and 6 digits at the first two tolerances.
+integration; the sums are the counts of the notebook. The two programs take the same number of steps and, up to the settled
+ones, steps of the same sizes; their settled step sizes differ by $7\times10^{-14}$ of their size at $10^{-8}$ and by
+$3\times10^{-8}$ of it at $10^{-10}$ and $10^{-12}$. Their deviations differ by $6\times10^{-8}$ and $1.2\times10^{-6}$ of their
+size at the first two tolerances.
 
 At $10^{-12}$ the two deviations differ by 10 per cent, and the reason is the second term of (2.62):
 
@@ -1495,17 +1506,141 @@ With $\delta^{\rm t}_{\rm LL}=8.07\times10^{-12}$ at the end, the second term of
 sides of a right triangle, because the error of the formula of the order 5 is real (the sixth power of $z^{\rm st}_{\rm LL}$: it
 changes the moduli of the amplitudes) and that of the time is imaginary (it changes their phases). The dotted curve of Figure
 2C(b) shows the rounding of the time alone; its kinks at the times 4, 8 and 16 are the three lines of Table 2.14. The fractions
-of the third column depend on the last binary digits of the step size. Two programs that take the same 41111 steps to ten
-digits need not agree in them, so their deviations at this tolerance need not agree better than they do; at $10^{-8}$ and
-$10^{-10}$ the rounding of the time is less than $10^{-6}$ and about $10^{-4}$ of the deviation (Table 2.6), and the programs
-agree.
+of the third column depend on the last binary digits of the step size, and in these digits the program and the notebook differ.
+The next three paragraphs show what the last digits do, where they come from, and what follows for the six numbers.
+
+*The time defect as a function of the step size.* A double-precision number between two neighbouring powers of 2 is a multiple of
+$2^{-52}$ times the lower power. This power of 2 is the **unit in the last place** $u^{\rm lp}_{\rm LL}$ of all times of that range:
+$2^{-50}$, $2^{-49}$ and $2^{-48}$ for the times from 4 to 8, from 8 to 16 and from 16 to 32. A settled step that begins and ends
+in one range adds the step size to a multiple of the unit, and the machine rounds the sum to the nearest multiple of the unit.
+The rounding error of the addition is therefore the distance of the step size from its own nearest multiple of the unit, the
+same for every step of the range (the third column of Table 2.14). With $N^{\rm lp}_{\rm LL}$ the number of settled steps whose end
+time has the unit $u^{\rm lp}_{\rm LL}$,
+
+$$\delta^{\rm t}_{\rm LL}\approx\sum_{\text{units}}N^{\rm lp}_{\rm LL}\,\Big(h^{\rm IDA}_{\rm LL}-u^{\rm lp}_{\rm LL}\Big\lfloor\frac{h^{\rm IDA}_{\rm LL}}{u^{\rm lp}_{\rm LL}}\Big\rceil\Big),\tag{2.64}$$
+
+where the half brackets denote the nearest integer (the even one of the two if the quotient lies exactly half way between two
+integers; this is how the machine addition rounds). At $10^{-12}$ the sum runs over the {{GEN:t2_steps_units_12}} units from
+$2^{-60}$ to $2^{-48}$ that occur among the 41070 settled steps. It leaves out three small things: the 40 steps before the settled
+ones, whose rounding errors add up to less than $10^{-18}$; the one step of every range that begins below a power of 2 and ends
+above it; and the last step, which IDA makes $(20-x^0_{\rm LL})(1-2^{-50})$ long, with the time $x^0_{\rm LL}$ at its beginning, and
+ends at 20, so that the exact sum of the step sizes falls short of 20 by another $3.4\times10^{-20}$.
+
+Every unit of the sum divides the largest one, $2^{-48}$. The right side of (2.64) therefore depends on the settled step size only
+through its remainder after division by $2^{-48}=3.55\times10^{-15}$: it is a periodic function of the step size with this
+period. The settled step size, $4.87\times10^{-4}$, is itself a multiple of ITS unit in the last place, $2^{-64}$, so that one
+period contains exactly $2^{16}=65536$ machine numbers. **The time defect is a function of the last 16 binary digits of the
+settled step size, and of nothing else.** Check GS-20 computes it for all 65536 by carrying out the additions as IDA does (the
+steps before the settled ones, 41070 additions of the candidate step size, and the last step). The result agrees with (2.64)
+within the sum of the units, {{GEN:t2_steps_unit_sum}}, and for the step sizes of the two integrations by the program the
+additions give the measured time defect to 12 digits and the last grid point bit for bit.
+
+![](figures/fig_t2_steps_last_digits.png){width=92%}
+
+**Figure 2E.** IDA at $r^{\rm tol}_{\rm LL}=10^{-12}$ as a function of the last 16 binary digits of its settled step size. Horizontal
+axis: the remainder of the step size after division by $2^{-48}$, in units of $2^{-48}$ (it has 65536 values; every 32nd is drawn).
+(a) The time defect $\delta^{\rm t}_{\rm LL}$, obtained by carrying out the additions. It rises by 41070 times the increase of the step
+size and falls back wherever the step size passes the middle between two multiples of a unit: by $2.9\times10^{-11}$ for each
+of the units $2^{-48}$ and $2^{-49}$ (8216 and 16432 steps), by $7.3\times10^{-12}$ for $2^{-50}$ (8216 steps), and by less for the
+smaller units. Its modulus stays below {{GEN:t2_steps_defect_largest}}; half the sum of the products
+$N^{\rm lp}_{\rm LL}u^{\rm lp}_{\rm LL}$, the bound that (2.64) allows, is {{GEN:t2_steps_defect_bound}}. (b) The predicted deviation
+at the end, (2.63), with the errors of the formulas of the integration by the program and the time defect of panel (a). Markers:
+the three integrations of this tolerance that Table 2.16 lists, in (a) with their time defects, in (b) with their measured
+deviations. The data are in the files `t2_steps_last_digits.csv` and `t2_steps_settled.csv`.
+
+*Where the last digits of the settled step size come from.* IDA changes the size of its steps in two places. After an attempt
+that the test (2.44) rejects, it shortens the step: at the first rejection of a step by a factor between 1/4 and 0.9 that it
+computes from the rejected estimate, at every further rejection by the factor 1/4. After an accepted step of the order
+$k^{\rm IDA}_{\rm LL}$ it computes the factor
+
+$$\eta^{\rm cmp}_{\rm LL}=\big(2\,\delta^{\rm nxt}_{\rm LL}+10^{-4}\big)^{-1/(k+1)},\qquad\delta^{\rm nxt}_{\rm LL}=\frac{\sigma^{\rm IDA}_{\rm LL}}{c^{\rm est}_{\rm LL}}\,\delta^{\rm est}_{\rm LL},\tag{2.65}$$
+
+and doubles the step if $\eta^{\rm cmp}_{\rm LL}\ge2$, leaves it unchanged if $1<\eta^{\rm cmp}_{\rm LL}<2$, and multiplies it by
+$\eta^{\rm cmp}_{\rm LL}$, but by no more than 0.9 and by no less than 0.5, if $\eta^{\rm cmp}_{\rm LL}\le1$. (If IDA changes the order
+together with the step, the estimate for the new order stands in place of $\delta^{\rm nxt}_{\rm LL}$; this does not happen at the
+steps of Table 2.15.) The number $\delta^{\rm nxt}_{\rm LL}$ is the **estimate for the next step**. IDA estimates a local error as a
+multiple of the difference between the accepted and the predicted values of the unknowns; in the test (2.44) the multiple is
+$c^{\rm est}_{\rm LL}$, in the rule for the step size it is a second coefficient, $\sigma^{\rm IDA}_{\rm LL}$. Both follow from the sizes of
+the last steps: with $\psi^{\rm IDA}_{{\rm LL},m}$ the sum of the sizes of the last *m* internal steps, the present one included,
+
+$$c^{\rm est}_{\rm LL}=\max\Big(\Big\lvert\frac{h^{\rm IDA}_{\rm LL}}{\psi^{\rm IDA}_{{\rm LL},k+1}}+\sum_{m=1}^{k}\frac{h^{\rm IDA}_{\rm LL}}{\psi^{\rm IDA}_{{\rm LL},m}}-H^{\rm har}_{\rm LL}\Big\rvert,\ \frac{h^{\rm IDA}_{\rm LL}}{\psi^{\rm IDA}_{{\rm LL},k+1}}\Big),\qquad\sigma^{\rm IDA}_{\rm LL}=\frac{1\cdot2\cdots k^{\rm IDA}_{\rm LL}\,\big(h^{\rm IDA}_{\rm LL}\big)^{k}}{\psi^{\rm IDA}_{{\rm LL},2}\,\psi^{\rm IDA}_{{\rm LL},3}\cdots\psi^{\rm IDA}_{{\rm LL},k+1}}.\tag{2.66}$$
+
+Both are $1/(k^{\rm IDA}_{\rm LL}+1)$ when the last steps have one size (then $\psi^{\rm IDA}_{{\rm LL},m}$ is *m* times the step size, and
+the sum in the first formula is the harmonic number $H^{\rm har}_{\rm LL}$); after a change of the step size they differ. Check GS-20
+computes both from the step sizes for every step of the nine integrations by IDA; they agree with the coefficients that IDA
+itself reports to 14 digits.
+
+{{GEN:t2_steps_table_history}}
+
+**Table 2.15.** How the settled step size of IDA comes about, for the three tolerances (the program, with the exact iteration
+matrix). Every change of the step size before the first settled step is by one of the fixed numbers 1/4, 0.9 and 2, the limits
+of the two rules, with one exception: the factor (2.65) that IDA computes after the step number 1, 43 and 40. The rule (2.65)
+with the coefficients (2.66), applied to the test value of that step, gives the factor to all digits, and $10^{-4}$ times the
+product of all factors is the settled step size to all digits (check GS-20). At $10^{-10}$ and $10^{-12}$ the computed factor is
+the last change of the step size; at $10^{-8}$ it is the first change after the first step, and two factors 0.9 and nine
+doublings follow it. From the first settled step on the test value stays inside the band of part (G), and no rule changes the
+step size again.
+
+The settled step size is thus a product of exactly known numbers and ONE computed number, and the computed number depends on
+the test value of one step: a norm of the difference between the accepted and the predicted values of the unknowns, measured in
+units of the tolerance. How firm is this number? IDA offers two ways to form its iteration matrix. The program writes the
+matrix exactly. The other way, which the IDA of the notebook uses (its count of evaluations in Table 2.13 shows it), is by
+difference quotients: for each of the 768 real unknowns the right side is evaluated once more with this unknown changed a little
+(in the IDA of SUNDIALS by about $1.5\times10^{-8}$ of its size, the square root of the rounding unit), and the change of the
+result divided by the change of the unknown is a column of the matrix. The equations are linear, so that such a quotient has no
+error of approximation; but it carries the rounding errors of two evaluations divided by the small change, a relative error of
+about the rounding unit divided by $1.5\times10^{-8}$: 8 correct digits instead of 16. Newton's method with such a matrix
+converges to the same solution of the formula. The value that IDA accepts after one or two Newton steps, however, is not
+the limit, and it differs from the value obtained with the exact matrix in digits far below the tolerance - the digits of which
+the test value is made. The program therefore repeats the three integrations with difference quotients:
+
+{{GEN:t2_steps_table_realizations}}
+
+**Table 2.16.** Three integrations of every tolerance that differ only in the iteration matrix of IDA: the program with the exact
+matrix, the program with the matrix by difference quotients, and the notebook. *Third column:* the settled step size relative to
+that of the first line. With difference quotients the program takes as many steps, makes as many evaluations in its steps and
+computes as many matrices, and its step sizes are bit for bit those of the first line up to the computed factor of Table 2.15;
+the factor itself is another number, because the test value of that one step is another number (by $2.3\times10^{-8}$ and
+$4.1\times10^{-8}$ of itself at $10^{-10}$ and $10^{-12}$; the factor changes by $-1/(k^{\rm IDA}_{\rm LL}+1)$ times as much, as (2.65) says). The
+settled step size of the notebook is read from the times at the ends of its steps: 4, 4 and 8 neighbouring machine numbers
+reproduce the end times of all its settled steps bit for bit when they are added up from the time before the first settled step,
+and the table uses the smallest of them. The steps of the notebook before the settled ones are those of the program, to 12
+digits or better. *Fourth column:* the time defect (for the notebook the middle of the values of its candidates, which differ by
+at most $1.6\times10^{-14}$). *Last three columns:* the measured deviation at the end; its relative difference from the first
+line; and the same difference as (2.62) and (2.63) predict it from the errors of the formulas of the first line and the time
+defect of the line itself.
+
+Table 2.16 answers observation 4, at all three tolerances. The three integrations of a tolerance take steps of the same sizes
+except for one number. That number moves the settled step size by 4 and 8 parts in $10^{9}$ (difference quotients in the
+program) or by 3 parts in $10^{8}$ (notebook) at $10^{-10}$ and $10^{-12}$, and by less than 1 part in $10^{13}$ at $10^{-8}$. A
+relative change of the step size by $3\times10^{-8}$ changes the errors of the formulas by $2\times10^{-7}$ of their size (they
+are proportional to the fifth power of the step size at a fixed end time). But it replaces the last 16 binary digits of the step
+size by others, and with them the time defect: the fourth column shows three unrelated numbers for every tolerance. The
+deviations differ as these time defects say (last two columns): by $10^{-9}$ to $6\times10^{-8}$ of their size at $10^{-8}$ and by
+$10^{-6}$ to $8\times10^{-6}$ at $10^{-10}$, where the rounding of the time is a small part of the deviation, and by 9 and 16 per
+cent at $10^{-12}$, where it is the larger part.
+
+{{GEN:t2_steps_table_last_digits}}
+
+**Table 2.17.** IDA at $10^{-12}$: the predicted deviation over the 65536 cases of the last 16 binary digits of the settled step
+size (the line of Figure 2E(b)), and the three measured deviations of Table 2.16. *Last column:* the part of the 65536 cases in
+which the predicted deviation is smaller than the number of the line.
+
+Over the 65536 cases the deviation goes from $1.98\times10^{-11}$, the errors of the formulas alone, to $1.21\times10^{-10}$, a
+factor 6, and in half of the cases it lies below $4.4\times10^{-11}$. The three integrations stand at 0.43, 0.49 and 0.55 of this
+distribution; their time defects are the values of the function of Figure 2E(a) at their step sizes. The deviation of IDA at
+this tolerance is therefore known as a distribution - 20 to 121 tolerances, with the median 44 - and the number of a single
+integration, 44 tolerances for the notebook, is one case of it. No setting of the integrator decides which case occurs: it is
+decided by the rounding errors of the linear algebra of one step. At $10^{-8}$ and $10^{-10}$ the rounding of the time is less
+than $10^{-6}$ and about $10^{-4}$ of the deviation (Table 2.6), and the three integrations agree within $6\times10^{-8}$ and
+$8\times10^{-6}$ of the deviation.
 
 *The experiment: a matrix that is always current.* IDA can be told to compute its matrix anew whenever the leading coefficient
 changes. Then $r^{\rm cj}_{\rm LL}=1$ in every step, (2.60) is (2.50), and all effects of the kept matrix must disappear:
 
 {{GEN:t2_steps_table_matrix}}
 
-**Table 2.15.** IDA with its default rule and with a matrix that is always current. They do disappear: at $10^{-10}$ the
+**Table 2.18.** IDA with its default rule and with a matrix that is always current. They do disappear: at $10^{-10}$ the
 deviation is 0.643 of the default one, which is the sixth power of the ratio of the two settled step sizes times the ratio of
 the numbers of steps divided by the factor 1.97 of (2.61) (0.642; check GS-20). At $10^{-12}$ there is no alternating error: the
 test value of the settled steps is steady (Figure 2C(a), dashed), IDA takes steps of more than twice the size and fewer than half
@@ -1541,11 +1676,14 @@ times smaller. This is the scatter of (G) again.
 - *IDA at $10^{-12}$: $4.8\times10^{-11}$ in the program, $4.4\times10^{-11}$ in the notebook, 48 and 44 tolerances.* Order 5,
   41111 steps, a matrix that is 31 per cent out of date and beyond the limit of stability: the alternating error keeps the steps
   small and cancels in the sum (coherence 0.046), $41111\times0.0253\times0.0463=48$; what remains is the error of the formula
-  ($2.0\times10^{-11}$) and the rounding of the time ($4.4\times10^{-11}$). Prediction: $4.825\times10^{-11}$.
+  ($2.0\times10^{-11}$) and the rounding of the time ($4.4\times10^{-11}$ in the program). Prediction: $4.825\times10^{-11}$ for the
+  program and {{GEN:t2_steps_pred12nb}} for the notebook, each with its own time defect. The rounding of the time depends on the
+  last 16 binary digits of the settled step size; over all their cases the deviation lies between 20 and 121 tolerances (Table
+  2.17), and the two numbers are two cases near the median.
 
 {{GEN:t2_steps_table_budget}}
 
-**Table 2.16.** The six deviations against the error budget (2.40): the number of steps times the largest local error that the
+**Table 2.19.** The six deviations against the error budget (2.40): the number of steps times the largest local error that the
 tolerances allow, $B^{\rm loc}_{\rm LL}$, which is $\sqrt2\,(r^{\rm tol}_{\rm LL}+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})$ with the weights of
 CVODE and $r^{\rm tol}_{\rm LL}+a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}$ with the weights of IDA for a state of the norm 1. Every
 deviation is below its budget, by factors between 3.6 and 1092 (check GS-17).
@@ -1561,6 +1699,10 @@ deviation is below its budget, by factors between 3.6 and 1092 (check GS-17).
   the least that such a comparison needs. Over the scan neither integrator is the more accurate one.
 - A smaller value of the local error test does not mean a smaller error (IDA at $10^{-10}$), and a stable-looking integration is
   not the more accurate one (IDA at $10^{-12}$ with a current matrix).
+- Where the errors of the formula are as small as the rounding of the time variable (IDA at $10^{-12}$), the deviation of a
+  single integration is one case of a distribution that spans a factor 6 (Table 2.17). The case is chosen by rounding errors,
+  here by those of the iteration matrix; two programs that run the same algorithm with the same settings agree only as far as
+  the distribution is narrow.
 
 ## 2.13 Discussion
 
@@ -5715,7 +5857,7 @@ null vectors of the mass matrices of the Bogoliubov matrices (circles) and $\arc
 From the folder Revision_SuperLoop of the repository:
 
 ```
-# 1. the checks GS-1 to GS-{{GEN:nchecks_t2_fields}} of item [1], the explicit matrices and equations, the data of Figures 1, 2 and 2A to 2D
+# 1. the checks GS-1 to GS-{{GEN:nchecks_t2_fields}} of item [1], the explicit matrices and equations, the data of Figures 1, 2 and 2A to 2E
 cd test2/rust && cargo build --release && ./target/release/t2_fields && cd ../..
 # 1b. Section 2.12: the tests of the library crates t2steps and t2core, and the independent computation of the formulas
 #     with 40 digits (checks FC-1 to FC-{{GEN:nchecks_t2_py_formula}})
@@ -5723,7 +5865,7 @@ cd test2/rust && cargo test --release --lib -p t2steps && cargo test --release -
 python3 test2/python/t2_formula_check.py
 # 2. the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} of item [2] (the analytic solutions) and the data of Figures 3 to 6
 cd test2/rust && cargo build --release && ./target/release/t2_analytic && cd ../..
-# 3. Figures 1 to 6 (test2/figures/fig_t2_*.pdf and .png) and Figures 2A to 2D (test2/figures/fig_t2_steps_*.pdf and .png)
+# 3. Figures 1 to 6 (test2/figures/fig_t2_*.pdf and .png) and Figures 2A to 2E (test2/figures/fig_t2_steps_*.pdf and .png)
 python3 test2/python/make_t2_figures.py
 python3 test2/python/make_t2_steps_figures.py
 # 4. item [3]: the self-test of the Python solver, the seven examples, the table of the keys, the checks EX-1 to EX-7
@@ -5791,7 +5933,7 @@ The Cargo workspace `test2/rust` has nine members (the fourth, `t2solve`, is the
   uses the vendored crate `cvode_rs`) and exact symbolic linear forms for printing formulas (`sym.rs`);
 - `t2fields` (program `t2_fields`): the checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, the explicit matrices and
   component equations of Section 2 and the tables of Section 2.12 (written into `test2/data/t2_fragments.md`, from which
-  this document takes them), and the data of Figures 1, 2 and 2A to 2D; its module `steps.rs` holds the checks GS-17 to
+  this document takes them), and the data of Figures 1, 2 and 2A to 2E; its module `steps.rs` holds the checks GS-17 to
   GS-20 (Appendix A.2h);
 - `t2analytic` (program `t2_analytic`): the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} of the analytic solutions of
   Section 3 and the data of Figures 3 to 6. It applies the lattice operator of `t2core` (`lattice.rs`), the routine
@@ -6144,9 +6286,15 @@ The programs of Section 2.12:
   (backward Euler, the trapezoidal rule, the backward differentiation formula of the order 2), the roots, the limits of
   stability and their closed forms, and the identity (2.42) with the prediction (2.62) on a small problem for both
   integrators.
-- **The module `steps.rs` of the program `t2_fields`**: the nine integrations with the full analysis of every step (the six of
-  Table 2.2, and IDA with a matrix that is always current at the three tolerances), the scan of 25 tolerances, the checks GS-17
-  to GS-20, the sixteen tables of Section 2.12, and the eight data files `test2/data/t2_steps_*.csv`.
+- **The module `steps.rs` of the program `t2_fields`**: the twelve integrations with the full analysis of every step (the six of
+  Table 2.2; IDA with a matrix that is always current; and IDA with its matrix formed by difference quotients; each at the three
+  tolerances), the scan of 25 tolerances, the time defect of IDA at $10^{-12}$ for all 65536 cases of the last 16 binary digits
+  of its settled step size, the checks GS-17 to GS-20, the nineteen tables of Section 2.12, and the ten data files
+  `test2/data/t2_steps_*.csv`. The numbers of the IDA of the notebook that part (H) of Section 2.12 uses are constants of this
+  module: the numbers of steps and of evaluations, the largest and the smallest step and the deviations (printed by the notebook
+  `3+1super-loop.nb` in its check GS-13), and the times and step sizes of its settled steps (read from the grid of its solution by
+  the script `3+1super-loop_provenance/tools/gs13_ida_settled_steps.wl` of PROJECT spacetimes, whose output is the file
+  `3+1super-loop_provenance/logs/IDA_settled_steps_probe.txt`).
 - **`test2/python/t2_formula_check.py`**: an independent computation of the formulas of Section 2.12 with the
   multiple-precision arithmetic of the Python library mpmath (40 digits). It shares no code with the Rust crate and uses
   other routes where it can: the coefficients from the series that define them; every number of the file
@@ -6154,7 +6302,7 @@ The programs of Section 2.12:
   of CVODE and (2.57) with (2.59) of IDA step by step and reading the factor off after 400 steps; the leading terms (2.51), (2.53) and (2.61); the roots
   (for CVODE as the eigenvalues of the matrix that advances the stored amplitudes and derivatives by one step); and the limits
   of stability. Its checks are FC-1 to FC-{{GEN:nchecks_t2_py_formula}}.
-- **`test2/python/make_t2_steps_figures.py`**: Figures 2A to 2D from the data files.
+- **`test2/python/make_t2_steps_figures.py`**: Figures 2A to 2E from the data files.
 
 The report of `t2_formula_check.py`, verbatim (`test2/data/t2_py_formula_checks.txt`). It uses the plain names of the report of
 `t2_fields` above, and: `c_AM(n)`, `c_AB(n)` for $c^{\rm AM}_{{\rm LL},m}$, $c^{\rm AB}_{{\rm LL},m}$ with the index in brackets; `u` for
@@ -6175,7 +6323,7 @@ $a^{\rm st}_{{\rm LL},s}$ and the stored derivative $g^{\rm st}_{{\rm LL},s}$ of
 | `test2/data/t2_dispersion_curves.csv` | the lattice energy (2.37) and the continuum energy (Figure 1) | `r_W`, `q`, `eps`, `eps_lat` |
 | `test2/data/t2_dispersion_lattice.csv` | the eigenvalues of the lattice operator on plane waves (Figure 1, circles) | `r_W`, `q`, `eps_lat` |
 | `test2/data/t2_cvode_accuracy.csv` | the time integration with CVODE on the lattice of GS-10 (check GS-13): the relative deviation from the exact solution, and the size and the order of the last internal step, for three tolerances (Figure 2) | `x_LL^0`, `dev_rtol_1e-8`, `dev_rtol_1e-10`, `dev_rtol_1e-12`, `h_rtol_1e-8`, `h_rtol_1e-10`, `h_rtol_1e-12`, `q_rtol_1e-8`, `q_rtol_1e-10`, `q_rtol_1e-12` |
-| `test2/data/t2_steps_runs.csv` | Section 2.12: one line for each of the nine integrations (CVODE, IDA with its default rule for the iteration matrix, IDA with a matrix that is always current; three tolerances): the numbers of steps, the settled steps, the deviation, the coherence, the predictions (Tables 2.2, 2.3, 2.5, 2.6, 2.15 and 2.16) | `integration`, `integrator`, `matrix_rule`, `rtol`, `atol`, `N_steps`, `h_step`, `order`, `main_steps`, `one_iteration`, `two_iterations`, `cj_ratio`, `max_deviation`, `sum_local_error`, `coherence`, `identity_defect`, `time_defect`, `test_value_median`, `local_wrms_median`, `local_cosine_median`, `predicted_deviation`, `predicted_formula`, `predicted_exact_solve`, `predicted_time`, `rest`, `N_evals`, `N_matrix` |
+| `test2/data/t2_steps_runs.csv` | Section 2.12: one line for each of the nine integrations (CVODE, IDA with its default rule for the iteration matrix, IDA with a matrix that is always current; three tolerances): the numbers of steps, the settled steps, the deviation, the coherence, the predictions (Tables 2.2, 2.3, 2.5, 2.6, 2.18 and 2.19) | `integration`, `integrator`, `matrix_rule`, `rtol`, `atol`, `N_steps`, `h_step`, `order`, `main_steps`, `one_iteration`, `two_iterations`, `cj_ratio`, `max_deviation`, `sum_local_error`, `coherence`, `identity_defect`, `time_defect`, `test_value_median`, `local_wrms_median`, `local_cosine_median`, `predicted_deviation`, `predicted_formula`, `predicted_exact_solve`, `predicted_time`, `rest`, `N_evals`, `N_matrix` |
 | `test2/data/t2_steps_segments.csv` | the sequence of the internal steps of the nine integrations, as groups of consecutive steps of the same kind (Table 2.11) | `integration`, `h_step`, `order`, `iterations`, `cj_ratio`, `count` |
 | `test2/data/t2_steps_trace.csv` | the internal steps of the nine integrations one by one (all steps of an integration with at most 3000 steps; otherwise the first 1200, every 25th, and the last 100) (Figure 2C) | `integration`, `step`, `t_step`, `h_step`, `order`, `iterations`, `cj_ratio`, `test_value`, `local_wrms`, `local_error`, `local_cosine`, `deviation`, `time_defect` |
 | `test2/data/t2_steps_modes.csv` | the relative error of every eigenvector at the end of the nine integrations, measured and predicted (Figure 2A) | `integration`, `E_qp`, `weight`, `measured_re`, `measured_im`, `formula_re`, `formula_im`, `exact_solve_re`, `exact_solve_im`, `time_im` |
@@ -6183,6 +6331,8 @@ $a^{\rm st}_{{\rm LL},s}$ and the stored derivative $g^{\rm st}_{{\rm LL},s}$ of
 | `test2/data/t2_steps_formulas.csv` | the relative error of one step of the formulas, (2.50), (2.53), (2.56), (2.60), for a table of orders, numbers of iterations, ratios $r^{\rm cj}_{\rm LL}$ and $\lvert z^{\rm st}_{\rm LL}\rvert$; every number is repeated independently by `t2_formula_check.py` | `formula`, `order`, `iterations`, `cj_ratio`, `z_abs`, `eps_re_hi`, `eps_re_lo`, `eps_im_hi`, `eps_im_lo` |
 | `test2/data/t2_steps_roots.csv` | the largest modulus of a root other than the principal one of (2.56) and (2.60) (Figure 2B) | `formula`, `order`, `iterations`, `cj_ratio`, `z_abs`, `other_root`, `alternating_root` |
 | `test2/data/t2_steps_limits.csv` | the limits of stability (Tables 2.7 and 2.8) | `formula`, `order`, `iterations`, `limit_low`, `limit_high` |
+| `test2/data/t2_steps_settled.csv` | how the settled step size of IDA comes about, and the three integrations of every tolerance that differ in the iteration matrix: the program with the exact matrix, the program with difference quotients, the notebook (Tables 2.15 and 2.16, the markers of Figure 2E) | `integration`, `matrix_source`, `rtol`, `quarter_cuts`, `tenth_cuts`, `doublings`, `factor_step`, `factor_order`, `test_value`, `next_estimate`, `computed_factor`, `fixed_product`, `h_step`, `h_candidates`, `first_settled`, `settled_steps`, `phase`, `time_defect`, `time_defect_spread`, `N_steps`, `max_deviation`, `predicted_deviation` |
+| `test2/data/t2_steps_last_digits.csv` | IDA at $10^{-12}$: the time defect (by carrying out the additions, and from (2.64)) and the predicted deviation for every 32nd of the 65536 cases of the last 16 binary digits of the settled step size (Figure 2E; Table 2.17 is computed from all 65536) | `phase`, `h_step`, `time_defect`, `time_defect_formula`, `predicted_deviation` |
 | `test2/data/t2_py_formula_checks.txt` | the report of the checks FC-1 to FC-{{GEN:nchecks_t2_py_formula}} of `t2_formula_check.py` | — |
 | `test2/data/t2_analytic_checks.txt` | the report of the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} | — |
 | `test2/data/t2_A_dispersion_curves.csv` | the energies (3.7) on the lattice for both isospin components (Figure 3(a), curves) | `q`, `Q_LL`, `branch`, `E_qp` |
@@ -6337,6 +6487,7 @@ its content in a line `# content:` and its parameters in lines `# name: value`.
 | 2B | `test2/figures/fig_t2_steps_stability` | `t2_steps_roots.csv`, `t2_steps_limits.csv`, `t2_steps_runs.csv`, `t2_steps_modes.csv` | GS-18 to GS-20 |
 | 2C | `test2/figures/fig_t2_steps_wave` | `t2_steps_trace.csv`, `t2_steps_runs.csv`, `t2_steps_scan.csv`, `t2_steps_modes.csv` | GS-20 |
 | 2D | `test2/figures/fig_t2_steps_scan` | `t2_steps_scan.csv` | GS-19 |
+| 2E | `test2/figures/fig_t2_steps_last_digits` | `t2_steps_last_digits.csv`, `t2_steps_settled.csv` | GS-20 |
 | 3 | `test2/figures/fig_t2_case_A` | `t2_A_dispersion_curves.csv`, `t2_A_dispersion_lattice.csv`, `t2_A_precession.csv` | AS-1, AS-2 |
 | 4 | `test2/figures/fig_t2_case_B` | `t2_B_bogoliubov_curves.csv`, `t2_B_bogoliubov_lattice.csv`, `t2_B_rabi.csv`, `t2_B_gap.csv` | AS-3 to AS-5 |
 | 5 | `test2/figures/fig_t2_case_C` | `t2_C_kink_profile.csv`, `t2_C_kink_spectrum.csv`, `t2_C_kink_convergence.csv` | AS-9 |
@@ -6368,7 +6519,7 @@ the checks, converts the mixing angles of (d) from radians to degrees, and label
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
 $\pm m_{\rm LL}$ and the line $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$), the relative deviation of Figure 1(b) from two columns of a
 data file, the normal-state energy $\lvert\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}\rvert$ of Figure 4(a) from a column and a
-parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ of Figure 5(d). Figures 2A to 2D are drawn by
+parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ of Figure 5(d). Figures 2A to 2E are drawn by
 `test2/python/make_t2_steps_figures.py` from the data files of Section 2.12; the script computes only moduli of complex numbers
 given by their real and imaginary parts, quotients of two columns (the deviation divided by the tolerance, the deviation of IDA
 divided by that of CVODE, the factor 1.96 of Figure 2A(b)), the norm of $\mathcal H^{\rm lat}_{\rm LL}$ applied to the initial state
@@ -6377,7 +6528,9 @@ integration from its step size and the largest eigenvalue (the circles of Figure
 0.1 and 0.5, the lower end $(2^{-6}-10^{-4})/2$ of the band of IDA, and the straight line of the growth by the factor
 `other_root` per step in Figure 2C(a); it interpolates the curves of Figure 2B at the positions of the six integrations; and
 every number in a label of these figures is read from a data file or is a constant of a rule of the integrators (0.1, 0.5,
-0.6, $5/3$).
+0.6, $5/3$). For Figure 2E it divides the column `phase` by the parameter `period` of its data file, draws the two functions
+piece by piece (two neighbouring points whose time defects differ by more than $4\times10^{-12}$ are not joined: there the
+function jumps), and draws a dashed line at the smallest predicted deviation of the file.
 
 ## A.4 Checksums
 
@@ -6414,6 +6567,8 @@ SHA-256 checksums of the sources and data of items [1] to [11] at the time this 
 {{SHA256:test2/data/t2_steps_formulas.csv}}  test2/data/t2_steps_formulas.csv
 {{SHA256:test2/data/t2_steps_roots.csv}}  test2/data/t2_steps_roots.csv
 {{SHA256:test2/data/t2_steps_limits.csv}}  test2/data/t2_steps_limits.csv
+{{SHA256:test2/data/t2_steps_settled.csv}}  test2/data/t2_steps_settled.csv
+{{SHA256:test2/data/t2_steps_last_digits.csv}}  test2/data/t2_steps_last_digits.csv
 {{SHA256:test2/rust/t2cvcmp/Cargo.toml}}  test2/rust/t2cvcmp/Cargo.toml
 {{SHA256:test2/rust/t2cvcmp/src/main.rs}}  test2/rust/t2cvcmp/src/main.rs
 {{SHA256:test2/cvode_vs_rk4/run_convergence.sh}}  test2/cvode_vs_rk4/run_convergence.sh
