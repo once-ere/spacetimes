@@ -1,5 +1,5 @@
 PROJECT spacetimes, provenance of the notebook 3+1super-loop.nb: the symbols of the formulas (tools/check_provenance_symbols.py)
 file: P_3+1super-loop.md
 section 2 (lines 28 to 243) defines 154 signatures of symbols with the suffix LL; the other sections use 149 signatures
-exception: line 1512 uses \gamma_{\rm LL} -- the description of error E18 quotes a label that the first version of Part II printed wrongly (the component gamma^1_LL without its index); it is not a symbol of the document
+exception: line 1532 uses \gamma_{\rm LL} -- the description of error E18 quotes a label that the first version of Part II printed wrongly (the component gamma^1_LL without its index); it is not a symbol of the document
 PASS  0 used signatures are not defined in section 2
