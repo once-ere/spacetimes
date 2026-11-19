@@ -24,7 +24,7 @@
 # (run from the folder Revision_SuperLoop, or from anywhere with the full path of the script)
 #
 # Requires: pandoc >= 2.11, XeLaTeX and latexmk (TeX Live), the DejaVu fonts and
-# the Latin Modern Math font, python3 (for the layout check).
+# the Latin Modern Math font, python3 (for keep_tables.py and the layout check).
 #
 # Provenance: adapted from code/scripts/build_docs.sh of the author's project
 # NCSS (github.com/once-ere/NCSS, Revision_1), whose pipeline the author accepted.
@@ -103,14 +103,25 @@ open(path, "w", encoding="utf-8").write("\n".join(out))
 if nsplit:
     print("[docs]   note: %d split(s) of code lines longer than 2400 characters" % nsplit)
 PYSPLIT
+  # 1c. A short table is kept on one page: keep_tables.py estimates the height of every table of the .tex and, for a
+  #    table of at most about two thirds of a page, forbids the page breaks between its rows and between the table
+  #    and the paragraph after it (its caption).  The .md is not changed.
+  python3 "$ROOT/code/scripts/keep_tables.py" "$dir/$base.tex"
   # 2. LaTeX -> PDF (XeLaTeX via latexmk), run inside the document's directory
   #    so that relative figure paths resolve exactly as in the Markdown source.
   pushd "$dir" > /dev/null
   latexmk -xelatex -interaction=nonstopmode -halt-on-error -quiet "$base.tex" > /dev/null 2>&1 \
     || { echo "[docs] LaTeX failed for $md; the error is in $dir/$base.log"; exit 1; }
   # 3. Layout check: list every line, table cell or formula wider than its box,
-  #    and every character for which the font has no glyph.
-  if ! python3 "$ROOT/code/scripts/check_layout.py" "$base.log"; then
+  #    every page higher than the text area, and every character for which the
+  #    font has no glyph.
+  #    check_layout.py reads the log of LaTeX; check_pages.py reads the PDF and
+  #    reports every page with text below the text area (LaTeX does not report
+  #    a table that is kept on one page and is higher than the page).
+  ok=1
+  python3 "$ROOT/code/scripts/check_layout.py" "$base.log" || ok=0
+  python3 "$ROOT/code/scripts/check_pages.py" "$base.pdf" || ok=0
+  if [ "$ok" -eq 0 ]; then
     PROBLEMS=$((PROBLEMS + 1))
   fi
   # 4. Remove the LaTeX by-products (.aux, .log, .fls, ...); keep .tex and .pdf.
@@ -122,4 +133,4 @@ if [ "$PROBLEMS" -gt 0 ]; then
   echo "[docs] done; $PROBLEMS document(s) have layout problems (listed above)"
   exit 2
 fi
-echo "[docs] done; no line, table cell or formula is wider than its box"
+echo "[docs] done; no line, table cell or formula is wider than its box, and no page is higher than the text area"

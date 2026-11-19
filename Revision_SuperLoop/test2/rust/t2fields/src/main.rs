@@ -3,9 +3,13 @@
 //! The gauge-covariant field equations of the self-interacting spinor field Psi_LL on the 3+1
 //! manifold R^(1,3)_LL.  This program
 //!   * builds every matrix of the field equations from the super-loop (module t2core::model);
-//!   * checks every statement that the document makes about them (checks GS-1 to GS-16);
+//!   * checks every statement that the document makes about them (checks GS-1 to GS-20; the checks
+//!     GS-17 to GS-20, which take the time integrations of GS-13 apart step by step, are the module
+//!     `steps` of this program and use the library crate `t2steps` of the workspace);
 //!   * writes the data of the figures of item [1] (test2/data/t2_dispersion_curves.csv,
-//!     t2_dispersion_lattice.csv, t2_cvode_accuracy.csv);
+//!     t2_dispersion_lattice.csv, t2_cvode_accuracy.csv, and for the checks GS-17 to GS-20 the eight
+//!     files t2_steps_runs.csv, t2_steps_segments.csv, t2_steps_trace.csv, t2_steps_modes.csv,
+//!     t2_steps_scan.csv, t2_steps_formulas.csv, t2_steps_roots.csv and t2_steps_limits.csv);
 //!   * writes the explicit matrices and the explicit component equations in LaTeX
 //!     (test2/data/t2_fragments.md), each of them evaluated numerically and compared with the
 //!     matrix computation it describes, so that no printed formula is typed by hand;
@@ -14,7 +18,9 @@
 //! Build and run (from the folder Revision_SuperLoop/test2/rust):
 //!     cargo run --release --bin t2_fields
 //! The program writes into Revision_SuperLoop/test2/data (located from the crate directory) and exits
-//! with status 1 if a check fails.
+//! with status 1 if a check fails.  The checks GS-1 to GS-16 take about 20 seconds; the checks GS-17 to
+//! GS-20 run 59 time integrations step by step (9 with the full analysis of every step, 50 of the scan
+//! of the tolerances), several at a time on the available processor cores: about 2 minutes on two cores.
 //!
 //! Arithmetic: double precision; equalities are tested with the tolerances named in the statement
 //! of each check.  Random numbers come from a fixed seed.
@@ -29,6 +35,8 @@ use t2core::lattice::{self, Fields, Lattice, Mats, M2};
 use t2core::model::{self, eta, kpair, lift2, lift4, sigma, tiso};
 use t2core::rng::Rng;
 use t2core::sym::{mat_lin, tex_matrix, Lin, SymMat, GR};
+
+mod steps;
 
 // ------------------------------------------------------------------ report
 
@@ -1703,6 +1711,12 @@ fn main() {
         disp_dev < 1e-12,
         format!("largest deviation {}", sci(disp_dev)),
     );
+
+    // ================================================================ GS-17 to GS-20: the integrations of GS-13 step by step
+    // (module steps: CVODE and IDA run one internal step at a time on the problem of GS-13, the exact local error of
+    // every step, the errors of the formulas, the rules for the step size, IDA in the open)
+    let gs13_at_20 = [dev13[0][touts13.len() - 1], dev13[1][touts13.len() - 1], dev13[2][touts13.len() - 1]];
+    steps::run(&mut ck, &mut fr, &dd, &lat, &fl, &hl, &w0_13, &e13, &v13, &gs13_at_20);
 
     // ================================================================ output
     fr.write(&dd.join("t2_fragments.md"));

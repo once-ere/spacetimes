@@ -35,6 +35,9 @@ python3 explanations/code/make_explain_figures.py                        # the t
 (cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)      # checks Z-1 .. Z-8
 python3 explanations/code/make_r13_figures.py                            # the four figures of the 3+1 document
 (cd test2/rust && cargo build --release && ./target/release/t2_fields)   # Test 2, item [1]: checks GS-1 .. GS-{{GEN:nchecks_t2_fields}}
+(cd test2/rust && cargo test --release --lib -p t2steps && cargo test --release --lib -p t2core)   # the tests of the two library crates
+python3 test2/python/t2_formula_check.py                                 # the formulas of GS-18 and GS-20 with 40 digits: checks FC-1 .. FC-{{GEN:nchecks_t2_py_formula}}
+python3 test2/python/make_t2_steps_figures.py                            # the four figures of the checks GS-17 .. GS-20
 (cd test2/rust && cargo build --release && ./target/release/t2_analytic) # Test 2, item [2]: checks AS-1 .. AS-{{GEN:nchecks_t2_analytic}}
 python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt   # Test 2, item [3]: the self-test of the solver
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do python3 test2/python/t2_solve.py test2/examples/$e.t2in --out test2/data/t2_py_$e; done
@@ -58,12 +61,15 @@ item [2] of Test 2) and their figures; the Python solver of item [3] (its self-t
 keys) and the checks of its examples; the plots of item [4]; the Rust solver of item [5], its examples and the comparison of the two sets of solutions; the Rust plots of item [6]; the checks of the superfluid boson singlet state of items [7] to [11] and their figures; twice in a row the registry of the symbols, the fragments of the documents, the checks of the symbols
 and of self-containedness, the assembly of the Markdown documents, the manuscript (.tex, .pdf, .md) and
 the provenance documents (.tex, .pdf) (the second pass makes every document contain the reports of the
-first); then it verifies that every report passes, that no placeholder is left unresolved, that every
+first; the build of a document, `build_docs.sh`, keeps every table of at most about two thirds of a page on one page
+with `keep_tables.py`, and it fails if a line, a table cell or a formula is wider than its space, `check_layout.py`, or
+if a page has text below its text area, `check_pages.py`); then it verifies that every report passes, that no placeholder is left unresolved, that every
 report printed in a document is the current one, that no formula ends directly before a digit, that
 every document exists as .md, .tex and .pdf, and that no document names a software tool that does not
 belong in a manuscript, and prints one verdict, "ALL PASS" or the list of failures. Requirements: a Rust
 toolchain for the edition 2021; Python 3 with SymPy, NumPy and Matplotlib; TeX Live with REVTeX 4.2,
-XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font; pandoc. The program refuses to run
+XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font; pandoc; pdftotext of the poppler utilities (for the
+check of the pages). The program refuses to run
 unless it is started in the folder `Revision_SuperLoop` (it writes its data files into `data/` of that
 folder).
 
@@ -725,6 +731,90 @@ The formulas of the checks:
   $w^{\rm ex}_{\rm LL}$ for the tolerances $r^{\rm tol}_{\rm LL}=10^{-8}$, $10^{-10}$, $10^{-12}$ (the relative deviation
   $\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert$ below $B^{\rm err}_{\rm LL}$, and below
   $10^{-9}$ at $10^{-12}$), and the eigenvalues of the operator of the solvers on plane waves.
+* **GS-17 to GS-20 (the time integrations of GS-13, step by step).** Both integrators are run one internal step at a time:
+  CVODE through the function `integrate_steps` of `t2core::cvode`, and IDA, the integrator of SUNDIALS for implicit differential
+  equations (backward differentiation formulas of the orders 1 to 5, Newton's method with an iteration matrix), through the
+  module `ida.rs` of the library crate `t2steps`, which uses the crate `ida_rs` of the vendored translation with the settings
+  that reproduce the internal steps of the IDA inside the function `NDSolve` of the Wolfram Language: the real and imaginary
+  parts of the components as real unknowns, the tolerance $r^{\rm tol}_{\rm LL}\lvert\text{unknown}\rvert+a^{\rm tol}_{\rm LL}$ for each of
+  them, a first step of $10^{-4}$, a dense matrix. In the formulas the number of an internal step, of an eigenvector and of a
+  coefficient or iterate appear only in subscripts, superscripts and limits of sums (written *s*, *n*, *m*; *q* and *k* stand for the
+  orders $q^{\rm CV}_{\rm LL}$ and $k^{\rm IDA}_{\rm LL}$).
+  *GS-17.* With the time $t^{\rm st}_{{\rm LL},s}$ at the end of an internal step, the exact local error of the step and the deviation
+  are
+  $w^{\rm loc}_{{\rm LL},s}=w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})-\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s}-t^{\rm st}_{{\rm LL},s-1})\big)w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s-1})$
+  and $w^{\rm dev}_{{\rm LL},s}=w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})-w^{\rm ex}_{\rm LL}(t^{\rm st}_{{\rm LL},s})$, and the identity is
+  $w^{\rm dev}_{{\rm LL},N^{\rm st}_{\rm LL}}=\sum_{s=1}^{N^{\rm st}_{\rm LL}}\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},N^{\rm st}_{\rm LL}}-t^{\rm st}_{{\rm LL},s})\big)w^{\rm loc}_{{\rm LL},s}$.
+  Both sides are evaluated in the eigenvectors of $\mathcal H^{\rm lat}_{\rm LL}$, where the exact evolution multiplies the amplitude
+  $a^{\rm md}_{{\rm LL},n}$ of an eigenvector by a phase factor. The coherence $\Xi^{\rm coh}_{\rm LL}$ is the norm of the left side divided
+  by the sum of the norms $\lVert w^{\rm loc}_{{\rm LL},s}\rVert$, and $c^{\rm loc}_{{\rm LL},s}$ is the cosine of the angle between the local
+  errors of two consecutive steps, both carried to the same time.
+  *GS-18.* For one eigenvector with the eigenvalue $E^{\rm qp}_{{\rm LL},n}$ and a step of the size $h^{\rm st}_{\rm LL}$,
+  $z^{\rm st}_{\rm LL}=-iE^{\rm qp}_{{\rm LL},n}h^{\rm st}_{\rm LL}$; a formula that is applied in the same way in every step multiplies the
+  amplitude by a factor $\kappa^{\rm fac}_{\rm LL}$ per step, the relative error of one step is
+  $\delta^{\rm st}_{\rm LL}=\kappa^{\rm fac}_{\rm LL}\exp(-z^{\rm st}_{\rm LL})-1$, and $u^{\rm st}_{\rm LL}=1-1/\kappa^{\rm fac}_{\rm LL}$ is the factor of
+  the backward difference $\nabla^{\rm bd}_{\rm LL}$ (the value at the end of a step minus the value at the end of the step before).
+  Solved exactly, the Adams-Moulton formula of the order $q^{\rm CV}_{\rm LL}$ is
+  $u^{\rm st}_{\rm LL}=z^{\rm st}_{\rm LL}\sum_{m=0}^{q-1}c^{\rm AM}_{{\rm LL},m}(u^{\rm st}_{\rm LL})^m$, with the coefficients $c^{\rm AM}_{{\rm LL},m}$ of the
+  series of $-u^{\rm st}_{\rm LL}/\ln(1-u^{\rm st}_{\rm LL})$ ($1$, $-\tfrac12$, $-\tfrac1{12}$, $-\tfrac1{24}$, $-\tfrac{19}{720}$, ...), and the
+  backward differentiation formula of the order $k^{\rm IDA}_{\rm LL}$ is
+  $u^{\rm st}_{\rm LL}+\tfrac12(u^{\rm st}_{\rm LL})^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}(u^{\rm st}_{\rm LL})^{k}=z^{\rm st}_{\rm LL}$; the exact solution has
+  $-\ln(1-u^{\rm st}_{\rm LL})=z^{\rm st}_{\rm LL}$, so that the leading errors are $-c^{\rm AM}_{{\rm LL},q}(z^{\rm st}_{\rm LL})^{q+1}$ and
+  $(z^{\rm st}_{\rm LL})^{k+1}/(k^{\rm IDA}_{\rm LL}+1)$. As CVODE applies its formula, with $n^{\rm fp}_{\rm LL}$ fixed-point iterations: with the
+  amplitude $a^{\rm st}_{{\rm LL},s}$ at the end of a step, the step size times the stored derivative $g^{\rm st}_{{\rm LL},s}$, and the weights
+  $b^{\rm AM}_{{\rm LL},m}$, $b^{\rm AB}_{{\rm LL},m}$ of the Adams-Moulton and Adams-Bashforth formulas written in the derivatives,
+  the prediction is $a^{\rm prd}_{{\rm LL},s}=a^{\rm st}_{{\rm LL},s-1}+\sum_{m=1}^{q}b^{\rm AB}_{{\rm LL},m}g^{\rm st}_{{\rm LL},s-m}$, the explicit part
+  is $a^{\rm bas}_{{\rm LL},s}=a^{\rm st}_{{\rm LL},s-1}+\sum_{m=1}^{q-1}b^{\rm AM}_{{\rm LL},m}g^{\rm st}_{{\rm LL},s-m}$, the iterates are
+  $a^{\rm it}_{{\rm LL},0}=a^{\rm prd}_{{\rm LL},s}$, $a^{\rm it}_{{\rm LL},m+1}=a^{\rm bas}_{{\rm LL},s}+b^{\rm AM}_{{\rm LL},0}z^{\rm st}_{\rm LL}a^{\rm it}_{{\rm LL},m}$, and
+  what is kept is $a^{\rm st}_{{\rm LL},s}=a^{\rm it}_{{\rm LL},n^{\rm fp}_{\rm LL}}$ and
+  $g^{\rm st}_{{\rm LL},s}=z^{\rm st}_{\rm LL}a^{\rm it}_{{\rm LL},n^{\rm fp}_{\rm LL}-1}$ (the stored derivative belongs to the iterate before the accepted
+  one). For a solution in which the amplitude and the stored derivative are multiplied by $\kappa^{\rm fac}_{\rm LL}$ in every step
+  this is a polynomial equation of the degree $q^{\rm CV}_{\rm LL}+1$ for $(\kappa^{\rm fac}_{\rm LL})^{-1}$. As IDA applies its formula,
+  with $n^{\rm Nw}_{\rm LL}$ Newton steps and an iteration matrix that was computed for a leading coefficient smaller by the factor
+  $r^{\rm cj}_{\rm LL}$ (the leading coefficient of a step is $c^{\rm ld}_{\rm LL}=H^{\rm har}_{\rm LL}/h^{\rm IDA}_{\rm LL}$ with the harmonic number
+  $H^{\rm har}_{\rm LL}=1+\tfrac12+\dots+1/k^{\rm IDA}_{\rm LL}$; IDA keeps a matrix while $r^{\rm cj}_{\rm LL}$ lies between 0.6 and $5/3$ and
+  multiplies every Newton correction by $2/(1+r^{\rm cj}_{\rm LL})$): the prediction is the polynomial through the last
+  $k^{\rm IDA}_{\rm LL}+1$ amplitudes, $a^{\rm prd}_{{\rm LL},s}=a^{\rm st}_{{\rm LL},s}-(\nabla^{\rm bd}_{\rm LL})^{k+1}a^{\rm st}_{{\rm LL},s}$; one Newton step
+  covers the fraction
+  $\rho^{\rm one}_{\rm LL}=\dfrac{2}{1+r^{\rm cj}_{\rm LL}}\,\dfrac{H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}}{H^{\rm har}_{\rm LL}/r^{\rm cj}_{\rm LL}-z^{\rm st}_{\rm LL}}$
+  of the way from the prediction to the exact solution $a^{\rm imp}_{{\rm LL},s}$ of the formula, $n^{\rm Nw}_{\rm LL}$ steps the fraction
+  $\rho^{\rm Nw}_{\rm LL}=1-(1-\rho^{\rm one}_{\rm LL})^{n^{\rm Nw}_{\rm LL}}$, and the factor of a step follows from
+  $u^{\rm st}_{\rm LL}+\tfrac12(u^{\rm st}_{\rm LL})^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}(u^{\rm st}_{\rm LL})^{k}=z^{\rm st}_{\rm LL}-\dfrac{1-\rho^{\rm Nw}_{\rm LL}}{\rho^{\rm Nw}_{\rm LL}}\big(H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}\big)(u^{\rm st}_{\rm LL})^{k+1}$,
+  with the leading error
+  $\big(1/(k^{\rm IDA}_{\rm LL}+1)+H^{\rm har}_{\rm LL}(\rho^{\rm Nw}_{\rm LL}-1)/\rho^{\rm Nw}_{\rm LL}\big)(z^{\rm st}_{\rm LL})^{k+1}$. The principal root of
+  each equation (the one near $\exp(z^{\rm st}_{\rm LL})$) is computed by Newton's method in numbers of 31 digits (module `dd.rs`),
+  all roots by the iteration of Durand and Kerner. The predicted relative error of the amplitude of an eigenvector at the end is
+  the sum of $\delta^{\rm st}_{\rm LL}$ over the steps, each with its recorded size, order, number of iterations and $r^{\rm cj}_{\rm LL}$,
+  minus $iE^{\rm qp}_{{\rm LL},n}\delta^{\rm t}_{\rm LL}$, where $\delta^{\rm t}_{\rm LL}$ is the exact sum of the step sizes minus the time that
+  the integrator reports (the rounding of its time variable); the predicted deviation $\delta^{\rm pre}_{\rm LL}$ is the norm of these
+  errors weighted with the moduli of the amplitudes of the initial state.
+  *GS-19.* The band of the value $\delta^{\rm est}_{\rm LL}$ of the local error test in which the step size is kept: IDA doubles a
+  step if $(2\delta^{\rm est}_{\rm LL}+10^{-4})^{-1/(k+1)}$ is at least 2 and shortens it if this number is at most 1, the band from
+  $(2^{-(k+1)}-10^{-4})/2$ to $(1-10^{-4})/2$; CVODE changes a step only if $1/\big((6\delta^{\rm est}_{\rm LL})^{1/(q+1)}+10^{-6}\big)$
+  (or the corresponding number of a neighbouring order) is at least 1.5, the band from $(1/1.5-10^{-6})^{q+1}/6$ to 1. CVODE
+  accepts the first iterate of a step if its test value is at most 0.1. The scan: 25 relative tolerances from $10^{-6}$ to
+  $10^{-12}$, four per decade (neighbouring tolerances differ by the factor $10^{-1/4}$).
+  *GS-20.* The limit of stability of IDA with one Newton step: the alternating root $\kappa^{\rm fac}_{\rm LL}=-1$ is
+  $u^{\rm st}_{\rm LL}=2$; for $z^{\rm st}_{\rm LL}=0$ the equation above gives
+  $(\rho^{\rm one}_{\rm LL}-1)/\rho^{\rm one}_{\rm LL}=\big(2+\tfrac12\,2^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}2^{k}\big)/\big(H^{\rm har}_{\rm LL}2^{k+1}\big)$,
+  and with $\rho^{\rm one}_{\rm LL}=2r^{\rm cj}_{\rm LL}/(1+r^{\rm cj}_{\rm LL})$ the limit $r^{\rm cj}_{\rm LL}=137/105$ for the order 5 and $25/17$
+  for the order 4. The rule of IDA for a second Newton step: after the first Newton step IDA stops if a number that it keeps
+  from the last step with two Newton steps, the quotient of the norms of the second and the first correction divided by 1
+  minus this quotient, times the norm of the first correction is at most 0.33; the quotient is
+  $\lvert1-\rho^{\rm one}_{\rm LL}\rvert$, and the test value of a first iterate is the norm of the first correction divided by
+  $k^{\rm IDA}_{\rm LL}+1$. The rounding of the time: the time that IDA reports is the rounded sum of the time before and the step
+  size, and between two powers of 2 the rounding of one addition of a fixed step size is a fixed fraction of one unit in the
+  last place.
+  The module `steps.rs` of `t2_fields` runs nine integrations with the analysis of every step (CVODE, IDA, and IDA with a
+  matrix that is computed anew whenever the leading coefficient changes, at $r^{\rm tol}_{\rm LL}=10^{-8}$, $10^{-10}$, $10^{-12}$) and
+  the scan, and writes `test2/data/t2_steps_runs.csv`, `t2_steps_segments.csv`, `t2_steps_trace.csv`, `t2_steps_modes.csv`,
+  `t2_steps_scan.csv`, `t2_steps_formulas.csv`, `t2_steps_roots.csv` and `t2_steps_limits.csv` (each states its content and
+  its columns in its first line). The Python script `test2/python/t2_formula_check.py` computes the formulas of GS-18 and
+  GS-20 once more with 40 digits (library mpmath) and by other routes (checks FC-1 to FC-6: the coefficients from their
+  series; every number of `t2_steps_formulas.csv`; the factor of a step read off after 400 steps of the recurrences
+  themselves; the leading errors; the roots, for CVODE as the eigenvalues of the matrix that advances the stored amplitudes
+  and derivatives by one step; the limits of stability); `test2/python/make_t2_steps_figures.py` draws the four figures
+  `test2/figures/fig_t2_steps_modes`, `fig_t2_steps_stability`, `fig_t2_steps_wave` and `fig_t2_steps_scan` (.pdf and .png).
 * **GS-12 (the printed formulas):** every explicit matrix and every component equation is built from the exact
   linear forms of `sym.rs`; each monomial carries a numerical value (a plane wave with constant fields, or random
   numbers); the value of the printed expression is compared with the matrix computation.
@@ -740,6 +830,12 @@ last internal step of CVODE, for the tolerance named at the end); the script `te
 
 ```
 {{FILE:test2/data/t2_fields_checks.txt}}
+```
+
+The output of the last run of `t2_formula_check.py`:
+
+```
+{{FILE:test2/data/t2_py_formula_checks.txt}}
 ```
 
 **Item [2]: the analytic solutions (program `t2_analytic`).** Build and run, from the folder `Revision_SuperLoop`:
@@ -1223,6 +1319,16 @@ block: the folder `explanations`; the third block: the folder `test2`):
 {{SHA256:test2/rust/t2core/src/cmat.rs}}  test2/rust/t2core/src/cmat.rs
 {{SHA256:test2/rust/t2core/src/sym.rs}}  test2/rust/t2core/src/sym.rs
 {{SHA256:test2/rust/t2fields/src/main.rs}}  test2/rust/t2fields/src/main.rs
+{{SHA256:test2/rust/t2fields/src/steps.rs}}  test2/rust/t2fields/src/steps.rs
+{{SHA256:test2/rust/t2steps/src/lib.rs}}  test2/rust/t2steps/src/lib.rs
+{{SHA256:test2/rust/t2steps/src/dd.rs}}  test2/rust/t2steps/src/dd.rs
+{{SHA256:test2/rust/t2steps/src/formulas.rs}}  test2/rust/t2steps/src/formulas.rs
+{{SHA256:test2/rust/t2steps/src/ida.rs}}  test2/rust/t2steps/src/ida.rs
+{{SHA256:test2/rust/t2steps/src/anatomy.rs}}  test2/rust/t2steps/src/anatomy.rs
+{{SHA256:test2/rust/t2steps/src/runs.rs}}  test2/rust/t2steps/src/runs.rs
+{{SHA256:test2/python/t2_formula_check.py}}  test2/python/t2_formula_check.py
+{{SHA256:test2/python/make_t2_steps_figures.py}}  test2/python/make_t2_steps_figures.py
+{{SHA256:test2/data/t2_py_formula_checks.txt}}  test2/data/t2_py_formula_checks.txt
 {{SHA256:test2/rust/t2analytic/src/main.rs}}  test2/rust/t2analytic/src/main.rs
 {{SHA256:test2/python/make_t2_figures.py}}  test2/python/make_t2_figures.py
 {{SHA256:test2/data/t2_fields_checks.txt}}  test2/data/t2_fields_checks.txt

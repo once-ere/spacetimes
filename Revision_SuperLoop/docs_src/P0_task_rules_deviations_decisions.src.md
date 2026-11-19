@@ -270,6 +270,49 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
    error). The registry of this folder therefore defines the tolerances, the internal step and the error bounds for both
    integrators (the entries of $r^{\rm tol}_{\rm LL}$, $h^{\rm IDA}_{\rm LL}$, $B^{\rm err}_{\rm LL}$ and $B^{\rm loc}_{\rm LL}$ in Section 12).
 
+## 2.11 The requests of November 18, 2026, 12:57 and 12:59 (verbatim)
+
+The request of 12:57, verbatim (the table is the one that had been reported to the author: the relative deviations from the
+exact solution at the end of the time integrations of check GS-13):
+
+```
+this makes no sense; do a better job of explaining and stop taking shortcuts:
+rtol    IDA (notebook)    CVODE (original program)
+1e-8    7.1e-6    1.2e-6
+1e-10   9.3e-8    1.7e-7
+1e-12   4.4e-11   1.7e-10
+```
+
+The request of 12:59, verbatim:
+
+```
+first of all, since you are intelligent you naturally define terms before you use them: so define
+these headings, and where they appear:: rtol    IDA (notebook)    CVODE (original program)
+```
+
+## 2.12 What these requests ask for, and how they are answered
+
+1. **The headings defined, and where they appear.** The table is Table 2.1 of the document of Test 2 (Section 2.12 there), with
+   every heading defined in its caption. In short: `rtol` is the relative tolerance $r^{\rm tol}_{\rm LL}$ given to an integrator,
+   the bound that the integrator applies to its own estimate of the error of ONE internal step (not a bound on the error at the
+   end; the absolute tolerance is $a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100$); "IDA (notebook)" is the relative deviation
+   $\delta^{\rm rel}_{\rm LL}$ of the computed state from the exact solution at the time 20 when the lattice equations of check GS-13
+   are integrated by IDA, the integrator of the library SUNDIALS that the Wolfram Language calls through `NDSolve`, in the
+   notebook `3+1super-loop.nb` of the project; "CVODE (original program)" is the same deviation when they are integrated by
+   CVODE in the Rust program `t2_fields`, check GS-13. The numbers first appeared in the report of check GS-13 of the notebook
+   and in the report `test2/data/t2_fields_checks.txt` of this folder.
+2. **The explanation, without shortcuts.** The six numbers were taken apart by a calculation, not by an argument. Both
+   integrators were run one internal step at a time (CVODE through a new function of the module `t2core::cvode`; IDA in the
+   open, with the pure-Rust IDA of the vendored translation of SUNDIALS 7.8.0, set up so that it takes exactly the internal
+   steps of the IDA inside `NDSolve`), every step was measured against the exact solution in the eigenvectors of the lattice
+   operator, and the error of one step of each formula was computed from the formula as the integrator applies it. The result
+   is the new Section 2.12 of the document of Test 2 with sixteen tables and four figures, the new library crate `t2steps`, the
+   module `steps.rs` of `t2_fields` with the checks GS-17 to GS-20, and the independent Python computation
+   `t2_formula_check.py` (checks FC-1 to FC-6). The findings are in Section 6 of this document.
+3. **An unsupported sentence removed.** Section 2.11 of the document of Test 2 had explained the numbers of steps of check GS-13
+   by the stability of the Adams-Moulton formulas, without a calculation. The calculation shows another cause; the paragraph
+   was replaced (Section 11, entry E72).
+
 # 3. The hard rules, and how each is met
 
 | rule (in the words of this provenance) | how it is met | where to verify |
@@ -292,11 +335,11 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
 | `manuscript/` | the manuscript "The Lorentz Super-Loop of the Bi-Octonions: Non-Associative Counterexamples to the No-Go Theorems and a Spin-Zero Spinor Superfluid" (.tex, .pdf, .md) and its reference list `sl_refs.bib` |
 | `provenance/` | this document, the registry of the symbols (`P1`), the calculations (`P2`), each as .md, .tex, .pdf; `symbols_ll.csv`; the generated fragments |
 | `code/superloop-rs/` | the Rust program `superloop`, commands `algebra`, `malcev`, `manifolds`, `superfluid`, `renorm`, `all` |
-| `code/scripts/` | `malcev_groebner.py`, `make_figures.py`, `write_symbol_registry.py`, `check_symbols.py`, `check_self_contained.py`, `write_doc_tables.py`, `assemble_docs.py`, `build_manuscript.py`, `tex2md.py`, `build_docs.sh`, `check_layout.py`, `doc_header.tex`, `check_all.sh` |
+| `code/scripts/` | `malcev_groebner.py`, `make_figures.py`, `write_symbol_registry.py`, `check_symbols.py`, `check_self_contained.py`, `write_doc_tables.py`, `assemble_docs.py`, `build_manuscript.py`, `tex2md.py`, `build_docs.sh`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, `doc_header.tex`, `check_all.sh` |
 | `data/` | 14 data files, the reports of all checks and the Gröbner bases |
 | `figures/` | 7 figures, .pdf and .png |
 | `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf), with its program `code/explain-rs` (binary `explain_superfluid`), its figure script `code/make_explain_figures.py` and its three figures; the document "The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" (.md, .tex, .pdf), with its program `code/r13-rs` (binary `r13_yukawa`), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), and the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE), and the library `t2steps` (the time integrations of check GS-13 taken apart step by step: double-double numbers, the formulas of CVODE and IDA on one eigenvector, IDA run in the open, the analysis of every step); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py`, the independent check of the formulas of the time integrators `t2_formula_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_steps_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
 | `vendor/` (in the top folder of the repository, beside `Revision_SuperLoop`) | `sundials_rs-7.8.0`, the pure-Rust translation of SUNDIALS 7.8.0 of the author's repository, unchanged (Section 10), and its provenance `P_sundials_rs-7.8.0` (.md, .tex, .pdf) |
 | `docs_src/` | the sources of the documents |
 
@@ -416,6 +459,15 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
    declared a requirement; the wording of check EX-4 and of the document of the calculations; the numbers of the
    checks in the descriptions of two figures; and the script `check_all.sh`, in which a failure of the first pass on
    documents of an earlier build no longer counts. No number of a data file changed (Section 11, entries E66 to E71).
+23. **Stage 21 — the time integrations of check GS-13 taken apart step by step** (2026-11-18; Sections 2.11 and 2.12 of this
+   document): the function `integrate_steps` of `t2core::cvode` (CVODE returning after every internal step); the new library
+   crate `t2steps` (modules `dd`, `formulas`, `ida`, `anatomy`, `runs`; its own tests); the module `steps.rs` of `t2_fields`
+   with the checks GS-17 to GS-20, nine integrations with the full analysis of every step, a scan of 25 tolerances for both
+   integrators, eight data files `t2_steps_*.csv` and sixteen tables; the Python script `t2_formula_check.py` (checks FC-1 to
+   FC-6, 40 digits, no code shared with the Rust crate); Figures 2A to 2D (`make_t2_steps_figures.py`); Section 2.12 of the
+   document of Test 2, its Appendix A.2h, and the corrected paragraph of its Section 2.11; ten registry entries of group 9
+   for the quantities of the analysis; the checks of the registry extended to every single item of an entry; `check_all.sh`
+   runs the new tests, the new check and the new figures (Section 11, entries E72 to E80).
 
 # 6. The results in brief
 
@@ -556,6 +608,27 @@ include all of your new rust code, along with docs, in this 'spacetimes' PROJECT
   Test 2 passes with bounds derived from the error budget $B^{\rm err}_{\rm LL}$; the comparison with the first version shows that its quench was wrong
   in the third decimal (the mean of the gap 0.500877 instead of 0.503125, the frequency 1.18449 instead of 1.18898), and that its
   rule for the fixed time step allowed steps with large errors on random lattice problems (Section 2.10).
+* **The six deviations of check GS-13** (stage 21; the integrations of the lattice equations of check GS-13 from the time 0 to
+  the time 20 by CVODE and by IDA at the relative tolerances $10^{-8}$, $10^{-10}$, $10^{-12}$, with the deviations
+  $1.2\times10^{-6}$, $1.7\times10^{-7}$, $1.7\times10^{-10}$ for CVODE and $7.1\times10^{-6}$, $9.3\times10^{-8}$, $4.4\times10^{-11}$ for
+  the IDA of the notebook). (i) The deviation at the end is exactly the sum of the errors of the single internal steps, each
+  carried to the end by the exact evolution (verified to rounding in nine integrations); it is therefore the product of the
+  number of steps, the mean error of a step, and the coherence $\Xi^{\rm coh}_{\rm LL}$ (the norm of the sum of the errors of the
+  steps divided by the sum of their norms). A tolerance bounds the estimated error of one step, so deviations of hundreds to
+  thousands of tolerances are the expected size, and all six lie below the error budget $B^{\rm err}_{\rm LL}$. (ii) The error of
+  one step follows from the formula as the integrator applies it, with its iteration stopped after one or two iterations; the
+  prediction from these formulas agrees with the measured deviation within 0.4 per cent in the four integrations whose steps
+  are of one kind and brackets it in the two others. (iii) The rule of each integrator for its next step leaves a settled step
+  unchanged while the value of its local error test lies in a wide band (a factor 64 for IDA); the quotient of deviation and
+  tolerance therefore scatters, between 93 and 2881 for CVODE and between 13 and 2271 for IDA over 25 tolerances, and the
+  quotient of the deviations of the two integrators passes 1 ten times: the three tolerances do not rank the integrators.
+  (iv) With one iteration per step both integrators are stable only within limits, and three of the six integrations lie
+  outside them (CVODE at $10^{-8}$ and $10^{-12}$; IDA at $10^{-12}$, whose iteration matrix is out of date by the factor 1.313,
+  beyond the limit $137/105$): an error grows until the convergence test of the integrator asks for a second iteration, the
+  errors of consecutive steps largely cancel, and the coherence is 0.36, 0.27 and 0.05. (v) At $10^{-10}$ the matrix of IDA is
+  out of date by the factor 1.164, which makes the error of every step 1.97 times that of the formula. (vi) At $10^{-12}$, 91
+  per cent of the deviation of IDA is the rounding of the 41111 additions of the step size to its time variable; with a
+  matrix that is always current IDA takes steps of twice the size and its deviation is 8 times larger.
 
 # 7. Deviations from the wording of the task, with their reasons
 
@@ -815,6 +888,10 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
   diagonalization. In item [2] the domain wall was solved for walls along one coordinate only, and
   the bound states of walls of the width $\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}>1$ were checked through the two scalar operators
   of the square of the operator, not on the lattice.
+* The step-by-step analysis of the time integrations (stage 21) was made for the problem of check GS-13: linear equations
+  with a constant matrix, 384 components, the time 0 to 20. Its formulas hold for such problems; for the self-consistent
+  evolutions of the solvers, which are not linear, no such analysis was made. For the two integrations by CVODE whose steps
+  are of two kinds the deviation is bracketed between two predictions, not predicted.
 * The Yukawa completion was not renormalized explicitly to all orders (D8). The document on the $3+1$
   manifold proves renormalizability by power counting, by the completeness of the Lagrangian and by the
   one-loop bubble, and states what the standard renormalization theorem adds; the counterterms beyond one
@@ -913,6 +990,23 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
 | E69 | the details of check AS-8 printed "1 bound states" | reading of the report during the rewriting | singular and plural |
 | E70 | the description of the figures in `test2/python/make_t2_figures.py` named check AS-8 for Figure 5 and check AS-9 for Figure 6; the figures show the results of the checks AS-9 and AS-10 (the checks were renumbered when check AS-8 was added, and the two descriptions were not) | reading of the script during the rewriting of the figures for the notebook | the four places corrected |
 | E71 | `check_all.sh` counted a failure of the checks of the symbols and of self-containedness in its first pass, although these checks also read built documents, which in the first pass are those of the earlier build: after a change of the registry the first run ended with "SOME CHECK FAILS" while the second pass, on the rebuilt documents, passed (seen in stage 19) | the run of stage 19 | a failure of these two checks in the first pass is printed as a note and does not count; the second pass decides (a real error fails there as well) |
+| E72 | Section 2.11 of the document of Test 2 explained the numbers of steps of check GS-13 by "the stability of the Adams-Moulton formulas on the imaginary axis, whose interval shrinks as the order grows" and concluded that "therefore the cost does not fall in proportion to the tolerance". No calculation stood behind the sentence, and it is wrong: the exactly solved formulas are stable at these step sizes; what is unstable is the scheme with ONE fixed-point iteration at the orders 6 and 7, and it does not limit the step size but holds the value of the local error test at 0.1; the numbers of steps differ because the orders differ (6, 5, 7) and because the rule for the next step leaves a settled step anywhere in a wide band | the author's objection to the table of the six deviations (request of 12:57, Section 2.11), and the step-by-step analysis made in answer | the paragraph replaced; Section 2.12 of the document of Test 2 with the checks GS-17 to GS-20 |
+| E73 | the six deviations of check GS-13 (three of this folder, three of the notebook) were reported to the author as a table whose headings were not defined, with a comment that named no cause; numbers were passed on as a result although nothing about them had been derived | the author's requests of 12:57 and 12:59 | Table 2.1 of the document of Test 2 with every heading defined; the calculation of stage 21 |
+| E74 | in the work of stage 21, before it was committed: the factor of a step was entered in the registry as $\kappa^{\rm st}_{\rm LL}$, the symbol that an entry of item [9] defines as the parameter of a straight line of fields. The writer of the registry and check LL-S1 compared whole entries, and an entry may list several symbols: a symbol that stands in two entries beside different companions was not seen | reading of the registry while Section 2.12 was written | the factor of a step is $\kappa^{\rm fac}_{\rm LL}$; two further new symbols were renamed because they resembled registered ones; the writer of the registry and check LL-S1 now compare every single item of every entry (none stands in two entries), tested with a registry that contains the collision |
+| E75 | same work: the comments and function names of the crate `t2steps` used the Greek names gamma, beta, zeta and sigma for coefficients of the formulas and for the factor of a step; in this project these names belong to the Dirac matrices, to a quantity of the superfluid and to the Pauli matrices | reading of the code against the registry | the functions and comments use the registered plain-text names (`c_AM`, `c_AB`, `b_AM`, `b_AB`, `kappa_step`); names quoted from the source text of IDA are marked as such |
+| E76 | same work: the routine for the limit of stability of the Adams-Moulton formulas returned 0 for the orders 11 and 12 with one iteration, because the limit lies below the first point of its search; the first printing of the table of the limits showed 0.0000 | the printed table | bisection below the first point of the search (limits 0.0019 and 0.0010); the independent Python check extended to the orders 11 and 12 |
+| E77 | same work: the first drafts of Figures 2A to 2D had numbers typed into their labels (a factor, a root, a ratio, two step sizes, two numbers of steps) | review of the figure script against the rule that no printed number is typed by hand | every number of a label is read from a data file; the threshold of the second Newton step is written by the program as a parameter line of its data file |
+| E78 | same work: the vector that IDA returns as its estimate of the local error was first taken for the correction of the step and multiplied by its coefficient a second time; and the first form of part (d) of check GS-19 required the predicted and the measured deviation to agree within 1 per cent, which failed, because the errors of the first steps of an integration (about one tolerance) are not described by the formulas of settled steps | a test value that the rule of IDA could not have produced; the failing check | the returned vector is the estimate itself; the check states what holds: the measured and the predicted errors of the eigenvectors differ by at most 3 tolerances |
+| E79 | same work: in first drafts the limit of the ratio of IDA was written 1.304 and the alternating root 1.016 (rounded by hand from a scan), and the rounding of one addition of the step size had the wrong sign | the independent Python computation; the table written by the program | the limit is derived in closed form, $137/105=1.3048$, and checked; the root is $-1.0171$; every number of Section 2.12 of the document of Test 2 is written by the program |
+| E80 | same work: check FC-2 of the Python script first read the two parts of a number of twice the usual precision as decimal fractions instead of the double-precision numbers that they denote, and check FC-3 first compared with a recurrence that is unstable at high orders (it failed with a difference of $10^{12}$) | the two failing checks | the parts are read as double-precision numbers; FC-3 uses the stable cases. The second failure was the first sign of the instability of the steps with one iteration, which became part (F) of Section 2.12 of the document of Test 2 |
+| E81 | same work: the program wrote the tables of the new Section 2.12 with columns of equal width. In the built document three tables were wider than the page (14 boxes, by 1.8 to 13.6 pt), which made the full check end with "SOME CHECK FAILS"; and in at least four tables (the decomposition, the settled steps, the test values, the predictions) numbers such as $1.185\times10^{-6}$ were broken after the multiplication sign into two lines, which the layout check does not report, because a broken number fits its column | the layout check of `build_docs.sh` in the full check; then every page of the tables was looked at | the function `table_head` of `steps.rs` states the width of every column in points next to its heading and stops the program if the widths of a table do not add up to the width that its columns share; the function `tex_sci` writes a number with a power of ten as one unbreakable piece, so that a column too narrow for its numbers is reported by the layout check; the table of the predictions (nine columns of such numbers) was divided into Tables 2.5 and 2.6; the comparison with the notebook (Table 2.13) lists one quantity per line instead of two ten-digit numbers per cell; the table of the settled steps gives their number without repeating the number of all steps, and the table of the experiment with a current matrix omits the number of matrices (it is in the data file `t2_steps_runs.csv`); the negative numbers of two tables are written with a minus sign instead of a hyphen. All sixteen tables were typeset alone and looked at before the document was built |
+| E82 | same work: part (E) of Section 2.12 cited "Table 2.4" for the two medians 0.1643 and 0.0836, which stand in Table 2.3 | re-reading of the section against its tables | the reference corrected |
+| E83 | same work: four statements of Section 2.12 had been written from an impression of a figure or from memory and not from a computed number: that the test value of IDA at $10^{-12}$ is held "between about 0.02 and 0.35" (measured: between 0.0165 and 0.3516, nine tenths of the settled steps between 0.061 and 0.320); that the deviations lie below their error budgets "by factors between 4 and 1100" (computed: 3.64 to 1092); that the time reported by IDA is the rounded sum "in all 41111 steps but the last" (it is in all 41111: the last step is shortened so that it ends at 20, and the sum of the time before and of this step is exactly 20); and that the second Newton step reduces the alternating error "to about a seventh", next to a measured period of 110 steps, without the number that connects the two (the factor 0.1353 and the growth 1.0171 per step give 118 steps) | re-reading of the section sentence by sentence, each number looked up in the reports of the checks | check GS-17 now computes the six quotients of deviation and budget and requires each to be below 1; check GS-20 now computes the range of the test value over the settled steps and the period that follows from the two factors, and requires the test values to lie inside the band of IDA and the period to agree with the measured one within 10 per cent; the four sentences state the computed numbers |
+| E84 | same work: the description at the head of `make_t2_steps_figures.py` and one comment of `steps.rs` named the figures by the letters of an earlier order (scan 2B, stability 2C, saw-tooth 2D); the document has stability 2B, saw-tooth 2C, scan 2D | comparison of the script with the captions of the document | the description and the comment corrected |
+| E85 | same work: Section 2.12 said twice that the integrators reach their settled steps "after twenty to forty-five steps"; the numbers had been read off a listing and rounded. The counts are 20, 16 and 31 (CVODE) and 41, 43 and 46 (IDA) | the numbers of settled steps in Table 2.3, which did not fit the sentence (3661 steps, 3645 of them settled, leaves 16) | check GS-17 now counts the steps before the first settled step and the steps of another size or order after it, and requires the settled steps to form one unbroken run; the two sentences state the counts |
+| E86 | same work: in the built document three tables of Section 2.12 were divided between two pages (the six integrations against the limits of stability after their second line; the scan; the comparison with the notebook). pandoc writes every table as a longtable, which LaTeX may divide after any row; this had been so in all documents of the folder | the pages of Section 2.12 were looked at one by one | the new script `code/scripts/keep_tables.py` estimates the height of every table of the generated LaTeX file and, for a table of at most about two thirds of a page, forbids the page breaks between its rows and between the table and the paragraph after it; both document builders of the folder call it, and `doc_header.tex` carries the penalty that it sets. Because the page builder of longtable hides a page that is too high from the log of LaTeX (verified with a table of 70 rows that was kept on purpose: no message, 20 rows lost), the new script `code/scripts/check_pages.py` examines every built PDF and fails the build if a page has text below its text area; `check_layout.py` also reports the pages that LaTeX itself records as too high. Tested with the script and the header on tables of 8, 25 and 60 rows at 17 positions before the end of a page: the tables of 8 and 25 rows were never divided and never separated from their caption, the table of 60 rows is left as it was |
+| E87 | same work: Section 2.12, check GS-17, the description of a data file and two figure labels said that every deviation is measured "at the time 20". This holds for IDA, which is told to stop there. CVODE takes its internal steps past an output time and interpolates back, and the step-by-step analysis measures at the end of the last internal step, at the times 20.0094, 20.0054 and 20.0052; check GS-13 reports the interpolated state at 20, with deviations smaller by 0.09, 0.03 and 0.03 per cent ($1.184\times10^{-6}$ against $1.185\times10^{-6}$ at $10^{-8}$: 118 against 119 tolerances) | the last lines of the data file `t2_steps_trace.csv` were read when the caption of Table 2.1 was compared with the data | check GS-17 now takes the three deviations of check GS-13 at the time 20, requires the last step of CVODE to end less than one step size after 20 and that of IDA exactly at 20, and compares the deviations (within 0.2 per cent); the program writes the end times and the numbers of GS-13 for the caption of Table 2.1, which defines the end of an integration; Section 2.11 gives the deviations of GS-13 in tolerances as 118, 1702 and 174; the figure labels and the description of the data file say "at the end" |
+| E88 | same work: the two new scripts added two lines to the list of checksums at the end of the manuscript. The list then filled its page, and the change of the page grid to the two-column reference list directly below it left a page that was higher than the text area by 16 pt (two lines of the list printed into the lower margin) | the check of the LaTeX log in `build_manuscript.py`, which failed in both passes of the full check | the reference list of the manuscript begins on a new page (`\clearpage` before the change of the grid in `docs_src/manuscript/13_appendices.tex`); the manuscript still has 42 pages; its last two pages were looked at |
 
 # 12. The symbols
 

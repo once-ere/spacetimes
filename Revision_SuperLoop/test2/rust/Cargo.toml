@@ -1,13 +1,15 @@
 # Cargo workspace of PROJECT spacetimes, Revision_SuperLoop, folder test2.
 # Pure Rust: no crate is downloaded; every member uses only the standard library and t2core, and t2core uses the
-# pure-Rust SUNDIALS 7.8.0 vendored in the folder vendor/sundials_rs-7.8.0 of PROJECT spacetimes (CVODE).
+# pure-Rust SUNDIALS 7.8.0 vendored in the folder vendor/sundials_rs-7.8.0 of PROJECT spacetimes (CVODE).  The member
+# t2steps (the time integrations of check GS-13 taken apart step by step) uses in addition the integrator IDA of the
+# same vendored translation (crate ida_rs).
 #
 # Build everything (from this folder):   cargo build --release
 # The binaries are then in target/release/, together with the shared library libt2cvode (.so on Linux, .dylib on
 # macOS) of the member t2cvode_c: the C interface of the time integration with CVODE, which the Python solver
 # test2/python/t2_solve.py loads (so that the Python and the Rust solvers integrate with the same CVODE).
 [workspace]
-members = ["t2core", "t2fields", "t2analytic", "t2solve", "t2plot", "t2sfbs", "t2cvcmp", "t2cvode_c"]
+members = ["t2core", "t2fields", "t2analytic", "t2solve", "t2plot", "t2sfbs", "t2cvcmp", "t2cvode_c", "t2steps"]
 resolver = "2"
 
 [profile.release]

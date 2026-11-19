@@ -86,6 +86,17 @@
 \AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
   \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
 \setlength{\LTcapwidth}{\textwidth}
+% A short table is kept on one page.  The build (code/scripts/keep_tables.py) ends the rows of such a table with \\*,
+% which forbids a page break after a row, and sets \sptkeptpenalty to 10000 in front of the table.  This penalty is
+% put here in the place of the breakpoint (penalty 0) that longtable leaves after every table, so that the paragraph
+% that follows a kept table, its caption, begins on the same page; it is set back to 0 after the table.
+\newcount\sptkeptpenalty
+\sptkeptpenalty=0
+\makeatletter
+\patchcmd{\endlongtable}{\endgraf\penalty\z@\addvspace\LTpost}%
+  {\endgraf\penalty\sptkeptpenalty\addvspace\LTpost\global\sptkeptpenalty=\z@}%
+  {}{\PackageError{doc_header}{the end of longtable could not be patched}{The tables can still be typeset, but a short table may be separated from its caption.}}
+\makeatother
 % allow line breaks after slashes and hyphens inside table cells
 \usepackage{xurl}
 % code blocks: break over-long lines instead of running into the margin.
@@ -203,6 +214,7 @@ defines everything that is needed.
 
 The sentence makes seven statements:
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0250}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1750}}
@@ -224,22 +236,22 @@ sections
 1 & ``its spinor charges'' & The particles are the spinor charges of the
 Lorentz super-loop. As particles they are fermions: a Dirac field with
 an isospin index that takes the two values up and down, with the
-electric charges \(+\tfrac12\) (up) and \(-\tfrac12\) (down). & 2 \\
+electric charges \(+\tfrac12\) (up) and \(-\tfrac12\) (down). & 2 \\*
 2 & ``spin-zero'' & The particles bind into pairs whose total spin is
-zero. & 3, 4 \\
+zero. & 3, 4 \\*
 3 & ``superfluid \ldots{} condenses'' & At zero temperature the pairs
 form one coherent quantum state, a condensate, which has a lower grand
 potential than the gas of unpaired particles and can flow without
-friction. & 6 \\
+friction. & 6 \\*
 4 & ``isospin-triplet'' & The pairs have isospin 1. Nothing else is
 possible: the rule of Pauli forbids a spin-zero pair of two identical
-fermions to have isospin 0. & 3, 5 \\
+fermions to have isospin 0. & 3, 5 \\*
 5 & ``unitary'' & The condensate pairs the two isospin directions
 equally: every particle, up or down, has the same energy gap. Among all
-condensates this one has the lowest grand potential. & 7 \\
+condensates this one has the lowest grand potential. & 7 \\*
 6 & ``electrically neutral'' & The condensed pairs carry no net electric
 charge. In the state chosen in the manuscript every pair has the charge
-0, and the electric charge remains a conserved quantity. & 8 \\
+0, and the electric charge remains a conserved quantity. & 8 \\*
 7 & ``the pair that is a singlet of the whole super-loop requires two
 species'' & The only pair that every symmetry of the super-loop leaves
 unchanged (spin 0 and isospin 0 together) is symmetric under the
@@ -584,6 +596,7 @@ species, the total ``species spin'' (0: the antisymmetric species
 combination \((\lvert12\rangle-\lvert21\rangle)/\sqrt2\), the species
 singlet; 1: the three symmetric combinations, the species triplet):
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1029}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1176}}
@@ -612,17 +625,17 @@ allowed in an s-wave
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-0 & 0 & one kind & 1 & 0 & 1 & no \\
-0 & 1 & one kind & 3 & 3 & 0 & yes \\
-1 & 0 & one kind & 3 & 3 & 0 & yes \\
-1 & 1 & one kind & 9 & 0 & 9 & no \\
-0 & 0 & two species, 0 (singlet) & 1 & 1 & 0 & yes \\
-0 & 0 & two species, 1 (triplet) & 3 & 0 & 3 & no \\
-0 & 1 & two species, 0 (singlet) & 3 & 0 & 3 & no \\
-0 & 1 & two species, 1 (triplet) & 9 & 9 & 0 & yes \\
-1 & 0 & two species, 0 (singlet) & 3 & 0 & 3 & no \\
-1 & 0 & two species, 1 (triplet) & 9 & 9 & 0 & yes \\
-1 & 1 & two species, 0 (singlet) & 9 & 9 & 0 & yes \\
+0 & 0 & one kind & 1 & 0 & 1 & no \\*
+0 & 1 & one kind & 3 & 3 & 0 & yes \\*
+1 & 0 & one kind & 3 & 3 & 0 & yes \\*
+1 & 1 & one kind & 9 & 0 & 9 & no \\*
+0 & 0 & two species, 0 (singlet) & 1 & 1 & 0 & yes \\*
+0 & 0 & two species, 1 (triplet) & 3 & 0 & 3 & no \\*
+0 & 1 & two species, 0 (singlet) & 3 & 0 & 3 & no \\*
+0 & 1 & two species, 1 (triplet) & 9 & 9 & 0 & yes \\*
+1 & 0 & two species, 0 (singlet) & 3 & 0 & 3 & no \\*
+1 & 0 & two species, 1 (triplet) & 9 & 9 & 0 & yes \\*
+1 & 1 & two species, 0 (singlet) & 9 & 9 & 0 & yes \\*
 1 & 1 & two species, 1 (triplet) & 27 & 0 & 27 & no \\
 \end{longtable}
 
@@ -1124,6 +1137,7 @@ The program computes the content of seven example condensates (data file
 \(\lvert\vec d_{\rm LL}\rvert=1\), so the gaps are in units of
 \(\lvert\vec d_{\rm LL}\rvert\):
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1200}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.2300}}
@@ -1158,19 +1172,19 @@ unbroken generator
 \endlastfoot
 polar along the third axis & \((0,0,1)\) & 0, 1, 0 & 0 & 0 & 1, 1 & none
 & isospin rotation about the axis (0, 0, 1):
-\(T^3_{\rm LL}=Q_{\rm LL}\) \\
+\(T^3_{\rm LL}=Q_{\rm LL}\) \\*
 polar along the first axis & \((1,0,0)\) & 0.5, 0, 0.5 & 0 & 0 & 1, 1 &
-none & isospin rotation about the axis (1, 0, 0) \\
+none & isospin rotation about the axis (1, 0, 0) \\*
 polar along (1,2,2)/3 & \((1,2,2)/3\) & 0.277778, 0.444444, 0.277778 & 0
 & 0 & 1, 1 & none & isospin rotation about the axis (0.333333, 0.666667,
-0.666667) \\
+0.666667) \\*
 unitary with a phase & \(\exp(i\pi/4)\,(0,0.6,0.8)\) & 0.18, 0.64, 0.18
-& 0 & 0 & 1, 1 & none & isospin rotation about the axis (0, 0.6, 0.8) \\
+& 0 & 0 & 1, 1 & none & isospin rotation about the axis (0, 0.6, 0.8) \\*
 partly non-unitary & \((1,i/2,0)/\sqrt{5/4}\) & 0.9, 0, 0.1 & 0.8 & 0.8
-& 1.341641, 0.447214 & none & none \\
+& 1.341641, 0.447214 & none & none \\*
 charged, up-up pairs & \((1,i,0)/\sqrt2\) & 1, 0, 0 & 1 & 1 & 1.414214,
 0 & isospin down & \(\tfrac12F_{\rm LL}-T^3_{\rm LL}\), the number of
-isospin-down particles \\
+isospin-down particles \\*
 charged, down-down pairs & \((1,-i,0)/\sqrt2\) & 0, 0, 1 & \(-1\) & 1 &
 1.414214, 0 & isospin up & \(\tfrac12F_{\rm LL}+T^3_{\rm LL}\), the
 number of isospin-up particles \\
@@ -1618,6 +1632,7 @@ examples}\label{a-second-label-that-carries-the-antisymmetry-examples}}
 \section{10. The sentence again, in one
 table}\label{the-sentence-again-in-one-table}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1379}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3333}}
@@ -1641,31 +1656,31 @@ where it is computed
 is \(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\) (scalar, \(0^+\)); the fermion
 number is broken & the attractive contact interaction acts in the
 spin-zero s-wave channels; the scalar channel wins for massive spinor
-charges & checks X-3; Section 7.6 \\
+charges & checks X-3; Section 7.6 \\*
 ``of its spinor charges'' & the particles are the quanta of the Dirac
 isodoublet \(\Psi_{\rm LL}\) built from the spinor charges
 \(\mathbf b\,\mathbf e_4\): fermions with the charges \(\pm\tfrac12\) &
 spinor number \(-1\) and the spin-statistics theorem & Section 2; check
-X-8 \\
+X-8 \\*
 ``condenses'' & the minimum of \(\Omega_{\rm LL}\) lies at
 \(\vec d_{\rm LL}\neq0\) & gap equation (6.7); with a Fermi sea every
 attraction suffices & gap \(0.090417\), \(\Omega_{\rm LL}\)
-\(-9.720605\times10^{-5}\) \\
+\(-9.720605\times10^{-5}\) \\*
 ``in an isospin-triplet \ldots{} state'' & the isospin factor of every
 spin-zero pair matrix is symmetric: isospin 1, pairs of charge \(+1\),
 0, \(-1\) & rule of Pauli: antisymmetric Dirac factor, so symmetric
-isospin factor & checks X-1 to X-4, X-10 \\
+isospin factor & checks X-1 to X-4, X-10 \\*
 ``unitary'' & \(\zeta_{\rm LL}=0\):
 \(\mathsf D_{\rm LL}\mathsf D_{\rm LL}^\dagger=\lvert\vec d_{\rm LL}\rvert^2\sigma^{\rm LL}_0\);
 one gap for both isospin directions; average isospin of a pair 0 &
 concavity of \(E^+_{\rm LL}+E^-_{\rm LL}\) in the squared gap (Jensen);
 the fully non-unitary state has half the condensation energy & checks
-X-5, X-6; ratio \(0.500000\) \\
+X-5, X-6; ratio \(0.500000\) \\*
 ``electrically neutral'' & the average charge of a pair is 0 in every
 unitary state; for \(\vec d_{\rm LL}\propto(0,0,1)\) every pair has the
 charge 0 and \(Q_{\rm LL}=T^3_{\rm LL}\) is unbroken: a superfluid, not
 a superconductor & Eq. (7.4); the unbroken generator of a unitary state
-is the isospin rotation about its real direction & checks X-5, X-7 \\
+is the isospin rotation about its real direction & checks X-5, X-7 \\*
 ``the pair that is a singlet of the whole super-loop requires two
 species'' & the scalar part \(-N_{\rm LL}(\mathbf b',\mathbf b)\) of the
 product of two spinor charges (spin 0, isospin 0, charge 0) is symmetric
@@ -1784,6 +1799,7 @@ Revision_SuperLoop, folder explanations, program `explain_superfluid`: the examp
 \subsection{11.3 The data files of the
 examples}\label{the-data-files-of-the-examples}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1429}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4286}}
@@ -1806,19 +1822,19 @@ matrices of one field and of two species (table of Section 5.3) &
 \texttt{species}, \texttt{exchange\_sign\_Dirac},
 \texttt{exchange\_sign\_isospin}, \texttt{exchange\_sign\_species},
 \texttt{exchange\_sign\_total}, \texttt{nonzero\_pair\_terms},
-\texttt{pair\_charge} \\
+\texttt{pair\_charge} \\*
 \texttt{explanations/data/ex\_states.csv} & the seven example
 condensates (table of Section 7.3) & \texttt{state},
 \texttt{dvec\_definition}, \texttt{dvec}, \texttt{pairs\_charge\_plus1},
 \texttt{pairs\_charge\_0}, \texttt{pairs\_charge\_minus1},
 \texttt{average\_pair\_charge}, \texttt{average\_pair\_isospin},
 \texttt{zeta}, \texttt{Delta\_+}, \texttt{Delta\_-}, \texttt{unpaired},
-\texttt{stabilizer\_dim}, \texttt{unbroken\_generator} \\
+\texttt{stabilizer\_dim}, \texttt{unbroken\_generator} \\*
 \texttt{explanations/data/ex\_two\_particle\_counting.csv} & the
 two-particle states of Section 3.4 & \texttt{total\_spin},
 \texttt{total\_isospin}, \texttt{species\_pair},
 \texttt{number\_of\_states}, \texttt{antisymmetric\_states},
-\texttt{symmetric\_states}, \texttt{allowed\_in\_s\_wave} \\
+\texttt{symmetric\_states}, \texttt{allowed\_in\_s\_wave} \\*
 \texttt{explanations/data/ex\_superfluid\_checks.txt} & the report of
 the checks X-1 to X-10 (Section 11.2) & --- \\
 \end{longtable}
@@ -1878,6 +1894,7 @@ script from the data files of Section 11.3.
 \hypertarget{the-figures}{%
 \subsection{11.5 The figures}\label{the-figures}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0968}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3226}}
@@ -1898,9 +1915,9 @@ checks
 \bottomrule\noalign{}
 \endlastfoot
 1 & \texttt{explanations/figures/fig\_ex\_bookkeeping} &
-\texttt{explanations/data/ex\_pair\_matrices.csv} & X-1, X-2, X-9 \\
+\texttt{explanations/data/ex\_pair\_matrices.csv} & X-1, X-2, X-9 \\*
 2 & \texttt{explanations/figures/fig\_ex\_pairs} &
-\texttt{explanations/data/ex\_states.csv} & X-5, X-6 \\
+\texttt{explanations/data/ex\_states.csv} & X-5, X-6 \\*
 3 & \texttt{explanations/figures/fig\_ex\_energy} &
 \texttt{data/sl\_sf\_omega\_zeta.csv},
 \texttt{data/sl\_sf\_dispersion.csv} & S-6, S-3 of \texttt{superloop} \\
@@ -1935,10 +1952,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-082b5c203c2fc5c5f91511d176073f7a736733b4a08ebdbbc093f3f9d4a9c2e8  explanations/figures/fig_ex_r13_bubble.pdf
-a58b93b4d1bcef6fb18781fc93790021960e74bdef2f8f59a0723bf994e38fe3  explanations/figures/fig_ex_r13_coordinates.pdf
-c22e4c5ae1608ceca6b2b85c6d2c5422e56afedf3d17428117cf70eb012584b7  explanations/figures/fig_ex_r13_divergences.pdf
-46fa60e38e10778a123d8c3761241f7a0890ab4f55578ce7cddba38bb5f9d43d  explanations/figures/fig_ex_r13_lorentz.pdf
+a935ecf2ee5d3d19f84476d021a9573feab187d286e96f89d70864f94b840f40  explanations/figures/fig_ex_r13_bubble.pdf
+14bb116dd8a63094d385a0f0a52f6daa004c9d383db6d0838e98e8100c8bfd67  explanations/figures/fig_ex_r13_coordinates.pdf
+5813bfac75db4fa5b435d866033c5467e260cf40ee3c70ae1a41d18c3ad020a1  explanations/figures/fig_ex_r13_divergences.pdf
+9294dcd7b3f09f22cbd079f2a9929c5f9e0ff5cc07a687ca08edcef675b4b24d  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -2285,6 +2302,7 @@ map \(\mathbf y\mapsto[\mathbf x,\mathbf y]\) & new & \texttt{Killing}
 
 \textbf{3 Operators on the super-loop and their eigenvalues}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2200}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.5000}}
@@ -2306,7 +2324,7 @@ plain-text names
 \endlastfoot
 \(Q_{\rm LL}\) & the electric charge, \(Q_{\rm LL}=T^3_{\rm LL}\):
 eigenvalues \(0\) on \(\mathbb C\otimes\mathbb H\) and \(\pm\tfrac12\)
-on the spinor charges & new & \texttt{Q\_LL} \\
+on the spinor charges & new & \texttt{Q\_LL} \\*
 \(T^\iota_{\rm LL}\), \((T_{\rm LL})^2\) & the isospin generators
 \(T^\iota_{\rm LL}=i\,D^{\rm v}_{\rm LL}(\mathbf e_\iota/2)\),
 Hermitian, \([T^1_{\rm LL},T^2_{\rm LL}]=iT^3_{\rm LL}\) and cyclically,
@@ -2314,7 +2332,7 @@ and the isospin Casimir
 \((T_{\rm LL})^2=\sum_\iota(T^\iota_{\rm LL})^2\) & new &
 \texttt{T\_LL\^{}iota} \texttt{T\_LL\^{}iota\textquotesingle{}}
 \texttt{T\_LL\^{}iota\textquotesingle{}\textquotesingle{}}
-\texttt{T\_LL\^{}3} \texttt{T\_LL\^{}2} \\
+\texttt{T\_LL\^{}3} \texttt{T\_LL\^{}2} \\*
 \(\mathrm{Cas}_{\rm LL}\) & the Casimir operator of the rotations,
 \(\mathrm{Cas}_{\rm LL}=-\sum_jD_{\rm LL}(J^j_{\rm LL})^2\); its
 eigenvalue is 0 for spin 0, 3/4 for spin 1/2 and 2 for spin 1 & new &
@@ -2323,6 +2341,7 @@ eigenvalue is 0 for spin 0, 3/4 for spin 1/2 and 2 for spin 1 & new &
 
 \textbf{4 The covariant families and their classification}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2200}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.5000}}
@@ -2350,13 +2369,13 @@ brackets: \(\mathcal F^{\rm A}_{\rm LL}\) on
 \(\mathfrak l_{\rm LL}\oplus\mathfrak p_{\rm LL}\oplus\mathfrak s_{\rm LL}\)
 (18), \(\mathcal F^{\rm C}_{\rm LL}\) on
 \(\mathfrak l_{\rm LL}\oplus\mathfrak{su}(2)\oplus\mathfrak s_{\rm LL}\)
-(17) & new & \texttt{F\_A} \texttt{F\_B} \texttt{F\_C} \\
+(17) & new & \texttt{F\_A} \texttt{F\_B} \texttt{F\_C} \\*
 \(\mathfrak p_{\rm LL}\); \(\mathbf r\), \(\mathbf r'\) & the
 translations of the family \(\mathcal F^{\rm B}_{\rm LL}\): the real
 space of the Hermitian bi-quaternions \(\mathbf r=\mathbf r^\dagger\)
 (dimension 4), on which \(\mathfrak l_{\rm LL}\) acts by
 \([\mathbf u,\mathbf r]=\mathbf u\mathbf r+\mathbf r\mathbf u^\dagger\)
-& new & \texttt{p\_LL} \texttt{rP} \texttt{rP\textquotesingle{}} \\
+& new & \texttt{p\_LL} \texttt{rP} \texttt{rP\textquotesingle{}} \\*
 \(c^{\rm tw}_{\rm LL}\), \(c^{\rm sl}_{\rm LL}\),
 \(c^{\rm PP}_{\rm LL}\), \(c^{\rm Ps}_{\rm LL}\),
 \(c^{\rm sP}_{\rm LL}\), \(c^{\rm TT}_{\rm LL}\),
@@ -2378,11 +2397,11 @@ of \(c^{\rm tw}_{\rm LL}\), and likewise & new & \texttt{c\_tw}
 \texttt{c\_TT} \texttt{c\_Ts} \texttt{c\_sT} \texttt{csP} \texttt{cTT}
 \texttt{ctw\_re} \texttt{ctw\_im} \texttt{csl\_re} \texttt{csl\_im}
 \texttt{cPP\_re} \texttt{cPP\_im} \texttt{cPs\_re} \texttt{cPs\_im}
-\texttt{cTs\_re} \texttt{cTs\_im} \texttt{csT\_re} \texttt{csT\_im} \\
+\texttt{cTs\_re} \texttt{cTs\_im} \texttt{csT\_re} \texttt{csT\_im} \\*
 \(\lambda^{\rm sc}_{\rm LL}\) & a complex number \(\neq0\) by which the
 spinor charges are rescaled,
 \(\mathbf b\mapsto\lambda^{\rm sc}_{\rm LL}\mathbf b\) & new &
-\texttt{lambda\_sc} \\
+\texttt{lambda\_sc} \\*
 \(\mathcal I^{\rm Jac}_{\rm LL}\), \(\mathcal I^{\rm Mal}_{\rm LL}\);
 \(w^{\rm sat}_{\rm LL}\) & the ideals of polynomials in the real
 coefficients of a family generated by the Jacobi and by the Malcev
@@ -2395,6 +2414,7 @@ polynomial times \(w^{\rm sat}_{\rm LL}\), minus 1) & new &
 
 \textbf{5 The manifolds}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2200}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.5000}}
@@ -2423,25 +2443,25 @@ its subspace of Hermitian bi-quaternions (\(p\le3\)), Minkowski space of
 \(3+1\) dimensions & new & \texttt{R\^{}(1,7)\_LL}
 \texttt{R\^{}(1,3)\_LL} \texttt{x\_LL\^{}0} \texttt{x\_LL\^{}p}
 \texttt{x\_LL\^{}1} \texttt{x\_LL\^{}2} \texttt{x\_LL\^{}3}
-\texttt{x\_LL\^{}j} \\
+\texttt{x\_LL\^{}j} \\*
 \(\mathbb O^{\rm s}_{\rm LL}\) & the split octonions inside
 \(\mathbb B_{\rm LL}\): the real space
 \(\mathbb H+(i\mathbb H)\mathbf e_4\) (real combinations of
 \(\mathbf e_0,\dots,\mathbf e_3,i\mathbf e_4,\dots,i\mathbf e_7\)),
 closed under the product, on which \(N_{\rm LL}\) has signature
 \((4,4)\): the \(4+4\) manifold (plain text \texttt{R\^{}(4,4)}) & new &
-\texttt{Os} \texttt{R\^{}(4,4)} \\
+\texttt{Os} \texttt{R\^{}(4,4)} \\*
 \(S^7_{\rm LL}\), \(S^{3,4}_{\rm LL}\) & the unit elements
 (\(N_{\rm LL}=1\)) of \(\mathbb O\) (the seven-sphere) and of
 \(\mathbb O^{\rm s}_{\rm LL}\) (the pseudo-sphere): the two real forms
 of \(\mathbb L_{\rm LL}\), both Moufang loops & new & \texttt{S\^{}7}
-\texttt{S\^{}(3,4)} \\
+\texttt{S\^{}(3,4)} \\*
 \(X^{\rm LL}_{\mathbf x}\) & the frame field
 \(X^{\rm LL}_{\mathbf x}(\mathbf w)=\mathbf w\mathbf x\) on
 \(\mathbb L_{\rm LL}\) for imaginary \(\mathbf x\) (a vector field: the
 velocity of the curve \(\mathbf w(\theta_{\rm LL})\) with
 \(d\mathbf w/d\theta_{\rm LL}=\mathbf w\mathbf x\)) & new &
-\texttt{X\_x} \texttt{X\_y} \\
+\texttt{X\_x} \texttt{X\_y} \\*
 \(\mathsf L_{\rm LL}(\mathbf g)\) & the real \(4\times4\) matrix of the
 Lorentz transformation
 \(\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger\) of
@@ -2450,16 +2470,16 @@ Lorentz transformation
 \(\mathbf g\): its entry in row \(p\) and column \(p'\)
 (\(p,p'=0,\dots,3\)) is
 \(\tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)\),
-with \(\sigma^{\rm LL}_0\) the unit matrix & new & \texttt{Lmat} \\
+with \(\sigma^{\rm LL}_0\) the unit matrix & new & \texttt{Lmat} \\*
 \(\chi_{\rm LL}\) & a two-component spinor (a column of two complex
 numbers) on which a unit bi-quaternion \(\mathbf g\) acts by
 \(\chi_{\rm LL}\mapsto M_{\rm LL}(\mathbf g)\chi_{\rm LL}\); the
 Hermitian matrix \(\chi_{\rm LL}\chi_{\rm LL}^\dagger\) is the matrix
 \(M_{\rm LL}(\mathbf x)\) of a point \(\mathbf x\) of the future light
-cone of \(\mathbb R^{1,3}_{\rm LL}\) & new & \texttt{chi} \\
+cone of \(\mathbb R^{1,3}_{\rm LL}\) & new & \texttt{chi} \\*
 \(\theta_{\rm LL}\) & the real parameter of a one-parameter family of
 transformations or of a curve (an angle, a rapidity) & new &
-\texttt{theta} \\
+\texttt{theta} \\*
 \(\mathcal V_{\rm LL}(\mathbf u)\) & the vector action of a Lorentz
 element on \(\mathbb R^{1,3}_{\rm LL}\),
 \(\mathcal V_{\rm LL}(\mathbf u)\mathbf x=\mathbf u\mathbf x+\mathbf x\mathbf u^\dagger\),
@@ -2643,6 +2663,7 @@ species index & new & \\
 
 \textbf{7 Power counting and renormalizability}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2200}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.5000}}
@@ -2666,7 +2687,7 @@ plain-text names
 coupling, in units in which \(\hbar\) and the speed of light are 1 (a
 bracket with two or three arguments is a commutator or an associator) &
 new & \texttt{{[}Psi\_LL{]}} \texttt{{[}phi{]}} \texttt{{[}G{]}}
-\texttt{{[}g\_Y{]}} \texttt{{[}lam4{]}} \\
+\texttt{{[}g\_Y{]}} \texttt{{[}lam4{]}} \\*
 \(\phi_{\rm LL}\), \(g^{\rm Y}_{\rm LL}\), \(\lambda^{(1)}_{\rm LL}\),
 \(\lambda^{(2)}_{\rm LL}\) & the Yukawa completion: a complex
 isospin-triplet pair field
@@ -2677,20 +2698,20 @@ the Yukawa coupling \(g^{\rm Y}_{\rm LL}\), and the couplings
 terms \((\phi^\dagger_{\rm LL}\phi_{\rm LL})^2\) and
 \(\lvert\phi^T_{\rm LL}\phi_{\rm LL}\rvert^2\) (plain text
 \texttt{lam4}: either of them) & new & \texttt{phi} \texttt{g\_Y}
-\texttt{lam4} \texttt{lam4\_1} \texttt{lam4\_2} \\
+\texttt{lam4} \texttt{lam4\_1} \texttt{lam4\_2} \\*
 \(\mathcal L^{\rm Y}_{\rm LL}\), \(\mathcal L^{\rm c}_{\rm LL}\) & the
 Lagrangian densities of the Yukawa form and of the contact form of the
 field theory of the spinor charges on \(\mathbb R^{1,3}_{\rm LL}\) & new
-& \texttt{Lagr\_Y} \texttt{Lagr\_c} \\
+& \texttt{Lagr\_Y} \texttt{Lagr\_c} \\*
 \(m^\phi_{\rm LL}\) & the mass of the pair field \(\phi_{\rm LL}\) in
-the Yukawa form & new & \texttt{m\_phi} \\
+the Yukawa form & new & \texttt{m\_phi} \\*
 \(I^{\rm ren}_{\rm LL}\) & the renormalized one-loop bubble,
 \(I^{\rm ren}_{\rm LL}(p^{\rm E}_{\rm LL})=I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})-I^{\rm bub}_{\rm LL}(0)-(p^{\rm E}_{\rm LL})^2\,\partial I^{\rm bub}_{\rm LL}/\partial(p^{\rm E}_{\rm LL})^2\)
 (the derivative taken at \(p^{\rm E}_{\rm LL}=0\)): the bubble minus its
-mass and wave-function counterterms & new & \texttt{Iren} \\
+mass and wave-function counterterms & new & \texttt{Iren} \\*
 \(\deg_{\rm LL}\) & the superficial degree of divergence of a
 one-particle-irreducible graph: the power of the cutoff with which it
-grows when all its loop momenta grow together & new & \texttt{deg} \\
+grows when all its loop momenta grow together & new & \texttt{deg} \\*
 \(n^{\rm loop}_{\rm LL}\), \(n^{\rm int,F}_{\rm LL}\),
 \(n^{\rm int,B}_{\rm LL}\), \(n^{\rm ext,F}_{\rm LL}\),
 \(n^{\rm ext,B}_{\rm LL}\), \(n^{\rm v}_{\rm LL}\),
@@ -2699,7 +2720,7 @@ loops, of internal fermion and boson lines, of external fermion and
 boson lines, of vertices, of Yukawa vertices and of quartic vertices of
 a graph & new & \texttt{nloop} \texttt{nint\_F} \texttt{nint\_B}
 \texttt{next\_F} \texttt{next\_B} \texttt{nvert} \texttt{nvert\_Y}
-\texttt{nvert\_4} \\
+\texttt{nvert\_4} \\*
 \(I^{\rm bub}_{\rm LL}\); \(k^{\rm E}_{\rm LL}\), \(p^{\rm E}_{\rm LL}\)
 & the one-loop bubble of the Yukawa completion,
 \(I^{\rm bub}_{\rm LL}(p^{\rm E}_{\rm LL})=\int_{k^{\rm E}_{\rm LL}<\Lambda_{\rm LL}}\frac{d^4k^{\rm E}_{\rm LL}}{(2\pi)^4}\frac{k^{\rm E}_{\rm LL}\cdot(k^{\rm E}_{\rm LL}+p^{\rm E}_{\rm LL})+m_{\rm LL}^2}{[(k^{\rm E}_{\rm LL})^2+m_{\rm LL}^2][(k^{\rm E}_{\rm LL}+p^{\rm E}_{\rm LL})^2+m_{\rm LL}^2]}\),
@@ -3804,6 +3825,177 @@ derivatives at the two ends,
 \(B^{\rm out}_{\rm LL}=(1+\tfrac14h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})B^{\rm err}_{\rm LL}+\tfrac14h^{\rm IDA}_{\rm LL}r^{\rm der}_{\rm LL}+(h^{\rm IDA}_{\rm LL}E^{\rm max}_{\rm LL})^4/384\)
 & new & \texttt{budget\_step} \texttt{local\_error} \texttt{E\_max}
 \texttt{deriv\_residual} \texttt{budget\_out} \\
+\(h^{\rm st}_{\rm LL}\), \(t^{\rm st}_{{\rm LL},s}\);
+\(k^{\rm IDA}_{\rm LL}\); \(n^{\rm fp}_{\rm LL}\),
+\(n^{\rm Nw}_{\rm LL}\) & the size of an internal step of a time
+integration, where a statement holds for both integrators
+(\(h^{\rm CV}_{\rm LL}\) for CVODE, \(h^{\rm IDA}_{\rm LL}\) for IDA),
+and the time \(x^0_{\rm LL}\) at the end of a numbered internal step, as
+the integrator reports it (the last subscript is the number of the step;
+\(t^{\rm st}_{{\rm LL},0}\) is the initial time); the order of the
+backward differentiation formula of a step of IDA (1 to 5); the number
+of fixed-point iterations that CVODE makes in a step, and the number of
+steps of Newton's method that IDA makes in a step & new &
+\texttt{h\_step} \texttt{t\_step} \texttt{k\_IDA} \texttt{n\_fp}
+\texttt{n\_Newton} \\
+\(w^{\rm loc}_{{\rm LL},s}\), \(w^{\rm dev}_{{\rm LL},s}\);
+\(\Xi^{\rm coh}_{\rm LL}\); \(c^{\rm loc}_{{\rm LL},s}\) & the exact
+local error of a numbered internal step of a time integration (the last
+subscript is the number of the step),
+\(w^{\rm loc}_{{\rm LL},s}=w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})-\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s}-t^{\rm st}_{{\rm LL},s-1})\big)w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s-1})\),
+the computed state at the end of the step minus the exact solution that
+starts at the beginning of the step from the computed state (its norm is
+\(\delta^{\rm loc}_{\rm LL}\)); the deviation of the computed state from
+the exact solution at the end of the step,
+\(w^{\rm dev}_{{\rm LL},s}=w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})-w^{\rm ex}_{\rm LL}(t^{\rm st}_{{\rm LL},s})\);
+and the coherence of an integration, the norm of the deviation at its
+end divided by the sum of the norms \(\delta^{\rm loc}_{\rm LL}\) of the
+local errors of all its steps (at most 1, and equal to 1 if all local
+errors, carried to the end by the exact evolution, point in one
+direction); and the cosine of the angle between the exact local error of
+a numbered step and that of the step before, both carried to the same
+time by the exact evolution,
+\(c^{\rm loc}_{{\rm LL},s}={\rm Re}\,\langle\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s}-t^{\rm st}_{{\rm LL},s-1})\big)w^{\rm loc}_{{\rm LL},s-1},w^{\rm loc}_{{\rm LL},s}\rangle/(\lVert w^{\rm loc}_{{\rm LL},s-1}\rVert\,\lVert w^{\rm loc}_{{\rm LL},s}\rVert)\)
+with the scalar product of the complex vectors: \(+1\) if the two errors
+add up, \(-1\) if they cancel (plain text
+\texttt{local\_cosine\_median}: its median over the settled steps) & new
+& \texttt{w\_local} \texttt{w\_deviation} \texttt{coherence}
+\texttt{local\_cosine} \texttt{local\_cosine\_median} \\
+\(\delta^{\rm est}_{\rm LL}\), \(\delta^{\rm wrms}_{\rm LL}\);
+\(c^{\rm est}_{\rm LL}\) & the value of the local error test of an
+internal step of CVODE or of IDA: the weighted root-mean-square norm
+(the square root of the mean, over the \(2n^{\rm cpx}_{\rm LL}\) real
+unknowns, of the squares of the errors of the unknowns, each divided by
+the tolerance of its unknown) of the estimate that the integrator makes
+of the local error of the step; the integrator accepts a step only if
+this number is at most 1; the same norm of the exact local error
+\(w^{\rm loc}_{{\rm LL},s}\) of the step, with the same tolerances; and
+the factor by which the integrator multiplies the difference between the
+accepted and the predicted state of a step to obtain its estimate (for
+steps of a constant size: in CVODE the modulus of the Adams-Moulton
+coefficient \(c^{\rm AM}_{{\rm LL},m}\) whose index is the order,
+divided by the Adams-Bashforth coefficient \(c^{\rm AB}_{{\rm LL},m}\)
+whose index is the order minus 1; in IDA 1 divided by the order plus 1)
+& new & \texttt{test\_value} \texttt{local\_wrms} \texttt{c\_est} \\
+\(z^{\rm st}_{\rm LL}\), \(\kappa^{\rm fac}_{\rm LL}\),
+\(u^{\rm st}_{\rm LL}\), \(\delta^{\rm st}_{\rm LL}\) & for one
+eigenvector of \(\mathcal H^{\rm lat}_{\rm LL}\), with the eigenvalue
+\(E^{\rm qp}_{{\rm LL},n}\), and an internal step of the size
+\(h^{\rm st}_{\rm LL}\): the number
+\(z^{\rm st}_{\rm LL}=-iE^{\rm qp}_{{\rm LL},n}h^{\rm st}_{\rm LL}\)
+(the exact solution multiplies the amplitude of the eigenvector by
+\(\exp(z^{\rm st}_{\rm LL})\) in the step); the factor
+\(\kappa^{\rm fac}_{\rm LL}\) by which a linear multistep formula that
+is applied in the same way with the same step size in every step
+multiplies the amplitude in every step;
+\(u^{\rm st}_{\rm LL}=1-1/\kappa^{\rm fac}_{\rm LL}\), the factor by
+which the backward difference multiplies the sequence of the amplitudes;
+and the relative error of one step,
+\(\delta^{\rm st}_{\rm LL}=\kappa^{\rm fac}_{\rm LL}\exp(-z^{\rm st}_{\rm LL})-1\)
+& new & \texttt{z\_step} \texttt{kappa\_step} \texttt{u\_step}
+\texttt{eps\_step} \\
+\(c^{\rm AM}_{{\rm LL},m}\), \(c^{\rm AB}_{{\rm LL},m}\);
+\(b^{\rm AM}_{{\rm LL},m}\), \(b^{\rm AB}_{{\rm LL},m}\);
+\(g^{\rm st}_{{\rm LL},s}\) & the coefficients of the Adams-Moulton and
+of the Adams-Bashforth formulas written in backward differences,
+numbered by the last subscript: \(c^{\rm AM}_{{\rm LL},m}\) is the
+coefficient of the power of \(u^{\rm st}_{\rm LL}\) with this number as
+exponent in the series of
+\(-u^{\rm st}_{\rm LL}/\ln(1-u^{\rm st}_{\rm LL})\) (the numbers \(1\),
+\(-\tfrac12\), \(-\tfrac1{12}\), \(-\tfrac1{24}\), \(-\tfrac{19}{720}\),
+\(-\tfrac3{160}\), \(-\tfrac{863}{60480}\), \(-\tfrac{275}{24192}\) for
+the exponents 0 to 7), and \(c^{\rm AB}_{{\rm LL},m}\) the same
+coefficient of
+\(-u^{\rm st}_{\rm LL}/\big((1-u^{\rm st}_{\rm LL})\ln(1-u^{\rm st}_{\rm LL})\big)\)
+(the numbers \(1\), \(\tfrac12\), \(\tfrac5{12}\), \(\tfrac38\),
+\(\tfrac{251}{720}\) for the exponents 0 to 4); the weights of the same
+two formulas of a given order written in the values of the derivative:
+\(b^{\rm AM}_{{\rm LL},m}\) multiplies the derivative at the step end
+that lies as many steps before the new step end as the last subscript
+says (the subscript 0 is the new step end itself; the subscripts run up
+to the order minus 1), and \(b^{\rm AB}_{{\rm LL},m}\) the same for the
+subscripts from 1 up to the order; and \(g^{\rm st}_{{\rm LL},s}\), the
+step size times the derivative that CVODE has stored for the end of a
+numbered step (the last subscript is the number of the step; for the
+amplitude of one eigenvector) & new & \texttt{c\_AM} \texttt{c\_AB}
+\texttt{b\_AM} \texttt{b\_AB} \texttt{g\_stored} \\
+\(H^{\rm har}_{\rm LL}\), \(c^{\rm ld}_{\rm LL}\),
+\(r^{\rm cj}_{\rm LL}\); \(\rho^{\rm Nw}_{\rm LL}\),
+\(\rho^{\rm one}_{\rm LL}\) & the harmonic number of the order of a step
+of IDA,
+\(H^{\rm har}_{\rm LL}=1+\tfrac12+\dots+1/k^{\rm IDA}_{\rm LL}\); the
+leading coefficient of the step,
+\(c^{\rm ld}_{\rm LL}=H^{\rm har}_{\rm LL}/h^{\rm IDA}_{\rm LL}\), the
+factor by which the backward differentiation formula multiplies a change
+of the new value to give the change of its derivative (\texttt{cj} in
+the source text of IDA); the ratio \(r^{\rm cj}_{\rm LL}\) of the
+leading coefficient of a step to the leading coefficient for which the
+iteration matrix used in the step was computed (1 for a matrix made for
+the step; IDA computes its matrix anew only when the ratio leaves the
+interval from 0.6 to 5/3); the fraction \(\rho^{\rm Nw}_{\rm LL}\) of
+the way from the predicted value of a step to the exact solution of its
+formula that the steps of Newton's method of IDA cover in the step; and
+the same fraction for one step of Newton's method,
+\(\rho^{\rm one}_{\rm LL}=\dfrac{2}{1+r^{\rm cj}_{\rm LL}}\,\dfrac{H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}}{H^{\rm har}_{\rm LL}/r^{\rm cj}_{\rm LL}-z^{\rm st}_{\rm LL}}\),
+so that
+\(\rho^{\rm Nw}_{\rm LL}=1-(1-\rho^{\rm one}_{\rm LL})^{n^{\rm Nw}_{\rm LL}}\)
+& new & \texttt{H\_har} \texttt{cj} \texttt{cj\_ratio}
+\texttt{rho\_Newton} \texttt{rho\_one} \\
+\(a^{\rm md}_{{\rm LL},n}\), \(\delta^{\rm ac}_{{\rm LL},n}\),
+\(\delta^{\rm t}_{\rm LL}\), \(\delta^{\rm pre}_{\rm LL}\) & the
+amplitude of a state of the lattice along a numbered eigenvector of
+\(\mathcal H^{\rm lat}_{\rm LL}\) (the scalar product of the normalized
+eigenvector with the state; the last subscript is the number of the
+eigenvector, as in \(E^{\rm qp}_{{\rm LL},n}\)); the relative error of
+this amplitude at the end of a time integration, the computed amplitude
+divided by the exact one, minus 1; the rounding of the time variable of
+an integrator, \(\delta^{\rm t}_{\rm LL}\), the exact sum of the sizes
+of all its internal steps minus the time that it reports at the end; and
+the deviation at the end of an integration that is predicted from the
+formulas of the integrator,
+\(\delta^{\rm pre}_{\rm LL}=\big(\sum_n\lvert a^{\rm md}_{{\rm LL},n}\rvert^2\lvert\delta^{\rm ac}_{{\rm LL},n}\rvert^2\big)^{1/2}\)
+with the amplitudes of the initial state and the predicted errors & new
+& \texttt{a\_mode} \texttt{err\_mode} \texttt{time\_defect}
+\texttt{predicted\_deviation} \\
+\(a^{\rm st}_{{\rm LL},s}\); \(\nabla^{\rm bd}_{\rm LL}\) & the
+amplitude of one eigenvector of \(\mathcal H^{\rm lat}_{\rm LL}\) (the
+one under discussion) in the computed state at the end of a numbered
+internal step (the last subscript is the number of the step); and the
+backward difference of a sequence that is given at the ends of the
+internal steps, its value at the end of a step minus its value at the
+end of the step before,
+\(\nabla^{\rm bd}_{\rm LL}a^{\rm st}_{{\rm LL},s}=a^{\rm st}_{{\rm LL},s}-a^{\rm st}_{{\rm LL},s-1}\);
+a power of it is its repeated application & new & \texttt{a\_step}
+\texttt{nabla\_bd} \\
+\(a^{\rm prd}_{{\rm LL},s}\), \(a^{\rm imp}_{{\rm LL},s}\),
+\(a^{\rm bas}_{{\rm LL},s}\); \(a^{\rm it}_{{\rm LL},m}\);
+\(y^{\rm fp}_{\rm LL}\) & for the amplitude of one eigenvector in a
+numbered internal step: the predicted value, from which the iteration of
+the step starts (in CVODE the Adams-Bashforth formula applied to the
+stored derivatives, in IDA the value at the new time of the polynomial
+through the values at the ends of the last steps); the exact solution of
+the implicit formula of the step for the stored values of the earlier
+steps; the explicit part of the Adams-Moulton formula in CVODE (the
+amplitude at the end of the step before plus the weighted stored
+derivatives of the earlier steps); the iterates of the step, numbered by
+the last subscript from 0 (the predicted value); and the factor
+\(y^{\rm fp}_{\rm LL}=b^{\rm AM}_{{\rm LL},0}\,z^{\rm st}_{\rm LL}\) by
+which one fixed-point iteration of CVODE multiplies the distance of an
+iterate from \(a^{\rm imp}_{{\rm LL},s}\) & new & \texttt{a\_predicted}
+\texttt{a\_implicit} \texttt{a\_base} \texttt{a\_iterate}
+\texttt{y\_fp} \\
+\(S^{\rm AB}_{\rm LL}\), \(S^{\rm AM}_{\rm LL}\); \(r^{\rm g}_{\rm LL}\)
+& for a solution of the recurrence of CVODE in which the amplitude and
+the stored derivative of one eigenvector are multiplied by
+\(\kappa^{\rm fac}_{\rm LL}\) in every step: the sums over the stored
+derivatives of the earlier steps,
+\(S^{\rm AB}_{\rm LL}=\sum_{m=1}^{q}b^{\rm AB}_{{\rm LL},m}(\kappa^{\rm fac}_{\rm LL})^{-m}\)
+(upper limit: the order \(q^{\rm CV}_{\rm LL}\)) and
+\(S^{\rm AM}_{\rm LL}=\sum_{m=1}^{q-1}b^{\rm AM}_{{\rm LL},m}(\kappa^{\rm fac}_{\rm LL})^{-m}\)
+(upper limit: the order minus 1), and the constant ratio
+\(r^{\rm g}_{\rm LL}=g^{\rm st}_{{\rm LL},s}/a^{\rm st}_{{\rm LL},s}\)
+of the stored derivative to the amplitude & new & \texttt{S\_AB}
+\texttt{S\_AM} \texttt{r\_g} \\
 \end{longtable}
 
 \end{document}

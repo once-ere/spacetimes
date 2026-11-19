@@ -25,6 +25,8 @@ for md in "$@"; do
       -V mathfont="Latin Modern Math" \
       -V colorlinks=true -V linkcolor=blue -V urlcolor=blue -V citecolor=blue \
       --include-in-header="$TMPH"
+    # a short table is kept on one page (Revision_SuperLoop/code/scripts/keep_tables.py changes the .tex)
+    python3 "$TOOLS/../../../code/scripts/keep_tables.py" "$base.tex"
     latexmk -xelatex -interaction=nonstopmode -halt-on-error -quiet "$base.tex" > /dev/null 2>&1 \
       || { echo "[docs] LaTeX failed for $md; the error is in $dir/$base.log"; exit 1; }
     # the layout check of the project (Revision_SuperLoop/code/scripts/check_layout.py): every line, table cell or
@@ -32,8 +34,11 @@ for md in "$@"; do
     # build fails; the .log is then kept for inspection
     python3 "$TOOLS/../../../code/scripts/check_layout.py" "$base.log" \
       || { echo "[docs] layout problems in $md (listed above); the log is $dir/$base.log"; exit 1; }
+    # and the check of the pages (check_pages.py of the same folder): no page has text below its text area
+    python3 "$TOOLS/../../../code/scripts/check_pages.py" "$base.pdf" \
+      || { echo "[docs] layout problems in $md (listed above)"; exit 1; }
     latexmk -c -quiet "$base.tex" > /dev/null 2>&1 || true
     rm -f "$base.xdv" )
 done
 rm -f "$TMPH"
-echo "[docs] done; no line, table cell or formula is wider than its box"
+echo "[docs] done; no line, table cell or formula is wider than its box, and no page is higher than the text area"

@@ -124,6 +124,17 @@
 \AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
   \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
 \setlength{\LTcapwidth}{\textwidth}
+% A short table is kept on one page.  The build (Revision_SuperLoop/code/scripts/keep_tables.py) ends the rows of such
+% a table with \\*, which forbids a page break after a row, and sets \sptkeptpenalty to 10000 in front of the table.
+% This penalty is put here in the place of the breakpoint (penalty 0) that longtable leaves after every table, so that
+% the paragraph that follows a kept table, its caption, begins on the same page; it is set back to 0 after the table.
+\newcount\sptkeptpenalty
+\sptkeptpenalty=0
+\makeatletter
+\patchcmd{\endlongtable}{\endgraf\penalty\z@\addvspace\LTpost}%
+  {\endgraf\penalty\sptkeptpenalty\addvspace\LTpost\global\sptkeptpenalty=\z@}%
+  {}{\PackageError{doc_header}{the end of longtable could not be patched}{The tables can still be typeset, but a short table may be separated from its caption.}}
+\makeatother
 % allow line breaks after slashes and hyphens inside table cells
 \usepackage{xurl}
 % code blocks: break over-long lines instead of running into the margin.
@@ -693,6 +704,7 @@ The method:
 \hypertarget{what-was-changed}{%
 \section{4. What was changed}\label{what-was-changed}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1507}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4247}}
@@ -714,45 +726,45 @@ module \texttt{t2core::cvode} (\texttt{integrate},
 \texttt{integrate\_status} for a right side that can fail,
 \texttt{evolve\_lattice}, settings, counters, error weights, error
 budget); dependency \texttt{cvode\_rs} (path into
-\texttt{vendor/sundials\_rs-7.8.0}) \\
+\texttt{vendor/sundials\_rs-7.8.0}) \\*
 \texttt{t2\_analytic} AS-2, AS-4 & RK4, \(\ell^{\rm t}_{\rm LL}=0.004\)
 and 0.02; tolerance of the checks \(10^{-8}\) & CVODE at 101 output
 times; tolerance of the checks \(10^{-9}\); counters reported; data
-columns \texttt{P\_up\_cvode}, \texttt{P\_hole\_cvode} \\
+columns \texttt{P\_up\_cvode}, \texttt{P\_hole\_cvode} \\*
 \texttt{t2\_fields} GS-13 & the stability of the RK4 factor (a statement
 about the method); data \texttt{t2\_rk4\_stability.csv}, Figure 2 of
 Test 2 & CVODE against the exact spectral solution on the lattice of
 GS-10, for three tolerances, with the error budget; data
-\texttt{t2\_cvode\_accuracy.csv} \\
+\texttt{t2\_cvode\_accuracy.csv} \\*
 \texttt{t2\_solve}, task \texttt{evolve} & RK4 with the keys
 \texttt{time\_step}, \texttt{steps}, \texttt{output\_every} (input
 format \texttt{t2in\ 1}) & CVODE with \texttt{output\_step},
 \texttt{outputs}, \texttt{fields\_every}, \texttt{rtol}, \texttt{atol}
 (format \texttt{t2in\ 2}; the format \texttt{t2in\ 1} is refused with an
-explanation); conservation checked against \(10B^{\rm err}_{\rm LL}\) \\
+explanation); conservation checked against \(10B^{\rm err}_{\rm LL}\) \\*
 \texttt{t2\_solve}, task \texttt{quench} & implicit midpoint rule &
 CVODE for all modes at once, the pair field computed from the modes at
-every evaluation \\
+every evaluation \\*
 \texttt{t2\_sfbs} SB-10, SB-16 & RK4, \(\ell^{\rm t}_{\rm LL}=0.02\) and
 0.05 & CVODE, sampled at the same times (the sampling interval of the
-signal is kept) \\
+signal is kept) \\*
 \texttt{t2\_plot} & the titles ``RK4 errors'', ``what the implicit
 midpoint rule conserves'' & ``CVODE errors'', ``the conserved quantities
-(CVODE errors)'' \\
+(CVODE errors)'' \\*
 \texttt{t2\_solve.py} (Python solver of item {[}3{]}) & RK4
 (\texttt{evolve}) and the implicit midpoint rule (\texttt{quench}) in
 Python & the same CVODE as the Rust programs, called through the new
 shared library \texttt{libt2cvode} (crate \texttt{t2cvode\_c}, the C
 interface of \texttt{t2core::cvode}) with the module \texttt{ctypes};
 format \texttt{t2in\ 2}; the same checks and reports as the Rust
-solver \\
+solver \\*
 \texttt{t2\_plot.py}, \texttt{make\_t2\_figures.py},
 \texttt{t2\_examples\_check.py} & the titles and labels of RK4 and the
 midpoint rule; Figure 2 of Test 2 the RK4 factor; the fermion number of
 EX-7 checked against \(10^{-9}\) & the titles and labels of CVODE;
 Figure 2 of Test 2 the accuracy of CVODE (GS-13); EX-7 against the bound
 of the solvers; the tables of Section 6.4 of Test 2 written as
-fragments \\
+fragments \\*
 new & & the program \texttt{t2\_cvcmp}, the shared library
 \texttt{libt2cvode} and the scripts of the folder
 \texttt{test2/cvode\_vs\_rk4} (this comparison) \\
@@ -956,6 +968,7 @@ what the tolerance controls, improves monotonically.
 \subsection{5.2 The archived RK4 numbers are
 reproduced}\label{the-archived-rk4-numbers-are-reproduced}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
@@ -973,7 +986,7 @@ the same, CVODE (\(r^{\rm tol}_{\rm LL}=10^{-12}\))
 \bottomrule\noalign{}
 \endlastfoot
 \(P^\uparrow_{\rm LL}\) of AS-2 (\texttt{t2\_A\_precession.csv}) &
-5.00e-10 & 1.00e-10 \\
+5.00e-10 & 1.00e-10 \\*
 \(P^{\rm h}_{\rm LL}\) of AS-4 (\texttt{t2\_B\_rabi.csv}) & 2.00e-10 &
 0.00e0 \\
 \end{longtable}
@@ -1006,6 +1019,7 @@ to \(10^{-13}\) is much smaller than the difference from the first
 version, the CVODE result is converged and the difference is the error
 of the first version.
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
@@ -1028,28 +1042,29 @@ CVODE \(10^{-13}\) minus CVODE \(10^{-12}\)
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-packet\_free & \texttt{norm} & 1.50e-7 & 1.76e-7 & 3.00e-11 \\
-packet\_free & \texttt{E\_expect} & 1.66e-7 & 1.96e-7 & 3.40e-11 \\
-packet\_free & \texttt{P\_hole} & 0.00e0 & 0.00e0 & 0.00e0 \\
-packet\_free & \texttt{P\_up} & 0.00e0 & 0.00e0 & 0.00e0 \\
-packet\_free & \texttt{x\_mean\_1} & 7.75e-6 & 8.63e-8 & 2.00e-10 \\
-cyclotron & \texttt{norm} & 2.92e-7 & 7.20e-10 & 2.52e-9 \\
-cyclotron & \texttt{E\_expect} & 3.59e-7 & 7.71e-10 & 3.10e-9 \\
-cyclotron & \texttt{P\_up} & 0.00e0 & 0.00e0 & 0.00e0 \\
-cyclotron & \texttt{x\_mean\_1} & 4.95e-6 & 1.18e-8 & 3.35e-9 \\
-cyclotron & \texttt{x\_mean\_2} & 4.52e-6 & 1.36e-8 & 6.27e-9 \\
-andreev & \texttt{norm} & 1.46e-9 & 5.60e-11 & 9.00e-12 \\
-andreev & \texttt{E\_expect} & 2.79e-9 & 1.29e-10 & 1.61e-11 \\
-andreev & \texttt{P\_hole} & 1.40e-9 & 6.20e-11 & 6.00e-12 \\
-andreev & \texttt{P\_up} & 1.39e-9 & 6.15e-11 & 6.00e-12 \\
-andreev & \texttt{x\_mean\_1} & 5.06e-8 & 1.70e-9 & 4.00e-10 \\
-quench & \texttt{abs\_d\_mean} & 4.11e-3 & 4.42e-9 & 4.20e-11 \\
-quench & \texttt{abs\_d\_site0} & 4.11e-3 & 4.42e-9 & 4.20e-11 \\
-quench & \texttt{N\_F} & 1.27e-8 & 5.07e-7 & 4.90e-9 \\
-quench & \texttt{E\_MF} & 1.92e-3 & 3.86e-6 & 3.70e-8 \\
+packet\_free & \texttt{norm} & 1.50e-7 & 1.76e-7 & 3.00e-11 \\*
+packet\_free & \texttt{E\_expect} & 1.66e-7 & 1.96e-7 & 3.40e-11 \\*
+packet\_free & \texttt{P\_hole} & 0.00e0 & 0.00e0 & 0.00e0 \\*
+packet\_free & \texttt{P\_up} & 0.00e0 & 0.00e0 & 0.00e0 \\*
+packet\_free & \texttt{x\_mean\_1} & 7.75e-6 & 8.63e-8 & 2.00e-10 \\*
+cyclotron & \texttt{norm} & 2.92e-7 & 7.20e-10 & 2.52e-9 \\*
+cyclotron & \texttt{E\_expect} & 3.59e-7 & 7.71e-10 & 3.10e-9 \\*
+cyclotron & \texttt{P\_up} & 0.00e0 & 0.00e0 & 0.00e0 \\*
+cyclotron & \texttt{x\_mean\_1} & 4.95e-6 & 1.18e-8 & 3.35e-9 \\*
+cyclotron & \texttt{x\_mean\_2} & 4.52e-6 & 1.36e-8 & 6.27e-9 \\*
+andreev & \texttt{norm} & 1.46e-9 & 5.60e-11 & 9.00e-12 \\*
+andreev & \texttt{E\_expect} & 2.79e-9 & 1.29e-10 & 1.61e-11 \\*
+andreev & \texttt{P\_hole} & 1.40e-9 & 6.20e-11 & 6.00e-12 \\*
+andreev & \texttt{P\_up} & 1.39e-9 & 6.15e-11 & 6.00e-12 \\*
+andreev & \texttt{x\_mean\_1} & 5.06e-8 & 1.70e-9 & 4.00e-10 \\*
+quench & \texttt{abs\_d\_mean} & 4.11e-3 & 4.42e-9 & 4.20e-11 \\*
+quench & \texttt{abs\_d\_site0} & 4.11e-3 & 4.42e-9 & 4.20e-11 \\*
+quench & \texttt{N\_F} & 1.27e-8 & 5.07e-7 & 4.90e-9 \\*
+quench & \texttt{E\_MF} & 1.92e-3 & 3.86e-6 & 3.70e-8 \\*
 quench & \texttt{ortho\_error} & 4.84e-10 & 2.09e-8 & 1.88e-10 \\
 \end{longtable}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
   >{\raggedleft\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
@@ -1078,8 +1093,8 @@ the same, CVODE
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-packet\_free & 1.50e-7 & 1.07e-10 & 1.66e-7 & 1.23e-10 & 2400 & 1406 \\
-cyclotron & 2.95e-7 & 2.56e-9 & 3.62e-7 & 3.15e-9 & 2880 & 4570 \\
+packet\_free & 1.50e-7 & 1.07e-10 & 1.66e-7 & 1.23e-10 & 2400 & 1406 \\*
+cyclotron & 2.95e-7 & 2.56e-9 & 3.62e-7 & 3.15e-9 & 2880 & 4570 \\*
 andreev & 1.46e-9 & 9.81e-12 & 2.80e-9 & 1.88e-11 & 4800 & 3514 \\
 \end{longtable}
 
@@ -1110,6 +1125,7 @@ tolerance \(10^{-12}\) of the programs is needed.
 \subsection{5.4 The quench: a correction of the
 results}\label{the-quench-a-correction-of-the-results}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
   >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
@@ -1133,11 +1149,11 @@ CVODE, \(r^{\rm tol}_{\rm LL}=10^{-13}\)
 \bottomrule\noalign{}
 \endlastfoot
 angular frequency of the amplitude oscillation & 1.184485 & 1.188975 &
-1.188975 & 1.188975 \\
+1.188975 & 1.188975 \\*
 mean of the gap after the quench & 0.5008765642 & 0.5031251098 &
-0.5031251078 & 0.5031251078 \\
+0.5031251078 & 0.5031251078 \\*
 amplitude of the oscillation (fit) & 0.00586681 & 0.00707867 &
-0.00707867 & 0.00707867 \\
+0.00707867 & 0.00707867 \\*
 largest change of the conserved functional \(E^{\rm MF}_{\rm LL}\) &
 1.92e-3 & 3.96e-6 & 9.69e-8 & 6.00e-8 \\
 \end{longtable}
@@ -1177,6 +1193,7 @@ orthonormality to \(5\times10^{-10}\) and \(E^{\rm MF}_{\rm LL}\) to
 \subsection{\texorpdfstring{5.5 The superfluid boson singlet state
 (\texttt{t2\_sfbs})}{5.5 The superfluid boson singlet state (t2\_sfbs)}}\label{the-superfluid-boson-singlet-state-t2_sfbs}}
 
+\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1067}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.3600}}
@@ -1200,15 +1217,15 @@ reference value
 \bottomrule\noalign{}
 \endlastfoot
 SB-10 & spectral line of the pair field (pole \(M^{\rm B}_{\rm LL}\)
-with the same nodes) & 0.279251576 & 0.279251552 & 0.279251554 \\
+with the same nodes) & 0.279251576 & 0.279251552 & 0.279251554 \\*
 SB-10 & relative deviation of the line from the pole & 7.88e-8 & 7.16e-9
-& \\
+& \\*
 SB-10 & largest relative change of the mean-field energy & 1.50e-8 &
-2.30e-9 & 0 \\
+2.30e-9 & 0 \\*
 SB-16 & line of the gap oscillation, displacement 0.02 & 0.41888388 &
-0.41888608 & \\
+0.41888608 & \\*
 SB-16 & line of the gap oscillation, displacement 0.01 & 0.41895942 &
-0.41896162 & \\
+0.41896162 & \\*
 SB-16 & largest relative change of the mean-field energy & 6.80e-7 &
 9.60e-10 & 0 \\
 \end{longtable}
@@ -1391,19 +1408,19 @@ macOS, run in that folder with these lines as input, checks them):
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{9daa10d19e02cdde6717421969fbab4272f7545d7a9eb553879c58f6e81b9bea  cvode\_vs\_rk4/P\_CVODE\_vs\_RK4.src.md}
-\NormalTok{4d1f93b147745574fd24b0713b0fb1619c14e7b3274980ba05ed1474343e08e5  rust/t2core/src/cvode.rs}
+\NormalTok{757a4254c88030fd7662b064d77376ea6f806f1eb41f12205d5f31d5a84fc9d9  rust/t2core/src/cvode.rs}
 \NormalTok{5ffa38243c640b9a0c56f599bd823d009f100d766827241d5bb916b2aa062489  rust/t2core/src/lib.rs}
 \NormalTok{dab79f76867469c867f54f7596f5afe3541ff13ac20055e213fc1485b6770783  rust/t2core/src/lattice.rs}
 \NormalTok{4e8d8ca5c485c44a0dbf8392db86f98b4b3539ad4c6dae7cc9e4e1146c5423c1  rust/t2core/Cargo.toml}
 \NormalTok{8fb5ad97b0919f63a06d573f1d51ed92c65bf9e4cef05e79d35c7f270d75d795  rust/t2analytic/src/main.rs}
-\NormalTok{50b9903c673b420ba4ff1ef52d12fd4ba0b147628a01b9be687a26d182d0dbcf  rust/t2fields/src/main.rs}
+\NormalTok{11683e09d28b96cd27ad96c7081df897a228b8059d9b668821475e4810d08500  rust/t2fields/src/main.rs}
 \NormalTok{51ece54663942a06f2d506cc703e821c2e9d6398fe3557ba2448c1415ef14435  rust/t2solve/src/main.rs}
 \NormalTok{496582dcac974a071fcdf5f512d6d6541c54168576433bafbec7fa34c6f77109  rust/t2solve/src/input.rs}
 \NormalTok{ffbf4d84fc45f3b37efa79167881d99ec83557ad646beebd07da78eafcfa13da  rust/t2solve/src/ops.rs}
 \NormalTok{e45d9db743d3954fe9ea282fbd5505b7c74bf6974842c6500e035e6a1fddb787  rust/t2sfbs/src/main.rs}
 \NormalTok{aa740ea0100c9dfc5b8e9986c5d3caf28f84d558a199b3275133b879f06f063f  rust/t2plot/src/main.rs}
-\NormalTok{0ff87a48b052eff6d5a8ec48d62b89a117fd354ce88d43d1600ca8088f92237a  rust/Cargo.toml}
-\NormalTok{b74a42a7acf5ce394fb82e5fa379fd7b839fdcb6665f7a4a63cc9966b9d15109  rust/Cargo.lock}
+\NormalTok{0a5786dd7ba5ab84e950c56ae5b138a7f92dc43044fd1902f687b135c392684a  rust/Cargo.toml}
+\NormalTok{e29e1171180173c8fb2b5b168196edad3678c566d0409f8efa2605a8cbc43c02  rust/Cargo.lock}
 \NormalTok{c8ef47dadc0f3a764969e9078d291b56d1fda6214c5b287dd3701478a546381e  rust/t2cvode\_c/Cargo.toml}
 \NormalTok{01c1d1ba6b299c3cab31973e2406850af688a900e3f439c2833529ac000462bb  rust/t2cvode\_c/src/lib.rs}
 \NormalTok{331b07273d2479c125d98ae081d3fd111abac02a82c81cc1c089a6633e8b1d58  python/t2\_solve.py}
@@ -1416,8 +1433,8 @@ macOS, run in that folder with these lines as input, checks them):
 \NormalTok{74ab8cda1fe469b7d71651cd2847fcb2a41076cf7cae08a957de19b45e40bd34  cvode\_vs\_rk4/run\_convergence.sh}
 \NormalTok{3a48b57f9f6a5b69ce2c6d507107a93f87f23b446308091dd3a5c705cbe25537  cvode\_vs\_rk4/python/make\_cmp\_figures.py}
 \NormalTok{3a5f7205f573fdae845c1f4cec3768bef74bf9d996b6750e2efa20a74589c33f  cvode\_vs\_rk4/tools/assemble\_provenance.py}
-\NormalTok{f5e38096826890c64580c3c5964c7db643e17611a08a1b87c48771dbcdf4d421  cvode\_vs\_rk4/tools/build\_docs.sh}
-\NormalTok{d7ca078f2469605306af331e68a8f2526149a197441f15230b00cc6f35395320  cvode\_vs\_rk4/tools/doc\_header.tex}
+\NormalTok{e02941150181793d5f320400aa446aa1df24d55a6b70f86183a7360a5b7a0d89  cvode\_vs\_rk4/tools/build\_docs.sh}
+\NormalTok{8273504406ab37fa7919ecb9287cfed861ee5a3b19d676f7432898e8e1d51d63  cvode\_vs\_rk4/tools/doc\_header.tex}
 \NormalTok{48e69b803c0d8b8a1d8f3bc93960b986d8c1a8c0fdb0f05166b99cca84f980ee  cvode\_vs\_rk4/data/cmp\_report.txt}
 \NormalTok{372e72ad62dd5e7ec5dff3955edde2585c5a9edce9bfcfc3d76aa7ac9474f562  cvode\_vs\_rk4/data/cmp\_tables.md}
 \NormalTok{fea0faf35475c6e7318668dd0db6642e6e328d8fe26e68ed12c7375f1425deae  cvode\_vs\_rk4/data/cmp\_work\_precision.csv}
@@ -1427,48 +1444,48 @@ macOS, run in that folder with these lines as input, checks them):
 \NormalTok{46310bbd846f8501e686c0200c9cd7324ddf36c4d462dab754e716c38eecf17e  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10.t2in}
 \NormalTok{0f885e0bcea41ec0fc24769b8ea16b6f5828b4d49e5c31124a14a041acd08877  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_fields.csv}
 \NormalTok{bc1419cdcdab70e2497efbcf66d457676b8f297cd4fd37b266f107f428b38214  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_series.csv}
-\NormalTok{22c9920004678f509e6fcddf2d9800f4ba8907e32bfb77511e2919035347f6c5  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_summary.txt}
+\NormalTok{5a2ee838ddf691d04ff7726397889aaa58b5d7da429ca4b8bceb742666046195  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}10\_summary.txt}
 \NormalTok{e4375430cf22436d49cb358490f63f2559954274a5fa77fb6eaaf98514a94269  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13.t2in}
 \NormalTok{61a91f729af99e943678a3fc00ebbde53b2f5d125b3f0ccfa8fde70162cfe15b  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_fields.csv}
 \NormalTok{c62eb09c720f50376daf0805240ef64da25b94adb1992e0bd599e0fc69416cf3  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_series.csv}
-\NormalTok{bd98d65eef6a58420879fdf5ace395b8eeb6d774e2ef3d21d25f093b31dd56e2  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_summary.txt}
+\NormalTok{8d8e8fd457bafeb2784b269c4bc5f0acf89e6a0ffc10d60efcad35d94b5732a0  cvode\_vs\_rk4/data/conv/andreev\_rtol1e{-}13\_summary.txt}
 \NormalTok{0c25103622adf74bca4870389031dd4bec37dbb5ea2a9d1ed36d84f77d8e8a0e  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10.t2in}
 \NormalTok{32e11f6ec6875b94e3ccca982cf9e4273845b22e6f838035583d8d8bcd27b639  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_fields.csv}
 \NormalTok{4517cc1238bd38857f81f4967fb998bd6f836dd829a4ef8f434a8fba900300bc  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_series.csv}
-\NormalTok{842327310444b0d866184cc4618072e1d9378a643cc056e37789c7ff41080567  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_summary.txt}
+\NormalTok{4419b353e99232e8f807ef50220477b6a7a2768ea5e7f683a0f36ddc21eda368  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}10\_summary.txt}
 \NormalTok{edce3fed5a9445b220b8f013a7e2f1d4663b8aebbc2689ed823729f75d6a2a66  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13.t2in}
 \NormalTok{45881806e19f3b98615fabf762baefe8bcb8ecdf9cece6f9392c7589290579d2  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_fields.csv}
 \NormalTok{7038c61df1a3b4a3217f4acfa8df1bb62e610d793cd96f2bbb11662699aaff7c  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_series.csv}
-\NormalTok{31b6074a85c5221e209ca6ff938d6ce97a7ded19e6c72d7b6731ba0d185a3016  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_summary.txt}
+\NormalTok{a5de2f2e20d204ef6adae4e2a5337bc7bc2a34565710c11bc1c420a24f9cb550  cvode\_vs\_rk4/data/conv/cyclotron\_rtol1e{-}13\_summary.txt}
 \NormalTok{4f529989b9fada4f1dd6e4d2c5e84cbff3b867e4ca5d44e474c634953bcf8ce6  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10.t2in}
 \NormalTok{12a56df2793143cceb307518c1d7a951c89331c3f10db9b99e26702e940aee56  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_fields.csv}
 \NormalTok{5d3e6de60bd827055f738a3cf1a8171e98fbe22c20498e5d1e537e0bc2e88f47  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_series.csv}
-\NormalTok{5af1e8bdc9433b57b7b0c0170065ab7fe133971887f334268064d361b8e1340e  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_summary.txt}
+\NormalTok{30589f37203ee888b69b71749d9d62032da7fdad0c2d41e633b357a0ea35bad7  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}10\_summary.txt}
 \NormalTok{3de6b714810579af5f23778b941c3cbd6976ae6b0d817f8823cd0f548eb38cd3  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13.t2in}
 \NormalTok{03ac0010bfa50139ce34fa7b2e6d6508ad0732a9992c2da4b7c03318fcf7d56c  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_fields.csv}
 \NormalTok{1e032e75564f3fc0f4e2b159d2c752d8c5b9e21382edf2dc1807f9675bd7e3c4  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_series.csv}
-\NormalTok{d9e90014ec6b5d51b800f0e947eb43e5735566d6cff5b1cc950e8d4cfb48ddc1  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_summary.txt}
+\NormalTok{e30a8d97b36b630abac6ee0298790672313c38e0fdc0900a76a85c9d5fdfba78  cvode\_vs\_rk4/data/conv/packet\_free\_rtol1e{-}13\_summary.txt}
 \NormalTok{2f92bbf302825e10e8d26c4e2e86ad785dc6dd73907c786aeb04c6fba4193679  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10.t2in}
 \NormalTok{a9a67107b4d3bcc73a2e068071b2f27ee1229210ed86e075149d8e943412e31b  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_fields.csv}
 \NormalTok{fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_iterations.csv}
 \NormalTok{2e755102bae80ec636a04d65e4fea75b689f141b421854662fe2ba113c93424c  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_series.csv}
 \NormalTok{9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_spectrum.csv}
-\NormalTok{9c013fc57e0041abc1201a4f9b6fd80c1cd9bbb1e74a2a84c949c97c2c29f102  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_summary.txt}
+\NormalTok{41738a091596d118419386da14075ca6df1d44e2b78f5840e3dbc44680c08299  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}10\_summary.txt}
 \NormalTok{1fc4629bc3d0ad5d895397ff147de6b63ba7412fecc665fe13c89a8771767ca8  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13.t2in}
 \NormalTok{ab787e259c9fb52450d27f347a8c43a8b35e07f76a4e789e200ce5bb0c7b7f99  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_fields.csv}
 \NormalTok{fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_iterations.csv}
 \NormalTok{c25e8c26476f8963c6c6dbbe0d2afe13ba5816e214dd99d36cd98f075be0a8bd  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_series.csv}
 \NormalTok{9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_spectrum.csv}
-\NormalTok{4d2baa00e10cae3916211806d1e84c3e32063abc91c5ef3836ce44f99df03f36  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_summary.txt}
-\NormalTok{d747e55e0a28372a37743eaf32407fb9bbb3116088dcd4d9d9861e25e5f5a10d  cvode\_vs\_rk4/figures/fig\_cmp\_conservation.pdf}
+\NormalTok{df4d7b1c23f0c234293d94d1bef0b160714f52ada77aea049f353b960a85aeed  cvode\_vs\_rk4/data/conv/quench\_rtol1e{-}13\_summary.txt}
+\NormalTok{61461bda428397778aab58ad377f5fbb09028f32b5a65e5649d36532a0fafdc1  cvode\_vs\_rk4/figures/fig\_cmp\_conservation.pdf}
 \NormalTok{9764badfd131b386853c3c5301eb62155cb038f5caab81b7e8ba2d4a852625af  cvode\_vs\_rk4/figures/fig\_cmp\_conservation.png}
-\NormalTok{6c184842e0457e139cf421b5c4cf08a6ad05efd185527695d702bd258cb5f110  cvode\_vs\_rk4/figures/fig\_cmp\_lat\_time.pdf}
+\NormalTok{0dca448162b54ebdc78b5c0a8853bedfdc49cbfa3510ace87ca17f5f52ebc9b3  cvode\_vs\_rk4/figures/fig\_cmp\_lat\_time.pdf}
 \NormalTok{5ab90d13d08e79585a679043ac6aa4ec379f723fcb074737982a4b1514ddf7df  cvode\_vs\_rk4/figures/fig\_cmp\_lat\_time.png}
-\NormalTok{846a54a99635f9908cec20bbbb0b93fcb76d6f8c4868d8b50f4af39999420b5d  cvode\_vs\_rk4/figures/fig\_cmp\_quench.pdf}
+\NormalTok{3b7a1900bb53d0469b09d9038c22e5da5350383d0bc7e2026d5a91d1522a2b50  cvode\_vs\_rk4/figures/fig\_cmp\_quench.pdf}
 \NormalTok{4ce9a92498c1f9b8287576a7d642d4802aecacf11ea489815c3bb634a70f8c84  cvode\_vs\_rk4/figures/fig\_cmp\_quench.png}
-\NormalTok{0e30c0837ea30f071ec7b55ba40c605bbebe14f43d25fcb22bff67b754b54565  cvode\_vs\_rk4/figures/fig\_cmp\_sfbs.pdf}
+\NormalTok{59fa8c69a9ce127cd405fdd75e80db2a8e89dad6c8df88470dfec55c32a58f8f  cvode\_vs\_rk4/figures/fig\_cmp\_sfbs.pdf}
 \NormalTok{92014e585daf58b90a637f85f151e7660475208d93ba78c722ac251044f1b1c0  cvode\_vs\_rk4/figures/fig\_cmp\_sfbs.png}
-\NormalTok{2ee5e0d7689e9ac6f8220a993173617feab1d578fe9c97121dfc6ef4405e3e09  cvode\_vs\_rk4/figures/fig\_cmp\_work\_precision.pdf}
+\NormalTok{689b44c851081a730fa9402e64039a8e23754aa2f74080967b204390dfcf3a2b  cvode\_vs\_rk4/figures/fig\_cmp\_work\_precision.pdf}
 \NormalTok{26b322a6384a9d5c74c2b3b73f93742c918762dd3cb0c5c9771213223f6c9c84  cvode\_vs\_rk4/figures/fig\_cmp\_work\_precision.png}
 \end{Highlighting}
 \end{Shaded}
@@ -1928,6 +1945,165 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
 \NormalTok{    integrate(w0}\OperatorTok{,} \DecValTok{0.0}\OperatorTok{,}\NormalTok{ touts}\OperatorTok{,}\NormalTok{ settings}\OperatorTok{,}\NormalTok{ f}\OperatorTok{,}\NormalTok{ out)}
 \OperatorTok{\}}
 
+\CommentTok{/// One internal step of CVODE, as \textasciigrave{}integrate\_steps\textasciigrave{} reports it.}
+\AttributeTok{\#[}\NormalTok{derive}\AttributeTok{(}\BuiltInTok{Clone}\OperatorTok{,} \BuiltInTok{Debug}\OperatorTok{,} \BuiltInTok{Default}\AttributeTok{)]}
+\KeywordTok{pub} \KeywordTok{struct}\NormalTok{ StepReport }\OperatorTok{\{}
+    \CommentTok{/// the number of the step (1, 2, ...)}
+    \KeywordTok{pub}\NormalTok{ n}\OperatorTok{:} \DataTypeTok{i64}\OperatorTok{,}
+    \CommentTok{/// the time t\_n at the end of the step}
+    \KeywordTok{pub}\NormalTok{ t}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+    \CommentTok{/// the size h\_n of the step (CVodeGetLastStep)}
+    \KeywordTok{pub}\NormalTok{ h}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+    \CommentTok{/// the order q\_n of the formula with which the step was taken (CVodeGetLastOrder)}
+    \KeywordTok{pub}\NormalTok{ q}\OperatorTok{:} \DataTypeTok{i32}\OperatorTok{,}
+    \CommentTok{/// the value of the local error test of the step: the weighted root{-}mean{-}square norm of the estimate of the local}
+    \CommentTok{/// error that CVODE made for this step (CVodeGetEstLocalErrors), with the error weights of the step}
+    \CommentTok{/// (CVodeGetErrWeights).  CVODE accepted the step because this number is at most 1.}
+    \KeywordTok{pub}\NormalTok{ test}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+    \CommentTok{/// the number of iterations of the fixed{-}point solver of the corrector in this step and in the rejected attempts}
+    \CommentTok{/// before it (the increase of CVodeGetNumNonlinSolvIters)}
+    \KeywordTok{pub}\NormalTok{ iterations}\OperatorTok{:} \DataTypeTok{i64}\OperatorTok{,}
+    \CommentTok{/// the number of attempts of this step that the local error test rejected (the increase of CVodeGetNumErrTestFails)}
+    \KeywordTok{pub}\NormalTok{ rejected}\OperatorTok{:} \DataTypeTok{i64}\OperatorTok{,}
+\OperatorTok{\}}
+
+\CommentTok{/// The integration of \textasciigrave{}integrate\textasciigrave{}, reported step by step: CVODE is called with the task CV\_ONE\_STEP, which returns}
+\CommentTok{/// after every internal step with the state at the }\RegionMarkerTok{END}\CommentTok{ of that step (no interpolation), until the time has reached}
+\CommentTok{/// or passed \textasciigrave{}tend\textasciigrave{}.  After every step the function calls \textasciigrave{}step(report, w, weights)\textasciigrave{} with the report of the step, the}
+\CommentTok{/// state w(t\_n) and the 2n error weights of the step (the weight of Re w\_k and of Im w\_k is 1/(rtol |w\_k| + atol),}
+\CommentTok{/// taken at the beginning of the step).}
+\CommentTok{///}
+\CommentTok{/// The integrator is set up by exactly the same calls, in the same order, as in \textasciigrave{}integrate\_status\textasciigrave{}, and \textasciigrave{}tfirst\textasciigrave{} plays}
+\CommentTok{/// the part of the first output time there (CVODE uses it once, for its first step size).  CVODE chooses its steps}
+\CommentTok{/// without regard to the output times (in \textasciigrave{}integrate\textasciigrave{} it steps past an output time and interpolates), so the internal}
+\CommentTok{/// steps reported here are the internal steps of \textasciigrave{}integrate\textasciigrave{} with the first output time \textasciigrave{}tfirst\textasciigrave{}.}
+\KeywordTok{pub} \KeywordTok{fn}\NormalTok{ integrate\_steps(}
+\NormalTok{    w0}\OperatorTok{:} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,}
+\NormalTok{    t0}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+\NormalTok{    tfirst}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+\NormalTok{    tend}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+\NormalTok{    settings}\OperatorTok{:} \OperatorTok{\&}\NormalTok{CvodeSettings}\OperatorTok{,}
+    \KeywordTok{mut}\NormalTok{ f}\OperatorTok{:}\NormalTok{ ComplexRhs}\OperatorTok{,}
+    \KeywordTok{mut}\NormalTok{ step}\OperatorTok{:} \KeywordTok{impl} \BuiltInTok{FnMut}\NormalTok{(}\OperatorTok{\&}\NormalTok{StepReport}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[}\DataTypeTok{f64}\NormalTok{])}\OperatorTok{,}
+\NormalTok{) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{Result}\OperatorTok{\textless{}}\NormalTok{CvodeStats}\OperatorTok{,} \DataTypeTok{String}\OperatorTok{\textgreater{}} \OperatorTok{\{}
+    \KeywordTok{let}\NormalTok{ n }\OperatorTok{=}\NormalTok{ w0}\OperatorTok{.}\NormalTok{len()}\OperatorTok{;}
+    \KeywordTok{let}\NormalTok{ g}\OperatorTok{:}\NormalTok{ ComplexRhsStatus }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\KeywordTok{move} \OperatorTok{|}\NormalTok{t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{        f(t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw)}\OperatorTok{;}
+        \DecValTok{0}
+    \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ ctx\_out}\OperatorTok{:} \DataTypeTok{Option}\OperatorTok{\textless{}}\NormalTok{SUNContext}\OperatorTok{\textgreater{}} \OperatorTok{=} \ConstantTok{None}\OperatorTok{;}
+    \ControlFlowTok{if}\NormalTok{ SUNContext\_Create(SUN\_COMM\_NULL}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ ctx\_out) }\OperatorTok{!=} \DecValTok{0} \OperatorTok{\{}
+        \ControlFlowTok{return} \ConstantTok{Err}\NormalTok{(}\StringTok{"SUNContext\_Create failed"}\OperatorTok{.}\NormalTok{into())}\OperatorTok{;}
+    \OperatorTok{\}}
+    \KeywordTok{let}\NormalTok{ ctx }\OperatorTok{=}\NormalTok{ ctx\_out}\OperatorTok{.}\NormalTok{ok\_or(}\StringTok{"SUNContext\_Create returned no context"}\NormalTok{)}\OperatorTok{?;}
+    \KeywordTok{let}\NormalTok{ y }\OperatorTok{=}\NormalTok{ N\_VNew\_Serial(}\DecValTok{2} \OperatorTok{*}\NormalTok{ n }\KeywordTok{as} \DataTypeTok{i64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ctx)}\OperatorTok{.}\NormalTok{ok\_or(}\StringTok{"N\_VNew\_Serial failed"}\NormalTok{)}\OperatorTok{?;}
+    \OperatorTok{\{}
+        \KeywordTok{let} \KeywordTok{mut}\NormalTok{ yd }\OperatorTok{=}\NormalTok{ NV\_DATA\_S(}\OperatorTok{\&}\NormalTok{y)}\OperatorTok{;}
+        \ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \DecValTok{0}\OperatorTok{..}\NormalTok{n }\OperatorTok{\{}
+\NormalTok{            yd[}\DecValTok{2} \OperatorTok{*}\NormalTok{ k] }\OperatorTok{=}\NormalTok{ w0[k]}\OperatorTok{.}\NormalTok{re}\OperatorTok{;}
+\NormalTok{            yd[}\DecValTok{2} \OperatorTok{*}\NormalTok{ k }\OperatorTok{+} \DecValTok{1}\NormalTok{] }\OperatorTok{=}\NormalTok{ w0[k]}\OperatorTok{.}\NormalTok{im}\OperatorTok{;}
+        \OperatorTok{\}}
+    \OperatorTok{\}}
+    \KeywordTok{let}\NormalTok{ lmm }\OperatorTok{=} \ControlFlowTok{match}\NormalTok{ settings}\OperatorTok{.}\NormalTok{lmm }\OperatorTok{\{}
+        \PreprocessorTok{Lmm::}\NormalTok{Adams }\OperatorTok{=\textgreater{}}\NormalTok{ CV\_ADAMS}\OperatorTok{,}
+        \PreprocessorTok{Lmm::}\NormalTok{Bdf }\OperatorTok{=\textgreater{}}\NormalTok{ CV\_BDF}\OperatorTok{,}
+    \OperatorTok{\};}
+    \KeywordTok{let}\NormalTok{ mem }\OperatorTok{=}\NormalTok{ CVodeCreate(lmm}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ctx)}\OperatorTok{.}\NormalTok{ok\_or(}\StringTok{"CVodeCreate failed"}\NormalTok{)}\OperatorTok{?;}
+    \KeywordTok{let}\NormalTok{ check }\OperatorTok{=} \OperatorTok{|}\NormalTok{r}\OperatorTok{:} \DataTypeTok{i32}\OperatorTok{,}\NormalTok{ what}\OperatorTok{:} \OperatorTok{\&}\DataTypeTok{str}\OperatorTok{|} \OperatorTok{{-}\textgreater{}} \DataTypeTok{Result}\OperatorTok{\textless{}}\NormalTok{()}\OperatorTok{,} \DataTypeTok{String}\OperatorTok{\textgreater{}} \OperatorTok{\{}
+        \ControlFlowTok{if}\NormalTok{ r }\OperatorTok{==}\NormalTok{ CV\_SUCCESS }\OperatorTok{\{}
+            \ConstantTok{Ok}\NormalTok{(())}
+        \OperatorTok{\}} \ControlFlowTok{else} \OperatorTok{\{}
+            \ConstantTok{Err}\NormalTok{(}\PreprocessorTok{format!}\NormalTok{(}\StringTok{"\{\} returned \{\}"}\OperatorTok{,}\NormalTok{ what}\OperatorTok{,}\NormalTok{ r))}
+        \OperatorTok{\}}
+    \OperatorTok{\};}
+\NormalTok{    check(CVodeInit(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,}\NormalTok{ rhs\_trampoline}\OperatorTok{,}\NormalTok{ t0}\OperatorTok{,} \OperatorTok{\&}\NormalTok{y)}\OperatorTok{,} \StringTok{"CVodeInit"}\NormalTok{)}\OperatorTok{?;}
+\NormalTok{    check(CVodeWFtolerances(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,}\NormalTok{ ewt\_complex)}\OperatorTok{,} \StringTok{"CVodeWFtolerances"}\NormalTok{)}\OperatorTok{?;}
+\NormalTok{    check(CVodeSetMaxOrd(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,}\NormalTok{ settings}\OperatorTok{.}\NormalTok{max\_order)}\OperatorTok{,} \StringTok{"CVodeSetMaxOrd"}\NormalTok{)}\OperatorTok{?;}
+\NormalTok{    check(CVodeSetMaxNumSteps(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,}\NormalTok{ settings}\OperatorTok{.}\NormalTok{max\_steps)}\OperatorTok{,} \StringTok{"CVodeSetMaxNumSteps"}\NormalTok{)}\OperatorTok{?;}
+    \KeywordTok{let}\NormalTok{ data }\OperatorTok{=}\NormalTok{ RhsData }\OperatorTok{\{}\NormalTok{ f}\OperatorTok{:}\NormalTok{ g}\OperatorTok{,}\NormalTok{ w}\OperatorTok{:} \PreprocessorTok{vec!}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ZERO}\OperatorTok{;}\NormalTok{ n]}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{:} \PreprocessorTok{vec!}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ZERO}\OperatorTok{;}\NormalTok{ n]}\OperatorTok{,}\NormalTok{ rtol}\OperatorTok{:}\NormalTok{ settings}\OperatorTok{.}\NormalTok{rtol}\OperatorTok{,}\NormalTok{ atol}\OperatorTok{:}\NormalTok{ settings}\OperatorTok{.}\NormalTok{atol }\OperatorTok{\};}
+\NormalTok{    check(CVodeSetUserData(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \ConstantTok{Some}\NormalTok{(}\DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(data)))}\OperatorTok{,} \StringTok{"CVodeSetUserData"}\NormalTok{)}\OperatorTok{?;}
+    \KeywordTok{let}\NormalTok{ nls }\OperatorTok{=}\NormalTok{ SUNNonlinSol\_FixedPoint(}\OperatorTok{\&}\NormalTok{y}\OperatorTok{,} \DecValTok{0}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ctx)}\OperatorTok{.}\NormalTok{ok\_or(}\StringTok{"SUNNonlinSol\_FixedPoint failed"}\NormalTok{)}\OperatorTok{?;}
+\NormalTok{    check(CVodeSetNonlinearSolver(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\NormalTok{nls)}\OperatorTok{,} \StringTok{"CVodeSetNonlinearSolver"}\NormalTok{)}\OperatorTok{?;}
+    \CommentTok{// two work vectors: the estimate of the local error and the error weights of the step}
+    \KeywordTok{let}\NormalTok{ ele }\OperatorTok{=}\NormalTok{ N\_VNew\_Serial(}\DecValTok{2} \OperatorTok{*}\NormalTok{ n }\KeywordTok{as} \DataTypeTok{i64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ctx)}\OperatorTok{.}\NormalTok{ok\_or(}\StringTok{"N\_VNew\_Serial failed"}\NormalTok{)}\OperatorTok{?;}
+    \KeywordTok{let}\NormalTok{ ewt }\OperatorTok{=}\NormalTok{ N\_VNew\_Serial(}\DecValTok{2} \OperatorTok{*}\NormalTok{ n }\KeywordTok{as} \DataTypeTok{i64}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ctx)}\OperatorTok{.}\NormalTok{ok\_or(}\StringTok{"N\_VNew\_Serial failed"}\NormalTok{)}\OperatorTok{?;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ w }\OperatorTok{=} \PreprocessorTok{vec!}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ZERO}\OperatorTok{;}\NormalTok{ n]}\OperatorTok{;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ wts }\OperatorTok{=} \PreprocessorTok{vec!}\NormalTok{[}\DecValTok{0.0f64}\OperatorTok{;} \DecValTok{2} \OperatorTok{*}\NormalTok{ n]}\OperatorTok{;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ t }\OperatorTok{=}\NormalTok{ t0}\OperatorTok{;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ nst }\OperatorTok{=} \DecValTok{0i64}\OperatorTok{;}
+    \KeywordTok{let}\NormalTok{ (}\KeywordTok{mut}\NormalTok{ iters\_before}\OperatorTok{,} \KeywordTok{mut}\NormalTok{ fails\_before) }\OperatorTok{=}\NormalTok{ (}\DecValTok{0i64}\OperatorTok{,} \DecValTok{0i64}\NormalTok{)}\OperatorTok{;}
+    \ControlFlowTok{while}\NormalTok{ t }\OperatorTok{\textless{}}\NormalTok{ tend }\OperatorTok{\{}
+        \KeywordTok{let}\NormalTok{ r }\OperatorTok{=}\NormalTok{ CVode(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,}\NormalTok{ tfirst}\OperatorTok{,} \OperatorTok{\&}\NormalTok{y}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ t}\OperatorTok{,}\NormalTok{ CV\_ONE\_STEP)}\OperatorTok{;}
+        \ControlFlowTok{if}\NormalTok{ r }\OperatorTok{\textless{}} \DecValTok{0} \OperatorTok{\{}
+            \ControlFlowTok{return} \ConstantTok{Err}\NormalTok{(}\PreprocessorTok{format!}\NormalTok{(}\StringTok{"CVode returned \{\} after the step \{\} at the time \{\}"}\OperatorTok{,}\NormalTok{ r}\OperatorTok{,}\NormalTok{ nst}\OperatorTok{,}\NormalTok{ t))}\OperatorTok{;}
+        \OperatorTok{\}}
+\NormalTok{        nst }\OperatorTok{+=} \DecValTok{1}\OperatorTok{;}
+        \OperatorTok{\{}
+            \KeywordTok{let}\NormalTok{ yd }\OperatorTok{=}\NormalTok{ NV\_DATA\_S(}\OperatorTok{\&}\NormalTok{y)}\OperatorTok{;}
+            \ControlFlowTok{for}\NormalTok{ k }\KeywordTok{in} \DecValTok{0}\OperatorTok{..}\NormalTok{n }\OperatorTok{\{}
+\NormalTok{                w[k]}\OperatorTok{.}\NormalTok{re }\OperatorTok{=}\NormalTok{ yd[}\DecValTok{2} \OperatorTok{*}\NormalTok{ k]}\OperatorTok{;}
+\NormalTok{                w[k]}\OperatorTok{.}\NormalTok{im }\OperatorTok{=}\NormalTok{ yd[}\DecValTok{2} \OperatorTok{*}\NormalTok{ k }\OperatorTok{+} \DecValTok{1}\NormalTok{]}\OperatorTok{;}
+            \OperatorTok{\}}
+        \OperatorTok{\}}
+        \KeywordTok{let} \KeywordTok{mut}\NormalTok{ rep }\OperatorTok{=}\NormalTok{ StepReport }\OperatorTok{\{}\NormalTok{ n}\OperatorTok{:}\NormalTok{ nst}\OperatorTok{,}\NormalTok{ t}\OperatorTok{,} \OperatorTok{..}\BuiltInTok{Default}\PreprocessorTok{::}\KeywordTok{default}\NormalTok{() }\OperatorTok{\};}
+\NormalTok{        CVodeGetLastStep(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ rep}\OperatorTok{.}\NormalTok{h)}\OperatorTok{;}
+\NormalTok{        CVodeGetLastOrder(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ rep}\OperatorTok{.}\NormalTok{q)}\OperatorTok{;}
+\NormalTok{        check(CVodeGetEstLocalErrors(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ele)}\OperatorTok{,} \StringTok{"CVodeGetEstLocalErrors"}\NormalTok{)}\OperatorTok{?;}
+\NormalTok{        check(CVodeGetErrWeights(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ewt)}\OperatorTok{,} \StringTok{"CVodeGetErrWeights"}\NormalTok{)}\OperatorTok{?;}
+\NormalTok{        rep}\OperatorTok{.}\NormalTok{test }\OperatorTok{=}\NormalTok{ N\_VWrmsNorm(}\OperatorTok{\&}\NormalTok{ele}\OperatorTok{,} \OperatorTok{\&}\NormalTok{ewt)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ (}\KeywordTok{mut}\NormalTok{ iters}\OperatorTok{,} \KeywordTok{mut}\NormalTok{ fails) }\OperatorTok{=}\NormalTok{ (}\DecValTok{0i64}\OperatorTok{,} \DecValTok{0i64}\NormalTok{)}\OperatorTok{;}
+\NormalTok{        CVodeGetNumNonlinSolvIters(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ iters)}\OperatorTok{;}
+\NormalTok{        CVodeGetNumErrTestFails(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ fails)}\OperatorTok{;}
+\NormalTok{        rep}\OperatorTok{.}\NormalTok{iterations }\OperatorTok{=}\NormalTok{ iters }\OperatorTok{{-}}\NormalTok{ iters\_before}\OperatorTok{;}
+\NormalTok{        rep}\OperatorTok{.}\NormalTok{rejected }\OperatorTok{=}\NormalTok{ fails }\OperatorTok{{-}}\NormalTok{ fails\_before}\OperatorTok{;}
+\NormalTok{        iters\_before }\OperatorTok{=}\NormalTok{ iters}\OperatorTok{;}
+\NormalTok{        fails\_before }\OperatorTok{=}\NormalTok{ fails}\OperatorTok{;}
+        \OperatorTok{\{}
+            \KeywordTok{let}\NormalTok{ wd }\OperatorTok{=}\NormalTok{ NV\_DATA\_S(}\OperatorTok{\&}\NormalTok{ewt)}\OperatorTok{;}
+\NormalTok{            wts}\OperatorTok{.}\NormalTok{copy\_from\_slice(}\OperatorTok{\&}\NormalTok{wd[}\OperatorTok{..}\DecValTok{2} \OperatorTok{*}\NormalTok{ n])}\OperatorTok{;}
+        \OperatorTok{\}}
+\NormalTok{        step(}\OperatorTok{\&}\NormalTok{rep}\OperatorTok{,} \OperatorTok{\&}\NormalTok{w}\OperatorTok{,} \OperatorTok{\&}\NormalTok{wts)}\OperatorTok{;}
+    \OperatorTok{\}}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ st }\OperatorTok{=} \PreprocessorTok{CvodeStats::}\KeywordTok{default}\NormalTok{()}\OperatorTok{;}
+\NormalTok{    CVodeGetNumSteps(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{nsteps)}\OperatorTok{;}
+\NormalTok{    CVodeGetNumRhsEvals(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{nfevals)}\OperatorTok{;}
+\NormalTok{    CVodeGetNumErrTestFails(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{netfails)}\OperatorTok{;}
+\NormalTok{    CVodeGetNumNonlinSolvIters(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{nniters)}\OperatorTok{;}
+\NormalTok{    CVodeGetNumNonlinSolvConvFails(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{nncfails)}\OperatorTok{;}
+\NormalTok{    CVodeGetLastOrder(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{qlast)}\OperatorTok{;}
+\NormalTok{    CVodeGetLastStep(}\OperatorTok{\&}\NormalTok{mem}\OperatorTok{,} \OperatorTok{\&}\KeywordTok{mut}\NormalTok{ st}\OperatorTok{.}\NormalTok{hlast)}\OperatorTok{;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ mem\_opt }\OperatorTok{=} \ConstantTok{Some}\NormalTok{(mem)}\OperatorTok{;}
+\NormalTok{    CVodeFree(}\OperatorTok{\&}\KeywordTok{mut}\NormalTok{ mem\_opt)}\OperatorTok{;}
+\NormalTok{    SUNNonlinSolFree(}\ConstantTok{Some}\NormalTok{(nls))}\OperatorTok{;}
+\NormalTok{    N\_VDestroy(ele)}\OperatorTok{;}
+\NormalTok{    N\_VDestroy(ewt)}\OperatorTok{;}
+\NormalTok{    N\_VDestroy(y)}\OperatorTok{;}
+    \KeywordTok{let} \KeywordTok{mut}\NormalTok{ ctx\_opt }\OperatorTok{=} \ConstantTok{Some}\NormalTok{(ctx)}\OperatorTok{;}
+\NormalTok{    SUNContext\_Free(}\OperatorTok{\&}\KeywordTok{mut}\NormalTok{ ctx\_opt)}\OperatorTok{;}
+    \ConstantTok{Ok}\NormalTok{(st)}
+\OperatorTok{\}}
+
+\CommentTok{/// \textasciigrave{}evolve\_lattice\textasciigrave{}, reported step by step (see \textasciigrave{}integrate\_steps\textasciigrave{}): the same right side dw/dx\^{}0 = {-}i H\_lat w.}
+\KeywordTok{pub} \KeywordTok{fn}\NormalTok{ evolve\_lattice\_steps(}
+\NormalTok{    lat}\OperatorTok{:} \OperatorTok{\&}\NormalTok{Lattice}\OperatorTok{,}
+\NormalTok{    fl}\OperatorTok{:} \OperatorTok{\&}\NormalTok{Fields}\OperatorTok{,}
+\NormalTok{    w0}\OperatorTok{:} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,}
+\NormalTok{    tfirst}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+\NormalTok{    tend}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}
+\NormalTok{    settings}\OperatorTok{:} \OperatorTok{\&}\NormalTok{CvodeSettings}\OperatorTok{,}
+\NormalTok{    step}\OperatorTok{:} \KeywordTok{impl} \BuiltInTok{FnMut}\NormalTok{(}\OperatorTok{\&}\NormalTok{StepReport}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[C64]}\OperatorTok{,} \OperatorTok{\&}\NormalTok{[}\DataTypeTok{f64}\NormalTok{])}\OperatorTok{,}
+\NormalTok{) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{Result}\OperatorTok{\textless{}}\NormalTok{CvodeStats}\OperatorTok{,} \DataTypeTok{String}\OperatorTok{\textgreater{}} \OperatorTok{\{}
+    \KeywordTok{let}\NormalTok{ (lat}\OperatorTok{,}\NormalTok{ fl) }\OperatorTok{=}\NormalTok{ (lat}\OperatorTok{.}\NormalTok{clone()}\OperatorTok{,}\NormalTok{ fl}\OperatorTok{.}\NormalTok{clone())}\OperatorTok{;}
+    \KeywordTok{let}\NormalTok{ mats }\OperatorTok{=} \PreprocessorTok{Mats::}\NormalTok{new()}\OperatorTok{;}
+    \KeywordTok{let}\NormalTok{ f}\OperatorTok{:}\NormalTok{ ComplexRhs }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\KeywordTok{move} \OperatorTok{|}\NormalTok{\_t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{        lat}\OperatorTok{.}\NormalTok{apply(}\OperatorTok{\&}\NormalTok{fl}\OperatorTok{,} \OperatorTok{\&}\NormalTok{mats}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw)}\OperatorTok{;}
+        \ControlFlowTok{for}\NormalTok{ z }\KeywordTok{in}\NormalTok{ dw}\OperatorTok{.}\NormalTok{iter\_mut() }\OperatorTok{\{}
+            \OperatorTok{*}\NormalTok{z }\OperatorTok{=}\NormalTok{ C64 }\OperatorTok{\{}\NormalTok{ re}\OperatorTok{:}\NormalTok{ z}\OperatorTok{.}\NormalTok{im}\OperatorTok{,}\NormalTok{ im}\OperatorTok{:} \OperatorTok{{-}}\NormalTok{z}\OperatorTok{.}\NormalTok{re }\OperatorTok{\};}
+        \OperatorTok{\}}
+    \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+\NormalTok{    integrate\_steps(w0}\OperatorTok{,} \DecValTok{0.0}\OperatorTok{,}\NormalTok{ tfirst}\OperatorTok{,}\NormalTok{ tend}\OperatorTok{,}\NormalTok{ settings}\OperatorTok{,}\NormalTok{ f}\OperatorTok{,}\NormalTok{ step)}
+\OperatorTok{\}}
+
 \CommentTok{/// The output times t0 + k dt for k = 0, 1, ..., n (n + 1 times), computed as t0 + k dt (no summation of dt).}
 \KeywordTok{pub} \KeywordTok{fn}\NormalTok{ uniform\_times(t0}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}\NormalTok{ dt}\OperatorTok{:} \DataTypeTok{f64}\OperatorTok{,}\NormalTok{ n}\OperatorTok{:} \DataTypeTok{usize}\NormalTok{) }\OperatorTok{{-}\textgreater{}} \DataTypeTok{Vec}\OperatorTok{\textless{}}\DataTypeTok{f64}\OperatorTok{\textgreater{}} \OperatorTok{\{}
 \NormalTok{    (}\DecValTok{0}\OperatorTok{..=}\NormalTok{n)}\OperatorTok{.}\NormalTok{map(}\OperatorTok{|}\NormalTok{k}\OperatorTok{|}\NormalTok{ t0 }\OperatorTok{+}\NormalTok{ k }\KeywordTok{as} \DataTypeTok{f64} \OperatorTok{*}\NormalTok{ dt)}\OperatorTok{.}\NormalTok{collect()}
@@ -1955,6 +2131,36 @@ CVODE)}{B.1 test2/rust/t2core/src/cvode.rs (the time integration with CVODE)}}\l
         \OperatorTok{.}\NormalTok{unwrap()}\OperatorTok{;}
         \PreprocessorTok{assert!}\NormalTok{(worst }\OperatorTok{\textless{}} \DecValTok{1e{-}8}\OperatorTok{,} \StringTok{"deviation \{\} (\{\})"}\OperatorTok{,}\NormalTok{ worst}\OperatorTok{,}\NormalTok{ st}\OperatorTok{.}\NormalTok{describe())}\OperatorTok{;}
         \PreprocessorTok{assert!}\NormalTok{(st}\OperatorTok{.}\NormalTok{nsteps }\OperatorTok{\textgreater{}} \DecValTok{0} \OperatorTok{\&\&}\NormalTok{ st}\OperatorTok{.}\NormalTok{qlast }\OperatorTok{\textgreater{}=} \DecValTok{1}\NormalTok{)}\OperatorTok{;}
+    \OperatorTok{\}}
+
+    \CommentTok{/// \textasciigrave{}integrate\_steps\textasciigrave{} takes the internal steps of \textasciigrave{}integrate\textasciigrave{}: the same number of steps up to the last output time,}
+    \CommentTok{/// and at every step the value of the local error test is at most 1; the sum of the step sizes is the time}
+    \AttributeTok{\#[}\NormalTok{test}\AttributeTok{]}
+    \KeywordTok{fn}\NormalTok{ steps\_are\_those\_of\_integrate() }\OperatorTok{\{}
+        \KeywordTok{let}\NormalTok{ e }\OperatorTok{=} \DecValTok{1.7}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ touts }\OperatorTok{=}\NormalTok{ uniform\_times(}\DecValTok{0.0}\OperatorTok{,} \DecValTok{0.5}\OperatorTok{,} \DecValTok{40}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ set }\OperatorTok{=} \PreprocessorTok{CvodeSettings::}\NormalTok{adams(}\DecValTok{1e{-}10}\OperatorTok{,} \DecValTok{1e{-}12}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ f1}\OperatorTok{:}\NormalTok{ ComplexRhs }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\KeywordTok{move} \OperatorTok{|}\NormalTok{\_t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{            dw[}\DecValTok{0}\NormalTok{] }\OperatorTok{=}\NormalTok{ c(}\DecValTok{0.0}\OperatorTok{,} \OperatorTok{{-}}\NormalTok{e) }\OperatorTok{*}\NormalTok{ w[}\DecValTok{0}\NormalTok{]}\OperatorTok{;}
+        \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ st }\OperatorTok{=}\NormalTok{ integrate(}\OperatorTok{\&}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ONE]}\OperatorTok{,} \DecValTok{0.0}\OperatorTok{,} \OperatorTok{\&}\NormalTok{touts}\OperatorTok{,} \OperatorTok{\&}\NormalTok{set}\OperatorTok{,}\NormalTok{ f1}\OperatorTok{,} \OperatorTok{|}\NormalTok{\_i}\OperatorTok{,}\NormalTok{ \_t}\OperatorTok{,}\NormalTok{ \_w}\OperatorTok{|} \OperatorTok{\{\}}\NormalTok{)}\OperatorTok{.}\NormalTok{unwrap()}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ f2}\OperatorTok{:}\NormalTok{ ComplexRhs }\OperatorTok{=} \DataTypeTok{Box}\PreprocessorTok{::}\NormalTok{new(}\KeywordTok{move} \OperatorTok{|}\NormalTok{\_t}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ dw}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{            dw[}\DecValTok{0}\NormalTok{] }\OperatorTok{=}\NormalTok{ c(}\DecValTok{0.0}\OperatorTok{,} \OperatorTok{{-}}\NormalTok{e) }\OperatorTok{*}\NormalTok{ w[}\DecValTok{0}\NormalTok{]}\OperatorTok{;}
+        \OperatorTok{\}}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ (}\KeywordTok{mut}\NormalTok{ count}\OperatorTok{,} \KeywordTok{mut}\NormalTok{ sum\_h}\OperatorTok{,} \KeywordTok{mut}\NormalTok{ worst\_test}\OperatorTok{,} \KeywordTok{mut}\NormalTok{ last\_t) }\OperatorTok{=}\NormalTok{ (}\DecValTok{0i64}\OperatorTok{,} \DecValTok{0.0f64}\OperatorTok{,} \DecValTok{0.0f64}\OperatorTok{,} \DecValTok{0.0f64}\NormalTok{)}\OperatorTok{;}
+        \KeywordTok{let}\NormalTok{ st2 }\OperatorTok{=}\NormalTok{ integrate\_steps(}\OperatorTok{\&}\NormalTok{[}\PreprocessorTok{C64::}\NormalTok{ONE]}\OperatorTok{,} \DecValTok{0.0}\OperatorTok{,} \DecValTok{0.5}\OperatorTok{,} \DecValTok{20.0}\OperatorTok{,} \OperatorTok{\&}\NormalTok{set}\OperatorTok{,}\NormalTok{ f2}\OperatorTok{,} \OperatorTok{|}\NormalTok{rep}\OperatorTok{,}\NormalTok{ w}\OperatorTok{,}\NormalTok{ wts}\OperatorTok{|} \OperatorTok{\{}
+\NormalTok{            count }\OperatorTok{+=} \DecValTok{1}\OperatorTok{;}
+\NormalTok{            sum\_h }\OperatorTok{+=}\NormalTok{ rep}\OperatorTok{.}\NormalTok{h}\OperatorTok{;}
+\NormalTok{            worst\_test }\OperatorTok{=}\NormalTok{ worst\_test}\OperatorTok{.}\NormalTok{max(rep}\OperatorTok{.}\NormalTok{test)}\OperatorTok{;}
+\NormalTok{            last\_t }\OperatorTok{=}\NormalTok{ rep}\OperatorTok{.}\NormalTok{t}\OperatorTok{;}
+            \PreprocessorTok{assert\_eq!}\NormalTok{(wts}\OperatorTok{.}\NormalTok{len()}\OperatorTok{,} \DecValTok{2}\NormalTok{)}\OperatorTok{;}
+            \PreprocessorTok{assert!}\NormalTok{(w[}\DecValTok{0}\NormalTok{]}\OperatorTok{.}\NormalTok{abs() }\OperatorTok{\textgreater{}} \DecValTok{0.9}\NormalTok{)}\OperatorTok{;}
+        \OperatorTok{\}}\NormalTok{)}
+        \OperatorTok{.}\NormalTok{unwrap()}\OperatorTok{;}
+        \PreprocessorTok{assert\_eq!}\NormalTok{(count}\OperatorTok{,}\NormalTok{ st2}\OperatorTok{.}\NormalTok{nsteps)}\OperatorTok{;}
+        \PreprocessorTok{assert\_eq!}\NormalTok{(st}\OperatorTok{.}\NormalTok{nsteps}\OperatorTok{,}\NormalTok{ st2}\OperatorTok{.}\NormalTok{nsteps}\OperatorTok{,} \StringTok{"integrate took \{\} steps, integrate\_steps \{\}"}\OperatorTok{,}\NormalTok{ st}\OperatorTok{.}\NormalTok{nsteps}\OperatorTok{,}\NormalTok{ st2}\OperatorTok{.}\NormalTok{nsteps)}\OperatorTok{;}
+        \PreprocessorTok{assert!}\NormalTok{((sum\_h }\OperatorTok{{-}}\NormalTok{ last\_t)}\OperatorTok{.}\NormalTok{abs() }\OperatorTok{\textless{}} \DecValTok{1e{-}9} \OperatorTok{*}\NormalTok{ last\_t}\OperatorTok{,} \StringTok{"sum of the steps \{\} against the time \{\}"}\OperatorTok{,}\NormalTok{ sum\_h}\OperatorTok{,}\NormalTok{ last\_t)}\OperatorTok{;}
+        \PreprocessorTok{assert!}\NormalTok{(worst\_test }\OperatorTok{\textless{}=} \DecValTok{1.0} \OperatorTok{\&\&}\NormalTok{ worst\_test }\OperatorTok{\textgreater{}} \DecValTok{0.0}\OperatorTok{,} \StringTok{"largest test value \{\}"}\OperatorTok{,}\NormalTok{ worst\_test)}\OperatorTok{;}
     \OperatorTok{\}}
 
     \CommentTok{/// a right side that fails unrecoverably after 50 evaluations stops the integration with an error, and an}

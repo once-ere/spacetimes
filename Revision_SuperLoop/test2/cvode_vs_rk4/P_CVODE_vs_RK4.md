@@ -499,19 +499,19 @@ The SHA-256 digests of these files (each line: the digest, two spaces, the path 
 
 ```text
 9daa10d19e02cdde6717421969fbab4272f7545d7a9eb553879c58f6e81b9bea  cvode_vs_rk4/P_CVODE_vs_RK4.src.md
-4d1f93b147745574fd24b0713b0fb1619c14e7b3274980ba05ed1474343e08e5  rust/t2core/src/cvode.rs
+757a4254c88030fd7662b064d77376ea6f806f1eb41f12205d5f31d5a84fc9d9  rust/t2core/src/cvode.rs
 5ffa38243c640b9a0c56f599bd823d009f100d766827241d5bb916b2aa062489  rust/t2core/src/lib.rs
 dab79f76867469c867f54f7596f5afe3541ff13ac20055e213fc1485b6770783  rust/t2core/src/lattice.rs
 4e8d8ca5c485c44a0dbf8392db86f98b4b3539ad4c6dae7cc9e4e1146c5423c1  rust/t2core/Cargo.toml
 8fb5ad97b0919f63a06d573f1d51ed92c65bf9e4cef05e79d35c7f270d75d795  rust/t2analytic/src/main.rs
-50b9903c673b420ba4ff1ef52d12fd4ba0b147628a01b9be687a26d182d0dbcf  rust/t2fields/src/main.rs
+11683e09d28b96cd27ad96c7081df897a228b8059d9b668821475e4810d08500  rust/t2fields/src/main.rs
 51ece54663942a06f2d506cc703e821c2e9d6398fe3557ba2448c1415ef14435  rust/t2solve/src/main.rs
 496582dcac974a071fcdf5f512d6d6541c54168576433bafbec7fa34c6f77109  rust/t2solve/src/input.rs
 ffbf4d84fc45f3b37efa79167881d99ec83557ad646beebd07da78eafcfa13da  rust/t2solve/src/ops.rs
 e45d9db743d3954fe9ea282fbd5505b7c74bf6974842c6500e035e6a1fddb787  rust/t2sfbs/src/main.rs
 aa740ea0100c9dfc5b8e9986c5d3caf28f84d558a199b3275133b879f06f063f  rust/t2plot/src/main.rs
-0ff87a48b052eff6d5a8ec48d62b89a117fd354ce88d43d1600ca8088f92237a  rust/Cargo.toml
-b74a42a7acf5ce394fb82e5fa379fd7b839fdcb6665f7a4a63cc9966b9d15109  rust/Cargo.lock
+0a5786dd7ba5ab84e950c56ae5b138a7f92dc43044fd1902f687b135c392684a  rust/Cargo.toml
+e29e1171180173c8fb2b5b168196edad3678c566d0409f8efa2605a8cbc43c02  rust/Cargo.lock
 c8ef47dadc0f3a764969e9078d291b56d1fda6214c5b287dd3701478a546381e  rust/t2cvode_c/Cargo.toml
 01c1d1ba6b299c3cab31973e2406850af688a900e3f439c2833529ac000462bb  rust/t2cvode_c/src/lib.rs
 331b07273d2479c125d98ae081d3fd111abac02a82c81cc1c089a6633e8b1d58  python/t2_solve.py
@@ -524,8 +524,8 @@ bb6ec652913d355b2857746b223c186278923f631428b2633444156be19e9dd9  rust/t2cvcmp/C
 74ab8cda1fe469b7d71651cd2847fcb2a41076cf7cae08a957de19b45e40bd34  cvode_vs_rk4/run_convergence.sh
 3a48b57f9f6a5b69ce2c6d507107a93f87f23b446308091dd3a5c705cbe25537  cvode_vs_rk4/python/make_cmp_figures.py
 3a5f7205f573fdae845c1f4cec3768bef74bf9d996b6750e2efa20a74589c33f  cvode_vs_rk4/tools/assemble_provenance.py
-f5e38096826890c64580c3c5964c7db643e17611a08a1b87c48771dbcdf4d421  cvode_vs_rk4/tools/build_docs.sh
-d7ca078f2469605306af331e68a8f2526149a197441f15230b00cc6f35395320  cvode_vs_rk4/tools/doc_header.tex
+e02941150181793d5f320400aa446aa1df24d55a6b70f86183a7360a5b7a0d89  cvode_vs_rk4/tools/build_docs.sh
+8273504406ab37fa7919ecb9287cfed861ee5a3b19d676f7432898e8e1d51d63  cvode_vs_rk4/tools/doc_header.tex
 48e69b803c0d8b8a1d8f3bc93960b986d8c1a8c0fdb0f05166b99cca84f980ee  cvode_vs_rk4/data/cmp_report.txt
 372e72ad62dd5e7ec5dff3955edde2585c5a9edce9bfcfc3d76aa7ac9474f562  cvode_vs_rk4/data/cmp_tables.md
 fea0faf35475c6e7318668dd0db6642e6e328d8fe26e68ed12c7375f1425deae  cvode_vs_rk4/data/cmp_work_precision.csv
@@ -535,48 +535,48 @@ fea0faf35475c6e7318668dd0db6642e6e328d8fe26e68ed12c7375f1425deae  cvode_vs_rk4/d
 46310bbd846f8501e686c0200c9cd7324ddf36c4d462dab754e716c38eecf17e  cvode_vs_rk4/data/conv/andreev_rtol1e-10.t2in
 0f885e0bcea41ec0fc24769b8ea16b6f5828b4d49e5c31124a14a041acd08877  cvode_vs_rk4/data/conv/andreev_rtol1e-10_fields.csv
 bc1419cdcdab70e2497efbcf66d457676b8f297cd4fd37b266f107f428b38214  cvode_vs_rk4/data/conv/andreev_rtol1e-10_series.csv
-22c9920004678f509e6fcddf2d9800f4ba8907e32bfb77511e2919035347f6c5  cvode_vs_rk4/data/conv/andreev_rtol1e-10_summary.txt
+5a2ee838ddf691d04ff7726397889aaa58b5d7da429ca4b8bceb742666046195  cvode_vs_rk4/data/conv/andreev_rtol1e-10_summary.txt
 e4375430cf22436d49cb358490f63f2559954274a5fa77fb6eaaf98514a94269  cvode_vs_rk4/data/conv/andreev_rtol1e-13.t2in
 61a91f729af99e943678a3fc00ebbde53b2f5d125b3f0ccfa8fde70162cfe15b  cvode_vs_rk4/data/conv/andreev_rtol1e-13_fields.csv
 c62eb09c720f50376daf0805240ef64da25b94adb1992e0bd599e0fc69416cf3  cvode_vs_rk4/data/conv/andreev_rtol1e-13_series.csv
-bd98d65eef6a58420879fdf5ace395b8eeb6d774e2ef3d21d25f093b31dd56e2  cvode_vs_rk4/data/conv/andreev_rtol1e-13_summary.txt
+8d8e8fd457bafeb2784b269c4bc5f0acf89e6a0ffc10d60efcad35d94b5732a0  cvode_vs_rk4/data/conv/andreev_rtol1e-13_summary.txt
 0c25103622adf74bca4870389031dd4bec37dbb5ea2a9d1ed36d84f77d8e8a0e  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10.t2in
 32e11f6ec6875b94e3ccca982cf9e4273845b22e6f838035583d8d8bcd27b639  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_fields.csv
 4517cc1238bd38857f81f4967fb998bd6f836dd829a4ef8f434a8fba900300bc  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_series.csv
-842327310444b0d866184cc4618072e1d9378a643cc056e37789c7ff41080567  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_summary.txt
+4419b353e99232e8f807ef50220477b6a7a2768ea5e7f683a0f36ddc21eda368  cvode_vs_rk4/data/conv/cyclotron_rtol1e-10_summary.txt
 edce3fed5a9445b220b8f013a7e2f1d4663b8aebbc2689ed823729f75d6a2a66  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13.t2in
 45881806e19f3b98615fabf762baefe8bcb8ecdf9cece6f9392c7589290579d2  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_fields.csv
 7038c61df1a3b4a3217f4acfa8df1bb62e610d793cd96f2bbb11662699aaff7c  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_series.csv
-31b6074a85c5221e209ca6ff938d6ce97a7ded19e6c72d7b6731ba0d185a3016  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_summary.txt
+a5de2f2e20d204ef6adae4e2a5337bc7bc2a34565710c11bc1c420a24f9cb550  cvode_vs_rk4/data/conv/cyclotron_rtol1e-13_summary.txt
 4f529989b9fada4f1dd6e4d2c5e84cbff3b867e4ca5d44e474c634953bcf8ce6  cvode_vs_rk4/data/conv/packet_free_rtol1e-10.t2in
 12a56df2793143cceb307518c1d7a951c89331c3f10db9b99e26702e940aee56  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_fields.csv
 5d3e6de60bd827055f738a3cf1a8171e98fbe22c20498e5d1e537e0bc2e88f47  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_series.csv
-5af1e8bdc9433b57b7b0c0170065ab7fe133971887f334268064d361b8e1340e  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_summary.txt
+30589f37203ee888b69b71749d9d62032da7fdad0c2d41e633b357a0ea35bad7  cvode_vs_rk4/data/conv/packet_free_rtol1e-10_summary.txt
 3de6b714810579af5f23778b941c3cbd6976ae6b0d817f8823cd0f548eb38cd3  cvode_vs_rk4/data/conv/packet_free_rtol1e-13.t2in
 03ac0010bfa50139ce34fa7b2e6d6508ad0732a9992c2da4b7c03318fcf7d56c  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_fields.csv
 1e032e75564f3fc0f4e2b159d2c752d8c5b9e21382edf2dc1807f9675bd7e3c4  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_series.csv
-d9e90014ec6b5d51b800f0e947eb43e5735566d6cff5b1cc950e8d4cfb48ddc1  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_summary.txt
+e30a8d97b36b630abac6ee0298790672313c38e0fdc0900a76a85c9d5fdfba78  cvode_vs_rk4/data/conv/packet_free_rtol1e-13_summary.txt
 2f92bbf302825e10e8d26c4e2e86ad785dc6dd73907c786aeb04c6fba4193679  cvode_vs_rk4/data/conv/quench_rtol1e-10.t2in
 a9a67107b4d3bcc73a2e068071b2f27ee1229210ed86e075149d8e943412e31b  cvode_vs_rk4/data/conv/quench_rtol1e-10_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode_vs_rk4/data/conv/quench_rtol1e-10_iterations.csv
 2e755102bae80ec636a04d65e4fea75b689f141b421854662fe2ba113c93424c  cvode_vs_rk4/data/conv/quench_rtol1e-10_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode_vs_rk4/data/conv/quench_rtol1e-10_spectrum.csv
-9c013fc57e0041abc1201a4f9b6fd80c1cd9bbb1e74a2a84c949c97c2c29f102  cvode_vs_rk4/data/conv/quench_rtol1e-10_summary.txt
+41738a091596d118419386da14075ca6df1d44e2b78f5840e3dbc44680c08299  cvode_vs_rk4/data/conv/quench_rtol1e-10_summary.txt
 1fc4629bc3d0ad5d895397ff147de6b63ba7412fecc665fe13c89a8771767ca8  cvode_vs_rk4/data/conv/quench_rtol1e-13.t2in
 ab787e259c9fb52450d27f347a8c43a8b35e07f76a4e789e200ce5bb0c7b7f99  cvode_vs_rk4/data/conv/quench_rtol1e-13_fields.csv
 fedf30fa15f587b6da6e0f5ba98ecaa4bc924e20e68920b4ba797c215de66ea7  cvode_vs_rk4/data/conv/quench_rtol1e-13_iterations.csv
 c25e8c26476f8963c6c6dbbe0d2afe13ba5816e214dd99d36cd98f075be0a8bd  cvode_vs_rk4/data/conv/quench_rtol1e-13_series.csv
 9b391bb8c06355e07562835d407212cedc8ed83ab0960786bf803be010c25f4f  cvode_vs_rk4/data/conv/quench_rtol1e-13_spectrum.csv
-4d2baa00e10cae3916211806d1e84c3e32063abc91c5ef3836ce44f99df03f36  cvode_vs_rk4/data/conv/quench_rtol1e-13_summary.txt
-d747e55e0a28372a37743eaf32407fb9bbb3116088dcd4d9d9861e25e5f5a10d  cvode_vs_rk4/figures/fig_cmp_conservation.pdf
+df4d7b1c23f0c234293d94d1bef0b160714f52ada77aea049f353b960a85aeed  cvode_vs_rk4/data/conv/quench_rtol1e-13_summary.txt
+61461bda428397778aab58ad377f5fbb09028f32b5a65e5649d36532a0fafdc1  cvode_vs_rk4/figures/fig_cmp_conservation.pdf
 9764badfd131b386853c3c5301eb62155cb038f5caab81b7e8ba2d4a852625af  cvode_vs_rk4/figures/fig_cmp_conservation.png
-6c184842e0457e139cf421b5c4cf08a6ad05efd185527695d702bd258cb5f110  cvode_vs_rk4/figures/fig_cmp_lat_time.pdf
+0dca448162b54ebdc78b5c0a8853bedfdc49cbfa3510ace87ca17f5f52ebc9b3  cvode_vs_rk4/figures/fig_cmp_lat_time.pdf
 5ab90d13d08e79585a679043ac6aa4ec379f723fcb074737982a4b1514ddf7df  cvode_vs_rk4/figures/fig_cmp_lat_time.png
-846a54a99635f9908cec20bbbb0b93fcb76d6f8c4868d8b50f4af39999420b5d  cvode_vs_rk4/figures/fig_cmp_quench.pdf
+3b7a1900bb53d0469b09d9038c22e5da5350383d0bc7e2026d5a91d1522a2b50  cvode_vs_rk4/figures/fig_cmp_quench.pdf
 4ce9a92498c1f9b8287576a7d642d4802aecacf11ea489815c3bb634a70f8c84  cvode_vs_rk4/figures/fig_cmp_quench.png
-0e30c0837ea30f071ec7b55ba40c605bbebe14f43d25fcb22bff67b754b54565  cvode_vs_rk4/figures/fig_cmp_sfbs.pdf
+59fa8c69a9ce127cd405fdd75e80db2a8e89dad6c8df88470dfec55c32a58f8f  cvode_vs_rk4/figures/fig_cmp_sfbs.pdf
 92014e585daf58b90a637f85f151e7660475208d93ba78c722ac251044f1b1c0  cvode_vs_rk4/figures/fig_cmp_sfbs.png
-2ee5e0d7689e9ac6f8220a993173617feab1d578fe9c97121dfc6ef4405e3e09  cvode_vs_rk4/figures/fig_cmp_work_precision.pdf
+689b44c851081a730fa9402e64039a8e23754aa2f74080967b204390dfcf3a2b  cvode_vs_rk4/figures/fig_cmp_work_precision.pdf
 26b322a6384a9d5c74c2b3b73f93742c918762dd3cb0c5c9771213223f6c9c84  cvode_vs_rk4/figures/fig_cmp_work_precision.png
 ```
 
@@ -1026,6 +1026,165 @@ pub fn evolve_lattice(
     integrate(w0, 0.0, touts, settings, f, out)
 }
 
+/// One internal step of CVODE, as `integrate_steps` reports it.
+#[derive(Clone, Debug, Default)]
+pub struct StepReport {
+    /// the number of the step (1, 2, ...)
+    pub n: i64,
+    /// the time t_n at the end of the step
+    pub t: f64,
+    /// the size h_n of the step (CVodeGetLastStep)
+    pub h: f64,
+    /// the order q_n of the formula with which the step was taken (CVodeGetLastOrder)
+    pub q: i32,
+    /// the value of the local error test of the step: the weighted root-mean-square norm of the estimate of the local
+    /// error that CVODE made for this step (CVodeGetEstLocalErrors), with the error weights of the step
+    /// (CVodeGetErrWeights).  CVODE accepted the step because this number is at most 1.
+    pub test: f64,
+    /// the number of iterations of the fixed-point solver of the corrector in this step and in the rejected attempts
+    /// before it (the increase of CVodeGetNumNonlinSolvIters)
+    pub iterations: i64,
+    /// the number of attempts of this step that the local error test rejected (the increase of CVodeGetNumErrTestFails)
+    pub rejected: i64,
+}
+
+/// The integration of `integrate`, reported step by step: CVODE is called with the task CV_ONE_STEP, which returns
+/// after every internal step with the state at the END of that step (no interpolation), until the time has reached
+/// or passed `tend`.  After every step the function calls `step(report, w, weights)` with the report of the step, the
+/// state w(t_n) and the 2n error weights of the step (the weight of Re w_k and of Im w_k is 1/(rtol |w_k| + atol),
+/// taken at the beginning of the step).
+///
+/// The integrator is set up by exactly the same calls, in the same order, as in `integrate_status`, and `tfirst` plays
+/// the part of the first output time there (CVODE uses it once, for its first step size).  CVODE chooses its steps
+/// without regard to the output times (in `integrate` it steps past an output time and interpolates), so the internal
+/// steps reported here are the internal steps of `integrate` with the first output time `tfirst`.
+pub fn integrate_steps(
+    w0: &[C64],
+    t0: f64,
+    tfirst: f64,
+    tend: f64,
+    settings: &CvodeSettings,
+    mut f: ComplexRhs,
+    mut step: impl FnMut(&StepReport, &[C64], &[f64]),
+) -> Result<CvodeStats, String> {
+    let n = w0.len();
+    let g: ComplexRhsStatus = Box::new(move |t, w, dw| {
+        f(t, w, dw);
+        0
+    });
+    let mut ctx_out: Option<SUNContext> = None;
+    if SUNContext_Create(SUN_COMM_NULL, &mut ctx_out) != 0 {
+        return Err("SUNContext_Create failed".into());
+    }
+    let ctx = ctx_out.ok_or("SUNContext_Create returned no context")?;
+    let y = N_VNew_Serial(2 * n as i64, &ctx).ok_or("N_VNew_Serial failed")?;
+    {
+        let mut yd = NV_DATA_S(&y);
+        for k in 0..n {
+            yd[2 * k] = w0[k].re;
+            yd[2 * k + 1] = w0[k].im;
+        }
+    }
+    let lmm = match settings.lmm {
+        Lmm::Adams => CV_ADAMS,
+        Lmm::Bdf => CV_BDF,
+    };
+    let mem = CVodeCreate(lmm, &ctx).ok_or("CVodeCreate failed")?;
+    let check = |r: i32, what: &str| -> Result<(), String> {
+        if r == CV_SUCCESS {
+            Ok(())
+        } else {
+            Err(format!("{} returned {}", what, r))
+        }
+    };
+    check(CVodeInit(&mem, rhs_trampoline, t0, &y), "CVodeInit")?;
+    check(CVodeWFtolerances(&mem, ewt_complex), "CVodeWFtolerances")?;
+    check(CVodeSetMaxOrd(&mem, settings.max_order), "CVodeSetMaxOrd")?;
+    check(CVodeSetMaxNumSteps(&mem, settings.max_steps), "CVodeSetMaxNumSteps")?;
+    let data = RhsData { f: g, w: vec![C64::ZERO; n], dw: vec![C64::ZERO; n], rtol: settings.rtol, atol: settings.atol };
+    check(CVodeSetUserData(&mem, Some(Box::new(data))), "CVodeSetUserData")?;
+    let nls = SUNNonlinSol_FixedPoint(&y, 0, &ctx).ok_or("SUNNonlinSol_FixedPoint failed")?;
+    check(CVodeSetNonlinearSolver(&mem, &nls), "CVodeSetNonlinearSolver")?;
+    // two work vectors: the estimate of the local error and the error weights of the step
+    let ele = N_VNew_Serial(2 * n as i64, &ctx).ok_or("N_VNew_Serial failed")?;
+    let ewt = N_VNew_Serial(2 * n as i64, &ctx).ok_or("N_VNew_Serial failed")?;
+    let mut w = vec![C64::ZERO; n];
+    let mut wts = vec![0.0f64; 2 * n];
+    let mut t = t0;
+    let mut nst = 0i64;
+    let (mut iters_before, mut fails_before) = (0i64, 0i64);
+    while t < tend {
+        let r = CVode(&mem, tfirst, &y, &mut t, CV_ONE_STEP);
+        if r < 0 {
+            return Err(format!("CVode returned {} after the step {} at the time {}", r, nst, t));
+        }
+        nst += 1;
+        {
+            let yd = NV_DATA_S(&y);
+            for k in 0..n {
+                w[k].re = yd[2 * k];
+                w[k].im = yd[2 * k + 1];
+            }
+        }
+        let mut rep = StepReport { n: nst, t, ..Default::default() };
+        CVodeGetLastStep(&mem, &mut rep.h);
+        CVodeGetLastOrder(&mem, &mut rep.q);
+        check(CVodeGetEstLocalErrors(&mem, &ele), "CVodeGetEstLocalErrors")?;
+        check(CVodeGetErrWeights(&mem, &ewt), "CVodeGetErrWeights")?;
+        rep.test = N_VWrmsNorm(&ele, &ewt);
+        let (mut iters, mut fails) = (0i64, 0i64);
+        CVodeGetNumNonlinSolvIters(&mem, &mut iters);
+        CVodeGetNumErrTestFails(&mem, &mut fails);
+        rep.iterations = iters - iters_before;
+        rep.rejected = fails - fails_before;
+        iters_before = iters;
+        fails_before = fails;
+        {
+            let wd = NV_DATA_S(&ewt);
+            wts.copy_from_slice(&wd[..2 * n]);
+        }
+        step(&rep, &w, &wts);
+    }
+    let mut st = CvodeStats::default();
+    CVodeGetNumSteps(&mem, &mut st.nsteps);
+    CVodeGetNumRhsEvals(&mem, &mut st.nfevals);
+    CVodeGetNumErrTestFails(&mem, &mut st.netfails);
+    CVodeGetNumNonlinSolvIters(&mem, &mut st.nniters);
+    CVodeGetNumNonlinSolvConvFails(&mem, &mut st.nncfails);
+    CVodeGetLastOrder(&mem, &mut st.qlast);
+    CVodeGetLastStep(&mem, &mut st.hlast);
+    let mut mem_opt = Some(mem);
+    CVodeFree(&mut mem_opt);
+    SUNNonlinSolFree(Some(nls));
+    N_VDestroy(ele);
+    N_VDestroy(ewt);
+    N_VDestroy(y);
+    let mut ctx_opt = Some(ctx);
+    SUNContext_Free(&mut ctx_opt);
+    Ok(st)
+}
+
+/// `evolve_lattice`, reported step by step (see `integrate_steps`): the same right side dw/dx^0 = -i H_lat w.
+pub fn evolve_lattice_steps(
+    lat: &Lattice,
+    fl: &Fields,
+    w0: &[C64],
+    tfirst: f64,
+    tend: f64,
+    settings: &CvodeSettings,
+    step: impl FnMut(&StepReport, &[C64], &[f64]),
+) -> Result<CvodeStats, String> {
+    let (lat, fl) = (lat.clone(), fl.clone());
+    let mats = Mats::new();
+    let f: ComplexRhs = Box::new(move |_t, w, dw| {
+        lat.apply(&fl, &mats, w, dw);
+        for z in dw.iter_mut() {
+            *z = C64 { re: z.im, im: -z.re };
+        }
+    });
+    integrate_steps(w0, 0.0, tfirst, tend, settings, f, step)
+}
+
 /// The output times t0 + k dt for k = 0, 1, ..., n (n + 1 times), computed as t0 + k dt (no summation of dt).
 pub fn uniform_times(t0: f64, dt: f64, n: usize) -> Vec<f64> {
     (0..=n).map(|k| t0 + k as f64 * dt).collect()
@@ -1053,6 +1212,36 @@ mod tests {
         .unwrap();
         assert!(worst < 1e-8, "deviation {} ({})", worst, st.describe());
         assert!(st.nsteps > 0 && st.qlast >= 1);
+    }
+
+    /// `integrate_steps` takes the internal steps of `integrate`: the same number of steps up to the last output time,
+    /// and at every step the value of the local error test is at most 1; the sum of the step sizes is the time
+    #[test]
+    fn steps_are_those_of_integrate() {
+        let e = 1.7;
+        let touts = uniform_times(0.0, 0.5, 40);
+        let set = CvodeSettings::adams(1e-10, 1e-12);
+        let f1: ComplexRhs = Box::new(move |_t, w, dw| {
+            dw[0] = c(0.0, -e) * w[0];
+        });
+        let st = integrate(&[C64::ONE], 0.0, &touts, &set, f1, |_i, _t, _w| {}).unwrap();
+        let f2: ComplexRhs = Box::new(move |_t, w, dw| {
+            dw[0] = c(0.0, -e) * w[0];
+        });
+        let (mut count, mut sum_h, mut worst_test, mut last_t) = (0i64, 0.0f64, 0.0f64, 0.0f64);
+        let st2 = integrate_steps(&[C64::ONE], 0.0, 0.5, 20.0, &set, f2, |rep, w, wts| {
+            count += 1;
+            sum_h += rep.h;
+            worst_test = worst_test.max(rep.test);
+            last_t = rep.t;
+            assert_eq!(wts.len(), 2);
+            assert!(w[0].abs() > 0.9);
+        })
+        .unwrap();
+        assert_eq!(count, st2.nsteps);
+        assert_eq!(st.nsteps, st2.nsteps, "integrate took {} steps, integrate_steps {}", st.nsteps, st2.nsteps);
+        assert!((sum_h - last_t).abs() < 1e-9 * last_t, "sum of the steps {} against the time {}", sum_h, last_t);
+        assert!(worst_test <= 1.0 && worst_test > 0.0, "largest test value {}", worst_test);
     }
 
     /// a right side that fails unrecoverably after 50 evaluations stops the integration with an error, and an

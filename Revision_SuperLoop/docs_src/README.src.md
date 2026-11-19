@@ -64,7 +64,9 @@ with the gauge-covariant derivative of the gauge group $SL(2,\mathbb C)\times SU
 explicitly, shows that the Dirac operator is the right multiplication of the spinor charges by the frame
 bi-quaternions, and formulates the mean-field (Dirac-Bogoliubov-de Gennes) equations and their gauge-covariant
 lattice discretization for numerical solution, with its own Rust programs and {{GEN:nchecks_t2_fields}} further
-checks. Its second answer (item [2]) analyzes these equations (each mode keeps its norm; the fermion number is
+checks; the last four of them (GS-17 to GS-20, Section 2.12 of the document, library crate `test2/rust/t2steps`) take the time
+integrations of the lattice equations by CVODE and by IDA apart, one internal step at a time, and compute where the deviation
+that each integration leaves comes from. Its second answer (item [2]) analyzes these equations (each mode keeps its norm; the fermion number is
 conserved exactly when the pair field is self-consistent; constant potentials are pure gauge except for their
 holonomy on a ring; the square of the covariant Dirac Hamiltonian gives the Pauli equation with the gyromagnetic
 factor 2 for both kinds of charge) and solves four cases exactly: free spinor charges in constant gauge
@@ -172,7 +174,7 @@ SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member `t2sfbs` of the work
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]); the time integration with CVODE in `rust/t2core/src/cvode.rs` and, for the Python solver, the shared library `libt2cvode` of `rust/t2cvode_c`; the comparison of CVODE with the fixed-step methods of the first version in `cvode_vs_rk4/` (the document `P_CVODE_vs_RK4`, .md, .tex, .pdf, its program `rust/t2cvcmp`, binary `t2_cvcmp`, its scripts, data and figures) and the data of the first version in `rk4_reference/` |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, item [1]) and the program `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]); the time integration with CVODE in `rust/t2core/src/cvode.rs` and, for the Python solver, the shared library `libt2cvode` of `rust/t2cvode_c`; the step-by-step analysis of the time integrations of check GS-13 in the library `rust/t2steps` and the module `rust/t2fields/src/steps.rs` (checks GS-17 to GS-20), with the independent check `python/t2_formula_check.py` and the figure script `python/make_t2_steps_figures.py`; the comparison of CVODE with the fixed-step methods of the first version in `cvode_vs_rk4/` (the document `P_CVODE_vs_RK4`, .md, .tex, .pdf, its program `rust/t2cvcmp`, binary `t2_cvcmp`, its scripts, data and figures) and the data of the first version in `rk4_reference/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -192,8 +194,12 @@ python3 explanations/code/make_explain_figures.py
 # the examples and checks of the document on the 3+1 manifold (checks Z-1 to Z-8) and its four figures:
 (cd explanations && cargo run --release --manifest-path code/r13-rs/Cargo.toml)
 python3 explanations/code/make_r13_figures.py
-# Test 2, item [1]: the checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, the explicit matrices and equations (Figures 1 and 2):
+# Test 2, item [1]: the checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, the explicit matrices and equations (Figures 1, 2 and 2A to 2D):
 (cd test2/rust && cargo build --release && ./target/release/t2_fields)
+# the tests of the library crates t2steps and t2core, the formulas of Section 2.12 with 40 digits (checks FC-1 to FC-{{GEN:nchecks_t2_py_formula}}), Figures 2A to 2D:
+(cd test2/rust && cargo test --release --lib -p t2steps && cargo test --release --lib -p t2core)
+python3 test2/python/t2_formula_check.py
+python3 test2/python/make_t2_steps_figures.py
 # Test 2, item [2]: the analytic solutions, checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} (Figures 3 to 6):
 (cd test2/rust && cargo build --release && ./target/release/t2_analytic)
 # the six figures of Test 2:
@@ -231,7 +237,7 @@ bash code/scripts/check_all.sh
 
 Requirements: a Rust toolchain for the edition 2021; Python 3 with SymPy, NumPy and Matplotlib; for
 the documents TeX Live with REVTeX 4.2, XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math
-font, and pandoc. The program uses the library crate `code/spacetimes-rs` of the repository (complex
+font, pandoc, and pdftotext of the poppler utilities (the build verifies that no page has text below its text area). The program uses the library crate `code/spacetimes-rs` of the repository (complex
 numbers, Hermitian diagonalization, Gauss-Legendre rules, Brent's root finder, the writer of data
 files); no crate is downloaded. The Rust programs of the folder `test2` use no downloaded crate either: their time
 integrator CVODE is the pure-Rust translation of SUNDIALS 7.8.0 that the repository contains (folder

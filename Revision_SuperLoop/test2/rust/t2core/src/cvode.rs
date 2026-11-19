@@ -357,6 +357,165 @@ pub fn evolve_lattice(
     integrate(w0, 0.0, touts, settings, f, out)
 }
 
+/// One internal step of CVODE, as `integrate_steps` reports it.
+#[derive(Clone, Debug, Default)]
+pub struct StepReport {
+    /// the number of the step (1, 2, ...)
+    pub n: i64,
+    /// the time t_n at the end of the step
+    pub t: f64,
+    /// the size h_n of the step (CVodeGetLastStep)
+    pub h: f64,
+    /// the order q_n of the formula with which the step was taken (CVodeGetLastOrder)
+    pub q: i32,
+    /// the value of the local error test of the step: the weighted root-mean-square norm of the estimate of the local
+    /// error that CVODE made for this step (CVodeGetEstLocalErrors), with the error weights of the step
+    /// (CVodeGetErrWeights).  CVODE accepted the step because this number is at most 1.
+    pub test: f64,
+    /// the number of iterations of the fixed-point solver of the corrector in this step and in the rejected attempts
+    /// before it (the increase of CVodeGetNumNonlinSolvIters)
+    pub iterations: i64,
+    /// the number of attempts of this step that the local error test rejected (the increase of CVodeGetNumErrTestFails)
+    pub rejected: i64,
+}
+
+/// The integration of `integrate`, reported step by step: CVODE is called with the task CV_ONE_STEP, which returns
+/// after every internal step with the state at the END of that step (no interpolation), until the time has reached
+/// or passed `tend`.  After every step the function calls `step(report, w, weights)` with the report of the step, the
+/// state w(t_n) and the 2n error weights of the step (the weight of Re w_k and of Im w_k is 1/(rtol |w_k| + atol),
+/// taken at the beginning of the step).
+///
+/// The integrator is set up by exactly the same calls, in the same order, as in `integrate_status`, and `tfirst` plays
+/// the part of the first output time there (CVODE uses it once, for its first step size).  CVODE chooses its steps
+/// without regard to the output times (in `integrate` it steps past an output time and interpolates), so the internal
+/// steps reported here are the internal steps of `integrate` with the first output time `tfirst`.
+pub fn integrate_steps(
+    w0: &[C64],
+    t0: f64,
+    tfirst: f64,
+    tend: f64,
+    settings: &CvodeSettings,
+    mut f: ComplexRhs,
+    mut step: impl FnMut(&StepReport, &[C64], &[f64]),
+) -> Result<CvodeStats, String> {
+    let n = w0.len();
+    let g: ComplexRhsStatus = Box::new(move |t, w, dw| {
+        f(t, w, dw);
+        0
+    });
+    let mut ctx_out: Option<SUNContext> = None;
+    if SUNContext_Create(SUN_COMM_NULL, &mut ctx_out) != 0 {
+        return Err("SUNContext_Create failed".into());
+    }
+    let ctx = ctx_out.ok_or("SUNContext_Create returned no context")?;
+    let y = N_VNew_Serial(2 * n as i64, &ctx).ok_or("N_VNew_Serial failed")?;
+    {
+        let mut yd = NV_DATA_S(&y);
+        for k in 0..n {
+            yd[2 * k] = w0[k].re;
+            yd[2 * k + 1] = w0[k].im;
+        }
+    }
+    let lmm = match settings.lmm {
+        Lmm::Adams => CV_ADAMS,
+        Lmm::Bdf => CV_BDF,
+    };
+    let mem = CVodeCreate(lmm, &ctx).ok_or("CVodeCreate failed")?;
+    let check = |r: i32, what: &str| -> Result<(), String> {
+        if r == CV_SUCCESS {
+            Ok(())
+        } else {
+            Err(format!("{} returned {}", what, r))
+        }
+    };
+    check(CVodeInit(&mem, rhs_trampoline, t0, &y), "CVodeInit")?;
+    check(CVodeWFtolerances(&mem, ewt_complex), "CVodeWFtolerances")?;
+    check(CVodeSetMaxOrd(&mem, settings.max_order), "CVodeSetMaxOrd")?;
+    check(CVodeSetMaxNumSteps(&mem, settings.max_steps), "CVodeSetMaxNumSteps")?;
+    let data = RhsData { f: g, w: vec![C64::ZERO; n], dw: vec![C64::ZERO; n], rtol: settings.rtol, atol: settings.atol };
+    check(CVodeSetUserData(&mem, Some(Box::new(data))), "CVodeSetUserData")?;
+    let nls = SUNNonlinSol_FixedPoint(&y, 0, &ctx).ok_or("SUNNonlinSol_FixedPoint failed")?;
+    check(CVodeSetNonlinearSolver(&mem, &nls), "CVodeSetNonlinearSolver")?;
+    // two work vectors: the estimate of the local error and the error weights of the step
+    let ele = N_VNew_Serial(2 * n as i64, &ctx).ok_or("N_VNew_Serial failed")?;
+    let ewt = N_VNew_Serial(2 * n as i64, &ctx).ok_or("N_VNew_Serial failed")?;
+    let mut w = vec![C64::ZERO; n];
+    let mut wts = vec![0.0f64; 2 * n];
+    let mut t = t0;
+    let mut nst = 0i64;
+    let (mut iters_before, mut fails_before) = (0i64, 0i64);
+    while t < tend {
+        let r = CVode(&mem, tfirst, &y, &mut t, CV_ONE_STEP);
+        if r < 0 {
+            return Err(format!("CVode returned {} after the step {} at the time {}", r, nst, t));
+        }
+        nst += 1;
+        {
+            let yd = NV_DATA_S(&y);
+            for k in 0..n {
+                w[k].re = yd[2 * k];
+                w[k].im = yd[2 * k + 1];
+            }
+        }
+        let mut rep = StepReport { n: nst, t, ..Default::default() };
+        CVodeGetLastStep(&mem, &mut rep.h);
+        CVodeGetLastOrder(&mem, &mut rep.q);
+        check(CVodeGetEstLocalErrors(&mem, &ele), "CVodeGetEstLocalErrors")?;
+        check(CVodeGetErrWeights(&mem, &ewt), "CVodeGetErrWeights")?;
+        rep.test = N_VWrmsNorm(&ele, &ewt);
+        let (mut iters, mut fails) = (0i64, 0i64);
+        CVodeGetNumNonlinSolvIters(&mem, &mut iters);
+        CVodeGetNumErrTestFails(&mem, &mut fails);
+        rep.iterations = iters - iters_before;
+        rep.rejected = fails - fails_before;
+        iters_before = iters;
+        fails_before = fails;
+        {
+            let wd = NV_DATA_S(&ewt);
+            wts.copy_from_slice(&wd[..2 * n]);
+        }
+        step(&rep, &w, &wts);
+    }
+    let mut st = CvodeStats::default();
+    CVodeGetNumSteps(&mem, &mut st.nsteps);
+    CVodeGetNumRhsEvals(&mem, &mut st.nfevals);
+    CVodeGetNumErrTestFails(&mem, &mut st.netfails);
+    CVodeGetNumNonlinSolvIters(&mem, &mut st.nniters);
+    CVodeGetNumNonlinSolvConvFails(&mem, &mut st.nncfails);
+    CVodeGetLastOrder(&mem, &mut st.qlast);
+    CVodeGetLastStep(&mem, &mut st.hlast);
+    let mut mem_opt = Some(mem);
+    CVodeFree(&mut mem_opt);
+    SUNNonlinSolFree(Some(nls));
+    N_VDestroy(ele);
+    N_VDestroy(ewt);
+    N_VDestroy(y);
+    let mut ctx_opt = Some(ctx);
+    SUNContext_Free(&mut ctx_opt);
+    Ok(st)
+}
+
+/// `evolve_lattice`, reported step by step (see `integrate_steps`): the same right side dw/dx^0 = -i H_lat w.
+pub fn evolve_lattice_steps(
+    lat: &Lattice,
+    fl: &Fields,
+    w0: &[C64],
+    tfirst: f64,
+    tend: f64,
+    settings: &CvodeSettings,
+    step: impl FnMut(&StepReport, &[C64], &[f64]),
+) -> Result<CvodeStats, String> {
+    let (lat, fl) = (lat.clone(), fl.clone());
+    let mats = Mats::new();
+    let f: ComplexRhs = Box::new(move |_t, w, dw| {
+        lat.apply(&fl, &mats, w, dw);
+        for z in dw.iter_mut() {
+            *z = C64 { re: z.im, im: -z.re };
+        }
+    });
+    integrate_steps(w0, 0.0, tfirst, tend, settings, f, step)
+}
+
 /// The output times t0 + k dt for k = 0, 1, ..., n (n + 1 times), computed as t0 + k dt (no summation of dt).
 pub fn uniform_times(t0: f64, dt: f64, n: usize) -> Vec<f64> {
     (0..=n).map(|k| t0 + k as f64 * dt).collect()
@@ -384,6 +543,36 @@ mod tests {
         .unwrap();
         assert!(worst < 1e-8, "deviation {} ({})", worst, st.describe());
         assert!(st.nsteps > 0 && st.qlast >= 1);
+    }
+
+    /// `integrate_steps` takes the internal steps of `integrate`: the same number of steps up to the last output time,
+    /// and at every step the value of the local error test is at most 1; the sum of the step sizes is the time
+    #[test]
+    fn steps_are_those_of_integrate() {
+        let e = 1.7;
+        let touts = uniform_times(0.0, 0.5, 40);
+        let set = CvodeSettings::adams(1e-10, 1e-12);
+        let f1: ComplexRhs = Box::new(move |_t, w, dw| {
+            dw[0] = c(0.0, -e) * w[0];
+        });
+        let st = integrate(&[C64::ONE], 0.0, &touts, &set, f1, |_i, _t, _w| {}).unwrap();
+        let f2: ComplexRhs = Box::new(move |_t, w, dw| {
+            dw[0] = c(0.0, -e) * w[0];
+        });
+        let (mut count, mut sum_h, mut worst_test, mut last_t) = (0i64, 0.0f64, 0.0f64, 0.0f64);
+        let st2 = integrate_steps(&[C64::ONE], 0.0, 0.5, 20.0, &set, f2, |rep, w, wts| {
+            count += 1;
+            sum_h += rep.h;
+            worst_test = worst_test.max(rep.test);
+            last_t = rep.t;
+            assert_eq!(wts.len(), 2);
+            assert!(w[0].abs() > 0.9);
+        })
+        .unwrap();
+        assert_eq!(count, st2.nsteps);
+        assert_eq!(st.nsteps, st2.nsteps, "integrate took {} steps, integrate_steps {}", st.nsteps, st2.nsteps);
+        assert!((sum_h - last_t).abs() < 1e-9 * last_t, "sum of the steps {} against the time {}", sum_h, last_t);
+        assert!(worst_test <= 1.0 && worst_test > 0.0, "largest test value {}", worst_test);
     }
 
     /// a right side that fails unrecoverably after 50 evaluations stops the integration with an error, and an

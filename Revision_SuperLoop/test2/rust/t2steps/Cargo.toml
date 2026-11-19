@@ -1,0 +1,14 @@
+[package]
+name = "t2steps"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2: a time integration taken apart step by step - the internal steps of CVODE and of IDA (SUNDIALS 7.8.0, pure Rust), the exact local error of every step, the accumulated error of every eigenmode, and the errors of the Adams-Moulton and backward differentiation formulas computed from their characteristic equations"
+
+[lib]
+# the comments of the modules contain indented formulas, which are not code examples
+doctest = false
+
+[dependencies]
+t2core = { path = "../t2core" }
+# IDA of SUNDIALS 7.8.0 in pure Rust, vendored in PROJECT spacetimes (vendor/sundials_rs-7.8.0)
+ida_rs = { path = "../../../../vendor/sundials_rs-7.8.0/crates/ida_rs" }

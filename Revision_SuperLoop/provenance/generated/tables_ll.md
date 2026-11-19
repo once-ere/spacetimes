@@ -65,8 +65,9 @@
 | `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
 | `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | 8 of 8 |
 | `test2/data/t2_analytic_checks.txt` | `t2_analytic` | 10 of 10 |
-| `test2/data/t2_fields_checks.txt` | `t2_fields` | 16 of 16 |
+| `test2/data/t2_fields_checks.txt` | `t2_fields` | 20 of 20 |
 | `test2/data/t2_py_examples_checks.txt` | `t2_examples_check.py` | 10 of 10 |
+| `test2/data/t2_py_formula_checks.txt` | `t2_formula_check.py` | 6 of 6 |
 | `test2/data/t2_py_selftest_checks.txt` | `t2_solve.py` | 6 of 6 |
 | `test2/data/t2_rs_examples_checks.txt` | `t2_examples_check.py` | 11 of 11 |
 | `test2/data/t2_rs_selftest_checks.txt` | `t2_solve` | 6 of 6 |
@@ -148,15 +149,15 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (204 entries) and every plain-text name of the programs, figures and data files belongs to one entry (612 names) & PASS\\
-LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 450 items of the 202 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 105 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (237 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 204 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 8404 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 9671 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
-LL-S7 & every one of the 5184 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters) & PASS\\
-LL-S8 & every one of the 3642 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 139 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 4825 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-S1 & every symbol text is registered once (214 entries), every single item of the entries belongs to one entry (492 items), and every plain-text name of the programs, figures and data files belongs to one entry (653 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 490 items of the 212 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 113 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (292 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 214 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 8924 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 10294 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 5200 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters) & PASS\\
+LL-S8 & every one of the 3642 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 148 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
+LL-S9 & the 5614 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
 LL-H1 & none of the 30 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
@@ -455,17 +456,19 @@ b0097ad508f55fe34ce5d8ad72c4ac7a3d7cf7d919661ca1422d1dbc6b747d88  code/superloop
 84ce114dda4a896f3a7286572de3301961e6f1d82cd208379b093187e64a4c4c  code/superloop-rs/Cargo.toml
 f3abd67e3bc8b707583adcb4dd5aa5bdb5ec233237bb115dcf1d1f4163df436f  code/scripts/assemble_docs.py
 fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/build_manuscript.py
-465063731c88f51a1d8af013d40f1cae7613007e63d3256e5ab26b364bd3b455  code/scripts/check_layout.py
+ca6622b69179666116079c69b010fb6fb45d0f39cb30c1f32503848b459048e9  code/scripts/check_layout.py
+434d6216aaf225bcfd9b88d9a9ea58fba6d3a99b633282ea375ed913385764be  code/scripts/check_pages.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-b08318bee2dd37941e042758eec0fa7ca054a2bec76a570eb4d698375ac0d8e1  code/scripts/check_symbols.py
+83d60c3ae64e0e7b3cd9f6a52a67215eda210da308279a84dc9a2f9d4c17f1d2  code/scripts/check_symbols.py
+aa5a9dd31707550c713e4f8e066b234f7d7fc53908c4bef049c3bf94d54db56d  code/scripts/keep_tables.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
-47495d2d8a0c86059b233ea532af506c5a1b875e9935f98c14ae78688750c65b  code/scripts/write_symbol_registry.py
-a0ec1bd5f42e9f4d44fa248789d0d9fcc77213790580132f6e2b0b0467be274f  code/scripts/build_docs.sh
-182ba7ed89bdb964f0f7c7925ae5e492aa287bc936e4996bb46e33cb1837cc40  code/scripts/check_all.sh
-cad52ccfbd5b20a51f59cd044cc1bfb05cae4268d45581539f66d47145b7e24d  code/scripts/doc_header.tex
+001df94351f88875bf940264ac801a9ac8ca18c84168601820c3d3a302666307  code/scripts/write_symbol_registry.py
+5484c962175d1850ad87e734745ba7d9c0f13186368b8032e28d50c4b7fd1e9f  code/scripts/build_docs.sh
+6ed3af86adb62d30c8dfbf0480fffcd9a4c72a24003882a95c097e0e9db3859f  code/scripts/check_all.sh
+ec9d4e63434b533f2fb2ce9650061aaae0c8775503bf131085c7c048c6647d4e  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
 
 <!-- BEGIN ex_pair_matrices_table -->
@@ -532,10 +535,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-082b5c203c2fc5c5f91511d176073f7a736733b4a08ebdbbc093f3f9d4a9c2e8  explanations/figures/fig_ex_r13_bubble.pdf
-a58b93b4d1bcef6fb18781fc93790021960e74bdef2f8f59a0723bf994e38fe3  explanations/figures/fig_ex_r13_coordinates.pdf
-c22e4c5ae1608ceca6b2b85c6d2c5422e56afedf3d17428117cf70eb012584b7  explanations/figures/fig_ex_r13_divergences.pdf
-46fa60e38e10778a123d8c3761241f7a0890ab4f55578ce7cddba38bb5f9d43d  explanations/figures/fig_ex_r13_lorentz.pdf
+a935ecf2ee5d3d19f84476d021a9573feab187d286e96f89d70864f94b840f40  explanations/figures/fig_ex_r13_bubble.pdf
+14bb116dd8a63094d385a0f0a52f6daa004c9d383db6d0838e98e8100c8bfd67  explanations/figures/fig_ex_r13_coordinates.pdf
+5813bfac75db4fa5b435d866033c5467e260cf40ee3c70ae1a41d18c3ad020a1  explanations/figures/fig_ex_r13_divergences.pdf
+9294dcd7b3f09f22cbd079f2a9929c5f9e0ff5cc07a687ca08edcef675b4b24d  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1011,6 +1014,226 @@ i\partial_0\Psi_{{\rm LL},8}&=-i\,(\nabla^{\rm LL}_1\Psi_{\rm LL})_6+(\nabla^{\r
 $$M_{\rm LL}(\mathbf D_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0+\nabla^{\rm LL}_3&\nabla^{\rm LL}_1-i\,\nabla^{\rm LL}_2\\\nabla^{\rm LL}_1+i\,\nabla^{\rm LL}_2&\nabla^{\rm LL}_0-\nabla^{\rm LL}_3\end{pmatrix},\qquad M_{\rm LL}(\bar{\mathbf D}_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0-\nabla^{\rm LL}_3&-\nabla^{\rm LL}_1+i\,\nabla^{\rm LL}_2\\-\nabla^{\rm LL}_1-i\,\nabla^{\rm LL}_2&\nabla^{\rm LL}_0+\nabla^{\rm LL}_3\end{pmatrix}.$$
 <!-- END t2_weyl_blocks -->
 
+<!-- BEGIN t2_steps_table_six -->
+| $r^{\rm tol}_{\rm LL}$ | IDA, notebook | IDA, this program | CVODE | IDA (notebook) divided by $r^{\rm tol}_{\rm LL}$ | CVODE divided by $r^{\rm tol}_{\rm LL}$ | IDA (notebook) divided by CVODE |
+|-----------------|-------------------------------|-------------------------------|----------------------------|---------------------------------------|-------------------------------|------------------------------------|
+| $10^{-8}$ | ${7.1\times10^{-6}}$ | ${7.1\times10^{-6}}$ | ${1.2\times10^{-6}}$ | 713 | 119 | 6.01 |
+| $10^{-10}$ | ${9.3\times10^{-8}}$ | ${9.3\times10^{-8}}$ | ${1.7\times10^{-7}}$ | 931 | 1702 | 0.55 |
+| $10^{-12}$ | ${4.4\times10^{-11}}$ | ${4.8\times10^{-11}}$ | ${1.7\times10^{-10}}$ | 44 | 174 | 0.25 |
+<!-- END t2_steps_table_six -->
+
+<!-- BEGIN t2_steps_cvode_end_times -->
+20.0094, 20.0054 and 20.0052
+<!-- END t2_steps_cvode_end_times -->
+
+<!-- BEGIN t2_steps_gs13_at_20 -->
+${1.184\times10^{-6}}$, ${1.702\times10^{-7}}$ and ${1.737\times10^{-10}}$
+<!-- END t2_steps_gs13_at_20 -->
+
+<!-- BEGIN t2_steps_gs13_at_20_tolerances -->
+118, 1702 and 174
+<!-- END t2_steps_gs13_at_20_tolerances -->
+
+<!-- BEGIN t2_steps_table_budget -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | $N^{\rm st}_{\rm LL}$ | $B^{\rm loc}_{\rm LL}/r^{\rm tol}_{\rm LL}$ | $B^{\rm err}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}$ at the end | $\delta^{\rm rel}_{\rm LL}/B^{\rm err}_{\rm LL}$ |
+|-------------------------------|-----------------------|-----------------------|-----------------------------|-------------------------------------|-----------------------------------------|-----------------------------|
+| CVODE | $10^{-8}$ | 1528 | 1.691 | ${2.58\times10^{-5}}$ | ${1.185\times10^{-6}}$ | 0.04586 |
+| CVODE | $10^{-10}$ | 3661 | 1.691 | ${6.19\times10^{-7}}$ | ${1.702\times10^{-7}}$ | 0.27493 |
+| CVODE | $10^{-12}$ | 3804 | 1.691 | ${6.43\times10^{-9}}$ | ${1.737\times10^{-10}}$ | 0.02700 |
+| IDA | $10^{-8}$ | 2705 | 1.277 | ${3.45\times10^{-5}}$ | ${7.125\times10^{-6}}$ | 0.20625 |
+| IDA | $10^{-10}$ | 7309 | 1.277 | ${9.33\times10^{-7}}$ | ${9.309\times10^{-8}}$ | 0.09972 |
+| IDA | $10^{-12}$ | 41111 | 1.277 | ${5.25\times10^{-8}}$ | ${4.808\times10^{-11}}$ | 0.00092 |
+<!-- END t2_steps_table_budget -->
+
+<!-- BEGIN t2_steps_table_decomposition -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | $N^{\rm st}_{\rm LL}$ | mean of $\delta^{\rm loc}_{\rm LL}$, divided by $r^{\rm tol}_{\rm LL}$ | $\Xi^{\rm coh}_{\rm LL}$ | product: $\delta^{\rm rel}_{\rm LL}$ at the end | $\delta^{\rm rel}_{\rm LL}/r^{\rm tol}_{\rm LL}$ | median cosine between the local errors of consecutive steps |
+|-----------------------|---------------|---------------|------------------------------------|----------------|----------------------------------|------------------|--------------------------------------------------|
+| CVODE | $10^{-8}$ | 1528 | 0.2168 | 0.3578 | ${1.185\times10^{-6}}$ | 119 | $-0.194$ |
+| CVODE | $10^{-10}$ | 3661 | 0.4654 | 0.9992 | ${1.702\times10^{-7}}$ | 1702 | 1.000 |
+| CVODE | $10^{-12}$ | 3804 | 0.1720 | 0.2655 | ${1.737\times10^{-10}}$ | 174 | $-0.690$ |
+| IDA | $10^{-8}$ | 2705 | 0.2645 | 0.9960 | ${7.125\times10^{-6}}$ | 713 | 1.000 |
+| IDA | $10^{-10}$ | 7309 | 0.1279 | 0.9957 | ${9.309\times10^{-8}}$ | 931 | 1.000 |
+| IDA | $10^{-12}$ | 41111 | 0.0253 | 0.0463 | ${4.808\times10^{-11}}$ | 48 | $-0.972$ |
+<!-- END t2_steps_table_decomposition -->
+
+<!-- BEGIN t2_steps_table_settled -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | settled steps | $h^{\rm st}_{\rm LL}$ | order | with 1, with 2 iterations | $r^{\rm cj}_{\rm LL}$ | median of $\delta^{\rm est}_{\rm LL}$ | its band | median of $\delta^{\rm wrms}_{\rm LL}$ |
+|----------------------|-------------|---------------|---------------------------------|------------|------------------------|---------------|----------------|-----------------------------|----------------|
+| CVODE | $10^{-8}$ | 1508 | ${1.3216\times10^{-2}}$ | 6 | 832, 676 | (none) | 0.0958 | 0.0098 to 1.0 | 0.1926 |
+| CVODE | $10^{-10}$ | 3645 | ${5.4836\times10^{-3}}$ | 5 | 0, 3645 | (none) | 0.3735 | 0.0146 to 1.0 | 0.3779 |
+| CVODE | $10^{-12}$ | 3773 | ${5.2896\times10^{-3}}$ | 7 | 2793, 980 | (none) | 0.0814 | 0.0065 to 1.0 | 0.1490 |
+| IDA | $10^{-8}$ | 2663 | ${7.4892\times10^{-3}}$ | 5 | 2662, 1 | 1.0000 | 0.3420 | 0.0078 to 0.5 | 0.3417 |
+| IDA | $10^{-10}$ | 7265 | ${2.7490\times10^{-3}}$ | 5 | 7264, 1 | 1.1641 | 0.0836 | 0.0078 to 0.5 | 0.1643 |
+| IDA | $10^{-12}$ | 41064 | ${4.8686\times10^{-4}}$ | 5 | 40692, 372 | 1.3129 | 0.1421 | 0.0078 to 0.5 | 0.0295 |
+<!-- END t2_steps_table_settled -->
+
+<!-- BEGIN t2_steps_table_tests -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | order | $h^{\rm st}_{\rm LL}$ | $\delta^{\rm est}_{\rm LL}$ of an exactly solved step, from the formula | median of the measured $\delta^{\rm est}_{\rm LL}$ | measured divided by formula | largest modulus of another root with one iteration |
+|---------------------|-------------|------------|---------------------------------|----------------------------------------|----------------------------|----------------------------|--------------------------------|
+| CVODE | $10^{-8}$ | 6 | ${1.3216\times10^{-2}}$ | 0.0638 | 0.0958 | 1.500 | 1.2511 |
+| CVODE | $10^{-10}$ | 5 | ${5.4836\times10^{-3}}$ | 0.3740 | 0.3735 | 0.999 | 0.7361 |
+| CVODE | $10^{-12}$ | 7 | ${5.2896\times10^{-3}}$ | 0.0323 | 0.0814 | 2.523 | 1.1297 |
+| IDA | $10^{-8}$ | 5 | ${7.4892\times10^{-3}}$ | 0.3419 | 0.3420 | 1.000 | 0.7127 |
+| IDA | $10^{-10}$ | 5 | ${2.7490\times10^{-3}}$ | 0.0834 | 0.0836 | 1.002 | 0.7248 |
+| IDA | $10^{-12}$ | 5 | ${4.8686\times10^{-4}}$ | ${2.57\times10^{-4}}$ | 0.1421 | 553 | 1.0171 |
+<!-- END t2_steps_table_tests -->
+
+<!-- BEGIN t2_steps_table_formulas -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | leading term | with every step solved exactly | from the formulas as applied | measured $\delta^{\rm rel}_{\rm LL}$ |
+|-----------------------|---------------|------------------------------------------|------------------------------------------------|------------------------------------------------|-------------------------------------------|
+| CVODE | $10^{-8}$ | ${1.061\times10^{-6}}$ | ${1.056\times10^{-6}}$ | ${1.665\times10^{-6}}$ | ${1.185\times10^{-6}}$ |
+| CVODE | $10^{-10}$ | ${1.683\times10^{-7}}$ | ${1.683\times10^{-7}}$ | ${1.703\times10^{-7}}$ | ${1.702\times10^{-7}}$ |
+| CVODE | $10^{-12}$ | ${1.445\times10^{-10}}$ | ${1.408\times10^{-10}}$ | ${1.831\times10^{-10}}$ | ${1.737\times10^{-10}}$ |
+| IDA | $10^{-8}$ | ${7.094\times10^{-6}}$ | ${7.124\times10^{-6}}$ | ${7.126\times10^{-6}}$ | ${7.125\times10^{-6}}$ |
+| IDA | $10^{-10}$ | ${9.303\times10^{-8}}$ | ${4.740\times10^{-8}}$ | ${9.310\times10^{-8}}$ | ${9.309\times10^{-8}}$ |
+| IDA | $10^{-12}$ | ${2.160\times10^{-11}}$ | ${6.842\times10^{-12}}$ | ${1.979\times10^{-11}}$ | ${4.808\times10^{-11}}$ |
+<!-- END t2_steps_table_formulas -->
+
+<!-- BEGIN t2_steps_table_prediction -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | from the formulas as applied | from the rounding of the time | both: $\delta^{\rm pre}_{\rm LL}$ | measured $\delta^{\rm rel}_{\rm LL}$ | $\delta^{\rm pre}_{\rm LL}$/measured |
+|-----------------------|---------------|-------------------------------------|-------------------------------------|-----------------------------------|-----------------------------------|-------------------------------|
+| CVODE | $10^{-8}$ | ${1.665\times10^{-6}}$ | ${7.88\times10^{-13}}$ | ${1.665\times10^{-6}}$ | ${1.185\times10^{-6}}$ | 1.4049 |
+| CVODE | $10^{-10}$ | ${1.703\times10^{-7}}$ | ${3.39\times10^{-12}}$ | ${1.703\times10^{-7}}$ | ${1.702\times10^{-7}}$ | 1.0002 |
+| CVODE | $10^{-12}$ | ${1.831\times10^{-10}}$ | ${8.82\times10^{-12}}$ | ${1.793\times10^{-10}}$ | ${1.737\times10^{-10}}$ | 1.0322 |
+| IDA | $10^{-8}$ | ${7.126\times10^{-6}}$ | ${3.43\times10^{-12}}$ | ${7.126\times10^{-6}}$ | ${7.125\times10^{-6}}$ | 1.0001 |
+| IDA | $10^{-10}$ | ${9.310\times10^{-8}}$ | ${1.30\times10^{-11}}$ | ${9.310\times10^{-8}}$ | ${9.309\times10^{-8}}$ | 1.0001 |
+| IDA | $10^{-12}$ | ${1.979\times10^{-11}}$ | ${4.38\times10^{-11}}$ | ${4.825\times10^{-11}}$ | ${4.808\times10^{-11}}$ | 1.0035 |
+<!-- END t2_steps_table_prediction -->
+
+<!-- BEGIN t2_steps_table_constants -->
+| order | Adams-Moulton, $\lvert c^{\rm AM}_{{\rm LL},q}\rvert$ | backward differentiation, $1/(k^{\rm IDA}_{\rm LL}+1)$ | $\lVert(\mathcal H^{\rm lat}_{\rm LL})^{\rm order+1}w^{\rm lat}_{\rm LL}(0)\rVert$ |
+|-------------------------|----------------------------------------------------------|----------------------------------------------------------------------------------|------------------------------------------------------------------|
+| 1 | 0.500000 | 0.500000 | ${3.3885\times10^{1}}$ |
+| 2 | 0.083333 | 0.333333 | ${2.2855\times10^{2}}$ |
+| 3 | 0.041667 | 0.250000 | ${1.6231\times10^{3}}$ |
+| 4 | 0.026389 | 0.200000 | ${1.1962\times10^{4}}$ |
+| 5 | 0.018750 | 0.166667 | ${9.0590\times10^{4}}$ |
+| 6 | 0.014269 | (none) | ${7.0028\times10^{5}}$ |
+| 7 | 0.011367 | (none) | ${5.4983\times10^{6}}$ |
+<!-- END t2_steps_table_constants -->
+
+<!-- BEGIN t2_steps_table_notebook -->
+| $r^{\rm tol}_{\rm LL}$ | quantity | IDA of the notebook | IDA of the program `t2_fields` |
+|--------------------|---------------------------------------------------------------------------|------------------------------------------------------------|----------------------------------------------------------------------------|
+| $10^{-8}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 2705 | 2705 |
+| $10^{-8}$ | largest internal step | ${7.489190703\times10^{-3}}$ | ${7.489190703\times10^{-3}}$ |
+| $10^{-8}$ | smallest internal step | ${1.462732559\times10^{-5}}$ | ${1.462732559\times10^{-5}}$ |
+| $10^{-8}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 11182 | $2722+769\times11+1=11182$ |
+| $10^{-8}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${7.125333\times10^{-6}}$ | ${7.125333\times10^{-6}}$ |
+| $10^{-10}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 7309 | 7309 |
+| $10^{-10}$ | largest internal step | ${3.200000000\times10^{-3}}$ | ${3.200000000\times10^{-3}}$ |
+| $10^{-10}$ | smallest internal step | ${1.562500000\times10^{-6}}$ | ${1.562500000\times10^{-6}}$ |
+| $10^{-10}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 18096 | $7329+769\times14+1=18096$ |
+| $10^{-10}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${9.308767\times10^{-8}}$ | ${9.308778\times10^{-8}}$ |
+| $10^{-12}$ | internal steps, $N^{\rm st}_{\rm LL}$ | 41111 | 41111 |
+| $10^{-12}$ | largest internal step | ${5.832000000\times10^{-4}}$ | ${5.832000000\times10^{-4}}$ |
+| $10^{-12}$ | smallest internal step | ${9.765625000\times10^{-8}}$ | ${9.765625000\times10^{-8}}$ |
+| $10^{-12}$ | evaluations of the right side, $N^{\rm ev}_{\rm LL}$ | 54585 | $41511+769\times17+1=54585$ |
+| $10^{-12}$ | $\delta^{\rm rel}_{\rm LL}$ at $x^0_{\rm LL}=20$ | ${4.378788\times10^{-11}}$ | ${4.807918\times10^{-11}}$ |
+<!-- END t2_steps_table_notebook -->
+
+<!-- BEGIN t2_steps_table_origin -->
+| $r^{\rm tol}_{\rm LL}$ | last step with a current matrix | its $h^{\rm IDA}_{\rm LL}$ | its $k^{\rm IDA}_{\rm LL}$ | settled steps: $h^{\rm IDA}_{\rm LL}$ | $k^{\rm IDA}_{\rm LL}$ | quotient of the two $c^{\rm ld}_{\rm LL}=H^{\rm har}_{\rm LL}/h^{\rm IDA}_{\rm LL}$ | $r^{\rm cj}_{\rm LL}$ that IDA reports | steps taken with this matrix |
+|--------------|-------------------------|---------------------------------|-----------|---------------------------------|-----------|------------------------------------|--------------------|------------------|
+| $10^{-8}$ | number 42 | ${7.4892\times10^{-3}}$ | 5 | ${7.4892\times10^{-3}}$ | 5 | 1.000000 | 1.000000 | 2663 |
+| $10^{-10}$ | number 43 | ${3.2000\times10^{-3}}$ | 5 | ${2.7490\times10^{-3}}$ | 5 | 1.164069 | 1.164069 | 7266 |
+| $10^{-12}$ | number 40 | ${5.8320\times10^{-4}}$ | 4 | ${4.8686\times10^{-4}}$ | 5 | 1.312866 | 1.312866 | 41071 |
+<!-- END t2_steps_table_origin -->
+
+<!-- BEGIN t2_steps_table_limits_adams -->
+| $q^{\rm CV}_{\rm LL}$ | limit of $\lvert z^{\rm st}_{\rm LL}\rvert$ with $n^{\rm fp}_{\rm LL}=1$ | with $n^{\rm fp}_{\rm LL}=2$ | with $n^{\rm fp}_{\rm LL}=3$ | gain of the predictor | limit with $n^{\rm fp}_{\rm LL}=1$ times the gain |
+|---------------|-------------------------------------------------------|-------------------------------|-------------------------------|-------------------------------------|--------------------------------------------------|
+| 1 | 0.5774 | 0.8074 | 0.8997 | 1.00 | 0.577 |
+| 2 | 0.6667 | above 1 | above 1 | 2.00 | 1.333 |
+| 3 | 0.4059 | 0.8542 | above 1 | 3.67 | 1.488 |
+| 4 | 0.2155 | 0.6678 | above 1 | 6.67 | 1.436 |
+| 5 | 0.1111 | 0.5068 | above 1 | 12.24 | 1.360 |
+| 6 | 0.0568 | 0.3781 | 0.8658 | 22.80 | 1.295 |
+| 7 | 0.0289 | 0.2790 | 0.7462 | 43.00 | 1.245 |
+| 8 | 0.0147 | 0.2040 | 0.6460 | 81.94 | 1.207 |
+| 9 | 0.0075 | 0.1481 | 0.4999 | 157.42 | 1.178 |
+| 10 | 0.0038 | 0.1066 | 0.3559 | 304.36 | 1.156 |
+| 11 | 0.0019 | 0.0759 | 0.1676 | 591.27 | 1.139 |
+| 12 | 0.0010 | 0.0532 | 0.0865 | 1152.97 | 1.125 |
+<!-- END t2_steps_table_limits_adams -->
+
+<!-- BEGIN t2_steps_table_limits_bdf -->
+| $k^{\rm IDA}_{\rm LL}$ | stable for $r^{\rm cj}_{\rm LL}$ from | to | the alternating root reaches $-1$ at $r^{\rm cj}_{\rm LL}=$ |
+|--------------------|---------------------------------------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| 1 | 0.6000 (the limit of IDA) | 1.6667 (the limit of IDA) | (never) |
+| 2 | 0.6000 (the limit of IDA) | 1.6667 (the limit of IDA) | 3 |
+| 3 | 0.6000 (the limit of IDA) | 1.6667 (the limit of IDA) | 11/6 = 1.8333 |
+| 4 | 0.6000 (the limit of IDA) | 1.4706 | 25/17 = 1.4706 |
+| 5 | 0.7722 | 1.3048 | 137/105 = 1.3048 |
+<!-- END t2_steps_table_limits_bdf -->
+
+<!-- BEGIN t2_steps_table_roots -->
+| integrator | $r^{\rm tol}_{\rm LL}$ | order | $E^{\rm max}_{\rm LL}h^{\rm st}_{\rm LL}$ | $r^{\rm cj}_{\rm LL}$ | largest modulus of another root with one iteration | with two iterations | settled steps with one, with two iterations |
+|-----------------------|---------------|--------------|----------------------|------------------|--------------------------------------------|----------------------------|-------------------------------------------|
+| CVODE | $10^{-8}$ | 6 | 0.1115 | (none) | 1.2511 | 0.4986 | 832, 676 |
+| CVODE | $10^{-10}$ | 5 | 0.0463 | (none) | 0.7361 | 0.2374 | 0, 3645 |
+| CVODE | $10^{-12}$ | 7 | 0.0446 | (none) | 1.1297 | 0.4220 | 2793, 980 |
+| IDA | $10^{-8}$ | 5 | 0.0632 | 1.0000 | 0.7127 | 0.7127 | 2662, 1 |
+| IDA | $10^{-10}$ | 5 | 0.0232 | 1.1641 | 0.7248 | 0.7158 | 7264, 1 |
+| IDA | $10^{-12}$ | 5 | 0.0041 | 1.3129 | 1.0171 | 0.7363 | 40692, 372 |
+<!-- END t2_steps_table_roots -->
+
+<!-- BEGIN t2_steps_table_rounding -->
+| range of the time | one unit in the last place | rounding of one addition, in units | settled steps that start in the range | their sum: change of $\delta^{\rm t}_{\rm LL}$ |
+|---------------------------------------------------------------------------|-----------------------------------|--------------------------------------|--------------------------------------|---------------------------------------|
+| 4 to 8 | ${8.882\times10^{-16}}$ | $+0.4785$ | 8216 | ${-3.491\times10^{-12}}$ |
+| 8 to 16 | ${1.776\times10^{-15}}$ | $-0.2608$ | 16432 | ${7.612\times10^{-12}}$ |
+| 16 to 20 | ${3.553\times10^{-15}}$ | $-0.1304$ | 8215 | ${3.805\times10^{-12}}$ |
+| 4 to 20, sum of the three lines | | | | ${7.926\times10^{-12}}$ |
+| 4 to 20, measured | | | | ${7.925\times10^{-12}}$ |
+| 0 to 20, measured ($\delta^{\rm t}_{\rm LL}$ at the end) | | | | ${8.070\times10^{-12}}$ |
+<!-- END t2_steps_table_rounding -->
+
+<!-- BEGIN t2_steps_table_matrix -->
+| $r^{\rm tol}_{\rm LL}$ | matrix | $N^{\rm st}_{\rm LL}$ | $h^{\rm st}_{\rm LL}$ of the settled steps | $r^{\rm cj}_{\rm LL}$ | median of $\delta^{\rm est}_{\rm LL}$ | $\Xi^{\rm coh}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}$ at the end | $\delta^{\rm pre}_{\rm LL}$ |
+|-------------|-------------------------------|-------------|---------------------------------|---------------|----------------|---------------|--------------------------------|---------------------------------|
+| $10^{-8}$ | default of IDA | 2705 | ${7.4892\times10^{-3}}$ | 1.0000 | 0.3420 | 0.9960 | ${7.125\times10^{-6}}$ | ${7.126\times10^{-6}}$ |
+| $10^{-8}$ | always current | 3887 | ${5.1808\times10^{-3}}$ | 1.0000 | 0.0375 | 0.9651 | ${1.148\times10^{-6}}$ | ${1.144\times10^{-6}}$ |
+| $10^{-10}$ | default of IDA | 7309 | ${2.7490\times10^{-3}}$ | 1.1641 | 0.0836 | 0.9957 | ${9.309\times10^{-8}}$ | ${9.310\times10^{-8}}$ |
+| $10^{-10}$ | always current | 6976 | ${2.8800\times10^{-3}}$ | 1.0000 | 0.1106 | 0.9939 | ${5.983\times10^{-8}}$ | ${5.981\times10^{-8}}$ |
+| $10^{-12}$ | default of IDA | 41111 | ${4.8686\times10^{-4}}$ | 1.3129 | 0.1421 | 0.0463 | ${4.808\times10^{-11}}$ | ${4.825\times10^{-11}}$ |
+| $10^{-12}$ | always current | 19087 | ${1.0498\times10^{-3}}$ | 1.0000 | 0.0259 | 0.9758 | ${3.853\times10^{-10}}$ | ${3.855\times10^{-10}}$ |
+<!-- END t2_steps_table_matrix -->
+
+<!-- BEGIN t2_steps_table_scan -->
+| $r^{\rm tol}_{\rm LL}$ | CVODE: $N^{\rm st}_{\rm LL}$ | $h^{\rm CV}_{\rm LL}$ | $q^{\rm CV}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}/r^{\rm tol}_{\rm LL}$ | IDA: $N^{\rm st}_{\rm LL}$ | $h^{\rm IDA}_{\rm LL}$ | $r^{\rm cj}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}/r^{\rm tol}_{\rm LL}$ | $\delta^{\rm rel}_{\rm LL}$ of IDA / of CVODE |
+|------------------------------|-----------------|------------------------------|---------|-----------------|--------------|------------------------------|-------------|-----------------|------------------|
+| ${1.00\times10^{-6}}$ | 1058 | ${1.910\times10^{-2}}$ | 5 | 148 (m) | 2234 | ${9.020\times10^{-3}}$ | 0.710 | 20 (m) | 0.138 |
+| ${5.62\times10^{-7}}$ | 1160 | ${1.739\times10^{-2}}$ | 5 | 180 (m) | 2658 | ${7.573\times10^{-3}}$ | 0.698 | 17 (m) | 0.097 |
+| ${3.16\times10^{-7}}$ | 1275 | ${1.582\times10^{-2}}$ | 5 | 205 (m) | 3187 | ${6.310\times10^{-3}}$ | 0.692 | 25 (m) | 0.124 |
+| ${1.78\times10^{-7}}$ | 1483 | ${1.358\times10^{-2}}$ | 5 | 178 | 3858 | ${5.208\times10^{-3}}$ | 0.692 | 13 (m) | 0.073 |
+| ${1.00\times10^{-7}}$ | 1063 | ${1.925\times10^{-2}}$ | 6 | 93 (m) | 1940 | ${1.047\times10^{-2}}$ | 1.000 | 379 | 4.070 |
+| ${5.62\times10^{-8}}$ | 981 | ${2.071\times10^{-2}}$ | 6 | 330 | 2531 | ${7.992\times10^{-3}}$ | 1.000 | 176 | 0.532 |
+| ${3.16\times10^{-8}}$ | 1118 | ${1.815\times10^{-2}}$ | 6 | 256 | 3669 | ${5.498\times10^{-3}}$ | 1.124 | 85 | 0.332 |
+| ${1.78\times10^{-8}}$ | 1410 | ${1.433\times10^{-2}}$ | 6 | 126 (m) | 2860 | ${7.618\times10^{-3}}$ | 0.725 | 305 (m) | 2.418 |
+| ${1.00\times10^{-8}}$ | 1528 | ${1.322\times10^{-2}}$ | 6 | 119 (m) | 2705 | ${7.489\times10^{-3}}$ | 1.000 | 713 | 6.012 |
+| ${5.62\times10^{-9}}$ | 1851 | ${1.088\times10^{-2}}$ | 5 | 960 | 3887 | ${5.184\times10^{-3}}$ | 0.609 | 164 (m) | 0.171 |
+| ${3.16\times10^{-9}}$ | 2042 | ${9.857\times10^{-3}}$ | 5 | 1034 | 3958 | ${5.093\times10^{-3}}$ | 0.609 | 249 (m) | 0.241 |
+| ${1.78\times10^{-9}}$ | 2247 | ${8.950\times10^{-3}}$ | 5 | 1128 | 4321 | ${4.666\times10^{-3}}$ | 1.111 | 632 | 0.560 |
+| ${1.00\times10^{-9}}$ | 2479 | ${8.111\times10^{-3}}$ | 5 | 1220 | 5329 | ${3.779\times10^{-3}}$ | 1.111 | 395 | 0.323 |
+| ${5.62\times10^{-10}}$ | 2733 | ${7.352\times10^{-3}}$ | 5 | 1323 | 4797 | ${4.199\times10^{-3}}$ | 1.235 | 1609 | 1.216 |
+| ${3.16\times10^{-10}}$ | 3013 | ${6.667\times10^{-3}}$ | 5 | 1437 | 4854 | ${4.152\times10^{-3}}$ | 1.111 | 1981 | 1.379 |
+| ${1.78\times10^{-10}}$ | 3321 | ${6.046\times10^{-3}}$ | 5 | 1563 | 6093 | ${3.304\times10^{-3}}$ | 1.000 | 668 | 0.428 |
+| ${1.00\times10^{-10}}$ | 3661 | ${5.484\times10^{-3}}$ | 5 | 1702 | 7309 | ${2.749\times10^{-3}}$ | 1.164 | 931 | 0.547 |
+| ${5.62\times10^{-11}}$ | 4034 | ${4.974\times10^{-3}}$ | 5 | 1855 | 8937 | ${2.246\times10^{-3}}$ | 1.111 | 520 | 0.280 |
+| ${3.16\times10^{-11}}$ | 2524 | ${7.983\times10^{-3}}$ | 7 | 110 (m) | 9797 | ${2.048\times10^{-3}}$ | 1.111 | 581 | 5.292 |
+| ${1.78\times10^{-11}}$ | 4900 | ${4.093\times10^{-3}}$ | 5 | 2208 | 12531 | ${1.600\times10^{-3}}$ | 1.000 | 178 | 0.081 |
+| ${1.00\times10^{-11}}$ | 5399 | ${3.714\times10^{-3}}$ | 5 | 2411 | 13921 | ${1.440\times10^{-3}}$ | 1.000 | 187 | 0.078 |
+| ${5.62\times10^{-12}}$ | 5949 | ${3.370\times10^{-3}}$ | 5 | 2635 | 14526 | ${1.380\times10^{-3}}$ | 1.000 | 270 | 0.102 |
+| ${3.16\times10^{-12}}$ | 6554 | ${3.058\times10^{-3}}$ | 5 | 2881 | 15293 | ${1.311\times10^{-3}}$ | 0.609 | 320 (m) | 0.111 |
+| ${1.78\times10^{-12}}$ | 3554 | ${5.663\times10^{-3}}$ | 7 | 165 (m) | 13281 | ${1.514\times10^{-3}}$ | 1.111 | 2271 | 13.740 |
+| ${1.00\times10^{-12}}$ | 3804 | ${5.290\times10^{-3}}$ | 7 | 174 (m) | 41111 | ${4.869\times10^{-4}}$ | 1.313 | 48 | 0.277 |
+<!-- END t2_steps_table_scan -->
+
+<!-- BEGIN t2_steps_formula_rows -->
+588
+<!-- END t2_steps_formula_rows -->
+
 <!-- BEGIN t2_ex8_table -->
 | quantities | largest difference | origin |
 |------------------------------|----------|------------------------------|
@@ -1023,13 +1246,13 @@ $$M_{\rm LL}(\mathbf D_{\rm LL})=\begin{pmatrix}\nabla^{\rm LL}_0+\nabla^{\rm LL
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.27 | 0.19 |
-| `cyclotron` | 8.68 | 7.30 |
-| `andreev` | 1.27 | 0.91 |
-| `kink_spectrum` | 1.02 | 3.29 |
-| `ground_state` | 2.03 | 5.89 |
-| `kink_ground_state` | 8.03 | 27.55 |
-| `quench` (the time evolution) | 41.45 | 29.87 |
+| `packet_free` | 0.29 | 0.22 |
+| `cyclotron` | 7.68 | 6.67 |
+| `andreev` | 1.09 | 0.91 |
+| `kink_spectrum` | 0.89 | 2.94 |
+| `ground_state` | 1.67 | 5.39 |
+| `kink_ground_state` | 7.45 | 25.60 |
+| `quench` (the time evolution) | 36.61 | 26.61 |
 <!-- END t2_times_table -->
 
 <!-- BEGIN t2_py_keys -->
@@ -1146,12 +1369,16 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_analytic -->
 
 <!-- BEGIN nchecks_t2_fields -->
-16
+20
 <!-- END nchecks_t2_fields -->
 
 <!-- BEGIN nchecks_t2_py_examples -->
 10
 <!-- END nchecks_t2_py_examples -->
+
+<!-- BEGIN nchecks_t2_py_formula -->
+6
+<!-- END nchecks_t2_py_formula -->
 
 <!-- BEGIN nchecks_t2_py_selftest -->
 6
@@ -1170,9 +1397,9 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_sfbs -->
 
 <!-- BEGIN n_t2_rust_lines -->
-14058
+17502
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->
-20
+27
 <!-- END n_t2_rust_files -->

@@ -10,8 +10,9 @@ groups, Lie algebras, operation signs, or plain indices).  A symbol is compared 
 the symbol text of an entry is split at the formula signs into its items (for example
 "$\\mathbf x$, $\\mathbf y$" has the items $\\mathbf x$ and $\\mathbf y$).  This script verifies:
 
-  LL-S1  no symbol text is registered twice, and no plain-text name (the names under which the
-         programs, the figures and the data files write a symbol) belongs to two entries;
+  LL-S1  no symbol text is registered twice, no single item of an entry is an item of another
+         entry, and no plain-text name (the names under which the programs, the figures and the
+         data files write a symbol) belongs to two entries;
   LL-S2  every taken entry has exactly the meaning of the master registry from which it is
          taken; no item of a new entry is an item of either master registry; and every item of
          a new entry that is also an item of the registry of the sibling folder Revision_NoGo
@@ -169,6 +170,26 @@ DESCRIPTIVE = {
     "occupation_particles": "the probability that a state of positive energy +eps of a momentum is occupied",
     "occupation_antiparticles": "the probability that a state of negative energy -eps of a momentum is empty",
     "commutator_33": "an eigenvalue of the commutator of the pair operator Pi_3 of one lattice site with its Hermitian conjugate",
+    # the data files of the checks GS-17 to GS-20 (the time integrations of GS-13 step by step)
+    "integration": "the name of a time integration: cvode_, ida_ or ida_current_ followed by its relative tolerance",
+    "integrator": "CVODE or IDA", "matrix_rule": "when IDA computes its iteration matrix anew: default (when cj/cjJ leaves the interval 0.6 to 5/3), current (whenever cj changes), none (CVODE uses no matrix)",
+    "order": "the order of the formula of a step (q_CV for CVODE, k_IDA for IDA)", "main_steps": "the number of steps that have the step size and order of most steps",
+    "one_iteration": "the number of the main steps with one iteration of the implicit equation", "two_iterations": "the number of the main steps with two iterations",
+    "sum_local_error": "the sum of the norms of the exact local errors of all steps", "identity_defect": "the norm of the deviation at the end minus the sum of the carried local errors",
+    "test_value_median": "the median of the value of the local error test over the settled steps", "local_wrms_median": "the median of the weighted root-mean-square norm of the exact local error over the settled steps",
+    "predicted_formula": "the deviation predicted from the formulas as the integrator applies them, without the rounding of the time", "predicted_exact_solve": "the deviation predicted from the formulas with every implicit equation solved exactly",
+    "predicted_time": "the deviation that the rounding of the time variable alone gives", "rest": "the norm of the difference between the measured and the predicted errors of the modes, weighted with the amplitudes of the initial state",
+    "N_matrix": "the number of evaluations of the iteration matrix of IDA", "iterations": "the number of iterations of the implicit equation of a step (fixed-point iterations of CVODE, Newton steps of IDA; 0 in the table of the formulas: solved exactly)",
+    "count": "the number of consecutive steps of the same kind", "step": "the number of an internal step", "deviation": "the norm of the deviation from the exact solution at the end of a step",
+    "weight": "the modulus of the amplitude of the initial state along an eigenvector", "measured_re": "real part of the measured relative error of a mode", "measured_im": "imaginary part of the measured relative error of a mode",
+    "formula_re": "real part of the error of a mode predicted from the formulas as applied", "formula_im": "imaginary part of the error of a mode predicted from the formulas as applied",
+    "exact_solve_re": "real part of the error of a mode predicted with every implicit equation solved exactly", "exact_solve_im": "imaginary part of the error of a mode predicted with every implicit equation solved exactly",
+    "time_im": "the error of a mode from the rounding of the time variable (purely imaginary)", "regular": "1 if at least 95 per cent of the settled steps are of one kind, else 0",
+    "formula": "AM (Adams-Moulton) or BDF (backward differentiation)", "z_abs": "the modulus of z_step", "eps_re_hi": "real part of eps_step, leading part of the double-double number",
+    "eps_re_lo": "real part of eps_step, trailing part", "eps_im_hi": "imaginary part of eps_step, leading part", "eps_im_lo": "imaginary part of eps_step, trailing part",
+    "alternating_root": "the root on the negative real axis of the recurrence of a backward differentiation formula with one Newton step and an old matrix (0 where there is none)",
+    "other_root": "the largest modulus of a root other than the principal one of the recurrence of a formula as an integrator applies it",
+    "limit_low": "the lower end of an interval of stability", "limit_high": "the upper end of an interval of stability",
 }
 
 # LL-S5: symbols of the superfluid that must carry the suffix LL
@@ -340,8 +361,18 @@ def main():
             if nm in owner and owner[nm] != r["symbol"]:
                 dup_names.append(nm)
             owner[nm] = r["symbol"]
-    check("LL-S1", "every symbol text is registered once (%d entries) and every plain-text name of the programs, figures and data files belongs to one entry (%d names)" % (len(reg), len(owner)),
-          not dup_syms and not dup_names, " ".join(dup_syms + dup_names))
+    # every single item of an entry ("$a$, $b$; $c$" has three) must belong to one entry only: an item that is
+    # listed in two entries beside different companions would be one symbol for two objects (Hard Rule 5)
+    item_owner = {}
+    dup_items = []
+    for r in reg:
+        for it in items(r["symbol"]):
+            key = re.sub(r"\s+", "", it)
+            if key in item_owner and item_owner[key] != r["symbol"]:
+                dup_items.append(it)
+            item_owner[key] = r["symbol"]
+    check("LL-S1", "every symbol text is registered once (%d entries), every single item of the entries belongs to one entry (%d items), and every plain-text name of the programs, figures and data files belongs to one entry (%d names)" % (len(reg), len(item_owner), len(owner)),
+          not dup_syms and not dup_names and not dup_items, " ".join(dup_syms + dup_names + dup_items))
 
     # ------------------------------------------------------------------ LL-S2
     bad = []

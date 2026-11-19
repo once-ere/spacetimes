@@ -6,6 +6,11 @@
    material runs into the margin or into the neighboring table column.
 2. XeLaTeX records every character for which the font has no glyph as
    "Missing character"; the character is then silently left out of the PDF.
+3. LaTeX records a page whose content is higher than the text area as
+   "Overfull \\vbox (N pt too high) has occurred while \\output is active".
+   This happens when something that may not be divided between two pages (a
+   figure, a table that keep_tables.py keeps on one page) is higher than a
+   page; its lower part is then printed over the bottom margin or lost.
 
 This script lists these places so that they can be repaired in the Markdown
 source; `build_docs.sh` runs it on every document it builds.
@@ -52,6 +57,12 @@ def overfull_boxes(log_text):
     return boxes
 
 
+def overfull_pages(log_text):
+    """Return the excess in pt of every page that is higher than the text area."""
+    pat = re.compile(r"^Overfull \\vbox \(([0-9.]+)pt too high\) has occurred while \\output is active", re.M)
+    return [float(x) for x in pat.findall(log_text)]
+
+
 def missing_characters(log_text):
     """Return the sorted set of characters for which a font has no glyph.
 
@@ -70,6 +81,10 @@ def main():
         log_text = f.read()
     boxes = [b for b in overfull_boxes(log_text) if b[0] > threshold]
     missing = missing_characters(log_text)
+    pages = [x for x in overfull_pages(log_text) if x > threshold]
+    if pages:
+        print(f"  LAYOUT: {len(pages)} page(s) higher than the text area by more than {threshold:g} pt ({path}): "
+              + ", ".join(f"{x:.1f} pt" for x in pages))
     if boxes:
         print(f"  LAYOUT: {len(boxes)} box(es) wider than their space by more than {threshold:g} pt ({path})")
         for excess, text in sorted(boxes, reverse=True):
@@ -78,7 +93,7 @@ def main():
         print(f"  LAYOUT: {len(missing)} character(s) without a glyph ({path})")
         for m in missing:
             print(f"    {m}")
-    return 1 if boxes or missing else 0
+    return 1 if boxes or missing or pages else 0
 
 
 if __name__ == "__main__":

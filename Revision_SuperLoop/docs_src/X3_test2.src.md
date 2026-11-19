@@ -38,13 +38,16 @@ photon); their sections were added to this same document, in this order, as they
 - **Units.** $\hbar$ and the speed of light are 1.
 - **Indices.** $p,p'$ run over $0,1,2,3$ (the coordinates of space-time); $j,j',j''$ over $1,2,3$ (the
   space directions); $\iota,\iota',\iota''$ over $1,2,3$ (the isospin directions, an internal space). A sum
-  is always written with its sign $\sum$; nothing is summed silently.
+  is always written with its sign $\sum$; nothing is summed silently. In Section 2.12 three further numbers occur, only in
+  subscripts, superscripts and limits of sums: the number of an internal step of a time integration (written *s*), of an
+  eigenvector of the lattice operator (*n*), and of a coefficient of a formula or of an iterate (*m*).
 - **Symbols.** Every symbol of the folder Revision_SuperLoop carries the suffix LL (or is a bi-octonion in bold
   upright type, a number set, a group, a Lie algebra, an operation sign, or a plain index), so that no symbol
   of this document means anything else anywhere in the project. Every symbol is defined in words where it is
   first used, and the complete table of all symbols is Appendix C.
 - **Machine checks.** Every statement of this document that can be computed is checked by a program of the
-  folder `test2/rust`: the statements of item [1] by `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}), the
+  folder `test2/rust`: the statements of item [1] by `t2_fields` (checks GS-1 to GS-{{GEN:nchecks_t2_fields}}; the formulas
+  of Section 2.12 once more, independently and with 40 digits, by `t2_formula_check.py`, checks FC-1 to FC-{{GEN:nchecks_t2_py_formula}}), the
   analytic solutions of item [2] by `t2_analytic` (checks AS-1 to AS-{{GEN:nchecks_t2_analytic}}), the Python solver of
   item [3] by its self-test and by the checks of every run, and its solutions of the seven examples by
   `t2_examples_check.py` (checks EX-1 to EX-7), the Rust solver of item [5] by its self-test and the comparison EX-8, and
@@ -90,8 +93,9 @@ photon); their sections were added to this same document, in this order, as they
    which removes the doublers, and integrated in time by CVODE, the variable-order, variable-step
    Adams-Moulton integrator of the library SUNDIALS, which controls the local error of every step.
 
-Sixteen machine checks (GS-1 to GS-16) verify every statement. The rest of this section derives these
-results step by step.
+The {{GEN:nchecks_t2_fields}} machine checks GS-1 to GS-{{GEN:nchecks_t2_fields}} verify every statement; the last four take the time
+integrations of check GS-13 apart, one internal step at a time, and explain the size of every deviation from the exact
+solution that the integrators leave (Section 2.12). The rest of this section derives these results step by step.
 
 ## 2.1 The manifold and its coordinates
 
@@ -858,11 +862,11 @@ $\exp(-iE^{\rm qp}_{{\rm LL},n}x^0_{\rm LL})$ times the eigenvector times its sc
 deviation $\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert$ grows slowly
 with the time and stays below $B^{\rm err}_{\rm LL}$ for every tolerance; at the end it is $1.2\times10^{-6}$, $1.7\times10^{-7}$
 and $1.7\times10^{-10}$ (Figure 2(a); report in Appendix A.2). CVODE settles on a step size and an order that do not change
-over the run (Figure 2(b), (c)). The steps are limited not by the accuracy alone but also by the stability of the
-Adams-Moulton formulas on the imaginary axis, whose interval shrinks as the order grows: $h^{\rm CV}_{\rm LL}$ times the spectral
-radius 8.4349 of $\mathcal H^{\rm lat}_{\rm LL}$ (check GS-10) is 0.11, 0.046 and 0.045 for the three tolerances. Therefore the
-cost does not fall in proportion to the tolerance: at $r^{\rm tol}_{\rm LL}=10^{-10}$ CVODE needs 3661 steps, almost as many as
-the 3804 steps at $10^{-12}$ (1528 at $10^{-8}$).
+over the run (Figure 2(b), (c)): the orders 6, 5 and 7, with 1528, 3661 and 3804 steps for the three tolerances. Neither the
+deviations ({{GEN:t2_steps_gs13_at_20_tolerances}} tolerances) nor the numbers of steps are simple functions of the tolerance. Section 2.12 takes
+the three integrations apart step by step and computes where each of these numbers comes from. In brief: a tolerance bounds the
+estimated error of ONE step; the deviation is the sum of the errors of all steps; and the rule of CVODE for the size of the next
+step leaves a settled step anywhere in a wide band.
 
 ![](figures/fig_t2_cvode_accuracy.png){width=100%}
 
@@ -899,7 +903,666 @@ orthogonality of the modes, the fermion-number
 density, the pair field $\lvert\vec d_{\rm LL}\rvert$, and, for time-independent fields, the energy (the sum over the
 modes of the expectation value of $\mathcal H^{\rm lat}_{\rm LL}$).
 
-## 2.12 Discussion
+## 2.12 The time integrations of check GS-13, step by step (checks GS-17 to GS-20)
+
+**The question.** Check GS-13 integrates the lattice equations
+$i\,\partial_0w^{\rm lat}_{\rm LL}=\mathcal H^{\rm lat}_{\rm LL}w^{\rm lat}_{\rm LL}$ on the lattice of check GS-10 from $x^0_{\rm LL}=0$ to
+$x^0_{\rm LL}=20$ with CVODE, for three tolerances, and compares the result with the exact solution. The notebook
+`3+1super-loop.nb` of PROJECT spacetimes, which repeats checks of Section 2 in the Wolfram Language, integrates the same
+problem with **IDA**: the second integrator of the library SUNDIALS, made for implicit differential equations, which the Wolfram
+Language contains and calls through its function `NDSolve` (option `Method -> "IDA"`). The two programs report these deviations
+from the exact solution at the end of the integration:
+
+{{GEN:t2_steps_table_six}}
+
+**Table 2.1.** The relative deviation
+$\delta^{\rm rel}_{\rm LL}=\lVert w^{\rm lat}_{\rm LL}-w^{\rm ex}_{\rm LL}\rVert/\lVert w^{\rm ex}_{\rm LL}\rVert$ of the computed state from the
+exact solution at the end of the integration. *First column:* the relative tolerance $r^{\rm tol}_{\rm LL}$ that was given to the integrator;
+the absolute tolerance is $a^{\rm tol}_{\rm LL}=r^{\rm tol}_{\rm LL}/100$ in every integration. A tolerance is not a bound on the
+deviation: it is the bound that the integrator applies to its own estimate of the error of ONE internal step (the test (2.39) of
+CVODE; the test (2.44) of IDA). *Second column:* IDA inside `NDSolve`, as the notebook reports it. *Third column:* the IDA of
+SUNDIALS 7.8.0 in pure Rust (the crate `ida_rs` of the folder `vendor/sundials_rs-7.8.0`), run by the program `t2_fields` with the
+settings that reproduce the internal steps of the notebook one by one (part (H) of this section). *Fourth column:* CVODE in the
+program `t2_fields`, run as in check GS-13. *Last three columns:* quotients of the columns before them.
+
+*The end of an integration* is, in this section, the end of its last internal step. IDA is told not to step beyond
+$x^0_{\rm LL}=20$ and ends its last step exactly there. CVODE takes its internal steps past an output time and gives the state at
+the output time by interpolation; its last internal step ends at the times {{GEN:t2_steps_cvode_end_times}} for the three
+tolerances, and the fourth column is the deviation at these times. Check GS-13 reports the interpolated state at
+$x^0_{\rm LL}=20$; its deviations are {{GEN:t2_steps_gs13_at_20}} ({{GEN:t2_steps_gs13_at_20_tolerances}} tolerances), smaller than
+those of the fourth column by less than 0.1 per cent (check GS-17).
+
+At first sight the six numbers of the second and the fourth column follow no rule:
+
+1. none of them is near its tolerance; they are 44 to 1700 times larger;
+2. they are not proportional to the tolerance: when the tolerance falls from $10^{-8}$ to $10^{-10}$ the deviation of CVODE falls
+   by a factor 7, from $10^{-10}$ to $10^{-12}$ by a factor 980; for IDA the two factors are 77 and 2100;
+3. they do not rank the integrators: IDA is 6 times less accurate than CVODE at the first tolerance, 1.8 times more accurate at
+   the second and 4 times more accurate at the third;
+4. the same algorithm, taking the same internal steps in two programs, gives $4.4\times10^{-11}$ and $4.8\times10^{-11}$ at the
+   third tolerance.
+
+This section computes where each of the six numbers comes from. The method: both integrators are run one internal step at a
+time, and every step is measured against the exact solution. The programs are the library crate `t2steps` and the module
+`steps.rs` of `t2_fields` (Appendix A.2h); the statements are the checks GS-17 to GS-20, and every table of this section is
+written by the program.
+
+**The answer in brief.**
+
+1. *The size.* A tolerance bounds the estimated error of one step. An integration has 1500 to 41000 steps, and a unitary
+   evolution carries the error of every step along unchanged. If the errors of all steps point in the same direction, the
+   deviation at the end is the number of steps times the error of one step: hundreds to thousands of tolerances. This is what the
+   error budget (2.40) says, and all six deviations lie below their budgets (Table 2.16).
+2. *Three factors.* An identity, (2.42), states that the deviation at the end is the sum of the errors of the single steps. It
+   splits each deviation into the product (2.43) of three factors: the number of steps, the mean error of a step, and a number
+   between 0 and 1, the coherence, that measures how parallel the errors of the steps are (Table 2.2).
+3. *The error of one step* follows from the formula of the integrator AS THE INTEGRATOR APPLIES IT. Both integrators solve the
+   implicit equation of a step by an iteration that they stop after one or two iterations; what they have then computed is not
+   the solution of the textbook formula but that of another recurrence, which can be written down and solved, (2.56) and (2.60).
+   Summed over the steps and the eigenvectors of $\mathcal H^{\rm lat}_{\rm LL}$, the errors of these recurrences predict the
+   deviation at the end. In the four integrations whose steps are all of one kind the prediction agrees with the measured
+   deviation within 0.4 per cent; in the two others it brackets it (Tables 2.5 and 2.6, Figure 2A).
+4. *Why the deviation is not proportional to the tolerance.* The rule by which an integrator chooses its next step leaves a step
+   size unchanged as long as the estimated error of a step lies in a wide band below its limit: for IDA between 0.0078 and 0.5 of
+   the limit, a factor 64; for CVODE between about 0.01 and 1 of it. Where in its band an integration settles is decided by its
+   first 16 to 46 steps. The quotient of deviation and tolerance therefore scatters: over 25 tolerances between $10^{-6}$ and
+   $10^{-12}$ it lies between 93 and 2881 for CVODE and between 13 and 2271 for IDA, it jumps by factors of up to 20 and 47 between
+   two neighbouring tolerances, and the quotient of the deviations of the two integrators passes the value 1 ten times (Figure
+   2D). The three tolerances of Table 2.1 are three samples of this scatter.
+5. *Iterations that are stopped early can be unstable.* With one iteration per step each integrator is stable only within
+   limits (Tables 2.7 and 2.8), and three of the six integrations lie outside them: CVODE at $10^{-8}$ and $10^{-12}$ (orders
+   6 and 7 with one fixed-point iteration), and IDA at $10^{-12}$ (an iteration matrix made for a leading coefficient 1.31 times
+   smaller; the limit is $137/105=1.305$). There an error that the scheme itself feeds grows from step to step, until the
+   convergence test of the integrator asks for a second iteration, which cuts it back. The local errors of consecutive steps are
+   then no longer parallel, and they largely cancel: the coherence is 0.36, 0.27 and 0.05 in these three integrations and above
+   0.99 in the three others.
+6. *Rounding.* At $10^{-12}$ IDA takes 41111 steps, and the errors of its formula are so small that 91 per cent of the deviation
+   is the rounding of the 41111 additions of the step size to the time variable (Table 2.14). This part depends on the last binary
+   digits of the step size, which two programs need not share: observation 4.
+
+In the formulas of this section the number of an internal step, of an eigenvector, and of a coefficient or an iterate appear
+only in subscripts, superscripts and limits of sums, where they are written *s*, *n* and *m*; in the same places *q* and *k* stand
+for the orders $q^{\rm CV}_{\rm LL}$ and $k^{\rm IDA}_{\rm LL}$.
+
+**(A) The deviation is the sum of the local errors (check GS-17).** Let $t^{\rm st}_{{\rm LL},s}$ be the time at the end of the
+internal step with the number *s*, as the integrator reports it ($t^{\rm st}_{{\rm LL},0}=0$), and
+$w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})$ the computed state at that time. The exact solution over a time difference is the
+multiplication by the unitary matrix $\exp(-i\mathcal H^{\rm lat}_{\rm LL}\times\text{time difference})$. Two errors are defined at
+the end of every step:
+
+$$\begin{aligned}w^{\rm loc}_{{\rm LL},s}&=w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})-\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s}-t^{\rm st}_{{\rm LL},s-1})\big)\,w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s-1}),\\ w^{\rm dev}_{{\rm LL},s}&=w^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s})-w^{\rm ex}_{\rm LL}(t^{\rm st}_{{\rm LL},s}).\end{aligned}\tag{2.41}$$
+
+The first is the **exact local error** of the step: what this one step did wrong, measured against the exact solution that starts
+from the computed state at the beginning of the step; its norm is $\delta^{\rm loc}_{\rm LL}$. The second is the **deviation**: the
+error that has accumulated since the start. The exact solution satisfies
+$w^{\rm ex}_{\rm LL}(t^{\rm st}_{{\rm LL},s})=\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s}-t^{\rm st}_{{\rm LL},s-1})\big)w^{\rm ex}_{\rm LL}(t^{\rm st}_{{\rm LL},s-1})$.
+Subtracting this from the first line of (2.41) gives
+$w^{\rm dev}_{{\rm LL},s}=\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},s}-t^{\rm st}_{{\rm LL},s-1})\big)w^{\rm dev}_{{\rm LL},s-1}+w^{\rm loc}_{{\rm LL},s}$,
+and, starting from $w^{\rm dev}_{{\rm LL},0}=0$, after all $N^{\rm st}_{\rm LL}$ steps
+
+$$w^{\rm dev}_{{\rm LL},N^{\rm st}_{\rm LL}}=\sum_{s=1}^{N^{\rm st}_{\rm LL}}\exp\big(-i\mathcal H^{\rm lat}_{\rm LL}(t^{\rm st}_{{\rm LL},N^{\rm st}_{\rm LL}}-t^{\rm st}_{{\rm LL},s})\big)\,w^{\rm loc}_{{\rm LL},s}.\tag{2.42}$$
+
+The deviation at the end is the sum of the local errors of all steps, each carried to the end by the exact evolution. Nothing is
+approximated in (2.42). The exact evolution changes the norm of no vector, so the norm of the sum is at most the sum of the norms
+$\lVert w^{\rm loc}_{{\rm LL},s}\rVert$, with equality if all carried local errors point in the same direction. Their quotient is the
+**coherence** $\Xi^{\rm coh}_{\rm LL}$, and for an exact solution of the norm 1
+
+$$\delta^{\rm rel}_{\rm LL}\ \text{at the end}=N^{\rm st}_{\rm LL}\times\Big(\frac{1}{N^{\rm st}_{\rm LL}}\sum_{s=1}^{N^{\rm st}_{\rm LL}}\lVert w^{\rm loc}_{{\rm LL},s}\rVert\Big)\times\Xi^{\rm coh}_{\rm LL},\qquad \Xi^{\rm coh}_{\rm LL}=\frac{\lVert w^{\rm dev}_{{\rm LL},N^{\rm st}_{\rm LL}}\rVert}{\sum_{s}\lVert w^{\rm loc}_{{\rm LL},s}\rVert}\le1.\tag{2.43}$$
+
+The product (2.43) holds by the definition of the coherence. Its use is that it splits the question "why is the deviation what
+it is?" into three questions with separate answers: how many steps were taken, how large is the error of one step, and in which
+directions do the errors of the steps point.
+
+*How it is measured.* The program diagonalizes $\mathcal H^{\rm lat}_{\rm LL}$ once. Let $a^{\rm md}_{{\rm LL},n}$ be the amplitude of a
+state along the eigenvector with the number *n* (the scalar product of the normalized eigenvector with the state). The exact evolution
+over a time difference multiplies $a^{\rm md}_{{\rm LL},n}$ by $\exp(-iE^{\rm qp}_{{\rm LL},n}\times\text{time difference})$, so both errors of
+(2.41) cost one change of basis per step. Check GS-17 verifies (2.42) for every integration of this section: the two sides agree
+within $N^{\rm st}_{\rm LL}\times10^{-16}$, one rounding error per step.
+
+{{GEN:t2_steps_table_decomposition}}
+
+**Table 2.2.** The three factors of (2.43) for the six integrations (the IDA of the program `t2_fields`). The fourth column is the
+mean of the norms of the local errors in units of the tolerance. The last column measures the directions directly: for every
+settled step (defined in (B)) the cosine of the angle between the local error of the step and that of the step before, both
+carried to the same time (the real part of their scalar product divided by the product of their norms); the table gives its
+median. In three integrations the local errors of consecutive steps are parallel (cosine 1.000), and the coherence is above
+0.99: there the deviation is simply the number of steps times the error of one step. In the three others the cosine is negative.
+In IDA at $10^{-12}$ it is $-0.97$: consecutive local errors are nearly opposite, and the sum of the 41111 local errors is 22
+times smaller than the sum of their norms.
+
+The rest of this section explains the three factors: the error of one step from the formulas, (C) to (E); the directions of the
+errors from the stability of the iterations, (F); the number of steps from the rule for the step size, (G).
+
+**(B) The two integrators and their tests of the local error.** CVODE was described in Section 2.11: Adams-Moulton formulas of
+the orders 1 to 12, solved by a fixed-point iteration, with the test (2.39). **IDA** integrates an equation given in the implicit
+form "a function of the time, of the unknowns and of their derivatives is zero". It works with real unknowns: the
+$2n^{\rm cpx}_{\rm LL}=768$ real and imaginary parts of the components of $w^{\rm lat}_{\rm LL}$, for which the lattice equations are a real
+linear system (the real unknowns are multiplied by a real antisymmetric matrix built from the real and the imaginary part of
+$\mathcal H^{\rm lat}_{\rm LL}$). IDA uses the backward differentiation formulas of the orders 1 to 5, described in (C), and solves the
+equation of a step by Newton's method with an iteration matrix that it computes and factorizes (the matrix of the derivatives of
+the equation of the step with respect to the new unknowns). It accepts a step only if
+
+$$\Big(\frac{1}{2n^{\rm cpx}_{\rm LL}}\sum_{\text{real unknowns}}\frac{(\text{estimated local error of the unknown})^2}{\big(r^{\rm tol}_{\rm LL}\lvert\text{unknown}\rvert+a^{\rm tol}_{\rm LL}\big)^2}\Big)^{1/2}\le1.\tag{2.44}$$
+
+This is the test (2.39) with other weights: IDA measures the error of every real unknown against the modulus of that unknown,
+CVODE (with the weight function of the module `t2core::cvode`) against the modulus of the complex component. The left side of
+(2.39) or (2.44) is the **value of the local error test** of a step, $\delta^{\rm est}_{\rm LL}$; the same norm applied to the exact
+local error $w^{\rm loc}_{{\rm LL},s}$ of the step is written $\delta^{\rm wrms}_{\rm LL}$. Both integrators begin with the order 1 and a
+very small step and raise the order and the step size in their first steps. After 16 to 46 steps (CVODE: 20, 16 and 31 for
+the three tolerances; IDA: 41, 43 and 46) each of them takes steps of one constant size and one constant order without
+interruption to the end of the integration, where IDA shortens its last step so that it ends at $x^0_{\rm LL}=20$ (check GS-17).
+These are called the **settled steps**, and they are 98.4 to 99.9 per cent of all steps:
+
+{{GEN:t2_steps_table_settled}}
+
+**Table 2.3.** The settled steps of the six integrations: their number (of the $N^{\rm st}_{\rm LL}$ steps of Table 2.2), their
+size $h^{\rm st}_{\rm LL}$ (which stands for $h^{\rm CV}_{\rm LL}$ or $h^{\rm IDA}_{\rm LL}$) and order; how many of them made one and two
+iterations of the implicit equation (fixed-point iterations of CVODE, Newton steps of IDA); for IDA the ratio $r^{\rm cj}_{\rm LL}$
+defined in (D); the median of the value of the local error test, and the band in which the rule for the next step leaves it,
+derived in (G); and the median of the same norm of the exact local error.
+
+**(C) One step of a multistep formula on one eigenvector.** The lattice equations are linear with a constant matrix. A linear
+multistep formula, and an iteration for its implicit equation that uses only $\mathcal H^{\rm lat}_{\rm LL}$ and matrices built from
+it, therefore acts on every eigenvector of $\mathcal H^{\rm lat}_{\rm LL}$ separately: for a given sequence of step sizes, orders and
+numbers of iterations, the amplitude of each eigenvector obeys its own scalar recurrence. (The choice of the step sizes couples
+the eigenvectors, because the tests (2.39) and (2.44) are norms over all components.) Let $a^{\rm st}_{{\rm LL},s}$ be the amplitude
+of one eigenvector, with the eigenvalue $E^{\rm qp}_{{\rm LL},n}$, in the computed state at the end of the step with the number *s*, and
+
+$$z^{\rm st}_{\rm LL}=-i\,E^{\rm qp}_{{\rm LL},n}\,h^{\rm st}_{\rm LL}.\tag{2.45}$$
+
+In a step of the size $h^{\rm st}_{\rm LL}$ the exact solution multiplies the amplitude by $\exp(z^{\rm st}_{\rm LL})$. A formula that is
+applied in the same way with the same step size in every step multiplies it, after the first few steps, by a constant factor
+$\kappa^{\rm fac}_{\rm LL}$. The **relative error of one step** is
+
+$$\delta^{\rm st}_{\rm LL}=\kappa^{\rm fac}_{\rm LL}\exp(-z^{\rm st}_{\rm LL})-1.\tag{2.46}$$
+
+After a number of such steps the computed amplitude is the exact one times $(1+\delta^{\rm st}_{\rm LL})$ to the power of this
+number, that is, to first order, 1 plus the number of steps times $\delta^{\rm st}_{\rm LL}$: the step errors of one eigenvector add
+up with the same phase. For the tolerances of this section $\lvert\delta^{\rm st}_{\rm LL}\rvert$ lies between $10^{-9}$ and
+$10^{-17}$: it is the difference of two numbers that agree to 9 to 17 digits, and the program computes it with numbers of 31
+significant digits (module `dd` of the crate `t2steps`).
+
+*The backward difference.* For a sequence given at the ends of the steps, $\nabla^{\rm bd}_{\rm LL}$ is the value at the end of a
+step minus the value at the end of the step before,
+$\nabla^{\rm bd}_{\rm LL}a^{\rm st}_{{\rm LL},s}=a^{\rm st}_{{\rm LL},s}-a^{\rm st}_{{\rm LL},s-1}$. On a sequence that is multiplied by
+$\kappa^{\rm fac}_{\rm LL}$ in every step it is the multiplication by
+
+$$u^{\rm st}_{\rm LL}=1-\frac{1}{\kappa^{\rm fac}_{\rm LL}},\tag{2.47}$$
+
+and applying it several times multiplies by the corresponding power of $u^{\rm st}_{\rm LL}$. For the exact solution,
+$\kappa^{\rm fac}_{\rm LL}=\exp(z^{\rm st}_{\rm LL})$, so that
+
+$$-\ln\big(1-u^{\rm st}_{\rm LL}\big)=z^{\rm st}_{\rm LL}\qquad\text{(exact solution)}.\tag{2.48}$$
+
+Both families of formulas are truncations of this one relation.
+
+*The backward differentiation formulas (IDA).* The logarithm in (2.48) is the series
+$u^{\rm st}_{\rm LL}+\tfrac12(u^{\rm st}_{\rm LL})^2+\tfrac13(u^{\rm st}_{\rm LL})^3+\dots$. The backward differentiation formula of the order
+$k^{\rm IDA}_{\rm LL}$ keeps its first $k^{\rm IDA}_{\rm LL}$ terms:
+
+$$\Big(\nabla^{\rm bd}_{\rm LL}+\tfrac12(\nabla^{\rm bd}_{\rm LL})^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}(\nabla^{\rm bd}_{\rm LL})^{k^{\rm IDA}_{\rm LL}}\Big)a^{\rm st}_{{\rm LL},s}=z^{\rm st}_{\rm LL}\,a^{\rm st}_{{\rm LL},s}.\tag{2.49}$$
+
+(The left side is the step size times the derivative, at the new time, of the polynomial of the degree $k^{\rm IDA}_{\rm LL}$
+through the new value and the $k^{\rm IDA}_{\rm LL}$ values before it; the right side is the step size times the derivative that the
+differential equation demands at the new value. This is the definition of the formula.) On a sequence with the factor
+$\kappa^{\rm fac}_{\rm LL}$, (2.49) reads
+
+$$u^{\rm st}_{\rm LL}+\tfrac12(u^{\rm st}_{\rm LL})^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}(u^{\rm st}_{\rm LL})^{k^{\rm IDA}_{\rm LL}}=z^{\rm st}_{\rm LL}.\tag{2.50}$$
+
+It differs from (2.48) by the first omitted term of the series. The solution of (2.50) therefore exceeds the exact value
+$1-\exp(-z^{\rm st}_{\rm LL})$ of $u^{\rm st}_{\rm LL}$ by $(z^{\rm st}_{\rm LL})^{k+1}/(k^{\rm IDA}_{\rm LL}+1)$ to leading order, and by (2.46)
+and (2.47)
+
+$$\delta^{\rm st}_{\rm LL}=\frac{(z^{\rm st}_{\rm LL})^{k+1}}{k^{\rm IDA}_{\rm LL}+1}\,\big(1+\text{terms of the order of }z^{\rm st}_{\rm LL}\big)\qquad\text{(backward differentiation, solved exactly)}.\tag{2.51}$$
+
+*The Adams-Moulton formulas (CVODE).* Write (2.48) as $u^{\rm st}_{\rm LL}=z^{\rm st}_{\rm LL}\times\big(-u^{\rm st}_{\rm LL}/\ln(1-u^{\rm st}_{\rm LL})\big)$
+and expand the function in the bracket in powers of $u^{\rm st}_{\rm LL}$; its coefficients are called $c^{\rm AM}_{{\rm LL},m}$:
+$1$, $-\tfrac12$, $-\tfrac1{12}$, $-\tfrac1{24}$, $-\tfrac{19}{720}$, $-\tfrac3{160}$, $-\tfrac{863}{60480}$, $-\tfrac{275}{24192}$ for
+the indices 0 to 7. The Adams-Moulton formula of the order $q^{\rm CV}_{\rm LL}$ keeps the first $q^{\rm CV}_{\rm LL}$ terms:
+
+$$\nabla^{\rm bd}_{\rm LL}a^{\rm st}_{{\rm LL},s}=\sum_{m=0}^{q-1}c^{\rm AM}_{{\rm LL},m}\,(\nabla^{\rm bd}_{\rm LL})^{m}\,g^{\rm st}_{{\rm LL},s},\tag{2.52}$$
+
+where $g^{\rm st}_{{\rm LL},s}$ is the step size times the derivative at the end of the step with the number *s*; if the implicit equation is
+solved exactly, $g^{\rm st}_{{\rm LL},s}=z^{\rm st}_{\rm LL}a^{\rm st}_{{\rm LL},s}$. (The right side is the integral, over the step, of the
+polynomial through the derivatives at the new step end and at the $q^{\rm CV}_{\rm LL}-1$ step ends before it. This is the
+definition of the formula.) On a sequence with the factor $\kappa^{\rm fac}_{\rm LL}$,
+
+$$u^{\rm st}_{\rm LL}=z^{\rm st}_{\rm LL}\sum_{m=0}^{q-1}c^{\rm AM}_{{\rm LL},m}\,(u^{\rm st}_{\rm LL})^{m},\qquad\delta^{\rm st}_{\rm LL}=-c^{\rm AM}_{{\rm LL},q}\,(z^{\rm st}_{\rm LL})^{q+1}\,\big(1+\text{terms of the order of }z^{\rm st}_{\rm LL}\big),\tag{2.53}$$
+
+the second equation by the same argument as for (2.51): the first omitted term of the series is
+$c^{\rm AM}_{{\rm LL},q}(u^{\rm st}_{\rm LL})^{q}$ with the order $q^{\rm CV}_{\rm LL}$ as its index. The companion formulas without the
+new derivative, the **Adams-Bashforth formulas**, which CVODE uses to predict, have in the same way the coefficients
+$c^{\rm AB}_{{\rm LL},m}$ of the series of $-u^{\rm st}_{\rm LL}/\big((1-u^{\rm st}_{\rm LL})\ln(1-u^{\rm st}_{\rm LL})\big)$: $1$, $\tfrac12$,
+$\tfrac5{12}$, $\tfrac38$, $\tfrac{251}{720}$ for the indices 0 to 4; the two series differ by the factor $1-u^{\rm st}_{\rm LL}$, so that
+$c^{\rm AM}_{{\rm LL},m}=c^{\rm AB}_{{\rm LL},m}-c^{\rm AB}_{{\rm LL},m-1}$.
+
+For the oscillations of this problem $z^{\rm st}_{\rm LL}$ is imaginary. An even power of it is real: such an error changes the
+modulus of the amplitude. An odd power is imaginary: such an error changes its phase.
+
+{{GEN:t2_steps_table_constants}}
+
+**Table 2.4.** The constants of the leading terms (2.51) and (2.53), and the norms of the powers of the lattice operator applied
+to the initial state of check GS-13. If all steps of an integration were settled steps of the size $h^{\rm st}_{\rm LL}$ and of an
+order with the constant of the second or third column, solved exactly, then by (2.42), (2.46) and the leading terms the
+deviation at the end would be the number of steps times the constant times $(h^{\rm st}_{\rm LL})^{\rm order+1}$ times the norm in
+the last column. This is the column "leading term" of Table 2.5.
+
+**(D) The formulas as the integrators apply them.** Neither integrator solves the implicit equation of a step exactly. Each
+predicts the new state by an explicit formula, improves the prediction by an iteration, and stops as soon as its test of
+convergence is satisfied; in the settled steps of the six integrations this is after one or two iterations (Table 2.3). The
+state that the integrator then accepts is not the solution of (2.49) or (2.52). It is the solution of another recurrence, which
+is derived now for each integrator.
+
+*CVODE: the fixed-point iteration.* CVODE keeps, for the end of every step, the amplitude and the derivative that it has stored
+there; $g^{\rm st}_{{\rm LL},s}$ now denotes the step size times this stored derivative. With the weights $b^{\rm AM}_{{\rm LL},m}$ and
+$b^{\rm AB}_{{\rm LL},m}$ of the two Adams formulas written in the derivatives themselves instead of their differences (for the order
+2: $b^{\rm AM}_{{\rm LL},0}=b^{\rm AM}_{{\rm LL},1}=\tfrac12$, the trapezoidal rule, and $b^{\rm AB}_{{\rm LL},1}=\tfrac32$,
+$b^{\rm AB}_{{\rm LL},2}=-\tfrac12$), one step of CVODE with $n^{\rm fp}_{\rm LL}$ iterations is
+
+$$\begin{aligned}
+a^{\rm prd}_{{\rm LL},s}&=a^{\rm st}_{{\rm LL},s-1}+\sum_{m=1}^{q}b^{\rm AB}_{{\rm LL},m}\,g^{\rm st}_{{\rm LL},s-m}&&\text{(the prediction: Adams-Bashforth)},\\
+a^{\rm bas}_{{\rm LL},s}&=a^{\rm st}_{{\rm LL},s-1}+\sum_{m=1}^{q-1}b^{\rm AM}_{{\rm LL},m}\,g^{\rm st}_{{\rm LL},s-m}&&\text{(the explicit part of (2.52))},\\
+a^{\rm it}_{{\rm LL},0}&=a^{\rm prd}_{{\rm LL},s},\qquad a^{\rm it}_{{\rm LL},m+1}=a^{\rm bas}_{{\rm LL},s}+b^{\rm AM}_{{\rm LL},0}\,z^{\rm st}_{\rm LL}\,a^{\rm it}_{{\rm LL},m}&&\text{(the iteration)},\\
+a^{\rm st}_{{\rm LL},s}&=a^{\rm it}_{{\rm LL},n^{\rm fp}_{\rm LL}},\qquad g^{\rm st}_{{\rm LL},s}=z^{\rm st}_{\rm LL}\,a^{\rm it}_{{\rm LL},n^{\rm fp}_{\rm LL}-1}&&\text{(what is kept)}.
+\end{aligned}\tag{2.54}$$
+
+The last line is the essential point: the derivative that CVODE stores for the end of a step is the one that it evaluated last,
+at the iterate BEFORE the accepted one. (CVODE stores as the new derivative the predicted derivative plus the difference of the
+accepted and the predicted amplitude divided by $b^{\rm AM}_{{\rm LL},0}$ times the step size; with the third line of (2.54), and
+because the prediction satisfies the same line with the predicted derivative, this is the derivative at the last iterate but
+one.) With one iteration per step the stored derivative is that of the predicted value. The exact solution of the implicit
+formula for the stored history is $a^{\rm imp}_{{\rm LL},s}=a^{\rm bas}_{{\rm LL},s}/(1-y^{\rm fp}_{\rm LL})$ with
+$y^{\rm fp}_{\rm LL}=b^{\rm AM}_{{\rm LL},0}z^{\rm st}_{\rm LL}$, and every iteration multiplies the distance from it by $y^{\rm fp}_{\rm LL}$:
+
+$$a^{\rm it}_{{\rm LL},m}-a^{\rm imp}_{{\rm LL},s}=(y^{\rm fp}_{\rm LL})^{m}\,\big(a^{\rm prd}_{{\rm LL},s}-a^{\rm imp}_{{\rm LL},s}\big).\tag{2.55}$$
+
+Now let the amplitude and the stored derivative both be multiplied by $\kappa^{\rm fac}_{\rm LL}$ in every step, with the constant
+ratio $r^{\rm g}_{\rm LL}=g^{\rm st}_{{\rm LL},s}/a^{\rm st}_{{\rm LL},s}$, and let
+$S^{\rm AB}_{\rm LL}=\sum_{m=1}^{q}b^{\rm AB}_{{\rm LL},m}(\kappa^{\rm fac}_{\rm LL})^{-m}$ and
+$S^{\rm AM}_{\rm LL}=\sum_{m=1}^{q-1}b^{\rm AM}_{{\rm LL},m}(\kappa^{\rm fac}_{\rm LL})^{-m}$. Dividing (2.54) by $a^{\rm st}_{{\rm LL},s}$ and using
+(2.55) gives two equations for the two unknowns $\kappa^{\rm fac}_{\rm LL}$ and $r^{\rm g}_{\rm LL}$:
+
+$$\begin{aligned}
+1&=\big(1-(y^{\rm fp}_{\rm LL})^{n^{\rm fp}_{\rm LL}}\big)\,\frac{(\kappa^{\rm fac}_{\rm LL})^{-1}+r^{\rm g}_{\rm LL}S^{\rm AM}_{\rm LL}}{1-y^{\rm fp}_{\rm LL}}+(y^{\rm fp}_{\rm LL})^{n^{\rm fp}_{\rm LL}}\,\big((\kappa^{\rm fac}_{\rm LL})^{-1}+r^{\rm g}_{\rm LL}S^{\rm AB}_{\rm LL}\big),\\
+r^{\rm g}_{\rm LL}&=z^{\rm st}_{\rm LL}\Big[\big(1-(y^{\rm fp}_{\rm LL})^{n^{\rm fp}_{\rm LL}-1}\big)\,\frac{(\kappa^{\rm fac}_{\rm LL})^{-1}+r^{\rm g}_{\rm LL}S^{\rm AM}_{\rm LL}}{1-y^{\rm fp}_{\rm LL}}+(y^{\rm fp}_{\rm LL})^{n^{\rm fp}_{\rm LL}-1}\,\big((\kappa^{\rm fac}_{\rm LL})^{-1}+r^{\rm g}_{\rm LL}S^{\rm AB}_{\rm LL}\big)\Big].
+\end{aligned}\tag{2.56}$$
+
+Eliminating $r^{\rm g}_{\rm LL}$ leaves one polynomial equation of the degree $q^{\rm CV}_{\rm LL}+1$ for
+$(\kappa^{\rm fac}_{\rm LL})^{-1}$. It has $q^{\rm CV}_{\rm LL}+1$ roots. One of them, the **principal root**, lies near
+$\exp(z^{\rm st}_{\rm LL})$ and gives $\delta^{\rm st}_{\rm LL}$ by (2.46). The others are the factors of solutions of the recurrence
+that have nothing to do with the differential equation; they matter in (F). For many iterations the powers of $y^{\rm fp}_{\rm LL}$
+vanish, (2.56) becomes $r^{\rm g}_{\rm LL}=z^{\rm st}_{\rm LL}$ and
+$1-(\kappa^{\rm fac}_{\rm LL})^{-1}=z^{\rm st}_{\rm LL}(b^{\rm AM}_{{\rm LL},0}+S^{\rm AM}_{\rm LL})$, which is the first equation of (2.53) written
+in the derivatives.
+
+*IDA: Newton's method with a kept matrix.* IDA predicts the new amplitude by the polynomial of the degree $k^{\rm IDA}_{\rm LL}$
+through the last $k^{\rm IDA}_{\rm LL}+1$ amplitudes, taken at the new time. Whatever the accepted amplitude
+$a^{\rm st}_{{\rm LL},s}$ turns out to be,
+
+$$a^{\rm prd}_{{\rm LL},s}=a^{\rm st}_{{\rm LL},s}-(\nabla^{\rm bd}_{\rm LL})^{k+1}a^{\rm st}_{{\rm LL},s},\tag{2.57}$$
+
+because the backward difference of the order $k^{\rm IDA}_{\rm LL}+1$ of a polynomial of the degree $k^{\rm IDA}_{\rm LL}$ vanishes.
+IDA then solves (2.49) for the new amplitude by Newton's method. As a function of the new amplitude alone, the left side of
+(2.49) minus its right side is a straight line with the slope $H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}$, where
+$H^{\rm har}_{\rm LL}=1+\tfrac12+\dots+1/k^{\rm IDA}_{\rm LL}$ (every power of $\nabla^{\rm bd}_{\rm LL}$ contains the new amplitude once); the
+line passes through zero at the exact solution $a^{\rm imp}_{{\rm LL},s}$ of the formula. Newton's method with this slope would reach
+$a^{\rm imp}_{{\rm LL},s}$ in one step. IDA, however, does not compute a new iteration matrix for every step. In its source text the
+slope of the formula is governed by the **leading coefficient** $c^{\rm ld}_{\rm LL}=H^{\rm har}_{\rm LL}/h^{\rm IDA}_{\rm LL}$, which changes
+with the step size and with the order. IDA keeps a matrix as long as the ratio
+
+$$r^{\rm cj}_{\rm LL}=\frac{c^{\rm ld}_{\rm LL}\ \text{of the step}}{c^{\rm ld}_{\rm LL}\ \text{for which the matrix was computed}}$$
+
+stays between $0.6$ and $5/3$ (and the iteration converges), and it multiplies every Newton correction by
+$2/(1+r^{\rm cj}_{\rm LL})$. With a kept matrix the slope that Newton's method uses is
+$H^{\rm har}_{\rm LL}/r^{\rm cj}_{\rm LL}-z^{\rm st}_{\rm LL}$ instead of $H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}$, and one Newton step covers the
+fraction
+
+$$\rho^{\rm one}_{\rm LL}=\frac{2}{1+r^{\rm cj}_{\rm LL}}\;\frac{H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}}{H^{\rm har}_{\rm LL}/r^{\rm cj}_{\rm LL}-z^{\rm st}_{\rm LL}}\tag{2.58}$$
+
+of the way from the predicted amplitude to $a^{\rm imp}_{{\rm LL},s}$; for small $\lvert z^{\rm st}_{\rm LL}\rvert$ this is
+$2r^{\rm cj}_{\rm LL}/(1+r^{\rm cj}_{\rm LL})$: exactly 1 for a current matrix, more than 1 (the step overshoots) for
+$r^{\rm cj}_{\rm LL}>1$, less than 1 for $r^{\rm cj}_{\rm LL}<1$. Every further Newton step multiplies the remaining distance by
+$1-\rho^{\rm one}_{\rm LL}$, so $n^{\rm Nw}_{\rm LL}$ Newton steps cover the fraction
+$\rho^{\rm Nw}_{\rm LL}=1-(1-\rho^{\rm one}_{\rm LL})^{n^{\rm Nw}_{\rm LL}}$:
+
+$$a^{\rm st}_{{\rm LL},s}=a^{\rm prd}_{{\rm LL},s}+\rho^{\rm Nw}_{\rm LL}\,\big(a^{\rm imp}_{{\rm LL},s}-a^{\rm prd}_{{\rm LL},s}\big).\tag{2.59}$$
+
+On a sequence with the factor $\kappa^{\rm fac}_{\rm LL}$, (2.57) gives
+$a^{\rm st}_{{\rm LL},s}-a^{\rm prd}_{{\rm LL},s}=(u^{\rm st}_{\rm LL})^{k+1}a^{\rm st}_{{\rm LL},s}$, the straight line gives
+$a^{\rm st}_{{\rm LL},s}-a^{\rm imp}_{{\rm LL},s}$ as the left side of (2.50) minus its right side, divided by
+$H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}$ and multiplied by $a^{\rm st}_{{\rm LL},s}$, and (2.59) connects the two:
+
+$$u^{\rm st}_{\rm LL}+\tfrac12(u^{\rm st}_{\rm LL})^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}(u^{\rm st}_{\rm LL})^{k^{\rm IDA}_{\rm LL}}=z^{\rm st}_{\rm LL}-\frac{1-\rho^{\rm Nw}_{\rm LL}}{\rho^{\rm Nw}_{\rm LL}}\,\big(H^{\rm har}_{\rm LL}-z^{\rm st}_{\rm LL}\big)\,(u^{\rm st}_{\rm LL})^{k+1}.\tag{2.60}$$
+
+This equation of the degree $k^{\rm IDA}_{\rm LL}+1$ replaces (2.50). Its principal root gives
+
+$$\delta^{\rm st}_{\rm LL}=\Big(\frac{1}{k^{\rm IDA}_{\rm LL}+1}+\frac{\rho^{\rm Nw}_{\rm LL}-1}{\rho^{\rm Nw}_{\rm LL}}\,H^{\rm har}_{\rm LL}\Big)\,(z^{\rm st}_{\rm LL})^{k+1}\,\big(1+\text{terms of the order of }z^{\rm st}_{\rm LL}\big).\tag{2.61}$$
+
+A kept matrix changes the error of every step by the factor
+$1+(k^{\rm IDA}_{\rm LL}+1)H^{\rm har}_{\rm LL}(\rho^{\rm Nw}_{\rm LL}-1)/\rho^{\rm Nw}_{\rm LL}$ against (2.51). For the order 5
+($H^{\rm har}_{\rm LL}=137/60$), one Newton step and $r^{\rm cj}_{\rm LL}=1.164$ this factor is 1.97.
+
+*The estimates of the local error.* Both integrators estimate the local error of a step as the difference between the accepted
+and the predicted state times a factor $c^{\rm est}_{\rm LL}$, chosen such that for an exactly solved step of a constant size the
+estimate is the leading term of the error. For IDA the difference is $(u^{\rm st}_{\rm LL})^{k+1}a^{\rm st}_{{\rm LL},s}$ by (2.57), and
+comparison with (2.51) gives $c^{\rm est}_{\rm LL}=1/(k^{\rm IDA}_{\rm LL}+1)$. For CVODE the prediction has the error
+$-c^{\rm AB}_{{\rm LL},q}(z^{\rm st}_{\rm LL})^{q+1}$ and the solution of the formula the error $-c^{\rm AM}_{{\rm LL},q}(z^{\rm st}_{\rm LL})^{q+1}$
+(both relative to the amplitude); their difference is $c^{\rm AB}_{{\rm LL},q-1}(z^{\rm st}_{\rm LL})^{q+1}$ by the relation between the
+two sets of coefficients, so that $c^{\rm est}_{\rm LL}=\lvert c^{\rm AM}_{{\rm LL},q}\rvert/c^{\rm AB}_{{\rm LL},q-1}$. The value of the local
+error test $\delta^{\rm est}_{\rm LL}$ is the norm of this estimate. If the implicit equation is not solved exactly, the true error of
+the step and the estimate differ: for IDA with a kept matrix by the same factor as in (2.61), because the difference between the
+accepted and the predicted amplitude is still $(u^{\rm st}_{\rm LL})^{k+1}a^{\rm st}_{{\rm LL},s}$.
+
+**(E) The predicted deviation, and the comparison with the measured one (check GS-18).** Every step of an integration is of a
+**kind**: its size, its order, its number of iterations and, for IDA, its ratio $r^{\rm cj}_{\rm LL}$. For every kind and every
+eigenvector the program computes $\delta^{\rm st}_{\rm LL}$ from the principal root of (2.56) or (2.60). By (2.42) and (2.46) the
+relative error of the amplitude with the number *n* at the end, $\delta^{\rm ac}_{{\rm LL},n}$ (the computed amplitude divided by the exact one,
+minus 1), is predicted as
+
+$$\delta^{\rm ac}_{{\rm LL},n}\approx\sum_{s=1}^{N^{\rm st}_{\rm LL}}\delta^{\rm st}_{\rm LL}\big(\text{kind of the step with this number};\ E^{\rm qp}_{{\rm LL},n}\big)-i\,E^{\rm qp}_{{\rm LL},n}\,\delta^{\rm t}_{\rm LL}.\tag{2.62}$$
+
+The last term is the **rounding of the time variable**. An integrator adds the step size to its time in every step and rounds
+the sum to the 53 binary digits of a double-precision number. The time that it reports at the end therefore differs from the
+exact sum of its step sizes; $\delta^{\rm t}_{\rm LL}$ is the exact sum minus the reported time. The computed state belongs to the
+exact sum, the comparison with the exact solution is made at the reported time, and every amplitude gets the phase error
+$-iE^{\rm qp}_{{\rm LL},n}\delta^{\rm t}_{\rm LL}$. The predicted deviation is the norm of the predicted errors, weighted with the
+amplitudes of the initial state:
+
+$$\delta^{\rm pre}_{\rm LL}=\Big(\sum_n\lvert a^{\rm md}_{{\rm LL},n}\rvert^2\,\lvert\text{right side of (2.62)}\rvert^2\Big)^{1/2}.\tag{2.63}$$
+
+{{GEN:t2_steps_table_formulas}}
+
+**Table 2.5.** The deviation at the end computed from the formulas alone, in three approximations, and the measured one. Each
+of the three is the norm (2.63) of the first term of (2.62). *Leading term:* from Table 2.4 as described there, with the
+constant of (2.61) for IDA. *With every step solved exactly:* with $\delta^{\rm st}_{\rm LL}$ from (2.50) and (2.53) and the
+recorded size and order of every step. *From the formulas as applied:* with $\delta^{\rm st}_{\rm LL}$ from (2.60) and (2.56) and
+the recorded kind of every step.
+
+{{GEN:t2_steps_table_prediction}}
+
+**Table 2.6.** The predicted and the measured deviation at the end. *From the formulas as applied:* the norm (2.63) of the
+first term of (2.62) alone (the fifth column of Table 2.5). *From the rounding of the time:* that of the second term alone,
+$\lvert\delta^{\rm t}_{\rm LL}\rvert$ times the norm of $\mathcal H^{\rm lat}_{\rm LL}$ applied to the initial state (5.4269). *Both:* the
+prediction (2.63) with both terms. The last two columns: the measurement, and the prediction divided by the measurement.
+
+![](figures/fig_t2_steps_modes.png){width=100%}
+
+**Figure 2A.** The relative error $\lvert\delta^{\rm ac}_{{\rm LL},n}\rvert$ of each of the 384 eigenvectors at the end of the integration against
+the modulus of its eigenvalue, for (a) CVODE and (b) IDA at the three tolerances (aqua $10^{-8}$, orange $10^{-10}$, blue
+$10^{-12}$). Points: measured. Full lines: the prediction (2.62). Dotted lines: the same with every implicit equation solved
+exactly and without the rounding of the time. The power laws are those of the orders of the settled steps. In (b) the dash-dotted
+line is the first term of (2.62) alone for $10^{-12}$: there the measured errors follow the rounding of the time, a straight
+line of the slope 1. At $10^{-10}$ the full line lies 1.96 times above the dotted one: the kept matrix of (2.61). In (a) the
+errors of the slow eigenvectors at $10^{-8}$ come from the first steps of the integration. Data:
+`test2/data/t2_steps_modes.csv`.
+
+The results of the comparison (check GS-18):
+
+- *The four integrations whose settled steps are of one kind* (CVODE at $10^{-10}$; IDA at $10^{-8}$ and $10^{-10}$; and IDA at
+  $10^{-12}$, where 99.1 per cent of the settled steps make one Newton step). The prediction agrees with the measurement within
+  0.4 per cent. In every integration whose settled steps are of one kind and stable in the sense of (F) (six integrations of
+  this section and 31 of the scan of (G)) the difference between the measured and the predicted errors of the eigenvectors has
+  a norm of at most 1.2 tolerances: it is the error of the first steps, in which the order and the step size change and which
+  the formulas for settled steps do not describe.
+- *IDA at $10^{-10}$:* with every step solved exactly the deviation would be $4.7\times10^{-8}$; the kept matrix
+  ($r^{\rm cj}_{\rm LL}=1.164$) raises it by the factor 1.96 to the measured $9.3\times10^{-8}$. The value of the local error test
+  does not see this: the median of the exact local error in the norm of IDA is 1.965 times the median of the test value (Table
+  2.3: 0.1643 and 0.0836), the factor of (2.61).
+- *The two integrations by CVODE whose settled steps are of two kinds* ($10^{-8}$: 832 steps with one and 676 with two
+  iterations; $10^{-12}$: 2793 and 980). The first term of (2.62) adds the errors that the two kinds of steps would each make in
+  an unbroken sequence of their own kind. In these integrations the kind changes every few steps, no such sequence forms, and the
+  sum overestimates the deviation, by 40 and by 3 per cent. The measured deviation lies between this sum and the prediction with
+  every step solved exactly. Part (F) explains why these integrations mix two kinds of steps.
+
+**(F) The stability of the iterations that are stopped early.** The equations (2.56) and (2.60) have other roots besides the
+principal one. If all of them have moduli below 1, every part of the computed solution that is not the solution of the
+differential equation dies out from step to step. If one of them has a modulus above 1, such a part grows by this factor in
+every step, whatever its origin; the rounding errors suffice to start it. The program computes all roots (module `formulas` of
+the crate `t2steps`; independently, with 40 digits and by another route, the script `t2_formula_check.py`).
+
+{{GEN:t2_steps_table_limits_adams}}
+
+**Table 2.7.** CVODE: the largest $\lvert z^{\rm st}_{\rm LL}\rvert$ on the imaginary axis up to which all other roots of (2.56) lie
+inside the unit circle, for one, two and three fixed-point iterations per step. With one iteration the limit about halves with
+every order. The reason is the last line of (2.54): with one iteration the stored derivative is that of the predicted value, so
+that an error of the stored derivatives passes through the predictor into the next stored derivative. The backward difference
+of any order of a sequence that changes its sign from step to step is 2 to the power of that order times the sequence; the
+Adams-Bashforth predictor of
+the order $q^{\rm CV}_{\rm LL}$ therefore multiplies such an error by $\sum_{m=0}^{q-1}c^{\rm AB}_{{\rm LL},m}2^m$ (fifth column, "gain"),
+which about doubles with every order, and the loop is closed with the factor $\lvert z^{\rm st}_{\rm LL}\rvert$. The limit times the
+gain (last column) is between 1.1 and 1.5 for all orders from 2 to 12. A second iteration raises the limits by factors of 4 to 50.
+
+{{GEN:t2_steps_table_limits_bdf}}
+
+**Table 2.8.** IDA with one Newton step per step: the interval of the ratio $r^{\rm cj}_{\rm LL}$, inside the interval from 0.6 to
+$5/3$ in which IDA keeps its matrix, in which all other roots of (2.60) lie inside the unit circle (for small
+$\lvert z^{\rm st}_{\rm LL}\rvert$). The upper end has a closed form. The root $\kappa^{\rm fac}_{\rm LL}=-1$, an error that changes its sign
+from step to step, is $u^{\rm st}_{\rm LL}=2$ by (2.47). Setting $u^{\rm st}_{\rm LL}=2$ and $z^{\rm st}_{\rm LL}=0$ in (2.60) gives
+$(\rho^{\rm one}_{\rm LL}-1)/\rho^{\rm one}_{\rm LL}=\big(2+\tfrac12\,2^2+\dots+\tfrac{1}{k^{\rm IDA}_{\rm LL}}2^{k}\big)/\big(H^{\rm har}_{\rm LL}2^{k+1}\big)$; with
+$\rho^{\rm one}_{\rm LL}=2r^{\rm cj}_{\rm LL}/(1+r^{\rm cj}_{\rm LL})$ this is $r^{\rm cj}_{\rm LL}=1/(1-2\times\text{that number})$: for the order
+5, $(256/15)/((137/60)\times64)=16/137$ and $r^{\rm cj}_{\rm LL}=137/105$; for the order 4, $25/17$. For the orders 4 and 5 IDA thus
+keeps matrices with which one Newton step per step is unstable.
+
+{{GEN:t2_steps_table_roots}}
+
+**Table 2.9.** The six integrations against these limits: the order of the settled steps, $\lvert z^{\rm st}_{\rm LL}\rvert$ of the
+eigenvalue of the largest modulus ($E^{\rm max}_{\rm LL}=8.4349$), the ratio $r^{\rm cj}_{\rm LL}$, and the largest modulus of a root
+other than the principal one with one and with two iterations per step. Three integrations are unstable with one iteration
+(modulus above 1) and stable with two. These are exactly the three integrations with a small coherence in Table 2.2.
+
+![](figures/fig_t2_steps_stability.png){width=100%}
+
+**Figure 2B.** The largest modulus of a root other than the principal one. (a) CVODE: the Adams-Moulton formulas of the orders
+5, 6 and 7 with one (full lines) and two (dashed lines) fixed-point iterations, against $\lvert z^{\rm st}_{\rm LL}\rvert$; the filled
+circles are the settled steps of the three integrations for the eigenvalue of the largest modulus, the open circles the same
+steps with two iterations. (b) IDA: the backward differentiation formula of the order 5 with one Newton step against
+$r^{\rm cj}_{\rm LL}$; the circles are the settled steps of the three integrations. The tinted regions are unstable. Data:
+`test2/data/t2_steps_roots.csv`, `t2_steps_limits.csv`, `t2_steps_runs.csv`.
+
+{{GEN:t2_steps_table_tests}}
+
+**Table 2.10.** The value of the local error test from the formula alone and as measured. Fifth column: the weighted norm (2.39)
+or (2.44) of the error that one exactly solved settled step commits on the exact solution, computed from the relative errors
+(2.51) and (2.53) of the formulas at 81 times between 0 and 20 (median). Sixth column: the median of the measured test value
+over the settled steps. In the three integrations that are stable with one iteration (last column below 1) the two agree within
+0.2 per cent: there the test value, and with it the local error of a step, is what the formula gives for the step size. In the
+three unstable integrations the measured test value is 1.5, 2.5 and 550 times larger: the difference is the growing error.
+
+*What happens in an unstable integration: CVODE.* CVODE accepts the first iterate of a step if the value of the local error test
+computed from it is at most 0.1, and iterates once more otherwise (its test of convergence compares the norm of the first
+correction, times $c^{\rm est}_{\rm LL}$, with 0.1). Check GS-19 confirms the rule on every settled step of the three integrations
+by CVODE, in both directions: no step with one iteration has a test value above 0.1, and no step with two iterations has one
+below it (up to the small difference between the first and the second iterate). Whether CVODE begins with one or with two iterations
+is decided by the test value that the formula alone gives for the settled step (Table 2.10, computed from (2.53) for the exact
+solution): at $10^{-10}$ it is 0.374, above 0.1, CVODE makes two iterations in every settled step, the scheme is stable, all
+steps are of one kind, and the measured test value is the predicted one (0.3735). At $10^{-8}$ and $10^{-12}$ it is 0.064 and
+0.032, below 0.1, and CVODE begins with one iteration per step.
+These steps are unstable (roots 1.25 and 1.13): an error grows, and with it the difference between the accepted and the predicted
+state, which is what the test measures. When the test value passes 0.1, CVODE makes two iterations; these steps are stable
+(roots 0.50 and 0.42) and damp the error; the test value falls below 0.1 again, and the cycle repeats. The test value is thereby
+held near 0.1 (medians 0.096 and 0.081 in Table 2.3), the steps change between the two kinds every few steps, and the two kinds
+err differently: for the eigenvalue of the largest modulus at $10^{-8}$ a step with one iteration has 2.6 times the error of the
+leading term and a step with two iterations 1.1 times, and the two errors differ in their direction in the complex plane by 75
+degrees (check GS-18). The local errors of consecutive steps are then not parallel (cosines $-0.19$ and $-0.69$ in Table 2.2),
+and the coherence is 0.36 and 0.27.
+
+{{GEN:t2_steps_table_origin}}
+
+**Table 2.11.** IDA: where the ratio $r^{\rm cj}_{\rm LL}$ of the settled steps comes from. In each integration the matrix of the
+settled steps was computed in one of the first 43 steps and then used to the end. At $10^{-8}$ it was computed for the settled
+step size itself. At $10^{-10}$ it was computed for the step size $3.2\times10^{-3}$, and IDA then shortened the step by the factor
+0.859: $r^{\rm cj}_{\rm LL}=1.164$, inside the stable interval of Table 2.8. At $10^{-12}$ it was computed for the step size
+$5.832\times10^{-4}$ and the order 4; IDA shortened the step by the factor 0.835 and then raised the order to 5, which raises
+$H^{\rm har}_{\rm LL}$ from $25/12$ to $137/60$: $r^{\rm cj}_{\rm LL}=1.313$, above the limit $137/105=1.305$.
+
+*What happens in an unstable integration: IDA at $10^{-12}$.* With $r^{\rm cj}_{\rm LL}=1.313$ the alternating root of (2.60) is
+$-1.0171$: an error that changes its sign from step to step grows by 1.7 per cent per step. The measured test value of
+consecutive settled steps grows by the factor 1.0172 (median over 39183 pairs of steps). What stops the growth is the test of
+convergence of IDA. After the first Newton step of a step IDA stops if a number that it calls `ss` times the norm of the first
+correction is at most 0.33. The number `ss` is kept from the last step with two Newton steps: it is the quotient of the norms
+of the second and of the first correction of that step, divided by 1 minus this quotient. On these linear equations the quotient
+is $\lvert1-\rho^{\rm one}_{\rm LL}\rvert=0.1353$, which gives 0.1564. The value of the local error test of a first iterate is the
+norm of the first correction divided by $k^{\rm IDA}_{\rm LL}+1=6$. IDA therefore makes a second Newton step exactly when the test
+value of the first iterate exceeds $0.33/(6\times0.1564)=0.352$. In every settled step with two Newton steps the test value of
+the first iterate lies within 2 per cent of this number, and no step with one Newton step has a larger test value (check GS-20).
+The second Newton step multiplies the distance from the solution of the formula by 0.1353, about a seventh, and the growth
+begins again: a saw-tooth with 372 teeth in the integration and a median period of 110 steps (Figure 2C(a); the growth by 1.0171
+per step makes up for the factor 0.1353 in 118 steps). Without the alternating error the test value of these steps would
+be $2.6\times10^{-4}$ (Table 2.10); the measured median is 0.14, more than 500 times larger. In this integration the local error of a step is mostly the
+alternating error, which cancels between consecutive steps (cosine $-0.97$): hence the coherence 0.046.
+
+![](figures/fig_t2_steps_wave.png){width=100%}
+
+**Figure 2C.** IDA at $r^{\rm tol}_{\rm LL}=10^{-12}$ with its default rule for the iteration matrix (blue, full) and with a matrix
+that is computed anew whenever the leading coefficient changes (aqua, dashed). (a) The value of the local error test against the
+number of the step; triangles mark the steps with two Newton steps; the dotted lines are the growth by the factor 1.0171 per
+step, the threshold 0.352 of the second Newton step, and the value 0.0078 below which IDA doubles a step. (b) The norm of the
+deviation from the exact solution against the time; the dotted curve is the rounding of the time alone,
+$\lvert\delta^{\rm t}_{\rm LL}\rvert$ up to that time multiplied by the norm of $\mathcal H^{\rm lat}_{\rm LL}$ applied to the initial state. Data:
+`test2/data/t2_steps_trace.csv`, `t2_steps_runs.csv`, `t2_steps_scan.csv`, `t2_steps_modes.csv`.
+
+**(G) What fixes the step size (check GS-19).** After every accepted step an integrator decides the size of the next one from the
+value of the local error test.
+
+- *IDA* computes the number $(2\delta^{\rm est}_{\rm LL}+10^{-4})^{-1/(k+1)}$ (for settled steps; in general with an estimate for
+  the order of the next step). If it is at least 2, the next step is twice as long; if it is at most 1, the next step is
+  shorter by a factor between 0.5 and 0.9; otherwise the step size stays. IDA never lengthens a step by another factor than 2.
+  A settled test value therefore lies between $(2^{-(k+1)}-10^{-4})/2$ and $(1-10^{-4})/2$: between 0.0078 and 0.5 for the order
+  5, a factor 64 in the estimated error, which is a factor 2 in the step size.
+- *CVODE* computes $1/\big((6\,\delta^{\rm est}_{\rm LL})^{1/(q+1)}+10^{-6}\big)$, and the corresponding numbers for the two
+  neighbouring orders, and changes the step size or the order only if the largest of them is at least 1.5. A settled test value
+  therefore lies between $(1/1.5-10^{-6})^{q+1}/6$ and 1: above 0.0146, 0.0098 and 0.0065 for the orders 5, 6 and 7.
+
+Inside its band a settled step is never changed. Where in the band an integration settles is decided in its first steps, in
+which the integrator raises the order and lengthens the step (IDA by doubling it) until the test value has entered the band. A slightly different tolerance
+shifts this whole sequence: the settled test value moves through the band, and jumps to its other end when an edge is crossed.
+Check GS-19 repeats the integration for 25 tolerances from $10^{-6}$ to $10^{-12}$, four per decade:
+
+![](figures/fig_t2_steps_scan.png){width=92%}
+
+**Figure 2D.** The scan of the tolerance for CVODE (orange squares, dashed) and IDA (blue circles, full); open markers are
+integrations whose settled steps are of two kinds. (a) The deviation at the end divided by the tolerance. (b) The median of the
+value of the local error test over the settled steps; the tinted band is that of IDA for the order 5. (c) The deviation of IDA
+divided by that of CVODE; the three tolerances of Table 2.1 are marked (with the IDA of the program `t2_fields`). Data:
+`test2/data/t2_steps_scan.csv`.
+
+{{GEN:t2_steps_table_scan}}
+
+**Table 2.12.** The scan. For each integrator the number of steps, the size of the settled steps, the order of CVODE (IDA is at
+the order 5 in all 25 integrations) or the ratio $r^{\rm cj}_{\rm LL}$ of IDA, and the deviation at the end in units of the tolerance;
+"(m)" marks an integration with settled steps of both kinds. Last column: the quotient of the two deviations.
+
+The findings (check GS-19): in all 50 integrations the median test value lies in the band of its integrator; the quotient of
+deviation and tolerance lies between 93 and 2881 for CVODE and between 13 and 2271 for IDA; between two neighbouring tolerances
+it changes by factors of up to 20 (CVODE) and 47 (IDA); the quotient of the deviations of the two integrators lies between 0.073
+and 13.7 and passes the value 1 ten times. Every integration with settled steps of both kinds (17 of the 50) is unstable with one
+iteration in the sense of (F), and every integration that is stable with one iteration (29) has steps of one kind. For these
+29 and for two further integrations that make two iterations in nearly every step, the prediction (2.62) agrees with the
+measured errors of the eigenvectors within 1.2 tolerances.
+
+**(H) IDA in the open, the notebook, and the rounding of the time (check GS-20).** The IDA inside `NDSolve` is a closed program:
+from outside one sees the times of its internal steps and the states at these times, but not the order of a step, the value of
+its local error test, or the age of its matrix. The module `ida` of the crate `t2steps` runs the IDA of SUNDIALS 7.8.0 in the
+open, with the settings that the comparison singles out: the tolerance $r^{\rm tol}_{\rm LL}\lvert\text{unknown}\rvert+a^{\rm tol}_{\rm LL}$
+for every real unknown, a first step of $10^{-4}$, the orders 1 to 5, a dense iteration matrix, and no step beyond
+$x^0_{\rm LL}=20$.
+
+{{GEN:t2_steps_table_notebook}}
+
+**Table 2.13.** The IDA of the notebook and the IDA of the program `t2_fields`, quantity by quantity: the number of internal
+steps, the largest and the smallest internal step, the number of evaluations of the right side, and the deviation at the end.
+The notebook counts more evaluations because its IDA forms the iteration matrix by difference quotients, one evaluation for
+each of the 768 real unknowns and one more, while the program gives IDA the matrix itself. The last column therefore adds to
+the evaluations that the program counts 769 for every matrix that IDA computed (11, 14 and 17 matrices) and 1 for the whole
+integration; the sums are the counts of the notebook. The two programs take the same steps, and their deviations agree to 7
+and 6 digits at the first two tolerances.
+
+At $10^{-12}$ the two deviations differ by 10 per cent, and the reason is the second term of (2.62):
+
+{{GEN:t2_steps_table_rounding}}
+
+**Table 2.14.** The rounding of the time variable of IDA at $10^{-12}$. The time that IDA reports at the end of a step is the
+rounded sum of the time before and the step size (check GS-20 confirms it for all 41111 steps; the last step is shortened so
+that it ends at 20). Between two powers
+of 2 all double-precision numbers are multiples of one unit in the last place, and the settled step size is not such a multiple;
+the rounding of one addition is therefore the same fraction of a unit for every time between two powers of 2 (third column;
+positive: the rounded sum is the larger). The number of steps in a range times this fraction times the unit is the change of
+$\delta^{\rm t}_{\rm LL}$ over the range (the sign is reversed, because $\delta^{\rm t}_{\rm LL}$ is the exact sum minus the reported time).
+The three ranges together give the measured change from the time 4 to the time 20 within 0.02 per cent.
+
+With $\delta^{\rm t}_{\rm LL}=8.07\times10^{-12}$ at the end, the second term of (2.62) alone gives the deviation $4.38\times10^{-11}$,
+91 per cent of the measured $4.81\times10^{-11}$; the formulas give $1.98\times10^{-11}$ (Table 2.6). The two parts add as the
+sides of a right triangle, because the error of the formula of the order 5 is real (the sixth power of $z^{\rm st}_{\rm LL}$: it
+changes the moduli of the amplitudes) and that of the time is imaginary (it changes their phases). The dotted curve of Figure
+2C(b) shows the rounding of the time alone; its kinks at the times 4, 8 and 16 are the three lines of Table 2.14. The fractions
+of the third column depend on the last binary digits of the step size. Two programs that take the same 41111 steps to ten
+digits need not agree in them, so their deviations at this tolerance need not agree better than they do; at $10^{-8}$ and
+$10^{-10}$ the rounding of the time is less than $10^{-6}$ and about $10^{-4}$ of the deviation (Table 2.6), and the programs
+agree.
+
+*The experiment: a matrix that is always current.* IDA can be told to compute its matrix anew whenever the leading coefficient
+changes. Then $r^{\rm cj}_{\rm LL}=1$ in every step, (2.60) is (2.50), and all effects of the kept matrix must disappear:
+
+{{GEN:t2_steps_table_matrix}}
+
+**Table 2.15.** IDA with its default rule and with a matrix that is always current. They do disappear: at $10^{-10}$ the
+deviation is 0.643 of the default one, which is the sixth power of the ratio of the two settled step sizes times the ratio of
+the numbers of steps divided by the factor 1.97 of (2.61) (0.642; check GS-20). At $10^{-12}$ there is no alternating error: the
+test value of the settled steps is steady (Figure 2C(a), dashed), IDA takes steps of more than twice the size and fewer than half
+as many of them, and the local errors are parallel again (coherence 0.976). But the deviation is 8 times LARGER than with the
+default rule. In the default integration the alternating error holds the test value of the settled steps between 0.017 and 0.352 (nine
+tenths of them between 0.06 and 0.32), far above what
+the formula alone gives at that step size ($2.6\times10^{-4}$: Table 2.10, and equally the sixth power of the ratio of the step
+sizes times the test value of the integration with a current matrix); this number is below 0.0078, so that without the
+alternating error IDA would have doubled the step. The instability keeps the steps of the default integration small, and its small steps make it accurate.
+At $10^{-8}$ the two integrations differ although the kept matrix of the settled steps is current in both: with other matrices
+in the first steps the integration settles at another place of its band (test value 0.037 instead of 0.34), with a deviation 6
+times smaller. This is the scatter of (G) again.
+
+**(I) The six numbers, one by one.** With the three factors of (2.43) from Table 2.2:
+
+- *CVODE at $10^{-8}$: $1.2\times10^{-6}$, 119 tolerances.* Order 6, 1528 steps. The steps with one iteration are unstable
+  ($\lvert z^{\rm st}_{\rm LL}\rvert$ up to 0.11, limit 0.057); the test value is held at 0.1; the mean local error is 0.22
+  tolerances, and the two kinds of steps do not add up in phase (coherence 0.36): $1528\times0.2168\times0.3578=119$.
+- *CVODE at $10^{-10}$: $1.7\times10^{-7}$, 1702 tolerances.* Order 5, 3661 steps, all with two iterations and stable. The test
+  value is 0.37, in the upper part of its band; the mean local error is 0.47 tolerances and all local errors are parallel
+  (coherence 0.999): $3661\times0.4654\times0.9992=1702$. The prediction from the formula gives $1.703\times10^{-7}$.
+- *CVODE at $10^{-12}$: $1.7\times10^{-10}$, 174 tolerances.* Order 7, 3804 steps; unstable with one iteration as at $10^{-8}$
+  (limit 0.029, $\lvert z^{\rm st}_{\rm LL}\rvert$ up to 0.045): $3804\times0.1720\times0.2655=174$. The deviation falls by a factor 980
+  from $10^{-10}$ although the number of steps hardly changes, because the order is 7 instead of 5 (the error of a step falls
+  with the eighth instead of the sixth power of the step size) and the errors of the steps partly cancel.
+- *IDA at $10^{-8}$: $7.1\times10^{-6}$, 713 tolerances.* Order 5, 2705 steps, a current matrix, a test value of 0.34 near the
+  upper end of its band, parallel local errors: $2705\times0.2645\times0.9960=713$. Prediction: $7.126\times10^{-6}$. It is 6 times
+  the deviation of CVODE at this tolerance because it has almost twice as many steps, each with a slightly larger error, and
+  because its errors add up in phase while those of CVODE do not (the quotient of the two coherences is 2.8).
+- *IDA at $10^{-10}$: $9.3\times10^{-8}$, 931 tolerances.* Order 5, 7309 steps, a matrix that is 16 per cent out of date: every
+  step has 1.97 times the error of the formula, which the error test does not see; parallel local errors:
+  $7309\times0.1279\times0.9957=931$. Prediction: $9.310\times10^{-8}$.
+- *IDA at $10^{-12}$: $4.8\times10^{-11}$ in the program, $4.4\times10^{-11}$ in the notebook, 48 and 44 tolerances.* Order 5,
+  41111 steps, a matrix that is 31 per cent out of date and beyond the limit of stability: the alternating error keeps the steps
+  small and cancels in the sum (coherence 0.046), $41111\times0.0253\times0.0463=48$; what remains is the error of the formula
+  ($2.0\times10^{-11}$) and the rounding of the time ($4.4\times10^{-11}$). Prediction: $4.825\times10^{-11}$.
+
+{{GEN:t2_steps_table_budget}}
+
+**Table 2.16.** The six deviations against the error budget (2.40): the number of steps times the largest local error that the
+tolerances allow, $B^{\rm loc}_{\rm LL}$, which is $\sqrt2\,(r^{\rm tol}_{\rm LL}+a^{\rm tol}_{\rm LL}\sqrt{n^{\rm cpx}_{\rm LL}})$ with the weights of
+CVODE and $r^{\rm tol}_{\rm LL}+a^{\rm tol}_{\rm LL}\sqrt{2n^{\rm cpx}_{\rm LL}}$ with the weights of IDA for a state of the norm 1. Every
+deviation is below its budget, by factors between 3.6 and 1092 (check GS-17).
+
+**What follows for the use of the integrators.**
+
+- The deviation that an integration can be relied on to stay below is the error budget: the tolerance times the number of steps
+  (times $B^{\rm loc}_{\rm LL}/r^{\rm tol}_{\rm LL}$, 1.3 to 1.7 here). For a wanted accuracy the tolerance must be chosen smaller than this
+  accuracy by the number of steps. The solvers of Test 2 use $r^{\rm tol}_{\rm LL}=10^{-12}$ and compare their conservation laws with
+  ten error budgets (Section 2.11).
+- The deviation at one tolerance is one sample of a quantity that can change by more than a factor ten from one tolerance to
+  the next (by factors of up to 20 and 47 in the scan). Two integrators, or two settings of one integrator, cannot be ranked by single integrations; the scan of (G) is
+  the least that such a comparison needs. Over the scan neither integrator is the more accurate one.
+- A smaller value of the local error test does not mean a smaller error (IDA at $10^{-10}$), and a stable-looking integration is
+  not the more accurate one (IDA at $10^{-12}$ with a current matrix).
+
+## 2.13 Discussion
 
 - **What is specific to the super-loop.** Every ingredient comes from the super-loop: the manifold is its
   Hermitian bi-quaternions; the Dirac matrices are its frame multiplications (2.5), (2.13); the Lorentz gauge
@@ -5052,12 +5715,17 @@ null vectors of the mass matrices of the Bogoliubov matrices (circles) and $\arc
 From the folder Revision_SuperLoop of the repository:
 
 ```
-# 1. the checks GS-1 to GS-{{GEN:nchecks_t2_fields}} of item [1], the explicit matrices and equations, the data of Figures 1 and 2
+# 1. the checks GS-1 to GS-{{GEN:nchecks_t2_fields}} of item [1], the explicit matrices and equations, the data of Figures 1, 2 and 2A to 2D
 cd test2/rust && cargo build --release && ./target/release/t2_fields && cd ../..
+# 1b. Section 2.12: the tests of the library crates t2steps and t2core, and the independent computation of the formulas
+#     with 40 digits (checks FC-1 to FC-{{GEN:nchecks_t2_py_formula}})
+cd test2/rust && cargo test --release --lib -p t2steps && cargo test --release --lib -p t2core && cd ../..
+python3 test2/python/t2_formula_check.py
 # 2. the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} of item [2] (the analytic solutions) and the data of Figures 3 to 6
 cd test2/rust && cargo build --release && ./target/release/t2_analytic && cd ../..
-# 3. Figures 1 to 6 (test2/figures/fig_t2_*.pdf and .png)
+# 3. Figures 1 to 6 (test2/figures/fig_t2_*.pdf and .png) and Figures 2A to 2D (test2/figures/fig_t2_steps_*.pdf and .png)
 python3 test2/python/make_t2_figures.py
+python3 test2/python/make_t2_steps_figures.py
 # 4. item [3]: the self-test of the Python solver, the seven examples, the table of the keys, the checks EX-1 to EX-7
 python3 test2/python/t2_solve.py --selftest test2/data/t2_py_selftest_checks.txt
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do
@@ -5090,34 +5758,41 @@ bash test2/cvode_vs_rk4/run_convergence.sh "$PWD/test2/rust/target/release/t2_so
 bash code/scripts/check_all.sh
 ```
 
-The program `t2_fields` runs in about 20 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
+The program `t2_fields` runs in about 2 minutes on two processor cores (20 seconds for the checks GS-1 to GS-16; the checks
+GS-17 to GS-20 run 59 time integrations step by step, several at a time on the available cores), `t2_formula_check.py` in
+about 100 seconds, `t2_analytic` in about 5 seconds, the seven examples of item [3]
 together in about 70 seconds (the quench 45 seconds), the Rust solver of item [5] in about 80 seconds, `t2_sfbs` in about
 90 seconds (most of it the Lanczos computations of check SB-5 in the Fock space of 65536 states, the $16\times16$ Bogoliubov
 matrices of checks SB-7, SB-8, SB-11 and SB-14 to SB-17, and the time-dependent mean-field runs of checks SB-10 and SB-16),
-`t2_cvcmp` in about 5 seconds and the convergence runs of step 10 in about 3 minutes, all on one processor core.
+`t2_cvcmp` in about 5 seconds and the convergence runs of step 10 in about 3 minutes, all of these on one processor core.
 
-Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy and Matplotlib; rsvg-convert (librsvg) for the
+Requirements: a Rust toolchain (edition 2021); Python 3 with NumPy, SciPy, Matplotlib and mpmath (mpmath for
+`t2_formula_check.py` only); rsvg-convert (librsvg) for the
 conversion of the SVG figures of item [6]; for the documents pandoc
-(2.11 or later), XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font. The Rust programs of the
+(2.11 or later), XeLaTeX and latexmk, the DejaVu fonts and the Latin Modern Math font, and pdftotext of the poppler
+utilities (the build of a document verifies that no page has text below its text area). The Rust programs of the
 folder test2 use no downloaded crate: the time integrator CVODE is the translation of SUNDIALS 7.8.0 into pure Rust that is
 part of PROJECT spacetimes (the crates `sundials_core` and `cvode_rs` of the folder `vendor/sundials_rs-7.8.0`, next to the
 folder Revision_SuperLoop), and the Python solver uses it through the shared library `libt2cvode` built by the same
-`cargo build --release`.
+`cargo build --release`. The crate `t2steps` of Section 2.12 uses in addition the integrator IDA of the same translation (the
+crate `ida_rs` of the same folder).
 
 ## A.2 The programs of items [1] and [2]
 
-The Cargo workspace `test2/rust` has eight members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e; the sixth, `t2sfbs`, the checks of items [7] to [11], Appendix A.2f; the seventh, `t2cvcmp`, the comparison of CVODE with the fixed-step methods of the first version, Appendix A.2g; the eighth, `t2cvode_c`, the shared library `libt2cvode` through which the Python solver calls CVODE, Appendix A.2b):
+The Cargo workspace `test2/rust` has nine members (the fourth, `t2solve`, is the solver of item [5], Appendix A.2d; the fifth, `t2plot`, the plotter of item [6], Appendix A.2e; the sixth, `t2sfbs`, the checks of items [7] to [11], Appendix A.2f; the seventh, `t2cvcmp`, the comparison of CVODE with the fixed-step methods of the first version, Appendix A.2g; the eighth, `t2cvode_c`, the shared library `libt2cvode` through which the Python solver calls CVODE, Appendix A.2b; the ninth, `t2steps`, the library of the step-by-step analysis of Section 2.12, Appendix A.2h):
 
 - `t2core` (library): complex numbers and matrices, the Hermitian eigensolver, the super-loop operators as matrices
   (`model.rs`: $M_{\rm LL}$, the frame, the Dirac matrices, $\mathsf S_{\rm LL}$, $\mathsf s_{\rm LL}$,
   $T^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$, $\mathsf P_{\rm LL}$, $\psi'_{\rm LL}$, the Cayley-Dickson product),
   the lattice operator (`lattice.rs`), the time integration with CVODE (`cvode.rs`: the functions `integrate`,
-  `integrate_status` and `evolve_lattice`, the settings, the counters, the error weights of complex components of (2.39)
-  and the error budget (2.40); it uses the vendored crate `cvode_rs`) and exact symbolic linear forms for printing formulas
-  (`sym.rs`);
+  `integrate_status` and `evolve_lattice`, the functions `integrate_steps` and `evolve_lattice_steps`, which return after
+  every internal step of CVODE with its size, its order, the value of its local error test and its number of iterations
+  (Section 2.12), the settings, the counters, the error weights of complex components of (2.39) and the error budget (2.40); it
+  uses the vendored crate `cvode_rs`) and exact symbolic linear forms for printing formulas (`sym.rs`);
 - `t2fields` (program `t2_fields`): the checks GS-1 to GS-{{GEN:nchecks_t2_fields}}, the explicit matrices and
-  component equations of Section 2 (written into `test2/data/t2_fragments.md`, from which this document takes them),
-  and the data of Figures 1 and 2;
+  component equations of Section 2 and the tables of Section 2.12 (written into `test2/data/t2_fragments.md`, from which
+  this document takes them), and the data of Figures 1, 2 and 2A to 2D; its module `steps.rs` holds the checks GS-17 to
+  GS-20 (Appendix A.2h);
 - `t2analytic` (program `t2_analytic`): the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} of the analytic solutions of
   Section 3 and the data of Figures 3 to 6. It applies the lattice operator of `t2core` (`lattice.rs`), the routine
   that the solvers use, to the analytic solutions, so that every analytic solution is also a test of that code; the
@@ -5140,7 +5815,15 @@ $\nabla^{\rm LL}_p$, $\mathbf D_{\rm LL}$; `Fv_LL`, `FF_LL`, `Rc_LL` for the fie
 (2.11); `Kch_iota`, `Ppair`, `dvec`, `d_iota`, `Pi_iota(x)` for the pairing; `psi_p`, `psi_h`, `H_DB`, `Xph`,
 `Gsite`, `H_lat`, `Ulink_j`, `eps_lat`, `Hbound`, `dx`, `r_W` for the mean-field and lattice equations; `w_lat`, `w_cmp`,
 `w_exact`, `E_qp`, `rtol`, `atol` for $w^{\rm lat}_{\rm LL}$, $w^{\rm cmp}_{\rm LL}$, $w^{\rm ex}_{\rm LL}$, $E^{\rm qp}_{{\rm LL},n}$,
-$r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$ of the time integration (Section 2.11).
+$r^{\rm tol}_{\rm LL}$, $a^{\rm tol}_{\rm LL}$ of the time integration (Section 2.11); and, in the checks GS-17 to GS-20 of Section 2.12,
+`N_steps`, `h_step`, `q_CV`, `k_IDA`, `n_fp`, `n_Newton` for $N^{\rm st}_{\rm LL}$, $h^{\rm st}_{\rm LL}$, $q^{\rm CV}_{\rm LL}$,
+$k^{\rm IDA}_{\rm LL}$, $n^{\rm fp}_{\rm LL}$, $n^{\rm Nw}_{\rm LL}$; `w_local`, `w_deviation`, `local_error`, `local_cosine`, `test_value` for
+$w^{\rm loc}_{{\rm LL},s}$, $w^{\rm dev}_{{\rm LL},s}$, $\delta^{\rm loc}_{\rm LL}$, $c^{\rm loc}_{{\rm LL},s}$, $\delta^{\rm est}_{\rm LL}$; `z_step`,
+`kappa_step`, `eps_step` for $z^{\rm st}_{\rm LL}$, $\kappa^{\rm fac}_{\rm LL}$, $\delta^{\rm st}_{\rm LL}$; `b_AM` for $b^{\rm AM}_{{\rm LL},m}$;
+`H_har`, `cj_ratio`, `rho_Newton`, `rho_one` for $H^{\rm har}_{\rm LL}$, $r^{\rm cj}_{\rm LL}$, $\rho^{\rm Nw}_{\rm LL}$, $\rho^{\rm one}_{\rm LL}$
+(`cj` and `cjJ` are the leading coefficient $c^{\rm ld}_{\rm LL}$ of a step and the one for which its matrix was computed);
+`E_max` for $E^{\rm max}_{\rm LL}$; `err_mode`, `time_defect`, `predicted_deviation` for $\delta^{\rm ac}_{{\rm LL},n}$, $\delta^{\rm t}_{\rm LL}$,
+$\delta^{\rm pre}_{\rm LL}$; `ss`, `rate` and `delnrm` are quoted from the source text of IDA and explained where they occur.
 
 ```
 {{FILE:test2/data/t2_fields_checks.txt}}
@@ -5442,15 +6125,65 @@ site; `ortho_error` for the largest entry of $(\mathsf W^{\rm m}_{\rm LL})^\dagg
 {{FILE:test2/cvode_vs_rk4/data/cmp_report.txt}}
 ```
 
+## A.2h The step-by-step analysis of the time integrations of check GS-13
+
+The programs of Section 2.12:
+
+- **The library crate `t2steps`** of the Rust workspace (`Cargo.toml`; `src/lib.rs`, whose head comment describes the crate
+  and shows how to use it). Its modules: `dd.rs`, real and complex numbers of twice the precision of double-precision
+  numbers, about 31 digits (the sum and the product of two double-precision numbers are computed together with their exact
+  rounding errors); `formulas.rs`, the coefficients $c^{\rm AM}_{{\rm LL},m}$, $c^{\rm AB}_{{\rm LL},m}$, $b^{\rm AM}_{{\rm LL},m}$,
+  $b^{\rm AB}_{{\rm LL},m}$, the relative error $\delta^{\rm st}_{\rm LL}$ of one step from the principal root of (2.50), (2.53), (2.56)
+  and (2.60) (Newton's method in the 31-digit numbers), all roots of (2.56) and (2.60) (the iteration of Durand and Kerner
+  for all roots of a polynomial at once), and the limits of stability of Tables 2.7 and 2.8; `ida.rs`, IDA on the real form of
+  the lattice equations, returning after every internal step with its order, the value of its local error test, the ratio
+  $r^{\rm cj}_{\rm LL}$ and the number of its Newton steps (it uses the vendored crate `ida_rs`); `anatomy.rs`, the measurements
+  of parts (A) and (E) of Section 2.12 for any sequence of steps; `runs.rs`, CVODE and IDA run through `anatomy`, several
+  integrations at a time on the available processor cores. The crate has its own tests (`cargo test --release --lib -p
+  t2steps`): the 31-digit arithmetic, the coefficients against their fractions, the step errors against closed forms
+  (backward Euler, the trapezoidal rule, the backward differentiation formula of the order 2), the roots, the limits of
+  stability and their closed forms, and the identity (2.42) with the prediction (2.62) on a small problem for both
+  integrators.
+- **The module `steps.rs` of the program `t2_fields`**: the nine integrations with the full analysis of every step (the six of
+  Table 2.2, and IDA with a matrix that is always current at the three tolerances), the scan of 25 tolerances, the checks GS-17
+  to GS-20, the sixteen tables of Section 2.12, and the eight data files `test2/data/t2_steps_*.csv`.
+- **`test2/python/t2_formula_check.py`**: an independent computation of the formulas of Section 2.12 with the
+  multiple-precision arithmetic of the Python library mpmath (40 digits). It shares no code with the Rust crate and uses
+  other routes where it can: the coefficients from the series that define them; every number of the file
+  `t2_steps_formulas.csv`; the same step errors once more without any equation for a root, by applying the recurrences (2.54)
+  of CVODE and (2.57) with (2.59) of IDA step by step and reading the factor off after 400 steps; the leading terms (2.51), (2.53) and (2.61); the roots
+  (for CVODE as the eigenvalues of the matrix that advances the stored amplitudes and derivatives by one step); and the limits
+  of stability. Its checks are FC-1 to FC-{{GEN:nchecks_t2_py_formula}}.
+- **`test2/python/make_t2_steps_figures.py`**: Figures 2A to 2D from the data files.
+
+The report of `t2_formula_check.py`, verbatim (`test2/data/t2_py_formula_checks.txt`). It uses the plain names of the report of
+`t2_fields` above, and: `c_AM(n)`, `c_AB(n)` for $c^{\rm AM}_{{\rm LL},m}$, $c^{\rm AB}_{{\rm LL},m}$ with the index in brackets; `u` for
+$u^{\rm st}_{\rm LL}$, `z` for $z^{\rm st}_{\rm LL}$, `q` and `k` for the orders $q^{\rm CV}_{\rm LL}$ and $k^{\rm IDA}_{\rm LL}$, `rho` for
+$\rho^{\rm Nw}_{\rm LL}$, `H_k` for $H^{\rm har}_{\rm LL}$, `cj/cjJ` for $r^{\rm cj}_{\rm LL}$; `y_n` and `G_n` for the amplitude
+$a^{\rm st}_{{\rm LL},s}$ and the stored derivative $g^{\rm st}_{{\rm LL},s}$ of a step.
+
+```
+{{FILE:test2/data/t2_py_formula_checks.txt}}
+```
+
 ## A.3 Data files and figures
 
 | file | content | columns |
 |--------------------|----------------------------------------|--------------------|
-| `test2/data/t2_fields_checks.txt` | the report of the checks GS-1 to GS-16 | — |
+| `test2/data/t2_fields_checks.txt` | the report of the checks GS-1 to GS-{{GEN:nchecks_t2_fields}} | — |
 | `test2/data/t2_fragments.md` | the explicit matrices and component equations of Section 2, in LaTeX | — |
 | `test2/data/t2_dispersion_curves.csv` | the lattice energy (2.37) and the continuum energy (Figure 1) | `r_W`, `q`, `eps`, `eps_lat` |
 | `test2/data/t2_dispersion_lattice.csv` | the eigenvalues of the lattice operator on plane waves (Figure 1, circles) | `r_W`, `q`, `eps_lat` |
 | `test2/data/t2_cvode_accuracy.csv` | the time integration with CVODE on the lattice of GS-10 (check GS-13): the relative deviation from the exact solution, and the size and the order of the last internal step, for three tolerances (Figure 2) | `x_LL^0`, `dev_rtol_1e-8`, `dev_rtol_1e-10`, `dev_rtol_1e-12`, `h_rtol_1e-8`, `h_rtol_1e-10`, `h_rtol_1e-12`, `q_rtol_1e-8`, `q_rtol_1e-10`, `q_rtol_1e-12` |
+| `test2/data/t2_steps_runs.csv` | Section 2.12: one line for each of the nine integrations (CVODE, IDA with its default rule for the iteration matrix, IDA with a matrix that is always current; three tolerances): the numbers of steps, the settled steps, the deviation, the coherence, the predictions (Tables 2.2, 2.3, 2.5, 2.6, 2.15 and 2.16) | `integration`, `integrator`, `matrix_rule`, `rtol`, `atol`, `N_steps`, `h_step`, `order`, `main_steps`, `one_iteration`, `two_iterations`, `cj_ratio`, `max_deviation`, `sum_local_error`, `coherence`, `identity_defect`, `time_defect`, `test_value_median`, `local_wrms_median`, `local_cosine_median`, `predicted_deviation`, `predicted_formula`, `predicted_exact_solve`, `predicted_time`, `rest`, `N_evals`, `N_matrix` |
+| `test2/data/t2_steps_segments.csv` | the sequence of the internal steps of the nine integrations, as groups of consecutive steps of the same kind (Table 2.11) | `integration`, `h_step`, `order`, `iterations`, `cj_ratio`, `count` |
+| `test2/data/t2_steps_trace.csv` | the internal steps of the nine integrations one by one (all steps of an integration with at most 3000 steps; otherwise the first 1200, every 25th, and the last 100) (Figure 2C) | `integration`, `step`, `t_step`, `h_step`, `order`, `iterations`, `cj_ratio`, `test_value`, `local_wrms`, `local_error`, `local_cosine`, `deviation`, `time_defect` |
+| `test2/data/t2_steps_modes.csv` | the relative error of every eigenvector at the end of the nine integrations, measured and predicted (Figure 2A) | `integration`, `E_qp`, `weight`, `measured_re`, `measured_im`, `formula_re`, `formula_im`, `exact_solve_re`, `exact_solve_im`, `time_im` |
+| `test2/data/t2_steps_scan.csv` | the scan of 25 tolerances for both integrators (Table 2.12, Figure 2D) | `integrator`, `rtol`, `N_steps`, `h_step`, `order`, `main_steps`, `one_iteration`, `two_iterations`, `cj_ratio`, `max_deviation`, `predicted_deviation`, `predicted_exact_solve`, `predicted_time`, `rest`, `test_value_median`, `time_defect`, `regular`, `other_root` |
+| `test2/data/t2_steps_formulas.csv` | the relative error of one step of the formulas, (2.50), (2.53), (2.56), (2.60), for a table of orders, numbers of iterations, ratios $r^{\rm cj}_{\rm LL}$ and $\lvert z^{\rm st}_{\rm LL}\rvert$; every number is repeated independently by `t2_formula_check.py` | `formula`, `order`, `iterations`, `cj_ratio`, `z_abs`, `eps_re_hi`, `eps_re_lo`, `eps_im_hi`, `eps_im_lo` |
+| `test2/data/t2_steps_roots.csv` | the largest modulus of a root other than the principal one of (2.56) and (2.60) (Figure 2B) | `formula`, `order`, `iterations`, `cj_ratio`, `z_abs`, `other_root`, `alternating_root` |
+| `test2/data/t2_steps_limits.csv` | the limits of stability (Tables 2.7 and 2.8) | `formula`, `order`, `iterations`, `limit_low`, `limit_high` |
+| `test2/data/t2_py_formula_checks.txt` | the report of the checks FC-1 to FC-{{GEN:nchecks_t2_py_formula}} of `t2_formula_check.py` | — |
 | `test2/data/t2_analytic_checks.txt` | the report of the checks AS-1 to AS-{{GEN:nchecks_t2_analytic}} | — |
 | `test2/data/t2_A_dispersion_curves.csv` | the energies (3.7) on the lattice for both isospin components (Figure 3(a), curves) | `q`, `Q_LL`, `branch`, `E_qp` |
 | `test2/data/t2_A_dispersion_lattice.csv` | the eigenvalues of the lattice operator on plane waves with constant potentials (Figure 3(a), circles) | `q`, `Q_LL`, `E_qp` |
@@ -5572,13 +6305,38 @@ and $2(2Z^{\rm t}_{\rm LL})^{1/2}g^{\rm F}_{\rm LL}\Delta^{\rm vac}_{\rm LL}$; `
 the charged vector fields; `F_transverse`, `F_longitudinal`: the fermion-number vector field; `massive_scalars`: the three massive scalar
 fields (12.9); `threshold`: $2((M^{\rm q}_{\rm LL})^2+(k^{\rm B}_{\rm LL})^2/4)^{1/2}$); `ratio_gF_gv` is $g^{\rm F}_{\rm LL}/g^{\rm v}_{\rm LL}$, and
 `theta_mix_vacuum`, `theta_mix_saddle`, `theta_mix_pred` are $\theta^{\rm mix}_{\rm LL}$ in the vacuum, at the saddle point, and
-$\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))$. Every data file states
+$\arctan(g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL}))$. In the files `t2_steps_*` of Section 2.12, `integration` names a time integration
+(`cvode_`, `ida_` or `ida_current_` followed by its relative tolerance), `integrator` is CVODE or IDA, and `matrix_rule` says when
+IDA computes its iteration matrix anew (`default`: when $r^{\rm cj}_{\rm LL}$ leaves the interval from 0.6 to $5/3$; `current`:
+whenever the leading coefficient changes; `none`: CVODE uses no matrix); `order` is the order of the formula of a step,
+`main_steps` the number of the settled steps, `one_iteration` and `two_iterations` the numbers of the settled steps with one and
+with two iterations of the implicit equation, `iterations` the number of iterations of a step (0 in the file of the formulas:
+the implicit equation solved exactly); `count` is the number of consecutive steps of the same kind and `step` the number of an
+internal step; `max_deviation` is $\delta^{\rm rel}_{\rm LL}$ at the end and `deviation` the norm of $w^{\rm dev}_{{\rm LL},s}$;
+`sum_local_error` is the sum of the norms of the local errors of all steps and `identity_defect` the norm of the difference of
+the two sides of (2.42); `test_value_median`, `local_wrms_median` and `local_cosine_median` are the medians over the settled steps
+of $\delta^{\rm est}_{\rm LL}$, $\delta^{\rm wrms}_{\rm LL}$ and $c^{\rm loc}_{{\rm LL},s}$; `predicted_formula`, `predicted_exact_solve` and
+`predicted_time` are the three parts of the prediction named in Tables 2.5 and 2.6, and `rest` is the norm of the difference between
+the measured and the predicted errors of the eigenvectors, weighted with the amplitudes of the initial state; `N_matrix` is the
+number of iteration matrices that IDA computed; `weight` is $\lvert a^{\rm md}_{{\rm LL},n}\rvert$ of the initial state, `measured_re`
+and `measured_im` the real and the imaginary part of the measured $\delta^{\rm ac}_{{\rm LL},n}$, `formula_re`, `formula_im`,
+`exact_solve_re`, `exact_solve_im` those of the first term of (2.62) with the formulas as applied and with every implicit
+equation solved exactly, and `time_im` the second term of (2.62), which is imaginary; `regular` is 1 if at least 95 per cent
+of the settled steps are of one kind; `formula` is `AM` (Adams-Moulton) or `BDF` (backward differentiation), `z_abs` is
+$\lvert z^{\rm st}_{\rm LL}\rvert$, and `eps_re_hi`, `eps_re_lo`, `eps_im_hi`, `eps_im_lo` are the real and the imaginary part of
+$\delta^{\rm st}_{\rm LL}$, each as the sum of a leading and a trailing double-precision number; `other_root` is the largest modulus
+of a root other than the principal one, `alternating_root` the root on the negative real axis (0 where there is none), and
+`limit_low`, `limit_high` are the ends of an interval of stability. Every data file states
 its content in a line `# content:` and its parameters in lines `# name: value`.
 
 | figure | file (.pdf and .png) | data | checks |
 |------|--------------------|------------------------------|------|
 | 1 | `test2/figures/fig_t2_lattice_dispersion` | `t2_dispersion_curves.csv`, `t2_dispersion_lattice.csv` | GS-10, GS-16 |
 | 2 | `test2/figures/fig_t2_cvode_accuracy` | `t2_cvode_accuracy.csv` | GS-13 |
+| 2A | `test2/figures/fig_t2_steps_modes` | `t2_steps_modes.csv`, `t2_steps_runs.csv` | GS-18 |
+| 2B | `test2/figures/fig_t2_steps_stability` | `t2_steps_roots.csv`, `t2_steps_limits.csv`, `t2_steps_runs.csv`, `t2_steps_modes.csv` | GS-18 to GS-20 |
+| 2C | `test2/figures/fig_t2_steps_wave` | `t2_steps_trace.csv`, `t2_steps_runs.csv`, `t2_steps_scan.csv`, `t2_steps_modes.csv` | GS-20 |
+| 2D | `test2/figures/fig_t2_steps_scan` | `t2_steps_scan.csv` | GS-19 |
 | 3 | `test2/figures/fig_t2_case_A` | `t2_A_dispersion_curves.csv`, `t2_A_dispersion_lattice.csv`, `t2_A_precession.csv` | AS-1, AS-2 |
 | 4 | `test2/figures/fig_t2_case_B` | `t2_B_bogoliubov_curves.csv`, `t2_B_bogoliubov_lattice.csv`, `t2_B_rabi.csv`, `t2_B_gap.csv` | AS-3 to AS-5 |
 | 5 | `test2/figures/fig_t2_case_C` | `t2_C_kink_profile.csv`, `t2_C_kink_spectrum.csv`, `t2_C_kink_convergence.csv` | AS-9 |
@@ -5610,7 +6368,16 @@ the checks, converts the mixing angles of (d) from radians to degrees, and label
 lines (the value 1, $2\sqrt2$, 2.5, the asymptote, the mass and the doubler energy; in Figure 5 the energies
 $\pm m_{\rm LL}$ and the line $r^{\rm W}_{\rm LL}\ell^{\rm x}_{\rm LL}/6$), the relative deviation of Figure 1(b) from two columns of a
 data file, the normal-state energy $\lvert\varepsilon^{\rm lat}_{\rm LL}-\mu_{\rm LL}\rvert$ of Figure 4(a) from a column and a
-parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ of Figure 5(d).
+parameter of its data file, and the differences $E^{\rm R}_{\rm LL}-m_{\rm LL}$ of Figure 5(d). Figures 2A to 2D are drawn by
+`test2/python/make_t2_steps_figures.py` from the data files of Section 2.12; the script computes only moduli of complex numbers
+given by their real and imaginary parts, quotients of two columns (the deviation divided by the tolerance, the deviation of IDA
+divided by that of CVODE, the factor 1.96 of Figure 2A(b)), the norm of $\mathcal H^{\rm lat}_{\rm LL}$ applied to the initial state
+from the columns `weight` and `E_qp` (for the dotted curve of Figure 2C(b)), the largest $\lvert z^{\rm st}_{\rm LL}\rvert$ of an
+integration from its step size and the largest eigenvalue (the circles of Figure 2B(a)), and reference lines: the values 1,
+0.1 and 0.5, the lower end $(2^{-6}-10^{-4})/2$ of the band of IDA, and the straight line of the growth by the factor
+`other_root` per step in Figure 2C(a); it interpolates the curves of Figure 2B at the positions of the six integrations; and
+every number in a label of these figures is read from a data file or is a constant of a rule of the integrators (0.1, 0.5,
+0.6, $5/3$).
 
 ## A.4 Checksums
 
@@ -5628,6 +6395,25 @@ SHA-256 checksums of the sources and data of items [1] to [11] at the time this 
 {{SHA256:test2/rust/Cargo.lock}}  test2/rust/Cargo.lock
 {{SHA256:test2/rust/t2cvode_c/Cargo.toml}}  test2/rust/t2cvode_c/Cargo.toml
 {{SHA256:test2/rust/t2cvode_c/src/lib.rs}}  test2/rust/t2cvode_c/src/lib.rs
+{{SHA256:test2/rust/t2steps/Cargo.toml}}  test2/rust/t2steps/Cargo.toml
+{{SHA256:test2/rust/t2steps/src/lib.rs}}  test2/rust/t2steps/src/lib.rs
+{{SHA256:test2/rust/t2steps/src/dd.rs}}  test2/rust/t2steps/src/dd.rs
+{{SHA256:test2/rust/t2steps/src/formulas.rs}}  test2/rust/t2steps/src/formulas.rs
+{{SHA256:test2/rust/t2steps/src/ida.rs}}  test2/rust/t2steps/src/ida.rs
+{{SHA256:test2/rust/t2steps/src/anatomy.rs}}  test2/rust/t2steps/src/anatomy.rs
+{{SHA256:test2/rust/t2steps/src/runs.rs}}  test2/rust/t2steps/src/runs.rs
+{{SHA256:test2/rust/t2fields/src/steps.rs}}  test2/rust/t2fields/src/steps.rs
+{{SHA256:test2/python/t2_formula_check.py}}  test2/python/t2_formula_check.py
+{{SHA256:test2/python/make_t2_steps_figures.py}}  test2/python/make_t2_steps_figures.py
+{{SHA256:test2/data/t2_py_formula_checks.txt}}  test2/data/t2_py_formula_checks.txt
+{{SHA256:test2/data/t2_steps_runs.csv}}  test2/data/t2_steps_runs.csv
+{{SHA256:test2/data/t2_steps_segments.csv}}  test2/data/t2_steps_segments.csv
+{{SHA256:test2/data/t2_steps_trace.csv}}  test2/data/t2_steps_trace.csv
+{{SHA256:test2/data/t2_steps_modes.csv}}  test2/data/t2_steps_modes.csv
+{{SHA256:test2/data/t2_steps_scan.csv}}  test2/data/t2_steps_scan.csv
+{{SHA256:test2/data/t2_steps_formulas.csv}}  test2/data/t2_steps_formulas.csv
+{{SHA256:test2/data/t2_steps_roots.csv}}  test2/data/t2_steps_roots.csv
+{{SHA256:test2/data/t2_steps_limits.csv}}  test2/data/t2_steps_limits.csv
 {{SHA256:test2/rust/t2cvcmp/Cargo.toml}}  test2/rust/t2cvcmp/Cargo.toml
 {{SHA256:test2/rust/t2cvcmp/src/main.rs}}  test2/rust/t2cvcmp/src/main.rs
 {{SHA256:test2/cvode_vs_rk4/run_convergence.sh}}  test2/cvode_vs_rk4/run_convergence.sh
@@ -5802,6 +6588,16 @@ SHA-256 checksums of the sources and data of items [1] to [11] at the time this 
 * E. Hairer, C. Lubich and G. Wanner, Geometric Numerical Integration, 2nd ed. (Springer, Berlin, 2006).
 * A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker and C. S. Woodward, SUNDIALS: Suite of
   nonlinear and differential/algebraic equation solvers, ACM Trans. Math. Softw. 31, 363 (2005).
+* F. Bashforth and J. C. Adams, An Attempt to Test the Theories of Capillary Action (Cambridge University Press, Cambridge,
+  1883); F. R. Moulton, New Methods in Exterior Ballistics (University of Chicago Press, Chicago, 1926).
+* C. F. Curtiss and J. O. Hirschfelder, Integration of stiff equations, Proc. Natl. Acad. Sci. USA 38, 235 (1952).
+* C. W. Gear, Numerical Initial Value Problems in Ordinary Differential Equations (Prentice-Hall, Englewood Cliffs, 1971).
+* E. Hairer, S. P. Nørsett and G. Wanner, Solving Ordinary Differential Equations I: Nonstiff Problems, 2nd ed. (Springer,
+  Berlin, 1993).
+* K. E. Brenan, S. L. Campbell and L. R. Petzold, Numerical Solution of Initial-Value Problems in Differential-Algebraic
+  Equations (SIAM, Philadelphia, 1996).
+* T. J. Dekker, A floating-point technique for extending the available precision, Numer. Math. 18, 224 (1971).
+* I. O. Kerner, Ein Gesamtschrittverfahren zur Berechnung der Nullstellen von Polynomen, Numer. Math. 8, 290 (1966).
 * A. F. Andreev, The thermal conductivity of the intermediate state in superconductors, Sov. Phys. JETP 19, 1228
   (1964).
 * D. J. Gross and A. Neveu, Dynamical symmetry breaking in asymptotically free field theories, Phys. Rev. D 10, 3235
@@ -5846,7 +6642,9 @@ Pöschl and Teller, the Rabi oscillation, the theory of Bardeen, Cooper and Schr
 bound states of Jackiw and Rebbi, the bounds of perturbation theory, Richardson extrapolation and the Sturm-sequence
 bisection for tridiagonal matrices; for the time integration the variable-order, variable-step Adams-Moulton methods of
 CVODE (SUNDIALS) with their control of the local error, and, for the first version (Appendix A.2g), the implicit midpoint rule
-and its conservation of quadratic invariants; for item [3] the Anderson acceleration of fixed-point iterations, Andreev
+and its conservation of quadratic invariants; for Section 2.12 the Adams-Bashforth and Adams-Moulton formulas and the backward
+differentiation formulas in backward differences, their use with a predictor and a limited number of iterations, the integrator
+IDA, the arithmetic with pairs of double-precision numbers, and the simultaneous iteration for all roots of a polynomial; for item [3] the Anderson acceleration of fixed-point iterations, Andreev
 reflection, the self-consistent kink of the
 Gross-Neveu model, the pseudo-spin description of the superfluid and the oscillation of the gap after a sudden change; for
 item [7] the representation of fermion operators by matrices on the states of a few modes, the Lanczos method, and the

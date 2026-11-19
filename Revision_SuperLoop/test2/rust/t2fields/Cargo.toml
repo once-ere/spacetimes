@@ -10,3 +10,5 @@ path = "src/main.rs"
 
 [dependencies]
 t2core = { path = "../t2core" }
+# the time integrations taken apart step by step (checks GS-17 to GS-20)
+t2steps = { path = "../t2steps" }

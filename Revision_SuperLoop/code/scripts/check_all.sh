@@ -9,10 +9,14 @@
 #      spin-zero superfluid) and its three figures, which read two data files of superloop; and
 #      the program explanations/code/r13-rs (the 3+1 manifold and the renormalizability of the
 #      Yukawa form) and its four figures; then the programs of the folder test2 (the answers to
-#      Test 2): t2_fields (the gauge-covariant field equations of the spinor field, item [1]),
-#      t2_analytic (the analytic solutions of item [2]) and the figures of items [1] and [2]
-#      (test2/python/make_t2_figures.py), and the further programs of test2 (the solvers, the plotters, t2_sfbs, and the
-#      comparison of CVODE with the fixed-step methods of the first version in test2/cvode_vs_rk4);
+#      Test 2): t2_fields (the gauge-covariant field equations of the spinor field, item [1]; its checks GS-17 to
+#      GS-20 take the time integrations of check GS-13 apart step by step and need about two minutes), the tests of
+#      the library crates t2steps and t2core, the independent computation of the formulas of the time integrators with
+#      40 digits (test2/python/t2_formula_check.py, about 100 seconds) and Figures 2A to 2D
+#      (test2/python/make_t2_steps_figures.py); t2_analytic (the analytic solutions of item [2]) and the figures of
+#      items [1] and [2] (test2/python/make_t2_figures.py), and the further programs of test2 (the solvers, the
+#      plotters, t2_sfbs, and the comparison of CVODE with the fixed-step methods of the first version in
+#      test2/cvode_vs_rk4);
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
@@ -52,6 +56,12 @@ run "r13_yukawa (explanations)" r13
 run "make_r13_figures.py (explanations)" python3 explanations/code/make_r13_figures.py
 t2fields() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_fields); }
 run "t2_fields (test2)" t2fields
+# Section 2.12 of the document of Test 2 (checks GS-17 to GS-20): the tests of the two library crates, the formulas once
+# more with 40 digits and by other routes (checks FC-1 to FC-6), and Figures 2A to 2D
+t2libtests() { (cd test2/rust && cargo test --release --quiet --lib -p t2steps && cargo test --release --quiet --lib -p t2core); }
+run "cargo test of t2steps and t2core (test2)" t2libtests
+run "t2_formula_check.py (test2)" python3 test2/python/t2_formula_check.py
+run "make_t2_steps_figures.py (test2)" python3 test2/python/make_t2_steps_figures.py
 t2analytic() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_analytic); }
 run "t2_analytic (test2)" t2analytic
 run "make_t2_figures.py (test2)" python3 test2/python/make_t2_figures.py
