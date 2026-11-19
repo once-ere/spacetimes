@@ -28,6 +28,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "t2cjt"
+version = "0.1.0"
+dependencies = [
+ "t2core",
+]
+
+[[package]]
 name = "t2core"
 version = "0.1.0"
 dependencies = [

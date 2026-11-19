@@ -23,17 +23,21 @@ defined in Section 7.
 
 # 2. How the registry is built
 
-The script `code/scripts/write_symbol_registry.py` writes the registry, in nine groups: indices,
+The script `code/scripts/write_symbol_registry.py` writes the registry, in ten groups: indices,
 conventions and number sets; the bi-octonions and the super-loop; the operators and their eigenvalues;
 the covariant families and their classification; the manifolds; the spin-zero superfluid; power
-counting; groups, Lie algebras, operations and labels; and (group 9, new with Test 2) the gauge-covariant
+counting; groups, Lie algebras, operations and labels; (group 9, new with Test 2) the gauge-covariant
 field equations of the spinor field, their analytic solutions and their numerical solution: the frame, the
 gauge transformations, the gauge potentials and the connection, the covariant derivative, the field
 strengths, the components of the field and its two spinor charges, the mean-field equations, the lattice,
 and the quantities of the analytic solutions of item [2] of Test 2 (the potentials felt by the two isospin
 components, the precession frequency, the probabilities of isospin up and of the hole, the Bogoliubov
 angle, the domain wall of the pair field and its bound states, the Rayleigh quotient, and the Landau
-levels). It has two kinds of entries.
+levels); and (group 10, new with stage D of Test 2) the quantities of the method of Cornwall, Jackiw and
+Tomboulis: the propagator of the Nambu spinor and its effective action, the correlation matrices and the
+mean fields of a state, the energy functionals, the bare parameters, the Dirac mass, the trial states of
+the vacuum sector, the normal channels and the matrix of the charge conjugation. It has two kinds of
+entries.
 
 * **Taken** ({{GEN:symbols_ll_count_taken}} entries): symbols of the two master registries of the
   project — `provenance/symbols.csv` of the main project and

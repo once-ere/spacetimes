@@ -314,16 +314,105 @@ these headings, and where they appear:: rtol    IDA (notebook)    CVODE (origina
    by the stability of the Adams-Moulton formulas, without a calculation. The calculation shows another cause; the paragraph
    was replaced (Section 11, entry E72).
 
+## 2.13 The requests of November 18, 2026, 20:17 to 21:00, and of November 19, 2026, 06:50 and 06:55 (verbatim)
+
+The request of November 18, 20:17, verbatim. It adds six stages to Test 2; this project calls them D to I, in the order of
+its six paragraphs:
+
+```
+I am adding  stages to your task. These are my new stages:
+Apply the method of J. M. Cornwall, R. Jackiw and E. Tomboulis (Phys. Rev. D 10,
+2428 (1974); reference name is "CJT" ) to analyze , with provenance, explain and
+discuss the creation of
+a superfluid boson singlet  (\(S=0\)) state (SFBS) from the spinor field;
+
+Derive , explain and discuss and record, with provenance, the effective potential for the superfluid boson singlet  (\(S=0\)) state (similar to the Mexican Hat potential for the complex Higgs doublet);
+
+Find the relative minima of this effective potential; 
+spontaneously break the symmetry, 
+following the example of the Higgs boson; 
+
+Expand the the superfluid boson singlet (\(S=0\)) state about this minimum, 
+similar to the treatment of the Higgs boson;
+call this approximation SFBSv.
+
+Derive , explain and discuss and record, with provenance,  the kinetic Lagrangian for the superfluid boson singlet  (\(S=0\)) state. 
+
+Give mass to the Goldstone bosons by substituting SFBSv into the kinetic Lagrangian and expanding ; diagonalize mass terms and work out the surviving symmetry group; prove this group is related to U(1)_em and the massless photon.
+```
+
+The request of 20:23, verbatim:
+
+```
+please close  my complaint about the table of six deviations NOW; i have enough information on this matter
+```
+
+The request of 20:24, verbatim:
+
+```
+D first
+```
+
+The request of 21:00, its operative part, verbatim (the rest of the message concerns the times of the working sessions):
+
+```
+PUSH EVERY ITEM that you can NOW. Commit , carry the bundle to my Mac, check that it applied, and send me the push
+block at once. [...] complete all stages and do not stop. push new items as soon as they are complete.
+```
+
+The requests of November 19, 06:50 and 06:55, verbatim:
+
+```
+Create a spreadsheet from your last answer.
+```
+
+```
+Complete stage D NOW! Resolve all issues!! Invent Mathematically possible fixes. DO IT NOW!!!
+```
+
+## 2.14 What these requests ask for, and how they are answered
+
+1. **Six new stages, D to I.** They ask again for the content of the items [7] to [11] of Test 2 (the construction of the SFBS,
+   its effective potential, the minima and the breaking of the symmetry, SFBSv, the kinetic Lagrangian, the masses and the
+   photon), now with a prescribed method: the effective action of the propagator of Cornwall, Jackiw and Tomboulis. The items
+   [7] to [11] had been answered with the pair field alone (a Hubbard-Stratonovich transformation and its mean field). The new
+   stages are answered in a new document of the folder `test2`, "The superfluid boson singlet state by the method of
+   Cornwall, Jackiw and Tomboulis", one stage after the other, each with its program, its checks, its figures and its own
+   commit. By the request of 20:24 stage D is the first; the work that was open before (the notebook of Test 2, and the older
+   fixed-step calculations of the project redone with CVODE) follows after stage I.
+2. **The complaint about the six deviations is closed** (20:23). Its answer is Section 2.12 of the document of Test 2 and the
+   stages 21 and 22 of Section 5. A short form of it was added to the provenance of the notebook `3+1super-loop.nb` of the
+   project, where the matter is recorded as closed with the author's words; the chapter of the notebook that was to repeat the
+   checks GS-17 to GS-20 was set aside unfinished. Nothing further is done on it unless the author asks.
+3. **Everything pushed** (21:00): every commit that existed was carried to the author's computer, and the notes for the
+   continuation of the work were brought up to date.
+4. **A spreadsheet** (06:50) of the comparison between the treatment with the pair field alone and the first results of the
+   method of Cornwall, Jackiw and Tomboulis was made for the author outside the repository. Its content, in its final form,
+   is Table 6 of the new document.
+5. **Stage D completed, and the issues resolved** (06:55). The first calculations of stage D had shown four discrepancies
+   with the treatment of items [7] to [11]: the vacuum sits at a shifted chemical potential; the Dirac mass of the spinor
+   charges is not the mass of the Lagrangian (four times that mass in a condensed vacuum); the critical coupling for the mass
+   0.2 is 32.3506 instead of 21.28661; and the vacuum at the coupling 22.5 of Test 2 is normal. They are
+   resolved, every step with a proof and a check by machine: (i) the shift of the chemical potential is the effect of the
+   order of the factors of the interaction, fixed by the charge conjugation; (ii) the interaction is normal-ordered with
+   respect to the normal correlations of the vacuum, which is the same as a counterterm for the mass, and with it the vacuum,
+   its gap equation, the critical coupling and the SFBS boson are exactly those of items [7] to [11]; (iii) an alternative
+   that changes the interaction (its axially symmetric completion) removes the dressing of the mass for every state and is
+   recorded, not adopted; (iv) it is proved that no contact interaction is free of normal contractions in every state, so
+   that a subtraction at the vacuum is all that can be done. What remains different after (ii) is of the second order about
+   the vacuum and is a result, not an issue. Stage 23 of Section 5 and Section 6 give the content; deviation D23 of Section 7
+   and the decisions 10 and 11 of Section 8 state what was chosen.
+
 # 3. The hard rules, and how each is met
 
 | rule (in the words of this provenance) | how it is met | where to verify |
 |---|---|---|
 | 0. Write for clever physics Ph.D. students who do not know the solution; they must be able to learn from it and teach it | the manuscript defines every term before it uses it (generator, Jacobiator, associator, alternative algebra, loop, Moufang loop, Malcev algebra, derivation, automorphism, twist charge, Gröbner basis, saturation, unitary state, Bogoliubov-de Gennes matrix, superficial degree of divergence, ...), proves its seven theorems in the text, and states what is not established; the explanation of the sentence on the superfluid, and the document on the $3+1$ manifold and the Yukawa form, are written for a reader who knows nothing of the solution, with worked examples | manuscript, Secs. I–XI; the two documents in `explanations/` |
-| 1. Every documentation, symbol and provenance file in .md, .tex and .pdf | `README`, `P0`, `P1`, `P2`, the manuscript, the two documents of `explanations/` and the document of the answers to Test 2 in `test2/` exist in all three formats; `check_all.sh` builds them and fails if one is missing | `check_all.sh`, Section 4 |
+| 1. Every documentation, symbol and provenance file in .md, .tex and .pdf | `README`, `P0`, `P1`, `P2`, the manuscript, the two documents of `explanations/` and the two documents of `test2/` (the answers to Test 2, and stage D by the method of Cornwall, Jackiw and Tomboulis) exist in all three formats; `check_all.sh` builds them and fails if one is missing | `check_all.sh`, Section 4 |
 | 2. Push to the repository as soon as anything is updated | the work was committed in stages (Section 5), each carried to the author's computer at once; for Test 2, after each item; the push itself can only be made by the author, with the command block given at the end of each stage | the git log |
 | 3. Working directory `/Users/nsh/Developer/github/spacetimes` | the folder `Revision_SuperLoop` of that repository | — |
 | 4. Repository `https://github.com/once-ere/spacetimes.git` | as stated | — |
-| 5. One symbol, one object, in the whole project; a master provenance of the symbols, and its symbols used everywhere | the registry `provenance/symbols_ll.csv` takes 2 symbols of the master registries with their meanings and adds 213 new ones, all with the suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur) that marks them as algebra elements, matrices, number sets or Lie algebras; the plain-text names of the programs, figures and data files are registered as well; nine machine checks (LL-S1 to LL-S9) | `P1`, data file `sl_symbol_checks.txt` |
+| 5. One symbol, one object, in the whole project; a master provenance of the symbols, and its symbols used everywhere | the registry `provenance/symbols_ll.csv` takes 2 symbols of the master registries with their meanings and adds 231 new ones, all with the suffix LL or in a type (bold upright, sans-serif, blackboard, fraktur) that marks them as algebra elements, matrices, number sets or Lie algebras; the plain-text names of the programs, figures and data files are registered as well; nine machine checks (LL-S1 to LL-S9) | `P1`, data file `sl_symbol_checks.txt` |
 | 6. Source code for every equation, result, figure and prediction, commented, with instructions and provenance; Rust first, then C, Python, Mathematica; execute the code; a carefully designed figure for each prediction | the Rust program `superloop` computes every result except the Gröbner bases (62 checks, all passing); the Gröbner bases are computed in Python (deviation D3) and every solution found there is verified exhaustively by the Rust program; a Python script draws the seven figures from the data files; the Rust program `explain_superfluid` computes every example of the explanation (10 checks, all passing), and a Python script draws its three figures; the Rust program `r13_yukawa` computes every number of the document on the $3+1$ manifold (8 checks, all passing), and a Python script draws its four figures; the pure Rust programs of the workspace `test2/rust` compute and check every matrix, equation and number of Test 2: `t2_fields` for item [1] (20 checks, all passing), `t2_analytic` for item [2] (10 checks), the solver `t2_solve` for item [5] (a self-test of 6 checks and seven examples with 11 checks of their solutions, among them the comparison EX-8 with the Python solver), the plotter `t2_plot` for item [6], `t2_sfbs` for items [7] to [11] (17 checks) and `t2_cvcmp` for the comparison of CVODE with the fixed-step methods of the first version; the Python solver `t2_solve.py` for item [3] (a self-test of 6 checks, the same seven examples with 10 checks) and the Python plotter `t2_plot.py` for item [4]; Python scripts draw the figures of the documents from the data files; every number in the documents is inserted from the data files by a script | `P2`, `code/`, `explanations/code/`, `test2/` |
 | 7. Every equation, symbol and definition in the very file that uses it; never refer the reader elsewhere | every document contains the complete table of the symbols and the formulas it uses; the check LL-H1 searches all documents for referrals | data file `sl_self_contained_checks.txt` |
 | 8. Follow the instructions exactly, or explain in a provenance why not and pause | Section 7 explains every place where the wording of the task cannot be followed literally (a counterexample to a proved theorem whose hypotheses hold, a "group" that is not associative) and what is provided instead; the work did not pause, because every instruction could be carried out in full on that basis | Section 7 |
@@ -340,7 +429,7 @@ these headings, and where they appear:: rtol    IDA (notebook)    CVODE (origina
 | `data/` | 14 data files, the reports of all checks and the Gröbner bases |
 | `figures/` | 7 figures, .pdf and .png |
 | `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf), with its program `code/explain-rs` (binary `explain_superfluid`), its figure script `code/make_explain_figures.py` and its three figures; the document "The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" (.md, .tex, .pdf), with its program `code/r13-rs` (binary `r13_yukawa`), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE), and the library `t2steps` (the time integrations of check GS-13 taken apart step by step: double-double numbers, the formulas of CVODE and IDA on one eigenvector, IDA run in the open, the analysis of every step); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py`, the independent check of the formulas of the time integrators `t2_formula_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_steps_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the document of stage D, "The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis" (.md, .tex, .pdf), with its program `t2_cjt` (member `t2cjt` of the workspace `rust/`, checks CJ-1 to CJ-11) and its figure script `python/make_t2_cjt_figures.py`; the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE), and the library `t2steps` (the time integrations of check GS-13 taken apart step by step: double-double numbers, the formulas of CVODE and IDA on one eigenvector, IDA run in the open, the analysis of every step); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py`, the independent check of the formulas of the time integrators `t2_formula_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_steps_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
 | `vendor/` (in the top folder of the repository, beside `Revision_SuperLoop`) | `sundials_rs-7.8.0`, the pure-Rust translation of SUNDIALS 7.8.0 of the author's repository, unchanged (Section 10), and its provenance `P_sundials_rs-7.8.0` (.md, .tex, .pdf) |
 | `docs_src/` | the sources of the documents |
 
@@ -488,6 +577,21 @@ these headings, and where they appear:: rtol    IDA (notebook)    CVODE (origina
    was corrected (the caption of Table 2.1, observation 4, part (H)) and extended (the equations (2.64) to (2.66), Tables 2.15
    to 2.17, Figure 2E; the two later tables are now 2.18 and 2.19); two data files (`t2_steps_settled.csv`,
    `t2_steps_last_digits.csv`); one registry entry with six symbols (Section 11, entries E89 to E92).
+
+25. **Stage 23 — Test 2, stage D: the creation of the SFBS by the method of Cornwall, Jackiw and Tomboulis** (2026-11-19;
+   Sections 2.13 and 2.14). New: the document `test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and
+   Tomboulis` (.md, .tex, .pdf; source `docs_src/X4_sfbs_cjt.src.md`); the member `t2cjt` of the workspace `test2/rust` (program
+   `t2_cjt`, checks CJ-1 to CJ-11, six data files, the report and the fragments of the document); the figure
+   script `test2/python/make_t2_cjt_figures.py` with four figures `fig_t2_cjt_*`; group 10 of the registry with 18 entries; 30
+   descriptive names of data columns; two steps of `check_all.sh`. The work, in order: (a) the three contractions of the
+   interaction, and the proof that the two-loop action is minus the energy of a quasi-free state; (b) the 64 normal channels
+   and their coefficients; (c) the charge conjugation and the shift of the chemical potential; (d) the vacuum sector in closed
+   form, with the result that a condensed vacuum has four times the mass of the Lagrangian; (e) the four discrepancies with
+   the treatment of items [7] to [11], stated; (f) their resolution by the normal ordering of the interaction with respect to
+   the normal correlations of the vacuum, and the alternative of the axially symmetric interaction; (g) the SFBS boson as a
+   pole of the pair part of the propagator, with the pair susceptibility in closed form below the threshold and at imaginary
+   frequencies; (h) two time integrations of the time-dependent equations of the two-loop action with CVODE; (i) the test of
+   the approximation on one site, where the exact ground state is known (Section 11, entries E93 to E96).
 
 # 6. The results in brief
 
@@ -659,6 +763,23 @@ these headings, and where they appear:: rtol    IDA (notebook)    CVODE (origina
   $4.38\times10^{-11}$). Over all 65536 cases of the last 16 digits the deviation of IDA at $10^{-12}$ goes from
   $1.98\times10^{-11}$ (the errors of the formulas alone) to $1.21\times10^{-10}$, with the median $4.4\times10^{-11}$: the number
   $4.4\times10^{-11}$ of the notebook is one case of this distribution, and no setting of the integrator selects the case.
+
+* **Test 2, stage D** (stage 23): in the method of Cornwall, Jackiw and Tomboulis the SFBS is the pair part of the propagator of
+  the Nambu spinor. At two loops the effective action is minus the energy of a quasi-free state, with three contractions of
+  the interaction, of which the treatment of items [7] to [11] had kept one. The two others act in 64 normal channels with the
+  coefficients $\pm3$ and $\pm1$; they shift the chemical potential by $\tfrac32G_{\rm LL}N^\Lambda_{\rm LL}$ and dress the Dirac
+  mass, so that with the interaction as it stands a condensed vacuum has four times the mass of the Lagrangian, the critical
+  coupling for the mass 0.2 is 32.3506 and the vacuum at $G_{\rm LL}=22.5$ is normal. With the interaction
+  normal-ordered with respect to the normal correlations of the vacuum (two counterterms, fixed by the charge symmetry of the
+  vacuum and by its Dirac mass) the vacuum, its gap equation, $G^{\rm crit}_{\rm LL}=21.28661$,
+  $\Delta^{\rm vac}_{\rm LL}=0.2094933$, the binding coupling and the mass of the SFBS boson are those of items [7] to
+  [11]; the mass written in the Lagrangian is then $m_{\rm LL}(1-3G_{\rm LL}/(4G^{\rm crit}_{\rm LL}))$ below and $m_{\rm LL}/4$
+  above the critical coupling. The SFBS boson is a pole of the pair part of the propagator below the threshold for couplings
+  between 17.7463 and 21.28661, and no normal channel mixes with it; integrated in time by CVODE, the pair
+  amplitude rings at $G_{\rm LL}=20$ with the frequency 0.279252 (predicted: 0.279252) and grows at
+  $G_{\rm LL}=22.5$ with the rate 0.249607 (predicted: 0.249608). What stays different from items [7] to
+  [11] is of the second order about the vacuum: the normal stationary state above the critical coupling has the Dirac mass
+  0.227347, and the condensed vacuum lies 3.8816e-5 below it, not 5.2884e-5.
 
 # 7. Deviations from the wording of the task, with their reasons
 
@@ -867,6 +988,20 @@ package of Python but the same pure-Rust CVODE, through the shared library `libt
 names the pure-Rust CVODE of the author's repository, and with one integrator the two solvers can be compared number by number
 (check EX-8).
 
+**D23. "Apply the method of J. M. Cornwall, R. Jackiw and E. Tomboulis ... to analyze ... the creation of a superfluid boson
+singlet (S=0) state (SFBS) from the spinor field", and "Resolve all issues ... Invent mathematically possible fixes".** Three
+choices were made. (1) The approximation: the two-loop term of the two-particle-irreducible part of the effective action, the
+first that contains the interaction. The method itself is exact; the graphs of three and more loops are not included. (2) The
+reading of the Lagrangian: applied to the Lagrangian as it stands, with the interaction in the order
+$(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$ and 0.2 as the mass of the Lagrangian, the method gives a normal vacuum at the
+parameters of Test 2. The fix that is adopted keeps the Lagrangian and reads its interaction as normal-ordered with respect
+to the normal correlations of the vacuum; $m_{\rm LL}$ and $\mu_{\rm LL}$ of Test 2 are then the Dirac mass and the chemical
+potential of the vacuum, and the mass written in the Lagrangian is another number, which depends on the coupling. This is a
+choice. It was made because it leaves every number of the vacuum of Test 2 as it is; the alternative, the interaction
+completed to an axially symmetric one, changes the model and is recorded, not adopted (Section 8, decision 10). (3) The
+differences that remain at the second order about the vacuum are kept: removing them would give up the property that the
+approximation is a variational one (decision 11). Of the six stages only stage D is answered so far.
+
 # 8. Decisions that are the author's
 
 1. **The super-loop as the "super-group"** (D2). If a group is required, the only consistent choices are
@@ -892,6 +1027,14 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
    manuscript names that representative ("up to an isospin rotation"). Whether to add a sentence on this
    degeneracy to the manuscript, or an isospin-breaking interaction that selects the third axis, is the
    author's decision; the manuscript was not changed.
+
+10. **The reading of the contact interaction in the method of Cornwall, Jackiw and Tomboulis** (D23): normal-ordered with
+   respect to the normal correlations of the vacuum, so that $m_{\rm LL}$ and $\mu_{\rm LL}$ of Test 2 are the Dirac mass and the
+   chemical potential of the vacuum (adopted); or the axially symmetric completion of the interaction with the pseudoscalar
+   pair operators $\Pi'^\iota_{\rm LL}$, in which no state dresses the mass (recorded).
+11. **The differences of the second order** between the two-loop treatment and the treatment of items [7] to [11] with the
+   pair field alone (the dressed normal state, the depth of the condensed vacuum, the masses of the oscillations of the
+   condensed vacuum): they are kept in the stages E to I unless the author decides otherwise.
 
 # 9. What has not been done
 
@@ -926,6 +1069,13 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
   manifold proves renormalizability by power counting, by the completeness of the Lagrangian and by the
   one-loop bubble, and states what the standard renormalization theorem adds; the counterterms beyond one
   loop and the running of the couplings were not computed.
+
+* Of the six stages D to I of the method of Cornwall, Jackiw and Tomboulis only stage D is answered. The effective potential,
+  its minima, SFBSv, the kinetic Lagrangian and the masses of the gauge bosons in this method (stages E to I) are not yet
+  derived; the answers to items [8] to [11] are those of the treatment with the pair field alone. Stage D is the two-loop
+  approximation: the graphs of three and more loops (the effect of the SFBS boson on the spinor charges that it is made of)
+  are not included, and their size is not estimated; on one site, where the exact ground state is known, the two-loop energy
+  lies far above it. The time integrations of stage D are for states that are the same at every point of space.
 
 # 10. Inputs
 
@@ -1041,6 +1191,10 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
 | E90 | in the work of stage 22, before it was committed: the first form of the closed formula (2.64) for the time defect took the nearest multiple of a unit with the rule "a number half way is rounded away from zero". The machine addition rounds such a sum to the neighbour whose last binary digit is 0. For the one step size of the 65536 that lies exactly half way between two multiples of the unit $2^{-49}$ the formula was wrong by the whole product of 16432 steps and the unit, $2.9\times10^{-11}$ | the new part of check GS-20 compares the formula with the additions carried out for all 65536 step sizes; it failed with exactly this difference | the formula uses the rule of the machine addition (the even neighbour; the function `round_ties_even`), and the text states the rule; the largest difference between formula and additions is now $5.7\times10^{-15}$, below the sum of the units |
 | E91 | same work: the time defect was first rebuilt from the steps before the settled ones and the additions of the settled step size alone, with the last step taken as the exact difference between 20 and the time before it. IDA makes the last step $(20-x^0_{\rm LL})(1-2^{-50})$ long and then sets its time to 20; the exact sum of the step sizes is smaller than assumed by $3.4\times10^{-20}$ (5 units in the last place of the last step) | the comparison of the rebuilt time defect with the measured one of the two integrations by the program failed at the relative level $4\times10^{-9}$, with the same difference $5\times2^{-67}$ in both | the last step is rebuilt as IDA computes it; check GS-20 requires the rebuilt time defect to agree with the measured one within $10^{-12}$ of itself, the last grid point bit for bit, and the size of the last step bit for bit; the text of part (H) names the three things that (2.64) leaves out |
 | E92 | same work: the first version of the script that reads the settled steps of the notebook from its grid (`gs13_ida_settled_steps.wl`) printed, for the steps between two powers of 2, the smallest and the largest rounding error of an addition. In such a range all steps but one have the same rounding error; the one step that begins below the power of 2 has another. The smallest value was taken for the value of the range, and three wrong numbers ($-0.27$, $+0.11$, $+0.06$ units for the times from 4 to 8, 8 to 16 and 16 to 20 of the notebook at $10^{-12}$) were noted as a result | the sum of the rounding errors of each range, printed beside them, did not equal the number of steps times the noted value (from 16 to 20: 8216 steps, sum $-1.29\times10^{-11}$, which is $-0.443$ units per step) | the script prints the median over the steps of a range (the value of all steps but one) and the number of steps with another value; the values are $+0.2275$, $+0.1138$ and $-0.4431$ units. The wrong numbers were in no committed file |
+| E93 | stage 23, before it was committed: check CJ-1 compared the expectation value of the interaction, computed directly in the Fock space, with the pair term plus only ONE of the two equal normal contractions (the program multiplied the normal term of the energy by 2 where the factor is 4) | the check itself, which failed at its first run by 8.1 | the factor corrected; the two sides then agree to $10^{-13}$ |
+| E94 | same work: check CJ-8 asked the two time integrations to conserve the energy to $10^{-9}$ while CVODE ran with the relative tolerance $10^{-11}$; the energy changed by $1.6\times10^{-8}$, which is the accumulated local error that this tolerance permits over 19205 steps, not an error of the equations | the check failed at its first run | the integrations run with the relative tolerance $10^{-13}$ and the absolute tolerance $10^{-15}$; the energy then changes by less than $10^{-10}$, and the measured frequency and rate agree with the predictions to $10^{-7}$ and $6\times10^{-7}$ of themselves |
+| E95 | same work: the first draft of the document used letters without registry entries for objects of single proofs (a matrix with the trial mass, the mean-field matrix without mean fields, unnamed blocks of a matrix, summation indices written as formulas) | checks LL-S6 and LL-S7 | the proofs were rewritten with registered symbols ($\mathsf h_{\rm LL}$ with its mass stated, $\mathsf H^{\rm var}_{\rm LL}$ at vanishing mean fields, the correlation matrices themselves), the two functions of the proof of the theorem on the SFBS boson were registered, and statements about indices are made in words |
+| E96 | same work: four names chosen for columns of the new data files (`run`, `threshold`, `potential`, `integration`) were already descriptive words of other data files, with other meanings | the list of descriptive words was searched before the new names were entered | the columns are named `time_integration`, `pair_threshold` and `energy_above_vacuum`, and the name `run` is not used |
 
 # 12. The symbols
 
@@ -1059,6 +1213,29 @@ names the pure-Rust CVODE of the author's repository, and with one integrator th
 | $\tau^{\rm LL}_\iota$ | the same three Pauli matrices acting on the isospin index of a field (the index of the two components up and down of an isodoublet) | new | `tau_iota` `tau_1` `tau_2` `tau_3` |
 | $\mathsf E_{\rm LL}$ | the real antisymmetric $2\times2$ matrix $i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, with $\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}$; it acts on a Weyl, isospin or species index, as stated at each place | new | `eps2` |
 | $\mathsf 1_2$, $\mathsf 1_4$, $\mathsf 1_8$, $\mathsf 1_{16}$ | the $2\times2$, the $4\times4$, the $8\times8$ and the $16\times16$ unit matrices | new |  |
+
+**10 Test 2, stage D: the superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis**
+
+| symbol | meaning | origin | plain-text names |
+|-----------|-------------------------|----|----------|
+| $\mathcal G_{\rm LL}$, $\mathcal G^{\rm fr}_{\rm LL}$; $\mathcal K^{\rm src}_{\rm LL}$, $W^{\rm src}_{\rm LL}$ | the propagator of the Nambu spinor, the matrix of 16 rows $i\mathcal G_{\rm LL}(x_{\rm LL},x'_{\rm LL})=\langle\mathrm T\,\mathcal N_{\rm LL}(x_{\rm LL})\mathcal N_{\rm LL}(x'_{\rm LL})^\dagger\rangle$ ($\mathrm T$ orders the two factors by their times, with a minus sign when it exchanges them; $x_{\rm LL}$ and $x'_{\rm LL}$ are two points of $\mathbb R^{1,3}_{\rm LL}$), and the same propagator at $G_{\rm LL}=0$; the source of the method of Cornwall, Jackiw and Tomboulis, a matrix function of two points that is coupled to the product of the fields at these points, and the generating functional $W^{\rm src}_{\rm LL}$ of this source, $-i$ times the logarithm of the vacuum amplitude in the presence of the source | new | `G_prop` `G_free` `K_src` `W_src` |
+| $\Gamma^{\rm CJT}_{\rm LL}$, $\Gamma^{\rm 2PI}_{\rm LL}$; $\mathcal S^{\rm sf}_{\rm LL}$, $\mathcal S^{\rm int}_{\rm LL}$ | the effective action of the propagator in the method of Cornwall, Jackiw and Tomboulis, the Legendre transform of $W^{\rm src}_{\rm LL}$ with respect to the source: a functional of $\mathcal G_{\rm LL}$ that is stationary at the propagator of the theory and whose value there, for a state that does not change in time, is minus the duration times the energy; its part $\Gamma^{\rm 2PI}_{\rm LL}$, the sum of the vacuum graphs that stay connected when any two of their lines are cut, drawn with the lines $\mathcal G_{\rm LL}$ and the vertices of the interaction; the action of the spinor field, the integral of its Lagrangian density over $\mathbb R^{1,3}_{\rm LL}$, and the part of it that contains the coupling $G_{\rm LL}$ | new | `Gamma_CJT` `Gamma_2PI` `S_sf` `S_int` |
+| $\omega^{\rm f}_{\rm LL}$, $\upsilon^{\rm f}_{\rm LL}$ | a frequency of the spinor field, the variable conjugate to the difference of the times of the two points of a propagator, and its value on the imaginary axis, $\omega^{\rm f}_{\rm LL}=i\upsilon^{\rm f}_{\rm LL}$ with real $\upsilon^{\rm f}_{\rm LL}$ | new | `omega_f` `upsilon_f` |
+| $\mathsf C^{\rm n}_{\rm LL}$, $\mathsf C^{\rm p}_{\rm LL}$; $\mathsf C^{\rm vac}_{\rm LL}$; $\mathsf R^{\rm Nb}_{\rm LL}$ | the correlation matrices of a state that is the same at every point of space, $8\times8$ matrices with the entries $(\mathsf C^{\rm n}_{\rm LL})_{ab}=\langle\Psi^\dagger_{{\rm LL},b}\Psi_{{\rm LL},a}\rangle$ (normal; Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{ab}=\langle\Psi_{{\rm LL},a}\Psi_{{\rm LL},b}\rangle$ (pair; antisymmetric), the two fields at the same point and time; with the argument $\vec q_{\rm LL}$ their parts of one momentum, of which they are the integrals $\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}$; the normal correlation matrix of the vacuum; and the density matrix of the Nambu spinor at one momentum, the $16\times16$ matrix with the entries $\langle\mathcal N^\dagger_{{\rm LL},b}\mathcal N_{{\rm LL},a}\rangle$, whose upper left block is $\mathsf C^{\rm n}_{\rm LL}(\vec q_{\rm LL})$ and whose upper right block is $-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})$ | new | `C_n` `C_p` `C_vac` `R_Nb` |
+| $\mathsf N^{\rm sc}_{\rm LL}$; $\mathsf H^{\rm var}_{\rm LL}(\vec q_{\rm LL})$ | the normal mean field of a state, the Hermitian $8\times8$ matrix $\mathsf N^{\rm sc}_{\rm LL}=-G_{\rm LL}\sum_\iota(\mathsf K^\iota_{\rm LL})^\dagger(\mathsf C^{\rm n}_{\rm LL})^T\mathsf K^\iota_{\rm LL}$, and the mean-field matrix of the two-loop approximation, $\mathsf H^{\rm var}_{\rm LL}(\vec q_{\rm LL})=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q_{\rm LL})+\mathsf N^{\rm sc}_{\rm LL}-\mu^{\rm b}_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P_{\rm LL}^\dagger&-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})+\mathsf N^{\rm sc}_{\rm LL}-\mu^{\rm b}_{\rm LL})^T\end{pmatrix}$ (with the bare mass $m^{\rm b}_{\rm LL}$ in $\mathsf h_{\rm LL}$), which acts on the Nambu spinor: the matrix $\mathsf H_{\rm LL}(\vec q_{\rm LL})$ with the normal mean field added | new | `N_sc` `H_var` |
+| $\mathcal E^{\rm var}_{\rm LL}$, $\mathcal E^{\rm no}_{\rm LL}$, $\mathcal E^{\rm po}_{\rm LL}$ | the energy per volume of a quasi-free state as a functional of its correlation matrices, which is minus the two-loop effective action of the propagator per duration and volume: $\mathcal E^{\rm var}_{\rm LL}$ for the Hamiltonian with the bare parameters and the interaction in the order $(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$; $\mathcal E^{\rm no}_{\rm LL}$ for the interaction normal-ordered with respect to the vacuum, in which $\mathsf C^{\rm n}_{\rm LL}-\mathsf C^{\rm vac}_{\rm LL}$ stands in the place of $\mathsf C^{\rm n}_{\rm LL}$ in the normal term; and $\mathcal E^{\rm po}_{\rm LL}$ for the pairing-only approximation, without the normal term | new | `E_var` `E_no` `E_po` |
+| $N^\Lambda_{\rm LL}$ | the number of modes per volume and per component of the field below the cutoff, $N^\Lambda_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}=\Lambda_{\rm LL}^3/(6\pi^2)$; it is the value at coinciding points of the anticommutator of a component of the field with its Hermitian conjugate | new | `N_Lambda` |
+| $m^{\rm b}_{\rm LL}$, $\mu^{\rm b}_{\rm LL}$ | the bare mass and the bare chemical potential: the parameters that stand in the Hamiltonian when its interaction is written in the order $(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$ without any subtraction. For the interaction normal-ordered with respect to the vacuum, with the mass $m_{\rm LL}$ and the chemical potential $\mu_{\rm LL}$, they are $m^{\rm b}_{\rm LL}=m_{\rm LL}-\tfrac32G_{\rm LL}s^{\rm vac}_{\rm LL}$ and $\mu^{\rm b}_{\rm LL}=\mu_{\rm LL}-\tfrac32G_{\rm LL}N^\Lambda_{\rm LL}$ | new | `m_bare` `mu_bare` |
+| $M^{\rm D}_{\rm LL}$, $M^{\rm N}_{\rm LL}$ | the Dirac mass of a state, the bare mass plus the coefficient of $\beta_{\rm LL}$ in its normal mean field, $M^{\rm D}_{\rm LL}=m^{\rm b}_{\rm LL}+\tfrac18\mathrm{tr}\big((\beta_{\rm LL}\otimes\mathsf 1_2)\mathsf N^{\rm sc}_{\rm LL}\big)$: the mass that stands in the energies of its quasi-particles; and the Dirac mass of the normal stationary state, the root of $M^{\rm N}_{\rm LL}=m^{\rm b}_{\rm LL}+\tfrac32G_{\rm LL}M^{\rm N}_{\rm LL}\,\Xi^{(1)}_{\rm LL}((M^{\rm N}_{\rm LL})^2)$ | new | `M_D` `M_N` |
+| $M^{\rm v}_{\rm LL}$, $\Delta^{\rm v}_{\rm LL}$, $E^{\rm v}_{\rm LL}$; $s^{\rm c}_{\rm LL}$, $f^{\rm c}_{\rm LL}$, $s^{\rm vac}_{\rm LL}$ | the trial states of the vacuum sector: the ground states of the mean-field matrix with the Dirac mass $M^{\rm v}_{\rm LL}$, the pairing block $\Delta^{\rm v}_{\rm LL}(\mathsf K^3_{\rm LL})^\dagger$ and no chemical potential; their quasi-particle energy $E^{\rm v}_{\rm LL}=(q_{\rm LL}^2+(M^{\rm v}_{\rm LL})^2+(\Delta^{\rm v}_{\rm LL})^2)^{1/2}$; the two integrals $s^{\rm c}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}M^{\rm v}_{\rm LL}/E^{\rm v}_{\rm LL}$ and $f^{\rm c}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}\Delta^{\rm v}_{\rm LL}/E^{\rm v}_{\rm LL}$, which give $\langle\Psi^\dagger_{\rm LL}(\beta_{\rm LL}\otimes\mathsf 1_2)\Psi_{\rm LL}\rangle=-4s^{\rm c}_{\rm LL}$ and $\langle\Pi^3_{\rm LL}\rangle=-4f^{\rm c}_{\rm LL}$; and the value of $s^{\rm c}_{\rm LL}$ in the vacuum | new | `M_trial` `Delta_trial` `E_trial` `s_c` `f_c` `s_vac` |
+| $V^{\rm CJT}_{\rm LL}(M^{\rm v}_{\rm LL},\Delta^{\rm v}_{\rm LL})$ | the two-loop energy per volume of the trial state of the vacuum sector at the charge-symmetric chemical potential, $V^{\rm CJT}_{\rm LL}=-2\,\Xi_{\rm LL}((M^{\rm v}_{\rm LL})^2+(\Delta^{\rm v}_{\rm LL})^2)+4(M^{\rm v}_{\rm LL}-m^{\rm b}_{\rm LL})s^{\rm c}_{\rm LL}+4\Delta^{\rm v}_{\rm LL}f^{\rm c}_{\rm LL}-3G_{\rm LL}(s^{\rm c}_{\rm LL})^2-4G_{\rm LL}(f^{\rm c}_{\rm LL})^2+3G_{\rm LL}(N^\Lambda_{\rm LL})^2$: minus the two-loop effective action of the propagator of that state, per duration and volume | new | `V_CJT` |
+| $\mathsf T^A_{\rm LL}$, $n^A_{\rm LL}$, $c^A_{\rm LL}$, $c'^A_{\rm LL}$; $\varsigma^{\rm D}_{\rm LL}$ | the 64 normal channels, numbered by their superscript from 1 to 64: the Hermitian $8\times8$ matrices $\mathsf T^A_{\rm LL}$, each the tensor product of one of the 16 Hermitian Dirac matrices $\mathsf 1_4$, $\beta_{\rm LL}$, $i\beta_{\rm LL}\gamma^{\rm ch}_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$, $\alpha^j_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}\alpha^j_{\rm LL}$, $i\beta_{\rm LL}\alpha^j_{\rm LL}$, $\beta_{\rm LL}\gamma^{\rm ch}_{\rm LL}\alpha^j_{\rm LL}$ with $\mathsf 1_2$ or with a Pauli matrix $\tau^{\rm LL}_\iota$ (the trace of the product of two of them is 8 if they are equal and 0 otherwise); the densities $n^A_{\rm LL}=\langle\Psi^\dagger_{\rm LL}\mathsf T^A_{\rm LL}\Psi_{\rm LL}\rangle=\mathrm{tr}(\mathsf T^A_{\rm LL}\mathsf C^{\rm n}_{\rm LL})$; the coefficients in $\sum_\iota\mathsf K^\iota_{\rm LL}\mathsf T^A_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger=c^A_{\rm LL}(\mathsf T^A_{\rm LL})^T$ and, for the pseudoscalar pair matrices, in $\sum_\iota\mathsf K'^\iota_{\rm LL}\mathsf T^A_{\rm LL}(\mathsf K'^\iota_{\rm LL})^\dagger=c'^A_{\rm LL}(\mathsf T^A_{\rm LL})^T$; and the sign $\varsigma^{\rm D}_{\rm LL}=\pm1$ of a Dirac matrix: the product of $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$, the matrix and $(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger$ is $\varsigma^{\rm D}_{\rm LL}$ times the transpose of the matrix | new | `T_ch` `T_ch'` `n_ch` `c_ch` `c_ch'` `sign_D` |
+| $G^{\rm crit,b}_{\rm LL}$ | the critical coupling of the Hamiltonian with the bare mass $m^{\rm b}_{\rm LL}$ and the interaction not ordered, $G^{\rm crit,b}_{\rm LL}=1/(2\,\Xi^{(1)}_{\rm LL}(16(m^{\rm b}_{\rm LL})^2))$, above which its two-loop vacuum is condensed | new | `G_crit_bare` |
+| $\gamma^{\rm gr}_{\rm LL}$; $\epsilon^{\rm sd}_{\rm LL}$ | the rate of the exponential growth of the pair field on an unstable normal state, the positive root of $G_{\rm LL}\chi^{\rm pr}_{\rm LL}(i\gamma^{\rm gr}_{\rm LL},0)=1$ with the Dirac mass of that state in $\chi^{\rm pr}_{\rm LL}$; and the size of the pair seed that starts a time integration, the factor of $(\mathsf K^3_{\rm LL})^\dagger$ in the pairing block of the mean-field matrix whose ground state is the initial state | new | `gamma_gr` `eps_seed` |
+| $u^{{\rm pr},\iota}_{\rm LL}$, $w^{{\rm pr},\iota}_{\rm LL}$ | the two functions of the length of the momentum and of the time that describe the pair correlations of a normal vacuum to the first order in a pair field: $\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})=-\sum_\iota\big(u^{{\rm pr},\iota}_{\rm LL}+w^{{\rm pr},\iota}_{\rm LL}\,\mathsf h_{\rm LL}(\vec q_{\rm LL})/\varepsilon_{\rm LL}\big)(\mathsf K^\iota_{\rm LL})^\dagger$; the pair amplitude is $\langle\Pi^\iota_{\rm LL}\rangle=8\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}u^{{\rm pr},\iota}_{\rm LL}$ | new | `u_pr` `w_pr` |
+| $\mathsf U^{\rm C}_{\rm LL}$ | the matrix of the charge conjugation of the model, $\mathsf U^{\rm C}_{\rm LL}=i\beta_{\rm LL}\alpha^2_{\rm LL}\otimes\mathsf 1_2$: the exchange $\Psi_{{\rm LL},a}\to\sum_b(\mathsf U^{\rm C}_{\rm LL})_{ab}\Psi^\dagger_{{\rm LL},b}$ of particles and holes leaves the kinetic and the mass term unchanged and turns $\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$ into $\sum_\iota\Pi^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger$ | new | `U_C` |
+| $\Pi'^\iota_{\rm LL}$ | the pseudoscalar pair operators, $\Pi'^\iota_{\rm LL}=\Psi_{\rm LL}^T\mathsf K'^\iota_{\rm LL}\Psi_{\rm LL}$ (both fields at the same point); they enter only the axially symmetric completion of the interaction, an alternative that the document of stage D records and does not adopt | new | `Pi'_iota` |
+| $E^{\rm ex}_{\rm LL}$ | the exact ground energy of the Hamiltonian of one site, the lowest eigenvalue of its $256\times256$ matrix in the Fock space of the 8 modes of the site | new | `E_ex` |
 
 **2 The bi-octonions and the super-loop**
 

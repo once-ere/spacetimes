@@ -1,0 +1,12 @@
+[package]
+name = "t2cjt"
+version = "0.1.0"
+edition = "2021"
+description = "Test 2, stage D: the creation of the superfluid boson singlet state (SFBS) from the spinor field by the method of Cornwall, Jackiw and Tomboulis (two-loop effective action of the propagator), with machine checks"
+
+[[bin]]
+name = "t2_cjt"
+path = "src/main.rs"
+
+[dependencies]
+t2core = { path = "../t2core" }

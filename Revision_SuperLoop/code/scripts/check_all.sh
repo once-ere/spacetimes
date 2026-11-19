@@ -15,8 +15,9 @@
 #      40 digits (test2/python/t2_formula_check.py, about 100 seconds) and Figures 2A to 2D
 #      (test2/python/make_t2_steps_figures.py); t2_analytic (the analytic solutions of item [2]) and the figures of
 #      items [1] and [2] (test2/python/make_t2_figures.py), and the further programs of test2 (the solvers, the
-#      plotters, t2_sfbs, and the comparison of CVODE with the fixed-step methods of the first version in
-#      test2/cvode_vs_rk4);
+#      plotters, t2_sfbs, t2_cjt (stage D: the superfluid boson singlet state by the method of Cornwall, Jackiw and
+#      Tomboulis, about one minute) with its figures, and the comparison of CVODE with the fixed-step methods of the
+#      first version in test2/cvode_vs_rk4);
 #   2. two passes of: the registry of the symbols, the fragments of the documents, the checks of
 #      the symbols and of self-containedness, the assembly of the Markdown documents, the build of
 #      the manuscript and of the .tex/.pdf versions of the documents.  The second pass is needed
@@ -93,6 +94,11 @@ run "t2_plot (Rust), Figures 14 to 20 (test2, item 6)" t2rsplot
 t2sfbs() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_sfbs); }
 run "t2_sfbs (test2, items 7 to 11)" t2sfbs
 run "make_t2_sfbs_figures.py (test2, items 7 to 11)" python3 test2/python/make_t2_sfbs_figures.py
+# Test 2, stage D: the checks CJ-* of the creation of the superfluid boson singlet state by the method of Cornwall,
+# Jackiw and Tomboulis (t2_cjt) and their figures
+t2cjt() { (cd test2/rust && cargo build --release --quiet && ./target/release/t2_cjt); }
+run "t2_cjt (test2, stage D)" t2cjt
+run "make_t2_cjt_figures.py (test2, stage D)" python3 test2/python/make_t2_cjt_figures.py
 # Test 2: the comparison of CVODE with the fixed-step methods of the first version (folder test2/cvode_vs_rk4): the four
 # time-dependent examples at two further tolerances, the program t2_cvcmp (it exits with status 1 if one of its checks
 # fails) and its five figures; its document is built after the documents of the folder (it prints the registry)

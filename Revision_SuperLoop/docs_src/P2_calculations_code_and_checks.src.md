@@ -50,6 +50,8 @@ python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py   # 
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done   # item [6]: Figures 14 to 20 (SVG)
 (cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_sfbs   # items [7] to [11]: checks SB-*, fragments, data
 python3 test2/python/make_t2_sfbs_figures.py                             # Figure 21 and the following figures of items [7] to [11]
+(cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_cjt    # stage D: checks CJ-*, fragments, data
+python3 test2/python/make_t2_cjt_figures.py                              # the four figures of stage D
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -1285,6 +1287,49 @@ gap (10.10). (v) The dispersion relations of Figure 26(c) at $G_{\rm LL}=22.5$, 
 (13.9), compared at ten wave numbers with the root of the determinant of the two equations of the time and the longitudinal component of
 Section 13.4, found by 200 bisections. Figure 26 is drawn by `test2/python/make_t2_sfbs_figures.py`.
 
+## Stage D: the creation of the SFBS by the method of Cornwall, Jackiw and Tomboulis
+
+The member `t2cjt` of the workspace `test2/rust` (binary `t2_cjt`; one source file `src/main.rs`, which reuses the modules
+`fock.rs` and `quad.rs` of the member `t2sfbs`) computes every number, table and data file of the document
+`test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis` and verifies its statements by the
+checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}. What is computed, and how:
+
+* *The Fock space of one site* (8 fermion modes, 256 states; checks CJ-1, CJ-3, CJ-10): the pair operators, quadratic
+  Hamiltonians with pairing and the Hamiltonian of one site as dense $256\times256$ matrices, diagonalized by the Hermitian
+  eigensolver of `t2core`; the correlation matrices of a state by applying the operators to its vector.
+* *The mean-field matrices* (all other checks): the $16\times16$ matrix $\mathsf H^{\rm var}_{\rm LL}(\vec q_{\rm LL})$ for every
+  momentum of a grid, its eigenvectors with negative eigenvalues, and the correlation matrices $\mathsf C^{\rm n}_{\rm LL}$,
+  $\mathsf C^{\rm p}_{\rm LL}$ as sums over the grid. Three grids: a product rule (Gauss-Legendre in the length of the momentum
+  and in the cosine of the polar angle, equal weights in the azimuth; $64\times4\times6$ points for the comparisons with closed
+  forms, $48\times2\times4$ for the iterations), the two directions of one axis (64 lengths; exact for states that are covariant
+  under rotations), and one site.
+* *The self-consistent states*: the fixed point of the map from the mean fields $\mathsf N^{\rm sc}_{\rm LL}$, $\mathsf P_{\rm LL}$
+  to the mean fields of their ground state, by Anderson acceleration (depth 6, damping 0.6, the least squares through the
+  normal equations), until the largest entry of the residual is below $10^{-12}$.
+* *Closed forms*: the functions $\Xi_{\rm LL}$ and $\Xi^{(1)}_{\rm LL}$, the energy $V^{\rm CJT}_{\rm LL}$ of the trial states, the
+  pair susceptibility $\chi^{\rm pr}_{\rm LL}$ below the threshold and at imaginary frequencies; the roots (the Dirac mass
+  $M^{\rm N}_{\rm LL}$ of the normal state, the gap, the boson mass $M^{\rm B}_{\rm LL}$, the growth rate
+  $\gamma^{\rm gr}_{\rm LL}$, the binding coupling of the interaction that is not ordered) by 100 to 200 bisections.
+* *The response of the normal vacuum* (check CJ-7): the second-order sum over the eigenvectors of the $16\times16$ matrices,
+  for the six real pair operators against all 70 operators (6 pair operators and 64 normal ones), at three frequencies.
+* *The time integrations* (check CJ-8): the occupied vectors of 128 momenta, 16384 complex unknowns, with the mean fields of
+  the current state in the right side; CVODE (Adams-Moulton formulas, $r^{\rm tol}_{\rm LL}=10^{-13}$,
+  $a^{\rm tol}_{\rm LL}=10^{-15}$) through the module `t2core::cvode`; the frequency of the first run from the maximum of the
+  Hann-windowed Fourier sum of the pair amplitude (2001 scan points, then a golden-section search), the rate of the second
+  from a least-squares line through the logarithm of its modulus, between 300 times its initial value and 0.005 times the
+  value of the condensed vacuum.
+
+Data files (folder `test2/data`): `t2_cjt_checks.txt` (the report), `t2_cjt_fragments.md` (the numbers and tables of the
+document), `t2_cjt_channels.csv` (the coefficients of the 64 normal channels), `t2_cjt_vacuum.csv` (the vacuum against the
+coupling in the three readings), `t2_cjt_boson.csv` (the mass of the SFBS boson), `t2_cjt_surface.csv` (the energy of the trial
+states), `t2_cjt_time.csv` (the two time integrations), `t2_cjt_site.csv` (one site). Figures (folder `test2/figures`, each as
+.pdf and .png, drawn by `test2/python/make_t2_cjt_figures.py` from these files): `fig_t2_cjt_vacuum`, `fig_t2_cjt_surface`,
+`fig_t2_cjt_creation`, `fig_t2_cjt_site`. The program runs in about one minute on one processor core. Its report:
+
+```
+{{FILE:test2/data/t2_cjt_checks.txt}}
+```
+
 # 12. The checks of the documents
 
 The script `check_symbols.py` verifies nine statements on the symbols: LL-S1, no symbol and no
@@ -1370,6 +1415,21 @@ block: the folder `explanations`; the third block: the folder `test2`):
 {{SHA256:test2/figures/fig_t2_case_B.png}}  test2/figures/fig_t2_case_B.png
 {{SHA256:test2/figures/fig_t2_case_C.png}}  test2/figures/fig_t2_case_C.png
 {{SHA256:test2/figures/fig_t2_case_D.png}}  test2/figures/fig_t2_case_D.png
+{{SHA256:test2/rust/t2cjt/Cargo.toml}}  test2/rust/t2cjt/Cargo.toml
+{{SHA256:test2/rust/t2cjt/src/main.rs}}  test2/rust/t2cjt/src/main.rs
+{{SHA256:test2/python/make_t2_cjt_figures.py}}  test2/python/make_t2_cjt_figures.py
+{{SHA256:test2/data/t2_cjt_checks.txt}}  test2/data/t2_cjt_checks.txt
+{{SHA256:test2/data/t2_cjt_fragments.md}}  test2/data/t2_cjt_fragments.md
+{{SHA256:test2/data/t2_cjt_channels.csv}}  test2/data/t2_cjt_channels.csv
+{{SHA256:test2/data/t2_cjt_vacuum.csv}}  test2/data/t2_cjt_vacuum.csv
+{{SHA256:test2/data/t2_cjt_boson.csv}}  test2/data/t2_cjt_boson.csv
+{{SHA256:test2/data/t2_cjt_surface.csv}}  test2/data/t2_cjt_surface.csv
+{{SHA256:test2/data/t2_cjt_time.csv}}  test2/data/t2_cjt_time.csv
+{{SHA256:test2/data/t2_cjt_site.csv}}  test2/data/t2_cjt_site.csv
+{{SHA256:test2/figures/fig_t2_cjt_vacuum.png}}  test2/figures/fig_t2_cjt_vacuum.png
+{{SHA256:test2/figures/fig_t2_cjt_surface.png}}  test2/figures/fig_t2_cjt_surface.png
+{{SHA256:test2/figures/fig_t2_cjt_creation.png}}  test2/figures/fig_t2_cjt_creation.png
+{{SHA256:test2/figures/fig_t2_cjt_site.png}}  test2/figures/fig_t2_cjt_site.png
 ```
 
 # 15. The symbols

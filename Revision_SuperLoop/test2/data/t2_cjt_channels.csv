@@ -1,0 +1,19 @@
+# content: the coefficients c_ch of the normal channels T = D (x) tau_b in sum_iota K T K^dag = c_ch T^T, for the scalar pair matrices, for the pseudoscalar pair matrices, and their sum (the coefficient of the axially symmetric completion of the interaction)
+# program: t2_cjt (test2/rust/t2cjt), check CJ-2
+dirac_matrix,isospin_matrix,number_of_channels,coefficient_scalar,coefficient_pseudoscalar,coefficient_sum
+1,tau_0,1,3,3,6
+1,tau_iota,3,1,1,2
+beta,tau_0,1,3,-3,0
+beta,tau_iota,3,1,-1,0
+i beta gamma_ch,tau_0,1,-3,3,0
+i beta gamma_ch,tau_iota,3,-1,1,0
+gamma_ch,tau_0,1,3,3,6
+gamma_ch,tau_iota,3,1,1,2
+alpha^j,tau_0,3,-3,-3,-6
+alpha^j,tau_iota,9,-1,-1,-2
+gamma_ch alpha^j,tau_0,3,-3,-3,-6
+gamma_ch alpha^j,tau_iota,9,-1,-1,-2
+i beta alpha^j,tau_0,3,3,-3,0
+i beta alpha^j,tau_iota,9,1,-1,0
+beta gamma_ch alpha^j,tau_0,3,-3,3,0
+beta gamma_ch alpha^j,tau_iota,9,-1,1,0

@@ -65,6 +65,7 @@
 | `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
 | `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | 8 of 8 |
 | `test2/data/t2_analytic_checks.txt` | `t2_analytic` | 10 of 10 |
+| `test2/data/t2_cjt_checks.txt` | `t2_cjt` | 11 of 11 |
 | `test2/data/t2_fields_checks.txt` | `t2_fields` | 20 of 20 |
 | `test2/data/t2_py_examples_checks.txt` | `t2_examples_check.py` | 10 of 10 |
 | `test2/data/t2_py_formula_checks.txt` | `t2_formula_check.py` | 6 of 6 |
@@ -149,16 +150,16 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (215 entries), every single item of the entries belongs to one entry (498 items), and every plain-text name of the programs, figures and data files belongs to one entry (659 names) & PASS\\
-LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 496 items of the 213 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 115 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (307 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 7 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 215 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 9082 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 10468 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
-LL-S7 & every one of the 5200 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (71 registered styled letters) & PASS\\
-LL-S8 & every one of the 3642 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 150 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 5810 formulas of the 1 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
-LL-H1 & none of the 30 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
+LL-S1 & every symbol text is registered once (233 entries), every single item of the entries belongs to one entry (542 items), and every plain-text name of the programs, figures and data files belongs to one entry (704 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 540 items of the 231 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 121 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (337 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 8 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 233 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 9744 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 11261 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 5576 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (76 registered styled letters) & PASS\\
+LL-S8 & every one of the 3670 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 158 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
+LL-S9 & the 6516 formulas of the 2 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-H1 & none of the 32 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
 <!-- BEGIN nchecks_rust -->
@@ -459,15 +460,15 @@ fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/b
 ca6622b69179666116079c69b010fb6fb45d0f39cb30c1f32503848b459048e9  code/scripts/check_layout.py
 434d6216aaf225bcfd9b88d9a9ea58fba6d3a99b633282ea375ed913385764be  code/scripts/check_pages.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-24e2caff1bd5c6d2f5cd4e5dcf01f2872436102e97a3b32c44088d592c199290  code/scripts/check_symbols.py
+0456ffd3a3d3117d4af57900d27d90cddec39e273e57c963cd0a6f54273cc1e1  code/scripts/check_symbols.py
 aa5a9dd31707550c713e4f8e066b234f7d7fc53908c4bef049c3bf94d54db56d  code/scripts/keep_tables.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
-1cdabf945879cd329759167a81cced1387c61638ff1e04c2c3bb7f088f409234  code/scripts/write_symbol_registry.py
+8c03c8c87787f28d49d7f02af3966e42cd1beac197833368f88f6d1f2a8a1a35  code/scripts/write_symbol_registry.py
 5484c962175d1850ad87e734745ba7d9c0f13186368b8032e28d50c4b7fd1e9f  code/scripts/build_docs.sh
-6ed3af86adb62d30c8dfbf0480fffcd9a4c72a24003882a95c097e0e9db3859f  code/scripts/check_all.sh
+4e1a0dc6a727035b406cc77915181128db27398aecca1c6bb44bfbed1564e592  code/scripts/check_all.sh
 ec9d4e63434b533f2fb2ce9650061aaae0c8775503bf131085c7c048c6647d4e  code/scripts/doc_header.tex
 <!-- END code_sha256 -->
 
@@ -535,10 +536,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-8fd92e0521c6bb0ca55e327f6cd10cd6f50c2a43be2713373c0be30972e18a75  explanations/figures/fig_ex_r13_bubble.pdf
-acfca7acd2150ff7571369fa9d492ab2ca5c2c5d5dd524276b71be10603f8923  explanations/figures/fig_ex_r13_coordinates.pdf
-70eb091beb78e79db117066c716b302e61705d3548ef368f0b5ec00790d34aba  explanations/figures/fig_ex_r13_divergences.pdf
-0022777bf7a992849386a0a0bea5586d9250462b4794c732772147d340f78a6d  explanations/figures/fig_ex_r13_lorentz.pdf
+2bf7b6e98e59693ab8b088e09a20d8bf7f58e3d80c788981b061b83f33ce8467  explanations/figures/fig_ex_r13_bubble.pdf
+852436eab6d4af9daf7cd8aa44e11bd8cb2c9e3922ca328ab13cc26794537bce  explanations/figures/fig_ex_r13_coordinates.pdf
+8b1a17a48ef3f5bda992d97c33c5ad5c081b8631ccc061d0debae233ba6a675a  explanations/figures/fig_ex_r13_divergences.pdf
+362ba6ac93f11226568852fe9bb74623f6df0423e62e38c97110428fbe510f5d  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1306,6 +1307,209 @@ ${7.1\times10^{-15}}$
 588
 <!-- END t2_steps_formula_rows -->
 
+<!-- BEGIN cjt_table_channels -->
+| Dirac matrix | its density is the | number | $\varsigma^{\rm D}_{\rm LL}$ | $c^A_{\rm LL}$ with $\mathsf 1_2$, with $\tau^{\rm LL}_\iota$ | $c'^A_{\rm LL}$ with $\mathsf 1_2$, with $\tau^{\rm LL}_\iota$ | sum with $\mathsf 1_2$, with $\tau^{\rm LL}_\iota$ |
+|----------------|--------------------------|-------|------|-------------|-------------|-------------|
+| $\mathsf 1_4$ | density of the spinor charges | 1 | $+1$ | $+3$, $+1$ | $+3$, $+1$ | $6$, $2$ |
+| $\beta_{\rm LL}$ | scalar density (the Dirac mass) | 1 | $+1$ | $+3$, $+1$ | $-3$, $-1$ | $0$, $0$ |
+| $i\beta_{\rm LL}\gamma^{\rm ch}_{\rm LL}$ | pseudoscalar density | 1 | $-1$ | $-3$, $-1$ | $+3$, $+1$ | $0$, $0$ |
+| $\gamma^{\rm ch}_{\rm LL}$ | axial charge density | 1 | $+1$ | $+3$, $+1$ | $+3$, $+1$ | $6$, $2$ |
+| $\alpha^j_{\rm LL}$ | current | 3 | $-1$ | $-3$, $-1$ | $-3$, $-1$ | $-6$, $-2$ |
+| $\gamma^{\rm ch}_{\rm LL}\alpha^j_{\rm LL}$ | spin density | 3 | $-1$ | $-3$, $-1$ | $-3$, $-1$ | $-6$, $-2$ |
+| $i\beta_{\rm LL}\alpha^j_{\rm LL}$ | electric-type tensor | 3 | $+1$ | $+3$, $+1$ | $-3$, $-1$ | $0$, $0$ |
+| $\beta_{\rm LL}\gamma^{\rm ch}_{\rm LL}\alpha^j_{\rm LL}$ | magnetic-type tensor | 3 | $-1$ | $-3$, $-1$ | $+3$, $+1$ | $0$, $0$ |
+<!-- END cjt_table_channels -->
+
+<!-- BEGIN cjt_uc_name -->
+(i beta alpha^2) (x) tau_0
+<!-- END cjt_uc_name -->
+
+<!-- BEGIN cjt_gcrit_bare -->
+32.3506
+<!-- END cjt_gcrit_bare -->
+
+<!-- BEGIN cjt_mn_bare_t2 -->
+0.539206
+<!-- END cjt_mn_bare_t2 -->
+
+<!-- BEGIN cjt_gcrit -->
+21.28661
+<!-- END cjt_gcrit -->
+
+<!-- BEGIN cjt_gbind -->
+17.7463
+<!-- END cjt_gbind -->
+
+<!-- BEGIN cjt_dvac -->
+0.2094933
+<!-- END cjt_dvac -->
+
+<!-- BEGIN cjt_mq -->
+0.2896333
+<!-- END cjt_mq -->
+
+<!-- BEGIN cjt_mbare_t2 -->
+0.0500
+<!-- END cjt_mbare_t2 -->
+
+<!-- BEGIN cjt_mbare_osc -->
+0.0590663
+<!-- END cjt_mbare_osc -->
+
+<!-- BEGIN cjt_svac -->
+0.0044444
+<!-- END cjt_svac -->
+
+<!-- BEGIN cjt_mn_no_t2 -->
+0.227347
+<!-- END cjt_mn_no_t2 -->
+
+<!-- BEGIN cjt_depth_po -->
+-5.2884e-5
+<!-- END cjt_depth_po -->
+
+<!-- BEGIN cjt_depth_po_abs -->
+5.2884e-5
+<!-- END cjt_depth_po_abs -->
+
+<!-- BEGIN cjt_depth_cjt_abs -->
+3.8816e-5
+<!-- END cjt_depth_cjt_abs -->
+
+<!-- BEGIN cjt_depth_cjt -->
+-3.8816e-5
+<!-- END cjt_depth_cjt -->
+
+<!-- BEGIN cjt_nlam -->
+0.0168869
+<!-- END cjt_nlam -->
+
+<!-- BEGIN cjt_mub_t2 -->
+-0.56993
+<!-- END cjt_mub_t2 -->
+
+<!-- BEGIN cjt_table_vacuum -->
+| $G_{\rm LL}$ | not ordered: $M^{\rm D}_{\rm LL}$ | not ordered: $\Delta_{\rm LL}$ | normal-ordered: $m^{\rm b}_{\rm LL}$ | normal-ordered: $M^{\rm D}_{\rm LL}$ | normal-ordered: $\Delta_{\rm LL}$ | pairing only: $\Delta_{\rm LL}$ |
+|-------|----------|----------|----------|----------|----------|----------|
+| 12 | 0.3278 | 0.0000 | 0.1154 | 0.2000 | 0.0000 | 0.0000 |
+| 15 | 0.3779 | 0.0000 | 0.0942 | 0.2000 | 0.0000 | 0.0000 |
+| 18 | 0.4366 | 0.0000 | 0.0731 | 0.2000 | 0.0000 | 0.0000 |
+| 20 | 0.4803 | 0.0000 | 0.0590 | 0.2000 | 0.0000 | 0.0000 |
+| 21 | 0.5033 | 0.0000 | 0.0520 | 0.2000 | 0.0000 | 0.0000 |
+| 22.5 | 0.5392 | 0.0000 | 0.0500 | 0.2000 | 0.2094 | 0.2094 |
+| 25 | 0.6019 | 0.0000 | 0.0500 | 0.2000 | 0.3940 | 0.3940 |
+| 30 | 0.7352 | 0.0000 | 0.0500 | 0.2000 | 0.6641 | 0.6641 |
+| 33 | 0.8000 | 0.2155 | 0.0500 | 0.2000 | 0.8040 | 0.8040 |
+| 36 | 0.8000 | 0.5244 | 0.0500 | 0.2000 | 0.9354 | 0.9354 |
+| 40 | 0.8000 | 0.7839 | 0.0500 | 0.2000 | 1.1020 | 1.1020 |
+<!-- END cjt_table_vacuum -->
+
+<!-- BEGIN cjt_mb_osc -->
+0.279252
+<!-- END cjt_mb_osc -->
+
+<!-- BEGIN cjt_gbind_bare -->
+15.036
+<!-- END cjt_gbind_bare -->
+
+<!-- BEGIN cjt_mn_bare_osc -->
+0.4803
+<!-- END cjt_mn_bare_osc -->
+
+<!-- BEGIN cjt_mb_bare_osc -->
+0.741755
+<!-- END cjt_mb_bare_osc -->
+
+<!-- BEGIN cjt_table_boson -->
+| $G_{\rm LL}$ | $M^{\rm B}_{\rm LL}$ | $2m_{\rm LL}-M^{\rm B}_{\rm LL}$ |
+|-------|----------|----------|
+| 18 | 0.397362 | 0.002638 |
+| 19 | 0.356465 | 0.043535 |
+| 20 | 0.279252 | 0.120748 |
+| 20.5 | 0.221990 | 0.178010 |
+| 21 | 0.135923 | 0.264077 |
+| 21.2 | 0.075108 | 0.324892 |
+<!-- END cjt_table_boson -->
+
+<!-- BEGIN cjt_om_measured -->
+0.279252
+<!-- END cjt_om_measured -->
+
+<!-- BEGIN cjt_om_reldev -->
+1.0e-7
+<!-- END cjt_om_reldev -->
+
+<!-- BEGIN cjt_gamma -->
+0.249608
+<!-- END cjt_gamma -->
+
+<!-- BEGIN cjt_gamma_fit -->
+0.249607
+<!-- END cjt_gamma_fit -->
+
+<!-- BEGIN cjt_gamma_reldev -->
+6.2e-7
+<!-- END cjt_gamma_reldev -->
+
+<!-- BEGIN cjt_pi_sat -->
+0.018622
+<!-- END cjt_pi_sat -->
+
+<!-- BEGIN cjt_pi_max -->
+0.025354
+<!-- END cjt_pi_max -->
+
+<!-- BEGIN cjt_pi_late -->
+0.013341
+<!-- END cjt_pi_late -->
+
+<!-- BEGIN cjt_td_steps -->
+14481 and 5823
+<!-- END cjt_td_steps -->
+
+<!-- BEGIN cjt_table_starts -->
+| start | iterations | residual | $\mathcal E^{\rm var}_{\rm LL}$ minus vacuum | $\lvert\vec d_{\rm LL}\rvert$ | $\zeta_{\rm LL}$ | $M^{\rm D}_{\rm LL}$ | reached |
+|-----|---------|--------|-----------|---------|--------|---------|--------------|
+| 1 | 36 | 1.2e-12 | -6.7e-16 | 0.2094933 | 1.1e-10 | 0.2000000 | the condensed vacuum |
+| 2 | 51 | 1.0e-12 | -8.7e-16 | 0.2094933 | 4.6e-11 | 0.2000000 | the condensed vacuum |
+| 3 | 40 | 8.7e-13 | -8.3e-17 | 0.2094933 | 6.5e-11 | 0.2000000 | the condensed vacuum |
+| 4 | 39 | 5.6e-13 | 0.0e0 | 0.2094933 | 3.2e-11 | 0.2000000 | the condensed vacuum |
+<!-- END cjt_table_starts -->
+
+<!-- BEGIN cjt_table_site -->
+| $G_{\rm LL}$ | exact ground energy $E^{\rm ex}_{\rm LL}$ | two-loop energy $\mathcal E^{\rm var}_{\rm LL}$ | difference | $\lvert\vec d_{\rm LL}\rvert$ of the two-loop state |
+|------|-----------|-----------|-----------|-----------|
+| 0.1 | -0.914847 | -0.800000 | 0.114847 | 0.000000 |
+| 0.2 | -1.163806 | -0.800000 | 0.363806 | 0.000000 |
+| 0.3 | -1.474923 | -0.800000 | 0.674923 | 0.000000 |
+| 0.5 | -2.180214 | -0.820000 | 1.360214 | 0.600000 |
+| 0.75 | -3.124245 | -0.963333 | 2.160912 | 1.268858 |
+| 1 | -4.094372 | -1.160000 | 2.934372 | 1.833030 |
+| 1.5 | -6.063508 | -1.606667 | 4.456841 | 2.891366 |
+| 2 | -8.047791 | -2.080000 | 5.967791 | 3.919184 |
+| 3 | -12.031938 | -3.053333 | 8.978604 | 5.946427 |
+| 4 | -16.023974 | -4.040000 | 11.983974 | 7.959899 |
+<!-- END cjt_table_site -->
+
+<!-- BEGIN cjt_report -->
+```text
+Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superfluid boson singlet state (SFBS) from the spinor field Psi_LL by the method of Cornwall, Jackiw and Tomboulis, in the two-loop approximation of the effective action of the propagator (Test 2, stage D)
+11 of 11 checks passed
+
+[PASS] CJ-1  Wick's theorem for the interaction, in the Fock space of one site (8 fermion modes, 256 states): for the ground state of a random quadratic Hamiltonian c^dag h c + (1/2)(c^dag P c^dag^T + Hermitian conjugate) (h Hermitian, P antisymmetric, both random), <sum_iota Pi_iota^dag Pi_iota> computed directly in the Fock space equals sum_iota |<Pi_iota>|^2 + 2 sum_iota tr(Kch_iota C_n Kch_iota^dag C_n^T); and the correlation matrices C_n[a][b] = <c_b^dag c_a>, C_p[a][b] = <c_a c_b> of that ground state are the upper left block and minus the upper right block of the projector on the eigenvectors with negative eigenvalues of the matrix [[h, P], [P^dag, -h^T]] of 16 rows  -- 4 random Hamiltonians: largest |direct - Wick| = 9.4e-14; largest difference of C_n 2.0e-14, of C_p 1.7e-14 between the Fock space and the matrix of 16 rows; smallest gap above the ground state 0.001
+[PASS] CJ-2  the 64 normal channels: for every matrix T = D (x) tau_b (D one of the 16 Hermitian Dirac matrices 1, beta, i beta gamma_ch, gamma_ch, alpha^j, gamma_ch alpha^j, i beta alpha^j, beta gamma_ch alpha^j; tau_0 the unit matrix), sum_iota Kch_iota T Kch_iota^dag = c_ch T^T with c_ch = sign_D times 3 for tau_0 and sign_D times 1 for tau_iota, sign_D = +1 for 1, beta, gamma_ch, i beta alpha^j and -1 for the other four classes; the same for the pseudoscalar pair matrices Kch'_iota with the signs +1 for 1, i beta gamma_ch, gamma_ch, beta gamma_ch alpha^j and -1 for the other four; the 64 matrices are Hermitian with tr(T_ch T_ch') = 8 or 0; and for a random Hermitian C_n the mean field N_sc = -G sum_iota Kch_iota^dag C_n^T Kch_iota equals -(G/8) sum_ch c_ch n_ch T_ch and the normal term of the energy equals -(G/16) sum_ch c_ch n_ch^2, with n_ch = tr(T_ch C_n)  -- largest entry of sum K T K^dag - c_ch T^T 0.0e0; largest |c_ch - expected| 0.0e0; orthogonality 0.0e0; mean field 3.4e-16; normal energy 4.4e-16
+[PASS] CJ-3  the order of the factors of the interaction and the charge conjugation, on one site (256 states): sum_iota [Pi_iota, Pi_iota^dag] = 48 - 12 n_F_site for the scalar pair operators and for the pseudoscalar ones (n_F_site: the number of spinor charges on the site); there is a matrix U_C = D (x) tau_b with U_C^dag alpha^j U_C = (alpha^j)^T, U_C^dag beta U_C = -beta^T, for which -(U_C^T Kch_iota U_C)^* is a unitary combination of the Kch_iota (the exchange c_a -> sum_b U_C[a][b] c_b^dag of particles and holes keeps the kinetic term and turns sum Pi^dag Pi into sum Pi Pi^dag); and the 256 eigenvalues of the Hamiltonian of one site with the chemical potential mu equal those with the chemical potential -mu - 3 G, shifted by -8 mu - 12 G  -- commutator: largest entry of the difference 0.0e0 (scalar), 0.0e0 (pseudoscalar); U_C = (i beta alpha^2) (x) tau_0 (largest violation 0.0e0); spectra: largest difference 6.4e-14 for (m, mu, G) = (0.191, 0.505, 1.569), (m, mu, G) = (0.421, -0.624, 0.978), (m, mu, G) = (0.488, 0.022, 0.794)
+[PASS] CJ-4  the terms of the effective action on the trial family: (a) for the spectra e_k, e'_k of two random particle-hole symmetric Hermitian matrices of 16 rows, (1/4) int dw/(2 pi) sum_k ln((w^2 + e_k^2)/(w^2 + e'_k^2)) = (1/4) sum_k (|e_k| - |e'_k|) (the trace-log term is minus the ground energy of the trial Hamiltonian), the spectrum is symmetric about zero, and -(1/2) sum_k sign(e_k) v_k v_k^dag = R_Nb - 1/2 with R_Nb the projector on the negative eigenvalues (the symmetric equal-time limit of the propagator); (b) for trial states of the vacuum sector with the Dirac mass M_trial and the gap Delta_trial (bare mass 0.05, G = 22.5, charge-symmetric chemical potential), the energy E_var from the matrices of 16 rows on the momentum grid equals the closed form V_CJT = -2 Xi + 4 (M_trial - m_bare) s_c + 4 Delta_trial f_c - 3 G s_c^2 - 4 G f_c^2 + 3 G N_Lambda^2, with C_n = (N_Lambda/2) - (s_c/2) beta and <Pi_3> = -4 f_c, <Pi_1> = <Pi_2> = 0; and the gradient of V_CJT is (4 (M_trial - m_bare) - 6 G s_c) grad s_c + (4 Delta_trial - 8 G f_c) grad f_c  -- (a) frequency integral 0.7041280531 against 0.7041280531 (difference 2.1e-11); symmetry of the spectrum 1.6e-15; equal-time limit 5.4e-16; (b) 4 trial states: largest |E_var - V_CJT| 3.2e-15, C_n 7.6e-17, <Pi> 3.8e-17, gradient against central differences 1.8e-12
+[PASS] CJ-5  the stationary states of the vacuum sector with bare parameters, at the charge-symmetric chemical potential mu_bare = -(3/2) G N_Lambda: the normal state with the Dirac mass M_N, the root of M_N = m_bare + (3/2) G M_N Xi_1(M_N^2), and, above the critical coupling G_crit_bare = 1/(2 Xi_1(16 m_bare^2)), the condensed state with the Dirac mass M_D = 4 m_bare exactly and the gap from 1 = 2 G Xi_1(16 m_bare^2 + Delta^2), are fixed points of the general self-consistency map of the matrices of 16 rows (mean fields reproduced); both have the density 4 N_Lambda (half filling); their energies equal the closed form V_CJT; the condensed state lies below the normal one where it exists, M_N > 4 m_bare there and M_N < 4 m_bare below the critical coupling; and M_N = 4 m_bare at the critical coupling (the transition is continuous)  -- largest residual of the mean fields 5.1e-15; density - 4 N_Lambda 5.8e-16; |M_D - 4 m_bare| 5.6e-16; |E_var - V_CJT| 3.2e-15; |M_N(G_crit_bare) - 4 m_bare| 0.0e0; (m_bare, G) = (0.05, 18): normal M_N = 0.1442960, no condensed state; (m_bare, G) = (0.05, 22.5): normal M_N = 0.2273467, condensed M_D = 4 m_bare = 0.2, gap 0.2094933, E_c - E_n = -3.8816e-5; (m_bare, G) = (0.05, 30): normal M_N = 0.4566355, condensed M_D = 4 m_bare = 0.2, gap 0.6641406, E_c - E_n = -1.4993e-3; (m_bare, G) = (0.2, 15): normal M_N = 0.3779745, no condensed state; (m_bare, G) = (0.2, 22.5): normal M_N = 0.5392059, no condensed state; (m_bare, G) = (0.2, 40): normal M_N = 1.0135753, condensed M_D = 4 m_bare = 0.8, gap 0.7839054, E_c - E_n = -5.7262e-4
+[PASS] CJ-6  the normal ordering of the interaction with respect to the vacuum, at the parameters of the document of Test 2 (m = 0.2, G = 22.5, Lambda = 1): (a) the state with the Dirac mass M_D = m and the gap of the pairing-only gap equation 1 = 2 G Xi_1(m^2 + Delta^2) is a stationary state of the functional with the bare parameters m_bare = m - (3/2) G s_vac = m/4 and mu_bare = -(3/2) G N_Lambda; (b) for random states the normal-ordered functional E_no, in which C_n - C_vac replaces C_n in the normal term and m, mu = 0 replace m_bare, mu_bare, differs from the bare functional E_var by the same constant, the normal term of the vacuum; (c) the critical coupling 1/(2 Xi_1(m^2)) = 21.28661 and the gap Delta_vac = 0.2094933 of the pairing-only theory are reproduced; (d) without the normal ordering (0.2 as bare mass) the vacuum at G = 22.5 is normal, with the Dirac mass M_N = 0.539206, and the critical coupling is 1/(2 Xi_1(16 m^2)) = 32.35; (e) on a grid of 81 x 81 trial states (M_trial from 0.04 to 0.46, Delta_trial from 0 to 0.4) no energy lies below that of the vacuum  -- (a) residual of the mean fields 2.4e-15; |m_bare - (m - (3/2) G s_vac)| 1.4e-17; m_bare = 0.0500000; (b) largest deviation from the constant 1.7e-16 (constant -0.0205820501); (c) G_crit = 21.2866098, Delta_vac = 0.2094933; (d) M_N = 0.5392059, G_crit_bare = 32.3505912; (e) smallest V_CJT - V_CJT(vacuum) on the grid 7.3e-8
+[PASS] CJ-7  the SFBS boson of the normal vacuum (m = 0.2, G = 20, interaction normal-ordered; momentum grid along the axis): the response of the pair operators (Pi_iota + Pi_iota^dag)/2 and (Pi_iota - Pi_iota^dag)/(2 i) to fields coupled to the same six operators, computed from the eigenvectors of the matrices of 16 rows at the frequencies 0, 0.25 and 0.39, is -2 chi_pr times the unit matrix, with chi_pr = int 8 eps/(4 eps^2 - omega_B^2) in its closed form; the response of the 64 normal operators Psi_LL^dag T_ch Psi_LL to these fields vanishes (no mixing in the normal vacuum); the closed form of chi_pr agrees with a quadrature, also at an imaginary frequency; chi_pr(0) = 2 Xi_1(m^2) = 1/G_crit; the pole condition G chi_pr(M_B^2) = 1 has a root below the threshold 2 m, which tends to 2 m at the binding coupling G_bind and to 0 at the critical coupling  -- largest deviation of the diagonal from -2 chi_pr 3.1e-16; other pair entries 2.5e-18; mixing with the normal channels 0.0e0; closed form against quadrature 2.8e-17; M_B(G = 20) = 0.2792516 with |G chi_pr - 1| = 0.0e0; G_bind = 17.7462765, G_crit = 21.2866098; M_B just above G_bind 0.4000000, just below G_crit 3.7e-5
+[PASS] CJ-8  the creation of the SFBS in real time: the time-dependent mean-field equations of the two-loop action, i dv/dt = H_var(q) v for the occupied vectors of every momentum with the mean fields of the current state, integrated by CVODE (Adams-Moulton formulas, rtol 1e-13, atol 1e-15; m = 0.2, interaction normal-ordered, 128 momenta along the axis). Run 1, G = 20 (between G_bind and G_crit), start: the normal vacuum with the pair seed 1e-4 Kch_3^dag in its mean-field matrix: <Pi_3> stays real and oscillates, and the frequency of the largest line of its Hann-windowed Fourier sum equals the boson mass M_B of the pole condition; the Dirac mass stays at m to the second order in the seed. Run 2, G = 22.5 (above G_crit), start: the normal stationary state with the seed 1e-8: |<Pi_3>| grows exponentially with the rate gamma_gr, the root of G chi_pr(-gamma_gr^2) = 1 for the Dirac mass of that state; the growth ends in oscillations about the condensed vacuum, in which |<Pi_3>| reaches between one half and twice the value 2 Delta_vac/G of the condensed vacuum (the equations conserve the energy, so that the state cannot come to rest in the vacuum). Both integrations conserve the energy E_var to better than 1e-9  -- run 1: frequency 0.2792516 against M_B = 0.2792516 (relative difference 1.0e-7); largest |Im <Pi_3>| 2.5e-12; largest |Dirac mass - m| 8.8e-9; change of the energy 6.2e-11; 14481 steps, 28956 evaluations of the right side. Run 2: fitted rate 0.2496075 over 186 output times against gamma_gr = 0.2496077 (relative difference 6.2e-7); largest |<Pi_3>| 0.0253535 and mean over the last third 0.0133409 against 2 Delta_vac/G = 0.0186216; change of the energy 2.8e-11; 5823 steps, 11640 evaluations
+[PASS] CJ-9  general solutions of the two-loop equations without imposed symmetry (m = 0.2, G = 22.5, interaction normal-ordered; 384 momenta in a product grid): from four random starts (random Hermitian N_sc, random complex order parameter) the Anderson iteration of the self-consistency map of the full matrices of 16 rows converges; no solution has an energy below that of the vacuum of the closed form; and the solutions that reach this energy have |dvec| = Delta_vac, zeta = 0 and the Dirac mass m (they are the vacuum (0, 0, Delta_vac) turned by a symmetry transformation)  -- start 1: 36 iterations, residual 1.2e-12, E - E_vacuum = -6.661e-16, |d| = 0.2094933, zeta = 1.1e-10, M_D = 0.2000000 (the condensed vacuum); start 2: 51 iterations, residual 1.0e-12, E - E_vacuum = -8.674e-16, |d| = 0.2094933, zeta = 4.6e-11, M_D = 0.2000000 (the condensed vacuum); start 3: 40 iterations, residual 8.7e-13, E - E_vacuum = -8.327e-17, |d| = 0.2094933, zeta = 6.5e-11, M_D = 0.2000000 (the condensed vacuum); start 4: 39 iterations, residual 5.6e-13, E - E_vacuum = 0.000e0, |d| = 0.2094933, zeta = 3.2e-11, M_D = 0.2000000 (the condensed vacuum)
+[PASS] CJ-10  the two-loop action is a variational energy, tested on one site (8 fermion modes, 256 states; m = 0.2, chemical potential -(3/2) G, ten couplings from 0.1 to 4): the energy E_var of the self-consistent mean-field state equals the expectation value of the Hamiltonian c^dag (m beta - mu) c - (G/4) sum_iota Pi_iota^dag Pi_iota in the ground state of the mean-field Hamiltonian, constructed in the Fock space; and it is never below the exact ground energy (the lowest eigenvalue of the 256 x 256 matrix)  -- largest |E_var - expectation value| 5.1e-15; smallest E_var - exact ground energy 0.114847; largest residual of the mean fields 9.0e-14
+[PASS] CJ-11  the alternative without mass dressing, the axially symmetric completion -(G/4) sum_iota (Pi_iota^dag Pi_iota + Pi'_iota^dag Pi'_iota) of the interaction (pseudoscalar pair operators Pi'_iota of the matrices Kch'_iota): the sums of the coefficients of the scalar and of the pseudoscalar pairs vanish on the four classes of channels that flip the chirality (beta, i beta gamma_ch, i beta alpha^j, beta gamma_ch alpha^j) and equal 6 (tau_0) or 2 (tau_iota) in modulus on the other four; the mean field N_sc of a random state has no component on the flipping channels, so that no state changes the Dirac mass; at the chemical potential -3 G N_Lambda the state with the Dirac mass m = 0.2 and the gap of the pairing-only gap equation (G = 22.5) is a stationary state with vanishing pseudoscalar pair amplitudes; and a general solution from a random start with scalar and pseudoscalar pair fields reaches the energy of this state, with |dvec| = Delta_vac, the Dirac mass m and no pseudoscalar pair amplitude  -- largest sum on the flipping classes 0.0e0; largest flipping component of N_sc 6.2e-16; residual of the mean fields of the vacuum 1.0e-14; pseudoscalar amplitudes of the vacuum 6.0e-17; general solution: 71 iterations, residual 9.2e-13, E - E_vacuum = 7.88e-16, |dvec| = 0.2094933, pseudoscalar amplitude 6.7e-13, Dirac mass 0.2000000
+```
+<!-- END cjt_report -->
+
 <!-- BEGIN t2_ex8_table -->
 | quantities | largest difference | origin |
 |------------------------------|----------|------------------------------|
@@ -1318,13 +1522,13 @@ ${7.1\times10^{-15}}$
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.32 | 0.20 |
-| `cyclotron` | 7.02 | 6.29 |
-| `andreev` | 1.05 | 0.87 |
-| `kink_spectrum` | 0.83 | 2.92 |
-| `ground_state` | 1.60 | 5.10 |
-| `kink_ground_state` | 7.25 | 24.56 |
-| `quench` (the time evolution) | 34.14 | 25.33 |
+| `packet_free` | 0.23 | 0.16 |
+| `cyclotron` | 7.43 | 5.71 |
+| `andreev` | 1.13 | 0.73 |
+| `kink_spectrum` | 0.81 | 3.41 |
+| `ground_state` | 1.67 | 5.22 |
+| `kink_ground_state` | 6.92 | 23.19 |
+| `quench` (the time evolution) | 35.25 | 24.66 |
 <!-- END t2_times_table -->
 
 <!-- BEGIN t2_py_keys -->
@@ -1440,6 +1644,10 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 10
 <!-- END nchecks_t2_analytic -->
 
+<!-- BEGIN nchecks_t2_cjt -->
+11
+<!-- END nchecks_t2_cjt -->
+
 <!-- BEGIN nchecks_t2_fields -->
 20
 <!-- END nchecks_t2_fields -->
@@ -1469,9 +1677,9 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_sfbs -->
 
 <!-- BEGIN n_t2_rust_lines -->
-18024
+20019
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->
-27
+28
 <!-- END n_t2_rust_files -->
