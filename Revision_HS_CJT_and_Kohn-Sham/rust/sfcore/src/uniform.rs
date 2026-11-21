@@ -448,3 +448,121 @@ pub fn susceptibility_column(model: &mut Model, n0: &CMat, p0: &CMat, b: usize, 
     }
     out
 }
+
+// ================================================================================================ finite temperature
+// (added for the free energy of Section 12.4 of superfluid.md; the functions above are unchanged)
+
+/// the Fermi function 1/(e^{e/t} + 1) of a quasi-particle energy e at the temperature t > 0; at t = 0 the step function
+/// theta(-e) (the ground state), with the value 1/2 at e = 0
+pub fn fermi(e: f64, t: f64) -> f64 {
+    if t <= 0.0 {
+        return if e < 0.0 { 1.0 } else if e > 0.0 { 0.0 } else { 0.5 };
+    }
+    let x = e / t;
+    if x > 700.0 {
+        0.0
+    } else if x < -700.0 {
+        1.0
+    } else {
+        1.0 / (x.exp() + 1.0)
+    }
+}
+
+/// -[f ln f + (1 - f) ln(1 - f)], the entropy of one fermion mode of occupation f (0 ln 0 = 0)
+pub fn mode_entropy(f: f64) -> f64 {
+    let a = if f > 0.0 && f < 1.0 { -f * f.ln() } else { 0.0 };
+    let b = if f > 0.0 && f < 1.0 { -(1.0 - f) * (1.0 - f).ln() } else { 0.0 };
+    a + b
+}
+
+/// a self-consistent state at the temperature t: the stationary point of the free energy per volume
+/// Omega = E - t S (energy and free energy measured from the normal vacuum at t = 0)
+#[derive(Clone, Debug)]
+pub struct ThermalSolution {
+    pub n_self: CMat,
+    pub p_self: CMat,
+    pub drho: CMat,
+    pub kap: CMat,
+    /// the energy per volume E (kinetic plus interaction, with the external terms if any)
+    pub energy: f64,
+    /// the entropy per volume S
+    pub entropy: f64,
+    /// the free energy per volume E - t S
+    pub free: f64,
+    pub iterations: usize,
+    pub residual: f64,
+}
+
+impl Model {
+    /// the correlation matrices of the thermal state of the BdG matrices at the temperature t, R = sum_k f(e_k) v_k v_k^dag
+    /// at every node (C^n = R_11, C^p = -R_12), and the entropy per volume
+    /// S = -1/2 sum_n w_n sum_k [f_k ln f_k + (1 - f_k) ln(1 - f_k)]: the BdG space of a node holds every mode twice
+    /// (at +e and at -e, with the occupations f and 1 - f), hence the factor 1/2; at t = 0 this is states() with S = 0
+    pub fn states_t(&self, nself: &CMat, pself: &CMat, t: f64) -> (Vec<CMat>, Vec<CMat>, f64) {
+        let mut cn = vec![];
+        let mut cp = vec![];
+        let mut s = 0.0;
+        for n in 0..self.grid.len() {
+            let (_, w) = self.grid.node(n);
+            let (ev, v) = eigh(&self.bdg(n, nself, pself));
+            let mut r = CMat::zeros(16);
+            for k in 0..16 {
+                let f = fermi(ev[k], t);
+                s += 0.5 * w * mode_entropy(f);
+                if f == 0.0 {
+                    continue;
+                }
+                for a in 0..16 {
+                    let va = v.get(a, k).scale(f);
+                    for b in 0..16 {
+                        r.a[a * 16 + b] += va * v.get(b, k).conj();
+                    }
+                }
+            }
+            cn.push(r.sub_block(0, 0, 8, 8));
+            cp.push(r.sub_block(0, 8, 8, 8).scale_r(-1.0));
+        }
+        (cn, cp, s)
+    }
+    /// the self-consistent thermal state at the temperature t from the initial self-energies (linear mixing, as solve())
+    pub fn solve_t(&self, n0: &CMat, p0: &CMat, mix: f64, tol: f64, maxit: usize, t: f64) -> ThermalSolution {
+        let mut nself = n0.clone();
+        let mut pself = p0.clone();
+        let mut it = 0;
+        loop {
+            let (cn, cp, s) = self.states_t(&nself, &pself, t);
+            let (drho, kap, ek) = self.local(&cn, &cp);
+            let (ei, n2, p2) = self.interaction(&drho, &kap);
+            let res = n2.sub(&nself).max_abs().max(p2.sub(&pself).max_abs());
+            if res < tol || it >= maxit {
+                let e = ek + ei;
+                return ThermalSolution { n_self: n2, p_self: p2, drho, kap, energy: e, entropy: s, free: e - t * s, iterations: it, residual: res };
+            }
+            nself = n2.scale_r(mix).add(&nself.scale_r(1.0 - mix));
+            pself = p2.scale_r(mix).add(&pself.scale_r(1.0 - mix));
+            nself = nself.add(&nself.dagger()).scale_r(0.5);
+            pself = pself.sub(&pself.transpose()).scale_r(0.5);
+            it += 1;
+        }
+    }
+    /// the thermal state of a fixed pair self-energy (an applied pair field) at the temperature t, with the normal
+    /// self-energy made self-consistent: one point of the constrained free energy (the pair self-energy of the method's
+    /// functional for this state is returned in p_self)
+    pub fn fixed_pair_state_t(&self, pself: &CMat, n0: &CMat, mix: f64, tol: f64, maxit: usize, t: f64) -> ThermalSolution {
+        let mut nself = n0.clone();
+        let mut it = 0;
+        loop {
+            let (cn, cp, s) = self.states_t(&nself, pself, t);
+            let (drho, kap, ek) = self.local(&cn, &cp);
+            let (ei, n2, p2) = self.interaction(&drho, &kap);
+            let res = n2.sub(&nself).max_abs();
+            if res < tol || it >= maxit {
+                let e = ek + ei;
+                return ThermalSolution { n_self: n2, p_self: p2, drho, kap, energy: e, entropy: s, free: e - t * s, iterations: it, residual: res };
+            }
+            nself = n2.scale_r(mix).add(&nself.scale_r(1.0 - mix));
+            nself = nself.add(&nself.dagger()).scale_r(0.5);
+            it += 1;
+        }
+    }
+}

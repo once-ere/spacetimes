@@ -2,8 +2,10 @@
 """
 sf_part3_figures.py -- the figures of part III of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PROJECT spacetimes),
 drawn from the data files written by the Rust program sf_part3 (folder data/): Figure 8 (fig_part3_q1_potential), Figure 9
-(fig_part3_q3_landau, the accuracy of the Landau form) and Figure 10 (fig_part3_q2_masses); and Figure R1 of the
-document provenance/P4_remarks.md (fig_p4_r1_landau, the same as Figure 9 with the equation number of that document).
+(fig_part3_q3_landau, the accuracy of the Landau form), Figure 10 (fig_part3_q4_thermal, the free energy at finite
+temperature) and Figure 11 (fig_part3_q2_masses); Figure R1 of the document provenance/P4_remarks.md (fig_p4_r1_landau,
+the same as Figure 9 with the equation number of that document) and Figure A1 of that document (fig_p4_a1_thermal, the
+same as Figure 10 with the equation numbers of that document).
 
 Run (from the folder Revision_HS_CJT_and_Kohn-Sham, after rust/target/release/sf_part3):
     python3 python/sf_part3_figures.py
@@ -156,10 +158,88 @@ def fig_landau(eq="(12.2)", name="fig_part3_q3_landau"):
     save(fig, name)
 
 
+def fig_thermal(eq="(12.2)", name="fig_part3_q4_thermal"):
+    """Figure 10: the free energy at finite temperature (eq: the number of the Landau form in the document that shows
+    the figure; name: the name of the files).  (a) the order parameter Phi0(T) of the five methods (KS and
+    CJT coincide) against T/T_c, with the radius r(T) = (M_n(T)^2 + pi^2 T^2)^(1/2) of the series of F in powers of
+    Phi^2 (dashed, the same colour); (b) Phi0(T)/r(T): below 1 the order parameter lies inside the radius of
+    convergence; (c) the free-energy curves of CJT, F(Phi; T)/|F(Phi0; T)| against Phi/Phi0(T), with the universal
+    quartic curve x^4 - 2x^2 of Landau's theory (dashed); (d) the largest residual of the Landau form (12.2) and of the
+    quartic form, relative to the depth, and the relative error of Landau's order parameter (-a/(2b))^(1/2).
+    Data: part3_thermal.csv, part3_thermal_curves.csv, part3_thermal_landau.csv."""
+    head, rows = read("part3_thermal.csv")
+    col = {h: i for i, h in enumerate(head)}
+    _, crows = read("part3_thermal_curves.csv")
+    _, lrows = read("part3_thermal_landau.csv")
+    tags = ("HS_1_1", "HS_0_1", "HS_0_0", "CJT")
+    fig, axs = plt.subplots(2, 2, figsize=(9.6, 7.0))
+    (ax, bx), (cx, dx) = axs
+    for k, tag in enumerate(tags):
+        r = [x for x in rows if x[0] == tag]
+        tau = np.array([float(x[col["tau"]]) for x in r])
+        phi0 = np.array([float(x[col["Phi0"]]) for x in r])
+        rad = np.array([float(x[col["radius"]]) for x in r])
+        ax.plot(tau, phi0, color=PAL[k], lw=1.4, ls=["-", "--", "-.", ":"][k], marker="o", ms=3, label=LAB[tag])
+        ax.plot(tau, rad, color=PAL[k], lw=0.9, ls=(0, (2, 2)), alpha=0.8)
+        bx.plot(tau, phi0 / rad, color=PAL[k], lw=1.4, ls=["-", "--", "-.", ":"][k], marker="o", ms=3, label=LAB[tag])
+        lr = [x for x in lrows if x[0] == tag]
+        lt = np.array([float(x[1]) for x in lr])
+        dx.semilogy(lt, 100 * np.array([float(x[2]) for x in lr]), color=PAL[k], lw=1.3, ls="-", marker="o", ms=3, label=LAB[tag])
+        dx.semilogy(lt, 100 * np.array([float(x[3]) for x in lr]), color=PAL[k], lw=0.9, ls=":", marker="s", ms=2.5)
+    ax.text(0.03, 0.93, "thin dashed: radius of convergence r(T)", fontsize=7, color=INK2, transform=ax.transAxes)
+    ax.set_xlabel(r"$T/T^X_{\rm c}$")
+    ax.set_ylabel(r"order parameter $\Phi^X_0(T)$")
+    ax.set_title("(a) the order parameter falls to zero at $T_{\\rm c}$", fontsize=9, color=INK)
+    ax.legend(fontsize=7, loc="upper left", bbox_to_anchor=(0.0, 0.9))
+    bx.axhline(1.0, color=INK2, lw=0.8)
+    bx.set_xlabel(r"$T/T^X_{\rm c}$")
+    bx.set_ylabel(r"$\Phi^X_0(T)\,/\,r(T)$")
+    bx.set_title("(b) below 1: inside the radius of convergence", fontsize=9, color=INK)
+    bx.legend(fontsize=7, loc="upper right")
+    # (c) the free-energy curves of CJT, normalized
+    cr = [x for x in crows if x[0] == "CJT"]
+    taus = sorted(set(float(x[1]) for x in cr))
+    cmap = plt.get_cmap("Blues")
+    for j, tau in enumerate(taus):
+        pts = [x for x in cr if abs(float(x[1]) - tau) < 1e-9]
+        prow = [x for x in rows if x[0] == "CJT" and abs(float(x[col["tau"]]) - tau) < 1e-9][0]
+        p0, fmin = float(prow[col["Phi0"]]), abs(float(prow[col["F_min"]]))
+        xs = np.array([float(x[3]) for x in pts]) / p0
+        ys = np.array([float(x[4]) for x in pts]) / fmin
+        cx.plot(xs, ys, color=cmap(0.35 + 0.6 * j / max(len(taus) - 1, 1)), lw=1.3, label=r"$T/T_{\rm c}=%g$" % tau)
+    xx = np.linspace(0, 1.6, 200)
+    cx.plot(xx, xx ** 4 - 2 * xx ** 2, color=INK, lw=1.0, ls="--", label=r"Landau: $x^4-2x^2$")
+    cx.axhline(0, color=INK2, lw=0.6)
+    cx.set_xlabel(r"$\Phi/\Phi^{\rm CJT}_0(T)$")
+    cx.set_ylabel(r"$F^{\rm CJT}(\Phi;T)\,/\,|F^{\rm CJT}(\Phi_0;T)|$")
+    cx.set_title("(c) CJT: the shape tends to Landau's quartic form", fontsize=9, color=INK)
+    cx.set_ylim(-1.2, 1.6)
+    cx.legend(fontsize=6.5, loc="upper left")
+    # (d) the accuracy of the Landau form and of Landau's order parameter
+    for k, tag in enumerate(tags):
+        r = [x for x in rows if x[0] == tag]
+        tau = np.array([float(x[col["tau"]]) for x in r])
+        phi0 = np.array([float(x[col["Phi0"]]) for x in r])
+        pl = np.array([float(x[col["Phi0_Landau"]]) for x in r])
+        ok = np.isfinite(pl)
+        dx.semilogy(tau[ok], 100 * np.abs(pl[ok] / phi0[ok] - 1), color=PAL[k], lw=0.9, ls="--", marker="^", ms=2.5)
+    dx.text(0.02, 0.04, "solid: residual of the Landau form %s / depth\ndotted: residual of the quartic form / depth\n"
+            "dashed: error of Landau's order parameter $(-a/2b)^{1/2}$" % eq, fontsize=6.5, color=INK2, transform=dx.transAxes)
+    dx.set_xlabel(r"$T/T^X_{\rm c}$")
+    dx.set_ylabel("per cent")
+    dx.set_title("(d) the Landau form becomes exact as $T\\to T_{\\rm c}$", fontsize=9, color=INK)
+    dx.legend(fontsize=6.5, loc="lower left", bbox_to_anchor=(0.0, 0.17))
+    fig.tight_layout()
+    save(fig, name)
+
+
 if __name__ == "__main__":
     fig_potential()
     fig_masses()
     fig_landau()
     # the same figure for the document of remarks provenance/P4_remarks.md, whose equation of the Landau form is (R1.3)
     fig_landau("(R1.3)", "fig_p4_r1_landau")
+    fig_thermal()
+    # the same figure for the addendum A1 of provenance/P4_remarks.md, whose equation of the Landau form is (R1.3)
+    fig_thermal("(R1.3)", "fig_p4_a1_thermal")
     print("figures written to", FIG)

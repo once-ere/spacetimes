@@ -353,7 +353,9 @@ ENTRIES = [
      "measured from the normal vacuum: the ground-state energy of the mean-field Hamiltonian plus "
      "$\\Delta_{\\rm LL}^2/G_{\\rm LL}$", "new"),
     (G7, "$I^{(1)}_{\\rm SF}$, $I^{(3)}_{\\rm SF}$", "I1 I3", "the integrals $\\int_0^{\\Lambda_{\\rm LL}}q^2(q^2+M^2)^{\\mp1/2}dq$ "
-     "(upper sign $I^{(1)}_{\\rm SF}$, lower $I^{(3)}_{\\rm SF}$) as functions of the mass $M$ in their argument", "new"),
+     "(upper sign $I^{(1)}_{\\rm SF}$, lower $I^{(3)}_{\\rm SF}$) as functions of the mass $M$ in their argument; at the "
+     "temperature $T$, $I^{(1)}_{\\rm SF}(M,T)=\\int_0^{\\Lambda_{\\rm LL}}q^2\\tanh(E/2T)E^{-1}dq$ with "
+     "$E=(q^2+M^2)^{1/2}$, which equals $I^{(1)}_{\\rm SF}(M)$ at $T=0$", "new"),
     (G7, "$\\mathsf A^{\\rm K}_{\\rm SF}$, $\\mathsf P^{\\rm K}_{\\rm SF}$, $\\mathsf B^{\\rm K}_{\\rm SF}$, $\\mathsf G^{\\rm K}_{\\rm SF}$",
      "A_K P_K B_K G_K", "the $16\\times16$ matrices of the kink problem: $\\mathrm{diag}(\\alpha^1_{\\rm LL},(\\alpha^1_{\\rm LL})^*)$, the "
      "pairing matrix with the blocks $(\\mathsf K^3_{\\rm LL})^\\dagger$ (upper right) and $\\mathsf K^3_{\\rm LL}$ (lower left), "
@@ -435,7 +437,8 @@ ENTRIES = [
      "their product $\\boldsymbol\\chi_{\\rm SF}(\\omega)\\mathsf F^X_{\\rm SF}$", "new"),
     (G9, "$\\lambda^{\\rm S}_{\\rm SF}$, $\\lambda^{\\rm P}_{\\rm SF}$", "lambda_S lambda_P", "the eigenvalues of "
      "$\\mathsf Q^X_{\\rm SF}(0)$ of the normal vacuum in the scalar-density channel and in the pair channel (an eigenvalue "
-     "larger than 1 means that the normal vacuum is unstable in that channel)", "new"),
+     "larger than 1 means that the normal vacuum is unstable in that channel); $\\lambda^{\\rm P}_{\\rm SF}(T)$ is the "
+     "eigenvalue of the pair channel of the normal state at the temperature $T$", "new"),
     (G9, "$\\Omega_{\\rm SF}$", "Omega", "the energy of a transition between an occupied and an empty eigenvector of "
      "$\\mathsf H_{\\rm SF}(\\vec q_{\\rm LL})$, the difference of their eigenvalues", "new"),
     (G9, "$\\Gamma^{\\rm CJT}_{\\rm LL}$; $\\mathcal G_{\\rm LL}$", "Gamma_CJT G_prop", "the effective action of the "
@@ -475,7 +478,8 @@ ENTRIES = [
      "of a uniform state, $\\mathsf P_{\\rm SF}=\\sum_\\iota\\Phi^{X,\\iota}_{\\rm SF}(\\mathsf K^\\iota_{\\rm LL})^\\dagger$ (the value of the "
      "auxiliary pair field in HS, the anomalous self-energy in CJT, the Kohn-Sham pair potential in KS)", "new"),
     (G10, "$\\Phi^X_{0,{\\rm SF}}$", "Phi0", "the modulus of the field $\\vec\\Phi^X_{\\rm SF}$ in the vacuum of method $X$ "
-     "(the minimum of $\\mathcal V^X_{\\rm SF}$)", "new"),
+     "(the minimum of $\\mathcal V^X_{\\rm SF}$); $\\Phi^X_{0,{\\rm SF}}(T)$ is the modulus in the superfluid at the "
+     "temperature $T$ (the minimum of $\\mathcal F^X_{\\rm SF}$), with $\\Phi^X_{0,{\\rm SF}}(0)=\\Phi^X_{0,{\\rm SF}}$", "new"),
     (G10, "$Z^X_{\\rm SF}$, $Y^X_{\\rm SF}$", "Z_X Y_X", "the two coefficients of the kinetic part of the effective "
      "Lagrangian of method $X$: of $(\\nabla\\vec\\Phi)^\\dagger\\cdot\\nabla\\vec\\Phi$ and of "
      "$\\lvert\\vec\\Phi^\\dagger\\cdot\\nabla\\vec\\Phi\\rvert^2/\\lvert\\vec\\Phi\\rvert^2$ (each contracted over the coordinates "
@@ -491,10 +495,27 @@ ENTRIES = [
      "the coefficients of the Landau form $a\\lvert\\vec\\Phi\\rvert^2+b\\lvert\\vec\\Phi\\rvert^4+c\\lvert\\vec\\Phi\\rvert^6"
      "+u(\\lvert\\vec\\Phi\\rvert^4-\\lvert\\vec\\Phi\\cdot\\vec\\Phi\\rvert^2)$ of $\\mathcal V^X_{\\rm SF}$ (the first three fitted "
      "along the polar states, $u$ from the curvature along the non-unitary directions)", "new"),
+    (G10, "$T^{X,{\\rm c}}_{\\rm SF}$", "Tc", "the critical temperature of method $X$: the temperature at which the "
+     "eigenvalue $\\lambda^{\\rm P}_{\\rm SF}(T)$ of the static pair response of the normal state reaches 1 (with $k_{\\rm B}=1$, "
+     "in units of $\\Lambda_{\\rm LL}$)", "new"),
+    (G10, "$\\mathcal S_{\\rm SF}$", "entropy S_minus_S_normal", "the entropy per volume of a uniform quasi-free state: minus one half of the integral "
+     "$\\int d^3q/(2\\pi)^3$ over the momenta of $\\sum_k[f_k\\ln f_k+(1-f_k)\\ln(1-f_k)]$, the sum over the 16 eigenvalues "
+     "of the matrix of Bogoliubov and de Gennes at the momentum, with their occupations $f_k$", "new"),
+    (G10, "$\\mathcal F^X_{\\rm SF}$", "F_min free", "the free energy of the field $\\vec\\Phi$ in method $X$ at the temperature $T$: "
+     "the smallest $\\mathcal E^X_{\\rm SF}-T\\mathcal S_{\\rm SF}$ among the thermal states with the field $\\vec\\Phi$, measured from "
+     "the normal state at the same temperature; at $T=0$ the effective potential", "new"),
+    (G10, "$M^{X,{\\rm n}}_{\\rm SF}$", "Dirac_mass_normal mass_n", "the Dirac mass of the normal state of method $X$ at the "
+     "temperature $T$ (the mass plus the scalar part of its normal self-energy)", "new"),
+    (G10, "$r^X_{\\rm SF}$", "radius", "the radius of convergence, up to a factor of the order of 1, of the series of the free "
+     "energy of method $X$ in powers of $\\lvert\\vec\\Phi\\rvert^2$ about the normal state: "
+     "$(M^{X,{\\rm n}}_{\\rm SF}(T)^2+\\pi^2T^2)^{1/2}$", "new"),
+    (G10, "$b^{X,{\\rm Tay}}_{\\rm SF}$", "b_Taylor", "the coefficient of $\\lvert\\vec\\Phi\\rvert^4$ of the Taylor series of the "
+     "free energy of method $X$ at $\\vec\\Phi=0$ (at the temperature $T$)", "new"),
     (G10, "$a^{X,{\\rm Tay}}_{\\rm SF}$", "a_taylor a_Taylor", "the coefficient of $\\lvert\\vec\\Phi\\rvert^2$ of the Taylor series of "
      "the effective potential $\\mathcal V^X_{\\rm SF}$ at $\\vec\\Phi=0$ (one half of its second derivative along the polar "
      "fields there), computed from states with small applied pair fields; the coefficient $a^X_{\\rm SF}$ of the fitted Landau "
-     "form differs from it", "new"),
+     "form differs from it; $a^{X,{\\rm Tay}}_{\\rm SF}(T)$ is the same coefficient of the free energy "
+     "$\\mathcal F^X_{\\rm SF}$ at the temperature $T$", "new"),
     (G10, "$\\mathcal L^{\\rm CJT}$, $\\mathcal L^{\\rm HS}$, $\\mathcal L^{\\rm KS}$; $\\mathcal L^X_{\\rm kinetic}$, $\\mathcal L^X_{\\rm potential}$",
      "L_CJT L_HS L_KS L_kin L_pot", "the effective Lagrangian of the field $\\vec\\Phi^X_{\\rm SF}$ in method $X$, and its "
      "kinetic part (the terms with derivatives, to second order) and potential part (the author's names)", "author"),

@@ -1926,6 +1926,186 @@ complex isospin vector of fermion number 2 coupled to the gauge fields of $SU(2)
 Mexican-hat potential: the structure of the Higgs sector of the Standard Model (Section 1), with an isospin vector in place of
 the doublet.
 
+## 12.4 The free energy at finite temperature, the critical temperatures and the size of the order parameter
+
+This section is an addendum that the author asked for on 21 November 2026: to compute the effective potential and the
+free energy of each method $X$ (HS $(1,1)$, HS $(0,1)$, HS $(0,0)$, KS and CJT), and to determine whether the order
+parameter is then smaller and more physically reasonable. The effective potential is the subject of Section 12.1; this
+section computes the free energy at the temperature $T$ (with $k_{\rm B}=1$, in the units of the cutoff $\Lambda_{\rm LL}=1$, and
+$\mu_{\rm LL}=0$), whose value at $T=0$ is the effective potential.
+
+**The free energy of a state.** At the temperature $T$ a uniform quasi-free state is the thermal state of its matrix of
+Bogoliubov and de Gennes: at every momentum the generalized density is $\mathsf R(\vec q_{\rm LL})=f(\mathsf H_{\rm SF}(\vec q_{\rm LL}))$,
+the Fermi function $f(\varepsilon)=(e^{\varepsilon/T}+1)^{-1}$ applied to the eigenvalues $\varepsilon_k$ of $\mathsf H_{\rm SF}$. The free energy
+per volume of method $X$ is
+$$\mathcal E^X_{\rm SF}[\mathsf R]-T\,\mathcal S_{\rm SF}[\mathsf R],\qquad\mathcal S_{\rm SF}[\mathsf R]=-\frac12\int\!\frac{d^3q}{(2\pi)^3}\sum_{k=1}^{16}\big[f_k\ln f_k+(1-f_k)\ln(1-f_k)\big],\tag{12.7}$$
+with the energy $\mathcal E^X_{\rm SF}$ of method $X$ (Section 9, unchanged) and the entropy $\mathcal S_{\rm SF}$ of the quasi-free state,
+$f_k=f(\varepsilon_k)$ (every mode of the doubled space of $\mathsf H_{\rm SF}$ appears twice, at $\pm\varepsilon$ with the occupations $f$ and $1-f$,
+hence the factor $\tfrac12$). For HS this is the free energy at the saddle point of the auxiliary fields, for CJT the
+effective action at finite temperature with the truncation of Section 9.2, and for KS the functional of Mermin with the
+entropy of the quasi-free state of Kohn and Sham and the exchange-correlation energy of Section 9, which has no explicit
+dependence on the temperature (in the exact theory of Mermin the exchange-correlation free energy depends on the
+temperature; here only the states do). The choice is decision D15 of the task record. The self-energies are the
+derivatives of $\mathcal E^X_{\rm SF}$ as before, and the stationary points of (12.7) are the self-consistent thermal states. The
+**free energy of the field** $\vec\Phi$ is the smallest free energy among the states with this field, measured from the
+normal state at the same temperature,
+$$\mathcal F^X_{\rm SF}(\vec\Phi;T)=\min\{\mathcal E^X_{\rm SF}-T\mathcal S_{\rm SF}:\ \vec\Phi^X_{\rm SF}(\mathsf R)=\vec\Phi\}-\big(\mathcal E^X_{\rm SF}-T\mathcal S_{\rm SF}\big)_{\rm normal},\tag{12.8}$$
+computed as in Section 12.1 with an applied pair field and a self-consistent normal self-energy (the argument of
+Section 12.1 holds at every temperature). At $T=0$ the entropy vanishes and $\mathcal F^X_{\rm SF}(\vec\Phi;0)=\mathcal V^X_{\rm SF}(\vec\Phi)$:
+**the effective potential is the free energy at zero temperature.** *Checks P3-T1, YP3-T1:* at $T=0.005$ the thermal
+states reproduce the ground states of $T=0$ to $10^{-12}$; *check P3-T7:* the Landau form fitted to the free energy at
+$T=0$ has the residual of Table 12.1. The minimum of $\mathcal F^X_{\rm SF}(\vec\Phi;T)$ lies at $\lvert\vec\Phi\rvert=\Phi^X_{0,{\rm SF}}(T)$, the
+order parameter at the temperature $T$, with $\Phi^X_{0,{\rm SF}}(0)=\Phi^X_{0,{\rm SF}}$.
+
+**The critical temperature.** The normal state at $T$ has a normal self-energy that is a Dirac mass $M^{X,{\rm n}}_{\rm SF}(T)$ (the
+thermally excited particles and antiparticles change the scalar density, which shifts the mass through $g^{X,{\rm S}}_{\rm SF}$;
+in HS $(0,1)$ and $(0,0)$, where $g^{X,{\rm S}}_{\rm SF}=0$, it stays $m_{\rm LL}$). Its pair channel is unstable when
+$$\lambda^{\rm P}_{\rm SF}(T)=\frac{g^{X,{\rm P}}_{\rm SF}\,I^{(1)}_{\rm SF}(M^{X,{\rm n}}_{\rm SF}(T),T)}{\pi^2}>1\tag{12.9}$$
+with the integral
+$$I^{(1)}_{\rm SF}(M,T)=\int_0^{\Lambda_{\rm LL}}\frac{q^2\tanh(E/2T)}{E}\,dq,\qquad E=(q^2+M^2)^{1/2},$$
+the static pair response of Section 9.4 at finite temperature ($\tanh(E/2T)=1-2f(E)$ is the thermal factor of a pair of
+quasi-particles; at $T=0$, $I^{(1)}_{\rm SF}(M,0)=I^{(1)}_{\rm SF}(M)$). The critical temperature $T^{X,{\rm c}}_{\rm SF}$ solves
+$\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$ (*check P3-T3*: by bisection, with the normal state computed at every step; at $T=0$
+the formula gives the eigenvalue of Table 10.1; *check YP3-T3*: the Python program finds the same $T^{X,{\rm c}}_{\rm SF}$ to
+$10^{-10}$; *check YP3-T5*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.001$ to $T=0.6$, so
+$T^{X,{\rm c}}_{\rm SF}$ is the only solution there). Below $T^{X,{\rm c}}_{\rm SF}$ a polar start ends in a superfluid, above it in the normal state (*check P3-T4*). The
+critical temperatures are $0.214$ (HS (0, 0)) to $0.260$ (HS (1, 1)); KS and CJT coincide also at finite temperature.
+
+**The gap equation and the Dirac mass.** The polar superfluid with the Dirac mass $M^{X,{\rm D}}_{\rm SF}$ and the pair
+amplitude $\Phi^X_{0,{\rm SF}}(T)$ has the quasi-particle energies (10.3), and its pair self-consistency is
+$$1=\frac{g^{X,{\rm P}}_{\rm SF}}{\pi^2}\,I^{(1)}_{\rm SF}\Big(\big((M^{X,{\rm D}}_{\rm SF})^2+\Phi^X_{0,{\rm SF}}(T)^2\big)^{1/2},T\Big)\tag{12.10}$$
+(*check P3-T2*: the self-consistent states satisfy it to $10^{-12}$ at every temperature of Table 12.4; *check YP3-T4*: the
+Python program solves (12.10) alone for HS $(0,0)$ and finds the same order parameter to $10^{-9}$). The pair coupling
+alone fixes $(M^{X,{\rm D}}_{\rm SF})^2+\Phi^X_{0,{\rm SF}}(T)^2$ at every temperature. The scalar density of the superfluid, the
+density $n^{\rm S}_{\rm SF}$ of Section 9.4 at the temperature $T$,
+$$n^{\rm S}_{\rm SF}=\int\!\frac{d^3q}{(2\pi)^3}\Big[-\frac{4M^{X,{\rm D}}_{\rm SF}\tanh(E/2T)}{E}+\frac{4m_{\rm LL}}{(q^2+m_{\rm LL}^2)^{1/2}}\Big],$$
+that is,
+$$n^{\rm S}_{\rm SF}=-\frac2{\pi^2}\Big[M^{X,{\rm D}}_{\rm SF}\,I^{(1)}_{\rm SF}(E^{X,{\rm gap}}_{\rm SF},T)-m_{\rm LL}I^{(1)}_{\rm SF}(m_{\rm LL})\Big],$$
+with $E=(q^2+(E^{X,{\rm gap}}_{\rm SF})^2)^{1/2}$ and $E^{X,{\rm gap}}_{\rm SF}=((M^{X,{\rm D}}_{\rm SF})^2+\Phi^X_{0,{\rm SF}}(T)^2)^{1/2}$, contains the
+same integral, which (12.10) fixes to $\pi^2/g^{X,{\rm P}}_{\rm SF}$: $n^{\rm S}_{\rm SF}=-2M^{X,{\rm D}}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}+2m_{\rm LL}I^{(1)}_{\rm SF}(m_{\rm LL})/\pi^2$.
+The scalar self-consistency $M^{X,{\rm D}}_{\rm SF}-m_{\rm LL}=g^{X,{\rm S}}_{\rm SF}n^{\rm S}_{\rm SF}$ therefore contains no temperature, and it has
+the same solution at every temperature below $T^{X,{\rm c}}_{\rm SF}$ (*check P3-T8*): **the Dirac mass of the superfluid does not
+depend on the temperature**, and the order parameter follows from (12.10) alone. (In the normal state the integral is
+$I^{(1)}_{\rm SF}(M^{X,{\rm n}}_{\rm SF}(T),T)$, which is not fixed, and $M^{X,{\rm n}}_{\rm SF}(T)$ changes with the temperature where
+$g^{X,{\rm S}}_{\rm SF}\ne0$.)
+
+**The radius of convergence at finite temperature.** The free energy is built from integrals over the momenta of
+functions of the quasi-particle energies $E=(q^2+M^2+\Phi_{\rm a}^2)^{1/2}$ (for a Dirac mass $M$ and an applied pair field
+$\Phi_{\rm a}$) and of their Fermi functions: the terms $-T\ln(2\cosh(E/2T))$, one for each pair of eigenvalues $\pm E$ of $\mathsf H_{\rm SF}$
+(at the Fermi occupation $f=f(E)$ the energy $E(f-\tfrac12)$ of the pair and its term $T[f\ln f+(1-f)\ln(1-f)]$ in
+$-T\mathcal S_{\rm SF}$ add up to $-T\ln(2\cosh(E/2T))$), and the densities with the factor $\tanh(E/2T)/E$. With the Matsubara frequencies $\omega_n=(2n+1)\pi T$ they become sums over $n$,
+$$\ln\big(2\cosh(E/2T)\big)=\ln2+\sum_{n=0}^\infty\ln\Big(1+\frac{E^2}{\omega_n^2}\Big),\qquad\frac{\tanh(E/2T)}E=4T\sum_{n=0}^\infty\frac1{\omega_n^2+E^2},$$
+of functions of $\omega_n^2+q^2+M^2+\Phi_{\rm a}^2$. Integrated over the momenta, each is singular where $\omega_n^2+M^2+\Phi_{\rm a}^2=0$
+(at the end $q=0$ of the integral); the nearest of these points to the origin, for the Dirac mass of the normal state
+held fixed, is $\Phi_{\rm a}^2=-(M^{X,{\rm n}}_{\rm SF}(T)^2+\pi^2T^2)$. At $T=0$ the frequencies become continuous, and the singularity
+is the point $\Phi_{\rm a}^2=-(M^{X,{\rm D}}_{\rm SF})^2$ of Section 12.1. The series of $\mathcal F^X_{\rm SF}$ in powers of
+$\lvert\vec\Phi\rvert^2$ about the normal state therefore converges within a radius of the order of
+$$r^X_{\rm SF}(T)=\big(M^{X,{\rm n}}_{\rm SF}(T)^2+\pi^2T^2\big)^{1/2},\tag{12.11}$$
+not exactly equal to it: the Dirac mass changes with the applied field where $g^{X,{\rm S}}_{\rm SF}\ne0$, and the field $\Phi$ of the
+states is not the applied field $\Phi_{\rm a}$. $r^X_{\rm SF}(0)=m_{\rm LL}$, and $r^X_{\rm SF}$ grows with the temperature to
+$0.688$ (HS (0, 0)) to $0.828$ (HS (1, 1)) at $0.98\,T^{X,{\rm c}}_{\rm SF}$. Because (12.11) is an estimate, the statements below rest also on direct
+measures that do not use it: the residual of the Landau form and the error of Landau's order parameter.
+
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| effective pair coupling $g^{X,{\rm P}}_{\rm SF}$ | $25.20$ | $24.50$ | $23.70$ | $23.70$ | $23.70$ |
+| effective scalar coupling $g^{X,{\rm S}}_{\rm SF}$ | $2.80$ | $0$ | $0$ | $-7.40$ | $-7.40$ |
+| $\lambda^{\rm P}_{\rm SF}(0)$ of the normal vacuum | $1.18384$ | $1.15096$ | $1.11338$ | $1.11338$ | $1.11338$ |
+| critical temperature $T^{X,{\rm c}}_{\rm SF}$ | $0.260467$ | $0.240465$ | $0.213799$ | $0.222119$ | $0.222119$ |
+| $\Phi^X_{0,{\rm SF}}(0)$ | $0.403064$ | $0.362009$ | $0.306989$ | $0.328486$ | $0.328486$ |
+| $\Phi^X_{0,{\rm SF}}(0)/T^{X,{\rm c}}_{\rm SF}$ | $1.547$ | $1.505$ | $1.436$ | $1.479$ | $1.479$ |
+| $E^{X,{\rm gap}}_{\rm SF}(0)/T^{X,{\rm c}}_{\rm SF}$ | $1.739$ | $1.720$ | $1.714$ | $1.650$ | $1.650$ |
+| Dirac mass of the superfluid (every $T<T^{X,{\rm c}}_{\rm SF}$) | $0.206685$ | $0.200000$ | $0.200000$ | $0.162293$ | $0.162293$ |
+| $\Phi^X_{0,{\rm SF}}(T)<r^X_{\rm SF}(T)$ above $T/T^{X,{\rm c}}_{\rm SF}=$ | $0.42$ | $0.40$ | $0.35$ | $0.37$ | $0.37$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0$ | $2.02$ | $1.81$ | $1.53$ | $1.64$ | $1.64$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.5$ | $0.860$ | $0.824$ | $0.765$ | $0.800$ | $0.800$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.9$ | $0.295$ | $0.287$ | $0.273$ | $0.284$ | $0.284$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.98$ | $0.127$ | $0.124$ | $0.118$ | $0.123$ | $0.123$ |
+| residual of (12.2) / depth at $0$ (per cent) | $0.70$ | $0.47$ | $0.27$ | $0.28$ | $0.28$ |
+| residual of (12.2) / depth at $0.5$ (per cent) | $0.56$ | $0.38$ | $0.19$ | $0.23$ | $0.23$ |
+| residual of (12.2) / depth at $0.9$ (per cent) | $0.040$ | $0.030$ | $0.019$ | $0.024$ | $0.024$ |
+| residual of (12.2) / depth at $0.98$ (per cent) | $0.0017$ | $0.0013$ | $0.00078$ | $0.0010$ | $0.0010$ |
+| residual of the quartic form / depth at $0$ (per cent) | $5.9$ | $4.4$ | $2.8$ | $5.0$ | $5.0$ |
+| residual of the quartic form / depth at $0.9$ (per cent) | $1.8$ | $1.6$ | $1.3$ | $1.6$ | $1.6$ |
+| residual of the quartic form / depth at $0.98$ (per cent) | $0.37$ | $0.32$ | $0.26$ | $0.31$ | $0.31$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0$ (per cent) | $3.8$ | $3.1$ | $1.9$ | $7.0$ | $7.0$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0.9$ (per cent) | $2.7$ | $2.3$ | $1.8$ | $2.3$ | $2.3$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0.98$ (per cent) | $0.56$ | $0.49$ | $0.38$ | $0.47$ | $0.47$ |
+| occupation of the states at the cutoff at $0.98\,T^{X,{\rm c}}_{\rm SF}$ (per cent) | $1.8$ | $1.3$ | $0.76$ | $0.94$ | $0.94$ |
+
+**Table 12.4.** The free energy at finite temperature. Rows 1 to 3: the effective couplings and the eigenvalue of the
+static pair response of the normal vacuum; rows 4 to 8: the critical temperature, the order parameter at $T=0$, its
+ratio to $T^{X,{\rm c}}_{\rm SF}$ and that of the gap $E^{X,{\rm gap}}_{\rm SF}=((M^{X,{\rm D}}_{\rm SF})^2+(\Phi^X_{0,{\rm SF}})^2)^{1/2}$ at $T=0$,
+and the Dirac mass $M^{X,{\rm D}}_{\rm SF}$ of the superfluid;
+row 9: the reduced temperature above which the order parameter lies inside the radius of convergence (12.11)
+(interpolated linearly in the table of temperatures); rows 10 to 13: $\Phi^X_{0,{\rm SF}}(T)/r^X_{\rm SF}(T)$ at four temperatures; rows 14
+to 20: the largest residual of the Landau form (12.2) and of the quartic form fitted to $\mathcal F^X_{\rm SF}(\Phi;T)$ on
+$[0,1.4\,\Phi^X_{0,{\rm SF}}(T)]$, relative to the depth $\lvert\mathcal F^X_{\rm SF}(\Phi^X_{0,{\rm SF}}(T);T)\rvert$; rows 21 to 23: the error of the
+order parameter $(-a/2b)^{1/2}$ of Landau's theory, where $a=a^{X,{\rm Tay}}_{\rm SF}(T)$ and $b=b^{X,{\rm Tay}}_{\rm SF}(T)$ are the Taylor
+coefficients of $\lvert\vec\Phi\rvert^2$ and $\lvert\vec\Phi\rvert^4$ of $\mathcal F^X_{\rm SF}$ at the origin (computed from four small applied
+fields); row 24: the occupation $f(E(\Lambda_{\rm LL}))$ of the states at the cutoff. Data: `data/part3_thermal.csv`,
+`data/part3_thermal_landau.csv`, `data/part3_values.csv`.
+
+![](figures/fig_part3_q4_thermal.png){width=100%}
+
+**Figure 10.** The free energy at finite temperature. (a) The order parameter $\Phi^X_{0,{\rm SF}}(T)$ against $T/T^{X,{\rm c}}_{\rm SF}$
+(KS and CJT coincide; one curve for both), with the radius $r^X_{\rm SF}(T)$ of (12.11) thin and dashed in the same colour. (b) The ratio
+$\Phi^X_{0,{\rm SF}}(T)/r^X_{\rm SF}(T)$: below 1 the order parameter lies inside the radius of convergence. (c) The free energy of
+CJT normalized to its minimum, $\mathcal F^{\rm CJT}_{\rm SF}(\Phi;T)/\lvert\mathcal F^{\rm CJT}_{\rm SF}(\Phi_0;T)\rvert$ against $\Phi/\Phi^{\rm CJT}_{0,{\rm SF}}(T)$,
+with the curve $x^4-2x^2$ of Landau's theory (dashed). (d) The largest residual of the Landau form (12.2) (solid) and of
+the quartic form (dotted), relative to the depth, and the error of Landau's order parameter $(-a/2b)^{1/2}$ (dashed).
+Data: `data/part3_thermal.csv`, `data/part3_thermal_curves.csv`, `data/part3_thermal_landau.csv`.
+
+**Is the order parameter smaller and more physically reasonable?** Yes, near the critical temperature, and only
+there:
+
+1. **It is smaller.** $\Phi^X_{0,{\rm SF}}(T)$ keeps its value of $T=0$ up to about $0.3\,T^{X,{\rm c}}_{\rm SF}$ (the gap, $0.366$ (HS (0, 0)) to $0.453$ (HS (1, 1)), is much
+   larger than $T$, and thermal quasi-particles are exponentially rare; at $0.3\,T^{X,{\rm c}}_{\rm SF}$ it has changed by
+   $0.12$ per cent (HS (0, 0)) to $0.13$ per cent (KS, CJT)), then falls and vanishes continuously at
+   $T^{X,{\rm c}}_{\rm SF}$, like $(1-T/T^{X,{\rm c}}_{\rm SF})^{1/2}$ (Figure 10a): at $0.98\,T^{X,{\rm c}}_{\rm SF}$ it is $0.0812$ (HS (0, 0)) to $0.105$ (HS (1, 1)), against
+   $0.307$ (HS (0, 0)) to $0.403$ (HS (1, 1)) at $T=0$.
+2. **It lies inside the radius of convergence.** At $T=0$ the order parameter is $1.53$ (HS (0, 0)) to $2.02$ (HS (1, 1)) times the radius (12.11);
+   above $0.35$ (HS (0, 0)) to $0.42$ (HS (1, 1)) times $T^{X,{\rm c}}_{\rm SF}$ it is smaller than the radius (row 9), and at $0.98\,T^{X,{\rm c}}_{\rm SF}$ the ratio is
+   $0.118$ (HS (0, 0)) to $0.127$ (HS (1, 1)) (Figure 10b). There the series of the free energy in powers of $\lvert\vec\Phi\rvert^2$ converges at the
+   minimum, and the Landau coefficients are the Taylor coefficients of the free energy: the regime of Landau's theory,
+   which Section 12.1 found absent at $T=0$.
+3. **The Landau form becomes exact.** The largest residual of (12.2), relative to the depth, is $0.27$ per cent (HS (0, 0)) to $0.70$ per cent (HS (1, 1)) at
+   $T=0$ and $0.00078$ per cent (HS (0, 0)) to $0.0017$ per cent (HS (1, 1)) at $0.98\,T^{X,{\rm c}}_{\rm SF}$. That of the quartic form (the form of the Higgs potential of the
+   Standard Model and of the theory of Ginzburg and Landau) is $2.8$ per cent (HS (0, 0)) to $5.9$ per cent (HS (1, 1)) at $T=0$ and $0.26$ per cent (HS (0, 0)) to $0.37$ per cent (HS (1, 1)) at
+   $0.98\,T^{X,{\rm c}}_{\rm SF}$; near $T^{X,{\rm c}}_{\rm SF}$ it falls in proportion to $1-T/T^{X,{\rm c}}_{\rm SF}$ (*check P3-T6*). The normalized free energy approaches the curve $x^4-2x^2$ (Figure 10c).
+4. **Landau's theory predicts the order parameter.** $(-a/2b)^{1/2}$ from the Taylor coefficients at the origin errs by
+   $1.9$ per cent (HS (0, 0)) to $7.0$ per cent (KS, CJT) at $T=0$ and by $0.38$ per cent (HS (0, 0)) to $0.56$ per cent (HS (1, 1)) at $0.98\,T^{X,{\rm c}}_{\rm SF}$; the error is about
+   $0.19$ (HS (0, 0)) to $0.28$ (HS (1, 1)) times $1-T/T^{X,{\rm c}}_{\rm SF}$ near $T^{X,{\rm c}}_{\rm SF}$ (*check P3-T5*), as Landau's theory requires.
+5. **The scales.** Near $T^{X,{\rm c}}_{\rm SF}$ the order parameter is small also against the Dirac mass and the cutoff. The
+   critical temperatures themselves, however, are about a fifth to a quarter of the cutoff ($0.214$ (HS (0, 0)) to $0.260$ (HS (1, 1))); the states at the cutoff are
+   occupied by $0.76$ per cent (HS (0, 0)) to $1.8$ per cent (HS (1, 1)) at $0.98\,T^{X,{\rm c}}_{\rm SF}$ (row 24), so the thermal physics reaches the cutoff only weakly.
+   The ratio $\Phi^X_{0,{\rm SF}}(0)/T^{X,{\rm c}}_{\rm SF}$ is $1.44$ (HS (0, 0)) to $1.55$ (HS (1, 1)), and the ratio of the gap,
+   $E^{X,{\rm gap}}_{\rm SF}(0)/T^{X,{\rm c}}_{\rm SF}$, is $1.65$ (KS, CJT) to $1.74$ (HS (1, 1)); the theory of Bardeen, Cooper and Schrieffer gives
+   $\Delta(0)/T_{\rm c}=\pi e^{-\gamma_{\rm E}}=1.764$ for weak pairing at a Fermi surface. The ratios are of the same size but not equal:
+   here there is no Fermi surface ($\mu_{\rm LL}=0$), the pairing needs a coupling above the critical one, and the gap
+   contains the Dirac mass.
+
+**What the free energy of these methods does not contain (a remark, and why it matters).** All three methods give
+mean-field free energies. The thermal state is quasi-free, so (12.7) contains the thermal quasi-particles of the spinor
+field, but neither the thermal fluctuations of the order parameter about its mean value (its amplitude, Goldstone and
+non-unitary modes, Sections 13 and 14) nor thermal gauge fields (the gauge fields of Sections 13 to 15 do not enter the
+thermal state). In HS this is the saddle point without the fluctuations of the auxiliary fields, in CJT the truncation
+of Section 9.2, and in KS an exchange-correlation energy without a thermal part. Near a continuous transition the
+fluctuations of the order parameter grow. Within the critical region, whose width in $1-T/T^{X,{\rm c}}_{\rm SF}$ is the
+Ginzburg number of the transition (Levanyuk 1959, Ginzburg 1960), the mean-field free energy fails: the order parameter
+vanishes with an exponent different from the $\tfrac12$ of item 1, $T^{X,{\rm c}}_{\rm SF}$ is shifted, and for an order
+parameter with two quartic invariants, as here, the fluctuations can also make the transition discontinuous (the
+renormalization-group analysis of such fields is reviewed by Pelissetto and Vicari, 2002). A gauge field coupled to the
+order parameter can do the same: its fluctuations make the transition of a superconductor weakly first order
+(Halperin, Lubensky and Ma, 1974), and the thermal transition of the Higgs field of the electroweak theory, of first
+order for small Higgs masses, ends at a critical Higgs mass, above which there is no transition but a smooth crossover
+(Kajantie, Laine, Rummukainen and Shaposhnikov, 1996). The statements of items 1 to 4 are therefore statements about the
+mean-field free energy; they describe the superfluid near $T^{X,{\rm c}}_{\rm SF}$ only outside the critical region, and
+whether the transition of the full theory is continuous is not decided here. The Ginzburg number needs the gradient
+coefficient of the field at $T^{X,{\rm c}}_{\rm SF}$, which this section does not compute (Section 12.2 computes it at $T=0$);
+it is the next step if the critical region is to be located. At $T=0$ the methods omit the quantum fluctuations of the
+order parameter as well; that is a property of the methods (Section 9), not the subject of this remark.
+
 # 13. The minima, the breaking of the symmetry and $\mathrm{SFBSv}^X$
 
 ## 13.1 The vacua and the surviving symmetry
@@ -1982,7 +2162,7 @@ of the linear response (Section 10.5), and the masses of the gauge bosons that (
 project, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ (Section 13.3). Data: `data/part3_sfbsv.csv`.
 
 The effective Lagrangian, which keeps the derivatives to second order, gives the masses of the amplitude and of the
-non-unitary modes 7 to 17 per cent above the exact linear response (Table 13.1 and Figure 10). The difference is
+non-unitary modes 7 to 17 per cent above the exact linear response (Table 13.1 and Figure 11). The difference is
 expected: the modes lie at 0.8 to 0.9 of the threshold $2E^{X,{\rm gap}}_{\rm SF}$, where the response depends strongly on the
 frequency and the expansion to second order in the derivatives (in $\omega$) is not accurate; the ordering of the modes
 (in CJT and KS the amplitude mode below the non-unitary doublet; in HS $(0,1)$ and $(0,0)$ the two degenerate) is the
@@ -1990,7 +2170,7 @@ same in both.
 
 ![](figures/fig_part3_q2_masses.png){width=100%}
 
-**Figure 10.** Left: the masses of the amplitude and of the non-unitary modes from the effective Lagrangians (13.6) and
+**Figure 11.** Left: the masses of the amplitude and of the non-unitary modes from the effective Lagrangians (13.6) and
 from the linear response of Section 10.5. Right: the squared decay constants of the Goldstone fields from the time
 components and from the space components, and the spurious stiffness of the unbroken $T^3$ from the space components.
 Data: `data/part3_sfbsv.csv`.
@@ -2112,14 +2292,14 @@ $\theta'=37.875^\circ$, and it couples to the charge $T^2_{\rm LL}-\tfrac12F_{\r
 $g^{\rm v}_{\rm LL}\cos\theta'=2g^{\rm v}_{\rm LL}g^{\rm F}_{\rm LL}/((g^{\rm v}_{\rm LL})^2+4(g^{\rm F}_{\rm LL})^2)^{1/2}=0.55255$: the same structure as
 the Weinberg angle ($\tan\theta_W=g'/g$, $e=gg'/(g^2+g'^2)^{1/2}$), with $g'$ replaced by $2g^{\rm F}_{\rm LL}$ because the field has
 fermion number 2. The mixing angle of the photon is fixed by the generator that leaves the condensate unchanged; for the
-polar vacua of the superfluid that generator is pure isospin, and the angle is zero. Figure 11 follows the masses
+polar vacua of the superfluid that generator is pure isospin, and the angle is zero. Figure 12 follows the masses
 along the family $\vec\Phi=\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$ of the angle $\upsilon$ (upsilon): a massless boson
 exists only where the field has a continuous stabilizer ($\upsilon=0$, $45^\circ$, $90^\circ$), and its composition changes from
 $W^3$ through $\cos\theta'W^2-\sin\theta'B$ to $W^1$.
 
 ![](figures/fig_part4_r1_massmatrix.png){width=100%}
 
-**Figure 11.** The mass matrix (14.3) of $\mathcal L^{\rm CJT}$ along the fields $\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$. Left: the
+**Figure 12.** The mass matrix (14.3) of $\mathcal L^{\rm CJT}$ along the fields $\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$. Left: the
 four masses (square roots of the eigenvalues). Right: the squared components of the lightest boson. At $\upsilon=0$ and
 $90^\circ$ the field is a polar vacuum (along $\vec e_3$ and, up to the phase $i$, along $\vec e_1$) and the massless boson is $W^3$
 and $W^1$; at $\upsilon=45^\circ$ it is $\cos\theta'W^2-\sin\theta'B$. Computed by `python/sf_part4_figures.py` from (14.3) with the
@@ -2231,12 +2411,12 @@ have the same rate.
 
 **The nonlinear stage.** When $\lvert\Phi^3\rvert$ reaches $\Phi_0$ the growth stops; the field overshoots to
 $\lvert\Phi^3\rvert_{\max}>\Phi_0$, falls back (in the three HS methods to between $0.2$ and $7$ per cent of $\Phi_0$, in KS and CJT
-to between $0.2$ and $0.65$ of $\Phi_0$), and grows again: a train of pulses (Figure 12). The state cannot
+to between $0.2$ and $0.65$ of $\Phi_0$), and grows again: a train of pulses (Figure 13). The state cannot
 settle in the minimum of the Mexican hat. Its energy is conserved (*check P4-T3*, $4\times10^{-8}$ of the depth of the
 minimum) and equals that of the normal vacuum, which lies above the minimum by $\lvert\mathcal E^X_{\rm SF}\rvert$; the time-dependent
 mean field has no mechanism that carries this energy away (it is collisionless: no scattering of quasi-particles, no
 radiation, the state stays uniform), so it stays in the motion, which exchanges it between the kinetic and the
-interaction energy (Figure 12, right). The same pulse train is known from the collisionless dynamics of the BCS pairing
+interaction energy (Figure 13, right). The same pulse train is known from the collisionless dynamics of the BCS pairing
 problem started near the normal state; relaxation to the minimum needs processes beyond the mean field. The charges stay
 zero to $10^{-16}$ (*P4-T4*), $\mathsf R_{\rm SF}$ stays a Hermitian projector with the block relation of (6.4a) to $6\times10^{-10}$ (*P4-T5*), and
 the run with ten times smaller tolerances agrees to $5\times10^{-8}\Phi_0$ (*P4-T12*).
@@ -2265,7 +2445,7 @@ per pulse), in KS and in CJT (about 3 per pulse), and neutral in HS $(0,1)$ and 
 the two methods in which the amplitude mode and the non-unitary modes are degenerate, Table 10.4). The growth does not
 follow from how close the pulses come to the normal vacuum (the pulses of HS $(0,0)$ come closest, those of KS and CJT stay
 farthest from it); its mechanism is not analyzed further in this manuscript. The energy stays conserved in these runs
-(*P4-T13*), and the departure reaches $0.1$ at the times of Table 15.1 (seed $10^{-11}$; Figure 13, right).
+(*P4-T13*), and the departure reaches $0.1$ at the times of Table 15.1 (seed $10^{-11}$; Figure 14, right).
 
 | method | $\lambda^{\rm P}_{\rm SF}$ | $\gamma^X_{\rm SF}$, linear response | $\gamma^X_{\rm SF}$, time-dependent | largest $\lvert\Phi^3\rvert/\Phi_0$ | first maximum at $t$ | period | growth of the departure per pulse | $t$ at $s=0.1$ |
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -2283,7 +2463,7 @@ seeds, the growth of the departure (15.1) per pulse (seed $10^{-13}$) and the ti
 
 ![](figures/fig_part4_r2_growth.png){width=100%}
 
-**Figure 12.** Left: $\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ from the normal vacuum with the seed $10^{-7}$, for the five methods (KS and CJT
+**Figure 13.** Left: $\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ from the normal vacuum with the seed $10^{-7}$, for the five methods (KS and CJT
 coincide to $10^{-8}$), with the growth $e^{\gamma^X_{\rm SF}t}$ of the linear response (dotted). Right: CJT, $\lvert\Phi^3\rvert/\Phi_0$ and the kinetic, the interaction and the
 total energy per volume. Data: `data/part4_td_growth_*.csv`.
 
@@ -2319,7 +2499,7 @@ YP4-T3*).
 
 ![](figures/fig_part4_r3_modes.png){width=100%}
 
-**Figure 13.** Left: CJT, the windowed power spectra of the two signals after the changes of the ground state, with the
+**Figure 14.** Left: CJT, the windowed power spectra of the two signals after the changes of the ground state, with the
 collective modes of the linear response (dotted) and the threshold of two quasi-particles. Right: the departure (15.1) from
 the polar sector with the full equations and the non-unitary seed $10^{-13}$. Data: `data/part4_td_kicks_CJT.csv`,
 `data/part4_td_growth_*.csv`.
@@ -2359,7 +2539,7 @@ $\ell_{\rm W}=((M^{\rm CJT}_{W,{\rm SF}})^2-\omega_{\rm s}^2)^{-1/2}=29.565$. Th
 frequency over the last two periods agrees with this steady state for $\lvert x\rvert<100$ to $2\times10^{-3}$ of its largest value, and
 its decay length for $30<x<100$ is $30.141$ (*check P4-W5*; the remaining difference comes from the
 width of the source and from the waves above the mass that the switching on of the source excites, which travel slowly and
-are still visible beyond $x\approx150$, Figure 14). The photon carries energy to infinity at any frequency, the W only above its mass: the
+are still visible beyond $x\approx150$, Figure 15). The photon carries energy to infinity at any frequency, the W only above its mass: the
 range of the force of a static source is infinite for the photon and $1/M^X_{W,{\rm SF}}$ for the W.
 
 ## 15.4 The longitudinal Z: the Higgs mechanism in time
@@ -2416,7 +2596,7 @@ massive Z. The Python program repeats both sections through the C interface (*ch
 
 ![](figures/fig_part4_r4_waves.png){width=100%}
 
-**Figure 14.** Top left: the transverse photon and W at $t=900$, driven at $0.7M_W$ by the current sheet at $x=0$. Top right:
+**Figure 15.** Top left: the transverse photon and W at $t=900$, driven at $0.7M_W$ by the current sheet at $x=0$. Top right:
 the amplitude of the W at the source frequency, the evanescent steady state and the slope $e^{-x/\ell_{\rm W}}$. Bottom left: the energy
 density of the free Goldstone packet (up) and of the longitudinal Z (down) at three times. Bottom right: the centres of
 their energies. Data: `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv`.
@@ -2435,7 +2615,8 @@ Both are drawn by `python/sf_part4_figures.py` from the data files of `sf_part4`
 # 16. Provenance: programs, commands, reports, data and figures
 
 The programs of each part, how to build and run them, the reports of their checks (printed completely), and the
-checksums of their data files and figures.
+checksums of their data files and figures. In the reports, a check whose deviation and tolerance are both 0 is the check
+of a fact (a yes-or-no statement, such as "a polar start ends in a superfluid"): it passes when the statement holds.
 
 ## 16.1 Part I: the programs and how to run them
 
@@ -2779,21 +2960,27 @@ VERDICT: ALL PASS (23 of 23)
 
 * **Rust.** The program `sf_part3` (crate `rust/sfpart3`: the modules `effpot` (Section 12.1: the states with a fixed
   pair field, the curves, the curvatures, the symmetries, the Landau fit), `landau` (Section 12.1: the accuracy of the
-  Landau form, Table 12.2 and Figure 9, with the checks P3-8 to P3-11) and `kinetic` (Section 12.2: the
-  susceptibilities and the twisted states)) uses the library `sfcore`, with two functions added for this part in the
-  module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix). It reads
+  Landau form, Table 12.2 and Figure 9, with the checks P3-8 to P3-11), `kinetic` (Section 12.2: the
+  susceptibilities and the twisted states) and `thermal` (Section 12.4: the free energy at finite temperature, the
+  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T8)) uses the library `sfcore`, with two functions added for this part in the
+  module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
+  Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
 
       cd rust
       cargo build --release
       ./target/release/sf_part3
 
-  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about two minutes.
+  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about fifteen minutes (the
+  free energy at finite temperature takes most of it: near the critical temperature the iterations converge slowly).
 * **Python.** `python/sf_part3.py` recomputes, with the engine of `python/sf_part2.py`, the minima, the curvatures of the
   effective potentials, the Taylor coefficients at the origin, the susceptibilities and the stiffness of the twisted
   states of HS $(1,1)$ and CJT, checks the quasi-particle energies (10.3) with an applied pair field, recomputes every
-  number of Table 12.2 from the data files of the five polar curves, and compares all of them with the values of the
-  Rust program; `python/sf_part3_figures.py` draws Figures 8, 9 and 10:
+  number of Table 12.2 from the data files of the five polar curves, computes the thermal states of HS $(1,1)$ and
+  CJT (the limit $T\to0$, the critical temperatures, the order parameter at two temperatures), solves the gap equation
+  (12.10) of HS $(0,0)$ alone, shows for the five methods that $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the
+  temperature, and compares all of them with the values of the Rust program;
+  `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11:
 
       python3 python/sf_part3.py
       python3 python/sf_part3_figures.py
@@ -2815,6 +3002,14 @@ VERDICT: ALL PASS (23 of 23)
 | P3-9 HS_1_1 | PASS | 2.027e-17 | 1.0e-12 | HS\_1\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 HS_1_1 | PASS | 1.103e-14 | 1.0e-9 | HS\_1\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 HS_1_1 | PASS | 8.786e-9 | 1.0e-6 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -6.0408804409e-3) |
+| P3-T1 HS_1_1 | PASS | 2.357e-14 | 1.0e-12 | HS\_1\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_1_1 | PASS | 4.408e-14 | 1.0e-12 | HS\_1\_1: the critical temperature T\_c = 0.2604672394 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1838428143 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_1_1 | PASS | 9.363e-13 | 1.0e-9 | HS\_1\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 25.200000) |
+| P3-T8 HS_1_1 | PASS | 3.622e-14 | 1.0e-10 | HS\_1\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2066851932; largest change) |
+| P3-T5 HS_1_1 | PASS | 2.814e-1 | 5.0e-1 | HS\_1\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 5.63e-3) |
+| P3-T4 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 7.489e-2) and in the normal state at 1.01 T\_c (Phi0 = 2.8e-11) |
+| P3-T7 HS_1_1 | PASS | 5.579e-12 | 1.0e-8 | HS\_1\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 7.035495e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.83e-2, 8.81e-3, 3.73e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.7e-5 of the depth at 0.98 T\_c |
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -2824,6 +3019,14 @@ VERDICT: ALL PASS (23 of 23)
 | P3-9 HS_0_1 | PASS | 2.269e-17 | 1.0e-12 | HS\_0\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 HS_0_1 | PASS | 5.616e-13 | 1.0e-9 | HS\_0\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 HS_0_1 | PASS | 5.417e-9 | 1.0e-6 | HS\_0\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -5.2811441242e-3) |
+| P3-T1 HS_0_1 | PASS | 9.226e-14 | 1.0e-12 | HS\_0\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_0_1 | PASS | 4.028e-13 | 1.0e-12 | HS\_0\_1: the critical temperature T\_c = 0.2404654563 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1509582917 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_0_1 | PASS | 1.032e-12 | 1.0e-9 | HS\_0\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 24.500000) |
+| P3-T8 HS_0_1 | PASS | 0.000e0 | 1.0e-10 | HS\_0\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
+| P3-T5 HS_0_1 | PASS | 2.436e-1 | 5.0e-1 | HS\_0\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.87e-3) |
+| P3-T4 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.757e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.2e-11) |
+| P3-T7 HS_0_1 | PASS | 5.897e-13 | 1.0e-8 | HS\_0\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 4.693236e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.60e-2, 7.67e-3, 3.24e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.3e-5 of the depth at 0.98 T\_c |
 | P3-6 HS_0_1 | PASS | 1.170e-19 | 1.0e-10 | HS\_0\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.2e-19) |
 | P3-1 HS_0_0 | PASS | 7.716e-15 | 1.0e-9 | HS\_0\_0: the applied field Phi0 = 0.3069887935 gives back Phi\^3 = Phi0 and the ground-state energy -2.0616190807e-4 of part II |
 | P3-2 HS_0_0 | PASS | 2.628e-8 | 1.0e-6 | HS\_0\_0: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -2833,6 +3036,14 @@ VERDICT: ALL PASS (23 of 23)
 | P3-9 HS_0_0 | PASS | 0.000e0 | 1.0e-12 | HS\_0\_0: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 HS_0_0 | PASS | 8.612e-13 | 1.0e-9 | HS\_0\_0: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 HS_0_0 | PASS | 7.213e-9 | 1.0e-6 | HS\_0\_0: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2619672631e-3) |
+| P3-T1 HS_0_0 | PASS | 1.041e-13 | 1.0e-12 | HS\_0\_0: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_0_0 | PASS | 1.976e-13 | 1.0e-12 | HS\_0\_0: the critical temperature T\_c = 0.2137990984 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_0_0 | PASS | 1.214e-12 | 1.0e-9 | HS\_0\_0: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 HS_0_0 | PASS | 0.000e0 | 1.0e-10 | HS\_0\_0: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
+| P3-T5 HS_0_0 | PASS | 1.915e-1 | 5.0e-1 | HS\_0\_0: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 3.83e-3) |
+| P3-T4 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 5.773e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.9e-11) |
+| P3-T7 HS_0_0 | PASS | 1.841e-11 | 1.0e-8 | HS\_0\_0: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.690453e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.27e-2, 6.06e-3, 2.56e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 7.8e-6 of the depth at 0.98 T\_c |
 | P3-6 HS_0_0 | PASS | 1.946e-16 | 1.0e-10 | HS\_0\_0: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -1.9e-16) |
 | P3-1 KS | PASS | 1.074e-14 | 1.0e-9 | KS: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 KS | PASS | 3.446e-8 | 1.0e-6 | KS: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -2842,6 +3053,14 @@ VERDICT: ALL PASS (23 of 23)
 | P3-9 KS | PASS | 2.222e-16 | 1.0e-12 | KS: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 KS | PASS | 7.503e-13 | 1.0e-9 | KS: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 KS | PASS | 7.428e-8 | 1.0e-6 | KS: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
+| P3-T1 KS | PASS | 6.271e-14 | 1.0e-12 | KS: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 KS | PASS | 1.987e-13 | 1.0e-12 | KS: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 KS | PASS | 1.142e-12 | 1.0e-9 | KS: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 KS | PASS | 3.271e-13 | 1.0e-10 | KS: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
+| P3-T5 KS | PASS | 2.348e-1 | 5.0e-1 | KS: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
+| P3-T4 KS | PASS | 0.000e0 | 0.0e0 | KS: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
+| P3-T7 KS | PASS | 3.458e-11 | 1.0e-8 | KS: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 KS | PASS | 0.000e0 | 0.0e0 | KS: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T\_c |
 | P3-6 KS | PASS | 6.046e-16 | 1.0e-10 | KS: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -6.0e-16) |
 | P3-1 CJT | PASS | 3.223e-14 | 1.0e-9 | CJT: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 CJT | PASS | 3.446e-8 | 1.0e-6 | CJT: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -2851,10 +3070,18 @@ VERDICT: ALL PASS (23 of 23)
 | P3-9 CJT | PASS | 3.315e-16 | 1.0e-12 | CJT: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 CJT | PASS | 2.943e-13 | 1.0e-9 | CJT: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 CJT | PASS | 7.425e-8 | 1.0e-6 | CJT: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
+| P3-T1 CJT | PASS | 8.078e-14 | 1.0e-12 | CJT: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 CJT | PASS | 1.978e-13 | 1.0e-12 | CJT: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 CJT | PASS | 1.142e-12 | 1.0e-9 | CJT: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 CJT | PASS | 3.271e-13 | 1.0e-10 | CJT: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
+| P3-T5 CJT | PASS | 2.348e-1 | 5.0e-1 | CJT: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
+| P3-T4 CJT | PASS | 0.000e0 | 0.0e0 | CJT: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
+| P3-T7 CJT | PASS | 4.596e-11 | 1.0e-8 | CJT: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T\_c |
 | P3-6 CJT | PASS | 1.269e-15 | 1.0e-10 | CJT: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.3e-15) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 
-VERDICT: ALL PASS (47 of 47)
+VERDICT: ALL PASS (87 of 87)
 
 ## 16.11 Part III: the report of the Python program
 
@@ -2866,6 +3093,18 @@ VERDICT: ALL PASS (47 of 47)
 | YP3-11 HS_0_0 | PASS | 5.701e-11 | 1.0e-07 | HS\_0\_0: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_0.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-11 KS | PASS | 3.104e-09 | 1.0e-07 | KS: the accuracy of the Landau form recomputed from data/part3\_effpot\_KS.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-11 CJT | PASS | 1.216e-09 | 1.0e-07 | CJT: the accuracy of the Landau form recomputed from data/part3\_effpot\_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-T1 HS_1_1 | PASS | 6.164e-14 | 1.0e-12 | HS\_1\_1: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| YP3-T3 HS_1_1 | PASS | 6.756e-14 | 1.0e-10 | HS\_1\_1: the critical temperature T\_c = 0.2604672394 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T2 HS_1_1 | PASS | 3.311e-12 | 1.0e-08 | HS\_1\_1: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
+| YP3-T1 CJT | PASS | 1.046e-13 | 1.0e-12 | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| YP3-T3 CJT | PASS | 2.138e-13 | 1.0e-10 | CJT: the critical temperature T\_c = 0.2221187371 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T2 CJT | PASS | 6.209e-13 | 1.0e-08 | CJT: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
+| YP3-T4 | PASS | 9.807e-12 | 1.0e-09 | HS (0, 0): the order parameter of every temperature of the table from the gap equation g\^P I1(m\^2 + Phi0\^2, T)/pi\^2 = 1 alone (without the self-consistent engine) = Rust (largest difference) |
+| YP3-T5 HS_1_1 | PASS | 2.420e-14 | 1.0e-09 | HS\_1\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 HS_0_1 | PASS | 3.464e-14 | 1.0e-09 | HS\_0\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 HS_0_0 | PASS | 1.688e-14 | 1.0e-09 | HS\_0\_0: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 KS | PASS | 5.906e-14 | 1.0e-09 | KS: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 CJT | PASS | 5.906e-14 | 1.0e-09 | CJT: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
@@ -2881,22 +3120,28 @@ VERDICT: ALL PASS (47 of 47)
 | YP3-10 CJT | PASS | 2.872e-12 | 1.0e-08 | CJT: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08) |
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 
-VERDICT: ALL PASS (20 of 20)
+VERDICT: ALL PASS (32 of 32)
 
 ## 16.12 Part III: data files and figures (SHA-256 checksums)
 
 * `data/hck_part3_checks.txt` (report of `sf_part3`):\
-  `84b5b846d59b811dbfdbbd4c8bc375f244e7f5ea844e141154072f1de70f33d3`
+  `94f3ab212a1c8e335853564cc0ef492091b30ada56554845575548ea33d822a0`
 * `data/hck_part3_checks_python.txt` (report of `python/sf_part3.py`):\
-  `bd21c832c2cc219c173f99f3ccb9376610414a75cd93a7a7240d72ee0cd38e17`
+  `07c4d9fc2512d0b92ee98ff304e4ec6ced36e0c1a27d7fdf30c7b687e5f5825e`
 * `data/part3_values.csv` (the numbers of Part III):\
-  `5893d2b871015c3ab475affb82a17a21c18f1a772c754fb6c2018ec8c6f1deeb`
-* `data/part3_sfbsv.csv` (Tables 12.3 and 13.1, Figure 10):\
+  `348a825bc2d41da358659c46f13bd651468176b04620de44272dd45f1b753a43`
+* `data/part3_sfbsv.csv` (Tables 12.3 and 13.1, Figure 11):\
   `7553ebd5ec2cd946f5b3e634d1bcf5d68eb8426474dfb02c123669fa6aad4214`
 * `data/part3_landau.csv` (Table 12.2, Figure 9, right):\
   `f2b56e0925e8494c23b4365ab6b91747ccc34bd3c7f3774d8a3817d4685be089`
 * `data/part3_landau_residuals.csv` (Figure 9, left):\
   `11a6001a3ffc86e0d2d0dadbdeb4ebcb223ff15f5634e16121130b67ee3b382f`
+* `data/part3_thermal.csv` (Table 12.4, Figure 10):\
+  `c5fee32769ca52cea89527613b67cdd854ce91c1ee113805aab3d2ff02d0450f`
+* `data/part3_thermal_landau.csv` (Table 12.4, Figure 10 (d)):\
+  `ff63593fd7adfb0540f2141cad93438d810e0c00d44612df93889d17a1b577f0`
+* `data/part3_thermal_curves.csv` (Figure 10 (c)):\
+  `519b410f803a762dcdb4d503197344d25079c751b45388421a0d79cc80e69e9b`
 * `data/part3_effpot_HS_1_1.csv`, `data/part3_effpot_HS_0_1.csv`, `data/part3_effpot_HS_0_0.csv`, `data/part3_effpot_KS.csv`,
   `data/part3_effpot_CJT.csv` (Figure 8):\
   `adec9b41732d6e022c680889612a4f56a4610a52765d36d44a1ae76de2e2dc5c`\
@@ -2908,7 +3153,9 @@ VERDICT: ALL PASS (20 of 20)
   `48f72a711590af29604ff220d62ecffee75901fd606dc106864bed1303fae954`
 * `figures/fig_part3_q3_landau.pdf` (Figure 9):\
   `378eeb85ba05ccdadd3e14a3410ba43a4b72110ce39b4d824ee4a907c0bd09a3`
-* `figures/fig_part3_q2_masses.pdf` (Figure 10):\
+* `figures/fig_part3_q4_thermal.pdf` (Figure 10):\
+  `80503fcda3fee378f332e636e1f52746ff13bbcb2dce6cbc7733bf4f62e18412`
+* `figures/fig_part3_q2_masses.pdf` (Figure 11):\
   `65cd0d5018bbfc2a2bcfb63102a42e2a6570d73e4a569a5a6ba41971d3c294e2`
 
 ## 16.13 Part IV: the programs and how to run them
@@ -2939,7 +3186,7 @@ VERDICT: ALL PASS (20 of 20)
   cores (the right side of (6.6) is shared among the cores of the machine).
 * **Python.** `python/sfsundials.py` loads the library of `sfsundials_c` with the standard module ctypes;
   `python/sf_part4.py` recomputes, with numpy, LAPACK and the integrators through the C interface, the checks YP4 of
-  Section 16.15; `python/sf_part4_figures.py` draws Figures 11 to 13 and makes the two videos (it needs matplotlib and
+  Section 16.15; `python/sf_part4_figures.py` draws Figures 12 to 15 and makes the two videos (it needs matplotlib and
   the program ffmpeg):
 
       python3 python/sf_part4.py
@@ -3116,14 +3363,14 @@ VERDICT: ALL PASS (20 of 20)
 * `data/part4_td_summary.csv` (Tables 15.1 and 15.2):\
   `024c04abcdabc12484921f19de63cbf4f2fb20b002b60735ac6bdbd89142283d`
 * `data/part4_td_growth_HS_1_1.csv`, `data/part4_td_growth_HS_0_1.csv`, `data/part4_td_growth_HS_0_0.csv`,
-  `data/part4_td_growth_KS.csv`, `data/part4_td_growth_CJT.csv` (Figures 12 and 12):\
+  `data/part4_td_growth_KS.csv`, `data/part4_td_growth_CJT.csv` (Figures 13 and 14):\
   `3525bd90a9e4ae91e4479c3ee62d90e1cee605428625b0fd48aaff5af7770939`\
   `e5f39af7202beedaf504a1842704ce029027df2106ff8321aee3c01750712549`\
   `4234161741cbfc3ab106921af2db43125087a23762514982db39fff6ee842c93`\
   `6b83ed8e8fb654546be5dea32d4c0768fde9d9a9943cd604dcdbae277c1e429e`\
   `fe10d5a08d11fee1d4490e656c891218bc6fc0e9b22c9d775a4338861131d925`
 * `data/part4_td_kicks_HS_1_1.csv`, `data/part4_td_kicks_HS_0_1.csv`, `data/part4_td_kicks_HS_0_0.csv`,
-  `data/part4_td_kicks_KS.csv`, `data/part4_td_kicks_CJT.csv` (Table 15.2, Figure 13):\
+  `data/part4_td_kicks_KS.csv`, `data/part4_td_kicks_CJT.csv` (Table 15.2, Figure 14):\
   `0d5c8386b3f4a19ce4e2609ecc7a165dcd6e0e96022ab79a8f1ec072a9d023b5`\
   `9f7e896649bb63551331d3b0e36e95abc9762c2266a1ff2f7b5cdd98e49c8557`\
   `929607fadd33d1d6940f515687ce2ac29a95743282f7bd747306610fa2df094f`\
@@ -3134,18 +3381,18 @@ VERDICT: ALL PASS (20 of 20)
   `f467ab53be96720146dff2fc335820ee48da7c8b5491cc3e4586c31c14b9f182`
 * `data/part4_td_small_CJT.csv` (the comparison YP4-T1):\
   `af01b17d961e4283f8b66e2bb97c79b024ddf2b4a7cd64f5843795d80bfbec80`
-* `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv` (Figure 14, the
+* `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv` (Figure 15, the
   second video):\
   `e714fc85a788d1dfadcddb323b833c3ce65722af9a62267f5a1fa0d8c7c5bf00`\
   `94e3bec519f3a739f4862f33814fc749a3a85710e67e859c5925a91887ad99cc`\
   `3d773b42e6ef09b3ef4047bfcd470db74b420e803e2b22f01a6e96b1263ee09e`
-* `figures/fig_part4_r1_massmatrix.pdf` (Figure 11):\
+* `figures/fig_part4_r1_massmatrix.pdf` (Figure 12):\
   `caa47847ba676acb6b11a824be1101413d542f7d5fdaa76b76f9ef12b91385c6`
-* `figures/fig_part4_r2_growth.pdf` (Figure 12):\
+* `figures/fig_part4_r2_growth.pdf` (Figure 13):\
   `8ced54b15da35c5546d0e06305383f0b664ea038cdd3c8f34df9dabae68c3799`
-* `figures/fig_part4_r3_modes.pdf` (Figure 13):\
+* `figures/fig_part4_r3_modes.pdf` (Figure 14):\
   `d7cc1802f966287a371b23c0099d38dcec18f794cd5815c962722adabc8418ec`
-* `figures/fig_part4_r4_waves.pdf` (Figure 14):\
+* `figures/fig_part4_r4_waves.pdf` (Figure 15):\
   `b8c847aceb6786a7bd284e3dfcdf4eb2fa220c7bab19b97273eb1dd2dd5e9d7b`
 * `videos/video_part4_v1_condensate_growth.mp4`:\
   `272e4b213c6825ba45694137abdeff9965d8272951ddb89eee00c49ddbaabefd`
@@ -3217,6 +3464,19 @@ Each of the following was found before part II was committed.
    The figures 9 to 13 of the earlier versions are now the figures 10 to 14, and the earlier Table 12.2 is Table 12.3.
 4. Section 12.3 named "Section 2.2" for the Higgs sector of the Standard Model; the Standard Model is stated in
    Section 1 (corrected with item 3).
+5. Asked by the author (21 November 2026) to compute the effective potential and the free energy of every method and to
+   determine whether the order parameter is smaller and more physically reasonable, the solution added Section 12.4
+   (the free energy at finite temperature, the critical temperatures, the radius of convergence at finite temperature,
+   Table 12.4 and Figure 10; module `thermal` of `sf_part3`, checks P3-T1 to P3-T8 and YP3-T1 to YP3-T5; the thermal
+   states of the library `sfcore`). The figures 10 to 14 of the earlier versions are now the figures 11 to 15. The first
+   run of the module fitted the Landau form to free-energy curves of 41 points with the applied fields up to
+   $1.6\,\Phi^X_{0,{\rm SF}}(T)$, which cover a smaller interval than the curves of Section 12.1 and gave at $T=0$ a residual
+   different from that of Table 12.1; the curves now use the 61 applied fields of Section 12.1 (up to
+   $2\,\Phi^X_{0,{\rm SF}}(T)$), and check P3-T7 confirms that the residual at $T=0$ is that of Table 12.1.
+6. The renumbering of item 3 changed only the first number of two ranges of figures: Section 16.13 said that
+   `python/sf_part4_figures.py` draws "Figures 11 to 13" (it draws four figures, then numbered 11 to 14, now 12 to 15),
+   and Section 16.16 said that the data of the growth runs serve "Figures 12 and 12" (they serve the figures then
+   numbered 12 and 13, now 13 and 14). Found while renumbering for item 5 and corrected with it.
 
 ## 17.4 Part IV
 
@@ -3431,7 +3691,7 @@ author's conventions (Section 1).
 | $\Sigma^j_{\rm SF}$ | `Sigma_j` | the spin matrices $\mathrm{diag}(\sigma^{\rm LL}_j,\sigma^{\rm LL}_j)$ on the Dirac index (twice the spin) | new |
 | $e^{\rm c}_{\rm SF}$ | `e_c` | the charge with which an isospin component couples to an abelian gauge field: $g^{\rm v}_{\rm LL}Q_{\rm LL}$ for the field $W^3_{{\rm SF},p}$, $g^{\rm F}_{\rm LL}$ for $B_{{\rm SF},p}$ | new |
 | $\mathcal E^{\rm MF}_{\rm SF}(\Delta_{\rm LL})$ | `E_MF` | the energy per volume of the uniform polar state of the pairing interaction in the mean-field (pairing-only) approximation at $\mu_{\rm LL}=0$, as a function of the gap, measured from the normal vacuum: the ground-state energy of the mean-field Hamiltonian plus $\Delta_{\rm LL}^2/G_{\rm LL}$ | new |
-| $I^{(1)}_{\rm SF}$, $I^{(3)}_{\rm SF}$ | `I1` `I3` | the integrals $\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{\mp1/2}dq$ (upper sign $I^{(1)}_{\rm SF}$, lower $I^{(3)}_{\rm SF}$) as functions of the mass $M$ in their argument | new |
+| $I^{(1)}_{\rm SF}$, $I^{(3)}_{\rm SF}$ | `I1` `I3` | the integrals $\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{\mp1/2}dq$ (upper sign $I^{(1)}_{\rm SF}$, lower $I^{(3)}_{\rm SF}$) as functions of the mass $M$ in their argument; at the temperature $T$, $I^{(1)}_{\rm SF}(M,T)=\int_0^{\Lambda_{\rm LL}}q^2\tanh(E/2T)E^{-1}dq$ with $E=(q^2+M^2)^{1/2}$, which equals $I^{(1)}_{\rm SF}(M)$ at $T=0$ | new |
 | $\mathsf A^{\rm K}_{\rm SF}$, $\mathsf P^{\rm K}_{\rm SF}$, $\mathsf B^{\rm K}_{\rm SF}$, $\mathsf G^{\rm K}_{\rm SF}$ | `A_K` `P_K` `B_K` `G_K` | the $16\times16$ matrices of the kink problem: $\mathrm{diag}(\alpha^1_{\rm LL},(\alpha^1_{\rm LL})^*)$, the pairing matrix with the blocks $(\mathsf K^3_{\rm LL})^\dagger$ (upper right) and $\mathsf K^3_{\rm LL}$ (lower left), $\mathrm{diag}(\beta_{\rm LL},-\beta_{\rm LL})$, and $-i\mathsf A^{\rm K}_{\rm SF}\mathsf P^{\rm K}_{\rm SF}$ | new |
 | $\mathsf H^{\rm K}_{\rm SF}$, $\mathsf H^{{\rm K},0}_{\rm SF}$ | `H_K` `H_K0` | the Bogoliubov-de Gennes operator of the quasi-particles in the kink of the pair field, $-i\mathsf A^{\rm K}_{\rm SF}\partial_1+\Delta_{\rm LL}(x)\mathsf P^{\rm K}_{\rm SF}+m_{\rm LL}\mathsf B^{\rm K}_{\rm SF}$, and the same without the mass term | new |
 | $E^{\rm K}_{{\rm SF},n}$, $s^{\rm K}_{\rm SF}$ | `E_Kn` `s_K` | the energies of the bound states of the kink problem without the mass, $(E^{\rm K}_{{\rm SF},n})^2=(\Delta^\infty_{\rm LL})^2-(\Delta^\infty_{\rm LL}-n/\ell^{\rm K}_{\rm LL})^2$, and the index $s^{\rm K}_{\rm SF}=\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}$ of the Poeschl-Teller potential | new |
@@ -3467,7 +3727,7 @@ author's conventions (Section 1).
 | $\chi^{\rm S}_{\rm SF}$ | `chi_S` | the scalar susceptibility of the normal vacuum, $-\partial n^{\rm S}_{\rm SF}/\partial M=(2/\pi^2)\int_0^{\Lambda_{\rm LL}}q^4(q^2+m_{\rm LL}^2)^{-3/2}dq$ | new |
 | $D^X_{\rm SF}$ | `D_X` | the pair amplitude of a polar state of method $X$: its pair self-energy is $D^X_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger$ | new |
 | $\boldsymbol\chi_{\rm SF}(\omega)$, $\mathsf F^X_{\rm SF}$, $\mathsf Q^X_{\rm SF}(\omega)$ | `chi_resp` `F_kern` `Q_resp` | the linear response of a uniform state at the frequency $\omega$ (the map from the amplitudes of the self-energies to the amplitudes of the local correlation matrices, a $120\times120$ matrix), the kernel of method $X$ (the map from the amplitudes of the correlation matrices to those of the self-energies), and their product $\boldsymbol\chi_{\rm SF}(\omega)\mathsf F^X_{\rm SF}$ | new |
-| $\lambda^{\rm S}_{\rm SF}$, $\lambda^{\rm P}_{\rm SF}$ | `lambda_S` `lambda_P` | the eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ of the normal vacuum in the scalar-density channel and in the pair channel (an eigenvalue larger than 1 means that the normal vacuum is unstable in that channel) | new |
+| $\lambda^{\rm S}_{\rm SF}$, $\lambda^{\rm P}_{\rm SF}$ | `lambda_S` `lambda_P` | the eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ of the normal vacuum in the scalar-density channel and in the pair channel (an eigenvalue larger than 1 means that the normal vacuum is unstable in that channel); $\lambda^{\rm P}_{\rm SF}(T)$ is the eigenvalue of the pair channel of the normal state at the temperature $T$ | new |
 | $\Omega_{\rm SF}$ | `Omega` | the energy of a transition between an occupied and an empty eigenvector of $\mathsf H_{\rm SF}(\vec q_{\rm LL})$, the difference of their eigenvalues | new |
 | $\Gamma^{\rm CJT}_{\rm LL}$; $\mathcal G_{\rm LL}$ | `Gamma_CJT` `G_prop` | the effective action of the propagator in the method of Cornwall, Jackiw and Tomboulis, and the propagator of the Nambu spinor of 16 components | Revision_SuperLoop, same symbol |
 | $\mathsf C^{\rm n}_{\rm LL}$, $\mathsf C^{\rm p}_{\rm LL}$; $\mathsf C^{\rm vac}_{\rm LL}$ | `C_n` `C_p` `C_vac` | the correlation matrices of a uniform state: $(\mathsf C^{\rm n}_{\rm LL})_{cc'}=\langle\Psi^\dagger_{{\rm LL},c'}\Psi_{{\rm LL},c}\rangle$ (normal, Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{cc'}=\langle\Psi_{{\rm LL},c}\Psi_{{\rm LL},c'}\rangle$ (pair, antisymmetric), both fields at one point, and the normal correlation matrix of the normal vacuum; with the argument $\vec q_{\rm LL}$, their parts of one momentum | Revision_SuperLoop, same symbol |
@@ -3485,12 +3745,18 @@ author's conventions (Section 1).
 | symbol | plain-text names | meaning | origin |
 |:---|:---|:---|:---|
 | $\vec\Phi^X_{\rm SF}$, $\Phi^{X,\iota}_{\rm SF}$ | `Phi_X` | the field of the superfluid boson singlet state in method $X$, a complex isospin vector of fermion number 2 and spin 0: the amplitudes of the pair self-energy of a uniform state, $\mathsf P_{\rm SF}=\sum_\iota\Phi^{X,\iota}_{\rm SF}(\mathsf K^\iota_{\rm LL})^\dagger$ (the value of the auxiliary pair field in HS, the anomalous self-energy in CJT, the Kohn-Sham pair potential in KS) | new |
-| $\Phi^X_{0,{\rm SF}}$ | `Phi0` | the modulus of the field $\vec\Phi^X_{\rm SF}$ in the vacuum of method $X$ (the minimum of $\mathcal V^X_{\rm SF}$) | new |
+| $\Phi^X_{0,{\rm SF}}$ | `Phi0` | the modulus of the field $\vec\Phi^X_{\rm SF}$ in the vacuum of method $X$ (the minimum of $\mathcal V^X_{\rm SF}$); $\Phi^X_{0,{\rm SF}}(T)$ is the modulus in the superfluid at the temperature $T$ (the minimum of $\mathcal F^X_{\rm SF}$), with $\Phi^X_{0,{\rm SF}}(0)=\Phi^X_{0,{\rm SF}}$ | new |
 | $Z^X_{\rm SF}$, $Y^X_{\rm SF}$ | `Z_X` `Y_X` | the two coefficients of the kinetic part of the effective Lagrangian of method $X$: of $(\nabla\vec\Phi)^\dagger\cdot\nabla\vec\Phi$ and of $\lvert\vec\Phi^\dagger\cdot\nabla\vec\Phi\rvert^2/\lvert\vec\Phi\rvert^2$ (each contracted over the coordinates with $\eta^{\rm LL}_{pp}$) | new |
 | $f^{X,{\rm F}}_{\rm SF}$, $f^{X,{\rm I}}_{\rm SF}$; $\tilde f^{X,{\rm F}}_{\rm SF}$, $\tilde f^{X,{\rm I}}_{\rm SF}$, $\tilde f^{X,3}_{\rm SF}$ | `fF` `fI` `fF_s` `fI_s` `f3_s` | the decay constants of the Goldstone field of the phase (F) and of the isospin rotations (I) in method $X$, from the time components (the static susceptibilities); the same from the space components (states with a uniform twist), and the space-component stiffness of the unbroken generator $T^3_{\rm LL}$, which vanishes in a gauge-invariant regularization | new |
 | $\nu^X_{{\rm SF},1}$, $\nu^X_{{\rm SF},2}$ | `nu_1` `nu_2` | the two non-unitary fields of $\mathrm{SFBSv}^X$ (the imaginary parts of the components 1 and 2 of the field relative to its phase) | new |
 | $a^X_{\rm SF}$, $b^X_{\rm SF}$, $c^X_{\rm SF}$, $u^X_{\rm SF}$ | `landau_a` `landau_b` `landau_c` `u_X` `landau_res` `landau_phifit` `landau_depthfit` `landau_curvfit` `landau_signs` `landau_resK` `landau_cK4` `landau_rng` | the coefficients of the Landau form $a\lvert\vec\Phi\rvert^2+b\lvert\vec\Phi\rvert^4+c\lvert\vec\Phi\rvert^6+u(\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2)$ of $\mathcal V^X_{\rm SF}$ (the first three fitted along the polar states, $u$ from the curvature along the non-unitary directions) | new |
-| $a^{X,{\rm Tay}}_{\rm SF}$ | `a_taylor` `a_Taylor` | the coefficient of $\lvert\vec\Phi\rvert^2$ of the Taylor series of the effective potential $\mathcal V^X_{\rm SF}$ at $\vec\Phi=0$ (one half of its second derivative along the polar fields there), computed from states with small applied pair fields; the coefficient $a^X_{\rm SF}$ of the fitted Landau form differs from it | new |
+| $T^{X,{\rm c}}_{\rm SF}$ | `Tc` | the critical temperature of method $X$: the temperature at which the eigenvalue $\lambda^{\rm P}_{\rm SF}(T)$ of the static pair response of the normal state reaches 1 (with $k_{\rm B}=1$, in units of $\Lambda_{\rm LL}$) | new |
+| $\mathcal S_{\rm SF}$ | `entropy` `S_minus_S_normal` | the entropy per volume of a uniform quasi-free state: minus one half of the integral $\int d^3q/(2\pi)^3$ over the momenta of $\sum_k[f_k\ln f_k+(1-f_k)\ln(1-f_k)]$, the sum over the 16 eigenvalues of the matrix of Bogoliubov and de Gennes at the momentum, with their occupations $f_k$ | new |
+| $\mathcal F^X_{\rm SF}$ | `F_min` `free` | the free energy of the field $\vec\Phi$ in method $X$ at the temperature $T$: the smallest $\mathcal E^X_{\rm SF}-T\mathcal S_{\rm SF}$ among the thermal states with the field $\vec\Phi$, measured from the normal state at the same temperature; at $T=0$ the effective potential | new |
+| $M^{X,{\rm n}}_{\rm SF}$ | `Dirac_mass_normal` `mass_n` | the Dirac mass of the normal state of method $X$ at the temperature $T$ (the mass plus the scalar part of its normal self-energy) | new |
+| $r^X_{\rm SF}$ | `radius` | the radius of convergence, up to a factor of the order of 1, of the series of the free energy of method $X$ in powers of $\lvert\vec\Phi\rvert^2$ about the normal state: $(M^{X,{\rm n}}_{\rm SF}(T)^2+\pi^2T^2)^{1/2}$ | new |
+| $b^{X,{\rm Tay}}_{\rm SF}$ | `b_Taylor` | the coefficient of $\lvert\vec\Phi\rvert^4$ of the Taylor series of the free energy of method $X$ at $\vec\Phi=0$ (at the temperature $T$) | new |
+| $a^{X,{\rm Tay}}_{\rm SF}$ | `a_taylor` `a_Taylor` | the coefficient of $\lvert\vec\Phi\rvert^2$ of the Taylor series of the effective potential $\mathcal V^X_{\rm SF}$ at $\vec\Phi=0$ (one half of its second derivative along the polar fields there), computed from states with small applied pair fields; the coefficient $a^X_{\rm SF}$ of the fitted Landau form differs from it; $a^{X,{\rm Tay}}_{\rm SF}(T)$ is the same coefficient of the free energy $\mathcal F^X_{\rm SF}$ at the temperature $T$ | new |
 | $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$; $\mathcal L^X_{\rm kinetic}$, $\mathcal L^X_{\rm potential}$ | `L_CJT` `L_HS` `L_KS` `L_kin` `L_pot` | the effective Lagrangian of the field $\vec\Phi^X_{\rm SF}$ in method $X$, and its kinetic part (the terms with derivatives, to second order) and potential part (the author's names) | the author's name |
 | $\mathcal V^X_{\rm SF}$ | `V_eff_X` | the effective potential of method $X$, $-\mathcal L^X_{\rm potential}$: the energy per volume of the uniform state with the field $\vec\Phi^X_{\rm SF}$, measured from the normal vacuum | new |
 | $\kappa^{X,{\rm t}}_{\rm SF}$, $\kappa^{X,{\rm s}}_{\rm SF}$, $\kappa^{X,{\rm h}}_{\rm SF}$ | `kappa_t` `kappa_s` `kappa_h` | the stiffness coefficients of $\mathcal L^X_{\rm kinetic}$: of the time derivatives and of the space derivatives of the directions in which the field turns (phase and isospin), and of the derivatives of its modulus | Revision_SuperLoop wrote $Z^{\rm t}_{\rm LL}$, $Z^{\rm s}_{\rm LL}$ |
@@ -3563,7 +3829,12 @@ of angular momentum 0 and 1 of a correlation matrix); $\mathfrak a$, $\mathfrak 
 $\mathfrak s$, $\mathfrak A$, $\mathfrak F$ (the quantities of the angular and radial integrals of (11.3)); $\mathfrak m$, $\mathfrak D$ (the
 two parameters of the Kohn-Sham potentials, Section 11.5).
 
-**Local variables of Part III.** $\Phi_0$ (short for $\Phi^X_{0,{\rm SF}}$); $\Phi$ (the modulus of a polar field), $\Phi_i$ (the
+**Local variables of Part III.** $\Phi_0$ (short for $\Phi^X_{0,{\rm SF}}$); $T$ (the temperature, with $k_{\rm B}=1$, in units of
+$\Lambda_{\rm LL}$, Section 12.4), $f(\varepsilon)$, $f_k$, $\varepsilon_k$ (the Fermi function, the occupation and the eigenvalue $k$ of
+$\mathsf H_{\rm SF}$ at a momentum), $\omega_n$ (the Matsubara frequencies $(2n+1)\pi T$), $E$ (a quasi-particle energy in (12.9),
+(12.10)), $a$, $b$ (short for $a^{X,{\rm Tay}}_{\rm SF}(T)$, $b^{X,{\rm Tay}}_{\rm SF}(T)$ in Table 12.4), $x$ (the variable of the curve
+$x^4-2x^2$ of Figure 10), $\Delta(0)$, $T_{\rm c}$, $\gamma_{\rm E}$ (the gap at zero temperature and the critical temperature of
+the theory of Bardeen, Cooper and Schrieffer, and Euler's constant); $\Phi$ (the modulus of a polar field), $\Phi_i$ (the
 computed points of a polar curve), $\Phi_{\max}$ (the end of a computed curve), $\Phi_{\rm a}$ (the amplitude of an applied
 pair self-energy $\Phi_{\rm a}(\mathsf K^3_{\rm LL})^\dagger$), $\mathcal V_{\rm L}$, $\Phi_{\rm L}$ (the polynomial (12.2) along the polar fields and its
 minimum), $K$, $c_k$ (the number of powers and the coefficients of a least-squares fit $\sum_{k=1}^Kc_k\Phi^{2k}$), $q$, $s$ (the
@@ -3586,7 +3857,7 @@ $\vec X_a$ (the change of a constant field under a gauge field of the direction 
 form (14.2)); $\vartheta$, $\vec n$ (the phase and the direction of a vacuum, as in Part III); $\vec e_{\perp1}$, $\vec e_{\perp2}$ (two
 unit vectors that complete $\vec n$ to a right-handed frame); $\mathsf V$ (a real matrix with $\mathsf M^X_{\rm SF}=\mathsf V^T\mathsf V$);
 $\theta'$ (the angle of the massless field of the non-polar example, Section 14.3); $\upsilon$ (the angle of the family of fields of
-Figure 11); $\mathsf r$, $\theta$ (as in Part III); $\lambda_0,\dots,\lambda_3$, $v_0$ (the eigenvalues of the microscopic mass
+Figure 12); $\mathsf r$, $\theta$ (as in Part III); $\lambda_0,\dots,\lambda_3$, $v_0$ (the eigenvalues of the microscopic mass
 matrix and the eigenvector of $\lambda_0$, Table 14.1); $\mathsf R$, $\mathsf H$ (short for $\mathsf R_{\rm SF}$, $\mathsf H_{\rm SF}$), $w$ (the
 weight of a node of the grid) and $\gamma$ (a positive number, $\omega=i\gamma$) in Section 15.1; $s(t)$, $s_1$, $s_2$, $e_k$ (the departure
 (15.1) from the polar sector, its values for the two seeds, and its largest value in the pulse $k$); $w_j$, $n_{\rm out}$ (the
@@ -3674,6 +3945,23 @@ gauge-invariant fields of (15.8)).
   cholesterics, Molecular Crystals and Liquid Crystals 12, 193 (1971) -- the examples of Landau forms (Section 12.1).
 * A. S. Householder, Unitary triangularization of a nonsymmetric matrix, Journal of the ACM 5, 339 (1958) -- the
   least squares by reflections (Section 12.1).
+* T. Matsubara, A new approach to quantum-statistical mechanics, Progress of Theoretical Physics 14, 351 (1955); N. D.
+  Mermin, Thermal properties of the inhomogeneous electron gas, Physical Review 137, A1441 (1965); G. Amelino-Camelia
+  and S.-Y. Pi, Self-consistent improvement of the finite-temperature effective potential, Physical Review D 47, 2356
+  (1993) -- the free energy at finite temperature of the three methods (Section 12.4).
+* A. P. Levanyuk, Zhurnal Eksperimental'noi i Teoreticheskoi Fiziki 36, 810 (1959) [Soviet Physics JETP 9, 571]; V. L.
+  Ginzburg, Some remarks on phase transitions of the second kind and the microscopic theory of ferroelectric materials,
+  Fizika Tverdogo Tela 2, 2031 (1960) [Soviet Physics Solid State 2, 1824 (1961)] -- the width of the critical region of
+  a continuous transition, in which the fluctuations of the order parameter invalidate the mean-field theory
+  (Section 12.4).
+* A. Pelissetto and E. Vicari, Critical phenomena and renormalization-group theory, Physics Reports 368, 549 (2002) --
+  the critical behavior of fields with several quartic invariants (Section 12.4).
+* B. I. Halperin, T. C. Lubensky and S.-k. Ma, First-order phase transitions in superconductors and smectic-A liquid
+  crystals, Physical Review Letters 32, 292 (1974) -- a transition made first order by the fluctuations of a gauge field
+  (Section 12.4).
+* K. Kajantie, M. Laine, K. Rummukainen and M. Shaposhnikov, Physical Review Letters 77, 2887 (1996) -- lattice
+  simulations showing that the line of thermal first-order transitions of the Higgs field of the electroweak theory ends
+  at a critical Higgs mass (Section 12.4).
 
 * G. S. Guralnik, C. R. Hagen and T. W. B. Kibble, Global conservation laws and massless particles, Physical Review Letters
   13, 585 (1964); A. Proca, Sur la théorie ondulatoire des électrons positifs et négatifs, Journal de Physique et le

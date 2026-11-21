@@ -11,6 +11,14 @@
 | P3-9 HS_1_1 | PASS | 2.027e-17 | 1.0e-12 | HS\_1\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 HS_1_1 | PASS | 1.103e-14 | 1.0e-9 | HS\_1\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 HS_1_1 | PASS | 8.786e-9 | 1.0e-6 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -6.0408804409e-3) |
+| P3-T1 HS_1_1 | PASS | 2.357e-14 | 1.0e-12 | HS\_1\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_1_1 | PASS | 4.408e-14 | 1.0e-12 | HS\_1\_1: the critical temperature T\_c = 0.2604672394 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1838428143 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_1_1 | PASS | 9.363e-13 | 1.0e-9 | HS\_1\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 25.200000) |
+| P3-T8 HS_1_1 | PASS | 3.622e-14 | 1.0e-10 | HS\_1\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2066851932; largest change) |
+| P3-T5 HS_1_1 | PASS | 2.814e-1 | 5.0e-1 | HS\_1\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 5.63e-3) |
+| P3-T4 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 7.489e-2) and in the normal state at 1.01 T\_c (Phi0 = 2.8e-11) |
+| P3-T7 HS_1_1 | PASS | 5.579e-12 | 1.0e-8 | HS\_1\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 7.035495e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.83e-2, 8.81e-3, 3.73e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.7e-5 of the depth at 0.98 T\_c |
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -20,6 +28,14 @@
 | P3-9 HS_0_1 | PASS | 2.269e-17 | 1.0e-12 | HS\_0\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 HS_0_1 | PASS | 5.616e-13 | 1.0e-9 | HS\_0\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 HS_0_1 | PASS | 5.417e-9 | 1.0e-6 | HS\_0\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -5.2811441242e-3) |
+| P3-T1 HS_0_1 | PASS | 9.226e-14 | 1.0e-12 | HS\_0\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_0_1 | PASS | 4.028e-13 | 1.0e-12 | HS\_0\_1: the critical temperature T\_c = 0.2404654563 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1509582917 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_0_1 | PASS | 1.032e-12 | 1.0e-9 | HS\_0\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 24.500000) |
+| P3-T8 HS_0_1 | PASS | 0.000e0 | 1.0e-10 | HS\_0\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
+| P3-T5 HS_0_1 | PASS | 2.436e-1 | 5.0e-1 | HS\_0\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.87e-3) |
+| P3-T4 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.757e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.2e-11) |
+| P3-T7 HS_0_1 | PASS | 5.897e-13 | 1.0e-8 | HS\_0\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 4.693236e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.60e-2, 7.67e-3, 3.24e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.3e-5 of the depth at 0.98 T\_c |
 | P3-6 HS_0_1 | PASS | 1.170e-19 | 1.0e-10 | HS\_0\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.2e-19) |
 | P3-1 HS_0_0 | PASS | 7.716e-15 | 1.0e-9 | HS\_0\_0: the applied field Phi0 = 0.3069887935 gives back Phi\^3 = Phi0 and the ground-state energy -2.0616190807e-4 of part II |
 | P3-2 HS_0_0 | PASS | 2.628e-8 | 1.0e-6 | HS\_0\_0: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -29,6 +45,14 @@
 | P3-9 HS_0_0 | PASS | 0.000e0 | 1.0e-12 | HS\_0\_0: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 HS_0_0 | PASS | 8.612e-13 | 1.0e-9 | HS\_0\_0: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 HS_0_0 | PASS | 7.213e-9 | 1.0e-6 | HS\_0\_0: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2619672631e-3) |
+| P3-T1 HS_0_0 | PASS | 1.041e-13 | 1.0e-12 | HS\_0\_0: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_0_0 | PASS | 1.976e-13 | 1.0e-12 | HS\_0\_0: the critical temperature T\_c = 0.2137990984 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_0_0 | PASS | 1.214e-12 | 1.0e-9 | HS\_0\_0: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 HS_0_0 | PASS | 0.000e0 | 1.0e-10 | HS\_0\_0: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
+| P3-T5 HS_0_0 | PASS | 1.915e-1 | 5.0e-1 | HS\_0\_0: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 3.83e-3) |
+| P3-T4 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 5.773e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.9e-11) |
+| P3-T7 HS_0_0 | PASS | 1.841e-11 | 1.0e-8 | HS\_0\_0: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.690453e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.27e-2, 6.06e-3, 2.56e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 7.8e-6 of the depth at 0.98 T\_c |
 | P3-6 HS_0_0 | PASS | 1.946e-16 | 1.0e-10 | HS\_0\_0: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -1.9e-16) |
 | P3-1 KS | PASS | 1.074e-14 | 1.0e-9 | KS: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 KS | PASS | 3.446e-8 | 1.0e-6 | KS: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -38,6 +62,14 @@
 | P3-9 KS | PASS | 2.222e-16 | 1.0e-12 | KS: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 KS | PASS | 7.503e-13 | 1.0e-9 | KS: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 KS | PASS | 7.428e-8 | 1.0e-6 | KS: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
+| P3-T1 KS | PASS | 6.271e-14 | 1.0e-12 | KS: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 KS | PASS | 1.987e-13 | 1.0e-12 | KS: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 KS | PASS | 1.142e-12 | 1.0e-9 | KS: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 KS | PASS | 3.271e-13 | 1.0e-10 | KS: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
+| P3-T5 KS | PASS | 2.348e-1 | 5.0e-1 | KS: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
+| P3-T4 KS | PASS | 0.000e0 | 0.0e0 | KS: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
+| P3-T7 KS | PASS | 3.458e-11 | 1.0e-8 | KS: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 KS | PASS | 0.000e0 | 0.0e0 | KS: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T\_c |
 | P3-6 KS | PASS | 6.046e-16 | 1.0e-10 | KS: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -6.0e-16) |
 | P3-1 CJT | PASS | 3.223e-14 | 1.0e-9 | CJT: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 CJT | PASS | 3.446e-8 | 1.0e-6 | CJT: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
@@ -47,11 +79,19 @@
 | P3-9 CJT | PASS | 3.315e-16 | 1.0e-12 | CJT: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
 | P3-11 CJT | PASS | 2.943e-13 | 1.0e-9 | CJT: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
 | P3-10 CJT | PASS | 7.425e-8 | 1.0e-6 | CJT: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
+| P3-T1 CJT | PASS | 8.078e-14 | 1.0e-12 | CJT: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 CJT | PASS | 1.978e-13 | 1.0e-12 | CJT: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 CJT | PASS | 1.142e-12 | 1.0e-9 | CJT: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 CJT | PASS | 3.271e-13 | 1.0e-10 | CJT: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
+| P3-T5 CJT | PASS | 2.348e-1 | 5.0e-1 | CJT: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
+| P3-T4 CJT | PASS | 0.000e0 | 0.0e0 | CJT: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
+| P3-T7 CJT | PASS | 4.596e-11 | 1.0e-8 | CJT: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference) |
+| P3-T6 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T\_c |
 | P3-6 CJT | PASS | 1.269e-15 | 1.0e-10 | CJT: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.3e-15) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 <!-- END p3_checks_rust -->
 <!-- BEGIN p3_verdict_rust -->
-VERDICT: ALL PASS (47 of 47)
+VERDICT: ALL PASS (87 of 87)
 <!-- END p3_verdict_rust -->
 <!-- BEGIN p3_checks_python -->
 | check | result | deviation | tolerance | statement |
@@ -62,6 +102,18 @@ VERDICT: ALL PASS (47 of 47)
 | YP3-11 HS_0_0 | PASS | 5.701e-11 | 1.0e-07 | HS\_0\_0: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_0.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-11 KS | PASS | 3.104e-09 | 1.0e-07 | KS: the accuracy of the Landau form recomputed from data/part3\_effpot\_KS.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-11 CJT | PASS | 1.216e-09 | 1.0e-07 | CJT: the accuracy of the Landau form recomputed from data/part3\_effpot\_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-T1 HS_1_1 | PASS | 6.164e-14 | 1.0e-12 | HS\_1\_1: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| YP3-T3 HS_1_1 | PASS | 6.756e-14 | 1.0e-10 | HS\_1\_1: the critical temperature T\_c = 0.2604672394 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T2 HS_1_1 | PASS | 3.311e-12 | 1.0e-08 | HS\_1\_1: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
+| YP3-T1 CJT | PASS | 1.046e-13 | 1.0e-12 | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| YP3-T3 CJT | PASS | 2.138e-13 | 1.0e-10 | CJT: the critical temperature T\_c = 0.2221187371 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T2 CJT | PASS | 6.209e-13 | 1.0e-08 | CJT: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
+| YP3-T4 | PASS | 9.807e-12 | 1.0e-09 | HS (0, 0): the order parameter of every temperature of the table from the gap equation g\^P I1(m\^2 + Phi0\^2, T)/pi\^2 = 1 alone (without the self-consistent engine) = Rust (largest difference) |
+| YP3-T5 HS_1_1 | PASS | 2.420e-14 | 1.0e-09 | HS\_1\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 HS_0_1 | PASS | 3.464e-14 | 1.0e-09 | HS\_0\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 HS_0_0 | PASS | 1.688e-14 | 1.0e-09 | HS\_0\_0: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 KS | PASS | 5.906e-14 | 1.0e-09 | KS: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 CJT | PASS | 5.906e-14 | 1.0e-09 | CJT: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
@@ -78,8 +130,20 @@ VERDICT: ALL PASS (47 of 47)
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 <!-- END p3_checks_python -->
 <!-- BEGIN p3_verdict_python -->
-VERDICT: ALL PASS (20 of 20)
+VERDICT: ALL PASS (32 of 32)
 <!-- END p3_verdict_python -->
+<!-- BEGIN p3_th_Tc_HS_1_1 -->
+$0.2604672394$
+<!-- END p3_th_Tc_HS_1_1 -->
+<!-- BEGIN p3_th_lam0_HS_1_1 -->
+$1.183842814$
+<!-- END p3_th_lam0_HS_1_1 -->
+<!-- BEGIN p3_th_gP_HS_1_1 -->
+$25.2$
+<!-- END p3_th_gP_HS_1_1 -->
+<!-- BEGIN p3_th_gS_HS_1_1 -->
+$2.8$
+<!-- END p3_th_gS_HS_1_1 -->
 <!-- BEGIN p3_Phi0_HS_1_1 -->
 $0.4030641406$
 <!-- END p3_Phi0_HS_1_1 -->
@@ -236,6 +300,18 @@ $-0.006162431094$
 <!-- BEGIN p3_a_taylor_chk_HS_1_1 -->
 $-0.00616243104$
 <!-- END p3_a_taylor_chk_HS_1_1 -->
+<!-- BEGIN p3_th_Tc_HS_0_1 -->
+$0.2404654563$
+<!-- END p3_th_Tc_HS_0_1 -->
+<!-- BEGIN p3_th_lam0_HS_0_1 -->
+$1.150958292$
+<!-- END p3_th_lam0_HS_0_1 -->
+<!-- BEGIN p3_th_gP_HS_0_1 -->
+$24.5$
+<!-- END p3_th_gP_HS_0_1 -->
+<!-- BEGIN p3_th_gS_HS_0_1 -->
+$0$
+<!-- END p3_th_gS_HS_0_1 -->
 <!-- BEGIN p3_Phi0_HS_0_1 -->
 $0.3620090014$
 <!-- END p3_Phi0_HS_0_1 -->
@@ -392,6 +468,18 @@ $-0.005353419813$
 <!-- BEGIN p3_a_taylor_chk_HS_0_1 -->
 $-0.005353419784$
 <!-- END p3_a_taylor_chk_HS_0_1 -->
+<!-- BEGIN p3_th_Tc_HS_0_0 -->
+$0.2137990984$
+<!-- END p3_th_Tc_HS_0_0 -->
+<!-- BEGIN p3_th_lam0_HS_0_0 -->
+$1.11337598$
+<!-- END p3_th_lam0_HS_0_0 -->
+<!-- BEGIN p3_th_gP_HS_0_0 -->
+$23.7$
+<!-- END p3_th_gP_HS_0_0 -->
+<!-- BEGIN p3_th_gS_HS_0_0 -->
+$0$
+<!-- END p3_th_gS_HS_0_0 -->
 <!-- BEGIN p3_Phi0_HS_0_0 -->
 $0.3069887935$
 <!-- END p3_Phi0_HS_0_0 -->
@@ -548,6 +636,18 @@ $-0.004296658732$
 <!-- BEGIN p3_a_taylor_chk_HS_0_0 -->
 $-0.004296658701$
 <!-- END p3_a_taylor_chk_HS_0_0 -->
+<!-- BEGIN p3_th_Tc_KS -->
+$0.2221187371$
+<!-- END p3_th_Tc_KS -->
+<!-- BEGIN p3_th_lam0_KS -->
+$1.11337598$
+<!-- END p3_th_lam0_KS -->
+<!-- BEGIN p3_th_gP_KS -->
+$23.7$
+<!-- END p3_th_gP_KS -->
+<!-- BEGIN p3_th_gS_KS -->
+$-7.4$
+<!-- END p3_th_gS_KS -->
 <!-- BEGIN p3_Phi0_KS -->
 $0.3284861084$
 <!-- END p3_Phi0_KS -->
@@ -704,6 +804,18 @@ $-0.004296658755$
 <!-- BEGIN p3_a_taylor_chk_KS -->
 $-0.004296659074$
 <!-- END p3_a_taylor_chk_KS -->
+<!-- BEGIN p3_th_Tc_CJT -->
+$0.2221187371$
+<!-- END p3_th_Tc_CJT -->
+<!-- BEGIN p3_th_lam0_CJT -->
+$1.11337598$
+<!-- END p3_th_lam0_CJT -->
+<!-- BEGIN p3_th_gP_CJT -->
+$23.7$
+<!-- END p3_th_gP_CJT -->
+<!-- BEGIN p3_th_gS_CJT -->
+$-7.4$
+<!-- END p3_th_gS_CJT -->
 <!-- BEGIN p3_Phi0_CJT -->
 $0.3284861084$
 <!-- END p3_Phi0_CJT -->
@@ -1009,3 +1121,172 @@ $11.61$
 <!-- BEGIN p3_lf_signs -->
 $3$
 <!-- END p3_lf_signs -->
+<!-- BEGIN p3_table_thermal -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| effective pair coupling $g^{X,{\rm P}}_{\rm SF}$ | $25.20$ | $24.50$ | $23.70$ | $23.70$ | $23.70$ |
+| effective scalar coupling $g^{X,{\rm S}}_{\rm SF}$ | $2.80$ | $0$ | $0$ | $-7.40$ | $-7.40$ |
+| $\lambda^{\rm P}_{\rm SF}(0)$ of the normal vacuum | $1.18384$ | $1.15096$ | $1.11338$ | $1.11338$ | $1.11338$ |
+| critical temperature $T^{X,{\rm c}}_{\rm SF}$ | $0.260467$ | $0.240465$ | $0.213799$ | $0.222119$ | $0.222119$ |
+| $\Phi^X_{0,{\rm SF}}(0)$ | $0.403064$ | $0.362009$ | $0.306989$ | $0.328486$ | $0.328486$ |
+| $\Phi^X_{0,{\rm SF}}(0)/T^{X,{\rm c}}_{\rm SF}$ | $1.547$ | $1.505$ | $1.436$ | $1.479$ | $1.479$ |
+| $E^{X,{\rm gap}}_{\rm SF}(0)/T^{X,{\rm c}}_{\rm SF}$ | $1.739$ | $1.720$ | $1.714$ | $1.650$ | $1.650$ |
+| Dirac mass of the superfluid (every $T<T^{X,{\rm c}}_{\rm SF}$) | $0.206685$ | $0.200000$ | $0.200000$ | $0.162293$ | $0.162293$ |
+| $\Phi^X_{0,{\rm SF}}(T)<r^X_{\rm SF}(T)$ above $T/T^{X,{\rm c}}_{\rm SF}=$ | $0.42$ | $0.40$ | $0.35$ | $0.37$ | $0.37$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0$ | $2.02$ | $1.81$ | $1.53$ | $1.64$ | $1.64$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.5$ | $0.860$ | $0.824$ | $0.765$ | $0.800$ | $0.800$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.9$ | $0.295$ | $0.287$ | $0.273$ | $0.284$ | $0.284$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.98$ | $0.127$ | $0.124$ | $0.118$ | $0.123$ | $0.123$ |
+| residual of (12.2) / depth at $0$ (per cent) | $0.70$ | $0.47$ | $0.27$ | $0.28$ | $0.28$ |
+| residual of (12.2) / depth at $0.5$ (per cent) | $0.56$ | $0.38$ | $0.19$ | $0.23$ | $0.23$ |
+| residual of (12.2) / depth at $0.9$ (per cent) | $0.040$ | $0.030$ | $0.019$ | $0.024$ | $0.024$ |
+| residual of (12.2) / depth at $0.98$ (per cent) | $0.0017$ | $0.0013$ | $0.00078$ | $0.0010$ | $0.0010$ |
+| residual of the quartic form / depth at $0$ (per cent) | $5.9$ | $4.4$ | $2.8$ | $5.0$ | $5.0$ |
+| residual of the quartic form / depth at $0.9$ (per cent) | $1.8$ | $1.6$ | $1.3$ | $1.6$ | $1.6$ |
+| residual of the quartic form / depth at $0.98$ (per cent) | $0.37$ | $0.32$ | $0.26$ | $0.31$ | $0.31$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0$ (per cent) | $3.8$ | $3.1$ | $1.9$ | $7.0$ | $7.0$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0.9$ (per cent) | $2.7$ | $2.3$ | $1.8$ | $2.3$ | $2.3$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0.98$ (per cent) | $0.56$ | $0.49$ | $0.38$ | $0.47$ | $0.47$ |
+| occupation of the states at the cutoff at $0.98\,T^{X,{\rm c}}_{\rm SF}$ (per cent) | $1.8$ | $1.3$ | $0.76$ | $0.94$ | $0.94$ |
+<!-- END p3_table_thermal -->
+<!-- BEGIN p4_table_thermal -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| effective pair coupling $g^{X,{\rm P}}_{\rm SF}$ | $25.20$ | $24.50$ | $23.70$ | $23.70$ | $23.70$ |
+| effective scalar coupling $g^{X,{\rm S}}_{\rm SF}$ | $2.80$ | $0$ | $0$ | $-7.40$ | $-7.40$ |
+| $\lambda^{\rm P}_{\rm SF}(0)$ of the normal vacuum | $1.18384$ | $1.15096$ | $1.11338$ | $1.11338$ | $1.11338$ |
+| critical temperature $T^{X,{\rm c}}_{\rm SF}$ | $0.260467$ | $0.240465$ | $0.213799$ | $0.222119$ | $0.222119$ |
+| $\Phi^X_{0,{\rm SF}}(0)$ | $0.403064$ | $0.362009$ | $0.306989$ | $0.328486$ | $0.328486$ |
+| $\Phi^X_{0,{\rm SF}}(0)/T^{X,{\rm c}}_{\rm SF}$ | $1.547$ | $1.505$ | $1.436$ | $1.479$ | $1.479$ |
+| $E^{X,{\rm gap}}_{\rm SF}(0)/T^{X,{\rm c}}_{\rm SF}$ | $1.739$ | $1.720$ | $1.714$ | $1.650$ | $1.650$ |
+| Dirac mass of the superfluid (every $T<T^{X,{\rm c}}_{\rm SF}$) | $0.206685$ | $0.200000$ | $0.200000$ | $0.162293$ | $0.162293$ |
+| $\Phi^X_{0,{\rm SF}}(T)<r^X_{\rm SF}(T)$ above $T/T^{X,{\rm c}}_{\rm SF}=$ | $0.42$ | $0.40$ | $0.35$ | $0.37$ | $0.37$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0$ | $2.02$ | $1.81$ | $1.53$ | $1.64$ | $1.64$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.5$ | $0.860$ | $0.824$ | $0.765$ | $0.800$ | $0.800$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.9$ | $0.295$ | $0.287$ | $0.273$ | $0.284$ | $0.284$ |
+| $\Phi^X_{0,{\rm SF}}/r^X_{\rm SF}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.98$ | $0.127$ | $0.124$ | $0.118$ | $0.123$ | $0.123$ |
+| residual of (R1.3) / depth at $0$ (per cent) | $0.70$ | $0.47$ | $0.27$ | $0.28$ | $0.28$ |
+| residual of (R1.3) / depth at $0.5$ (per cent) | $0.56$ | $0.38$ | $0.19$ | $0.23$ | $0.23$ |
+| residual of (R1.3) / depth at $0.9$ (per cent) | $0.040$ | $0.030$ | $0.019$ | $0.024$ | $0.024$ |
+| residual of (R1.3) / depth at $0.98$ (per cent) | $0.0017$ | $0.0013$ | $0.00078$ | $0.0010$ | $0.0010$ |
+| residual of the quartic form / depth at $0$ (per cent) | $5.9$ | $4.4$ | $2.8$ | $5.0$ | $5.0$ |
+| residual of the quartic form / depth at $0.9$ (per cent) | $1.8$ | $1.6$ | $1.3$ | $1.6$ | $1.6$ |
+| residual of the quartic form / depth at $0.98$ (per cent) | $0.37$ | $0.32$ | $0.26$ | $0.31$ | $0.31$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0$ (per cent) | $3.8$ | $3.1$ | $1.9$ | $7.0$ | $7.0$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0.9$ (per cent) | $2.7$ | $2.3$ | $1.8$ | $2.3$ | $2.3$ |
+| $(-a/2b)^{1/2}/\Phi^X_{0,{\rm SF}}-1$ at $0.98$ (per cent) | $0.56$ | $0.49$ | $0.38$ | $0.47$ | $0.47$ |
+| occupation of the states at the cutoff at $0.98\,T^{X,{\rm c}}_{\rm SF}$ (per cent) | $1.8$ | $1.3$ | $0.76$ | $0.94$ | $0.94$ |
+<!-- END p4_table_thermal -->
+<!-- BEGIN p4_checks_thermal -->
+| check | result | deviation | tolerance | statement |
+|:---|:---|---:|---:|:-----------|
+| P3-T1 HS_1_1 | PASS | $2.36\times10^{-14}$ | $1\times10^{-12}$ | HS\_1\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_1_1 | PASS | $4.41\times10^{-14}$ | $1\times10^{-12}$ | HS\_1\_1: the critical temperature T\_c = 0.2604672394 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1838428143 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_1_1 | PASS | $9.36\times10^{-13}$ | $1\times10^{-9}$ | HS\_1\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 25.200000) |
+| P3-T8 HS_1_1 | PASS | $3.62\times10^{-14}$ | $1\times10^{-10}$ | HS\_1\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2066851932; largest change) |
+| P3-T5 HS_1_1 | PASS | $0.281$ | $0.5$ | HS\_1\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 5.63e-3) |
+| P3-T4 HS_1_1 | PASS | -- | -- | HS\_1\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 7.489e-2) and in the normal state at 1.01 T\_c (Phi0 = 2.8e-11) |
+| P3-T7 HS_1_1 | PASS | $5.58\times10^{-12}$ | $1\times10^{-8}$ | HS\_1\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 7.035495e-3 of the depth, is that of row 8 of Table R1 (relative difference) |
+| P3-T6 HS_1_1 | PASS | -- | -- | HS\_1\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.83e-2, 8.81e-3, 3.73e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (R1.3) is 1.7e-5 of the depth at 0.98 T\_c |
+| P3-T1 HS_0_1 | PASS | $9.23\times10^{-14}$ | $1\times10^{-12}$ | HS\_0\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_0_1 | PASS | $4.03\times10^{-13}$ | $1\times10^{-12}$ | HS\_0\_1: the critical temperature T\_c = 0.2404654563 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1509582917 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_0_1 | PASS | $1.03\times10^{-12}$ | $1\times10^{-9}$ | HS\_0\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 24.500000) |
+| P3-T8 HS_0_1 | PASS | $0$ | $1\times10^{-10}$ | HS\_0\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
+| P3-T5 HS_0_1 | PASS | $0.244$ | $0.5$ | HS\_0\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.87e-3) |
+| P3-T4 HS_0_1 | PASS | -- | -- | HS\_0\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.757e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.2e-11) |
+| P3-T7 HS_0_1 | PASS | $5.9\times10^{-13}$ | $1\times10^{-8}$ | HS\_0\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 4.693236e-3 of the depth, is that of row 8 of Table R1 (relative difference) |
+| P3-T6 HS_0_1 | PASS | -- | -- | HS\_0\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.60e-2, 7.67e-3, 3.24e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (R1.3) is 1.3e-5 of the depth at 0.98 T\_c |
+| P3-T1 HS_0_0 | PASS | $1.04\times10^{-13}$ | $1\times10^{-12}$ | HS\_0\_0: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 HS_0_0 | PASS | $1.98\times10^{-13}$ | $1\times10^{-12}$ | HS\_0\_0: the critical temperature T\_c = 0.2137990984 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 HS_0_0 | PASS | $1.21\times10^{-12}$ | $1\times10^{-9}$ | HS\_0\_0: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 HS_0_0 | PASS | $0$ | $1\times10^{-10}$ | HS\_0\_0: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
+| P3-T5 HS_0_0 | PASS | $0.192$ | $0.5$ | HS\_0\_0: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 3.83e-3) |
+| P3-T4 HS_0_0 | PASS | -- | -- | HS\_0\_0: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 5.773e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.9e-11) |
+| P3-T7 HS_0_0 | PASS | $1.84\times10^{-11}$ | $1\times10^{-8}$ | HS\_0\_0: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.690453e-3 of the depth, is that of row 8 of Table R1 (relative difference) |
+| P3-T6 HS_0_0 | PASS | -- | -- | HS\_0\_0: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.27e-2, 6.06e-3, 2.56e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (R1.3) is 7.8e-6 of the depth at 0.98 T\_c |
+| P3-T1 KS | PASS | $6.27\times10^{-14}$ | $1\times10^{-12}$ | KS: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 KS | PASS | $1.99\times10^{-13}$ | $1\times10^{-12}$ | KS: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 KS | PASS | $1.14\times10^{-12}$ | $1\times10^{-9}$ | KS: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 KS | PASS | $3.27\times10^{-13}$ | $1\times10^{-10}$ | KS: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
+| P3-T5 KS | PASS | $0.235$ | $0.5$ | KS: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
+| P3-T4 KS | PASS | -- | -- | KS: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
+| P3-T7 KS | PASS | $3.46\times10^{-11}$ | $1\times10^{-8}$ | KS: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of row 8 of Table R1 (relative difference) |
+| P3-T6 KS | PASS | -- | -- | KS: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (R1.3) is 1.0e-5 of the depth at 0.98 T\_c |
+| P3-T1 CJT | PASS | $8.08\times10^{-14}$ | $1\times10^{-12}$ | CJT: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
+| P3-T3 CJT | PASS | $1.98\times10^{-13}$ | $1\times10^{-12}$ | CJT: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T2 CJT | PASS | $1.14\times10^{-12}$ | $1\times10^{-9}$ | CJT: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
+| P3-T8 CJT | PASS | $3.27\times10^{-13}$ | $1\times10^{-10}$ | CJT: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
+| P3-T5 CJT | PASS | $0.235$ | $0.5$ | CJT: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
+| P3-T4 CJT | PASS | -- | -- | CJT: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
+| P3-T7 CJT | PASS | $4.6\times10^{-11}$ | $1\times10^{-8}$ | CJT: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of row 8 of Table R1 (relative difference) |
+| P3-T6 CJT | PASS | -- | -- | CJT: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (R1.3) is 1.0e-5 of the depth at 0.98 T\_c |
+| YP3-T1 HS_1_1 | PASS | $6.16\times10^{-14}$ | $1\times10^{-12}$ | HS\_1\_1: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| YP3-T3 HS_1_1 | PASS | $6.76\times10^{-14}$ | $1\times10^{-10}$ | HS\_1\_1: the critical temperature T\_c = 0.2604672394 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T2 HS_1_1 | PASS | $3.31\times10^{-12}$ | $1\times10^{-8}$ | HS\_1\_1: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
+| YP3-T1 CJT | PASS | $1.05\times10^{-13}$ | $1\times10^{-12}$ | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| YP3-T3 CJT | PASS | $2.14\times10^{-13}$ | $1\times10^{-10}$ | CJT: the critical temperature T\_c = 0.2221187371 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T2 CJT | PASS | $6.21\times10^{-13}$ | $1\times10^{-8}$ | CJT: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
+| YP3-T4 | PASS | $9.81\times10^{-12}$ | $1\times10^{-9}$ | HS (0, 0): the order parameter of every temperature of the table from the gap equation g\^P I1(m\^2 + Phi0\^2, T)/pi\^2 = 1 alone (without the self-consistent engine) = Rust (largest difference) |
+| YP3-T5 HS_1_1 | PASS | $2.42\times10^{-14}$ | $1\times10^{-9}$ | HS\_1\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 HS_0_1 | PASS | $3.46\times10^{-14}$ | $1\times10^{-9}$ | HS\_0\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 HS_0_0 | PASS | $1.69\times10^{-14}$ | $1\times10^{-9}$ | HS\_0\_0: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 KS | PASS | $5.91\times10^{-14}$ | $1\times10^{-9}$ | KS: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 CJT | PASS | $5.91\times10^{-14}$ | $1\times10^{-9}$ | CJT: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+<!-- END p4_checks_thermal -->
+<!-- BEGIN p4_tc -->
+$0.214$ (HS (0, 0)) to $0.260$ (HS (1, 1))
+<!-- END p4_tc -->
+<!-- BEGIN p4_cross -->
+$0.35$ (HS (0, 0)) to $0.42$ (HS (1, 1))
+<!-- END p4_cross -->
+<!-- BEGIN p4_phi0_98 -->
+$0.0812$ (HS (0, 0)) to $0.105$ (HS (1, 1))
+<!-- END p4_phi0_98 -->
+<!-- BEGIN p4_ratio_98 -->
+$0.118$ (HS (0, 0)) to $0.127$ (HS (1, 1))
+<!-- END p4_ratio_98 -->
+<!-- BEGIN p4_r_98 -->
+$0.688$ (HS (0, 0)) to $0.828$ (HS (1, 1))
+<!-- END p4_r_98 -->
+<!-- BEGIN p4_res6_0 -->
+$0.27$ per cent (HS (0, 0)) to $0.70$ per cent (HS (1, 1))
+<!-- END p4_res6_0 -->
+<!-- BEGIN p4_res6_98 -->
+$0.00078$ per cent (HS (0, 0)) to $0.0017$ per cent (HS (1, 1))
+<!-- END p4_res6_98 -->
+<!-- BEGIN p4_res4_0 -->
+$2.8$ per cent (HS (0, 0)) to $5.9$ per cent (HS (1, 1))
+<!-- END p4_res4_0 -->
+<!-- BEGIN p4_res4_98 -->
+$0.26$ per cent (HS (0, 0)) to $0.37$ per cent (HS (1, 1))
+<!-- END p4_res4_98 -->
+<!-- BEGIN p4_gl_0 -->
+$1.9$ per cent (HS (0, 0)) to $7.0$ per cent (KS, CJT)
+<!-- END p4_gl_0 -->
+<!-- BEGIN p4_gl_98 -->
+$0.38$ per cent (HS (0, 0)) to $0.56$ per cent (HS (1, 1))
+<!-- END p4_gl_98 -->
+<!-- BEGIN p4_glcoef -->
+$0.19$ (HS (0, 0)) to $0.28$ (HS (1, 1))
+<!-- END p4_glcoef -->
+<!-- BEGIN p4_ratio_bcs -->
+$1.44$ (HS (0, 0)) to $1.55$ (HS (1, 1))
+<!-- END p4_ratio_bcs -->
+<!-- BEGIN p4_gapratio -->
+$1.65$ (KS, CJT) to $1.74$ (HS (1, 1))
+<!-- END p4_gapratio -->
+<!-- BEGIN p4_occ -->
+$0.76$ per cent (HS (0, 0)) to $1.8$ per cent (HS (1, 1))
+<!-- END p4_occ -->
+<!-- BEGIN p4_phi0_lam -->
+$0.307$ (HS (0, 0)) to $0.403$ (HS (1, 1))
+<!-- END p4_phi0_lam -->
+<!-- BEGIN p4_gap0 -->
+$0.366$ (HS (0, 0)) to $0.453$ (HS (1, 1))
+<!-- END p4_gap0 -->
+<!-- BEGIN p4_keep03 -->
+$0.12$ per cent (HS (0, 0)) to $0.13$ per cent (KS, CJT)
+<!-- END p4_keep03 -->
+<!-- BEGIN p4_ratio_0 -->
+$1.53$ (HS (0, 0)) to $2.02$ (HS (1, 1))
+<!-- END p4_ratio_0 -->

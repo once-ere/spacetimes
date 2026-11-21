@@ -856,6 +856,27 @@ mechanism in time. A mean field that depends on space, with dynamical
 gauge fields, would need far more computing than can be checked within
 this solution.
 
+\textbf{D15. The free energy of the methods (added on 21 November 2026,
+at the author's request).} The author asked to compute ``the free
+energy'' of every method, beside the effective potential, and to
+determine whether the order parameter is then smaller and more
+physically reasonable. The free energy is taken to be the thermodynamic
+free energy per volume at the temperature \(T\) and \(\mu_{\rm LL}=0\)
+of the uniform quasi-free (thermal) states,
+\(\mathcal E^X_{\rm SF}-T\mathcal S_{\rm SF}\), with the energy
+functional of each method unchanged and the entropy of the quasi-free
+state; as a function of the field it is the constrained minimum measured
+from the normal state at the same temperature. \emph{Reason.} This is
+the free energy of Landau's theory, which the answer on the Landau form
+(C10) compared with the effective potential: at \(T=0\) the two
+coincide, and near the critical temperature the order parameter of a
+continuous transition is small. For HS it is the free energy at the
+saddle point, for CJT the effective action at finite temperature with
+the truncation of the method, and for KS the functional of Mermin with
+the entropy of the Kohn-Sham system. Fluctuations of the order parameter
+beyond the mean field are not included (Section 12.4 states the
+consequence).
+
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the
@@ -1070,6 +1091,35 @@ charges, and the coupling of the gauge field \(a\)
 \(\Psi^\dagger_{\rm LL}\mathsf q^b_{\rm SF}\Psi_{\rm LL}\) (the term
 \(-\mu^b_{\rm SF}\Psi^\dagger_{\rm LL}\mathsf q^b_{\rm SF}\Psi_{\rm LL}\)
 of the Hamiltonian density) \\
+\(\vec\Phi\); \(\Phi^X_{0,{\rm SF}}\), \(\Phi_0\); \(\Phi\),
+\(\Phi_{\rm a}\) & the field of the superfluid boson singlet state (the
+complex isospin vector of the three amplitudes of the pair self-energy
+of a state); its modulus in the vacuum of method \(X\), written
+\(\Phi_0\) in C10 and E9, and \(\Phi^X_{0,{\rm SF}}(T)\) in the
+superfluid at the temperature \(T\); the modulus of a polar field; the
+amplitude of an applied pair self-energy (C10, E9, E10) \\
+\(M\) & in E9: the Dirac mass of a state (the mass of its
+quasi-particles, the mass plus the scalar part of its normal
+self-energy) \\
+\(a^{X,{\rm Tay}}_{\rm SF}\) & the coefficient of
+\(\lvert\vec\Phi\rvert^2\) of the Taylor series of the effective
+potential of method \(X\) at \(\vec\Phi=0\) (C10) \\
+\(\mu^{\rm SM}\), \(\lambda^{\rm SM}\) & the two parameters of the Higgs
+potential of the Standard Model,
+\(-(\mu^{\rm SM})^2(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}+\lambda^{\rm SM}((\Phi^{\rm SM})^\dagger\Phi^{\rm SM})^2\)
+(C10) \\
+\(T\); \(\mu_{\rm LL}\) & the temperature, with Boltzmann's constant set
+to 1 (D15, C12, E10); the chemical potential of the fermion number, zero
+in the whole solution \\
+\(\mathcal E^X_{\rm SF}\); \(\mathcal S_{\rm SF}\) & the energy per
+volume of a uniform state in method \(X\); the entropy per volume of a
+uniform quasi-free state,
+\(-\tfrac12\int d^3q/(2\pi)^3\sum_k[f_k\ln f_k+(1-f_k)\ln(1-f_k)]\) with
+the occupations \(f_k\) of the 16 eigenvalues of its matrix of
+Bogoliubov and de Gennes at the momentum \(\vec q\) (D15) \\
+\(T^{X,{\rm c}}_{\rm SF}\) & the critical temperature of method \(X\):
+below it the superfluid, above it the normal state is the state of the
+lowest free energy (C12) \\
 \(\square\) & end of a proof \\
 \end{longtable}
 
@@ -1175,8 +1225,8 @@ three effective Lagrangians, the vacua, the stabilizer
 \(SL(2,\mathbb C)\times O(2)\), and \(\mathrm{SFBSv}^X\) with the masses
 compared with the linear response); the provenance, the corrections, the
 symbols and the references are now Sections 14 to 17; the program
-\texttt{sf\_part3} (VERDICT: ALL PASS (47 of 47)), the Python programs
-\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (20 of 20)) and
+\texttt{sf\_part3} (VERDICT: ALL PASS (87 of 87)), the Python programs
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (32 of 32)) and
 \texttt{python/sf\_part3\_figures.py}, the data and two figures; 5
 entries added to the registry and one rewritten (now 167) \\
 E5 & 20 Nov 2026 & corrections during object O5, each found before the
@@ -1293,8 +1343,8 @@ definition and seven examples of the Landau form, its accuracy, the
 cause of the residual, why it matters, Table 12.2, Figure 9; the earlier
 figures 9 to 13 are now 10 to 14 and the earlier Table 12.2 is Table
 12.3), the module \texttt{landau} of \texttt{sf\_part3} with the checks
-P3-8 to P3-11 (VERDICT: ALL PASS (47 of 47)), the checks YP3-8 to YP3-11
-of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (20 of 20)), the new
+P3-8 to P3-11 (VERDICT: ALL PASS (87 of 87)), the checks YP3-8 to YP3-11
+of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (32 of 32)), the new
 provenance document \texttt{provenance/P4\_remarks.md} (\texttt{.tex},
 \texttt{.pdf}), which keeps the answer, two entries of the registry of
 the symbols (\(a^{X,{\rm Tay}}_{\rm SF}\); \(\mu^{\rm SM}\),
@@ -1334,6 +1384,45 @@ its counterparts in \texttt{sf\_part2} and \texttt{python/sf\_part2.py}
 counterparts of one check (``P2-6b, P2-6c''); one warning of
 \texttt{NIntegrate} in the first dry run removed (error E8 of
 \texttt{provenance/P3\_notebook.md}) \\
+C12 & 21 Nov 2026, 08:13 & the author's request: compute the effective
+potential and the free energy of the five methods, and determine whether
+the order parameter is smaller and more physically reasonable; document
+the addendum with provenance. Decision D15; Section 12.4 of the
+manuscript (the free energy at finite temperature, the critical
+temperatures \(0.214\) (HS (0, 0)) to \(0.260\) (HS (1, 1)), the gap
+equation at finite temperature, the temperature-independent Dirac mass
+of the superfluid, the radius of convergence at finite temperature,
+Table 12.4, Figure 10; the earlier figures 10 to 14 are now 11 to 15);
+the thermal states of \texttt{sfcore}; the module \texttt{thermal} of
+\texttt{sf\_part3} with the checks P3-T1 to P3-T8 (VERDICT: ALL PASS (87
+of 87)); the checks YP3-T1 to YP3-T5 of \texttt{python/sf\_part3.py}
+(VERDICT: ALL PASS (32 of 32)); the addendum A1 of
+\texttt{provenance/P4\_remarks.md}. The answer: near the critical
+temperature the order parameter is small, lies inside the radius of
+convergence above \(0.35\) (HS (0, 0)) to \(0.42\) (HS (1, 1)) times
+\(T^{X,{\rm c}}_{\rm SF}\), and the Landau form becomes exact; at
+\(T=0\) it is not \\
+E10 & 21 Nov 2026 & correction during C12, found before the commit: the
+first run of the module \texttt{thermal} fitted the Landau form to
+free-energy curves whose applied fields reached only
+\(1.6\,\Phi^X_{0,{\rm SF}}(T)\), a smaller interval than that of Section
+12.1, so that its residual at \(T=0\) differed from Table 12.1; the
+curves now use the applied fields of Section 12.1, and the new check
+P3-T7 compares the two \\
+E11 & 21 Nov 2026 & correction during C12: the renumbering of the
+figures in C10 changed only the first number of two ranges of the
+manuscript, so that Section 16.13 said that the figure program of Part
+IV draws ``Figures 11 to 13'' (it draws four figures, then 11 to 14) and
+Section 16.16 that the data of the growth runs serve ``Figures 12 and
+12'' (then 12 and 13); found while renumbering the figures for Section
+12.4, corrected (now 12 to 15 and 13 and 14) and recorded as item 6 of
+Section 17.3 of the manuscript \\
+E12 & 21 Nov 2026 & correction during C12: the symbols that the entries
+C10 and E9 use (\(\vec\Phi\), \(\Phi_0\), \(\Phi\), \(\Phi_{\rm a}\),
+\(M\), \(a^{X,{\rm Tay}}_{\rm SF}\), \(\mu^{\rm SM}\),
+\(\lambda^{\rm SM}\)) were missing from the table of Section 8 of this
+record, contrary to the rule that every document defines its symbols;
+they are now defined there, with the symbols of D15, C12 and E10 \\
 \end{longtable}
 
 \end{document}

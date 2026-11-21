@@ -11,6 +11,7 @@
 mod effpot;
 mod kinetic;
 mod landau;
+mod thermal;
 
 use sfcore::cmat::CMat;
 use sfcore::dirac::k_scalar;
@@ -33,6 +34,9 @@ fn main() {
         .lines().skip(1).map(|l| { let v: Vec<&str> = l.split(',').collect(); (v[0].to_string(), v[4].parse().unwrap(), v[5].parse().unwrap()) }).collect();
     let mut sf_rows = vec![];
     let mut landau_rows: Vec<Vec<String>> = vec![];
+    let mut th_rows: Vec<Vec<String>> = vec![];
+    let mut th_land: Vec<Vec<String>> = vec![];
+    let mut th_curves: Vec<Vec<String>> = vec![];
     let mut resid_rows: Vec<Vec<String>> = vec![];
     landau::check_qp_energies(&mut rep);
     let mut curves_out = vec![];
@@ -47,6 +51,24 @@ fn main() {
         // the accuracy of the Landau form (12.2) (Table 12.2, Figure 9)
         let acc = landau::accuracy(&mut rep, &tag, &model, &cv, phi0);
         let st = kinetic::stiffness(&mut model, &sol.n_self, &p0, sol.energy);
+        // the free energy at finite temperature (Section 12.4): T_c, Phi0(T), F(Phi; T) and its Landau form
+        let lam2: f64 = std::fs::read_to_string(data.join("part2_values.csv")).expect("run sf_part2 first").lines()
+            .find(|l| l.starts_with(&format!("p2_lamP_V2_{},", tag))).map(|l| l.split(',').nth(1).unwrap().parse().unwrap()).unwrap();
+        let th = thermal::run(&mut rep, &tag, &m, &v2, &model, &sol.n_self, &sol.p_self, phi0, sol.energy, lam2, cv.landau.3 / sol.energy.abs());
+        println!("{:<20} T_c {:.8} lambda^P(0) {:.8} g^P {:.6} g^S {:.6} ({:.0} s)", m.name(), th.tc, th.lam0, th.g_p, th.g_s, t0.elapsed().as_secs_f64());
+        for (k, v) in [("Tc", th.tc), ("lam0", th.lam0), ("gP", th.g_p), ("gS", th.g_s)] {
+            vals.push((format!("p3_th_{}_{}", k, tag), v));
+        }
+        for p in &th.points {
+            th_rows.push(vec![tag.clone(), f(p.tau), f(p.t), f(p.phi0), f(p.mass), f(p.gap), f(p.mass_n), f(p.radius), f(p.phi0 / p.radius), f(p.free), f(p.dentropy),
+                              f(p.gapeq), f(p.a), f(p.b), f(p.phi0_landau), format!("{}", p.iterations)]);
+        }
+        for c in &th.curves {
+            th_land.push(vec![tag.clone(), f(c.tau), f(c.res6), f(c.res4)]);
+            for r in &c.rows {
+                th_curves.push(vec![tag.clone(), f(c.tau), f(r.0), f(r.1), f(r.2)]);
+            }
+        }
         rep.add(&format!("P3-6 {}", tag), &format!("{}: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = {:.1e})", tag, st.chi33), st.chi33.abs(), 1e-10);
         // the coefficients of the kinetic part and the masses of SFBSv
         let z = st.chi11 / (2.0 * phi0 * phi0);
@@ -99,6 +121,10 @@ fn main() {
     write_csv(&data.join("part3_sfbsv.csv"), &["method", "Phi0", "E0", "Z", "Y", "V2_amplitude", "V2_nonunitary", "M_H", "M_H_RPA", "M_NU", "M_NU_RPA", "fF2_time", "fF2_space", "fI2_time", "fI2_space", "f3_2_space"], &sf_rows);
     write_csv(&data.join("part3_landau.csv"), &["method", "Phi0", "E0", "V2_amplitude", "Phi_L", "V_L_at_Phi_L", "V_L2_at_Phi_L", "a", "a_Taylor",
         "res_K2", "res_K3", "res_K4", "res_K5", "res_K6", "sign_changes_K3", "c_of_K4", "top1", "c_top1", "res_top1", "top2", "c_top2", "res_top2", "top3", "c_top3", "res_top3"], &landau_rows);
+    write_csv(&data.join("part3_thermal.csv"), &["method", "tau", "T", "Phi0", "Dirac_mass", "gap", "Dirac_mass_normal", "radius", "Phi0_over_radius", "F_min", "S_minus_S_normal",
+        "gap_equation_residual", "a_Taylor", "b_Taylor", "Phi0_Landau", "iterations"], &th_rows);
+    write_csv(&data.join("part3_thermal_landau.csv"), &["method", "tau", "res_Landau_over_depth", "res_quartic_over_depth"], &th_land);
+    write_csv(&data.join("part3_thermal_curves.csv"), &["method", "tau", "applied_field", "Phi", "F"], &th_curves);
     write_csv(&data.join("part3_landau_residuals.csv"), &["method", "Phi", "Phi_over_Phi0", "res_K2_over_depth", "res_K3_over_depth", "res_K4_over_depth"], &resid_rows);
     for (tag, rows) in &curves_out {
         let r: Vec<Vec<String>> = rows.iter().map(|x| vec![f(x.0), f(x.1), f(x.2), f(x.3)]).collect();

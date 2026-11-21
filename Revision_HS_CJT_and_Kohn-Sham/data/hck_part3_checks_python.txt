@@ -8,6 +8,18 @@ PASS YP3-11 HS_0_1 deviation 1.478e-11 (tolerance 1.0e-07): HS_0_1: the accuracy
 PASS YP3-11 HS_0_0 deviation 5.701e-11 (tolerance 1.0e-07): HS_0_0: the accuracy of the Landau form recomputed from data/part3_effpot_HS_0_0.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
 PASS YP3-11 KS deviation 3.104e-09 (tolerance 1.0e-07): KS: the accuracy of the Landau form recomputed from data/part3_effpot_KS.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
 PASS YP3-11 CJT deviation 1.216e-09 (tolerance 1.0e-07): CJT: the accuracy of the Landau form recomputed from data/part3_effpot_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
+PASS YP3-T1 HS_1_1 deviation 6.164e-14 (tolerance 1.0e-12): HS_1_1: the thermal states at T = 0.005 reproduce the ground state of T = 0 (|change of Phi0| + relative change of the energy)
+PASS YP3-T3 HS_1_1 deviation 6.756e-14 (tolerance 1.0e-10): HS_1_1: the critical temperature T_c = 0.2604672394 = Rust (relative; bisection of lambda^P(T) = 1 with the normal states of this engine)
+PASS YP3-T2 HS_1_1 deviation 3.311e-12 (tolerance 1.0e-08): HS_1_1: the order parameter and the free energy of the superfluid at 0.5 T_c and 0.9 T_c = Rust (largest difference; the free energy relative)
+PASS YP3-T1 CJT deviation 1.046e-13 (tolerance 1.0e-12): CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (|change of Phi0| + relative change of the energy)
+PASS YP3-T3 CJT deviation 2.138e-13 (tolerance 1.0e-10): CJT: the critical temperature T_c = 0.2221187371 = Rust (relative; bisection of lambda^P(T) = 1 with the normal states of this engine)
+PASS YP3-T2 CJT deviation 6.209e-13 (tolerance 1.0e-08): CJT: the order parameter and the free energy of the superfluid at 0.5 T_c and 0.9 T_c = Rust (largest difference; the free energy relative)
+PASS YP3-T4  deviation 9.807e-12 (tolerance 1.0e-09): HS (0, 0): the order parameter of every temperature of the table from the gap equation g^P I1(m^2 + Phi0^2, T)/pi^2 = 1 alone (without the self-consistent engine) = Rust (largest difference)
+PASS YP3-T5 HS_1_1 deviation 2.420e-14 (tolerance 1.0e-09): HS_1_1: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)
+PASS YP3-T5 HS_0_1 deviation 3.464e-14 (tolerance 1.0e-09): HS_0_1: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)
+PASS YP3-T5 HS_0_0 deviation 1.688e-14 (tolerance 1.0e-09): HS_0_0: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)
+PASS YP3-T5 KS deviation 5.906e-14 (tolerance 1.0e-09): KS: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)
+PASS YP3-T5 CJT deviation 5.906e-14 (tolerance 1.0e-09): CJT: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)
 PASS YP3-1 HS_1_1 deviation 5.519e-14 (tolerance 1.0e-09): HS_1_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406)
 PASS YP3-2 HS_1_1 deviation 2.068e-10 (tolerance 1.0e-06): HS_1_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative)
 PASS YP3-4 HS_1_1 deviation 4.316e-10 (tolerance 1.0e-05): HS_1_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative)
@@ -24,6 +36,6 @@ PASS YP3-10 CJT deviation 2.872e-12 (tolerance 1.0e-08): CJT: the coefficient of
 PASS YP3-7 CJT deviation 1.972e-11 (tolerance 1.0e-07): CJT: the stiffness of the phase from the twisted states f^2 = 2.2552881119e-03 = Rust (relative)
 
 Notes:
-  run time 30 s
+  run time 79 s
 
-VERDICT: ALL PASS (20 of 20)
+VERDICT: ALL PASS (32 of 32)
