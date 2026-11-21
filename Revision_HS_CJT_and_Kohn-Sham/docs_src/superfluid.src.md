@@ -34,8 +34,10 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
 
 **State of this version.** This version contains Parts I to IV, complete. Section 16 gives the programs, the commands
 and the reports of the checks of every part, Section 17 the corrections made during the work, Section 18 all symbols,
-and Section 19 the published works on the methods. The Mathematica notebook `superfluid.nb` named in Section 6.3 is the
-next object of the work and is not yet part of this version.
+and Section 19 the published works on the methods. The Mathematica notebook `superfluid.nb` named in Section 6.3 is
+written part by part; its first version repeats the computations of Part I in the Wolfram language, each with its
+counterparts in the two programs, and the corrections that it brought to the programs of Part I are listed in Section
+17.5.
 
 **How to read it.** The manuscript is written for a reader who knows quantum mechanics, special relativity and the
 Dirac equation at the level of a first graduate course. It defines every symbol before it is used (all symbols are
@@ -86,7 +88,10 @@ $A_\mu=\sin\theta_WW^3_\mu+\cos\theta_WB_\mu$, with $e=g\sin\theta_W$; with the 
 $\langle\Phi^{\rm SM}\rangle=(0,v)/\sqrt2$ the masses are $M_W=gv/2$, $M_Z=\sqrt{g^2+g'^2}\,v/2$, and the photon is
 massless. (Some textbooks write $-ig$ in (1.1); the two signs describe the same theory with $W\to-W$.) This
 manuscript uses the same sign, $+i$ in front of every coupling, for all GEE covariant derivatives, and names the
-analogous objects after those of the Standard Model, with the suffix SF.
+analogous objects after those of the Standard Model, with the suffix SF. *Check SM-1 (Section 16):* the kinetic term
+$(D^{\rm SM}_\mu\langle\Phi^{\rm SM}\rangle)^\dagger D^{{\rm SM},\mu}\langle\Phi^{\rm SM}\rangle$ of the constant vacuum is a quadratic form in
+$(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ whose matrix has the eigenvalues $M_W^2$ (twice), $M_Z^2$ and $0$, with the eigenvectors
+$W^1_\mu$, $W^2_\mu$, $Z_\mu$ and $A_\mu$ above; the programs check this for 20 values of $(g,g',v)$.
 
 # 2. The manifold M31 of the Lorentz super-loop (item 1 of the problem)
 
@@ -585,9 +590,12 @@ $-g^{\rm v}_{\rm LL}\sum_{\iota,p}W^\iota_{{\rm SF},p}j^{\iota,p}_{\rm SF}-g^{\r
 Euler-Lagrange equations of (5.1) are the **Yang-Mills equations**
 $$\sum_p\partial_pW^{\iota,pp'}_{\rm SF}-g^{\rm v}_{\rm LL}\sum_{p\iota'\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},p}W^{\iota'',pp'}_{\rm SF}=g^{\rm v}_{\rm LL}j^{\iota,p'}_{\rm SF},\qquad\sum_p\partial_pB^{pp'}_{\rm SF}=g^{\rm F}_{\rm LL}j^{{\rm F},p'}_{\rm SF}.\tag{5.10}$$
 The left side of the first is the adjoint covariant derivative of Section 4.3 applied to the field strength,
-$\sum_p\nabla^{\rm GEE}_p\mathsf W^{pp'}_{\rm SF}$. *Check E-10 of the Python program* derives the Euler-Lagrange equations of
-$\mathcal L^{\rm YM}_{\rm SF}$ plus the coupling to an arbitrary current symbolically (the program sympy) and finds (5.10)
-for all twelve components; *check C-5* verifies that the left side transforms covariantly.
+$\sum_p\nabla^{\rm GEE}_p\mathsf W^{pp'}_{\rm SF}$. *Check E-14* derives the Euler-Lagrange equations of
+$\mathcal L^{\rm YM}_{\rm SF}$ plus the coupling to an arbitrary current and finds (5.10) for all twelve components: the Python
+program symbolically (the program sympy), the Rust program by exact derivatives of the Lagrangian density (a
+polynomial of degree four in the fields and their first derivatives, differentiated in its arguments by five-point
+differences, which are exact for such a polynomial, and along the coordinates by automatic differentiation) at six
+random points; *check C-5* verifies that the left side transforms covariantly.
 
 **Conservation laws.** The contact terms commute with $F_{\rm LL}$ and $T^\iota_{\rm LL}$ (E-5), so, by Noether's theorem, the
 equations (5.5) conserve the currents: $\sum_p\partial_pj^{{\rm F},p}_{\rm SF}=0$ and $\sum_p\nabla^{\rm GEE}_pj^{\iota,p}_{\rm SF}=0$
@@ -2538,6 +2546,16 @@ Each of the following was found before part IV was committed.
    14.1 was given a row per quantity (it was wider than the page), the growth rates of Table 15.1 were given six
    digits, equation (14.5) was set on two lines, and the rounded values of checks quoted in Sections 15.1 and 15.3 were
    compared with the final report and corrected where they differed.
+
+## 17.5 Corrections brought by the notebook
+
+1. The Python program of Part I had used the identifier E-10 for its symbolic derivation of the Yang-Mills equations
+   (5.10), while E-10 of the Rust program is the check that the self-energy of Hartree and Fock is the derivative of the
+   energy: one identifier named two different checks. It was found when the notebook compared each of its checks with
+   the checks of the same identifier in the two programs. The Python check is now E-14, and the Rust program has a new
+   check E-14 of the same statement (Section 5.2), made by exact derivatives of the Lagrangian density.
+2. The conventions of the Standard Model (Section 1) had no check of their own; the check SM-1, added to both programs,
+   is the counterpart of the notebook's check of these conventions.
 
 # 18. The symbols
 

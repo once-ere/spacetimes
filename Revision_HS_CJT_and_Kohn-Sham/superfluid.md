@@ -33,8 +33,10 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
 
 **State of this version.** This version contains Parts I to IV, complete. Section 16 gives the programs, the commands
 and the reports of the checks of every part, Section 17 the corrections made during the work, Section 18 all symbols,
-and Section 19 the published works on the methods. The Mathematica notebook `superfluid.nb` named in Section 6.3 is the
-next object of the work and is not yet part of this version.
+and Section 19 the published works on the methods. The Mathematica notebook `superfluid.nb` named in Section 6.3 is
+written part by part; its first version repeats the computations of Part I in the Wolfram language, each with its
+counterparts in the two programs, and the corrections that it brought to the programs of Part I are listed in Section
+17.5.
 
 **How to read it.** The manuscript is written for a reader who knows quantum mechanics, special relativity and the
 Dirac equation at the level of a first graduate course. It defines every symbol before it is used (all symbols are
@@ -85,7 +87,10 @@ $A_\mu=\sin\theta_WW^3_\mu+\cos\theta_WB_\mu$, with $e=g\sin\theta_W$; with the 
 $\langle\Phi^{\rm SM}\rangle=(0,v)/\sqrt2$ the masses are $M_W=gv/2$, $M_Z=\sqrt{g^2+g'^2}\,v/2$, and the photon is
 massless. (Some textbooks write $-ig$ in (1.1); the two signs describe the same theory with $W\to-W$.) This
 manuscript uses the same sign, $+i$ in front of every coupling, for all GEE covariant derivatives, and names the
-analogous objects after those of the Standard Model, with the suffix SF.
+analogous objects after those of the Standard Model, with the suffix SF. *Check SM-1 (Section 16):* the kinetic term
+$(D^{\rm SM}_\mu\langle\Phi^{\rm SM}\rangle)^\dagger D^{{\rm SM},\mu}\langle\Phi^{\rm SM}\rangle$ of the constant vacuum is a quadratic form in
+$(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ whose matrix has the eigenvalues $M_W^2$ (twice), $M_Z^2$ and $0$, with the eigenvectors
+$W^1_\mu$, $W^2_\mu$, $Z_\mu$ and $A_\mu$ above; the programs check this for 20 values of $(g,g',v)$.
 
 # 2. The manifold M31 of the Lorentz super-loop (item 1 of the problem)
 
@@ -584,9 +589,12 @@ $-g^{\rm v}_{\rm LL}\sum_{\iota,p}W^\iota_{{\rm SF},p}j^{\iota,p}_{\rm SF}-g^{\r
 Euler-Lagrange equations of (5.1) are the **Yang-Mills equations**
 $$\sum_p\partial_pW^{\iota,pp'}_{\rm SF}-g^{\rm v}_{\rm LL}\sum_{p\iota'\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},p}W^{\iota'',pp'}_{\rm SF}=g^{\rm v}_{\rm LL}j^{\iota,p'}_{\rm SF},\qquad\sum_p\partial_pB^{pp'}_{\rm SF}=g^{\rm F}_{\rm LL}j^{{\rm F},p'}_{\rm SF}.\tag{5.10}$$
 The left side of the first is the adjoint covariant derivative of Section 4.3 applied to the field strength,
-$\sum_p\nabla^{\rm GEE}_p\mathsf W^{pp'}_{\rm SF}$. *Check E-10 of the Python program* derives the Euler-Lagrange equations of
-$\mathcal L^{\rm YM}_{\rm SF}$ plus the coupling to an arbitrary current symbolically (the program sympy) and finds (5.10)
-for all twelve components; *check C-5* verifies that the left side transforms covariantly.
+$\sum_p\nabla^{\rm GEE}_p\mathsf W^{pp'}_{\rm SF}$. *Check E-14* derives the Euler-Lagrange equations of
+$\mathcal L^{\rm YM}_{\rm SF}$ plus the coupling to an arbitrary current and finds (5.10) for all twelve components: the Python
+program symbolically (the program sympy), the Rust program by exact derivatives of the Lagrangian density (a
+polynomial of degree four in the fields and their first derivatives, differentiated in its arguments by five-point
+differences, which are exact for such a polynomial, and along the coordinates by automatic differentiation) at six
+random points; *check C-5* verifies that the left side transforms covariantly.
 
 **Conservation laws.** The contact terms commute with $F_{\rm LL}$ and $T^\iota_{\rm LL}$ (E-5), so, by Noether's theorem, the
 equations (5.5) conserve the currents: $\sum_p\partial_pj^{{\rm F},p}_{\rm SF}=0$ and $\sum_p\nabla^{\rm GEE}_pj^{\iota,p}_{\rm SF}=0$
@@ -2379,6 +2387,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 | E-13 | PASS | 4.774e-15 | 1.0e-10 | the generalized density ((rho, -kappa), (-kappa\^dag, 1 - rho\^\*)) of a quasi-free ground state is the projector onto the negative eigenvalues of its BdG matrix (5 random states) |
 | E-8 | PASS | 1.243e-14 | 1.0e-11 | Wick: &lt;:(Psi\^dag A Psi)(Psi\^dag B Psi):> = tr(A rho)tr(B rho) - tr(A rho B rho) - tr(kappa\^\* A kappa B\^T) in random quasi-free states |
 | E-9 | PASS | 3.197e-14 | 1.0e-11 | Wick: &lt;Pi\^dag Pi> = /tr(K kappa\^T)/\^2 + 2 tr(K\^dag rho\^T K rho) in random quasi-free states |
+| E-14 | PASS | 2.331e-15 | 1.0e-11 | the Euler-Lagrange equations of L = -(1/4) F\^a\_pq F\^(a,pq) - g W\^a\_p J\^(a,p) are the Yang-Mills equations (5.10): d\_p F\^(a,pq) - g eps\_abc W\^b\_p F\^(c,pq) = g J\^(a,q), all 12 components at 6 random points (exact derivatives of the polynomial L by five-point differences in its arguments, automatic differentiation in x; largest residual, the largest /E/ being 1.961e0) |
 | AS1-1 | PASS | 2.421e-15 | 1.0e-13 | plane waves chi exp(-i omega t + i q.x) with (omega, chi) an eigenpair of H\_pw(q) solve the field equation in constant gauge fields (20 random field sets, 8 eigenpairs each) |
 | AS1-2 | PASS | 5.107e-15 | 1.0e-13 | abelian constant fields (W\^3, B): omega = V0\_s +- [m\^2 + (q + e\_s W\^3 + g\_F B)\^2]\^(1/2), each twice (50 random cases) |
 | AS1-3 | PASS | 2.887e-15 | 1.0e-12 | spin-isospin locked constant field: the eight frequencies at 121 momenta along x\^3 equal the four analytic branches with both signs |
@@ -2401,8 +2410,9 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 | AS4-5a | PASS | -- | -- | Wilson lattice of the reduced kink problem: below the continuum there are exactly three bound states, one at -m or +m and the pair +-(m\^2+E1\^2)\^(1/2), for each of the three spacings (numbers of eigenvalues 3, 3, 3) |
 | AS4-5b | PASS | 1.116e-5 | 1.0e-3 | the Richardson extrapolation 2 E(0.025) - E(0.05) of the lattice bound states agrees with m and (m\^2+E1\^2)\^(1/2) (largest relative deviation; tolerance of order a\^2) |
 | AS4-6 | PASS | -- | -- | the lattice deviation of the bound states decreases each time the spacing is halved (1.241e-2, 6.228e-3, 3.119e-3) |
+| SM-1 | PASS | 4.163e-16 | 1.0e-14 | Standard Model with +i g: the mass matrix of (W\^1, W\^2, W\^3, B) from (D &lt;Phi>)\^dag (D &lt;Phi>) has the eigenvectors W\^1, W\^2 (M\_W\^2 = (g v/2)\^2), Z = cos(thetaW) W\^3 - sin(thetaW) B (M\_Z\^2 = (g\^2 + g'\^2) v\^2/4) and the massless photon A = sin(thetaW) W\^3 + cos(thetaW) B (20 triples g, g', v; largest residual relative to M\_Z\^2) |
 
-VERDICT: ALL PASS (76 of 76)
+VERDICT: ALL PASS (78 of 78)
 
 ## 16.3 Part I: the report of the Python program
 
@@ -2430,7 +2440,7 @@ VERDICT: ALL PASS (76 of 76)
 | C-4 | PASS | 6.969e-14 | 1.0e-09 | isotriplet: nabla Phi = dPhi - g W x Phi + 2 i g\_F B Phi is covariant |
 | C-8 | PASS | 5.043e-14 | 1.0e-09 | local SL(2,C): gamma\^p[f'] (d\_p + Gamma'\_p)(S psi) = S gamma\^p d\_p psi (eighth-order differences) |
 | E-2 | PASS | 0.000e+00 | 1.0e-11 | scalar contact term: [Psi\_e, H\_S] = G\^S (Psi-bar Psi)(gamma\^0 Psi)\_e |
-| E-10 | PASS | -- | -- | symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d\_p W\^{a,pp'} - g eps\_abc W\^b\_p W\^{c,pp'} = g j\^{a,p'} for all 12 components (sympy) (12 equations identical) |
+| E-14 | PASS | -- | -- | symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d\_p W\^{a,pp'} - g eps\_abc W\^b\_p W\^{c,pp'} = g j\^{a,p'} for all 12 components (sympy) (12 equations identical) |
 | E-3 | PASS | 3.553e-15 | 1.0e-11 | vector contact term |
 | E-4 | PASS | 0.000e+00 | 1.0e-10 | pairing term: [Psi\_e, H\_P] = -(G/2) sum (K\^dag Psi\^\*)\_e Pi |
 | AS1-3 | PASS | 1.554e-15 | 1.0e-12 | spin-isospin locked field: four analytic branches (61 momenta) |
@@ -2441,15 +2451,16 @@ VERDICT: ALL PASS (76 of 76)
 | AS4-5a | PASS | -- | -- | three bound states below the continuum for each spacing ([3, 3, 3]) |
 | AS4-5b | PASS | 1.116e-05 | 1.0e-03 | kink bound states, Richardson extrapolation |
 | AS4-3 | PASS | -- | -- | symbolic: (d/dx + Delta) sech\^2(x/ell) = 0 and (-d\^2 + Delta\^2 - Delta') sech tanh = E1\^2 sech tanh with E1\^2 = 3/16 (residuals 0, 0) |
+| SM-1 | PASS | 3.863e-16 | 1.0e-14 | Standard Model with +i g: the mass matrix of (W\^1, W\^2, W\^3, B) has the eigenvalues 0, M\_W\^2 (twice), M\_Z\^2 (LAPACK) and the null vector A = sin(thetaW) W\^3 + cos(thetaW) B (20 random g, g', v; relative to M\_Z\^2) |
 
-VERDICT: ALL PASS (33 of 33)
+VERDICT: ALL PASS (34 of 34)
 
 ## 16.4 Part I: data files and figures (SHA-256 checksums)
 
 * `data/hck_part1_checks.txt` (report of `sf_part1`):\
-  `3e5dcb47b11fd034e4953af4b577b9ccb757084ea6983d2221c01feda6d8d2f6`
+  `5843c6b9e58dc8b5dd03c980d4a47c6d1672da1b564f86b6fc093e973513bb44`
 * `data/hck_part1_checks_python.txt` (report of `python/sf_part1.py`):\
-  `3d540af0586af556aaeaf51ce643f276fbb9e5e73090bef3e3f4cdb90984dcbf`
+  `d8328c8c945436fde4e689661d08e23df95cd36b346a51a62577140ee167777c`
 * `data/part1_values.csv` (the numbers of Section 7):\
   `3ee618a621336b48e077572329a1e1ef7631b83492e9afb769629b7dfd643db0`
 * `data/part1_m31_examples.csv` (examples of M31 (Section 2)):\
@@ -3080,6 +3091,16 @@ Each of the following was found before part IV was committed.
    14.1 was given a row per quantity (it was wider than the page), the growth rates of Table 15.1 were given six
    digits, equation (14.5) was set on two lines, and the rounded values of checks quoted in Sections 15.1 and 15.3 were
    compared with the final report and corrected where they differed.
+
+## 17.5 Corrections brought by the notebook
+
+1. The Python program of Part I had used the identifier E-10 for its symbolic derivation of the Yang-Mills equations
+   (5.10), while E-10 of the Rust program is the check that the self-energy of Hartree and Fock is the derivative of the
+   energy: one identifier named two different checks. It was found when the notebook compared each of its checks with
+   the checks of the same identifier in the two programs. The Python check is now E-14, and the Rust program has a new
+   check E-14 of the same statement (Section 5.2), made by exact derivatives of the Lagrangian density.
+2. The conventions of the Standard Model (Section 1) had no check of their own; the check SM-1, added to both programs,
+   is the counterpart of the notebook's check of these conventions.
 
 # 18. The symbols
 

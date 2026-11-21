@@ -56,6 +56,7 @@ PASS E-12    deviation 1.066e-14 (tolerance 1.0e-10): the chirality-block form (
 PASS E-13    deviation 4.774e-15 (tolerance 1.0e-10): the generalized density ((rho, -kappa), (-kappa^dag, 1 - rho^*)) of a quasi-free ground state is the projector onto the negative eigenvalues of its BdG matrix (5 random states)
 PASS E-8     deviation 1.243e-14 (tolerance 1.0e-11): Wick: <:(Psi^dag A Psi)(Psi^dag B Psi):> = tr(A rho)tr(B rho) - tr(A rho B rho) - tr(kappa^* A kappa B^T) in random quasi-free states
 PASS E-9     deviation 3.197e-14 (tolerance 1.0e-11): Wick: <Pi^dag Pi> = |tr(K kappa^T)|^2 + 2 tr(K^dag rho^T K rho) in random quasi-free states
+PASS E-14    deviation 2.331e-15 (tolerance 1.0e-11): the Euler-Lagrange equations of L = -(1/4) F^a_pq F^(a,pq) - g W^a_p J^(a,p) are the Yang-Mills equations (5.10): d_p F^(a,pq) - g eps_abc W^b_p F^(c,pq) = g J^(a,q), all 12 components at 6 random points (exact derivatives of the polynomial L by five-point differences in its arguments, automatic differentiation in x; largest residual, the largest |E| being 1.961e0)
 PASS AS1-1   deviation 2.421e-15 (tolerance 1.0e-13): plane waves chi exp(-i omega t + i q.x) with (omega, chi) an eigenpair of H_pw(q) solve the field equation in constant gauge fields (20 random field sets, 8 eigenpairs each)
 PASS AS1-2   deviation 5.107e-15 (tolerance 1.0e-13): abelian constant fields (W^3, B): omega = V0_s +- [m^2 + (q + e_s W^3 + g_F B)^2]^(1/2), each twice (50 random cases)
 PASS AS1-3   deviation 2.887e-15 (tolerance 1.0e-12): spin-isospin locked constant field: the eight frequencies at 121 momenta along x^3 equal the four analytic branches with both signs
@@ -78,11 +79,12 @@ PASS AS4-4   deviation 2.502e-17 (tolerance 1.0e-13): kink: the analytic n = 1 b
 PASS AS4-5a  Wilson lattice of the reduced kink problem: below the continuum there are exactly three bound states, one at -m or +m and the pair +-(m^2+E1^2)^(1/2), for each of the three spacings [numbers of eigenvalues 3, 3, 3]
 PASS AS4-5b  deviation 1.116e-5 (tolerance 1.0e-3): the Richardson extrapolation 2 E(0.025) - E(0.05) of the lattice bound states agrees with m and (m^2+E1^2)^(1/2) (largest relative deviation; tolerance of order a^2)
 PASS AS4-6   the lattice deviation of the bound states decreases each time the spacing is halved [1.241e-2, 6.228e-3, 3.119e-3]
+PASS SM-1    deviation 4.163e-16 (tolerance 1.0e-14): Standard Model with +i g: the mass matrix of (W^1, W^2, W^3, B) from (D <Phi>)^dag (D <Phi>) has the eigenvectors W^1, W^2 (M_W^2 = (g v/2)^2), Z = cos(thetaW) W^3 - sin(thetaW) B (M_Z^2 = (g^2 + g'^2) v^2/4) and the massless photon A = sin(thetaW) W^3 + cos(thetaW) B (20 triples g, g', v; largest residual relative to M_Z^2)
 
 Notes:
   AS3: G_crit = pi^2/I1(m) = 21.2866097555; at G = 22.5: Delta = 0.2094933033, quasiparticle mass (m^2+Delta^2)^(1/2) = 0.2896332925, E(Delta) = -5.2884491065e-5
   AS4 raw lattice deviation at the spacing 0.025: 3.119e-3 (first order in a, as expected for Wilson fermions)
   AS4 lattice eigenvalues below the continuum threshold 0.5385164807: a = 0.1: [-0.47972301467592177, -0.2024821911082964, 0.47643326939538305]; a = 0.05: [-0.47835871196410534, -0.20124552405289634, 0.47670274183144934]; a = 0.025: [-0.4776674054001955, -0.20062387801701845, 0.4768364871616513]; analytic |E|: 0.2000000000, 0.4769696007
-  run time 3.3 s
+  run time 3.0 s
 
-VERDICT: ALL PASS (76 of 76)
+VERDICT: ALL PASS (78 of 78)

@@ -1,8 +1,8 @@
 //! sf_part1 -- the machine checks and the analytic solutions of part I of the manuscript superfluid.md
 //! (folder Revision_HS_CJT_and_Kohn-Sham of PROJECT spacetimes): the bi-octonions, the super-loop and the manifold
 //! M31 (checks A), the spinor field on M31 and theorem D1 (checks F), the gauge group GEE and its covariant
-//! derivatives (checks C), the field equations as Heisenberg equations (checks E), and the analytic solutions
-//! AS1 to AS4 (checks S).
+//! derivatives (checks C), the field equations as Heisenberg equations (checks E), the analytic solutions
+//! AS1 to AS4 (checks S), and the conventions of the Standard Model (check SM-1).
 //!
 //! Build and run (from the folder rust/ of Revision_HS_CJT_and_Kohn-Sham):
 //!     cargo build --release
@@ -21,6 +21,8 @@ mod c_gauge;
 mod e_fieldeq;
 mod f_spinor;
 mod s_solutions;
+mod sm_conventions;
+mod ym_equations;
 
 use sfcore::report::{data_dir, Report};
 use std::time::Instant;
@@ -39,8 +41,11 @@ fn main() {
     c_gauge::run(&mut rep);
     println!("== E: the field equations as Heisenberg equations");
     e_fieldeq::run(&mut rep);
+    ym_equations::run(&mut rep);
     println!("== S: the analytic solutions");
     let vals = s_solutions::run(&mut rep, &data);
+    println!("== SM: the conventions of the Standard Model");
+    sm_conventions::run(&mut rep);
     let rows: Vec<Vec<String>> = vals.iter().map(|(k, v)| vec![k.clone(), sfcore::report::f(*v)]).collect();
     sfcore::report::write_csv(&data.join("part1_values.csv"), &["name", "value"], &rows);
     rep.note(&format!("run time {:.1} s", t0.elapsed().as_secs_f64()));

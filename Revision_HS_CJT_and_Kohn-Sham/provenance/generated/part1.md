@@ -56,6 +56,7 @@
 | E-13 | PASS | 4.774e-15 | 1.0e-10 | the generalized density ((rho, -kappa), (-kappa\^dag, 1 - rho\^\*)) of a quasi-free ground state is the projector onto the negative eigenvalues of its BdG matrix (5 random states) |
 | E-8 | PASS | 1.243e-14 | 1.0e-11 | Wick: &lt;:(Psi\^dag A Psi)(Psi\^dag B Psi):> = tr(A rho)tr(B rho) - tr(A rho B rho) - tr(kappa\^\* A kappa B\^T) in random quasi-free states |
 | E-9 | PASS | 3.197e-14 | 1.0e-11 | Wick: &lt;Pi\^dag Pi> = /tr(K kappa\^T)/\^2 + 2 tr(K\^dag rho\^T K rho) in random quasi-free states |
+| E-14 | PASS | 2.331e-15 | 1.0e-11 | the Euler-Lagrange equations of L = -(1/4) F\^a\_pq F\^(a,pq) - g W\^a\_p J\^(a,p) are the Yang-Mills equations (5.10): d\_p F\^(a,pq) - g eps\_abc W\^b\_p F\^(c,pq) = g J\^(a,q), all 12 components at 6 random points (exact derivatives of the polynomial L by five-point differences in its arguments, automatic differentiation in x; largest residual, the largest /E/ being 1.961e0) |
 | AS1-1 | PASS | 2.421e-15 | 1.0e-13 | plane waves chi exp(-i omega t + i q.x) with (omega, chi) an eigenpair of H\_pw(q) solve the field equation in constant gauge fields (20 random field sets, 8 eigenpairs each) |
 | AS1-2 | PASS | 5.107e-15 | 1.0e-13 | abelian constant fields (W\^3, B): omega = V0\_s +- [m\^2 + (q + e\_s W\^3 + g\_F B)\^2]\^(1/2), each twice (50 random cases) |
 | AS1-3 | PASS | 2.887e-15 | 1.0e-12 | spin-isospin locked constant field: the eight frequencies at 121 momenta along x\^3 equal the four analytic branches with both signs |
@@ -78,9 +79,10 @@
 | AS4-5a | PASS | -- | -- | Wilson lattice of the reduced kink problem: below the continuum there are exactly three bound states, one at -m or +m and the pair +-(m\^2+E1\^2)\^(1/2), for each of the three spacings (numbers of eigenvalues 3, 3, 3) |
 | AS4-5b | PASS | 1.116e-5 | 1.0e-3 | the Richardson extrapolation 2 E(0.025) - E(0.05) of the lattice bound states agrees with m and (m\^2+E1\^2)\^(1/2) (largest relative deviation; tolerance of order a\^2) |
 | AS4-6 | PASS | -- | -- | the lattice deviation of the bound states decreases each time the spacing is halved (1.241e-2, 6.228e-3, 3.119e-3) |
+| SM-1 | PASS | 4.163e-16 | 1.0e-14 | Standard Model with +i g: the mass matrix of (W\^1, W\^2, W\^3, B) from (D &lt;Phi>)\^dag (D &lt;Phi>) has the eigenvectors W\^1, W\^2 (M\_W\^2 = (g v/2)\^2), Z = cos(thetaW) W\^3 - sin(thetaW) B (M\_Z\^2 = (g\^2 + g'\^2) v\^2/4) and the massless photon A = sin(thetaW) W\^3 + cos(thetaW) B (20 triples g, g', v; largest residual relative to M\_Z\^2) |
 <!-- END p1_checks_rust -->
 <!-- BEGIN p1_verdict_rust -->
-VERDICT: ALL PASS (76 of 76)
+VERDICT: ALL PASS (78 of 78)
 <!-- END p1_verdict_rust -->
 <!-- BEGIN p1_checks_python -->
 | check | result | deviation | tolerance | statement |
@@ -107,7 +109,7 @@ VERDICT: ALL PASS (76 of 76)
 | C-4 | PASS | 6.969e-14 | 1.0e-09 | isotriplet: nabla Phi = dPhi - g W x Phi + 2 i g\_F B Phi is covariant |
 | C-8 | PASS | 5.043e-14 | 1.0e-09 | local SL(2,C): gamma\^p[f'] (d\_p + Gamma'\_p)(S psi) = S gamma\^p d\_p psi (eighth-order differences) |
 | E-2 | PASS | 0.000e+00 | 1.0e-11 | scalar contact term: [Psi\_e, H\_S] = G\^S (Psi-bar Psi)(gamma\^0 Psi)\_e |
-| E-10 | PASS | -- | -- | symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d\_p W\^{a,pp'} - g eps\_abc W\^b\_p W\^{c,pp'} = g j\^{a,p'} for all 12 components (sympy) (12 equations identical) |
+| E-14 | PASS | -- | -- | symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d\_p W\^{a,pp'} - g eps\_abc W\^b\_p W\^{c,pp'} = g j\^{a,p'} for all 12 components (sympy) (12 equations identical) |
 | E-3 | PASS | 3.553e-15 | 1.0e-11 | vector contact term |
 | E-4 | PASS | 0.000e+00 | 1.0e-10 | pairing term: [Psi\_e, H\_P] = -(G/2) sum (K\^dag Psi\^\*)\_e Pi |
 | AS1-3 | PASS | 1.554e-15 | 1.0e-12 | spin-isospin locked field: four analytic branches (61 momenta) |
@@ -118,9 +120,10 @@ VERDICT: ALL PASS (76 of 76)
 | AS4-5a | PASS | -- | -- | three bound states below the continuum for each spacing ([3, 3, 3]) |
 | AS4-5b | PASS | 1.116e-05 | 1.0e-03 | kink bound states, Richardson extrapolation |
 | AS4-3 | PASS | -- | -- | symbolic: (d/dx + Delta) sech\^2(x/ell) = 0 and (-d\^2 + Delta\^2 - Delta') sech tanh = E1\^2 sech tanh with E1\^2 = 3/16 (residuals 0, 0) |
+| SM-1 | PASS | 3.863e-16 | 1.0e-14 | Standard Model with +i g: the mass matrix of (W\^1, W\^2, W\^3, B) has the eigenvalues 0, M\_W\^2 (twice), M\_Z\^2 (LAPACK) and the null vector A = sin(thetaW) W\^3 + cos(thetaW) B (20 random g, g', v; relative to M\_Z\^2) |
 <!-- END p1_checks_python -->
 <!-- BEGIN p1_verdict_python -->
-VERDICT: ALL PASS (33 of 33)
+VERDICT: ALL PASS (34 of 34)
 <!-- END p1_verdict_python -->
 <!-- BEGIN p1_m_LL -->
 $0.2$

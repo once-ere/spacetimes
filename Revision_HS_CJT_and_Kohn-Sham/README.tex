@@ -249,8 +249,8 @@ its covariant derivatives, the Lagrangian and the field equations with
 their numerical formulation, and four analytic solutions) is complete:
 \texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf}, with the Rust
 workspace \texttt{rust/} (program \texttt{sf\_part1}: VERDICT: ALL PASS
-(76 of 76)) and the Python programs \texttt{python/sf\_part1.py}
-(VERDICT: ALL PASS (33 of 33)) and
+(78 of 78)) and the Python programs \texttt{python/sf\_part1.py}
+(VERDICT: ALL PASS (34 of 34)) and
 \texttt{python/sf\_part1\_figures.py}.
 
 \textbf{Part II of the manuscript} (item 6 of the problem and the three
@@ -281,8 +281,15 @@ integrated with CVODE and IDA; two videos) is complete, with the program
 \texttt{sf\_part4} (VERDICT: ALL PASS (120 of 120)), the integrators
 \texttt{sfsundials} and their C interface \texttt{sfsundials\_c}, and
 the Python programs \texttt{python/sf\_part4.py} (VERDICT: ALL PASS (20
-of 20)) and \texttt{python/sf\_part4\_figures.py}. The Mathematica
-notebook \texttt{superfluid.nb} is the next object of the plan.
+of 20)) and \texttt{python/sf\_part4\_figures.py}.
+
+\textbf{The Mathematica notebook \texttt{superfluid.nb}} (object O8) is
+written part by part. Its first version contains the introduction, the
+register of the checks and Part I: 34 checks, each repeated by the Rust
+and the Python program of Part I (verdict of the evaluation in the front
+end of Wolfram: ALL PASS (34 of 34), 0 messages). Its provenance is
+\texttt{provenance/P3\_notebook.md}. Parts II to IV of the notebook
+follow.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -322,11 +329,16 @@ solution, written by \texttt{code/scripts/write\_symbol\_registry.py}
 from \texttt{code/scripts/symbol\_entries.py} & written \\
 \texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript of
 the solution & parts I to IV written \\
-\texttt{superfluid.nb} & the Mathematica notebook of the whole solution,
-with its provenance & planned \\
+\texttt{superfluid.nb}, \texttt{superfluid\_notebook.pdf} & the
+Mathematica notebook of the whole solution, evaluated in the front end
+of Wolfram, and its printed copy & introduction and Part I written;
+Parts II to IV planned \\
+\texttt{provenance/P3\_notebook.md}, \texttt{.tex}, \texttt{.pdf} & the
+provenance of the notebook: its task, files, build and evaluation, the
+checks with their counterparts in Rust and Python, the symbols of its
+code, the corrections & written for Part I; grows with the notebook \\
 \texttt{provenance/} (further documents) & the provenance of the code,
-the computed values and the checks, and the provenance of the notebook &
-planned \\
+the computed values and the checks & planned \\
 \texttt{code/scripts/} & the document pipeline:
 \texttt{assemble\_docs.py} (writes a document from its source in
 \texttt{docs\_src/} and the generated fragments),
@@ -363,13 +375,15 @@ parts I to IV written \\
 to IV), \texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
 \texttt{sf\_part3\_figures.py}, \texttt{sf\_part4\_figures.py} (the
 figures, and the videos of part IV) & parts I to IV written \\
-\texttt{wolfram/} & the Wolfram-language parts of the notebook: in
-\texttt{wolfram/tools/} the builder of the notebook from its source
-(\texttt{build\_notebook.wls}), the reader of formulas that turns the
-TeX of the texts into two-dimensional formulas
-(\texttt{sf\_formula.wl}), and the evaluation of the notebook in the
-front end of Wolfram (\texttt{guirun.wl}); the sources of the notebook
-follow with object O8 & tools written; sources planned \\
+\texttt{wolfram/} & the Wolfram-language parts of the notebook: the
+sources \texttt{wolfram/source/superfluid.source.wl} and
+\texttt{part1.source.wl}; in \texttt{wolfram/tools/} the builder of the
+notebook from its source (\texttt{build\_notebook.wls}), the reader of
+formulas that turns the TeX of the texts into two-dimensional formulas
+(\texttt{sf\_formula.wl}), the evaluation of the notebook in the front
+end of Wolfram (\texttt{guirun.wl} and the three calls
+\texttt{gui\_start.wl}, \texttt{gui\_go.wl}, \texttt{gui\_status.wl}),
+and the dry run (\texttt{make\_dryrun.py}) & Part I written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},
@@ -421,6 +435,7 @@ folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 \ExtensionTok{python3}\NormalTok{ python/sf\_part4.py                    }\CommentTok{\# part IV: the Python computation (uses the library of cargo build)}
 \ExtensionTok{python3}\NormalTok{ python/sf\_part4\_figures.py            }\CommentTok{\# part IV: the figures and the two videos (needs ffmpeg)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_part4\_fragments.py }\CommentTok{\# the tables and numbers of part IV for the manuscript}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_notebook\_fragments.py }\CommentTok{\# the tables of the provenance of the notebook (from data/hck\_notebook\_log.txt)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
@@ -439,5 +454,23 @@ needs pandoc (version 2.11 or later), a TeX distribution with XeLaTeX
 and latexmk, the DejaVu fonts and the font Latin Modern Math;
 \texttt{check\_self\_contained.py} checks that no document refers its
 reader to another document.
+
+The notebook is opened in Wolfram (version 15 or later) and evaluated
+with Evaluation \textgreater{} Evaluate Notebook. It is made from its
+source on a computer with Wolfram by
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/tools/build\_notebook.wls wolfram/source/superfluid.source.wl built.nb wolfram/tools/sf\_formula.wl}
+\end{Highlighting}
+\end{Shaded}
+
+which writes the unevaluated notebook \texttt{built.nb}; evaluating it
+gives \texttt{superfluid.nb} (the evaluation of record, with its log
+\texttt{data/hck\_notebook\_log.txt}, is made in the front end by
+\texttt{wolfram/tools/guirun.wl};
+\texttt{python3\ wolfram/tools/make\_dryrun.py\ dry.wls\ wolfram/source/superfluid.source.wl}
+and \texttt{wolframscript\ -file\ dry.wls} evaluate the code of all
+input cells without the front end).
 
 \end{document}

@@ -333,7 +333,7 @@ def checks_e(rep):
 
 
 def ym_check(rep):
-    """E-10: the Euler-Lagrange equations of L = -(1/4) W^a_pq W^{a,pq} - g W^a_p j^{a,p} (the Yang-Mills Lagrangian of
+    """E-14: the Euler-Lagrange equations of L = -(1/4) W^a_pq W^{a,pq} - g W^a_p j^{a,p} (the Yang-Mills Lagrangian of
     SU(2)_v with the source of the spinor field, in the +i convention of the covariant derivative) are
     d_p W^{a,p p'} - g eps_abc W^b_p W^{c,p p'} = g j^{a,p'}: derived symbolically by sympy (euler_equations) and
     compared with this form.  Also the abelian case B with g_F."""
@@ -358,7 +358,7 @@ def ym_check(rep):
             - g * sum(levi(a, b, c) * W[b][p] * Fup(c, p) for b in range(3) for c in range(3) for p in range(4)) - g * J[a][pp]
         diff_ = sp.expand(eq.lhs - eq.rhs - claimed)
         worst = max(worst, 0 if diff_ == 0 else 1)
-    rep.add_bool("E-10", "symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: "
+    rep.add_bool("E-14", "symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: "
                  "d_p W^{a,pp'} - g eps_abc W^b_p W^{c,pp'} = g j^{a,p'} for all 12 components (sympy)",
                  worst == 0, "12 equations identical")
 
@@ -477,6 +477,25 @@ def checks_s(rep):
                  r0 == 0 and r1 == 0 and abs(e1sq - 3 / 16) < 1e-15, "residuals %s, %s" % (r0, r1))
 
 
+# ================================================================================================ SM
+def checks_sm(rep):
+    """SM-1: the conventions of the Standard Model (Section 1): with D Phi = (d + i g tau^a/2 W^a + i g' Y B) Phi, Y = 1/2,
+    and <Phi> = (0, v)/sqrt 2, the mass matrix M_ab = 2 Re(X_a^dag X_b) of (W^1, W^2, W^3, B) has the eigenvalues 0,
+    M_W^2 = (g v/2)^2 (twice), M_Z^2 = (g^2 + g'^2) v^2/4 (LAPACK), and the photon (0, 0, g', g) is its null vector"""
+    dev = 0.0
+    for _ in range(20):
+        g, gp, v = RNG.uniform(0.2, 1.5), RNG.uniform(0.05, 1.0), RNG.uniform(0.3, 3.0)
+        vac = np.array([0.0, v / np.sqrt(2)], complex)
+        xs = [1j * g / 2 * SIG[a] @ vac for a in (1, 2, 3)] + [1j * gp / 2 * vac]
+        m = np.array([[2 * np.real(np.vdot(xa, xb)) for xb in xs] for xa in xs])
+        mw2, mz2 = (g * v / 2) ** 2, (g * g + gp * gp) * v * v / 4
+        ev = np.sort(np.linalg.eigvalsh(m))
+        photon = np.array([0, 0, gp, g]) / np.hypot(g, gp)
+        dev = max(dev, np.max(np.abs(ev - np.array([0.0, mw2, mw2, mz2]))) / mz2, np.max(np.abs(m @ photon)) / mz2)
+    rep.add("SM-1", "Standard Model with +i g: the mass matrix of (W^1, W^2, W^3, B) has the eigenvalues 0, M_W^2 (twice), "
+            "M_Z^2 (LAPACK) and the null vector A = sin(thetaW) W^3 + cos(thetaW) B (20 random g, g', v; relative to M_Z^2)", dev, 1e-14)
+
+
 def main():
     t0 = time.time()
     rep = Report("sf_part1.py: Python computation of the checks of part I of superfluid.md (Revision_HS_CJT_and_Kohn-Sham)")
@@ -490,6 +509,8 @@ def main():
     checks_e(rep)
     print("== S")
     checks_s(rep)
+    print("== SM")
+    checks_sm(rep)
     rep.note("run time %.1f s" % (time.time() - t0))
     rep.write("hck_part1_checks_python.txt")
     print("%d of %d checks passed" % (rep.npass, rep.n))

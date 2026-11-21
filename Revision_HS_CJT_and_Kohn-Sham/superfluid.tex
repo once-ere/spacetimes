@@ -241,8 +241,10 @@ complete. Section 16 gives the programs, the commands and the reports of
 the checks of every part, Section 17 the corrections made during the
 work, Section 18 all symbols, and Section 19 the published works on the
 methods. The Mathematica notebook \texttt{superfluid.nb} named in
-Section 6.3 is the next object of the work and is not yet part of this
-version.
+Section 6.3 is written part by part; its first version repeats the
+computations of Part I in the Wolfram language, each with its
+counterparts in the two programs, and the corrections that it brought to
+the programs of Part I are listed in Section 17.5.
 
 \textbf{How to read it.} The manuscript is written for a reader who
 knows quantum mechanics, special relativity and the Dirac equation at
@@ -325,7 +327,13 @@ definite mass are \(W^\pm_\mu=(W^1_\mu\mp iW^2_\mu)/\sqrt2\),
 theory with \(W\to-W\).) This manuscript uses the same sign, \(+i\) in
 front of every coupling, for all GEE covariant derivatives, and names
 the analogous objects after those of the Standard Model, with the suffix
-SF.
+SF. \emph{Check SM-1 (Section 16):} the kinetic term
+\((D^{\rm SM}_\mu\langle\Phi^{\rm SM}\rangle)^\dagger D^{{\rm SM},\mu}\langle\Phi^{\rm SM}\rangle\)
+of the constant vacuum is a quadratic form in
+\((W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)\) whose matrix has the eigenvalues
+\(M_W^2\) (twice), \(M_Z^2\) and \(0\), with the eigenvectors
+\(W^1_\mu\), \(W^2_\mu\), \(Z_\mu\) and \(A_\mu\) above; the programs
+check this for 20 values of \((g,g',v)\).
 
 \hypertarget{the-manifold-m31-of-the-lorentz-super-loop-item-1-of-the-problem}{%
 \section{2. The manifold M31 of the Lorentz super-loop (item 1 of the
@@ -1198,12 +1206,16 @@ equations}
 \[\sum_p\partial_pW^{\iota,pp'}_{\rm SF}-g^{\rm v}_{\rm LL}\sum_{p\iota'\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},p}W^{\iota'',pp'}_{\rm SF}=g^{\rm v}_{\rm LL}j^{\iota,p'}_{\rm SF},\qquad\sum_p\partial_pB^{pp'}_{\rm SF}=g^{\rm F}_{\rm LL}j^{{\rm F},p'}_{\rm SF}.\tag{5.10}\]
 The left side of the first is the adjoint covariant derivative of
 Section 4.3 applied to the field strength,
-\(\sum_p\nabla^{\rm GEE}_p\mathsf W^{pp'}_{\rm SF}\). \emph{Check E-10
-of the Python program} derives the Euler-Lagrange equations of
-\(\mathcal L^{\rm YM}_{\rm SF}\) plus the coupling to an arbitrary
-current symbolically (the program sympy) and finds (5.10) for all twelve
-components; \emph{check C-5} verifies that the left side transforms
-covariantly.
+\(\sum_p\nabla^{\rm GEE}_p\mathsf W^{pp'}_{\rm SF}\). \emph{Check E-14}
+derives the Euler-Lagrange equations of \(\mathcal L^{\rm YM}_{\rm SF}\)
+plus the coupling to an arbitrary current and finds (5.10) for all
+twelve components: the Python program symbolically (the program sympy),
+the Rust program by exact derivatives of the Lagrangian density (a
+polynomial of degree four in the fields and their first derivatives,
+differentiated in its arguments by five-point differences, which are
+exact for such a polynomial, and along the coordinates by automatic
+differentiation) at six random points; \emph{check C-5} verifies that
+the left side transforms covariantly.
 
 \textbf{Conservation laws.} The contact terms commute with
 \(F_{\rm LL}\) and \(T^\iota_{\rm LL}\) (E-5), so, by Noether's theorem,
@@ -4899,6 +4911,13 @@ rho) - tr(kappa\^{}* A kappa B\^{}T) in random quasi-free states \\
 E-9 & PASS & 3.197e-14 & 1.0e-11 & Wick: \textless Pi\^{}dag
 Pi\textgreater{} = /tr(K kappa\^{}T)/\^{}2 + 2 tr(K\^{}dag rho\^{}T K
 rho) in random quasi-free states \\
+E-14 & PASS & 2.331e-15 & 1.0e-11 & the Euler-Lagrange equations of L =
+-(1/4) F\^{}a\_pq F\^{}(a,pq) - g W\^{}a\_p J\^{}(a,p) are the
+Yang-Mills equations (5.10): d\_p F\^{}(a,pq) - g eps\_abc W\^{}b\_p
+F\^{}(c,pq) = g J\^{}(a,q), all 12 components at 6 random points (exact
+derivatives of the polynomial L by five-point differences in its
+arguments, automatic differentiation in x; largest residual, the largest
+/E/ being 1.961e0) \\
 AS1-1 & PASS & 2.421e-15 & 1.0e-13 & plane waves chi exp(-i omega t + i
 q.x) with (omega, chi) an eigenpair of H\_pw(q) solve the field equation
 in constant gauge fields (20 random field sets, 8 eigenpairs each) \\
@@ -4970,9 +4989,16 @@ order a\^{}2) \\
 AS4-6 & PASS & -- & -- & the lattice deviation of the bound states
 decreases each time the spacing is halved (1.241e-2, 6.228e-3,
 3.119e-3) \\
+SM-1 & PASS & 4.163e-16 & 1.0e-14 & Standard Model with +i g: the mass
+matrix of (W\^{}1, W\^{}2, W\^{}3, B) from (D
+\textless Phi\textgreater)\^{}dag (D \textless Phi\textgreater) has the
+eigenvectors W\^{}1, W\^{}2 (M\_W\^{}2 = (g v/2)\^{}2), Z = cos(thetaW)
+W\^{}3 - sin(thetaW) B (M\_Z\^{}2 = (g\^{}2 + g'\^{}2) v\^{}2/4) and the
+massless photon A = sin(thetaW) W\^{}3 + cos(thetaW) B (20 triples g,
+g', v; largest residual relative to M\_Z\^{}2) \\
 \end{longtable}
 
-VERDICT: ALL PASS (76 of 76)
+VERDICT: ALL PASS (78 of 78)
 
 \hypertarget{part-i-the-report-of-the-python-program}{%
 \subsection{16.3 Part I: the report of the Python
@@ -5039,7 +5065,7 @@ C-8 & PASS & 5.043e-14 & 1.0e-09 & local SL(2,C): gamma\^{}p{[}f'{]}
 differences) \\
 E-2 & PASS & 0.000e+00 & 1.0e-11 & scalar contact term: {[}Psi\_e,
 H\_S{]} = G\^{}S (Psi-bar Psi)(gamma\^{}0 Psi)\_e \\
-E-10 & PASS & -- & -- & symbolic Euler-Lagrange equations of the
+E-14 & PASS & -- & -- & symbolic Euler-Lagrange equations of the
 Yang-Mills Lagrangian with the source: d\_p W\^{}\{a,pp'\} - g eps\_abc
 W\^{}b\_p W\^{}\{c,pp'\} = g j\^{}\{a,p'\} for all 12 components (sympy)
 (12 equations identical) \\
@@ -5063,9 +5089,13 @@ extrapolation \\
 AS4-3 & PASS & -- & -- & symbolic: (d/dx + Delta) sech\^{}2(x/ell) = 0
 and (-d\^{}2 + Delta\^{}2 - Delta') sech tanh = E1\^{}2 sech tanh with
 E1\^{}2 = 3/16 (residuals 0, 0) \\
+SM-1 & PASS & 3.863e-16 & 1.0e-14 & Standard Model with +i g: the mass
+matrix of (W\^{}1, W\^{}2, W\^{}3, B) has the eigenvalues 0, M\_W\^{}2
+(twice), M\_Z\^{}2 (LAPACK) and the null vector A = sin(thetaW) W\^{}3 +
+cos(thetaW) B (20 random g, g', v; relative to M\_Z\^{}2) \\
 \end{longtable}
 
-VERDICT: ALL PASS (33 of 33)
+VERDICT: ALL PASS (34 of 34)
 
 \hypertarget{part-i-data-files-and-figures-sha-256-checksums}{%
 \subsection{16.4 Part I: data files and figures (SHA-256
@@ -5075,11 +5105,11 @@ checksums)}\label{part-i-data-files-and-figures-sha-256-checksums}}
 \tightlist
 \item
   \texttt{data/hck\_part1\_checks.txt} (report of \texttt{sf\_part1}):\\
-  \texttt{3e5dcb47b11fd034e4953af4b577b9ccb757084ea6983d2221c01feda6d8d2f6}
+  \texttt{5843c6b9e58dc8b5dd03c980d4a47c6d1672da1b564f86b6fc093e973513bb44}
 \item
   \texttt{data/hck\_part1\_checks\_python.txt} (report of
   \texttt{python/sf\_part1.py}):\\
-  \texttt{3d540af0586af556aaeaf51ce643f276fbb9e5e73090bef3e3f4cdb90984dcbf}
+  \texttt{d8328c8c945436fde4e689661d08e23df95cd36b346a51a62577140ee167777c}
 \item
   \texttt{data/part1\_values.csv} (the numbers of Section 7):\\
   \texttt{3ee618a621336b48e077572329a1e1ef7631b83492e9afb769629b7dfd643db0}
@@ -6751,6 +6781,29 @@ Each of the following was found before part IV was committed.
   lines, and the rounded values of checks quoted in Sections 15.1 and
   15.3 were compared with the final report and corrected where they
   differed.
+\end{enumerate}
+
+\hypertarget{corrections-brought-by-the-notebook}{%
+\subsection{17.5 Corrections brought by the
+notebook}\label{corrections-brought-by-the-notebook}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The Python program of Part I had used the identifier E-10 for its
+  symbolic derivation of the Yang-Mills equations (5.10), while E-10 of
+  the Rust program is the check that the self-energy of Hartree and Fock
+  is the derivative of the energy: one identifier named two different
+  checks. It was found when the notebook compared each of its checks
+  with the checks of the same identifier in the two programs. The Python
+  check is now E-14, and the Rust program has a new check E-14 of the
+  same statement (Section 5.2), made by exact derivatives of the
+  Lagrangian density.
+\item
+  The conventions of the Standard Model (Section 1) had no check of
+  their own; the check SM-1, added to both programs, is the counterpart
+  of the notebook's check of these conventions.
 \end{enumerate}
 
 \hypertarget{the-symbols}{%

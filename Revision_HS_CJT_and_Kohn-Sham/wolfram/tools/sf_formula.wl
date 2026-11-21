@@ -54,6 +54,32 @@ SFNBFormulaReading::usage = "SFNBFormulaReading[boxes] writes boxes on one line,
 
 Begin["`Private`"];
 
+(* ---------- 0. The characters of the TeX commands of letters and signs ----------
+   (in the notebook 3+1super-loop.nb this table belongs to its reader of symbols; this notebook has no reader of
+   symbols, so the table stands here) *)
+cmd = <|
+  "\\alpha" -> "\[Alpha]", "\\beta" -> "\[Beta]", "\\gamma" -> "\[Gamma]", "\\delta" -> "\[Delta]",
+  "\\epsilon" -> "\[Epsilon]", "\\varepsilon" -> "\[CurlyEpsilon]", "\\zeta" -> "\[Zeta]", "\\eta" -> "\[Eta]",
+  "\\theta" -> "\[Theta]", "\\vartheta" -> "\[CurlyTheta]", "\\iota" -> "\[Iota]", "\\kappa" -> "\[Kappa]",
+  "\\varkappa" -> "\[CurlyKappa]", "\\lambda" -> "\[Lambda]", "\\mu" -> "\[Mu]", "\\nu" -> "\[Nu]",
+  "\\xi" -> "\[Xi]", "\\pi" -> "\[Pi]", "\\varpi" -> "\[CurlyPi]", "\\rho" -> "\[Rho]",
+  "\\varrho" -> "\[CurlyRho]", "\\sigma" -> "\[Sigma]", "\\varsigma" -> "\[FinalSigma]", "\\tau" -> "\[Tau]",
+  "\\upsilon" -> "\[Upsilon]", "\\phi" -> "\[Phi]", "\\varphi" -> "\[CurlyPhi]", "\\chi" -> "\[Chi]",
+  "\\psi" -> "\[Psi]", "\\omega" -> "\[Omega]",
+  "\\Gamma" -> "\[CapitalGamma]", "\\Delta" -> "\[CapitalDelta]", "\\Theta" -> "\[CapitalTheta]",
+  "\\Lambda" -> "\[CapitalLambda]", "\\Xi" -> "\[CapitalXi]", "\\Pi" -> "\[CapitalPi]",
+  "\\Sigma" -> "\[CapitalSigma]", "\\Upsilon" -> "\[CapitalUpsilon]", "\\Phi" -> "\[CapitalPhi]",
+  "\\Psi" -> "\[CapitalPsi]", "\\Omega" -> "\[CapitalOmega]",
+  "\\ell" -> "\[ScriptL]", "\\nabla" -> "\[Del]", "\\partial" -> "\[PartialD]", "\\infty" -> "\[Infinity]",
+  "\\pm" -> "\[PlusMinus]", "\\mp" -> "\[MinusPlus]", "\\dagger" -> "\[Dagger]",
+  "\\uparrow" -> "\[UpArrow]", "\\downarrow" -> "\[DownArrow]", "\\cdot" -> "\[CenterDot]",
+  "\\dots" -> "\[Ellipsis]", "\\ldots" -> "\[Ellipsis]", "\\times" -> "\[Times]",
+  "\\otimes" -> "\[CircleTimes]", "\\oplus" -> "\[CirclePlus]", "\\circ" -> "\[SmallCircle]",
+  "\\langle" -> "\[LeftAngleBracket]", "\\rangle" -> "\[RightAngleBracket]",
+  "\\lvert" -> "|", "\\rvert" -> "|", "\\vert" -> "|",
+  "\\deg" -> "deg", "\\det" -> "det", "\\exp" -> "exp", "\\ln" -> "ln", "\\sum" -> "\[Sum]",
+  "\\int" -> "\[Integral]"|>;
+
 (* ---------- 1. Tokens ---------- *)
 formulaTokens[s_String] := StringCases[s, {
     RegularExpression["\\\\[A-Za-z]+"],     (* a command such as \frac or \Delta *)
@@ -64,9 +90,9 @@ formulaTokens[s_String] := StringCases[s, {
     RegularExpression["(?s)."]}];           (* any other single character *)
 
 (* ---------- 2. Tables ---------- *)
-(* the characters of the commands: those of the reader of symbols (the table cmd of section I.3:
-   Greek letters, \ell, \nabla, \partial, \infty, \pm, \dagger, arrows, \cdot, \times, ...) and,
-   in addition, the delimiters, relations and other signs of complete formulas *)
+(* the characters of the commands: those of the table cmd of part 0 (Greek letters, \ell, \nabla,
+   \partial, \infty, \pm, \dagger, arrows, \cdot, \times, ...) and, in addition, the delimiters,
+   relations and other signs of complete formulas *)
 formulaChar = Join[cmd, <|
     "\\lvert" -> "\[LeftBracketingBar]", "\\rvert" -> "\[RightBracketingBar]",
     "\\lVert" -> "\[LeftDoubleBracketingBar]", "\\rVert" -> "\[RightDoubleBracketingBar]",

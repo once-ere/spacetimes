@@ -24,7 +24,7 @@ PASS C-3     deviation 2.755e-13 (tolerance 1.0e-08): field strength W'_pq = U W
 PASS C-4     deviation 6.969e-14 (tolerance 1.0e-09): isotriplet: nabla Phi = dPhi - g W x Phi + 2 i g_F B Phi is covariant
 PASS C-8     deviation 5.043e-14 (tolerance 1.0e-09): local SL(2,C): gamma^p[f'] (d_p + Gamma'_p)(S psi) = S gamma^p d_p psi (eighth-order differences)
 PASS E-2     deviation 0.000e+00 (tolerance 1.0e-11): scalar contact term: [Psi_e, H_S] = G^S (Psi-bar Psi)(gamma^0 Psi)_e
-PASS E-10    symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d_p W^{a,pp'} - g eps_abc W^b_p W^{c,pp'} = g j^{a,p'} for all 12 components (sympy) [12 equations identical]
+PASS E-14    symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d_p W^{a,pp'} - g eps_abc W^b_p W^{c,pp'} = g j^{a,p'} for all 12 components (sympy) [12 equations identical]
 PASS E-3     deviation 3.553e-15 (tolerance 1.0e-11): vector contact term
 PASS E-4     deviation 0.000e+00 (tolerance 1.0e-10): pairing term: [Psi_e, H_P] = -(G/2) sum (K^dag Psi^*)_e Pi
 PASS AS1-3   deviation 1.554e-15 (tolerance 1.0e-12): spin-isospin locked field: four analytic branches (61 momenta)
@@ -35,9 +35,10 @@ PASS AS3-4   deviation 3.005e-11 (tolerance 1.0e-09): the gap at G = 22.5 agrees
 PASS AS4-5a  three bound states below the continuum for each spacing [[3, 3, 3]]
 PASS AS4-5b  deviation 1.116e-05 (tolerance 1.0e-03): kink bound states, Richardson extrapolation
 PASS AS4-3   symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 - Delta') sech tanh = E1^2 sech tanh with E1^2 = 3/16 [residuals 0, 0]
+PASS SM-1    deviation 3.863e-16 (tolerance 1.0e-14): Standard Model with +i g: the mass matrix of (W^1, W^2, W^3, B) has the eigenvalues 0, M_W^2 (twice), M_Z^2 (LAPACK) and the null vector A = sin(thetaW) W^3 + cos(thetaW) B (20 random g, g', v; relative to M_Z^2)
 
 Notes:
   AS3: G_crit = 21.2866097555; Delta(G = 22.5) = 0.2094933033
-  run time 7.3 s
+  run time 6.5 s
 
-VERDICT: ALL PASS (33 of 33)
+VERDICT: ALL PASS (34 of 34)
