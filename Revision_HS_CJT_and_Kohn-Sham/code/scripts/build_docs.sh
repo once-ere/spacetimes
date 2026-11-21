@@ -37,8 +37,12 @@ PROBLEMS=0   # number of documents with layout problems
 # Which documents?  Either the ones named on the command line, or every
 # Markdown file of the folder except the document sources (docs_src/ and every
 # file *.src.md), the generated fragments (provenance/generated/), the data
-# files (data/) and the build products of the Rust programs (rust/target/),
-# which are not documents.
+# files (data/), the build products of the Rust programs (rust/target/),
+# which are not documents, and the folder paper_prd/ of the article for Physical
+# Review D, whose .tex files are REVTeX sources and whose .md, .tex and .pdf files are
+# made by paper_prd/scripts/build_paper.py (this script would overwrite them); the one
+# document of that folder that this script builds, paper_prd/README.md, is named on the
+# command line:  bash code/scripts/build_docs.sh paper_prd/README.md
 # The list is read line by line so that file names with spaces survive.
 # ---------------------------------------------------------------------------
 DOCS=()
@@ -48,7 +52,7 @@ else
   while IFS= read -r f; do DOCS+=("$f"); done < <(
     find . -name '*.md' -not -path './.git/*' -not -path '*/target/*' \
            -not -path './docs_src/*' -not -path './provenance/generated/*' \
-           -not -path './data/*' -not -name '*.src.md' | sed 's|^\./||' | sort)
+           -not -path './data/*' -not -path './paper_prd/*' -not -name '*.src.md' | sed 's|^\./||' | sort)
 fi
 
 for md in "${DOCS[@]}"; do

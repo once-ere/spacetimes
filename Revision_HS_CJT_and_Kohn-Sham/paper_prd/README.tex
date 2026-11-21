@@ -1,0 +1,541 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (the documents of the folder Revision_HS_CJT_and_Kohn-Sham).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% A short table is kept on one page.  The build (code/scripts/keep_tables.py) ends the rows of such a table with \\*,
+% which forbids a page break after a row, and sets \sptkeptpenalty to 10000 in front of the table.  This penalty is
+% put here in the place of the breakpoint (penalty 0) that longtable leaves after every table, so that the paragraph
+% that follows a kept table, its caption, begins on the same page; it is set back to 0 after the table.
+\newcount\sptkeptpenalty
+\sptkeptpenalty=0
+\makeatletter
+\patchcmd{\endlongtable}{\endgraf\penalty\z@\addvspace\LTpost}%
+  {\endgraf\penalty\sptkeptpenalty\addvspace\LTpost\global\sptkeptpenalty=\z@}%
+  {}{\PackageError{doc_header}{the end of longtable could not be patched}{The tables can still be typeset, but a short table may be separated from its caption.}}
+\makeatother
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_HS\_CJT\_and\_Kohn-Sham}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={paper\_prd: the Regular Article ``Higgs as a Composite, and Quantum Gravity'' for Physical Review D},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{paper\_prd: the Regular Article ``Higgs as a Composite, and
+Quantum Gravity'' for Physical Review D}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{README of the folder
+Revision\_HS\_CJT\_and\_Kohn-Sham/paper\_prd of PROJECT spacetimes}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 21, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-folder-is}{%
+\section{1. What this folder is}\label{what-this-folder-is}}
+
+This folder contains the Regular Article ``Higgs as a Composite, and
+Quantum Gravity'' by Patrick Lee Nash, Ph.D., prepared for submission to
+Physical Review D, together with its Supplemental Material, the cover
+letter, the information to be entered on the submission server of the
+American Physical Society (APS), and the folder of the files to be
+uploaded. The author asked for it on 21 November 2026 at 11:29 PST, with
+three questions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  How wide is the region of the fluctuations near the critical
+  temperature \(T^{X,{\rm c}}_{\rm SF}\) of the superfluid? The answer
+  needs one more calculation, the gradient coefficient of the order
+  parameter at \(T^{X,{\rm c}}_{\rm SF}\).
+\item
+  For each of the five mean-field methods \(X\) = HS \((1,1)\), HS
+  \((0,1)\), HS \((0,0)\), KS, CJT: can the superfluid play the role of
+  the Higgs particle?
+\item
+  Is the Higgs then a composite particle?
+\end{enumerate}
+
+The author also fixed the form of the answer: a Regular Article for
+Physical Review D, as a publication-ready PDF with its text, references,
+figures, tables and captions, its LaTeX source in REVTeX, a data
+availability statement, a cover letter, generous supplementary documents
+that prove every assertion, and the preparation of the steps on the
+submission server. The steps on the server (logging in, entering the
+data, uploading, submitting) are the author's; nothing has been
+submitted. The gravitational sector of the title is not computed: the
+article outlines in its Sec. VIII how it will be added through E. A.
+Lord's gauge theory of the local change of spinor representation (Proc.
+Cambridge Philos. Soc. 69, 423 (1971)), the route that the author named,
+and says that this sector is a program.
+
+\hypertarget{the-answers-in-brief}{%
+\section{2. The answers in brief}\label{the-answers-in-brief}}
+
+The symbols are those of the article: \(X\) is the method,
+\(\mathrm{SF}\) marks a quantity of the superfluid, \(\Lambda_{\rm LL}\)
+(the momentum cutoff of the uniform states) is the unit of energy,
+\(v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}\) is the analogue of the scale
+\(v=246.22\) GeV of the Standard Model (\(f^{X,{\rm I}}_{\rm SF}\) the
+decay constant of the isospin rotations), and \(M^{X,{\rm H}}_{\rm SF}\)
+is the mass of the amplitude mode.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{The width of the critical region.} The Ginzburg number, the
+  reduced temperature
+  \(\lvert T-T^{X,{\rm c}}_{\rm SF}\rvert/T^{X,{\rm c}}_{\rm SF}\) below
+  which the Gaussian fluctuations of the order parameter exceed the jump
+  of the specific heat of the mean-field theory, is
+  \({\rm Gi}^{X}_{\rm SF}\) = \(7.6\) (KS, CJT) to \(11\) (HS (1, 1)).
+  The critical region is wider than the critical temperature itself, and
+  the mean-field transition, on which the five methods agree, is not
+  reliable. The cause is that the pairs are tightly bound: the
+  correlation length is \(1.05\) (HS (1, 1)) to \(1.35\) (HS (0, 0)) in
+  units of \(1/\Lambda_{\rm LL}\), about the cutoff length, and a
+  correlation volume holds \(0.035\) (HS (1, 1)) to \(0.043\) (KS, CJT)
+  degrees of freedom. The gradient coefficient needed for this number is
+  computed from the static pair response of a moving pair; the
+  calculation also shows that the cutoff must be placed on the relative
+  momentum of the pair (with a cutoff on the momenta of the two
+  constituents the gradient expansion does not exist).
+\item
+  \textbf{The Higgs particle.} In every method the superfluid realizes
+  the Higgs mechanism (massive \(W^\pm\) and \(Z\), a massless photon, a
+  neutral scalar below the threshold of two quasi-particles), but in no
+  method can its amplitude mode be the observed Higgs boson:
+  \(M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}\) = \(4.46\) (CJT) to \(5.69\)
+  (HS (1, 1)), \(8.8\) to \(11\) times the value \(0.5085\) of the
+  Standard Model; the quartic coupling \(9.94\) (CJT) to \(16.2\) (HS
+  (1, 1)) exceeds the tree-level unitarity bound \(8\pi/3\); the
+  tree-level width is \(2.1\) (KS, CJT) to \(3.9\) (HS (1, 1)) times the
+  mass; and every method has charged scalars at \(0.991\) (HS (1, 1)) to
+  \(1.09\) (KS) times \(M^{X,{\rm H}}_{\rm SF}\). The methods differ in
+  degree, not in kind.
+\item
+  \textbf{Compositeness.} Yes, in every method and by construction: the
+  field of the superfluid is the amplitude of the pair self-energy, a
+  composite of two spinor charges; its kinetic term consists of
+  susceptibilities of the spinor field; its amplitude mode is a bound
+  state of two quasi-particles. Whether the Higgs boson of nature is
+  composite is not decided by this computation.
+\end{enumerate}
+
+\hypertarget{contents}{%
+\section{3. Contents}\label{contents}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+file or folder
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+what it is
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{higgs\_composite\_qg.pdf}, \texttt{.tex}, \texttt{.md} & the
+article (REVTeX 4.2, two columns), its LaTeX source and its Markdown
+version \\
+\texttt{higgs\_composite\_qg\_SM.pdf}, \texttt{.tex}, \texttt{.md} & the
+Supplemental Material: notation, model, methods, the superfluid at
+\(T=0\) and at finite temperature, the derivation of the gradient
+coefficient and of the Ginzburg number, the Higgs sector, compositeness,
+Lord's construction, every check of the three implementations with its
+deviation and tolerance, the data files and programs with their SHA-256
+checksums \\
+\texttt{cover\_letter.pdf}, \texttt{.tex}, \texttt{.md} & the cover
+letter to the editors \\
+\texttt{submission\_info.pdf}, \texttt{.tex}, \texttt{.md} & what to
+enter on the submission server: journal and article type, length, title
+and byline, the abstract (typeset and as LaTeX source), the subject
+classification (PhySH), the data availability statement, the comments
+for the editor and the suggested referees, the files to upload, the
+steps on the server, and the statements that only the author can
+confirm \\
+\texttt{submission/} & exactly the files to upload: the article as PDF
+and as LaTeX source with its \texttt{.bbl} and its five figures in the
+same folder, the Supplemental Material and the cover letter \\
+\texttt{src/} & the templates of the four documents
+(\texttt{*.template.tex}) and the bibliography \texttt{references.bib};
+every number that a program computes is a placeholder
+\texttt{\{\{NAME\}\}} in the templates \\
+\texttt{scripts/build\_paper.py} & the program that fills the
+placeholders from the data files and the reports of the checks and
+builds the four documents and the folder \texttt{submission/} \\
+\texttt{figures/} & the five figures of the article, copied by the build
+from the folder \texttt{figures/} of
+\texttt{Revision\_HS\_CJT\_and\_Kohn-Sham} \\
+\texttt{generated/numbers.csv} & every placeholder with the value that
+the last build inserted \\
+\texttt{generated/build\_report.txt} & the checks of the last build
+(Section 5) \\
+\texttt{references.bib} & the copy of \texttt{src/references.bib} that
+the build uses \\
+\texttt{README.md}, \texttt{.tex}, \texttt{.pdf} & this description \\
+\end{longtable}
+
+\hypertarget{how-the-numbers-are-made}{%
+\section{4. How the numbers are made}\label{how-the-numbers-are-made}}
+
+The article prints results of the programs of the folder
+\texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}: the Rust programs
+\texttt{sf\_part2}, \texttt{sf\_part3} and \texttt{sf\_part4}, which
+write the data files of \texttt{data/}, the Python programs
+\texttt{sf\_part2.py}, \texttt{sf\_part3.py} and \texttt{sf\_part4.py},
+which compute the same results independently with numpy and LAPACK, and
+the notebook \texttt{superfluid.nb} in the Wolfram Language, which
+repeats the checks of the statements of the article's Secs. III to VI
+(except the mass matrix of the gauge bosons and the time-dependent
+calculations) with a third implementation. Every check is written to a
+report in \texttt{data/} with its deviation and its tolerance.
+
+\texttt{scripts/build\_paper.py} reads the data files and the reports
+and computes every number that the four documents state about these
+results: the results themselves (the tables, and ranges such as the
+Ginzburg numbers), and every bound of the agreement of two computations
+(``the three implementations confirm (14) to \(2\times10^{-11}\)''). A
+bound is the largest deviation of the checks it summarizes, rounded
+\textbf{up} to one significant digit, so that a stated bound is never
+smaller than a measured deviation. Typed in the templates are only the
+parameters of the model and of the numerical method, mathematical
+constants, and the measured values of the Standard Model and of
+cosmology, each with its reference. The values inserted by the last
+build are listed in \texttt{generated/numbers.csv}.
+
+The build compiles the article and the Supplemental Material with
+pdfLaTeX, BibTeX and REVTeX 4.2, the cover letter and the submission
+information with pdfLaTeX, and writes the Markdown versions with pandoc.
+It fixes the date that pdfTeX writes into a PDF to the date of the
+documents (21 November 2026), so that a rebuild from the same sources
+and data gives the same bytes; this was checked by building twice and
+comparing the SHA-256 checksums of every PDF, LaTeX and Markdown file.
+
+To build (from the folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham},
+after the programs have written \texttt{data/}):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_HS\_CJT\_and\_Kohn{-}Sham"}
+\ExtensionTok{python3}\NormalTok{ paper\_prd/scripts/build\_paper.py             }\CommentTok{\# the four documents and submission/}
+\FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh paper\_prd/README.md  }\CommentTok{\# this README as .tex and .pdf}
+\end{Highlighting}
+\end{Shaded}
+
+\texttt{build\_paper.py} needs Python 3, a TeX installation with REVTeX
+4.2 (\texttt{revtex4-2.cls}, \texttt{apsrev4-2.bst}) and the LaTeX
+packages \texttt{listings} and \texttt{longtable}, and pandoc. Its exit
+status is 1 if a document has an undefined reference or an overfull box
+wider than 1 pt, or if the folder \texttt{submission/} fails its check.
+
+\hypertarget{the-checks-of-the-last-build}{%
+\section{5. The checks of the last
+build}\label{the-checks-of-the-last-build}}
+
+\begin{verbatim}
+build_paper.py: the checks of the LaTeX builds (pages; undefined references or citations; overfull boxes wider
+than 1 pt).  A document passes when it has no undefined reference and no such box.
+
+higgs_composite_qg: 10 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg_SM: 36 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+submission/: the flat source compiles alone to 10 pages (the manuscript has 10); undefined: none -> PASS
+submission_info: 5 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+\end{verbatim}
+
+The check of \texttt{submission/} compiles a copy of the folder alone in
+a temporary folder, with the figures beside the source as the server
+keeps them, and compares the number of pages with the article.
+
+\hypertarget{corrections-made-before-the-first-version-was-kept}{%
+\section{6. Corrections made before the first version was
+kept}\label{corrections-made-before-the-first-version-was-kept}}
+
+Before the first commit, every number typed in the drafts of the
+templates was compared with the reports and data files, and every number
+that a program computes was replaced by a placeholder. The comparison
+found these errors in the drafts, which were not committed (their causes
+are recorded in the task record of the folder, entry E20):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  ``the masses of \(W\) and \(Z\) are at most a fifth of
+  \(M^{X,{\rm H}}_{\rm SF}/2\)'' was false for KS and CJT, where the
+  ratio is 0.213; the text now gives the bound
+  \(M_V\le0.11\,M^{X,{\rm H}}_{\rm SF}\) from the data, and the
+  tree-level factor \((1-4x)^{1/2}(1-4x+12x^2)\),
+  \(x=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2\), of the decays into \(W^+W^-\)
+  and \(ZZ\) (the drafts named only the phase-space factor
+  \((1-4x)^{1/2}\)). The drafts took the sentence from the committed
+  documents \texttt{superfluid.md} (Section 14.6),
+  \texttt{provenance/P4\_remarks.md} (addendum A2) and
+  \texttt{superfluid.nb} (Section III.G.8), which contain it in this
+  version of the folder (entry E20 of the task record);
+\item
+  the value of \(M_H/v\) of the Standard Model was given as 0.509 in the
+  abstract; \(125.20/246.22=0.50849\) rounds to 0.508 (0.509 came from
+  rounding 0.5085 a second time); the abstract now gives 0.5085;
+\item
+  ``the programs compute both numbers also from the full static response
+  of the normal vacuum \ldots{} to \(10^{-14}\)'': only the Rust program
+  computes them so, and the largest deviation is \(3.5\times10^{-14}\);
+\item
+  bounds smaller than the largest deviation they summarize: ``the
+  programs confirm (14) to \(10^{-11}\)'' (the Python check YP3-G2
+  deviates by \(1.6\times10^{-11}\)), and, rounded down, ``they agree to
+  \(5\times10^{-12}\) (checks P3-G10)'' for the closed form of the slope
+  \(\alpha^{X,{\rm GL}}_{\rm SF}\) (the checks P3-G10 deviate by up to
+  \(5.1\times10^{-12}\); the sentence now also cites the checks YP3-G10
+  and WP3-G10, which deviate by up to \(4.7\times10^{-12}\) and
+  \(7.0\times10^{-12}\));
+\item
+  the build wrote the dash of a range of numbers as
+  \texttt{\textbackslash{}text\{-\/-\}}, which pandoc dropped outside
+  formulas: the Markdown versions of the drafts read ``Ginzburg numbers
+  7.611'' instead of 7.6 to 11; the dash is now written
+  \texttt{\textbackslash{}mbox\{-\/-\}}, which LaTeX and pandoc both set
+  correctly;
+\item
+  the Markdown versions of the drafts lacked the title, the byline and
+  the abstract, which pandoc does not write for a REVTeX document; the
+  build now adds them.
+\end{enumerate}
+
+\hypertarget{provenance}{%
+\section{7. Provenance}\label{provenance}}
+
+The four documents, the folder \texttt{submission/},
+\texttt{generated/numbers.csv} and \texttt{generated/build\_report.txt}
+are written by \texttt{scripts/build\_paper.py} from the templates in
+\texttt{src/} and the data files and reports of \texttt{data/}; the
+Supplemental Material lists the data files, the programs and the
+templates with their SHA-256 checksums. The checksums of the templates,
+of the build program and of the files to upload, at the time this README
+was built:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{paper\_prd/scripts/build\_paper.py}:\\
+  \texttt{87385d87df8c0a0daef4c79ae2d882f2c9514bf9ae70cb08e789b2f0be622492}
+\item
+  \texttt{paper\_prd/src/higgs\_composite\_qg.template.tex}:\\
+  \texttt{caaa27159f468c30d8479912f5729089c5bf3a0d73c813e256b708148a20f427}
+\item
+  \texttt{paper\_prd/src/higgs\_composite\_qg\_SM.template.tex}:\\
+  \texttt{378b3bac8d90d6f7ce3ef201bf26ce7e06608f128b6daa6c00ad3d0c1dcf67f3}
+\item
+  \texttt{paper\_prd/src/cover\_letter.template.tex}:\\
+  \texttt{1ec211ee8c354e88745904f6d6834382a108b80d6fdafc3231128e12719eaa7e}
+\item
+  \texttt{paper\_prd/src/submission\_info.template.tex}:\\
+  \texttt{f75d5820fdcdba7c42218c3b4ba276d38e2737f048e84f1c1c77eeb63d1b15d0}
+\item
+  \texttt{paper\_prd/src/references.bib}:\\
+  \texttt{7f62530ea60bd47ac9ee26d8d771fab13e07344e228bf102337904f190e4001a}
+\item
+  \texttt{paper\_prd/submission/higgs\_composite\_qg.pdf}:\\
+  \texttt{9cee9dec502b1fddc45d9575804014df697dbeba76bdbf9b1b688c5657de4fc0}
+\item
+  \texttt{paper\_prd/submission/higgs\_composite\_qg.tex}:\\
+  \texttt{e1ff70ffc66c0b4727576b28eaa1c9e119a06640653cfd73d211e763dc1cfe77}
+\item
+  \texttt{paper\_prd/submission/higgs\_composite\_qg.bbl}:\\
+  \texttt{b2784b0a4ea1b9fb393896852432e980bac241ad8bdf46425d0efab79d8c24f9}
+\item
+  \texttt{paper\_prd/submission/higgs\_composite\_qg\_SM.pdf}:\\
+  \texttt{a1a778942169e682d3767d04cae94daac76f1db05d3239e6c601d257b293a9ae}
+\item
+  \texttt{paper\_prd/submission/cover\_letter.pdf}:\\
+  \texttt{a0048b594ee490311edaa4e937dbf5be46e3f3df1557e0f2b0f645206076f1fb}
+\end{itemize}
+
+\end{document}

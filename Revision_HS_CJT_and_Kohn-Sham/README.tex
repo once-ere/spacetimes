@@ -312,6 +312,24 @@ PASS (154 of 154), 0 messages). Its provenance is
 \texttt{provenance/P3\_notebook.md}. The rest of Part III and Part IV of
 the notebook follow.
 
+\textbf{The article for Physical Review D} (folder
+\texttt{paper\_prd/}), asked for by the author on 21 November 2026 at
+11:29 PST: the Regular Article ``Higgs as a Composite, and Quantum
+Gravity'', which answers how wide the critical region near the critical
+temperature is (the Ginzburg number, from the gradient coefficient at
+the critical temperature: \(7.6\) (KS, CJT) to \(11\) (HS (1, 1))),
+whether the superfluid of each method can play the role of the Higgs
+particle (it realizes the Higgs mechanism, but its amplitude mode is
+\(8.8\) to \(11\) times too heavy against the scale of the breaking,
+broad and strongly coupled, and accompanied by charged scalars), and
+whether the Higgs is a composite particle (yes, by construction); with
+its Supplemental Material, the cover letter, the information for the
+submission server of the APS and the folder of the files to upload, all
+built from the data files and the reports of the checks by
+\texttt{paper\_prd/scripts/build\_paper.py}. The gravitational sector of
+the title is outlined, not computed. The submission itself is the
+author's.
+
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
 
@@ -353,8 +371,9 @@ the solution & parts I to IV written \\
 \texttt{superfluid.nb}, \texttt{superfluid\_notebook.pdf} & the
 Mathematica notebook of the whole solution, evaluated in the front end
 of Wolfram, and its printed copy & introduction, Parts I and II and the
-sections of Part III on the Landau form and on the free energy at finite
-temperature written; the rest planned \\
+sections of Part III on the Landau form (III.L), on the free energy at
+finite temperature (III.T) and on the gradient coefficient, the Ginzburg
+number and the Higgs sector (III.G) written; the rest planned \\
 \texttt{provenance/P3\_notebook.md}, \texttt{.tex}, \texttt{.pdf} & the
 provenance of the notebook: its task, files, build and evaluation, the
 checks with their counterparts in Rust and Python, the symbols of its
@@ -367,7 +386,10 @@ the accuracy of the Landau form, with its definition and examples; the
 addendum A1 (the free energy of the five methods at finite temperature,
 and whether the order parameter is smaller and more physically
 reasonable) and remark R2 (the free energies are mean-field free
-energies) & written for R1, A1 and R2; grows with every such remark \\
+energies); the addendum A2 (the gradient coefficient at the critical
+temperature and the width of the critical region; the superfluid as a
+Higgs sector and the compositeness of the Higgs) with its remarks &
+written for R1, A1, R2 and A2; grows with every such remark \\
 \texttt{provenance/} (further documents) & the provenance of the code,
 the computed values and the checks & planned \\
 \texttt{code/scripts/} & the document pipeline:
@@ -410,17 +432,19 @@ figures, and the videos of part IV) & parts I to IV written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
-\texttt{part3\_landau.source.wl} and \texttt{part3\_thermal.source.wl},
-and the data cells \texttt{data\_part2.wl}, \texttt{data\_part3.wl} and
-\texttt{data\_part3\_thermal.wl}; in \texttt{wolfram/tools/} the builder
-of the notebook from its source (\texttt{build\_notebook.wls}), the
-reader of formulas that turns the TeX of the texts into two-dimensional
-formulas (\texttt{sf\_formula.wl}), the evaluation of the notebook in
-the front end of Wolfram (\texttt{guirun.wl} and the three calls
+\texttt{part3\_landau.source.wl}, \texttt{part3\_thermal.source.wl} and
+\texttt{part3\_ginzburg.source.wl}, and the data cells
+\texttt{data\_part2.wl}, \texttt{data\_part3.wl},
+\texttt{data\_part3\_thermal.wl} and \texttt{data\_part3\_ginzburg.wl};
+in \texttt{wolfram/tools/} the builder of the notebook from its source
+(\texttt{build\_notebook.wls}), the reader of formulas that turns the
+TeX of the texts into two-dimensional formulas
+(\texttt{sf\_formula.wl}), the evaluation of the notebook in the front
+end of Wolfram (\texttt{guirun.wl} and the three calls
 \texttt{gui\_start.wl}, \texttt{gui\_go.wl}, \texttt{gui\_status.wl}),
 the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
-(\texttt{make\_data\_cells.py}) & Parts I and II and the sections of
-Part III on the Landau form written \\
+(\texttt{make\_data\_cells.py}) & Parts I and II and the sections III.L,
+III.T and III.G of Part III written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},
@@ -444,6 +468,18 @@ videos (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
 \texttt{write\_part3\_fragments.py}, \texttt{write\_part4\_fragments.py}
 & turn the reports and values of parts I to IV into the tables and
 numbers of the manuscript & written \\
+\texttt{paper\_prd/} & the Regular Article ``Higgs as a Composite, and
+Quantum Gravity'' for Physical Review D
+(\texttt{higgs\_composite\_qg.pdf}, \texttt{.tex}, \texttt{.md}), its
+Supplemental Material (\texttt{higgs\_composite\_qg\_SM.*}), the cover
+letter (\texttt{cover\_letter.*}), the information for the submission
+server (\texttt{submission\_info.*}), the folder \texttt{submission/}
+with exactly the files to upload, the templates \texttt{src/}, the build
+\texttt{scripts/build\_paper.py} with its record
+\texttt{generated/numbers.csv} and \texttt{generated/build\_report.txt},
+and its README (\texttt{paper\_prd/README.md}, \texttt{.tex},
+\texttt{.pdf}) & written; not submitted (the submission is the
+author's) \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
@@ -478,6 +514,8 @@ folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh               }\CommentTok{\# .md {-}\textgreater{} .tex {-}\textgreater{} .pdf, with the layout check}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py  }\CommentTok{\# writes data/hck\_self\_contained\_checks.txt}
+\ExtensionTok{python3}\NormalTok{ paper\_prd/scripts/build\_paper.py      }\CommentTok{\# the article for Physical Review D, its companions}
+\FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh paper\_prd/README.md  }\CommentTok{\# the README of paper\_prd/ (named)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -490,7 +528,11 @@ document from its source in \texttt{docs\_src/}; \texttt{build\_docs.sh}
 needs pandoc (version 2.11 or later), a TeX distribution with XeLaTeX
 and latexmk, the DejaVu fonts and the font Latin Modern Math;
 \texttt{check\_self\_contained.py} checks that no document refers its
-reader to another document.
+reader to another document. \texttt{build\_paper.py} needs a TeX
+installation with REVTeX 4.2 and pdfLaTeX, and pandoc; the default run
+of \texttt{build\_docs.sh} leaves the folder \texttt{paper\_prd/} alone,
+because the \texttt{.tex} files there are REVTeX sources written by
+\texttt{build\_paper.py}.
 
 The notebook is opened in Wolfram (version 15 or later) and evaluated
 with Evaluation \textgreater{} Evaluate Notebook. It is made from its

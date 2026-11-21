@@ -70,6 +70,16 @@ repeated by the Rust and the Python programs (verdict of the evaluation in the f
 {{GEN:nb_verdict}}). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
 follow.
 
+**The article for Physical Review D** (folder `paper_prd/`), asked for by the author on 21 November 2026 at 11:29 PST:
+the Regular Article "Higgs as a Composite, and Quantum Gravity", which answers how wide the critical region near the
+critical temperature is (the Ginzburg number, from the gradient coefficient at the critical temperature: {{GEN:p3_gz_Gi}}),
+whether the superfluid of each method can play the role of the Higgs particle (it realizes the Higgs mechanism, but its
+amplitude mode is {{GEN:p3_h_times_sm}} times too heavy against the scale of the breaking, broad and strongly coupled, and
+accompanied by charged scalars), and whether the Higgs is a composite particle (yes, by construction); with its
+Supplemental Material, the cover letter, the information for the submission server of the APS and the folder of the
+files to upload, all built from the data files and the reports of the checks by `paper_prd/scripts/build_paper.py`. The
+gravitational sector of the title is outlined, not computed. The submission itself is the author's.
+
 # 3. Contents
 
 | file or folder | what it is | state |
@@ -79,18 +89,19 @@ follow.
 | `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
 | `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
 | `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to IV written |
-| `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction, Parts I and II and the sections of Part III on the Landau form and on the free energy at finite temperature written; the rest planned |
+| `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction, Parts I and II and the sections of Part III on the Landau form (III.L), on the free energy at finite temperature (III.T) and on the gradient coefficient, the Ginzburg number and the Higgs sector (III.G) written; the rest planned |
 | `provenance/P3_notebook.md`, `.tex`, `.pdf` | the provenance of the notebook: its task, files, build and evaluation, the checks with their counterparts in Rust and Python, the symbols of its code, the corrections | written for Part I; grows with the notebook |
-| `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples; the addendum A1 (the free energy of the five methods at finite temperature, and whether the order parameter is smaller and more physically reasonable) and remark R2 (the free energies are mean-field free energies) | written for R1, A1 and R2; grows with every such remark |
+| `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples; the addendum A1 (the free energy of the five methods at finite temperature, and whether the order parameter is smaller and more physically reasonable) and remark R2 (the free energies are mean-field free energies); the addendum A2 (the gradient coefficient at the critical temperature and the width of the critical region; the superfluid as a Higgs sector and the compositeness of the Higgs) with its remarks | written for R1, A1, R2 and A2; grows with every such remark |
 | `provenance/` (further documents) | the provenance of the code, the computed values and the checks | planned |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?); the registry of the symbols: `symbol_entries.py` (the entries), `write_symbol_registry.py` (reads the seven registries of the project, writes the registry of the solution and the tables of the MASTER provenance) and `check_symbols.py` (the checks of the symbols) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
 | `rust/` | the Rust workspace: the library `sfcore` (bi-quaternions and bi-octonions, Dirac matrices, automatic differentiation to second order, Fock-space operators, eigenvalues of block-tridiagonal matrices, quadrature, reports; for part II the uniform quasi-free states of the three methods, the linear response, the eigenvalues of general complex matrices and the exchange of gauge bosons; for part III the states with a fixed pair field and the thermal states at a temperature $T$; for part IV the response at complex frequencies), the program `sf_part1` (the checks and analytic solutions of part I), the program `sf_part2` (part II), the program `sf_part3` (part III), the program `sf_part4` (part IV), the integrators CVODE and IDA of the vendored pure-Rust SUNDIALS 7.8.0 with a plain interface (`sfsundials`), and their C interface for Python, the shared library `libsfsundials_c` (`sfsundials_c`) | parts I to IV written |
 | `python/` | `sfcommon.py` (common definitions), `sfsundials.py` (CVODE and IDA through the C interface), `sf_part1.py`, `sf_part2.py`, `sf_part3.py`, `sf_part4.py` (the second, independent computations of parts I to IV), `sf_part1_figures.py`, `sf_part2_figures.py`, `sf_part3_figures.py`, `sf_part4_figures.py` (the figures, and the videos of part IV) | parts I to IV written |
-| `wolfram/` | the Wolfram-language parts of the notebook: the sources `wolfram/source/superfluid.source.wl`, `part1.source.wl`, `part2.source.wl`, `part3_landau.source.wl` and `part3_thermal.source.wl`, and the data cells `data_part2.wl`, `data_part3.wl` and `data_part3_thermal.wl`; in `wolfram/tools/` the builder of the notebook from its source (`build_notebook.wls`), the reader of formulas that turns the TeX of the texts into two-dimensional formulas (`sf_formula.wl`), the evaluation of the notebook in the front end of Wolfram (`guirun.wl` and the three calls `gui_start.wl`, `gui_go.wl`, `gui_status.wl`), the dry run (`make_dryrun.py`), and the writer of the data cells (`make_data_cells.py`) | Parts I and II and the sections of Part III on the Landau form written |
+| `wolfram/` | the Wolfram-language parts of the notebook: the sources `wolfram/source/superfluid.source.wl`, `part1.source.wl`, `part2.source.wl`, `part3_landau.source.wl`, `part3_thermal.source.wl` and `part3_ginzburg.source.wl`, and the data cells `data_part2.wl`, `data_part3.wl`, `data_part3_thermal.wl` and `data_part3_ginzburg.wl`; in `wolfram/tools/` the builder of the notebook from its source (`build_notebook.wls`), the reader of formulas that turns the TeX of the texts into two-dimensional formulas (`sf_formula.wl`), the evaluation of the notebook in the front end of Wolfram (`guirun.wl` and the three calls `gui_start.wl`, `gui_go.wl`, `gui_status.wl`), the dry run (`make_dryrun.py`), and the writer of the data cells (`make_data_cells.py`) | Parts I and II and the sections III.L, III.T and III.G of Part III written |
 | `data/` | the reports of the checks (`hck_part1_checks.txt`, `hck_part1_checks_python.txt`, `hck_part2_checks.txt`, `hck_part2_checks_python.txt`, `hck_part3_checks.txt`, `hck_part3_checks_python.txt`, `hck_part4_checks.txt`, `hck_part4_checks_python.txt`, `hck_symbol_checks.txt`, `hck_self_contained_checks.txt`) and the data of parts I to IV (`part1_*.csv`, `part2_*.csv`, `part3_*.csv`, `part4_*.csv`) | parts I to IV written |
 | `figures/`, `videos/` | the figures (`fig_part1_*`, `fig_part2_*`, `fig_part3_*`, `fig_part4_*`, each `.pdf` and `.png`) and the videos (`video_part4_v1_condensate_growth.mp4`, `video_part4_v2_gauge_fields.mp4`) | written |
 | `code/scripts/write_part1_fragments.py`, `write_part2_fragments.py`, `write_part3_fragments.py`, `write_part4_fragments.py` | turn the reports and values of parts I to IV into the tables and numbers of the manuscript | written |
+| `paper_prd/` | the Regular Article "Higgs as a Composite, and Quantum Gravity" for Physical Review D (`higgs_composite_qg.pdf`, `.tex`, `.md`), its Supplemental Material (`higgs_composite_qg_SM.*`), the cover letter (`cover_letter.*`), the information for the submission server (`submission_info.*`), the folder `submission/` with exactly the files to upload, the templates `src/`, the build `scripts/build_paper.py` with its record `generated/numbers.csv` and `generated/build_report.txt`, and its README (`paper_prd/README.md`, `.tex`, `.pdf`) | written; not submitted (the submission is the author's) |
 
 # 4. How to build the documents
 
@@ -120,6 +131,8 @@ python3 code/scripts/check_symbols.py         # writes data/hck_symbol_checks.tx
 python3 code/scripts/assemble_docs.py         # docs_src/*.src.md -> the .md documents
 bash code/scripts/build_docs.sh               # .md -> .tex -> .pdf, with the layout check
 python3 code/scripts/check_self_contained.py  # writes data/hck_self_contained_checks.txt
+python3 paper_prd/scripts/build_paper.py      # the article for Physical Review D, its companions
+bash code/scripts/build_docs.sh paper_prd/README.md  # the README of paper_prd/ (named)
 ```
 
 The Rust programs need the Rust toolchain (`cargo`; no crate is downloaded: the integrators are the pure-Rust SUNDIALS
@@ -127,7 +140,9 @@ The Rust programs need the Rust toolchain (`cargo`; no crate is downloaded: the 
 scipy, sympy and matplotlib, and the videos the program ffmpeg. `assemble_docs.py` writes each document from its source in `docs_src/`;
 `build_docs.sh` needs pandoc (version 2.11 or later), a TeX distribution with XeLaTeX and latexmk, the DejaVu fonts
 and the font Latin Modern Math; `check_self_contained.py` checks that no document refers its reader to another
-document.
+document. `build_paper.py` needs a TeX installation with REVTeX 4.2 and pdfLaTeX, and pandoc; the default run of
+`build_docs.sh` leaves the folder `paper_prd/` alone, because the `.tex` files there are REVTeX sources written by
+`build_paper.py`.
 
 The notebook is opened in Wolfram (version 15 or later) and evaluated with Evaluation > Evaluate Notebook. It is made
 from its source on a computer with Wolfram by
