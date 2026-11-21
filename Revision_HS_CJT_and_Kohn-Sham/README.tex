@@ -268,8 +268,8 @@ ALL PASS (44 of 44)) and the Python programs
 \(\mathcal L^{\rm KS}\), their potential parts (the Mexican hat) and
 kinetic parts, the vacua and the breaking of the symmetry, and
 \(\mathrm{SFBSv}^X\)) is complete, with the program \texttt{sf\_part3}
-(VERDICT: ALL PASS (87 of 87)) and the Python programs
-\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (32 of 32)) and
+(VERDICT: ALL PASS (92 of 92)) and the Python programs
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (45 of 45)) and
 \texttt{python/sf\_part3\_figures.py}. Section 12.1 now also defines the
 Landau form, with examples, and states its accuracy, the cause of its
 error and why the error matters (Table 12.2, Figure 9); the answer to
@@ -297,13 +297,16 @@ of 20)) and \texttt{python/sf\_part4\_figures.py}.
 
 \textbf{The Mathematica notebook \texttt{superfluid.nb}} (object O8) is
 written part by part. This version contains the introduction, the
-register of the checks, Part I, Part II, and the first section of Part
-III (the Landau form: its definition, examples, accuracy, the cause of
-its error and why the error matters): 65 checks, each repeated by the
-Rust and the Python programs (verdict of the evaluation in the front end
-of Wolfram: ALL PASS (65 of 65), 0 messages). Its provenance is
-\texttt{provenance/P3\_notebook.md}. The rest of Part III and Part IV of
-the notebook follow.
+register of the checks, Part I, Part II, the first section of Part III
+(the Landau form: its definition, examples, accuracy, the cause of its
+error and why the error matters), and the second section of Part III
+(Section III.T: the free energy of the five methods at finite
+temperature, the critical temperatures, the size of the order parameter,
+and the remark that the free energies are mean-field free energies): 91
+checks, each repeated by the Rust and the Python programs (verdict of
+the evaluation in the front end of Wolfram: ALL PASS (91 of 91), 0
+messages). Its provenance is \texttt{provenance/P3\_notebook.md}. The
+rest of Part III and Part IV of the notebook follow.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -346,7 +349,8 @@ the solution & parts I to IV written \\
 \texttt{superfluid.nb}, \texttt{superfluid\_notebook.pdf} & the
 Mathematica notebook of the whole solution, evaluated in the front end
 of Wolfram, and its printed copy & introduction, Parts I and II and the
-section of Part III on the Landau form written; the rest planned \\
+sections of Part III on the Landau form and on the free energy at finite
+temperature written; the rest planned \\
 \texttt{provenance/P3\_notebook.md}, \texttt{.tex}, \texttt{.pdf} & the
 provenance of the notebook: its task, files, build and evaluation, the
 checks with their counterparts in Rust and Python, the symbols of its
@@ -401,18 +405,18 @@ to IV), \texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
 figures, and the videos of part IV) & parts I to IV written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
-\texttt{part1.source.wl}, \texttt{part2.source.wl} and
-\texttt{part3\_landau.source.wl}, and the data cells
-\texttt{data\_part2.wl} and \texttt{data\_part3.wl}; in
-\texttt{wolfram/tools/} the builder of the notebook from its source
-(\texttt{build\_notebook.wls}), the reader of formulas that turns the
-TeX of the texts into two-dimensional formulas
-(\texttt{sf\_formula.wl}), the evaluation of the notebook in the front
-end of Wolfram (\texttt{guirun.wl} and the three calls
+\texttt{part1.source.wl}, \texttt{part2.source.wl},
+\texttt{part3\_landau.source.wl} and \texttt{part3\_thermal.source.wl},
+and the data cells \texttt{data\_part2.wl}, \texttt{data\_part3.wl} and
+\texttt{data\_part3\_thermal.wl}; in \texttt{wolfram/tools/} the builder
+of the notebook from its source (\texttt{build\_notebook.wls}), the
+reader of formulas that turns the TeX of the texts into two-dimensional
+formulas (\texttt{sf\_formula.wl}), the evaluation of the notebook in
+the front end of Wolfram (\texttt{guirun.wl} and the three calls
 \texttt{gui\_start.wl}, \texttt{gui\_go.wl}, \texttt{gui\_status.wl}),
 the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
-(\texttt{make\_data\_cells.py}) & Parts I and II and the section of Part
-III on the Landau form written \\
+(\texttt{make\_data\_cells.py}) & Parts I and II and the sections of
+Part III on the Landau form written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},

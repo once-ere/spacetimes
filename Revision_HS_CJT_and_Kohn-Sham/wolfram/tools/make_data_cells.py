@@ -9,6 +9,7 @@ files it was made from and their SHA-256 checksums, so that the provenance can t
 Usage (from the folder Revision_HS_CJT_and_Kohn-Sham):
     python3 wolfram/tools/make_data_cells.py 2      # writes wolfram/source/data_part2.wl
     python3 wolfram/tools/make_data_cells.py 3      # writes wolfram/source/data_part3.wl
+    python3 wolfram/tools/make_data_cells.py 3T     # writes wolfram/source/data_part3_thermal.wl (Section III.T)
     python3 wolfram/tools/make_data_cells.py 4      # writes wolfram/source/data_part4.wl
 """
 import csv
@@ -67,16 +68,27 @@ def main():
         for tag in ("HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"):
             pieces.append(table_list("part3_effpot_%s.csv" % tag, "rustEffPot[\"%s\"]" % tag,
                                      ["applied_field", "Phi3", "V", "Dirac_mass"], {"applied_field", "Phi3", "V", "Dirac_mass"}))
+    elif part == "3T":
+        # the free energy at finite temperature: the table of the order parameter, the residuals of the Landau forms and
+        # the free-energy curves of the five methods
+        cols = ["method", "tau", "T", "Phi0", "Dirac_mass", "gap", "Dirac_mass_normal", "radius", "Phi0_over_radius", "F_min",
+                "S_minus_S_normal", "gap_equation_residual", "a_Taylor", "b_Taylor", "Phi0_Landau", "iterations"]
+        pieces.append(table_list("part3_thermal.csv", "rustThermal", cols, set(cols[1:])))
+        cols = ["method", "tau", "res_Landau_over_depth", "res_quartic_over_depth"]
+        pieces.append(table_list("part3_thermal_landau.csv", "rustThermalLandau", cols, set(cols[1:])))
+        cols = ["method", "tau", "applied_field", "Phi", "F"]
+        pieces.append(table_list("part3_thermal_curves.csv", "rustThermalCurves", cols, set(cols[1:])))
     elif part == "4":
         pieces.append(values_assoc("part4_values.csv", "rustPart4"))
     else:
-        sys.exit("usage: make_data_cells.py 2|3|4")
-    head = ["(* The values of the Rust programs that Part %s of the notebook uses or compares with its own results, written by" % part,
+        sys.exit("usage: make_data_cells.py 2|3|3T|4")
+    where = "Section III.T of Part III" if part == "3T" else "Part %s" % part
+    head = ["(* The values of the Rust programs that %s of the notebook uses or compares with its own results, written by" % where,
             "   wolfram/tools/make_data_cells.py from the data files of the folder data/ (do not edit):"]
     for path, _ in pieces:
         head.append("     %s   SHA-256 %s" % (os.path.relpath(path, ROOT), sha(path)))
     head.append("*)")
-    out = os.path.join(ROOT, "wolfram", "source", "data_part%s.wl" % part)
+    out = os.path.join(ROOT, "wolfram", "source", "data_part3_thermal.wl" if part == "3T" else "data_part%s.wl" % part)
     with open(out, "w", encoding="utf-8") as f:
         f.write("\n".join(head) + "\n" + "\n".join(code for _, code in pieces) + "\n")
     print("wrote %s" % os.path.relpath(out, ROOT))

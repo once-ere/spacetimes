@@ -3,22 +3,22 @@
 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 <!-- END nb_version -->
 <!-- BEGIN nb_seconds -->
-249
+175
 <!-- END nb_seconds -->
 <!-- BEGIN nb_counts -->
-33 input cells, 33 of them evaluated; 9 output cells; 76 printed lines
+44 input cells, 44 of them evaluated; 13 output cells; 105 printed lines
 <!-- END nb_counts -->
 <!-- BEGIN nb_messages -->
 0
 <!-- END nb_messages -->
 <!-- BEGIN nb_ntests -->
-65
+91
 <!-- END nb_ntests -->
 <!-- BEGIN nb_npass -->
-65
+91
 <!-- END nb_npass -->
 <!-- BEGIN nb_verdict -->
-ALL PASS (65 of 65), 0 messages
+ALL PASS (91 of 91), 0 messages
 <!-- END nb_verdict -->
 <!-- BEGIN nb_table_checks -->
 | check | result | deviation in the notebook | tolerance | Rust: check, deviation | Python: check, deviation | statement |
@@ -88,4 +88,30 @@ ALL PASS (65 of 65), 0 messages
 | WP3-8 | PASS | $1.554\times10^{-15}$ | $1.000\times10^{-13}$ | P3-8 (PASS), $2.442\times10^{-15}$ | YP3-8 (PASS), $1.332\times10^{-15}$ | the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1\_2 and P = Phi\_a (K\^3)\^dag has the eigenvalues -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (20 random q, M, Phi\_a) |
 | WP3-10 HS_1_1 | PASS | $2.646\times10^{-7}$ | $1.000\times10^{-6}$ | P3-10 HS_1_1 (PASS), $8.786\times10^{-9}$ | YP3-10 HS_1_1 (PASS), $3.072\times10^{-11}$ | HS (1, 1): the coefficient of Phi\^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a\^Tay = -0.00616243 (relative) |
 | WP3-10 CJT | PASS | $2.377\times10^{-8}$ | $1.000\times10^{-6}$ | P3-10 CJT (PASS), $7.425\times10^{-8}$ | YP3-10 CJT (PASS), $2.872\times10^{-12}$ | CJT: the coefficient of Phi\^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a\^Tay = -0.00429666 (relative) |
+| WP3-T1 HS_1_1 | PASS | $7.903\times10^{-14}$ | $1.000\times10^{-11}$ | P3-T1 HS_1_1 (PASS), $2.357\times10^{-14}$ | YP3-T1 HS_1_1 (PASS), $6.164\times10^{-14}$ | HS (1, 1): the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| WP3-T1 CJT | PASS | $9.391\times10^{-14}$ | $1.000\times10^{-11}$ | P3-T1 CJT (PASS), $8.078\times10^{-14}$ | YP3-T1 CJT (PASS), $1.046\times10^{-13}$ | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| WP3-T3 HS_1_1 | PASS | $7.291\times10^{-14}$ | $1.000\times10^{-10}$ | P3-T3 HS_1_1 (PASS), $4.408\times10^{-14}$ | YP3-T3 HS_1_1 (PASS), $6.756\times10^{-14}$; YP3-T9 HS_1_1 (PASS), $2.420\times10^{-14}$ | HS (1, 1): the critical temperature T\_c = 0.2604672394 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.183842814 = Rust; the Dirac mass of the normal state of the thermal engine at T\_c = 0.2066851932 = the scalar self-consistency |
+| WP3-T3 HS_0_1 | PASS | $4.653\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 HS_0_1 (PASS), $4.028\times10^{-13}$ | YP3-T9 HS_0_1 (PASS), $3.464\times10^{-14}$ | HS (0, 1): the critical temperature T\_c = 0.2404654563 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.150958292 = Rust |
+| WP3-T3 HS_0_0 | PASS | $2.056\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 HS_0_0 (PASS), $1.976\times10^{-13}$ | YP3-T9 HS_0_0 (PASS), $1.688\times10^{-14}$ | HS (0, 0): the critical temperature T\_c = 0.2137990984 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.11337598 = Rust |
+| WP3-T3 KS | PASS | $3.755\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 KS (PASS), $1.987\times10^{-13}$ | YP3-T9 KS (PASS), $5.906\times10^{-14}$ | KS: the critical temperature T\_c = 0.2221187371 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.11337598 = Rust; the Dirac mass of the normal state of the thermal engine at T\_c = 0.1622929325 = the scalar self-consistency |
+| WP3-T3 CJT | PASS | $3.755\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 CJT (PASS), $1.978\times10^{-13}$ | YP3-T3 CJT (PASS), $2.138\times10^{-13}$; YP3-T9 CJT (PASS), $5.906\times10^{-14}$ | CJT: the critical temperature T\_c = 0.2221187371 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.11337598 = Rust; the Dirac mass of the normal state of the thermal engine at T\_c = 0.1622929325 = the scalar self-consistency |
+| WP3-T9 HS_1_1 | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 HS_1_1 (PASS), $0$ | YP3-T9 HS_1_1 (PASS), $2.420\times10^{-14}$ | HS (1, 1): lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.18384 to 0.620857; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 HS_0_1 | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 HS_0_1 (PASS), $0$ | YP3-T9 HS_0_1 (PASS), $3.464\times10^{-14}$ | HS (0, 1): lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.15096 to 0.60469; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 HS_0_0 | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 HS_0_0 (PASS), $0$ | YP3-T9 HS_0_0 (PASS), $1.688\times10^{-14}$ | HS (0, 0): lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.584946; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 KS | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 KS (PASS), $0$ | YP3-T9 KS (PASS), $5.906\times10^{-14}$ | KS: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.588434; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 CJT | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 CJT (PASS), $0$ | YP3-T9 CJT (PASS), $5.906\times10^{-14}$ | CJT: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.588434; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T2 CJT | PASS | $1.589\times10^{-12}$ | $1.000\times10^{-8}$ | P3-T2 CJT (PASS), $1.142\times10^{-12}$ | YP3-T2 CJT (PASS), $6.209\times10^{-13}$ | CJT: the superfluid at 0.5 T\_c and 0.9 T\_c (thermal engine): the order parameter and the free energy = Rust (largest difference; the free energy relative), and the gap equation holds (largest /g\^P I1/pi\^2 - 1/; the sum of both) |
+| WP3-T8 CJT | PASS | $2.765\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T8 CJT (PASS), $3.271\times10^{-13}$ | YP3-T8 CJT (PASS), $1.717\times10^{-13}$ | CJT: the Dirac mass of the superfluid at 0.5 T\_c and 0.9 T\_c equals that at T = 0, 0.1622929325, and the Rust value (largest difference) |
+| WP3-T2 HS_0_0 | PASS | $9.924\times10^{-12}$ | $1.000\times10^{-9}$ | P3-T2 HS_0_0 (PASS), $1.214\times10^{-12}$ | YP3-T4 (PASS), $9.807\times10^{-12}$ | HS (0, 0): the order parameter of every temperature of the table from the gap equation alone (with the Dirac mass m\_LL, without the self-consistent engine) = Rust (largest difference) |
+| WP3-T5 CJT | PASS | $1.431\times10^{-7}$ | $1.000\times10^{-5}$ | P3-T5 CJT (PASS), $2.348\times10^{-1}$ | YP3-T5 CJT (PASS), $3.080\times10^{-7}$ | CJT at 0.9 T\_c: the Taylor coefficients a = -0.0010510272, b = 0.014755098 of the free energy at the origin and the error 2.277e-2 of the order parameter (-a/2b)\^(1/2) of Landau's theory (0.228 times 1 - T/T\_c) = Rust (largest relative difference of a and b, difference of the error) |
+| WP3-T6 HS_1_1 | PASS | $5.525\times10^{-11}$ | $1.000\times10^{-7}$ | P3-T6 HS_1_1 (PASS), $0$ | YP3-T6 HS_1_1 (PASS), $7.060\times10^{-11}$ | HS (1, 1): the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.828e-2, 8.811e-3, 3.734e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 1.668e-5 at 0.98 T\_c: yes |
+| WP3-T7 HS_1_1 | PASS | $5.804\times10^{-12}$ | $1.000\times10^{-8}$ | P3-T7 HS_1_1 (PASS), $5.579\times10^{-12}$ | YP3-T7 HS_1_1 (PASS), $5.638\times10^{-12}$ | HS (1, 1): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 HS_0_1 | PASS | $2.410\times10^{-11}$ | $1.000\times10^{-7}$ | P3-T6 HS_0_1 (PASS), $0$ | YP3-T6 HS_0_1 (PASS), $9.270\times10^{-12}$ | HS (0, 1): the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.597e-2, 7.668e-3, 3.244e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 1.252e-5 at 0.98 T\_c: yes |
+| WP3-T7 HS_0_1 | PASS | $2.383\times10^{-12}$ | $1.000\times10^{-8}$ | P3-T7 HS_0_1 (PASS), $5.897\times10^{-13}$ | YP3-T7 HS_0_1 (PASS), $1.304\times10^{-12}$ | HS (0, 1): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 HS_0_0 | PASS | $1.579\times10^{-10}$ | $1.000\times10^{-7}$ | P3-T6 HS_0_0 (PASS), $0$ | YP3-T6 HS_0_0 (PASS), $4.884\times10^{-10}$ | HS (0, 0): the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.267e-2, 6.063e-3, 2.562e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 7.750e-6 at 0.98 T\_c: yes |
+| WP3-T7 HS_0_0 | PASS | $2.475\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 HS_0_0 (PASS), $1.841\times10^{-11}$ | YP3-T7 HS_0_0 (PASS), $1.891\times10^{-11}$ | HS (0, 0): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 KS | PASS | $5.965\times10^{-11}$ | $1.000\times10^{-7}$ | P3-T6 KS (PASS), $0$ | YP3-T6 KS (PASS), $1.306\times10^{-10}$ | KS: the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 9.969e-6 at 0.98 T\_c: yes |
+| WP3-T7 KS | PASS | $4.070\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 KS (PASS), $3.458\times10^{-11}$ | YP3-T7 KS (PASS), $3.539\times10^{-11}$ | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 CJT | PASS | $8.948\times10^{-12}$ | $1.000\times10^{-7}$ | P3-T6 CJT (PASS), $0$ | YP3-T6 CJT (PASS), $5.804\times10^{-11}$ | CJT: the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 9.969e-6 at 0.98 T\_c: yes |
+| WP3-T7 CJT | PASS | $4.876\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 CJT (PASS), $4.596\times10^{-11}$ | YP3-T7 CJT (PASS), $4.636\times10^{-11}$ | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
 <!-- END nb_table_checks -->

@@ -391,9 +391,10 @@ Table A1); the thermal factor $\tanh(E/2T)<1$ lowers it at higher temperatures. 
 $T^{X,{\rm c}}_{\rm SF}$ solves $\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$. *Check P3-T3:* the
 program finds it by bisection, with the normal state computed at every step, to $10^{-12}$, and at $T=0$ (A1.4) gives
 the eigenvalue of the full static response of the normal vacuum (row 3 of Table A1); *check YP3-T3:* the Python program
-finds the same $T^{X,{\rm c}}_{\rm SF}$ to $10^{-10}$; *check YP3-T5:* in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase
-from $T=0.001$ to $T=0.6$ (600 temperatures; the normal state from its scalar self-consistency), so $T^{X,{\rm c}}_{\rm SF}$ is
-the only solution there; *check P3-T4:* below $T^{X,{\rm c}}_{\rm SF}$ (at $0.99\,T^{X,{\rm c}}_{\rm SF}$) a polar start
+finds the same $T^{X,{\rm c}}_{\rm SF}$ to $10^{-10}$; *checks P3-T9 and YP3-T9:* in every method $\lambda^{\rm P}_{\rm SF}(T)$ does
+not increase from $T=0.01$ to $T=0.6$ (60 temperatures with the normal state of the thermal engine; in Python 600
+temperatures from $T=0.001$, with the normal state from its scalar self-consistency), so $T^{X,{\rm c}}_{\rm SF}$ is the
+only solution there; *check P3-T4:* below $T^{X,{\rm c}}_{\rm SF}$ (at $0.99\,T^{X,{\rm c}}_{\rm SF}$) a polar start
 ends in a superfluid, above it (at $1.01\,T^{X,{\rm c}}_{\rm SF}$) in the normal state. The critical temperatures are
 {{GEN:p4_tc}} (row 4); KS and CJT coincide at every temperature, as they do at $T=0$.
 
@@ -532,11 +533,15 @@ that implies near $T^{X,{\rm c}}_{\rm SF}$ is remark R2 (Section 4).
 **Programs.** The Rust program `sf_part3` (crate `rust/sfpart3`, module `thermal`) computes the thermal states, the
 normal states, the critical temperatures by bisection of (A1.4), the order parameter at the 13 temperatures, the
 free-energy curves (A1.2) at six temperatures, the Taylor coefficients, the least-squares fits of the Landau form, and
-the checks P3-T1 to P3-T8; the thermal states are functions of the library `sfcore` (module `uniform`: `fermi`,
+the checks P3-T1 to P3-T9; the thermal states are functions of the library `sfcore` (module `uniform`: `fermi`,
 `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). The Python program `python/sf_part3.py` computes the thermal
 states of HS $(1,1)$ and CJT with its own engine (the limit $T\to0$, the critical temperatures, the order parameter and the
-free energy at $0.5$ and $0.9\,T^{X,{\rm c}}_{\rm SF}$) solves the gap equation (A1.5) of HS $(0,0)$ alone, and shows for the five methods that $\lambda^{\rm P}_{\rm SF}(T)$ does not
-increase with the temperature (checks YP3-T1 to YP3-T5). `python/sf_part3_figures.py` draws Figure A1, and `code/scripts/write_part3_fragments.py` writes Table A1, the
+free energy and the Dirac mass at $0.5$ and $0.9\,T^{X,{\rm c}}_{\rm SF}$), solves the gap equation (A1.5) of HS $(0,0)$ alone,
+computes the Taylor coefficients of the free energy of CJT at $0.9\,T^{\rm CJT,c}_{\rm SF}$ and the order parameter of
+Landau's theory, recomputes from the data file of the free-energy curves the residuals of their Landau forms, and shows
+for the five methods that $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (checks YP3-T1 to YP3-T9;
+each has the identifier of the Rust check of the same statement with the prefix Y). The notebook `superfluid.nb`
+repeats the computation in its Section III.T with the engine of its Part II (the checks WP3-T1 to WP3-T9). `python/sf_part3_figures.py` draws Figure A1, and `code/scripts/write_part3_fragments.py` writes Table A1, the
 table of the checks below and every number of Section 3 from the data files.
 
 **Commands** (from the folder `Revision_HS_CJT_and_Kohn-Sham`; the Rust program takes about fifteen minutes, the Python

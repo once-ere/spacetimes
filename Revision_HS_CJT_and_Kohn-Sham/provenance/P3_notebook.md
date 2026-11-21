@@ -33,25 +33,31 @@ group GEE and its covariant derivatives, the Lagrangian and the field equations,
 Part II (item 6 of the problem: the pair channels and the gauge bosons that mediate the pairing, the three methods and
 their numerical engine, the recursion of the potential to $V^{(2)}_{\rm SF}$, the ground states and their gaps, the
 Goldstone and the collective modes, the susceptibilities and the masses of the gauge bosons, the exchange of the gauge
-bosons), and the first section of Part III (the Landau form of the effective potentials: its definition with
+bosons), the first section of Part III (the Landau form of the effective potentials: its definition with
 examples, its accuracy, the cause of its error and why the error matters; the answer to the author's questions of 21
-November 2026, which he asked to be kept in the notebook), with 65 checks. The rest of Part III and
-Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons in every vacuum, the surviving
-symmetry and the dynamics with IDA) follow in the next versions. The section of Part III takes the five computed polar
-curves of the effective potential from the Rust program `sf_part3` (a closed cell of data with the SHA-256 checksums of
-its files) and recomputes every number from them; Part II computes all its states itself and compares them with the
-values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time integration.
+November 2026, which he asked to be kept in the notebook), and the second section of Part III (Section III.T: the free
+energy of the five methods at finite temperature, the critical temperatures, the gap equation, the size of the order
+parameter against the radius of convergence, and the remark that the free energies of the methods are mean-field free
+energies, with its importance; the addendum asked for by the author on 21 November 2026), with 91
+checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
+Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
+cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
+thermal states, the critical temperatures and the Taylor coefficients itself with the engine of Part II, and takes the
+free-energy curves of the Rust program from a third closed cell; Part II computes all its states itself and compares
+them with the values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time
+integration.
 
 # 3. The files
 
 The files of the notebook, each with its SHA-256 checksum:
 
 * `superfluid.nb`: the notebook, evaluated in the front end of Wolfram (inputs, printed checks, the table of all checks);\
-  `5e864ac9df94ba9aa0d36110fdfbe2235787c5ef10574d116c0a0996a85a9e0a`
+  `3a44be8fb51e22f47b1abc96d14ce01a670e2e9bdcfb6f9d8c5b72e2e1f3454b`
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
-  `67058a2b1cf3fc0ec9a3b441270816dd8bb5c5486e1ba454daf2304f2278ffb8`
+  `3b1fff66393e798d2885d4dcdee306a000707262e569cade31ef8495f0ec97fd`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
-  `b6d3cc15f9dacb898d9eeb65762e015cc18e270b08e94207a7ef90813ab1d964`
+  `8dcba4ac0bbaf8e7fb09afbcdc1429b29a0ab7a2ec553cc9484c5530f8062bd1`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
   `10bea1f4d47c952b00cf50af5183f2f3da3ee8af325ec485191108aaa789beb1`
 * `wolfram/source/part2.source.wl`: the source of Part II;\
@@ -61,13 +67,21 @@ The files of the notebook, each with its SHA-256 checksum:
   data files and their SHA-256 checksums);\
   `5d4643454332a18a6a102f513e16961fe8118d95433757f477a9248e622da57c`
 * `wolfram/source/part3_landau.source.wl`: the source of the first section of Part III (the Landau form);\
-  `2fbe3ad5f084d3b4e038074f473f70bf5f3df715f2cadf9e48f930891a77d01e`
+  `9cc6176d7163c81c26b7d67057df2e055ad6448aa31781174610e8ddd63d2c9d`
 * `wolfram/source/data_part3.wl`: the values of Part III of the Rust program and its five polar curves, included in a
   closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the data files and
   their SHA-256 checksums);\
-  `44deff1c0624be586db8a6899cf94e951150d20de5f3714a280ccf4f90d964e0`
+  `e01ee767695f6e62dcd007ba37eb29d49ffc1e33860f244e5b355d2af74cf696`
+* `wolfram/source/part3_thermal.source.wl`: the source of the second section of Part III (Section III.T, the free energy
+  at finite temperature);\
+  `f4cc0886e28a7fe6971e0795be5f5af23f8ac6d75355150a9aebd8208df834c8`
+* `wolfram/source/data_part3_thermal.wl`: the thermal results of the Rust program (the table of the order parameter, the
+  residuals of the Landau forms and the free-energy curves of the five methods), included in a closed cell of the
+  notebook (written by `wolfram/tools/make_data_cells.py 3T`; its first lines name the data files and their SHA-256
+  checksums);\
+  `5f3fe6ec541cd7e8a13c08517a63ba8b10deff9a5b37eded75aec6bbef2ebfac`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
-  `b1b63f10f2d8a206ac051e6b342c2c155ba8e1f55d589279945ab08515f477a6`
+  `5f4f2f3723c3afde1ff45be7fe10ce27276497b479dad78fe6494ead0b8244b3`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
   `dd5e855c6fddcb0a00a6f3e2adecb5ced86c4cf52a8a48d4671eaa23fc63e1b0`
 * `wolfram/tools/sf_formula.wl`: the reader of formulas: turns the TeX of the formulas of the texts into two-dimensional boxes;\
@@ -83,9 +97,9 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/tools/make_dryrun.py`: writes the code of all input cells into one file for a test run by `wolframscript` without the front end;\
   `f3ac70882c2c356d331bc5808683b7b56e535e9694ee39868c2b7cf3c2357f2f`
 * `data/hck_notebook_log.txt`: the log of the evaluation: the version of Wolfram, the counts of the cells, every message and printed line, one line per check;\
-  `bb4c35cc5bd5f6fcead38a07bd5f12bfd409bb2bb37932cbf19f39a2865d513f`
+  `c405ca7a1f9695c69a6df5c5172927190142a5168f850c05ba4bc975dd550b68`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
-  `8ad3c7b9c62a4019826b09b79b180475a7c81fef4c0d48ff12777201be8ec7be`
+  `a1827360f356a09fdb4c6e6cc182a08448fd81d48dada7d6945d60d37557fa23`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
   `964aba7450188e949483630e9d5471630ab11e09933d770831dcc45fab0e262c`
 
@@ -106,13 +120,14 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
     wolframscript -file wolfram/tools/build_notebook.wls wolfram/source/superfluid.source.wl in/superfluid.nb \
         wolfram/tools/sf_formula.wl
 
-The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)` and
-`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` of the main source by the cells of these parts, a line such as
+The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)`,
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` and `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` of the main source
+by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 151 cells (two of them closed cells of data), 517 formulas in the
-texts, 0 warnings.
+reader cannot read as a warning. This version: 200 cells (three of them closed cells of data), 695 formulas in the
+texts, 0 warnings (the builder's own count, printed when it ran).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
 the menu command Evaluate Notebook, but in a fresh kernel named `SFNBRun`, in three calls (each returns at once):
@@ -132,20 +147,21 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (138 seconds, of which Part II takes about two minutes); the only difference from the notebook is that it prints the computing time after every
-check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (162 seconds in this version, of which Part II takes about two minutes and Section III.T about half a
+minute); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 249 seconds; 33 input cells, 33 of them evaluated; 9 output cells; 76 printed lines; **0 messages** (no error and no
-warning of the Wolfram language); verdict: **ALL PASS (65 of 65), 0 messages**.
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 175 seconds; 44 input cells, 44 of them evaluated; 13 output cells; 105 printed lines; **0 messages** (no error and no
+warning of the Wolfram language); verdict: **ALL PASS (91 of 91), 0 messages**.
 
 # 6. The checks and their counterparts
 
 Every check of the notebook carries the identifier of the same check in the Rust program with the prefix W, and names
 its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
-`sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III) and in the Python program
+`sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III, whose module `thermal` makes the checks
+P3-T1 to P3-T9 of Section III.T) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
 steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
@@ -218,6 +234,32 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WP3-8 | PASS | $1.554\times10^{-15}$ | $1.000\times10^{-13}$ | P3-8 (PASS), $2.442\times10^{-15}$ | YP3-8 (PASS), $1.332\times10^{-15}$ | the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1\_2 and P = Phi\_a (K\^3)\^dag has the eigenvalues -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (20 random q, M, Phi\_a) |
 | WP3-10 HS_1_1 | PASS | $2.646\times10^{-7}$ | $1.000\times10^{-6}$ | P3-10 HS_1_1 (PASS), $8.786\times10^{-9}$ | YP3-10 HS_1_1 (PASS), $3.072\times10^{-11}$ | HS (1, 1): the coefficient of Phi\^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a\^Tay = -0.00616243 (relative) |
 | WP3-10 CJT | PASS | $2.377\times10^{-8}$ | $1.000\times10^{-6}$ | P3-10 CJT (PASS), $7.425\times10^{-8}$ | YP3-10 CJT (PASS), $2.872\times10^{-12}$ | CJT: the coefficient of Phi\^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a\^Tay = -0.00429666 (relative) |
+| WP3-T1 HS_1_1 | PASS | $7.903\times10^{-14}$ | $1.000\times10^{-11}$ | P3-T1 HS_1_1 (PASS), $2.357\times10^{-14}$ | YP3-T1 HS_1_1 (PASS), $6.164\times10^{-14}$ | HS (1, 1): the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| WP3-T1 CJT | PASS | $9.391\times10^{-14}$ | $1.000\times10^{-11}$ | P3-T1 CJT (PASS), $8.078\times10^{-14}$ | YP3-T1 CJT (PASS), $1.046\times10^{-13}$ | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
+| WP3-T3 HS_1_1 | PASS | $7.291\times10^{-14}$ | $1.000\times10^{-10}$ | P3-T3 HS_1_1 (PASS), $4.408\times10^{-14}$ | YP3-T3 HS_1_1 (PASS), $6.756\times10^{-14}$; YP3-T9 HS_1_1 (PASS), $2.420\times10^{-14}$ | HS (1, 1): the critical temperature T\_c = 0.2604672394 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.183842814 = Rust; the Dirac mass of the normal state of the thermal engine at T\_c = 0.2066851932 = the scalar self-consistency |
+| WP3-T3 HS_0_1 | PASS | $4.653\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 HS_0_1 (PASS), $4.028\times10^{-13}$ | YP3-T9 HS_0_1 (PASS), $3.464\times10^{-14}$ | HS (0, 1): the critical temperature T\_c = 0.2404654563 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.150958292 = Rust |
+| WP3-T3 HS_0_0 | PASS | $2.056\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 HS_0_0 (PASS), $1.976\times10^{-13}$ | YP3-T9 HS_0_0 (PASS), $1.688\times10^{-14}$ | HS (0, 0): the critical temperature T\_c = 0.2137990984 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.11337598 = Rust |
+| WP3-T3 KS | PASS | $3.755\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 KS (PASS), $1.987\times10^{-13}$ | YP3-T9 KS (PASS), $5.906\times10^{-14}$ | KS: the critical temperature T\_c = 0.2221187371 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.11337598 = Rust; the Dirac mass of the normal state of the thermal engine at T\_c = 0.1622929325 = the scalar self-consistency |
+| WP3-T3 CJT | PASS | $3.755\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T3 CJT (PASS), $1.978\times10^{-13}$ | YP3-T3 CJT (PASS), $2.138\times10^{-13}$; YP3-T9 CJT (PASS), $5.906\times10^{-14}$ | CJT: the critical temperature T\_c = 0.2221187371 (bisection of lambda\^P(T) = 1) = Rust (relative), and lambda\^P(0) = 1.11337598 = Rust; the Dirac mass of the normal state of the thermal engine at T\_c = 0.1622929325 = the scalar self-consistency |
+| WP3-T9 HS_1_1 | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 HS_1_1 (PASS), $0$ | YP3-T9 HS_1_1 (PASS), $2.420\times10^{-14}$ | HS (1, 1): lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.18384 to 0.620857; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 HS_0_1 | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 HS_0_1 (PASS), $0$ | YP3-T9 HS_0_1 (PASS), $3.464\times10^{-14}$ | HS (0, 1): lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.15096 to 0.60469; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 HS_0_0 | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 HS_0_0 (PASS), $0$ | YP3-T9 HS_0_0 (PASS), $1.688\times10^{-14}$ | HS (0, 0): lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.584946; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 KS | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 KS (PASS), $0$ | YP3-T9 KS (PASS), $5.906\times10^{-14}$ | KS: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.588434; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T9 CJT | PASS | $0$ | $1.000\times10^{-12}$ | P3-T9 CJT (PASS), $0$ | YP3-T9 CJT (PASS), $5.906\times10^{-14}$ | CJT: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.588434; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
+| WP3-T2 CJT | PASS | $1.589\times10^{-12}$ | $1.000\times10^{-8}$ | P3-T2 CJT (PASS), $1.142\times10^{-12}$ | YP3-T2 CJT (PASS), $6.209\times10^{-13}$ | CJT: the superfluid at 0.5 T\_c and 0.9 T\_c (thermal engine): the order parameter and the free energy = Rust (largest difference; the free energy relative), and the gap equation holds (largest /g\^P I1/pi\^2 - 1/; the sum of both) |
+| WP3-T8 CJT | PASS | $2.765\times10^{-13}$ | $1.000\times10^{-10}$ | P3-T8 CJT (PASS), $3.271\times10^{-13}$ | YP3-T8 CJT (PASS), $1.717\times10^{-13}$ | CJT: the Dirac mass of the superfluid at 0.5 T\_c and 0.9 T\_c equals that at T = 0, 0.1622929325, and the Rust value (largest difference) |
+| WP3-T2 HS_0_0 | PASS | $9.924\times10^{-12}$ | $1.000\times10^{-9}$ | P3-T2 HS_0_0 (PASS), $1.214\times10^{-12}$ | YP3-T4 (PASS), $9.807\times10^{-12}$ | HS (0, 0): the order parameter of every temperature of the table from the gap equation alone (with the Dirac mass m\_LL, without the self-consistent engine) = Rust (largest difference) |
+| WP3-T5 CJT | PASS | $1.431\times10^{-7}$ | $1.000\times10^{-5}$ | P3-T5 CJT (PASS), $2.348\times10^{-1}$ | YP3-T5 CJT (PASS), $3.080\times10^{-7}$ | CJT at 0.9 T\_c: the Taylor coefficients a = -0.0010510272, b = 0.014755098 of the free energy at the origin and the error 2.277e-2 of the order parameter (-a/2b)\^(1/2) of Landau's theory (0.228 times 1 - T/T\_c) = Rust (largest relative difference of a and b, difference of the error) |
+| WP3-T6 HS_1_1 | PASS | $5.525\times10^{-11}$ | $1.000\times10^{-7}$ | P3-T6 HS_1_1 (PASS), $0$ | YP3-T6 HS_1_1 (PASS), $7.060\times10^{-11}$ | HS (1, 1): the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.828e-2, 8.811e-3, 3.734e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 1.668e-5 at 0.98 T\_c: yes |
+| WP3-T7 HS_1_1 | PASS | $5.804\times10^{-12}$ | $1.000\times10^{-8}$ | P3-T7 HS_1_1 (PASS), $5.579\times10^{-12}$ | YP3-T7 HS_1_1 (PASS), $5.638\times10^{-12}$ | HS (1, 1): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 HS_0_1 | PASS | $2.410\times10^{-11}$ | $1.000\times10^{-7}$ | P3-T6 HS_0_1 (PASS), $0$ | YP3-T6 HS_0_1 (PASS), $9.270\times10^{-12}$ | HS (0, 1): the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.597e-2, 7.668e-3, 3.244e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 1.252e-5 at 0.98 T\_c: yes |
+| WP3-T7 HS_0_1 | PASS | $2.383\times10^{-12}$ | $1.000\times10^{-8}$ | P3-T7 HS_0_1 (PASS), $5.897\times10^{-13}$ | YP3-T7 HS_0_1 (PASS), $1.304\times10^{-12}$ | HS (0, 1): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 HS_0_0 | PASS | $1.579\times10^{-10}$ | $1.000\times10^{-7}$ | P3-T6 HS_0_0 (PASS), $0$ | YP3-T6 HS_0_0 (PASS), $4.884\times10^{-10}$ | HS (0, 0): the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.267e-2, 6.063e-3, 2.562e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 7.750e-6 at 0.98 T\_c: yes |
+| WP3-T7 HS_0_0 | PASS | $2.475\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 HS_0_0 (PASS), $1.841\times10^{-11}$ | YP3-T7 HS_0_0 (PASS), $1.891\times10^{-11}$ | HS (0, 0): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 KS | PASS | $5.965\times10^{-11}$ | $1.000\times10^{-7}$ | P3-T6 KS (PASS), $0$ | YP3-T6 KS (PASS), $1.306\times10^{-10}$ | KS: the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 9.969e-6 at 0.98 T\_c: yes |
+| WP3-T7 KS | PASS | $4.070\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 KS (PASS), $3.458\times10^{-11}$ | YP3-T7 KS (PASS), $3.539\times10^{-11}$ | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-T6 CJT | PASS | $8.948\times10^{-12}$ | $1.000\times10^{-7}$ | P3-T6 CJT (PASS), $0$ | YP3-T6 CJT (PASS), $5.804\times10^{-11}$ | CJT: the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 9.969e-6 at 0.98 T\_c: yes |
+| WP3-T7 CJT | PASS | $4.876\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 CJT (PASS), $4.596\times10^{-11}$ | YP3-T7 CJT (PASS), $4.636\times10^{-11}$ | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
 `data/hck_part1_checks_python.txt`, `data/hck_part2_checks.txt`, `data/hck_part2_checks_python.txt`,
@@ -267,7 +309,16 @@ repeat itself in the others:
   eigensolver, LAPACK in Python); the Taylor coefficient at the origin from the first six points of the computed curve
   in the notebook, and from three states with small applied fields and the Richardson extrapolation in the two
   programs; the integral with the term $\tfrac1{16}s^2\ln s$ exactly, by `Integrate`, `FullSimplify` and `Series`, in
-  the notebook alone (it is shown, not checked).
+  the notebook alone (it is shown, not checked);
+* **the free energy at finite temperature** (WP3-T1 to WP3-T9): the thermal states $f(\mathsf H_{\rm SF})$ by `Eigensystem` of
+  the symmetrized $16\times16$ matrices on the grid of Part II in the notebook, by the Rust program's own eigensolver and
+  by LAPACK in Python; the critical temperatures by bisection, in the notebook with the Dirac mass of the normal state
+  from its scalar self-consistency alone (and, for the three methods with a scalar coupling, compared with the normal
+  state of the thermal engine), in Rust and Python with the normal state of the engine (and, in Python's YP3-T9, also
+  from the scalar self-consistency); the Taylor coefficients by `LinearSolve` of the cubic interpolation in the scaled
+  variable $\Phi^2/\Phi^2_{\max}$ (Gaussian elimination in Rust, `numpy.linalg.solve` in Python); the residuals of the
+  Landau forms of the Rust free-energy curves by `LeastSquares` (Householder reflections in Rust, the singular-value
+  decomposition in Python).
 
 # 8. The symbols of the code of Part I
 
@@ -318,6 +369,13 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 | `lfBdG`, `lfQpDev` | $\mathsf H_{\rm SF}(\vec q_{\rm LL})$ | Part III: the matrix of Bogoliubov and de Gennes with a Dirac mass and an applied pair field, and the deviation of its eigenvalues from $\pm E$ |
 | `lfq`, `lfs`, `lfLam`, `lfInt`, `lfClosed`, `lfSeries` | $q$, $s$, $\Lambda_{\rm LL}$ | Part III: the variables of the integral $\int_0^{\Lambda}q^2(q^2+s)^{1/2}dq$, its value, its closed form and its expansion about $s=0$ |
 | `lfTaylor` | $a^{X,{\rm Tay}}_{\rm SF}$ | Part III: the Taylor coefficient of $\lvert\vec\Phi\rvert^2$ at the origin, estimated from the first six points of the curve |
+| `fermiSF`, `binEntropy`, `thermalNode`, `solveSFT`, `fixedPairT`, `phiOf` | $f(\varepsilon)$, $\mathcal S_{\rm SF}$, $\Phi^X_{0,{\rm SF}}(T)$ | Section III.T: the Fermi function at the temperature $T$, the entropy of one mode, the thermal state $f(\mathsf H_{\rm SF})$ of one node with the entropy of its 16 modes, the self-consistent thermal state, the thermal state of an applied pair field, and the order parameter of a state |
+| `rustThermal`, `rustThermalLandau`, `rustThermalCurves`, `thCol`, `thRow`, `thGet`, `thTaus` | -- | Section III.T: the thermal results of the Rust program (the table of the order parameter, the residuals of the Landau forms, the free-energy curves), the names of the columns of the table, one row and one entry, and the reduced temperatures of the table |
+| `thTags`, `thName`, `thModel`, `thGround` | $X$ | Section III.T: the five methods and their names, the model of $V^{(2)}_{\rm SF}$ of a method, and its ground state at $T=0$ iterated to $10^{-13}$ |
+| `i1Grid`, `thCoup`, `thMassN`, `thLam`, `thTc` | $I^{(1)}_{\rm SF}(M,T)$, $g^{X,{\rm S}}_{\rm SF}$, $g^{X,{\rm P}}_{\rm SF}$, $M^{X,{\rm n}}_{\rm SF}(T)$, $\lambda^{\rm P}_{\rm SF}(T)$, $T^{X,{\rm c}}_{\rm SF}$ | Section III.T: the integral of the pair response on the radial nodes, the effective couplings, the Dirac mass of the normal state from its scalar self-consistency, the eigenvalue of the pair response of the normal state, and the critical temperature |
+| `thSF`, `thGapPhi`, `thPhiGap00` | $\Phi^X_{0,{\rm SF}}(T)$ | Section III.T: the superfluid and the normal state of CJT at $0.5$ and $0.9\,T^{\rm CJT,c}_{\rm SF}$, the order parameter from the gap equation alone, and its values for HS $(0,0)$ |
+| `thCurveTaus`, `thRes`, `thRustRes` | -- | Section III.T: the reduced temperatures of the free-energy curves, and the residuals of the Landau form and of the quartic form recomputed by the notebook and of the Rust program |
+| `thRadius`, `thCross`, `thShown`, `thLegend`, `thColors` | $r^X_{\rm SF}(T)$ | Section III.T: the radius of convergence with the Dirac mass of the normal state computed by the notebook, the reduced temperature above which the order parameter lies inside it, and the curves, the legend and the colors of the figure |
 
 # 9. Errors and corrections found while this version was written
 
@@ -349,6 +407,23 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 8. *A warning of the numerical integration (E8).* The first dry run of Part II gave `NIntegrate` the two radii as
    machine numbers with the working precision of 30 digits, and the kernel warned that the integrand had less
    precision than requested; the radii are now given 30 digits (`SetPrecision`), and the warning is gone.
+
+9. *A badly conditioned system (E9).* The first dry run of Section III.T solved the cubic interpolation of the Taylor
+   coefficients in the variable $\Phi^2$ (values from $1.1\times10^{-4}$ to $1.7\times10^{-3}$), whose matrix has the condition
+   number $1.2\times10^{10}$, and `LinearSolve` warned that its result might contain significant numerical errors (the
+   coefficients agreed with those of the Rust program to $1.4\times10^{-7}$ all the same). The interpolation now uses the
+   scaled variable $\Phi^2/\Phi^2_{\max}$, with the condition number 146, and the warning is gone.
+
+10. *A sentence that the notebook had outgrown (E10).* The introduction of the first section of Part III said that
+    Part II, whose engine computes such curves, "follows in the next versions"; Part II was added in the version before
+    this one. The sentence now says what that chapter takes from the Rust program and that the next chapter uses the
+    engine of Part II.
+
+11. *One identifier for two checks (E11).* When Section III.T named the counterparts of its checks, the Python check of
+    the uniqueness of the critical temperature had the identifier YP3-T5, which by the rule of the identifiers belongs
+    to the Python counterpart of the Rust check P3-T5 (the order parameter of Landau's theory). The Python check is now
+    YP3-T9, the Rust program makes the same check as P3-T9, and the Python program has the new counterparts YP3-T5 to
+    YP3-T8 of the Rust checks P3-T5 to P3-T8, so that every check of Section III.T has a counterpart in both programs.
 
 # 10. What follows
 

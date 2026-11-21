@@ -1967,8 +1967,9 @@ the static pair response of Section 9.4 at finite temperature ($\tanh(E/2T)=1-2f
 quasi-particles; at $T=0$, $I^{(1)}_{\rm SF}(M,0)=I^{(1)}_{\rm SF}(M)$). The critical temperature $T^{X,{\rm c}}_{\rm SF}$ solves
 $\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$ (*check P3-T3*: by bisection, with the normal state computed at every step; at $T=0$
 the formula gives the eigenvalue of Table 10.1; *check YP3-T3*: the Python program finds the same $T^{X,{\rm c}}_{\rm SF}$ to
-$10^{-10}$; *check YP3-T5*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.001$ to $T=0.6$, so
-$T^{X,{\rm c}}_{\rm SF}$ is the only solution there). Below $T^{X,{\rm c}}_{\rm SF}$ a polar start ends in a superfluid, above it in the normal state (*check P3-T4*). The
+$10^{-10}$; *checks P3-T9 and YP3-T9*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.01$ to $T=0.6$
+(60 temperatures with the normal state of the thermal engine; in Python 600 temperatures from $T=0.001$, with the normal
+state from its scalar self-consistency), so $T^{X,{\rm c}}_{\rm SF}$ is the only solution there). Below $T^{X,{\rm c}}_{\rm SF}$ a polar start ends in a superfluid, above it in the normal state (*check P3-T4*). The
 critical temperatures are $0.214$ (HS (0, 0)) to $0.260$ (HS (1, 1)); KS and CJT coincide also at finite temperature.
 
 **The gap equation and the Dirac mass.** The polar superfluid with the Dirac mass $M^{X,{\rm D}}_{\rm SF}$ and the pair
@@ -2962,7 +2963,7 @@ VERDICT: ALL PASS (23 of 23)
   pair field, the curves, the curvatures, the symmetries, the Landau fit), `landau` (Section 12.1: the accuracy of the
   Landau form, Table 12.2 and Figure 9, with the checks P3-8 to P3-11), `kinetic` (Section 12.2: the
   susceptibilities and the twisted states) and `thermal` (Section 12.4: the free energy at finite temperature, the
-  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T8)) uses the library `sfcore`, with two functions added for this part in the
+  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T9)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
   Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -2977,9 +2978,12 @@ VERDICT: ALL PASS (23 of 23)
   effective potentials, the Taylor coefficients at the origin, the susceptibilities and the stiffness of the twisted
   states of HS $(1,1)$ and CJT, checks the quasi-particle energies (10.3) with an applied pair field, recomputes every
   number of Table 12.2 from the data files of the five polar curves, computes the thermal states of HS $(1,1)$ and
-  CJT (the limit $T\to0$, the critical temperatures, the order parameter at two temperatures), solves the gap equation
-  (12.10) of HS $(0,0)$ alone, shows for the five methods that $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the
-  temperature, and compares all of them with the values of the Rust program;
+  CJT (the limit $T\to0$, the critical temperatures, the order parameter, the free energy and the Dirac mass at two
+  temperatures), solves the gap equation (12.10) of HS $(0,0)$ alone, computes the Taylor coefficients of the free
+  energy of CJT at $0.9\,T^{\rm CJT,c}_{\rm SF}$ and the order parameter of Landau's theory, recomputes from the data file of
+  the free-energy curves the residuals of their Landau forms, shows for the five methods that
+  $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (checks YP3-T1 to YP3-T9; each has the identifier of
+  the Rust check of the same statement with the prefix Y), and compares all of them with the values of the Rust program;
   `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11:
 
       python3 python/sf_part3.py
@@ -3004,6 +3008,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-10 HS_1_1 | PASS | 8.786e-9 | 1.0e-6 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -6.0408804409e-3) |
 | P3-T1 HS_1_1 | PASS | 2.357e-14 | 1.0e-12 | HS\_1\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
 | P3-T3 HS_1_1 | PASS | 4.408e-14 | 1.0e-12 | HS\_1\_1: the critical temperature T\_c = 0.2604672394 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1838428143 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T9 HS_1_1 | PASS | 0.000e0 | 1.0e-12 | HS\_1\_1: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.183843 to 0.620857; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
 | P3-T2 HS_1_1 | PASS | 9.363e-13 | 1.0e-9 | HS\_1\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 25.200000) |
 | P3-T8 HS_1_1 | PASS | 3.622e-14 | 1.0e-10 | HS\_1\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2066851932; largest change) |
 | P3-T5 HS_1_1 | PASS | 2.814e-1 | 5.0e-1 | HS\_1\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 5.63e-3) |
@@ -3021,6 +3026,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-10 HS_0_1 | PASS | 5.417e-9 | 1.0e-6 | HS\_0\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -5.2811441242e-3) |
 | P3-T1 HS_0_1 | PASS | 9.226e-14 | 1.0e-12 | HS\_0\_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
 | P3-T3 HS_0_1 | PASS | 4.028e-13 | 1.0e-12 | HS\_0\_1: the critical temperature T\_c = 0.2404654563 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1509582917 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T9 HS_0_1 | PASS | 0.000e0 | 1.0e-12 | HS\_0\_1: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.150958 to 0.604690; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
 | P3-T2 HS_0_1 | PASS | 1.032e-12 | 1.0e-9 | HS\_0\_1: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 24.500000) |
 | P3-T8 HS_0_1 | PASS | 0.000e0 | 1.0e-10 | HS\_0\_1: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
 | P3-T5 HS_0_1 | PASS | 2.436e-1 | 5.0e-1 | HS\_0\_1: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.87e-3) |
@@ -3038,6 +3044,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-10 HS_0_0 | PASS | 7.213e-9 | 1.0e-6 | HS\_0\_0: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2619672631e-3) |
 | P3-T1 HS_0_0 | PASS | 1.041e-13 | 1.0e-12 | HS\_0\_0: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
 | P3-T3 HS_0_0 | PASS | 1.976e-13 | 1.0e-12 | HS\_0\_0: the critical temperature T\_c = 0.2137990984 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T9 HS_0_0 | PASS | 0.000e0 | 1.0e-12 | HS\_0\_0: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.113376 to 0.584946; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
 | P3-T2 HS_0_0 | PASS | 1.214e-12 | 1.0e-9 | HS\_0\_0: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
 | P3-T8 HS_0_0 | PASS | 0.000e0 | 1.0e-10 | HS\_0\_0: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.2000000000; largest change) |
 | P3-T5 HS_0_0 | PASS | 1.915e-1 | 5.0e-1 | HS\_0\_0: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 3.83e-3) |
@@ -3055,6 +3062,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-10 KS | PASS | 7.428e-8 | 1.0e-6 | KS: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
 | P3-T1 KS | PASS | 6.271e-14 | 1.0e-12 | KS: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
 | P3-T3 KS | PASS | 1.987e-13 | 1.0e-12 | KS: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T9 KS | PASS | 0.000e0 | 1.0e-12 | KS: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.113376 to 0.588434; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
 | P3-T2 KS | PASS | 1.142e-12 | 1.0e-9 | KS: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
 | P3-T8 KS | PASS | 3.271e-13 | 1.0e-10 | KS: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
 | P3-T5 KS | PASS | 2.348e-1 | 5.0e-1 | KS: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
@@ -3072,6 +3080,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-10 CJT | PASS | 7.425e-8 | 1.0e-6 | CJT: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
 | P3-T1 CJT | PASS | 8.078e-14 | 1.0e-12 | CJT: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; /change of Phi0/ + relative change of the energy) |
 | P3-T3 CJT | PASS | 1.978e-13 | 1.0e-12 | CJT: the critical temperature T\_c = 0.2221187371 solves lambda\^P(T\_c) = 1 (/lambda\^P(T\_c) - 1/), and lambda\^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf\_part2 (difference) |
+| P3-T9 CJT | PASS | 0.000e0 | 1.0e-12 | CJT: lambda\^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.113376 to 0.588434; the largest rise), so T\_c is the only solution of lambda\^P(T) = 1 there |
 | P3-T2 CJT | PASS | 1.142e-12 | 1.0e-9 | CJT: the gap equation g\^P I1(M\^2 + Phi0\^2, T)/pi\^2 = 1 holds for the superfluid at every temperature of the table (largest /residual/; g\^P = 23.700000) |
 | P3-T8 CJT | PASS | 3.271e-13 | 1.0e-10 | CJT: the Dirac mass of the superfluid is the same at every temperature below T\_c (0.1622929325; largest change) |
 | P3-T5 CJT | PASS | 2.348e-1 | 5.0e-1 | CJT: near T\_c the order parameter of Landau's theory (-a/2b)\^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T\_c (largest /(-a/2b)\^(1/2)/Phi0 - 1/ / (1 - T/T\_c) at T/T\_c = 0.9, 0.95, 0.98; at T/T\_c = 0.98 the error is 4.70e-3) |
@@ -3081,7 +3090,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-6 CJT | PASS | 1.269e-15 | 1.0e-10 | CJT: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.3e-15) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 
-VERDICT: ALL PASS (87 of 87)
+VERDICT: ALL PASS (92 of 92)
 
 ## 16.11 Part III: the report of the Python program
 
@@ -3095,16 +3104,29 @@ VERDICT: ALL PASS (87 of 87)
 | YP3-11 CJT | PASS | 1.216e-09 | 1.0e-07 | CJT: the accuracy of the Landau form recomputed from data/part3\_effpot\_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-T1 HS_1_1 | PASS | 6.164e-14 | 1.0e-12 | HS\_1\_1: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
 | YP3-T3 HS_1_1 | PASS | 6.756e-14 | 1.0e-10 | HS\_1\_1: the critical temperature T\_c = 0.2604672394 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T8 HS_1_1 | PASS | 1.707e-14 | 1.0e-10 | HS\_1\_1: the Dirac mass of the superfluid at 0.5 T\_c and 0.9 T\_c equals that at T = 0 (0.2066851932) and the Rust value (largest difference) |
 | YP3-T2 HS_1_1 | PASS | 3.311e-12 | 1.0e-08 | HS\_1\_1: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
 | YP3-T1 CJT | PASS | 1.046e-13 | 1.0e-12 | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (/change of Phi0/ + relative change of the energy) |
 | YP3-T3 CJT | PASS | 2.138e-13 | 1.0e-10 | CJT: the critical temperature T\_c = 0.2221187371 = Rust (relative; bisection of lambda\^P(T) = 1 with the normal states of this engine) |
+| YP3-T8 CJT | PASS | 1.717e-13 | 1.0e-10 | CJT: the Dirac mass of the superfluid at 0.5 T\_c and 0.9 T\_c equals that at T = 0 (0.1622929325) and the Rust value (largest difference) |
 | YP3-T2 CJT | PASS | 6.209e-13 | 1.0e-08 | CJT: the order parameter and the free energy of the superfluid at 0.5 T\_c and 0.9 T\_c = Rust (largest difference; the free energy relative) |
 | YP3-T4 | PASS | 9.807e-12 | 1.0e-09 | HS (0, 0): the order parameter of every temperature of the table from the gap equation g\^P I1(m\^2 + Phi0\^2, T)/pi\^2 = 1 alone (without the self-consistent engine) = Rust (largest difference) |
-| YP3-T5 HS_1_1 | PASS | 2.420e-14 | 1.0e-09 | HS\_1\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
-| YP3-T5 HS_0_1 | PASS | 3.464e-14 | 1.0e-09 | HS\_0\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
-| YP3-T5 HS_0_0 | PASS | 1.688e-14 | 1.0e-09 | HS\_0\_0: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
-| YP3-T5 KS | PASS | 5.906e-14 | 1.0e-09 | KS: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
-| YP3-T5 CJT | PASS | 5.906e-14 | 1.0e-09 | CJT: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T9 HS_1_1 | PASS | 2.420e-14 | 1.0e-09 | HS\_1\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T9 HS_0_1 | PASS | 3.464e-14 | 1.0e-09 | HS\_0\_1: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T9 HS_0_0 | PASS | 1.688e-14 | 1.0e-09 | HS\_0\_0: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T9 KS | PASS | 5.906e-14 | 1.0e-09 | KS: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T9 CJT | PASS | 5.906e-14 | 1.0e-09 | CJT: lambda\^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T\_c is the only solution of lambda\^P(T) = 1, and lambda\^P(T\_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and /lambda\^P(T\_c) - 1/) |
+| YP3-T5 CJT | PASS | 3.080e-07 | 1.0e-05 | CJT at 0.9 T\_c: the Taylor coefficients a = -1.05102722e-03, b = 1.47550953e-02 of the free energy at the origin (four applied fields, exact cubic interpolation of F/Phi\^2) and the error 2.2771e-02 of the order parameter (-a/2b)\^(1/2) of Landau's theory = Rust (largest relative difference of a and b, difference of the error); the error is 0.228 times 1 - T/T\_c |
+| YP3-T6 HS_1_1 | PASS | 7.060e-11 | 1.0e-07 | HS\_1\_1: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3\_thermal\_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T\_c (1.83e-02, 8.81e-03, 3.73e-03 at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.7e-05 at 0.98 T\_c: yes |
+| YP3-T7 HS_1_1 | PASS | 5.638e-12 | 1.0e-08 | HS\_1\_1: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 7.035495e-03 of the depth, is that of Table 12.1 (relative difference) |
+| YP3-T6 HS_0_1 | PASS | 9.270e-12 | 1.0e-07 | HS\_0\_1: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3\_thermal\_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T\_c (1.60e-02, 7.67e-03, 3.24e-03 at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.3e-05 at 0.98 T\_c: yes |
+| YP3-T7 HS_0_1 | PASS | 1.304e-12 | 1.0e-08 | HS\_0\_1: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 4.693236e-03 of the depth, is that of Table 12.1 (relative difference) |
+| YP3-T6 HS_0_0 | PASS | 4.884e-10 | 1.0e-07 | HS\_0\_0: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3\_thermal\_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T\_c (1.27e-02, 6.06e-03, 2.56e-03 at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 7.8e-06 at 0.98 T\_c: yes |
+| YP3-T7 HS_0_0 | PASS | 1.891e-11 | 1.0e-08 | HS\_0\_0: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.690453e-03 of the depth, is that of Table 12.1 (relative difference) |
+| YP3-T6 KS | PASS | 1.306e-10 | 1.0e-07 | KS: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3\_thermal\_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T\_c (1.58e-02, 7.47e-03, 3.13e-03 at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-05 at 0.98 T\_c: yes |
+| YP3-T7 KS | PASS | 3.539e-11 | 1.0e-08 | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference) |
+| YP3-T6 CJT | PASS | 5.804e-11 | 1.0e-07 | CJT: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3\_thermal\_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T\_c (1.58e-02, 7.47e-03, 3.13e-03 at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-05 at 0.98 T\_c: yes |
+| YP3-T7 CJT | PASS | 4.636e-11 | 1.0e-08 | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
@@ -3120,14 +3142,14 @@ VERDICT: ALL PASS (87 of 87)
 | YP3-10 CJT | PASS | 2.872e-12 | 1.0e-08 | CJT: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08) |
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 
-VERDICT: ALL PASS (32 of 32)
+VERDICT: ALL PASS (45 of 45)
 
 ## 16.12 Part III: data files and figures (SHA-256 checksums)
 
 * `data/hck_part3_checks.txt` (report of `sf_part3`):\
-  `94f3ab212a1c8e335853564cc0ef492091b30ada56554845575548ea33d822a0`
+  `0551c0121ec0ed0d73feb139df0bc16931038c8ad771a45c167f4f899845d324`
 * `data/hck_part3_checks_python.txt` (report of `python/sf_part3.py`):\
-  `07c4d9fc2512d0b92ee98ff304e4ec6ced36e0c1a27d7fdf30c7b687e5f5825e`
+  `429b99148f5468641648ccdfd64243c7692e28afbabb30d494716ed3f4f8a5fe`
 * `data/part3_values.csv` (the numbers of Part III):\
   `348a825bc2d41da358659c46f13bd651468176b04620de44272dd45f1b753a43`
 * `data/part3_sfbsv.csv` (Tables 12.3 and 13.1, Figure 11):\
@@ -3467,7 +3489,7 @@ Each of the following was found before part II was committed.
 5. Asked by the author (21 November 2026) to compute the effective potential and the free energy of every method and to
    determine whether the order parameter is smaller and more physically reasonable, the solution added Section 12.4
    (the free energy at finite temperature, the critical temperatures, the radius of convergence at finite temperature,
-   Table 12.4 and Figure 10; module `thermal` of `sf_part3`, checks P3-T1 to P3-T8 and YP3-T1 to YP3-T5; the thermal
+   Table 12.4 and Figure 10; module `thermal` of `sf_part3`, checks P3-T1 to P3-T9 and YP3-T1 to YP3-T9; the thermal
    states of the library `sfcore`). The figures 10 to 14 of the earlier versions are now the figures 11 to 15. The first
    run of the module fitted the Landau form to free-energy curves of 41 points with the applied fields up to
    $1.6\,\Phi^X_{0,{\rm SF}}(T)$, which cover a smaller interval than the curves of Section 12.1 and gave at $T=0$ a residual
@@ -3477,6 +3499,13 @@ Each of the following was found before part II was committed.
    `python/sf_part4_figures.py` draws "Figures 11 to 13" (it draws four figures, then numbered 11 to 14, now 12 to 15),
    and Section 16.16 said that the data of the growth runs serve "Figures 12 and 12" (they serve the figures then
    numbered 12 and 13, now 13 and 14). Found while renumbering for item 5 and corrected with it.
+7. The Python check that $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (the uniqueness of
+   $T^{X,{\rm c}}_{\rm SF}$) was first named YP3-T5, the identifier that the rule of the identifiers gives to the Python
+   counterpart of the Rust check P3-T5, a check of another statement (the order parameter of Landau's theory): one
+   identifier for two different checks. It was found when the notebook named the counterparts of its checks of
+   Section 12.4. The Python check is now YP3-T9, the Rust program makes the same check as P3-T9 (60 temperatures with the
+   normal state of its thermal engine), and the Python program has the counterparts YP3-T5 to YP3-T8 of the Rust checks
+   P3-T5 to P3-T8 (P3-T4, a polar start below and above $T^{X,{\rm c}}_{\rm SF}$, has no Python counterpart).
 
 ## 17.4 Part IV
 

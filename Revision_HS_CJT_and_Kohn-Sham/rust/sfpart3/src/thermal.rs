@@ -16,7 +16,8 @@
 //! density appears at T > 0 and shifts the mass through the scalar coupling g^S); its pair channel is unstable when
 //! lambda^P(T) = g^P I1(M_n(T)^2, T)/pi^2 > 1, with I1(s, T) = int_0^Lambda q^2 tanh(E/2T)/E dq, E = (q^2 + s)^(1/2)
 //! (the static pair response of AS3 at finite temperature; at T = 0 this is lambda^P of Part II).  T_c solves
-//! lambda^P(T_c) = 1 (bisection; the normal state is computed at every step).
+//! lambda^P(T_c) = 1 (bisection; the normal state is computed at every step); P3-T9 shows that lambda^P(T) does not
+//! increase with the temperature, so that T_c is unique.
 //!
 //! THE GAP EQUATION.  A polar superfluid with the Dirac mass M and the pair amplitude Phi0 has the quasi-particle
 //! energies (q^2 + M^2 + Phi0^2)^(1/2) (check P3-8), and its pair self-consistency is g^P I1(M^2 + Phi0^2, T)/pi^2 = 1:
@@ -144,6 +145,24 @@ pub fn run(rep: &mut Report, tag: &str, m: &Method, v2: &Potential, model: &Mode
     let (lam_c, _) = lam_p(model, g_p, tc);
     rep.add(&format!("P3-T3 {}", tag), &format!("{}: the critical temperature T_c = {:.10} solves lambda^P(T_c) = 1 (|lambda^P(T_c) - 1|), and lambda^P(0) = {:.10} equals the eigenvalue of the static pair response of the normal vacuum computed by sf_part2 (difference)", tag, tc, lam0),
             (lam_c - 1.0).abs() + (lam0 - lam_part2).abs(), 1e-12);
+    // ---- the uniqueness of T_c: lambda^P(T) of the normal state does not increase with the temperature (60
+    //      temperatures from 0.01 to 0.6, the normal state of the engine at each), so that the bisection above finds the
+    //      only solution of lambda^P(T) = 1 there
+    let (mut prev, mut rise, mut first, mut last) = (f64::INFINITY, 0.0f64, 0.0f64, 0.0f64);
+    for k in 0..60 {
+        let t = 0.01 + (0.6 - 0.01) * k as f64 / 59.0;
+        let l = lam_p(model, g_p, t).0;
+        if k == 0 {
+            first = l;
+        }
+        last = l;
+        if l > prev {
+            rise = rise.max(l - prev);
+        }
+        prev = l;
+    }
+    rep.add(&format!("P3-T9 {}", tag), &format!("{}: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from {:.6} to {:.6}; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there", tag, first, last),
+            rise, 1e-12);
     // ---- the points of the table: the superfluid at every T, the normal state, the Taylor coefficients
     let mut points = vec![];
     let (mut n_prev, mut p_prev) = (gs_n.clone(), gs_p.clone());

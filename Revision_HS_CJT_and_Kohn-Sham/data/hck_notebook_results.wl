@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 08:14:46", "kernel" -> {0, 12340}, 
+<|"finished" -> "Sat 21 Nov 2026 09:49:34", "kernel" -> {0, 14165}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -262,5 +262,159 @@ the origin from the first six points of the curve = the Rust value a^Tay = \
     "deviation" -> 2.3768641768367542*^-8, "tolerance" -> 1.*^-6, 
     "text" -> "CJT: the coefficient of Phi^2 of the Taylor series at the \
 origin from the first six points of the curve = the Rust value a^Tay = \
--0.00429666 (relative)", "rust" -> "P3-10 CJT", "python" -> "YP3-10 CJT"|>}, 
- "line" -> 316, "seconds" -> 1073.398707`9.482306061302681|>
+-0.00429666 (relative)", "rust" -> "P3-10 CJT", "python" -> "YP3-10 CJT"|>, 
+   <|"id" -> "WP3-T1 HS_1_1", "pass" -> True, 
+    "deviation" -> 7.902992417085206*^-14, "tolerance" -> 1.*^-11, 
+    "text" -> "HS (1, 1): the thermal states at T = 0.005 reproduce the \
+ground state of T = 0 (|change of Phi0| + relative change of the energy)", 
+    "rust" -> "P3-T1 HS_1_1", "python" -> "YP3-T1 HS_1_1"|>, 
+   <|"id" -> "WP3-T1 CJT", "pass" -> True, "deviation" -> 
+     9.390566524865536*^-14, "tolerance" -> 1.*^-11, 
+    "text" -> "CJT: the thermal states at T = 0.005 reproduce the ground \
+state of T = 0 (|change of Phi0| + relative change of the energy)", 
+    "rust" -> "P3-T1 CJT", "python" -> "YP3-T1 CJT"|>, 
+   <|"id" -> "WP3-T3 HS_1_1", "pass" -> True, 
+    "deviation" -> 7.291069575607853*^-14, "tolerance" -> 1.*^-10, 
+    "text" -> "HS (1, 1): the critical temperature T_c = 0.2604672394 \
+(bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = \
+1.183842814 = Rust; the Dirac mass of the normal state of the thermal engine \
+at T_c = 0.2066851932 = the scalar self-consistency", 
+    "rust" -> "P3-T3 HS_1_1", "python" -> "YP3-T3 HS_1_1, YP3-T9 HS_1_1"|>, 
+   <|"id" -> "WP3-T3 HS_0_1", "pass" -> True, 
+    "deviation" -> 4.652863264823992*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "HS (0, 1): the critical temperature T_c = 0.2404654563 \
+(bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = \
+1.150958292 = Rust", "rust" -> "P3-T3 HS_0_1", "python" -> "YP3-T9 HS_0_1"|>, 
+   <|"id" -> "WP3-T3 HS_0_0", "pass" -> True, 
+    "deviation" -> 2.0559693319962386*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "HS (0, 0): the critical temperature T_c = 0.2137990984 \
+(bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = \
+1.11337598 = Rust", "rust" -> "P3-T3 HS_0_0", "python" -> "YP3-T9 HS_0_0"|>, 
+   <|"id" -> "WP3-T3 KS", "pass" -> True, "deviation" -> 
+     3.7545820013099945*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "KS: the critical temperature T_c = 0.2221187371 (bisection of \
+lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.11337598 = Rust; the \
+Dirac mass of the normal state of the thermal engine at T_c = 0.1622929325 = \
+the scalar self-consistency", "rust" -> "P3-T3 KS", 
+    "python" -> "YP3-T9 KS"|>, <|"id" -> "WP3-T3 CJT", "pass" -> True, 
+    "deviation" -> 3.754859557066151*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "CJT: the critical temperature T_c = 0.2221187371 (bisection of \
+lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.11337598 = Rust; the \
+Dirac mass of the normal state of the thermal engine at T_c = 0.1622929325 = \
+the scalar self-consistency", "rust" -> "P3-T3 CJT", 
+    "python" -> "YP3-T3 CJT, YP3-T9 CJT"|>, <|"id" -> "WP3-T9 HS_1_1", 
+    "pass" -> True, "deviation" -> 0., "tolerance" -> 1.*^-12, 
+    "text" -> "HS (1, 1): lambda^P(T) of the normal state does not increase \
+on 60 temperatures from 0.01 to 0.6 (from 1.18384 to 0.620857; the largest \
+rise), so T_c is the only solution of lambda^P(T) = 1 there", 
+    "rust" -> "P3-T9 HS_1_1", "python" -> "YP3-T9 HS_1_1"|>, 
+   <|"id" -> "WP3-T9 HS_0_1", "pass" -> True, "deviation" -> 0., 
+    "tolerance" -> 1.*^-12, "text" -> "HS (0, 1): lambda^P(T) of the normal \
+state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.15096 to \
+0.60469; the largest rise), so T_c is the only solution of lambda^P(T) = 1 \
+there", "rust" -> "P3-T9 HS_0_1", "python" -> "YP3-T9 HS_0_1"|>, 
+   <|"id" -> "WP3-T9 HS_0_0", "pass" -> True, "deviation" -> 0., 
+    "tolerance" -> 1.*^-12, "text" -> "HS (0, 0): lambda^P(T) of the normal \
+state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to \
+0.584946; the largest rise), so T_c is the only solution of lambda^P(T) = 1 \
+there", "rust" -> "P3-T9 HS_0_0", "python" -> "YP3-T9 HS_0_0"|>, 
+   <|"id" -> "WP3-T9 KS", "pass" -> True, "deviation" -> 0., 
+    "tolerance" -> 1.*^-12, "text" -> "KS: lambda^P(T) of the normal state \
+does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to \
+0.588434; the largest rise), so T_c is the only solution of lambda^P(T) = 1 \
+there", "rust" -> "P3-T9 KS", "python" -> "YP3-T9 KS"|>, 
+   <|"id" -> "WP3-T9 CJT", "pass" -> True, "deviation" -> 0., 
+    "tolerance" -> 1.*^-12, "text" -> "CJT: lambda^P(T) of the normal state \
+does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to \
+0.588434; the largest rise), so T_c is the only solution of lambda^P(T) = 1 \
+there", "rust" -> "P3-T9 CJT", "python" -> "YP3-T9 CJT"|>, 
+   <|"id" -> "WP3-T2 CJT", "pass" -> True, "deviation" -> 
+     1.58886979531066*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: the superfluid at 0.5 T_c and 0.9 T_c (thermal engine): \
+the order parameter and the free energy = Rust (largest difference; the free \
+energy relative), and the gap equation holds (largest |g^P I1/pi^2 - 1|; the \
+sum of both)", "rust" -> "P3-T2 CJT", "python" -> "YP3-T2 CJT"|>, 
+   <|"id" -> "WP3-T8 CJT", "pass" -> True, "deviation" -> 
+     2.7650104428289524*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "CJT: the Dirac mass of the superfluid at 0.5 T_c and 0.9 T_c \
+equals that at T = 0, 0.1622929325, and the Rust value (largest difference)", 
+    "rust" -> "P3-T8 CJT", "python" -> "YP3-T8 CJT"|>, 
+   <|"id" -> "WP3-T2 HS_0_0", "pass" -> True, 
+    "deviation" -> 9.924283617124274*^-12, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (0, 0): the order parameter of every temperature of the \
+table from the gap equation alone (with the Dirac mass m_LL, without the \
+self-consistent engine) = Rust (largest difference)", 
+    "rust" -> "P3-T2 HS_0_0", "python" -> "YP3-T4"|>, 
+   <|"id" -> "WP3-T5 CJT", "pass" -> True, "deviation" -> 
+     1.4309498207616506*^-7, "tolerance" -> 0.00001, 
+    "text" -> "CJT at 0.9 T_c: the Taylor coefficients a = -0.0010510272, b = \
+0.014755098 of the free energy at the origin and the error 2.277e-2 of the \
+order parameter (-a/2b)^(1/2) of Landau's theory (0.228 times 1 - T/T_c) = \
+Rust (largest relative difference of a and b, difference of the error)", 
+    "rust" -> "P3-T5 CJT", "python" -> "YP3-T5 CJT"|>, 
+   <|"id" -> "WP3-T6 HS_1_1", "pass" -> True, 
+    "deviation" -> 5.525022453462602*^-11, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (1, 1): the largest residuals of the Landau form and of the \
+quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by \
+LeastSquares from the curves of the Rust program = Rust (largest relative \
+difference); the quartic residual falls towards T_c (1.828e-2, 8.811e-3, \
+3.734e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is \
+1.668e-5 at 0.98 T_c: yes", "rust" -> "P3-T6 HS_1_1", 
+    "python" -> "YP3-T6 HS_1_1"|>, <|"id" -> "WP3-T7 HS_1_1", "pass" -> True, 
+    "deviation" -> 5.803949340232617*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (1, 1): at T = 0 the free energy is the effective \
+potential: the residual of the Landau form of the curve at T = 0 is that of \
+Section III.L (relative difference)", "rust" -> "P3-T7 HS_1_1", 
+    "python" -> "YP3-T7 HS_1_1"|>, <|"id" -> "WP3-T6 HS_0_1", "pass" -> True, 
+    "deviation" -> 2.4102008609948484*^-11, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 1): the largest residuals of the Landau form and of the \
+quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by \
+LeastSquares from the curves of the Rust program = Rust (largest relative \
+difference); the quartic residual falls towards T_c (1.597e-2, 7.668e-3, \
+3.244e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is \
+1.252e-5 at 0.98 T_c: yes", "rust" -> "P3-T6 HS_0_1", 
+    "python" -> "YP3-T6 HS_0_1"|>, <|"id" -> "WP3-T7 HS_0_1", "pass" -> True, 
+    "deviation" -> 2.382768341936481*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (0, 1): at T = 0 the free energy is the effective \
+potential: the residual of the Landau form of the curve at T = 0 is that of \
+Section III.L (relative difference)", "rust" -> "P3-T7 HS_0_1", 
+    "python" -> "YP3-T7 HS_0_1"|>, <|"id" -> "WP3-T6 HS_0_0", "pass" -> True, 
+    "deviation" -> 1.579425830725195*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 0): the largest residuals of the Landau form and of the \
+quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by \
+LeastSquares from the curves of the Rust program = Rust (largest relative \
+difference); the quartic residual falls towards T_c (1.267e-2, 6.063e-3, \
+2.562e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is \
+7.750e-6 at 0.98 T_c: yes", "rust" -> "P3-T6 HS_0_0", 
+    "python" -> "YP3-T6 HS_0_0"|>, <|"id" -> "WP3-T7 HS_0_0", "pass" -> True, 
+    "deviation" -> 2.4749494385268108*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (0, 0): at T = 0 the free energy is the effective \
+potential: the residual of the Landau form of the curve at T = 0 is that of \
+Section III.L (relative difference)", "rust" -> "P3-T7 HS_0_0", 
+    "python" -> "YP3-T7 HS_0_0"|>, <|"id" -> "WP3-T6 KS", "pass" -> True, 
+    "deviation" -> 5.965334070160951*^-11, "tolerance" -> 1.*^-7, 
+    "text" -> "KS: the largest residuals of the Landau form and of the \
+quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by \
+LeastSquares from the curves of the Rust program = Rust (largest relative \
+difference); the quartic residual falls towards T_c (1.579e-2, 7.470e-3, \
+3.134e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is \
+9.969e-6 at 0.98 T_c: yes", "rust" -> "P3-T6 KS", "python" -> "YP3-T6 KS"|>, 
+   <|"id" -> "WP3-T7 KS", "pass" -> True, "deviation" -> 
+     4.069880609041015*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "KS: at T = 0 the free energy is the effective potential: the \
+residual of the Landau form of the curve at T = 0 is that of Section III.L \
+(relative difference)", "rust" -> "P3-T7 KS", "python" -> "YP3-T7 KS"|>, 
+   <|"id" -> "WP3-T6 CJT", "pass" -> True, "deviation" -> 
+     8.948235068560688*^-12, "tolerance" -> 1.*^-7, 
+    "text" -> "CJT: the largest residuals of the Landau form and of the \
+quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by \
+LeastSquares from the curves of the Rust program = Rust (largest relative \
+difference); the quartic residual falls towards T_c (1.579e-2, 7.470e-3, \
+3.134e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is \
+9.969e-6 at 0.98 T_c: yes", "rust" -> "P3-T6 CJT", 
+    "python" -> "YP3-T6 CJT"|>, <|"id" -> "WP3-T7 CJT", "pass" -> True, 
+    "deviation" -> 4.875983837574409*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: at T = 0 the free energy is the effective potential: the \
+residual of the Landau form of the curve at T = 0 is that of Section III.L \
+(relative difference)", "rust" -> "P3-T7 CJT", "python" -> "YP3-T7 CJT"|>}, 
+ "line" -> 363, "seconds" -> 448.661047`9.103463358978885|>

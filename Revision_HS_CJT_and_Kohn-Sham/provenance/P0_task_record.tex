@@ -1225,8 +1225,8 @@ three effective Lagrangians, the vacua, the stabilizer
 \(SL(2,\mathbb C)\times O(2)\), and \(\mathrm{SFBSv}^X\) with the masses
 compared with the linear response); the provenance, the corrections, the
 symbols and the references are now Sections 14 to 17; the program
-\texttt{sf\_part3} (VERDICT: ALL PASS (87 of 87)), the Python programs
-\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (32 of 32)) and
+\texttt{sf\_part3} (VERDICT: ALL PASS (92 of 92)), the Python programs
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (45 of 45)) and
 \texttt{python/sf\_part3\_figures.py}, the data and two figures; 5
 entries added to the registry and one rewritten (now 167) \\
 E5 & 20 Nov 2026 & corrections during object O5, each found before the
@@ -1308,7 +1308,7 @@ accepts the Krylov solver
 dense Jacobian matrix \\
 C9 & 21 Nov 2026 & object O8, first version: the notebook
 \texttt{superfluid.nb} with the introduction, the register of the checks
-and Part I (65 checks; ALL PASS (65 of 65), 0 messages in the front end
+and Part I (91 checks; ALL PASS (91 of 91), 0 messages in the front end
 of Wolfram 15.0.1), its sources in \texttt{wolfram/source/}, its tools
 in \texttt{wolfram/tools/}, its printed copy
 \texttt{superfluid\_notebook.pdf}, its log
@@ -1343,8 +1343,8 @@ definition and seven examples of the Landau form, its accuracy, the
 cause of the residual, why it matters, Table 12.2, Figure 9; the earlier
 figures 9 to 13 are now 10 to 14 and the earlier Table 12.2 is Table
 12.3), the module \texttt{landau} of \texttt{sf\_part3} with the checks
-P3-8 to P3-11 (VERDICT: ALL PASS (87 of 87)), the checks YP3-8 to YP3-11
-of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (32 of 32)), the new
+P3-8 to P3-11 (VERDICT: ALL PASS (92 of 92)), the checks YP3-8 to YP3-11
+of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (45 of 45)), the new
 provenance document \texttt{provenance/P4\_remarks.md} (\texttt{.tex},
 \texttt{.pdf}), which keeps the answer, two entries of the registry of
 the symbols (\(a^{X,{\rm Tay}}_{\rm SF}\); \(\mu^{\rm SM}\),
@@ -1379,7 +1379,7 @@ ground states of 15 cases, the Goldstone and the collective modes, the
 susceptibilities, the exchange of the gauge bosons with the Thouless
 eigenvalues and the CJT state with the exchange; 23 checks, each with
 its counterparts in \texttt{sf\_part2} and \texttt{python/sf\_part2.py}
-(65 checks in all; ALL PASS (65 of 65), 0 messages);
+(91 checks in all; ALL PASS (91 of 91), 0 messages);
 \texttt{code/scripts/write\_notebook\_fragments.py} now accepts several
 counterparts of one check (``P2-6b, P2-6c''); one warning of
 \texttt{NIntegrate} in the first dry run removed (error E8 of
@@ -1394,9 +1394,9 @@ equation at finite temperature, the temperature-independent Dirac mass
 of the superfluid, the radius of convergence at finite temperature,
 Table 12.4, Figure 10; the earlier figures 10 to 14 are now 11 to 15);
 the thermal states of \texttt{sfcore}; the module \texttt{thermal} of
-\texttt{sf\_part3} with the checks P3-T1 to P3-T8 (VERDICT: ALL PASS (87
-of 87)); the checks YP3-T1 to YP3-T5 of \texttt{python/sf\_part3.py}
-(VERDICT: ALL PASS (32 of 32)); the addendum A1 of
+\texttt{sf\_part3} with the checks P3-T1 to P3-T8 (VERDICT: ALL PASS (92
+of 92)); the checks YP3-T1 to YP3-T5 of \texttt{python/sf\_part3.py}
+(VERDICT: ALL PASS (45 of 45)); the addendum A1 of
 \texttt{provenance/P4\_remarks.md}. The answer: near the critical
 temperature the order parameter is small, lies inside the radius of
 convergence above \(0.35\) (HS (0, 0)) to \(0.42\) (HS (1, 1)) times
@@ -1423,6 +1423,29 @@ C10 and E9 use (\(\vec\Phi\), \(\Phi_0\), \(\Phi\), \(\Phi_{\rm a}\),
 \(\lambda^{\rm SM}\)) were missing from the table of Section 8 of this
 record, contrary to the rule that every document defines its symbols;
 they are now defined there, with the symbols of D15, C12 and E10 \\
+C13 & 21 Nov 2026, 09:15 to 09:50 & the rule of C10 applied to the
+addendum C12 (its answer and its remark go into the notebook as well):
+object O8, Section III.T of the notebook
+(\texttt{wolfram/source/part3\_thermal.source.wl}, data cell
+\texttt{wolfram/source/data\_part3\_thermal.wl}): the thermal states
+with the engine of Part II, the limit \(T\to0\), the critical
+temperatures and their uniqueness, the superfluid of CJT at \(0.5\) and
+\(0.9\,T^{X,{\rm c}}_{\rm SF}\), the gap equation alone for HS
+\((0,0)\), the Taylor coefficients and the order parameter of Landau's
+theory, the residuals of the Landau forms, the answer, and the remark on
+the mean-field free energies with its importance; 26 checks, each with
+its counterparts in \texttt{sf\_part3} and \texttt{python/sf\_part3.py}
+(91 checks in all; ALL PASS (91 of 91), 0 messages); the new Rust check
+P3-T9 and the new Python checks YP3-T5 to YP3-T8, so that every check of
+the section has counterparts in both programs (VERDICT: ALL PASS (92 of
+92); VERDICT: ALL PASS (45 of 45)); the corrections E9 to E11 of
+\texttt{provenance/P3\_notebook.md} \\
+E13 & 21 Nov 2026 & correction during C13: the Python check of the
+uniqueness of the critical temperature, added in C12, was named YP3-T5,
+the identifier that belongs to the Python counterpart of the Rust check
+P3-T5, a check of another statement; it is now YP3-T9, and the Rust
+program has the same check as P3-T9 (item 7 of Section 17.3 of the
+manuscript, E11 of \texttt{provenance/P3\_notebook.md}) \\
 \end{longtable}
 
 \end{document}

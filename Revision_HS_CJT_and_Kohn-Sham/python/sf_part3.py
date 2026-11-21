@@ -20,9 +20,14 @@ states of this engine (the Fermi occupations of the BdG eigenvalues and the entr
 YP3-T1 (the limit T -> 0), YP3-T3 (the critical temperatures by bisection of lambda^P(T) = 1), YP3-T2 (the order
 parameter and the free energy at T = 0.5 T_c and 0.9 T_c); YP3-T4 solves the gap equation of HS (0, 0) at every
 temperature of the table without the engine (bisection of a sum over the radial nodes) and compares the order
-parameter with the Rust values; YP3-T5 shows, for the five methods, that the eigenvalue lambda^P(T) of the pair
-response of the normal state does not increase with the temperature (so the critical temperature is unique) and equals
-1 at the critical temperature of the Rust program.
+parameter with the Rust values; YP3-T8 checks that the Dirac mass of the superfluid does not depend on the
+temperature; YP3-T5 computes, for CJT at 0.9 T_c, the Taylor coefficients of the free energy at the origin from four
+small applied fields and the error of the order parameter of Landau's theory; YP3-T6 and YP3-T7 recompute, from the
+data file data/part3_thermal_curves.csv, the residuals of the Landau form and of the quartic form of the free-energy
+curves of the five methods at six temperatures; YP3-T9 shows, for the five methods, that the eigenvalue lambda^P(T)
+of the pair response of the normal state does not increase with the temperature (so the critical temperature is
+unique) and equals 1 at the critical temperature of the Rust program.  Every thermal check has the identifier of the
+Rust check of the same statement with the prefix Y.
 
 Run (from the folder python/, after the Rust program sf_part3):   python3 sf_part3.py
 Requires: Python 3, numpy.  Output: data/hck_part3_checks_python.txt.  Run time: about two minutes.
@@ -280,6 +285,8 @@ def thermal(rep, vals):
         rep.add("YP3-T3 %s" % key, "%s: the critical temperature T_c = %.10f = Rust (relative; bisection of lambda^P(T) = 1 with the normal states of this engine)" % (key, tc),
                 abs(tc - vals["p3_th_Tc_" + key]) / vals["p3_th_Tc_" + key], 1e-10)
         dev = 0.0
+        dmass = 0.0
+        m0 = M + np.trace(B8 @ gs["n"]).real / 8      # the Dirac mass of the superfluid at T = 0
         n_s, p_s = gs["n"], gs["p"]
         for tau in (0.5, 0.9):
             r = [x for x in rows if x["method"] == key and abs(float(x["tau"]) - tau) < 1e-9][0]
@@ -289,6 +296,9 @@ def thermal(rep, vals):
             n_s, p_s = sf["n"], sf["p"]
             ph = abs(np.trace(k_scalar(3) @ sf["p"]) / 8)
             dev = max(dev, abs(ph - float(r["Phi0"])), abs((sf["free"] - nn["free"]) - float(r["F_min"])) / abs(float(r["F_min"])))
+            mt = M + np.trace(B8 @ sf["n"]).real / 8
+            dmass = max(dmass, abs(mt - m0), abs(mt - float(r["Dirac_mass"])))
+        rep.add("YP3-T8 %s" % key, "%s: the Dirac mass of the superfluid at 0.5 T_c and 0.9 T_c equals that at T = 0 (%.10f) and the Rust value (largest difference)" % (key, m0), dmass, 1e-10)
         rep.add("YP3-T2 %s" % key, "%s: the order parameter and the free energy of the superfluid at 0.5 T_c and 0.9 T_c = Rust (largest difference; the free energy relative)" % key, dev, 1e-8)
         print("  thermal %s done" % key)
     # HS (0, 0): the order parameter from the gap equation alone, g^P I1(m^2 + D^2, T)/pi^2 = 1 (the Dirac mass stays m)
@@ -306,7 +316,7 @@ def thermal(rep, vals):
                 hi = mid
         dev = max(dev, abs(0.5 * (lo + hi) - float(r["Phi0"])))
     rep.add("YP3-T4", "HS (0, 0): the order parameter of every temperature of the table from the gap equation g^P I1(m^2 + Phi0^2, T)/pi^2 = 1 alone (without the self-consistent engine) = Rust (largest difference)", dev, 1e-9)
-    # YP3-T5: lambda^P(T) of the normal state does not increase with the temperature, so that T_c is the only solution of
+    # YP3-T9: lambda^P(T) of the normal state does not increase with the temperature, so that T_c is the only solution of
     # lambda^P(T) = 1.  The normal state at T from its scalar self-consistency alone, M_n - m = g^S n^S with
     # n^S = -(2/pi^2) [M_n I1(M_n, T) - m I1(m, 0)] (the normal self-energy of the normal state is a Dirac mass), on 600
     # temperatures from 0.001 to 0.6 (T_c = 0.21 to 0.26); the grid of the engine gives the integrals.
@@ -331,8 +341,85 @@ def thermal(rep, vals):
         tc = vals["p3_th_Tc_" + key]
         lam_c = g_p * i1_nodes(mo, mass_n(tc) ** 2, tc) / np.pi ** 2
         rise = max(0.0, float(np.diff(lam).max()))
-        rep.add("YP3-T5 %s" % key, "%s: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise %.1e; from %.6f to %.6f), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)" % (key, rise, lam[0], lam[-1]),
+        rep.add("YP3-T9 %s" % key, "%s: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise %.1e; from %.6f to %.6f), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and |lambda^P(T_c) - 1|)" % (key, rise, lam[0], lam[-1]),
                 max(rise, abs(lam_c - 1.0)), 1e-9)
+    taylor_landau(rep, rows)
+    thermal_landau(rep, vals)
+
+
+def fixed_pair_t(mo, p, n0, t, tol=1e-14):
+    """the thermal state of the applied pair field p at the temperature t, with the normal self-energy made
+    self-consistent: the normal self-energy, the field of the state (the three amplitudes of its own pair self-energy)
+    and the free energy E - t S"""
+    n = n0.copy()
+    for it in range(200000):
+        cn, cp, ent = thermal_states(mo, mo.bdg(n, p), t)
+        rho, kap, ek = mo.local(cn, cp)
+        ei, n2, p2 = mo.inter(rho, kap)
+        if abs(n2 - n).max() < tol:
+            break
+        n = 0.7 * n2 + 0.3 * n
+        n = 0.5 * (n + n.conj().T)
+    phi = [np.trace(k_scalar(i) @ p2) / 8 for i in (1, 2, 3)]
+    return n2, phi, ek + ei - t * ent
+
+
+def taylor_landau(rep, rows):
+    """YP3-T5 (CJT at 0.9 T_c): the Taylor coefficients a, b of F(Phi; T) = a Phi^2 + b Phi^4 + ... at the origin from
+    the thermal states of the applied fields 0.01, 0.02, 0.03, 0.04 (F/Phi^2 interpolated exactly by a cubic polynomial
+    in Phi^2), and the error of the order parameter (-a/2b)^(1/2) of Landau's theory"""
+    mo = Model(terms(("CJT",), 2.8, 0.8, 25.2))
+    z = np.zeros((8, 8), complex)
+    r = [x for x in rows if x["method"] == "CJT" and abs(float(x["tau"]) - 0.9) < 1e-9][0]
+    t = float(r["T"])
+    nn = solve_t(mo, z, z, t, tol=1e-14)
+    n0 = nn["n"]
+    xs, ys = [], []
+    for fa in (0.01, 0.02, 0.03, 0.04):
+        n0, phi, f = fixed_pair_t(mo, fa * K3D, n0, t)
+        ph2 = abs(phi[2]) ** 2
+        xs.append(ph2)
+        ys.append((f - nn["free"]) / ph2)
+    c = np.linalg.solve(np.vander(np.array(xs), 4, increasing=True), np.array(ys))
+    a, b = c[0], c[1]
+    err = np.sqrt(-a / (2 * b)) / float(r["Phi0"]) - 1.0
+    err_rust = float(r["Phi0_Landau"]) / float(r["Phi0"]) - 1.0
+    dev = max(abs(a - float(r["a_Taylor"])) / abs(float(r["a_Taylor"])), abs(b - float(r["b_Taylor"])) / abs(float(r["b_Taylor"])), abs(err - err_rust))
+    rep.add("YP3-T5 CJT", "CJT at 0.9 T_c: the Taylor coefficients a = %.8e, b = %.8e of the free energy at the origin (four applied fields, exact cubic interpolation of F/Phi^2) and the error %.4e of the order parameter (-a/2b)^(1/2) of Landau's theory = Rust (largest relative difference of a and b, difference of the error); the error is %.3f times 1 - T/T_c" % (a, b, err, abs(err) / 0.1), dev, 1e-5)
+
+
+def thermal_landau(rep, vals):
+    """YP3-T6, YP3-T7 (the five methods): the residuals of the Landau form (12.2) and of the quartic form of the
+    free-energy curves, recomputed from data/part3_thermal_curves.csv with numpy (SVD)"""
+    curves = {}
+    with open(os.path.join(DATA, "part3_thermal_curves.csv")) as f:
+        for r in csv.DictReader(f):
+            curves.setdefault((r["method"], round(float(r["tau"]), 4)), []).append((float(r["Phi"]), float(r["F"])))
+    table = {}
+    with open(os.path.join(DATA, "part3_thermal.csv")) as f:
+        for r in csv.DictReader(f):
+            table[(r["method"], round(float(r["tau"]), 4))] = r
+    rust = {}
+    with open(os.path.join(DATA, "part3_thermal_landau.csv")) as f:
+        for r in csv.DictReader(f):
+            rust[(r["method"], round(float(r["tau"]), 4))] = (float(r["res_Landau_over_depth"]), float(r["res_quartic_over_depth"]))
+    for key in ("HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"):
+        dev = 0.0
+        mine = {}
+        for tau in (0.0, 0.5, 0.8, 0.9, 0.95, 0.98):
+            pts = np.array(curves[(key, tau)])
+            phi0 = float(table[(key, tau)]["Phi0"])
+            depth = abs(float(table[(key, tau)]["F_min"]))
+            sel = pts[:, 0] <= 1.4 * phi0
+            _, r6, _ = even_fit(pts[sel, 0], pts[sel, 1], 3)
+            _, r4, _ = even_fit(pts[sel, 0], pts[sel, 1], 2)
+            mine[tau] = (r6 / depth, r4 / depth)
+            dev = max(dev, abs(mine[tau][0] - rust[(key, tau)][0]) / rust[(key, tau)][0], abs(mine[tau][1] - rust[(key, tau)][1]) / rust[(key, tau)][1])
+        falls = mine[0.9][1] > mine[0.95][1] > mine[0.98][1] and mine[0.98][0] < 1e-4
+        rep.add("YP3-T6 %s" % key, "%s: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (%.2e, %.2e, %.2e at 0.9, 0.95, 0.98 T_c) and that of (12.2) is %.1e at 0.98 T_c: %s" % (key, mine[0.9][1], mine[0.95][1], mine[0.98][1], mine[0.98][0], "yes" if falls else "NO"),
+                dev + (0.0 if falls else 1.0), 1e-7)
+        t12 = vals["p3_landau_res_" + key] / abs(vals["p3_E0_" + key])
+        rep.add("YP3-T7 %s" % key, "%s: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, %.6e of the depth, is that of Table 12.1 (relative difference)" % (key, mine[0.0][0]), abs(mine[0.0][0] - t12) / t12, 1e-8)
 
 
 def main():

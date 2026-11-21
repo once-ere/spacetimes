@@ -34,14 +34,20 @@ group GEE and its covariant derivatives, the Lagrangian and the field equations,
 Part II (item 6 of the problem: the pair channels and the gauge bosons that mediate the pairing, the three methods and
 their numerical engine, the recursion of the potential to $V^{(2)}_{\rm SF}$, the ground states and their gaps, the
 Goldstone and the collective modes, the susceptibilities and the masses of the gauge bosons, the exchange of the gauge
-bosons), and the first section of Part III (the Landau form of the effective potentials: its definition with
+bosons), the first section of Part III (the Landau form of the effective potentials: its definition with
 examples, its accuracy, the cause of its error and why the error matters; the answer to the author's questions of 21
-November 2026, which he asked to be kept in the notebook), with {{GEN:nb_ntests}} checks. The rest of Part III and
-Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons in every vacuum, the surviving
-symmetry and the dynamics with IDA) follow in the next versions. The section of Part III takes the five computed polar
-curves of the effective potential from the Rust program `sf_part3` (a closed cell of data with the SHA-256 checksums of
-its files) and recomputes every number from them; Part II computes all its states itself and compares them with the
-values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time integration.
+November 2026, which he asked to be kept in the notebook), and the second section of Part III (Section III.T: the free
+energy of the five methods at finite temperature, the critical temperatures, the gap equation, the size of the order
+parameter against the radius of convergence, and the remark that the free energies of the methods are mean-field free
+energies, with its importance; the addendum asked for by the author on 21 November 2026), with {{GEN:nb_ntests}}
+checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
+Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
+cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
+thermal states, the critical temperatures and the Taylor coefficients itself with the engine of Part II, and takes the
+free-energy curves of the Rust program from a third closed cell; Part II computes all its states itself and compares
+them with the values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time
+integration.
 
 # 3. The files
 
@@ -67,6 +73,14 @@ The files of the notebook, each with its SHA-256 checksum:
   closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the data files and
   their SHA-256 checksums);\
   `{{SHA256:wolfram/source/data_part3.wl}}`
+* `wolfram/source/part3_thermal.source.wl`: the source of the second section of Part III (Section III.T, the free energy
+  at finite temperature);\
+  `{{SHA256:wolfram/source/part3_thermal.source.wl}}`
+* `wolfram/source/data_part3_thermal.wl`: the thermal results of the Rust program (the table of the order parameter, the
+  residuals of the Landau forms and the free-energy curves of the five methods), included in a closed cell of the
+  notebook (written by `wolfram/tools/make_data_cells.py 3T`; its first lines name the data files and their SHA-256
+  checksums);\
+  `{{SHA256:wolfram/source/data_part3_thermal.wl}}`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
   `{{SHA256:wolfram/tools/make_data_cells.py}}`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
@@ -107,13 +121,14 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
     wolframscript -file wolfram/tools/build_notebook.wls wolfram/source/superfluid.source.wl in/superfluid.nb \
         wolfram/tools/sf_formula.wl
 
-The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)` and
-`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` of the main source by the cells of these parts, a line such as
+The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)`,
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` and `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` of the main source
+by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 151 cells (two of them closed cells of data), 517 formulas in the
-texts, 0 warnings.
+reader cannot read as a warning. This version: 200 cells (three of them closed cells of data), 695 formulas in the
+texts, 0 warnings (the builder's own count, printed when it ran).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
 the menu command Evaluate Notebook, but in a fresh kernel named `SFNBRun`, in three calls (each returns at once):
@@ -133,8 +148,8 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (138 seconds, of which Part II takes about two minutes); the only difference from the notebook is that it prints the computing time after every
-check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (162 seconds in this version, of which Part II takes about two minutes and Section III.T about half a
+minute); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
@@ -146,7 +161,8 @@ warning of the Wolfram language); verdict: **{{GEN:nb_verdict}}**.
 
 Every check of the notebook carries the identifier of the same check in the Rust program with the prefix W, and names
 its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
-`sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III) and in the Python program
+`sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III, whose module `thermal` makes the checks
+P3-T1 to P3-T9 of Section III.T) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
 steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
@@ -202,7 +218,16 @@ repeat itself in the others:
   eigensolver, LAPACK in Python); the Taylor coefficient at the origin from the first six points of the computed curve
   in the notebook, and from three states with small applied fields and the Richardson extrapolation in the two
   programs; the integral with the term $\tfrac1{16}s^2\ln s$ exactly, by `Integrate`, `FullSimplify` and `Series`, in
-  the notebook alone (it is shown, not checked).
+  the notebook alone (it is shown, not checked);
+* **the free energy at finite temperature** (WP3-T1 to WP3-T9): the thermal states $f(\mathsf H_{\rm SF})$ by `Eigensystem` of
+  the symmetrized $16\times16$ matrices on the grid of Part II in the notebook, by the Rust program's own eigensolver and
+  by LAPACK in Python; the critical temperatures by bisection, in the notebook with the Dirac mass of the normal state
+  from its scalar self-consistency alone (and, for the three methods with a scalar coupling, compared with the normal
+  state of the thermal engine), in Rust and Python with the normal state of the engine (and, in Python's YP3-T9, also
+  from the scalar self-consistency); the Taylor coefficients by `LinearSolve` of the cubic interpolation in the scaled
+  variable $\Phi^2/\Phi^2_{\max}$ (Gaussian elimination in Rust, `numpy.linalg.solve` in Python); the residuals of the
+  Landau forms of the Rust free-energy curves by `LeastSquares` (Householder reflections in Rust, the singular-value
+  decomposition in Python).
 
 # 8. The symbols of the code of Part I
 
@@ -253,6 +278,13 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 | `lfBdG`, `lfQpDev` | $\mathsf H_{\rm SF}(\vec q_{\rm LL})$ | Part III: the matrix of Bogoliubov and de Gennes with a Dirac mass and an applied pair field, and the deviation of its eigenvalues from $\pm E$ |
 | `lfq`, `lfs`, `lfLam`, `lfInt`, `lfClosed`, `lfSeries` | $q$, $s$, $\Lambda_{\rm LL}$ | Part III: the variables of the integral $\int_0^{\Lambda}q^2(q^2+s)^{1/2}dq$, its value, its closed form and its expansion about $s=0$ |
 | `lfTaylor` | $a^{X,{\rm Tay}}_{\rm SF}$ | Part III: the Taylor coefficient of $\lvert\vec\Phi\rvert^2$ at the origin, estimated from the first six points of the curve |
+| `fermiSF`, `binEntropy`, `thermalNode`, `solveSFT`, `fixedPairT`, `phiOf` | $f(\varepsilon)$, $\mathcal S_{\rm SF}$, $\Phi^X_{0,{\rm SF}}(T)$ | Section III.T: the Fermi function at the temperature $T$, the entropy of one mode, the thermal state $f(\mathsf H_{\rm SF})$ of one node with the entropy of its 16 modes, the self-consistent thermal state, the thermal state of an applied pair field, and the order parameter of a state |
+| `rustThermal`, `rustThermalLandau`, `rustThermalCurves`, `thCol`, `thRow`, `thGet`, `thTaus` | -- | Section III.T: the thermal results of the Rust program (the table of the order parameter, the residuals of the Landau forms, the free-energy curves), the names of the columns of the table, one row and one entry, and the reduced temperatures of the table |
+| `thTags`, `thName`, `thModel`, `thGround` | $X$ | Section III.T: the five methods and their names, the model of $V^{(2)}_{\rm SF}$ of a method, and its ground state at $T=0$ iterated to $10^{-13}$ |
+| `i1Grid`, `thCoup`, `thMassN`, `thLam`, `thTc` | $I^{(1)}_{\rm SF}(M,T)$, $g^{X,{\rm S}}_{\rm SF}$, $g^{X,{\rm P}}_{\rm SF}$, $M^{X,{\rm n}}_{\rm SF}(T)$, $\lambda^{\rm P}_{\rm SF}(T)$, $T^{X,{\rm c}}_{\rm SF}$ | Section III.T: the integral of the pair response on the radial nodes, the effective couplings, the Dirac mass of the normal state from its scalar self-consistency, the eigenvalue of the pair response of the normal state, and the critical temperature |
+| `thSF`, `thGapPhi`, `thPhiGap00` | $\Phi^X_{0,{\rm SF}}(T)$ | Section III.T: the superfluid and the normal state of CJT at $0.5$ and $0.9\,T^{\rm CJT,c}_{\rm SF}$, the order parameter from the gap equation alone, and its values for HS $(0,0)$ |
+| `thCurveTaus`, `thRes`, `thRustRes` | -- | Section III.T: the reduced temperatures of the free-energy curves, and the residuals of the Landau form and of the quartic form recomputed by the notebook and of the Rust program |
+| `thRadius`, `thCross`, `thShown`, `thLegend`, `thColors` | $r^X_{\rm SF}(T)$ | Section III.T: the radius of convergence with the Dirac mass of the normal state computed by the notebook, the reduced temperature above which the order parameter lies inside it, and the curves, the legend and the colors of the figure |
 
 # 9. Errors and corrections found while this version was written
 
@@ -284,6 +316,23 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 8. *A warning of the numerical integration (E8).* The first dry run of Part II gave `NIntegrate` the two radii as
    machine numbers with the working precision of 30 digits, and the kernel warned that the integrand had less
    precision than requested; the radii are now given 30 digits (`SetPrecision`), and the warning is gone.
+
+9. *A badly conditioned system (E9).* The first dry run of Section III.T solved the cubic interpolation of the Taylor
+   coefficients in the variable $\Phi^2$ (values from $1.1\times10^{-4}$ to $1.7\times10^{-3}$), whose matrix has the condition
+   number $1.2\times10^{10}$, and `LinearSolve` warned that its result might contain significant numerical errors (the
+   coefficients agreed with those of the Rust program to $1.4\times10^{-7}$ all the same). The interpolation now uses the
+   scaled variable $\Phi^2/\Phi^2_{\max}$, with the condition number 146, and the warning is gone.
+
+10. *A sentence that the notebook had outgrown (E10).* The introduction of the first section of Part III said that
+    Part II, whose engine computes such curves, "follows in the next versions"; Part II was added in the version before
+    this one. The sentence now says what that chapter takes from the Rust program and that the next chapter uses the
+    engine of Part II.
+
+11. *One identifier for two checks (E11).* When Section III.T named the counterparts of its checks, the Python check of
+    the uniqueness of the critical temperature had the identifier YP3-T5, which by the rule of the identifiers belongs
+    to the Python counterpart of the Rust check P3-T5 (the order parameter of Landau's theory). The Python check is now
+    YP3-T9, the Rust program makes the same check as P3-T9, and the Python program has the new counterparts YP3-T5 to
+    YP3-T8 of the Rust checks P3-T5 to P3-T8, so that every check of Section III.T has a counterpart in both programs.
 
 # 10. What follows
 

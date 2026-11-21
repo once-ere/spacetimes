@@ -1798,8 +1798,9 @@ the static pair response of Section 9.4 at finite temperature ($\tanh(E/2T)=1-2f
 quasi-particles; at $T=0$, $I^{(1)}_{\rm SF}(M,0)=I^{(1)}_{\rm SF}(M)$). The critical temperature $T^{X,{\rm c}}_{\rm SF}$ solves
 $\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$ (*check P3-T3*: by bisection, with the normal state computed at every step; at $T=0$
 the formula gives the eigenvalue of Table 10.1; *check YP3-T3*: the Python program finds the same $T^{X,{\rm c}}_{\rm SF}$ to
-$10^{-10}$; *check YP3-T5*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.001$ to $T=0.6$, so
-$T^{X,{\rm c}}_{\rm SF}$ is the only solution there). Below $T^{X,{\rm c}}_{\rm SF}$ a polar start ends in a superfluid, above it in the normal state (*check P3-T4*). The
+$10^{-10}$; *checks P3-T9 and YP3-T9*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.01$ to $T=0.6$
+(60 temperatures with the normal state of the thermal engine; in Python 600 temperatures from $T=0.001$, with the normal
+state from its scalar self-consistency), so $T^{X,{\rm c}}_{\rm SF}$ is the only solution there). Below $T^{X,{\rm c}}_{\rm SF}$ a polar start ends in a superfluid, above it in the normal state (*check P3-T4*). The
 critical temperatures are {{GEN:p4_tc}}; KS and CJT coincide also at finite temperature.
 
 **The gap equation and the Dirac mass.** The polar superfluid with the Dirac mass $M^{X,{\rm D}}_{\rm SF}$ and the pair
@@ -2558,7 +2559,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   pair field, the curves, the curvatures, the symmetries, the Landau fit), `landau` (Section 12.1: the accuracy of the
   Landau form, Table 12.2 and Figure 9, with the checks P3-8 to P3-11), `kinetic` (Section 12.2: the
   susceptibilities and the twisted states) and `thermal` (Section 12.4: the free energy at finite temperature, the
-  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T8)) uses the library `sfcore`, with two functions added for this part in the
+  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T9)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
   Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -2573,9 +2574,12 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   effective potentials, the Taylor coefficients at the origin, the susceptibilities and the stiffness of the twisted
   states of HS $(1,1)$ and CJT, checks the quasi-particle energies (10.3) with an applied pair field, recomputes every
   number of Table 12.2 from the data files of the five polar curves, computes the thermal states of HS $(1,1)$ and
-  CJT (the limit $T\to0$, the critical temperatures, the order parameter at two temperatures), solves the gap equation
-  (12.10) of HS $(0,0)$ alone, shows for the five methods that $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the
-  temperature, and compares all of them with the values of the Rust program;
+  CJT (the limit $T\to0$, the critical temperatures, the order parameter, the free energy and the Dirac mass at two
+  temperatures), solves the gap equation (12.10) of HS $(0,0)$ alone, computes the Taylor coefficients of the free
+  energy of CJT at $0.9\,T^{\rm CJT,c}_{\rm SF}$ and the order parameter of Landau's theory, recomputes from the data file of
+  the free-energy curves the residuals of their Landau forms, shows for the five methods that
+  $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (checks YP3-T1 to YP3-T9; each has the identifier of
+  the Rust check of the same statement with the prefix Y), and compares all of them with the values of the Rust program;
   `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11:
 
       python3 python/sf_part3.py
@@ -2800,7 +2804,7 @@ Each of the following was found before part II was committed.
 5. Asked by the author (21 November 2026) to compute the effective potential and the free energy of every method and to
    determine whether the order parameter is smaller and more physically reasonable, the solution added Section 12.4
    (the free energy at finite temperature, the critical temperatures, the radius of convergence at finite temperature,
-   Table 12.4 and Figure 10; module `thermal` of `sf_part3`, checks P3-T1 to P3-T8 and YP3-T1 to YP3-T5; the thermal
+   Table 12.4 and Figure 10; module `thermal` of `sf_part3`, checks P3-T1 to P3-T9 and YP3-T1 to YP3-T9; the thermal
    states of the library `sfcore`). The figures 10 to 14 of the earlier versions are now the figures 11 to 15. The first
    run of the module fitted the Landau form to free-energy curves of 41 points with the applied fields up to
    $1.6\,\Phi^X_{0,{\rm SF}}(T)$, which cover a smaller interval than the curves of Section 12.1 and gave at $T=0$ a residual
@@ -2810,6 +2814,13 @@ Each of the following was found before part II was committed.
    `python/sf_part4_figures.py` draws "Figures 11 to 13" (it draws four figures, then numbered 11 to 14, now 12 to 15),
    and Section 16.16 said that the data of the growth runs serve "Figures 12 and 12" (they serve the figures then
    numbered 12 and 13, now 13 and 14). Found while renumbering for item 5 and corrected with it.
+7. The Python check that $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (the uniqueness of
+   $T^{X,{\rm c}}_{\rm SF}$) was first named YP3-T5, the identifier that the rule of the identifiers gives to the Python
+   counterpart of the Rust check P3-T5, a check of another statement (the order parameter of Landau's theory): one
+   identifier for two different checks. It was found when the notebook named the counterparts of its checks of
+   Section 12.4. The Python check is now YP3-T9, the Rust program makes the same check as P3-T9 (60 temperatures with the
+   normal state of its thermal engine), and the Python program has the counterparts YP3-T5 to YP3-T8 of the Rust checks
+   P3-T5 to P3-T8 (P3-T4, a polar start below and above $T^{X,{\rm c}}_{\rm SF}$, has no Python counterpart).
 
 ## 17.4 Part IV
 

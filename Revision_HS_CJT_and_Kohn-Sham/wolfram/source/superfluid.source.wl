@@ -56,6 +56,8 @@ checkTrue[id_String, text_String, ok_, detail_String, rust_String, python_String
 
 (* @@INCLUDECELLS part3_landau.source.wl@@ *)
 
+(* @@INCLUDECELLS part3_thermal.source.wl@@ *)
+
 (* ::Chapter:: *)
 (*The list of all checks*)
 

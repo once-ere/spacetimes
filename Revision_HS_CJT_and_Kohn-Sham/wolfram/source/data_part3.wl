@@ -1,6 +1,6 @@
 (* The values of the Rust programs that Part 3 of the notebook uses or compares with its own results, written by
    wolfram/tools/make_data_cells.py from the data files of the folder data/ (do not edit):
-     data/part3_values.csv   SHA-256 5893d2b871015c3ab475affb82a17a21c18f1a772c754fb6c2018ec8c6f1deeb
+     data/part3_values.csv   SHA-256 348a825bc2d41da358659c46f13bd651468176b04620de44272dd45f1b753a43
      data/part3_effpot_HS_1_1.csv   SHA-256 adec9b41732d6e022c680889612a4f56a4610a52765d36d44a1ae76de2e2dc5c
      data/part3_effpot_HS_0_1.csv   SHA-256 d2a263df26a3949391ed3cf24626c1116b9fd794c00a81dcdbfb156a85b8fce7
      data/part3_effpot_HS_0_0.csv   SHA-256 b0439dd3ee1bd3a71d6851e4389af27a480fed96707ec6e46c06ae19be0700bc
@@ -8,6 +8,10 @@
      data/part3_effpot_CJT.csv   SHA-256 32c3fb53937001c51a23a33b2790112e0970043d8b33f08473d277be1bb9954c
 *)
 rustPart3 = <|
+   "p3_th_Tc_HS_1_1" -> 2.604672394001*^-1,
+   "p3_th_lam0_HS_1_1" -> 1.183842814304*^0,
+   "p3_th_gP_HS_1_1" -> 2.520000000000*^1,
+   "p3_th_gS_HS_1_1" -> 2.800000000000*^0,
    "p3_Phi0_HS_1_1" -> 4.030641405974*^-1,
    "p3_E0_HS_1_1" -> -5.186344202260*^-4,
    "p3_V2amp_HS_1_1" -> 2.805926638133*^-2,
@@ -60,6 +64,10 @@ rustPart3 = <|
    "p3_landau_rng3_res_HS_1_1" -> 9.030771223631*^-6,
    "p3_a_taylor_HS_1_1" -> -6.162431094124*^-3,
    "p3_a_taylor_chk_HS_1_1" -> -6.162431039978*^-3,
+   "p3_th_Tc_HS_0_1" -> 2.404654563265*^-1,
+   "p3_th_lam0_HS_0_1" -> 1.150958291684*^0,
+   "p3_th_gP_HS_0_1" -> 2.450000000000*^1,
+   "p3_th_gS_HS_0_1" -> 0.000000000000*^0,
    "p3_Phi0_HS_0_1" -> 3.620090014142*^-1,
    "p3_E0_HS_0_1" -> -3.608029261390*^-4,
    "p3_V2amp_HS_0_1" -> 2.372537890946*^-2,
@@ -112,6 +120,10 @@ rustPart3 = <|
    "p3_landau_rng3_res_HS_0_1" -> 5.441757753373*^-6,
    "p3_a_taylor_HS_0_1" -> -5.353419813339*^-3,
    "p3_a_taylor_chk_HS_0_1" -> -5.353419784339*^-3,
+   "p3_th_Tc_HS_0_0" -> 2.137990983941*^-1,
+   "p3_th_lam0_HS_0_0" -> 1.113375980119*^0,
+   "p3_th_gP_HS_0_0" -> 2.370000000000*^1,
+   "p3_th_gS_HS_0_0" -> 0.000000000000*^0,
    "p3_Phi0_HS_0_0" -> 3.069887934783*^-1,
    "p3_E0_HS_0_0" -> -2.061619080677*^-4,
    "p3_V2amp_HS_0_0" -> 1.837793389510*^-2,
@@ -164,6 +176,10 @@ rustPart3 = <|
    "p3_landau_rng3_res_HS_0_0" -> 2.380005329721*^-6,
    "p3_a_taylor_HS_0_0" -> -4.296658731607*^-3,
    "p3_a_taylor_chk_HS_0_0" -> -4.296658700617*^-3,
+   "p3_th_Tc_KS" -> 2.221187370593*^-1,
+   "p3_th_lam0_KS" -> 1.113375980119*^0,
+   "p3_th_gP_KS" -> 2.370000000000*^1,
+   "p3_th_gS_KS" -> -7.400000000000*^0,
    "p3_Phi0_KS" -> 3.284861083768*^-1,
    "p3_E0_KS" -> -2.422384965940*^-4,
    "p3_V2amp_KS" -> 1.967187373359*^-2,
@@ -216,6 +232,10 @@ rustPart3 = <|
    "p3_landau_rng3_res_KS" -> 3.051446035902*^-6,
    "p3_a_taylor_KS" -> -4.296658755320*^-3,
    "p3_a_taylor_chk_KS" -> -4.296659074484*^-3,
+   "p3_th_Tc_CJT" -> 2.221187370593*^-1,
+   "p3_th_lam0_CJT" -> 1.113375980119*^0,
+   "p3_th_gP_CJT" -> 2.370000000000*^1,
+   "p3_th_gS_CJT" -> -7.400000000000*^0,
    "p3_Phi0_CJT" -> 3.284861083768*^-1,
    "p3_E0_CJT" -> -2.422384965940*^-4,
    "p3_V2amp_CJT" -> 1.967187373404*^-2,
