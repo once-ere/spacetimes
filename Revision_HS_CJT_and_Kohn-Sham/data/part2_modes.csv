@@ -1,0 +1,9 @@
+method,gap,threshold,goldstone_modes,omega,multiplicity,amplitude
+HS_1_1,4.52967405607746121e-1,9.05934811215492242e-1,3,8.06128281194059992e-1,2,kb[C gamma^ch x E tau2] 0.461; k[C gamma^ch x E tau2] 0.461; n[gamma^0 x tau1] 0.020; kb[C gamma^0 gamma^ch x E tau2] 0.020
+HS_1_1,4.52967405607746121e-1,9.05934811215492242e-1,3,8.13693091685952385e-1,1,k[C gamma^ch x E tau3] 0.474; kb[C gamma^ch x E tau3] 0.474; k[C gamma^0 gamma^ch x E tau3] 0.019; kb[C gamma^0 gamma^ch x E tau3] 0.019
+HS_0_1,4.13582539651642267e-1,8.27165079303284534e-1,3,7.25083390995323374e-1,3,k[C gamma^ch x E tau3] 0.282; kb[C gamma^ch x E tau3] 0.282; kb[C gamma^ch x E tau2] 0.190; k[C gamma^ch x E tau2] 0.190
+HS_0_0,3.66390664893420537e-1,7.32781329786841074e-1,3,6.14387383983286073e-1,3,k[C gamma^ch x E tau3] 0.285; kb[C gamma^ch x E tau3] 0.285; kb[C gamma^ch x E tau2] 0.193; k[C gamma^ch x E tau2] 0.193
+KS,3.66390664893408158e-1,7.32781329786816316e-1,3,6.03475966909225336e-1,1,k[C gamma^ch x E tau3] 0.426; kb[C gamma^ch x E tau3] 0.426; n[gamma^0 x 1] 0.111; k[C gamma^0 gamma^ch x E tau3] 0.019
+KS,3.66390664893408158e-1,7.32781329786816316e-1,3,6.57284727194539675e-1,2,kb[C gamma^ch x E tau2] 0.475; k[C gamma^ch x E tau2] 0.475; n[gamma^0 x tau1] 0.011; kb[C gamma^0 gamma^ch x E tau2] 0.011
+CJT,3.66390664893408435e-1,7.32781329786816871e-1,3,6.03475966909230443e-1,1,k[C gamma^ch x E tau3] 0.426; kb[C gamma^ch x E tau3] 0.426; n[gamma^0 x 1] 0.111; k[C gamma^0 gamma^ch x E tau3] 0.019
+CJT,3.66390664893408435e-1,7.32781329786816871e-1,3,6.44007154633925660e-1,2,k[C gamma^ch x E tau2] 0.467; kb[C gamma^ch x E tau2] 0.467; n[gamma^0 x tau1] 0.028; k[C gamma^0 gamma^ch x E tau2] 0.013

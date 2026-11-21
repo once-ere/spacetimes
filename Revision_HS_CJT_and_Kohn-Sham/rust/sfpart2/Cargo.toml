@@ -1,0 +1,14 @@
+# sf_part2: the pair channels, the gauge bosons that mediate the pairing, the recursion of the potential, and the
+# ground state, the first excited states and the gap by the methods HS, CJT and KS (part II of superfluid.md).
+# Run from the folder rust/:  cargo run --release --bin sf_part2
+[package]
+name = "sfpart2"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sf_part2"
+path = "src/main.rs"
+
+[dependencies]
+sfcore = { path = "../sfcore" }

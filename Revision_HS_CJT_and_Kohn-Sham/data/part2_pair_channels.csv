@@ -1,0 +1,43 @@
+operator,channel,E_pair_per_unit_coupling,G_ch_per_unit_coupling
+scalar (1/2):(Psi-bar Psi)^2:,K^1 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+scalar (1/2):(Psi-bar Psi)^2:,K^2 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+scalar (1/2):(Psi-bar Psi)^2:,K^3 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+scalar (1/2):(Psi-bar Psi)^2:,K'^1 (pseudoscalar 0-),-1.00000000000000000e0,2.50000000000000000e-1
+scalar (1/2):(Psi-bar Psi)^2:,K'^2 (pseudoscalar 0-),-1.00000000000000000e0,2.50000000000000000e-1
+scalar (1/2):(Psi-bar Psi)^2:,K'^3 (pseudoscalar 0-),-1.00000000000000000e0,2.50000000000000000e-1
+vector (1/2):j_p j^p:,K^1 (scalar 0+),4.00000000000000000e0,-1.00000000000000000e0
+vector (1/2):j_p j^p:,K^2 (scalar 0+),4.00000000000000000e0,-1.00000000000000000e0
+vector (1/2):j_p j^p:,K^3 (scalar 0+),4.00000000000000000e0,-1.00000000000000000e0
+vector (1/2):j_p j^p:,K'^1 (pseudoscalar 0-),4.00000000000000000e0,-1.00000000000000000e0
+vector (1/2):j_p j^p:,K'^2 (pseudoscalar 0-),4.00000000000000000e0,-1.00000000000000000e0
+vector (1/2):j_p j^p:,K'^3 (pseudoscalar 0-),4.00000000000000000e0,-1.00000000000000000e0
+pairing -(1/4) sum Pi^dag Pi,K^1 (scalar 0+),-4.00000000000000000e0,1.00000000000000000e0
+pairing -(1/4) sum Pi^dag Pi,K^2 (scalar 0+),-4.00000000000000000e0,1.00000000000000000e0
+pairing -(1/4) sum Pi^dag Pi,K^3 (scalar 0+),-4.00000000000000000e0,1.00000000000000000e0
+pairing -(1/4) sum Pi^dag Pi,K'^1 (pseudoscalar 0-),0.00000000000000000e0,-0.00000000000000000e0
+pairing -(1/4) sum Pi^dag Pi,K'^2 (pseudoscalar 0-),0.00000000000000000e0,-0.00000000000000000e0
+pairing -(1/4) sum Pi^dag Pi,K'^3 (pseudoscalar 0-),0.00000000000000000e0,-0.00000000000000000e0
+boson W1 (1/2) sum eta :j^p j_p:,K^1 (scalar 0+),-1.00000000000000000e0,2.50000000000000000e-1
+boson W1 (1/2) sum eta :j^p j_p:,K^2 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+boson W1 (1/2) sum eta :j^p j_p:,K^3 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+boson W1 (1/2) sum eta :j^p j_p:,K'^1 (pseudoscalar 0-),-1.00000000000000000e0,2.50000000000000000e-1
+boson W1 (1/2) sum eta :j^p j_p:,K'^2 (pseudoscalar 0-),1.00000000000000000e0,-2.50000000000000000e-1
+boson W1 (1/2) sum eta :j^p j_p:,K'^3 (pseudoscalar 0-),1.00000000000000000e0,-2.50000000000000000e-1
+boson W2 (1/2) sum eta :j^p j_p:,K^1 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+boson W2 (1/2) sum eta :j^p j_p:,K^2 (scalar 0+),-1.00000000000000000e0,2.50000000000000000e-1
+boson W2 (1/2) sum eta :j^p j_p:,K^3 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+boson W2 (1/2) sum eta :j^p j_p:,K'^1 (pseudoscalar 0-),1.00000000000000000e0,-2.50000000000000000e-1
+boson W2 (1/2) sum eta :j^p j_p:,K'^2 (pseudoscalar 0-),-1.00000000000000000e0,2.50000000000000000e-1
+boson W2 (1/2) sum eta :j^p j_p:,K'^3 (pseudoscalar 0-),1.00000000000000000e0,-2.50000000000000000e-1
+boson W3 (1/2) sum eta :j^p j_p:,K^1 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+boson W3 (1/2) sum eta :j^p j_p:,K^2 (scalar 0+),1.00000000000000000e0,-2.50000000000000000e-1
+boson W3 (1/2) sum eta :j^p j_p:,K^3 (scalar 0+),-1.00000000000000000e0,2.50000000000000000e-1
+boson W3 (1/2) sum eta :j^p j_p:,K'^1 (pseudoscalar 0-),1.00000000000000000e0,-2.50000000000000000e-1
+boson W3 (1/2) sum eta :j^p j_p:,K'^2 (pseudoscalar 0-),1.00000000000000000e0,-2.50000000000000000e-1
+boson W3 (1/2) sum eta :j^p j_p:,K'^3 (pseudoscalar 0-),-1.00000000000000000e0,2.50000000000000000e-1
+boson B (1/2) sum eta :j^p j_p:,K^1 (scalar 0+),4.00000000000000000e0,-1.00000000000000000e0
+boson B (1/2) sum eta :j^p j_p:,K^2 (scalar 0+),4.00000000000000000e0,-1.00000000000000000e0
+boson B (1/2) sum eta :j^p j_p:,K^3 (scalar 0+),4.00000000000000000e0,-1.00000000000000000e0
+boson B (1/2) sum eta :j^p j_p:,K'^1 (pseudoscalar 0-),4.00000000000000000e0,-1.00000000000000000e0
+boson B (1/2) sum eta :j^p j_p:,K'^2 (pseudoscalar 0-),4.00000000000000000e0,-1.00000000000000000e0
+boson B (1/2) sum eta :j^p j_p:,K'^3 (pseudoscalar 0-),4.00000000000000000e0,-1.00000000000000000e0

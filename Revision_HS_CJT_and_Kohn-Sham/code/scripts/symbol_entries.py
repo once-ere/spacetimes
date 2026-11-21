@@ -393,6 +393,14 @@ ENTRIES = [
     (G8, "$D^{\\rm b}_{\\rm SF}(\\vec k)$, $M^{\\rm b}_{\\rm SF}$", "D_b M_b", "the static kernel "
      "$1/(\\lvert\\vec k\\rvert^2+(M^{\\rm b}_{\\rm SF})^2)$ of the exchange of the gauge boson b (b = $A$, $W$, $Z$) with the "
      "momentum transfer $\\vec k$, and the mass of that boson", "new"),
+    (G8, "$\\mathsf t^{\\rm b}_{\\rm SF}$, $\\mathsf A^{\\rm b}_{{\\rm SF},p}$", "t_b A_b", "the isospin matrix of the "
+     "gauge boson b ($\\tfrac12\\tau^{\\rm LL}_\\iota$ for $W^\\iota_{{\\rm SF},p}$, $\\mathsf 1_2$ for $B_{{\\rm SF},p}$) and "
+     "its vertex matrices $(\\gamma^0_{\\rm LL}\\gamma^p_{\\rm LL})\\otimes\\mathsf t^{\\rm b}_{\\rm SF}$ (the current of b is "
+     "$\\Psi^\\dagger_{\\rm LL}\\mathsf A^{\\rm b}_{{\\rm SF},p}\\Psi_{\\rm LL}$)", "new"),
+    (G8, "$\\lambda^{\\rm T}_{\\rm SF}$, $g^{\\rm crit}_{\\rm SF}$", "lambda_T g_crit", "the largest eigenvalue of the "
+     "linearized gap equation of the normal vacuum in the channel $\\mathsf K^3_{\\rm LL}$ with the exchange of gauge bosons "
+     "(the normal vacuum is unstable against pairing when it exceeds 1), and the coupling at which the photon alone would "
+     "make it 1", "new"),
     (G8, "$\\mathcal E^{\\rm ex,b}_{\\rm SF}$", "E_ex_b", "the energy per volume of the static exchange of the gauge boson b "
      "in a uniform state, measured from the normal vacuum", "new"),
     # ------------------------------------------------------------------ group 9
@@ -401,9 +409,35 @@ ENTRIES = [
     (G9, "$\\sigma^{\\rm HS}_{\\rm SF}$, $\\omega^{{\\rm HS},p}_{\\rm SF}$, $\\vec\\Phi^{\\rm HS}_{\\rm SF}$",
      "sigma_HS omega_HS Phi_HS", "the auxiliary (Hubbard-Stratonovich) fields of the scalar density, of the vector current "
      "and of the pair channel", "new"),
-    (G9, "$s^{\\rm HS}_{\\rm SF}$", "s_HS", "the HS parameter: the share (between 0 and 1) of the scalar contact term that "
-     "is decoupled in the scalar-density channel; the rest is rewritten in the pair channels with the Fierz identity",
+    (G9, "$s^{\\rm HS,S}_{\\rm SF}$, $s^{\\rm HS,V}_{\\rm SF}$", "s_S s_V", "the HS parameters: the shares (between 0 "
+     "and 1) of the scalar and of the vector contact term that are decoupled in the density channels (their direct "
+     "contraction); the rest of each term is decoupled in the pair channels (its pair contraction)", "new"),
+    (G9, "$w^{\\rm H}_{\\rm SF}$, $w^{\\rm F}_{\\rm SF}$, $w^{\\rm P}_{\\rm SF}$", "w_h w_f w_p", "the weights with "
+     "which a method keeps the direct (Hartree), the exchange (Fock) and the pair (Bogoliubov) contraction of a contact "
+     "term in its energy per volume", "new"),
+    (G9, "$\\mathcal P^{\\rm KS}_{\\rm SF}$", "ks_project", "the projection of an $8\\times8$ matrix $\\mathsf X$ onto the "
+     "span of $\\mathsf 1_8$ and $\\beta_{\\rm LL}\\otimes\\mathsf 1_2$: "
+     "$\\mathcal P^{\\rm KS}_{\\rm SF}(\\mathsf X)=\\tfrac18\\mathrm{tr}(\\mathsf X)\\,\\mathsf 1_8+\\tfrac18\\mathrm{tr}(\\beta_{\\rm LL}\\mathsf X)\\,\\beta_{\\rm LL}$ "
+     "(the Kohn-Sham densities are the number density and the scalar density)", "new"),
+    (G9, "$g^{X,{\\rm S}}_{\\rm SF}$, $g^{X,{\\rm P}}_{\\rm SF}$", "g_S g_P", "the effective couplings of method $X$ in "
+     "the scalar-density channel (a uniform scalar density $n^{\\rm S}_{\\rm SF}$ shifts the Dirac mass by "
+     "$g^{X,{\\rm S}}_{\\rm SF}n^{\\rm S}_{\\rm SF}$) and in the pair channel $\\mathsf K^3_{\\rm LL}$ (normalized so that "
+     "the pairing term alone has $g^{X,{\\rm P}}_{\\rm SF}=G_{\\rm LL}$)", "new"),
+    (G9, "$\\chi^{\\rm S}_{\\rm SF}$", "chi_S", "the scalar susceptibility of the normal vacuum, "
+     "$-\\partial n^{\\rm S}_{\\rm SF}/\\partial M=(2/\\pi^2)\\int_0^{\\Lambda_{\\rm LL}}q^4(q^2+m_{\\rm LL}^2)^{-3/2}dq$",
      "new"),
+    (G9, "$D^X_{\\rm SF}$", "D_X", "the pair amplitude of a polar state of method $X$: its pair self-energy is "
+     "$D^X_{\\rm SF}(\\mathsf K^3_{\\rm LL})^\\dagger$", "new"),
+    (G9, "$\\boldsymbol\\chi_{\\rm SF}(\\omega)$, $\\mathsf F^X_{\\rm SF}$, $\\mathsf Q^X_{\\rm SF}(\\omega)$",
+     "chi_resp F_kern Q_resp", "the linear response of a uniform state at the frequency $\\omega$ (the map from the "
+     "amplitudes of the self-energies to the amplitudes of the local correlation matrices, a $120\\times120$ matrix), the "
+     "kernel of method $X$ (the map from the amplitudes of the correlation matrices to those of the self-energies), and "
+     "their product $\\boldsymbol\\chi_{\\rm SF}(\\omega)\\mathsf F^X_{\\rm SF}$", "new"),
+    (G9, "$\\lambda^{\\rm S}_{\\rm SF}$, $\\lambda^{\\rm P}_{\\rm SF}$", "lambda_S lambda_P", "the eigenvalues of "
+     "$\\mathsf Q^X_{\\rm SF}(0)$ of the normal vacuum in the scalar-density channel and in the pair channel (an eigenvalue "
+     "larger than 1 means that the normal vacuum is unstable in that channel)", "new"),
+    (G9, "$\\Omega_{\\rm SF}$", "Omega", "the energy of a transition between an occupied and an empty eigenvector of "
+     "$\\mathsf H_{\\rm SF}(\\vec q_{\\rm LL})$, the difference of their eigenvalues", "new"),
     (G9, "$\\Gamma^{\\rm CJT}_{\\rm LL}$; $\\mathcal G_{\\rm LL}$", "Gamma_CJT G_prop", "the effective action of the "
      "propagator in the method of Cornwall, Jackiw and Tomboulis, and the propagator of the Nambu spinor of 16 components",
      "LL"),
@@ -460,9 +494,19 @@ ENTRIES = [
      "$X$ (the minima of $\\mathcal V^X_{\\rm SF}$) and the stabilizer of a chosen vacuum in GEE", "new"),
     (G10, "$M^{X,{\\rm H}}_{\\rm SF}$", "M_H", "the mass of the amplitude (Higgs) mode of the superfluid in method $X$",
      "new"),
+    (G10, "$M^{X,{\\rm NU}}_{\\rm SF}$", "M_NU", "the mass of the two non-unitary modes of the superfluid in method $X$ "
+     "(the oscillations of the imaginary parts of the components 1 and 2 of the order parameter of a polar state along the "
+     "third isospin axis)", "new"),
     # ------------------------------------------------------------------ group 11
     (G11, "$\\mathsf M^X_{\\rm SF}$", "Mmat", "the real symmetric $4\\times4$ mass matrix of the gauge fields "
      "$W^1_{{\\rm SF},p}$, $W^2_{{\\rm SF},p}$, $W^3_{{\\rm SF},p}$, $B_{{\\rm SF},p}$ in the vacuum of method $X$", "new"),
+    (G11, "$\\mathsf q^a_{\\rm SF}$, $\\mu^a_{\\rm SF}$, $\\chi^{ab}_{\\rm SF}$", "q_a mu_a chi_ab", "the charge matrices "
+     "of the four gauge fields ($a=1,2,3$: $\\mathsf 1_4\\otimes\\tfrac12\\tau^{\\rm LL}_a$; $a={\\rm F}$: $\\mathsf 1_8$), the "
+     "chemical potentials of the charges $\\Psi^\\dagger_{\\rm LL}\\mathsf q^a_{\\rm SF}\\Psi_{\\rm LL}$, and the static "
+     "susceptibilities $\\chi^{ab}_{\\rm SF}=\\partial\\langle\\Psi^\\dagger_{\\rm LL}\\mathsf q^a_{\\rm SF}\\Psi_{\\rm LL}\\rangle/\\partial\\mu^b_{\\rm SF}$ "
+     "at $\\mu^b_{\\rm SF}=0$", "new"),
+    (G11, "$s^{\\rm g}_{\\rm SF}$", "s_g", "a common factor of the two gauge couplings, $g^{\\rm v}_{\\rm LL}=0.7\\,s^{\\rm g}_{\\rm SF}$ "
+     "and $g^{\\rm F}_{\\rm LL}=0.45\\,s^{\\rm g}_{\\rm SF}$", "new"),
     (G11, "$M^X_{W,{\\rm SF}}$, $M^X_{Z,{\\rm SF}}$, $M^X_{A,{\\rm SF}}$", "M_W M_Z M_A", "the masses of $W^\\pm_{{\\rm SF},p}$, "
      "$Z_{{\\rm SF},p}$ and $A_{{\\rm SF},p}$ in method $X$", "new"),
     # ------------------------------------------------------------------ group 12

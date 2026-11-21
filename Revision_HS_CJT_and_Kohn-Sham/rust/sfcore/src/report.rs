@@ -98,12 +98,21 @@ pub fn write_text(path: &Path, s: &str) {
     f.write_all(s.as_bytes()).unwrap();
 }
 
-/// writes a CSV file: a header line and one line per row (the entries must not contain commas)
+/// one field of a CSV line: quoted (with inner quotes doubled) when it contains a comma or a quote (RFC 4180)
+fn csv_field(x: &str) -> String {
+    if x.contains(',') || x.contains('"') {
+        format!("\"{}\"", x.replace('"', "\"\""))
+    } else {
+        x.to_string()
+    }
+}
+
+/// writes a CSV file: a header line and one line per row (fields with commas are quoted)
 pub fn write_csv(path: &Path, header: &[&str], rows: &[Vec<String>]) {
-    let mut s = header.join(",");
+    let mut s = header.iter().map(|h| csv_field(h)).collect::<Vec<_>>().join(",");
     s.push('\n');
     for r in rows {
-        s.push_str(&r.join(","));
+        s.push_str(&r.iter().map(|x| csv_field(x)).collect::<Vec<_>>().join(","));
         s.push('\n');
     }
     write_text(path, &s);

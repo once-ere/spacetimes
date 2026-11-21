@@ -15,14 +15,25 @@
 //!   the exact operator checks (theorem D1, the field equations as Heisenberg equations);
 //! * `report` -- the record of the machine checks and the writers of the data files;
 //! * `sturm` -- eigenvalues of Hermitian block-tridiagonal matrices (lattice problems in one space direction) by
-//!   counting with the block LDL^dag factorization and bisection.
+//!   counting with the block LDL^dag factorization and bisection;
+//! * `uniform` -- uniform quasi-free states: the mean-field engine of the methods HS, KS and CJT (contact terms with
+//!   selectable Wick contractions, self-consistency, energies);
+//! * `exchange` -- the static exchange of gauge bosons in uniform states (momentum-dependent self-energies);
+//! * `linalg` -- linear systems, eigenvalues and eigenvectors of general complex matrices;
+//! * `methods` -- the potentials of the recursion and the methods HS, KS and CJT as weights of the Wick contractions;
+//! * `rpa` -- the linear response of uniform states (the static stability and the collective modes).
 pub mod algebra;
 pub mod c64;
 pub mod cmat;
 pub mod dirac;
 pub mod dual;
+pub mod exchange;
 pub mod fockmat;
+pub mod linalg;
+pub mod methods;
 pub mod quad;
 pub mod report;
 pub mod rng;
+pub mod rpa;
 pub mod sturm;
+pub mod uniform;

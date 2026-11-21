@@ -1,0 +1,32 @@
+sf_part2.py: the Python computation of part II of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YP2-0a  deviation 0.000e+00 (tolerance 1.0e-12): pair-channel energies of 7 operators in 6 channels (exact algebra of one point) = the Rust table
+PASS YP2-0b  deviation 0.000e+00 (tolerance 1.0e-12): the three W together = 1/4 of B in every channel
+PASS YP2-1   deviation 7.233e-13 (tolerance 1.0e-08): self-energies = derivatives of the energy, V^(2), five methods, random states
+PASS YP2-2   deviation 2.918e-11 (tolerance 3.0e-10): pairing-only limit = AS3 of part I (|d^3| = 0.2094933033)
+PASS YP2-6a  deviation 1.332e-15 (tolerance 1.0e-10): V^(2) from the conditions on the CJT effective couplings: (G^S, G) = (2.8000000000, 25.2000000000)
+PASS YP2-6b  deviation 3.268e-13 (tolerance 1.0e-10): the critical pair coupling pi^2/I1(m) = 21.2866097555
+PASS YP2-6c  deviation 1.776e-15 (tolerance 1.0e-11): effective couplings g_S, g_P of 3 potentials x 5 methods = Rust
+PASS YP2-6d  deviation 7.541e-17 (tolerance 1.0e-11): ground-state energies of 3 potentials x 5 methods = Rust
+PASS YP2-6e  deviation 1.682e-12 (tolerance 1.0e-08): pair amplitudes |D| of the ground states = Rust
+PASS YP2-6f  deviation 4.952e-13 (tolerance 1.0e-08): Dirac masses of the ground states = Rust
+PASS YP2-6g  deviation 4.959e-13 (tolerance 1.0e-07): gaps of the ground states = Rust
+PASS YP2-7a HS_1_1 deviation 1.621e-13 (tolerance 1.0e-09): HS_1_1: three Goldstone modes (LAPACK eigenvalues of M(0) equal to 1); spectrum of every node +-E (spread 4.0e-15)
+PASS YP2-7b HS_1_1 deviation 5.262e-14 (tolerance 1.0e-07): HS_1_1: the collective modes below the threshold ['0.80612828', '0.81369309'] = Rust ['0.80612828', '0.81369309']
+PASS YP2-7a KS deviation 2.320e-13 (tolerance 1.0e-09): KS: three Goldstone modes (LAPACK eigenvalues of M(0) equal to 1); spectrum of every node +-E (spread 4.0e-15)
+PASS YP2-7b KS deviation 1.333e-13 (tolerance 1.0e-07): KS: the collective modes below the threshold ['0.60347597', '0.65728473'] = Rust ['0.60347597', '0.65728473']
+PASS YP2-7a CJT deviation 2.329e-13 (tolerance 1.0e-09): CJT: three Goldstone modes (LAPACK eigenvalues of M(0) equal to 1); spectrum of every node +-E (spread 4.4e-15)
+PASS YP2-7b CJT deviation 1.180e-13 (tolerance 1.0e-07): CJT: the collective modes below the threshold ['0.60347597', '0.64400715'] = Rust ['0.60347597', '0.64400715']
+PASS YP2-8a HS_1_1 deviation 3.744e-15 (tolerance 1.0e-08): HS_1_1: chi_11 = 0.0051186247, chi_FF = 0.0201445392 = Rust; chi_33 = 1.1e-15 (massless photon), no mixing
+PASS YP2-8a KS deviation 5.405e-15 (tolerance 1.0e-08): KS: chi_11 = 0.0043170062, chi_FF = 0.0203622430 = Rust; chi_33 = 1.3e-16 (massless photon), no mixing
+PASS YP2-8a CJT deviation 3.879e-15 (tolerance 1.0e-08): CJT: chi_11 = 0.0045778739, chi_FF = 0.0203622430 = Rust; chi_33 = 8.2e-16 (massless photon), no mixing
+PASS YP2-8b  deviation 1.443e-14 (tolerance 1.0e-12): angular averages D0, D1 of the Yukawa kernel (closed forms of the Rust program) = 400-point quadrature in the angle
+PASS YP2-8c  deviation 5.918e-12 (tolerance 1.0e-09): Thouless eigenvalues of the exchange per unit coupling^2: photon 0.0357317832, B -0.1429271327 = Rust
+PASS YP2-8d  deviation 1.492e-08 (tolerance 1.0e-07): CJT with exchange at g_v = 0.7, g_F = 0.45: energy -1.3240201973e-04 = Rust (relative; 294 iterations)
+
+Notes:
+  run time 155 s
+
+VERDICT: ALL PASS (23 of 23)
