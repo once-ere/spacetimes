@@ -7,11 +7,11 @@
 #
 # Build everything (from this folder, Revision_HS_CJT_and_Kohn-Sham/rust):
 #     cargo build --release
-# The programs are then in target/release/ (sf_part1, ...), together with the shared library libsfsundials
+# The programs are then in target/release/ (sf_part1, ...), together with the shared library libsfsundials_c
 # (.so on Linux, .dylib on macOS) of the member sfsundials_c: the C interface of CVODE and IDA through which the Python
 # programs of the folder python/ integrate with the same pure-Rust SUNDIALS.
 [workspace]
-members = ["sfcore", "sfpart1", "sfpart2", "sfpart3"]
+members = ["sfcore", "sfpart1", "sfpart2", "sfpart3", "sfsundials", "sfsundials_c", "sfpart4"]
 resolver = "2"
 
 [profile.release]

@@ -197,6 +197,17 @@ impl Response {
         }
         m
     }
+    /// chi(omega) at a complex frequency (added for Part IV: at omega = i gamma, gamma > 0, a solution of v = chi F v is
+    /// a fluctuation that grows as e^{gamma t}, the unstable mode of a state that is not a minimum)
+    pub fn chi_complex(&self, omega: C64) -> CMat {
+        let mut m = CMat::new(NV, NV);
+        for bk in &self.buckets {
+            let dp = C64::ONE / (omega - c(bk.omega, 0.0));
+            let dm = C64::ONE / (omega + c(bk.omega, 0.0));
+            m = m.add(&bk.a.scale(dp)).sub(&bk.b.scale(dm));
+        }
+        m
+    }
     /// the products chi_c F of every bucket with a kernel, for fast evaluation of M(omega) = chi(omega) F
     pub fn with_kernel(&self, f: &CMat) -> Response {
         let buckets = self.buckets.iter().map(|bk| Bucket { omega: bk.omega, a: bk.a.mul(f), b: bk.b.mul(f) }).collect();

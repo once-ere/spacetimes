@@ -3,7 +3,7 @@
 title: "A spin-zero spinor superfluid on the 3+1 manifold M31 of the Lorentz super-loop: the GEE gauge theory of the Dirac isodoublet, its field equations and analytic solutions, and the superfluid boson singlet state by the methods of Hubbard-Stratonovich, Cornwall-Jackiw-Tomboulis and Kohn-Sham"
 subtitle: "Manuscript of PROJECT spacetimes, folder Revision_HS_CJT_and_Kohn-Sham"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 20, 2026"
+date: "November 21, 2026"
 ---
 
 <!-- This file is generated from docs_src/superfluid.src.md by code/scripts/assemble_docs.py; edit the source. -->
@@ -17,7 +17,7 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
   and the GEE gauge-covariant derivatives; the Lagrangian of the self-interacting spinor field with a mass term and a
   self-interaction, its Euler-Lagrange equations, explicit and in the form needed for numerical solution; and four
   analytic solutions. Every statement that can be checked by a computation is checked by two programs, one in Rust
-  and one in Python, whose reports are printed in Section 14.
+  and one in Python, whose reports are printed in Section 16.
 * **Part II** (Sections 8 to 11): the condensation of the spinor field into a superfluid boson singlet state of spin $S=0$, the gauge
   bosons that mediate the pairing, and the ground state, the first excited states and the gap by the methods of
   Hubbard-Stratonovich (HS), Cornwall-Jackiw-Tomboulis (CJT) and Kohn-Sham (KS), with the recursion of the potential
@@ -25,18 +25,21 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
 * **Part III** (Sections 12 and 13): the three effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their
   kinetic and potential parts, the Mexican hat, the minima, the spontaneous breaking of the symmetry and
   $\mathrm{SFBSv}^{\rm CJT}$, $\mathrm{SFBSv}^{\rm HS}$, $\mathrm{SFBSv}^{\rm KS}$.
-* **Part IV**: the masses of the gauge bosons, the diagonalization of the mass terms, the surviving symmetry group and
-  its massless gauge boson; the dynamics, computed with the integrators CVODE and IDA.
+* **Part IV** (Sections 14 and 15): the mass matrix of the gauge bosons in every vacuum, its diagonalization, the theorem
+  that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group
+  $SL(2,\mathbb C)\times O(2)$ and its $U(1)$ with the massless photon; the dynamics of the superfluid (the growth of the
+  condensate from the unstable normal vacuum, the collective modes in time, the stability of the train of pulses) and of
+  its gauge fields (the photon that radiates and the W that stays bound; the Goldstone wave that the gauge field turns into
+  the longitudinal Z), computed with the integrators CVODE and IDA, with two videos.
 
-**State of this version.** This version contains Parts I, II and III, complete. Part IV is being computed and will be
-added to this same document; until then its heading above describes what it will contain, and nothing in Parts I to
-III depends on it. Section 14 gives the programs, the commands and the reports of the checks of every
-part, Section 15 the corrections made during the work, Section 16 all symbols, and Section 17 the published works on
-the methods.
+**State of this version.** This version contains Parts I to IV, complete. Section 16 gives the programs, the commands
+and the reports of the checks of every part, Section 17 the corrections made during the work, Section 18 all symbols,
+and Section 19 the published works on the methods. The Mathematica notebook `superfluid.nb` named in Section 6.3 is the
+next object of the work and is not yet part of this version.
 
 **How to read it.** The manuscript is written for a reader who knows quantum mechanics, special relativity and the
 Dirac equation at the level of a first graduate course. It defines every symbol before it is used (all symbols are
-also collected in Section 16), shows every step of every derivation, and states for every result how it was checked.
+also collected in Section 18), shows every step of every derivation, and states for every result how it was checked.
 Nothing is left to another document.
 
 # 1. Conventions, units and notation
@@ -141,7 +144,7 @@ element has the inverse $\bar{\mathbf w}$; it is not a group because the product
 **Moufang loop**. It is a manifold of real dimension 14 (sixteen real coefficients and the two real conditions
 $N_{\rm LL}(\mathbf w)=1$). The unit bi-quaternions, $SL(2,\mathbb C)$, form a subgroup of $\mathbb L_{\rm LL}$.
 
-*Checks A-1 to A-7 (Section 14).* The quaternion rules (2.1), the rules of the eight units ($\mathbf e_p^2=-1$ and
+*Checks A-1 to A-7 (Section 16).* The quaternion rules (2.1), the rules of the eight units ($\mathbf e_p^2=-1$ and
 $\mathbf e_p\mathbf e_{p'}=-\mathbf e_{p'}\mathbf e_p$ for $p\neq p'$, both at least 1), (2.4), $\mathbf x\bar{\mathbf x}=N_{\rm LL}(\mathbf x)\mathbf e_0$,
 alternativity and the Moufang identities are checked exactly (bi-octonions with small integer coefficients, whose
 products double precision computes without rounding) on 200 random triples; of the 343 ordered triples of imaginary
@@ -200,7 +203,7 @@ and the unit matrix $\mathsf L_{\rm LL}$. *Examples* (file `data/part1_m31_examp
 0.8 takes $(1,0,0,0)$ to $(\cosh0.8,\sinh0.8,0,0)$, keeping $N_{\rm LL}=1$; the rotation by $\pi/3$ about $x^3_{\rm LL}$
 takes $(0,1,0,0)$ to $(0,\tfrac12,\tfrac{\sqrt3}2,0)$.
 
-*Checks A-8 to A-11 (Section 14):* the properties of $M_{\rm LL}$; the Hermiticity of the points and (2.7), (2.8) for 200
+*Checks A-8 to A-11 (Section 16):* the properties of $M_{\rm LL}$; the Hermiticity of the points and (2.7), (2.8) for 200
 random points; for 200 random unit bi-quaternions, that (2.9) keeps M31 and the interval, that $\mathsf L_{\rm LL}(\mathbf g)$
 is proper orthochronous, and the homomorphism; and the 27 commutators (2.11).
 
@@ -486,7 +489,7 @@ $[\nabla_p,\nabla_{p'}]$, which is $ig$ times the field strength and is covarian
 **currents** of the spinor field are the isospin current and the fermion-number current
 $$j^{\iota,p}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL},\qquad j^{{\rm F},p}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}.\tag{4.9}$$
 
-*Checks C-1 to C-11 (Section 14).* Every covariance law of this section is checked at 12 random points with random
+*Checks C-1 to C-11 (Section 16).* Every covariance law of this section is checked at 12 random points with random
 smooth gauge fields, gauge transformations and test spinors, all derivatives exact (automatic differentiation to
 second order in the Rust program; finite differences of eighth order in the Python program): the covariance of (4.4)
 under $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ (C-1); the reality of $W'^\iota_{{\rm SF},p}$ (C-2); the field strengths and the
@@ -570,7 +573,7 @@ $$\mathcal H_{\rm SF}=\Psi^\dagger_{\rm LL}\Big(-i\sum_j\alpha^j_{\rm LL}\nabla_
 $\mathcal H=i\Psi^\dagger\partial_0\Psi-\mathcal L$ removes the time derivative; the gauge terms come from
 $\bar\Psi\gamma^p(-g^{\rm v}\mathsf W_p-g^{\rm F}B_p)\Psi$ with $\bar\Psi\gamma^0=\Psi^\dagger$ and $\bar\Psi\gamma^j=\Psi^\dagger\alpha^j$.
 
-*Checks E-1 to E-7 (Section 14), exact operator algebra on the 256 states of one point.* For each term of
+*Checks E-1 to E-7 (Section 16), exact operator algebra on the 256 states of one point.* For each term of
 (5.9) at one point (mass, constant gauge potentials of all four components, and the three contact terms of (5.4) with
 the normal order of the empty state of the point), the commutator $[\Psi_e,\,\cdot\,]$ equals the corresponding term of
 (5.8), for all eight components $e$: the field equation (5.5) is the Heisenberg equation of (5.9), with the operator
@@ -685,9 +688,11 @@ proportional to $N^{\rm lat}_{\rm SF}$. *Check AS2-0* compares it with a dense d
 values of the currents, $\langle j^{\iota,p}_{\rm SF}\rangle=\mathrm{tr}(\gamma^0\gamma^pT^\iota\,\delta\mathsf C^{\rm n})$ and likewise
 $\langle j^{{\rm F},p}_{\rm SF}\rangle$. In the temporal gauge $W^\iota_{{\rm SF},0}=B_{{\rm SF},0}=0$ the space components and their
 time derivatives (the electric fields) are the dynamical variables, and the time component of (5.10) (Gauss's law)
-is a constraint without a time derivative. The coupled system of (6.6) and (5.10) is therefore a system of
-differential-algebraic equations: differential equations for $\mathsf R_{\rm SF}$ and the gauge fields, an algebraic equation
-for the constraint.
+contains no time derivative: it is a condition on the initial values, which the other equations keep, and the coupled
+system of (6.6) and (5.10) is a system of ordinary differential equations. When the time components are kept as
+unknowns (for example in the unitary gauge of Section 15.4), Gauss's law is an algebraic equation that determines them,
+and the system is a system of differential-algebraic equations: differential equations for $\mathsf R_{\rm SF}$ and the space
+components, algebraic equations for the time components.
 
 ## 6.3 The integrators
 
@@ -702,8 +707,8 @@ with a method of fixed step size:
 
 The Rust and the Python programs use the pure-Rust translation of SUNDIALS 7.8.0 of the author's repository
 `rustSolveIt_macos-silicon_SUNDIALS_7_8_0`, kept in PROJECT spacetimes as `vendor/sundials_rs-7.8.0`; the Python
-programs call it through a library with a C interface. The Mathematica notebook `superfluid.nb` uses IDA inside the
-Wolfram function `NDSolve`. The time-dependent solutions are in Part IV.
+programs call it through a library with a C interface. The Mathematica notebook `superfluid.nb` (Section 0) uses IDA
+inside the Wolfram function `NDSolve`. The time-dependent solutions are in Section 15.
 
 # 7. Analytic solutions of four simple cases (item 5 of the problem)
 
@@ -1296,7 +1301,7 @@ $\mathsf R_{\rm SF}+i\epsilon[\mathsf G,\mathsf R_{\rm SF}]$ is again stationary
 equation at $\omega=0$: $\mathsf Q^X_{\rm SF}(0)$ has the eigenvalue 1 three times. *Check P2-7a:* in all five methods exactly three
 eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ equal 1, to $2.5\times10^{-13}$ (the Goldstone theorem, a test of the self-consistency of the
 ground state and of the response). The unbroken generator $T^3_{\rm LL}$ gives no mode. With the gauge fields, the three
-Goldstone modes become the longitudinal parts of the massive $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (Section 11; Part IV).
+Goldstone modes become the longitudinal parts of the massive $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (Sections 11, 14.2 and 15.4).
 
 **The massive modes.**
 
@@ -1636,15 +1641,15 @@ rotations $\mathsf R^{\rm v}_{\rm LL}$ of $SU(2)_{\rm v}$; the Lorentz group doe
 therefore equivalent to $\vec\Phi=\Phi_0\vec e_3$, chosen from now on.
 
 **The stabilizer.** The elements of GEE that leave $\Phi_0\vec e_3$ unchanged form the group
-$$H^{\rm vac}_{\rm SF}=SL(2,\mathbb C)\times O(2),\qquad O(2)=\{e^{i\alpha T^3_{\rm LL}}\}\rtimes\{\mathsf 1,\ \mathsf r\},\tag{13.2}$$
-where $e^{i\alpha T^3_{\rm LL}}$ are the isospin rotations about $\vec e_3$ (they fix $\vec e_3$) and $\mathsf r$ is the rotation by $\pi$ about
+$$H^{\rm vac}_{\rm SF}=SL(2,\mathbb C)\times O(2),\qquad O(2)=\{e^{i\theta T^3_{\rm LL}}\}\rtimes\{\mathsf 1,\ \mathsf r\},\tag{13.2}$$
+where $e^{i\theta T^3_{\rm LL}}$ are the isospin rotations about $\vec e_3$ (they fix $\vec e_3$) and $\mathsf r$ is the rotation by $\pi$ about
 $\vec e_1$ ($\vec e_3\to-\vec e_3$) combined with the phase $\theta^{\rm F}_{\rm LL}=\pi/2$ ($e^{2i\theta^{\rm F}}=-1$), which together leave
 $\Phi_0\vec e_3$ unchanged. Proof that there are no others: an element $(\mathsf U_{\rm LL},\theta^{\rm F}_{\rm LL})$ of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$
 maps $\Phi_0\vec e_3$ to $e^{2i\theta^{\rm F}}\Phi_0\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec e_3$; equality requires
 $\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec e_3=\pm\vec e_3$ with $e^{2i\theta^{\rm F}}=\pm1$
 correspondingly, which are the rotations about $\vec e_3$ (with $e^{2i\theta^{\rm F}}=1$) and those composed with $\mathsf r$. The
-identity component is $U(1)^{\rm Q}_{\rm SF}=\{e^{i\alpha T^3_{\rm LL}}\}$, generated by the charge $Q=T^3_{\rm LL}$ (the isospin $T^3$
-of the spinor charges: $\pm\tfrac12$). **The symmetry breaking** is
+identity component is $U(1)^{\rm Q}_{\rm LL}=\{e^{i\theta T^3_{\rm LL}}\}$, generated by the charge $Q_{\rm LL}=T^3_{\rm LL}$ (the
+isospin $T^3$ of the spinor charges: $\pm\tfrac12$). **The symmetry breaking** is
 $$\mathrm{GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\ \longrightarrow\ SL(2,\mathbb C)\times O(2),\tag{13.3}$$
 with three broken generators ($T^1_{\rm LL}$, $T^2_{\rm LL}$, $F_{\rm LL}$), the three Goldstone modes of Section 10.5; the Lorentz group is
 unbroken because the condensate has spin zero.
@@ -1698,14 +1703,417 @@ that is $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}(2Z^X_{\rm SF})^{1/2}\Phi_0=g^{\rm v
 and no mass for $W^3_{\rm SF}$: the masses (11.1) of Part II follow from the effective Lagrangian, and the three Goldstone
 fields have become the longitudinal parts of $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (the Higgs mechanism; the reading of "give mass to
 the Goldstone bosons" of decision D8). The mass matrix, its diagonalization and the proof that the surviving gauge
-boson is massless are the subject of Part IV.
+boson is massless are the subject of Section 14.
 
-# 14. Provenance: programs, commands, reports, data and figures
+# 14. The masses of the gauge bosons, the surviving group and the massless photon (Part IV)
+
+Part IV completes item 6 of the problem. Section 13.3 inserted the vacuum $\Phi^X_{0,{\rm SF}}\vec e_3$ into the kinetic part
+(12.4) and found the masses of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$; this section writes the mass matrix of the four gauge
+fields for every vacuum (13.1), diagonalizes it, proves that exactly one gauge boson stays massless, identifies the
+surviving symmetry group and its $U(1)$, and checks all of it against the microscopic theory of Part II. Section 15
+follows the superfluid and its gauge fields in time. Throughout, $\Phi_0$ is short for $\Phi^X_{0,{\rm SF}}$, and $a$, $b$
+label the four gauge fields $(\mathcal A^1_p,\mathcal A^2_p,\mathcal A^3_p,\mathcal A^{\rm F}_p)=(W^1_{{\rm SF},p},W^2_{{\rm SF},p},W^3_{{\rm SF},p},B_{{\rm SF},p})$
+with the couplings $g_a=g^{\rm v}_{\rm LL}$ ($a=1,2,3$) and $g_{\rm F}=g^{\rm F}_{\rm LL}$, as in Section 11.1.
+
+## 14.1 The mass matrix of a general field and of a vacuum
+
+**A constant field.** Let the field $\vec\Phi$ of the superfluid boson singlet state be constant, and let only one gauge
+field be present, with the components $\mathcal A^a_p=\mathfrak c_a\mathcal A_p$ along a fixed real vector
+$\mathfrak c=(\mathfrak c_1,\mathfrak c_2,\mathfrak c_3,\mathfrak c_{\rm F})$ of the four gauge directions
+($\vec{\mathfrak c}=(\mathfrak c_1,\mathfrak c_2,\mathfrak c_3)$). The covariant derivative (12.3) is then
+$\nabla_p\vec\Phi=\mathcal A_p\,\vec X(\mathfrak c)$ with the complex isospin vector
+$$\vec X(\mathfrak c)=2ig^{\rm F}_{\rm LL}\mathfrak c_{\rm F}\vec\Phi-g^{\rm v}_{\rm LL}\,\vec{\mathfrak c}\times\vec\Phi,\qquad(\vec{\mathfrak c}\times\vec\Phi)_\iota=\sum_{\iota'\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}\mathfrak c_{\iota'}\Phi^{\iota''},\tag{14.1}$$
+and (12.4) becomes $\sum_p\eta^{\rm LL}_{pp}\mathcal A_p\mathcal A_p\,\mathcal K(\vec X(\mathfrak c))$ with the quadratic form
+$$\mathcal K(\vec X)=Z^X_{\rm SF}\lvert\vec X\rvert^2+Y^X_{\rm SF}\frac{\lvert\vec\Phi^\dagger\cdot\vec X\rvert^2}{\lvert\vec\Phi\rvert^2}.\tag{14.2}$$
+For several gauge fields at once, $\vec X$ is linear in $\mathfrak c$, $\vec X(\mathfrak c)=\sum_a\mathfrak c_a\vec X_a$, where $\vec X_a$ is
+(14.1) for the direction $a$ alone ($\mathfrak c_b=1$ for $b=a$ and 0 otherwise), and the terms of second order in the gauge fields of (12.4) are the **mass term**
+$\tfrac12\sum_{ab}\mathsf M^X_{{\rm SF},ab}\sum_p\eta^{\rm LL}_{pp}\mathcal A^a_p\mathcal A^b_p$ with the mass matrix
+$$\mathsf M^X_{{\rm SF},ab}=2\,\mathrm{Re}\Big[Z^X_{\rm SF}\,\vec X_a^\dagger\cdot\vec X_b+Y^X_{\rm SF}\frac{(\vec\Phi^\dagger\cdot\vec X_a)^*(\vec\Phi^\dagger\cdot\vec X_b)}{\lvert\vec\Phi\rvert^2}\Big]\tag{14.3}$$
+(the second derivative of $\mathcal K(\vec X(\mathfrak c))$ with respect to $\mathfrak c_a$ and $\mathfrak c_b$; the factor 2 makes it the coefficient of
+$\tfrac12\mathcal A^a\mathcal A^b$). (14.3) is the matrix (11.1) of the effective theory: the same quadratic dependence on
+constant time components of the gauge fields, computed from $\mathcal L^X$ instead of from the susceptibilities.
+
+**A vacuum.** For the vacuum $\vec\Phi=\Phi_0e^{i\vartheta}\vec n$ of (13.1) ($\vartheta$ real, $\vec n$ a real unit vector), (14.1)
+gives $\vec X(\mathfrak c)=\Phi_0e^{i\vartheta}\big(2ig^{\rm F}_{\rm LL}\mathfrak c_{\rm F}\vec n-g^{\rm v}_{\rm LL}\vec{\mathfrak c}\times\vec n\big)$. The two parts
+are orthogonal ($\vec n\cdot(\vec{\mathfrak c}\times\vec n)=0$), $\lvert\vec{\mathfrak c}\times\vec n\rvert^2=\lvert\vec{\mathfrak c}\rvert^2-(\vec n\cdot\vec{\mathfrak c})^2$, and
+$\vec\Phi^\dagger\cdot\vec X=2ig^{\rm F}_{\rm LL}\mathfrak c_{\rm F}\Phi_0^2$. Hence
+$$\mathcal K(\vec X(\mathfrak c))=Z^X_{\rm SF}\Phi_0^2(g^{\rm v}_{\rm LL})^2\big(\lvert\vec{\mathfrak c}\rvert^2-(\vec n\cdot\vec{\mathfrak c})^2\big)+4\big(Z^X_{\rm SF}+Y^X_{\rm SF}\big)\Phi_0^2(g^{\rm F}_{\rm LL})^2\mathfrak c_{\rm F}^2,\tag{14.4}$$
+and the mass matrix of the vacuum, in the order $(W^1,W^2,W^3,B)$, is
+$$\begin{aligned}\mathsf M^X_{\rm SF}&=\begin{pmatrix}(M^X_{W,{\rm SF}})^2\big(\mathsf 1_3-\vec n\,\vec n^T\big)&0\\0&(M^X_{Z,{\rm SF}})^2\end{pmatrix},\\(M^X_{W,{\rm SF}})^2&=2Z^X_{\rm SF}\Phi_0^2(g^{\rm v}_{\rm LL})^2,\qquad(M^X_{Z,{\rm SF}})^2=8\big(Z^X_{\rm SF}+Y^X_{\rm SF}\big)\Phi_0^2(g^{\rm F}_{\rm LL})^2.\end{aligned}\tag{14.5}$$
+It does not depend on the phase $\vartheta$, and for $\vec n=\vec e_3$ it is the mass term (13.7). With (12.5) the two masses are
+$g^{\rm v}_{\rm LL}(\chi^{11}_{\rm SF})^{1/2}$ and $g^{\rm F}_{\rm LL}(\chi^{\rm FF}_{\rm SF})^{1/2}$, the masses (11.1) of Part II.
+
+## 14.2 The diagonalization
+
+The matrix (14.5) is diagonalized by inspection. Let $(\vec e_{\perp1},\vec e_{\perp2},\vec n)$ be a right-handed orthonormal frame
+of the isospin space ($\vec e_{\perp1}\times\vec e_{\perp2}=\vec n$). Then
+* $(\vec n,0)$ has the eigenvalue $0$: the field $A_{{\rm SF},p}=\vec n\cdot\vec W_{{\rm SF},p}$ is massless (the **photon**);
+* $(\vec e_{\perp1},0)$ and $(\vec e_{\perp2},0)$ have the eigenvalue $(M^X_{W,{\rm SF}})^2$: the fields
+  $W^\pm_{{\rm SF},p}=(\vec e_{\perp1}\cdot\vec W_{{\rm SF},p}\mp i\,\vec e_{\perp2}\cdot\vec W_{{\rm SF},p})/\sqrt2$;
+* $(0,0,0,1)$ has the eigenvalue $(M^X_{Z,{\rm SF}})^2$: the field $Z_{{\rm SF},p}=B_{{\rm SF},p}$.
+
+For the vacuum along $\vec e_3$ ($\vec e_{\perp1}=\vec e_1$, $\vec e_{\perp2}=\vec e_2$) these are the fields of Section 11.1:
+$A_{{\rm SF},p}=W^3_{{\rm SF},p}$, $W^\pm_{{\rm SF},p}=(W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2$, $Z_{{\rm SF},p}=B_{{\rm SF},p}$. In the
+basis of the mass eigenstates the mass term is
+$$\sum_p\eta^{\rm LL}_{pp}\Big[(M^X_{W,{\rm SF}})^2\,W^+_{{\rm SF},p}W^-_{{\rm SF},p}+\tfrac12(M^X_{Z,{\rm SF}})^2Z_{{\rm SF},p}Z_{{\rm SF},p}+0\cdot A_{{\rm SF},p}A_{{\rm SF},p}\Big]\tag{14.6}$$
+(the real field $W^\pm$ pair contributes $\tfrac12M^2[(e_{\perp1}\cdot W)^2+(e_{\perp2}\cdot W)^2]=M^2W^+W^-$, since $W^-=(W^+)^*$).
+
+**The mixing angle and the charge of the photon.** In the Standard Model (1.1) the photon is the combination
+$\sin\theta_WW^3_\mu+\cos\theta_WB_\mu$ because the vacuum of the doublet is left unchanged by the charge
+$Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}$, which mixes the generators of $SU(2)_L$ and $U(1)_Y$. Here the vacuum is left unchanged by
+$\vec n\cdot\vec T_{\rm LL}$ alone (Section 13.1): the condensate has fermion number 2, so no admixture of $F_{\rm LL}$ can leave it
+unchanged, and it has the charge 0 of $\vec n\cdot\vec T_{\rm LL}$. Therefore the photon contains no $B_{{\rm SF},p}$:
+$\theta^{\rm W}_{\rm SF}=0$. The covariant derivative (5.6) contains $ig^{\rm v}_{\rm LL}\sum_\iota W^\iota_{{\rm SF},p}T^\iota_{\rm LL}$, whose part along
+the photon is $ig^{\rm v}_{\rm LL}A_{{\rm SF},p}\,(\vec n\cdot\vec T_{\rm LL})$; the photon couples to the charge $\vec n\cdot\vec T_{\rm LL}$
+($Q_{\rm LL}=T^3_{\rm LL}$ for the vacuum along $\vec e_3$) with the coupling
+$$e_{\rm SF}=g^{\rm v}_{\rm LL}\qquad(\theta^{\rm W}_{\rm SF}=0).\tag{14.7}$$
+The charges $Q_{\rm LL}$ of the fields (vacuum along $\vec e_3$): the spinor charges $\pm\tfrac12$ (isospin up and down);
+$W^\pm_{{\rm SF},p}$: $\pm1$ (from $[T^3_{\rm LL},T^1_{\rm LL}\pm iT^2_{\rm LL}]=\pm(T^1_{\rm LL}\pm iT^2_{\rm LL})$); $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$: 0;
+the condensate $\Phi_0\vec e_3$ and the amplitude field $h^X_{\rm SF}$: 0; the two non-unitary fields combine into
+$\nu^X_{{\rm SF},1}\mp i\nu^X_{{\rm SF},2}$ of charge $\pm1$ (they rotate like the components 1, 2 of an isospin vector).
+
+**The count of the degrees of freedom.** Before the breaking: four massless vector fields with two polarizations each
+(8) and the six real components of $\vec\Phi$: 14. After the breaking: three massive vector fields $W^+$, $W^-$, $Z$ with three
+polarizations each (9), the massless photon (2), and the three massive scalar fields $h^X_{\rm SF}$, $\nu^X_{{\rm SF},1}$,
+$\nu^X_{{\rm SF},2}$ (3): 14. The three Goldstone fields $\vartheta^X_{{\rm SF},0}$, $\vartheta^X_{{\rm SF},1}$, $\vartheta^X_{{\rm SF},2}$
+have become the third (longitudinal) polarizations of $Z$, $W^+$, $W^-$: the Higgs mechanism, which the author calls
+"give mass to the Goldstone bosons" (decision D8). Section 15.4 shows it in time.
+
+## 14.3 The theorem: the massless gauge bosons are the generators that leave the field unchanged
+
+**Theorem M1.** Let $Z^X_{\rm SF}>0$ and $Z^X_{\rm SF}+Y^X_{\rm SF}>0$. For every field $\vec\Phi\neq0$ the vectors $\mathfrak c$ with
+$\mathsf M^X_{\rm SF}\mathfrak c=0$ in (14.3) are exactly those for which the infinitesimal gauge transformation with the parameters
+$\mathfrak c_a$ leaves $\vec\Phi$ unchanged, $\vec X(\mathfrak c)=0$. *Proof.* By the Cauchy-Schwarz inequality,
+$\lvert\vec\Phi^\dagger\cdot\vec X\rvert^2\le\lvert\vec\Phi\rvert^2\lvert\vec X\rvert^2$, so
+$\mathcal K(\vec X)\ge\min(Z^X_{\rm SF},Z^X_{\rm SF}+Y^X_{\rm SF})\lvert\vec X\rvert^2$, which is positive for $\vec X\neq0$. Since
+$\mathfrak c^T\mathsf M^X_{\rm SF}\mathfrak c=2\mathcal K(\vec X(\mathfrak c))\ge0$, the matrix is positive semidefinite, and for such a
+matrix $\mathsf M^X_{\rm SF}\mathfrak c=0$ holds exactly when $\mathfrak c^T\mathsf M^X_{\rm SF}\mathfrak c=0$ (write
+$\mathsf M^X_{\rm SF}=\mathsf V^T\mathsf V$ with a real matrix $\mathsf V$; then $\mathfrak c^T\mathsf M^X_{\rm SF}\mathfrak c=\lvert\mathsf V\mathfrak c\rvert^2$). Hence
+$\mathsf M^X_{\rm SF}\mathfrak c=0\Leftrightarrow\mathcal K(\vec X(\mathfrak c))=0\Leftrightarrow\vec X(\mathfrak c)=0$. Finally, $\vec X(\mathfrak c)$ is by
+(12.3) the change of $\vec\Phi$ under the infinitesimal transformation of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ with the parameters
+$\mathfrak c_a$ (times the couplings). $\square$
+
+The conditions hold in every method (Table 12.2: $Z^X_{\rm SF}>0$, and $Z^X_{\rm SF}+Y^X_{\rm SF}>0$ also for HS $(1,1)$, where
+$Y^X_{\rm SF}<0$). For a vacuum, $\vec X(\mathfrak c)=0$ means $2ig^{\rm F}_{\rm LL}\mathfrak c_{\rm F}\vec n=g^{\rm v}_{\rm LL}\vec{\mathfrak c}\times\vec n$; the two
+sides are orthogonal, so both vanish: $\mathfrak c_{\rm F}=0$ and $\vec{\mathfrak c}\parallel\vec n$. **The massless gauge bosons of a vacuum correspond one to one
+to the generators of the identity component of its stabilizer** (Section 13.1): there is exactly one, the photon
+$A_{{\rm SF},p}=\vec n\cdot\vec W_{{\rm SF},p}$, because the stabilizer has the one-dimensional Lie algebra spanned by $\vec n\cdot\vec T_{\rm LL}$.
+
+**Why the mixing angle is zero: a field with a mixed stabilizer.** The theorem holds for every field, also for fields
+that are not vacua. For $\vec\Phi=\Phi_0(\vec e_3+i\vec e_1)/\sqrt2$ (a non-unitary field, which the potential does not favour:
+$u^X_{\rm SF}>0$), $\vec e_2\times\vec\Phi=-i\vec\Phi$, so $\vec X(\mathfrak c)$ for $\mathfrak c=(0,\mathfrak c_2,0,\mathfrak c_{\rm F})$ is
+$i(g^{\rm v}_{\rm LL}\mathfrak c_2+2g^{\rm F}_{\rm LL}\mathfrak c_{\rm F})\vec\Phi$, which vanishes for
+$\mathfrak c\propto(0,2g^{\rm F}_{\rm LL},0,-g^{\rm v}_{\rm LL})$ (and the other directions give no further zero eigenvalue, *check P4-M8*). The massless field is
+then $\cos\theta'\,W^2_{{\rm SF},p}-\sin\theta'\,B_{{\rm SF},p}$ with $\tan\theta'=g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL})$,
+$\theta'={{GENM:p4_mixing_angle_nonpolar_deg_s}}^\circ$, and it couples to the charge $T^2_{\rm LL}-\tfrac12F_{\rm LL}$ with the strength
+$g^{\rm v}_{\rm LL}\cos\theta'=2g^{\rm v}_{\rm LL}g^{\rm F}_{\rm LL}/((g^{\rm v}_{\rm LL})^2+4(g^{\rm F}_{\rm LL})^2)^{1/2}={{GENM:p4_charge_nonpolar_s}}$: the same structure as
+the Weinberg angle ($\tan\theta_W=g'/g$, $e=gg'/(g^2+g'^2)^{1/2}$), with $g'$ replaced by $2g^{\rm F}_{\rm LL}$ because the field has
+fermion number 2. The mixing angle of the photon is fixed by the generator that leaves the condensate unchanged; for the
+polar vacua of the superfluid that generator is pure isospin, and the angle is zero. Figure 10 follows the masses
+along the family $\vec\Phi=\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$ of the angle $\upsilon$ (upsilon): a massless boson
+exists only where the field has a continuous stabilizer ($\upsilon=0$, $45^\circ$, $90^\circ$), and its composition changes from
+$W^3$ through $\cos\theta'W^2-\sin\theta'B$ to $W^1$.
+
+![](figures/fig_part4_r1_massmatrix.png){width=100%}
+
+**Figure 10.** The mass matrix (14.3) of $\mathcal L^{\rm CJT}$ along the fields $\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$. Left: the
+four masses (square roots of the eigenvalues). Right: the squared components of the lightest boson. At $\upsilon=0$ and
+$90^\circ$ the field is a polar vacuum (along $\vec e_3$ and, up to the phase $i$, along $\vec e_1$) and the massless boson is $W^3$
+and $W^1$; at $\upsilon=45^\circ$ it is $\cos\theta'W^2-\sin\theta'B$. Computed by `python/sf_part4_figures.py` from (14.3) with the
+coefficients of Table 12.2.
+
+## 14.4 The surviving group and its U(1)
+
+By Section 13.1 the stabilizer of the vacuum $\Phi_0\vec e_3$ is $H^{\rm vac}_{\rm SF}=SL(2,\mathbb C)\times O(2)$ with
+$O(2)=\{e^{i\theta T^3_{\rm LL}}\}\rtimes\{\mathsf 1,\mathsf r\}$, where $\mathsf r$ is the rotation by $\pi$ about $\vec e_1$ combined with the phase
+$\theta^{\rm F}_{\rm LL}=\pi/2$. As a group of transformations of the fields:
+* **The identity component** is the group $U(1)^{\rm Q}_{\rm LL}=\{e^{i\theta Q_{\rm LL}}\}$, $Q_{\rm LL}=T^3_{\rm LL}$, of the earlier work of the
+  project: a circle group, of period $4\pi$ on the spinor charges ($Q_{\rm LL}=\pm\tfrac12$) and $2\pi$ on all bosonic fields. Its
+  element $e^{2\pi iQ_{\rm LL}}$ is $-1$ on the spinor field and $+1$ on the bosons, as is $e^{i\pi F_{\rm LL}}$, which also leaves the
+  condensate unchanged ($e^{2i\theta^{\rm F}_{\rm LL}}=1$): the two act alike on every field, so the stabilizer contains no further
+  continuous or discrete transformations of the fields than $U(1)^{\rm Q}_{\rm LL}$ and $\mathsf r$.
+* **The discrete part.** $\mathsf r e^{i\theta Q_{\rm LL}}\mathsf r^{-1}=e^{-i\theta Q_{\rm LL}}$ (the rotation by $\pi$ about $\vec e_1$ reverses $\vec e_3$), and
+  $\mathsf r^2$ (the rotation by $2\pi$ times $e^{i\pi F_{\rm LL}}$) acts as the identity on every field; so
+  $O(2)/U(1)^{\rm Q}_{\rm LL}=\mathbb Z_2$. On the gauge fields $\mathsf r$ acts as $W^1\to W^1$, $W^2\to-W^2$, $W^3\to-W^3$, $B\to B$, that is
+  $$A_{{\rm SF},p}\to-A_{{\rm SF},p},\qquad W^\pm_{{\rm SF},p}\to W^\mp_{{\rm SF},p},\qquad Z_{{\rm SF},p}\to Z_{{\rm SF},p}:\tag{14.8}$$
+  $\mathsf r$ is the charge conjugation of the theory of the photon, a discrete symmetry without a gauge boson.
+
+**The answer to the last request of item 6.** The surviving symmetry group of every method is
+$SL(2,\mathbb C)\times O(2)$; it is related to a $U(1)$ in the precise sense that its gauge part $O(2)$ is the semidirect product of
+the circle group $U(1)^{\rm Q}_{\rm LL}$ (its identity component, the group of the electric charge $Q_{\rm LL}$) and the charge
+conjugation $\mathsf r$. The gauge field of $U(1)^{\rm Q}_{\rm LL}$ is the photon $A_{{\rm SF},p}=W^3_{{\rm SF},p}$, which is massless by
+theorem M1, couples with $e_{\rm SF}=g^{\rm v}_{\rm LL}$ and does not mix with $B_{{\rm SF},p}$. The masslessness does not depend on the
+details of the method. In every method the vacuum is invariant under $U(1)^{\rm Q}_{\rm LL}$, has the charge $Q_{\rm LL}=0$ and a gap, so a
+small chemical potential of $Q_{\rm LL}$ does not change it: $\chi^{33}_{\rm SF}=0$. The rotation by $\pi$ about $\vec e_3$ reverses
+$\mu^1_{\rm SF}$ and $\mu^2_{\rm SF}$ and keeps $Q_{\rm LL}$, and $\mathsf r$ reverses $Q_{\rm LL}$ and keeps $\mu^{\rm F}_{\rm SF}$; so the induced charge
+$\langle Q_{\rm LL}\rangle$ is an even function of $\mu^1_{\rm SF}$, $\mu^2_{\rm SF}$ and vanishes for every $\mu^{\rm F}_{\rm SF}$, and $\chi^{3b}_{\rm SF}=0$ for
+all $b$. The matrix (11.1) therefore has the null vector of $W^3_{{\rm SF},p}$ in every method that keeps these symmetries, as
+Tables 11.1 and 14.1 confirm.
+
+## 14.5 The numbers and the checks
+
+The microscopic mass matrix (11.1) is computed for a vacuum that is not along $\vec e_3$, so that the identification of the
+photon is not the trivial one: the self-consistent state with the pair self-energy $\Phi_0e^{i\pi/5}(\mathsf K^1_{\rm LL})^\dagger$, the
+vacuum $\vartheta=\pi/5$, $\vec n=\vec e_1$ of (13.1), for which theorem M1 predicts the massless field $W^1_{{\rm SF},p}$.
+The program finds the state with the energy of the ground state (*checks P4-M0*), computes the $4\times4$ matrix
+$\chi^{ab}_{\rm SF}$ by the method of Section 11.1 (with the self-consistency solved to $10^{-13}$), and diagonalizes
+$g_ag_b\chi^{ab}_{\rm SF}$ by the cyclic Jacobi method (plane rotations that annihilate one off-diagonal entry at a time).
+
+{{GEN:p4_table_mass}}
+
+**Table 14.1.** The eigenvalues $\lambda_0\le\lambda_1\le\lambda_2\le\lambda_3$ of the microscopic mass matrix of the vacuum
+$\Phi_0e^{i\pi/5}\vec e_1$ ($\lambda_1$ and $\lambda_2$ agree to $10^{-12}\lambda_3$ and share a row), the masses $M^X_{W,{\rm SF}}=\lambda_1^{1/2}$ and $M^X_{Z,{\rm SF}}=\lambda_3^{1/2}$, the distance
+$1-\lvert\langle v_0,(1,0,0,0)\rangle\rvert$ of the eigenvector $v_0$ of $\lambda_0$ from $W^1$ (in the order $(W^1,W^2,W^3,B)$), and the largest difference between (14.3) and the microscopic matrix, relative to
+$(M^X_{Z,{\rm SF}})^2$. Data: `data/part4_massmatrix.csv`.
+
+In all five methods: the matrix is symmetric (*P4-M1*), its smallest eigenvalue vanishes to rounding (*P4-M2*), its
+eigenvector is $W^1$ to rounding (*P4-M3*), the other eigenvalues are the $(M^X_{W,{\rm SF}})^2$ (twice) and $(M^X_{Z,{\rm SF}})^2$ of
+the vacuum along $\vec e_3$ of Part III to $3\times10^{-12}$, with $Z_{{\rm SF},p}=B_{{\rm SF},p}$ (*P4-M4*), and the mass matrix (14.3) of the
+effective Lagrangian at the same vacuum equals the microscopic one to $3\times10^{-12}$ (*P4-M5*). For the vacuum
+$\Phi_0e^{i\pi/5}(1,1,1)/\sqrt3$, (14.3) has the eigenvalues $0$, $(M^X_{W,{\rm SF}})^2$, $(M^X_{W,{\rm SF}})^2$, $(M^X_{Z,{\rm SF}})^2$ and the
+massless field $(W^1+W^2+W^3)/\sqrt3$ (*P4-M6*); along $\vec e_3$ its eigenvalues are those of (14.5) (*P4-M7*); for the field
+$\Phi_0(\vec e_3+i\vec e_1)/\sqrt2$ it has one zero eigenvalue with the eigenvector $\cos\theta'W^2-\sin\theta'B$ (*P4-M8*). (The
+microscopic check uses a vacuum along a coordinate axis because there the static response is well defined; see Section
+17.4, item 1.) The Python program repeats the microscopic matrices of HS $(1,1)$ and CJT with its own engine and LAPACK
+(*checks YP4-M1 to YP4-M3*).
+
+# 15. The dynamics of the superfluid and of its gauge fields (Part IV)
+
+Every equation of this section is integrated by CVODE or IDA (Section 6.3) in the pure-Rust SUNDIALS 7.8.0, by the
+program `sf_part4` and, through the C interface of the crate `sfsundials_c`, by the Python program `sf_part4.py`. The
+time $t$ is $x^0_{\rm LL}$, in units of $1/\Lambda_{\rm LL}$.
+
+## 15.1 The growth of the condensate from the normal vacuum
+
+**The equations.** The unknowns are the generalized densities $\mathsf R_{\rm SF}(\vec q_{\rm LL})$ (6.4a) at the 144 momenta of the grid
+of Part II (24 radial nodes times six directions): all 256 complex entries of every matrix, 73 728 real numbers. Their
+equation is the time-dependent mean field (6.6), $i\partial_0\mathsf R_{\rm SF}=[\mathsf H_{\rm SF},\mathsf R_{\rm SF}]$, with the BdG matrices (6.5)
+built from the self-energies of the state at every instant (from the local matrices (9.1) and the formulas (9.4), (9.5)
+of the method). CVODE integrates it with the Adams-Moulton formulas (orders up to 12, the fixed-point iteration of the
+corrector) and the error weights $1/(10^{-10}\lvert z\rvert+10^{-15})$ of the complex entries $z$ (the relative tolerance $10^{-10}$
+and the absolute tolerance $10^{-15}$; the runs with the non-unitary seeds below use the absolute tolerance $10^{-18}$, the
+runs of Section 15.2 the absolute tolerance $10^{-13}$); the weight uses the modulus
+because the real and the imaginary part of an oscillating entry pass through zero. The equations conserve the energy
+per volume (the self-energies are the derivatives (6.3) of the energy, so that
+$d\mathcal E/dt=\tfrac12\sum_{\vec q}w\,\mathrm{tr}(\mathsf H\,d\mathsf R/dt)=-\tfrac i2\sum_{\vec q}w\,\mathrm{tr}(\mathsf H[\mathsf H,\mathsf R])=0$, $w$ the weight of a node), the four
+charges (the energy is GEE-invariant), the projector property $\mathsf R^2=\mathsf R$, the Hermiticity and the relation of the
+blocks of (6.4a); the program checks all of them.
+
+**The start.** The normal vacuum is a stationary state (Section 9.3), but unstable: its static response in the pair
+channel has the eigenvalue $\lambda^{\rm P}_{\rm SF}>1$ (Section 9.4). The run starts from the ground state of the BdG matrix with
+$\mathsf N_{\rm SF}=0$ and the small pair self-energy $10^{-7}(\mathsf K^3_{\rm LL})^\dagger$ (a seed), which differs from the normal vacuum by
+terms of order $10^{-7}$.
+
+**The linear stage.** A fluctuation of the normal vacuum with the time dependence $e^{-i\omega t}$ obeys the equations of
+Section 10.5 with the same matrix $\mathsf Q^X_{\rm SF}(\omega)$ (10.7); at the imaginary frequency $\omega=i\gamma$ ($\gamma>0$) the
+fluctuation grows as $e^{\gamma t}$. For the normal vacuum the eigenvalue of $\mathsf Q^X_{\rm SF}(i\gamma)$ in the pair channel is real and
+falls from $\lambda^{\rm P}_{\rm SF}$ at $\gamma=0$ to 0 as $\gamma\to\infty$. (At $\omega=i\gamma$ the two terms of a group of (10.6) give
+$-[(\mathsf J^+_\kappa+\mathsf J^-_\kappa)\Omega_\kappa+i\gamma(\mathsf J^+_\kappa-\mathsf J^-_\kappa)]/(\Omega_\kappa^2+\gamma^2)$; the normal vacuum at
+$\mu_{\rm LL}=0$ is symmetric under charge conjugation, the pairs of two particles and of two antiparticles contribute alike, and the
+eigenvalue is real; the program checks that its imaginary part vanishes, *check P4-T1b*.) The **growth rate**
+$\gamma^X_{\rm SF}$ is the value at which it passes 1; the program finds it by bisection with the response of Part II at complex
+frequencies (*check P4-T1*: at $\gamma\to0$ the eigenvalue is $\lambda^{\rm P}_{\rm SF}$ of Part II to $4\times10^{-13}$). The time-dependent run grows exactly at this rate: the slope of
+$\ln\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ between $3\times10^{-5}\Phi_0$ and $3\times10^{-3}\Phi_0$ equals $\gamma^X_{\rm SF}$ to $2\times10^{-5}$
+(*check P4-T2*, Table 15.1). HS $(0,0)$, KS and CJT, which have the same pair coupling $g^{X,{\rm P}}_{\rm SF}$ in the normal vacuum,
+have the same rate.
+
+**The nonlinear stage.** When $\lvert\Phi^3\rvert$ reaches $\Phi_0$ the growth stops; the field overshoots to
+$\lvert\Phi^3\rvert_{\max}>\Phi_0$, falls back (in the three HS methods to between $0.2$ and $7$ per cent of $\Phi_0$, in KS and CJT
+to between $0.2$ and $0.65$ of $\Phi_0$), and grows again: a train of pulses (Figure 11). The state cannot
+settle in the minimum of the Mexican hat. Its energy is conserved (*check P4-T3*, $4\times10^{-8}$ of the depth of the
+minimum) and equals that of the normal vacuum, which lies above the minimum by $\lvert\mathcal E^X_{\rm SF}\rvert$; the time-dependent
+mean field has no mechanism that carries this energy away (it is collisionless: no scattering of quasi-particles, no
+radiation, the state stays uniform), so it stays in the motion, which exchanges it between the kinetic and the
+interaction energy (Figure 11, right). The same pulse train is known from the collisionless dynamics of the BCS pairing
+problem started near the normal state; relaxation to the minimum needs processes beyond the mean field. The charges stay
+zero to $10^{-16}$ (*P4-T4*), $\mathsf R_{\rm SF}$ stays a Hermitian projector with the block relation of (6.4a) to $6\times10^{-10}$ (*P4-T5*), and
+the run with ten times smaller tolerances agrees to $5\times10^{-8}\Phi_0$ (*P4-T12*).
+
+**The polar sector and its stability.** The seed lies in the channel $\mathsf K^3_{\rm LL}$, which is invariant under
+$U(1)^{\rm Q}_{\rm LL}$ (the pair has $Q_{\rm LL}=0$); so is the normal vacuum, and the equations keep the invariance: the state stays in
+the **polar sector**, the states invariant under $U(1)^{\rm Q}_{\rm LL}$, in which $\Phi^1=\Phi^2=0$. The self-energies of such a state connect
+only components of equal $Q_{\rm LL}$ ($\mathsf N$) or of opposite $Q_{\rm LL}$ ($\mathsf P$). The growth runs use these invariant parts of the
+self-energies, which in exact arithmetic is the same; the state then stays polar to $3\times10^{-17}$ (*P4-T6*). Without this
+projection the rounding errors of the order $10^{-16}$ in the components $\mathsf K^1$, $\mathsf K^2$ grow: in a first run with the full
+equations they reached $0.95$ of $\lvert\Phi^3\rvert$ in HS $(1,1)$ by $t=250$. This is a property of the motion, not of the
+integration. Two runs with the full equations and the additional seeds $10^{-11}i(\mathsf K^1_{\rm LL})^\dagger$ and
+$10^{-13}i(\mathsf K^1_{\rm LL})^\dagger$ (non-unitary perturbations, of the charges $\pm1$ of $Q_{\rm LL}$; the absolute tolerance
+$10^{-18}$, far below the off-polar entries of $\mathsf R_{\rm SF}$ of the smaller seed) measure it with the departure
+$$s(t)=\big(\lvert\Phi^{X,1}_{\rm SF}(t)\rvert^2+\lvert\Phi^{X,2}_{\rm SF}(t)\rvert^2\big)^{1/2}\big/\Phi_0.\tag{15.1}$$
+During the growth from the normal vacuum the departure grows with the condensate, because the three pair channels of the
+normal vacuum are unstable at the same rate. After the saturation, let $e_k$ be the largest $s(t)$ in the pulse $k$ (between
+the $k$-th and the $(k+1)$-th maximum of $\lvert\Phi^3\rvert$, $k=0,1,\dots$); the least-squares line through $\ln e_k$ (seed
+$10^{-13}$, while $e_k<0.1$) gives the **growth of the departure per pulse** of Table 15.1. Through the growth and the first pulse,
+while the departure of the larger seed is below $10^{-3}$, the two runs differ by the factor 100 of their seeds to
+{{GEN:p4_T14_max_s}} or better (*check P4-T14*, tolerance $10^{-3}$): the departure is the linear response to the perturbation, which the motion amplifies. (Its
+nonlinear corrections are of the relative order $s^2$: the departure has the charges $\pm1$ of $Q_{\rm LL}$, so a product of two
+departures, of charge 0 or $\pm2$, cannot enter its equation; the first correction is of the third order.) The result:
+the pulse train of the polar sector is unstable against non-unitary perturbations in HS $(1,1)$ (a factor of about 100
+per pulse), in KS and in CJT (about 3 per pulse), and neutral in HS $(0,1)$ and HS $(0,0)$ (the factor 1 to $10^{-3}$; these are
+the two methods in which the amplitude mode and the non-unitary modes are degenerate, Table 10.4). The growth does not
+follow from how close the pulses come to the normal vacuum (the pulses of HS $(0,0)$ come closest, those of KS and CJT stay
+farthest from it); its mechanism is not analyzed further in this manuscript. The energy stays conserved in these runs
+(*P4-T13*), and the departure reaches $0.1$ at the times of Table 15.1 (seed $10^{-11}$; Figure 12, right).
+
+{{GEN:p4_table_growth}}
+
+**Table 15.1.** The growth of the condensate from the normal vacuum ($V^{(2)}_{\rm SF}$, polar sector, $t\le250$): the static eigenvalue,
+the growth rate from the linear response and from the time-dependent run, the largest $\lvert\Phi^3\rvert/\Phi_0$, the time of the
+first maximum, the time between the first two maxima; and, from the runs with the full equations and the non-unitary
+seeds, the growth of the departure (15.1) per pulse (seed $10^{-13}$) and the time at which the departure reaches $0.1$
+(seed $10^{-11}$; "--": not by $t=250$). Data: `data/part4_td_summary.csv`, `data/part4_td_growth_*.csv`.
+
+![](figures/fig_part4_r2_growth.png){width=100%}
+
+**Figure 11.** Left: $\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ from the normal vacuum with the seed $10^{-7}$, for the five methods (KS and CJT
+coincide to $10^{-8}$), with the growth $e^{\gamma^X_{\rm SF}t}$ of the linear response (dotted). Right: CJT, $\lvert\Phi^3\rvert/\Phi_0$ and the kinetic, the interaction and the
+total energy per volume. Data: `data/part4_td_growth_*.csv`.
+
+## 15.2 The small oscillations: the collective modes in time
+
+The first excited states of Part II are oscillations of the ground state; the time-dependent mean field must show them.
+Two runs per method start from the ground state of the BdG matrix with the pair self-energy of the ground state changed
+slightly: $(1+10^{-3})\mathsf P_{\rm SF}$ (a change of the amplitude) and $\mathsf P_{\rm SF}+10^{-3}i\Phi_0(\mathsf K^1_{\rm LL})^\dagger$ (a non-unitary change). The
+frequency of the oscillation of $\lvert\Phi^3(t)\rvert$ in the first run, and of $\mathrm{Im}(\Phi^1\Phi^{3*})/\lvert\Phi^3\rvert$ in the second, is
+the maximum of the Fourier sum with the Hann window ($w_j=\sin^2(\pi j/(n_{\rm out}-1))$ for the outputs $j=0,\dots,n_{\rm out}-1$ at
+$30\le t\le400$),
+located by a scan and a golden-section search. The continuum of two quasi-particles, which the change also excites,
+begins at the threshold $2E^{X,{\rm gap}}_{\rm SF}$, above the modes, and its contribution decays.
+
+{{GEN:p4_table_modes}}
+
+**Table 15.2.** The frequencies of the time-dependent runs after the two changes of the ground state, and the collective
+modes of the linear response of Section 10.5 (Table 10.4). Data: `data/part4_td_summary.csv`, `data/part4_td_kicks_CJT.csv`.
+
+The frequencies of the runs equal those of the linear response to $1.5\times10^{-6}$ (*checks P4-T7, P4-T8*), with the energy
+conserved to $10^{-11}$ of the depth (*P4-T9*): the amplitude mode and the non-unitary doublet are undamped oscillations of
+the superfluid (they lie below the threshold), and in HS $(0,1)$, $(0,0)$ the two changes give the same frequency, the
+triple mode of Table 10.4. The ground state does not move (*P4-T10*, $dR/dt$ below $10^{-14}$), and neither does the ground state
+turned by a phase rotation or an isospin rotation (*P4-T11*): these are the Goldstone directions, of zero frequency. The
+Python program repeats the growth and the amplitude mode on the grid of 8 radial nodes with its own response (*YP4-T1 to
+YP4-T3*).
+
+![](figures/fig_part4_r3_modes.png){width=100%}
+
+**Figure 12.** Left: CJT, the windowed power spectra of the two signals after the changes of the ground state, with the
+collective modes of the linear response (dotted) and the threshold of two quasi-particles. Right: the departure (15.1) from
+the polar sector with the full equations and the non-unitary seed $10^{-13}$. Data: `data/part4_td_kicks_CJT.csv`,
+`data/part4_td_growth_*.csv`.
+
+## 15.3 The photon and the W: radiation and a bound cloud
+
+**The equations.** In the unitary gauge and to first order in the gauge fields, (12.6) gives every component of every
+gauge field the Yang-Mills kinetic term (5.3) and the mass term (14.6). A component transverse to the direction of
+propagation, for fields that depend on $t$ and $x=x^1_{\rm LL}$ only, obeys the Klein-Gordon equation with the mass of its
+field (the Proca equation reduces to it). With a prescribed transverse current sheet $\mathcal J(t,x)$ of the spinor charges
+(of the charge $Q_{\rm LL}$ for the photon, of $T^1_{\rm LL}$ for $W^1$, with the same profile):
+$$\partial_0^2A_{{\rm SF},2}=\partial_1^2A_{{\rm SF},2}+\mathcal J,\qquad\partial_0^2W^1_{{\rm SF},2}=\partial_1^2W^1_{{\rm SF},2}-(M^X_{W,{\rm SF}})^2W^1_{{\rm SF},2}+\mathcal J,\tag{15.2}$$
+$$\mathcal J(t,x)=\mathcal J_0\big(1-x^2/\sigma_{\rm s}^2\big)e^{-x^2/(2\sigma_{\rm s}^2)}\,r_{\rm s}(t)\sin(\omega_{\rm s}t),\qquad r_{\rm s}(t)=\sin^2\big(\pi t/(2\tau_{\rm s})\big)\ (t<\tau_{\rm s}),\ 1\ (t\ge\tau_{\rm s}),\tag{15.3}$$
+with $\mathcal J_0=10^{-3}$, $\sigma_{\rm s}=8$, $\tau_{\rm s}=300$ and the frequency $\omega_{\rm s}=0.7M^{\rm CJT}_{W,{\rm SF}}={{GENM:p4_waves_omega_s_s}}$, below
+the mass of the W ($M^{\rm CJT}_{W,{\rm SF}}={{GENM:p4_waves_MW_s}}$, Table 13.1). The profile integrates to zero, so the sheet carries no net
+current.
+
+**The spectral grid.** $x$ runs over $N^{\rm lat}_{\rm SF}=511$ points with the spacing $\ell^{\rm lat}_{\rm SF}=2000/511$ on a periodic interval
+of the length $2000$. A function on the grid is the trigonometric polynomial
+$\sum_mu_me^{ik_mx}$, $k_m=2\pi m/2000$, $\lvert m\rvert\le255$, and its derivative at the grid points is $\mathsf D^{\rm sp}_{\rm SF}u$ with
+the Fourier differentiation matrix (odd number of points; $x_j$, $x_l$ grid points, $N=N^{\rm lat}_{\rm SF}$, $L=2000$)
+$$(\mathsf D^{\rm sp}_{\rm SF})_{jl}=\frac{\pi}{L}\,\frac{(-1)^{j-l}}{\sin(\pi(j-l)/N)}\quad(j\neq l),\qquad(\mathsf D^{\rm sp}_{\rm SF})_{jj}=0.\tag{15.4}$$
+It is real and antisymmetric, its eigenvectors are the modes $e^{ik_mx_j}$ with the eigenvalues $ik_m$ exactly (*check P4-W1*),
+so $\partial_1^2$ is $(\mathsf D^{\rm sp}_{\rm SF})^2$, exact for every mode of the grid; the error of the spatial derivatives is then
+smaller than any power of the spacing for smooth fields. Each Fourier mode of (15.2) from rest has the exact solution
+$$u_m(t)=\mathcal J_m\int_0^t\frac{\sin(\omega_m(t-t'))}{\omega_m}\,r_{\rm s}(t')\sin(\omega_{\rm s}t')\,dt',\qquad\omega_m=(k_m^2+M^2)^{1/2},\tag{15.5}$$
+($M=0$ or $M^{\rm CJT}_{W,{\rm SF}}$; $\mathcal J_m$ the Fourier coefficient of the profile), which the program evaluates by Gauss-Legendre
+quadrature (12 points on every interval of length 1).
+
+**The results.** CVODE (Adams, real weights, $10^{-10}$, $10^{-13}$) integrates (15.2) to $t=900$; the fields equal (15.5) to
+$5\times10^{-9}$ of their largest value (*checks P4-W2, P4-W3*). The photon **radiates**: for $100<x<400$ its amplitude at $t=900$ is
+${{GENM:p4_waves_photon_amplitude_s}}$, the amplitude $\mathcal J_0\lvert\hat\varsigma(\omega_{\rm s})\rvert/(2\omega_{\rm s})={{GENM:p4_waves_photon_amplitude_pred_s}}$ of the
+outgoing wave of the steady state ($\hat\varsigma(\omega)=(2\pi)^{1/2}\sigma_{\rm s}^3\omega^2e^{-\omega^2\sigma_{\rm s}^2/2}$, the Fourier
+transform of the profile; *check P4-W4*). The W **stays bound**: below its mass a wave cannot propagate, $k^2=\omega_{\rm s}^2-M^2<0$,
+and the steady state is the evanescent cloud $\propto e^{-\lvert x\rvert/\ell_{\rm W}}$ with
+$\ell_{\rm W}=((M^{\rm CJT}_{W,{\rm SF}})^2-\omega_{\rm s}^2)^{-1/2}={{GENM:p4_waves_W_decay_length_pred_s}}$. The amplitude of the W at the source
+frequency over the last two periods agrees with this steady state for $\lvert x\rvert<100$ to $2\times10^{-3}$ of its largest value, and
+its decay length for $30<x<100$ is ${{GENM:p4_waves_W_decay_length_s}}$ (*check P4-W5*; the remaining difference comes from the
+width of the source and from the waves above the mass that the switching on of the source excites, which travel slowly and
+are still visible beyond $x\approx150$, Figure 13). The photon carries energy to infinity at any frequency, the W only above its mass: the
+range of the force of a static source is infinite for the photon and $1/M^X_{W,{\rm SF}}$ for the W.
+
+## 15.4 The longitudinal Z: the Higgs mechanism in time
+
+**The equations.** Keep only the phase of the condensate and the gauge field $B_{{\rm SF},p}$:
+$\vec\Phi=\Phi_0e^{i\vartheta}\vec e_3$ with $\vartheta$ short for $\vartheta^X_{{\rm SF},0}(t,x)$, and $B_{{\rm SF},0}(t,x)$, $B^1_{\rm SF}(t,x)=-B_{{\rm SF},1}(t,x)$
+(the other components zero). With the field strength $B_{{\rm SF},01}=\partial_0B_{{\rm SF},1}-\partial_1B_{{\rm SF},0}$, the
+decay constant $f^{X,{\rm F}}_{\rm SF}$ of the phase (Section 12.2: $(f^{X,{\rm F}}_{\rm SF})^2=2(Z^X_{\rm SF}+Y^X_{\rm SF})\Phi_0^2$) and (12.4), (5.3),
+the Lagrangian is
+$$\mathcal L=\tfrac12B_{{\rm SF},01}^2+\tfrac12(f^{X,{\rm F}}_{\rm SF})^2\Big[\big(\partial_0\vartheta+2g^{\rm F}_{\rm LL}B_{{\rm SF},0}\big)^2-\big(\partial_1\vartheta-2g^{\rm F}_{\rm LL}B^1_{\rm SF}\big)^2\Big],\tag{15.6}$$
+and the mass of (14.5) is $M^X_{Z,{\rm SF}}=2g^{\rm F}_{\rm LL}f^{X,{\rm F}}_{\rm SF}$. (15.6) is invariant under $\vartheta\to\vartheta-2g^{\rm F}_{\rm LL}\lambda$,
+$B_{{\rm SF},p}\to B_{{\rm SF},p}+\partial_p\lambda$ for every function $\lambda(t,x)$. Its Euler-Lagrange equations (with respect to
+$B_{{\rm SF},0}$, $B^1_{\rm SF}$ and $\vartheta$) are, with $\kappa_{\rm F}=2g^{\rm F}_{\rm LL}(f^{X,{\rm F}}_{\rm SF})^2$,
+$$\begin{aligned}\partial_1B_{{\rm SF},01}&=-\kappa_{\rm F}\big(\partial_0\vartheta+2g^{\rm F}_{\rm LL}B_{{\rm SF},0}\big),\qquad\partial_0B_{{\rm SF},01}=-\kappa_{\rm F}\big(\partial_1\vartheta-2g^{\rm F}_{\rm LL}B^1_{\rm SF}\big),\\\partial_0^2\vartheta&=\partial_1^2\vartheta-2g^{\rm F}_{\rm LL}\big(\partial_0B_{{\rm SF},0}+\partial_1B^1_{\rm SF}\big).\end{aligned}\tag{15.7}$$
+The first, Gauss's law, contains no time derivative of $B_{{\rm SF},0}$. Without the gauge field ($g=0$) $\vartheta$ is the free
+Goldstone field, massless.
+
+**Two gauges, two integrators.**
+* *The temporal gauge* $B_{{\rm SF},0}=0$ (CVODE). Unknowns $\vartheta$, $\partial_0\vartheta$, $B^1_{\rm SF}$ and $B_{{\rm SF},01}$, with
+  $\partial_0B^1_{\rm SF}=-B_{{\rm SF},01}$ (the definition of the field strength when $B_{{\rm SF},0}=0$) and the second and third
+  equations of (15.7): ordinary differential equations. Gauss's
+  law is then a condition on the initial values, which these equations keep (its time derivative vanishes by the other two);
+  the program checks it at every output (*check P4-W7*, $2\times10^{-14}$).
+* *The unitary gauge* $\vartheta=0$ (IDA). The gauge-invariant fields $\mathcal C_p=B_{{\rm SF},p}+\partial_p\vartheta/(2g^{\rm F}_{\rm LL})$ are
+  the gauge field of the unitary gauge. With $\mathcal C^1=-\mathcal C_1$ and $M$ short for $M^X_{Z,{\rm SF}}$, (15.7) becomes the system
+  $$\partial_0\mathcal C^1=-B_{{\rm SF},01}-\partial_1\mathcal C_0,\qquad\partial_0B_{{\rm SF},01}=M^2\mathcal C^1,\qquad0=\partial_1B_{{\rm SF},01}+M^2\mathcal C_0,\tag{15.8}$$
+  two differential equations and an algebraic one (Gauss's law, which determines $\mathcal C_0$ from $B_{{\rm SF},01}$): a
+  differential-algebraic system of index one, because the derivative of the algebraic equation with respect to its
+  unknown, $M^2$, is invertible. IDA solves it with the exact iteration matrix (I1) of the crate `sfsundials`. For the
+  photon, $M=0$, Gauss's law no longer determines $\mathcal C_0$: the gauge freedom remains, and there is no longitudinal mode.
+
+Every Fourier mode of (15.8) obeys $\partial_0^2\mathcal C^1_m=-(k_m^2+M^2)\mathcal C^1_m$, with $B_{{\rm SF},01,m}=-M^2\partial_0\mathcal C^1_m/(k_m^2+M^2)$
+and $\mathcal C_{0,m}=-ik_mB_{{\rm SF},01,m}/M^2$: the longitudinal Z, massive, with the dispersion $\omega^2=k^2+M^2$, is the exact solution.
+
+**The run.** A packet of the Goldstone field, $\vartheta=e^{-(x+150)^2/(2\cdot40^2)}\cos(0.08(x+150))$ with
+$\partial_0\vartheta=-\partial_1\vartheta$ (moving to the right at the speed 1 when $g=0$), $B^1_{\rm SF}=0$ and $B_{{\rm SF},01}$ from Gauss's law, on
+255 points of a periodic interval of the length 1024, to $t=350$, with the CJT values $(f^{X,{\rm F}}_{\rm SF})^2={{GENM:p3_fF2_t_CJT}}$,
+$g^{\rm F}_{\rm LL}=0.45$, $M^X_{Z,{\rm SF}}={{GENM:p4_waves_MZ_s}}$ (*check P4-W0*: $2g^{\rm F}_{\rm LL}f^{X,{\rm F}}_{\rm SF}$ equals
+$g^{\rm F}_{\rm LL}(\chi^{\rm FF}_{\rm SF})^{1/2}$ of Part III):
+* without the gauge field the packet keeps its shape and its energy moves at the speed 1 (*checks P4-W6*, the exact
+  solution to $1.3\times10^{-9}$; *P4-W12*, the slope of the centre of the energy $1-2\times10^{-10}$);
+* with the gauge field the same packet becomes the longitudinal Z: its energy, $\tfrac12B_{{\rm SF},01}^2+\tfrac12M^2(\mathcal C_0^2+(\mathcal C^1)^2)$,
+  moves at ${{GENM:p4_waves_Z_velocity_s}}$ (the group velocity $k/(k^2+M^2)^{1/2}$ of the central wave number is
+  ${{GENM:p4_waves_Z_group_velocity_k0_s}}$) and the packet disperses (*P4-W13*: the same velocity in the exact solution);
+* the temporal gauge (CVODE) and the unitary gauge (IDA) describe the same physics: their gauge-invariant fields
+  $B^1_{\rm SF}-\partial_1\vartheta/(2g^{\rm F}_{\rm LL})$, $B_{{\rm SF},01}$, $\partial_0\vartheta/(2g^{\rm F}_{\rm LL})$ and $\mathcal C^1$, $B_{{\rm SF},01}$,
+  $\mathcal C_0$ agree to
+  $5\times10^{-9}$ of their largest value (*P4-W10*), the IDA solution equals the exact one to $5\times10^{-9}$ (*P4-W9*), and the
+  energies are conserved and equal (*P4-W8*, *P4-W11*).
+
+This is the Higgs mechanism in time: the Goldstone wave of the phase of the condensate, massless and moving at the
+speed of light without the gauge field, is in the presence of the gauge field the longitudinal polarization of the
+massive Z. The Python program repeats both sections through the C interface (*checks YP4-W2 to YP4-W7*).
+
+![](figures/fig_part4_r4_waves.png){width=100%}
+
+**Figure 13.** Top left: the transverse photon and W at $t=900$, driven at $0.7M_W$ by the current sheet at $x=0$. Top right:
+the amplitude of the W at the source frequency, the evanescent steady state and the slope $e^{-x/\ell_{\rm W}}$. Bottom left: the energy
+density of the free Goldstone packet (up) and of the longitudinal Z (down) at three times. Bottom right: the centres of
+their energies. Data: `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv`.
+
+## 15.5 The videos
+
+* `videos/video_part4_v1_condensate_growth.mp4` -- the growth of the condensate of CJT from the normal vacuum (Section
+  15.1): $\lvert\Phi^3(t)\rvert/\Phi_0$, the pair amplitude $\lVert\mathsf C^{\rm p}(\vec q)\rVert/\sqrt8$ and the number of charges in the upper
+  band at the momenta of the grid along $+\vec e_3$, compared with the ground state, every 0.5 time units to $t=250$.
+* `videos/video_part4_v2_gauge_fields.mp4` -- the photon radiating and the W bound (Section 15.3), and the free Goldstone
+  packet against the same packet eaten by the gauge field (Section 15.4).
+
+Both are drawn by `python/sf_part4_figures.py` from the data files of `sf_part4` and encoded by the program ffmpeg
+(H.264).
+
+# 16. Provenance: programs, commands, reports, data and figures
 
 The programs of each part, how to build and run them, the reports of their checks (printed completely), and the
 checksums of their data files and figures.
 
-## 14.1 Part I: the programs and how to run them
+## 16.1 Part I: the programs and how to run them
 
 All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT spacetimes.
 
@@ -1736,19 +2144,19 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       python3 code/scripts/assemble_docs.py docs_src/superfluid.src.md
       bash code/scripts/build_docs.sh superfluid.md
 
-## 14.2 Part I: the report of the Rust program
+## 16.2 Part I: the report of the Rust program
 
 {{GEN:p1_checks_rust}}
 
 {{GEN:p1_verdict_rust}}
 
-## 14.3 Part I: the report of the Python program
+## 16.3 Part I: the report of the Python program
 
 {{GEN:p1_checks_python}}
 
 {{GEN:p1_verdict_python}}
 
-## 14.4 Part I: data files and figures (SHA-256 checksums)
+## 16.4 Part I: data files and figures (SHA-256 checksums)
 
 * `data/hck_part1_checks.txt` (report of `sf_part1`):\
   `{{SHA256:data/hck_part1_checks.txt}}`
@@ -1779,7 +2187,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 * `figures/fig_part1_s4_kink.pdf` (Figure 4):\
   `{{SHA256:figures/fig_part1_s4_kink.pdf}}`
 
-## 14.5 Part II: the programs and how to run them
+## 16.5 Part II: the programs and how to run them
 
 * **Rust.** The program `sf_part2` (crate `rust/sfpart2`: the modules `channels` (Section 8), `engine` (Section 9.3 and
   the checks of the linear algebra), `recursion` (Sections 9.4, 10.1 to 10.4), `excited` (Section 10.5), `gauge` and
@@ -1793,7 +2201,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       cargo build --release
       ./target/release/sf_part2
 
-  Output: `data/hck_part2_checks.txt` (the report) and the data files listed in Section 14.8. The program ends with the
+  Output: `data/hck_part2_checks.txt` (the report) and the data files listed in Section 16.8. The program ends with the
   exit status 0 exactly when every check passes; it runs about nine minutes on two processor cores.
 * **Python.** `python/sf_part2.py` is an independent second computation with numpy and LAPACK (its own grid from
   `numpy.polynomial.legendre`, its own energy functional, response, exchange kernels and iterations); it reads the
@@ -1803,25 +2211,25 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       python3 python/sf_part2_figures.py
 
 * **Documents.** `code/scripts/write_part2_fragments.py` turns the reports and the data files into the tables and the
-  numbers of Part II; the manuscript is then assembled and built as in Section 14.1:
+  numbers of Part II; the manuscript is then assembled and built as in Section 16.1:
 
       python3 code/scripts/write_part2_fragments.py
       python3 code/scripts/assemble_docs.py docs_src/superfluid.src.md
       bash code/scripts/build_docs.sh superfluid.md
 
-## 14.6 Part II: the report of the Rust program
+## 16.6 Part II: the report of the Rust program
 
 {{GEN:p2_checks_rust}}
 
 {{GEN:p2_verdict_rust}}
 
-## 14.7 Part II: the report of the Python program
+## 16.7 Part II: the report of the Python program
 
 {{GEN:p2_checks_python}}
 
 {{GEN:p2_verdict_python}}
 
-## 14.8 Part II: data files and figures (SHA-256 checksums)
+## 16.8 Part II: data files and figures (SHA-256 checksums)
 
 * `data/hck_part2_checks.txt` (report of `sf_part2`):\
   `{{SHA256:data/hck_part2_checks.txt}}`
@@ -1860,7 +2268,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 * `figures/fig_part2_p3_gauge.pdf` (Figure 7):\
   `{{SHA256:figures/fig_part2_p3_gauge.pdf}}`
 
-## 14.9 Part III: the programs and how to run them
+## 16.9 Part III: the programs and how to run them
 
 * **Rust.** The program `sf_part3` (crate `rust/sfpart3`: the modules `effpot` (Section 12.1: the states with a fixed
   pair field, the curves, the curvatures, the symmetries, the Landau fit) and `kinetic` (Section 12.2: the
@@ -1872,7 +2280,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       cargo build --release
       ./target/release/sf_part3
 
-  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 14.12; about two minutes.
+  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about two minutes.
 * **Python.** `python/sf_part3.py` recomputes, with the engine of `python/sf_part2.py`, the minima, the curvatures of the
   effective potentials, the susceptibilities and the stiffness of the twisted states of HS $(1,1)$ and CJT, and compares
   them with the values of the Rust program; `python/sf_part3_figures.py` draws Figures 8 and 9:
@@ -1884,19 +2292,19 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 
       python3 code/scripts/write_part3_fragments.py
 
-## 14.10 Part III: the report of the Rust program
+## 16.10 Part III: the report of the Rust program
 
 {{GEN:p3_checks_rust}}
 
 {{GEN:p3_verdict_rust}}
 
-## 14.11 Part III: the report of the Python program
+## 16.11 Part III: the report of the Python program
 
 {{GEN:p3_checks_python}}
 
 {{GEN:p3_verdict_python}}
 
-## 14.12 Part III: data files and figures (SHA-256 checksums)
+## 16.12 Part III: data files and figures (SHA-256 checksums)
 
 * `data/hck_part3_checks.txt` (report of `sf_part3`):\
   `{{SHA256:data/hck_part3_checks.txt}}`
@@ -1918,9 +2326,108 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 * `figures/fig_part3_q2_masses.pdf` (Figure 9):\
   `{{SHA256:figures/fig_part3_q2_masses.pdf}}`
 
-# 15. Corrections made during the work
+## 16.13 Part IV: the programs and how to run them
 
-## 15.1 Part I
+* **Rust.** Three new crates of the workspace `rust/`:
+  * `sfsundials` -- the integrators: `cvode::integrate` (CVODE of SUNDIALS 7.8.0 in pure Rust: Adams-Moulton or BDF
+    formulas, fixed-point iteration of the corrector, real or complex error weights) and `ida::integrate` (IDA: BDF
+    formulas, Newton's method with the dense LU solver, an exact or a difference-quotient iteration matrix, the
+    optional correction of the initial values by `IDACalcIC`), with the vendored crates `cvode_rs` and `ida_rs` of
+    `vendor/sundials_rs-7.8.0` of PROJECT spacetimes;
+  * `sfsundials_c` -- the shared library `libsfsundials_c` (`.so` on Linux, `.dylib` on macOS) with the C functions
+    `sfs_cvode` and `sfs_ida`, through which the Python programs use the same integrators;
+  * `sfpart4` -- the program `sf_part4` with the modules `mass` (Section 14: the vectors (14.1), the matrix (14.3), the
+    cyclic Jacobi method), `tdhfb` (Section 15.1: the right side of (6.6), the projector states, the polar sector, the
+    observables), `waves` (Sections 15.3 and 15.4: (15.2) with the source (15.3), the exact solutions (15.5), the two
+    gauges of (15.7), (15.8) and their exact solution), `spectral` (the grid and the matrix (15.4), the discrete Fourier
+    transform) and `signal` (the windowed Fourier sum, the least-squares line).
+
+  The library `sfcore` gained one function for this part, the response at a complex frequency (`Response::chi_complex`
+  in the module `rpa`); nothing else of Parts I to III was changed. `sf_part4` reads `data/part2_modes.csv`,
+  `data/part2_values.csv` and `data/part3_values.csv`, so it is run after `sf_part2` and `sf_part3`:
+
+      cd rust
+      cargo build --release
+      ./target/release/sf_part4
+
+  Output: `data/hck_part4_checks.txt` and the data files of Section 16.16; about twenty minutes (1203 s) on two processor
+  cores (the right side of (6.6) is shared among the cores of the machine).
+* **Python.** `python/sfsundials.py` loads the library of `sfsundials_c` with the standard module ctypes;
+  `python/sf_part4.py` recomputes, with numpy, LAPACK and the integrators through the C interface, the checks YP4 of
+  Section 16.15; `python/sf_part4_figures.py` draws Figures 10 to 13 and makes the two videos (it needs matplotlib and
+  the program ffmpeg):
+
+      python3 python/sf_part4.py
+      python3 python/sf_part4_figures.py
+
+* **Documents.** `code/scripts/write_part4_fragments.py` writes the tables and the numbers of Part IV:
+
+      python3 code/scripts/write_part4_fragments.py
+
+## 16.14 Part IV: the report of the Rust program
+
+{{GEN:p4_checks_rust}}
+
+{{GEN:p4_verdict_rust}}
+
+## 16.15 Part IV: the report of the Python program
+
+{{GEN:p4_checks_python}}
+
+{{GEN:p4_verdict_python}}
+
+## 16.16 Part IV: data files, figures and videos (SHA-256 checksums)
+
+* `data/hck_part4_checks.txt` (report of `sf_part4`):\
+  `{{SHA256:data/hck_part4_checks.txt}}`
+* `data/hck_part4_checks_python.txt` (report of `python/sf_part4.py`):\
+  `{{SHA256:data/hck_part4_checks_python.txt}}`
+* `data/part4_values.csv` (the numbers of Part IV):\
+  `{{SHA256:data/part4_values.csv}}`
+* `data/part4_massmatrix.csv` (Table 14.1):\
+  `{{SHA256:data/part4_massmatrix.csv}}`
+* `data/part4_td_summary.csv` (Tables 15.1 and 15.2):\
+  `{{SHA256:data/part4_td_summary.csv}}`
+* `data/part4_td_growth_HS_1_1.csv`, `data/part4_td_growth_HS_0_1.csv`, `data/part4_td_growth_HS_0_0.csv`,
+  `data/part4_td_growth_KS.csv`, `data/part4_td_growth_CJT.csv` (Figures 11 and 12):\
+  `{{SHA256:data/part4_td_growth_HS_1_1.csv}}`\
+  `{{SHA256:data/part4_td_growth_HS_0_1.csv}}`\
+  `{{SHA256:data/part4_td_growth_HS_0_0.csv}}`\
+  `{{SHA256:data/part4_td_growth_KS.csv}}`\
+  `{{SHA256:data/part4_td_growth_CJT.csv}}`
+* `data/part4_td_kicks_HS_1_1.csv`, `data/part4_td_kicks_HS_0_1.csv`, `data/part4_td_kicks_HS_0_0.csv`,
+  `data/part4_td_kicks_KS.csv`, `data/part4_td_kicks_CJT.csv` (Table 15.2, Figure 12):\
+  `{{SHA256:data/part4_td_kicks_HS_1_1.csv}}`\
+  `{{SHA256:data/part4_td_kicks_HS_0_1.csv}}`\
+  `{{SHA256:data/part4_td_kicks_HS_0_0.csv}}`\
+  `{{SHA256:data/part4_td_kicks_KS.csv}}`\
+  `{{SHA256:data/part4_td_kicks_CJT.csv}}`
+* `data/part4_td_frames_CJT.csv`, `data/part4_td_groundprofile_CJT.csv` (the first video):\
+  `{{SHA256:data/part4_td_frames_CJT.csv}}`\
+  `{{SHA256:data/part4_td_groundprofile_CJT.csv}}`
+* `data/part4_td_small_CJT.csv` (the comparison YP4-T1):\
+  `{{SHA256:data/part4_td_small_CJT.csv}}`
+* `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv` (Figure 13, the
+  second video):\
+  `{{SHA256:data/part4_waves_transverse.csv}}`\
+  `{{SHA256:data/part4_waves_Wcloud.csv}}`\
+  `{{SHA256:data/part4_waves_longitudinal.csv}}`
+* `figures/fig_part4_r1_massmatrix.pdf` (Figure 10):\
+  `{{SHA256:figures/fig_part4_r1_massmatrix.pdf}}`
+* `figures/fig_part4_r2_growth.pdf` (Figure 11):\
+  `{{SHA256:figures/fig_part4_r2_growth.pdf}}`
+* `figures/fig_part4_r3_modes.pdf` (Figure 12):\
+  `{{SHA256:figures/fig_part4_r3_modes.pdf}}`
+* `figures/fig_part4_r4_waves.pdf` (Figure 13):\
+  `{{SHA256:figures/fig_part4_r4_waves.pdf}}`
+* `videos/video_part4_v1_condensate_growth.mp4`:\
+  `{{SHA256:videos/video_part4_v1_condensate_growth.mp4}}`
+* `videos/video_part4_v2_gauge_fields.mp4`:\
+  `{{SHA256:videos/video_part4_v2_gauge_fields.mp4}}`
+
+# 17. Corrections made during the work
+
+## 17.1 Part I
 
 Each of the following was found before part I was committed; each is recorded so that the history of the results is
 complete.
@@ -1942,7 +2449,7 @@ complete.
    (sympy); it had not finished after 11 minutes of computing time and was stopped. It was replaced by differences of
    eighth order, which also makes the Python method independent of the Rust method.
 
-## 15.2 Part II
+## 17.2 Part II
 
 Each of the following was found before part II was committed.
 
@@ -1967,7 +2474,7 @@ Each of the following was found before part II was committed.
 6. A run of the Python program was once started while an earlier run was still writing to the same output file; the
    interleaved output was discarded, and the program was run again alone.
 
-## 15.3 Part III
+## 17.3 Part III
 
 1. *Check P3-7* first required the stiffness of the twisted state on six directions and on 72 directions to agree to
    $10^{-8}$ and failed with $4\times10^{-7}$. The six directions are exact for the term of second order in the twist;
@@ -1976,7 +2483,63 @@ Each of the following was found before part II was committed.
 2. The first version of the figure program wrote the calligraphic letter without braces, which the formula renderer of
    matplotlib does not accept; corrected before any figure was used.
 
-# 16. The symbols
+## 17.4 Part IV
+
+Each of the following was found before part IV was committed.
+
+1. The first microscopic check of the mass matrix used the vacuum $\Phi_0e^{i\pi/5}(1,1,1)/\sqrt3$. Its static
+   susceptibilities could not be computed: a chemical potential $\mu^b_{\rm SF}$ of a charge whose axis is neither parallel nor
+   perpendicular to $\vec n$ lowers the energy of the vacua by $\tfrac12\chi^{11}_{\rm SF}(\mu^b_{\rm SF})^2\sin^2$ of the angle between the
+   axis and $\vec n$, so the self-consistent iteration turned the condensate slowly along the flat Goldstone directions, never
+   reached the tolerance and ran for many minutes; the run was stopped. For a vacuum along a coordinate axis the
+   symmetry forbids this turning (the axis of every charge is parallel or perpendicular to $\vec n$); the microscopic check
+   now uses the vacuum along $\vec e_1$, and the vacuum along $(1,1,1)/\sqrt3$ is checked with (14.3) (Section 14.5). The
+   results of Section 14 do not depend on this choice: the mass matrix of every vacuum is (14.5).
+2. *Check P4-W5* (the bound cloud of the W) first required the decay length fitted for $40<x<110$ to agree with
+   $\ell_{\rm W}$ to 5 per cent, with the source switched on in the time $\tau_{\rm s}=100$, and failed (17 per cent). The waves
+   above the mass that the switching on excites travel slowly and were still present at $40<x<110$. With $\tau_{\rm s}=300$ (a
+   gentler switching on), the amplitude over the last two periods, and the fit for $30<x<100$, the check compares the
+   whole profile with the steady state and passes (Section 15.3).
+3. *Check P4-T6* (the state stays in the channel $\mathsf K^3$) first failed in HS $(1,1)$, KS and CJT: with the full equations the
+   rounding errors in the components $\mathsf K^1$, $\mathsf K^2$ grew (in HS $(1,1)$ to $0.95$ of $\lvert\Phi^3\rvert$). This is the
+   instability of the pulse train described in Section 15.1; the growth runs now stay in the polar sector, and the
+   instability is measured by the seeded runs (*checks P4-T13, P4-T14*).
+4. *Check P4-T14* (the departure is linear in the seed) first compared $s(t)$ of the seeds $10^{-10}$ and $10^{-12}$ by their
+   ratio at every output and failed for CJT (2.5 per cent): near the zeros of the oscillating components the ratio of two
+   small numbers is dominated by the errors of the integration. The next version compared $\lvert s_1-100s_2\rvert$ with the
+   largest $s_1$, with the seeds $10^{-11}$ and $10^{-13}$, over the whole run while $s_1<10^{-3}$, and failed for HS $(0,0)$
+   ($8\times10^{-3}$); the difference appeared only after the first pulse. Restricted to the growth and the first pulse
+   (the present window), the check still failed for HS $(0,0)$ ($1.8\times10^{-3}$). In the output of that run $s_1$ and
+   $100s_2$ agree to $10^{-8}$ (relative) until $t\approx46$; the difference arises while the pulse passes near the normal
+   vacuum (the minimum $\lvert\Phi^3\rvert=2.1\times10^{-3}\Phi_0$ at $t\approx58$) and stays near $2\times10^{-3}$ afterwards. These
+   runs then used the absolute tolerance $10^{-15}$, like the growth runs. With the absolute tolerance $10^{-18}$, and no other
+   change, the check passes for all five methods (largest value {{GEN:p4_T14_max_s}}). The off-polar entries of
+   $\mathsf R_{\rm SF}$ in the run with the smaller seed are many orders of magnitude below the entries of the order 1, and
+   they are smallest near the normal vacuum, where all pair amplitudes are small; the absolute tolerance $10^{-15}$ was
+   evidently not small enough for them there (this account of the mechanism was not tested further). Whether the
+   comparison over the whole run would pass with the smaller tolerance was not tested. In the same
+   revision the growth of the departure was measured first as an average rate from $t=0$; since the departure grows with
+   the condensate during the growth from the normal vacuum, that rate mixed two effects, and the growth per pulse after
+   the saturation replaced it (Section 15.1).
+5. Section 13.1 wrote the identity component of the stabilizer as $U(1)^{\rm Q}_{\rm SF}$ and its generator as $Q$. This group and this
+   charge are the objects $U(1)^{\rm Q}_{\rm LL}$ and $Q_{\rm LL}=T^3_{\rm LL}$ of the earlier work of the project, which the registry of the
+   symbols lists; by the rule "one symbol, one object" Section 13.1 now writes $U(1)^{\rm Q}_{\rm LL}$ and $Q_{\rm LL}$.
+6. Section 6.2 stated that in the temporal gauge the coupled system of the field equations is a system of
+   differential-algebraic equations with an algebraic equation for Gauss's law. In the temporal gauge Gauss's law contains
+   no unknown that it determines: it is a condition on the initial values that the other equations keep (Section 15.4,
+   *check P4-W7*). A differential-algebraic system arises when the time component of the gauge field is kept as an
+   unknown, as in the unitary gauge of Section 15.4. Section 6.2 now says so.
+7. Sections 13.1 and 14.4 first wrote the angle of a rotation about $\vec e_3$ as $\alpha$, the letter of the index of the two
+   components of a two-component spinor (Section 1); the angle is now written $\theta$, as in the definition of
+   $U(1)^{\rm Q}_{\rm LL}$.
+8. The statements of the checks of Part IV (Sections 16.14 and 16.15) first cited equation labels that exist only in the source code
+   of the programs `sf_part4` and `sf_part4.py` (such as (M2) for the mass matrix), which this manuscript does not contain; they now cite
+   the equations (14.1), (14.3), (15.2), (15.4) and (15.6), and the programs were run again. In the same revision Table
+   14.1 was given a row per quantity (it was wider than the page), the growth rates of Table 15.1 were given six
+   digits, equation (14.5) was set on two lines, and the rounded values of checks quoted in Sections 15.1 and 15.3 were
+   compared with the final report and corrected where they differed.
+
+# 18. The symbols
 
 Every symbol of this manuscript, except the local variables listed at the end of this section, is an entry of the
 registry of the solution, which is printed here completely. The column "origin" states where the symbol comes from:
@@ -2025,10 +2588,30 @@ $\mathsf R_{\rm SF}$ of a state, Section 12.1); $\lambda$ (a Lagrange multiplier
 non-unitary direction in Section 12.1); $\mathcal V''_{\rm amp}$, $\mathcal V''_{\rm NU}$ (the curvatures of
 $\mathcal V^X_{\rm SF}$ along the amplitude and along the non-unitary direction); $Q$ (the strength of a uniform twist);
 $\mathsf t$ (the isospin matrix of a twist); $\vartheta$, $\vec n$ (the phase and the direction of a vacuum, (13.1));
-$\mathsf r$ (the element of the stabilizer that reverses $\vec e_3$); $\alpha$ (an angle of rotation about $\vec e_3$);
+$\mathsf r$ (the element of the stabilizer that reverses $\vec e_3$); $\theta$ (an angle of rotation about $\vec e_3$);
 $\mathsf U_\vartheta$ (the isospin matrix of the Goldstone angles in (13.4)); $k$ (an index, 1 or 2, in (13.5)).
 
-# 17. Published works on the methods used
+**Local variables of Part IV.** $\Phi_0$ (short for $\Phi^X_{0,{\rm SF}}$); $a$, $b$, $\mathcal A^a_p$, $g_a$ (as in Part II); $\mathfrak c$,
+$\mathfrak c_a$, $\vec{\mathfrak c}$ (the directions of a gauge field in the space of the four gauge fields, (14.1)); $\vec X(\mathfrak c)$,
+$\vec X_a$ (the change of a constant field under a gauge field of the direction $\mathfrak c$, (14.1)); $\mathcal K$ (the quadratic
+form (14.2)); $\vartheta$, $\vec n$ (the phase and the direction of a vacuum, as in Part III); $\vec e_{\perp1}$, $\vec e_{\perp2}$ (two
+unit vectors that complete $\vec n$ to a right-handed frame); $\mathsf V$ (a real matrix with $\mathsf M^X_{\rm SF}=\mathsf V^T\mathsf V$);
+$\theta'$ (the angle of the massless field of the non-polar example, Section 14.3); $\upsilon$ (the angle of the family of fields of
+Figure 10); $\mathsf r$, $\theta$ (as in Part III); $\lambda_0,\dots,\lambda_3$, $v_0$ (the eigenvalues of the microscopic mass
+matrix and the eigenvector of $\lambda_0$, Table 14.1); $\mathsf R$, $\mathsf H$ (short for $\mathsf R_{\rm SF}$, $\mathsf H_{\rm SF}$), $w$ (the
+weight of a node of the grid) and $\gamma$ (a positive number, $\omega=i\gamma$) in Section 15.1; $s(t)$, $s_1$, $s_2$, $e_k$ (the departure
+(15.1) from the polar sector, its values for the two seeds, and its largest value in the pulse $k$); $w_j$, $n_{\rm out}$ (the
+Hann window and the number of outputs,
+Section 15.2); $t$, $x$ (short for $x^0_{\rm LL}$ and $x^1_{\rm LL}$ in Sections 15.3 and 15.4); $\mathcal J$, $\mathcal J_0$, $\sigma_{\rm s}$,
+$\omega_{\rm s}$, $\tau_{\rm s}$, $r_{\rm s}$ (the source (15.3), its strength, width, frequency, switching time and switching
+function); $\hat\varsigma$ (the Fourier transform of the profile of the source); $N$, $L$, $x_j$, $x_l$, $k_m$, $m$, $u_m$, $\mathcal J_m$,
+$\omega_m$, $M$ (the number of points, the period, the points, the wave numbers and their number, the Fourier
+coefficients of a field and of the source, the frequency of a mode and the mass in (15.4), (15.5)); $\ell_{\rm W}$ (the decay
+length of the bound W); $\kappa_{\rm F}$ (the coefficient $2g^{\rm F}_{\rm LL}(f^{X,{\rm F}}_{\rm SF})^2$ in (15.7)), $M$ (short for
+$M^X_{Z,{\rm SF}}$ in Section 15.4), $\lambda$ (the function of a gauge transformation), $\mathcal C_p$, $\mathcal C^1$ (the
+gauge-invariant fields of (15.8)).
+
+# 19. Published works on the methods used
 
 * A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker and C. S. Woodward, SUNDIALS: Suite
   of nonlinear and differential/algebraic equation solvers, ACM Transactions on Mathematical Software 31, 363 (2005);
@@ -2091,3 +2674,19 @@ $\mathsf U_\vartheta$ (the isospin matrix of the Goldstone angles in (13.4)); $k
   the effective potential at a fixed value of the field (Section 12.1).
 * V. L. Ginzburg and L. D. Landau, On the theory of superconductivity, Zhurnal Eksperimental'noi i Teoreticheskoi Fiziki
   20, 1064 (1950) -- the expansion of the energy in powers of the order parameter and its gradients (Sections 12 and 13).
+
+* G. S. Guralnik, C. R. Hagen and T. W. B. Kibble, Global conservation laws and massless particles, Physical Review Letters
+  13, 585 (1964); A. Proca, Sur la théorie ondulatoire des électrons positifs et négatifs, Journal de Physique et le
+  Radium 7, 347 (1936); E. C. G. Stueckelberg, Die Wechselwirkungskräfte in der Elektrodynamik und in der Feldtheorie
+  der Kernkräfte, Helvetica Physica Acta 11, 225 (1938) -- the Higgs mechanism, the massive vector field and its
+  gauge-invariant form (Sections 14 and 15.4).
+* S. Weinberg, A model of leptons, Physical Review Letters 19, 1264 (1967) -- the mixing angle of the Standard Model
+  (Section 14.3).
+* A. F. Volkov and Sh. M. Kogan, Collisionless relaxation of the energy gap in superconductors, Soviet Physics JETP 38,
+  1018 (1974); R. A. Barankov, L. S. Levitov and B. Z. Spivak, Collective Rabi oscillations and solitons in a
+  time-dependent BCS pairing problem, Physical Review Letters 93, 160401 (2004) -- the collisionless dynamics of a
+  condensate (Section 15.1).
+* L. N. Trefethen, Spectral Methods in MATLAB (SIAM, Philadelphia, 2000) -- the Fourier differentiation matrix (Section 15.3).
+* C. G. J. Jacobi, Über ein leichtes Verfahren, die in der Theorie der Säcularstörungen vorkommenden Gleichungen numerisch
+  aufzulösen, Journal für die reine und angewandte Mathematik 30, 51 (1846) -- the eigenvalues of symmetric matrices by
+  plane rotations (Section 14.5).

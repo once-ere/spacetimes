@@ -530,6 +530,12 @@ ENTRIES = [
     # ------------------------------------------------------------------ group 12
     (G12, "$\\ell^{\\rm lat}_{\\rm SF}$, $N^{\\rm lat}_{\\rm SF}$", "dx_lat N_lat", "the spacing and the number of sites of "
      "a lattice in one space direction", "new"),
+    (G12, "$\\gamma^X_{\\rm SF}$", "gamma_RPA gamma_TD", "the growth rate of the unstable pair mode of the normal vacuum in "
+     "method $X$: the number $\\gamma>0$ at which an eigenvalue of $\\mathsf Q^X_{\\rm SF}(i\\gamma)$ equals 1; a fluctuation of the "
+     "normal vacuum in the pair channel grows as $e^{\\gamma^X_{\\rm SF}t}$", "new"),
+    (G12, "$\\mathsf D^{\\rm sp}_{\\rm SF}$", "dmatrix", "the Fourier differentiation matrix of a periodic grid of an odd number "
+     "$N^{\\rm lat}_{\\rm SF}$ of points with the spacing $\\ell^{\\rm lat}_{\\rm SF}$: the derivative, at the points, of the "
+     "trigonometric polynomial through the values of a function at the points", "new"),
     (G12, "$r^{\\rm W}_{\\rm SF}$", "r_W", "the Wilson parameter of the lattice: the coefficient of the Wilson term "
      "$\\beta_{\\rm LL}(r^{\\rm W}_{\\rm SF}/2\\ell^{\\rm lat}_{\\rm SF})[2\\Psi(x)-\\Psi(x+\\ell^{\\rm lat}_{\\rm SF})-\\Psi(x-\\ell^{\\rm lat}_{\\rm SF})]$ "
      "(value 1)", "new"),

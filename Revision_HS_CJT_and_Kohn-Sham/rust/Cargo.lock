@@ -3,6 +3,20 @@
 version = 4
 
 [[package]]
+name = "cvode_rs"
+version = "7.8.0"
+dependencies = [
+ "sundials_core",
+]
+
+[[package]]
+name = "ida_rs"
+version = "7.8.0"
+dependencies = [
+ "sundials_core",
+]
+
+[[package]]
 name = "sfcore"
 version = "0.1.0"
 
@@ -26,3 +40,30 @@ version = "0.1.0"
 dependencies = [
  "sfcore",
 ]
+
+[[package]]
+name = "sfpart4"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+ "sfsundials",
+]
+
+[[package]]
+name = "sfsundials"
+version = "0.1.0"
+dependencies = [
+ "cvode_rs",
+ "ida_rs",
+]
+
+[[package]]
+name = "sfsundials_c"
+version = "0.1.0"
+dependencies = [
+ "sfsundials",
+]
+
+[[package]]
+name = "sundials_core"
+version = "7.8.0"

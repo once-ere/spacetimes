@@ -207,7 +207,7 @@ Cornwall-Jackiw-Tomboulis and Kohn-Sham}
 \subtitle{README of the folder Revision\_HS\_CJT\_and\_Kohn-Sham of
 PROJECT spacetimes}
 \author{Prepared for Patrick Lee Nash, Ph.D.}
-\date{November 20, 2026}
+\date{November 21, 2026}
 
 \begin{document}
 \maketitle
@@ -270,8 +270,19 @@ kinetic parts, the vacua and the breaking of the symmetry, and
 \(\mathrm{SFBSv}^X\)) is complete, with the program \texttt{sf\_part3}
 (VERDICT: ALL PASS (31 of 31)) and the Python programs
 \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (10 of 10)) and
-\texttt{python/sf\_part3\_figures.py}. Part IV follows in the same
-manuscript.
+\texttt{python/sf\_part3\_figures.py}.
+
+\textbf{Part IV of the manuscript} (the mass matrix of the gauge bosons
+in every vacuum and its diagonalization, the theorem that the massless
+gauge bosons are the generators that leave the condensate unchanged, the
+surviving group \(SL(2,\mathbb C)\times O(2)\) and its \(U(1)\) with the
+massless photon; the dynamics of the superfluid and of its gauge fields,
+integrated with CVODE and IDA; two videos) is complete, with the program
+\texttt{sf\_part4} (VERDICT: ALL PASS (120 of 120)), the integrators
+\texttt{sfsundials} and their C interface \texttt{sfsundials\_c}, and
+the Python programs \texttt{python/sf\_part4.py} (VERDICT: ALL PASS (20
+of 20)) and \texttt{python/sf\_part4\_figures.py}. The Mathematica
+notebook \texttt{superfluid.nb} is the next object of the plan.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -310,7 +321,7 @@ grows with the solution \\
 solution, written by \texttt{code/scripts/write\_symbol\_registry.py}
 from \texttt{code/scripts/symbol\_entries.py} & written \\
 \texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript of
-the solution & parts I to III written; part IV follows \\
+the solution & parts I to IV written \\
 \texttt{superfluid.nb} & the Mathematica notebook of the whole solution,
 with its provenance & planned \\
 \texttt{provenance/} (further documents) & the provenance of the code,
@@ -337,16 +348,28 @@ differentiation to second order, Fock-space operators, eigenvalues of
 block-tridiagonal matrices, quadrature, reports; for part II the uniform
 quasi-free states of the three methods, the linear response, the
 eigenvalues of general complex matrices and the exchange of gauge
-bosons), the program \texttt{sf\_part1} (the checks and analytic
-solutions of part I) the program \texttt{sf\_part2} (part II) and the
-program \texttt{sf\_part3} (part III) & parts I to III written \\
+bosons; for part IV the response at complex frequencies), the program
+\texttt{sf\_part1} (the checks and analytic solutions of part I), the
+program \texttt{sf\_part2} (part II), the program \texttt{sf\_part3}
+(part III), the program \texttt{sf\_part4} (part IV), the integrators
+CVODE and IDA of the vendored pure-Rust SUNDIALS 7.8.0 with a plain
+interface (\texttt{sfsundials}), and their C interface for Python, the
+shared library \texttt{libsfsundials\_c} (\texttt{sfsundials\_c}) &
+parts I to IV written \\
 \texttt{python/} & \texttt{sfcommon.py} (common definitions),
-\texttt{sf\_part1.py}, \texttt{sf\_part2.py}, \texttt{sf\_part3.py} (the
-second, independent computations of parts I to III),
-\texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
-\texttt{sf\_part3\_figures.py} (the figures) & parts I to III written \\
-\texttt{wolfram/} & the Wolfram-language parts of the notebook &
-planned \\
+\texttt{sfsundials.py} (CVODE and IDA through the C interface),
+\texttt{sf\_part1.py}, \texttt{sf\_part2.py}, \texttt{sf\_part3.py},
+\texttt{sf\_part4.py} (the second, independent computations of parts I
+to IV), \texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
+\texttt{sf\_part3\_figures.py}, \texttt{sf\_part4\_figures.py} (the
+figures, and the videos of part IV) & parts I to IV written \\
+\texttt{wolfram/} & the Wolfram-language parts of the notebook: in
+\texttt{wolfram/tools/} the builder of the notebook from its source
+(\texttt{build\_notebook.wls}), the reader of formulas that turns the
+TeX of the texts into two-dimensional formulas
+(\texttt{sf\_formula.wl}), and the evaluation of the notebook in the
+front end of Wolfram (\texttt{guirun.wl}); the sources of the notebook
+follow with object O8 & tools written; sources planned \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},
@@ -354,17 +377,21 @@ planned \\
 \texttt{hck\_part2\_checks\_python.txt},
 \texttt{hck\_part3\_checks.txt},
 \texttt{hck\_part3\_checks\_python.txt},
+\texttt{hck\_part4\_checks.txt},
+\texttt{hck\_part4\_checks\_python.txt},
 \texttt{hck\_symbol\_checks.txt},
-\texttt{hck\_self\_contained\_checks.txt}) and the data of parts I to
-III (\texttt{part1\_*.csv}, \texttt{part2\_*.csv},
-\texttt{part3\_*.csv}) & parts I to III written \\
+\texttt{hck\_self\_contained\_checks.txt}) and the data of parts I to IV
+(\texttt{part1\_*.csv}, \texttt{part2\_*.csv}, \texttt{part3\_*.csv},
+\texttt{part4\_*.csv}) & parts I to IV written \\
 \texttt{figures/}, \texttt{videos/} & the figures
 (\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
-each \texttt{.pdf} and \texttt{.png}) and the videos & figures of parts
-I to III written \\
+\texttt{fig\_part4\_*}, each \texttt{.pdf} and \texttt{.png}) and the
+videos (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
+\texttt{video\_part4\_v2\_gauge\_fields.mp4}) & written \\
 \texttt{code/scripts/write\_part1\_fragments.py},
-\texttt{write\_part2\_fragments.py}, \texttt{write\_part3\_fragments.py}
-& turn the reports and values of parts I to III into the tables and
+\texttt{write\_part2\_fragments.py},
+\texttt{write\_part3\_fragments.py}, \texttt{write\_part4\_fragments.py}
+& turn the reports and values of parts I to IV into the tables and
 numbers of the manuscript & written \\
 \end{longtable}
 
@@ -390,6 +417,10 @@ folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 \ExtensionTok{python3}\NormalTok{ python/sf\_part3.py                    }\CommentTok{\# part III: the Python computation}
 \ExtensionTok{python3}\NormalTok{ python/sf\_part3\_figures.py            }\CommentTok{\# part III: the figures}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_part3\_fragments.py }\CommentTok{\# the tables and numbers of part III for the manuscript}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sf\_part4}\KeywordTok{)}        \CommentTok{\# part IV: checks and data (after sf\_part3; about twenty minutes)}
+\ExtensionTok{python3}\NormalTok{ python/sf\_part4.py                    }\CommentTok{\# part IV: the Python computation (uses the library of cargo build)}
+\ExtensionTok{python3}\NormalTok{ python/sf\_part4\_figures.py            }\CommentTok{\# part IV: the figures and the two videos (needs ffmpeg)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_part4\_fragments.py }\CommentTok{\# the tables and numbers of part IV for the manuscript}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
@@ -399,11 +430,13 @@ folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 \end{Shaded}
 
 The Rust programs need the Rust toolchain (\texttt{cargo}; no crate is
-downloaded); the Python programs need Python 3 with numpy, scipy, sympy
-and matplotlib. \texttt{assemble\_docs.py} writes each document from its
-source in \texttt{docs\_src/}; \texttt{build\_docs.sh} needs pandoc
-(version 2.11 or later), a TeX distribution with XeLaTeX and latexmk,
-the DejaVu fonts and the font Latin Modern Math;
+downloaded: the integrators are the pure-Rust SUNDIALS 7.8.0 vendored in
+PROJECT spacetimes as \texttt{vendor/sundials\_rs-7.8.0}); the Python
+programs need Python 3 with numpy, scipy, sympy and matplotlib, and the
+videos the program ffmpeg. \texttt{assemble\_docs.py} writes each
+document from its source in \texttt{docs\_src/}; \texttt{build\_docs.sh}
+needs pandoc (version 2.11 or later), a TeX distribution with XeLaTeX
+and latexmk, the DejaVu fonts and the font Latin Modern Math;
 \texttt{check\_self\_contained.py} checks that no document refers its
 reader to another document.
 
