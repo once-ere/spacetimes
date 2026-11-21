@@ -20,7 +20,16 @@
 | P3-T4 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 7.489e-2) and in the normal state at 1.01 T\_c (Phi0 = 2.8e-11) |
 | P3-T7 HS_1_1 | PASS | 5.579e-12 | 1.0e-8 | HS\_1\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 7.035495e-3 of the depth, is that of Table 12.1 (relative difference) |
 | P3-T6 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.83e-2, 8.81e-3, 3.73e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.7e-5 of the depth at 0.98 T\_c |
+| P3-G1 HS_1_1 | PASS | 7.975e-10 | 1.0e-7 | HS\_1\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.3427965859e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 12.4 (-1.3427965869e-3) (relative difference) |
+| P3-G2 HS_1_1 | PASS | 6.276e-13 | 1.0e-9 | HS\_1\_1: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 HS_1_1 | PASS | 2.197e-15 | 1.0e-9 | HS\_1\_1: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0140378852) |
+| P3-G4 HS_1_1 | PASS | 1.089e-33 | 1.0e-12 | HS\_1\_1: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 2.22e-16) |
+| P3-G5 HS_1_1 | PASS | 2.845e-11 | 1.0e-8 | HS\_1\_1: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0154874758 (isospin invariance; relative difference) |
+| P3-G6 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0154876192, c(k = 0.02) = 0.0154880494, extrapolated 0.0154874758 |
+| P3-G9 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01391 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k\^2) |
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
+| P3-H1 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.813693 &lt; 2 E\_gap = 0.905935 (M\_H / 2 E\_gap = 0.8982) |
+| P3-H2 HS_1_1 | PASS | 2.098e-14 | 1.0e-8 | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07096573 and f\_I\^2/f\_F = 0.07212812 (largest relative difference) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_1 | PASS | 1.082e-14 | 1.0e-10 | HS\_0\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
@@ -38,7 +47,16 @@
 | P3-T4 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.757e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.2e-11) |
 | P3-T7 HS_0_1 | PASS | 5.897e-13 | 1.0e-8 | HS\_0\_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 4.693236e-3 of the depth, is that of Table 12.1 (relative difference) |
 | P3-T6 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.60e-2, 7.67e-3, 3.24e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.3e-5 of the depth at 0.98 T\_c |
+| P3-G1 HS_0_1 | PASS | 1.747e-10 | 1.0e-7 | HS\_0\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.2087983988e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 12.4 (-1.2087983990e-3) (relative difference) |
+| P3-G2 HS_0_1 | PASS | 3.926e-12 | 1.0e-9 | HS\_0\_1: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 HS_0_1 | PASS | 9.010e-15 | 1.0e-9 | HS\_0\_1: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0126991375) |
+| P3-G4 HS_0_1 | PASS | 1.929e-16 | 1.0e-12 | HS\_0\_1: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 1.57e-4) |
+| P3-G5 HS_0_1 | PASS | 3.195e-12 | 1.0e-8 | HS\_0\_1: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0171375865 (isospin invariance; relative difference) |
+| P3-G6 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0171377370, c(k = 0.02) = 0.0171381885, extrapolated 0.0171375865 |
+| P3-G9 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01448 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k\^2) |
 | P3-6 HS_0_1 | PASS | 1.170e-19 | 1.0e-10 | HS\_0\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.2e-19) |
+| P3-H1 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.725083 &lt; 2 E\_gap = 0.827165 (M\_H / 2 E\_gap = 0.8766) |
+| P3-H2 HS_0_1 | PASS | 3.419e-14 | 1.0e-8 | HS\_0\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.06723334 and f\_I\^2/f\_F = 0.06822015 (largest relative difference) |
 | P3-1 HS_0_0 | PASS | 7.716e-15 | 1.0e-9 | HS\_0\_0: the applied field Phi0 = 0.3069887935 gives back Phi\^3 = Phi0 and the ground-state energy -2.0616190807e-4 of part II |
 | P3-2 HS_0_0 | PASS | 2.628e-8 | 1.0e-6 | HS\_0\_0: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_0 | PASS | 6.311e-14 | 1.0e-10 | HS\_0\_0: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
@@ -56,7 +74,17 @@
 | P3-T4 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 5.773e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.9e-11) |
 | P3-T7 HS_0_0 | PASS | 1.841e-11 | 1.0e-8 | HS\_0\_0: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.690453e-3 of the depth, is that of Table 12.1 (relative difference) |
 | P3-T6 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.27e-2, 6.06e-3, 2.56e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 7.8e-6 of the depth at 0.98 T\_c |
+| P3-G1 HS_0_0 | PASS | 8.823e-10 | 1.0e-7 | HS\_0\_0: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.0158790690e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 12.4 (-1.0158790681e-3) (relative difference) |
+| P3-G2 HS_0_0 | PASS | 5.015e-12 | 1.0e-9 | HS\_0\_0: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 HS_0_0 | PASS | 2.071e-15 | 1.0e-9 | HS\_0\_0: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0107433853) |
+| P3-G4 HS_0_0 | PASS | 1.116e-16 | 1.0e-12 | HS\_0\_0: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 7.72e-5) |
+| P3-G5 HS_0_0 | PASS | 3.099e-12 | 1.0e-8 | HS\_0\_0: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0195279853 (isospin invariance; relative difference) |
+| P3-G6 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0195281300, c(k = 0.02) = 0.0195285640, extrapolated 0.0195279853 |
+| P3-G7 HS_0_0 | PASS | 2.360e-6 | 1.0e-5 | HS\_0\_0 (no normal self-energy): the twisted states of the nonlinear engine give the gradient coefficient of the linear response with the pair self-energy along (K\^3)\^dag (0.0195280500 and 0.0195280961; relative difference) |
+| P3-G9 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01532 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k\^2) |
 | P3-6 HS_0_0 | PASS | 1.946e-16 | 1.0e-10 | HS\_0\_0: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -1.9e-16) |
+| P3-H1 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.614387 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8384) |
+| P3-H2 HS_0_0 | PASS | 8.660e-15 | 1.0e-8 | HS\_0\_0: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.06139396 and f\_I\^2/f\_F = 0.06139396 (largest relative difference) |
 | P3-1 KS | PASS | 1.074e-14 | 1.0e-9 | KS: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 KS | PASS | 3.446e-8 | 1.0e-6 | KS: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 KS | PASS | 3.939e-14 | 1.0e-10 | KS: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
@@ -74,7 +102,16 @@
 | P3-T4 KS | PASS | 0.000e0 | 0.0e0 | KS: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
 | P3-T7 KS | PASS | 3.458e-11 | 1.0e-8 | KS: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference) |
 | P3-T6 KS | PASS | 0.000e0 | 0.0e0 | KS: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T\_c |
+| P3-G1 KS | PASS | 4.374e-10 | 1.0e-7 | KS: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.0510272234e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 12.4 (-1.0510272239e-3) (relative difference) |
+| P3-G2 KS | PASS | 1.572e-12 | 1.0e-9 | KS: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 KS | PASS | 2.934e-15 | 1.0e-9 | KS: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0111755228) |
+| P3-G4 KS | PASS | 3.135e-16 | 1.0e-12 | KS: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 6.16e-5) |
+| P3-G5 KS | PASS | 1.707e-11 | 1.0e-8 | KS: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0192717762 (isospin invariance; relative difference) |
+| P3-G6 KS | PASS | 0.000e0 | 0.0e0 | KS: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0192719291, c(k = 0.02) = 0.0192723879, extrapolated 0.0192717762 |
+| P3-G9 KS | PASS | 0.000e0 | 0.0e0 | KS: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01520 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k\^2) |
 | P3-6 KS | PASS | 6.046e-16 | 1.0e-10 | KS: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -6.0e-16) |
+| P3-H1 KS | PASS | 0.000e0 | 0.0e0 | KS: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
+| P3-H2 KS | PASS | 4.763e-14 | 1.0e-8 | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06050620 (largest relative difference) |
 | P3-1 CJT | PASS | 3.223e-14 | 1.0e-9 | CJT: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 CJT | PASS | 3.446e-8 | 1.0e-6 | CJT: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 CJT | PASS | 6.266e-14 | 1.0e-10 | CJT: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
@@ -92,11 +129,21 @@
 | P3-T4 CJT | PASS | 0.000e0 | 0.0e0 | CJT: a polar start ends in a superfluid at 0.99 T\_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T\_c (Phi0 = 3.8e-11) |
 | P3-T7 CJT | PASS | 4.596e-11 | 1.0e-8 | CJT: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference) |
 | P3-T6 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the Landau form becomes exact as T -> T\_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T\_c |
+| P3-G1 CJT | PASS | 4.421e-10 | 1.0e-7 | CJT: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.0510272234e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 12.4 (-1.0510272239e-3) (relative difference) |
+| P3-G2 CJT | PASS | 1.258e-12 | 1.0e-9 | CJT: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 CJT | PASS | 2.725e-15 | 1.0e-9 | CJT: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0111755228) |
+| P3-G4 CJT | PASS | 2.218e-16 | 1.0e-12 | CJT: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 6.16e-5) |
+| P3-G5 CJT | PASS | 1.327e-11 | 1.0e-8 | CJT: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0192717762 (isospin invariance; relative difference) |
+| P3-G6 CJT | PASS | 0.000e0 | 0.0e0 | CJT: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0192719291, c(k = 0.02) = 0.0192723879, extrapolated 0.0192717762 |
+| P3-G9 CJT | PASS | 0.000e0 | 0.0e0 | CJT: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01520 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k\^2) |
+| P3-G8 | PASS | 1.874e-10 | 1.0e-8 | CJT: the gradient coefficient does not depend on the quadrature: six directions and 24 radial nodes 0.019271776156, 64 directions 0.019271776160, 40 radial nodes 0.019271776155 (largest relative difference) |
 | P3-6 CJT | PASS | 1.269e-15 | 1.0e-10 | CJT: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.3e-15) |
+| P3-H1 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
+| P3-H2 CJT | PASS | 7.683e-14 | 1.0e-8 | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06416246 (largest relative difference) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 <!-- END p3_checks_rust -->
 <!-- BEGIN p3_verdict_rust -->
-VERDICT: ALL PASS (92 of 92)
+VERDICT: ALL PASS (139 of 139)
 <!-- END p3_verdict_rust -->
 <!-- BEGIN p3_checks_python -->
 | check | result | deviation | tolerance | statement |
@@ -132,6 +179,33 @@ VERDICT: ALL PASS (92 of 92)
 | YP3-T7 KS | PASS | 3.539e-11 | 1.0e-08 | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference) |
 | YP3-T6 CJT | PASS | 5.804e-11 | 1.0e-07 | CJT: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3\_thermal\_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T\_c (1.58e-02, 7.47e-03, 3.13e-03 at 0.9, 0.95, 0.98 T\_c) and that of (12.2) is 1.0e-05 at 0.98 T\_c: yes |
 | YP3-T7 CJT | PASS | 4.636e-11 | 1.0e-08 | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference) |
+| YP3-G1 HS_1_1 | PASS | 4.228e-11 | 1.0e-07 | HS\_1\_1: the gradient coefficient at T\_c, c = 0.0154874758, with this engine (64 directions, LAPACK) = Rust 0.0154874758 (relative difference) |
+| YP3-G2 HS_1_1 | PASS | 4.438e-13 | 1.0e-06 | HS\_1\_1: alpha = T\_c da/dT = 0.0140378852 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.2066851932) = Rust 0.0140378852 (relative difference) |
+| YP3-G3 HS_1_1 | PASS | 1.274e-10 | 1.0e-06 | HS\_1\_1: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 11.379614 from the Rust coefficients and 11.379614 from the coefficients of this program (with the Rust b) = Rust 11.379614 (largest relative difference) |
+| YP3-G1 HS_0_1 | PASS | 2.108e-10 | 1.0e-07 | HS\_0\_1: the gradient coefficient at T\_c, c = 0.0171375865, with this engine (64 directions, LAPACK) = Rust 0.0171375865 (relative difference) |
+| YP3-G2 HS_0_1 | PASS | 1.914e-12 | 1.0e-06 | HS\_0\_1: alpha = T\_c da/dT = 0.0126991375 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000) = Rust 0.0126991375 (relative difference) |
+| YP3-G3 HS_0_1 | PASS | 6.345e-10 | 1.0e-06 | HS\_0\_1: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 9.767745 from the Rust coefficients and 9.767745 from the coefficients of this program (with the Rust b) = Rust 9.767745 (largest relative difference) |
+| YP3-G1 HS_0_0 | PASS | 6.746e-11 | 1.0e-07 | HS\_0\_0: the gradient coefficient at T\_c, c = 0.0195279853, with this engine (64 directions, LAPACK) = Rust 0.0195279853 (relative difference) |
+| YP3-G2 HS_0_0 | PASS | 2.272e-12 | 1.0e-06 | HS\_0\_0: alpha = T\_c da/dT = 0.0107433853 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000) = Rust 0.0107433853 (relative difference) |
+| YP3-G3 HS_0_0 | PASS | 2.048e-10 | 1.0e-06 | HS\_0\_0: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 8.277176 from the Rust coefficients and 8.277176 from the coefficients of this program (with the Rust b) = Rust 8.277176 (largest relative difference) |
+| YP3-G1 KS | PASS | 2.334e-10 | 1.0e-07 | KS: the gradient coefficient at T\_c, c = 0.0192717762, with this engine (64 directions, LAPACK) = Rust 0.0192717762 (relative difference) |
+| YP3-G2 KS | PASS | 4.420e-12 | 1.0e-06 | KS: alpha = T\_c da/dT = 0.0111755228 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325) = Rust 0.0111755228 (relative difference) |
+| YP3-G3 KS | PASS | 7.051e-10 | 1.0e-06 | KS: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 7.620723 from the Rust coefficients and 7.620723 from the coefficients of this program (with the Rust b) = Rust 7.620723 (largest relative difference) |
+| YP3-G1 CJT | PASS | 2.252e-10 | 1.0e-07 | CJT: the gradient coefficient at T\_c, c = 0.0192717762, with this engine (64 directions, LAPACK) = Rust 0.0192717762 (relative difference) |
+| YP3-G2 CJT | PASS | 4.702e-12 | 1.0e-06 | CJT: alpha = T\_c da/dT = 0.0111755228 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325) = Rust 0.0111755228 (relative difference) |
+| YP3-G3 CJT | PASS | 6.806e-10 | 1.0e-06 | CJT: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 7.620723 from the Rust coefficients and 7.620723 from the coefficients of this program (with the Rust b) = Rust 7.620723 (largest relative difference) |
+| YP3-G4 CJT | PASS | 1.715e-07 | 1.0e-06 | CJT at T\_c: the quartic coefficient b = 0.0147237342 of the free energy (four applied fields, nonlinear thermal states of this engine) = Rust 0.0147237368 (relative difference); a(T\_c) = 4.2e-13 |
+| YP3-H1 HS_1_1 | PASS | 3.168e-13 | 1.0e-09 | HS\_1\_1: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 HS_1_1 | PASS | 3.333e-11 | 1.0e-06 | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07096573 and 0.07212812, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 HS_0_1 | PASS | 1.460e-13 | 1.0e-09 | HS\_0\_1: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13544990, M\_H/v\_SF = 5.353148, lambda\_SF = 14.32810, Gamma/M\_H = 3.47079) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 HS_0_1 | PASS | 3.334e-11 | 1.0e-06 | HS\_0\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.06723334 and 0.06822015, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 HS_0_0 | PASS | 1.853e-13 | 1.0e-09 | HS\_0\_0: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.12278792, M\_H/v\_SF = 5.003647, lambda\_SF = 12.51824, Gamma/M\_H = 2.98851) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 HS_0_0 | PASS | 3.333e-11 | 1.0e-06 | HS\_0\_0: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.06139396 and 0.06139396, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 KS | PASS | 2.514e-13 | 1.0e-09 | KS: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13140786, M\_H/v\_SF = 4.592389, lambda\_SF = 10.54502, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 KS | PASS | 3.334e-11 | 1.0e-06 | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06050620, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 CJT | PASS | 3.085e-13 | 1.0e-09 | CJT: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 CJT | PASS | 3.334e-11 | 1.0e-06 | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06416246, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H3 | PASS | 0.000e+00 | 1.0e-10 | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 (Particle Data Group 2024; largest relative difference) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
@@ -148,7 +222,7 @@ VERDICT: ALL PASS (92 of 92)
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 <!-- END p3_checks_python -->
 <!-- BEGIN p3_verdict_python -->
-VERDICT: ALL PASS (45 of 45)
+VERDICT: ALL PASS (72 of 72)
 <!-- END p3_verdict_python -->
 <!-- BEGIN p3_th_Tc_HS_1_1 -->
 $0.2604672394$
@@ -162,6 +236,36 @@ $25.2$
 <!-- BEGIN p3_th_gS_HS_1_1 -->
 $2.8$
 <!-- END p3_th_gS_HS_1_1 -->
+<!-- BEGIN p3_gz_alpha_HS_1_1 -->
+$0.01403788523$
+<!-- END p3_gz_alpha_HS_1_1 -->
+<!-- BEGIN p3_gz_b_HS_1_1 -->
+$0.0123885669$
+<!-- END p3_gz_b_HS_1_1 -->
+<!-- BEGIN p3_gz_c_HS_1_1 -->
+$0.01548747577$
+<!-- END p3_gz_c_HS_1_1 -->
+<!-- BEGIN p3_gz_c_fixed_HS_1_1 -->
+$0.01548747577$
+<!-- END p3_gz_c_fixed_HS_1_1 -->
+<!-- BEGIN p3_gz_c_T3_HS_1_1 -->
+$0.003217905814$
+<!-- END p3_gz_c_T3_HS_1_1 -->
+<!-- BEGIN p3_gz_c_twisted_HS_1_1 -->
+$0.01722642338$
+<!-- END p3_gz_c_twisted_HS_1_1 -->
+<!-- BEGIN p3_gz_Gi_HS_1_1 -->
+$11.37961395$
+<!-- END p3_gz_Gi_HS_1_1 -->
+<!-- BEGIN p3_gz_xi0_HS_1_1 -->
+$1.050363148$
+<!-- END p3_gz_xi0_HS_1_1 -->
+<!-- BEGIN p3_gz_PhiG_HS_1_1 -->
+$2.539154196$
+<!-- END p3_gz_PhiG_HS_1_1 -->
+<!-- BEGIN p3_gz_width_HS_1_1 -->
+$2.964016631$
+<!-- END p3_gz_width_HS_1_1 -->
 <!-- BEGIN p3_Phi0_HS_1_1 -->
 $0.4030641406$
 <!-- END p3_Phi0_HS_1_1 -->
@@ -318,6 +422,54 @@ $-0.006162431094$
 <!-- BEGIN p3_a_taylor_chk_HS_1_1 -->
 $-0.00616243104$
 <!-- END p3_a_taylor_chk_HS_1_1 -->
+<!-- BEGIN p3_h_vSF_HS_1_1 -->
+$0.1430891284$
+<!-- END p3_h_vSF_HS_1_1 -->
+<!-- BEGIN p3_h_fF_HS_1_1 -->
+$0.07096572979$
+<!-- END p3_h_fF_HS_1_1 -->
+<!-- BEGIN p3_h_fI_HS_1_1 -->
+$0.07154456418$
+<!-- END p3_h_fI_HS_1_1 -->
+<!-- BEGIN p3_h_MH_v_HS_1_1 -->
+$5.686617152$
+<!-- END p3_h_MH_v_HS_1_1 -->
+<!-- BEGIN p3_h_lambda_HS_1_1 -->
+$16.16880732$
+<!-- END p3_h_lambda_HS_1_1 -->
+<!-- BEGIN p3_h_MH_MW_HS_1_1 -->
+$16.24747758$
+<!-- END p3_h_MH_MW_HS_1_1 -->
+<!-- BEGIN p3_h_MH_2gap_HS_1_1 -->
+$0.8981806214$
+<!-- END p3_h_MH_2gap_HS_1_1 -->
+<!-- BEGIN p3_h_MNU_MH_HS_1_1 -->
+$0.9907031157$
+<!-- END p3_h_MNU_MH_HS_1_1 -->
+<!-- BEGIN p3_h_fF_fI_HS_1_1 -->
+$0.9919094567$
+<!-- END p3_h_fF_fI_HS_1_1 -->
+<!-- BEGIN p3_h_MW_MZ_HS_1_1 -->
+$0.7841217487$
+<!-- END p3_h_MW_MZ_HS_1_1 -->
+<!-- BEGIN p3_h_width_MH_HS_1_1 -->
+$3.92324396$
+<!-- END p3_h_width_MH_HS_1_1 -->
+<!-- BEGIN p3_h_Tc_v_HS_1_1 -->
+$1.820314669$
+<!-- END p3_h_Tc_v_HS_1_1 -->
+<!-- BEGIN p3_h_LambdaGeV_HS_1_1 -->
+$1720.745684$
+<!-- END p3_h_LambdaGeV_HS_1_1 -->
+<!-- BEGIN p3_h_MHGeV_HS_1_1 -->
+$1400.158875$
+<!-- END p3_h_MHGeV_HS_1_1 -->
+<!-- BEGIN p3_h_gapGeV_HS_1_1 -->
+$779.441708$
+<!-- END p3_h_gapGeV_HS_1_1 -->
+<!-- BEGIN p3_h_TcGeV_HS_1_1 -->
+$448.1978779$
+<!-- END p3_h_TcGeV_HS_1_1 -->
 <!-- BEGIN p3_th_Tc_HS_0_1 -->
 $0.2404654563$
 <!-- END p3_th_Tc_HS_0_1 -->
@@ -330,6 +482,36 @@ $24.5$
 <!-- BEGIN p3_th_gS_HS_0_1 -->
 $0$
 <!-- END p3_th_gS_HS_0_1 -->
+<!-- BEGIN p3_gz_alpha_HS_0_1 -->
+$0.01269913755$
+<!-- END p3_gz_alpha_HS_0_1 -->
+<!-- BEGIN p3_gz_b_HS_0_1 -->
+$0.01376400013$
+<!-- END p3_gz_b_HS_0_1 -->
+<!-- BEGIN p3_gz_c_HS_0_1 -->
+$0.01713758647$
+<!-- END p3_gz_c_HS_0_1 -->
+<!-- BEGIN p3_gz_c_fixed_HS_0_1 -->
+$0.01713804123$
+<!-- END p3_gz_c_fixed_HS_0_1 -->
+<!-- BEGIN p3_gz_c_T3_HS_0_1 -->
+$0.003395274$
+<!-- END p3_gz_c_T3_HS_0_1 -->
+<!-- BEGIN p3_gz_c_twisted_HS_0_1 -->
+$0.01904908212$
+<!-- END p3_gz_c_twisted_HS_0_1 -->
+<!-- BEGIN p3_gz_Gi_HS_0_1 -->
+$9.767744883$
+<!-- END p3_gz_Gi_HS_0_1 -->
+<!-- BEGIN p3_gz_xi0_HS_0_1 -->
+$1.161683219$
+<!-- END p3_gz_xi0_HS_0_1 -->
+<!-- BEGIN p3_gz_PhiG_HS_0_1 -->
+$2.122740645$
+<!-- END p3_gz_PhiG_HS_0_1 -->
+<!-- BEGIN p3_gz_width_HS_0_1 -->
+$2.348805231$
+<!-- END p3_gz_width_HS_0_1 -->
 <!-- BEGIN p3_Phi0_HS_0_1 -->
 $0.3620090014$
 <!-- END p3_Phi0_HS_0_1 -->
@@ -486,6 +668,54 @@ $-0.005353419813$
 <!-- BEGIN p3_a_taylor_chk_HS_0_1 -->
 $-0.005353419784$
 <!-- END p3_a_taylor_chk_HS_0_1 -->
+<!-- BEGIN p3_h_vSF_HS_0_1 -->
+$0.1354498975$
+<!-- END p3_h_vSF_HS_0_1 -->
+<!-- BEGIN p3_h_fF_HS_0_1 -->
+$0.06723334285$
+<!-- END p3_h_fF_HS_0_1 -->
+<!-- BEGIN p3_h_fI_HS_0_1 -->
+$0.06772494877$
+<!-- END p3_h_fI_HS_0_1 -->
+<!-- BEGIN p3_h_MH_v_HS_0_1 -->
+$5.353148317$
+<!-- END p3_h_MH_v_HS_0_1 -->
+<!-- BEGIN p3_h_lambda_HS_0_1 -->
+$14.32809845$
+<!-- END p3_h_lambda_HS_0_1 -->
+<!-- BEGIN p3_h_MH_MW_HS_0_1 -->
+$15.29470948$
+<!-- END p3_h_MH_MW_HS_0_1 -->
+<!-- BEGIN p3_h_MH_2gap_HS_0_1 -->
+$0.8765884938$
+<!-- END p3_h_MH_2gap_HS_0_1 -->
+<!-- BEGIN p3_h_MNU_MH_HS_0_1 -->
+$1$
+<!-- END p3_h_MNU_MH_HS_0_1 -->
+<!-- BEGIN p3_h_fF_fI_HS_0_1 -->
+$0.9927411401$
+<!-- END p3_h_fF_fI_HS_0_1 -->
+<!-- BEGIN p3_h_MW_MZ_HS_0_1 -->
+$0.7834648393$
+<!-- END p3_h_MW_MZ_HS_0_1 -->
+<!-- BEGIN p3_h_width_MH_HS_0_1 -->
+$3.470786568$
+<!-- END p3_h_width_MH_HS_0_1 -->
+<!-- BEGIN p3_h_Tc_v_HS_0_1 -->
+$1.775309252$
+<!-- END p3_h_Tc_v_HS_0_1 -->
+<!-- BEGIN p3_h_LambdaGeV_HS_0_1 -->
+$1817.793918$
+<!-- END p3_h_LambdaGeV_HS_0_1 -->
+<!-- BEGIN p3_h_MHGeV_HS_0_1 -->
+$1318.052179$
+<!-- END p3_h_MHGeV_HS_0_1 -->
+<!-- BEGIN p3_h_gapGeV_HS_0_1 -->
+$751.8078253$
+<!-- END p3_h_gapGeV_HS_0_1 -->
+<!-- BEGIN p3_h_TcGeV_HS_0_1 -->
+$437.1166441$
+<!-- END p3_h_TcGeV_HS_0_1 -->
 <!-- BEGIN p3_th_Tc_HS_0_0 -->
 $0.2137990984$
 <!-- END p3_th_Tc_HS_0_0 -->
@@ -498,6 +728,36 @@ $23.7$
 <!-- BEGIN p3_th_gS_HS_0_0 -->
 $0$
 <!-- END p3_th_gS_HS_0_0 -->
+<!-- BEGIN p3_gz_alpha_HS_0_0 -->
+$0.01074338535$
+<!-- END p3_gz_alpha_HS_0_0 -->
+<!-- BEGIN p3_gz_b_HS_0_0 -->
+$0.01594338681$
+<!-- END p3_gz_b_HS_0_0 -->
+<!-- BEGIN p3_gz_c_HS_0_0 -->
+$0.01952798529$
+<!-- END p3_gz_c_HS_0_0 -->
+<!-- BEGIN p3_gz_c_fixed_HS_0_0 -->
+$0.01952809613$
+<!-- END p3_gz_c_fixed_HS_0_0 -->
+<!-- BEGIN p3_gz_c_T3_HS_0_0 -->
+$0.003596900408$
+<!-- END p3_gz_c_T3_HS_0_0 -->
+<!-- BEGIN p3_gz_c_twisted_HS_0_0 -->
+$0.01952805004$
+<!-- END p3_gz_c_twisted_HS_0_0 -->
+<!-- BEGIN p3_gz_Gi_HS_0_0 -->
+$8.277176475$
+<!-- END p3_gz_Gi_HS_0_0 -->
+<!-- BEGIN p3_gz_xi0_HS_0_0 -->
+$1.348211859$
+<!-- END p3_gz_xi0_HS_0_0 -->
+<!-- BEGIN p3_gz_PhiG_HS_0_0 -->
+$1.669961254$
+<!-- END p3_gz_PhiG_HS_0_0 -->
+<!-- BEGIN p3_gz_width_HS_0_0 -->
+$1.769652868$
+<!-- END p3_gz_width_HS_0_0 -->
 <!-- BEGIN p3_Phi0_HS_0_0 -->
 $0.3069887935$
 <!-- END p3_Phi0_HS_0_0 -->
@@ -654,6 +914,54 @@ $-0.004296658732$
 <!-- BEGIN p3_a_taylor_chk_HS_0_0 -->
 $-0.004296658701$
 <!-- END p3_a_taylor_chk_HS_0_0 -->
+<!-- BEGIN p3_h_vSF_HS_0_0 -->
+$0.122787921$
+<!-- END p3_h_vSF_HS_0_0 -->
+<!-- BEGIN p3_h_fF_HS_0_0 -->
+$0.06139396071$
+<!-- END p3_h_fF_HS_0_0 -->
+<!-- BEGIN p3_h_fI_HS_0_0 -->
+$0.06139396052$
+<!-- END p3_h_fI_HS_0_0 -->
+<!-- BEGIN p3_h_MH_v_HS_0_0 -->
+$5.003646765$
+<!-- END p3_h_MH_v_HS_0_0 -->
+<!-- BEGIN p3_h_lambda_HS_0_0 -->
+$12.51824048$
+<!-- END p3_h_lambda_HS_0_0 -->
+<!-- BEGIN p3_h_MH_MW_HS_0_0 -->
+$14.29613362$
+<!-- END p3_h_MH_MW_HS_0_0 -->
+<!-- BEGIN p3_h_MH_2gap_HS_0_0 -->
+$0.8384320929$
+<!-- END p3_h_MH_2gap_HS_0_0 -->
+<!-- BEGIN p3_h_MNU_MH_HS_0_0 -->
+$1$
+<!-- END p3_h_MNU_MH_HS_0_0 -->
+<!-- BEGIN p3_h_fF_fI_HS_0_0 -->
+$1.000000003$
+<!-- END p3_h_fF_fI_HS_0_0 -->
+<!-- BEGIN p3_h_MW_MZ_HS_0_0 -->
+$0.7777777755$
+<!-- END p3_h_MW_MZ_HS_0_0 -->
+<!-- BEGIN p3_h_width_MH_HS_0_0 -->
+$2.988509758$
+<!-- END p3_h_width_MH_HS_0_0 -->
+<!-- BEGIN p3_h_Tc_v_HS_0_0 -->
+$1.741206273$
+<!-- END p3_h_Tc_v_HS_0_0 -->
+<!-- BEGIN p3_h_LambdaGeV_HS_0_0 -->
+$2005.246102$
+<!-- END p3_h_LambdaGeV_HS_0_0 -->
+<!-- BEGIN p3_h_MHGeV_HS_0_0 -->
+$1231.997907$
+<!-- END p3_h_MHGeV_HS_0_0 -->
+<!-- BEGIN p3_h_gapGeV_HS_0_0 -->
+$734.7034524$
+<!-- END p3_h_gapGeV_HS_0_0 -->
+<!-- BEGIN p3_h_TcGeV_HS_0_0 -->
+$428.7198086$
+<!-- END p3_h_TcGeV_HS_0_0 -->
 <!-- BEGIN p3_th_Tc_KS -->
 $0.2221187371$
 <!-- END p3_th_Tc_KS -->
@@ -666,6 +974,36 @@ $23.7$
 <!-- BEGIN p3_th_gS_KS -->
 $-7.4$
 <!-- END p3_th_gS_KS -->
+<!-- BEGIN p3_gz_alpha_KS -->
+$0.01117552279$
+<!-- END p3_gz_alpha_KS -->
+<!-- BEGIN p3_gz_b_KS -->
+$0.01472373627$
+<!-- END p3_gz_b_KS -->
+<!-- BEGIN p3_gz_c_KS -->
+$0.01927177616$
+<!-- END p3_gz_c_KS -->
+<!-- BEGIN p3_gz_c_fixed_KS -->
+$0.01927184912$
+<!-- END p3_gz_c_fixed_KS -->
+<!-- BEGIN p3_gz_c_T3_KS -->
+$0.003597120443$
+<!-- END p3_gz_c_T3_KS -->
+<!-- BEGIN p3_gz_c_twisted_KS -->
+$0.02120992501$
+<!-- END p3_gz_c_twisted_KS -->
+<!-- BEGIN p3_gz_Gi_KS -->
+$7.620722641$
+<!-- END p3_gz_Gi_KS -->
+<!-- BEGIN p3_gz_xi0_KS -->
+$1.313188126$
+<!-- END p3_gz_xi0_KS -->
+<!-- BEGIN p3_gz_PhiG_KS -->
+$1.700622769$
+<!-- END p3_gz_PhiG_KS -->
+<!-- BEGIN p3_gz_width_KS -->
+$1.692705289$
+<!-- END p3_gz_width_KS -->
 <!-- BEGIN p3_Phi0_KS -->
 $0.3284861084$
 <!-- END p3_Phi0_KS -->
@@ -822,6 +1160,54 @@ $-0.004296658755$
 <!-- BEGIN p3_a_taylor_chk_KS -->
 $-0.004296659074$
 <!-- END p3_a_taylor_chk_KS -->
+<!-- BEGIN p3_h_vSF_KS -->
+$0.1314078561$
+<!-- END p3_h_vSF_KS -->
+<!-- BEGIN p3_h_fF_KS -->
+$0.07134816576$
+<!-- END p3_h_fF_KS -->
+<!-- BEGIN p3_h_fI_KS -->
+$0.06570392806$
+<!-- END p3_h_fI_KS -->
+<!-- BEGIN p3_h_MH_v_KS -->
+$4.592388802$
+<!-- END p3_h_MH_v_KS -->
+<!-- BEGIN p3_h_lambda_KS -->
+$10.54501745$
+<!-- END p3_h_lambda_KS -->
+<!-- BEGIN p3_h_MH_MW_KS -->
+$13.12111086$
+<!-- END p3_h_MH_MW_KS -->
+<!-- BEGIN p3_h_MH_2gap_KS -->
+$0.8235416793$
+<!-- END p3_h_MH_2gap_KS -->
+<!-- BEGIN p3_h_MNU_MH_KS -->
+$1.089164711$
+<!-- END p3_h_MNU_MH_KS -->
+<!-- BEGIN p3_h_fF_fI_KS -->
+$1.085904114$
+<!-- END p3_h_fF_fI_KS -->
+<!-- BEGIN p3_h_MW_MZ_KS -->
+$0.7162490389$
+<!-- END p3_h_MW_MZ_KS -->
+<!-- BEGIN p3_h_width_MH_KS -->
+$2.13489115$
+<!-- END p3_h_width_MH_KS -->
+<!-- BEGIN p3_h_Tc_v_KS -->
+$1.690300288$
+<!-- END p3_h_Tc_v_KS -->
+<!-- BEGIN p3_h_LambdaGeV_KS -->
+$1873.708371$
+<!-- END p3_h_LambdaGeV_KS -->
+<!-- BEGIN p3_h_MHGeV_KS -->
+$1130.737971$
+<!-- END p3_h_MHGeV_KS -->
+<!-- BEGIN p3_h_gapGeV_KS -->
+$686.5092558$
+<!-- END p3_h_gapGeV_KS -->
+<!-- BEGIN p3_h_TcGeV_KS -->
+$416.1857369$
+<!-- END p3_h_TcGeV_KS -->
 <!-- BEGIN p3_th_Tc_CJT -->
 $0.2221187371$
 <!-- END p3_th_Tc_CJT -->
@@ -834,6 +1220,36 @@ $23.7$
 <!-- BEGIN p3_th_gS_CJT -->
 $-7.4$
 <!-- END p3_th_gS_CJT -->
+<!-- BEGIN p3_gz_alpha_CJT -->
+$0.01117552279$
+<!-- END p3_gz_alpha_CJT -->
+<!-- BEGIN p3_gz_b_CJT -->
+$0.01472373676$
+<!-- END p3_gz_b_CJT -->
+<!-- BEGIN p3_gz_c_CJT -->
+$0.01927177616$
+<!-- END p3_gz_c_CJT -->
+<!-- BEGIN p3_gz_c_fixed_CJT -->
+$0.01927184912$
+<!-- END p3_gz_c_fixed_CJT -->
+<!-- BEGIN p3_gz_c_T3_CJT -->
+$0.003597120443$
+<!-- END p3_gz_c_T3_CJT -->
+<!-- BEGIN p3_gz_c_twisted_CJT -->
+$0.007684162085$
+<!-- END p3_gz_c_twisted_CJT -->
+<!-- BEGIN p3_gz_Gi_CJT -->
+$7.62072315$
+<!-- END p3_gz_Gi_CJT -->
+<!-- BEGIN p3_gz_xi0_CJT -->
+$1.313188126$
+<!-- END p3_gz_xi0_CJT -->
+<!-- BEGIN p3_gz_PhiG_CJT -->
+$1.700622797$
+<!-- END p3_gz_PhiG_CJT -->
+<!-- BEGIN p3_gz_width_CJT -->
+$1.692705402$
+<!-- END p3_gz_width_CJT -->
 <!-- BEGIN p3_Phi0_CJT -->
 $0.3284861084$
 <!-- END p3_Phi0_CJT -->
@@ -990,6 +1406,54 @@ $-0.004296658755$
 <!-- BEGIN p3_a_taylor_chk_CJT -->
 $-0.004296659074$
 <!-- END p3_a_taylor_chk_CJT -->
+<!-- BEGIN p3_h_vSF_CJT -->
+$0.1353199754$
+<!-- END p3_h_vSF_CJT -->
+<!-- BEGIN p3_h_fF_CJT -->
+$0.07134816576$
+<!-- END p3_h_fF_CJT -->
+<!-- BEGIN p3_h_fI_CJT -->
+$0.06765998769$
+<!-- END p3_h_fI_CJT -->
+<!-- BEGIN p3_h_MH_v_CJT -->
+$4.459622204$
+<!-- END p3_h_MH_v_CJT -->
+<!-- BEGIN p3_h_lambda_CJT -->
+$9.944115103$
+<!-- END p3_h_lambda_CJT -->
+<!-- BEGIN p3_h_MH_MW_CJT -->
+$12.74177773$
+<!-- END p3_h_MH_MW_CJT -->
+<!-- BEGIN p3_h_MH_2gap_CJT -->
+$0.8235416793$
+<!-- END p3_h_MH_2gap_CJT -->
+<!-- BEGIN p3_h_MNU_MH_CJT -->
+$1.067162886$
+<!-- END p3_h_MNU_MH_CJT -->
+<!-- BEGIN p3_h_fF_fI_CJT -->
+$1.054510475$
+<!-- END p3_h_fF_fI_CJT -->
+<!-- BEGIN p3_h_MW_MZ_CJT -->
+$0.7375723581$
+<!-- END p3_h_MW_MZ_CJT -->
+<!-- BEGIN p3_h_width_MH_CJT -->
+$2.13489115$
+<!-- END p3_h_width_MH_CJT -->
+<!-- BEGIN p3_h_Tc_v_CJT -->
+$1.641433472$
+<!-- END p3_h_Tc_v_CJT -->
+<!-- BEGIN p3_h_LambdaGeV_CJT -->
+$1819.539202$
+<!-- END p3_h_LambdaGeV_CJT -->
+<!-- BEGIN p3_h_MHGeV_CJT -->
+$1098.048179$
+<!-- END p3_h_MHGeV_CJT -->
+<!-- BEGIN p3_h_gapGeV_CJT -->
+$666.662178$
+<!-- END p3_h_gapGeV_CJT -->
+<!-- BEGIN p3_h_TcGeV_CJT -->
+$404.1537495$
+<!-- END p3_h_TcGeV_CJT -->
 <!-- BEGIN p3_table_potential -->
 | method | $\Phi^X_{0,{\rm SF}}$ | $10^4\,\mathcal V^X_{\rm SF}$ at the minimum | $10^3a^X_{\rm SF}$ | $10^3b^X_{\rm SF}$ | $10^3c^X_{\rm SF}$ | $10^3u^X_{\rm SF}$ | largest fit residual / depth |
 |:---|---:|---:|---:|---:|---:|---:|---:|
@@ -1326,3 +1790,279 @@ $0.12$ per cent (HS (0, 0)) to $0.13$ per cent (KS, CJT)
 <!-- BEGIN p4_ratio_0 -->
 $1.53$ (HS (0, 0)) to $2.02$ (HS (1, 1))
 <!-- END p4_ratio_0 -->
+<!-- BEGIN p3_table_ginzburg -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| critical temperature $T^{X,{\rm c}}_{\rm SF}$ | $0.260467$ | $0.240465$ | $0.213799$ | $0.222119$ | $0.222119$ |
+| Dirac mass of the normal state at $T^{X,{\rm c}}_{\rm SF}$ | $0.206685$ | $0.200000$ | $0.200000$ | $0.162293$ | $0.162293$ |
+| $10^2\,\alpha^{X,{\rm GL}}_{\rm SF}$ | $1.40379$ | $1.26991$ | $1.07434$ | $1.11755$ | $1.11755$ |
+| $10^2\,b^{X,{\rm Tay}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$ | $1.23886$ | $1.37640$ | $1.59434$ | $1.47237$ | $1.47237$ |
+| $10^2\,\mathsf c^X_{\rm SF}$ (phase twist) | $1.548748$ | $1.713759$ | $1.952799$ | $1.927178$ | $1.927178$ |
+| $10^2\,\mathsf c^X_{\rm SF}$ from the isospin twist | $1.548748$ | $1.713759$ | $1.952799$ | $1.927178$ | $1.927178$ |
+| $10^2\,\mathsf c^X_{\rm SF}$ without the other pair channels | $1.548748$ | $1.713804$ | $1.952810$ | $1.927185$ | $1.927185$ |
+| $10^2\,\mathsf c^{X,{\rm T3}}_{\rm SF}$ (twist of the unbroken $T^3_{\rm LL}$; cutoff error) | $0.3218$ | $0.3395$ | $0.3597$ | $0.3597$ | $0.3597$ |
+| $10^2\,\mathsf c^{X,{\rm tw}}_{\rm SF}$ (twisted states of the nonlinear engine) | $1.723$ | $1.905$ | $1.953$ | $2.121$ | $0.7684$ |
+| $\xi^{X,{\rm GL}}_{\rm SF}=(\mathsf c^X_{\rm SF}/\alpha^{X,{\rm GL}}_{\rm SF})^{1/2}$ | $1.050$ | $1.162$ | $1.348$ | $1.313$ | $1.313$ |
+| $\Delta C^X_{\rm SF}(\xi^{X,{\rm GL}}_{\rm SF})^3$ | $0.0354$ | $0.0382$ | $0.0415$ | $0.0432$ | $0.0432$ |
+| Ginzburg number ${\rm Gi}^{X}_{\rm SF}$ (12.13) | $11.38$ | $9.768$ | $8.277$ | $7.621$ | $7.621$ |
+| width ${\rm Gi}^{X}_{\rm SF}\,T^{X,{\rm c}}_{\rm SF}$ | $2.964$ | $2.349$ | $1.770$ | $1.693$ | $1.693$ |
+| ${\rm Gi}^{X}_{\rm SF}$ with $\mathsf c^X_{\rm SF}+\mathsf c^{X,{\rm T3}}_{\rm SF}$ | $6.46$ | $5.68$ | $4.98$ | $4.56$ | $4.56$ |
+| ${\rm Gi}^{X}_{\rm SF}$ with $\mathsf c^X_{\rm SF}-\mathsf c^{X,{\rm T3}}_{\rm SF}$ | $22.9$ | $18.9$ | $15.2$ | $14.2$ | $14.2$ |
+| growth factor from $q^{\rm pair}_{\rm SF}=0.005$ to $0.01$, cutoff on the relative momentum | $4.00004$ | $4.00004$ | $4.00003$ | $4.00004$ | $4.00004$ |
+| growth factor from $q^{\rm pair}_{\rm SF}=0.005$ to $0.01$, cutoff on the momenta of the charges | $2.0139$ | $2.0145$ | $2.0153$ | $2.0152$ | $2.0152$ |
+<!-- END p3_table_ginzburg -->
+<!-- BEGIN p3_gz_c -->
+$0.0155$ (HS (1, 1)) to $0.0195$ (HS (0, 0))
+<!-- END p3_gz_c -->
+<!-- BEGIN p3_gz_alpha -->
+$0.0107$ (HS (0, 0)) to $0.0140$ (HS (1, 1))
+<!-- END p3_gz_alpha -->
+<!-- BEGIN p3_gz_b -->
+$0.0124$ (HS (1, 1)) to $0.0159$ (HS (0, 0))
+<!-- END p3_gz_b -->
+<!-- BEGIN p3_gz_Gi -->
+$7.6$ (KS, CJT) to $11$ (HS (1, 1))
+<!-- END p3_gz_Gi -->
+<!-- BEGIN p3_gz_width -->
+$1.69$ (KS, CJT) to $2.96$ (HS (1, 1))
+<!-- END p3_gz_width -->
+<!-- BEGIN p3_gz_xi0 -->
+$1.05$ (HS (1, 1)) to $1.35$ (HS (0, 0))
+<!-- END p3_gz_xi0 -->
+<!-- BEGIN p3_gz_dcxi3 -->
+$0.035$ (HS (1, 1)) to $0.043$ (KS, CJT)
+<!-- END p3_gz_dcxi3 -->
+<!-- BEGIN p3_gz_sqrtgi -->
+$2.8$ (KS, CJT) to $3.4$ (HS (1, 1))
+<!-- END p3_gz_sqrtgi -->
+<!-- BEGIN p3_gz_t3pct -->
+$18$ per cent (HS (0, 0)) to $21$ per cent (HS (1, 1))
+<!-- END p3_gz_t3pct -->
+<!-- BEGIN p3_gz_gi_lo -->
+$4.6$ (KS, CJT) to $6.5$ (HS (1, 1))
+<!-- END p3_gz_gi_lo -->
+<!-- BEGIN p3_gz_gi_hi -->
+$14$ (KS, CJT) to $23$ (HS (1, 1))
+<!-- END p3_gz_gi_hi -->
+<!-- BEGIN p3_gz_gi_cjt_tw -->
+$1.2\times10^{2}$
+<!-- END p3_gz_gi_cjt_tw -->
+<!-- BEGIN p3_gz_tw_hsks -->
+$10$ to $11$ per cent
+<!-- END p3_gz_tw_hsks -->
+<!-- BEGIN p3_gz_tw_cjt -->
+$60$ per cent
+<!-- END p3_gz_tw_cjt -->
+<!-- BEGIN p3_gz_lens -->
+$2.014$ (HS (1, 1)) to $2.015$ (HS (0, 0))
+<!-- END p3_gz_lens -->
+<!-- BEGIN p3_gz_lensslope -->
+$0.0240$ (HS (1, 1)) to $0.0247$ (KS, CJT)
+<!-- END p3_gz_lensslope -->
+<!-- BEGIN p3_gz_mn -->
+$0.1623$ (KS, CJT) to $0.2067$ (HS (1, 1))
+<!-- END p3_gz_mn -->
+<!-- BEGIN p3_table_higgs -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT | Standard Model |
+|:----------------------|---------:|---------:|---------:|---------:|---------:|---------:|
+| $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ | $0.143089$ | $0.135450$ | $0.122788$ | $0.131408$ | $0.135320$ | $246.22$ GeV |
+| $f^{X,{\rm F}}_{\rm SF}$ | $0.0709657$ | $0.0672333$ | $0.0613940$ | $0.0713482$ | $0.0713482$ | -- |
+| $f^{X,{\rm I}}_{\rm SF}$ | $0.0715446$ | $0.0677249$ | $0.0613940$ | $0.0657039$ | $0.0676600$ | $123.11$ GeV |
+| $M^{X,{\rm H}}_{\rm SF}$ (linear response) | $0.813693$ | $0.725083$ | $0.614387$ | $0.603476$ | $0.603476$ | $125.20$ GeV |
+| $M^{X,{\rm NU}}_{\rm SF}$ (linear response) | $0.806128$ | $0.725083$ | $0.614387$ | $0.657285$ | $0.644007$ | -- |
+| $M^X_{W,{\rm SF}}$ ($g^{\rm v}_{\rm LL}=0.7$) | $0.050081$ | $0.047407$ | $0.042976$ | $0.045993$ | $0.047362$ | $80.3692$ GeV |
+| $M^X_{Z,{\rm SF}}$ ($g^{\rm F}_{\rm LL}=0.45$) | $0.063869$ | $0.060510$ | $0.055255$ | $0.064213$ | $0.064213$ | $91.1880$ GeV |
+| $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ | $5.687$ | $5.353$ | $5.004$ | $4.592$ | $4.460$ | $0.5085$ |
+| $\lambda^{X,{\rm H}}_{\rm SF}=(M^{X,{\rm H}}_{\rm SF})^2/(2(v^X_{\rm SF})^2)$ | $16.17$ | $14.33$ | $12.52$ | $10.55$ | $9.944$ | $0.1293$ |
+| $M^{X,{\rm H}}_{\rm SF}/M^X_{W,{\rm SF}}$ | $16.25$ | $15.29$ | $14.30$ | $13.12$ | $12.74$ | $1.558$ |
+| $M^X_{W,{\rm SF}}/M^X_{Z,{\rm SF}}$ | $0.7841$ | $0.7835$ | $0.7778$ | $0.7162$ | $0.7376$ | $0.8814$ |
+| $M^{X,{\rm H}}_{\rm SF}/(2E^{X,{\rm gap}}_{\rm SF})$ | $0.8982$ | $0.8766$ | $0.8384$ | $0.8235$ | $0.8235$ | -- |
+| $M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ | $0.9907$ | $1.000$ | $1.000$ | $1.089$ | $1.067$ | none |
+| $f^{X,{\rm F}}_{\rm SF}/f^{X,{\rm I}}_{\rm SF}$ | $0.9919$ | $0.9927$ | $1.000$ | $1.086$ | $1.055$ | -- |
+| $\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ (14.10) | $3.92$ | $3.47$ | $2.99$ | $2.13$ | $2.13$ | $3.0\times10^{-5}$ |
+| $T^{X,{\rm c}}_{\rm SF}/v^X_{\rm SF}$ | $1.820$ | $1.775$ | $1.741$ | $1.690$ | $1.641$ | $0.648$ |
+| $\Lambda_{\rm LL}$ in GeV for $v^X_{\rm SF}=246.22$ GeV | $1721$ | $1818$ | $2005$ | $1874$ | $1820$ | -- |
+| $M^{X,{\rm H}}_{\rm SF}$ in GeV on that scale | $1400$ | $1318$ | $1232$ | $1131$ | $1098$ | $125.20$ |
+| $T^{X,{\rm c}}_{\rm SF}$ in GeV on that scale | $448.2$ | $437.1$ | $428.7$ | $416.2$ | $404.2$ | $159.5$ |
+| ${\rm Gi}^{X}_{\rm SF}$ (Table 12.5) | $11.4$ | $9.77$ | $8.28$ | $7.62$ | $7.62$ | -- |
+<!-- END p3_table_higgs -->
+<!-- BEGIN p3_h_mhv -->
+$4.46$ (CJT) to $5.69$ (HS (1, 1))
+<!-- END p3_h_mhv -->
+<!-- BEGIN p3_h_lambda -->
+$9.94$ (CJT) to $16.2$ (HS (1, 1))
+<!-- END p3_h_lambda -->
+<!-- BEGIN p3_h_width -->
+$2.1$ (KS, CJT) to $3.9$ (HS (1, 1))
+<!-- END p3_h_width -->
+<!-- BEGIN p3_h_mhmw -->
+$12.7$ (CJT) to $16.2$ (HS (1, 1))
+<!-- END p3_h_mhmw -->
+<!-- BEGIN p3_h_mh2gap -->
+$0.824$ (KS, CJT) to $0.898$ (HS (1, 1))
+<!-- END p3_h_mh2gap -->
+<!-- BEGIN p3_h_mnu -->
+$0.991$ (HS (1, 1)) to $1.09$ (KS)
+<!-- END p3_h_mnu -->
+<!-- BEGIN p3_h_ffi -->
+$0.992$ (HS (1, 1)) to $1.09$ (KS)
+<!-- END p3_h_ffi -->
+<!-- BEGIN p3_h_mwmz -->
+$0.716$ (KS) to $0.784$ (HS (1, 1))
+<!-- END p3_h_mwmz -->
+<!-- BEGIN p3_h_gev_mh -->
+$1098$ GeV (CJT) to $1400$ GeV (HS (1, 1))
+<!-- END p3_h_gev_mh -->
+<!-- BEGIN p3_h_gev_lambda -->
+$1.72\times10^{3}$ GeV (HS (1, 1)) to $2.01\times10^{3}$ GeV (HS (0, 0))
+<!-- END p3_h_gev_lambda -->
+<!-- BEGIN p3_h_gev_tc -->
+$404$ GeV (CJT) to $448$ GeV (HS (1, 1))
+<!-- END p3_h_gev_tc -->
+<!-- BEGIN p3_h_tcv -->
+$1.64$ (CJT) to $1.82$ (HS (1, 1))
+<!-- END p3_h_tcv -->
+<!-- BEGIN p3_h_times_sm -->
+$8.8$ to $11$
+<!-- END p3_h_times_sm -->
+<!-- BEGIN p3_h_fi_gap -->
+$0.16$ (HS (1, 1)) to $0.18$ (KS, CJT)
+<!-- END p3_h_fi_gap -->
+<!-- BEGIN p3_h_sm_mhv -->
+$0.5085$
+<!-- END p3_h_sm_mhv -->
+<!-- BEGIN p3_h_sm_lambda -->
+$0.1293$
+<!-- END p3_h_sm_lambda -->
+<!-- BEGIN p3_h_sm_mhmw -->
+$1.558$
+<!-- END p3_h_sm_mhmw -->
+<!-- BEGIN p3_h_sm_mwmz -->
+$0.8814$
+<!-- END p3_h_sm_mwmz -->
+<!-- BEGIN p4_table_ginzburg -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| critical temperature $T^{X,{\rm c}}_{\rm SF}$ | $0.260467$ | $0.240465$ | $0.213799$ | $0.222119$ | $0.222119$ |
+| Dirac mass of the normal state at $T^{X,{\rm c}}_{\rm SF}$ | $0.206685$ | $0.200000$ | $0.200000$ | $0.162293$ | $0.162293$ |
+| $10^2\,\alpha^{X,{\rm GL}}_{\rm SF}$ | $1.40379$ | $1.26991$ | $1.07434$ | $1.11755$ | $1.11755$ |
+| $10^2\,b^{X,{\rm Tay}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$ | $1.23886$ | $1.37640$ | $1.59434$ | $1.47237$ | $1.47237$ |
+| $10^2\,\mathsf c^X_{\rm SF}$ (phase twist) | $1.548748$ | $1.713759$ | $1.952799$ | $1.927178$ | $1.927178$ |
+| $10^2\,\mathsf c^X_{\rm SF}$ from the isospin twist | $1.548748$ | $1.713759$ | $1.952799$ | $1.927178$ | $1.927178$ |
+| $10^2\,\mathsf c^X_{\rm SF}$ without the other pair channels | $1.548748$ | $1.713804$ | $1.952810$ | $1.927185$ | $1.927185$ |
+| $10^2\,\mathsf c^{X,{\rm T3}}_{\rm SF}$ (twist of the unbroken $T^3_{\rm LL}$; cutoff error) | $0.3218$ | $0.3395$ | $0.3597$ | $0.3597$ | $0.3597$ |
+| $10^2\,\mathsf c^{X,{\rm tw}}_{\rm SF}$ (twisted states of the nonlinear engine) | $1.723$ | $1.905$ | $1.953$ | $2.121$ | $0.7684$ |
+| $\xi^{X,{\rm GL}}_{\rm SF}=(\mathsf c^X_{\rm SF}/\alpha^{X,{\rm GL}}_{\rm SF})^{1/2}$ | $1.050$ | $1.162$ | $1.348$ | $1.313$ | $1.313$ |
+| $\Delta C^X_{\rm SF}(\xi^{X,{\rm GL}}_{\rm SF})^3$ | $0.0354$ | $0.0382$ | $0.0415$ | $0.0432$ | $0.0432$ |
+| Ginzburg number ${\rm Gi}^{X}_{\rm SF}$ (A2.3) | $11.38$ | $9.768$ | $8.277$ | $7.621$ | $7.621$ |
+| width ${\rm Gi}^{X}_{\rm SF}\,T^{X,{\rm c}}_{\rm SF}$ | $2.964$ | $2.349$ | $1.770$ | $1.693$ | $1.693$ |
+| ${\rm Gi}^{X}_{\rm SF}$ with $\mathsf c^X_{\rm SF}+\mathsf c^{X,{\rm T3}}_{\rm SF}$ | $6.46$ | $5.68$ | $4.98$ | $4.56$ | $4.56$ |
+| ${\rm Gi}^{X}_{\rm SF}$ with $\mathsf c^X_{\rm SF}-\mathsf c^{X,{\rm T3}}_{\rm SF}$ | $22.9$ | $18.9$ | $15.2$ | $14.2$ | $14.2$ |
+| growth factor from $q^{\rm pair}_{\rm SF}=0.005$ to $0.01$, cutoff on the relative momentum | $4.00004$ | $4.00004$ | $4.00003$ | $4.00004$ | $4.00004$ |
+| growth factor from $q^{\rm pair}_{\rm SF}=0.005$ to $0.01$, cutoff on the momenta of the charges | $2.0139$ | $2.0145$ | $2.0153$ | $2.0152$ | $2.0152$ |
+<!-- END p4_table_ginzburg -->
+<!-- BEGIN p4_table_higgs -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT | Standard Model |
+|:----------------------|---------:|---------:|---------:|---------:|---------:|---------:|
+| $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ | $0.143089$ | $0.135450$ | $0.122788$ | $0.131408$ | $0.135320$ | $246.22$ GeV |
+| $f^{X,{\rm F}}_{\rm SF}$ | $0.0709657$ | $0.0672333$ | $0.0613940$ | $0.0713482$ | $0.0713482$ | -- |
+| $f^{X,{\rm I}}_{\rm SF}$ | $0.0715446$ | $0.0677249$ | $0.0613940$ | $0.0657039$ | $0.0676600$ | $123.11$ GeV |
+| $M^{X,{\rm H}}_{\rm SF}$ (linear response) | $0.813693$ | $0.725083$ | $0.614387$ | $0.603476$ | $0.603476$ | $125.20$ GeV |
+| $M^{X,{\rm NU}}_{\rm SF}$ (linear response) | $0.806128$ | $0.725083$ | $0.614387$ | $0.657285$ | $0.644007$ | -- |
+| $M^X_{W,{\rm SF}}$ ($g^{\rm v}_{\rm LL}=0.7$) | $0.050081$ | $0.047407$ | $0.042976$ | $0.045993$ | $0.047362$ | $80.3692$ GeV |
+| $M^X_{Z,{\rm SF}}$ ($g^{\rm F}_{\rm LL}=0.45$) | $0.063869$ | $0.060510$ | $0.055255$ | $0.064213$ | $0.064213$ | $91.1880$ GeV |
+| $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ | $5.687$ | $5.353$ | $5.004$ | $4.592$ | $4.460$ | $0.5085$ |
+| $\lambda^{X,{\rm H}}_{\rm SF}=(M^{X,{\rm H}}_{\rm SF})^2/(2(v^X_{\rm SF})^2)$ | $16.17$ | $14.33$ | $12.52$ | $10.55$ | $9.944$ | $0.1293$ |
+| $M^{X,{\rm H}}_{\rm SF}/M^X_{W,{\rm SF}}$ | $16.25$ | $15.29$ | $14.30$ | $13.12$ | $12.74$ | $1.558$ |
+| $M^X_{W,{\rm SF}}/M^X_{Z,{\rm SF}}$ | $0.7841$ | $0.7835$ | $0.7778$ | $0.7162$ | $0.7376$ | $0.8814$ |
+| $M^{X,{\rm H}}_{\rm SF}/(2E^{X,{\rm gap}}_{\rm SF})$ | $0.8982$ | $0.8766$ | $0.8384$ | $0.8235$ | $0.8235$ | -- |
+| $M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ | $0.9907$ | $1.000$ | $1.000$ | $1.089$ | $1.067$ | none |
+| $f^{X,{\rm F}}_{\rm SF}/f^{X,{\rm I}}_{\rm SF}$ | $0.9919$ | $0.9927$ | $1.000$ | $1.086$ | $1.055$ | -- |
+| $\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ (A2.9) | $3.92$ | $3.47$ | $2.99$ | $2.13$ | $2.13$ | $3.0\times10^{-5}$ |
+| $T^{X,{\rm c}}_{\rm SF}/v^X_{\rm SF}$ | $1.820$ | $1.775$ | $1.741$ | $1.690$ | $1.641$ | $0.648$ |
+| $\Lambda_{\rm LL}$ in GeV for $v^X_{\rm SF}=246.22$ GeV | $1721$ | $1818$ | $2005$ | $1874$ | $1820$ | -- |
+| $M^{X,{\rm H}}_{\rm SF}$ in GeV on that scale | $1400$ | $1318$ | $1232$ | $1131$ | $1098$ | $125.20$ |
+| $T^{X,{\rm c}}_{\rm SF}$ in GeV on that scale | $448.2$ | $437.1$ | $428.7$ | $416.2$ | $404.2$ | $159.5$ |
+| ${\rm Gi}^{X}_{\rm SF}$ (Table A2) | $11.4$ | $9.77$ | $8.28$ | $7.62$ | $7.62$ | -- |
+<!-- END p4_table_higgs -->
+<!-- BEGIN p4_checks_ginzburg -->
+| check | result | deviation | tolerance | statement |
+|:---|:---|---:|---:|:-----------|
+| P3-G1 HS_1_1 | PASS | $7.97\times10^{-10}$ | $1\times10^{-7}$ | HS\_1\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.3427965859e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.3427965869e-3) (relative difference) |
+| P3-G2 HS_1_1 | PASS | $6.28\times10^{-13}$ | $1\times10^{-9}$ | HS\_1\_1: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 HS_1_1 | PASS | $2.2\times10^{-15}$ | $1\times10^{-9}$ | HS\_1\_1: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0140378852) |
+| P3-G4 HS_1_1 | PASS | $1.09\times10^{-33}$ | $1\times10^{-12}$ | HS\_1\_1: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 2.22e-16) |
+| P3-G5 HS_1_1 | PASS | $2.84\times10^{-11}$ | $1\times10^{-8}$ | HS\_1\_1: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0154874758 (isospin invariance; relative difference) |
+| P3-G6 HS_1_1 | PASS | -- | -- | HS\_1\_1: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0154876192, c(k = 0.02) = 0.0154880494, extrapolated 0.0154874758 |
+| P3-G9 HS_1_1 | PASS | -- | -- | HS\_1\_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01391 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k\^2) |
+| P3-H1 HS_1_1 | PASS | -- | -- | HS\_1\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.813693 &lt; 2 E\_gap = 0.905935 (M\_H / 2 E\_gap = 0.8982) |
+| P3-H2 HS_1_1 | PASS | $2.1\times10^{-14}$ | $1\times10^{-8}$ | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07096573 and f\_I\^2/f\_F = 0.07212812 (largest relative difference) |
+| P3-G1 HS_0_1 | PASS | $1.75\times10^{-10}$ | $1\times10^{-7}$ | HS\_0\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.2087983988e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.2087983990e-3) (relative difference) |
+| P3-G2 HS_0_1 | PASS | $3.93\times10^{-12}$ | $1\times10^{-9}$ | HS\_0\_1: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 HS_0_1 | PASS | $9.01\times10^{-15}$ | $1\times10^{-9}$ | HS\_0\_1: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0126991375) |
+| P3-G4 HS_0_1 | PASS | $1.93\times10^{-16}$ | $1\times10^{-12}$ | HS\_0\_1: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 1.57e-4) |
+| P3-G5 HS_0_1 | PASS | $3.2\times10^{-12}$ | $1\times10^{-8}$ | HS\_0\_1: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0171375865 (isospin invariance; relative difference) |
+| P3-G6 HS_0_1 | PASS | -- | -- | HS\_0\_1: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0171377370, c(k = 0.02) = 0.0171381885, extrapolated 0.0171375865 |
+| P3-G9 HS_0_1 | PASS | -- | -- | HS\_0\_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01448 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k\^2) |
+| P3-H1 HS_0_1 | PASS | -- | -- | HS\_0\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.725083 &lt; 2 E\_gap = 0.827165 (M\_H / 2 E\_gap = 0.8766) |
+| P3-H2 HS_0_1 | PASS | $3.42\times10^{-14}$ | $1\times10^{-8}$ | HS\_0\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.06723334 and f\_I\^2/f\_F = 0.06822015 (largest relative difference) |
+| P3-G1 HS_0_0 | PASS | $8.82\times10^{-10}$ | $1\times10^{-7}$ | HS\_0\_0: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.0158790690e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.0158790681e-3) (relative difference) |
+| P3-G2 HS_0_0 | PASS | $5.01\times10^{-12}$ | $1\times10^{-9}$ | HS\_0\_0: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 HS_0_0 | PASS | $2.07\times10^{-15}$ | $1\times10^{-9}$ | HS\_0\_0: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0107433853) |
+| P3-G4 HS_0_0 | PASS | $1.12\times10^{-16}$ | $1\times10^{-12}$ | HS\_0\_0: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 7.72e-5) |
+| P3-G5 HS_0_0 | PASS | $3.1\times10^{-12}$ | $1\times10^{-8}$ | HS\_0\_0: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0195279853 (isospin invariance; relative difference) |
+| P3-G6 HS_0_0 | PASS | -- | -- | HS\_0\_0: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0195281300, c(k = 0.02) = 0.0195285640, extrapolated 0.0195279853 |
+| P3-G7 HS_0_0 | PASS | $2.36\times10^{-6}$ | $1\times10^{-5}$ | HS\_0\_0 (no normal self-energy): the twisted states of the nonlinear engine give the gradient coefficient of the linear response with the pair self-energy along (K\^3)\^dag (0.0195280500 and 0.0195280961; relative difference) |
+| P3-G9 HS_0_0 | PASS | -- | -- | HS\_0\_0: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01532 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k\^2) |
+| P3-H1 HS_0_0 | PASS | -- | -- | HS\_0\_0: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.614387 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8384) |
+| P3-H2 HS_0_0 | PASS | $8.66\times10^{-15}$ | $1\times10^{-8}$ | HS\_0\_0: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.06139396 and f\_I\^2/f\_F = 0.06139396 (largest relative difference) |
+| P3-G1 KS | PASS | $4.37\times10^{-10}$ | $1\times10^{-7}$ | KS: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.0510272234e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.0510272239e-3) (relative difference) |
+| P3-G2 KS | PASS | $1.57\times10^{-12}$ | $1\times10^{-9}$ | KS: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 KS | PASS | $2.93\times10^{-15}$ | $1\times10^{-9}$ | KS: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0111755228) |
+| P3-G4 KS | PASS | $3.14\times10^{-16}$ | $1\times10^{-12}$ | KS: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 6.16e-5) |
+| P3-G5 KS | PASS | $1.71\times10^{-11}$ | $1\times10^{-8}$ | KS: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0192717762 (isospin invariance; relative difference) |
+| P3-G6 KS | PASS | -- | -- | KS: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0192719291, c(k = 0.02) = 0.0192723879, extrapolated 0.0192717762 |
+| P3-G9 KS | PASS | -- | -- | KS: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01520 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k\^2) |
+| P3-H1 KS | PASS | -- | -- | KS: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
+| P3-H2 KS | PASS | $4.76\times10^{-14}$ | $1\times10^{-8}$ | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06050620 (largest relative difference) |
+| P3-G1 CJT | PASS | $4.42\times10^{-10}$ | $1\times10^{-7}$ | CJT: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.0510272234e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.0510272239e-3) (relative difference) |
+| P3-G2 CJT | PASS | $1.26\times10^{-12}$ | $1\times10^{-9}$ | CJT: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
+| P3-G3 CJT | PASS | $2.72\times10^{-15}$ | $1\times10^{-9}$ | CJT: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0111755228) |
+| P3-G4 CJT | PASS | $2.22\times10^{-16}$ | $1\times10^{-12}$ | CJT: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K\^iota)\^dag; at k = 0.01 it is 6.16e-5) |
+| P3-G5 CJT | PASS | $1.33\times10^{-11}$ | $1\times10^{-8}$ | CJT: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0192717762 (isospin invariance; relative difference) |
+| P3-G6 CJT | PASS | -- | -- | CJT: c > 0 and the extrapolation in k converges: c(k = 0.01) = 0.0192719291, c(k = 0.02) = 0.0192723879, extrapolated 0.0192717762 |
+| P3-G9 CJT | PASS | -- | -- | CJT: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01520 for k = 0.01 and 0.005, 2 for /k/), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k\^2) |
+| P3-G8 | PASS | $1.87\times10^{-10}$ | $1\times10^{-8}$ | CJT: the gradient coefficient does not depend on the quadrature: six directions and 24 radial nodes 0.019271776156, 64 directions 0.019271776160, 40 radial nodes 0.019271776155 (largest relative difference) |
+| P3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
+| P3-H2 CJT | PASS | $7.68\times10^{-14}$ | $1\times10^{-8}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06416246 (largest relative difference) |
+| YP3-G1 HS_1_1 | PASS | $4.23\times10^{-11}$ | $1\times10^{-7}$ | HS\_1\_1: the gradient coefficient at T\_c, c = 0.0154874758, with this engine (64 directions, LAPACK) = Rust 0.0154874758 (relative difference) |
+| YP3-G2 HS_1_1 | PASS | $4.44\times10^{-13}$ | $1\times10^{-6}$ | HS\_1\_1: alpha = T\_c da/dT = 0.0140378852 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.2066851932) = Rust 0.0140378852 (relative difference) |
+| YP3-G3 HS_1_1 | PASS | $1.27\times10^{-10}$ | $1\times10^{-6}$ | HS\_1\_1: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 11.379614 from the Rust coefficients and 11.379614 from the coefficients of this program (with the Rust b) = Rust 11.379614 (largest relative difference) |
+| YP3-G1 HS_0_1 | PASS | $2.11\times10^{-10}$ | $1\times10^{-7}$ | HS\_0\_1: the gradient coefficient at T\_c, c = 0.0171375865, with this engine (64 directions, LAPACK) = Rust 0.0171375865 (relative difference) |
+| YP3-G2 HS_0_1 | PASS | $1.91\times10^{-12}$ | $1\times10^{-6}$ | HS\_0\_1: alpha = T\_c da/dT = 0.0126991375 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000) = Rust 0.0126991375 (relative difference) |
+| YP3-G3 HS_0_1 | PASS | $6.35\times10^{-10}$ | $1\times10^{-6}$ | HS\_0\_1: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 9.767745 from the Rust coefficients and 9.767745 from the coefficients of this program (with the Rust b) = Rust 9.767745 (largest relative difference) |
+| YP3-G1 HS_0_0 | PASS | $6.75\times10^{-11}$ | $1\times10^{-7}$ | HS\_0\_0: the gradient coefficient at T\_c, c = 0.0195279853, with this engine (64 directions, LAPACK) = Rust 0.0195279853 (relative difference) |
+| YP3-G2 HS_0_0 | PASS | $2.27\times10^{-12}$ | $1\times10^{-6}$ | HS\_0\_0: alpha = T\_c da/dT = 0.0107433853 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000) = Rust 0.0107433853 (relative difference) |
+| YP3-G3 HS_0_0 | PASS | $2.05\times10^{-10}$ | $1\times10^{-6}$ | HS\_0\_0: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 8.277176 from the Rust coefficients and 8.277176 from the coefficients of this program (with the Rust b) = Rust 8.277176 (largest relative difference) |
+| YP3-G1 KS | PASS | $2.33\times10^{-10}$ | $1\times10^{-7}$ | KS: the gradient coefficient at T\_c, c = 0.0192717762, with this engine (64 directions, LAPACK) = Rust 0.0192717762 (relative difference) |
+| YP3-G2 KS | PASS | $4.42\times10^{-12}$ | $1\times10^{-6}$ | KS: alpha = T\_c da/dT = 0.0111755228 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325) = Rust 0.0111755228 (relative difference) |
+| YP3-G3 KS | PASS | $7.05\times10^{-10}$ | $1\times10^{-6}$ | KS: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 7.620723 from the Rust coefficients and 7.620723 from the coefficients of this program (with the Rust b) = Rust 7.620723 (largest relative difference) |
+| YP3-G1 CJT | PASS | $2.25\times10^{-10}$ | $1\times10^{-7}$ | CJT: the gradient coefficient at T\_c, c = 0.0192717762, with this engine (64 directions, LAPACK) = Rust 0.0192717762 (relative difference) |
+| YP3-G2 CJT | PASS | $4.7\times10^{-12}$ | $1\times10^{-6}$ | CJT: alpha = T\_c da/dT = 0.0111755228 in closed form (lambda\^P(T\_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325) = Rust 0.0111755228 (relative difference) |
+| YP3-G3 CJT | PASS | $6.81\times10^{-10}$ | $1\times10^{-6}$ | CJT: the Ginzburg number Gi = 36 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 7.620723 from the Rust coefficients and 7.620723 from the coefficients of this program (with the Rust b) = Rust 7.620723 (largest relative difference) |
+| YP3-G4 CJT | PASS | $1.71\times10^{-7}$ | $1\times10^{-6}$ | CJT at T\_c: the quartic coefficient b = 0.0147237342 of the free energy (four applied fields, nonlinear thermal states of this engine) = Rust 0.0147237368 (relative difference); a(T\_c) = 4.2e-13 |
+| YP3-H1 HS_1_1 | PASS | $3.17\times10^{-13}$ | $1\times10^{-9}$ | HS\_1\_1: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 HS_1_1 | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07096573 and 0.07212812, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 HS_0_1 | PASS | $1.46\times10^{-13}$ | $1\times10^{-9}$ | HS\_0\_1: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13544990, M\_H/v\_SF = 5.353148, lambda\_SF = 14.32810, Gamma/M\_H = 3.47079) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 HS_0_1 | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | HS\_0\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.06723334 and 0.06822015, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 HS_0_0 | PASS | $1.85\times10^{-13}$ | $1\times10^{-9}$ | HS\_0\_0: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.12278792, M\_H/v\_SF = 5.003647, lambda\_SF = 12.51824, Gamma/M\_H = 2.98851) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 HS_0_0 | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | HS\_0\_0: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.06139396 and 0.06139396, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 KS | PASS | $2.51\times10^{-13}$ | $1\times10^{-9}$ | KS: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13140786, M\_H/v\_SF = 4.592389, lambda\_SF = 10.54502, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 KS | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06050620, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H1 CJT | PASS | $3.08\times10^{-13}$ | $1\times10^{-9}$ | CJT: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
+| YP3-H2 CJT | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06416246, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
+| YP3-H3 | PASS | $0$ | $1\times10^{-10}$ | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 (Particle Data Group 2024; largest relative difference) |
+<!-- END p4_checks_ginzburg -->
+<!-- BEGIN p4_ngchecks -->
+74
+<!-- END p4_ngchecks -->

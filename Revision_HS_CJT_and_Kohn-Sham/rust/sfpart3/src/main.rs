@@ -7,8 +7,13 @@
 //!     cargo build --release
 //!     ./target/release/sf_part3
 //! Output in data/: hck_part3_checks.txt and the data files part3_*.csv (among them part3_landau.csv and
-//! part3_landau_residuals.csv, the accuracy of the Landau form, module landau).  Run time about two minutes.
+//! part3_landau_residuals.csv, the accuracy of the Landau form, module landau; part3_ginzburg.csv and
+//! part3_ginzburg_regions.csv, the gradient coefficient at T_c and the Ginzburg number, module ginzburg; part3_higgs.csv,
+//! the numbers of the superfluid as a Higgs sector, module higgs, with a last row of the Standard Model).  Run time about
+//! fifteen minutes.
 mod effpot;
+mod ginzburg;
+mod higgs;
 mod kinetic;
 mod landau;
 mod thermal;
@@ -38,6 +43,9 @@ fn main() {
     let mut th_land: Vec<Vec<String>> = vec![];
     let mut th_curves: Vec<Vec<String>> = vec![];
     let mut resid_rows: Vec<Vec<String>> = vec![];
+    let mut gz_rows: Vec<Vec<String>> = vec![];
+    let mut gz_regions: Vec<Vec<String>> = vec![];
+    let mut higgs_rows: Vec<Vec<String>> = vec![];
     landau::check_qp_energies(&mut rep);
     let mut curves_out = vec![];
     for m in [Method::Hs { s_s: 1.0, s_v: 1.0 }, Method::Hs { s_s: 0.0, s_v: 1.0 }, Method::Hs { s_s: 0.0, s_v: 0.0 }, Method::Ks, Method::Cjt] {
@@ -67,6 +75,66 @@ fn main() {
             th_land.push(vec![tag.clone(), f(c.tau), f(c.res6), f(c.res4)]);
             for r in &c.rows {
                 th_curves.push(vec![tag.clone(), f(c.tau), f(r.0), f(r.1), f(r.2)]);
+            }
+        }
+        // ---- the gradient coefficient at T_c and the Ginzburg number (Section 12.5)
+        let gz = ginzburg::run(&mut model, th.g_p, th.tc);
+        {
+            let pi2 = std::f64::consts::PI * std::f64::consts::PI;
+            let grid0 = model.grid.clone();
+            let ident = CMat::identity(2);
+            // P3-G1: the linear response a(0, T) equals the Taylor coefficient of the nonlinear free energy at 0.9 T_c
+            let p09 = th.points.iter().find(|p| (p.tau - 0.9).abs() < 1e-12).unwrap();
+            let (n09, _) = ginzburg::normal_self_energy(&model, p09.t);
+            let a09 = ginzburg::a_twist(&model, &grid0, &n09, p09.t, 0.0, &ident, true).a;
+            rep.add(&format!("P3-G1 {}", tag), &format!("{}: at 0.9 T_c the coefficient a(0) of |Phi|^2 from the linear response ({:.10e}) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 ({:.10e}) (relative difference)", tag, a09, p09.a),
+                    (a09 - p09.a).abs() / p09.a.abs(), 1e-7);
+            // P3-G2: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) with lambda^P(T) of (12.9)
+            let mut worst = 0.0f64;
+            for t in [0.9 * th.tc, 0.998 * th.tc, 1.002 * th.tc] {
+                let (nn, _) = ginzburg::normal_self_energy(&model, t);
+                let mn = ginzburg::dirac_mass(&nn);
+                let lam = th.g_p * thermal::i1(&model, mn * mn, t) / pi2;
+                let a = ginzburg::a_twist(&model, &grid0, &nn, t, 0.0, &ident, true).a;
+                let cl = (1.0 - lam) / (lam * th.g_p);
+                worst = worst.max((a - cl).abs() / cl.abs());
+            }
+            rep.add(&format!("P3-G2 {}", tag), &format!("{}: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002 (largest relative difference)", tag), worst, 1e-9);
+            rep.add(&format!("P3-G3 {}", tag), &format!("{}: a(0, T_c) vanishes to the accuracy of T_c (|a(0, T_c)| / alpha; alpha = {:.10})", tag, gz.alpha), gz.a_tc.abs() / gz.alpha, 1e-9);
+            rep.add(&format!("P3-G4 {}", tag), &format!("{}: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K^iota)^dag; at k = {} it is {:.2e})", tag, ginzburg::K1, gz.perp_k), gz.perp0, 1e-12);
+            rep.add(&format!("P3-G5 {}", tag), &format!("{}: the isospin twist gives the gradient coefficient of the phase twist, c = {:.10} (isospin invariance; relative difference)", tag, gz.c), (gz.c_iso / gz.c - 1.0).abs(), 1e-8);
+            rep.add_bool(&format!("P3-G6 {}", tag), &format!("{}: c > 0 and the extrapolation in k converges: c(k = 0.01) = {:.10}, c(k = 0.02) = {:.10}, extrapolated {:.10}", tag, gz.c_h, gz.c_2h, gz.c),
+                         gz.c > 0.0 && (gz.c_2h - gz.c_h).abs() / gz.c < 1e-3, "");
+            if tag == "HS_0_0" {
+                rep.add("P3-G7 HS_0_0", &format!("HS_0_0 (no normal self-energy): the twisted states of the nonlinear engine give the gradient coefficient of the linear response with the pair self-energy along (K^3)^dag ({:.10} and {:.10}; relative difference)", gz.c_nonlinear, gz.c_fixed),
+                        (gz.c_nonlinear / gz.c_fixed - 1.0).abs(), 1e-5);
+            }
+            // the two regularizations: cutoff on the relative momentum (sphere) and on the momenta of the charges (lens)
+            let (n_c, _) = ginzburg::normal_self_energy(&model, th.tc);
+            let (s0, l0) = ginzburg::a_regions(&model, &n_c, th.tc, 0.0);
+            let mut sl = vec![];
+            for k in [0.005, 0.01, 0.02, 0.04] {
+                let (sa, la) = ginzburg::a_regions(&model, &n_c, th.tc, k);
+                gz_regions.push(vec![tag.clone(), f(k), f(sa - s0), f(la - l0), f((sa - s0) / (k * k)), f((la - l0) / k)]);
+                sl.push((sa - s0, la - l0));
+            }
+            let (rs, rl) = (sl[1].0 / sl[0].0, sl[1].1 / sl[0].1);
+            rep.add_bool(&format!("P3-G9 {}", tag), &format!("{}: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in |k| (ratio {:.5} for k = 0.01 and 0.005, 2 for |k|), with the cutoff on the relative momentum quadratic (ratio {:.6}, 4 for k^2)", tag, rl, rs),
+                         (rl / 2.0 - 1.0).abs() < 0.02 && (rs / 4.0 - 1.0).abs() < 1e-3, "");
+            if tag == "CJT" {
+                let gp8 = Grid::new(24, 1.0, DirRule::Product(8, 8));
+                let cp = ginzburg::gradient(&model, &gp8, &n_c, th.tc, &ident, 2.0, ginzburg::K1, true).0;
+                let m40 = Model::new(M_LL, 0.0, terms(&m, &v2), grid(40));
+                let (n40, _) = ginzburg::normal_self_energy(&m40, th.tc);
+                let c40 = ginzburg::gradient(&m40, &m40.grid.clone(), &n40, th.tc, &ident, 2.0, ginzburg::K1, true).0;
+                rep.add("P3-G8", &format!("CJT: the gradient coefficient does not depend on the quadrature: six directions and 24 radial nodes {:.12}, 64 directions {:.12}, 40 radial nodes {:.12} (largest relative difference)", gz.c, cp, c40),
+                        ((cp - gz.c).abs()).max((c40 - gz.c).abs()) / gz.c, 1e-8);
+            }
+            println!("{:<20} Ginzburg: alpha {:.8} b {:.8} c {:.8} (fixed {:.8}, T3 {:.6}, twisted states {:.6}) Gi {:.4} xi0 {:.4} ({:.0} s)", m.name(), gz.alpha, gz.b, gz.c, gz.c_fixed, gz.c_t3, gz.c_nonlinear, gz.gi, gz.xi0, t0.elapsed().as_secs_f64());
+            gz_rows.push(vec![tag.clone(), f(gz.tc), f(gz.mass_n), f(gz.alpha), f(gz.b), f(gz.c), f(gz.c_iso), f(gz.c_fixed), f(gz.c_t3), f(gz.c_nonlinear), f(gz.c_h), f(gz.c_2h),
+                              f(gz.perp0), f(gz.perp_k), f(gz.a_tc), f(gz.gi), f(gz.width), f(gz.xi0), f(gz.phi_g)]);
+            for (k, v) in [("alpha", gz.alpha), ("b", gz.b), ("c", gz.c), ("c_fixed", gz.c_fixed), ("c_T3", gz.c_t3), ("c_twisted", gz.c_nonlinear), ("Gi", gz.gi), ("xi0", gz.xi0), ("PhiG", gz.phi_g), ("width", gz.width)] {
+                vals.push((format!("p3_gz_{}_{}", k, tag), v));
             }
         }
         rep.add(&format!("P3-6 {}", tag), &format!("{}: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = {:.1e})", tag, st.chi33), st.chi33.abs(), 1e-10);
@@ -115,6 +183,21 @@ fn main() {
         for &(x, r2, r3, r4) in &acc.residuals {
             resid_rows.push(vec![tag.clone(), f(x), f(x / phi0), f(r2 / sol.energy.abs()), f(r3 / sol.energy.abs()), f(r4 / sol.energy.abs())]);
         }
+        // ---- the superfluid as a Higgs sector (Section 14.6)
+        {
+            let gap0 = th.points[0].gap;
+            let hg = higgs::run(phi0, z, y, rpa_h, rpa_nu, GV, GF, gap0, th.tc);
+            rep.add_bool(&format!("P3-H1 {}", tag), &format!("{}: the amplitude mode lies below the threshold of two quasi-particles, M_H = {:.6} < 2 E_gap = {:.6} (M_H / 2 E_gap = {:.4})", tag, rpa_h, 2.0 * gap0, hg.mh_over_2gap), rpa_h < 2.0 * gap0, "");
+            rep.add(&format!("P3-H2 {}", tag), &format!("{}: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = {:.8} and f_I^2/f_F = {:.8} (largest relative difference)", tag, hg.f_f, hg.f_i * hg.f_i / hg.f_f),
+                    ((hg.g_phase / hg.f_f - 1.0).abs()).max((hg.g_iso / (hg.f_i * hg.f_i / hg.f_f) - 1.0).abs()), 1e-8);
+            println!("{:<20} Higgs: v_SF {:.6} M_H/v {:.4} lambda {:.3} M_H/M_W {:.3} M_H/2E_gap {:.4} M_NU/M_H {:.4} f_F/f_I {:.4} Gamma/M_H {:.3} Lambda = {:.1} GeV, M_H = {:.1} GeV", m.name(), hg.v_sf, hg.mh_over_v, hg.lambda, hg.mh_over_mw, hg.mh_over_2gap, hg.mnu_over_mh, hg.ff_over_fi, hg.width_over_mh, hg.lambda_gev, hg.mh_gev);
+            higgs_rows.push(vec![tag.clone(), f(hg.v_sf), f(hg.f_f), f(hg.f_i), f(hg.mh), f(hg.mnu), f(hg.mw), f(hg.mz), f(hg.mh_over_v), f(hg.lambda), f(hg.mh_over_mw), f(hg.mh_over_2gap),
+                                 f(hg.mnu_over_mh), f(hg.ff_over_fi), f(hg.mw_over_mz), f(hg.width_over_mh), f(hg.tc_over_v), f(hg.lambda_gev), f(hg.mh_gev), f(hg.gap_gev), f(hg.tc_gev)]);
+            for (k, v) in [("vSF", hg.v_sf), ("fF", hg.f_f), ("fI", hg.f_i), ("MH_v", hg.mh_over_v), ("lambda", hg.lambda), ("MH_MW", hg.mh_over_mw), ("MH_2gap", hg.mh_over_2gap), ("MNU_MH", hg.mnu_over_mh),
+                           ("fF_fI", hg.ff_over_fi), ("MW_MZ", hg.mw_over_mz), ("width_MH", hg.width_over_mh), ("Tc_v", hg.tc_over_v), ("LambdaGeV", hg.lambda_gev), ("MHGeV", hg.mh_gev), ("gapGeV", hg.gap_gev), ("TcGeV", hg.tc_gev)] {
+                vals.push((format!("p3_h_{}_{}", k, tag), v));
+            }
+        }
         sf_rows.push(vec![tag.clone(), f(phi0), f(sol.energy), f(z), f(y), f(cv.v2_amp), f(cv.v2_nu), f(mh), f(rpa_h), f(mnu), f(rpa_nu), f(st.ff_t), f(st.ff_s), f(st.fi_t), f(st.fi_s), f(st.f3_s)]);
         curves_out.push((tag.clone(), cv.rows.clone()));
     }
@@ -125,6 +208,21 @@ fn main() {
         "gap_equation_residual", "a_Taylor", "b_Taylor", "Phi0_Landau", "iterations"], &th_rows);
     write_csv(&data.join("part3_thermal_landau.csv"), &["method", "tau", "res_Landau_over_depth", "res_quartic_over_depth"], &th_land);
     write_csv(&data.join("part3_thermal_curves.csv"), &["method", "tau", "applied_field", "Phi", "F"], &th_curves);
+    write_csv(&data.join("part3_ginzburg.csv"), &["method", "T_c", "Dirac_mass_normal", "alpha", "b", "c", "c_isospin_twist", "c_fixed_channels", "c_T3_twist", "c_twisted_states",
+        "c_k001", "c_k002", "other_channels_k0", "other_channels_k001", "a_at_Tc", "Gi", "Gi_Tc", "xi0", "Phi_G"], &gz_rows);
+    write_csv(&data.join("part3_ginzburg_regions.csv"), &["method", "k", "a_minus_a0_sphere", "a_minus_a0_lens", "sphere_over_k2", "lens_over_k"], &gz_regions);
+    {
+        // the last row: the Standard Model values of the ratios that have an analogue here (NaN for the others)
+        let sm = higgs::standard_model();
+        let mut row = vec!["SM".to_string()];
+        let nan = f64::NAN;
+        for v in [higgs::SM_V, nan, higgs::SM_V / 2.0, higgs::SM_MH, nan, higgs::SM_MW, higgs::SM_MZ, sm[0], sm[1], sm[2], nan, nan, nan, sm[3], nan, nan, nan, nan, nan, nan] {
+            row.push(f(v));
+        }
+        higgs_rows.push(row);
+    }
+    write_csv(&data.join("part3_higgs.csv"), &["method", "v_SF", "f_F", "f_I", "M_H", "M_NU", "M_W", "M_Z", "M_H_over_v_SF", "lambda_SF", "M_H_over_M_W", "M_H_over_2E_gap",
+        "M_NU_over_M_H", "f_F_over_f_I", "M_W_over_M_Z", "Gamma_over_M_H", "T_c_over_v_SF", "Lambda_GeV", "M_H_GeV", "E_gap_GeV", "T_c_GeV"], &higgs_rows);
     write_csv(&data.join("part3_landau_residuals.csv"), &["method", "Phi", "Phi_over_Phi0", "res_K2_over_depth", "res_K3_over_depth", "res_K4_over_depth"], &resid_rows);
     for (tag, rows) in &curves_out {
         let r: Vec<Vec<String>> = rows.iter().map(|x| vec![f(x.0), f(x.1), f(x.2), f(x.3)]).collect();

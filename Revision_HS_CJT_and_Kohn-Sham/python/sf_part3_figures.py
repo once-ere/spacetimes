@@ -5,11 +5,16 @@ drawn from the data files written by the Rust program sf_part3 (folder data/): F
 (fig_part3_q3_landau, the accuracy of the Landau form), Figure 10 (fig_part3_q4_thermal, the free energy at finite
 temperature) and Figure 11 (fig_part3_q2_masses); Figure R1 of the document provenance/P4_remarks.md (fig_p4_r1_landau,
 the same as Figure 9 with the equation number of that document) and Figure A1 of that document (fig_p4_a1_thermal, the
-same as Figure 10 with the equation numbers of that document).
+same as Figure 10 with the equation numbers of that document); and the two figures of the second addendum, whose numbers
+superfluid.md shows as Tables 12.5 and 14.2 of its Sections 12.5 and 14.6 (superfluid.md itself has no figure of them):
+Figures A2 and A3 of provenance/P4_remarks.md (fig_p4_a2_ginzburg, the regularization of a moving pair and the Ginzburg
+numbers; fig_p4_a2_higgs, the superfluid as a Higgs sector against the Standard Model; both with the equation numbers of
+that document) and the same two figures without equation numbers for the article in paper_prd/ (fig_prd_ginzburg,
+fig_prd_higgs).
 
 Run (from the folder Revision_HS_CJT_and_Kohn-Sham, after rust/target/release/sf_part3):
     python3 python/sf_part3_figures.py
-Requires: Python 3, numpy, matplotlib.   Output: figures/fig_part3_*.pdf and .png.
+Requires: Python 3, numpy, matplotlib.   Output: figures/fig_part3_*, fig_p4_* and fig_prd_* (.pdf and .png).
 
 Design: the categorical palette of parts I and II in its fixed order, thin lines, every series also told apart by its
 line style or marker and named in a legend, a recessive grid, one axis per panel; the surface of the Mexican hat uses a
@@ -45,7 +50,9 @@ def read(name):
 
 def save(fig, name):
     os.makedirs(FIG, exist_ok=True)
-    fig.savefig(os.path.join(FIG, name + ".pdf"), bbox_inches="tight")
+    # the PDF is written without its creation date ("CreationDate": None), so that a rerun gives the same bytes and the
+    # same SHA-256 checksum as listed in the documents (the PNG files carry no date)
+    fig.savefig(os.path.join(FIG, name + ".pdf"), bbox_inches="tight", metadata={"CreationDate": None})
     fig.savefig(os.path.join(FIG, name + ".png"), bbox_inches="tight")
     plt.close(fig)
 
@@ -233,6 +240,104 @@ def fig_thermal(eq="(12.2)", name="fig_part3_q4_thermal"):
     save(fig, name)
 
 
+def fig_ginzburg(eq="(A2.3)", name="fig_p4_a2_ginzburg"):
+    """The gradient coefficient at T_c and the Ginzburg number (Section 12.5 of superfluid.md, addendum A2 of
+    provenance/P4_remarks.md).  (a) a(q_pair; T_c) - a(0; T_c) against the pair momentum for the cutoff on the relative
+    momentum (solid: quadratic, slope 2 on the logarithmic axes) and on the momenta of the two charges (dashed: linear,
+    slope 1); (b) the Ginzburg number of the five methods (KS and CJT coincide), with the range from changing the gradient
+    coefficient by the spurious coefficient of the T^3 twist, against the line Gi = 1 below which mean-field theory could
+    hold near T_c.  eq: the equation number of the Ginzburg number shown in the label of panel (b) ("" for none); name:
+    the name of the files.  Data: part3_ginzburg_regions.csv, part3_ginzburg.csv."""
+    _, rrows = read("part3_ginzburg_regions.csv")
+    head, grows = read("part3_ginzburg.csv")
+    col = {h: i for i, h in enumerate(head)}
+    tags = ("HS_1_1", "HS_0_1", "HS_0_0", "CJT")
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(9.6, 3.7))
+    for k, tag in enumerate(tags):
+        r = [x for x in rrows if x[0] == tag]
+        q = np.array([float(x[1]) for x in r])
+        ds = np.array([float(x[2]) for x in r])
+        dl = np.array([float(x[3]) for x in r])
+        ax.loglog(q, ds, color=PAL[k], lw=1.4, ls="-", marker="o", ms=3.5, label=LAB[tag])
+        ax.loglog(q, dl, color=PAL[k], lw=1.1, ls="--", marker="s", ms=3)
+    ax.text(0.04, 0.62, "dashed: cutoff on the momenta of the two charges (slope 1)", fontsize=7, color=INK2, transform=ax.transAxes)
+    ax.text(0.04, 0.55, "solid: cutoff on the relative momentum (slope 2)", fontsize=7, color=INK2, transform=ax.transAxes)
+    ax.set_xticks([0.005, 0.01, 0.02, 0.04])
+    ax.set_xticklabels(["0.005", "0.01", "0.02", "0.04"])
+    ax.minorticks_off()
+    ax.set_xlabel(r"pair momentum $q^{\rm pair}_{\rm SF}$")
+    ax.set_ylabel(r"$a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T_{\rm c})-a^{X,{\rm Tay}}_{\rm SF}(0;T_{\rm c})$")
+    ax.legend(fontsize=7, loc="lower right")
+    ax.set_title("(a) a moving pair at the critical temperature", fontsize=9, loc="left")
+    alltags = ["HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"]
+    xs = np.arange(len(alltags))
+    gi = np.array([float([x for x in grows if x[0] == t][0][col["Gi"]]) for t in alltags])
+
+    def gi_c(t, c):
+        x = [y for y in grows if y[0] == t][0]
+        b, tc, al = float(x[col["b"]]), float(x[col["T_c"]]), float(x[col["alpha"]])
+        return 36 * b * b * tc * tc / (64 * np.pi ** 2 * al * c ** 3)
+    lo = np.array([gi_c(t, float([x for x in grows if x[0] == t][0][col["c"]]) + float([x for x in grows if x[0] == t][0][col["c_T3_twist"]])) for t in alltags])
+    hi = np.array([gi_c(t, float([x for x in grows if x[0] == t][0][col["c"]]) - float([x for x in grows if x[0] == t][0][col["c_T3_twist"]])) for t in alltags])
+    bx.errorbar(xs, gi, yerr=[gi - lo, hi - gi], fmt="o", ms=5, color=PAL[0], ecolor=INK2, elinewidth=1.0, capsize=3,
+                label=r"${\rm Gi}^{X}_{\rm SF}$" + (" " + eq if eq else "") + r"; bars: $\mathsf{c}^X_{\rm SF}\pm\mathsf{c}^{X,{\rm T3}}_{\rm SF}$")
+    bx.axhline(1.0, color=INK2, lw=0.9, ls=":")
+    bx.text(0.02, 1.08, "Gi = 1", fontsize=7, color=INK2)
+    bx.set_yscale("log")
+    bx.set_ylim(0.3, 60)
+    bx.set_xticks(xs)
+    bx.set_xticklabels([LAB[t] if t != "CJT" else "CJT" for t in alltags], fontsize=8)
+    bx.set_ylabel("Ginzburg number")
+    bx.legend(fontsize=7, loc="upper right")
+    bx.set_title("(b) the width of the critical region", fontsize=9, loc="left")
+    fig.tight_layout()
+    save(fig, name)
+
+
+def fig_higgs(eq="(A2.9)", name="fig_p4_a2_higgs"):
+    """The superfluid as a Higgs sector (Section 14.6 of superfluid.md, addendum A2 of provenance/P4_remarks.md).
+    (a) M_H/v_SF and the quartic coupling lambda_SF of the five methods against the values of the Standard Model and the
+    tree-level bound 8 pi/3 of perturbative unitarity; (b) the estimated width Gamma/M_H ((14.10) of superfluid.md, (A2.9)
+    of the addendum) and the ratio M_NU/M_H of the charged scalars, against the Standard Model (Gamma_H/m_H with
+    Gamma_H = 3.7 MeV; no charged scalars).  eq: the equation number of the width shown in the label of panel (b) ("" for
+    none); name: the name of the files.  Data: part3_higgs.csv."""
+    head, rows = read("part3_higgs.csv")
+    col = {h: i for i, h in enumerate(head)}
+    tags = ["HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"]
+    get = lambda t, k: float([x for x in rows if x[0] == t][0][col[k]])
+    sm = lambda k: float([x for x in rows if x[0] == "SM"][0][col[k]])
+    xs = np.arange(len(tags))
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(9.6, 3.7))
+    ax.plot(xs - 0.1, [get(t, "M_H_over_v_SF") for t in tags], ls="none", marker="o", ms=5, color=PAL[0], label=r"$M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$")
+    ax.plot(xs + 0.1, [get(t, "lambda_SF") for t in tags], ls="none", marker="s", ms=5, color=PAL[1], label=r"$\lambda^{X,{\rm H}}_{\rm SF}$")
+    ax.axhline(sm("M_H_over_v_SF"), color=PAL[0], lw=0.9, ls="--")
+    ax.axhline(sm("lambda_SF"), color=PAL[1], lw=0.9, ls="--")
+    ax.axhline(8 * np.pi / 3, color=INK2, lw=0.9, ls=":")
+    ax.text(len(tags) - 0.6, sm("M_H_over_v_SF") * 1.15, "Standard Model $m_H/v$", fontsize=7, color=INK2, ha="right")
+    ax.text(len(tags) - 0.6, sm("lambda_SF") * 1.15, r"Standard Model $\lambda_H$", fontsize=7, color=INK2, ha="right")
+    ax.text(len(tags) - 0.6, 8 * np.pi / 3 * 0.78, r"unitarity bound $8\pi/3$", fontsize=7, color=INK2, ha="right")
+    ax.set_yscale("log")
+    ax.set_ylim(0.05, 40)
+    ax.set_xlim(-0.6, len(tags) - 0.4)
+    ax.set_xticks(xs)
+    ax.set_xticklabels([LAB[t] if t != "CJT" else "CJT" for t in tags], fontsize=8)
+    ax.legend(fontsize=7, loc="center left")
+    ax.set_title("(a) mass and coupling of the amplitude mode", fontsize=9, loc="left")
+    bx.plot(xs - 0.1, [get(t, "Gamma_over_M_H") for t in tags], ls="none", marker="D", ms=5, color=PAL[2], label=r"$\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$" + (" " + eq if eq else ""))
+    bx.plot(xs + 0.1, [get(t, "M_NU_over_M_H") for t in tags], ls="none", marker="^", ms=5, color=PAL[3], label=r"$M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ (charged scalars)")
+    bx.axhline(3.7e-3 / 125.20, color=PAL[2], lw=0.9, ls="--")
+    bx.text(len(tags) - 0.6, 3.7e-3 / 125.20 * 1.6, r"Standard Model $\Gamma_H/m_H$", fontsize=7, color=INK2, ha="right")
+    bx.set_yscale("log")
+    bx.set_ylim(1e-5, 20)
+    bx.set_xlim(-0.6, len(tags) - 0.4)
+    bx.set_xticks(xs)
+    bx.set_xticklabels([LAB[t] if t != "CJT" else "CJT" for t in tags], fontsize=8)
+    bx.legend(fontsize=7, loc="center left")
+    bx.set_title("(b) width and the charged scalars", fontsize=9, loc="left")
+    fig.tight_layout()
+    save(fig, name)
+
+
 if __name__ == "__main__":
     fig_potential()
     fig_masses()
@@ -242,4 +347,11 @@ if __name__ == "__main__":
     fig_thermal()
     # the same figure for the addendum A1 of provenance/P4_remarks.md, whose equation of the Landau form is (R1.3)
     fig_thermal("(R1.3)", "fig_p4_a1_thermal")
+    # the two figures of the addendum A2 of provenance/P4_remarks.md (Figures A2 and A3, with its equation numbers (A2.3)
+    # of the Ginzburg number and (A2.9) of the width) and the same figures for the article in paper_prd/ (without
+    # equation numbers; its captions name the equations)
+    fig_ginzburg("(A2.3)", "fig_p4_a2_ginzburg")
+    fig_higgs("(A2.9)", "fig_p4_a2_higgs")
+    fig_ginzburg("", "fig_prd_ginzburg")
+    fig_higgs("", "fig_prd_higgs")
     print("figures written to", FIG)

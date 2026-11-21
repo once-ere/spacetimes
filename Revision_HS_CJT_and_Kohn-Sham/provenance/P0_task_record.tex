@@ -877,6 +877,57 @@ the entropy of the Kohn-Sham system. Fluctuations of the order parameter
 beyond the mean field are not included (Section 12.4 states the
 consequence).
 
+\textbf{D16. The width of the critical region (added on 21 November
+2026, at the author's request).} The author asked how wide the region of
+the fluctuations near the critical temperature is, which needs the
+gradient coefficient of the field at the critical temperature. The width
+is measured by the Ginzburg number of the criterion of the specific
+heat: the temperature, relative to the critical one, at which the
+specific heat of the Gaussian fluctuations of the six real components of
+the field equals the jump of the specific heat of mean-field theory. The
+gradient coefficient is the coefficient of the squared momentum of a
+moving pair field in the free energy of the method at second order in
+the field, computed from the static pair response of the normal state at
+the critical temperature, with the other pair channels of the method
+made self-consistent. \emph{Reason.} This is the standard criterion of
+Levanyuk and Ginzburg, and the static pair response is exact at second
+order in the field for the free energy of each method. For a moving pair
+the cutoff must be placed on the relative momentum: with the cutoff on
+the momenta of the two charges the free energy is not analytic in the
+momentum of the pair (Section 12.5 of the manuscript shows it), and the
+twisted states of Section 12.2 use the same placement. The error of the
+regularization is stated with the result.
+
+\textbf{D17. The superfluid as the Higgs particle (added on 21 November
+2026, at the author's request).} The author asked to determine for each
+method whether the superfluid can play the role of the Higgs particle,
+and whether the Higgs is really a composite particle. The answer
+compares seven properties of the Higgs sector of the Standard Model (the
+mechanism, a neutral scalar below the threshold, its mass against the
+scale of the breaking, its width, the absence of further scalars, the
+quantum numbers, the thermal history) with the numbers of the methods;
+the analogue of the vacuum value of the Higgs field of the Standard
+Model is twice the isospin decay constant, because the mass of the W is
+the gauge coupling times that decay constant; the masses of the
+collective modes are those of the linear response of each method; the
+width is the estimate of the effective Lagrangian at first order; the
+values of the Standard Model are those of the Particle Data Group 2024.
+\emph{Reason.} These are the properties by which a Higgs sector is
+judged, and they are dimensionless or can be made so without a choice of
+units.
+
+\textbf{D18. The article for Physical Review D (added on 21 November
+2026, at the author's request).} The answer to D16 and D17 is also
+written as a Regular Article for Physical Review D, titled by the author
+``Higgs as a Composite, and Quantum Gravity'', by Patrick Lee Nash,
+Ph.D., with the source in REVTeX, the PDF, the supplemental material,
+the cover letter and the information for the submission server, in the
+folder \texttt{paper\_prd/}. The gravitational sector is described as
+the author intends to include it, following the gauge theory of
+gravitation of E. A. Lord (1971), and stated plainly as not yet
+computed. The author submits the article himself: the submission server
+needs his account, and nothing is submitted on his behalf.
+
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the
@@ -1225,8 +1276,8 @@ three effective Lagrangians, the vacua, the stabilizer
 \(SL(2,\mathbb C)\times O(2)\), and \(\mathrm{SFBSv}^X\) with the masses
 compared with the linear response); the provenance, the corrections, the
 symbols and the references are now Sections 14 to 17; the program
-\texttt{sf\_part3} (VERDICT: ALL PASS (92 of 92)), the Python programs
-\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (45 of 45)) and
+\texttt{sf\_part3} (VERDICT: ALL PASS (139 of 139)), the Python programs
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (72 of 72)) and
 \texttt{python/sf\_part3\_figures.py}, the data and two figures; 5
 entries added to the registry and one rewritten (now 167) \\
 E5 & 20 Nov 2026 & corrections during object O5, each found before the
@@ -1343,12 +1394,13 @@ definition and seven examples of the Landau form, its accuracy, the
 cause of the residual, why it matters, Table 12.2, Figure 9; the earlier
 figures 9 to 13 are now 10 to 14 and the earlier Table 12.2 is Table
 12.3), the module \texttt{landau} of \texttt{sf\_part3} with the checks
-P3-8 to P3-11 (VERDICT: ALL PASS (92 of 92)), the checks YP3-8 to YP3-11
-of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (45 of 45)), the new
-provenance document \texttt{provenance/P4\_remarks.md} (\texttt{.tex},
-\texttt{.pdf}), which keeps the answer, two entries of the registry of
-the symbols (\(a^{X,{\rm Tay}}_{\rm SF}\); \(\mu^{\rm SM}\),
-\(\lambda^{\rm SM}\)), and a section of the notebook \\
+P3-8 to P3-11 (VERDICT: ALL PASS (139 of 139)), the checks YP3-8 to
+YP3-11 of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (72 of 72)),
+the new provenance document \texttt{provenance/P4\_remarks.md}
+(\texttt{.tex}, \texttt{.pdf}), which keeps the answer, two entries of
+the registry of the symbols (\(a^{X,{\rm Tay}}_{\rm SF}\);
+\(\mu^{\rm SM}\), \(\lambda^{\rm SM}\)), and a section of the
+notebook \\
 E9 & 21 Nov 2026 & statements of the first two answers of C10 that were
 false or inexact, found when the programs recomputed every number: (1)
 ``the residual changes sign five times'': it changes sign three times;
@@ -1394,13 +1446,13 @@ equation at finite temperature, the temperature-independent Dirac mass
 of the superfluid, the radius of convergence at finite temperature,
 Table 12.4, Figure 10; the earlier figures 10 to 14 are now 11 to 15);
 the thermal states of \texttt{sfcore}; the module \texttt{thermal} of
-\texttt{sf\_part3} with the checks P3-T1 to P3-T8 (VERDICT: ALL PASS (92
-of 92)); the checks YP3-T1 to YP3-T5 of \texttt{python/sf\_part3.py}
-(VERDICT: ALL PASS (45 of 45)); the addendum A1 of
-\texttt{provenance/P4\_remarks.md}. The answer: near the critical
-temperature the order parameter is small, lies inside the radius of
-convergence above \(0.35\) (HS (0, 0)) to \(0.42\) (HS (1, 1)) times
-\(T^{X,{\rm c}}_{\rm SF}\), and the Landau form becomes exact; at
+\texttt{sf\_part3} with the checks P3-T1 to P3-T8 (VERDICT: ALL PASS
+(139 of 139)); the checks YP3-T1 to YP3-T5 of
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (72 of 72)); the
+addendum A1 of \texttt{provenance/P4\_remarks.md}. The answer: near the
+critical temperature the order parameter is small, lies inside the
+radius of convergence above \(0.35\) (HS (0, 0)) to \(0.42\) (HS (1, 1))
+times \(T^{X,{\rm c}}_{\rm SF}\), and the Landau form becomes exact; at
 \(T=0\) it is not \\
 E10 & 21 Nov 2026 & correction during C12, found before the commit: the
 first run of the module \texttt{thermal} fitted the Landau form to
@@ -1437,8 +1489,8 @@ the mean-field free energies with its importance; 26 checks, each with
 its counterparts in \texttt{sf\_part3} and \texttt{python/sf\_part3.py}
 (91 checks in all; ALL PASS (91 of 91), 0 messages); the new Rust check
 P3-T9 and the new Python checks YP3-T5 to YP3-T8, so that every check of
-the section has counterparts in both programs (VERDICT: ALL PASS (92 of
-92); VERDICT: ALL PASS (45 of 45)); the corrections E9 to E11 of
+the section has counterparts in both programs (VERDICT: ALL PASS (139 of
+139); VERDICT: ALL PASS (72 of 72)); the corrections E9 to E11 of
 \texttt{provenance/P3\_notebook.md} \\
 E13 & 21 Nov 2026 & correction during C13: the Python check of the
 uniqueness of the critical temperature, added in C12, was named YP3-T5,
@@ -1446,6 +1498,48 @@ the identifier that belongs to the Python counterpart of the Rust check
 P3-T5, a check of another statement; it is now YP3-T9, and the Rust
 program has the same check as P3-T9 (item 7 of Section 17.3 of the
 manuscript, E11 of \texttt{provenance/P3\_notebook.md}) \\
+C14 & 21 Nov 2026, 11:29 & the author's request: find how wide the
+region of the fluctuations near the critical temperature is, which needs
+the gradient coefficient of the field at the critical temperature; then
+determine for each method whether the superfluid can play the role of
+the Higgs particle and whether the Higgs is really a composite particle;
+formulate the answer as a Regular Article for Physical Review D with its
+supplemental material, cover letter and submission information.
+Decisions D16 to D18; Sections 12.5 and 14.6 of the manuscript (Tables
+12.5 and 14.2), the modules \texttt{ginzburg} and \texttt{higgs} of
+\texttt{sf\_part3} (checks P3-G1 to P3-G9, P3-H1, P3-H2), the Python
+checks YP3-G1 to YP3-G4 and YP3-H1 to YP3-H3, the addendum A2 of
+\texttt{provenance/P4\_remarks.md}, and the folder
+\texttt{paper\_prd/} \\
+E14 & 21 Nov 2026 & correction during C14: the answer of Section 12.4
+(C12), ``the order parameter is smaller and more physically reasonable
+near the critical temperature'', was stated without the qualification
+that the Ginzburg number later showed to be needed; the temperatures
+where the mean-field free energy behaves as Landau's theory lie inside
+the critical region, so the answer holds for the mean-field free energy
+only; the answer, the remark R2 of \texttt{provenance/P4\_remarks.md}
+and item 8 of Section 17.3 of the manuscript now say so \\
+E15 & 21 Nov 2026 & correction during C14: the header of the program
+\texttt{sf\_part3} said that it runs about two minutes; since the
+addendum C12 it runs about fifteen minutes (the free energy at finite
+temperature; 845 s and 888 s in the runs of the two earlier reports, 889
+s with C14); the header and Section 16.9 now say so. A first draft of
+this entry and of Section 16.9 said ``about sixteen minutes with C14'':
+an estimate written before the program was run, false (the modules of
+C14 add about a second), corrected before the commit (item 8 of Section
+17.3 of the manuscript) \\
+E16 & 21 Nov 2026 & correction during C14, found before the commit: the
+first registry entry of the Ginzburg number wrote its superscript
+without braces, which the check HCK-S7 reads as a decorated letter \(X\)
+of its own (a symbol that the registry does not have); the symbol is now
+written with the superscript in braces everywhere, and the check
+passes \\
+E17 & 21 Nov 2026 & correction during C14: the figure program
+\texttt{python/sf\_part3\_figures.py} wrote each PDF file with the date
+and time of its creation, so that a rerun gave files with the same
+drawing but other SHA-256 checksums than those listed in the documents;
+it now writes them without the creation date, and a rerun reproduces the
+listed checksums (item 9 of Section 17.3 of the manuscript) \\
 \end{longtable}
 
 \end{document}

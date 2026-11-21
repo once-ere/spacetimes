@@ -24,13 +24,18 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
   of the spinor field; the masses of the gauge bosons in the condensate and their role in the pairing.
 * **Part III** (Sections 12 and 13): the three effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their
   kinetic and potential parts, the Mexican hat, the minima, the spontaneous breaking of the symmetry and
-  $\mathrm{SFBSv}^{\rm CJT}$, $\mathrm{SFBSv}^{\rm HS}$, $\mathrm{SFBSv}^{\rm KS}$.
+  $\mathrm{SFBSv}^{\rm CJT}$, $\mathrm{SFBSv}^{\rm HS}$, $\mathrm{SFBSv}^{\rm KS}$; and two addenda of 21 November 2026: the free energy at
+  finite temperature, the critical temperatures and the size of the order parameter (Section 12.4), and the gradient
+  coefficient of the field at the critical temperature with the width of the critical region, the Ginzburg number
+  (Section 12.5).
 * **Part IV** (Sections 14 and 15): the mass matrix of the gauge bosons in every vacuum, its diagonalization, the theorem
   that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group
   $SL(2,\mathbb C)\times O(2)$ and its $U(1)$ with the massless photon; the dynamics of the superfluid (the growth of the
   condensate from the unstable normal vacuum, the collective modes in time, the stability of the train of pulses) and of
   its gauge fields (the photon that radiates and the W that stays bound; the Goldstone wave that the gauge field turns into
-  the longitudinal Z), computed with the integrators CVODE and IDA, with two videos.
+  the longitudinal Z), computed with the integrators CVODE and IDA, with two videos; and, as part of the second addendum,
+  whether the superfluid of each method can play the role of the Higgs particle and whether the Higgs is a composite
+  particle (Section 14.6).
 
 **State of this version.** This version contains Parts I to IV, complete. Section 16 gives the programs, the commands
 and the reports of the checks of every part, Section 17 the corrections made during the work, Section 18 all symbols,
@@ -1864,7 +1869,8 @@ the quartic form (dotted), relative to the depth, and the error of Landau's orde
 Data: `data/part3_thermal.csv`, `data/part3_thermal_curves.csv`, `data/part3_thermal_landau.csv`.
 
 **Is the order parameter smaller and more physically reasonable?** Yes, near the critical temperature, and only
-there:
+there, for the mean-field free energy of the methods (Section 12.5 shows that these temperatures lie inside the critical
+region of the transition, where the fluctuations that the methods omit dominate):
 
 1. **It is smaller.** $\Phi^X_{0,{\rm SF}}(T)$ keeps its value of $T=0$ up to about $0.3\,T^{X,{\rm c}}_{\rm SF}$ (the gap, {{GEN:p4_gap0}}, is much
    larger than $T$, and thermal quasi-particles are exponentially rare; at $0.3\,T^{X,{\rm c}}_{\rm SF}$ it has changed by
@@ -1909,9 +1915,199 @@ order for small Higgs masses, ends at a critical Higgs mass, above which there i
 (Kajantie, Laine, Rummukainen and Shaposhnikov, 1996). The statements of items 1 to 4 are therefore statements about the
 mean-field free energy; they describe the superfluid near $T^{X,{\rm c}}_{\rm SF}$ only outside the critical region, and
 whether the transition of the full theory is continuous is not decided here. The Ginzburg number needs the gradient
-coefficient of the field at $T^{X,{\rm c}}_{\rm SF}$, which this section does not compute (Section 12.2 computes it at $T=0$);
-it is the next step if the critical region is to be located. At $T=0$ the methods omit the quantum fluctuations of the
-order parameter as well; that is a property of the methods (Section 9), not the subject of this remark.
+coefficient of the field at $T^{X,{\rm c}}_{\rm SF}$, which Section 12.5 computes (Section 12.2 computes the kinetic coefficients at
+$T=0$); the result, ${\rm Gi}^{X}_{\rm SF}$ = {{GEN:p3_gz_Gi}}, places the whole range of temperatures of this section inside the
+critical region. At $T=0$ the methods omit the quantum fluctuations of the order parameter as well; that is a property
+of the methods (Section 9), not the subject of this remark.
+
+## 12.5 The gradient coefficient at the critical temperature and the width of the critical region
+
+This section is the second addendum that the author asked for on 21 November 2026: to find how wide the region of the
+fluctuations near $T^{X,{\rm c}}_{\rm SF}$ is (the remark at the end of Section 12.4), which needs one more calculation, the
+gradient coefficient of the field at $T^{X,{\rm c}}_{\rm SF}$. The temperature is measured with $k_{\rm B}=1$ in the units of the
+cutoff $\Lambda_{\rm LL}=1$, as in Section 12.4.
+
+**The form of Ginzburg and Landau.** Near $T^{X,{\rm c}}_{\rm SF}$ the field $\vec\Phi$ is small. For a static field
+$\vec\Phi(\vec x)$ that varies slowly in space (near a continuous transition the fluctuations that matter are static and
+slow: a fluctuation with a nonzero Matsubara frequency $2\pi nT$ costs an energy of the order of $(2\pi T)^2$ times the
+coefficient of the time derivatives, and $2\pi T^{X,{\rm c}}_{\rm SF}$ is $1.3$ to $1.6$ here, of the order of the cutoff), the free energy of method $X$ to second order in the field and in its derivatives and to fourth
+order in the field is the functional of Ginzburg and Landau
+$$\mathcal F^{X,{\rm GL}}_{\rm SF}[\vec\Phi]=\int d^3x\Big[\mathsf c^X_{\rm SF}\sum_{j=1}^3(\partial_j\vec\Phi)^\dagger\cdot\partial_j\vec\Phi+a^{X,{\rm Tay}}_{\rm SF}(T)\,\lvert\vec\Phi\rvert^2+b^{X,{\rm Tay}}_{\rm SF}(T)\,\lvert\vec\Phi\rvert^4\Big],\tag{12.12}$$
+with $a^{X,{\rm Tay}}_{\rm SF}(T)\approx\alpha^{X,{\rm GL}}_{\rm SF}\,t^{\rm red}_{\rm SF}$ near $T^{X,{\rm c}}_{\rm SF}$, the reduced temperature
+$t^{\rm red}_{\rm SF}=(T-T^{X,{\rm c}}_{\rm SF})/T^{X,{\rm c}}_{\rm SF}$, the Taylor coefficients
+$a^{X,{\rm Tay}}_{\rm SF}$, $b^{X,{\rm Tay}}_{\rm SF}$ of the free energy (12.8) at the origin (Section 12.4), the slope
+$\alpha^{X,{\rm GL}}_{\rm SF}=T^{X,{\rm c}}_{\rm SF}\,\partial_Ta^{X,{\rm Tay}}_{\rm SF}$ at $T^{X,{\rm c}}_{\rm SF}$, and the **gradient
+coefficient** $\mathsf c^X_{\rm SF}$ at $T^{X,{\rm c}}_{\rm SF}$. The rotations and the isospin rotations allow no other term of
+second order: the space indices and the isospin indices of two derivatives of the field can only be contracted with
+$\delta_{jj'}$ and $\delta_{\iota\iota'}$, and a term with $\vec\Phi\cdot\vec\Phi$ (without the complex conjugate) has the fermion number 4
+and is not invariant under $U(1)^{\rm F}_{\rm LL}$. At fourth order there are two invariants, $\lvert\vec\Phi\rvert^4$ and
+$\lvert\vec\Phi\cdot\vec\Phi\rvert^2$, which are equal on the polar fields of Section 13 (the minimum); (12.12) keeps the
+coefficient along these fields. The gauge fields enter (12.12) through the covariant derivative (12.3); they are not
+part of the estimate below.
+
+**The Ginzburg number.** The field has $n^\Phi_{\rm SF}=6$ real components (the real and imaginary parts of
+$\Phi^{X,1}_{\rm SF}$, $\Phi^{X,2}_{\rm SF}$, $\Phi^{X,3}_{\rm SF}$), and $\lvert\vec\Phi\rvert^2$ is the sum of their squares. Above
+$T^{X,{\rm c}}_{\rm SF}$ the field fluctuates about zero with the probability density proportional to
+$\exp(-\mathcal F^{X,{\rm GL}}_{\rm SF}/T)$. To second order in the field the probability is Gaussian, every real component and
+every wave vector $\vec k$ contributes a factor of its own, and the free energy per volume of the fluctuations is, up to
+terms that are analytic in $T$,
+$\tfrac12n^\Phi_{\rm SF}T\int\frac{d^3k}{(2\pi)^3}\ln\big(\mathsf c^X_{\rm SF}k^2+a^{X,{\rm Tay}}_{\rm SF}\big)$. Its second derivative
+with respect to $T$, with $\partial_Ta^{X,{\rm Tay}}_{\rm SF}=\alpha^{X,{\rm GL}}_{\rm SF}/T^{X,{\rm c}}_{\rm SF}$ and
+$\int\frac{d^3k}{(2\pi)^3}(\mathsf ck^2+a)^{-2}=(8\pi\mathsf c^{3/2}a^{1/2})^{-1}$, gives the specific heat per volume of the
+fluctuations, $C=-T\,\partial^2_T(\text{free energy})$, near $T^{X,{\rm c}}_{\rm SF}$:
+$$C^{X,{\rm fl}}_{\rm SF}=\frac{n^\Phi_{\rm SF}\,(\alpha^{X,{\rm GL}}_{\rm SF})^{3/2}}{16\pi\,(\mathsf c^X_{\rm SF})^{3/2}\,(t^{\rm red}_{\rm SF})^{1/2}}.$$
+It diverges at $T^{X,{\rm c}}_{\rm SF}$. Below $T^{X,{\rm c}}_{\rm SF}$ the minimum of (12.12) is $\lvert\vec\Phi\rvert^2=-a/(2b)$ with the
+free energy $-a^2/(4b)$ per volume, so the specific heat of mean-field theory jumps at $T^{X,{\rm c}}_{\rm SF}$ by
+$$\Delta C^X_{\rm SF}=\frac{(\alpha^{X,{\rm GL}}_{\rm SF})^2}{2\,b^{X,{\rm Tay}}_{\rm SF}\,T^{X,{\rm c}}_{\rm SF}}.$$
+Mean-field theory holds where the fluctuations add little to it, $C^{X,{\rm fl}}_{\rm SF}\ll\Delta C^X_{\rm SF}$. The two are equal at
+$t^{\rm red}_{\rm SF}={\rm Gi}^{X}_{\rm SF}$, the **Ginzburg number**,
+$${\rm Gi}^{X}_{\rm SF}=\frac{(n^\Phi_{\rm SF})^2\,\big(b^{X,{\rm Tay}}_{\rm SF}\big)^2\,\big(T^{X,{\rm c}}_{\rm SF}\big)^2}{64\pi^2\,\alpha^{X,{\rm GL}}_{\rm SF}\,\big(\mathsf c^X_{\rm SF}\big)^3}=\frac{(n^\Phi_{\rm SF})^2}{256\pi^2\big(\Delta C^X_{\rm SF}(\xi^{X,{\rm GL}}_{\rm SF})^3\big)^2},\qquad\xi^{X,{\rm GL}}_{\rm SF}=\Big(\frac{\mathsf c^X_{\rm SF}}{\alpha^{X,{\rm GL}}_{\rm SF}}\Big)^{1/2}\tag{12.13}$$
+(Levanyuk 1959, Ginzburg 1960). The critical region, where mean-field theory fails, has the width of about
+${\rm Gi}^{X}_{\rm SF}\,T^{X,{\rm c}}_{\rm SF}$ in temperature on both sides of $T^{X,{\rm c}}_{\rm SF}$. The second form shows the meaning: the
+correlation length of mean-field theory is $\xi^{X,{\rm GL}}_{\rm SF}\lvert t^{\rm red}_{\rm SF}\rvert^{-1/2}$, and mean-field theory needs
+a large specific-heat jump per correlation volume, $\Delta C^X_{\rm SF}(\xi^{X,{\rm GL}}_{\rm SF})^3\gg1$ (many degrees of freedom in a
+correlation volume). Other forms of the criterion (the mean square fluctuation of the field in a correlation volume
+against the square of its mean value, or the first correction to $b^{X,{\rm Tay}}_{\rm SF}$ against $b^{X,{\rm Tay}}_{\rm SF}$) lead to the
+same combination with other factors of order one; (12.13) is the definition used here.
+
+**The coefficient of $\lvert\vec\Phi\rvert^2$ of a moving pair.** A pair field with the momentum $q^{\rm pair}_{\rm SF}$ along
+$\vec e_3$, $\vec\Phi(\vec x)=\vec\Phi\,e^{iq^{\rm pair}_{\rm SF}x^3}$, has the gradient term $\mathsf c^X_{\rm SF}(q^{\rm pair}_{\rm SF})^2\lvert\vec\Phi\rvert^2$
+in (12.12), so its coefficient of $\lvert\vec\Phi\rvert^2$ is
+$a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T)=a^{X,{\rm Tay}}_{\rm SF}(T)+\mathsf c^X_{\rm SF}(q^{\rm pair}_{\rm SF})^2+O((q^{\rm pair}_{\rm SF})^4)$. The program
+computes it from the static pair response at second order in the field. The state of a moving pair pairs the
+momenta $\vec q_{\rm LL}+\tfrac12q^{\rm pair}_{\rm SF}\vec e_3$ and $-\vec q_{\rm LL}+\tfrac12q^{\rm pair}_{\rm SF}\vec e_3$ (relative momentum
+$\vec q_{\rm LL}$); after the gauge transformation $\Psi\to e^{iq^{\rm pair}_{\rm SF}x^3/2}\Psi$, which makes the pair field uniform, it is
+the thermal state (Section 12.4) of the matrix (6.5) with $\mathsf h_{\rm LL}(\pm\vec q_{\rm LL})$ replaced by
+$\mathsf h_{\rm LL}(\pm\vec q_{\rm LL})+\mathsf T^{\rm tw}_{\rm SF}$, the **twist** $\mathsf T^{\rm tw}_{\rm SF}=\tfrac12q^{\rm pair}_{\rm SF}\,\alpha^3_{\rm LL}\otimes\mathsf 1_2$,
+with the normal self-energy $\mathsf N^{\rm n}_{\rm SF}$ of the normal state at $T$ (a change of the normal self-energy changes
+the free energy only at fourth order in the field, because (12.7) is stationary in it) and with a small pair block
+$\mathsf P^{\rm a}_{\rm SF}$ (8$\times$8, antisymmetric) in place of $\mathsf P_{\rm SF}$. To first order in $\mathsf P^{\rm a}_{\rm SF}$ the pair
+matrix of the state, summed over the momenta, $\mathsf C^{\rm p,tot}_{\rm SF}=\int\frac{d^3q}{(2\pi)^3}\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})$, is
+the **static pair response**
+$$\mathsf C^{\rm p,tot}_{\rm SF}=\mathcal X^{\rm P}_{\rm SF}[\mathsf P^{\rm a}_{\rm SF}]=-\int\frac{d^3q}{(2\pi)^3}\sum_{a,b=1}^8\frac{f(\varepsilon^{\rm A}_{{\rm SF},a})-f(\varepsilon^{\rm D}_{{\rm SF},b})}{\varepsilon^{\rm A}_{{\rm SF},a}-\varepsilon^{\rm D}_{{\rm SF},b}}\;\mathsf u_{{\rm SF},a}\mathsf u_{{\rm SF},a}^\dagger\,\mathsf P^{\rm a}_{\rm SF}\,\mathsf w_{{\rm SF},b}\mathsf w_{{\rm SF},b}^\dagger,\tag{12.14}$$
+where $\varepsilon^{\rm A}_{{\rm SF},a}$ and the normalized eigenvectors $\mathsf u_{{\rm SF},a}$ are those of the particle block
+$\mathsf h_{\rm LL}(\vec q_{\rm LL})+\mathsf N^{\rm n}_{\rm SF}+\mathsf T^{\rm tw}_{\rm SF}$, $\varepsilon^{\rm D}_{{\rm SF},b}$ and $\mathsf w_{{\rm SF},b}$ those of
+the hole block $-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})+\mathsf N^{\rm n}_{\rm SF}+\mathsf T^{\rm tw}_{\rm SF})^T$, $f$ is the Fermi function, and the
+quotient is $f'(\varepsilon)$ where the two energies coincide (the first-order term of the function $f(\mathsf H_{\rm SF})$ of a
+Hermitian matrix in its off-diagonal block). The free energy of the state, from the normal state at $T$, is to second
+order
+$$\mathcal F^X_{2,{\rm SF}}=\tfrac12\,\mathrm{Re}\,\mathrm{tr}\Big(\big(\mathsf P^{\rm a}_{\rm SF}-\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}_{\rm SF}]\big)\big(\mathsf C^{\rm p,tot}_{\rm SF}\big)^\dagger\Big),\tag{12.15}$$
+where $\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}_{\rm SF}]$ is the pair self-energy (6.3), (6.4) of method $X$ for the pair matrix
+$\mathsf C^{\rm p,tot}_{\rm SF}$ (linear in it; it contains every pair channel of the method's functional, not only the channels
+$\mathsf K^\iota_{\rm LL}$). *Derivation:* the expectation value of the pair term of the BdG Hamiltonian is
+$\langle V\rangle=-\mathrm{Re}\,\mathrm{tr}(\mathsf P^{\rm a}_{\rm SF}(\mathsf C^{\rm p,tot}_{\rm SF})^\dagger)$ (from (6.3)); the thermal state of the
+Hamiltonian with the pair term has the thermodynamic potential $\tfrac12\langle V\rangle$ below that of the normal state (second-order
+perturbation theory); the free energy (12.7) of the method contains this potential minus $\langle V\rangle$ (the pair term is
+not part of the Hamiltonian of the model) plus the pair part of the interaction energy, which is quadratic in the pair
+matrix and therefore equals $-\tfrac12\mathrm{Re}\,\mathrm{tr}(\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}_{\rm SF}](\mathsf C^{\rm p,tot}_{\rm SF})^\dagger)$ by (6.3);
+the sum is (12.15). The field of the state is the component of its pair self-energy along $(\mathsf K^3_{\rm LL})^\dagger$,
+$\Phi^{X,3}_{\rm SF}=\mathrm{tr}(\mathsf K^3_{\rm LL}\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}_{\rm SF}])/8$ (Section 12.1). The free energy of the field is
+the smallest (12.15) among the states with this field: the components of $\mathsf P^{\rm a}_{\rm SF}$ along $(\mathsf K^1_{\rm LL})^\dagger$,
+$(\mathsf K^2_{\rm LL})^\dagger$, $(\mathsf K^3_{\rm LL})^\dagger$ (the three components of the field) are held at $(0,0,1)$, and its
+components along the other 25 antisymmetric matrices are made self-consistent, equal to those of
+$\mathsf P_{\rm SF}[\mathcal X^{\rm P}_{\rm SF}[\mathsf P^{\rm a}_{\rm SF}]]$ (a linear system of 25 complex unknowns; this is the stationarity
+of the free energy with a Lagrange multiplier for the field). Then
+$a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T)=\mathcal F^X_{2,{\rm SF}}/\lvert\Phi^{X,3}_{\rm SF}\rvert^2$.
+
+**Checks of the method.** At $q^{\rm pair}_{\rm SF}=0$ no other pair channel is induced (the norm of the self-consistent
+other components is below $4\times10^{-16}$, *check P3-G4*), and the computation reproduces Section 12.4: at
+$0.9\,T^{X,{\rm c}}_{\rm SF}$ it gives the Taylor coefficient of the nonlinear free energy to $10^{-9}$ (*P3-G1*), and at every
+temperature
+$$a^{X,{\rm Tay}}_{\rm SF}(0;T)=\frac{1-\lambda^{\rm P}_{\rm SF}(T)}{\lambda^{\rm P}_{\rm SF}(T)\,g^{X,{\rm P}}_{\rm SF}}\tag{12.16}$$
+(*P3-G2*, to $6\times10^{-12}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.9$, $0.998$, $1.002$), with the eigenvalue (12.9). (12.16) is (12.15) in
+the channel $\mathsf K^3_{\rm LL}$ alone: there the pair self-energy is $\mathsf P_{\rm SF}[\mathsf C^{\rm p}]=-\tfrac12g^{X,{\rm P}}_{\rm SF}\,\mathrm{tr}(\mathsf K^3_{\rm LL}(\mathsf C^{\rm p})^T)(\mathsf K^3_{\rm LL})^\dagger$
+(the definition of the effective pair coupling, Section 9.4), the applied block $(\mathsf K^3_{\rm LL})^\dagger$ produces the field
+$\Phi^{X,3}_{\rm SF}=\lambda^{\rm P}_{\rm SF}(T)$ (the definition of the eigenvalue), and (12.15) is
+$\tfrac12(1-\lambda^{\rm P}_{\rm SF})\cdot2\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$. At $T^{X,{\rm c}}_{\rm SF}$, $a^{X,{\rm Tay}}_{\rm SF}(0;T)$ vanishes to
+$10^{-14}\alpha^{X,{\rm GL}}_{\rm SF}$ (*P3-G3*), and $\alpha^{X,{\rm GL}}_{\rm SF}$ is $-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$ (the
+Python program computes it in this closed form, with the Dirac mass of the normal state from its scalar
+self-consistency and no BdG engine: *check YP3-G2*).
+
+**The momenta of the pair and the regularization.** The model has the cutoff $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$ on the
+momenta of the uniform states, and for a moving pair the cutoff must be placed on one of two momenta. With the cutoff on
+the momenta of the two charges of the pair, $\lvert\vec q_{\rm LL}\pm\tfrac12q^{\rm pair}_{\rm SF}\vec e_3\rvert<\Lambda_{\rm LL}$ (a lens of two
+spheres), a moving pair loses the pairs in a shell at the cutoff whose thickness is of order $\lvert q^{\rm pair}_{\rm SF}\rvert$, and
+$a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T)-a^{X,{\rm Tay}}_{\rm SF}(0;T)$ is linear in $\lvert q^{\rm pair}_{\rm SF}\rvert$: doubling $q^{\rm pair}_{\rm SF}$ from $0.005$ to
+$0.01$ multiplies it by {{GEN:p3_gz_lens}} (2 for a linear function; the slope is {{GEN:p3_gz_lensslope}}), and a gradient
+expansion does not exist (*check P3-G9*). With the cutoff on the relative momentum, $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$, the
+change is quadratic (the factor is $4.0000$ to five digits, Table 12.5): this is the routing of the momenta of the space
+components of Section 12.2, where the uniform twist shifts the momenta inside the fixed sphere, and it is used here. The
+remaining error of the regularization is measured by two quantities:
+
+1. The twist $\mathsf T^{\rm tw}_{\rm SF}=q^{\rm pair}_{\rm SF}\,\alpha^3_{\rm LL}\otimes\tfrac12\tau_3$ of the unbroken generator $T^3_{\rm LL}$ does not
+   change the field $\Phi^{X,3}_{\rm SF}\vec e_3$ (its charge is 0) and costs nothing in a gauge-invariant theory; with the cutoff it
+   displaces the relative momentum of the two charges of the pair inside the sphere and costs
+   $\mathsf c^{X,{\rm T3}}_{\rm SF}(q^{\rm pair}_{\rm SF})^2\lvert\vec\Phi\rvert^2$, with $\mathsf c^{X,{\rm T3}}_{\rm SF}$ equal to {{GEN:p3_gz_t3pct}} of $\mathsf c^X_{\rm SF}$.
+   (The twist $q^{\rm pair}_{\rm SF}\,\alpha^3_{\rm LL}\otimes\tfrac12\tau_1$ of the isospin direction moves the two components of
+   charge $\pm1$ of $T^1_{\rm LL}$ with the momenta $\pm q^{\rm pair}_{\rm SF}$ and gives the same coefficient as the phase twist, to
+   $3\times10^{-11}$, *check P3-G5*: the isospin invariance of (12.12).)
+2. The same coefficient can be computed with the nonlinear thermal states of the engine (Section 12.4) in the presence
+   of the constant potential $\mathsf T^{\rm tw}_{\rm SF}$ and with a self-consistent normal self-energy, as the space components of
+   Section 12.2: $\mathsf c^{X,{\rm tw}}_{\rm SF}$. For HS $(0,0)$, which has no normal self-energy, it agrees with the linear response
+   with the pair self-energy along $(\mathsf K^3_{\rm LL})^\dagger$ to $2.4\times10^{-6}$ (*check P3-G7*). For the other methods the
+   twisted normal state carries a spurious current (the occupied sphere is displaced), which through the vector
+   interaction changes the normal self-energy at first order in $q^{\rm pair}_{\rm SF}$; $\mathsf c^{X,{\rm tw}}_{\rm SF}$ differs from
+   $\mathsf c^X_{\rm SF}$ by {{GEN:p3_gz_tw_hsks}} (HS $(1,1)$, HS $(0,1)$, KS) and is {{GEN:p3_gz_tw_cjt}} smaller in CJT,
+   whose exchange of the space components of the vector current is the strongest: the cutoff effect that makes the space
+   components of Table 12.3 differ from the time components. The linear response (12.14) uses the normal self-energy of
+   the untwisted normal state and is free of this effect, because a moving pair field changes the normal self-energy only
+   at second order in the field.
+
+**The coefficients.** $\mathsf c^X_{\rm SF}$ is $[a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T^{X,{\rm c}}_{\rm SF})-a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})]/(q^{\rm pair}_{\rm SF})^2$
+at $q^{\rm pair}_{\rm SF}=0.01$ and $0.02$ with the Richardson extrapolation (the two values differ by $3\times10^{-5}$ of
+$\mathsf c^X_{\rm SF}$, *P3-G6*); $\alpha^{X,{\rm GL}}_{\rm SF}$ comes from central differences of $a^{X,{\rm Tay}}_{\rm SF}(0;T)$ at
+$T^{X,{\rm c}}_{\rm SF}(1\pm0.002)$ and $T^{X,{\rm c}}_{\rm SF}(1\pm0.004)$ (the normal state recomputed at every temperature) with the Richardson
+extrapolation, and $b^{X,{\rm Tay}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$ from the nonlinear free energy of four small applied fields at
+$T^{X,{\rm c}}_{\rm SF}$ (as in Section 12.4). The six directions of the momentum grid are exact at second order in
+$q^{\rm pair}_{\rm SF}$ (as for the twisted states of Section 12.2): 64 directions and 40 radial nodes give $\mathsf c^{\rm CJT}_{\rm SF}$ to
+$2\times10^{-10}$ (*P3-G8*). The Python program repeats $\mathsf c^X_{\rm SF}$ with its own implementation of (12.14), (12.15) and
+64 directions (*YP3-G1*, to $10^{-7}$), $\alpha^{X,{\rm GL}}_{\rm SF}$ in closed form (*YP3-G2*), the Ginzburg number (*YP3-G3*) and
+$b^{\rm CJT,Tay}_{\rm SF}(T^{\rm CJT,c}_{\rm SF})$ with its own nonlinear thermal states (*YP3-G4*).
+
+{{GEN:p3_table_ginzburg}}
+
+**Table 12.5.** The gradient coefficient at the critical temperature and the Ginzburg number. Rows 1 to 4: the
+critical temperature, the Dirac mass of the normal state at $T^{X,{\rm c}}_{\rm SF}$, the slope $\alpha^{X,{\rm GL}}_{\rm SF}$ and the quartic
+coefficient of (12.12); rows 5 to 9: the gradient coefficient from the phase twist (the result), from the isospin twist,
+without the other pair channels, the spurious coefficient of the twist of $T^3_{\rm LL}$ and the coefficient of the twisted
+states of the nonlinear engine; rows 10 to 15: the correlation length $\xi^{X,{\rm GL}}_{\rm SF}$ (in units of $1/\Lambda_{\rm LL}$), the
+specific-heat jump per correlation volume, the Ginzburg number (12.13), the width of the critical region in temperature, and
+the Ginzburg number with $\mathsf c^X_{\rm SF}$ changed by $\pm\mathsf c^{X,{\rm T3}}_{\rm SF}$; rows 16 and 17: the factor by which
+$a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T^{X,{\rm c}}_{\rm SF})-a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$ grows from $q^{\rm pair}_{\rm SF}=0.005$ to $0.01$ for the
+two regularizations (4 for a quadratic, 2 for a linear function). KS and CJT have the same normal state and the same
+pair channels at $T^{X,{\rm c}}_{\rm SF}$ (they differ only in the exchange of the normal part), hence the same numbers, except
+for the twisted states. Data: `data/part3_ginzburg.csv`, `data/part3_ginzburg_regions.csv`.
+
+**How wide is the critical region?** The Ginzburg number is {{GEN:p3_gz_Gi}}, far above 1. The condition
+$\lvert t^{\rm red}_{\rm SF}\rvert\gg{\rm Gi}^{X}_{\rm SF}$ of mean-field theory therefore holds at no temperature where the form (12.12) applies: even at
+$\lvert t^{\rm red}_{\rm SF}\rvert=1$ (that is at $T=0$ or at $T=2T^{X,{\rm c}}_{\rm SF}$) the Gaussian fluctuations alone give
+$C^{X,{\rm fl}}_{\rm SF}/\Delta C^X_{\rm SF}=({\rm Gi}^{X}_{\rm SF})^{1/2}=$ {{GEN:p3_gz_sqrtgi}}. The width ${\rm Gi}^{X}_{\rm SF}T^{X,{\rm c}}_{\rm SF}$ is
+{{GEN:p3_gz_width}}: larger than the critical temperature itself and of the order of the cutoff. The numbers show why.
+The correlation length $\xi^{X,{\rm GL}}_{\rm SF}$ is {{GEN:p3_gz_xi0}} times $1/\Lambda_{\rm LL}$, about the shortest length of the model:
+the pairs are tightly bound (there is no Fermi surface, $\mu_{\rm LL}=0$, and the pairing needs a coupling above the critical
+one, Section 9.4). The specific-heat jump per correlation volume is {{GEN:p3_gz_dcxi3}}, far below 1: a correlation
+volume holds much less than one degree of freedom, while mean-field theory needs many. (In a superconductor of the theory
+of Bardeen, Cooper and Schrieffer the correlation length is large against the distance of the electrons, and the
+Ginzburg number, of the order of $(T_{\rm c}/E_{\rm F})^4$ with the Fermi energy $E_{\rm F}$, is tiny; here the opposite holds.) The error
+of the regularization does not change the conclusion: with $\mathsf c^X_{\rm SF}$ changed by $\pm\mathsf c^{X,{\rm T3}}_{\rm SF}$ the Ginzburg number
+lies between {{GEN:p3_gz_gi_lo}} and {{GEN:p3_gz_gi_hi}}, and with the coefficient $\mathsf c^{\rm CJT,tw}_{\rm SF}$ of the twisted states
+CJT would have ${\rm Gi}^{\rm CJT}_{\rm SF}\approx$ {{GEN:p3_gz_gi_cjt_tw}}.
+
+**What this means for Section 12.4 (a remark, and why it matters).** The statements of items 1 to 4 of Section 12.4
+are statements about the mean-field free energy, and as such they are correct (and checked). But the temperatures at
+which that free energy shows the behaviour of Landau's theory, from about $0.4\,T^{X,{\rm c}}_{\rm SF}$ to
+$0.98\,T^{X,{\rm c}}_{\rm SF}$, lie inside the critical region (12.13). The mean-field theory of the five methods therefore does not
+describe the superfluid anywhere near its transition: the critical temperatures of Table 12.4, the exponent $\tfrac12$ of
+the order parameter and the continuity of the transition are not reliable, and the answer of Section 12.4 ("smaller and
+more physically reasonable near the critical temperature") holds for the mean-field free energy only. It matters
+because the five methods agree with each other there (Table 12.4), and agreement among mean-field methods is no evidence
+when all of them omit the same fluctuations. A reliable description of the transition needs a calculation beyond the
+methods: for example the three-dimensional theory (12.12) of a complex isospin vector with two quartic invariants and
+with the gauge fields on a lattice (the method used for the thermal transition of the electroweak theory by Kajantie,
+Laine, Rummukainen and Shaposhnikov, 1996), or the Gaussian fluctuations of the auxiliary pair field in HS (the method of
+Nozières and Schmitt-Rink, 1985, for pairs that are bound more tightly than their distance). At $T=0$ the corresponding
+question concerns the quantum fluctuations of the field; Section 14.6 estimates their strength from the coupling of the
+amplitude mode.
 
 # 13. The minima, the breaking of the symmetry and $\mathrm{SFBSv}^X$
 
@@ -2160,6 +2356,117 @@ $\Phi_0(\vec e_3+i\vec e_1)/\sqrt2$ it has one zero eigenvalue with the eigenvec
 microscopic check uses a vacuum along a coordinate axis because there the static response is well defined; see Section
 17.4, item 1.) The Python program repeats the microscopic matrices of HS $(1,1)$ and CJT with its own engine and LAPACK
 (*checks YP4-M1 to YP4-M3*).
+
+## 14.6 Can the superfluid play the role of the Higgs particle, and is the Higgs a composite particle?
+
+This section is the second part of the second addendum of 21 November 2026 (Section 12.5 is the first): to determine for each method whether the
+superfluid can play the role of the Higgs particle, and whether the Higgs is really a composite particle. The answer
+compares the numbers of Parts II and III with those of the Standard Model, whose conventions are those of Section 1:
+$M_W=gv/2$, $M_Z=\sqrt{g^2+g'^2}\,v/2$, the vacuum value $v=(\sqrt2G_F)^{-1/2}=246.22$ GeV with the Fermi constant $G_F$, and the
+Higgs boson of the mass $m_H=125.20\pm0.11$ GeV, the width $\Gamma_H=3.7^{+1.9}_{-1.4}$ MeV, $M_W=80.3692\pm0.0133$ GeV and
+$M_Z=91.1880\pm0.0020$ GeV (Particle Data Group, Navas et al. 2024). The quartic coupling of the Standard Model is
+$\lambda_H=m_H^2/(2v^2)=0.1293$ (the convention $m_H^2=2\lambda_Hv^2$).
+
+**The scale of the breaking.** In the Standard Model $M_W=gv/2$. Here $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}f^{X,{\rm I}}_{\rm SF}$ with the
+isospin decay constant $f^{X,{\rm I}}_{\rm SF}=(2Z^X_{\rm SF})^{1/2}\Phi^X_{0,{\rm SF}}$ (Sections 12.2 and 13.3), so the analogue of $v$ is
+$$v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF},\qquad M^X_{W,{\rm SF}}=\tfrac12g^{\rm v}_{\rm LL}v^X_{\rm SF},\tag{14.9}$$
+which does not depend on the gauge coupling. The dimensionless numbers of a Higgs sector are then the ratio
+$M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ of the mass of the amplitude (Higgs) mode to the scale of the breaking (Standard Model
+{{GEN:p3_h_sm_mhv}}), the quartic coupling $\lambda^{X,{\rm H}}_{\rm SF}=(M^{X,{\rm H}}_{\rm SF})^2/(2(v^X_{\rm SF})^2)$ (Standard Model
+{{GEN:p3_h_sm_lambda}}), and, at the couplings $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ of the project (close to $g=0.65$ and
+$g'=0.35$ of the Standard Model), $M^{X,{\rm H}}_{\rm SF}/M^X_{W,{\rm SF}}$ (Standard Model {{GEN:p3_h_sm_mhmw}}) and
+$M^X_{W,{\rm SF}}/M^X_{Z,{\rm SF}}$ (Standard Model {{GEN:p3_h_sm_mwmz}}). The masses $M^{X,{\rm H}}_{\rm SF}$ and $M^{X,{\rm NU}}_{\rm SF}$ are those
+of the linear response of Section 10.5 (Table 13.1), the exact small oscillations of each method.
+
+**The width of the amplitude mode.** The mean-field response of the methods contains no pairs of collective modes, and
+there the amplitude mode is a sharp pole below the threshold $2E^{X,{\rm gap}}_{\rm SF}$ of two quasi-particles. Beyond the methods
+it can decay into two Goldstone fields. The kinetic part (12.4), written with the fields of (13.4), contains the
+couplings of the amplitude field $h^X_{\rm SF}$ to the Goldstone fields: on the field
+$\vec\Phi=(\Phi^X_{0,{\rm SF}}+h^X_{\rm SF}/(2(Z^X_{\rm SF}+Y^X_{\rm SF}))^{1/2})\,e^{i\vartheta^X_{{\rm SF},0}}\vec e_3$ the two invariants of (12.4) give
+$(Z^X_{\rm SF}+Y^X_{\rm SF})(\Phi^X_{0,{\rm SF}}+h^X_{\rm SF}/(2(Z^X_{\rm SF}+Y^X_{\rm SF}))^{1/2})^2(\partial\vartheta^X_{{\rm SF},0})^2$, whose term linear in
+$h^X_{\rm SF}$ is $f^{X,{\rm F}}_{\rm SF}\,h^X_{\rm SF}(\partial\vartheta^X_{{\rm SF},0})^2$; on the field rotated about $\vec e_1$ by
+$\vartheta^X_{{\rm SF},1}$ only the first invariant contributes, and the term is
+$((f^{X,{\rm I}}_{\rm SF})^2/f^{X,{\rm F}}_{\rm SF})\,h^X_{\rm SF}(\partial\vartheta^X_{{\rm SF},1})^2$ (and the same for $\vartheta^X_{{\rm SF},2}$) (*checks
+P3-H2, YP3-H2* differentiate (12.4) numerically). With the canonically normalized Goldstone fields $f^{X,{\rm F}}_{\rm SF}\vartheta^X_{{\rm SF},0}$ and
+$f^{X,{\rm I}}_{\rm SF}\vartheta^X_{{\rm SF},k}$ ($k=1,2$) all three couplings are $1/f^{X,{\rm F}}_{\rm SF}$ times $h^X_{\rm SF}$ times the squared
+derivative of the canonical field. For the decay of $h^X_{\rm SF}$ at rest into two massless quanta of one canonical field this
+gives the amplitude $(M^{X,{\rm H}}_{\rm SF})^2/f^{X,{\rm F}}_{\rm SF}$ (the coupling times the product $(M^{X,{\rm H}}_{\rm SF})^2/2$ of the
+four-momenta of the two quanta, twice, because the two quanta are identical) and the width
+$\lvert\text{amplitude}\rvert^2/(32\pi M^{X,{\rm H}}_{\rm SF})=(M^{X,{\rm H}}_{\rm SF})^3/(32\pi(f^{X,{\rm F}}_{\rm SF})^2)$ (the two-body phase space
+of two identical massless particles), and the three channels give together
+$$\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}.\tag{14.10}$$
+With the gauge fields the Goldstone fields are the longitudinal parts of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$, whose masses are
+at most about a fifth of $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor $(1-4M^2/(M^{X,{\rm H}}_{\rm SF})^2)^{1/2}$ is above $0.97$); by the
+equivalence theorem of the longitudinal gauge bosons and the Goldstone
+fields (Cornwall, Levin and Tiktopoulos 1974; Chanowitz and Gaillard 1985) (14.10) is then the width of
+$h\to W^+W^-,ZZ$. For the Standard Model with $f=v$ the same formula is the known width $3m_H^3/(32\pi v^2)$ of a heavy
+Higgs boson. (14.10) uses the effective Lagrangian at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is not accurate (its mass of the
+amplitude mode differs from the linear response by 7 to 17 per cent, Table 13.1); it estimates the order of magnitude.
+
+{{GEN:p3_table_higgs}}
+
+**Table 14.2.** The superfluid as a Higgs sector. Rows 1 to 7: the scale $v^X_{\rm SF}$ (14.9), the decay constants, the masses of
+the amplitude mode and of the non-unitary doublet (linear response, Table 13.1) and of the gauge bosons (Table 14.1), in
+units of $\Lambda_{\rm LL}$; rows 8 to 16: the dimensionless numbers; rows 17 to 19: the scale $\Lambda_{\rm LL}$ for which $v^X_{\rm SF}$ is
+$246.22$ GeV, and the mass of the amplitude mode and the critical temperature on that scale; row 20: the Ginzburg number
+of Section 12.5. The column of the Standard Model gives the measured values (Particle Data Group 2024; $\Gamma_H/m_H$ with
+$\Gamma_H=3.7$ MeV) and, in rows 16 and 19, the temperature $159.5\pm1.5$ GeV of its thermal crossover (D'Onofrio and
+Rummukainen 2016), which is not a phase transition (so the Standard Model has no critical region, row 20). Data: `data/part3_higgs.csv` (its last row: the Standard Model).
+
+**The answer for each method.** The five methods are judged by seven properties of the Higgs sector of the Standard
+Model:
+
+1. *The Higgs mechanism.* In every method the condensate gives masses to $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$, leaves exactly one
+   gauge boson massless (theorem M1) and turns the three Goldstone fields into the longitudinal parts of the massive
+   bosons (Sections 13.3, 14.2, 15.4): the superfluid does what the Higgs field does.
+2. *A neutral scalar particle.* In every method the amplitude mode $h^X_{\rm SF}$ (charge $Q_{\rm LL}=0$) lies below the threshold
+   of two quasi-particles, at {{GEN:p3_h_mh2gap}} of $2E^{X,{\rm gap}}_{\rm SF}$ (*P3-H1*): a bound state of the mean-field dynamics.
+3. *Its mass against the scale of the breaking.* $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ is {{GEN:p3_h_mhv}}, {{GEN:p3_h_times_sm}} times the
+   value of the Standard Model; $\lambda^{X,{\rm H}}_{\rm SF}$ is {{GEN:p3_h_lambda}}, beyond the bound $8\pi/3=8.38$ that perturbative
+   unitarity of the scattering of longitudinal gauge bosons sets at tree level (Lee, Quigg and Thacker 1977). On the scale on
+   which $v^X_{\rm SF}=246.22$ GeV the amplitude mode has the mass {{GEN:p3_h_gev_mh}} (the Standard Model: $125.20$ GeV), and
+   $M^{X,{\rm H}}_{\rm SF}/M^X_{W,{\rm SF}}$ is {{GEN:p3_h_mhmw}}.
+4. *Its width.* (14.10) gives $\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ = {{GEN:p3_h_width}}: once the decays into Goldstone fields
+   (or longitudinal gauge bosons) are allowed, the amplitude mode is not a particle but a broad resonance. The Higgs boson
+   has $\Gamma_H/m_H\approx3\times10^{-5}$.
+5. *No further scalars.* Every method has the non-unitary doublet, two scalars of charge $\pm1$ at {{GEN:p3_h_mnu}} times
+   $M^{X,{\rm H}}_{\rm SF}$ (degenerate with the amplitude mode in HS $(0,1)$ and HS $(0,0)$). The Standard Model has none.
+6. *The quantum numbers.* The condensate is an isospin vector of fermion number 2 of the vector-like $SU(2)_{\rm v}$; the
+   Higgs field of the Standard Model is a doublet of hypercharge $\tfrac12$ of the chiral $SU(2)_L$. Hence here the photon is
+   $W^3_{{\rm SF},p}$ ($\theta^{\rm W}_{\rm SF}=0$), the $Z_{{\rm SF},p}$ is the gauge boson of the fermion number, which the condensate
+   breaks, and $M^X_{W,{\rm SF}}/M^X_{Z,{\rm SF}}=g^{\rm v}_{\rm LL}f^{X,{\rm I}}_{\rm SF}/(2g^{\rm F}_{\rm LL}f^{X,{\rm F}}_{\rm SF})$ ({{GEN:p3_h_mwmz}}) depends on two
+   independent couplings, with no relation like $M_W=M_Z\cos\theta_W$ of the custodial symmetry of the Standard Model
+   ($f^{X,{\rm F}}_{\rm SF}/f^{X,{\rm I}}_{\rm SF}$ is {{GEN:p3_h_ffi}}; exactly 1 only in HS $(0,0)$). The masses of the spinor field do not
+   come from the condensate as Yukawa masses: the condensate adds a pairing gap, $E^{X,{\rm gap}}_{\rm SF}=((M^{X,{\rm D}}_{\rm SF})^2+(\Phi^X_{0,{\rm SF}})^2)^{1/2}$,
+   to a Dirac mass that the vector-like theory allows without it.
+7. *The thermal history.* The transition of the superfluid lies deep in its own critical region
+   (${\rm Gi}^{X}_{\rm SF}$ = {{GEN:p3_gz_Gi}}, Section 12.5); its mean-field temperature, {{GEN:p3_h_tcv}} times $v^X_{\rm SF}$ (that is
+   {{GEN:p3_h_gev_tc}} on the scale of row 17), is not reliable. The Standard Model has a smooth crossover at $159.5$ GeV.
+
+**The verdict.** In every method the superfluid realizes the Higgs mechanism, with the massless photon and the
+longitudinal gauge bosons, and has a Higgs-like neutral scalar. In no method can its amplitude mode be the Higgs boson
+that is observed: it is {{GEN:p3_h_times_sm}} times too heavy against the scale of the breaking, strongly coupled
+($\lambda^{X,{\rm H}}_{\rm SF}$ above the unitarity bound), broad, accompanied by charged scalars of about the same mass, and attached to
+a different symmetry (fermion number and a vector-like isospin instead of hypercharge and a chiral isospin). The methods
+differ in degree, not in kind: CJT and KS come closest ($M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}=4.46$ and $4.59$, the smallest widths) and
+HS $(1,1)$ is farthest ($5.69$).
+
+**Is the Higgs a composite particle?** In this model, yes, in every method: the field $\vec\Phi^X_{\rm SF}$ is not a field of the
+Lagrangian (5.1) to (5.4), whose only matter field is the spinor field. It is the amplitude of the pair self-energy, a
+composite of two spinor charges; its kinetic part (12.4) has no term of its own and is generated entirely by the spinor
+field (the coefficients $Z^X_{\rm SF}$, $Y^X_{\rm SF}$ are susceptibilities of the spinor field, Section 12.2); and its amplitude mode is a
+bound state of two quasi-particles below their threshold (Section 10.5). This is the compositeness condition of Bardeen,
+Hill and Lindner (1990) (the wave-function normalization of the composite field vanishes at the cutoff, where only the
+spinor field exists). The same structure explains why the composite is heavy: in the dynamics of Nambu and Jona-Lasinio
+(1961) the mass of the bound state is tied to the gap of the spinor charges ($M^{X,{\rm H}}_{\rm SF}$ is {{GEN:p3_h_mh2gap}} of
+$2E^{X,{\rm gap}}_{\rm SF}$), while the scale of the breaking comes from a loop of the spinor field and is small against the gap
+($f^{X,{\rm I}}_{\rm SF}/E^{X,{\rm gap}}_{\rm SF}$ is {{GEN:p3_h_fi_gap}}). A light composite needs a large ratio of the cutoff to the gap
+(Bardeen, Hill and Lindner) or a different mechanism, for example a Higgs boson that is itself a pseudo-Goldstone boson of
+a larger broken symmetry (Kaplan and Georgi 1984; Agashe, Contino and Pomarol 2005). Whether the Higgs boson of nature is
+composite is not decided by this work: its measured couplings agree with those of an elementary Higgs field of the
+Standard Model at the level of several per cent (ATLAS 2022, CMS 2022), which constrains, but does not exclude,
+compositeness at a higher scale. What this work shows is that the composite Higgs of the five mean-field methods of this
+model, with its cutoff of the order of the scale of the breaking, is not that boson.
 
 # 15. The dynamics of the superfluid and of its gauge fields (Part IV)
 
@@ -2559,7 +2866,11 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   pair field, the curves, the curvatures, the symmetries, the Landau fit), `landau` (Section 12.1: the accuracy of the
   Landau form, Table 12.2 and Figure 9, with the checks P3-8 to P3-11), `kinetic` (Section 12.2: the
   susceptibilities and the twisted states) and `thermal` (Section 12.4: the free energy at finite temperature, the
-  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T9)) uses the library `sfcore`, with two functions added for this part in the
+  critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T9), `ginzburg` (Section 12.5: the static
+  pair response (12.14) of a moving pair, the gradient coefficient at the critical temperature, the two regularizations
+  of a moving pair, the twisted states, the Ginzburg number, Table 12.5, with the checks P3-G1 to P3-G9) and `higgs`
+  (Section 14.6: the numbers of Table 14.2, the couplings of the amplitude field to the Goldstone fields and the width
+  (14.10), with the checks P3-H1 and P3-H2)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
   Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -2568,8 +2879,9 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       cargo build --release
       ./target/release/sf_part3
 
-  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about fifteen minutes (the
-  free energy at finite temperature takes most of it: near the critical temperature the iterations converge slowly).
+  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about fifteen minutes on two
+  processor cores (889 s in the run of the report; the free energy at finite temperature takes most of it: near the
+  critical temperature the iterations converge slowly).
 * **Python.** `python/sf_part3.py` recomputes, with the engine of `python/sf_part2.py`, the minima, the curvatures of the
   effective potentials, the Taylor coefficients at the origin, the susceptibilities and the stiffness of the twisted
   states of HS $(1,1)$ and CJT, checks the quasi-particle energies (10.3) with an applied pair field, recomputes every
@@ -2579,8 +2891,13 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   energy of CJT at $0.9\,T^{\rm CJT,c}_{\rm SF}$ and the order parameter of Landau's theory, recomputes from the data file of
   the free-energy curves the residuals of their Landau forms, shows for the five methods that
   $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (checks YP3-T1 to YP3-T9; each has the identifier of
-  the Rust check of the same statement with the prefix Y), and compares all of them with the values of the Rust program;
-  `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11:
+  the Rust check of the same statement with the prefix Y), recomputes the gradient coefficient at the critical
+  temperature of the five methods with its own implementation of (12.14), (12.15) and 64 directions, the slope
+  $\alpha^{X,{\rm GL}}_{\rm SF}$ in closed form, the Ginzburg numbers and the quartic coefficient of CJT at its critical temperature
+  (checks YP3-G1 to YP3-G4), and recomputes the numbers of Table 14.2 and the couplings of the amplitude field from the
+  data files (checks YP3-H1 to YP3-H3), and compares all of them with the values of the Rust program;
+  `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11; it writes each PDF file without its creation date, so
+  that a rerun gives the same bytes and the same SHA-256 checksums as those of Section 16.12:
 
       python3 python/sf_part3.py
       python3 python/sf_part3_figures.py
@@ -2621,6 +2938,18 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   `{{SHA256:data/part3_thermal_landau.csv}}`
 * `data/part3_thermal_curves.csv` (Figure 10 (c)):\
   `{{SHA256:data/part3_thermal_curves.csv}}`
+* `data/part3_ginzburg.csv` (Table 12.5; the columns: the method, $T^{X,{\rm c}}_{\rm SF}$, the Dirac mass of the normal state,
+  $\alpha^{X,{\rm GL}}_{\rm SF}$, $b^{X,{\rm Tay}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$, $\mathsf c^X_{\rm SF}$ from the phase twist, from the isospin twist,
+  without the other pair channels, $\mathsf c^{X,{\rm T3}}_{\rm SF}$, $\mathsf c^{X,{\rm tw}}_{\rm SF}$, the two steps $q^{\rm pair}_{\rm SF}=0.01$, $0.02$
+  of the extrapolation, the norms of the other pair channels at $q^{\rm pair}_{\rm SF}=0$ and $0.01$,
+  $a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$, ${\rm Gi}^{X}_{\rm SF}$, ${\rm Gi}^{X}_{\rm SF}T^{X,{\rm c}}_{\rm SF}$, $\xi^{X,{\rm GL}}_{\rm SF}$, and the field
+  $(\alpha^{X,{\rm GL}}_{\rm SF}{\rm Gi}^{X}_{\rm SF}/(2b^{X,{\rm Tay}}_{\rm SF}))^{1/2}$ of mean-field theory at $t^{\rm red}_{\rm SF}=-{\rm Gi}^{X}_{\rm SF}$):\
+  `{{SHA256:data/part3_ginzburg.csv}}`
+* `data/part3_ginzburg_regions.csv` (Table 12.5, rows 16 and 17: $a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T^{X,{\rm c}}_{\rm SF})-a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$
+  for the two regularizations at $q^{\rm pair}_{\rm SF}=0.005$, $0.01$, $0.02$, $0.04$):\
+  `{{SHA256:data/part3_ginzburg_regions.csv}}`
+* `data/part3_higgs.csv` (Table 14.2; the last row: the Standard Model):\
+  `{{SHA256:data/part3_higgs.csv}}`
 * `data/part3_effpot_HS_1_1.csv`, `data/part3_effpot_HS_0_1.csv`, `data/part3_effpot_HS_0_0.csv`, `data/part3_effpot_KS.csv`,
   `data/part3_effpot_CJT.csv` (Figure 8):\
   `{{SHA256:data/part3_effpot_HS_1_1.csv}}`\
@@ -2821,6 +3150,19 @@ Each of the following was found before part II was committed.
    Section 12.4. The Python check is now YP3-T9, the Rust program makes the same check as P3-T9 (60 temperatures with the
    normal state of its thermal engine), and the Python program has the counterparts YP3-T5 to YP3-T8 of the Rust checks
    P3-T5 to P3-T8 (P3-T4, a polar start below and above $T^{X,{\rm c}}_{\rm SF}$, has no Python counterpart).
+8. The answer of Section 12.4 ("the order parameter is smaller and more physically reasonable near the critical
+   temperature") was first stated without the qualification that Section 12.5 showed to be needed: the temperatures at
+   which the mean-field free energy behaves as Landau's theory lie inside the critical region, whose width in reduced
+   temperature, the Ginzburg number, is {{GEN:p3_gz_Gi}}. The answer now says that it holds for the mean-field free energy
+   of the methods, and the remark at the end of Section 12.4 states the result of Section 12.5. The header of the program
+   `sf_part3` said that it runs about two minutes; since Section 12.4 it runs about fifteen minutes (845 s and 888 s in
+   the runs of the two earlier reports, 889 s with Section 12.5); the header and Section 16.9 now say so. A first draft
+   of this item and of Section 16.9 said "about sixteen minutes with Section 12.5": that was an estimate written before
+   the program was run, and it was false (the new modules add about a second); it was corrected before the commit.
+9. The figure program of Part III wrote each PDF file with the date and time of its creation, so that a rerun gave
+   files with the same drawing but other SHA-256 checksums than those listed in Section 16.12. It now writes the PDF
+   files without the creation date; the checksums of Section 16.12 are those of the files written so, and a rerun
+   reproduces them.
 
 ## 17.4 Part IV
 

@@ -33,6 +33,33 @@ PASS YP3-T6 KS deviation 1.306e-10 (tolerance 1.0e-07): KS: the largest residual
 PASS YP3-T7 KS deviation 3.539e-11 (tolerance 1.0e-08): KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference)
 PASS YP3-T6 CJT deviation 5.804e-11 (tolerance 1.0e-07): CJT: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (1.58e-02, 7.47e-03, 3.13e-03 at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.0e-05 at 0.98 T_c: yes
 PASS YP3-T7 CJT deviation 4.636e-11 (tolerance 1.0e-08): CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference)
+PASS YP3-G1 HS_1_1 deviation 4.228e-11 (tolerance 1.0e-07): HS_1_1: the gradient coefficient at T_c, c = 0.0154874758, with this engine (64 directions, LAPACK) = Rust 0.0154874758 (relative difference)
+PASS YP3-G2 HS_1_1 deviation 4.438e-13 (tolerance 1.0e-06): HS_1_1: alpha = T_c da/dT = 0.0140378852 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2066851932) = Rust 0.0140378852 (relative difference)
+PASS YP3-G3 HS_1_1 deviation 1.274e-10 (tolerance 1.0e-06): HS_1_1: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = 11.379614 from the Rust coefficients and 11.379614 from the coefficients of this program (with the Rust b) = Rust 11.379614 (largest relative difference)
+PASS YP3-G1 HS_0_1 deviation 2.108e-10 (tolerance 1.0e-07): HS_0_1: the gradient coefficient at T_c, c = 0.0171375865, with this engine (64 directions, LAPACK) = Rust 0.0171375865 (relative difference)
+PASS YP3-G2 HS_0_1 deviation 1.914e-12 (tolerance 1.0e-06): HS_0_1: alpha = T_c da/dT = 0.0126991375 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000) = Rust 0.0126991375 (relative difference)
+PASS YP3-G3 HS_0_1 deviation 6.345e-10 (tolerance 1.0e-06): HS_0_1: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = 9.767745 from the Rust coefficients and 9.767745 from the coefficients of this program (with the Rust b) = Rust 9.767745 (largest relative difference)
+PASS YP3-G1 HS_0_0 deviation 6.746e-11 (tolerance 1.0e-07): HS_0_0: the gradient coefficient at T_c, c = 0.0195279853, with this engine (64 directions, LAPACK) = Rust 0.0195279853 (relative difference)
+PASS YP3-G2 HS_0_0 deviation 2.272e-12 (tolerance 1.0e-06): HS_0_0: alpha = T_c da/dT = 0.0107433853 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000) = Rust 0.0107433853 (relative difference)
+PASS YP3-G3 HS_0_0 deviation 2.048e-10 (tolerance 1.0e-06): HS_0_0: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = 8.277176 from the Rust coefficients and 8.277176 from the coefficients of this program (with the Rust b) = Rust 8.277176 (largest relative difference)
+PASS YP3-G1 KS deviation 2.334e-10 (tolerance 1.0e-07): KS: the gradient coefficient at T_c, c = 0.0192717762, with this engine (64 directions, LAPACK) = Rust 0.0192717762 (relative difference)
+PASS YP3-G2 KS deviation 4.420e-12 (tolerance 1.0e-06): KS: alpha = T_c da/dT = 0.0111755228 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325) = Rust 0.0111755228 (relative difference)
+PASS YP3-G3 KS deviation 7.051e-10 (tolerance 1.0e-06): KS: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = 7.620723 from the Rust coefficients and 7.620723 from the coefficients of this program (with the Rust b) = Rust 7.620723 (largest relative difference)
+PASS YP3-G1 CJT deviation 2.252e-10 (tolerance 1.0e-07): CJT: the gradient coefficient at T_c, c = 0.0192717762, with this engine (64 directions, LAPACK) = Rust 0.0192717762 (relative difference)
+PASS YP3-G2 CJT deviation 4.702e-12 (tolerance 1.0e-06): CJT: alpha = T_c da/dT = 0.0111755228 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325) = Rust 0.0111755228 (relative difference)
+PASS YP3-G3 CJT deviation 6.806e-10 (tolerance 1.0e-06): CJT: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = 7.620723 from the Rust coefficients and 7.620723 from the coefficients of this program (with the Rust b) = Rust 7.620723 (largest relative difference)
+PASS YP3-G4 CJT deviation 1.715e-07 (tolerance 1.0e-06): CJT at T_c: the quartic coefficient b = 0.0147237342 of the free energy (four applied fields, nonlinear thermal states of this engine) = Rust 0.0147237368 (relative difference); a(T_c) = 4.2e-13
+PASS YP3-H1 HS_1_1 deviation 3.168e-13 (tolerance 1.0e-09): HS_1_1: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.14308913, M_H/v_SF = 5.686617, lambda_SF = 16.16881, Gamma/M_H = 3.92324) = data/part3_higgs.csv (largest relative difference)
+PASS YP3-H2 HS_1_1 deviation 3.333e-11 (tolerance 1.0e-06): HS_1_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07096573 and 0.07212812, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)
+PASS YP3-H1 HS_0_1 deviation 1.460e-13 (tolerance 1.0e-09): HS_0_1: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13544990, M_H/v_SF = 5.353148, lambda_SF = 14.32810, Gamma/M_H = 3.47079) = data/part3_higgs.csv (largest relative difference)
+PASS YP3-H2 HS_0_1 deviation 3.334e-11 (tolerance 1.0e-06): HS_0_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.06723334 and 0.06822015, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)
+PASS YP3-H1 HS_0_0 deviation 1.853e-13 (tolerance 1.0e-09): HS_0_0: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.12278792, M_H/v_SF = 5.003647, lambda_SF = 12.51824, Gamma/M_H = 2.98851) = data/part3_higgs.csv (largest relative difference)
+PASS YP3-H2 HS_0_0 deviation 3.333e-11 (tolerance 1.0e-06): HS_0_0: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.06139396 and 0.06139396, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)
+PASS YP3-H1 KS deviation 2.514e-13 (tolerance 1.0e-09): KS: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13140786, M_H/v_SF = 4.592389, lambda_SF = 10.54502, Gamma/M_H = 2.13489) = data/part3_higgs.csv (largest relative difference)
+PASS YP3-H2 KS deviation 3.334e-11 (tolerance 1.0e-06): KS: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07134817 and 0.06050620, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)
+PASS YP3-H1 CJT deviation 3.085e-13 (tolerance 1.0e-09): CJT: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13531998, M_H/v_SF = 4.459622, lambda_SF = 9.94412, Gamma/M_H = 2.13489) = data/part3_higgs.csv (largest relative difference)
+PASS YP3-H2 CJT deviation 3.334e-11 (tolerance 1.0e-06): CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07134817 and 0.06416246, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)
+PASS YP3-H3  deviation 0.000e+00 (tolerance 1.0e-10): the Standard Model row: M_H/v = 0.50849, lambda = 0.12928, M_H/M_W = 1.55781, M_W/M_Z = 0.88136 (Particle Data Group 2024; largest relative difference)
 PASS YP3-1 HS_1_1 deviation 5.519e-14 (tolerance 1.0e-09): HS_1_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406)
 PASS YP3-2 HS_1_1 deviation 2.068e-10 (tolerance 1.0e-06): HS_1_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative)
 PASS YP3-4 HS_1_1 deviation 4.316e-10 (tolerance 1.0e-05): HS_1_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative)
@@ -49,6 +76,6 @@ PASS YP3-10 CJT deviation 2.872e-12 (tolerance 1.0e-08): CJT: the coefficient of
 PASS YP3-7 CJT deviation 1.972e-11 (tolerance 1.0e-07): CJT: the stiffness of the phase from the twisted states f^2 = 2.2552881119e-03 = Rust (relative)
 
 Notes:
-  run time 79 s
+  run time 77 s
 
-VERDICT: ALL PASS (45 of 45)
+VERDICT: ALL PASS (72 of 72)

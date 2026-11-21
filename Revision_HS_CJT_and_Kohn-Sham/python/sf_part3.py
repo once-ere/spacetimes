@@ -29,8 +29,18 @@ of the pair response of the normal state does not increase with the temperature 
 unique) and equals 1 at the critical temperature of the Rust program.  Every thermal check has the identifier of the
 Rust check of the same statement with the prefix Y.
 
+The gradient coefficient at T_c and the Ginzburg number (Section 12.5 of superfluid.md; module ginzburg of the Rust
+program): YP3-G1 recomputes the gradient coefficient c of the five methods with an independent implementation of the
+static pair response (numpy, LAPACK eigh of the particle and hole blocks) on an independent quadrature of the ball
+(64 directions instead of six); YP3-G2 computes alpha = T_c da/dT in closed form from a(0, T) = (1 - lambda)/(lambda g^P)
+with the Dirac mass of the normal state from its scalar self-consistency (no BdG engine); YP3-G3 recomputes the
+Ginzburg number; YP3-G4 recomputes the quartic coefficient b of CJT at T_c with the nonlinear thermal states of this
+engine.  The superfluid as a Higgs sector (Section 14.6; module higgs): YP3-H1 recomputes the numbers of Table 14.2 from
+the data files, YP3-H2 differentiates the kinetic part (12.4) along a line of the field to get the couplings of the
+amplitude field to the Goldstone fields, YP3-H3 checks the Standard Model row.
+
 Run (from the folder python/, after the Rust program sf_part3):   python3 sf_part3.py
-Requires: Python 3, numpy.  Output: data/hck_part3_checks_python.txt.  Run time: about two minutes.
+Requires: Python 3, numpy.  Output: data/hck_part3_checks_python.txt.  Run time: about one and a half minutes.
 """
 import csv
 import os
@@ -40,7 +50,7 @@ import time
 import numpy as np
 
 from sfcommon import ALPHA, BETA, DATA, SIG, Report, d8, i8, k_scalar
-from sf_part2 import I8, M, Model, terms
+from sf_part2 import I8, LAM, M, Model, hmat, interaction, terms
 from sf_part2 import eff_couplings as _eff
 
 
@@ -422,6 +432,223 @@ def thermal_landau(rep, vals):
         rep.add("YP3-T7 %s" % key, "%s: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, %.6e of the depth, is that of Table 12.1 (relative difference)" % (key, mine[0.0][0]), abs(mine[0.0][0] - t12) / t12, 1e-8)
 
 
+# ============================================================== the gradient coefficient at T_c and the Ginzburg number
+# (Section 12.5 of superfluid.md; module ginzburg of the Rust program)
+PAIRS = [(a, b) for a in range(8) for b in range(a + 1, 8)]
+ALPHA3 = d8(ALPHA[3])
+KEYS3 = {"HS_1_1": ("HS", 1.0, 1.0), "HS_0_1": ("HS", 0.0, 1.0), "HS_0_0": ("HS", 0.0, 0.0), "KS": ("KS",), "CJT": ("CJT",)}
+
+
+def sphere_nodes(nr=24, nt=8, nphi=8):
+    """an independent quadrature of the ball |q| < Lambda (the Rust program uses the six directions): Gauss-Legendre in
+    |q| (nr nodes) and in cos(theta) (nt nodes), nphi equal steps in phi; weights of int d^3q/(2 pi)^3"""
+    xr, wr = np.polynomial.legendre.leggauss(nr)
+    xt, wt = np.polynomial.legendre.leggauss(nt)
+    q = 0.5 * LAM * (xr + 1.0)
+    wq = 0.5 * LAM * wr * q * q / (2 * np.pi ** 2)
+    nodes, w = [], []
+    for ct, wc in zip(xt, wt):
+        st = np.sqrt(1.0 - ct * ct)
+        for k in range(nphi):
+            ph = 2 * np.pi * (k + 0.5) / nphi
+            n = np.array([st * np.cos(ph), st * np.sin(ph), ct])
+            nodes.extend(qq * n for qq in q)
+            w.extend(wq * 0.5 * wc / nphi)
+    return np.array(nodes), np.array(w)
+
+
+def pair_response_py(qs, w, nself, x, t):
+    """the static pair response chi(E_ab - E_ba) of the 28 basis matrices at the temperature t: the thermal state of the
+    particle block A = h(q) + N + X and of the hole block D = -(h(-q) + N + X)^T to first order in the pair block,
+    chi(P) = - sum_q w_q U_A [(U_A^dag P U_D) o F] U_D^dag, F_ab = (f(e_a) - f(e'_b))/(e_a - e'_b) (f' at e_a = e'_b)"""
+    a = hmat(qs) + nself[None] + x[None]
+    d = -np.transpose(hmat(-qs) + nself[None] + x[None], (0, 2, 1))
+    ea, ua = np.linalg.eigh(a)
+    ed, ud = np.linalg.eigh(d)
+    de = ea[:, :, None] - ed[:, None, :]
+    close = np.abs(de) < 1e-7
+    fmid = fermi(0.5 * (ea[:, :, None] + ed[:, None, :]), t)
+    fm = np.where(close, -fmid * (1 - fmid) / t, (fermi(ea, t)[:, :, None] - fermi(ed, t)[:, None, :]) / np.where(close, 1.0, de))
+    uad = np.conj(np.transpose(ua, (0, 2, 1)))
+    udh = np.conj(np.transpose(ud, (0, 2, 1)))
+    out = []
+    for (pa, pb) in PAIRS:
+        m = (uad[:, :, pa, None] * ud[:, None, pb, :] - uad[:, :, pb, None] * ud[:, None, pa, :]) * fm
+        out.append(-np.einsum("n,nad->ad", w, ua @ m @ udh))
+    return out
+
+
+def _co(m):
+    return np.array([m[a, b] for a, b in PAIRS])
+
+
+def _fc(v):
+    m = np.zeros((8, 8), complex)
+    for j, (a, b) in enumerate(PAIRS):
+        m[a, b], m[b, a] = v[j], -v[j]
+    return m
+
+
+def quad_py(ts, chi, relax=True):
+    """a(k) = F_2/|Phi|^2 with F_2 = (1/2) Re tr((P - P_m(kap)) kap^dag), kap = chi(P); the components of P along the
+    three (K^iota)^dag held at (0, 0, 1), the other 25 self-consistent (relax) or zero"""
+    z = np.zeros((8, 8), complex)
+
+    def pm(k):
+        return interaction(ts, z, k)[2]
+    cols = np.array([_co(pm(k)) for k in chi]).T
+    kd = [_co(k_scalar(i).conj().T) for i in (1, 2, 3)]
+
+    def perp(v):
+        out = v.copy()
+        mv = _fc(v)
+        for i, kv in zip((1, 2, 3), kd):
+            out = out - kv * np.trace(k_scalar(i) @ mv) / 8
+        return out
+    p = kd[2].copy()
+    if relax:
+        amat = np.eye(28) - np.array([perp(cols[:, j]) for j in range(28)]).T
+        p = kd[2] + np.linalg.solve(amat, perp(cols @ kd[2]))
+    kap = sum(p[j] * chi[j] for j in range(28))
+    pmeth = pm(kap)
+    phi = np.trace(k_scalar(3) @ pmeth) / 8
+    return 0.5 * np.trace((_fc(p) - pmeth) @ kap.conj().T).real / abs(phi) ** 2
+
+
+XG, WG = np.polynomial.legendre.leggauss(400)
+QG, WQ = 0.5 * LAM * (XG + 1.0), 0.5 * LAM * WG
+
+
+def _i1(mm, t):
+    """I1(M, T) = int_0^Lambda q^2 tanh(E/2T)/E dq, E = (q^2 + M^2)^(1/2) (T = 0: tanh = 1)"""
+    e = np.sqrt(QG ** 2 + mm * mm)
+    return float(np.sum(WQ * QG ** 2 * (np.tanh(e / (2 * t)) if t > 0 else 1.0) / e))
+
+
+def _i1_t(mm, t):
+    """dI1/dT = -(1/(2 T^2)) int q^2 sech^2(E/2T) dq"""
+    e = np.sqrt(QG ** 2 + mm * mm)
+    return float(-np.sum(WQ * QG ** 2 / np.cosh(e / (2 * t)) ** 2) / (2 * t * t))
+
+
+def _i1_m(mm, t):
+    """dI1/dM = int q^2 (M/E) [sech^2(E/2T)/(2 T E) - tanh(E/2T)/E^2] dq"""
+    e = np.sqrt(QG ** 2 + mm * mm)
+    return float(np.sum(WQ * QG ** 2 * (mm / e) * (1.0 / (np.cosh(e / (2 * t)) ** 2 * 2 * t * e) - np.tanh(e / (2 * t)) / e ** 2)))
+
+
+def alpha_closed(g_s, g_p, tc):
+    """alpha = T_c da/dT at T_c from a(0, T) = (1 - lambda(T))/(lambda(T) g^P), lambda(T) = g^P I1(M_n(T), T)/pi^2, with the
+    Dirac mass of the normal state from its scalar self-consistency M = m + g^S n_S(M, T),
+    n_S = -(2/pi^2) [M I1(M, T) - m I1(m, 0)], and dM/dT from the implicit function theorem (no BdG engine)"""
+    def g(mm):
+        return mm - M + g_s * (2 / np.pi ** 2) * (mm * _i1(mm, tc) - M * _i1(M, 0.0))
+    lo, hi = 0.01, 1.0
+    if g_s == 0.0:
+        mn = M
+    else:
+        for _ in range(200):
+            mid = 0.5 * (lo + hi)
+            if g(lo) * g(mid) <= 0:
+                hi = mid
+            else:
+                lo = mid
+        mn = 0.5 * (lo + hi)
+    dns_t = -(2 / np.pi ** 2) * mn * _i1_t(mn, tc)
+    dns_m = -(2 / np.pi ** 2) * (_i1(mn, tc) + mn * _i1_m(mn, tc))
+    dm_t = g_s * dns_t / (1.0 - g_s * dns_m)
+    lam = g_p * _i1(mn, tc) / np.pi ** 2
+    dlam = g_p * (_i1_t(mn, tc) + _i1_m(mn, tc) * dm_t) / np.pi ** 2
+    return -tc * dlam / (lam * lam * g_p), lam, mn
+
+
+def ginzburg(rep, vals):
+    """YP3-G1 to YP3-G4: the gradient coefficient at T_c with an independent engine and quadrature, alpha in closed form,
+    the Ginzburg number, and the quartic coefficient at T_c (CJT) with the nonlinear thermal states of this engine"""
+    with open(os.path.join(DATA, "part3_ginzburg.csv")) as f:
+        rust = {r["method"]: r for r in csv.DictReader(f)}
+    qs, w = sphere_nodes()
+    z = np.zeros((8, 8), complex)
+    for key, meth in KEYS3.items():
+        ts = terms(meth, 2.8, 0.8, 25.2)
+        mo = Model(ts)
+        tc = vals["p3_th_Tc_" + key]
+        nn = solve_t(mo, z, z, tc, tol=1e-14)["n"]
+
+        def a_of(k):
+            return quad_py(ts, pair_response_py(qs, w, nn, 0.5 * k * ALPHA3, tc))
+        a0 = a_of(0.0)
+        c1 = (a_of(0.01) - a0) / 1e-4
+        c2 = (a_of(0.02) - a0) / 4e-4
+        c = (4 * c1 - c2) / 3
+        cr = float(rust[key]["c"])
+        rep.add("YP3-G1 %s" % key, "%s: the gradient coefficient at T_c, c = %.10f, with this engine (64 directions, LAPACK) = Rust %.10f (relative difference)" % (key, c, cr), abs(c - cr) / cr, 1e-7)
+        g_s, g_p = sf2_eff(meth)
+        al, lam, mn = alpha_closed(g_s, g_p, tc)
+        ar = float(rust[key]["alpha"])
+        rep.add("YP3-G2 %s" % key, "%s: alpha = T_c da/dT = %.10f in closed form (lambda^P(T_c) = %.12f, Dirac mass of the normal state %.10f) = Rust %.10f (relative difference)" % (key, al, lam, mn, ar), abs(al - ar) / ar, 1e-6)
+        b, tcr, gir = float(rust[key]["b"]), float(rust[key]["T_c"]), float(rust[key]["Gi"])
+        gi_r = 36 * b * b * tcr * tcr / (64 * np.pi ** 2 * ar * cr ** 3)
+        gi_p = 36 * b * b * tc * tc / (64 * np.pi ** 2 * al * c ** 3)
+        rep.add("YP3-G3 %s" % key, "%s: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = %.6f from the Rust coefficients and %.6f from the coefficients of this program (with the Rust b) = Rust %.6f (largest relative difference)" % (key, gi_r, gi_p, gir),
+                max(abs(gi_r - gir), abs(gi_p - gir)) / gir, 1e-6)
+        if key == "CJT":
+            nst = solve_t(mo, z, z, tc, tol=1e-14)
+            n0 = nst["n"]
+            xs, ys = [], []
+            for fa in (0.01, 0.02, 0.03, 0.04):
+                n0, phi, fr = fixed_pair_t(mo, fa * K3D, n0, tc)
+                ph2 = abs(phi[2]) ** 2
+                xs.append(ph2)
+                ys.append((fr - nst["free"]) / ph2)
+            cf = np.linalg.solve(np.vander(np.array(xs), 4, increasing=True), np.array(ys))
+            rep.add("YP3-G4 CJT", "CJT at T_c: the quartic coefficient b = %.10f of the free energy (four applied fields, nonlinear thermal states of this engine) = Rust %.10f (relative difference); a(T_c) = %.1e" % (cf[1], b, cf[0]), abs(cf[1] - b) / b, 1e-6)
+
+
+def higgs(rep, vals):
+    """YP3-H1 to YP3-H3: the numbers of the superfluid as a Higgs sector (Section 14.6) recomputed from the data files,
+    the couplings of the amplitude field to the Goldstone fields by an independent differentiation of (12.4), and the
+    Standard Model row"""
+    with open(os.path.join(DATA, "part3_higgs.csv")) as f:
+        rust = {r["method"]: r for r in csv.DictReader(f)}
+    gap0 = {r["method"]: float(r["gap"]) for r in read_thermal() if abs(float(r["tau"])) < 1e-12}
+    for key in KEYS3:
+        phi0, c11, cff = vals["p3_Phi0_" + key], vals["p3_chi11_" + key], vals["p3_chiFF_" + key]
+        mh, mnu = vals["p3_MH_RPA_" + key], vals["p3_MNU_RPA_" + key]
+        f_i, f_f = np.sqrt(c11), np.sqrt(cff / 4)
+        v = 2 * f_i
+        mw, mz = 0.7 * np.sqrt(c11), 0.45 * np.sqrt(cff)
+        mine = {"v_SF": v, "f_F": f_f, "f_I": f_i, "M_H_over_v_SF": mh / v, "lambda_SF": mh * mh / (2 * v * v), "M_H_over_M_W": mh / mw,
+                "M_H_over_2E_gap": mh / (2 * gap0[key]), "M_NU_over_M_H": mnu / mh, "f_F_over_f_I": f_f / f_i, "M_W_over_M_Z": mw / mz,
+                "Gamma_over_M_H": 3 * mh * mh / (32 * np.pi * f_f * f_f), "T_c_over_v_SF": vals["p3_th_Tc_" + key] / v, "M_H_GeV": mh * 246.22 / v}
+        dev = max(abs(mine[k] - float(rust[key][k])) / abs(float(rust[key][k])) for k in mine)
+        rep.add("YP3-H1 %s" % key, "%s: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = %.8f, M_H/v_SF = %.6f, lambda_SF = %.5f, Gamma/M_H = %.5f) = data/part3_higgs.csv (largest relative difference)" % (key, v, mh / v, mh * mh / (2 * v * v), mine["Gamma_over_M_H"]), dev, 1e-9)
+        # the couplings: the kinetic part (12.4) along a line x of the field Phi(x) = (Phi0 + h(x)/N_h) e^{i th0(x)} R_1(th1(x)) e_3,
+        # differentiated in x by central differences of the complex field (independent of the Rust formula)
+        z_, y_ = c11 / (2 * phi0 * phi0), cff / (8 * phi0 * phi0) - c11 / (2 * phi0 * phi0)
+        nh = np.sqrt(2 * (z_ + y_))
+
+        def field(h, th0, th1):
+            r1 = np.array([[1, 0, 0], [0, np.cos(th1), -np.sin(th1)], [0, np.sin(th1), np.cos(th1)]])
+            return (phi0 + h / nh) * np.exp(1j * th0) * (r1 @ np.array([0, 0, 1.0]))
+
+        def kin(h, s0, s1):
+            dx = 1e-5
+            ph = field(h, 0.0, 0.0)
+            dph = (field(h, s0 * dx, s1 * dx) - field(h, -s0 * dx, -s1 * dx)) / (2 * dx)
+            return z_ * np.vdot(dph, dph).real + y_ * abs(np.vdot(ph, dph)) ** 2 / np.vdot(ph, ph).real
+
+        dl = 1e-3
+        g0 = (kin(dl, 1, 0) - kin(-dl, 1, 0)) / (2 * dl)
+        g1 = (kin(dl, 0, 1) - kin(-dl, 0, 1)) / (2 * dl)
+        rep.add("YP3-H2 %s" % key, "%s: the couplings of h to (d theta_0)^2 and (d theta_1)^2, %.8f and %.8f, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)" % (key, g0, g1),
+                max(abs(g0 / f_f - 1), abs(g1 / (f_i * f_i / f_f) - 1)), 1e-6)
+    sm = rust["SM"]
+    ref = {"M_H_over_v_SF": 125.20 / 246.22, "lambda_SF": 125.20 ** 2 / (2 * 246.22 ** 2), "M_H_over_M_W": 125.20 / 80.3692, "M_W_over_M_Z": 80.3692 / 91.1880}
+    rep.add("YP3-H3", "the Standard Model row: M_H/v = %.5f, lambda = %.5f, M_H/M_W = %.5f, M_W/M_Z = %.5f (Particle Data Group 2024; largest relative difference)" % tuple(ref.values()),
+            max(abs(float(sm[k]) - ref[k]) / ref[k] for k in ref), 1e-10)
+
+
 def main():
     t0 = time.time()
     vals = read_values()
@@ -429,6 +656,8 @@ def main():
     check_qp_energies(rep)
     landau_fits(rep, vals)
     thermal(rep, vals)
+    ginzburg(rep, vals)
+    higgs(rep, vals)
     for meth, key in ((("HS", 1.0, 1.0), "HS_1_1"), (("CJT",), "CJT")):
         mo = Model(terms(meth, 2.8, 0.8, 25.2))
         s = mo.solve(np.zeros((8, 8), complex), 0.3 * K3D, tol=1e-14)

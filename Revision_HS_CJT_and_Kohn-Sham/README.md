@@ -42,7 +42,7 @@ complete, with the program `sf_part2` (VERDICT: ALL PASS (44 of 44)) and the Pyt
 
 **Part III of the manuscript** (the effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their potential parts
 (the Mexican hat) and kinetic parts, the vacua and the breaking of the symmetry, and $\mathrm{SFBSv}^X$) is complete, with the
-program `sf_part3` (VERDICT: ALL PASS (92 of 92)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (45 of 45)) and
+program `sf_part3` (VERDICT: ALL PASS (139 of 139)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (72 of 72)) and
 `python/sf_part3_figures.py`. Section 12.1 now also defines the Landau form, with examples, and states its accuracy,
 the cause of its error and why the error matters (Table 12.2, Figure 9); the answer to the author's questions on this
 remark is kept in `provenance/P4_remarks.md`. Section 12.4, added at the author's request of 21 November 2026, computes

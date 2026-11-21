@@ -13,10 +13,16 @@ and writes provenance/generated/part3.md with the fragments
     p3_table_thermal, p4_*                                                 the free energy at finite temperature (Table 12.4,
                                                                            the ranges quoted in Section 12.4, and Table A1
                                                                            and the checks of provenance/P4_remarks.md);
+    p3_table_ginzburg, p3_gz_*                                             the gradient coefficient at T_c and the Ginzburg
+                                                                           number (Table 12.5 and the ranges of Section 12.5;
+                                                                           data/part3_ginzburg.csv, part3_ginzburg_regions.csv);
+    p3_table_higgs, p3_h_*                                                 the superfluid as a Higgs sector (Table 14.2 and the
+                                                                           ranges of Section 14.6; data/part3_higgs.csv);
     p3_<name>                                                              each named value (10 significant digits).
 Usage (from the folder Revision_HS_CJT_and_Kohn-Sham):   python3 code/scripts/write_part3_fragments.py
 """
 import csv
+import math
 import os
 import sys
 
@@ -275,6 +281,156 @@ def main():
     frags["p4_gap0"] = span2(lambda t: g(t, 0.0, "gap"), 3)
     frags["p4_keep03"] = span2(lambda t: 100 * abs(g(t, 0.3, "Phi0") / g(t, 0.0, "Phi0") - 1), 2, " per cent")
     frags["p4_ratio_0"] = span2(lambda t: g(t, 0.0, "Phi0_over_radius"), 3)
+
+    # ---- the gradient coefficient at T_c and the Ginzburg number (Table 12.5, Section 12.5)
+    gz = {}
+    with open(os.path.join(D, "part3_ginzburg.csv")) as f:
+        for r in csv.DictReader(f):
+            gz[r["method"]] = {k: float(v) for k, v in r.items() if k != "method"}
+    reg = {}
+    with open(os.path.join(D, "part3_ginzburg_regions.csv")) as f:
+        for r in csv.DictReader(f):
+            reg[(r["method"], round(float(r["k"]), 4))] = (float(r["a_minus_a0_sphere"]), float(r["a_minus_a0_lens"]))
+
+    def gi_of(t, c):
+        x = gz[t]
+        return 36.0 * x["b"] ** 2 * x["T_c"] ** 2 / (64.0 * math.pi ** 2 * x["alpha"] * c ** 3)
+
+    def dcxi3(t):
+        x = gz[t]
+        return x["alpha"] ** 0.5 * x["c"] ** 1.5 / (2.0 * x["b"] * x["T_c"])
+    growsG = [
+        ("critical temperature $T^{X,{\\rm c}}_{\\rm SF}$", lambda t: sig(gz[t]["T_c"], 6)),
+        ("Dirac mass of the normal state at $T^{X,{\\rm c}}_{\\rm SF}$", lambda t: sig(gz[t]["Dirac_mass_normal"], 6)),
+        ("$10^2\\,\\alpha^{X,{\\rm GL}}_{\\rm SF}$", lambda t: sig(100 * gz[t]["alpha"], 6)),
+        ("$10^2\\,b^{X,{\\rm Tay}}_{\\rm SF}(T^{X,{\\rm c}}_{\\rm SF})$", lambda t: sig(100 * gz[t]["b"], 6)),
+        ("$10^2\\,\\mathsf c^X_{\\rm SF}$ (phase twist)", lambda t: sig(100 * gz[t]["c"], 7)),
+        ("$10^2\\,\\mathsf c^X_{\\rm SF}$ from the isospin twist", lambda t: sig(100 * gz[t]["c_isospin_twist"], 7)),
+        ("$10^2\\,\\mathsf c^X_{\\rm SF}$ without the other pair channels", lambda t: sig(100 * gz[t]["c_fixed_channels"], 7)),
+        ("$10^2\\,\\mathsf c^{X,{\\rm T3}}_{\\rm SF}$ (twist of the unbroken $T^3_{\\rm LL}$; cutoff error)", lambda t: sig(100 * gz[t]["c_T3_twist"], 4)),
+        ("$10^2\\,\\mathsf c^{X,{\\rm tw}}_{\\rm SF}$ (twisted states of the nonlinear engine)", lambda t: sig(100 * gz[t]["c_twisted_states"], 4)),
+        ("$\\xi^{X,{\\rm GL}}_{\\rm SF}=(\\mathsf c^X_{\\rm SF}/\\alpha^{X,{\\rm GL}}_{\\rm SF})^{1/2}$", lambda t: sig(gz[t]["xi0"], 4)),
+        ("$\\Delta C^X_{\\rm SF}(\\xi^{X,{\\rm GL}}_{\\rm SF})^3$", lambda t: sig(dcxi3(t), 3)),
+        ("Ginzburg number ${\\rm Gi}^{X}_{\\rm SF}$ (12.13)", lambda t: sig(gz[t]["Gi"], 4)),
+        ("width ${\\rm Gi}^{X}_{\\rm SF}\\,T^{X,{\\rm c}}_{\\rm SF}$", lambda t: sig(gz[t]["Gi_Tc"], 4)),
+        ("${\\rm Gi}^{X}_{\\rm SF}$ with $\\mathsf c^X_{\\rm SF}+\\mathsf c^{X,{\\rm T3}}_{\\rm SF}$", lambda t: sig(gi_of(t, gz[t]["c"] + gz[t]["c_T3_twist"]), 3)),
+        ("${\\rm Gi}^{X}_{\\rm SF}$ with $\\mathsf c^X_{\\rm SF}-\\mathsf c^{X,{\\rm T3}}_{\\rm SF}$", lambda t: sig(gi_of(t, gz[t]["c"] - gz[t]["c_T3_twist"]), 3)),
+        ("growth factor from $q^{\\rm pair}_{\\rm SF}=0.005$ to $0.01$, cutoff on the relative momentum", lambda t: sig(reg[(t, 0.01)][0] / reg[(t, 0.005)][0], 6)),
+        ("growth factor from $q^{\\rm pair}_{\\rm SF}=0.005$ to $0.01$, cutoff on the momenta of the charges", lambda t: sig(reg[(t, 0.01)][1] / reg[(t, 0.005)][1], 5)),
+    ]
+    out = ["| quantity | " + " | ".join(METH[t] for t in tags) + " |", "|:-----------------------------|" + "|".join(["-------:"] * len(tags)) + "|"]
+    for label, fn in growsG:
+        out.append("| %s | %s |" % (label, " | ".join(fn(t) for t in tags)))
+    frags["p3_table_ginzburg"] = "\n".join(out)
+    frags["p3_gz_c"] = span2(lambda t: gz[t]["c"], 3)
+    frags["p3_gz_alpha"] = span2(lambda t: gz[t]["alpha"], 3)
+    frags["p3_gz_b"] = span2(lambda t: gz[t]["b"], 3)
+    frags["p3_gz_Gi"] = span2(lambda t: gz[t]["Gi"], 2)
+    frags["p3_gz_width"] = span2(lambda t: gz[t]["Gi_Tc"], 3)
+    frags["p3_gz_xi0"] = span2(lambda t: gz[t]["xi0"], 3)
+    frags["p3_gz_dcxi3"] = span2(dcxi3, 2)
+    frags["p3_gz_sqrtgi"] = span2(lambda t: gz[t]["Gi"] ** 0.5, 2)
+    frags["p3_gz_t3pct"] = span2(lambda t: 100 * gz[t]["c_T3_twist"] / gz[t]["c"], 2, " per cent")
+    frags["p3_gz_gi_lo"] = span2(lambda t: gi_of(t, gz[t]["c"] + gz[t]["c_T3_twist"]), 2)
+    frags["p3_gz_gi_hi"] = span2(lambda t: gi_of(t, gz[t]["c"] - gz[t]["c_T3_twist"]), 2)
+    frags["p3_gz_gi_cjt_tw"] = sig(gi_of("CJT", gz["CJT"]["c_twisted_states"]), 2)
+    hsks = [t for t in tags if t not in ("HS_0_0", "CJT")]
+    frags["p3_gz_tw_hsks"] = "%s to %s per cent" % (sig(min(100 * (gz[t]["c_twisted_states"] / gz[t]["c"] - 1) for t in hsks), 2),
+                                                     sig(max(100 * (gz[t]["c_twisted_states"] / gz[t]["c"] - 1) for t in hsks), 2))
+    frags["p3_gz_tw_cjt"] = sig(100 * (1 - gz["CJT"]["c_twisted_states"] / gz["CJT"]["c"]), 2) + " per cent"
+    frags["p3_gz_lens"] = span2(lambda t: reg[(t, 0.01)][1] / reg[(t, 0.005)][1], 4)
+    frags["p3_gz_lensslope"] = span2(lambda t: reg[(t, 0.005)][1] / 0.005, 3)
+    frags["p3_gz_mn"] = span2(lambda t: gz[t]["Dirac_mass_normal"], 4)
+    # ---- the superfluid as a Higgs sector (Table 14.2, Section 14.6)
+    hg = {}
+    with open(os.path.join(D, "part3_higgs.csv")) as f:
+        for r in csv.DictReader(f):
+            hg[r["method"]] = {k: float(v) for k, v in r.items() if k != "method"}
+    sm = hg["SM"]
+    smh = {"M_H_over_v_SF": sig(sm["M_H_over_v_SF"], 4), "lambda_SF": sig(sm["lambda_SF"], 4), "M_H_over_M_W": sig(sm["M_H_over_M_W"], 4),
+           "M_W_over_M_Z": sig(sm["M_W_over_M_Z"], 4)}
+    hrows = [
+        ("$v^X_{\\rm SF}=2f^{X,{\\rm I}}_{\\rm SF}$", "v_SF", 6, "$246.22$ GeV"),
+        ("$f^{X,{\\rm F}}_{\\rm SF}$", "f_F", 6, "--"),
+        ("$f^{X,{\\rm I}}_{\\rm SF}$", "f_I", 6, "$123.11$ GeV"),
+        ("$M^{X,{\\rm H}}_{\\rm SF}$ (linear response)", "M_H", 6, "$125.20$ GeV"),
+        ("$M^{X,{\\rm NU}}_{\\rm SF}$ (linear response)", "M_NU", 6, "--"),
+        ("$M^X_{W,{\\rm SF}}$ ($g^{\\rm v}_{\\rm LL}=0.7$)", "M_W", 5, "$80.3692$ GeV"),
+        ("$M^X_{Z,{\\rm SF}}$ ($g^{\\rm F}_{\\rm LL}=0.45$)", "M_Z", 5, "$91.1880$ GeV"),
+        ("$M^{X,{\\rm H}}_{\\rm SF}/v^X_{\\rm SF}$", "M_H_over_v_SF", 4, None),
+        ("$\\lambda^{X,{\\rm H}}_{\\rm SF}=(M^{X,{\\rm H}}_{\\rm SF})^2/(2(v^X_{\\rm SF})^2)$", "lambda_SF", 4, None),
+        ("$M^{X,{\\rm H}}_{\\rm SF}/M^X_{W,{\\rm SF}}$", "M_H_over_M_W", 4, None),
+        ("$M^X_{W,{\\rm SF}}/M^X_{Z,{\\rm SF}}$", "M_W_over_M_Z", 4, None),
+        ("$M^{X,{\\rm H}}_{\\rm SF}/(2E^{X,{\\rm gap}}_{\\rm SF})$", "M_H_over_2E_gap", 4, "--"),
+        ("$M^{X,{\\rm NU}}_{\\rm SF}/M^{X,{\\rm H}}_{\\rm SF}$", "M_NU_over_M_H", 4, "none"),
+        ("$f^{X,{\\rm F}}_{\\rm SF}/f^{X,{\\rm I}}_{\\rm SF}$", "f_F_over_f_I", 4, "--"),
+        ("$\\Gamma^{X,{\\rm H}}_{\\rm SF}/M^{X,{\\rm H}}_{\\rm SF}$ (14.10)", "Gamma_over_M_H", 3, "$3.0\\times10^{-5}$"),
+        ("$T^{X,{\\rm c}}_{\\rm SF}/v^X_{\\rm SF}$", "T_c_over_v_SF", 4, "$0.648$"),
+        ("$\\Lambda_{\\rm LL}$ in GeV for $v^X_{\\rm SF}=246.22$ GeV", "Lambda_GeV", 4, "--"),
+        ("$M^{X,{\\rm H}}_{\\rm SF}$ in GeV on that scale", "M_H_GeV", 4, "$125.20$"),
+        ("$T^{X,{\\rm c}}_{\\rm SF}$ in GeV on that scale", "T_c_GeV", 4, "$159.5$"),
+    ]
+    htags = ["HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"]
+    out = ["| quantity | " + " | ".join(METH[t] for t in htags) + " | Standard Model |", "|:----------------------|" + "|".join(["---------:"] * (len(htags) + 1)) + "|"]
+    for label, key, dg, smv in hrows:
+        smtext = smh[key] if smv is None else smv
+        out.append("| %s | %s | %s |" % (label, " | ".join(sig(hg[t][key], dg) for t in htags), smtext))
+    out.append("| ${\\rm Gi}^{X}_{\\rm SF}$ (Table 12.5) | %s | -- |" % " | ".join(sig(gz[t]["Gi"], 3) for t in htags))
+    frags["p3_table_higgs"] = "\n".join(out)
+
+    def hspan(key, digits=3, unit=""):
+        lo = min(htags, key=lambda t: hg[t][key])
+        hi = max(htags, key=lambda t: hg[t][key])
+        if abs(hg["KS"][key] - hg["CJT"][key]) < 1e-9 * abs(hg["CJT"][key]):
+            nm = lambda t: "KS, CJT" if t in ("KS", "CJT") else METH[t]
+        else:
+            nm = lambda t: METH[t]
+        return "%s%s (%s) to %s%s (%s)" % (sig(hg[lo][key], digits), unit, nm(lo), sig(hg[hi][key], digits), unit, nm(hi))
+    frags["p3_h_mhv"] = hspan("M_H_over_v_SF", 3)
+    frags["p3_h_lambda"] = hspan("lambda_SF", 3)
+    frags["p3_h_width"] = hspan("Gamma_over_M_H", 2)
+    frags["p3_h_mhmw"] = hspan("M_H_over_M_W", 3)
+    frags["p3_h_mh2gap"] = hspan("M_H_over_2E_gap", 3)
+    frags["p3_h_mnu"] = hspan("M_NU_over_M_H", 3)
+    frags["p3_h_ffi"] = hspan("f_F_over_f_I", 3)
+    frags["p3_h_mwmz"] = hspan("M_W_over_M_Z", 3)
+    frags["p3_h_gev_mh"] = hspan("M_H_GeV", 4, " GeV")
+    frags["p3_h_gev_lambda"] = hspan("Lambda_GeV", 3, " GeV")
+    frags["p3_h_gev_tc"] = hspan("T_c_GeV", 3, " GeV")
+    frags["p3_h_tcv"] = hspan("T_c_over_v_SF", 3)
+    frags["p3_h_times_sm"] = "%s to %s" % (sig(min(hg[t]["M_H_over_v_SF"] for t in htags) / sm["M_H_over_v_SF"], 2), sig(max(hg[t]["M_H_over_v_SF"] for t in htags) / sm["M_H_over_v_SF"], 2))
+    frags["p3_h_fi_gap"] = span2(lambda t: hg[t]["f_I"] / g(t, 0.0, "gap"), 2)
+    frags["p3_h_sm_mhv"] = sig(sm["M_H_over_v_SF"], 4)
+    frags["p3_h_sm_lambda"] = sig(sm["lambda_SF"], 4)
+    frags["p3_h_sm_mhmw"] = sig(sm["M_H_over_M_W"], 4)
+    frags["p3_h_sm_mwmz"] = sig(sm["M_W_over_M_Z"], 4)
+
+    # ---- the same tables and the checks for the addendum A2 of provenance/P4_remarks.md (its equation numbers)
+    frags["p4_table_ginzburg"] = frags["p3_table_ginzburg"].replace("(12.13)", "(A2.3)")
+    frags["p4_table_higgs"] = frags["p3_table_higgs"].replace("(14.10)", "(A2.9)").replace("(Table 12.5)", "(Table A2)")
+    glines = []
+    relab = [("(12.4)", "(A2.8)"), ("Section 12.4", "Section 3"), ("Table 14.2", "Table A3")]
+    for fn in ("hck_part3_checks.txt", "hck_part3_checks_python.txt"):
+        for line in open(os.path.join(D, fn), encoding="utf-8"):
+            line = line.rstrip("\n")
+            mm = _re.match(r"(PASS|FAIL) (Y?P3-[GH]\d+(?: \S+)?)\s+(?:dev|deviation) (\S+) \((?:tol|tolerance) (\S+)\)\s*:?\s*(.*)$", line)
+            if mm:
+                text = mm.group(5)
+                for a, b in relab:
+                    text = text.replace(a, b)
+                if float(mm.group(4)) == 0.0:
+                    glines.append("| %s | %s | -- | -- | %s |" % (mm.group(2), mm.group(1), esc(text)))
+                else:
+                    glines.append("| %s | %s | $%s$ | $%s$ | %s |" % (mm.group(2), mm.group(1), fmt(float(mm.group(3)), 3), fmt(float(mm.group(4)), 2), esc(text)))
+                continue
+            mm = _re.match(r"(PASS|FAIL) (Y?P3-[GH]\d+(?: \S+)?)\s+(.*?)\s*\[(.*)\]$", line)
+            if mm:
+                text = mm.group(3) + (" (" + mm.group(4) + ")" if mm.group(4) else "")
+                for a, b in relab:
+                    text = text.replace(a, b)
+                glines.append("| %s | %s | -- | -- | %s |" % (mm.group(2), mm.group(1), esc(text)))
+    frags["p4_checks_ginzburg"] = "\n".join(["| check | result | deviation | tolerance | statement |", "|:---|:---|---:|---:|:-----------|"] + glines)
+    frags["p4_ngchecks"] = str(len(glines))
 
     o = ["<!-- Generated by code/scripts/write_part3_fragments.py; do not edit. -->"]
     for k, v in frags.items():
