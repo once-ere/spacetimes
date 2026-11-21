@@ -100,6 +100,7 @@ $n=n^\Phi_\SF=6$ & the number of real components of $\vec\Phi$ \\
 $C^{\rm fl}$, $\Delta C$, $\xi$ & the specific heat of the Gaussian fluctuations, the jump of the mean-field specific heat, the correlation length at $|t|=1$ \\
 ${\rm Gi}^X_\SF$ & the Ginzburg number, Eq.~(\ref{eq:Gi}) \\
 $v^X_\SF$, $\lambda^{X,{\rm H}}_\SF$, $\Gamma^{X,{\rm H}}_\SF$ & the analogue of the vacuum value $v$, the quartic coupling and the width of the amplitude mode, Eqs.~(\ref{eq:vSF}), (\ref{eq:width}) \\
+$M_V$, $\zeta_V$ & the mass of $W$ or $Z$ in the decay of the amplitude mode into two gauge bosons, and $\zeta_V=M_V^2/(M^{X,{\rm H}}_\SF)^2$, Sec.~\ref{sec:higgs} \\
 $m_H$, $v$, $\Gamma_H$, $\lambda_H$, $M_W$, $M_Z$, $G_F$ & the Standard Model: Higgs mass, vacuum value, Higgs width, quartic coupling, $W$ and $Z$ masses, Fermi constant \\
 \end{longtable}
 \endgroup
@@ -832,19 +833,19 @@ f^{X,{\rm F}}_\SF h(\partial\vartheta_0)^2$. On the field rotated about $\vec e_
 invariant contributes: $2Z\Phi_0(\partial\vartheta_1)^2h/N_h=((f^{X,{\rm I}}_\SF)^2/f^{X,{\rm F}}_\SF)h(\partial\vartheta_1)^2$, and likewise for $\vartheta_2$.
 (The notebook derives these two couplings by exact symbolic differentiation; the Python program by finite differences of the field.)
 With the canonical Goldstone fields $\pi_0=f^{X,{\rm F}}_\SF\vartheta_0$ and $\pi_k=f^{X,{\rm I}}_\SF\vartheta_k$ all three couplings are
-$h(\partial\pi)^2/f^{X,{\rm F}}_\SF$. For the decay of $h$ at rest (four-momentum $P$, $P^2=M_H^2$) into two massless quanta of one field
+$h(\partial\pi)^2/f^{X,{\rm F}}_\SF$. For the decay of $h$ at rest (four-momentum $P$, $P^2=(M^{X,{\rm H}}_\SF)^2$) into two massless quanta of one field
 with the four-momenta $k_1,k_2$, the vertex $g\,h\,\partial_\mu\pi\partial^\mu\pi$ with $g=1/f^{X,{\rm F}}_\SF$ gives the amplitude
-$\mathcal M=-2g\,k_1\cdot k_2=-g\,M_H^2$ (two contractions; $2k_1\cdot k_2=P^2$ for massless quanta), and with the two-body phase space
-of two identical particles, $\Gamma=|\mathcal M|^2/(32\pi M_H)$:
+$\mathcal M=-2g\,k_1\cdot k_2=-g\,(M^{X,{\rm H}}_\SF)^2$ (two contractions; $2k_1\cdot k_2=P^2$ for massless quanta), and with the two-body phase space
+of two identical particles, $\Gamma=|\mathcal M|^2/(32\pi M^{X,{\rm H}}_\SF)$:
 \begin{equation}
-\Gamma(h\to\pi\pi)=\frac{M_H^3}{32\pi(f^{X,{\rm F}}_\SF)^2},\qquad\Gamma^{X,{\rm H}}_\SF=\frac{3\,(M^{X,{\rm H}}_\SF)^3}{32\pi\,(f^{X,{\rm F}}_\SF)^2}
+\Gamma(h\to\pi\pi)=\frac{(M^{X,{\rm H}}_\SF)^3}{32\pi(f^{X,{\rm F}}_\SF)^2},\qquad\Gamma^{X,{\rm H}}_\SF=\frac{3\,(M^{X,{\rm H}}_\SF)^3}{32\pi\,(f^{X,{\rm F}}_\SF)^2}
 \label{eq:width}
 \end{equation}
 for the three channels. With the gauge fields the Goldstone fields are the longitudinal parts of $W^\pm$ and $Z$, and by the
 equivalence theorem~\cite{CLT1974,ChanowitzGaillard1985} (\ref{eq:width}) is the width into $W^+W^-$ and $ZZ$ up to corrections of relative order
-$x=M_V^2/M_H^2$, where $M_V$ is the mass of $W$ or $Z$: at tree level the width of a scalar with the couplings of (\ref{eq:Lkin})
-into a pair of these bosons carries the factor $(1-4x)^{1/2}(1-4x+12x^2)$ (phase space and the sum over the polarizations), which
-is above 0.93 here ($M_V\le0.11\,M_H$). For the Standard Model with
+$\zeta_V=M_V^2/(M^{X,{\rm H}}_\SF)^2$, where $M_V$ is the mass of $W$ or $Z$: at tree level the width of a scalar with the couplings of (\ref{eq:Lkin})
+into a pair of these bosons carries the factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ (phase space and the sum over the polarizations), which
+is above 0.93 here ($M_V\le0.11\,M^{X,{\rm H}}_\SF$). For the Standard Model with
 $f=v$, (\ref{eq:width}) is the known width $3m_H^3/(32\pi v^2)$ of a heavy Higgs boson~\cite{LQT1977}. \emph{A remark:} the effective
 Lagrangian is used at the energy $M^{X,{\rm H}}_\SF$, where it is not accurate (its mass of the amplitude mode differs from the response
 by 7.0\mbox{--}17\%); (\ref{eq:width}) gives the order of magnitude, which is all that the conclusion needs.
@@ -1375,8 +1376,8 @@ in Wolfram 15 by Evaluation $>$ Evaluate Notebook. The files, with their SHA-256
 \texttt{figures/\hspace{0pt plus 1fil}\allowbreak{}fig\_part4\_r1\_massmatrix.pdf} & \texttt{caa47847ba676acb6b11a824be110141\newline 3d542f7d5fdaa76b76f9ef12b91385c6} \\
 \texttt{figures/\hspace{0pt plus 1fil}\allowbreak{}fig\_prd\_ginzburg.pdf} & \texttt{1e79446ef1c9c36e4fbe4619b5aec0da\newline 2f5a411d0c738a72fc15ff85a868e00a} \\
 \texttt{figures/\hspace{0pt plus 1fil}\allowbreak{}fig\_prd\_higgs.pdf} & \texttt{b82436f38ced067d978391586eb42927\newline de6978a869dcd6d6a5cd7f6bbc2c1864} \\
-\texttt{paper\_prd/\hspace{0pt plus 1fil}\allowbreak{}src/\hspace{0pt plus 1fil}\allowbreak{}higgs\_composite\_qg.template.tex} & \texttt{caaa27159f468c30d8479912f5729089\newline c5bf3a0d73c813e256b708148a20f427} \\
-\texttt{paper\_prd/\hspace{0pt plus 1fil}\allowbreak{}src/\hspace{0pt plus 1fil}\allowbreak{}higgs\_composite\_qg\_SM.template.tex} & \texttt{378b3bac8d90d6f7ce3ef201bf26ce7e\newline 06608f128b6daa6c00ad3d0c1dcf67f3} \\
+\texttt{paper\_prd/\hspace{0pt plus 1fil}\allowbreak{}src/\hspace{0pt plus 1fil}\allowbreak{}higgs\_composite\_qg.template.tex} & \texttt{23e68c90064e9f5eaf01a492b7c18eed\newline 3214ef1f7bb3768ba33a105cd8d58642} \\
+\texttt{paper\_prd/\hspace{0pt plus 1fil}\allowbreak{}src/\hspace{0pt plus 1fil}\allowbreak{}higgs\_composite\_qg\_SM.template.tex} & \texttt{fe65d43293efa23374ccde6e8cebb6a7\newline ad2ecfe44bac988bbc1aae7f9f4ef172} \\
 \texttt{paper\_prd/\hspace{0pt plus 1fil}\allowbreak{}src/\hspace{0pt plus 1fil}\allowbreak{}references.bib} & \texttt{7f62530ea60bd47ac9ee26d8d771fab1\newline 3e07344e228bf102337904f190e4001a} \\
 \texttt{paper\_prd/\hspace{0pt plus 1fil}\allowbreak{}scripts/\hspace{0pt plus 1fil}\allowbreak{}build\_paper.py} & \texttt{87385d87df8c0a0daef4c79ae2d882f2\newline c9514bf9ae70cb08e789b2f0be622492} \\
 \end{longtable}

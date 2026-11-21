@@ -61,11 +61,12 @@ result with the Higgs sector of the Standard Model.
     coefficient of $|\vec\Phi|^2$ acquires a term linear in the momentum
     of the pair), while a cutoff on their relative momentum does not.
 
-4.  The amplitude mode is not the observed Higgs boson:
-    $M_H/v=4.46\mbox{--}5.69$, 8.8–11 times the value of the Standard
-    Model; the quartic coupling exceeds the tree-level unitarity bound;
-    the tree-level width is 2.1–3.9 times the mass; and there are
-    charged scalars of about the same mass.
+4.  The amplitude mode is not the observed Higgs boson: the ratio of its
+    mass to the scale of the breaking is $4.46\mbox{--}5.69$, 8.8–11
+    times the value of the Standard Model; the quartic coupling exceeds
+    the tree-level unitarity bound; the tree-level width is 2.1–3.9
+    times the mass; and there are charged scalars of about the same
+    mass.
 
 **Why Physical Review D.** The manuscript concerns the Higgs sector,
 composite Higgs bosons and dynamical symmetry breaking, and the

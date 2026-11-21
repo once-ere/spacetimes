@@ -2381,7 +2381,8 @@ of the linear response (Section 10.5), and the masses of the gauge bosons that (
 project, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ (Section 13.3). Data: `data/part3_sfbsv.csv`.
 
 The effective Lagrangian, which keeps the derivatives to second order, gives the masses of the amplitude and of the
-non-unitary modes 7 to 17 per cent above the exact linear response (Table 13.1 and Figure 11). The difference is
+non-unitary modes above the exact linear response, by $7.0$ (KS, CJT) to $17$ (HS (1, 1)) per cent for the amplitude mode and by
+$9.4$ (CJT) to $16$ (HS (1, 1)) per cent for the non-unitary modes (Table 13.1 and Figure 11). The difference is
 expected: the modes lie at 0.8 to 0.9 of the threshold $2E^{X,{\rm gap}}_{\rm SF}$, where the response depends strongly on the
 frequency and the expansion to second order in the derivatives (in $\omega$) is not accurate; the ordering of the modes
 (in CJT and KS the amplitude mode below the non-unitary doublet; in HS $(0,1)$ and $(0,0)$ the two degenerate) is the
@@ -2626,13 +2627,19 @@ four-momenta of the two quanta, twice, because the two quanta are identical) and
 $\lvert\text{amplitude}\rvert^2/(32\pi M^{X,{\rm H}}_{\rm SF})=(M^{X,{\rm H}}_{\rm SF})^3/(32\pi(f^{X,{\rm F}}_{\rm SF})^2)$ (the two-body phase space
 of two identical massless particles), and the three channels give together
 $$\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}.\tag{14.10}$$
-With the gauge fields the Goldstone fields are the longitudinal parts of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$, whose masses are
-at most about a fifth of $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor $(1-4M^2/(M^{X,{\rm H}}_{\rm SF})^2)^{1/2}$ is above $0.97$); by the
-equivalence theorem of the longitudinal gauge bosons and the Goldstone
-fields (Cornwall, Levin and Tiktopoulos 1974; Chanowitz and Gaillard 1985) (14.10) is then the width of
-$h\to W^+W^-,ZZ$. For the Standard Model with $f=v$ the same formula is the known width $3m_H^3/(32\pi v^2)$ of a heavy
-Higgs boson. (14.10) uses the effective Lagrangian at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is not accurate (its mass of the
-amplitude mode differs from the linear response by 7 to 17 per cent, Table 13.1); it estimates the order of magnitude.
+With the gauge fields the Goldstone fields are the longitudinal parts of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$; by the
+equivalence theorem of the longitudinal gauge bosons and the Goldstone fields (Cornwall, Levin and Tiktopoulos 1974;
+Chanowitz and Gaillard 1985) (14.10) is then the width of $h\to W^+W^-,ZZ$, up to corrections of the relative order of
+$(M^X_{W,{\rm SF}}/M^{X,{\rm H}}_{\rm SF})^2$ and $(M^X_{Z,{\rm SF}}/M^{X,{\rm H}}_{\rm SF})^2$. The kinetic part (12.4) couples $h$ to the gauge
+bosons as the Higgs boson of the Standard Model is coupled, with $f^{X,{\rm F}}_{\rm SF}$ in place of $v$, and at tree level the width
+of $h$ into a pair of $W$ bosons is the width of the two corresponding Goldstone channels times the factor
+$$\Big(1-\frac{4(M^X_{W,{\rm SF}})^2}{(M^{X,{\rm H}}_{\rm SF})^2}\Big)^{1/2}\Big(1-\frac{4(M^X_{W,{\rm SF}})^2}{(M^{X,{\rm H}}_{\rm SF})^2}+\frac{12(M^X_{W,{\rm SF}})^4}{(M^{X,{\rm H}}_{\rm SF})^4}\Big)$$
+(the phase space and the sum over the polarizations of the two bosons), and the same with $M^X_{Z,{\rm SF}}$ for $ZZ$. Here
+the larger of $M^X_{W,{\rm SF}}$ and $M^X_{Z,{\rm SF}}$ is $0.0785$ (HS (1, 1)) to $0.106$ (KS, CJT) times $M^{X,{\rm H}}_{\rm SF}$, so that the factor is
+$0.934$ (KS, CJT) to $0.964$ (HS (1, 1)): (14.10) overestimates the width into $W^+W^-$ and $ZZ$ by less than $7$ per cent. For the
+Standard Model with $f=v$ the same formula is the known width $3m_H^3/(32\pi v^2)$ of a heavy Higgs boson. (14.10) uses
+the effective Lagrangian at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is not accurate (its mass of the amplitude mode
+differs from the linear response by $7.0$ (KS, CJT) to $17$ (HS (1, 1)) per cent, Table 13.1); it estimates the order of magnitude.
 
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT | Standard Model |
 |:----------------------|---------:|---------:|---------:|---------:|---------:|---------:|
@@ -4045,6 +4052,16 @@ Each of the following was found before part II was committed.
     statements, P3-G10 to P3-G12, P3-H3 and P3-H4, whose identifiers they now carry; the earlier YP3-G1 (the gradient
     coefficient on 64 directions) is now YP3-G8, the counterpart of P3-G8 (the gradient coefficient does not depend on
     the quadrature). The Rust program makes 156 checks (all pass, 899 s), the Python program 113 (all pass, 99 s).
+11. Section 14.6 said that the masses of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$ "are at most about a fifth of
+    $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor $(1-4M^2/(M^{X,{\rm H}}_{\rm SF})^2)^{1/2}$ is above $0.97$)". No program had computed
+    the ratio: the bound holds for the three HS methods but not for KS and CJT, where the larger mass is
+    $0.213$ of $M^{X,{\rm H}}_{\rm SF}/2$; and the sentence named only the factor of the phase space of the decays
+    into $W^+W^-$ and $ZZ$, not that of the sum over the polarizations of the bosons. It was found on 21 November 2026,
+    when every number typed in the drafts of the article for Physical Review D was compared with the data files and the
+    reports. Section 14.6 now gives the whole factor at tree level and its values, which `code/scripts/write_part3_fragments.py`
+    computes from `data/part3_higgs.csv`; the ranges of the masses of the effective Lagrangian against the linear response
+    (Sections 13.2 and 14.6), typed as "7 to 17 per cent", are now computed by the same program, separately for the
+    amplitude mode and for the non-unitary modes.
 
 ## 17.4 Part IV
 

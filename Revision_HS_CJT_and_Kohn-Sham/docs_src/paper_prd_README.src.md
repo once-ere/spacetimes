@@ -124,13 +124,15 @@ files, and every number that a program computes was replaced by a placeholder. T
 drafts, which were not committed (their causes are recorded in the task record of the folder, entry E20):
 
 1. "the masses of $W$ and $Z$ are at most a fifth of $M^{X,{\rm H}}_{\rm SF}/2$" was false for KS and CJT, where the ratio is
-   0.213; the text now gives the bound $M_V\le0.11\,M^{X,{\rm H}}_{\rm SF}$ from the data, and the tree-level factor
-   $(1-4x)^{1/2}(1-4x+12x^2)$, $x=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, of the decays into $W^+W^-$ and $ZZ$ (the drafts named only
-   the phase-space factor $(1-4x)^{1/2}$). The drafts took the sentence from the committed documents `superfluid.md`
-   (Section 14.6), `provenance/P4_remarks.md` (addendum A2) and `superfluid.nb` (Section III.G.8), which contain it in
-   this version of the folder (entry E20 of the task record);
-2. the value of $M_H/v$ of the Standard Model was given as 0.509 in the abstract; $125.20/246.22=0.50849$ rounds to 0.508
-   (0.509 came from rounding 0.5085 a second time); the abstract now gives 0.5085;
+   {{GEN:p3_h_vv_half_max}}; the text now gives the bound $M_V\le{{GENM:p3_h_vv_ratio_max}}\,M^{X,{\rm H}}_{\rm SF}$ from the data, with $M_V$ the
+   mass of $W$ or $Z$, and the tree-level factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$, $\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, of
+   the decays into $W^+W^-$ and $ZZ$ (the drafts named only the phase-space factor $(1-4\zeta_V)^{1/2}$). The drafts took the
+   sentence from the documents `superfluid.md` (Section 14.6), `provenance/P4_remarks.md` (addendum A2) and
+   `superfluid.nb` (Section III.G.8). It has since been corrected in `superfluid.md` and `provenance/P4_remarks.md`
+   (entries E20 and E23 of the task record); `superfluid.nb` contains it in this version of the folder;
+2. the ratio of the mass of the Higgs boson to the scale of the breaking in the Standard Model was given as 0.509 in the
+   abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract now
+   gives 0.5085;
 3. "the programs compute both numbers also from the full static response of the normal vacuum ... to $10^{-14}$": only the
    Rust program computes them so, and the largest deviation is $3.5\times10^{-14}$;
 4. bounds smaller than the largest deviation they summarize: "the programs confirm (14) to $10^{-11}$" (the Python check

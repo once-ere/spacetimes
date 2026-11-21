@@ -86,6 +86,8 @@ data-reference="tab:symbols">1</a> lists the symbols.
 | $v^X_{\rm SF}$, $\lambda^{X,{\rm H}}_{\rm SF}$, $\Gamma^{X,{\rm H}}_{\rm SF}$                                | the analogue of the vacuum value $v$, the quartic coupling and the width of the amplitude mode, Eqs. (<a href="#eq:vSF" data-reference-type="ref"                                                            
                                                                                                                 data-reference="eq:vSF">[eq:vSF]</a>), (<a href="#eq:width" data-reference-type="ref"                                                                                                                         
                                                                                                                 data-reference="eq:width">[eq:width]</a>)                                                                                                                                                                     |
+| $M_V$, $\zeta_V$                                                                                             | the mass of $W$ or $Z$ in the decay of the amplitude mode into two gauge bosons, and $\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, Sec. <a href="#sec:higgs" data-reference-type="ref"                         
+                                                                                                                data-reference="sec:higgs">8</a>                                                                                                                                                                              |
 | $m_H$, $v$, $\Gamma_H$, $\lambda_H$, $M_W$, $M_Z$, $G_F$                                                     | the Standard Model: Higgs mass, vacuum value, Higgs width, quartic coupling, $W$ and $Z$ masses, Fermi constant                                                                                              |
 
 The symbols of the article and of this Supplemental Material.
@@ -1178,28 +1180,30 @@ finite differences of the field.) With the canonical Goldstone fields
 $\pi_0=f^{X,{\rm F}}_{\rm SF}\vartheta_0$ and
 $\pi_k=f^{X,{\rm I}}_{\rm SF}\vartheta_k$ all three couplings are
 $h(\partial\pi)^2/f^{X,{\rm F}}_{\rm SF}$. For the decay of $h$ at rest
-(four-momentum $P$, $P^2=M_H^2$) into two massless quanta of one field
-with the four-momenta $k_1,k_2$, the vertex
+(four-momentum $P$, $P^2=(M^{X,{\rm H}}_{\rm SF})^2$) into two massless
+quanta of one field with the four-momenta $k_1,k_2$, the vertex
 $g\,h\,\partial_\mu\pi\partial^\mu\pi$ with $g=1/f^{X,{\rm F}}_{\rm SF}$
-gives the amplitude $\mathcal M=-2g\,k_1\cdot k_2=-g\,M_H^2$ (two
+gives the amplitude
+$\mathcal M=-2g\,k_1\cdot k_2=-g\,(M^{X,{\rm H}}_{\rm SF})^2$ (two
 contractions; $2k_1\cdot k_2=P^2$ for massless quanta), and with the
 two-body phase space of two identical particles,
-$\Gamma=|\mathcal M|^2/(32\pi M_H)$:
-$$\Gamma(h\to\pi\pi)=\frac{M_H^3}{32\pi(f^{X,{\rm F}}_{\rm SF})^2},\qquad\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}
+$\Gamma=|\mathcal M|^2/(32\pi M^{X,{\rm H}}_{\rm SF})$:
+$$\Gamma(h\to\pi\pi)=\frac{(M^{X,{\rm H}}_{\rm SF})^3}{32\pi(f^{X,{\rm F}}_{\rm SF})^2},\qquad\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}
 \label{eq:width}$$ for the three channels. With the gauge fields the
 Goldstone fields are the longitudinal parts of $W^\pm$ and $Z$, and by
 the equivalence theorem (Cornwall, Levin, and Tiktopoulos 1974;
 Chanowitz and Gaillard 1985)
 (<a href="#eq:width" data-reference-type="ref"
 data-reference="eq:width">[eq:width]</a>) is the width into $W^+W^-$ and
-$ZZ$ up to corrections of relative order $x=M_V^2/M_H^2$, where $M_V$ is
-the mass of $W$ or $Z$: at tree level the width of a scalar with the
-couplings of (<a href="#eq:Lkin" data-reference-type="ref"
+$ZZ$ up to corrections of relative order
+$\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, where $M_V$ is the mass of
+$W$ or $Z$: at tree level the width of a scalar with the couplings of
+(<a href="#eq:Lkin" data-reference-type="ref"
 data-reference="eq:Lkin">[eq:Lkin]</a>) into a pair of these bosons
-carries the factor $(1-4x)^{1/2}(1-4x+12x^2)$ (phase space and the sum
-over the polarizations), which is above 0.93 here ($M_V\le0.11\,M_H$).
-For the Standard Model with $f=v$,
-(<a href="#eq:width" data-reference-type="ref"
+carries the factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ (phase
+space and the sum over the polarizations), which is above 0.93 here
+($M_V\le0.11\,M^{X,{\rm H}}_{\rm SF}$). For the Standard Model with
+$f=v$, (<a href="#eq:width" data-reference-type="ref"
 data-reference="eq:width">[eq:width]</a>) is the known width
 $3m_H^3/(32\pi v^2)$ of a heavy Higgs boson (Lee, Quigg, and Thacker
 1977). *A remark:* the effective Lagrangian is used at the energy
@@ -1811,8 +1815,8 @@ SHA-256 checksums at the time this document was built:
 | `figures/fig_part4_r1_massmatrix.pdf`              | `caa47847ba676acb6b11a824be1101413d542f7d5fdaa76b76f9ef12b91385c6` |
 | `figures/fig_prd_ginzburg.pdf`                     | `1e79446ef1c9c36e4fbe4619b5aec0da2f5a411d0c738a72fc15ff85a868e00a` |
 | `figures/fig_prd_higgs.pdf`                        | `b82436f38ced067d978391586eb42927de6978a869dcd6d6a5cd7f6bbc2c1864` |
-| `paper_prd/src/higgs_composite_qg.template.tex`    | `caaa27159f468c30d8479912f5729089c5bf3a0d73c813e256b708148a20f427` |
-| `paper_prd/src/higgs_composite_qg_SM.template.tex` | `378b3bac8d90d6f7ce3ef201bf26ce7e06608f128b6daa6c00ad3d0c1dcf67f3` |
+| `paper_prd/src/higgs_composite_qg.template.tex`    | `23e68c90064e9f5eaf01a492b7c18eed3214ef1f7bb3768ba33a105cd8d58642` |
+| `paper_prd/src/higgs_composite_qg_SM.template.tex` | `fe65d43293efa23374ccde6e8cebb6a7ad2ecfe44bac988bbc1aae7f9f4ef172` |
 | `paper_prd/src/references.bib`                     | `7f62530ea60bd47ac9ee26d8d771fab13e07344e228bf102337904f190e4001a` |
 | `paper_prd/scripts/build_paper.py`                 | `87385d87df8c0a0daef4c79ae2d882f2c9514bf9ae70cb08e789b2f0be622492` |
 

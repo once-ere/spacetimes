@@ -16,8 +16,9 @@ $SL(2,\mathbb C)\times O(2)$, whose identity component contains the $U(1)$ of th
 composite scalar bound below the threshold of two quasi-particles. From the static pair response we compute the gradient
 coefficient of the order parameter at the critical temperature and find Ginzburg numbers 7.6–11: the critical region
 is wider than the critical temperature itself, and the mean-field transition is not reliable. Against the Standard Model, the amplitude mode is
-8.8–11 times too heavy relative to the scale of the breaking ($M_H/v=4.46\mbox{--}5.69$ against $0.5085$), strongly coupled,
-broad ($\Gamma_H/M_H\approx2.1\mbox{--}3.9$ at tree level), and accompanied by charged scalars of about the same mass.
+8.8–11 times too heavy relative to the scale of the breaking (the ratio of its mass to that scale is $4.46\mbox{--}5.69$,
+against $0.5085$), strongly coupled, broad (its tree-level width is $2.1\mbox{--}3.9$ times its mass), and accompanied by
+charged scalars of about the same mass.
 The Higgs boson of this model is therefore composite by construction, but it is not the boson observed at the LHC. We
 outline how gravitation enters through E. A. Lord’s gauge theory of the local change of spinor representation, for which
 the $SL(2,\mathbb C)$ factor of the gauge group is the natural place; the gravitational sector is not computed here.
@@ -624,10 +625,11 @@ $$\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,
 \label{eq:width}$$ which by the equivalence theorem (Cornwall, Levin,
 and Tiktopoulos 1974; Chanowitz and Gaillard 1985) is also the width
 into $W^+W^-$ and $ZZ$, up to corrections of relative order
-$x=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, where $M_V$ is the mass of $W$ or
-$Z$: here $M_V\le0.11\,M^{X,{\rm H}}_{\rm SF}$, and the tree-level
-factor $(1-4x)^{1/2}(1-4x+12x^2)$ of these channels lowers the width by
-less than 7%. For $f=v$, (<a href="#eq:width" data-reference-type="ref"
+$\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, where $M_V$ is the mass of
+$W$ or $Z$: here $M_V\le0.11\,M^{X,{\rm H}}_{\rm SF}$, and the
+tree-level factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ of these
+channels lowers the width by less than 7%. For $f=v$,
+(<a href="#eq:width" data-reference-type="ref"
 data-reference="eq:width">[eq:width]</a>) is the width
 $3m_H^3/(32\pi v^2)$ of a heavy Standard-Model Higgs boson. The
 effective Lagrangian is used at the energy $M^{X,{\rm H}}_{\rm SF}$,

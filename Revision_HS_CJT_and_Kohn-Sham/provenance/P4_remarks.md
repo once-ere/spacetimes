@@ -1003,10 +1003,17 @@ $f^{X,{\rm F}}_{\rm SF}\vartheta_0$, $f^{X,{\rm I}}_{\rm SF}\vartheta_1$ all thr
 massless quanta of one such field has the amplitude $(M^{X,{\rm H}}_{\rm SF})^2/f^{X,{\rm F}}_{\rm SF}$ and the width
 $(M^{X,{\rm H}}_{\rm SF})^3/(32\pi(f^{X,{\rm F}}_{\rm SF})^2)$ (two identical particles), and the three channels give
 $$\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}.\tag{A2.9}$$
-With the gauge fields the Goldstone fields are the longitudinal $W^\pm$ and $Z$; their masses are at most a fifth of
-$M^{X,{\rm H}}_{\rm SF}/2$, and by the equivalence theorem (Cornwall, Levin and Tiktopoulos 1974; Chanowitz and Gaillard 1985)
-(A2.9) is the width of $h\to W^+W^-,ZZ$; for the Standard Model it is the known width $3m_H^3/(32\pi v^2)$ of a heavy Higgs
-boson. (Remark R5 of Section 5.8: (A2.9) is an estimate of the order of magnitude.)
+With the gauge fields the Goldstone fields are the longitudinal $W^\pm$ and $Z$, and by the equivalence theorem (Cornwall,
+Levin and Tiktopoulos 1974; Chanowitz and Gaillard 1985) (A2.9) is the width of $h\to W^+W^-,ZZ$, up to corrections of the
+relative order of $(M^X_{W,{\rm SF}}/M^{X,{\rm H}}_{\rm SF})^2$ and $(M^X_{Z,{\rm SF}}/M^{X,{\rm H}}_{\rm SF})^2$: the kinetic part couples $h$ to
+the gauge bosons as the Higgs boson of the Standard Model is coupled, with $f^{X,{\rm F}}_{\rm SF}$ in place of $v$, and at tree level
+the width into a pair of $W$ bosons is the width of the two corresponding Goldstone channels times the factor
+$$\Big(1-\frac{4(M^X_{W,{\rm SF}})^2}{(M^{X,{\rm H}}_{\rm SF})^2}\Big)^{1/2}\Big(1-\frac{4(M^X_{W,{\rm SF}})^2}{(M^{X,{\rm H}}_{\rm SF})^2}+\frac{12(M^X_{W,{\rm SF}})^4}{(M^{X,{\rm H}}_{\rm SF})^4}\Big)\tag{A2.10}$$
+(the phase space and the sum over the polarizations of the two bosons), and the same with $M^X_{Z,{\rm SF}}$ for $ZZ$. The
+larger of $M^X_{W,{\rm SF}}$ and $M^X_{Z,{\rm SF}}$ is $0.0785$ (HS (1, 1)) to $0.106$ (KS, CJT) times $M^{X,{\rm H}}_{\rm SF}$, so that the factor (A2.10)
+is $0.934$ (KS, CJT) to $0.964$ (HS (1, 1)), and (A2.9) overestimates the width into $W^+W^-$ and $ZZ$ by less than $7$ per cent
+(remark R6 of Section 5.8). For the Standard Model (A2.9) is the known width $3m_H^3/(32\pi v^2)$ of a heavy Higgs boson.
+(Remark R5 of Section 5.8: (A2.9) is an estimate of the order of magnitude.)
 
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT | Standard Model |
 |:----------------------|---------:|---------:|---------:|---------:|---------:|---------:|
@@ -1102,9 +1109,19 @@ of the five mean-field methods of this model is not that boson.
   far above 1, so the conclusion stands.
 * **R5: "the width (A2.9) is an estimate of the order of magnitude".** *What it means:* (A2.9) uses the effective Lagrangian,
   which keeps the derivatives to second order, at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is not accurate (its own mass of the
-  amplitude mode differs from the linear response by 7 to 17 per cent), and it is a first-order (tree-level) width. *Why
-  it matters:* the conclusion needs only the order of magnitude: $2.1$ (KS, CJT) to $3.9$ (HS (1, 1)) times the mass, against
+  amplitude mode differs from the linear response by $7.0$ (KS, CJT) to $17$ (HS (1, 1)) per cent), and it is a first-order (tree-level)
+  width. *Why it matters:* the conclusion needs only the order of magnitude: $2.1$ (KS, CJT) to $3.9$ (HS (1, 1)) times the mass, against
   $3\times10^{-5}$ for the Higgs boson.
+* **R6: "(A2.9) is the width into $W^+W^-$ and $ZZ$ up to corrections of the relative order of the squared ratio of the
+  masses".** *What it means:* the equivalence theorem replaces the longitudinal gauge bosons by the Goldstone fields; it
+  holds at energies large against the masses of the bosons, and the decay of $h$ at rest gives each boson the energy
+  $M^{X,{\rm H}}_{\rm SF}/2$. The corrections at tree level are the factor (A2.10): the velocity of the bosons, which reduces the
+  phase space, and the transverse polarizations, which the Goldstone fields do not have. *Why it holds:* the coupling of
+  $h$ to the gauge bosons comes from the same kinetic part as its coupling to the Goldstone fields, with the masses
+  $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}f^{X,{\rm I}}_{\rm SF}$ and $M^X_{Z,{\rm SF}}=2g^{\rm F}_{\rm LL}f^{X,{\rm F}}_{\rm SF}$ (Table A3); this is the structure of
+  the Standard Model, whose tree-level widths into $W^+W^-$ and $ZZ$ carry the same factor with the masses of its bosons. *Why it matters:* the factor is
+  $0.934$ (KS, CJT) to $0.964$ (HS (1, 1)), so (A2.9) overestimates these widths by less than $7$ per cent, far less than the
+  uncertainty of R5; the conclusion, a broad resonance, does not depend on it.
 
 ## 5.9 Provenance
 
@@ -1301,3 +1318,14 @@ Kaplan and H. Georgi, Physics Letters B 136, 183 (1984); K. Agashe, R. Contino a
 (2005); ATLAS Collaboration, A detailed map of Higgs boson interactions by the ATLAS experiment ten years after the
 discovery, Nature 607, 52 (2022); CMS Collaboration, A portrait of the Higgs boson by the CMS experiment ten years after
 the discovery, Nature 607, 60 (2022).
+
+## 5.10 Corrections of the first version
+
+1. The first version of Section 5.6 said that the masses of $W^\pm$ and $Z$ "are at most a fifth of
+   $M^{X,{\rm H}}_{\rm SF}/2$". That is false for KS and CJT: the larger of $M^X_{W,{\rm SF}}$ and $M^X_{Z,{\rm SF}}$ is
+   $0.0785$ (HS (1, 1)) to $0.106$ (KS, CJT) times $M^{X,{\rm H}}_{\rm SF}$, that is, up to $0.213$ of $M^{X,{\rm H}}_{\rm SF}/2$. No program had computed the
+   ratio; the bound held for the three HS methods only. The same sentence named only the factor of the phase space of the
+   decays into $W^+W^-$ and $ZZ$, not that of the sum over the polarizations. It was found on 21 November 2026, when every
+   number typed in the drafts of the article for Physical Review D was compared with the data files and the reports;
+   Section 5.6 now gives the factor (A2.10) and its values, computed from `data/part3_higgs.csv` by
+   `code/scripts/write_part3_fragments.py`, and remark R6 explains it.

@@ -1998,6 +1998,30 @@ $1.558$
 <!-- BEGIN p3_h_sm_mwmz -->
 $0.8814$
 <!-- END p3_h_sm_mwmz -->
+<!-- BEGIN p3_h_vv_ratio -->
+$0.0785$ (HS (1, 1)) to $0.106$ (KS, CJT)
+<!-- END p3_h_vv_ratio -->
+<!-- BEGIN p3_h_vv_ratio_max -->
+$0.11$
+<!-- END p3_h_vv_ratio_max -->
+<!-- BEGIN p3_h_vv_half_max -->
+$0.213$
+<!-- END p3_h_vv_half_max -->
+<!-- BEGIN p3_h_vv_factor -->
+$0.934$ (KS, CJT) to $0.964$ (HS (1, 1))
+<!-- END p3_h_vv_factor -->
+<!-- BEGIN p3_h_vv_factor_min -->
+$0.93$
+<!-- END p3_h_vv_factor_min -->
+<!-- BEGIN p3_h_vv_corr -->
+$7$ per cent
+<!-- END p3_h_vv_corr -->
+<!-- BEGIN p3_h_meff_h -->
+$7.0$ (KS, CJT) to $17$ (HS (1, 1))
+<!-- END p3_h_meff_h -->
+<!-- BEGIN p3_h_meff_nu -->
+$9.4$ (CJT) to $16$ (HS (1, 1))
+<!-- END p3_h_meff_nu -->
 <!-- BEGIN p4_table_ginzburg -->
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
 |:-----------------------------|-------:|-------:|-------:|-------:|-------:|

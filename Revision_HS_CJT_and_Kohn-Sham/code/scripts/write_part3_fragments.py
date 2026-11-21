@@ -256,9 +256,13 @@ def main():
     frags["p4_checks_thermal"] = "\n".join(["| check | result | deviation | tolerance | statement |", "|:---|:---|---:|---:|:-----------|"] + tlines)
 
     def span2(fn, digits=3, unit=""):
+        """the range of fn over the five methods, each end named by its method; KS and CJT are named together only where
+        their printed values agree: they have the same normal state and pair channels, so many quantities agree, but not
+        all (for example those of the kinetic part and of the non-unitary modes)"""
         lo = min(tags, key=fn)
         hi = max(tags, key=fn)
-        nm = lambda t: "KS, CJT" if t in ("KS", "CJT") else METH[t]
+        same = sig(fn("KS"), digits) == sig(fn("CJT"), digits)
+        nm = lambda t: "KS, CJT" if t in ("KS", "CJT") and same else METH[t]
         return "%s%s (%s) to %s%s (%s)" % (sig(fn(lo), digits), unit, nm(lo), sig(fn(hi), digits), unit, nm(hi))
 
     frags["p4_tc"] = span2(lambda t: q4[t]["tc"])
@@ -404,6 +408,29 @@ def main():
     frags["p3_h_sm_lambda"] = sig(sm["lambda_SF"], 4)
     frags["p3_h_sm_mhmw"] = sig(sm["M_H_over_M_W"], 4)
     frags["p3_h_sm_mwmz"] = sig(sm["M_W_over_M_Z"], 4)
+    # the decay of the amplitude mode into W+W- and ZZ (Section 14.6): the width (14.10) into pairs of Goldstone quanta is
+    # that into pairs of gauge bosons up to corrections of relative order (M_V/M_H)^2; at tree level the width into a pair
+    # of bosons of the mass M_V carries the factor (1 - 4r)^(1/2) (1 - 4r + 12r^2), r = (M_V/M_H)^2 (phase space and the
+    # sum over the polarizations).  The bounds are rounded so that they hold: the ratio UP, the factor DOWN.
+    def vv_ratio(t):
+        return max(hg[t]["M_W"], hg[t]["M_Z"]) / hg[t]["M_H"]
+
+    def vv_factor(t):
+        r = vv_ratio(t) ** 2
+        return (1 - 4 * r) ** 0.5 * (1 - 4 * r + 12 * r * r)
+    rmax = max(vv_ratio(t) for t in htags)
+    fmin = min(vv_factor(t) for t in htags)
+    dd = 1 - int(math.floor(math.log10(rmax)))
+    frags["p3_h_vv_ratio"] = span2(vv_ratio, 3)
+    frags["p3_h_vv_ratio_max"] = "$%.*f$" % (dd, math.ceil(rmax * 10 ** dd) / 10 ** dd)
+    frags["p3_h_vv_half_max"] = sig(2 * rmax, 3)   # the largest ratio of the mass of W or Z to M_H/2
+    frags["p3_h_vv_factor"] = span2(vv_factor, 3)
+    frags["p3_h_vv_factor_min"] = "$%.2f$" % (math.floor(fmin * 100) / 100)
+    frags["p3_h_vv_corr"] = "$%d$ per cent" % math.ceil(100 * (1 - fmin))
+    # the masses of the effective Lagrangian (the curvature of the potential and the kinetic part) against the linear
+    # response (Table 13.1): the amplitude mode alone, and both massive modes
+    frags["p3_h_meff_h"] = span2(lambda t: 100 * (vals["p3_MH_" + t] / vals["p3_MH_RPA_" + t] - 1), 2)
+    frags["p3_h_meff_nu"] = span2(lambda t: 100 * (vals["p3_MNU_" + t] / vals["p3_MNU_RPA_" + t] - 1), 2)
 
     # ---- the same tables and the checks for the addendum A2 of provenance/P4_remarks.md (its equation numbers)
     frags["p4_table_ginzburg"] = frags["p3_table_ginzburg"].replace("(12.13)", "(A2.3)")
