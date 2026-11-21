@@ -22,11 +22,12 @@ it. This README is the list of contents of the folder.
 
 # 2. State
 
-**20 November 2026.** The folder has been created; the task record and this README are written. The work then
-pauses for the author's instructions: the author's Rule 2 requires a pause after a false statement has been recorded
-with its cause, and one was made and corrected on 20 November 2026 (I stated that the reading of four symbol
-registries of the earlier work was complete when two of them had not yet been read completely). Nothing of the
-solution has been calculated yet.
+**20 November 2026.** The folder has been created; the task record and this README are written. The work paused
+after that, as the author's Rule 2 requires after a false statement has been recorded with its cause (I had stated
+that the reading of four symbol registries of the earlier work was complete when two of them had not yet been read
+completely; the statement was corrected in the next message). At 18:28 PST the author instructed to continue and to
+complete all stages; at 19:25 PST, to push every item as soon as it is complete. The work continues; this table is
+updated with every item.
 
 # 3. Contents
 

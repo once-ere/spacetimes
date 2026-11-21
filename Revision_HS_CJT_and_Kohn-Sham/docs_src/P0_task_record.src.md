@@ -156,7 +156,7 @@ Once all three methods admit a superfluid solution:
 | 2 | Every statement that a step is complete is checked against evidence before it is made (counts, commit identifiers, reports of checks), and the evidence is stated. A false statement is recorded in this document with its cause (Section 4), and the work pauses. A decision of interpretation that the task requires is stated with its reason (Section 6). |
 | 3 | The builder `code/scripts/build_docs.sh` makes the `.tex` from the `.md` with pandoc and the `.pdf` from the `.tex` with XeLaTeX, and checks the layout of every page. |
 | 4, 10 | The script `code/scripts/check_self_contained.py` searches every document and every document source of the folder for wordings that send the reader elsewhere; each document has its own section of symbols. |
-| 5 | After every completed object: commit in the workspace, transfer of the commits to the author's computer as a git bundle, application and check there, and the push command for the author (I cannot push myself). |
+| 5 | After every completed object: commit in the workspace, transfer of the commits to the author's computer as a git bundle, application and check there, and the push command for the author at once (I cannot push myself); the work then continues without waiting (the author's instruction of 20 November 2026, 19:25 PST). |
 | 6, 7 | All paths of the folder are relative to `/Users/nsh/Developer/github/spacetimes/Revision_HS_CJT_and_Kohn-Sham`. |
 | 8 | A MASTER provenance of the symbols, with its registry and machine checks, is the second object of the plan (Section 7). |
 | 9 | Rust first; Python where a figure or a mirror of the Rust code is required; the Wolfram language in the notebook, executed on the author's computer. Every program is executed, and its output is kept in `data/` with its provenance. |
@@ -188,9 +188,10 @@ evidence is stated with the claim (for example "232 of 232 entries", "check repo
 (c) The MASTER provenance of the symbols reads every registry of the project by a program, which counts what it has
 read and fails if an entry is missing, so that the reading of the symbols no longer rests on a statement of mine.
 
-**The pause.** Rule 2 requires that the work pause after such a record, for further instructions. The work pauses
-after this document and the folder's README have been committed and transferred for the push; it continues when the
-author gives the instruction.
+**The pause.** Rule 2 requires that the work pause after such a record, for further instructions. The work paused
+after this document and the folder's README had been committed (`b85b6b4`) and transferred for the push. At 18:28 PST
+the author instructed: continue, complete all stages, do not stop. The work resumed then; the author changed none of
+the decisions of Section 6, which therefore stand.
 
 # 5. The state of the work when this record was written
 
@@ -421,4 +422,6 @@ The plan is changed only with a record in Section 9.
 
 | entry | date | what |
 |:---|:---|:---|
-| E1 | 20 Nov 2026 | the false statement of Section 4, corrected in the next message; recorded here; the work pauses after this record |
+| E1 | 20 Nov 2026 | the false statement of Section 4, corrected in the next message; recorded here; the work paused after this record |
+| C1 | 20 Nov 2026, 18:28 | the author's instruction: continue, complete all stages, do not stop; the decisions of Section 6 stand |
+| C2 | 20 Nov 2026, 19:25 | the author's instruction: push every item as soon as it is complete (commit, carry the bundle to the author's computer, check that it applied, send the push command at once), then continue without waiting |
