@@ -1051,7 +1051,7 @@ gauge boson of the superfluid attracts the two charges of the condensed pair**, 
 $T^3=\pm\tfrac12$. The massive bosons repel, but
 their exchange has the short range $1/M^{\rm b}_{\rm SF}$. This is the gauge boson that the task names: a massless GEE gauge
 boson that appears with the breaking of the symmetry and attracts the charges of the pair, a force particle not yet
-observed. Whether its attraction can
+observed, named in Section 14.4 the zeugon. Whether its attraction can
 create or sustain the condensate is a quantitative question, answered in Section 11: it reinforces a condensate made by
 the pairing term, but it cannot pair the symmetric vacuum, where all four bosons are massless and their sum (8.5)
 repels.
@@ -2580,6 +2580,36 @@ $\langle Q_{\rm LL}\rangle$ is an even function of $\mu^1_{\rm SF}$, $\mu^2_{\rm
 all $b$. The matrix (11.1) therefore has the null vector of $W^3_{{\rm SF},p}$ in every method that keeps these symmetries, as
 Tables 11.1 and 14.1 confirm.
 
+**The new massless gauge boson: the zeugon.** The massless gauge boson $A_{{\rm SF},p}=\vec n\cdot\vec W_{{\rm SF},p}$ of
+$U(1)^{\rm Q}_{\rm LL}$ is the massless GEE gauge boson that appears with the breaking of the symmetry, which item 6 of the
+problem asks for. It is not the photon: it couples to the charge $Q_{\rm LL}$ of $SU(2)_{\rm v}$, which only the DiracLike
+spinor (charges $\pm\tfrac12$), $W^\pm_{{\rm SF},p}$ and the two non-unitary scalars (charges $\pm1$) carry, and nothing in the
+model carries electric charge. The author, who asked for such a boson, offered the solution its naming; it is named here
+the **zeugon**, from the Greek ζεῦγος, a yoked pair, because it is the only gauge boson that attracts the two DiracLike
+spinors of the condensed pair (Sections 8.2 and 11.4). What the computation establishes about it:
+
+1. *It is massless in every method:* by theorem M1, and in the microscopic theory of Part II
+   (*checks P2-8a, P4-M2*); in CJT with the exchange of the gauge bosons its computed mass is $1.999946729\times10^{-8}$,
+   against $M^{\rm CJT}_{W,{\rm SF}}=0.04302319693$ (Section 11.4).
+2. *It attracts the pair, but does not by itself hold it at the couplings of the project:* its exchange energy in the
+   CJT condensate is $-4.834663821\times10^{-5}$ (attraction), while $W^1$, $W^2$ and $B$ repel; its attraction alone
+   would pair the normal vacuum only for $g^{\rm v}_{\rm LL}>5.290206869$ (Section 11.3), so at
+   $g^{\rm v}_{\rm LL}=0.7$ the condensate is produced by the pairing term of $V^{(2)}_{\rm SF}$.
+3. *Its charge conjugation is a gauge symmetry:* the group that survives the breaking is $O(2)$, not $U(1)$, and its
+   second component $\mathsf r$, a gauge transformation, reverses the zeugon and exchanges $W^+_{{\rm SF},p}$ and $W^-_{{\rm SF},p}$
+   (14.8). This never holds for the photon. A $U(1)$ gauge theory with a local charge conjugation is called Alice
+   electrodynamics (J. Kiskis 1978; A. S. Schwarz 1982; M. Bucher, H.-K. Lo and J. Preskill 1992). Here the vacua
+   $\Phi_0e^{i\vartheta}\vec n$ and $\Phi_0e^{i(\vartheta+\pi)}(-\vec n)$ are the same field, so the vacuum manifold contains closed
+   loops along which $\vec n$ turns into $-\vec n$ while the phase advances by $\pi$; a string of the superfluid along such
+   a loop (a half-quantum vortex, the Alice string; U. Leonhardt and G. E. Volovik described its counterpart in a
+   condensate of spin 1 in 2000) reverses the charge $Q_{\rm LL}$ of every particle carried around it. These strings, and
+   the magnetic monopoles of the zeugon that the sphere of the directions $\vec n$ allows, follow from the topology of the
+   vacuum manifold; they have not been computed in this work.
+
+The structure exists only after the breaking: in the symmetric vacuum all four gauge bosons are massless and the unbroken
+group contains no charge conjugation. Whether nature contains the zeugon is not decided by this work: it is a prediction
+of the model, which couples it to no field of the Standard Model.
+
 ## 14.5 The numbers and the checks
 
 The microscopic mass matrix (11.1) is computed for a vacuum that is not along $\vec e_3$, so that the identification of the
@@ -2759,7 +2789,7 @@ a gauge group and its amplitude mode a Higgs particle:
 
 **The verdict.** (a) In every method the superfluid is the Higgs field of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$: it breaks the
 group to $U(1)^{\rm Q}_{\rm LL}$, gives the force particles $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$ their masses, leaves the massless
-force particle $A_{{\rm SF},p}$, and has a Higgs-like scalar of charge $Q_{\rm LL}=0$ below the threshold of two quasi-particles.
+force particle $A_{{\rm SF},p}$, the zeugon (Section 14.4), and has a Higgs-like scalar of charge $Q_{\rm LL}=0$ below the threshold of two quasi-particles.
 That scalar is a Higgs particle of the new group only in the mean-field dynamics: once it can decay into the longitudinal
 gauge bosons it is a resonance broader than its mass, and it is accompanied by the two non-unitary scalars of charge
 $Q_{\rm LL}=\pm1$ of about the same mass. The methods differ in degree, not in kind: CJT and KS have the lightest and
@@ -4229,6 +4259,10 @@ the spontaneous breaking of the new group. The earlier versions were wrong in th
    the couplings, the widths and every check are those of the earlier version. What depended on the identification with
    the electroweak theory, the values in GeV, the ratios to the values of the Standard Model, the unitarity bound and the
    verdict built on them, is withdrawn.
+5. **The name of the massless gauge boson.** On 21 November 2026 the author asked again for the new massless gauge
+   boson that appears after the breaking and is not the photon, and offered the solution its naming. Section 14.4 names
+   it the zeugon and states what the computation establishes about it, including that its charge conjugation is a gauge
+   symmetry (Alice electrodynamics), with the strings and monopoles that follow from it not computed.
 
 # 18. The symbols
 
@@ -4345,7 +4379,7 @@ author's conventions (Section 1).
 | $\mathsf W_{{\rm SF},p}$ | `Wmat_p` | the gauge field of $SU(2)_{\rm v}$ as a Hermitian traceless $2\times2$ matrix, $\sum_\iota W^\iota_{{\rm SF},p}\tau^{\rm LL}_\iota/2$; with two indices, $\mathsf W_{{\rm SF},pp'}$, its field strength $\partial_p\mathsf W_{{\rm SF},p'}-\partial_{p'}\mathsf W_{{\rm SF},p}+ig^{\rm v}_{\rm LL}[\mathsf W_{{\rm SF},p},\mathsf W_{{\rm SF},p'}]$ | new |
 | $\Omega^{\rm L}_{{\rm SF},pp'}$ | `Omega_L` | the curvature of the Lorentz connection, $\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+[\Gamma^{\rm LL}_p,\Gamma^{\rm LL}_{p'}]$ (zero on flat M31) | new |
 | $j^{\iota,p}_{\rm SF}$, $j^{{\rm F},p}_{\rm SF}$ | `j_iota` `j_F` | the isospin current $\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}$ and the fermion-number current $\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}$ of the spinor field | new |
-| $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$ | `Wplus` `Wminus` `Z_p` `A_p` | the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, named after the Standard Model (the names only: the group is a new one): the fields $(W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2$ of the charges $Q_{\rm LL}=\pm1$, the massive field of charge 0 and the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, which is not the photon (their expressions in $W^3_{{\rm SF},p}$ and $B_{{\rm SF},p}$ are derived in the solution) | new |
+| $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$ | `Wplus` `Wminus` `Z_p` `A_p` | the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, named after the Standard Model (the names only: the group is a new one): the fields $(W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2$ of the charges $Q_{\rm LL}=\pm1$, the massive field of charge 0 and the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, which is not the photon and is named the zeugon (their expressions in $W^3_{{\rm SF},p}$ and $B_{{\rm SF},p}$ are derived in the solution) | new |
 | $\theta^{\rm W}_{\rm SF}$, $g^{\rm Q}_{\rm SF}$ | `theta_W` `g_Q` | the mixing angle: the angle between the massless gauge boson $A_{{\rm SF},p}$ and the axis $W^3_{{\rm SF},p}$ in the plane of $W^3_{{\rm SF},p}$ and $B_{{\rm SF},p}$; the coupling of $A_{{\rm SF},p}$ to the charge $Q_{\rm LL}$ | new |
 
 **Group 6 The Lagrangian, the field equations and their numerical form.**

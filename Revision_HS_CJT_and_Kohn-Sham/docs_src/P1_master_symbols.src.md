@@ -191,7 +191,7 @@ electroweak quantum numbers, so no object of the right column is an object of th
 | $W^a_\mu$, $g$; $\tau^a$, $T^{a,{\rm SM}}$ | $W^\iota_{{\rm SF},p}$, $g^{\rm v}_{\rm LL}$; $\tau^{\rm LL}_\iota$, $T^\iota_{\rm LL}$ |
 | $B_\mu$, $g'$, $Y^{\rm SM}$ | $B_{{\rm SF},p}$, $g^{\rm F}_{\rm LL}$, $F_{\rm LL}$ |
 | $Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}$, the electric charge | $Q_{\rm LL}=T^3_{\rm LL}$, the generator of the surviving group (derived in the solution), a charge of $SU(2)_{\rm v}$, not the electric charge |
-| $W^\pm_\mu$, $Z_\mu$, $A_\mu$ (the photon), $\theta_W$, $e$ | $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$ (the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, not the photon), $\theta^{\rm W}_{\rm SF}$, $g^{\rm Q}_{\rm SF}$ |
+| $W^\pm_\mu$, $Z_\mu$, $A_\mu$ (the photon), $\theta_W$, $e$ | $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$ (the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, not the photon; named the zeugon), $\theta^{\rm W}_{\rm SF}$, $g^{\rm Q}_{\rm SF}$ |
 | $v$ | $v^X_{\rm SF}$, the scale of the breaking of the new group, defined by $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}v^X_{\rm SF}/2$ as $v$ is defined by $M_W=gv/2$ (its value in GeV is not known) |
 | the indices $\mu$ (0 to 3) and $a$ (1 to 3) | $p$ and $\iota$ |
 

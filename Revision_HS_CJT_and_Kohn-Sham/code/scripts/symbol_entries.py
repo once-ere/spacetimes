@@ -283,7 +283,7 @@ ENTRIES = [
      "the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\\rm v}\\times U(1)^{\\rm F}_{\\rm LL}$, "
      "named after the Standard Model (the names only: the group is a new one): the fields "
      "$(W^1_{{\\rm SF},p}\\mp iW^2_{{\\rm SF},p})/\\sqrt2$ of the charges $Q_{\\rm LL}=\\pm1$, the massive field of charge 0 and "
-     "the massless gauge boson of $U(1)^{\\rm Q}_{\\rm LL}$, which is not the photon (their expressions in "
+     "the massless gauge boson of $U(1)^{\\rm Q}_{\\rm LL}$, which is not the photon and is named the zeugon (their expressions in "
      "$W^3_{{\\rm SF},p}$ and $B_{{\\rm SF},p}$ are derived in the solution)", "new"),
     (G5, "$\\theta^{\\rm W}_{\\rm SF}$, $g^{\\rm Q}_{\\rm SF}$", "theta_W g_Q", "the mixing angle: the angle between the "
      "massless gauge boson $A_{{\\rm SF},p}$ and the axis $W^3_{{\\rm SF},p}$ in the plane of $W^3_{{\\rm SF},p}$ and "
