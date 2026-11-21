@@ -32,9 +32,11 @@ be added through E. A. Lord's gauge theory of the local change of spinor represe
 # 2. The answers in brief
 
 The symbols are those of the article: $X$ is the method, $\mathrm{SF}$ marks a quantity of the superfluid, $\Lambda_{\rm LL}$
-(the momentum cutoff of the uniform states) is the unit of energy, $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ is the analogue of the
-scale $v=246.22$ GeV of the Standard Model ($f^{X,{\rm I}}_{\rm SF}$ the decay constant of the isospin rotations), and
-$M^{X,{\rm H}}_{\rm SF}$ is the mass of the amplitude mode.
+(the momentum cutoff of the uniform states) is the unit of energy, $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ is the scale of the breaking of
+the new gauge group, defined as the Standard Model defines its vacuum value, by $M_W=gv/2$ ($f^{X,{\rm I}}_{\rm SF}$ the decay
+constant of the isospin rotations; the value of $v^X_{\rm SF}$ in GeV is not known), and $M^{X,{\rm H}}_{\rm SF}$ is the mass of the
+amplitude mode. The spinor field is the DiracLike spinor: it has electric charge 0 and no electroweak quantum numbers, and
+$SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge group, not the electroweak group.
 
 1. **The width of the critical region.** The Ginzburg number, the reduced temperature $\lvert T-T^{X,{\rm c}}_{\rm SF}\rvert/T^{X,{\rm c}}_{\rm SF}$
    below which the Gaussian fluctuations of the order parameter exceed the jump of the specific heat of the mean-field
@@ -45,16 +47,23 @@ $M^{X,{\rm H}}_{\rm SF}$ is the mass of the amplitude mode.
    computed from the static pair response of a moving pair; the calculation also shows that the cutoff must be placed on
    the relative momentum of the pair (with a cutoff on the momenta of the two constituents the gradient expansion does
    not exist).
-2. **The Higgs particle.** In every method the superfluid realizes the Higgs mechanism (massive $W^\pm$ and $Z$, a massless
-   photon, a neutral scalar below the threshold of two quasi-particles), but in no method can its amplitude mode be the
-   observed Higgs boson: $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ = {{GEN:p3_h_mhv}}, {{GEN:p3_h_times_sm}} times the value
-   {{GEN:p3_h_sm_mhv}} of the Standard Model; the quartic coupling {{GEN:p3_h_lambda}} exceeds the tree-level unitarity bound
-   $8\pi/3$; the tree-level width is {{GEN:p3_h_width}} times the mass; and every method has charged scalars at
-   {{GEN:p3_h_mnu}} times $M^{X,{\rm H}}_{\rm SF}$. The methods differ in degree, not in kind.
+2. **The Higgs particle.** (a) In every method the superfluid is the Higgs field of its own gauge group: $W^\pm$ and $Z$
+   become massive, one gauge boson, the zeugon, stays massless, and a scalar of charge $Q_{\rm LL}=0$ lies below the threshold
+   of two quasi-particles. That scalar is a Higgs particle only in the mean-field dynamics: once it can decay into the
+   longitudinal gauge bosons its tree-level width is {{GEN:p3_h_width}} times its mass; $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ =
+   {{GEN:p3_h_mhv}}, the quartic coupling is {{GEN:p3_h_lambda}}, and every method has the two non-unitary scalars of the
+   charges $Q_{\rm LL}=\pm1$ at {{GEN:p3_h_mnu}} times $M^{X,{\rm H}}_{\rm SF}$. The methods differ in degree, not in kind.
+   (b) In no method can the superfluid be the Higgs field of the Standard Model: the DiracLike spinor carries no
+   electroweak quantum numbers, so the condensate is a singlet of the electroweak group, whatever its numbers.
 3. **Compositeness.** Yes, in every method and by construction: the field of the superfluid is the amplitude of the pair
    self-energy, a composite of two spinor charges; its kinetic term consists of susceptibilities of the spinor field;
    its amplitude mode is a bound state of two quasi-particles. Whether the Higgs boson of nature is composite is not
-   decided by this computation.
+   decided by this computation, because the Higgs particle of this model is not that boson.
+4. **The new massless gauge boson.** After the breaking exactly one gauge boson stays massless, the gauge boson of the
+   unbroken isospin charge $Q_{\rm LL}$; it is not the photon, and the author offered its naming: it is the **zeugon** (Greek
+   *zeugos*, a yoked pair), the only gauge boson that attracts the two members of a pair. The surviving group $O(2)$ makes
+   its charge conjugation a gauge symmetry, the structure of Alice electrodynamics; the Alice strings and monopoles that
+   follow from the topology of the vacuum are not computed.
 
 # 3. Contents
 
@@ -87,7 +96,7 @@ about these results: the results themselves (the tables, and ranges such as the 
 the agreement of two computations ("the three implementations confirm (14) to $2\times10^{-11}$"). A bound is the largest
 deviation of the checks it summarizes, rounded **up** to one significant digit, so that a stated bound is never smaller
 than a measured deviation. Typed in the templates are only the parameters of the model and of the numerical method,
-mathematical constants, and the measured values of the Standard Model and of cosmology, each with its reference. The
+mathematical constants, and the measured values of cosmology, each with its reference. The
 values inserted by the last build are listed in `generated/numbers.csv`.
 
 The build compiles the article and the Supplemental Material with pdfLaTeX, BibTeX and REVTeX 4.2, the cover letter and
@@ -130,8 +139,8 @@ drafts, which were not committed (their causes are recorded in the task record o
    sentence from the documents `superfluid.md` (Section 14.6), `provenance/P4_remarks.md` (addendum A2) and
    `superfluid.nb` (Section III.G.8), where it has since been corrected (entries E20, E23 and E24 of the task record);
 2. the ratio of the mass of the Higgs boson to the scale of the breaking in the Standard Model was given as 0.509 in the
-   abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract now
-   gives 0.5085;
+   abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract then
+   gave 0.5085, and since the correction of item 7 it gives no value of the Standard Model;
 3. "the programs compute both numbers also from the full static response of the normal vacuum ... to $10^{-14}$": only the
    Rust program computes them so, and the largest deviation is $3.5\times10^{-14}$;
 4. bounds smaller than the largest deviation they summarize: "the programs confirm (14) to $10^{-11}$" (the Python check
@@ -143,7 +152,17 @@ drafts, which were not committed (their causes are recorded in the task record o
    versions of the drafts read "Ginzburg numbers 7.611" instead of 7.6 to 11; the dash is now written `\mbox{--}`, which
    LaTeX and pandoc both set correctly;
 6. the Markdown versions of the drafts lacked the title, the byline and the abstract, which pandoc does not write for a
-   REVTeX document; the build now adds them.
+   REVTeX document; the build now adds them;
+7. after the first version had been kept, the author stated (21 November 2026) that the spinor field, the DiracLike
+   spinor, has electric charge 0 and no electroweak quantum numbers, and that $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new
+   gauge group, not the electroweak group. The first version had called the unbroken charge the electric charge and the
+   massless gauge boson the photon, and had judged the superfluid against the Higgs boson of the Standard Model (the
+   ratio of the mass to the scale of the breaking against 0.5085, the unitarity bound of the Higgs doublet, the values in
+   GeV on the scale $v=246.22$ GeV, "charged scalars"). That comparison had no basis and is withdrawn: the article, the
+   Supplemental Material and the cover letter now answer separately whether the superfluid is the Higgs field of its own
+   group and whether it can be that of the Standard Model, Table III has no column of the Standard Model and no rows in
+   GeV, the vacuum energy is compared with the dark-energy density as a condition on the unknown scale, and the massless
+   gauge boson is the zeugon (entries C18, C19, E25 to E27 of the task record).
 
 # 7. Provenance
 

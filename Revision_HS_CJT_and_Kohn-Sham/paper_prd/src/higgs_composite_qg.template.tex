@@ -3,7 +3,7 @@
 % This file is generated from src/higgs_composite_qg.template.tex by scripts/build_paper.py, which inserts every number
 % that a program computes, from the data files and the reports of the checks of the folder data/ (the bounds of the
 % agreement of two computations rounded up).  Typed in the template are only the parameters of the model and of the
-% numerical method, mathematical constants, and measured values of the Standard Model and of cosmology with their references.
+% numerical method, mathematical constants, and measured values of cosmology with their references.
 % Build:  python3 scripts/build_paper.py   (writes higgs_composite_qg.tex and runs pdflatex and bibtex)
 \documentclass[aps,prd,twocolumn,superscriptaddress,nofootinbib,floatfix,longbibliography]{revtex4-2}
 \usepackage{amsmath,amssymb}
@@ -28,23 +28,24 @@
 
 \begin{abstract}
 The unit bi-octonions form a Moufang loop, the Lorentz super-loop, that contains $SL(2,\mathbb C)$ and eight spinor
-charges; these are carried by a Dirac isodoublet on Minkowski space, coupled to the gauge group
-$SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$ of the local Lorentz transformations, the isospin and the fermion
-number. With a contact self-interaction whose spin-zero pair channel is supercritical, the spinor field condenses into a
-superfluid whose order parameter is a composite isospin vector of fermion number two. We solve it in five mean-field
-methods (Hubbard-Stratonovich with three decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis) and derive its effective
-Lagrangians. In every method the condensate realizes the Higgs mechanism: the isospin bosons $W^\pm$ and the
-fermion-number boson $Z$ become massive, exactly one gauge boson (the photon) stays massless, and the surviving group is
-$SL(2,\mathbb C)\times O(2)$, whose identity component contains the $U(1)$ of the electric charge. The amplitude mode is a
-composite scalar bound below the threshold of two quasi-particles. From the static pair response we compute the gradient
-coefficient of the order parameter at the critical temperature and find Ginzburg numbers {{GI_RANGE}}: the critical region
-is wider than the critical temperature itself, and the mean-field transition is not reliable. Against the Standard Model, the amplitude mode is
-{{TIMES_SM}} times too heavy relative to the scale of the breaking (the ratio of its mass to that scale is ${{MHV_RANGE}}$,
-against ${{SM_MHV}}$), strongly coupled, broad (its tree-level width is ${{WIDTH_RANGE}}$ times its mass), and accompanied by
-charged scalars of about the same mass.
-The Higgs boson of this model is therefore composite by construction, but it is not the boson observed at the LHC. We
-outline how gravitation enters through E.~A.~Lord's gauge theory of the local change of spinor representation, for which
-the $SL(2,\mathbb C)$ factor of the gauge group is the natural place; the gravitational sector is not computed here.
+charges; these are carried by an isodoublet of DiracLike spinors on Minkowski space (Dirac spinors of $SL(2,\mathbb C)$
+that have electric charge zero and no electroweak quantum numbers, particles not yet observed), coupled to a new gauge
+group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$ of the local Lorentz transformations, a vector-like isospin and
+the fermion number. With a contact self-interaction whose spin-zero pair channel is supercritical, the spinor field
+condenses into a superfluid whose order parameter is a composite isospin vector of fermion number two. We solve it in
+five mean-field methods (Hubbard-Stratonovich with three decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis) and
+derive its effective Lagrangians. In every method the condensate is the Higgs field of the new group: the isospin bosons
+$W^\pm$ and the fermion-number boson $Z$ become massive, and exactly one gauge boson stays massless. This boson, which we
+name the zeugon, is not the photon: it couples to the unbroken isospin charge, it is the only gauge boson that attracts
+the two members of a pair, and, because the surviving group is $SL(2,\mathbb C)\times O(2)$, its charge conjugation is
+itself a gauge symmetry, the structure of Alice electrodynamics. The amplitude mode is a composite scalar bound below
+the threshold of two quasi-particles; once it can decay into the longitudinal gauge bosons its width is ${{WIDTH_RANGE}}$
+times its mass. From the static pair response we compute the gradient coefficient of the order parameter at the critical
+temperature and find Ginzburg numbers {{GI_RANGE}}: the critical region is wider than the critical temperature itself,
+and the mean-field transition is not reliable. The Higgs particle of the new group is therefore composite and broad.
+Because the condensate is a singlet of the electroweak group, it cannot be the Higgs boson observed at the LHC. We outline
+how gravitation enters through E.~A.~Lord's gauge theory of the local change of spinor representation, for which the
+$SL(2,\mathbb C)$ factor of the gauge group is the natural place; the gravitational sector is not computed here.
 \end{abstract}
 
 \maketitle
@@ -65,20 +66,26 @@ that gap.
 
 In earlier work~\cite{Nash2026} the author showed that the unit bi-octonions form a Moufang loop, the Lorentz super-loop,
 that contains $SL(2,\mathbb C)$ together with eight spinor charges, a Weyl spinor that is an isospin doublet, and that a
-spin-zero superfluid of these charges forms isospin-triplet pairs. The present paper asks whether such a superfluid can
-be the Higgs sector of a gauge theory: whether it gives masses to gauge bosons while leaving a massless photon, whether
-its amplitude mode can be the Higgs particle, and whether the Higgs is then a composite particle. We set up the gauge
+spin-zero superfluid of these charges forms isospin-triplet pairs. The spinor field of that work is a DiracLike spinor: it
+transforms under $SL(2,\mathbb C)$ as a Dirac spinor, but it is not the electron; it has electric charge zero and no
+electroweak quantum numbers, and its gauge group $SU(2)_{\rm v}\times U(1)^{\rm F}$ is a new group, not the electroweak group
+$SU(2)_L\times U(1)_Y$, whose conventions we borrow for the names only. The present paper asks whether the superfluid can
+be the Higgs sector of this gauge theory: whether it gives masses to the gauge bosons, which gauge boson stays massless,
+whether its amplitude mode is a Higgs particle, and whether that Higgs is then a composite particle. We set up the gauge
 theory of the spinor field (Sec.~\ref{sec:model}), solve its superfluid in five mean-field methods
 (Sec.~\ref{sec:methods}), derive the effective Lagrangians, the collective modes, the masses of the gauge bosons and the
 surviving symmetry (Sec.~\ref{sec:T0}), compute the free energy at finite temperature and the Ginzburg number of the
-transition (Sec.~\ref{sec:thermal}), compare the result with the Higgs sector of the Standard Model
-(Sec.~\ref{sec:higgs}), and discuss compositeness (Sec.~\ref{sec:composite}).
+transition (Sec.~\ref{sec:thermal}), ask whether the superfluid is the Higgs field of its own group and whether it could be
+that of the Standard Model (Sec.~\ref{sec:higgs}), and discuss compositeness (Sec.~\ref{sec:composite}).
 
-The answers are as follows. In every method the superfluid realizes the Higgs mechanism, with a massless photon; its
-amplitude mode is a composite scalar below the threshold of two quasi-particles; and the Higgs field of the model is
-composite by construction. But the amplitude mode is {{TIMES_SM}} times too heavy against the scale of the breaking, broad,
-and strongly coupled, the thermal transition lies deep in its own critical region, and there are charged scalars that the
-Standard Model does not have: this composite Higgs is not the observed boson.
+The answers are as follows. In every method the superfluid is the Higgs field of $SU(2)_{\rm v}\times U(1)^{\rm F}$: three gauge
+bosons become massive and one, the zeugon, stays massless; its charge conjugation is a local symmetry, and it is the only
+gauge boson that attracts the pair, although alone it would pair the vacuum only above the coupling
+$g^{\rm v}={{GV_CRIT}}$, against $0.7$ in the model. The amplitude mode is a composite scalar below the threshold of two
+quasi-particles, so the Higgs field of the model is composite by construction; but it is broad, its width exceeding its
+mass once it can decay into the longitudinal gauge bosons, and the thermal transition lies deep in its own critical
+region. Because the DiracLike spinor carries no electroweak quantum numbers, the condensate is a singlet of the electroweak
+group: it cannot be the Higgs field of the Standard Model, whatever its numbers.
 
 The gauge group of the model contains $SL(2,\mathbb C)$ as a gauge factor with a Lorentz connection, which is a pure gauge
 on the flat space-time of this paper. E.~A.~Lord~\cite{Lord1971} showed that the local change of representation of the
@@ -96,8 +103,8 @@ a notebook in the Wolfram Language; the Supplemental Material~\cite{SM} gives th
 \paragraph*{Space-time and spinor field.}
 Space-time is the manifold M31 of the Hermitian bi-quaternions, which is Minkowski space with the metric
 $\eta^\LL={\rm diag}(1,-1,-1,-1)$~\cite{Nash2026}; we use $\hbar=c=k_{\rm B}=1$. The spinor charges of the super-loop are
-carried by a Dirac isodoublet $\Psi_\LL$ with eight complex components (four Dirac components times two isospin components)
-and the mass $m_\LL=0.2$. The momenta of the uniform states are restricted to $|\vec q_\LL|<\Lambda_\LL=1$; the cutoff
+carried by an isodoublet $\Psi_\LL$ of DiracLike spinors with eight complex components (four Dirac components times two
+isospin components), electric charge zero, no electroweak quantum numbers, and the mass $m_\LL=0.2$. The momenta of the uniform states are restricted to $|\vec q_\LL|<\Lambda_\LL=1$; the cutoff
 $\Lambda_\LL$ is the unit of energy throughout.
 
 \paragraph*{Gauge group and covariant derivative.}
@@ -107,7 +114,8 @@ The group of the local transformations is
 \label{eq:GEE}
 \end{equation}
 the local Lorentz transformations of the spinor index, the isospin (vector-like: it acts on both chiralities alike) and
-the fermion number $F_\LL$. The covariant derivative of the spinor field is
+the fermion number $F_\LL$; $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$ is a new gauge group, not the electroweak group of the
+Standard Model, whose names we borrow for analogous objects only. The covariant derivative of the spinor field is
 \begin{equation}
 \nabla_p\Psi_\LL=\big(\partial_p+\Gamma^\LL_p+ig^{\rm v}_\LL\mathsf W_{\SF,p}+ig^{\rm F}_\LL B_{\SF,p}\big)\Psi_\LL ,
 \label{eq:cov}
@@ -256,7 +264,7 @@ $M^{X,{\rm H}}_\SF$ and $M^{X,{\rm NU}}_\SF$ of Table~\ref{tab:higgs}; both lie 
 quasi-particles, at {{MH2GAP_RANGE}} of it for the amplitude mode. The three Goldstone fields (the phase and two isospin
 angles) are massless without the gauge fields.
 
-\paragraph*{Gauge bosons, photon and surviving group.}
+\paragraph*{Gauge bosons, the zeugon and the surviving group.}
 Inserting a constant field into (\ref{eq:Lkin}) gives the mass matrix of the four gauge fields
 $(W^1,W^2,W^3,B)$. For a polar vacuum $\vec\Phi=\Phi_0e^{i\vartheta}\vec n$ it is diagonal in a frame adapted to $\vec n$, with the
 eigenvalues $0$ (the field $\vec n\cdot\vec W$), $(M^X_{W,\SF})^2$ twice and $(M^X_{Z,\SF})^2$,
@@ -267,16 +275,26 @@ M^X_{W,\SF}=g^{\rm v}_\LL f^{X,{\rm I}}_\SF ,\qquad M^X_{Z,\SF}=2g^{\rm F}_\LL f
 and the same masses follow from the microscopic response of the superfluid to constant gauge fields, to
 {{MASS_MICRO}} of $(M^X_{Z,\SF})^2$~\cite{SM}. The massless gauge bosons correspond one to one to the generators that leave the field
 unchanged (a theorem that holds for every field, because the mass matrix is positive semidefinite~\cite{SM}): for a polar
-vacuum the only such generator is $\vec n\cdot\vec T$, so the photon is $A=\vec n\cdot\vec W$; it does not mix with $B$ (the
-weak mixing angle vanishes) because the condensate has fermion number 2, so no admixture of $F_\LL$ leaves it unchanged. For
+vacuum the only such generator is $\vec n\cdot\vec T$, so exactly one gauge boson, $A=\vec n\cdot\vec W$, stays massless. It is not
+the photon: it couples with the strength $g^{\rm v}_\LL$ to the charge $Q_\LL=\vec n\cdot\vec T_\LL$ of $SU(2)_{\rm v}$, which only
+the spinor field ($\pm\frac12$), $W^\pm$ and the non-unitary scalars ($\pm1$) carry. We name it the \emph{zeugon} (from the
+Greek \emph{zeugos}, a yoked pair): it is the only gauge boson that attracts the two members of the condensed
+pair~\cite{SM}, although alone it would pair the normal vacuum only for $g^{\rm v}_\LL>{{GV_CRIT}}$. It does not mix with $B$
+(the mixing angle vanishes) because the condensate has fermion number 2, so no admixture of $F_\LL$ leaves it unchanged. For
 a field with a mixed stabilizer the massless boson does mix (Fig.~\ref{fig:mixing}), with $\tan\theta'=g^{\rm v}_\LL/(2g^{\rm F}_\LL)$,
-the analogue of the Weinberg angle with $g'$ replaced by $2g^{\rm F}_\LL$. The surviving group of the vacuum along $\vec e_3$ is
-$SL(2,\mathbb C)\times O(2)$: the identity component of $O(2)$ is the group $U(1)^{\rm Q}_\LL$ of the electric charge
-$Q_\LL=T^3_\LL$ (charges $\pm\frac12$ of the spinor field, $\pm1$ of $W^\pm$), and its second component is a charge conjugation
-of the photon. Of the fourteen degrees of freedom (four massless vector fields and the six real components of $\vec\Phi$),
+the analogue of the weak mixing angle with $g'$ replaced by $2g^{\rm F}_\LL$. The surviving group of the vacuum along $\vec e_3$ is
+$SL(2,\mathbb C)\times O(2)$: the identity component of $O(2)$ is the group $U(1)^{\rm Q}_\LL$ of the charge
+$Q_\LL=T^3_\LL$, and its second component, a rotation by $\pi$ of the isospin combined with the fermion-number phase $\pi/2$,
+is a gauge transformation that reverses the zeugon and exchanges $W^+$ and $W^-$. The charge conjugation of the zeugon is
+therefore a local symmetry, the defining property of Alice
+electrodynamics~\cite{Kiskis1978,Schwarz1982,BucherLoPreskill1992}. Since $(\vec n,\vartheta)$ and $(-\vec n,\vartheta+\pi)$ are
+the same vacuum, the vacuum manifold contains loops along which $\vec n$ turns into $-\vec n$; a half-quantum vortex along
+such a loop is an Alice string, which reverses $Q_\LL$ of a particle carried around it, as in the polar phase of spin-one
+condensates~\cite{LeonhardtVolovik2000}. These strings, and the monopoles of $U(1)^{\rm Q}_\LL$ that the sphere of directions
+$\vec n$ allows, are not computed here. Of the fourteen degrees of freedom (four massless vector fields and the six real components of $\vec\Phi$),
 the three Goldstone fields become the longitudinal parts of $W^\pm$ and $Z$; a time-dependent calculation in the temporal
 and in the unitary gauge (CVODE and IDA) shows the Goldstone wave of the phase turning into the longitudinal $Z$ with the
-dispersion $\omega^2=k^2+M_Z^2$~\cite{SM}. The $SL(2,\mathbb C)$ factor is unbroken: the condensate is a Lorentz scalar.
+dispersion $\omega^2=k^2+(M^X_{Z,\SF})^2$~\cite{SM}. The $SL(2,\mathbb C)$ factor is unbroken: the condensate is a Lorentz scalar.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{figures/fig_part4_r1_massmatrix.pdf}
@@ -415,38 +433,55 @@ of the pair field~\cite{NozieresSchmittRink1985}.
 \section{Can the superfluid play the role of the Higgs particle?}
 \label{sec:higgs}
 
-In the Standard Model $M_W=gv/2$ with $v=(\sqrt2G_F)^{-1/2}=246.22$~GeV, $m_H=125.20\pm0.11$~GeV, and the Higgs boson is
-narrow, $\Gamma_H=3.7^{+1.9}_{-1.4}$~MeV~\cite{PDG2024,CMSwidth2022}. By (\ref{eq:masses}) the analogue of $v$ is
+The question has two meanings. (a) Is the superfluid the Higgs field of its own gauge group
+$SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$, with a Higgs particle? (b) Can it be the Higgs field of the Standard Model, and its
+amplitude mode the boson observed at the LHC?
+
+\paragraph*{(b) needs no number.}
+The only matter field of (\ref{eq:L}) is the DiracLike spinor, which has electric charge zero and no quantum numbers of
+$SU(2)_L\times U(1)_Y$. Every field made of it, the condensate included, is therefore a singlet of the electroweak group:
+its vacuum value leaves that group unbroken, gives no mass to the $W$ and $Z$ bosons of nature, and its amplitude mode
+has no coupling at tree level to them, to the quarks or to the leptons, the couplings by which the observed boson is
+identified and which agree with the Standard Model to several per cent~\cite{ATLAS2022,CMS2022}. In no method can the
+superfluid be the Higgs field of the Standard Model. The model contains no coupling between the two sectors; a term such
+as $(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}\,\vec\Phi^\dagger\cdot\vec\Phi$ would be an addition to it, would mix the amplitude mode
+with the observed boson, and would be limited by the measured couplings of that boson.
+
+\paragraph*{(a) The Higgs sector of the new group.}
+The scale $\Lambda_\LL$ of the model is fixed by no observation, and all masses are given in its units. By
+(\ref{eq:masses}), with the convention $M_W=gv/2$ by which the Standard Model defines its vacuum value, the scale of the
+breaking is
 \begin{equation}
 v^X_\SF=2f^{X,{\rm I}}_\SF ,\qquad M^X_{W,\SF}=\tfrac12g^{\rm v}_\LL v^X_\SF ,
 \label{eq:vSF}
 \end{equation}
-independent of the gauge coupling, and the natural dimensionless numbers are $M^{X,{\rm H}}_\SF/v^X_\SF$ (Standard Model
-${{SM_MHV}}$) and the quartic coupling $\lambda^{X,{\rm H}}_\SF=(M^{X,{\rm H}}_\SF)^2/(2(v^X_\SF)^2)$ (Standard Model ${{SM_LAMBDA}}$).
+independent of the gauge coupling, and the natural dimensionless numbers are $M^{X,{\rm H}}_\SF/v^X_\SF$, the quartic coupling
+$\lambda^{X,{\rm H}}_\SF=(M^{X,{\rm H}}_\SF)^2/(2(v^X_\SF)^2)$ and the ratio of the width of the amplitude mode to its mass.
 
 \paragraph*{Width.}
 The kinetic part (\ref{eq:Lkin}), with $\vec\Phi=(\Phi_0+h/(2(Z+Y))^{1/2})e^{i\vartheta_0}R_1(\vartheta_1)\vec e_3$, contains the
 couplings $f^{X,{\rm F}}_\SF h(\partial\vartheta_0)^2$ and $((f^{X,{\rm I}}_\SF)^2/f^{X,{\rm F}}_\SF)h(\partial\vartheta_{1,2})^2$: for the
 canonically normalized Goldstone fields all three are $1/f^{X,{\rm F}}_\SF$. The decay of $h$ into two massless Goldstone
-quanta then has the width $(M^{X,{\rm H}}_\SF)^3/(32\pi(f^{X,{\rm F}}_\SF)^2)$ in each channel, and
+quanta then has the width $(M^{X,{\rm H}}_\SF)^3/(32\pi(f^{X,{\rm F}}_\SF)^2)$ in each of the three channels, one for each broken
+generator, and
 \begin{equation}
 \Gamma^{X,{\rm H}}_\SF=\frac{3\,(M^{X,{\rm H}}_\SF)^3}{32\pi\,(f^{X,{\rm F}}_\SF)^2},
 \label{eq:width}
 \end{equation}
-which by the equivalence theorem~\cite{CLT1974,ChanowitzGaillard1985} is also the width into $W^+W^-$ and $ZZ$, up to corrections
-of relative order $\zeta_V=M_V^2/(M^{X,{\rm H}}_\SF)^2$, where $M_V$ is the mass of $W$ or $Z$: here $M_V\le{{MV_OVER_MH}}\,M^{X,{\rm H}}_\SF$,
-and the tree-level factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ of these channels lowers the width by less than
-{{VV_CORR_PCT}}. For $f=v$,
-(\ref{eq:width}) is the width $3m_H^3/(32\pi v^2)$ of a heavy Standard-Model Higgs boson. The effective Lagrangian is used at the energy $M^{X,{\rm H}}_\SF$, where it is not accurate (its own mass of the
-amplitude mode differs from the linear response by {{MEFF_PCT}}), so (\ref{eq:width}) gives the order of magnitude.
+which by the equivalence theorem~\cite{CLT1974,ChanowitzGaillard1985} is also the width into $W^+W^-$ and $ZZ$ of the new
+group, up to corrections of relative order $\zeta_V=M_V^2/(M^{X,{\rm H}}_\SF)^2$, where $M_V$ is the mass of $W$ or $Z$: here
+$M_V\le{{MV_OVER_MH}}\,M^{X,{\rm H}}_\SF$, and the tree-level factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ of these channels
+lowers the width by less than {{VV_CORR_PCT}}. With $f^{X,{\rm F}}_\SF$ replaced by the vacuum value $v$ of the Standard Model,
+(\ref{eq:width}) is the known width $3m^3/(32\pi v^2)$ of a heavy Higgs boson of mass $m$, a check of the normalization. The
+effective Lagrangian is used at the energy $M^{X,{\rm H}}_\SF$, where it is not accurate (its own mass of the amplitude mode
+differs from the linear response by {{MEFF_PCT}}), so (\ref{eq:width}) gives the order of magnitude.
 
 \begin{table*}
-\caption{\label{tab:higgs}The superfluid as a Higgs sector. Masses in units of $\Lambda_\LL$ (gauge boson masses at
-$g^{\rm v}_\LL=0.7$, $g^{\rm F}_\LL=0.45$); the last rows set $v^X_\SF=246.22$~GeV. The last column gives the Standard
-Model~\cite{PDG2024}; its thermal crossover is at $159.5\pm1.5$~GeV~\cite{DOnofrio2016} and has no critical region.}
+\caption{\label{tab:higgs}The superfluid as the Higgs sector of $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$. Masses in units of
+$\Lambda_\LL$ (gauge boson masses at $g^{\rm v}_\LL=0.7$, $g^{\rm F}_\LL=0.45$).}
 \begin{ruledtabular}
-\begin{tabular}{lcccccc}
-quantity & HS (1,1) & HS (0,1) & HS (0,0) & KS & CJT & Standard Model \\
+\begin{tabular}{lccccc}
+quantity & HS (1,1) & HS (0,1) & HS (0,0) & KS & CJT \\
 \hline
 {{TABLE_HIGGS}}
 \end{tabular}
@@ -455,47 +490,50 @@ quantity & HS (1,1) & HS (0,1) & HS (0,0) & KS & CJT & Standard Model \\
 
 \begin{figure*}
 \includegraphics[width=0.85\textwidth]{figures/fig_prd_higgs.pdf}
-\caption{\label{fig:higgs}(a) $M^{X,{\rm H}}_\SF/v^X_\SF$ and $\lambda^{X,{\rm H}}_\SF$ against the Standard Model (dashed) and the
-tree-level bound $8\pi/3$ of perturbative unitarity (dotted). (b) The width (\ref{eq:width}) relative to the mass, against
-$\Gamma_H/m_H$ of the Standard Model, and the mass ratio of the charged non-unitary scalars to the amplitude mode.}
+\caption{\label{fig:higgs}(a) $M^{X,{\rm H}}_\SF/v^X_\SF$ and $\lambda^{X,{\rm H}}_\SF$ of the five methods. (b) The width
+(\ref{eq:width}) relative to the mass, and the mass ratio of the two non-unitary scalars (charges $Q_\LL=\pm1$) to the
+amplitude mode; the dotted line marks the ratio 1.}
 \end{figure*}
 
 \paragraph*{The verdict for each method.}
-Table~\ref{tab:higgs} and Fig.~\ref{fig:higgs} compare seven properties.
-(1) \emph{The Higgs mechanism}: realized in every method (Sec.~\ref{sec:T0}).
-(2) \emph{A neutral scalar below threshold}: in every method, at {{MH2GAP_RANGE}} of $2E^{X,{\rm gap}}_\SF$.
-(3) \emph{Its mass against the scale of the breaking}: $M^{X,{\rm H}}_\SF/v^X_\SF={{MHV_RANGE}}$, {{TIMES_SM}} times the Standard-Model
-value; $\lambda^{X,{\rm H}}_\SF={{LAMBDA_RANGE}}$ exceeds the tree-level unitarity bound $8\pi/3=8.38$~\cite{LQT1977}; on the scale
-$v^X_\SF=246.22$~GeV the amplitude mode has the mass {{MHGEV_RANGE}}.
-(4) \emph{Its width}: $\Gamma^{X,{\rm H}}_\SF/M^{X,{\rm H}}_\SF={{WIDTH_RANGE}}$, a broad resonance, against $3\times10^{-5}$.
-(5) \emph{No further scalars}: every method has the charged non-unitary doublet at {{MNU_RANGE}} of $M^{X,{\rm H}}_\SF$.
-(6) \emph{Quantum numbers}: the condensate is an isospin vector of fermion number 2 of a vector-like isospin, not a
-hypercharge doublet of a chiral $SU(2)_L$; the photon is $W^3$, the $Z$ is the boson of the fermion number, and
-$M^X_{W,\SF}/M^X_{Z,\SF}$ depends on two independent couplings with no custodial relation; the condensate adds a pairing gap to
-the Dirac mass of the spinor field rather than generating Yukawa masses.
+Table~\ref{tab:higgs} and Fig.~\ref{fig:higgs} give seven properties.
+(1) \emph{The Higgs mechanism}: realized in every method, with the massless zeugon (Sec.~\ref{sec:T0}).
+(2) \emph{A scalar of charge $Q_\LL=0$ below threshold}: in every method, at {{MH2GAP_RANGE}} of $2E^{X,{\rm gap}}_\SF$.
+(3) \emph{Its mass against the scale of the breaking}: $M^{X,{\rm H}}_\SF/v^X_\SF={{MHV_RANGE}}$ and
+$\lambda^{X,{\rm H}}_\SF={{LAMBDA_RANGE}}$; the amplitude mode is heavier than the scale of the breaking. The bound of
+perturbative unitarity that Lee, Quigg and Thacker derived for the Higgs doublet of the Standard Model~\cite{LQT1977}
+depends on the scalar fields and channels of the theory; for this one it was not computed.
+(4) \emph{Its width}: $\Gamma^{X,{\rm H}}_\SF/M^{X,{\rm H}}_\SF={{WIDTH_RANGE}}$: a broad resonance, not a particle.
+(5) \emph{Further scalars}: every method has the non-unitary doublet, of the charges $Q_\LL=\pm1$, at {{MNU_RANGE}} of
+$M^{X,{\rm H}}_\SF$.
+(6) \emph{Quantum numbers}: the condensate is an isospin vector of fermion number 2 of the vector-like $SU(2)_{\rm v}$; the
+zeugon is $W^3$, $Z$ is the boson of the fermion number, and $M^X_{W,\SF}/M^X_{Z,\SF}$ depends on two independent
+couplings; the condensate adds a pairing gap to the Dirac mass of the spinor field rather than generating Yukawa masses.
 (7) \emph{Thermal history}: the transition lies deep in its critical region (Sec.~\ref{sec:thermal}).
-In every method the superfluid realizes the Higgs mechanism and has a Higgs-like neutral scalar, but in no method can that
-scalar be the observed Higgs boson. The methods differ in degree, not in kind: CJT and KS are closest, HS (1,1) farthest.
+In every method the superfluid is the Higgs field of $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$, with a Higgs-like scalar that is
+a particle only in mean-field dynamics and becomes a resonance broader than its mass once it can decay. The methods differ
+in degree, not in kind: CJT and KS have the lightest and narrowest amplitude mode, HS (1,1) the heaviest and broadest.
 
 %=====================================================================================================================
 \section{Is the Higgs a composite particle?}
 \label{sec:composite}
 
-In this model, yes, in every method. The field $\vec\Phi^X_\SF$ is not a field of the Lagrangian (\ref{eq:L}), whose only
-matter field is the spinor field; it is the amplitude (\ref{eq:Phi}) of the pair self-energy, a composite of two spinor
-charges. Its kinetic part (\ref{eq:Lkin}) has no term of its own: $Z^X_\SF$ and $Y^X_\SF$ are susceptibilities of the spinor
-field. Its amplitude mode is a bound state of two quasi-particles below their threshold. This is the compositeness
-condition of Bardeen, Hill and Lindner~\cite{BHL1990}: the normalization of the kinetic term of the composite field vanishes
-at the cutoff, where only the spinor field exists.
+In this model, yes, in every method, for the Higgs particle of the new group. The field $\vec\Phi^X_\SF$ is not a field of
+the Lagrangian (\ref{eq:L}), whose only matter field is the spinor field; it is the amplitude (\ref{eq:Phi}) of the pair
+self-energy, a composite of two spinor charges. Its kinetic part (\ref{eq:Lkin}) has no term of its own: $Z^X_\SF$ and
+$Y^X_\SF$ are susceptibilities of the spinor field. Its amplitude mode is a bound state of two quasi-particles below their
+threshold. This is the compositeness condition of Bardeen, Hill and Lindner~\cite{BHL1990}: the normalization of the kinetic
+term of the composite field vanishes at the cutoff, where only the spinor field exists.
 
-The same structure explains why this composite is heavy. In Nambu-Jona-Lasinio dynamics the mass of the bound state is
-tied to the gap of its constituents~\cite{NJL1961} (here $M^{X,{\rm H}}_\SF$ is {{MH2GAP_RANGE}} of $2E^{X,{\rm gap}}_\SF$), while
-the scale of the breaking comes from a loop of the constituents and is small against the gap
-($f^{X,{\rm I}}_\SF/E^{X,{\rm gap}}_\SF={{FIGAP_RANGE}}$). A light composite Higgs needs a cutoff far above the gap, as in top
-condensation~\cite{BHL1990,HillSimmons2003}, or another mechanism, such as a pseudo-Goldstone Higgs~\cite{KaplanGeorgi1984,Agashe2005}.
-Whether the Higgs boson of nature is composite is not decided here: its couplings agree with the Standard Model to several
-per cent~\cite{ATLAS2022,CMS2022}, which constrains, but does not exclude, compositeness at a higher scale. What the
-computation shows is that the composite Higgs of the mean-field methods of this model is not that boson.
+The same structure explains why this composite is heavy against the scale of the breaking. In Nambu-Jona-Lasinio
+dynamics the mass of the bound state is tied to the gap of its constituents~\cite{NJL1961} (here $M^{X,{\rm H}}_\SF$ is
+{{MH2GAP_RANGE}} of $2E^{X,{\rm gap}}_\SF$), while the scale of the breaking comes from a loop of the constituents and is small
+against the gap ($f^{X,{\rm I}}_\SF/E^{X,{\rm gap}}_\SF={{FIGAP_RANGE}}$). A light composite needs a cutoff far above the gap, as
+in top condensation~\cite{BHL1990,HillSimmons2003}, or another mechanism, such as a pseudo-Goldstone
+scalar~\cite{KaplanGeorgi1984,Agashe2005}. Whether the Higgs boson of nature is composite is not decided here, because the
+Higgs particle of this model is not that boson (answer (b) of Sec.~\ref{sec:higgs}); its couplings agree with the Standard
+Model to several per cent~\cite{ATLAS2022,CMS2022}, which constrains, but does not exclude, its compositeness at a higher
+scale.
 
 %=====================================================================================================================
 \section{Toward the gravitational sector}
@@ -516,10 +554,12 @@ source. Gauging the local Lorentz group is also the route of Utiyama and Kibble~
 
 Two consequences of the present results are already clear. First, the superfluid is a Lorentz scalar and leaves
 $SL(2,\mathbb C)$ unbroken, so the condensation does not give the gravitational field a mass. Second, the condensate lowers
-the energy density of the vacuum by the depth of the effective potential, ${{DEPTH_CJT}}\,\Lambda_\LL^4$ in CJT, that is about
-$({{DEPTH_GEV}}\ {\rm GeV})^4$ on the scale of Table~\ref{tab:higgs}, against the observed dark-energy density of about
-$2.5\times10^{-47}\,{\rm GeV}^4$~\cite{PDG2024}: the cosmological-constant problem~\cite{Weinberg1989} appears here in its usual
-form. The quantization of the gravitational sector, and with it the ``quantum gravity'' of the title, is beyond this paper.
+the energy density of the vacuum by the depth of the effective potential, ${{DEPTH_CJT}}\,\Lambda_\LL^4$ in CJT, that is
+${{DEPTH_V4}}\,(v^{\rm CJT}_\SF)^4$ on the scale of its own breaking. Since that scale is not known, the comparison with the
+observed dark-energy density of about $2.5\times10^{-47}\,{\rm GeV}^4$~\cite{PDG2024} can only be stated as a condition: the two
+are equal if $v^{\rm CJT}_\SF$ is about {{V_MATCH}}~meV, and for a larger scale the vacuum energy exceeds the observed density by
+the fourth power of the ratio, the cosmological-constant problem~\cite{Weinberg1989} in its usual form. The quantization of
+the gravitational sector, and with it the ``quantum gravity'' of the title, is beyond this paper.
 A related observation, also left to future work, is that the Einstein term itself may be induced by the loop of the spinor
 field~\cite{Sakharov1967,Visser2002}, just as the kinetic term (\ref{eq:Lkin}) of the composite field is.
 
@@ -527,15 +567,17 @@ field~\cite{Sakharov1967,Visser2002}, just as the kinetic term (\ref{eq:Lkin}) o
 \section{Conclusions}
 \label{sec:conclusions}
 
-A spin-zero superfluid of the spinor charges of the Lorentz super-loop, solved in five mean-field methods, realizes the
-Higgs mechanism of the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$: massive $W^\pm$ and $Z$, a massless
-photon that does not mix with the boson of the fermion number, the surviving group $SL(2,\mathbb C)\times O(2)$ with the $U(1)$
-of the electric charge, and a composite amplitude mode below the threshold of two quasi-particles. Its Higgs field is
-composite by construction. Quantitatively it is not the Standard-Model Higgs sector: the amplitude mode is {{TIMES_SM}}
-times too heavy against the scale of the breaking, broad and strongly coupled, there are charged scalars of comparable
-mass, and the thermal transition lies inside a critical region of width ${\rm Gi}\approx{{GI_RANGE}}$, so that its
-mean-field description is not reliable. The gravitational sector will be added through Lord's gauge theory of the local
-change of spinor representation, for which the model already has the place.
+A spin-zero superfluid of the spinor charges of the Lorentz super-loop, DiracLike spinors without electric charge, solved
+in five mean-field methods, is the Higgs field of the new gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$:
+$W^\pm$ and $Z$ become massive, the surviving group is $SL(2,\mathbb C)\times O(2)$, and exactly one gauge boson stays
+massless. This boson, the zeugon, is not the photon: it couples to the unbroken isospin charge, it is the only gauge boson
+that attracts the two members of a pair, and its charge conjugation is a gauge symmetry, so that the half-quantum vortices
+that the topology of the vacuum allows are Alice strings. The amplitude mode is a composite scalar below the threshold of two quasi-particles,
+so the Higgs field is composite by construction; it is broad once it can decay into the longitudinal gauge bosons, and
+the thermal transition lies inside a critical region of width ${\rm Gi}\approx{{GI_RANGE}}$, so that its mean-field
+description is not reliable. Being a singlet of the electroweak group, the superfluid cannot be the Higgs field of the
+Standard Model. The gravitational sector will be added through Lord's gauge theory of the local change of spinor
+representation, for which the model already has the place.
 
 %=====================================================================================================================
 \section*{Data availability}

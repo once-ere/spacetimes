@@ -13,15 +13,15 @@ What it does:
        data/part3_thermal*.csv    the superfluid at finite temperature, the Landau residuals, the free-energy curves
        data/part3_ginzburg*.csv   the coefficients of the Ginzburg-Landau functional at T_c, the Ginzburg number, the
                                   two regularizations of a moving pair
-       data/part3_higgs.csv       the superfluid as a Higgs sector, with a row of the Standard Model
+       data/part3_higgs.csv       the superfluid as the Higgs sector of SU(2)_v x U(1)^F (its row of the Standard Model is
+                                  not used: the DiracLike spinor has no electroweak quantum numbers)
        data/part4_massmatrix.csv  the mass matrix of the gauge bosons
        data/hck_*.txt             the reports of the checks of the programs and the log of the notebook
   2. computes every number that the texts state about these results -- the results themselves, and every bound of the
      agreement of two computations, taken from the deviations in the reports and rounded UP (functions sci_up, sig_up),
      so that a stated bound is never smaller than the largest measured deviation -- builds the tables, and replaces the
      placeholders {{NAME}} of the templates.  Typed in the templates are only the parameters of the model and of the
-     numerical method, mathematical constants, and measured values of the Standard Model and of cosmology with their
-     references;
+     numerical method, mathematical constants, and measured values of cosmology with their references;
   3. copies the figures from figures/ into paper_prd/figures/ and src/references.bib into paper_prd/;
   4. writes <name>.tex for the four documents (higgs_composite_qg, higgs_composite_qg_SM, cover_letter, submission_info)
      and runs pdflatex (with bibtex for the first two); SOURCE_DATE_EPOCH fixes the date written into the PDFs, so that a
@@ -126,46 +126,66 @@ def main():
         return 36 * x["b"] ** 2 * x["T_c"] ** 2 / (64 * math.pi ** 2 * x["alpha"] * c ** 3)
     num["GI_LO"] = sig(min(gi_c(t, gz[t]["c"] + gz[t]["c_T3_twist"]) for t in TAGS), 2)
     num["GI_HI"] = sig(max(gi_c(t, gz[t]["c"] - gz[t]["c_T3_twist"]) for t in TAGS), 2)
-    # ---- the Higgs sector (Table III)
-    sm = hg["SM"]
+    # ---- the Higgs sector of SU(2)_v x U(1)^F (Table III): no column of the Standard Model and no values in GeV, because
+    # the DiracLike spinor carries no electroweak quantum numbers (the superfluid is not the Higgs sector of the
+    # electroweak group) and no observation fixes the scale of the new group
     hrows = [
-        ("$v^X_\\SF=2f^{X,{\\rm I}}_\\SF$", "v_SF", 4, "246.22 GeV"),
-        ("$f^{X,{\\rm F}}_\\SF$", "f_F", 4, "--"),
-        ("$M^{X,{\\rm H}}_\\SF$ (amplitude mode)", "M_H", 4, "125.20 GeV"),
-        ("$M^{X,{\\rm NU}}_\\SF$ (charged scalars)", "M_NU", 4, "--"),
-        ("$M^X_{W,\\SF}$", "M_W", 3, "80.37 GeV"),
-        ("$M^X_{Z,\\SF}$", "M_Z", 3, "91.19 GeV"),
-        ("$M^{X,{\\rm H}}_\\SF/v^X_\\SF$", "M_H_over_v_SF", 3, sig(sm["M_H_over_v_SF"], 4)),
-        ("$\\lambda^{X,{\\rm H}}_\\SF$", "lambda_SF", 3, sig(sm["lambda_SF"], 4)),
-        ("$M^{X,{\\rm H}}_\\SF/M^X_{W,\\SF}$", "M_H_over_M_W", 3, sig(sm["M_H_over_M_W"], 4)),
-        ("$M^X_{W,\\SF}/M^X_{Z,\\SF}$", "M_W_over_M_Z", 3, sig(sm["M_W_over_M_Z"], 4)),
-        ("$M^{X,{\\rm H}}_\\SF/2E^{X,{\\rm gap}}_\\SF$", "M_H_over_2E_gap", 3, "--"),
-        ("$M^{X,{\\rm NU}}_\\SF/M^{X,{\\rm H}}_\\SF$", "M_NU_over_M_H", 3, "none"),
-        ("$f^{X,{\\rm F}}_\\SF/f^{X,{\\rm I}}_\\SF$", "f_F_over_f_I", 3, "--"),
-        ("$\\Gamma^{X,{\\rm H}}_\\SF/M^{X,{\\rm H}}_\\SF$, Eq.~(\\ref{eq:width})", "Gamma_over_M_H", 2, "$3\\times10^{-5}$"),
-        ("$T^{X,{\\rm c}}_\\SF/v^X_\\SF$", "T_c_over_v_SF", 3, "0.648"),
-        ("$\\Lambda_\\LL$ [GeV]", "Lambda_GeV", 4, "--"),
-        ("$M^{X,{\\rm H}}_\\SF$ [GeV]", "M_H_GeV", 4, "125.20"),
-        ("$T^{X,{\\rm c}}_\\SF$ [GeV]", "T_c_GeV", 3, "159.5"),
+        ("$v^X_\\SF=2f^{X,{\\rm I}}_\\SF$", "v_SF", 4),
+        ("$f^{X,{\\rm F}}_\\SF$", "f_F", 4),
+        ("$M^{X,{\\rm H}}_\\SF$ (amplitude mode)", "M_H", 4),
+        ("$M^{X,{\\rm NU}}_\\SF$ (non-unitary scalars)", "M_NU", 4),
+        ("$M^X_{W,\\SF}$", "M_W", 3),
+        ("$M^X_{Z,\\SF}$", "M_Z", 3),
+        ("$M^{X,{\\rm H}}_\\SF/v^X_\\SF$", "M_H_over_v_SF", 3),
+        ("$\\lambda^{X,{\\rm H}}_\\SF$", "lambda_SF", 3),
+        ("$M^{X,{\\rm H}}_\\SF/M^X_{W,\\SF}$", "M_H_over_M_W", 3),
+        ("$M^X_{W,\\SF}/M^X_{Z,\\SF}$", "M_W_over_M_Z", 3),
+        ("$M^{X,{\\rm H}}_\\SF/2E^{X,{\\rm gap}}_\\SF$", "M_H_over_2E_gap", 3),
+        ("$M^{X,{\\rm NU}}_\\SF/M^{X,{\\rm H}}_\\SF$", "M_NU_over_M_H", 3),
+        ("$f^{X,{\\rm F}}_\\SF/f^{X,{\\rm I}}_\\SF$", "f_F_over_f_I", 3),
+        ("$\\Gamma^{X,{\\rm H}}_\\SF/M^{X,{\\rm H}}_\\SF$, Eq.~(\\ref{eq:width})", "Gamma_over_M_H", 2),
+        ("$T^{X,{\\rm c}}_\\SF/v^X_\\SF$", "T_c_over_v_SF", 3),
     ]
     rows = []
-    for label, key, n, smv in hrows:
-        rows.append("%s & %s & %s \\\\" % (label, " & ".join(sig(hg[t][key], n) for t in TAGS), smv))
-    rows.append("${\\rm Gi}^X_\\SF$, Eq.~(\\ref{eq:Gi}) & %s & -- \\\\" % " & ".join(sig(gz[t]["Gi"], 3) for t in TAGS))
+    for label, key, n in hrows:
+        rows.append("%s & %s \\\\" % (label, " & ".join(sig(hg[t][key], n) for t in TAGS)))
+    rows.append("${\\rm Gi}^X_\\SF$, Eq.~(\\ref{eq:Gi}) & %s \\\\" % " & ".join(sig(gz[t]["Gi"], 3) for t in TAGS))
     num["TABLE_HIGGS"] = "\n".join(rows)
     mhv = [hg[t]["M_H_over_v_SF"] for t in TAGS]
     num["MHV_RANGE"] = rng(mhv, 3)
-    num["TIMES_SM"] = rng([x / sm["M_H_over_v_SF"] for x in mhv], 2)
     num["LAMBDA_RANGE"] = rng([hg[t]["lambda_SF"] for t in TAGS], 3)
     num["WIDTH_RANGE"] = rng([hg[t]["Gamma_over_M_H"] for t in TAGS], 2)
     num["MNU_RANGE"] = rng([hg[t]["M_NU_over_M_H"] for t in TAGS], 3)
-    num["MHGEV_RANGE"] = rng([hg[t]["M_H_GeV"] / 1000 for t in TAGS], 3, "~TeV")
     num["FIGAP_RANGE"] = rng([hg[t]["f_I"] / float(th[(t, 0.0)]["gap"]) for t in TAGS], 2)
-    # ---- the vacuum energy of the condensate (CJT) on the scale where v_SF = 246.22 GeV
+    # ---- the zeugon: the massless gauge boson of U(1)^Q (Part II of the solution: the Thouless eigenvalues of the normal
+    # vacuum, the exchange energies of the four gauge bosons in the CJT superfluid, and the computed masses)
+    p2 = {r["name"]: float(r["value"]) for r in read_csv("part2_values.csv")}
+
+    def tex_sci(x, n):
+        """x with n significant digits as a TeX power of ten, e.g. -4.83\\times10^{-5}"""
+        e = int(math.floor(math.log10(abs(x))))
+        m = sig(x / 10 ** e, n)
+        if m.lstrip("-") == "10" or m.lstrip("-").startswith("10."):
+            e += 1
+            m = sig(x / 10 ** e, n)
+        return "%s\\times10^{%d}" % (m, e)
+    num["GV_CRIT"] = sig(p2["p2_thouless7"], 3)
+    num["THOULESS3"] = sig(p2["p2_thouless3"], 3)
+    num["THOULESS6"] = sig(p2["p2_thouless6"], 3)
+    num["EX_W3"] = tex_sci(p2["p2_cjtex_exchange_energy_W3"], 3)
+    num["EX_W1"] = tex_sci(p2["p2_cjtex_exchange_energy_W1"], 3)
+    num["EX_B"] = tex_sci(p2["p2_cjtex_exchange_energy_B"], 3)
+    num["EX_TOT"] = tex_sci(p2["p2_cjtex_exchange_energy"], 3)
+    num["M_A_CJT"] = tex_sci(p2["p2_cjtex_M_photon"], 2)  # the data name is that of the first version (the zeugon)
+    num["M_W_CJT"] = sig(p2["p2_cjtex_M_W"], 3)
+    # ---- the vacuum energy of the condensate (CJT), in units of Lambda_LL and of its own scale of breaking, and the scale
+    # of breaking at which it would equal the observed dark-energy density (2.5e-47 GeV^4, Particle Data Group 2024)
     depth = abs(vals["p3_E0_CJT"])
     e = int(math.floor(math.log10(depth)))
     num["DEPTH_CJT"] = "%s\\times10^{%d}" % (sig(depth / 10 ** e, 2), e)
-    num["DEPTH_GEV"] = sig(depth ** 0.25 * hg["CJT"]["Lambda_GeV"], 3)
+    depth_v4 = depth / hg["CJT"]["v_SF"] ** 4
+    num["DEPTH_V4"] = sig(depth_v4, 2)
+    num["V_MATCH"] = sig((2.5e-47 / depth_v4) ** 0.25 * 1e12, 2)  # GeV -> meV
     sm_numbers(num, vals, th, gz, hg)
     check_numbers(num, th, hg)
     # ---- the article, then the Supplemental Material, the cover letter and the submission information
@@ -188,11 +208,7 @@ def check_numbers(num, th, hg):
     """the numbers of the text that state how well two computations agree, or how large a correction is; every one is
     computed here from the data files and the reports of the checks (bounds are rounded up, so that a stated bound is never
     smaller than the largest measured deviation)"""
-    sm = hg["SM"]
     sfb = {r["method"]: {k: float(v) for k, v in r.items() if k != "method"} for r in read_csv("part3_sfbsv.csv")}
-    # the Standard-Model values M_H/v and lambda (the row SM of data/part3_higgs.csv, checked by P3-H4)
-    num["SM_MHV"] = sig(sm["M_H_over_v_SF"], 4)
-    num["SM_LAMBDA"] = sig(sm["lambda_SF"], 4)
     # the order parameter between T = 0 and 0.3 T_c: the largest relative change
     num["PHI03_PCT"] = sig_up(max(100 * (1 - float(th[(t, 0.3)]["Phi0"]) / float(th[(t, 0.0)]["Phi0"])) for t in TAGS), 2) + "\\%"
     # a(0;T) = (1 - lambda)/(lambda g^P) and the closed form of alpha, in the three implementations

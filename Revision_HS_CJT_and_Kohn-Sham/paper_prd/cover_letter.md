@@ -25,26 +25,29 @@ showed that the unit bi-octonions form a Moufang loop that contains
 $SL(2,\mathbb C)$ together with eight spinor charges, a Weyl spinor that
 is an isospin doublet, and that a spin-zero superfluid of these charges
 forms isospin-triplet pairs. The present manuscript asks whether such a
-superfluid can be the Higgs sector of a gauge theory. It sets up the
-gauge theory of the spinor field with the group
-$SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$, solves its
-superfluid in five mean-field methods (Hubbard-Stratonovich with three
-decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis), derives the
-effective Lagrangians of the composite order parameter, and compares the
-result with the Higgs sector of the Standard Model.
+superfluid can be the Higgs sector of a gauge theory. The spinor field
+is a DiracLike spinor (a Dirac spinor of $SL(2,\mathbb C)$ with electric
+charge zero and no electroweak quantum numbers), and its gauge group
+$SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$ is a new group,
+not the electroweak group. The manuscript solves the superfluid in five
+mean-field methods (Hubbard-Stratonovich with three decouplings,
+Kohn-Sham, and Cornwall-Jackiw-Tomboulis), derives the effective
+Lagrangians of the composite order parameter, and asks whether the
+superfluid is the Higgs field of its own gauge group and whether it
+could be that of the Standard Model.
 
 **Main findings.**
 
-1.  In every method the condensate realizes the Higgs mechanism: the
-    isospin bosons $W^\pm$ and the boson $Z$ of the fermion number
-    become massive, exactly one gauge boson (the photon) stays massless,
-    and the surviving group is $SL(2,\mathbb C)\times O(2)$, whose
-    identity component contains the $U(1)$ of the electric charge. The
+1.  In every method the condensate is the Higgs field of the new group:
+    the isospin bosons $W^\pm$ and the boson $Z$ of the fermion number
+    become massive, and exactly one gauge boson stays massless. The
     massless gauge bosons correspond one to one to the generators that
-    leave the condensate unchanged; for the polar condensate the photon
-    does not mix with the boson of the fermion number, and for a field
-    with a mixed stabilizer a mixing angle analogous to the Weinberg
-    angle appears.
+    leave the condensate unchanged. The massless boson, which I name the
+    zeugon, is a new gauge boson, not the photon: it couples to the
+    unbroken isospin charge, it is the only gauge boson that attracts
+    the two members of a pair, and, because the surviving group is
+    $SL(2,\mathbb C)\times O(2)$, its charge conjugation is itself a
+    gauge symmetry, the structure of Alice electrodynamics.
 
 2.  The amplitude mode is a composite scalar bound below the threshold
     of two quasi-particles; the Higgs field of the model is composite by
@@ -61,19 +64,20 @@ result with the Higgs sector of the Standard Model.
     coefficient of $|\vec\Phi|^2$ acquires a term linear in the momentum
     of the pair), while a cutoff on their relative momentum does not.
 
-4.  The amplitude mode is not the observed Higgs boson: the ratio of its
-    mass to the scale of the breaking is $4.46\mbox{--}5.69$, 8.8–11
-    times the value of the Standard Model; the quartic coupling exceeds
-    the tree-level unitarity bound; the tree-level width is 2.1–3.9
-    times the mass; and there are charged scalars of about the same
-    mass.
+4.  The amplitude mode is a broad resonance: once it can decay into the
+    longitudinal gauge bosons its tree-level width is 2.1–3.9 times its
+    mass, and its mass is $4.46\mbox{--}5.69$ times the scale of the
+    breaking. Because the DiracLike spinor carries no electroweak
+    quantum numbers, the condensate is a singlet of the electroweak
+    group and cannot be the Higgs field of the Standard Model, whatever
+    its numbers.
 
-**Why Physical Review D.** The manuscript concerns the Higgs sector,
-composite Higgs bosons and dynamical symmetry breaking, and the
-finite-temperature transition of a gauge theory. Its negative result for
-the Higgs boson is quantitative, and its treatment of the gradient
-coefficient and of the regularization of a moving pair applies to any
-model in which a four-fermion interaction condenses a fermion field.
+**Why Physical Review D.** The manuscript concerns a Higgs sector,
+composite Higgs bosons and dynamical symmetry breaking, a new massless
+gauge boson with a local charge conjugation, and the finite-temperature
+transition of a gauge theory. Its treatment of the gradient coefficient
+and of the regularization of a moving pair applies to any model in which
+a four-fermion interaction condenses a fermion field.
 
 **On the title and the gravitational sector.** The title names quantum
 gravity because the gauge group of the model contains $SL(2,\mathbb C)$

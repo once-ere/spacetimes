@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{44}%
+\begin{thebibliography}{47}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -75,14 +75,14 @@
   discovery},\ }\href {https://doi.org/10.1038/s41586-022-04893-w} {\bibfield
   {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo {volume} {607}},\
   \bibinfo {pages} {52} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {{CMS Collaboration}}(2022{\natexlab{a}})}]{CMS2022}%
+\bibitem [{\citenamefont {{CMS Collaboration}}(2022)}]{CMS2022}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibnamefont {{CMS Collaboration}}},\
   }\bibfield  {title} {\bibinfo {title} {A portrait of the {H}iggs boson by the
   {CMS} experiment ten years after the discovery},\ }\href
   {https://doi.org/10.1038/s41586-022-04892-x} {\bibfield  {journal} {\bibinfo
   {journal} {Nature}\ }\textbf {\bibinfo {volume} {607}},\ \bibinfo {pages}
-  {60} (\bibinfo {year} {2022}{\natexlab{a}})}\BibitemShut {NoStop}%
+  {60} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Navas}\ \emph {et~al.}(2024)\citenamefont {Navas}
   \emph {et~al.}}]{PDG2024}%
   \BibitemOpen
@@ -285,6 +285,44 @@
   {howpublished} {\url{https://github.com/once-ere/spacetimes}} (\bibinfo
   {year} {2026}{\natexlab{b}}),\ \bibinfo {note} {folder
   \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kiskis}(1978)}]{Kiskis1978}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Kiskis}},\ }\bibfield  {title} {\bibinfo {title} {Disconnected gauge groups
+  and the global violation of charge conservation},\ }\href
+  {https://doi.org/10.1103/PhysRevD.17.3196} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {17}},\ \bibinfo
+  {pages} {3196} (\bibinfo {year} {1978})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Schwarz}(1982)}]{Schwarz1982}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~S.}\ \bibnamefont
+  {Schwarz}},\ }\bibfield  {title} {\bibinfo {title} {Field theories with no
+  local conservation of the electric charge},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume}
+  {208}},\ \bibinfo {pages} {141} (\bibinfo {year} {1982})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Bucher}\ \emph {et~al.}(1992)\citenamefont {Bucher},
+  \citenamefont {Lo},\ and\ \citenamefont {Preskill}}]{BucherLoPreskill1992}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Bucher}}, \bibinfo {author} {\bibfnamefont {H.-K.}\ \bibnamefont {Lo}},\
+  and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Preskill}},\
+  }\bibfield  {title} {\bibinfo {title} {Topological approach to {A}lice
+  electrodynamics},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+  {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {386}},\ \bibinfo {pages} {3}
+  (\bibinfo {year} {1992})},\ \Eprint {https://arxiv.org/abs/hep-th/9112039}
+  {hep-th/9112039} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Leonhardt}\ and\ \citenamefont
+  {Volovik}(2000)}]{LeonhardtVolovik2000}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {U.}~\bibnamefont
+  {Leonhardt}}\ and\ \bibinfo {author} {\bibfnamefont {G.~E.}\ \bibnamefont
+  {Volovik}},\ }\bibfield  {title} {\bibinfo {title} {How to create an {A}lice
+  string (half-quantum vortex) in a vector {B}ose-{E}instein condensate},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {JETP Lett.}\
+  }\textbf {\bibinfo {volume} {72}},\ \bibinfo {pages} {46} (\bibinfo {year}
+  {2000})},\ \Eprint {https://arxiv.org/abs/cond-mat/0003428}
+  {cond-mat/0003428} \BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Amelino-Camelia}\ and\ \citenamefont
   {Pi}(1993)}]{AmelinoCamelia1993}%
   \BibitemOpen
@@ -378,15 +416,6 @@
   {journal} {\bibinfo  {journal} {J. Low Temp. Phys.}\ }\textbf {\bibinfo
   {volume} {59}},\ \bibinfo {pages} {195} (\bibinfo {year} {1985})}\BibitemShut
   {NoStop}%
-\bibitem [{\citenamefont {{CMS
-  Collaboration}}(2022{\natexlab{b}})}]{CMSwidth2022}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibnamefont {{CMS Collaboration}}},\
-  }\bibfield  {title} {\bibinfo {title} {Measurement of the {H}iggs boson width
-  and evidence of its off-shell contributions to {ZZ} production},\ }\href
-  {https://doi.org/10.1038/s41567-022-01682-0} {\bibfield  {journal} {\bibinfo
-  {journal} {Nat. Phys.}\ }\textbf {\bibinfo {volume} {18}},\ \bibinfo {pages}
-  {1329} (\bibinfo {year} {2022}{\natexlab{b}})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Cornwall}\ \emph
   {et~al.}(1974{\natexlab{b}})\citenamefont {Cornwall}, \citenamefont {Levin},\
   and\ \citenamefont {Tiktopoulos}}]{CLT1974}%

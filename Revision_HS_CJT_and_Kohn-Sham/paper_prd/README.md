@@ -31,9 +31,11 @@ be added through E. A. Lord's gauge theory of the local change of spinor represe
 # 2. The answers in brief
 
 The symbols are those of the article: $X$ is the method, $\mathrm{SF}$ marks a quantity of the superfluid, $\Lambda_{\rm LL}$
-(the momentum cutoff of the uniform states) is the unit of energy, $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ is the analogue of the
-scale $v=246.22$ GeV of the Standard Model ($f^{X,{\rm I}}_{\rm SF}$ the decay constant of the isospin rotations), and
-$M^{X,{\rm H}}_{\rm SF}$ is the mass of the amplitude mode.
+(the momentum cutoff of the uniform states) is the unit of energy, $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ is the scale of the breaking of
+the new gauge group, defined as the Standard Model defines its vacuum value, by $M_W=gv/2$ ($f^{X,{\rm I}}_{\rm SF}$ the decay
+constant of the isospin rotations; the value of $v^X_{\rm SF}$ in GeV is not known), and $M^{X,{\rm H}}_{\rm SF}$ is the mass of the
+amplitude mode. The spinor field is the DiracLike spinor: it has electric charge 0 and no electroweak quantum numbers, and
+$SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge group, not the electroweak group.
 
 1. **The width of the critical region.** The Ginzburg number, the reduced temperature $\lvert T-T^{X,{\rm c}}_{\rm SF}\rvert/T^{X,{\rm c}}_{\rm SF}$
    below which the Gaussian fluctuations of the order parameter exceed the jump of the specific heat of the mean-field
@@ -44,16 +46,23 @@ $M^{X,{\rm H}}_{\rm SF}$ is the mass of the amplitude mode.
    computed from the static pair response of a moving pair; the calculation also shows that the cutoff must be placed on
    the relative momentum of the pair (with a cutoff on the momenta of the two constituents the gradient expansion does
    not exist).
-2. **The Higgs particle.** In every method the superfluid realizes the Higgs mechanism (massive $W^\pm$ and $Z$, a massless
-   photon, a neutral scalar below the threshold of two quasi-particles), but in no method can its amplitude mode be the
-   observed Higgs boson: $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ = $4.46$ (CJT) to $5.69$ (HS (1, 1)), $8.8$ to $11$ times the value
-   $0.5085$ of the Standard Model; the quartic coupling $9.94$ (CJT) to $16.2$ (HS (1, 1)) exceeds the tree-level unitarity bound
-   $8\pi/3$; the tree-level width is $2.1$ (KS, CJT) to $3.9$ (HS (1, 1)) times the mass; and every method has charged scalars at
-   $0.991$ (HS (1, 1)) to $1.09$ (KS) times $M^{X,{\rm H}}_{\rm SF}$. The methods differ in degree, not in kind.
+2. **The Higgs particle.** (a) In every method the superfluid is the Higgs field of its own gauge group: $W^\pm$ and $Z$
+   become massive, one gauge boson, the zeugon, stays massless, and a scalar of charge $Q_{\rm LL}=0$ lies below the threshold
+   of two quasi-particles. That scalar is a Higgs particle only in the mean-field dynamics: once it can decay into the
+   longitudinal gauge bosons its tree-level width is $2.1$ (KS, CJT) to $3.9$ (HS (1, 1)) times its mass; $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ =
+   $4.46$ (CJT) to $5.69$ (HS (1, 1)), the quartic coupling is $9.94$ (CJT) to $16.2$ (HS (1, 1)), and every method has the two non-unitary scalars of the
+   charges $Q_{\rm LL}=\pm1$ at $0.991$ (HS (1, 1)) to $1.09$ (KS) times $M^{X,{\rm H}}_{\rm SF}$. The methods differ in degree, not in kind.
+   (b) In no method can the superfluid be the Higgs field of the Standard Model: the DiracLike spinor carries no
+   electroweak quantum numbers, so the condensate is a singlet of the electroweak group, whatever its numbers.
 3. **Compositeness.** Yes, in every method and by construction: the field of the superfluid is the amplitude of the pair
    self-energy, a composite of two spinor charges; its kinetic term consists of susceptibilities of the spinor field;
    its amplitude mode is a bound state of two quasi-particles. Whether the Higgs boson of nature is composite is not
-   decided by this computation.
+   decided by this computation, because the Higgs particle of this model is not that boson.
+4. **The new massless gauge boson.** After the breaking exactly one gauge boson stays massless, the gauge boson of the
+   unbroken isospin charge $Q_{\rm LL}$; it is not the photon, and the author offered its naming: it is the **zeugon** (Greek
+   *zeugos*, a yoked pair), the only gauge boson that attracts the two members of a pair. The surviving group $O(2)$ makes
+   its charge conjugation a gauge symmetry, the structure of Alice electrodynamics; the Alice strings and monopoles that
+   follow from the topology of the vacuum are not computed.
 
 # 3. Contents
 
@@ -86,7 +95,7 @@ about these results: the results themselves (the tables, and ranges such as the 
 the agreement of two computations ("the three implementations confirm (14) to $2\times10^{-11}$"). A bound is the largest
 deviation of the checks it summarizes, rounded **up** to one significant digit, so that a stated bound is never smaller
 than a measured deviation. Typed in the templates are only the parameters of the model and of the numerical method,
-mathematical constants, and the measured values of the Standard Model and of cosmology, each with its reference. The
+mathematical constants, and the measured values of cosmology, each with its reference. The
 values inserted by the last build are listed in `generated/numbers.csv`.
 
 The build compiles the article and the Supplemental Material with pdfLaTeX, BibTeX and REVTeX 4.2, the cover letter and
@@ -114,10 +123,10 @@ build_paper.py: the checks of the LaTeX builds (pages; undefined references or c
 than 1 pt).  A document passes when it has no undefined reference and no such box.
 
 higgs_composite_qg: 10 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
-higgs_composite_qg_SM: 36 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg_SM: 37 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 submission/: the flat source compiles alone to 10 pages (the manuscript has 10); undefined: none -> PASS
-submission_info: 5 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+submission_info: 6 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 ```
 
 The check of `submission/` compiles a copy of the folder alone in a temporary folder, with the figures beside the source
@@ -136,8 +145,8 @@ drafts, which were not committed (their causes are recorded in the task record o
    sentence from the documents `superfluid.md` (Section 14.6), `provenance/P4_remarks.md` (addendum A2) and
    `superfluid.nb` (Section III.G.8), where it has since been corrected (entries E20, E23 and E24 of the task record);
 2. the ratio of the mass of the Higgs boson to the scale of the breaking in the Standard Model was given as 0.509 in the
-   abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract now
-   gives 0.5085;
+   abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract then
+   gave 0.5085, and since the correction of item 7 it gives no value of the Standard Model;
 3. "the programs compute both numbers also from the full static response of the normal vacuum ... to $10^{-14}$": only the
    Rust program computes them so, and the largest deviation is $3.5\times10^{-14}$;
 4. bounds smaller than the largest deviation they summarize: "the programs confirm (14) to $10^{-11}$" (the Python check
@@ -149,7 +158,17 @@ drafts, which were not committed (their causes are recorded in the task record o
    versions of the drafts read "Ginzburg numbers 7.611" instead of 7.6 to 11; the dash is now written `\mbox{--}`, which
    LaTeX and pandoc both set correctly;
 6. the Markdown versions of the drafts lacked the title, the byline and the abstract, which pandoc does not write for a
-   REVTeX document; the build now adds them.
+   REVTeX document; the build now adds them;
+7. after the first version had been kept, the author stated (21 November 2026) that the spinor field, the DiracLike
+   spinor, has electric charge 0 and no electroweak quantum numbers, and that $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new
+   gauge group, not the electroweak group. The first version had called the unbroken charge the electric charge and the
+   massless gauge boson the photon, and had judged the superfluid against the Higgs boson of the Standard Model (the
+   ratio of the mass to the scale of the breaking against 0.5085, the unitarity bound of the Higgs doublet, the values in
+   GeV on the scale $v=246.22$ GeV, "charged scalars"). That comparison had no basis and is withdrawn: the article, the
+   Supplemental Material and the cover letter now answer separately whether the superfluid is the Higgs field of its own
+   group and whether it can be that of the Standard Model, Table III has no column of the Standard Model and no rows in
+   GeV, the vacuum energy is compared with the dark-energy density as a condition on the unknown scale, and the massless
+   gauge boson is the zeugon (entries C18, C19, E25 to E27 of the task record).
 
 # 7. Provenance
 
@@ -159,24 +178,24 @@ Material lists the data files, the programs and the templates with their SHA-256
 templates, of the build program and of the files to upload, at the time this README was built:
 
 * `paper_prd/scripts/build_paper.py`:\
-  `87385d87df8c0a0daef4c79ae2d882f2c9514bf9ae70cb08e789b2f0be622492`
+  `101275242a577d8fd71c4dc30953d495e17cdb46e2218cf08f9f516ea2b8bea5`
 * `paper_prd/src/higgs_composite_qg.template.tex`:\
-  `23e68c90064e9f5eaf01a492b7c18eed3214ef1f7bb3768ba33a105cd8d58642`
+  `d7e42f13b65121f4c6b9edbd47fb6789cee86a2dfe88120391630bcba874db99`
 * `paper_prd/src/higgs_composite_qg_SM.template.tex`:\
-  `fe65d43293efa23374ccde6e8cebb6a7ad2ecfe44bac988bbc1aae7f9f4ef172`
+  `4fd15b1e7ed260a94f23e0744e8ef63a28de55d4d0f63a0c7840360201c26afd`
 * `paper_prd/src/cover_letter.template.tex`:\
-  `0ab05cab31032e22d024cafd8cd629db9671318954f07cacf2017a9e7957e232`
+  `c9ab7ba1a5fdc2f5a7cb8cab08a7470f241b6ed658b0312901c35d00e3afa04f`
 * `paper_prd/src/submission_info.template.tex`:\
-  `f75d5820fdcdba7c42218c3b4ba276d38e2737f048e84f1c1c77eeb63d1b15d0`
+  `a208aec1b66d53011bdccaab5182f48211cdccfc5578a80fcbafccc0654d3773`
 * `paper_prd/src/references.bib`:\
-  `7f62530ea60bd47ac9ee26d8d771fab13e07344e228bf102337904f190e4001a`
+  `3197563f0734ae4cfde3374586d56f4b783bac025ff09e1248c7936cb6c1b1fe`
 * `paper_prd/submission/higgs_composite_qg.pdf`:\
-  `4c1ce9d763e30afbc2ad40e7d3cfcf8b1c5c622221c8812df9ae911013bcf4b0`
+  `f8f78ce49b38e0ede09ce492d8038c266ca5925b217b3b2c20449f9479f257e0`
 * `paper_prd/submission/higgs_composite_qg.tex`:\
-  `307b013c364a1d6fcb8c14f77e62fca4a74abd19a21733fad71b7c40d235b310`
+  `be51e0ee904836cbd5a8e33a4247dcb9a456718cd833760755b7142435de93ac`
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
-  `b2784b0a4ea1b9fb393896852432e980bac241ad8bdf46425d0efab79d8c24f9`
+  `05cf62568724668752e04505b94c9e766ab1a7046849dbc65adaec0223f1b79d`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\
-  `c286ca02a4caeff0cbb6a875b56e3173b1f20e3cb674f28aa3efa49fd7185bed`
+  `e27e5434013abd789d01cb2bce09ac06458610c2353a87b86d768ac6e47c736b`
 * `paper_prd/submission/cover_letter.pdf`:\
-  `710d7eb10a3cc991367fdfb781a3727181a20bba217302f5f07090937db5156f`
+  `7a7af727c5d82a82015bdb7a00294e8c9ee5624b352655cc63467232286693e9`

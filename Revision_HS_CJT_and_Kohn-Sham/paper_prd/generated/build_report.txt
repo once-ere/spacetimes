@@ -2,7 +2,7 @@ build_paper.py: the checks of the LaTeX builds (pages; undefined references or c
 than 1 pt).  A document passes when it has no undefined reference and no such box.
 
 higgs_composite_qg: 10 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
-higgs_composite_qg_SM: 36 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg_SM: 37 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 submission/: the flat source compiles alone to 10 pages (the manuscript has 10); undefined: none -> PASS
-submission_info: 5 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+submission_info: 6 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
