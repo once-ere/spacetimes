@@ -16,6 +16,10 @@ Figures (each as .pdf and .png in test2/figures):
                           amplitude at G = 22.5 and the oscillations in which it ends   (data: t2_cjt_time.csv)
     fig_t2_cjt_site       one site: the exact ground energy and the two-loop energy against the coupling
                                                                                  (data: t2_cjt_site.csv)
+    fig_t2_cjt_potential  stage E, the effective potential of the SFBS: (a) along the unitary cut, with the two
+                          pairing-only potentials; (b) over the plane of one complex component of the order parameter
+                          (the Mexican hat); (c) over the plane of the two gaps, with its stationary points
+                                                              (data: t2_cjt_potential_cut.csv, t2_cjt_potential_plane.csv)
 
 Colours are never the only carrier of information: every curve has its own line style or marker and is named in a
 legend or by a label next to it.
@@ -219,8 +223,84 @@ def fig_site():
     save(fig, "fig_t2_cjt_site")
 
 
+def fig_potential():
+    """Figure 5: the effective potential of the SFBS (stage E).  Three panels: (a) the unitary cut with the three
+    potentials, (b) the hat over the plane of one complex component of the order parameter, (c) the plane of the two
+    gaps of the order parameter with the three kinds of stationary points."""
+    c = rows("t2_cjt_potential_cut.csv")
+    pl = rows("t2_cjt_potential_plane.csv")
+    dvac = float(parameter("t2_cjt_potential_cut.csv", "Delta_vac"))
+    ysad = float(parameter("t2_cjt_potential_plane.csv", "saddle_gap"))
+    unit = 1e-5
+    usad = float(parameter("t2_cjt_potential_plane.csv", "saddle_energy_above_vacuum")) / unit
+    uorg = float(parameter("t2_cjt_potential_plane.csv", "origin_energy_above_vacuum")) / unit
+    col = lambda k: np.array([float(r[k]) for r in c])
+    fig = plt.figure(figsize=(10.6, 9.4))
+    gs = fig.add_gridspec(2, 2, height_ratios=[0.78, 1.0], hspace=0.30, wspace=0.16, left=0.075, right=0.975, top=0.955, bottom=0.065)
+    # (a) the unitary cut
+    a = fig.add_subplot(gs[0, :])
+    a.plot(col("order_parameter"), col("energy_above_vacuum") / unit, color=BLUE, lw=2.2,
+           label=r"$\mathcal{U}^{\rm CJT}_{\rm LL}$ (two loops) against the order parameter")
+    a.plot(col("order_parameter_pairing_only"), col("energy_above_vacuum_pairing_only") / unit, color=ORANGE, ls="--", lw=2.2,
+           label=r"$\mathcal{U}^{\rm po}_{\rm LL}$ (pairing only) against the order parameter")
+    a.plot(col("pair_field"), col("hs_potential_above_minimum") / unit, color=GREY, ls="-.", lw=1.8,
+           label=r"$\Omega_{\rm LL}$ (pairing only) against the pair field")
+    a.plot([dvac], [0.0], marker="o", color=ORANGE, mec=INK, ms=9, ls="none", zorder=5, clip_on=False)
+    a.annotate("the minimum of all three,\n" + r"at $\Delta^{\rm vac}_{\rm LL}=%.4f$" % dvac, (dvac, 0.0), (0.222, 4.1), fontsize=10.5,
+               arrowprops=dict(arrowstyle="-", color=INK, lw=0.7))
+    a.annotate("the normal state:\n%.2f (two loops)" % uorg, (0.0, uorg), (0.022, 1.55), fontsize=10.5,
+               arrowprops=dict(arrowstyle="-", color=INK, lw=0.7))
+    a.set_xlim(0, 0.36)
+    a.set_ylim(0, 9.5)
+    a.set_xlabel(r"order parameter $\Delta_{\rm LL}$, or pair field (units $\Lambda_{\rm LL}$)")
+    a.set_ylabel("potential minus its minimum\n" + r"(units $10^{-5}\Lambda_{\rm LL}^4$)")
+    a.set_title("(a) the unitary cut: three potentials with one minimum", loc="left", fontsize=12)
+    a.legend(fontsize=10.5, loc="upper center")
+    # (b) the hat: the cut turned about the axis, over the plane of one complex component
+    b = fig.add_subplot(gs[1, 0], projection="3d")
+    rr = np.linspace(0.0, 0.285, 60)
+    u_of = np.interp(rr, col("order_parameter"), col("energy_above_vacuum") / unit)
+    ph = np.linspace(0, 2 * np.pi, 73)
+    R, P = np.meshgrid(rr, ph)
+    Z = np.tile(u_of, (len(ph), 1))
+    b.plot_surface(R * np.cos(P), R * np.sin(P), Z, cmap="Blues", linewidth=0.2, edgecolor=MUTED, alpha=0.95, rstride=3, cstride=4)
+    b.plot(dvac * np.cos(ph), dvac * np.sin(ph), np.zeros_like(ph), color=ORANGE, lw=2.6, zorder=10)
+    b.set_xlabel(r"${\rm Re}\,d^3_{\rm LL}$", labelpad=4)
+    b.set_ylabel(r"${\rm Im}\,d^3_{\rm LL}$", labelpad=4)
+    b.set_xticks([-0.2, 0.0, 0.2])
+    b.set_yticks([-0.2, 0.0, 0.2])
+    b.view_init(elev=36, azim=-58)
+    b.tick_params(labelsize=9.5, pad=1)
+    b.set_box_aspect((1, 1, 0.72), zoom=0.92)
+    fig.text(0.075, 0.522, "(b) the hat: " + r"$\mathcal{U}^{\rm CJT}_{\rm LL}$ minus its minimum (units $10^{-5}\Lambda_{\rm LL}^4$)" + "\n     over the plane of one complex component;\n     thick circle: its minima, the vacua in this plane", fontsize=12, ha="left", va="top", color=INK)
+    # (c) the plane of the two gaps
+    a = fig.add_subplot(gs[1, 1])
+    n = int(round(math.sqrt(len(pl))))
+    arr = lambda k: np.array([float(r[k]) for r in pl]).reshape(n, n)
+    X, Y, Zp = arr("gap_plus"), arr("gap_minus"), np.maximum(arr("energy_above_vacuum"), 0.0) / unit
+    levels = sorted([0, 0.2, 0.6, 1.2, usad, 3.0, uorg, 5.5, 8, 12, 20, 40])
+    a.contourf(X, Y, Zp, levels=levels, cmap="Blues", extend="max")
+    cl = a.contour(X, Y, Zp, levels=levels[1:], colors=INK, linewidths=0.5)
+    a.clabel(cl, fmt=lambda x: "%.1f" % x, fontsize=8.5)
+    a.plot([dvac], [dvac], marker="o", color=ORANGE, mec=INK, ms=10, ls="none", zorder=5, label="vacuum (minimum)")
+    a.plot([ysad, 0.0], [0.0, ysad], marker="s", mfc="white", mec=INK, ms=9, ls="none", zorder=5, clip_on=False, label="non-unitary state (saddle)")
+    a.plot([0.0], [0.0], marker="^", mfc=GREY, mec=INK, ms=10, ls="none", zorder=5, clip_on=False, label="origin, the normal state (maximum)")
+    a.plot([0, 0.36], [0, 0.36], color=MUTED, lw=0.9, ls=":")
+    a.text(0.305, 0.33, "unitary", fontsize=10, color=INK, rotation=45, ha="center", va="center", bbox=BOX)
+    a.set_xlim(0, 0.36)
+    a.set_ylim(0, 0.36)
+    a.set_aspect("equal")
+    a.set_xlabel(r"gap $\Delta^+_{\rm LL}$ of the order parameter")
+    a.set_ylabel(r"gap $\Delta^-_{\rm LL}$ of the order parameter")
+    a.set_title("(c) the plane of the two gaps\n     (contours in units $10^{-5}\\Lambda_{\\rm LL}^4$)", loc="left", fontsize=12)
+    a.grid(False)
+    a.legend(fontsize=9.8, loc="upper left", framealpha=0.92, frameon=True, edgecolor="none")
+    save(fig, "fig_t2_cjt_potential")
+
+
 if __name__ == "__main__":
     fig_vacuum()
     fig_surface()
     fig_creation()
     fig_site()
+    fig_potential()

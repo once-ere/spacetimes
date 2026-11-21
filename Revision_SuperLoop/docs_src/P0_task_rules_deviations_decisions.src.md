@@ -403,6 +403,11 @@ Complete stage D NOW! Resolve all issues!! Invent Mathematically possible fixes.
    that a subtraction at the vacuum is all that can be done. What remains different after (ii) is of the second order about
    the vacuum and is a result, not an issue. Stage 23 of Section 5 and Section 6 give the content; deviation D23 of Section 7
    and the decisions 10 and 11 of Section 8 state what was chosen.
+6. **Stage E completed** (the same day, under the standing instruction to complete all stages without stopping and to
+   deliver each one as soon as it is complete). The effective potential of the SFBS is derived in the same method, as a
+   function of the order parameter, in closed form up to the solution of two coupled equations; it has the shape of the
+   Mexican hat, with the normal state as its maximum, the unitary order parameters as its minima and the non-unitary state
+   as a saddle. Stage 24 of Section 5 and Section 6 give the content. The stages F to I are not yet answered.
 
 # 3. The hard rules, and how each is met
 
@@ -430,7 +435,7 @@ Complete stage D NOW! Resolve all issues!! Invent Mathematically possible fixes.
 | `data/` | 14 data files, the reports of all checks and the Gröbner bases |
 | `figures/` | 7 figures, .pdf and .png |
 | `explanations/` | the document "The spin-zero superfluid of the spinor charges - an explanation" (.md, .tex, .pdf), with its program `code/explain-rs` (binary `explain_superfluid`), its figure script `code/make_explain_figures.py` and its three figures; the document "The 3+1 manifold of the super-loop and the renormalizability of the Yukawa form" (.md, .tex, .pdf), with its program `code/r13-rs` (binary `r13_yukawa`), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the document of stage D, "The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis" (.md, .tex, .pdf), with its program `t2_cjt` (member `t2cjt` of the workspace `rust/`, checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}) and its figure script `python/make_t2_cjt_figures.py`; the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE), and the library `t2steps` (the time integrations of check GS-13 taken apart step by step: double-double numbers, the formulas of CVODE and IDA on one eigenvector, IDA run in the open, the analysis of every step); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py`, the independent check of the formulas of the time integrators `t2_formula_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_steps_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the document of the stages D and E, "The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis" (.md, .tex, .pdf), with its program `t2_cjt` (member `t2cjt` of the workspace `rust/`, checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}) and its figure script `python/make_t2_cjt_figures.py`; the Cargo workspace `rust/` with the library `t2core` (random numbers, complex matrices, the super-loop operators, the lattice operator, the symbolic algebra, and the module `cvode` that calls CVODE), the programs `t2_fields` (item [1]), `t2_analytic` (item [2]), `t2_solve` (item [5]), `t2_plot` (item [6]), `t2_sfbs` (items [7] to [11]) and `t2_cvcmp` (the comparison of CVODE with the first version), the shared library `t2cvode_c` (`libt2cvode`, the interface of the Python solver to CVODE), and the library `t2steps` (the time integrations of check GS-13 taken apart step by step: double-double numbers, the formulas of CVODE and IDA on one eigenvector, IDA run in the open, the analysis of every step); `python/` with the solver `t2_solve.py` (item [3]), the plotter `t2_plot.py` (item [4]), the checks of the examples `t2_examples_check.py`, the independent check of the formulas of the time integrators `t2_formula_check.py` and the figure scripts `make_t2_figures.py`, `make_t2_steps_figures.py`, `make_t2_sfbs_figures.py`; the seven example input files in `examples/`; the data files and reports in `data/`; the figures in `figures/`; `rk4_reference/`, the data files of the first version (fixed-step methods), kept for the comparison; `cvode_vs_rk4/`, the comparison of CVODE with the first version (the provenance `P_CVODE_vs_RK4`, .md, .tex, .pdf, its data, figures and scripts) |
 | `vendor/` (in the top folder of the repository, beside `Revision_SuperLoop`) | `sundials_rs-7.8.0`, the pure-Rust translation of SUNDIALS 7.8.0 of the author's repository, unchanged (Section 10), and its provenance `P_sundials_rs-7.8.0` (.md, .tex, .pdf) |
 | `docs_src/` | the sources of the documents |
 
@@ -593,6 +598,21 @@ Complete stage D NOW! Resolve all issues!! Invent Mathematically possible fixes.
    pole of the pair part of the propagator, with the pair susceptibility in closed form below the threshold and at imaginary
    frequencies; (h) two time integrations of the time-dependent equations of the two-loop action with CVODE; (i) the test of
    the approximation on one site, where the exact ground state is known (Section 11, entries E93 to E96).
+
+26. **Stage 24 — Test 2, stage E: the effective potential of the SFBS** (2026-11-19). New Section 10 of the document of the
+   stages D to I, with Theorems E1 to E4, Tables 7 and 8 and Figure 5; the function `stage_e` of the program `t2_cjt` with
+   the checks CJ-12 to CJ-15, two data files (`t2_cjt_potential_cut.csv`, `t2_cjt_potential_plane.csv`) and the figure
+   `fig_t2_cjt_potential`; six registry entries of group 10; nine descriptive names of data columns. The work, in order:
+   (a) the definition of the effective potential of the order parameter in the method (the two-loop energy made stationary
+   at fixed pair amplitude) and the theorem on the constrained states, with the derivative of the potential; (b) the
+   reduction by the symmetry to the two gaps of the order parameter and to two sectors of spinor charges; (c) the closed
+   form of the energy of the two-sector states and the two coupled equations for their Dirac masses; (d) the question whether
+   the constrained state is the lowest at its order parameter: proved for the pairing-only functional; for the two-loop
+   functional a criterion (all eigenvalues of the matrix of first derivatives of the self-consistency map of the normal mean
+   field below 1), computed at four pair fields; (e) the three
+   potentials on the unitary cut (the two-loop one, the pairing-only one of the order parameter, and the one of the document
+   of Test 2, which is a function of the pair field) and the identity that relates the last two; (f) the stationary points
+   (maximum, minimum manifold, saddle) and the figure of the hat.
 
 # 6. The results in brief
 
@@ -781,6 +801,22 @@ Complete stage D NOW! Resolve all issues!! Invent Mathematically possible fixes.
   $G_{\rm LL}=22.5$ with the rate {{GEN:cjt_gamma_fit}} (predicted: {{GEN:cjt_gamma}}). What stays different from items [7] to
   [11] is of the second order about the vacuum: the normal stationary state above the critical coupling has the Dirac mass
   {{GEN:cjt_mn_no_t2}}, and the condensed vacuum lies {{GEN:cjt_depth_cjt_abs}} below it, not {{GEN:cjt_depth_po_abs}}.
+
+* **Test 2, stage E** (stage 24): the effective potential of the SFBS is the two-loop energy of the state that is stationary
+  in everything except its pair amplitude; such a state is the ground state of the mean-field matrix with a pair field
+  $\vec b_{\rm LL}$ as a free parameter, and the derivative of the potential with respect to $(d^\iota_{\rm LL})^*$ is
+  $(b^\iota_{\rm LL}-d^\iota_{\rm LL})/G_{\rm LL}$. The potential depends on the order parameter through its two gaps
+  $\Delta^\pm_{\rm LL}$ only and is given in closed form by two coupled equations for the Dirac masses of two sectors of spinor
+  charges. At $m_{\rm LL}=0.2$, $G_{\rm LL}=22.5$ it is a Mexican hat: the origin a maximum {{GEN:cje_u_origin}} above the
+  minimum, the minimum the manifold of the unitary order parameters of the modulus {{GEN:cjt_dvac}}, and the non-unitary
+  state a saddle {{GEN:cje_u_saddle}} above the minimum. The potential of items [8] and [9] is a function of the pair field,
+  not of the order parameter, and exceeds the pairing-only energy of the state with that pair field by
+  $\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2/G_{\rm LL}$; all potentials have the same minimum. The two-loop hat is
+  shallower ({{GEN:cje_u_origin}} against {{GEN:cje_om_vac}}), and its saddle lies at {{GEN:cje_saddle_fraction}} of the
+  depth instead of at one half, because the two sectors are coupled through their Dirac masses. Whether the state that
+  defines the potential is the lowest at its order parameter: proved for the pairing-only functional; for the two-loop
+  functional it is a strict local minimum at the four pair fields examined (largest eigenvalue of the matrix of first
+  derivatives of the self-consistency map {{GEN:cje_lam_vacuum}}, below 1), and from random starts no other state was found.
 
 # 7. Deviations from the wording of the task, with their reasons
 
@@ -1001,7 +1037,10 @@ potential of the vacuum, and the mass written in the Lagrangian is another numbe
 choice. It was made because it leaves every number of the vacuum of Test 2 as it is; the alternative, the interaction
 completed to an axially symmetric one, changes the model and is recorded, not adopted (Section 8, decision 10). (3) The
 differences that remain at the second order about the vacuum are kept: removing them would give up the property that the
-approximation is a variational one (decision 11). Of the six stages only stage D is answered so far.
+approximation is a variational one (decision 11). Of the six stages, D and E are answered so far. For stage E ("the effective
+potential for the superfluid boson singlet (S=0) state") the potential is taken as a function of the order parameter, the
+expectation value of the field of the SFBS, as for the Higgs field; the potential of items [8] and [9] is a function of the
+pair field, and the relation between the two is proved (Theorem E4 of the document).
 
 # 8. Decisions that are the author's
 
@@ -1071,9 +1110,12 @@ approximation is a variational one (decision 11). Of the six stages only stage D
   one-loop bubble, and states what the standard renormalization theorem adds; the counterterms beyond one
   loop and the running of the couplings were not computed.
 
-* Of the six stages D to I of the method of Cornwall, Jackiw and Tomboulis only stage D is answered. The effective potential,
-  its minima, SFBSv, the kinetic Lagrangian and the masses of the gauge bosons in this method (stages E to I) are not yet
-  derived; the answers to items [8] to [11] are those of the treatment with the pair field alone. Stage D is the two-loop
+* Of the six stages D to I of the method of Cornwall, Jackiw and Tomboulis the stages D and E are answered. The breaking of the
+  symmetry, SFBSv, the kinetic Lagrangian and the masses of the gauge bosons in this method (stages F to I) are not yet
+  derived; the answers to items [9] to [11] are those of the treatment with the pair field alone. The effective potential of
+  stage E is built from the constrained states of two sectors; at the four pair fields examined these are strict local
+  minima of the energy at their order parameter, and no other state was found from random starts, but that they are the
+  lowest of all states with their order parameter is not proved for the two-loop functional. Stage D is the two-loop
   approximation: the graphs of three and more loops (the effect of the SFBS boson on the spinor charges that it is made of)
   are not included, and their size is not estimated; on one site, where the exact ground state is known, the two-loop energy
   lies far above it. The time integrations of stage D are for states that are the same at every point of space.
@@ -1196,6 +1238,12 @@ approximation is a variational one (decision 11). Of the six stages only stage D
 | E94 | same work: check CJ-8 asked the two time integrations to conserve the energy to $10^{-9}$ while CVODE ran with the relative tolerance $10^{-11}$; the energy changed by $1.6\times10^{-8}$, which is the accumulated local error that this tolerance permits over 19205 steps, not an error of the equations | the check failed at its first run | the integrations run with the relative tolerance $10^{-13}$ and the absolute tolerance $10^{-15}$; the energy then changes by less than $10^{-10}$, and the measured frequency and rate agree with the predictions to $10^{-7}$ and $6\times10^{-7}$ of themselves |
 | E95 | same work: the first draft of the document used letters without registry entries for objects of single proofs (a matrix with the trial mass, the mean-field matrix without mean fields, unnamed blocks of a matrix, summation indices written as formulas) | checks LL-S6 and LL-S7 | the proofs were rewritten with registered symbols ($\mathsf h_{\rm LL}$ with its mass stated, $\mathsf H^{\rm var}_{\rm LL}$ at vanishing mean fields, the correlation matrices themselves), the two functions of the proof of the theorem on the SFBS boson were registered, and statements about indices are made in words |
 | E96 | same work: four names chosen for columns of the new data files (`run`, `threshold`, `potential`, `integration`) were already descriptive words of other data files, with other meanings | the list of descriptive words was searched before the new names were entered | the columns are named `time_integration`, `pair_threshold` and `energy_above_vacuum`, and the name `run` is not used |
+| E97 | stage 24, before it was committed: the first draft of the section on the effective potential said that the minimum property of the state that defines the potential "is verified at the stationary points" and cited the table of the general solutions, which shows it for the vacuum only; and the check behind the sentence iterated the normal mean field at one pair field with an accelerated iteration, which also converges to states that are not minima | reading the draft against the table and the check before the full check was run | the question was worked out instead of asserted: the shifted energy and the theorem that a minimum of it is a minimum at fixed order parameter; a proof for the pairing-only functional; for the two-loop functional the criterion that all eigenvalues of the matrix of first derivatives of the self-consistency map are below 1, computed at four pair fields (largest value {{GEN:cje_lam_vacuum}}); and the plain statement of what is not proved |
+| E98 | same work: a new part of check CJ-15 compared the smaller gap of an order parameter, computed from the modulus and the non-unitarity as a square root of a difference that vanishes, with zero; the rounding error of the difference, $10^{-17}$, became $2\times10^{-9}$ under the square root and failed the check | the check failed at its first run | the pairing blocks are compared instead of the gaps (difference below $10^{-14}$) |
+| E99 | same work: the first drawing of the figure of the effective potential had its three panels in one row; at the width of the page its lettering was below 5 points, the title of the middle panel was cut at the upper edge, and the values of the saddle and of the origin were written into the script instead of being read from the data | looking at the page of the built document, not only at the figure | two rows (the unitary cut above, the hat and the plane of the two gaps below), lettering of 6 points and more at the width of the page, and the two values are comment lines of the data file, read by the script |
+| E100 | same work: the formatter of the Rust tool chain was run once on the new program with its default line width; it rewrote the whole source of the program and also a source file of another program that is included by path | the list of changed files before staging | both files were restored (the included file from the repository, the program from the copy made before the run) and the program was built and run again; the formatter is not part of the procedure |
+| E101 | same work: the title of group 10 of the registry was lengthened from "stage D" to "stages D to I"; in the table of symbols of the manuscript the titles of the groups are set on one line across the three columns, and the longer title was 4.8 pt wider than the table | the full check, which failed at the step that builds the manuscript ("Overfull hbox in alignment" for every part of the table) | the title was shortened ("the SFBS by the method of Cornwall, Jackiw and Tomboulis"); the manuscript builds without a box wider than its space, and the full check was run again from the start |
+| E102 | same work: the full check that had failed (E101) was stopped while the typesetting program was writing the auxiliary file of the document of Test 2; the truncated file stayed in the folder, and the next full check failed at that document ("File ended while scanning use of ...") | the full check | the leftover auxiliary files of the two documents whose typesetting had been interrupted were removed and the full check was run again from the start. A full check is not stopped while a document is being typeset; if it must be, the auxiliary files of that document are removed before the next run |
 
 # 12. The symbols
 

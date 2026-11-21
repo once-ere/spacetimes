@@ -65,7 +65,7 @@
 | `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
 | `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | 8 of 8 |
 | `test2/data/t2_analytic_checks.txt` | `t2_analytic` | 10 of 10 |
-| `test2/data/t2_cjt_checks.txt` | `t2_cjt` | 11 of 11 |
+| `test2/data/t2_cjt_checks.txt` | `t2_cjt` | 15 of 15 |
 | `test2/data/t2_fields_checks.txt` | `t2_fields` | 20 of 20 |
 | `test2/data/t2_py_examples_checks.txt` | `t2_examples_check.py` | 10 of 10 |
 | `test2/data/t2_py_formula_checks.txt` | `t2_formula_check.py` | 6 of 6 |
@@ -150,15 +150,15 @@ G-9 & F\_B, Malcev identity with the twist c\_tw = -2: the ideal contains ctw\_i
 G-10 & F\_C (l\_LL + su(2) isospin + spinor charges), Jacobi identity: csl\_re\^{}2 + csl\_im\^{}2 lies in the ideal, so c\_sl = 0 on every real solution: every Lie algebra of the family has no Lorentz part in [s\_LL, s\_LL], even when isospin is present & PASS\\
 G-11 & F\_C, Malcev identity: csl\_re $|$c\_Ts$|$\^{}2, csl\_im $|$c\_Ts$|$\^{}2, csl\_re $|$c\_sT$|$\^{}2, csl\_im $|$c\_sT$|$\^{}2 lie in the ideal: whenever the spinor charges close into the Lorentz algebra (c\_sl != 0), isospin acts trivially on them (c\_Ts = 0) and [s\_LL, s\_LL] has no isospin part (c\_sT = 0) -- isospin can join the super-loop only as an outer automorphism & PASS\\
 G-12 & F\_C, Malcev identity: on real solutions with c\_sl != 0, G-11 gives $|$c\_Ts$|$\^{}2 = 0 and $|$c\_sT$|$\^{}2 = 0, hence c\_Ts = c\_sT = 0; adding cTs\_re, cTs\_im, csT\_re, csT\_im to the ideal and saturating by csl\_re\^{}2 + csl\_im\^{}2 != 0, the ideal contains ctw\_re + 2 and ctw\_im: the twist is -2 -- the spinor charges with the Lorentz bracket form the bi-octonion algebra m\_LL, and su(2) isospin decouples (it can act on m\_LL only by automorphisms) & PASS\\
-LL-S1 & every symbol text is registered once (233 entries), every single item of the entries belongs to one entry (542 items), and every plain-text name of the programs, figures and data files belongs to one entry (704 names) & PASS\\
-LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 540 items of the 231 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
-LL-S3 & every column of the 121 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (337 different columns), and every file states its content in a line '\# content:' & PASS\\
-LL-S4 & each of the 8 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 233 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
-LL-S5 & in the 9744 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
-LL-S6 & in the 11261 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
-LL-S7 & every one of the 5576 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (76 registered styled letters) & PASS\\
-LL-S8 & every one of the 3670 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 158 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
-LL-S9 & the 6516 formulas of the 2 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
+LL-S1 & every symbol text is registered once (239 entries), every single item of the entries belongs to one entry (555 items), and every plain-text name of the programs, figures and data files belongs to one entry (721 names) & PASS\\
+LL-S2 & the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 553 items of the 237 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision\_NoGo also contains are exactly the 25 declared shared ones, each with the same object (\$SO(3)\$, \$SU(2)\$, \$U(1)\$, \$\textbackslash{}det\$, \$\textbackslash{}langle\textbackslash{} \textbackslash{}rangle\$, \$\textbackslash{}mathbb C\$, \$\textbackslash{}mathbb R\$, \$\textbackslash{}mathfrak g\_2\$, \$\textbackslash{}mathfrak\{so\}(3)\$, \$\textbackslash{}mathfrak\{so\}(3,1)\$, \$\textbackslash{}mathfrak\{so\}(4)\$, \$\textbackslash{}mathfrak\{so\}(4,4)\$, \$\textbackslash{}mathfrak\{so\}(8)\$, \$\textbackslash{}mathfrak\{so\}(8,\textbackslash{}mathbb C)\$, \$\textbackslash{}mathfrak\{su\}(2)\$, \$\textbackslash{}mathrm G\_2\$, \$\textbackslash{}mathrm\{Re\}\$, \$\textbackslash{}mathrm\{diag\}\$, \$\textbackslash{}mathrm\{tr\}\$, \$\textbackslash{}mathsf 1\_8\$, \$\textbackslash{}mathsf 1\_\{16\}\$, \$\textbackslash{}otimes\$, \$i\$, \$p\$, \$\{\}\^{}T\$) & PASS\\
+LL-S3 & every column of the 123 data files data/sl\_*.csv, explanations/data/ex\_*.csv and test2/data/t2\_*.csv is a registered plain-text name or a descriptive word (346 different columns), and every file states its content in a line '\# content:' & PASS\\
+LL-S4 & each of the 8 documents of Revision\_SuperLoop and the manuscript contains the complete table of the 239 registered symbols, so that every symbol it uses is defined in the document itself & PASS\\
+LL-S5 & in the 9979 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL & PASS\\
+LL-S6 & in the 11543 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well & PASS\\
+LL-S7 & every one of the 5638 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (77 registered styled letters) & PASS\\
+LL-S8 & every one of the 3670 occurrences of a name with the suffix \_LL, of an algebra element, of a family coefficient or of a pair matrix in the 160 reports and data files (data/sl\_*, explanations/data/ex\_* and test2/data/t2\_*) is a registered plain-text name & PASS\\
+LL-S9 & the 6736 formulas of the 2 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7 & PASS\\
 LL-H1 & none of the 32 documents and document sources of Revision\_SuperLoop refers its reader to another document for an equation, a symbol or a definition & PASS\\
 <!-- END checks_rows_tex -->
 
@@ -460,13 +460,13 @@ fd9de7ac8794a7d0316d7c07d791807a180ce1eccfa53c19eed8f69ba4022ea1  code/scripts/b
 ca6622b69179666116079c69b010fb6fb45d0f39cb30c1f32503848b459048e9  code/scripts/check_layout.py
 434d6216aaf225bcfd9b88d9a9ea58fba6d3a99b633282ea375ed913385764be  code/scripts/check_pages.py
 4ba23b938888ca73c928afdbe5c03078510fe524398e1751a8f7bf76ba1725d4  code/scripts/check_self_contained.py
-0456ffd3a3d3117d4af57900d27d90cddec39e273e57c963cd0a6f54273cc1e1  code/scripts/check_symbols.py
+9e69370f0fca11ad4e9c4626e702ab3faf12596290a34197492420978a78d09a  code/scripts/check_symbols.py
 aa5a9dd31707550c713e4f8e066b234f7d7fc53908c4bef049c3bf94d54db56d  code/scripts/keep_tables.py
 d915832d77bfc194020e1bbed3740c8420e309cbf54832b2e5b1439a1b4cdc27  code/scripts/make_figures.py
 cf5b78e608bd8ed2c880ca46425d5b6a5daca31331ca90af1697e5885d95e621  code/scripts/malcev_groebner.py
 cfdc99c1e280e6956e641694c6105e6758d2cb38a6a8054aa4c4f7da11c21eb3  code/scripts/tex2md.py
 eba07ddfbe6b2d1431b3f92eb5e3a14caf1eb7f5cb9aaa72a5b7d9551c22e074  code/scripts/write_doc_tables.py
-8c03c8c87787f28d49d7f02af3966e42cd1beac197833368f88f6d1f2a8a1a35  code/scripts/write_symbol_registry.py
+50b71f0075bc0504685bfdca0e9704649e20abdc9daecf556b90ee620766c720  code/scripts/write_symbol_registry.py
 5484c962175d1850ad87e734745ba7d9c0f13186368b8032e28d50c4b7fd1e9f  code/scripts/build_docs.sh
 4e1a0dc6a727035b406cc77915181128db27398aecca1c6bb44bfbed1564e592  code/scripts/check_all.sh
 ec9d4e63434b533f2fb2ce9650061aaae0c8775503bf131085c7c048c6647d4e  code/scripts/doc_header.tex
@@ -536,10 +536,10 @@ d159f9c35283f947a298ad9bc73174c65b6726638ca51b6238e3b62b35648415  explanations/d
 5f5026bbbaea06c1bf85883730514138297454ee5fd8681d1f509d66e2347c0a  explanations/figures/fig_ex_bookkeeping.pdf
 f25a98e31da53ef2c337460ff305c58f17756ec4e571390ba10d7bea58f340f7  explanations/figures/fig_ex_energy.pdf
 e37d43b994421650e4528f6905c3250b0e3ee073213f843f923e98957b36c06a  explanations/figures/fig_ex_pairs.pdf
-2bf7b6e98e59693ab8b088e09a20d8bf7f58e3d80c788981b061b83f33ce8467  explanations/figures/fig_ex_r13_bubble.pdf
-852436eab6d4af9daf7cd8aa44e11bd8cb2c9e3922ca328ab13cc26794537bce  explanations/figures/fig_ex_r13_coordinates.pdf
-8b1a17a48ef3f5bda992d97c33c5ad5c081b8631ccc061d0debae233ba6a675a  explanations/figures/fig_ex_r13_divergences.pdf
-362ba6ac93f11226568852fe9bb74623f6df0423e62e38c97110428fbe510f5d  explanations/figures/fig_ex_r13_lorentz.pdf
+b0b3c6a3b7efaa3d7236c94948ceea1710f44fa6e0d15438e298c9b8f40ff9ad  explanations/figures/fig_ex_r13_bubble.pdf
+7c5aad1bd0e0483e64907d4d2ec6bbb907e2072df854bba33a86c0d727755332  explanations/figures/fig_ex_r13_coordinates.pdf
+6b484d3028b5c413ad001f7f287631eb5d7ad9b81c1c53122ee5920488671d03  explanations/figures/fig_ex_r13_divergences.pdf
+d8393cb76a61f3eebe776c2fe42944fe58b8d54c4e817b683b78da21f2d6b585  explanations/figures/fig_ex_r13_lorentz.pdf
 9ebe88b30c37e04d72636b771d9045fe00bf8cadb355acc808ae6247601c7bf3  explanations/code/explain-rs/src/main.rs
 ea0102d48fa91faba90a2f3df9090eb71be4d01d548fec47a38a296628a06e41  explanations/code/explain-rs/Cargo.toml
 d54d506b7d88a51c7152057d89a12800edff59d1a83fc3c5ab1c5f67862a808f  explanations/code/make_explain_figures.py
@@ -1491,10 +1491,93 @@ ${7.1\times10^{-15}}$
 | 4 | -16.023974 | -4.040000 | 11.983974 | 7.959899 |
 <!-- END cjt_table_site -->
 
+<!-- BEGIN cje_lam_generic -->
+0.6795
+<!-- END cje_lam_generic -->
+
+<!-- BEGIN cje_lam_origin -->
+0.6730
+<!-- END cje_lam_origin -->
+
+<!-- BEGIN cje_lam_saddle -->
+0.6784
+<!-- END cje_lam_saddle -->
+
+<!-- BEGIN cje_lam_vacuum -->
+0.6821
+<!-- END cje_lam_vacuum -->
+
+<!-- BEGIN cje_curv -->
+-0.001713
+<!-- END cje_curv -->
+
+<!-- BEGIN cje_u_origin -->
+3.8816e-5
+<!-- END cje_u_origin -->
+
+<!-- BEGIN cje_u_saddle -->
+2.2146e-5
+<!-- END cje_u_saddle -->
+
+<!-- BEGIN cje_saddle_gap -->
+0.195731
+<!-- END cje_saddle_gap -->
+
+<!-- BEGIN cje_saddle_dmod -->
+0.138403
+<!-- END cje_saddle_dmod -->
+
+<!-- BEGIN cje_saddle_mp -->
+0.213487
+<!-- END cje_saddle_mp -->
+
+<!-- BEGIN cje_saddle_mm -->
+0.216859
+<!-- END cje_saddle_mm -->
+
+<!-- BEGIN cje_saddle_fraction -->
+0.4295
+<!-- END cje_saddle_fraction -->
+
+<!-- BEGIN cje_om_vac -->
+5.2884e-5
+<!-- END cje_om_vac -->
+
+<!-- BEGIN cje_om_saddle -->
+2.6442e-5
+<!-- END cje_om_saddle -->
+
+<!-- BEGIN cje_dmax -->
+0.7599
+<!-- END cje_dmax -->
+
+<!-- BEGIN cje_table_cut -->
+| pair field | Dirac mass $M^{\rm D}_{\rm LL}$ | order parameter $\Delta_{\rm LL}$ | $\mathcal U^{\rm CJT}_{\rm LL}$ minus its minimum | pairing only: order parameter | pairing only: energy minus its minimum | $\Omega_{\rm LL}$ of the pair field minus its minimum |
+|-------|---------|---------|-----------|---------|-----------|-----------|
+| 0.00 | 0.227347 | 0.000000 | 3.8816e-5 | 0.000000 | 5.2884e-5 | 5.2884e-5 |
+| 0.05 | 0.225561 | 0.051889 | 3.4332e-5 | 0.052662 | 4.6445e-5 | 4.6760e-5 |
+| 0.10 | 0.220378 | 0.103082 | 2.2636e-5 | 0.104244 | 3.0030e-5 | 3.0830e-5 |
+| 0.15 | 0.212302 | 0.152897 | 8.7635e-6 | 0.153857 | 1.1305e-5 | 1.1966e-5 |
+| 0.20 | 0.202103 | 0.200694 | 2.7793e-7 | 0.200888 | 3.4734e-7 | 3.8243e-7 |
+| 0.25 | 0.190678 | 0.245926 | 6.0393e-6 | 0.244979 | 7.3143e-6 | 8.4346e-6 |
+| 0.30 | 0.178890 | 0.288200 | 3.4716e-5 | 0.285966 | 4.0863e-5 | 4.9616e-5 |
+| 0.40 | 0.156718 | 0.363176 | 1.8720e-4 | 0.358623 | 2.1073e-4 | 2.8683e-4 |
+| 0.50 | 0.138312 | 0.425666 | 4.8710e-4 | 0.419600 | 5.3258e-4 | 8.1987e-4 |
+| 0.60 | 0.123874 | 0.477090 | 9.3036e-4 | 0.470288 | 9.9887e-4 | 1.7467e-3 |
+<!-- END cje_table_cut -->
+
+<!-- BEGIN cje_table_points -->
+| stationary point | $\lvert\vec d_{\rm LL}\rvert$ | $\zeta_{\rm LL}$ | Dirac masses of the two sectors | $\mathcal U^{\rm CJT}_{\rm LL}$ minus its minimum | pairing only: $\Omega_{\rm LL}$ minus its minimum | kind |
+|-------------|-------|-----|-----------|----------|----------|----------|
+| the vacuum (a three-dimensional manifold) | 0.209493 | 0 | 0.200000, 0.200000 | 0 | 0 | minimum |
+| the non-unitary state | 0.138403 | 1 | 0.213487, 0.216859 | 2.2146e-5 | 2.6442e-5 | saddle |
+| the origin (normal state) | 0 | — | 0.227347, 0.227347 | 3.8816e-5 | 5.2884e-5 | maximum |
+<!-- END cje_table_points -->
+
 <!-- BEGIN cjt_report -->
 ```text
-Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superfluid boson singlet state (SFBS) from the spinor field Psi_LL by the method of Cornwall, Jackiw and Tomboulis, in the two-loop approximation of the effective action of the propagator (Test 2, stage D)
-11 of 11 checks passed
+Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superfluid boson singlet state (SFBS) from the spinor field Psi_LL by the method of Cornwall, Jackiw and Tomboulis, in the two-loop approximation of the effective action of the propagator, and the effective potential of the SFBS (Test 2, stages D and E)
+15 of 15 checks passed
 
 [PASS] CJ-1  Wick's theorem for the interaction, in the Fock space of one site (8 fermion modes, 256 states): for the ground state of a random quadratic Hamiltonian c^dag h c + (1/2)(c^dag P c^dag^T + Hermitian conjugate) (h Hermitian, P antisymmetric, both random), <sum_iota Pi_iota^dag Pi_iota> computed directly in the Fock space equals sum_iota |<Pi_iota>|^2 + 2 sum_iota tr(Kch_iota C_n Kch_iota^dag C_n^T); and the correlation matrices C_n[a][b] = <c_b^dag c_a>, C_p[a][b] = <c_a c_b> of that ground state are the upper left block and minus the upper right block of the projector on the eigenvectors with negative eigenvalues of the matrix [[h, P], [P^dag, -h^T]] of 16 rows  -- 4 random Hamiltonians: largest |direct - Wick| = 9.4e-14; largest difference of C_n 2.0e-14, of C_p 1.7e-14 between the Fock space and the matrix of 16 rows; smallest gap above the ground state 0.001
 [PASS] CJ-2  the 64 normal channels: for every matrix T = D (x) tau_b (D one of the 16 Hermitian Dirac matrices 1, beta, i beta gamma_ch, gamma_ch, alpha^j, gamma_ch alpha^j, i beta alpha^j, beta gamma_ch alpha^j; tau_0 the unit matrix), sum_iota Kch_iota T Kch_iota^dag = c_ch T^T with c_ch = sign_D times 3 for tau_0 and sign_D times 1 for tau_iota, sign_D = +1 for 1, beta, gamma_ch, i beta alpha^j and -1 for the other four classes; the same for the pseudoscalar pair matrices Kch'_iota with the signs +1 for 1, i beta gamma_ch, gamma_ch, beta gamma_ch alpha^j and -1 for the other four; the 64 matrices are Hermitian with tr(T_ch T_ch') = 8 or 0; and for a random Hermitian C_n the mean field N_sc = -G sum_iota Kch_iota^dag C_n^T Kch_iota equals -(G/8) sum_ch c_ch n_ch T_ch and the normal term of the energy equals -(G/16) sum_ch c_ch n_ch^2, with n_ch = tr(T_ch C_n)  -- largest entry of sum K T K^dag - c_ch T^T 0.0e0; largest |c_ch - expected| 0.0e0; orthogonality 0.0e0; mean field 3.4e-16; normal energy 4.4e-16
@@ -1507,6 +1590,10 @@ Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superflu
 [PASS] CJ-9  general solutions of the two-loop equations without imposed symmetry (m = 0.2, G = 22.5, interaction normal-ordered; 384 momenta in a product grid): from four random starts (random Hermitian N_sc, random complex order parameter) the Anderson iteration of the self-consistency map of the full matrices of 16 rows converges; no solution has an energy below that of the vacuum of the closed form; and the solutions that reach this energy have |dvec| = Delta_vac, zeta = 0 and the Dirac mass m (they are the vacuum (0, 0, Delta_vac) turned by a symmetry transformation)  -- start 1: 36 iterations, residual 1.2e-12, E - E_vacuum = -6.661e-16, |d| = 0.2094933, zeta = 1.1e-10, M_D = 0.2000000 (the condensed vacuum); start 2: 51 iterations, residual 1.0e-12, E - E_vacuum = -8.674e-16, |d| = 0.2094933, zeta = 4.6e-11, M_D = 0.2000000 (the condensed vacuum); start 3: 40 iterations, residual 8.7e-13, E - E_vacuum = -8.327e-17, |d| = 0.2094933, zeta = 6.5e-11, M_D = 0.2000000 (the condensed vacuum); start 4: 39 iterations, residual 5.6e-13, E - E_vacuum = 0.000e0, |d| = 0.2094933, zeta = 3.2e-11, M_D = 0.2000000 (the condensed vacuum)
 [PASS] CJ-10  the two-loop action is a variational energy, tested on one site (8 fermion modes, 256 states; m = 0.2, chemical potential -(3/2) G, ten couplings from 0.1 to 4): the energy E_var of the self-consistent mean-field state equals the expectation value of the Hamiltonian c^dag (m beta - mu) c - (G/4) sum_iota Pi_iota^dag Pi_iota in the ground state of the mean-field Hamiltonian, constructed in the Fock space; and it is never below the exact ground energy (the lowest eigenvalue of the 256 x 256 matrix)  -- largest |E_var - expectation value| 5.1e-15; smallest E_var - exact ground energy 0.114847; largest residual of the mean fields 9.0e-14
 [PASS] CJ-11  the alternative without mass dressing, the axially symmetric completion -(G/4) sum_iota (Pi_iota^dag Pi_iota + Pi'_iota^dag Pi'_iota) of the interaction (pseudoscalar pair operators Pi'_iota of the matrices Kch'_iota): the sums of the coefficients of the scalar and of the pseudoscalar pairs vanish on the four classes of channels that flip the chirality (beta, i beta gamma_ch, i beta alpha^j, beta gamma_ch alpha^j) and equal 6 (tau_0) or 2 (tau_iota) in modulus on the other four; the mean field N_sc of a random state has no component on the flipping channels, so that no state changes the Dirac mass; at the chemical potential -3 G N_Lambda the state with the Dirac mass m = 0.2 and the gap of the pairing-only gap equation (G = 22.5) is a stationary state with vanishing pseudoscalar pair amplitudes; and a general solution from a random start with scalar and pseudoscalar pair fields reaches the energy of this state, with |dvec| = Delta_vac, the Dirac mass m and no pseudoscalar pair amplitude  -- largest sum on the flipping classes 0.0e0; largest flipping component of N_sc 6.2e-16; residual of the mean fields of the vacuum 1.0e-14; pseudoscalar amplitudes of the vacuum 6.0e-17; general solution: 71 iterations, residual 9.2e-13, E - E_vacuum = 7.88e-16, |dvec| = 0.2094933, pseudoscalar amplitude 6.7e-13, Dirac mass 0.2000000
+[PASS] CJ-12  stage E, the two-sector trial states: for the pair field in its normal form, bvec = (0, (i/2)(y_+ - y_-), (1/2)(y_+ + y_-)), and a normal mean field with the Dirac mass M_trial_+ on the isospin state tau_1 = -1 and M_trial_- on tau_1 = +1 (four sets of parameters, not self-consistent; bare mass 0.05, G = 22.5), the energy E_var from the matrices of 16 rows equals the closed form V_two = sum over the two sectors of [-Xi(M^2 + y^2) + 2 (M - m_bare) s + 2 y f] - (3G/4)(s_+ + s_-)^2 - (G/4)(s_+ - s_-)^2 - 2 G (f_+^2 + f_-^2) + 3 G N_Lambda^2 with s = M Xi_1(M^2 + y^2) and f = y Xi_1(M^2 + y^2) of each sector; the order parameter of the state is again of the normal form, with the gaps 2 G f_+ and 2 G f_- in the same sectors; and its normal mean field consists of the Dirac masses m_bare + G s_+ + (G/2) s_- and m_bare + G s_- + (G/2) s_+ of the two sectors and of the shift of the chemical potential, with no other component  -- 4 sets: largest |E_var - V_two| 1.5e-15; gaps and pairing block of the order parameter 8.0e-16; normal mean field 4.6e-15; other components 3.3e-16
+[PASS] CJ-13  stage E, the effective potential U_CJT(dvec) of the order parameter, the two-loop energy of the state that is stationary in everything except its pair amplitude (m = 0.2, G = 22.5, normal-ordered form): (a) for six pair fields (unitary and not) the state with the Dirac masses of the two coupled equations M_+ = m_bare + G s_+ + (G/2) s_-, M_- = m_bare + G s_- + (G/2) s_+ reproduces its normal mean field under the general map of the matrices of 16 rows, and its energy is V_two; (b) the derivative of U_CJT with respect to the order parameter is (pair field - order parameter)/G: dU_CJT = ((y_+ - Delta_+) dDelta_+ + (y_- - Delta_-) dDelta_-)/G, verified by central differences in y_+ and in y_-; (c) along the unitary cut the order parameter 2 G b Xi_1(M^2 + b^2) increases strictly with the pair field b (4001 values of b from 0 to 5) and stays below 2 G N_Lambda, so that U_CJT is a single-valued function of the order parameter on its whole range; (d) at four pair fields (the gaps 0.3 and 0.1; the origin; the non-unitary stationary state; the vacuum) the iteration of the normal mean field alone, from three random Hermitian starts each without imposed symmetry, converges to the state of the two coupled equations; (e) at the same four pair fields the Jacobian of this self-consistency map, -(G/8) c_ch chi with the static susceptibility chi of the 64 densities n_ch (by central differences, step 1e-4), has all its eigenvalues below 1, so that the constrained state is a strict local minimum of E_no + |bvec - dvec|^2/G among the quasi-free states and hence of E_no among the states with its order parameter; the element of the Jacobian in the scalar channel at the origin equals its closed form (3/2) G d(M Xi_1(M^2))/dM  -- (a) largest residual of the normal mean field and of the energy 5.2e-15; (b) largest deviation of the derivative 1.5e-12; (c) increasing: true, largest order parameter 0.7509339 against 2 G N_Lambda = 0.7599089; (d) largest difference of the normal mean field and of the energy from the two-sector state 2.6e-12, at most 22 iterations; (e) largest eigenvalue of the Jacobian at the four pair fields, in the order of (d): 0.6795 (smallest -0.6810), 0.6730 (smallest -0.7801), 0.6784 (smallest -0.7367), 0.6821 (smallest -0.6756); largest asymmetry of the susceptibility 1.7e-12, its largest positive eigenvalue 0.0e0; element of the Jacobian in the scalar channel at the origin 0.6730, difference from its closed form 1.8e-10
+[PASS] CJ-14  stage E, the symmetry of the effective potential: when the mean fields of a constrained state (pair field of the gaps 0.3 and 0.1) are turned by a random fermion-number and isospin transformation U = exp(i theta) (1_4 (x) u), N_sc -> U N_sc U^dag and Ppair -> U Ppair U^T (four random transformations), the energy is unchanged, the turned state reproduces its turned normal mean field, and its order parameter has the same two gaps Delta_+ and Delta_-: U_CJT depends on dvec only through |dvec| and zeta  -- largest change of the energy 3.7e-15; of the normal mean field 3.3e-15; of the gaps of the order parameter 5.0e-16
+[PASS] CJ-15  stage E, the stationary points of U_CJT (m = 0.2, G = 22.5, normal-ordered form) and the shape of the potential: the origin (the normal stationary state) is a local maximum, U_CJT there exceeds the vacuum value by 3.8816e-5; the vacuum, |dvec| = Delta_vac and zeta = 0, is the lowest point of a grid of 61 x 61 pair fields; near the origin U_CJT = U_CJT(0) - (1/G)(1 - 1/(2 G Xi_1(M_N^2))) |dvec|^2; the non-unitary state (one sector condensed, zeta = 1) is a stationary state of the general map of the matrices of 16 rows and a saddle: U_CJT decreases from it towards the vacuum and increases along its own gap; in the pairing-only potential Omega the two sectors are independent and the saddle lies at exactly half the depth of the vacuum, in U_CJT the sectors are coupled through the Dirac masses and it does not; and the identity between the two pairing-only potentials, Omega(bvec) = E_po(state with the pair field bvec) - E_po(normal state) + |bvec - dvec|^2/G, holds for seven pair fields (unitary and not), the pairing-only energy and the order parameter being taken from the matrices of 16 rows  -- U_CJT minus its vacuum value: origin 3.8816e-5, non-unitary saddle 2.2146e-5 (gap of its pair field 0.1957308, Dirac masses 0.2134875 and 0.2168594, gaps of its order parameter 0.1957308 and 0.0e0), lowest grid value 8.2e-10; residual of the saddle under the general map 2.6e-15; pairing only: Omega(vacuum) = -5.2884e-5, Omega(saddle) = -2.6442e-5; depth of the saddle below the origin as a fraction of the depth of the vacuum: 0.4295 (pairing only: 0.5); coefficient of |dvec|^2 at the origin -0.001713 against the formula -0.001713; identity of the two pairing-only potentials: largest deviation 2.8e-15, of the pairing block of the order parameter from the normal form with the gaps 2 G y Xi_1(m^2 + y^2) 1.7e-15
 ```
 <!-- END cjt_report -->
 
@@ -1522,13 +1609,13 @@ Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superflu
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.23 | 0.16 |
-| `cyclotron` | 7.43 | 5.71 |
-| `andreev` | 1.13 | 0.73 |
-| `kink_spectrum` | 0.81 | 3.41 |
-| `ground_state` | 1.67 | 5.22 |
-| `kink_ground_state` | 6.92 | 23.19 |
-| `quench` (the time evolution) | 35.25 | 24.66 |
+| `packet_free` | 0.29 | 0.22 |
+| `cyclotron` | 8.22 | 6.87 |
+| `andreev` | 1.19 | 0.92 |
+| `kink_spectrum` | 0.89 | 3.00 |
+| `ground_state` | 1.84 | 5.41 |
+| `kink_ground_state` | 7.62 | 25.16 |
+| `quench` (the time evolution) | 38.24 | 27.29 |
 <!-- END t2_times_table -->
 
 <!-- BEGIN t2_py_keys -->
@@ -1645,7 +1732,7 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_analytic -->
 
 <!-- BEGIN nchecks_t2_cjt -->
-11
+15
 <!-- END nchecks_t2_cjt -->
 
 <!-- BEGIN nchecks_t2_fields -->
@@ -1677,7 +1764,7 @@ $$\mathsf D_{\rm LL}=\begin{pmatrix}d^1_{\rm LL}-i\,d^2_{\rm LL}&-d^3_{\rm LL}\\
 <!-- END nchecks_t2_sfbs -->
 
 <!-- BEGIN n_t2_rust_lines -->
-20019
+20487
 <!-- END n_t2_rust_lines -->
 
 <!-- BEGIN n_t2_rust_files -->

@@ -138,15 +138,21 @@ not a mixture because the condensed pairs are neutral; the complete $4\times4$ m
 matrices of the spinor field (Figure 26). Items [7] to [11] are verified by the checks SB-1 to
 SB-{{GEN:nchecks_t2_sfbs}} of the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
-**Test 2, stage D** (`test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis`, .pdf, .tex,
-.md): the creation of the SFBS treated with the effective action of the propagator. At two loops this action is minus the
+**Test 2, stages D and E** (`test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis`, .pdf,
+.tex, .md): the creation of the SFBS treated with the effective action of the propagator, and its effective potential. At two loops this action is minus the
 energy of a quasi-free state, with three contractions of the interaction; the two normal ones, which the treatment of items
 [7] to [11] had dropped, shift the chemical potential and dress the Dirac mass (a condensed vacuum has four times the mass
 of the Lagrangian). With the interaction normal-ordered with respect to the normal correlations of the vacuum, the vacuum,
 its gap and the SFBS boson are those of items [7] to [11]; the SFBS appears as a pole of the pair part of the propagator
 and, above the critical coupling, as its condensate, and both are confirmed by time integrations with CVODE. Verified by the
-checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}} of the program `t2_cjt` (member `t2cjt` of the workspace). The stages E to I of the
-same method are not yet answered.
+checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}} of the program `t2_cjt` (member `t2cjt` of the workspace). Stage E: the effective
+potential of the order parameter is the two-loop energy at fixed pair amplitude, in closed form through two coupled
+equations for the Dirac masses of two sectors; it is a Mexican hat with the normal state as its maximum, the unitary
+order parameters of the modulus {{GEN:cjt_dvac}} as its minimum and the non-unitary state as a saddle, shallower than the
+hat of items [8] and [9] and related to it by an identity; at the pair fields examined the state that defines it is a
+strict local minimum of the energy at its order parameter (a criterion with the matrix of first derivatives of the
+self-consistency map; the largest eigenvalue found is {{GEN:cje_lam_vacuum}}, below 1). The stages F to I of the same
+method are not yet answered.
 
 # 2. Where to start reading
 
@@ -172,8 +178,9 @@ same method are not yet answered.
    eight-dimensional manifolds.
 7. `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state`
    (.pdf, .tex, .md): the answers to Test 2, item by item, each with its programs, checks and provenance.
-8. `test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis` (.pdf, .tex, .md): stage D of
-   Test 2, the creation of the SFBS by the effective action of the propagator, with its program, checks and provenance.
+8. `test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis` (.pdf, .tex, .md): the stages
+   D and E of Test 2, the creation of the SFBS and its effective potential by the effective action of the propagator, with
+   their program, checks and provenance.
 
 # 3. Contents
 
@@ -237,7 +244,7 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 # Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state, and its figures:
 (cd test2/rust && cargo build --release && ./target/release/t2_sfbs)
 python3 test2/python/make_t2_sfbs_figures.py
-# Test 2, stage D: the checks CJ-* of the creation of the SFBS by the method of Cornwall, Jackiw and Tomboulis, and its figures:
+# Test 2, stages D and E: the checks CJ-* of the SFBS by the method of Cornwall, Jackiw and Tomboulis, and their figures:
 (cd test2/rust && cargo build --release && ./target/release/t2_cjt)
 python3 test2/python/make_t2_cjt_figures.py
 # the comparison of CVODE with the fixed-step methods of the first version, and its document:
@@ -289,8 +296,8 @@ A non-associative quantum mechanics that could carry the super-loop as a symmetr
 cannot, by Theorem R); larger families of brackets (more internal generators, central or tensorial
 charges, other representations of the spinor charges); corrections to the superfluid beyond mean
 field, finite temperature and the dispersions of the Goldstone modes; the renormalization of the Yukawa
-completion to all orders; the stages E to I of the treatment of the SFBS by the method of Cornwall, Jackiw and
-Tomboulis (stage D is done), and its corrections beyond two loops.
+completion to all orders; the stages F to I of the treatment of the SFBS by the method of Cornwall, Jackiw and
+Tomboulis (the stages D and E are done), and its corrections beyond two loops.
 
 # 8. The symbols
 

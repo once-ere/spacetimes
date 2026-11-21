@@ -1,7 +1,7 @@
 <!-- OUTPUT: test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis.md -->
 ---
 title: "The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis"
-subtitle: "PROJECT spacetimes, Revision_SuperLoop, folder test2. Stage D: the creation of the superfluid boson singlet state from the spinor field, with its provenance"
+subtitle: "PROJECT spacetimes, Revision_SuperLoop, folder test2. Stages D and E: the creation of the superfluid boson singlet state from the spinor field, and its effective potential, with their provenance"
 author: "Prepared for Patrick Lee Nash, Ph.D."
 date: "November 19, 2026"
 ---
@@ -24,8 +24,8 @@ E. Tomboulis, Phys. Rev. D 10, 2428 (1974), called CJT below:
 * **I.** substitute SFBSv into the kinetic Lagrangian, diagonalize the mass terms, work out the surviving symmetry
   group and prove its relation to the group of electromagnetism and the massless photon.
 
-**This document answers stage D.** Stages E to I are not yet answered; they will be added to this document as further
-sections, each when it is complete. On November 19, 2026 the author added: complete stage D, resolve all issues, and
+**This document answers stages D and E.** Stages F to I are not yet answered; they will be added to this document as
+further sections, each when it is complete. On November 19, 2026 the author added: complete stage D, resolve all issues, and
 invent mathematically possible fixes. The issues are the four discrepancies between the method of CJT and the earlier
 treatment of the SFBS in this project that the first calculations of stage D had shown; they are stated in Section 6.3
 and resolved in Section 7.
@@ -77,13 +77,43 @@ the value used throughout Test 2.
 Every statement above is checked by the program `t2_cjt` (checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}, all passed;
 Appendix A).
 
-## 1.3 How to read this document
+## 1.3 The result of stage E in brief
+
+1. **The definition.** The field of the SFBS is the order parameter $\vec d_{\rm LL}$, a part of the propagator. Its
+   effective potential $\mathcal U^{\rm CJT}_{\rm LL}(\vec d_{\rm LL})$ is the two-loop energy per volume of the state
+   that is stationary in everything except its pair amplitude, which is held at the value that belongs to
+   $\vec d_{\rm LL}$. Such a state is the ground state of a mean-field matrix whose pair field $\vec b_{\rm LL}$ is a
+   free parameter, and $\partial\mathcal U^{\rm CJT}_{\rm LL}/\partial(d^\iota_{\rm LL})^*=(b^\iota_{\rm LL}-d^\iota_{\rm LL})/G_{\rm LL}$
+   (Theorem E1).
+2. **The closed form.** The potential depends on $\vec d_{\rm LL}$ only through its modulus and its non-unitarity, that
+   is, through two gaps $\Delta^\pm_{\rm LL}$. In the normal form of the pair field the spinor charges split into two
+   sectors with one gap each, coupled through their Dirac masses, and the potential is given in closed form by two
+   coupled equations for these masses (Theorem E2).
+3. **Stationary, or lowest?** A criterion decides whether such a state is a minimum at its order parameter: all
+   eigenvalues of the matrix of first derivatives of the self-consistency map of the normal mean field must be below 1
+   (Theorem E3). At the four pair fields examined the largest is between {{GEN:cje_lam_origin}} and
+   {{GEN:cje_lam_vacuum}}. For the pairing-only functional the minimum property is proved for every order parameter;
+   for the two-loop functional it is not proved that the state is the lowest of all.
+4. **The Mexican hat.** At $G_{\rm LL}=22.5$ the origin, the normal state, is a maximum, {{GEN:cje_u_origin}} above the
+   minimum; the minimum is the manifold of the unitary order parameters of the modulus
+   $\Delta^{\rm vac}_{\rm LL}={{GEN:cjt_dvac}}$, a circle in the plane of one complex component (Figure 5); the
+   non-unitary state, in which one sector is condensed and the other is not, is a saddle {{GEN:cje_u_saddle}} above
+   the minimum.
+5. **Against the potential of the earlier treatment.** That potential, $\Omega_{\rm LL}$, is a function of the pair
+   field, not of the order parameter, and it is the potential of the pairing-only treatment; it exceeds the energy of
+   the state with that pair field by $\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2/G_{\rm LL}$ (Theorem E4). All
+   potentials have their minimum at the same $\Delta^{\rm vac}_{\rm LL}$. The two-loop hat is shallower
+   ({{GEN:cje_u_origin}} against {{GEN:cje_om_vac}}), and its saddle lies at {{GEN:cje_saddle_fraction}} of the depth
+   instead of at one half, because the two sectors are no longer independent.
+
+## 1.4 How to read this document
 
 The document is self-contained: every symbol is defined where it first appears, and the complete table of the symbols
 of the folder is Appendix C. Theorems are numbered D1 to D8; each is followed by its proof and by the check of the
 program that verifies it by machine. Section 2 states the model. Section 3 explains the method of CJT and its two-loop
 approximation. Sections 4 to 6 work out what the approximation gives for the model as it stands, and state the issues.
 Section 7 resolves them. Section 8 is the creation of the SFBS. Section 9 discusses the limits of the approximation.
+Section 10 is stage E, the effective potential.
 
 # 2. The model
 
@@ -941,7 +971,7 @@ $\gamma^{\rm gr}_{\rm LL}$ (dashed), and the value of the condensed vacuum (dott
    $\gamma^{\rm gr}_{\rm LL}$. This vacuum is the superfluid, and the oscillations of its order parameter are the
    subject of stages E to I.
 
-# 9. Discussion
+# 9. Discussion of stage D
 
 ## 9.1 How good is the two-loop approximation?
 
@@ -1005,6 +1035,374 @@ the oscillations of the condensed vacuum) are to be kept, as the method of CJT r
 unless told otherwise, or to be suppressed for the sake of agreement with the earlier treatment, which would be the
 pairing-only functional (7.7) under another name.
 
+# 10. Stage E: the effective potential of the SFBS
+
+## 10.1 The definition in the method
+
+For an elementary scalar field the effective potential at a value of the field is the energy per volume of the state
+of lowest energy in which the field has that expectation value. Its minima are the vacua; for the Higgs doublet it is
+the Mexican hat. The SFBS is not an elementary field: its field is the order parameter (2.7),
+$d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$, a part of the propagator. Its effective
+potential is defined in the same way, with the two-loop energy of Sections 3 and 7:
+$$\mathcal U^{\rm CJT}_{\rm LL}(\vec d_{\rm LL})=\min\Big\{\mathcal E^{\rm no}_{\rm LL}\ :\ \text{quasi-free states with }-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle=d^\iota_{\rm LL}\ \text{for }\iota=1,2,3\Big\}.\tag{10.1}$$
+In the language of Section 3 this is minus the two-loop effective action per duration and volume, made stationary with
+respect to the whole propagator except its pair amplitude at coinciding points, which is held fixed: the Legendre
+transform that belongs to a source coupled to the pair operators alone, a special case of the source of Section 3.1.
+$\mathcal U^{\rm po}_{\rm LL}$ denotes the same construction with the pairing-only functional $\mathcal E^{\rm po}_{\rm LL}$
+of (7.7). All states of this section are quasi-free and the same at every point of space, and the chemical potential
+$\mu_{\rm LL}$ is zero throughout, as in the vacuum sector of Section 6.
+
+Two notions are used throughout. A **constrained state** is the ground state of a mean-field matrix (3.6) whose
+normal block is the normal mean field (4.2) of the state itself and whose pairing block is
+$\mathsf P_{\rm LL}=\sum_\iota b^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$ with some vector
+$\vec b_{\rm LL}\in\mathbb C^3$, the **pair field** of the state. The pair field is a free parameter; the order
+parameter of the state follows from it. And for a fixed vector $\vec b_{\rm LL}\in\mathbb C^3$ the **shifted energy**
+of a state with the order parameter $\vec d_{\rm LL}$ is
+$$\mathcal E^{\rm sh}_{\rm LL}=\mathcal E^{\rm no}_{\rm LL}+\frac{\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2}{G_{\rm LL}}.\tag{10.2}$$
+
+**Theorem E1 (the constrained states).** (a) A state makes $\mathcal E^{\rm no}_{\rm LL}$ stationary among the states
+with a given order parameter $\vec d_{\rm LL}$ exactly when, for some $\vec b_{\rm LL}\in\mathbb C^3$, its density
+matrix $\mathsf R^{\rm Nb}_{\rm LL}$ commutes at every momentum with the matrix (3.6) that is built from its own normal
+mean field and from the pairing block of $\vec b_{\rm LL}$; the state of lowest energy for these mean fields is the
+constrained state with the pair field $\vec b_{\rm LL}$. (b) Where the potential is built from constrained states, its
+derivative is
+$$\frac{\partial\,\mathcal U^{\rm CJT}_{\rm LL}}{\partial(d^\iota_{\rm LL})^*}=\frac{b^\iota_{\rm LL}-d^\iota_{\rm LL}}{G_{\rm LL}}.\tag{10.3}$$
+(c) The stationary points of $\mathcal U^{\rm CJT}_{\rm LL}$ are the constrained states with
+$\vec b_{\rm LL}=\vec d_{\rm LL}$: exactly the stationary states of the unconstrained problem (Theorem D2 (b)), with the
+same energies. (d) For a fixed vector $\vec b_{\rm LL}$ the states that make the shifted energy (10.2) stationary,
+without any constraint, are those of (a) with this $\vec b_{\rm LL}$. A constrained state that is a minimum of the
+shifted energy, locally or among all states, is a minimum in the same sense of $\mathcal E^{\rm no}_{\rm LL}$ among the
+states with its order parameter.
+
+*Proof.* (a) The three complex constraints are treated with multipliers, which are written
+$\tfrac12(d^\iota_{\rm LL}-b^\iota_{\rm LL})$ with three complex numbers $b^\iota_{\rm LL}$: the function
+$\mathcal E^{\rm no}_{\rm LL}-\sum_\iota\big(\tfrac12(d^\iota_{\rm LL}-b^\iota_{\rm LL})^*\langle\Pi^\iota_{\rm LL}\rangle+\text{complex conjugate}\big)$
+has to be stationary without constraint. By the proof of Theorem D2 (b) the first-order change of
+$\mathcal E^{\rm no}_{\rm LL}$ contains the pair amplitudes in the form
+$\tfrac12\sum_\iota\big((d^\iota_{\rm LL})^*\,d\langle\Pi^\iota_{\rm LL}\rangle+\text{complex conjugate}\big)$; the
+multiplier terms change the factor $(d^\iota_{\rm LL})^*$ into $(b^\iota_{\rm LL})^*$ and nothing else. The change is
+therefore $\tfrac12\int\mathrm{tr}(\mathsf H^{\rm var}_{\rm LL}\,d\mathsf R^{\rm Nb}_{\rm LL})$ with the pairing block
+built from $\vec b_{\rm LL}$, and the rest of that proof applies unchanged. (b) When $\vec d_{\rm LL}$ changes, the
+change of the constrained minimum is the change of the constraint terms at fixed multipliers:
+$d\,\mathcal U^{\rm CJT}_{\rm LL}=\sum_\iota\big(\tfrac12(d^\iota_{\rm LL}-b^\iota_{\rm LL})^*\,d\langle\Pi^\iota_{\rm LL}\rangle+\text{complex conjugate}\big)$,
+and $d\langle\Pi^\iota_{\rm LL}\rangle=-(2/G_{\rm LL})\,d(d^\iota_{\rm LL})$. (c) follows from (b) and (a). (d) Because
+the order parameter of a state is $-\tfrac12G_{\rm LL}$ times its pair amplitudes, the first-order change of the second
+term of (10.2) is $-\sum_\iota\big(\tfrac12(d^\iota_{\rm LL}-b^\iota_{\rm LL})^*\,d\langle\Pi^\iota_{\rm LL}\rangle+\text{complex conjugate}\big)$:
+the multiplier terms of (a). And on the states with one and the same order parameter the two functions
+$\mathcal E^{\rm sh}_{\rm LL}$ and $\mathcal E^{\rm no}_{\rm LL}$ differ by a constant. $\blacksquare$
+
+The pair field is what stands in the mean-field matrix; the order parameter is what the state answers with. They agree
+only at a stationary point. This distinction is the key to the comparison of Section 10.5.
+
+## 10.2 The symmetry, and the normal form
+
+The energy is invariant under the fermion-number and isospin transformations of Section 2.3, under which the order
+parameter is multiplied by a phase and rotated as an isospin vector. The potential (10.1) therefore depends on
+$\vec d_{\rm LL}$ only through what a phase and a rotation leave unchanged. For a complex vector of three components
+these are two numbers: its modulus $\lvert\vec d_{\rm LL}\rvert$ and its non-unitarity $\zeta_{\rm LL}$ (Section 2.4),
+or, equivalently, the two **gaps**
+$$\Delta^\pm_{\rm LL}=\lvert\vec d_{\rm LL}\rvert\,(1\pm\zeta_{\rm LL})^{1/2},\qquad\Delta^+_{\rm LL}\ge\Delta^-_{\rm LL}\ge0.\tag{10.4}$$
+Every order parameter can be turned by a phase and a rotation into the **normal form**
+$$\vec d^{\rm nf}_{\rm LL}(\Delta^+_{\rm LL},\Delta^-_{\rm LL})=\big(0,\ \tfrac i2(\Delta^+_{\rm LL}-\Delta^-_{\rm LL}),\ \tfrac12(\Delta^+_{\rm LL}+\Delta^-_{\rm LL})\big)\tag{10.5}$$
+(choose the phase so that the real and the imaginary part of the vector are orthogonal, then rotate the longer of the
+two to the third axis and the other to the second; their lengths are
+$\tfrac12(\Delta^+_{\rm LL}\pm\Delta^-_{\rm LL})$). A unitary order parameter has $\zeta_{\rm LL}=0$, equal gaps, and
+the normal form $(0,0,\lvert\vec d_{\rm LL}\rvert)$. It is therefore enough to know the potential on the normal forms.
+The same holds for the pair field, whose normal form is written
+$\vec b_{\rm LL}=\vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})$ with two gaps $y^\pm_{\rm LL}$ of the pair field;
+Theorem E2 (b) below shows that a pair field of the normal form has an order parameter of the normal form.
+*Check CJ-14* turns the mean fields of a constrained state by four random transformations: the energy and the two gaps
+of the order parameter do not change (to $10^{-14}$).
+
+The normal form (10.5) is linear in its two gaps, and for two vectors of this form
+$$\begin{aligned}\mathrm{Re}\sum_\iota\big(\vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})^\iota\big)^*\,\vec d^{\rm nf}_{\rm LL}(\Delta^+_{\rm LL},\Delta^-_{\rm LL})^\iota&=\tfrac12\big(y^+_{\rm LL}\Delta^+_{\rm LL}+y^-_{\rm LL}\Delta^-_{\rm LL}\big),\\
+\lvert\vec d^{\rm nf}_{\rm LL}(\Delta^+_{\rm LL},\Delta^-_{\rm LL})\rvert^2&=\tfrac12\big((\Delta^+_{\rm LL})^2+(\Delta^-_{\rm LL})^2\big).\end{aligned}\tag{10.6}$$
+With (10.6) the derivative (10.3), for a pair field and an order parameter of the normal form, reads
+$$d\,\mathcal U^{\rm CJT}_{\rm LL}=\frac{(y^+_{\rm LL}-\Delta^+_{\rm LL})\,d\Delta^+_{\rm LL}+(y^-_{\rm LL}-\Delta^-_{\rm LL})\,d\Delta^-_{\rm LL}}{G_{\rm LL}}\tag{10.7}$$
+(the change of the potential is $2/G_{\rm LL}$ times the real part of
+$\sum_\iota(b^\iota_{\rm LL}-d^\iota_{\rm LL})^*\,d(d^\iota_{\rm LL})$).
+
+*The two sectors.* With the pair matrices (2.2) the pairing block of a pair field of the normal form is
+$(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger$ times the isospin matrix
+$$\sum_\iota b^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger=\tfrac12(y^+_{\rm LL}-y^-_{\rm LL})\,\mathsf 1_2-\tfrac12(y^+_{\rm LL}+y^-_{\rm LL})\,\tau^{\rm LL}_1,\tag{10.8}$$
+which is diagonal on the two eigenstates of $\tau^{\rm LL}_1$: it is $y^+_{\rm LL}$ on the state with the eigenvalue
+$-1$ and $-y^-_{\rm LL}$ on the state with the eigenvalue $+1$. The spinor charges of the first isospin state pair
+among themselves with the gap $y^+_{\rm LL}$, those of the second with the gap $y^-_{\rm LL}$: two **sectors**.
+
+## 10.3 The potential in closed form
+
+Because the two sectors have different gaps, their scalar densities differ, and so do their Dirac masses. The trial
+states are: the mean-field matrix with the pair field of the normal form, no chemical potential, and the Dirac mass
+$M^{{\rm v}+}_{\rm LL}$ in the first sector, $M^{{\rm v}-}_{\rm LL}$ in the second. For each sector, as in (6.1),
+$$E^{{\rm v}\pm}_{\rm LL}=\big(q_{\rm LL}^2+(M^{{\rm v}\pm}_{\rm LL})^2+(y^\pm_{\rm LL})^2\big)^{1/2},\qquad
+s^{{\rm c}\pm}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}\frac{M^{{\rm v}\pm}_{\rm LL}}{E^{{\rm v}\pm}_{\rm LL}},\qquad
+f^{{\rm c}\pm}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}\frac{d^3q_{\rm LL}}{(2\pi)^3}\frac{y^\pm_{\rm LL}}{E^{{\rm v}\pm}_{\rm LL}}.\tag{10.9}$$
+
+**Theorem E2 (two sectors).** (a) The two-loop energy per volume of the trial state at $\mu_{\rm LL}=0$ is
+$$\begin{aligned}V^{\rm two}_{\rm LL}={}&\sum_\pm\Big[-\Xi_{\rm LL}\big((M^{{\rm v}\pm}_{\rm LL})^2+(y^\pm_{\rm LL})^2\big)+2(M^{{\rm v}\pm}_{\rm LL}-m^{\rm b}_{\rm LL})s^{{\rm c}\pm}_{\rm LL}+2y^\pm_{\rm LL}f^{{\rm c}\pm}_{\rm LL}\Big]\\
+&-\tfrac34G_{\rm LL}\big(s^{{\rm c}+}_{\rm LL}+s^{{\rm c}-}_{\rm LL}\big)^2-\tfrac14G_{\rm LL}\big(s^{{\rm c}+}_{\rm LL}-s^{{\rm c}-}_{\rm LL}\big)^2
+-2G_{\rm LL}\big((f^{{\rm c}+}_{\rm LL})^2+(f^{{\rm c}-}_{\rm LL})^2\big)+3G_{\rm LL}(N^\Lambda_{\rm LL})^2.\end{aligned}\tag{10.10}$$
+(b) Its order parameter is of the normal form, with the gaps
+$$\Delta^\pm_{\rm LL}=2G_{\rm LL}f^{{\rm c}\pm}_{\rm LL}.\tag{10.11}$$
+(c) Its normal mean field consists of the shift of the chemical potential and of the Dirac masses
+$m^{\rm b}_{\rm LL}+G_{\rm LL}s^{{\rm c}\pm}_{\rm LL}+\tfrac12G_{\rm LL}s^{{\rm c}\mp}_{\rm LL}$ of the two sectors, and of
+nothing else. Hence the trial state is a constrained state exactly when
+$$M^{{\rm v}+}_{\rm LL}=m^{\rm b}_{\rm LL}+G_{\rm LL}s^{{\rm c}+}_{\rm LL}+\tfrac12G_{\rm LL}s^{{\rm c}-}_{\rm LL},\qquad
+M^{{\rm v}-}_{\rm LL}=m^{\rm b}_{\rm LL}+G_{\rm LL}s^{{\rm c}-}_{\rm LL}+\tfrac12G_{\rm LL}s^{{\rm c}+}_{\rm LL},\tag{10.12}$$
+two coupled equations for the two masses at given gaps of the pair field. (d) For $y^+_{\rm LL}=y^-_{\rm LL}$ the two
+masses are equal, $V^{\rm two}_{\rm LL}$ is $V^{\rm CJT}_{\rm LL}$ of (6.4), and (10.12) is the first equation of (6.5).
+
+*Proof.* In a basis of the isospin index made of the two eigenstates of $\tau^{\rm LL}_1$ the mean-field matrix is the
+direct sum of two matrices of 8 rows, one for each sector, and each is of the form treated in the proof of Theorem D5
+with half as many components: its square is $(E^{{\rm v}\pm}_{\rm LL})^2$, and its correlation matrices are those of
+that proof with the mass and the gap of the sector. (a), (b) The kinetic term and the pair amplitudes are therefore
+half of the expressions of Theorem D5 for each sector; the pair term of the energy is
+$-\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}$, with the modulus of (10.6). For the normal term (4.2) the state has three
+densities: the number $4N^\Lambda_{\rm LL}$ and the scalar density
+$-2(s^{{\rm c}+}_{\rm LL}+s^{{\rm c}-}_{\rm LL})$, both with the coefficient 3, and the density of
+$\beta_{\rm LL}\otimes\tau^{\rm LL}_1$, which is $+2(s^{{\rm c}+}_{\rm LL}-s^{{\rm c}-}_{\rm LL})$ and has the
+coefficient 1 (Table 1). With the term $6G_{\rm LL}(N^\Lambda_{\rm LL})^2$ of the chemical potential this gives
+(10.10). (c) By (4.2) the normal mean field is $-\tfrac32G_{\rm LL}N^\Lambda_{\rm LL}
++\tfrac34G_{\rm LL}(s^{{\rm c}+}_{\rm LL}+s^{{\rm c}-}_{\rm LL})\,\beta_{\rm LL}\otimes\mathsf 1_2
+-\tfrac14G_{\rm LL}(s^{{\rm c}+}_{\rm LL}-s^{{\rm c}-}_{\rm LL})\,\beta_{\rm LL}\otimes\tau^{\rm LL}_1$, and on the
+state with $\tau^{\rm LL}_1=\mp1$ the last two terms are the mass
+$G_{\rm LL}s^{{\rm c}\pm}_{\rm LL}+\tfrac12G_{\rm LL}s^{{\rm c}\mp}_{\rm LL}$. (d) is read off. $\blacksquare$
+
+*Check CJ-12* verifies (10.10), (10.11) and the statement (c) against the $16\times16$ matrices for four sets of
+parameters (differences below $10^{-14}$).
+
+**The potential.** For gaps $(y^+_{\rm LL},y^-_{\rm LL})$ of the pair field, solve (10.12) for the two masses
+(Newton's method; the Jacobian is known in closed form); then
+$$\mathcal U^{\rm CJT}_{\rm LL}\Big(\vec d^{\rm nf}_{\rm LL}\big(2G_{\rm LL}f^{{\rm c}+}_{\rm LL},\,2G_{\rm LL}f^{{\rm c}-}_{\rm LL}\big)\Big)=V^{\rm two}_{\rm LL}\tag{10.13}$$
+gives the potential at the order parameter that belongs to this pair field: a parametric representation, in closed
+form up to the solution of two equations. *Check CJ-13* verifies it: (a) for six pair fields the state reproduces its
+normal mean field under the general map of the $16\times16$ matrices; (b) the derivative of the potential obeys (10.7)
+(to $10^{-12}$); (c) along the unitary cut the order parameter increases strictly with the pair field, so that the
+potential is a single-valued function of it. The order parameter is bounded: every $f^{{\rm c}\pm}_{\rm LL}$ is below
+$N^\Lambda_{\rm LL}$, so that the gaps of the order parameter stay below
+$2G_{\rm LL}N^\Lambda_{\rm LL}={{GEN:cje_dmax}}$ at $G_{\rm LL}=22.5$; the potential is defined inside this range.
+
+## 10.4 Stationary, or lowest?
+
+Theorem E1 (a) describes the states that are stationary under the constraint; the potential (10.1) is the lowest of
+them. Whether the constrained state of (10.13) is the lowest is answered here as far as it can be.
+
+*The pairing-only functional: proved.* By (7.7), (7.3) and (4.2), $\mathcal E^{\rm po}_{\rm LL}$ consists of the
+kinetic term with the mass $m_{\rm LL}$ and of the pair term $-\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}$, and of nothing
+else. In its shifted energy the pair term combines with the second term of (10.2) to
+$\lvert\vec b_{\rm LL}\rvert^2/G_{\rm LL}+\tfrac12\sum_\iota\big((b^\iota_{\rm LL})^*\langle\Pi^\iota_{\rm LL}\rangle+\text{complex conjugate}\big)$,
+so that the shifted energy is a constant plus the expectation value of a quadratic Hamiltonian: the one with the
+matrix (3.6), the Dirac mass $m_{\rm LL}$, no normal mean field and the pairing block of $\vec b_{\rm LL}$. The
+expectation value of a Hamiltonian is lowest in its ground state. By Theorem E1 (d) the constrained state of the
+pairing-only treatment is therefore the state of lowest $\mathcal E^{\rm po}_{\rm LL}$ at its order parameter:
+$\mathcal U^{\rm po}_{\rm LL}$ is the potential in the strict sense, for every order parameter.
+
+*The two-loop functional: a criterion.* Here the normal term is present, a quadratic form of the 64 densities
+$n^A_{\rm LL}$ with coefficients of both signs (Table 1), and the shifted energy is no longer the expectation value of
+one Hamiltonian.
+
+**Theorem E3 (a criterion for a local minimum).** Let a constrained state with the pair field $\vec b_{\rm LL}$ be
+given whose mean-field matrix has no eigenvalue zero. Let $\chi^{\rm n}_{\rm LL}$ be the $64\times64$ matrix of the
+derivatives of the densities $n^A_{\rm LL}$ of the ground state of (3.6) with respect to the coefficients with which
+the 64 channel matrices are added to its normal block, the pairing block being kept, taken at this state (rows: the
+densities; columns: the channel matrices). (a) $\chi^{\rm n}_{\rm LL}$ is real and symmetric and has no positive
+eigenvalue. (b) The **self-consistency map** takes a normal block to the ground state of (3.6) with the pairing block
+of $\vec b_{\rm LL}$, to the densities of this state, and to their normal mean field (4.2). The constrained state is a
+fixed point of it, and in terms of the coefficients of the channel matrices its matrix of first derivatives there is
+$$\mathsf J^{\rm sc}_{\rm LL}=-\tfrac18G_{\rm LL}\,\mathrm{diag}(c^A_{\rm LL})\,\chi^{\rm n}_{\rm LL},\tag{10.14}$$
+with real eigenvalues. (c) Let $\mathcal E^{\rm qu}_{\rm LL}$ denote the expectation value per volume of the quadratic
+Hamiltonian whose matrix is the mean-field matrix of the constrained state. For every state
+$$\begin{aligned}\mathcal E^{\rm sh}_{\rm LL}[\text{state}]-\mathcal E^{\rm sh}_{\rm LL}[\text{constrained state}]={}&\mathcal E^{\rm qu}_{\rm LL}[\text{state}]-\mathcal E^{\rm qu}_{\rm LL}[\text{constrained state}]\\
+&-\tfrac1{16}G_{\rm LL}\sum_Ac^A_{\rm LL}\big(n^A_{\rm LL}[\text{state}]-n^A_{\rm LL}[\text{constrained state}]\big)^2.\end{aligned}\tag{10.15}$$
+(d) If all eigenvalues of $\mathsf J^{\rm sc}_{\rm LL}$ are below 1, the constrained state is a strict local minimum of
+the shifted energy and therefore, by Theorem E1 (d), of $\mathcal E^{\rm no}_{\rm LL}$ among the states with its order
+parameter. If an eigenvalue exceeds 1, it is not a minimum of the shifted energy.
+
+*Proof.* (a) Adding a channel matrix with a coefficient to the normal block adds the coefficient times
+$\Psi^\dagger_{\rm LL}\mathsf T^A_{\rm LL}\Psi_{\rm LL}$ to the quadratic Hamiltonian. By first-order perturbation
+theory the derivative of its ground energy per volume with respect to the coefficient is the density $n^A_{\rm LL}$ of
+the ground state. Hence $\chi^{\rm n}_{\rm LL}$ is the matrix of the second derivatives of the ground energy: real and
+symmetric. The ground energy is the smallest of the expectation values of the Hamiltonian in all states, each of which
+is a linear function of the coefficients; the smallest of a family of linear functions is concave, and the matrix of
+the second derivatives of a concave function has no positive eigenvalue. (b) By (4.2) the normal mean field of a state
+has the coefficients $-\tfrac18G_{\rm LL}c^A_{\rm LL}n^A_{\rm LL}$; the chain rule gives (10.14). Let
+$(-\chi^{\rm n}_{\rm LL})^{1/2}$ be the symmetric matrix without negative eigenvalue whose square is
+$-\chi^{\rm n}_{\rm LL}$. The eigenvalues of a product of two matrices that differ from zero do not depend on the
+order of the factors, so that those of $\mathsf J^{\rm sc}_{\rm LL}$ are those of the real symmetric matrix
+$(-\chi^{\rm n}_{\rm LL})^{1/2}\,\tfrac18G_{\rm LL}\mathrm{diag}(c^A_{\rm LL})\,(-\chi^{\rm n}_{\rm LL})^{1/2}$: real.
+(c) By (7.3) and (4.2), $\mathcal E^{\rm no}_{\rm LL}$ is the kinetic term with the mass $m_{\rm LL}$, the pair term,
+and the normal term $-\tfrac1{16}G_{\rm LL}\sum_Ac^A_{\rm LL}(\dots)^2$ of the differences between the densities of the
+state and those of the vacuum. As in the pairing-only case, the pair term and the second term of (10.2) combine to a
+constant plus the expectation value of the pairing block of $\vec b_{\rm LL}$. In the normal term write each
+difference as the sum of two: the density of the state minus that of the constrained state, and the density of the
+constrained state minus that of the vacuum. The square of the first is the last term of (10.15); the square of the
+second is a constant; and the cross term is linear in the densities of the state, with the coefficients
+$-\tfrac18G_{\rm LL}c^A_{\rm LL}$ times the second differences, which by (4.2) are the coefficients of the normal mean
+field of the constrained state: it is the expectation value of the normal block of its mean-field matrix. Kinetic
+term, pairing block and normal block together are $\mathcal E^{\rm qu}_{\rm LL}$. (d) Consider a small change of the
+state, described by finitely many real parameters for every momentum. The constrained state is the ground state of the
+Hamiltonian of $\mathcal E^{\rm qu}_{\rm LL}$, and no eigenvalue vanishes; to second order the first difference on the
+right of (10.15) is therefore one half of a positive quadratic form of the parameters. To first order the changes of
+the 64 densities are linear in the parameters. Minimising a positive quadratic form under a linear condition is
+elementary: among all changes of the state with given first-order changes of the densities, the smallest value of the
+first difference is one half of the quadratic form of the inverse of a positive matrix in these changes, and this
+matrix is $-\chi^{\rm n}_{\rm LL}$, because the response of the ground state to a small addition to the normal block
+is the same minimisation without the condition (the first-order changes of the densities lie in the range of
+$\chi^{\rm n}_{\rm LL}$, on which the inverse is taken). To second order the right side of (10.15) is thus not below
+one half of the quadratic form of $(-\chi^{\rm n}_{\rm LL})^{-1}-\tfrac18G_{\rm LL}\mathrm{diag}(c^A_{\rm LL})$ in the
+changes of the densities, with equality for the response states. Writing the changes of the densities as
+$(-\chi^{\rm n}_{\rm LL})^{1/2}$ times an arbitrary vector turns this form into that of
+$\mathsf 1-(-\chi^{\rm n}_{\rm LL})^{1/2}\,\tfrac18G_{\rm LL}\mathrm{diag}(c^A_{\rm LL})\,(-\chi^{\rm n}_{\rm LL})^{1/2}$,
+which is positive exactly when all eigenvalues of $\mathsf J^{\rm sc}_{\rm LL}$ are below 1, by (b); and it takes a
+negative value when one of them exceeds 1. A change of the state that leaves the densities unchanged to first order
+raises the first difference alone. $\blacksquare$
+
+The eigenvalues of $\mathsf J^{\rm sc}_{\rm LL}$ have a second meaning: they are the factors by which a small deviation
+from the constrained state is multiplied in one step of the iteration of the self-consistency map.
+
+*What the program finds.* *Check CJ-13 (e)* computes $\chi^{\rm n}_{\rm LL}$ by central differences (step $10^{-4}$)
+on a grid of 384 momenta, and from it the eigenvalues of $\mathsf J^{\rm sc}_{\rm LL}$, at four pair fields: the pair
+field with the gaps 0.3 and 0.1 (far from every stationary point), the origin, the non-unitary stationary state of
+Section 10.6, and the vacuum. The largest eigenvalues are {{GEN:cje_lam_generic}}, {{GEN:cje_lam_origin}},
+{{GEN:cje_lam_saddle}} and {{GEN:cje_lam_vacuum}}: all below 1. (At the origin the largest eigenvalue is the element of
+the scalar channel, which has the closed form
+$\tfrac32G_{\rm LL}\,\partial\big(M^{\rm N}_{\rm LL}\Xi^{(1)}_{\rm LL}((M^{\rm N}_{\rm LL})^2)\big)/\partial M^{\rm N}_{\rm LL}$;
+the program confirms this element to $10^{-9}$. The computed matrix $\chi^{\rm n}_{\rm LL}$ is symmetric to $10^{-11}$
+and has no positive eigenvalue.) At these four pair fields the constrained state is therefore a strict local minimum of
+$\mathcal E^{\rm no}_{\rm LL}$ at its order parameter. *Check CJ-13 (d)* iterates the self-consistency map at the same
+four pair fields from three random Hermitian starts each, without imposed symmetry: every run converges to the state
+of (10.12), and to no other. At the order parameter of the vacuum the general solutions of Table 3, which are not
+constrained at all, find no state of lower energy.
+
+*What is not proved.* That the constrained state (10.13) is the lowest of *all* states with its order parameter, for
+*every* order parameter, is not proved for the two-loop functional; no counterexample was found.
+
+## 10.5 The unitary cut, and the three potentials
+
+For a unitary order parameter $(0,0,\Delta_{\rm LL})$ the pair field is $(0,0,y^+_{\rm LL})$ with
+$y^+_{\rm LL}=y^-_{\rm LL}$, the two sectors are equal, and (10.12), (10.11), (10.13) become: the Dirac mass
+$M^{\rm D}_{\rm LL}$ is the root of
+$$M^{\rm D}_{\rm LL}=m^{\rm b}_{\rm LL}+\tfrac32G_{\rm LL}M^{\rm D}_{\rm LL}\,\Xi^{(1)}_{\rm LL}\big((M^{\rm D}_{\rm LL})^2+(y^+_{\rm LL})^2\big),\qquad
+\Delta_{\rm LL}=2G_{\rm LL}\,y^+_{\rm LL}\,\Xi^{(1)}_{\rm LL}\big((M^{\rm D}_{\rm LL})^2+(y^+_{\rm LL})^2\big),\tag{10.16}$$
+and the potential is $V^{\rm CJT}_{\rm LL}$ of (6.4) at these values. Table 7 and Figure 5 (a) show it together with
+two potentials of the pairing-only treatment, which must be told apart:
+
+* $\mathcal U^{\rm po}_{\rm LL}$, the construction (10.1) for the pairing-only functional: a function of the *order
+  parameter*, like $\mathcal U^{\rm CJT}_{\rm LL}$;
+* $\Omega_{\rm LL}$, the potential of the earlier treatment of the SFBS in this project. There the interaction is
+  replaced, by the Hubbard-Stratonovich transformation, by a Gaussian integral over an auxiliary complex isovector
+  that couples to the pair operators, and the spinor field is integrated out; what remains is a function of the
+  auxiliary field, which is the *pair field* of the mean-field matrix. With the two gaps of the pair field it is
+  $$\Omega_{\rm LL}(\vec b_{\rm LL})=\frac{\lvert\vec b_{\rm LL}\rvert^2}{G_{\rm LL}}-\sum_\pm\Big[\Xi_{\rm LL}\big(m_{\rm LL}^2+(y^\pm_{\rm LL})^2\big)-\Xi_{\rm LL}\big(m_{\rm LL}^2\big)\Big],\qquad\lvert\vec b_{\rm LL}\rvert^2=\tfrac12\big((y^+_{\rm LL})^2+(y^-_{\rm LL})^2\big).\tag{10.17}$$
+
+**Theorem E4 (the two pairing-only potentials).** For every pair field, with $\vec d_{\rm LL}$ the order parameter of
+the constrained state of the pairing-only treatment with that pair field,
+$$\Omega_{\rm LL}(\vec b_{\rm LL})=\mathcal U^{\rm po}_{\rm LL}(\vec d_{\rm LL})-\mathcal U^{\rm po}_{\rm LL}(0)+\frac{\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2}{G_{\rm LL}}.\tag{10.18}$$
+In words: $\Omega_{\rm LL}$ is the smallest shifted energy (10.2) of the pairing-only functional at the vector
+$\vec b_{\rm LL}$, measured from the normal state. The two functions have the same stationary points, with the same
+values there, and at every other pair field $\Omega_{\rm LL}$ is the larger of the two.
+
+*Proof.* In the pairing-only treatment both sectors have the Dirac mass $m_{\rm LL}$, and by the proof of Theorem E2
+without its normal term the energy of the state with the pair field $\vec b_{\rm LL}$ is
+$\sum_\pm[-\Xi_{\rm LL}(m_{\rm LL}^2+(y^\pm_{\rm LL})^2)+2y^\pm_{\rm LL}f^{{\rm c}\pm}_{\rm LL}]-\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}$,
+with the gaps (10.11) of its order parameter. By (10.11) and (10.6) the middle term is $2/G_{\rm LL}$ times the real
+scalar product of the pair field and the order parameter. Subtracting the value at vanishing pair field and comparing
+with (10.17) leaves
+$(\lvert\vec b_{\rm LL}\rvert^2-2\,\mathrm{Re}\sum_\iota(b^\iota_{\rm LL})^*d^\iota_{\rm LL}+\lvert\vec d_{\rm LL}\rvert^2)/G_{\rm LL}$.
+By Section 10.4 the state is the lowest at its order parameter, so that its energy is $\mathcal U^{\rm po}_{\rm LL}$.
+The stationary points: by (10.17) and (10.11) the derivative of $\Omega_{\rm LL}$ with respect to $y^\pm_{\rm LL}$ is
+$(y^\pm_{\rm LL}-\Delta^\pm_{\rm LL})/G_{\rm LL}$, which vanishes exactly where the pair field equals the order
+parameter, as does the derivative (10.7) of the other function. $\blacksquare$
+
+*Check CJ-15* verifies (10.18) for seven pair fields, unitary and not, with the energy and the order parameter taken
+from the $16\times16$ matrices (largest deviation below $10^{-14}$).
+
+{{GEN:cje_table_cut}}
+
+**Table 7.** The unitary cut at $m_{\rm LL}=0.2$, $G_{\rm LL}=22.5$ (normal-ordered form). For each pair field: the
+Dirac mass and the order parameter of the two-loop constrained state (10.16) and its potential; the order parameter
+and the potential of the pairing-only state with the same pair field; and $\Omega_{\rm LL}$ at that pair field. Each
+potential is measured from its own minimum. At the pair field {{GEN:cjt_dvac}} all order parameters equal the pair
+field: the common minimum (data file `test2/data/t2_cjt_potential_cut.csv`, 601 pair fields).
+
+Three things are read off. (i) All three potentials have their minimum at the same place,
+$\Delta^{\rm vac}_{\rm LL}={{GEN:cjt_dvac}}$: Theorems D6 and E4. (ii) In the two-loop potential the Dirac mass changes
+along the cut: it is $M^{\rm N}_{\rm LL}={{GEN:cjt_mn_no_t2}}$ at the origin, $m_{\rm LL}=0.2$ at the minimum, and
+falls further beyond it. This is the dressing of Section 7.3, and it makes the hat shallower: the origin lies
+{{GEN:cje_u_origin}} above the minimum instead of {{GEN:cje_om_vac}}. (iii) Near the origin
+$$\mathcal U^{\rm CJT}_{\rm LL}=\mathcal U^{\rm CJT}_{\rm LL}(0)-\frac1{G_{\rm LL}}\Big(1-\frac1{2G_{\rm LL}\Xi^{(1)}_{\rm LL}((M^{\rm N}_{\rm LL})^2)}\Big)\lvert\vec d_{\rm LL}\rvert^2+\dots,\tag{10.19}$$
+because for small gaps (10.11) gives $\Delta^\pm_{\rm LL}=2G_{\rm LL}\Xi^{(1)}_{\rm LL}((M^{\rm N}_{\rm LL})^2)\,y^\pm_{\rm LL}$
+up to terms of the third order, and (10.7) is then integrated with the modulus of (10.6). The coefficient is negative
+({{GEN:cje_curv}} at $G_{\rm LL}=22.5$) exactly when $2G_{\rm LL}\Xi^{(1)}_{\rm LL}((M^{\rm N}_{\rm LL})^2)>1$, which is
+the condition under which the normal state is unstable (Theorem D7 (d), with the Dirac mass of the normal state);
+check CJ-15 confirms the number from the computed potential.
+
+## 10.6 The Mexican hat and its stationary points
+
+{{GEN:cje_table_points}}
+
+**Table 8.** The stationary points of the effective potential at $m_{\rm LL}=0.2$, $G_{\rm LL}=22.5$ (normal-ordered
+form), with the corresponding values of the pairing-only potential.
+
+![](figures/fig_t2_cjt_potential.png){width=100%}
+
+**Figure 5.** The effective potential of the SFBS at $m_{\rm LL}=0.2$, $G_{\rm LL}=22.5$ (normal-ordered form), each
+potential measured from its minimum, in units $10^{-5}\Lambda_{\rm LL}^4$. (a) The unitary cut: the two-loop potential
+against the order parameter (solid), the pairing-only potential against the order parameter (dashed), and the potential
+$\Omega_{\rm LL}$ of (10.17) against the pair field (dash-dotted). (b) The two-loop potential over the plane of one
+complex component of the order parameter, the others being zero: the Mexican hat; the thick circle is the set of its
+minima in this plane. (c) The two-loop potential over the plane of the two gaps of the order parameter (contour lines
+at the values written on them); the diagonal is the unitary cut, and the half above it repeats the half below it
+with the two sectors exchanged (data files `test2/data/t2_cjt_potential_cut.csv` and
+`test2/data/t2_cjt_potential_plane.csv`).
+
+*The maximum.* At the origin the state is the normal stationary state of Section 7.3. It is a maximum of the potential
+in every direction, by (10.19); this is the instability of Theorem D7 (d).
+
+*The minimum.* The lowest value is taken at the unitary order parameters of the modulus $\Delta^{\rm vac}_{\rm LL}$:
+all vectors obtained from $(0,0,\Delta^{\rm vac}_{\rm LL})$ by a phase and an isospin rotation. In the plane of one
+complex component this is the circle of Figure 5 (b), the brim of the hat; in the space $\mathbb C^3$ of all order
+parameters it is a manifold of three dimensions (one phase and the two angles of a direction). It is the vacuum of
+(7.4). On a grid of $61\times61$ pair fields no value of the potential lies below it (check CJ-15).
+
+*The saddle.* A second stationary state exists off the unitary cut: the pair field with the gaps
+$(y^+_{\rm LL},0)$, in which the first sector is condensed with the gap {{GEN:cje_saddle_gap}} and the second is
+normal ($\zeta_{\rm LL}=1$, $\lvert\vec d_{\rm LL}\rvert={{GEN:cje_saddle_dmod}}$; only the spinor charges of one
+isospin state are paired). The two sectors have different Dirac masses there, {{GEN:cje_saddle_mp}} in the condensed
+and {{GEN:cje_saddle_mm}} in the normal one. It is a saddle of the potential: the potential falls from it towards the
+vacuum and rises along its own gap (Figure 5 (c)). It lies {{GEN:cje_u_saddle}} above the vacuum. Measured from the
+origin its depth is {{GEN:cje_saddle_fraction}} of the depth of the vacuum. In the pairing-only potential (10.17) the
+two sectors are independent, each contributes half of the depth, and the saddle lies at exactly one half; the two-loop
+sectors are coupled through (10.12), and it does not.
+
+## 10.7 Discussion of stage E
+
+*The analogy with the Higgs doublet, and where it ends.* The potential of the Higgs doublet depends on one invariant,
+the modulus of the doublet, and its minima form a sphere. The order parameter of the SFBS is a complex isospin vector
+with two invariants; its potential distinguishes the unitary from the non-unitary directions, the minima are the
+unitary ones, and the non-unitary stationary state is a saddle that has no counterpart for the doublet. Which
+symmetries the vacuum keeps is the subject of stage F.
+
+*What the potential is a function of.* The potential asked for is a function of the field of the SFBS, the order
+parameter. The potential $\Omega_{\rm LL}$ of the earlier treatment is a function of the pair field. By Theorem E4 this
+makes no difference for the stationary points and their energies, and it makes a difference for everything else: the
+curvatures at the minimum, which are the masses of stage G, must be computed from the potential of the order parameter
+together with the kinetic terms of stage H, or directly from the equations of motion (8.1); the two ways must agree,
+and stage G will check it. The two-loop functional has a potential of the pair field of its own, the smallest shifted
+energy (10.2) at the vector $\vec b_{\rm LL}$; where the constrained state is the minimum it equals
+$\mathcal U^{\rm CJT}_{\rm LL}(\vec d_{\rm LL})+\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2/G_{\rm LL}$, the
+counterpart of (10.18).
+
+*Not convex.* The exact effective potential, the Legendre transform of the exact generating functional, is a convex
+function. The potential (10.1) is the energy of states that are the same at every point of space, in the two-loop
+approximation, and it has the shape of a hat. There is no contradiction: between the origin and the brim the states
+of lowest energy at a given average order parameter are not the same at every point (they consist of regions with
+different order parameters), and they are outside the family (10.1). For the vacuum and the small oscillations about
+it this plays no role.
+
+*The second-order differences again.* Table 8 and Figure 5 (a) are the differences announced in Section 7.3, now for
+the whole potential: the same brim, a lower crown, a different saddle.
+
 # Appendix A. Provenance
 
 ## A.1 How to reproduce everything
@@ -1014,7 +1412,7 @@ From the folder Revision_SuperLoop of the repository:
 ```
 # 1. the checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}, the numbers and tables of this document, the data of its figures (about one minute)
 (cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_cjt
-# 2. Figures 1 to 4 (test2/figures/fig_t2_cjt_*.pdf and .png)
+# 2. Figures 1 to 5 (test2/figures/fig_t2_cjt_*.pdf and .png)
 python3 test2/python/make_t2_cjt_figures.py
 # 3. everything of the folder Revision_SuperLoop, all checks and all documents, with one verdict ("ALL PASS")
 bash code/scripts/check_all.sh
@@ -1042,6 +1440,10 @@ modes (operators applied to vectors of $2^8$ components), and `quad.rs`, Gauss-L
 * *the time integration*: the right side of (8.1) for the occupied vectors, given to CVODE through the interface
   `t2core::cvode`; the frequency of run 1 by the maximum of a Hann-windowed Fourier sum (scan, then golden-section
   search), the rate of run 2 by a least-squares line through the logarithm of the modulus;
+* *stage E*: the closed form (10.10) of the two-sector states, the solution of the two equations (10.12) by Newton's
+  method with the exact Jacobian, the constrained states and the parametric form (10.13) of the potential, the
+  susceptibility of the 64 densities by central differences and the eigenvalues of the matrix (10.14), the non-unitary
+  stationary state by bisection, and the pairing-only potentials (10.17) with the identity (10.18);
 * *the checks* CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}, each a function of the program, with the report below.
 
 The figures are drawn by `test2/python/make_t2_cjt_figures.py` from the data files; that script computes nothing
@@ -1068,14 +1470,17 @@ for the bare parameters, `Kch_iota` for the pair matrices and `Pi_iota` for the 
 | `test2/data/t2_cjt_surface.csv` | the energy of the trial states of the vacuum sector | Figure 2 |
 | `test2/data/t2_cjt_time.csv` | the pair amplitude against the time, two integrations | Figure 3 |
 | `test2/data/t2_cjt_site.csv` | one site: exact and two-loop energy | Table 5, Figure 4 |
+| `test2/data/t2_cjt_potential_cut.csv` | stage E: the three potentials along the unitary cut | Table 7, Figure 5 (a), (b) |
+| `test2/data/t2_cjt_potential_plane.csv` | stage E: the effective potential in the plane of the two gaps | Figure 5 (c) |
 | `test2/figures/fig_t2_cjt_vacuum.pdf`, `.png` | Figure 1 | Section 7.2 |
 | `test2/figures/fig_t2_cjt_surface.pdf`, `.png` | Figure 2 | Section 7.3 |
 | `test2/figures/fig_t2_cjt_creation.pdf`, `.png` | Figure 3 | Section 8.2 |
 | `test2/figures/fig_t2_cjt_site.pdf`, `.png` | Figure 4 | Section 9.1 |
+| `test2/figures/fig_t2_cjt_potential.pdf`, `.png` | Figure 5 | Section 10.6 |
 
 ## A.5 Checksums
 
-SHA-256 checksums of the sources and data of stage D at the time this document was built:
+SHA-256 checksums of the sources and data of the stages D and E at the time this document was built:
 
 ```
 {{SHA256:test2/rust/Cargo.toml}}  test2/rust/Cargo.toml
@@ -1094,6 +1499,8 @@ SHA-256 checksums of the sources and data of stage D at the time this document w
 {{SHA256:test2/data/t2_cjt_surface.csv}}  test2/data/t2_cjt_surface.csv
 {{SHA256:test2/data/t2_cjt_time.csv}}  test2/data/t2_cjt_time.csv
 {{SHA256:test2/data/t2_cjt_site.csv}}  test2/data/t2_cjt_site.csv
+{{SHA256:test2/data/t2_cjt_potential_cut.csv}}  test2/data/t2_cjt_potential_cut.csv
+{{SHA256:test2/data/t2_cjt_potential_plane.csv}}  test2/data/t2_cjt_potential_plane.csv
 ```
 
 # Appendix B. Published works on the methods used here

@@ -137,15 +137,21 @@ not a mixture because the condensed pairs are neutral; the complete $4\times4$ m
 matrices of the spinor field (Figure 26). Items [7] to [11] are verified by the checks SB-1 to
 SB-17 of the program `t2_sfbs` (member `t2sfbs` of the workspace).
 
-**Test 2, stage D** (`test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis`, .pdf, .tex,
-.md): the creation of the SFBS treated with the effective action of the propagator. At two loops this action is minus the
+**Test 2, stages D and E** (`test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis`, .pdf,
+.tex, .md): the creation of the SFBS treated with the effective action of the propagator, and its effective potential. At two loops this action is minus the
 energy of a quasi-free state, with three contractions of the interaction; the two normal ones, which the treatment of items
 [7] to [11] had dropped, shift the chemical potential and dress the Dirac mass (a condensed vacuum has four times the mass
 of the Lagrangian). With the interaction normal-ordered with respect to the normal correlations of the vacuum, the vacuum,
 its gap and the SFBS boson are those of items [7] to [11]; the SFBS appears as a pole of the pair part of the propagator
 and, above the critical coupling, as its condensate, and both are confirmed by time integrations with CVODE. Verified by the
-checks CJ-1 to CJ-11 of the program `t2_cjt` (member `t2cjt` of the workspace). The stages E to I of the
-same method are not yet answered.
+checks CJ-1 to CJ-15 of the program `t2_cjt` (member `t2cjt` of the workspace). Stage E: the effective
+potential of the order parameter is the two-loop energy at fixed pair amplitude, in closed form through two coupled
+equations for the Dirac masses of two sectors; it is a Mexican hat with the normal state as its maximum, the unitary
+order parameters of the modulus 0.2094933 as its minimum and the non-unitary state as a saddle, shallower than the
+hat of items [8] and [9] and related to it by an identity; at the pair fields examined the state that defines it is a
+strict local minimum of the energy at its order parameter (a criterion with the matrix of first derivatives of the
+self-consistency map; the largest eigenvalue found is 0.6821, below 1). The stages F to I of the same
+method are not yet answered.
 
 # 2. Where to start reading
 
@@ -171,8 +177,9 @@ same method are not yet answered.
    eight-dimensional manifolds.
 7. `test2/Test 2 - the gauge-covariant spinor field on the 3+1 manifold and the superfluid boson singlet state`
    (.pdf, .tex, .md): the answers to Test 2, item by item, each with its programs, checks and provenance.
-8. `test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis` (.pdf, .tex, .md): stage D of
-   Test 2, the creation of the SFBS by the effective action of the propagator, with its program, checks and provenance.
+8. `test2/The superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis` (.pdf, .tex, .md): the stages
+   D and E of Test 2, the creation of the SFBS and its effective potential by the effective action of the propagator, with
+   their program, checks and provenance.
 
 # 3. Contents
 
@@ -185,7 +192,7 @@ same method are not yet answered.
 | `data/` | the data files written by the programs, and the reports of all checks |
 | `figures/` | seven figures, each as .pdf and .png |
 | `explanations/` | the explanation of the sentence on the superfluid (.md, .tex, .pdf), with its Rust program `code/explain-rs` (binary `explain_superfluid`, checks X-1 to X-10), its figure script `code/make_explain_figures.py` and its three figures; the document on the $3+1$ manifold and the renormalizability of the Yukawa form (.md, .tex, .pdf), with its Rust program `code/r13-rs` (binary `r13_yukawa`, checks Z-1 to Z-8), its figure script `code/make_r13_figures.py` and its four figures; the data files and reports of both programs in `data/`, the figures in `figures/` |
-| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the document of stage D by the method of Cornwall, Jackiw and Tomboulis (.md, .tex, .pdf), with the program `t2_cjt` (checks CJ-1 to CJ-11) and the figure script `python/make_t2_cjt_figures.py`; the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-20, item [1]) and the program `t2_analytic` (checks AS-1 to AS-10, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]); the time integration with CVODE in `rust/t2core/src/cvode.rs` and, for the Python solver, the shared library `libt2cvode` of `rust/t2cvode_c`; the step-by-step analysis of the time integrations of check GS-13 in the library `rust/t2steps` and the module `rust/t2fields/src/steps.rs` (checks GS-17 to GS-20), with the independent check `python/t2_formula_check.py` and the figure script `python/make_t2_steps_figures.py`; the comparison of CVODE with the fixed-step methods of the first version in `cvode_vs_rk4/` (the document `P_CVODE_vs_RK4`, .md, .tex, .pdf, its program `rust/t2cvcmp`, binary `t2_cvcmp`, its scripts, data and figures) and the data of the first version in `rk4_reference/` |
+| `test2/` | the answers to Test 2 (.md, .tex, .pdf); the document of stage D by the method of Cornwall, Jackiw and Tomboulis (.md, .tex, .pdf), with the program `t2_cjt` (checks CJ-1 to CJ-15) and the figure script `python/make_t2_cjt_figures.py`; the Cargo workspace `rust/` with the library `t2core` and the program `t2_fields` (checks GS-1 to GS-20, item [1]) and the program `t2_analytic` (checks AS-1 to AS-10, item [2]), the figure script `python/make_t2_figures.py`, the data files and reports in `data/`, the figures in `figures/` ; the Python solver `python/t2_solve.py` with the seven input files of `examples/` and the checks of the examples `python/t2_examples_check.py` (item [3]); the plotter `python/t2_plot.py` (item [4]); the Rust solver `rust/t2solve` (binary `t2_solve`, item [5]); the Rust plotter `rust/t2plot` (binary `t2_plot`, item [6]); the checks of the superfluid boson singlet state `rust/t2sfbs` (binary `t2_sfbs`, items [7] to [11]); the time integration with CVODE in `rust/t2core/src/cvode.rs` and, for the Python solver, the shared library `libt2cvode` of `rust/t2cvode_c`; the step-by-step analysis of the time integrations of check GS-13 in the library `rust/t2steps` and the module `rust/t2fields/src/steps.rs` (checks GS-17 to GS-20), with the independent check `python/t2_formula_check.py` and the figure script `python/make_t2_steps_figures.py`; the comparison of CVODE with the fixed-step methods of the first version in `cvode_vs_rk4/` (the document `P_CVODE_vs_RK4`, .md, .tex, .pdf, its program `rust/t2cvcmp`, binary `t2_cvcmp`, its scripts, data and figures) and the data of the first version in `rk4_reference/` |
 | `docs_src/` | the sources of the documents (Markdown with placeholders; the manuscript in REVTeX) |
 
 # 4. How to run everything
@@ -236,7 +243,7 @@ for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_st
 # Test 2, items [7] to [11]: the checks SB-* of the superfluid boson singlet state, and its figures:
 (cd test2/rust && cargo build --release && ./target/release/t2_sfbs)
 python3 test2/python/make_t2_sfbs_figures.py
-# Test 2, stage D: the checks CJ-* of the creation of the SFBS by the method of Cornwall, Jackiw and Tomboulis, and its figures:
+# Test 2, stages D and E: the checks CJ-* of the SFBS by the method of Cornwall, Jackiw and Tomboulis, and their figures:
 (cd test2/rust && cargo build --release && ./target/release/t2_cjt)
 python3 test2/python/make_t2_cjt_figures.py
 # the comparison of CVODE with the fixed-step methods of the first version, and its document:
@@ -273,7 +280,7 @@ integrator CVODE is the pure-Rust translation of SUNDIALS 7.8.0 that the reposit
 | `explanations/data/ex_superfluid_checks.txt` | `explain_superfluid` | 10 of 10 |
 | `explanations/data/ex_r13_checks.txt` | `r13_yukawa` | 8 of 8 |
 | `test2/data/t2_analytic_checks.txt` | `t2_analytic` | 10 of 10 |
-| `test2/data/t2_cjt_checks.txt` | `t2_cjt` | 11 of 11 |
+| `test2/data/t2_cjt_checks.txt` | `t2_cjt` | 15 of 15 |
 | `test2/data/t2_fields_checks.txt` | `t2_fields` | 20 of 20 |
 | `test2/data/t2_py_examples_checks.txt` | `t2_examples_check.py` | 10 of 10 |
 | `test2/data/t2_py_formula_checks.txt` | `t2_formula_check.py` | 6 of 6 |
@@ -308,8 +315,8 @@ A non-associative quantum mechanics that could carry the super-loop as a symmetr
 cannot, by Theorem R); larger families of brackets (more internal generators, central or tensorial
 charges, other representations of the spinor charges); corrections to the superfluid beyond mean
 field, finite temperature and the dispersions of the Goldstone modes; the renormalization of the Yukawa
-completion to all orders; the stages E to I of the treatment of the SFBS by the method of Cornwall, Jackiw and
-Tomboulis (stage D is done), and its corrections beyond two loops.
+completion to all orders; the stages F to I of the treatment of the SFBS by the method of Cornwall, Jackiw and
+Tomboulis (the stages D and E are done), and its corrections beyond two loops.
 
 # 8. The symbols
 
@@ -329,7 +336,7 @@ Tomboulis (stage D is done), and its corrections beyond two loops.
 | $\mathsf E_{\rm LL}$ | the real antisymmetric $2\times2$ matrix $i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, with $\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}$; it acts on a Weyl, isospin or species index, as stated at each place | new | `eps2` |
 | $\mathsf 1_2$, $\mathsf 1_4$, $\mathsf 1_8$, $\mathsf 1_{16}$ | the $2\times2$, the $4\times4$, the $8\times8$ and the $16\times16$ unit matrices | new |  |
 
-**10 Test 2, stage D: the superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis**
+**10 Test 2, stages D to I: the SFBS by the method of Cornwall, Jackiw and Tomboulis**
 
 | symbol | meaning | origin | plain-text names |
 |-----------|-------------------------|----|----------|
@@ -351,6 +358,12 @@ Tomboulis (stage D is done), and its corrections beyond two loops.
 | $\mathsf U^{\rm C}_{\rm LL}$ | the matrix of the charge conjugation of the model, $\mathsf U^{\rm C}_{\rm LL}=i\beta_{\rm LL}\alpha^2_{\rm LL}\otimes\mathsf 1_2$: the exchange $\Psi_{{\rm LL},a}\to\sum_b(\mathsf U^{\rm C}_{\rm LL})_{ab}\Psi^\dagger_{{\rm LL},b}$ of particles and holes leaves the kinetic and the mass term unchanged and turns $\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$ into $\sum_\iota\Pi^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger$ | new | `U_C` |
 | $\Pi'^\iota_{\rm LL}$ | the pseudoscalar pair operators, $\Pi'^\iota_{\rm LL}=\Psi_{\rm LL}^T\mathsf K'^\iota_{\rm LL}\Psi_{\rm LL}$ (both fields at the same point); they enter only the axially symmetric completion of the interaction, an alternative that the document of stage D records and does not adopt | new | `Pi'_iota` |
 | $E^{\rm ex}_{\rm LL}$ | the exact ground energy of the Hamiltonian of one site, the lowest eigenvalue of its $256\times256$ matrix in the Fock space of the 8 modes of the site | new | `E_ex` |
+| $\mathcal U^{\rm CJT}_{\rm LL}(\vec d_{\rm LL})$, $\mathcal U^{\rm po}_{\rm LL}(\vec d_{\rm LL})$ | the effective potential of the SFBS in the method of Cornwall, Jackiw and Tomboulis at two loops: the smallest energy per volume $\mathcal E^{\rm no}_{\rm LL}$ among the quasi-free states with the order parameter $\vec d_{\rm LL}$ (the two-loop effective action, per duration and volume and with the opposite sign, made stationary in everything except the pair amplitude); a function of $\lvert\vec d_{\rm LL}\rvert$ and $\zeta_{\rm LL}$ only; and the same for the pairing-only functional $\mathcal E^{\rm po}_{\rm LL}$ | new | `U_CJT` `U_po` |
+| $\vec b_{\rm LL}$, $b^\iota_{\rm LL}$ | the pair field of a constrained state: the complex isovector in the pairing block $\mathsf P_{\rm LL}=\sum_\iota b^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$ of the mean-field matrix whose ground state has a prescribed order parameter $\vec d_{\rm LL}$. The derivative of the effective potential is $\partial\mathcal U^{\rm CJT}_{\rm LL}/\partial(d^\iota_{\rm LL})^*=(b^\iota_{\rm LL}-d^\iota_{\rm LL})/G_{\rm LL}$, and $\vec b_{\rm LL}=\vec d_{\rm LL}$ at its stationary points. In its normal form $\vec b_{\rm LL}=\vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})$, with the two gaps $y^+_{\rm LL}$, $y^-_{\rm LL}$ of the pair field | new | `bvec` `b_iota` |
+| $M^{{\rm v}\pm}_{\rm LL}$, $E^{{\rm v}\pm}_{\rm LL}$, $s^{{\rm c}\pm}_{\rm LL}$, $f^{{\rm c}\pm}_{\rm LL}$ | the quantities of the two sectors of a trial state whose pair field has the two gaps $y^+_{\rm LL}$ and $y^-_{\rm LL}$ (upper sign: the isospin state with the eigenvalue $-1$ of $\tau^{\rm LL}_1$, which has the gap $y^+_{\rm LL}$; lower sign: the eigenvalue $+1$, with the gap $y^-_{\rm LL}$): the Dirac masses $M^{{\rm v}\pm}_{\rm LL}$, the quasi-particle energies $E^{{\rm v}\pm}_{\rm LL}=(q_{\rm LL}^2+(M^{{\rm v}\pm}_{\rm LL})^2+(y^\pm_{\rm LL})^2)^{1/2}$, and the integrals $s^{{\rm c}\pm}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}M^{{\rm v}\pm}_{\rm LL}/E^{{\rm v}\pm}_{\rm LL}$ and $f^{{\rm c}\pm}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}y^\pm_{\rm LL}/E^{{\rm v}\pm}_{\rm LL}$ | new | `M_trial_+` `M_trial_-` `M_+` `M_-` `s_+` `s_-` `f_+` `f_-` |
+| $V^{\rm two}_{\rm LL}$ | the two-loop energy per volume of the two-sector trial state at the charge-symmetric chemical potential, $V^{\rm two}_{\rm LL}=\sum_\pm\big[-\Xi_{\rm LL}((M^{{\rm v}\pm}_{\rm LL})^2+(y^\pm_{\rm LL})^2)+2(M^{{\rm v}\pm}_{\rm LL}-m^{\rm b}_{\rm LL})s^{{\rm c}\pm}_{\rm LL}+2y^\pm_{\rm LL}f^{{\rm c}\pm}_{\rm LL}\big]-\tfrac34G_{\rm LL}(s^{{\rm c}+}_{\rm LL}+s^{{\rm c}-}_{\rm LL})^2-\tfrac14G_{\rm LL}(s^{{\rm c}+}_{\rm LL}-s^{{\rm c}-}_{\rm LL})^2-2G_{\rm LL}\big((f^{{\rm c}+}_{\rm LL})^2+(f^{{\rm c}-}_{\rm LL})^2\big)+3G_{\rm LL}(N^\Lambda_{\rm LL})^2$; for equal sectors it is $V^{\rm CJT}_{\rm LL}$ | new | `V_two` |
+| $\mathcal E^{\rm sh}_{\rm LL}$, $\mathcal E^{\rm qu}_{\rm LL}$ | for a fixed vector $\vec b_{\rm LL}\in\mathbb C^3$: the shifted energy $\mathcal E^{\rm sh}_{\rm LL}=\mathcal E^{\rm no}_{\rm LL}+\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2/G_{\rm LL}$ of a quasi-free state with the order parameter $\vec d_{\rm LL}$; its stationary states are the constrained states with the pair field $\vec b_{\rm LL}$, and a constrained state that is a minimum of it is a minimum of $\mathcal E^{\rm no}_{\rm LL}$ among the states with its order parameter. And the expectation value per volume, in a quasi-free state, of the quadratic Hamiltonian whose matrix is the mean-field matrix of a given constrained state | new | `E_sh` `E_qu` |
+| $\chi^{\rm n}_{\rm LL}$, $\mathsf J^{\rm sc}_{\rm LL}$ | at a constrained state: the $64\times64$ matrix of the derivatives of the densities $n^A_{\rm LL}$ of the ground state of the mean-field matrix with respect to the coefficients with which the 64 channel matrices $\mathsf T^A_{\rm LL}$ are added to its normal block, the pairing block being kept (the static susceptibility of the normal densities; real, symmetric, without positive eigenvalue); and the matrix of first derivatives $\mathsf J^{\rm sc}_{\rm LL}=-\tfrac18G_{\rm LL}\,\mathrm{diag}(c^A_{\rm LL})\,\chi^{\rm n}_{\rm LL}$ of the self-consistency map of the normal mean field at the fixed pair field (normal block, ground state, densities, normal mean field). If all its eigenvalues are below 1 the constrained state is a strict local minimum of the shifted energy | new | `chi_n` `J_sc` |
 
 **2 The bi-octonions and the super-loop**
 

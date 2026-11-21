@@ -62,6 +62,16 @@ MAIN = os.path.dirname(ROOT)
 
 # column names of the data files that are descriptive words, not symbols
 DESCRIPTIVE = {
+    # the data files of stage E of Test 2 (program t2_cjt)
+    "pair_field": "the modulus b of the pair field of a constrained state on the unitary cut (the pair field is (0, 0, b))",
+    "order_parameter": "the modulus of the order parameter dvec of a constrained state on the unitary cut",
+    "order_parameter_pairing_only": "the same in the pairing-only treatment",
+    "energy_above_vacuum_pairing_only": "the pairing-only energy per volume E_po of the state with the pair field of the row, minus its value at the vacuum",
+    "hs_potential_above_minimum": "the pairing-only potential Omega of the pair field of the row, minus its value at its minimum",
+    "pair_gap_plus": "the gap y_+ of the pair field of a constrained state",
+    "pair_gap_minus": "the gap y_- of the pair field of a constrained state",
+    "gap_plus": "the gap Delta_+ of the order parameter of a constrained state",
+    "gap_minus": "the gap Delta_- of the order parameter of a constrained state",
     # the data files of stage D of Test 2 (program t2_cjt)
     "dirac_matrix": "a class of the 16 Hermitian Dirac matrices (1, beta, i beta gamma_ch, gamma_ch, alpha^j, gamma_ch alpha^j, i beta alpha^j, beta gamma_ch alpha^j)",
     "isospin_matrix": "the isospin factor of a normal channel: tau_0 (the unit matrix) or tau_iota (one of the three Pauli matrices)",
@@ -71,7 +81,7 @@ DESCRIPTIVE = {
     "coefficient_sum": "the sum of the two coefficients, the coefficient of the axially symmetric completion of the interaction",
     "mass_trial": "the Dirac mass M_trial of a trial state of the vacuum sector",
     "gap_trial": "the gap Delta_trial of a trial state of the vacuum sector",
-    "energy_above_vacuum": "the two-loop energy per volume V_CJT of a trial state minus its value at the vacuum",
+    "energy_above_vacuum": "the two-loop energy per volume of a trial state or of a constrained state minus its value at the vacuum",
     "mass_unordered": "the Dirac mass of the two-loop vacuum when the interaction is not ordered and the mass of the file is the bare mass",
     "gap_unordered": "the gap of the two-loop vacuum when the interaction is not ordered and the mass of the file is the bare mass",
     "bare_mass_ordered": "the bare mass m_bare that the normal ordering of the interaction with respect to the vacuum implies for the mass of the file",

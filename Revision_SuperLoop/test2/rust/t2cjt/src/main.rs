@@ -1,4 +1,4 @@
-//! t2_cjt -- PROJECT spacetimes, Revision_SuperLoop, Test 2, stage D.
+//! t2_cjt -- PROJECT spacetimes, Revision_SuperLoop, Test 2, stages D and E.
 //!
 //! The creation of the superfluid boson singlet state (SFBS, spin 0) from the spinor field, analyzed by the method of
 //! J. M. Cornwall, R. Jackiw and E. Tomboulis (Phys. Rev. D 10, 2428 (1974); "CJT"): the effective action of the
@@ -27,9 +27,16 @@
 //! on the Nambu spinor (Psi(q), Psi^dag(-q)^T): C_n(q) and -C_p(q) are the upper left and the upper right block of the
 //! projector on the eigenvectors of H_var(q) with negative eigenvalues.
 //!
-//! WHAT THE PROGRAM DOES.  It checks every statement of the document of stage D by machine (checks CJ-1 to CJ-10,
-//! listed in main below), writes the numbers and tables of that document, and the data of its figures.
+//! WHAT THE PROGRAM DOES.  It checks every statement of the document of the stages D and E by machine (checks CJ-1 to
+//! CJ-15, called from main below), writes the numbers and tables of that document, and the data of its figures.
 //! The time integration of check CJ-8 is done by CVODE (SUNDIALS 7.8.0 in pure Rust, Adams-Moulton formulas).
+//!
+//! STAGE E (function stage_e, checks CJ-12 to CJ-15): the effective potential U_CJT(dvec) of the SFBS, the two-loop
+//! energy of the state that is stationary in everything except its pair amplitude.  Such a state is the ground state
+//! of H_var with its own normal mean field and a pairing block of a pair field bvec that is a free parameter; in the
+//! normal form of bvec the problem splits into two sectors with one gap each, coupled through their Dirac masses.
+//! Whether such a state is a minimum at its order parameter is decided by the Jacobian of the self-consistency map of
+//! the normal mean field, -(G/8) c_ch chi, with the static susceptibility chi of the 64 densities (check CJ-13 (e)).
 //!
 //! OUTPUT (folder test2/data):
 //!     t2_cjt_checks.txt       the report of the checks
@@ -40,6 +47,8 @@
 //!     t2_cjt_surface.csv      the energy of the trial states of the vacuum sector
 //!     t2_cjt_time.csv         the pair amplitude against the time (integrations with CVODE)
 //!     t2_cjt_site.csv         one site: exact ground energy and two-loop energy
+//!     t2_cjt_potential_cut.csv    stage E: the effective potential along the unitary cut, with the pairing-only ones
+//!     t2_cjt_potential_plane.csv  stage E: the effective potential in the plane of the two gaps
 //!
 //! USE (from the folder test2/rust):   cargo build --release && ./target/release/t2_cjt
 //! Exit status 0 if every check passes.
@@ -1965,12 +1974,470 @@ fn cj11(ch: &mut Checks, cs: &[[f64; 2]; 8], cps: &[[f64; 2]; 8]) {
     );
 }
 
+// ------------------------------------------------------------------ stage E: the effective potential of the SFBS
+
+/// Xi_2(x) = d Xi_1/dx = (Lambda/sqrt(Lambda^2 + x) - arsinh(Lambda/sqrt(x)))/(4 pi^2) = -(1/2) int (q^2 + x)^(-3/2)
+fn xi2(x: f64) -> f64 {
+    let l = LAMBDA;
+    (l / (l * l + x).sqrt() - (l / x.sqrt()).asinh()) / (4.0 * PI * PI)
+}
+
+/// the pairing block of the pair field in its normal form, bvec = (0, (i/2)(yp - ym), (1/2)(yp + ym)): its isospin
+/// matrix has the eigenvalues yp (on the isospin state with tau_1 = -1) and -ym (tau_1 = +1), the two gaps
+fn pair_block_nf(md: &Model, yp: f64, ym: f64) -> CMat {
+    md.kds[1].scale(c(0.0, 0.5 * (yp - ym))).add(&md.kds[2].scale_r(0.5 * (yp + ym)))
+}
+
+/// the normal mean field of a two-sector trial state: the Dirac mass mp in the sector of the gap yp (tau_1 = -1), the
+/// Dirac mass mm in the sector of the gap ym (tau_1 = +1), and the term that cancels the chemical potential
+fn normal_block_two(md: &Model, m: f64, mu: f64, mp: f64, mm: f64) -> CMat {
+    let b1 = beta().kron(&sigma(1));
+    md.beta8.scale_r(0.5 * (mp + mm) - m).add(&b1.scale_r(0.5 * (mm - mp))).add(&CMat::identity(8).scale_r(mu))
+}
+
+/// the densities s = M Xi_1 and f = y Xi_1 of one sector
+fn sector(mass: f64, y: f64) -> (f64, f64) {
+    let x = mass * mass + y * y;
+    (mass * xi1(x), y * xi1(x))
+}
+
+/// the two-loop energy per volume of the two-sector trial state (bare mass m, charge-symmetric chemical potential):
+/// V = sum over the sectors of [-Xi(x) + 2 (M - m) s + 2 y f] - (3g/4)(s+ + s-)^2 - (g/4)(s+ - s-)^2
+///     - 2 g (f+^2 + f-^2) + 3 g N_Lambda^2,  x = M^2 + y^2
+fn v_two(m: f64, g: f64, mp: f64, mm: f64, yp: f64, ym: f64) -> f64 {
+    let ((sp, fp), (sm, fm)) = (sector(mp, yp), sector(mm, ym));
+    -xi0(mp * mp + yp * yp) - xi0(mm * mm + ym * ym) + 2.0 * (mp - m) * sp + 2.0 * (mm - m) * sm + 2.0 * yp * fp + 2.0 * ym * fm
+        - 0.75 * g * (sp + sm).powi(2)
+        - 0.25 * g * (sp - sm).powi(2)
+        - 2.0 * g * (fp * fp + fm * fm)
+        + 3.0 * g * nlam() * nlam()
+}
+
+/// the Dirac mass of the state that is self-consistent in its normal mean field at the given real pair field b along
+/// the third axis: the root of M = m + (3/2) g M Xi_1(M^2 + b^2), by bisection
+fn mass_at_pair_field(m: f64, g: f64, b: f64) -> f64 {
+    let f = |x: f64| x - m - 1.5 * g * x * xi1(x * x + b * b);
+    let (mut lo, mut hi) = (m, m + 1.5 * g * nlam() + 1e-9);
+    for _ in 0..200 {
+        let mid = 0.5 * (lo + hi);
+        if f(mid) < 0.0 {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    0.5 * (lo + hi)
+}
+
+/// the Dirac masses of the two sectors that are self-consistent at the gaps (yp, ym) of the pair field:
+/// M+ = m + g s+ + (g/2) s-, M- = m + g s- + (g/2) s+, by Newton's method with the exact Jacobian
+fn masses_two(m: f64, g: f64, yp: f64, ym: f64) -> (f64, f64) {
+    let start = mass_at_pair_field(m, g, (0.5 * (yp * yp + ym * ym)).sqrt());
+    let (mut mp, mut mm) = (start, start);
+    for _ in 0..100 {
+        let ((sp, _), (sm, _)) = (sector(mp, yp), sector(mm, ym));
+        let (f1, f2) = (mp - m - g * sp - 0.5 * g * sm, mm - m - g * sm - 0.5 * g * sp);
+        if f1.abs().max(f2.abs()) < 1e-15 {
+            break;
+        }
+        let (xp, xm) = (mp * mp + yp * yp, mm * mm + ym * ym);
+        let (ap, am) = (xi1(xp) + 2.0 * mp * mp * xi2(xp), xi1(xm) + 2.0 * mm * mm * xi2(xm));
+        let (j11, j12, j21, j22) = (1.0 - g * ap, -0.5 * g * am, -0.5 * g * ap, 1.0 - g * am);
+        let det = j11 * j22 - j12 * j21;
+        mp -= (j22 * f1 - j12 * f2) / det;
+        mm -= (-j21 * f1 + j11 * f2) / det;
+    }
+    (mp, mm)
+}
+
+/// the state that is stationary in everything except its pair field, for the pair field of the gaps (yp, ym):
+/// (Dirac masses, gaps 2 g f of its order parameter, energy per volume)
+fn constrained(m: f64, g: f64, yp: f64, ym: f64) -> ((f64, f64), (f64, f64), f64) {
+    let (mp, mm) = masses_two(m, g, yp, ym);
+    let ((_, fp), (_, fm)) = (sector(mp, yp), sector(mm, ym));
+    ((mp, mm), (2.0 * g * fp, 2.0 * g * fm), v_two(m, g, mp, mm, yp, ym))
+}
+
+/// the two gaps (larger, smaller) of an order parameter: |dvec| (1 +- zeta)^(1/2)
+fn gaps_of(d: &[C64; 3]) -> (f64, f64) {
+    let (d2, zeta) = d_invariants(d);
+    ((d2 * (1.0 + zeta)).sqrt(), (d2 * (1.0 - zeta).max(0.0)).sqrt())
+}
+
+/// the gap of the non-unitary stationary state (one sector condensed, the other normal): the root of
+/// 2 g Xi_1(M+^2 + y^2) = 1 with the self-consistent masses, by bisection
+fn nonunitary_gap(m: f64, g: f64) -> Option<f64> {
+    let f = |y: f64| {
+        let (mp, _) = masses_two(m, g, y, 0.0);
+        2.0 * g * xi1(mp * mp + y * y) - 1.0
+    };
+    if f(1e-6) <= 0.0 {
+        return None;
+    }
+    let (mut lo, mut hi) = (1e-6, 2.0 * g * nlam() + 1.0);
+    for _ in 0..200 {
+        let mid = 0.5 * (lo + hi);
+        if f(mid) > 0.0 {
+            lo = mid;
+        } else {
+            hi = mid;
+        }
+    }
+    Some(0.5 * (lo + hi))
+}
+
+fn stage_e(ch: &mut Checks, fr: &mut Frags, dir: &PathBuf) {
+    let gr = Grid::product(64, 4, 6);
+    let nl = gr.nlam();
+    let (m, g) = (M_T2, G_T2);
+    let mb = bare_mass(m, g);
+    let md = Model::new(g, false);
+    let mu_b = -1.5 * g * nl;
+    let dvac = gap_of(m, g).unwrap();
+    let e_vac = v_closed(mb, g, m, dvac);
+    let b1 = beta().kron(&sigma(1));
+
+    // ---- CJ-12: the closed form of the two-sector trial states against the matrices of 16 rows
+    let (mut e_v, mut e_gap, mut e_mass, mut e_rest) = (0.0f64, 0.0f64, 0.0f64, 0.0f64);
+    let trials = [(0.21, 0.33, 0.25, 0.07), (0.4, 0.15, 0.05, 0.3), (0.2, 0.2, 0.2094933, 0.2094933), (0.12, 0.27, 0.19, 0.0)];
+    for &(mp, mm, yp, ym) in &trials {
+        let nsc = normal_block_two(&md, mb, mu_b, mp, mm);
+        let pp = pair_block_nf(&md, yp, ym);
+        let st = ground(&md, &gr, mb, mu_b, &nsc, &pp);
+        e_v = e_v.max((energy(&md, &st, mu_b) - v_two(mb, g, mp, mm, yp, ym)).abs());
+        let (n2, p2) = md.fields(&st.cn, &st.cp);
+        let ((sp, fp), (sm, fm)) = (sector(mp, yp), sector(mm, ym));
+        // the order parameter of the state has the gaps 2 g f of the two sectors
+        let (ga, gb) = gaps_of(&dvec(&md, &p2));
+        let (ta, tb) = (2.0 * g * fp, 2.0 * g * fm);
+        e_gap = e_gap.max((ga - ta.max(tb)).abs()).max((gb - ta.min(tb)).abs());
+        // and it is again a pair field in the normal form, with these gaps in the same sectors
+        e_gap = e_gap.max(p2.sub(&pair_block_nf(&md, ta, tb)).max_abs());
+        // its normal mean field: the masses m + g s + (g/2) s' of the two sectors, the shift of the chemical
+        // potential, and nothing else
+        let expect = normal_block_two(&md, mb, mu_b, mb + g * sp + 0.5 * g * sm, mb + g * sm + 0.5 * g * sp);
+        e_mass = e_mass.max(n2.sub(&expect).max_abs());
+        let mut rest = n2.sub(&md.beta8.scale(tr_prod(&md.beta8, &n2).scale(1.0 / 8.0))).sub(&b1.scale(tr_prod(&b1, &n2).scale(1.0 / 8.0)));
+        rest = rest.sub(&CMat::identity(8).scale(n2.trace().scale(1.0 / 8.0)));
+        e_rest = e_rest.max(rest.max_abs());
+    }
+    ch.add(
+        "CJ-12",
+        "stage E, the two-sector trial states: for the pair field in its normal form, bvec = (0, (i/2)(y_+ - y_-), (1/2)(y_+ + y_-)), and a normal mean field with the Dirac mass M_trial_+ on the isospin state tau_1 = -1 and M_trial_- on tau_1 = +1 (four sets of parameters, not self-consistent; bare mass 0.05, G = 22.5), the energy E_var from the matrices of 16 rows equals the closed form V_two = sum over the two sectors of [-Xi(M^2 + y^2) + 2 (M - m_bare) s + 2 y f] - (3G/4)(s_+ + s_-)^2 - (G/4)(s_+ - s_-)^2 - 2 G (f_+^2 + f_-^2) + 3 G N_Lambda^2 with s = M Xi_1(M^2 + y^2) and f = y Xi_1(M^2 + y^2) of each sector; the order parameter of the state is again of the normal form, with the gaps 2 G f_+ and 2 G f_- in the same sectors; and its normal mean field consists of the Dirac masses m_bare + G s_+ + (G/2) s_- and m_bare + G s_- + (G/2) s_+ of the two sectors and of the shift of the chemical potential, with no other component",
+        e_v < 1e-12 && e_gap < 1e-12 && e_mass < 1e-12 && e_rest < 1e-12,
+        format!("{} sets: largest |E_var - V_two| {}; gaps and pairing block of the order parameter {}; normal mean field {}; other components {}", trials.len(), sci(e_v), sci(e_gap), sci(e_mass), sci(e_rest)),
+    );
+
+    // ---- CJ-13: the effective potential U(dvec): the energy of the state that is stationary at fixed pair amplitude
+    // (a) the constrained states are stationary in their normal mean field (general map of the matrices of 16 rows)
+    let mut e_norm = 0.0f64;
+    let mut e_env = 0.0f64;
+    let pts = [(0.05, 0.05), (0.2094933, 0.2094933), (0.5, 0.5), (0.3, 0.1), (0.25, 0.0), (0.02, 0.4)];
+    for &(yp, ym) in &pts {
+        let ((mp, mm), (dp, dm), u) = constrained(mb, g, yp, ym);
+        let nsc = normal_block_two(&md, mb, mu_b, mp, mm);
+        let st = ground(&md, &gr, mb, mu_b, &nsc, &pair_block_nf(&md, yp, ym));
+        let (n2, _) = md.fields(&st.cn, &st.cp);
+        e_norm = e_norm.max(n2.sub(&nsc).max_abs()).max((energy(&md, &st, mu_b) - u).abs());
+        // (b) the derivative of U with respect to the order parameter is (pair field - order parameter)/G:
+        // dU = ((y_+ - Delta_+) dDelta_+ + (y_- - Delta_-) dDelta_-)/G, by central differences in y_+ and in y_-
+        let h = 1e-5;
+        for dir_ in 0..2 {
+            let (a, b) = if dir_ == 0 { ((yp + h, ym), (yp - h, ym)) } else { ((yp, ym + h), (yp, (ym - h).abs())) };
+            if dir_ == 1 && ym < h {
+                continue;
+            }
+            let (_, (dpa, dma), ua) = constrained(mb, g, a.0, a.1);
+            let (_, (dpb, dmb), ub) = constrained(mb, g, b.0, b.1);
+            let pred = ((yp - dp) * (dpa - dpb) + (ym - dm) * (dma - dmb)) / g;
+            e_env = e_env.max((ua - ub - pred).abs() / (2.0 * h));
+        }
+    }
+    // (c) along the unitary cut the order parameter increases with the pair field, so that U is a function of it;
+    // it stays below 2 G N_Lambda
+    let mut mono = true;
+    let mut last = -1.0;
+    let mut dmax = 0.0f64;
+    for k in 0..=4000 {
+        let b = 5.0 * k as f64 / 4000.0;
+        let mv = mass_at_pair_field(mb, g, b);
+        let d = 2.0 * g * b * xi1(mv * mv + b * b);
+        mono &= d > last;
+        last = d;
+        dmax = dmax.max(d);
+    }
+    // (d) at fixed pair fields the iteration of the normal mean field alone, from random Hermitian starts without
+    // imposed symmetry, reaches the state of the two coupled equations. (e) The Jacobian of this self-consistency
+    // map has all its eigenvalues below 1 there. The map is: normal block -> ground state -> densities n_ch =
+    // tr(T_ch C_n) of the 64 channels -> normal block N_sc = -(G/8) sum_ch c_ch n_ch T_ch. With the static
+    // susceptibility chi (the derivative of the 64 densities with respect to the coefficients of the T_ch in the
+    // normal block; a symmetric matrix without positive eigenvalue, because the ground energy of a Hamiltonian is a
+    // concave function of its parameters) the Jacobian is -(G/8) c chi, and its non-zero eigenvalues are those of the
+    // symmetric matrix (-chi)^(1/2) (G/8) c (-chi)^(1/2). All of them below 1 means: the constrained state is a
+    // strict local minimum of E_no + |bvec - dvec|^2/G among the quasi-free states, and therefore of E_no among the
+    // states with its order parameter.
+    let grs = Grid::product(48, 2, 4);
+    let mu_s = -1.5 * g * grs.nlam();
+    let y_sad = nonunitary_gap(mb, g).unwrap_or(0.0);
+    let fixed = [(0.3, 0.1), (0.0, 0.0), (y_sad, 0.0), (dvac, dvac)];
+    let chans = channels();
+    let nch = chans.len();
+    let coef: Vec<f64> = chans.iter().map(|(_, _, t)| channel_coefficient(&md.ks, t).0).collect();
+    let mut rng_d = Rng(271828);
+    let (mut e_uni, mut it_max) = (0.0f64, 0usize);
+    let (mut e_sym, mut chi_pos, mut e_jac, mut jac_scalar) = (0.0f64, 0.0f64, 0.0f64, 0.0f64);
+    let mut lams: Vec<(f64, f64)> = Vec::new();
+    for (kf, &(yp, ym)) in fixed.iter().enumerate() {
+        let ((mp_r, mm_r), _, u_ref) = constrained(mb, g, yp, ym);
+        let n_ref = normal_block_two(&md, mb, mu_s, mp_r, mm_r);
+        let pfix = pair_block_nf(&md, yp, ym);
+        for _ in 0..3 {
+            let n0 = md.beta8.scale_r(0.3 * rng_d.unit()).add(&rand_herm(&mut rng_d, 8, 0.05)).add(&CMat::identity(8).scale_r(mu_s));
+            let mut map = |x: &[f64]| -> Vec<f64> {
+                let (n, _) = unpack(x);
+                let st = ground(&md, &grs, mb, mu_s, &n, &pfix);
+                let (n2, _) = md.fields(&st.cn, &st.cp);
+                pack(&n2, &pfix)
+            };
+            let (x, _res, it) = anderson(&mut map, pack(&n0, &pfix), 6, 0.6, 1e-12, 800);
+            let (n, _) = unpack(&x);
+            let st = ground(&md, &grs, mb, mu_s, &n, &pfix);
+            e_uni = e_uni.max(n.sub(&n_ref).max_abs()).max((energy(&md, &st, mu_s) - u_ref).abs());
+            it_max = it_max.max(it);
+        }
+        // the susceptibility by central differences of the coefficient of each channel matrix
+        let eps = 1e-4;
+        let mut chi = vec![vec![0.0f64; nch]; nch];
+        for (kb, (_, _, tb)) in chans.iter().enumerate() {
+            let sp = ground(&md, &grs, mb, mu_s, &n_ref.add(&tb.scale_r(eps)), &pfix);
+            let sm = ground(&md, &grs, mb, mu_s, &n_ref.sub(&tb.scale_r(eps)), &pfix);
+            for (ka, (_, _, ta)) in chans.iter().enumerate() {
+                chi[ka][kb] = (tr_prod(ta, &sp.cn).re - tr_prod(ta, &sm.cn).re) / (2.0 * eps);
+            }
+        }
+        let mut mchi = CMat::zeros(nch);
+        for ka in 0..nch {
+            for kb in 0..nch {
+                e_sym = e_sym.max((chi[ka][kb] - chi[kb][ka]).abs());
+                mchi.set(ka, kb, c(-0.5 * (chi[ka][kb] + chi[kb][ka]), 0.0));
+            }
+        }
+        // (-chi)^(1/2) from the eigenvalues and eigenvectors of -chi
+        let (w, v) = eigh(&mchi);
+        chi_pos = chi_pos.max(w.iter().fold(0.0f64, |acc, x| acc.max(-x)));
+        let mut root = CMat::zeros(nch);
+        for ka in 0..nch {
+            for kb in 0..nch {
+                let mut z = C64::ZERO;
+                for k in 0..nch {
+                    z += (v.get(ka, k) * v.get(kb, k).conj()).scale(w[k].max(0.0).sqrt());
+                }
+                root.set(ka, kb, z);
+            }
+        }
+        let mut cdiag = CMat::zeros(nch);
+        for k in 0..nch {
+            cdiag.set(k, k, c(0.125 * g * coef[k], 0.0));
+        }
+        let (lam, _) = eigh(&root.mul(&cdiag).mul(&root));
+        let lmax = lam.iter().fold(f64::NEG_INFINITY, |acc, x| acc.max(*x));
+        let lmin = lam.iter().fold(f64::INFINITY, |acc, x| acc.min(*x));
+        lams.push((lmin, lmax));
+        if kf == 1 {
+            // at the origin the element of the Jacobian in the scalar channel is (3/2) G d(M Xi_1(M^2))/dM
+            let kb = chans.iter().position(|(_, _, t)| t.sub(&md.beta8).max_abs() < 1e-12).unwrap();
+            let closed = 1.5 * g * (xi1(mp_r * mp_r) + 2.0 * mp_r * mp_r * xi2(mp_r * mp_r));
+            jac_scalar = -0.125 * g * coef[kb] * chi[kb][kb];
+            e_jac = (jac_scalar - closed).abs();
+        }
+    }
+    let lam_top = lams.iter().fold(f64::NEG_INFINITY, |acc, x| acc.max(x.1));
+    let lam_list = lams.iter().map(|x| format!("{:.4} (smallest {:.4})", x.1, x.0)).collect::<Vec<_>>().join(", ");
+    fr.add("cje_lam_generic", format!("{:.4}", lams[0].1));
+    fr.add("cje_lam_origin", format!("{:.4}", lams[1].1));
+    fr.add("cje_lam_saddle", format!("{:.4}", lams[2].1));
+    fr.add("cje_lam_vacuum", format!("{:.4}", lams[3].1));
+    ch.add(
+        "CJ-13",
+        "stage E, the effective potential U_CJT(dvec) of the order parameter, the two-loop energy of the state that is stationary in everything except its pair amplitude (m = 0.2, G = 22.5, normal-ordered form): (a) for six pair fields (unitary and not) the state with the Dirac masses of the two coupled equations M_+ = m_bare + G s_+ + (G/2) s_-, M_- = m_bare + G s_- + (G/2) s_+ reproduces its normal mean field under the general map of the matrices of 16 rows, and its energy is V_two; (b) the derivative of U_CJT with respect to the order parameter is (pair field - order parameter)/G: dU_CJT = ((y_+ - Delta_+) dDelta_+ + (y_- - Delta_-) dDelta_-)/G, verified by central differences in y_+ and in y_-; (c) along the unitary cut the order parameter 2 G b Xi_1(M^2 + b^2) increases strictly with the pair field b (4001 values of b from 0 to 5) and stays below 2 G N_Lambda, so that U_CJT is a single-valued function of the order parameter on its whole range; (d) at four pair fields (the gaps 0.3 and 0.1; the origin; the non-unitary stationary state; the vacuum) the iteration of the normal mean field alone, from three random Hermitian starts each without imposed symmetry, converges to the state of the two coupled equations; (e) at the same four pair fields the Jacobian of this self-consistency map, -(G/8) c_ch chi with the static susceptibility chi of the 64 densities n_ch (by central differences, step 1e-4), has all its eigenvalues below 1, so that the constrained state is a strict local minimum of E_no + |bvec - dvec|^2/G among the quasi-free states and hence of E_no among the states with its order parameter; the element of the Jacobian in the scalar channel at the origin equals its closed form (3/2) G d(M Xi_1(M^2))/dM",
+        e_norm < 1e-11 && e_env < 1e-7 && mono && dmax < 2.0 * g * nl && e_uni < 1e-9 && lam_top < 1.0 && e_sym < 1e-6 && chi_pos < 1e-6 && e_jac < 1e-6,
+        format!("(a) largest residual of the normal mean field and of the energy {}; (b) largest deviation of the derivative {}; (c) increasing: {}, largest order parameter {} against 2 G N_Lambda = {}; (d) largest difference of the normal mean field and of the energy from the two-sector state {}, at most {} iterations; (e) largest eigenvalue of the Jacobian at the four pair fields, in the order of (d): {}; largest asymmetry of the susceptibility {}, its largest positive eigenvalue {}; element of the Jacobian in the scalar channel at the origin {:.4}, difference from its closed form {}", sci(e_norm), sci(e_env), mono, f7(dmax), f7(2.0 * g * nl), sci(e_uni), it_max, lam_list, sci(e_sym), sci(chi_pos), jac_scalar, sci(e_jac)),
+    );
+
+    // ---- CJ-14: U depends on the order parameter through its two invariants only
+    let mut rng = Rng(314159);
+    let (yp, ym) = (0.3, 0.1);
+    let ((mp, mm), (dp, dm), u0) = constrained(mb, g, yp, ym);
+    let nsc = normal_block_two(&md, mb, mu_b, mp, mm);
+    let pp = pair_block_nf(&md, yp, ym);
+    let (mut e_en, mut e_cov, mut e_inv) = (0.0f64, 0.0f64, 0.0f64);
+    for _ in 0..4 {
+        // a random element of SU(2) on the isospin index and a random phase: U = exp(i theta) (1_4 (x) u)
+        let (a, b_, c_, d_) = (rng.unit(), rng.unit(), rng.unit(), rng.unit());
+        let nrm = (a * a + b_ * b_ + c_ * c_ + d_ * d_).sqrt();
+        let u2 = CMat::m2(c(a / nrm, b_ / nrm), c(c_ / nrm, d_ / nrm), c(-c_ / nrm, d_ / nrm), c(a / nrm, -b_ / nrm));
+        let th = PI * rng.unit();
+        let big = CMat::identity(4).kron(&u2).scale(C64::cis(th));
+        let n_t = big.mul(&nsc).mul(&big.dagger());
+        let p_t = big.mul(&pp).mul(&big.transpose());
+        let st = ground(&md, &gr, mb, mu_b, &n_t, &p_t);
+        e_en = e_en.max((energy(&md, &st, mu_b) - u0).abs());
+        let (n2, p2) = md.fields(&st.cn, &st.cp);
+        // covariance of the map: the normal mean field of the turned state is the turned normal mean field
+        e_cov = e_cov.max(n2.sub(&n_t).max_abs());
+        let (ga, gb) = gaps_of(&dvec(&md, &p2));
+        e_inv = e_inv.max((ga - dp.max(dm)).abs()).max((gb - dp.min(dm)).abs());
+    }
+    ch.add(
+        "CJ-14",
+        "stage E, the symmetry of the effective potential: when the mean fields of a constrained state (pair field of the gaps 0.3 and 0.1) are turned by a random fermion-number and isospin transformation U = exp(i theta) (1_4 (x) u), N_sc -> U N_sc U^dag and Ppair -> U Ppair U^T (four random transformations), the energy is unchanged, the turned state reproduces its turned normal mean field, and its order parameter has the same two gaps Delta_+ and Delta_-: U_CJT depends on dvec only through |dvec| and zeta",
+        e_en < 1e-12 && e_cov < 1e-11 && e_inv < 1e-11,
+        format!("largest change of the energy {}; of the normal mean field {}; of the gaps of the order parameter {}", sci(e_en), sci(e_cov), sci(e_inv)),
+    );
+
+    // ---- CJ-15: the stationary points of U and the shape of the hat
+    let mn = mass_normal(mb, g);
+    let u_origin = v_closed(mb, g, mn, 0.0) - e_vac;
+    let ynu = nonunitary_gap(mb, g).expect("non-unitary stationary state");
+    let ((mnp, mnm), (dnp, dnm), unu) = constrained(mb, g, ynu, 0.0);
+    let u_saddle = unu - e_vac;
+    // the non-unitary state is a fixed point of the general map
+    let nsc = normal_block_two(&md, mb, mu_b, mnp, mnm);
+    let pp = pair_block_nf(&md, ynu, 0.0);
+    let st = ground(&md, &gr, mb, mu_b, &nsc, &pp);
+    let (n2, p2) = md.fields(&st.cn, &st.cp);
+    let e_fix = n2.sub(&nsc).max_abs().max(p2.sub(&pp).max_abs());
+    // the pairing-only potential Omega(bvec) = |bvec|^2/G - sum over the sectors of (Xi(m^2 + y^2) - Xi(m^2))
+    let om = |yp: f64, ym: f64| 0.5 * (yp * yp + ym * ym) / g - (xi0(m * m + yp * yp) - xi0(m * m)) - (xi0(m * m + ym * ym) - xi0(m * m));
+    let (om_vac, om_saddle) = (om(dvac, dvac), om(dvac, 0.0));
+    // the shape: the vacuum is the lowest point of a grid of pair fields, the origin the highest point near itself,
+    // the non-unitary state a saddle (lower towards the vacuum, higher along its own gap)
+    let mut umin = f64::INFINITY;
+    let mut csv = Csv::new(
+        "stage E: the effective potential U_CJT of the SFBS in the plane of the two gaps: for the pair field of the gaps (y_+, y_-), the gaps (Delta_+, Delta_-) of the order parameter of the constrained state and its energy per volume minus that of the vacuum (m = 0.2, G = 22.5, normal-ordered form)",
+        &[
+            ("program", "t2_cjt (test2/rust/t2cjt), check CJ-15".to_string()),
+            ("m", format!("{}", m)),
+            ("G", format!("{}", g)),
+            ("Lambda", format!("{}", LAMBDA)),
+            ("Delta_vac", f7(dvac)),
+            ("saddle_gap", f7(ynu)),
+            ("saddle_energy_above_vacuum", format!("{:.6e}", u_saddle)),
+            ("origin_energy_above_vacuum", format!("{:.6e}", u_origin)),
+        ],
+        "pair_gap_plus,pair_gap_minus,gap_plus,gap_minus,energy_above_vacuum",
+    );
+    let npl = 60;
+    for i in 0..=npl {
+        for j in 0..=npl {
+            let (yp, ym) = (0.45 * i as f64 / npl as f64, 0.45 * j as f64 / npl as f64);
+            let (_, (dp_, dm_), u) = constrained(mb, g, yp, ym);
+            umin = umin.min(u - e_vac);
+            csv.row(&[format!("{:.5}", yp), format!("{:.5}", ym), format!("{:.7}", dp_), format!("{:.7}", dm_), format!("{:.6e}", u - e_vac)]);
+        }
+    }
+    csv.write(dir, "t2_cjt_potential_plane.csv");
+    let near_origin = constrained(mb, g, 0.01, 0.01).2 - e_vac;
+    // the coefficient of |dvec|^2 at the origin: -(1/G)(1 - 1/(2 G Xi_1(M_N^2)))
+    let curv_pred = -(1.0 / g) * (1.0 - 1.0 / (2.0 * g * xi1(mn * mn)));
+    let (_, (dsm, _), usm) = constrained(mb, g, 1e-3, 1e-3);
+    let curv_num = (usm - e_vac - u_origin) / (dsm * dsm);
+    let saddle_down = constrained(mb, g, ynu, 0.02).2 - e_vac;
+    let saddle_up_a = constrained(mb, g, ynu + 0.02, 0.0).2 - e_vac;
+    let saddle_up_b = constrained(mb, g, ynu - 0.02, 0.0).2 - e_vac;
+    // the identity between the two pairing-only potentials, Omega(bvec) = E_po(state with the pair field bvec) -
+    // E_po(normal state) + |bvec - dvec|^2/G: the pairing-only energy (kinetic term with the Dirac mass m plus pair
+    // term) and the order parameter are taken from the matrices of 16 rows, Omega from its closed form
+    let zero8 = CMat::zeros(8);
+    let st0 = ground(&md, &gr, m, 0.0, &zero8, &zero8);
+    let e_po0 = st0.ekin + md.e_pair(&st0.cp);
+    let (mut e_ident, mut e_dpo) = (0.0f64, 0.0f64);
+    let pairs_po = [(0.05, 0.05), (0.2094933, 0.2094933), (0.5, 0.5), (0.3, 0.1), (0.25, 0.0), (0.02, 0.4), (0.7, 0.01)];
+    for &(yp, ym) in &pairs_po {
+        let st = ground(&md, &gr, m, 0.0, &zero8, &pair_block_nf(&md, yp, ym));
+        let (_, p2) = md.fields(&st.cn, &st.cp);
+        let dst = dvec(&md, &p2);
+        let bst = dvec(&md, &pair_block_nf(&md, yp, ym));
+        let dist2: f64 = (0..3).map(|i| (bst[i] - dst[i]).norm_sqr()).sum();
+        e_ident = e_ident.max((om(yp, ym) - (st.ekin + md.e_pair(&st.cp) - e_po0) - dist2 / g).abs());
+        // the order parameter of the pairing-only state is of the normal form, with the gaps 2 G y Xi_1(m^2 + y^2)
+        let (ta, tb) = (2.0 * g * yp * xi1(m * m + yp * yp), 2.0 * g * ym * xi1(m * m + ym * ym));
+        e_dpo = e_dpo.max(p2.sub(&pair_block_nf(&md, ta, tb)).max_abs());
+    }
+    ch.add(
+        "CJ-15",
+        "stage E, the stationary points of U_CJT (m = 0.2, G = 22.5, normal-ordered form) and the shape of the potential: the origin (the normal stationary state) is a local maximum, U_CJT there exceeds the vacuum value by 3.8816e-5; the vacuum, |dvec| = Delta_vac and zeta = 0, is the lowest point of a grid of 61 x 61 pair fields; near the origin U_CJT = U_CJT(0) - (1/G)(1 - 1/(2 G Xi_1(M_N^2))) |dvec|^2; the non-unitary state (one sector condensed, zeta = 1) is a stationary state of the general map of the matrices of 16 rows and a saddle: U_CJT decreases from it towards the vacuum and increases along its own gap; in the pairing-only potential Omega the two sectors are independent and the saddle lies at exactly half the depth of the vacuum, in U_CJT the sectors are coupled through the Dirac masses and it does not; and the identity between the two pairing-only potentials, Omega(bvec) = E_po(state with the pair field bvec) - E_po(normal state) + |bvec - dvec|^2/G, holds for seven pair fields (unitary and not), the pairing-only energy and the order parameter being taken from the matrices of 16 rows",
+        (u_origin - 3.8816e-5).abs() < 5e-10 && near_origin < u_origin && umin > -1e-13 && e_fix < 1e-11 && saddle_down < u_saddle && saddle_up_a > u_saddle && saddle_up_b > u_saddle && (om_saddle - 0.5 * om_vac).abs() < 1e-15 && ((u_origin - u_saddle) / u_origin - 0.5).abs() > 0.01 && ((curv_num - curv_pred) / curv_pred).abs() < 1e-3 && e_ident < 1e-12 && e_dpo < 1e-12,
+        format!(
+            "U_CJT minus its vacuum value: origin {:.4e}, non-unitary saddle {:.4e} (gap of its pair field {}, Dirac masses {} and {}, gaps of its order parameter {} and {}), lowest grid value {}; residual of the saddle under the general map {}; pairing only: Omega(vacuum) = {:.4e}, Omega(saddle) = {:.4e}; depth of the saddle below the origin as a fraction of the depth of the vacuum: {:.4} (pairing only: 0.5); coefficient of |dvec|^2 at the origin {:.6} against the formula {:.6}; identity of the two pairing-only potentials: largest deviation {}, of the pairing block of the order parameter from the normal form with the gaps 2 G y Xi_1(m^2 + y^2) {}",
+            u_origin,
+            u_saddle,
+            f7(ynu),
+            f7(mnp),
+            f7(mnm),
+            f7(dnp),
+            sci(dnm),
+            sci(umin),
+            sci(e_fix),
+            om_vac,
+            om_saddle,
+            (u_origin - u_saddle) / u_origin,
+            curv_num,
+            curv_pred,
+            sci(e_ident),
+            sci(e_dpo)
+        ),
+    );
+    fr.add("cje_curv", format!("{:.6}", curv_pred));
+    fr.add("cje_u_origin", format!("{:.4e}", u_origin));
+    fr.add("cje_u_saddle", format!("{:.4e}", u_saddle));
+    fr.add("cje_saddle_gap", format!("{:.6}", ynu));
+    fr.add("cje_saddle_dmod", format!("{:.6}", ynu / 2.0f64.sqrt()));
+    fr.add("cje_saddle_mp", format!("{:.6}", mnp));
+    fr.add("cje_saddle_mm", format!("{:.6}", mnm));
+    fr.add("cje_saddle_fraction", format!("{:.4}", (u_origin - u_saddle) / u_origin));
+    fr.add("cje_om_vac", format!("{:.4e}", -om_vac));
+    fr.add("cje_om_saddle", format!("{:.4e}", -om_saddle));
+    fr.add("cje_dmax", format!("{:.4}", 2.0 * g * nl));
+    // the unitary cut: the three potentials against their own arguments
+    let mut csv = Csv::new(
+        "stage E: the effective potential along the unitary cut dvec = (0, 0, Delta) (m = 0.2, G = 22.5, normal-ordered form): for the pair field b, the Dirac mass and the order parameter of the constrained state and its two-loop energy minus that of the vacuum (U_CJT); the same in the pairing-only treatment (order parameter 2 G b Xi_1(m^2 + b^2) and energy of the state with the pair field b, minus the value at the vacuum); and the pairing-only potential Omega of the pair field b minus its value at its minimum",
+        &[("program", "t2_cjt (test2/rust/t2cjt), check CJ-15".to_string()), ("m", format!("{}", m)), ("G", format!("{}", g)), ("Lambda", format!("{}", LAMBDA)), ("Delta_vac", f10(dvac))],
+        "pair_field,dirac_mass,order_parameter,energy_above_vacuum,order_parameter_pairing_only,energy_above_vacuum_pairing_only,hs_potential_above_minimum",
+    );
+    let vpo = |b: f64| {
+        let f = b * xi1(m * m + b * b);
+        -2.0 * xi0(m * m + b * b) + 4.0 * b * f - 4.0 * g * f * f
+    };
+    let mut table = String::from("| pair field | Dirac mass $M^{\\rm D}_{\\rm LL}$ | order parameter $\\Delta_{\\rm LL}$ | $\\mathcal U^{\\rm CJT}_{\\rm LL}$ minus its minimum | pairing only: order parameter | pairing only: energy minus its minimum | $\\Omega_{\\rm LL}$ of the pair field minus its minimum |\n|-------|---------|---------|-----------|---------|-----------|-----------|\n");
+    for k in 0..=600 {
+        let b = 0.6 * k as f64 / 600.0;
+        let mv = mass_at_pair_field(mb, g, b);
+        let d = 2.0 * g * b * xi1(mv * mv + b * b);
+        let u = v_closed(mb, g, mv, b) - e_vac;
+        let dpo = 2.0 * g * b * xi1(m * m + b * b);
+        let upo = vpo(b) - vpo(dvac);
+        let omb = om(b, b) - om_vac;
+        csv.row(&[format!("{:.4}", b), f7(mv), f7(d), format!("{:.6e}", u), f7(dpo), format!("{:.6e}", upo), format!("{:.6e}", omb)]);
+        if [0, 50, 100, 150, 200, 250, 300, 400, 500, 600].contains(&k) {
+            table.push_str(&format!("| {:.2} | {:.6} | {:.6} | {:.4e} | {:.6} | {:.4e} | {:.4e} |\n", b, mv, d, u, dpo, upo, omb));
+        }
+    }
+    csv.write(dir, "t2_cjt_potential_cut.csv");
+    fr.add("cje_table_cut", table);
+    let mut table = String::from("| stationary point | $\\lvert\\vec d_{\\rm LL}\\rvert$ | $\\zeta_{\\rm LL}$ | Dirac masses of the two sectors | $\\mathcal U^{\\rm CJT}_{\\rm LL}$ minus its minimum | pairing only: $\\Omega_{\\rm LL}$ minus its minimum | kind |\n|-------------|-------|-----|-----------|----------|----------|----------|\n");
+    table.push_str(&format!("| the vacuum (a three-dimensional manifold) | {:.6} | 0 | {:.6}, {:.6} | 0 | 0 | minimum |\n", dvac, m, m));
+    table.push_str(&format!("| the non-unitary state | {:.6} | 1 | {:.6}, {:.6} | {:.4e} | {:.4e} | saddle |\n", ynu / 2.0f64.sqrt(), mnp, mnm, u_saddle, om_saddle - om_vac));
+    table.push_str(&format!("| the origin (normal state) | 0 | — | {:.6}, {:.6} | {:.4e} | {:.4e} | maximum |\n", mn, mn, u_origin, -om_vac));
+    fr.add("cje_table_points", table);
+}
+
 // ------------------------------------------------------------------ main
 
 fn main() {
     let dir = data_dir();
     let mut ch = Checks {
-        title: "Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superfluid boson singlet state (SFBS) from the spinor field Psi_LL by the method of Cornwall, Jackiw and Tomboulis, in the two-loop approximation of the effective action of the propagator (Test 2, stage D)".to_string(),
+        title: "Revision_SuperLoop, folder test2, program `t2_cjt`: the creation of the superfluid boson singlet state (SFBS) from the spinor field Psi_LL by the method of Cornwall, Jackiw and Tomboulis, in the two-loop approximation of the effective action of the propagator, and the effective potential of the SFBS (Test 2, stages D and E)".to_string(),
         items: Vec::new(),
     };
     let mut fr = Frags(Vec::new());
@@ -1984,6 +2451,7 @@ fn main() {
     cj8(&mut ch, &mut fr, &dir);
     cj9(&mut ch, &mut fr, &dir);
     cj11(&mut ch, &cs, &cps);
+    stage_e(&mut ch, &mut fr, &dir);
     let text = ch.text();
     fs::write(dir.join("t2_cjt_checks.txt"), &text).expect("write report");
     fr.add("cjt_report", format!("```text\n{}```", text));

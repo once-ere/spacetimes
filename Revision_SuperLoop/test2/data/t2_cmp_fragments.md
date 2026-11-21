@@ -9,11 +9,11 @@
 <!-- BEGIN t2_times_table -->
 | example | Python | Rust |
 |------|------|------|
-| `packet_free` | 0.23 | 0.16 |
-| `cyclotron` | 7.43 | 5.71 |
-| `andreev` | 1.13 | 0.73 |
-| `kink_spectrum` | 0.81 | 3.41 |
-| `ground_state` | 1.67 | 5.22 |
-| `kink_ground_state` | 6.92 | 23.19 |
-| `quench` (the time evolution) | 35.25 | 24.66 |
+| `packet_free` | 0.29 | 0.22 |
+| `cyclotron` | 8.22 | 6.87 |
+| `andreev` | 1.19 | 0.92 |
+| `kink_spectrum` | 0.89 | 3.00 |
+| `ground_state` | 1.84 | 5.41 |
+| `kink_ground_state` | 7.62 | 25.16 |
+| `quench` (the time evolution) | 38.24 | 27.29 |
 <!-- END t2_times_table -->

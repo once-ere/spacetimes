@@ -33,10 +33,12 @@ strengths, the components of the field and its two spinor charges, the mean-fiel
 and the quantities of the analytic solutions of item [2] of Test 2 (the potentials felt by the two isospin
 components, the precession frequency, the probabilities of isospin up and of the hole, the Bogoliubov
 angle, the domain wall of the pair field and its bound states, the Rayleigh quotient, and the Landau
-levels); and (group 10, new with stage D of Test 2) the quantities of the method of Cornwall, Jackiw and
+levels); and (group 10, new with the stages D and E of Test 2) the quantities of the method of Cornwall, Jackiw and
 Tomboulis: the propagator of the Nambu spinor and its effective action, the correlation matrices and the
 mean fields of a state, the energy functionals, the bare parameters, the Dirac mass, the trial states of
-the vacuum sector, the normal channels and the matrix of the charge conjugation. It has two kinds of
+the vacuum sector, the normal channels, the matrix of the charge conjugation, and, for the effective potential
+of stage E, the potential itself, the pair field, the quantities of the two sectors, the shifted energy and the
+susceptibility of the normal densities. It has two kinds of
 entries.
 
 * **Taken** ({{GEN:symbols_ll_count_taken}} entries): symbols of the two master registries of the

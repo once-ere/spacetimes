@@ -50,8 +50,8 @@ python3 test2/python/t2_examples_check.py test2/data/t2_rs test2/data/t2_py   # 
 for e in packet_free cyclotron andreev kink_spectrum ground_state kink_ground_state quench; do ./test2/rust/target/release/t2_plot test2/data/t2_rs_$e --out test2/figures/fig_t2_rs_$e; done   # item [6]: Figures 14 to 20 (SVG)
 (cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_sfbs   # items [7] to [11]: checks SB-*, fragments, data
 python3 test2/python/make_t2_sfbs_figures.py                             # Figure 21 and the following figures of items [7] to [11]
-(cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_cjt    # stage D: checks CJ-*, fragments, data
-python3 test2/python/make_t2_cjt_figures.py                              # the four figures of stage D
+(cd test2/rust && cargo build --release) && ./test2/rust/target/release/t2_cjt    # stages D and E: checks CJ-*, fragments, data
+python3 test2/python/make_t2_cjt_figures.py                              # the five figures of the stages D and E
 python3 test2/python/make_t2_figures.py                                  # the six figures of Test 2
 bash code/scripts/check_all.sh                                           # everything, with one verdict
 ```
@@ -1287,7 +1287,7 @@ gap (10.10). (v) The dispersion relations of Figure 26(c) at $G_{\rm LL}=22.5$, 
 (13.9), compared at ten wave numbers with the root of the determinant of the two equations of the time and the longitudinal component of
 Section 13.4, found by 200 bisections. Figure 26 is drawn by `test2/python/make_t2_sfbs_figures.py`.
 
-## Stage D: the creation of the SFBS by the method of Cornwall, Jackiw and Tomboulis
+## Stages D and E: the creation of the SFBS and its effective potential by the method of Cornwall, Jackiw and Tomboulis
 
 The member `t2cjt` of the workspace `test2/rust` (binary `t2_cjt`; one source file `src/main.rs`, which reuses the modules
 `fock.rs` and `quad.rs` of the member `t2sfbs`) computes every number, table and data file of the document
@@ -1319,7 +1319,21 @@ checks CJ-1 to CJ-{{GEN:nchecks_t2_cjt}}. What is computed, and how:
   from a least-squares line through the logarithm of its modulus, between 300 times its initial value and 0.005 times the
   value of the condensed vacuum.
 
-Data files (folder `test2/data`): `t2_cjt_checks.txt` (the report), `t2_cjt_fragments.md` (the numbers and tables of the
+* *The effective potential* (stage E; function `stage_e`, checks CJ-12 to CJ-15): the closed form $V^{\rm two}_{\rm LL}$ of the
+  energy of the two-sector states; the two coupled equations for the Dirac masses $M^{{\rm v}\pm}_{\rm LL}$ at given gaps
+  $y^\pm_{\rm LL}$ of the pair field by Newton's method with the exact Jacobian (at most 100 steps, until the residual is
+  below $10^{-15}$); the order parameter and the potential $\mathcal U^{\rm CJT}_{\rm LL}$ of the constrained state; the
+  derivative of the potential by central differences of the pair field ($10^{-5}$); the susceptibility $\chi^{\rm n}_{\rm LL}$
+  of the 64 densities by central differences of the coefficient of each channel matrix in the normal block ($10^{-4}$; 384
+  momenta in a product grid of 48 radial, 2 polar and 4 azimuthal points), the square root of $-\chi^{\rm n}_{\rm LL}$ from its
+  eigenvalues and eigenvectors, and the eigenvalues of the symmetric matrix
+  $(-\chi^{\rm n}_{\rm LL})^{1/2}\,\tfrac18G_{\rm LL}\mathrm{diag}(c^A_{\rm LL})\,(-\chi^{\rm n}_{\rm LL})^{1/2}$, which are those of
+  $\mathsf J^{\rm sc}_{\rm LL}$; the iteration of the self-consistency map with Anderson acceleration (depth 6, damping 0.6)
+  from random Hermitian starts until the residual is below $10^{-12}$; the non-unitary stationary state by 200
+  bisections; the pairing-only potentials in closed form; a grid of $61\times61$ pair fields and 601 points of the unitary cut.
+
+Data files (folder `test2/data`): `t2_cjt_potential_cut.csv` and `t2_cjt_potential_plane.csv` (stage E: the potentials along
+the unitary cut and in the plane of the two gaps; figure `fig_t2_cjt_potential`), `t2_cjt_checks.txt` (the report), `t2_cjt_fragments.md` (the numbers and tables of the
 document), `t2_cjt_channels.csv` (the coefficients of the 64 normal channels), `t2_cjt_vacuum.csv` (the vacuum against the
 coupling in the three readings), `t2_cjt_boson.csv` (the mass of the SFBS boson), `t2_cjt_surface.csv` (the energy of the trial
 states), `t2_cjt_time.csv` (the two time integrations), `t2_cjt_site.csv` (one site). Figures (folder `test2/figures`, each as
@@ -1426,10 +1440,13 @@ block: the folder `explanations`; the third block: the folder `test2`):
 {{SHA256:test2/data/t2_cjt_surface.csv}}  test2/data/t2_cjt_surface.csv
 {{SHA256:test2/data/t2_cjt_time.csv}}  test2/data/t2_cjt_time.csv
 {{SHA256:test2/data/t2_cjt_site.csv}}  test2/data/t2_cjt_site.csv
+{{SHA256:test2/data/t2_cjt_potential_cut.csv}}  test2/data/t2_cjt_potential_cut.csv
+{{SHA256:test2/data/t2_cjt_potential_plane.csv}}  test2/data/t2_cjt_potential_plane.csv
 {{SHA256:test2/figures/fig_t2_cjt_vacuum.png}}  test2/figures/fig_t2_cjt_vacuum.png
 {{SHA256:test2/figures/fig_t2_cjt_surface.png}}  test2/figures/fig_t2_cjt_surface.png
 {{SHA256:test2/figures/fig_t2_cjt_creation.png}}  test2/figures/fig_t2_cjt_creation.png
 {{SHA256:test2/figures/fig_t2_cjt_site.png}}  test2/figures/fig_t2_cjt_site.png
+{{SHA256:test2/figures/fig_t2_cjt_potential.png}}  test2/figures/fig_t2_cjt_potential.png
 ```
 
 # 15. The symbols

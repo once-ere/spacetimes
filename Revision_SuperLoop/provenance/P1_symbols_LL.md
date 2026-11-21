@@ -17,7 +17,7 @@ lists the collisions that were found and how each was resolved (Section 3), name
 folder shares with the folder `Revision_NoGo` (Section 4), states the meaning of the plain-text names
 that the programs, the figures and the data files use (Section 5), reproduces the nine machine checks
 of the symbols with their output (Section 6), and contains the complete table of the
-233 registered symbols (Section 7). Every symbol that occurs in this document is
+239 registered symbols (Section 7). Every symbol that occurs in this document is
 defined in Section 7.
 
 # 2. How the registry is built
@@ -32,10 +32,12 @@ strengths, the components of the field and its two spinor charges, the mean-fiel
 and the quantities of the analytic solutions of item [2] of Test 2 (the potentials felt by the two isospin
 components, the precession frequency, the probabilities of isospin up and of the hole, the Bogoliubov
 angle, the domain wall of the pair field and its bound states, the Rayleigh quotient, and the Landau
-levels); and (group 10, new with stage D of Test 2) the quantities of the method of Cornwall, Jackiw and
+levels); and (group 10, new with the stages D and E of Test 2) the quantities of the method of Cornwall, Jackiw and
 Tomboulis: the propagator of the Nambu spinor and its effective action, the correlation matrices and the
 mean fields of a state, the energy functionals, the bare parameters, the Dirac mass, the trial states of
-the vacuum sector, the normal channels and the matrix of the charge conjugation. It has two kinds of
+the vacuum sector, the normal channels, the matrix of the charge conjugation, and, for the effective potential
+of stage E, the potential itself, the pair field, the quantities of the two sectors, the shifted energy and the
+susceptibility of the normal densities. It has two kinds of
 entries.
 
 * **Taken** (2 entries): symbols of the two master registries of the
@@ -46,7 +48,7 @@ entries.
   space-like coordinates (registered in the main project as $i,j$; here only $j$ is an index, with the
   values 1, 2, 3, and the letter $i$ is the imaginary unit, a new entry), and the number $D$ of space
   dimensions (here $D=3$ for the four-dimensional world and $D=7$ for the eight-dimensional manifolds).
-* **New** (231 entries): every new symbol carries the suffix LL (for *Lorentz
+* **New** (237 entries): every new symbol carries the suffix LL (for *Lorentz
   super-loop*), written as a subscript ($Q_{\rm LL}$), or, when the lower position holds an index, as a
   superscript ($\sigma^{\rm LL}_j$, $L^{\rm LL}_{\mathbf x}$). The exceptions are symbols that cannot be read
   as anything else: the bi-octonions and their parts in bold upright type ($\mathbf x$, $\mathbf e_p$,
@@ -201,15 +203,15 @@ layout command of the printed equations) is not read as letters. The output of t
 PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenance/symbols_ll.csv)
 9 of 9 checks passed
 
-[PASS] LL-S1  every symbol text is registered once (233 entries), every single item of the entries belongs to one entry (542 items), and every plain-text name of the programs, figures and data files belongs to one entry (704 names)
-[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 540 items of the 231 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision_NoGo also contains are exactly the 25 declared shared ones, each with the same object ($SO(3)$, $SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\mathsf 1_8$, $\mathsf 1_{16}$, $\otimes$, $i$, $p$, ${}^T$)
-[PASS] LL-S3  every column of the 121 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (337 different columns), and every file states its content in a line '# content:'
-[PASS] LL-S4  each of the 8 documents of Revision_SuperLoop and the manuscript contains the complete table of the 233 registered symbols, so that every symbol it uses is defined in the document itself
-[PASS] LL-S5  in the 9744 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
-[PASS] LL-S6  in the 11261 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
-[PASS] LL-S7  every one of the 5576 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (76 registered styled letters)
-[PASS] LL-S8  every one of the 3670 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 158 reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name
-[PASS] LL-S9  the 6516 formulas of the 2 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
+[PASS] LL-S1  every symbol text is registered once (239 entries), every single item of the entries belongs to one entry (555 items), and every plain-text name of the programs, figures and data files belongs to one entry (721 names)
+[PASS] LL-S2  the 2 taken entries carry exactly the meaning of the MASTER registry from which they are taken; none of the 553 items of the 237 new entries is an item of either master registry (503 items compared); the 25 items that the registry of Revision_NoGo also contains are exactly the 25 declared shared ones, each with the same object ($SO(3)$, $SU(2)$, $U(1)$, $\det$, $\langle\ \rangle$, $\mathbb C$, $\mathbb R$, $\mathfrak g_2$, $\mathfrak{so}(3)$, $\mathfrak{so}(3,1)$, $\mathfrak{so}(4)$, $\mathfrak{so}(4,4)$, $\mathfrak{so}(8)$, $\mathfrak{so}(8,\mathbb C)$, $\mathfrak{su}(2)$, $\mathrm G_2$, $\mathrm{Re}$, $\mathrm{diag}$, $\mathrm{tr}$, $\mathsf 1_8$, $\mathsf 1_{16}$, $\otimes$, $i$, $p$, ${}^T$)
+[PASS] LL-S3  every column of the 123 data files data/sl_*.csv, explanations/data/ex_*.csv and test2/data/t2_*.csv is a registered plain-text name or a descriptive word (346 different columns), and every file states its content in a line '# content:'
+[PASS] LL-S4  each of the 8 documents of Revision_SuperLoop and the manuscript contains the complete table of the 239 registered symbols, so that every symbol it uses is defined in the document itself
+[PASS] LL-S5  in the 9979 formulas of the documents, mu, Lambda, Omega, nu, Delta, zeta and varepsilon always carry the suffix LL
+[PASS] LL-S6  in the 11543 formulas of the documents and of the new registry entries, no Latin letter except the index j, D, the imaginary unit i, the index p and the differential d stands without the suffix LL in its scripts, and the Greek letters that are symbols carry the suffix as well
+[PASS] LL-S7  every one of the 5638 occurrences of a letter in bold, sans-serif, calligraphic, blackboard or fraktur type in the formulas of the documents is a registered symbol (77 registered styled letters)
+[PASS] LL-S8  every one of the 3670 occurrences of a name with the suffix _LL, of an algebra element, of a family coefficient or of a pair matrix in the 160 reports and data files (data/sl_*, explanations/data/ex_* and test2/data/t2_*) is a registered plain-text name
+[PASS] LL-S9  the 6736 formulas of the 2 built documents of the folder test2, with the explicit matrices and equations written by the programs inserted, satisfy LL-S5, LL-S6 and LL-S7
 ```
 
 # 7. The complete table of the symbols
@@ -230,7 +232,7 @@ PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenan
 | $\mathsf E_{\rm LL}$ | the real antisymmetric $2\times2$ matrix $i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, with $\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}$; it acts on a Weyl, isospin or species index, as stated at each place | new | `eps2` |
 | $\mathsf 1_2$, $\mathsf 1_4$, $\mathsf 1_8$, $\mathsf 1_{16}$ | the $2\times2$, the $4\times4$, the $8\times8$ and the $16\times16$ unit matrices | new |  |
 
-**10 Test 2, stage D: the superfluid boson singlet state by the method of Cornwall, Jackiw and Tomboulis**
+**10 Test 2, stages D to I: the SFBS by the method of Cornwall, Jackiw and Tomboulis**
 
 | symbol | meaning | origin | plain-text names |
 |-----------|-------------------------|----|----------|
@@ -252,6 +254,12 @@ PROJECT spacetimes, Revision_SuperLoop: checks of the symbols (registry provenan
 | $\mathsf U^{\rm C}_{\rm LL}$ | the matrix of the charge conjugation of the model, $\mathsf U^{\rm C}_{\rm LL}=i\beta_{\rm LL}\alpha^2_{\rm LL}\otimes\mathsf 1_2$: the exchange $\Psi_{{\rm LL},a}\to\sum_b(\mathsf U^{\rm C}_{\rm LL})_{ab}\Psi^\dagger_{{\rm LL},b}$ of particles and holes leaves the kinetic and the mass term unchanged and turns $\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$ into $\sum_\iota\Pi^\iota_{\rm LL}(\Pi^\iota_{\rm LL})^\dagger$ | new | `U_C` |
 | $\Pi'^\iota_{\rm LL}$ | the pseudoscalar pair operators, $\Pi'^\iota_{\rm LL}=\Psi_{\rm LL}^T\mathsf K'^\iota_{\rm LL}\Psi_{\rm LL}$ (both fields at the same point); they enter only the axially symmetric completion of the interaction, an alternative that the document of stage D records and does not adopt | new | `Pi'_iota` |
 | $E^{\rm ex}_{\rm LL}$ | the exact ground energy of the Hamiltonian of one site, the lowest eigenvalue of its $256\times256$ matrix in the Fock space of the 8 modes of the site | new | `E_ex` |
+| $\mathcal U^{\rm CJT}_{\rm LL}(\vec d_{\rm LL})$, $\mathcal U^{\rm po}_{\rm LL}(\vec d_{\rm LL})$ | the effective potential of the SFBS in the method of Cornwall, Jackiw and Tomboulis at two loops: the smallest energy per volume $\mathcal E^{\rm no}_{\rm LL}$ among the quasi-free states with the order parameter $\vec d_{\rm LL}$ (the two-loop effective action, per duration and volume and with the opposite sign, made stationary in everything except the pair amplitude); a function of $\lvert\vec d_{\rm LL}\rvert$ and $\zeta_{\rm LL}$ only; and the same for the pairing-only functional $\mathcal E^{\rm po}_{\rm LL}$ | new | `U_CJT` `U_po` |
+| $\vec b_{\rm LL}$, $b^\iota_{\rm LL}$ | the pair field of a constrained state: the complex isovector in the pairing block $\mathsf P_{\rm LL}=\sum_\iota b^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$ of the mean-field matrix whose ground state has a prescribed order parameter $\vec d_{\rm LL}$. The derivative of the effective potential is $\partial\mathcal U^{\rm CJT}_{\rm LL}/\partial(d^\iota_{\rm LL})^*=(b^\iota_{\rm LL}-d^\iota_{\rm LL})/G_{\rm LL}$, and $\vec b_{\rm LL}=\vec d_{\rm LL}$ at its stationary points. In its normal form $\vec b_{\rm LL}=\vec d^{\rm nf}_{\rm LL}(y^+_{\rm LL},y^-_{\rm LL})$, with the two gaps $y^+_{\rm LL}$, $y^-_{\rm LL}$ of the pair field | new | `bvec` `b_iota` |
+| $M^{{\rm v}\pm}_{\rm LL}$, $E^{{\rm v}\pm}_{\rm LL}$, $s^{{\rm c}\pm}_{\rm LL}$, $f^{{\rm c}\pm}_{\rm LL}$ | the quantities of the two sectors of a trial state whose pair field has the two gaps $y^+_{\rm LL}$ and $y^-_{\rm LL}$ (upper sign: the isospin state with the eigenvalue $-1$ of $\tau^{\rm LL}_1$, which has the gap $y^+_{\rm LL}$; lower sign: the eigenvalue $+1$, with the gap $y^-_{\rm LL}$): the Dirac masses $M^{{\rm v}\pm}_{\rm LL}$, the quasi-particle energies $E^{{\rm v}\pm}_{\rm LL}=(q_{\rm LL}^2+(M^{{\rm v}\pm}_{\rm LL})^2+(y^\pm_{\rm LL})^2)^{1/2}$, and the integrals $s^{{\rm c}\pm}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}M^{{\rm v}\pm}_{\rm LL}/E^{{\rm v}\pm}_{\rm LL}$ and $f^{{\rm c}\pm}_{\rm LL}=\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}y^\pm_{\rm LL}/E^{{\rm v}\pm}_{\rm LL}$ | new | `M_trial_+` `M_trial_-` `M_+` `M_-` `s_+` `s_-` `f_+` `f_-` |
+| $V^{\rm two}_{\rm LL}$ | the two-loop energy per volume of the two-sector trial state at the charge-symmetric chemical potential, $V^{\rm two}_{\rm LL}=\sum_\pm\big[-\Xi_{\rm LL}((M^{{\rm v}\pm}_{\rm LL})^2+(y^\pm_{\rm LL})^2)+2(M^{{\rm v}\pm}_{\rm LL}-m^{\rm b}_{\rm LL})s^{{\rm c}\pm}_{\rm LL}+2y^\pm_{\rm LL}f^{{\rm c}\pm}_{\rm LL}\big]-\tfrac34G_{\rm LL}(s^{{\rm c}+}_{\rm LL}+s^{{\rm c}-}_{\rm LL})^2-\tfrac14G_{\rm LL}(s^{{\rm c}+}_{\rm LL}-s^{{\rm c}-}_{\rm LL})^2-2G_{\rm LL}\big((f^{{\rm c}+}_{\rm LL})^2+(f^{{\rm c}-}_{\rm LL})^2\big)+3G_{\rm LL}(N^\Lambda_{\rm LL})^2$; for equal sectors it is $V^{\rm CJT}_{\rm LL}$ | new | `V_two` |
+| $\mathcal E^{\rm sh}_{\rm LL}$, $\mathcal E^{\rm qu}_{\rm LL}$ | for a fixed vector $\vec b_{\rm LL}\in\mathbb C^3$: the shifted energy $\mathcal E^{\rm sh}_{\rm LL}=\mathcal E^{\rm no}_{\rm LL}+\lvert\vec b_{\rm LL}-\vec d_{\rm LL}\rvert^2/G_{\rm LL}$ of a quasi-free state with the order parameter $\vec d_{\rm LL}$; its stationary states are the constrained states with the pair field $\vec b_{\rm LL}$, and a constrained state that is a minimum of it is a minimum of $\mathcal E^{\rm no}_{\rm LL}$ among the states with its order parameter. And the expectation value per volume, in a quasi-free state, of the quadratic Hamiltonian whose matrix is the mean-field matrix of a given constrained state | new | `E_sh` `E_qu` |
+| $\chi^{\rm n}_{\rm LL}$, $\mathsf J^{\rm sc}_{\rm LL}$ | at a constrained state: the $64\times64$ matrix of the derivatives of the densities $n^A_{\rm LL}$ of the ground state of the mean-field matrix with respect to the coefficients with which the 64 channel matrices $\mathsf T^A_{\rm LL}$ are added to its normal block, the pairing block being kept (the static susceptibility of the normal densities; real, symmetric, without positive eigenvalue); and the matrix of first derivatives $\mathsf J^{\rm sc}_{\rm LL}=-\tfrac18G_{\rm LL}\,\mathrm{diag}(c^A_{\rm LL})\,\chi^{\rm n}_{\rm LL}$ of the self-consistency map of the normal mean field at the fixed pair field (normal block, ground state, densities, normal mean field). If all its eigenvalues are below 1 the constrained state is a strict local minimum of the shifted energy | new | `chi_n` `J_sc` |
 
 **2 The bi-octonions and the super-loop**
 
