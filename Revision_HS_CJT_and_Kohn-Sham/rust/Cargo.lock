@@ -19,3 +19,10 @@ version = "0.1.0"
 dependencies = [
  "sfcore",
 ]
+
+[[package]]
+name = "sfpart3"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+]

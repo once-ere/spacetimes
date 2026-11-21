@@ -38,7 +38,12 @@ and four analytic solutions) is complete: `superfluid.md`, `.tex`, `.pdf`, with 
 that mediate the pairing, the methods HS, KS and CJT and their numerical engine, the recursion of the potential to
 $V^{(2)}_{\rm SF}$, the ground states, the first excited states and the gaps, and the gauge bosons in the superfluid) is
 complete, with the program `sf_part2` (VERDICT: ALL PASS (44 of 44)) and the Python programs `python/sf_part2.py`
-(VERDICT: ALL PASS (23 of 23)) and `python/sf_part2_figures.py`. Parts III and IV follow in the same manuscript.
+(VERDICT: ALL PASS (23 of 23)) and `python/sf_part2_figures.py`.
+
+**Part III of the manuscript** (the effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their potential parts
+(the Mexican hat) and kinetic parts, the vacua and the breaking of the symmetry, and $\mathrm{SFBSv}^X$) is complete, with the
+program `sf_part3` (VERDICT: ALL PASS (31 of 31)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (10 of 10)) and
+`python/sf_part3_figures.py`. Part IV follows in the same manuscript.
 
 # 3. Contents
 
@@ -48,17 +53,17 @@ complete, with the program `sf_part2` (VERDICT: ALL PASS (44 of 44)) and the Pyt
 | `provenance/P0_task_record.md`, `.tex`, `.pdf` | the task (paraphrased), how the author's rules are kept, the record of a false statement and its correction, the decisions of interpretation, the plan, the log of errors and changes | written |
 | `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
 | `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
-| `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I and II written; parts III and IV follow |
+| `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to III written; part IV follows |
 | `superfluid.nb` | the Mathematica notebook of the whole solution, with its provenance | planned |
 | `provenance/` (further documents) | the provenance of the code, the computed values and the checks, and the provenance of the notebook | planned |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?); the registry of the symbols: `symbol_entries.py` (the entries), `write_symbol_registry.py` (reads the seven registries of the project, writes the registry of the solution and the tables of the MASTER provenance) and `check_symbols.py` (the checks of the symbols) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
-| `rust/` | the Rust workspace: the library `sfcore` (bi-quaternions and bi-octonions, Dirac matrices, automatic differentiation to second order, Fock-space operators, eigenvalues of block-tridiagonal matrices, quadrature, reports; for part II the uniform quasi-free states of the three methods, the linear response, the eigenvalues of general complex matrices and the exchange of gauge bosons), the program `sf_part1` (the checks and analytic solutions of part I) and the program `sf_part2` (part II) | parts I and II written |
-| `python/` | `sfcommon.py` (common definitions), `sf_part1.py` and `sf_part2.py` (the second, independent computations of parts I and II), `sf_part1_figures.py` and `sf_part2_figures.py` (the figures) | parts I and II written |
+| `rust/` | the Rust workspace: the library `sfcore` (bi-quaternions and bi-octonions, Dirac matrices, automatic differentiation to second order, Fock-space operators, eigenvalues of block-tridiagonal matrices, quadrature, reports; for part II the uniform quasi-free states of the three methods, the linear response, the eigenvalues of general complex matrices and the exchange of gauge bosons), the program `sf_part1` (the checks and analytic solutions of part I) the program `sf_part2` (part II) and the program `sf_part3` (part III) | parts I to III written |
+| `python/` | `sfcommon.py` (common definitions), `sf_part1.py`, `sf_part2.py`, `sf_part3.py` (the second, independent computations of parts I to III), `sf_part1_figures.py`, `sf_part2_figures.py`, `sf_part3_figures.py` (the figures) | parts I to III written |
 | `wolfram/` | the Wolfram-language parts of the notebook | planned |
-| `data/` | the reports of the checks (`hck_part1_checks.txt`, `hck_part1_checks_python.txt`, `hck_part2_checks.txt`, `hck_part2_checks_python.txt`, `hck_symbol_checks.txt`, `hck_self_contained_checks.txt`) and the data of parts I and II (`part1_*.csv`, `part2_*.csv`) | parts I and II written |
-| `figures/`, `videos/` | the figures (`fig_part1_*.pdf`, `.png`, `fig_part2_*.pdf`, `.png`) and the videos | figures of parts I and II written |
-| `code/scripts/write_part1_fragments.py`, `write_part2_fragments.py` | turn the reports and values of parts I and II into the tables and numbers of the manuscript | written |
+| `data/` | the reports of the checks (`hck_part1_checks.txt`, `hck_part1_checks_python.txt`, `hck_part2_checks.txt`, `hck_part2_checks_python.txt`, `hck_part3_checks.txt`, `hck_part3_checks_python.txt`, `hck_symbol_checks.txt`, `hck_self_contained_checks.txt`) and the data of parts I to III (`part1_*.csv`, `part2_*.csv`, `part3_*.csv`) | parts I to III written |
+| `figures/`, `videos/` | the figures (`fig_part1_*`, `fig_part2_*`, `fig_part3_*`, each `.pdf` and `.png`) and the videos | figures of parts I to III written |
+| `code/scripts/write_part1_fragments.py`, `write_part2_fragments.py`, `write_part3_fragments.py` | turn the reports and values of parts I to III into the tables and numbers of the manuscript | written |
 
 # 4. How to build the documents
 
@@ -74,6 +79,10 @@ python3 code/scripts/write_part1_fragments.py # the tables and numbers of part I
 python3 python/sf_part2.py                    # part II: the Python computation (after sf_part2)
 python3 python/sf_part2_figures.py            # part II: the figures
 python3 code/scripts/write_part2_fragments.py # the tables and numbers of part II for the manuscript
+(cd rust && ./target/release/sf_part3)        # part III: checks and data (after sf_part2)
+python3 python/sf_part3.py                    # part III: the Python computation
+python3 python/sf_part3_figures.py            # part III: the figures
+python3 code/scripts/write_part3_fragments.py # the tables and numbers of part III for the manuscript
 python3 code/scripts/write_symbol_registry.py # the registry of the symbols and its tables
 python3 code/scripts/check_symbols.py         # writes data/hck_symbol_checks.txt
 python3 code/scripts/assemble_docs.py         # docs_src/*.src.md -> the .md documents

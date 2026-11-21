@@ -17,26 +17,26 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
   and the GEE gauge-covariant derivatives; the Lagrangian of the self-interacting spinor field with a mass term and a
   self-interaction, its Euler-Lagrange equations, explicit and in the form needed for numerical solution; and four
   analytic solutions. Every statement that can be checked by a computation is checked by two programs, one in Rust
-  and one in Python, whose reports are printed in Section 12.
+  and one in Python, whose reports are printed in Section 14.
 * **Part II** (Sections 8 to 11): the condensation of the spinor field into a superfluid boson singlet state of spin $S=0$, the gauge
   bosons that mediate the pairing, and the ground state, the first excited states and the gap by the methods of
   Hubbard-Stratonovich (HS), Cornwall-Jackiw-Tomboulis (CJT) and Kohn-Sham (KS), with the recursion of the potential
   of the spinor field; the masses of the gauge bosons in the condensate and their role in the pairing.
-* **Part III**: the three effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their
+* **Part III** (Sections 12 and 13): the three effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their
   kinetic and potential parts, the Mexican hat, the minima, the spontaneous breaking of the symmetry and
   $\mathrm{SFBSv}^{\rm CJT}$, $\mathrm{SFBSv}^{\rm HS}$, $\mathrm{SFBSv}^{\rm KS}$.
 * **Part IV**: the masses of the gauge bosons, the diagonalization of the mass terms, the surviving symmetry group and
   its massless gauge boson; the dynamics, computed with the integrators CVODE and IDA.
 
-**State of this version.** This version contains Parts I and II, complete. Parts III and IV are being computed and
-will be added to this same document; until then their headings above describe what they will contain, and nothing in
-Parts I and II depends on them. Section 12 gives the programs, the commands and the reports of the checks of every
-part, Section 13 the corrections made during the work, Section 14 all symbols, and Section 15 the published works on
+**State of this version.** This version contains Parts I, II and III, complete. Part IV is being computed and will be
+added to this same document; until then its heading above describes what it will contain, and nothing in Parts I to
+III depends on it. Section 14 gives the programs, the commands and the reports of the checks of every
+part, Section 15 the corrections made during the work, Section 16 all symbols, and Section 17 the published works on
 the methods.
 
 **How to read it.** The manuscript is written for a reader who knows quantum mechanics, special relativity and the
 Dirac equation at the level of a first graduate course. It defines every symbol before it is used (all symbols are
-also collected in Section 14), shows every step of every derivation, and states for every result how it was checked.
+also collected in Section 16), shows every step of every derivation, and states for every result how it was checked.
 Nothing is left to another document.
 
 # 1. Conventions, units and notation
@@ -141,7 +141,7 @@ element has the inverse $\bar{\mathbf w}$; it is not a group because the product
 **Moufang loop**. It is a manifold of real dimension 14 (sixteen real coefficients and the two real conditions
 $N_{\rm LL}(\mathbf w)=1$). The unit bi-quaternions, $SL(2,\mathbb C)$, form a subgroup of $\mathbb L_{\rm LL}$.
 
-*Checks A-1 to A-7 (Section 12).* The quaternion rules (2.1), the rules of the eight units ($\mathbf e_p^2=-1$ and
+*Checks A-1 to A-7 (Section 14).* The quaternion rules (2.1), the rules of the eight units ($\mathbf e_p^2=-1$ and
 $\mathbf e_p\mathbf e_{p'}=-\mathbf e_{p'}\mathbf e_p$ for $p\neq p'$, both at least 1), (2.4), $\mathbf x\bar{\mathbf x}=N_{\rm LL}(\mathbf x)\mathbf e_0$,
 alternativity and the Moufang identities are checked exactly (bi-octonions with small integer coefficients, whose
 products double precision computes without rounding) on 200 random triples; of the 343 ordered triples of imaginary
@@ -200,7 +200,7 @@ and the unit matrix $\mathsf L_{\rm LL}$. *Examples* (file `data/part1_m31_examp
 0.8 takes $(1,0,0,0)$ to $(\cosh0.8,\sinh0.8,0,0)$, keeping $N_{\rm LL}=1$; the rotation by $\pi/3$ about $x^3_{\rm LL}$
 takes $(0,1,0,0)$ to $(0,\tfrac12,\tfrac{\sqrt3}2,0)$.
 
-*Checks A-8 to A-11 (Section 12):* the properties of $M_{\rm LL}$; the Hermiticity of the points and (2.7), (2.8) for 200
+*Checks A-8 to A-11 (Section 14):* the properties of $M_{\rm LL}$; the Hermiticity of the points and (2.7), (2.8) for 200
 random points; for 200 random unit bi-quaternions, that (2.9) keeps M31 and the interval, that $\mathsf L_{\rm LL}(\mathbf g)$
 is proper orthochronous, and the homomorphism; and the 27 commutators (2.11).
 
@@ -486,7 +486,7 @@ $[\nabla_p,\nabla_{p'}]$, which is $ig$ times the field strength and is covarian
 **currents** of the spinor field are the isospin current and the fermion-number current
 $$j^{\iota,p}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL},\qquad j^{{\rm F},p}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}.\tag{4.9}$$
 
-*Checks C-1 to C-11 (Section 12).* Every covariance law of this section is checked at 12 random points with random
+*Checks C-1 to C-11 (Section 14).* Every covariance law of this section is checked at 12 random points with random
 smooth gauge fields, gauge transformations and test spinors, all derivatives exact (automatic differentiation to
 second order in the Rust program; finite differences of eighth order in the Python program): the covariance of (4.4)
 under $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ (C-1); the reality of $W'^\iota_{{\rm SF},p}$ (C-2); the field strengths and the
@@ -570,7 +570,7 @@ $$\mathcal H_{\rm SF}=\Psi^\dagger_{\rm LL}\Big(-i\sum_j\alpha^j_{\rm LL}\nabla_
 $\mathcal H=i\Psi^\dagger\partial_0\Psi-\mathcal L$ removes the time derivative; the gauge terms come from
 $\bar\Psi\gamma^p(-g^{\rm v}\mathsf W_p-g^{\rm F}B_p)\Psi$ with $\bar\Psi\gamma^0=\Psi^\dagger$ and $\bar\Psi\gamma^j=\Psi^\dagger\alpha^j$.
 
-*Checks E-1 to E-7 (Section 12), exact operator algebra on the 256 states of one point.* For each term of
+*Checks E-1 to E-7 (Section 14), exact operator algebra on the 256 states of one point.* For each term of
 (5.9) at one point (mass, constant gauge potentials of all four components, and the three contact terms of (5.4) with
 the normal order of the empty state of the point), the commutator $[\Psi_e,\,\cdot\,]$ equals the corresponding term of
 (5.8), for all eight components $e$: the field equation (5.5) is the Heisenberg equation of (5.9), with the operator
@@ -1498,12 +1498,214 @@ Section 10 is unchanged. The gauge bosons acquire the masses of Table 11.1 by th
   by itself only for $g^{\rm v}_{\rm LL}>{{GENM:p2_thouless7}}$, and with all bosons together the net exchange weakens the condensate at
   the couplings of the project.
 
-# 12. Provenance: programs, commands, reports, data and figures
+# 12. The effective Lagrangians of the superfluid boson singlet state (Part III)
+
+Part III builds, for each method $X$, the effective Lagrangian $\mathcal L^X=\mathcal L^X_{\rm kinetic}+\mathcal L^X_{\rm potential}$ of the field
+of the superfluid boson singlet state (decision D7 of the task record: the potential part is minus the effective
+potential, the energy per volume of a uniform state as a function of the field; the kinetic part contains the
+derivatives to second order, in the form that GEE requires). All results are for the potential $V^{(2)}_{\rm SF}$ of
+Section 10.3.
+
+## 12.1 The field and the effective potential
+
+**The field.** The superfluid boson singlet state is described by the complex isospin vector $\vec\Phi^X_{\rm SF}$ of the
+amplitudes of the pair self-energy of a uniform state,
+$$\mathsf P_{\rm SF}=\sum_{\iota=1}^3\Phi^{X,\iota}_{\rm SF}(\mathsf K^\iota_{\rm LL})^\dagger,\tag{12.1}$$
+where $\mathsf P_{\rm SF}$ is the pair self-energy (9.4), (9.5) that the functional of method $X$ assigns to the state. In HS
+it is the value of the auxiliary pair field $\vec\Phi^{\rm HS}_{\rm SF}$, in CJT the anomalous self-energy, in KS the Kohn-Sham
+pair potential; in each method it equals $-\tfrac12g^{X,{\rm P}}_{\rm SF}\langle\Pi^\iota_{\rm LL}\rangle$ (Section 9.4), and for the
+ground state $\vec\Phi^X_{\rm SF}=D^X_{\rm SF}\vec e_3$. Under GEE the field is a Lorentz scalar, an isospin vector (by (3.16)), and
+it takes the phase $e^{2i\theta^{\rm F}_{\rm LL}}$ under $U(1)^{\rm F}_{\rm LL}$ (fermion number 2).
+
+**The effective potential.** $\mathcal V^X_{\rm SF}(\vec\Phi)$ is the smallest energy per volume of method $X$ among the uniform
+quasi-free states whose field (12.1) is $\vec\Phi$ (the constrained effective potential). It is computed as follows.
+Apply a fixed pair self-energy $\mathsf P$ (an applied field), make the normal self-energy self-consistent,
+$\mathsf N_{\rm SF}=\mathsf N(\delta\mathsf C^{\rm n})$, and take the ground state $\mathsf R$ of the BdG matrix with $(\mathsf N_{\rm SF},\mathsf P)$; its field
+$\vec\Phi(\mathsf R)$ and its energy $\mathcal E^X_{\rm SF}[\mathsf R]$ give one point $(\vec\Phi(\mathsf R),\mathcal E^X_{\rm SF}[\mathsf R])$ of
+$\mathcal V^X_{\rm SF}$. Proof that it is the constrained minimum: the states of smallest energy with a given field are the
+stationary points of $\mathcal E^X_{\rm SF}-2\,\mathrm{Re}\,\lambda\,\mathrm{tr}(\mathsf K^3\mathsf C^{\rm p\,T})$ with a Lagrange multiplier
+$\lambda$; by (6.3) they are the ground states of the BdG matrix with the normal self-energy of the state and the pair
+self-energy $\mathsf P_{\rm SF}(\mathsf R)+2\lambda(\mathsf K^3)^\dagger$, that is, with an applied pair self-energy; conversely every applied
+field defines a $\lambda$. Along the applied fields, the derivative of the energy vanishes where the applied field equals
+the state's own pair self-energy, so the stationary points of $\mathcal V^X_{\rm SF}$ are the self-consistent states of
+Part II and its minimum is the ground state (*checks P3-1, P3-2*: the applied field $\Phi^X_{0,{\rm SF}}=\lvert D^X_{\rm SF}\rvert$
+returns the field $\Phi^X_{0,{\rm SF}}$ and the ground-state energy of Table 10.2 to $10^{-13}$, and the slope there is below
+$4\times10^{-8}$ of $\Phi^X_{0,{\rm SF}}$ times the curvature, the accuracy of the five-point derivative).
+
+**Symmetry.** Since $\mathcal E^X_{\rm SF}$ is GEE-invariant, $\mathcal V^X_{\rm SF}$ depends on $\vec\Phi$ only through the two invariants
+$\lvert\vec\Phi\rvert^2$ and $\lvert\vec\Phi\cdot\vec\Phi\rvert^2$ (the latter equals $\lvert\vec\Phi\rvert^4$ for the polar fields
+$\vec\Phi=e^{i\vartheta}\lvert\vec\Phi\rvert\vec n$ with a real unit vector $\vec n$, and is smaller for the others). *Check P3-3:* a phase
+of the applied field and the isospin direction 1 instead of 3 give the same energy to $10^{-10}$ (relative).
+
+**The Mexican hat.** Figure 8 shows $\mathcal V^X_{\rm SF}$ along the polar fields $\Phi^{X,3}_{\rm SF}$ (real) for the five methods.
+It vanishes at $\vec\Phi=0$ (the normal vacuum), is negative next to it (*check P3-5*: the normal vacuum is a maximum,
+because $\lambda^{\rm P}_{\rm SF}>1$, Section 9.4) and has its minimum at $\lvert\vec\Phi\rvert=\Phi^X_{0,{\rm SF}}$. Rotated about the
+origin of the complex plane of $\Phi^3$ (the phase is a symmetry), the curve is the Mexican hat. The potential $V^{(2)}_{\rm SF}$
+already produces it in all three methods, so the recursion of Section 10 needs no further step for this purpose.
+Along the polar states the curve is fitted well by the Landau form
+$$\mathcal V^X_{\rm SF}\approx a^X_{\rm SF}\lvert\vec\Phi\rvert^2+b^X_{\rm SF}\lvert\vec\Phi\rvert^4+c^X_{\rm SF}\lvert\vec\Phi\rvert^6+u^X_{\rm SF}\big(\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2\big)\tag{12.2}$$
+(least squares on $0\le\lvert\vec\Phi\rvert\le1.4\Phi^X_{0,{\rm SF}}$; $a^X_{\rm SF}<0$ is the instability of the origin). The last term
+vanishes for polar fields and measures the cost of non-unitarity: for $\vec\Phi=\Phi_0\vec e_3+i\nu\vec e_1$ (with $\Phi_0$ short for
+$\Phi^X_{0,{\rm SF}}$) it is $4u^X_{\rm SF}\Phi_0^2\nu^2$, while the first three terms give $\nu^2$ times the derivative of the polar
+curve, which vanishes at the minimum; hence $u^X_{\rm SF}=\mathcal V''_{\rm NU}/(8\Phi_0^2)$, with the curvature
+$\mathcal V''_{\rm NU}=\partial^2\mathcal V^X_{\rm SF}/\partial\nu^2$ computed from states with the applied field
+$\Phi_0(\mathsf K^3)^\dagger+i\nu(\mathsf K^1)^\dagger$ (two values of $\nu$ and the Richardson extrapolation, corrected for the small change of the
+amplitude). $u^X_{\rm SF}>0$ in every method (*check P3-4*): the polar minimum is a minimum also in the non-unitary
+directions.
+
+{{GEN:p3_table_potential}}
+
+**Table 12.1.** The effective potentials: the modulus of the field in the vacuum, the depth of the minimum (equal to the
+ground-state energy of Table 10.2), the Landau coefficients (12.2), and the largest deviation of the fit from the
+computed curve relative to the depth. Data: `data/part3_effpot_*.csv`, `data/part3_values.csv`.
+
+![](figures/fig_part3_q1_potential.png){width=100%}
+
+**Figure 8.** Left: the effective potentials $\mathcal V^X_{\rm SF}$ along the polar fields, with their minima (dots). Right: the
+Mexican hat of CJT over the complex plane of $\Phi^3$. Data: `data/part3_effpot_*.csv`.
+
+## 12.2 The kinetic part
+
+**The form.** The field $\vec\Phi$ has the covariant derivative of an isospin vector of fermion number 2 (Section 4.3),
+$$\nabla_p\vec\Phi=\partial_p\vec\Phi+2ig^{\rm F}_{\rm LL}B_{{\rm SF},p}\vec\Phi-g^{\rm v}_{\rm LL}\vec W_{{\rm SF},p}\times\vec\Phi,\tag{12.3}$$
+with $\vec W_{{\rm SF},p}=(W^1_{{\rm SF},p},W^2_{{\rm SF},p},W^3_{{\rm SF},p})$. The terms with two derivatives that are invariant under GEE
+(Lorentz scalars, isospin scalars, phase-invariant) are built from the two invariants
+$(\nabla_p\vec\Phi)^\dagger\cdot\nabla_{p'}\vec\Phi$ and $(\vec\Phi^\dagger\cdot\nabla_p\vec\Phi)^*(\vec\Phi^\dagger\cdot\nabla_{p'}\vec\Phi)/\lvert\vec\Phi\rvert^2$,
+contracted with $\eta^{\rm LL}_{pp'}$:
+$$\mathcal L^X_{\rm kinetic}=\sum_p\eta^{\rm LL}_{pp}\Big[Z^X_{\rm SF}(\nabla_p\vec\Phi)^\dagger\cdot\nabla_p\vec\Phi+Y^X_{\rm SF}\frac{\lvert\vec\Phi^\dagger\cdot\nabla_p\vec\Phi\rvert^2}{\lvert\vec\Phi\rvert^2}\Big]\tag{12.4}$$
+(a term $(\vec\Phi\cdot\nabla\vec\Phi)$ without the complex conjugate is not phase-invariant, and further terms with
+$\lvert\vec\Phi\cdot\vec\Phi\rvert$ contribute to the stiffnesses only for non-unitary fields).
+
+**The coefficients from the time components.** On the vacuum $\vec\Phi=\Phi_0\vec e_3$, a rotation of the phase,
+$\vec\Phi=\Phi_0e^{i\vartheta_0}\vec e_3$, gives $(\partial\vec\Phi)^\dagger\cdot\partial\vec\Phi=\lvert\vec\Phi^\dagger\cdot\partial\vec\Phi\rvert^2/\lvert\vec\Phi\rvert^2=\Phi_0^2(\partial\vartheta_0)^2$,
+so (12.4) becomes $\tfrac12(f^{X,{\rm F}}_{\rm SF})^2(\partial\vartheta_0)^2$ with $(f^{X,{\rm F}}_{\rm SF})^2=2(Z^X_{\rm SF}+Y^X_{\rm SF})\Phi_0^2$; an isospin rotation
+about the first axis, $\vec\Phi=\Phi_0(\cos\vartheta_1\vec e_3+\sin\vartheta_1\vec e_2)$, gives $\vec\Phi^\dagger\cdot\partial\vec\Phi=0$ and
+$(f^{X,{\rm I}}_{\rm SF})^2=2Z^X_{\rm SF}\Phi_0^2$. A chemical potential $\mu^{\rm F}_{\rm SF}$ of the fermion number enters as the time
+component of the covariant derivative, $\partial_0\vartheta_0\to\partial_0\vartheta_0-2\mu^{\rm F}_{\rm SF}$ (the field has fermion number 2),
+and lowers the energy by $\tfrac12(f^{X,{\rm F}}_{\rm SF})^2(2\mu^{\rm F}_{\rm SF})^2$; comparing with $\tfrac12\chi^{\rm FF}_{\rm SF}(\mu^{\rm F}_{\rm SF})^2$ (Section
+11.1) gives $(f^{X,{\rm F}}_{\rm SF})^2=\chi^{\rm FF}_{\rm SF}/4$; likewise $\mu^1_{\rm SF}$ turns the vector about the first axis,
+$\partial_0\vartheta_1\to\partial_0\vartheta_1-\mu^1_{\rm SF}$, and $(f^{X,{\rm I}}_{\rm SF})^2=\chi^{11}_{\rm SF}$. Hence
+$$Z^X_{\rm SF}=\frac{\chi^{11}_{\rm SF}}{2\Phi_0^2},\qquad Z^X_{\rm SF}+Y^X_{\rm SF}=\frac{\chi^{\rm FF}_{\rm SF}}{8\Phi_0^2}.\tag{12.5}$$
+The susceptibilities are recomputed by the program of Part III (with the method of Section 11.1). The unbroken $T^3$ has
+no stiffness, $\chi^{33}_{\rm SF}=0$ (*check P3-6*), as (12.4) requires: $\vec e_3\times\vec e_3=0$.
+
+**The space components.** A Lorentz-invariant theory has the same coefficients for the space components. The program
+also computes the space components directly, from states with a uniform twist: the constant potential
+$Q\,\Psi^\dagger(\alpha^3_{\rm LL}\otimes\mathsf t)\Psi$ ($Q=0.01,0.02$, Richardson extrapolation) shifts the momenta of the charges of the
+isospin matrix $\mathsf t$ and twists the field along the third space axis (the phase by $2Qx^3$ for $\mathsf t=\mathsf 1_2$; the
+direction by the angle $Qx^3$ about the first axis for $\mathsf t=\tfrac12\tau_1$); the energy of the twisted superfluid minus that of
+the twisted normal vacuum gives $(\tilde f^{X,{\rm F}}_{\rm SF})^2$ and $(\tilde f^{X,{\rm I}}_{\rm SF})^2$. The six directions are exact
+for these states at second order in $Q$ (*check P3-7*). Table 12.2 shows that the space components differ from the time
+components (by up to a factor 2.3 for the phase in CJT), and that the twist of the unbroken $T^3$, which costs nothing in a
+gauge-invariant theory, costs $(\tilde f^{X,3}_{\rm SF})^2\neq0$. Both effects come from the momentum cutoff: a uniform space
+component shifts the momenta inside the fixed sphere $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$, which is neither gauge- nor
+Lorentz-invariant, while a time component does not shift them (Section 11.1). The effective Lagrangian (12.4) therefore
+takes the Lorentz-covariant form that GEE requires, with the coefficients (12.5) of the time components; the space
+components measure the error of the regularization.
+
+{{GEN:p3_table_kinetic}}
+
+**Table 12.2.** The coefficients of the kinetic part (12.4), (12.5), and the squared decay constants from the time
+components ($f$) and from the space components ($\tilde f$; the last column: the unbroken $T^3$). Data:
+`data/part3_sfbsv.csv`.
+
+In HS $(0,0)$, $Y^{\rm HS}_{\rm SF}=0$: with only the pairing interaction in the pair channels, the phase and the isospin
+directions are alike (the degeneracy of the massive modes of Section 10.5 has the same cause).
+
+## 12.3 The three effective Lagrangians
+
+With (12.4) and the effective potential, and with the Yang-Mills part (5.3) of the gauge fields, the effective
+Lagrangian of method $X$ is
+$$\mathcal L^X=\mathcal L^X_{\rm kinetic}+\mathcal L^X_{\rm potential}+\mathcal L^{\rm YM}_{\rm SF},\qquad\mathcal L^X_{\rm potential}=-\mathcal V^X_{\rm SF}(\vec\Phi),\tag{12.6}$$
+for $X$ = CJT, HS, KS, with the numbers of Tables 12.1 and 12.2 ($\mathcal V^X_{\rm SF}$ is the computed function; (12.2) is its
+Landau approximation). KS and CJT have the same potential along the polar fields (the theorem of Section 9.2); they differ
+in the non-unitary directions ($u^X_{\rm SF}$) and in $Z$ and $Y$, through the isovector response, where KS has no exchange
+kernel. $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$ and $\mathcal L^{\rm KS}$ are Lagrangians of a
+complex isospin vector of fermion number 2 coupled to the gauge fields of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, with a
+Mexican-hat potential: the structure of the Higgs sector of Section 2.2, with an isospin vector in place of the doublet.
+
+# 13. The minima, the breaking of the symmetry and $\mathrm{SFBSv}^X$
+
+## 13.1 The vacua and the surviving symmetry
+
+**The minima.** By Section 12.1 the minima of $\mathcal V^X_{\rm SF}$ are the polar fields of modulus $\Phi_0$:
+$$\mathcal M^{X,{\rm vac}}_{\rm SF}=\{\Phi_0e^{i\vartheta}\vec n:\ \vartheta\ \text{real},\ \vec n\in\mathbb R^3,\ \lvert\vec n\rvert=1\},\tag{13.1}$$
+where $(\vartheta,\vec n)$ and $(\vartheta+\pi,-\vec n)$ give the same field; the manifold is $(S^1\times S^2)/\mathbb Z_2$, of
+dimension 3. GEE acts on it transitively: the phase by $U(1)^{\rm F}_{\rm LL}$ ($\vartheta\to\vartheta+2\theta^{\rm F}_{\rm LL}$) and $\vec n$ by the
+rotations $\mathsf R^{\rm v}_{\rm LL}$ of $SU(2)_{\rm v}$; the Lorentz group does not act (the field is a scalar). Every vacuum is
+therefore equivalent to $\vec\Phi=\Phi_0\vec e_3$, chosen from now on.
+
+**The stabilizer.** The elements of GEE that leave $\Phi_0\vec e_3$ unchanged form the group
+$$H^{\rm vac}_{\rm SF}=SL(2,\mathbb C)\times O(2),\qquad O(2)=\{e^{i\alpha T^3_{\rm LL}}\}\rtimes\{\mathsf 1,\ \mathsf r\},\tag{13.2}$$
+where $e^{i\alpha T^3_{\rm LL}}$ are the isospin rotations about $\vec e_3$ (they fix $\vec e_3$) and $\mathsf r$ is the rotation by $\pi$ about
+$\vec e_1$ ($\vec e_3\to-\vec e_3$) combined with the phase $\theta^{\rm F}_{\rm LL}=\pi/2$ ($e^{2i\theta^{\rm F}}=-1$), which together leave
+$\Phi_0\vec e_3$ unchanged. Proof that there are no others: an element $(\mathsf U_{\rm LL},\theta^{\rm F}_{\rm LL})$ of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$
+maps $\Phi_0\vec e_3$ to $e^{2i\theta^{\rm F}}\Phi_0\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec e_3$; equality requires
+$\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\vec e_3=\pm\vec e_3$ with $e^{2i\theta^{\rm F}}=\pm1$
+correspondingly, which are the rotations about $\vec e_3$ (with $e^{2i\theta^{\rm F}}=1$) and those composed with $\mathsf r$. The
+identity component is $U(1)^{\rm Q}_{\rm SF}=\{e^{i\alpha T^3_{\rm LL}}\}$, generated by the charge $Q=T^3_{\rm LL}$ (the isospin $T^3$
+of the spinor charges: $\pm\tfrac12$). **The symmetry breaking** is
+$$\mathrm{GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\ \longrightarrow\ SL(2,\mathbb C)\times O(2),\tag{13.3}$$
+with three broken generators ($T^1_{\rm LL}$, $T^2_{\rm LL}$, $F_{\rm LL}$), the three Goldstone modes of Section 10.5; the Lorentz group is
+unbroken because the condensate has spin zero.
+
+## 13.2 $\mathrm{SFBSv}^X$: the expansion about the vacuum
+
+Write the field near the vacuum as
+$$\vec\Phi=e^{i\vartheta^X_{{\rm SF},0}}\,\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\vartheta})\Big[\Big(\Phi_0+\frac{h^X_{\rm SF}}{\sqrt{2(Z^X_{\rm SF}+Y^X_{\rm SF})}}\Big)\vec e_3+\frac{i\big(\nu^X_{{\rm SF},1}\vec e_1+\nu^X_{{\rm SF},2}\vec e_2\big)}{\sqrt{2Z^X_{\rm SF}}}\Big],\tag{13.4}$$
+with the amplitude (Higgs) field $h^X_{\rm SF}$, the three Goldstone fields $\vartheta^X_{{\rm SF},0}$ (the phase) and
+$\vartheta^X_{{\rm SF},1}$, $\vartheta^X_{{\rm SF},2}$ (the angles of the isospin rotation $\mathsf R^{\rm v}_{\rm LL}$ of
+$\mathsf U_\vartheta=\exp(-i\vartheta^X_{{\rm SF},1}T^1_{\rm LL}-i\vartheta^X_{{\rm SF},2}T^2_{\rm LL})$, about $\vec e_1$ and $\vec e_2$ to first
+order), and the two
+non-unitary fields $\nu^X_{{\rm SF},1}$, $\nu^X_{{\rm SF},2}$: six real fields for the six real components of $\vec\Phi$. Inserting (13.4)
+into (12.6) without gauge fields and keeping the terms of second order in the fields gives $\mathrm{SFBSv}^X$:
+$$\begin{aligned}\mathcal L^X\approx{}&\sum_p\eta^{\rm LL}_{pp}\Big[\tfrac12(\partial_ph^X_{\rm SF})^2+\tfrac12(f^{X,{\rm F}}_{\rm SF})^2(\partial_p\vartheta^X_{{\rm SF},0})^2+\tfrac12(f^{X,{\rm I}}_{\rm SF})^2\sum_{k=1,2}(\partial_p\vartheta^X_{{\rm SF},k})^2+\tfrac12\sum_{k=1,2}(\partial_p\nu^X_{{\rm SF},k})^2\Big]\\&-\tfrac12(M^{X,{\rm H}}_{\rm SF})^2(h^X_{\rm SF})^2-\tfrac12(M^{X,{\rm NU}}_{\rm SF})^2\sum_{k=1,2}(\nu^X_{{\rm SF},k})^2-\mathcal V^X_{\rm SF}(\Phi_0),\end{aligned}\tag{13.5}$$
+with $k$ a local index and the masses
+$$(M^{X,{\rm H}}_{\rm SF})^2=\frac{\mathcal V''_{\rm amp}}{2(Z^X_{\rm SF}+Y^X_{\rm SF})},\qquad(M^{X,{\rm NU}}_{\rm SF})^2=\frac{\mathcal V''_{\rm NU}}{2Z^X_{\rm SF}}=\frac{4u^X_{\rm SF}\Phi_0^2}{Z^X_{\rm SF}}\tag{13.6}$$
+($\mathcal V''_{\rm amp}$ is the curvature of the polar curve at its minimum, computed from five states around it). The
+normalizations in (13.4) make the kinetic terms of $h$ and $\nu$ canonical: the amplitude direction has the coefficient
+$Z+Y$ of (12.4) (both invariants contribute), the non-unitary directions only $Z$ ($\vec\Phi^\dagger\cdot\partial\vec\Phi=0$ for them).
+The Goldstone fields are massless: $\mathcal V^X_{\rm SF}$ does not depend on them.
+
+{{GEN:p3_table_sfbsv}}
+
+**Table 13.1.** The masses of $\mathrm{SFBSv}^X$ from the effective Lagrangian (13.6), compared with the collective modes
+of the linear response (Section 10.5), and the masses of the gauge bosons that (12.4) gives at the couplings of the
+project, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ (Section 13.3). Data: `data/part3_sfbsv.csv`.
+
+The effective Lagrangian, which keeps the derivatives to second order, gives the masses of the amplitude and of the
+non-unitary modes 7 to 17 per cent above the exact linear response (Table 13.1 and Figure 9). The difference is
+expected: the modes lie at 0.8 to 0.9 of the threshold $2E^{X,{\rm gap}}_{\rm SF}$, where the response depends strongly on the
+frequency and the expansion to second order in the derivatives (in $\omega$) is not accurate; the ordering of the modes
+(in CJT and KS the amplitude mode below the non-unitary doublet; in HS $(0,1)$ and $(0,0)$ the two degenerate) is the
+same in both.
+
+![](figures/fig_part3_q2_masses.png){width=100%}
+
+**Figure 9.** Left: the masses of the amplitude and of the non-unitary modes from the effective Lagrangians (13.6) and
+from the linear response of Section 10.5. Right: the squared decay constants of the Goldstone fields from the time
+components and from the space components, and the spurious stiffness of the unbroken $T^3$ from the space components.
+Data: `data/part3_sfbsv.csv`.
+
+## 13.3 The gauge fields in $\mathrm{SFBSv}^X$
+
+With the gauge fields, the Goldstone fields can be removed by a gauge transformation (the unitary gauge
+$\vartheta^X_{{\rm SF},0}=\vartheta^X_{{\rm SF},1}=\vartheta^X_{{\rm SF},2}=0$). In the vacuum, (12.3) gives
+$\nabla_p(\Phi_0\vec e_3)=\Phi_0[2ig^{\rm F}_{\rm LL}B_{{\rm SF},p}\vec e_3+g^{\rm v}_{\rm LL}(W^1_{{\rm SF},p}\vec e_2-W^2_{{\rm SF},p}\vec e_1)]$ (from
+$\vec e_1\times\vec e_3=-\vec e_2$, $\vec e_2\times\vec e_3=\vec e_1$, $\vec e_3\times\vec e_3=0$), and (12.4) becomes the mass term
+$$\sum_p\eta^{\rm LL}_{pp}\Big[Z^X_{\rm SF}\Phi_0^2(g^{\rm v}_{\rm LL})^2\big((W^1_{{\rm SF},p})^2+(W^2_{{\rm SF},p})^2\big)+4(Z^X_{\rm SF}+Y^X_{\rm SF})\Phi_0^2(g^{\rm F}_{\rm LL})^2(B_{{\rm SF},p})^2\Big],\tag{13.7}$$
+that is $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}(2Z^X_{\rm SF})^{1/2}\Phi_0=g^{\rm v}_{\rm LL}(\chi^{11}_{\rm SF})^{1/2}$, $M^X_{Z,{\rm SF}}=g^{\rm F}_{\rm LL}(8(Z^X_{\rm SF}+Y^X_{\rm SF}))^{1/2}\Phi_0=g^{\rm F}_{\rm LL}(\chi^{\rm FF}_{\rm SF})^{1/2}$,
+and no mass for $W^3_{\rm SF}$: the masses (11.1) of Part II follow from the effective Lagrangian, and the three Goldstone
+fields have become the longitudinal parts of $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (the Higgs mechanism; the reading of "give mass to
+the Goldstone bosons" of decision D8). The mass matrix, its diagonalization and the proof that the surviving gauge
+boson is massless are the subject of Part IV.
+
+# 14. Provenance: programs, commands, reports, data and figures
 
 The programs of each part, how to build and run them, the reports of their checks (printed completely), and the
 checksums of their data files and figures.
 
-## 12.1 Part I: the programs and how to run them
+## 14.1 Part I: the programs and how to run them
 
 All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT spacetimes.
 
@@ -1534,19 +1736,19 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       python3 code/scripts/assemble_docs.py docs_src/superfluid.src.md
       bash code/scripts/build_docs.sh superfluid.md
 
-## 12.2 Part I: the report of the Rust program
+## 14.2 Part I: the report of the Rust program
 
 {{GEN:p1_checks_rust}}
 
 {{GEN:p1_verdict_rust}}
 
-## 12.3 Part I: the report of the Python program
+## 14.3 Part I: the report of the Python program
 
 {{GEN:p1_checks_python}}
 
 {{GEN:p1_verdict_python}}
 
-## 12.4 Part I: data files and figures (SHA-256 checksums)
+## 14.4 Part I: data files and figures (SHA-256 checksums)
 
 * `data/hck_part1_checks.txt` (report of `sf_part1`):\
   `{{SHA256:data/hck_part1_checks.txt}}`
@@ -1577,7 +1779,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 * `figures/fig_part1_s4_kink.pdf` (Figure 4):\
   `{{SHA256:figures/fig_part1_s4_kink.pdf}}`
 
-## 12.5 Part II: the programs and how to run them
+## 14.5 Part II: the programs and how to run them
 
 * **Rust.** The program `sf_part2` (crate `rust/sfpart2`: the modules `channels` (Section 8), `engine` (Section 9.3 and
   the checks of the linear algebra), `recursion` (Sections 9.4, 10.1 to 10.4), `excited` (Section 10.5), `gauge` and
@@ -1591,7 +1793,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       cargo build --release
       ./target/release/sf_part2
 
-  Output: `data/hck_part2_checks.txt` (the report) and the data files listed in Section 12.8. The program ends with the
+  Output: `data/hck_part2_checks.txt` (the report) and the data files listed in Section 14.8. The program ends with the
   exit status 0 exactly when every check passes; it runs about nine minutes on two processor cores.
 * **Python.** `python/sf_part2.py` is an independent second computation with numpy and LAPACK (its own grid from
   `numpy.polynomial.legendre`, its own energy functional, response, exchange kernels and iterations); it reads the
@@ -1601,25 +1803,25 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       python3 python/sf_part2_figures.py
 
 * **Documents.** `code/scripts/write_part2_fragments.py` turns the reports and the data files into the tables and the
-  numbers of Part II; the manuscript is then assembled and built as in Section 12.1:
+  numbers of Part II; the manuscript is then assembled and built as in Section 14.1:
 
       python3 code/scripts/write_part2_fragments.py
       python3 code/scripts/assemble_docs.py docs_src/superfluid.src.md
       bash code/scripts/build_docs.sh superfluid.md
 
-## 12.6 Part II: the report of the Rust program
+## 14.6 Part II: the report of the Rust program
 
 {{GEN:p2_checks_rust}}
 
 {{GEN:p2_verdict_rust}}
 
-## 12.7 Part II: the report of the Python program
+## 14.7 Part II: the report of the Python program
 
 {{GEN:p2_checks_python}}
 
 {{GEN:p2_verdict_python}}
 
-## 12.8 Part II: data files and figures (SHA-256 checksums)
+## 14.8 Part II: data files and figures (SHA-256 checksums)
 
 * `data/hck_part2_checks.txt` (report of `sf_part2`):\
   `{{SHA256:data/hck_part2_checks.txt}}`
@@ -1658,9 +1860,67 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 * `figures/fig_part2_p3_gauge.pdf` (Figure 7):\
   `{{SHA256:figures/fig_part2_p3_gauge.pdf}}`
 
-# 13. Corrections made during the work
+## 14.9 Part III: the programs and how to run them
 
-## 13.1 Part I
+* **Rust.** The program `sf_part3` (crate `rust/sfpart3`: the modules `effpot` (Section 12.1: the states with a fixed
+  pair field, the curves, the curvatures, the symmetries, the Landau fit) and `kinetic` (Section 12.2: the
+  susceptibilities and the twisted states)) uses the library `sfcore`, with two functions added for this part in the
+  module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix). It reads
+  `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
+
+      cd rust
+      cargo build --release
+      ./target/release/sf_part3
+
+  Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 14.12; about two minutes.
+* **Python.** `python/sf_part3.py` recomputes, with the engine of `python/sf_part2.py`, the minima, the curvatures of the
+  effective potentials, the susceptibilities and the stiffness of the twisted states of HS $(1,1)$ and CJT, and compares
+  them with the values of the Rust program; `python/sf_part3_figures.py` draws Figures 8 and 9:
+
+      python3 python/sf_part3.py
+      python3 python/sf_part3_figures.py
+
+* **Documents.** `code/scripts/write_part3_fragments.py` writes the tables and the numbers of Part III:
+
+      python3 code/scripts/write_part3_fragments.py
+
+## 14.10 Part III: the report of the Rust program
+
+{{GEN:p3_checks_rust}}
+
+{{GEN:p3_verdict_rust}}
+
+## 14.11 Part III: the report of the Python program
+
+{{GEN:p3_checks_python}}
+
+{{GEN:p3_verdict_python}}
+
+## 14.12 Part III: data files and figures (SHA-256 checksums)
+
+* `data/hck_part3_checks.txt` (report of `sf_part3`):\
+  `{{SHA256:data/hck_part3_checks.txt}}`
+* `data/hck_part3_checks_python.txt` (report of `python/sf_part3.py`):\
+  `{{SHA256:data/hck_part3_checks_python.txt}}`
+* `data/part3_values.csv` (the numbers of Part III):\
+  `{{SHA256:data/part3_values.csv}}`
+* `data/part3_sfbsv.csv` (Tables 12.2 and 13.1, Figure 9):\
+  `{{SHA256:data/part3_sfbsv.csv}}`
+* `data/part3_effpot_HS_1_1.csv`, `data/part3_effpot_HS_0_1.csv`, `data/part3_effpot_HS_0_0.csv`, `data/part3_effpot_KS.csv`,
+  `data/part3_effpot_CJT.csv` (Figure 8):\
+  `{{SHA256:data/part3_effpot_HS_1_1.csv}}`\
+  `{{SHA256:data/part3_effpot_HS_0_1.csv}}`\
+  `{{SHA256:data/part3_effpot_HS_0_0.csv}}`\
+  `{{SHA256:data/part3_effpot_KS.csv}}`\
+  `{{SHA256:data/part3_effpot_CJT.csv}}`
+* `figures/fig_part3_q1_potential.pdf` (Figure 8):\
+  `{{SHA256:figures/fig_part3_q1_potential.pdf}}`
+* `figures/fig_part3_q2_masses.pdf` (Figure 9):\
+  `{{SHA256:figures/fig_part3_q2_masses.pdf}}`
+
+# 15. Corrections made during the work
+
+## 15.1 Part I
 
 Each of the following was found before part I was committed; each is recorded so that the history of the results is
 complete.
@@ -1682,7 +1942,7 @@ complete.
    (sympy); it had not finished after 11 minutes of computing time and was stopped. It was replaced by differences of
    eighth order, which also makes the Python method independent of the Rust method.
 
-## 13.2 Part II
+## 15.2 Part II
 
 Each of the following was found before part II was committed.
 
@@ -1707,7 +1967,16 @@ Each of the following was found before part II was committed.
 6. A run of the Python program was once started while an earlier run was still writing to the same output file; the
    interleaved output was discarded, and the program was run again alone.
 
-# 14. The symbols
+## 15.3 Part III
+
+1. *Check P3-7* first required the stiffness of the twisted state on six directions and on 72 directions to agree to
+   $10^{-8}$ and failed with $4\times10^{-7}$. The six directions are exact for the term of second order in the twist;
+   the terms of fourth order, where they are not, are removed by the Richardson extrapolation only up to terms of
+   relative order $Q^4\approx10^{-8}$ times their coefficients; the tolerance is now $2\times10^{-6}$.
+2. The first version of the figure program wrote the calligraphic letter without braces, which the formula renderer of
+   matplotlib does not accept; corrected before any figure was used.
+
+# 16. The symbols
 
 Every symbol of this manuscript, except the local variables listed at the end of this section, is an entry of the
 registry of the solution, which is printed here completely. The column "origin" states where the symbol comes from:
@@ -1751,7 +2020,15 @@ of angular momentum 0 and 1 of a correlation matrix); $\mathfrak a$, $\mathfrak 
 $\mathfrak s$, $\mathfrak A$, $\mathfrak F$ (the quantities of the angular and radial integrals of (11.3)); $\mathfrak m$, $\mathfrak D$ (the
 two parameters of the Kohn-Sham potentials, Section 11.5).
 
-# 15. Published works on the methods used
+**Local variables of Part III.** $\Phi_0$ (short for $\Phi^X_{0,{\rm SF}}$); $\mathsf R$ (short for the generalized density
+$\mathsf R_{\rm SF}$ of a state, Section 12.1); $\lambda$ (a Lagrange multiplier, Section 12.1); $\nu$ (the coefficient of the
+non-unitary direction in Section 12.1); $\mathcal V''_{\rm amp}$, $\mathcal V''_{\rm NU}$ (the curvatures of
+$\mathcal V^X_{\rm SF}$ along the amplitude and along the non-unitary direction); $Q$ (the strength of a uniform twist);
+$\mathsf t$ (the isospin matrix of a twist); $\vartheta$, $\vec n$ (the phase and the direction of a vacuum, (13.1));
+$\mathsf r$ (the element of the stabilizer that reverses $\vec e_3$); $\alpha$ (an angle of rotation about $\vec e_3$);
+$\mathsf U_\vartheta$ (the isospin matrix of the Goldstone angles in (13.4)); $k$ (an index, 1 or 2, in (13.5)).
+
+# 17. Published works on the methods used
 
 * A. C. Hindmarsh, P. N. Brown, K. E. Grant, S. L. Lee, R. Serban, D. E. Shumaker and C. S. Woodward, SUNDIALS: Suite
   of nonlinear and differential/algebraic equation solvers, ACM Transactions on Mathematical Software 31, 363 (2005);
@@ -1809,3 +2086,8 @@ two parameters of the Kohn-Sham potentials, Section 11.5).
 * J. G. F. Francis, The QR transformation: a unitary analogue to the LR transformation, The Computer Journal 4, 265
   (1961); J. H. Wilkinson, The Algebraic Eigenvalue Problem (Clarendon Press, Oxford, 1965) -- the shifted QR algorithm
   for the eigenvalues of general matrices (Section 10.5).
+
+* L. O'Raifeartaigh, A. Wipf and H. Yoneyama, The constraint effective potential, Nuclear Physics B 271, 653 (1986) --
+  the effective potential at a fixed value of the field (Section 12.1).
+* V. L. Ginzburg and L. D. Landau, On the theory of superconductivity, Zhurnal Eksperimental'noi i Teoreticheskoi Fiziki
+  20, 1064 (1950) -- the expansion of the energy in powers of the order parameter and its gradients (Sections 12 and 13).

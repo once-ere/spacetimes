@@ -394,3 +394,57 @@ pub fn dirac_mass(m: f64, nself: &CMat) -> f64 {
 pub fn cr(x: f64) -> C64 {
     c(x, 0.0)
 }
+
+impl Model {
+    /// the state of a fixed pair self-energy P (an applied pair field) with the normal self-energy made self-consistent:
+    /// N = N(drho) of the method; returns the normal self-energy, the local matrices and the energy of the method's
+    /// functional (without any external term).  Along the applied fields this is the constrained effective potential:
+    /// the state minimizes the energy among the states with its own pair amplitude (Part III of superfluid.md).
+    pub fn fixed_pair_state(&self, pself: &CMat, n0: &CMat, mix: f64, tol: f64, maxit: usize) -> (CMat, CMat, CMat, f64, usize, f64) {
+        let mut nself = n0.clone();
+        let mut it = 0;
+        loop {
+            let (cn, cp, _) = self.states(&nself, pself);
+            let (drho, kap, ek) = self.local(&cn, &cp);
+            let (ei, n2, _) = self.interaction(&drho, &kap);
+            let res = n2.sub(&nself).max_abs();
+            if res < tol || it >= maxit {
+                return (n2, drho, kap, ek + ei, it, res);
+            }
+            nself = n2.scale_r(mix).add(&nself.scale_r(1.0 - mix));
+            nself = nself.add(&nself.dagger()).scale_r(0.5);
+            it += 1;
+        }
+    }
+}
+
+/// the charge matrices of the four gauge fields: T^1, T^2, T^3 (isospin, 1_4 (x) tau/2) and F (fermion number, 1_8)
+pub fn gauge_charges() -> Vec<CMat> {
+    use crate::dirac::{i8, sigma};
+    vec![i8(&sigma(1)).scale_r(0.5), i8(&sigma(2)).scale_r(0.5), i8(&sigma(3)).scale_r(0.5), CMat::identity(8)]
+}
+
+/// the static susceptibility chi_ab = d<Psi^dag q_a Psi>/d mu_b of the self-consistent state reached from (n0, p0), by
+/// central differences of the induced charges at mu_b = +-h, +-2h with the Richardson extrapolation (the same method
+/// as the program sf_part2); returns the column b
+pub fn susceptibility_column(model: &mut Model, n0: &CMat, p0: &CMat, b: usize, h: f64) -> [f64; 4] {
+    let qs = gauge_charges();
+    let mut dn = [[0.0; 4]; 2];
+    for (k, step) in [h, 2.0 * h].iter().enumerate() {
+        let mut r = vec![];
+        for sgn in [1.0, -1.0] {
+            let x = qs[b].scale_r(-sgn * step);
+            model.ext_n = Some(x.clone());
+            r.push(model.solve(&n0.add(&x), p0, 0.6, 1e-14, 40000).drho);
+        }
+        model.ext_n = None;
+        for a in 0..4 {
+            dn[k][a] = (qs[a].mul(&r[0]).trace().re - qs[a].mul(&r[1]).trace().re) / (2.0 * step);
+        }
+    }
+    let mut out = [0.0; 4];
+    for a in 0..4 {
+        out[a] = (4.0 * dn[0][a] - dn[1][a]) / 3.0;
+    }
+    out
+}

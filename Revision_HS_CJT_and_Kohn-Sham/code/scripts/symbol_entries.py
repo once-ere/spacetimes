@@ -471,8 +471,26 @@ ENTRIES = [
      "energy of one quasi-particle) and the Dirac mass of its ground state", "new"),
     # ------------------------------------------------------------------ group 10
     (G10, "$\\vec\\Phi^X_{\\rm SF}$, $\\Phi^{X,\\iota}_{\\rm SF}$", "Phi_X", "the field of the superfluid boson singlet "
-     "state in method $X$, a complex isospin vector of fermion number 2 and spin 0: the auxiliary field (HS), the order "
-     "parameter $\\vec d_{\\rm LL}$ (CJT), the Kohn-Sham pair potential (KS)", "new"),
+     "state in method $X$, a complex isospin vector of fermion number 2 and spin 0: the amplitudes of the pair self-energy "
+     "of a uniform state, $\\mathsf P_{\\rm SF}=\\sum_\\iota\\Phi^{X,\\iota}_{\\rm SF}(\\mathsf K^\\iota_{\\rm LL})^\\dagger$ (the value of the "
+     "auxiliary pair field in HS, the anomalous self-energy in CJT, the Kohn-Sham pair potential in KS)", "new"),
+    (G10, "$\\Phi^X_{0,{\\rm SF}}$", "Phi0", "the modulus of the field $\\vec\\Phi^X_{\\rm SF}$ in the vacuum of method $X$ "
+     "(the minimum of $\\mathcal V^X_{\\rm SF}$)", "new"),
+    (G10, "$Z^X_{\\rm SF}$, $Y^X_{\\rm SF}$", "Z_X Y_X", "the two coefficients of the kinetic part of the effective "
+     "Lagrangian of method $X$: of $(\\nabla\\vec\\Phi)^\\dagger\\cdot\\nabla\\vec\\Phi$ and of "
+     "$\\lvert\\vec\\Phi^\\dagger\\cdot\\nabla\\vec\\Phi\\rvert^2/\\lvert\\vec\\Phi\\rvert^2$ (each contracted over the coordinates "
+     "with $\\eta^{\\rm LL}_{pp}$)", "new"),
+    (G10, "$f^{X,{\\rm F}}_{\\rm SF}$, $f^{X,{\\rm I}}_{\\rm SF}$; $\\tilde f^{X,{\\rm F}}_{\\rm SF}$, $\\tilde f^{X,{\\rm I}}_{\\rm SF}$, $\\tilde f^{X,3}_{\\rm SF}$",
+     "fF fI fF_s fI_s f3_s", "the decay constants of the Goldstone field of the phase (F) and of the isospin rotations (I) "
+     "in method $X$, from the time components (the static susceptibilities); the same from the space components (states "
+     "with a uniform twist), and the space-component stiffness of the unbroken generator $T^3_{\\rm LL}$, which vanishes in "
+     "a gauge-invariant regularization", "new"),
+    (G10, "$\\nu^X_{{\\rm SF},1}$, $\\nu^X_{{\\rm SF},2}$", "nu_1 nu_2", "the two non-unitary fields of "
+     "$\\mathrm{SFBSv}^X$ (the imaginary parts of the components 1 and 2 of the field relative to its phase)", "new"),
+    (G10, "$a^X_{\\rm SF}$, $b^X_{\\rm SF}$, $c^X_{\\rm SF}$, $u^X_{\\rm SF}$", "landau_a landau_b landau_c u_X",
+     "the coefficients of the Landau form $a\\lvert\\vec\\Phi\\rvert^2+b\\lvert\\vec\\Phi\\rvert^4+c\\lvert\\vec\\Phi\\rvert^6"
+     "+u(\\lvert\\vec\\Phi\\rvert^4-\\lvert\\vec\\Phi\\cdot\\vec\\Phi\\rvert^2)$ of $\\mathcal V^X_{\\rm SF}$ (the first three fitted "
+     "along the polar states, $u$ from the curvature along the non-unitary directions)", "new"),
     (G10, "$\\mathcal L^{\\rm CJT}$, $\\mathcal L^{\\rm HS}$, $\\mathcal L^{\\rm KS}$; $\\mathcal L^X_{\\rm kinetic}$, $\\mathcal L^X_{\\rm potential}$",
      "L_CJT L_HS L_KS L_kin L_pot", "the effective Lagrangian of the field $\\vec\\Phi^X_{\\rm SF}$ in method $X$, and its "
      "kinetic part (the terms with derivatives, to second order) and potential part (the author's names)", "author"),

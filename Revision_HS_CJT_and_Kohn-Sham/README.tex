@@ -261,8 +261,17 @@ the first excited states and the gaps, and the gauge bosons in the
 superfluid) is complete, with the program \texttt{sf\_part2} (VERDICT:
 ALL PASS (44 of 44)) and the Python programs
 \texttt{python/sf\_part2.py} (VERDICT: ALL PASS (23 of 23)) and
-\texttt{python/sf\_part2\_figures.py}. Parts III and IV follow in the
-same manuscript.
+\texttt{python/sf\_part2\_figures.py}.
+
+\textbf{Part III of the manuscript} (the effective Lagrangians
+\(\mathcal L^{\rm CJT}\), \(\mathcal L^{\rm HS}\),
+\(\mathcal L^{\rm KS}\), their potential parts (the Mexican hat) and
+kinetic parts, the vacua and the breaking of the symmetry, and
+\(\mathrm{SFBSv}^X\)) is complete, with the program \texttt{sf\_part3}
+(VERDICT: ALL PASS (31 of 31)) and the Python programs
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (10 of 10)) and
+\texttt{python/sf\_part3\_figures.py}. Part IV follows in the same
+manuscript.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -301,7 +310,7 @@ grows with the solution \\
 solution, written by \texttt{code/scripts/write\_symbol\_registry.py}
 from \texttt{code/scripts/symbol\_entries.py} & written \\
 \texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript of
-the solution & parts I and II written; parts III and IV follow \\
+the solution & parts I to III written; part IV follows \\
 \texttt{superfluid.nb} & the Mathematica notebook of the whole solution,
 with its provenance & planned \\
 \texttt{provenance/} (further documents) & the provenance of the code,
@@ -329,12 +338,13 @@ block-tridiagonal matrices, quadrature, reports; for part II the uniform
 quasi-free states of the three methods, the linear response, the
 eigenvalues of general complex matrices and the exchange of gauge
 bosons), the program \texttt{sf\_part1} (the checks and analytic
-solutions of part I) and the program \texttt{sf\_part2} (part II) &
-parts I and II written \\
+solutions of part I) the program \texttt{sf\_part2} (part II) and the
+program \texttt{sf\_part3} (part III) & parts I to III written \\
 \texttt{python/} & \texttt{sfcommon.py} (common definitions),
-\texttt{sf\_part1.py} and \texttt{sf\_part2.py} (the second, independent
-computations of parts I and II), \texttt{sf\_part1\_figures.py} and
-\texttt{sf\_part2\_figures.py} (the figures) & parts I and II written \\
+\texttt{sf\_part1.py}, \texttt{sf\_part2.py}, \texttt{sf\_part3.py} (the
+second, independent computations of parts I to III),
+\texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
+\texttt{sf\_part3\_figures.py} (the figures) & parts I to III written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook &
 planned \\
 \texttt{data/} & the reports of the checks
@@ -342,17 +352,20 @@ planned \\
 \texttt{hck\_part1\_checks\_python.txt},
 \texttt{hck\_part2\_checks.txt},
 \texttt{hck\_part2\_checks\_python.txt},
+\texttt{hck\_part3\_checks.txt},
+\texttt{hck\_part3\_checks\_python.txt},
 \texttt{hck\_symbol\_checks.txt},
-\texttt{hck\_self\_contained\_checks.txt}) and the data of parts I and
-II (\texttt{part1\_*.csv}, \texttt{part2\_*.csv}) & parts I and II
-written \\
+\texttt{hck\_self\_contained\_checks.txt}) and the data of parts I to
+III (\texttt{part1\_*.csv}, \texttt{part2\_*.csv},
+\texttt{part3\_*.csv}) & parts I to III written \\
 \texttt{figures/}, \texttt{videos/} & the figures
-(\texttt{fig\_part1\_*.pdf}, \texttt{.png}, \texttt{fig\_part2\_*.pdf},
-\texttt{.png}) and the videos & figures of parts I and II written \\
+(\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
+each \texttt{.pdf} and \texttt{.png}) and the videos & figures of parts
+I to III written \\
 \texttt{code/scripts/write\_part1\_fragments.py},
-\texttt{write\_part2\_fragments.py} & turn the reports and values of
-parts I and II into the tables and numbers of the manuscript &
-written \\
+\texttt{write\_part2\_fragments.py}, \texttt{write\_part3\_fragments.py}
+& turn the reports and values of parts I to III into the tables and
+numbers of the manuscript & written \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
@@ -373,6 +386,10 @@ folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 \ExtensionTok{python3}\NormalTok{ python/sf\_part2.py                    }\CommentTok{\# part II: the Python computation (after sf\_part2)}
 \ExtensionTok{python3}\NormalTok{ python/sf\_part2\_figures.py            }\CommentTok{\# part II: the figures}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_part2\_fragments.py }\CommentTok{\# the tables and numbers of part II for the manuscript}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sf\_part3}\KeywordTok{)}        \CommentTok{\# part III: checks and data (after sf\_part2)}
+\ExtensionTok{python3}\NormalTok{ python/sf\_part3.py                    }\CommentTok{\# part III: the Python computation}
+\ExtensionTok{python3}\NormalTok{ python/sf\_part3\_figures.py            }\CommentTok{\# part III: the figures}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_part3\_fragments.py }\CommentTok{\# the tables and numbers of part III for the manuscript}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
