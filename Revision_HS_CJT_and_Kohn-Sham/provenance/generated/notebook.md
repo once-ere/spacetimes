@@ -3,10 +3,10 @@
 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 <!-- END nb_version -->
 <!-- BEGIN nb_seconds -->
-321
+264
 <!-- END nb_seconds -->
 <!-- BEGIN nb_counts -->
-55 input cells, 55 of them evaluated; 15 output cells; 172 printed lines
+56 input cells, 56 of them evaluated; 16 output cells; 172 printed lines
 <!-- END nb_counts -->
 <!-- BEGIN nb_messages -->
 0

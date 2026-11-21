@@ -59,9 +59,9 @@ integration.
 The files of the notebook, each with its SHA-256 checksum:
 
 * `superfluid.nb`: the notebook, evaluated in the front end of Wolfram (inputs, printed checks, the table of all checks);\
-  `56db2c1a85f438d81ade9767e96d7c51ba285667ef1e577954b50501ffd3ff0b`
+  `85f097b94f4a8fdb7ffaca6a7042ce395c6950bab34168b202be3e3c0f07c52d`
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
-  `bf4d4b858b700a631f94e3a94357aae82c7efbf440d41b20b7daa08475814353`
+  `bfb903f3a1ce6e29ca0376add51a3d91c7eb07d55fb462268cfd85e5c6b12327`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
   `6dc8d7f4677e49db294036068f14c0028413d83537e5b02f958c86493701d48e`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
@@ -88,7 +88,7 @@ The files of the notebook, each with its SHA-256 checksum:
   `5f3fe6ec541cd7e8a13c08517a63ba8b10deff9a5b37eded75aec6bbef2ebfac`
 * `wolfram/source/part3_ginzburg.source.wl`: the source of the third section of Part III (Section III.G, the width of
   the critical region and the superfluid as a Higgs sector);\
-  `782d42b8cc588b1206bd5ec307ebf09c0757e9265ca4b3b6c400993edfde9930`
+  `a7ca5e15e0856c0fbd80f6aa10beb567725b7df21cf987926226cb52c42562af`
 * `wolfram/source/data_part3_ginzburg.wl`: the results of the modules `ginzburg` and `higgs` of the Rust program (the
   coefficients of the five methods, the two regularizations and the numbers of the Higgs sector with the row of the
   Standard Model), included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
@@ -111,9 +111,9 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/tools/make_dryrun.py`: writes the code of all input cells into one file for a test run by `wolframscript` without the front end;\
   `f3ac70882c2c356d331bc5808683b7b56e535e9694ee39868c2b7cf3c2357f2f`
 * `data/hck_notebook_log.txt`: the log of the evaluation: the version of Wolfram, the counts of the cells, every message and printed line, one line per check;\
-  `0f347b4fd1f3b35ceaf441ee5767f6566a9aace3e05fc35beb5a1b86dadc3e11`
+  `73097acaae5ad3b3462e6b7f0f642842931531efa0b166c29b0cfe24fdd49c9c`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
-  `76f4078d88a0064293b91d0b1b94874d3e73f1dd1cb26e3fbd41deeefa6e5bb7`
+  `ec64def2ddd9341369637d7d2c7c86c1910bf27301f96d325a8fd3a39626f711`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
   `5f526c1531834298dc5e900f4c81d404d192f02eb15a030b99baba4533b1aa93`
 
@@ -141,7 +141,7 @@ by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 257 cells (four of them closed cells of data), 950 formulas in the
+reader cannot read as a warning. This version: 261 cells (four of them closed cells of data), 967 formulas in the
 texts, 0 warnings (the builder's own count, printed when it ran).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
@@ -162,13 +162,13 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (244 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute and
-Section III.G about 80 seconds); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (246 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute and
+Section III.G about 83 seconds, by the times that the dry run prints after its checks); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 321 seconds; 55 input cells, 55 of them evaluated; 15 output cells; 172 printed lines; **0 messages** (no error and no
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 264 seconds; 56 input cells, 56 of them evaluated; 16 output cells; 172 printed lines; **0 messages** (no error and no
 warning of the Wolfram language); verdict: **ALL PASS (154 of 154), 0 messages**.
 
 # 6. The checks and their counterparts
@@ -538,6 +538,17 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     Ginzburg numbers joined a number to a text, and the kernel issued the message `StringJoin::string` (which the
     evaluated notebook must not have); the number is now turned into a text with `ToString`. The second dry run passed
     all checks without a message.
+
+15. *A bound that no program had computed (E15).* The text of Section III.G.8 said that the masses of the gauge bosons
+    are "at most about a fifth of $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor is above 0.97)". In KS and CJT the larger
+    of the masses of $W$ and $Z$ is $0.213$ of $M^{X,{\rm H}}_{\rm SF}/2$, and the sentence named only the factor of the
+    phase space of the decays into $W^+W^-$ and $ZZ$, not that of the sum over the polarizations. It was found on 21
+    November 2026, when the numbers typed in the drafts of the article for Physical Review D were compared with the data;
+    the same sentence stood in Section 14.6 of the manuscript and in the addendum A2 of `provenance/P4_remarks.md`, which
+    were corrected first. Section III.G.8 now explains the corrections at tree level, with the factor as a formula, and
+    a new input cell (`gzVV`) computes for every method the larger ratio of the masses, the smaller factor and how much
+    the masses of the effective Lagrangian exceed those of the linear response. The cell makes no check: its numbers come
+    from the values of the Rust program that the checks WP3-H1 to WP3-H3 have already compared with the notebook's own.
 
 # 10. What follows
 

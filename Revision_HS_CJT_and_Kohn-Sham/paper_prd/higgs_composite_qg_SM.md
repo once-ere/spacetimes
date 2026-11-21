@@ -1799,7 +1799,7 @@ SHA-256 checksums at the time this document was built:
 | `data/hck_part3_checks_python.txt`                 | `bc3f8083ce9754b74438953b32a8d23ff49b61eff389afa7255a535c7d669376` |
 | `data/hck_part4_checks.txt`                        | `ea3168c17f2cc59e11d300e29063c490107130fce49d33af00c26854b1a6945a` |
 | `data/hck_part4_checks_python.txt`                 | `2893d02232a255f2f2e9cd12e27d6a1e12bb1ed9d40b565db773629b97a3e498` |
-| `data/hck_notebook_log.txt`                        | `0f347b4fd1f3b35ceaf441ee5767f6566a9aace3e05fc35beb5a1b86dadc3e11` |
+| `data/hck_notebook_log.txt`                        | `73097acaae5ad3b3462e6b7f0f642842931531efa0b166c29b0cfe24fdd49c9c` |
 | `rust/sfpart3/src/main.rs`                         | `01dab0d8220149598c8608e631c810b977e81067fad0f276ea07f0586d977878` |
 | `rust/sfpart3/src/ginzburg.rs`                     | `55fe360697251a1cdeba86429126a97e07e87228218853537156b6ab5840b5c6` |
 | `rust/sfpart3/src/higgs.rs`                        | `d7a0a0a7c60ddbcdbd51bdedecd9f01fe7c29e99f5343b3ac4dea89fa8c1b431` |
@@ -1808,8 +1808,8 @@ SHA-256 checksums at the time this document was built:
 | `python/sf_part2.py`                               | `e4c97995616bea969f948643a35d5f86bc8b1698af6955b20185ffa299b44012` |
 | `python/sf_part3.py`                               | `f3e5a3a2b4d47576833c7d70710441ea80e7416efa151e6e3151bd167acb1a4e` |
 | `python/sf_part3_figures.py`                       | `441570237f2f74dcb4bcd328180c9f104cfa70a1de0587154655a0d181d660f8` |
-| `wolfram/source/part3_ginzburg.source.wl`          | `782d42b8cc588b1206bd5ec307ebf09c0757e9265ca4b3b6c400993edfde9930` |
-| `superfluid.nb`                                    | `56db2c1a85f438d81ade9767e96d7c51ba285667ef1e577954b50501ffd3ff0b` |
+| `wolfram/source/part3_ginzburg.source.wl`          | `a7ca5e15e0856c0fbd80f6aa10beb567725b7df21cf987926226cb52c42562af` |
+| `superfluid.nb`                                    | `85f097b94f4a8fdb7ffaca6a7042ce395c6950bab34168b202be3e3c0f07c52d` |
 | `figures/fig_part3_q1_potential.pdf`               | `d76e0840c72af9ee73ca97111560d3800af8f0b1760a0539b3ccd9b194d0cbb0` |
 | `figures/fig_part3_q4_thermal.pdf`                 | `c7bac6536492b220f77d5c0652b13a4a6fc65f2c63b2f3a77adfc5c2e371080d` |
 | `figures/fig_part4_r1_massmatrix.pdf`              | `caa47847ba676acb6b11a824be1101413d542f7d5fdaa76b76f9ef12b91385c6` |

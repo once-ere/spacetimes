@@ -305,7 +305,7 @@ Grid[Prepend[Table[Module[{g = gzGi[t], r = gzResults[t], ct3 = gzRust[t, "cT3"]
 (*\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}.*)
 
 (* ::Text:: *)
-(*With the gauge fields the Goldstone fields are the longitudinal parts of the massive gauge bosons (the equivalence theorem of J. M. Cornwall, D. N. Levin and G. Tiktopoulos 1974 and of M. S. Chanowitz and M. K. Gaillard 1985), whose masses are at most about a fifth of $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor is above 0.97). For the Standard Model with $f=v$ the same formula is the known width $3m_H^3/(32\pi v^2)$ of a heavy Higgs boson. **A remark on the width (what it means and why it matters).** The formula uses the effective Lagrangian at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is not accurate (its mass of the amplitude mode differs from the linear response by 7 to 17 per cent), so it estimates the order of magnitude only. It matters because the conclusion drawn from it, that the amplitude mode is a broad resonance and not a narrow particle, needs only the order of magnitude: the width is 2 to 4 times the mass. The next cell derives the two couplings by exact differentiation of the kinetic part (symbolic, with real symbols), and compares them with the closed forms and the Rust values.*)
+(*With the gauge fields the Goldstone fields are the longitudinal parts of the massive gauge bosons (the equivalence theorem of J. M. Cornwall, D. N. Levin and G. Tiktopoulos 1974 and of M. S. Chanowitz and M. K. Gaillard 1985), so that the same formula gives the width into $W^+W^-$ and $ZZ$, up to corrections that the cells after the table of the Higgs sector compute. For the Standard Model with $f=v$ the same formula is the known width $3m_H^3/(32\pi v^2)$ of a heavy Higgs boson. **A remark on the width (what it means and why it matters).** The formula uses the effective Lagrangian at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is not accurate (its mass of the amplitude mode differs from the linear response by 7.0 to 17 per cent, as the cell after the table of the Higgs sector computes), so it estimates the order of magnitude only. It matters because the conclusion drawn from it, that the amplitude mode is a broad resonance and not a narrow particle, needs only the order of magnitude: the width is 2 to 4 times the mass. The next cell derives the two couplings by exact differentiation of the kinetic part (symbolic, with real symbols), and compares them with the closed forms and the Rust values.*)
 
 (* ::Input:: *)
 (* the couplings of the amplitude field to the Goldstone fields by exact differentiation of the kinetic part along a line
@@ -349,6 +349,28 @@ Grid[Prepend[Append[Table[Module[{hg = gzHiggs[t]}, {thName[t], NumberForm[hg["M
        NumberForm[hg["MNUMH"], 4], NumberForm[hg["fFfI"], 4], NumberForm[hg["MWMZ"], 4], NumberForm[hg["width"], 3], NumberForm[hg["MHGeV"], 4]}], {t, thTags}],
     {"Standard Model", NumberForm[125.20/246.22, 4], NumberForm[125.20^2/(2 246.22^2), 4], NumberForm[125.20/80.3692, 4], "--", "none", "--", NumberForm[80.3692/91.1880, 4], NumberForm[0.0037/125.20, 2], "125.20"}],
    {"method", "M_H/v", "lambda", "M_H/M_W", "M_H/2E_gap", "M_NU/M_H", "f_F/f_I", "M_W/M_Z", "Gamma/M_H", "M_H (GeV) at v = 246.22 GeV"}], Frame -> All, Alignment -> Right, BaseStyle -> {FontSize -> 8}]
+
+(* ::Text:: *)
+(***The decay into pairs of gauge bosons (a remark: what it means and why it matters).** The width formula above is the width into $W^+W^-$ and $ZZ$ up to corrections of the relative order of $(M^X_{W,{\rm SF}}/M^{X,{\rm H}}_{\rm SF})^2$ and $(M^X_{Z,{\rm SF}}/M^{X,{\rm H}}_{\rm SF})^2$: the equivalence theorem holds at energies large against the masses of the bosons, and the decay at rest gives each boson the energy $M^{X,{\rm H}}_{\rm SF}/2$. The kinetic part couples $h$ to the gauge bosons as the Higgs boson of the Standard Model is coupled, with $f^{X,{\rm F}}_{\rm SF}$ in place of $v$, and at tree level the width into a pair of $W$ bosons is that of the two corresponding Goldstone channels times the factor*)
+
+(* ::DisplayFormula:: *)
+(*\Big(1-\frac{4(M^X_{W,{\rm SF}})^2}{(M^{X,{\rm H}}_{\rm SF})^2}\Big)^{1/2}\Big(1-\frac{4(M^X_{W,{\rm SF}})^2}{(M^{X,{\rm H}}_{\rm SF})^2}+\frac{12(M^X_{W,{\rm SF}})^4}{(M^{X,{\rm H}}_{\rm SF})^4}\Big)*)
+
+(* ::Text:: *)
+(*(the phase space, and the sum over the polarizations of the two bosons, whose transverse parts the Goldstone fields do not have), and the same with $M^X_{Z,{\rm SF}}$ for $ZZ$. The next cell computes, for every method, the larger of the ratios $M^X_{W,{\rm SF}}/M^{X,{\rm H}}_{\rm SF}$ and $M^X_{Z,{\rm SF}}/M^{X,{\rm H}}_{\rm SF}$, the smaller of the two factors, and how much the masses of the effective Lagrangian exceed those of the linear response. The ratio is at most 0.106 (KS and CJT) and the factor at least 0.934, so the width formula overestimates the width into $W^+W^-$ and $ZZ$ by less than 7 per cent. It matters little: that is far less than the uncertainty of the effective Lagrangian at the energy of the mode (the remark above), and the conclusion, a broad resonance, does not depend on it.*)
+
+(* ::Input:: *)
+(* the decay into a pair of W or Z bosons: the larger of the ratios M_W/M_H and M_Z/M_H (gzVV["ratio"]), the tree-level
+   factor (1 - 4 r)^(1/2) (1 - 4 r + 12 r^2) with r the square of that ratio (gzVV["factor"]; the smaller of the factors
+   of W and Z), and the masses of the effective Lagrangian (the curvature of the potential and the kinetic part) against
+   the linear response, in per cent, for the amplitude mode (gzVV["effH"]) and for the non-unitary modes (gzVV["effNU"]);
+   the masses M_W = g^v f_I and M_Z = 2 g^F f_F are those of gzHiggs *)
+gzVV[t_] := Module[{hg = gzHiggs[t], mw, mz, r},
+   mw = gvLL hg["fI"]; mz = 2 gfLL hg["fF"]; r = (Max[mw, mz]/hg["MH"])^2;
+   <|"ratio" -> Sqrt[r], "factor" -> Sqrt[1 - 4 r] (1 - 4 r + 12 r^2),
+     "effH" -> 100 (rustPart3["p3_MH_" <> t]/rustPart3["p3_MH_RPA_" <> t] - 1), "effNU" -> 100 (rustPart3["p3_MNU_" <> t]/rustPart3["p3_MNU_RPA_" <> t] - 1)|>];
+Grid[Prepend[Table[Module[{q = gzVV[t]}, {thName[t], NumberForm[q["ratio"], 4], NumberForm[q["factor"], 4], NumberForm[q["effH"], 3], NumberForm[q["effNU"], 3]}], {t, thTags}],
+   {"method", "max(M_W, M_Z)/M_H", "tree-level factor", "M_H: L^X over response - 1 (per cent)", "M_NU: L^X over response - 1 (per cent)"}], Frame -> All, Alignment -> Right, BaseStyle -> {FontSize -> 8}]
 
 (* ::Text:: *)
 (***The answer for each method**, judged by seven properties of the Higgs sector of the Standard Model.*)

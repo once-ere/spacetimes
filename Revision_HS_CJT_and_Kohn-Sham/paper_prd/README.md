@@ -134,8 +134,7 @@ drafts, which were not committed (their causes are recorded in the task record o
    mass of $W$ or $Z$, and the tree-level factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$, $\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, of
    the decays into $W^+W^-$ and $ZZ$ (the drafts named only the phase-space factor $(1-4\zeta_V)^{1/2}$). The drafts took the
    sentence from the documents `superfluid.md` (Section 14.6), `provenance/P4_remarks.md` (addendum A2) and
-   `superfluid.nb` (Section III.G.8). It has since been corrected in `superfluid.md` and `provenance/P4_remarks.md`
-   (entries E20 and E23 of the task record); `superfluid.nb` contains it in this version of the folder;
+   `superfluid.nb` (Section III.G.8), where it has since been corrected (entries E20, E23 and E24 of the task record);
 2. the ratio of the mass of the Higgs boson to the scale of the breaking in the Standard Model was given as 0.509 in the
    abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract now
    gives 0.5085;
@@ -178,6 +177,6 @@ templates, of the build program and of the files to upload, at the time this REA
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
   `b2784b0a4ea1b9fb393896852432e980bac241ad8bdf46425d0efab79d8c24f9`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\
-  `835caabcda11783f63a2d9636e16f60a4904ec270f7fc970f67a134d92cd4430`
+  `c286ca02a4caeff0cbb6a875b56e3173b1f20e3cb674f28aa3efa49fd7185bed`
 * `paper_prd/submission/cover_letter.pdf`:\
   `710d7eb10a3cc991367fdfb781a3727181a20bba217302f5f07090937db5156f`

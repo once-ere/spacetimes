@@ -1,9 +1,9 @@
 evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/in/superfluid.nb
 saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/out/superfluid.nb
-seconds:  321
-kernel:   {0, 14234}   last In line: 408
-counts:   <|"inputs" -> 55, "evaluated" -> 55, "outputs" -> 15, "prints" -> 172, "messages" -> 0|>
+seconds:  264
+kernel:   {0, 16383}   last In line: 410
+counts:   <|"inputs" -> 56, "evaluated" -> 56, "outputs" -> 16, "prints" -> 172, "messages" -> 0|>
 --- messages (0) ---
 --- printed lines (172) ---
 during In[6]:=  the common objects are defined; m_LL = 1/5
@@ -182,7 +182,7 @@ during In[402]:=  PASS WP3-H3 KS  deviation 2.253e-13 (tolerance 1.000e-9): KS: 
 during In[402]:=  PASS WP3-H1 CJT  CJT: the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.603476 < 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M_H / 2 E_gap = 0.82354]   [the same check: Rust P3-H1 CJT, Python YP3-H1 CJT]
 during In[402]:=  PASS WP3-H3 CJT  deviation 3.085e-13 (tolerance 1.000e-9): CJT: the numbers of the Higgs sector (v_SF = 0.13531998, M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest relative difference)   [the same check: Rust P3-H3 CJT, Python YP3-H3 CJT]
 during In[402]:=  PASS WP3-H4  deviation 2.183e-16 (tolerance 1.000e-10): the Standard Model row: M_H/v = 0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference)   [the same check: Rust P3-H4, Python YP3-H4]
-during In[407]:=  checks of this notebook: 154; passed: 154; failed: {}
+during In[409]:=  checks of this notebook: 154; passed: 154; failed: {}
 --- input cells (label, beginning) ---
 In[1]:=  (* the register of the checks of this notebook: one association per check, in the order of
 In[6]:=  (* the mass of the spinor field, m_LL, in units of the cutoff Lambda_LL = 1 *) mLL = 1/5; 
@@ -237,8 +237,9 @@ In[393]:=  Module[{mo = thModel["CJT"], tc = thTc["CJT"], nn, n0, xs = {}, ys = 
 In[394]:=  gzGi[t_] := Module[{r = gzResults[t], b = If[t === "CJT", gzResults["CJT"]["b"], gzRust[t,
 In[397]:=  (* the couplings of the amplitude field to the Goldstone fields by exact differentiation o
 In[402]:=  (* the numbers of the Higgs sector of every method from the values of Parts II and III (th
-In[406]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
-In[407]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
+In[406]:=  (* the decay into a pair of W or Z bosons: the larger of the ratios M_W/M_H and M_Z/M_H (g
+In[408]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
+In[409]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
 --- tests ---
 <|"id" -> "WSM-1", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "Standard Model with +i g: the eigenvalues of the mass matrix are 0, M_W^2 (twice), M_Z^2, and the photon sin(thetaW) W^3 + cos(thetaW) B is massless [exact, with symbolic g, g', v]", "rust" -> "SM-1", "python" -> "SM-1"|>
 <|"id" -> "WA-2", "pass" -> True, "deviation" -> 0., "tolerance" -> 0., "text" -> "bi-octonion units: e_p^2 = -1, e_p e_q = -e_q e_p, e_j e_4 = e_(4+j) (exact)", "rust" -> "A-2", "python" -> "A-2"|>

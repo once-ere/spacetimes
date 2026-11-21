@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 13:43:24", "kernel" -> {0, 14234}, 
+<|"finished" -> "Sat 21 Nov 2026 14:50:24", "kernel" -> {0, 16383}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -764,5 +764,5 @@ relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>,
     "tolerance" -> 1.*^-10, "text" -> "the Standard Model row: M_H/v = \
 0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the \
 values of the Particle Data Group 2024 = Rust (largest relative difference)", 
-    "rust" -> "P3-H4", "python" -> "YP3-H4"|>}, "line" -> 408, 
- "seconds" -> 14025.145336`10.59845236383742|>
+    "rust" -> "P3-H4", "python" -> "YP3-H4"|>}, "line" -> 410, 
+ "seconds" -> 3956.464692`10.04885228787696|>
