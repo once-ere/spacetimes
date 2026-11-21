@@ -105,14 +105,24 @@ def main():
         npass += ok
         dev, tol = wl_number(t, "deviation"), wl_number(t, "tolerance")
         r, p = wl_string(t, "rust"), wl_string(t, "python")
-        rv = rust.get(r, ("--", "--"))
-        pv = py.get(p, ("--", "--"))
-        rdev, pdev = num(rv[1]), num(pv[1])
-        rows.append("| %s | %s | %s | %s | %s (%s), %s | %s (%s), %s | %s |" % (
+
+        # a notebook check may have several counterparts in one program, written "A, B": each is looked up, each must
+        # have passed, and the table names each with its result and deviation
+        def cells(ids, table):
+            out, allpass = [], True
+            for one in ids.split(", "):
+                v = table.get(one, ("--", "--"))
+                allpass = allpass and v[0] == "PASS"
+                out.append("%s (%s), %s" % (one, v[0], num(v[1])))
+            return "; ".join(out), allpass
+
+        rcell, rok = cells(r, rust)
+        pcell, pok = cells(p, py)
+        rows.append("| %s | %s | %s | %s | %s | %s | %s |" % (
             tid, "PASS" if ok else "FAIL", fmt(dev) if dev is not None else "--", fmt(tol) if tol is not None else "--",
-            r, rv[0], rdev, p, pv[0], pdev, esc(wl_string(t, "text"))))
-        if rv[0] != "PASS" or pv[0] != "PASS":
-            sys.exit("the counterpart of %s is missing or failed: Rust %s %s, Python %s %s" % (tid, r, rv[0], p, pv[0]))
+            rcell, pcell, esc(wl_string(t, "text"))))
+        if not (rok and pok):
+            sys.exit("a counterpart of %s is missing or failed: Rust %s, Python %s" % (tid, rcell, pcell))
     frags["nb_ntests"] = str(len(tests))
     frags["nb_npass"] = str(npass)
     frags["nb_verdict"] = ("ALL PASS (%d of %d), %s messages" % (npass, len(tests), cdict["messages"])

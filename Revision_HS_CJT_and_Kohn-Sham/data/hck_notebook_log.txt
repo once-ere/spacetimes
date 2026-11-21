@@ -1,11 +1,11 @@
 evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/in/superfluid.nb
 saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/out/superfluid.nb
-seconds:  23
-kernel:   {0, 12306}   last In line: 228
-counts:   <|"inputs" -> 20, "evaluated" -> 20, "outputs" -> 5, "prints" -> 51, "messages" -> 0|>
+seconds:  249
+kernel:   {0, 12340}   last In line: 316
+counts:   <|"inputs" -> 33, "evaluated" -> 33, "outputs" -> 9, "prints" -> 76, "messages" -> 0|>
 --- messages (0) ---
---- printed lines (51) ---
+--- printed lines (76) ---
 during In[6]:=  the common objects are defined; m_LL = 1/5
 during In[42]:=  the mass matrix of (W1, W2, W3, B): ((gSM^2 vSM^2)/4	0	0	0
 0	(gSM^2 vSM^2)/4	0	0
@@ -48,20 +48,45 @@ during In[172]:=  PASS WAS3-4  deviation 3.005e-11 (tolerance 1.000e-9): the gap
 during In[172]:=  PASS WAS4-5a  three bound states below the continuum for each spacing [counts {3, 3, 3}]   [the same check: Rust AS4-5a, Python AS4-5a]
 during In[172]:=  PASS WAS4-5b  deviation 1.116e-5 (tolerance 1.000e-3): kink bound states, Richardson extrapolation   [the same check: Rust AS4-5b, Python AS4-5b]
 during In[172]:=  PASS WAS4-3  symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0]   [the same check: Rust AS4-3, Python AS4-3]
-during In[182]:=  |Phi|^4 - |Phi.Phi|^2 - |Phi x Phi*|^2 = 0;  on a polar field |Phi|^4 - |Phi.Phi|^2 = 0
-during In[187]:=  values of the Rust program sf_part3: 260; points of the five polar curves: {61,61,61,61,61}
-during In[201]:=  PASS WP3-11 HS_1_1  deviation 2.492e-11 (tolerance 1.000e-7): HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_1_1, Python YP3-11 HS_1_1]
-during In[201]:=  PASS WP3-11 HS_0_1  deviation 4.409e-11 (tolerance 1.000e-7): HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_1, Python YP3-11 HS_0_1]
-during In[201]:=  PASS WP3-11 HS_0_0  deviation 4.051e-11 (tolerance 1.000e-7): HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_0, Python YP3-11 HS_0_0]
-during In[201]:=  PASS WP3-11 KS  deviation 3.482e-9 (tolerance 1.000e-7): KS: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 KS, Python YP3-11 KS]
-during In[201]:=  PASS WP3-11 CJT  deviation 6.816e-9 (tolerance 1.000e-7): CJT: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 CJT, Python YP3-11 CJT]
-during In[213]:=  PASS WP3-8  deviation 1.554e-15 (tolerance 1.000e-13): the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1_2 and P = Phi_a (K^3)^dag has the eigenvalues -+(q^2 + M^2 + Phi_a^2)^(1/2), eight times each (20 random q, M, Phi_a)   [the same check: Rust P3-8, Python YP3-8]
-during In[217]:=  the integral minus the closed form: 0
-during In[217]:=  the closed form about s = 0 (cutoff 1), to the order s^2: 1/4+lfs/4+lfs^2/32-1/8 lfs^2 Log[2]+1/16 lfs^2 Log[lfs]
-during In[217]:=  its term with the logarithm: lfs^2/16 Log[s]
-during In[223]:=  PASS WP3-10 HS_1_1  deviation 2.646e-7 (tolerance 1.000e-6): HS (1, 1): the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00616243 (relative)   [the same check: Rust P3-10 HS_1_1, Python YP3-10 HS_1_1]
-during In[223]:=  PASS WP3-10 CJT  deviation 2.377e-8 (tolerance 1.000e-6): CJT: the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00429666 (relative)   [the same check: Rust P3-10 CJT, Python YP3-10 CJT]
-during In[227]:=  checks of this notebook: 42; passed: 42; failed: {}
+during In[182]:=  values of the Rust program sf_part2: 231; rows of its table of pair channels: 42
+during In[185]:=  PASS WP2-0a  deviation 0 (tolerance 1.000e-12): pair-channel energies of 7 operators in 6 channels (exact algebra of one point) = the table of the Rust program   [the same check: Rust P2-0e, Python YP2-0a]
+during In[185]:=  PASS WP2-0b  deviation 0 (tolerance 1.000e-12): the three W together = 1/4 of B in every channel   [the same check: Rust P2-0d, Python YP2-0b]
+during In[196]:=  the engine is defined; grid of 24 radial nodes: 144 momenta
+during In[221]:=  PASS WP2-1  deviation 2.988e-12 (tolerance 1.000e-8): self-energies = derivatives of the energy, V^(2), five methods, random states   [the same check: Rust P2-1a, Python YP2-1]
+during In[221]:=  PASS WP2-2  deviation 2.918e-11 (tolerance 3.000e-10): pairing-only limit = AS3 of Part I: |d^3| = 0.20949330327 (237 iterations)   [the same check: Rust P2-2a, Python YP2-2]
+during In[227]:=  PASS WP2-6b  deviation 3.304e-13 (tolerance 1.000e-10): the critical pair coupling pi^2/I1(m) = 21.286609756   [the same check: Rust P2-6b, Python YP2-6b]
+during In[227]:=  PASS WP2-6a  deviation 6.661e-15 (tolerance 1.000e-10): V^(2) from the conditions on the CJT effective couplings: (G^S, G) = (2.8, 25.2)   [the same check: Rust P2-6a, Python YP2-6a]
+during In[232]:=  PASS WP2-6c  deviation 7.994e-15 (tolerance 1.000e-11): effective couplings g_S, g_P of 3 potentials x 5 methods = Rust   [the same check: Rust P2-6b, P2-6c, Python YP2-6c]
+during In[232]:=  PASS WP2-6d  deviation 1.370e-16 (tolerance 1.000e-11): ground-state energies of 3 potentials x 5 methods = Rust   [the same check: Rust P2-6d, Python YP2-6d]
+during In[232]:=  PASS WP2-6e  deviation 1.682e-12 (tolerance 1.000e-8): pair amplitudes |D| of the ground states = Rust   [the same check: Rust P2-6d, Python YP2-6e]
+during In[232]:=  PASS WP2-6f  deviation 3.673e-12 (tolerance 1.000e-8): Dirac masses of the ground states = Rust   [the same check: Rust P2-6d, Python YP2-6f]
+during In[232]:=  PASS WP2-6g  deviation 3.673e-12 (tolerance 1.000e-7): gaps of the ground states = Rust   [the same check: Rust P2-6d, Python YP2-6g]
+during In[253]:=  PASS WP2-7a HS_1_1  deviation 1.603e-13 (tolerance 1.000e-9): HS_1_1: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 1.998e-15)   [the same check: Rust P2-7a HS_1_1, Python YP2-7a HS_1_1]
+during In[253]:=  PASS WP2-7b HS_1_1  deviation 6.573e-14 (tolerance 1.000e-7): HS_1_1: the collective modes below the threshold {0.806128281, 0.813693092} = Rust {0.806128281, 0.813693092}   [the same check: Rust P2-7a HS_1_1, Python YP2-7b HS_1_1]
+during In[253]:=  PASS WP2-7a KS  deviation 2.300e-13 (tolerance 1.000e-9): KS: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 1.776e-15)   [the same check: Rust P2-7a KS, Python YP2-7a KS]
+during In[253]:=  PASS WP2-7b KS  deviation 1.482e-13 (tolerance 1.000e-7): KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727}   [the same check: Rust P2-7a KS, Python YP2-7b KS]
+during In[253]:=  PASS WP2-7a CJT  deviation 2.338e-13 (tolerance 1.000e-9): CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15)   [the same check: Rust P2-7a CJT, Python YP2-7a CJT]
+during In[253]:=  PASS WP2-7b CJT  deviation 1.361e-13 (tolerance 1.000e-7): CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155}   [the same check: Rust P2-7a CJT, Python YP2-7b CJT]
+during In[256]:=  PASS WP2-8a HS_1_1  deviation 8.289e-14 (tolerance 1.000e-8): HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = Rust; chi_33 = 8.759e-16 (massless photon), no mixing   [the same check: Rust P2-8a HS_1_1, P2-8b HS_1_1, Python YP2-8a HS_1_1]
+during In[256]:=  PASS WP2-8a KS  deviation 5.794e-14 (tolerance 1.000e-8): KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; chi_33 = 4.201e-16 (massless photon), no mixing   [the same check: Rust P2-8a KS, P2-8b KS, Python YP2-8a KS]
+during In[256]:=  PASS WP2-8a CJT  deviation 3.145e-14 (tolerance 1.000e-8): CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; chi_33 = 3.067e-16 (massless photon), no mixing   [the same check: Rust P2-8a CJT, P2-8b CJT, Python YP2-8a CJT]
+during In[266]:=  PASS WP2-8b  deviation 9.437e-16 (tolerance 1.000e-12): the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle   [the same check: Rust P2-3a, P2-3b, Python YP2-8b]
+during In[267]:=  PASS WP2-8c  deviation 5.919e-12 (tolerance 1.000e-9): the Thouless eigenvalues of the exchange per unit coupling squared: photon W^3 0.03573178317, B -0.1429271327 = Rust   [the same check: Rust P2-8c, P2-8d, Python YP2-8c]
+during In[269]:=  PASS WP2-8d  deviation 1.492e-8 (tolerance 1.000e-7): CJT with the exchange at g_v = 0.7, g_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5)   [the same check: Rust P2-8f, Python YP2-8d]
+during In[270]:=  |Phi|^4 - |Phi.Phi|^2 - |Phi x Phi*|^2 = 0;  on a polar field |Phi|^4 - |Phi.Phi|^2 = 0
+during In[275]:=  values of the Rust program sf_part3: 260; points of the five polar curves: {61,61,61,61,61}
+during In[289]:=  PASS WP3-11 HS_1_1  deviation 2.492e-11 (tolerance 1.000e-7): HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_1_1, Python YP3-11 HS_1_1]
+during In[289]:=  PASS WP3-11 HS_0_1  deviation 4.409e-11 (tolerance 1.000e-7): HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_1, Python YP3-11 HS_0_1]
+during In[289]:=  PASS WP3-11 HS_0_0  deviation 4.051e-11 (tolerance 1.000e-7): HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_0, Python YP3-11 HS_0_0]
+during In[289]:=  PASS WP3-11 KS  deviation 3.482e-9 (tolerance 1.000e-7): KS: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 KS, Python YP3-11 KS]
+during In[289]:=  PASS WP3-11 CJT  deviation 6.816e-9 (tolerance 1.000e-7): CJT: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 CJT, Python YP3-11 CJT]
+during In[301]:=  PASS WP3-8  deviation 1.554e-15 (tolerance 1.000e-13): the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1_2 and P = Phi_a (K^3)^dag has the eigenvalues -+(q^2 + M^2 + Phi_a^2)^(1/2), eight times each (20 random q, M, Phi_a)   [the same check: Rust P3-8, Python YP3-8]
+during In[305]:=  the integral minus the closed form: 0
+during In[305]:=  the closed form about s = 0 (cutoff 1), to the order s^2: 1/4+lfs/4+lfs^2/32-1/8 lfs^2 Log[2]+1/16 lfs^2 Log[lfs]
+during In[305]:=  its term with the logarithm: lfs^2/16 Log[s]
+during In[311]:=  PASS WP3-10 HS_1_1  deviation 2.646e-7 (tolerance 1.000e-6): HS (1, 1): the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00616243 (relative)   [the same check: Rust P3-10 HS_1_1, Python YP3-10 HS_1_1]
+during In[311]:=  PASS WP3-10 CJT  deviation 2.377e-8 (tolerance 1.000e-6): CJT: the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00429666 (relative)   [the same check: Rust P3-10 CJT, Python YP3-10 CJT]
+during In[315]:=  checks of this notebook: 65; passed: 65; failed: {}
 --- input cells (label, beginning) ---
 In[1]:=  (* the register of the checks of this notebook: one association per check, in the order of
 In[6]:=  (* the mass of the spinor field, m_LL, in units of the cutoff Lambda_LL = 1 *) mLL = 1/5; 
@@ -72,17 +97,30 @@ In[74]:=  (* F-2: the Clifford algebra {gamma^p, gamma^q} = 2 eta^pq, C gamma^p 
 In[92]:=  (* the four coordinates x^0 .. x^3 of the test, as symbols *) Clear[x0, x1, x2, x3]; xs = 
 In[142]:=  (* the annihilation operators c_e (e = 1..8) of the eight components and their adjoints, 2
 In[172]:=  (* hPW[q, m, gv, gf, w, b]: the plane-wave matrix of AS1 for the constant fields w[[p+1, i
-In[182]:=  (* the identity |Phi|^4 - |Phi.Phi|^2 = |Phi x Phi^*|^2 for complex 3-vectors, exactly, wi
-In[187]:=  (* The values of the Rust programs that Part 3 of the notebook uses or compares with its o
-In[194]:=  (* lfTags: the five methods (the tags of the data) and their printed names *) lfTags = {"H
-In[201]:=  (* evenFit[pts, kk]: the least-squares fit V = sum_{k=1..kk} c_k Phi^(2k) to the points {P
-In[206]:=  (* the table of the accuracy of the Landau form; pct[x]: x in per cent with three signific
-In[209]:=  (* the figure: top, the residual of the Landau form along the fitted interval relative to 
-In[213]:=  (* the BdG matrix of the eight components with the Dirac mass M (normal self-energy (M - m
-In[217]:=  (* the integral of q^2 (q^2 + s)^(1/2) from 0 to the cutoff lam, exactly, and its expansio
-In[223]:=  (* lfTaylor[t]: a^Tay estimated from the points 2 to 7 of the curve (the first point is Ph
-In[226]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
-In[227]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
+In[182]:=  (* The values of the Rust programs that Part 2 of the notebook uses or compares with its o
+In[185]:=  (* kPs[iota]: the matrices K'^iota_LL = C_LL (x) E_LL tau_iota of the pseudoscalar spin-ze
+In[196]:=  (* ---- the constants and matrices of the engine (floating point) ---- *) lamLL = 1.;     
+In[221]:=  (* YP2-1: the self-energies are the derivatives of the energy: central differences on thre
+In[227]:=  (* the critical pair coupling pi^2/I1(m) and the coefficients of V^(2) from the two condit
+In[232]:=  (* the recursion: for every potential and method the effective couplings and the ground st
+In[242]:=  (* the 28 pairs (i, j), i < j, of the antisymmetric matrices, in the order of the rows *) 
+In[253]:=  (* the Goldstone modes and the collective modes of HS (1, 1), KS and CJT with V^(2) *) mod
+In[256]:=  (* the four charges: T^1, T^2, T^3 (1_4 (x) tau/2) and the fermion number 1_8 *) chargesSF
+In[261]:=  (* kernSF[g, mass]: the radial kernels of D0, D1 in closed form: {r0, r1}, {s0, s1} with D
+In[266]:=  (* the closed forms of D0, D1 against a numerical integration over the angle (mass 0.5, th
+In[267]:=  (* the Thouless eigenvalues of the exchange of W^3 alone and of B alone in the normal vacu
+In[269]:=  (* CJT with the exchange of the four gauge bosons at g_v = 0.7, g_F = 0.45 *) Module[{mo, 
+In[270]:=  (* the identity |Phi|^4 - |Phi.Phi|^2 = |Phi x Phi^*|^2 for complex 3-vectors, exactly, wi
+In[275]:=  (* The values of the Rust programs that Part 3 of the notebook uses or compares with its o
+In[282]:=  (* lfTags: the five methods (the tags of the data) and their printed names *) lfTags = {"H
+In[289]:=  (* evenFit[pts, kk]: the least-squares fit V = sum_{k=1..kk} c_k Phi^(2k) to the points {P
+In[294]:=  (* the table of the accuracy of the Landau form; pct[x]: x in per cent with three signific
+In[297]:=  (* the figure: top, the residual of the Landau form along the fitted interval relative to 
+In[301]:=  (* the BdG matrix of the eight components with the Dirac mass M (normal self-energy (M - m
+In[305]:=  (* the integral of q^2 (q^2 + s)^(1/2) from 0 to the cutoff lam, exactly, and its expansio
+In[311]:=  (* lfTaylor[t]: a^Tay estimated from the points 2 to 7 of the curve (the first point is Ph
+In[314]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
+In[315]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
 --- tests ---
 <|"id" -> "WSM-1", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "Standard Model with +i g: the eigenvalues of the mass matrix are 0, M_W^2 (twice), M_Z^2, and the photon sin(thetaW) W^3 + cos(thetaW) B is massless [exact, with symbolic g, g', v]", "rust" -> "SM-1", "python" -> "SM-1"|>
 <|"id" -> "WA-2", "pass" -> True, "deviation" -> 0., "tolerance" -> 0., "text" -> "bi-octonion units: e_p^2 = -1, e_p e_q = -e_q e_p, e_j e_4 = e_(4+j) (exact)", "rust" -> "A-2", "python" -> "A-2"|>
@@ -118,6 +156,29 @@ In[227]:=  (* the count of the checks that passed *) Print["checks of this noteb
 <|"id" -> "WAS4-5a", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "three bound states below the continuum for each spacing [counts {3, 3, 3}]", "rust" -> "AS4-5a", "python" -> "AS4-5a"|>
 <|"id" -> "WAS4-5b", "pass" -> True, "deviation" -> 0.000011159909793223566, "tolerance" -> 0.001, "text" -> "kink bound states, Richardson extrapolation", "rust" -> "AS4-5b", "python" -> "AS4-5b"|>
 <|"id" -> "WAS4-3", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0]", "rust" -> "AS4-3", "python" -> "AS4-3"|>
+<|"id" -> "WP2-0a", "pass" -> True, "deviation" -> 0., "tolerance" -> 1.*^-12, "text" -> "pair-channel energies of 7 operators in 6 channels (exact algebra of one point) = the table of the Rust program", "rust" -> "P2-0e", "python" -> "YP2-0a"|>
+<|"id" -> "WP2-0b", "pass" -> True, "deviation" -> 0., "tolerance" -> 1.*^-12, "text" -> "the three W together = 1/4 of B in every channel", "rust" -> "P2-0d", "python" -> "YP2-0b"|>
+<|"id" -> "WP2-1", "pass" -> True, "deviation" -> 2.9877104938798824*^-12, "tolerance" -> 1.*^-8, "text" -> "self-energies = derivatives of the energy, V^(2), five methods, random states", "rust" -> "P2-1a", "python" -> "YP2-1"|>
+<|"id" -> "WP2-2", "pass" -> True, "deviation" -> 2.918423835929218*^-11, "tolerance" -> 3.*^-10, "text" -> "pairing-only limit = AS3 of Part I: |d^3| = 0.20949330327 (237 iterations)", "rust" -> "P2-2a", "python" -> "YP2-2"|>
+<|"id" -> "WP2-6b", "pass" -> True, "deviation" -> 3.304023721284466*^-13, "tolerance" -> 1.*^-10, "text" -> "the critical pair coupling pi^2/I1(m) = 21.286609756", "rust" -> "P2-6b", "python" -> "YP2-6b"|>
+<|"id" -> "WP2-6a", "pass" -> True, "deviation" -> 6.661338147750939*^-15, "tolerance" -> 1.*^-10, "text" -> "V^(2) from the conditions on the CJT effective couplings: (G^S, G) = (2.8, 25.2)", "rust" -> "P2-6a", "python" -> "YP2-6a"|>
+<|"id" -> "WP2-6c", "pass" -> True, "deviation" -> 7.993605777301127*^-15, "tolerance" -> 1.*^-11, "text" -> "effective couplings g_S, g_P of 3 potentials x 5 methods = Rust", "rust" -> "P2-6b, P2-6c", "python" -> "YP2-6c"|>
+<|"id" -> "WP2-6d", "pass" -> True, "deviation" -> 1.3704315460216776*^-16, "tolerance" -> 1.*^-11, "text" -> "ground-state energies of 3 potentials x 5 methods = Rust", "rust" -> "P2-6d", "python" -> "YP2-6d"|>
+<|"id" -> "WP2-6e", "pass" -> True, "deviation" -> 1.681936232583*^-12, "tolerance" -> 1.*^-8, "text" -> "pair amplitudes |D| of the ground states = Rust", "rust" -> "P2-6d", "python" -> "YP2-6e"|>
+<|"id" -> "WP2-6f", "pass" -> True, "deviation" -> 3.67336716600164*^-12, "tolerance" -> 1.*^-8, "text" -> "Dirac masses of the ground states = Rust", "rust" -> "P2-6d", "python" -> "YP2-6f"|>
+<|"id" -> "WP2-6g", "pass" -> True, "deviation" -> 3.673339410426024*^-12, "tolerance" -> 1.*^-7, "text" -> "gaps of the ground states = Rust", "rust" -> "P2-6d", "python" -> "YP2-6g"|>
+<|"id" -> "WP2-7a HS_1_1", "pass" -> True, "deviation" -> 1.6031620489117507*^-13, "tolerance" -> 1.*^-9, "text" -> "HS_1_1: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 1.998e-15)", "rust" -> "P2-7a HS_1_1", "python" -> "YP2-7a HS_1_1"|>
+<|"id" -> "WP2-7b HS_1_1", "pass" -> True, "deviation" -> 6.572520305780927*^-14, "tolerance" -> 1.*^-7, "text" -> "HS_1_1: the collective modes below the threshold {0.806128281, 0.813693092} = Rust {0.806128281, 0.813693092}", "rust" -> "P2-7a HS_1_1", "python" -> "YP2-7b HS_1_1"|>
+<|"id" -> "WP2-7a KS", "pass" -> True, "deviation" -> 2.3003821070233244*^-13, "tolerance" -> 1.*^-9, "text" -> "KS: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 1.776e-15)", "rust" -> "P2-7a KS", "python" -> "YP2-7a KS"|>
+<|"id" -> "WP2-7b KS", "pass" -> True, "deviation" -> 1.482147737874584*^-13, "tolerance" -> 1.*^-7, "text" -> "KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727}", "rust" -> "P2-7a KS", "python" -> "YP2-7b KS"|>
+<|"id" -> "WP2-7a CJT", "pass" -> True, "deviation" -> 2.3381296898605797*^-13, "tolerance" -> 1.*^-9, "text" -> "CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15)", "rust" -> "P2-7a CJT", "python" -> "YP2-7a CJT"|>
+<|"id" -> "WP2-7b CJT", "pass" -> True, "deviation" -> 1.361133428190442*^-13, "tolerance" -> 1.*^-7, "text" -> "CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155}", "rust" -> "P2-7a CJT", "python" -> "YP2-7b CJT"|>
+<|"id" -> "WP2-8a HS_1_1", "pass" -> True, "deviation" -> 8.28896163085313*^-14, "tolerance" -> 1.*^-8, "text" -> "HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = Rust; chi_33 = 8.759e-16 (massless photon), no mixing", "rust" -> "P2-8a HS_1_1, P2-8b HS_1_1", "python" -> "YP2-8a HS_1_1"|>
+<|"id" -> "WP2-8a KS", "pass" -> True, "deviation" -> 5.793994320980066*^-14, "tolerance" -> 1.*^-8, "text" -> "KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; chi_33 = 4.201e-16 (massless photon), no mixing", "rust" -> "P2-8a KS, P2-8b KS", "python" -> "YP2-8a KS"|>
+<|"id" -> "WP2-8a CJT", "pass" -> True, "deviation" -> 3.14518597555092*^-14, "tolerance" -> 1.*^-8, "text" -> "CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; chi_33 = 3.067e-16 (massless photon), no mixing", "rust" -> "P2-8a CJT, P2-8b CJT", "python" -> "YP2-8a CJT"|>
+<|"id" -> "WP2-8b", "pass" -> True, "deviation" -> 9.43689570931383*^-16, "tolerance" -> 1.*^-12, "text" -> "the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle", "rust" -> "P2-3a, P2-3b", "python" -> "YP2-8b"|>
+<|"id" -> "WP2-8c", "pass" -> True, "deviation" -> 5.919147116895118*^-12, "tolerance" -> 1.*^-9, "text" -> "the Thouless eigenvalues of the exchange per unit coupling squared: photon W^3 0.03573178317, B -0.1429271327 = Rust", "rust" -> "P2-8c, P2-8d", "python" -> "YP2-8c"|>
+<|"id" -> "WP2-8d", "pass" -> True, "deviation" -> 1.491562614044437*^-8, "tolerance" -> 1.*^-7, "text" -> "CJT with the exchange at g_v = 0.7, g_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5)", "rust" -> "P2-8f", "python" -> "YP2-8d"|>
 <|"id" -> "WP3-11 HS_1_1", "pass" -> True, "deviation" -> 2.492097276316496*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_1_1", "python" -> "YP3-11 HS_1_1"|>
 <|"id" -> "WP3-11 HS_0_1", "pass" -> True, "deviation" -> 4.408719629389778*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_0_1", "python" -> "YP3-11 HS_0_1"|>
 <|"id" -> "WP3-11 HS_0_0", "pass" -> True, "deviation" -> 4.0512580084894096*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_0_0", "python" -> "YP3-11 HS_0_0"|>

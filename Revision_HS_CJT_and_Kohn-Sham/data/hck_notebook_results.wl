@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 07:56:46", "kernel" -> {0, 12306}, 
+<|"finished" -> "Sat 21 Nov 2026 08:14:46", "kernel" -> {0, 12340}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -120,7 +120,100 @@ below the continuum for each spacing [counts {3, 3, 3}]", "rust" -> "AS4-5a",
      Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], 
     "text" -> "symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 \
 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0]", "rust" -> "AS4-3", 
-    "python" -> "AS4-3"|>, <|"id" -> "WP3-11 HS_1_1", "pass" -> True, 
+    "python" -> "AS4-3"|>, <|"id" -> "WP2-0a", "pass" -> True, 
+    "deviation" -> 0., "tolerance" -> 1.*^-12, "text" -> "pair-channel \
+energies of 7 operators in 6 channels (exact algebra of one point) = the \
+table of the Rust program", "rust" -> "P2-0e", "python" -> "YP2-0a"|>, 
+   <|"id" -> "WP2-0b", "pass" -> True, "deviation" -> 0., 
+    "tolerance" -> 1.*^-12, "text" -> 
+     "the three W together = 1/4 of B in every channel", "rust" -> "P2-0d", 
+    "python" -> "YP2-0b"|>, <|"id" -> "WP2-1", "pass" -> True, 
+    "deviation" -> 2.9877104938798824*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "self-energies = derivatives of the energy, V^(2), five \
+methods, random states", "rust" -> "P2-1a", "python" -> "YP2-1"|>, 
+   <|"id" -> "WP2-2", "pass" -> True, "deviation" -> 2.918423835929218*^-11, 
+    "tolerance" -> 3.*^-10, "text" -> "pairing-only limit = AS3 of Part I: \
+|d^3| = 0.20949330327 (237 iterations)", "rust" -> "P2-2a", 
+    "python" -> "YP2-2"|>, <|"id" -> "WP2-6b", "pass" -> True, 
+    "deviation" -> 3.304023721284466*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "the critical pair coupling pi^2/I1(m) = 21.286609756", 
+    "rust" -> "P2-6b", "python" -> "YP2-6b"|>, <|"id" -> "WP2-6a", 
+    "pass" -> True, "deviation" -> 6.661338147750939*^-15, 
+    "tolerance" -> 1.*^-10, "text" -> "V^(2) from the conditions on the CJT \
+effective couplings: (G^S, G) = (2.8, 25.2)", "rust" -> "P2-6a", 
+    "python" -> "YP2-6a"|>, <|"id" -> "WP2-6c", "pass" -> True, 
+    "deviation" -> 7.993605777301127*^-15, "tolerance" -> 1.*^-11, 
+    "text" -> 
+     "effective couplings g_S, g_P of 3 potentials x 5 methods = Rust", 
+    "rust" -> "P2-6b, P2-6c", "python" -> "YP2-6c"|>, 
+   <|"id" -> "WP2-6d", "pass" -> True, "deviation" -> 
+     1.3704315460216776*^-16, "tolerance" -> 1.*^-11, 
+    "text" -> "ground-state energies of 3 potentials x 5 methods = Rust", 
+    "rust" -> "P2-6d", "python" -> "YP2-6d"|>, <|"id" -> "WP2-6e", 
+    "pass" -> True, "deviation" -> 1.681936232583*^-12, 
+    "tolerance" -> 1.*^-8, "text" -> 
+     "pair amplitudes |D| of the ground states = Rust", "rust" -> "P2-6d", 
+    "python" -> "YP2-6e"|>, <|"id" -> "WP2-6f", "pass" -> True, 
+    "deviation" -> 3.67336716600164*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "Dirac masses of the ground states = Rust", "rust" -> "P2-6d", 
+    "python" -> "YP2-6f"|>, <|"id" -> "WP2-6g", "pass" -> True, 
+    "deviation" -> 3.673339410426024*^-12, "tolerance" -> 1.*^-7, 
+    "text" -> "gaps of the ground states = Rust", "rust" -> "P2-6d", 
+    "python" -> "YP2-6g"|>, <|"id" -> "WP2-7a HS_1_1", "pass" -> True, 
+    "deviation" -> 1.6031620489117507*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "HS_1_1: three Goldstone modes (the eigenvalues of M(0) equal \
+to 1); the spectrum of every node is +-E (spread 1.998e-15)", 
+    "rust" -> "P2-7a HS_1_1", "python" -> "YP2-7a HS_1_1"|>, 
+   <|"id" -> "WP2-7b HS_1_1", "pass" -> True, 
+    "deviation" -> 6.572520305780927*^-14, "tolerance" -> 1.*^-7, 
+    "text" -> "HS_1_1: the collective modes below the threshold {0.806128281, \
+0.813693092} = Rust {0.806128281, 0.813693092}", "rust" -> "P2-7a HS_1_1", 
+    "python" -> "YP2-7b HS_1_1"|>, <|"id" -> "WP2-7a KS", "pass" -> True, 
+    "deviation" -> 2.3003821070233244*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "KS: three Goldstone modes (the eigenvalues of M(0) equal to \
+1); the spectrum of every node is +-E (spread 1.776e-15)", 
+    "rust" -> "P2-7a KS", "python" -> "YP2-7a KS"|>, 
+   <|"id" -> "WP2-7b KS", "pass" -> True, "deviation" -> 
+     1.482147737874584*^-13, "tolerance" -> 1.*^-7, 
+    "text" -> "KS: the collective modes below the threshold {0.603475967, \
+0.657284727} = Rust {0.603475967, 0.657284727}", "rust" -> "P2-7a KS", 
+    "python" -> "YP2-7b KS"|>, <|"id" -> "WP2-7a CJT", "pass" -> True, 
+    "deviation" -> 2.3381296898605797*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "CJT: three Goldstone modes (the eigenvalues of M(0) equal to \
+1); the spectrum of every node is +-E (spread 2.442e-15)", 
+    "rust" -> "P2-7a CJT", "python" -> "YP2-7a CJT"|>, 
+   <|"id" -> "WP2-7b CJT", "pass" -> True, "deviation" -> 
+     1.361133428190442*^-13, "tolerance" -> 1.*^-7, 
+    "text" -> "CJT: the collective modes below the threshold {0.603475967, \
+0.644007155} = Rust {0.603475967, 0.644007155}", "rust" -> "P2-7a CJT", 
+    "python" -> "YP2-7b CJT"|>, <|"id" -> "WP2-8a HS_1_1", "pass" -> True, 
+    "deviation" -> 8.28896163085313*^-14, "tolerance" -> 1.*^-8, 
+    "text" -> "HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = \
+Rust; chi_33 = 8.759e-16 (massless photon), no mixing", 
+    "rust" -> "P2-8a HS_1_1, P2-8b HS_1_1", "python" -> "YP2-8a HS_1_1"|>, 
+   <|"id" -> "WP2-8a KS", "pass" -> True, "deviation" -> 
+     5.793994320980066*^-14, "tolerance" -> 1.*^-8, 
+    "text" -> "KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; \
+chi_33 = 4.201e-16 (massless photon), no mixing", 
+    "rust" -> "P2-8a KS, P2-8b KS", "python" -> "YP2-8a KS"|>, 
+   <|"id" -> "WP2-8a CJT", "pass" -> True, "deviation" -> 
+     3.14518597555092*^-14, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; \
+chi_33 = 3.067e-16 (massless photon), no mixing", 
+    "rust" -> "P2-8a CJT, P2-8b CJT", "python" -> "YP2-8a CJT"|>, 
+   <|"id" -> "WP2-8b", "pass" -> True, "deviation" -> 9.43689570931383*^-16, 
+    "tolerance" -> 1.*^-12, "text" -> "the angular averages D0, D1 of the \
+Yukawa kernel in closed form = numerical integration over the angle", 
+    "rust" -> "P2-3a, P2-3b", "python" -> "YP2-8b"|>, 
+   <|"id" -> "WP2-8c", "pass" -> True, "deviation" -> 5.919147116895118*^-12, 
+    "tolerance" -> 1.*^-9, "text" -> "the Thouless eigenvalues of the \
+exchange per unit coupling squared: photon W^3 0.03573178317, B -0.1429271327 \
+= Rust", "rust" -> "P2-8c, P2-8d", "python" -> "YP2-8c"|>, 
+   <|"id" -> "WP2-8d", "pass" -> True, "deviation" -> 1.491562614044437*^-8, 
+    "tolerance" -> 1.*^-7, "text" -> "CJT with the exchange at g_v = 0.7, g_F \
+= 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy \
+9.647e-5)", "rust" -> "P2-8f", "python" -> "YP2-8d"|>, 
+   <|"id" -> "WP3-11 HS_1_1", "pass" -> True, 
     "deviation" -> 2.492097276316496*^-11, "tolerance" -> 1.*^-7, 
     "text" -> "HS (1, 1): the accuracy of the Landau form recomputed by \
 LeastSquares (the coefficients, the minimum, depth and curvature of the \
@@ -170,4 +263,4 @@ the origin from the first six points of the curve = the Rust value a^Tay = \
     "text" -> "CJT: the coefficient of Phi^2 of the Taylor series at the \
 origin from the first six points of the curve = the Rust value a^Tay = \
 -0.00429666 (relative)", "rust" -> "P3-10 CJT", "python" -> "YP3-10 CJT"|>}, 
- "line" -> 228, "seconds" -> 119.578397`8.529197720714237|>
+ "line" -> 316, "seconds" -> 1073.398707`9.482306061302681|>

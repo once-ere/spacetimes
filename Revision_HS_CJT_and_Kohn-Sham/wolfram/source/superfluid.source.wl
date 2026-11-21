@@ -52,6 +52,8 @@ checkTrue[id_String, text_String, ok_, detail_String, rust_String, python_String
 
 (* @@INCLUDECELLS part1.source.wl@@ *)
 
+(* @@INCLUDECELLS part2.source.wl@@ *)
+
 (* @@INCLUDECELLS part3_landau.source.wl@@ *)
 
 (* ::Chapter:: *)

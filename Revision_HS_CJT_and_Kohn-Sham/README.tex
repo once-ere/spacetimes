@@ -289,13 +289,13 @@ of 20)) and \texttt{python/sf\_part4\_figures.py}.
 
 \textbf{The Mathematica notebook \texttt{superfluid.nb}} (object O8) is
 written part by part. This version contains the introduction, the
-register of the checks, Part I, and the first section of Part III (the
-Landau form: its definition, examples, accuracy, the cause of its error
-and why the error matters): 42 checks, each repeated by the Rust and the
-Python programs (verdict of the evaluation in the front end of Wolfram:
-ALL PASS (42 of 42), 0 messages). Its provenance is
-\texttt{provenance/P3\_notebook.md}. The rest of Part III, and Parts II
-and IV of the notebook follow.
+register of the checks, Part I, Part II, and the first section of Part
+III (the Landau form: its definition, examples, accuracy, the cause of
+its error and why the error matters): 65 checks, each repeated by the
+Rust and the Python programs (verdict of the evaluation in the front end
+of Wolfram: ALL PASS (65 of 65), 0 messages). Its provenance is
+\texttt{provenance/P3\_notebook.md}. The rest of Part III and Part IV of
+the notebook follow.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -337,8 +337,8 @@ from \texttt{code/scripts/symbol\_entries.py} & written \\
 the solution & parts I to IV written \\
 \texttt{superfluid.nb}, \texttt{superfluid\_notebook.pdf} & the
 Mathematica notebook of the whole solution, evaluated in the front end
-of Wolfram, and its printed copy & introduction, Part I and the section
-of Part III on the Landau form written; the rest planned \\
+of Wolfram, and its printed copy & introduction, Parts I and II and the
+section of Part III on the Landau form written; the rest planned \\
 \texttt{provenance/P3\_notebook.md}, \texttt{.tex}, \texttt{.pdf} & the
 provenance of the notebook: its task, files, build and evaluation, the
 checks with their counterparts in Rust and Python, the symbols of its
@@ -389,16 +389,18 @@ to IV), \texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
 figures, and the videos of part IV) & parts I to IV written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
-\texttt{part1.source.wl} and \texttt{part3\_landau.source.wl}, and the
-data cell \texttt{data\_part3.wl}; in \texttt{wolfram/tools/} the
-builder of the notebook from its source (\texttt{build\_notebook.wls}),
-the reader of formulas that turns the TeX of the texts into
-two-dimensional formulas (\texttt{sf\_formula.wl}), the evaluation of
-the notebook in the front end of Wolfram (\texttt{guirun.wl} and the
-three calls \texttt{gui\_start.wl}, \texttt{gui\_go.wl},
-\texttt{gui\_status.wl}), the dry run (\texttt{make\_dryrun.py}), and
-the writer of the data cells (\texttt{make\_data\_cells.py}) & Part I
-and the section of Part III on the Landau form written \\
+\texttt{part1.source.wl}, \texttt{part2.source.wl} and
+\texttt{part3\_landau.source.wl}, and the data cells
+\texttt{data\_part2.wl} and \texttt{data\_part3.wl}; in
+\texttt{wolfram/tools/} the builder of the notebook from its source
+(\texttt{build\_notebook.wls}), the reader of formulas that turns the
+TeX of the texts into two-dimensional formulas
+(\texttt{sf\_formula.wl}), the evaluation of the notebook in the front
+end of Wolfram (\texttt{guirun.wl} and the three calls
+\texttt{gui\_start.wl}, \texttt{gui\_go.wl}, \texttt{gui\_status.wl}),
+the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
+(\texttt{make\_data\_cells.py}) & Parts I and II and the section of Part
+III on the Landau form written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},

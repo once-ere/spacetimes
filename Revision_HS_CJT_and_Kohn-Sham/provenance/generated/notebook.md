@@ -3,22 +3,22 @@
 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 <!-- END nb_version -->
 <!-- BEGIN nb_seconds -->
-23
+249
 <!-- END nb_seconds -->
 <!-- BEGIN nb_counts -->
-20 input cells, 20 of them evaluated; 5 output cells; 51 printed lines
+33 input cells, 33 of them evaluated; 9 output cells; 76 printed lines
 <!-- END nb_counts -->
 <!-- BEGIN nb_messages -->
 0
 <!-- END nb_messages -->
 <!-- BEGIN nb_ntests -->
-42
+65
 <!-- END nb_ntests -->
 <!-- BEGIN nb_npass -->
-42
+65
 <!-- END nb_npass -->
 <!-- BEGIN nb_verdict -->
-ALL PASS (42 of 42), 0 messages
+ALL PASS (65 of 65), 0 messages
 <!-- END nb_verdict -->
 <!-- BEGIN nb_table_checks -->
 | check | result | deviation in the notebook | tolerance | Rust: check, deviation | Python: check, deviation | statement |
@@ -57,6 +57,29 @@ ALL PASS (42 of 42), 0 messages
 | WAS4-5a | PASS | -- | -- | AS4-5a (PASS), -- | AS4-5a (PASS), -- | three bound states below the continuum for each spacing [counts {3, 3, 3}] |
 | WAS4-5b | PASS | $1.116\times10^{-5}$ | $1.000\times10^{-3}$ | AS4-5b (PASS), $1.116\times10^{-5}$ | AS4-5b (PASS), $1.116\times10^{-5}$ | kink bound states, Richardson extrapolation |
 | WAS4-3 | PASS | -- | -- | AS4-3 (PASS), $2.776\times10^{-17}$ | AS4-3 (PASS), -- | symbolic: (d/dx + Delta) sech\^2(x/ell) = 0 and (-d\^2 + Delta\^2 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0] |
+| WP2-0a | PASS | $0$ | $1.000\times10^{-12}$ | P2-0e (PASS), $0$ | YP2-0a (PASS), $0$ | pair-channel energies of 7 operators in 6 channels (exact algebra of one point) = the table of the Rust program |
+| WP2-0b | PASS | $0$ | $1.000\times10^{-12}$ | P2-0d (PASS), $0$ | YP2-0b (PASS), $0$ | the three W together = 1/4 of B in every channel |
+| WP2-1 | PASS | $2.988\times10^{-12}$ | $1.000\times10^{-8}$ | P2-1a (PASS), $6.262\times10^{-14}$ | YP2-1 (PASS), $7.233\times10^{-13}$ | self-energies = derivatives of the energy, V\^(2), five methods, random states |
+| WP2-2 | PASS | $2.918\times10^{-11}$ | $3.000\times10^{-10}$ | P2-2a (PASS), $2.919\times10^{-11}$ | YP2-2 (PASS), $2.918\times10^{-11}$ | pairing-only limit = AS3 of Part I: /d\^3/ = 0.20949330327 (237 iterations) |
+| WP2-6b | PASS | $3.304\times10^{-13}$ | $1.000\times10^{-10}$ | P2-6b (PASS), $1.776\times10^{-15}$ | YP2-6b (PASS), $3.268\times10^{-13}$ | the critical pair coupling pi\^2/I1(m) = 21.286609756 |
+| WP2-6a | PASS | $6.661\times10^{-15}$ | $1.000\times10^{-10}$ | P2-6a (PASS), $8.882\times10^{-15}$ | YP2-6a (PASS), $1.332\times10^{-15}$ | V\^(2) from the conditions on the CJT effective couplings: (G\^S, G) = (2.8, 25.2) |
+| WP2-6c | PASS | $7.994\times10^{-15}$ | $1.000\times10^{-11}$ | P2-6b (PASS), $1.776\times10^{-15}$; P2-6c (PASS), $3.486\times10^{-14}$ | YP2-6c (PASS), $1.776\times10^{-15}$ | effective couplings g\_S, g\_P of 3 potentials x 5 methods = Rust |
+| WP2-6d | PASS | $1.370\times10^{-16}$ | $1.000\times10^{-11}$ | P2-6d (PASS), $0$ | YP2-6d (PASS), $7.541\times10^{-17}$ | ground-state energies of 3 potentials x 5 methods = Rust |
+| WP2-6e | PASS | $1.682\times10^{-12}$ | $1.000\times10^{-8}$ | P2-6d (PASS), $0$ | YP2-6e (PASS), $1.682\times10^{-12}$ | pair amplitudes /D/ of the ground states = Rust |
+| WP2-6f | PASS | $3.673\times10^{-12}$ | $1.000\times10^{-8}$ | P2-6d (PASS), $0$ | YP2-6f (PASS), $4.952\times10^{-13}$ | Dirac masses of the ground states = Rust |
+| WP2-6g | PASS | $3.673\times10^{-12}$ | $1.000\times10^{-7}$ | P2-6d (PASS), $0$ | YP2-6g (PASS), $4.959\times10^{-13}$ | gaps of the ground states = Rust |
+| WP2-7a HS_1_1 | PASS | $1.603\times10^{-13}$ | $1.000\times10^{-9}$ | P2-7a HS_1_1 (PASS), $1.816\times10^{-13}$ | YP2-7a HS_1_1 (PASS), $1.621\times10^{-13}$ | HS\_1\_1: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 1.998e-15) |
+| WP2-7b HS_1_1 | PASS | $6.573\times10^{-14}$ | $1.000\times10^{-7}$ | P2-7a HS_1_1 (PASS), $1.816\times10^{-13}$ | YP2-7b HS_1_1 (PASS), $5.262\times10^{-14}$ | HS\_1\_1: the collective modes below the threshold {0.806128281, 0.813693092} = Rust {0.806128281, 0.813693092} |
+| WP2-7a KS | PASS | $2.300\times10^{-13}$ | $1.000\times10^{-9}$ | P2-7a KS (PASS), $2.502\times10^{-13}$ | YP2-7a KS (PASS), $2.320\times10^{-13}$ | KS: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 1.776e-15) |
+| WP2-7b KS | PASS | $1.482\times10^{-13}$ | $1.000\times10^{-7}$ | P2-7a KS (PASS), $2.502\times10^{-13}$ | YP2-7b KS (PASS), $1.333\times10^{-13}$ | KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727} |
+| WP2-7a CJT | PASS | $2.338\times10^{-13}$ | $1.000\times10^{-9}$ | P2-7a CJT (PASS), $2.485\times10^{-13}$ | YP2-7a CJT (PASS), $2.329\times10^{-13}$ | CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15) |
+| WP2-7b CJT | PASS | $1.361\times10^{-13}$ | $1.000\times10^{-7}$ | P2-7a CJT (PASS), $2.485\times10^{-13}$ | YP2-7b CJT (PASS), $1.180\times10^{-13}$ | CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155} |
+| WP2-8a HS_1_1 | PASS | $8.289\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a HS_1_1 (PASS), $2.278\times10^{-15}$; P2-8b HS_1_1 (PASS), $8.820\times10^{-9}$ | YP2-8a HS_1_1 (PASS), $3.744\times10^{-15}$ | HS\_1\_1: chi\_11 = 0.005118624664, chi\_FF = 0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless photon), no mixing |
+| WP2-8a KS | PASS | $5.794\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a KS (PASS), $2.159\times10^{-15}$; P2-8b KS (PASS), $4.283\times10^{-9}$ | YP2-8a KS (PASS), $5.405\times10^{-15}$ | KS: chi\_11 = 0.004317006163, chi\_FF = 0.02036224303 = Rust; chi\_33 = 4.201e-16 (massless photon), no mixing |
+| WP2-8a CJT | PASS | $3.145\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a CJT (PASS), $1.879\times10^{-15}$; P2-8b CJT (PASS), $3.584\times10^{-9}$ | YP2-8a CJT (PASS), $3.879\times10^{-15}$ | CJT: chi\_11 = 0.004577873934, chi\_FF = 0.02036224303 = Rust; chi\_33 = 3.067e-16 (massless photon), no mixing |
+| WP2-8b | PASS | $9.437\times10^{-16}$ | $1.000\times10^{-12}$ | P2-3a (PASS), $1.475\times10^{-17}$; P2-3b (PASS), $5.309\times10^{-15}$ | YP2-8b (PASS), $1.443\times10^{-14}$ | the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle |
+| WP2-8c | PASS | $5.919\times10^{-12}$ | $1.000\times10^{-9}$ | P2-8c (PASS), $5.102\times10^{-12}$; P2-8d (PASS), $2.041\times10^{-11}$ | YP2-8c (PASS), $5.918\times10^{-12}$ | the Thouless eigenvalues of the exchange per unit coupling squared: photon W\^3 0.03573178317, B -0.1429271327 = Rust |
+| WP2-8d | PASS | $1.492\times10^{-8}$ | $1.000\times10^{-7}$ | P2-8f (PASS), $0$ | YP2-8d (PASS), $1.492\times10^{-8}$ | CJT with the exchange at g\_v = 0.7, g\_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5) |
 | WP3-11 HS_1_1 | PASS | $2.492\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_1_1 (PASS), $1.103\times10^{-14}$ | YP3-11 HS_1_1 (PASS), $9.618\times10^{-12}$ | HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
 | WP3-11 HS_0_1 | PASS | $4.409\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_0_1 (PASS), $5.616\times10^{-13}$ | YP3-11 HS_0_1 (PASS), $1.478\times10^{-11}$ | HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
 | WP3-11 HS_0_0 | PASS | $4.051\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_0_0 (PASS), $8.612\times10^{-13}$ | YP3-11 HS_0_0 (PASS), $5.701\times10^{-11}$ | HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |

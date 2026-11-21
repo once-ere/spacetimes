@@ -30,15 +30,18 @@ fixed-step integrator such as the fourth-order Runge-Kutta method).
 **The state of this version.** The notebook is written chapter by chapter, and each chapter is committed as soon as it
 is complete. This version contains the introduction, the register of the checks (chapter 0), Part I (items 1 to 5 of
 the problem: the conventions, the manifold M31 and the Lorentz super-loop, the spinor field and theorem D1, the gauge
-group GEE and its covariant derivatives, the Lagrangian and the field equations, and the four analytic solutions), and
-the first section of Part III (the Landau form of the effective potentials: its definition with examples, its accuracy,
-the cause of its error and why the error matters; the answer to the author's questions of 21 November 2026, which he
-asked to be kept in the notebook), with {{GEN:nb_ntests}} checks. The rest of Part III, and Parts II and IV (the three
-methods and the superfluid, the effective Lagrangians and the Mexican hat, the masses of the gauge bosons, the surviving
-symmetry and the dynamics with IDA) follow in the next versions. Until Part II is in the notebook, the section of
-Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
-cell of data with the SHA-256 checksums of its files) and recomputes every number from them. Neither part has a time
-integration.
+group GEE and its covariant derivatives, the Lagrangian and the field equations, and the four analytic solutions),
+Part II (item 6 of the problem: the pair channels and the gauge bosons that mediate the pairing, the three methods and
+their numerical engine, the recursion of the potential to $V^{(2)}_{\rm SF}$, the ground states and their gaps, the
+Goldstone and the collective modes, the susceptibilities and the masses of the gauge bosons, the exchange of the gauge
+bosons), and the first section of Part III (the Landau form of the effective potentials: its definition with
+examples, its accuracy, the cause of its error and why the error matters; the answer to the author's questions of 21
+November 2026, which he asked to be kept in the notebook), with {{GEN:nb_ntests}} checks. The rest of Part III and
+Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons in every vacuum, the surviving
+symmetry and the dynamics with IDA) follow in the next versions. The section of Part III takes the five computed polar
+curves of the effective potential from the Rust program `sf_part3` (a closed cell of data with the SHA-256 checksums of
+its files) and recomputes every number from them; Part II computes all its states itself and compares them with the
+values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time integration.
 
 # 3. The files
 
@@ -52,6 +55,12 @@ The files of the notebook, each with its SHA-256 checksum:
   `{{SHA256:wolfram/source/superfluid.source.wl}}`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
   `{{SHA256:wolfram/source/part1.source.wl}}`
+* `wolfram/source/part2.source.wl`: the source of Part II;\
+  `{{SHA256:wolfram/source/part2.source.wl}}`
+* `wolfram/source/data_part2.wl`: the values of Part II of the Rust program and its table of pair-channel energies,
+  included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the
+  data files and their SHA-256 checksums);\
+  `{{SHA256:wolfram/source/data_part2.wl}}`
 * `wolfram/source/part3_landau.source.wl`: the source of the first section of Part III (the Landau form);\
   `{{SHA256:wolfram/source/part3_landau.source.wl}}`
 * `wolfram/source/data_part3.wl`: the values of Part III of the Rust program and its five polar curves, included in a
@@ -98,12 +107,12 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
     wolframscript -file wolfram/tools/build_notebook.wls wolfram/source/superfluid.source.wl in/superfluid.nb \
         wolfram/tools/sf_formula.wl
 
-The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)` and `(* @@INCLUDECELLS part3_landau.source.wl@@ *)`
-of the main source by the cells of these parts, a line `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that
-file, turns
+The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)` and
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` of the main source by the cells of these parts, a line such as
+`(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 108 cells (one of them a closed cell of data), 357 formulas in the
+reader cannot read as a warning. This version: 151 cells (two of them closed cells of data), 517 formulas in the
 texts, 0 warnings.
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
@@ -124,7 +133,7 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (Part I and the section of Part III: 14 to 17 seconds); the only difference from the notebook is that it prints the computing time after every
+kernel (138 seconds, of which Part II takes about two minutes); the only difference from the notebook is that it prints the computing time after every
 check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
@@ -136,15 +145,18 @@ warning of the Wolfram language); verdict: **{{GEN:nb_verdict}}**.
 # 6. The checks and their counterparts
 
 Every check of the notebook carries the identifier of the same check in the Rust program with the prefix W, and names
-its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart3`, program
-`sf_part3`, for Part III) and in the Python program (`python/sf_part1.py`, `python/sf_part3.py`). The table gives, for each check, the deviation measured by the notebook and by each counterpart
+its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
+`sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III) and in the Python program
+(`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
+steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
 program that writes the table stops with an error if a counterpart is missing from its report or did not pass.
 
 {{GEN:nb_table_checks}}
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
-`data/hck_part1_checks_python.txt`, `data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`.
+`data/hck_part1_checks_python.txt`, `data/hck_part2_checks.txt`, `data/hck_part2_checks_python.txt`,
+`data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`.
 
 # 7. The methods of the notebook and of its counterparts
 
@@ -173,6 +185,17 @@ repeat itself in the others:
   `Eigenvalues` (up to 4800 rows), the gap equation by `FindRoot` with 30 digits, and the profiles of the kink by
   `FullSimplify` in the notebook; the Rust program's own eigensolvers (inertia counting and bisection of
   block-tridiagonal matrices) and the band solver of LAPACK in Python;
+* **the pair channels** (WP2-0a, WP2-0b): exact operator algebra on the 256 states of one point with exact matrices in
+  the notebook (deviation exactly 0) and in floating point in Python; the Rust program checks the same table against
+  the pair contraction of the mean field (P2-0e) and the sum rule of the three W (P2-0d);
+* **the engine of the three methods** (WP2-1 to WP2-8d): the notebook ports the formulas of the energy and of the
+  self-energies, the grid (Gauss-Legendre nodes from `NSolve` of the Legendre polynomial with 40 digits) and the
+  iteration, and uses `Eigensystem` of the exactly Hermitian (symmetrized) $16\times16$ matrices, `Eigenvalues` of the
+  $120\times120$ response matrices, `LinearSolve` for $V^{(2)}_{\rm SF}$, and `NIntegrate` with 30 digits for the angular
+  averages of the Yukawa kernel; the Rust program uses its own eigensolvers (Householder and QL for Hermitian matrices,
+  the shifted QR algorithm for general ones) and the Python program LAPACK. The three programs share the grid (24
+  radial nodes, six directions), the starts and the tolerances, so that the same states are found; the random states
+  of WP2-1 differ;
 * **the accuracy of the Landau form** (WP3-8, WP3-10, WP3-11): the least squares by the function `LeastSquares` on
   scaled columns in the notebook, by Householder reflections in Rust, and by the singular-value decomposition of numpy
   in Python; the quasi-particle energies by `Eigenvalues` of the $16\times16$ matrices (the Rust program's own
@@ -211,6 +234,17 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 | `gScal`, `gVec`, `gPair`, `hS`, `hV`, `hP`, `piOps` | $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$, -- , -- , -- , $\Pi^\iota_{\rm LL}$ | the exact couplings $-8$, $4/5$, $45/2$ of the operator checks, the Hamiltonians of the three contact terms of one point, the pair operators |
 | `wF`, `jF`, `fYM`, `lYM`, `eqsYM`, `gYM` | $W^\iota_{{\rm SF},p}$, $j^{\iota,p}_{\rm SF}$, $W^\iota_{{\rm SF},pp'}$, -- , -- , $g^{\rm v}_{\rm LL}$ | the symbolic gauge fields and currents, the field strengths, the Lagrangian density of the Yang-Mills check, its Euler-Lagrange equations, the coupling |
 | `hPW`, `i1`, `gapAS3` | -- , $I_1$, $\Delta$ | the plane-wave matrix of AS1, the integral of the gap equation of AS3, the gap at $G=22.5$ |
+| `kPs[iota]`, `pairState`, `channelOps`, `channelMats`, `channelStates`, `pairEnergy`, `rustPairEnergy` | $\mathsf K'^\iota_{\rm LL}$, $\lvert\mathsf K\rangle$, $E^{\rm pair}_{\rm SF}$ | Part II: the pseudoscalar pair matrices, the state of two charges in a channel, the seven contact operators, the six channels and their states, the pair energies and the table of the Rust program |
+| `rustPart2`, `rustPairChannels` | -- | Part II: the values of the Rust program `sf_part2` and its table of pair-channel energies |
+| `lamLL`, `gvLL`, `gfLL`, `id8`, `b8`, `k8[iota]`, `zero8` | $\Lambda_{\rm LL}$, $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$, $\mathsf 1_8$, $\beta_{\rm LL}\otimes\mathsf 1_2$, $\mathsf K^\iota_{\rm LL}$ | Part II: the cutoff, the gauge couplings 0.7 and 0.45, and the numerical matrices of the engine |
+| `gaussLegendre`, `gridSF`, `ksProj`, `terms`, `interaction` | $\mathcal P^{\rm KS}_{\rm SF}$ | Part II: the Gauss-Legendre rule, the grid of momenta and weights, the projection of Kohn and Sham, the contact terms of a method, and the energy and self-energies of the contact terms |
+| `makeModel`, `bdg`, `stateOfNode`, `states`, `localDens`, `solveSF` | $\mathsf H_{\rm SF}(\vec q_{\rm LL})$, $\mathsf N_{\rm SF}$, $\mathsf P_{\rm SF}$ | Part II: the free matrices and the normal vacuum on the grid, the matrices of Bogoliubov and de Gennes, the ground state of one and of all nodes, the local matrices, and the self-consistent state |
+| `qpSF`, `gapSF`, `dGap`, `diracMass`, `effCouplings`, `methodsSF`, `shortName` | $E^{X,{\rm gap}}_{\rm SF}$, $\lvert D^X_{\rm SF}\rvert$, $M^{X,{\rm D}}_{\rm SF}$, $g^{X,{\rm S}}_{\rm SF}$, $g^{X,{\rm P}}_{\rm SF}$ | Part II: the smallest quasi-particle energy at a momentum, the gap, the pair amplitude, the Dirac mass, the effective couplings, the five methods and their names |
+| `dP21`, `moAS3`, `solAS3`, `d3AS3`, `gCrit`, `gS2`, `gP2`, `potentialsSF` | $G^{\rm crit}_{\rm LL}$, $G^{\rm S}_{\rm SF}$, $G_{\rm LL}$ | Part II: the deviation of WP2-1, the pairing-only model of AS3 and its solution, the critical pair coupling, the coefficients of $V^{(2)}_{\rm SF}$, and the three potentials |
+| `devSF`, `groundSF`, `groundRows` | -- | Part II: the deviations from the Rust values, the ground states of the 15 cases, and the printed table |
+| `pairsSF`, `toVec`, `fromVec`, `respKernel`, `respFields`, `respExtract`, `maskA`, `maskB`, `response`, `mMat`, `countModes`, `modeRows` | $\mathsf F$, $\mathsf A_n$, $\mathsf B_n$, $\Omega_n$, $\mathsf M(\omega)$ | Part II: the 120 amplitudes of a change of the self-energies and their maps, the kernel of the contact terms, the 120 fields, the response matrices of the nodes, $\mathsf M(\omega)=\chi(\omega)\mathsf F$, the number of its real eigenvalues above 1, and the table of the modes |
+| `chargesSF`, `susceptibilitySF`, `chiRows` | $\chi^{ab}_{\rm SF}$ | Part II: the four charges, the static susceptibilities and their table with the masses $M_W$, $M_Z$ |
+| `kernSF`, `kernIntegral`, `verticesSF`, `makeBosons`, `exchangeSF`, `thoulessSF`, `cjtExchange` | $D_0$, $D_1$ | Part II: the radial kernels of the angular averages, their integrals with the subtracted logarithm, the vertices and the four bosons, the exchange self-energies and energy, the Thouless eigenvalues, and the CJT state with the exchange |
 | `lfVec`, `lfNorm2`, `lfIdentity`, `lfPolar` | $\vec\Phi$, $\lvert\vec\Phi\rvert^2$ | Part III: a complex 3-vector with symbolic real and imaginary parts (`lfRe[k]`, `lfIm[k]`), its squared norm, the identity $\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2=\lvert\vec\Phi\times\vec\Phi^*\rvert^2$ and its value on a polar field (`lfTh`, `lfR`, `lfT1`, `lfT2`: its phase, modulus and direction) |
 | `rustPart3`, `rustEffPot[tag]` | -- | Part III: the values of the Rust program `sf_part3` and its five computed polar curves (applied field, field, energy per volume, Dirac mass) |
 | `lfTags`, `lfName`, `lfPhi0`, `lfE0`, `lfCurve`, `lfFitted` | $X$, $\Phi^X_{0,{\rm SF}}$, $\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})$ | Part III: the five methods, their names, the vacuum field, the energy of the minimum (minus the depth), the polar curve $\{\Phi,\mathcal V^X_{\rm SF}\}$, and its points with $\Phi\le$ a given multiple of $\Phi^X_{0,{\rm SF}}$ |
@@ -247,9 +281,13 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
    of its figure side by side, 880 points wide; the printed copy cut the right panel. The panels now stand one above
    the other, each 460 points wide, and the notebook was built and evaluated again.
 
+8. *A warning of the numerical integration (E8).* The first dry run of Part II gave `NIntegrate` the two radii as
+   machine numbers with the working precision of 30 digits, and the kernel warned that the integrand had less
+   precision than requested; the radii are now given 30 digits (`SetPrecision`), and the warning is gone.
+
 # 10. What follows
 
-The rest of Part III, and Parts II and IV of the notebook (the three methods, the effective Lagrangians, the masses of the gauge bosons, the
-surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the videos) are added in the same way: the
-checks of the Python programs `sf_part2.py`, `sf_part3.py` and `sf_part4.py`, each with its counterparts, and this
+The rest of Part III and Part IV of the notebook (the effective Lagrangians, the masses of the gauge bosons in every
+vacuum, the surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the videos) are added in the
+same way: the checks of the Python programs `sf_part3.py` and `sf_part4.py`, each with its counterparts, and this
 document is extended with each part.
