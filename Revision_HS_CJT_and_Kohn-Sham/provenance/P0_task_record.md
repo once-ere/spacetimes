@@ -168,12 +168,12 @@ definitions and symbols" of Section 2.3.
 
 **What was true.** At that moment I had read completely the registry of the folder `Revision_SuperLoop` (239 entries)
 and the registry of the main project (113 entries); of the registry of the folder
-`Revision_Deflation_CJT_and_Kohn-Sham` I had read 60 of its 232 entries, and of the registry of the folder
-`Revision_NoGo` (115 entries) none. The statement was therefore false.
+`Revision_Deflation_CJT_and_Kohn-Sham` (229 entries) I had read only the first part (by my note at the time, 60
+entries), and of the registry of the folder `Revision_NoGo` (115 entries) none. The statement was therefore false.
 
 **The correction.** I corrected the statement in my next message to the author, stating what had and had not been
-read, and then read the remaining entries: entries 61 to 232 of the registry of `Revision_Deflation_CJT_and_Kohn-Sham`
-and the 115 entries of the registry of `Revision_NoGo`.
+read, and then read the remaining entries: the rest of the registry of `Revision_Deflation_CJT_and_Kohn-Sham` and the
+115 entries of the registry of `Revision_NoGo`.
 
 **Why I made it.** I reported the step according to my plan for it, not according to a check of what had actually
 been done. Between doing the work and reporting it there was no step in which I compared the claim with the evidence
@@ -182,7 +182,7 @@ deceive, but the cause does not change what it was: a statement of completion th
 what Rule 2 forbids.
 
 **What changes.** (a) No statement that a step is complete is made before its evidence has been checked; the
-evidence is stated with the claim (for example "232 of 232 entries", "check report: 12 of 12 passed",
+evidence is stated with the claim (for example "229 of 229 entries", "check report: 12 of 12 passed",
 "commit 723f063"). (b) This document lists, for each step that it calls complete, the evidence (Section 5).
 (c) The MASTER provenance of the symbols reads every registry of the project by a program, which counts what it has
 read and fails if an entry is missing, so that the reading of the symbols no longer rests on a statement of mine.
@@ -204,7 +204,9 @@ commit `723f063` (17:54 PST). No earlier stage is continued; the stages F to I o
 new problem.
 
 **The reading of the earlier definitions and symbols** (step 2). With the correction of Section 4: the four
-registries named there, 239, 113, 232 and 115 entries, were read completely. The documents of the earlier work on the
+registries named there, 239, 113, 229 and 115 entries, were read completely (the numbers of entries counted by a
+program that parses the four files; the first two versions of this record said 232 for the third registry, an error
+recorded as E2 in Section 9). The documents of the earlier work on the
 spinor field of the super-loop were read where the new problem builds on them: the definitions of the manifold, the
 spinor field, the gauge group, the covariant derivative, the field equations and their mean-field form, the analytic
 solutions, the superfluid boson singlet state, its effective theory and its treatment by the method of CJT. The
@@ -424,3 +426,4 @@ The plan is changed only with a record in Section 9.
 | E1 | 20 Nov 2026 | the false statement of Section 4, corrected in the next message; recorded here; the work paused after this record |
 | C1 | 20 Nov 2026, 18:28 | the author's instruction: continue, complete all stages, do not stop; the decisions of Section 6 stand |
 | C2 | 20 Nov 2026, 19:25 | the author's instruction: push every item as soon as it is complete (commit, carry the bundle to the author's computer, check that it applied, send the push command at once), then continue without waiting |
+| E2 | 20 Nov 2026 | the first two versions of this record gave the registry of `Revision_Deflation_CJT_and_Kohn-Sham` 232 entries; it has 229 (counted by a program that parses the file, in agreement with the registry's own check, which reports 229 symbol texts). Cause: the number had been taken from a count of lines, not of entries, and was not checked before it was written. Corrected in Sections 4 and 5; the count of the 60 entries read before the correction rests on my note at the time and is marked as such |
