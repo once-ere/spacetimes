@@ -10,6 +10,7 @@ Usage (from the folder Revision_HS_CJT_and_Kohn-Sham):
     python3 wolfram/tools/make_data_cells.py 2      # writes wolfram/source/data_part2.wl
     python3 wolfram/tools/make_data_cells.py 3      # writes wolfram/source/data_part3.wl
     python3 wolfram/tools/make_data_cells.py 3T     # writes wolfram/source/data_part3_thermal.wl (Section III.T)
+    python3 wolfram/tools/make_data_cells.py 3G     # writes wolfram/source/data_part3_ginzburg.wl (Section III.G)
     python3 wolfram/tools/make_data_cells.py 4      # writes wolfram/source/data_part4.wl
 """
 import csv
@@ -78,17 +79,27 @@ def main():
         pieces.append(table_list("part3_thermal_landau.csv", "rustThermalLandau", cols, set(cols[1:])))
         cols = ["method", "tau", "applied_field", "Phi", "F"]
         pieces.append(table_list("part3_thermal_curves.csv", "rustThermalCurves", cols, set(cols[1:])))
+    elif part == "3G":
+        # the gradient coefficient at T_c, the Ginzburg number, the two regularizations and the Higgs sector
+        cols = ["method", "T_c", "Dirac_mass_normal", "alpha", "b", "c", "c_isospin_twist", "c_fixed_channels", "c_T3_twist",
+                "c_twisted_states", "c_k001", "c_k002", "other_channels_k0", "other_channels_k001", "a_at_Tc", "Gi", "Gi_Tc", "xi0", "Phi_G"]
+        pieces.append(table_list("part3_ginzburg.csv", "rustGinzburg", cols, set(cols[1:])))
+        cols = ["method", "k", "a_minus_a0_sphere", "a_minus_a0_lens", "sphere_over_k2", "lens_over_k"]
+        pieces.append(table_list("part3_ginzburg_regions.csv", "rustGinzburgRegions", cols, set(cols[1:])))
+        cols = ["method", "v_SF", "f_F", "f_I", "M_H", "M_NU", "M_W", "M_Z", "M_H_over_v_SF", "lambda_SF", "M_H_over_M_W", "M_H_over_2E_gap",
+                "M_NU_over_M_H", "f_F_over_f_I", "M_W_over_M_Z", "Gamma_over_M_H", "T_c_over_v_SF", "Lambda_GeV", "M_H_GeV", "E_gap_GeV", "T_c_GeV"]
+        pieces.append(table_list("part3_higgs.csv", "rustHiggs", cols, set(cols[1:])))
     elif part == "4":
         pieces.append(values_assoc("part4_values.csv", "rustPart4"))
     else:
-        sys.exit("usage: make_data_cells.py 2|3|3T|4")
-    where = "Section III.T of Part III" if part == "3T" else "Part %s" % part
+        sys.exit("usage: make_data_cells.py 2|3|3T|3G|4")
+    where = {"3T": "Section III.T of Part III", "3G": "Section III.G of Part III"}.get(part, "Part %s" % part)
     head = ["(* The values of the Rust programs that %s of the notebook uses or compares with its own results, written by" % where,
             "   wolfram/tools/make_data_cells.py from the data files of the folder data/ (do not edit):"]
     for path, _ in pieces:
         head.append("     %s   SHA-256 %s" % (os.path.relpath(path, ROOT), sha(path)))
     head.append("*)")
-    out = os.path.join(ROOT, "wolfram", "source", "data_part3_thermal.wl" if part == "3T" else "data_part%s.wl" % part)
+    out = os.path.join(ROOT, "wolfram", "source", {"3T": "data_part3_thermal.wl", "3G": "data_part3_ginzburg.wl"}.get(part, "data_part%s.wl" % part))
     with open(out, "w", encoding="utf-8") as f:
         f.write("\n".join(head) + "\n" + "\n".join(code for _, code in pieces) + "\n")
     print("wrote %s" % os.path.relpath(out, ROOT))

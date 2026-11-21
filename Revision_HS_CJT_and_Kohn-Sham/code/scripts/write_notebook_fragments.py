@@ -39,6 +39,10 @@ def report_values(name):
         m = re.match(r"(PASS|FAIL) (\S+)\s", line)
         if m:
             out.setdefault(m.group(2), (m.group(1), "--"))
+            # a check of a fact of one method, written "ID TAG TAG: statement": its identifier with the tag
+            m2 = re.match(r"(PASS|FAIL) (\S+) (\S+) (\S+):\s", line)
+            if m2 and m2.group(3) == m2.group(4):
+                out.setdefault("%s %s" % (m2.group(2), m2.group(3)), (m2.group(1), "--"))
     return out
 
 

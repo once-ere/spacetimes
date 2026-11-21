@@ -121,7 +121,20 @@ fn main() {
             let (rs, rl) = (sl[1].0 / sl[0].0, sl[1].1 / sl[0].1);
             rep.add_bool(&format!("P3-G9 {}", tag), &format!("{}: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in |k| (ratio {:.5} for k = 0.01 and 0.005, 2 for |k|), with the cutoff on the relative momentum quadratic (ratio {:.6}, 4 for k^2)", tag, rl, rs),
                          (rl / 2.0 - 1.0).abs() < 0.02 && (rs / 4.0 - 1.0).abs() < 1e-3, "");
+            // P3-G10: alpha from the central differences of the linear response equals the closed form of (12.9)
+            let (al_c, lam_c, mn_c) = ginzburg::alpha_closed(&model, th.g_s, th.g_p, th.tc);
+            rep.add(&format!("P3-G10 {}", tag), &format!("{}: alpha = T_c da/dT = {:.10} from central differences of the linear response a(0, T) (Richardson) equals the closed form -T_c lambda'(T_c)/(lambda^2 g^P) = {:.10} (lambda^P(T_c) = {:.12}, Dirac mass of the normal state {:.10} from its scalar self-consistency; relative difference)", tag, gz.alpha, al_c, lam_c, mn_c),
+                    (gz.alpha - al_c).abs() / al_c, 1e-9);
+            // P3-G11: the two forms of the Ginzburg number (12.13)
+            let dc = gz.alpha * gz.alpha / (2.0 * gz.b * gz.tc);
+            let gi2 = ginzburg::N_COMP * ginzburg::N_COMP / (256.0 * pi2 * (dc * gz.xi0.powi(3)).powi(2));
+            rep.add(&format!("P3-G11 {}", tag), &format!("{}: the two forms of the Ginzburg number (12.13) agree: n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = {:.10} and n^2/(256 pi^2 (Delta C xi0^3)^2) = {:.10}, with Delta C = alpha^2/(2 b T_c) = {:.6e} and xi0 = (c/alpha)^(1/2) = {:.8} (relative difference)", tag, gz.gi, gi2, dc, gz.xi0),
+                    (gi2 / gz.gi - 1.0).abs(), 1e-12);
             if tag == "CJT" {
+                // P3-G12: the quartic coefficient b at T_c does not depend on the applied fields of its interpolation
+                let (_, b2) = ginzburg::taylor_nonlinear_fields(&mut model, th.tc, None, &[0.015, 0.025, 0.035, 0.045]);
+                rep.add("P3-G12 CJT", &format!("CJT at T_c: the quartic coefficient b of the free energy at the origin (cubic interpolation of F/Phi^2 in Phi^2 through four states of the nonlinear engine) is positive and does not depend on the applied fields: b = {:.10} from the fields 0.01 to 0.04 and {:.10} from the fields 0.015 to 0.045 (relative difference)", gz.b, b2),
+                        if gz.b > 0.0 { (b2 / gz.b - 1.0).abs() } else { f64::INFINITY }, 1e-6);
                 let gp8 = Grid::new(24, 1.0, DirRule::Product(8, 8));
                 let cp = ginzburg::gradient(&model, &gp8, &n_c, th.tc, &ident, 2.0, ginzburg::K1, true).0;
                 let m40 = Model::new(M_LL, 0.0, terms(&m, &v2), grid(40));
@@ -190,6 +203,21 @@ fn main() {
             rep.add_bool(&format!("P3-H1 {}", tag), &format!("{}: the amplitude mode lies below the threshold of two quasi-particles, M_H = {:.6} < 2 E_gap = {:.6} (M_H / 2 E_gap = {:.4})", tag, rpa_h, 2.0 * gap0, hg.mh_over_2gap), rpa_h < 2.0 * gap0, "");
             rep.add(&format!("P3-H2 {}", tag), &format!("{}: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = {:.8} and f_I^2/f_F = {:.8} (largest relative difference)", tag, hg.f_f, hg.f_i * hg.f_i / hg.f_f),
                     ((hg.g_phase / hg.f_f - 1.0).abs()).max((hg.g_iso / (hg.f_i * hg.f_i / hg.f_f) - 1.0).abs()), 1e-8);
+            // P3-H3: the numbers of Table 14.2 recomputed here directly from the susceptibilities chi_11, chi_FF, the masses
+            // of the collective modes, the gap and T_c (v = 2 f_I, f_I = chi_11^(1/2), f_F = chi_FF^(1/2)/2, M_W = g^v f_I,
+            // M_Z = 2 g^F f_F, lambda = M_H^2/(2 v^2), Gamma/M_H = 3 M_H^2/(32 pi f_F^2)), independently of the module higgs
+            {
+                let v = 2.0 * st.chi11.sqrt();
+                let (f_i, f_f) = (st.chi11.sqrt(), 0.5 * st.chiff.sqrt());
+                let (mw, mz) = (GV * f_i, 2.0 * GF * f_f);
+                let mine = [v, f_f, f_i, rpa_h / v, rpa_h * rpa_h / (2.0 * v * v), rpa_h / mw, rpa_h / (2.0 * gap0), rpa_nu / rpa_h, f_f / f_i, mw / mz,
+                            3.0 * rpa_h * rpa_h / (32.0 * std::f64::consts::PI * f_f * f_f), th.tc / v, rpa_h * 246.22 / v];
+                let theirs = [hg.v_sf, hg.f_f, hg.f_i, hg.mh_over_v, hg.lambda, hg.mh_over_mw, hg.mh_over_2gap, hg.mnu_over_mh, hg.ff_over_fi, hg.mw_over_mz,
+                              hg.width_over_mh, hg.tc_over_v, hg.mh_gev];
+                let dev = mine.iter().zip(&theirs).map(|(a, b)| (a - b).abs() / b.abs()).fold(0.0, f64::max);
+                rep.add(&format!("P3-H3 {}", tag), &format!("{}: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = {:.8}, M_H/v_SF = {:.6}, lambda_SF = {:.5}, Gamma/M_H = {:.5}) = the module higgs (largest relative difference)", tag, v, rpa_h / v, mine[4], mine[10]),
+                        dev, 1e-12);
+            }
             println!("{:<20} Higgs: v_SF {:.6} M_H/v {:.4} lambda {:.3} M_H/M_W {:.3} M_H/2E_gap {:.4} M_NU/M_H {:.4} f_F/f_I {:.4} Gamma/M_H {:.3} Lambda = {:.1} GeV, M_H = {:.1} GeV", m.name(), hg.v_sf, hg.mh_over_v, hg.lambda, hg.mh_over_mw, hg.mh_over_2gap, hg.mnu_over_mh, hg.ff_over_fi, hg.width_over_mh, hg.lambda_gev, hg.mh_gev);
             higgs_rows.push(vec![tag.clone(), f(hg.v_sf), f(hg.f_f), f(hg.f_i), f(hg.mh), f(hg.mnu), f(hg.mw), f(hg.mz), f(hg.mh_over_v), f(hg.lambda), f(hg.mh_over_mw), f(hg.mh_over_2gap),
                                  f(hg.mnu_over_mh), f(hg.ff_over_fi), f(hg.mw_over_mz), f(hg.width_over_mh), f(hg.tc_over_v), f(hg.lambda_gev), f(hg.mh_gev), f(hg.gap_gev), f(hg.tc_gev)]);
@@ -214,6 +242,11 @@ fn main() {
     {
         // the last row: the Standard Model values of the ratios that have an analogue here (NaN for the others)
         let sm = higgs::standard_model();
+        // P3-H4: the row from the values of the Particle Data Group against rounded values typed independently
+        let typed = [0.5085, 0.1293, 1.558, 0.8814];
+        let dev = sm.iter().zip(&typed).map(|(a, b)| (a - b).abs() / b).fold(0.0, f64::max);
+        rep.add("P3-H4", &format!("the Standard-Model row: M_H/v = {:.5}, lambda = M_H^2/(2 v^2) = {:.5}, M_H/M_W = {:.5}, M_W/M_Z = {:.5} from m_H = 125.20, v = 246.22, M_W = 80.3692, M_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3)", sm[0], sm[1], sm[2], sm[3]),
+                dev, 1e-3);
         let mut row = vec!["SM".to_string()];
         let nan = f64::NAN;
         for v in [higgs::SM_V, nan, higgs::SM_V / 2.0, higgs::SM_MH, nan, higgs::SM_MW, higgs::SM_MZ, sm[0], sm[1], sm[2], nan, nan, nan, sm[3], nan, nan, nan, nan, nan, nan] {

@@ -2020,8 +2020,8 @@ the channel $\mathsf K^3_{\rm LL}$ alone: there the pair self-energy is $\mathsf
 $\Phi^{X,3}_{\rm SF}=\lambda^{\rm P}_{\rm SF}(T)$ (the definition of the eigenvalue), and (12.15) is
 $\tfrac12(1-\lambda^{\rm P}_{\rm SF})\cdot2\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$. At $T^{X,{\rm c}}_{\rm SF}$, $a^{X,{\rm Tay}}_{\rm SF}(0;T)$ vanishes to
 $10^{-14}\alpha^{X,{\rm GL}}_{\rm SF}$ (*P3-G3*), and $\alpha^{X,{\rm GL}}_{\rm SF}$ is $-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$ (the
-Python program computes it in this closed form, with the Dirac mass of the normal state from its scalar
-self-consistency and no BdG engine: *check YP3-G2*).
+programs compute it also in this closed form, with the Dirac mass of the normal state from its scalar self-consistency
+and no BdG engine, and it agrees with the central differences below to $5\times10^{-12}$: *check P3-G10*).
 
 **The momenta of the pair and the regularization.** The model has the cutoff $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$ on the
 momenta of the uniform states, and for a moving pair the cutoff must be placed on one of two momenta. With the cutoff on
@@ -2058,11 +2058,15 @@ at $q^{\rm pair}_{\rm SF}=0.01$ and $0.02$ with the Richardson extrapolation (th
 $\mathsf c^X_{\rm SF}$, *P3-G6*); $\alpha^{X,{\rm GL}}_{\rm SF}$ comes from central differences of $a^{X,{\rm Tay}}_{\rm SF}(0;T)$ at
 $T^{X,{\rm c}}_{\rm SF}(1\pm0.002)$ and $T^{X,{\rm c}}_{\rm SF}(1\pm0.004)$ (the normal state recomputed at every temperature) with the Richardson
 extrapolation, and $b^{X,{\rm Tay}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$ from the nonlinear free energy of four small applied fields at
-$T^{X,{\rm c}}_{\rm SF}$ (as in Section 12.4). The six directions of the momentum grid are exact at second order in
+$T^{X,{\rm c}}_{\rm SF}$ (as in Section 12.4); four other fields, $0.015$ to $0.045$, give the same $b^{\rm CJT,Tay}_{\rm SF}$ to
+$10^{-7}$ (*P3-G12*). The six directions of the momentum grid are exact at second order in
 $q^{\rm pair}_{\rm SF}$ (as for the twisted states of Section 12.2): 64 directions and 40 radial nodes give $\mathsf c^{\rm CJT}_{\rm SF}$ to
-$2\times10^{-10}$ (*P3-G8*). The Python program repeats $\mathsf c^X_{\rm SF}$ with its own implementation of (12.14), (12.15) and
-64 directions (*YP3-G1*, to $10^{-7}$), $\alpha^{X,{\rm GL}}_{\rm SF}$ in closed form (*YP3-G2*), the Ginzburg number (*YP3-G3*) and
-$b^{\rm CJT,Tay}_{\rm SF}(T^{\rm CJT,c}_{\rm SF})$ with its own nonlinear thermal states (*YP3-G4*).
+$2\times10^{-10}$ (*P3-G8*). The two forms of (12.13) give the same Ginzburg number (*P3-G11*). The Python program
+repeats every one of the checks P3-G1 to P3-G12 with its own implementation of (12.14), (12.15) on 64 directions and
+with its own nonlinear thermal states (the checks YP3-G1 to YP3-G12, each with the identifier of the Rust check of the
+same statement and the prefix Y; its gradient coefficients agree with those of the Rust program to $2\times10^{-10}$,
+*YP3-G8*). The notebook `superfluid.nb` repeats them with a third implementation in the Wolfram Language, except the
+twisted states of HS $(0,0)$ (its checks WP3-G1 to WP3-G6 and WP3-G8 to WP3-G12, all passed).
 
 {{GEN:p3_table_ginzburg}}
 
@@ -2411,7 +2415,12 @@ units of $\Lambda_{\rm LL}$; rows 8 to 16: the dimensionless numbers; rows 17 to
 $246.22$ GeV, and the mass of the amplitude mode and the critical temperature on that scale; row 20: the Ginzburg number
 of Section 12.5. The column of the Standard Model gives the measured values (Particle Data Group 2024; $\Gamma_H/m_H$ with
 $\Gamma_H=3.7$ MeV) and, in rows 16 and 19, the temperature $159.5\pm1.5$ GeV of its thermal crossover (D'Onofrio and
-Rummukainen 2016), which is not a phase transition (so the Standard Model has no critical region, row 20). Data: `data/part3_higgs.csv` (its last row: the Standard Model).
+Rummukainen 2016), which is not a phase transition (so the Standard Model has no critical region, row 20). The
+numbers of the table are recomputed from the susceptibilities $\chi^{11}_{\rm SF}$, $\chi^{\rm FF}_{\rm SF}$, the masses, the gap and the critical
+temperature by (14.9) and (14.10) independently of the module that writes them (*check P3-H3*), and the column of the
+Standard Model from the values of the Particle Data Group (*check P3-H4*); the Python program and the notebook repeat
+these checks (YP3-H1 to YP3-H4, WP3-H1 to WP3-H4; the notebook derives the couplings of the amplitude field by exact
+symbolic differentiation of (12.4)). Data: `data/part3_higgs.csv` (its last row: the Standard Model).
 
 **The answer for each method.** The five methods are judged by seven properties of the Higgs sector of the Standard
 Model:
@@ -2868,9 +2877,9 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   susceptibilities and the twisted states) and `thermal` (Section 12.4: the free energy at finite temperature, the
   critical temperatures, Table 12.4 and Figure 10, with the checks P3-T1 to P3-T9), `ginzburg` (Section 12.5: the static
   pair response (12.14) of a moving pair, the gradient coefficient at the critical temperature, the two regularizations
-  of a moving pair, the twisted states, the Ginzburg number, Table 12.5, with the checks P3-G1 to P3-G9) and `higgs`
-  (Section 14.6: the numbers of Table 14.2, the couplings of the amplitude field to the Goldstone fields and the width
-  (14.10), with the checks P3-H1 and P3-H2)) uses the library `sfcore`, with two functions added for this part in the
+  of a moving pair, the twisted states, the slope in closed form, the Ginzburg number, Table 12.5, with the checks
+  P3-G1 to P3-G12) and `higgs` (Section 14.6: the numbers of Table 14.2, the couplings of the amplitude field to the
+  Goldstone fields and the width (14.10), with the checks P3-H1 to P3-H4)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
   Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -2880,7 +2889,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
       ./target/release/sf_part3
 
   Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about fifteen minutes on two
-  processor cores (889 s in the run of the report; the free energy at finite temperature takes most of it: near the
+  processor cores (899 s in the run of the report; the free energy at finite temperature takes most of it: near the
   critical temperature the iterations converge slowly).
 * **Python.** `python/sf_part3.py` recomputes, with the engine of `python/sf_part2.py`, the minima, the curvatures of the
   effective potentials, the Taylor coefficients at the origin, the susceptibilities and the stiffness of the twisted
@@ -2890,12 +2899,16 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   temperatures), solves the gap equation (12.10) of HS $(0,0)$ alone, computes the Taylor coefficients of the free
   energy of CJT at $0.9\,T^{\rm CJT,c}_{\rm SF}$ and the order parameter of Landau's theory, recomputes from the data file of
   the free-energy curves the residuals of their Landau forms, shows for the five methods that
-  $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (checks YP3-T1 to YP3-T9; each has the identifier of
-  the Rust check of the same statement with the prefix Y), recomputes the gradient coefficient at the critical
-  temperature of the five methods with its own implementation of (12.14), (12.15) and 64 directions, the slope
-  $\alpha^{X,{\rm GL}}_{\rm SF}$ in closed form, the Ginzburg numbers and the quartic coefficient of CJT at its critical temperature
-  (checks YP3-G1 to YP3-G4), and recomputes the numbers of Table 14.2 and the couplings of the amplitude field from the
-  data files (checks YP3-H1 to YP3-H3), and compares all of them with the values of the Rust program;
+  $\lambda^{\rm P}_{\rm SF}(T)$ does not increase with the temperature (checks YP3-T1 to YP3-T9), repeats every check of
+  Section 12.5 with its own implementation of (12.14), (12.15) on 64 directions and with its own nonlinear thermal
+  states: the coefficient at zero pair momentum against the Taylor coefficient and against (12.16), the vanishing at
+  the critical temperature, the other pair channels, the isospin twist, the gradient coefficient and its extrapolation,
+  the twisted states of HS $(0,0)$, the independence of the quadrature, the two regularizations, the slope in closed
+  form, the two forms of the Ginzburg number and the quartic coefficient of CJT (checks YP3-G1 to YP3-G12), and
+  repeats the checks of Section 14.6: the amplitude mode below the threshold, the couplings of the amplitude field by
+  differentiating (12.4), the numbers of Table 14.2 recomputed from the data files and the row of the Standard Model
+  (checks YP3-H1 to YP3-H4); each check has the identifier of the Rust check of the same statement with the prefix Y,
+  and the program compares its values with those of the Rust program;
   `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11; it writes each PDF file without its creation date, so
   that a rerun gives the same bytes and the same SHA-256 checksums as those of Section 16.12:
 
@@ -3156,13 +3169,26 @@ Each of the following was found before part II was committed.
    temperature, the Ginzburg number, is {{GEN:p3_gz_Gi}}. The answer now says that it holds for the mean-field free energy
    of the methods, and the remark at the end of Section 12.4 states the result of Section 12.5. The header of the program
    `sf_part3` said that it runs about two minutes; since Section 12.4 it runs about fifteen minutes (845 s and 888 s in
-   the runs of the two earlier reports, 889 s with Section 12.5); the header and Section 16.9 now say so. A first draft
+   the runs of the two earlier reports, 889 s with Section 12.5 and 899 s with the checks of item 10); the header and
+   Section 16.9 now say so. A first draft
    of this item and of Section 16.9 said "about sixteen minutes with Section 12.5": that was an estimate written before
    the program was run, and it was false (the new modules add about a second); it was corrected before the commit.
 9. The figure program of Part III wrote each PDF file with the date and time of its creation, so that a rerun gave
    files with the same drawing but other SHA-256 checksums than those listed in Section 16.12. It now writes the PDF
    files without the creation date; the checksums of Section 16.12 are those of the files written so, and a rerun
    reproduces them.
+10. The Python checks of Sections 12.5 and 14.6 were first numbered YP3-G1 to YP3-G4 and YP3-H1 to YP3-H3 in the order
+    in which the Python program made them, without regard to the rule of the identifiers (a Python check carries the
+    identifier of the Rust check of the same statement with the prefix Y): YP3-G1 to YP3-G4, YP3-H1 and YP3-H3 named
+    other statements than the Rust checks P3-G1 to P3-G4, P3-H1 and P3-H3 (only YP3-H2 matched), the error of item 7
+    again. It was found when the notebook named the counterparts of its checks of Sections 12.5 and 14.6, before the
+    notebook was evaluated. The Python program now makes, with its own engine, the counterpart of every Rust check
+    P3-G1 to P3-G9, P3-H1 and P3-H2 under the identifier of the rule. Its earlier checks of statements that had no Rust
+    check (the slope in closed form, the two forms of the Ginzburg number, the quartic coefficient of CJT, the numbers
+    of Table 14.2 recomputed from the data files, the row of the Standard Model) received Rust checks of the same
+    statements, P3-G10 to P3-G12, P3-H3 and P3-H4, whose identifiers they now carry; the earlier YP3-G1 (the gradient
+    coefficient on 64 directions) is now YP3-G8, the counterpart of P3-G8 (the gradient coefficient does not depend on
+    the quadrature). The Rust program makes 156 checks (all pass, 899 s), the Python program 113 (all pass, 99 s).
 
 ## 17.4 Part IV
 

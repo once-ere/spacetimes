@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 09:49:34", "kernel" -> {0, 14165}, 
+<|"finished" -> "Sat 21 Nov 2026 13:43:24", "kernel" -> {0, 14234}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -416,5 +416,353 @@ difference); the quartic residual falls towards T_c (1.579e-2, 7.470e-3, \
     "deviation" -> 4.875983837574409*^-11, "tolerance" -> 1.*^-8, 
     "text" -> "CJT: at T = 0 the free energy is the effective potential: the \
 residual of the Landau form of the curve at T = 0 is that of Section III.L \
-(relative difference)", "rust" -> "P3-T7 CJT", "python" -> "YP3-T7 CJT"|>}, 
- "line" -> 363, "seconds" -> 448.661047`9.103463358978885|>
+(relative difference)", "rust" -> "P3-T7 CJT", "python" -> "YP3-T7 CJT"|>, 
+   <|"id" -> "WP3-G1 HS_1_1", "pass" -> True, 
+    "deviation" -> 7.97504585215478*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (1, 1): at 0.9 T_c the coefficient a(0) of |Phi|^2 from the \
+static pair response (-1.343e-3) equals the Taylor coefficient a^Tay of the \
+nonlinear free energy of Section III.T (-1.343e-3) (relative difference)", 
+    "rust" -> "P3-G1 HS_1_1", "python" -> "YP3-G1 HS_1_1"|>, 
+   <|"id" -> "WP3-G2 HS_1_1", "pass" -> True, 
+    "deviation" -> 1.0991907481343948*^-12, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (1, 1): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at \
+T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest \
+relative difference)", "rust" -> "P3-G2 HS_1_1", 
+    "python" -> "YP3-G2 HS_1_1"|>, <|"id" -> "WP3-G10 HS_1_1", 
+    "pass" -> True, "deviation" -> 1.4961154605226713*^-12, 
+    "tolerance" -> 1.*^-8, "text" -> "HS (1, 1): alpha = T_c da/dT = \
+0.01403788523 from central differences of the static pair response \
+(Richardson) = 0.01403788523 in closed form (lambda^P(T_c) = 1., M_n = \
+0.2066851932) = Rust (largest relative difference)", 
+    "rust" -> "P3-G10 HS_1_1", "python" -> "YP3-G10 HS_1_1"|>, 
+   <|"id" -> "WP3-G3 HS_1_1", "pass" -> True, 
+    "deviation" -> 4.0799172430577496*^-14, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (1, 1): a(0, T_c) vanishes to the accuracy of T_c (|a(0, \
+T_c)| / alpha)", "rust" -> "P3-G3 HS_1_1", "python" -> "YP3-G3 HS_1_1"|>, 
+   <|"id" -> "WP3-G4 HS_1_1", "pass" -> True, "deviation" -> 0., 
+    "tolerance" -> 1.*^-12, "text" -> "HS (1, 1): at zero pair momentum no \
+other pair channel is induced (norm of the self-consistent components of P^a \
+other than (K^iota)^dag)", "rust" -> "P3-G4 HS_1_1", 
+    "python" -> "YP3-G4 HS_1_1"|>, <|"id" -> "WP3-G1 HS_0_1", "pass" -> True, 
+    "deviation" -> 1.7468862901806725*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 1): at 0.9 T_c the coefficient a(0) of |Phi|^2 from the \
+static pair response (-1.209e-3) equals the Taylor coefficient a^Tay of the \
+nonlinear free energy of Section III.T (-1.209e-3) (relative difference)", 
+    "rust" -> "P3-G1 HS_0_1", "python" -> "YP3-G1 HS_0_1"|>, 
+   <|"id" -> "WP3-G2 HS_0_1", "pass" -> True, 
+    "deviation" -> 7.142314976564212*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (0, 1): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at \
+T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest \
+relative difference)", "rust" -> "P3-G2 HS_0_1", 
+    "python" -> "YP3-G2 HS_0_1"|>, <|"id" -> "WP3-G10 HS_0_1", 
+    "pass" -> True, "deviation" -> 2.0141917164463835*^-12, 
+    "tolerance" -> 1.*^-8, "text" -> "HS (0, 1): alpha = T_c da/dT = \
+0.01269913755 from central differences of the static pair response \
+(Richardson) = 0.01269913755 in closed form (lambda^P(T_c) = 1., M_n = 0.2) = \
+Rust (largest relative difference)", "rust" -> "P3-G10 HS_0_1", 
+    "python" -> "YP3-G10 HS_0_1"|>, <|"id" -> "WP3-G3 HS_0_1", 
+    "pass" -> True, "deviation" -> 4.6388814141908836*^-14, 
+    "tolerance" -> 1.*^-9, "text" -> "HS (0, 1): a(0, T_c) vanishes to the \
+accuracy of T_c (|a(0, T_c)| / alpha)", "rust" -> "P3-G3 HS_0_1", 
+    "python" -> "YP3-G3 HS_0_1"|>, <|"id" -> "WP3-G4 HS_0_1", "pass" -> True, 
+    "deviation" -> 4.440933447525036*^-16, "tolerance" -> 1.*^-12, 
+    "text" -> "HS (0, 1): at zero pair momentum no other pair channel is \
+induced (norm of the self-consistent components of P^a other than \
+(K^iota)^dag)", "rust" -> "P3-G4 HS_0_1", "python" -> "YP3-G4 HS_0_1"|>, 
+   <|"id" -> "WP3-G1 HS_0_0", "pass" -> True, 
+    "deviation" -> 8.823147783682405*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 0): at 0.9 T_c the coefficient a(0) of |Phi|^2 from the \
+static pair response (-1.016e-3) equals the Taylor coefficient a^Tay of the \
+nonlinear free energy of Section III.T (-1.016e-3) (relative difference)", 
+    "rust" -> "P3-G1 HS_0_0", "python" -> "YP3-G1 HS_0_0"|>, 
+   <|"id" -> "WP3-G2 HS_0_0", "pass" -> True, 
+    "deviation" -> 4.361697203691235*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (0, 0): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at \
+T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest \
+relative difference)", "rust" -> "P3-G2 HS_0_0", 
+    "python" -> "YP3-G2 HS_0_0"|>, <|"id" -> "WP3-G10 HS_0_0", 
+    "pass" -> True, "deviation" -> 2.7130018054869585*^-12, 
+    "tolerance" -> 1.*^-8, "text" -> "HS (0, 0): alpha = T_c da/dT = \
+0.01074338535 from central differences of the static pair response \
+(Richardson) = 0.01074338535 in closed form (lambda^P(T_c) = 1., M_n = 0.2) = \
+Rust (largest relative difference)", "rust" -> "P3-G10 HS_0_0", 
+    "python" -> "YP3-G10 HS_0_0"|>, <|"id" -> "WP3-G3 HS_0_0", 
+    "pass" -> True, "deviation" -> 5.93006752635891*^-14, 
+    "tolerance" -> 1.*^-9, "text" -> "HS (0, 0): a(0, T_c) vanishes to the \
+accuracy of T_c (|a(0, T_c)| / alpha)", "rust" -> "P3-G3 HS_0_0", 
+    "python" -> "YP3-G3 HS_0_0"|>, <|"id" -> "WP3-G4 HS_0_0", "pass" -> True, 
+    "deviation" -> 3.2591788140372538*^-18, "tolerance" -> 1.*^-12, 
+    "text" -> "HS (0, 0): at zero pair momentum no other pair channel is \
+induced (norm of the self-consistent components of P^a other than \
+(K^iota)^dag)", "rust" -> "P3-G4 HS_0_0", "python" -> "YP3-G4 HS_0_0"|>, 
+   <|"id" -> "WP3-G1 KS", "pass" -> True, "deviation" -> 
+     4.374102942120868*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "KS: at 0.9 T_c the coefficient a(0) of |Phi|^2 from the static \
+pair response (-1.051e-3) equals the Taylor coefficient a^Tay of the \
+nonlinear free energy of Section III.T (-1.051e-3) (relative difference)", 
+    "rust" -> "P3-G1 KS", "python" -> "YP3-G1 KS"|>, 
+   <|"id" -> "WP3-G2 KS", "pass" -> True, "deviation" -> 
+     5.239791532555912*^-12, "tolerance" -> 1.*^-9, 
+    "text" -> "KS: a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = \
+0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative \
+difference)", "rust" -> "P3-G2 KS", "python" -> "YP3-G2 KS"|>, 
+   <|"id" -> "WP3-G10 KS", "pass" -> True, "deviation" -> 
+     6.309130857564906*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "KS: alpha = T_c da/dT = 0.01117552279 from central differences \
+of the static pair response (Richardson) = 0.01117552279 in closed form \
+(lambda^P(T_c) = 1., M_n = 0.1622929325) = Rust (largest relative \
+difference)", "rust" -> "P3-G10 KS", "python" -> "YP3-G10 KS"|>, 
+   <|"id" -> "WP3-G3 KS", "pass" -> True, "deviation" -> 
+     4.44324131374413*^-14, "tolerance" -> 1.*^-9, 
+    "text" -> 
+     "KS: a(0, T_c) vanishes to the accuracy of T_c (|a(0, T_c)| / alpha)", 
+    "rust" -> "P3-G3 KS", "python" -> "YP3-G3 KS"|>, 
+   <|"id" -> "WP3-G4 KS", "pass" -> True, "deviation" -> 
+     4.440949266878626*^-16, "tolerance" -> 1.*^-12, 
+    "text" -> "KS: at zero pair momentum no other pair channel is induced \
+(norm of the self-consistent components of P^a other than (K^iota)^dag)", 
+    "rust" -> "P3-G4 KS", "python" -> "YP3-G4 KS"|>, 
+   <|"id" -> "WP3-G1 CJT", "pass" -> True, "deviation" -> 
+     4.421070065111613*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "CJT: at 0.9 T_c the coefficient a(0) of |Phi|^2 from the \
+static pair response (-1.051e-3) equals the Taylor coefficient a^Tay of the \
+nonlinear free energy of Section III.T (-1.051e-3) (relative difference)", 
+    "rust" -> "P3-G1 CJT", "python" -> "YP3-G1 CJT"|>, 
+   <|"id" -> "WP3-G2 CJT", "pass" -> True, "deviation" -> 
+     5.240196226667837*^-12, "tolerance" -> 1.*^-9, 
+    "text" -> "CJT: a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = \
+0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative \
+difference)", "rust" -> "P3-G2 CJT", "python" -> "YP3-G2 CJT"|>, 
+   <|"id" -> "WP3-G10 CJT", "pass" -> True, "deviation" -> 
+     6.949745522324911*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: alpha = T_c da/dT = 0.01117552279 from central \
+differences of the static pair response (Richardson) = 0.01117552279 in \
+closed form (lambda^P(T_c) = 1., M_n = 0.1622929325) = Rust (largest relative \
+difference)", "rust" -> "P3-G10 CJT", "python" -> "YP3-G10 CJT"|>, 
+   <|"id" -> "WP3-G3 CJT", "pass" -> True, "deviation" -> 
+     4.527076055512884*^-14, "tolerance" -> 1.*^-9, 
+    "text" -> 
+     "CJT: a(0, T_c) vanishes to the accuracy of T_c (|a(0, T_c)| / alpha)", 
+    "rust" -> "P3-G3 CJT", "python" -> "YP3-G3 CJT"|>, 
+   <|"id" -> "WP3-G4 CJT", "pass" -> True, "deviation" -> 
+     4.441082720772643*^-16, "tolerance" -> 1.*^-12, 
+    "text" -> "CJT: at zero pair momentum no other pair channel is induced \
+(norm of the self-consistent components of P^a other than (K^iota)^dag)", 
+    "rust" -> "P3-G4 CJT", "python" -> "YP3-G4 CJT"|>, 
+   <|"id" -> "WP3-G5 HS_1_1", "pass" -> True, 
+    "deviation" -> 4.978240042419202*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (1, 1): the isospin twist gives the gradient coefficient of \
+the phase twist, c = 0.01548747577 (isospin invariance; relative difference)"\
+, "rust" -> "P3-G5 HS_1_1", "python" -> "YP3-G5 HS_1_1"|>, 
+   <|"id" -> "WP3-G6 HS_1_1", "pass" -> True, 
+    "deviation" -> 1.0637973840563779*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (1, 1): c > 0 and the extrapolation in k converges: c(0.01) \
+= 0.01548761918, c(0.02) = 0.01548804939, extrapolated 0.01548747577 = Rust \
+(relative difference; 1 is added if c <= 0 or the two values differ by more \
+than 1e-3 of c)", "rust" -> "P3-G6 HS_1_1", "python" -> "YP3-G6 HS_1_1"|>, 
+   <|"id" -> "WP3-G5 HS_0_1", "pass" -> True, 
+    "deviation" -> 2.03027594736227*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (0, 1): the isospin twist gives the gradient coefficient of \
+the phase twist, c = 0.01713758647 (isospin invariance; relative difference)"\
+, "rust" -> "P3-G5 HS_0_1", "python" -> "YP3-G5 HS_0_1"|>, 
+   <|"id" -> "WP3-G6 HS_0_1", "pass" -> True, 
+    "deviation" -> 2.4620954108417742*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (0, 1): c > 0 and the extrapolation in k converges: c(0.01) \
+= 0.01713773698, c(0.02) = 0.01713818851, extrapolated 0.01713758647 = Rust \
+(relative difference; 1 is added if c <= 0 or the two values differ by more \
+than 1e-3 of c)", "rust" -> "P3-G6 HS_0_1", "python" -> "YP3-G6 HS_0_1"|>, 
+   <|"id" -> "WP3-G5 HS_0_0", "pass" -> True, 
+    "deviation" -> 1.5220269489191196*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (0, 0): the isospin twist gives the gradient coefficient of \
+the phase twist, c = 0.01952798529 (isospin invariance; relative difference)"\
+, "rust" -> "P3-G5 HS_0_0", "python" -> "YP3-G5 HS_0_0"|>, 
+   <|"id" -> "WP3-G6 HS_0_0", "pass" -> True, 
+    "deviation" -> 3.960374547005667*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "HS (0, 0): c > 0 and the extrapolation in k converges: c(0.01) \
+= 0.01952812997, c(0.02) = 0.019528564, extrapolated 0.01952798529 = Rust \
+(relative difference; 1 is added if c <= 0 or the two values differ by more \
+than 1e-3 of c)", "rust" -> "P3-G6 HS_0_0", "python" -> "YP3-G6 HS_0_0"|>, 
+   <|"id" -> "WP3-G5 KS", "pass" -> True, "deviation" -> 
+     9.723444271969583*^-12, "tolerance" -> 1.*^-8, 
+    "text" -> "KS: the isospin twist gives the gradient coefficient of the \
+phase twist, c = 0.01927177616 (isospin invariance; relative difference)", 
+    "rust" -> "P3-G5 KS", "python" -> "YP3-G5 KS"|>, 
+   <|"id" -> "WP3-G6 KS", "pass" -> True, "deviation" -> 
+     5.370594156726152*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "KS: c > 0 and the extrapolation in k converges: c(0.01) = \
+0.0192719291, c(0.02) = 0.01927238792, extrapolated 0.01927177616 = Rust \
+(relative difference; 1 is added if c <= 0 or the two values differ by more \
+than 1e-3 of c)", "rust" -> "P3-G6 KS", "python" -> "YP3-G6 KS"|>, 
+   <|"id" -> "WP3-G5 CJT", "pass" -> True, "deviation" -> 
+     1.4914736112814353*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: the isospin twist gives the gradient coefficient of the \
+phase twist, c = 0.01927177616 (isospin invariance; relative difference)", 
+    "rust" -> "P3-G5 CJT", "python" -> "YP3-G5 CJT"|>, 
+   <|"id" -> "WP3-G6 CJT", "pass" -> True, "deviation" -> 
+     4.071588749899605*^-11, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: c > 0 and the extrapolation in k converges: c(0.01) = \
+0.0192719291, c(0.02) = 0.01927238792, extrapolated 0.01927177616 = Rust \
+(relative difference; 1 is added if c <= 0 or the two values differ by more \
+than 1e-3 of c)", "rust" -> "P3-G6 CJT", "python" -> "YP3-G6 CJT"|>, 
+   <|"id" -> "WP3-G9 HS_1_1", "pass" -> True, 
+    "deviation" -> 3.527085530675634*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (1, 1): with the cutoff on the momenta of the two charges \
+a(k) - a(0) is linear in |k| (ratio 2.01391 for k = 0.01 and 0.005), with the \
+cutoff on the relative momentum quadratic (ratio 4.000035); the four \
+differences = Rust (largest relative difference; 1 is added if a ratio is off \
+by more than 0.02 of 2 or 1e-3 of 4)", "rust" -> "P3-G9 HS_1_1", 
+    "python" -> "YP3-G9 HS_1_1"|>, <|"id" -> "WP3-G9 HS_0_1", "pass" -> True, 
+    "deviation" -> 1.8902856187244244*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 1): with the cutoff on the momenta of the two charges \
+a(k) - a(0) is linear in |k| (ratio 2.01448 for k = 0.01 and 0.005), with the \
+cutoff on the relative momentum quadratic (ratio 4.000036); the four \
+differences = Rust (largest relative difference; 1 is added if a ratio is off \
+by more than 0.02 of 2 or 1e-3 of 4)", "rust" -> "P3-G9 HS_0_1", 
+    "python" -> "YP3-G9 HS_0_1"|>, <|"id" -> "WP3-G9 HS_0_0", "pass" -> True, 
+    "deviation" -> 1.918800081942358*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 0): with the cutoff on the momenta of the two charges \
+a(k) - a(0) is linear in |k| (ratio 2.01532 for k = 0.01 and 0.005), with the \
+cutoff on the relative momentum quadratic (ratio 4.000035); the four \
+differences = Rust (largest relative difference; 1 is added if a ratio is off \
+by more than 0.02 of 2 or 1e-3 of 4)", "rust" -> "P3-G9 HS_0_0", 
+    "python" -> "YP3-G9 HS_0_0"|>, <|"id" -> "WP3-G9 KS", "pass" -> True, 
+    "deviation" -> 2.782965934500261*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "KS: with the cutoff on the momenta of the two charges a(k) - \
+a(0) is linear in |k| (ratio 2.0152 for k = 0.01 and 0.005), with the cutoff \
+on the relative momentum quadratic (ratio 4.000036); the four differences = \
+Rust (largest relative difference; 1 is added if a ratio is off by more than \
+0.02 of 2 or 1e-3 of 4)", "rust" -> "P3-G9 KS", "python" -> "YP3-G9 KS"|>, 
+   <|"id" -> "WP3-G9 CJT", "pass" -> True, "deviation" -> 
+     1.4095713557786313*^-10, "tolerance" -> 1.*^-7, 
+    "text" -> "CJT: with the cutoff on the momenta of the two charges a(k) - \
+a(0) is linear in |k| (ratio 2.0152 for k = 0.01 and 0.005), with the cutoff \
+on the relative momentum quadratic (ratio 4.000036); the four differences = \
+Rust (largest relative difference; 1 is added if a ratio is off by more than \
+0.02 of 2 or 1e-3 of 4)", "rust" -> "P3-G9 CJT", "python" -> "YP3-G9 CJT"|>, 
+   <|"id" -> "WP3-G8", "pass" -> True, "deviation" -> 
+     1.6093941759659764*^-10, "tolerance" -> 1.*^-8, 
+    "text" -> "CJT: the gradient coefficient does not depend on the \
+quadrature: six directions and 24 radial nodes 0.0192717761556, 144 \
+directions 0.0192717761587, 40 radial nodes 0.0192717761551 (largest relative \
+difference)", "rust" -> "P3-G8", "python" -> "YP3-G8 CJT"|>, 
+   <|"id" -> "WP3-G12", "pass" -> True, "deviation" -> 6.307684884410249*^-8, 
+    "tolerance" -> 1.*^-6, "text" -> "CJT at T_c: the quartic coefficient b = \
+0.01472373584 of the free energy at the origin (four applied fields, thermal \
+engine) is positive and = Rust 0.01472373676 (relative difference; a(T_c) = \
+5.619e-14)", "rust" -> "P3-G12 CJT", "python" -> "YP3-G12 CJT"|>, 
+   <|"id" -> "WP3-G11 HS_1_1", "pass" -> True, 
+    "deviation" -> 3.2466754278051456*^-11, "tolerance" -> 1.*^-6, 
+    "text" -> "HS (1, 1): the Ginzburg number by the first form 11.379614 and \
+by the second form 11.379614 = Rust 11.379614 (largest relative difference)", 
+    "rust" -> "P3-G11 HS_1_1", "python" -> "YP3-G11 HS_1_1"|>, 
+   <|"id" -> "WP3-G11 HS_0_1", "pass" -> True, 
+    "deviation" -> 7.598524828115476*^-11, "tolerance" -> 1.*^-6, 
+    "text" -> "HS (0, 1): the Ginzburg number by the first form 9.7677449 and \
+by the second form 9.7677449 = Rust 9.7677449 (largest relative difference)", 
+    "rust" -> "P3-G11 HS_0_1", "python" -> "YP3-G11 HS_0_1"|>, 
+   <|"id" -> "WP3-G11 HS_0_0", "pass" -> True, 
+    "deviation" -> 1.2118585798165479*^-10, "tolerance" -> 1.*^-6, 
+    "text" -> "HS (0, 0): the Ginzburg number by the first form 8.2771765 and \
+by the second form 8.2771765 = Rust 8.2771765 (largest relative difference)", 
+    "rust" -> "P3-G11 HS_0_0", "python" -> "YP3-G11 HS_0_0"|>, 
+   <|"id" -> "WP3-G11 KS", "pass" -> True, "deviation" -> 
+     1.5627998716306842*^-10, "tolerance" -> 1.*^-6, 
+    "text" -> "KS: the Ginzburg number by the first form 7.6207226 and by the \
+second form 7.6207226 = Rust 7.6207226 (largest relative difference)", 
+    "rust" -> "P3-G11 KS", "python" -> "YP3-G11 KS"|>, 
+   <|"id" -> "WP3-G11 CJT", "pass" -> True, "deviation" -> 
+     1.2603666662271124*^-7, "tolerance" -> 1.*^-6, 
+    "text" -> "CJT: the Ginzburg number by the first form 7.6207222 and by \
+the second form 7.6207222 = Rust 7.6207232 (largest relative difference)", 
+    "rust" -> "P3-G11 CJT", "python" -> "YP3-G11 CJT"|>, 
+   <|"id" -> "WP3-H2 HS_1_1", "pass" -> True, 
+    "deviation" -> 3.1530333899354446*^-14, "tolerance" -> 1.*^-10, 
+    "text" -> "HS (1, 1): the couplings of h to (d theta_0)^2 and (d \
+theta_1)^2 by exact differentiation of the kinetic part, 0.07096573 and \
+0.07212812, = f_F and f_I^2/f_F and = Rust (largest relative difference)", 
+    "rust" -> "P3-H2 HS_1_1", "python" -> "YP3-H2 HS_1_1"|>, 
+   <|"id" -> "WP3-H2 HS_0_1", "pass" -> True, 
+    "deviation" -> 1.4210854715202004*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "HS (0, 1): the couplings of h to (d theta_0)^2 and (d \
+theta_1)^2 by exact differentiation of the kinetic part, 0.067233343 and \
+0.068220149, = f_F and f_I^2/f_F and = Rust (largest relative difference)", 
+    "rust" -> "P3-H2 HS_0_1", "python" -> "YP3-H2 HS_0_1"|>, 
+   <|"id" -> "WP3-H2 HS_0_0", "pass" -> True, 
+    "deviation" -> 7.693845560652335*^-14, "tolerance" -> 1.*^-10, 
+    "text" -> "HS (0, 0): the couplings of h to (d theta_0)^2 and (d \
+theta_1)^2 by exact differentiation of the kinetic part, 0.061393961 and \
+0.06139396, = f_F and f_I^2/f_F and = Rust (largest relative difference)", 
+    "rust" -> "P3-H2 HS_0_0", "python" -> "YP3-H2 HS_0_0"|>, 
+   <|"id" -> "WP3-H2 KS", "pass" -> True, "deviation" -> 
+     1.3566925360919413*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "KS: the couplings of h to (d theta_0)^2 and (d theta_1)^2 by \
+exact differentiation of the kinetic part, 0.071348166 and 0.060506197, = f_F \
+and f_I^2/f_F and = Rust (largest relative difference)", 
+    "rust" -> "P3-H2 KS", "python" -> "YP3-H2 KS"|>, 
+   <|"id" -> "WP3-H2 CJT", "pass" -> True, "deviation" -> 
+     1.3522516439934407*^-13, "tolerance" -> 1.*^-10, 
+    "text" -> "CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2 by \
+exact differentiation of the kinetic part, 0.071348166 and 0.064162461, = f_F \
+and f_I^2/f_F and = Rust (largest relative difference)", 
+    "rust" -> "P3-H2 CJT", "python" -> "YP3-H2 CJT"|>, 
+   <|"id" -> "WP3-H1 HS_1_1", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "HS (1, 1): the amplitude mode lies \
+below the threshold of two quasi-particles: M_H = 0.8136931 < 2 E_gap = \
+0.9059348 (the gap of the ground state computed by the notebook) [M_H / 2 \
+E_gap = 0.89818]", "rust" -> "P3-H1 HS_1_1", "python" -> "YP3-H1 HS_1_1"|>, 
+   <|"id" -> "WP3-H3 HS_1_1", "pass" -> True, 
+    "deviation" -> 3.1683109975964804*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (1, 1): the numbers of the Higgs sector (v_SF = 0.14308913, \
+M_H/v_SF = 5.68662, lambda = 16.1688, Gamma/M_H = 3.9232) = Rust (largest \
+relative difference)", "rust" -> "P3-H3 HS_1_1", 
+    "python" -> "YP3-H3 HS_1_1"|>, <|"id" -> "WP3-H1 HS_0_1", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "HS (0, 1): the amplitude mode lies \
+below the threshold of two quasi-particles: M_H = 0.7250834 < 2 E_gap = \
+0.8271651 (the gap of the ground state computed by the notebook) [M_H / 2 \
+E_gap = 0.87659]", "rust" -> "P3-H1 HS_0_1", "python" -> "YP3-H1 HS_0_1"|>, 
+   <|"id" -> "WP3-H3 HS_0_1", "pass" -> True, 
+    "deviation" -> 1.207537460504549*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (0, 1): the numbers of the Higgs sector (v_SF = 0.1354499, \
+M_H/v_SF = 5.35315, lambda = 14.3281, Gamma/M_H = 3.4708) = Rust (largest \
+relative difference)", "rust" -> "P3-H3 HS_0_1", 
+    "python" -> "YP3-H3 HS_0_1"|>, <|"id" -> "WP3-H1 HS_0_0", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "HS (0, 0): the amplitude mode lies \
+below the threshold of two quasi-particles: M_H = 0.6143874 < 2 E_gap = \
+0.7327813 (the gap of the ground state computed by the notebook) [M_H / 2 \
+E_gap = 0.83843]", "rust" -> "P3-H1 HS_0_0", "python" -> "YP3-H1 HS_0_0"|>, 
+   <|"id" -> "WP3-H3 HS_0_0", "pass" -> True, 
+    "deviation" -> 1.8500560848145316*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "HS (0, 0): the numbers of the Higgs sector (v_SF = 0.12278792, \
+M_H/v_SF = 5.00365, lambda = 12.5182, Gamma/M_H = 2.9885) = Rust (largest \
+relative difference)", "rust" -> "P3-H3 HS_0_0", 
+    "python" -> "YP3-H3 HS_0_0"|>, <|"id" -> "WP3-H1 KS", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "KS: the amplitude mode lies below \
+the threshold of two quasi-particles: M_H = 0.603476 < 2 E_gap = 0.7327813 \
+(the gap of the ground state computed by the notebook) [M_H / 2 E_gap = \
+0.82354]", "rust" -> "P3-H1 KS", "python" -> "YP3-H1 KS"|>, 
+   <|"id" -> "WP3-H3 KS", "pass" -> True, "deviation" -> 
+     2.2528015737373747*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "KS: the numbers of the Higgs sector (v_SF = 0.13140786, \
+M_H/v_SF = 4.59239, lambda = 10.545, Gamma/M_H = 2.1349) = Rust (largest \
+relative difference)", "rust" -> "P3-H3 KS", "python" -> "YP3-H3 KS"|>, 
+   <|"id" -> "WP3-H1 CJT", "pass" -> True, "deviation" -> 
+     Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], 
+    "text" -> "CJT: the amplitude mode lies below the threshold of two \
+quasi-particles: M_H = 0.603476 < 2 E_gap = 0.7327813 (the gap of the ground \
+state computed by the notebook) [M_H / 2 E_gap = 0.82354]", 
+    "rust" -> "P3-H1 CJT", "python" -> "YP3-H1 CJT"|>, 
+   <|"id" -> "WP3-H3 CJT", "pass" -> True, "deviation" -> 
+     3.0848612500944125*^-13, "tolerance" -> 1.*^-9, 
+    "text" -> "CJT: the numbers of the Higgs sector (v_SF = 0.13531998, \
+M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest \
+relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>, 
+   <|"id" -> "WP3-H4", "pass" -> True, "deviation" -> 2.183379497789186*^-16, 
+    "tolerance" -> 1.*^-10, "text" -> "the Standard Model row: M_H/v = \
+0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the \
+values of the Particle Data Group 2024 = Rust (largest relative difference)", 
+    "rust" -> "P3-H4", "python" -> "YP3-H4"|>}, "line" -> 408, 
+ "seconds" -> 14025.145336`10.59845236383742|>

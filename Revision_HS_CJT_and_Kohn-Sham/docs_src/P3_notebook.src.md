@@ -39,13 +39,19 @@ examples, its accuracy, the cause of its error and why the error matters; the an
 November 2026, which he asked to be kept in the notebook), and the second section of Part III (Section III.T: the free
 energy of the five methods at finite temperature, the critical temperatures, the gap equation, the size of the order
 parameter against the radius of convergence, and the remark that the free energies of the methods are mean-field free
-energies, with its importance; the addendum asked for by the author on 21 November 2026), with {{GEN:nb_ntests}}
-checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+energies, with its importance; the addendum asked for by the author on 21 November 2026), and the third section of
+Part III (Section III.G: the gradient coefficient of the field at the critical temperature from the static pair
+response of a moving pair, the two regularizations, the slope and the quartic coefficient, the Ginzburg number and the
+width of the critical region; the superfluid as a Higgs sector against the Standard Model, the couplings of the
+amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second addendum asked for
+by the author on 21 November 2026, with its three remarks), with {{GEN:nb_ntests}} checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
 in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
 Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
 cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
 thermal states, the critical temperatures and the Taylor coefficients itself with the engine of Part II, and takes the
-free-energy curves of the Rust program from a third closed cell; Part II computes all its states itself and compares
+free-energy curves of the Rust program from a third closed cell; Section III.G computes the static pair response, the
+coefficients and the couplings itself with the engines of Part II and of Section III.T and takes the results of the
+modules `ginzburg` and `higgs` of the Rust program from a fourth closed cell; Part II computes all its states itself and compares
 them with the values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time
 integration.
 
@@ -81,6 +87,14 @@ The files of the notebook, each with its SHA-256 checksum:
   notebook (written by `wolfram/tools/make_data_cells.py 3T`; its first lines name the data files and their SHA-256
   checksums);\
   `{{SHA256:wolfram/source/data_part3_thermal.wl}}`
+* `wolfram/source/part3_ginzburg.source.wl`: the source of the third section of Part III (Section III.G, the width of
+  the critical region and the superfluid as a Higgs sector);\
+  `{{SHA256:wolfram/source/part3_ginzburg.source.wl}}`
+* `wolfram/source/data_part3_ginzburg.wl`: the results of the modules `ginzburg` and `higgs` of the Rust program (the
+  coefficients of the five methods, the two regularizations and the numbers of the Higgs sector with the row of the
+  Standard Model), included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
+  first lines name the data files and their SHA-256 checksums);\
+  `{{SHA256:wolfram/source/data_part3_ginzburg.wl}}`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
   `{{SHA256:wolfram/tools/make_data_cells.py}}`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
@@ -122,12 +136,13 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
         wolfram/tools/sf_formula.wl
 
 The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)`,
-`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` and `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` of the main source
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)`, `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` and
+`(* @@INCLUDECELLS part3_ginzburg.source.wl@@ *)` of the main source
 by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 200 cells (three of them closed cells of data), 695 formulas in the
+reader cannot read as a warning. This version: 257 cells (four of them closed cells of data), 950 formulas in the
 texts, 0 warnings (the builder's own count, printed when it ran).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
@@ -148,8 +163,8 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (162 seconds in this version, of which Part II takes about two minutes and Section III.T about half a
-minute); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (244 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute and
+Section III.G about 80 seconds); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
@@ -162,7 +177,8 @@ warning of the Wolfram language); verdict: **{{GEN:nb_verdict}}**.
 Every check of the notebook carries the identifier of the same check in the Rust program with the prefix W, and names
 its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
 `sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III, whose module `thermal` makes the checks
-P3-T1 to P3-T9 of Section III.T) and in the Python program
+P3-T1 to P3-T9 of Section III.T and whose modules `ginzburg` and `higgs` make the checks P3-G1 to P3-G12 and P3-H1 to
+P3-H4 of Section III.G) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
 steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
@@ -227,7 +243,18 @@ repeat itself in the others:
   from the scalar self-consistency); the Taylor coefficients by `LinearSolve` of the cubic interpolation in the scaled
   variable $\Phi^2/\Phi^2_{\max}$ (Gaussian elimination in Rust, `numpy.linalg.solve` in Python); the residuals of the
   Landau forms of the Rust free-energy curves by `LeastSquares` (Householder reflections in Rust, the singular-value
-  decomposition in Python).
+  decomposition in Python);
+* **the width of the critical region and the Higgs sector** (WP3-G1 to WP3-G12, WP3-H1 to WP3-H4): the static pair
+  response by `Eigensystem` of the symmetrized $8\times8$ particle and hole blocks at every node, the matrices
+  $\mathsf U_A^\dagger(E_{ab}-E_{ba})\mathsf U_D$ from the components of the eigenvectors by `Outer`, and the system of the
+  other 25 pair channels by `LinearSolve` in the notebook; the Rust program's own eigensolver and LU decomposition, and
+  LAPACK (batched `eigh`, `solve`) in Python. The notebook and the Rust program work on the grid of Part II (24 radial
+  nodes, six directions), the Python program on 64 directions; the product rule of the two regularizations (24 radial
+  nodes, 24 nodes in $\cos\theta$, 6 angles $\varphi$) is the same in the three. The slope in closed form uses the
+  derivatives of $I^{(1)}_{\rm SF}$ on the radial nodes of the grid in the notebook and in Rust, on 400 Gauss-Legendre nodes
+  in Python. The couplings of the amplitude field come from exact symbolic differentiation of the kinetic part (`D`,
+  `ComplexExpand`, `Simplify`) in the notebook, from finite differences of the field in Python and of the kinetic part
+  in Rust. The twisted states of the nonlinear engine of HS $(0,0)$ (P3-G7) are not repeated by the notebook.
 
 # 8. The symbols of the code of Part I
 
@@ -333,6 +360,30 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     to the Python counterpart of the Rust check P3-T5 (the order parameter of Landau's theory). The Python check is now
     YP3-T9, the Rust program makes the same check as P3-T9, and the Python program has the new counterparts YP3-T5 to
     YP3-T8 of the Rust checks P3-T5 to P3-T8, so that every check of Section III.T has a counterpart in both programs.
+
+12. *One identifier for two checks, again (E12).* When Section III.G named the counterparts of its checks, the Python
+    checks of the gradient coefficient and of the Higgs sector had been numbered YP3-G1 to YP3-G4 and YP3-H1 to YP3-H3 in
+    the order in which the Python program made them, so that six of them carried the identifiers of Rust checks of
+    other statements (the error of item 11 again). The Python program now makes the counterpart of every Rust check
+    under the identifier of the rule, and its earlier checks of statements without a Rust check (the slope in closed
+    form, the two forms of the Ginzburg number, the quartic coefficient of CJT, the numbers of the Higgs sector, the row
+    of the Standard Model) received Rust checks of the same statements, P3-G10 to P3-G12, P3-H3 and P3-H4. Found before
+    the notebook was evaluated.
+
+13. *Two sentences that the notebook had outgrown (E13).* Section III.T.7 said that the gradient coefficient at the
+    critical temperature "is not computed yet" and that computing it is the next step; Section III.G computes it, and the
+    sentence now states its result. The answer of Section III.T.6 ("smaller and more physically reasonable near the
+    critical temperature") now says that it holds for the mean-field free energy of the methods, because Section III.G
+    shows that the temperatures where it holds lie inside the critical region.
+
+14. *A variable of the same name, and a number joined to a text (E14).* The first dry run of Section III.G found two
+    errors of its code. (a) The function of the product rule numbered the angles $\varphi$ with the loop variable `k`, the
+    name of the pair momentum in the radius of the lens; the loop variable of the function shadowed the momentum, the
+    lens was built with the values of the angle index, and check WP3-G9 failed for all five methods. The loop variable
+    is now `iphi`, and the radius of the lens receives the value of the momentum inserted (`With`). (b) The table of the
+    Ginzburg numbers joined a number to a text, and the kernel issued the message `StringJoin::string` (which the
+    evaluated notebook must not have); the number is now turned into a text with `ToString`. The second dry run passed
+    all checks without a message.
 
 # 10. What follows
 

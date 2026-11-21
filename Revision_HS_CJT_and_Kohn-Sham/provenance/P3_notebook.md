@@ -38,13 +38,19 @@ examples, its accuracy, the cause of its error and why the error matters; the an
 November 2026, which he asked to be kept in the notebook), and the second section of Part III (Section III.T: the free
 energy of the five methods at finite temperature, the critical temperatures, the gap equation, the size of the order
 parameter against the radius of convergence, and the remark that the free energies of the methods are mean-field free
-energies, with its importance; the addendum asked for by the author on 21 November 2026), with 91
-checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+energies, with its importance; the addendum asked for by the author on 21 November 2026), and the third section of
+Part III (Section III.G: the gradient coefficient of the field at the critical temperature from the static pair
+response of a moving pair, the two regularizations, the slope and the quartic coefficient, the Ginzburg number and the
+width of the critical region; the superfluid as a Higgs sector against the Standard Model, the couplings of the
+amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second addendum asked for
+by the author on 21 November 2026, with its three remarks), with 154 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
 in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
 Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
 cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
 thermal states, the critical temperatures and the Taylor coefficients itself with the engine of Part II, and takes the
-free-energy curves of the Rust program from a third closed cell; Part II computes all its states itself and compares
+free-energy curves of the Rust program from a third closed cell; Section III.G computes the static pair response, the
+coefficients and the couplings itself with the engines of Part II and of Section III.T and takes the results of the
+modules `ginzburg` and `higgs` of the Rust program from a fourth closed cell; Part II computes all its states itself and compares
 them with the values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time
 integration.
 
@@ -53,11 +59,11 @@ integration.
 The files of the notebook, each with its SHA-256 checksum:
 
 * `superfluid.nb`: the notebook, evaluated in the front end of Wolfram (inputs, printed checks, the table of all checks);\
-  `3a44be8fb51e22f47b1abc96d14ce01a670e2e9bdcfb6f9d8c5b72e2e1f3454b`
+  `56db2c1a85f438d81ade9767e96d7c51ba285667ef1e577954b50501ffd3ff0b`
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
-  `3b1fff66393e798d2885d4dcdee306a000707262e569cade31ef8495f0ec97fd`
+  `bf4d4b858b700a631f94e3a94357aae82c7efbf440d41b20b7daa08475814353`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
-  `8dcba4ac0bbaf8e7fb09afbcdc1429b29a0ab7a2ec553cc9484c5530f8062bd1`
+  `6dc8d7f4677e49db294036068f14c0028413d83537e5b02f958c86493701d48e`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
   `10bea1f4d47c952b00cf50af5183f2f3da3ee8af325ec485191108aaa789beb1`
 * `wolfram/source/part2.source.wl`: the source of Part II;\
@@ -71,17 +77,25 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/source/data_part3.wl`: the values of Part III of the Rust program and its five polar curves, included in a
   closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the data files and
   their SHA-256 checksums);\
-  `e01ee767695f6e62dcd007ba37eb29d49ffc1e33860f244e5b355d2af74cf696`
+  `0d309c1ce8f511d31e0e49f3fcc498f5606a60b6d4a34dfb03a146b8adca7e35`
 * `wolfram/source/part3_thermal.source.wl`: the source of the second section of Part III (Section III.T, the free energy
   at finite temperature);\
-  `f4cc0886e28a7fe6971e0795be5f5af23f8ac6d75355150a9aebd8208df834c8`
+  `673d6b22ba4177fe636a717d664bcef3d7c0f6b612cbe21a868ad726c4835caf`
 * `wolfram/source/data_part3_thermal.wl`: the thermal results of the Rust program (the table of the order parameter, the
   residuals of the Landau forms and the free-energy curves of the five methods), included in a closed cell of the
   notebook (written by `wolfram/tools/make_data_cells.py 3T`; its first lines name the data files and their SHA-256
   checksums);\
   `5f3fe6ec541cd7e8a13c08517a63ba8b10deff9a5b37eded75aec6bbef2ebfac`
+* `wolfram/source/part3_ginzburg.source.wl`: the source of the third section of Part III (Section III.G, the width of
+  the critical region and the superfluid as a Higgs sector);\
+  `782d42b8cc588b1206bd5ec307ebf09c0757e9265ca4b3b6c400993edfde9930`
+* `wolfram/source/data_part3_ginzburg.wl`: the results of the modules `ginzburg` and `higgs` of the Rust program (the
+  coefficients of the five methods, the two regularizations and the numbers of the Higgs sector with the row of the
+  Standard Model), included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
+  first lines name the data files and their SHA-256 checksums);\
+  `82e03135f402463a5c0dbc8b380f11ee972667802c618faf1c43e14764ab60c4`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
-  `5f4f2f3723c3afde1ff45be7fe10ce27276497b479dad78fe6494ead0b8244b3`
+  `9e370a301699c67481f8e5b43b84aac6fbacb60196de09e790916857945c01c5`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
   `dd5e855c6fddcb0a00a6f3e2adecb5ced86c4cf52a8a48d4671eaa23fc63e1b0`
 * `wolfram/tools/sf_formula.wl`: the reader of formulas: turns the TeX of the formulas of the texts into two-dimensional boxes;\
@@ -97,11 +111,11 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/tools/make_dryrun.py`: writes the code of all input cells into one file for a test run by `wolframscript` without the front end;\
   `f3ac70882c2c356d331bc5808683b7b56e535e9694ee39868c2b7cf3c2357f2f`
 * `data/hck_notebook_log.txt`: the log of the evaluation: the version of Wolfram, the counts of the cells, every message and printed line, one line per check;\
-  `c405ca7a1f9695c69a6df5c5172927190142a5168f850c05ba4bc975dd550b68`
+  `0f347b4fd1f3b35ceaf441ee5767f6566a9aace3e05fc35beb5a1b86dadc3e11`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
-  `a1827360f356a09fdb4c6e6cc182a08448fd81d48dada7d6945d60d37557fa23`
+  `76f4078d88a0064293b91d0b1b94874d3e73f1dd1cb26e3fbd41deeefa6e5bb7`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
-  `964aba7450188e949483630e9d5471630ab11e09933d770831dcc45fab0e262c`
+  `5f526c1531834298dc5e900f4c81d404d192f02eb15a030b99baba4533b1aa93`
 
 The builder, the reader of formulas and the evaluation script were first written for the notebook `3+1super-loop.nb` of
 the project; they are copied into this folder with their contexts renamed (from `SL31` to `SFNB`), so that this folder
@@ -121,12 +135,13 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
         wolfram/tools/sf_formula.wl
 
 The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)`,
-`(* @@INCLUDECELLS part3_landau.source.wl@@ *)` and `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` of the main source
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)`, `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` and
+`(* @@INCLUDECELLS part3_ginzburg.source.wl@@ *)` of the main source
 by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 200 cells (three of them closed cells of data), 695 formulas in the
+reader cannot read as a warning. This version: 257 cells (four of them closed cells of data), 950 formulas in the
 texts, 0 warnings (the builder's own count, printed when it ran).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
@@ -147,21 +162,22 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (162 seconds in this version, of which Part II takes about two minutes and Section III.T about half a
-minute); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (244 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute and
+Section III.G about 80 seconds); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 175 seconds; 44 input cells, 44 of them evaluated; 13 output cells; 105 printed lines; **0 messages** (no error and no
-warning of the Wolfram language); verdict: **ALL PASS (91 of 91), 0 messages**.
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 321 seconds; 55 input cells, 55 of them evaluated; 15 output cells; 172 printed lines; **0 messages** (no error and no
+warning of the Wolfram language); verdict: **ALL PASS (154 of 154), 0 messages**.
 
 # 6. The checks and their counterparts
 
 Every check of the notebook carries the identifier of the same check in the Rust program with the prefix W, and names
 its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
 `sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III, whose module `thermal` makes the checks
-P3-T1 to P3-T9 of Section III.T) and in the Python program
+P3-T1 to P3-T9 of Section III.T and whose modules `ginzburg` and `higgs` make the checks P3-G1 to P3-G12 and P3-H1 to
+P3-H4 of Section III.G) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
 steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
@@ -260,6 +276,69 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WP3-T7 KS | PASS | $4.070\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 KS (PASS), $3.458\times10^{-11}$ | YP3-T7 KS (PASS), $3.539\times10^{-11}$ | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
 | WP3-T6 CJT | PASS | $8.948\times10^{-12}$ | $1.000\times10^{-7}$ | P3-T6 CJT (PASS), $0$ | YP3-T6 CJT (PASS), $5.804\times10^{-11}$ | CJT: the largest residuals of the Landau form and of the quartic form at T/T\_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T\_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T\_c) and that of the Landau form is 9.969e-6 at 0.98 T\_c: yes |
 | WP3-T7 CJT | PASS | $4.876\times10^{-11}$ | $1.000\times10^{-8}$ | P3-T7 CJT (PASS), $4.596\times10^{-11}$ | YP3-T7 CJT (PASS), $4.636\times10^{-11}$ | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) |
+| WP3-G1 HS_1_1 | PASS | $7.975\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G1 HS_1_1 (PASS), $7.975\times10^{-10}$ | YP3-G1 HS_1_1 (PASS), $7.976\times10^{-10}$ | HS (1, 1): at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the static pair response (-1.343e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section III.T (-1.343e-3) (relative difference) |
+| WP3-G2 HS_1_1 | PASS | $1.099\times10^{-12}$ | $1.000\times10^{-9}$ | P3-G2 HS_1_1 (PASS), $6.276\times10^{-13}$ | YP3-G2 HS_1_1 (PASS), $9.724\times10^{-12}$ | HS (1, 1): a(0, T) = (1 - lambda\^P(T))/(lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) of Section III.T.4 (largest relative difference) |
+| WP3-G10 HS_1_1 | PASS | $1.496\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G10 HS_1_1 (PASS), $5.463\times10^{-13}$ | YP3-G10 HS_1_1 (PASS), $4.438\times10^{-13}$ | HS (1, 1): alpha = T\_c da/dT = 0.01403788523 from central differences of the static pair response (Richardson) = 0.01403788523 in closed form (lambda\^P(T\_c) = 1., M\_n = 0.2066851932) = Rust (largest relative difference) |
+| WP3-G3 HS_1_1 | PASS | $4.080\times10^{-14}$ | $1.000\times10^{-9}$ | P3-G3 HS_1_1 (PASS), $2.197\times10^{-15}$ | YP3-G3 HS_1_1 (PASS), $7.218\times10^{-14}$ | HS (1, 1): a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha) |
+| WP3-G4 HS_1_1 | PASS | $0$ | $1.000\times10^{-12}$ | P3-G4 HS_1_1 (PASS), $1.089\times10^{-33}$ | YP3-G4 HS_1_1 (PASS), $0$ | HS (1, 1): at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P\^a other than (K\^iota)\^dag) |
+| WP3-G1 HS_0_1 | PASS | $1.747\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G1 HS_0_1 (PASS), $1.747\times10^{-10}$ | YP3-G1 HS_0_1 (PASS), $1.748\times10^{-10}$ | HS (0, 1): at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the static pair response (-1.209e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section III.T (-1.209e-3) (relative difference) |
+| WP3-G2 HS_0_1 | PASS | $7.142\times10^{-13}$ | $1.000\times10^{-9}$ | P3-G2 HS_0_1 (PASS), $3.926\times10^{-12}$ | YP3-G2 HS_0_1 (PASS), $7.318\times10^{-12}$ | HS (0, 1): a(0, T) = (1 - lambda\^P(T))/(lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) of Section III.T.4 (largest relative difference) |
+| WP3-G10 HS_0_1 | PASS | $2.014\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G10 HS_0_1 (PASS), $2.118\times10^{-12}$ | YP3-G10 HS_0_1 (PASS), $1.914\times10^{-12}$ | HS (0, 1): alpha = T\_c da/dT = 0.01269913755 from central differences of the static pair response (Richardson) = 0.01269913755 in closed form (lambda\^P(T\_c) = 1., M\_n = 0.2) = Rust (largest relative difference) |
+| WP3-G3 HS_0_1 | PASS | $4.639\times10^{-14}$ | $1.000\times10^{-9}$ | P3-G3 HS_0_1 (PASS), $9.010\times10^{-15}$ | YP3-G3 HS_0_1 (PASS), $1.071\times10^{-13}$ | HS (0, 1): a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha) |
+| WP3-G4 HS_0_1 | PASS | $4.441\times10^{-16}$ | $1.000\times10^{-12}$ | P3-G4 HS_0_1 (PASS), $1.929\times10^{-16}$ | YP3-G4 HS_0_1 (PASS), $1.392\times10^{-18}$ | HS (0, 1): at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P\^a other than (K\^iota)\^dag) |
+| WP3-G1 HS_0_0 | PASS | $8.823\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G1 HS_0_0 (PASS), $8.823\times10^{-10}$ | YP3-G1 HS_0_0 (PASS), $8.823\times10^{-10}$ | HS (0, 0): at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the static pair response (-1.016e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section III.T (-1.016e-3) (relative difference) |
+| WP3-G2 HS_0_0 | PASS | $4.362\times10^{-13}$ | $1.000\times10^{-9}$ | P3-G2 HS_0_0 (PASS), $5.015\times10^{-12}$ | YP3-G2 HS_0_0 (PASS), $1.047\times10^{-11}$ | HS (0, 0): a(0, T) = (1 - lambda\^P(T))/(lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) of Section III.T.4 (largest relative difference) |
+| WP3-G10 HS_0_0 | PASS | $2.713\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G10 HS_0_0 (PASS), $2.378\times10^{-12}$ | YP3-G10 HS_0_0 (PASS), $2.272\times10^{-12}$ | HS (0, 0): alpha = T\_c da/dT = 0.01074338535 from central differences of the static pair response (Richardson) = 0.01074338535 in closed form (lambda\^P(T\_c) = 1., M\_n = 0.2) = Rust (largest relative difference) |
+| WP3-G3 HS_0_0 | PASS | $5.930\times10^{-14}$ | $1.000\times10^{-9}$ | P3-G3 HS_0_0 (PASS), $2.071\times10^{-15}$ | YP3-G3 HS_0_0 (PASS), $5.145\times10^{-14}$ | HS (0, 0): a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha) |
+| WP3-G4 HS_0_0 | PASS | $3.259\times10^{-18}$ | $1.000\times10^{-12}$ | P3-G4 HS_0_0 (PASS), $1.116\times10^{-16}$ | YP3-G4 HS_0_0 (PASS), $1.063\times10^{-18}$ | HS (0, 0): at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P\^a other than (K\^iota)\^dag) |
+| WP3-G1 KS | PASS | $4.374\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G1 KS (PASS), $4.374\times10^{-10}$ | YP3-G1 KS (PASS), $4.375\times10^{-10}$ | KS: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the static pair response (-1.051e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section III.T (-1.051e-3) (relative difference) |
+| WP3-G2 KS | PASS | $5.240\times10^{-12}$ | $1.000\times10^{-9}$ | P3-G2 KS (PASS), $1.572\times10^{-12}$ | YP3-G2 KS (PASS), $1.635\times10^{-11}$ | KS: a(0, T) = (1 - lambda\^P(T))/(lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) of Section III.T.4 (largest relative difference) |
+| WP3-G10 KS | PASS | $6.309\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G10 KS (PASS), $4.843\times10^{-12}$ | YP3-G10 KS (PASS), $4.420\times10^{-12}$ | KS: alpha = T\_c da/dT = 0.01117552279 from central differences of the static pair response (Richardson) = 0.01117552279 in closed form (lambda\^P(T\_c) = 1., M\_n = 0.1622929325) = Rust (largest relative difference) |
+| WP3-G3 KS | PASS | $4.443\times10^{-14}$ | $1.000\times10^{-9}$ | P3-G3 KS (PASS), $2.934\times10^{-15}$ | YP3-G3 KS (PASS), $2.192\times10^{-13}$ | KS: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha) |
+| WP3-G4 KS | PASS | $4.441\times10^{-16}$ | $1.000\times10^{-12}$ | P3-G4 KS (PASS), $3.135\times10^{-16}$ | YP3-G4 KS (PASS), $3.134\times10^{-16}$ | KS: at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P\^a other than (K\^iota)\^dag) |
+| WP3-G1 CJT | PASS | $4.421\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G1 CJT (PASS), $4.421\times10^{-10}$ | YP3-G1 CJT (PASS), $4.422\times10^{-10}$ | CJT: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the static pair response (-1.051e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section III.T (-1.051e-3) (relative difference) |
+| WP3-G2 CJT | PASS | $5.240\times10^{-12}$ | $1.000\times10^{-9}$ | P3-G2 CJT (PASS), $1.258\times10^{-12}$ | YP3-G2 CJT (PASS), $1.583\times10^{-11}$ | CJT: a(0, T) = (1 - lambda\^P(T))/(lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) of Section III.T.4 (largest relative difference) |
+| WP3-G10 CJT | PASS | $6.950\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G10 CJT (PASS), $5.127\times10^{-12}$ | YP3-G10 CJT (PASS), $4.702\times10^{-12}$ | CJT: alpha = T\_c da/dT = 0.01117552279 from central differences of the static pair response (Richardson) = 0.01117552279 in closed form (lambda\^P(T\_c) = 1., M\_n = 0.1622929325) = Rust (largest relative difference) |
+| WP3-G3 CJT | PASS | $4.527\times10^{-14}$ | $1.000\times10^{-9}$ | P3-G3 CJT (PASS), $2.725\times10^{-15}$ | YP3-G3 CJT (PASS), $2.192\times10^{-13}$ | CJT: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha) |
+| WP3-G4 CJT | PASS | $4.441\times10^{-16}$ | $1.000\times10^{-12}$ | P3-G4 CJT (PASS), $2.218\times10^{-16}$ | YP3-G4 CJT (PASS), $3.134\times10^{-16}$ | CJT: at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P\^a other than (K\^iota)\^dag) |
+| WP3-G5 HS_1_1 | PASS | $4.978\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G5 HS_1_1 (PASS), $2.845\times10^{-11}$ | YP3-G5 HS_1_1 (PASS), $3.656\times10^{-10}$ | HS (1, 1): the isospin twist gives the gradient coefficient of the phase twist, c = 0.01548747577 (isospin invariance; relative difference) |
+| WP3-G6 HS_1_1 | PASS | $1.064\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G6 HS_1_1 (PASS), $0$ | YP3-G6 HS_1_1 (PASS), -- | HS (1, 1): c > 0 and the extrapolation in k converges: c(0.01) = 0.01548761918, c(0.02) = 0.01548804939, extrapolated 0.01548747577 = Rust (relative difference; 1 is added if c &lt;= 0 or the two values differ by more than 1e-3 of c) |
+| WP3-G5 HS_0_1 | PASS | $2.030\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G5 HS_0_1 (PASS), $3.195\times10^{-12}$ | YP3-G5 HS_0_1 (PASS), $2.265\times10^{-10}$ | HS (0, 1): the isospin twist gives the gradient coefficient of the phase twist, c = 0.01713758647 (isospin invariance; relative difference) |
+| WP3-G6 HS_0_1 | PASS | $2.462\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G6 HS_0_1 (PASS), $0$ | YP3-G6 HS_0_1 (PASS), -- | HS (0, 1): c > 0 and the extrapolation in k converges: c(0.01) = 0.01713773698, c(0.02) = 0.01713818851, extrapolated 0.01713758647 = Rust (relative difference; 1 is added if c &lt;= 0 or the two values differ by more than 1e-3 of c) |
+| WP3-G5 HS_0_0 | PASS | $1.522\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G5 HS_0_0 (PASS), $3.099\times10^{-12}$ | YP3-G5 HS_0_0 (PASS), $1.692\times10^{-10}$ | HS (0, 0): the isospin twist gives the gradient coefficient of the phase twist, c = 0.01952798529 (isospin invariance; relative difference) |
+| WP3-G6 HS_0_0 | PASS | $3.960\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G6 HS_0_0 (PASS), $0$ | YP3-G6 HS_0_0 (PASS), -- | HS (0, 0): c > 0 and the extrapolation in k converges: c(0.01) = 0.01952812997, c(0.02) = 0.019528564, extrapolated 0.01952798529 = Rust (relative difference; 1 is added if c &lt;= 0 or the two values differ by more than 1e-3 of c) |
+| WP3-G5 KS | PASS | $9.723\times10^{-12}$ | $1.000\times10^{-8}$ | P3-G5 KS (PASS), $1.707\times10^{-11}$ | YP3-G5 KS (PASS), $6.579\times10^{-11}$ | KS: the isospin twist gives the gradient coefficient of the phase twist, c = 0.01927177616 (isospin invariance; relative difference) |
+| WP3-G6 KS | PASS | $5.371\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G6 KS (PASS), $0$ | YP3-G6 KS (PASS), -- | KS: c > 0 and the extrapolation in k converges: c(0.01) = 0.0192719291, c(0.02) = 0.01927238792, extrapolated 0.01927177616 = Rust (relative difference; 1 is added if c &lt;= 0 or the two values differ by more than 1e-3 of c) |
+| WP3-G5 CJT | PASS | $1.491\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G5 CJT (PASS), $1.327\times10^{-11}$ | YP3-G5 CJT (PASS), $6.741\times10^{-11}$ | CJT: the isospin twist gives the gradient coefficient of the phase twist, c = 0.01927177616 (isospin invariance; relative difference) |
+| WP3-G6 CJT | PASS | $4.072\times10^{-11}$ | $1.000\times10^{-8}$ | P3-G6 CJT (PASS), $0$ | YP3-G6 CJT (PASS), -- | CJT: c > 0 and the extrapolation in k converges: c(0.01) = 0.0192719291, c(0.02) = 0.01927238792, extrapolated 0.01927177616 = Rust (relative difference; 1 is added if c &lt;= 0 or the two values differ by more than 1e-3 of c) |
+| WP3-G9 HS_1_1 | PASS | $3.527\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G9 HS_1_1 (PASS), $0$ | YP3-G9 HS_1_1 (PASS), -- | HS (1, 1): with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01391 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000035); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) |
+| WP3-G9 HS_0_1 | PASS | $1.890\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G9 HS_0_1 (PASS), $0$ | YP3-G9 HS_0_1 (PASS), -- | HS (0, 1): with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01448 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000036); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) |
+| WP3-G9 HS_0_0 | PASS | $1.919\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G9 HS_0_0 (PASS), $0$ | YP3-G9 HS_0_0 (PASS), -- | HS (0, 0): with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.01532 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000035); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) |
+| WP3-G9 KS | PASS | $2.783\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G9 KS (PASS), $0$ | YP3-G9 KS (PASS), -- | KS: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.0152 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000036); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) |
+| WP3-G9 CJT | PASS | $1.410\times10^{-10}$ | $1.000\times10^{-7}$ | P3-G9 CJT (PASS), $0$ | YP3-G9 CJT (PASS), -- | CJT: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in /k/ (ratio 2.0152 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000036); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) |
+| WP3-G8 | PASS | $1.609\times10^{-10}$ | $1.000\times10^{-8}$ | P3-G8 (PASS), $1.874\times10^{-10}$ | YP3-G8 CJT (PASS), $2.252\times10^{-10}$ | CJT: the gradient coefficient does not depend on the quadrature: six directions and 24 radial nodes 0.0192717761556, 144 directions 0.0192717761587, 40 radial nodes 0.0192717761551 (largest relative difference) |
+| WP3-G12 | PASS | $6.308\times10^{-8}$ | $1.000\times10^{-6}$ | P3-G12 CJT (PASS), $9.245\times10^{-8}$ | YP3-G12 CJT (PASS), $1.715\times10^{-7}$ | CJT at T\_c: the quartic coefficient b = 0.01472373584 of the free energy at the origin (four applied fields, thermal engine) is positive and = Rust 0.01472373676 (relative difference; a(T\_c) = 5.619e-14) |
+| WP3-G11 HS_1_1 | PASS | $3.247\times10^{-11}$ | $1.000\times10^{-6}$ | P3-G11 HS_1_1 (PASS), $4.441\times10^{-16}$ | YP3-G11 HS_1_1 (PASS), $1.274\times10^{-10}$ | HS (1, 1): the Ginzburg number by the first form 11.379614 and by the second form 11.379614 = Rust 11.379614 (largest relative difference) |
+| WP3-G11 HS_0_1 | PASS | $7.599\times10^{-11}$ | $1.000\times10^{-6}$ | P3-G11 HS_0_1 (PASS), $2.220\times10^{-16}$ | YP3-G11 HS_0_1 (PASS), $6.345\times10^{-10}$ | HS (0, 1): the Ginzburg number by the first form 9.7677449 and by the second form 9.7677449 = Rust 9.7677449 (largest relative difference) |
+| WP3-G11 HS_0_0 | PASS | $1.212\times10^{-10}$ | $1.000\times10^{-6}$ | P3-G11 HS_0_0 (PASS), $6.661\times10^{-16}$ | YP3-G11 HS_0_0 (PASS), $2.048\times10^{-10}$ | HS (0, 0): the Ginzburg number by the first form 8.2771765 and by the second form 8.2771765 = Rust 8.2771765 (largest relative difference) |
+| WP3-G11 KS | PASS | $1.563\times10^{-10}$ | $1.000\times10^{-6}$ | P3-G11 KS (PASS), $0$ | YP3-G11 KS (PASS), $7.051\times10^{-10}$ | KS: the Ginzburg number by the first form 7.6207226 and by the second form 7.6207226 = Rust 7.6207226 (largest relative difference) |
+| WP3-G11 CJT | PASS | $1.260\times10^{-7}$ | $1.000\times10^{-6}$ | P3-G11 CJT (PASS), $4.441\times10^{-16}$ | YP3-G11 CJT (PASS), $6.806\times10^{-10}$ | CJT: the Ginzburg number by the first form 7.6207222 and by the second form 7.6207222 = Rust 7.6207232 (largest relative difference) |
+| WP3-H2 HS_1_1 | PASS | $3.153\times10^{-14}$ | $1.000\times10^{-10}$ | P3-H2 HS_1_1 (PASS), $2.098\times10^{-14}$ | YP3-H2 HS_1_1 (PASS), $3.333\times10^{-11}$ | HS (1, 1): the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.07096573 and 0.07212812, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
+| WP3-H2 HS_0_1 | PASS | $1.421\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 HS_0_1 (PASS), $3.419\times10^{-14}$ | YP3-H2 HS_0_1 (PASS), $3.334\times10^{-11}$ | HS (0, 1): the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.067233343 and 0.068220149, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
+| WP3-H2 HS_0_0 | PASS | $7.694\times10^{-14}$ | $1.000\times10^{-10}$ | P3-H2 HS_0_0 (PASS), $8.660\times10^{-15}$ | YP3-H2 HS_0_0 (PASS), $3.333\times10^{-11}$ | HS (0, 0): the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.061393961 and 0.06139396, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
+| WP3-H2 KS | PASS | $1.357\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 KS (PASS), $4.763\times10^{-14}$ | YP3-H2 KS (PASS), $3.334\times10^{-11}$ | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.071348166 and 0.060506197, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
+| WP3-H2 CJT | PASS | $1.352\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 CJT (PASS), $7.683\times10^{-14}$ | YP3-H2 CJT (PASS), $3.334\times10^{-11}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.071348166 and 0.064162461, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
+| WP3-H1 HS_1_1 | PASS | -- | -- | P3-H1 HS_1_1 (PASS), $0$ | YP3-H1 HS_1_1 (PASS), -- | HS (1, 1): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.8136931 &lt; 2 E\_gap = 0.9059348 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.89818] |
+| WP3-H3 HS_1_1 | PASS | $3.168\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_1_1 (PASS), $1.624\times10^{-16}$ | YP3-H3 HS_1_1 (PASS), $3.168\times10^{-13}$ | HS (1, 1): the numbers of the Higgs sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662, lambda = 16.1688, Gamma/M\_H = 3.9232) = Rust (largest relative difference) |
+| WP3-H1 HS_0_1 | PASS | -- | -- | P3-H1 HS_0_1 (PASS), $0$ | YP3-H1 HS_0_1 (PASS), -- | HS (0, 1): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.7250834 &lt; 2 E\_gap = 0.8271651 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.87659] |
+| WP3-H3 HS_0_1 | PASS | $1.208\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_0_1 (PASS), $0$ | YP3-H3 HS_0_1 (PASS), $1.460\times10^{-13}$ | HS (0, 1): the numbers of the Higgs sector (v\_SF = 0.1354499, M\_H/v\_SF = 5.35315, lambda = 14.3281, Gamma/M\_H = 3.4708) = Rust (largest relative difference) |
+| WP3-H1 HS_0_0 | PASS | -- | -- | P3-H1 HS_0_0 (PASS), $0$ | YP3-H1 HS_0_0 (PASS), -- | HS (0, 0): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.6143874 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.83843] |
+| WP3-H3 HS_0_0 | PASS | $1.850\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_0_0 (PASS), $0$ | YP3-H3 HS_0_0 (PASS), $1.853\times10^{-13}$ | HS (0, 0): the numbers of the Higgs sector (v\_SF = 0.12278792, M\_H/v\_SF = 5.00365, lambda = 12.5182, Gamma/M\_H = 2.9885) = Rust (largest relative difference) |
+| WP3-H1 KS | PASS | -- | -- | P3-H1 KS (PASS), $0$ | YP3-H1 KS (PASS), -- | KS: the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.603476 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.82354] |
+| WP3-H3 KS | PASS | $2.253\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 KS (PASS), $3.369\times10^{-16}$ | YP3-H3 KS (PASS), $2.514\times10^{-13}$ | KS: the numbers of the Higgs sector (v\_SF = 0.13140786, M\_H/v\_SF = 4.59239, lambda = 10.545, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
+| WP3-H1 CJT | PASS | -- | -- | P3-H1 CJT (PASS), $0$ | YP3-H1 CJT (PASS), -- | CJT: the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.603476 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.82354] |
+| WP3-H3 CJT | PASS | $3.085\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 CJT (PASS), $3.573\times10^{-16}$ | YP3-H3 CJT (PASS), $3.085\times10^{-13}$ | CJT: the numbers of the Higgs sector (v\_SF = 0.13531998, M\_H/v\_SF = 4.45962, lambda = 9.94412, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
+| WP3-H4 | PASS | $2.183\times10^{-16}$ | $1.000\times10^{-10}$ | P3-H4 (PASS), $1.531\times10^{-4}$ | YP3-H4 (PASS), $0$ | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.5578, M\_W/M\_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference) |
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
 `data/hck_part1_checks_python.txt`, `data/hck_part2_checks.txt`, `data/hck_part2_checks_python.txt`,
@@ -318,7 +397,18 @@ repeat itself in the others:
   from the scalar self-consistency); the Taylor coefficients by `LinearSolve` of the cubic interpolation in the scaled
   variable $\Phi^2/\Phi^2_{\max}$ (Gaussian elimination in Rust, `numpy.linalg.solve` in Python); the residuals of the
   Landau forms of the Rust free-energy curves by `LeastSquares` (Householder reflections in Rust, the singular-value
-  decomposition in Python).
+  decomposition in Python);
+* **the width of the critical region and the Higgs sector** (WP3-G1 to WP3-G12, WP3-H1 to WP3-H4): the static pair
+  response by `Eigensystem` of the symmetrized $8\times8$ particle and hole blocks at every node, the matrices
+  $\mathsf U_A^\dagger(E_{ab}-E_{ba})\mathsf U_D$ from the components of the eigenvectors by `Outer`, and the system of the
+  other 25 pair channels by `LinearSolve` in the notebook; the Rust program's own eigensolver and LU decomposition, and
+  LAPACK (batched `eigh`, `solve`) in Python. The notebook and the Rust program work on the grid of Part II (24 radial
+  nodes, six directions), the Python program on 64 directions; the product rule of the two regularizations (24 radial
+  nodes, 24 nodes in $\cos\theta$, 6 angles $\varphi$) is the same in the three. The slope in closed form uses the
+  derivatives of $I^{(1)}_{\rm SF}$ on the radial nodes of the grid in the notebook and in Rust, on 400 Gauss-Legendre nodes
+  in Python. The couplings of the amplitude field come from exact symbolic differentiation of the kinetic part (`D`,
+  `ComplexExpand`, `Simplify`) in the notebook, from finite differences of the field in Python and of the kinetic part
+  in Rust. The twisted states of the nonlinear engine of HS $(0,0)$ (P3-G7) are not repeated by the notebook.
 
 # 8. The symbols of the code of Part I
 
@@ -424,6 +514,30 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     to the Python counterpart of the Rust check P3-T5 (the order parameter of Landau's theory). The Python check is now
     YP3-T9, the Rust program makes the same check as P3-T9, and the Python program has the new counterparts YP3-T5 to
     YP3-T8 of the Rust checks P3-T5 to P3-T8, so that every check of Section III.T has a counterpart in both programs.
+
+12. *One identifier for two checks, again (E12).* When Section III.G named the counterparts of its checks, the Python
+    checks of the gradient coefficient and of the Higgs sector had been numbered YP3-G1 to YP3-G4 and YP3-H1 to YP3-H3 in
+    the order in which the Python program made them, so that six of them carried the identifiers of Rust checks of
+    other statements (the error of item 11 again). The Python program now makes the counterpart of every Rust check
+    under the identifier of the rule, and its earlier checks of statements without a Rust check (the slope in closed
+    form, the two forms of the Ginzburg number, the quartic coefficient of CJT, the numbers of the Higgs sector, the row
+    of the Standard Model) received Rust checks of the same statements, P3-G10 to P3-G12, P3-H3 and P3-H4. Found before
+    the notebook was evaluated.
+
+13. *Two sentences that the notebook had outgrown (E13).* Section III.T.7 said that the gradient coefficient at the
+    critical temperature "is not computed yet" and that computing it is the next step; Section III.G computes it, and the
+    sentence now states its result. The answer of Section III.T.6 ("smaller and more physically reasonable near the
+    critical temperature") now says that it holds for the mean-field free energy of the methods, because Section III.G
+    shows that the temperatures where it holds lie inside the critical region.
+
+14. *A variable of the same name, and a number joined to a text (E14).* The first dry run of Section III.G found two
+    errors of its code. (a) The function of the product rule numbered the angles $\varphi$ with the loop variable `k`, the
+    name of the pair momentum in the radius of the lens; the loop variable of the function shadowed the momentum, the
+    lens was built with the values of the angle index, and check WP3-G9 failed for all five methods. The loop variable
+    is now `iphi`, and the radius of the lens receives the value of the momentum inserted (`With`). (b) The table of the
+    Ginzburg numbers joined a number to a text, and the kernel issued the message `StringJoin::string` (which the
+    evaluated notebook must not have); the number is now turned into a text with `ToString`. The second dry run passed
+    all checks without a message.
 
 # 10. What follows
 

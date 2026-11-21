@@ -42,7 +42,7 @@ complete, with the program `sf_part2` (VERDICT: ALL PASS (44 of 44)) and the Pyt
 
 **Part III of the manuscript** (the effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their potential parts
 (the Mexican hat) and kinetic parts, the vacua and the breaking of the symmetry, and $\mathrm{SFBSv}^X$) is complete, with the
-program `sf_part3` (VERDICT: ALL PASS (139 of 139)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (72 of 72)) and
+program `sf_part3` (VERDICT: ALL PASS (156 of 156)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (113 of 113)) and
 `python/sf_part3_figures.py`. Section 12.1 now also defines the Landau form, with examples, and states its accuracy,
 the cause of its error and why the error matters (Table 12.2, Figure 9); the answer to the author's questions on this
 remark is kept in `provenance/P4_remarks.md`. Section 12.4, added at the author's request of 21 November 2026, computes
@@ -62,9 +62,11 @@ the integrators `sfsundials` and their C interface `sfsundials_c`, and the Pytho
 introduction, the register of the checks, Part I, Part II, the first section of Part III (the Landau form: its
 definition, examples, accuracy, the cause of its error and why the error matters), and the second section of Part III
 (Section III.T: the free energy of the five methods at finite temperature, the critical temperatures, the size of the
-order parameter, and the remark that the free energies are mean-field free energies): 91 checks, each
+order parameter, and the remark that the free energies are mean-field free energies), and the third section of
+Part III (Section III.G: the gradient coefficient at the critical temperature, the Ginzburg number and the width of the
+critical region, and the superfluid as a Higgs sector against the Standard Model): 154 checks, each
 repeated by the Rust and the Python programs (verdict of the evaluation in the front end of Wolfram:
-ALL PASS (91 of 91), 0 messages). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
+ALL PASS (154 of 154), 0 messages). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
 follow.
 
 # 3. Contents

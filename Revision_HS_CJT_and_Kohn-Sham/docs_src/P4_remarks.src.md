@@ -756,7 +756,9 @@ $(\mathsf K^3_{\rm LL})^\dagger$ produces the field $\lambda^{\rm P}_{\rm SF}(T)
 $$a^{X,{\rm Tay}}_{\rm SF}(0;T)=\frac{1-\lambda^{\rm P}_{\rm SF}(T)}{\lambda^{\rm P}_{\rm SF}(T)\,g^{X,{\rm P}}_{\rm SF}}\tag{A2.6}$$
 (*checks P3-G1 to P3-G3*: (A2.6) and the Taylor coefficient of Section 3 at $0.9\,T^{X,{\rm c}}_{\rm SF}$ agree with the linear response to
 $10^{-9}$, and $a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$ vanishes). Hence $\alpha^{X,{\rm GL}}_{\rm SF}=-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$
-at $T^{X,{\rm c}}_{\rm SF}$ (the Python program computes it in this closed form, *YP3-G2*).
+at $T^{X,{\rm c}}_{\rm SF}$ (the programs compute it also in this closed form, with the Dirac mass of the normal state from its
+scalar self-consistency and no BdG engine, and it agrees with the central differences of (A2.6) to $5\times10^{-12}$:
+*checks P3-G10, YP3-G10*).
 
 **The routing of the momenta.** With the cutoff on the momenta of the two charges of a pair,
 $\lvert\vec q_{\rm LL}\pm\tfrac12q^{\rm pair}_{\rm SF}\vec e_3\rvert<\Lambda_{\rm LL}$, a moving pair loses the pairs in a shell of thickness of order
@@ -930,9 +932,15 @@ of the five mean-field methods of this model is not that boson.
 static pair response (A2.4), the free energy (A2.5) with the other pair channels made self-consistent, the coefficients,
 the two routings, the twisted states, the Ginzburg number; the numbers of Table A3 and the couplings (A2.8)) and its
 Python counterpart `python/sf_part3.py` (functions `ginzburg` and `higgs`: an independent implementation of (A2.4) and
-(A2.5) on 64 directions, the slope $\alpha^{X,{\rm GL}}_{\rm SF}$ in closed form from (A2.6), the quartic coefficient of CJT with its own
-nonlinear thermal states, the numbers of Table A3 from the data files and the couplings (A2.8) by differentiating the
-field); the figures by `python/sf_part3_figures.py`; the tables and numbers of this section by
+(A2.5) on 64 directions and of the nonlinear thermal states, with which it repeats every Rust check of this addendum
+under the same identifier with the prefix Y: the coefficient at zero pair momentum against the Taylor coefficient and
+against (A2.6), the vanishing at the critical temperature, the other pair channels, the isospin twist, the gradient
+coefficient and its extrapolation, the twisted states of HS $(0,0)$, the independence of the quadrature, the two routings,
+the slope $\alpha^{X,{\rm GL}}_{\rm SF}$ in closed form, the two forms of the Ginzburg number, the quartic coefficient of CJT, the
+amplitude mode below the threshold, the couplings (A2.8) by differentiating the field, the numbers of Table A3 from the
+data files and the row of the Standard Model); the notebook `superfluid.nb`, which repeats the same checks with a third
+implementation in the Wolfram Language, except the twisted states of HS $(0,0)$ (the checks WP3-G1 to WP3-G6, WP3-G8 to
+WP3-G12 and WP3-H1 to WP3-H4, with the couplings (A2.8) by exact symbolic differentiation); the figures by `python/sf_part3_figures.py`; the tables and numbers of this section by
 `code/scripts/write_part3_fragments.py`:
 
     cd rust && cargo build --release && ./target/release/sf_part3 && cd ..

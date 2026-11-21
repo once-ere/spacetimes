@@ -63,7 +63,9 @@ the integrators `sfsundials` and their C interface `sfsundials_c`, and the Pytho
 introduction, the register of the checks, Part I, Part II, the first section of Part III (the Landau form: its
 definition, examples, accuracy, the cause of its error and why the error matters), and the second section of Part III
 (Section III.T: the free energy of the five methods at finite temperature, the critical temperatures, the size of the
-order parameter, and the remark that the free energies are mean-field free energies): {{GEN:nb_ntests}} checks, each
+order parameter, and the remark that the free energies are mean-field free energies), and the third section of
+Part III (Section III.G: the gradient coefficient at the critical temperature, the Ginzburg number and the width of the
+critical region, and the superfluid as a Higgs sector against the Standard Model): {{GEN:nb_ntests}} checks, each
 repeated by the Rust and the Python programs (verdict of the evaluation in the front end of Wolfram:
 {{GEN:nb_verdict}}). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
 follow.

@@ -302,13 +302,18 @@ pub fn twist_charges() -> (CMat, CMat, CMat) {
 /// fields 0.01 .. 0.04 along (K^3)^dag and a self-consistent normal self-energy (Model::fixed_pair_state_t), from the
 /// normal state with the same twist; F/Phi^2 is interpolated by a cubic polynomial in Phi^2 (as in Section 12.4)
 pub fn taylor_nonlinear(model: &mut Model, t: f64, x: Option<CMat>) -> (f64, f64) {
+    taylor_nonlinear_fields(model, t, x, &[0.01, 0.02, 0.03, 0.04])
+}
+
+/// taylor_nonlinear with the four applied fields given (check P3-G12 compares two sets of fields)
+pub fn taylor_nonlinear_fields(model: &mut Model, t: f64, x: Option<CMat>, fields: &[f64; 4]) -> (f64, f64) {
     model.ext_n = x.clone();
     let x0 = x.unwrap_or_else(|| CMat::zeros(8));
     let ns = model.solve_t(&x0, &CMat::zeros(8), 0.6, 1e-14, 200000, t);
     let mut n0 = ns.n_self.clone();
     let mut xs = vec![];
     let mut ys = vec![];
-    for fa in [0.01, 0.02, 0.03, 0.04] {
+    for &fa in fields {
         let s = model.fixed_pair_state_t(&k_scalar(3).dagger().scale_r(fa), &n0, 0.7, 1e-14, 200000, t);
         n0 = s.n_self.clone();
         let phi = comp3(&s.p_self).abs();
@@ -348,6 +353,65 @@ fn poly4(xs: &[f64], ys: &[f64]) -> [f64; 4] {
         x[k] = s / a[k][k];
     }
     x
+}
+
+/// the radial integral of (12.9) and its two derivatives on the radial nodes of the grid (E = (q^2 + M^2)^(1/2)):
+///     I1(M, T) = sum_r w_r q^2 tanh(E/2T)/E,
+///     dI1/dT  = -(1/(2 T^2)) sum_r w_r q^2 sech^2(E/2T),
+///     dI1/dM  = sum_r w_r q^2 (M/E) [sech^2(E/2T)/(2 T E) - tanh(E/2T)/E^2];
+/// at T = 0 the factor tanh is 1 and dI1/dT = 0
+pub fn i1_derivatives(model: &Model, mm: f64, t: f64) -> (f64, f64, f64) {
+    let g = &model.grid;
+    let (mut i1, mut i1t, mut i1m) = (0.0, 0.0, 0.0);
+    for (q, w) in g.kr.iter().zip(&g.wr) {
+        let e = (q * q + mm * mm).sqrt();
+        let (th, sech2) = if t > 0.0 {
+            let x = e / (2.0 * t);
+            (x.tanh(), 1.0 / (x.cosh() * x.cosh()))
+        } else {
+            (1.0, 0.0)
+        };
+        i1 += w * q * q * th / e;
+        if t > 0.0 {
+            i1t -= w * q * q * sech2 / (2.0 * t * t);
+            i1m += w * q * q * (mm / e) * (sech2 / (2.0 * t * e) - th / (e * e));
+        } else {
+            i1m -= w * q * q * mm / (e * e * e);
+        }
+    }
+    (i1, i1t, i1m)
+}
+
+/// alpha = T_c d a(0, T)/dT at T_c in closed form (check P3-G10): a(0, T) = (1 - lambda(T))/(lambda(T) g^P) (check P3-G2)
+/// with lambda(T) = g^P I1(M_n(T), T)/pi^2 of (12.9), so that alpha = -T_c lambda'(T_c)/(lambda(T_c)^2 g^P); the Dirac
+/// mass M_n of the normal state solves its scalar self-consistency M - m = g^S n_S(M, T),
+/// n_S = -(2/pi^2) [M I1(M, T) - m I1(m, 0)] (bisection), and dM_n/dT = g^S dn_S/dT / (1 - g^S dn_S/dM) (implicit
+/// function theorem); no BdG matrix and no finite difference is used.  Returns (alpha, lambda(T_c), M_n(T_c)).
+pub fn alpha_closed(model: &Model, g_s: f64, g_p: f64, tc: f64) -> (f64, f64, f64) {
+    let pi2 = std::f64::consts::PI * std::f64::consts::PI;
+    let i1_m0 = i1_derivatives(model, M_LL, 0.0).0;
+    let gap = |mm: f64| mm - M_LL + g_s * (2.0 / pi2) * (mm * i1_derivatives(model, mm, tc).0 - M_LL * i1_m0);
+    let mn = if g_s == 0.0 {
+        M_LL
+    } else {
+        let (mut lo, mut hi) = (0.01, 1.0);
+        for _ in 0..200 {
+            let mid = 0.5 * (lo + hi);
+            if gap(lo) * gap(mid) <= 0.0 {
+                hi = mid;
+            } else {
+                lo = mid;
+            }
+        }
+        0.5 * (lo + hi)
+    };
+    let (i1, i1t, i1m) = i1_derivatives(model, mn, tc);
+    let dns_t = -(2.0 / pi2) * mn * i1t;
+    let dns_m = -(2.0 / pi2) * (i1 + mn * i1m);
+    let dm_t = g_s * dns_t / (1.0 - g_s * dns_m);
+    let lam = g_p * i1 / pi2;
+    let dlam = g_p * (i1t + i1m * dm_t) / pi2;
+    (-tc * dlam / (lam * lam * g_p), lam, mn)
 }
 
 /// the results of one method

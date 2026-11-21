@@ -30,17 +30,25 @@ unique) and equals 1 at the critical temperature of the Rust program.  Every the
 Rust check of the same statement with the prefix Y.
 
 The gradient coefficient at T_c and the Ginzburg number (Section 12.5 of superfluid.md; module ginzburg of the Rust
-program): YP3-G1 recomputes the gradient coefficient c of the five methods with an independent implementation of the
-static pair response (numpy, LAPACK eigh of the particle and hole blocks) on an independent quadrature of the ball
-(64 directions instead of six); YP3-G2 computes alpha = T_c da/dT in closed form from a(0, T) = (1 - lambda)/(lambda g^P)
-with the Dirac mass of the normal state from its scalar self-consistency (no BdG engine); YP3-G3 recomputes the
-Ginzburg number; YP3-G4 recomputes the quartic coefficient b of CJT at T_c with the nonlinear thermal states of this
-engine.  The superfluid as a Higgs sector (Section 14.6; module higgs): YP3-H1 recomputes the numbers of Table 14.2 from
-the data files, YP3-H2 differentiates the kinetic part (12.4) along a line of the field to get the couplings of the
-amplitude field to the Goldstone fields, YP3-H3 checks the Standard Model row.
+program): an independent implementation of the static pair response (numpy, LAPACK eigh of the particle and hole
+blocks) and of the quadratic free energy (12.15) on an independent quadrature of the ball (64 directions instead of six)
+makes the counterparts of the Rust checks: YP3-G1 (at 0.9 T_c the linear response gives the Taylor coefficient of
+Section 12.4), YP3-G2 (a(0, T) = (1 - lambda)/(lambda g^P) at three temperatures, lambda from (12.9) on 400 radial
+nodes), YP3-G3 (a(0, T_c) vanishes), YP3-G4 (no other pair channel at k = 0), YP3-G5 (the isospin twist gives the
+gradient coefficient of the phase twist), YP3-G6 (c > 0 and the extrapolation converges), YP3-G7 (HS (0, 0): the twisted
+states of the nonlinear thermal engine of this program give the gradient coefficient of its linear response), YP3-G8 (c
+does not depend on the quadrature: 64 directions here, six in the Rust program), YP3-G9 (the cutoff on the momenta of
+the charges makes a(k) - a(0) linear in |k|, the cutoff on the relative momentum quadratic), YP3-G10 (alpha in closed
+form, with the Dirac mass of the normal state from its scalar self-consistency, no BdG engine), YP3-G11 (the Ginzburg
+number by both forms of (12.13)), YP3-G12 (the quartic coefficient b of CJT at T_c with the nonlinear thermal states of
+this engine).  The superfluid as a Higgs sector (Section 14.6; module higgs): YP3-H1 (the amplitude mode lies below the
+threshold of two quasi-particles), YP3-H2 (the couplings of the amplitude field to the Goldstone fields by
+differentiating the kinetic part (12.4) along a line of the field), YP3-H3 (the numbers of Table 14.2 recomputed from
+the data files), YP3-H4 (the Standard Model row).  Each identifier is that of the Rust check of the same statement with
+the prefix Y.
 
 Run (from the folder python/, after the Rust program sf_part3):   python3 sf_part3.py
-Requires: Python 3, numpy.  Output: data/hck_part3_checks_python.txt.  Run time: about one and a half minutes.
+Requires: Python 3, numpy.  Output: data/hck_part3_checks_python.txt.  Run time: about 100 seconds.
 """
 import csv
 import os
@@ -491,7 +499,8 @@ def _fc(v):
 
 def quad_py(ts, chi, relax=True):
     """a(k) = F_2/|Phi|^2 with F_2 = (1/2) Re tr((P - P_m(kap)) kap^dag), kap = chi(P); the components of P along the
-    three (K^iota)^dag held at (0, 0, 1), the other 25 self-consistent (relax) or zero"""
+    three (K^iota)^dag held at (0, 0, 1), the other 25 self-consistent (relax) or zero; returns (a, |P_perp|), the norm
+    of the self-consistent components other than the three (K^iota)^dag (zero without relax)"""
     z = np.zeros((8, 8), complex)
 
     def pm(k):
@@ -506,13 +515,42 @@ def quad_py(ts, chi, relax=True):
             out = out - kv * np.trace(k_scalar(i) @ mv) / 8
         return out
     p = kd[2].copy()
+    pnorm = 0.0
     if relax:
         amat = np.eye(28) - np.array([perp(cols[:, j]) for j in range(28)]).T
-        p = kd[2] + np.linalg.solve(amat, perp(cols @ kd[2]))
+        pp = np.linalg.solve(amat, perp(cols @ kd[2]))
+        pnorm = float(np.sqrt(np.sum(np.abs(pp) ** 2)))
+        p = kd[2] + pp
     kap = sum(p[j] * chi[j] for j in range(28))
     pmeth = pm(kap)
     phi = np.trace(k_scalar(3) @ pmeth) / 8
-    return 0.5 * np.trace((_fc(p) - pmeth) @ kap.conj().T).real / abs(phi) ** 2
+    return 0.5 * np.trace((_fc(p) - pmeth) @ kap.conj().T).real / abs(phi) ** 2, pnorm
+
+
+def region_nodes(nr, nt, nphi, radius):
+    """the nodes of a region of relative momenta with the radius radius(n) in the direction n: Gauss-Legendre in
+    cos(theta) on [-1, 0] and on [0, 1] (nt nodes each), nphi equal steps in phi, nr Gauss-Legendre nodes on
+    [0, radius(n)]; weights of int d^3q/(2 pi)^3 (the same rule as region_nodes of the Rust module ginzburg)"""
+    xr, wr = np.polynomial.legendre.leggauss(nr)
+    xt, wt = np.polynomial.legendre.leggauss(nt)
+    nodes, w = [], []
+    for half in (-1.0, 1.0):
+        for ct0, wt0 in zip(xt, wt):
+            ct, wct = 0.5 * (ct0 + half), 0.25 * wt0
+            st = np.sqrt(max(1.0 - ct * ct, 0.0))
+            for k in range(nphi):
+                ph = 2 * np.pi * (k + 0.5) / nphi
+                n = np.array([st * np.cos(ph), st * np.sin(ph), ct])
+                r = radius(n)
+                q = 0.5 * r * (xr + 1.0)
+                nodes.extend(qq * n for qq in q)
+                w.extend(0.5 * r * wr * q * q / (2 * np.pi ** 2) * wct / nphi)
+    return np.array(nodes), np.array(w)
+
+
+def dirac_mass(n_self):
+    """the Dirac mass m_LL + tr((beta (x) 1_2) N)/8 of a normal self-energy"""
+    return M + np.trace(B8 @ n_self).real / 8
 
 
 XG, WG = np.polynomial.legendre.leggauss(400)
@@ -562,67 +600,143 @@ def alpha_closed(g_s, g_p, tc):
     return -tc * dlam / (lam * lam * g_p), lam, mn
 
 
+def taylor_twisted(mo, t, x):
+    """the Taylor coefficient a of the nonlinear free energy F(Phi; T) = a Phi^2 + b Phi^4 + ... at the origin at the
+    temperature t with the constant twist x in the normal self-energy (mo.ext): the thermal states of the applied fields
+    0.01 .. 0.04 along (K^3)^dag, measured from the normal state with the same twist, F/Phi^2 interpolated exactly by a
+    cubic polynomial in Phi^2 (as taylor_nonlinear of the Rust module ginzburg)"""
+    z = np.zeros((8, 8), complex)
+    mo.ext = x
+    nst = solve_t(mo, x.astype(complex), z, t, tol=1e-14)
+    n0 = nst["n"]
+    xs, ys = [], []
+    for fa in (0.01, 0.02, 0.03, 0.04):
+        n0, phi, fr = fixed_pair_t(mo, fa * K3D, n0, t)
+        ph2 = abs(phi[2]) ** 2
+        xs.append(ph2)
+        ys.append((fr - nst["free"]) / ph2)
+    mo.ext = None
+    cf = np.linalg.solve(np.vander(np.array(xs), 4, increasing=True), np.array(ys))
+    return cf[0], cf[1]
+
+
 def ginzburg(rep, vals):
-    """YP3-G1 to YP3-G4: the gradient coefficient at T_c with an independent engine and quadrature, alpha in closed form,
-    the Ginzburg number, and the quartic coefficient at T_c (CJT) with the nonlinear thermal states of this engine"""
+    """YP3-G1 to YP3-G12, the Python counterparts of the Rust checks P3-G1 to P3-G12 (Section 12.5): the static pair
+    response and the quadratic free energy of this engine (numpy, LAPACK eigh of the particle and hole blocks) on an
+    independent quadrature of the ball (64 directions instead of six), alpha in closed form, the twisted states of the
+    nonlinear thermal engine, the two regularizations, the Ginzburg number and the quartic coefficient of CJT"""
     with open(os.path.join(DATA, "part3_ginzburg.csv")) as f:
         rust = {r["method"]: r for r in csv.DictReader(f)}
+    trows = read_thermal()
     qs, w = sphere_nodes()
     z = np.zeros((8, 8), complex)
+    phase, iso = np.eye(2), SIG[1] / 2
     for key, meth in KEYS3.items():
         ts = terms(meth, 2.8, 0.8, 25.2)
         mo = Model(ts)
         tc = vals["p3_th_Tc_" + key]
-        nn = solve_t(mo, z, z, tc, tol=1e-14)["n"]
-
-        def a_of(k):
-            return quad_py(ts, pair_response_py(qs, w, nn, 0.5 * k * ALPHA3, tc))
-        a0 = a_of(0.0)
-        c1 = (a_of(0.01) - a0) / 1e-4
-        c2 = (a_of(0.02) - a0) / 4e-4
-        c = (4 * c1 - c2) / 3
-        cr = float(rust[key]["c"])
-        rep.add("YP3-G1 %s" % key, "%s: the gradient coefficient at T_c, c = %.10f, with this engine (64 directions, LAPACK) = Rust %.10f (relative difference)" % (key, c, cr), abs(c - cr) / cr, 1e-7)
         g_s, g_p = sf2_eff(meth)
+        cr, ar = float(rust[key]["c"]), float(rust[key]["alpha"])
+
+        def normal_n(t):
+            return solve_t(mo, z, z, t, tol=1e-14)["n"]
+        nn = normal_n(tc)
+
+        def a_of(k, t2=phase, s=2.0, n=nn, t=tc, relax=True, nodes=(qs, w)):
+            """a(k) and |P_perp| for the twist of the isospin matrix t2 with the pair momentum k (twist strength k/s)"""
+            x = (k / s) * d8(ALPHA[3]) @ i8(t2)
+            return quad_py(ts, pair_response_py(nodes[0], nodes[1], n, x, t), relax)
+
+        def grad(t2=phase, s=2.0, relax=True, nodes=(qs, w)):
+            """c from k = 0.01, 0.02 and the Richardson extrapolation: (c, c(0.01), c(0.02))"""
+            a0 = a_of(0.0, t2, s, relax=relax, nodes=nodes)[0]
+            c1 = (a_of(0.01, t2, s, relax=relax, nodes=nodes)[0] - a0) / 1e-4
+            c2 = (a_of(0.02, t2, s, relax=relax, nodes=nodes)[0] - a0) / 4e-4
+            return (4 * c1 - c2) / 3, c1, c2
         al, lam, mn = alpha_closed(g_s, g_p, tc)
-        ar = float(rust[key]["alpha"])
-        rep.add("YP3-G2 %s" % key, "%s: alpha = T_c da/dT = %.10f in closed form (lambda^P(T_c) = %.12f, Dirac mass of the normal state %.10f) = Rust %.10f (relative difference)" % (key, al, lam, mn, ar), abs(al - ar) / ar, 1e-6)
+        # YP3-G1: at 0.9 T_c the linear response gives the Taylor coefficient a^Tay of Section 12.4
+        r09 = [r for r in trows if r["method"] == key and abs(float(r["tau"]) - 0.9) < 1e-9][0]
+        t09 = float(r09["T"])
+        a09 = a_of(0.0, n=normal_n(t09), t=t09)[0]
+        at = float(r09["a_Taylor"])
+        rep.add("YP3-G1 %s" % key, "%s: at 0.9 T_c the coefficient a(0) of |Phi|^2 from the linear response of this engine (%.10e) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (%.10e, data/part3_thermal.csv) (relative difference)" % (key, a09, at),
+                abs(a09 - at) / abs(at), 1e-7)
+        # YP3-G2: a(0, T) = (1 - lambda)/(lambda g^P), lambda from (12.9) with 400 radial nodes and the Dirac mass of the normal state
+        worst = 0.0
+        for t in (0.9 * tc, 0.998 * tc, 1.002 * tc):
+            n_t = normal_n(t)
+            lam_t = g_p * _i1(dirac_mass(n_t), t) / np.pi ** 2
+            a_t = a_of(0.0, n=n_t, t=t)[0]
+            cl = (1 - lam_t) / (lam_t * g_p)
+            worst = max(worst, abs(a_t - cl) / abs(cl))
+        rep.add("YP3-G2 %s" % key, "%s: a(0, T) of this engine = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) from (12.9) on 400 radial nodes (largest relative difference)" % key, worst, 1e-9)
+        # YP3-G3, YP3-G4: a(0, T_c) vanishes, and at k = 0 no other pair channel is induced
+        a_c, perp0 = a_of(0.0)
+        perpk = a_of(0.01)[1]
+        rep.add("YP3-G3 %s" % key, "%s: a(0, T_c) of this engine vanishes to the accuracy of T_c (|a(0, T_c)| / alpha; alpha = %.10f in closed form)" % (key, al), abs(a_c) / al, 1e-9)
+        rep.add("YP3-G4 %s" % key, "%s: at k = 0 no other pair channel is induced in this engine (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is %.2e)" % (key, perpk), perp0, 1e-12)
+        # YP3-G5, YP3-G6, YP3-G8: the gradient coefficient from the phase twist and from the isospin twist
+        c, c1, c2 = grad()
+        c_iso = grad(iso, 1.0)[0]
+        rep.add("YP3-G5 %s" % key, "%s: the isospin twist gives the gradient coefficient of the phase twist in this engine, c = %.10f (isospin invariance; relative difference)" % (key, c), abs(c_iso / c - 1), 1e-8)
+        rep.add_bool("YP3-G6 %s" % key, "%s: c > 0 and the extrapolation in k converges in this engine: c(k = 0.01) = %.10f, c(k = 0.02) = %.10f, extrapolated %.10f" % (key, c1, c2, c),
+                     c > 0 and abs(c2 - c1) / c < 1e-3, "|c(0.02) - c(0.01)| / c = %.2e, below 1e-3" % (abs(c2 - c1) / c))
+        rep.add("YP3-G8 %s" % key, "%s: the gradient coefficient does not depend on the quadrature: 64 directions (this engine) %.12f, six directions (Rust) %.12f (relative difference)" % (key, c, cr), abs(c - cr) / cr, 1e-7)
+        # YP3-G7 (HS (0, 0), no normal self-energy): the twisted states of the nonlinear engine
+        if key == "HS_0_0":
+            six = (mo.g.q, mo.g.w)
+            c_fix = grad(relax=False, nodes=six)[0]
+            a_0 = taylor_twisted(mo, tc, z)[0]
+            a_1 = taylor_twisted(mo, tc, 0.005 * ALPHA3)[0]
+            a_2 = taylor_twisted(mo, tc, 0.01 * ALPHA3)[0]
+            c_nl = (4 * (a_1 - a_0) / 1e-4 - (a_2 - a_0) / 4e-4) / 3
+            rep.add("YP3-G7 HS_0_0", "HS_0_0 (no normal self-energy): the twisted states of the nonlinear engine of this program give the gradient coefficient of its linear response with the pair self-energy along (K^3)^dag (%.10f and %.10f; relative difference)" % (c_nl, c_fix),
+                    abs(c_nl / c_fix - 1), 1e-5)
+        # YP3-G9: the two regularizations of a moving pair (the nodes of Rust's region_nodes(24, 12, 6))
+        sph0 = region_nodes(24, 12, 6, lambda n: LAM)
+        a_s0 = a_of(0.0, nodes=sph0)[0]
+        ds, dl = [], []
+        for k in (0.005, 0.01):
+            lens = region_nodes(24, 12, 6, lambda n: -0.5 * k * abs(n[2]) + np.sqrt(LAM * LAM - 0.25 * k * k * (1 - n[2] * n[2])))
+            ds.append(a_of(k, nodes=sph0)[0] - a_s0)
+            dl.append(a_of(k, nodes=lens)[0] - a_s0)
+        rs, rl = ds[1] / ds[0], dl[1] / dl[0]
+        rep.add_bool("YP3-G9 %s" % key, "%s: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in |k| in this engine (ratio %.5f for k = 0.01 and 0.005, 2 for |k|), with the cutoff on the relative momentum quadratic (ratio %.6f, 4 for k^2)" % (key, rl, rs),
+                     abs(rl / 2 - 1) < 0.02 and abs(rs / 4 - 1) < 1e-3, "|ratio/2 - 1| = %.2e below 0.02, |ratio/4 - 1| = %.2e below 1e-3" % (abs(rl / 2 - 1), abs(rs / 4 - 1)))
+        # YP3-G10: alpha in closed form
+        rep.add("YP3-G10 %s" % key, "%s: alpha = T_c da/dT = %.10f in closed form (lambda^P(T_c) = %.12f, Dirac mass of the normal state %.10f from its scalar self-consistency, no BdG engine) = Rust %.10f from central differences of the linear response (relative difference)" % (key, al, lam, mn, ar),
+                abs(al - ar) / ar, 1e-9)
+        # YP3-G11: the Ginzburg number, both forms of (12.13)
         b, tcr, gir = float(rust[key]["b"]), float(rust[key]["T_c"]), float(rust[key]["Gi"])
         gi_r = 36 * b * b * tcr * tcr / (64 * np.pi ** 2 * ar * cr ** 3)
         gi_p = 36 * b * b * tc * tc / (64 * np.pi ** 2 * al * c ** 3)
-        rep.add("YP3-G3 %s" % key, "%s: the Ginzburg number Gi = 36 b^2 T_c^2/(64 pi^2 alpha c^3) = %.6f from the Rust coefficients and %.6f from the coefficients of this program (with the Rust b) = Rust %.6f (largest relative difference)" % (key, gi_r, gi_p, gir),
-                max(abs(gi_r - gir), abs(gi_p - gir)) / gir, 1e-6)
+        dcap, xi = al * al / (2 * b * tc), np.sqrt(c / al)
+        gi_2 = 36 / (256 * np.pi ** 2 * (dcap * xi ** 3) ** 2)
+        rep.add("YP3-G11 %s" % key, "%s: the Ginzburg number Gi = n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = %.6f from the Rust coefficients, %.6f from the coefficients alpha, c of this program (with the Rust b), %.6f from the second form n^2/(256 pi^2 (Delta C xi0^3)^2) = Rust %.6f (largest relative difference)" % (key, gi_r, gi_p, gi_2, gir),
+                max(abs(gi_r - gir), abs(gi_p - gir), abs(gi_2 - gi_p)) / gir, 1e-6)
+        # YP3-G12 (CJT): the quartic coefficient b at T_c with the nonlinear thermal states of this engine
         if key == "CJT":
-            nst = solve_t(mo, z, z, tc, tol=1e-14)
-            n0 = nst["n"]
-            xs, ys = [], []
-            for fa in (0.01, 0.02, 0.03, 0.04):
-                n0, phi, fr = fixed_pair_t(mo, fa * K3D, n0, tc)
-                ph2 = abs(phi[2]) ** 2
-                xs.append(ph2)
-                ys.append((fr - nst["free"]) / ph2)
-            cf = np.linalg.solve(np.vander(np.array(xs), 4, increasing=True), np.array(ys))
-            rep.add("YP3-G4 CJT", "CJT at T_c: the quartic coefficient b = %.10f of the free energy (four applied fields, nonlinear thermal states of this engine) = Rust %.10f (relative difference); a(T_c) = %.1e" % (cf[1], b, cf[0]), abs(cf[1] - b) / b, 1e-6)
+            a_t, b_t = taylor_twisted(mo, tc, z)
+            rep.add("YP3-G12 CJT", "CJT at T_c: the quartic coefficient b = %.10f of the free energy at the origin (four applied fields, nonlinear thermal states of this engine) is positive and = Rust %.10f (relative difference); a(T_c) = %.1e" % (b_t, b, a_t),
+                    abs(b_t - b) / b if b_t > 0 else np.inf, 1e-6)
+        print("  %s: Section 12.5 done" % key)
 
 
 def higgs(rep, vals):
-    """YP3-H1 to YP3-H3: the numbers of the superfluid as a Higgs sector (Section 14.6) recomputed from the data files,
-    the couplings of the amplitude field to the Goldstone fields by an independent differentiation of (12.4), and the
-    Standard Model row"""
+    """YP3-H1 to YP3-H4, the Python counterparts of the Rust checks P3-H1 to P3-H4 (Section 14.6): the amplitude mode
+    below the threshold, the couplings of the amplitude field to the Goldstone fields by an independent differentiation
+    of (12.4), the numbers of Table 14.2 recomputed from the data files, and the Standard Model row"""
     with open(os.path.join(DATA, "part3_higgs.csv")) as f:
         rust = {r["method"]: r for r in csv.DictReader(f)}
     gap0 = {r["method"]: float(r["gap"]) for r in read_thermal() if abs(float(r["tau"])) < 1e-12}
     for key in KEYS3:
         phi0, c11, cff = vals["p3_Phi0_" + key], vals["p3_chi11_" + key], vals["p3_chiFF_" + key]
         mh, mnu = vals["p3_MH_RPA_" + key], vals["p3_MNU_RPA_" + key]
+        rep.add_bool("YP3-H1 %s" % key, "%s: the amplitude mode lies below the threshold of two quasi-particles, M_H = %.6f < 2 E_gap = %.6f (M_H / 2 E_gap = %.4f; data/part3_values.csv, data/part3_thermal.csv)" % (key, mh, 2 * gap0[key], mh / (2 * gap0[key])),
+                     mh < 2 * gap0[key], "2 E_gap - M_H = %.6f" % (2 * gap0[key] - mh))
         f_i, f_f = np.sqrt(c11), np.sqrt(cff / 4)
         v = 2 * f_i
         mw, mz = 0.7 * np.sqrt(c11), 0.45 * np.sqrt(cff)
-        mine = {"v_SF": v, "f_F": f_f, "f_I": f_i, "M_H_over_v_SF": mh / v, "lambda_SF": mh * mh / (2 * v * v), "M_H_over_M_W": mh / mw,
-                "M_H_over_2E_gap": mh / (2 * gap0[key]), "M_NU_over_M_H": mnu / mh, "f_F_over_f_I": f_f / f_i, "M_W_over_M_Z": mw / mz,
-                "Gamma_over_M_H": 3 * mh * mh / (32 * np.pi * f_f * f_f), "T_c_over_v_SF": vals["p3_th_Tc_" + key] / v, "M_H_GeV": mh * 246.22 / v}
-        dev = max(abs(mine[k] - float(rust[key][k])) / abs(float(rust[key][k])) for k in mine)
-        rep.add("YP3-H1 %s" % key, "%s: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = %.8f, M_H/v_SF = %.6f, lambda_SF = %.5f, Gamma/M_H = %.5f) = data/part3_higgs.csv (largest relative difference)" % (key, v, mh / v, mh * mh / (2 * v * v), mine["Gamma_over_M_H"]), dev, 1e-9)
         # the couplings: the kinetic part (12.4) along a line x of the field Phi(x) = (Phi0 + h(x)/N_h) e^{i th0(x)} R_1(th1(x)) e_3,
         # differentiated in x by central differences of the complex field (independent of the Rust formula)
         z_, y_ = c11 / (2 * phi0 * phi0), cff / (8 * phi0 * phi0) - c11 / (2 * phi0 * phi0)
@@ -643,9 +757,14 @@ def higgs(rep, vals):
         g1 = (kin(dl, 0, 1) - kin(-dl, 0, 1)) / (2 * dl)
         rep.add("YP3-H2 %s" % key, "%s: the couplings of h to (d theta_0)^2 and (d theta_1)^2, %.8f and %.8f, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)" % (key, g0, g1),
                 max(abs(g0 / f_f - 1), abs(g1 / (f_i * f_i / f_f) - 1)), 1e-6)
+        mine = {"v_SF": v, "f_F": f_f, "f_I": f_i, "M_H_over_v_SF": mh / v, "lambda_SF": mh * mh / (2 * v * v), "M_H_over_M_W": mh / mw,
+                "M_H_over_2E_gap": mh / (2 * gap0[key]), "M_NU_over_M_H": mnu / mh, "f_F_over_f_I": f_f / f_i, "M_W_over_M_Z": mw / mz,
+                "Gamma_over_M_H": 3 * mh * mh / (32 * np.pi * f_f * f_f), "T_c_over_v_SF": vals["p3_th_Tc_" + key] / v, "M_H_GeV": mh * 246.22 / v}
+        dev = max(abs(mine[k] - float(rust[key][k])) / abs(float(rust[key][k])) for k in mine)
+        rep.add("YP3-H3 %s" % key, "%s: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = %.8f, M_H/v_SF = %.6f, lambda_SF = %.5f, Gamma/M_H = %.5f) = data/part3_higgs.csv (largest relative difference)" % (key, v, mh / v, mh * mh / (2 * v * v), mine["Gamma_over_M_H"]), dev, 1e-9)
     sm = rust["SM"]
     ref = {"M_H_over_v_SF": 125.20 / 246.22, "lambda_SF": 125.20 ** 2 / (2 * 246.22 ** 2), "M_H_over_M_W": 125.20 / 80.3692, "M_W_over_M_Z": 80.3692 / 91.1880}
-    rep.add("YP3-H3", "the Standard Model row: M_H/v = %.5f, lambda = %.5f, M_H/M_W = %.5f, M_W/M_Z = %.5f (Particle Data Group 2024; largest relative difference)" % tuple(ref.values()),
+    rep.add("YP3-H4", "the Standard Model row: M_H/v = %.5f, lambda = %.5f, M_H/M_W = %.5f, M_W/M_Z = %.5f (Particle Data Group 2024; largest relative difference)" % tuple(ref.values()),
             max(abs(float(sm[k]) - ref[k]) / ref[k] for k in ref), 1e-10)
 
 
