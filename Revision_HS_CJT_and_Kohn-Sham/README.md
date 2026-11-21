@@ -34,14 +34,15 @@ updated with every item.
 |:---|:---|:---|
 | `README.md`, `.tex`, `.pdf` | this list of contents | written |
 | `provenance/P0_task_record.md`, `.tex`, `.pdf` | the task (paraphrased), how the author's rules are kept, the record of a false statement and its correction, the decisions of interpretation, the plan, the log of errors and changes | written |
-| `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution | planned |
+| `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
+| `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
 | `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | planned |
 | `superfluid.nb` | the Mathematica notebook of the whole solution, with its provenance | planned |
 | `provenance/` (further documents) | the provenance of the code, the computed values and the checks, and the provenance of the notebook | planned |
-| `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?) | written |
+| `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?); the registry of the symbols: `symbol_entries.py` (the entries), `write_symbol_registry.py` (reads the seven registries of the project, writes the registry of the solution and the tables of the MASTER provenance) and `check_symbols.py` (the checks of the symbols) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
 | `rust/`, `python/`, `wolfram/` | the programs (Rust first, Python, Wolfram language) | planned |
-| `data/`, `figures/`, `videos/` | the results of the programs, the figures and the videos | `data/` holds the report of the check of the documents |
+| `data/`, `figures/`, `videos/` | the results of the programs, the figures and the videos | `data/` holds the reports of the checks of the documents (`hck_self_contained_checks.txt`) and of the symbols (`hck_symbol_checks.txt`) |
 
 # 4. How to build the documents
 
@@ -49,6 +50,8 @@ The documents are built in two steps, from the folder `Revision_HS_CJT_and_Kohn-
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_HS_CJT_and_Kohn-Sham"
+python3 code/scripts/write_symbol_registry.py # the registry of the symbols and its tables
+python3 code/scripts/check_symbols.py         # writes data/hck_symbol_checks.txt
 python3 code/scripts/assemble_docs.py         # docs_src/*.src.md -> the .md documents
 bash code/scripts/build_docs.sh               # .md -> .tex -> .pdf, with the layout check
 python3 code/scripts/check_self_contained.py  # writes data/hck_self_contained_checks.txt

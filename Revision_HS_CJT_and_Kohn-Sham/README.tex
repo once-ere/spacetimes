@@ -246,7 +246,6 @@ updated with every item.
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
 
-\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
@@ -264,21 +263,29 @@ state
 \bottomrule\noalign{}
 \endlastfoot
 \texttt{README.md}, \texttt{.tex}, \texttt{.pdf} & this list of contents
-& written \\*
+& written \\
 \texttt{provenance/P0\_task\_record.md}, \texttt{.tex}, \texttt{.pdf} &
 the task (paraphrased), how the author's rules are kept, the record of a
 false statement and its correction, the decisions of interpretation, the
-plan, the log of errors and changes & written \\*
+plan, the log of errors and changes & written \\
 \texttt{provenance/P1\_master\_symbols.md}, \texttt{.tex}, \texttt{.pdf}
 & the MASTER provenance of the symbols of PROJECT spacetimes for this
-solution & planned \\*
+solution: the convention of the symbols (suffix LL: taken unchanged from
+the earlier work on the super-loop; suffix SF: introduced by this
+solution), the seven registries of the project read by a program, the
+identifications and remedies file by file, the collisions and their
+resolution, the machine checks, and the table of all symbols & written;
+grows with the solution \\
+\texttt{provenance/symbols\_sf.csv} & the registry of the symbols of the
+solution, written by \texttt{code/scripts/write\_symbol\_registry.py}
+from \texttt{code/scripts/symbol\_entries.py} & written \\
 \texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript of
-the solution & planned \\*
+the solution & planned \\
 \texttt{superfluid.nb} & the Mathematica notebook of the whole solution,
-with its provenance & planned \\*
+with its provenance & planned \\
 \texttt{provenance/} (further documents) & the provenance of the code,
 the computed values and the checks, and the provenance of the notebook &
-planned \\*
+planned \\
 \texttt{code/scripts/} & the document pipeline:
 \texttt{assemble\_docs.py} (writes a document from its source in
 \texttt{docs\_src/} and the generated fragments),
@@ -287,14 +294,20 @@ every document, with a check of the layout of every page),
 \texttt{doc\_header.tex}, \texttt{keep\_tables.py},
 \texttt{check\_layout.py}, \texttt{check\_pages.py}, and
 \texttt{check\_self\_contained.py} (does a document send its reader
-elsewhere?) & written \\*
+elsewhere?); the registry of the symbols: \texttt{symbol\_entries.py}
+(the entries), \texttt{write\_symbol\_registry.py} (reads the seven
+registries of the project, writes the registry of the solution and the
+tables of the MASTER provenance) and \texttt{check\_symbols.py} (the
+checks of the symbols) & written \\
 \texttt{docs\_src/} & the hand-edited sources of the documents &
-written \\*
+written \\
 \texttt{rust/}, \texttt{python/}, \texttt{wolfram/} & the programs (Rust
-first, Python, Wolfram language) & planned \\*
+first, Python, Wolfram language) & planned \\
 \texttt{data/}, \texttt{figures/}, \texttt{videos/} & the results of the
-programs, the figures and the videos & \texttt{data/} holds the report
-of the check of the documents \\
+programs, the figures and the videos & \texttt{data/} holds the reports
+of the checks of the documents
+(\texttt{hck\_self\_contained\_checks.txt}) and of the symbols
+(\texttt{hck\_symbol\_checks.txt}) \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
@@ -307,6 +320,8 @@ The documents are built in two steps, from the folder
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_HS\_CJT\_and\_Kohn{-}Sham"}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh               }\CommentTok{\# .md {-}\textgreater{} .tex {-}\textgreater{} .pdf, with the layout check}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py  }\CommentTok{\# writes data/hck\_self\_contained\_checks.txt}

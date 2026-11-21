@@ -233,66 +233,81 @@ listed in Section 8); the full derivations of the solution are part of the solut
 **D1. The spinor field is an isospin doublet of four-component Dirac fields.** The field $\Psi_{\rm LL}$ has eight
 complex Grassmann components: a Dirac index with four values times an isospin index with two values. Each of its two
 isospin components is a four-component Dirac field, the field named in item 2 of Section 2.4. In the language of the
-super-loop, $\Psi_{\rm LL}$ is made of two spinor charges $\mathbf b^-\mathbf e_4$ and $\mathbf b^+\mathbf e_4$ ($\mathbf b^\pm$
-bi-quaternions), as in the earlier work. *Reason.* Item 3 requires that $SU(2)_{\rm v}$ act on the spinors, and item 4
-requires a Lagrangian with a mass term, all gauge-covariant. The following theorem shows that these requirements
-cannot be met by a single four-component Dirac field; they are met by the doublet, on which the mass term
+super-loop, $\Psi_{\rm LL}$ is made of two spinor charges $\mathbf b^-_{\rm LL}\mathbf e_4$ and $\mathbf b^+_{\rm LL}\mathbf e_4$
+($\mathbf b^\pm_{\rm LL}$ bi-quaternions), as in the earlier work. *Reason.* Item 3 requires that $SU(2)_{\rm v}$ act on the
+spinors, and item 4 requires a Lagrangian with a mass term, all gauge-covariant. The following theorem shows that these
+requirements cannot be met by a single four-component Dirac field; they are met by the doublet, on which the mass term
 $m_{\rm LL}\bar\Psi_{\rm LL}\Psi_{\rm LL}$ is invariant under the whole of GEE.
 
-> **Theorem D1.** Let $\psi$ be one Dirac field with four complex Grassmann components on M31, and let $SU(2)_{\rm v}$
-> act on $\psi$ by a non-trivial linear representation that commutes with the Lorentz group $SL(2,\mathbb C)$ and
-> leaves the kinetic term $\bar\psi i\gamma^p\partial_p\psi$ invariant. Then no Lorentz-invariant bilinear of $\psi$
-> without derivatives (Dirac mass, pseudoscalar mass, Majorana mass, or any real combination of them) is invariant
-> under $SU(2)_{\rm v}$. Hence no mass term of $\psi$ is GEE-invariant.
+> **Theorem D1.** Let $\psi_{\rm SF}$ be one Dirac field with four complex Grassmann components on M31, and let
+> $SU(2)_{\rm v}$ act on $\psi_{\rm SF}$ by a non-trivial linear representation that commutes with the Lorentz group
+> $SL(2,\mathbb C)$ and leaves the kinetic term $\bar\psi_{\rm SF}i\gamma^p_{\rm LL}\partial_p\psi_{\rm SF}$ invariant. Then no
+> Lorentz-invariant bilinear of $\psi_{\rm SF}$ without derivatives (Dirac mass, pseudoscalar mass, Majorana mass, or any
+> real combination of them) is invariant under $SU(2)_{\rm v}$. Hence no mass term of $\psi_{\rm SF}$ is GEE-invariant.
 
-*Proof.* In the chiral basis the Dirac matrices are $\gamma^0=\begin{pmatrix}0&\sigma_0\\\sigma_0&0\end{pmatrix}$ and
-$\gamma^j=\begin{pmatrix}0&\sigma_j\\-\sigma_j&0\end{pmatrix}$ ($j=1,2,3$), with the $2\times2$ unit matrix $\sigma_0$ and the
-Pauli matrices $\sigma_j$; write $\psi=(\psi_-,\psi_+)$ with two-component blocks (chirality $-1$ above, $+1$ below).
-A unit bi-quaternion, represented by a complex $2\times2$ matrix $X$ of determinant 1, acts by
-$\psi_-\mapsto(X^\dagger)^{-1}\psi_-$ and $\psi_+\mapsto X\psi_+$. With $\mathsf E=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, every
-$2\times2$ matrix $X$ of determinant 1 obeys $\mathsf EX\mathsf E^{-1}=(X^T)^{-1}$ (multiply out: for
-$X=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ both sides equal $\begin{pmatrix}d&-c\\-b&a\end{pmatrix}$). Hence the two-component
-fields $\xi_1=\psi_-$ and $\xi_2=\mathsf E\psi_+^*$ transform alike, $\xi_a\mapsto(X^\dagger)^{-1}\xi_a$: they are two
-left-handed Weyl spinors. In terms of them, up to a total derivative (which uses that the components anticommute),
-$\bar\psi i\gamma^p\partial_p\psi=\sum_{a=1,2}i\,\xi_a^\dagger(\partial_0-\sum_j\sigma_j\partial_j)\xi_a$, which is invariant
-exactly under the unitary transformations of the pair $(\xi_1,\xi_2)$, the group $U(2)$. A linear map that mixed
-$\xi_a$ with $\xi_b^*$ would not commute with $SL(2,\mathbb C)$, because $\xi^*$ transforms with $X^*$, a representation not
-equivalent to $(X^\dagger)^{-1}$. A non-trivial representation of $SU(2)_{\rm v}$ by $2\times2$ unitary matrices is
-equivalent to the defining one; so $SU(2)_{\rm v}$ acts on $(\xi_1,\xi_2)$ as an isospin doublet (this is the
-Pauli-Gürsey group of a single Dirac field). The only Lorentz-invariant bilinears of left-handed spinors without
-derivatives are $B_{ab}=\xi_a^T\mathsf E\xi_b$ and their Hermitian conjugates. Because the components anticommute and
-$\mathsf E^T=-\mathsf E$, $B_{ab}=\sum_{\alpha\beta}\xi_{a\alpha}\mathsf E_{\alpha\beta}\xi_{b\beta}=-\sum_{\alpha\beta}\xi_{b\beta}\mathsf E_{\alpha\beta}\xi_{a\alpha}=B_{ba}$:
-the bilinears are symmetric in the isospin indices and form the symmetric tensor product of two doublets, the isospin
-triplet. The triplet contains no invariant, so no linear combination of the $B_{ab}$ and $B_{ab}^\dagger$ is invariant
-under $SU(2)_{\rm v}$. The Dirac mass is one such combination: $\bar\psi\psi=B_{21}+B_{21}^\dagger$ (from
-$\psi_+=\mathsf E^{-1}\xi_2^*$ and $\bar\psi\psi=\psi_-^\dagger\psi_++\psi_+^\dagger\psi_-$). $\square$
+*Proof.* In the chiral basis the Dirac matrices are
+$\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$ and
+$\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$ ($j=1,2,3$), with the $2\times2$ unit
+matrix $\sigma^{\rm LL}_0$ and the Pauli matrices $\sigma^{\rm LL}_j$; write $\psi_{\rm SF}=(\psi^-_{\rm SF},\psi^+_{\rm SF})$ with
+two-component blocks (chirality $-1$ above, $+1$ below), and $\bar\psi_{\rm SF}=\psi_{\rm SF}^\dagger\gamma^0_{\rm LL}$. A unit
+bi-quaternion $\mathbf g$, with its matrix $M_{\rm LL}(\mathbf g)$ of determinant $N_{\rm LL}(\mathbf g)=1$, acts by
+$\psi^-_{\rm SF}\mapsto(M_{\rm LL}(\mathbf g)^\dagger)^{-1}\psi^-_{\rm SF}$ and $\psi^+_{\rm SF}\mapsto M_{\rm LL}(\mathbf g)\psi^+_{\rm SF}$.
+With $\mathsf E_{\rm LL}=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, every unit bi-quaternion obeys
+$\mathsf E_{\rm LL}M_{\rm LL}(\mathbf g)\mathsf E_{\rm LL}^{-1}=(M_{\rm LL}(\mathbf g)^T)^{-1}$. (Multiply out: with the
+coefficients $\xi^{\rm LL}_p=\xi^{\rm LL}_p(\mathbf g)$, $M_{\rm LL}(\mathbf g)=\begin{pmatrix}\xi^{\rm LL}_0-i\xi^{\rm LL}_3&-i\xi^{\rm LL}_1-\xi^{\rm LL}_2\\-i\xi^{\rm LL}_1+\xi^{\rm LL}_2&\xi^{\rm LL}_0+i\xi^{\rm LL}_3\end{pmatrix}$,
+and $\mathsf E_{\rm LL}M_{\rm LL}(\mathbf g)\mathsf E_{\rm LL}^{-1}=\begin{pmatrix}\xi^{\rm LL}_0+i\xi^{\rm LL}_3&i\xi^{\rm LL}_1-\xi^{\rm LL}_2\\i\xi^{\rm LL}_1+\xi^{\rm LL}_2&\xi^{\rm LL}_0-i\xi^{\rm LL}_3\end{pmatrix}$,
+which is the transpose of the adjugate of $M_{\rm LL}(\mathbf g)$, that is $N_{\rm LL}(\mathbf g)\,(M_{\rm LL}(\mathbf g)^T)^{-1}$.)
+Applied to $M_{\rm LL}(\mathbf g)^*$, whose determinant is also 1, it shows that the two-component fields
+$\xi_{{\rm SF},1}=\psi^-_{\rm SF}$ and $\xi_{{\rm SF},2}=\mathsf E_{\rm LL}(\psi^+_{\rm SF})^*$ transform alike,
+$\xi_{{\rm SF},f}\mapsto(M_{\rm LL}(\mathbf g)^\dagger)^{-1}\xi_{{\rm SF},f}$: they are two left-handed Weyl spinors. In terms of
+them, up to a total derivative (which uses that the components anticommute),
+$\bar\psi_{\rm SF}i\gamma^p_{\rm LL}\partial_p\psi_{\rm SF}=\sum_{f=1,2}i\,\xi_{{\rm SF},f}^\dagger(\partial_0-\sum_j\sigma^{\rm LL}_j\partial_j)\xi_{{\rm SF},f}$,
+which is invariant exactly under the unitary transformations of the pair $(\xi_{{\rm SF},1},\xi_{{\rm SF},2})$, the group
+$U(2)$. A linear map that mixed $\xi_{{\rm SF},f}$ with $\xi_{{\rm SF},f'}^*$ would not commute with $SL(2,\mathbb C)$, because
+$\xi_{{\rm SF},f}^*$ transforms with $M_{\rm LL}(\mathbf g)^*$, a representation not equivalent to
+$(M_{\rm LL}(\mathbf g)^\dagger)^{-1}$. A non-trivial representation of $SU(2)_{\rm v}$ by $2\times2$ unitary matrices is
+equivalent to the defining one; so $SU(2)_{\rm v}$ acts on $(\xi_{{\rm SF},1},\xi_{{\rm SF},2})$ as an isospin doublet (this
+is the Pauli-Gürsey group of a single Dirac field). The only Lorentz-invariant bilinears of left-handed spinors without
+derivatives are $I^{\rm W}_{{\rm SF},ff'}=\xi_{{\rm SF},f}^T\mathsf E_{\rm LL}\xi_{{\rm SF},f'}$ and their Hermitian conjugates.
+Because the components anticommute and $\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}$,
+$I^{\rm W}_{{\rm SF},ff'}=\sum_{\alpha\alpha'}\xi_{{\rm SF},f\alpha}(\mathsf E_{\rm LL})_{\alpha\alpha'}\xi_{{\rm SF},f'\alpha'}=-\sum_{\alpha\alpha'}\xi_{{\rm SF},f'\alpha'}(\mathsf E_{\rm LL})_{\alpha\alpha'}\xi_{{\rm SF},f\alpha}=I^{\rm W}_{{\rm SF},f'f}$:
+the bilinears are symmetric in the doublet indices and form the symmetric tensor product of two doublets, the
+isospin triplet. The triplet contains no invariant, so no linear combination of the $I^{\rm W}_{{\rm SF},ff'}$ and
+their Hermitian conjugates is invariant under $SU(2)_{\rm v}$. The Dirac mass is one such combination:
+$\bar\psi_{\rm SF}\psi_{\rm SF}=I^{\rm W}_{{\rm SF},21}+(I^{\rm W}_{{\rm SF},21})^\dagger$ (from
+$\psi^+_{\rm SF}=\mathsf E_{\rm LL}^{-1}\xi_{{\rm SF},2}^*$ and
+$\bar\psi_{\rm SF}\psi_{\rm SF}=(\psi^-_{\rm SF})^\dagger\psi^+_{\rm SF}+(\psi^+_{\rm SF})^\dagger\psi^-_{\rm SF}$). $\square$
 
 In the super-loop, a single spinor charge $\mathbf b\mathbf e_4$ (four complex components) is exactly such a pair
-$(\xi_1,\xi_2)$, an isospin doublet of left-handed spinors; the doublet of Dirac fields consists of two spinor charges,
-and its mass term pairs the two. The theorem will be checked by machine (exact operator algebra of the anticommuting
-components) in the code of the manuscript.
+$(\xi_{{\rm SF},1},\xi_{{\rm SF},2})$, an isospin doublet of left-handed spinors; the doublet of Dirac fields consists of two
+spinor charges, and its mass term pairs the two. The theorem will be checked by machine (exact operator algebra of the
+anticommuting components) in the code of the manuscript.
 
 **D2. The conventions of Section 2.2 are adopted.** The gauge-covariant derivative carries $+i$ in front of the
 couplings, as in (2.1):
 
-$$\nabla^{\rm GEE}_p\Psi_{\rm LL}=\Big(\partial_p+\Gamma^{\rm LL}_p+ig^{\rm v}_{\rm LL}\sum_{\iota=1}^3W^\iota_{{\rm LL},p}T^\iota_{\rm LL}+ig^{\rm F}_{\rm LL}B_{{\rm LL},p}\Big)\Psi_{\rm LL},\tag{6.1}$$
+$$\nabla^{\rm GEE}_p\Psi_{\rm LL}=\Big(\partial_p+\Gamma^{\rm LL}_p+ig^{\rm v}_{\rm LL}\sum_{\iota=1}^3W^\iota_{{\rm SF},p}T^\iota_{\rm LL}+ig^{\rm F}_{\rm LL}B_{{\rm SF},p}\Big)\Psi_{\rm LL},\tag{6.1}$$
 
-with the gauge fields $W^\iota_{{\rm LL},p}$ of $SU(2)_{\rm v}$ (coupling $g^{\rm v}_{\rm LL}$), the gauge field
-$B_{{\rm LL},p}$ of $U(1)^{\rm F}_{\rm LL}$ (coupling $g^{\rm F}_{\rm LL}$; the fermion number of $\Psi_{\rm LL}$ is 1), and the
-Lorentz connection $\Gamma^{\rm LL}_p$ of $SL(2,\mathbb C)$. The names of the Standard Model are used for the analogous
-objects, with the suffix LL that marks the objects of the super-loop: $W^\pm_{{\rm LL},p}$, $Z_{{\rm LL},p}$, the photon
-$A_{{\rm LL},p}$ and the mixing angle $\theta^{\rm W}_{\rm LL}$. *Reason.* The author gives the conventions "to establish
-terms, symbols and conventions". The earlier work on the super-loop wrote $-i$ in front of the couplings and named the
-gauge fields of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ $A^\iota_{{\rm LL},p}$ and $A^{\rm F}_{{\rm LL},p}$, with the same
-couplings and generators. The two conventions describe the same theory: $W^\iota_{{\rm LL},p}=-A^\iota_{{\rm LL},p}$ and
-$B_{{\rm LL},p}=-A^{\rm F}_{{\rm LL},p}$, and the Yang-Mills Lagrangian, which is quadratic in the field strengths, has the
-same form in both.
+with the gauge fields $W^\iota_{{\rm SF},p}$ of $SU(2)_{\rm v}$ (coupling $g^{\rm v}_{\rm LL}$), the gauge field
+$B_{{\rm SF},p}$ of $U(1)^{\rm F}_{\rm LL}$ (coupling $g^{\rm F}_{\rm LL}$; the fermion number of $\Psi_{\rm LL}$ is 1), and the
+spin connection $\Gamma^{\rm LL}_p$ of $SL(2,\mathbb C)$. The names of the Standard Model are used for the analogous
+objects, with the suffix SF that marks the objects that this solution introduces: $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$,
+the photon $A_{{\rm SF},p}$ and the mixing angle $\theta^{\rm W}_{\rm SF}$. *Reason.* The author gives the conventions "to
+establish terms, symbols and conventions". The earlier work on the super-loop wrote $-i$ in front of the couplings and
+named the gauge fields of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ $A^\iota_{{\rm LL},p}$ and $A^{\rm F}_{{\rm LL},p}$, with the
+same couplings and generators. The two conventions describe the same theory: $W^\iota_{{\rm SF},p}=-A^\iota_{{\rm LL},p}$ and
+$B_{{\rm SF},p}=-A^{\rm F}_{{\rm LL},p}$, and the Yang-Mills Lagrangian, which is quadratic in the field strengths, has the
+same form in both. (The suffixes: a symbol with the suffix LL is taken unchanged from the earlier work on the
+super-loop; a symbol with the suffix SF is introduced by this solution. The earlier work had used, for example,
+$W^\pm_{{\rm LL},p}$ for its charged fields with the other sign convention; a new suffix keeps every symbol of the project
+for one object.)
 
 **D3. The potential of the spinor field and its recursion.** The Lagrangian of the spinor field is the Dirac
-Lagrangian with the covariant derivative (6.1), the mass term, and a self-interaction $\mathcal L^{\rm self}_{\rm LL}$ that is
+Lagrangian with the covariant derivative (6.1), the mass term, and a self-interaction $\mathcal L^{\rm self}_{\rm SF}$ that is
 a sum of GEE-invariant products of four field components at one point; the gauge fields have their Yang-Mills
-Lagrangian. The recursion of item 6 is carried out as a sequence of potentials $V^{(0)},V^{(1)},\dots$, each examined by
-all three methods, and each change and its result are recorded in the manuscript. The first potential, $V^{(0)}$, is the
+Lagrangian. The recursion of item 6 is carried out as a sequence of potentials $V^{(0)}_{\rm SF},V^{(1)}_{\rm SF},\dots$, each
+examined by all three methods, and each change and its result are recorded in the manuscript. The first potential,
+$V^{(0)}_{\rm SF}$, is the
 author's own form of the interaction of the earlier Kohn-Sham work of the project: a scalar and a vector product of
 densities, with the interaction energy density $\tfrac12G_Vn^2+\tfrac12G_Sn_S^2$ of uniform matter (number density $n$,
 scalar density $n_S$, attraction for $G_S<0$, repulsion for $G_V>0$; the author's symbols). The further potentials add
@@ -322,7 +337,7 @@ couplings $G_S$, $G_V$ of D3) and is extended by a pairing part and by the contr
 These are the defining approximations of the three methods; they make the three methods differ where they should, and
 they let the task's "HS parameters" and "Kohn-Sham potential" be changed as the task allows.
 
-**D6. Units, regularization, ground state, excited states and gap.** Units with $\hbar=c=1$ and a momentum cutoff
+**D6. Units, regularization, ground state, excited states and gap.** Units in which Planck's constant and the speed of light are 1, and a momentum cutoff
 $\Lambda_{\rm LL}=1$ on the three-momenta of the spinor field (a contact interaction requires a cutoff); the mass of the
 spinor charges $m_{\rm LL}=0.2$, the value of the earlier work, so that the results can be compared with it; zero
 temperature; the vacuum (chemical potential zero) as the main case. In each method the ground state is the uniform
@@ -381,43 +396,53 @@ The plan is changed only with a record in Section 9.
 
 # 8. The symbols of this document
 
+The symbols of this record are those of the registry of the solution; the suffix LL marks a symbol taken unchanged from
+the earlier work on the super-loop, the suffix SF a symbol introduced by this solution.
+
 | symbol | meaning |
 |:---|:---|
-| M31 | the $3+1$ manifold of the Lorentz super-loop: the set of Hermitian bi-quaternions $\mathbf x=x^0\mathbf e_0+i\sum_jx^j\mathbf e_j$ with four real coordinates, whose norm $(x^0)^2-\sum_j(x^j)^2$ is the Minkowski interval |
-| $\mathbf e_0,\mathbf e_1,\mathbf e_2,\mathbf e_3$; $\mathbf e_4$ | the units of the quaternions ($\mathbf e_0=1$, $\mathbf e_j^2=-1$, $\mathbf e_1\mathbf e_2=\mathbf e_3$ and cyclically); $\mathbf e_4$: the fourth octonion unit, which turns a bi-quaternion $\mathbf b$ into the spinor charge $\mathbf b\mathbf e_4$ of the super-loop |
-| bi-quaternion | a combination $\sum_p\xi_p\mathbf e_p$ ($p=0,1,2,3$) with complex coefficients $\xi_p$; unit bi-quaternion: $\sum_p\xi_p^2=1$ |
-| $\mathbf b$, $\mathbf b^\pm$ | bi-quaternions; $\mathbf b^\pm\mathbf e_4$: the two spinor charges of which the field $\Psi_{\rm LL}$ is made |
+| M31, $\mathbb R^{1,3}_{\rm LL}$ | the $3+1$ manifold of the Lorentz super-loop: the Hermitian bi-quaternions $\mathbf x=x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j$ with four real coordinates $x^p_{\rm LL}$, whose norm $(x^0_{\rm LL})^2-\sum_j(x^j_{\rm LL})^2$ is the Minkowski interval (M31 is the author's name) |
+| $\mathbf e_0,\dots,\mathbf e_7$ | the units of the octonions: $\mathbf e_0=1$, the quaternion units $\mathbf e_1,\mathbf e_2,\mathbf e_3$ ($\mathbf e_j^2=-1$, $\mathbf e_1\mathbf e_2=\mathbf e_3$ and cyclically), $\mathbf e_4$ (the unit that turns a bi-quaternion $\mathbf b$ into the spinor charge $\mathbf b\mathbf e_4$ of the super-loop), and $\mathbf e_{4+j}=\mathbf e_j\mathbf e_4$ |
+| $\mathbf x$, $\mathbf b$, $\mathbf g$ | bi-quaternions: complex combinations $\sum_p\xi^{\rm LL}_p(\mathbf x)\mathbf e_p$ of $\mathbf e_0,\dots,\mathbf e_3$ with the complex coefficients $\xi^{\rm LL}_p(\mathbf x)$; $\mathbf g$: a unit bi-quaternion, $N_{\rm LL}(\mathbf g)=1$ |
+| $\xi^{\rm LL}_p(\mathbf x)$ | the coefficient of $\mathbf e_p$ in the bi-quaternion $\mathbf x$ |
+| $N_{\rm LL}(\mathbf x)$ | the complex norm $\sum_p\xi^{\rm LL}_p(\mathbf x)^2$ of a bi-quaternion |
+| $M_{\rm LL}(\mathbf b)$ | the complex $2\times2$ matrix of a bi-quaternion, $M_{\rm LL}(\mathbf e_0)=\sigma^{\rm LL}_0$, $M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j$, extended linearly; $\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)$ |
+| $\mathbf b^\pm_{\rm LL}$ | the bi-quaternions of the two spinor charges $\mathbf b^\pm_{\rm LL}\mathbf e_4$ of which the field $\Psi_{\rm LL}$ is made |
 | $SL(2,\mathbb C)$ | the group of complex $2\times2$ matrices of determinant 1 (the unit bi-quaternions); the Lorentz group of the super-loop |
-| $SU(2)_{\rm v}$ | the group of unitary $2\times2$ matrices of determinant 1 acting on the isospin index |
-| $U(1)^{\rm F}_{\rm LL}$ | the group of the phases $\exp(i\theta)$ acting on the fermion number |
-| GEE | $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, the gauge group of the problem |
+| $SU(2)_{\rm v}$, $SU(2)$, $U(2)$ | the group of unitary $2\times2$ matrices of determinant 1 acting on the isospin index; that group in general; the unitary $2\times2$ matrices |
+| $U(1)^{\rm F}_{\rm LL}$, $\theta^{\rm F}_{\rm LL}$ | the group of the phases $\exp(i\theta^{\rm F}_{\rm LL})$ of the fermion number (the author writes U(1)FLL) |
+| GEE | $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, the gauge group of the problem (the author's name) |
 | $\Psi_{\rm LL}$ | the spinor field: eight complex Grassmann (anticommuting) operator components, Dirac index (4 values) times isospin index (2 values) |
-| $\bar\Psi_{\rm LL}$ | the Dirac adjoint, $\Psi_{\rm LL}^\dagger(\gamma^0\otimes\mathsf 1_2)$ |
-| $\psi$, $\psi_\pm$, $\bar\psi$ | in Theorem D1 only: a single Dirac field, its two chirality blocks, its Dirac adjoint $\psi^\dagger\gamma^0$ |
-| $\xi_1$, $\xi_2$; $\xi_{a\alpha}$ | in Theorem D1 only: the two left-handed Weyl spinors $\xi_1=\psi_-$, $\xi_2=\mathsf E\psi_+^*$; their components ($a$: isospin index, $\alpha$: spinor index) |
-| $B_{ab}$ | in Theorem D1 only: the Lorentz-invariant bilinears $\xi_a^T\mathsf E\xi_b$ |
-| $X$ | in Theorem D1 only: a complex $2\times2$ matrix of determinant 1 (the matrix of a unit bi-quaternion) |
-| $\gamma^p$ ($p=0,1,2,3$) | the Dirac matrices of the chiral basis, given in the proof of Theorem D1 |
-| $\sigma_0$, $\sigma_j$; $\mathsf E$ | the $2\times2$ unit matrix and the Pauli matrices; $\mathsf E=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ |
+| $\bar\Psi_{\rm LL}$ | the Dirac adjoint, $\Psi_{\rm LL}^\dagger(\gamma^0_{\rm LL}\otimes\mathsf 1_2)$ |
+| $\psi_{\rm SF}$, $\psi^\pm_{\rm SF}$, $\bar\psi_{\rm SF}$ | a single Dirac field with four complex Grassmann components, its two chirality blocks, its Dirac adjoint $\psi_{\rm SF}^\dagger\gamma^0_{\rm LL}$ |
+| $\xi_{{\rm SF},f}$, $\xi_{{\rm SF},f\alpha}$ | the two left-handed Weyl spinors $\xi_{{\rm SF},1}=\psi^-_{\rm SF}$, $\xi_{{\rm SF},2}=\mathsf E_{\rm LL}(\psi^+_{\rm SF})^*$ of a single Dirac field, and their components |
+| $I^{\rm W}_{{\rm SF},ff'}$ | the Lorentz-invariant bilinears $\xi_{{\rm SF},f}^T\mathsf E_{\rm LL}\xi_{{\rm SF},f'}$ |
+| $\gamma^p_{\rm LL}$ | the Dirac matrices of the chiral basis, given in the proof of Theorem D1 |
+| $\sigma^{\rm LL}_0$, $\sigma^{\rm LL}_j$; $\mathsf E_{\rm LL}$ | the $2\times2$ unit matrix and the Pauli matrices; $\mathsf E_{\rm LL}=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ |
+| $\tau^{\rm LL}_\iota$ | the Pauli matrices acting on the isospin index |
 | $\mathsf 1_2$ | the $2\times2$ unit matrix acting on the isospin index |
-| $p$; $j$; $\iota$; $a$, $b$; $\alpha$, $\beta$ | indices: $p$ over the four coordinates (0 = time), $j$ over the three space coordinates, $\iota$ over the three generators of $SU(2)_{\rm v}$, $a,b$ isospin, $\alpha,\beta$ spinor components |
-| $\partial_p$ | the partial derivative with respect to the coordinate $x^p$ of M31 |
+| $p$; $j$; $\iota$; $f$, $f'$; $\alpha$, $\alpha'$ | indices: $p$ over the four coordinates (0 = time), $j$ over the three space coordinates, $\iota$ over the three generators of $SU(2)_{\rm v}$, $f,f'$ over the two members of a doublet, $\alpha,\alpha'$ over the two components of a Weyl spinor |
+| $x^p_{\rm LL}$; $\partial_p$ | the coordinates of M31 ($x^0_{\rm LL}$ the time) and the partial derivative with respect to $x^p_{\rm LL}$ |
 | $\nabla^{\rm GEE}_p$ | the GEE gauge-covariant derivative, (6.1) |
-| $\Gamma^{\rm LL}_p$ | the Lorentz connection (gauge field of $SL(2,\mathbb C)$) |
-| $W^\iota_{{\rm LL},p}$; $g^{\rm v}_{\rm LL}$ | the gauge fields of $SU(2)_{\rm v}$ and their coupling |
-| $B_{{\rm LL},p}$; $g^{\rm F}_{\rm LL}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ and its coupling |
-| $T^\iota_{\rm LL}$ | the generators of $SU(2)_{\rm v}$ on $\Psi_{\rm LL}$: the unit matrix on the Dirac index times $\tau_\iota/2$ on the isospin index ($\tau_\iota$: Pauli matrices) |
-| $W^\pm_{{\rm LL},p}$, $Z_{{\rm LL},p}$, $A_{{\rm LL},p}$, $\theta^{\rm W}_{\rm LL}$ | the charged gauge bosons, the massive neutral gauge boson, the photon and the mixing angle of the super-loop theory, named after the Standard Model |
+| $\Gamma^{\rm LL}_p$ | the spin connection (the gauge field of $SL(2,\mathbb C)$ acting on the Dirac index) |
+| $W^\iota_{{\rm SF},p}$; $g^{\rm v}_{\rm LL}$ | the gauge fields of $SU(2)_{\rm v}$ and their coupling |
+| $B_{{\rm SF},p}$; $g^{\rm F}_{\rm LL}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ and its coupling |
+| $A^\iota_{{\rm LL},p}$, $A^{\rm F}_{{\rm LL},p}$; $W^\pm_{{\rm LL},p}$ | the gauge fields of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ in the convention of the earlier work, $-W^\iota_{{\rm SF},p}$ and $-B_{{\rm SF},p}$; the charged fields of the earlier work |
+| $T^\iota_{\rm LL}$ | the generators of $SU(2)_{\rm v}$ on $\Psi_{\rm LL}$: the unit matrix on the Dirac index times $\tau^{\rm LL}_\iota/2$ on the isospin index |
+| $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$, $\theta^{\rm W}_{\rm SF}$ | the charged gauge bosons, the massive neutral gauge boson, the photon and the mixing angle of the super-loop theory, named after the Standard Model |
 | $m_{\rm LL}$ | the mass of the spinor charges |
 | $\Lambda_{\rm LL}$ | the momentum cutoff |
-| $\mathcal L^{\rm self}_{\rm LL}$ | the self-interaction term of the Lagrangian |
-| $V^{(0)},V^{(1)},\dots$ | the successive potentials of the recursion (D3) |
-| $G_S$, $G_V$; $n$, $n_S$ | the author's scalar and vector couplings of the Kohn-Sham ansatz; number density and scalar density of uniform matter |
-| $\mathcal L^X$, $\mathcal L^X_{\rm kinetic}$, $\mathcal L^X_{\rm potential}$ | the effective Lagrangian of method $X$ (CJT, HS or KS) and its kinetic and potential parts (D7) |
-| $\mathrm{SFBSv}^X$ | the expansion of the superfluid solution of method $X$ about its vacuum (D8) |
+| $\mathcal L^{\rm self}_{\rm SF}$ | the self-interaction term of the Lagrangian |
+| $V^{(0)}_{\rm SF},V^{(1)}_{\rm SF},\dots$ | the successive potentials of the recursion (D3) |
+| $G_S$, $G_V$; $n$, $n_S$ | the author's scalar and vector couplings of his Kohn-Sham ansatz in the earlier work; number density and scalar density of uniform matter there |
+| $S$ | the total spin of a state of two spinor charges; $S=0$: the spin singlet (the author's notation) |
+| HS, CJT, KS; $X$ | the three methods; $X$ stands for any one of them |
+| $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$; $\mathcal L^X_{\rm kinetic}$, $\mathcal L^X_{\rm potential}$ | the effective Lagrangian of method $X$ and its kinetic and potential parts (D7; the author's names) |
+| $\mathrm{SFBSv}^X$ | the expansion of the superfluid solution of method $X$ about its vacuum (D8; the author's name) |
 | $\Phi^{\rm SM}$, $\phi^+$, $\phi^0$; $D^{\rm SM}_\mu$ | Section 2.2 only: the Higgs doublet of the Standard Model, its components, its covariant derivative |
-| $W^a_\mu$, $B_\mu$, $g$, $g'$, $\tau^a$, $T^{a,{\rm SM}}$, $Y^{\rm SM}$, $Q^{\rm SM}$ | Section 2.2 only: the gauge fields, couplings, Pauli matrices, generators, hypercharge and charge of the Standard Model ($a=1,2,3$, $\mu=0,1,2,3$) |
+| $W^a_\mu$, $B_\mu$; $g$, $g'$; $\tau^a$, $T^{a,{\rm SM}}$; $Y^{\rm SM}$, $Q^{\rm SM}$ | Section 2.2 only: the gauge fields, couplings, Pauli matrices, generators, hypercharge and charge of the Standard Model ($a=1,2,3$, $\mu=0,1,2,3$) |
 | $W^\pm_\mu$, $Z_\mu$, $A_\mu$, $\theta_W$, $e$, $v$ | Section 2.2 only: the mass eigenstates, the weak mixing angle, the elementary charge and the vacuum value of the Standard Model |
+| $SU(2)_L$, $U(1)_Y$ | Section 2.2 only: the electroweak gauge group of the Standard Model |
 | $\square$ | end of a proof |
 
 # 9. Log of errors and changes
@@ -427,4 +452,5 @@ The plan is changed only with a record in Section 9.
 | E1 | 20 Nov 2026 | the false statement of Section 4, corrected in the next message; recorded here; the work paused after this record |
 | C1 | 20 Nov 2026, 18:28 | the author's instruction: continue, complete all stages, do not stop; the decisions of Section 6 stand |
 | C2 | 20 Nov 2026, 19:25 | the author's instruction: push every item as soon as it is complete (commit, carry the bundle to the author's computer, check that it applied, send the push command at once), then continue without waiting |
+| C3 | 20 Nov 2026 | the symbols of this record brought into agreement with the registry of the solution and its convention (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution): Theorem D1 and its proof rewritten with registered symbols, the gauge fields of D2 renamed from the suffix LL to SF, the table of Section 8 rewritten |
 | E2 | 20 Nov 2026 | the first two versions of this record gave the registry of `Revision_Deflation_CJT_and_Kohn-Sham` 232 entries; it has 229 (counted by a program that parses the file, in agreement with the registry's own check, which reports 229 symbol texts). Cause: the number had been taken from a count of lines, not of entries, and was not checked before it was written. Corrected in Sections 4 and 5; the count of the 60 entries read before the correction rests on my note at the time and is marked as such |
