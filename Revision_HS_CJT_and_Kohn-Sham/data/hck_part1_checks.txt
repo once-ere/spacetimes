@@ -1,0 +1,88 @@
+sf_part1: checks of part I of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS A-1     deviation 0.000e0 (tolerance 0.0e0): quaternion units: e_j^2 = -1, e_j e_k = -e_k e_j = e_l for (j,k,l) cyclic
+PASS A-2     deviation 0.000e0 (tolerance 0.0e0): bi-octonion units: e_p^2 = -1, e_p e_q = -e_q e_p (p != q, both >= 1), e_j e_4 = e_{4+j}
+PASS A-3     deviation 0.000e0 (tolerance 0.0e0): the complex norm is multiplicative, N(xy) = N(x)N(y), 200 random bi-octonions (exact integers)
+PASS A-4     deviation 0.000e0 (tolerance 0.0e0): x xbar = N(x) e_0, 200 random bi-octonions (exact)
+PASS A-5     deviation 0.000e0 (tolerance 0.0e0): alternativity (xx)y = x(xy), (yx)x = y(xx), 200 random triples (exact)
+PASS A-6     deviation 0.000e0 (tolerance 0.0e0): the three Moufang identities, 200 random triples (exact)
+PASS A-7     the bi-octonion product is not associative: (e1 e2) e4 - e1 (e2 e4) = 2 e7, and of the 343 triples of imaginary units 168 have a nonzero associator; the largest associator of the 200 random triples is nonzero [nonzero unit associators 168 of 343; (e1e2)e4 - e1(e2e4) = 2 e7: true; max random associator 654.638831723264]
+PASS A-8     deviation 1.776e-15 (tolerance 1.0e-13): bi-quaternions: associative; M(bb') = M(b)M(b'); det M(b) = N(b); M(b^dag) = M(b)^dag; the inverse map recovers b (200 random)
+PASS A-9     deviation 0.000e0 (tolerance 1.0e-13): M31: the points are Hermitian bi-quaternions (x^dag = x), M(x) = sum_p x^p sigma_p, N(x) = Minkowski interval (200 random)
+PASS A-10a   deviation 3.324e-14 (tolerance 1.0e-11): x -> g x g^dag maps M31 to itself (Hermitian image) and keeps N(x) (200 random unit g)
+PASS A-10b   deviation 5.551e-15 (tolerance 1.0e-10): L(g)^T eta L(g) = eta and det L(g) = 1 (200 random unit g)
+PASS A-10c   L(g)_00 >= 1 (orthochronous) for the 200 random unit g [all 200]
+PASS A-10d   deviation 4.441e-15 (tolerance 1.0e-10): L(gh) = L(g) L(h) and L(-g) = L(g) (200 random pairs)
+PASS A-11    deviation 0.000e0 (tolerance 1.0e-15): the 27 commutators of the generators: [J^j,J^k] = eps_jkl J^l, [J^j,K^k] = eps_jkl K^l, [K^j,K^k] = -eps_jkl J^l
+PASS A-12    deviation 0.000e0 (tolerance 0.0e0): spinor charges: (b e4) g = (b gbar) e4, g (b e4) = (b g) e4, (v ((b e4) e4)) e4^-1 = (v b) e4 (200 random, exact)
+PASS F-1     deviation 0.000e0 (tolerance 0.0e0): the eight components at one point: {Psi_c, Psi_c'^dag} = delta, {Psi_c, Psi_c'} = 0 (Fock space of dimension 256)
+PASS F-2     deviation 0.000e0 (tolerance 1.0e-15): Dirac matrices: {g^p, g^q} = 2 eta^pq, g^0 g^p g^0 = (g^p)^dag, C g^p C^-1 = -(g^p)^T, g^ch = diag(-1,-1,1,1), C = diag(E,-E), C^T = -C
+PASS F-3a    deviation 1.599e-14 (tolerance 1.0e-10): S(g)^-1 g^p S(g) = sum_q L(g)_pq g^q (200 random unit g)
+PASS F-3b    deviation 6.280e-16 (tolerance 1.0e-10): S(g)^dag g^0 S(g) = g^0, so Psi-bar Psi is invariant (200 random)
+PASS F-3c    deviation 7.229e-15 (tolerance 1.0e-10): S(gh) = S(g) S(h) and S(-g) = -S(g) (200 random pairs)
+PASS F-3d    deviation 3.625e-15 (tolerance 1.0e-10): the Dirac matrices of the frame gtilde f gtilde^dag are S(g) g^p S(g)^-1 (200 random)
+PASS F-4     deviation 5.674e-15 (tolerance 1.0e-12): spinor charges: psi'(b gbar) = M(g) psi'(b), psi'(b g^dag) = M(gtilde) psi'(b), psi'(v b) = psi'(b) M(v)^T with M(v) in SU(2) (200 random)
+PASS F-5a    deviation 0.000e0 (tolerance 1.0e-14): D1: the three Pauli-Guersey generators commute with the six Lorentz generators on (psi, psi^dag)
+PASS F-5b    deviation 0.000e0 (tolerance 1.0e-14): D1: they commute with the massless Dirac Hamiltonian at 50 random momenta (the kinetic term is invariant)
+PASS F-5c    D1: the Lorentz-invariant antisymmetric bilinears of one point form a complex space of dimension 6; of these none (dimension 0) is invariant under the Pauli-Guersey SU(2): no GEE-invariant mass term of a single Dirac field [dimension of the Lorentz invariants 6, of the GEE invariants 0]
+PASS F-5d    D1: with the mass m = 0.2 the Pauli-Guersey generators do not commute with the Dirac Hamiltonian (smallest of the largest commutators over 50 momenta > 0.1) [0.200000]
+PASS F-6     deviation 0.000e0 (tolerance 1.0e-13): doublet: [m Psi-bar Psi, T^iota] = [m Psi-bar Psi, F] = [m Psi-bar Psi, J^j] = 0 on the Fock space of one point
+PASS F-7a    deviation 1.650e-15 (tolerance 1.0e-12): pair matrices: K^T = -K, K^dag K = 1, (S (x) 1)^T K (S (x) 1) = K (50 random g), (1 (x) U)^T K^a (1 (x) U) = sum_b R(U)_ab K^b (50 random U), for the six K^iota, K'^iota
+PASS F-7b    the Lorentz-invariant antisymmetric pair matrices of the eight components form a space of dimension 6 (the spin-zero pairs are isospin triplets) [dimension 6]
+PASS C-1     deviation 5.551e-16 (tolerance 1.0e-12): SU(2)_v x U(1)^F: nabla'_p (e^{i theta} U Psi) = e^{i theta} U nabla_p Psi with W' = U W U^dag + (i/g)(dU)U^dag, B' = B - (d theta)/g_F (12 points, 4 directions)
+PASS C-2     deviation 2.236e-16 (tolerance 1.0e-13): the transformed W'_p is again Hermitian and traceless: real components W'^iota_p
+PASS C-3     deviation 2.238e-16 (tolerance 1.0e-12): field strengths: W'_pq = U W_pq U^dag, B'_pq = B_pq, and W^iota_pq = dW - dW - g eps W W
+PASS C-4     deviation 9.037e-16 (tolerance 1.0e-12): isotriplet of fermion number 2: nabla Phi = dPhi - g W x Phi + 2 i g_F B Phi is covariant, Phi' = e^{2 i theta} R(U) Phi; R(U) orthogonal
+PASS C-5     deviation 5.551e-16 (tolerance 1.0e-11): the Yang-Mills operator D_q W^{q p} is covariant (adjoint): D'_q W'^{q p} = U (D_q W^{q p}) U^dag
+PASS C-6     deviation 0.000e0 (tolerance 1.0e-12): local SL(2,C): the Dirac matrices of the transformed frame are S(x) gamma^p S(x)^-1
+PASS C-7     deviation 2.371e-16 (tolerance 1.0e-12): local SL(2,C): the connection Gamma'_p = -(d_p S) S^-1 lies in the Lorentz algebra (blocks -X^dag, X with tr X = 0)
+PASS C-8     deviation 2.809e-15 (tolerance 1.0e-11): local SL(2,C): gamma^p[f'] (d_p + Gamma'_p)(S psi) = S gamma^p d_p psi, and psi-bar gamma^p nabla_p psi is invariant
+PASS C-9     deviation 2.701e-15 (tolerance 1.0e-11): all of GEE at once on the eight components, with a general Lorentz connection, W and B: the Dirac operator is covariant
+PASS C-10    deviation 8.006e-16 (tolerance 1.0e-11): the curvature of the Lorentz connection transforms as R'_pq = S R_pq S^-1
+PASS C-11    deviation 7.298e-15 (tolerance 1.0e-11): the value of the Dirac Lagrangian density Psi-bar (i gamma^p nabla_p - m) Psi is invariant under all of GEE
+PASS E-1     deviation 1.665e-16 (tolerance 1.0e-12): [Psi_e, Psi^dag h0 Psi] = (h0 Psi)_e: mass and constant gauge potentials (all 8 components)
+PASS E-2     deviation 0.000e0 (tolerance 1.0e-11): [Psi_e, (G^S/2) :(Psi-bar Psi)^2:] = G^S (Psi-bar Psi)(gamma^0 Psi)_e: the scalar contact term
+PASS E-3     deviation 3.553e-15 (tolerance 1.0e-11): [Psi_e, (G^V/2) :j_p j^p:] = G^V [(Psi^dag Psi) Psi_e - sum_j (Psi^dag alpha^j Psi)(alpha^j Psi)_e]: the vector contact term
+PASS E-4     deviation 0.000e0 (tolerance 1.0e-10): [Psi_e, -(G/4) sum Pi^dag Pi] = -(G/2) sum (K^dag Psi^*)_e Pi: the spin-zero pairing term
+PASS E-5     deviation 7.105e-15 (tolerance 1.0e-10): the Hamiltonian of a point (mass and contact terms) commutes with F, T^1, T^2, T^3 and the rotations J^j
+PASS E-6     deviation 0.000e0 (tolerance 1.0e-12): ordering: (Psi^dag A Psi)^2 = :(Psi^dag A Psi)^2: + Psi^dag A^2 Psi (A = gamma^0, alpha^1)
+PASS E-7a    deviation 0.000e0 (tolerance 1.0e-12): [F, Pi^iota] = -2 Pi^iota: the pair operator removes fermion number 2
+PASS E-7b    deviation 0.000e0 (tolerance 1.0e-12): [T^a, Pi^b] = i eps_abc Pi^c: the pair operators form an isospin vector
+PASS E-10    deviation 3.109e-13 (tolerance 1.0e-9): Hartree and Fock self-energy N = c[X tr(Y rho) + Y tr(X rho) - X rho Y - Y rho X] is the derivative of the Wick energy: dE = tr(N d rho)
+PASS E-11    deviation 5.431e-11 (tolerance 1.0e-9): pair self-energies P = -c(X kappa Y^T + Y kappa X^T) and P = d K^dag (d = -(G/2) tr(K kappa^T)): dE = -Re tr(P d kappa^dag) (BdG convention)
+PASS E-12    deviation 1.066e-14 (tolerance 1.0e-10): the chirality-block form (5.7) of the right side of the field equation equals gamma^0 [Psi, H_self] (all eight components)
+PASS E-13    deviation 4.774e-15 (tolerance 1.0e-10): the generalized density ((rho, -kappa), (-kappa^dag, 1 - rho^*)) of a quasi-free ground state is the projector onto the negative eigenvalues of its BdG matrix (5 random states)
+PASS E-8     deviation 1.243e-14 (tolerance 1.0e-11): Wick: <:(Psi^dag A Psi)(Psi^dag B Psi):> = tr(A rho)tr(B rho) - tr(A rho B rho) - tr(kappa^* A kappa B^T) in random quasi-free states
+PASS E-9     deviation 3.197e-14 (tolerance 1.0e-11): Wick: <Pi^dag Pi> = |tr(K kappa^T)|^2 + 2 tr(K^dag rho^T K rho) in random quasi-free states
+PASS AS1-1   deviation 2.421e-15 (tolerance 1.0e-13): plane waves chi exp(-i omega t + i q.x) with (omega, chi) an eigenpair of H_pw(q) solve the field equation in constant gauge fields (20 random field sets, 8 eigenpairs each)
+PASS AS1-2   deviation 5.107e-15 (tolerance 1.0e-13): abelian constant fields (W^3, B): omega = V0_s +- [m^2 + (q + e_s W^3 + g_F B)^2]^(1/2), each twice (50 random cases)
+PASS AS1-3   deviation 2.887e-15 (tolerance 1.0e-12): spin-isospin locked constant field: the eight frequencies at 121 momenta along x^3 equal the four analytic branches with both signs
+PASS AS1-5   deviation 0.000e0 (tolerance 1.0e-14): locked field: W^iota_jk = -g w^2 eps_{iota jk}, and the left side of the Yang-Mills equation (5.10) is -2 g^2 w^3 delta_{iota j} (it needs the external current -2 g w^3 delta_{iota j})
+PASS AS1-4   deviation 6.661e-16 (tolerance 1.0e-13): locked field at q = 0: frequencies +-(m^2 + g^2 w^2/4)^(1/2) (3 each, total isospin+spin J = 1) and +-(m^2 + 9 g^2 w^2/4)^(1/2) (J = 0)
+PASS AS2-1   deviation 5.551e-17 (tolerance 1.0e-14): Landau level n = 0: the analytic spinor (spin up in both chirality blocks) times exp(-eB(x-x0)^2/2) solves H Psi = (m^2+q3^2)^(1/2) Psi exactly (41 points)
+PASS AS2-0   deviation 4.197e-14 (tolerance 1.0e-11): block-tridiagonal eigenvalues by inertia counting and bisection = dense eigenvalues (40 sites, 160 eigenvalues)
+PASS AS2-2   deviation 4.828e-3 (tolerance 1.0e-2): Wilson lattice in x^1 (spacing 0.025, 800 sites): the seven lowest positive frequencies agree with the Landau levels, multiplicities included (largest relative deviation)
+PASS AS2-3   the lattice deviation decreases each time the spacing is halved (0.1 -> 0.05 -> 0.025): the discretization converges [relative deviations 1.954e-2 (a = 0.1), 9.694e-3 (a = 0.05), 4.828e-3 (a = 0.025)]
+PASS AS2-4   deviation 6.450e-5 (tolerance 1.0e-3): the Richardson extrapolation 2 E(0.025) - E(0.05) of the seven lattice levels agrees with the Landau levels (largest relative deviation; tolerance of order a^2)
+PASS AS3-1   deviation 3.775e-15 (tolerance 1.0e-12): uniform unitary pair field: the 16 BdG eigenvalues are +-[(eps +- mu)^2 + Delta^2]^(1/2), each four times (100 random q, mu, Delta, phase, direction)
+PASS AS3-2   deviation 1.561e-17 (tolerance 1.0e-12): energy per volume of the polar state: Gauss-Legendre quadrature (64 nodes) of the BdG eigenvalues = closed form -(2/pi^2)[I3(M) - I3(m)] + Delta^2/G (5 values of Delta)
+PASS AS3-3   deviation 1.681e-12 (tolerance 1.0e-9): the gap equation 1 = (G/pi^2) I1(M_q), M_q = (m^2 + Delta^2)^(1/2), gives the stationary point of E(Delta) (central difference of E)
+PASS AS3-4   for G = 22.5 > G_crit the gap is nonzero and the condensed state lies below the normal vacuum [G_crit = 21.286610, Delta = 0.209493, E(Delta) = -5.288449e-5]
+PASS AS4-1   deviation 0.000e0 (tolerance 1.0e-14): kink: the 16x16 matrices A = diag(alpha^1, alpha^1*), P (pairing K^3) and Bm = diag(beta, -beta) anticommute pairwise and square to 1, so H^2 = H0^2 + m^2
+PASS AS4-2   Gamma = -i A P has the eigenvalues -1 and +1, eight times each, and commutes with Bm [8 eigenvalues -1]
+PASS AS4-2b  restricted to the eigenspace Gamma = -1, Bm has the eigenvalues +1 and -1 four times each (n = 0 states at +m and -m, four each) [+1: 4, -1: 4]
+PASS AS4-3   deviation 2.776e-17 (tolerance 1.0e-14): kink Delta_inf tanh(x/ell) (Delta_inf = 0.5, ell = 4): the analytic bound state sech^2(x/ell) chi has the energy +-m exactly (61 points)
+PASS AS4-4   deviation 2.502e-17 (tolerance 1.0e-13): kink: the analytic n = 1 bound state built from sech(x/ell) tanh(x/ell) has the energy (m^2 + 2 Delta_inf/ell - 1/ell^2)^(1/2) exactly (61 points)
+PASS AS4-5a  Wilson lattice of the reduced kink problem: below the continuum there are exactly three bound states, one at -m or +m and the pair +-(m^2+E1^2)^(1/2), for each of the three spacings [numbers of eigenvalues 3, 3, 3]
+PASS AS4-5b  deviation 1.116e-5 (tolerance 1.0e-3): the Richardson extrapolation 2 E(0.025) - E(0.05) of the lattice bound states agrees with m and (m^2+E1^2)^(1/2) (largest relative deviation; tolerance of order a^2)
+PASS AS4-6   the lattice deviation of the bound states decreases each time the spacing is halved [1.241e-2, 6.228e-3, 3.119e-3]
+
+Notes:
+  AS3: G_crit = pi^2/I1(m) = 21.2866097555; at G = 22.5: Delta = 0.2094933033, quasiparticle mass (m^2+Delta^2)^(1/2) = 0.2896332925, E(Delta) = -5.2884491065e-5
+  AS4 raw lattice deviation at the spacing 0.025: 3.119e-3 (first order in a, as expected for Wilson fermions)
+  AS4 lattice eigenvalues below the continuum threshold 0.5385164807: a = 0.1: [-0.47972301467592177, -0.2024821911082964, 0.47643326939538305]; a = 0.05: [-0.47835871196410534, -0.20124552405289634, 0.47670274183144934]; a = 0.025: [-0.4776674054001955, -0.20062387801701845, 0.4768364871616513]; analytic |E|: 0.2000000000, 0.4769696007
+  run time 3.3 s
+
+VERDICT: ALL PASS (76 of 76)

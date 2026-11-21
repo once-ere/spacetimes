@@ -92,11 +92,15 @@ def sf_bases():
 
 BRACED = r"\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}"
 DECO = r"(?:\^(?:" + BRACED + r"|\\[A-Za-z]+|[A-Za-z0-9])|_(?:" + BRACED + r"|\\[A-Za-z]+|[A-Za-z0-9]))"
-SYMBOL = re.compile(r"((?:\\(?:mathcal|mathsf|mathbf|mathrm|mathbb|vec|bar|tilde|hat)\s*)?(?:\\[A-Za-z]+|[A-Za-z]))((?:" + DECO + r")+)")
+# a symbol: an optional font or accent command, a letter or command, optional primes (W' is the transformed W), and
+# its decorations (superscripts and subscripts)
+SYMBOL = re.compile(r"((?:\\(?:mathcal|mathsf|mathbf|mathrm|mathbb|vec|bar|tilde|hat)\s*)?(?:\\[A-Za-z]+|[A-Za-z]))'*((?:" + DECO + r")+)")
 
 
 def doc_sf_bases(text):
     """the leading letters/commands of all decorated symbols whose decorations contain the suffix SF"""
+    # a LaTeX line break \\ directly followed by a letter (as in "\\B'_{...}" in an aligned formula) is not a command
+    text = text.replace("\\\\", "\\\\ ")
     found = []
     for m in SYMBOL.finditer(text):
         if "\\rm SF" in m.group(2):

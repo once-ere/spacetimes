@@ -243,6 +243,17 @@ instructed to continue and to complete all stages; at 19:25 PST, to push
 every item as soon as it is complete. The work continues; this table is
 updated with every item.
 
+\textbf{Part I of the manuscript} (items 1 to 5 of the problem: the
+manifold M31, the spinor field and theorem D1, the gauge group GEE and
+its covariant derivatives, the Lagrangian and the field equations with
+their numerical formulation, and four analytic solutions) is complete:
+\texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf}, with the Rust
+workspace \texttt{rust/} (program \texttt{sf\_part1}: VERDICT: ALL PASS
+(76 of 76)) and the Python programs \texttt{python/sf\_part1.py}
+(VERDICT: ALL PASS (33 of 33)) and
+\texttt{python/sf\_part1\_figures.py}. Parts II to IV follow in the same
+manuscript.
+
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
 
@@ -280,7 +291,7 @@ grows with the solution \\
 solution, written by \texttt{code/scripts/write\_symbol\_registry.py}
 from \texttt{code/scripts/symbol\_entries.py} & written \\
 \texttt{superfluid.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript of
-the solution & planned \\
+the solution & part I written; parts II to IV follow \\
 \texttt{superfluid.nb} & the Mathematica notebook of the whole solution,
 with its provenance & planned \\
 \texttt{provenance/} (further documents) & the provenance of the code,
@@ -301,25 +312,46 @@ tables of the MASTER provenance) and \texttt{check\_symbols.py} (the
 checks of the symbols) & written \\
 \texttt{docs\_src/} & the hand-edited sources of the documents &
 written \\
-\texttt{rust/}, \texttt{python/}, \texttt{wolfram/} & the programs (Rust
-first, Python, Wolfram language) & planned \\
-\texttt{data/}, \texttt{figures/}, \texttt{videos/} & the results of the
-programs, the figures and the videos & \texttt{data/} holds the reports
-of the checks of the documents
-(\texttt{hck\_self\_contained\_checks.txt}) and of the symbols
-(\texttt{hck\_symbol\_checks.txt}) \\
+\texttt{rust/} & the Rust workspace: the library \texttt{sfcore}
+(bi-quaternions and bi-octonions, Dirac matrices, automatic
+differentiation to second order, Fock-space operators, eigenvalues of
+block-tridiagonal matrices, quadrature, reports) and the program
+\texttt{sf\_part1} (the checks and analytic solutions of part I) & part
+I written \\
+\texttt{python/} & \texttt{sfcommon.py} (common definitions),
+\texttt{sf\_part1.py} (the second, independent computation of the checks
+of part I), \texttt{sf\_part1\_figures.py} (the figures of part I) &
+part I written \\
+\texttt{wolfram/} & the Wolfram-language parts of the notebook &
+planned \\
+\texttt{data/} & the reports of the checks
+(\texttt{hck\_part1\_checks.txt},
+\texttt{hck\_part1\_checks\_python.txt},
+\texttt{hck\_symbol\_checks.txt},
+\texttt{hck\_self\_contained\_checks.txt}) and the data of part I
+(\texttt{part1\_*.csv}) & part I written \\
+\texttt{figures/}, \texttt{videos/} & the figures
+(\texttt{fig\_part1\_*.pdf}, \texttt{.png}) and the videos & figures of
+part I written \\
+\texttt{code/scripts/write\_part1\_fragments.py} & turns the reports and
+values of part I into the tables and numbers of the manuscript &
+written \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
 \section{4. How to build the
 documents}\label{how-to-build-the-documents}}
 
-The documents are built in two steps, from the folder
-\texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
+The programs are run first, then the documents are built, from the
+folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_HS\_CJT\_and\_Kohn{-}Sham"}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/sf\_part1}\KeywordTok{)}   \CommentTok{\# part I: checks and data}
+\ExtensionTok{python3}\NormalTok{ python/sf\_part1.py                    }\CommentTok{\# part I: the Python computation of the checks}
+\ExtensionTok{python3}\NormalTok{ python/sf\_part1\_figures.py            }\CommentTok{\# part I: the figures}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_part1\_fragments.py }\CommentTok{\# the tables and numbers of part I for the manuscript}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
@@ -328,11 +360,13 @@ The documents are built in two steps, from the folder
 \end{Highlighting}
 \end{Shaded}
 
-The first command writes each document from its source in
-\texttt{docs\_src/}; the second needs pandoc (version 2.11 or later), a
-TeX distribution with XeLaTeX and latexmk, the DejaVu fonts and the font
-Latin Modern Math; the third checks that no document refers its reader
-to another document. Python 3 is needed for the first and the third
-command and for the layout check of the second.
+The Rust program needs the Rust toolchain (\texttt{cargo}; no crate is
+downloaded); the Python programs need Python 3 with numpy, scipy, sympy
+and matplotlib. \texttt{assemble\_docs.py} writes each document from its
+source in \texttt{docs\_src/}; \texttt{build\_docs.sh} needs pandoc
+(version 2.11 or later), a TeX distribution with XeLaTeX and latexmk,
+the DejaVu fonts and the font Latin Modern Math;
+\texttt{check\_self\_contained.py} checks that no document refers its
+reader to another document.
 
 \end{document}

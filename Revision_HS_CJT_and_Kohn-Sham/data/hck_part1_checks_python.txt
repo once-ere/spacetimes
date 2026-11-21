@@ -1,0 +1,43 @@
+sf_part1.py: Python computation of the checks of part I of superfluid.md (Revision_HS_CJT_and_Kohn-Sham)
+Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS A-2     deviation 0.000e+00 (tolerance 0.0e+00): bi-octonion units: e_p^2 = -1, e_p e_q = -e_q e_p, e_j e_4 = e_{4+j}
+PASS A-3     deviation 0.000e+00 (tolerance 0.0e+00): N(xy) = N(x) N(y), 200 random integer bi-octonions
+PASS A-4     deviation 0.000e+00 (tolerance 0.0e+00): x xbar = N(x) e0
+PASS A-5     deviation 0.000e+00 (tolerance 0.0e+00): alternativity
+PASS A-6     deviation 0.000e+00 (tolerance 0.0e+00): the three Moufang identities
+PASS A-7     168 of the 343 triples of imaginary units have a nonzero associator; (e1e2)e4 - e1(e2e4) = 2 e7 [168 nonzero]
+PASS A-8     deviation 7.589e-15 (tolerance 1.0e-12): M(bb') = M(b)M(b'), det M = N, M(b^dag) = M(b)^dag, inverse map
+PASS A-10b   deviation 5.329e-15 (tolerance 1.0e-10): L^T eta L = eta, det L = 1
+PASS A-10c   L_00 >= 1 [200]
+PASS A-10d   deviation 7.105e-15 (tolerance 1.0e-10): L(gh) = L(g)L(h), L(-g) = L(g)
+PASS A-12    deviation 0.000e+00 (tolerance 0.0e+00): spinor charges under the super-loop multiplications
+PASS F-2     deviation 0.000e+00 (tolerance 1.0e-14): Clifford algebra, chirality, charge conjugation
+PASS F-3a    deviation 1.604e-14 (tolerance 1.0e-10): S^-1 gamma^p S = L_pq gamma^q
+PASS F-3b    deviation 7.448e-16 (tolerance 1.0e-10): S^dag gamma^0 S = gamma^0
+PASS F-3d    deviation 3.827e-15 (tolerance 1.0e-10): frame transformation of the Dirac matrices
+PASS F-5a    deviation 0.000e+00 (tolerance 1.0e-14): D1: Pauli-Guersey generators commute with the Lorentz generators
+PASS F-5c    D1: Lorentz-invariant bilinears: dimension 6; GEE-invariant: dimension 0 [6, 0]
+PASS C-1     deviation 3.736e-14 (tolerance 1.0e-09): SU(2)_v x U(1)^F covariance of nabla on Psi (eighth-order differences, 4 points)
+PASS C-3     deviation 2.755e-13 (tolerance 1.0e-08): field strength W'_pq = U W_pq U^dag (nested eighth-order differences, 2 points)
+PASS C-4     deviation 6.969e-14 (tolerance 1.0e-09): isotriplet: nabla Phi = dPhi - g W x Phi + 2 i g_F B Phi is covariant
+PASS C-8     deviation 5.043e-14 (tolerance 1.0e-09): local SL(2,C): gamma^p[f'] (d_p + Gamma'_p)(S psi) = S gamma^p d_p psi (eighth-order differences)
+PASS E-2     deviation 0.000e+00 (tolerance 1.0e-11): scalar contact term: [Psi_e, H_S] = G^S (Psi-bar Psi)(gamma^0 Psi)_e
+PASS E-10    symbolic Euler-Lagrange equations of the Yang-Mills Lagrangian with the source: d_p W^{a,pp'} - g eps_abc W^b_p W^{c,pp'} = g j^{a,p'} for all 12 components (sympy) [12 equations identical]
+PASS E-3     deviation 3.553e-15 (tolerance 1.0e-11): vector contact term
+PASS E-4     deviation 0.000e+00 (tolerance 1.0e-10): pairing term: [Psi_e, H_P] = -(G/2) sum (K^dag Psi^*)_e Pi
+PASS AS1-3   deviation 1.554e-15 (tolerance 1.0e-12): spin-isospin locked field: four analytic branches (61 momenta)
+PASS AS2-2   deviation 4.828e-03 (tolerance 1.0e-02): Landau levels, Wilson lattice spacing 0.025 (LAPACK)
+PASS AS2-4   deviation 6.450e-05 (tolerance 1.0e-03): Landau levels, Richardson extrapolation 2E(0.025) - E(0.05)
+PASS AS3-1   deviation 2.665e-15 (tolerance 1.0e-12): BdG spectrum of unitary pair fields (50 random)
+PASS AS3-4   deviation 3.005e-11 (tolerance 1.0e-09): the gap at G = 22.5 agrees with the Rust value 0.2094933033
+PASS AS4-5a  three bound states below the continuum for each spacing [[3, 3, 3]]
+PASS AS4-5b  deviation 1.116e-05 (tolerance 1.0e-03): kink bound states, Richardson extrapolation
+PASS AS4-3   symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 - Delta') sech tanh = E1^2 sech tanh with E1^2 = 3/16 [residuals 0, 0]
+
+Notes:
+  AS3: G_crit = 21.2866097555; Delta(G = 22.5) = 0.2094933033
+  run time 7.3 s
+
+VERDICT: ALL PASS (33 of 33)

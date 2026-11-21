@@ -1,0 +1,28 @@
+//! sfcore -- the library of the common calculations of the superfluid solution (folder Revision_HS_CJT_and_Kohn-Sham
+//! of PROJECT spacetimes).
+//!
+//! Modules:
+//! * `c64`, `cmat`, `rng`, `quad` -- complex numbers, dense complex matrices with a Hermitian eigensolver, a
+//!   pseudo-random generator and Gauss-Legendre quadrature (copied from the earlier work of the project, see the note at
+//!   the top of each file);
+//! * `algebra` -- the bi-quaternions, the bi-octonions (Cayley-Dickson product), the complex norm, the matrix map
+//!   M_LL, the points of M31 and the Lorentz transformations L_LL(g);
+//! * `dirac` -- the Pauli matrices, the Dirac matrices of the chiral basis, the 8x8 matrices of the Dirac isodoublet
+//!   (Dirac index times isospin index), the generators of GEE, the pair matrices and the free Hamiltonian;
+//! * `dual` -- forward-mode automatic differentiation in the four coordinates of M31 (exact first derivatives), used
+//!   by the checks of gauge covariance;
+//! * `fockmat` -- dense Jordan-Wigner matrices of the annihilation and creation operators of n fermion modes, used by
+//!   the exact operator checks (theorem D1, the field equations as Heisenberg equations);
+//! * `report` -- the record of the machine checks and the writers of the data files;
+//! * `sturm` -- eigenvalues of Hermitian block-tridiagonal matrices (lattice problems in one space direction) by
+//!   counting with the block LDL^dag factorization and bisection.
+pub mod algebra;
+pub mod c64;
+pub mod cmat;
+pub mod dirac;
+pub mod dual;
+pub mod fockmat;
+pub mod quad;
+pub mod report;
+pub mod rng;
+pub mod sturm;

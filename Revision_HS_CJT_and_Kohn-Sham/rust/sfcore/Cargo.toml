@@ -1,0 +1,10 @@
+# sfcore: the library of the common calculations of the folder Revision_HS_CJT_and_Kohn-Sham.
+# Pure Rust, standard library only.
+[package]
+name = "sfcore"
+version = "0.1.0"
+edition = "2021"
+description = "Bi-octonions, M31, Dirac isodoublet, GEE, field equations and mean-field solvers of the superfluid solution"
+
+[lib]
+path = "src/lib.rs"

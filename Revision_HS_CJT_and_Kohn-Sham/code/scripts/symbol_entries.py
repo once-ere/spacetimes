@@ -268,6 +268,11 @@ ENTRIES = [
     (G5, "$W^\\iota_{{\\rm SF},pp'}$, $B_{{\\rm SF},pp'}$", "W_pq B_pq", "the field strengths "
      "$\\partial_pW^\\iota_{{\\rm SF},p'}-\\partial_{p'}W^\\iota_{{\\rm SF},p}-g^{\\rm v}_{\\rm LL}\\sum\\epsilon^{\\rm LL}_{\\iota\\iota'\\iota''}W^{\\iota'}_{{\\rm SF},p}W^{\\iota''}_{{\\rm SF},p'}$ "
      "and $\\partial_pB_{{\\rm SF},p'}-\\partial_{p'}B_{{\\rm SF},p}$", "new"),
+    (G5, "$\\mathsf W_{{\\rm SF},p}$", "Wmat_p", "the gauge field of $SU(2)_{\\rm v}$ as a Hermitian traceless $2\\times2$ matrix, "
+     "$\\sum_\\iota W^\\iota_{{\\rm SF},p}\\tau^{\\rm LL}_\\iota/2$; with two indices, $\\mathsf W_{{\\rm SF},pp'}$, its field strength "
+     "$\\partial_p\\mathsf W_{{\\rm SF},p'}-\\partial_{p'}\\mathsf W_{{\\rm SF},p}+ig^{\\rm v}_{\\rm LL}[\\mathsf W_{{\\rm SF},p},\\mathsf W_{{\\rm SF},p'}]$", "new"),
+    (G5, "$\\Omega^{\\rm L}_{{\\rm SF},pp'}$", "Omega_L", "the curvature of the Lorentz connection, "
+     "$\\partial_p\\Gamma^{\\rm LL}_{p'}-\\partial_{p'}\\Gamma^{\\rm LL}_p+[\\Gamma^{\\rm LL}_p,\\Gamma^{\\rm LL}_{p'}]$ (zero on flat M31)", "new"),
     (G5, "$j^{\\iota,p}_{\\rm SF}$, $j^{{\\rm F},p}_{\\rm SF}$", "j_iota j_F", "the isospin current "
      "$\\bar\\Psi_{\\rm LL}\\gamma^p_{\\rm LL}T^\\iota_{\\rm LL}\\Psi_{\\rm LL}$ and the fermion-number current "
      "$\\bar\\Psi_{\\rm LL}\\gamma^p_{\\rm LL}\\Psi_{\\rm LL}$ of the spinor field", "new"),
@@ -301,6 +306,12 @@ ENTRIES = [
     (G6, "$V^{(0)}_{\\rm SF}$, $V^{(1)}_{\\rm SF}$, $V^{(n)}_{\\rm SF}$", "V0 V1 Vn", "the self-interaction of the "
      "step $n$ of the recursion of the potential: the set of contact terms (with their couplings) and of gauge-boson "
      "exchanges examined at that step", "new"),
+    (G6, "$\\mathsf X_{\\rm SF}$, $\\mathsf Y_{\\rm SF}$", "Xmat Ymat", "two arbitrary $8\\times8$ matrices in the general statements "
+     "of Wick's theorem and of the self-energies of a contact term $\\nu{:}(\\Psi^\\dagger\\mathsf X_{\\rm SF}\\Psi)(\\Psi^\\dagger\\mathsf Y_{\\rm SF}\\Psi){:}$", "new"),
+    (G6, "$\\mathsf R_{\\rm SF}(\\vec q_{\\rm LL})$", "Rgen", "the generalized density of a uniform quasi-free state at the momentum "
+     "$\\vec q_{\\rm LL}$: the $16\\times16$ Hermitian matrix of the expectation values $\\langle\\mathcal N_{{\\rm LL},b}^\\dagger\\mathcal N_{{\\rm LL},a}\\rangle$ "
+     "of the Nambu spinor, with the blocks $\\mathsf C^{\\rm n}_{\\rm LL}(\\vec q_{\\rm LL})$, $-\\mathsf C^{\\rm p}_{\\rm LL}(\\vec q_{\\rm LL})$, "
+     "$-\\mathsf C^{\\rm p}_{\\rm LL}(\\vec q_{\\rm LL})^\\dagger$, $\\mathsf 1_8-\\mathsf C^{\\rm n}_{\\rm LL}(-\\vec q_{\\rm LL})^*$", "new"),
     (G6, "$\\mathcal H_{\\rm SF}$", "Hdens", "the Hamiltonian density of the spinor field, minus the Lagrangian density "
      "without the time derivative terms", "new"),
     # ------------------------------------------------------------------ group 7
@@ -327,10 +338,37 @@ ENTRIES = [
      "normal vacuum in a pair channel at the frequency $\\omega$ and zero momentum, and the mass of the bound state of two "
      "spinor charges in that channel (the solution of $G^{\\rm ch}_{\\rm SF}\\chi^{\\rm ch}_{\\rm SF}(M^{\\rm B}_{\\rm SF})=1$ below "
      "$2m_{\\rm LL}$)", "new"),
+    (G7, "$\\mathsf H^{\\rm pw}_{\\rm SF}(\\vec q_{\\rm LL})$, $\\mathsf k_{{\\rm SF},j}$", "H_pw k_j", "the Hermitian $8\\times8$ matrix whose "
+     "eigenvalues are the frequencies of the plane waves of momentum $\\vec q_{\\rm LL}$ in constant gauge fields, "
+     "$\\beta_{\\rm LL}m_{\\rm LL}+g^{\\rm v}_{\\rm LL}\\mathsf 1_4\\otimes\\mathsf W_{{\\rm SF},0}+g^{\\rm F}_{\\rm LL}B_{{\\rm SF},0}+\\sum_j\\alpha^j_{\\rm LL}\\mathsf k_{{\\rm SF},j}$, "
+     "and the kinetic momenta $\\mathsf k_{{\\rm SF},j}=q^j_{\\rm LL}+g^{\\rm v}_{\\rm LL}\\mathsf 1_4\\otimes\\mathsf W_{{\\rm SF},j}+g^{\\rm F}_{\\rm LL}B_{{\\rm SF},j}$", "new"),
+    (G7, "$w^{\\rm lk}_{\\rm SF}$", "w_lk", "the amplitude of the spin-isospin locked constant gauge field "
+     "$W^\\iota_{{\\rm SF},j}=w^{\\rm lk}_{\\rm SF}\\delta_{\\iota j}$", "new"),
+    (G7, "$\\Sigma^j_{\\rm SF}$", "Sigma_j", "the spin matrices $\\mathrm{diag}(\\sigma^{\\rm LL}_j,\\sigma^{\\rm LL}_j)$ on the Dirac index "
+     "(twice the spin)", "new"),
+    (G7, "$e^{\\rm c}_{\\rm SF}$", "e_c", "the charge with which an isospin component couples to an abelian gauge field: "
+     "$g^{\\rm v}_{\\rm LL}Q_{\\rm LL}$ for the field $W^3_{{\\rm SF},p}$, $g^{\\rm F}_{\\rm LL}$ for $B_{{\\rm SF},p}$", "new"),
+    (G7, "$\\mathcal E^{\\rm MF}_{\\rm SF}(\\Delta_{\\rm LL})$", "E_MF", "the energy per volume of the uniform polar state of the "
+     "pairing interaction in the mean-field (pairing-only) approximation at $\\mu_{\\rm LL}=0$, as a function of the gap, "
+     "measured from the normal vacuum: the ground-state energy of the mean-field Hamiltonian plus "
+     "$\\Delta_{\\rm LL}^2/G_{\\rm LL}$", "new"),
+    (G7, "$I^{(1)}_{\\rm SF}$, $I^{(3)}_{\\rm SF}$", "I1 I3", "the integrals $\\int_0^{\\Lambda_{\\rm LL}}q^2(q^2+M^2)^{\\mp1/2}dq$ "
+     "(upper sign $I^{(1)}_{\\rm SF}$, lower $I^{(3)}_{\\rm SF}$) as functions of the mass $M$ in their argument", "new"),
+    (G7, "$\\mathsf A^{\\rm K}_{\\rm SF}$, $\\mathsf P^{\\rm K}_{\\rm SF}$, $\\mathsf B^{\\rm K}_{\\rm SF}$, $\\mathsf G^{\\rm K}_{\\rm SF}$",
+     "A_K P_K B_K G_K", "the $16\\times16$ matrices of the kink problem: $\\mathrm{diag}(\\alpha^1_{\\rm LL},(\\alpha^1_{\\rm LL})^*)$, the "
+     "pairing matrix with the blocks $(\\mathsf K^3_{\\rm LL})^\\dagger$ (upper right) and $\\mathsf K^3_{\\rm LL}$ (lower left), "
+     "$\\mathrm{diag}(\\beta_{\\rm LL},-\\beta_{\\rm LL})$, and $-i\\mathsf A^{\\rm K}_{\\rm SF}\\mathsf P^{\\rm K}_{\\rm SF}$", "new"),
+    (G7, "$\\mathsf H^{\\rm K}_{\\rm SF}$, $\\mathsf H^{{\\rm K},0}_{\\rm SF}$", "H_K H_K0", "the Bogoliubov-de Gennes operator of the "
+     "quasi-particles in the kink of the pair field, $-i\\mathsf A^{\\rm K}_{\\rm SF}\\partial_1+\\Delta_{\\rm LL}(x)\\mathsf P^{\\rm K}_{\\rm SF}+m_{\\rm LL}\\mathsf B^{\\rm K}_{\\rm SF}$, "
+     "and the same without the mass term", "new"),
+    (G7, "$E^{\\rm K}_{{\\rm SF},n}$, $s^{\\rm K}_{\\rm SF}$", "E_Kn s_K", "the energies of the bound states of the kink problem "
+     "without the mass, $(E^{\\rm K}_{{\\rm SF},n})^2=(\\Delta^\\infty_{\\rm LL})^2-(\\Delta^\\infty_{\\rm LL}-n/\\ell^{\\rm K}_{\\rm LL})^2$, "
+     "and the index $s^{\\rm K}_{\\rm SF}=\\Delta^\\infty_{\\rm LL}\\ell^{\\rm K}_{\\rm LL}$ of the Poeschl-Teller potential", "new"),
     (G7, "$\\Delta^\\infty_{\\rm LL}$, $\\ell^{\\rm K}_{\\rm LL}$", "Delta_inf ell_K", "the gap far from a domain wall "
      "(kink) of the pair field, and the width of the wall", "LL"),
-    (G7, "$\\varphi^{\\rm K}_{\\rm SF}$, $\\chi^{\\rm K}_{\\rm SF}$", "phi_K chi_K", "the profile and the constant "
-     "16-component spinor of a bound state of a kink of the pair field", "new"),
+    (G7, "$\\varphi^{\\rm K}_{\\rm SF}$, $\\varphi^{\\rm K}_{{\\rm SF},n}$, $\\chi^{\\rm K}_{\\rm SF}$", "phi_K chi_K", "the profile of a "
+     "bound state of a kink of the pair field (with the number $n$ of the state: $n=0$, $1$, ...), and the constant "
+     "16-component spinor of that state", "new"),
     (G7, "$\\mathcal B_{\\rm SF}$, $n^{\\rm L}_{\\rm SF}$, $\\ell^{\\rm B}_{\\rm SF}$", "Bmag n_L l_B", "the strength of a "
      "constant magnetic field (of the photon or of a gauge field, as said in the text), the number of a Landau level "
      "(0, 1, 2, ...), and the magnetic length", "new"),
@@ -430,6 +468,9 @@ ENTRIES = [
     # ------------------------------------------------------------------ group 12
     (G12, "$\\ell^{\\rm lat}_{\\rm SF}$, $N^{\\rm lat}_{\\rm SF}$", "dx_lat N_lat", "the spacing and the number of sites of "
      "a lattice in one space direction", "new"),
+    (G12, "$r^{\\rm W}_{\\rm SF}$", "r_W", "the Wilson parameter of the lattice: the coefficient of the Wilson term "
+     "$\\beta_{\\rm LL}(r^{\\rm W}_{\\rm SF}/2\\ell^{\\rm lat}_{\\rm SF})[2\\Psi(x)-\\Psi(x+\\ell^{\\rm lat}_{\\rm SF})-\\Psi(x-\\ell^{\\rm lat}_{\\rm SF})]$ "
+     "(value 1)", "new"),
     # ------------------------------------------------------------------ group 13
     (G13, "$D^{\\rm SM}_\\mu$; $\\Phi^{\\rm SM}$, $\\phi^+$, $\\phi^0$", "", "the covariant derivative of the Higgs doublet "
      "of the Standard Model, the doublet and its two components", "SM"),
@@ -438,5 +479,6 @@ ENTRIES = [
      "the hypercharge and the electric charge ($a=1,2,3$; $\\mu=0,\\dots,3$)", "SM"),
     (G13, "$W^\\pm_\\mu$, $Z_\\mu$, $A_\\mu$, $\\theta_W$, $e$, $v$", "", "the mass eigenstates of the Standard Model, the "
      "weak mixing angle, the elementary charge and the vacuum value of the Higgs field", "SM"),
+    (G13, "$M_W$, $M_Z$", "", "the masses of $W^\\pm_\\mu$ and $Z_\\mu$ in the Standard Model, $gv/2$ and $\\sqrt{g^2+g'^2}\\,v/2$", "SM"),
     (G13, "$SU(2)_L$, $U(1)_Y$", "", "the electroweak gauge group of the Standard Model", "SM"),
 ]
