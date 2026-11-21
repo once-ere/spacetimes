@@ -409,6 +409,29 @@ Complete stage D NOW! Resolve all issues!! Invent Mathematically possible fixes.
    Mexican hat, with the normal state as its maximum, the unitary order parameters as its minima and the non-unitary state
    as a saddle. Stage 24 of Section 5 and Section 6 give the content. The stages F to I are not yet answered.
 
+## 2.15 The instructions of November 20, 2026, 17:21 and 17:31 (verbatim)
+
+At 17:21 the author gave a new task. Its first instruction reads:
+
+> "First stop all running stages; create a provenance."
+
+At 17:31 he added:
+
+> "it is OK to push stage E 's. completed work, if this does NOT interfere with your current task"
+
+## 2.16 What these instructions ask for, and how they are answered
+
+1. **All stages of this folder are stopped.** At the moment of the stop no program of any stage was running. Stage D was
+   complete and pushed. Stage E was complete in every part but not verified: its full check had not finished. The stages
+   B (items [3] to [11] of the notebook), C, F, G, H and I are not continued; the drafts of stage F and the set-aside notebook
+   chapter of stage B stay outside the repository, unchanged. Nothing was deleted.
+2. **Stage E is delivered with the author's permission.** The full check was run once more after 17:31; it ended at
+   17:52 with ALL PASS, and the work of stage E was committed unchanged as `0cefb61`.
+3. **The provenance of the stop** is the document `P3` of this folder (.md, .tex, .pdf). It records the instructions, the
+   state of every stage at the stop, what was done, the state of the repository, and the errors made during the stop.
+4. **The new task** of that day is carried out in a new folder of the repository, `Revision_HS_CJT_and_Kohn-Sham`; it
+   changes nothing in this folder.
+
 # 3. The hard rules, and how each is met
 
 | rule (in the words of this provenance) | how it is met | where to verify |

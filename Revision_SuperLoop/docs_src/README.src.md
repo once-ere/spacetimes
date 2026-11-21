@@ -8,6 +8,12 @@ date: "November 17, 2026"
 
 <!-- This file is generated from docs_src/README.src.md by code/scripts/assemble_docs.py; edit the source. -->
 
+# 0. The state of this folder
+
+On 20 November 2026 the author stopped every stage of the work in this folder; the work of stage E, which was complete,
+was delivered after the stop with his permission. The provenance document `P3` (`provenance/P3_stop_of_the_running_stages`,
+.md, .tex, .pdf) is the record of the stop.
+
 # 1. What this folder is
 
 The theorems of McGlinn, O'Raifeartaigh, Coleman and Mandula, and Haag, Łopuszański and Sohnius
@@ -187,7 +193,7 @@ method are not yet answered.
 | path | content |
 |---|---|
 | `manuscript/` | the manuscript (.tex, .pdf, .md) and its reference list `sl_refs.bib` |
-| `provenance/` | `P0`, `P1`, `P2` (each .md, .tex, .pdf); `symbols_ll.csv`, the registry of the symbols; `generated/`, the fragments that the scripts insert into the documents |
+| `provenance/` | `P0`, `P1`, `P2`, `P3` (the record of the stop of 20 November 2026) (each .md, .tex, .pdf); `symbols_ll.csv`, the registry of the symbols; `generated/`, the fragments that the scripts insert into the documents |
 | `code/superloop-rs/` | the Rust program `superloop` (commands `algebra`, `malcev`, `manifolds`, `superfluid`, `renorm`, `all`) |
 | `code/scripts/` | the Gröbner-basis classification `malcev_groebner.py`, the figures, the registry and the checks of the symbols, the check of self-containedness, the fragments, the builds of the documents, `check_all.sh` |
 | `data/` | the data files written by the programs, and the reports of all checks |

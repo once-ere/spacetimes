@@ -1,0 +1,559 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (README and provenance documents of Revision_SuperLoop).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% A short table is kept on one page.  The build (code/scripts/keep_tables.py) ends the rows of such a table with \\*,
+% which forbids a page break after a row, and sets \sptkeptpenalty to 10000 in front of the table.  This penalty is
+% put here in the place of the breakpoint (penalty 0) that longtable leaves after every table, so that the paragraph
+% that follows a kept table, its caption, begins on the same page; it is set back to 0 after the table.
+\newcount\sptkeptpenalty
+\sptkeptpenalty=0
+\makeatletter
+\patchcmd{\endlongtable}{\endgraf\penalty\z@\addvspace\LTpost}%
+  {\endgraf\penalty\sptkeptpenalty\addvspace\LTpost\global\sptkeptpenalty=\z@}%
+  {}{\PackageError{doc_header}{the end of longtable could not be patched}{The tables can still be typeset, but a short table may be separated from its caption.}}
+\makeatother
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_SuperLoop}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={The stop of all running stages on 20 November 2026},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{The stop of all running stages on 20 November 2026}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance document \texttt{P3} of PROJECT spacetimes,
+Revision\_SuperLoop}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 20, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-document-is}{%
+\section{1. What this document is}\label{what-this-document-is}}
+
+On 20 November 2026 the author gave a new task. Its first instruction
+was to stop all running stages and to create a provenance of the stop.
+This document is that provenance. It records
+
+\begin{itemize}
+\tightlist
+\item
+  the two instructions of that day that concern the stop, verbatim
+  (Section 3);
+\item
+  every stage of the work plan, what it was meant to do, and its state
+  at the moment of the stop (Sections 4 and 5);
+\item
+  what was done to stop the stages, and what was found when the state
+  was checked (Sections 6 and 8);
+\item
+  the one stage whose finished work was delivered after the stop with
+  the author's permission, stage E, and how it was verified before
+  delivery (Section 7);
+\item
+  what the stop does not change (Section 9), and the errors made during
+  the stop (Section 10).
+\end{itemize}
+
+Every term used here is defined in Section 2. The document contains no
+formula.
+
+\hypertarget{the-terms-used-in-this-document}{%
+\section{2. The terms used in this
+document}\label{the-terms-used-in-this-document}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.1651}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.8349}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Term
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PROJECT spacetimes & the author's project. Its repository is
+\texttt{https://github.com/once-ere/spacetimes.git}; its working folder
+on the author's computer is
+\texttt{/Users/nsh/Developer/github/spacetimes}, called \textbf{the Mac
+folder} below. \\
+Revision\_SuperLoop & the folder of the repository in which the stages
+of Section 4 were carried out. \\
+workspace & the cloud computer on which the programs and documents of
+the stages were written and run. It holds a copy (a clone) of the
+repository. \\
+commit & a recorded state of the repository, named here by the first
+seven hexadecimal digits of its identifier. \textbf{main} is the
+principal line of commits. \textbf{origin/main} is the state of main on
+the server of the repository, as last seen by the Mac folder. To
+\textbf{push} is to send the commits of the Mac folder to the server;
+the author does this himself. \\
+bundle & a file that carries commits from the workspace to the Mac
+folder. There they are added with a fast-forward merge: commits are
+added, and nothing that is already there is changed or removed. \\
+tracked file & a file whose content is recorded in the commits. \\
+full check & the script \texttt{code/scripts/check\_all.sh} of
+Revision\_SuperLoop. It rebuilds every program, data file, figure and
+document of the folder from its sources and runs every check: 69 steps,
+about 21 minutes. Its last line is \texttt{ALL\ PASS} when every step
+succeeds. \\
+program check & one of the numbered checks that a program of the folder
+prints in its report (for example \texttt{CJ-12}), each with the word
+PASS or FAIL. \\
+stage & one part of the work plan in force before the stop; Section 4
+lists them with their content. \\
+task list & the list of tasks of the working session, which the author
+sees beside the conversation. \\
+watcher & a small Wolfram Language program that runs inside the author's
+Wolfram application on the Mac. It executes requests that the workspace
+places as files in the folder \texttt{.git-transfer/mma/} of the Mac
+folder, and writes the answers there. It is a tool for running Wolfram
+code, not a stage. \\
+SFBS & the superfluid boson singlet state: the state of spin zero formed
+by pairs of spinor charges. \\
+CJT & the method of J. M. Cornwall, R. Jackiw and E. Tomboulis,
+``Effective action for composite operators'', Phys. Rev.~D 10, 2428
+(1974). \\
+RK4, CVODE, IDA & RK4 is the classical Runge-Kutta method of fourth
+order with a fixed step. CVODE and IDA are integrators with error
+control of the SUNDIALS library, used here in the pure Rust version of
+the author's repository and, for IDA, inside the Wolfram function
+\texttt{NDSolve}. \\
+Test 2 & the author's test problem of Revision\_SuperLoop: the
+gauge-covariant spinor field on the 3+1 manifold and the SFBS, in eleven
+items numbered {[}1{]} to {[}11{]}. \\
+\end{longtable}
+
+\hypertarget{the-instructions-of-20-november-2026}{%
+\section{3. The instructions of 20 November
+2026}\label{the-instructions-of-20-november-2026}}
+
+At 17:21 (Pacific time) the author gave a new task. Its first
+instruction reads, verbatim:
+
+\begin{quote}
+``First stop all running stages; create a provenance.''
+\end{quote}
+
+At 17:31 the author added, verbatim:
+
+\begin{quote}
+``it is OK to push stage E 's. completed work, if this does NOT
+interfere with your current task''
+\end{quote}
+
+The rest of the new task is carried out in a new folder of the
+repository and is not part of this record.
+
+\hypertarget{the-stages-of-the-work-plan-and-their-state-at-the-stop}{%
+\section{4. The stages of the work plan, and their state at the
+stop}\label{the-stages-of-the-work-plan-and-their-state-at-the-stop}}
+
+The work plan in force was that of 18 November 2026: stages A, B and C,
+and the six stages D to I that the author added on 18 November at 20:17.
+Table 1 lists each stage, what it was meant to do, its state at the
+moment of the stop, and what the stop did to it.
+
+\textbf{Table 1.} The stages of the work plan.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0556}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.4333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1778}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Stage
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What it was meant to do
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+State at the stop
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Action
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & the notebook \texttt{3+1super-loop.nb} (at the top of the
+repository) with every time integration done by IDA instead of RK4 &
+complete; commit \texttt{8779db7} & none needed \\
+B & the port of the programs of Test 2, items {[}2{]} to {[}11{]}, into
+the same notebook & item {[}2{]} complete (commit \texttt{5dc688e});
+items {[}3{]} to {[}11{]} not begun; a notebook chapter with the checks
+named GS-17 to GS-20 had been written and set aside outside the
+repository; it was never committed & stopped \\
+C & the older programs that use integrators with a fixed step, redone
+with CVODE in new folders & not begun & stopped \\
+D & the creation of the SFBS from the spinor field by the method CJT &
+complete; commit \texttt{32a4961}; pushed by the author (origin/main =
+\texttt{32a4961} on the Mac at 17:30 on 20 November) & none needed \\
+E & the effective potential of the SFBS in the method CJT (the analogue
+of the ``Mexican hat'' potential of the complex Higgs doublet) & every
+part written on 19 November: the program part (program checks CJ-12 to
+CJ-15; the report of 19 November, 09:32, says ``15 of 15 checks
+passed''), the new section 10 of the document of the stages D to I, the
+figure, the data files, the symbol registry and the records of the
+folder. \textbf{Not verified}: the full check had been started three
+times; the first two runs failed through two errors of procedure of the
+person doing the work, and the third run (started 19 November, 09:36:54)
+stopped with the workspace after 17 of its 69 steps; its log ends at
+09:41. \textbf{Not committed.} & verified and delivered after the
+author's permission of 17:31 (Section 7) \\
+F & the relative minima of this potential and the spontaneous breaking
+of the symmetry & a draft of its program part (four program checks,
+named CJ-16 to CJ-19) and a scratch calculation exist in the workspace
+outside the repository; the draft was never compiled into the program &
+stopped; the drafts are kept unchanged and are not continued \\
+G & the expansion of the SFBS about the minimum (called SFBSv) & not
+begun & stopped \\
+H & the kinetic Lagrangian of the SFBS & not begun & stopped \\
+I & the masses of the Goldstone bosons from SFBSv and the kinetic
+Lagrangian, the diagonalization of the mass terms, the surviving
+symmetry group, and its relation to U(1)\_em and the massless photon &
+not begun & stopped \\
+\end{longtable}
+
+\hypertarget{stages-that-the-author-had-paused-earlier}{%
+\section{5. Stages that the author had paused
+earlier}\label{stages-that-the-author-had-paused-earlier}}
+
+These were not running at the stop; they remain as the author left them.
+
+\textbf{Table 2.} Stages paused or stopped earlier by the author.
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1712}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5586}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2703}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+When
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+State
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+12 November, about 15:20 & the main project (the 4+4 and 7+1
+spacetimes): the independent verification pass, the correction of the
+statement about fermions bound to a vortex line, a planned provenance,
+the final check & paused by the author; not running since \\*
+15 November, 12:36 & all stages of the main project then running &
+paused by the author; not running since \\*
+15 November, 13:25 & the folders \texttt{Revision\_2} and
+\texttt{Revision\_2b} & stopped by the author's choice; they stay as
+they are \\
+\end{longtable}
+
+\hypertarget{what-was-done-to-stop-the-stages}{%
+\section{6. What was done to stop the
+stages}\label{what-was-done-to-stop-the-stages}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Processes in the workspace.} At 17:29 on 20 November no
+  process of any stage ran in the workspace: it had been restarted, and
+  the list of its processes contained none of the programs of the
+  stages. There was nothing to end.
+\item
+  \textbf{Processes on the Mac.} No program of a stage runs on the Mac;
+  the stages ran in the workspace. The watcher is not a stage and was
+  not touched. It is needed for the new task, for which the author asked
+  that the Wolfram application on his computer be used.
+\item
+  \textbf{The task list.} Every open task of the stages was marked
+  ``STOPPED 2026-11-20''.
+\item
+  \textbf{The drafts.} The drafts of stage F and the set-aside notebook
+  chapter of stage B were left where they were, unchanged, outside the
+  repository. Nothing was deleted.
+\item
+  \textbf{No further work} is done on stages B, C, F, G, H and I, unless
+  the author asks for it. The only work done after the stop on a stage
+  of Table 1 is the verification and delivery of the finished work of
+  stage E (Section 7), which the author permitted at 17:31 under the
+  condition that it not interfere with the new task: it ran in the
+  background while the new task began.
+\end{enumerate}
+
+\hypertarget{stage-e-verification-and-delivery}{%
+\section{7. Stage E: verification and
+delivery}\label{stage-e-verification-and-delivery}}
+
+Stage E is the only stage of Table 1 on which work was done after the
+stop, and that work was limited to verifying and delivering what had
+been finished before the stop. Nothing of its content was changed.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{The permission.} At 17:31 the author permitted the delivery of
+  the finished work of stage E, if it did not interfere with the new
+  task. It did not: the verification ran by itself in the background of
+  the workspace while the new task began.
+\item
+  \textbf{The verification.} The full check of Revision\_SuperLoop was
+  run once more from the start, on 20 November from 17:33:13 to
+  17:52:42. Every one of its 69 steps succeeded; its last line is
+  \texttt{ALL\ PASS}. The report of the program of stage E says ``15 of
+  15 checks passed'' (the program checks CJ-1 to CJ-15; CJ-12 to CJ-15
+  belong to stage E).
+\item
+  \textbf{The commit.} The files of stage E, as the full check rebuilt
+  them from their sources, were committed unchanged as commit
+  \texttt{0cefb61} (``Test 2, stage E: the effective potential of the
+  superfluid boson singlet state by the method of Cornwall, Jackiw and
+  Tomboulis''): 110 files.
+\item
+  \textbf{What stage E contains.} A new Section 10 of the document of
+  the stages D to I of Test 2 (its file name: ``The superfluid boson
+  singlet state by the method of Cornwall, Jackiw and Tomboulis'', .md,
+  .tex, .pdf), with four theorems, two tables and one figure; the four
+  program checks CJ-12 to CJ-15 of the program \texttt{t2\_cjt}; two
+  data files and one figure; six entries of the symbol registry of the
+  folder; and the records of the folder (its task record, symbol file,
+  record of the calculations and README) brought up to date. The other
+  files of the commit are those that the full check rebuilds every time
+  (documents and figures whose content did not change).
+\item
+  \textbf{The transfer.} Commit \texttt{0cefb61} and the commit of this
+  document are carried to the Mac folder together; the author pushes
+  them.
+\end{enumerate}
+
+\hypertarget{the-state-of-the-repository-at-the-stop}{%
+\section{8. The state of the repository at the
+stop}\label{the-state-of-the-repository-at-the-stop}}
+
+The repository on the Mac was examined at 17:30 on 20 November.
+
+\begin{itemize}
+\tightlist
+\item
+  main = origin/main = \texttt{32a4961}: the server and the Mac folder
+  held the same commits.
+\item
+  No tracked file was changed or missing.
+\item
+  \texttt{git\ fsck}, the integrity check of git, found no missing and
+  no damaged object.
+\item
+  It reported twelve leftover temporary files of git (34 MiB in total)
+  in \texttt{.git/objects/pack/}, and a leftover lock file
+  \texttt{.git/objects/maintenance.lock}. They were left by earlier git
+  operations that could not finish removing their own temporary files,
+  because the programs of the workspace are not allowed to delete files
+  in the Mac folder. They do not affect the commits, the merges or the
+  pushes. They were not removed.
+\end{itemize}
+
+These checks show that the content recorded in the repository is intact.
+They do not judge the quality of that content.
+
+After the stop, commit \texttt{0cefb61} (stage E) and the commit of this
+document are carried to the Mac folder in one bundle and added there by
+a fast-forward merge, which changes nothing that is already there; the
+author then pushes them to the server.
+
+\hypertarget{what-the-stop-does-not-change}{%
+\section{9. What the stop does not
+change}\label{what-the-stop-does-not-change}}
+
+\begin{itemize}
+\tightlist
+\item
+  Every commit up to \texttt{32a4961} stays as it is; nothing was
+  rewritten or removed.
+\item
+  The folders of earlier revisions are not changed.
+\item
+  The new task of 20 November is carried out in a new folder of the
+  repository, \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}. It changes
+  nothing in Revision\_SuperLoop.
+\end{itemize}
+
+\hypertarget{errors-made-during-the-stop}{%
+\section{10. Errors made during the
+stop}\label{errors-made-during-the-stop}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.0877}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3947}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.1930}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.3246}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Error
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What went wrong
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+How it was found
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Correction
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+E1 & The first draft of Table 2 of this document named another document
+as the record of an earlier pause. The author's rule forbids sending the
+reader to another document. & reading the draft against the author's
+rules before the document was built & the reference was removed; Table 2
+states the facts itself \\
+\end{longtable}
+
+\end{document}
