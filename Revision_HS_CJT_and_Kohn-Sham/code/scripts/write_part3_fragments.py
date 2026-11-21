@@ -350,36 +350,36 @@ def main():
     with open(os.path.join(D, "part3_higgs.csv")) as f:
         for r in csv.DictReader(f):
             hg[r["method"]] = {k: float(v) for k, v in r.items() if k != "method"}
-    sm = hg["SM"]
-    smh = {"M_H_over_v_SF": sig(sm["M_H_over_v_SF"], 4), "lambda_SF": sig(sm["lambda_SF"], 4), "M_H_over_M_W": sig(sm["M_H_over_M_W"], 4),
-           "M_W_over_M_Z": sig(sm["M_W_over_M_Z"], 4)}
+    sm = hg["SM"]  # the row of the Standard Model in the data file; Table 14.2 and Section 14.6 no longer use it
+    # Table 14.2: the superfluid as the Higgs sector of SU(2)_v x U(1)^F_LL, in units of Lambda_LL and as dimensionless
+    # numbers.  It has no column of the Standard Model and no values in GeV: the DiracLike spinor carries no electroweak
+    # quantum numbers, so the superfluid is not the Higgs sector of the electroweak group, and no observation fixes the
+    # scale of the new group (Sections 14.6 and 17.6 of the manuscript).
     hrows = [
-        ("$v^X_{\\rm SF}=2f^{X,{\\rm I}}_{\\rm SF}$", "v_SF", 6, "$246.22$ GeV"),
-        ("$f^{X,{\\rm F}}_{\\rm SF}$", "f_F", 6, "--"),
-        ("$f^{X,{\\rm I}}_{\\rm SF}$", "f_I", 6, "$123.11$ GeV"),
-        ("$M^{X,{\\rm H}}_{\\rm SF}$ (linear response)", "M_H", 6, "$125.20$ GeV"),
-        ("$M^{X,{\\rm NU}}_{\\rm SF}$ (linear response)", "M_NU", 6, "--"),
-        ("$M^X_{W,{\\rm SF}}$ ($g^{\\rm v}_{\\rm LL}=0.7$)", "M_W", 5, "$80.3692$ GeV"),
-        ("$M^X_{Z,{\\rm SF}}$ ($g^{\\rm F}_{\\rm LL}=0.45$)", "M_Z", 5, "$91.1880$ GeV"),
-        ("$M^{X,{\\rm H}}_{\\rm SF}/v^X_{\\rm SF}$", "M_H_over_v_SF", 4, None),
-        ("$\\lambda^{X,{\\rm H}}_{\\rm SF}=(M^{X,{\\rm H}}_{\\rm SF})^2/(2(v^X_{\\rm SF})^2)$", "lambda_SF", 4, None),
-        ("$M^{X,{\\rm H}}_{\\rm SF}/M^X_{W,{\\rm SF}}$", "M_H_over_M_W", 4, None),
-        ("$M^X_{W,{\\rm SF}}/M^X_{Z,{\\rm SF}}$", "M_W_over_M_Z", 4, None),
-        ("$M^{X,{\\rm H}}_{\\rm SF}/(2E^{X,{\\rm gap}}_{\\rm SF})$", "M_H_over_2E_gap", 4, "--"),
-        ("$M^{X,{\\rm NU}}_{\\rm SF}/M^{X,{\\rm H}}_{\\rm SF}$", "M_NU_over_M_H", 4, "none"),
-        ("$f^{X,{\\rm F}}_{\\rm SF}/f^{X,{\\rm I}}_{\\rm SF}$", "f_F_over_f_I", 4, "--"),
-        ("$\\Gamma^{X,{\\rm H}}_{\\rm SF}/M^{X,{\\rm H}}_{\\rm SF}$ (14.10)", "Gamma_over_M_H", 3, "$3.0\\times10^{-5}$"),
-        ("$T^{X,{\\rm c}}_{\\rm SF}/v^X_{\\rm SF}$", "T_c_over_v_SF", 4, "$0.648$"),
-        ("$\\Lambda_{\\rm LL}$ in GeV for $v^X_{\\rm SF}=246.22$ GeV", "Lambda_GeV", 4, "--"),
-        ("$M^{X,{\\rm H}}_{\\rm SF}$ in GeV on that scale", "M_H_GeV", 4, "$125.20$"),
-        ("$T^{X,{\\rm c}}_{\\rm SF}$ in GeV on that scale", "T_c_GeV", 4, "$159.5$"),
+        ("$v^X_{\\rm SF}=2f^{X,{\\rm I}}_{\\rm SF}$", "v_SF", 6),
+        ("$f^{X,{\\rm F}}_{\\rm SF}$", "f_F", 6),
+        ("$f^{X,{\\rm I}}_{\\rm SF}$", "f_I", 6),
+        ("$M^{X,{\\rm H}}_{\\rm SF}$ (linear response)", "M_H", 6),
+        ("$M^{X,{\\rm NU}}_{\\rm SF}$ (linear response)", "M_NU", 6),
+        ("$M^X_{W,{\\rm SF}}$ ($g^{\\rm v}_{\\rm LL}=0.7$)", "M_W", 5),
+        ("$M^X_{Z,{\\rm SF}}$ ($g^{\\rm F}_{\\rm LL}=0.45$)", "M_Z", 5),
+        ("$M^{X,{\\rm H}}_{\\rm SF}/v^X_{\\rm SF}$", "M_H_over_v_SF", 4),
+        ("$\\lambda^{X,{\\rm H}}_{\\rm SF}=(M^{X,{\\rm H}}_{\\rm SF})^2/(2(v^X_{\\rm SF})^2)$", "lambda_SF", 4),
+        ("$M^{X,{\\rm H}}_{\\rm SF}/M^X_{W,{\\rm SF}}$", "M_H_over_M_W", 4),
+        ("$M^X_{W,{\\rm SF}}/M^X_{Z,{\\rm SF}}$", "M_W_over_M_Z", 4),
+        ("$M^{X,{\\rm H}}_{\\rm SF}/(2E^{X,{\\rm gap}}_{\\rm SF})$", "M_H_over_2E_gap", 4),
+        ("$M^{X,{\\rm NU}}_{\\rm SF}/M^{X,{\\rm H}}_{\\rm SF}$", "M_NU_over_M_H", 4),
+        ("$f^{X,{\\rm F}}_{\\rm SF}/f^{X,{\\rm I}}_{\\rm SF}$", "f_F_over_f_I", 4),
+        ("$\\Gamma^{X,{\\rm H}}_{\\rm SF}/M^{X,{\\rm H}}_{\\rm SF}$ (14.10)", "Gamma_over_M_H", 3),
+        ("$T^{X,{\\rm c}}_{\\rm SF}/v^X_{\\rm SF}$", "T_c_over_v_SF", 4),
     ]
     htags = ["HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"]
-    out = ["| quantity | " + " | ".join(METH[t] for t in htags) + " | Standard Model |", "|:----------------------|" + "|".join(["---------:"] * (len(htags) + 1)) + "|"]
-    for label, key, dg, smv in hrows:
-        smtext = smh[key] if smv is None else smv
-        out.append("| %s | %s | %s |" % (label, " | ".join(sig(hg[t][key], dg) for t in htags), smtext))
-    out.append("| ${\\rm Gi}^{X}_{\\rm SF}$ (Table 12.5) | %s | -- |" % " | ".join(sig(gz[t]["Gi"], 3) for t in htags))
+    out = ["| quantity | " + " | ".join(METH[t] for t in htags) + " |", "|:----------------------|" + "|".join(["---------:"] * len(htags)) + "|"]
+    for label, key, dg in hrows:
+        out.append("| %s | %s |" % (label, " | ".join(sig(hg[t][key], dg) for t in htags)))
+    out.append("| ${\\rm Gi}^{X}_{\\rm SF}$ (Table 12.5) | %s |" % " | ".join(sig(gz[t]["Gi"], 3) for t in htags))
+    for t in htags:  # the ratio M_H/v of each method with three digits (the verdict of Section 14.6)
+        frags["p3_h_mhv3_" + t] = sig(hg[t]["M_H_over_v_SF"], 3)
     frags["p3_table_higgs"] = "\n".join(out)
 
     def hspan(key, digits=3, unit=""):

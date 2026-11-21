@@ -8,7 +8,7 @@ the same as Figure 9 with the equation number of that document) and Figure A1 of
 same as Figure 10 with the equation numbers of that document); and the two figures of the second addendum, whose numbers
 superfluid.md shows as Tables 12.5 and 14.2 of its Sections 12.5 and 14.6 (superfluid.md itself has no figure of them):
 Figures A2 and A3 of provenance/P4_remarks.md (fig_p4_a2_ginzburg, the regularization of a moving pair and the Ginzburg
-numbers; fig_p4_a2_higgs, the superfluid as a Higgs sector against the Standard Model; both with the equation numbers of
+numbers; fig_p4_a2_higgs, the superfluid as the Higgs sector of SU(2)_v x U(1)^F_LL; both with the equation numbers of
 that document) and the same two figures without equation numbers for the article in paper_prd/ (fig_prd_ginzburg,
 fig_prd_higgs).
 
@@ -295,45 +295,39 @@ def fig_ginzburg(eq="(A2.3)", name="fig_p4_a2_ginzburg"):
 
 
 def fig_higgs(eq="(A2.9)", name="fig_p4_a2_higgs"):
-    """The superfluid as a Higgs sector (Section 14.6 of superfluid.md, addendum A2 of provenance/P4_remarks.md).
-    (a) M_H/v_SF and the quartic coupling lambda_SF of the five methods against the values of the Standard Model and the
-    tree-level bound 8 pi/3 of perturbative unitarity; (b) the estimated width Gamma/M_H ((14.10) of superfluid.md, (A2.9)
-    of the addendum) and the ratio M_NU/M_H of the charged scalars, against the Standard Model (Gamma_H/m_H with
-    Gamma_H = 3.7 MeV; no charged scalars).  eq: the equation number of the width shown in the label of panel (b) ("" for
-    none); name: the name of the files.  Data: part3_higgs.csv."""
+    """The superfluid as the Higgs sector of SU(2)_v x U(1)^F_LL (Section 14.6 of superfluid.md, addendum A2 of
+    provenance/P4_remarks.md).  (a) M_H/v_SF and the quartic coupling lambda_SF of the five methods; (b) the estimated
+    width Gamma/M_H ((14.10) of superfluid.md, (A2.9) of the addendum) and the ratio M_NU/M_H of the two non-unitary
+    scalars (charge Q_LL = +-1 of the new group).  The figure has no values of the Standard Model: the DiracLike spinor
+    carries no electroweak quantum numbers, so the superfluid is not the Higgs sector of the electroweak group, and the
+    bound 8 pi/3 of perturbative unitarity is that of the Higgs doublet of the Standard Model, not computed for this
+    theory.  eq: the equation number of the width shown in the label of panel (b) ("" for none); name: the name of the
+    files.  Data: part3_higgs.csv."""
     head, rows = read("part3_higgs.csv")
     col = {h: i for i, h in enumerate(head)}
     tags = ["HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"]
     get = lambda t, k: float([x for x in rows if x[0] == t][0][col[k]])
-    sm = lambda k: float([x for x in rows if x[0] == "SM"][0][col[k]])
     xs = np.arange(len(tags))
     fig, (ax, bx) = plt.subplots(1, 2, figsize=(9.6, 3.7))
     ax.plot(xs - 0.1, [get(t, "M_H_over_v_SF") for t in tags], ls="none", marker="o", ms=5, color=PAL[0], label=r"$M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$")
     ax.plot(xs + 0.1, [get(t, "lambda_SF") for t in tags], ls="none", marker="s", ms=5, color=PAL[1], label=r"$\lambda^{X,{\rm H}}_{\rm SF}$")
-    ax.axhline(sm("M_H_over_v_SF"), color=PAL[0], lw=0.9, ls="--")
-    ax.axhline(sm("lambda_SF"), color=PAL[1], lw=0.9, ls="--")
-    ax.axhline(8 * np.pi / 3, color=INK2, lw=0.9, ls=":")
-    ax.text(len(tags) - 0.6, sm("M_H_over_v_SF") * 1.15, "Standard Model $m_H/v$", fontsize=7, color=INK2, ha="right")
-    ax.text(len(tags) - 0.6, sm("lambda_SF") * 1.15, r"Standard Model $\lambda_H$", fontsize=7, color=INK2, ha="right")
-    ax.text(len(tags) - 0.6, 8 * np.pi / 3 * 0.78, r"unitarity bound $8\pi/3$", fontsize=7, color=INK2, ha="right")
     ax.set_yscale("log")
-    ax.set_ylim(0.05, 40)
+    ax.set_ylim(2, 40)
     ax.set_xlim(-0.6, len(tags) - 0.4)
     ax.set_xticks(xs)
     ax.set_xticklabels([LAB[t] if t != "CJT" else "CJT" for t in tags], fontsize=8)
     ax.legend(fontsize=7, loc="center left")
     ax.set_title("(a) mass and coupling of the amplitude mode", fontsize=9, loc="left")
     bx.plot(xs - 0.1, [get(t, "Gamma_over_M_H") for t in tags], ls="none", marker="D", ms=5, color=PAL[2], label=r"$\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$" + (" " + eq if eq else ""))
-    bx.plot(xs + 0.1, [get(t, "M_NU_over_M_H") for t in tags], ls="none", marker="^", ms=5, color=PAL[3], label=r"$M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ (charged scalars)")
-    bx.axhline(3.7e-3 / 125.20, color=PAL[2], lw=0.9, ls="--")
-    bx.text(len(tags) - 0.6, 3.7e-3 / 125.20 * 1.6, r"Standard Model $\Gamma_H/m_H$", fontsize=7, color=INK2, ha="right")
+    bx.plot(xs + 0.1, [get(t, "M_NU_over_M_H") for t in tags], ls="none", marker="^", ms=5, color=PAL[3], label=r"$M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$ (non-unitary scalars, $Q_{\rm LL}=\pm1$)")
+    bx.axhline(1.0, color=INK2, lw=0.9, ls=":")  # the ratio 1: a width equal to the mass
     bx.set_yscale("log")
-    bx.set_ylim(1e-5, 20)
+    bx.set_ylim(0.5, 8)
     bx.set_xlim(-0.6, len(tags) - 0.4)
     bx.set_xticks(xs)
     bx.set_xticklabels([LAB[t] if t != "CJT" else "CJT" for t in tags], fontsize=8)
     bx.legend(fontsize=7, loc="center left")
-    bx.set_title("(b) width and the charged scalars", fontsize=9, loc="left")
+    bx.set_title("(b) width and the non-unitary scalars", fontsize=9, loc="left")
     fig.tight_layout()
     save(fig, name)
 

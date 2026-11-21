@@ -176,8 +176,12 @@ real $2\times2$ matrices (the same unit matrix); both are declared in Section 5.
 
 ## 4.8 The author's conventions (the Standard Model)
 
-The author fixes terms, symbols and conventions by the electroweak Standard Model. The solution follows them; its
-objects correspond as follows (the correspondence of the physics, not an identity of the objects):
+The author gave the electroweak Standard Model "to establish terms, symbols and conventions" for a new gauge group,
+whose gauge-covariant derivative is modelled after that of the Standard Model but is not equal or equivalent to it. The
+table pairs each object of the Standard Model with the object of the new group that is built in the same way and is
+named after it. The paired objects are different objects of different theories: $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is
+not the electroweak group, and the spinor field of the solution, the DiracLike spinor, has electric charge 0 and no
+electroweak quantum numbers, so no object of the right column is an object of the electroweak theory.
 
 | Standard Model (author's conventions) | the solution |
 |:---|:---|
@@ -186,9 +190,9 @@ objects correspond as follows (the correspondence of the physics, not an identit
 | $\Phi^{\rm SM}$, a doublet of hypercharge $Y^{\rm SM}=\tfrac12$ | $\vec\Phi^X_{\rm SF}$, an isospin vector (triplet) of fermion number $F_{\rm LL}=2$ |
 | $W^a_\mu$, $g$; $\tau^a$, $T^{a,{\rm SM}}$ | $W^\iota_{{\rm SF},p}$, $g^{\rm v}_{\rm LL}$; $\tau^{\rm LL}_\iota$, $T^\iota_{\rm LL}$ |
 | $B_\mu$, $g'$, $Y^{\rm SM}$ | $B_{{\rm SF},p}$, $g^{\rm F}_{\rm LL}$, $F_{\rm LL}$ |
-| $Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}$ | $Q_{\rm LL}$, the generator of the surviving group (derived in the solution) |
-| $W^\pm_\mu$, $Z_\mu$, $A_\mu$, $\theta_W$, $e$ | $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$, $\theta^{\rm W}_{\rm SF}$, $e_{\rm SF}$ |
-| $v$ | $\Delta^X_{\rm SF}$, the modulus of the field at the vacuum of method $X$ |
+| $Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}$, the electric charge | $Q_{\rm LL}=T^3_{\rm LL}$, the generator of the surviving group (derived in the solution), a charge of $SU(2)_{\rm v}$, not the electric charge |
+| $W^\pm_\mu$, $Z_\mu$, $A_\mu$ (the photon), $\theta_W$, $e$ | $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$ (the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, not the photon), $\theta^{\rm W}_{\rm SF}$, $g^{\rm Q}_{\rm SF}$ |
+| $v$ | $v^X_{\rm SF}$, the scale of the breaking of the new group, defined by $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}v^X_{\rm SF}/2$ as $v$ is defined by $M_W=gv/2$ (its value in GeV is not known) |
 | the indices $\mu$ (0 to 3) and $a$ (1 to 3) | $p$ and $\iota$ |
 
 The Standard-Model symbols keep their plain form, because they are the author's; the solution adds the superscript SM

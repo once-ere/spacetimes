@@ -657,17 +657,17 @@ $37.875$
 <!-- BEGIN p4_charge_nonpolar_s -->
 $0.55255$
 <!-- END p4_charge_nonpolar_s -->
-<!-- BEGIN p4_waves_photon_amplitude_s -->
+<!-- BEGIN p4_waves_A_amplitude_s -->
 $0.020539$
-<!-- END p4_waves_photon_amplitude_s -->
-<!-- BEGIN p4_waves_photon_amplitude_pred_s -->
+<!-- END p4_waves_A_amplitude_s -->
+<!-- BEGIN p4_waves_A_amplitude_pred_s -->
 $0.0205392$
-<!-- END p4_waves_photon_amplitude_pred_s -->
+<!-- END p4_waves_A_amplitude_pred_s -->
 <!-- BEGIN p4_table_mass -->
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
 |:--------------------|-----------:|-----------:|-----------:|-----------:|-----------:|
 | $\Phi^X_{0,{\rm SF}}$ | $0.4030641$ | $0.362009$ | $0.3069888$ | $0.3284861$ | $0.3284861$ |
-| $10^3\lambda_0$ (photon) | $-1.2\times10^{-13}$ | $1.5\times10^{-13}$ | $-2.3\times10^{-13}$ | $-3\times10^{-14}$ | $-1.3\times10^{-13}$ |
+| $10^3\lambda_0$ (massless $A_{{\rm SF},p}$) | $-1.2\times10^{-13}$ | $1.5\times10^{-13}$ | $-2.3\times10^{-13}$ | $-3\times10^{-14}$ | $-1.3\times10^{-13}$ |
 | $10^3\lambda_1=10^3\lambda_2$ | $2.5081261$ | $2.2474677$ | $1.846917$ | $2.115333$ | $2.2431582$ |
 | $10^3\lambda_3$ | $4.0792692$ | $3.6614611$ | $3.0530669$ | $4.1233542$ | $4.1233542$ |
 | $M^X_{W,{\rm SF}}=\lambda_1^{1/2}$ | $0.05008119$ | $0.04740746$ | $0.04297577$ | $0.04599275$ | $0.04736199$ |

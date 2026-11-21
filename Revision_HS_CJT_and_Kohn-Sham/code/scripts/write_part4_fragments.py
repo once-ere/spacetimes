@@ -66,8 +66,8 @@ def main():
     for k in ("p4_waves_W_decay_length", "p4_waves_W_decay_length_pred", "p4_waves_Z_velocity", "p4_waves_Z_group_velocity_k0",
               "p4_waves_MW", "p4_waves_MZ", "p4_waves_omega_s", "p4_mixing_angle_nonpolar_deg", "p4_charge_nonpolar"):
         frags[k + "_s"] = "$" + fmt(vals[k], 5) + "$"
-    frags["p4_waves_photon_amplitude_s"] = "$" + fmt(vals["p4_waves_photon_amplitude"], 6) + "$"
-    frags["p4_waves_photon_amplitude_pred_s"] = "$" + fmt(vals["p4_waves_photon_amplitude_pred"], 6) + "$"
+    frags["p4_waves_A_amplitude_s"] = "$" + fmt(vals["p4_waves_photon_amplitude"], 6) + "$"  # A_SF, the massless gauge boson
+    frags["p4_waves_A_amplitude_pred_s"] = "$" + fmt(vals["p4_waves_photon_amplitude_pred"], 6) + "$"
     mass = rows_of("part4_massmatrix.csv")
     # lambda_1 and lambda_2 (the two W) agree to rounding; the table shows them in one column, after this test
     for t in TAGS:
@@ -78,7 +78,7 @@ def main():
     out = ["| quantity | " + " | ".join(METH[t] for t in TAGS) + " |",
            "|:--------------------|" + "|".join(["-----------:"] * len(TAGS)) + "|"]
     rows = [("$\\Phi^X_{0,{\\rm SF}}$", lambda r: m(r["Phi0"], 7)),
-            ("$10^3\\lambda_0$ (photon)", lambda r: m(float(r["eigenvalue_0"]) * 1e3, 2)),
+            ("$10^3\\lambda_0$ (massless $A_{{\\rm SF},p}$)", lambda r: m(float(r["eigenvalue_0"]) * 1e3, 2)),
             ("$10^3\\lambda_1=10^3\\lambda_2$", lambda r: m(float(r["eigenvalue_1"]) * 1e3, 8)),
             ("$10^3\\lambda_3$", lambda r: m(float(r["eigenvalue_3"]) * 1e3, 8)),
             ("$M^X_{W,{\\rm SF}}=\\lambda_1^{1/2}$", lambda r: m(float(r["eigenvalue_1"]) ** 0.5, 7)),

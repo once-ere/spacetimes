@@ -104,8 +104,9 @@ ENTRIES = [
      "author"),
     (G1, "GEE", "GEE", "the gauge group of the problem, $SL(2,\\mathbb C)\\times SU(2)_{\\rm v}\\times U(1)^{\\rm F}_{\\rm LL}$ "
      "(the author's name)", "author"),
-    (G1, "$U(1)^{\\rm Q}_{\\rm LL}$", "U(1)^Q", "the group of the electric charge: the phases $\\exp(i\\theta Q_{\\rm LL})$, "
-     "$Q_{\\rm LL}=T^3_{\\rm LL}$, the rotations about the third isospin axis", "LL"),
+    (G1, "$U(1)^{\\rm Q}_{\\rm LL}$", "U(1)^Q", "the group of the charge $Q_{\\rm LL}$ (a charge of $SU(2)_{\\rm v}$, not the "
+     "electric charge): the phases $\\exp(i\\theta Q_{\\rm LL})$, $Q_{\\rm LL}=T^3_{\\rm LL}$, the rotations about the third "
+     "isospin axis", "LL"),
     # ------------------------------------------------------------------ group 2
     (G2, "$\\mathbb H$, $\\mathbb O$", "H O", "the quaternions and the octonions: the real combinations of the units "
      "$\\mathbf e_0,\\dots,\\mathbf e_3$ and of $\\mathbf e_0,\\dots,\\mathbf e_7$", "LL"),
@@ -173,7 +174,8 @@ ENTRIES = [
      "$\\tfrac12\\mathrm{Re}\\,\\mathrm{tr}(\\sigma^{\\rm LL}_pM\\sigma^{\\rm LL}_{p'}M^\\dagger)$ with "
      "$M=M_{\\rm LL}(\\mathbf g)$", "LL"),
     # ------------------------------------------------------------------ group 4
-    (G4, "$\\Psi_{\\rm LL}$", "Psi_LL", "the spinor field: an isospin doublet of four-component Dirac fields, eight complex "
+    (G4, "$\\Psi_{\\rm LL}$", "Psi_LL", "the spinor field, the DiracLike spinor (electric charge 0, no electroweak quantum numbers): an isospin doublet "
+     "of four-component DiracLike fields, eight complex "
      "Grassmann (anticommuting) operator components $\\Psi_{{\\rm LL},c}$, made of two spinor charges of the super-loop",
      "LL"),
     (G4, "$\\Psi_{{\\rm LL},1},\\dots,\\Psi_{{\\rm LL},8}$; $\\Psi^\\pm_{\\rm LL}$; $\\bar\\Psi_{\\rm LL}$",
@@ -181,12 +183,12 @@ ENTRIES = [
      "and down; 3, 4 the second; 5, 6 the third; 7, 8 the fourth); the chirality blocks $\\Psi^-_{\\rm LL}$ (components 1 to "
      "4) and $\\Psi^+_{\\rm LL}$ (5 to 8); the Dirac adjoint $\\bar\\Psi_{\\rm LL}=\\Psi^\\dagger_{\\rm LL}(\\gamma^0_{\\rm LL}\\otimes\\sigma^{\\rm LL}_0)$",
      "LL"),
-    (G4, "$\\psi_{\\rm SF}$, $\\psi^\\pm_{\\rm SF}$", "psi1 psi1_pm", "a single Dirac field with four complex "
+    (G4, "$\\psi_{\\rm SF}$, $\\psi^\\pm_{\\rm SF}$", "psi1 psi1_pm", "a single DiracLike field with four complex "
      "Grassmann components (no isospin index), and its chirality blocks $\\psi^-_{\\rm SF}$ (first two components, "
      "chirality $-1$) and $\\psi^+_{\\rm SF}$ (last two, chirality $+1$); used in the theorem that rules out a "
      "GEE-invariant mass term for such a field", "new"),
     (G4, "$\\xi_{{\\rm SF},f}$, $\\xi_{{\\rm SF},f\\alpha}$", "xi_W", "the two left-handed Weyl spinors of a "
-     "single Dirac field, $\\xi_{{\\rm SF},1}=\\psi^-_{\\rm SF}$ and $\\xi_{{\\rm SF},2}=\\mathsf E_{\\rm LL}(\\psi^+_{\\rm SF})^*$, "
+     "single DiracLike field, $\\xi_{{\\rm SF},1}=\\psi^-_{\\rm SF}$ and $\\xi_{{\\rm SF},2}=\\mathsf E_{\\rm LL}(\\psi^+_{\\rm SF})^*$, "
      "and their components", "new"),
     (G4, "$I^{\\rm W}_{{\\rm SF},ff'}$", "I_W", "the Lorentz-invariant bilinears "
      "$\\xi_{{\\rm SF},f}^T\\mathsf E_{\\rm LL}\\xi_{{\\rm SF},f'}$ of two left-handed Weyl spinors", "new"),
@@ -238,8 +240,9 @@ ENTRIES = [
     (G5, "$T^\\iota_{\\rm LL}$", "T_LL^iota", "the generators of $SU(2)_{\\rm v}$ on the spinor field, "
      "$\\mathsf 1_4\\otimes\\tau^{\\rm LL}_\\iota/2$; $[T^1_{\\rm LL},T^2_{\\rm LL}]=iT^3_{\\rm LL}$ and cyclically",
      "LL"),
-    (G5, "$Q_{\\rm LL}$", "Q_LL", "the electric charge, the generator $Q_{\\rm LL}=T^3_{\\rm LL}$ of the group "
-     "$U(1)^{\\rm Q}_{\\rm LL}$; $\\pm\\tfrac12$ on isospin up and down", "LL"),
+    (G5, "$Q_{\\rm LL}$", "Q_LL", "the charge of the rotations about the third isospin axis, the generator "
+     "$Q_{\\rm LL}=T^3_{\\rm LL}$ of the group $U(1)^{\\rm Q}_{\\rm LL}$; $\\pm\\tfrac12$ on isospin up and down; a charge of "
+     "$SU(2)_{\\rm v}$, not the electric charge (the DiracLike spinor has electric charge 0)", "LL"),
     (G5, "$\\theta^{\\rm F}_{\\rm LL}$", "thF", "the phase of a local transformation of the fermion number, a real function "
      "on M31", "LL"),
     (G5, "$\\mathsf U_{\\rm LL}$, $\\mathsf R^{\\rm v}_{\\rm LL}(\\mathsf U_{\\rm LL})$", "U_LL Rv", "a local isospin "
@@ -277,12 +280,14 @@ ENTRIES = [
      "$\\bar\\Psi_{\\rm LL}\\gamma^p_{\\rm LL}T^\\iota_{\\rm LL}\\Psi_{\\rm LL}$ and the fermion-number current "
      "$\\bar\\Psi_{\\rm LL}\\gamma^p_{\\rm LL}\\Psi_{\\rm LL}$ of the spinor field", "new"),
     (G5, "$W^\\pm_{{\\rm SF},p}$, $Z_{{\\rm SF},p}$, $A_{{\\rm SF},p}$", "Wplus Wminus Z_p A_p",
-     "the gauge fields of definite mass after the breaking of the symmetry, named after the Standard Model: the charged "
-     "fields $(W^1_{{\\rm SF},p}\\mp iW^2_{{\\rm SF},p})/\\sqrt2$, the massive neutral field and the massless photon "
-     "(their expressions in $W^3_{{\\rm SF},p}$ and $B_{{\\rm SF},p}$ are derived in the solution)", "new"),
-    (G5, "$\\theta^{\\rm W}_{\\rm SF}$, $e_{\\rm SF}$", "theta_W e_SF", "the mixing angle: the angle between the photon "
-     "$A_{{\\rm SF},p}$ and the axis $W^3_{{\\rm SF},p}$ in the plane of $W^3_{{\\rm SF},p}$ and $B_{{\\rm SF},p}$; the "
-     "coupling of the photon to the charge $Q_{\\rm LL}$", "new"),
+     "the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\\rm v}\\times U(1)^{\\rm F}_{\\rm LL}$, "
+     "named after the Standard Model (the names only: the group is a new one): the fields "
+     "$(W^1_{{\\rm SF},p}\\mp iW^2_{{\\rm SF},p})/\\sqrt2$ of the charges $Q_{\\rm LL}=\\pm1$, the massive field of charge 0 and "
+     "the massless gauge boson of $U(1)^{\\rm Q}_{\\rm LL}$, which is not the photon (their expressions in "
+     "$W^3_{{\\rm SF},p}$ and $B_{{\\rm SF},p}$ are derived in the solution)", "new"),
+    (G5, "$\\theta^{\\rm W}_{\\rm SF}$, $g^{\\rm Q}_{\\rm SF}$", "theta_W g_Q", "the mixing angle: the angle between the "
+     "massless gauge boson $A_{{\\rm SF},p}$ and the axis $W^3_{{\\rm SF},p}$ in the plane of $W^3_{{\\rm SF},p}$ and "
+     "$B_{{\\rm SF},p}$; the coupling of $A_{{\\rm SF},p}$ to the charge $Q_{\\rm LL}$", "new"),
     # ------------------------------------------------------------------ group 6
     (G6, "$\\mathcal L_{\\rm SF}$, $\\mathcal L^\\Psi_{\\rm SF}$, $\\mathcal L^{\\rm self}_{\\rm SF}$, $\\mathcal L^{\\rm YM}_{\\rm SF}$",
      "Lagr Lagr_Psi Lagr_self Lagr_YM", "the Lagrangian density of the solution and its parts: the Dirac part with the "
@@ -346,7 +351,7 @@ ENTRIES = [
      "$W^\\iota_{{\\rm SF},j}=w^{\\rm lk}_{\\rm SF}\\delta_{\\iota j}$", "new"),
     (G7, "$\\Sigma^j_{\\rm SF}$", "Sigma_j", "the spin matrices $\\mathrm{diag}(\\sigma^{\\rm LL}_j,\\sigma^{\\rm LL}_j)$ on the Dirac index "
      "(twice the spin)", "new"),
-    (G7, "$e^{\\rm c}_{\\rm SF}$", "e_c", "the charge with which an isospin component couples to an abelian gauge field: "
+    (G7, "$g^{\\rm c}_{\\rm SF}$", "g_c", "the strength with which an isospin component couples to an abelian gauge field: "
      "$g^{\\rm v}_{\\rm LL}Q_{\\rm LL}$ for the field $W^3_{{\\rm SF},p}$, $g^{\\rm F}_{\\rm LL}$ for $B_{{\\rm SF},p}$", "new"),
     (G7, "$\\mathcal E^{\\rm MF}_{\\rm SF}(\\Delta_{\\rm LL})$", "E_MF", "the energy per volume of the uniform polar state of the "
      "pairing interaction in the mean-field (pairing-only) approximation at $\\mu_{\\rm LL}=0$, as a function of the gap, "
@@ -372,7 +377,7 @@ ENTRIES = [
      "bound state of a kink of the pair field (with the number $n$ of the state: $n=0$, $1$, ...), and the constant "
      "16-component spinor of that state", "new"),
     (G7, "$\\mathcal B_{\\rm SF}$, $n^{\\rm L}_{\\rm SF}$, $\\ell^{\\rm B}_{\\rm SF}$", "Bmag n_L l_B", "the strength of a "
-     "constant magnetic field (of the photon or of a gauge field, as said in the text), the number of a Landau level "
+     "constant magnetic field (of the gauge field $W^3_{{\\rm SF},p}$ or of $B_{{\\rm SF},p}$, as said in the text), the number of a Landau level "
      "(0, 1, 2, ...), and the magnetic length", "new"),
     # ------------------------------------------------------------------ group 8
     (G8, "$\\mathsf K_{\\rm SF}[\\Gamma,\\mathsf t]$", "Kpair", "the general pair matrix "
@@ -401,7 +406,7 @@ ENTRIES = [
      "$\\Psi^\\dagger_{\\rm LL}\\mathsf A^{\\rm b}_{{\\rm SF},p}\\Psi_{\\rm LL}$)", "new"),
     (G8, "$\\lambda^{\\rm T}_{\\rm SF}$, $g^{\\rm crit}_{\\rm SF}$", "lambda_T g_crit", "the largest eigenvalue of the "
      "linearized gap equation of the normal vacuum in the channel $\\mathsf K^3_{\\rm LL}$ with the exchange of gauge bosons "
-     "(the normal vacuum is unstable against pairing when it exceeds 1), and the coupling at which the photon alone would "
+     "(the normal vacuum is unstable against pairing when it exceeds 1), and the coupling at which $W^3_{\\rm SF}$ alone would "
      "make it 1", "new"),
     (G8, "$\\mathcal E^{\\rm ex,b}_{\\rm SF}$", "E_ex_b", "the energy per volume of the static exchange of the gauge boson b "
      "in a uniform state, measured from the normal vacuum", "new"),
@@ -561,7 +566,8 @@ ENTRIES = [
     (G10, "$\\mathcal F^X_{2,{\\rm SF}}$", "", "the free energy of a state with a small applied pair block, to second order in it, "
      "measured from the normal state at the same temperature", "new"),
     (G10, "$v^X_{\\rm SF}$", "vSF v_SF", "the scale of the breaking in method $X$, $2f^{X,{\\rm I}}_{\\rm SF}$: the analogue of the vacuum "
-     "value $v$ of the Standard Model ($M^X_{W,{\\rm SF}}=g^{\\rm v}_{\\rm LL}v^X_{\\rm SF}/2$)", "new"),
+     "value $v$ of the Standard Model by the same convention ($M^X_{W,{\\rm SF}}=g^{\\rm v}_{\\rm LL}v^X_{\\rm SF}/2$); a scale "
+     "of the new group, not the electroweak scale", "new"),
     (G10, "$\\lambda^{X,{\\rm H}}_{\\rm SF}$", "lambda_SF", "the quartic coupling of the amplitude mode of method $X$ in the "
      "convention of the Standard Model, $(M^{X,{\\rm H}}_{\\rm SF})^2/(2(v^X_{\\rm SF})^2)$", "new"),
     (G10, "$\\Gamma^{X,{\\rm H}}_{\\rm SF}$", "width_MH Gamma_over_M_H", "the estimate of the width of the amplitude mode of "

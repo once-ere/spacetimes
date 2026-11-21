@@ -109,7 +109,8 @@ and parts of the project in a damaged state, and asks me to repair and complete 
 
 1. Read and understand the $3+1$ manifold of the Lorentz super-loop, named M31.
 2. Read and understand the spinor fields on M31, in particular the Dirac spinor field: a quantized fermion field with
-   four spinor components, whose components are complex Grassmann operators.
+   four spinor components, whose components are complex Grassmann operators. (Since 21 November 2026 the author calls
+   it the DiracLike spinor: it has electric charge 0 and no electroweak degrees of freedom, C18.)
 3. Read, understand and use the gauge group $\mathrm{GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$,
    which acts on the spinors and on the other fields on M31; create a GEE gauge-covariant derivative of the spinors,
    and GEE gauge-covariant derivatives of the other fields as required.
@@ -161,7 +162,9 @@ Once all three methods admit a superfluid solution:
 | 8 | A MASTER provenance of the symbols, with its registry and machine checks, is the second object of the plan (Section 7). |
 | 9 | Rust first; Python where a figure or a mirror of the Rust code is required; the Wolfram language in the notebook, executed on the author's computer. Every program is executed, and its output is kept in `data/` with its provenance. |
 
-# 4. Record of a false statement (Rule 2)
+# 4. Records of false statements (Rule 2)
+
+## 4.1 The reading of the registries (20 November 2026)
 
 **What I stated.** On the evening of 20 November 2026, before this folder was created (17:59 PST), I told the author
 in a message that I had completed the reading of the four symbol registries of the earlier work, the step "learn all
@@ -192,6 +195,49 @@ read and fails if an entry is missing, so that the reading of the symbols no lon
 after this document and the folder's README had been committed (`b85b6b4`) and transferred for the push. At 18:28 PST
 the author instructed: continue, complete all stages, do not stop. The work resumed then; the author changed none of
 the decisions of Section 6, which therefore stand.
+
+## 4.2 The electric charge of the spinor field (21 November 2026)
+
+**What I stated.** From Part I (20 November 2026) to the article for Physical Review D (21 November 2026) the documents
+of this folder said that the charge $Q_{\rm LL}=T^3_{\rm LL}$ is "the electric charge", that the massless gauge boson
+$A_{{\rm SF},p}$ of the superfluid is "the photon", that $W^\pm_{{\rm SF},p}$ and the two non-unitary scalars are "charged"
+and the amplitude mode "neutral", and that the surviving group $U(1)^{\rm Q}_{\rm LL}$ is "the group of the electric charge".
+On that basis the answer to the request of D17 judged the superfluid against the Higgs boson of the Standard Model: it
+compared its ratios with the values of the Standard Model, set its scale of breaking to 246.22 GeV, applied the bound of
+perturbative unitarity of the Higgs doublet of the Standard Model, and concluded, as I also told the author in a
+message, that its amplitude mode is "9 to 11 times too heavy" against the scale of the breaking, above the unitarity
+bound, very broad, and "accompanied by charged scalars of similar mass".
+
+**What was true.** The author never said that the spinor field carries electric charge or that
+$SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is the electroweak group. He gave the electroweak theory "to establish terms,
+symbols and conventions" for a new gauge-covariant derivative that is modelled after it but is not equal or equivalent
+to it (Section 2.2 and his earlier task), and on 21 November 2026 he stated that the spinor field, which he now calls the
+DiracLike spinor, has electric charge 0 and no electroweak degrees of freedom (C18). The statements above were therefore
+false, and the comparison with the Higgs boson of the Standard Model had no basis: a field made of the DiracLike spinor
+is a singlet of the electroweak group, which it can neither break nor give masses, whatever its numbers are.
+
+**Why I made it.** The symbol $Q_{\rm LL}$ was taken, with the meaning "the electric charge", from the registry of the
+earlier work on the super-loop (the folder `Revision_SuperLoop`), where that meaning had been written by the earlier
+solution, not by the author. The check of the symbols compares the symbol and its object with the earlier registry
+(HCK-S4), not the meaning with the author's statements, and I did not check the meaning. I then read the author's
+conventions, which restate the electroweak theory, as permission to give the objects of the new group the physical
+names of that theory (photon, charged, neutral), and from the names I moved, without marking the step, to the physics:
+if $A_{{\rm SF},p}$ is the photon, the breaking is the electroweak breaking, and the superfluid can be measured against the
+Higgs boson of nature. Each step looked like the application of a convention; none was a statement of the author.
+
+**The correction.** C18, E25 and the entries that follow E25 list what was corrected: the names in every document, the
+registry of the symbols, the figures and the video; Section 14.6 of the manuscript, which now answers separately
+whether the superfluid is the Higgs field of its own gauge group and whether it can be the Higgs field of the Standard
+Model; and the programs that wrote the values in GeV and the values of the Standard Model.
+
+**What changes.** (a) A meaning taken from an earlier registry is checked against the author's statements, not only
+the symbol against its object. (b) A physical identification (a particle of nature, a charge of nature, a scale in
+GeV) is made only where the author states it or a computation derives it; a convention of names is never read as one.
+(c) The registry states for $Q_{\rm LL}$, $U(1)^{\rm Q}_{\rm LL}$ and $A_{{\rm SF},p}$ that they are not the electric charge, its
+group and the photon.
+
+**The pause.** The author's instruction of 21 November 2026, 06:35 (do not stop, but pause to push and to document)
+applies: the work continues after each corrected part has been documented and pushed.
 
 # 5. The state of the work when this record was written
 
@@ -291,15 +337,17 @@ $$\nabla^{\rm GEE}_p\Psi_{\rm LL}=\Big(\partial_p+\Gamma^{\rm LL}_p+ig^{\rm v}_{
 with the gauge fields $W^\iota_{{\rm SF},p}$ of $SU(2)_{\rm v}$ (coupling $g^{\rm v}_{\rm LL}$), the gauge field
 $B_{{\rm SF},p}$ of $U(1)^{\rm F}_{\rm LL}$ (coupling $g^{\rm F}_{\rm LL}$; the fermion number of $\Psi_{\rm LL}$ is 1), and the
 spin connection $\Gamma^{\rm LL}_p$ of $SL(2,\mathbb C)$. The names of the Standard Model are used for the analogous
-objects, with the suffix SF that marks the objects that this solution introduces: $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$,
-the photon $A_{{\rm SF},p}$ and the mixing angle $\theta^{\rm W}_{\rm SF}$. *Reason.* The author gives the conventions "to
+objects of the new group, with the suffix SF that marks the objects that this solution introduces: $W^\pm_{{\rm SF},p}$,
+$Z_{{\rm SF},p}$, the massless gauge boson $A_{{\rm SF},p}$ and the mixing angle $\theta^{\rm W}_{\rm SF}$. A name states how the
+object is built, not that it is an object of the electroweak theory: $A_{{\rm SF},p}$ is not the photon, and the charge
+$Q_{\rm LL}$ is not the electric charge (Section 4.2). *Reason.* The author gives the conventions "to
 establish terms, symbols and conventions". The earlier work on the super-loop wrote $-i$ in front of the couplings and
 named the gauge fields of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ $A^\iota_{{\rm LL},p}$ and $A^{\rm F}_{{\rm LL},p}$, with the
 same couplings and generators. The two conventions describe the same theory: $W^\iota_{{\rm SF},p}=-A^\iota_{{\rm LL},p}$ and
 $B_{{\rm SF},p}=-A^{\rm F}_{{\rm LL},p}$, and the Yang-Mills Lagrangian, which is quadratic in the field strengths, has the
 same form in both. (The suffixes: a symbol with the suffix LL is taken unchanged from the earlier work on the
 super-loop; a symbol with the suffix SF is introduced by this solution. The earlier work had used, for example,
-$W^\pm_{{\rm LL},p}$ for its charged fields with the other sign convention; a new suffix keeps every symbol of the project
+$W^\pm_{{\rm LL},p}$ for its fields of the charges $Q_{\rm LL}=\pm1$ with the other sign convention; a new suffix keeps every symbol of the project
 for one object.)
 
 **D3. The potential of the spinor field and its recursion.** The Lagrangian of the spinor field is the Dirac
@@ -318,8 +366,8 @@ interaction makes the recursion a test of it, and every step is a calculation, n
 **D4. The gauge boson that mediates the pairing.** The pairing of item 6 is analyzed in two parts. (a) An exact
 algebraic analysis of which gauge bosons of GEE attract and which repel two spinor charges in each spin-zero pair
 channel, before and after the breaking of the symmetry. (b) The quantitative contribution of the exchange of the gauge
-bosons to the pairing, computed in the condensed state, where the photon of the surviving $U(1)$ is massless and the
-other gauge bosons are massive. Whether the photon alone can sustain the condensate is computed, not assumed; the
+bosons to the pairing, computed in the condensed state, where the gauge boson of the surviving $U(1)$ is massless and the
+other gauge bosons are massive. Whether that massless boson alone can sustain the condensate is computed, not assumed; the
 result is reported whatever it is. *Reason.* The task says that the pairing is mediated by a new gauge boson, and
 suggests a massless GEE gauge boson that appears after the breaking of the symmetry; this is a statement that the
 calculation must confirm or refute.
@@ -364,8 +412,8 @@ manuscript.
 **D9. Dynamics and videos.** Time-dependent equations are integrated only with CVODE or IDA: in Rust and Python with
 the pure-Rust SUNDIALS 7.8.0 of the author's repository (vendored in the project as `vendor/sundials_rs-7.8.0`), in the
 notebook with IDA inside `NDSolve`. The videos show solutions of such equations (for example the growth of the
-condensate from the unstable normal state, and the propagation of the massless photon against a massive gauge boson
-in the effective theory).
+condensate from the unstable normal state, and the propagation of the massless gauge boson $A_{{\rm SF},p}$ against a
+massive gauge boson in the effective theory).
 
 **D10. Code.** A Rust workspace in `rust/`, with a library of the common calculations, programs for every result,
 and a library with a C interface to CVODE and IDA through which the Python programs use the same integrators. Python
@@ -387,7 +435,7 @@ invariance at the cutoff.
 **D14. The dynamics (added with objects O6 and O7).** The dynamics of item 6 is computed in two parts: (a) the
 time-dependent mean field of the uniform superfluid of every method (the growth of the condensate from the unstable
 normal vacuum, the small oscillations about the ground state, the stability of the motion); (b) the gauge fields of the
-effective Lagrangian of CJT in one space direction (a transverse photon and a transverse W driven by a source, and the
+effective Lagrangian of CJT in one space direction (a transverse massless $A_{{\rm SF},p}$ and a transverse massive $W^1_{{\rm SF},p}$ driven by a source, and the
 phase of the condensate with and without the gauge field of the fermion number, in two gauges). *Reason.* The task asks
 for the masses of the gauge bosons, the surviving group and the massless gauge boson, and D9 for videos of solutions of
 time-dependent equations; (a) shows the superfluid itself in time and ties the dynamics to the excited states of
@@ -420,16 +468,20 @@ cutoff must be placed on the relative momentum: with the cutoff on the momenta o
 analytic in the momentum of the pair (Section 12.5 of the manuscript shows it), and the twisted states of Section 12.2 use
 the same placement. The error of the regularization is stated with the result.
 
-**D17. The superfluid as the Higgs particle (added on 21 November 2026, at the author's request).** The author asked to
-determine for each method whether the superfluid can play the role of the Higgs particle, and whether the Higgs is
-really a composite particle. The answer compares seven properties of the Higgs sector of the Standard Model (the
-mechanism, a neutral scalar below the threshold, its mass against the scale of the breaking, its width, the absence of
-further scalars, the quantum numbers, the thermal history) with the numbers of the methods; the analogue of the vacuum
-value of the Higgs field of the Standard Model is twice the isospin decay constant, because the mass of the W is the gauge coupling times that decay constant;
-the masses of the collective modes are those of the linear response of each method; the width is the estimate of the
-effective Lagrangian at first order; the values of the Standard Model are those of the Particle Data Group 2024.
-*Reason.* These are the properties by which a Higgs sector is judged, and they are dimensionless or can be made so
-without a choice of units.
+**D17. The superfluid as the Higgs particle (added on 21 November 2026, at the author's request; corrected the same day,
+C18).** The author asked to determine for each method whether the superfluid can play the role of the Higgs particle,
+and whether the Higgs is really a composite particle. The question is answered in two parts. (a) Whether the superfluid
+is the Higgs field of its own gauge group $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$: the properties by which a field is the
+Higgs field of a gauge group and its amplitude mode a Higgs particle (the mechanism, a scalar of charge $Q_{\rm LL}=0$
+below the threshold, its mass against the scale of the breaking, its width, the further scalars, the quantum numbers,
+the thermal history), with the quantities of the new group alone; the scale of the breaking is twice the isospin decay
+constant, by the convention $M_W=gv/2$ of Section 2.2, because the mass of $W^\pm_{{\rm SF},p}$ is the gauge coupling times
+that decay constant; the masses of the collective modes are those of the linear response of each method; the width is
+the estimate of the effective Lagrangian at first order. (b) Whether the superfluid can be the Higgs field of the
+Standard Model: decided by the quantum numbers of the DiracLike spinor, which has electric charge 0 and no electroweak
+quantum numbers, so that the answer needs no number. No value of the Standard Model is a measure of (a), and no scale
+in GeV is assigned. *Reason.* The two parts are different questions about different gauge groups; the first version of
+this decision treated them as one (Section 4.2).
 
 **D18. The article for Physical Review D (added on 21 November 2026, at the author's request).** The answer to D16 and
 D17 is also written as a Regular Article for Physical Review D, titled by the author "Higgs as a Composite, and Quantum
@@ -454,7 +506,7 @@ The work is done as a sequence of objects; each is committed and pushed as soon 
 | O3 | the manuscript, part I (items 1 to 5): the manifold, the spinor field, GEE and the covariant derivatives, the Lagrangian and the field equations, their numerical formulation, and analytic solutions, each checked by programs |
 | O4 | part II (item 6 and the three methods): the analysis of the pairing channels and of the gauge bosons that mediate the pairing, the recursion of the potential, and the ground state, the first excited states and the gap by HS, CJT and KS |
 | O5 | part III: the three effective Lagrangians, their kinetic and potential parts, the Mexican hat, the minima, the breaking of the symmetry, and $\mathrm{SFBSv}^{\rm CJT}$, $\mathrm{SFBSv}^{\rm HS}$, $\mathrm{SFBSv}^{\rm KS}$ |
-| O6 | part IV: the masses of the gauge bosons by each method, the diagonalization, the surviving group and the massless photon |
+| O6 | part IV: the masses of the gauge bosons by each method, the diagonalization, the surviving group and the massless gauge boson |
 | O7 | the dynamics, integrated with CVODE and IDA, and the videos |
 | O8 | the notebook `superfluid.nb` and its provenance |
 | O9 | the provenance of the code, the computed values and the checks; the final check of the whole folder |
@@ -494,9 +546,9 @@ the earlier work on the super-loop, the suffix SF a symbol introduced by this so
 | $\Gamma^{\rm LL}_p$ | the spin connection (the gauge field of $SL(2,\mathbb C)$ acting on the Dirac index) |
 | $W^\iota_{{\rm SF},p}$; $g^{\rm v}_{\rm LL}$ | the gauge fields of $SU(2)_{\rm v}$ and their coupling |
 | $B_{{\rm SF},p}$; $g^{\rm F}_{\rm LL}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ and its coupling |
-| $A^\iota_{{\rm LL},p}$, $A^{\rm F}_{{\rm LL},p}$; $W^\pm_{{\rm LL},p}$ | the gauge fields of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ in the convention of the earlier work, $-W^\iota_{{\rm SF},p}$ and $-B_{{\rm SF},p}$; the charged fields of the earlier work |
+| $A^\iota_{{\rm LL},p}$, $A^{\rm F}_{{\rm LL},p}$; $W^\pm_{{\rm LL},p}$ | the gauge fields of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ in the convention of the earlier work, $-W^\iota_{{\rm SF},p}$ and $-B_{{\rm SF},p}$; the fields of the charges $Q_{\rm LL}=\pm1$ of the earlier work |
 | $T^\iota_{\rm LL}$ | the generators of $SU(2)_{\rm v}$ on $\Psi_{\rm LL}$: the unit matrix on the Dirac index times $\tau^{\rm LL}_\iota/2$ on the isospin index |
-| $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$, $\theta^{\rm W}_{\rm SF}$ | the charged gauge bosons, the massive neutral gauge boson, the photon and the mixing angle of the super-loop theory, named after the Standard Model |
+| $W^\pm_{{\rm SF},p}$, $Z_{{\rm SF},p}$, $A_{{\rm SF},p}$, $\theta^{\rm W}_{\rm SF}$ | the gauge bosons of the charges $Q_{\rm LL}=\pm1$, the massive gauge boson of charge 0, the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$ (not the photon) and the mixing angle of the super-loop theory, named after the Standard Model (the names only) |
 | $m_{\rm LL}$ | the mass of the spinor charges |
 | $\Lambda_{\rm LL}$ | the momentum cutoff |
 | $\mathcal L^{\rm self}_{\rm SF}$ | the self-interaction term of the Lagrangian |
@@ -540,7 +592,7 @@ the earlier work on the super-loop, the suffix SF a symbol introduced by this so
 | E4 | 20 Nov 2026 | corrections during object O4, each found before the commit: (1) the two weights of the pairing term of HS were interchanged in the Rust library and in the Python program (found because a Dirac mass disagreed with the only term that can shift it in HS); (2) check P2-2b first took the gap over the nodes of the grid, whose smallest radial node is not at zero momentum; (3) check P2-8h first compared minima of two different functionals (different boson masses); (4) check YP2-8d first used an absolute tolerance finer than the convergence of the iterations; (5) the first data files of part II had commas inside fields, which split the columns; the CSV writer now quotes such fields; (6) one run of the Python program overlapped an earlier run writing to the same output file; its output was discarded and the program run again alone |
 | C6 | 20 Nov 2026 | object O5 complete: part III of the manuscript (Sections 12 and 13: the field of the superfluid boson singlet state, the constrained effective potentials and the Mexican hat, the kinetic parts with their coefficients from the static susceptibilities, the three effective Lagrangians, the vacua, the stabilizer $SL(2,\mathbb C)\times O(2)$, and $\mathrm{SFBSv}^X$ with the masses compared with the linear response); the provenance, the corrections, the symbols and the references are now Sections 14 to 17; the program `sf_part3` ({{GEN:p3_verdict_rust}}), the Python programs `python/sf_part3.py` ({{GEN:p3_verdict_python}}) and `python/sf_part3_figures.py`, the data and two figures; 5 entries added to the registry and one rewritten (now 167) |
 | E5 | 20 Nov 2026 | corrections during object O5, each found before the commit: (1) check P3-7 first used a tolerance finer than the Richardson extrapolation reaches; (2) the figure program first wrote a calligraphic letter in a form the formula renderer of matplotlib rejects |
-| C7 | 21 Nov 2026 | objects O6 and O7 complete: part IV of the manuscript (Section 14: the mass matrix of the gauge bosons in every vacuum, its diagonalization, the theorem that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group and its $U(1)$, the massless photon, checked against the microscopic susceptibilities; Section 15: the growth of the condensate from the normal vacuum, the collective modes in time, the stability of the train of pulses, the photon and the W driven by a source, the longitudinal Z in two gauges, two videos); the provenance, the corrections, the symbols and the references are now Sections 16 to 19; the crates `sfsundials` (CVODE and IDA of the vendored pure-Rust SUNDIALS 7.8.0) and `sfsundials_c` (their C interface for Python), the program `sf_part4` ({{GEN:p4_verdict_rust}}), the Python programs `python/sfsundials.py`, `python/sf_part4.py` ({{GEN:p4_verdict_python}}) and `python/sf_part4_figures.py`, the data, four figures and two videos; 2 entries added to the registry of the symbols (now 169); decision D14 added |
+| C7 | 21 Nov 2026 | objects O6 and O7 complete: part IV of the manuscript (Section 14: the mass matrix of the gauge bosons in every vacuum, its diagonalization, the theorem that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group and its $U(1)$, the massless gauge boson (then called the photon, Section 4.2), checked against the microscopic susceptibilities; Section 15: the growth of the condensate from the normal vacuum, the collective modes in time, the stability of the train of pulses, the massless $A_{{\rm SF},p}$ (then called the photon) and $W^1_{{\rm SF},p}$ driven by a source, the longitudinal $Z_{{\rm SF},p}$ in two gauges, two videos); the provenance, the corrections, the symbols and the references are now Sections 16 to 19; the crates `sfsundials` (CVODE and IDA of the vendored pure-Rust SUNDIALS 7.8.0) and `sfsundials_c` (their C interface for Python), the program `sf_part4` ({{GEN:p4_verdict_rust}}), the Python programs `python/sfsundials.py`, `python/sf_part4.py` ({{GEN:p4_verdict_python}}) and `python/sf_part4_figures.py`, the data, four figures and two videos; 2 entries added to the registry of the symbols (now 169); decision D14 added |
 | E6 | 21 Nov 2026 | corrections during objects O6 and O7, each found before the commit: (1) the first microscopic check of the mass matrix used a vacuum along $(1,1,1)/\sqrt3$, whose static susceptibilities are not defined by a converging static solution (a chemical potential turns the condensate along the flat Goldstone directions); the run was stopped after many minutes and the check now uses a vacuum along a coordinate axis; (2) the first check of the bound cloud of the W failed (17 per cent) because the waves excited by switching on the source had not yet left the region of the fit; the source is now switched on more gently and the whole profile is compared; (3) the first check that the state stays in the channel $\mathsf K^3$ failed in three methods: with the full equations rounding errors grow along the other channels, an instability of the motion that the manuscript now describes and measures, while the growth runs stay in the invariant polar sector; (4) the first test of the linearity of that instability compared ratios of small oscillating numbers and failed for CJT; a comparison of the differences over the whole run failed for HS $(0,0)$, and one restricted to the growth and the first pulse still failed there ($1.8\times10^{-3}$); the difference depended on the absolute tolerance of the seeded runs, and with $10^{-18}$ in the place of $10^{-15}$ the check passes |
 | E7 | 21 Nov 2026 | further corrections during objects O6 and O7, each found before the commit: (1) Section 13.1 had written the group and the charge of the earlier work, $U(1)^{\rm Q}_{\rm LL}$ and $Q_{\rm LL}$, with another symbol; (2) Section 6.2 had called the equations of the temporal gauge differential-algebraic; Gauss's law is there a condition on the initial values; (3) Section 13.1 had written an angle of rotation with the letter of the index of a two-component spinor; (4) the texts of the report of `sf_part4` cited equation labels that exist only in its source code (such as (M2) and (W1)), which the manuscript does not contain; the check HCK-H1 (no document sends its reader elsewhere) found them; the code and its report now cite the equations (14.1), (14.3), (15.4), (15.2) and (15.6) of the manuscript, and the program was run again; (5) Table 14.1, Table 15.1 and equation (14.5) were wider than the page; Table 14.1 now has a row per quantity, with the two equal eigenvalues of the W in one row, the growth rates of Table 15.1 have six digits, and (14.5) has two lines; rounded values of checks quoted in Sections 15.1 and 15.3 were corrected against the final report (P4-T5, P4-T6, P4-T12, P4-W2, P4-W3, P4-W7, P4-W9, P4-W10, P4-W12, and the range of the minima of the pulses, which reach $0.65\Phi_0$ in KS and CJT and $7$ per cent of $\Phi_0$ in HS $(1,1)$) |
 | C8 | 21 Nov 2026, 06:35 | the author's instruction, repeated: push every item as soon as it is complete (commit, carry the bundle to the author's computer, check that it applied, send the push command at once), document every step with provenance, and continue without waiting. The final run of `sf_part4`, started at 01:38, was lost when the cloud machine on which the programs run was stopped and restarted (it was running again at 06:19); the run was started again at 06:24. For object O8 the watcher that runs Wolfram on the author's computer was started again in Wolfram 15.0.1 (06:19; it answered request 224), and a probe (request 225) showed that the method IDA of `NDSolve` accepts the Krylov solver `"ImplicitSolver" -> {"GMRES"}`, which needs no dense Jacobian matrix |
@@ -570,3 +622,5 @@ the earlier work on the super-loop, the suffix SF a symbol introduced by this so
 | C17 | 21 Nov 2026 | the plan of Section 7 gains, after C16: correct the sentence of E20 (1) in Section 14.6 of the manuscript, the addendum A2 of `provenance/P4_remarks.md`, Section III.G.8 of the notebook and the comment of `rust/sfpart3/src/higgs.rs`; compare every number typed in the sources of the documents (`docs_src/`) with the reports and data files in the same way as in E20, replace the numbers that a program computes by fragments, and correct the statement of `code/scripts/assemble_docs.py` that the documents contain no number typed by hand |
 | E23 | 21 Nov 2026, 14:35 to 14:42 | first part of C17: the sentence of E20 (1) corrected in Section 14.6 of the manuscript (item 11 of Section 17.3) and in the addendum A2 of `provenance/P4_remarks.md` (Section 5.10, and the new remark R6 on the factor of the decays into $W^+W^-$ and $ZZ$); the ranges typed as "7 to 17 per cent" (Sections 13.2 and 14.6 of the manuscript, remark R5) are now fragments, with the range of the non-unitary modes stated separately; the fragment writer of Part III names KS and CJT together at an end of a range only where their printed values agree (they agreed in every earlier range; in the new range of the non-unitary modes CJT and KS differ). The comment of `rust/sfpart3/src/higgs.rs` says that the masses of $W$ and $Z$ are far below $M^{X,{\rm H}}_{\rm SF}/2$, which is true, and calls the width an estimate; it was left unchanged, so that the program that wrote the data is unchanged. In the article and its Supplemental Material the squared ratio of the masses, written $x$ in C16, is now $\zeta_V$, because $x$ already denotes the coordinates there ($x^3$, $d^3x$). Section III.G.8 of the notebook still contains the sentence of E20 (1); its correction is the next item |
 | E24 | 21 Nov 2026, 14:42 to 14:53 | second part of C17: the sentence of E20 (1) corrected in Section III.G.8 of the notebook (E15 of `provenance/P3_notebook.md`): the text explains the corrections of the width of the decays into $W^+W^-$ and $ZZ$ at tree level, with the factor as a formula, and the new input cell `gzVV` computes for every method the larger ratio of the masses of $W$ and $Z$ to $M^{X,{\rm H}}_{\rm SF}$, the smaller factor, and how much the masses of the effective Lagrangian exceed those of the linear response; dry run (request 273 of the watcher, no message) and build (261 cells, 0 warnings) on the author's computer, evaluation in the front end of Wolfram ({{GEN:nb_verdict}}); the Supplemental Material of the article lists the new checksums of the notebook and its source |
+| C18 | 21 Nov 2026, 14:57 and 15:11 | the author's statement and request: the spinor field of the project, which he had called a Dirac spinor to emphasize its Lorentz transformation, is henceforth the DiracLike spinor; it has electric charge 0, carries no electroweak degrees of freedom and is a particle not yet observed; $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge group, not the electroweak group, which he never said it was; the gauge boson that mediates the pairing is a force particle not yet observed, which arises with the spontaneous breaking of the new group. He asked to re-analyze, re-compute and re-write everything that references electric charge. At 15:11 he stated that the conclusions against the Higgs boson of the Standard Model (the amplitude mode too heavy against the scale of the breaking, above the unitarity bound, very broad, with charged scalars) have no merit, because the analysis used the electric charge. The plan gains, before the rest of C17: correct every document, the registry of the symbols, the figures, the videos, the notebook and the programs, each part pushed when complete (Section 4.2) |
+| E25 | 21 Nov 2026, 14:57 to 15:26 | first part of C18: in the manuscript `superfluid.md` the charge $Q_{\rm LL}$ is a charge of $SU(2)_{\rm v}$, not the electric charge; $A_{{\rm SF},p}$ is the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, not the photon; $W^\pm_{{\rm SF},p}$ and the non-unitary scalars carry the charges $Q_{\rm LL}=\pm1$; the couplings of (14.7) and of Section 7.2 are $g^{\rm Q}_{\rm SF}$ and $g^{\rm c}_{\rm SF}$, no longer written with the letter of the elementary electric charge; the spinor field is the DiracLike field (Sections 0, 1, 3, 6, 7, 8, 11, 12, 14 and 15); Section 14.6 answers separately whether the superfluid is the Higgs field of its own group and whether it can be that of the Standard Model, with no value of the Standard Model as a measure and no scale in GeV; Section 17.6 states the correction. Table 14.2 has no column of the Standard Model and no rows in GeV (`code/scripts/write_part3_fragments.py`); the label of a row of Table 14.1 and the names of two fragments of Section 15.3 no longer say photon (`code/scripts/write_part4_fragments.py`). The registry of the symbols (`code/scripts/symbol_entries.py`), Section 4.8 of `provenance/P1_master_symbols.md` (the objects named after the Standard Model are different objects of a different theory) and this record (Section 4.2, D2, D4, D9, D17, O6, the symbols) are corrected. Figures 7 and 15 of the manuscript, Figure A3 of `provenance/P4_remarks.md` and the figure of the article on the Higgs sector are drawn again without the photon, the charged scalars and the values of the Standard Model, and the second video is made again. Still to correct after this part: `provenance/P4_remarks.md`, the article, its Supplemental Material, the cover letter and the submission information, the notebook and its provenance, the README files, the comments and the texts of the checks of the programs, and the data written for the identification (the values in GeV and the row of the Standard Model of `data/part3_higgs.csv`, the column of `data/part4_waves_transverse.csv` named photon) |

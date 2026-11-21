@@ -94,6 +94,8 @@ BRACED = r"\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}"
 DECO = r"(?:\^(?:" + BRACED + r"|\\[A-Za-z]+|[A-Za-z0-9])|_(?:" + BRACED + r"|\\[A-Za-z]+|[A-Za-z0-9]))"
 # a symbol: an optional font or accent command, a letter or command, optional primes (W' is the transformed W), and
 # its decorations (superscripts and subscripts)
+# the decorations of a symbol one by one, at the top level: (the kind ^ or _, its content)
+TOPDECO = re.compile(r"([\^_])(" + BRACED + r"|\\[A-Za-z]+|[A-Za-z0-9])")
 SYMBOL = re.compile(r"((?:\\(?:mathcal|mathsf|mathbf|mathrm|mathbb|vec|bar|tilde|hat)\s*)?(?:\\[A-Za-z]+|[A-Za-z]))'*((?:" + DECO + r")+)")
 
 
@@ -105,6 +107,10 @@ def doc_sf_bases(text):
     for m in SYMBOL.finditer(text):
         if "\\rm SF" in m.group(2):
             base = re.sub(r"\\(vec|bar|tilde|hat)\s*", "", m.group(1))
+            # the exponential function: e with superscripts only, such as e^{iq^{pair}_SF x^3}, whose exponent contains
+            # a symbol with the suffix SF; it is not a symbol built on the letter e (no symbol of the registry is)
+            if base == "e" and all(kind == "^" for kind, _ in TOPDECO.findall(m.group(2))):
+                continue
             found.append(W.base_letter("$" + base + "$"))
     return found
 
