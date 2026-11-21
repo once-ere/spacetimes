@@ -487,10 +487,14 @@ ENTRIES = [
      "a gauge-invariant regularization", "new"),
     (G10, "$\\nu^X_{{\\rm SF},1}$, $\\nu^X_{{\\rm SF},2}$", "nu_1 nu_2", "the two non-unitary fields of "
      "$\\mathrm{SFBSv}^X$ (the imaginary parts of the components 1 and 2 of the field relative to its phase)", "new"),
-    (G10, "$a^X_{\\rm SF}$, $b^X_{\\rm SF}$, $c^X_{\\rm SF}$, $u^X_{\\rm SF}$", "landau_a landau_b landau_c u_X",
+    (G10, "$a^X_{\\rm SF}$, $b^X_{\\rm SF}$, $c^X_{\\rm SF}$, $u^X_{\\rm SF}$", "landau_a landau_b landau_c u_X landau_res landau_phifit landau_depthfit landau_curvfit landau_signs landau_resK landau_cK4 landau_rng",
      "the coefficients of the Landau form $a\\lvert\\vec\\Phi\\rvert^2+b\\lvert\\vec\\Phi\\rvert^4+c\\lvert\\vec\\Phi\\rvert^6"
      "+u(\\lvert\\vec\\Phi\\rvert^4-\\lvert\\vec\\Phi\\cdot\\vec\\Phi\\rvert^2)$ of $\\mathcal V^X_{\\rm SF}$ (the first three fitted "
      "along the polar states, $u$ from the curvature along the non-unitary directions)", "new"),
+    (G10, "$a^{X,{\\rm Tay}}_{\\rm SF}$", "a_taylor a_Taylor", "the coefficient of $\\lvert\\vec\\Phi\\rvert^2$ of the Taylor series of "
+     "the effective potential $\\mathcal V^X_{\\rm SF}$ at $\\vec\\Phi=0$ (one half of its second derivative along the polar "
+     "fields there), computed from states with small applied pair fields; the coefficient $a^X_{\\rm SF}$ of the fitted Landau "
+     "form differs from it", "new"),
     (G10, "$\\mathcal L^{\\rm CJT}$, $\\mathcal L^{\\rm HS}$, $\\mathcal L^{\\rm KS}$; $\\mathcal L^X_{\\rm kinetic}$, $\\mathcal L^X_{\\rm potential}$",
      "L_CJT L_HS L_KS L_kin L_pot", "the effective Lagrangian of the field $\\vec\\Phi^X_{\\rm SF}$ in method $X$, and its "
      "kinetic part (the terms with derivatives, to second order) and potential part (the author's names)", "author"),
@@ -547,6 +551,9 @@ ENTRIES = [
      "the hypercharge and the electric charge ($a=1,2,3$; $\\mu=0,\\dots,3$)", "SM"),
     (G13, "$W^\\pm_\\mu$, $Z_\\mu$, $A_\\mu$, $\\theta_W$, $e$, $v$", "", "the mass eigenstates of the Standard Model, the "
      "weak mixing angle, the elementary charge and the vacuum value of the Higgs field", "SM"),
+    (G13, "$\\mu^{\\rm SM}$, $\\lambda^{\\rm SM}$", "", "the two coefficients of the Higgs potential "
+     "$-(\\mu^{\\rm SM})^2(\\Phi^{\\rm SM})^\\dagger\\Phi^{\\rm SM}+\\lambda^{\\rm SM}((\\Phi^{\\rm SM})^\\dagger\\Phi^{\\rm SM})^2$ of the "
+     "Standard Model", "SM"),
     (G13, "$M_W$, $M_Z$", "", "the masses of $W^\\pm_\\mu$ and $Z_\\mu$ in the Standard Model, $gv/2$ and $\\sqrt{g^2+g'^2}\\,v/2$", "SM"),
     (G13, "$SU(2)_L$, $U(1)_Y$", "", "the electroweak gauge group of the Standard Model", "SM"),
 ]

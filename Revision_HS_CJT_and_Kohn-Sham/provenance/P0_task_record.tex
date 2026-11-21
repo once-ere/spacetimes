@@ -1175,8 +1175,8 @@ three effective Lagrangians, the vacua, the stabilizer
 \(SL(2,\mathbb C)\times O(2)\), and \(\mathrm{SFBSv}^X\) with the masses
 compared with the linear response); the provenance, the corrections, the
 symbols and the references are now Sections 14 to 17; the program
-\texttt{sf\_part3} (VERDICT: ALL PASS (31 of 31)), the Python programs
-\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (10 of 10)) and
+\texttt{sf\_part3} (VERDICT: ALL PASS (47 of 47)), the Python programs
+\texttt{python/sf\_part3.py} (VERDICT: ALL PASS (20 of 20)) and
 \texttt{python/sf\_part3\_figures.py}, the data and two figures; 5
 entries added to the registry and one rewritten (now 167) \\
 E5 & 20 Nov 2026 & corrections during object O5, each found before the
@@ -1258,7 +1258,7 @@ accepts the Krylov solver
 dense Jacobian matrix \\
 C9 & 21 Nov 2026 & object O8, first version: the notebook
 \texttt{superfluid.nb} with the introduction, the register of the checks
-and Part I (34 checks; ALL PASS (34 of 34), 0 messages in the front end
+and Part I (42 checks; ALL PASS (42 of 42), 0 messages in the front end
 of Wolfram 15.0.1), its sources in \texttt{wolfram/source/}, its tools
 in \texttt{wolfram/tools/}, its printed copy
 \texttt{superfluid\_notebook.pdf}, its log
@@ -1281,6 +1281,46 @@ now E-14 and the Rust program has a check E-14 of the same statement;
 (5) the notebook's check of the conventions of the Standard Model had no
 counterpart; the check SM-1 was added to both programs; (6) the dry run
 first printed its times as unevaluated number formats \\
+C10 & 21 Nov 2026, 07:23 to 07:35 & the author's questions on the remark
+``The Landau form is a fit; its largest residual is 0.27--0.7 \% of the
+depth'' (made in the answer that showed the three effective
+Lagrangians): explain it clearly and completely and discuss why it is
+important (07:23); save the answer and put it into the documents and
+into the notebook, and do the same in the future for every such remark
+(07:30); define the Landau form and give examples (07:35). Answered in
+two messages, then documented: Section 12.1 of the manuscript (the
+definition and seven examples of the Landau form, its accuracy, the
+cause of the residual, why it matters, Table 12.2, Figure 9; the earlier
+figures 9 to 13 are now 10 to 14 and the earlier Table 12.2 is Table
+12.3), the module \texttt{landau} of \texttt{sf\_part3} with the checks
+P3-8 to P3-11 (VERDICT: ALL PASS (47 of 47)), the checks YP3-8 to YP3-11
+of \texttt{python/sf\_part3.py} (VERDICT: ALL PASS (20 of 20)), the new
+provenance document \texttt{provenance/P4\_remarks.md} (\texttt{.tex},
+\texttt{.pdf}), which keeps the answer, two entries of the registry of
+the symbols (\(a^{X,{\rm Tay}}_{\rm SF}\); \(\mu^{\rm SM}\),
+\(\lambda^{\rm SM}\)), and a section of the notebook \\
+E9 & 21 Nov 2026 & statements of the first two answers of C10 that were
+false or inexact, found when the programs recomputed every number: (1)
+``the residual changes sign five times'': it changes sign three times;
+the number had been read from a printed list of every third residual and
+not counted, and it was stated without a check; (2) ``a fit on
+\([0,2\Phi_0]\) has residuals of 1.2--1.7 \%'': that fit used all 61
+points of the curve, whose fields reach 1.52 to 1.64 times \(\Phi_0\);
+the applied field, not the field of the states, reaches \(2\Phi_0\); (3)
+the correction of (2) in the second answer gave the range as 1.52 to
+1.61; HS \((0,0)\) reaches 1.64; (4) ``the power series converges only
+for \(\lvert\Phi\rvert<M\)'': the singularity lies at
+\(\Phi_{\rm a}^2=-M^2\) in the applied field, and the radius in the
+field of the states is of the order of \(M\), not equal to it; (5) the
+errors of the curvature, 1.1 to 2.7 per cent, were those of the
+polynomial at the minimum of the computed curve; at the polynomial's own
+minimum, where a user evaluates it, they are 0.86 to 2.3 per cent (and
+0.43 to 1.1 per cent for the mass of the amplitude mode), which the
+documents now give. Found in the same work: Section 12.3 of the
+manuscript named Section 2.2 for the Higgs sector of the Standard Model,
+which is stated in Section 1. All are corrected in the documents; the
+corrections are listed in Section 2.7 of
+\texttt{provenance/P4\_remarks.md} and reported to the author \\
 \end{longtable}
 
 \end{document}

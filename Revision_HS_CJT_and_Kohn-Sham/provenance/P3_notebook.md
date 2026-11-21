@@ -27,25 +27,38 @@ follow; every time integration in the notebook uses the method IDA inside the fu
 fixed-step integrator such as the fourth-order Runge-Kutta method).
 
 **The state of this version.** The notebook is written chapter by chapter, and each chapter is committed as soon as it
-is complete. This version contains the introduction, the register of the checks (chapter 0) and Part I (items 1 to 5 of
+is complete. This version contains the introduction, the register of the checks (chapter 0), Part I (items 1 to 5 of
 the problem: the conventions, the manifold M31 and the Lorentz super-loop, the spinor field and theorem D1, the gauge
-group GEE and its covariant derivatives, the Lagrangian and the field equations, and the four analytic solutions), with
-34 checks. Parts II to IV (the three methods and the superfluid, the effective Lagrangians and the Mexican
-hat, the masses of the gauge bosons, the surviving symmetry and the dynamics with IDA) follow in the next versions.
-Part I has no time integration.
+group GEE and its covariant derivatives, the Lagrangian and the field equations, and the four analytic solutions), and
+the first section of Part III (the Landau form of the effective potentials: its definition with examples, its accuracy,
+the cause of its error and why the error matters; the answer to the author's questions of 21 November 2026, which he
+asked to be kept in the notebook), with 42 checks. The rest of Part III, and Parts II and IV (the three
+methods and the superfluid, the effective Lagrangians and the Mexican hat, the masses of the gauge bosons, the surviving
+symmetry and the dynamics with IDA) follow in the next versions. Until Part II is in the notebook, the section of
+Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
+cell of data with the SHA-256 checksums of its files) and recomputes every number from them. Neither part has a time
+integration.
 
 # 3. The files
 
 The files of the notebook, each with its SHA-256 checksum:
 
 * `superfluid.nb`: the notebook, evaluated in the front end of Wolfram (inputs, printed checks, the table of all checks);\
-  `92afb6621c6b5250504c0bd43c43a896674fa317be4ae6cbb510c6fb31c4567a`
+  `3b473f6015bb678f3cfa09f683c3c1cdc869fec08fbeacb184f8d3d2e837acf3`
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
-  `2bec4f83acb34977a99fcff194b6b9f61699ee8575cc14039311b1d0dd23c427`
+  `15a48d963143b1ea34cc135adbb869bdc5d67cf5e4cbbb26b0591d1319651eea`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
-  `a33fda77de99c247e6e3b03d2e9bdde17b8edc879d2977d4a609dc7da659efb3`
+  `8446e7fb777d077765830ccbef7a42ac75ac3699c26c900840e6ed4dc41e4557`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
   `10bea1f4d47c952b00cf50af5183f2f3da3ee8af325ec485191108aaa789beb1`
+* `wolfram/source/part3_landau.source.wl`: the source of the first section of Part III (the Landau form);\
+  `2fbe3ad5f084d3b4e038074f473f70bf5f3df715f2cadf9e48f930891a77d01e`
+* `wolfram/source/data_part3.wl`: the values of Part III of the Rust program and its five polar curves, included in a
+  closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the data files and
+  their SHA-256 checksums);\
+  `44deff1c0624be586db8a6899cf94e951150d20de5f3714a280ccf4f90d964e0`
+* `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
+  `b1b63f10f2d8a206ac051e6b342c2c155ba8e1f55d589279945ab08515f477a6`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
   `dd5e855c6fddcb0a00a6f3e2adecb5ced86c4cf52a8a48d4671eaa23fc63e1b0`
 * `wolfram/tools/sf_formula.wl`: the reader of formulas: turns the TeX of the formulas of the texts into two-dimensional boxes;\
@@ -61,9 +74,9 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/tools/make_dryrun.py`: writes the code of all input cells into one file for a test run by `wolframscript` without the front end;\
   `f3ac70882c2c356d331bc5808683b7b56e535e9694ee39868c2b7cf3c2357f2f`
 * `data/hck_notebook_log.txt`: the log of the evaluation: the version of Wolfram, the counts of the cells, every message and printed line, one line per check;\
-  `c81d86a9b63cc732202573d402dbaec46b1dd57fed559a9817da8f237cddb9f6`
+  `4c26766542fc4ed82b5e165254db333c68616100cb5852cfd02704937ccb6a3e`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
-  `30f06195541ae260e76dea0a29bb7c90981d2f3d770a8eeed02b29634ad84b19`
+  `29b7817f4ed2488ffeeeef16eac62be393c9d10f36d6e8b334f769a7aa5ccf2b`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
   `e591d5ebc2fa730c7d621a73e0f8cbd95951bc26bec3926cf37a8ec585d5dc9a`
 
@@ -84,10 +97,13 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
     wolframscript -file wolfram/tools/build_notebook.wls wolfram/source/superfluid.source.wl in/superfluid.nb \
         wolfram/tools/sf_formula.wl
 
-The builder replaces the line `(* @@INCLUDECELLS part1.source.wl@@ *)` of the main source by the cells of Part I, turns
+The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)` and `(* @@INCLUDECELLS part3_landau.source.wl@@ *)`
+of the main source by the cells of these parts, a line `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that
+file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 65 cells, 217 formulas in the texts, 0 warnings.
+reader cannot read as a warning. This version: 108 cells (one of them a closed cell of data), 357 formulas in the
+texts, 0 warnings.
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
 the menu command Evaluate Notebook, but in a fresh kernel named `SFNBRun`, in three calls (each returns at once):
@@ -107,20 +123,20 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (Part I: 13 seconds); the only difference from the notebook is that it prints the computing time after every
+kernel (Part I and the section of Part III: 14 to 17 seconds); the only difference from the notebook is that it prints the computing time after every
 check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 22 seconds; 11 input cells, 11 of them evaluated; 1 output cells; 38 printed lines; **0 messages** (no error and no
-warning of the Wolfram language); verdict: **ALL PASS (34 of 34), 0 messages**.
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 23 seconds; 20 input cells, 20 of them evaluated; 5 output cells; 51 printed lines; **0 messages** (no error and no
+warning of the Wolfram language); verdict: **ALL PASS (42 of 42), 0 messages**.
 
 # 6. The checks and their counterparts
 
 Every check of the notebook carries the identifier of the same check in the Rust program with the prefix W, and names
-its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`) and in the Python program
-(`python/sf_part1.py`). The table gives, for each check, the deviation measured by the notebook and by each counterpart
+its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart3`, program
+`sf_part3`, for Part III) and in the Python program (`python/sf_part1.py`, `python/sf_part3.py`). The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
 program that writes the table stops with an error if a counterpart is missing from its report or did not pass.
 
@@ -160,9 +176,17 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WAS4-5a | PASS | -- | -- | AS4-5a (PASS), -- | AS4-5a (PASS), -- | three bound states below the continuum for each spacing [counts {3, 3, 3}] |
 | WAS4-5b | PASS | $1.116\times10^{-5}$ | $1.000\times10^{-3}$ | AS4-5b (PASS), $1.116\times10^{-5}$ | AS4-5b (PASS), $1.116\times10^{-5}$ | kink bound states, Richardson extrapolation |
 | WAS4-3 | PASS | -- | -- | AS4-3 (PASS), $2.776\times10^{-17}$ | AS4-3 (PASS), -- | symbolic: (d/dx + Delta) sech\^2(x/ell) = 0 and (-d\^2 + Delta\^2 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0] |
+| WP3-11 HS_1_1 | PASS | $2.492\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_1_1 (PASS), $1.103\times10^{-14}$ | YP3-11 HS_1_1 (PASS), $9.618\times10^{-12}$ | HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
+| WP3-11 HS_0_1 | PASS | $4.409\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_0_1 (PASS), $5.616\times10^{-13}$ | YP3-11 HS_0_1 (PASS), $1.478\times10^{-11}$ | HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
+| WP3-11 HS_0_0 | PASS | $4.051\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_0_0 (PASS), $8.612\times10^{-13}$ | YP3-11 HS_0_0 (PASS), $5.701\times10^{-11}$ | HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
+| WP3-11 KS | PASS | $3.482\times10^{-9}$ | $1.000\times10^{-7}$ | P3-11 KS (PASS), $7.503\times10^{-13}$ | YP3-11 KS (PASS), $3.104\times10^{-9}$ | KS: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
+| WP3-11 CJT | PASS | $6.816\times10^{-9}$ | $1.000\times10^{-7}$ | P3-11 CJT (PASS), $2.943\times10^{-13}$ | YP3-11 CJT (PASS), $1.216\times10^{-9}$ | CJT: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
+| WP3-8 | PASS | $1.554\times10^{-15}$ | $1.000\times10^{-13}$ | P3-8 (PASS), $2.442\times10^{-15}$ | YP3-8 (PASS), $1.332\times10^{-15}$ | the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1\_2 and P = Phi\_a (K\^3)\^dag has the eigenvalues -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (20 random q, M, Phi\_a) |
+| WP3-10 HS_1_1 | PASS | $2.646\times10^{-7}$ | $1.000\times10^{-6}$ | P3-10 HS_1_1 (PASS), $8.786\times10^{-9}$ | YP3-10 HS_1_1 (PASS), $3.072\times10^{-11}$ | HS (1, 1): the coefficient of Phi\^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a\^Tay = -0.00616243 (relative) |
+| WP3-10 CJT | PASS | $2.377\times10^{-8}$ | $1.000\times10^{-6}$ | P3-10 CJT (PASS), $7.425\times10^{-8}$ | YP3-10 CJT (PASS), $2.872\times10^{-12}$ | CJT: the coefficient of Phi\^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a\^Tay = -0.00429666 (relative) |
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
-`data/hck_part1_checks_python.txt`.
+`data/hck_part1_checks_python.txt`, `data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`.
 
 # 7. The methods of the notebook and of its counterparts
 
@@ -190,7 +214,14 @@ repeat itself in the others:
 * **the analytic solutions** (WAS1-3 to WAS4-3): dense eigenvalues of the Hermitian matrices by the function
   `Eigenvalues` (up to 4800 rows), the gap equation by `FindRoot` with 30 digits, and the profiles of the kink by
   `FullSimplify` in the notebook; the Rust program's own eigensolvers (inertia counting and bisection of
-  block-tridiagonal matrices) and the band solver of LAPACK in Python.
+  block-tridiagonal matrices) and the band solver of LAPACK in Python;
+* **the accuracy of the Landau form** (WP3-8, WP3-10, WP3-11): the least squares by the function `LeastSquares` on
+  scaled columns in the notebook, by Householder reflections in Rust, and by the singular-value decomposition of numpy
+  in Python; the quasi-particle energies by `Eigenvalues` of the $16\times16$ matrices (the Rust program's own
+  eigensolver, LAPACK in Python); the Taylor coefficient at the origin from the first six points of the computed curve
+  in the notebook, and from three states with small applied fields and the Richardson extrapolation in the two
+  programs; the integral with the term $\tfrac1{16}s^2\ln s$ exactly, by `Integrate`, `FullSimplify` and `Series`, in
+  the notebook alone (it is shown, not checked).
 
 # 8. The symbols of the code of Part I
 
@@ -222,6 +253,14 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 | `gScal`, `gVec`, `gPair`, `hS`, `hV`, `hP`, `piOps` | $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$, -- , -- , -- , $\Pi^\iota_{\rm LL}$ | the exact couplings $-8$, $4/5$, $45/2$ of the operator checks, the Hamiltonians of the three contact terms of one point, the pair operators |
 | `wF`, `jF`, `fYM`, `lYM`, `eqsYM`, `gYM` | $W^\iota_{{\rm SF},p}$, $j^{\iota,p}_{\rm SF}$, $W^\iota_{{\rm SF},pp'}$, -- , -- , $g^{\rm v}_{\rm LL}$ | the symbolic gauge fields and currents, the field strengths, the Lagrangian density of the Yang-Mills check, its Euler-Lagrange equations, the coupling |
 | `hPW`, `i1`, `gapAS3` | -- , $I_1$, $\Delta$ | the plane-wave matrix of AS1, the integral of the gap equation of AS3, the gap at $G=22.5$ |
+| `lfVec`, `lfNorm2`, `lfIdentity`, `lfPolar` | $\vec\Phi$, $\lvert\vec\Phi\rvert^2$ | Part III: a complex 3-vector with symbolic real and imaginary parts (`lfRe[k]`, `lfIm[k]`), its squared norm, the identity $\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2=\lvert\vec\Phi\times\vec\Phi^*\rvert^2$ and its value on a polar field (`lfTh`, `lfR`, `lfT1`, `lfT2`: its phase, modulus and direction) |
+| `rustPart3`, `rustEffPot[tag]` | -- | Part III: the values of the Rust program `sf_part3` and its five computed polar curves (applied field, field, energy per volume, Dirac mass) |
+| `lfTags`, `lfName`, `lfPhi0`, `lfE0`, `lfCurve`, `lfFitted` | $X$, $\Phi^X_{0,{\rm SF}}$, $\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})$ | Part III: the five methods, their names, the vacuum field, the energy of the minimum (minus the depth), the polar curve $\{\Phi,\mathcal V^X_{\rm SF}\}$, and its points with $\Phi\le$ a given multiple of $\Phi^X_{0,{\rm SF}}$ |
+| `evenFit`, `landauMin`, `lfResults`, `lfKeys`, `lfRows`, `pct` | $\sum_kc_k\Phi^{2k}$, $\Phi_{\rm L}$ | Part III: the least-squares fit with the powers $\Phi^2,\dots,\Phi^{2K}$, the minimum of the Landau polynomial with its value and second derivative, all numbers of the accuracy for each method, the names compared with the Rust values, the rows of the printed table, a number in per cent |
+| `lfColors`, `lfShown`, `lfLegend` | -- | Part III: the colors, the four distinct curves (KS and CJT coincide) and the legend of the figure |
+| `lfBdG`, `lfQpDev` | $\mathsf H_{\rm SF}(\vec q_{\rm LL})$ | Part III: the matrix of Bogoliubov and de Gennes with a Dirac mass and an applied pair field, and the deviation of its eigenvalues from $\pm E$ |
+| `lfq`, `lfs`, `lfLam`, `lfInt`, `lfClosed`, `lfSeries` | $q$, $s$, $\Lambda_{\rm LL}$ | Part III: the variables of the integral $\int_0^{\Lambda}q^2(q^2+s)^{1/2}dq$, its value, its closed form and its expansion about $s=0$ |
+| `lfTaylor` | $a^{X,{\rm Tay}}_{\rm SF}$ | Part III: the Taylor coefficient of $\lvert\vec\Phi\rvert^2$ at the origin, estimated from the first six points of the curve |
 
 # 9. Errors and corrections found while this version was written
 
@@ -246,9 +285,13 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 6. *The printed time of the dry run (E6).* The first dry run printed the computing times as unevaluated number formats;
    the dry run now prints rounded numbers. This affects only the dry run.
 
+7. *A figure wider than the printed page (E7).* The first evaluation of the section of Part III placed the two panels
+   of its figure side by side, 880 points wide; the printed copy cut the right panel. The panels now stand one above
+   the other, each 460 points wide, and the notebook was built and evaluated again.
+
 # 10. What follows
 
-Parts II to IV of the notebook (the three methods, the effective Lagrangians, the masses of the gauge bosons, the
+The rest of Part III, and Parts II and IV of the notebook (the three methods, the effective Lagrangians, the masses of the gauge bosons, the
 surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the videos) are added in the same way: the
 checks of the Python programs `sf_part2.py`, `sf_part3.py` and `sf_part4.py`, each with its counterparts, and this
 document is extended with each part.

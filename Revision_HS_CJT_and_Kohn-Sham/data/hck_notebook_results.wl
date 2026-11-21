@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 07:10:51", "kernel" -> {0, 11887}, 
+<|"finished" -> "Sat 21 Nov 2026 07:56:46", "kernel" -> {0, 12306}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -120,5 +120,54 @@ below the continuum for each spacing [counts {3, 3, 3}]", "rust" -> "AS4-5a",
      Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], 
     "text" -> "symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 \
 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0]", "rust" -> "AS4-3", 
-    "python" -> "AS4-3"|>}, "line" -> 184, 
- "seconds" -> 27.624698`7.892842532400889|>
+    "python" -> "AS4-3"|>, <|"id" -> "WP3-11 HS_1_1", "pass" -> True, 
+    "deviation" -> 2.492097276316496*^-11, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (1, 1): the accuracy of the Landau form recomputed by \
+LeastSquares (the coefficients, the minimum, depth and curvature of the \
+polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the \
+fits on three intervals, the sign changes) = Rust (largest relative \
+difference)", "rust" -> "P3-11 HS_1_1", "python" -> "YP3-11 HS_1_1"|>, 
+   <|"id" -> "WP3-11 HS_0_1", "pass" -> True, 
+    "deviation" -> 4.408719629389778*^-11, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 1): the accuracy of the Landau form recomputed by \
+LeastSquares (the coefficients, the minimum, depth and curvature of the \
+polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the \
+fits on three intervals, the sign changes) = Rust (largest relative \
+difference)", "rust" -> "P3-11 HS_0_1", "python" -> "YP3-11 HS_0_1"|>, 
+   <|"id" -> "WP3-11 HS_0_0", "pass" -> True, 
+    "deviation" -> 4.0512580084894096*^-11, "tolerance" -> 1.*^-7, 
+    "text" -> "HS (0, 0): the accuracy of the Landau form recomputed by \
+LeastSquares (the coefficients, the minimum, depth and curvature of the \
+polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the \
+fits on three intervals, the sign changes) = Rust (largest relative \
+difference)", "rust" -> "P3-11 HS_0_0", "python" -> "YP3-11 HS_0_0"|>, 
+   <|"id" -> "WP3-11 KS", "pass" -> True, "deviation" -> 
+     3.4817732076617623*^-9, "tolerance" -> 1.*^-7, 
+    "text" -> "KS: the accuracy of the Landau form recomputed by LeastSquares \
+(the coefficients, the minimum, depth and curvature of the polynomial, the \
+residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three \
+intervals, the sign changes) = Rust (largest relative difference)", 
+    "rust" -> "P3-11 KS", "python" -> "YP3-11 KS"|>, 
+   <|"id" -> "WP3-11 CJT", "pass" -> True, "deviation" -> 
+     6.816432670177407*^-9, "tolerance" -> 1.*^-7, 
+    "text" -> "CJT: the accuracy of the Landau form recomputed by \
+LeastSquares (the coefficients, the minimum, depth and curvature of the \
+polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the \
+fits on three intervals, the sign changes) = Rust (largest relative \
+difference)", "rust" -> "P3-11 CJT", "python" -> "YP3-11 CJT"|>, 
+   <|"id" -> "WP3-8", "pass" -> True, "deviation" -> 1.5543122344752192*^-15, 
+    "tolerance" -> 1.*^-13, "text" -> "the pair field enters the \
+quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) \
+1_2 and P = Phi_a (K^3)^dag has the eigenvalues -+(q^2 + M^2 + \
+Phi_a^2)^(1/2), eight times each (20 random q, M, Phi_a)", "rust" -> "P3-8", 
+    "python" -> "YP3-8"|>, <|"id" -> "WP3-10 HS_1_1", "pass" -> True, 
+    "deviation" -> 2.645548995744994*^-7, "tolerance" -> 1.*^-6, 
+    "text" -> "HS (1, 1): the coefficient of Phi^2 of the Taylor series at \
+the origin from the first six points of the curve = the Rust value a^Tay = \
+-0.00616243 (relative)", "rust" -> "P3-10 HS_1_1", 
+    "python" -> "YP3-10 HS_1_1"|>, <|"id" -> "WP3-10 CJT", "pass" -> True, 
+    "deviation" -> 2.3768641768367542*^-8, "tolerance" -> 1.*^-6, 
+    "text" -> "CJT: the coefficient of Phi^2 of the Taylor series at the \
+origin from the first six points of the curve = the Rust value a^Tay = \
+-0.00429666 (relative)", "rust" -> "P3-10 CJT", "python" -> "YP3-10 CJT"|>}, 
+ "line" -> 228, "seconds" -> 119.578397`8.529197720714237|>

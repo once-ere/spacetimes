@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 sf_part3_figures.py -- the figures of part III of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PROJECT spacetimes),
-drawn from the data files written by the Rust program sf_part3 (folder data/).
+drawn from the data files written by the Rust program sf_part3 (folder data/): Figure 8 (fig_part3_q1_potential), Figure 9
+(fig_part3_q3_landau, the accuracy of the Landau form) and Figure 10 (fig_part3_q2_masses); and Figure R1 of the
+document provenance/P4_remarks.md (fig_p4_r1_landau, the same as Figure 9 with the equation number of that document).
 
 Run (from the folder Revision_HS_CJT_and_Kohn-Sham, after rust/target/release/sf_part3):
     python3 python/sf_part3_figures.py
@@ -116,7 +118,48 @@ def fig_masses():
     save(fig, "fig_part3_q2_masses")
 
 
+def fig_landau(eq="(12.2)", name="fig_part3_q3_landau"):
+    """Figure 9: the accuracy of the Landau form (12.2).  Left: the residual of (12.2) along the fitted interval, relative
+    to the depth of the minimum, for the four distinct curves (KS = CJT along the polar fields).  Right: the largest
+    residual of the least-squares fits with the powers Phi^2 .. Phi^(2K) against the highest power 2K (log scale); 2K = 6
+    is (12.2), 2K = 4 the quartic form of the Standard Model.  Data: part3_landau_residuals.csv, part3_landau.csv."""
+    _, rows = read("part3_landau_residuals.csv")
+    _, lrows = read("part3_landau.csv")
+    head = read("part3_landau.csv")[0]
+    fig, (ax, bx) = plt.subplots(1, 2, figsize=(9.6, 3.5))
+    for k, tag in enumerate(("HS_1_1", "HS_0_1", "HS_0_0", "CJT")):
+        rr = np.array([[float(r[2]), float(r[4])] for r in rows if r[0] == tag])
+        ax.plot(rr[:, 0], 100 * rr[:, 1], color=PAL[k], lw=1.4, ls=["-", "--", "-.", ":"][k], marker="o", ms=2.2, label=LAB[tag])
+    ax.axhline(0, color=INK2, lw=0.8)
+    ax.axvline(1.0, color=INK2, lw=0.6, ls=":")
+    ax.text(1.01, ax.get_ylim()[0] * 0.92, r"$\Phi^X_{0,{\rm SF}}$", fontsize=7, color=INK2)
+    ax.set_xlabel(r"$\Phi/\Phi^X_{0,{\rm SF}}$ (polar fields)")
+    ax.set_ylabel("residual of %s / depth  (per cent)" % eq)
+    ax.legend(fontsize=7, loc="lower left")
+    ax.set_title("the fit %s oscillates about the computed curve" % eq, fontsize=9, color=INK)
+    ks = [2, 3, 4, 5, 6]
+    for k, tag in enumerate(("HS_1_1", "HS_0_1", "HS_0_0", "CJT")):
+        r = [x for x in lrows if x[0] == tag][0]
+        depth = abs(float(r[head.index("E0")]))
+        res = [float(r[head.index("res_K%d" % q)]) / depth * 100 for q in ks]
+        bx.semilogy([2 * q for q in ks], res, color=PAL[k], lw=1.2, ls=["-", "--", "-.", ":"][k], marker=["o", "s", "^", "D"][k], ms=4,
+                    label=LAB[tag])
+    bx.axvline(6, color=INK2, lw=0.6, ls=":")
+    bx.set_ylim(2e-5, 60)
+    bx.text(6.12, 14.0, eq, fontsize=7, color=INK2)
+    bx.text(3.95, 14.0, "quartic (SM)", fontsize=7, color=INK2)
+    bx.set_xticks([4, 6, 8, 10, 12])
+    bx.set_xlabel(r"highest power $2K$ of $\Phi$ in the fit $\sum_{k\leq K} c_k\Phi^{2k}$")
+    bx.set_ylabel("largest residual / depth (per cent)")
+    bx.legend(fontsize=7, loc="lower left")
+    bx.set_title("more terms: smaller residual (a truncation)", fontsize=9, color=INK)
+    save(fig, name)
+
+
 if __name__ == "__main__":
     fig_potential()
     fig_masses()
+    fig_landau()
+    # the same figure for the document of remarks provenance/P4_remarks.md, whose equation of the Landau form is (R1.3)
+    fig_landau("(R1.3)", "fig_p4_r1_landau")
     print("figures written to", FIG)

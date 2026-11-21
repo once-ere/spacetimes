@@ -6,9 +6,11 @@
 //! the masses):
 //!     cargo build --release
 //!     ./target/release/sf_part3
-//! Output in data/: hck_part3_checks.txt and the data files part3_*.csv.  Run time about two minutes.
+//! Output in data/: hck_part3_checks.txt and the data files part3_*.csv (among them part3_landau.csv and
+//! part3_landau_residuals.csv, the accuracy of the Landau form, module landau).  Run time about two minutes.
 mod effpot;
 mod kinetic;
+mod landau;
 
 use sfcore::cmat::CMat;
 use sfcore::dirac::k_scalar;
@@ -30,6 +32,9 @@ fn main() {
     let modes: Vec<(String, f64, i64)> = std::fs::read_to_string(data.join("part2_modes.csv")).expect("run sf_part2 first")
         .lines().skip(1).map(|l| { let v: Vec<&str> = l.split(',').collect(); (v[0].to_string(), v[4].parse().unwrap(), v[5].parse().unwrap()) }).collect();
     let mut sf_rows = vec![];
+    let mut landau_rows: Vec<Vec<String>> = vec![];
+    let mut resid_rows: Vec<Vec<String>> = vec![];
+    landau::check_qp_energies(&mut rep);
     let mut curves_out = vec![];
     for m in [Method::Hs { s_s: 1.0, s_v: 1.0 }, Method::Hs { s_s: 0.0, s_v: 1.0 }, Method::Hs { s_s: 0.0, s_v: 0.0 }, Method::Ks, Method::Cjt] {
         let tag = m.short();
@@ -39,6 +44,8 @@ fn main() {
         // the phase of the ground state is that of the start (real); the field is Phi0 e3
         let p0 = k_scalar(3).dagger().scale_r(phi0);
         let cv = effpot::curve(&mut rep, &tag, &model, &sol.n_self, phi0, sol.energy, 60);
+        // the accuracy of the Landau form (12.2) (Table 12.2, Figure 9)
+        let acc = landau::accuracy(&mut rep, &tag, &model, &cv, phi0);
         let st = kinetic::stiffness(&mut model, &sol.n_self, &p0, sol.energy);
         rep.add(&format!("P3-6 {}", tag), &format!("{}: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = {:.1e})", tag, st.chi33), st.chi33.abs(), 1e-10);
         // the coefficients of the kinetic part and the masses of SFBSv
@@ -56,10 +63,43 @@ fn main() {
                        ("MW", GV * st.chi11.sqrt()), ("MZ", GF * st.chiff.sqrt()), ("landau_a", a), ("landau_b", b), ("landau_c", c), ("landau_res", res), ("b2", -cv.v2_nu / (8.0 * phi0 * phi0)), ("slope", cv.slope_at_min)] {
             vals.push((format!("p3_{}_{}", k, tag), v));
         }
+        vals.push((format!("p3_landau_phifit_{}", tag), acc.phi_fit));
+        vals.push((format!("p3_landau_depthfit_{}", tag), acc.depth_fit));
+        vals.push((format!("p3_landau_curvfit_{}", tag), acc.curv_fit));
+        vals.push((format!("p3_landau_signs_{}", tag), acc.sign_changes as f64));
+        for &(k, r) in &acc.res_by_k {
+            vals.push((format!("p3_landau_resK{}_{}", k, tag), r));
+        }
+        vals.push((format!("p3_landau_cK4_{}", tag), acc.c_k4));
+        for (i, &(top, ra, rb, rc, rr)) in acc.by_range.iter().enumerate() {
+            for (k, v) in [("top", top), ("a", ra), ("b", rb), ("c", rc), ("res", rr)] {
+                vals.push((format!("p3_landau_rng{}_{}_{}", i + 1, k, tag), v));
+            }
+        }
+        vals.push((format!("p3_a_taylor_{}", tag), acc.a_taylor));
+        vals.push((format!("p3_a_taylor_chk_{}", tag), acc.a_taylor_check));
+        let mut lrow = vec![tag.clone(), f(phi0), f(sol.energy), f(cv.v2_amp), f(acc.phi_fit), f(acc.depth_fit), f(acc.curv_fit), f(a), f(acc.a_taylor)];
+        for &(_, r) in &acc.res_by_k {
+            lrow.push(f(r));
+        }
+        lrow.push(format!("{}", acc.sign_changes));
+        lrow.push(f(acc.c_k4));
+        for &(top, _, _, rc, rr) in &acc.by_range {
+            lrow.push(f(top));
+            lrow.push(f(rc));
+            lrow.push(f(rr));
+        }
+        landau_rows.push(lrow);
+        for &(x, r2, r3, r4) in &acc.residuals {
+            resid_rows.push(vec![tag.clone(), f(x), f(x / phi0), f(r2 / sol.energy.abs()), f(r3 / sol.energy.abs()), f(r4 / sol.energy.abs())]);
+        }
         sf_rows.push(vec![tag.clone(), f(phi0), f(sol.energy), f(z), f(y), f(cv.v2_amp), f(cv.v2_nu), f(mh), f(rpa_h), f(mnu), f(rpa_nu), f(st.ff_t), f(st.ff_s), f(st.fi_t), f(st.fi_s), f(st.f3_s)]);
         curves_out.push((tag.clone(), cv.rows.clone()));
     }
     write_csv(&data.join("part3_sfbsv.csv"), &["method", "Phi0", "E0", "Z", "Y", "V2_amplitude", "V2_nonunitary", "M_H", "M_H_RPA", "M_NU", "M_NU_RPA", "fF2_time", "fF2_space", "fI2_time", "fI2_space", "f3_2_space"], &sf_rows);
+    write_csv(&data.join("part3_landau.csv"), &["method", "Phi0", "E0", "V2_amplitude", "Phi_L", "V_L_at_Phi_L", "V_L2_at_Phi_L", "a", "a_Taylor",
+        "res_K2", "res_K3", "res_K4", "res_K5", "res_K6", "sign_changes_K3", "c_of_K4", "top1", "c_top1", "res_top1", "top2", "c_top2", "res_top2", "top3", "c_top3", "res_top3"], &landau_rows);
+    write_csv(&data.join("part3_landau_residuals.csv"), &["method", "Phi", "Phi_over_Phi0", "res_K2_over_depth", "res_K3_over_depth", "res_K4_over_depth"], &resid_rows);
     for (tag, rows) in &curves_out {
         let r: Vec<Vec<String>> = rows.iter().map(|x| vec![f(x.0), f(x.1), f(x.2), f(x.3)]).collect();
         write_csv(&data.join(format!("part3_effpot_{}.csv", tag)), &["applied_field", "Phi3", "V", "Dirac_mass"], &r);

@@ -44,7 +44,9 @@ complete, with the program `sf_part2` ({{GEN:p2_verdict_rust}}) and the Python p
 **Part III of the manuscript** (the effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their potential parts
 (the Mexican hat) and kinetic parts, the vacua and the breaking of the symmetry, and $\mathrm{SFBSv}^X$) is complete, with the
 program `sf_part3` ({{GEN:p3_verdict_rust}}) and the Python programs `python/sf_part3.py` ({{GEN:p3_verdict_python}}) and
-`python/sf_part3_figures.py`.
+`python/sf_part3_figures.py`. Section 12.1 now also defines the Landau form, with examples, and states its accuracy,
+the cause of its error and why the error matters (Table 12.2, Figure 9); the answer to the author's questions on this
+remark is kept in `provenance/P4_remarks.md`.
 
 **Part IV of the manuscript** (the mass matrix of the gauge bosons in every vacuum and its diagonalization, the
 theorem that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group
@@ -53,10 +55,11 @@ fields, integrated with CVODE and IDA; two videos) is complete, with the program
 the integrators `sfsundials` and their C interface `sfsundials_c`, and the Python programs `python/sf_part4.py`
 ({{GEN:p4_verdict_python}}) and `python/sf_part4_figures.py`.
 
-**The Mathematica notebook `superfluid.nb`** (object O8) is written part by part. Its first version contains the
-introduction, the register of the checks and Part I: {{GEN:nb_ntests}} checks, each repeated by the Rust and the Python
-program of Part I (verdict of the evaluation in the front end of Wolfram: {{GEN:nb_verdict}}). Its provenance is
-`provenance/P3_notebook.md`. Parts II to IV of the notebook follow.
+**The Mathematica notebook `superfluid.nb`** (object O8) is written part by part. This version contains the
+introduction, the register of the checks, Part I, and the first section of Part III (the Landau form: its definition,
+examples, accuracy, the cause of its error and why the error matters): {{GEN:nb_ntests}} checks, each repeated by the
+Rust and the Python programs (verdict of the evaluation in the front end of Wolfram: {{GEN:nb_verdict}}). Its
+provenance is `provenance/P3_notebook.md`. The rest of Part III, and Parts II and IV of the notebook follow.
 
 # 3. Contents
 
@@ -67,14 +70,15 @@ program of Part I (verdict of the evaluation in the front end of Wolfram: {{GEN:
 | `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
 | `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
 | `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to IV written |
-| `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction and Part I written; Parts II to IV planned |
+| `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction, Part I and the section of Part III on the Landau form written; the rest planned |
 | `provenance/P3_notebook.md`, `.tex`, `.pdf` | the provenance of the notebook: its task, files, build and evaluation, the checks with their counterparts in Rust and Python, the symbols of its code, the corrections | written for Part I; grows with the notebook |
+| `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples | written for R1; grows with every such remark |
 | `provenance/` (further documents) | the provenance of the code, the computed values and the checks | planned |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?); the registry of the symbols: `symbol_entries.py` (the entries), `write_symbol_registry.py` (reads the seven registries of the project, writes the registry of the solution and the tables of the MASTER provenance) and `check_symbols.py` (the checks of the symbols) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
 | `rust/` | the Rust workspace: the library `sfcore` (bi-quaternions and bi-octonions, Dirac matrices, automatic differentiation to second order, Fock-space operators, eigenvalues of block-tridiagonal matrices, quadrature, reports; for part II the uniform quasi-free states of the three methods, the linear response, the eigenvalues of general complex matrices and the exchange of gauge bosons; for part IV the response at complex frequencies), the program `sf_part1` (the checks and analytic solutions of part I), the program `sf_part2` (part II), the program `sf_part3` (part III), the program `sf_part4` (part IV), the integrators CVODE and IDA of the vendored pure-Rust SUNDIALS 7.8.0 with a plain interface (`sfsundials`), and their C interface for Python, the shared library `libsfsundials_c` (`sfsundials_c`) | parts I to IV written |
 | `python/` | `sfcommon.py` (common definitions), `sfsundials.py` (CVODE and IDA through the C interface), `sf_part1.py`, `sf_part2.py`, `sf_part3.py`, `sf_part4.py` (the second, independent computations of parts I to IV), `sf_part1_figures.py`, `sf_part2_figures.py`, `sf_part3_figures.py`, `sf_part4_figures.py` (the figures, and the videos of part IV) | parts I to IV written |
-| `wolfram/` | the Wolfram-language parts of the notebook: the sources `wolfram/source/superfluid.source.wl` and `part1.source.wl`; in `wolfram/tools/` the builder of the notebook from its source (`build_notebook.wls`), the reader of formulas that turns the TeX of the texts into two-dimensional formulas (`sf_formula.wl`), the evaluation of the notebook in the front end of Wolfram (`guirun.wl` and the three calls `gui_start.wl`, `gui_go.wl`, `gui_status.wl`), and the dry run (`make_dryrun.py`) | Part I written |
+| `wolfram/` | the Wolfram-language parts of the notebook: the sources `wolfram/source/superfluid.source.wl`, `part1.source.wl` and `part3_landau.source.wl`, and the data cell `data_part3.wl`; in `wolfram/tools/` the builder of the notebook from its source (`build_notebook.wls`), the reader of formulas that turns the TeX of the texts into two-dimensional formulas (`sf_formula.wl`), the evaluation of the notebook in the front end of Wolfram (`guirun.wl` and the three calls `gui_start.wl`, `gui_go.wl`, `gui_status.wl`), the dry run (`make_dryrun.py`), and the writer of the data cells (`make_data_cells.py`) | Part I and the section of Part III on the Landau form written |
 | `data/` | the reports of the checks (`hck_part1_checks.txt`, `hck_part1_checks_python.txt`, `hck_part2_checks.txt`, `hck_part2_checks_python.txt`, `hck_part3_checks.txt`, `hck_part3_checks_python.txt`, `hck_part4_checks.txt`, `hck_part4_checks_python.txt`, `hck_symbol_checks.txt`, `hck_self_contained_checks.txt`) and the data of parts I to IV (`part1_*.csv`, `part2_*.csv`, `part3_*.csv`, `part4_*.csv`) | parts I to IV written |
 | `figures/`, `videos/` | the figures (`fig_part1_*`, `fig_part2_*`, `fig_part3_*`, `fig_part4_*`, each `.pdf` and `.png`) and the videos (`video_part4_v1_condensate_growth.mp4`, `video_part4_v2_gauge_fields.mp4`) | written |
 | `code/scripts/write_part1_fragments.py`, `write_part2_fragments.py`, `write_part3_fragments.py`, `write_part4_fragments.py` | turn the reports and values of parts I to IV into the tables and numbers of the manuscript | written |

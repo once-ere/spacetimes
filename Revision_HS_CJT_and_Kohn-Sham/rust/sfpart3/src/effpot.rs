@@ -32,6 +32,8 @@ pub struct Curve {
     pub slope_at_min: f64,
     /// the Landau fit V = a Phi^2 + b Phi^4 + c Phi^6 on [0, 1.4 Phi0] and its largest residual
     pub landau: (f64, f64, f64, f64),
+    /// the largest deviation of the normal self-energies of the curve from a multiple of beta (x) 1_2 (a Dirac mass)
+    pub ndev: f64,
 }
 
 /// the least-squares fit of y = a x^2 + b x^4 + c x^6 (normal equations, 3x3)
@@ -73,9 +75,13 @@ pub fn curve(rep: &mut Report, tag: &str, model: &Model, n_gs: &CMat, phi0: f64,
     let k3d = k_scalar(3).dagger();
     let mut rows = vec![];
     let mut n0 = CMat::zeros(8);
+    let b8 = d8(&beta());
+    let mut ndev = 0.0f64;
     for i in 0..=npts {
         let fa = 2.0 * phi0 * i as f64 / npts as f64;
         let (ph, e, md, n) = point(model, &k3d.scale_r(fa), &n0);
+        // the normal self-energy minus its Dirac-mass part (tr((beta (x) 1_2) N)/8) beta (x) 1_2
+        ndev = ndev.max(n.sub(&b8.scale(b8.mul(&n).trace().scale(1.0 / 8.0))).max_abs());
         n0 = n;
         rows.push((fa, ph[2].re, e, md));
     }
@@ -123,5 +129,5 @@ pub fn curve(rep: &mut Report, tag: &str, model: &Model, n_gs: &CMat, phi0: f64,
     rep.add_bool(&format!("P3-5 {}", tag), &format!("{}: Mexican hat: V(0) = {:.1e} and V < 0 near the origin (V({:.4}) = {:.6e})", tag, rows[0].2, small.1, small.2), rows[0].2.abs() < 1e-14 && small.2 < 0.0, "");
     let pts: Vec<(f64, f64)> = rows.iter().filter(|r| r.1 <= 1.4 * phi0).map(|r| (r.1, r.2)).collect();
     let landau = landau_fit(&pts);
-    Curve { rows, v2_amp, v2_nu, slope_at_min: slope, landau }
+    Curve { rows, v2_amp, v2_nu, slope_at_min: slope, landau, ndev }
 }

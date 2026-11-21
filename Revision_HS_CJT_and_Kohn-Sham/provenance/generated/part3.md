@@ -2,57 +2,83 @@
 <!-- BEGIN p3_checks_rust -->
 | check | result | deviation | tolerance | statement |
 |:---|:---|:---|:---|:---|
+| P3-8 | PASS | 2.442e-15 | 1.0e-13 | the pair field enters the quasi-particle energies like a mass, (10.3): the BdG matrix with N = (M - m) beta (x) 1\_2 and P = Phi\_a (K\^3)\^dag has the eigenvalues -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (20 random q, M, Phi\_a) |
 | P3-1 HS_1_1 | PASS | 2.509e-14 | 1.0e-9 | HS\_1\_1: the applied field Phi0 = 0.4030641406 gives back Phi\^3 = Phi0 and the ground-state energy -5.1863442023e-4 of part II |
 | P3-2 HS_1_1 | PASS | 3.985e-8 | 1.0e-6 | HS\_1\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_1_1 | PASS | 3.010e-14 | 1.0e-10 | HS\_1\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the polar minimum is a minimum also in the non-unitary directions (curvature 2.759287e-2 > 0) |
 | P3-5 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0159) = -1.557047e-6) |
+| P3-9 HS_1_1 | PASS | 2.027e-17 | 1.0e-12 | HS\_1\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_1_1 | PASS | 1.103e-14 | 1.0e-9 | HS\_1\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_1_1 | PASS | 8.786e-9 | 1.0e-6 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -6.0408804409e-3) |
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_1 | PASS | 1.082e-14 | 1.0e-10 | HS\_0\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: the polar minimum is a minimum also in the non-unitary directions (curvature 2.372538e-2 > 0) |
 | P3-5 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0139) = -1.031488e-6) |
+| P3-9 HS_0_1 | PASS | 2.269e-17 | 1.0e-12 | HS\_0\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_0_1 | PASS | 5.616e-13 | 1.0e-9 | HS\_0\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_0_1 | PASS | 5.417e-9 | 1.0e-6 | HS\_0\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -5.2811441242e-3) |
 | P3-6 HS_0_1 | PASS | 1.170e-19 | 1.0e-10 | HS\_0\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.2e-19) |
 | P3-1 HS_0_0 | PASS | 7.716e-15 | 1.0e-9 | HS\_0\_0: the applied field Phi0 = 0.3069887935 gives back Phi\^3 = Phi0 and the ground-state energy -2.0616190807e-4 of part II |
 | P3-2 HS_0_0 | PASS | 2.628e-8 | 1.0e-6 | HS\_0\_0: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_0 | PASS | 6.311e-14 | 1.0e-10 | HS\_0\_0: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: the polar minimum is a minimum also in the non-unitary directions (curvature 1.837793e-2 > 0) |
 | P3-5 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0114) = -5.571838e-7) |
+| P3-9 HS_0_0 | PASS | 0.000e0 | 1.0e-12 | HS\_0\_0: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_0_0 | PASS | 8.612e-13 | 1.0e-9 | HS\_0\_0: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_0_0 | PASS | 7.213e-9 | 1.0e-6 | HS\_0\_0: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2619672631e-3) |
 | P3-6 HS_0_0 | PASS | 1.946e-16 | 1.0e-10 | HS\_0\_0: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -1.9e-16) |
 | P3-1 KS | PASS | 1.074e-14 | 1.0e-9 | KS: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 KS | PASS | 3.446e-8 | 1.0e-6 | KS: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 KS | PASS | 3.939e-14 | 1.0e-10 | KS: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 KS | PASS | 0.000e0 | 0.0e0 | KS: the polar minimum is a minimum also in the non-unitary directions (curvature 2.172785e-2 > 0) |
 | P3-5 KS | PASS | 0.000e0 | 0.0e0 | KS: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0122) = -6.380082e-7) |
+| P3-9 KS | PASS | 2.222e-16 | 1.0e-12 | KS: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 KS | PASS | 7.503e-13 | 1.0e-9 | KS: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 KS | PASS | 7.428e-8 | 1.0e-6 | KS: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
 | P3-6 KS | PASS | 6.046e-16 | 1.0e-10 | KS: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -6.0e-16) |
 | P3-1 CJT | PASS | 3.223e-14 | 1.0e-9 | CJT: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 CJT | PASS | 3.446e-8 | 1.0e-6 | CJT: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 CJT | PASS | 6.266e-14 | 1.0e-10 | CJT: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the polar minimum is a minimum also in the non-unitary directions (curvature 2.107798e-2 > 0) |
 | P3-5 CJT | PASS | 0.000e0 | 0.0e0 | CJT: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0122) = -6.380082e-7) |
+| P3-9 CJT | PASS | 3.315e-16 | 1.0e-12 | CJT: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 CJT | PASS | 2.943e-13 | 1.0e-9 | CJT: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 CJT | PASS | 7.425e-8 | 1.0e-6 | CJT: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
 | P3-6 CJT | PASS | 1.269e-15 | 1.0e-10 | CJT: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.3e-15) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 <!-- END p3_checks_rust -->
 <!-- BEGIN p3_verdict_rust -->
-VERDICT: ALL PASS (31 of 31)
+VERDICT: ALL PASS (47 of 47)
 <!-- END p3_verdict_rust -->
 <!-- BEGIN p3_checks_python -->
 | check | result | deviation | tolerance | statement |
 |:---|:---|:---|:---|:---|
+| YP3-8 | PASS | 1.332e-15 | 1.0e-13 | the quasi-particle energies (10.3) for an applied pair field and a Dirac mass: -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (LAPACK, 20 random q, M, Phi\_a) |
+| YP3-11 HS_1_1 | PASS | 9.618e-12 | 1.0e-07 | HS\_1\_1: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_1\_1.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 HS_0_1 | PASS | 1.478e-11 | 1.0e-07 | HS\_0\_1: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_1.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 HS_0_0 | PASS | 5.701e-11 | 1.0e-07 | HS\_0\_0: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_0.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 KS | PASS | 3.104e-09 | 1.0e-07 | KS: the accuracy of the Landau form recomputed from data/part3\_effpot\_KS.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 CJT | PASS | 1.216e-09 | 1.0e-07 | CJT: the accuracy of the Landau form recomputed from data/part3\_effpot\_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
 | YP3-6 HS_1_1 | PASS | 1.229e-14 | 1.0e-09 | HS\_1\_1: the susceptibilities chi\_11 = 0.0051186247, chi\_FF = 0.0201445392 = Rust (the coefficients Z and Y of the kinetic part) |
+| YP3-9 HS_1_1 | PASS | 8.923e-18 | 1.0e-12 | HS\_1\_1: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1\_2) |
+| YP3-10 HS_1_1 | PASS | 3.072e-11 | 1.0e-08 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -6.1624310943e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 8.8e-09) |
 | YP3-7 HS_1_1 | PASS | 1.239e-11 | 1.0e-07 | HS\_1\_1: the stiffness of the phase from the twisted states f\^2 = 6.8731729932e-03 = Rust (relative) |
 | YP3-1 CJT | PASS | 9.310e-14 | 1.0e-09 | CJT: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.3284861084) |
 | YP3-2 CJT | PASS | 4.557e-11 | 1.0e-06 | CJT: the curvature of the effective potential along the amplitude V'' = 1.9671873735e-02 = Rust (relative) |
 | YP3-4 CJT | PASS | 4.249e-10 | 1.0e-05 | CJT: the curvature along the non-unitary direction 2.1077976476e-02 = Rust (relative) |
 | YP3-6 CJT | PASS | 4.226e-15 | 1.0e-09 | CJT: the susceptibilities chi\_11 = 0.0045778739, chi\_FF = 0.0203622430 = Rust (the coefficients Z and Y of the kinetic part) |
+| YP3-9 CJT | PASS | 8.555e-17 | 1.0e-12 | CJT: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1\_2) |
+| YP3-10 CJT | PASS | 2.872e-12 | 1.0e-08 | CJT: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08) |
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 <!-- END p3_checks_python -->
 <!-- BEGIN p3_verdict_python -->
-VERDICT: ALL PASS (10 of 10)
+VERDICT: ALL PASS (20 of 20)
 <!-- END p3_verdict_python -->
 <!-- BEGIN p3_Phi0_HS_1_1 -->
 $0.4030641406$
@@ -129,6 +155,87 @@ $-0.02123041976$
 <!-- BEGIN p3_slope_HS_1_1 -->
 $-4.506609822\times10^{-10}$
 <!-- END p3_slope_HS_1_1 -->
+<!-- BEGIN p3_landau_phifit_HS_1_1 -->
+$0.4026382101$
+<!-- END p3_landau_phifit_HS_1_1 -->
+<!-- BEGIN p3_landau_depthfit_HS_1_1 -->
+$-0.0005202653719$
+<!-- END p3_landau_depthfit_HS_1_1 -->
+<!-- BEGIN p3_landau_curvfit_HS_1_1 -->
+$0.02869343083$
+<!-- END p3_landau_curvfit_HS_1_1 -->
+<!-- BEGIN p3_landau_signs_HS_1_1 -->
+$3$
+<!-- END p3_landau_signs_HS_1_1 -->
+<!-- BEGIN p3_landau_resK2_HS_1_1 -->
+$3.04736646\times10^{-5}$
+<!-- END p3_landau_resK2_HS_1_1 -->
+<!-- BEGIN p3_landau_resK3_HS_1_1 -->
+$3.648849811\times10^{-6}$
+<!-- END p3_landau_resK3_HS_1_1 -->
+<!-- BEGIN p3_landau_resK4_HS_1_1 -->
+$1.955551687\times10^{-7}$
+<!-- END p3_landau_resK4_HS_1_1 -->
+<!-- BEGIN p3_landau_resK5_HS_1_1 -->
+$5.119132025\times10^{-8}$
+<!-- END p3_landau_resK5_HS_1_1 -->
+<!-- BEGIN p3_landau_resK6_HS_1_1 -->
+$3.497936516\times10^{-9}$
+<!-- END p3_landau_resK6_HS_1_1 -->
+<!-- BEGIN p3_landau_cK4_HS_1_1 -->
+$0.0006156890894$
+<!-- END p3_landau_cK4_HS_1_1 -->
+<!-- BEGIN p3_landau_rng1_top_HS_1_1 -->
+$1$
+<!-- END p3_landau_rng1_top_HS_1_1 -->
+<!-- BEGIN p3_landau_rng1_a_HS_1_1 -->
+$-0.006144692908$
+<!-- END p3_landau_rng1_a_HS_1_1 -->
+<!-- BEGIN p3_landau_rng1_b_HS_1_1 -->
+$0.01685693292$
+<!-- END p3_landau_rng1_b_HS_1_1 -->
+<!-- BEGIN p3_landau_rng1_c_HS_1_1 -->
+$0.008048055232$
+<!-- END p3_landau_rng1_c_HS_1_1 -->
+<!-- BEGIN p3_landau_rng1_res_HS_1_1 -->
+$2.143043076\times10^{-7}$
+<!-- END p3_landau_rng1_res_HS_1_1 -->
+<!-- BEGIN p3_landau_rng2_top_HS_1_1 -->
+$1.4$
+<!-- END p3_landau_rng2_top_HS_1_1 -->
+<!-- BEGIN p3_landau_rng2_a_HS_1_1 -->
+$-0.006040880441$
+<!-- END p3_landau_rng2_a_HS_1_1 -->
+<!-- BEGIN p3_landau_rng2_b_HS_1_1 -->
+$0.01513840986$
+<!-- END p3_landau_rng2_b_HS_1_1 -->
+<!-- BEGIN p3_landau_rng2_c_HS_1_1 -->
+$0.01436310352$
+<!-- END p3_landau_rng2_c_HS_1_1 -->
+<!-- BEGIN p3_landau_rng2_res_HS_1_1 -->
+$3.648849811\times10^{-6}$
+<!-- END p3_landau_rng2_res_HS_1_1 -->
+<!-- BEGIN p3_landau_rng3_top_HS_1_1 -->
+$1.520876277$
+<!-- END p3_landau_rng3_top_HS_1_1 -->
+<!-- BEGIN p3_landau_rng3_a_HS_1_1 -->
+$-0.005928666817$
+<!-- END p3_landau_rng3_a_HS_1_1 -->
+<!-- BEGIN p3_landau_rng3_b_HS_1_1 -->
+$0.01382944137$
+<!-- END p3_landau_rng3_b_HS_1_1 -->
+<!-- BEGIN p3_landau_rng3_c_HS_1_1 -->
+$0.01766785954$
+<!-- END p3_landau_rng3_c_HS_1_1 -->
+<!-- BEGIN p3_landau_rng3_res_HS_1_1 -->
+$9.030771224\times10^{-6}$
+<!-- END p3_landau_rng3_res_HS_1_1 -->
+<!-- BEGIN p3_a_taylor_HS_1_1 -->
+$-0.006162431094$
+<!-- END p3_a_taylor_HS_1_1 -->
+<!-- BEGIN p3_a_taylor_chk_HS_1_1 -->
+$-0.00616243104$
+<!-- END p3_a_taylor_chk_HS_1_1 -->
 <!-- BEGIN p3_Phi0_HS_0_1 -->
 $0.3620090014$
 <!-- END p3_Phi0_HS_0_1 -->
@@ -204,6 +311,87 @@ $-0.02262999194$
 <!-- BEGIN p3_slope_HS_0_1 -->
 $-2.96438851\times10^{-10}$
 <!-- END p3_slope_HS_0_1 -->
+<!-- BEGIN p3_landau_phifit_HS_0_1 -->
+$0.3616824697$
+<!-- END p3_landau_phifit_HS_0_1 -->
+<!-- BEGIN p3_landau_depthfit_HS_0_1 -->
+$-0.0003615442063$
+<!-- END p3_landau_depthfit_HS_0_1 -->
+<!-- BEGIN p3_landau_curvfit_HS_0_1 -->
+$0.02408202791$
+<!-- END p3_landau_curvfit_HS_0_1 -->
+<!-- BEGIN p3_landau_signs_HS_0_1 -->
+$3$
+<!-- END p3_landau_signs_HS_0_1 -->
+<!-- BEGIN p3_landau_resK2_HS_0_1 -->
+$1.596050643\times10^{-5}$
+<!-- END p3_landau_resK2_HS_0_1 -->
+<!-- BEGIN p3_landau_resK3_HS_0_1 -->
+$1.693333392\times10^{-6}$
+<!-- END p3_landau_resK3_HS_0_1 -->
+<!-- BEGIN p3_landau_resK4_HS_0_1 -->
+$4.506727046\times10^{-8}$
+<!-- END p3_landau_resK4_HS_0_1 -->
+<!-- BEGIN p3_landau_resK5_HS_0_1 -->
+$1.907976171\times10^{-8}$
+<!-- END p3_landau_resK5_HS_0_1 -->
+<!-- BEGIN p3_landau_resK6_HS_0_1 -->
+$1.860456725\times10^{-9}$
+<!-- END p3_landau_resK6_HS_0_1 -->
+<!-- BEGIN p3_landau_cK4_HS_0_1 -->
+$0.001974633532$
+<!-- END p3_landau_cK4_HS_0_1 -->
+<!-- BEGIN p3_landau_rng1_top_HS_0_1 -->
+$1$
+<!-- END p3_landau_rng1_top_HS_0_1 -->
+<!-- BEGIN p3_landau_rng1_a_HS_0_1 -->
+$-0.005341902061$
+<!-- END p3_landau_rng1_a_HS_0_1 -->
+<!-- BEGIN p3_landau_rng1_b_HS_0_1 -->
+$0.01863008765$
+<!-- END p3_landau_rng1_b_HS_0_1 -->
+<!-- BEGIN p3_landau_rng1_c_HS_0_1 -->
+$0.008524317598$
+<!-- END p3_landau_rng1_c_HS_0_1 -->
+<!-- BEGIN p3_landau_rng1_res_HS_0_1 -->
+$1.129214882\times10^{-7}$
+<!-- END p3_landau_rng1_res_HS_0_1 -->
+<!-- BEGIN p3_landau_rng2_top_HS_0_1 -->
+$1.4$
+<!-- END p3_landau_rng2_top_HS_0_1 -->
+<!-- BEGIN p3_landau_rng2_a_HS_0_1 -->
+$-0.005281144124$
+<!-- END p3_landau_rng2_a_HS_0_1 -->
+<!-- BEGIN p3_landau_rng2_b_HS_0_1 -->
+$0.01735966341$
+<!-- END p3_landau_rng2_b_HS_0_1 -->
+<!-- BEGIN p3_landau_rng2_c_HS_0_1 -->
+$0.01440212362$
+<!-- END p3_landau_rng2_c_HS_0_1 -->
+<!-- BEGIN p3_landau_rng2_res_HS_0_1 -->
+$1.693333392\times10^{-6}$
+<!-- END p3_landau_rng2_res_HS_0_1 -->
+<!-- BEGIN p3_landau_rng3_top_HS_0_1 -->
+$1.567673086$
+<!-- END p3_landau_rng3_top_HS_0_1 -->
+<!-- BEGIN p3_landau_rng3_a_HS_0_1 -->
+$-0.005187749667$
+<!-- END p3_landau_rng3_a_HS_0_1 -->
+<!-- BEGIN p3_landau_rng3_b_HS_0_1 -->
+$0.01604251228$
+<!-- END p3_landau_rng3_b_HS_0_1 -->
+<!-- BEGIN p3_landau_rng3_c_HS_0_1 -->
+$0.01842072123$
+<!-- END p3_landau_rng3_c_HS_0_1 -->
+<!-- BEGIN p3_landau_rng3_res_HS_0_1 -->
+$5.441757753\times10^{-6}$
+<!-- END p3_landau_rng3_res_HS_0_1 -->
+<!-- BEGIN p3_a_taylor_HS_0_1 -->
+$-0.005353419813$
+<!-- END p3_a_taylor_HS_0_1 -->
+<!-- BEGIN p3_a_taylor_chk_HS_0_1 -->
+$-0.005353419784$
+<!-- END p3_a_taylor_chk_HS_0_1 -->
 <!-- BEGIN p3_Phi0_HS_0_0 -->
 $0.3069887935$
 <!-- END p3_Phi0_HS_0_0 -->
@@ -279,6 +467,87 @@ $-0.02437595485$
 <!-- BEGIN p3_slope_HS_0_0 -->
 $-1.482779573\times10^{-10}$
 <!-- END p3_slope_HS_0_0 -->
+<!-- BEGIN p3_landau_phifit_HS_0_0 -->
+$0.3067869357$
+<!-- END p3_landau_phifit_HS_0_0 -->
+<!-- BEGIN p3_landau_depthfit_HS_0_0 -->
+$-0.0002063991979$
+<!-- END p3_landau_depthfit_HS_0_0 -->
+<!-- BEGIN p3_landau_curvfit_HS_0_0 -->
+$0.01853573477$
+<!-- END p3_landau_curvfit_HS_0_0 -->
+<!-- BEGIN p3_landau_signs_HS_0_0 -->
+$3$
+<!-- END p3_landau_signs_HS_0_0 -->
+<!-- BEGIN p3_landau_resK2_HS_0_0 -->
+$5.787548069\times10^{-6}$
+<!-- END p3_landau_resK2_HS_0_0 -->
+<!-- BEGIN p3_landau_resK3_HS_0_0 -->
+$5.546690007\times10^{-7}$
+<!-- END p3_landau_resK3_HS_0_0 -->
+<!-- BEGIN p3_landau_resK4_HS_0_0 -->
+$8.994954828\times10^{-9}$
+<!-- END p3_landau_resK4_HS_0_0 -->
+<!-- BEGIN p3_landau_resK5_HS_0_0 -->
+$5.236775418\times10^{-9}$
+<!-- END p3_landau_resK5_HS_0_0 -->
+<!-- BEGIN p3_landau_resK6_HS_0_0 -->
+$6.556850869\times10^{-10}$
+<!-- END p3_landau_resK6_HS_0_0 -->
+<!-- BEGIN p3_landau_cK4_HS_0_0 -->
+$0.002736221021$
+<!-- END p3_landau_cK4_HS_0_0 -->
+<!-- BEGIN p3_landau_rng1_top_HS_0_0 -->
+$1$
+<!-- END p3_landau_rng1_top_HS_0_0 -->
+<!-- BEGIN p3_landau_rng1_a_HS_0_0 -->
+$-0.004290508423$
+<!-- END p3_landau_rng1_a_HS_0_0 -->
+<!-- BEGIN p3_landau_rng1_b_HS_0_0 -->
+$0.02151290327$
+<!-- END p3_landau_rng1_b_HS_0_0 -->
+<!-- BEGIN p3_landau_rng1_c_HS_0_0 -->
+$0.008450016758$
+<!-- END p3_landau_rng1_c_HS_0_0 -->
+<!-- BEGIN p3_landau_rng1_res_HS_0_0 -->
+$4.33691115\times10^{-8}$
+<!-- END p3_landau_rng1_res_HS_0_0 -->
+<!-- BEGIN p3_landau_rng2_top_HS_0_0 -->
+$1.4$
+<!-- END p3_landau_rng2_top_HS_0_0 -->
+<!-- BEGIN p3_landau_rng2_a_HS_0_0 -->
+$-0.004261967263$
+<!-- END p3_landau_rng2_a_HS_0_0 -->
+<!-- BEGIN p3_landau_rng2_b_HS_0_0 -->
+$0.02066550277$
+<!-- END p3_landau_rng2_b_HS_0_0 -->
+<!-- BEGIN p3_landau_rng2_c_HS_0_0 -->
+$0.01399700267$
+<!-- END p3_landau_rng2_c_HS_0_0 -->
+<!-- BEGIN p3_landau_rng2_res_HS_0_0 -->
+$5.546690007\times10^{-7}$
+<!-- END p3_landau_rng2_res_HS_0_0 -->
+<!-- BEGIN p3_landau_rng3_top_HS_0_0 -->
+$1.635444031$
+<!-- END p3_landau_rng3_top_HS_0_0 -->
+<!-- BEGIN p3_landau_rng3_a_HS_0_0 -->
+$-0.004200959412$
+<!-- END p3_landau_rng3_a_HS_0_0 -->
+<!-- BEGIN p3_landau_rng3_b_HS_0_0 -->
+$0.01951379815$
+<!-- END p3_landau_rng3_b_HS_0_0 -->
+<!-- BEGIN p3_landau_rng3_c_HS_0_0 -->
+$0.0187030776$
+<!-- END p3_landau_rng3_c_HS_0_0 -->
+<!-- BEGIN p3_landau_rng3_res_HS_0_0 -->
+$2.38000533\times10^{-6}$
+<!-- END p3_landau_rng3_res_HS_0_0 -->
+<!-- BEGIN p3_a_taylor_HS_0_0 -->
+$-0.004296658732$
+<!-- END p3_a_taylor_HS_0_0 -->
+<!-- BEGIN p3_a_taylor_chk_HS_0_0 -->
+$-0.004296658701$
+<!-- END p3_a_taylor_chk_HS_0_0 -->
 <!-- BEGIN p3_Phi0_KS -->
 $0.3284861084$
 <!-- END p3_Phi0_KS -->
@@ -354,6 +623,87 @@ $-0.02517054883$
 <!-- BEGIN p3_slope_KS -->
 $-2.226742202\times10^{-10}$
 <!-- END p3_slope_KS -->
+<!-- BEGIN p3_landau_phifit_KS -->
+$0.3283498971$
+<!-- END p3_landau_phifit_KS -->
+<!-- BEGIN p3_landau_depthfit_KS -->
+$-0.0002425354878$
+<!-- END p3_landau_depthfit_KS -->
+<!-- BEGIN p3_landau_curvfit_KS -->
+$0.01985070351$
+<!-- END p3_landau_curvfit_KS -->
+<!-- BEGIN p3_landau_signs_KS -->
+$3$
+<!-- END p3_landau_signs_KS -->
+<!-- BEGIN p3_landau_resK2_KS -->
+$1.21710626\times10^{-5}$
+<!-- END p3_landau_resK2_KS -->
+<!-- BEGIN p3_landau_resK3_KS -->
+$6.896068501\times10^{-7}$
+<!-- END p3_landau_resK3_KS -->
+<!-- BEGIN p3_landau_resK4_KS -->
+$4.978885185\times10^{-8}$
+<!-- END p3_landau_resK4_KS -->
+<!-- BEGIN p3_landau_resK5_KS -->
+$3.651054623\times10^{-9}$
+<!-- END p3_landau_resK5_KS -->
+<!-- BEGIN p3_landau_resK6_KS -->
+$1.031432988\times10^{-10}$
+<!-- END p3_landau_resK6_KS -->
+<!-- BEGIN p3_landau_cK4_KS -->
+$0.01161352935$
+<!-- END p3_landau_cK4_KS -->
+<!-- BEGIN p3_landau_rng1_top_KS -->
+$1$
+<!-- END p3_landau_rng1_top_KS -->
+<!-- BEGIN p3_landau_rng1_a_KS -->
+$-0.004293640058$
+<!-- END p3_landau_rng1_a_KS -->
+<!-- BEGIN p3_landau_rng1_b_KS -->
+$0.01722085954$
+<!-- END p3_landau_rng1_b_KS -->
+<!-- BEGIN p3_landau_rng1_c_KS -->
+$0.01633735504$
+<!-- END p3_landau_rng1_c_KS -->
+<!-- BEGIN p3_landau_rng1_res_KS -->
+$2.97317613\times10^{-8}$
+<!-- END p3_landau_rng1_res_KS -->
+<!-- BEGIN p3_landau_rng2_top_KS -->
+$1.4$
+<!-- END p3_landau_rng2_top_KS -->
+<!-- BEGIN p3_landau_rng2_a_KS -->
+$-0.00426740334$
+<!-- END p3_landau_rng2_a_KS -->
+<!-- BEGIN p3_landau_rng2_b_KS -->
+$0.01656622625$
+<!-- END p3_landau_rng2_b_KS -->
+<!-- BEGIN p3_landau_rng2_c_KS -->
+$0.01993821538$
+<!-- END p3_landau_rng2_c_KS -->
+<!-- BEGIN p3_landau_rng2_res_KS -->
+$6.896068501\times10^{-7}$
+<!-- END p3_landau_rng2_res_KS -->
+<!-- BEGIN p3_landau_rng3_top_KS -->
+$1.609021759$
+<!-- END p3_landau_rng3_top_KS -->
+<!-- BEGIN p3_landau_rng3_a_KS -->
+$-0.004205650857$
+<!-- END p3_landau_rng3_a_KS -->
+<!-- BEGIN p3_landau_rng3_b_KS -->
+$0.01554142081$
+<!-- END p3_landau_rng3_b_KS -->
+<!-- BEGIN p3_landau_rng3_c_KS -->
+$0.02361508794$
+<!-- END p3_landau_rng3_c_KS -->
+<!-- BEGIN p3_landau_rng3_res_KS -->
+$3.051446036\times10^{-6}$
+<!-- END p3_landau_rng3_res_KS -->
+<!-- BEGIN p3_a_taylor_KS -->
+$-0.004296658755$
+<!-- END p3_a_taylor_KS -->
+<!-- BEGIN p3_a_taylor_chk_KS -->
+$-0.004296659074$
+<!-- END p3_a_taylor_chk_KS -->
 <!-- BEGIN p3_Phi0_CJT -->
 $0.3284861084$
 <!-- END p3_Phi0_CJT -->
@@ -429,6 +779,87 @@ $-0.02441770892$
 <!-- BEGIN p3_slope_CJT -->
 $-2.226741604\times10^{-10}$
 <!-- END p3_slope_CJT -->
+<!-- BEGIN p3_landau_phifit_CJT -->
+$0.3283498971$
+<!-- END p3_landau_phifit_CJT -->
+<!-- BEGIN p3_landau_depthfit_CJT -->
+$-0.0002425354878$
+<!-- END p3_landau_depthfit_CJT -->
+<!-- BEGIN p3_landau_curvfit_CJT -->
+$0.01985070351$
+<!-- END p3_landau_curvfit_CJT -->
+<!-- BEGIN p3_landau_signs_CJT -->
+$3$
+<!-- END p3_landau_signs_CJT -->
+<!-- BEGIN p3_landau_resK2_CJT -->
+$1.21710626\times10^{-5}$
+<!-- END p3_landau_resK2_CJT -->
+<!-- BEGIN p3_landau_resK3_CJT -->
+$6.896068501\times10^{-7}$
+<!-- END p3_landau_resK3_CJT -->
+<!-- BEGIN p3_landau_resK4_CJT -->
+$4.978885185\times10^{-8}$
+<!-- END p3_landau_resK4_CJT -->
+<!-- BEGIN p3_landau_resK5_CJT -->
+$3.651054619\times10^{-9}$
+<!-- END p3_landau_resK5_CJT -->
+<!-- BEGIN p3_landau_resK6_CJT -->
+$1.031432963\times10^{-10}$
+<!-- END p3_landau_resK6_CJT -->
+<!-- BEGIN p3_landau_cK4_CJT -->
+$0.01161352935$
+<!-- END p3_landau_cK4_CJT -->
+<!-- BEGIN p3_landau_rng1_top_CJT -->
+$1$
+<!-- END p3_landau_rng1_top_CJT -->
+<!-- BEGIN p3_landau_rng1_a_CJT -->
+$-0.004293640058$
+<!-- END p3_landau_rng1_a_CJT -->
+<!-- BEGIN p3_landau_rng1_b_CJT -->
+$0.01722085954$
+<!-- END p3_landau_rng1_b_CJT -->
+<!-- BEGIN p3_landau_rng1_c_CJT -->
+$0.01633735504$
+<!-- END p3_landau_rng1_c_CJT -->
+<!-- BEGIN p3_landau_rng1_res_CJT -->
+$2.97317613\times10^{-8}$
+<!-- END p3_landau_rng1_res_CJT -->
+<!-- BEGIN p3_landau_rng2_top_CJT -->
+$1.4$
+<!-- END p3_landau_rng2_top_CJT -->
+<!-- BEGIN p3_landau_rng2_a_CJT -->
+$-0.00426740334$
+<!-- END p3_landau_rng2_a_CJT -->
+<!-- BEGIN p3_landau_rng2_b_CJT -->
+$0.01656622625$
+<!-- END p3_landau_rng2_b_CJT -->
+<!-- BEGIN p3_landau_rng2_c_CJT -->
+$0.01993821538$
+<!-- END p3_landau_rng2_c_CJT -->
+<!-- BEGIN p3_landau_rng2_res_CJT -->
+$6.896068501\times10^{-7}$
+<!-- END p3_landau_rng2_res_CJT -->
+<!-- BEGIN p3_landau_rng3_top_CJT -->
+$1.609021759$
+<!-- END p3_landau_rng3_top_CJT -->
+<!-- BEGIN p3_landau_rng3_a_CJT -->
+$-0.004205650857$
+<!-- END p3_landau_rng3_a_CJT -->
+<!-- BEGIN p3_landau_rng3_b_CJT -->
+$0.01554142081$
+<!-- END p3_landau_rng3_b_CJT -->
+<!-- BEGIN p3_landau_rng3_c_CJT -->
+$0.02361508794$
+<!-- END p3_landau_rng3_c_CJT -->
+<!-- BEGIN p3_landau_rng3_res_CJT -->
+$3.051446036\times10^{-6}$
+<!-- END p3_landau_rng3_res_CJT -->
+<!-- BEGIN p3_a_taylor_CJT -->
+$-0.004296658755$
+<!-- END p3_a_taylor_CJT -->
+<!-- BEGIN p3_a_taylor_chk_CJT -->
+$-0.004296659074$
+<!-- END p3_a_taylor_chk_CJT -->
 <!-- BEGIN p3_table_potential -->
 | method | $\Phi^X_{0,{\rm SF}}$ | $10^4\,\mathcal V^X_{\rm SF}$ at the minimum | $10^3a^X_{\rm SF}$ | $10^3b^X_{\rm SF}$ | $10^3c^X_{\rm SF}$ | $10^3u^X_{\rm SF}$ | largest fit residual / depth |
 |:---|---:|---:|---:|---:|---:|---:|---:|
@@ -456,3 +887,125 @@ $-2.226741604\times10^{-10}$
 | KS | $0.645739$ | $0.603476$ | $1.07$ | $0.736943$ | $0.657285$ | $1.121$ | $0.045993$ | $0.064213$ |
 | CJT | $0.645739$ | $0.603476$ | $1.07$ | $0.704855$ | $0.644007$ | $1.094$ | $0.047362$ | $0.064213$ |
 <!-- END p3_table_sfbsv -->
+<!-- BEGIN p3_table_landau -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| minimum of (12.2): $\Phi_{\rm L}/\Phi^X_{0,{\rm SF}}-1$ | $-0.11$ | $-0.090$ | $-0.066$ | $-0.041$ | $-0.041$ |
+| depth of (12.2): $\mathcal V_{\rm L}(\Phi_{\rm L})/\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})-1$ | $0.31$ | $0.21$ | $0.12$ | $0.12$ | $0.12$ |
+| curvature of (12.2) at its minimum: $\mathcal V_{\rm L}''(\Phi_{\rm L})/\mathcal V''_{\rm amp}-1$ | $2.3$ | $1.5$ | $0.86$ | $0.91$ | $0.91$ |
+| $M^{X,{\rm H}}_{\rm SF}$ from (12.2), relative error | $1.1$ | $0.75$ | $0.43$ | $0.45$ | $0.45$ |
+| $10^3a^{X,{\rm Tay}}_{\rm SF}$ (Taylor coefficient at the origin) | $-6.16243$ | $-5.35342$ | $-4.29666$ | $-4.29666$ | $-4.29666$ |
+| $a^X_{\rm SF}/a^{X,{\rm Tay}}_{\rm SF}-1$ | $-2.0$ | $-1.4$ | $-0.81$ | $-0.68$ | $-0.68$ |
+| largest residual / depth, powers to $\Phi^4$ (quartic) | $5.9$ | $4.4$ | $2.8$ | $5.0$ | $5.0$ |
+| the same, powers to $\Phi^6$: (12.2) | $0.70$ | $0.47$ | $0.27$ | $0.28$ | $0.28$ |
+| the same, powers to $\Phi^8$ | $0.038$ | $0.012$ | $0.0044$ | $0.021$ | $0.021$ |
+| the same, powers to $\Phi^{10}$ | $0.0099$ | $0.0053$ | $0.0025$ | $0.0015$ | $0.0015$ |
+| the same, powers to $\Phi^{12}$ | $0.00067$ | $0.00052$ | $0.00032$ | $4.3\times10^{-5}$ | $4.3\times10^{-5}$ |
+| sign changes of the residual of (12.2) | $3$ | $3$ | $3$ | $3$ | $3$ |
+| $10^3c^X_{\rm SF}$, (12.2) fitted on $[0,\Phi^X_{0,{\rm SF}}]$ | $8.048$ | $8.524$ | $8.450$ | $16.34$ | $16.34$ |
+| $10^3c^X_{\rm SF}$, fitted on $[0,1.4\Phi^X_{0,{\rm SF}}]$ (Table 12.1) | $14.36$ | $14.40$ | $14.00$ | $19.94$ | $19.94$ |
+| $10^3c^X_{\rm SF}$, fitted on the whole curve | $17.67$ | $18.42$ | $18.70$ | $23.62$ | $23.62$ |
+| end of the whole curve: $\Phi_{\max}/\Phi^X_{0,{\rm SF}}$ | $1.52$ | $1.57$ | $1.64$ | $1.61$ | $1.61$ |
+| largest residual / depth on the whole curve | $1.7$ | $1.5$ | $1.2$ | $1.3$ | $1.3$ |
+| $10^3c$ of the fit with powers to $\Phi^8$ | $0.6157$ | $1.975$ | $2.736$ | $11.61$ | $11.61$ |
+<!-- END p3_table_landau -->
+<!-- BEGIN p4_table_landau -->
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| minimum of (R1.3): $\Phi_{\rm L}/\Phi^X_{0,{\rm SF}}-1$ | $-0.11$ | $-0.090$ | $-0.066$ | $-0.041$ | $-0.041$ |
+| depth of (R1.3): $\mathcal V_{\rm L}(\Phi_{\rm L})/\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})-1$ | $0.31$ | $0.21$ | $0.12$ | $0.12$ | $0.12$ |
+| curvature of (R1.3) at its minimum: $\mathcal V_{\rm L}''(\Phi_{\rm L})/\mathcal V''_{\rm amp}-1$ | $2.3$ | $1.5$ | $0.86$ | $0.91$ | $0.91$ |
+| $M^{X,{\rm H}}_{\rm SF}$ from (R1.3), relative error | $1.1$ | $0.75$ | $0.43$ | $0.45$ | $0.45$ |
+| $10^3a^{X,{\rm Tay}}_{\rm SF}$ (Taylor coefficient at the origin) | $-6.16243$ | $-5.35342$ | $-4.29666$ | $-4.29666$ | $-4.29666$ |
+| $a^X_{\rm SF}/a^{X,{\rm Tay}}_{\rm SF}-1$ | $-2.0$ | $-1.4$ | $-0.81$ | $-0.68$ | $-0.68$ |
+| largest residual / depth, powers to $\Phi^4$ (quartic) | $5.9$ | $4.4$ | $2.8$ | $5.0$ | $5.0$ |
+| the same, powers to $\Phi^6$: (R1.3) | $0.70$ | $0.47$ | $0.27$ | $0.28$ | $0.28$ |
+| the same, powers to $\Phi^8$ | $0.038$ | $0.012$ | $0.0044$ | $0.021$ | $0.021$ |
+| the same, powers to $\Phi^{10}$ | $0.0099$ | $0.0053$ | $0.0025$ | $0.0015$ | $0.0015$ |
+| the same, powers to $\Phi^{12}$ | $0.00067$ | $0.00052$ | $0.00032$ | $4.3\times10^{-5}$ | $4.3\times10^{-5}$ |
+| sign changes of the residual of (R1.3) | $3$ | $3$ | $3$ | $3$ | $3$ |
+| $10^3c^X_{\rm SF}$, (R1.3) fitted on $[0,\Phi^X_{0,{\rm SF}}]$ | $8.048$ | $8.524$ | $8.450$ | $16.34$ | $16.34$ |
+| $10^3c^X_{\rm SF}$, fitted on $[0,1.4\Phi^X_{0,{\rm SF}}]$ | $14.36$ | $14.40$ | $14.00$ | $19.94$ | $19.94$ |
+| $10^3c^X_{\rm SF}$, fitted on the whole curve | $17.67$ | $18.42$ | $18.70$ | $23.62$ | $23.62$ |
+| end of the whole curve: $\Phi_{\max}/\Phi^X_{0,{\rm SF}}$ | $1.52$ | $1.57$ | $1.64$ | $1.61$ | $1.61$ |
+| largest residual / depth on the whole curve | $1.7$ | $1.5$ | $1.2$ | $1.3$ | $1.3$ |
+| $10^3c$ of the fit with powers to $\Phi^8$ | $0.6157$ | $1.975$ | $2.736$ | $11.61$ | $11.61$ |
+<!-- END p4_table_landau -->
+<!-- BEGIN p4_checks_landau -->
+| check | result | deviation | tolerance | statement |
+|:---|:---|---:|---:|:-----------|
+| P3-8 | PASS | $2.44\times10^{-15}$ | $1\times10^{-13}$ | the pair field enters the quasi-particle energies like a mass, (R1.4): the BdG matrix with N = (M - m) beta (x) 1\_2 and P = Phi\_a (K\^3)\^dag has the eigenvalues -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (20 random q, M, Phi\_a) |
+| P3-9 HS_1_1 | PASS | $2.03\times10^{-17}$ | $1\times10^{-12}$ | HS\_1\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (R1.4) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_1_1 | PASS | $1.1\times10^{-14}$ | $1\times10^{-9}$ | HS\_1\_1: the least squares of (R1.3) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_1_1 | PASS | $8.79\times10^{-9}$ | $1\times10^{-6}$ | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (R1.3) has a = -6.0408804409e-3) |
+| P3-9 HS_0_1 | PASS | $2.27\times10^{-17}$ | $1\times10^{-12}$ | HS\_0\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (R1.4) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_0_1 | PASS | $5.62\times10^{-13}$ | $1\times10^{-9}$ | HS\_0\_1: the least squares of (R1.3) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_0_1 | PASS | $5.42\times10^{-9}$ | $1\times10^{-6}$ | HS\_0\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (R1.3) has a = -5.2811441242e-3) |
+| P3-9 HS_0_0 | PASS | $0$ | $1\times10^{-12}$ | HS\_0\_0: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (R1.4) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_0_0 | PASS | $8.61\times10^{-13}$ | $1\times10^{-9}$ | HS\_0\_0: the least squares of (R1.3) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_0_0 | PASS | $7.21\times10^{-9}$ | $1\times10^{-6}$ | HS\_0\_0: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (R1.3) has a = -4.2619672631e-3) |
+| P3-9 KS | PASS | $2.22\times10^{-16}$ | $1\times10^{-12}$ | KS: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (R1.4) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 KS | PASS | $7.5\times10^{-13}$ | $1\times10^{-9}$ | KS: the least squares of (R1.3) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 KS | PASS | $7.43\times10^{-8}$ | $1\times10^{-6}$ | KS: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (R1.3) has a = -4.2674033395e-3) |
+| P3-9 CJT | PASS | $3.32\times10^{-16}$ | $1\times10^{-12}$ | CJT: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (R1.4) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 CJT | PASS | $2.94\times10^{-13}$ | $1\times10^{-9}$ | CJT: the least squares of (R1.3) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 CJT | PASS | $7.43\times10^{-8}$ | $1\times10^{-6}$ | CJT: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (R1.3) has a = -4.2674033395e-3) |
+| YP3-8 | PASS | $1.33\times10^{-15}$ | $1\times10^{-13}$ | the quasi-particle energies (R1.4) for an applied pair field and a Dirac mass: -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (LAPACK, 20 random q, M, Phi\_a) |
+| YP3-11 HS_1_1 | PASS | $9.62\times10^{-12}$ | $1\times10^{-7}$ | HS\_1\_1: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_1\_1.csv with numpy (SVD): the minimum, depth and curvature of (R1.3), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 HS_0_1 | PASS | $1.48\times10^{-11}$ | $1\times10^{-7}$ | HS\_0\_1: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_1.csv with numpy (SVD): the minimum, depth and curvature of (R1.3), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 HS_0_0 | PASS | $5.7\times10^{-11}$ | $1\times10^{-7}$ | HS\_0\_0: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_0.csv with numpy (SVD): the minimum, depth and curvature of (R1.3), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 KS | PASS | $3.1\times10^{-9}$ | $1\times10^{-7}$ | KS: the accuracy of the Landau form recomputed from data/part3\_effpot\_KS.csv with numpy (SVD): the minimum, depth and curvature of (R1.3), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 CJT | PASS | $1.22\times10^{-9}$ | $1\times10^{-7}$ | CJT: the accuracy of the Landau form recomputed from data/part3\_effpot\_CJT.csv with numpy (SVD): the minimum, depth and curvature of (R1.3), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-9 HS_1_1 | PASS | $8.92\times10^{-18}$ | $1\times10^{-12}$ | HS\_1\_1: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1\_2) |
+| YP3-10 HS_1_1 | PASS | $3.07\times10^{-11}$ | $1\times10^{-8}$ | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -6.1624310943e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 8.8e-09) |
+| YP3-9 CJT | PASS | $8.56\times10^{-17}$ | $1\times10^{-12}$ | CJT: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1\_2) |
+| YP3-10 CJT | PASS | $2.87\times10^{-12}$ | $1\times10^{-8}$ | CJT: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08) |
+<!-- END p4_checks_landau -->
+<!-- BEGIN p3_lf_phi -->
+$0.041$ per cent (KS, CJT) to $0.11$ per cent (HS (1, 1))
+<!-- END p3_lf_phi -->
+<!-- BEGIN p3_lf_depth -->
+$0.12$ per cent (HS (0, 0)) to $0.31$ per cent (HS (1, 1))
+<!-- END p3_lf_depth -->
+<!-- BEGIN p3_lf_curv -->
+$0.86$ per cent (HS (0, 0)) to $2.3$ per cent (HS (1, 1))
+<!-- END p3_lf_curv -->
+<!-- BEGIN p3_lf_mh -->
+$0.43$ per cent (HS (0, 0)) to $1.1$ per cent (HS (1, 1))
+<!-- END p3_lf_mh -->
+<!-- BEGIN p3_lf_a -->
+$0.68$ per cent (KS, CJT) to $2.0$ per cent (HS (1, 1))
+<!-- END p3_lf_a -->
+<!-- BEGIN p3_lf_res4 -->
+$2.8$ per cent (HS (0, 0)) to $5.9$ per cent (HS (1, 1))
+<!-- END p3_lf_res4 -->
+<!-- BEGIN p3_lf_res6 -->
+$0.27$ per cent (HS (0, 0)) to $0.70$ per cent (HS (1, 1))
+<!-- END p3_lf_res6 -->
+<!-- BEGIN p3_lf_res8 -->
+$0.0044$ per cent (HS (0, 0)) to $0.038$ per cent (HS (1, 1))
+<!-- END p3_lf_res8 -->
+<!-- BEGIN p3_lf_res10 -->
+$0.0015$ per cent (KS, CJT) to $0.0099$ per cent (HS (1, 1))
+<!-- END p3_lf_res10 -->
+<!-- BEGIN p3_lf_res12 -->
+$4.3\times10^{-5}$ per cent (KS, CJT) to $0.00067$ per cent (HS (1, 1))
+<!-- END p3_lf_res12 -->
+<!-- BEGIN p3_lf_resall -->
+$1.2$ per cent (HS (0, 0)) to $1.7$ per cent (HS (1, 1))
+<!-- END p3_lf_resall -->
+<!-- BEGIN p3_lf_resmin -->
+$0.11$ per cent (HS (0, 0)) to $0.31$ per cent (HS (1, 1))
+<!-- END p3_lf_resmin -->
+<!-- BEGIN p3_lf_top3 -->
+$1.52$ to $1.64$
+<!-- END p3_lf_top3 -->
+<!-- BEGIN p3_lf_c_cjt -->
+$16.34$, $19.94$ and $23.62$
+<!-- END p3_lf_c_cjt -->
+<!-- BEGIN p3_lf_cK4_cjt -->
+$11.61$
+<!-- END p3_lf_cK4_cjt -->
+<!-- BEGIN p3_lf_signs -->
+$3$
+<!-- END p3_lf_signs -->

@@ -1,11 +1,11 @@
 evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/in/superfluid.nb
 saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/out/superfluid.nb
-seconds:  22
-kernel:   {0, 11887}   last In line: 184
-counts:   <|"inputs" -> 11, "evaluated" -> 11, "outputs" -> 1, "prints" -> 38, "messages" -> 0|>
+seconds:  23
+kernel:   {0, 12306}   last In line: 228
+counts:   <|"inputs" -> 20, "evaluated" -> 20, "outputs" -> 5, "prints" -> 51, "messages" -> 0|>
 --- messages (0) ---
---- printed lines (38) ---
+--- printed lines (51) ---
 during In[6]:=  the common objects are defined; m_LL = 1/5
 during In[42]:=  the mass matrix of (W1, W2, W3, B): ((gSM^2 vSM^2)/4	0	0	0
 0	(gSM^2 vSM^2)/4	0	0
@@ -48,7 +48,20 @@ during In[172]:=  PASS WAS3-4  deviation 3.005e-11 (tolerance 1.000e-9): the gap
 during In[172]:=  PASS WAS4-5a  three bound states below the continuum for each spacing [counts {3, 3, 3}]   [the same check: Rust AS4-5a, Python AS4-5a]
 during In[172]:=  PASS WAS4-5b  deviation 1.116e-5 (tolerance 1.000e-3): kink bound states, Richardson extrapolation   [the same check: Rust AS4-5b, Python AS4-5b]
 during In[172]:=  PASS WAS4-3  symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0]   [the same check: Rust AS4-3, Python AS4-3]
-during In[183]:=  checks of this notebook: 34; passed: 34; failed: {}
+during In[182]:=  |Phi|^4 - |Phi.Phi|^2 - |Phi x Phi*|^2 = 0;  on a polar field |Phi|^4 - |Phi.Phi|^2 = 0
+during In[187]:=  values of the Rust program sf_part3: 260; points of the five polar curves: {61,61,61,61,61}
+during In[201]:=  PASS WP3-11 HS_1_1  deviation 2.492e-11 (tolerance 1.000e-7): HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_1_1, Python YP3-11 HS_1_1]
+during In[201]:=  PASS WP3-11 HS_0_1  deviation 4.409e-11 (tolerance 1.000e-7): HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_1, Python YP3-11 HS_0_1]
+during In[201]:=  PASS WP3-11 HS_0_0  deviation 4.051e-11 (tolerance 1.000e-7): HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_0, Python YP3-11 HS_0_0]
+during In[201]:=  PASS WP3-11 KS  deviation 3.482e-9 (tolerance 1.000e-7): KS: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 KS, Python YP3-11 KS]
+during In[201]:=  PASS WP3-11 CJT  deviation 6.816e-9 (tolerance 1.000e-7): CJT: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 CJT, Python YP3-11 CJT]
+during In[213]:=  PASS WP3-8  deviation 1.554e-15 (tolerance 1.000e-13): the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1_2 and P = Phi_a (K^3)^dag has the eigenvalues -+(q^2 + M^2 + Phi_a^2)^(1/2), eight times each (20 random q, M, Phi_a)   [the same check: Rust P3-8, Python YP3-8]
+during In[217]:=  the integral minus the closed form: 0
+during In[217]:=  the closed form about s = 0 (cutoff 1), to the order s^2: 1/4+lfs/4+lfs^2/32-1/8 lfs^2 Log[2]+1/16 lfs^2 Log[lfs]
+during In[217]:=  its term with the logarithm: lfs^2/16 Log[s]
+during In[223]:=  PASS WP3-10 HS_1_1  deviation 2.646e-7 (tolerance 1.000e-6): HS (1, 1): the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00616243 (relative)   [the same check: Rust P3-10 HS_1_1, Python YP3-10 HS_1_1]
+during In[223]:=  PASS WP3-10 CJT  deviation 2.377e-8 (tolerance 1.000e-6): CJT: the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00429666 (relative)   [the same check: Rust P3-10 CJT, Python YP3-10 CJT]
+during In[227]:=  checks of this notebook: 42; passed: 42; failed: {}
 --- input cells (label, beginning) ---
 In[1]:=  (* the register of the checks of this notebook: one association per check, in the order of
 In[6]:=  (* the mass of the spinor field, m_LL, in units of the cutoff Lambda_LL = 1 *) mLL = 1/5; 
@@ -59,8 +72,17 @@ In[74]:=  (* F-2: the Clifford algebra {gamma^p, gamma^q} = 2 eta^pq, C gamma^p 
 In[92]:=  (* the four coordinates x^0 .. x^3 of the test, as symbols *) Clear[x0, x1, x2, x3]; xs = 
 In[142]:=  (* the annihilation operators c_e (e = 1..8) of the eight components and their adjoints, 2
 In[172]:=  (* hPW[q, m, gv, gf, w, b]: the plane-wave matrix of AS1 for the constant fields w[[p+1, i
-In[182]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
-In[183]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
+In[182]:=  (* the identity |Phi|^4 - |Phi.Phi|^2 = |Phi x Phi^*|^2 for complex 3-vectors, exactly, wi
+In[187]:=  (* The values of the Rust programs that Part 3 of the notebook uses or compares with its o
+In[194]:=  (* lfTags: the five methods (the tags of the data) and their printed names *) lfTags = {"H
+In[201]:=  (* evenFit[pts, kk]: the least-squares fit V = sum_{k=1..kk} c_k Phi^(2k) to the points {P
+In[206]:=  (* the table of the accuracy of the Landau form; pct[x]: x in per cent with three signific
+In[209]:=  (* the figure: top, the residual of the Landau form along the fitted interval relative to 
+In[213]:=  (* the BdG matrix of the eight components with the Dirac mass M (normal self-energy (M - m
+In[217]:=  (* the integral of q^2 (q^2 + s)^(1/2) from 0 to the cutoff lam, exactly, and its expansio
+In[223]:=  (* lfTaylor[t]: a^Tay estimated from the points 2 to 7 of the curve (the first point is Ph
+In[226]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
+In[227]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
 --- tests ---
 <|"id" -> "WSM-1", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "Standard Model with +i g: the eigenvalues of the mass matrix are 0, M_W^2 (twice), M_Z^2, and the photon sin(thetaW) W^3 + cos(thetaW) B is massless [exact, with symbolic g, g', v]", "rust" -> "SM-1", "python" -> "SM-1"|>
 <|"id" -> "WA-2", "pass" -> True, "deviation" -> 0., "tolerance" -> 0., "text" -> "bi-octonion units: e_p^2 = -1, e_p e_q = -e_q e_p, e_j e_4 = e_(4+j) (exact)", "rust" -> "A-2", "python" -> "A-2"|>
@@ -96,3 +118,11 @@ In[183]:=  (* the count of the checks that passed *) Print["checks of this noteb
 <|"id" -> "WAS4-5a", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "three bound states below the continuum for each spacing [counts {3, 3, 3}]", "rust" -> "AS4-5a", "python" -> "AS4-5a"|>
 <|"id" -> "WAS4-5b", "pass" -> True, "deviation" -> 0.000011159909793223566, "tolerance" -> 0.001, "text" -> "kink bound states, Richardson extrapolation", "rust" -> "AS4-5b", "python" -> "AS4-5b"|>
 <|"id" -> "WAS4-3", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "symbolic: (d/dx + Delta) sech^2(x/ell) = 0 and (-d^2 + Delta^2 - Delta') sech tanh = (3/16) sech tanh [residuals 0, 0]", "rust" -> "AS4-3", "python" -> "AS4-3"|>
+<|"id" -> "WP3-11 HS_1_1", "pass" -> True, "deviation" -> 2.492097276316496*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_1_1", "python" -> "YP3-11 HS_1_1"|>
+<|"id" -> "WP3-11 HS_0_1", "pass" -> True, "deviation" -> 4.408719629389778*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_0_1", "python" -> "YP3-11 HS_0_1"|>
+<|"id" -> "WP3-11 HS_0_0", "pass" -> True, "deviation" -> 4.0512580084894096*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_0_0", "python" -> "YP3-11 HS_0_0"|>
+<|"id" -> "WP3-11 KS", "pass" -> True, "deviation" -> 3.4817732076617623*^-9, "tolerance" -> 1.*^-7, "text" -> "KS: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 KS", "python" -> "YP3-11 KS"|>
+<|"id" -> "WP3-11 CJT", "pass" -> True, "deviation" -> 6.816432670177407*^-9, "tolerance" -> 1.*^-7, "text" -> "CJT: the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 CJT", "python" -> "YP3-11 CJT"|>
+<|"id" -> "WP3-8", "pass" -> True, "deviation" -> 1.5543122344752192*^-15, "tolerance" -> 1.*^-13, "text" -> "the pair field enters the quasi-particle energies like a mass: the BdG matrix with N = (M - m) beta (x) 1_2 and P = Phi_a (K^3)^dag has the eigenvalues -+(q^2 + M^2 + Phi_a^2)^(1/2), eight times each (20 random q, M, Phi_a)", "rust" -> "P3-8", "python" -> "YP3-8"|>
+<|"id" -> "WP3-10 HS_1_1", "pass" -> True, "deviation" -> 2.645548995744994*^-7, "tolerance" -> 1.*^-6, "text" -> "HS (1, 1): the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00616243 (relative)", "rust" -> "P3-10 HS_1_1", "python" -> "YP3-10 HS_1_1"|>
+<|"id" -> "WP3-10 CJT", "pass" -> True, "deviation" -> 2.3768641768367542*^-8, "tolerance" -> 1.*^-6, "text" -> "CJT: the coefficient of Phi^2 of the Taylor series at the origin from the first six points of the curve = the Rust value a^Tay = -0.00429666 (relative)", "rust" -> "P3-10 CJT", "python" -> "YP3-10 CJT"|>

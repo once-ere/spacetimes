@@ -2,39 +2,55 @@ sf_part3: checks of part III of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PR
 Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
 statement that is true or false, the facts that decide it), and the statement that is checked.
 
+PASS P3-8    deviation 2.442e-15 (tolerance 1.0e-13): the pair field enters the quasi-particle energies like a mass, (10.3): the BdG matrix with N = (M - m) beta (x) 1_2 and P = Phi_a (K^3)^dag has the eigenvalues -+(q^2 + M^2 + Phi_a^2)^(1/2), eight times each (20 random q, M, Phi_a)
 PASS P3-1 HS_1_1 deviation 2.509e-14 (tolerance 1.0e-9): HS_1_1: the applied field Phi0 = 0.4030641406 gives back Phi^3 = Phi0 and the ground-state energy -5.1863442023e-4 of part II
 PASS P3-2 HS_1_1 deviation 3.985e-8 (tolerance 1.0e-6): HS_1_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'')
 PASS P3-3 HS_1_1 deviation 3.010e-14 (tolerance 1.0e-10): HS_1_1: the effective potential depends only on |Phi| (a phase of U(1)F and the isospin direction 1 give the same energy)
 PASS P3-4 HS_1_1 deviation 0.000e0 (tolerance 0.0e0): HS_1_1: the polar minimum is a minimum also in the non-unitary directions (curvature 2.759287e-2 > 0)
 PASS P3-5 HS_1_1 deviation 0.000e0 (tolerance 0.0e0): HS_1_1: Mexican hat: V(0) = 1.9e-17 and V < 0 near the origin (V(0.0159) = -1.557047e-6)
+PASS P3-9 HS_1_1 deviation 2.027e-17 (tolerance 1.0e-12): HS_1_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1_2)
+PASS P3-11 HS_1_1 deviation 1.103e-14 (tolerance 1.0e-9): HS_1_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c)
+PASS P3-10 HS_1_1 deviation 8.786e-9 (tolerance 1.0e-6): HS_1_1: the coefficient of Phi^2 of the Taylor series at the origin, a^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -6.0408804409e-3)
 PASS P3-6 HS_1_1 deviation 2.471e-16 (tolerance 1.0e-10): HS_1_1: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = 2.5e-16)
 PASS P3-1 HS_0_1 deviation 3.606e-14 (tolerance 1.0e-9): HS_0_1: the applied field Phi0 = 0.3620090014 gives back Phi^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II
 PASS P3-2 HS_0_1 deviation 3.451e-8 (tolerance 1.0e-6): HS_0_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'')
 PASS P3-3 HS_0_1 deviation 1.082e-14 (tolerance 1.0e-10): HS_0_1: the effective potential depends only on |Phi| (a phase of U(1)F and the isospin direction 1 give the same energy)
 PASS P3-4 HS_0_1 deviation 0.000e0 (tolerance 0.0e0): HS_0_1: the polar minimum is a minimum also in the non-unitary directions (curvature 2.372538e-2 > 0)
 PASS P3-5 HS_0_1 deviation 0.000e0 (tolerance 0.0e0): HS_0_1: Mexican hat: V(0) = 1.9e-17 and V < 0 near the origin (V(0.0139) = -1.031488e-6)
+PASS P3-9 HS_0_1 deviation 2.269e-17 (tolerance 1.0e-12): HS_0_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1_2)
+PASS P3-11 HS_0_1 deviation 5.616e-13 (tolerance 1.0e-9): HS_0_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c)
+PASS P3-10 HS_0_1 deviation 5.417e-9 (tolerance 1.0e-6): HS_0_1: the coefficient of Phi^2 of the Taylor series at the origin, a^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -5.2811441242e-3)
 PASS P3-6 HS_0_1 deviation 1.170e-19 (tolerance 1.0e-10): HS_0_1: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = 1.2e-19)
 PASS P3-1 HS_0_0 deviation 7.716e-15 (tolerance 1.0e-9): HS_0_0: the applied field Phi0 = 0.3069887935 gives back Phi^3 = Phi0 and the ground-state energy -2.0616190807e-4 of part II
 PASS P3-2 HS_0_0 deviation 2.628e-8 (tolerance 1.0e-6): HS_0_0: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'')
 PASS P3-3 HS_0_0 deviation 6.311e-14 (tolerance 1.0e-10): HS_0_0: the effective potential depends only on |Phi| (a phase of U(1)F and the isospin direction 1 give the same energy)
 PASS P3-4 HS_0_0 deviation 0.000e0 (tolerance 0.0e0): HS_0_0: the polar minimum is a minimum also in the non-unitary directions (curvature 1.837793e-2 > 0)
 PASS P3-5 HS_0_0 deviation 0.000e0 (tolerance 0.0e0): HS_0_0: Mexican hat: V(0) = 1.9e-17 and V < 0 near the origin (V(0.0114) = -5.571838e-7)
+PASS P3-9 HS_0_0 deviation 0.000e0 (tolerance 1.0e-12): HS_0_0: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1_2)
+PASS P3-11 HS_0_0 deviation 8.612e-13 (tolerance 1.0e-9): HS_0_0: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c)
+PASS P3-10 HS_0_0 deviation 7.213e-9 (tolerance 1.0e-6): HS_0_0: the coefficient of Phi^2 of the Taylor series at the origin, a^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2619672631e-3)
 PASS P3-6 HS_0_0 deviation 1.946e-16 (tolerance 1.0e-10): HS_0_0: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = -1.9e-16)
 PASS P3-1 KS deviation 1.074e-14 (tolerance 1.0e-9): KS: the applied field Phi0 = 0.3284861084 gives back Phi^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II
 PASS P3-2 KS deviation 3.446e-8 (tolerance 1.0e-6): KS: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'')
 PASS P3-3 KS deviation 3.939e-14 (tolerance 1.0e-10): KS: the effective potential depends only on |Phi| (a phase of U(1)F and the isospin direction 1 give the same energy)
 PASS P3-4 KS deviation 0.000e0 (tolerance 0.0e0): KS: the polar minimum is a minimum also in the non-unitary directions (curvature 2.172785e-2 > 0)
 PASS P3-5 KS deviation 0.000e0 (tolerance 0.0e0): KS: Mexican hat: V(0) = 1.9e-17 and V < 0 near the origin (V(0.0122) = -6.380082e-7)
+PASS P3-9 KS deviation 2.222e-16 (tolerance 1.0e-12): KS: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1_2)
+PASS P3-11 KS deviation 7.503e-13 (tolerance 1.0e-9): KS: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c)
+PASS P3-10 KS deviation 7.428e-8 (tolerance 1.0e-6): KS: the coefficient of Phi^2 of the Taylor series at the origin, a^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3)
 PASS P3-6 KS deviation 6.046e-16 (tolerance 1.0e-10): KS: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = -6.0e-16)
 PASS P3-1 CJT deviation 3.223e-14 (tolerance 1.0e-9): CJT: the applied field Phi0 = 0.3284861084 gives back Phi^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II
 PASS P3-2 CJT deviation 3.446e-8 (tolerance 1.0e-6): CJT: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'')
 PASS P3-3 CJT deviation 6.266e-14 (tolerance 1.0e-10): CJT: the effective potential depends only on |Phi| (a phase of U(1)F and the isospin direction 1 give the same energy)
 PASS P3-4 CJT deviation 0.000e0 (tolerance 0.0e0): CJT: the polar minimum is a minimum also in the non-unitary directions (curvature 2.107798e-2 > 0)
 PASS P3-5 CJT deviation 0.000e0 (tolerance 0.0e0): CJT: Mexican hat: V(0) = 1.9e-17 and V < 0 near the origin (V(0.0122) = -6.380082e-7)
+PASS P3-9 CJT deviation 3.315e-16 (tolerance 1.0e-12): CJT: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1_2)
+PASS P3-11 CJT deviation 2.943e-13 (tolerance 1.0e-9): CJT: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c)
+PASS P3-10 CJT deviation 7.425e-8 (tolerance 1.0e-6): CJT: the coefficient of Phi^2 of the Taylor series at the origin, a^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3)
 PASS P3-6 CJT deviation 1.269e-15 (tolerance 1.0e-10): CJT: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = 1.3e-15)
 PASS P3-7    deviation 4.002e-7 (tolerance 2.0e-6): the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative)
 
 Notes:
-  run time 110.9 s
+  run time 103.8 s
 
-VERDICT: ALL PASS (31 of 31)
+VERDICT: ALL PASS (47 of 47)

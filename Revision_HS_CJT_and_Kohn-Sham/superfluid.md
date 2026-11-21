@@ -1693,9 +1693,46 @@ It vanishes at $\vec\Phi=0$ (the normal vacuum), is negative next to it (*check 
 because $\lambda^{\rm P}_{\rm SF}>1$, Section 9.4) and has its minimum at $\lvert\vec\Phi\rvert=\Phi^X_{0,{\rm SF}}$. Rotated about the
 origin of the complex plane of $\Phi^3$ (the phase is a symmetry), the curve is the Mexican hat. The potential $V^{(2)}_{\rm SF}$
 already produces it in all three methods, so the recursion of Section 10 needs no further step for this purpose.
-Along the polar states the curve is fitted well by the Landau form
+**The Landau form.** A *Landau form* of a potential is its expansion in powers of the order parameter (the field that
+vanishes in the symmetric state and not in the broken one) under two rules: only polynomial invariants of the symmetry
+group occur, and the expansion stops after the lowest orders that bound the potential from below and produce its
+minima. L. D. Landau introduced it for phase transitions: near a continuous transition the order parameter is small,
+the free energy is assumed to be analytic in it, and the form is its Taylor expansion, whose coefficients (the Landau
+coefficients) are derivatives at the symmetric state; the quadratic coefficient changes its sign at the transition, and
+the signs of the higher coefficients decide the order of the transition and which broken state is the minimum.
+Examples:
+
+* a uniaxial ferromagnet: $F_{\rm mag}=a_{\rm mag}m_{\rm mag}^2+b_{\rm mag}m_{\rm mag}^4$ for the magnetization $m_{\rm mag}$ (the
+  symmetry $m_{\rm mag}\to-m_{\rm mag}$), with $a_{\rm mag}$ proportional to the temperature minus the Curie temperature
+  and $b_{\rm mag}>0$; below the Curie temperature the minima are $m_{\rm mag}=\pm(-a_{\rm mag}/(2b_{\rm mag}))^{1/2}$;
+* the theory of superconductivity of V. L. Ginzburg and L. D. Landau: $\alpha_{\rm GL}\lvert\psi_{\rm GL}\rvert^2+\tfrac12\beta_{\rm GL}\lvert\psi_{\rm GL}\rvert^4$
+  for the complex pair wave function $\psi_{\rm GL}$ (the symmetry $U(1)$), to which the gradient terms and the magnetic
+  field are added; L. P. Gor'kov derived it from the theory of Bardeen, Cooper and Schrieffer near the critical
+  temperature, where $\lvert\psi_{\rm GL}\rvert$ is small, so that there the coefficients are true Taylor coefficients;
+* the Higgs potential of the Standard Model (Section 1), $-(\mu^{\rm SM})^2(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}+\lambda^{\rm SM}((\Phi^{\rm SM})^\dagger\Phi^{\rm SM})^2$:
+  the doublet has the single invariant $(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}$ of degree 2, and this Landau form is exact
+  at tree level, not a truncation;
+* the Bose-Einstein condensates of spin 1 (T.-L. Ho; T. Ohmi and K. Machida), the closest analogue of the field of this
+  manuscript: their order parameter is a complex vector $\vec\varpi$, and their energy per volume
+  $\tfrac12c_{\rm n}\lvert\vec\varpi\rvert^4+\tfrac12c_{\rm s}(\lvert\vec\varpi\rvert^4-\lvert\vec\varpi\cdot\vec\varpi\rvert^2)$ contains the same two
+  quartic invariants as the isospin vector below, the second term being the square of the spin; $c_{\rm s}>0$ (sodium-23)
+  favors the polar state, $c_{\rm s}<0$ (rubidium-87) the ferromagnetic state $\vec\varpi\propto(1,i,0)$;
+* the ferroelectric barium titanate (A. F. Devonshire): $\alpha_{\rm D}P_{\rm D}^2+\beta_{\rm D}P_{\rm D}^4+\gamma_{\rm D}P_{\rm D}^6$ for the
+  polarization $P_{\rm D}$ with $\beta_{\rm D}<0$ and $\gamma_{\rm D}>0$: the sixth power is required, and the transition is of
+  first order;
+* superfluid helium-3 (A. J. Leggett): one quadratic and five quartic invariants of a complex $3\times3$ matrix, whose
+  five coefficients decide between the phases A and B;
+* the nematic liquid crystals (P. G. de Gennes): the traceless symmetric tensor of the nematic order admits an
+  invariant of the third degree, so the transition is of first order.
+
+The name has nothing to do with the Landau levels of Section 7.2. For the complex isospin vector $\vec\Phi$ under GEE
+the independent invariants up to the fourth degree are $\lvert\vec\Phi\rvert^2$, $\lvert\vec\Phi\rvert^4$ and
+$\lvert\vec\Phi\cdot\vec\Phi\rvert^2$, and $\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2=\lvert\vec\Phi\times\vec\Phi^*\rvert^2$ vanishes
+exactly on the polar fields. Along the polar states the computed curve is summarized by the Landau form
 $$\mathcal V^X_{\rm SF}\approx a^X_{\rm SF}\lvert\vec\Phi\rvert^2+b^X_{\rm SF}\lvert\vec\Phi\rvert^4+c^X_{\rm SF}\lvert\vec\Phi\rvert^6+u^X_{\rm SF}\big(\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2\big)\tag{12.2}$$
-(least squares on $0\le\lvert\vec\Phi\rvert\le1.4\Phi^X_{0,{\rm SF}}$; $a^X_{\rm SF}<0$ is the instability of the origin). The last term
+(its first three coefficients by least squares on the computed points with $0\le\lvert\vec\Phi\rvert\le1.4\Phi^X_{0,{\rm SF}}$, so that
+(12.2) is a fit and not a derivation, whose accuracy is the subject of the last paragraphs of this section;
+$a^X_{\rm SF}<0$ is the instability of the origin). The last term
 vanishes for polar fields and measures the cost of non-unitarity: for $\vec\Phi=\Phi_0\vec e_3+i\nu\vec e_1$ (with $\Phi_0$ short for
 $\Phi^X_{0,{\rm SF}}$) it is $4u^X_{\rm SF}\Phi_0^2\nu^2$, while the first three terms give $\nu^2$ times the derivative of the polar
 curve, which vanishes at the minimum; hence $u^X_{\rm SF}=\mathcal V''_{\rm NU}/(8\Phi_0^2)$, with the curvature
@@ -1720,6 +1757,107 @@ computed curve relative to the depth. Data: `data/part3_effpot_*.csv`, `data/par
 
 **Figure 8.** Left: the effective potentials $\mathcal V^X_{\rm SF}$ along the polar fields, with their minima (dots). Right: the
 Mexican hat of CJT over the complex plane of $\Phi^3$. Data: `data/part3_effpot_*.csv`.
+
+**The accuracy of the Landau form.** The coefficients $a^X_{\rm SF}$, $b^X_{\rm SF}$, $c^X_{\rm SF}$ of (12.2) are not derived
+from the theory: they minimize the sum of the squares of the residuals $\mathcal V_{\rm L}(\Phi_i)-\mathcal V^X_{\rm SF}(\Phi_i)$ over the
+computed points $\Phi_i\le1.4\Phi^X_{0,{\rm SF}}$ (47 to 51 points), where
+$\mathcal V_{\rm L}(\Phi)=a^X_{\rm SF}\Phi^2+b^X_{\rm SF}\Phi^4+c^X_{\rm SF}\Phi^6$ is (12.2) along the polar fields $\vec\Phi=\Phi\vec e_3$. The
+computed points are accurate to about $10^{-13}$ (*check P3-1*), so every deviation of (12.2) from them is an error of
+the form, not of the computation. The largest residual is $0.27$ per cent (HS (0, 0)) to $0.70$ per cent (HS (1, 1)) of the depth
+$\lvert\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})\rvert$ of the minimum (Table 12.1, last column). Figure 9 (left) shows the residual along
+the interval: it changes its sign $3$ times, it is largest at the upper end ($\Phi\approx1.39\Phi^X_{0,{\rm SF}}$), and at
+the minimum it is $0.11$ per cent (HS (0, 0)) to $0.31$ per cent (HS (1, 1)) of the depth. This oscillation about the computed curve is that of a polynomial
+that approximates a function which is not a polynomial: the least-squares fits $\sum_{k=1}^Kc_k\Phi^{2k}$ with more powers
+reduce the largest residual to $0.0044$ per cent (HS (0, 0)) to $0.038$ per cent (HS (1, 1)) of the depth with the powers to $\Phi^8$ ($K=4$) and to $4.3\times10^{-5}$ per cent (KS, CJT) to $0.00067$ per cent (HS (1, 1))
+with the powers to $\Phi^{12}$ ($K=6$) (Figure 9, right), while the quartic form $a\Phi^2+b\Phi^4$ of the Standard Model
+misses by $2.8$ per cent (HS (0, 0)) to $5.9$ per cent (HS (1, 1)) (*check P3-11*: the least squares by Householder reflections reproduce the coefficients of
+(12.2); *check YP3-11*: the Python program recomputes every number of Table 12.2 from the data files with the
+singular-value decomposition).
+
+**The cause.** The pair field enters the quasi-particle energies like a mass. For the applied pair self-energy
+$\Phi_{\rm a}(\mathsf K^3_{\rm LL})^\dagger$ and a normal self-energy that is a Dirac mass $M^{X,{\rm D}}_{\rm SF}$, the quasi-particle
+energies are (10.3) with $\lvert D^X_{\rm SF}\rvert$ replaced by $\Phi_{\rm a}$ (*checks P3-8, YP3-8*), and along the whole polar curve
+the normal self-energy is such a Dirac mass (*checks P3-9, YP3-9*). The energy per volume is then an integral over the
+momenta $q=\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$ of functions of $(q^2+s)^{1/2}$ with $s=(M^{X,{\rm D}}_{\rm SF})^2+\Phi_{\rm a}^2$; the
+integral $\int_0^{\Lambda_{\rm LL}}q^2(q^2+s)^{1/2}\,dq$ contains the term $\tfrac1{16}s^2\ln s$, which is not analytic at $s=0$, that is,
+at $\Phi_{\rm a}^2=-(M^{X,{\rm D}}_{\rm SF})^2$. Hence $\mathcal V^X_{\rm SF}$ is not a polynomial in $\lvert\vec\Phi\rvert^2$, and its Taylor series
+about the origin can converge only within a radius of the order of the Dirac mass ($m_{\rm LL}=0.2$ at the origin),
+while $\Phi^X_{0,{\rm SF}}=0.31$ to $0.40$: the superfluid is far from the regime of Landau's theory, in which the order
+parameter is small and the Landau coefficients are Taylor coefficients. The coefficients of (12.2) are therefore
+properties of the fit:
+
+* $a^X_{\rm SF}$ differs by $0.68$ per cent (KS, CJT) to $2.0$ per cent (HS (1, 1)) from the Taylor coefficient $a^{X,{\rm Tay}}_{\rm SF}$ of $\lvert\vec\Phi\rvert^2$ at the
+  origin, computed directly from the states with the small applied fields $\Phi_{\rm a}=0.004$, $0.008$, $0.016$ (the
+  quotient $\mathcal V^X_{\rm SF}/\Phi^2$ at two of them, with the term proportional to $\Phi^2$ eliminated by the Richardson
+  extrapolation; the two pairs agree to $10^{-7}$, *check P3-10*, and the Python program finds the same value to
+  $10^{-10}$, *check YP3-10*);
+* $b^X_{\rm SF}$ and $c^X_{\rm SF}$ change with the fitted interval and with the number of powers: for CJT, $10^3c^{\rm CJT}_{\rm SF}$ is
+  $16.34$, $19.94$ and $23.62$ when (12.2) is fitted on $[0,\Phi^X_{0,{\rm SF}}]$, on $[0,1.4\Phi^X_{0,{\rm SF}}]$ and on the whole computed
+  curve, and $11.61$ when the power $\Phi^8$ is added (Table 12.2).
+
+| quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
+|:-----------------------------|-------:|-------:|-------:|-------:|-------:|
+| minimum of (12.2): $\Phi_{\rm L}/\Phi^X_{0,{\rm SF}}-1$ | $-0.11$ | $-0.090$ | $-0.066$ | $-0.041$ | $-0.041$ |
+| depth of (12.2): $\mathcal V_{\rm L}(\Phi_{\rm L})/\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})-1$ | $0.31$ | $0.21$ | $0.12$ | $0.12$ | $0.12$ |
+| curvature of (12.2) at its minimum: $\mathcal V_{\rm L}''(\Phi_{\rm L})/\mathcal V''_{\rm amp}-1$ | $2.3$ | $1.5$ | $0.86$ | $0.91$ | $0.91$ |
+| $M^{X,{\rm H}}_{\rm SF}$ from (12.2), relative error | $1.1$ | $0.75$ | $0.43$ | $0.45$ | $0.45$ |
+| $10^3a^{X,{\rm Tay}}_{\rm SF}$ (Taylor coefficient at the origin) | $-6.16243$ | $-5.35342$ | $-4.29666$ | $-4.29666$ | $-4.29666$ |
+| $a^X_{\rm SF}/a^{X,{\rm Tay}}_{\rm SF}-1$ | $-2.0$ | $-1.4$ | $-0.81$ | $-0.68$ | $-0.68$ |
+| largest residual / depth, powers to $\Phi^4$ (quartic) | $5.9$ | $4.4$ | $2.8$ | $5.0$ | $5.0$ |
+| the same, powers to $\Phi^6$: (12.2) | $0.70$ | $0.47$ | $0.27$ | $0.28$ | $0.28$ |
+| the same, powers to $\Phi^8$ | $0.038$ | $0.012$ | $0.0044$ | $0.021$ | $0.021$ |
+| the same, powers to $\Phi^{10}$ | $0.0099$ | $0.0053$ | $0.0025$ | $0.0015$ | $0.0015$ |
+| the same, powers to $\Phi^{12}$ | $0.00067$ | $0.00052$ | $0.00032$ | $4.3\times10^{-5}$ | $4.3\times10^{-5}$ |
+| sign changes of the residual of (12.2) | $3$ | $3$ | $3$ | $3$ | $3$ |
+| $10^3c^X_{\rm SF}$, (12.2) fitted on $[0,\Phi^X_{0,{\rm SF}}]$ | $8.048$ | $8.524$ | $8.450$ | $16.34$ | $16.34$ |
+| $10^3c^X_{\rm SF}$, fitted on $[0,1.4\Phi^X_{0,{\rm SF}}]$ (Table 12.1) | $14.36$ | $14.40$ | $14.00$ | $19.94$ | $19.94$ |
+| $10^3c^X_{\rm SF}$, fitted on the whole curve | $17.67$ | $18.42$ | $18.70$ | $23.62$ | $23.62$ |
+| end of the whole curve: $\Phi_{\max}/\Phi^X_{0,{\rm SF}}$ | $1.52$ | $1.57$ | $1.64$ | $1.61$ | $1.61$ |
+| largest residual / depth on the whole curve | $1.7$ | $1.5$ | $1.2$ | $1.3$ | $1.3$ |
+| $10^3c$ of the fit with powers to $\Phi^8$ | $0.6157$ | $1.975$ | $2.736$ | $11.61$ | $11.61$ |
+
+**Table 12.2.** The accuracy of the Landau form (12.2). Rows 1 to 4: what the polynomial (12.2) gets wrong at its
+minimum $\Phi_{\rm L}$ (the position, the depth and the curvature $\mathcal V_{\rm L}''(\Phi_{\rm L})$, compared with $\Phi^X_{0,{\rm SF}}$, the
+ground-state energy and the curvature $\mathcal V''_{\rm amp}$ of the computed curve, and the resulting error of the mass of
+the amplitude mode by (13.6)). Rows 5, 6: the Taylor coefficient of $\lvert\vec\Phi\rvert^2$ at the origin and the deviation
+of the fitted $a^X_{\rm SF}$ from it. Rows 7 to 11: the largest residual of the least-squares fits with the powers
+$\Phi^2,\dots,\Phi^{2K}$, $K=2$ to $6$, relative to the depth. Row 12: the sign changes of the residual of (12.2). Rows 13
+to 17: the coefficient $c^X_{\rm SF}$ of (12.2) fitted on three intervals, the end $\Phi_{\max}$ of the computed curve and the
+largest residual of the fit on the whole curve. Row 18: the coefficient of $\Phi^6$ of the fit with the powers to
+$\Phi^8$. Rows 1 to 4, 6 to 11 and 17 in per cent. Data: `data/part3_landau.csv`, `data/part3_values.csv`.
+
+![](figures/fig_part3_q3_landau.png){width=100%}
+
+**Figure 9.** The accuracy of the Landau form. Left: the residual $\mathcal V_{\rm L}(\Phi)-\mathcal V^X_{\rm SF}(\Phi)$ of (12.2) at the
+computed points of the fitted interval, relative to the depth of the minimum (KS and CJT coincide along the polar
+fields). Right: the largest residual of the least-squares fits $\sum_{k=1}^Kc_k\Phi^{2k}$ against the highest power $2K$;
+$2K=4$ is the quartic form of the Standard Model, $2K=6$ is (12.2). Data: `data/part3_landau_residuals.csv`,
+`data/part3_landau.csv`.
+
+**Why the accuracy matters.**
+
+1. The effective Lagrangians (12.6) contain the computed function $\mathcal V^X_{\rm SF}$, not (12.2), and no other result of
+   this manuscript uses $a^X_{\rm SF}$, $b^X_{\rm SF}$, $c^X_{\rm SF}$: the mass $M^{X,{\rm H}}_{\rm SF}$ of the amplitude mode uses the
+   curvature $\mathcal V''_{\rm amp}$ of the computed curve at its minimum (five states, *check P3-2*), $u^X_{\rm SF}$ and
+   $M^{X,{\rm NU}}_{\rm SF}$ use the computed curvature $\mathcal V''_{\rm NU}$, and Part IV uses $\Phi^X_{0,{\rm SF}}$, $Z^X_{\rm SF}$,
+   $Y^X_{\rm SF}$ and the susceptibilities. The error of the fit therefore enters no other number.
+2. Whoever replaces $\mathcal V^X_{\rm SF}$ by (12.2), as in a model of the type of Ginzburg and Landau or of Higgs, makes the
+   errors of Table 12.2: the minimum $\Phi_{\rm L}$ of (12.2) is $0.041$ per cent (KS, CJT) to $0.11$ per cent (HS (1, 1)) too small, its depth $0.12$ per cent (HS (0, 0)) to $0.31$ per cent (HS (1, 1)) too
+   large, its curvature at its minimum $0.86$ per cent (HS (0, 0)) to $2.3$ per cent (HS (1, 1)) too large, and the mass of the amplitude mode by (13.6)
+   $0.43$ per cent (HS (0, 0)) to $1.1$ per cent (HS (1, 1)) too large: a derivative enlarges the relative error of the function. Beyond the fitted interval the
+   error grows: fitted on the whole computed curve (up to $\Phi_{\max}=$ $1.52$ to $1.64$ times $\Phi^X_{0,{\rm SF}}$), (12.2)
+   misses by $1.2$ per cent (HS (0, 0)) to $1.7$ per cent (HS (1, 1)) of the depth.
+3. Only the quantities that the computed function itself defines are physical: $\Phi^X_{0,{\rm SF}}$, the depth, the
+   curvatures $\mathcal V''_{\rm amp}$ and $\mathcal V''_{\rm NU}$, and the Taylor coefficient $a^{X,{\rm Tay}}_{\rm SF}$ at the origin. No
+   physical meaning may be given to $b^X_{\rm SF}$ or $c^X_{\rm SF}$ alone, and the methods may be compared through these
+   coefficients only within the accuracy of the fit.
+4. The qualitative results do not depend on the fit: the Mexican hat (*checks P3-1, P3-2, P3-5*), the dependence on the
+   two invariants only (*P3-3*) and the stability of the polar minimum ($u^X_{\rm SF}>0$, *P3-4*) are properties of the
+   computed function, and the sign of $a^X_{\rm SF}$ is that of $a^{X,{\rm Tay}}_{\rm SF}$.
+5. The field of the superfluid boson singlet state has a Mexican hat with the symmetry structure of the Higgs sector
+   (Section 12.3) and of the polar phase of a condensate of spin 1, but its potential is not the quartic potential of
+   the Standard Model, which is exact at tree level: the quartic form misses $\mathcal V^X_{\rm SF}$ by $2.8$ per cent (HS (0, 0)) to $5.9$ per cent (HS (1, 1)) of the
+   depth, about ten times more than (12.2).
 
 ## 12.2 The kinetic part
 
@@ -1752,7 +1890,7 @@ $Q\,\Psi^\dagger(\alpha^3_{\rm LL}\otimes\mathsf t)\Psi$ ($Q=0.01,0.02$, Richard
 isospin matrix $\mathsf t$ and twists the field along the third space axis (the phase by $2Qx^3$ for $\mathsf t=\mathsf 1_2$; the
 direction by the angle $Qx^3$ about the first axis for $\mathsf t=\tfrac12\tau_1$); the energy of the twisted superfluid minus that of
 the twisted normal vacuum gives $(\tilde f^{X,{\rm F}}_{\rm SF})^2$ and $(\tilde f^{X,{\rm I}}_{\rm SF})^2$. The six directions are exact
-for these states at second order in $Q$ (*check P3-7*). Table 12.2 shows that the space components differ from the time
+for these states at second order in $Q$ (*check P3-7*). Table 12.3 shows that the space components differ from the time
 components (by up to a factor 2.3 for the phase in CJT), and that the twist of the unbroken $T^3$, which costs nothing in a
 gauge-invariant theory, costs $(\tilde f^{X,3}_{\rm SF})^2\neq0$. Both effects come from the momentum cutoff: a uniform space
 component shifts the momenta inside the fixed sphere $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$, which is neither gauge- nor
@@ -1768,7 +1906,7 @@ components measure the error of the regularization.
 | KS | $2.00041$ | $3.584$ | $5.0906$ | $5.5039$ | $4.317$ | $5.0198$ | $0.7028$ |
 | CJT | $2.12129$ | $2.376$ | $5.0906$ | $2.2553$ | $4.5779$ | $3.5749$ | $0.4769$ |
 
-**Table 12.2.** The coefficients of the kinetic part (12.4), (12.5), and the squared decay constants from the time
+**Table 12.3.** The coefficients of the kinetic part (12.4), (12.5), and the squared decay constants from the time
 components ($f$) and from the space components ($\tilde f$; the last column: the unbroken $T^3$). Data:
 `data/part3_sfbsv.csv`.
 
@@ -1780,12 +1918,13 @@ directions are alike (the degeneracy of the massive modes of Section 10.5 has th
 With (12.4) and the effective potential, and with the Yang-Mills part (5.3) of the gauge fields, the effective
 Lagrangian of method $X$ is
 $$\mathcal L^X=\mathcal L^X_{\rm kinetic}+\mathcal L^X_{\rm potential}+\mathcal L^{\rm YM}_{\rm SF},\qquad\mathcal L^X_{\rm potential}=-\mathcal V^X_{\rm SF}(\vec\Phi),\tag{12.6}$$
-for $X$ = CJT, HS, KS, with the numbers of Tables 12.1 and 12.2 ($\mathcal V^X_{\rm SF}$ is the computed function; (12.2) is its
-Landau approximation). KS and CJT have the same potential along the polar fields (the theorem of Section 9.2); they differ
+for $X$ = CJT, HS, KS, with the numbers of Tables 12.1 and 12.3 ($\mathcal V^X_{\rm SF}$ is the computed function; (12.2) is its
+Landau approximation, whose accuracy Table 12.2 states). KS and CJT have the same potential along the polar fields (the theorem of Section 9.2); they differ
 in the non-unitary directions ($u^X_{\rm SF}$) and in $Z$ and $Y$, through the isovector response, where KS has no exchange
 kernel. $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$ and $\mathcal L^{\rm KS}$ are Lagrangians of a
 complex isospin vector of fermion number 2 coupled to the gauge fields of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, with a
-Mexican-hat potential: the structure of the Higgs sector of Section 2.2, with an isospin vector in place of the doublet.
+Mexican-hat potential: the structure of the Higgs sector of the Standard Model (Section 1), with an isospin vector in place of
+the doublet.
 
 # 13. The minima, the breaking of the symmetry and $\mathrm{SFBSv}^X$
 
@@ -1843,7 +1982,7 @@ of the linear response (Section 10.5), and the masses of the gauge bosons that (
 project, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ (Section 13.3). Data: `data/part3_sfbsv.csv`.
 
 The effective Lagrangian, which keeps the derivatives to second order, gives the masses of the amplitude and of the
-non-unitary modes 7 to 17 per cent above the exact linear response (Table 13.1 and Figure 9). The difference is
+non-unitary modes 7 to 17 per cent above the exact linear response (Table 13.1 and Figure 10). The difference is
 expected: the modes lie at 0.8 to 0.9 of the threshold $2E^{X,{\rm gap}}_{\rm SF}$, where the response depends strongly on the
 frequency and the expansion to second order in the derivatives (in $\omega$) is not accurate; the ordering of the modes
 (in CJT and KS the amplitude mode below the non-unitary doublet; in HS $(0,1)$ and $(0,0)$ the two degenerate) is the
@@ -1851,7 +1990,7 @@ same in both.
 
 ![](figures/fig_part3_q2_masses.png){width=100%}
 
-**Figure 9.** Left: the masses of the amplitude and of the non-unitary modes from the effective Lagrangians (13.6) and
+**Figure 10.** Left: the masses of the amplitude and of the non-unitary modes from the effective Lagrangians (13.6) and
 from the linear response of Section 10.5. Right: the squared decay constants of the Goldstone fields from the time
 components and from the space components, and the spurious stiffness of the unbroken $T^3$ from the space components.
 Data: `data/part3_sfbsv.csv`.
@@ -1957,7 +2096,7 @@ $\mathsf M^X_{\rm SF}\mathfrak c=0\Leftrightarrow\mathcal K(\vec X(\mathfrak c))
 (12.3) the change of $\vec\Phi$ under the infinitesimal transformation of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ with the parameters
 $\mathfrak c_a$ (times the couplings). $\square$
 
-The conditions hold in every method (Table 12.2: $Z^X_{\rm SF}>0$, and $Z^X_{\rm SF}+Y^X_{\rm SF}>0$ also for HS $(1,1)$, where
+The conditions hold in every method (Table 12.3: $Z^X_{\rm SF}>0$, and $Z^X_{\rm SF}+Y^X_{\rm SF}>0$ also for HS $(1,1)$, where
 $Y^X_{\rm SF}<0$). For a vacuum, $\vec X(\mathfrak c)=0$ means $2ig^{\rm F}_{\rm LL}\mathfrak c_{\rm F}\vec n=g^{\rm v}_{\rm LL}\vec{\mathfrak c}\times\vec n$; the two
 sides are orthogonal, so both vanish: $\mathfrak c_{\rm F}=0$ and $\vec{\mathfrak c}\parallel\vec n$. **The massless gauge bosons of a vacuum correspond one to one
 to the generators of the identity component of its stabilizer** (Section 13.1): there is exactly one, the photon
@@ -1973,18 +2112,18 @@ $\theta'=37.875^\circ$, and it couples to the charge $T^2_{\rm LL}-\tfrac12F_{\r
 $g^{\rm v}_{\rm LL}\cos\theta'=2g^{\rm v}_{\rm LL}g^{\rm F}_{\rm LL}/((g^{\rm v}_{\rm LL})^2+4(g^{\rm F}_{\rm LL})^2)^{1/2}=0.55255$: the same structure as
 the Weinberg angle ($\tan\theta_W=g'/g$, $e=gg'/(g^2+g'^2)^{1/2}$), with $g'$ replaced by $2g^{\rm F}_{\rm LL}$ because the field has
 fermion number 2. The mixing angle of the photon is fixed by the generator that leaves the condensate unchanged; for the
-polar vacua of the superfluid that generator is pure isospin, and the angle is zero. Figure 10 follows the masses
+polar vacua of the superfluid that generator is pure isospin, and the angle is zero. Figure 11 follows the masses
 along the family $\vec\Phi=\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$ of the angle $\upsilon$ (upsilon): a massless boson
 exists only where the field has a continuous stabilizer ($\upsilon=0$, $45^\circ$, $90^\circ$), and its composition changes from
 $W^3$ through $\cos\theta'W^2-\sin\theta'B$ to $W^1$.
 
 ![](figures/fig_part4_r1_massmatrix.png){width=100%}
 
-**Figure 10.** The mass matrix (14.3) of $\mathcal L^{\rm CJT}$ along the fields $\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$. Left: the
+**Figure 11.** The mass matrix (14.3) of $\mathcal L^{\rm CJT}$ along the fields $\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$. Left: the
 four masses (square roots of the eigenvalues). Right: the squared components of the lightest boson. At $\upsilon=0$ and
 $90^\circ$ the field is a polar vacuum (along $\vec e_3$ and, up to the phase $i$, along $\vec e_1$) and the massless boson is $W^3$
 and $W^1$; at $\upsilon=45^\circ$ it is $\cos\theta'W^2-\sin\theta'B$. Computed by `python/sf_part4_figures.py` from (14.3) with the
-coefficients of Table 12.2.
+coefficients of Table 12.3.
 
 ## 14.4 The surviving group and its U(1)
 
@@ -2092,12 +2231,12 @@ have the same rate.
 
 **The nonlinear stage.** When $\lvert\Phi^3\rvert$ reaches $\Phi_0$ the growth stops; the field overshoots to
 $\lvert\Phi^3\rvert_{\max}>\Phi_0$, falls back (in the three HS methods to between $0.2$ and $7$ per cent of $\Phi_0$, in KS and CJT
-to between $0.2$ and $0.65$ of $\Phi_0$), and grows again: a train of pulses (Figure 11). The state cannot
+to between $0.2$ and $0.65$ of $\Phi_0$), and grows again: a train of pulses (Figure 12). The state cannot
 settle in the minimum of the Mexican hat. Its energy is conserved (*check P4-T3*, $4\times10^{-8}$ of the depth of the
 minimum) and equals that of the normal vacuum, which lies above the minimum by $\lvert\mathcal E^X_{\rm SF}\rvert$; the time-dependent
 mean field has no mechanism that carries this energy away (it is collisionless: no scattering of quasi-particles, no
 radiation, the state stays uniform), so it stays in the motion, which exchanges it between the kinetic and the
-interaction energy (Figure 11, right). The same pulse train is known from the collisionless dynamics of the BCS pairing
+interaction energy (Figure 12, right). The same pulse train is known from the collisionless dynamics of the BCS pairing
 problem started near the normal state; relaxation to the minimum needs processes beyond the mean field. The charges stay
 zero to $10^{-16}$ (*P4-T4*), $\mathsf R_{\rm SF}$ stays a Hermitian projector with the block relation of (6.4a) to $6\times10^{-10}$ (*P4-T5*), and
 the run with ten times smaller tolerances agrees to $5\times10^{-8}\Phi_0$ (*P4-T12*).
@@ -2126,7 +2265,7 @@ per pulse), in KS and in CJT (about 3 per pulse), and neutral in HS $(0,1)$ and 
 the two methods in which the amplitude mode and the non-unitary modes are degenerate, Table 10.4). The growth does not
 follow from how close the pulses come to the normal vacuum (the pulses of HS $(0,0)$ come closest, those of KS and CJT stay
 farthest from it); its mechanism is not analyzed further in this manuscript. The energy stays conserved in these runs
-(*P4-T13*), and the departure reaches $0.1$ at the times of Table 15.1 (seed $10^{-11}$; Figure 12, right).
+(*P4-T13*), and the departure reaches $0.1$ at the times of Table 15.1 (seed $10^{-11}$; Figure 13, right).
 
 | method | $\lambda^{\rm P}_{\rm SF}$ | $\gamma^X_{\rm SF}$, linear response | $\gamma^X_{\rm SF}$, time-dependent | largest $\lvert\Phi^3\rvert/\Phi_0$ | first maximum at $t$ | period | growth of the departure per pulse | $t$ at $s=0.1$ |
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -2144,7 +2283,7 @@ seeds, the growth of the departure (15.1) per pulse (seed $10^{-13}$) and the ti
 
 ![](figures/fig_part4_r2_growth.png){width=100%}
 
-**Figure 11.** Left: $\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ from the normal vacuum with the seed $10^{-7}$, for the five methods (KS and CJT
+**Figure 12.** Left: $\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ from the normal vacuum with the seed $10^{-7}$, for the five methods (KS and CJT
 coincide to $10^{-8}$), with the growth $e^{\gamma^X_{\rm SF}t}$ of the linear response (dotted). Right: CJT, $\lvert\Phi^3\rvert/\Phi_0$ and the kinetic, the interaction and the
 total energy per volume. Data: `data/part4_td_growth_*.csv`.
 
@@ -2180,7 +2319,7 @@ YP4-T3*).
 
 ![](figures/fig_part4_r3_modes.png){width=100%}
 
-**Figure 12.** Left: CJT, the windowed power spectra of the two signals after the changes of the ground state, with the
+**Figure 13.** Left: CJT, the windowed power spectra of the two signals after the changes of the ground state, with the
 collective modes of the linear response (dotted) and the threshold of two quasi-particles. Right: the departure (15.1) from
 the polar sector with the full equations and the non-unitary seed $10^{-13}$. Data: `data/part4_td_kicks_CJT.csv`,
 `data/part4_td_growth_*.csv`.
@@ -2220,7 +2359,7 @@ $\ell_{\rm W}=((M^{\rm CJT}_{W,{\rm SF}})^2-\omega_{\rm s}^2)^{-1/2}=29.565$. Th
 frequency over the last two periods agrees with this steady state for $\lvert x\rvert<100$ to $2\times10^{-3}$ of its largest value, and
 its decay length for $30<x<100$ is $30.141$ (*check P4-W5*; the remaining difference comes from the
 width of the source and from the waves above the mass that the switching on of the source excites, which travel slowly and
-are still visible beyond $x\approx150$, Figure 13). The photon carries energy to infinity at any frequency, the W only above its mass: the
+are still visible beyond $x\approx150$, Figure 14). The photon carries energy to infinity at any frequency, the W only above its mass: the
 range of the force of a static source is infinite for the photon and $1/M^X_{W,{\rm SF}}$ for the W.
 
 ## 15.4 The longitudinal Z: the Higgs mechanism in time
@@ -2277,7 +2416,7 @@ massive Z. The Python program repeats both sections through the C interface (*ch
 
 ![](figures/fig_part4_r4_waves.png){width=100%}
 
-**Figure 13.** Top left: the transverse photon and W at $t=900$, driven at $0.7M_W$ by the current sheet at $x=0$. Top right:
+**Figure 14.** Top left: the transverse photon and W at $t=900$, driven at $0.7M_W$ by the current sheet at $x=0$. Top right:
 the amplitude of the W at the source frequency, the evanescent steady state and the slope $e^{-x/\ell_{\rm W}}$. Bottom left: the energy
 density of the free Goldstone packet (up) and of the longitudinal Z (down) at three times. Bottom right: the centres of
 their energies. Data: `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv`.
@@ -2639,7 +2778,8 @@ VERDICT: ALL PASS (23 of 23)
 ## 16.9 Part III: the programs and how to run them
 
 * **Rust.** The program `sf_part3` (crate `rust/sfpart3`: the modules `effpot` (Section 12.1: the states with a fixed
-  pair field, the curves, the curvatures, the symmetries, the Landau fit) and `kinetic` (Section 12.2: the
+  pair field, the curves, the curvatures, the symmetries, the Landau fit), `landau` (Section 12.1: the accuracy of the
+  Landau form, Table 12.2 and Figure 9, with the checks P3-8 to P3-11) and `kinetic` (Section 12.2: the
   susceptibilities and the twisted states)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -2650,8 +2790,10 @@ VERDICT: ALL PASS (23 of 23)
 
   Output: `data/hck_part3_checks.txt` (the report) and the data files of Section 16.12; about two minutes.
 * **Python.** `python/sf_part3.py` recomputes, with the engine of `python/sf_part2.py`, the minima, the curvatures of the
-  effective potentials, the susceptibilities and the stiffness of the twisted states of HS $(1,1)$ and CJT, and compares
-  them with the values of the Rust program; `python/sf_part3_figures.py` draws Figures 8 and 9:
+  effective potentials, the Taylor coefficients at the origin, the susceptibilities and the stiffness of the twisted
+  states of HS $(1,1)$ and CJT, checks the quasi-particle energies (10.3) with an applied pair field, recomputes every
+  number of Table 12.2 from the data files of the five polar curves, and compares all of them with the values of the
+  Rust program; `python/sf_part3_figures.py` draws Figures 8, 9 and 10:
 
       python3 python/sf_part3.py
       python3 python/sf_part3_figures.py
@@ -2664,67 +2806,97 @@ VERDICT: ALL PASS (23 of 23)
 
 | check | result | deviation | tolerance | statement |
 |:---|:---|:---|:---|:---|
+| P3-8 | PASS | 2.442e-15 | 1.0e-13 | the pair field enters the quasi-particle energies like a mass, (10.3): the BdG matrix with N = (M - m) beta (x) 1\_2 and P = Phi\_a (K\^3)\^dag has the eigenvalues -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (20 random q, M, Phi\_a) |
 | P3-1 HS_1_1 | PASS | 2.509e-14 | 1.0e-9 | HS\_1\_1: the applied field Phi0 = 0.4030641406 gives back Phi\^3 = Phi0 and the ground-state energy -5.1863442023e-4 of part II |
 | P3-2 HS_1_1 | PASS | 3.985e-8 | 1.0e-6 | HS\_1\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_1_1 | PASS | 3.010e-14 | 1.0e-10 | HS\_1\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the polar minimum is a minimum also in the non-unitary directions (curvature 2.759287e-2 > 0) |
 | P3-5 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0159) = -1.557047e-6) |
+| P3-9 HS_1_1 | PASS | 2.027e-17 | 1.0e-12 | HS\_1\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_1_1 | PASS | 1.103e-14 | 1.0e-9 | HS\_1\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_1_1 | PASS | 8.786e-9 | 1.0e-6 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -6.1624310941e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -6.0408804409e-3) |
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_1 | PASS | 1.082e-14 | 1.0e-10 | HS\_0\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: the polar minimum is a minimum also in the non-unitary directions (curvature 2.372538e-2 > 0) |
 | P3-5 HS_0_1 | PASS | 0.000e0 | 0.0e0 | HS\_0\_1: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0139) = -1.031488e-6) |
+| P3-9 HS_0_1 | PASS | 2.269e-17 | 1.0e-12 | HS\_0\_1: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_0_1 | PASS | 5.616e-13 | 1.0e-9 | HS\_0\_1: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_0_1 | PASS | 5.417e-9 | 1.0e-6 | HS\_0\_1: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -5.3534198133e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -5.2811441242e-3) |
 | P3-6 HS_0_1 | PASS | 1.170e-19 | 1.0e-10 | HS\_0\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.2e-19) |
 | P3-1 HS_0_0 | PASS | 7.716e-15 | 1.0e-9 | HS\_0\_0: the applied field Phi0 = 0.3069887935 gives back Phi\^3 = Phi0 and the ground-state energy -2.0616190807e-4 of part II |
 | P3-2 HS_0_0 | PASS | 2.628e-8 | 1.0e-6 | HS\_0\_0: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_0 | PASS | 6.311e-14 | 1.0e-10 | HS\_0\_0: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: the polar minimum is a minimum also in the non-unitary directions (curvature 1.837793e-2 > 0) |
 | P3-5 HS_0_0 | PASS | 0.000e0 | 0.0e0 | HS\_0\_0: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0114) = -5.571838e-7) |
+| P3-9 HS_0_0 | PASS | 0.000e0 | 1.0e-12 | HS\_0\_0: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 HS_0_0 | PASS | 8.612e-13 | 1.0e-9 | HS\_0\_0: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 HS_0_0 | PASS | 7.213e-9 | 1.0e-6 | HS\_0\_0: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587316e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2619672631e-3) |
 | P3-6 HS_0_0 | PASS | 1.946e-16 | 1.0e-10 | HS\_0\_0: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -1.9e-16) |
 | P3-1 KS | PASS | 1.074e-14 | 1.0e-9 | KS: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 KS | PASS | 3.446e-8 | 1.0e-6 | KS: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 KS | PASS | 3.939e-14 | 1.0e-10 | KS: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 KS | PASS | 0.000e0 | 0.0e0 | KS: the polar minimum is a minimum also in the non-unitary directions (curvature 2.172785e-2 > 0) |
 | P3-5 KS | PASS | 0.000e0 | 0.0e0 | KS: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0122) = -6.380082e-7) |
+| P3-9 KS | PASS | 2.222e-16 | 1.0e-12 | KS: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 KS | PASS | 7.503e-13 | 1.0e-9 | KS: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 KS | PASS | 7.428e-8 | 1.0e-6 | KS: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587553e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
 | P3-6 KS | PASS | 6.046e-16 | 1.0e-10 | KS: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = -6.0e-16) |
 | P3-1 CJT | PASS | 3.223e-14 | 1.0e-9 | CJT: the applied field Phi0 = 0.3284861084 gives back Phi\^3 = Phi0 and the ground-state energy -2.4223849659e-4 of part II |
 | P3-2 CJT | PASS | 3.446e-8 | 1.0e-6 | CJT: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 CJT | PASS | 6.266e-14 | 1.0e-10 | CJT: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
 | P3-4 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the polar minimum is a minimum also in the non-unitary directions (curvature 2.107798e-2 > 0) |
 | P3-5 CJT | PASS | 0.000e0 | 0.0e0 | CJT: Mexican hat: V(0) = 1.9e-17 and V &lt; 0 near the origin (V(0.0122) = -6.380082e-7) |
+| P3-9 CJT | PASS | 3.315e-16 | 1.0e-12 | CJT: along the polar curve the normal self-energy of every state is a Dirac mass, so the quasi-particle energies are (10.3) (largest deviation from a multiple of beta (x) 1\_2) |
+| P3-11 CJT | PASS | 2.943e-13 | 1.0e-9 | CJT: the least squares of (12.2) by Householder reflections give the coefficients of the normal equations (sum of the relative differences of a, b, c) |
+| P3-10 CJT | PASS | 7.425e-8 | 1.0e-6 | CJT: the coefficient of Phi\^2 of the Taylor series at the origin, a\^Tay = -4.2966587554e-3, by Richardson from the fields 0.004, 0.008 and from 0.008, 0.016 (relative difference; the fit (12.2) has a = -4.2674033395e-3) |
 | P3-6 CJT | PASS | 1.269e-15 | 1.0e-10 | CJT: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 1.3e-15) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 
-VERDICT: ALL PASS (31 of 31)
+VERDICT: ALL PASS (47 of 47)
 
 ## 16.11 Part III: the report of the Python program
 
 | check | result | deviation | tolerance | statement |
 |:---|:---|:---|:---|:---|
+| YP3-8 | PASS | 1.332e-15 | 1.0e-13 | the quasi-particle energies (10.3) for an applied pair field and a Dirac mass: -+(q\^2 + M\^2 + Phi\_a\^2)\^(1/2), eight times each (LAPACK, 20 random q, M, Phi\_a) |
+| YP3-11 HS_1_1 | PASS | 9.618e-12 | 1.0e-07 | HS\_1\_1: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_1\_1.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 HS_0_1 | PASS | 1.478e-11 | 1.0e-07 | HS\_0\_1: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_1.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 HS_0_0 | PASS | 5.701e-11 | 1.0e-07 | HS\_0\_0: the accuracy of the Landau form recomputed from data/part3\_effpot\_HS\_0\_0.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 KS | PASS | 3.104e-09 | 1.0e-07 | KS: the accuracy of the Landau form recomputed from data/part3\_effpot\_KS.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
+| YP3-11 CJT | PASS | 1.216e-09 | 1.0e-07 | CJT: the accuracy of the Landau form recomputed from data/part3\_effpot\_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
 | YP3-6 HS_1_1 | PASS | 1.229e-14 | 1.0e-09 | HS\_1\_1: the susceptibilities chi\_11 = 0.0051186247, chi\_FF = 0.0201445392 = Rust (the coefficients Z and Y of the kinetic part) |
+| YP3-9 HS_1_1 | PASS | 8.923e-18 | 1.0e-12 | HS\_1\_1: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1\_2) |
+| YP3-10 HS_1_1 | PASS | 3.072e-11 | 1.0e-08 | HS\_1\_1: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -6.1624310943e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 8.8e-09) |
 | YP3-7 HS_1_1 | PASS | 1.239e-11 | 1.0e-07 | HS\_1\_1: the stiffness of the phase from the twisted states f\^2 = 6.8731729932e-03 = Rust (relative) |
 | YP3-1 CJT | PASS | 9.310e-14 | 1.0e-09 | CJT: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.3284861084) |
 | YP3-2 CJT | PASS | 4.557e-11 | 1.0e-06 | CJT: the curvature of the effective potential along the amplitude V'' = 1.9671873735e-02 = Rust (relative) |
 | YP3-4 CJT | PASS | 4.249e-10 | 1.0e-05 | CJT: the curvature along the non-unitary direction 2.1077976476e-02 = Rust (relative) |
 | YP3-6 CJT | PASS | 4.226e-15 | 1.0e-09 | CJT: the susceptibilities chi\_11 = 0.0045778739, chi\_FF = 0.0203622430 = Rust (the coefficients Z and Y of the kinetic part) |
+| YP3-9 CJT | PASS | 8.555e-17 | 1.0e-12 | CJT: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1\_2) |
+| YP3-10 CJT | PASS | 2.872e-12 | 1.0e-08 | CJT: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08) |
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 
-VERDICT: ALL PASS (10 of 10)
+VERDICT: ALL PASS (20 of 20)
 
 ## 16.12 Part III: data files and figures (SHA-256 checksums)
 
 * `data/hck_part3_checks.txt` (report of `sf_part3`):\
-  `bef6d72bed71ee6e68faf525be58412afc17792c87f64a03eefb3830b5ce97e1`
+  `84b5b846d59b811dbfdbbd4c8bc375f244e7f5ea844e141154072f1de70f33d3`
 * `data/hck_part3_checks_python.txt` (report of `python/sf_part3.py`):\
-  `4bf0a394d2c78a9142cd9952b2f5c4f2e08b44389089c43f9085c8acce3954ed`
+  `bd21c832c2cc219c173f99f3ccb9376610414a75cd93a7a7240d72ee0cd38e17`
 * `data/part3_values.csv` (the numbers of Part III):\
-  `e2fceaa16427e7a5294274441ecaafd9b54bb766d46e882336582f01ae75fcb3`
-* `data/part3_sfbsv.csv` (Tables 12.2 and 13.1, Figure 9):\
+  `5893d2b871015c3ab475affb82a17a21c18f1a772c754fb6c2018ec8c6f1deeb`
+* `data/part3_sfbsv.csv` (Tables 12.3 and 13.1, Figure 10):\
   `7553ebd5ec2cd946f5b3e634d1bcf5d68eb8426474dfb02c123669fa6aad4214`
+* `data/part3_landau.csv` (Table 12.2, Figure 9, right):\
+  `f2b56e0925e8494c23b4365ab6b91747ccc34bd3c7f3774d8a3817d4685be089`
+* `data/part3_landau_residuals.csv` (Figure 9, left):\
+  `11a6001a3ffc86e0d2d0dadbdeb4ebcb223ff15f5634e16121130b67ee3b382f`
 * `data/part3_effpot_HS_1_1.csv`, `data/part3_effpot_HS_0_1.csv`, `data/part3_effpot_HS_0_0.csv`, `data/part3_effpot_KS.csv`,
   `data/part3_effpot_CJT.csv` (Figure 8):\
   `adec9b41732d6e022c680889612a4f56a4610a52765d36d44a1ae76de2e2dc5c`\
@@ -2734,7 +2906,9 @@ VERDICT: ALL PASS (10 of 10)
   `32c3fb53937001c51a23a33b2790112e0970043d8b33f08473d277be1bb9954c`
 * `figures/fig_part3_q1_potential.pdf` (Figure 8):\
   `48f72a711590af29604ff220d62ecffee75901fd606dc106864bed1303fae954`
-* `figures/fig_part3_q2_masses.pdf` (Figure 9):\
+* `figures/fig_part3_q3_landau.pdf` (Figure 9):\
+  `378eeb85ba05ccdadd3e14a3410ba43a4b72110ce39b4d824ee4a907c0bd09a3`
+* `figures/fig_part3_q2_masses.pdf` (Figure 10):\
   `65cd0d5018bbfc2a2bcfb63102a42e2a6570d73e4a569a5a6ba41971d3c294e2`
 
 ## 16.13 Part IV: the programs and how to run them
@@ -2765,7 +2939,7 @@ VERDICT: ALL PASS (10 of 10)
   cores (the right side of (6.6) is shared among the cores of the machine).
 * **Python.** `python/sfsundials.py` loads the library of `sfsundials_c` with the standard module ctypes;
   `python/sf_part4.py` recomputes, with numpy, LAPACK and the integrators through the C interface, the checks YP4 of
-  Section 16.15; `python/sf_part4_figures.py` draws Figures 10 to 13 and makes the two videos (it needs matplotlib and
+  Section 16.15; `python/sf_part4_figures.py` draws Figures 11 to 13 and makes the two videos (it needs matplotlib and
   the program ffmpeg):
 
       python3 python/sf_part4.py
@@ -2942,14 +3116,14 @@ VERDICT: ALL PASS (20 of 20)
 * `data/part4_td_summary.csv` (Tables 15.1 and 15.2):\
   `024c04abcdabc12484921f19de63cbf4f2fb20b002b60735ac6bdbd89142283d`
 * `data/part4_td_growth_HS_1_1.csv`, `data/part4_td_growth_HS_0_1.csv`, `data/part4_td_growth_HS_0_0.csv`,
-  `data/part4_td_growth_KS.csv`, `data/part4_td_growth_CJT.csv` (Figures 11 and 12):\
+  `data/part4_td_growth_KS.csv`, `data/part4_td_growth_CJT.csv` (Figures 12 and 12):\
   `3525bd90a9e4ae91e4479c3ee62d90e1cee605428625b0fd48aaff5af7770939`\
   `e5f39af7202beedaf504a1842704ce029027df2106ff8321aee3c01750712549`\
   `4234161741cbfc3ab106921af2db43125087a23762514982db39fff6ee842c93`\
   `6b83ed8e8fb654546be5dea32d4c0768fde9d9a9943cd604dcdbae277c1e429e`\
   `fe10d5a08d11fee1d4490e656c891218bc6fc0e9b22c9d775a4338861131d925`
 * `data/part4_td_kicks_HS_1_1.csv`, `data/part4_td_kicks_HS_0_1.csv`, `data/part4_td_kicks_HS_0_0.csv`,
-  `data/part4_td_kicks_KS.csv`, `data/part4_td_kicks_CJT.csv` (Table 15.2, Figure 12):\
+  `data/part4_td_kicks_KS.csv`, `data/part4_td_kicks_CJT.csv` (Table 15.2, Figure 13):\
   `0d5c8386b3f4a19ce4e2609ecc7a165dcd6e0e96022ab79a8f1ec072a9d023b5`\
   `9f7e896649bb63551331d3b0e36e95abc9762c2266a1ff2f7b5cdd98e49c8557`\
   `929607fadd33d1d6940f515687ce2ac29a95743282f7bd747306610fa2df094f`\
@@ -2960,18 +3134,18 @@ VERDICT: ALL PASS (20 of 20)
   `f467ab53be96720146dff2fc335820ee48da7c8b5491cc3e4586c31c14b9f182`
 * `data/part4_td_small_CJT.csv` (the comparison YP4-T1):\
   `af01b17d961e4283f8b66e2bb97c79b024ddf2b4a7cd64f5843795d80bfbec80`
-* `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv` (Figure 13, the
+* `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv` (Figure 14, the
   second video):\
   `e714fc85a788d1dfadcddb323b833c3ce65722af9a62267f5a1fa0d8c7c5bf00`\
   `94e3bec519f3a739f4862f33814fc749a3a85710e67e859c5925a91887ad99cc`\
   `3d773b42e6ef09b3ef4047bfcd470db74b420e803e2b22f01a6e96b1263ee09e`
-* `figures/fig_part4_r1_massmatrix.pdf` (Figure 10):\
+* `figures/fig_part4_r1_massmatrix.pdf` (Figure 11):\
   `caa47847ba676acb6b11a824be1101413d542f7d5fdaa76b76f9ef12b91385c6`
-* `figures/fig_part4_r2_growth.pdf` (Figure 11):\
+* `figures/fig_part4_r2_growth.pdf` (Figure 12):\
   `8ced54b15da35c5546d0e06305383f0b664ea038cdd3c8f34df9dabae68c3799`
-* `figures/fig_part4_r3_modes.pdf` (Figure 12):\
+* `figures/fig_part4_r3_modes.pdf` (Figure 13):\
   `d7cc1802f966287a371b23c0099d38dcec18f794cd5815c962722adabc8418ec`
-* `figures/fig_part4_r4_waves.pdf` (Figure 13):\
+* `figures/fig_part4_r4_waves.pdf` (Figure 14):\
   `b8c847aceb6786a7bd284e3dfcdf4eb2fa220c7bab19b97273eb1dd2dd5e9d7b`
 * `videos/video_part4_v1_condensate_growth.mp4`:\
   `272e4b213c6825ba45694137abdeff9965d8272951ddb89eee00c49ddbaabefd`
@@ -3035,6 +3209,14 @@ Each of the following was found before part II was committed.
    relative order $Q^4\approx10^{-8}$ times their coefficients; the tolerance is now $2\times10^{-6}$.
 2. The first version of the figure program wrote the calligraphic letter without braces, which the formula renderer of
    matplotlib does not accept; corrected before any figure was used.
+3. Section 12.1 said only that the polar curve "is fitted well by the Landau form" and gave the largest residual in
+   Table 12.1, without saying what the residual means, why the form cannot be exact, and what follows from it. Asked by
+   the author (21 November 2026) to explain the remark and its importance and to define the Landau form with examples,
+   the solution added the definition and the examples of the Landau form, the paragraphs on its accuracy, its cause and
+   its importance, Table 12.2 and Figure 9 (module `landau` of `sf_part3`, checks P3-8 to P3-11 and YP3-8 to YP3-11).
+   The figures 9 to 13 of the earlier versions are now the figures 10 to 14, and the earlier Table 12.2 is Table 12.3.
+4. Section 12.3 named "Section 2.2" for the Higgs sector of the Standard Model; the Standard Model is stated in
+   Section 1 (corrected with item 3).
 
 ## 17.4 Part IV
 
@@ -3307,7 +3489,8 @@ author's conventions (Section 1).
 | $Z^X_{\rm SF}$, $Y^X_{\rm SF}$ | `Z_X` `Y_X` | the two coefficients of the kinetic part of the effective Lagrangian of method $X$: of $(\nabla\vec\Phi)^\dagger\cdot\nabla\vec\Phi$ and of $\lvert\vec\Phi^\dagger\cdot\nabla\vec\Phi\rvert^2/\lvert\vec\Phi\rvert^2$ (each contracted over the coordinates with $\eta^{\rm LL}_{pp}$) | new |
 | $f^{X,{\rm F}}_{\rm SF}$, $f^{X,{\rm I}}_{\rm SF}$; $\tilde f^{X,{\rm F}}_{\rm SF}$, $\tilde f^{X,{\rm I}}_{\rm SF}$, $\tilde f^{X,3}_{\rm SF}$ | `fF` `fI` `fF_s` `fI_s` `f3_s` | the decay constants of the Goldstone field of the phase (F) and of the isospin rotations (I) in method $X$, from the time components (the static susceptibilities); the same from the space components (states with a uniform twist), and the space-component stiffness of the unbroken generator $T^3_{\rm LL}$, which vanishes in a gauge-invariant regularization | new |
 | $\nu^X_{{\rm SF},1}$, $\nu^X_{{\rm SF},2}$ | `nu_1` `nu_2` | the two non-unitary fields of $\mathrm{SFBSv}^X$ (the imaginary parts of the components 1 and 2 of the field relative to its phase) | new |
-| $a^X_{\rm SF}$, $b^X_{\rm SF}$, $c^X_{\rm SF}$, $u^X_{\rm SF}$ | `landau_a` `landau_b` `landau_c` `u_X` | the coefficients of the Landau form $a\lvert\vec\Phi\rvert^2+b\lvert\vec\Phi\rvert^4+c\lvert\vec\Phi\rvert^6+u(\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2)$ of $\mathcal V^X_{\rm SF}$ (the first three fitted along the polar states, $u$ from the curvature along the non-unitary directions) | new |
+| $a^X_{\rm SF}$, $b^X_{\rm SF}$, $c^X_{\rm SF}$, $u^X_{\rm SF}$ | `landau_a` `landau_b` `landau_c` `u_X` `landau_res` `landau_phifit` `landau_depthfit` `landau_curvfit` `landau_signs` `landau_resK` `landau_cK4` `landau_rng` | the coefficients of the Landau form $a\lvert\vec\Phi\rvert^2+b\lvert\vec\Phi\rvert^4+c\lvert\vec\Phi\rvert^6+u(\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2)$ of $\mathcal V^X_{\rm SF}$ (the first three fitted along the polar states, $u$ from the curvature along the non-unitary directions) | new |
+| $a^{X,{\rm Tay}}_{\rm SF}$ | `a_taylor` `a_Taylor` | the coefficient of $\lvert\vec\Phi\rvert^2$ of the Taylor series of the effective potential $\mathcal V^X_{\rm SF}$ at $\vec\Phi=0$ (one half of its second derivative along the polar fields there), computed from states with small applied pair fields; the coefficient $a^X_{\rm SF}$ of the fitted Landau form differs from it | new |
 | $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$; $\mathcal L^X_{\rm kinetic}$, $\mathcal L^X_{\rm potential}$ | `L_CJT` `L_HS` `L_KS` `L_kin` `L_pot` | the effective Lagrangian of the field $\vec\Phi^X_{\rm SF}$ in method $X$, and its kinetic part (the terms with derivatives, to second order) and potential part (the author's names) | the author's name |
 | $\mathcal V^X_{\rm SF}$ | `V_eff_X` | the effective potential of method $X$, $-\mathcal L^X_{\rm potential}$: the energy per volume of the uniform state with the field $\vec\Phi^X_{\rm SF}$, measured from the normal vacuum | new |
 | $\kappa^{X,{\rm t}}_{\rm SF}$, $\kappa^{X,{\rm s}}_{\rm SF}$, $\kappa^{X,{\rm h}}_{\rm SF}$ | `kappa_t` `kappa_s` `kappa_h` | the stiffness coefficients of $\mathcal L^X_{\rm kinetic}$: of the time derivatives and of the space derivatives of the directions in which the field turns (phase and isospin), and of the derivatives of its modulus | Revision_SuperLoop wrote $Z^{\rm t}_{\rm LL}$, $Z^{\rm s}_{\rm LL}$ |
@@ -3343,6 +3526,7 @@ author's conventions (Section 1).
 | $D^{\rm SM}_\mu$; $\Phi^{\rm SM}$, $\phi^+$, $\phi^0$ |  | the covariant derivative of the Higgs doublet of the Standard Model, the doublet and its two components | the author's conventions (Standard Model) |
 | $W^a_\mu$, $B_\mu$; $g$, $g'$; $\tau^a$, $T^{a,{\rm SM}}$; $Y^{\rm SM}$, $Q^{\rm SM}$ |  | the gauge fields of $SU(2)_L$ and $U(1)_Y$ of the Standard Model, their couplings, the Pauli matrices and generators, the hypercharge and the electric charge ($a=1,2,3$; $\mu=0,\dots,3$) | the author's conventions (Standard Model) |
 | $W^\pm_\mu$, $Z_\mu$, $A_\mu$, $\theta_W$, $e$, $v$ |  | the mass eigenstates of the Standard Model, the weak mixing angle, the elementary charge and the vacuum value of the Higgs field | the author's conventions (Standard Model) |
+| $\mu^{\rm SM}$, $\lambda^{\rm SM}$ |  | the two coefficients of the Higgs potential $-(\mu^{\rm SM})^2(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}+\lambda^{\rm SM}((\Phi^{\rm SM})^\dagger\Phi^{\rm SM})^2$ of the Standard Model | the author's conventions (Standard Model) |
 | $M_W$, $M_Z$ |  | the masses of $W^\pm_\mu$ and $Z_\mu$ in the Standard Model, $gv/2$ and $\sqrt{g^2+g'^2}\,v/2$ | the author's conventions (Standard Model) |
 | $SU(2)_L$, $U(1)_Y$ |  | the electroweak gauge group of the Standard Model | the author's conventions (Standard Model) |
 
@@ -3379,7 +3563,16 @@ of angular momentum 0 and 1 of a correlation matrix); $\mathfrak a$, $\mathfrak 
 $\mathfrak s$, $\mathfrak A$, $\mathfrak F$ (the quantities of the angular and radial integrals of (11.3)); $\mathfrak m$, $\mathfrak D$ (the
 two parameters of the Kohn-Sham potentials, Section 11.5).
 
-**Local variables of Part III.** $\Phi_0$ (short for $\Phi^X_{0,{\rm SF}}$); $\mathsf R$ (short for the generalized density
+**Local variables of Part III.** $\Phi_0$ (short for $\Phi^X_{0,{\rm SF}}$); $\Phi$ (the modulus of a polar field), $\Phi_i$ (the
+computed points of a polar curve), $\Phi_{\max}$ (the end of a computed curve), $\Phi_{\rm a}$ (the amplitude of an applied
+pair self-energy $\Phi_{\rm a}(\mathsf K^3_{\rm LL})^\dagger$), $\mathcal V_{\rm L}$, $\Phi_{\rm L}$ (the polynomial (12.2) along the polar fields and its
+minimum), $K$, $c_k$ (the number of powers and the coefficients of a least-squares fit $\sum_{k=1}^Kc_k\Phi^{2k}$), $q$, $s$ (the
+modulus of a momentum and the quantity $(M^{X,{\rm D}}_{\rm SF})^2+\Phi_{\rm a}^2$ in the paragraph on the cause of the residual);
+the symbols of the examples of Landau forms in Section 12.1: $F_{\rm mag}$, $a_{\rm mag}$, $b_{\rm mag}$, $m_{\rm mag}$ (the energy, its
+two coefficients and the magnetization of a ferromagnet), $\alpha_{\rm GL}$, $\beta_{\rm GL}$, $\psi_{\rm GL}$ (the coefficients and the
+order parameter of Ginzburg and Landau), $\vec\varpi$, $c_{\rm n}$, $c_{\rm s}$ (the order parameter and the two coefficients of a
+condensate of spin 1), $\alpha_{\rm D}$, $\beta_{\rm D}$, $\gamma_{\rm D}$, $P_{\rm D}$ (the coefficients and the polarization of Devonshire's
+theory); $\mathsf R$ (short for the generalized density
 $\mathsf R_{\rm SF}$ of a state, Section 12.1); $\lambda$ (a Lagrange multiplier, Section 12.1); $\nu$ (the coefficient of the
 non-unitary direction in Section 12.1); $\mathcal V''_{\rm amp}$, $\mathcal V''_{\rm NU}$ (the curvatures of
 $\mathcal V^X_{\rm SF}$ along the amplitude and along the non-unitary direction); $Q$ (the strength of a uniform twist);
@@ -3393,7 +3586,7 @@ $\vec X_a$ (the change of a constant field under a gauge field of the direction 
 form (14.2)); $\vartheta$, $\vec n$ (the phase and the direction of a vacuum, as in Part III); $\vec e_{\perp1}$, $\vec e_{\perp2}$ (two
 unit vectors that complete $\vec n$ to a right-handed frame); $\mathsf V$ (a real matrix with $\mathsf M^X_{\rm SF}=\mathsf V^T\mathsf V$);
 $\theta'$ (the angle of the massless field of the non-polar example, Section 14.3); $\upsilon$ (the angle of the family of fields of
-Figure 10); $\mathsf r$, $\theta$ (as in Part III); $\lambda_0,\dots,\lambda_3$, $v_0$ (the eigenvalues of the microscopic mass
+Figure 11); $\mathsf r$, $\theta$ (as in Part III); $\lambda_0,\dots,\lambda_3$, $v_0$ (the eigenvalues of the microscopic mass
 matrix and the eigenvector of $\lambda_0$, Table 14.1); $\mathsf R$, $\mathsf H$ (short for $\mathsf R_{\rm SF}$, $\mathsf H_{\rm SF}$), $w$ (the
 weight of a node of the grid) and $\gamma$ (a positive number, $\omega=i\gamma$) in Section 15.1; $s(t)$, $s_1$, $s_2$, $e_k$ (the departure
 (15.1) from the polar sector, its values for the two seeds, and its largest value in the pulse $k$); $w_j$, $n_{\rm out}$ (the
@@ -3470,6 +3663,17 @@ gauge-invariant fields of (15.8)).
   the effective potential at a fixed value of the field (Section 12.1).
 * V. L. Ginzburg and L. D. Landau, On the theory of superconductivity, Zhurnal Eksperimental'noi i Teoreticheskoi Fiziki
   20, 1064 (1950) -- the expansion of the energy in powers of the order parameter and its gradients (Sections 12 and 13).
+* L. D. Landau, On the theory of phase transitions, Zhurnal Eksperimental'noi i Teoreticheskoi Fiziki 7, 19 (1937) -- the
+  Landau form (Section 12.1).
+* L. P. Gor'kov, Microscopic derivation of the Ginzburg-Landau equations in the theory of superconductivity, Soviet
+  Physics JETP 9, 1364 (1959); A. F. Devonshire, Theory of barium titanate, Part I, Philosophical Magazine 40, 1040
+  (1949); T.-L. Ho, Spinor Bose condensates in optical traps, Physical Review Letters 81, 742 (1998); T. Ohmi and
+  K. Machida, Bose-Einstein condensation with internal degrees of freedom in alkali atom gases, Journal of the Physical
+  Society of Japan 67, 1822 (1998); A. J. Leggett, A theoretical description of the new phases of liquid $^3$He, Reviews
+  of Modern Physics 47, 331 (1975); P. G. de Gennes, Short range order effects in the isotropic phase of nematics and
+  cholesterics, Molecular Crystals and Liquid Crystals 12, 193 (1971) -- the examples of Landau forms (Section 12.1).
+* A. S. Householder, Unitary triangularization of a nonsymmetric matrix, Journal of the ACM 5, 339 (1958) -- the
+  least squares by reflections (Section 12.1).
 
 * G. S. Guralnik, C. R. Hagen and T. W. B. Kibble, Global conservation laws and massless particles, Physical Review Letters
   13, 585 (1964); A. Proca, Sur la théorie ondulatoire des électrons positifs et négatifs, Journal de Physique et le

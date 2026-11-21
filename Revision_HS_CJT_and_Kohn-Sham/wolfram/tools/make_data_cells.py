@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""make_data_cells.py  (PROJECT spacetimes, folder Revision_HS_CJT_and_Kohn-Sham, notebook superfluid.nb)
+
+Writes the values of the Rust programs that the notebook compares with its own results into Wolfram Language files
+that the source of the notebook includes in closed input cells (line  (* @@INCLUDE data_partN.wl@@ *)).  The notebook
+reads no file when it is evaluated: these values are part of it.  Each file begins with a comment that names the data
+files it was made from and their SHA-256 checksums, so that the provenance can trace every number.
+
+Usage (from the folder Revision_HS_CJT_and_Kohn-Sham):
+    python3 wolfram/tools/make_data_cells.py 2      # writes wolfram/source/data_part2.wl
+    python3 wolfram/tools/make_data_cells.py 3      # writes wolfram/source/data_part3.wl
+    python3 wolfram/tools/make_data_cells.py 4      # writes wolfram/source/data_part4.wl
+"""
+import csv
+import hashlib
+import os
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+D = os.path.join(ROOT, "data")
+
+
+def wl_number(s):
+    """a number of a CSV file in the input form of the Wolfram Language: full digits, 2.5e-3 -> 2.5*^-3"""
+    x = s.strip()
+    if x.lower() in ("nan", "inf", "-inf"):
+        return "Indeterminate"
+    if "e" in x or "E" in x:
+        m, e = x.lower().split("e")
+        return "%s*^%d" % (m, int(e))
+    return x
+
+
+def sha(path):
+    return hashlib.sha256(open(path, "rb").read()).hexdigest()
+
+
+def values_assoc(name, var):
+    path = os.path.join(D, name)
+    rows = list(csv.DictReader(open(path)))
+    body = ",\n   ".join('"%s" -> %s' % (r["name"], wl_number(r["value"])) for r in rows)
+    return path, "%s = <|\n   %s|>;" % (var, body)
+
+
+def table_list(name, var, cols, numeric):
+    path = os.path.join(D, name)
+    rows = list(csv.DictReader(open(path)))
+    out = []
+    for r in rows:
+        items = []
+        for c in cols:
+            items.append(wl_number(r[c]) if c in numeric else '"%s"' % r[c].replace('"', '\\"'))
+        out.append("{" + ", ".join(items) + "}")
+    return path, "%s = {\n   %s};" % (var, ",\n   ".join(out))
+
+
+def main():
+    part = sys.argv[1]
+    pieces = []
+    if part == "2":
+        pieces.append(values_assoc("part2_values.csv", "rustPart2"))
+        pieces.append(table_list("part2_pair_channels.csv", "rustPairChannels",
+                                 ["operator", "channel", "E_pair_per_unit_coupling"], {"E_pair_per_unit_coupling"}))
+    elif part == "3":
+        pieces.append(values_assoc("part3_values.csv", "rustPart3"))
+        # the five computed polar curves of the effective potential: {applied field, Phi^3, V, Dirac mass} per point
+        for tag in ("HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"):
+            pieces.append(table_list("part3_effpot_%s.csv" % tag, "rustEffPot[\"%s\"]" % tag,
+                                     ["applied_field", "Phi3", "V", "Dirac_mass"], {"applied_field", "Phi3", "V", "Dirac_mass"}))
+    elif part == "4":
+        pieces.append(values_assoc("part4_values.csv", "rustPart4"))
+    else:
+        sys.exit("usage: make_data_cells.py 2|3|4")
+    head = ["(* The values of the Rust programs that Part %s of the notebook uses or compares with its own results, written by" % part,
+            "   wolfram/tools/make_data_cells.py from the data files of the folder data/ (do not edit):"]
+    for path, _ in pieces:
+        head.append("     %s   SHA-256 %s" % (os.path.relpath(path, ROOT), sha(path)))
+    head.append("*)")
+    out = os.path.join(ROOT, "wolfram", "source", "data_part%s.wl" % part)
+    with open(out, "w", encoding="utf-8") as f:
+        f.write("\n".join(head) + "\n" + "\n".join(code for _, code in pieces) + "\n")
+    print("wrote %s" % os.path.relpath(out, ROOT))
+
+
+if __name__ == "__main__":
+    main()

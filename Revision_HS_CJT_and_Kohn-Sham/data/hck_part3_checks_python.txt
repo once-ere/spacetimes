@@ -2,18 +2,28 @@ sf_part3.py: the Python computation of part III of superfluid.md (Revision_HS_CJ
 Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
 the measured deviation and its tolerance (or the facts that decide it), and the statement.
 
+PASS YP3-8   deviation 1.332e-15 (tolerance 1.0e-13): the quasi-particle energies (10.3) for an applied pair field and a Dirac mass: -+(q^2 + M^2 + Phi_a^2)^(1/2), eight times each (LAPACK, 20 random q, M, Phi_a)
+PASS YP3-11 HS_1_1 deviation 9.618e-12 (tolerance 1.0e-07): HS_1_1: the accuracy of the Landau form recomputed from data/part3_effpot_HS_1_1.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
+PASS YP3-11 HS_0_1 deviation 1.478e-11 (tolerance 1.0e-07): HS_0_1: the accuracy of the Landau form recomputed from data/part3_effpot_HS_0_1.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
+PASS YP3-11 HS_0_0 deviation 5.701e-11 (tolerance 1.0e-07): HS_0_0: the accuracy of the Landau form recomputed from data/part3_effpot_HS_0_0.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
+PASS YP3-11 KS deviation 3.104e-09 (tolerance 1.0e-07): KS: the accuracy of the Landau form recomputed from data/part3_effpot_KS.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
+PASS YP3-11 CJT deviation 1.216e-09 (tolerance 1.0e-07): CJT: the accuracy of the Landau form recomputed from data/part3_effpot_CJT.csv with numpy (SVD): the minimum, depth and curvature of (12.2), the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals and the sign changes = Rust (largest relative difference)
 PASS YP3-1 HS_1_1 deviation 5.519e-14 (tolerance 1.0e-09): HS_1_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406)
 PASS YP3-2 HS_1_1 deviation 2.068e-10 (tolerance 1.0e-06): HS_1_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative)
 PASS YP3-4 HS_1_1 deviation 4.316e-10 (tolerance 1.0e-05): HS_1_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative)
 PASS YP3-6 HS_1_1 deviation 1.229e-14 (tolerance 1.0e-09): HS_1_1: the susceptibilities chi_11 = 0.0051186247, chi_FF = 0.0201445392 = Rust (the coefficients Z and Y of the kinetic part)
+PASS YP3-9 HS_1_1 deviation 8.923e-18 (tolerance 1.0e-12): HS_1_1: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1_2)
+PASS YP3-10 HS_1_1 deviation 3.072e-11 (tolerance 1.0e-08): HS_1_1: the coefficient of Phi^2 of the Taylor series of the effective potential at the origin a^Tay = -6.1624310943e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 8.8e-09)
 PASS YP3-7 HS_1_1 deviation 1.239e-11 (tolerance 1.0e-07): HS_1_1: the stiffness of the phase from the twisted states f^2 = 6.8731729932e-03 = Rust (relative)
 PASS YP3-1 CJT deviation 9.310e-14 (tolerance 1.0e-09): CJT: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.3284861084)
 PASS YP3-2 CJT deviation 4.557e-11 (tolerance 1.0e-06): CJT: the curvature of the effective potential along the amplitude V'' = 1.9671873735e-02 = Rust (relative)
 PASS YP3-4 CJT deviation 4.249e-10 (tolerance 1.0e-05): CJT: the curvature along the non-unitary direction 2.1077976476e-02 = Rust (relative)
 PASS YP3-6 CJT deviation 4.226e-15 (tolerance 1.0e-09): CJT: the susceptibilities chi_11 = 0.0045778739, chi_FF = 0.0203622430 = Rust (the coefficients Z and Y of the kinetic part)
+PASS YP3-9 CJT deviation 8.555e-17 (tolerance 1.0e-12): CJT: the normal self-energy of the states with the applied fields 0.5, 1, 1.5, 2 Phi0 is a Dirac mass (largest deviation from a multiple of beta (x) 1_2)
+PASS YP3-10 CJT deviation 2.872e-12 (tolerance 1.0e-08): CJT: the coefficient of Phi^2 of the Taylor series of the effective potential at the origin a^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08)
 PASS YP3-7 CJT deviation 1.972e-11 (tolerance 1.0e-07): CJT: the stiffness of the phase from the twisted states f^2 = 2.2552881119e-03 = Rust (relative)
 
 Notes:
-  run time 24 s
+  run time 30 s
 
-VERDICT: ALL PASS (10 of 10)
+VERDICT: ALL PASS (20 of 20)
