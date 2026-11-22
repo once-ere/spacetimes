@@ -3,88 +3,70 @@
 title: "paper_prd: the Regular Article \"Higgs as a Composite, and Quantum Gravity\" for Physical Review D"
 subtitle: "README of the folder Revision_SM_Higgs/paper_prd of PROJECT spacetimes"
 author: "Prepared for Patrick Lee Nash, Ph.D."
-date: "November 21, 2026"
+date: "November 22, 2026"
 ---
 
 <!-- This file is generated from docs_src/paper_prd_README.src.md by code/scripts/assemble_docs.py; edit the source. -->
-
-**The state of this document under the revised hypotheses (21 November 2026).** This document was inherited
-unchanged from the earlier hypotheses, under which the spinor field was the DiracLike spinor with the electric charge 0
-and $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ was a new gauge group. The hypotheses of this folder are different:
-$SU(2)_{\rm v}$ is $SU(2)_L$, the fermion number is the hypercharge ($Y^{\rm SM}=F_{\rm LL}/4$), a singlet field $\chi_{\rm SH}$
-is added, and the superfluid is the condensate of the pairs of a particle of $\Psi_{\rm LL}$ and a particle of
-$\chi_{\rm SH}$, which has the quantum numbers of the Higgs doublet. Every statement below that depends on the earlier
-hypotheses is replaced as this document is rewritten for the revised ones.
 
 # 1. What this folder is
 
 This folder contains the Regular Article "Higgs as a Composite, and Quantum Gravity" by Patrick Lee Nash, Ph.D.,
 prepared for submission to Physical Review D, together with its Supplemental Material, the cover letter, the
 information to be entered on the submission server of the American Physical Society (APS), and the folder of the files
-to be uploaded. The author asked for it on 21 November 2026 at 11:29 PST, with three questions:
+to be uploaded. The steps on the server (logging in, entering the data, uploading, submitting) are the author's;
+nothing has been submitted.
 
-1. How wide is the region of the fluctuations near the critical temperature $T^{X,{\rm c}}_{\rm SF}$ of the superfluid? The
-   answer needs one more calculation, the gradient coefficient of the order parameter at $T^{X,{\rm c}}_{\rm SF}$.
-2. For each of the five mean-field methods $X$ = HS $(1,1)$, HS $(0,1)$, HS $(0,0)$, KS, CJT: can the superfluid play the
-   role of the Higgs particle?
-3. Is the Higgs then a composite particle?
+The article is the third part of stage 6 of the revision of the hypotheses of PROJECT spacetimes. The author asked on 21
+November 2026, at 17:09 PST, that the hypotheses be modified so that the superfluid can be the Higgs field of the
+Standard Model, with the same quantum numbers as the Higgs; at 19:38 PST he instructed that a second singlet with the
+hypercharge $-\tfrac34$ be added. The article reports the second version of the revised hypotheses, with the first
+version (one singlet) as the comparison. It replaces the article that this folder held under the earlier hypotheses,
+in which the spinor field had no electroweak quantum numbers and the superfluid was the Higgs field of a new gauge
+group; that article stays unchanged in the folder `Revision_HS_CJT_and_Kohn-Sham/paper_prd` and in the history of the
+repository.
 
-The author also fixed the form of the answer: a Regular Article for Physical Review D, as a publication-ready PDF with
-its text, references, figures, tables and captions, its LaTeX source in REVTeX, a data availability statement, a cover
-letter, generous supplementary documents that prove every assertion, and the preparation of the steps on the submission
-server. The steps on the server (logging in, entering the data, uploading, submitting) are the author's; nothing has
-been submitted. The gravitational sector of the title is not computed: the article outlines in its Sec. VIII how it will
-be added through E. A. Lord's gauge theory of the local change of spinor representation (Proc. Cambridge Philos. Soc.
-69, 423 (1971)), the route that the author named, and says that this sector is a program.
+The article answers, under the revised hypotheses, the questions of the author's request of 21 November 2026, 11:29 PST:
+whether the superfluid can play the role of the Higgs particle in each of the five mean-field methods, and whether the
+Higgs is then a composite particle. The first question of that request, the width of the region of the fluctuations
+near the critical temperature, was answered for the earlier hypotheses only. The revision has no stage at finite
+temperature, so the article does not recompute it and says so (decision D35 of the task record; the author can ask for
+a thermal stage). The gravitational sector of the title is not computed: the article outlines, in its Sec. X, how it
+will be added through E. A. Lord's gauge theory of the local change of spinor representation (Proc. Cambridge Philos.
+Soc. 69, 423 (1971)), the route that the author named, and says that this sector is a program.
 
 # 2. The answers in brief
 
-The symbols are those of the article: $X$ is the method, $\mathrm{SF}$ marks a quantity of the superfluid, $\Lambda_{\rm LL}$
-(the momentum cutoff of the uniform states) is the unit of energy, $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$ is the scale of the breaking of
-the new gauge group, defined as the Standard Model defines its vacuum value, by $M_W=gv/2$ ($f^{X,{\rm I}}_{\rm SF}$ the decay
-constant of the isospin rotations; the value of $v^X_{\rm SF}$ in GeV is not known), and $M^{X,{\rm H}}_{\rm SF}$ is the mass of the
-amplitude mode. The spinor field is the DiracLike spinor: it has electric charge 0 and no electroweak quantum numbers, and
-$SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge group, not the electroweak group.
+The symbols are those of the article: $\Lambda_{\rm LL}$, the momentum cutoff of the uniform states, is the unit of energy;
+$v_{\rm SH}$ is the scale of the breaking, defined by $M_W=gv_{\rm SH}/2$ as the Standard Model defines $v$; $M_H$ is the mass of
+the amplitude mode.
 
-1. **The width of the critical region.** The Ginzburg number, the reduced temperature $\lvert T-T^{X,{\rm c}}_{\rm SF}\rvert/T^{X,{\rm c}}_{\rm SF}$
-   below which the Gaussian fluctuations of the order parameter exceed the jump of the specific heat of the mean-field
-   theory, is ${\rm Gi}^{X}_{\rm SF}$ = {{GEN:p3_gz_Gi}}. The critical region is wider than the critical temperature itself, and
-   the mean-field transition, on which the five methods agree, is not reliable. The cause is that the pairs are tightly
-   bound: the correlation length is {{GEN:p3_gz_xi0}} in units of $1/\Lambda_{\rm LL}$, about the cutoff length, and a
-   correlation volume holds {{GEN:p3_gz_dcxi3}} degrees of freedom. The gradient coefficient needed for this number is
-   computed from the static pair response of a moving pair; the calculation also shows that the cutoff must be placed on
-   the relative momentum of the pair (with a cutoff on the momenta of the two constituents the gradient expansion does
-   not exist).
-2. **The Higgs particle.** (a) In every method the superfluid is the Higgs field of its own gauge group: $W^\pm$ and $Z$
-   become massive, one gauge boson, the zeugon, stays massless, and a scalar of charge $Q_{\rm LL}=0$ lies below the threshold
-   of two quasi-particles. That scalar is a Higgs particle only in the mean-field dynamics: once it can decay into the
-   longitudinal gauge bosons its tree-level width is {{GEN:p3_h_width}} times its mass; $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$ =
-   {{GEN:p3_h_mhv}}, the quartic coupling is {{GEN:p3_h_lambda}}, and every method has the two non-unitary scalars of the
-   charges $Q_{\rm LL}=\pm1$ at {{GEN:p3_h_mnu}} times $M^{X,{\rm H}}_{\rm SF}$. The methods differ in degree, not in kind.
-   (b) In no method can the superfluid be the Higgs field of the Standard Model: the DiracLike spinor carries no
-   electroweak quantum numbers, so the condensate is a singlet of the electroweak group, whatever its numbers.
-3. **Compositeness.** Yes, in every method and by construction: the field of the superfluid is the amplitude of the pair
-   self-energy, a composite of two spinor charges; its kinetic term consists of susceptibilities of the spinor field;
-   its amplitude mode is a bound state of two quasi-particles. Whether the Higgs boson of nature is composite is not
-   decided by this computation, because the Higgs particle of this model is not that boson.
-4. **The new massless gauge boson.** After the breaking exactly one gauge boson stays massless, the gauge boson of the
-   unbroken isospin charge $Q_{\rm LL}$; it is not the photon, and the author offered its naming: it is the **zeugon** (Greek
-   *zeugos*, a yoked pair), the only gauge boson that attracts the two members of a pair. The surviving group $O(2)$ makes
-   its charge conjugation a gauge symmetry, the structure of Alice electrodynamics; the Alice strings and monopoles that
-   follow from the topology of the vacuum are not computed.
+1. **The quantum numbers and the gauge bosons.** The two pair fields of the isodoublet with the two singlets form a
+   bidoublet of $SU(2)_L\times SU(2)_{\rm R}$ with the quantum numbers of two Higgs doublets. In all five methods the
+   ground state is the custodial vacuum: it breaks $SU(2)_L\times U(1)_Y$ to the $U(1)$ of the electric charge, keeps the
+   photon massless and gives $\rho=1$. With $v_{\rm SH}=246.22$ GeV the $W$ and $Z$ bosons have their measured masses at tree
+   level and the cutoff is {{GEN:hg_lam2_range}} GeV.
+2. **The Higgs particle.** The amplitude mode is a composite scalar, bound below the energy that breaks a pair in the
+   methods without exchange self-energies and decaying above it in KS and CJT. In the pairing-only methods it lies exactly
+   at the pair self-energy: $M_H/v_{\rm SH}={{GENM:hg_mh_over_v_rpa2}}$, against $m_H/v={{GENM:hg_mh_over_v_sm}}$, and no coupling of
+   the scan brings it below {{GEN:hg_scan_min2}}. Within the mean field the superfluid is therefore the Higgs field of the
+   Standard Model in its quantum numbers and its gauge-boson masses, but not in the mass of its boson.
+3. **Compositeness.** Yes, by construction: the order parameter is the expectation value of pairs of a member of the
+   isodoublet and a singlet, and the amplitude mode is a bound state or a resonance of two quasi-particles.
+4. **What comes with it.** A custodial triplet of massive scalars, a massless Goldstone boson of the particle number
+   (decision D32 of the author, pending), and fermions with the electric charges $\tfrac34$ and $-\tfrac14$.
 
 # 3. Contents
 
 | file or folder | what it is |
 |:---|:---|
 | `higgs_composite_qg.pdf`, `.tex`, `.md` | the article (REVTeX 4.2, two columns), its LaTeX source and its Markdown version |
-| `higgs_composite_qg_SM.pdf`, `.tex`, `.md` | the Supplemental Material: notation, model, methods, the superfluid at $T=0$ and at finite temperature, the derivation of the gradient coefficient and of the Ginzburg number, the Higgs sector, compositeness, Lord's construction, every check of the three implementations with its deviation and tolerance, the data files and programs with their SHA-256 checksums |
+| `higgs_composite_qg_SM.pdf`, `.tex`, `.md` | the Supplemental Material: notation, the model and its group theory, the methods, the normal vacuum, the stationary states, the effective potential, the susceptibilities and the gauge bosons, the amplitude mode with its closed form, the scan, the dynamics in time, Lord's construction, every check of the Rust and the Python programs with its deviation and tolerance, the data files with their SHA-256 checksums |
 | `cover_letter.pdf`, `.tex`, `.md` | the cover letter to the editors |
 | `submission_info.pdf`, `.tex`, `.md` | what to enter on the submission server: journal and article type, length, title and byline, the abstract (typeset and as LaTeX source), the subject classification (PhySH), the data availability statement, the comments for the editor and the suggested referees, the files to upload, the steps on the server, and the statements that only the author can confirm |
-| `submission/` | exactly the files to upload: the article as PDF and as LaTeX source with its `.bbl` and its five figures in the same folder, the Supplemental Material and the cover letter |
+| `submission/` | exactly the files to upload: the article as PDF and as LaTeX source with its `.bbl` and its three figures in the same folder, the Supplemental Material and the cover letter |
 | `src/` | the templates of the four documents (`*.template.tex`) and the bibliography `references.bib`; every number that a program computes is a placeholder `{{NAME}}` in the templates |
-| `scripts/build_paper.py` | the program that fills the placeholders from the data files and the reports of the checks and builds the four documents and the folder `submission/` |
-| `figures/` | the five figures of the article, copied by the build from the folder `figures/` of `Revision_SM_Higgs` |
+| `scripts/build_paper.py` | the program that fills the placeholders and builds the four documents and the folder `submission/` |
+| `figures/` | the four figures of the article and of the Supplemental Material, copied by the build from the folder `figures/` of `Revision_SM_Higgs` |
 | `generated/numbers.csv` | every placeholder with the value that the last build inserted |
 | `generated/build_report.txt` | the checks of the last build (Section 5) |
 | `references.bib` | the copy of `src/references.bib` that the build uses |
@@ -92,38 +74,49 @@ $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge group, not the electr
 
 # 4. How the numbers are made
 
-The article prints results of the programs of the folder `Revision_SM_Higgs`: the Rust programs `sf_part2`,
-`sf_part3` and `sf_part4`, which write the data files of `data/`, the Python programs `sf_part2.py`, `sf_part3.py` and
-`sf_part4.py`, which compute the same results independently with numpy and LAPACK, and the notebook `superfluid.nb` in the
-Wolfram Language, which repeats the checks of the statements of the article's Secs. III to VI (except the mass matrix of
-the gauge bosons and the time-dependent calculations) with a third implementation. Every check is written to a report
-in `data/` with its deviation and its tolerance.
+The article prints results of the programs of the revision in the folder `Revision_SM_Higgs`: the Rust programs
+`sh_quantum`, `sh_superfluid`, `sh_higgs` and `sh_dynamics`, which write the data files of `data/`; the Python programs
+`python/sh_quantum.py`, `sh_superfluid.py`, `sh_higgs.py` and `sh_dynamics.py`, which check them with their own engine and
+by other methods; and the Wolfram scripts `wolfram/source/sh_*.wls`, which check the group theory and the closed forms in
+exact arithmetic, and whose checks Part R of the notebook `superfluid.nb` repeats. Every check is written to a report in
+`data/` with its deviation and its tolerance.
 
-`scripts/build_paper.py` reads the data files and the reports and computes every number that the four documents state
-about these results: the results themselves (the tables, and ranges such as the Ginzburg numbers), and every bound of
-the agreement of two computations ("the three implementations confirm (14) to $2\times10^{-11}$"). A bound is the largest
-deviation of the checks it summarizes, rounded **up** to one significant digit, so that a stated bound is never smaller
-than a measured deviation. Typed in the templates are only the parameters of the model and of the numerical method,
-mathematical constants, and the measured values of cosmology, each with its reference. The
-values inserted by the last build are listed in `generated/numbers.csv`.
+`scripts/build_paper.py` takes the numbers that the manuscripts of the revision state from the fragments that their
+fragment programs wrote into `provenance/generated/` (`sh_quantum.md`, `sh_superfluid.md`, `sh_higgs.md`, `sh_dynamics.md`,
+`notebook.md`), so that the article states exactly the numbers of the manuscripts; it computes the few others from the
+data files (the cutoff in TeV, the ratio to the Standard Model, the bound of $\lvert\rho_{\rm SH}-1\rvert$, the masses of the
+constituents in GeV). A bound of agreement is the largest deviation of the checks it summarizes, rounded **up**, so that a
+stated bound is never smaller than a measured deviation. The tables of results of the Supplemental Material are the
+tables of the manuscripts, converted from Markdown to LaTeX and set as floats, which never break across a page; the
+tables of the checks are read from the reports. Where a statement of a check cites the document of the hypotheses or an
+equation of a manuscript of the stages, the build replaces the citation by the place of the Supplemental Material that
+states the same thing (the Supplemental Material refers to no other document and says so in its Sec. S11), and it stops
+if a citation of another document remains. Typed in
+the templates are only the parameters of the model and of the numerical method, mathematical constants, the quantum
+numbers that the hypotheses assign, and measured values with their references. The values inserted by the last build are
+listed in `generated/numbers.csv`.
 
 The build compiles the article and the Supplemental Material with pdfLaTeX, BibTeX and REVTeX 4.2, the cover letter and
 the submission information with pdfLaTeX, and writes the Markdown versions with pandoc. It fixes the date that pdfTeX
-writes into a PDF to the date of the documents (21 November 2026), so that a rebuild from the same sources and data
-gives the same bytes; this was checked by building twice and comparing the SHA-256 checksums of every PDF, LaTeX and
-Markdown file.
+writes into a PDF to the date of the documents (22 November 2026), so that a rebuild from the same sources and data
+gives the same bytes.
 
-To build (from the folder `Revision_SM_Higgs`, after the programs have written `data/`):
+To build (from the folder `Revision_SM_Higgs`, after the programs have written `data/`, the fragment programs
+`provenance/generated/`, and the figure programs `python/sh_article_figures.py` and `python/sh_higgs_figures.py`
+`figures/`):
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_SM_Higgs"
+python3 python/sh_article_figures.py                 # Figures 1 to 3 of the article
+python3 python/sh_higgs_figures.py                   # Figure S1 of the Supplemental Material
 python3 paper_prd/scripts/build_paper.py             # the four documents and submission/
 bash code/scripts/build_docs.sh paper_prd/README.md  # this README as .tex and .pdf
 ```
 
 `build_paper.py` needs Python 3, a TeX installation with REVTeX 4.2 (`revtex4-2.cls`, `apsrev4-2.bst`) and the LaTeX
-packages `listings` and `longtable`, and pandoc. Its exit status is 1 if a document has an undefined reference or an
-overfull box wider than 1 pt, or if the folder `submission/` fails its check.
+packages `listings` and `longtable`, and pandoc. It runs LaTeX again, up to three more times, while the labels of a
+document still move. Its exit status is 1 if a document has an undefined or multiply defined reference, labels that do
+not settle, a lost float or an overfull box wider than 1 pt, or if the folder `submission/` fails its check.
 
 # 5. The checks of the last build
 
@@ -134,50 +127,68 @@ overfull box wider than 1 pt, or if the folder `submission/` fails its check.
 The check of `submission/` compiles a copy of the folder alone in a temporary folder, with the figures beside the source
 as the server keeps them, and compares the number of pages with the article.
 
-# 6. Corrections made before the first version was kept
+# 6. Corrections made before this version was kept
 
-Before the first commit, every number typed in the drafts of the templates was compared with the reports and data
-files, and every number that a program computes was replaced by a placeholder. The comparison found these errors in the
-drafts, which were not committed (their causes are recorded in the task record of the folder, entry E20):
+Each of the following was found, by proofreading the built documents or by a check of the build, before the first
+commit of this version of the folder, and is corrected in it.
 
-1. "the masses of $W$ and $Z$ are at most a fifth of $M^{X,{\rm H}}_{\rm SF}/2$" was false for KS and CJT, where the ratio is
-   {{GEN:p3_h_vv_half_max}}; the text now gives the bound $M_V\le{{GENM:p3_h_vv_ratio_max}}\,M^{X,{\rm H}}_{\rm SF}$ from the data, with $M_V$ the
-   mass of $W$ or $Z$, and the tree-level factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$, $\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, of
-   the decays into $W^+W^-$ and $ZZ$ (the drafts named only the phase-space factor $(1-4\zeta_V)^{1/2}$). The drafts took the
-   sentence from the documents `superfluid.md` (Section 14.6), `provenance/P4_remarks.md` (addendum A2) and
-   `superfluid.nb` (Section III.G.8), where it has since been corrected (entries E20, E23 and E24 of the task record);
-2. the ratio of the mass of the Higgs boson to the scale of the breaking in the Standard Model was given as 0.509 in the
-   abstract; $125.20/246.22=0.50849$ rounds to 0.508 (0.509 came from rounding 0.5085 a second time); the abstract then
-   gave 0.5085, and since the correction of item 7 it gives no value of the Standard Model;
-3. "the programs compute both numbers also from the full static response of the normal vacuum ... to $10^{-14}$": only the
-   Rust program computes them so, and the largest deviation is $3.5\times10^{-14}$;
-4. bounds smaller than the largest deviation they summarize: "the programs confirm (14) to $10^{-11}$" (the Python check
-   YP3-G2 deviates by $1.6\times10^{-11}$), and, rounded down, "they agree to $5\times10^{-12}$ (checks P3-G10)" for the
-   closed form of the slope $\alpha^{X,{\rm GL}}_{\rm SF}$ (the checks P3-G10 deviate by up to $5.1\times10^{-12}$; the
-   sentence now also cites the checks YP3-G10 and WP3-G10, which deviate by up to $4.7\times10^{-12}$ and
-   $7.0\times10^{-12}$);
-5. the build wrote the dash of a range of numbers as `\text{--}`, which pandoc dropped outside formulas: the Markdown
-   versions of the drafts read "Ginzburg numbers 7.611" instead of 7.6 to 11; the dash is now written `\mbox{--}`, which
-   LaTeX and pandoc both set correctly;
-6. the Markdown versions of the drafts lacked the title, the byline and the abstract, which pandoc does not write for a
-   REVTeX document; the build now adds them;
-7. after the first version had been kept, the author stated (21 November 2026) that the spinor field, the DiracLike
-   spinor, has electric charge 0 and no electroweak quantum numbers, and that $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new
-   gauge group, not the electroweak group. The first version had called the unbroken charge the electric charge and the
-   massless gauge boson the photon, and had judged the superfluid against the Higgs boson of the Standard Model (the
-   ratio of the mass to the scale of the breaking against 0.5085, the unitarity bound of the Higgs doublet, the values in
-   GeV on the scale $v=246.22$ GeV, "charged scalars"). That comparison had no basis and is withdrawn: the article, the
-   Supplemental Material and the cover letter now answer separately whether the superfluid is the Higgs field of its own
-   group and whether it can be that of the Standard Model, Table III has no column of the Standard Model and no rows in
-   GeV, the vacuum energy is compared with the dark-energy density as a condition on the unknown scale, and the massless
-   gauge boson is the zeugon (entries C18, C19, E25 to E27 of the task record).
+1. **The masses of the constituents.** A draft said that the lightest fermionic excitations have masses of a few hundred
+   GeV. The gap of the ground states of the second version is {{GEN:hg_gap2_gev_range}} GeV, and the article states that
+   range.
+2. **The direction of the scan.** A draft said that the ratio $M_H/v_{\rm SH}$ grows near the critical coupling. The scan
+   shows the opposite: the ratio is smallest near the critical coupling and grows with the coupling, because the pair
+   self-energy grows while the scale stays small. The build now checks that the ratio increases with the coupling at
+   each mass of the second version, and it inserts the smallest ratio and the largest scale from the data.
+3. **Statements wider than the computation.** Statements about the scan, the checks and the broken generators were
+   first written for more cases than were computed; they now name the cases (the second version, the pairing-only
+   methods, the generators that are symmetries of the version).
+4. **The paths of the figures.** The source named the figures without their folder `figures/`; the check of the folder
+   `submission/` found it. The source now names the folder, and the copy in `submission/` drops it, as the server keeps
+   all files in one folder.
+5. **Overfull lines.** The equation of the critical coupling was split, and the widths of the columns of the tables of
+   the Supplemental Material were set.
+6. **The legends.** The legends of Figures 1 and 2 covered curves and were moved.
+7. **The notation of the tables.** The tables of the Supplemental Material first printed the symbols of the manuscripts
+   (with the suffix SH where the article has none); the build now maps them to the symbols of the article, and the symbol
+   table of the Supplemental Material gained the two potentials $V^{(0)}$ and $V^{(1)}$ that its tables use.
+8. **An undefined mass.** The free Hamiltonian of the singlets in the Supplemental Material used a mass $m$ that it
+   did not define; it now names the masses of the two singlets.
+9. **Where KS and CJT differ.** The Supplemental Material proves that KS and CJT coincide on the states of the paper,
+   but its table of the normal vacuum shows the two methods differing in the response to the mixings of the fields. It
+   now says why: such changes leave the span of the Kohn-Sham densities, and only CJT keeps their exchange contraction.
+10. **Terms used before their definition.** The pairing-only methods (HS (0,1) and HS (0,0)) were named before they
+    were defined; both documents now define them where the methods are introduced. The integral of the critical
+    coupling was written $I_1(m)$ for $I_1(m_{\rm LL})$, and the stages that the tables of the checks name were not
+    explained; Sec. S11 now explains them.
+11. **The index of the hypercharge.** The mass matrix of the gauge bosons used the index 4 for the hypercharge while
+    the eight generators of the global group were not listed; the eight generators are now named, and the hypercharge
+    has the index $Y$.
+12. **The rank in the first version.** The Supplemental Material said that the matrix of the eight susceptibilities
+    has rank three in the first version. There $SU(2)_{\rm R}$ is not a symmetry, and the program counts the rank among
+    $T^1$, $T^2$, $T^3$, $R_{\rm SH}$ and $F^{\rm tot}_{\rm SH}$; the text now says so.
+13. **A table under a wrong header.** The table of the scale broke across a page, and its last two rows appeared under
+    the header of the next table, the table of the gap (a fault of long tables under REVTeX 4.2 when a page breaks just
+    before the next long table begins). The short tables are now floats, and the captions of the remaining long tables
+    end their label with a period, as the floats do.
+14. **Citations of other documents.** The statements of the checks cited the document of the hypotheses and equations
+    of the manuscripts of the stages; the build replaces them (Section 4).
+15. **The smallest ratio of the scan.** The abstract said that the ratio "stays above" its smallest value; it now says
+    that the ratio is at least that value.
+16. **The parameter $\rho$ in the scan.** The article said that $\rho_{\rm SH}=1$ at every point of the scan; that holds
+    in the second version only (in the first version $\rho_{\rm SH}$ grows with the coupling), and the range of the ratio
+    that the sentence gives is that of the second version. The sentence now says so.
+17. **The range of the factor.** The article said that the amplitude mode is 16 to 19 times too heavy without saying
+    where the two ends come from; it now gives the factor of the linear response and that of the effective Lagrangian.
+18. **Labels that move.** The build did not check that the labels had settled after its passes of LaTeX; it now runs
+    more passes and fails if they do not settle.
+19. **A plural.** The submission information wrote "2 page(s)"; it now writes "2 pages".
 
 # 7. Provenance
 
 The four documents, the folder `submission/`, `generated/numbers.csv` and `generated/build_report.txt` are written by
-`scripts/build_paper.py` from the templates in `src/` and the data files and reports of `data/`; the Supplemental
-Material lists the data files, the programs and the templates with their SHA-256 checksums. The checksums of the
-templates, of the build program and of the files to upload, at the time this README was built:
+`scripts/build_paper.py` from the templates in `src/`, the fragments of `provenance/generated/` and the data files and
+reports of `data/`; the Supplemental Material lists the data files and reports with their SHA-256 checksums. The
+checksums of the templates, of the build program and of the files to upload, at the time this README was built:
 
 * `paper_prd/scripts/build_paper.py`:\
   `{{SHA256:paper_prd/scripts/build_paper.py}}`

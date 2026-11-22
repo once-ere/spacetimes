@@ -1,10 +1,10 @@
-% higgs_composite_qg_SM.tex -- Supplemental Material of the Regular Article "Higgs as a Composite, and Quantum Gravity".
-% PROJECT spacetimes, folder Revision_SM_Higgs/paper_prd.
+% higgs_composite_qg_SM.tex -- Supplemental Material of the Regular Article "Higgs as a Composite, and Quantum Gravity",
+% revised hypotheses.  PROJECT spacetimes, folder Revision_SM_Higgs/paper_prd.
 % This file is generated from src/higgs_composite_qg_SM.template.tex by scripts/build_paper.py, which inserts every number
 % that a program computes, every table of results, every table of checks and every checksum from the files of the folder
-% (the bounds of the agreement of two computations rounded up).  Typed in the template are only the parameters of the model
-% and of the numerical method, mathematical constants, and measured values of cosmology with their
-% references.  Build:  python3 paper_prd/scripts/build_paper.py
+% (the bounds of the agreement of two computations rounded up).  Typed in the template are only the parameters of the
+% model and of the numerical method, mathematical constants, the quantum numbers that the hypotheses assign, and measured
+% values of the Standard Model with their references.  Build:  python3 paper_prd/scripts/build_paper.py
 \documentclass[aps,prd,onecolumn,superscriptaddress,nofootinbib,floatfix,longbibliography]{revtex4-2}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
@@ -15,11 +15,25 @@
 
 \newcommand{\LL}{{\rm LL}}
 \newcommand{\SF}{{\rm SF}}
+\newcommand{\SH}{{\rm SH}}
 \newcommand{\tr}{\mathrm{tr}}
 \renewcommand{\theequation}{S\arabic{equation}}
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thesection}{S\arabic{section}}
+% the captions of the long tables end their label with a period, like those of the floats
+\makeatletter
+\def\LT@makecaption#1#2#3{%
+  \LT@mcol\LT@cols c{\hbox to\z@{\hss\parbox[t]\LTcapwidth{%
+    \sbox\@tempboxa{#1{#2. }#3}%
+    \ifdim\wd\@tempboxa>\hsize
+      #1{#2. }#3%
+    \else
+      \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi
+    \endgraf\vskip\baselineskip}%
+  \hss}}}
+\makeatother
 
 \begin{document}
 
@@ -28,16 +42,16 @@
 \author{Patrick Lee Nash, Ph.D.}
 \affiliation{PROJECT spacetimes}
 
-\date{November 21, 2026}
+\date{November 22, 2026}
 
 \begin{abstract}
 This Supplemental Material gives the derivations, the numerical methods, the complete tables of results, the checks and
 the data behind every statement of the article. It is written to be read on its own: every symbol is defined here
-(Sec.~\ref{sec:notation}), and every equation that the article uses is derived or stated with its source. Equations,
-tables and figures of this document carry the prefix S. All numbers are outputs of two independent programs, one in Rust
-and one in Python (numpy and LAPACK), and the statements of Secs.~\ref{sec:thermal} to \ref{sec:higgs} are checked a third
-time by a notebook in the Wolfram Language; Sec.~\ref{sec:checks} lists the checks with their results, and
-Sec.~\ref{sec:data} the files with their SHA-256 checksums.
+(Sec.~\ref{sec:notation}), and every equation that the article uses is derived or stated here. Equations, tables and
+figures of this document carry the prefix S. All numbers are outputs of programs in Rust, checked by independent
+programs in Python (numpy and LAPACK) and, for the group theory and the closed forms, by scripts in the Wolfram Language
+in exact arithmetic; Sec.~\ref{sec:checks} lists the checks with their results, and Sec.~\ref{sec:data} the files with
+their SHA-256 checksums.
 \end{abstract}
 
 \maketitle
@@ -48,61 +62,66 @@ Sec.~\ref{sec:data} the files with their SHA-256 checksums.
 \section{Notation and conventions}
 \label{sec:notation}
 
-Units: $\hbar=c=k_{\rm B}=1$; the momentum cutoff $\Lambda_\LL=1$ is the unit of energy, of momentum and of temperature, and
-$1/\Lambda_\LL$ the unit of length. The metric is $\eta^\LL={\rm diag}(1,-1,-1,-1)$; indices $p,p'=0,\dots,3$ label space-time,
-$j=1,2,3$ space, $\iota=1,2,3$ isospin. The suffix LL marks the objects of the Lorentz super-loop (the bi-octonion model of
-Ref.~\cite{Nash2026}), the suffix SF those of the superfluid; a superscript $X$ names the method (Sec.~\ref{sec:methods}).
-Table~\ref{tab:symbols} lists the symbols.
+Units: $\hbar=c=1$; the momentum cutoff $\Lambda_\LL=1$ is the unit of energy and of momentum, and $1/\Lambda_\LL$ the unit
+of length and of time. The metric is $\eta^\LL={\rm diag}(1,-1,-1,-1)$. The suffix LL marks the objects of the Lorentz
+super-loop (the bi-octonion model of Ref.~\cite{Nash2026}), SF those of the superfluid of the earlier hypotheses that the
+revised ones keep, and SH those of the revised hypotheses; a superscript $X$ names the method (Sec.~\ref{sec:methods}).
+The \emph{second version} of the hypotheses has the two singlets $\chi_\SH$ and $\chi'_\SH$; the \emph{first version},
+computed as the comparison, has the pairing term of $\chi_\SH$ only, and $\chi'_\SH$ is a free field. Table~\ref{tab:symbols}
+lists the symbols.
 
 \begingroup\small
-\begin{longtable}{p{0.27\textwidth}p{0.68\textwidth}}
+\begin{longtable}{p{0.30\textwidth}p{0.65\textwidth}}
 \caption{\label{tab:symbols}The symbols of the article and of this Supplemental Material.}\\
 \hline\hline
-symbol & meaning \\ \hline
+symbol & meaning\\ \hline
 \endfirsthead
-\hline symbol & meaning \\ \hline
+\hline symbol & meaning\\ \hline
 \endhead
 \hline\hline
 \endlastfoot
-$\Psi_\LL$ & the DiracLike isodoublet (electric charge zero, no electroweak quantum numbers): eight complex components (four Dirac components times two isospin components) \\
-$m_\LL=0.2$, $\Lambda_\LL=1$ & the mass of $\Psi_\LL$ and the momentum cutoff of the uniform states, $|\vec q_\LL|<\Lambda_\LL$ \\
-$\gamma^p_\LL$, $\gamma^{\rm ch}_\LL$, $\alpha^j_\LL$, $\beta_\LL$, $\mathsf C_\LL$ & Dirac matrices (chiral basis), chirality, $\alpha^j_\LL=\gamma^0_\LL\gamma^j_\LL$, $\beta_\LL=\gamma^0_\LL$, charge conjugation; Eq.~(\ref{eq:dirac}) \\
-$\tau^\LL_\iota$, $\mathsf E_\LL=i\tau^\LL_2$, $\mathsf 1_n$ & Pauli matrices acting on the isospin index; the antisymmetric $2\times2$ matrix; unit matrices \\
-$\mathsf K^\iota_\LL$, $\Pi^\iota_\LL$ & the pair matrices and the pair operators of the spin-zero, isospin-one channel, Eq.~(\ref{eq:pairs}) \\
-GEE & the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$ \\
-$g^{\rm v}_\LL=0.7$, $g^{\rm F}_\LL=0.45$ & the couplings of the isospin gauge field $W^\iota_{\SF,p}$ and of the gauge field $B_{\SF,p}$ of the fermion number $F_\LL$ \\
-$G^{\rm S}_\SF$, $G^{\rm V}_\SF$, $G_\LL$ & the couplings of the scalar, the vector and the pairing contact term of the potential $V^{(n)}_\SF$ \\
-$\mathsf C^{\rm n}_\LL(\vec q)$, $\mathsf C^{\rm p}_\LL(\vec q)$ & the normal and the pair correlation matrix ($8\times8$) of a uniform quasi-free state at the momentum $\vec q$ \\
-$\delta\mathsf C^{\rm n}$, $\mathsf C^{\rm p}$ & their integrals over the momenta (the normal one measured from the normal vacuum), Eq.~(\ref{eq:localC}) \\
-$\mathsf N_\SF$, $\mathsf P_\SF$ & the normal and the pair self-energy, Eqs.~(\ref{eq:Nbil})--(\ref{eq:Ppair}) \\
-$\mathsf H_\SF(\vec q)$ & the Bogoliubov-de Gennes (BdG) matrix, Eq.~(\ref{eq:BdG}) \\
-$w^{\rm H}$, $w^{\rm F}$, $w^{\rm P}$ & the weights of the direct, exchange and pair contractions, which define the methods (Table~\ref{tab:weights}) \\
-$X$ & a method: HS $(s_{\rm S},s_{\rm V})$ with $(1,1)$, $(0,1)$, $(0,0)$; KS; CJT \\
-$g^{X,{\rm S}}_\SF$, $g^{X,{\rm P}}_\SF$ & the effective couplings of method $X$ in the scalar density channel and in the pair channel $\mathsf K^3_\LL$, Eqs.~(\ref{eq:gS}), (\ref{eq:gP}) \\
-$\lambda^{\rm S}_\SF$, $\lambda^{\rm P}_\SF(T)$ & the eigenvalues of the static response of the normal state in the scalar and in the pair channel \\
-$I_1(M,T)$ & $\int_0^{\Lambda_\LL}q^2\tanh(E/2T)E^{-1}dq$ with $E=(q^2+M^2)^{1/2}$; $I_1(M,0)$ with $\tanh=1$ \\
-$\vec\Phi^X_\SF=(\Phi^{X,\iota}_\SF)$ & the field of the superfluid: the amplitudes of the pair self-energy along $(\mathsf K^\iota_\LL)^\dagger$, Eq.~(\ref{eq:Phi}) \\
-$\Phi^X_{0,\SF}$, $M^{X,{\rm D}}_\SF$, $E^{X,{\rm gap}}_\SF$ & the order parameter, the Dirac mass and the gap of the ground state at $T=0$ \\
-$\mathcal V^X_\SF(\vec\Phi)$ & the effective potential: the smallest energy per volume of the states with the field $\vec\Phi$, from the normal vacuum \\
-$Z^X_\SF$, $Y^X_\SF$ & the coefficients of the two invariants of the kinetic part, Eq.~(\ref{eq:Lkin}) \\
-$\chi^{ab}_\SF$ & the static susceptibilities of the vacuum to the chemical potentials $\mu^a_\SF$ of the charges $T^1_\LL,T^2_\LL,T^3_\LL,F_\LL$ \\
-$f^{X,{\rm F}}_\SF$, $f^{X,{\rm I}}_\SF$ & the decay constants of the Goldstone fields of the phase and of the isospin rotations \\
-$M^{X,{\rm H}}_\SF$, $M^{X,{\rm NU}}_\SF$ & the masses of the amplitude (Higgs) mode and of the non-unitary doublet of the charges $Q_\LL=\pm1$ (linear response) \\
-$M^X_{W,\SF}$, $M^X_{Z,\SF}$ & the masses of $W^\pm$ and of $Z$, Eq.~(\ref{eq:MWMZ}) \\
-$T^{X,{\rm c}}_\SF$, $t$ & the critical temperature of the mean-field theory; the reduced temperature $(T-T^{X,{\rm c}}_\SF)/T^{X,{\rm c}}_\SF$ \\
-$M^{X,{\rm n}}_\SF(T)$ & the Dirac mass of the normal state at the temperature $T$ \\
-$\mathsf c^X_\SF$, $\alpha^{X,{\rm GL}}_\SF$, $b^X_\SF$ & the gradient coefficient, the slope and the quartic coefficient of the functional of Ginzburg and Landau, Eq.~(\ref{eq:GL}) \\
-$a(q;T)$ & the coefficient of $|\vec\Phi|^2$ of a pair field moving with the momentum $q$ \\
-$\mathsf P^{\rm a}_\SF$, $\mathsf C^{\rm p,tot}_\SF$, $\mathcal X^{\rm P}_\SF$ & a small applied pair block; the pair matrix summed over the momenta; the static pair response, Eq.~(\ref{eq:chi}) \\
-$\varepsilon^{\rm A}_a,\mathsf u_a$; $\varepsilon^{\rm D}_b,\mathsf w_b$ & the eigenvalues and eigenvectors of the particle block and of the hole block \\
-$\mathcal F^X_2$ & the free energy of a state at second order in the pair field, Eq.~(\ref{eq:F2}) \\
-$n=n^\Phi_\SF=6$ & the number of real components of $\vec\Phi$ \\
-$C^{\rm fl}$, $\Delta C$, $\xi$ & the specific heat of the Gaussian fluctuations, the jump of the mean-field specific heat, the correlation length at $|t|=1$ \\
-${\rm Gi}^X_\SF$ & the Ginzburg number, Eq.~(\ref{eq:Gi}) \\
-$v^X_\SF$, $\lambda^{X,{\rm H}}_\SF$, $\Gamma^{X,{\rm H}}_\SF$ & the scale of the breaking (defined as $v$ is by $M_W=gv/2$), the quartic coupling and the width of the amplitude mode, Eqs.~(\ref{eq:vSF}), (\ref{eq:width}) \\
-$Q_\LL$, $A$ & the charge $T^3_\LL$ of the unbroken subgroup of $SU(2)_{\rm v}$ (not the electric charge), and its massless gauge boson, the zeugon \\
-$M_V$, $\zeta_V$ & the mass of $W$ or $Z$ in the decay of the amplitude mode into two gauge bosons, and $\zeta_V=M_V^2/(M^{X,{\rm H}}_\SF)^2$, Sec.~\ref{sec:higgs} \\
-$M_W$, $g$, $v$, $m$ & the Standard Model, used only for the convention $M_W=gv/2$ and the check of Eq.~(\ref{eq:width}): the mass of its $W$ boson, the coupling of $SU(2)_L$, the vacuum value of its Higgs doublet, the mass of a heavy Higgs boson \\
+$\Psi_\LL$; $\chi_\SH$, $\chi'_\SH$ & the isodoublet of Dirac fields (eight components, component $2d+s$: Dirac index $d=0,\dots,3$ of the chiral basis, isospin index $s=0$ up, $s=1$ down); the two singlet Dirac fields (four components each) \\
+$m_\LL$, $m^\chi_\SH$, $m^{\chi'}_\SH$ & the masses of the three fields, all $0.2\,\Lambda_\LL$ \\
+$\Lambda_\LL$ & the momentum cutoff of the uniform states, the unit of the computation \\
+$\gamma^\mu_\LL$, $\beta_\LL=\gamma^0_\LL$, $\alpha^j_\LL$, $\gamma^{\rm ch}_\LL$, $C_\LL$ & the Dirac matrices of the chiral basis, the chirality matrix ($\gamma^5$ of the article) and the charge-conjugation matrix \\
+$SU(2)_L$, $U(1)_Y$; $T^{a}$, $\tau^a$ & the electroweak gauge group; its generators ($a=1,2,3$; $\tfrac12\tau^a$ on the isospin of $\Psi_\LL$, zero on the singlets) and the Pauli matrices \\
+$Y$, $Q=T^3+Y$ & the hypercharge and the electric charge (Table~\ref{tab:fields}) \\
+$g$, $g'$, $\theta_W$ & the couplings of $SU(2)_L$ and $U(1)_Y$ and the weak mixing angle, $\cos\theta_W=M_W/M_Z$ \\
+$W^a_\mu$, $B_\mu$; $W^\pm_\mu$, $Z_\mu$ & the gauge fields of $SU(2)_L$ and $U(1)_Y$; the massive weak gauge fields \\
+$F^{\rm tot}_\SH$, $R_\SH$ & the particle number (1 on every particle of every field) and the relative number (particles of $\Psi_\LL$ minus particles of the singlets) \\
+$SU(2)_R$, $T^a_R$; $SU(2)_V$ & the custodial group, which rotates $(\chi_\SH,\chi'_\SH)$ as a doublet, and its generators; the diagonal subgroup of $SU(2)_L\times SU(2)_R$ \\
+$\Pi^s_\SH$, $\Pi'^s_\SH$ & the pair operators (\ref{eq:pairs}) of $\Psi_\LL$ with $\chi_\SH$ and with $\chi'_\SH$ \\
+$\mathbf e^{\rm u}$, $\mathbf e^{\rm d}$ & the isospin columns $(1,0)^T$ and $(0,1)^T$ \\
+$\Phi^s$, $\Phi'^s$; $\mathcal M_\SH$ & the pair fields, proportional to $\langle\Pi^s_\SH\rangle$ and $\langle\Pi'^s_\SH\rangle$; their $2\times2$ matrix (\ref{eq:M}) \\
+$\Pi_\SH[\mathsf V_\SH]$, $\Xi_\SH[\mathsf V_\SH]$ & a pair and a particle-antiparticle bilinear with the coefficient matrix $\mathsf V_\SH$ (\ref{eq:bilinears}) \\
+$G^{\rm S}_\SF$, $G^{\rm V}_\SF$, $G_\SH$ & the couplings of the scalar, the vector and the pairing contact terms ($-8$, $0.8$, $100.8$ in units of $\Lambda_\LL^{-2}$) \\
+$V^{(0)}$, $V^{(1)}$ & the contact potential without the pairing terms, and with them: the potential of the article \\
+$I_1(M)$; $G^{\rm crit}_\SH$ & the integral (\ref{eq:I1}); the critical coupling $4\pi^2/I_1(m_\LL)$ of the pairing \\
+$\mathsf h(\vec q)$ & the free Dirac Hamiltonian of the sixteen components at the momentum $\vec q$ \\
+$\mathsf N$, $\mathsf P$; $\mathsf H(\vec q)$ & the normal and the pair self-energies of a uniform state; its Bogoliubov-de Gennes (BdG) matrix (\ref{eq:BdG}) \\
+$\varrho$, $\kappa$ & the local normal matrix, measured from the normal vacuum, and the local pair matrix \\
+$\mathcal E^X$ & the energy per volume of a uniform state in method $X$, measured from the normal vacuum \\
+$X$; $s_{\rm S}$, $s_{\rm V}$ & a method: HS (1,1), HS (0,1), HS (0,0), KS or CJT; the shares of the scalar and the vector term decoupled in density channels in HS \\
+$M^{\rm u}$, $M^{\rm d}$, $M^\chi$, $M^{\chi'}$ & the Dirac masses of the four species in a state: the bare mass plus a quarter of the trace of $\mathsf N$ with the matrix $\beta_\LL$ of the species \\
+$\varsigma^{(1)}$, $\varsigma^{(2)}$ & the singular values of the $2\times2$ matrix of the coefficients of $(\mathsf K^s)^\dagger$ and $(\mathsf K'^s)^\dagger$ in $\mathsf P$, the larger first \\
+$\mathsf K^s$, $\mathsf K'^s$ & the $16\times16$ pair matrices of $\Pi^s_\SH$ and $\Pi'^s_\SH$ \\
+$\mathsf P^{\rm vac}$; $d$, $d^0_\SH$ & the direction (\ref{eq:Pvac}) of the vacuum in the pair self-energy; the coefficient of a pair self-energy along it, and its value in the ground state \\
+$\varphi_\SH$, $\varphi^0_\SH$ & the pair amplitude $|\langle\Pi^{\rm d}_\SH\rangle|$ of a state, and its value in the ground state \\
+$E^{X,{\rm gap}}$ & the gap of a ground state: the lowest energy of a quasi-particle \\
+$\lambda^{\rm H}$, $\lambda^{\rm S}$, $\lambda^{\rm T}$ & the largest eigenvalues of the static response of the normal vacuum in the doublet-singlet pairs, the scalar channel and the triplet pairs of $\Psi_\LL$ \\
+$V^{\rm eff}_\SH$; $V^{\rm eff\,\prime\prime}_\SH$ & the effective potential along the direction of the vacuum; its second derivative \\
+$Q_a$, $\mu^a$, $\chi^{ab}$ & the eight generators of the global group as $16\times16$ matrices, the chemical potential of $Q_a$, and the susceptibilities (\ref{eq:chi}); $\chi^{11}$, $\chi^{33}$, $\chi^{YY}$, $\chi^{3Y}$, $\chi^{FF}$ those of $T^1$, $T^3$, $Y$, the mixed one of $T^3$ and $Y$, and that of $F^{\rm tot}_\SH$ \\
+$Z_\SH$; $\mathsf M^{\rm g}$ & the kinetic coefficient of the pair fields; the mass matrix (\ref{eq:Mg}) of the gauge fields \\
+$v_\SH$, $\rho_\SH$; $M_{W,\SH}$, $M_{Z,\SH}$ & the scale of the breaking and the ratio $M_W^2/(M_Z^2\cos^2\theta_W)$ of the superfluid; its masses of the $W$ and the $Z$ \\
+$v$, $m_H$ & the vacuum value of the Higgs field of the Standard Model and the mass of the Higgs boson \\
+$M^{\rm EFT}_\SH$; $\omega^{\rm H}_\SH$ & the frequency (\ref{eq:MEFT}) of the amplitude mode from the effective Lagrangian; its frequency from the linear response \\
+$M_{\rm eff}$ & the energy $(m_\LL^2+(d^0_\SH)^2/4)^{1/2}$ of a paired quasi-particle at rest in the pairing-only methods \\
+$\bm\chi(\omega)$, $\mathsf F^X$ & the linear response of a uniform state at the frequency $\omega$, and the kernel of the contact terms of method $X$ \\
+$\lambda^{\rm amp}(\omega)$, $\lambda^{\rm ph}(\omega)$ & the eigenvalues (\ref{eq:lam}) of the response of the pair amplitudes in HS (0,0) along the amplitude and the phase of the vacuum direction \\
+$\epsilon^{\rm kick}$ & the relative size of the displacement of the pair self-energy that starts a run in time \\
+$\omega^{\rm pk}$, $\Gamma^{\rm pk}$, $\Gamma^{\rm win}$ & the frequency of a peak of the spectrum of a run, its half-width at half maximum, and the half-width that the finite length of the run alone gives \\
+$\mathsf O^\dagger\mathsf O-\mathsf 1$ & the departure of the quasi-particle vectors of a run from orthonormality \\
+$q$, $\vec q$, $M$, $E$ & a momentum, its vector, a mass and an energy (integration variables) \\
 \end{longtable}
 \endgroup
 
@@ -110,879 +129,486 @@ $M_W$, $g$, $v$, $m$ & the Standard Model, used only for the convention $M_W=gv/
 \section{The model}
 \label{sec:model}
 
-\subsection{Matrices}
+\subsection{Fields and charges}
 
-In the chiral basis the Dirac matrices are the $4\times4$ matrices of $2\times2$ blocks
-\begin{gather}
-\gamma^0_\LL=\begin{pmatrix}0&\mathsf 1_2\\\mathsf 1_2&0\end{pmatrix},\qquad
-\gamma^j_\LL=\begin{pmatrix}0&\tau_j\\-\tau_j&0\end{pmatrix},\nonumber\\
-\gamma^{\rm ch}_\LL=i\gamma^0_\LL\gamma^1_\LL\gamma^2_\LL\gamma^3_\LL={\rm diag}(-1,-1,1,1),\qquad
-\mathsf C_\LL=i\gamma^2_\LL\gamma^0_\LL={\rm diag}(\mathsf E_\LL,-\mathsf E_\LL),
-\label{eq:dirac}
-\end{gather}
-with $\{\gamma^p_\LL,\gamma^{p'}_\LL\}=2\eta^\LL_{pp'}\mathsf 1_4$, the Pauli matrices $\tau_j$ (acting here on the Dirac index), and
-$\mathsf C_\LL\gamma^p_\LL\mathsf C_\LL^{-1}=-(\gamma^p_\LL)^T$; $\alpha^j_\LL={\rm diag}(-\tau_j,\tau_j)$ and $\beta_\LL=\gamma^0_\LL$. The
-$8\times8$ matrices act on the Dirac index (first factor) and on the isospin index (second factor). The pair matrices and the
-pair operators of the spin-zero, isospin-one channel are
-\begin{equation}
-\mathsf K^\iota_\LL=(\mathsf C_\LL\gamma^{\rm ch}_\LL)\otimes(\mathsf E_\LL\tau^\LL_\iota),\qquad\Pi^\iota_\LL=\Psi_\LL^T\mathsf K^\iota_\LL\Psi_\LL\qquad(\iota=1,2,3).
-\label{eq:pairs}
-\end{equation}
-$\mathsf C_\LL\gamma^{\rm ch}_\LL={\rm diag}(-\mathsf E_\LL,-\mathsf E_\LL)$ is antisymmetric and the three $\mathsf E_\LL\tau^\LL_\iota$ are
-symmetric, so $\mathsf K^\iota_\LL$ is antisymmetric, as a local pair of fermions requires; the symmetric isospin factors make the pair
-an isospin vector, and the Dirac factor makes it a Lorentz scalar of fermion number 2. Two identities are used repeatedly:
-\begin{equation}
-(\mathsf K^\iota_\LL)^\dagger\mathsf K^\iota_\LL=\mathsf 1_8,\qquad\tr\big(\mathsf K^\iota_\LL(\mathsf K^\kappa_\LL)^\dagger\big)=8\,\delta_{\iota\kappa}
-\label{eq:Kid}
-\end{equation}
-(from $\mathsf E_\LL^\dagger\mathsf E_\LL=\mathsf 1_2$, $\tau_\iota^2=\mathsf 1_2$ and $\tr(\tau_\iota\tau_\kappa)=2\delta_{\iota\kappa}$).
-
-\subsection{Gauge group, Lagrangian and potential}
-
-The group of local transformations is ${\rm GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$: the local Lorentz
-transformations of the spinor index, the vector-like isospin (acting on both chiralities alike), and the fermion number.
-The covariant derivative of the spinor field is
-\begin{equation}
-\nabla_p\Psi_\LL=\big(\partial_p+\Gamma^\LL_p+ig^{\rm v}_\LL\textstyle\sum_\iota W^\iota_{\SF,p}T^\iota_\LL+ig^{\rm F}_\LL B_{\SF,p}F_\LL\big)\Psi_\LL,
-\qquad T^\iota_\LL=\mathsf 1_4\otimes\tfrac12\tau^\LL_\iota,\quad F_\LL=\mathsf 1_8,
-\label{eq:cov}
-\end{equation}
-with the Lorentz connection $\Gamma^\LL_p$, a pure gauge on flat space-time, set to zero in all calculations. The field of the
-superfluid (Sec.~\ref{sec:methods}) transforms as an isospin vector of fermion number 2, with
-\begin{equation}
-\nabla_p\vec\Phi=\partial_p\vec\Phi+2ig^{\rm F}_\LL B_{\SF,p}\vec\Phi-g^{\rm v}_\LL\vec W_{\SF,p}\times\vec\Phi .
-\label{eq:covPhi}
-\end{equation}
-The Lagrangian is
-\begin{equation}
-\mathcal L_\SF=\bar\Psi_\LL\Big(i\sum_p\gamma^p_\LL\nabla_p-m_\LL\Big)\Psi_\LL-\tfrac14\sum_\iota W^\iota_{\SF,pp'}W^{\iota,pp'}_\SF-\tfrac14B_{\SF,pp'}B^{pp'}_\SF-V^{(n)}_\SF ,
-\label{eq:L}
-\end{equation}
-with the contact self-interaction (the Hamiltonian density of the potential)
-\begin{equation}
-V^{(n)}_\SF=\tfrac12G^{\rm S}_\SF{:}(\bar\Psi_\LL\Psi_\LL)^2{:}+\tfrac12G^{\rm V}_\SF\sum_p\eta^\LL_{pp}{:}(j^{{\rm F},p}_\SF)^2{:}-\tfrac14G_\LL\sum_{\iota=1}^3{:}(\Pi^\iota_\LL)^\dagger\Pi^\iota_\LL{:},
-\qquad j^{{\rm F},p}_\SF=\bar\Psi_\LL\gamma^p_\LL\Psi_\LL ,
-\label{eq:V}
-\end{equation}
-normal-ordered with respect to the filled Dirac sea of the free field of mass $m_\LL$. The vector term is a sum of bilinear
-terms, $\sum_p\eta^\LL_{pp}(j^{{\rm F},p})^2=(\Psi^\dagger\Psi)^2-\sum_j(\Psi^\dagger\alpha^j_\LL\Psi)^2$.
-
-\paragraph*{The recursion of the potential.}
-The author's first potential $V^{(0)}_\SF$ has $(G^{\rm S}_\SF,G^{\rm V}_\SF,G_\LL)=(-8,0.8,0)$: a scalar attraction and a vector
-repulsion, without a pairing term. Its effective pair couplings (Sec.~\ref{sec:methods}) are far below the critical value, and
-it admits no superfluid in any method. $V^{(1)}_\SF$ adds the pairing term with $G_\LL=22.5$, above the critical coupling
-$G^{\rm crit}_\LL={{GCRIT}}$ of the pair channel of the normal vacuum; HS then condenses into a superfluid, but in KS and CJT the
-exchange contraction of the pairing term adds the scalar attraction $-\tfrac38G_\LL$ (Eq.~(\ref{eq:gS})), the scalar channel
-becomes unstable first, and the ground state is a massive state without pairs. $V^{(2)}_\SF$ keeps the form and the vector
-coupling and fixes $G^{\rm S}_\SF$ and $G_\LL$ by two conditions on the effective couplings of KS and CJT: the scalar coupling of
-$V^{(0)}_\SF$ (stable) and the pair coupling of $V^{(1)}_\SF$ (supercritical),
-\begin{equation}
-\tfrac78G^{\rm S}_\SF-\tfrac12G^{\rm V}_\SF-\tfrac38G_\LL=-7.4,\qquad G_\LL-\tfrac14G^{\rm S}_\SF-G^{\rm V}_\SF=23.7,
-\label{eq:recursion}
-\end{equation}
-with the solution $G^{\rm S}_\SF=2.8$, $G_\LL=25.2$ ($G^{\rm V}_\SF=0.8$). With $V^{(2)}_\SF$ the normal vacuum of every method is unstable
-only in the pair channel, and the ground state of every method is a polar superfluid. Table~\ref{tab:recursion} gives the
-numbers; the article uses $V^{(2)}_\SF$ throughout.
+There are three Dirac fields of $SL(2,\mathbb C)$, all singlets of colour and all vector-like. Table~\ref{tab:fields} gives
+their charges. The particle number $F^{\rm tot}_\SH$ and the relative number $R_\SH$ are global symmetries; neither is
+gauged. On $\Psi_\LL$ and $\chi_\SH$ the hypercharge is a quarter of the fermion number $F_\LL$ of the earlier hypotheses,
+$Y=\frac14F_\LL$, so the gauge field of $U(1)^{\rm F}$ of those hypotheses is $B_\mu$ with the coupling $g'/4$; on
+$\chi'_\SH$, $4Y=-3F^{\rm tot}_\SH$. The isospin group $SU(2)_{\rm v}$ of the earlier hypotheses is $SU(2)_L$.
 
 \begin{table}[h]
-\caption{\label{tab:recursion}The recursion of the potential: the effective couplings (\ref{eq:gS}), (\ref{eq:gP}) and the
-eigenvalues of the static response of the normal vacuum in the scalar and in the pair channel (``--'': no interaction in the
-channel; above 1 the normal vacuum is unstable), and the ground state with its energy per volume (times $10^4$), pair
-amplitude $|D|$ (the field $\Phi^3$ of the ground state), Dirac mass and gap.}
+\caption{\label{tab:fields}The fields and their charges.}
 \begin{ruledtabular}
-\begin{tabular}{llrrrrlrrrr}
-potential & method & $g^{X,{\rm S}}_\SF$ & $g^{X,{\rm P}}_\SF$ & $\lambda^{\rm S}_\SF$ & $\lambda^{\rm P}_\SF$ & ground state & $10^4\mathcal E$ & $|D|$ & $M^{X,{\rm D}}_\SF$ & $E^{X,{\rm gap}}_\SF$ \\
+\begin{tabular}{lcccccc}
+field & $SU(2)_L$ & $Y$ & $Q$ & $F^{\rm tot}_\SH$ & $R_\SH$ & mass\\
 \hline
-{{TABLE_RECURSION}}
+$\Psi_\LL$, up & $\mathbf 2$ & $\frac14$ & $\frac34$ & 1 & $+1$ & $m_\LL$\\
+$\Psi_\LL$, down & $\mathbf 2$ & $\frac14$ & $-\frac14$ & 1 & $+1$ & $m_\LL$\\
+$\chi_\SH$ & $\mathbf 1$ & $\frac14$ & $\frac14$ & 1 & $-1$ & $m^\chi_\SH$\\
+$\chi'_\SH$ & $\mathbf 1$ & $-\frac34$ & $-\frac34$ & 1 & $-1$ & $m^{\chi'}_\SH$\\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
+
+The covariant derivative is
+\begin{equation}
+D_\mu=\partial_\mu+\Gamma^\LL_\mu+ig\,\tfrac{\tau^a}{2}W^a_\mu+ig'\,YB_\mu ,
+\label{eq:cov}
+\end{equation}
+with the Lorentz connection $\Gamma^\LL_\mu$, a pure gauge on flat space-time, set to zero. The couplings are those of the
+Standard Model, from the measured Fermi constant and masses of the weak bosons~\cite{PDG2026}:
+$v=(\sqrt2G_F)^{-1/2}={{V_GEV}}$~GeV, $g=2M_W/v={{G}}$, $\cos\theta_W=M_W/M_Z$ and $g'=g\tan\theta_W={{GP}}$.
+Because every field is vector-like, every trace of the gauge anomalies vanishes (checked:
+Sec.~\ref{sec:checks}).
+
+\subsection{Bilinears and channels}
+
+The bilinears of spin zero of two fields are the pairs and the particle-antiparticle bilinears,
+\begin{equation}
+\Pi_\SH[\mathsf V_\SH]=\Psi^T_\LL\mathsf V_\SH\chi_\SH,\qquad \Xi_\SH[\mathsf V_\SH]=\Psi^\dagger_\LL\mathsf V_\SH\chi_\SH ,
+\label{eq:bilinears}
+\end{equation}
+and likewise for every other choice of the two fields. A bilinear is a Lorentz scalar when the coefficient matrix obeys
+$\mathsf s(\mathbf u)^T\mathsf V+\mathsf V\mathsf s(\mathbf u)=0$ (pairs) or
+$\mathsf s(\mathbf u)^\dagger\mathsf V+\mathsf V\mathsf s(\mathbf u)=0$ (particle-antiparticle) for the six generators
+$\mathbf u$ of $SL(2,\mathbb C)$, with $\mathsf s(\mathbf u)$ their action on the Dirac index. For two particles of one field
+only the antisymmetric part of $\mathsf V$ gives an operator, because the components anticommute. The Lorentz-invariant
+bilinears of one kind and one parity form a channel; a generator of the internal group acts on a channel, in a basis
+orthonormal in $\tr(\mathsf V^\dagger\mathsf V')$, as a Hermitian matrix, whose eigenvalues are the charges of the channel.
+Table~\ref{tab:channels} gives the pair channels of positive parity. The two Lorentz-invariant matrices of a pair of Dirac
+spinors, $C_\LL$ and $C_\LL\gamma^{\rm ch}_\LL$, are antisymmetric, so for two members of $\Psi_\LL$ the isospin factor must be
+symmetric:
+\begin{equation}
+\mathbf 2\otimes\mathbf 2=\mathbf 1_{\rm antisymmetric}\oplus\mathbf 3_{\rm symmetric}.
+\label{eq:2x2}
+\end{equation}
+The pairs of two members of $\Psi_\LL$ are therefore a triplet with $Y=\frac12$ and the charges $\frac32$, $\frac12$,
+$-\frac12$, without a neutral component; only the pairs of $\Psi_\LL$ with a singlet are doublets with $|Y|=\frac12$ and a
+neutral component. Every pair without $\Psi_\LL$ and a singlet has $|Q|\ge{{MIN_ABS_Q}}$ (checked in exact arithmetic).
+
+{{T_CHANNELS}}
+
+\subsection{The interaction and the custodial symmetry}
+
+The pair operators of the attraction are
+\begin{equation}
+\Pi^s_\SH=\tfrac12\Pi_\SH[C_\LL\gamma^{\rm ch}_\LL\otimes\mathbf e^s],\qquad \Pi'^s_\SH=\tfrac12\Pi_\SH[C_\LL\gamma^{\rm ch}_\LL\otimes\mathbf e^s]\big|_{\chi_\SH\to\chi'_\SH},
+\label{eq:pairs}
+\end{equation}
+$s={\rm u},{\rm d}$, and the Hamiltonian density is
+\begin{multline}
+\mathcal H=\Psi^\dagger\mathsf h(-i\nabla)\Psi+\tfrac12G^{\rm S}_\SF{:}(\bar\Psi_\LL\Psi_\LL)^2{:}
++\tfrac12G^{\rm V}_\SF{:}\Big[(\Psi^\dagger_\LL\Psi_\LL)^2-\sum_j\big(\Psi^\dagger_\LL(\alpha^j_\LL\otimes\mathsf 1_2)\Psi_\LL\big)^2\Big]{:}\\
+-G_\SH\sum_{s={\rm u},{\rm d}}\big[{:}(\Pi^s_\SH)^\dagger\Pi^s_\SH{:}+{:}(\Pi'^s_\SH)^\dagger\Pi'^s_\SH{:}\big],
+\label{eq:H}
+\end{multline}
+where $\Psi=(\Psi_\LL,\chi_\SH,\chi'_\SH)$ has sixteen components, $\mathsf h(\vec q)$ is the free Dirac Hamiltonian,
+block-diagonal with $(\alpha^j_\LL q^j+\beta_\LL m_\LL)\otimes\mathsf 1_2$ on $\Psi_\LL$ and $\alpha^j_\LL q^j+\beta_\LL m^\chi_\SH$ and
+$\alpha^j_\LL q^j+\beta_\LL m^{\chi'}_\SH$ on the two singlets, the momenta obey $|\vec q|<\Lambda_\LL$, and the colons order the operators so that their expectation value in the
+normal vacuum vanishes. The couplings are $G^{\rm S}_\SF=-8$, $G^{\rm V}_\SF=0.8$, $G_\SH=100.8$ (units of $\Lambda_\LL^{-2}$).
+In the first version the terms of $\Pi'^s_\SH$ are absent.
+
+Without $B_\mu$, the generators of $SU(2)_L$ (on $\Psi_\LL$), of $SU(2)_R$ ($\frac12\tau^a$ on the pair
+$(\chi_\SH,\chi'_\SH)$), $R_\SH$ and $F^{\rm tot}_\SH$ commute with (\ref{eq:H}) when the singlets have equal masses; the
+hypercharge is
+\begin{equation}
+Y=T^3_R+\tfrac14R_\SH ,
+\label{eq:Y}
+\end{equation}
+so $g'$ breaks $SU(2)_R$ to $T^3_R$. Table~\ref{tab:custodial} gives the pair channels of $\Psi_\LL$ with the pair of singlets
+under $SU(2)_L\times SU(2)_R$. The pair fields form the matrix
+\begin{equation}
+\mathcal M_\SH=\begin{pmatrix}\Phi^{\rm u}&\Phi'^{\rm u}\\\Phi^{\rm d}&\Phi'^{\rm d}\end{pmatrix}\to L\,\mathcal M_\SH R^T ,
+\label{eq:M}
+\end{equation}
+a bidoublet: its columns are a doublet with $Y=\frac12$ (charges $+1$, 0) and a doublet with $Y=-\frac12$ (charges 0,
+$-1$), whose conjugate $i\tau^2(\Phi')^*$ is a second doublet with $Y=\frac12$. A vacuum with only the neutral components,
+of equal lengths, is brought by the symmetries to the form $\mathcal M_\SH\propto i\tau^2$, which is unchanged for $L=R$
+because $L\,i\tau^2L^T=i\tau^2\det L$. It keeps $SU(2)_V$, $R_\SH$ and the electric charge
+$Q=T^3+T^3_R+\frac14R_\SH$, and breaks three generators of $SU(2)_L\times U(1)_Y$ and $F^{\rm tot}_\SH$.
+
+{{T_CUSTODIAL}}
 
 %=====================================================================================================================
 \section{The five mean-field methods}
 \label{sec:methods}
 
-\subsection{Quasi-free states and their energy}
+\subsection{Quasi-free states}
 
-All methods describe the state of the spinor field by a uniform quasi-free state: at every momentum the normal and the pair
-correlation matrices $\mathsf C^{\rm n}_\LL(\vec q)$, $\mathsf C^{\rm p}_\LL(\vec q)$, and their integrals
+A uniform quasi-free state is the ground state of a quadratic Hamiltonian with constant self-energies, a Hermitian
+$16\times16$ matrix $\mathsf N$ and an antisymmetric one $\mathsf P$. At the momentum $\vec q$ its BdG matrix is
 \begin{equation}
-\delta\mathsf C^{\rm n}=\int\frac{d^3q}{(2\pi)^3}\big[\mathsf C^{\rm n}_\LL(\vec q)-\mathsf C^{\rm vac}_\LL(\vec q)\big],\qquad\mathsf C^{\rm p}=\int\frac{d^3q}{(2\pi)^3}\mathsf C^{\rm p}_\LL(\vec q),
-\qquad\mathsf C^{\rm vac}_\LL(\vec q)=\tfrac12\Big(\mathsf 1_8-\frac{\mathsf h_\LL(\vec q)}{\varepsilon_q}\Big),
-\label{eq:localC}
-\end{equation}
-over $|\vec q|<\Lambda_\LL$, with the free matrix $\mathsf h_\LL(\vec q)=(\vec\alpha_\LL\cdot\vec q+\beta_\LL m_\LL)\otimes\mathsf 1_2$ and
-$\varepsilon_q=(q^2+m_\LL^2)^{1/2}$. The energy per volume, measured from the normal vacuum, is the kinetic part
-$\int\frac{d^3q}{(2\pi)^3}\tr[\mathsf h_\LL(\vec q)(\mathsf C^{\rm n}_\LL-\mathsf C^{\rm vac}_\LL)]$ plus the expectation value of the potential,
-evaluated with Wick's theorem. A bilinear term $\nu{:}(\Psi^\dagger\mathsf X\Psi)^2{:}$ (with $\nu=G^{\rm S}_\SF/2$, $\mathsf X=\beta_\LL\otimes\mathsf 1_2$;
-$\nu=G^{\rm V}_\SF/2$, $\mathsf X=\mathsf 1_8$; $\nu=-G^{\rm V}_\SF/2$, $\mathsf X=\alpha^j_\LL\otimes\mathsf 1_2$) and a pairing term contribute,
-with the weights $w^{\rm H}$, $w^{\rm F}$, $w^{\rm P}$ of the direct, exchange and pair contractions,
-\begin{align}
-\nu{:}(\Psi^\dagger\mathsf X\Psi)^2{:}&\to\nu\big[w^{\rm H}\tr(\mathsf X\delta\mathsf C^{\rm n})^2-w^{\rm F}\tr(\mathsf X\tilde{\mathsf C}\mathsf X\tilde{\mathsf C})-w^{\rm P}\tr\big((\mathsf C^{\rm p})^*\mathsf X\mathsf C^{\rm p}\mathsf X^T\big)\big],\label{eq:Ebil}\\
--\tfrac14G_\LL{:}(\Pi^\iota)^\dagger\Pi^\iota{:}&\to-\tfrac14G_\LL\big[w^{\rm P}|\tr(\mathsf K^\iota_\LL(\mathsf C^{\rm p})^T)|^2+2w^{\rm F}\tr\big((\mathsf K^\iota_\LL)^\dagger\tilde{\mathsf C}^T\mathsf K^\iota_\LL\tilde{\mathsf C}\big)\big],\label{eq:Epair}
-\end{align}
-where $\tilde{\mathsf C}=\delta\mathsf C^{\rm n}$, except in KS, where $\tilde{\mathsf C}=\mathcal P^{\rm KS}(\delta\mathsf C^{\rm n})$ with the projection
-$\mathcal P^{\rm KS}(\mathsf A)=\frac18\tr(\mathsf A)\mathsf 1_8+\frac18\tr((\beta_\LL\otimes\mathsf 1_2)\mathsf A)\,\beta_\LL\otimes\mathsf 1_2$ onto the two
-Kohn-Sham densities (the number density and the scalar density). The self-energies are the derivatives of the energy with
-respect to the correlations; for a bilinear term ($\mathcal P$ is $\mathcal P^{\rm KS}$ in KS and the identity otherwise)
-\begin{equation}
-\mathsf N_\SF=\nu\big[2w^{\rm H}\mathsf X\tr(\mathsf X\delta\mathsf C^{\rm n})-2w^{\rm F}\mathcal P(\mathsf X\tilde{\mathsf C}\mathsf X)\big],\qquad\mathsf P_\SF=-2\nu w^{\rm P}\mathsf X\mathsf C^{\rm p}\mathsf X^T,
-\label{eq:Nbil}
-\end{equation}
-and for a pairing term
-\begin{equation}
-\mathsf N_\SF=-G_\LL w^{\rm F}\mathcal P\big((\mathsf K^\iota_\LL)^\dagger\tilde{\mathsf C}^T\mathsf K^\iota_\LL\big),\qquad\mathsf P_\SF=w^{\rm P}d^\iota(\mathsf K^\iota_\LL)^\dagger,\quad d^\iota=-\tfrac12G_\LL\tr\big(\mathsf K^\iota_\LL(\mathsf C^{\rm p})^T\big).
-\label{eq:Ppair}
-\end{equation}
-The state is the thermal state (the ground state at $T=0$) of the BdG matrix
-\begin{equation}
-\mathsf H_\SF(\vec q)=\begin{pmatrix}\mathsf h_\LL(\vec q)+\mathsf N_\SF&\mathsf P_\SF\\\mathsf P_\SF^\dagger&-\big(\mathsf h_\LL(-\vec q)+\mathsf N_\SF\big)^T\end{pmatrix},
+\mathsf H(\vec q)=\begin{pmatrix}\mathsf h(\vec q)+\mathsf N&\mathsf P\\\mathsf P^\dagger&-\big(\mathsf h(-\vec q)+\mathsf N\big)^T\end{pmatrix},
 \label{eq:BdG}
 \end{equation}
-whose projector onto the negative eigenvalues (at $T=0$), or the Fermi function $f(\mathsf H_\SF)$ (at $T>0$), has the upper
-blocks $\mathsf C^{\rm n}_\LL$ and $-\mathsf C^{\rm p}_\LL$. The field of a state is the amplitude of its pair self-energy,
+and the state fills its negative eigenvalues. Its local matrices are the integrals over the momenta of the normal
+correlation matrix, measured from the normal vacuum, and of the pair correlation matrix, $\varrho$ and $\kappa$. The energy
+per volume $\mathcal E^X$ is the kinetic part plus the interaction energy that method $X$ assigns to the local matrices.
+The pair self-energy of the vacuum direction is
 \begin{equation}
-\mathsf P_\SF=\sum_{\iota=1}^3\Phi^{X,\iota}_\SF(\mathsf K^\iota_\LL)^\dagger+(\text{other pair channels}),\qquad\Phi^{X,\iota}_\SF=\tr(\mathsf K^\iota_\LL\mathsf P_\SF)/8,
-\label{eq:Phi}
+\mathsf P=d\,\mathsf P^{\rm vac},\qquad \mathsf P^{\rm vac}=(\mathsf K'^{\rm u})^\dagger-(\mathsf K^{\rm d})^\dagger\ \ \text{(second version)},\qquad
+\mathsf P^{\rm vac}=(\mathsf K^{\rm d})^\dagger\ \ \text{(first version)},
+\label{eq:Pvac}
 \end{equation}
-by (\ref{eq:Kid}).
+with $d$ real after a rotation by the particle number, and the pair amplitude is
+$\varphi_\SH=|\langle\Pi^{\rm d}_\SH\rangle|=\frac12|\tr(\mathsf K^{\rm d}\kappa^T)|$.
 
 \subsection{The methods}
 
-The methods differ in the weights (Table~\ref{tab:weights}).
-\emph{Hubbard-Stratonovich (HS)}~\cite{Hubbard1959,Stratonovich1957} rewrites each four-fermion term exactly as the exchange
-of an auxiliary field and replaces the auxiliary fields by their saddle point; a term can be decoupled in the density
-channel (direct contraction) or in the pair channel (pair contraction), and the shares $s_{\rm S}$, $s_{\rm V}$ of the scalar and
-the vector term decoupled in the density channel are parameters; HS keeps no exchange contraction. \emph{Kohn-Sham
-(KS)}~\cite{HohenbergKohn1964,KohnSham1965} minimizes a functional of the number density, the scalar density and the pair
-amplitude through an auxiliary system of independent charges in local potentials; the direct and the pair contractions are
-kept with weight 1 and the exchange contraction in the local-density approximation (the projection $\mathcal P^{\rm KS}$).
-\emph{Cornwall-Jackiw-Tomboulis (CJT)}~\cite{CJT1974} truncates the two-particle-irreducible effective action of the Nambu
-propagator at the contractions of the contact terms; for a uniform static propagator its stationary point is a quasi-free
-state whose energy is (\ref{eq:Ebil}), (\ref{eq:Epair}) with all weights 1.
+A method keeps the three Wick contractions of every contact term, the direct, the exchange and the pair contraction,
+with its own weights:
+\begin{itemize}
+\item HS $(s_{\rm S},s_{\rm V})$~\cite{Hubbard1959,Stratonovich1957} rewrites each four-fermion term as the exchange of an
+auxiliary field at the saddle point; it keeps the direct contraction of the shares $s_{\rm S}$, $s_{\rm V}$ of the scalar and
+the vector term decoupled in density channels and the pair contraction of the rest; the pairing terms are decoupled in
+their own pair channels; no exchange contraction is kept.
+\item KS~\cite{HohenbergKohn1964,KohnSham1965} keeps all three contractions, the exchange evaluated with the projection of
+$\varrho$ onto sixteen local densities: the number and the scalar densities of $\Psi_\LL$ as $2\times2$ matrices in the
+isospin space, and those of the pair of singlets as $2\times2$ matrices in the space of the two singlets.
+\item CJT~\cite{CJT1974} keeps all three contractions with the weight 1, the two-loop effective action of the propagator
+truncated at the contact terms.
+\end{itemize}
+The self-energies are the derivatives of the interaction energy with respect to the local matrices, and a stationary
+state is a state whose self-energies are those that its own local matrices produce. In HS (0,1) and HS (0,0) only the
+pairing terms act on the states of this paper, and their normal self-energy vanishes: these are the pairing-only methods.
 
-\begin{table}[h]
-\caption{\label{tab:weights}The weights $(w^{\rm H},w^{\rm F},w^{\rm P})$ of the contractions in the five methods.}
-\begin{ruledtabular}
-\begin{tabular}{llll}
-method & scalar term & vector term & pairing term \\
-\hline
-HS $(s_{\rm S},s_{\rm V})$ & $(s_{\rm S},0,1-s_{\rm S})$ & $(s_{\rm V},0,1-s_{\rm V})$ & $(0,0,1)$ \\
-KS & $(1,1,1)$, exchange projected & $(1,1,1)$, exchange projected & $(0,1,1)$, exchange projected \\
-CJT & $(1,1,1)$ & $(1,1,1)$ & $(0,1,1)$ \\
-\end{tabular}
-\end{ruledtabular}
-\end{table}
-
-\paragraph*{KS and CJT coincide on the polar states.}
-If $\delta\mathsf C^{\rm n}$ lies in the span of $\mathsf 1_8$ and $\beta_\LL\otimes\mathsf 1_2$ (the normal vacuum and the polar superfluids, by
-their symmetry), the projection acts as the identity: $\mathsf X\delta\mathsf C^{\rm n}\mathsf X$ stays in the span for $\mathsf X=\beta,\mathsf 1,\alpha^j$
-(with $\alpha^j\beta\alpha^j=-\beta$), and so does $(\mathsf K^\iota)^\dagger(\delta\mathsf C^{\rm n})^T\mathsf K^\iota$ (with (\ref{eq:Kid}) and
-$(\mathsf K^\iota)^\dagger\beta^T\mathsf K^\iota=\beta$). Hence KS and CJT have the same energy and self-energies on these states; they
-differ in the response to fluctuations outside this span (the isospin susceptibilities, Sec.~\ref{sec:T0}).
-
-\paragraph*{The effective couplings.}
-A scalar density $n^{\rm S}$ ($\delta\mathsf C^{\rm n}=n^{\rm S}\beta/8$) shifts the Dirac mass by $g^{X,{\rm S}}_\SF n^{\rm S}$, and a pair amplitude in the
-channel $\mathsf K^3_\LL$ produces the pair self-energy $D(\mathsf K^3_\LL)^\dagger$ with $D=-\frac12g^{X,{\rm P}}_\SF\tr(\mathsf K^3_\LL(\mathsf C^{\rm p})^T)$.
-Collecting the contractions of (\ref{eq:Nbil}), (\ref{eq:Ppair}) (the exchange of the scalar term gives $-\frac18G^{\rm S}n^{\rm S}\beta$, the
-exchange of the vector term $-\frac12G^{\rm V}n^{\rm S}\beta$, the exchange of the three pairing terms $-\frac38G_\LL n^{\rm S}\beta$):
-\begin{gather}
-g^{{\rm HS},{\rm S}}_\SF=s_{\rm S}G^{\rm S}_\SF,\qquad g^{{\rm KS},{\rm S}}_\SF=g^{{\rm CJT},{\rm S}}_\SF=\tfrac78G^{\rm S}_\SF-\tfrac12G^{\rm V}_\SF-\tfrac38G_\LL,\label{eq:gS}\\
-g^{{\rm HS},{\rm P}}_\SF=G_\LL-\tfrac14(1-s_{\rm S})G^{\rm S}_\SF-(1-s_{\rm V})G^{\rm V}_\SF,\qquad g^{{\rm KS},{\rm P}}_\SF=g^{{\rm CJT},{\rm P}}_\SF=G_\LL-\tfrac14G^{\rm S}_\SF-G^{\rm V}_\SF.\label{eq:gP}
-\end{gather}
-The normal vacuum is unstable towards pairing (the criterion of Thouless) when
-\begin{equation}
-\lambda^{\rm P}_\SF=\frac{g^{X,{\rm P}}_\SF\,I_1(m_\LL,0)}{\pi^2}=\frac{g^{X,{\rm P}}_\SF}{G^{\rm crit}_\LL}>1,
-\label{eq:lambda0}
-\end{equation}
-the linearized gap equation (Sec.~\ref{sec:thermal}), and towards a scalar condensate when $\lambda^{\rm S}_\SF=-g^{X,{\rm S}}_\SF\chi^{\rm S}>1$ with
-the scalar susceptibility $\chi^{\rm S}=\frac2{\pi^2}\int_0^{\Lambda_\LL}q^4(q^2+m_\LL^2)^{-3/2}dq$. The Rust program computes both numbers also from
-the full static response of the normal vacuum (a $120\times120$ matrix) and finds them equal to these formulas to {{RESP0_DEV}}
-(checks P2-6b, P2-6c).
+\emph{KS and CJT coincide on the states of this paper.} If $\varrho$ lies in the span of the sixteen Kohn-Sham densities,
+the two methods differ only in the projection of the exchange self-energies, and those lie in the span again: for the
+scalar and the vector terms because $\beta_\LL^2=(\alpha^j_\LL)^2=\mathsf 1_4$ and $\alpha^j_\LL$ anticommutes with $\beta_\LL$;
+for the pairing terms because $\mathsf K^\dagger\varrho^T\mathsf K$ maps a number or scalar density of one singlet to one of
+$\Psi_\LL$ times $\mathbf e^s(\mathbf e^s)^T$, and a density of $\Psi_\LL$ to one of a singlet; and no map produces a block
+between $\Psi_\LL$ and a singlet. The normal vacuum and every ground state satisfy the hypothesis, because their symmetries
+(the rotations, the parity, $R_\SH$, $Q$ and, in the second version, $SU(2)_V$) confine $\varrho$ to the span. KS and CJT
+therefore give the same energies, self-energies, susceptibilities and dynamics on them, which the programs confirm to the
+rounding. The two methods do differ in the response to changes that leave the span, the mixings of the fields. The
+normal blocks between $\Psi_\LL$ and a singlet, and between the two singlets, are reached only by the exchange contraction
+of the pairing terms, so HS, which keeps no exchange contraction, has none; in KS the blocks between $\Psi_\LL$ and a
+singlet are absent, because the Kohn-Sham densities have no such block, and the block between the singlets is projected
+to zero; CJT keeps the exchange contraction, and the largest eigenvalue of its static response is {{MIX_CJT}} in the
+blocks between $\Psi_\LL$ and the singlets and {{MIX_SS_CJT}} in the block between the singlets (Table~\ref{tab:normal}).
 
 \subsection{The numerical engine}
 
-The momenta are the products of 24 Gauss-Legendre nodes of $|\vec q|$ on $[0,\Lambda_\LL]$ and the six directions $\pm\vec e_j$,
-with the weight $w_rq^2/(2\pi^2)/6$ of $\int d^3q/(2\pi)^3$ at a node of radial weight $w_r$. The correlation matrices of the
-uniform states depend on the direction $\hat q$ only through terms of angular momentum 0 and 1 (from $\vec\alpha\cdot\hat q$; the
-products $\alpha^j\alpha^{j'}\hat q_j\hat q_{j'}$ reduce to 1), and the average over the six directions is exact for these (checked
-against a product rule of 72 directions). The BdG matrices are diagonalized at every node, the new self-energies follow
-from (\ref{eq:Nbil}), (\ref{eq:Ppair}) and are mixed with the old ones (new times 0.6 plus old times 0.4; 0.7 and 0.3 for the states with a fixed applied pair field) until they change by
-less than a tolerance between $10^{-12}$ and $10^{-14}$ (the smaller for the states of finite temperature). The gap is the minimum of the smallest positive eigenvalue of $\mathsf H_\SF(\vec q)$ over
-$0\le|\vec q|\le\Lambda_\LL$, and the Dirac mass of a state is $m_\LL+\frac18\tr((\beta_\LL\otimes\mathsf 1_2)\mathsf N_\SF)$. Two programs
-implement this independently: a Rust program with its own Hermitian eigensolver, and a Python program with numpy and LAPACK.
-With only the pair contraction of the pairing term the engine reproduces the analytic mean-field solution of the pairing
-model to {{AS3_DEV}} (checks P2-2a, P2-2b, YP2-2), and the self-energies equal the central differences of the energy for random states.
+The states are computed on 24 Gauss-Legendre nodes of $|\vec q|$ on $[0,\Lambda_\LL]$ times the six directions
+$\pm\hat x$, $\pm\hat y$, $\pm\hat z$, by linear mixing of the self-energies (weight 0.6) to a residual below
+$10^{-13}$. A calculation on 48 nodes gives the same $v_\SH$ and amplitude mode to {{GRID_DEV}}. The program in Rust
+computes every result; the program in Python repeats the key results with its own engine (numpy, vectorized over the
+momenta) and by other methods; the scripts in the Wolfram Language derive the group theory and the closed forms in exact
+arithmetic or with 30 to 40 digits, and a notebook repeats them.
 
 %=====================================================================================================================
-\section{The superfluid at zero temperature}
-\label{sec:T0}
+\section{The normal vacuum and the critical coupling}
+\label{sec:normal}
 
-\subsection{Ground states and the effective potential}
-
-With $V^{(2)}_\SF$ every method has a polar ground state, $\vec\Phi=\Phi^X_{0,\SF}e^{i\vartheta}\vec n$ with a real unit vector $\vec n$.
-Its normal self-energy is a Dirac mass and its pair self-energy is $\Phi_0(\mathsf K^3_\LL)^\dagger$ for $\vec n=\vec e_3$; then
-$\mathsf H_\SF^2$ is proportional to the unit matrix at every momentum, and the quasi-particle energies are
+In the normal vacuum ($\mathsf N=\mathsf P=0$) the static response to a pair self-energy in the doublet-singlet channel of
+the pairing-only methods is $\lambda^{\rm H}=G_\SH I_1(m_\LL)/(4\pi^2)$, with
 \begin{equation}
-\pm E(\vec q)=\pm\big(q^2+(M^{X,{\rm D}}_\SF)^2+(\Phi^X_{0,\SF})^2\big)^{1/2},
-\label{eq:qp}
+I_1(M)=\int_0^{\Lambda_\LL}\frac{q^2\,dq}{(q^2+M^2)^{1/2}}=\tfrac12\Big[\Lambda_\LL(\Lambda_\LL^2+M^2)^{1/2}-M^2\,{\rm arsinh}\frac{\Lambda_\LL}{M}\Big],
+\label{eq:I1}
 \end{equation}
-eight times each: the pair amplitude adds to the Dirac mass in quadrature, and $E^{X,{\rm gap}}_\SF=((M^{X,{\rm D}}_\SF)^2+(\Phi^X_{0,\SF})^2)^{1/2}$.
-Table~\ref{tab:T0} gives the numbers (the order parameter, the Dirac mass, the gap and the depth of the effective potential).
+so the critical coupling is $G^{\rm crit}_\SH=4\pi^2/I_1(m_\LL)={{GCRIT}}$ and $\lambda^{\rm H}=G_\SH/G^{\rm crit}_\SH={{LAMH}}$.
+The scalar and the vector terms do not act on this channel in the normal vacuum, so $\lambda^{\rm H}$ is the same in every
+method. Table~\ref{tab:normal} gives the largest eigenvalues of the static response in every channel: only the
+doublet-singlet pairs exceed 1, with the multiplicity of the four complex pair fields (eight real directions; four in the
+first version). Without the pairing terms (the potential $V^{(0)}$) every start of the iteration ends in the normal vacuum.
 
-The \textbf{effective potential} $\mathcal V^X_\SF(\vec\Phi)$ is computed point by point: a fixed pair self-energy
-$\Phi_{\rm a}(\mathsf K^3_\LL)^\dagger$ (the applied field) is put into (\ref{eq:BdG}), the normal self-energy is made self-consistent, and
-the state gives one point: its own field $\Phi^3$ (\ref{eq:Phi}) and its energy. Along the polar fields the curve is a Mexican
-hat with its minimum at $\Phi^X_{0,\SF}$. A Landau polynomial $a|\vec\Phi|^2+b|\vec\Phi|^4+c|\vec\Phi|^6$ fitted by least squares to
-the computed curve reproduces it to {{LANDAU_RES}} of the depth, but no polynomial is exact: the energy is an integral over
-the momenta of functions of $E=(q^2+M^2+\Phi_{\rm a}^2)^{1/2}$, which as a function of $\Phi_{\rm a}^2$ is singular at
-$\Phi_{\rm a}^2=-M^2$ (at the end $q=0$ of the integral), so the series in $|\vec\Phi|^2$ about the origin has a radius of
-convergence of the order of the Dirac mass, about $m_\LL$, while the order parameter is {{PHI0_OVER_M}} times $m_\LL$.
+{{T_NORMAL}}
 
-\subsection{The kinetic part and the decay constants}
+%=====================================================================================================================
+\section{The stationary states}
+\label{sec:states}
 
-The terms with two derivatives that GEE allows are built from two invariants:
-\begin{equation}
-\mathcal L^X_{\rm kin}=\sum_p\eta^\LL_{pp}\Big[Z^X_\SF(\nabla_p\vec\Phi)^\dagger\cdot\nabla_p\vec\Phi+Y^X_\SF\frac{|\vec\Phi^\dagger\cdot\nabla_p\vec\Phi|^2}{|\vec\Phi|^2}\Big].
-\label{eq:Lkin}
-\end{equation}
-On the vacuum $\Phi_0\vec e_3$ a rotation of the phase, $\vec\Phi=\Phi_0e^{i\vartheta_0}\vec e_3$, makes both invariants equal to
-$\Phi_0^2(\partial\vartheta_0)^2$, so (\ref{eq:Lkin}) is $\frac12(f^{X,{\rm F}}_\SF)^2(\partial\vartheta_0)^2$ with
-$(f^{X,{\rm F}}_\SF)^2=2(Z^X_\SF+Y^X_\SF)\Phi_0^2$; an isospin rotation about $\vec e_1$ makes $\vec\Phi^\dagger\cdot\partial\vec\Phi=0$, and
-$(f^{X,{\rm I}}_\SF)^2=2Z^X_\SF\Phi_0^2$. A chemical potential $\mu^{\rm F}$ of the fermion number enters as the time component of the
-covariant derivative, $\partial_0\vartheta_0\to\partial_0\vartheta_0-2\mu^{\rm F}$, and lowers the energy by
-$\frac12(f^{X,{\rm F}}_\SF)^2(2\mu^{\rm F})^2$; the microscopic theory lowers it by $\frac12\chi^{\rm FF}_\SF(\mu^{\rm F})^2$, with the static
-susceptibility $\chi^{\rm FF}_\SF$ of the vacuum (computed by central differences of self-consistent states with a small chemical
-potential). Likewise for $\mu^1$. Hence
-\begin{equation}
-(f^{X,{\rm F}}_\SF)^2=\tfrac14\chi^{\rm FF}_\SF,\quad(f^{X,{\rm I}}_\SF)^2=\chi^{11}_\SF,\qquad Z^X_\SF=\frac{\chi^{11}_\SF}{2\Phi_0^2},\quad Z^X_\SF+Y^X_\SF=\frac{\chi^{\rm FF}_\SF}{8\Phi_0^2}.
-\label{eq:ZY}
-\end{equation}
-The unbroken generator $T^3_\LL$ has no stiffness, $\chi^{33}_\SF=0$, as (\ref{eq:Lkin}) requires. The space components
-computed from states with a uniform twist differ from these time components because the sharp cutoff on the momenta is not
-Lorentz-invariant; the Lorentz-covariant form (\ref{eq:Lkin}) is used with the time components. Table~\ref{tab:kin} gives the
-numbers. The effective Lagrangian of method $X$ is $\mathcal L^X=\mathcal L^X_{\rm kin}-\mathcal V^X_\SF+\mathcal L^{\rm YM}$: a complex
-isospin vector of fermion number 2 with a Mexican-hat potential, coupled to $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$.
+The iteration was started from nineteen self-energies: the normal vacuum, pair self-energies along each doublet, along
+the custodial and other directions of the bidoublet, along the pairs of one field, shifts of the masses, polarizations of
+the isospin and of the singlets, and mixings. Table~\ref{tab:states} gives the stationary states that they reach and the
+largest eigenvalue of their static response in the doublet-singlet pairs. With the pairing terms every state other than
+the custodial superfluid has an eigenvalue above 1: a small pair amplitude grows on it. The \emph{scalar condensate} of
+KS and CJT of the second version, reached from the start that shifts every mass by $-1$, has no pairs and no mixing, and
+the Dirac masses of all four species are negative; it occurs only where the exchange contractions couple the scalar
+density of $\Psi_\LL$ with those of both singlets.
 
-\begin{table}[h]
-\caption{\label{tab:kin}The coefficients of the kinetic part (\ref{eq:Lkin}), the susceptibilities and the decay constants, and the
-masses of the amplitude mode and of the non-unitary doublet from the linear response (exact small oscillations of each method)
-and from the effective Lagrangian, with the threshold $2E^{X,{\rm gap}}_\SF$.}
-\begin{ruledtabular}
-\begin{tabular}{lrrrrrrrrr}
-method & $10^2Z$ & $10^3Y$ & $10^3\chi^{11}$ & $10^3\chi^{\rm FF}$ & $f^{\rm F}$ & $f^{\rm I}$ & $M^{\rm H}$ (resp.) & $M^{\rm NU}$ (resp.) & $2E^{\rm gap}$ \\
-\hline
-{{TABLE_KIN}}
-\end{tabular}
-\end{ruledtabular}
-\end{table}
+{{T_STATES}}
 
-\subsection{The collective modes}
+Table~\ref{tab:ground} gives the ground states: in the second version the custodial superfluid
+($\varsigma^{(1)}=\varsigma^{(2)}$, the matrix of the pair coefficients proportional to $i\tau^2$), in the first the
+condensate of $\Phi$ alone ($\varsigma^{(2)}=0$). Table~\ref{tab:sfmasses} gives their Dirac masses. Table~\ref{tab:response}
+gives their static response: exactly four eigenvalues equal to 1 in the second version (three gauged generators and the
+particle number) and all others below 1. The condensate of one doublet, stationary in the second version, has an
+eigenvalue {{ONE_DOUBLET_RANGE}} in the direction of the second doublet.
 
-The linear response of the vacuum (the time-dependent BdG equations linearized about the ground state, solved as an
-eigenvalue problem of the $120$-dimensional space of the local fluctuations at zero total momentum) gives the exact small
-oscillations of each method without any expansion in derivatives. For the polar vacuum along $\vec e_3$ it has three Goldstone
-modes of zero frequency (the phase and the two isospin angles), an amplitude (Higgs) mode $h$ of charge 0 and a doublet of
-non-unitary modes of charge $\pm1$ (the imaginary parts of the components 1 and 2 relative to the phase); both massive modes lie
-below the threshold $2E^{X,{\rm gap}}_\SF$ of two quasi-particles (Table~\ref{tab:kin}), at {{MH2GAP_RANGE}} of it for the amplitude
-mode. The masses from the curvature of $\mathcal V^X_\SF$ and from (\ref{eq:Lkin}) differ from the response by {{MEFF_ALL_PCT}}, the error
-of a derivative expansion at the energy of the mode.
+{{T_GROUND}}
 
-\subsection{The gauge bosons, the zeugon and the surviving group}
-\label{sec:mass}
+{{T_SFMASSES}}
 
-\paragraph*{The mass matrix.}
-For a constant field $\vec\Phi$ and constant gauge fields $\mathcal A^a_p=\mathfrak c_a\mathcal A_p$ along a real vector
-$\mathfrak c=(\vec{\mathfrak c},\mathfrak c_{\rm F})$ of the four gauge directions $(W^1,W^2,W^3,B)$, (\ref{eq:covPhi}) gives
-$\nabla_p\vec\Phi=\mathcal A_p\vec X(\mathfrak c)$ with $\vec X(\mathfrak c)=2ig^{\rm F}_\LL\mathfrak c_{\rm F}\vec\Phi-g^{\rm v}_\LL\vec{\mathfrak c}\times\vec\Phi$, and
-(\ref{eq:Lkin}) becomes $\sum_p\eta^\LL_{pp}\mathcal A_p\mathcal A_p\,\mathcal K(\vec X)$ with
-$\mathcal K(\vec X)=Z|\vec X|^2+Y|\vec\Phi^\dagger\cdot\vec X|^2/|\vec\Phi|^2$. The mass term is
-$\frac12\sum_{ab}\mathsf M_{ab}\sum_p\eta^\LL_{pp}\mathcal A^a_p\mathcal A^b_p$ with
-\begin{equation}
-\mathsf M_{ab}=2\,{\rm Re}\Big[Z\vec X_a^\dagger\cdot\vec X_b+Y\frac{(\vec\Phi^\dagger\cdot\vec X_a)^*(\vec\Phi^\dagger\cdot\vec X_b)}{|\vec\Phi|^2}\Big].
-\label{eq:massmatrix}
-\end{equation}
-For a polar vacuum $\vec\Phi=\Phi_0e^{i\vartheta}\vec n$ the two parts of $\vec X$ are orthogonal, and
-\begin{equation}
-\mathsf M=\begin{pmatrix}(M^X_{W,\SF})^2(\mathsf 1_3-\vec n\vec n^T)&0\\0&(M^X_{Z,\SF})^2\end{pmatrix},\qquad
-M^X_{W,\SF}=g^{\rm v}_\LL f^{X,{\rm I}}_\SF,\quad M^X_{Z,\SF}=2g^{\rm F}_\LL f^{X,{\rm F}}_\SF .
-\label{eq:MWMZ}
-\end{equation}
-The eigenvector $(\vec n,0)$ has the eigenvalue 0: the zeugon $A=\vec n\cdot\vec W$, the massless gauge boson of the unbroken charge. The two directions orthogonal to $\vec n$ give
-$W^\pm$, and $B$ is the $Z$.
+{{T_RESPONSE}}
 
-\paragraph*{Theorem (the massless bosons are the generators that leave the field unchanged).}
-If $Z>0$ and $Z+Y>0$, then for every field $\vec\Phi\ne0$ the null vectors of (\ref{eq:massmatrix}) are exactly the $\mathfrak c$ with
-$\vec X(\mathfrak c)=0$. \emph{Proof.} By the Cauchy-Schwarz inequality $|\vec\Phi^\dagger\cdot\vec X|^2\le|\vec\Phi|^2|\vec X|^2$, so
-$\mathcal K(\vec X)\ge\min(Z,Z+Y)|\vec X|^2>0$ for $\vec X\ne0$. Since $\mathfrak c^T\mathsf M\mathfrak c=2\mathcal K(\vec X(\mathfrak c))\ge0$, $\mathsf M$ is
-positive semidefinite, and for such a matrix $\mathsf M\mathfrak c=0$ exactly when $\mathfrak c^T\mathsf M\mathfrak c=0$ (write $\mathsf M=\mathsf V^T\mathsf V$).
-Hence $\mathsf M\mathfrak c=0\Leftrightarrow\mathcal K(\vec X(\mathfrak c))=0\Leftrightarrow\vec X(\mathfrak c)=0$, and $\vec X(\mathfrak c)$ is the change of
-$\vec\Phi$ under the infinitesimal gauge transformation with the parameters $\mathfrak c_a$. $\square$ For a polar vacuum
-$\vec X=0$ requires $\mathfrak c_{\rm F}=0$ and $\vec{\mathfrak c}\parallel\vec n$ (the two parts are orthogonal): exactly one massless boson.
-It does not mix with $B$ (the weak mixing angle vanishes) because the condensate has fermion number 2, so no admixture of
-$F_\LL$ leaves it unchanged. For the non-unitary field $\Phi_0(\vec e_3+i\vec e_1)/\sqrt2$, $\vec e_2\times\vec\Phi=-i\vec\Phi$, and
-$\vec X$ vanishes for $\mathfrak c\propto(0,2g^{\rm F}_\LL,0,-g^{\rm v}_\LL)$: the massless boson is $\cos\theta'W^2-\sin\theta'B$ with
-$\tan\theta'=g^{\rm v}_\LL/(2g^{\rm F}_\LL)$, $\theta'={{THETAP}}^\circ$, the analogue of the weak mixing angle with $g'$ replaced by
-$2g^{\rm F}_\LL$ (Fig.~\ref{fig:mixing}).
+%=====================================================================================================================
+\section{The effective potential}
+\label{sec:potential}
+
+The effective potential $V^{\rm eff}_\SH(\varphi_\SH)$ is the lowest energy per volume of the uniform states with the pair
+amplitude $\varphi_\SH$ along the direction of the vacuum. Minimizing the energy at a fixed pair amplitude adds a Lagrange
+multiplier times $\Pi^{\rm d}_\SH+(\Pi^{\rm d}_\SH)^\dagger$ (and the same for $\Pi'^{\rm u}_\SH$ in the second version) to the
+Hamiltonian, so the constrained state is the ground state of (\ref{eq:BdG}) with $\mathsf P=d\,\mathsf P^{\rm vac}$ for some
+$d$ and the normal self-energy that its own local matrices produce. The program fixes $d$, iterates $\mathsf N$ to
+self-consistency, and records the energy, the pair amplitude and the Dirac masses, for 33 values
+$d=0,0.05\,d^0_\SH,\dots,1.6\,d^0_\SH$, each state started from the normal self-energy of its neighbour. Because the
+self-consistent $\mathsf N$ need not be unique at fixed $d$, the continuation is made from both ends: from the ground state
+downward to $d=0$ and upward (the branch of the ground state), and from the normal vacuum upward. Where the two reach
+different states at the same $d$, the lower branch at the same $\varphi_\SH$ is $V^{\rm eff}_\SH$, and the other is followed
+with the step $0.005\,d^0_\SH$ to its end. The derivatives at the minimum follow from central differences in $d$ with the
+steps 0.01 and 0.02 combined by Richardson extrapolation, by the parametric formulas
+$V'=\mathcal E_d/\varphi_d$ and $V''=(\mathcal E_{dd}-V'\varphi_{dd})/\varphi_d^2$.
+
+In every method and both versions $V^{\rm eff}_\SH$ is a Mexican hat with its minimum at $d^0_\SH$ (Table~\ref{tab:minimum},
+Fig.~\ref{fig:potential}). Its top (Table~\ref{tab:top}) is the normal vacuum, except in KS and CJT of the second version,
+where the branch of the ground state ends at $d=0$ in the scalar condensate, at
+$V^{\rm eff}_\SH(0)={{TOP_RATIO}}\,|V^{\rm eff}_\SH(\varphi^0_\SH)|$; along it the masses of $\Psi_\LL$ stay negative. There the
+continuation from the normal vacuum follows a second branch, with positive masses of $\Psi_\LL$, which lies above the
+effective potential at the same pair amplitude by {{SB_GAP_RANGE}} times the depth. The continuation with the fine step
+follows it up to $d={{SB_LAST}}\,d^0_\SH$, where the number of steps of the iteration has risen steeply (to {{SB_LAST_IT}}),
+as near a fold where two branches of stationary states meet and end; at ${{SB_BEYOND}}\,d^0_\SH$ it reaches the branch of
+the ground state. The first form of this computation followed only the continuation from the normal vacuum and stated a top
+of zero in every method; for KS and CJT of the second version that was incorrect, and the present computation replaces
+it. The minimum, its curvature and every later result are computed at the ground state and are unchanged.
+
+{{T_MINIMUM}}
+
+{{T_TOP}}
 
 \begin{figure}[h]
-\includegraphics[width=0.85\textwidth]{figures/fig_part4_r1_massmatrix.pdf}
-\caption{\label{fig:mixing}The mass matrix (\ref{eq:massmatrix}) of the effective Lagrangian of CJT along the fields
-$\Phi_0(\cos\upsilon\,\vec e_3+i\sin\upsilon\,\vec e_1)$. Left: the four masses. Right: the squared components of the lightest boson. A
-massless boson exists only where the field has a continuous stabilizer ($\upsilon=0$, $45^\circ$, $90^\circ$); at $\upsilon=45^\circ$ it is
-$\cos\theta'W^2-\sin\theta'B$.}
+\includegraphics[width=0.9\textwidth]{figures/fig_sh_hg_potential.pdf}
+\caption{\label{fig:potential}The effective potential divided by the depth of its minimum, against the pair amplitude,
+for the five methods: the second version (left) and the first (right). KS and CJT coincide. The dashed line with circles
+is the second branch of KS and CJT of the second version.}
 \end{figure}
 
-\paragraph*{The microscopic check.}
-The same masses follow from the microscopic theory without the effective Lagrangian: the response of the self-consistent
-vacuum to constant time components of the gauge fields (equivalently, to chemical potentials of the four charges) gives the
-matrix $g_ag_b\chi^{ab}_\SF$. For the vacuum $\Phi_0e^{i\pi/5}\vec e_1$ (chosen so that the identification of the massless boson is not
-trivial) its smallest eigenvalue vanishes to rounding ({{MASS_LAMBDA0}} of the largest) with the eigenvector $W^1$, and the matrix agrees with
-(\ref{eq:massmatrix}) to {{MASS_MICRO}} of $(M^X_{Z,\SF})^2$ in the five methods.
-
-\paragraph*{The surviving group.}
-The stabilizer of the vacuum $\Phi_0\vec e_3$ in GEE is $SL(2,\mathbb C)\times O(2)$, with
-$O(2)=\{e^{i\theta T^3_\LL}\}\rtimes\{\mathsf 1,\mathsf r\}$, where $\mathsf r$ is the rotation by $\pi$ about $\vec e_1$ combined with the phase
-$e^{i\pi F_\LL/2}$. Its identity component is the group $U(1)^{\rm Q}_\LL$ of the charge $Q_\LL=T^3_\LL$ of $SU(2)_{\rm v}$, not the electric
-charge (charges $\pm\frac12$ of the spinor field and $\pm1$ of $W^\pm$); $e^{2\pi iQ_\LL}$ and $e^{i\pi F_\LL}$ act alike on every field. $\mathsf r$ reverses $Q_\LL$
-and acts on the gauge fields as $A\to-A$, $W^\pm\to W^\mp$, $Z\to Z$: a charge conjugation of the zeugon, without a gauge boson.
-$SL(2,\mathbb C)$ is unbroken because the condensate is a Lorentz scalar.
-
-\paragraph*{The zeugon.}
-The massless boson $A=\vec n\cdot\vec W$ is not the photon: it couples with the strength $g^{\rm v}_\LL$ to the charge
-$Q_\LL=\vec n\cdot\vec T_\LL$ of $SU(2)_{\rm v}$, which only the spinor field ($\pm\frac12$), $W^\pm$ and the two non-unitary scalars
-($\pm1$) carry, and nothing in the model carries electric charge. We name it the zeugon (from the Greek \emph{zeugos}, a yoked
-pair), because it is the only gauge boson that attracts the two members of the condensed pair. In the condensed channel
-$\mathsf K^3_\LL$ the exchange of one gauge boson between the two charges of a pair, in the limit of a heavy boson (a contact
-interaction, per unit of its coupling; negative means attraction), has the pair energy $-1$ for $W^3$, $+1$ for each of $W^1$
-and $W^2$, and $+4$ for $B$: in every spin-zero channel the three isospin bosons together give $+1$, because the pair is an isospin triplet, $\vec T_1\cdot\vec T_2=+\frac14$, so that no
-gauge boson attracts a spin-zero pair in the symmetric vacuum, where all four are massless. The linearized gap equation of the
-normal vacuum with the exchange of $W^3$ alone has the largest eigenvalue ${{THOULESS3}}\,(g^{\rm v}_\LL)^2$, so that the zeugon
-alone would pair the vacuum only for $g^{\rm v}_\LL>{{GV_CRIT}}$; with all four bosons at the couplings of the model the
-eigenvalue is ${{THOULESS6}}$, a repulsion. In the CJT superfluid with the exchange of the gauge bosons included
-self-consistently, the exchange energies per volume are ${{EX_W3}}$ for the zeugon (an attraction), ${{EX_W1}}$ for each of
-$W^1$ and $W^2$, and ${{EX_B}}$ for $B$; their sum, ${{EX_TOT}}$, weakens the condensate, which the pairing term of
-the potential (\ref{eq:V}) produces. The mass of the zeugon computed in that state is ${{M_A_CJT}}$, against $M^{\rm CJT}_{W,\SF}={{M_W_CJT}}$.
-\emph{A remark on its symmetry:} the element $\mathsf r$ of the surviving group reverses the zeugon and exchanges $W^+$ and $W^-$,
-and it is a gauge transformation, so the charge conjugation of the zeugon is a local symmetry, the defining property of Alice
-electrodynamics~\cite{Kiskis1978,Schwarz1982,BucherLoPreskill1992}. Since $(\vec n,\vartheta)$ and $(-\vec n,\vartheta+\pi)$ are the
-same vacuum, the vacuum manifold contains loops along which $\vec n$ turns into $-\vec n$ while the phase advances by $\pi$; a
-half-quantum vortex along such a loop is an Alice string, which reverses $Q_\LL$ of every particle carried around it, as in the
-polar phase of spin-one condensates~\cite{LeonhardtVolovik2000}. These strings, and the monopoles of $U(1)^{\rm Q}_\LL$ that the
-sphere of directions $\vec n$ allows, follow from the topology of the vacuum manifold and are not computed here.
-
-\paragraph*{The count of the degrees of freedom and the Higgs mechanism in time.}
-Before the breaking: four massless vector fields (8 polarizations) and six real components of $\vec\Phi$, together 14. After:
-three massive vector fields (9), the zeugon (2), and three massive scalars ($h$ and the two non-unitary fields), together 14: the
-three Goldstone fields have become the longitudinal polarizations of $W^\pm$ and $Z$. Keeping only the phase $\vartheta$ and $B$,
-the Lagrangian $\frac12B_{01}^2+\frac12(f^{\rm F})^2[(\partial_0\vartheta+2g^{\rm F}_\LL B_0)^2-(\partial_1\vartheta-2g^{\rm F}_\LL B^1)^2]$ was integrated
-in time in two gauges: in the temporal gauge with CVODE, and in the unitary gauge, where Gauss's law is an algebraic equation of
-a differential-algebraic system of index one, with IDA~\cite{SUNDIALS2005,SUNDIALS2022}. A wave packet of the Goldstone field
-that moves at the speed 1 without the gauge field becomes, with it, the longitudinal $Z$: its energy moves at the group velocity
-$k/(k^2+(M^X_{Z,\SF})^2)^{1/2}$ of the dispersion $\omega^2=k^2+(M^X_{Z,\SF})^2$, and the two integrators agree on the gauge-invariant fields.
-
 %=====================================================================================================================
-\section{Finite temperature}
-\label{sec:thermal}
+\section{The susceptibilities and the masses of the gauge bosons}
+\label{sec:gauge}
 
-\subsection{Thermal states and the free energy}
+\subsection{Chemical potentials as the time components of the gauge fields}
 
-At the temperature $T$ the state is the thermal state $f(\mathsf H_\SF)$ of (\ref{eq:BdG}), $f(\varepsilon)=1/(e^{\varepsilon/T}+1)$, and its
-free energy per volume is $\mathcal E^X_\SF-T\mathcal S_\SF$, with the energy of method $X$ (unchanged) and the entropy of the
-quasi-free state,
+A uniform, static gauge field couples to the charge densities. Its time component $A^a_0$ acts like a chemical potential
+$\mu^a=g_aA^a_0$ of the charge $Q_a$. In the effective Lagrangian of the pair fields, $Z_\SH|D_\mu\Phi|^2$ gives for a
+time component the term $Z_\SH\mu^2|Q\Phi|^2$, which lowers the energy of the superfluid by the same amount: the
+susceptibilities
 \begin{equation}
-\mathcal S_\SF=-\frac12\int\frac{d^3q}{(2\pi)^3}\sum_{k=1}^{16}\big[f_k\ln f_k+(1-f_k)\ln(1-f_k)\big],
-\label{eq:entropy}
-\end{equation}
-where $f_k$ are the occupations of the 16 eigenvalues of $\mathsf H_\SF(\vec q)$; every mode appears twice (at $\pm\varepsilon$, with the
-occupations $f$ and $1-f$), hence the factor $\frac12$. For HS this is the saddle point at finite $T$, for CJT the truncated effective
-action at finite $T$~\cite{AmelinoCamelia1993}, and for KS Mermin's functional~\cite{Mermin1965} with the exchange-correlation
-energy of $T=0$. The self-energies are the derivatives of the energy as at $T=0$, and the stationarity in the occupations gives
-the Fermi function. The free energy of the field, $\mathcal F^X_\SF(\vec\Phi;T)$, is computed with an applied pair field as the
-effective potential, and measured from the normal state at the same $T$.
-
-\subsection{The critical temperature}
-
-The normal state at $T$ has a normal self-energy that is a Dirac mass $M^{X,{\rm n}}_\SF(T)$ (the thermal particles and
-antiparticles change the scalar density, which shifts the mass where $g^{X,{\rm S}}_\SF\ne0$). Its static pair response in the
-channel $\mathsf K^3_\LL$ has the eigenvalue
-\begin{equation}
-\lambda^{\rm P}_\SF(T)=\frac{g^{X,{\rm P}}_\SF\,I_1\big(M^{X,{\rm n}}_\SF(T),T\big)}{\pi^2},\qquad I_1(M,T)=\int_0^{\Lambda_\LL}\frac{q^2\tanh(E/2T)}{E}dq,
-\label{eq:lambdaT}
-\end{equation}
-($\tanh(E/2T)=1-2f(E)$ is the thermal factor of a pair of quasi-particles), and the critical temperature solves
-$\lambda^{\rm P}_\SF(T^{X,{\rm c}}_\SF)=1$. In every method $\lambda^{\rm P}_\SF(T)$ does not increase with $T$ (checked on 60 temperatures from $0.01$
-to $0.6$ in Rust and in the notebook and on 600 temperatures in Python), so $T^{X,{\rm c}}_\SF$ is unique; below it a polar start
-ends in a superfluid, above it in the normal state. Table~\ref{tab:T0} gives $T^{X,{\rm c}}_\SF$.
-
-\subsection{The gap equation, and the Dirac mass of the superfluid}
-
-The polar superfluid at $T$ with the Dirac mass $M^{X,{\rm D}}_\SF$ and the order parameter $\Phi_0(T)$ has the pair self-consistency
-(the gap equation)
-\begin{equation}
-1=\frac{g^{X,{\rm P}}_\SF}{\pi^2}\,I_1\big(E^{\rm gap}(T),T\big),\qquad E^{\rm gap}(T)=\big((M^{X,{\rm D}}_\SF)^2+\Phi_0(T)^2\big)^{1/2}.
-\label{eq:gap}
-\end{equation}
-Its scalar density,
-$n^{\rm S}=-\frac2{\pi^2}[M^{X,{\rm D}}_\SF I_1(E^{\rm gap},T)-m_\LL I_1(m_\LL,0)]$, contains the same integral, which (\ref{eq:gap}) fixes to
-$\pi^2/g^{X,{\rm P}}_\SF$: $n^{\rm S}=-2M^{X,{\rm D}}_\SF/g^{X,{\rm P}}_\SF+2m_\LL I_1(m_\LL,0)/\pi^2$. The scalar self-consistency
-$M^{X,{\rm D}}_\SF-m_\LL=g^{X,{\rm S}}_\SF n^{\rm S}$ therefore contains no temperature: \emph{the Dirac mass of the superfluid does not
-depend on the temperature}, and $\Phi_0(T)$ follows from (\ref{eq:gap}) alone. Near $T^{X,{\rm c}}_\SF$ it vanishes like
-$(1-T/T^{X,{\rm c}}_\SF)^{1/2}$. The ratio $E^{X,{\rm gap}}_\SF(0)/T^{X,{\rm c}}_\SF={{GAPRATIO_RANGE}}$ is of the size of the ratio 1.764 of the
-theory of Bardeen, Cooper and Schrieffer~\cite{BCS1957}.
-
-\subsection{The radius of convergence, and Landau's theory}
-
-The free energy is an integral over the momenta of $-T\ln(2\cosh(E/2T))$ (one term per pair of eigenvalues $\pm E$) and of
-densities with the factor $\tanh(E/2T)/E$. With the Matsubara frequencies $\omega_m=(2m+1)\pi T$,
-\begin{equation}
-\ln\big(2\cosh(E/2T)\big)=\ln2+\sum_{m=0}^\infty\ln\Big(1+\frac{E^2}{\omega_m^2}\Big),\qquad\frac{\tanh(E/2T)}{E}=4T\sum_{m=0}^\infty\frac1{\omega_m^2+E^2},
-\label{eq:matsubara}
-\end{equation}
-functions of $\omega_m^2+q^2+M^2+\Phi_{\rm a}^2$. Integrated over the momenta, each is singular where $\omega_m^2+M^2+\Phi_{\rm a}^2=0$; the
-nearest such point to the origin is $\Phi_{\rm a}^2=-(M^{X,{\rm n}}_\SF(T)^2+\pi^2T^2)$. The series of the free energy in $|\vec\Phi|^2$ about the
-normal state therefore converges within a radius of the order of $r(T)=(M^{X,{\rm n}}_\SF(T)^2+\pi^2T^2)^{1/2}$, which grows with $T$.
-Near $T^{X,{\rm c}}_\SF$ the order parameter lies well inside it, the residual of the Landau form falls to {{LANDAU098}} of the depth
-at $0.98\,T^{X,{\rm c}}_\SF$, and the order parameter of Landau's theory, $(-a/2b)^{1/2}$ with the Taylor coefficients $a$, $b$ of
-the free energy at the origin, has an error of relative order $1-T/T^{X,{\rm c}}_\SF$. These are statements about the mean-field free
-energy; Sec.~\ref{sec:gi} shows that these temperatures lie inside the critical region.
-
-\begin{table}[h]
-\caption{\label{tab:T0}The five methods with $V^{(2)}_\SF$: effective couplings, the eigenvalue $\lambda^{\rm P}_\SF(0)$, the ground state at
-$T=0$ (order parameter, Dirac mass, gap, depth of the effective potential), the critical temperature and the ratio of the gap
-to it, in units of $\Lambda_\LL$. KS and CJT coincide on the polar states.}
-\begin{ruledtabular}
-\begin{tabular}{lrrrrrrrrr}
-method & $g^{X,{\rm S}}_\SF$ & $g^{X,{\rm P}}_\SF$ & $\lambda^{\rm P}_\SF(0)$ & $\Phi^X_{0,\SF}$ & $M^{X,{\rm D}}_\SF$ & $E^{X,{\rm gap}}_\SF$ & $10^4|\mathcal V^X_\SF(\Phi_0)|$ & $T^{X,{\rm c}}_\SF$ & $E^{\rm gap}/T^{X,{\rm c}}_\SF$ \\
-\hline
-{{TABLE_T0}}
-\end{tabular}
-\end{ruledtabular}
-\end{table}
-
-%=====================================================================================================================
-\section{The gradient coefficient at the critical temperature}
-\label{sec:gradient}
-
-\subsection{The functional of Ginzburg and Landau}
-
-Near $T^{X,{\rm c}}_\SF$ the field is small. For a static field that varies slowly in space the free energy of method $X$, to second
-order in the field and its derivatives and to fourth order in the field, is
-\begin{equation}
-\mathcal F^{X,{\rm GL}}_\SF=\int d^3x\Big[\mathsf c^X_\SF\sum_{j=1}^3(\partial_j\vec\Phi)^\dagger\cdot\partial_j\vec\Phi+\alpha^{X,{\rm GL}}_\SF t\,|\vec\Phi|^2+b^X_\SF|\vec\Phi|^4\Big],
-\label{eq:GL}
-\end{equation}
-with the Taylor coefficient $a(0;T)\approx\alpha^{X,{\rm GL}}_\SF t$ of $|\vec\Phi|^2$ (so $\alpha^{X,{\rm GL}}_\SF=T^{X,{\rm c}}_\SF\partial_Ta$ at
-$T^{X,{\rm c}}_\SF$) and the Taylor coefficient $b^X_\SF$ of $|\vec\Phi|^4$ at $T^{X,{\rm c}}_\SF$. Static fluctuations dominate near a continuous
-transition: a fluctuation with the Matsubara frequency $2\pi mT$, $m\ne0$, costs of the order of $(2\pi T)^2$ times the coefficient of
-the time derivatives, and $2\pi T^{X,{\rm c}}_\SF$ is {{TWOPITC_RANGE}}, of the order of the cutoff. Rotations and isospin rotations allow no
-other term of second order (the indices can only be contracted with $\delta_{jj'}$ and $\delta_{\iota\iota'}$), and a term with
-$\vec\Phi\cdot\vec\Phi$ has the fermion number 4. At fourth order the two invariants $|\vec\Phi|^4$ and $|\vec\Phi\cdot\vec\Phi|^2$ are equal on
-the polar fields (the minimum); (\ref{eq:GL}) keeps the coefficient along these fields.
-
-\subsection{A moving pair: the twist}
-
-A pair field with the momentum $q$ along $\vec e_3$, $\vec\Phi(\vec x)=\vec\Phi\,e^{iqx^3}$, has in (\ref{eq:GL}) the gradient term
-$\mathsf c^X_\SF q^2|\vec\Phi|^2$, so its coefficient of $|\vec\Phi|^2$ is
-\begin{equation}
-a(q;T)=a(0;T)+\mathsf c^X_\SF q^2+O(q^4).
-\label{eq:aq}
-\end{equation}
-Its state pairs the momenta $\vec q_\LL+\frac12q\vec e_3$ and $-\vec q_\LL+\frac12q\vec e_3$, with the relative momentum $\vec q_\LL$. The
-gauge transformation $\Psi\to e^{iqx^3/2}\Psi$ makes the pair field uniform; since $\mathsf h_\LL(\vec q)$ is linear in $\vec q$, it replaces
-$\mathsf h_\LL(\pm\vec q_\LL)$ in (\ref{eq:BdG}) by $\mathsf h_\LL(\pm\vec q_\LL)+\mathsf T^{\rm tw}$ with the \textbf{twist}
-$\mathsf T^{\rm tw}=\frac12q\,\alpha^3_\LL\otimes\mathsf 1_2$. More generally, $Q\,\alpha^3_\LL\otimes\mathsf t$ with an isospin matrix $\mathsf t$ shifts
-the momenta of the charges of $\mathsf t$: $\mathsf t=\mathsf 1_2$ moves the pair (fermion number 2) with $q=2Q$; $\mathsf t=\frac12\tau_1$ turns the
-isospin direction of the field along $x^3$, moving its components of charge $\pm1$ of $T^1_\LL$ with the momenta $\pm Q$ (isospin
-invariance requires the same coefficient); $\mathsf t=\frac12\tau_3$ twists the unbroken $T^3_\LL$, which does not change the field
-$\Phi\vec e_3$ (its charge is 0) and should cost nothing (Sec.~\ref{sec:reg}). At second order in the field the normal self-energy
-may be taken from the normal state at $T$: the free energy is stationary in it, so its change affects the free energy only at
-fourth order.
-
-\subsection{The static pair response}
-
-Let $\mathsf H_0={\rm diag}(\mathsf A,\mathsf D)$ be the BdG matrix of the normal state with the twist, with the particle block
-$\mathsf A=\mathsf h_\LL(\vec q_\LL)+\mathsf N^{\rm n}+\mathsf T$ (eigenvalues $\varepsilon^{\rm A}_a$, orthonormal eigenvectors $\mathsf u_a$) and the hole
-block $\mathsf D=-(\mathsf h_\LL(-\vec q_\LL)+\mathsf N^{\rm n}+\mathsf T)^T$ (eigenvalues $\varepsilon^{\rm D}_b$, eigenvectors $\mathsf w_b$), and add a small
-off-diagonal block, $\mathsf H=\mathsf H_0+\mathsf V$ with $\mathsf V=\begin{pmatrix}0&\mathsf P^{\rm a}\\(\mathsf P^{\rm a})^\dagger&0\end{pmatrix}$. The first-order
-change of a function of a Hermitian matrix is (the formula of Daleckii and Krein): in the eigenbasis of $\mathsf H_0$ with the
-eigenvalues $e_k$,
-\begin{equation}
-\big[\delta f(\mathsf H)\big]_{kl}=\frac{f(e_k)-f(e_l)}{e_k-e_l}\,\mathsf V_{kl},
-\label{eq:dk}
-\end{equation}
-with $f'(e_k)$ where $e_k=e_l$. [It follows from the resolvent: $f(\mathsf H)=\oint\frac{dz}{2\pi i}f(z)(z-\mathsf H)^{-1}$ and
-$\delta(z-\mathsf H)^{-1}=(z-\mathsf H_0)^{-1}\mathsf V(z-\mathsf H_0)^{-1}$, whose matrix element $\mathsf V_{kl}/((z-e_k)(z-e_l))$ integrates to the
-divided difference.] The upper-right block of $f(\mathsf H)$ is $-\mathsf C^{\rm p}_\LL(\vec q_\LL)$, so the pair matrix summed over the momenta
-is, to first order,
-\begin{equation}
-\mathsf C^{\rm p,tot}_\SF=\mathcal X^{\rm P}_\SF[\mathsf P^{\rm a}]=-\int\frac{d^3q_\LL}{(2\pi)^3}\sum_{a,b=1}^8\frac{f(\varepsilon^{\rm A}_a)-f(\varepsilon^{\rm D}_b)}{\varepsilon^{\rm A}_a-\varepsilon^{\rm D}_b}\,\mathsf u_a\mathsf u_a^\dagger\,\mathsf P^{\rm a}\,\mathsf w_b\mathsf w_b^\dagger .
+\chi^{ab}=\frac{\partial\langle Q_a\rangle}{\partial\mu^b}=-\frac{\partial^2\mathcal E}{\partial\mu^a\partial\mu^b}
 \label{eq:chi}
 \end{equation}
-In the programs this is evaluated, at every node, for the 28 basis matrices $\mathsf E_{ab}-\mathsf E_{ba}$ ($a<b$) of the antisymmetric
-$8\times8$ matrices: with $\mathsf U_{\rm A}=(\mathsf u_1,\dots,\mathsf u_8)$, $\mathsf U_{\rm D}=(\mathsf w_1,\dots,\mathsf w_8)$ and
-$\mathsf F_{ab}=(f(\varepsilon^{\rm A}_a)-f(\varepsilon^{\rm D}_b))/(\varepsilon^{\rm A}_a-\varepsilon^{\rm D}_b)$, $\mathcal X^{\rm P}[\mathsf B]=-\sum_qw_q\mathsf U_{\rm A}
-[(\mathsf U_{\rm A}^\dagger\mathsf B\mathsf U_{\rm D})\circ\mathsf F]\mathsf U_{\rm D}^\dagger$ (the circle is the entrywise product).
-
-\subsection{The free energy at second order}
-
-\emph{Claim:} the free energy of the state, measured from the normal state at $T$, is to second order in the pair field
+of the ground state of $H-\sum_b\mu^bQ_b$ are the coefficients of the mass term. The eight generators are $T^1$, $T^2$,
+$T^3$, $T^1_R$, $T^2_R$, $T^3_R$, $R_\SH$ and $F^{\rm tot}_\SH$; the susceptibilities of the hypercharge
+$Y=T^3_R+\tfrac14R_\SH$ are the corresponding combinations of theirs, and the mass matrix of $(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ is
 \begin{equation}
-\mathcal F^X_2=\tfrac12\,{\rm Re}\,\tr\Big[\big(\mathsf P^{\rm a}-\mathsf P_\SF[\mathsf C^{\rm p,tot}_\SF]\big)\big(\mathsf C^{\rm p,tot}_\SF\big)^\dagger\Big],
-\label{eq:F2}
+(\mathsf M^{\rm g})^2_{ab}=g_ag_b\,\chi^{ab},\qquad a,b=1,2,3,Y,\qquad g_1=g_2=g_3=g,\quad g_Y=g',
+\label{eq:Mg}
 \end{equation}
-where $\mathsf P_\SF[\cdot]$ is the pair self-energy (\ref{eq:Nbil}), (\ref{eq:Ppair}) of method $X$ for a given pair matrix (linear in it; it
-contains every pair channel of the method's functional). \emph{Derivation.} (i) Consider the quadratic Hamiltonian $H_0+\epsilon V$
-of the normal state plus a pair term $V$ whose BdG block is $\mathsf P^{\rm a}$. In the thermal state of $H_0+V$ the expectation value of
-the pair term is $\langle V\rangle=-{\rm Re}\,\tr(\mathsf P^{\rm a}(\mathsf C^{\rm p,tot})^\dagger)$ (the pair block of the energy of a quasi-free
-state). (ii) The thermodynamic potential $\Omega(\epsilon)=-T\ln{\rm Tr}\,e^{-(H_0+\epsilon V)/T}$ obeys $d\Omega/d\epsilon=\langle V\rangle_\epsilon$, and
-$\langle V\rangle_\epsilon$ vanishes in the normal state and is linear in $\epsilon$ at this order, $\langle V\rangle_\epsilon=\epsilon\langle V\rangle$; hence
-$\Omega(1)-\Omega(0)=\int_0^1\epsilon\,d\epsilon\,\langle V\rangle=\frac12\langle V\rangle$. (iii) The free energy of the method is this thermodynamic
-potential minus $\langle V\rangle$ (the pair term is not part of the Hamiltonian of the model) plus the pair part $E_{\rm pair}$ of the
-interaction energy of the method. $E_{\rm pair}$ is a quadratic form of the pair matrix whose derivative is the pair self-energy; for the
-pairing term, for example, $E_{\rm pair}=-\frac14G_\LL w^{\rm P}|\tr(\mathsf K\mathsf C^T)|^2$ and, by (\ref{eq:Ppair}) and the antisymmetry of
-$\mathsf K$, ${\rm Re}\,\tr(\mathsf P_\SF[\mathsf C]\mathsf C^\dagger)=\frac12G_\LL w^{\rm P}|\tr(\mathsf K\mathsf C^T)|^2$, so that
-$E_{\rm pair}=-\frac12{\rm Re}\,\tr(\mathsf P_\SF[\mathsf C]\mathsf C^\dagger)$, and the same holds for the pair contractions of the bilinear terms. The
-sum is $\frac12\langle V\rangle-\langle V\rangle+E_{\rm pair}=\frac12{\rm Re}\,\tr(\mathsf P^{\rm a}\mathsf C^\dagger)-\frac12{\rm Re}\,\tr(\mathsf P_\SF[\mathsf C]\mathsf C^\dagger)$,
-which is (\ref{eq:F2}). The normal part of the energy does not change at second order, because the free energy is stationary in
-the normal self-energy. $\square$ For a self-consistent pair field, $\mathsf P^{\rm a}=\mathsf P_\SF[\mathsf C^{\rm p,tot}]$, (\ref{eq:F2})
-vanishes: a self-consistent pair field of infinitesimal amplitude exists exactly where the coefficient below changes sign.
+where the index $a=1,2,3$ stands for $T^a$ and the index $Y$ for the hypercharge.
+The space components of a uniform gauge field would also give it, but with the sharp cutoff of the momenta the normal
+vacuum answers them with a current, an artifact that the time components avoid: the normal vacuum has a gap and does not
+respond to a chemical potential at all. The program computes the ground states of $H-\mu^bQ_b$ for $\mu^b=\pm h$, $\pm2h$
+($h=0.005$) and differentiates the charge densities $\langle Q_a\rangle=\tr(Q_a\varrho)$ by central differences with
+Richardson extrapolation; by the theorem of Hellmann and Feynman $\partial\mathcal E/\partial\mu^a=-\langle Q_a\rangle$, so
+$\chi$ must be symmetric. The Python program computes the same susceptibilities from the second derivatives of the
+energy, a second method.
 
-\subsection{The free energy of the field}
+\subsection{Results}
 
-The field of the state is the component of its own pair self-energy along $(\mathsf K^3_\LL)^\dagger$,
-$\Phi^3=\tr(\mathsf K^3_\LL\mathsf P_\SF[\mathsf C^{\rm p,tot}])/8$. The free energy of the field is the smallest $\mathcal F^X_2$ among the states with
-this field. The minimization at fixed field is done with a Lagrange multiplier: the components of $\mathsf P^{\rm a}$ along the three
-$(\mathsf K^\iota_\LL)^\dagger$ (the three components of the field) are held at $(0,0,1)$, and its components along the other 25 basis
-directions are made self-consistent, $\Pi_\perp\mathsf P^{\rm a}=\Pi_\perp\mathsf P_\SF[\mathcal X^{\rm P}[\mathsf P^{\rm a}]]$, where $\Pi_\perp$ removes the components
-along the $(\mathsf K^\iota_\LL)^\dagger$. With the linear map $\mathsf M:\mathsf P^{\rm a}\mapsto\mathsf P_\SF[\mathcal X^{\rm P}[\mathsf P^{\rm a}]]$ on the 28 coefficients and
-$\mathsf e_3$ the coefficients of $(\mathsf K^3_\LL)^\dagger$, this is the linear system
+Table~\ref{tab:chi} gives the susceptibilities. In every method they are symmetric, the row of $Q=T^3+Y$ vanishes (the
+photon is massless), and the matrix of the eight generators has rank four in the second version; in the first, where of
+$SU(2)_R$ only $T^3_R$ is a symmetry, the matrix of $T^1$, $T^2$, $T^3$, $R_\SH$ and $F^{\rm tot}_\SH$ has rank three. In
+the second version the custodial structure $\chi(T^a)=\chi(T^a_R)=-\chi(T^a,T^a_R)$ holds, so $\chi^{YY}=\chi^{33}=-\chi^{3Y}$
+and the mass matrix (\ref{eq:Mg}) has the eigenvalues $0$, $g^2\chi^{11}$ (twice) and $(g^2+g'^2)\chi^{33}$:
 \begin{equation}
-(\mathsf 1-\Pi_\perp\mathsf M)\,\mathsf p_\perp=\Pi_\perp\mathsf M\,\mathsf e_3,\qquad\mathsf P^{\rm a}=\mathsf e_3+\mathsf p_\perp ,
-\label{eq:linsys}
+M_{W,\SH}=\tfrac12g\,v_\SH,\quad M_{Z,\SH}=\tfrac12(g^2+g'^2)^{1/2}v_\SH,\quad v_\SH=2(\chi^{11})^{1/2},\quad
+\rho_\SH=\frac{\chi^{11}}{\chi^{33}}=1 .
+\label{eq:rho}
 \end{equation}
-and then $a(q;T)=\mathcal F^X_2/|\Phi^3|^2$. At $q=0$ no other channel is induced ($|\mathsf p_\perp|\le${} {{PPERP0}}, checks P3-G4, YP3-G4, WP3-G4), and in the
-channel $\mathsf K^3_\LL$ alone, where $\mathsf P_\SF[\mathsf C]=-\frac12g^{X,{\rm P}}_\SF\tr(\mathsf K^3_\LL\mathsf C^T)(\mathsf K^3_\LL)^\dagger$ (the definition of the effective
-pair coupling) and the applied block $(\mathsf K^3_\LL)^\dagger$ produces the field $\lambda^{\rm P}_\SF(T)$ (the definition of the eigenvalue),
-(\ref{eq:F2}) gives $\frac12(1-\lambda^{\rm P}_\SF)\cdot2\lambda^{\rm P}_\SF/g^{X,{\rm P}}_\SF$ for $|\Phi^3|^2=(\lambda^{\rm P}_\SF)^2$:
-\begin{equation}
-a(0;T)=\frac{1-\lambda^{\rm P}_\SF(T)}{\lambda^{\rm P}_\SF(T)\,g^{X,{\rm P}}_\SF},\qquad\alpha^{X,{\rm GL}}_\SF=-\frac{T^{X,{\rm c}}_\SF}{g^{X,{\rm P}}_\SF}\frac{d\lambda^{\rm P}_\SF}{dT}\Big|_{T^{X,{\rm c}}_\SF}.
-\label{eq:a0}
-\end{equation}
-The derivative is evaluated in closed form, $d\lambda^{\rm P}/dT=(g^{X,{\rm P}}_\SF/\pi^2)(\partial_TI_1+\partial_MI_1\,dM^{X,{\rm n}}_\SF/dT)$ with
-\begin{equation}
-\partial_TI_1=-\frac1{2T^2}\int_0^{\Lambda_\LL}\frac{q^2\,dq}{\cosh^2(E/2T)},\qquad\partial_MI_1=\int_0^{\Lambda_\LL}q^2\frac{M}{E}\Big[\frac1{2TE\cosh^2(E/2T)}-\frac{\tanh(E/2T)}{E^2}\Big]dq,
-\label{eq:dI}
-\end{equation}
-and $dM^{X,{\rm n}}_\SF/dT=g^{X,{\rm S}}_\SF\partial_Tn^{\rm S}/(1-g^{X,{\rm S}}_\SF\partial_Mn^{\rm S})$ from the scalar self-consistency
-$M-m_\LL=g^{X,{\rm S}}_\SF n^{\rm S}(M,T)$, $n^{\rm S}=-\frac2{\pi^2}[MI_1(M,T)-m_\LL I_1(m_\LL,0)]$ (the implicit function theorem). The Rust program
-and the notebook compare this closed form with the central differences of $a(0;T)$ at $T^{X,{\rm c}}_\SF(1\pm0.002)$ and $(1\pm0.004)$
-(Richardson extrapolation), and the Python program compares its closed form with the value of the Rust program: they agree to
-{{G10_ALL}} (checks P3-G10, WP3-G10, YP3-G10).
+In the first version $\rho_\SH$ is {{RHO1_RANGE}}, which the measured $M_W^2/(M_Z^2\cos^2\hat\theta_W)={{RHO_MEAS}}$ (with the
+$\overline{\rm MS}$ angle $\sin^2\hat\theta_W(M_Z)=0.23122$~\cite{PDG2026}) excludes. Table~\ref{tab:scale} gives the scale
+and the masses in GeV, with $v_\SH=v$, and Table~\ref{tab:gapgev} the gap in GeV: the lightest fermionic excitations, of
+the charges $\frac34$ and $-\frac14$.
 
-\subsection{The regularization of a moving pair}
-\label{sec:reg}
+{{T_CHI}}
 
-The model restricts the momenta of the uniform states to $|\vec q_\LL|<\Lambda_\LL$; for a moving pair the cutoff must be placed on one
-of two momenta. \emph{The cutoff on the momenta of the two charges}, $|\vec q_\LL\pm\frac12q\vec e_3|<\Lambda_\LL$, restricts the relative
-momenta to a lens, the intersection of two balls whose centres are $q$ apart. The lens lacks, compared with the ball
-$|\vec q_\LL|<\Lambda_\LL$, a shell at the cutoff of the thickness $\frac12q|\cos\theta|$ in the direction $\theta$ (its radius is
-$-\frac12q|n_3|+(\Lambda_\LL^2-\frac14q^2(1-n_3^2))^{1/2}$ in the direction $\vec n$), whose volume is of first order in $|q|$. The pairs in that shell
-contribute to $a$ at first order, and
-\begin{equation}
-a_{\rm lens}(q;T)-a(0;T)\propto|q|,
-\label{eq:lens}
-\end{equation}
-so that the expansion (\ref{eq:aq}) does not exist: doubling $q$ from 0.005 to 0.01 multiplies the change by {{LENS_RATIO}} (a
-linear function gives 2; Fig.~\ref{fig:gi}a). \emph{The cutoff on the relative momentum}, $|\vec q_\LL|<\Lambda_\LL$, keeps the ball, and
-the change is quadratic (the factor is $4.0000$ to five digits). This is the routing of the momenta of the twisted states of
-Sec.~\ref{sec:T0}, where a uniform twist shifts the momenta inside the fixed ball, and it is used here. Two quantities measure the
-remaining error of the regularization:
-\begin{enumerate}
-\item the twist $Q\,\alpha^3_\LL\otimes\frac12\tau_3$ of the unbroken generator $T^3_\LL$ costs the spurious coefficient $\mathsf c^{X,{\rm T3}}_\SF$, which
-is {{T3PCT}} of $\mathsf c^X_\SF$ (Table~\ref{tab:gi}); the isospin twist gives the same coefficient as the phase twist to {{G5_RUSTNB}} in the Rust program and the notebook and to
-{{G5_PY}} in the Python program (checks P3-G5, WP3-G5, YP3-G5);
-\item the nonlinear thermal states of the engine with the constant twist and a self-consistent normal self-energy give a
-coefficient $\mathsf c^{X,{\rm tw}}_\SF$ that agrees with the linear response with the pair self-energy along $(\mathsf K^3_\LL)^\dagger$ to
-{{G7_DEV}} for HS $(0,0)$, which has no normal self-energy ({{G7_PY}} in the Python program; checks P3-G7, YP3-G7), but differs by {{TWHSKS}} in HS $(1,1)$, HS $(0,1)$ and KS and by
-$-${{TWCJT}} in CJT: the twisted normal state carries a spurious current (the occupied ball is displaced), which through the vector
-interaction changes the normal self-energy at first order in $q$. The linear response (\ref{eq:chi}) uses the normal self-energy of
-the untwisted normal state and is free of this effect, because a moving pair field changes the normal self-energy only at second
-order in the field.
-\end{enumerate}
+{{T_SCALE}}
 
-\subsection{The numerical method}
-
-$\mathsf c^X_\SF$ is $[a(q;T^{X,{\rm c}}_\SF)-a(0;T^{X,{\rm c}}_\SF)]/q^2$ at $q=0.01$ and $0.02$ with the Richardson extrapolation (the two values
-differ by at most {{CK12_DIFF}} of $\mathsf c$). The six directions are exact at second order in $q$ (the term of second order of the integrand
-is a polynomial of degree two in the direction, which the six-direction rule integrates exactly); a product rule of 64 directions
-and a grid of 40 radial nodes give $\mathsf c^{\rm CJT}_\SF$ to {{G8_RUST}} (check P3-G8), the Python program on 64 directions gives every
-$\mathsf c^X_\SF$ to {{G8_PY}} (YP3-G8), and the notebook gives every $\mathsf c^X_\SF$ on the grid of six directions to {{NB_C}} of the
-value of the Rust program (WP3-G6) and $\mathsf c^{\rm CJT}_\SF$ on a product rule of 144 directions to {{G8_NB}} (WP3-G8). $b^X_\SF$ comes from the nonlinear free
-energy of four states with the applied fields $0.01$ to $0.04$ at $T^{X,{\rm c}}_\SF$ ($\mathcal F/\Phi^2$ interpolated by a cubic polynomial in
-$\Phi^2$); the fields $0.015$ to $0.045$ give the same value to {{G12_DEV}} (check P3-G12). Table~\ref{tab:gi} gives the results.
-
-\begin{table}[h]
-\caption{\label{tab:gi}The coefficients of (\ref{eq:GL}) at the critical temperature: the critical temperature, the Dirac mass of
-the normal state, $\alpha$, $b$, the gradient coefficient from the phase twist (the result), from the isospin twist, without the
-other pair channels, the spurious coefficient of the $T^3_\LL$ twist and the coefficient of the twisted nonlinear states; the
-correlation length, the specific-heat jump per correlation volume, the Ginzburg number (\ref{eq:Gi}), the width of the critical
-region in temperature, and the Ginzburg number with $\mathsf c$ changed by $\pm\mathsf c^{\rm T3}$.}
-\begin{ruledtabular}
-\begin{tabular}{lrrrrr}
-quantity & HS (1,1) & HS (0,1) & HS (0,0) & KS & CJT \\
-\hline
-{{TABLE_GI_FULL}}
-\end{tabular}
-\end{ruledtabular}
-\end{table}
-
-\begin{figure}[h]
-\includegraphics[width=0.85\textwidth]{figures/fig_prd_ginzburg.pdf}
-\caption{\label{fig:gi}(a) $a(q;T^{X,{\rm c}}_\SF)-a(0;T^{X,{\rm c}}_\SF)$ against the momentum $q$ of the pair for the two regularizations:
-quadratic for the cutoff on the relative momentum (solid), linear for the cutoff on the momenta of the two charges (dashed). (b) The
-Ginzburg number (\ref{eq:Gi}) of the five methods, with the range for $\mathsf c^X_\SF$ changed by $\pm\mathsf c^{X,{\rm T3}}_\SF$, against
-${\rm Gi}=1$.}
-\end{figure}
+{{T_GAPGEV}}
 
 %=====================================================================================================================
-\section{The Ginzburg number}
-\label{sec:gi}
+\section{The amplitude mode}
+\label{sec:amplitude}
 
-Above $T^{X,{\rm c}}_\SF$ the field fluctuates about zero with the probability density proportional to $\exp(-\mathcal F^{X,{\rm GL}}_\SF/T)$. To
-second order the weight is Gaussian; in a volume $V$ with periodic boundary conditions each of the $n=6$ real components and each
-wave vector $\vec k$ contributes a factor $\int d\phi\,e^{-V(\mathsf ck^2+a)\phi^2/T}\propto(\mathsf ck^2+a)^{-1/2}$, so the free energy per volume
-of the fluctuations is, up to terms analytic in $T$,
-\begin{equation}
-\mathcal F^{\rm fl}=\frac n2T\int\frac{d^3k}{(2\pi)^3}\ln\big(\mathsf ck^2+a\big),\qquad a=\alpha t,\ \ \partial_Ta=\frac{\alpha}{T^{X,{\rm c}}_\SF}.
-\label{eq:Ffl}
-\end{equation}
-Its second derivative in $T$ near $T^{X,{\rm c}}_\SF$ is dominated by the term with the second derivative of the logarithm,
-$-\frac n2T(\partial_Ta)^2\int\frac{d^3k}{(2\pi)^3}(\mathsf ck^2+a)^{-2}$, and with
-\begin{equation}
-\int\frac{d^3k}{(2\pi)^3}\frac1{(\mathsf ck^2+a)^2}=\frac1{2\pi^2}\int_0^\infty\frac{k^2dk}{(\mathsf ck^2+a)^2}=\frac{1}{8\pi\,\mathsf c^{3/2}a^{1/2}}
-\label{eq:integral}
-\end{equation}
-(substitute $k=(a/\mathsf c)^{1/2}u$ and use $\int_0^\infty u^2(1+u^2)^{-2}du=\pi/4$), the specific heat per volume
-$C=-T\partial_T^2\mathcal F$ of the fluctuations is
-\begin{equation}
-C^{\rm fl}=\frac{n\,\alpha^{3/2}}{16\pi\,\mathsf c^{3/2}\,t^{1/2}},
-\label{eq:Cfl}
-\end{equation}
-divergent at $T^{X,{\rm c}}_\SF$. Below $T^{X,{\rm c}}_\SF$ the minimum of (\ref{eq:GL}) is $|\vec\Phi|^2=-a/(2b)$ with the free energy $-a^2/(4b)$ per
-volume, so the specific heat of mean-field theory jumps at $T^{X,{\rm c}}_\SF$ by
-\begin{equation}
-\Delta C=T^{X,{\rm c}}_\SF\,\frac{(\partial_Ta)^2}{2b}=\frac{\alpha^2}{2b\,T^{X,{\rm c}}_\SF}.
-\label{eq:DC}
-\end{equation}
-Mean-field theory holds where $C^{\rm fl}\ll\Delta C$. The two are equal at $t={\rm Gi}^X_\SF$,
-\begin{equation}
-{\rm Gi}^X_\SF=\frac{n^2b^2(T^{X,{\rm c}}_\SF)^2}{64\pi^2\,\alpha\,\mathsf c^3}=\frac{n^2}{256\pi^2\,(\Delta C\,\xi^3)^2},\qquad\xi=\Big(\frac{\mathsf c}{\alpha}\Big)^{1/2},
-\label{eq:Gi}
-\end{equation}
-the Ginzburg number~\cite{Levanyuk1959,Ginzburg1960}; the second form follows from $\Delta C\xi^3=\alpha^{1/2}\mathsf c^{3/2}/(2bT^{X,{\rm c}}_\SF)$. The
-correlation length of mean-field theory is $\xi|t|^{-1/2}$, and mean-field theory needs a large specific-heat jump per correlation
-volume, $\Delta C\xi^3\gg1$: many degrees of freedom in a correlation volume. \emph{A remark on the factors.} Other forms of the
-criterion (the mean square fluctuation of the field in a correlation volume against the square of its mean value, or the first
-correction to $b$ against $b$) give the same combination of $\alpha$, $b$, $\mathsf c$ and $T_{\rm c}$ with other numerical factors of order
-one. (\ref{eq:Gi}) is the definition used here; a factor of order one does not change the conclusion, because the numbers are far
-above 1.
+\subsection{The effective Lagrangian}
 
-\paragraph*{The result.} ${\rm Gi}^X_\SF={{GI_RANGE}}$ (Table~\ref{tab:gi}). Even at $|t|=1$ the Gaussian fluctuations alone give
-$C^{\rm fl}/\Delta C=({\rm Gi}^X_\SF)^{1/2}={{SQRTGI_RANGE}}$; the width ${\rm Gi}^X_\SF T^{X,{\rm c}}_\SF$ of the critical region exceeds
-$T^{X,{\rm c}}_\SF$. The correlation length $\xi={{XI_RANGE}}$ is about the shortest length $1/\Lambda_\LL$ of the model: the pairs are tightly
-bound (there is no Fermi surface, the chemical potential is zero, and the coupling is above the critical one), and a correlation
-volume holds $\Delta C\xi^3={{DCXI3_RANGE}}$ degrees of freedom. In a superconductor of Bardeen, Cooper and Schrieffer the correlation
-length is large against the distance of the electrons and ${\rm Gi}\sim(T_{\rm c}/E_{\rm F})^4$ with the Fermi energy $E_{\rm F}$ is tiny; here
-the opposite holds. With $\mathsf c$ changed by $\pm\mathsf c^{\rm T3}$, ${\rm Gi}^X_\SF$ lies between {{GI_LO}} and {{GI_HI}}. The temperatures at
-which the mean-field free energy behaves as Landau's theory (Sec.~\ref{sec:thermal}) lie inside the critical region, and the
-mean-field statements near $T^{X,{\rm c}}_\SF$ (the critical temperature, the exponent $\frac12$, the continuity of the transition) are
-not reliable.
+At long wavelengths the pair fields obey $Z_\SH(|\partial\Phi^{\rm d}|^2+|\partial\Phi'^{\rm u}|^2)-V^{\rm eff}_\SH$ (second
+version). A chemical potential $\mu$ of $T^3$, under which $\Phi^{\rm d}$ has the charge $-\frac12$ and $\Phi'^{\rm u}$ the
+charge $+\frac12$, lowers the energy by $Z_\SH\mu^2(\frac14+\frac14)(\varphi^0_\SH)^2$, so $\chi^{33}=Z_\SH(\varphi^0_\SH)^2$.
+When both lengths oscillate together, $\varphi_\SH=\varphi^0_\SH+\eta$, the kinetic term is $2Z_\SH\dot\eta^2$ and the potential
+$\frac12V^{\rm eff\,\prime\prime}_\SH\eta^2$, so
+\begin{equation}
+(M^{\rm EFT}_\SH)^2=\frac{V^{\rm eff\,\prime\prime}_\SH(\varphi^0_\SH)\,(\varphi^0_\SH)^2}{4\chi^{33}} .
+\label{eq:MEFT}
+\end{equation}
+The same formula holds in the first version, with $\chi^{33}=\frac12Z_\SH(\varphi^0_\SH)^2$ and the kinetic term
+$Z_\SH\dot\eta^2$. Formula (\ref{eq:MEFT}) is the leading order of an expansion in the frequency; Table~\ref{tab:amp} shows that
+the mode lies close to the energy $2E^{X,{\rm gap}}$ that breaks a pair, where that expansion fails.
+
+{{T_AMP}}
+
+\subsection{The linear response}
+
+A uniform fluctuation with the time factor $e^{-i\omega t}$ changes the self-energies by complex amplitudes $\delta\mathsf N$,
+$\delta\mathsf P$ and $\delta\bar{\mathsf P}$ (independent at a real frequency). In the eigenbasis $(E_k,|k\rangle)$ of
+(\ref{eq:BdG}) at each momentum the change of the projector onto the negative eigenvalues is
+\begin{equation}
+\delta R_{kl}=\delta H_{kl}\,\frac{f_l-f_k}{\omega-E_k+E_l},\qquad f_k=1\ \text{for}\ E_k<0,\ 0\ \text{otherwise},
+\label{eq:dR}
+\end{equation}
+summed over the momenta; this is the response $\bm\chi(\omega)$ of the local matrices. The contact terms map the changes of
+the local matrices back to the self-energies by the kernel $\mathsf F^X$, and a collective mode is a frequency at which
+$1-\bm\chi(\omega)\mathsf F^X$ is singular. The program computes it in the sector of relative number 0 (the normal blocks of
+$\Psi_\LL$ and of the pair of singlets and the pairs of $\Psi_\LL$ with the singlets, closed under the symmetries of the
+state), in HS (0,1) and HS (0,0), where the mode lies below the threshold $2M_{\rm eff}$ of two paired quasi-particles. It
+searches the frequencies below the threshold for zeros of the smallest singular value, finds the null space at each zero,
+and projects onto it the amplitude of the vacuum direction; the amplitude mode is the zero whose null space contains it,
+and the dimension of the null space is its multiplicity. Table~\ref{tab:rpa} gives the results: at $\omega=0$ exactly
+four singular values vanish in the second version (three in the first), the Goldstone modes, and below the threshold the
+amplitude mode lies at $\omega^{\rm H}_\SH=d^0_\SH$ to {{OMEGA_D0_DEV}}.
+
+{{T_RPA}}
+
+\subsection{The closed form of the pairing-only methods}
+
+In HS (0,0) the response of the pair amplitudes takes the form of the theory of Bardeen, Cooper and
+Schrieffer~\cite{BCS1957}. With $E=(q^2+M_{\rm eff}^2)^{1/2}$ the eigenvalues along the amplitude and along the phase of the
+vacuum direction are
+\begin{equation}
+\lambda^{\rm amp}(\omega)=\frac{G_\SH}{4\pi^2}\int_0^{\Lambda_\LL}\frac{q^2(q^2+m_\LL^2)\,dq}{E\,(E^2-\omega^2/4)},\qquad
+\lambda^{\rm ph}(\omega)=\frac{G_\SH}{4\pi^2}\int_0^{\Lambda_\LL}\frac{q^2E\,dq}{E^2-\omega^2/4},
+\label{eq:lam}
+\end{equation}
+as sums over the nodes of the grid with its weights. The Python program finds that its response equals these sums to
+{{YH7_DEV}} at five frequencies, in both versions. At $\omega=0$, $\lambda^{\rm ph}(0)=G_\SH I_1(M_{\rm eff})/(4\pi^2)=1$ is the
+gap equation and the Goldstone theorem. Since $E^2=q^2+m_\LL^2+(d^0_\SH)^2/4$, the integrands obey, at every momentum,
+\begin{equation}
+\frac{q^2+m_\LL^2}{E\,(E^2-\omega^2/4)}-\frac1E=\frac{\omega^2-(d^0_\SH)^2}{4E\,(E^2-\omega^2/4)},
+\end{equation}
+and with the gap equation
+\begin{equation}
+\lambda^{\rm amp}(\omega)-1=\frac{\omega^2-(d^0_\SH)^2}{4}\,\frac{G_\SH}{4\pi^2}\int_0^{\Lambda_\LL}\frac{q^2\,dq}{E\,(E^2-\omega^2/4)} .
+\label{eq:identity}
+\end{equation}
+Below the threshold every term of the integral is positive, so $\lambda^{\rm amp}=1$ only at
+\begin{equation}
+\omega^{\rm H}_\SH=d^0_\SH ,
+\label{eq:omegaH}
+\end{equation}
+exactly, for every coupling, mass and cutoff and on every grid with positive weights. The mode is bound by
+$2M_{\rm eff}-d^0_\SH=(4m_\LL^2+(d^0_\SH)^2)^{1/2}-d^0_\SH={{BIND2}}$. The Wolfram script derives (\ref{eq:identity}) and the
+positivity symbolically and finds the root at $d^0_\SH$ to 22 digits. Result (\ref{eq:omegaH}) is the analogue of the
+amplitude mode of a superconductor at twice the gap parameter~\cite{LittlewoodVarma1981,PekkerVarma2015}; here $d^0_\SH/2$
+plays the role of the gap parameter, and the mass of the fields raises the lowest energy of a quasi-particle from
+$d^0_\SH/2$ to $M_{\rm eff}$, so that the mode is bound.
+
+\emph{The partners of the amplitude mode.} On the eight real components of the four complex pair fields the Python
+program finds four eigenvalues equal to 1 at $\omega=0$ and four more at $\omega=d^0_\SH$. The generators $T^a+T^a_R$ of
+$SU(2)_V$ commute with the response, and on each set the Casimir $\sum_a(T^a+T^a_R)^2$ has the eigenvalues 0, 2, 2, 2: a
+singlet and a triplet. At $\omega=0$ the triplet becomes the longitudinal parts of $W^\pm_\mu$ and $Z_\mu$ and the singlet is
+the Goldstone boson of $F^{\rm tot}_\SH$; at $\omega=d^0_\SH$ the singlet is the amplitude mode, and the triplet holds a
+neutral scalar and a charged scalar with its antiparticle ($Q=T^3+T^3_R$ on the pair fields). In the first version the
+same count gives three Goldstone modes and one amplitude mode, as in the Standard Model.
+
+\subsection{The dependence on the coupling and the mass}
+
+In HS (0,0) the gap equation $G_\SH I_1(M_{\rm eff})/(4\pi^2)=1$ gives $d^0_\SH$ in closed form, so the amplitude mode and the
+scale can be followed over the coupling. Table~\ref{tab:scan} gives 32 points: $m_\LL=0.1$ and $0.2$,
+$G_\SH/G^{\rm crit}_\SH$ from 1.02 to 3, both versions. In every point the Rust program finds the self-consistent state, the
+amplitude mode at $d^0_\SH$ to {{H8D_DEV}}, and $\rho_\SH=1$ in the second version; $\omega^{\rm H}_\SH/v_\SH$ lies between
+{{SCAN_MIN2}} and {{SCAN_MAX2}} in the second version, against $m_H/v={{MH_SM_V}}$.
+
+{{T_SCAN}}
 
 %=====================================================================================================================
-\section{The superfluid as a Higgs sector}
-\label{sec:higgs}
+\section{The dynamics in time}
+\label{sec:dynamics}
 
-\subsection{Two questions, and the scale of the breaking}
-
-The question whether the superfluid can play the role of the Higgs particle has two meanings. (b) Can it be the Higgs field
-of the Standard Model? No, and the answer needs no number: the only matter field of (\ref{eq:L}) is the DiracLike spinor,
-which has electric charge zero and no quantum numbers of $SU(2)_L\times U(1)_Y$, so every field made of it, the condensate
-included, is a singlet of the electroweak group. Its vacuum value leaves that group unbroken and gives no mass to the $W$ and
-$Z$ bosons of nature, and its amplitude mode has no coupling at tree level to them, to the quarks or to the leptons. The model
-contains no coupling between the two sectors; a term such as $(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}\,\vec\Phi^\dagger\cdot\vec\Phi$ would
-be an addition to it and would mix the amplitude mode with the observed boson, whose measured couplings would limit the
-mixing. (a) Is the superfluid the Higgs field of its own group $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$, with a Higgs particle? The
-rest of this section answers (a) with the quantities of that group alone. The scale $\Lambda_\LL$ of the model is fixed by no
-observation, and all masses are in its units. With the convention $M_W=gv/2$ by which the Standard Model defines the vacuum
-value $v$ of its Higgs doublet ($g$ the coupling of $SU(2)_L$, $M_W$ the mass of its $W$ boson), (\ref{eq:MWMZ}) gives the scale
-of the breaking
+The time-dependent mean field of method $X$ evolves the quasi-particle vectors of every momentum by the BdG matrix of the
+self-energies that the current local matrices produce,
 \begin{equation}
-v^X_\SF=2f^{X,{\rm I}}_\SF,\qquad M^X_{W,\SF}=\tfrac12g^{\rm v}_\LL v^X_\SF,\qquad\lambda^{X,{\rm H}}_\SF=\frac{(M^{X,{\rm H}}_\SF)^2}{2(v^X_\SF)^2},
-\label{eq:vSF}
+i\,\partial_t\,\mathsf O(\vec q,t)=\mathsf H(\vec q;\mathsf N(t),\mathsf P(t))\,\mathsf O(\vec q,t),
+\label{eq:tdmf}
 \end{equation}
-independent of the gauge coupling, and the quartic coupling in the same convention.
+whose linearization about a stationary state is the linear response (\ref{eq:dR}). The program integrates it with the
+backward differentiation formulas of CVODE~\cite{SUNDIALS2005,SUNDIALS2022} (relative tolerance $10^{-12}$, absolute
+$10^{-14}$, the Newton iteration replaced by a fixed-point iteration), on the same grid as the stationary states. A run
+starts from the ground state with the pair self-energy displaced by the relative amount $\epsilon^{\rm kick}$ along the
+vacuum direction (an amplitude run) or along the custodial triplet (a triplet run), and records $d(t)$; its spectrum is
+the Fourier transform over the run, with the peak frequency $\omega^{\rm pk}$ and the half-width $\Gamma^{\rm pk}$, compared
+with the half-width $\Gamma^{\rm win}$ that the length of the run alone gives. Table~\ref{tab:runs} lists the runs with the
+conservation of the energy, of the charges and of the orthonormality of the vectors, and Table~\ref{tab:modes} the modes.
 
-\subsection{The couplings of the amplitude field and the width}
+{{T_RUNS}}
 
-On the field $\vec\Phi=(\Phi_0+h/N_h)e^{i\vartheta_0}\vec e_3$ with $N_h=(2(Z+Y))^{1/2}$ (so that $h$ is canonically normalized), both invariants
-of (\ref{eq:Lkin}) equal $(\Phi_0+h/N_h)^2(\partial\vartheta_0)^2$, and the term linear in $h$ is $2(Z+Y)\Phi_0(\partial\vartheta_0)^2h/N_h=
-f^{X,{\rm F}}_\SF h(\partial\vartheta_0)^2$. On the field rotated about $\vec e_1$ by $\vartheta_1$, $\vec\Phi^\dagger\cdot\partial\vec\Phi=0$ and only the first
-invariant contributes: $2Z\Phi_0(\partial\vartheta_1)^2h/N_h=((f^{X,{\rm I}}_\SF)^2/f^{X,{\rm F}}_\SF)h(\partial\vartheta_1)^2$, and likewise for $\vartheta_2$.
-(The notebook derives these two couplings by exact symbolic differentiation; the Python program by finite differences of the field.)
-With the canonical Goldstone fields $\pi_0=f^{X,{\rm F}}_\SF\vartheta_0$ and $\pi_k=f^{X,{\rm I}}_\SF\vartheta_k$ all three couplings are
-$h(\partial\pi)^2/f^{X,{\rm F}}_\SF$. For the decay of $h$ at rest (four-momentum $P$, $P^2=(M^{X,{\rm H}}_\SF)^2$) into two massless quanta of one field
-with the four-momenta $k_1,k_2$, the vertex $g\,h\,\partial_\mu\pi\partial^\mu\pi$ with $g=1/f^{X,{\rm F}}_\SF$ gives the amplitude
-$\mathcal M=-2g\,k_1\cdot k_2=-g\,(M^{X,{\rm H}}_\SF)^2$ (two contractions; $2k_1\cdot k_2=P^2$ for massless quanta), and with the two-body phase space
-of two identical particles, $\Gamma=|\mathcal M|^2/(32\pi M^{X,{\rm H}}_\SF)$:
-\begin{equation}
-\Gamma(h\to\pi\pi)=\frac{(M^{X,{\rm H}}_\SF)^3}{32\pi(f^{X,{\rm F}}_\SF)^2},\qquad\Gamma^{X,{\rm H}}_\SF=\frac{3\,(M^{X,{\rm H}}_\SF)^3}{32\pi\,(f^{X,{\rm F}}_\SF)^2}
-\label{eq:width}
-\end{equation}
-for the three channels, one for each broken generator. With the gauge fields the Goldstone fields are the longitudinal parts of
-$W^\pm$ and $Z$, and by the equivalence theorem~\cite{CLT1974,ChanowitzGaillard1985}, which holds in every spontaneously broken gauge
-theory, (\ref{eq:width}) is the width into $W^+W^-$ and $ZZ$ of the new group up to corrections of relative order
-$\zeta_V=M_V^2/(M^{X,{\rm H}}_\SF)^2$, where $M_V$ is the mass of $W$ or $Z$: at tree level the width of a scalar with the couplings of (\ref{eq:Lkin})
-into a pair of these bosons carries the factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ (phase space and the sum over the polarizations), which
-is above {{VV_FACTOR}} here ($M_V\le{{MV_OVER_MH}}\,M^{X,{\rm H}}_\SF$). With $f^{X,{\rm F}}_\SF$ replaced by the vacuum value $v$
-of the Standard Model, (\ref{eq:width}) is the known width $3m^3/(32\pi v^2)$ of a heavy Higgs boson of mass $m$ into its
-longitudinal $W$ and $Z$ bosons~\cite{LQT1977}, a check of the factor 3 and of the normalization. \emph{A remark:} the effective
-Lagrangian is used at the energy $M^{X,{\rm H}}_\SF$, where it is not accurate (its mass of the amplitude mode differs from the response
-by {{MEFF_PCT}}); (\ref{eq:width}) gives the order of magnitude, which is all that the conclusion needs.
+{{T_MODES}}
 
-\begin{table}[h]
-\caption{\label{tab:higgs}The superfluid as the Higgs sector of $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$ (units of $\Lambda_\LL$;
-gauge boson masses at $g^{\rm v}_\LL=0.7$, $g^{\rm F}_\LL=0.45$).}
-\begin{ruledtabular}
-\begin{tabular}{lccccc}
-quantity & HS (1,1) & HS (0,1) & HS (0,0) & KS & CJT \\
-\hline
-{{TABLE_HIGGS}}
-\end{tabular}
-\end{ruledtabular}
-\end{table}
-
-\begin{figure}[h]
-\includegraphics[width=0.85\textwidth]{figures/fig_prd_higgs.pdf}
-\caption{\label{fig:higgs}(a) $M^{X,{\rm H}}_\SF/v^X_\SF$ and $\lambda^{X,{\rm H}}_\SF$ of the five methods. (b) The width
-(\ref{eq:width}) relative to the mass, and the mass ratio $M^{X,{\rm NU}}_\SF/M^{X,{\rm H}}_\SF$ of the two non-unitary scalars (charges
-$Q_\LL=\pm1$); the dotted line marks the ratio 1.}
-\end{figure}
-
-\subsection{The verdict}
-
-Seven properties decide whether a field is the Higgs field of a gauge group and its amplitude mode a Higgs particle
-(Table~\ref{tab:higgs}):
-(1) the Higgs mechanism, with the massless zeugon: realized in every method (Sec.~\ref{sec:mass});
-(2) a scalar of charge $Q_\LL=0$ below threshold: in every method, at {{MH2GAP_RANGE}} of $2E^{X,{\rm gap}}_\SF$;
-(3) its mass against the scale of the breaking: $M^{X,{\rm H}}_\SF/v^X_\SF={{MHV_RANGE}}$ and $\lambda^{X,{\rm H}}_\SF={{LAMBDA_RANGE}}$; the
-bound of perturbative unitarity that Lee, Quigg and Thacker derived for the Higgs doublet of the Standard Model~\cite{LQT1977}
-depends on the scalar fields and channels of the theory, and for this one it was not computed;
-(4) its width: $\Gamma^{X,{\rm H}}_\SF/M^{X,{\rm H}}_\SF={{WIDTH_RANGE}}$, a broad resonance, not a particle;
-(5) further scalars: every method has the non-unitary doublet, of the charges $Q_\LL=\pm1$, at {{MNU_RANGE}} of $M^{X,{\rm H}}_\SF$;
-(6) the quantum numbers: an isospin vector of fermion number 2 of the vector-like $SU(2)_{\rm v}$; the zeugon is $W^3$, $Z$ is the
-boson of the fermion number, $M^X_{W,\SF}/M^X_{Z,\SF}$ depends on two independent couplings, and the condensate adds a pairing gap to
-the Dirac mass rather than generating Yukawa masses;
-(7) the thermal history: the transition lies deep in its critical region (Sec.~\ref{sec:gi}).
-In every method the superfluid is the Higgs field of $SU(2)_{\rm v}\times U(1)^{\rm F}_\LL$, with a Higgs-like scalar that is a particle
-only in mean-field dynamics; CJT and KS have the lightest and narrowest amplitude mode, HS $(1,1)$ the heaviest and broadest. In
-no method is it the Higgs field of the Standard Model.
-
-%=====================================================================================================================
-\section{Compositeness}
-\label{sec:composite}
-
-The field $\vec\Phi^X_\SF$ is not a field of the Lagrangian (\ref{eq:L}), whose only matter field is the spinor field: it is the amplitude
-(\ref{eq:Phi}) of the pair self-energy, a composite of two spinor charges. Its kinetic part has no term of its own: $Z^X_\SF$ and $Y^X_\SF$
-are susceptibilities of the spinor field, Eq.~(\ref{eq:ZY}). Its amplitude mode is a bound state of two quasi-particles below their
-threshold. This is the compositeness condition of Bardeen, Hill and Lindner~\cite{BHL1990}: the normalization of the kinetic term of the
-composite field vanishes at the cutoff, where only the spinor field exists. In the dynamics of Nambu and
-Jona-Lasinio~\cite{NJL1961} the mass of the bound state is tied to the gap of its constituents (here $M^{X,{\rm H}}_\SF$ is {{MH2GAP_RANGE}}
-of $2E^{X,{\rm gap}}_\SF$), while the scale of the breaking comes from a loop of the constituents and is small against the gap
-($f^{X,{\rm I}}_\SF/E^{X,{\rm gap}}_\SF={{FIGAP_RANGE}}$): the composite is heavy against $v^X_\SF$. A light composite needs a cutoff far
-above the gap~\cite{BHL1990,HillSimmons2003} or a different mechanism, such as a pseudo-Goldstone scalar~\cite{KaplanGeorgi1984,Agashe2005}.
-Whether the Higgs boson of nature is composite is not decided here, because the Higgs particle of this model is not that boson
-(answer (b) of Sec.~\ref{sec:higgs}); its couplings agree with those of the Standard Model to several
-per cent~\cite{ATLAS2022,CMS2022}, which constrains, but does not exclude, its compositeness at a higher scale.
-
-\paragraph*{The vacuum energy.} The condensate lowers the energy density of the vacuum by the depth of the effective potential,
-${{DEPTH_CJT}}\,\Lambda_\LL^4$ in CJT, that is ${{DEPTH_V4}}\,(v^{\rm CJT}_\SF)^4$ on the scale of its own breaking. That scale is not known, so the
-comparison with the observed dark-energy density of about $2.5\times10^{-47}~{\rm GeV}^4$~\cite{PDG2024} is a condition: the two are
-equal if $v^{\rm CJT}_\SF$ is about {{V_MATCH}}~meV, and for a larger scale the vacuum energy exceeds the observed density by the fourth
-power of the ratio, the cosmological-constant problem~\cite{Weinberg1989} in its usual form.
+In HS (0,1) and HS (0,0) the amplitude run oscillates at $d^0_\SH$ to {{DY_DEV_AMP}}, without damping, and the triplet run
+at the same frequency. In HS (1,1) the mode lies at {{DY_RATIO_HS11}}\,$d^0_\SH$, below $2E^{X,{\rm gap}}$, undamped, and the
+triplet {{DY_SPLIT_HS11}} per cent above it. In KS and CJT the spectrum peaks at {{DY_AMP_KS}}, above $2E^{X,{\rm gap}}={{DY_GAP2_KS}}$,
+{{DY_WR_KS}} times wider than an undamped oscillation: the mode decays into pairs. With a chemical potential $\mu=0.01$ of
+the particle number the phase turns at the rate $2\mu$ to {{DY_DEV_JOS}} (the Josephson relation), and a displacement by
+$\epsilon^{\rm kick}=0.3$ in HS (0,0) oscillates at {{DY_LARGE_RATIO}}\,$d^0_\SH$, softer than the small oscillation.
 
 %=====================================================================================================================
 \section{Toward the gravitational sector: Lord's construction}
 \label{sec:gravity}
 
-The article states a program, not a result; this section describes the construction on which it rests. Lord~\cite{Lord1971} considered
-the two-component spinor algebra and the group of changes of its representation, under which the free field equations of particles of
-any spin (written with two-component spinors) are invariant. Making this group local, in the manner of Yang and Mills, requires a gauge
-field; gauge invariance together with Lorentz covariance then requires auxiliary fields. Lord interpreted the auxiliary fields as the
-potentials of a spin-two field, which is therefore self-interacting, and showed that the Bargmann-Wigner equations of the linear spin-two
-field, modified by this self-interaction, give a nonlinear theory identical with Einstein's general relativity. In addition the auxiliary
-fields become the gauge field of the general coordinate transformations: the components of the affine connection. The construction is the
-natural route for the present model because its spinor charges come with $SL(2,\mathbb C)$ from the super-loop~\cite{Nash2026}, and GEE
-already contains $SL(2,\mathbb C)$ as a gauge factor with the connection $\Gamma^\LL_p$ of (\ref{eq:cov}), which on the flat space-time of
-the article is a pure gauge. The program is: (i) replace the pure-gauge $\Gamma^\LL_p$ by Lord's gauge field and its auxiliary fields;
-(ii) couple the spinor field and its pairs to it; (iii) derive the gravitational field equations with the energy-momentum tensor of the
-spinor field, including the condensate, as their source. Two consequences of the present results are already clear: the superfluid is a
-Lorentz scalar and leaves $SL(2,\mathbb C)$ unbroken, so the condensation does not give the gravitational field a mass; and the vacuum
-energy of the condensate appears as a cosmological term (Sec.~\ref{sec:composite}). Gauging the local Lorentz group is also the route of
-Utiyama and of Kibble~\cite{Utiyama1956,Kibble1961,Hehl1976}, and the Einstein term itself may be induced by the loop of the spinor
-field~\cite{Sakharov1967,Visser2002}, as the kinetic term of the composite field is. None of this is computed in the article.
+Lord~\cite{Lord1971} considered the group of the local changes of representation of the two-component spinor algebra,
+under which the free field equations of particles of any spin are invariant, and made it a gauge group in the sense of
+Yang and Mills. Gauge invariance and Lorentz covariance then require auxiliary fields, which Lord interpreted as the
+potentials of a spin-two field; that field is self-interacting, and the Bargmann-Wigner equations of the linear spin-two
+field, modified by the self-interaction, give a nonlinear theory identical with Einstein's, the auxiliary fields becoming
+in addition the gauge field of the general coordinate transformations. In the present model the factor $SL(2,\mathbb C)$
+of the gauge group acts on the spinor indices of the three fields with the connection $\Gamma^\LL_\mu$ of (\ref{eq:cov}),
+a pure gauge on flat space-time. The program is to replace $\Gamma^\LL_\mu$ by Lord's gauge field and its auxiliary fields,
+to couple the spinor fields and their pairs to it, and to obtain the gravitational field equations with the
+energy-momentum tensor of the spinor fields as their source; the route of Utiyama and Kibble~\cite{Utiyama1956,Kibble1961,Hehl1976}
+gauges the local Lorentz group in the same spirit. None of this is computed here.
 
 %=====================================================================================================================
 \section{The checks}
 \label{sec:checks}
 
-Every computation is done by two independent programs, a Rust program (\texttt{rust/}, crates \texttt{sfcore} and
-\texttt{sfpart1} to \texttt{sfpart4}, with the SUNDIALS integrators in Rust) and a Python program (\texttt{python/}, numpy and
-LAPACK), and every check of one has a counterpart of the same statement in the other (the identifiers P$n$-$x$ in Rust and YP$n$-$x$
-in Python). The notebook \texttt{superfluid.nb} in the Wolfram Language repeats the checks of Parts I to III with a third
-implementation (identifiers W$\dots$). Table~\ref{tab:checkcounts} gives the counts; the tables below list, with their deviations and
-tolerances, every check of the statements of Secs.~\ref{sec:thermal} to \ref{sec:higgs} (a check of a fact has no deviation).
+The computation was made in stages, each with a program in Rust, one in Python and a script in the Wolfram Language:
+stage 2, the group theory and the quantum numbers (sh\_quantum, Sec.~\ref{sec:model}); stage 3, the normal vacuum and the
+stationary states (sh\_superfluid, Secs.~\ref{sec:methods} to \ref{sec:states}); stages 4 and 5, the effective potential,
+the masses of the gauge bosons and the amplitude mode (sh\_higgs, Secs.~\ref{sec:potential} to \ref{sec:amplitude}); and
+stage 6, the dynamics in time (sh\_dynamics, Sec.~\ref{sec:dynamics}). Stage 1 set out the hypotheses.
+Every statement of the article and of this Supplemental Material is tested by checks of the programs; each check
+compares a computed deviation with a tolerance, or decides a statement that is true or false from the facts that the
+program states. The statements of the checks are those that the programs write; where they cite the hypotheses or the
+equations of the manuscripts of the stages, the tables below cite instead the place of this Supplemental Material that
+states the same thing. The verdicts: the Rust programs {{VERDICTS_RUST}}; the Python programs {{VERDICTS_PYTHON}}; the Wolfram
+scripts {{VERDICTS_WOLFRAM}}; the notebook, which repeats the checks of the Wolfram scripts, {{VERDICT_NOTEBOOK}}. The
+tables list every check of the Rust and the Python programs with its result, deviation, tolerance and statement.
 
-\begin{table}[h]
-\caption{\label{tab:checkcounts}The checks of the programs of the folder (all pass).}
-\begin{ruledtabular}
-\begin{tabular}{lrr}
-program & checks & passed \\
-\hline
-{{TABLE_CHECKCOUNTS}}
-\end{tabular}
-\end{ruledtabular}
-\end{table}
-
-The statements in the tables below are quoted verbatim from the reports of the programs and from the log of the notebook.
-They refer to the equations and sections of the project's manuscript, from which the programs were written, and to sections
-of the notebook. In this document these are: the Landau form (12.2) and its residual of Table 12.1, and Section III.L of the
-notebook: the Landau polynomial of Sec.~\ref{sec:T0}A; the kinetic part (12.4): Eq.~(\ref{eq:Lkin}); Section 12.4 (the free
-energy at finite temperature) and Sections III.T and III.T.4 of the notebook: Sec.~\ref{sec:thermal}, with the eigenvalue
-(12.9) of Eq.~(\ref{eq:lambdaT}); the Ginzburg number (12.13): Eq.~(\ref{eq:Gi}); Table 14.2 and the equations (14.9), (14.10):
-Table~\ref{tab:higgs} and Eqs.~(\ref{eq:vSF}), (\ref{eq:width}). The program \texttt{sf\_part2} computes the states of
-Secs.~\ref{sec:methods} and \ref{sec:T0} at $T=0$. The data files named in the statements are listed with their checksums in
-Sec.~\ref{sec:data}.
-
-{{CHECK_TABLES}}
+{{CHECKS_TABLES}}
 
 %=====================================================================================================================
 \section{Data and programs}
 \label{sec:data}
 
-The repository~\cite{Repo} (folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}) contains the programs, their reports and data, the notebook
-and the sources of the article. To reproduce the numbers (from the folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}):
-\begin{verbatim}
-cd rust && cargo build --release
-./target/release/sf_part2 && ./target/release/sf_part3 && cd ..
-python3 python/sf_part3.py
-python3 python/sf_part3_figures.py
-python3 paper_prd/scripts/build_paper.py
-\end{verbatim}
-\texttt{sf\_part3} ran {{RUST3_TIME}} on two processor cores and \texttt{sf\_part3.py} {{PY3_TIME}} (the times written at the end of their reports). The notebook is evaluated
-in Wolfram 15 by Evaluation $>$ Evaluate Notebook. The files, with their SHA-256 checksums at the time this document was built:
+The repository of PROJECT spacetimes~\cite{Repo}, folder \texttt{Revision\_SM\_Higgs}, holds the programs: the Rust
+workspace \texttt{rust/} (the crates \texttt{shquantum}, \texttt{shsuperfluid}, \texttt{shhiggs} and \texttt{shdynamics}, the
+library \texttt{sfcore} and the CVODE crate \texttt{sfsundials}), the Python programs \texttt{python/sh\_quantum.py},
+\texttt{sh\_superfluid.py}, \texttt{sh\_higgs.py}, \texttt{sh\_dynamics.py} and their figure programs, the Wolfram scripts
+\texttt{wolfram/source/sh\_*.wls}, the notebook \texttt{superfluid.nb}, and the build of this article,
+\texttt{paper\_prd/scripts/build\_paper.py}. Table~\ref{tab:files} lists the data files and reports that this article reads,
+with their SHA-256 checksums.
 
-{{FILE_TABLE}}
+{{DATA_TABLE}}
 
 \bibliography{references}
 

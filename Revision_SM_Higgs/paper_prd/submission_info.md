@@ -3,7 +3,7 @@
 **Submission information**  
 “Higgs as a Composite, and Quantum Gravity”  
 Physical Review D, Regular Article  
-PROJECT spacetimes, November 21, 2026
+PROJECT spacetimes, November 22, 2026
 
 </div>
 
@@ -26,13 +26,13 @@ author can confirm.
 - Journal: Physical Review D. Article type: Regular Article (not a
   Letter, Comment or Reply; no earlier paper needs to be named).
 
-- Length: the manuscript has 10 pages in the two-column format of REVTeX
-  4.2, the Supplemental Material 36 pages, the cover letter 2 page(s).
+- Length: the manuscript has 7 pages in the two-column format of REVTeX
+  4.2, the Supplemental Material 30 pages, the cover letter 2 pages.
   Physical Review D sets no limit to the length of Regular Articles (the
   appropriate length depends on the information presented); the word
   limits of Letters and Comments do not apply.
 
-- Abstract: 335 words (a formula counted as one word); the APS guidance
+- Abstract: 327 words (a formula counted as one word); the APS guidance
   asks for less than 500 words.
 
 # Title and byline
@@ -57,45 +57,42 @@ author can confirm.
 As it appears in the manuscript:
 
 > The unit bi-octonions form a Moufang loop, the Lorentz super-loop,
-> that contains $SL(2,\mathbb C)$ and eight spinor charges; these are
-> carried by an isodoublet of DiracLike spinors on Minkowski space
-> (Dirac spinors of $SL(2,\mathbb C)$ that have electric charge zero and
-> no electroweak quantum numbers, particles not yet observed), coupled
-> to a new gauge group
-> $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$ of the local
-> Lorentz transformations, a vector-like isospin and the fermion number.
-> With a contact self-interaction whose spin-zero pair channel is
-> supercritical, the spinor field condenses into a superfluid whose
-> order parameter is a composite isospin vector of fermion number two.
-> We solve it in five mean-field methods (Hubbard-Stratonovich with
-> three decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis) and
-> derive its effective Lagrangians. In every method the condensate is
-> the Higgs field of the new group: the isospin bosons $W^\pm$ and the
-> fermion-number boson $Z$ become massive, and exactly one gauge boson
-> stays massless. This boson, which we name the zeugon, is not the
-> photon: it couples to the unbroken isospin charge, it is the only
-> gauge boson that attracts the two members of a pair, and, because the
-> surviving group is $SL(2,\mathbb C)\times O(2)$, its charge
-> conjugation is itself a gauge symmetry, the structure of Alice
-> electrodynamics. The amplitude mode is a composite scalar bound below
-> the threshold of two quasi-particles; once it can decay into the
-> longitudinal gauge bosons its width is $2.1\mbox{--}3.9$ times its
-> mass. From the static pair response we compute the gradient
-> coefficient of the order parameter at the critical temperature and
-> find Ginzburg numbers 7.6–11: the critical region is wider than the
-> critical temperature itself, and the mean-field transition is not
-> reliable. The Higgs particle of the new group is therefore composite
-> and broad. Because the condensate is a singlet of the electroweak
-> group, it cannot be the Higgs boson observed at the LHC. We outline
-> how gravitation enters through E. A. Lord’s gauge theory of the local
-> change of spinor representation, for which the $SL(2,\mathbb C)$
-> factor of the gauge group is the natural place; the gravitational
-> sector is not computed here.
+> that contains $SL(2,\mathbb C)$ and eight spinor charges, carried by
+> an isodoublet $\Psi$ of Dirac spinors. Two members of one isodoublet
+> pair into isospin triplets, so a superfluid of $\Psi$ alone cannot be
+> the Higgs field of the Standard Model. We give $\Psi$ the hypercharge
+> $\frac14$, add two Dirac singlets $\chi$ and $\chi'$ with the
+> hypercharges $\frac14$ and $-\frac34$, and let a contact interaction
+> bind a member of $\Psi$ to a singlet in the spin-zero $s$-wave
+> channel. The two pair fields form a bidoublet of
+> $SU(2)_L\times SU(2)_R$ with the quantum numbers of two Higgs
+> doublets. In five mean-field methods (Hubbard-Stratonovich with three
+> decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis) the ground
+> state is the custodial vacuum: it breaks $SU(2)_L\times U(1)_Y$ to the
+> $U(1)$ of the electric charge, keeps the photon massless and gives
+> $\rho=1$. Setting its scale to $v=246.22$ GeV puts the momentum cutoff
+> at 2.2–2.4 TeV. The amplitude mode, the candidate for the Higgs boson,
+> is a composite scalar bound below the threshold of two
+> quasi-particles. In the methods in which only the pairing acts, the
+> linear response has the closed form of the theory of Bardeen, Cooper
+> and Schrieffer and places the mode exactly at the pair self-energy:
+> $M_H/v=7.967$, 16 times the measured $m_H/v=0.5082$, and over a scan
+> of the coupling from 1.02 to 3 times its critical value, with two
+> masses of the fields, the ratio is at least $4.892$. A custodial
+> triplet of massive scalars and a Goldstone boson of the particle
+> number come with it. The time-dependent mean field confirms these
+> frequencies; in the methods with exchange self-energies the mode lies
+> above the threshold and decays. The superfluid therefore has the
+> quantum numbers of the Higgs field and gives the $W$ and $Z$ bosons
+> their masses, but in the mean field its amplitude mode is far too
+> heavy. We outline how gravitation will enter through E. A. Lord’s
+> gauge theory of the local change of spinor representation; it is not
+> computed here.
 
 The LaTeX source of the same text, to paste into the abstract field of
 the form:
 
-    The unit bi-octonions form a Moufang loop, the Lorentz super-loop, that contains $SL(2,\mathbb C)$ and eight spinor charges; these are carried by an isodoublet of DiracLike spinors on Minkowski space (Dirac spinors of $SL(2,\mathbb C)$ that have electric charge zero and no electroweak quantum numbers, particles not yet observed), coupled to a new gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$ of the local Lorentz transformations, a vector-like isospin and the fermion number. With a contact self-interaction whose spin-zero pair channel is supercritical, the spinor field condenses into a superfluid whose order parameter is a composite isospin vector of fermion number two. We solve it in five mean-field methods (Hubbard-Stratonovich with three decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis) and derive its effective Lagrangians. In every method the condensate is the Higgs field of the new group: the isospin bosons $W^\pm$ and the fermion-number boson $Z$ become massive, and exactly one gauge boson stays massless. This boson, which we name the zeugon, is not the photon: it couples to the unbroken isospin charge, it is the only gauge boson that attracts the two members of a pair, and, because the surviving group is $SL(2,\mathbb C)\times O(2)$, its charge conjugation is itself a gauge symmetry, the structure of Alice electrodynamics. The amplitude mode is a composite scalar bound below the threshold of two quasi-particles; once it can decay into the longitudinal gauge bosons its width is $2.1\mbox{--}3.9$ times its mass. From the static pair response we compute the gradient coefficient of the order parameter at the critical temperature and find Ginzburg numbers 7.6\mbox{--}11: the critical region is wider than the critical temperature itself, and the mean-field transition is not reliable. The Higgs particle of the new group is therefore composite and broad. Because the condensate is a singlet of the electroweak group, it cannot be the Higgs boson observed at the LHC. We outline how gravitation enters through E.~A.~Lord's gauge theory of the local change of spinor representation, for which the $SL(2,\mathbb C)$ factor of the gauge group is the natural place; the gravitational sector is not computed here.
+    The unit bi-octonions form a Moufang loop, the Lorentz super-loop, that contains $SL(2,\mathbb C)$ and eight spinor charges, carried by an isodoublet $\Psi$ of Dirac spinors. Two members of one isodoublet pair into isospin triplets, so a superfluid of $\Psi$ alone cannot be the Higgs field of the Standard Model. We give $\Psi$ the hypercharge $\frac14$, add two Dirac singlets $\chi$ and $\chi'$ with the hypercharges $\frac14$ and $-\frac34$, and let a contact interaction bind a member of $\Psi$ to a singlet in the spin-zero $s$-wave channel. The two pair fields form a bidoublet of $SU(2)_L\times SU(2)_R$ with the quantum numbers of two Higgs doublets. In five mean-field methods (Hubbard-Stratonovich with three decouplings, Kohn-Sham, and Cornwall-Jackiw-Tomboulis) the ground state is the custodial vacuum: it breaks $SU(2)_L\times U(1)_Y$ to the $U(1)$ of the electric charge, keeps the photon massless and gives $\rho=1$. Setting its scale to $v=246.22$~GeV puts the momentum cutoff at 2.2\mbox{--}2.4~TeV. The amplitude mode, the candidate for the Higgs boson, is a composite scalar bound below the threshold of two quasi-particles. In the methods in which only the pairing acts, the linear response has the closed form of the theory of Bardeen, Cooper and Schrieffer and places the mode exactly at the pair self-energy: $M_H/v=7.967$, 16 times the measured $m_H/v=0.5082$, and over a scan of the coupling from 1.02 to 3 times its critical value, with two masses of the fields, the ratio is at least \ensuremath{4.892}. A custodial triplet of massive scalars and a Goldstone boson of the particle number come with it. The time-dependent mean field confirms these frequencies; in the methods with exchange self-energies the mode lies above the threshold and decays. The superfluid therefore has the quantum numbers of the Higgs field and gives the $W$ and $Z$ bosons their masses, but in the mean field its amplitude mode is far too heavy. We outline how gravitation will enter through E.~A.~Lord's gauge theory of the local change of spinor representation; it is not computed here.
 
 # Subject classification (PhySH)
 
@@ -107,16 +104,18 @@ symmetry breaking models*, *Extensions of Higgs sector*. Suggested:
 
 - primary concept (to be starred): *Composite models*;
 
-- further concept: *Dynamical symmetry breaking models*. (*Extensions of
-  Higgs sector* is not suggested: the Higgs field of the model is that
-  of a new gauge group, whose spinor field has no electroweak quantum
-  numbers, not an extension of the Higgs sector of the Standard Model.)
+- further concepts: *Dynamical symmetry breaking models*; *Extensions of
+  Higgs sector* (the superfluid has the quantum numbers of two Higgs
+  doublets);
 
 - further concepts to search for (their exact names in PhySH were not
-  checked): dark or hidden sectors; new gauge bosons; topological
-  defects (Alice strings); spontaneous symmetry breaking;
-  Ginzburg-Landau theory; critical phenomena; mean field theory;
-  finite-temperature field theory; superfluidity; quantum gravity.
+  checked): custodial symmetry; electroweak symmetry breaking;
+  spontaneous symmetry breaking; collective modes; mean field theory;
+  superfluidity; quantum gravity.
+
+These names are those of the classification as it was found for the
+earlier version of this manuscript; the author confirms them in the
+form.
 
 # Data availability statement
 
@@ -126,12 +125,12 @@ the manuscript, with the citation written out:
 
 > The data that support the findings of this article are openly
 > available in the repository of PROJECT spacetimes,
-> <https://github.com/once-ere/spacetimes>, folder
-> `Revision_HS_CJT_and_Kohn-Sham`: the data files (`data/`), the Rust
-> and Python programs that produce them (`rust/`, `python/`), the
-> reports of their checks, the Wolfram Language notebook, and the
-> scripts that build this article from the data (`paper_prd/`). The
-> Supplemental Material lists the files with their SHA-256 checksums.
+> <https://github.com/once-ere/spacetimes>, folder `Revision_SM_Higgs`:
+> the data files (`data/`), the Rust, Python and Wolfram Language
+> programs that produce and check them (`rust/`, `python/`, `wolfram/`),
+> the reports of their checks, the notebook, and the scripts that build
+> this article from the data (`paper_prd/`). The Supplemental Material
+> lists the files with their SHA-256 checksums.
 
 A repository can change after publication. A frozen copy with a
 persistent identifier makes the statement permanent: for example a
@@ -168,16 +167,13 @@ with him (a collaboration, a common institution, a personal relation):
 - Roberto Contino: the composite Higgs boson as a pseudo-Goldstone boson
   (K. Agashe, R. Contino and A. Pomarol, Nucl. Phys. B 719, 165 (2005));
 
-- Kari Rummukainen: the thermal electroweak transition on the lattice
-  (K. Kajantie, M. Laine, K. Rummukainen and M. Shaposhnikov,
-  Phys. Rev. Lett. 77, 2887 (1996); M. D’Onofrio and K. Rummukainen,
-  Phys. Rev. D 93, 025003 (2016));
+- Chandra M. Varma: the amplitude (Higgs) modes of condensates of
+  fermion pairs (P. B. Littlewood and C. M. Varma, Phys. Rev. Lett. 47,
+  811 (1981); D. Pekker and C. M. Varma, Annu. Rev. Condens. Matter
+  Phys. 6, 269 (2015));
 
-- Mikko Laine: thermal field theory and the electroweak transition
-  (Phys. Rev. Lett. 77, 2887 (1996));
-
-- Andrea Pelissetto: critical phenomena and the renormalization group
-  (A. Pelissetto and E. Vicari, Phys. Rep. 368, 549 (2002)).
+- João P. Silva: models with two Higgs doublets and their custodial
+  symmetry (G. C. Branco *et al.*, Phys. Rep. 516, 1 (2012)).
 
 #### Joint submissions, excluded referees:
 
@@ -185,13 +181,14 @@ none.
 
 # Cover letter
 
-The file `cover_letter.pdf` (2 page(s)) gives the context of the
-manuscript (the earlier manuscript on the Lorentz super-loop), the four
-main findings with their numbers, the reasons for Physical Review D, a
-statement on the title and the gravitational sector (a program, not
-computed), the reproducibility of the numbers, the submission history (a
-first submission, not under consideration elsewhere) and a pointer to
-the suggested referees.
+The file `cover_letter.pdf` (2 pages) gives the context of the
+manuscript (the earlier manuscript on the Lorentz super-loop and why its
+superfluid could not be the Higgs field), the three main findings with
+their numbers, the reasons for Physical Review D, a statement on the
+title and the gravitational sector (a program, not computed), the
+reproducibility of the numbers, the submission history (a first
+submission, not under consideration elsewhere) and a pointer to the
+suggested referees.
 
 # Files to upload
 
@@ -203,19 +200,17 @@ an undefined reference. The server builds its own PDF from the source,
 which the author compares with `higgs_composite_qg.pdf` before
 submitting.
 
-| file                          | content                                                         |  kB | SHA-256 (first 16 digits) |
-|:------------------------------|:----------------------------------------------------------------|----:|:--------------------------|
-| file                          | content                                                         |  kB | SHA-256 (first 16 digits) |
-| `higgs_composite_qg.pdf`      | the manuscript (PDF)                                            | 561 | `f8f78ce49b38e0ed`        |
-| `higgs_composite_qg.tex`      | the manuscript (LaTeX source, REVTeX 4.2)                       |  48 | `be51e0ee904836cb`        |
-| `higgs_composite_qg.bbl`      | the bibliography of the source (from BibTeX with apsrev4-2.bst) |  29 | `05cf625687246687`        |
-| `fig_part3_q1_potential.pdf`  | Figure 1                                                        |  78 | `d76e0840c72af9ee`        |
-| `fig_part4_r1_massmatrix.pdf` | Figure 2                                                        |  26 | `caa47847ba676acb`        |
-| `fig_part3_q4_thermal.pdf`    | Figure 3                                                        |  43 | `c7bac6536492b220`        |
-| `fig_prd_ginzburg.pdf`        | Figure 4                                                        |  26 | `1e79446ef1c9c36e`        |
-| `fig_prd_higgs.pdf`           | Figure 5                                                        |  23 | `aaed0cb24621a722`        |
-| `higgs_composite_qg_SM.pdf`   | the Supplemental Material (PDF)                                 | 635 | `d1b11e4b83a81f02`        |
-| `cover_letter.pdf`            | the cover letter (PDF)                                          |  86 | `7a7af727c5d82a82`        |
+| file                        | content                                                         |  kB | SHA-256 (first 16 digits) |
+|:----------------------------|:----------------------------------------------------------------|----:|:--------------------------|
+| file                        | content                                                         |  kB | SHA-256 (first 16 digits) |
+| `higgs_composite_qg.pdf`    | the manuscript (PDF)                                            | 384 | `11f3480b122e922a`        |
+| `higgs_composite_qg.tex`    | the manuscript (LaTeX source, REVTeX 4.2)                       |  36 | `9534b247f0d2f0ff`        |
+| `higgs_composite_qg.bbl`    | the bibliography of the source (from BibTeX with apsrev4-2.bst) |  22 | `68992b5d6923dd5c`        |
+| `fig_prd_sh_potential.pdf`  | Figure 1                                                        |  19 | `99c334598e4a3194`        |
+| `fig_prd_sh_scan.pdf`       | Figure 2                                                        |  17 | `9d2ae12b30f5d189`        |
+| `fig_prd_sh_modes.pdf`      | Figure 3                                                        |  19 | `df4627138882083d`        |
+| `higgs_composite_qg_SM.pdf` | the Supplemental Material (PDF)                                 | 578 | `8d0864eb25ce443f`        |
+| `cover_letter.pdf`          | the cover letter (PDF)                                          |  87 | `051e02feeb149593`        |
 
 # The steps on the submission server
 

@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 """
-build_paper.py -- builds the Regular Article "Higgs as a Composite, and Quantum Gravity" (PROJECT spacetimes, folder
-Revision_SM_Higgs/paper_prd), its Supplemental Material, the cover letter and the submission information,
-from their templates in src/ and the files of the folder data/.
+build_paper.py -- builds the Regular Article "Higgs as a Composite, and Quantum Gravity" under the revised hypotheses
+(PROJECT spacetimes, folder Revision_SM_Higgs/paper_prd), its Supplemental Material, the cover letter and the
+submission information, from their templates in src/ and the files of the folders data/ and provenance/generated/.
 
 What it does:
-  1. reads the data files written by the programs of the folder (Rust sf_part2, sf_part3, sf_part4; checked by
-     python/sf_part2.py, sf_part3.py, sf_part4.py and by the notebook superfluid.nb):
-       data/part2_*.csv           the recursion of the potentials (effective couplings, ground states, critical coupling)
-       data/part3_values.csv      the named values of Part III (effective couplings, energies, Landau residuals, ...)
-       data/part3_sfbsv.csv       the kinetic part, the decay constants and the collective modes
-       data/part3_thermal*.csv    the superfluid at finite temperature, the Landau residuals, the free-energy curves
-       data/part3_ginzburg*.csv   the coefficients of the Ginzburg-Landau functional at T_c, the Ginzburg number, the
-                                  two regularizations of a moving pair
-       data/part3_higgs.csv       the superfluid as the Higgs sector of SU(2)_v x U(1)^F (its row of the Standard Model is
-                                  not used: the DiracLike spinor has no electroweak quantum numbers)
-       data/part4_massmatrix.csv  the mass matrix of the gauge bosons
-       data/hck_*.txt             the reports of the checks of the programs and the log of the notebook
-  2. computes every number that the texts state about these results -- the results themselves, and every bound of the
-     agreement of two computations, taken from the deviations in the reports and rounded UP (functions sci_up, sig_up),
-     so that a stated bound is never smaller than the largest measured deviation -- builds the tables, and replaces the
-     placeholders {{NAME}} of the templates.  Typed in the templates are only the parameters of the model and of the
-     numerical method, mathematical constants, and measured values of cosmology with their references;
-  3. copies the figures from figures/ into paper_prd/figures/ and src/references.bib into paper_prd/;
+  1. reads the numbers and tables that the fragment programs of the revision (code/scripts/write_sh_*_fragments.py,
+     write_notebook_fragments.py) wrote from the data files and the reports of the checks into
+     provenance/generated/sh_quantum.md, sh_superfluid.md, sh_higgs.md, sh_dynamics.md and notebook.md, so that the
+     article states exactly the numbers of the manuscripts of the revision; and the data files and reports themselves:
+       data/sh_couplings.csv, sh_quantum_values.csv     the couplings of the Standard Model and the group theory (stage 2)
+       data/sh_sf_ground.csv                             the ground states (stage 3)
+       data/sh_hg_minimum.csv, sh_hg_masses.csv          the minimum of the effective potential, the scale, the masses
+                                                         (stage 4)
+       data/hck_sh_*_checks*.txt, hck_notebook_log.txt   the reports of the checks of the programs and of the notebook
+  2. computes the remaining numbers (the cutoff in TeV, the ratio to the Standard Model, the bound of rho - 1, the
+     masses of the constituents in GeV), every bound of agreement rounded UP (function sci_up), builds the tables (the
+     tables of results of the Supplemental Material are the tables of the manuscripts, converted from Markdown to
+     LaTeX by md_longtable; the tables of the checks come from the reports), and replaces the placeholders {{NAME}} of
+     the templates.  Typed in the templates are only the parameters of the model and of the numerical method,
+     mathematical constants, the quantum numbers that the hypotheses assign, and measured values with their references;
+  3. copies the figures (figures/fig_prd_sh_potential, fig_prd_sh_scan, fig_prd_sh_modes, fig_sh_hg_potential, drawn by
+     python/sh_article_figures.py and python/sh_higgs_figures.py) into paper_prd/figures/ and src/references.bib into
+     paper_prd/;
   4. writes <name>.tex for the four documents (higgs_composite_qg, higgs_composite_qg_SM, cover_letter, submission_info)
      and runs pdflatex (with bibtex for the first two); SOURCE_DATE_EPOCH fixes the date written into the PDFs, so that a
      rebuild from the same sources gives the same bytes;
@@ -32,7 +32,7 @@ What it does:
      generated/numbers.csv, and the checks of the builds (pages; undefined references or citations; overfull boxes wider
      than 1 pt), generated/build_report.txt; removes the by-products of LaTeX.
 
-Usage (from the folder Revision_SM_Higgs):   python3 paper_prd/scripts/build_paper.py
+Usage (from the folder Revision_SM_Higgs, after the fragment programs):   python3 paper_prd/scripts/build_paper.py
 The exit status is 1 if a document has an undefined reference or an overfull box wider than 1 pt, or the folder
 submission/ fails its check.
 Requires: Python 3, a TeX installation with REVTeX 4.2 (revtex4-2.cls, apsrev4-2.bst) and the LaTeX packages listings and
@@ -51,16 +51,42 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PAPER = os.path.abspath(os.path.join(HERE, ".."))
 ROOT = os.path.abspath(os.path.join(PAPER, ".."))
 DATA = os.path.join(ROOT, "data")
+GEN = os.path.join(ROOT, "provenance", "generated")
 NAME = "higgs_composite_qg"
-TAGS = ["HS_1_1", "HS_0_1", "HS_0_0", "KS", "CJT"]
-LABEL = {"HS_1_1": "HS (1,1)", "HS_0_1": "HS (0,1)", "HS_0_0": "HS (0,0)", "KS": "KS", "CJT": "CJT"}
-# the date of the documents (the \date of the templates), 21 November 2026, 00:00 UTC, as seconds since 1970
-DOC_EPOCH = calendar.timegm((2026, 11, 21, 0, 0, 0))
+METHODS = ["HS (1, 1)", "HS (0, 1)", "HS (0, 0)", "KS", "CJT"]
+VERS = ["second", "first"]
+# the date of the documents (the \date of the templates), 22 November 2026, 00:00 UTC, as seconds since 1970
+DOC_EPOCH = calendar.timegm((2026, 11, 22, 0, 0, 0))
+# the figures of the documents, as the figure programs write them into figures/
+FIGURES = ["fig_prd_sh_potential", "fig_prd_sh_scan", "fig_prd_sh_modes", "fig_sh_hg_potential"]
 
 
 def read_csv(name):
-    with open(os.path.join(DATA, name)) as f:
+    with open(os.path.join(DATA, name), newline="") as f:
         return list(csv.DictReader(f))
+
+
+def fragments():
+    """every fragment of the generated files of the revision: name -> text"""
+    out = {}
+    for fn in ("sh_quantum.md", "sh_superfluid.md", "sh_higgs.md", "sh_dynamics.md", "notebook.md"):
+        s = open(os.path.join(GEN, fn), encoding="utf-8").read()
+        for m in re.finditer(r"<!-- BEGIN ([a-z0-9_]+) -->\n(.*?)\n<!-- END \1 -->", s, re.S):
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def tex_num(v):
+    """a number of a fragment as LaTeX that works in text and in math mode: "$a$" -> \\ensuremath{a}, "$a$ to $b$" ->
+    \\ensuremath{a}\\mbox{--}\\ensuremath{b} (the en-dash as \\mbox{--}, which LaTeX sets in both modes and pandoc converts
+    in both), a plain number unchanged"""
+    v = v.strip()
+    parts = re.split(r"\s+to\s+", v)
+    out = []
+    for p in parts:
+        m = re.fullmatch(r"\$(.*)\$", p)
+        out.append("\\ensuremath{%s}" % m.group(1) if m else p)
+    return "\\mbox{--}".join(out)
 
 
 def sig(x, n):
@@ -73,185 +99,353 @@ def sig(x, n):
 
 
 def rng(vals, n, unit=""):
-    """the range of a list of numbers as 'lo--hi'; the en-dash is written \\mbox{--}, which LaTeX sets in text and in math
-    mode alike and which pandoc converts in both (with \\text{--} pandoc dropped the dash in text mode: '7.6\\text{--}11'
-    became '7.611' in the Markdown versions)"""
+    """the range of a list of numbers as 'lo--hi' (the en-dash as \\mbox{--})"""
     lo, hi = min(vals), max(vals)
     if sig(lo, n) == sig(hi, n):
         return sig(lo, n) + unit
     return "%s\\mbox{--}%s%s" % (sig(lo, n), sig(hi, n), unit)
 
 
+def sci_up(x, n=1):
+    """an upper bound of |x| with n significant digits, rounded UP, as LaTeX that works in text and in math mode:
+    2.33e-12 -> \\ensuremath{3\\times10^{-12}}.  Used wherever the text says that two numbers agree "to" a bound, so that
+    the bound is never smaller than the largest measured deviation."""
+    if x == 0:
+        return "\\ensuremath{0}"
+    e = int(math.floor(math.log10(abs(x))))
+    m = math.ceil(round(abs(x) / 10 ** e * 10 ** (n - 1), 9)) / 10 ** (n - 1)
+    if m >= 10:
+        m, e = m / 10, e + 1
+    ms = ("%.*f" % (n - 1, m)) if n > 1 else "%d" % m
+    return "\\ensuremath{%s10^{%d}}" % ("" if ms == "1" else ms + "\\times", e)
+
+
+def sig_up(x, n):
+    """x > 0 rounded UP to n significant digits (fixed notation): an upper bound that the text states with 'below'"""
+    d = n - 1 - int(math.floor(math.log10(abs(x))))
+    v = math.ceil(round(x * 10 ** d, 9)) / 10 ** d
+    return "%.*f" % (max(d, 0), v)
+
+
+def tex_text(t):
+    """a plain-text statement of a report as LaTeX text"""
+    rep = {"\\": "\\textbackslash{}", "&": "\\&", "%": "\\%", "$": "\\$", "#": "\\#", "_": "\\_", "{": "\\{", "}": "\\}",
+           "~": "\\textasciitilde{}", "^": "\\textasciicircum{}", "<": "\\textless{}", ">": "\\textgreater{}", "|": "\\textbar{}"}
+    return "".join(rep.get(ch, ch) for ch in t)
+
+
+# the notation of the manuscripts of the revision -> the notation of the article and its Supplemental Material, which
+# drop the suffix SH where the article has no other object of the same letter (its symbol table defines every symbol)
+NOTATION = [(r"Y^{\rm SM}", "Y"), (r"Q^{\rm SM}", "Q"), (r"T^{3,{\rm R}}_{\rm SH}", "T^3_R"), (r"SU(2)_{\rm R}", "SU(2)_R"),
+            (r"\lambda^{\rm H}_{\rm SH}", r"\lambda^{\rm H}"), (r"\lambda^{\rm S}_{\rm SH}", r"\lambda^{\rm S}"),
+            (r"\lambda^{\rm T}_{\rm SH}", r"\lambda^{\rm T}"), (r"E^{X,{\rm gap}}_{\rm SH}", r"E^{X,{\rm gap}}"),
+            (r"M^{\rm u}_{\rm SH}", r"M^{\rm u}"), (r"M^{\rm d}_{\rm SH}", r"M^{\rm d}"), (r"M^\chi_{\rm SH}", r"M^\chi"),
+            (r"M^{\chi'}_{\rm SH}", r"M^{\chi'}"), (r"\varsigma^{(1)}_{\rm SH}", r"\varsigma^{(1)}"),
+            (r"\varsigma^{(2)}_{\rm SH}", r"\varsigma^{(2)}"), (r"\mathcal E^X_{\rm SH}", r"\mathcal E^X"),
+            (r"M^{\rm eff}_{\rm SH}", r"M_{\rm eff}"), (r"\epsilon^{\rm kick}_{\rm SH}", r"\epsilon^{\rm kick}"),
+            (r"\mathsf O_{\rm SH}", r"\mathsf O"), (r"\omega^{\rm pk}_{\rm SH}", r"\omega^{\rm pk}"),
+            (r"\Gamma^{\rm pk}_{\rm SH}", r"\Gamma^{\rm pk}"), (r"\Gamma^{\rm win}_{\rm SH}", r"\Gamma^{\rm win}"),
+            (r"V^{(0)}_{\rm SH}", r"V^{(0)}"), (r"V^{(1)}_{\rm SH}", r"V^{(1)}")]
+
+
+def sm_notation(c):
+    """a cell of a table of the manuscripts in the notation of the article (NOTATION, and the susceptibilities
+    \\chi^{ab}_{\\rm SH} -> \\chi^{ab})"""
+    for a, b in NOTATION:
+        c = c.replace(a, b)
+    return re.sub(r"\\chi\^\{([^}]*)\}_\{\\rm SH\}", r"\\chi^{\1}", c)
+
+
+def tex_cell(c):
+    """a cell of a Markdown table of the manuscripts as LaTeX: the formulas between dollar signs are kept, the text
+    between them is escaped (the Markdown escape \\_ becomes _ first)"""
+    c = sm_notation(c.strip().replace("\\_", "_"))
+    parts = re.split(r"(\$[^$]*\$)", c)
+    return "".join(p if p.startswith("$") and p.endswith("$") and len(p) > 1 else tex_text(p) for p in parts)
+
+
+FLOAT_ROWS = 40   # a table of at most this many rows is set as a float, which never breaks across a page
+
+
+def md_longtable(md, caption, label, colspec=None, drop=(), size="\\footnotesize"):
+    """a Markdown table of the manuscripts with its caption and label; drop: the indices of columns to leave out.
+    A table of at most FLOAT_ROWS rows becomes a float (table and tabular), a longer one a longtable.  The floats are
+    needed because under revtex4-2 a longtable that breaks across a page just before the next longtable begins gets on
+    its continuation the header of that next table (seen in the first build: the last two rows of the table of the
+    scale under the header of the table of the gap)."""
+    rows = [l for l in md.strip().split("\n") if l.strip().startswith("|")]
+    cells = [[c for c in r.strip().strip("|").split("|")] for r in rows]
+    head, body = cells[0], cells[2:]
+    keep = [i for i in range(len(head)) if i not in drop]
+    ncol = len(keep)
+    spec = colspec or "l" * ncol
+    if len(body) <= FLOAT_ROWS:
+        out = ["\\begin{table}[!htbp]", "\\caption{\\label{%s}%s}" % (label, caption),
+               "\\begingroup\\centering%s\\setlength{\\tabcolsep}{4pt}" % size,
+               "\\begin{tabular}{%s}" % spec, "\\hline\\hline",
+               " & ".join(tex_cell(head[i]) for i in keep) + " \\\\ \\hline"]
+        out += [" & ".join(tex_cell(r[i]) for i in keep) + " \\\\" for r in body]
+        out += ["\\hline\\hline", "\\end{tabular}\\par", "\\endgroup", "\\end{table}"]
+        return "\n".join(out)
+    out = ["\\begingroup%s\\setlength{\\tabcolsep}{4pt}" % size,
+           "\\begin{longtable}{%s}" % spec,
+           "\\caption{\\label{%s}%s}\\\\" % (label, caption), "\\hline\\hline",
+           " & ".join(tex_cell(head[i]) for i in keep) + " \\\\ \\hline", "\\endfirsthead",
+           "\\hline " + " & ".join(tex_cell(head[i]) for i in keep) + " \\\\ \\hline", "\\endhead",
+           "\\hline\\hline", "\\endlastfoot"]
+    for r in body:
+        out.append(" & ".join(tex_cell(r[i]) for i in keep) + " \\\\")
+    out += ["\\end{longtable}", "\\endgroup"]
+    return "\n".join(out)
+
+
+def report_lines(name):
+    """the checks of a report of the Rust or the Python programs: (identifier, result, deviation, tolerance, statement)"""
+    out = []
+    for line in open(os.path.join(DATA, name), encoding="utf-8"):
+        m = re.match(r"(PASS|FAIL) (\S+)\s+deviation (\S+) \(tolerance ([^)]+)\):\s*(.*)$", line.rstrip("\n"))
+        if m:
+            out.append((m.group(2), m.group(1), m.group(3), m.group(4), m.group(5)))
+            continue
+        m = re.match(r"(PASS|FAIL) (\S+)\s+dev (\S+) \(tol ([^)]+)\)\s+(.*)$", line.rstrip("\n"))
+        if m:
+            out.append((m.group(2), m.group(1), m.group(3), m.group(4), m.group(5)))
+            continue
+        m = re.match(r"(PASS|FAIL) (\S+)\s+(.*)$", line.rstrip("\n"))
+        if m:
+            out.append((m.group(2), m.group(1), "--", "--", m.group(3)))
+    if not out:
+        sys.exit("no checks in data/" + name)
+    return out
+
+
+def report_dev(name, cid):
+    """the deviation of the check cid in a report"""
+    for c, r, d, t, x in report_lines(name):
+        if c == cid:
+            return float(d)
+    sys.exit("check %s is missing in data/%s" % (cid, name))
+
+
+# The statements of the checks cite the document of the hypotheses (H0 to H6) and the equations of the manuscript of
+# stage 2.  The Supplemental Material refers to no other document, so its tables cite instead the place of the
+# Supplemental Material that states the same thing (applied to the LaTeX text of the statements; the SM says so in S11):
+# (3.1) the isospin factor of two members of Psi_LL -> (S3); (4.1) Y = F_LL/4 -> Sec. S2; (4.3) Y = T^3_R + R/4 -> (S6);
+# H4 the global group and its custodial symmetry, H5 the neutral vacuum, H0 the measured inputs -> Sec. S2;
+# H6 the identification v_SH = v -> Sec. S7.
+SM_REFS = [("equation (3.1)", "equation (\\ref{eq:2x2})"), ("equation (4.1)", "Sec.~\\ref{sec:model}"),
+           ("equation (4.3)", "equation (\\ref{eq:Y})"), ("of H4", "of Sec.~\\ref{sec:model}"),
+           ("of H5", "of Sec.~\\ref{sec:model}"), ("stated in H0", "stated in Sec.~\\ref{sec:model}"),
+           ("(H6)", "(Sec.~\\ref{sec:gauge})")]
+
+
+def sm_refs(t):
+    """the citations of the documents of the stages in a check statement -> the places of the Supplemental Material"""
+    for a, b in SM_REFS:
+        t = t.replace(a, b)
+    left = re.findall(r"\bH[0-9]\b|equations? \([0-9]+\.[0-9]+\)|Section [0-9]", t)
+    if left:
+        sys.exit("a check statement cites another document: %s in %s" % (left, t[:120]))
+    return t
+
+
+def check_table(title, label, rows):
+    """a longtable of checks"""
+    head = ["\\begingroup\\fontsize{7}{8.5}\\selectfont\\setlength{\\tabcolsep}{3pt}",
+            "\\begin{longtable}{p{0.09\\textwidth}p{0.05\\textwidth}p{0.085\\textwidth}p{0.075\\textwidth}p{0.64\\textwidth}}",
+            "\\caption{\\label{%s}%s}\\\\" % (label, title), "\\hline\\hline",
+            "check & result & deviation & tolerance & statement \\\\ \\hline", "\\endfirsthead",
+            "\\hline check & result & deviation & tolerance & statement \\\\ \\hline", "\\endhead", "\\hline\\hline", "\\endlastfoot"]
+    body = ["%s & %s & %s & %s & %s \\\\" % (tex_text(c), r, tex_text(d), tex_text(t), sm_refs(tex_text(x)))
+            for c, r, d, t, x in rows]
+    return "\n".join(head + body + ["\\end{longtable}", "\\endgroup"])
+
+
+def sha256(path):
+    import hashlib
+    return hashlib.sha256(open(path, "rb").read()).hexdigest()
+
+
 def main():
-    vals = {r["name"]: float(r["value"]) for r in read_csv("part3_values.csv")}
-    th = {(r["method"], round(float(r["tau"]), 4)): r for r in read_csv("part3_thermal.csv")}
-    gz = {r["method"]: {k: float(v) for k, v in r.items() if k != "method"} for r in read_csv("part3_ginzburg.csv")}
-    hg = {r["method"]: {k: float(v) for k, v in r.items() if k != "method"} for r in read_csv("part3_higgs.csv")}
+    fr = fragments()
     num = {}
-    # ---- Table I: couplings, the superfluid at T = 0, the critical temperature
-    rows = []
-    for t in TAGS:
-        r0 = th[(t, 0.0)]
-        tc = vals["p3_th_Tc_" + t]
-        gap = float(r0["gap"])
-        rows.append("%s & %s & %s & %s & %s & %s & %s & %s & %s & %s \\\\" % (
-            LABEL[t], sig(vals["p3_th_gS_" + t], 3) if abs(vals["p3_th_gS_" + t]) > 1e-12 else "0", sig(vals["p3_th_gP_" + t], 3),
-            sig(vals["p3_th_lam0_" + t], 5), sig(float(r0["Phi0"]), 5), sig(float(r0["Dirac_mass"]), 5), sig(gap, 5),
-            sig(1e4 * abs(vals["p3_E0_" + t]), 4), sig(tc, 5), sig(gap / tc, 4)))
-    num["TABLE_T0"] = "\n".join(rows)
-    num["TC_RANGE"] = rng([vals["p3_th_Tc_" + t] for t in TAGS], 3)
-    num["GAPRATIO_RANGE"] = rng([float(th[(t, 0.0)]["gap"]) / vals["p3_th_Tc_" + t] for t in TAGS], 3)
-    num["LANDAU_RES"] = rng([100 * vals["p3_landau_res_" + t] / abs(vals["p3_E0_" + t]) for t in TAGS], 2, "\\%")
-    num["MH2GAP_RANGE"] = rng([hg[t]["M_H_over_2E_gap"] for t in TAGS], 2)
-    num["THETAP"] = "%.3f" % math.degrees(math.atan(0.7 / (2 * 0.45)))
-    # ---- the Ginzburg number (Table II)
-    rows = []
-    for t in TAGS:
-        x = gz[t]
-        dcxi3 = x["alpha"] ** 0.5 * x["c"] ** 1.5 / (2 * x["b"] * x["T_c"])
-        rows.append("%s & %s & %s & %s & %s & %s & %s \\\\" % (LABEL[t], sig(100 * x["alpha"], 5), sig(100 * x["b"], 5), sig(100 * x["c"], 5),
-                                                              sig(x["xi0"], 4), sig(dcxi3, 3), sig(x["Gi"], 3)))
-    num["TABLE_GI"] = "\n".join(rows)
-    num["GI_RANGE"] = rng([gz[t]["Gi"] for t in TAGS], 2)
-    num["SQRTGI_RANGE"] = rng([gz[t]["Gi"] ** 0.5 for t in TAGS], 2)
-    num["XI_RANGE"] = rng([gz[t]["xi0"] for t in TAGS], 3)
-    num["DCXI3_RANGE"] = rng([gz[t]["alpha"] ** 0.5 * gz[t]["c"] ** 1.5 / (2 * gz[t]["b"] * gz[t]["T_c"]) for t in TAGS], 2)
-    num["T3PCT"] = rng([100 * gz[t]["c_T3_twist"] / gz[t]["c"] for t in TAGS], 2, "\\%")
-    hsks = ["HS_1_1", "HS_0_1", "KS"]
-    num["TWHSKS"] = rng([100 * (gz[t]["c_twisted_states"] / gz[t]["c"] - 1) for t in hsks], 2, "\\%")
-    num["TWCJT"] = sig(100 * (1 - gz["CJT"]["c_twisted_states"] / gz["CJT"]["c"]), 2) + "\\%"
+    f = lambda k: tex_num(fr[k])
+    mins = {(r["version"], r["method"]): r for r in read_csv("sh_hg_minimum.csv")}
+    mas = {(r["version"], r["method"]): r for r in read_csv("sh_hg_masses.csv")}
+    gnd = {(r["version"], r["method"]): r for r in read_csv("sh_sf_ground.csv")}
+    cpl = {r["name"]: float(r["value"]) for r in read_csv("sh_couplings.csv")}
+    qv = {r["name"]: float(r["value"]) for r in read_csv("sh_quantum_values.csv")}
+    sfv = {r["name"]: float(r["value"]) for r in read_csv("sh_sf_values.csv")}
 
-    def gi_c(t, c):
-        x = gz[t]
-        return 36 * x["b"] ** 2 * x["T_c"] ** 2 / (64 * math.pi ** 2 * x["alpha"] * c ** 3)
-    num["GI_LO"] = sig(min(gi_c(t, gz[t]["c"] + gz[t]["c_T3_twist"]) for t in TAGS), 2)
-    num["GI_HI"] = sig(max(gi_c(t, gz[t]["c"] - gz[t]["c_T3_twist"]) for t in TAGS), 2)
-    # ---- the Higgs sector of SU(2)_v x U(1)^F (Table III): no column of the Standard Model and no values in GeV, because
-    # the DiracLike spinor carries no electroweak quantum numbers (the superfluid is not the Higgs sector of the
-    # electroweak group) and no observation fixes the scale of the new group
-    hrows = [
-        ("$v^X_\\SF=2f^{X,{\\rm I}}_\\SF$", "v_SF", 4),
-        ("$f^{X,{\\rm F}}_\\SF$", "f_F", 4),
-        ("$M^{X,{\\rm H}}_\\SF$ (amplitude mode)", "M_H", 4),
-        ("$M^{X,{\\rm NU}}_\\SF$ (non-unitary scalars)", "M_NU", 4),
-        ("$M^X_{W,\\SF}$", "M_W", 3),
-        ("$M^X_{Z,\\SF}$", "M_Z", 3),
-        ("$M^{X,{\\rm H}}_\\SF/v^X_\\SF$", "M_H_over_v_SF", 3),
-        ("$\\lambda^{X,{\\rm H}}_\\SF$", "lambda_SF", 3),
-        ("$M^{X,{\\rm H}}_\\SF/M^X_{W,\\SF}$", "M_H_over_M_W", 3),
-        ("$M^X_{W,\\SF}/M^X_{Z,\\SF}$", "M_W_over_M_Z", 3),
-        ("$M^{X,{\\rm H}}_\\SF/2E^{X,{\\rm gap}}_\\SF$", "M_H_over_2E_gap", 3),
-        ("$M^{X,{\\rm NU}}_\\SF/M^{X,{\\rm H}}_\\SF$", "M_NU_over_M_H", 3),
-        ("$f^{X,{\\rm F}}_\\SF/f^{X,{\\rm I}}_\\SF$", "f_F_over_f_I", 3),
-        ("$\\Gamma^{X,{\\rm H}}_\\SF/M^{X,{\\rm H}}_\\SF$, Eq.~(\\ref{eq:width})", "Gamma_over_M_H", 2),
-        ("$T^{X,{\\rm c}}_\\SF/v^X_\\SF$", "T_c_over_v_SF", 3),
-    ]
-    rows = []
-    for label, key, n in hrows:
-        rows.append("%s & %s \\\\" % (label, " & ".join(sig(hg[t][key], n) for t in TAGS)))
-    rows.append("${\\rm Gi}^X_\\SF$, Eq.~(\\ref{eq:Gi}) & %s \\\\" % " & ".join(sig(gz[t]["Gi"], 3) for t in TAGS))
-    num["TABLE_HIGGS"] = "\n".join(rows)
-    mhv = [hg[t]["M_H_over_v_SF"] for t in TAGS]
-    num["MHV_RANGE"] = rng(mhv, 3)
-    num["LAMBDA_RANGE"] = rng([hg[t]["lambda_SF"] for t in TAGS], 3)
-    num["WIDTH_RANGE"] = rng([hg[t]["Gamma_over_M_H"] for t in TAGS], 2)
-    num["MNU_RANGE"] = rng([hg[t]["M_NU_over_M_H"] for t in TAGS], 3)
-    num["FIGAP_RANGE"] = rng([hg[t]["f_I"] / float(th[(t, 0.0)]["gap"]) for t in TAGS], 2)
-    # ---- the zeugon: the massless gauge boson of U(1)^Q (Part II of the solution: the Thouless eigenvalues of the normal
-    # vacuum, the exchange energies of the four gauge bosons in the CJT superfluid, and the computed masses)
-    p2 = {r["name"]: float(r["value"]) for r in read_csv("part2_values.csv")}
+    # ---- the couplings and the group theory
+    num["V_GEV"] = "%.2f" % cpl["v"]
+    num["G"], num["GP"] = f("hg_g"), f("hg_gp")
+    if abs(qv["min_abs_Q_pairs_without_Psi_chi"] - 0.5) > 1e-12:
+        sys.exit("the Supplemental Material writes 1/2 for the smallest charge of the other pairs")
+    num["MIN_ABS_Q"] = "\\ensuremath{\\tfrac12}"
+    # ---- the normal vacuum and the ground states
+    gc = sfv["G_crit_SH"]
+    num["GCRIT"] = sig(gc, 5)
+    num["LAMH"] = sig(100.8 / gc, 4)
+    if abs(100.8 / gc - float(fr["sf_lam_higgs"].strip("$"))) > 1e-8:
+        sys.exit("G_SH / G_crit differs from the eigenvalue of stage 3")
+    num["ONE_DOUBLET_RANGE"] = f("sf_one_doublet_range")
+    # the largest eigenvalue of the static response of CJT in the blocks between Psi_LL and the singlets (stage 3)
+    num["MIX_CJT"] = sig(float(fr["sf_lam_mixing_cjt"].strip("$")), 3)
+    num["MIX_SS_CJT"] = sig(float(fr["sf_lam_mixing_ss_cjt"].strip("$")), 3)   # the block between the two singlets
+    rows = ["\\begin{tabular}{llccc}", "version & method & $d^0_\\SH$ & $10^4\\,\\mathcal E$ & $E^{\\rm gap}$\\\\", "\\hline"]
+    for ver in VERS:
+        for meth in METHODS:
+            g = gnd[(ver, meth)]
+            rows.append("%s & %s & %s & %s & %s\\\\" % (ver if meth == METHODS[0] else "", meth.replace(", ", ","),
+                                                       sig(float(mins[(ver, meth)]["d0"]), 6), sig(float(g["energy"]) * 1e4, 6),
+                                                       sig(float(g["gap"]), 6)))
+    rows.append("\\end{tabular}")
+    num["TABLE_GROUND"] = "\n".join(rows)
+    # ---- the effective potential: the top of the hat and the second branch (stage 4, record 4.4 of the task record)
+    num["TOP_RATIO"] = tex_num("$" + fr["hg_top_ratio"] + "$")
+    num["SB_LAST"] = fr["hg_sb_last"]
+    num["SB_BEYOND"] = fr["hg_sb_beyond"]
+    num["SB_LAST_IT"] = fr["hg_sb_last_it"]
+    num["SB_GAP_RANGE"] = f("hg_sb_gap_range")
+    # ---- the gauge bosons and the scale
+    rho2 = [float(mas[("second", m)]["rho"]) for m in METHODS]
+    num["RHO2_DEV"] = sci_up(max(abs(r - 1) for r in rho2))
+    num["RHO1_RANGE"] = f("hg_rho1_range")
+    num["RHO_MEAS"] = fr["hg_rho_measured"]
+    num["VSH2_RANGE"] = f("hg_vsh2_range")
+    num["LAM2_GEV"] = f("hg_lam2_range")
+    lam2 = [float(mas[("second", m)]["Lambda_GeV"]) for m in METHODS]
+    num["LAM2_TEV"] = rng([x / 1000 for x in lam2], 2)
+    gap_gev = [float(gnd[("second", m)]["gap"]) * float(mas[("second", m)]["Lambda_GeV"]) for m in METHODS]
+    num["GAP_GEV_RANGE"] = rng(gap_gev, 3)
+    rows = ["\\begin{tabular}{lccccccc}",
+            "method & $v_\\SH$ & $\\Lambda_\\LL$ (GeV) & $\\rho_\\SH$ & $M^{\\rm EFT}_\\SH/v_\\SH$ & $M^{\\rm EFT}_\\SH$ (GeV) & "
+            "$\\omega^{\\rm H}_\\SH/v_\\SH$ & $\\omega^{\\rm H}_\\SH$ (GeV)\\\\", "\\hline"]
+    for meth in METHODS:
+        r = mas[("second", meth)]
+        rpa = r["M_H_RPA"] not in ("NaN", "nan", "")
+        rows.append("%s & %s & %s & %s & %s & %s & %s & %s\\\\" % (
+            meth.replace(", ", ","), sig(float(r["v_SH"]), 4), sig(float(r["Lambda_GeV"]), 4),
+            "1" if abs(float(r["rho"]) - 1) < 1e-9 else sig(float(r["rho"]), 6),
+            sig(float(r["M_H_EFT_over_v_SH"]), 4), sig(float(r["M_H_EFT_GeV"]), 4),
+            sig(float(r["M_H_RPA_over_v_SH"]), 4) if rpa else "--", sig(float(r["M_H_RPA_GeV"]), 4) if rpa else "--"))
+    rows.append("\\end{tabular}")
+    num["TABLE_MASSES"] = "\n".join(rows)
+    # ---- the amplitude mode
+    num["MEFT2_RANGE"] = f("hg_meft2_over_v_range")
+    num["MH_RPA_V"] = fr["hg_mh_over_v_rpa2"]
+    num["MH_RPA_GEV"] = fr["hg_mh_gev_rpa2"]
+    num["MH_SM_V"] = fr["hg_mh_over_v_sm"]
+    rpa2 = float(mas[("second", "HS (0, 0)")]["M_H_RPA_over_v_SH"])
+    num["FACTOR_RPA"] = sig(rpa2 / cpl["m_H_over_v"], 2)
+    num["FACTOR_RANGE"] = f("hg_factor_range")
+    # the factor of the effective Lagrangian alone: M^EFT/v of the five methods (second version) over the measured m_H/v
+    num["FACTOR_EFT"] = rng([float(mas[("second", m)]["M_H_EFT_over_v_SH"]) / cpl["m_H_over_v"] for m in METHODS], 2)
+    num["SCAN_MIN2"], num["SCAN_MAX2"] = f("hg_scan_min2"), f("hg_scan_max2")
+    scan2 = [r for r in read_csv("sh_hg_scan.csv") if r["version"] == "second"]
+    smin = min(float(r["M_H_RPA_over_v_SH"]) for r in scan2)
+    if abs(smin - float(fr["hg_scan_min2"].strip("$"))) > 1e-3 * smin:
+        sys.exit("the smallest ratio of the scan differs from the fragment of the manuscript")
+    num["SCAN_MIN_FACTOR"] = sig(smin / cpl["m_H_over_v"], 2)
+    num["SCAN_VMAX"] = sig_up(max(float(r["v_SH"]) for r in scan2), 2)
+    # the text says that the ratio grows with the coupling at each mass and is smallest at the smallest coupling
+    for m in sorted(set(r["m"] for r in scan2)):
+        seq = [float(r["M_H_RPA_over_v_SH"]) for r in sorted((r for r in scan2 if r["m"] == m), key=lambda r: float(r["G_over_Gcrit"]))]
+        if any(b <= a for a, b in zip(seq, seq[1:])):
+            sys.exit("the ratio of the scan does not grow with the coupling at m = %s" % m)
+    num["BIND2"] = sig(float(fr["hg_binding2"]), 4)
+    num["OMEGA_D0_DEV"] = f("hg_omega_d0_dev")
+    num["YH7_DEV"] = f("hg_yh7_dev")
+    num["H8D_DEV"] = f("hg_h8d_dev")
+    num["GRID_DEV"] = sci_up(report_dev("hck_sh_higgs_checks.txt", "H-9"))
+    # ---- the dynamics
+    num["DY_DEV_AMP"] = f("dy_dev_amp")
+    num["DY_RATIO_HS11"] = fr["dy_ratio_hs11_2"]
+    num["DY_SPLIT_HS11"] = fr["dy_split_hs11"]
+    num["DY_AMP_KS"] = fr["dy_amp_ks_2"]
+    num["DY_GAP2_KS"] = fr["dy_gap2_ks_2"]
+    num["DY_WR_KS"] = fr["dy_wr_ks_2"]
+    num["DY_DEV_JOS"] = f("dy_dev_jos")
+    num["DY_LARGE_RATIO"] = fr["dy_large_ratio_2"]
 
-    def tex_sci(x, n):
-        """x with n significant digits as a TeX power of ten, e.g. -4.83\\times10^{-5}"""
-        e = int(math.floor(math.log10(abs(x))))
-        m = sig(x / 10 ** e, n)
-        if m.lstrip("-") == "10" or m.lstrip("-").startswith("10."):
-            e += 1
-            m = sig(x / 10 ** e, n)
-        return "%s\\times10^{%d}" % (m, e)
-    num["GV_CRIT"] = sig(p2["p2_thouless7"], 3)
-    num["THOULESS3"] = sig(p2["p2_thouless3"], 3)
-    num["THOULESS6"] = sig(p2["p2_thouless6"], 3)
-    num["EX_W3"] = tex_sci(p2["p2_cjtex_exchange_energy_W3"], 3)
-    num["EX_W1"] = tex_sci(p2["p2_cjtex_exchange_energy_W1"], 3)
-    num["EX_B"] = tex_sci(p2["p2_cjtex_exchange_energy_B"], 3)
-    num["EX_TOT"] = tex_sci(p2["p2_cjtex_exchange_energy"], 3)
-    num["M_A_CJT"] = tex_sci(p2["p2_cjtex_M_A"], 2)  # the zeugon
-    num["M_W_CJT"] = sig(p2["p2_cjtex_M_W"], 3)
-    # ---- the vacuum energy of the condensate (CJT), in units of Lambda_LL and of its own scale of breaking, and the scale
-    # of breaking at which it would equal the observed dark-energy density (2.5e-47 GeV^4, Particle Data Group 2024)
-    depth = abs(vals["p3_E0_CJT"])
-    e = int(math.floor(math.log10(depth)))
-    num["DEPTH_CJT"] = "%s\\times10^{%d}" % (sig(depth / 10 ** e, 2), e)
-    depth_v4 = depth / hg["CJT"]["v_SF"] ** 4
-    num["DEPTH_V4"] = sig(depth_v4, 2)
-    num["V_MATCH"] = sig((2.5e-47 / depth_v4) ** 0.25 * 1e12, 2)  # GeV -> meV
-    sm_numbers(num, vals, th, gz, hg)
-    check_numbers(num, th, hg)
-    # ---- the article, then the Supplemental Material, the cover letter and the submission information
+    # ---- the tables of the Supplemental Material: the tables of the manuscripts
+    T = [("T_CHANNELS", "sh_table_channels", "The pair channels of positive parity of the three fields: the bilinear, the number of components, the representation of $SU(2)_L$, the hypercharge, the electric charges, the number of neutral components, the relative number and $T^3_R$.", "tab:channels", None, ()),
+         ("T_CUSTODIAL", "sh_table_custodial", "The pair channels of $\\Psi_\\LL$ with the pair of singlets under $SU(2)_L\\times SU(2)_R$.", "tab:custodial", None, ()),
+         ("T_NORMAL", "sf_table_normal", "The largest eigenvalues of the static response of the normal vacuum, by channel: the doublet-singlet pairs $\\lambda^{\\rm H}$ (with the multiplicity), the scalar channel $\\lambda^{\\rm S}$, the triplet pairs of $\\Psi_\\LL$ $\\lambda^{\\rm T}$, and the largest eigenvalues of the other pair channels, of the normal channels and of the mixings; $V^{(0)}$ is the potential without the pairing terms, $V^{(1)}$ that of the article.", "tab:normal", "llp{0.12\\textwidth}ccp{0.06\\textwidth}p{0.06\\textwidth}cp{0.06\\textwidth}p{0.06\\textwidth}", (), "\\scriptsize"),
+         ("T_STATES", "sf_table_states", "The stationary states reached from the nineteen starts, their energy, and the largest eigenvalue of their static response in the doublet-singlet pairs.", "tab:states", "lllcl", (3,)),
+         ("T_GROUND", "sf_table_ground", "The ground states: the energy, the two singular values of the matrix of the pair coefficients, and the gap.", "tab:ground", None, ()),
+         ("T_SFMASSES", "sf_table_masses", "The Dirac masses of the four species in the ground states.", "tab:sfmasses", None, ()),
+         ("T_RESPONSE", "sf_table_response", "The static response of the ground states: the number of eigenvalues equal to 1, the largest other eigenvalue in the sector of relative number 0 and in the sectors $\\pm2$, and the largest eigenvalue of the condensate of one doublet.", "tab:response", "llp{0.15\\textwidth}p{0.17\\textwidth}p{0.17\\textwidth}p{0.2\\textwidth}", ()),
+         ("T_MINIMUM", "hg_table_minimum", "The minimum of the effective potential: the pair self-energy and the pair amplitude of the ground state, its energy, and the curvature there.", "tab:minimum", None, ()),
+         ("T_TOP", "hg_table_top", "The top of the hat: the state of the branch of the ground state at $\\varphi_\\SH=0$, its energy, the ratio of that energy to the depth of the minimum, and its Dirac masses.", "tab:top", None, ()),
+         ("T_CHI", "hg_table_chi", "The susceptibilities ($10^3$ times their values) and $\\rho_\\SH$.", "tab:chi", None, ()),
+         ("T_SCALE", "hg_table_scale", "The scale and the masses of the gauge bosons, with $v_\\SH=246.22$ GeV.", "tab:scale", None, ()),
+         ("T_GAPGEV", "hg_table_gap", "The gap of the ground states in units of the cutoff and in GeV.", "tab:gapgev", None, ()),
+         ("T_AMP", "hg_table_amp", "The amplitude mode from the effective Lagrangian, and twice the gap, the lowest energy of two quasi-particles.", "tab:amp", None, ()),
+         ("T_RPA", "hg_table_rpa", "The amplitude mode from the linear response in the pairing-only methods: its frequency, its departure from $d^0_\\SH$, the ratio to the scale, the frequency in GeV, the lowest transition energy whose terms act on its null space, and its multiplicity.", "tab:rpa", "llcccccc", ()),
+         ("T_SCAN", "hg_table_scan", "The scan of HS (0,0): the mass, the coupling, the pair self-energy, the scale, $\\rho_\\SH$, the amplitude mode, the threshold and the ratio of the mode to the scale.", "tab:scan", None, ()),
+         ("T_RUNS", "dy_table_runs", "The runs in time: the kind, the version, the method, the displacement, the largest relative changes of the energy and of the charges and the departure from orthonormality, the steps of CVODE, and the computing time.", "tab:runs", None, ()),
+         ("T_MODES", "dy_table_modes", "The modes in time: $d^0_\\SH$, twice the gap, and the peak and the ratio of its half-width to that of the window, for the amplitude and the triplet runs.", "tab:modes", None, ())]
+    for item in T:
+        key, frag, cap, label, spec, drop = item[:6]
+        size = item[6] if len(item) > 6 else "\\footnotesize"
+        md = fr[frag]
+        if frag == "sf_table_states":
+            md = md.replace("starts (numbers of Table 3.1)", "starts")
+        num[key] = md_longtable(md, cap, label, spec, drop, size)
+
+    # ---- the checks: verdicts and tables (Rust and Python, the four programs of the revision)
+    stages = [("stage 2", "quantum", "sh"), ("stage 3", "superfluid", "sf"), ("stage 4", "higgs", "hg"), ("stage 6", "dynamics", "dy")]
+    num["VERDICTS_RUST"] = "; ".join("%s (\\texttt{sh\\_%s}) %s" % (st, p, fr[k + "_verdict_rust"]) for st, p, k in stages)
+    num["VERDICTS_PYTHON"] = "; ".join("%s %s" % (st, fr[k + "_verdict_python"]) for st, p, k in stages)
+    num["VERDICTS_WOLFRAM"] = "; ".join("%s %s" % (st, fr[k + "_verdict_wolfram"]) for st, p, k in stages)
+    nbl = open(os.path.join(DATA, "hck_notebook_log.txt"), encoding="utf-8").read()
+    ids = re.findall(r'"id" -> "([^"]+)"', nbl)
+    passes = re.findall(r'"pass" -> (True|False)', nbl)
+    partr = [i for i in ids if re.match(r"W(QN|SF|H|D)-", i)]
+    partr_pass = [p for i, p in zip(ids, passes) if re.match(r"W(QN|SF|H|D)-", i) and p == "True"]
+    num["VERDICT_NOTEBOOK"] = ("%s; its Part R repeats the %d checks of the Wolfram scripts of the revision, and %d of them pass"
+                               % (fr["nb_verdict"], len(partr), len(partr_pass)))
+    tabs = []
+    for st, p, k in stages:
+        for who, suffix, lab in (("Rust", "", "rust"), ("Python", "_python", "python")):
+            name = "hck_sh_%s_checks%s.txt" % (p, suffix)
+            tabs.append(check_table("The checks of the %s program of %s (\\texttt{data/%s})." % (who, st, tex_text(name)),
+                                    "tab:checks_%s_%s" % (p, lab), report_lines(name)))
+    num["CHECKS_TABLES"] = "\n\n".join(tabs)
+
+    # ---- the data files and reports with their checksums
+    files = ["sh_inputs.csv", "sh_couplings.csv", "sh_quantum_values.csv", "sh_channels.csv", "sh_custodial_channels.csv",
+             "sh_sf_normal_vacuum.csv", "sh_sf_states.csv", "sh_sf_ground.csv", "sh_sf_values.csv", "sh_hg_potential.csv",
+             "sh_hg_potential_second_branch.csv", "sh_hg_minimum.csv", "sh_hg_susceptibility.csv", "sh_hg_masses.csv",
+             "sh_hg_scan.csv", "sh_hg_values.csv", "sh_dyn_runs.csv", "sh_dyn_spectra.csv", "sh_dyn_values.csv"]
+    files += sorted(os.path.basename(x) for x in __import__("glob").glob(os.path.join(DATA, "hck_sh_*_checks*.txt")))
+    files += ["hck_notebook_log.txt"]
+    rows = ["\\begingroup\\footnotesize\\setlength{\\tabcolsep}{4pt}", "\\begin{longtable}{lrl}",
+            "\\caption{\\label{tab:files}The data files and the reports that this article reads, with their sizes and SHA-256 checksums.}\\\\",
+            "\\hline\\hline file & bytes & SHA-256 \\\\ \\hline", "\\endfirsthead", "\\hline file & bytes & SHA-256 \\\\ \\hline",
+            "\\endhead", "\\hline\\hline", "\\endlastfoot"]
+    for fn in files:
+        path = os.path.join(DATA, fn)
+        rows.append("\\texttt{data/%s} & %d & \\texttt{\\scriptsize %s} \\\\" % (tex_text(fn), os.path.getsize(path), sha256(path)))
+    rows += ["\\end{longtable}", "\\endgroup"]
+    num["DATA_TABLE"] = "\n".join(rows)
+
+    # ---- build
     report = []
-    code = build(NAME, num, report)
-    code = max(code, build(NAME + "_SM", num, report))
-    code = max(code, build("cover_letter", num, report, bib=False))
-    code = max(code, submission_folder(num, report))
+    bad = 0
+    bad += build(NAME, num, report)
+    bad += build(NAME + "_SM", num, report)
+    bad += build("cover_letter", num, report, bib=False)
     num["ABSTRACT_TEX"], num["ABSTRACT_WORDS"] = abstract()
-    code = max(code, build("submission_info", num, report, bib=False))
-    with open(os.path.join(PAPER, "generated", "build_report.txt"), "w") as f:
-        f.write("build_paper.py: the checks of the LaTeX builds (pages; undefined references or citations; overfull boxes wider\n"
-                "than 1 pt).  A document passes when it has no undefined reference and no such box.\n\n" + "\n".join(report) + "\n")
-    print("\n".join(report))
+    bad += submission_folder(num, report)
+    bad += build("submission_info", num, report, bib=False)
     clean()
-    sys.exit(code)
-
-
-def check_numbers(num, th, hg):
-    """the numbers of the text that state how well two computations agree, or how large a correction is; every one is
-    computed here from the data files and the reports of the checks (bounds are rounded up, so that a stated bound is never
-    smaller than the largest measured deviation)"""
-    sfb = {r["method"]: {k: float(v) for k, v in r.items() if k != "method"} for r in read_csv("part3_sfbsv.csv")}
-    # the order parameter between T = 0 and 0.3 T_c: the largest relative change
-    num["PHI03_PCT"] = sig_up(max(100 * (1 - float(th[(t, 0.3)]["Phi0"]) / float(th[(t, 0.0)]["Phi0"])) for t in TAGS), 2) + "\\%"
-    # a(0;T) = (1 - lambda)/(lambda g^P) and the closed form of alpha, in the three implementations
-    devs = (report_devs("hck_part3_checks.txt", ["P3-G2", "P3-G10"]) + report_devs("hck_part3_checks_python.txt", ["YP3-G2", "YP3-G10"])
-            + notebook_devs(["WP3-G2", "WP3-G10"]))
-    num["A0_CONFIRM"] = sci_up(max(devs))
-    num["G10_ALL"] = sci_up(max(report_devs("hck_part3_checks.txt", ["P3-G10"]) + report_devs("hck_part3_checks_python.txt", ["YP3-G10"])
-                                + notebook_devs(["WP3-G10"])))
-    # the masses of W and Z against the amplitude mode, and the tree-level factor of the decay into W+W- and ZZ,
-    # (1 - 4x)^(1/2) (1 - 4x + 12x^2) with x = M_V^2/M_H^2, relative to the width (14.12) into Goldstone quanta
-    ratio = max(max(hg[t]["M_W"], hg[t]["M_Z"]) / hg[t]["M_H"] for t in TAGS)
-    num["MV_OVER_MH"] = sig_up(ratio, 2)
-    x = ratio ** 2
-    fac = (1 - 4 * x) ** 0.5 * (1 - 4 * x + 12 * x * x)
-    num["VV_FACTOR"] = sig_down(fac, 2)
-    num["VV_CORR_PCT"] = sig_up(100 * (1 - fac), 1) + "\\%"
-    # the masses of the effective Lagrangian (curvature of V and Eq. (12.4)) against the linear response
-    num["MEFF_PCT"] = rng([100 * (sfb[t]["M_H"] / sfb[t]["M_H_RPA"] - 1) for t in TAGS], 2, "\\%")
-    num["MEFF_ALL_PCT"] = rng([100 * (sfb[t]["M_H"] / sfb[t]["M_H_RPA"] - 1) for t in TAGS]
-                              + [100 * (sfb[t]["M_NU"] / sfb[t]["M_NU_RPA"] - 1) for t in TAGS], 2, "\\%")
-    # the static response of the normal vacuum and the pairing-only limit (Part II)
-    num["RESP0_DEV"] = sci_up(max(report_devs("hck_part2_checks.txt", ["P2-6b", "P2-6c"])))
-    num["AS3_DEV"] = sci_up(max(report_devs("hck_part2_checks.txt", ["P2-2a", "P2-2b"]) + report_devs("hck_part2_checks_python.txt", ["YP2-2"])))
-    # the residual of the Landau form at 0.98 T_c, relative to the depth
-    lan = [float(r["res_Landau_over_depth"]) for r in read_csv("part3_thermal_landau.csv") if abs(float(r["tau"]) - 0.98) < 1e-9]
-    num["LANDAU098"] = rng([100 * v for v in lan], 2, "\\%")
-    # the gradient coefficient: induced channels at q = 0, isospin twist, twisted states, quadrature, the quartic coefficient
-    num["PPERP0"] = sci_up(max(report_devs("hck_part3_checks.txt", ["P3-G4"]) + report_devs("hck_part3_checks_python.txt", ["YP3-G4"])
-                               + notebook_devs(["WP3-G4"])))
-    num["G5_RUSTNB"] = sci_up(max(report_devs("hck_part3_checks.txt", ["P3-G5"]) + notebook_devs(["WP3-G5"])))
-    num["G5_PY"] = sci_up(max(report_devs("hck_part3_checks_python.txt", ["YP3-G5"])))
-    num["G7_DEV"] = sci_up(max(report_devs("hck_part3_checks.txt", ["P3-G7"])), 2)
-    num["G7_PY"] = sci_up(max(report_devs("hck_part3_checks_python.txt", ["YP3-G7"])))
-    gz = {r["method"]: {k: float(v) for k, v in r.items() if k != "method"} for r in read_csv("part3_ginzburg.csv")}
-    num["CK12_DIFF"] = sci_up(max(abs(gz[t]["c_k002"] - gz[t]["c_k001"]) / gz[t]["c"] for t in TAGS))
-    num["G8_RUST"] = sci_up(max(report_devs("hck_part3_checks.txt", ["P3-G8"])))
-    num["G8_PY"] = sci_up(max(report_devs("hck_part3_checks_python.txt", ["YP3-G8"])))
-    num["G8_NB"] = sci_up(max(notebook_devs(["WP3-G8"])))
-    num["NB_C"] = sci_up(max(notebook_devs(["WP3-G6"])))
-    num["G12_DEV"] = sci_up(max(report_devs("hck_part3_checks.txt", ["P3-G12"])))
-    # the run times written by the programs at the end of their reports
-    num["RUST3_TIME"] = "%d~s" % round(run_time("hck_part3_checks.txt"))
-    num["PY3_TIME"] = "%d~s" % round(run_time("hck_part3_checks_python.txt"))
+    with open(os.path.join(PAPER, "generated", "build_report.txt"), "w") as fo:
+        fo.write("build_paper.py: the checks of the builds\n" + "\n".join(report) + "\n")
+    print("\n".join(report))
+    return 1 if bad else 0
 
 
 def abstract():
@@ -260,7 +454,6 @@ def abstract():
     src = open(os.path.join(PAPER, NAME + ".tex"), encoding="utf-8").read()
     tex = re.search(r"\\begin\{abstract\}\n(.*?)\n\\end\{abstract\}", src, re.S).group(1)
     words = len(re.sub(r"\$[^$]*\$", "X", tex).split())
-    # one paragraph without the line breaks of the template, so that it can be copied as a whole into the form
     return " ".join(tex.split()), str(words)
 
 
@@ -272,8 +465,7 @@ def pages(name):
 
 UPLOAD = [(NAME + ".pdf", "the manuscript (PDF)"), (NAME + ".tex", "the manuscript (LaTeX source, REVTeX 4.2)"),
           (NAME + ".bbl", "the bibliography of the source (from BibTeX with apsrev4-2.bst)"),
-          ("fig_part3_q1_potential.pdf", "Figure 1"), ("fig_part4_r1_massmatrix.pdf", "Figure 2"), ("fig_part3_q4_thermal.pdf", "Figure 3"),
-          ("fig_prd_ginzburg.pdf", "Figure 4"), ("fig_prd_higgs.pdf", "Figure 5"),
+          ("fig_prd_sh_potential.pdf", "Figure 1"), ("fig_prd_sh_scan.pdf", "Figure 2"), ("fig_prd_sh_modes.pdf", "Figure 3"),
           (NAME + "_SM.pdf", "the Supplemental Material (PDF)"), ("cover_letter.pdf", "the cover letter (PDF)")]
 
 
@@ -288,20 +480,19 @@ def submission_folder(num, report):
     os.makedirs(sub)
     tex = open(os.path.join(PAPER, NAME + ".tex"), encoding="utf-8").read()
     flat = tex.replace("\\includegraphics[width=\\columnwidth]{figures/", "\\includegraphics[width=\\columnwidth]{")
-    flat = flat.replace("\\includegraphics[width=0.85\\textwidth]{figures/", "\\includegraphics[width=0.85\\textwidth]{")
     if "figures/" in flat:
         sys.exit("submission_folder: a figure path was not flattened")
-    for f, role in UPLOAD:
-        if f == NAME + ".tex":
-            open(os.path.join(sub, f), "w", encoding="utf-8").write(flat)
-        elif f.startswith("fig_"):
-            shutil.copyfile(os.path.join(PAPER, "figures", f), os.path.join(sub, f))
+    for fn, role in UPLOAD:
+        if fn == NAME + ".tex":
+            open(os.path.join(sub, fn), "w", encoding="utf-8").write(flat)
+        elif fn.startswith("fig_"):
+            shutil.copyfile(os.path.join(PAPER, "figures", fn), os.path.join(sub, fn))
         else:
-            shutil.copyfile(os.path.join(PAPER, f), os.path.join(sub, f))
+            shutil.copyfile(os.path.join(PAPER, fn), os.path.join(sub, fn))
     tmp = tempfile.mkdtemp()
-    for f, role in UPLOAD:
-        if f.endswith(".tex") or f.endswith(".bbl") or f.startswith("fig_"):
-            shutil.copyfile(os.path.join(sub, f), os.path.join(tmp, f))
+    for fn, role in UPLOAD:
+        if fn.endswith(".tex") or fn.endswith(".bbl") or fn.startswith("fig_"):
+            shutil.copyfile(os.path.join(sub, fn), os.path.join(tmp, fn))
     for i in range(2):
         subprocess.run(["pdflatex", "-interaction=nonstopmode", NAME + ".tex"], cwd=tmp, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     log = open(os.path.join(tmp, NAME + ".log"), encoding="latin-1").read()
@@ -311,14 +502,16 @@ def submission_folder(num, report):
     ok = n == pages(NAME) and not undefined
     report.append("submission/: the flat source compiles alone to %d pages (the manuscript has %d); undefined: %s -> %s"
                   % (n, pages(NAME), undefined if undefined else "none", "PASS" if ok else "FAIL"))
-    num["ARTICLE_PAGES"], num["SM_PAGES"], num["LETTER_PAGES"] = str(pages(NAME)), str(pages(NAME + "_SM")), str(pages("cover_letter"))
+    num["ARTICLE_PAGES"], num["SM_PAGES"] = str(pages(NAME)), str(pages(NAME + "_SM"))
+    nl = pages("cover_letter")
+    num["LETTER_PAGES"] = "%d %s" % (nl, "page" if nl == 1 else "pages")   # the number of pages of the letter, with its noun
     rows = ["\\begingroup\\small\\setlength{\\tabcolsep}{4pt}",
             "\\begin{longtable}{>{\\raggedright\\arraybackslash}p{0.31\\textwidth}>{\\raggedright\\arraybackslash}p{0.31\\textwidth}r>{\\raggedright\\arraybackslash}p{0.2\\textwidth}}",
             "\\hline\\hline file & content & kB & SHA-256 (first 16 digits) \\\\ \\hline", "\\endfirsthead",
             "\\hline file & content & kB & SHA-256 (first 16 digits) \\\\ \\hline", "\\endhead", "\\hline\\hline", "\\endlastfoot"]
-    for f, role in UPLOAD:
-        path = os.path.join(sub, f)
-        rows.append("\\texttt{%s} & %s & %d & \\texttt{%s} \\\\" % (tex_text(f), role, round(os.path.getsize(path) / 1024), sha256(path)[:16]))
+    for fn, role in UPLOAD:
+        path = os.path.join(sub, fn)
+        rows.append("\\texttt{%s} & %s & %d & \\texttt{%s} \\\\" % (tex_text(fn), role, round(os.path.getsize(path) / 1024), sha256(path)[:16]))
     rows += ["\\end{longtable}", "\\endgroup"]
     num["UPLOAD_TABLE"] = "\n".join(rows)
     return 0 if ok else 1
@@ -337,233 +530,6 @@ def clean():
         os.remove(sm_bbl)
 
 
-def sci1(x):
-    """x as a TeX power of ten with one significant digit, e.g. $2\\times10^{-12}$"""
-    if x == 0:
-        return "$0$"
-    e = int(math.floor(math.log10(abs(x))))
-    m = int(round(abs(x) / 10 ** e))
-    if m == 10:
-        m, e = 1, e + 1
-    return "$%s10^{%d}$" % ("" if m == 1 else "%d\\times" % m, e)
-
-
-def sci_up(x, n=1):
-    """an upper bound of |x| with n significant digits, rounded UP, as a TeX power of ten: 2.33e-12 -> $3\\times10^{-12}$.
-    Used wherever the text says that two numbers agree "to" a bound, so that the bound is never smaller than the largest
-    measured deviation."""
-    if x == 0:
-        return "$0$"
-    e = int(math.floor(math.log10(abs(x))))
-    m = math.ceil(round(abs(x) / 10 ** e * 10 ** (n - 1), 9)) / 10 ** (n - 1)
-    if m >= 10:
-        m, e = m / 10, e + 1
-    ms = ("%.*f" % (n - 1, m)) if n > 1 else "%d" % m
-    return "$%s10^{%d}$" % ("" if ms == "1" else ms + "\\times", e)
-
-
-def sig_up(x, n):
-    """x > 0 rounded UP to n significant digits (fixed notation)"""
-    d = n - 1 - int(math.floor(math.log10(abs(x))))
-    v = math.ceil(round(x * 10 ** d, 9)) / 10 ** d
-    return "%.*f" % (max(d, 0), v)
-
-
-def sig_down(x, n):
-    """x > 0 rounded DOWN to n significant digits (fixed notation)"""
-    d = n - 1 - int(math.floor(math.log10(abs(x))))
-    v = math.floor(round(x * 10 ** d, 9)) / 10 ** d
-    return "%.*f" % (max(d, 0), v)
-
-
-def report_devs(name, ids):
-    """the deviations (floats) of the checks of a report of the Rust or the Python programs whose identifier (the first
-    word, without the method) is one of ids; a check that is decided by facts (tolerance 0) has the deviation 0"""
-    out = []
-    for cid, res, dev, tol, text in report_lines(name, [""]):
-        if cid.split()[0] in ids:
-            out.append(0.0 if dev == "--" else float(dev))
-    if not out:
-        sys.exit("no check %s in %s" % (ids, name))
-    return out
-
-
-def notebook_devs(ids):
-    """the deviations of the checks of the notebook whose identifier (without the method) is one of ids"""
-    out = [float(dev) for cid, res, dev, tol, text in notebook_lines([""]) if cid.split()[0] in ids and dev != "--"]
-    if not out:
-        sys.exit("no notebook check %s" % (ids,))
-    return out
-
-
-def run_time(name):
-    """the run time in seconds that a program wrote at the end of its report ("run time 898.7 s")"""
-    m = re.search(r"run time ([0-9.]+) s", open(os.path.join(DATA, name), encoding="utf-8").read())
-    return float(m.group(1))
-
-
-def tex_text(t):
-    """a plain-text statement of a report as LaTeX text"""
-    rep = {"\\": "\\textbackslash{}", "&": "\\&", "%": "\\%", "$": "\\$", "#": "\\#", "_": "\\_", "{": "\\{", "}": "\\}",
-           "~": "\\textasciitilde{}", "^": "\\textasciicircum{}", "<": "\\textless{}", ">": "\\textgreater{}", "|": "\\textbar{}"}
-    return "".join(rep.get(ch, ch) for ch in t)
-
-
-def report_lines(name, prefixes):
-    """the checks of a report of the Rust or the Python programs whose identifiers begin with one of the prefixes:
-    (identifier, result, deviation, tolerance, statement)"""
-    out = []
-    for line in open(os.path.join(DATA, name), encoding="utf-8"):
-        m = re.match(r"(PASS|FAIL) (\S+(?: \S+)?)\s+deviation (\S+) \(tolerance ([^)]+)\):\s*(.*)$", line.rstrip("\n"))
-        if m:
-            cid, res, dev, tol, text = m.group(2), m.group(1), m.group(3), m.group(4), m.group(5)
-            if tol.strip() in ("0.0e0", "0.0e+00") and float(dev) == 0.0:
-                dev, tol = "--", "--"
-        else:
-            m = re.match(r"(PASS|FAIL) (\S+)\s+(.*)$", line.rstrip("\n"))
-            if not m:
-                continue
-            res, cid, text = m.group(1), m.group(2), m.group(3)
-            m2 = re.match(r"(\S+) \1:", text)
-            if m2:
-                cid = cid + " " + m2.group(1)
-                text = text[len(m2.group(1)) + 1:]
-            dev, tol = "--", "--"
-        if any(cid.startswith(pf) for pf in prefixes):
-            out.append((cid, res, dev, tol, text))
-    return out
-
-
-def notebook_lines(prefixes):
-    """the checks of the notebook from its log: (identifier, result, deviation, tolerance, statement)"""
-    log = open(os.path.join(DATA, "hck_notebook_log.txt"), encoding="utf-8").read()
-    out = []
-    for t in log.split("--- tests ---", 1)[1].splitlines():
-        if not t.startswith("<|"):
-            continue
-        g = lambda k: (re.search(r'"%s" -> "((?:[^"\\]|\\.)*)"' % k, t) or [None, ""])[1].replace('\\"', '"')
-        n = lambda k: (re.search(r'"%s" -> ([-0-9.eE*^]+)' % k, t) or [None, None])[1]
-        cid = g("id")
-        if not any(cid.startswith(pf) for pf in prefixes):
-            continue
-        dev, tol = n("deviation"), n("tolerance")
-        f = lambda v: "--" if v is None else "%.3e" % float(v.replace("*^", "e").rstrip("."))
-        out.append((cid, "PASS" if '"pass" -> True' in t else "FAIL", f(dev), f(tol),
-                    g("text") + " [Rust: " + g("rust") + "; Python: " + g("python") + "]"))
-    return out
-
-
-def check_table(title, rows):
-    """a longtable of checks"""
-    head = ["\\begingroup\\fontsize{7}{8.5}\\selectfont\\setlength{\\tabcolsep}{3pt}",
-            "\\begin{longtable}{p{0.13\\textwidth}p{0.085\\textwidth}p{0.085\\textwidth}p{0.62\\textwidth}}",
-            "\\caption{%s}\\\\" % title, "\\hline\\hline",
-            "check, result & deviation & tolerance & statement \\\\ \\hline", "\\endfirsthead",
-            "\\hline check, result & deviation & tolerance & statement \\\\ \\hline", "\\endhead", "\\hline\\hline", "\\endlastfoot"]
-    body = ["%s \\newline %s & %s & %s & %s \\\\" % (tex_text(c), r, tex_text(d), tex_text(t), tex_text(x)) for c, r, d, t, x in rows]
-    return "\n".join(head + body + ["\\end{longtable}", "\\endgroup"])
-
-
-def sha256(path):
-    import hashlib
-    return hashlib.sha256(open(path, "rb").read()).hexdigest()
-
-
-def sm_numbers(num, vals, th, gz, hg):
-    """the numbers, tables and lists of the Supplemental Material"""
-    part2 = {r["name"]: float(r["value"]) for r in read_csv("part2_values.csv")}
-    num["GCRIT"] = sig(part2["p2_Gcrit"], 10)
-    # the recursion: effective couplings and ground states of the three potentials
-    states = {(r["potential"], r["method"]): r for r in read_csv("part2_states.csv") if r["rank"] == "0"}
-    pot = {"V0": "$V^{(0)}_\\SF$", "V1": "$V^{(1)}_\\SF$", "V2": "$V^{(2)}_\\SF$"}
-    rows = []
-    for r in read_csv("part2_effective_couplings.csv"):
-        st = states[(r["potential"], r["method"])]
-        lam = lambda v: "--" if v.lower() == "nan" else sig(float(v), 4)
-        rows.append("%s & %s & %s & %s & %s & %s & %s & %s & %s & %s & %s \\\\" % (
-            pot[r["potential"]], LABEL[r["method"]], sig(float(r["g_S"]), 4) if abs(float(r["g_S"])) > 1e-12 else "0",
-            sig(float(r["g_P"]), 4) if abs(float(r["g_P"])) > 1e-12 else "0", lam(r["lambda_S"]), lam(r["lambda_P"]), st["kind"],
-            sig(1e4 * float(st["energy"]), 4) if abs(float(st["energy"])) > 1e-12 else "0",
-            sig(float(st["abs_D"]), 4) if float(st["abs_D"]) > 1e-9 else "0", sig(float(st["Dirac_mass"]), 4), sig(float(st["gap"]), 4)))
-    num["TABLE_RECURSION"] = "\n".join(rows)
-    num["PHI0_OVER_M"] = rng([float(th[(t, 0.0)]["Phi0"]) / 0.2 for t in TAGS], 3)
-    # the kinetic part and the collective modes
-    sfb = {r["method"]: {k: float(v) for k, v in r.items() if k != "method"} for r in read_csv("part3_sfbsv.csv")}
-    rows = []
-    for t in TAGS:
-        rows.append("%s & %s & %s & %s & %s & %s & %s & %s & %s & %s \\\\" % (
-            LABEL[t], sig(100 * sfb[t]["Z"], 5), sig(1e3 * sfb[t]["Y"], 4) if abs(sfb[t]["Y"]) > 1e-12 else "0",
-            sig(1e3 * vals["p3_chi11_" + t], 5), sig(1e3 * vals["p3_chiFF_" + t], 5), sig(hg[t]["f_F"], 5), sig(hg[t]["f_I"], 5),
-            sig(vals["p3_MH_RPA_" + t], 5), sig(vals["p3_MNU_RPA_" + t], 5), sig(2 * float(th[(t, 0.0)]["gap"]), 5)))
-    num["TABLE_KIN"] = "\n".join(rows)
-    # the microscopic mass matrix
-    mm = read_csv("part4_massmatrix.csv")
-    num["MASS_MICRO"] = sci_up(max(float(r["L_minus_micro"]) for r in mm))
-    num["MASS_LAMBDA0"] = sci_up(max(abs(float(r["eigenvalue_0"])) / float(r["eigenvalue_3"]) for r in mm))
-    num["TWOPITC_RANGE"] = rng([2 * math.pi * vals["p3_th_Tc_" + t] for t in TAGS], 3)
-    reg = read_csv("part3_ginzburg_regions.csv")
-    lens = {}
-    for r in reg:
-        lens[(r["method"], round(float(r["k"]), 4))] = float(r["a_minus_a0_lens"])
-    num["LENS_RATIO"] = rng([lens[(t, 0.01)] / lens[(t, 0.005)] for t in TAGS], 4)
-    # the full table of the Ginzburg-Landau coefficients
-    def gi_c(t, c):
-        x = gz[t]
-        return 36 * x["b"] ** 2 * x["T_c"] ** 2 / (64 * math.pi ** 2 * x["alpha"] * c ** 3)
-    qrows = [("$T^{X,{\\rm c}}_\\SF$", lambda t: sig(gz[t]["T_c"], 6)),
-             ("$M^{X,{\\rm n}}_\\SF(T^{X,{\\rm c}}_\\SF)$", lambda t: sig(gz[t]["Dirac_mass_normal"], 6)),
-             ("$10^2\\alpha^{X,{\\rm GL}}_\\SF$", lambda t: sig(100 * gz[t]["alpha"], 6)),
-             ("$10^2b^X_\\SF$", lambda t: sig(100 * gz[t]["b"], 6)),
-             ("$10^2\\mathsf c^X_\\SF$ (phase twist)", lambda t: sig(100 * gz[t]["c"], 6)),
-             ("$10^2\\mathsf c$ (isospin twist)", lambda t: sig(100 * gz[t]["c_isospin_twist"], 6)),
-             ("$10^2\\mathsf c$ (other channels held at 0)", lambda t: sig(100 * gz[t]["c_fixed_channels"], 6)),
-             ("$10^2\\mathsf c^{X,{\\rm T3}}_\\SF$ (twist of $T^3_\\LL$)", lambda t: sig(100 * gz[t]["c_T3_twist"], 4)),
-             ("$10^2\\mathsf c^{X,{\\rm tw}}_\\SF$ (twisted states)", lambda t: sig(100 * gz[t]["c_twisted_states"], 4)),
-             ("$\\xi=(\\mathsf c/\\alpha)^{1/2}$", lambda t: sig(gz[t]["xi0"], 4)),
-             ("$\\Delta C\\,\\xi^3$", lambda t: sig(gz[t]["alpha"] ** 0.5 * gz[t]["c"] ** 1.5 / (2 * gz[t]["b"] * gz[t]["T_c"]), 3)),
-             ("${\\rm Gi}^X_\\SF$", lambda t: sig(gz[t]["Gi"], 4)),
-             ("${\\rm Gi}^X_\\SF T^{X,{\\rm c}}_\\SF$", lambda t: sig(gz[t]["Gi_Tc"], 4)),
-             ("Gi with $\\mathsf c\\mp\\mathsf c^{\\rm T3}$", lambda t: "%s--%s" % (sig(gi_c(t, gz[t]["c"] + gz[t]["c_T3_twist"]), 3), sig(gi_c(t, gz[t]["c"] - gz[t]["c_T3_twist"]), 3)))]
-    num["TABLE_GI_FULL"] = "\n".join("%s & %s \\\\" % (lab, " & ".join(f(t) for t in TAGS)) for lab, f in qrows)
-    # the counts of the checks of every program
-    reports = [("Rust \\texttt{sf\\_part1} (Part I)", "hck_part1_checks.txt"), ("Python \\texttt{sf\\_part1.py}", "hck_part1_checks_python.txt"),
-               ("Rust \\texttt{sf\\_part2} (Part II)", "hck_part2_checks.txt"), ("Python \\texttt{sf\\_part2.py}", "hck_part2_checks_python.txt"),
-               ("Rust \\texttt{sf\\_part3} (Part III)", "hck_part3_checks.txt"), ("Python \\texttt{sf\\_part3.py}", "hck_part3_checks_python.txt"),
-               ("Rust \\texttt{sf\\_part4} (Part IV)", "hck_part4_checks.txt"), ("Python \\texttt{sf\\_part4.py}", "hck_part4_checks_python.txt")]
-    rows = []
-    for lab, f in reports:
-        lines = [l for l in open(os.path.join(DATA, f), encoding="utf-8") if re.match(r"(PASS|FAIL) ", l)]
-        rows.append("%s & %d & %d \\\\" % (lab, len(lines), sum(1 for l in lines if l.startswith("PASS"))))
-    nb = notebook_lines([""])
-    rows.append("Wolfram Language notebook \\texttt{superfluid.nb} (Parts I to III) & %d & %d \\\\" % (len(nb), sum(1 for r in nb if r[1] == "PASS")))
-    num["TABLE_CHECKCOUNTS"] = "\n".join(rows)
-    # the tables of the checks of Secs. S5 to S8
-    tables = [check_table("The checks of the Rust program \\texttt{sf\\_part3}: finite temperature (P3-T), the gradient coefficient and the Ginzburg number (P3-G), the Higgs sector (P3-H).",
-                          report_lines("hck_part3_checks.txt", ["P3-T", "P3-G", "P3-H"])),
-              check_table("The checks of the Python program \\texttt{sf\\_part3.py} (YP3-T, YP3-G, YP3-H; the counterparts of the Rust checks of the same identifier without the Y).",
-                          report_lines("hck_part3_checks_python.txt", ["YP3-T", "YP3-G", "YP3-H"])),
-              check_table("The checks of the notebook \\texttt{superfluid.nb} (WP3-T, WP3-G, WP3-H), with their counterparts in the two programs.",
-                          notebook_lines(["WP3-T", "WP3-G", "WP3-H"]))]
-    num["CHECK_TABLES"] = "\n\n".join(tables)
-    # the files and their checksums
-    files = ["data/part2_values.csv", "data/part2_effective_couplings.csv", "data/part2_states.csv", "data/part3_values.csv", "data/part3_sfbsv.csv",
-             "data/part3_thermal.csv", "data/part3_thermal_landau.csv", "data/part3_thermal_curves.csv", "data/part3_ginzburg.csv", "data/part3_ginzburg_regions.csv", "data/part3_higgs.csv", "data/part4_massmatrix.csv",
-             "data/hck_part1_checks.txt", "data/hck_part1_checks_python.txt", "data/hck_part2_checks.txt", "data/hck_part2_checks_python.txt",
-             "data/hck_part3_checks.txt", "data/hck_part3_checks_python.txt", "data/hck_part4_checks.txt", "data/hck_part4_checks_python.txt",
-             "data/hck_notebook_log.txt", "rust/sfpart3/src/main.rs", "rust/sfpart3/src/ginzburg.rs", "rust/sfpart3/src/higgs.rs",
-             "rust/sfpart3/src/thermal.rs", "rust/sfpart3/src/kinetic.rs", "python/sf_part2.py", "python/sf_part3.py", "python/sf_part3_figures.py",
-             "wolfram/source/part3_ginzburg.source.wl", "superfluid.nb", "figures/fig_part3_q1_potential.pdf", "figures/fig_part3_q4_thermal.pdf",
-             "figures/fig_part4_r1_massmatrix.pdf", "figures/fig_prd_ginzburg.pdf", "figures/fig_prd_higgs.pdf",
-             "paper_prd/src/higgs_composite_qg.template.tex", "paper_prd/src/higgs_composite_qg_SM.template.tex", "paper_prd/src/references.bib",
-             "paper_prd/scripts/build_paper.py"]
-    rows = ["\\begingroup\\fontsize{7}{8.5}\\selectfont\\setlength{\\tabcolsep}{3pt}", "\\begin{longtable}{p{0.5\\textwidth}p{0.45\\textwidth}}", "\\caption{The files and their SHA-256 checksums.}\\\\",
-            "\\hline\\hline file & SHA-256 \\\\ \\hline", "\\endfirsthead", "\\hline file & SHA-256 \\\\ \\hline", "\\endhead", "\\hline\\hline", "\\endlastfoot"]
-    for f in files:
-        rows.append("\\texttt{%s} & \\texttt{%s} \\\\" % (tex_text(f).replace("/", "/\\hspace{0pt plus 1fil}\\allowbreak{}"), (lambda h: h[:32] + "\\newline " + h[32:])(sha256(os.path.join(ROOT, f)))))
-    rows += ["\\end{longtable}", "\\endgroup"]
-    num["FILE_TABLE"] = "\n".join(rows)
-
-
 def build(name, num, report, bib=True):
     """renders src/<name>.template.tex with the numbers num, writes <name>.tex, compiles it and writes <name>.md;
     bib=False for the cover letter and the submission information (no bibliography, no figures);
@@ -576,15 +542,15 @@ def build(name, num, report, bib=True):
     out = out.replace("%% %s.tex -- " % name, "%% %s.tex (generated; edit src/%s.template.tex) -- " % (name, name), 1)
     open(os.path.join(PAPER, name + ".tex"), "w", encoding="utf-8").write(out)
     os.makedirs(os.path.join(PAPER, "generated"), exist_ok=True)
-    with open(os.path.join(PAPER, "generated", "numbers.csv"), "w") as f:
-        w = csv.writer(f)
+    with open(os.path.join(PAPER, "generated", "numbers.csv"), "w") as fo:
+        w = csv.writer(fo)
         w.writerow(["placeholder", "value"])
         for k in sorted(num):
             w.writerow([k, num[k].replace("\n", " | ")])
     # ---- figures and bibliography
     if bib:
         os.makedirs(os.path.join(PAPER, "figures"), exist_ok=True)
-        for fig in ("fig_part3_q1_potential", "fig_part4_r1_massmatrix", "fig_part3_q4_thermal", "fig_prd_ginzburg", "fig_prd_higgs"):
+        for fig in FIGURES:
             for ext in (".pdf", ".png"):
                 shutil.copyfile(os.path.join(ROOT, "figures", fig + ext), os.path.join(PAPER, "figures", fig + ext))
         shutil.copyfile(os.path.join(PAPER, "src", "references.bib"), os.path.join(PAPER, "references.bib"))
@@ -599,9 +565,17 @@ def build(name, num, report, bib=True):
         code, log = run(cmd)
         if code != 0 and cmd[0] == "bibtex":
             print(log)
+    # more passes while the labels move (the floats of the Supplemental Material can need a third or fourth pass); the
+    # last log is checked below, so labels that never settle fail the build
+    for _ in range(3):
+        log = open(os.path.join(PAPER, name + ".log"), encoding="latin-1").read()
+        if not re.search(r"Label\(s\) may have changed|Rerun to get", log):
+            break
+        run(latex)
     log = open(os.path.join(PAPER, name + ".log"), encoding="latin-1").read()
     problems = []
-    for pat in (r"Citation .* undefined", r"Reference .* undefined", r"There were undefined references"):
+    for pat in (r"Citation .* undefined", r"Reference .* undefined", r"There were undefined references",
+                r"multiply[- ]defined", r"Float\(s\) lost", r"Too many unprocessed floats", r"Label\(s\) may have changed"):
         problems += re.findall(pat, log)
     over = [float(x) for x in re.findall(r"Overfull \\hbox \(([0-9.]+)pt too wide\)", log)]
     big = [x for x in over if x > 1.0]
@@ -625,6 +599,7 @@ def md_front_matter(name):
     if not title:
         return
     macros = "\n".join(l for l in tex.splitlines() if l.startswith("\\newcommand"))
+
     def conv(t):
         p = subprocess.run(["pandoc", "-f", "latex", "-t", "gfm+tex_math_dollars", "--wrap=preserve"], input=macros + "\n" + t, cwd=PAPER,
                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
@@ -642,4 +617,4 @@ def md_front_matter(name):
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

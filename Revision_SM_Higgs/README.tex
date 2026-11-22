@@ -261,14 +261,14 @@ KS and CJT; (4) the effective potential, the mass of the amplitude mode
 against \(m_H\), the masses of \(W^\pm_\mu\) and \(Z_\mu\), the massless
 photon and the parameter \(\rho\) (the former stages 4 and 5, merged);
 (6) the dynamics in time, the notebook and the article. Every inherited
-document begins with a note that says so. Stages 1 to 4 and the first
-two parts of stage 6 (the dynamics in time and the notebook) are
-complete for the second version of the hypotheses (below): the quantum
-numbers and the breaking are checked in Section 6 of the hypotheses
-document (Rust: ALL PASS (55 of 55); Python: ALL PASS (14 of 14);
-Wolfram, in exact arithmetic: ALL PASS (13 of 13)), with the measured
-inputs of the 2026 edition of the Review of Particle Physics; and the
-mean-field superfluid of the three fields is computed in the manuscript
+document begins with a note that says so. Stages 1 to 4 and stage 6 (the
+dynamics in time, the notebook and the article) are complete for the
+second version of the hypotheses (below): the quantum numbers and the
+breaking are checked in Section 6 of the hypotheses document (Rust: ALL
+PASS (55 of 55); Python: ALL PASS (14 of 14); Wolfram, in exact
+arithmetic: ALL PASS (13 of 13)), with the measured inputs of the 2026
+edition of the Review of Particle Physics; and the mean-field superfluid
+of the three fields is computed in the manuscript
 \texttt{higgs\_superfluid.md} (\texttt{.tex}, \texttt{.pdf}), with the
 first version as the comparison: in all five methods the ground state is
 the custodial Higgs superfluid, which keeps the electric charge and the
@@ -403,26 +403,32 @@ the checks above include those of Part R. Its provenance is
 \texttt{provenance/P3\_notebook.md}. The rest of Part III and Part IV of
 the notebook for the earlier hypotheses are not written.
 
-\textbf{The article for Physical Review D} (folder
-\texttt{paper\_prd/}), asked for by the author on 21 November 2026 at
-11:29 PST: the Regular Article ``Higgs as a Composite, and Quantum
-Gravity'', which answers how wide the critical region near the critical
-temperature is (the Ginzburg number, from the gradient coefficient at
-the critical temperature: \(7.6\) (KS, CJT) to \(11\) (HS (1, 1))),
-whether the superfluid of each method can play the role of the Higgs
-particle (it is the Higgs field of its own gauge group
-\(SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\), with the massless zeugon
-and an amplitude mode that becomes a resonance broader than its mass
-once it can decay, \(2.1\) (KS, CJT) to \(3.9\) (HS (1, 1)) times its
-mass; it cannot be the Higgs field of the Standard Model, because the
-DiracLike spinor carries no electroweak quantum numbers), and whether
-the Higgs is a composite particle (yes, by construction); with its
-Supplemental Material, the cover letter, the information for the
-submission server of the APS and the folder of the files to upload, all
-built from the data files and the reports of the checks by
-\texttt{paper\_prd/scripts/build\_paper.py}. The gravitational sector of
-the title is outlined, not computed. The submission itself is the
-author's.
+\textbf{The article for Physical Review D} (folder \texttt{paper\_prd/};
+part three of stage 6, 22 November 2026): the Regular Article ``Higgs as
+a Composite, and Quantum Gravity'', rewritten for the second version of
+the revised hypotheses, with the first version as the comparison
+(decision D35 of the task record). It answers, under the revised
+hypotheses, the questions of the author's request of 21 November 2026,
+11:29 PST: whether the superfluid of each method can play the role of
+the Higgs particle, and whether the Higgs is then a composite particle.
+The superfluid has the quantum numbers of two Higgs doublets; in all
+five methods it breaks \(SU(2)_L\times U(1)_Y\) to the \(U(1)\) of the
+electric charge, keeps the photon massless and gives \(\rho=1\), so that
+with \(v_{\rm SH}=246.22\) GeV the \(W\) and \(Z\) bosons have their
+measured masses at tree level; but its amplitude mode, a composite
+scalar, is \(16\) to \(19\) times too heavy relative to the scale, so
+within the mean field it is not the Higgs boson. The width of the
+critical region, the first question of that request, was answered for
+the earlier hypotheses only; the revision has no stage at finite
+temperature. With the article come its Supplemental Material, the cover
+letter, the information for the submission server of the APS and the
+folder of the files to upload, all built by
+\texttt{paper\_prd/scripts/build\_paper.py} from the fragments of the
+manuscripts of the revision, the data files and the reports of the
+checks. The gravitational sector of the title is outlined, not computed.
+The submission itself is the author's. The article of the earlier
+hypotheses stays unchanged in the folder
+\texttt{Revision\_HS\_CJT\_and\_Kohn-Sham/paper\_prd}.
 
 \textbf{Stage 2 of the revision of the hypotheses} (first version 21
 November 2026, 17:30 to 18:15 PST; second version, with the two
@@ -527,8 +533,8 @@ amplitude mode is bound below the energy that breaks a pair and the
 triplet lies 2.2 per cent above it; in KS and CJT the amplitude mode
 lies above the energy that breaks a pair and decays. The notebook (part
 two of stage 6) is complete: Part R of \texttt{superfluid.nb} holds the
-checks and the remarks of the revision. The article (part three)
-follows.
+checks and the remarks of the revision. The article (part three) is
+complete (above).
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -689,8 +695,9 @@ and the amplitude mode of the pairing-only method);
 \texttt{sh\_dynamics}, with its own right side of the equations of
 motion) and \texttt{sh\_dynamics\_figures.py} (its figures);
 \texttt{sh\_higgs\_figures.py} (the figure of the effective potential of
-stage 4) & parts I to IV written; stages 2 to 4 and the first part of
-stage 6 of the revision written \\
+stage 4) and \texttt{sh\_article\_figures.py} (the three figures of the
+article) & parts I to IV written; stages 2 to 4 and stage 6 of the
+revision written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
@@ -757,7 +764,9 @@ written \\
 \texttt{figures/}, \texttt{videos/} & the figures
 (\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
 \texttt{fig\_part4\_*}, and of the revision
-\texttt{fig\_sh\_hg\_potential}, \texttt{fig\_sh\_dyn\_*}, each
+\texttt{fig\_sh\_hg\_potential}, \texttt{fig\_sh\_dyn\_*} and the
+figures of the article \texttt{fig\_prd\_sh\_potential},
+\texttt{fig\_prd\_sh\_scan}, \texttt{fig\_prd\_sh\_modes}, each
 \texttt{.pdf} and \texttt{.png}) and the videos
 (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
 \texttt{video\_part4\_v2\_gauge\_fields.mp4}) & written \\
@@ -856,6 +865,7 @@ folder \texttt{Revision\_SM\_Higgs}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py         }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh               }\CommentTok{\# .md {-}\textgreater{} .tex {-}\textgreater{} .pdf, with the layout check}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py  }\CommentTok{\# writes data/hck\_self\_contained\_checks.txt}
+\ExtensionTok{python3}\NormalTok{ python/sh\_article\_figures.py          }\CommentTok{\# the three figures of the article}
 \ExtensionTok{python3}\NormalTok{ paper\_prd/scripts/build\_paper.py      }\CommentTok{\# the article for Physical Review D, its companions}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh paper\_prd/README.md  }\CommentTok{\# the README of paper\_prd/ (named)}
 \end{Highlighting}

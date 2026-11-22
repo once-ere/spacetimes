@@ -1,96 +1,92 @@
 # Supplemental Material for “Higgs as a Composite, and Quantum Gravity”
 
-Patrick Lee Nash, Ph.D., PROJECT spacetimes. November 21, 2026
+Patrick Lee Nash, Ph.D., PROJECT spacetimes. November 22, 2026
 
 ## Abstract
 
 This Supplemental Material gives the derivations, the numerical methods, the complete tables of results, the checks and
 the data behind every statement of the article. It is written to be read on its own: every symbol is defined here
-(Sec. <a href="#sec:notation" data-reference-type="ref" data-reference="sec:notation">[sec:notation]</a>), and every equation that the article uses is derived or stated with its source. Equations,
-tables and figures of this document carry the prefix S. All numbers are outputs of two independent programs, one in Rust
-and one in Python (numpy and LAPACK), and the statements of Secs. <a href="#sec:thermal" data-reference-type="ref" data-reference="sec:thermal">[sec:thermal]</a> to <a href="#sec:higgs" data-reference-type="ref" data-reference="sec:higgs">[sec:higgs]</a> are checked a third
-time by a notebook in the Wolfram Language; Sec. <a href="#sec:checks" data-reference-type="ref" data-reference="sec:checks">[sec:checks]</a> lists the checks with their results, and
-Sec. <a href="#sec:data" data-reference-type="ref" data-reference="sec:data">[sec:data]</a> the files with their SHA-256 checksums.
+(Sec. <a href="#sec:notation" data-reference-type="ref" data-reference="sec:notation">[sec:notation]</a>), and every equation that the article uses is derived or stated here. Equations, tables and
+figures of this document carry the prefix S. All numbers are outputs of programs in Rust, checked by independent
+programs in Python (numpy and LAPACK) and, for the group theory and the closed forms, by scripts in the Wolfram Language
+in exact arithmetic; Sec. <a href="#sec:checks" data-reference-type="ref" data-reference="sec:checks">[sec:checks]</a> lists the checks with their results, and Sec. <a href="#sec:data" data-reference-type="ref" data-reference="sec:data">[sec:data]</a> the files with
+their SHA-256 checksums.
 
 # Notation and conventions
 
-Units: $\hbar=c=k_{\rm B}=1$; the momentum cutoff $\Lambda_{\rm LL}=1$
-is the unit of energy, of momentum and of temperature, and
-$1/\Lambda_{\rm LL}$ the unit of length. The metric is
-$\eta^{\rm LL}={\rm diag}(1,-1,-1,-1)$; indices $p,p'=0,\dots,3$ label
-space-time, $j=1,2,3$ space, $\iota=1,2,3$ isospin. The suffix LL marks
-the objects of the Lorentz super-loop (the bi-octonion model of
-Ref. (Nash 2026b)), the suffix SF those of the superfluid; a superscript
-$X$ names the method
+Units: $\hbar=c=1$; the momentum cutoff $\Lambda_{\rm LL}=1$ is the unit
+of energy and of momentum, and $1/\Lambda_{\rm LL}$ the unit of length
+and of time. The metric is $\eta^{\rm LL}={\rm diag}(1,-1,-1,-1)$. The
+suffix LL marks the objects of the Lorentz super-loop (the bi-octonion
+model of Ref. (Nash 2026b)), SF those of the superfluid of the earlier
+hypotheses that the revised ones keep, and SH those of the revised
+hypotheses; a superscript $X$ names the method
 (Sec. <a href="#sec:methods" data-reference-type="ref"
-data-reference="sec:methods">3</a>).
+data-reference="sec:methods">3</a>). The *second version* of the
+hypotheses has the two singlets $\chi_{\rm SH}$ and $\chi'_{\rm SH}$;
+the *first version*, computed as the comparison, has the pairing term of
+$\chi_{\rm SH}$ only, and $\chi'_{\rm SH}$ is a free field.
 Table <a href="#tab:symbols" data-reference-type="ref"
 data-reference="tab:symbols">1</a> lists the symbols.
 
 <div id="tab:symbols">
 
-| symbol                                                                                                       | meaning                                                                                                                                                                                                      |
-|:-------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| symbol                                                                                                       | meaning                                                                                                                                                                                                      |
-| $\Psi_{\rm LL}$                                                                                              | the DiracLike isodoublet (electric charge zero, no electroweak quantum numbers): eight complex components (four Dirac components times two isospin components)                                               |
-| $m_{\rm LL}=0.2$, $\Lambda_{\rm LL}=1$                                                                       | the mass of $\Psi_{\rm LL}$ and the momentum cutoff of the uniform states, $|\vec q_{\rm LL}|<\Lambda_{\rm LL}$                                                                                              |
-| $\gamma^p_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$, $\alpha^j_{\rm LL}$, $\beta_{\rm LL}$, $\mathsf C_{\rm LL}$ | Dirac matrices (chiral basis), chirality, $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$, charge conjugation; Eq. (<a href="#eq:dirac" data-reference-type="ref" 
-                                                                                                                data-reference="eq:dirac">[eq:dirac]</a>)                                                                                                                                                                     |
-| $\tau^{\rm LL}_\iota$, $\mathsf E_{\rm LL}=i\tau^{\rm LL}_2$, $\mathsf 1_n$                                  | Pauli matrices acting on the isospin index; the antisymmetric $2\times2$ matrix; unit matrices                                                                                                               |
-| $\mathsf K^\iota_{\rm LL}$, $\Pi^\iota_{\rm LL}$                                                             | the pair matrices and the pair operators of the spin-zero, isospin-one channel, Eq. (<a href="#eq:pairs" data-reference-type="ref"                                                                           
-                                                                                                                data-reference="eq:pairs">[eq:pairs]</a>)                                                                                                                                                                     |
-| GEE                                                                                                          | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$                                                                                                                            |
-| $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$                                                          | the couplings of the isospin gauge field $W^\iota_{{\rm SF},p}$ and of the gauge field $B_{{\rm SF},p}$ of the fermion number $F_{\rm LL}$                                                                   |
-| $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$                                                     | the couplings of the scalar, the vector and the pairing contact term of the potential $V^{(n)}_{\rm SF}$                                                                                                     |
-| $\mathsf C^{\rm n}_{\rm LL}(\vec q)$, $\mathsf C^{\rm p}_{\rm LL}(\vec q)$                                   | the normal and the pair correlation matrix ($8\times8$) of a uniform quasi-free state at the momentum $\vec q$                                                                                               |
-| $\delta\mathsf C^{\rm n}$, $\mathsf C^{\rm p}$                                                               | their integrals over the momenta (the normal one measured from the normal vacuum), Eq. (<a href="#eq:localC" data-reference-type="ref"                                                                       
-                                                                                                                data-reference="eq:localC">[eq:localC]</a>)                                                                                                                                                                   |
-| $\mathsf N_{\rm SF}$, $\mathsf P_{\rm SF}$                                                                   | the normal and the pair self-energy, Eqs. (<a href="#eq:Nbil" data-reference-type="ref"                                                                                                                      
-                                                                                                                data-reference="eq:Nbil">[eq:Nbil]</a>)–(<a href="#eq:Ppair" data-reference-type="ref"                                                                                                                        
-                                                                                                                data-reference="eq:Ppair">[eq:Ppair]</a>)                                                                                                                                                                     |
-| $\mathsf H_{\rm SF}(\vec q)$                                                                                 | the Bogoliubov-de Gennes (BdG) matrix, Eq. (<a href="#eq:BdG" data-reference-type="ref"                                                                                                                      
-                                                                                                                data-reference="eq:BdG">[eq:BdG]</a>)                                                                                                                                                                         |
-| $w^{\rm H}$, $w^{\rm F}$, $w^{\rm P}$                                                                        | the weights of the direct, exchange and pair contractions, which define the methods (Table <a href="#tab:weights" data-reference-type="ref"                                                                  
-                                                                                                                data-reference="tab:weights">3</a>)                                                                                                                                                                           |
-| $X$                                                                                                          | a method: HS $(s_{\rm S},s_{\rm V})$ with $(1,1)$, $(0,1)$, $(0,0)$; KS; CJT                                                                                                                                 |
-| $g^{X,{\rm S}}_{\rm SF}$, $g^{X,{\rm P}}_{\rm SF}$                                                           | the effective couplings of method $X$ in the scalar density channel and in the pair channel $\mathsf K^3_{\rm LL}$, Eqs. (<a href="#eq:gS" data-reference-type="ref"                                         
-                                                                                                                data-reference="eq:gS">[eq:gS]</a>), (<a href="#eq:gP" data-reference-type="ref"                                                                                                                              
-                                                                                                                data-reference="eq:gP">[eq:gP]</a>)                                                                                                                                                                           |
-| $\lambda^{\rm S}_{\rm SF}$, $\lambda^{\rm P}_{\rm SF}(T)$                                                    | the eigenvalues of the static response of the normal state in the scalar and in the pair channel                                                                                                             |
-| $I_1(M,T)$                                                                                                   | $\int_0^{\Lambda_{\rm LL}}q^2\tanh(E/2T)E^{-1}dq$ with $E=(q^2+M^2)^{1/2}$; $I_1(M,0)$ with $\tanh=1$                                                                                                        |
-| $\vec\Phi^X_{\rm SF}=(\Phi^{X,\iota}_{\rm SF})$                                                              | the field of the superfluid: the amplitudes of the pair self-energy along $(\mathsf K^\iota_{\rm LL})^\dagger$, Eq. (<a href="#eq:Phi" data-reference-type="ref"                                             
-                                                                                                                data-reference="eq:Phi">[eq:Phi]</a>)                                                                                                                                                                         |
-| $\Phi^X_{0,{\rm SF}}$, $M^{X,{\rm D}}_{\rm SF}$, $E^{X,{\rm gap}}_{\rm SF}$                                  | the order parameter, the Dirac mass and the gap of the ground state at $T=0$                                                                                                                                 |
-| $\mathcal V^X_{\rm SF}(\vec\Phi)$                                                                            | the effective potential: the smallest energy per volume of the states with the field $\vec\Phi$, from the normal vacuum                                                                                      |
-| $Z^X_{\rm SF}$, $Y^X_{\rm SF}$                                                                               | the coefficients of the two invariants of the kinetic part, Eq. (<a href="#eq:Lkin" data-reference-type="ref"                                                                                                
-                                                                                                                data-reference="eq:Lkin">[eq:Lkin]</a>)                                                                                                                                                                       |
-| $\chi^{ab}_{\rm SF}$                                                                                         | the static susceptibilities of the vacuum to the chemical potentials $\mu^a_{\rm SF}$ of the charges $T^1_{\rm LL},T^2_{\rm LL},T^3_{\rm LL},F_{\rm LL}$                                                     |
-| $f^{X,{\rm F}}_{\rm SF}$, $f^{X,{\rm I}}_{\rm SF}$                                                           | the decay constants of the Goldstone fields of the phase and of the isospin rotations                                                                                                                        |
-| $M^{X,{\rm H}}_{\rm SF}$, $M^{X,{\rm NU}}_{\rm SF}$                                                          | the masses of the amplitude (Higgs) mode and of the non-unitary doublet of the charges $Q_{\rm LL}=\pm1$ (linear response)                                                                                   |
-| $M^X_{W,{\rm SF}}$, $M^X_{Z,{\rm SF}}$                                                                       | the masses of $W^\pm$ and of $Z$, Eq. (<a href="#eq:MWMZ" data-reference-type="ref"                                                                                                                          
-                                                                                                                data-reference="eq:MWMZ">[eq:MWMZ]</a>)                                                                                                                                                                       |
-| $T^{X,{\rm c}}_{\rm SF}$, $t$                                                                                | the critical temperature of the mean-field theory; the reduced temperature $(T-T^{X,{\rm c}}_{\rm SF})/T^{X,{\rm c}}_{\rm SF}$                                                                               |
-| $M^{X,{\rm n}}_{\rm SF}(T)$                                                                                  | the Dirac mass of the normal state at the temperature $T$                                                                                                                                                    |
-| $\mathsf c^X_{\rm SF}$, $\alpha^{X,{\rm GL}}_{\rm SF}$, $b^X_{\rm SF}$                                       | the gradient coefficient, the slope and the quartic coefficient of the functional of Ginzburg and Landau, Eq. (<a href="#eq:GL" data-reference-type="ref"                                                    
-                                                                                                                data-reference="eq:GL">[eq:GL]</a>)                                                                                                                                                                           |
-| $a(q;T)$                                                                                                     | the coefficient of $|\vec\Phi|^2$ of a pair field moving with the momentum $q$                                                                                                                               |
-| $\mathsf P^{\rm a}_{\rm SF}$, $\mathsf C^{\rm p,tot}_{\rm SF}$, $\mathcal X^{\rm P}_{\rm SF}$                | a small applied pair block; the pair matrix summed over the momenta; the static pair response, Eq. (<a href="#eq:chi" data-reference-type="ref"                                                              
-                                                                                                                data-reference="eq:chi">[eq:chi]</a>)                                                                                                                                                                         |
-| $\varepsilon^{\rm A}_a,\mathsf u_a$; $\varepsilon^{\rm D}_b,\mathsf w_b$                                     | the eigenvalues and eigenvectors of the particle block and of the hole block                                                                                                                                 |
-| $\mathcal F^X_2$                                                                                             | the free energy of a state at second order in the pair field, Eq. (<a href="#eq:F2" data-reference-type="ref"                                                                                                
-                                                                                                                data-reference="eq:F2">[eq:F2]</a>)                                                                                                                                                                           |
-| $n=n^\Phi_{\rm SF}=6$                                                                                        | the number of real components of $\vec\Phi$                                                                                                                                                                  |
-| $C^{\rm fl}$, $\Delta C$, $\xi$                                                                              | the specific heat of the Gaussian fluctuations, the jump of the mean-field specific heat, the correlation length at $|t|=1$                                                                                  |
-| ${\rm Gi}^X_{\rm SF}$                                                                                        | the Ginzburg number, Eq. (<a href="#eq:Gi" data-reference-type="ref"                                                                                                                                         
-                                                                                                                data-reference="eq:Gi">[eq:Gi]</a>)                                                                                                                                                                           |
-| $v^X_{\rm SF}$, $\lambda^{X,{\rm H}}_{\rm SF}$, $\Gamma^{X,{\rm H}}_{\rm SF}$                                | the scale of the breaking (defined as $v$ is by $M_W=gv/2$), the quartic coupling and the width of the amplitude mode, Eqs. (<a href="#eq:vSF" data-reference-type="ref"                                     
-                                                                                                                data-reference="eq:vSF">[eq:vSF]</a>), (<a href="#eq:width" data-reference-type="ref"                                                                                                                         
-                                                                                                                data-reference="eq:width">[eq:width]</a>)                                                                                                                                                                     |
-| $Q_{\rm LL}$, $A$                                                                                            | the charge $T^3_{\rm LL}$ of the unbroken subgroup of $SU(2)_{\rm v}$ (not the electric charge), and its massless gauge boson, the zeugon                                                                    |
-| $M_V$, $\zeta_V$                                                                                             | the mass of $W$ or $Z$ in the decay of the amplitude mode into two gauge bosons, and $\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, Sec. <a href="#sec:higgs" data-reference-type="ref"                         
-                                                                                                                data-reference="sec:higgs">8</a>                                                                                                                                                                              |
-| $M_W$, $g$, $v$, $m$                                                                                         | the Standard Model, used only for the convention $M_W=gv/2$ and the check of Eq. (<a href="#eq:width" data-reference-type="ref"                                                                              
-                                                                                                                data-reference="eq:width">[eq:width]</a>): the mass of its $W$ boson, the coupling of $SU(2)_L$, the vacuum value of its Higgs doublet, the mass of a heavy Higgs boson                                       |
+| symbol                                                                                                                   | meaning                                                                                                                                                                                                     |
+|:-------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| symbol                                                                                                                   | meaning                                                                                                                                                                                                     |
+| $\Psi_{\rm LL}$; $\chi_{\rm SH}$, $\chi'_{\rm SH}$                                                                       | the isodoublet of Dirac fields (eight components, component $2d+s$: Dirac index $d=0,\dots,3$ of the chiral basis, isospin index $s=0$ up, $s=1$ down); the two singlet Dirac fields (four components each) |
+| $m_{\rm LL}$, $m^\chi_{\rm SH}$, $m^{\chi'}_{\rm SH}$                                                                    | the masses of the three fields, all $0.2\,\Lambda_{\rm LL}$                                                                                                                                                 |
+| $\Lambda_{\rm LL}$                                                                                                       | the momentum cutoff of the uniform states, the unit of the computation                                                                                                                                      |
+| $\gamma^\mu_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$, $\alpha^j_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$, $C_{\rm LL}$ | the Dirac matrices of the chiral basis, the chirality matrix ($\gamma^5$ of the article) and the charge-conjugation matrix                                                                                  |
+| $SU(2)_L$, $U(1)_Y$; $T^{a}$, $\tau^a$                                                                                   | the electroweak gauge group; its generators ($a=1,2,3$; $\tfrac12\tau^a$ on the isospin of $\Psi_{\rm LL}$, zero on the singlets) and the Pauli matrices                                                    |
+| $Y$, $Q=T^3+Y$                                                                                                           | the hypercharge and the electric charge (Table <a href="#tab:fields" data-reference-type="ref"                                                                                                              
+                                                                                                                            data-reference="tab:fields">2</a>)                                                                                                                                                                           |
+| $g$, $g'$, $\theta_W$                                                                                                    | the couplings of $SU(2)_L$ and $U(1)_Y$ and the weak mixing angle, $\cos\theta_W=M_W/M_Z$                                                                                                                   |
+| $W^a_\mu$, $B_\mu$; $W^\pm_\mu$, $Z_\mu$                                                                                 | the gauge fields of $SU(2)_L$ and $U(1)_Y$; the massive weak gauge fields                                                                                                                                   |
+| $F^{\rm tot}_{\rm SH}$, $R_{\rm SH}$                                                                                     | the particle number (1 on every particle of every field) and the relative number (particles of $\Psi_{\rm LL}$ minus particles of the singlets)                                                             |
+| $SU(2)_R$, $T^a_R$; $SU(2)_V$                                                                                            | the custodial group, which rotates $(\chi_{\rm SH},\chi'_{\rm SH})$ as a doublet, and its generators; the diagonal subgroup of $SU(2)_L\times SU(2)_R$                                                      |
+| $\Pi^s_{\rm SH}$, $\Pi'^s_{\rm SH}$                                                                                      | the pair operators (<a href="#eq:pairs" data-reference-type="ref"                                                                                                                                           
+                                                                                                                            data-reference="eq:pairs">[eq:pairs]</a>) of $\Psi_{\rm LL}$ with $\chi_{\rm SH}$ and with $\chi'_{\rm SH}$                                                                                                  |
+| $\mathbf e^{\rm u}$, $\mathbf e^{\rm d}$                                                                                 | the isospin columns $(1,0)^T$ and $(0,1)^T$                                                                                                                                                                 |
+| $\Phi^s$, $\Phi'^s$; $\mathcal M_{\rm SH}$                                                                               | the pair fields, proportional to $\langle\Pi^s_{\rm SH}\rangle$ and $\langle\Pi'^s_{\rm SH}\rangle$; their $2\times2$ matrix (<a href="#eq:M" data-reference-type="ref"                                     
+                                                                                                                            data-reference="eq:M">[eq:M]</a>)                                                                                                                                                                            |
+| $\Pi_{\rm SH}[\mathsf V_{\rm SH}]$, $\Xi_{\rm SH}[\mathsf V_{\rm SH}]$                                                   | a pair and a particle-antiparticle bilinear with the coefficient matrix $\mathsf V_{\rm SH}$ (<a href="#eq:bilinears" data-reference-type="ref"                                                             
+                                                                                                                            data-reference="eq:bilinears">[eq:bilinears]</a>)                                                                                                                                                            |
+| $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm SH}$                                                                 | the couplings of the scalar, the vector and the pairing contact terms ($-8$, $0.8$, $100.8$ in units of $\Lambda_{\rm LL}^{-2}$)                                                                            |
+| $V^{(0)}$, $V^{(1)}$                                                                                                     | the contact potential without the pairing terms, and with them: the potential of the article                                                                                                                |
+| $I_1(M)$; $G^{\rm crit}_{\rm SH}$                                                                                        | the integral (<a href="#eq:I1" data-reference-type="ref"                                                                                                                                                    
+                                                                                                                            data-reference="eq:I1">[eq:I1]</a>); the critical coupling $4\pi^2/I_1(m_{\rm LL})$ of the pairing                                                                                                           |
+| $\mathsf h(\vec q)$                                                                                                      | the free Dirac Hamiltonian of the sixteen components at the momentum $\vec q$                                                                                                                               |
+| $\mathsf N$, $\mathsf P$; $\mathsf H(\vec q)$                                                                            | the normal and the pair self-energies of a uniform state; its Bogoliubov-de Gennes (BdG) matrix (<a href="#eq:BdG" data-reference-type="ref"                                                                
+                                                                                                                            data-reference="eq:BdG">[eq:BdG]</a>)                                                                                                                                                                        |
+| $\varrho$, $\kappa$                                                                                                      | the local normal matrix, measured from the normal vacuum, and the local pair matrix                                                                                                                         |
+| $\mathcal E^X$                                                                                                           | the energy per volume of a uniform state in method $X$, measured from the normal vacuum                                                                                                                     |
+| $X$; $s_{\rm S}$, $s_{\rm V}$                                                                                            | a method: HS (1,1), HS (0,1), HS (0,0), KS or CJT; the shares of the scalar and the vector term decoupled in density channels in HS                                                                         |
+| $M^{\rm u}$, $M^{\rm d}$, $M^\chi$, $M^{\chi'}$                                                                          | the Dirac masses of the four species in a state: the bare mass plus a quarter of the trace of $\mathsf N$ with the matrix $\beta_{\rm LL}$ of the species                                                   |
+| $\varsigma^{(1)}$, $\varsigma^{(2)}$                                                                                     | the singular values of the $2\times2$ matrix of the coefficients of $(\mathsf K^s)^\dagger$ and $(\mathsf K'^s)^\dagger$ in $\mathsf P$, the larger first                                                   |
+| $\mathsf K^s$, $\mathsf K'^s$                                                                                            | the $16\times16$ pair matrices of $\Pi^s_{\rm SH}$ and $\Pi'^s_{\rm SH}$                                                                                                                                    |
+| $\mathsf P^{\rm vac}$; $d$, $d^0_{\rm SH}$                                                                               | the direction (<a href="#eq:Pvac" data-reference-type="ref"                                                                                                                                                 
+                                                                                                                            data-reference="eq:Pvac">[eq:Pvac]</a>) of the vacuum in the pair self-energy; the coefficient of a pair self-energy along it, and its value in the ground state                                             |
+| $\varphi_{\rm SH}$, $\varphi^0_{\rm SH}$                                                                                 | the pair amplitude $|\langle\Pi^{\rm d}_{\rm SH}\rangle|$ of a state, and its value in the ground state                                                                                                     |
+| $E^{X,{\rm gap}}$                                                                                                        | the gap of a ground state: the lowest energy of a quasi-particle                                                                                                                                            |
+| $\lambda^{\rm H}$, $\lambda^{\rm S}$, $\lambda^{\rm T}$                                                                  | the largest eigenvalues of the static response of the normal vacuum in the doublet-singlet pairs, the scalar channel and the triplet pairs of $\Psi_{\rm LL}$                                               |
+| $V^{\rm eff}_{\rm SH}$; $V^{\rm eff\,\prime\prime}_{\rm SH}$                                                             | the effective potential along the direction of the vacuum; its second derivative                                                                                                                            |
+| $Q_a$, $\mu^a$, $\chi^{ab}$                                                                                              | the eight generators of the global group as $16\times16$ matrices, the chemical potential of $Q_a$, and the susceptibilities (<a href="#eq:chi" data-reference-type="ref"                                   
+                                                                                                                            data-reference="eq:chi">[eq:chi]</a>); $\chi^{11}$, $\chi^{33}$, $\chi^{YY}$, $\chi^{3Y}$, $\chi^{FF}$ those of $T^1$, $T^3$, $Y$, the mixed one of $T^3$ and $Y$, and that of $F^{\rm tot}_{\rm SH}$        |
+| $Z_{\rm SH}$; $\mathsf M^{\rm g}$                                                                                        | the kinetic coefficient of the pair fields; the mass matrix (<a href="#eq:Mg" data-reference-type="ref"                                                                                                     
+                                                                                                                            data-reference="eq:Mg">[eq:Mg]</a>) of the gauge fields                                                                                                                                                      |
+| $v_{\rm SH}$, $\rho_{\rm SH}$; $M_{W,{\rm SH}}$, $M_{Z,{\rm SH}}$                                                        | the scale of the breaking and the ratio $M_W^2/(M_Z^2\cos^2\theta_W)$ of the superfluid; its masses of the $W$ and the $Z$                                                                                  |
+| $v$, $m_H$                                                                                                               | the vacuum value of the Higgs field of the Standard Model and the mass of the Higgs boson                                                                                                                   |
+| $M^{\rm EFT}_{\rm SH}$; $\omega^{\rm H}_{\rm SH}$                                                                        | the frequency (<a href="#eq:MEFT" data-reference-type="ref"                                                                                                                                                 
+                                                                                                                            data-reference="eq:MEFT">[eq:MEFT]</a>) of the amplitude mode from the effective Lagrangian; its frequency from the linear response                                                                          |
+| $M_{\rm eff}$                                                                                                            | the energy $(m_{\rm LL}^2+(d^0_{\rm SH})^2/4)^{1/2}$ of a paired quasi-particle at rest in the pairing-only methods                                                                                         |
+| $\bm\chi(\omega)$, $\mathsf F^X$                                                                                         | the linear response of a uniform state at the frequency $\omega$, and the kernel of the contact terms of method $X$                                                                                         |
+| $\lambda^{\rm amp}(\omega)$, $\lambda^{\rm ph}(\omega)$                                                                  | the eigenvalues (<a href="#eq:lam" data-reference-type="ref"                                                                                                                                                
+                                                                                                                            data-reference="eq:lam">[eq:lam]</a>) of the response of the pair amplitudes in HS (0,0) along the amplitude and the phase of the vacuum direction                                                           |
+| $\epsilon^{\rm kick}$                                                                                                    | the relative size of the displacement of the pair self-energy that starts a run in time                                                                                                                     |
+| $\omega^{\rm pk}$, $\Gamma^{\rm pk}$, $\Gamma^{\rm win}$                                                                 | the frequency of a peak of the spectrum of a run, its half-width at half maximum, and the half-width that the finite length of the run alone gives                                                          |
+| $\mathsf O^\dagger\mathsf O-\mathsf 1$                                                                                   | the departure of the quasi-particle vectors of a run from orthonormality                                                                                                                                    |
+| $q$, $\vec q$, $M$, $E$                                                                                                  | a momentum, its vector, a mass and an energy (integration variables)                                                                                                                                        |
 
 The symbols of the article and of this Supplemental Material.
 
@@ -98,1825 +94,1327 @@ The symbols of the article and of this Supplemental Material.
 
 # The model
 
-## Matrices
+## Fields and charges
 
-In the chiral basis the Dirac matrices are the $4\times4$ matrices of
-$2\times2$ blocks $$\begin{gathered}
-\gamma^0_{\rm LL}=\begin{pmatrix}0&\mathsf 1_2\\\mathsf 1_2&0\end{pmatrix},\qquad
-\gamma^j_{\rm LL}=\begin{pmatrix}0&\tau_j\\-\tau_j&0\end{pmatrix},\nonumber\\
-\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}={\rm diag}(-1,-1,1,1),\qquad
-\mathsf C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}={\rm diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL}),
-\label{eq:dirac}
-\end{gathered}$$ with
-$\{\gamma^p_{\rm LL},\gamma^{p'}_{\rm LL}\}=2\eta^{\rm LL}_{pp'}\mathsf 1_4$,
-the Pauli matrices $\tau_j$ (acting here on the Dirac index), and
-$\mathsf C_{\rm LL}\gamma^p_{\rm LL}\mathsf C_{\rm LL}^{-1}=-(\gamma^p_{\rm LL})^T$;
-$\alpha^j_{\rm LL}={\rm diag}(-\tau_j,\tau_j)$ and
-$\beta_{\rm LL}=\gamma^0_{\rm LL}$. The $8\times8$ matrices act on the
-Dirac index (first factor) and on the isospin index (second factor). The
-pair matrices and the pair operators of the spin-zero, isospin-one
-channel are
-$$\mathsf K^\iota_{\rm LL}=(\mathsf C_{\rm LL}\gamma^{\rm ch}_{\rm LL})\otimes(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota),\qquad\Pi^\iota_{\rm LL}=\Psi_{\rm LL}^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}\qquad(\iota=1,2,3).
-\label{eq:pairs}$$
-$\mathsf C_{\rm LL}\gamma^{\rm ch}_{\rm LL}={\rm diag}(-\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$
-is antisymmetric and the three $\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$
-are symmetric, so $\mathsf K^\iota_{\rm LL}$ is antisymmetric, as a
-local pair of fermions requires; the symmetric isospin factors make the
-pair an isospin vector, and the Dirac factor makes it a Lorentz scalar
-of fermion number 2. Two identities are used repeatedly:
-$$(\mathsf K^\iota_{\rm LL})^\dagger\mathsf K^\iota_{\rm LL}=\mathsf 1_8,\qquad\mathrm{tr}\big(\mathsf K^\iota_{\rm LL}(\mathsf K^\kappa_{\rm LL})^\dagger\big)=8\,\delta_{\iota\kappa}
-\label{eq:Kid}$$ (from
-$\mathsf E_{\rm LL}^\dagger\mathsf E_{\rm LL}=\mathsf 1_2$,
-$\tau_\iota^2=\mathsf 1_2$ and
-$\mathrm{tr}(\tau_\iota\tau_\kappa)=2\delta_{\iota\kappa}$).
-
-## Gauge group, Lagrangian and potential
-
-The group of local transformations is
-${\rm GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$:
-the local Lorentz transformations of the spinor index, the vector-like
-isospin (acting on both chiralities alike), and the fermion number. The
-covariant derivative of the spinor field is
-$$\nabla_p\Psi_{\rm LL}=\big(\partial_p+\Gamma^{\rm LL}_p+ig^{\rm v}_{\rm LL}\textstyle\sum_\iota W^\iota_{{\rm SF},p}T^\iota_{\rm LL}+ig^{\rm F}_{\rm LL}B_{{\rm SF},p}F_{\rm LL}\big)\Psi_{\rm LL},
-\qquad T^\iota_{\rm LL}=\mathsf 1_4\otimes\tfrac12\tau^{\rm LL}_\iota,\quad F_{\rm LL}=\mathsf 1_8,
-\label{eq:cov}$$ with the Lorentz connection $\Gamma^{\rm LL}_p$, a pure
-gauge on flat space-time, set to zero in all calculations. The field of
-the superfluid (Sec. <a href="#sec:methods" data-reference-type="ref"
-data-reference="sec:methods">3</a>) transforms as an isospin vector of
-fermion number 2, with
-$$\nabla_p\vec\Phi=\partial_p\vec\Phi+2ig^{\rm F}_{\rm LL}B_{{\rm SF},p}\vec\Phi-g^{\rm v}_{\rm LL}\vec W_{{\rm SF},p}\times\vec\Phi .
-\label{eq:covPhi}$$ The Lagrangian is
-$$\mathcal L_{\rm SF}=\bar\Psi_{\rm LL}\Big(i\sum_p\gamma^p_{\rm LL}\nabla_p-m_{\rm LL}\Big)\Psi_{\rm LL}-\tfrac14\sum_\iota W^\iota_{{\rm SF},pp'}W^{\iota,pp'}_{\rm SF}-\tfrac14B_{{\rm SF},pp'}B^{pp'}_{\rm SF}-V^{(n)}_{\rm SF},
-\label{eq:L}$$ with the contact self-interaction (the Hamiltonian
-density of the potential)
-$$V^{(n)}_{\rm SF}=\tfrac12G^{\rm S}_{\rm SF}{:}(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2{:}+\tfrac12G^{\rm V}_{\rm SF}\sum_p\eta^{\rm LL}_{pp}{:}(j^{{\rm F},p}_{\rm SF})^2{:}-\tfrac14G_{\rm LL}\sum_{\iota=1}^3{:}(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}{:},
-\qquad j^{{\rm F},p}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL},
-\label{eq:V}$$ normal-ordered with respect to the filled Dirac sea of
-the free field of mass $m_{\rm LL}$. The vector term is a sum of
-bilinear terms,
-$\sum_p\eta^{\rm LL}_{pp}(j^{{\rm F},p})^2=(\Psi^\dagger\Psi)^2-\sum_j(\Psi^\dagger\alpha^j_{\rm LL}\Psi)^2$.
-
-#### The recursion of the potential.
-
-The author’s first potential $V^{(0)}_{\rm SF}$ has
-$(G^{\rm S}_{\rm SF},G^{\rm V}_{\rm SF},G_{\rm LL})=(-8,0.8,0)$: a
-scalar attraction and a vector repulsion, without a pairing term. Its
-effective pair couplings
-(Sec. <a href="#sec:methods" data-reference-type="ref"
-data-reference="sec:methods">3</a>) are far below the critical value,
-and it admits no superfluid in any method. $V^{(1)}_{\rm SF}$ adds the
-pairing term with $G_{\rm LL}=22.5$, above the critical coupling
-$G^{\rm crit}_{\rm LL}=21.28660976$ of the pair channel of the normal
-vacuum; HS then condenses into a superfluid, but in KS and CJT the
-exchange contraction of the pairing term adds the scalar attraction
-$-\tfrac38G_{\rm LL}$ (Eq. (<a href="#eq:gS" data-reference-type="ref"
-data-reference="eq:gS">[eq:gS]</a>)), the scalar channel becomes
-unstable first, and the ground state is a massive state without pairs.
-$V^{(2)}_{\rm SF}$ keeps the form and the vector coupling and fixes
-$G^{\rm S}_{\rm SF}$ and $G_{\rm LL}$ by two conditions on the effective
-couplings of KS and CJT: the scalar coupling of $V^{(0)}_{\rm SF}$
-(stable) and the pair coupling of $V^{(1)}_{\rm SF}$ (supercritical),
-$$\tfrac78G^{\rm S}_{\rm SF}-\tfrac12G^{\rm V}_{\rm SF}-\tfrac38G_{\rm LL}=-7.4,\qquad G_{\rm LL}-\tfrac14G^{\rm S}_{\rm SF}-G^{\rm V}_{\rm SF}=23.7,
-\label{eq:recursion}$$ with the solution $G^{\rm S}_{\rm SF}=2.8$,
-$G_{\rm LL}=25.2$ ($G^{\rm V}_{\rm SF}=0.8$). With $V^{(2)}_{\rm SF}$
-the normal vacuum of every method is unstable only in the pair channel,
-and the ground state of every method is a polar superfluid.
-Table <a href="#tab:recursion" data-reference-type="ref"
-data-reference="tab:recursion">2</a> gives the numbers; the article uses
-$V^{(2)}_{\rm SF}$ throughout.
+There are three Dirac fields of $SL(2,\mathbb C)$, all singlets of
+colour and all vector-like.
+Table <a href="#tab:fields" data-reference-type="ref"
+data-reference="tab:fields">2</a> gives their charges. The particle
+number $F^{\rm tot}_{\rm SH}$ and the relative number $R_{\rm SH}$ are
+global symmetries; neither is gauged. On $\Psi_{\rm LL}$ and
+$\chi_{\rm SH}$ the hypercharge is a quarter of the fermion number
+$F_{\rm LL}$ of the earlier hypotheses, $Y=\frac14F_{\rm LL}$, so the
+gauge field of $U(1)^{\rm F}$ of those hypotheses is $B_\mu$ with the
+coupling $g'/4$; on $\chi'_{\rm SH}$, $4Y=-3F^{\rm tot}_{\rm SH}$. The
+isospin group $SU(2)_{\rm v}$ of the earlier hypotheses is $SU(2)_L$.
 
 <div class="ruledtabular">
 
-<div id="tab:recursion">
+<div id="tab:fields">
 
-| potential          | method   | $g^{X,{\rm S}}_{\rm SF}$ | $g^{X,{\rm P}}_{\rm SF}$ | $\lambda^{\rm S}_{\rm SF}$ | $\lambda^{\rm P}_{\rm SF}$ | ground state                | $10^4\mathcal E$ |  $|D|$ | $M^{X,{\rm D}}_{\rm SF}$ | $E^{X,{\rm gap}}_{\rm SF}$ |
-|:-------------------|:---------|-------------------------:|-------------------------:|---------------------------:|---------------------------:|:----------------------------|-----------------:|-------:|-------------------------:|---------------------------:|
-| $V^{(0)}_{\rm SF}$ | HS (1,1) |                   -8.000 |                        0 |                     0.6653 |                          – | normal vacuum               |                0 |      0 |                   0.2000 |                     0.2000 |
-| $V^{(0)}_{\rm SF}$ | HS (0,1) |                        0 |                    2.000 |                          – |                    0.09396 | normal vacuum               |                0 |      0 |                   0.2000 |                     0.2000 |
-| $V^{(0)}_{\rm SF}$ | HS (0,0) |                        0 |                    1.200 |                          – |                    0.05637 | normal vacuum               |                0 |      0 |                   0.2000 |                     0.2000 |
-| $V^{(0)}_{\rm SF}$ | KS       |                   -7.400 |                    1.200 |                     0.6154 |                    0.05637 | normal vacuum               |                0 |      0 |                   0.2000 |                     0.2000 |
-| $V^{(0)}_{\rm SF}$ | CJT      |                   -7.400 |                    1.200 |                     0.6154 |                    0.05637 | normal vacuum               |                0 |      0 |                   0.2000 |                     0.2000 |
-| $V^{(1)}_{\rm SF}$ | HS (1,1) |                   -8.000 |                    22.50 |                     0.6653 |                      1.057 | superfluid, polar           |          -0.6710 | 0.2331 |                   0.1719 |                     0.2896 |
-| $V^{(1)}_{\rm SF}$ | HS (0,1) |                        0 |                    24.50 |                          – |                      1.151 | superfluid, polar           |           -3.608 | 0.3620 |                   0.2000 |                     0.4136 |
-| $V^{(1)}_{\rm SF}$ | HS (0,0) |                        0 |                    23.70 |                          – |                      1.113 | superfluid, polar           |           -2.062 | 0.3070 |                   0.2000 |                     0.3664 |
-| $V^{(1)}_{\rm SF}$ | KS       |                   -15.84 |                    23.70 |                      1.317 |                      1.113 | massive (scalar condensate) |           -97.29 |      0 |                  -0.9308 |                     0.9308 |
-| $V^{(1)}_{\rm SF}$ | CJT      |                   -15.84 |                    23.70 |                      1.317 |                      1.113 | massive (scalar condensate) |           -97.29 |      0 |                  -0.9308 |                     0.9308 |
-| $V^{(2)}_{\rm SF}$ | HS (1,1) |                    2.800 |                    25.20 |                          – |                      1.184 | superfluid, polar           |           -5.186 | 0.4031 |                   0.2067 |                     0.4530 |
-| $V^{(2)}_{\rm SF}$ | HS (0,1) |                        0 |                    24.50 |                          – |                      1.151 | superfluid, polar           |           -3.608 | 0.3620 |                   0.2000 |                     0.4136 |
-| $V^{(2)}_{\rm SF}$ | HS (0,0) |                        0 |                    23.70 |                          – |                      1.113 | superfluid, polar           |           -2.062 | 0.3070 |                   0.2000 |                     0.3664 |
-| $V^{(2)}_{\rm SF}$ | KS       |                   -7.400 |                    23.70 |                     0.6154 |                      1.113 | superfluid, polar           |           -2.422 | 0.3285 |                   0.1623 |                     0.3664 |
-| $V^{(2)}_{\rm SF}$ | CJT      |                   -7.400 |                    23.70 |                     0.6154 |                      1.113 | superfluid, polar           |           -2.422 | 0.3285 |                   0.1623 |                     0.3664 |
+| field                 |  $SU(2)_L$  |    $Y$     |    $Q$     | $F^{\rm tot}_{\rm SH}$ | $R_{\rm SH}$ |         mass         |
+|:----------------------|:-----------:|:----------:|:----------:|:----------------------:|:------------:|:--------------------:|
+| $\Psi_{\rm LL}$, up   | $\mathbf 2$ | $\frac14$  | $\frac34$  |           1            |     $+1$     |     $m_{\rm LL}$     |
+| $\Psi_{\rm LL}$, down | $\mathbf 2$ | $\frac14$  | $-\frac14$ |           1            |     $+1$     |     $m_{\rm LL}$     |
+| $\chi_{\rm SH}$       | $\mathbf 1$ | $\frac14$  | $\frac14$  |           1            |     $-1$     |  $m^\chi_{\rm SH}$   |
+| $\chi'_{\rm SH}$      | $\mathbf 1$ | $-\frac34$ | $-\frac34$ |           1            |     $-1$     | $m^{\chi'}_{\rm SH}$ |
 
-The recursion of the potential: the effective couplings
-(<a href="#eq:gS" data-reference-type="ref"
-data-reference="eq:gS">[eq:gS]</a>),
-(<a href="#eq:gP" data-reference-type="ref"
-data-reference="eq:gP">[eq:gP]</a>) and the eigenvalues of the static
-response of the normal vacuum in the scalar and in the pair channel
-(“–”: no interaction in the channel; above 1 the normal vacuum is
-unstable), and the ground state with its energy per volume (times
-$10^4$), pair amplitude $|D|$ (the field $\Phi^3$ of the ground state),
-Dirac mass and gap.
+The fields and their charges.
 
 </div>
+
+</div>
+
+The covariant derivative is
+$$D_\mu=\partial_\mu+\Gamma^{\rm LL}_\mu+ig\,\tfrac{\tau^a}{2}W^a_\mu+ig'\,YB_\mu ,
+\label{eq:cov}$$ with the Lorentz connection $\Gamma^{\rm LL}_\mu$, a
+pure gauge on flat space-time, set to zero. The couplings are those of
+the Standard Model, from the measured Fermi constant and masses of the
+weak bosons (Takahashi et al. 2026): $v=(\sqrt2G_F)^{-1/2}=246.22$ GeV,
+$g=2M_W/v=0.652771$, $\cos\theta_W=M_W/M_Z$ and
+$g'=g\tan\theta_W=0.350046$. Because every field is vector-like, every
+trace of the gauge anomalies vanishes (checked:
+Sec. <a href="#sec:checks" data-reference-type="ref"
+data-reference="sec:checks">11</a>).
+
+## Bilinears and channels
+
+The bilinears of spin zero of two fields are the pairs and the
+particle-antiparticle bilinears,
+$$\Pi_{\rm SH}[\mathsf V_{\rm SH}]=\Psi^T_{\rm LL}\mathsf V_{\rm SH}\chi_{\rm SH},\qquad \Xi_{\rm SH}[\mathsf V_{\rm SH}]=\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\chi_{\rm SH},
+\label{eq:bilinears}$$ and likewise for every other choice of the two
+fields. A bilinear is a Lorentz scalar when the coefficient matrix obeys
+$\mathsf s(\mathbf u)^T\mathsf V+\mathsf V\mathsf s(\mathbf u)=0$
+(pairs) or
+$\mathsf s(\mathbf u)^\dagger\mathsf V+\mathsf V\mathsf s(\mathbf u)=0$
+(particle-antiparticle) for the six generators $\mathbf u$ of
+$SL(2,\mathbb C)$, with $\mathsf s(\mathbf u)$ their action on the Dirac
+index. For two particles of one field only the antisymmetric part of
+$\mathsf V$ gives an operator, because the components anticommute. The
+Lorentz-invariant bilinears of one kind and one parity form a channel; a
+generator of the internal group acts on a channel, in a basis
+orthonormal in $\mathrm{tr}(\mathsf V^\dagger\mathsf V')$, as a
+Hermitian matrix, whose eigenvalues are the charges of the channel.
+Table <a href="#tab:channels" data-reference-type="ref"
+data-reference="tab:channels">3</a> gives the pair channels of positive
+parity. The two Lorentz-invariant matrices of a pair of Dirac spinors,
+$C_{\rm LL}$ and $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$, are
+antisymmetric, so for two members of $\Psi_{\rm LL}$ the isospin factor
+must be symmetric:
+$$\mathbf 2\otimes\mathbf 2=\mathbf 1_{\rm antisymmetric}\oplus\mathbf 3_{\rm symmetric}.
+\label{eq:2x2}$$ The pairs of two members of $\Psi_{\rm LL}$ are
+therefore a triplet with $Y=\frac12$ and the charges $\frac32$,
+$\frac12$, $-\frac12$, without a neutral component; only the pairs of
+$\Psi_{\rm LL}$ with a singlet are doublets with $|Y|=\frac12$ and a
+neutral component. Every pair without $\Psi_{\rm LL}$ and a singlet has
+$|Q|\ge\ensuremath{\tfrac12}$ (checked in exact arithmetic).
+
+<div id="tab:channels">
+
+| bilinear                                                   | comp. | $SU(2)_L$                  | $Y$             | $Q$                                           | neutral | $R_{\rm SH}$ | $T^3_R$         |
+|:-----------------------------------------------------------|:------|:---------------------------|:----------------|:----------------------------------------------|:--------|:-------------|:----------------|
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}\Psi_{\rm LL}$         | 3     | $\mathbf 3$                | $\tfrac{1}{2}$  | $\tfrac{3}{2},\ \tfrac{1}{2},\ -\tfrac{1}{2}$ | 0       | $2$          | $0$             |
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}\chi_{\rm SH}$         | 2     | $\mathbf 2$                | $\tfrac{1}{2}$  | $1,\ 0$                                       | 1       | $0$          | $\tfrac{1}{2}$  |
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}\chi'_{\rm SH}$        | 2     | $\mathbf 2$                | $-\tfrac{1}{2}$ | $0,\ -1$                                      | 1       | $0$          | $-\tfrac{1}{2}$ |
+| ${\chi_{\rm SH}}^T\mathsf V_{\rm SH}\chi_{\rm SH}$         | 1     | $\mathbf 1$                | $\tfrac{1}{2}$  | $\tfrac{1}{2}$                                | 0       | $-2$         | $1$             |
+| ${\chi_{\rm SH}}^T\mathsf V_{\rm SH}\chi'_{\rm SH}$        | 1     | $\mathbf 1$                | $-\tfrac{1}{2}$ | $-\tfrac{1}{2}$                               | 0       | $-2$         | $0$             |
+| ${\chi'_{\rm SH}}^T\mathsf V_{\rm SH}\chi'_{\rm SH}$       | 1     | $\mathbf 1$                | $-\tfrac{3}{2}$ | $-\tfrac{3}{2}$                               | 0       | $-2$         | $-1$            |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}\Psi_{\rm LL}$   | 4     | $\mathbf 1\oplus\mathbf 3$ | $0$             | $1,\ 0,\ 0,\ -1$                              | 2       | $0$          | $0$             |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$   | 2     | $\mathbf 2$                | $0$             | $\tfrac{1}{2},\ -\tfrac{1}{2}$                | 0       | $-2$         | $\tfrac{1}{2}$  |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$  | 2     | $\mathbf 2$                | $-1$            | $-\tfrac{1}{2},\ -\tfrac{3}{2}$               | 0       | $-2$         | $-\tfrac{1}{2}$ |
+| ${\chi_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$   | 1     | $\mathbf 1$                | $0$             | $0$                                           | 1       | $0$          | $0$             |
+| ${\chi_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$  | 1     | $\mathbf 1$                | $-1$            | $-1$                                          | 0       | $0$          | $-1$            |
+| ${\chi'_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 1     | $\mathbf 1$                | $0$             | $0$                                           | 1       | $0$          | $0$             |
+
+The pair channels of positive parity of the three fields: the bilinear,
+the number of components, the representation of $SU(2)_L$, the
+hypercharge, the electric charges, the number of neutral components, the
+relative number and $T^3_R$.
+
+</div>
+
+## The interaction and the custodial symmetry
+
+The pair operators of the attraction are
+$$\Pi^s_{\rm SH}=\tfrac12\Pi_{\rm SH}[C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s],\qquad \Pi'^s_{\rm SH}=\tfrac12\Pi_{\rm SH}[C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s]\big|_{\chi_{\rm SH}\to\chi'_{\rm SH}},
+\label{eq:pairs}$$ $s={\rm u},{\rm d}$, and the Hamiltonian density is
+$$\begin{gathered}
+\mathcal H=\Psi^\dagger\mathsf h(-i\nabla)\Psi+\tfrac12G^{\rm S}_{\rm SF}{:}(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2{:}
++\tfrac12G^{\rm V}_{\rm SF}{:}\Big[(\Psi^\dagger_{\rm LL}\Psi_{\rm LL})^2-\sum_j\big(\Psi^\dagger_{\rm LL}(\alpha^j_{\rm LL}\otimes\mathsf 1_2)\Psi_{\rm LL}\big)^2\Big]{:}\\
+-G_{\rm SH}\sum_{s={\rm u},{\rm d}}\big[{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}+{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}\big],
+\label{eq:H}
+\end{gathered}$$ where
+$\Psi=(\Psi_{\rm LL},\chi_{\rm SH},\chi'_{\rm SH})$ has sixteen
+components, $\mathsf h(\vec q)$ is the free Dirac Hamiltonian,
+block-diagonal with
+$(\alpha^j_{\rm LL}q^j+\beta_{\rm LL}m_{\rm LL})\otimes\mathsf 1_2$ on
+$\Psi_{\rm LL}$ and $\alpha^j_{\rm LL}q^j+\beta_{\rm LL}m^\chi_{\rm SH}$
+and $\alpha^j_{\rm LL}q^j+\beta_{\rm LL}m^{\chi'}_{\rm SH}$ on the two
+singlets, the momenta obey $|\vec q|<\Lambda_{\rm LL}$, and the colons
+order the operators so that their expectation value in the normal vacuum
+vanishes. The couplings are $G^{\rm S}_{\rm SF}=-8$,
+$G^{\rm V}_{\rm SF}=0.8$, $G_{\rm SH}=100.8$ (units of
+$\Lambda_{\rm LL}^{-2}$). In the first version the terms of
+$\Pi'^s_{\rm SH}$ are absent.
+
+Without $B_\mu$, the generators of $SU(2)_L$ (on $\Psi_{\rm LL}$), of
+$SU(2)_R$ ($\frac12\tau^a$ on the pair
+$(\chi_{\rm SH},\chi'_{\rm SH})$), $R_{\rm SH}$ and
+$F^{\rm tot}_{\rm SH}$ commute with
+(<a href="#eq:H" data-reference-type="ref"
+data-reference="eq:H">[eq:H]</a>) when the singlets have equal masses;
+the hypercharge is $$Y=T^3_R+\tfrac14R_{\rm SH},
+\label{eq:Y}$$ so $g'$ breaks $SU(2)_R$ to $T^3_R$.
+Table <a href="#tab:custodial" data-reference-type="ref"
+data-reference="tab:custodial">4</a> gives the pair channels of
+$\Psi_{\rm LL}$ with the pair of singlets under $SU(2)_L\times SU(2)_R$.
+The pair fields form the matrix
+$$\mathcal M_{\rm SH}=\begin{pmatrix}\Phi^{\rm u}&\Phi'^{\rm u}\\\Phi^{\rm d}&\Phi'^{\rm d}\end{pmatrix}\to L\,\mathcal M_{\rm SH}R^T ,
+\label{eq:M}$$ a bidoublet: its columns are a doublet with $Y=\frac12$
+(charges $+1$, 0) and a doublet with $Y=-\frac12$ (charges 0, $-1$),
+whose conjugate $i\tau^2(\Phi')^*$ is a second doublet with $Y=\frac12$.
+A vacuum with only the neutral components, of equal lengths, is brought
+by the symmetries to the form $\mathcal M_{\rm SH}\propto i\tau^2$,
+which is unchanged for $L=R$ because $L\,i\tau^2L^T=i\tau^2\det L$. It
+keeps $SU(2)_V$, $R_{\rm SH}$ and the electric charge
+$Q=T^3+T^3_R+\frac14R_{\rm SH}$, and breaks three generators of
+$SU(2)_L\times U(1)_Y$ and $F^{\rm tot}_{\rm SH}$.
+
+<div id="tab:custodial">
+
+| bilinear                                                                                   | components | $SU(2)_L\times SU(2)_R$                            | $F^{\rm tot}_{\rm SH}$ | $R_{\rm SH}$ |
+|:-------------------------------------------------------------------------------------------|:-----------|:---------------------------------------------------|:-----------------------|:-------------|
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$                        | 4          | $(\mathbf 2,\mathbf 2)$                            | $2$                    | $0$          |
+| ${(\chi_{\rm SH},\chi'_{\rm SH})}^T\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$       | 3          | $(\mathbf 1,\mathbf 3)$                            | $2$                    | $-2$         |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$                  | 4          | $(\mathbf 2,\mathbf 2)$                            | $0$                    | $-2$         |
+| ${(\chi_{\rm SH},\chi'_{\rm SH})}^\dagger\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$ | 4          | $(\mathbf 1,\mathbf 1)\oplus(\mathbf 1,\mathbf 3)$ | $0$                    | $0$          |
+
+The pair channels of $\Psi_{\rm LL}$ with the pair of singlets under
+$SU(2)_L\times SU(2)_R$.
 
 </div>
 
 # The five mean-field methods
 
-## Quasi-free states and their energy
+## Quasi-free states
 
-All methods describe the state of the spinor field by a uniform
-quasi-free state: at every momentum the normal and the pair correlation
-matrices $\mathsf C^{\rm n}_{\rm LL}(\vec q)$,
-$\mathsf C^{\rm p}_{\rm LL}(\vec q)$, and their integrals
-$$\delta\mathsf C^{\rm n}=\int\frac{d^3q}{(2\pi)^3}\big[\mathsf C^{\rm n}_{\rm LL}(\vec q)-\mathsf C^{\rm vac}_{\rm LL}(\vec q)\big],\qquad\mathsf C^{\rm p}=\int\frac{d^3q}{(2\pi)^3}\mathsf C^{\rm p}_{\rm LL}(\vec q),
-\qquad\mathsf C^{\rm vac}_{\rm LL}(\vec q)=\tfrac12\Big(\mathsf 1_8-\frac{\mathsf h_{\rm LL}(\vec q)}{\varepsilon_q}\Big),
-\label{eq:localC}$$ over $|\vec q|<\Lambda_{\rm LL}$, with the free
-matrix
-$\mathsf h_{\rm LL}(\vec q)=(\vec\alpha_{\rm LL}\cdot\vec q+\beta_{\rm LL}m_{\rm LL})\otimes\mathsf 1_2$
-and $\varepsilon_q=(q^2+m_{\rm LL}^2)^{1/2}$. The energy per volume,
-measured from the normal vacuum, is the kinetic part
-$\int\frac{d^3q}{(2\pi)^3}\mathrm{tr}[\mathsf h_{\rm LL}(\vec q)(\mathsf C^{\rm n}_{\rm LL}-\mathsf C^{\rm vac}_{\rm LL})]$
-plus the expectation value of the potential, evaluated with Wick’s
-theorem. A bilinear term $\nu{:}(\Psi^\dagger\mathsf X\Psi)^2{:}$ (with
-$\nu=G^{\rm S}_{\rm SF}/2$,
-$\mathsf X=\beta_{\rm LL}\otimes\mathsf 1_2$;
-$\nu=G^{\rm V}_{\rm SF}/2$, $\mathsf X=\mathsf 1_8$;
-$\nu=-G^{\rm V}_{\rm SF}/2$,
-$\mathsf X=\alpha^j_{\rm LL}\otimes\mathsf 1_2$) and a pairing term
-contribute, with the weights $w^{\rm H}$, $w^{\rm F}$, $w^{\rm P}$ of
-the direct, exchange and pair contractions, $$\begin{aligned}
-\nu{:}(\Psi^\dagger\mathsf X\Psi)^2{:}&\to\nu\big[w^{\rm H}\mathrm{tr}(\mathsf X\delta\mathsf C^{\rm n})^2-w^{\rm F}\mathrm{tr}(\mathsf X\tilde{\mathsf C}\mathsf X\tilde{\mathsf C})-w^{\rm P}\mathrm{tr}\big((\mathsf C^{\rm p})^*\mathsf X\mathsf C^{\rm p}\mathsf X^T\big)\big],\label{eq:Ebil}\\
--\tfrac14G_{\rm LL}{:}(\Pi^\iota)^\dagger\Pi^\iota{:}&\to-\tfrac14G_{\rm LL}\big[w^{\rm P}|\mathrm{tr}(\mathsf K^\iota_{\rm LL}(\mathsf C^{\rm p})^T)|^2+2w^{\rm F}\mathrm{tr}\big((\mathsf K^\iota_{\rm LL})^\dagger\tilde{\mathsf C}^T\mathsf K^\iota_{\rm LL}\tilde{\mathsf C}\big)\big],\label{eq:Epair}
-\end{aligned}$$ where $\tilde{\mathsf C}=\delta\mathsf C^{\rm n}$,
-except in KS, where
-$\tilde{\mathsf C}=\mathcal P^{\rm KS}(\delta\mathsf C^{\rm n})$ with
-the projection
-$\mathcal P^{\rm KS}(\mathsf A)=\frac18\mathrm{tr}(\mathsf A)\mathsf 1_8+\frac18\mathrm{tr}((\beta_{\rm LL}\otimes\mathsf 1_2)\mathsf A)\,\beta_{\rm LL}\otimes\mathsf 1_2$
-onto the two Kohn-Sham densities (the number density and the scalar
-density). The self-energies are the derivatives of the energy with
-respect to the correlations; for a bilinear term ($\mathcal P$ is
-$\mathcal P^{\rm KS}$ in KS and the identity otherwise)
-$$\mathsf N_{\rm SF}=\nu\big[2w^{\rm H}\mathsf X\mathrm{tr}(\mathsf X\delta\mathsf C^{\rm n})-2w^{\rm F}\mathcal P(\mathsf X\tilde{\mathsf C}\mathsf X)\big],\qquad\mathsf P_{\rm SF}=-2\nu w^{\rm P}\mathsf X\mathsf C^{\rm p}\mathsf X^T,
-\label{eq:Nbil}$$ and for a pairing term
-$$\mathsf N_{\rm SF}=-G_{\rm LL}w^{\rm F}\mathcal P\big((\mathsf K^\iota_{\rm LL})^\dagger\tilde{\mathsf C}^T\mathsf K^\iota_{\rm LL}\big),\qquad\mathsf P_{\rm SF}=w^{\rm P}d^\iota(\mathsf K^\iota_{\rm LL})^\dagger,\quad d^\iota=-\tfrac12G_{\rm LL}\mathrm{tr}\big(\mathsf K^\iota_{\rm LL}(\mathsf C^{\rm p})^T\big).
-\label{eq:Ppair}$$ The state is the thermal state (the ground state at
-$T=0$) of the BdG matrix
-$$\mathsf H_{\rm SF}(\vec q)=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q)+\mathsf N_{\rm SF}&\mathsf P_{\rm SF}\\\mathsf P_{\rm SF}^\dagger&-\big(\mathsf h_{\rm LL}(-\vec q)+\mathsf N_{\rm SF}\big)^T\end{pmatrix},
-\label{eq:BdG}$$ whose projector onto the negative eigenvalues (at
-$T=0$), or the Fermi function $f(\mathsf H_{\rm SF})$ (at $T>0$), has
-the upper blocks $\mathsf C^{\rm n}_{\rm LL}$ and
-$-\mathsf C^{\rm p}_{\rm LL}$. The field of a state is the amplitude of
-its pair self-energy,
-$$\mathsf P_{\rm SF}=\sum_{\iota=1}^3\Phi^{X,\iota}_{\rm SF}(\mathsf K^\iota_{\rm LL})^\dagger+(\text{other pair channels}),\qquad\Phi^{X,\iota}_{\rm SF}=\mathrm{tr}(\mathsf K^\iota_{\rm LL}\mathsf P_{\rm SF})/8,
-\label{eq:Phi}$$ by (<a href="#eq:Kid" data-reference-type="ref"
-data-reference="eq:Kid">[eq:Kid]</a>).
+A uniform quasi-free state is the ground state of a quadratic
+Hamiltonian with constant self-energies, a Hermitian $16\times16$ matrix
+$\mathsf N$ and an antisymmetric one $\mathsf P$. At the momentum
+$\vec q$ its BdG matrix is
+$$\mathsf H(\vec q)=\begin{pmatrix}\mathsf h(\vec q)+\mathsf N&\mathsf P\\\mathsf P^\dagger&-\big(\mathsf h(-\vec q)+\mathsf N\big)^T\end{pmatrix},
+\label{eq:BdG}$$ and the state fills its negative eigenvalues. Its local
+matrices are the integrals over the momenta of the normal correlation
+matrix, measured from the normal vacuum, and of the pair correlation
+matrix, $\varrho$ and $\kappa$. The energy per volume $\mathcal E^X$ is
+the kinetic part plus the interaction energy that method $X$ assigns to
+the local matrices. The pair self-energy of the vacuum direction is
+$$\mathsf P=d\,\mathsf P^{\rm vac},\qquad \mathsf P^{\rm vac}=(\mathsf K'^{\rm u})^\dagger-(\mathsf K^{\rm d})^\dagger\ \ \text{(second version)},\qquad
+\mathsf P^{\rm vac}=(\mathsf K^{\rm d})^\dagger\ \ \text{(first version)},
+\label{eq:Pvac}$$ with $d$ real after a rotation by the particle number,
+and the pair amplitude is
+$\varphi_{\rm SH}=|\langle\Pi^{\rm d}_{\rm SH}\rangle|=\frac12|\mathrm{tr}(\mathsf K^{\rm d}\kappa^T)|$.
 
 ## The methods
 
-The methods differ in the weights
-(Table <a href="#tab:weights" data-reference-type="ref"
-data-reference="tab:weights">3</a>). *Hubbard-Stratonovich
-(HS)* (Hubbard 1959; Stratonovich 1957) rewrites each four-fermion term
-exactly as the exchange of an auxiliary field and replaces the auxiliary
-fields by their saddle point; a term can be decoupled in the density
-channel (direct contraction) or in the pair channel (pair contraction),
-and the shares $s_{\rm S}$, $s_{\rm V}$ of the scalar and the vector
-term decoupled in the density channel are parameters; HS keeps no
-exchange contraction. *Kohn-Sham (KS)* (Hohenberg and Kohn 1964; Kohn
-and Sham 1965) minimizes a functional of the number density, the scalar
-density and the pair amplitude through an auxiliary system of
-independent charges in local potentials; the direct and the pair
-contractions are kept with weight 1 and the exchange contraction in the
-local-density approximation (the projection $\mathcal P^{\rm KS}$).
-*Cornwall-Jackiw-Tomboulis (CJT)* (Cornwall, Jackiw, and Tomboulis 1974)
-truncates the two-particle-irreducible effective action of the Nambu
-propagator at the contractions of the contact terms; for a uniform
-static propagator its stationary point is a quasi-free state whose
-energy is (<a href="#eq:Ebil" data-reference-type="ref"
-data-reference="eq:Ebil">[eq:Ebil]</a>),
-(<a href="#eq:Epair" data-reference-type="ref"
-data-reference="eq:Epair">[eq:Epair]</a>) with all weights 1.
+A method keeps the three Wick contractions of every contact term, the
+direct, the exchange and the pair contraction, with its own weights:
 
-<div class="ruledtabular">
+- HS $(s_{\rm S},s_{\rm V})$ (Hubbard 1959; Stratonovich 1957) rewrites
+  each four-fermion term as the exchange of an auxiliary field at the
+  saddle point; it keeps the direct contraction of the shares
+  $s_{\rm S}$, $s_{\rm V}$ of the scalar and the vector term decoupled
+  in density channels and the pair contraction of the rest; the pairing
+  terms are decoupled in their own pair channels; no exchange
+  contraction is kept.
 
-<div id="tab:weights">
+- KS (Hohenberg and Kohn 1964; Kohn and Sham 1965) keeps all three
+  contractions, the exchange evaluated with the projection of $\varrho$
+  onto sixteen local densities: the number and the scalar densities of
+  $\Psi_{\rm LL}$ as $2\times2$ matrices in the isospin space, and those
+  of the pair of singlets as $2\times2$ matrices in the space of the two
+  singlets.
 
-| method                     | scalar term                   | vector term                   | pairing term                  |
-|:---------------------------|:------------------------------|:------------------------------|:------------------------------|
-| HS $(s_{\rm S},s_{\rm V})$ | $(s_{\rm S},0,1-s_{\rm S})$   | $(s_{\rm V},0,1-s_{\rm V})$   | $(0,0,1)$                     |
-| KS                         | $(1,1,1)$, exchange projected | $(1,1,1)$, exchange projected | $(0,1,1)$, exchange projected |
-| CJT                        | $(1,1,1)$                     | $(1,1,1)$                     | $(0,1,1)$                     |
+- CJT (Cornwall, Jackiw, and Tomboulis 1974) keeps all three
+  contractions with the weight 1, the two-loop effective action of the
+  propagator truncated at the contact terms.
 
-The weights $(w^{\rm H},w^{\rm F},w^{\rm P})$ of the contractions in the
-five methods.
+The self-energies are the derivatives of the interaction energy with
+respect to the local matrices, and a stationary state is a state whose
+self-energies are those that its own local matrices produce. In HS (0,1)
+and HS (0,0) only the pairing terms act on the states of this paper, and
+their normal self-energy vanishes: these are the pairing-only methods.
 
-</div>
-
-</div>
-
-#### KS and CJT coincide on the polar states.
-
-If $\delta\mathsf C^{\rm n}$ lies in the span of $\mathsf 1_8$ and
-$\beta_{\rm LL}\otimes\mathsf 1_2$ (the normal vacuum and the polar
-superfluids, by their symmetry), the projection acts as the identity:
-$\mathsf X\delta\mathsf C^{\rm n}\mathsf X$ stays in the span for
-$\mathsf X=\beta,\mathsf 1,\alpha^j$ (with
-$\alpha^j\beta\alpha^j=-\beta$), and so does
-$(\mathsf K^\iota)^\dagger(\delta\mathsf C^{\rm n})^T\mathsf K^\iota$
-(with (<a href="#eq:Kid" data-reference-type="ref"
-data-reference="eq:Kid">[eq:Kid]</a>) and
-$(\mathsf K^\iota)^\dagger\beta^T\mathsf K^\iota=\beta$). Hence KS and
-CJT have the same energy and self-energies on these states; they differ
-in the response to fluctuations outside this span (the isospin
-susceptibilities, Sec. <a href="#sec:T0" data-reference-type="ref"
-data-reference="sec:T0">4</a>).
-
-#### The effective couplings.
-
-A scalar density $n^{\rm S}$
-($\delta\mathsf C^{\rm n}=n^{\rm S}\beta/8$) shifts the Dirac mass by
-$g^{X,{\rm S}}_{\rm SF}n^{\rm S}$, and a pair amplitude in the channel
-$\mathsf K^3_{\rm LL}$ produces the pair self-energy
-$D(\mathsf K^3_{\rm LL})^\dagger$ with
-$D=-\frac12g^{X,{\rm P}}_{\rm SF}\mathrm{tr}(\mathsf K^3_{\rm LL}(\mathsf C^{\rm p})^T)$.
-Collecting the contractions of
-(<a href="#eq:Nbil" data-reference-type="ref"
-data-reference="eq:Nbil">[eq:Nbil]</a>),
-(<a href="#eq:Ppair" data-reference-type="ref"
-data-reference="eq:Ppair">[eq:Ppair]</a>) (the exchange of the scalar
-term gives $-\frac18G^{\rm S}n^{\rm S}\beta$, the exchange of the vector
-term $-\frac12G^{\rm V}n^{\rm S}\beta$, the exchange of the three
-pairing terms $-\frac38G_{\rm LL}n^{\rm S}\beta$): $$\begin{gathered}
-g^{{\rm HS},{\rm S}}_{\rm SF}=s_{\rm S}G^{\rm S}_{\rm SF},\qquad g^{{\rm KS},{\rm S}}_{\rm SF}=g^{{\rm CJT},{\rm S}}_{\rm SF}=\tfrac78G^{\rm S}_{\rm SF}-\tfrac12G^{\rm V}_{\rm SF}-\tfrac38G_{\rm LL},\label{eq:gS}\\
-g^{{\rm HS},{\rm P}}_{\rm SF}=G_{\rm LL}-\tfrac14(1-s_{\rm S})G^{\rm S}_{\rm SF}-(1-s_{\rm V})G^{\rm V}_{\rm SF},\qquad g^{{\rm KS},{\rm P}}_{\rm SF}=g^{{\rm CJT},{\rm P}}_{\rm SF}=G_{\rm LL}-\tfrac14G^{\rm S}_{\rm SF}-G^{\rm V}_{\rm SF}.\label{eq:gP}
-\end{gathered}$$ The normal vacuum is unstable towards pairing (the
-criterion of Thouless) when
-$$\lambda^{\rm P}_{\rm SF}=\frac{g^{X,{\rm P}}_{\rm SF}\,I_1(m_{\rm LL},0)}{\pi^2}=\frac{g^{X,{\rm P}}_{\rm SF}}{G^{\rm crit}_{\rm LL}}>1,
-\label{eq:lambda0}$$ the linearized gap equation
-(Sec. <a href="#sec:thermal" data-reference-type="ref"
-data-reference="sec:thermal">5</a>), and towards a scalar condensate
-when $\lambda^{\rm S}_{\rm SF}=-g^{X,{\rm S}}_{\rm SF}\chi^{\rm S}>1$
-with the scalar susceptibility
-$\chi^{\rm S}=\frac2{\pi^2}\int_0^{\Lambda_{\rm LL}}q^4(q^2+m_{\rm LL}^2)^{-3/2}dq$.
-The Rust program computes both numbers also from the full static
-response of the normal vacuum (a $120\times120$ matrix) and finds them
-equal to these formulas to $4\times10^{-14}$ (checks P2-6b, P2-6c).
+*KS and CJT coincide on the states of this paper.* If $\varrho$ lies in
+the span of the sixteen Kohn-Sham densities, the two methods differ only
+in the projection of the exchange self-energies, and those lie in the
+span again: for the scalar and the vector terms because
+$\beta_{\rm LL}^2=(\alpha^j_{\rm LL})^2=\mathsf 1_4$ and
+$\alpha^j_{\rm LL}$ anticommutes with $\beta_{\rm LL}$; for the pairing
+terms because $\mathsf K^\dagger\varrho^T\mathsf K$ maps a number or
+scalar density of one singlet to one of $\Psi_{\rm LL}$ times
+$\mathbf e^s(\mathbf e^s)^T$, and a density of $\Psi_{\rm LL}$ to one of
+a singlet; and no map produces a block between $\Psi_{\rm LL}$ and a
+singlet. The normal vacuum and every ground state satisfy the
+hypothesis, because their symmetries (the rotations, the parity,
+$R_{\rm SH}$, $Q$ and, in the second version, $SU(2)_V$) confine
+$\varrho$ to the span. KS and CJT therefore give the same energies,
+self-energies, susceptibilities and dynamics on them, which the programs
+confirm to the rounding. The two methods do differ in the response to
+changes that leave the span, the mixings of the fields. The normal
+blocks between $\Psi_{\rm LL}$ and a singlet, and between the two
+singlets, are reached only by the exchange contraction of the pairing
+terms, so HS, which keeps no exchange contraction, has none; in KS the
+blocks between $\Psi_{\rm LL}$ and a singlet are absent, because the
+Kohn-Sham densities have no such block, and the block between the
+singlets is projected to zero; CJT keeps the exchange contraction, and
+the largest eigenvalue of its static response is 0.262 in the blocks
+between $\Psi_{\rm LL}$ and the singlets and 0 in the block between the
+singlets (Table <a href="#tab:normal" data-reference-type="ref"
+data-reference="tab:normal">5</a>).
 
 ## The numerical engine
 
-The momenta are the products of 24 Gauss-Legendre nodes of $|\vec q|$ on
-$[0,\Lambda_{\rm LL}]$ and the six directions $\pm\vec e_j$, with the
-weight $w_rq^2/(2\pi^2)/6$ of $\int d^3q/(2\pi)^3$ at a node of radial
-weight $w_r$. The correlation matrices of the uniform states depend on
-the direction $\hat q$ only through terms of angular momentum 0 and 1
-(from $\vec\alpha\cdot\hat q$; the products
-$\alpha^j\alpha^{j'}\hat q_j\hat q_{j'}$ reduce to 1), and the average
-over the six directions is exact for these (checked against a product
-rule of 72 directions). The BdG matrices are diagonalized at every node,
-the new self-energies follow from
-(<a href="#eq:Nbil" data-reference-type="ref"
-data-reference="eq:Nbil">[eq:Nbil]</a>),
-(<a href="#eq:Ppair" data-reference-type="ref"
-data-reference="eq:Ppair">[eq:Ppair]</a>) and are mixed with the old
-ones (new times 0.6 plus old times 0.4; 0.7 and 0.3 for the states with
-a fixed applied pair field) until they change by less than a tolerance
-between $10^{-12}$ and $10^{-14}$ (the smaller for the states of finite
-temperature). The gap is the minimum of the smallest positive eigenvalue
-of $\mathsf H_{\rm SF}(\vec q)$ over $0\le|\vec q|\le\Lambda_{\rm LL}$,
-and the Dirac mass of a state is
-$m_{\rm LL}+\frac18\mathrm{tr}((\beta_{\rm LL}\otimes\mathsf 1_2)\mathsf N_{\rm SF})$.
-Two programs implement this independently: a Rust program with its own
-Hermitian eigensolver, and a Python program with numpy and LAPACK. With
-only the pair contraction of the pairing term the engine reproduces the
-analytic mean-field solution of the pairing model to $3\times10^{-11}$
-(checks P2-2a, P2-2b, YP2-2), and the self-energies equal the central
-differences of the energy for random states.
+The states are computed on 24 Gauss-Legendre nodes of $|\vec q|$ on
+$[0,\Lambda_{\rm LL}]$ times the six directions $\pm\hat x$,
+$\pm\hat y$, $\pm\hat z$, by linear mixing of the self-energies (weight
+0.6) to a residual below $10^{-13}$. A calculation on 48 nodes gives the
+same $v_{\rm SH}$ and amplitude mode to $2\times10^{-14}$. The program
+in Rust computes every result; the program in Python repeats the key
+results with its own engine (numpy, vectorized over the momenta) and by
+other methods; the scripts in the Wolfram Language derive the group
+theory and the closed forms in exact arithmetic or with 30 to 40 digits,
+and a notebook repeats them.
 
-# The superfluid at zero temperature
+# The normal vacuum and the critical coupling
 
-## Ground states and the effective potential
+In the normal vacuum ($\mathsf N=\mathsf P=0$) the static response to a
+pair self-energy in the doublet-singlet channel of the pairing-only
+methods is $\lambda^{\rm H}=G_{\rm SH}I_1(m_{\rm LL})/(4\pi^2)$, with
+$$I_1(M)=\int_0^{\Lambda_{\rm LL}}\frac{q^2\,dq}{(q^2+M^2)^{1/2}}=\tfrac12\Big[\Lambda_{\rm LL}(\Lambda_{\rm LL}^2+M^2)^{1/2}-M^2\,{\rm arsinh}\frac{\Lambda_{\rm LL}}{M}\Big],
+\label{eq:I1}$$ so the critical coupling is
+$G^{\rm crit}_{\rm SH}=4\pi^2/I_1(m_{\rm LL})=85.146$ and
+$\lambda^{\rm H}=G_{\rm SH}/G^{\rm crit}_{\rm SH}=1.184$. The scalar and
+the vector terms do not act on this channel in the normal vacuum, so
+$\lambda^{\rm H}$ is the same in every method.
+Table <a href="#tab:normal" data-reference-type="ref"
+data-reference="tab:normal">5</a> gives the largest eigenvalues of the
+static response in every channel: only the doublet-singlet pairs exceed
+1, with the multiplicity of the four complex pair fields (eight real
+directions; four in the first version). Without the pairing terms (the
+potential $V^{(0)}$) every start of the iteration ends in the normal
+vacuum.
 
-With $V^{(2)}_{\rm SF}$ every method has a polar ground state,
-$\vec\Phi=\Phi^X_{0,{\rm SF}}e^{i\vartheta}\vec n$ with a real unit
-vector $\vec n$. Its normal self-energy is a Dirac mass and its pair
-self-energy is $\Phi_0(\mathsf K^3_{\rm LL})^\dagger$ for
-$\vec n=\vec e_3$; then $\mathsf H_{\rm SF}^2$ is proportional to the
-unit matrix at every momentum, and the quasi-particle energies are
-$$\pm E(\vec q)=\pm\big(q^2+(M^{X,{\rm D}}_{\rm SF})^2+(\Phi^X_{0,{\rm SF}})^2\big)^{1/2},
-\label{eq:qp}$$ eight times each: the pair amplitude adds to the Dirac
-mass in quadrature, and
-$E^{X,{\rm gap}}_{\rm SF}=((M^{X,{\rm D}}_{\rm SF})^2+(\Phi^X_{0,{\rm SF}})^2)^{1/2}$.
-Table <a href="#tab:T0" data-reference-type="ref"
-data-reference="tab:T0">5</a> gives the numbers (the order parameter,
-the Dirac mass, the gap and the depth of the effective potential).
+<div id="tab:normal">
 
-The **effective potential** $\mathcal V^X_{\rm SF}(\vec\Phi)$ is
-computed point by point: a fixed pair self-energy
-$\Phi_{\rm a}(\mathsf K^3_{\rm LL})^\dagger$ (the applied field) is put
-into (<a href="#eq:BdG" data-reference-type="ref"
-data-reference="eq:BdG">[eq:BdG]</a>), the normal self-energy is made
-self-consistent, and the state gives one point: its own field $\Phi^3$
-(<a href="#eq:Phi" data-reference-type="ref"
-data-reference="eq:Phi">[eq:Phi]</a>) and its energy. Along the polar
-fields the curve is a Mexican hat with its minimum at
-$\Phi^X_{0,{\rm SF}}$. A Landau polynomial
-$a|\vec\Phi|^2+b|\vec\Phi|^4+c|\vec\Phi|^6$ fitted by least squares to
-the computed curve reproduces it to 0.27–0.70% of the depth, but no
-polynomial is exact: the energy is an integral over the momenta of
-functions of $E=(q^2+M^2+\Phi_{\rm a}^2)^{1/2}$, which as a function of
-$\Phi_{\rm a}^2$ is singular at $\Phi_{\rm a}^2=-M^2$ (at the end $q=0$
-of the integral), so the series in $|\vec\Phi|^2$ about the origin has a
-radius of convergence of the order of the Dirac mass, about
-$m_{\rm LL}$, while the order parameter is 1.53–2.02 times $m_{\rm LL}$.
+| potential        | method    | $\lambda^{\rm H}$ (multiplicity) | $\lambda^{\rm S}$ | $\lambda^{\rm T}$ | pairs of $\Psi_{\rm LL}$ | pairs of singlets |  normal   | mixing of the singlets | mixing with $\Psi_{\rm LL}$ |
+|:-----------------|:----------|:---------------------------------|:-----------------:|:-----------------:|:-------------------------|:------------------|:---------:|:-----------------------|:----------------------------|
+| $V^{(0)}$        | HS (1, 1) | $0$                              |     $0.6653$      |        $0$        | $0$                      | $0$               | $0.6653$  | $0$                    | $0$                         |
+| $V^{(0)}$        | HS (0, 1) | $0$                              |        $0$        |     $0.09396$     | $0.09396$                | $0$               | $0.05299$ | $0$                    | $0$                         |
+| $V^{(0)}$        | HS (0, 0) | $0$                              |        $0$        |     $0.05637$     | $0.05637$                | $0$               |    $0$    | $0$                    | $0$                         |
+| $V^{(0)}$        | KS        | $0$                              |     $0.6154$      |     $0.05637$     | $0.05637$                | $0$               | $0.6154$  | $0$                    | $0$                         |
+| $V^{(0)}$        | CJT       | $0$                              |     $0.6154$      |     $0.05637$     | $0.05637$                | $0$               | $0.6154$  | $0$                    | $0$                         |
+| $V^{(1)}$, first | HS (1, 1) | $1.184$ (4)                      |     $0.6653$      |        $0$        | $0$                      | $0$               | $0.6653$  | $0$                    | $0$                         |
+| $V^{(1)}$, first | HS (0, 1) | $1.184$ (4)                      |        $0$        |     $0.09396$     | $0.09396$                | $0$               | $0.05299$ | $0$                    | $0$                         |
+| $V^{(1)}$, first | HS (0, 0) | $1.184$ (4)                      |        $0$        |     $0.05637$     | $0.05637$                | $0$               |    $0$    | $0$                    | $0$                         |
+| $V^{(1)}$, first | KS        | $1.184$ (4)                      |     $0.7893$      |     $0.05637$     | $0.05637$                | $0$               | $0.7893$  | $0$                    | $0$                         |
+| $V^{(1)}$, first | CJT       | $1.184$ (4)                      |     $0.7893$      |     $0.05637$     | $0.05637$                | $0$               | $0.7893$  | $0$                    | $0.262$                     |
+| $V^{(1)}$        | HS (1, 1) | $1.184$ (8)                      |     $0.6653$      |        $0$        | $0$                      | $0$               | $0.6653$  | $0$                    | $0$                         |
+| $V^{(1)}$        | HS (0, 1) | $1.184$ (8)                      |        $0$        |     $0.09396$     | $0.09396$                | $0$               | $0.05299$ | $0$                    | $0$                         |
+| $V^{(1)}$        | HS (0, 0) | $1.184$ (8)                      |        $0$        |     $0.05637$     | $0.05637$                | $0$               |    $0$    | $0$                    | $0$                         |
+| $V^{(1)}$        | KS        | $1.184$ (8)                      |     $0.9153$      |     $0.05637$     | $0.05637$                | $0$               | $0.9153$  | $0$                    | $0$                         |
+| $V^{(1)}$        | CJT       | $1.184$ (8)                      |     $0.9153$      |     $0.05637$     | $0.05637$                | $0$               | $0.9153$  | $0$                    | $0.262$                     |
 
-## The kinetic part and the decay constants
-
-The terms with two derivatives that GEE allows are built from two
-invariants:
-$$\mathcal L^X_{\rm kin}=\sum_p\eta^{\rm LL}_{pp}\Big[Z^X_{\rm SF}(\nabla_p\vec\Phi)^\dagger\cdot\nabla_p\vec\Phi+Y^X_{\rm SF}\frac{|\vec\Phi^\dagger\cdot\nabla_p\vec\Phi|^2}{|\vec\Phi|^2}\Big].
-\label{eq:Lkin}$$ On the vacuum $\Phi_0\vec e_3$ a rotation of the
-phase, $\vec\Phi=\Phi_0e^{i\vartheta_0}\vec e_3$, makes both invariants
-equal to $\Phi_0^2(\partial\vartheta_0)^2$, so
-(<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) is
-$\frac12(f^{X,{\rm F}}_{\rm SF})^2(\partial\vartheta_0)^2$ with
-$(f^{X,{\rm F}}_{\rm SF})^2=2(Z^X_{\rm SF}+Y^X_{\rm SF})\Phi_0^2$; an
-isospin rotation about $\vec e_1$ makes
-$\vec\Phi^\dagger\cdot\partial\vec\Phi=0$, and
-$(f^{X,{\rm I}}_{\rm SF})^2=2Z^X_{\rm SF}\Phi_0^2$. A chemical potential
-$\mu^{\rm F}$ of the fermion number enters as the time component of the
-covariant derivative,
-$\partial_0\vartheta_0\to\partial_0\vartheta_0-2\mu^{\rm F}$, and lowers
-the energy by $\frac12(f^{X,{\rm F}}_{\rm SF})^2(2\mu^{\rm F})^2$; the
-microscopic theory lowers it by
-$\frac12\chi^{\rm FF}_{\rm SF}(\mu^{\rm F})^2$, with the static
-susceptibility $\chi^{\rm FF}_{\rm SF}$ of the vacuum (computed by
-central differences of self-consistent states with a small chemical
-potential). Likewise for $\mu^1$. Hence
-$$(f^{X,{\rm F}}_{\rm SF})^2=\tfrac14\chi^{\rm FF}_{\rm SF},\quad(f^{X,{\rm I}}_{\rm SF})^2=\chi^{11}_{\rm SF},\qquad Z^X_{\rm SF}=\frac{\chi^{11}_{\rm SF}}{2\Phi_0^2},\quad Z^X_{\rm SF}+Y^X_{\rm SF}=\frac{\chi^{\rm FF}_{\rm SF}}{8\Phi_0^2}.
-\label{eq:ZY}$$ The unbroken generator $T^3_{\rm LL}$ has no stiffness,
-$\chi^{33}_{\rm SF}=0$, as (<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) requires. The space components
-computed from states with a uniform twist differ from these time
-components because the sharp cutoff on the momenta is not
-Lorentz-invariant; the Lorentz-covariant form
-(<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) is used with the time
-components. Table <a href="#tab:kin" data-reference-type="ref"
-data-reference="tab:kin">4</a> gives the numbers. The effective
-Lagrangian of method $X$ is
-$\mathcal L^X=\mathcal L^X_{\rm kin}-\mathcal V^X_{\rm SF}+\mathcal L^{\rm YM}$:
-a complex isospin vector of fermion number 2 with a Mexican-hat
-potential, coupled to $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$.
-
-<div class="ruledtabular">
-
-<div id="tab:kin">
-
-| method   | $10^2Z$ |      $10^3Y$ | $10^3\chi^{11}$ | $10^3\chi^{\rm FF}$ | $f^{\rm F}$ | $f^{\rm I}$ | $M^{\rm H}$ (resp.) | $M^{\rm NU}$ (resp.) | $2E^{\rm gap}$ |
-|:---------|--------:|-------------:|----------------:|--------------------:|------------:|------------:|--------------------:|---------------------:|---------------:|
-| HS (1,1) |  1.5753 |      -0.2539 |          5.1186 |              20.145 |    0.070966 |    0.071545 |             0.81369 |              0.80613 |        0.90593 |
-| HS (0,1) |  1.7500 |      -0.2531 |          4.5867 |              18.081 |    0.067233 |    0.067725 |             0.72508 |              0.72508 |        0.82717 |
-| HS (0,0) |  1.9998 | 0.0000001196 |          3.7692 |              15.077 |    0.061394 |    0.061394 |             0.61439 |              0.61439 |        0.73278 |
-| KS       |  2.0004 |        3.584 |          4.3170 |              20.362 |    0.071348 |    0.065704 |             0.60348 |              0.65728 |        0.73278 |
-| CJT      |  2.1213 |        2.376 |          4.5779 |              20.362 |    0.071348 |    0.067660 |             0.60348 |              0.64401 |        0.73278 |
-
-The coefficients of the kinetic part
-(<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>), the susceptibilities and the
-decay constants, and the masses of the amplitude mode and of the
-non-unitary doublet from the linear response (exact small oscillations
-of each method) and from the effective Lagrangian, with the threshold
-$2E^{X,{\rm gap}}_{\rm SF}$.
+The largest eigenvalues of the static response of the normal vacuum, by
+channel: the doublet-singlet pairs $\lambda^{\rm H}$ (with the
+multiplicity), the scalar channel $\lambda^{\rm S}$, the triplet pairs
+of $\Psi_{\rm LL}$ $\lambda^{\rm T}$, and the largest eigenvalues of the
+other pair channels, of the normal channels and of the mixings;
+$V^{(0)}$ is the potential without the pairing terms, $V^{(1)}$ that of
+the article.
 
 </div>
 
+# The stationary states
+
+The iteration was started from nineteen self-energies: the normal
+vacuum, pair self-energies along each doublet, along the custodial and
+other directions of the bidoublet, along the pairs of one field, shifts
+of the masses, polarizations of the isospin and of the singlets, and
+mixings. Table <a href="#tab:states" data-reference-type="ref"
+data-reference="tab:states">6</a> gives the stationary states that they
+reach and the largest eigenvalue of their static response in the
+doublet-singlet pairs. With the pairing terms every state other than the
+custodial superfluid has an eigenvalue above 1: a small pair amplitude
+grows on it. The *scalar condensate* of KS and CJT of the second
+version, reached from the start that shifts every mass by $-1$, has no
+pairs and no mixing, and the Dirac masses of all four species are
+negative; it occurs only where the exchange contractions couple the
+scalar density of $\Psi_{\rm LL}$ with those of both singlets.
+
+<div id="tab:states">
+
+| potential        | method    | stationary state                | $10^4\,\mathcal E^X$ | largest eigenvalue, doublet-singlet pairs |
+|:-----------------|:----------|:--------------------------------|:--------------------:|:------------------------------------------|
+| $V^{(0)}$        | HS (1, 1) | normal vacuum                   |         $0$          | \-                                        |
+| $V^{(1)}$, first | HS (1, 1) | Higgs superfluid of one doublet |      $-5.49853$      | ground state                              |
+| $V^{(1)}$, first | HS (1, 1) | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(1)}$        | HS (1, 1) | custodial Higgs superfluid      |      $-11.2952$      | ground state                              |
+| $V^{(1)}$        | HS (1, 1) | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(0)}$        | HS (0, 1) | normal vacuum                   |         $0$          | \-                                        |
+| $V^{(1)}$, first | HS (0, 1) | Higgs superfluid of one doublet |      $-5.28389$      | ground state                              |
+| $V^{(1)}$, first | HS (0, 1) | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(1)}$        | HS (0, 1) | custodial Higgs superfluid      |      $-10.5678$      | ground state                              |
+| $V^{(1)}$        | HS (0, 1) | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(0)}$        | HS (0, 0) | normal vacuum                   |         $0$          | \-                                        |
+| $V^{(1)}$, first | HS (0, 0) | Higgs superfluid of one doublet |      $-5.28389$      | ground state                              |
+| $V^{(1)}$, first | HS (0, 0) | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(1)}$        | HS (0, 0) | custodial Higgs superfluid      |      $-10.5678$      | ground state                              |
+| $V^{(1)}$        | HS (0, 0) | Higgs superfluid of one doublet |      $-5.28389$      | $1.1838$                                  |
+| $V^{(1)}$        | HS (0, 0) | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(0)}$        | KS        | normal vacuum                   |         $0$          | \-                                        |
+| $V^{(1)}$, first | KS        | Higgs superfluid of one doublet |      $-6.2857$       | ground state                              |
+| $V^{(1)}$, first | KS        | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(1)}$        | KS        | custodial Higgs superfluid      |      $-16.4192$      | ground state                              |
+| $V^{(1)}$        | KS        | scalar condensate               |      $-4.05023$      | $1.126$                                   |
+| $V^{(1)}$        | KS        | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(0)}$        | CJT       | normal vacuum                   |         $0$          | \-                                        |
+| $V^{(1)}$, first | CJT       | Higgs superfluid of one doublet |      $-6.2857$       | ground state                              |
+| $V^{(1)}$, first | CJT       | normal vacuum                   |         $0$          | $1.1838$                                  |
+| $V^{(1)}$        | CJT       | custodial Higgs superfluid      |      $-16.4192$      | ground state                              |
+| $V^{(1)}$        | CJT       | scalar condensate               |      $-4.05023$      | $1.126$                                   |
+| $V^{(1)}$        | CJT       | normal vacuum                   |         $0$          | $1.1838$                                  |
+
+The stationary states reached from the nineteen starts, their energy,
+and the largest eigenvalue of their static response in the
+doublet-singlet pairs.
+
 </div>
 
-## The collective modes
+Table <a href="#tab:ground" data-reference-type="ref"
+data-reference="tab:ground">7</a> gives the ground states: in the second
+version the custodial superfluid ($\varsigma^{(1)}=\varsigma^{(2)}$, the
+matrix of the pair coefficients proportional to $i\tau^2$), in the first
+the condensate of $\Phi$ alone ($\varsigma^{(2)}=0$).
+Table <a href="#tab:sfmasses" data-reference-type="ref"
+data-reference="tab:sfmasses">8</a> gives their Dirac masses.
+Table <a href="#tab:response" data-reference-type="ref"
+data-reference="tab:response">9</a> gives their static response: exactly
+four eigenvalues equal to 1 in the second version (three gauged
+generators and the particle number) and all others below 1. The
+condensate of one doublet, stationary in the second version, has an
+eigenvalue $1.184$–$1.209$ in the direction of the second doublet.
 
-The linear response of the vacuum (the time-dependent BdG equations
-linearized about the ground state, solved as an eigenvalue problem of
-the $120$-dimensional space of the local fluctuations at zero total
-momentum) gives the exact small oscillations of each method without any
-expansion in derivatives. For the polar vacuum along $\vec e_3$ it has
-three Goldstone modes of zero frequency (the phase and the two isospin
-angles), an amplitude (Higgs) mode $h$ of charge 0 and a doublet of
-non-unitary modes of charge $\pm1$ (the imaginary parts of the
-components 1 and 2 relative to the phase); both massive modes lie below
-the threshold $2E^{X,{\rm gap}}_{\rm SF}$ of two quasi-particles
-(Table <a href="#tab:kin" data-reference-type="ref"
-data-reference="tab:kin">4</a>), at 0.82–0.90 of it for the amplitude
-mode. The masses from the curvature of $\mathcal V^X_{\rm SF}$ and from
-(<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) differ from the response by
-7.0–17%, the error of a derivative expansion at the energy of the mode.
+<div id="tab:ground">
 
-## The gauge bosons, the zeugon and the surviving group
+| version | method    | $10^4\,\mathcal E^X$ | $\varsigma^{(1)}$ | $\varsigma^{(2)}$ | $E^{X,{\rm gap}}$ |
+|:--------|:----------|:---------------------|:------------------|:------------------|:------------------|
+| second  | HS (1, 1) | $-11.2952$           | $0.832878$        | $0.832878$        | $0.426792$        |
+| second  | HS (0, 1) | $-10.5678$           | $0.812846$        | $0.812846$        | $0.452967$        |
+| second  | HS (0, 0) | $-10.5678$           | $0.812846$        | $0.812846$        | $0.452967$        |
+| second  | KS        | $-16.4192$           | $0.890787$        | $0.890787$        | $0.384201$        |
+| second  | CJT       | $-16.4192$           | $0.890787$        | $0.890787$        | $0.384201$        |
+| first   | HS (1, 1) | $-5.49853$           | $0.82581$         | $0$               | $0.170392$        |
+| first   | HS (0, 1) | $-5.28389$           | $0.812846$        | $0$               | $0.2$             |
+| first   | HS (0, 0) | $-5.28389$           | $0.812846$        | $0$               | $0.2$             |
+| first   | KS        | $-6.2857$            | $0.867286$        | $0$               | $0.111459$        |
+| first   | CJT       | $-6.2857$            | $0.867286$        | $0$               | $0.111459$        |
 
-#### The mass matrix.
+The ground states: the energy, the two singular values of the matrix of
+the pair coefficients, and the gap.
 
-For a constant field $\vec\Phi$ and constant gauge fields
-$\mathcal A^a_p=\mathfrak c_a\mathcal A_p$ along a real vector
-$\mathfrak c=(\vec{\mathfrak c},\mathfrak c_{\rm F})$ of the four gauge
-directions $(W^1,W^2,W^3,B)$,
-(<a href="#eq:covPhi" data-reference-type="ref"
-data-reference="eq:covPhi">[eq:covPhi]</a>) gives
-$\nabla_p\vec\Phi=\mathcal A_p\vec X(\mathfrak c)$ with
-$\vec X(\mathfrak c)=2ig^{\rm F}_{\rm LL}\mathfrak c_{\rm F}\vec\Phi-g^{\rm v}_{\rm LL}\vec{\mathfrak c}\times\vec\Phi$,
-and (<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) becomes
-$\sum_p\eta^{\rm LL}_{pp}\mathcal A_p\mathcal A_p\,\mathcal K(\vec X)$
-with
-$\mathcal K(\vec X)=Z|\vec X|^2+Y|\vec\Phi^\dagger\cdot\vec X|^2/|\vec\Phi|^2$.
-The mass term is
-$\frac12\sum_{ab}\mathsf M_{ab}\sum_p\eta^{\rm LL}_{pp}\mathcal A^a_p\mathcal A^b_p$
-with
-$$\mathsf M_{ab}=2\,{\rm Re}\Big[Z\vec X_a^\dagger\cdot\vec X_b+Y\frac{(\vec\Phi^\dagger\cdot\vec X_a)^*(\vec\Phi^\dagger\cdot\vec X_b)}{|\vec\Phi|^2}\Big].
-\label{eq:massmatrix}$$ For a polar vacuum
-$\vec\Phi=\Phi_0e^{i\vartheta}\vec n$ the two parts of $\vec X$ are
-orthogonal, and
-$$\mathsf M=\begin{pmatrix}(M^X_{W,{\rm SF}})^2(\mathsf 1_3-\vec n\vec n^T)&0\\0&(M^X_{Z,{\rm SF}})^2\end{pmatrix},\qquad
-M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}f^{X,{\rm I}}_{\rm SF},\quad M^X_{Z,{\rm SF}}=2g^{\rm F}_{\rm LL}f^{X,{\rm F}}_{\rm SF}.
-\label{eq:MWMZ}$$ The eigenvector $(\vec n,0)$ has the eigenvalue 0: the
-zeugon $A=\vec n\cdot\vec W$, the massless gauge boson of the unbroken
-charge. The two directions orthogonal to $\vec n$ give $W^\pm$, and $B$
-is the $Z$.
+</div>
 
-#### Theorem (the massless bosons are the generators that leave the field unchanged).
+<div id="tab:sfmasses">
 
-If $Z>0$ and $Z+Y>0$, then for every field $\vec\Phi\ne0$ the null
-vectors of (<a href="#eq:massmatrix" data-reference-type="ref"
-data-reference="eq:massmatrix">[eq:massmatrix]</a>) are exactly the
-$\mathfrak c$ with $\vec X(\mathfrak c)=0$. *Proof.* By the
-Cauchy-Schwarz inequality
-$|\vec\Phi^\dagger\cdot\vec X|^2\le|\vec\Phi|^2|\vec X|^2$, so
-$\mathcal K(\vec X)\ge\min(Z,Z+Y)|\vec X|^2>0$ for $\vec X\ne0$. Since
-$\mathfrak c^T\mathsf M\mathfrak c=2\mathcal K(\vec X(\mathfrak c))\ge0$,
-$\mathsf M$ is positive semidefinite, and for such a matrix
-$\mathsf M\mathfrak c=0$ exactly when
-$\mathfrak c^T\mathsf M\mathfrak c=0$ (write
-$\mathsf M=\mathsf V^T\mathsf V$). Hence
-$\mathsf M\mathfrak c=0\Leftrightarrow\mathcal K(\vec X(\mathfrak c))=0\Leftrightarrow\vec X(\mathfrak c)=0$,
-and $\vec X(\mathfrak c)$ is the change of $\vec\Phi$ under the
-infinitesimal gauge transformation with the parameters $\mathfrak c_a$.
-$\square$ For a polar vacuum $\vec X=0$ requires $\mathfrak c_{\rm F}=0$
-and $\vec{\mathfrak c}\parallel\vec n$ (the two parts are orthogonal):
-exactly one massless boson. It does not mix with $B$ (the weak mixing
-angle vanishes) because the condensate has fermion number 2, so no
-admixture of $F_{\rm LL}$ leaves it unchanged. For the non-unitary field
-$\Phi_0(\vec e_3+i\vec e_1)/\sqrt2$,
-$\vec e_2\times\vec\Phi=-i\vec\Phi$, and $\vec X$ vanishes for
-$\mathfrak c\propto(0,2g^{\rm F}_{\rm LL},0,-g^{\rm v}_{\rm LL})$: the
-massless boson is $\cos\theta'W^2-\sin\theta'B$ with
-$\tan\theta'=g^{\rm v}_{\rm LL}/(2g^{\rm F}_{\rm LL})$,
-$\theta'=37.875^\circ$, the analogue of the weak mixing angle with $g'$
-replaced by $2g^{\rm F}_{\rm LL}$
-(Fig. <a href="#fig:mixing" data-reference-type="ref"
-data-reference="fig:mixing">1</a>).
+| version | method    | $M^{\rm u}$  | $M^{\rm d}$  | $M^\chi$    | $M^{\chi'}$ |
+|:--------|:----------|:-------------|:-------------|:------------|:------------|
+| second  | HS (1, 1) | $0.150111$   | $0.150111$   | $0.2$       | $0.2$       |
+| second  | HS (0, 1) | $0.2$        | $0.2$        | $0.2$       | $0.2$       |
+| second  | HS (0, 0) | $0.2$        | $0.2$        | $0.2$       | $0.2$       |
+| second  | KS        | $-0.0622797$ | $-0.0622797$ | $0.0601084$ | $0.0601084$ |
+| second  | CJT       | $-0.0622797$ | $-0.0622797$ | $0.0601084$ | $0.0601084$ |
+| first   | HS (1, 1) | $0.170392$   | $0.170392$   | $0.2$       | $0.2$       |
+| first   | HS (0, 1) | $0.2$        | $0.2$        | $0.2$       | $0.2$       |
+| first   | HS (0, 0) | $0.2$        | $0.2$        | $0.2$       | $0.2$       |
+| first   | KS        | $0.111459$   | $0.112423$   | $0.145585$  | $0.2$       |
+| first   | CJT       | $0.111459$   | $0.112423$   | $0.145585$  | $0.2$       |
 
-<figure id="fig:mixing">
-<embed src="figures/fig_part4_r1_massmatrix.pdf" style="width:85.0%" />
-<figcaption><span id="fig:mixing" label="fig:mixing"></span>The mass
-matrix (<a href="#eq:massmatrix" data-reference-type="ref"
-data-reference="eq:massmatrix">[eq:massmatrix]</a>) of the effective
-Lagrangian of CJT along the fields <span
-class="math inline"><em>Φ</em><sub>0</sub>(cos<em>υ</em> <em>e⃗</em><sub>3</sub>+<em>i</em>sin<em>υ</em> <em>e⃗</em><sub>1</sub>)</span>.
-Left: the four masses. Right: the squared components of the lightest
-boson. A massless boson exists only where the field has a continuous
-stabilizer (<span class="math inline"><em>υ</em> = 0</span>, <span
-class="math inline">45<sup>∘</sup></span>, <span
-class="math inline">90<sup>∘</sup></span>); at <span
-class="math inline"><em>υ</em> = 45<sup>∘</sup></span> it is <span
-class="math inline">cos <em>θ</em>′<em>W</em><sup>2</sup> − sin <em>θ</em>′<em>B</em></span>.</figcaption>
+The Dirac masses of the four species in the ground states.
+
+</div>
+
+<div id="tab:response">
+
+| version | method    | eigenvalues equal to 1     | largest other eigenvalue, relative number 0 | largest eigenvalue, relative number $\pm2$ | largest eigenvalue of the condensate of one doublet |
+|:--------|:----------|:---------------------------|:--------------------------------------------|:-------------------------------------------|:----------------------------------------------------|
+| second  | HS (1, 1) | 4 (to $2.7\times10^{-11}$) | $0.73609$                                   | $0$                                        | $1.1929$                                            |
+| second  | HS (0, 1) | 4 (to $2.5\times10^{-11}$) | $0.7377$                                    | $0.068957$                                 | $1.1838$                                            |
+| second  | HS (0, 0) | 4 (to $2.4\times10^{-11}$) | $0.7377$                                    | $0.041374$                                 | $1.1838$                                            |
+| second  | KS        | 4 (to $3\times10^{-11}$)   | $0.85591$                                   | $0.040262$                                 | $1.209$                                             |
+| second  | CJT       | 4 (to $3.1\times10^{-11}$) | $0.85591$                                   | $0.25157$                                  | $1.209$                                             |
+| first   | HS (1, 1) | 3 (to $2.5\times10^{-11}$) | $0.74209$                                   | $0$                                        | \-                                                  |
+| first   | HS (0, 1) | 3 (to $2.4\times10^{-11}$) | $0.7377$                                    | $0.093956$                                 | \-                                                  |
+| first   | HS (0, 0) | 3 (to $2.3\times10^{-11}$) | $0.7377$                                    | $0.056373$                                 | \-                                                  |
+| first   | KS        | 3 (to $2.6\times10^{-11}$) | $0.81823$                                   | $0.058986$                                 | \-                                                  |
+| first   | CJT       | 3 (to $2.4\times10^{-11}$) | $0.81823$                                   | $0.24379$                                  | \-                                                  |
+
+The static response of the ground states: the number of eigenvalues
+equal to 1, the largest other eigenvalue in the sector of relative
+number 0 and in the sectors $\pm2$, and the largest eigenvalue of the
+condensate of one doublet.
+
+</div>
+
+# The effective potential
+
+The effective potential $V^{\rm eff}_{\rm SH}(\varphi_{\rm SH})$ is the
+lowest energy per volume of the uniform states with the pair amplitude
+$\varphi_{\rm SH}$ along the direction of the vacuum. Minimizing the
+energy at a fixed pair amplitude adds a Lagrange multiplier times
+$\Pi^{\rm d}_{\rm SH}+(\Pi^{\rm d}_{\rm SH})^\dagger$ (and the same for
+$\Pi'^{\rm u}_{\rm SH}$ in the second version) to the Hamiltonian, so
+the constrained state is the ground state of
+(<a href="#eq:BdG" data-reference-type="ref"
+data-reference="eq:BdG">[eq:BdG]</a>) with
+$\mathsf P=d\,\mathsf P^{\rm vac}$ for some $d$ and the normal
+self-energy that its own local matrices produce. The program fixes $d$,
+iterates $\mathsf N$ to self-consistency, and records the energy, the
+pair amplitude and the Dirac masses, for 33 values
+$d=0,0.05\,d^0_{\rm SH},\dots,1.6\,d^0_{\rm SH}$, each state started
+from the normal self-energy of its neighbour. Because the
+self-consistent $\mathsf N$ need not be unique at fixed $d$, the
+continuation is made from both ends: from the ground state downward to
+$d=0$ and upward (the branch of the ground state), and from the normal
+vacuum upward. Where the two reach different states at the same $d$, the
+lower branch at the same $\varphi_{\rm SH}$ is $V^{\rm eff}_{\rm SH}$,
+and the other is followed with the step $0.005\,d^0_{\rm SH}$ to its
+end. The derivatives at the minimum follow from central differences in
+$d$ with the steps 0.01 and 0.02 combined by Richardson extrapolation,
+by the parametric formulas $V'=\mathcal E_d/\varphi_d$ and
+$V''=(\mathcal E_{dd}-V'\varphi_{dd})/\varphi_d^2$.
+
+In every method and both versions $V^{\rm eff}_{\rm SH}$ is a Mexican
+hat with its minimum at $d^0_{\rm SH}$
+(Table <a href="#tab:minimum" data-reference-type="ref"
+data-reference="tab:minimum">10</a>,
+Fig. <a href="#fig:potential" data-reference-type="ref"
+data-reference="fig:potential">1</a>). Its top
+(Table <a href="#tab:top" data-reference-type="ref"
+data-reference="tab:top">11</a>) is the normal vacuum, except in KS and
+CJT of the second version, where the branch of the ground state ends at
+$d=0$ in the scalar condensate, at
+$V^{\rm eff}_{\rm SH}(0)=\ensuremath{-0.247}\,|V^{\rm eff}_{\rm SH}(\varphi^0_{\rm SH})|$;
+along it the masses of $\Psi_{\rm LL}$ stay negative. There the
+continuation from the normal vacuum follows a second branch, with
+positive masses of $\Psi_{\rm LL}$, which lies above the effective
+potential at the same pair amplitude by $0.21$–$0.247$ times the depth.
+The continuation with the fine step follows it up to
+$d=0.24\,d^0_{\rm SH}$, where the number of steps of the iteration has
+risen steeply (to 3856), as near a fold where two branches of stationary
+states meet and end; at $0.245\,d^0_{\rm SH}$ it reaches the branch of
+the ground state. The first form of this computation followed only the
+continuation from the normal vacuum and stated a top of zero in every
+method; for KS and CJT of the second version that was incorrect, and the
+present computation replaces it. The minimum, its curvature and every
+later result are computed at the ground state and are unchanged.
+
+<div id="tab:minimum">
+
+| version | method    | $d^0_{\rm SH}$ | $\varphi^0_{\rm SH}$ | $10^4\,\mathcal E^X$ | $V^{\rm eff\,\prime\prime}_{\rm SH}(\varphi^0_{\rm SH})$ |
+|:--------|:----------|:---------------|:---------------------|:---------------------|:---------------------------------------------------------|
+| second  | HS (1, 1) | $0.832878$     | $0.00826267$         | $-11.2952$           | $149.188$                                                |
+| second  | HS (0, 1) | $0.812846$     | $0.00806394$         | $-10.5678$           | $143.361$                                                |
+| second  | HS (0, 0) | $0.812846$     | $0.00806394$         | $-10.5678$           | $143.361$                                                |
+| second  | KS        | $0.890787$     | $0.00883717$         | $-16.4192$           | $181.683$                                                |
+| second  | CJT       | $0.890787$     | $0.00883717$         | $-16.4192$           | $181.683$                                                |
+| first   | HS (1, 1) | $0.82581$      | $0.00819256$         | $-5.49853$           | $73.148$                                                 |
+| first   | HS (0, 1) | $0.812846$     | $0.00806394$         | $-5.28389$           | $71.6803$                                                |
+| first   | HS (0, 0) | $0.812846$     | $0.00806394$         | $-5.28389$           | $71.6803$                                                |
+| first   | KS        | $0.867286$     | $0.00860402$         | $-6.2857$            | $80.0121$                                                |
+| first   | CJT       | $0.867286$     | $0.00860402$         | $-6.2857$            | $80.0121$                                                |
+
+The minimum of the effective potential: the pair self-energy and the
+pair amplitude of the ground state, its energy, and the curvature there.
+
+</div>
+
+<div id="tab:top">
+
+| version | method    | the state at $\varphi_{\rm SH}=0$ | $10^4\,V^{\rm eff}_{\rm SH}(0)$ | $V^{\rm eff}_{\rm SH}(0)$ / depth | $M^{\rm u}=M^{\rm d}$ | $M^\chi$     | $M^{\chi'}$  |
+|:--------|:----------|:----------------------------------|:--------------------------------|:----------------------------------|:----------------------|:-------------|:-------------|
+| second  | HS (1, 1) | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| second  | HS (0, 1) | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| second  | HS (0, 0) | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| second  | KS        | the scalar condensate             | $-4.05023$                      | $-0.2467$                         | $-0.329757$           | $-0.0981686$ | $-0.0981686$ |
+| second  | CJT       | the scalar condensate             | $-4.05023$                      | $-0.2467$                         | $-0.329757$           | $-0.0981686$ | $-0.0981686$ |
+| first   | HS (1, 1) | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| first   | HS (0, 1) | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| first   | HS (0, 0) | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| first   | KS        | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+| first   | CJT       | the normal vacuum                 | $0$                             | $0$                               | $0.2$                 | $0.2$        | $0.2$        |
+
+The top of the hat: the state of the branch of the ground state at
+$\varphi_{\rm SH}=0$, its energy, the ratio of that energy to the depth
+of the minimum, and its Dirac masses.
+
+</div>
+
+<figure id="fig:potential">
+<embed src="figures/fig_sh_hg_potential.pdf" style="width:90.0%" />
+<figcaption><span id="fig:potential" label="fig:potential"></span>The
+effective potential divided by the depth of its minimum, against the
+pair amplitude, for the five methods: the second version (left) and the
+first (right). KS and CJT coincide. The dashed line with circles is the
+second branch of KS and CJT of the second version.</figcaption>
 </figure>
 
-#### The microscopic check.
+# The susceptibilities and the masses of the gauge bosons
 
-The same masses follow from the microscopic theory without the effective
-Lagrangian: the response of the self-consistent vacuum to constant time
-components of the gauge fields (equivalently, to chemical potentials of
-the four charges) gives the matrix $g_ag_b\chi^{ab}_{\rm SF}$. For the
-vacuum $\Phi_0e^{i\pi/5}\vec e_1$ (chosen so that the identification of
-the massless boson is not trivial) its smallest eigenvalue vanishes to
-rounding ($8\times10^{-14}$ of the largest) with the eigenvector $W^1$,
-and the matrix agrees with
-(<a href="#eq:massmatrix" data-reference-type="ref"
-data-reference="eq:massmatrix">[eq:massmatrix]</a>) to $3\times10^{-12}$
-of $(M^X_{Z,{\rm SF}})^2$ in the five methods.
+## Chemical potentials as the time components of the gauge fields
 
-#### The surviving group.
+A uniform, static gauge field couples to the charge densities. Its time
+component $A^a_0$ acts like a chemical potential $\mu^a=g_aA^a_0$ of the
+charge $Q_a$. In the effective Lagrangian of the pair fields,
+$Z_{\rm SH}|D_\mu\Phi|^2$ gives for a time component the term
+$Z_{\rm SH}\mu^2|Q\Phi|^2$, which lowers the energy of the superfluid by
+the same amount: the susceptibilities
+$$\chi^{ab}=\frac{\partial\langle Q_a\rangle}{\partial\mu^b}=-\frac{\partial^2\mathcal E}{\partial\mu^a\partial\mu^b}
+\label{eq:chi}$$ of the ground state of $H-\sum_b\mu^bQ_b$ are the
+coefficients of the mass term. The eight generators are $T^1$, $T^2$,
+$T^3$, $T^1_R$, $T^2_R$, $T^3_R$, $R_{\rm SH}$ and
+$F^{\rm tot}_{\rm SH}$; the susceptibilities of the hypercharge
+$Y=T^3_R+\tfrac14R_{\rm SH}$ are the corresponding combinations of
+theirs, and the mass matrix of $(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ is
+$$(\mathsf M^{\rm g})^2_{ab}=g_ag_b\,\chi^{ab},\qquad a,b=1,2,3,Y,\qquad g_1=g_2=g_3=g,\quad g_Y=g',
+\label{eq:Mg}$$ where the index $a=1,2,3$ stands for $T^a$ and the index
+$Y$ for the hypercharge. The space components of a uniform gauge field
+would also give it, but with the sharp cutoff of the momenta the normal
+vacuum answers them with a current, an artifact that the time components
+avoid: the normal vacuum has a gap and does not respond to a chemical
+potential at all. The program computes the ground states of $H-\mu^bQ_b$
+for $\mu^b=\pm h$, $\pm2h$ ($h=0.005$) and differentiates the charge
+densities $\langle Q_a\rangle=\mathrm{tr}(Q_a\varrho)$ by central
+differences with Richardson extrapolation; by the theorem of Hellmann
+and Feynman $\partial\mathcal E/\partial\mu^a=-\langle Q_a\rangle$, so
+$\chi$ must be symmetric. The Python program computes the same
+susceptibilities from the second derivatives of the energy, a second
+method.
 
-The stabilizer of the vacuum $\Phi_0\vec e_3$ in GEE is
-$SL(2,\mathbb C)\times O(2)$, with
-$O(2)=\{e^{i\theta T^3_{\rm LL}}\}\rtimes\{\mathsf 1,\mathsf r\}$, where
-$\mathsf r$ is the rotation by $\pi$ about $\vec e_1$ combined with the
-phase $e^{i\pi F_{\rm LL}/2}$. Its identity component is the group
-$U(1)^{\rm Q}_{\rm LL}$ of the charge $Q_{\rm LL}=T^3_{\rm LL}$ of
-$SU(2)_{\rm v}$, not the electric charge (charges $\pm\frac12$ of the
-spinor field and $\pm1$ of $W^\pm$); $e^{2\pi iQ_{\rm LL}}$ and
-$e^{i\pi F_{\rm LL}}$ act alike on every field. $\mathsf r$ reverses
-$Q_{\rm LL}$ and acts on the gauge fields as $A\to-A$, $W^\pm\to W^\mp$,
-$Z\to Z$: a charge conjugation of the zeugon, without a gauge boson.
-$SL(2,\mathbb C)$ is unbroken because the condensate is a Lorentz
-scalar.
+## Results
 
-#### The zeugon.
+Table <a href="#tab:chi" data-reference-type="ref"
+data-reference="tab:chi">12</a> gives the susceptibilities. In every
+method they are symmetric, the row of $Q=T^3+Y$ vanishes (the photon is
+massless), and the matrix of the eight generators has rank four in the
+second version; in the first, where of $SU(2)_R$ only $T^3_R$ is a
+symmetry, the matrix of $T^1$, $T^2$, $T^3$, $R_{\rm SH}$ and
+$F^{\rm tot}_{\rm SH}$ has rank three. In the second version the
+custodial structure $\chi(T^a)=\chi(T^a_R)=-\chi(T^a,T^a_R)$ holds, so
+$\chi^{YY}=\chi^{33}=-\chi^{3Y}$ and the mass matrix
+(<a href="#eq:Mg" data-reference-type="ref"
+data-reference="eq:Mg">[eq:Mg]</a>) has the eigenvalues $0$,
+$g^2\chi^{11}$ (twice) and $(g^2+g'^2)\chi^{33}$:
+$$M_{W,{\rm SH}}=\tfrac12g\,v_{\rm SH},\quad M_{Z,{\rm SH}}=\tfrac12(g^2+g'^2)^{1/2}v_{\rm SH},\quad v_{\rm SH}=2(\chi^{11})^{1/2},\quad
+\rho_{\rm SH}=\frac{\chi^{11}}{\chi^{33}}=1 .
+\label{eq:rho}$$ In the first version $\rho_{\rm SH}$ is
+$1.202$–$1.247$, which the measured
+$M_W^2/(M_Z^2\cos^2\hat\theta_W)=1.0103$ (with the $\overline{\rm MS}$
+angle $\sin^2\hat\theta_W(M_Z)=0.23122$ (Takahashi et al. 2026))
+excludes. Table <a href="#tab:scale" data-reference-type="ref"
+data-reference="tab:scale">13</a> gives the scale and the masses in GeV,
+with $v_{\rm SH}=v$, and
+Table <a href="#tab:gapgev" data-reference-type="ref"
+data-reference="tab:gapgev">14</a> the gap in GeV: the lightest
+fermionic excitations, of the charges $\frac34$ and $-\frac14$.
 
-The massless boson $A=\vec n\cdot\vec W$ is not the photon: it couples
-with the strength $g^{\rm v}_{\rm LL}$ to the charge
-$Q_{\rm LL}=\vec n\cdot\vec T_{\rm LL}$ of $SU(2)_{\rm v}$, which only
-the spinor field ($\pm\frac12$), $W^\pm$ and the two non-unitary scalars
-($\pm1$) carry, and nothing in the model carries electric charge. We
-name it the zeugon (from the Greek *zeugos*, a yoked pair), because it
-is the only gauge boson that attracts the two members of the condensed
-pair. In the condensed channel $\mathsf K^3_{\rm LL}$ the exchange of
-one gauge boson between the two charges of a pair, in the limit of a
-heavy boson (a contact interaction, per unit of its coupling; negative
-means attraction), has the pair energy $-1$ for $W^3$, $+1$ for each of
-$W^1$ and $W^2$, and $+4$ for $B$: in every spin-zero channel the three
-isospin bosons together give $+1$, because the pair is an isospin
-triplet, $\vec T_1\cdot\vec T_2=+\frac14$, so that no gauge boson
-attracts a spin-zero pair in the symmetric vacuum, where all four are
-massless. The linearized gap equation of the normal vacuum with the
-exchange of $W^3$ alone has the largest eigenvalue
-$0.0357\,(g^{\rm v}_{\rm LL})^2$, so that the zeugon alone would pair
-the vacuum only for $g^{\rm v}_{\rm LL}>5.29$; with all four bosons at
-the couplings of the model the eigenvalue is $-0.0465$, a repulsion. In
-the CJT superfluid with the exchange of the gauge bosons included
-self-consistently, the exchange energies per volume are
-$-4.83\times10^{-5}$ for the zeugon (an attraction), $4.01\times10^{-5}$
-for each of $W^1$ and $W^2$, and $6.46\times10^{-5}$ for $B$; their sum,
-$9.65\times10^{-5}$, weakens the condensate, which the pairing term of
-the potential (<a href="#eq:V" data-reference-type="ref"
-data-reference="eq:V">[eq:V]</a>) produces. The mass of the zeugon
-computed in that state is $2.0\times10^{-8}$, against
-$M^{\rm CJT}_{W,{\rm SF}}=0.0430$. *A remark on its symmetry:* the
-element $\mathsf r$ of the surviving group reverses the zeugon and
-exchanges $W^+$ and $W^-$, and it is a gauge transformation, so the
-charge conjugation of the zeugon is a local symmetry, the defining
-property of Alice electrodynamics (Kiskis 1978; Schwarz 1982; Bucher,
-Lo, and Preskill 1992). Since $(\vec n,\vartheta)$ and
-$(-\vec n,\vartheta+\pi)$ are the same vacuum, the vacuum manifold
-contains loops along which $\vec n$ turns into $-\vec n$ while the phase
-advances by $\pi$; a half-quantum vortex along such a loop is an Alice
-string, which reverses $Q_{\rm LL}$ of every particle carried around it,
-as in the polar phase of spin-one condensates (Leonhardt and Volovik
-2000). These strings, and the monopoles of $U(1)^{\rm Q}_{\rm LL}$ that
-the sphere of directions $\vec n$ allows, follow from the topology of
-the vacuum manifold and are not computed here.
+<div id="tab:chi">
 
-#### The count of the degrees of freedom and the Higgs mechanism in time.
+| version | method    | $\chi^{11}$ | $\chi^{33}$ | $\chi^{YY}$ | $\chi^{3Y}$ | $\chi^{FF}$ | $\rho_{\rm SH}$ |
+|:--------|:----------|:------------|:------------|:------------|:------------|:------------|:----------------|
+| second  | HS (1, 1) | $2.73681$   | $2.73681$   | $2.73681$   | $-2.73681$  | $43.4088$   | $1$             |
+| second  | HS (0, 1) | $2.60214$   | $2.60214$   | $2.60214$   | $-2.60214$  | $41.2905$   | $1$             |
+| second  | HS (0, 0) | $2.60214$   | $2.60214$   | $2.60214$   | $-2.60214$  | $41.6343$   | $1$             |
+| second  | KS        | $3.11209$   | $3.11209$   | $3.11209$   | $-3.11209$  | $58.367$    | $1$             |
+| second  | CJT       | $3.11209$   | $3.11209$   | $3.11209$   | $-3.11209$  | $58.367$    | $1$             |
+| first   | HS (1, 1) | $1.66832$   | $1.33798$   | $1.33798$   | $-1.33798$  | $21.4077$   | $1.2468945$     |
+| first   | HS (0, 1) | $1.59944$   | $1.29568$   | $1.29568$   | $-1.29568$  | $20.7308$   | $1.2344421$     |
+| first   | HS (0, 0) | $1.59944$   | $1.30107$   | $1.30107$   | $-1.30107$  | $20.8171$   | $1.2293239$     |
+| first   | KS        | $1.88651$   | $1.56984$   | $1.56984$   | $-1.56984$  | $25.1174$   | $1.2017215$     |
+| first   | CJT       | $1.88651$   | $1.56984$   | $1.56984$   | $-1.56984$  | $25.1174$   | $1.2017215$     |
 
-Before the breaking: four massless vector fields (8 polarizations) and
-six real components of $\vec\Phi$, together 14. After: three massive
-vector fields (9), the zeugon (2), and three massive scalars ($h$ and
-the two non-unitary fields), together 14: the three Goldstone fields
-have become the longitudinal polarizations of $W^\pm$ and $Z$. Keeping
-only the phase $\vartheta$ and $B$, the Lagrangian
-$\frac12B_{01}^2+\frac12(f^{\rm F})^2[(\partial_0\vartheta+2g^{\rm F}_{\rm LL}B_0)^2-(\partial_1\vartheta-2g^{\rm F}_{\rm LL}B^1)^2]$
-was integrated in time in two gauges: in the temporal gauge with CVODE,
-and in the unitary gauge, where Gauss’s law is an algebraic equation of
-a differential-algebraic system of index one, with IDA (Hindmarsh et al.
-2005; Gardner et al. 2022). A wave packet of the Goldstone field that
-moves at the speed 1 without the gauge field becomes, with it, the
-longitudinal $Z$: its energy moves at the group velocity
-$k/(k^2+(M^X_{Z,{\rm SF}})^2)^{1/2}$ of the dispersion
-$\omega^2=k^2+(M^X_{Z,{\rm SF}})^2$, and the two integrators agree on
-the gauge-invariant fields.
-
-# Finite temperature
-
-## Thermal states and the free energy
-
-At the temperature $T$ the state is the thermal state
-$f(\mathsf H_{\rm SF})$ of (<a href="#eq:BdG" data-reference-type="ref"
-data-reference="eq:BdG">[eq:BdG]</a>),
-$f(\varepsilon)=1/(e^{\varepsilon/T}+1)$, and its free energy per volume
-is $\mathcal E^X_{\rm SF}-T\mathcal S_{\rm SF}$, with the energy of
-method $X$ (unchanged) and the entropy of the quasi-free state,
-$$\mathcal S_{\rm SF}=-\frac12\int\frac{d^3q}{(2\pi)^3}\sum_{k=1}^{16}\big[f_k\ln f_k+(1-f_k)\ln(1-f_k)\big],
-\label{eq:entropy}$$ where $f_k$ are the occupations of the 16
-eigenvalues of $\mathsf H_{\rm SF}(\vec q)$; every mode appears twice
-(at $\pm\varepsilon$, with the occupations $f$ and $1-f$), hence the
-factor $\frac12$. For HS this is the saddle point at finite $T$, for CJT
-the truncated effective action at finite $T$ (Amelino-Camelia and Pi
-1993), and for KS Mermin’s functional (Mermin 1965) with the
-exchange-correlation energy of $T=0$. The self-energies are the
-derivatives of the energy as at $T=0$, and the stationarity in the
-occupations gives the Fermi function. The free energy of the field,
-$\mathcal F^X_{\rm SF}(\vec\Phi;T)$, is computed with an applied pair
-field as the effective potential, and measured from the normal state at
-the same $T$.
-
-## The critical temperature
-
-The normal state at $T$ has a normal self-energy that is a Dirac mass
-$M^{X,{\rm n}}_{\rm SF}(T)$ (the thermal particles and antiparticles
-change the scalar density, which shifts the mass where
-$g^{X,{\rm S}}_{\rm SF}\ne0$). Its static pair response in the channel
-$\mathsf K^3_{\rm LL}$ has the eigenvalue
-$$\lambda^{\rm P}_{\rm SF}(T)=\frac{g^{X,{\rm P}}_{\rm SF}\,I_1\big(M^{X,{\rm n}}_{\rm SF}(T),T\big)}{\pi^2},\qquad I_1(M,T)=\int_0^{\Lambda_{\rm LL}}\frac{q^2\tanh(E/2T)}{E}dq,
-\label{eq:lambdaT}$$ ($\tanh(E/2T)=1-2f(E)$ is the thermal factor of a
-pair of quasi-particles), and the critical temperature solves
-$\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$. In every method
-$\lambda^{\rm P}_{\rm SF}(T)$ does not increase with $T$ (checked on 60
-temperatures from $0.01$ to $0.6$ in Rust and in the notebook and on 600
-temperatures in Python), so $T^{X,{\rm c}}_{\rm SF}$ is unique; below it
-a polar start ends in a superfluid, above it in the normal state.
-Table <a href="#tab:T0" data-reference-type="ref"
-data-reference="tab:T0">5</a> gives $T^{X,{\rm c}}_{\rm SF}$.
-
-## The gap equation, and the Dirac mass of the superfluid
-
-The polar superfluid at $T$ with the Dirac mass $M^{X,{\rm D}}_{\rm SF}$
-and the order parameter $\Phi_0(T)$ has the pair self-consistency (the
-gap equation)
-$$1=\frac{g^{X,{\rm P}}_{\rm SF}}{\pi^2}\,I_1\big(E^{\rm gap}(T),T\big),\qquad E^{\rm gap}(T)=\big((M^{X,{\rm D}}_{\rm SF})^2+\Phi_0(T)^2\big)^{1/2}.
-\label{eq:gap}$$ Its scalar density,
-$n^{\rm S}=-\frac2{\pi^2}[M^{X,{\rm D}}_{\rm SF}I_1(E^{\rm gap},T)-m_{\rm LL}I_1(m_{\rm LL},0)]$,
-contains the same integral, which
-(<a href="#eq:gap" data-reference-type="ref"
-data-reference="eq:gap">[eq:gap]</a>) fixes to
-$\pi^2/g^{X,{\rm P}}_{\rm SF}$:
-$n^{\rm S}=-2M^{X,{\rm D}}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}+2m_{\rm LL}I_1(m_{\rm LL},0)/\pi^2$.
-The scalar self-consistency
-$M^{X,{\rm D}}_{\rm SF}-m_{\rm LL}=g^{X,{\rm S}}_{\rm SF}n^{\rm S}$
-therefore contains no temperature: *the Dirac mass of the superfluid
-does not depend on the temperature*, and $\Phi_0(T)$ follows from
-(<a href="#eq:gap" data-reference-type="ref"
-data-reference="eq:gap">[eq:gap]</a>) alone. Near
-$T^{X,{\rm c}}_{\rm SF}$ it vanishes like
-$(1-T/T^{X,{\rm c}}_{\rm SF})^{1/2}$. The ratio
-$E^{X,{\rm gap}}_{\rm SF}(0)/T^{X,{\rm c}}_{\rm SF}=1.65\mbox{--}1.74$
-is of the size of the ratio 1.764 of the theory of Bardeen, Cooper and
-Schrieffer (J. Bardeen, Cooper, and Schrieffer 1957).
-
-## The radius of convergence, and Landau’s theory
-
-The free energy is an integral over the momenta of $-T\ln(2\cosh(E/2T))$
-(one term per pair of eigenvalues $\pm E$) and of densities with the
-factor $\tanh(E/2T)/E$. With the Matsubara frequencies
-$\omega_m=(2m+1)\pi T$,
-$$\ln\big(2\cosh(E/2T)\big)=\ln2+\sum_{m=0}^\infty\ln\Big(1+\frac{E^2}{\omega_m^2}\Big),\qquad\frac{\tanh(E/2T)}{E}=4T\sum_{m=0}^\infty\frac1{\omega_m^2+E^2},
-\label{eq:matsubara}$$ functions of $\omega_m^2+q^2+M^2+\Phi_{\rm a}^2$.
-Integrated over the momenta, each is singular where
-$\omega_m^2+M^2+\Phi_{\rm a}^2=0$; the nearest such point to the origin
-is $\Phi_{\rm a}^2=-(M^{X,{\rm n}}_{\rm SF}(T)^2+\pi^2T^2)$. The series
-of the free energy in $|\vec\Phi|^2$ about the normal state therefore
-converges within a radius of the order of
-$r(T)=(M^{X,{\rm n}}_{\rm SF}(T)^2+\pi^2T^2)^{1/2}$, which grows with
-$T$. Near $T^{X,{\rm c}}_{\rm SF}$ the order parameter lies well inside
-it, the residual of the Landau form falls to 0.00078–0.0017% of the
-depth at $0.98\,T^{X,{\rm c}}_{\rm SF}$, and the order parameter of
-Landau’s theory, $(-a/2b)^{1/2}$ with the Taylor coefficients $a$, $b$
-of the free energy at the origin, has an error of relative order
-$1-T/T^{X,{\rm c}}_{\rm SF}$. These are statements about the mean-field
-free energy; Sec. <a href="#sec:gi" data-reference-type="ref"
-data-reference="sec:gi">7</a> shows that these temperatures lie inside
-the critical region.
-
-<div class="ruledtabular">
-
-<div id="tab:T0">
-
-| method   | $g^{X,{\rm S}}_{\rm SF}$ | $g^{X,{\rm P}}_{\rm SF}$ | $\lambda^{\rm P}_{\rm SF}(0)$ | $\Phi^X_{0,{\rm SF}}$ | $M^{X,{\rm D}}_{\rm SF}$ | $E^{X,{\rm gap}}_{\rm SF}$ | $10^4|\mathcal V^X_{\rm SF}(\Phi_0)|$ | $T^{X,{\rm c}}_{\rm SF}$ | $E^{\rm gap}/T^{X,{\rm c}}_{\rm SF}$ |
-|:---------|-------------------------:|-------------------------:|------------------------------:|----------------------:|-------------------------:|---------------------------:|--------------------------------------:|-------------------------:|-------------------------------------:|
-| HS (1,1) |                     2.80 |                     25.2 |                        1.1838 |               0.40306 |                  0.20669 |                    0.45297 |                                 5.186 |                  0.26047 |                                1.739 |
-| HS (0,1) |                        0 |                     24.5 |                        1.1510 |               0.36201 |                  0.20000 |                    0.41358 |                                 3.608 |                  0.24047 |                                1.720 |
-| HS (0,0) |                        0 |                     23.7 |                        1.1134 |               0.30699 |                  0.20000 |                    0.36639 |                                 2.062 |                  0.21380 |                                1.714 |
-| KS       |                    -7.40 |                     23.7 |                        1.1134 |               0.32849 |                  0.16229 |                    0.36639 |                                 2.422 |                  0.22212 |                                1.650 |
-| CJT      |                    -7.40 |                     23.7 |                        1.1134 |               0.32849 |                  0.16229 |                    0.36639 |                                 2.422 |                  0.22212 |                                1.650 |
-
-The five methods with $V^{(2)}_{\rm SF}$: effective couplings, the
-eigenvalue $\lambda^{\rm P}_{\rm SF}(0)$, the ground state at $T=0$
-(order parameter, Dirac mass, gap, depth of the effective potential),
-the critical temperature and the ratio of the gap to it, in units of
-$\Lambda_{\rm LL}$. KS and CJT coincide on the polar states.
+The susceptibilities ($10^3$ times their values) and $\rho_{\rm SH}$.
 
 </div>
 
-</div>
+<div id="tab:scale">
 
-# The gradient coefficient at the critical temperature
+| version | method    | $v_{\rm SH}$ (units of $\Lambda_{\rm LL}$) | $\Lambda_{\rm LL}$ (GeV) | $M_{W,{\rm SH}}$ (GeV) | $M_{Z,{\rm SH}}$ (GeV) | $\rho_{\rm SH}$ |
+|:--------|:----------|:-------------------------------------------|:-------------------------|:-----------------------|:-----------------------|:----------------|
+| second  | HS (1, 1) | $0.104629$                                 | $2353.3$                 | $80.3625$              | $91.1879$              | $1$             |
+| second  | HS (0, 1) | $0.102022$                                 | $2413.4$                 | $80.3625$              | $91.1879$              | $1$             |
+| second  | HS (0, 0) | $0.102022$                                 | $2413.4$                 | $80.3625$              | $91.1879$              | $1$             |
+| second  | KS        | $0.111572$                                 | $2206.8$                 | $80.3625$              | $91.1879$              | $1$             |
+| second  | CJT       | $0.111572$                                 | $2206.8$                 | $80.3625$              | $91.1879$              | $1$             |
+| first   | HS (1, 1) | $0.0816903$                                | $3014.1$                 | $80.3625$              | $81.6624$              | $1.24689$       |
+| first   | HS (0, 1) | $0.0799859$                                | $3078.3$                 | $80.3625$              | $82.0733$              | $1.23444$       |
+| first   | HS (0, 0) | $0.0799859$                                | $3078.3$                 | $80.3625$              | $82.244$               | $1.22932$       |
+| first   | KS        | $0.0868678$                                | $2834.4$                 | $80.3625$              | $83.1831$              | $1.20172$       |
+| first   | CJT       | $0.0868678$                                | $2834.4$                 | $80.3625$              | $83.1831$              | $1.20172$       |
 
-## The functional of Ginzburg and Landau
-
-Near $T^{X,{\rm c}}_{\rm SF}$ the field is small. For a static field
-that varies slowly in space the free energy of method $X$, to second
-order in the field and its derivatives and to fourth order in the field,
-is
-$$\mathcal F^{X,{\rm GL}}_{\rm SF}=\int d^3x\Big[\mathsf c^X_{\rm SF}\sum_{j=1}^3(\partial_j\vec\Phi)^\dagger\cdot\partial_j\vec\Phi+\alpha^{X,{\rm GL}}_{\rm SF}t\,|\vec\Phi|^2+b^X_{\rm SF}|\vec\Phi|^4\Big],
-\label{eq:GL}$$ with the Taylor coefficient
-$a(0;T)\approx\alpha^{X,{\rm GL}}_{\rm SF}t$ of $|\vec\Phi|^2$ (so
-$\alpha^{X,{\rm GL}}_{\rm SF}=T^{X,{\rm c}}_{\rm SF}\partial_Ta$ at
-$T^{X,{\rm c}}_{\rm SF}$) and the Taylor coefficient $b^X_{\rm SF}$ of
-$|\vec\Phi|^4$ at $T^{X,{\rm c}}_{\rm SF}$. Static fluctuations dominate
-near a continuous transition: a fluctuation with the Matsubara frequency
-$2\pi mT$, $m\ne0$, costs of the order of $(2\pi T)^2$ times the
-coefficient of the time derivatives, and $2\pi T^{X,{\rm c}}_{\rm SF}$
-is 1.34–1.64, of the order of the cutoff. Rotations and isospin
-rotations allow no other term of second order (the indices can only be
-contracted with $\delta_{jj'}$ and $\delta_{\iota\iota'}$), and a term
-with $\vec\Phi\cdot\vec\Phi$ has the fermion number 4. At fourth order
-the two invariants $|\vec\Phi|^4$ and $|\vec\Phi\cdot\vec\Phi|^2$ are
-equal on the polar fields (the minimum);
-(<a href="#eq:GL" data-reference-type="ref"
-data-reference="eq:GL">[eq:GL]</a>) keeps the coefficient along these
-fields.
-
-## A moving pair: the twist
-
-A pair field with the momentum $q$ along $\vec e_3$,
-$\vec\Phi(\vec x)=\vec\Phi\,e^{iqx^3}$, has in
-(<a href="#eq:GL" data-reference-type="ref"
-data-reference="eq:GL">[eq:GL]</a>) the gradient term
-$\mathsf c^X_{\rm SF}q^2|\vec\Phi|^2$, so its coefficient of
-$|\vec\Phi|^2$ is $$a(q;T)=a(0;T)+\mathsf c^X_{\rm SF}q^2+O(q^4).
-\label{eq:aq}$$ Its state pairs the momenta
-$\vec q_{\rm LL}+\frac12q\vec e_3$ and
-$-\vec q_{\rm LL}+\frac12q\vec e_3$, with the relative momentum
-$\vec q_{\rm LL}$. The gauge transformation $\Psi\to e^{iqx^3/2}\Psi$
-makes the pair field uniform; since $\mathsf h_{\rm LL}(\vec q)$ is
-linear in $\vec q$, it replaces $\mathsf h_{\rm LL}(\pm\vec q_{\rm LL})$
-in (<a href="#eq:BdG" data-reference-type="ref"
-data-reference="eq:BdG">[eq:BdG]</a>) by
-$\mathsf h_{\rm LL}(\pm\vec q_{\rm LL})+\mathsf T^{\rm tw}$ with the
-**twist**
-$\mathsf T^{\rm tw}=\frac12q\,\alpha^3_{\rm LL}\otimes\mathsf 1_2$. More
-generally, $Q\,\alpha^3_{\rm LL}\otimes\mathsf t$ with an isospin matrix
-$\mathsf t$ shifts the momenta of the charges of $\mathsf t$:
-$\mathsf t=\mathsf 1_2$ moves the pair (fermion number 2) with $q=2Q$;
-$\mathsf t=\frac12\tau_1$ turns the isospin direction of the field along
-$x^3$, moving its components of charge $\pm1$ of $T^1_{\rm LL}$ with the
-momenta $\pm Q$ (isospin invariance requires the same coefficient);
-$\mathsf t=\frac12\tau_3$ twists the unbroken $T^3_{\rm LL}$, which does
-not change the field $\Phi\vec e_3$ (its charge is 0) and should cost
-nothing (Sec. <a href="#sec:reg" data-reference-type="ref"
-data-reference="sec:reg">6.6</a>). At second order in the field the
-normal self-energy may be taken from the normal state at $T$: the free
-energy is stationary in it, so its change affects the free energy only
-at fourth order.
-
-## The static pair response
-
-Let $\mathsf H_0={\rm diag}(\mathsf A,\mathsf D)$ be the BdG matrix of
-the normal state with the twist, with the particle block
-$\mathsf A=\mathsf h_{\rm LL}(\vec q_{\rm LL})+\mathsf N^{\rm n}+\mathsf T$
-(eigenvalues $\varepsilon^{\rm A}_a$, orthonormal eigenvectors
-$\mathsf u_a$) and the hole block
-$\mathsf D=-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})+\mathsf N^{\rm n}+\mathsf T)^T$
-(eigenvalues $\varepsilon^{\rm D}_b$, eigenvectors $\mathsf w_b$), and
-add a small off-diagonal block, $\mathsf H=\mathsf H_0+\mathsf V$ with
-$\mathsf V=\begin{pmatrix}0&\mathsf P^{\rm a}\\(\mathsf P^{\rm a})^\dagger&0\end{pmatrix}$.
-The first-order change of a function of a Hermitian matrix is (the
-formula of Daleckii and Krein): in the eigenbasis of $\mathsf H_0$ with
-the eigenvalues $e_k$,
-$$\big[\delta f(\mathsf H)\big]_{kl}=\frac{f(e_k)-f(e_l)}{e_k-e_l}\,\mathsf V_{kl},
-\label{eq:dk}$$ with $f'(e_k)$ where $e_k=e_l$. \[It follows from the
-resolvent: $f(\mathsf H)=\oint\frac{dz}{2\pi i}f(z)(z-\mathsf H)^{-1}$
-and
-$\delta(z-\mathsf H)^{-1}=(z-\mathsf H_0)^{-1}\mathsf V(z-\mathsf H_0)^{-1}$,
-whose matrix element $\mathsf V_{kl}/((z-e_k)(z-e_l))$ integrates to the
-divided difference.\] The upper-right block of $f(\mathsf H)$ is
-$-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})$, so the pair matrix
-summed over the momenta is, to first order,
-$$\mathsf C^{\rm p,tot}_{\rm SF}=\mathcal X^{\rm P}_{\rm SF}[\mathsf P^{\rm a}]=-\int\frac{d^3q_{\rm LL}}{(2\pi)^3}\sum_{a,b=1}^8\frac{f(\varepsilon^{\rm A}_a)-f(\varepsilon^{\rm D}_b)}{\varepsilon^{\rm A}_a-\varepsilon^{\rm D}_b}\,\mathsf u_a\mathsf u_a^\dagger\,\mathsf P^{\rm a}\,\mathsf w_b\mathsf w_b^\dagger .
-\label{eq:chi}$$ In the programs this is evaluated, at every node, for
-the 28 basis matrices $\mathsf E_{ab}-\mathsf E_{ba}$ ($a<b$) of the
-antisymmetric $8\times8$ matrices: with
-$\mathsf U_{\rm A}=(\mathsf u_1,\dots,\mathsf u_8)$,
-$\mathsf U_{\rm D}=(\mathsf w_1,\dots,\mathsf w_8)$ and
-$\mathsf F_{ab}=(f(\varepsilon^{\rm A}_a)-f(\varepsilon^{\rm D}_b))/(\varepsilon^{\rm A}_a-\varepsilon^{\rm D}_b)$,
-$\mathcal X^{\rm P}[\mathsf B]=-\sum_qw_q\mathsf U_{\rm A}
-[(\mathsf U_{\rm A}^\dagger\mathsf B\mathsf U_{\rm D})\circ\mathsf F]\mathsf U_{\rm D}^\dagger$
-(the circle is the entrywise product).
-
-## The free energy at second order
-
-*Claim:* the free energy of the state, measured from the normal state at
-$T$, is to second order in the pair field
-$$\mathcal F^X_2=\tfrac12\,{\rm Re}\,\mathrm{tr}\Big[\big(\mathsf P^{\rm a}-\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}_{\rm SF}]\big)\big(\mathsf C^{\rm p,tot}_{\rm SF}\big)^\dagger\Big],
-\label{eq:F2}$$ where $\mathsf P_{\rm SF}[\cdot]$ is the pair
-self-energy (<a href="#eq:Nbil" data-reference-type="ref"
-data-reference="eq:Nbil">[eq:Nbil]</a>),
-(<a href="#eq:Ppair" data-reference-type="ref"
-data-reference="eq:Ppair">[eq:Ppair]</a>) of method $X$ for a given pair
-matrix (linear in it; it contains every pair channel of the method’s
-functional). *Derivation.* (i) Consider the quadratic Hamiltonian
-$H_0+\epsilon V$ of the normal state plus a pair term $V$ whose BdG
-block is $\mathsf P^{\rm a}$. In the thermal state of $H_0+V$ the
-expectation value of the pair term is
-$\langle V\rangle=-{\rm Re}\,\mathrm{tr}(\mathsf P^{\rm a}(\mathsf C^{\rm p,tot})^\dagger)$
-(the pair block of the energy of a quasi-free state). (ii) The
-thermodynamic potential
-$\Omega(\epsilon)=-T\ln{\rm Tr}\,e^{-(H_0+\epsilon V)/T}$ obeys
-$d\Omega/d\epsilon=\langle V\rangle_\epsilon$, and
-$\langle V\rangle_\epsilon$ vanishes in the normal state and is linear
-in $\epsilon$ at this order,
-$\langle V\rangle_\epsilon=\epsilon\langle V\rangle$; hence
-$\Omega(1)-\Omega(0)=\int_0^1\epsilon\,d\epsilon\,\langle V\rangle=\frac12\langle V\rangle$.
-(iii) The free energy of the method is this thermodynamic potential
-minus $\langle V\rangle$ (the pair term is not part of the Hamiltonian
-of the model) plus the pair part $E_{\rm pair}$ of the interaction
-energy of the method. $E_{\rm pair}$ is a quadratic form of the pair
-matrix whose derivative is the pair self-energy; for the pairing term,
-for example,
-$E_{\rm pair}=-\frac14G_{\rm LL}w^{\rm P}|\mathrm{tr}(\mathsf K\mathsf C^T)|^2$
-and, by (<a href="#eq:Ppair" data-reference-type="ref"
-data-reference="eq:Ppair">[eq:Ppair]</a>) and the antisymmetry of
-$\mathsf K$,
-${\rm Re}\,\mathrm{tr}(\mathsf P_{\rm SF}[\mathsf C]\mathsf C^\dagger)=\frac12G_{\rm LL}w^{\rm P}|\mathrm{tr}(\mathsf K\mathsf C^T)|^2$,
-so that
-$E_{\rm pair}=-\frac12{\rm Re}\,\mathrm{tr}(\mathsf P_{\rm SF}[\mathsf C]\mathsf C^\dagger)$,
-and the same holds for the pair contractions of the bilinear terms. The
-sum is
-$\frac12\langle V\rangle-\langle V\rangle+E_{\rm pair}=\frac12{\rm Re}\,\mathrm{tr}(\mathsf P^{\rm a}\mathsf C^\dagger)-\frac12{\rm Re}\,\mathrm{tr}(\mathsf P_{\rm SF}[\mathsf C]\mathsf C^\dagger)$,
-which is (<a href="#eq:F2" data-reference-type="ref"
-data-reference="eq:F2">[eq:F2]</a>). The normal part of the energy does
-not change at second order, because the free energy is stationary in the
-normal self-energy. $\square$ For a self-consistent pair field,
-$\mathsf P^{\rm a}=\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}]$,
-(<a href="#eq:F2" data-reference-type="ref"
-data-reference="eq:F2">[eq:F2]</a>) vanishes: a self-consistent pair
-field of infinitesimal amplitude exists exactly where the coefficient
-below changes sign.
-
-## The free energy of the field
-
-The field of the state is the component of its own pair self-energy
-along $(\mathsf K^3_{\rm LL})^\dagger$,
-$\Phi^3=\mathrm{tr}(\mathsf K^3_{\rm LL}\mathsf P_{\rm SF}[\mathsf C^{\rm p,tot}])/8$.
-The free energy of the field is the smallest $\mathcal F^X_2$ among the
-states with this field. The minimization at fixed field is done with a
-Lagrange multiplier: the components of $\mathsf P^{\rm a}$ along the
-three $(\mathsf K^\iota_{\rm LL})^\dagger$ (the three components of the
-field) are held at $(0,0,1)$, and its components along the other 25
-basis directions are made self-consistent,
-$\Pi_\perp\mathsf P^{\rm a}=\Pi_\perp\mathsf P_{\rm SF}[\mathcal X^{\rm P}[\mathsf P^{\rm a}]]$,
-where $\Pi_\perp$ removes the components along the
-$(\mathsf K^\iota_{\rm LL})^\dagger$. With the linear map
-$\mathsf M:\mathsf P^{\rm a}\mapsto\mathsf P_{\rm SF}[\mathcal X^{\rm P}[\mathsf P^{\rm a}]]$
-on the 28 coefficients and $\mathsf e_3$ the coefficients of
-$(\mathsf K^3_{\rm LL})^\dagger$, this is the linear system
-$$(\mathsf 1-\Pi_\perp\mathsf M)\,\mathsf p_\perp=\Pi_\perp\mathsf M\,\mathsf e_3,\qquad\mathsf P^{\rm a}=\mathsf e_3+\mathsf p_\perp ,
-\label{eq:linsys}$$ and then $a(q;T)=\mathcal F^X_2/|\Phi^3|^2$. At
-$q=0$ no other channel is induced ($|\mathsf p_\perp|\le$
-$5\times10^{-16}$, checks P3-G4, YP3-G4, WP3-G4), and in the channel
-$\mathsf K^3_{\rm LL}$ alone, where
-$\mathsf P_{\rm SF}[\mathsf C]=-\frac12g^{X,{\rm P}}_{\rm SF}\mathrm{tr}(\mathsf K^3_{\rm LL}\mathsf C^T)(\mathsf K^3_{\rm LL})^\dagger$
-(the definition of the effective pair coupling) and the applied block
-$(\mathsf K^3_{\rm LL})^\dagger$ produces the field
-$\lambda^{\rm P}_{\rm SF}(T)$ (the definition of the eigenvalue),
-(<a href="#eq:F2" data-reference-type="ref"
-data-reference="eq:F2">[eq:F2]</a>) gives
-$\frac12(1-\lambda^{\rm P}_{\rm SF})\cdot2\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$
-for $|\Phi^3|^2=(\lambda^{\rm P}_{\rm SF})^2$:
-$$a(0;T)=\frac{1-\lambda^{\rm P}_{\rm SF}(T)}{\lambda^{\rm P}_{\rm SF}(T)\,g^{X,{\rm P}}_{\rm SF}},\qquad\alpha^{X,{\rm GL}}_{\rm SF}=-\frac{T^{X,{\rm c}}_{\rm SF}}{g^{X,{\rm P}}_{\rm SF}}\frac{d\lambda^{\rm P}_{\rm SF}}{dT}\Big|_{T^{X,{\rm c}}_{\rm SF}}.
-\label{eq:a0}$$ The derivative is evaluated in closed form,
-$d\lambda^{\rm P}/dT=(g^{X,{\rm P}}_{\rm SF}/\pi^2)(\partial_TI_1+\partial_MI_1\,dM^{X,{\rm n}}_{\rm SF}/dT)$
-with
-$$\partial_TI_1=-\frac1{2T^2}\int_0^{\Lambda_{\rm LL}}\frac{q^2\,dq}{\cosh^2(E/2T)},\qquad\partial_MI_1=\int_0^{\Lambda_{\rm LL}}q^2\frac{M}{E}\Big[\frac1{2TE\cosh^2(E/2T)}-\frac{\tanh(E/2T)}{E^2}\Big]dq,
-\label{eq:dI}$$ and
-$dM^{X,{\rm n}}_{\rm SF}/dT=g^{X,{\rm S}}_{\rm SF}\partial_Tn^{\rm S}/(1-g^{X,{\rm S}}_{\rm SF}\partial_Mn^{\rm S})$
-from the scalar self-consistency
-$M-m_{\rm LL}=g^{X,{\rm S}}_{\rm SF}n^{\rm S}(M,T)$,
-$n^{\rm S}=-\frac2{\pi^2}[MI_1(M,T)-m_{\rm LL}I_1(m_{\rm LL},0)]$ (the
-implicit function theorem). The Rust program and the notebook compare
-this closed form with the central differences of $a(0;T)$ at
-$T^{X,{\rm c}}_{\rm SF}(1\pm0.002)$ and $(1\pm0.004)$ (Richardson
-extrapolation), and the Python program compares its closed form with the
-value of the Rust program: they agree to $7\times10^{-12}$ (checks
-P3-G10, WP3-G10, YP3-G10).
-
-## The regularization of a moving pair
-
-The model restricts the momenta of the uniform states to
-$|\vec q_{\rm LL}|<\Lambda_{\rm LL}$; for a moving pair the cutoff must
-be placed on one of two momenta. *The cutoff on the momenta of the two
-charges*, $|\vec q_{\rm LL}\pm\frac12q\vec e_3|<\Lambda_{\rm LL}$,
-restricts the relative momenta to a lens, the intersection of two balls
-whose centres are $q$ apart. The lens lacks, compared with the ball
-$|\vec q_{\rm LL}|<\Lambda_{\rm LL}$, a shell at the cutoff of the
-thickness $\frac12q|\cos\theta|$ in the direction $\theta$ (its radius
-is $-\frac12q|n_3|+(\Lambda_{\rm LL}^2-\frac14q^2(1-n_3^2))^{1/2}$ in
-the direction $\vec n$), whose volume is of first order in $|q|$. The
-pairs in that shell contribute to $a$ at first order, and
-$$a_{\rm lens}(q;T)-a(0;T)\propto|q|,
-\label{eq:lens}$$ so that the expansion
-(<a href="#eq:aq" data-reference-type="ref"
-data-reference="eq:aq">[eq:aq]</a>) does not exist: doubling $q$ from
-0.005 to 0.01 multiplies the change by 2.014–2.015 (a linear function
-gives 2; Fig. <a href="#fig:gi" data-reference-type="ref"
-data-reference="fig:gi">2</a>a). *The cutoff on the relative momentum*,
-$|\vec q_{\rm LL}|<\Lambda_{\rm LL}$, keeps the ball, and the change is
-quadratic (the factor is $4.0000$ to five digits). This is the routing
-of the momenta of the twisted states of
-Sec. <a href="#sec:T0" data-reference-type="ref"
-data-reference="sec:T0">4</a>, where a uniform twist shifts the momenta
-inside the fixed ball, and it is used here. Two quantities measure the
-remaining error of the regularization:
-
-1.  the twist $Q\,\alpha^3_{\rm LL}\otimes\frac12\tau_3$ of the unbroken
-    generator $T^3_{\rm LL}$ costs the spurious coefficient
-    $\mathsf c^{X,{\rm T3}}_{\rm SF}$, which is 18–21% of
-    $\mathsf c^X_{\rm SF}$
-    (Table <a href="#tab:gi" data-reference-type="ref"
-    data-reference="tab:gi">6</a>); the isospin twist gives the same
-    coefficient as the phase twist to $3\times10^{-11}$ in the Rust
-    program and the notebook and to $4\times10^{-10}$ in the Python
-    program (checks P3-G5, WP3-G5, YP3-G5);
-
-2.  the nonlinear thermal states of the engine with the constant twist
-    and a self-consistent normal self-energy give a coefficient
-    $\mathsf c^{X,{\rm tw}}_{\rm SF}$ that agrees with the linear
-    response with the pair self-energy along
-    $(\mathsf K^3_{\rm LL})^\dagger$ to $2.4\times10^{-6}$ for HS
-    $(0,0)$, which has no normal self-energy ($4\times10^{-7}$ in the
-    Python program; checks P3-G7, YP3-G7), but differs by 10–11% in HS
-    $(1,1)$, HS $(0,1)$ and KS and by $-$<!-- -->60% in CJT: the twisted
-    normal state carries a spurious current (the occupied ball is
-    displaced), which through the vector interaction changes the normal
-    self-energy at first order in $q$. The linear response
-    (<a href="#eq:chi" data-reference-type="ref"
-    data-reference="eq:chi">[eq:chi]</a>) uses the normal self-energy of
-    the untwisted normal state and is free of this effect, because a
-    moving pair field changes the normal self-energy only at second
-    order in the field.
-
-## The numerical method
-
-$\mathsf c^X_{\rm SF}$ is
-$[a(q;T^{X,{\rm c}}_{\rm SF})-a(0;T^{X,{\rm c}}_{\rm SF})]/q^2$ at
-$q=0.01$ and $0.02$ with the Richardson extrapolation (the two values
-differ by at most $3\times10^{-5}$ of $\mathsf c$). The six directions
-are exact at second order in $q$ (the term of second order of the
-integrand is a polynomial of degree two in the direction, which the
-six-direction rule integrates exactly); a product rule of 64 directions
-and a grid of 40 radial nodes give $\mathsf c^{\rm CJT}_{\rm SF}$ to
-$2\times10^{-10}$ (check P3-G8), the Python program on 64 directions
-gives every $\mathsf c^X_{\rm SF}$ to $3\times10^{-10}$ (YP3-G8), and
-the notebook gives every $\mathsf c^X_{\rm SF}$ on the grid of six
-directions to $6\times10^{-11}$ of the value of the Rust program
-(WP3-G6) and $\mathsf c^{\rm CJT}_{\rm SF}$ on a product rule of 144
-directions to $2\times10^{-10}$ (WP3-G8). $b^X_{\rm SF}$ comes from the
-nonlinear free energy of four states with the applied fields $0.01$ to
-$0.04$ at $T^{X,{\rm c}}_{\rm SF}$ ($\mathcal F/\Phi^2$ interpolated by
-a cubic polynomial in $\Phi^2$); the fields $0.015$ to $0.045$ give the
-same value to $10^{-7}$ (check P3-G12).
-Table <a href="#tab:gi" data-reference-type="ref"
-data-reference="tab:gi">6</a> gives the results.
-
-<div class="ruledtabular">
-
-<div id="tab:gi">
-
-| quantity                                                        |  HS (1,1) |  HS (0,1) |  HS (0,0) |        KS |       CJT |
-|:----------------------------------------------------------------|----------:|----------:|----------:|----------:|----------:|
-| $T^{X,{\rm c}}_{\rm SF}$                                        |  0.260467 |  0.240465 |  0.213799 |  0.222119 |  0.222119 |
-| $M^{X,{\rm n}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$                |  0.206685 |  0.200000 |  0.200000 |  0.162293 |  0.162293 |
-| $10^2\alpha^{X,{\rm GL}}_{\rm SF}$                              |   1.40379 |   1.26991 |   1.07434 |   1.11755 |   1.11755 |
-| $10^2b^X_{\rm SF}$                                              |   1.23886 |   1.37640 |   1.59434 |   1.47237 |   1.47237 |
-| $10^2\mathsf c^X_{\rm SF}$ (phase twist)                        |   1.54875 |   1.71376 |   1.95280 |   1.92718 |   1.92718 |
-| $10^2\mathsf c$ (isospin twist)                                 |   1.54875 |   1.71376 |   1.95280 |   1.92718 |   1.92718 |
-| $10^2\mathsf c$ (other channels held at 0)                      |   1.54875 |   1.71380 |   1.95281 |   1.92718 |   1.92718 |
-| $10^2\mathsf c^{X,{\rm T3}}_{\rm SF}$ (twist of $T^3_{\rm LL}$) |    0.3218 |    0.3395 |    0.3597 |    0.3597 |    0.3597 |
-| $10^2\mathsf c^{X,{\rm tw}}_{\rm SF}$ (twisted states)          |     1.723 |     1.905 |     1.953 |     2.121 |    0.7684 |
-| $\xi=(\mathsf c/\alpha)^{1/2}$                                  |     1.050 |     1.162 |     1.348 |     1.313 |     1.313 |
-| $\Delta C\,\xi^3$                                               |    0.0354 |    0.0382 |    0.0415 |    0.0432 |    0.0432 |
-| ${\rm Gi}^X_{\rm SF}$                                           |     11.38 |     9.768 |     8.277 |     7.621 |     7.621 |
-| ${\rm Gi}^X_{\rm SF}T^{X,{\rm c}}_{\rm SF}$                     |     2.964 |     2.349 |     1.770 |     1.693 |     1.693 |
-| Gi with $\mathsf c\mp\mathsf c^{\rm T3}$                        | 6.46–22.9 | 5.68–18.9 | 4.98–15.2 | 4.56–14.2 | 4.56–14.2 |
-
-The coefficients of (<a href="#eq:GL" data-reference-type="ref"
-data-reference="eq:GL">[eq:GL]</a>) at the critical temperature: the
-critical temperature, the Dirac mass of the normal state, $\alpha$, $b$,
-the gradient coefficient from the phase twist (the result), from the
-isospin twist, without the other pair channels, the spurious coefficient
-of the $T^3_{\rm LL}$ twist and the coefficient of the twisted nonlinear
-states; the correlation length, the specific-heat jump per correlation
-volume, the Ginzburg number (<a href="#eq:Gi" data-reference-type="ref"
-data-reference="eq:Gi">[eq:Gi]</a>), the width of the critical region in
-temperature, and the Ginzburg number with $\mathsf c$ changed by
-$\pm\mathsf c^{\rm T3}$.
+The scale and the masses of the gauge bosons, with $v_{\rm SH}=246.22$
+GeV.
 
 </div>
 
-</div>
+<div id="tab:gapgev">
 
-<figure id="fig:gi">
-<embed src="figures/fig_prd_ginzburg.pdf" style="width:85.0%" />
-<figcaption><span id="fig:gi" label="fig:gi"></span>(a) <span
-class="math inline">$a(q;T^{X,{\rm c}}_{\rm SF})-a(0;T^{X,{\rm c}}_{\rm
-SF})$</span> against the momentum <span
-class="math inline"><em>q</em></span> of the pair for the two
-regularizations: quadratic for the cutoff on the relative momentum
-(solid), linear for the cutoff on the momenta of the two charges
-(dashed). (b) The Ginzburg number (<a href="#eq:Gi"
-data-reference-type="ref" data-reference="eq:Gi">[eq:Gi]</a>) of the
-five methods, with the range for <span class="math inline">$\mathsf
-c^X_{\rm SF}$</span> changed by <span class="math inline">$\pm\mathsf
-c^{X,{\rm T3}}_{\rm SF}$</span>, against <span class="math inline">${\rm
-Gi}=1$</span>.</figcaption>
-</figure>
+| version | method    | $E^{X,{\rm gap}}$ (units of $\Lambda_{\rm LL}$) | $E^{X,{\rm gap}}$ (GeV) |
+|:--------|:----------|:------------------------------------------------|:------------------------|
+| second  | HS (1, 1) | $0.426792$                                      | $1004.4$                |
+| second  | HS (0, 1) | $0.452967$                                      | $1093.2$                |
+| second  | HS (0, 0) | $0.452967$                                      | $1093.2$                |
+| second  | KS        | $0.384201$                                      | $847.86$                |
+| second  | CJT       | $0.384201$                                      | $847.86$                |
+| first   | HS (1, 1) | $0.170392$                                      | $513.57$                |
+| first   | HS (0, 1) | $0.2$                                           | $615.66$                |
+| first   | HS (0, 0) | $0.2$                                           | $615.66$                |
+| first   | KS        | $0.111459$                                      | $315.92$                |
+| first   | CJT       | $0.111459$                                      | $315.92$                |
 
-# The Ginzburg number
-
-Above $T^{X,{\rm c}}_{\rm SF}$ the field fluctuates about zero with the
-probability density proportional to
-$\exp(-\mathcal F^{X,{\rm GL}}_{\rm SF}/T)$. To second order the weight
-is Gaussian; in a volume $V$ with periodic boundary conditions each of
-the $n=6$ real components and each wave vector $\vec k$ contributes a
-factor
-$\int d\phi\,e^{-V(\mathsf ck^2+a)\phi^2/T}\propto(\mathsf ck^2+a)^{-1/2}$,
-so the free energy per volume of the fluctuations is, up to terms
-analytic in $T$,
-$$\mathcal F^{\rm fl}=\frac n2T\int\frac{d^3k}{(2\pi)^3}\ln\big(\mathsf ck^2+a\big),\qquad a=\alpha t,\ \ \partial_Ta=\frac{\alpha}{T^{X,{\rm c}}_{\rm SF}}.
-\label{eq:Ffl}$$ Its second derivative in $T$ near
-$T^{X,{\rm c}}_{\rm SF}$ is dominated by the term with the second
-derivative of the logarithm,
-$-\frac n2T(\partial_Ta)^2\int\frac{d^3k}{(2\pi)^3}(\mathsf ck^2+a)^{-2}$,
-and with
-$$\int\frac{d^3k}{(2\pi)^3}\frac1{(\mathsf ck^2+a)^2}=\frac1{2\pi^2}\int_0^\infty\frac{k^2dk}{(\mathsf ck^2+a)^2}=\frac{1}{8\pi\,\mathsf c^{3/2}a^{1/2}}
-\label{eq:integral}$$ (substitute $k=(a/\mathsf c)^{1/2}u$ and use
-$\int_0^\infty u^2(1+u^2)^{-2}du=\pi/4$), the specific heat per volume
-$C=-T\partial_T^2\mathcal F$ of the fluctuations is
-$$C^{\rm fl}=\frac{n\,\alpha^{3/2}}{16\pi\,\mathsf c^{3/2}\,t^{1/2}},
-\label{eq:Cfl}$$ divergent at $T^{X,{\rm c}}_{\rm SF}$. Below
-$T^{X,{\rm c}}_{\rm SF}$ the minimum of
-(<a href="#eq:GL" data-reference-type="ref"
-data-reference="eq:GL">[eq:GL]</a>) is $|\vec\Phi|^2=-a/(2b)$ with the
-free energy $-a^2/(4b)$ per volume, so the specific heat of mean-field
-theory jumps at $T^{X,{\rm c}}_{\rm SF}$ by
-$$\Delta C=T^{X,{\rm c}}_{\rm SF}\,\frac{(\partial_Ta)^2}{2b}=\frac{\alpha^2}{2b\,T^{X,{\rm c}}_{\rm SF}}.
-\label{eq:DC}$$ Mean-field theory holds where $C^{\rm fl}\ll\Delta C$.
-The two are equal at $t={\rm Gi}^X_{\rm SF}$,
-$${\rm Gi}^X_{\rm SF}=\frac{n^2b^2(T^{X,{\rm c}}_{\rm SF})^2}{64\pi^2\,\alpha\,\mathsf c^3}=\frac{n^2}{256\pi^2\,(\Delta C\,\xi^3)^2},\qquad\xi=\Big(\frac{\mathsf c}{\alpha}\Big)^{1/2},
-\label{eq:Gi}$$ the Ginzburg number (Levanyuk 1959; Ginzburg 1961); the
-second form follows from
-$\Delta C\xi^3=\alpha^{1/2}\mathsf c^{3/2}/(2bT^{X,{\rm c}}_{\rm SF})$.
-The correlation length of mean-field theory is $\xi|t|^{-1/2}$, and
-mean-field theory needs a large specific-heat jump per correlation
-volume, $\Delta C\xi^3\gg1$: many degrees of freedom in a correlation
-volume. *A remark on the factors.* Other forms of the criterion (the
-mean square fluctuation of the field in a correlation volume against the
-square of its mean value, or the first correction to $b$ against $b$)
-give the same combination of $\alpha$, $b$, $\mathsf c$ and $T_{\rm c}$
-with other numerical factors of order one.
-(<a href="#eq:Gi" data-reference-type="ref"
-data-reference="eq:Gi">[eq:Gi]</a>) is the definition used here; a
-factor of order one does not change the conclusion, because the numbers
-are far above 1.
-
-#### The result.
-
-${\rm Gi}^X_{\rm SF}=7.6\mbox{--}11$
-(Table <a href="#tab:gi" data-reference-type="ref"
-data-reference="tab:gi">6</a>). Even at $|t|=1$ the Gaussian
-fluctuations alone give
-$C^{\rm fl}/\Delta C=({\rm Gi}^X_{\rm SF})^{1/2}=2.8\mbox{--}3.4$; the
-width ${\rm Gi}^X_{\rm SF}T^{X,{\rm c}}_{\rm SF}$ of the critical region
-exceeds $T^{X,{\rm c}}_{\rm SF}$. The correlation length
-$\xi=1.05\mbox{--}1.35$ is about the shortest length
-$1/\Lambda_{\rm LL}$ of the model: the pairs are tightly bound (there is
-no Fermi surface, the chemical potential is zero, and the coupling is
-above the critical one), and a correlation volume holds
-$\Delta C\xi^3=0.035\mbox{--}0.043$ degrees of freedom. In a
-superconductor of Bardeen, Cooper and Schrieffer the correlation length
-is large against the distance of the electrons and
-${\rm Gi}\sim(T_{\rm c}/E_{\rm F})^4$ with the Fermi energy $E_{\rm F}$
-is tiny; here the opposite holds. With $\mathsf c$ changed by
-$\pm\mathsf c^{\rm T3}$, ${\rm Gi}^X_{\rm SF}$ lies between 4.6 and 23.
-The temperatures at which the mean-field free energy behaves as Landau’s
-theory (Sec. <a href="#sec:thermal" data-reference-type="ref"
-data-reference="sec:thermal">5</a>) lie inside the critical region, and
-the mean-field statements near $T^{X,{\rm c}}_{\rm SF}$ (the critical
-temperature, the exponent $\frac12$, the continuity of the transition)
-are not reliable.
-
-# The superfluid as a Higgs sector
-
-## Two questions, and the scale of the breaking
-
-The question whether the superfluid can play the role of the Higgs
-particle has two meanings. (b) Can it be the Higgs field of the Standard
-Model? No, and the answer needs no number: the only matter field of
-(<a href="#eq:L" data-reference-type="ref"
-data-reference="eq:L">[eq:L]</a>) is the DiracLike spinor, which has
-electric charge zero and no quantum numbers of $SU(2)_L\times U(1)_Y$,
-so every field made of it, the condensate included, is a singlet of the
-electroweak group. Its vacuum value leaves that group unbroken and gives
-no mass to the $W$ and $Z$ bosons of nature, and its amplitude mode has
-no coupling at tree level to them, to the quarks or to the leptons. The
-model contains no coupling between the two sectors; a term such as
-$(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}\,\vec\Phi^\dagger\cdot\vec\Phi$
-would be an addition to it and would mix the amplitude mode with the
-observed boson, whose measured couplings would limit the mixing. (a) Is
-the superfluid the Higgs field of its own group
-$SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, with a Higgs particle? The
-rest of this section answers (a) with the quantities of that group
-alone. The scale $\Lambda_{\rm LL}$ of the model is fixed by no
-observation, and all masses are in its units. With the convention
-$M_W=gv/2$ by which the Standard Model defines the vacuum value $v$ of
-its Higgs doublet ($g$ the coupling of $SU(2)_L$, $M_W$ the mass of its
-$W$ boson), (<a href="#eq:MWMZ" data-reference-type="ref"
-data-reference="eq:MWMZ">[eq:MWMZ]</a>) gives the scale of the breaking
-$$v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF},\qquad M^X_{W,{\rm SF}}=\tfrac12g^{\rm v}_{\rm LL}v^X_{\rm SF},\qquad\lambda^{X,{\rm H}}_{\rm SF}=\frac{(M^{X,{\rm H}}_{\rm SF})^2}{2(v^X_{\rm SF})^2},
-\label{eq:vSF}$$ independent of the gauge coupling, and the quartic
-coupling in the same convention.
-
-## The couplings of the amplitude field and the width
-
-On the field $\vec\Phi=(\Phi_0+h/N_h)e^{i\vartheta_0}\vec e_3$ with
-$N_h=(2(Z+Y))^{1/2}$ (so that $h$ is canonically normalized), both
-invariants of (<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) equal
-$(\Phi_0+h/N_h)^2(\partial\vartheta_0)^2$, and the term linear in $h$ is
-$2(Z+Y)\Phi_0(\partial\vartheta_0)^2h/N_h=
-f^{X,{\rm F}}_{\rm SF}h(\partial\vartheta_0)^2$. On the field rotated
-about $\vec e_1$ by $\vartheta_1$,
-$\vec\Phi^\dagger\cdot\partial\vec\Phi=0$ and only the first invariant
-contributes:
-$2Z\Phi_0(\partial\vartheta_1)^2h/N_h=((f^{X,{\rm I}}_{\rm SF})^2/f^{X,{\rm F}}_{\rm SF})h(\partial\vartheta_1)^2$,
-and likewise for $\vartheta_2$. (The notebook derives these two
-couplings by exact symbolic differentiation; the Python program by
-finite differences of the field.) With the canonical Goldstone fields
-$\pi_0=f^{X,{\rm F}}_{\rm SF}\vartheta_0$ and
-$\pi_k=f^{X,{\rm I}}_{\rm SF}\vartheta_k$ all three couplings are
-$h(\partial\pi)^2/f^{X,{\rm F}}_{\rm SF}$. For the decay of $h$ at rest
-(four-momentum $P$, $P^2=(M^{X,{\rm H}}_{\rm SF})^2$) into two massless
-quanta of one field with the four-momenta $k_1,k_2$, the vertex
-$g\,h\,\partial_\mu\pi\partial^\mu\pi$ with $g=1/f^{X,{\rm F}}_{\rm SF}$
-gives the amplitude
-$\mathcal M=-2g\,k_1\cdot k_2=-g\,(M^{X,{\rm H}}_{\rm SF})^2$ (two
-contractions; $2k_1\cdot k_2=P^2$ for massless quanta), and with the
-two-body phase space of two identical particles,
-$\Gamma=|\mathcal M|^2/(32\pi M^{X,{\rm H}}_{\rm SF})$:
-$$\Gamma(h\to\pi\pi)=\frac{(M^{X,{\rm H}}_{\rm SF})^3}{32\pi(f^{X,{\rm F}}_{\rm SF})^2},\qquad\Gamma^{X,{\rm H}}_{\rm SF}=\frac{3\,(M^{X,{\rm H}}_{\rm SF})^3}{32\pi\,(f^{X,{\rm F}}_{\rm SF})^2}
-\label{eq:width}$$ for the three channels, one for each broken
-generator. With the gauge fields the Goldstone fields are the
-longitudinal parts of $W^\pm$ and $Z$, and by the equivalence
-theorem (Cornwall, Levin, and Tiktopoulos 1974; Chanowitz and Gaillard
-1985), which holds in every spontaneously broken gauge theory,
-(<a href="#eq:width" data-reference-type="ref"
-data-reference="eq:width">[eq:width]</a>) is the width into $W^+W^-$ and
-$ZZ$ of the new group up to corrections of relative order
-$\zeta_V=M_V^2/(M^{X,{\rm H}}_{\rm SF})^2$, where $M_V$ is the mass of
-$W$ or $Z$: at tree level the width of a scalar with the couplings of
-(<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>) into a pair of these bosons
-carries the factor $(1-4\zeta_V)^{1/2}(1-4\zeta_V+12\zeta_V^2)$ (phase
-space and the sum over the polarizations), which is above 0.93 here
-($M_V\le0.11\,M^{X,{\rm H}}_{\rm SF}$). With $f^{X,{\rm F}}_{\rm SF}$
-replaced by the vacuum value $v$ of the Standard Model,
-(<a href="#eq:width" data-reference-type="ref"
-data-reference="eq:width">[eq:width]</a>) is the known width
-$3m^3/(32\pi v^2)$ of a heavy Higgs boson of mass $m$ into its
-longitudinal $W$ and $Z$ bosons (Lee, Quigg, and Thacker 1977), a check
-of the factor 3 and of the normalization. *A remark:* the effective
-Lagrangian is used at the energy $M^{X,{\rm H}}_{\rm SF}$, where it is
-not accurate (its mass of the amplitude mode differs from the response
-by 7.0–17%); (<a href="#eq:width" data-reference-type="ref"
-data-reference="eq:width">[eq:width]</a>) gives the order of magnitude,
-which is all that the conclusion needs.
-
-<div class="ruledtabular">
-
-<div id="tab:higgs">
-
-| quantity                                                                                                 | HS (1,1) | HS (0,1) | HS (0,0) |   KS    |   CJT   |
-|:---------------------------------------------------------------------------------------------------------|:--------:|:--------:|:--------:|:-------:|:-------:|
-| $v^X_{\rm SF}=2f^{X,{\rm I}}_{\rm SF}$                                                                   |  0.1431  |  0.1354  |  0.1228  | 0.1314  | 0.1353  |
-| $f^{X,{\rm F}}_{\rm SF}$                                                                                 | 0.07097  | 0.06723  | 0.06139  | 0.07135 | 0.07135 |
-| $M^{X,{\rm H}}_{\rm SF}$ (amplitude mode)                                                                |  0.8137  |  0.7251  |  0.6144  | 0.6035  | 0.6035  |
-| $M^{X,{\rm NU}}_{\rm SF}$ (non-unitary scalars)                                                          |  0.8061  |  0.7251  |  0.6144  | 0.6573  | 0.6440  |
-| $M^X_{W,{\rm SF}}$                                                                                       |  0.0501  |  0.0474  |  0.0430  | 0.0460  | 0.0474  |
-| $M^X_{Z,{\rm SF}}$                                                                                       |  0.0639  |  0.0605  |  0.0553  | 0.0642  | 0.0642  |
-| $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$                                                                    |   5.69   |   5.35   |   5.00   |  4.59   |  4.46   |
-| $\lambda^{X,{\rm H}}_{\rm SF}$                                                                           |   16.2   |   14.3   |   12.5   |  10.5   |  9.94   |
-| $M^{X,{\rm H}}_{\rm SF}/M^X_{W,{\rm SF}}$                                                                |   16.2   |   15.3   |   14.3   |  13.1   |  12.7   |
-| $M^X_{W,{\rm SF}}/M^X_{Z,{\rm SF}}$                                                                      |  0.784   |  0.783   |  0.778   |  0.716  |  0.738  |
-| $M^{X,{\rm H}}_{\rm SF}/2E^{X,{\rm gap}}_{\rm SF}$                                                       |  0.898   |  0.877   |  0.838   |  0.824  |  0.824  |
-| $M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$                                                         |  0.991   |   1.00   |   1.00   |  1.09   |  1.07   |
-| $f^{X,{\rm F}}_{\rm SF}/f^{X,{\rm I}}_{\rm SF}$                                                          |  0.992   |  0.993   |   1.00   |  1.09   |  1.05   |
-| $\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}$, Eq. (<a href="#eq:width" data-reference-type="ref" 
- data-reference="eq:width">[eq:width]</a>)                                                                 |   3.9    |   3.5    |   3.0    |   2.1   |   2.1   |
-| $T^{X,{\rm c}}_{\rm SF}/v^X_{\rm SF}$                                                                    |   1.82   |   1.78   |   1.74   |  1.69   |  1.64   |
-| ${\rm Gi}^X_{\rm SF}$, Eq. (<a href="#eq:Gi" data-reference-type="ref"                                   
- data-reference="eq:Gi">[eq:Gi]</a>)                                                                       |   11.4   |   9.77   |   8.28   |  7.62   |  7.62   |
-
-The superfluid as the Higgs sector of
-$SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ (units of
-$\Lambda_{\rm LL}$; gauge boson masses at $g^{\rm v}_{\rm LL}=0.7$,
-$g^{\rm F}_{\rm LL}=0.45$).
+The gap of the ground states in units of the cutoff and in GeV.
 
 </div>
 
+# The amplitude mode
+
+## The effective Lagrangian
+
+At long wavelengths the pair fields obey
+$Z_{\rm SH}(|\partial\Phi^{\rm d}|^2+|\partial\Phi'^{\rm u}|^2)-V^{\rm eff}_{\rm SH}$
+(second version). A chemical potential $\mu$ of $T^3$, under which
+$\Phi^{\rm d}$ has the charge $-\frac12$ and $\Phi'^{\rm u}$ the charge
+$+\frac12$, lowers the energy by
+$Z_{\rm SH}\mu^2(\frac14+\frac14)(\varphi^0_{\rm SH})^2$, so
+$\chi^{33}=Z_{\rm SH}(\varphi^0_{\rm SH})^2$. When both lengths
+oscillate together, $\varphi_{\rm SH}=\varphi^0_{\rm SH}+\eta$, the
+kinetic term is $2Z_{\rm SH}\dot\eta^2$ and the potential
+$\frac12V^{\rm eff\,\prime\prime}_{\rm SH}\eta^2$, so
+$$(M^{\rm EFT}_{\rm SH})^2=\frac{V^{\rm eff\,\prime\prime}_{\rm SH}(\varphi^0_{\rm SH})\,(\varphi^0_{\rm SH})^2}{4\chi^{33}} .
+\label{eq:MEFT}$$ The same formula holds in the first version, with
+$\chi^{33}=\frac12Z_{\rm SH}(\varphi^0_{\rm SH})^2$ and the kinetic term
+$Z_{\rm SH}\dot\eta^2$. Formula
+(<a href="#eq:MEFT" data-reference-type="ref"
+data-reference="eq:MEFT">[eq:MEFT]</a>) is the leading order of an
+expansion in the frequency;
+Table <a href="#tab:amp" data-reference-type="ref"
+data-reference="tab:amp">15</a> shows that the mode lies close to the
+energy $2E^{X,{\rm gap}}$ that breaks a pair, where that expansion
+fails.
+
+<div id="tab:amp">
+
+| version | method    | $M^{\rm EFT}_{\rm SH}$ | $M^{\rm EFT}_{\rm SH}/v_{\rm SH}$ | $M^{\rm EFT}_{\rm SH}$ (GeV) | $2E^{X,{\rm gap}}$ |
+|:--------|:----------|:-----------------------|:----------------------------------|:-----------------------------|:-------------------|
+| second  | HS (1, 1) | $0.96457$              | $9.219$                           | $2270$                       | $0.85358$          |
+| second  | HS (0, 1) | $0.94638$              | $9.276$                           | $2284$                       | $0.90593$          |
+| second  | HS (0, 0) | $0.94638$              | $9.276$                           | $2284$                       | $0.90593$          |
+| second  | KS        | $1.0676$               | $9.569$                           | $2356$                       | $0.7684$           |
+| second  | CJT       | $1.0676$               | $9.569$                           | $2356$                       | $0.7684$           |
+| first   | HS (1, 1) | $0.95778$              | $11.72$                           | $2887$                       | $0.34078$          |
+| first   | HS (0, 1) | $0.94835$              | $11.86$                           | $2919$                       | $0.4$              |
+| first   | HS (0, 0) | $0.94638$              | $11.83$                           | $2913$                       | $0.4$              |
+| first   | KS        | $0.97123$              | $11.18$                           | $2753$                       | $0.22292$          |
+| first   | CJT       | $0.97123$              | $11.18$                           | $2753$                       | $0.22292$          |
+
+The amplitude mode from the effective Lagrangian, and twice the gap, the
+lowest energy of two quasi-particles.
+
 </div>
 
-<figure id="fig:higgs">
-<embed src="figures/fig_prd_higgs.pdf" style="width:85.0%" />
-<figcaption><span id="fig:higgs" label="fig:higgs"></span>(a) <span
-class="math inline">$M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}$</span> and
-<span class="math inline">$\lambda^{X,{\rm H}}_{\rm SF}$</span> of the
-five methods. (b) The width (<a href="#eq:width"
-data-reference-type="ref" data-reference="eq:width">[eq:width]</a>)
-relative to the mass, and the mass ratio <span
-class="math inline">$M^{X,{\rm NU}}_{\rm SF}/M^{X,{\rm H}}_{\rm
-SF}$</span> of the two non-unitary scalars (charges <span
-class="math inline">$Q_{\rm LL}=\pm1$</span>); the dotted line marks the
-ratio 1.</figcaption>
-</figure>
+## The linear response
 
-## The verdict
+A uniform fluctuation with the time factor $e^{-i\omega t}$ changes the
+self-energies by complex amplitudes $\delta\mathsf N$, $\delta\mathsf P$
+and $\delta\bar{\mathsf P}$ (independent at a real frequency). In the
+eigenbasis $(E_k,|k\rangle)$ of
+(<a href="#eq:BdG" data-reference-type="ref"
+data-reference="eq:BdG">[eq:BdG]</a>) at each momentum the change of the
+projector onto the negative eigenvalues is
+$$\delta R_{kl}=\delta H_{kl}\,\frac{f_l-f_k}{\omega-E_k+E_l},\qquad f_k=1\ \text{for}\ E_k<0,\ 0\ \text{otherwise},
+\label{eq:dR}$$ summed over the momenta; this is the response
+$\bm\chi(\omega)$ of the local matrices. The contact terms map the
+changes of the local matrices back to the self-energies by the kernel
+$\mathsf F^X$, and a collective mode is a frequency at which
+$1-\bm\chi(\omega)\mathsf F^X$ is singular. The program computes it in
+the sector of relative number 0 (the normal blocks of $\Psi_{\rm LL}$
+and of the pair of singlets and the pairs of $\Psi_{\rm LL}$ with the
+singlets, closed under the symmetries of the state), in HS (0,1) and HS
+(0,0), where the mode lies below the threshold $2M_{\rm eff}$ of two
+paired quasi-particles. It searches the frequencies below the threshold
+for zeros of the smallest singular value, finds the null space at each
+zero, and projects onto it the amplitude of the vacuum direction; the
+amplitude mode is the zero whose null space contains it, and the
+dimension of the null space is its multiplicity.
+Table <a href="#tab:rpa" data-reference-type="ref"
+data-reference="tab:rpa">16</a> gives the results: at $\omega=0$ exactly
+four singular values vanish in the second version (three in the first),
+the Goldstone modes, and below the threshold the amplitude mode lies at
+$\omega^{\rm H}_{\rm SH}=d^0_{\rm SH}$ to $2\times10^{-13}$.
 
-Seven properties decide whether a field is the Higgs field of a gauge
-group and its amplitude mode a Higgs particle
-(Table <a href="#tab:higgs" data-reference-type="ref"
-data-reference="tab:higgs">7</a>): (1) the Higgs mechanism, with the
-massless zeugon: realized in every method
-(Sec. <a href="#sec:mass" data-reference-type="ref"
-data-reference="sec:mass">4.4</a>); (2) a scalar of charge
-$Q_{\rm LL}=0$ below threshold: in every method, at 0.82–0.90 of
-$2E^{X,{\rm gap}}_{\rm SF}$; (3) its mass against the scale of the
-breaking: $M^{X,{\rm H}}_{\rm SF}/v^X_{\rm SF}=4.46\mbox{--}5.69$ and
-$\lambda^{X,{\rm H}}_{\rm SF}=9.94\mbox{--}16.2$; the bound of
-perturbative unitarity that Lee, Quigg and Thacker derived for the Higgs
-doublet of the Standard Model (Lee, Quigg, and Thacker 1977) depends on
-the scalar fields and channels of the theory, and for this one it was
-not computed; (4) its width:
-$\Gamma^{X,{\rm H}}_{\rm SF}/M^{X,{\rm H}}_{\rm SF}=2.1\mbox{--}3.9$, a
-broad resonance, not a particle; (5) further scalars: every method has
-the non-unitary doublet, of the charges $Q_{\rm LL}=\pm1$, at 0.991–1.09
-of $M^{X,{\rm H}}_{\rm SF}$; (6) the quantum numbers: an isospin vector
-of fermion number 2 of the vector-like $SU(2)_{\rm v}$; the zeugon is
-$W^3$, $Z$ is the boson of the fermion number,
-$M^X_{W,{\rm SF}}/M^X_{Z,{\rm SF}}$ depends on two independent
-couplings, and the condensate adds a pairing gap to the Dirac mass
-rather than generating Yukawa masses; (7) the thermal history: the
-transition lies deep in its critical region
-(Sec. <a href="#sec:gi" data-reference-type="ref"
-data-reference="sec:gi">7</a>). In every method the superfluid is the
-Higgs field of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, with a
-Higgs-like scalar that is a particle only in mean-field dynamics; CJT
-and KS have the lightest and narrowest amplitude mode, HS $(1,1)$ the
-heaviest and broadest. In no method is it the Higgs field of the
-Standard Model.
+<div id="tab:rpa">
 
-# Compositeness
+| version | method    | $\omega^{\rm H}_{\rm SH}$ | $\omega^{\rm H}_{\rm SH}/d^0_{\rm SH}-1$ | $\omega^{\rm H}_{\rm SH}/v_{\rm SH}$ | $\omega^{\rm H}_{\rm SH}$ (GeV) | lowest transition that acts on it | multiplicity |
+|:--------|:----------|:-------------------------:|:----------------------------------------:|:------------------------------------:|:-------------------------------:|:---------------------------------:|:------------:|
+| second  | HS (0, 1) |      $0.8128455463$       |            $-2\times10^{-13}$            |               $7.967$                |             $1962$              |            $0.905948$             |      4       |
+| second  | HS (0, 0) |      $0.8128455463$       |            $-2\times10^{-13}$            |               $7.967$                |             $1962$              |            $0.905948$             |      4       |
+| first   | HS (0, 1) |      $0.8128455463$       |            $-2\times10^{-13}$            |               $10.16$                |             $2502$              |            $0.905948$             |      1       |
+| first   | HS (0, 0) |      $0.8128455463$       |            $-2\times10^{-13}$            |               $10.16$                |             $2502$              |            $0.905948$             |      1       |
 
-The field $\vec\Phi^X_{\rm SF}$ is not a field of the Lagrangian
-(<a href="#eq:L" data-reference-type="ref"
-data-reference="eq:L">[eq:L]</a>), whose only matter field is the spinor
-field: it is the amplitude (<a href="#eq:Phi" data-reference-type="ref"
-data-reference="eq:Phi">[eq:Phi]</a>) of the pair self-energy, a
-composite of two spinor charges. Its kinetic part has no term of its
-own: $Z^X_{\rm SF}$ and $Y^X_{\rm SF}$ are susceptibilities of the
-spinor field, Eq. (<a href="#eq:ZY" data-reference-type="ref"
-data-reference="eq:ZY">[eq:ZY]</a>). Its amplitude mode is a bound state
-of two quasi-particles below their threshold. This is the compositeness
-condition of Bardeen, Hill and Lindner (W. A. Bardeen, Hill, and Lindner
-1990): the normalization of the kinetic term of the composite field
-vanishes at the cutoff, where only the spinor field exists. In the
-dynamics of Nambu and Jona-Lasinio (Nambu and Jona-Lasinio 1961) the
-mass of the bound state is tied to the gap of its constituents (here
-$M^{X,{\rm H}}_{\rm SF}$ is 0.82–0.90 of $2E^{X,{\rm gap}}_{\rm SF}$),
-while the scale of the breaking comes from a loop of the constituents
-and is small against the gap
-($f^{X,{\rm I}}_{\rm SF}/E^{X,{\rm gap}}_{\rm SF}=0.16\mbox{--}0.18$):
-the composite is heavy against $v^X_{\rm SF}$. A light composite needs a
-cutoff far above the gap (W. A. Bardeen, Hill, and Lindner 1990; Hill
-and Simmons 2003) or a different mechanism, such as a pseudo-Goldstone
-scalar (Kaplan and Georgi 1984; Agashe, Contino, and Pomarol 2005).
-Whether the Higgs boson of nature is composite is not decided here,
-because the Higgs particle of this model is not that boson (answer (b)
-of Sec. <a href="#sec:higgs" data-reference-type="ref"
-data-reference="sec:higgs">8</a>); its couplings agree with those of the
-Standard Model to several per cent (ATLAS Collaboration 2022; CMS
-Collaboration 2022), which constrains, but does not exclude, its
-compositeness at a higher scale.
+The amplitude mode from the linear response in the pairing-only methods:
+its frequency, its departure from $d^0_{\rm SH}$, the ratio to the
+scale, the frequency in GeV, the lowest transition energy whose terms
+act on its null space, and its multiplicity.
 
-#### The vacuum energy.
+</div>
 
-The condensate lowers the energy density of the vacuum by the depth of
-the effective potential, $2.4\times10^{-4}\,\Lambda_{\rm LL}^4$ in CJT,
-that is $0.72\,(v^{\rm CJT}_{\rm SF})^4$ on the scale of its own
-breaking. That scale is not known, so the comparison with the observed
-dark-energy density of about $2.5\times10^{-47}~{\rm GeV}^4$ (Navas et
-al. 2024) is a condition: the two are equal if $v^{\rm CJT}_{\rm SF}$ is
-about 2.4 meV, and for a larger scale the vacuum energy exceeds the
-observed density by the fourth power of the ratio, the
-cosmological-constant problem (Weinberg 1989) in its usual form.
+## The closed form of the pairing-only methods
+
+In HS (0,0) the response of the pair amplitudes takes the form of the
+theory of Bardeen, Cooper and Schrieffer (Bardeen, Cooper, and
+Schrieffer 1957). With $E=(q^2+M_{\rm eff}^2)^{1/2}$ the eigenvalues
+along the amplitude and along the phase of the vacuum direction are
+$$\lambda^{\rm amp}(\omega)=\frac{G_{\rm SH}}{4\pi^2}\int_0^{\Lambda_{\rm LL}}\frac{q^2(q^2+m_{\rm LL}^2)\,dq}{E\,(E^2-\omega^2/4)},\qquad
+\lambda^{\rm ph}(\omega)=\frac{G_{\rm SH}}{4\pi^2}\int_0^{\Lambda_{\rm LL}}\frac{q^2E\,dq}{E^2-\omega^2/4},
+\label{eq:lam}$$ as sums over the nodes of the grid with its weights.
+The Python program finds that its response equals these sums to
+$10^{-15}$ at five frequencies, in both versions. At $\omega=0$,
+$\lambda^{\rm ph}(0)=G_{\rm SH}I_1(M_{\rm eff})/(4\pi^2)=1$ is the gap
+equation and the Goldstone theorem. Since
+$E^2=q^2+m_{\rm LL}^2+(d^0_{\rm SH})^2/4$, the integrands obey, at every
+momentum,
+$$\frac{q^2+m_{\rm LL}^2}{E\,(E^2-\omega^2/4)}-\frac1E=\frac{\omega^2-(d^0_{\rm SH})^2}{4E\,(E^2-\omega^2/4)},$$
+and with the gap equation
+$$\lambda^{\rm amp}(\omega)-1=\frac{\omega^2-(d^0_{\rm SH})^2}{4}\,\frac{G_{\rm SH}}{4\pi^2}\int_0^{\Lambda_{\rm LL}}\frac{q^2\,dq}{E\,(E^2-\omega^2/4)} .
+\label{eq:identity}$$ Below the threshold every term of the integral is
+positive, so $\lambda^{\rm amp}=1$ only at
+$$\omega^{\rm H}_{\rm SH}=d^0_{\rm SH},
+\label{eq:omegaH}$$ exactly, for every coupling, mass and cutoff and on
+every grid with positive weights. The mode is bound by
+$2M_{\rm eff}-d^0_{\rm SH}=(4m_{\rm LL}^2+(d^0_{\rm SH})^2)^{1/2}-d^0_{\rm SH}=0.09309$.
+The Wolfram script derives
+(<a href="#eq:identity" data-reference-type="ref"
+data-reference="eq:identity">[eq:identity]</a>) and the positivity
+symbolically and finds the root at $d^0_{\rm SH}$ to 22 digits. Result
+(<a href="#eq:omegaH" data-reference-type="ref"
+data-reference="eq:omegaH">[eq:omegaH]</a>) is the analogue of the
+amplitude mode of a superconductor at twice the gap
+parameter (Littlewood and Varma 1981; Pekker and Varma 2015); here
+$d^0_{\rm SH}/2$ plays the role of the gap parameter, and the mass of
+the fields raises the lowest energy of a quasi-particle from
+$d^0_{\rm SH}/2$ to $M_{\rm eff}$, so that the mode is bound.
+
+*The partners of the amplitude mode.* On the eight real components of
+the four complex pair fields the Python program finds four eigenvalues
+equal to 1 at $\omega=0$ and four more at $\omega=d^0_{\rm SH}$. The
+generators $T^a+T^a_R$ of $SU(2)_V$ commute with the response, and on
+each set the Casimir $\sum_a(T^a+T^a_R)^2$ has the eigenvalues 0, 2, 2,
+2: a singlet and a triplet. At $\omega=0$ the triplet becomes the
+longitudinal parts of $W^\pm_\mu$ and $Z_\mu$ and the singlet is the
+Goldstone boson of $F^{\rm tot}_{\rm SH}$; at $\omega=d^0_{\rm SH}$ the
+singlet is the amplitude mode, and the triplet holds a neutral scalar
+and a charged scalar with its antiparticle ($Q=T^3+T^3_R$ on the pair
+fields). In the first version the same count gives three Goldstone modes
+and one amplitude mode, as in the Standard Model.
+
+## The dependence on the coupling and the mass
+
+In HS (0,0) the gap equation $G_{\rm SH}I_1(M_{\rm eff})/(4\pi^2)=1$
+gives $d^0_{\rm SH}$ in closed form, so the amplitude mode and the scale
+can be followed over the coupling.
+Table <a href="#tab:scan" data-reference-type="ref"
+data-reference="tab:scan">17</a> gives 32 points: $m_{\rm LL}=0.1$ and
+$0.2$, $G_{\rm SH}/G^{\rm crit}_{\rm SH}$ from 1.02 to 3, both versions.
+In every point the Rust program finds the self-consistent state, the
+amplitude mode at $d^0_{\rm SH}$ to $2\times10^{-12}$, and
+$\rho_{\rm SH}=1$ in the second version;
+$\omega^{\rm H}_{\rm SH}/v_{\rm SH}$ lies between $4.892$ and $34.43$ in
+the second version, against $m_H/v=0.5082$.
+
+<div id="tab:scan">
+
+| version | $m_{\rm LL}$ | $G_{\rm SH}/G^{\rm crit}_{\rm SH}$ | $d^0_{\rm SH}$ | $v_{\rm SH}$ | $\rho_{\rm SH}$ | $\omega^{\rm H}_{\rm SH}$ | $2M_{\rm eff}$ | $\omega^{\rm H}_{\rm SH}/v_{\rm SH}$ |
+|:--------|:-------------|:-----------------------------------|:---------------|:-------------|:----------------|:--------------------------|:---------------|:-------------------------------------|
+| second  | $0.1$        | $1.02$                             | $0.20583$      | $0.042078$   | $1$             | $0.205833$                | $0.286997$     | $4.892$                              |
+| second  | $0.1$        | $1.05$                             | $0.34088$      | $0.062877$   | $1$             | $0.340883$                | $0.395223$     | $5.421$                              |
+| second  | $0.1$        | $1.1$                              | $0.50977$      | $0.082828$   | $1$             | $0.509767$                | $0.547597$     | $6.155$                              |
+| second  | $0.1$        | $1.1838$                           | $0.73828$      | $0.1021$     | $1$             | $0.738278$                | $0.764889$     | $7.231$                              |
+| second  | $0.1$        | $1.3$                              | $1.0064$       | $0.11671$    | $1$             | $1.00635$                 | $1.02604$      | $8.623$                              |
+| second  | $0.1$        | $1.5$                              | $1.4071$       | $0.12807$    | $1$             | $1.40709$                 | $1.42123$      | $10.99$                              |
+| second  | $0.1$        | $2$                                | $2.2705$       | $0.13152$    | $1$             | $2.2705$                  | $2.2793$       | $17.26$                              |
+| second  | $0.1$        | $3$                                | $3.8001$       | $0.11903$    | $1$             | $3.80008$                 | $3.80534$      | $31.92$                              |
+| second  | $0.2$        | $1.02$                             | $0.24066$      | $0.041741$   | $1$             | $0.240656$                | $0.466814$     | $5.765$                              |
+| second  | $0.2$        | $1.05$                             | $0.39029$      | $0.062858$   | $1$             | $0.390293$                | $0.558864$     | $6.209$                              |
+| second  | $0.2$        | $1.1$                              | $0.57181$      | $0.082962$   | $1$             | $0.571812$                | $0.697832$     | $6.892$                              |
+| second  | $0.2$        | $1.1838$                           | $0.81285$      | $0.10202$    | $1$             | $0.812846$                | $0.905935$     | $7.967$                              |
+| second  | $0.2$        | $1.3$                              | $1.0931$       | $0.11615$    | $1$             | $1.09305$                 | $1.16394$      | $9.411$                              |
+| second  | $0.2$        | $1.5$                              | $1.5106$       | $0.12679$    | $1$             | $1.51061$                 | $1.56267$      | $11.91$                              |
+| second  | $0.2$        | $2$                                | $2.411$        | $0.12934$    | $1$             | $2.41104$                 | $2.444$        | $18.64$                              |
+| second  | $0.2$        | $3$                                | $4.0115$       | $0.11652$    | $1$             | $4.01146$                 | $4.03136$      | $34.43$                              |
+| first   | $0.1$        | $1.02$                             | $0.20583$      | $0.030618$   | $1.05896$       | $0.205833$                | $0.286997$     | $6.723$                              |
+| first   | $0.1$        | $1.05$                             | $0.34088$      | $0.046903$   | $1.11287$       | $0.340883$                | $0.395223$     | $7.268$                              |
+| first   | $0.1$        | $1.1$                              | $0.50977$      | $0.06347$    | $1.1744$        | $0.509767$                | $0.547597$     | $8.032$                              |
+| first   | $0.1$        | $1.1838$                           | $0.73828$      | $0.080797$   | $1.25253$       | $0.738278$                | $0.764889$     | $9.137$                              |
+| first   | $0.1$        | $1.3$                              | $1.0064$       | $0.095641$   | $1.34313$       | $1.00635$                 | $1.02604$      | $10.52$                              |
+| first   | $0.1$        | $1.5$                              | $1.4071$       | $0.11017$    | $1.48008$       | $1.40709$                 | $1.42123$      | $12.77$                              |
+| first   | $0.1$        | $2$                                | $2.2705$       | $0.12369$    | $1.76891$       | $2.2705$                  | $2.2793$       | $18.36$                              |
+| first   | $0.1$        | $3$                                | $3.8001$       | $0.12476$    | $2.19689$       | $3.80008$                 | $3.80534$      | $30.46$                              |
+| first   | $0.2$        | $1.02$                             | $0.24066$      | $0.030059$   | $1.03721$       | $0.240656$                | $0.466814$     | $8.006$                              |
+| first   | $0.2$        | $1.05$                             | $0.39029$      | $0.046256$   | $1.08303$       | $0.390293$                | $0.558864$     | $8.438$                              |
+| first   | $0.2$        | $1.1$                              | $0.57181$      | $0.062771$   | $1.14496$       | $0.571812$                | $0.697832$     | $9.109$                              |
+| first   | $0.2$        | $1.1838$                           | $0.81285$      | $0.079986$   | $1.22932$       | $0.812846$                | $0.905935$     | $10.16$                              |
+| first   | $0.2$        | $1.3$                              | $1.0931$       | $0.09464$    | $1.32786$       | $1.09305$                 | $1.16394$      | $11.55$                              |
+| first   | $0.2$        | $1.5$                              | $1.5106$       | $0.10886$    | $1.47434$       | $1.51061$                 | $1.56267$      | $13.88$                              |
+| first   | $0.2$        | $2$                                | $2.411$        | $0.12187$    | $1.77559$       | $2.41104$                 | $2.444$        | $19.78$                              |
+| first   | $0.2$        | $3$                                | $4.0115$       | $0.12254$    | $2.21203$       | $4.01146$                 | $4.03136$      | $32.74$                              |
+
+The scan of HS (0,0): the mass, the coupling, the pair self-energy, the
+scale, $\rho_{\rm SH}$, the amplitude mode, the threshold and the ratio
+of the mode to the scale.
+
+</div>
+
+# The dynamics in time
+
+The time-dependent mean field of method $X$ evolves the quasi-particle
+vectors of every momentum by the BdG matrix of the self-energies that
+the current local matrices produce,
+$$i\,\partial_t\,\mathsf O(\vec q,t)=\mathsf H(\vec q;\mathsf N(t),\mathsf P(t))\,\mathsf O(\vec q,t),
+\label{eq:tdmf}$$ whose linearization about a stationary state is the
+linear response (<a href="#eq:dR" data-reference-type="ref"
+data-reference="eq:dR">[eq:dR]</a>). The program integrates it with the
+backward differentiation formulas of CVODE (Hindmarsh et al. 2005;
+Gardner et al. 2022) (relative tolerance $10^{-12}$, absolute
+$10^{-14}$, the Newton iteration replaced by a fixed-point iteration),
+on the same grid as the stationary states. A run starts from the ground
+state with the pair self-energy displaced by the relative amount
+$\epsilon^{\rm kick}$ along the vacuum direction (an amplitude run) or
+along the custodial triplet (a triplet run), and records $d(t)$; its
+spectrum is the Fourier transform over the run, with the peak frequency
+$\omega^{\rm pk}$ and the half-width $\Gamma^{\rm pk}$, compared with
+the half-width $\Gamma^{\rm win}$ that the length of the run alone
+gives. Table <a href="#tab:runs" data-reference-type="ref"
+data-reference="tab:runs">18</a> lists the runs with the conservation of
+the energy, of the charges and of the orthonormality of the vectors, and
+Table <a href="#tab:modes" data-reference-type="ref"
+data-reference="tab:modes">19</a> the modes.
+
+<div id="tab:runs">
+
+| run       | version | method    | $\epsilon^{\rm kick}$ | energy           | charges           | $\mathsf O^\dagger\mathsf O-\mathsf 1$ | steps | time (s) |
+|:----------|:--------|:----------|:----------------------|:-----------------|:------------------|:---------------------------------------|:------|:---------|
+| amplitude | second  | HS (1, 1) | $0.001$               | $5\times10^{-7}$ | $5\times10^{-10}$ | $2\times10^{-8}$                       | 6092  | 157      |
+| triplet   | second  | HS (1, 1) | $0.001$               | $6\times10^{-8}$ | $6\times10^{-11}$ | $2\times10^{-9}$                       | 7971  | 125      |
+| amplitude | second  | HS (0, 1) | $0.001$               | $9\times10^{-8}$ | $10^{-10}$        | $3\times10^{-9}$                       | 7458  | 127      |
+| triplet   | second  | HS (0, 1) | $0.001$               | $3\times10^{-7}$ | $3\times10^{-10}$ | $6\times10^{-9}$                       | 6524  | 130      |
+| ground    | second  | HS (0, 0) | –                     | $6\times10^{-8}$ | $7\times10^{-11}$ | $2\times10^{-9}$                       | 2280  | 45       |
+| josephson | second  | HS (0, 0) | –                     | $7\times10^{-8}$ | $7\times10^{-11}$ | $2\times10^{-9}$                       | 2281  | 47       |
+| amplitude | second  | HS (0, 0) | $0.001$               | $5\times10^{-7}$ | $5\times10^{-10}$ | $2\times10^{-8}$                       | 6104  | 140      |
+| triplet   | second  | HS (0, 0) | $0.001$               | $6\times10^{-8}$ | $6\times10^{-11}$ | $2\times10^{-9}$                       | 8087  | 138      |
+| large     | second  | HS (0, 0) | $0.3$                 | $2\times10^{-8}$ | $2\times10^{-11}$ | $4\times10^{-10}$                      | 9703  | 155      |
+| amplitude | second  | KS        | $0.001$               | $3\times10^{-8}$ | $5\times10^{-11}$ | $2\times10^{-9}$                       | 8349  | 153      |
+| triplet   | second  | KS        | $0.001$               | $4\times10^{-8}$ | $6\times10^{-11}$ | $2\times10^{-9}$                       | 8122  | 143      |
+| ground    | second  | CJT       | –                     | $9\times10^{-9}$ | $2\times10^{-11}$ | $4\times10^{-10}$                      | 2800  | 43       |
+| josephson | second  | CJT       | –                     | $9\times10^{-9}$ | $2\times10^{-11}$ | $4\times10^{-10}$                      | 2807  | 43       |
+| amplitude | second  | CJT       | $0.001$               | $3\times10^{-8}$ | $5\times10^{-11}$ | $2\times10^{-9}$                       | 8350  | 128      |
+| triplet   | second  | CJT       | $0.001$               | $2\times10^{-7}$ | $3\times10^{-10}$ | $7\times10^{-9}$                       | 6532  | 114      |
+| amplitude | first   | HS (1, 1) | $0.001$               | $10^{-6}$        | $6\times10^{-10}$ | $2\times10^{-8}$                       | 5695  | 119      |
+| amplitude | first   | HS (0, 1) | $0.001$               | $2\times10^{-6}$ | $6\times10^{-10}$ | $2\times10^{-8}$                       | 5639  | 131      |
+| amplitude | first   | HS (0, 0) | $0.001$               | $2\times10^{-6}$ | $6\times10^{-10}$ | $2\times10^{-8}$                       | 5694  | 129      |
+| large     | first   | HS (0, 0) | $0.3$                 | $6\times10^{-8}$ | $3\times10^{-11}$ | $9\times10^{-10}$                      | 8657  | 142      |
+| amplitude | first   | KS        | $0.001$               | $9\times10^{-7}$ | $6\times10^{-10}$ | $2\times10^{-8}$                       | 5721  | 136      |
+| amplitude | first   | CJT       | $0.001$               | $10^{-6}$        | $7\times10^{-10}$ | $2\times10^{-8}$                       | 5601  | 121      |
+
+The runs in time: the kind, the version, the method, the displacement,
+the largest relative changes of the energy and of the charges and the
+departure from orthonormality, the steps of CVODE, and the computing
+time.
+
+</div>
+
+<div id="tab:modes">
+
+| version | method    | $d^0_{\rm SH}$ | $2E^{X,{\rm gap}}$ | $\omega^{\rm pk}$, amplitude | $\Gamma^{\rm pk}/\Gamma^{\rm win}$ | $\omega^{\rm pk}$, triplet | $\Gamma^{\rm pk}/\Gamma^{\rm win}$ |
+|:--------|:----------|:---------------|:-------------------|:-----------------------------|:-----------------------------------|:---------------------------|:-----------------------------------|
+| second  | HS (1, 1) | $0.8328776$    | $0.853584$         | $0.8108707$                  | $1$                                | $0.8285249$                | $1$                                |
+| second  | HS (0, 1) | $0.8128455$    | $0.905935$         | $0.8128465$                  | $1$                                | $0.8128465$                | $1$                                |
+| second  | HS (0, 0) | $0.8128455$    | $0.905935$         | $0.8128465$                  | $1$                                | $0.8128465$                | $1$                                |
+| second  | KS        | $0.8907872$    | $0.768402$         | $0.8735459$                  | $1.8$                              | $0.8687108$                | $2.12$                             |
+| second  | CJT       | $0.8907872$    | $0.768402$         | $0.8735459$                  | $1.8$                              | $0.8687108$                | $2.12$                             |
+| first   | HS (1, 1) | $0.8258096$    | $0.340784$         | $0.8061557$                  | $1.04$                             | –                          | –                                  |
+| first   | HS (0, 1) | $0.8128455$    | $0.4$              | $0.8128466$                  | $1$                                | –                          | –                                  |
+| first   | HS (0, 0) | $0.8128455$    | $0.4$              | $0.8128466$                  | $1$                                | –                          | –                                  |
+| first   | KS        | $0.8672856$    | $0.222918$         | $0.8525918$                  | $2.16$                             | –                          | –                                  |
+| first   | CJT       | $0.8672856$    | $0.222918$         | $0.8525918$                  | $2.16$                             | –                          | –                                  |
+
+The modes in time: $d^0_{\rm SH}$, twice the gap, and the peak and the
+ratio of its half-width to that of the window, for the amplitude and the
+triplet runs.
+
+</div>
+
+In HS (0,1) and HS (0,0) the amplitude run oscillates at $d^0_{\rm SH}$
+to $2\times10^{-6}$, without damping, and the triplet run at the same
+frequency. In HS (1,1) the mode lies at 0.9736 $d^0_{\rm SH}$, below
+$2E^{X,{\rm gap}}$, undamped, and the triplet 2.2 per cent above it. In
+KS and CJT the spectrum peaks at 0.873546, above
+$2E^{X,{\rm gap}}=0.768402$, 1.8 times wider than an undamped
+oscillation: the mode decays into pairs. With a chemical potential
+$\mu=0.01$ of the particle number the phase turns at the rate $2\mu$ to
+$2\times10^{-9}$ (the Josephson relation), and a displacement by
+$\epsilon^{\rm kick}=0.3$ in HS (0,0) oscillates at
+0.9582 $d^0_{\rm SH}$, softer than the small oscillation.
 
 # Toward the gravitational sector: Lord’s construction
 
-The article states a program, not a result; this section describes the
-construction on which it rests. Lord (Lord 1971) considered the
-two-component spinor algebra and the group of changes of its
-representation, under which the free field equations of particles of any
-spin (written with two-component spinors) are invariant. Making this
-group local, in the manner of Yang and Mills, requires a gauge field;
-gauge invariance together with Lorentz covariance then requires
-auxiliary fields. Lord interpreted the auxiliary fields as the
-potentials of a spin-two field, which is therefore self-interacting, and
-showed that the Bargmann-Wigner equations of the linear spin-two field,
-modified by this self-interaction, give a nonlinear theory identical
-with Einstein’s general relativity. In addition the auxiliary fields
-become the gauge field of the general coordinate transformations: the
-components of the affine connection. The construction is the natural
-route for the present model because its spinor charges come with
-$SL(2,\mathbb C)$ from the super-loop (Nash 2026b), and GEE already
-contains $SL(2,\mathbb C)$ as a gauge factor with the connection
-$\Gamma^{\rm LL}_p$ of (<a href="#eq:cov" data-reference-type="ref"
-data-reference="eq:cov">[eq:cov]</a>), which on the flat space-time of
-the article is a pure gauge. The program is: (i) replace the pure-gauge
-$\Gamma^{\rm LL}_p$ by Lord’s gauge field and its auxiliary fields; (ii)
-couple the spinor field and its pairs to it; (iii) derive the
-gravitational field equations with the energy-momentum tensor of the
-spinor field, including the condensate, as their source. Two
-consequences of the present results are already clear: the superfluid is
-a Lorentz scalar and leaves $SL(2,\mathbb C)$ unbroken, so the
-condensation does not give the gravitational field a mass; and the
-vacuum energy of the condensate appears as a cosmological term
-(Sec. <a href="#sec:composite" data-reference-type="ref"
-data-reference="sec:composite">9</a>). Gauging the local Lorentz group
-is also the route of Utiyama and of Kibble (Utiyama 1956; Kibble 1961;
-Hehl et al. 1976), and the Einstein term itself may be induced by the
-loop of the spinor field (Sakharov 1968; Visser 2002), as the kinetic
-term of the composite field is. None of this is computed in the article.
+Lord (Lord 1971) considered the group of the local changes of
+representation of the two-component spinor algebra, under which the free
+field equations of particles of any spin are invariant, and made it a
+gauge group in the sense of Yang and Mills. Gauge invariance and Lorentz
+covariance then require auxiliary fields, which Lord interpreted as the
+potentials of a spin-two field; that field is self-interacting, and the
+Bargmann-Wigner equations of the linear spin-two field, modified by the
+self-interaction, give a nonlinear theory identical with Einstein’s, the
+auxiliary fields becoming in addition the gauge field of the general
+coordinate transformations. In the present model the factor
+$SL(2,\mathbb C)$ of the gauge group acts on the spinor indices of the
+three fields with the connection $\Gamma^{\rm LL}_\mu$ of
+(<a href="#eq:cov" data-reference-type="ref"
+data-reference="eq:cov">[eq:cov]</a>), a pure gauge on flat space-time.
+The program is to replace $\Gamma^{\rm LL}_\mu$ by Lord’s gauge field
+and its auxiliary fields, to couple the spinor fields and their pairs to
+it, and to obtain the gravitational field equations with the
+energy-momentum tensor of the spinor fields as their source; the route
+of Utiyama and Kibble (Utiyama 1956; Kibble 1961; Hehl et al. 1976)
+gauges the local Lorentz group in the same spirit. None of this is
+computed here.
 
 # The checks
 
-Every computation is done by two independent programs, a Rust program
-(`rust/`, crates `sfcore` and `sfpart1` to `sfpart4`, with the SUNDIALS
-integrators in Rust) and a Python program (`python/`, numpy and LAPACK),
-and every check of one has a counterpart of the same statement in the
-other (the identifiers P$n$-$x$ in Rust and YP$n$-$x$ in Python). The
-notebook `superfluid.nb` in the Wolfram Language repeats the checks of
-Parts I to III with a third implementation (identifiers W$\dots$).
-Table <a href="#tab:checkcounts" data-reference-type="ref"
-data-reference="tab:checkcounts">8</a> gives the counts; the tables
-below list, with their deviations and tolerances, every check of the
-statements of Secs. <a href="#sec:thermal" data-reference-type="ref"
-data-reference="sec:thermal">5</a> to
-<a href="#sec:higgs" data-reference-type="ref"
-data-reference="sec:higgs">8</a> (a check of a fact has no deviation).
-
-<div class="ruledtabular">
-
-<div id="tab:checkcounts">
-
-| program                                                    | checks | passed |
-|:-----------------------------------------------------------|-------:|-------:|
-| Rust `sf_part1` (Part I)                                   |     78 |     78 |
-| Python `sf_part1.py`                                       |     34 |     34 |
-| Rust `sf_part2` (Part II)                                  |     44 |     44 |
-| Python `sf_part2.py`                                       |     23 |     23 |
-| Rust `sf_part3` (Part III)                                 |    155 |    155 |
-| Python `sf_part3.py`                                       |    112 |    112 |
-| Rust `sf_part4` (Part IV)                                  |    120 |    120 |
-| Python `sf_part4.py`                                       |     20 |     20 |
-| Wolfram Language notebook `superfluid.nb` (Parts I to III) |    153 |    153 |
-
-The checks of the programs of the folder (all pass).
-
-</div>
-
-</div>
-
-The statements in the tables below are quoted verbatim from the reports
-of the programs and from the log of the notebook. They refer to the
-equations and sections of the project’s manuscript, from which the
-programs were written, and to sections of the notebook. In this document
-these are: the Landau form (12.2) and its residual of Table 12.1, and
-Section III.L of the notebook: the Landau polynomial of
-Sec. <a href="#sec:T0" data-reference-type="ref"
-data-reference="sec:T0">4</a>A; the kinetic part (12.4):
-Eq. (<a href="#eq:Lkin" data-reference-type="ref"
-data-reference="eq:Lkin">[eq:Lkin]</a>); Section 12.4 (the free energy
-at finite temperature) and Sections III.T and III.T.4 of the notebook:
-Sec. <a href="#sec:thermal" data-reference-type="ref"
-data-reference="sec:thermal">5</a>, with the eigenvalue (12.9) of
-Eq. (<a href="#eq:lambdaT" data-reference-type="ref"
-data-reference="eq:lambdaT">[eq:lambdaT]</a>); the Ginzburg number
-(12.13): Eq. (<a href="#eq:Gi" data-reference-type="ref"
-data-reference="eq:Gi">[eq:Gi]</a>); Table 14.2 and the equations
-(14.9), (14.10): Table <a href="#tab:higgs" data-reference-type="ref"
-data-reference="tab:higgs">7</a> and
-Eqs. (<a href="#eq:vSF" data-reference-type="ref"
-data-reference="eq:vSF">[eq:vSF]</a>),
-(<a href="#eq:width" data-reference-type="ref"
-data-reference="eq:width">[eq:width]</a>). The program `sf_part2`
-computes the states of
+The computation was made in stages, each with a program in Rust, one in
+Python and a script in the Wolfram Language: stage 2, the group theory
+and the quantum numbers (sh_quantum,
+Sec. <a href="#sec:model" data-reference-type="ref"
+data-reference="sec:model">2</a>); stage 3, the normal vacuum and the
+stationary states (sh_superfluid,
 Secs. <a href="#sec:methods" data-reference-type="ref"
-data-reference="sec:methods">3</a> and
-<a href="#sec:T0" data-reference-type="ref"
-data-reference="sec:T0">4</a> at $T=0$. The data files named in the
-statements are listed with their checksums in
-Sec. <a href="#sec:data" data-reference-type="ref"
-data-reference="sec:data">12</a>.
+data-reference="sec:methods">3</a> to
+<a href="#sec:states" data-reference-type="ref"
+data-reference="sec:states">5</a>); stages 4 and 5, the effective
+potential, the masses of the gauge bosons and the amplitude mode
+(sh_higgs, Secs. <a href="#sec:potential" data-reference-type="ref"
+data-reference="sec:potential">6</a> to
+<a href="#sec:amplitude" data-reference-type="ref"
+data-reference="sec:amplitude">8</a>); and stage 6, the dynamics in time
+(sh_dynamics, Sec. <a href="#sec:dynamics" data-reference-type="ref"
+data-reference="sec:dynamics">9</a>). Stage 1 set out the hypotheses.
+Every statement of the article and of this Supplemental Material is
+tested by checks of the programs; each check compares a computed
+deviation with a tolerance, or decides a statement that is true or false
+from the facts that the program states. The statements of the checks are
+those that the programs write; where they cite the hypotheses or the
+equations of the manuscripts of the stages, the tables below cite
+instead the place of this Supplemental Material that states the same
+thing. The verdicts: the Rust programs stage 2 (`sh_quantum`) ALL PASS
+(55 of 55); stage 3 (`sh_superfluid`) ALL PASS (25 of 25); stage 4
+(`sh_higgs`) ALL PASS (30 of 30); stage 6 (`sh_dynamics`) ALL PASS (12
+of 12); the Python programs stage 2 ALL PASS (14 of 14); stage 3 ALL
+PASS (8 of 8); stage 4 ALL PASS (10 of 10); stage 6 ALL PASS (7 of 7);
+the Wolfram scripts stage 2 ALL PASS (13 of 13); stage 3 ALL PASS (5 of
+5); stage 4 ALL PASS (5 of 5); stage 6 ALL PASS (5 of 5); the notebook,
+which repeats the checks of the Wolfram scripts, ALL PASS (181 of 181),
+0 messages; its Part R repeats the 28 checks of the Wolfram scripts of
+the revision, and 28 of them pass. The tables list every check of the
+Rust and the Python programs with its result, deviation, tolerance and
+statement.
 
-| check, result      | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                               |
-|:-------------------|:----------|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| check, result      | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                               |
-| P3-T1 HS_1_1 PASS  | 2.357e-14 | 1.0e-12   | HS_1_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; change of Phi0 + relative change of the energy)                                                                                                                                                                                    |
-| P3-T3 HS_1_1 PASS  | 4.408e-14 | 1.0e-12   | HS_1_1: the critical temperature T_c = 0.2604672394 solves lambda^P(T_c) = 1 (lambda^P(T_c) - 1), and lambda^P(0) = 1.1838428143 equals the eigenvalue of the static pair response of the normal vacuum computed by sf_part2 (difference)                                                                                               |
-| P3-T9 HS_1_1 PASS  | 0.000e0   | 1.0e-12   | HS_1_1: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.183843 to 0.620857; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there                                                                                                                                       |
-| P3-T2 HS_1_1 PASS  | 9.363e-13 | 1.0e-9    | HS_1_1: the gap equation g^P I1(M^2 + Phi0^2, T)/pi^2 = 1 holds for the superfluid at every temperature of the table (largest residual; g^P = 25.200000)                                                                                                                                                                                |
-| P3-T8 HS_1_1 PASS  | 3.622e-14 | 1.0e-10   | HS_1_1: the Dirac mass of the superfluid is the same at every temperature below T_c (0.2066851932; largest change)                                                                                                                                                                                                                      |
-| P3-T5 HS_1_1 PASS  | 2.814e-1  | 5.0e-1    | HS_1_1: near T_c the order parameter of Landau’s theory (-a/2b)^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T_c (largest (-a/2b)^(1/2)/Phi0 - 1 / (1 - T/T_c) at T/T_c = 0.9, 0.95, 0.98; at T/T_c = 0.98 the error is 5.63e-3)                                                                                      |
-| P3-T4 HS_1_1 PASS  | –         | –         | HS_1_1: a polar start ends in a superfluid at 0.99 T_c (Phi0 = 7.489e-2) and in the normal state at 1.01 T_c (Phi0 = 2.8e-11)                                                                                                                                                                                                           |
-| P3-T7 HS_1_1 PASS  | 5.579e-12 | 1.0e-8    | HS_1_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 7.035495e-3 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                             |
-| P3-T6 HS_1_1 PASS  | –         | –         | HS_1_1: the Landau form becomes exact as T -\> T_c: the residual of the quartic form falls (1.83e-2, 8.81e-3, 3.73e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.7e-5 of the depth at 0.98 T_c                                                                                                                        |
-| P3-G1 HS_1_1 PASS  | 7.975e-10 | 1.0e-7    | HS_1_1: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response (-1.3427965859e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.3427965869e-3) (relative difference)                                                                                                                  |
-| P3-G2 HS_1_1 PASS  | 6.276e-13 | 1.0e-9    | HS_1_1: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002 (largest relative difference)                                                                                                                                                                                                                      |
-| P3-G3 HS_1_1 PASS  | 2.197e-15 | 1.0e-9    | HS_1_1: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0140378852)                                                                                                                                                                                                                                             |
-| P3-G4 HS_1_1 PASS  | 1.089e-33 | 1.0e-12   | HS_1_1: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 2.22e-16)                                                                                                                                                                                     |
-| P3-G5 HS_1_1 PASS  | 2.845e-11 | 1.0e-8    | HS_1_1: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0154874758 (isospin invariance; relative difference)                                                                                                                                                                                                 |
-| P3-G6 HS_1_1 PASS  | –         | –         | HS_1_1: c \> 0 and the extrapolation in k converges: c(k = 0.01) = 0.0154876192, c(k = 0.02) = 0.0154880494, extrapolated 0.0154874758                                                                                                                                                                                                  |
-| P3-G9 HS_1_1 PASS  | –         | –         | HS_1_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01391 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k^2)                                                                                                                    |
-| P3-G10 HS_1_1 PASS | 5.463e-13 | 1.0e-9    | HS_1_1: alpha = T_c da/dT = 0.0140378852 from central differences of the linear response a(0, T) (Richardson) equals the closed form -T_c lambda’(T_c)/(lambda^2 g^P) = 0.0140378852 (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2066851932 from its scalar self-consistency; relative difference)                |
-| P3-G11 HS_1_1 PASS | 4.441e-16 | 1.0e-12   | HS_1_1: the two forms of the Ginzburg number (12.13) agree: n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 11.3796139519 and n^2/(256 pi^2 (Delta C xi0^3)^2) = 11.3796139519, with Delta C = alpha^2/(2 b T_c) = 3.053509e-2 and xi0 = (c/alpha)^(1/2) = 1.05036315 (relative difference)                                                         |
-| P3-H1 HS_1_1 PASS  | –         | –         | HS_1_1: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.813693 \< 2 E_gap = 0.905935 (M_H / 2 E_gap = 0.8982)                                                                                                                                                                                               |
-| P3-H2 HS_1_1 PASS  | 2.098e-14 | 1.0e-8    | HS_1_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.07096573 and f_I^2/f_F = 0.07212812 (largest relative difference)                                                                                                                                                           |
-| P3-H3 HS_1_1 PASS  | 0.000e0   | 1.0e-12   | HS_1_1: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.14308913, M_H/v_SF = 5.686617, lambda_SF = 16.16881, Gamma/M_H = 3.92324) = the module higgs (largest relative difference)                                                                                      |
-| P3-T1 HS_0_1 PASS  | 9.226e-14 | 1.0e-12   | HS_0_1: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; change of Phi0 + relative change of the energy)                                                                                                                                                                                    |
-| P3-T3 HS_0_1 PASS  | 4.028e-13 | 1.0e-12   | HS_0_1: the critical temperature T_c = 0.2404654563 solves lambda^P(T_c) = 1 (lambda^P(T_c) - 1), and lambda^P(0) = 1.1509582917 equals the eigenvalue of the static pair response of the normal vacuum computed by sf_part2 (difference)                                                                                               |
-| P3-T9 HS_0_1 PASS  | 0.000e0   | 1.0e-12   | HS_0_1: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.150958 to 0.604690; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there                                                                                                                                       |
-| P3-T2 HS_0_1 PASS  | 1.032e-12 | 1.0e-9    | HS_0_1: the gap equation g^P I1(M^2 + Phi0^2, T)/pi^2 = 1 holds for the superfluid at every temperature of the table (largest residual; g^P = 24.500000)                                                                                                                                                                                |
-| P3-T8 HS_0_1 PASS  | 0.000e0   | 1.0e-10   | HS_0_1: the Dirac mass of the superfluid is the same at every temperature below T_c (0.2000000000; largest change)                                                                                                                                                                                                                      |
-| P3-T5 HS_0_1 PASS  | 2.436e-1  | 5.0e-1    | HS_0_1: near T_c the order parameter of Landau’s theory (-a/2b)^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T_c (largest (-a/2b)^(1/2)/Phi0 - 1 / (1 - T/T_c) at T/T_c = 0.9, 0.95, 0.98; at T/T_c = 0.98 the error is 4.87e-3)                                                                                      |
-| P3-T4 HS_0_1 PASS  | –         | –         | HS_0_1: a polar start ends in a superfluid at 0.99 T_c (Phi0 = 6.757e-2) and in the normal state at 1.01 T_c (Phi0 = 3.2e-11)                                                                                                                                                                                                           |
-| P3-T7 HS_0_1 PASS  | 5.897e-13 | 1.0e-8    | HS_0_1: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 4.693236e-3 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                             |
-| P3-T6 HS_0_1 PASS  | –         | –         | HS_0_1: the Landau form becomes exact as T -\> T_c: the residual of the quartic form falls (1.60e-2, 7.67e-3, 3.24e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.3e-5 of the depth at 0.98 T_c                                                                                                                        |
-| P3-G1 HS_0_1 PASS  | 1.747e-10 | 1.0e-7    | HS_0_1: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response (-1.2087983988e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.2087983990e-3) (relative difference)                                                                                                                  |
-| P3-G2 HS_0_1 PASS  | 3.926e-12 | 1.0e-9    | HS_0_1: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002 (largest relative difference)                                                                                                                                                                                                                      |
-| P3-G3 HS_0_1 PASS  | 9.010e-15 | 1.0e-9    | HS_0_1: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0126991375)                                                                                                                                                                                                                                             |
-| P3-G4 HS_0_1 PASS  | 1.929e-16 | 1.0e-12   | HS_0_1: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 1.57e-4)                                                                                                                                                                                      |
-| P3-G5 HS_0_1 PASS  | 3.195e-12 | 1.0e-8    | HS_0_1: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0171375865 (isospin invariance; relative difference)                                                                                                                                                                                                 |
-| P3-G6 HS_0_1 PASS  | –         | –         | HS_0_1: c \> 0 and the extrapolation in k converges: c(k = 0.01) = 0.0171377370, c(k = 0.02) = 0.0171381885, extrapolated 0.0171375865                                                                                                                                                                                                  |
-| P3-G9 HS_0_1 PASS  | –         | –         | HS_0_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01448 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k^2)                                                                                                                    |
-| P3-G10 HS_0_1 PASS | 2.118e-12 | 1.0e-9    | HS_0_1: alpha = T_c da/dT = 0.0126991375 from central differences of the linear response a(0, T) (Richardson) equals the closed form -T_c lambda’(T_c)/(lambda^2 g^P) = 0.0126991375 (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000 from its scalar self-consistency; relative difference)                |
-| P3-G11 HS_0_1 PASS | 2.220e-16 | 1.0e-12   | HS_0_1: the two forms of the Ginzburg number (12.13) agree: n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 9.7677448828 and n^2/(256 pi^2 (Delta C xi0^3)^2) = 9.7677448828, with Delta C = alpha^2/(2 b T_c) = 2.436246e-2 and xi0 = (c/alpha)^(1/2) = 1.16168322 (relative difference)                                                           |
-| P3-H1 HS_0_1 PASS  | –         | –         | HS_0_1: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.725083 \< 2 E_gap = 0.827165 (M_H / 2 E_gap = 0.8766)                                                                                                                                                                                               |
-| P3-H2 HS_0_1 PASS  | 3.419e-14 | 1.0e-8    | HS_0_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.06723334 and f_I^2/f_F = 0.06822015 (largest relative difference)                                                                                                                                                           |
-| P3-H3 HS_0_1 PASS  | 0.000e0   | 1.0e-12   | HS_0_1: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.13544990, M_H/v_SF = 5.353148, lambda_SF = 14.32810, Gamma/M_H = 3.47079) = the module higgs (largest relative difference)                                                                                      |
-| P3-T1 HS_0_0 PASS  | 1.041e-13 | 1.0e-12   | HS_0_0: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; change of Phi0 + relative change of the energy)                                                                                                                                                                                    |
-| P3-T3 HS_0_0 PASS  | 1.976e-13 | 1.0e-12   | HS_0_0: the critical temperature T_c = 0.2137990984 solves lambda^P(T_c) = 1 (lambda^P(T_c) - 1), and lambda^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf_part2 (difference)                                                                                               |
-| P3-T9 HS_0_0 PASS  | 0.000e0   | 1.0e-12   | HS_0_0: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.113376 to 0.584946; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there                                                                                                                                       |
-| P3-T2 HS_0_0 PASS  | 1.214e-12 | 1.0e-9    | HS_0_0: the gap equation g^P I1(M^2 + Phi0^2, T)/pi^2 = 1 holds for the superfluid at every temperature of the table (largest residual; g^P = 23.700000)                                                                                                                                                                                |
-| P3-T8 HS_0_0 PASS  | 0.000e0   | 1.0e-10   | HS_0_0: the Dirac mass of the superfluid is the same at every temperature below T_c (0.2000000000; largest change)                                                                                                                                                                                                                      |
-| P3-T5 HS_0_0 PASS  | 1.915e-1  | 5.0e-1    | HS_0_0: near T_c the order parameter of Landau’s theory (-a/2b)^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T_c (largest (-a/2b)^(1/2)/Phi0 - 1 / (1 - T/T_c) at T/T_c = 0.9, 0.95, 0.98; at T/T_c = 0.98 the error is 3.83e-3)                                                                                      |
-| P3-T4 HS_0_0 PASS  | –         | –         | HS_0_0: a polar start ends in a superfluid at 0.99 T_c (Phi0 = 5.773e-2) and in the normal state at 1.01 T_c (Phi0 = 3.9e-11)                                                                                                                                                                                                           |
-| P3-T7 HS_0_0 PASS  | 1.841e-11 | 1.0e-8    | HS_0_0: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.690453e-3 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                             |
-| P3-T6 HS_0_0 PASS  | –         | –         | HS_0_0: the Landau form becomes exact as T -\> T_c: the residual of the quartic form falls (1.27e-2, 6.06e-3, 2.56e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 7.8e-6 of the depth at 0.98 T_c                                                                                                                        |
-| P3-G1 HS_0_0 PASS  | 8.823e-10 | 1.0e-7    | HS_0_0: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response (-1.0158790690e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.0158790681e-3) (relative difference)                                                                                                                  |
-| P3-G2 HS_0_0 PASS  | 5.015e-12 | 1.0e-9    | HS_0_0: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002 (largest relative difference)                                                                                                                                                                                                                      |
-| P3-G3 HS_0_0 PASS  | 2.071e-15 | 1.0e-9    | HS_0_0: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0107433853)                                                                                                                                                                                                                                             |
-| P3-G4 HS_0_0 PASS  | 1.116e-16 | 1.0e-12   | HS_0_0: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 7.72e-5)                                                                                                                                                                                      |
-| P3-G5 HS_0_0 PASS  | 3.099e-12 | 1.0e-8    | HS_0_0: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0195279853 (isospin invariance; relative difference)                                                                                                                                                                                                 |
-| P3-G6 HS_0_0 PASS  | –         | –         | HS_0_0: c \> 0 and the extrapolation in k converges: c(k = 0.01) = 0.0195281300, c(k = 0.02) = 0.0195285640, extrapolated 0.0195279853                                                                                                                                                                                                  |
-| P3-G7 HS_0_0 PASS  | 2.360e-6  | 1.0e-5    | HS_0_0 (no normal self-energy): the twisted states of the nonlinear engine give the gradient coefficient of the linear response with the pair self-energy along (K^3)^dag (0.0195280500 and 0.0195280961; relative difference)                                                                                                          |
-| P3-G9 HS_0_0 PASS  | –         | –         | HS_0_0: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01532 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k^2)                                                                                                                    |
-| P3-G10 HS_0_0 PASS | 2.378e-12 | 1.0e-9    | HS_0_0: alpha = T_c da/dT = 0.0107433853 from central differences of the linear response a(0, T) (Richardson) equals the closed form -T_c lambda’(T_c)/(lambda^2 g^P) = 0.0107433853 (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000 from its scalar self-consistency; relative difference)                |
-| P3-G11 HS_0_0 PASS | 6.661e-16 | 1.0e-12   | HS_0_0: the two forms of the Ginzburg number (12.13) agree: n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 8.2771764750 and n^2/(256 pi^2 (Delta C xi0^3)^2) = 8.2771764750, with Delta C = alpha^2/(2 b T_c) = 1.693035e-2 and xi0 = (c/alpha)^(1/2) = 1.34821186 (relative difference)                                                           |
-| P3-H1 HS_0_0 PASS  | –         | –         | HS_0_0: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.614387 \< 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8384)                                                                                                                                                                                               |
-| P3-H2 HS_0_0 PASS  | 8.660e-15 | 1.0e-8    | HS_0_0: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.06139396 and f_I^2/f_F = 0.06139396 (largest relative difference)                                                                                                                                                           |
-| P3-H3 HS_0_0 PASS  | 0.000e0   | 1.0e-12   | HS_0_0: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.12278792, M_H/v_SF = 5.003647, lambda_SF = 12.51824, Gamma/M_H = 2.98851) = the module higgs (largest relative difference)                                                                                      |
-| P3-T1 KS PASS      | 6.271e-14 | 1.0e-12   | KS: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; change of Phi0 + relative change of the energy)                                                                                                                                                                                        |
-| P3-T3 KS PASS      | 1.987e-13 | 1.0e-12   | KS: the critical temperature T_c = 0.2221187371 solves lambda^P(T_c) = 1 (lambda^P(T_c) - 1), and lambda^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf_part2 (difference)                                                                                                   |
-| P3-T9 KS PASS      | 0.000e0   | 1.0e-12   | KS: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.113376 to 0.588434; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there                                                                                                                                           |
-| P3-T2 KS PASS      | 1.142e-12 | 1.0e-9    | KS: the gap equation g^P I1(M^2 + Phi0^2, T)/pi^2 = 1 holds for the superfluid at every temperature of the table (largest residual; g^P = 23.700000)                                                                                                                                                                                    |
-| P3-T8 KS PASS      | 3.271e-13 | 1.0e-10   | KS: the Dirac mass of the superfluid is the same at every temperature below T_c (0.1622929325; largest change)                                                                                                                                                                                                                          |
-| P3-T5 KS PASS      | 2.348e-1  | 5.0e-1    | KS: near T_c the order parameter of Landau’s theory (-a/2b)^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T_c (largest (-a/2b)^(1/2)/Phi0 - 1 / (1 - T/T_c) at T/T_c = 0.9, 0.95, 0.98; at T/T_c = 0.98 the error is 4.70e-3)                                                                                          |
-| P3-T4 KS PASS      | –         | –         | KS: a polar start ends in a superfluid at 0.99 T_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T_c (Phi0 = 3.8e-11)                                                                                                                                                                                                               |
-| P3-T7 KS PASS      | 3.458e-11 | 1.0e-8    | KS: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                 |
-| P3-T6 KS PASS      | –         | –         | KS: the Landau form becomes exact as T -\> T_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T_c                                                                                                                            |
-| P3-G1 KS PASS      | 4.374e-10 | 1.0e-7    | KS: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response (-1.0510272234e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.0510272239e-3) (relative difference)                                                                                                                      |
-| P3-G2 KS PASS      | 1.572e-12 | 1.0e-9    | KS: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002 (largest relative difference)                                                                                                                                                                                                                          |
-| P3-G3 KS PASS      | 2.934e-15 | 1.0e-9    | KS: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0111755228)                                                                                                                                                                                                                                                 |
-| P3-G4 KS PASS      | 3.135e-16 | 1.0e-12   | KS: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 6.16e-5)                                                                                                                                                                                          |
-| P3-G5 KS PASS      | 1.707e-11 | 1.0e-8    | KS: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0192717762 (isospin invariance; relative difference)                                                                                                                                                                                                     |
-| P3-G6 KS PASS      | –         | –         | KS: c \> 0 and the extrapolation in k converges: c(k = 0.01) = 0.0192719291, c(k = 0.02) = 0.0192723879, extrapolated 0.0192717762                                                                                                                                                                                                      |
-| P3-G9 KS PASS      | –         | –         | KS: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01520 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k^2)                                                                                                                        |
-| P3-G10 KS PASS     | 4.843e-12 | 1.0e-9    | KS: alpha = T_c da/dT = 0.0111755228 from central differences of the linear response a(0, T) (Richardson) equals the closed form -T_c lambda’(T_c)/(lambda^2 g^P) = 0.0111755228 (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325 from its scalar self-consistency; relative difference)                    |
-| P3-G11 KS PASS     | 0.000e0   | 1.0e-12   | KS: the two forms of the Ginzburg number (12.13) agree: n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 7.6207226415 and n^2/(256 pi^2 (Delta C xi0^3)^2) = 7.6207226415, with Delta C = alpha^2/(2 b T_c) = 1.909424e-2 and xi0 = (c/alpha)^(1/2) = 1.31318813 (relative difference)                                                               |
-| P3-H1 KS PASS      | –         | –         | KS: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.603476 \< 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8235)                                                                                                                                                                                                   |
-| P3-H2 KS PASS      | 4.763e-14 | 1.0e-8    | KS: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.07134817 and f_I^2/f_F = 0.06050620 (largest relative difference)                                                                                                                                                               |
-| P3-H3 KS PASS      | 3.369e-16 | 1.0e-12   | KS: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.13140786, M_H/v_SF = 4.592389, lambda_SF = 10.54502, Gamma/M_H = 2.13489) = the module higgs (largest relative difference)                                                                                          |
-| P3-T1 CJT PASS     | 8.078e-14 | 1.0e-12   | CJT: the thermal engine at T = 0.005 reproduces the ground state of T = 0 (field and free energy; change of Phi0 + relative change of the energy)                                                                                                                                                                                       |
-| P3-T3 CJT PASS     | 1.978e-13 | 1.0e-12   | CJT: the critical temperature T_c = 0.2221187371 solves lambda^P(T_c) = 1 (lambda^P(T_c) - 1), and lambda^P(0) = 1.1133759801 equals the eigenvalue of the static pair response of the normal vacuum computed by sf_part2 (difference)                                                                                                  |
-| P3-T9 CJT PASS     | 0.000e0   | 1.0e-12   | CJT: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.113376 to 0.588434; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there                                                                                                                                          |
-| P3-T2 CJT PASS     | 1.142e-12 | 1.0e-9    | CJT: the gap equation g^P I1(M^2 + Phi0^2, T)/pi^2 = 1 holds for the superfluid at every temperature of the table (largest residual; g^P = 23.700000)                                                                                                                                                                                   |
-| P3-T8 CJT PASS     | 3.271e-13 | 1.0e-10   | CJT: the Dirac mass of the superfluid is the same at every temperature below T_c (0.1622929325; largest change)                                                                                                                                                                                                                         |
-| P3-T5 CJT PASS     | 2.348e-1  | 5.0e-1    | CJT: near T_c the order parameter of Landau’s theory (-a/2b)^(1/2) approaches Phi0(T) with an error of relative order 1 - T/T_c (largest (-a/2b)^(1/2)/Phi0 - 1 / (1 - T/T_c) at T/T_c = 0.9, 0.95, 0.98; at T/T_c = 0.98 the error is 4.70e-3)                                                                                         |
-| P3-T4 CJT PASS     | –         | –         | CJT: a polar start ends in a superfluid at 0.99 T_c (Phi0 = 6.128e-2) and in the normal state at 1.01 T_c (Phi0 = 3.8e-11)                                                                                                                                                                                                              |
-| P3-T7 CJT PASS     | 4.596e-11 | 1.0e-8    | CJT: at T = 0 the free energy is the effective potential: the largest residual of its Landau form, 2.846809e-3 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                |
-| P3-T6 CJT PASS     | –         | –         | CJT: the Landau form becomes exact as T -\> T_c: the residual of the quartic form falls (1.58e-2, 7.47e-3, 3.13e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.0e-5 of the depth at 0.98 T_c                                                                                                                           |
-| P3-G1 CJT PASS     | 4.421e-10 | 1.0e-7    | CJT: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response (-1.0510272234e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.0510272239e-3) (relative difference)                                                                                                                     |
-| P3-G2 CJT PASS     | 1.258e-12 | 1.0e-9    | CJT: a(0, T) = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002 (largest relative difference)                                                                                                                                                                                                                         |
-| P3-G3 CJT PASS     | 2.725e-15 | 1.0e-9    | CJT: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0111755228)                                                                                                                                                                                                                                                |
-| P3-G4 CJT PASS     | 2.218e-16 | 1.0e-12   | CJT: at k = 0 no other pair channel is induced (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 6.16e-5)                                                                                                                                                                                         |
-| P3-G5 CJT PASS     | 1.327e-11 | 1.0e-8    | CJT: the isospin twist gives the gradient coefficient of the phase twist, c = 0.0192717762 (isospin invariance; relative difference)                                                                                                                                                                                                    |
-| P3-G6 CJT PASS     | –         | –         | CJT: c \> 0 and the extrapolation in k converges: c(k = 0.01) = 0.0192719291, c(k = 0.02) = 0.0192723879, extrapolated 0.0192717762                                                                                                                                                                                                     |
-| P3-G9 CJT PASS     | –         | –         | CJT: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01520 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k^2)                                                                                                                       |
-| P3-G10 CJT PASS    | 5.127e-12 | 1.0e-9    | CJT: alpha = T_c da/dT = 0.0111755228 from central differences of the linear response a(0, T) (Richardson) equals the closed form -T_c lambda’(T_c)/(lambda^2 g^P) = 0.0111755228 (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325 from its scalar self-consistency; relative difference)                   |
-| P3-G11 CJT PASS    | 4.441e-16 | 1.0e-12   | CJT: the two forms of the Ginzburg number (12.13) agree: n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 7.6207231502 and n^2/(256 pi^2 (Delta C xi0^3)^2) = 7.6207231502, with Delta C = alpha^2/(2 b T_c) = 1.909424e-2 and xi0 = (c/alpha)^(1/2) = 1.31318813 (relative difference)                                                              |
-| P3-G12 CJT PASS    | 9.245e-8  | 1.0e-6    | CJT at T_c: the quartic coefficient b of the free energy at the origin (cubic interpolation of F/Phi^2 in Phi^2 through four states of the nonlinear engine) is positive and does not depend on the applied fields: b = 0.0147237368 from the fields 0.01 to 0.04 and 0.0147237354 from the fields 0.015 to 0.045 (relative difference) |
-| P3-G8 PASS         | 1.874e-10 | 1.0e-8    | CJT: the gradient coefficient does not depend on the quadrature: six directions and 24 radial nodes 0.019271776156, 64 directions 0.019271776160, 40 radial nodes 0.019271776155 (largest relative difference)                                                                                                                          |
-| P3-H1 CJT PASS     | –         | –         | CJT: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.603476 \< 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8235)                                                                                                                                                                                                  |
-| P3-H2 CJT PASS     | 7.683e-14 | 1.0e-8    | CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.07134817 and f_I^2/f_F = 0.06416246 (largest relative difference)                                                                                                                                                              |
-| P3-H3 CJT PASS     | 3.573e-16 | 1.0e-12   | CJT: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.13531998, M_H/v_SF = 4.459622, lambda_SF = 9.94412, Gamma/M_H = 2.13489) = the module higgs (largest relative difference)                                                                                          |
+<div id="tab:checks_quantum_rust">
 
-The checks of the Rust program `sf_part3`: finite temperature (P3-T),
-the gradient coefficient and the Ginzburg number (P3-G), the Higgs
-sector (P3-H).
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|:-------|:-------|:----------|:----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-1a  | PASS   | 0.000e0   | 1.0e-12   | \[T^a, T^b\] = i eps_abc T^c on the sixteen components (the algebra of SU(2)\_L)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| QN-1b  | PASS   | 0.000e0   | 1.0e-12   | \[T^a_R, T^b_R\] = i eps_abc T^c_R (the algebra of the custodial SU(2)\_R) and \[T^a, T^b_R\] = 0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| QN-1c  | PASS   | 0.000e0   | 1.0e-12   | Y, F_tot, R and T^3_R commute with T^1, T^2, T^3 and with each other, and F_tot and R commute with T^a_R (the global group SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F_tot of Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                                           data-reference="sec:model">2</a>)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| QN-1d  | PASS   | 0.000e0   | 1.0e-12   | T^a, T^a_R, Y, Q, F_tot, R are Hermitian (a unitary representation)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| QN-1e  | PASS   | –         | –         | Y = T^3_R + R/4 (equation (<a href="#eq:Y" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                                           data-reference="eq:Y">[eq:Y]</a>)) and Q = T^3 + T^3_R + R/4; Y does not commute with T^1_R (the coupling of B to Y breaks SU(2)\_R to the U(1) of T^3_R) \[deviations 0.0e0 and 0.0e0; largest entry of \[Y, T^1_R\] 1/2\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| QN-2a  | PASS   | –         | –         | the six real generators S(u) = diag(-M(u)^dag, M(u)) on each field satisfy S(\[u, u’\]) = \[S(u), S(u’)\] and are independent over the real numbers \[largest deviation 0.0e0; smallest eigenvalue of the real Gram matrix 4.0000\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| QN-2b  | PASS   | 0.000e0   | 1.0e-12   | the Lorentz generators commute with T^a, T^a_R, Y, Q, F_tot, R (space-time and internal symmetries)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| QN-3a  | PASS   | 0.000e0   | 1.0e-12   | the free Hamiltonian diag(h_Psi(q), h_chi(q), h_chi’(q)) commutes with T^a, Y, Q, F_tot, R, T^3_R (25 random momenta; the masses m_LL = 0.2, m^chi_SH = 0.35, m^chi’\_SH = 0.5, or all three 0.2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| QN-3b  | PASS   | 0.000e0   | 1.0e-12   | with equal masses of the two singlets (m^chi_SH = m^chi’\_SH = 0.35, m_LL = 0.2) it commutes also with T^1_R, T^2_R, T^3_R: SU(2)\_R is a symmetry of the free Lagrangian                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-3c  | PASS   | 0.000e0   | 1.0e-12   | with unequal masses of the singlets (0.35 and 0.5) the largest entry of \[h, T^1_R\] is m^chi_SH - m^chi’\_SH/2: the difference of the masses breaks SU(2)\_R (deviation from that value)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-4a  | PASS   | 0.000e0   | 1.0e-12   | Y = 1/4 on Psi_LL and chi_SH and -3/4 on chi’\_SH; F_LL = 4 Y equals F_tot on Psi_LL and chi_SH (Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                                           data-reference="sec:model">2</a>) and -3 F_tot on chi’\_SH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-4b  | PASS   | 0.000e0   | 1.0e-12   | Q = T^3 + Y is 3/4 on the up components of Psi_LL, -1/4 on the down components, 1/4 on chi_SH and -3/4 on chi’\_SH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| QN-4c  | PASS   | 0.000e0   | 1.0e-12   | the Casimir operators: sum_a (T^a)^2 = 3/4 on Psi_LL and 0 on the singlets, sum_a (T^a_R)^2 = 0 on Psi_LL and 3/4 on chi_SH and chi’\_SH (the pair of singlets is a doublet of SU(2)\_R)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| QN-5a  | PASS   | 0.000e0   | 1.0e-12   | the anomaly traces tr(gamma^ch Y^3), tr(gamma^ch Y), tr(gamma^ch {T^a, T^b} Y), tr(gamma^ch Y^2 T^a), tr(gamma^ch T^a {T^b, T^c}) vanish (47 traces)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| QN-5b  | PASS   | 0.000e0   | 1.0e-12   | the fields are vector-like: gamma^0, which exchanges the two chiralities, commutes with every internal generator                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| QN-5c  | PASS   | –         | –         | the number of Weyl doublets of SU(2)\_L is even (no global anomaly; the right-handed doublet counts as the conjugate of a left-handed one) \[8 components with Casimir 3/4, 2 Weyl doublets\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| QN-6a  | PASS   | –         | –         | the Lorentz-invariant pairs of the six sectors: dimensions 6 (Psi Psi, antisymmetric by Fermi statistics), 4 (Psi chi), 4 (Psi chi’), 2 (chi chi, antisymmetric), 2 (chi chi’), 2 (chi’ chi’, antisymmetric) \[Psi Psi 6, Psi chi 4, Psi chi’ 4, chi chi 2, chi chi’ 2, chi’ chi’ 2; eigenvalues counted as zero at most 6.6e-15, the others at least 3.000\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| QN-6b  | PASS   | –         | –         | the Lorentz-invariant particle-antiparticle bilinears of the six sectors: dimensions 8 (Psi^dag Psi), 4 (Psi^dag chi), 4 (Psi^dag chi’), 2 (chi^dag chi), 2 (chi^dag chi’), 2 (chi’^dag chi’) \[Psi^dag Psi 8, Psi^dag chi 4, Psi^dag chi’ 4, chi^dag chi 2, chi^dag chi’ 2, chi’^dag chi’ 2; eigenvalues counted as zero at most 7.8e-16, the others at least 3.000\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| QN-6c  | PASS   | –         | –         | the symmetric Lorentz-invariant matrices of two particles of one field, which give no operator (Fermi statistics): dimension 2 for Psi Psi, 0 for chi chi and chi’ chi’ \[dimensions 2, 0, 0; gap 2.0e-15 / 3.000\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| QN-6d  | PASS   | 3.201e-16 | 1.0e-12   | the four matrices C gamma^ch (x) e_s and C (x) e_s (s = up, down) are Lorentz invariant and orthogonal, and they span the pairs Psi chi and the pairs Psi chi’                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| QN-6e  | PASS   | –         | –         | with the two singlets taken as one field (chi, chi’), the Lorentz-invariant bilinears have the dimensions 8 (pairs with Psi = 4 + 4), 6 (antisymmetric pairs of two singlets = 2 + 2 + 2), 8 (Psi^dag (chi, chi’) = 4 + 4) and 8 ((chi, chi’)^dag (chi, chi’), the four sectors chi^dag chi, chi^dag chi’, chi’^dag chi, chi’^dag chi’) \[Psi (chi, chi’) 8, (chi, chi’) (chi, chi’) 6, Psi^dag (chi, chi’) 8, (chi, chi’)^dag (chi, chi’) 8\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| QN-7   | PASS   | 0.000e0   | 1.0e-12   | parity (phi -\> gamma^0 phi, intrinsic parities +1): gamma^0 K gamma^0 = +K for C gamma^ch (x) e_s (spin 0, positive parity) and -K for C (x) e_s, with either singlet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| QN-8a  | PASS   | 0.000e0   | 1.0e-12   | on Phi_SH = (Pi\[C gamma^ch (x) e_up\], Pi\[C gamma^ch (x) e_down\]) / norm(C gamma^ch), the pairs with chi_SH: G\_{T^a} = tau^a/2 and G_Y = 1/2, the generators of the Higgs doublet Phi^SM                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| QN-8b  | PASS   | 0.000e0   | 1.0e-12   | on Phi’\_SH, the same pairs with chi’\_SH: G\_{T^a} = tau^a/2 and G_Y = -1/2, a doublet with the opposite hypercharge                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| QN-8c  | PASS   | 0.000e0   | 1.0e-12   | the two pair fields span invariant spaces (closure of L_X for T^a, Y, Q, F_tot, R, T^3_R)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-8d  | PASS   | 0.000e0   | 1.0e-12   | G_Q = diag(1, 0) on Phi_SH and diag(0, -1) on Phi’\_SH (the neutral components are Phi^d_SH and Phi’^u_SH); G_F = 2 and G_R = 0 on both; G\_{T^3_R} = 1/2 on Phi_SH and -1/2 on Phi’\_SH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| QN-8e  | PASS   | 0.000e0   | 1.0e-12   | the Casimir sum_a G\_{T^a}^2 = 3/4 on the components of both pair fields (two doublets)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| QN-8f  | PASS   | 0.000e0   | 1.0e-12   | the conjugate i tau^2 (Phi’\_SH)^\* transforms with G~ = -(i tau^2) G^\* (i tau^2)^T: tau^a/2 and Y = 1/2, the generators of the Higgs doublet (a second field with its quantum numbers)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| QN-8g  | PASS   | –         | –         | the bidoublet M_SH = (Phi_SH, Phi’\_SH): on its components (up chi, up chi’, down chi, down chi’) G\_{T^a} = (tau^a/2) (x) 1_2 and G\_{T^a_R} = 1_2 (x) (tau^a/2), so that M_SH -\> L M_SH R^T; G_Y = 1_2 (x) tau^3/2, G_F = 2, G_R = 0; the space is invariant under all ten generators, and it is the multiplet (2,2) of SU(2)\_L x SU(2)\_R \[largest deviation 0.0e0; multiplets (2,2)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| QN-9a  | PASS   | 1.056e-14 | 1.0e-11   | for 25 random elements of SU(2)\_L x U(1)\_Y: Phi_SH -\> exp(i alpha.tau/2 + i beta/2) Phi_SH, the transformation of Phi^SM, and Phi’\_SH -\> exp(i alpha.tau/2 - i beta/2) Phi’\_SH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| QN-9b  | PASS   | 1.754e-14 | 1.0e-11   | for 25 random elements exp(i (alpha.T + gamma.T_R + theta_R R + theta_F F_tot)) of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F_tot: M_SH -\> e^(2 i theta_F) L M_SH R^T with L = exp(i alpha.tau/2) and R = exp(i gamma.tau/2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| QN-9c  | PASS   | 5.251e-14 | 1.0e-11   | the matrices of these transformations are unitary: the pairing term (4.2), minus G_SH times the sum of the squared lengths of the two pair fields (= tr(M_SH^dag M_SH)), is invariant under both groups                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| QN-9d  | PASS   | –         | –         | the determinant term eps_st Pi^s_SH Pi’^t_SH = det M_SH of consequence 3(c) is multiplied by e^(4 i theta_F): it is invariant under SU(2)\_L x SU(2)\_R x U(1)\_R, hence under SU(2)\_L x U(1)\_Y, and it breaks U(1)\_F_tot \[largest deviation from e^(4 i theta_F) det 1.3e-14; largest change of det itself 0.855\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| QN-9e  | PASS   | 1.174e-15 | 1.0e-10   | for 25 random elements g of SL(2,C) every Lorentz-invariant bilinear of QN-6 (the twelve sectors and the four custodial ones) is unchanged by phi -\> S(g) phi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| QN-10a | PASS   | 3.159e-15 | 1.0e-12   | each of the twelve spaces of QN-6 is the sum of a part of parity +1 and one of parity -1, and each of the 24 parts is invariant under T^a, Y, Q, F_tot, R, T^3_R (a representation)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| QN-10b | PASS   | –         | –         | the eigenvalues of every Casimir operator are those of whole SU(2) multiplets \[24 channels\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| QN-10c | PASS   | –         | –         | the channels (each for both parities): Psi Psi = triplet, Y = 1/2, Q = 3/2, 1/2, -1/2 (equation (<a href="#eq:2x2" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+                                           data-reference="eq:2x2">[eq:2x2]</a>): the isospin singlet is symmetric and absent); Psi chi = doublet, Y = 1/2, Q = 1, 0; Psi chi’ = doublet, Y = -1/2, Q = 0, -1; chi chi, chi chi’, chi’ chi’ = singlets with Y = Q = 1/2, -1/2, -3/2; Psi^dag Psi = 1 + 3, Y = 0; Psi^dag chi = doublet, Y = 0, Q = 1/2, -1/2; Psi^dag chi’ = doublet, Y = -1, Q = -1/2, -3/2; chi^dag chi and chi’^dag chi’ = neutral singlets; chi^dag chi’ = singlet, Y = Q = -1; and the values of T^3_R \[largest deviation of a charge 2.0e-15\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-10d | PASS   | –         | –         | the symmetric Lorentz-invariant Psi Psi matrices of QN-6c form isospin singlets (2 (x) 2 = 1 + 3: the singlet is the part that Fermi statistics removes) \[multiplets 1 + 1\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| QN-10e | PASS   | –         | –         | no pair of two particles of one field and no pair of chi_SH with chi’\_SH is neutral: a condensate of such pairs would carry electric charge \[smallest absolute value of Q in these channels 1/2\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| QN-10f | PASS   | –         | –         | the neutral pairs: exactly one neutral component in each of the channels Psi chi and Psi chi’ (the down particle with chi_SH and the up particle with chi’\_SH, by QN-8d) and none in the other pair channels \[Psi chi (+): 1; Psi chi (-): 1; Psi chi’ (+): 1; Psi chi’ (-): 1\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| QN-10g | PASS   | –         | –         | the custodial multiplets (both parities, each part invariant under all ten generators): Psi (chi, chi’) pairs (2,2); pairs of two singlets (1,3) (chi chi, chi chi’, chi’ chi’ form a triplet of SU(2)\_R); Psi^dag (chi, chi’) (2,2); (chi, chi’)^dag (chi, chi’) (1,1) + (1,3) \[Psi (chi, chi’) (+) (2,2); Psi (chi, chi’) (-) (2,2); (chi, chi’) (chi, chi’) (+) (1,3); (chi, chi’) (chi, chi’) (-) (1,3); Psi^dag (chi, chi’) (+) (2,2); Psi^dag (chi, chi’) (-) (2,2); (chi, chi’)^dag (chi, chi’) (+) (1,1) + (1,3); (chi, chi’)^dag (chi, chi’) (-) (1,1) + (1,3)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| QN-11a | PASS   | 4.441e-16 | 1.0e-12   | every doublet is brought to the form (0, phi) with real phi \> 0 by an element of SU(2)\_L (25 random doublets)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| QN-11b | PASS   | –         | –         | the generators of SU(2)\_L x U(1)\_Y that leave Phi_SH = (0, phi) unchanged span the direction of T^3 + Y = Q; so do those that leave the neutral vacuum Phi_SH = (0, phi), Phi’\_SH = (phi’, 0) of Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                           data-reference="sec:model">2</a> unchanged (25 random phi, phi’ of different lengths): SU(2)\_L x U(1)\_Y -\> U(1)\_Q \[deviation of the unit vector from (0, 0, 1, 1)/sqrt2: 1.1e-16 (Phi_SH alone), 2.2e-16 (both); gap 5.6e-17 / 0.250\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| QN-11c | PASS   | 1.112e-14 | 1.0e-12   | a neutral vacuum with equal lengths, M_SH = \[\[0, a\], \[b, 0\]\] with a = b = phi, is brought to phi i tau^2 by exp(i theta_3 T^3 + i theta_F F_tot) (25 random phases and lengths); the product a b, which SU(2)\_L x U(1)\_Y does not change (QN-9d), needs F_tot                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| QN-11d | PASS   | –         | –         | the vacuum phi i tau^2 keeps four of the eight generators of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F_tot: T^a + T^a_R (the custodial SU(2)\_V) and R; Q = T^3 + T^3_R + R/4 lies among them; four are broken, three of them in SU(2)\_L x U(1)\_Y (whose stabilizer is the direction of Q) and the fourth F_tot, which is not a combination of the kept and the gauged generators: three Goldstone modes for W and Z and one physical \[stabilizer of dimension 4 (deviation of its projector 4.4e-16; gap 5.6e-17 / 0.500); Q in it to 3.3e-16; broken 4 of 8, 3 of the 4 gauged; rank of kept + gauged 7, with F_tot 8\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| QN-11e | PASS   | –         | –         | a neutral vacuum with equal lengths and any phases keeps four generators (a conjugate of SU(2)\_V, and R); with unequal lengths it keeps only T^3 + T^3_R and R: the custodial SU(2)\_V needs equal lengths (25 random vacua of each kind) \[equal lengths: dimension 4 in all trials: true; unequal: deviation of the projector 3.0e-15\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| QN-11f | PASS   | –         | –         | a generic second condensate in any channel with a charged component, added to the neutral vacuum of Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+                                           data-reference="sec:model">2</a>, leaves no generator of SU(2)\_L x U(1)\_Y unbroken (the photon would become massive); in the neutral channels chi^dag chi and chi’^dag chi’ it leaves Q \[Psi Psi (+): generic 0, neutral -; Psi Psi (-): generic 0, neutral -; Psi chi (+): generic 0, neutral 1 (Q); Psi chi (-): generic 0, neutral 1 (Q); Psi chi’ (+): generic 0, neutral 1 (Q); Psi chi’ (-): generic 0, neutral 1 (Q); chi chi (+): generic 0, neutral -; chi chi (-): generic 0, neutral -; chi chi’ (+): generic 0, neutral -; chi chi’ (-): generic 0, neutral -; chi’ chi’ (+): generic 0, neutral -; chi’ chi’ (-): generic 0, neutral -; Psi^dag Psi (+): generic 0, neutral 1 (Q); Psi^dag Psi (-): generic 0, neutral 1 (Q); Psi^dag chi (+): generic 0, neutral -; Psi^dag chi (-): generic 0, neutral -; Psi^dag chi’ (+): generic 0, neutral -; Psi^dag chi’ (-): generic 0, neutral -; chi^dag chi (+): generic 1, neutral 1 (Q); chi^dag chi (-): generic 1, neutral 1 (Q); chi^dag chi’ (+): generic 0, neutral -; chi^dag chi’ (-): generic 0, neutral -; chi’^dag chi’ (+): generic 1, neutral 1 (Q); chi’^dag chi’ (-): generic 1, neutral 1 (Q)\]  |
+| QN-11g | PASS   | –         | –         | a second condensate in the neutral part of any channel (Q = 0) keeps exactly Q unbroken: the mean fields compatible with U(1)\_Q are the neutral ones \[dimension of the stabilizer 1 and along Q in every channel with a neutral part\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| QN-12a | PASS   | –         | –         | v = (sqrt2 G_F)^(-1/2) = 246.22 GeV to the five digits stated in Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                                           data-reference="sec:model">2</a> \[v = 246.2197 GeV\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| QN-12b | PASS   | 1.094e-16 | 1.0e-13   | for the vacuum Phi_SH = (0, phi), Phi’\_SH = (phi’, 0) of equal lengths, phi = phi’ = v_SH/2, the eigenvalues of the mass matrix are 0, M_W^2, M_W^2, M_Z^2 with M_W = g v_SH/2 and M_Z = sqrt(g^2 + g’^2) v_SH/2, where v_SH^2 = 2 (phi^2 + phi’^2) (relative deviation)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| QN-12c | PASS   | 1.558e-16 | 1.0e-13   | with v_SH = v (Sec. <a href="#sec:gauge" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                                           data-reference="sec:gauge">7</a>) and these couplings the two masses are the measured M_W and M_Z (relative deviation)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| QN-12d | PASS   | 5.551e-17 | 1.0e-12   | the massless field is A = sin(theta_W) W^3 + cos(theta_W) B and the field of mass M_Z is Z = cos(theta_W) W^3 - sin(theta_W) B, with tan(theta_W) = g’/g (the conventions (10.3) of the Review)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| QN-12e | PASS   | 2.220e-16 | 1.0e-12   | under the unbroken U(1)\_Q the field (W^1 - i W^2)/sqrt2 = W^+ has the charge +1 and the mass M_W; W^3 and B are neutral (the eigenvalues of the adjoint action of Q are -1, 0, 0, 1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| QN-12f | PASS   | 4.375e-16 | 1.0e-13   | rho = M_W^2 / (M_Z^2 cos^2 theta_W) = 1 for a canonical kinetic term of the two pair fields, for the vacuum of equal lengths and for 25 random ratios of the lengths, with the same eigenvalues (the value of the dynamics is computed in stage 4)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| QN-12g | PASS   | 0.000e0   | 1.0e-14   | e = g g’ / sqrt(g^2 + g’^2) = g sin(theta_W), and g^F_LL = g’/4 reproduces g’ Y = g^F_LL F_LL with F_LL = 4 Y on all three fields (Y = 1/4, 1/4, -3/4)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
-| check, result       | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|:--------------------|:----------|:----------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| check, result       | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| YP3-T1 HS_1_1 PASS  | 6.164e-14 | 1.0e-12   | HS_1_1: the thermal states at T = 0.005 reproduce the ground state of T = 0 (change of Phi0 + relative change of the energy)                                                                                                                                                                                                                                                                                                |
-| YP3-T3 HS_1_1 PASS  | 6.756e-14 | 1.0e-10   | HS_1_1: the critical temperature T_c = 0.2604672394 = Rust (relative; bisection of lambda^P(T) = 1 with the normal states of this engine)                                                                                                                                                                                                                                                                                   |
-| YP3-T8 HS_1_1 PASS  | 1.707e-14 | 1.0e-10   | HS_1_1: the Dirac mass of the superfluid at 0.5 T_c and 0.9 T_c equals that at T = 0 (0.2066851932) and the Rust value (largest difference)                                                                                                                                                                                                                                                                                 |
-| YP3-T2 HS_1_1 PASS  | 3.311e-12 | 1.0e-08   | HS_1_1: the order parameter and the free energy of the superfluid at 0.5 T_c and 0.9 T_c = Rust (largest difference; the free energy relative)                                                                                                                                                                                                                                                                              |
-| YP3-T1 CJT PASS     | 1.046e-13 | 1.0e-12   | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (change of Phi0 + relative change of the energy)                                                                                                                                                                                                                                                                                                   |
-| YP3-T3 CJT PASS     | 2.138e-13 | 1.0e-10   | CJT: the critical temperature T_c = 0.2221187371 = Rust (relative; bisection of lambda^P(T) = 1 with the normal states of this engine)                                                                                                                                                                                                                                                                                      |
-| YP3-T8 CJT PASS     | 1.717e-13 | 1.0e-10   | CJT: the Dirac mass of the superfluid at 0.5 T_c and 0.9 T_c equals that at T = 0 (0.1622929325) and the Rust value (largest difference)                                                                                                                                                                                                                                                                                    |
-| YP3-T2 CJT PASS     | 6.209e-13 | 1.0e-08   | CJT: the order parameter and the free energy of the superfluid at 0.5 T_c and 0.9 T_c = Rust (largest difference; the free energy relative)                                                                                                                                                                                                                                                                                 |
-| YP3-T4 PASS         | 9.807e-12 | 1.0e-09   | HS (0, 0): the order parameter of every temperature of the table from the gap equation g^P I1(m^2 + Phi0^2, T)/pi^2 = 1 alone (without the self-consistent engine) = Rust (largest difference)                                                                                                                                                                                                                              |
-| YP3-T9 HS_1_1 PASS  | 2.420e-14 | 1.0e-09   | HS_1_1: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.183843 to 0.620857), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and lambda^P(T_c) - 1)                                                                                    |
-| YP3-T9 HS_0_1 PASS  | 3.464e-14 | 1.0e-09   | HS_0_1: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.150958 to 0.604690), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and lambda^P(T_c) - 1)                                                                                    |
-| YP3-T9 HS_0_0 PASS  | 1.688e-14 | 1.0e-09   | HS_0_0: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.584946), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and lambda^P(T_c) - 1)                                                                                    |
-| YP3-T9 KS PASS      | 5.906e-14 | 1.0e-09   | KS: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and lambda^P(T_c) - 1)                                                                                        |
-| YP3-T9 CJT PASS     | 5.906e-14 | 1.0e-09   | CJT: lambda^P(T) of the normal state does not increase on 600 temperatures from 0.001 to 0.6 (largest rise 0.0e+00; from 1.113376 to 0.588434), so T_c is the only solution of lambda^P(T) = 1, and lambda^P(T_c of Rust) = 1 (the normal state from its scalar self-consistency alone; the larger of the rise and lambda^P(T_c) - 1)                                                                                       |
-| YP3-T5 CJT PASS     | 3.080e-07 | 1.0e-05   | CJT at 0.9 T_c: the Taylor coefficients a = -1.05102722e-03, b = 1.47550953e-02 of the free energy at the origin (four applied fields, exact cubic interpolation of F/Phi^2) and the error 2.2771e-02 of the order parameter (-a/2b)^(1/2) of Landau’s theory = Rust (largest relative difference of a and b, difference of the error); the error is 0.228 times 1 - T/T_c                                                  |
-| YP3-T6 HS_1_1 PASS  | 7.060e-11 | 1.0e-07   | HS_1_1: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (1.83e-02, 8.81e-03, 3.73e-03 at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.7e-05 at 0.98 T_c: yes |
-| YP3-T7 HS_1_1 PASS  | 5.638e-12 | 1.0e-08   | HS_1_1: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 7.035495e-03 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                                                                                  |
-| YP3-T6 HS_0_1 PASS  | 9.270e-12 | 1.0e-07   | HS_0_1: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (1.60e-02, 7.67e-03, 3.24e-03 at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.3e-05 at 0.98 T_c: yes |
-| YP3-T7 HS_0_1 PASS  | 1.304e-12 | 1.0e-08   | HS_0_1: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 4.693236e-03 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                                                                                  |
-| YP3-T6 HS_0_0 PASS  | 4.884e-10 | 1.0e-07   | HS_0_0: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (1.27e-02, 6.06e-03, 2.56e-03 at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 7.8e-06 at 0.98 T_c: yes |
-| YP3-T7 HS_0_0 PASS  | 1.891e-11 | 1.0e-08   | HS_0_0: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.690453e-03 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                                                                                  |
-| YP3-T6 KS PASS      | 1.306e-10 | 1.0e-07   | KS: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (1.58e-02, 7.47e-03, 3.13e-03 at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.0e-05 at 0.98 T_c: yes     |
-| YP3-T7 KS PASS      | 3.539e-11 | 1.0e-08   | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                                                                                      |
-| YP3-T6 CJT PASS     | 5.804e-11 | 1.0e-07   | CJT: the largest residuals of the Landau form (12.2) and of the quartic form, relative to the depth, of the free-energy curves at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed from data/part3_thermal_curves.csv with numpy (SVD) = Rust (largest relative difference); the quartic residual falls towards T_c (1.58e-02, 7.47e-03, 3.13e-03 at 0.9, 0.95, 0.98 T_c) and that of (12.2) is 1.0e-05 at 0.98 T_c: yes    |
-| YP3-T7 CJT PASS     | 4.636e-11 | 1.0e-08   | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0, 2.846809e-03 of the depth, is that of Table 12.1 (relative difference)                                                                                                                                                                                                                                     |
-| YP3-G1 HS_1_1 PASS  | 7.976e-10 | 1.0e-07   | HS_1_1: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response of this engine (-1.3427965859e-03) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.3427965869e-03, data/part3_thermal.csv) (relative difference)                                                                                                                                                             |
-| YP3-G2 HS_1_1 PASS  | 9.724e-12 | 1.0e-09   | HS_1_1: a(0, T) of this engine = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) from (12.9) on 400 radial nodes (largest relative difference)                                                                                                                                                                                                                                         |
-| YP3-G3 HS_1_1 PASS  | 7.218e-14 | 1.0e-09   | HS_1_1: a(0, T_c) of this engine vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0140378852 in closed form)                                                                                                                                                                                                                                                                                                   |
-| YP3-G4 HS_1_1 PASS  | 0.000e+00 | 1.0e-12   | HS_1_1: at k = 0 no other pair channel is induced in this engine (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 1.36e-34)                                                                                                                                                                                                                                                          |
-| YP3-G5 HS_1_1 PASS  | 3.656e-10 | 1.0e-08   | HS_1_1: the isospin twist gives the gradient coefficient of the phase twist in this engine, c = 0.0154874758 (isospin invariance; relative difference)                                                                                                                                                                                                                                                                      |
-| YP3-G6 HS_1_1 PASS  | –         | –         | HS_1_1: c \> 0 and the extrapolation in k converges in this engine: c(k = 0.01) = 0.0154876566, c(k = 0.02) = 0.0154881993, extrapolated 0.0154874758 \[c(0.02) - c(0.01) / c = 3.50e-05, below 1e-3\]                                                                                                                                                                                                                      |
-| YP3-G8 HS_1_1 PASS  | 4.228e-11 | 1.0e-07   | HS_1_1: the gradient coefficient does not depend on the quadrature: 64 directions (this engine) 0.015487475774, six directions (Rust) 0.015487475773 (relative difference)                                                                                                                                                                                                                                                  |
-| YP3-G9 HS_1_1 PASS  | –         | –         | HS_1_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k in this engine (ratio 2.01391 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k^2) \[ratio/2 - 1 = 6.96e-03 below 0.02, ratio/4 - 1 = 8.76e-06 below 1e-3\]                                                                                                                |
-| YP3-G10 HS_1_1 PASS | 4.438e-13 | 1.0e-09   | HS_1_1: alpha = T_c da/dT = 0.0140378852 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2066851932 from its scalar self-consistency, no BdG engine) = Rust 0.0140378852 from central differences of the linear response (relative difference)                                                                                                                                             |
-| YP3-G11 HS_1_1 PASS | 1.274e-10 | 1.0e-06   | HS_1_1: the Ginzburg number Gi = n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 11.379614 from the Rust coefficients, 11.379614 from the coefficients alpha, c of this program (with the Rust b), 11.379614 from the second form n^2/(256 pi^2 (Delta C xi0^3)^2) = Rust 11.379614 (largest relative difference)                                                                                                                       |
-| YP3-G1 HS_0_1 PASS  | 1.748e-10 | 1.0e-07   | HS_0_1: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response of this engine (-1.2087983988e-03) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.2087983990e-03, data/part3_thermal.csv) (relative difference)                                                                                                                                                             |
-| YP3-G2 HS_0_1 PASS  | 7.318e-12 | 1.0e-09   | HS_0_1: a(0, T) of this engine = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) from (12.9) on 400 radial nodes (largest relative difference)                                                                                                                                                                                                                                         |
-| YP3-G3 HS_0_1 PASS  | 1.071e-13 | 1.0e-09   | HS_0_1: a(0, T_c) of this engine vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0126991375 in closed form)                                                                                                                                                                                                                                                                                                   |
-| YP3-G4 HS_0_1 PASS  | 1.392e-18 | 1.0e-12   | HS_0_1: at k = 0 no other pair channel is induced in this engine (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 7.87e-05)                                                                                                                                                                                                                                                          |
-| YP3-G5 HS_0_1 PASS  | 2.265e-10 | 1.0e-08   | HS_0_1: the isospin twist gives the gradient coefficient of the phase twist in this engine, c = 0.0171375865 (isospin invariance; relative difference)                                                                                                                                                                                                                                                                      |
-| YP3-G6 HS_0_1 PASS  | –         | –         | HS_0_1: c \> 0 and the extrapolation in k converges in this engine: c(k = 0.01) = 0.0171377895, c(k = 0.02) = 0.0171383984, extrapolated 0.0171375865 \[c(0.02) - c(0.01) / c = 3.55e-05, below 1e-3\]                                                                                                                                                                                                                      |
-| YP3-G8 HS_0_1 PASS  | 2.108e-10 | 1.0e-07   | HS_0_1: the gradient coefficient does not depend on the quadrature: 64 directions (this engine) 0.017137586472, six directions (Rust) 0.017137586468 (relative difference)                                                                                                                                                                                                                                                  |
-| YP3-G9 HS_0_1 PASS  | –         | –         | HS_0_1: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k in this engine (ratio 2.01448 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k^2) \[ratio/2 - 1 = 7.24e-03 below 0.02, ratio/4 - 1 = 8.88e-06 below 1e-3\]                                                                                                                |
-| YP3-G10 HS_0_1 PASS | 1.914e-12 | 1.0e-09   | HS_0_1: alpha = T_c da/dT = 0.0126991375 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000 from its scalar self-consistency, no BdG engine) = Rust 0.0126991375 from central differences of the linear response (relative difference)                                                                                                                                             |
-| YP3-G11 HS_0_1 PASS | 6.345e-10 | 1.0e-06   | HS_0_1: the Ginzburg number Gi = n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 9.767745 from the Rust coefficients, 9.767745 from the coefficients alpha, c of this program (with the Rust b), 9.767745 from the second form n^2/(256 pi^2 (Delta C xi0^3)^2) = Rust 9.767745 (largest relative difference)                                                                                                                           |
-| YP3-G1 HS_0_0 PASS  | 8.823e-10 | 1.0e-07   | HS_0_0: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response of this engine (-1.0158790690e-03) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.0158790681e-03, data/part3_thermal.csv) (relative difference)                                                                                                                                                             |
-| YP3-G2 HS_0_0 PASS  | 1.047e-11 | 1.0e-09   | HS_0_0: a(0, T) of this engine = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) from (12.9) on 400 radial nodes (largest relative difference)                                                                                                                                                                                                                                         |
-| YP3-G3 HS_0_0 PASS  | 5.145e-14 | 1.0e-09   | HS_0_0: a(0, T_c) of this engine vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0107433853 in closed form)                                                                                                                                                                                                                                                                                                   |
-| YP3-G4 HS_0_0 PASS  | 1.063e-18 | 1.0e-12   | HS_0_0: at k = 0 no other pair channel is induced in this engine (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 3.86e-05)                                                                                                                                                                                                                                                          |
-| YP3-G5 HS_0_0 PASS  | 1.692e-10 | 1.0e-08   | HS_0_0: the isospin twist gives the gradient coefficient of the phase twist in this engine, c = 0.0195279853 (isospin invariance; relative difference)                                                                                                                                                                                                                                                                      |
-| YP3-G6 HS_0_0 PASS  | –         | –         | HS_0_0: c \> 0 and the extrapolation in k converges in this engine: c(k = 0.01) = 0.0195282114, c(k = 0.02) = 0.0195288895, extrapolated 0.0195279853 \[c(0.02) - c(0.01) / c = 3.47e-05, below 1e-3\]                                                                                                                                                                                                                      |
-| YP3-G8 HS_0_0 PASS  | 6.746e-11 | 1.0e-07   | HS_0_0: the gradient coefficient does not depend on the quadrature: 64 directions (this engine) 0.019527985291, six directions (Rust) 0.019527985290 (relative difference)                                                                                                                                                                                                                                                  |
-| YP3-G7 HS_0_0 PASS  | 3.026e-07 | 1.0e-05   | HS_0_0 (no normal self-energy): the twisted states of the nonlinear engine of this program give the gradient coefficient of its linear response with the pair self-energy along (K^3)^dag (0.0195281020 and 0.0195280961; relative difference)                                                                                                                                                                              |
-| YP3-G9 HS_0_0 PASS  | –         | –         | HS_0_0: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k in this engine (ratio 2.01532 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000035, 4 for k^2) \[ratio/2 - 1 = 7.66e-03 below 0.02, ratio/4 - 1 = 8.68e-06 below 1e-3\]                                                                                                                |
-| YP3-G10 HS_0_0 PASS | 2.272e-12 | 1.0e-09   | HS_0_0: alpha = T_c da/dT = 0.0107433853 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.2000000000 from its scalar self-consistency, no BdG engine) = Rust 0.0107433853 from central differences of the linear response (relative difference)                                                                                                                                             |
-| YP3-G11 HS_0_0 PASS | 2.048e-10 | 1.0e-06   | HS_0_0: the Ginzburg number Gi = n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 8.277176 from the Rust coefficients, 8.277176 from the coefficients alpha, c of this program (with the Rust b), 8.277176 from the second form n^2/(256 pi^2 (Delta C xi0^3)^2) = Rust 8.277176 (largest relative difference)                                                                                                                           |
-| YP3-G1 KS PASS      | 4.375e-10 | 1.0e-07   | KS: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response of this engine (-1.0510272234e-03) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.0510272239e-03, data/part3_thermal.csv) (relative difference)                                                                                                                                                                 |
-| YP3-G2 KS PASS      | 1.635e-11 | 1.0e-09   | KS: a(0, T) of this engine = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) from (12.9) on 400 radial nodes (largest relative difference)                                                                                                                                                                                                                                             |
-| YP3-G3 KS PASS      | 2.192e-13 | 1.0e-09   | KS: a(0, T_c) of this engine vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0111755228 in closed form)                                                                                                                                                                                                                                                                                                       |
-| YP3-G4 KS PASS      | 3.134e-16 | 1.0e-12   | KS: at k = 0 no other pair channel is induced in this engine (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 3.08e-05)                                                                                                                                                                                                                                                              |
-| YP3-G5 KS PASS      | 6.579e-11 | 1.0e-08   | KS: the isospin twist gives the gradient coefficient of the phase twist in this engine, c = 0.0192717762 (isospin invariance; relative difference)                                                                                                                                                                                                                                                                          |
-| YP3-G6 KS PASS      | –         | –         | KS: c \> 0 and the extrapolation in k converges in this engine: c(k = 0.01) = 0.0192720049, c(k = 0.02) = 0.0192726911, extrapolated 0.0192717762 \[c(0.02) - c(0.01) / c = 3.56e-05, below 1e-3\]                                                                                                                                                                                                                          |
-| YP3-G8 KS PASS      | 2.334e-10 | 1.0e-07   | KS: the gradient coefficient does not depend on the quadrature: 64 directions (this engine) 0.019271776161, six directions (Rust) 0.019271776156 (relative difference)                                                                                                                                                                                                                                                      |
-| YP3-G9 KS PASS      | –         | –         | KS: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k in this engine (ratio 2.01520 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k^2) \[ratio/2 - 1 = 7.60e-03 below 0.02, ratio/4 - 1 = 8.90e-06 below 1e-3\]                                                                                                                    |
-| YP3-G10 KS PASS     | 4.420e-12 | 1.0e-09   | KS: alpha = T_c da/dT = 0.0111755228 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325 from its scalar self-consistency, no BdG engine) = Rust 0.0111755228 from central differences of the linear response (relative difference)                                                                                                                                                 |
-| YP3-G11 KS PASS     | 7.051e-10 | 1.0e-06   | KS: the Ginzburg number Gi = n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 7.620723 from the Rust coefficients, 7.620723 from the coefficients alpha, c of this program (with the Rust b), 7.620723 from the second form n^2/(256 pi^2 (Delta C xi0^3)^2) = Rust 7.620723 (largest relative difference)                                                                                                                               |
-| YP3-G1 CJT PASS     | 4.422e-10 | 1.0e-07   | CJT: at 0.9 T_c the coefficient a(0) of Phi^2 from the linear response of this engine (-1.0510272234e-03) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section 12.4 (-1.0510272239e-03, data/part3_thermal.csv) (relative difference)                                                                                                                                                                |
-| YP3-G2 CJT PASS     | 1.583e-11 | 1.0e-09   | CJT: a(0, T) of this engine = (1 - lambda^P(T)) / (lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) from (12.9) on 400 radial nodes (largest relative difference)                                                                                                                                                                                                                                            |
-| YP3-G3 CJT PASS     | 2.192e-13 | 1.0e-09   | CJT: a(0, T_c) of this engine vanishes to the accuracy of T_c (a(0, T_c) / alpha; alpha = 0.0111755228 in closed form)                                                                                                                                                                                                                                                                                                      |
-| YP3-G4 CJT PASS     | 3.134e-16 | 1.0e-12   | CJT: at k = 0 no other pair channel is induced in this engine (norm of the self-consistent components of P other than (K^iota)^dag; at k = 0.01 it is 3.08e-05)                                                                                                                                                                                                                                                             |
-| YP3-G5 CJT PASS     | 6.741e-11 | 1.0e-08   | CJT: the isospin twist gives the gradient coefficient of the phase twist in this engine, c = 0.0192717762 (isospin invariance; relative difference)                                                                                                                                                                                                                                                                         |
-| YP3-G6 CJT PASS     | –         | –         | CJT: c \> 0 and the extrapolation in k converges in this engine: c(k = 0.01) = 0.0192720049, c(k = 0.02) = 0.0192726911, extrapolated 0.0192717762 \[c(0.02) - c(0.01) / c = 3.56e-05, below 1e-3\]                                                                                                                                                                                                                         |
-| YP3-G8 CJT PASS     | 2.252e-10 | 1.0e-07   | CJT: the gradient coefficient does not depend on the quadrature: 64 directions (this engine) 0.019271776161, six directions (Rust) 0.019271776156 (relative difference)                                                                                                                                                                                                                                                     |
-| YP3-G9 CJT PASS     | –         | –         | CJT: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k in this engine (ratio 2.01520 for k = 0.01 and 0.005, 2 for k), with the cutoff on the relative momentum quadratic (ratio 4.000036, 4 for k^2) \[ratio/2 - 1 = 7.60e-03 below 0.02, ratio/4 - 1 = 8.90e-06 below 1e-3\]                                                                                                                   |
-| YP3-G10 CJT PASS    | 4.702e-12 | 1.0e-09   | CJT: alpha = T_c da/dT = 0.0111755228 in closed form (lambda^P(T_c) = 1.000000000000, Dirac mass of the normal state 0.1622929325 from its scalar self-consistency, no BdG engine) = Rust 0.0111755228 from central differences of the linear response (relative difference)                                                                                                                                                |
-| YP3-G11 CJT PASS    | 6.806e-10 | 1.0e-06   | CJT: the Ginzburg number Gi = n^2 b^2 T_c^2/(64 pi^2 alpha c^3) = 7.620723 from the Rust coefficients, 7.620723 from the coefficients alpha, c of this program (with the Rust b), 7.620723 from the second form n^2/(256 pi^2 (Delta C xi0^3)^2) = Rust 7.620723 (largest relative difference)                                                                                                                              |
-| YP3-G12 CJT PASS    | 1.715e-07 | 1.0e-06   | CJT at T_c: the quartic coefficient b = 0.0147237342 of the free energy at the origin (four applied fields, nonlinear thermal states of this engine) is positive and = Rust 0.0147237368 (relative difference); a(T_c) = 4.2e-13                                                                                                                                                                                            |
-| YP3-H1 HS_1_1 PASS  | –         | –         | HS_1_1: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.813693 \< 2 E_gap = 0.905935 (M_H / 2 E_gap = 0.8982; data/part3_values.csv, data/part3_thermal.csv) \[2 E_gap - M_H = 0.092242\]                                                                                                                                                                                                       |
-| YP3-H2 HS_1_1 PASS  | 3.333e-11 | 1.0e-06   | HS_1_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07096573 and 0.07212812, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)                                                                                                                                                                                                                                                    |
-| YP3-H3 HS_1_1 PASS  | 3.168e-13 | 1.0e-09   | HS_1_1: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.14308913, M_H/v_SF = 5.686617, lambda_SF = 16.16881, Gamma/M_H = 3.92324) = data/part3_higgs.csv (largest relative difference)                                                                                                                                                                                 |
-| YP3-H1 HS_0_1 PASS  | –         | –         | HS_0_1: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.725083 \< 2 E_gap = 0.827165 (M_H / 2 E_gap = 0.8766; data/part3_values.csv, data/part3_thermal.csv) \[2 E_gap - M_H = 0.102082\]                                                                                                                                                                                                       |
-| YP3-H2 HS_0_1 PASS  | 3.334e-11 | 1.0e-06   | HS_0_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.06723334 and 0.06822015, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)                                                                                                                                                                                                                                                    |
-| YP3-H3 HS_0_1 PASS  | 1.460e-13 | 1.0e-09   | HS_0_1: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13544990, M_H/v_SF = 5.353148, lambda_SF = 14.32810, Gamma/M_H = 3.47079) = data/part3_higgs.csv (largest relative difference)                                                                                                                                                                                 |
-| YP3-H1 HS_0_0 PASS  | –         | –         | HS_0_0: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.614387 \< 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8384; data/part3_values.csv, data/part3_thermal.csv) \[2 E_gap - M_H = 0.118394\]                                                                                                                                                                                                       |
-| YP3-H2 HS_0_0 PASS  | 3.333e-11 | 1.0e-06   | HS_0_0: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.06139396 and 0.06139396, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)                                                                                                                                                                                                                                                    |
-| YP3-H3 HS_0_0 PASS  | 1.853e-13 | 1.0e-09   | HS_0_0: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.12278792, M_H/v_SF = 5.003647, lambda_SF = 12.51824, Gamma/M_H = 2.98851) = data/part3_higgs.csv (largest relative difference)                                                                                                                                                                                 |
-| YP3-H1 KS PASS      | –         | –         | KS: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.603476 \< 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8235; data/part3_values.csv, data/part3_thermal.csv) \[2 E_gap - M_H = 0.129305\]                                                                                                                                                                                                           |
-| YP3-H2 KS PASS      | 3.334e-11 | 1.0e-06   | KS: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07134817 and 0.06050620, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)                                                                                                                                                                                                                                                        |
-| YP3-H3 KS PASS      | 2.514e-13 | 1.0e-09   | KS: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13140786, M_H/v_SF = 4.592389, lambda_SF = 10.54502, Gamma/M_H = 2.13489) = data/part3_higgs.csv (largest relative difference)                                                                                                                                                                                     |
-| YP3-H1 CJT PASS     | –         | –         | CJT: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.603476 \< 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8235; data/part3_values.csv, data/part3_thermal.csv) \[2 E_gap - M_H = 0.129305\]                                                                                                                                                                                                          |
-| YP3-H2 CJT PASS     | 3.334e-11 | 1.0e-06   | CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07134817 and 0.06416246, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)                                                                                                                                                                                                                                                       |
-| YP3-H3 CJT PASS     | 3.085e-13 | 1.0e-09   | CJT: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13531998, M_H/v_SF = 4.459622, lambda_SF = 9.94412, Gamma/M_H = 2.13489) = data/part3_higgs.csv (largest relative difference)                                                                                                                                                                                     |
+The checks of the Rust program of stage 2
+(`data/hck_sh_quantum_checks.txt`).
 
-The checks of the Python program `sf_part3.py` (YP3-T, YP3-G, YP3-H; the
-counterparts of the Rust checks of the same identifier without the Y).
+</div>
 
-| check, result       | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-|:--------------------|:----------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| check, result       | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| WP3-T1 HS_1_1 PASS  | 7.903e-14 | 1.000e-11 | HS (1, 1): the thermal states at T = 0.005 reproduce the ground state of T = 0 (change of Phi0 + relative change of the energy) \[Rust: P3-T1 HS_1_1; Python: YP3-T1 HS_1_1\]                                                                                                                                                                                                                                                              |
-| WP3-T1 CJT PASS     | 9.391e-14 | 1.000e-11 | CJT: the thermal states at T = 0.005 reproduce the ground state of T = 0 (change of Phi0 + relative change of the energy) \[Rust: P3-T1 CJT; Python: YP3-T1 CJT\]                                                                                                                                                                                                                                                                          |
-| WP3-T3 HS_1_1 PASS  | 7.291e-14 | 1.000e-10 | HS (1, 1): the critical temperature T_c = 0.2604672394 (bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.183842814 = Rust; the Dirac mass of the normal state of the thermal engine at T_c = 0.2066851932 = the scalar self-consistency \[Rust: P3-T3 HS_1_1; Python: YP3-T3 HS_1_1, YP3-T9 HS_1_1\]                                                                                                                   |
-| WP3-T3 HS_0_1 PASS  | 4.653e-13 | 1.000e-10 | HS (0, 1): the critical temperature T_c = 0.2404654563 (bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.150958292 = Rust \[Rust: P3-T3 HS_0_1; Python: YP3-T9 HS_0_1\]                                                                                                                                                                                                                                                |
-| WP3-T3 HS_0_0 PASS  | 2.056e-13 | 1.000e-10 | HS (0, 0): the critical temperature T_c = 0.2137990984 (bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.11337598 = Rust \[Rust: P3-T3 HS_0_0; Python: YP3-T9 HS_0_0\]                                                                                                                                                                                                                                                 |
-| WP3-T3 KS PASS      | 3.755e-13 | 1.000e-10 | KS: the critical temperature T_c = 0.2221187371 (bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.11337598 = Rust; the Dirac mass of the normal state of the thermal engine at T_c = 0.1622929325 = the scalar self-consistency \[Rust: P3-T3 KS; Python: YP3-T9 KS\]                                                                                                                                                  |
-| WP3-T3 CJT PASS     | 3.755e-13 | 1.000e-10 | CJT: the critical temperature T_c = 0.2221187371 (bisection of lambda^P(T) = 1) = Rust (relative), and lambda^P(0) = 1.11337598 = Rust; the Dirac mass of the normal state of the thermal engine at T_c = 0.1622929325 = the scalar self-consistency \[Rust: P3-T3 CJT; Python: YP3-T3 CJT, YP3-T9 CJT\]                                                                                                                                   |
-| WP3-T9 HS_1_1 PASS  | 0.000e+00 | 1.000e-12 | HS (1, 1): lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.18384 to 0.620857; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there \[Rust: P3-T9 HS_1_1; Python: YP3-T9 HS_1_1\]                                                                                                                                                                                          |
-| WP3-T9 HS_0_1 PASS  | 0.000e+00 | 1.000e-12 | HS (0, 1): lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.15096 to 0.60469; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there \[Rust: P3-T9 HS_0_1; Python: YP3-T9 HS_0_1\]                                                                                                                                                                                           |
-| WP3-T9 HS_0_0 PASS  | 0.000e+00 | 1.000e-12 | HS (0, 0): lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.584946; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there \[Rust: P3-T9 HS_0_0; Python: YP3-T9 HS_0_0\]                                                                                                                                                                                          |
-| WP3-T9 KS PASS      | 0.000e+00 | 1.000e-12 | KS: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.588434; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there \[Rust: P3-T9 KS; Python: YP3-T9 KS\]                                                                                                                                                                                                         |
-| WP3-T9 CJT PASS     | 0.000e+00 | 1.000e-12 | CJT: lambda^P(T) of the normal state does not increase on 60 temperatures from 0.01 to 0.6 (from 1.11338 to 0.588434; the largest rise), so T_c is the only solution of lambda^P(T) = 1 there \[Rust: P3-T9 CJT; Python: YP3-T9 CJT\]                                                                                                                                                                                                      |
-| WP3-T2 CJT PASS     | 1.589e-12 | 1.000e-08 | CJT: the superfluid at 0.5 T_c and 0.9 T_c (thermal engine): the order parameter and the free energy = Rust (largest difference; the free energy relative), and the gap equation holds (largest g^P I1/pi^2 - 1; the sum of both) \[Rust: P3-T2 CJT; Python: YP3-T2 CJT\]                                                                                                                                                                  |
-| WP3-T8 CJT PASS     | 2.765e-13 | 1.000e-10 | CJT: the Dirac mass of the superfluid at 0.5 T_c and 0.9 T_c equals that at T = 0, 0.1622929325, and the Rust value (largest difference) \[Rust: P3-T8 CJT; Python: YP3-T8 CJT\]                                                                                                                                                                                                                                                           |
-| WP3-T2 HS_0_0 PASS  | 9.924e-12 | 1.000e-09 | HS (0, 0): the order parameter of every temperature of the table from the gap equation alone (with the Dirac mass m_LL, without the self-consistent engine) = Rust (largest difference) \[Rust: P3-T2 HS_0_0; Python: YP3-T4\]                                                                                                                                                                                                             |
-| WP3-T5 CJT PASS     | 1.431e-07 | 1.000e-05 | CJT at 0.9 T_c: the Taylor coefficients a = -0.0010510272, b = 0.014755098 of the free energy at the origin and the error 2.277e-2 of the order parameter (-a/2b)^(1/2) of Landau’s theory (0.228 times 1 - T/T_c) = Rust (largest relative difference of a and b, difference of the error) \[Rust: P3-T5 CJT; Python: YP3-T5 CJT\]                                                                                                        |
-| WP3-T6 HS_1_1 PASS  | 5.525e-11 | 1.000e-07 | HS (1, 1): the largest residuals of the Landau form and of the quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T_c (1.828e-2, 8.811e-3, 3.734e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is 1.668e-5 at 0.98 T_c: yes \[Rust: P3-T6 HS_1_1; Python: YP3-T6 HS_1_1\] |
-| WP3-T7 HS_1_1 PASS  | 5.804e-12 | 1.000e-08 | HS (1, 1): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) \[Rust: P3-T7 HS_1_1; Python: YP3-T7 HS_1_1\]                                                                                                                                                                                                                         |
-| WP3-T6 HS_0_1 PASS  | 2.410e-11 | 1.000e-07 | HS (0, 1): the largest residuals of the Landau form and of the quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T_c (1.597e-2, 7.668e-3, 3.244e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is 1.252e-5 at 0.98 T_c: yes \[Rust: P3-T6 HS_0_1; Python: YP3-T6 HS_0_1\] |
-| WP3-T7 HS_0_1 PASS  | 2.383e-12 | 1.000e-08 | HS (0, 1): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) \[Rust: P3-T7 HS_0_1; Python: YP3-T7 HS_0_1\]                                                                                                                                                                                                                         |
-| WP3-T6 HS_0_0 PASS  | 1.579e-10 | 1.000e-07 | HS (0, 0): the largest residuals of the Landau form and of the quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T_c (1.267e-2, 6.063e-3, 2.562e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is 7.750e-6 at 0.98 T_c: yes \[Rust: P3-T6 HS_0_0; Python: YP3-T6 HS_0_0\] |
-| WP3-T7 HS_0_0 PASS  | 2.475e-11 | 1.000e-08 | HS (0, 0): at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) \[Rust: P3-T7 HS_0_0; Python: YP3-T7 HS_0_0\]                                                                                                                                                                                                                         |
-| WP3-T6 KS PASS      | 5.965e-11 | 1.000e-07 | KS: the largest residuals of the Landau form and of the quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is 9.969e-6 at 0.98 T_c: yes \[Rust: P3-T6 KS; Python: YP3-T6 KS\]                |
-| WP3-T7 KS PASS      | 4.070e-11 | 1.000e-08 | KS: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) \[Rust: P3-T7 KS; Python: YP3-T7 KS\]                                                                                                                                                                                                                                        |
-| WP3-T6 CJT PASS     | 8.948e-12 | 1.000e-07 | CJT: the largest residuals of the Landau form and of the quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is 9.969e-6 at 0.98 T_c: yes \[Rust: P3-T6 CJT; Python: YP3-T6 CJT\]             |
-| WP3-T7 CJT PASS     | 4.876e-11 | 1.000e-08 | CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference) \[Rust: P3-T7 CJT; Python: YP3-T7 CJT\]                                                                                                                                                                                                                                     |
-| WP3-G1 HS_1_1 PASS  | 7.975e-10 | 1.000e-07 | HS (1, 1): at 0.9 T_c the coefficient a(0) of Phi^2 from the static pair response (-1.343e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section III.T (-1.343e-3) (relative difference) \[Rust: P3-G1 HS_1_1; Python: YP3-G1 HS_1_1\]                                                                                                                                                                            |
-| WP3-G2 HS_1_1 PASS  | 1.099e-12 | 1.000e-09 | HS (1, 1): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative difference) \[Rust: P3-G2 HS_1_1; Python: YP3-G2 HS_1_1\]                                                                                                                                                                                                                                     |
-| WP3-G10 HS_1_1 PASS | 1.496e-12 | 1.000e-08 | HS (1, 1): alpha = T_c da/dT = 0.01403788523 from central differences of the static pair response (Richardson) = 0.01403788523 in closed form (lambda^P(T_c) = 1., M_n = 0.2066851932) = Rust (largest relative difference) \[Rust: P3-G10 HS_1_1; Python: YP3-G10 HS_1_1\]                                                                                                                                                                |
-| WP3-G3 HS_1_1 PASS  | 4.080e-14 | 1.000e-09 | HS (1, 1): a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha) \[Rust: P3-G3 HS_1_1; Python: YP3-G3 HS_1_1\]                                                                                                                                                                                                                                                                                                                     |
-| WP3-G4 HS_1_1 PASS  | 0.000e+00 | 1.000e-12 | HS (1, 1): at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P^a other than (K^iota)^dag) \[Rust: P3-G4 HS_1_1; Python: YP3-G4 HS_1_1\]                                                                                                                                                                                                                                                    |
-| WP3-G1 HS_0_1 PASS  | 1.747e-10 | 1.000e-07 | HS (0, 1): at 0.9 T_c the coefficient a(0) of Phi^2 from the static pair response (-1.209e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section III.T (-1.209e-3) (relative difference) \[Rust: P3-G1 HS_0_1; Python: YP3-G1 HS_0_1\]                                                                                                                                                                            |
-| WP3-G2 HS_0_1 PASS  | 7.142e-13 | 1.000e-09 | HS (0, 1): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative difference) \[Rust: P3-G2 HS_0_1; Python: YP3-G2 HS_0_1\]                                                                                                                                                                                                                                     |
-| WP3-G10 HS_0_1 PASS | 2.014e-12 | 1.000e-08 | HS (0, 1): alpha = T_c da/dT = 0.01269913755 from central differences of the static pair response (Richardson) = 0.01269913755 in closed form (lambda^P(T_c) = 1., M_n = 0.2) = Rust (largest relative difference) \[Rust: P3-G10 HS_0_1; Python: YP3-G10 HS_0_1\]                                                                                                                                                                         |
-| WP3-G3 HS_0_1 PASS  | 4.639e-14 | 1.000e-09 | HS (0, 1): a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha) \[Rust: P3-G3 HS_0_1; Python: YP3-G3 HS_0_1\]                                                                                                                                                                                                                                                                                                                     |
-| WP3-G4 HS_0_1 PASS  | 4.441e-16 | 1.000e-12 | HS (0, 1): at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P^a other than (K^iota)^dag) \[Rust: P3-G4 HS_0_1; Python: YP3-G4 HS_0_1\]                                                                                                                                                                                                                                                    |
-| WP3-G1 HS_0_0 PASS  | 8.823e-10 | 1.000e-07 | HS (0, 0): at 0.9 T_c the coefficient a(0) of Phi^2 from the static pair response (-1.016e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section III.T (-1.016e-3) (relative difference) \[Rust: P3-G1 HS_0_0; Python: YP3-G1 HS_0_0\]                                                                                                                                                                            |
-| WP3-G2 HS_0_0 PASS  | 4.362e-13 | 1.000e-09 | HS (0, 0): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative difference) \[Rust: P3-G2 HS_0_0; Python: YP3-G2 HS_0_0\]                                                                                                                                                                                                                                     |
-| WP3-G10 HS_0_0 PASS | 2.713e-12 | 1.000e-08 | HS (0, 0): alpha = T_c da/dT = 0.01074338535 from central differences of the static pair response (Richardson) = 0.01074338535 in closed form (lambda^P(T_c) = 1., M_n = 0.2) = Rust (largest relative difference) \[Rust: P3-G10 HS_0_0; Python: YP3-G10 HS_0_0\]                                                                                                                                                                         |
-| WP3-G3 HS_0_0 PASS  | 5.930e-14 | 1.000e-09 | HS (0, 0): a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha) \[Rust: P3-G3 HS_0_0; Python: YP3-G3 HS_0_0\]                                                                                                                                                                                                                                                                                                                     |
-| WP3-G4 HS_0_0 PASS  | 3.259e-18 | 1.000e-12 | HS (0, 0): at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P^a other than (K^iota)^dag) \[Rust: P3-G4 HS_0_0; Python: YP3-G4 HS_0_0\]                                                                                                                                                                                                                                                    |
-| WP3-G1 KS PASS      | 4.374e-10 | 1.000e-07 | KS: at 0.9 T_c the coefficient a(0) of Phi^2 from the static pair response (-1.051e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section III.T (-1.051e-3) (relative difference) \[Rust: P3-G1 KS; Python: YP3-G1 KS\]                                                                                                                                                                                           |
-| WP3-G2 KS PASS      | 5.240e-12 | 1.000e-09 | KS: a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative difference) \[Rust: P3-G2 KS; Python: YP3-G2 KS\]                                                                                                                                                                                                                                                    |
-| WP3-G10 KS PASS     | 6.309e-12 | 1.000e-08 | KS: alpha = T_c da/dT = 0.01117552279 from central differences of the static pair response (Richardson) = 0.01117552279 in closed form (lambda^P(T_c) = 1., M_n = 0.1622929325) = Rust (largest relative difference) \[Rust: P3-G10 KS; Python: YP3-G10 KS\]                                                                                                                                                                               |
-| WP3-G3 KS PASS      | 4.443e-14 | 1.000e-09 | KS: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha) \[Rust: P3-G3 KS; Python: YP3-G3 KS\]                                                                                                                                                                                                                                                                                                                                    |
-| WP3-G4 KS PASS      | 4.441e-16 | 1.000e-12 | KS: at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P^a other than (K^iota)^dag) \[Rust: P3-G4 KS; Python: YP3-G4 KS\]                                                                                                                                                                                                                                                                   |
-| WP3-G1 CJT PASS     | 4.421e-10 | 1.000e-07 | CJT: at 0.9 T_c the coefficient a(0) of Phi^2 from the static pair response (-1.051e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section III.T (-1.051e-3) (relative difference) \[Rust: P3-G1 CJT; Python: YP3-G1 CJT\]                                                                                                                                                                                        |
-| WP3-G2 CJT PASS     | 5.240e-12 | 1.000e-09 | CJT: a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative difference) \[Rust: P3-G2 CJT; Python: YP3-G2 CJT\]                                                                                                                                                                                                                                                 |
-| WP3-G10 CJT PASS    | 6.950e-12 | 1.000e-08 | CJT: alpha = T_c da/dT = 0.01117552279 from central differences of the static pair response (Richardson) = 0.01117552279 in closed form (lambda^P(T_c) = 1., M_n = 0.1622929325) = Rust (largest relative difference) \[Rust: P3-G10 CJT; Python: YP3-G10 CJT\]                                                                                                                                                                            |
-| WP3-G3 CJT PASS     | 4.527e-14 | 1.000e-09 | CJT: a(0, T_c) vanishes to the accuracy of T_c (a(0, T_c) / alpha) \[Rust: P3-G3 CJT; Python: YP3-G3 CJT\]                                                                                                                                                                                                                                                                                                                                 |
-| WP3-G4 CJT PASS     | 4.441e-16 | 1.000e-12 | CJT: at zero pair momentum no other pair channel is induced (norm of the self-consistent components of P^a other than (K^iota)^dag) \[Rust: P3-G4 CJT; Python: YP3-G4 CJT\]                                                                                                                                                                                                                                                                |
-| WP3-G5 HS_1_1 PASS  | 4.978e-12 | 1.000e-08 | HS (1, 1): the isospin twist gives the gradient coefficient of the phase twist, c = 0.01548747577 (isospin invariance; relative difference) \[Rust: P3-G5 HS_1_1; Python: YP3-G5 HS_1_1\]                                                                                                                                                                                                                                                  |
-| WP3-G6 HS_1_1 PASS  | 1.064e-11 | 1.000e-08 | HS (1, 1): c \> 0 and the extrapolation in k converges: c(0.01) = 0.01548761918, c(0.02) = 0.01548804939, extrapolated 0.01548747577 = Rust (relative difference; 1 is added if c \<= 0 or the two values differ by more than 1e-3 of c) \[Rust: P3-G6 HS_1_1; Python: YP3-G6 HS_1_1\]                                                                                                                                                     |
-| WP3-G5 HS_0_1 PASS  | 2.030e-11 | 1.000e-08 | HS (0, 1): the isospin twist gives the gradient coefficient of the phase twist, c = 0.01713758647 (isospin invariance; relative difference) \[Rust: P3-G5 HS_0_1; Python: YP3-G5 HS_0_1\]                                                                                                                                                                                                                                                  |
-| WP3-G6 HS_0_1 PASS  | 2.462e-11 | 1.000e-08 | HS (0, 1): c \> 0 and the extrapolation in k converges: c(0.01) = 0.01713773698, c(0.02) = 0.01713818851, extrapolated 0.01713758647 = Rust (relative difference; 1 is added if c \<= 0 or the two values differ by more than 1e-3 of c) \[Rust: P3-G6 HS_0_1; Python: YP3-G6 HS_0_1\]                                                                                                                                                     |
-| WP3-G5 HS_0_0 PASS  | 1.522e-11 | 1.000e-08 | HS (0, 0): the isospin twist gives the gradient coefficient of the phase twist, c = 0.01952798529 (isospin invariance; relative difference) \[Rust: P3-G5 HS_0_0; Python: YP3-G5 HS_0_0\]                                                                                                                                                                                                                                                  |
-| WP3-G6 HS_0_0 PASS  | 3.960e-11 | 1.000e-08 | HS (0, 0): c \> 0 and the extrapolation in k converges: c(0.01) = 0.01952812997, c(0.02) = 0.019528564, extrapolated 0.01952798529 = Rust (relative difference; 1 is added if c \<= 0 or the two values differ by more than 1e-3 of c) \[Rust: P3-G6 HS_0_0; Python: YP3-G6 HS_0_0\]                                                                                                                                                       |
-| WP3-G5 KS PASS      | 9.723e-12 | 1.000e-08 | KS: the isospin twist gives the gradient coefficient of the phase twist, c = 0.01927177616 (isospin invariance; relative difference) \[Rust: P3-G5 KS; Python: YP3-G5 KS\]                                                                                                                                                                                                                                                                 |
-| WP3-G6 KS PASS      | 5.371e-11 | 1.000e-08 | KS: c \> 0 and the extrapolation in k converges: c(0.01) = 0.0192719291, c(0.02) = 0.01927238792, extrapolated 0.01927177616 = Rust (relative difference; 1 is added if c \<= 0 or the two values differ by more than 1e-3 of c) \[Rust: P3-G6 KS; Python: YP3-G6 KS\]                                                                                                                                                                     |
-| WP3-G5 CJT PASS     | 1.491e-11 | 1.000e-08 | CJT: the isospin twist gives the gradient coefficient of the phase twist, c = 0.01927177616 (isospin invariance; relative difference) \[Rust: P3-G5 CJT; Python: YP3-G5 CJT\]                                                                                                                                                                                                                                                              |
-| WP3-G6 CJT PASS     | 4.072e-11 | 1.000e-08 | CJT: c \> 0 and the extrapolation in k converges: c(0.01) = 0.0192719291, c(0.02) = 0.01927238792, extrapolated 0.01927177616 = Rust (relative difference; 1 is added if c \<= 0 or the two values differ by more than 1e-3 of c) \[Rust: P3-G6 CJT; Python: YP3-G6 CJT\]                                                                                                                                                                  |
-| WP3-G9 HS_1_1 PASS  | 3.527e-10 | 1.000e-07 | HS (1, 1): with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01391 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000035); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) \[Rust: P3-G9 HS_1_1; Python: YP3-G9 HS_1_1\]                                                             |
-| WP3-G9 HS_0_1 PASS  | 1.890e-10 | 1.000e-07 | HS (0, 1): with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01448 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000036); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) \[Rust: P3-G9 HS_0_1; Python: YP3-G9 HS_0_1\]                                                             |
-| WP3-G9 HS_0_0 PASS  | 1.919e-10 | 1.000e-07 | HS (0, 0): with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.01532 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000035); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) \[Rust: P3-G9 HS_0_0; Python: YP3-G9 HS_0_0\]                                                             |
-| WP3-G9 KS PASS      | 2.783e-10 | 1.000e-07 | KS: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.0152 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000036); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) \[Rust: P3-G9 KS; Python: YP3-G9 KS\]                                                                             |
-| WP3-G9 CJT PASS     | 1.410e-10 | 1.000e-07 | CJT: with the cutoff on the momenta of the two charges a(k) - a(0) is linear in k (ratio 2.0152 for k = 0.01 and 0.005), with the cutoff on the relative momentum quadratic (ratio 4.000036); the four differences = Rust (largest relative difference; 1 is added if a ratio is off by more than 0.02 of 2 or 1e-3 of 4) \[Rust: P3-G9 CJT; Python: YP3-G9 CJT\]                                                                          |
-| WP3-G8 PASS         | 1.609e-10 | 1.000e-08 | CJT: the gradient coefficient does not depend on the quadrature: six directions and 24 radial nodes 0.0192717761556, 144 directions 0.0192717761587, 40 radial nodes 0.0192717761551 (largest relative difference) \[Rust: P3-G8; Python: YP3-G8 CJT\]                                                                                                                                                                                     |
-| WP3-G12 PASS        | 6.308e-08 | 1.000e-06 | CJT at T_c: the quartic coefficient b = 0.01472373584 of the free energy at the origin (four applied fields, thermal engine) is positive and = Rust 0.01472373676 (relative difference; a(T_c) = 5.619e-14) \[Rust: P3-G12 CJT; Python: YP3-G12 CJT\]                                                                                                                                                                                      |
-| WP3-G11 HS_1_1 PASS | 3.247e-11 | 1.000e-06 | HS (1, 1): the Ginzburg number by the first form 11.379614 and by the second form 11.379614 = Rust 11.379614 (largest relative difference) \[Rust: P3-G11 HS_1_1; Python: YP3-G11 HS_1_1\]                                                                                                                                                                                                                                                 |
-| WP3-G11 HS_0_1 PASS | 7.599e-11 | 1.000e-06 | HS (0, 1): the Ginzburg number by the first form 9.7677449 and by the second form 9.7677449 = Rust 9.7677449 (largest relative difference) \[Rust: P3-G11 HS_0_1; Python: YP3-G11 HS_0_1\]                                                                                                                                                                                                                                                 |
-| WP3-G11 HS_0_0 PASS | 1.212e-10 | 1.000e-06 | HS (0, 0): the Ginzburg number by the first form 8.2771765 and by the second form 8.2771765 = Rust 8.2771765 (largest relative difference) \[Rust: P3-G11 HS_0_0; Python: YP3-G11 HS_0_0\]                                                                                                                                                                                                                                                 |
-| WP3-G11 KS PASS     | 1.563e-10 | 1.000e-06 | KS: the Ginzburg number by the first form 7.6207226 and by the second form 7.6207226 = Rust 7.6207226 (largest relative difference) \[Rust: P3-G11 KS; Python: YP3-G11 KS\]                                                                                                                                                                                                                                                                |
-| WP3-G11 CJT PASS    | 1.260e-07 | 1.000e-06 | CJT: the Ginzburg number by the first form 7.6207222 and by the second form 7.6207222 = Rust 7.6207232 (largest relative difference) \[Rust: P3-G11 CJT; Python: YP3-G11 CJT\]                                                                                                                                                                                                                                                             |
-| WP3-H2 HS_1_1 PASS  | 3.153e-14 | 1.000e-10 | HS (1, 1): the couplings of h to (d theta_0)^2 and (d theta_1)^2 by exact differentiation of the kinetic part, 0.07096573 and 0.07212812, = f_F and f_I^2/f_F and = Rust (largest relative difference) \[Rust: P3-H2 HS_1_1; Python: YP3-H2 HS_1_1\]                                                                                                                                                                                       |
-| WP3-H2 HS_0_1 PASS  | 1.421e-13 | 1.000e-10 | HS (0, 1): the couplings of h to (d theta_0)^2 and (d theta_1)^2 by exact differentiation of the kinetic part, 0.067233343 and 0.068220149, = f_F and f_I^2/f_F and = Rust (largest relative difference) \[Rust: P3-H2 HS_0_1; Python: YP3-H2 HS_0_1\]                                                                                                                                                                                     |
-| WP3-H2 HS_0_0 PASS  | 7.694e-14 | 1.000e-10 | HS (0, 0): the couplings of h to (d theta_0)^2 and (d theta_1)^2 by exact differentiation of the kinetic part, 0.061393961 and 0.06139396, = f_F and f_I^2/f_F and = Rust (largest relative difference) \[Rust: P3-H2 HS_0_0; Python: YP3-H2 HS_0_0\]                                                                                                                                                                                      |
-| WP3-H2 KS PASS      | 1.357e-13 | 1.000e-10 | KS: the couplings of h to (d theta_0)^2 and (d theta_1)^2 by exact differentiation of the kinetic part, 0.071348166 and 0.060506197, = f_F and f_I^2/f_F and = Rust (largest relative difference) \[Rust: P3-H2 KS; Python: YP3-H2 KS\]                                                                                                                                                                                                    |
-| WP3-H2 CJT PASS     | 1.352e-13 | 1.000e-10 | CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2 by exact differentiation of the kinetic part, 0.071348166 and 0.064162461, = f_F and f_I^2/f_F and = Rust (largest relative difference) \[Rust: P3-H2 CJT; Python: YP3-H2 CJT\]                                                                                                                                                                                                 |
-| WP3-H1 HS_1_1 PASS  | –         | –         | HS (1, 1): the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.8136931 \< 2 E_gap = 0.9059348 (the gap of the ground state computed by the notebook) \[M_H / 2 E_gap = 0.89818\] \[Rust: P3-H1 HS_1_1; Python: YP3-H1 HS_1_1\]                                                                                                                                                                                     |
-| WP3-H3 HS_1_1 PASS  | 3.168e-13 | 1.000e-09 | HS (1, 1): the numbers of the Higgs sector (v_SF = 0.14308913, M_H/v_SF = 5.68662, lambda = 16.1688, Gamma/M_H = 3.9232) = Rust (largest relative difference) \[Rust: P3-H3 HS_1_1; Python: YP3-H3 HS_1_1\]                                                                                                                                                                                                                                |
-| WP3-H1 HS_0_1 PASS  | –         | –         | HS (0, 1): the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.7250834 \< 2 E_gap = 0.8271651 (the gap of the ground state computed by the notebook) \[M_H / 2 E_gap = 0.87659\] \[Rust: P3-H1 HS_0_1; Python: YP3-H1 HS_0_1\]                                                                                                                                                                                     |
-| WP3-H3 HS_0_1 PASS  | 1.208e-13 | 1.000e-09 | HS (0, 1): the numbers of the Higgs sector (v_SF = 0.1354499, M_H/v_SF = 5.35315, lambda = 14.3281, Gamma/M_H = 3.4708) = Rust (largest relative difference) \[Rust: P3-H3 HS_0_1; Python: YP3-H3 HS_0_1\]                                                                                                                                                                                                                                 |
-| WP3-H1 HS_0_0 PASS  | –         | –         | HS (0, 0): the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.6143874 \< 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) \[M_H / 2 E_gap = 0.83843\] \[Rust: P3-H1 HS_0_0; Python: YP3-H1 HS_0_0\]                                                                                                                                                                                     |
-| WP3-H3 HS_0_0 PASS  | 1.850e-13 | 1.000e-09 | HS (0, 0): the numbers of the Higgs sector (v_SF = 0.12278792, M_H/v_SF = 5.00365, lambda = 12.5182, Gamma/M_H = 2.9885) = Rust (largest relative difference) \[Rust: P3-H3 HS_0_0; Python: YP3-H3 HS_0_0\]                                                                                                                                                                                                                                |
-| WP3-H1 KS PASS      | –         | –         | KS: the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.603476 \< 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) \[M_H / 2 E_gap = 0.82354\] \[Rust: P3-H1 KS; Python: YP3-H1 KS\]                                                                                                                                                                                                     |
-| WP3-H3 KS PASS      | 2.253e-13 | 1.000e-09 | KS: the numbers of the Higgs sector (v_SF = 0.13140786, M_H/v_SF = 4.59239, lambda = 10.545, Gamma/M_H = 2.1349) = Rust (largest relative difference) \[Rust: P3-H3 KS; Python: YP3-H3 KS\]                                                                                                                                                                                                                                                |
-| WP3-H1 CJT PASS     | –         | –         | CJT: the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.603476 \< 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) \[M_H / 2 E_gap = 0.82354\] \[Rust: P3-H1 CJT; Python: YP3-H1 CJT\]                                                                                                                                                                                                  |
-| WP3-H3 CJT PASS     | 3.085e-13 | 1.000e-09 | CJT: the numbers of the Higgs sector (v_SF = 0.13531998, M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest relative difference) \[Rust: P3-H3 CJT; Python: YP3-H3 CJT\]                                                                                                                                                                                                                                            |
+<div id="tab:checks_quantum_python">
 
-The checks of the notebook `superfluid.nb` (WP3-T, WP3-G, WP3-H), with
-their counterparts in the two programs.
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|:-------|:-------|:----------|:----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| YQN-1  | PASS   | –         | –         | the algebra of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F_tot on the sixteen components, Hermitian generators, Y = T^3_R + R/4 (4.3), Q = T^3 + T^3_R + R/4, and \[Y, T^1_R\] != 0 \[deviations 0.0e+00, 0.0e+00; largest entry of \[Y, T^1_R\] 1/2\]                                                                                                                                                                                                                                                                                                                                                                      |
+| YQN-2  | PASS   | –         | –         | the six Lorentz generators: S(\[u, u’\]) = \[S(u), S(u’)\], independent over the reals, commuting with the ten internal generators \[deviation 0.0e+00, real rank 6\]                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| YQN-3  | PASS   | –         | –         | the free Hamiltonians commute with T^a, Y, Q, F_tot, R, T^3_R for any masses (random momenta); with T^a_R when m^chi_SH = m^chi’\_SH; for unequal masses the largest entry of \[h, T^1_R\] is m^chi_SH - m^chi’\_SH/2 \[deviations 0.0e+00, 0.0e+00, 0.0e+00\]                                                                                                                                                                                                                                                                                                                                                          |
+| YQN-4  | PASS   | –         | –         | Y = 1/4, 1/4, -3/4 and Q = 3/4, -1/4 (Psi_LL), 1/4 (chi_SH), -3/4 (chi’\_SH); the Casimir operators of SU(2)\_L and SU(2)\_R; the table agrees with data/sh_quantum_numbers.csv of the Rust program \[deviation 0.0e+00, Casimirs 0.0e+00; rows that differ: none\]                                                                                                                                                                                                                                                                                                                                                     |
+| YQN-5  | PASS   | –         | –         | no anomaly (47 traces), vector-like fields, an even number of Weyl doublets \[largest trace 0.0e+00; \[gamma^0, X\] 0.0e+00; 2 Weyl doublets\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| YQN-6  | PASS   | –         | –         | the dimensions 6, 4, 4, 2, 2, 2 (pairs), 8, 4, 4, 2, 2, 2 (particle-antiparticle), 2, 0, 0 (symmetric Psi Psi, chi chi, chi’ chi’), 8, 6, 8, 8 (with the pair of singlets as one field); C gamma^ch (x) e_s and C (x) e_s are orthogonal and span the pairs Psi chi and Psi chi’ \[Psi Psi 6; Psi chi 4; Psi chi’ 4; chi chi 2; chi chi’ 2; chi’ chi’ 2; Psi^dag Psi 8; Psi^dag chi 4; Psi^dag chi’ 4; chi^dag chi 2; chi^dag chi’ 2; chi’^dag chi’ 2; symmetric \[2, 0, 0\]; Psi (chi, chi’) 8; (chi, chi’) (chi, chi’) 6; Psi^dag (chi, chi’) 8; (chi, chi’)^dag (chi, chi’) 8; span 1.3e-15, orthogonality 0.0e+00\] |
+| YQN-7  | PASS   | 0.000e+00 | 1.0e-12   | parity: +1 for C gamma^ch (x) e_s, -1 for C (x) e_s, with either singlet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| YQN-8  | PASS   | –         | –         | on Phi_SH: tau^a/2, Y = 1/2, Q = diag(1, 0); on Phi’\_SH: tau^a/2, Y = -1/2, Q = diag(0, -1); F_tot = 2, R = 0, T^3_R = +-1/2, Casimir 3/4, closure; i tau^2 Phi’^\* has the generators of the Higgs doublet; the bidoublet has (tau^a/2) (x) 1, 1 (x) (tau^a/2) and is the multiplet (2,2) \[deviations 0.0e+00, 0.0e+00, 0.0e+00; multiplets (2,2)\]                                                                                                                                                                                                                                                                  |
+| YQN-9a | PASS   | 3.629e-15 | 1.0e-11   | random SU(2)\_L x U(1)\_Y: Phi_SH -\> exp(i alpha.tau/2 + i beta/2) Phi_SH and Phi’\_SH -\> exp(i alpha.tau/2 - i beta/2) Phi’\_SH                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| YQN-9b | PASS   | 1.494e-15 | 1.0e-11   | random SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F_tot: M_SH -\> e^(2 i theta_F) L M_SH R^T; the matrices are unitary (the pairing term (4.2) is invariant); det M_SH -\> e^(4 i theta_F) det M_SH                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| YQN-9c | PASS   | 8.908e-15 | 1.0e-10   | random SL(2,C): every Lorentz-invariant bilinear of the twelve sectors and of the four custodial sectors is unchanged                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| YQN-10 | PASS   | –         | –         | the 24 channels (parity split, closure, SU(2) multiplets, Y, Q, F_tot, R, T^3_R) and the 8 custodial channels (SU(2)\_L x SU(2)\_R multiplets) agree with data/sh_channels.csv and data/sh_custodial_channels.csv of the Rust program \[largest deviation 5.1e-15; channels that differ: none\]                                                                                                                                                                                                                                                                                                                         |
+| YQN-11 | PASS   | –         | –         | every doublet is rotated to (0, phi); the stabilizer of the neutral vacuum in SU(2)\_L x U(1)\_Y is spanned by Q; that of phi i tau^2 among the eight generators is T^a + T^a_R and R, with three broken gauged generators and F_tot broken; unequal lengths keep only T^3 + T^3_R and R; a generic second condensate with a charged component breaks Q, a neutral one keeps it \[neutral vacuum Q; phi i tau^2: dimension 4, ranks 7 and 8; lengths as expected; second condensates as expected, keep Q; rotation 4.5e-16\]                                                                                            |
+| YQN-12 | PASS   | 4.375e-16 | 1.0e-12   | the mass matrix of the two pair fields: eigenvalues 0, M_W^2, M_W^2, M_Z^2 for equal lengths and for random ratios of the lengths (rho = 1), the photon (0, 0, sin, cos) and the Z (0, 0, cos, -sin); the couplings and the matrix agree with data/sh_couplings.csv and sh_mass_matrix.csv (relative deviation)                                                                                                                                                                                                                                                                                                         |
+
+The checks of the Python program of stage 2
+(`data/hck_sh_quantum_checks_python.txt`).
+
+</div>
+
+<div id="tab:checks_superfluid_rust">
+
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|:-------|:-------|:----------|:----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| SF-1a  | PASS   | 3.036e-17 | 1.0e-13   | the energy of the earlier engine (module uniform) and of the new engine (module uniform_n, the two singlet fields decoupled) on the earlier V^(2) from the polar start, five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| SF-1b  | PASS   | 5.569e-18 | 1.0e-12   | the local matrices of the two engines agree, and the blocks of the singlets stay empty                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| SF-2a  | PASS   | 3.508e-11 | 1.0e-9    | normal vacuum, pairs of Psi_LL with the singlets: the largest eigenvalue of the static response is G_SH / G^crit_SH with G^crit_SH = 4 pi^2 / I1(m) = 85.1464390222 (V^(1)\_SH, both versions: 1.1838428143; V^(0)\_SH: 0), five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| SF-2b  | PASS   | –         | –         | the eigenvalue G_SH / G^crit_SH is eightfold in the second version (two doublets, each component with its real and imaginary part) and fourfold in the first version \[V1_SH first version HS (1, 1): 4; V1_SH HS (1, 1): 8; V1_SH first version HS (0, 1): 4; V1_SH HS (0, 1): 8; V1_SH first version HS (0, 0): 4; V1_SH HS (0, 0): 8; V1_SH first version KS: 4; V1_SH KS: 8; V1_SH first version CJT: 4; V1_SH CJT: 8\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| SF-2c  | PASS   | 0.000e0   | 1.0e-10   | the pseudoscalar doublet-singlet pairs (matrix C (x) e_s, with either singlet) have no interaction in the normal vacuum (response 0)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| SF-3a  | PASS   | 7.517e-12 | 1.0e-9    | normal vacuum, scalar channel: the 3 x 3 response of the masses of Psi_LL, chi_SH and chi’\_SH agrees with the effective couplings (7/8 G^S - 1/2 G^V on Psi_LL in KS and CJT, s_S G^S in HS; the cross couplings -G_SH/16 of each paired singlet in KS and CJT) and the susceptibilities chi_S = 0.0831601473 (Psi_LL), 0.0415800737 (a singlet)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| SF-3b  | PASS   | –         | –         | the scalar channel of the normal vacuum is stable (largest eigenvalue of the 3 x 3 response below 1) for all potentials and methods \[V0_SH HS (1, 1): 0.6653; V1_SH first version HS (1, 1): 0.6653; V1_SH HS (1, 1): 0.6653; V0_SH HS (0, 1): 0.0000; V1_SH first version HS (0, 1): 0.0000; V1_SH HS (0, 1): 0.0000; V0_SH HS (0, 0): 0.0000; V1_SH first version HS (0, 0): 0.0000; V1_SH HS (0, 0): 0.0000; V0_SH KS: 0.6154; V1_SH first version KS: 0.7893; V1_SH KS: 0.9153; V0_SH CJT: 0.6154; V1_SH first version CJT: 0.7893; V1_SH CJT: 0.9153\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| SF-4a  | PASS   | 1.350e-11 | 1.0e-9    | normal vacuum, scalar triplet pairs of Psi_LL (K^3): the response agrees with g_P / G^crit_LL, g_P = -(1/4) G^S - G^V (KS, CJT) or -(1/4)(1 - s_S) G^S - (1 - s_V) G^V (HS)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| SF-4b  | PASS   | –         | –         | normal vacuum: every eigenvalue of the static response in the pairs of Psi_LL, the pairs of the singlets, the normal self-energies of each field and the mixings is below 1, for all potentials and methods: only the doublet-singlet pairs can condense \[V0_SH HS (1, 1) pairs Psi Psi: -0.0000; V0_SH HS (1, 1) pairs of singlets: -0.0000; V0_SH HS (1, 1) normal, each field: 0.6653; V0_SH HS (1, 1) normal, mixing of the singlets: -0.0000; V0_SH HS (1, 1) normal, mixing Psi with singlets: -0.0000; V1_SH first version HS (1, 1) pairs Psi Psi: -0.0000; V1_SH first version HS (1, 1) pairs of singlets: -0.0000; V1_SH first version HS (1, 1) normal, each field: 0.6653; V1_SH first version HS (1, 1) normal, mixing of the singlets: -0.0000; V1_SH first version HS (1, 1) normal, mixing Psi with singlets: -0.0000; V1_SH HS (1, 1) pairs Psi Psi: -0.0000; V1_SH HS (1, 1) pairs of singlets: -0.0000; V1_SH HS (1, 1) normal, each field: 0.6653; V1_SH HS (1, 1) normal, mixing of the singlets: -0.0000; V1_SH HS (1, 1) normal, mixing Psi with singlets: -0.0000; V0_SH HS (0, 1) pairs Psi Psi: 0.0940; V0_SH HS (0, 1) pairs of singlets: -0.0000; V0_SH HS (0, 1) normal, each field: 0.0530; V0_SH HS (0, 1) normal, mixing of the singlets: -0.0000; V0_SH HS (0, 1) normal, mixing Psi with singlets: -0.0000; V1_SH first version HS (0, 1) pairs Psi Psi: 0.0940; V1_SH first version HS (0, 1) pairs of singlets: -0.0000; V1_SH first version HS (0, 1) normal, each field: 0.0530; V1_SH first version HS (0, 1) normal, mixing of the singlets: -0.0000; V1_SH first version HS (0, 1) normal, mixing Psi with singlets: -0.0000; V1_SH HS (0, 1) pairs Psi Psi: 0.0940; V1_SH HS (0, 1) pairs of singlets: -0.0000; V1_SH HS (0, 1) normal, each field: 0.0530; V1_SH HS (0, 1) normal, mixing of the singlets: -0.0000; V1_SH HS (0, 1) normal, mixing Psi with singlets: -0.0000; V0_SH HS (0, 0) pairs Psi Psi: 0.0564; V0_SH HS (0, 0) pairs of singlets: -0.0000; V0_SH HS (0, 0) normal, each field: -0.0000; V0_SH HS (0, 0) normal, mixing of the singlets: -0.0000; V0_SH HS (0, 0) normal, mixing Psi with singlets: -0.0000; V1_SH first version HS (0, 0) pairs Psi Psi: 0.0564; V1_SH first version HS (0, 0) pairs of singlets: -0.0000; V1_SH first version HS (0, 0) normal, each field: -0.0000; V1_SH first version HS (0, 0) normal, mixing of the singlets: -0.0000; V1_SH first version HS (0, 0) normal, mixing Psi with singlets: -0.0000; V1_SH HS (0, 0) pairs Psi Psi: 0.0564; V1_SH HS (0, 0) pairs of singlets: -0.0000; V1_SH HS (0, 0) normal, each field: -0.0000; V1_SH HS (0, 0) normal, mixing of the singlets: -0.0000; V1_SH HS (0, 0) normal, mixing Psi with singlets: -0.0000; V0_SH KS pairs Psi Psi: 0.0564; V0_SH KS pairs of singlets: -0.0000; V0_SH KS normal, each field: 0.6154; V0_SH KS normal, mixing of the singlets: -0.0000; V0_SH KS normal, mixing Psi with singlets: -0.0000; V1_SH first version KS pairs Psi Psi: 0.0564; V1_SH first version KS pairs of singlets: -0.0000; V1_SH first version KS normal, each field: 0.7893; V1_SH first version KS normal, mixing of the singlets: -0.0000; V1_SH first version KS normal, mixing Psi with singlets: -0.0000; V1_SH KS pairs Psi Psi: 0.0564; V1_SH KS pairs of singlets: -0.0000; V1_SH KS normal, each field: 0.9153; V1_SH KS normal, mixing of the singlets: -0.0000; V1_SH KS normal, mixing Psi with singlets: -0.0000; V0_SH CJT pairs Psi Psi: 0.0564; V0_SH CJT pairs of singlets: -0.0000; V0_SH CJT normal, each field: 0.6154; V0_SH CJT normal, mixing of the singlets: -0.0000; V0_SH CJT normal, mixing Psi with singlets: -0.0000; V1_SH first version CJT pairs Psi Psi: 0.0564; V1_SH first version CJT pairs of singlets: -0.0000; V1_SH first version CJT normal, each field: 0.7893; V1_SH first version CJT normal, mixing of the singlets: -0.0000; V1_SH first version CJT normal, mixing Psi with singlets: 0.2620; V1_SH CJT pairs Psi Psi: 0.0564; V1_SH CJT pairs of singlets: -0.0000; V1_SH CJT normal, each field: 0.9153; V1_SH CJT normal, mixing of the singlets: -0.0000; V1_SH CJT normal, mixing Psi with singlets: 0.2620\] |
+| SF-4c  | PASS   | –         | –         | the eigenvalues of the static response are those of a symmetric matrix: the response of the densities to the self-energies and the kernel of the contact terms are symmetric in an orthonormal basis (largest asymmetry below 1e-7), and the response of the densities is negative semidefinite (smallest eigenvalue of its negative above -1e-9) \[largest asymmetry 1.3e-12; smallest eigenvalue -3.0e-13\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| SF-5   | PASS   | –         | –         | V^(0)\_SH: every start of every method ends in the normal vacuum (19 starts) \[HS (1, 1): 1 state(s); HS (0, 1): 1 state(s); HS (0, 0): 1 state(s); KS: 1 state(s); CJT: 1 state(s)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SF-6a  | PASS   | –         | –         | V^(1)\_SH, second version: the ground state of every method is the custodial Higgs superfluid (both pair fields, two equal singular values of the bidoublet, no charged pair, no mixing), the stationary state of lowest energy among those reached from the starts \[HS (1, 1): Higgs superfluid, custodial (E = -1.129524e-3); HS (0, 1): Higgs superfluid, custodial (E = -1.056777e-3); HS (0, 0): Higgs superfluid, custodial (E = -1.056777e-3); KS: Higgs superfluid, custodial (E = -1.641925e-3); CJT: Higgs superfluid, custodial (E = -1.641925e-3)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| SF-6b  | PASS   | –         | –         | V^(1)\_SH, first version: the ground state of every method is the superfluid of one doublet (Phi_SH alone), as in stage 3 of the first version \[HS (1, 1): Higgs superfluid, one doublet (E = -5.498534e-4); HS (0, 1): Higgs superfluid, one doublet (E = -5.283886e-4); HS (0, 0): Higgs superfluid, one doublet (E = -5.283886e-4); KS: Higgs superfluid, one doublet (E = -6.285704e-4); CJT: Higgs superfluid, one doublet (E = -6.285704e-4)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| SF-7a  | PASS   | 3.383e-12 | 1.0e-9    | second version: the starts along i tau^2, along a rotated unitary bidoublet and along a generic bidoublet reach states of equal energy and equal singular values (relative deviation; the symmetry of Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                                           data-reference="sec:model">2</a>)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| SF-7b  | PASS   | –         | –         | second version: the condensate of one doublet (Phi_SH alone), found by the iteration restricted to the self-energies that keep the number of chi’\_SH, is a stationary state of higher energy than the custodial one (without the restriction the starts along one doublet end as follows: HS (1, 1): Higgs down custodial, Higgs up custodial, Higgs generic custodial, second doublet down custodial; HS (0, 1): Higgs down custodial, Higgs up custodial, Higgs generic custodial, second doublet down custodial; HS (0, 0): Higgs down one doublet, Higgs up one doublet, Higgs generic custodial, second doublet down custodial; KS: Higgs down custodial, Higgs up custodial, Higgs generic custodial, second doublet down custodial; CJT: Higgs down custodial, Higgs up custodial, Higgs generic custodial, second doublet down custodial) \[HS (1, 1): one doublet -5.498534e-4, custodial -1.129524e-3; HS (0, 1): one doublet -5.283886e-4, custodial -1.056777e-3; HS (0, 0): one doublet -5.283886e-4, custodial -1.056777e-3; KS: one doublet -8.773090e-4, custodial -1.641925e-3; CJT: one doublet -8.773090e-4, custodial -1.641925e-3\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| SF-8   | PASS   | –         | –         | the generators of the global group of Sec. <a href="#sec:model" data-reference-type="ref"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+                                           data-reference="sec:model">2</a> (T^a, T^a_R, R, F_tot) that leave the custodial ground state of each method unchanged form a space of dimension 4 that contains Q^SM = T^3 + T^3_R + R/4; those of SU(2)\_L x U(1)\_Y a space of dimension 1 (the photon stays massless); the ground state of the first version keeps a space of dimension 3 that contains Q^SM \[V1_SH first version HS (1, 1): Some((3, 1)); V1_SH HS (1, 1): Some((4, 1)); V1_SH first version HS (0, 1): Some((3, 1)); V1_SH HS (0, 1): Some((4, 1)); V1_SH first version HS (0, 0): Some((3, 1)); V1_SH HS (0, 0): Some((4, 1)); V1_SH first version KS: Some((3, 1)); V1_SH KS: Some((4, 1)); V1_SH first version CJT: Some((3, 1)); V1_SH CJT: Some((4, 1))\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| SF-9a  | PASS   | –         | –         | the static response of each ground state: in the sector of relative number 0 exactly four eigenvalues equal 1 in the second version (the Goldstone modes of the three broken generators of SU(2)\_L x U(1)\_Y and of F_tot) and three in the first; all others below 1; in the sector of relative number +-2 all below 1: the ground states are stable and no charged condensate grows \[V1_SH first version HS (1, 1): 3 eigenvalues 1 (to 2.5e-11), largest other 0.74209, largest of the sector R = +-2 -0.00000; V1_SH HS (1, 1): 4 eigenvalues 1 (to 2.7e-11), largest other 0.73609, largest of the sector R = +-2 -0.00000; V1_SH first version HS (0, 1): 3 eigenvalues 1 (to 2.4e-11), largest other 0.73770, largest of the sector R = +-2 0.09396; V1_SH HS (0, 1): 4 eigenvalues 1 (to 2.5e-11), largest other 0.73770, largest of the sector R = +-2 0.06896; V1_SH first version HS (0, 0): 3 eigenvalues 1 (to 2.3e-11), largest other 0.73770, largest of the sector R = +-2 0.05637; V1_SH HS (0, 0): 4 eigenvalues 1 (to 2.4e-11), largest other 0.73770, largest of the sector R = +-2 0.04137; V1_SH first version KS: 3 eigenvalues 1 (to 2.6e-11), largest other 0.81823, largest of the sector R = +-2 0.05899; V1_SH KS: 4 eigenvalues 1 (to 3.0e-11), largest other 0.85591, largest of the sector R = +-2 0.04026; V1_SH first version CJT: 3 eigenvalues 1 (to 2.4e-11), largest other 0.81823, largest of the sector R = +-2 0.24379; V1_SH CJT: 4 eigenvalues 1 (to 3.1e-11), largest other 0.85591, largest of the sector R = +-2 0.25157\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| SF-9b  | PASS   | –         | –         | second version: the condensate of one doublet is unstable (the largest eigenvalue of its static response in the pairs of Psi_LL with the singlets is above 1, the direction of the second doublet) \[HS (1, 1): Some(1.192884); HS (0, 1): Some(1.183843); HS (0, 0): Some(1.183843); KS: Some(1.208961); CJT: Some(1.208961)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| SF-10  | PASS   | 5.836e-14 | 1.0e-6    | the custodial ground states of HS (1, 1) and CJT on 24 and 48 radial nodes: relative change of the energy and of the singular value of the bidoublet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| SF-11a | PASS   | 8.327e-16 | 1.0e-9    | first version: the lowest quasi-particle of every Higgs ground state is the unpaired up component of Psi_LL (electric charge 3/4): the gap equals its Dirac mass M_u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| SF-11b | PASS   | 3.652e-9  | 1.0e-6    | first version: the minimum of the quasi-particle energy lies at zero momentum                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| SF-11c | PASS   | –         | –         | second version: every constituent is paired; the gap of every custodial ground state is larger than that of the first version and larger than the smallest Dirac mass of the four species \[HS (1, 1): gap 0.426792 at q = 0.000 (first version 0.170392; smallest M 0.150111); HS (0, 1): gap 0.452967 at q = 0.000 (first version 0.200000; smallest M 0.200000); HS (0, 0): gap 0.452967 at q = 0.000 (first version 0.200000; smallest M 0.200000); KS: gap 0.384201 at q = 0.000 (first version 0.111459; smallest M 0.060108); CJT: gap 0.384201 at q = 0.000 (first version 0.111459; smallest M 0.060108)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| SF-12a | PASS   | 4.968e-14 | 1.0e-10   | the first version computed here (sixteen components, the pairing of chi’\_SH switched off) equals the first version computed on the twelve components of Psi_LL and chi_SH alone: relative difference of the energies and largest difference of the local matrices, five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| SF-12b | PASS   | 8.560e-18 | 1.0e-12   | in the first version the rows and columns of chi’\_SH of the local matrices and self-energies stay empty                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| SF-13  | PASS   | –         | –         | V^(1)\_SH, both versions: every stationary state other than the ground state is unstable towards the Higgs superfluid: the largest eigenvalue of its static response in the pairs of Psi_LL with the singlets is above 1 (in parentheses the largest eigenvalue in the normal self-energies of the fields) \[V1_SH first version HS (1, 1) normal vacuum: 1.183843 (normal self-energies 0.665281); V1_SH HS (1, 1) normal vacuum: 1.183843 (normal self-energies 0.665281); V1_SH first version HS (0, 1) normal vacuum: 1.183843 (normal self-energies 0.052989); V1_SH HS (0, 1) normal vacuum: 1.183843 (normal self-energies 0.052989); V1_SH first version HS (0, 0) normal vacuum: 1.183843 (normal self-energies -0.000000); V1_SH HS (0, 0) Higgs superfluid, one doublet: 1.183843 (normal self-energies -0.000000); V1_SH HS (0, 0) normal vacuum: 1.183843 (normal self-energies -0.000000); V1_SH first version KS normal vacuum: 1.183843 (normal self-energies 0.789268); V1_SH KS massive (scalar condensate): 1.126024 (normal self-energies 0.809619); V1_SH KS normal vacuum: 1.183843 (normal self-energies 0.915274); V1_SH first version CJT normal vacuum: 1.183843 (normal self-energies 0.789268); V1_SH CJT massive (scalar condensate): 1.126024 (normal self-energies 0.809619); V1_SH CJT normal vacuum: 1.183843 (normal self-energies 0.915274)\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+
+The checks of the Rust program of stage 3
+(`data/hck_sh_superfluid_checks.txt`).
+
+</div>
+
+<div id="tab:checks_superfluid_python">
+
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|:-------|:-------|:----------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check  | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| YSF-2  | PASS   | 4.270e-11 | 1.0e-09   | normal vacuum of V^(1)\_SH, second version: the response in each of the four doublet-singlet pairs equals G_SH / G^crit_SH (G^crit_SH = 4 pi^2 / I1(m) = 85.1464390222) and the value of the Rust program, five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| YSF-3  | PASS   | 8.011e-12 | 1.0e-09   | normal vacuum of V^(1)\_SH, second version: the 3 x 3 response of the masses of Psi_LL, chi_SH and chi’\_SH equals the formula of the effective couplings and the value of the Rust program                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| YSF-5  | PASS   | –         | –         | V^(0)\_SH: the normal start and the custodial start end in the normal vacuum, five methods \[pair amplitudes below 1e-6, masses unchanged\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| YSF-6  | PASS   | 4.955e-10 | 1.0e-09   | V^(1)\_SH, ground states of both versions (second: from the start along i tau^2; first: from the start along Phi^d): the energy and the singular values of the bidoublet (relative), the masses of the four species and the differences of the scalar densities agree with the Rust program, five methods                                                                                                                                                                                                                                                                                                                                                                                        |
+| YSF-7  | PASS   | 8.452e-15 | 1.0e-09   | second version: the start along a rotated unitary bidoublet reaches the same energy and singular values (relative; KS and CJT)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| YSF-11 | PASS   | 1.221e-15 | 1.0e-09   | the gaps (scan of 201 momenta): in the first version M_u at zero momentum; in the second version the value of the Rust program where its minimum lies at zero momentum                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| YSF-12 | PASS   | 1.562e-12 | 1.0e-09   | HS (0, 1) and HS (0, 0), ground states (no normal self-energy, only the pairing terms act): N = 0; P = D_d K_d^dag in the first version and D_d K_d^dag + D’\_u K’\_u^dag with /D’\_u/ = /D_d/ in the second; the gap equation G_SH I1(M_eff) / (4 pi^2) = 1 with M_eff = (m^2 + /D_d/^2 / 4)^(1/2) holds for /D_d/ of this computation and of the Rust program; the energy of the second version is twice that of the first; the positive eigenvalues of the BdG matrices at 11 momenta are (eps(q)^2 + /D_d/^2 / 4)^(1/2) sixteenfold in the second version, and eps(q) eightfold (the unpaired up components and the free chi’\_SH) and (eps(q)^2 + /D_d/^2 / 4)^(1/2) eightfold in the first |
+| YSF-13 | PASS   | 7.115e-12 | 1.0e-09   | the current channel of the normal vacuum: a uniform self-energy a alpha^3 (x) 1_2 of Psi_LL changes the current tr((alpha^3 (x) 1_2) rho) by -chi_J a, chi_J = 2 Lambda^3 / (3 pi^2 (Lambda^2 + m^2)^(1/2)) = 0.0662357298 (a surface term of the sharp cutoff); the largest eigenvalue of the static response of the normal self-energies of HS (0, 1) (Rust program, the three potentials) is G^V chi_J = 0.0529885838                                                                                                                                                                                                                                                                         |
+
+The checks of the Python program of stage 3
+(`data/hck_sh_superfluid_checks_python.txt`).
+
+</div>
+
+<div id="tab:checks_higgs_rust">
+
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|:------|:-------|:----------|:----------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| H-1   | PASS   | 1.778e-13 | 1.0e-9    | the state with the fixed pair self-energy d_0 P_dir and a self-consistent normal self-energy is the ground state: its energy (relative), and the pair self-energy that its pair amplitude produces equals d_0 P_dir (relative; self-consistency), five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| H-2a  | PASS   | 9.588e-5  | 1.0e-3    | phi_0 is a stationary point of V: V’(phi_0) phi_0 / E_0 from central differences with the step 0.01 in d (zero up to the error of the differences, of the order of the step squared), five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| H-2b  | PASS   | –         | –         | V”(phi_0) \> 0 in every method and both versions: phi_0 is a minimum of the effective potential \[second HS (1, 1): 149.1883; second HS (0, 1): 143.3606; second HS (0, 0): 143.3606; second KS: 181.6833; second CJT: 181.6833; first HS (1, 1): 73.1480; first HS (0, 1): 71.6803; first HS (0, 0): 71.6803; first KS: 80.0121; first CJT: 80.0121\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| H-2c  | PASS   | 2.302e-4  | 2.0e-3    | V”(phi_0) from the steps 0.02 and 0.01 in d agree to the order of the steps (relative difference; the stated value is their Richardson combination)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| H-2d  | PASS   | 6.298e-16 | 1.0e-9    | second version: at every computed state of both continuations (and of the second branch) the two pair amplitudes are equal, \<Pi^d_SH\> = \<Pi’^u_SH\> (difference relative to phi_0): the states move both pair fields together, along the custodial direction                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| H-3a  | PASS   | –         | –         | the Mexican hat along the vacuum direction, on the branch of the ground state (the effective potential): phi = 0 at d = 0, phi grows with d, V decreases from phi = 0 to the minimum, which is at d = d_0 among the 33 points, and increases beyond it, five methods, both versions \[second HS (1, 1): V(0) = 5.505867e-17, minimum at d = 1.00 d_0; second HS (0, 1): V(0) = 5.914361e-17, minimum at d = 1.00 d_0; second HS (0, 0): V(0) = 5.218329e-17, minimum at d = 1.00 d_0; second KS: V(0) = -4.050235e-4, minimum at d = 1.00 d_0; second CJT: V(0) = -4.050235e-4, minimum at d = 1.00 d_0; first HS (1, 1): V(0) = 3.547059e-17, minimum at d = 1.00 d_0; first HS (0, 1): V(0) = 5.265242e-17, minimum at d = 1.00 d_0; first HS (0, 0): V(0) = 5.218329e-17, minimum at d = 1.00 d_0; first KS: V(0) = 2.871952e-17, minimum at d = 1.00 d_0; first CJT: V(0) = 3.725649e-17, minimum at d = 1.00 d_0\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| H-3b  | PASS   | 2.255e-11 | 1.0e-8    | the top of the hat: at d = 0 the branch of the ground state is the normal vacuum (V = 0 relative to E_0, the bare masses 0.2) in HS (1, 1), HS (0, 1), HS (0, 0) of both versions and in KS and CJT of the first version, and the scalar condensate of stage 3 in KS and CJT of the second version (its energy and its four masses in data/sh_sf_states.csv; relative difference): the largest difference                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| H-3c  | PASS   | 3.243e-13 | 1.0e-9    | the continuation from the normal vacuum (from d = 0 with N = 0) coincides with the branch of the ground state at all 33 points (energy at the same d, relative to E_0) in the eight computations other than KS and CJT of the second version: the largest difference                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| H-3d  | PASS   | –         | –         | the second branch: exactly KS and CJT of the second version have one; there the continuation from the normal vacuum differs from the branch of the ground state at the grid points from d = 0 up to its last one on the second branch and coincides beyond; the masses of Psi_LL are negative at every state of the branch of the ground state and positive at every state of the second branch; the second branch lies above V at the same phi; the continuation with the step 0.005 d_0 ends on it where it falls onto the branch of the ground state (the state found there equals that of the branch of the ground state at the same d, relative difference below 1e-9) \[computations with a second branch: second KS, second CJT; second KS: differing grid points d = 0 to 0.20 d_0, coinciding beyond; M_up \< 0 on the branch of the ground state: true; M_up \> 0 on the second branch: true; above V at the same phi by 0.2097 to 0.2467 E_0; the last state on it at d = 0.240 d_0 (phi = 0.2877 phi_0, E = -2.068892e-4, 3856 iterations), at d = 0.245 d_0 the continuation falls onto the branch of the ground state (difference 1.5e-14 E_0); second CJT: differing grid points d = 0 to 0.20 d_0, coinciding beyond; M_up \< 0 on the branch of the ground state: true; M_up \> 0 on the second branch: true; above V at the same phi by 0.2097 to 0.2467 E_0; the last state on it at d = 0.240 d_0 (phi = 0.2877 phi_0, E = -2.068892e-4, 3856 iterations), at d = 0.245 d_0 the continuation falls onto the branch of the ground state (difference 4.2e-15 E_0)\]                                                 |
+| H-4a  | PASS   | 2.562e-7  | 1.0e-6    | the susceptibilities chi^{ab} = d\<Q_a\>/d mu_b are symmetric (largest chi^{ab} - chi^{ba} relative to chi^{11}), as the theorem of Hellmann and Feynman requires (chi^{ab} = -d^2 E / d mu_a d mu_b), eight generators, five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| H-4b  | PASS   | 3.845e-4  | 1.0e-3    | the steps 0.005 and 0.01 of the chemical potentials give the same susceptibilities to the order of the steps squared (largest difference relative to the largest element; the stated values are their Richardson combination)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| H-4c  | PASS   | 3.941e-12 | 1.0e-6    | KS and CJT give the same susceptibilities (relative to chi^{11}; the perturbed states keep their local normal matrix in the span of the Kohn-Sham densities), both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| H-4d  | PASS   | –         | –         | the number of broken generators, the nonzero eigenvalues of chi (above 1e-6 of the largest; none negative): four among the eight generators in the second version (the three of SU(2)\_L x U(1)\_Y that the photon does not keep, and F_tot), three among T^1, T^2, T^3, R, F_tot in the first version \[second HS (1, 1): 4; second HS (0, 1): 4; second HS (0, 0): 4; second KS: 4; second CJT: 4; first HS (1, 1): 3; first HS (0, 1): 3; first HS (0, 0): 3; first KS: 3; first CJT: 3\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| H-4e  | PASS   | 1.407e-12 | 1.0e-6    | second version: the generators that stage 3 found unbroken, T^a + T^a_R (a = 1, 2, 3) and R, have zero susceptibility with every generator (relative to chi^{11}), five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| H-4f  | PASS   | 2.447e-13 | 1.0e-6    | second version: the custodial structure chi(T^a, T^a) = chi(T^a_R, T^a_R) = -chi(T^a, T^a_R), equal for a = 1, 2, 3 (relative to chi^{11}), five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| H-4g  | PASS   | 8.096e-13 | 1.0e-6    | the electric charge Q = T^3 + T^3_R + R/4 does not respond: chi(Q, X_b) = 0 for the eight generators (relative to chi^{11}); the photon is massless, five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| H-5a  | PASS   | 1.703e-13 | 1.0e-6    | the mass matrix g_a g_b chi^{ab} of (W^1, W^2, W^3, B) has one zero eigenvalue (relative to the largest) whose eigenvector is the photon (0, 0, g’, g)/(g^2 + g’^2)^(1/2) (one minus the squared overlap), five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| H-5b  | PASS   | 2.018e-13 | 1.0e-6    | its other eigenvalues: M_W^2 = g^2 chi^{11} twice (relative), five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| H-6a  | PASS   | 7.261e-14 | 1.0e-9    | rho from the eigenvalues, M_W^2 / (M_Z^2 cos^2 theta_W), equals chi^{11} / chi^{33} (relative), five methods, both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| H-6b  | PASS   | 1.569e-13 | 1.0e-6    | second version: rho = chi^{11} / chi^{33} = 1 (the custodial symmetry of the vacuum), five methods                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| H-7a  | PASS   | –         | –         | at omega = 0 exactly four singular values of 1 - chi(0) F vanish in the sector of relative number 0 in the second version and three in the first (the Goldstone modes of the broken generators), and the next is not small, HS (0, 1) and HS (0, 0) \[second HS (0, 1): 4 below 1e-6, the next 2.60e-1; second HS (0, 0): 4 below 1e-6, the next 2.60e-1; first HS (0, 1): 3 below 1e-6, the next 2.60e-1; first HS (0, 0): 3 below 1e-6, the next 2.60e-1\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| H-7b  | PASS   | –         | –         | below the lowest transition energy that acts on it (the lowest omega_c whose residue A_c F, B_c F on the null space exceeds 1e-12 of the size of the bucket) there is a frequency at which 1 - chi(omega) F is singular (smallest singular value below 1e-6) and whose null space contains the amplitude of the vacuum direction (squared length of its projection above 0.999), HS (0, 1) and HS (0, 0), both versions; in the first version the sector also holds the transitions of the unpaired fields from 2 m_LL on, whose residues on the null space are at the level of the rounding (fraction below 1e-20): they do not act on the mode \[second HS (0, 1): omega 0.8128455463 (the lowest transition that acts on it 0.905948, the lowest of the sector 0.905948, the largest residue fraction below the former 0.0e0), singular value 6.6e-16, multiplicity 4, overlap 1.000000000; second HS (0, 0): omega 0.8128455463 (the lowest transition that acts on it 0.905948, the lowest of the sector 0.905948, the largest residue fraction below the former 0.0e0), singular value 4.8e-16, multiplicity 4, overlap 1.000000000; first HS (0, 1): omega 0.8128455463 (the lowest transition that acts on it 0.905948, the lowest of the sector 0.400029, the largest residue fraction below the former 2.8e-32), singular value 5.0e-16, multiplicity 1, overlap 1.000000000; first HS (0, 0): omega 0.8128455463 (the lowest transition that acts on it 0.905948, the lowest of the sector 0.400029, the largest residue fraction below the former 1.3e-31), singular value 1.2e-15, multiplicity 1, overlap 1.000000000\] |
+| H-7c  | PASS   | 1.093e-15 | 1.0e-10   | HS (0, 1) and HS (0, 0) give the same amplitude mode (relative difference of the frequencies), both versions: the vector term of HS (0, 1), which acts on the number density and the currents, does not couple to it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| H-7d  | PASS   | 1.990e-13 | 1.0e-10   | the amplitude mode lies at the pair self-energy, omega_H = d_0 (relative difference), HS (0, 1) and HS (0, 0), both versions: the analogue of the amplitude mode of the theory of Bardeen, Cooper and Schrieffer at twice the gap parameter, here d_0 / 2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| H-7e  | PASS   | 1.411e-5  | 1.0e-4    | the lowest transition energy that acts on the mode is the threshold of two paired quasi-particles, 2 M_eff = (4 m_LL^2 + d_0^2)^(1/2) (relative excess, of the order of the smallest momentum of the grid squared; never below it), HS (0, 1) and HS (0, 0), both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| H-8a  | PASS   | 8.549e-14 | 1.0e-9    | the scan (HS (0, 0), 16 points in each version): the pair self-energy d_0 of the closed-form gap equation (G_SH / 4 pi^2) I1((m^2 + d_0^2/4)^(1/2)) = 1 is self-consistent in the engine (relative)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| H-8b  | PASS   | –         | –         | in every point of the scan the amplitude mode is found below the threshold of two quasi-particles (smallest singular value below 1e-6, squared length of the projection of the amplitude of the vacuum direction onto the null space above 0.999) \[32 points\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| H-8c  | PASS   | 9.782e-10 | 1.0e-6    | the scan point m = 0.2, G_SH = 100.8 reproduces the main computation of HS (0, 0) in both versions: d_0, v_SH and the amplitude mode (the latter from the sector of the neutral pairs of the vacuum alone; relative)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| H-8d  | PASS   | 1.030e-12 | 1.0e-9    | in every point of the scan the amplitude mode lies at the pair self-energy, omega_H = d_0 (relative difference)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| H-9   | PASS   | 1.853e-14 | 1.0e-6    | 24 and 48 radial nodes give the same v_SH (HS (0, 0) and CJT) and the same amplitude mode (HS (0, 0)) (relative), second version                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+
+The checks of the Rust program of stage 4
+(`data/hck_sh_higgs_checks.txt`).
+
+</div>
+
+<div id="tab:checks_higgs_python">
+
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|:------|:-------|:----------|:----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| YH-1  | PASS   | 6.455e-13 | 1.0e-09   | HS (0, 1) and HS (0, 0), both versions: d_0 = 0.812845546320 of the closed-form gap equation (G_SH / 4 pi^2) I1((m^2 + d_0^2/4)^(1/2)) = 1 against the Rust value (relative)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| YH-2  | PASS   | 2.882e-09 | 1.0e-06   | the susceptibilities chi^{11}, chi^{33}, chi^{YY}, chi^{3Y} as -d^2 E / d mu^2 of the energy of the ground state of H - mu Q (a second method) equal those of the Rust program, d\<Q_a\>/d mu_b (relative to chi^{11}), HS (0, 0) and CJT, both versions \[second HS (0, 0): chi11 2.60214225e-03, chi33 2.60214225e-03, chiYY 2.60214225e-03, chi3Y -2.60214226e-03; second CJT: chi11 3.11208804e-03, chi33 3.11208805e-03, chiYY 3.11208805e-03, chi3Y -3.11208804e-03; first HS (0, 0): chi11 1.59943782e-03, chi33 1.30107113e-03, chiYY 1.30107113e-03, chi3Y -1.30107113e-03; first CJT: chi11 1.88650523e-03, chi33 1.56983561e-03, chiYY 1.56983561e-03, chi3Y -1.56983561e-03\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| YH-3  | PASS   | 2.016e-10 | 1.0e-04   | HS (0, 0), both versions: V”(phi_0) from the energy and the pair amplitude of the states with the fixed pair self-energy d P_dir (central differences, Richardson) against the Rust value (relative)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| YH-4  | PASS   | 6.952e-12 | 1.0e-06   | HS (0, 0): the reduced linear response of the pair amplitudes has the phase eigenvalue 1 at omega = 0 (the Goldstone mode), no coupling of the amplitude and the phase, and the amplitude mode below 2 M_eff at the frequency of the Rust program; equal in both versions (largest of these deviations) \[second: omega 0.8128455463 (Rust 0.8128455463), threshold 0.905935, phase eigenvalue at 0 1.000000000002, amplitude-phase coupling 1.1e-16; first: omega 0.8128455463 (Rust 0.8128455463), threshold 0.905935, phase eigenvalue at 0 1.000000000002, amplitude-phase coupling 1.2e-16\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| YH-5  | PASS   | 1.768e-16 | 1.0e-09   | the masses of data/sh_hg_masses.csv follow from the Rust data: M_EFT = (V” phi_0^2 / (4 chi^{33}))^(1/2), v_SH = 2 (chi^{11})^(1/2), rho = chi^{11} / chi^{33}, Lambda_LL = v / v_SH with v = 246.219672 GeV, M_W = g v / 2 (relative), ten rows                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| YH-6  | PASS   | 8.304e-15 | 1.0e-06   | the scan: d_0 of the closed form and the amplitude mode of the reduced linear response against data/sh_hg_scan.csv (relative), three points \[second m = 0.2, G/G^crit = 1.02: d_0 0.24065630, omega 0.24065630; first m = 0.2, G/G^crit = 3: d_0 4.01146256, omega 4.01146256; second m = 0.1, G/G^crit = 1.18384: d_0 0.73827806, omega 0.73827806\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| YH-7  | PASS   | 9.853e-16 | 1.0e-12   | HS (0, 0), both versions: the amplitude and phase eigenvalues of the reduced linear response equal the closed forms lambda_amp(omega) = (G/2) sum_n w_n (k_n^2 + m^2) / (E_n (E_n^2 - omega^2/4)) and lambda_phase(omega) = (G/2) sum_n w_n E_n / (E_n^2 - omega^2/4), E_n^2 = k_n^2 + m^2 + d_0^2/4, and lambda_amp(omega) - lambda_phase(0) = ((omega^2 - d_0^2)/4) S(omega) with S(omega) = (G/2) sum_n w_n / (E_n (E_n^2 - omega^2/4)) \> 0, at five frequencies below 2 M_eff (absolute); lambda_phase(0) = 1 is the gap equation \[second omega 0.000000: lambda_amp 0.7377040607282 (closed 0.7377040607282), lambda_phase 1.0000000000016 (closed 1.0000000000016); second omega 0.300000: lambda_amp 0.7627744954223 (closed 0.7627744954223), lambda_phase 1.0374095434543 (closed 1.0374095434543); second omega 0.600000: lambda_amp 0.8529756584284 (closed 0.8529756584284), lambda_phase 1.1760080331297 (closed 1.1760080331297); second omega 0.812846: lambda_amp 1.0000000000016 (closed 1.0000000000016), lambda_phase 1.4232626846379 (closed 1.4232626846379); second omega 0.878757: lambda_amp 1.0858625854677 (closed 1.0858625854677), lambda_phase 1.5946805054664 (closed 1.5946805054664); second: lambda_phase(0) - 1 = 1.6e-12 (the gap equation, to the tolerance of the solution); first omega 0.000000: lambda_amp 0.7377040607282 (closed 0.7377040607282), lambda_phase 1.0000000000016 (closed 1.0000000000016); first omega 0.300000: lambda_amp 0.7627744954223 (closed 0.7627744954223), lambda_phase 1.0374095434543 (closed 1.0374095434543); first omega 0.600000: lambda_amp 0.8529756584284 (closed 0.8529756584284), lambda_phase 1.1760080331297 (closed 1.1760080331297); first omega 0.812846: lambda_amp 1.0000000000016 (closed 1.0000000000016), lambda_phase 1.4232626846379 (closed 1.4232626846379); first omega 0.878757: lambda_amp 1.0858625854677 (closed 1.0858625854677), lambda_phase 1.5946805054664 (closed 1.5946805054664); first: lambda_phase(0) - 1 = 1.6e-12 (the gap equation, to the tolerance of the solution)\] |
+| YH-8  | PASS   | 2.442e-15 | 1.0e-09   | HS (0, 0): the number of eigenvalues equal to 1 of the reduced linear response on the pair fields (four in the second version at omega = 0 and at omega = d_0; three at omega = 0 and one at omega = d_0 in the first, on the doublet of chi); in the second version the custodial generators T^a + T^a_R commute with the response, and the Casimir sum_a (T^a + T^a_R)^2 has the eigenvalues 0, 2, 2, 2 on the four modes at either frequency (a singlet and a triplet; largest deviation) \[second omega 0.000000: 4 eigenvalues equal 1, Casimir of T^a + T^a_R on them -0.0000000000, 2.0000000000, 2.0000000000, 2.0000000000; second omega 0.812846: 4 eigenvalues equal 1, Casimir of T^a + T^a_R on them -0.0000000000, 2.0000000000, 2.0000000000, 2.0000000000; first omega 0.000000: 3 eigenvalues equal 1; first omega 0.812846: 1 eigenvalues equal 1\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| YH-9  | PASS   | 2.384e-15 | 1.0e-12   | the normal vacuum (no pair self-energy) of HS (0, 0) and CJT, both versions: the ground state of H - mu Q_b for the eight generators and mu = +-0.005, +-0.01 has zero charge densities and no pairs, so its susceptibilities vanish and the gauge bosons get no mass without the condensate (largest \<Q_a\> / mu and largest element of the pair self-energy) \[second HS (0, 0): largest \<Q_a\> / mu 2.4e-15; second CJT: largest \<Q_a\> / mu 2.0e-15; first HS (0, 0): largest \<Q_a\> / mu 2.4e-15; first CJT: largest \<Q_a\> / mu 1.9e-15\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| YH-10 | PASS   | 1.841e-11 | 1.0e-09   | CJT, second version, the states with a fixed pair self-energy d P_dir: at d = 0 the start N = -beta reaches the scalar condensate (E = -4.050234675814e-04, masses -0.3297568683, -0.3297568683, -0.0981685824, -0.0981685824), equal to the point d = 0 of the effective potential of the Rust program (data/sh_hg_potential.csv) and to the scalar condensate of stage 3 (data/sh_sf_states.csv); at d = 0.1 d_0 the start from the normal self-energy of the scalar condensate gives the branch of the ground state (E = -4.2735649938e-04, phi = 9.9502069357e-04, M_up = -0.325786) and the start N = 0 the second branch (E = -3.4414864460e-05, phi = 1.0471619891e-03, M_up = 0.191416), equal to the Rust data files (sh_hg_potential.csv, sh_hg_potential_second_branch.csv); the second branch has the higher energy and the larger pair amplitude at the same d, so that, V decreasing from phi = 0 to phi_0, it lies above V at its own phi (largest relative difference from the Rust values; 221, 193 and 485 iterations)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+
+The checks of the Python program of stage 4
+(`data/hck_sh_higgs_checks_python.txt`).
+
+</div>
+
+<div id="tab:checks_dynamics_rust">
+
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|:------|:-------|:----------|:----------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| D-1   | PASS   | 2.320e-10 | 1.0e-8    | the integrator (CVODE, Adams-Moulton, rtol 1e-12, atol 1e-14): y” = -y from (1, 0) over 0 \<= t \<= 100 against (cos t, -sin t) (largest absolute deviation at the 1001 output times)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| D-2   | PASS   | 3.736e-9  | 1.0e-7    | the ground state stays at rest: the largest d(t) - d_0 / d_0 over 0 \<= t \<= 100, second version, HS (0, 0) and CJT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| D-3a  | PASS   | 1.097e-6  | 1.0e-5    | the energy per volume is conserved in every run (largest E(t) - E(0) relative to the largest E(t) of the run; the largest in amplitude_first_HS0_1); the energy per volume is the difference of its kinetic and interaction parts, each about ten times larger, and its drift follows the loss of orthonormality of D-3c that the integration error causes (the exact flow conserves it: check WD-1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| D-3b  | PASS   | 6.115e-10 | 1.0e-9    | the charge densities of the symmetries are conserved in every run (all eight generators in the second version; T^1, T^2, T^3, T^3_R, R, F_tot in the first; largest absolute change)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| D-3c  | PASS   | 1.991e-8  | 1.0e-7    | the evolution is unitary: the largest V(q)^dag V(q) - 1 over the nodes at the end of every run                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| D-4a  | PASS   | 1.239e-6  | 1.0e-4    | the amplitude mode in the time domain: the peak of the spectrum of d(t) after the kick eps = 1e-3 lies at d_0, the frequency of the linear response of stage 4 (relative), HS (0, 1) and HS (0, 0), both versions \[second HS (0, 1): peak 0.81284655 against d_0 = 0.81284555, width ratio 1.0000; second HS (0, 0): peak 0.81284655 against d_0 = 0.81284555, width ratio 1.0000; first HS (0, 1): peak 0.81284655 against d_0 = 0.81284555, width ratio 1.0000; first HS (0, 0): peak 0.81284655 against d_0 = 0.81284555, width ratio 1.0000\]                                                                                                                                                                                                                                                                                                                                                                 |
+| D-4b  | PASS   | 5.048e-6  | 2.0e-2    | the amplitude mode is undamped over the run: the half width of its peak equals that of a pure cosine sampled in the same way, the width of the window (largest ratio minus 1), HS (0, 1) and HS (0, 0), both versions                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| D-5   | PASS   | 1.975e-8  | 1.0e-4    | second version, HS (0, 1) and HS (0, 0): the neutral member of the custodial triplet oscillates at the frequency of the amplitude mode (relative difference of the peaks), the degeneracy of stage 4                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| D-6a  | PASS   | 1.045e-9  | 1.0e-6    | the Josephson relation: with H - mu F_tot (mu = 0.01) the phase of d(t) turns at the rate 2 mu (relative difference of the modulus of the fitted rate; each pair carries the particle number 2), second version, HS (0, 0) and CJT \[second HS (0, 0): rate 0.019999999979 (2 mu = 0.02), largest d - d_0 / d_0 1.5e-9; second CJT: rate 0.020000000013 (2 mu = 0.02), largest d - d_0 / d_0 2.9e-10\]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| D-6b  | PASS   | 1.481e-9  | 1.0e-7    | in the same runs d(t) stays at d_0 (largest relative deviation)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| D-7   | PASS   | 4.573e-8  | 1.0e-6    | KS and CJT give the same dynamics: the largest d_KS(t) - d_CJT(t) / d_0 in the amplitude runs of both versions and of d_trip(t) in the triplet runs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| D-8   | PASS   | –         | –         | in the methods with normal self-energies (HS (1, 1), KS, CJT) the spectra of the amplitude runs (both versions) and of the triplet runs (second version) have a peak; reported with twice the gap of stage 3 and d_0 \[second HS (1, 1): amplitude peak 0.810871 (2 E_gap 0.853584, d_0 0.832878), width ratio 1.000, triplet peak 0.828525, width ratio 1.001; second KS: amplitude peak 0.873546 (2 E_gap 0.768402, d_0 0.890787), width ratio 1.800, triplet peak 0.868711, width ratio 2.120; second CJT: amplitude peak 0.873546 (2 E_gap 0.768402, d_0 0.890787), width ratio 1.800, triplet peak 0.868711, width ratio 2.120; first HS (1, 1): amplitude peak 0.806156 (2 E_gap 0.340784, d_0 0.825810), width ratio 1.038; first KS: amplitude peak 0.852592 (2 E_gap 0.222918, d_0 0.867286), width ratio 2.159; first CJT: amplitude peak 0.852592 (2 E_gap 0.222918, d_0 0.867286), width ratio 2.159\] |
+
+The checks of the Rust program of stage 6
+(`data/hck_sh_dynamics_checks.txt`).
+
+</div>
+
+<div id="tab:checks_dynamics_python">
+
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|:------|:-------|:----------|:----------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| check | result | deviation | tolerance | statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| YD-1  | PASS   | 3.733e-10 | 1.0e-08   | HS (0, 0), both versions: the kick eps = 1e-3 along the vacuum direction integrated here (numpy and CVODE, rtol 1e-12, atol 1e-14) to t = 100; d(t) against the Rust program every 1.0 (largest difference / d_0) \[second: largest d_Python - d_Rust / d_0 = 4.32e-11 (CVODE: 2049 steps, 4090 evaluations of the right side, 3 rejected steps, 4087 fixed-point iterations (0 convergence failures), last order 7, last step 4.9437e-02); first: largest d_Python - d_Rust / d_0 = 3.73e-10 (CVODE: 1899 steps, 3790 evaluations of the right side, 3 rejected steps, 3787 fixed-point iterations (0 convergence failures), last order 7, last step 5.3391e-02)\] |
+| YD-2a | PASS   | 3.611e-07 | 1.0e-05   | in the same runs the energy per volume is conserved (largest E(t) - E(0) relative to the largest E; the energy per volume is the difference of its kinetic and interaction parts, each about ten times larger, and its drift follows the loss of orthonormality that the integration error causes)                                                                                                                                                                                                                                                                                                                                                                  |
+| YD-2b | PASS   | 5.922e-09 | 1.0e-07   | in the same runs the vectors stay orthonormal (largest V^dag V - 1 at t = 100)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| YD-3  | PASS   | 1.241e-06 | 1.0e-04   | the peaks of the spectra of d(t) of the amplitude runs of HS (0, 1) and HS (0, 0) of the Rust program, computed here from the samples every 1.0, lie at d_0 = 0.8128455463 of the closed-form gap equation (relative) \[second HS0_1: 0.81284655; second HS0_0: 0.81284655; first HS0_1: 0.81284655; first HS0_0: 0.81284655\]                                                                                                                                                                                                                                                                                                                                      |
+| YD-4  | PASS   | 7.036e-09 | 1.0e-04   | the peaks of all 17 amplitude, triplet and large runs computed here (samples every 1.0) agree with those of the Rust program (samples every 0.2; data/sh_dyn_runs.csv; relative)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| YD-5  | PASS   | 1.045e-09 | 1.0e-06   | the Josephson runs of the Rust program: the unwrapped phase of d(t) grows linearly at the rate 2 mu = 0.02 (relative difference of the modulus of the fitted rate) \[josephson_second_HS0_0: rate 0.019999999979; josephson_second_CJT: rate 0.020000000013\]                                                                                                                                                                                                                                                                                                                                                                                                       |
+| YD-6  | PASS   | 6.022e-09 | 1.0e-07   | HS (0, 0): the reduced model of Anderson pseudospins, one at +eps_k and one at -eps_k = -(k^2 + m^2)^(1/2) for each of the 24 radial nodes (each with half the weight of the node), with the gap parameter d / 2, reproduces d(t) of the Rust program for 0 \<= t \<= 100 after the kicks eps = 1e-3 and 0.3, both versions (largest difference / d_0; d_0 of the reduced model is 0.812845546320) \[amplitude_second_HS0_0: 3.7e-09; large_second_HS0_0: 1.1e-09; amplitude_first_HS0_0: 6.0e-09; large_first_HS0_0: 1.3e-09\]                                                                                                                                     |
+
+The checks of the Python program of stage 6
+(`data/hck_sh_dynamics_checks_python.txt`).
+
+</div>
 
 # Data and programs
 
-The repository (Nash 2026a) (folder `Revision_HS_CJT_and_Kohn-Sham`)
-contains the programs, their reports and data, the notebook and the
-sources of the article. To reproduce the numbers (from the folder
-`Revision_HS_CJT_and_Kohn-Sham`):
+The repository of PROJECT spacetimes (Nash 2026a), folder
+`Revision_SM_Higgs`, holds the programs: the Rust workspace `rust/` (the
+crates `shquantum`, `shsuperfluid`, `shhiggs` and `shdynamics`, the
+library `sfcore` and the CVODE crate `sfsundials`), the Python programs
+`python/sh_quantum.py`, `sh_superfluid.py`, `sh_higgs.py`,
+`sh_dynamics.py` and their figure programs, the Wolfram scripts
+`wolfram/source/sh_*.wls`, the notebook `superfluid.nb`, and the build
+of this article, `paper_prd/scripts/build_paper.py`.
+Table <a href="#tab:files" data-reference-type="ref"
+data-reference="tab:files">28</a> lists the data files and reports that
+this article reads, with their SHA-256 checksums.
 
-    cd rust && cargo build --release
-    ./target/release/sf_part2 && ./target/release/sf_part3 && cd ..
-    python3 python/sf_part3.py
-    python3 python/sf_part3_figures.py
-    python3 paper_prd/scripts/build_paper.py
+<div id="tab:files">
 
-`sf_part3` ran 886 s on two processor cores and `sf_part3.py` 92 s (the
-times written at the end of their reports). The notebook is evaluated in
-Wolfram 15 by Evaluation $>$ Evaluate Notebook. The files, with their
-SHA-256 checksums at the time this document was built:
+| file                                        |  bytes | SHA-256                                                            |
+|:--------------------------------------------|-------:|:-------------------------------------------------------------------|
+| file                                        |  bytes | SHA-256                                                            |
+| `data/sh_inputs.csv`                        |    931 | `f605c1c8c60d36511bceb1a2b4fa1cf91b51aa93fbf624a99e9eda8c36f6b65d` |
+| `data/sh_couplings.csv`                     |   1047 | `afb7d27fadd5ad83d33e5b735ebaaf98ca74a270e9947f76c6cad2a8fd5d68ca` |
+| `data/sh_quantum_values.csv`                |    953 | `2c4de2ae4a8fd59ee2b954c93e777a21016806ee4bdf66c04442d3b62edc3ce9` |
+| `data/sh_channels.csv`                      |   1559 | `bc89a1743dd5e352760a6e811136334da5af1b1266a7471637233b8d19ae5489` |
+| `data/sh_custodial_channels.csv`            |    654 | `33870c458d7e071d434ea52950b32b796eb5606cf14b65ada06f2518113aa720` |
+| `data/sh_sf_normal_vacuum.csv`              |   5670 | `96a0e4c8ee0051b4bb0701dacb78de3c019eee7cbc5c39112c2dc80523bd6822` |
+| `data/sh_sf_states.csv`                     |  15703 | `da8afed0b5804eec5370305509448f0e93799938bc96e8496756861b3d936f79` |
+| `data/sh_sf_ground.csv`                     |   3728 | `519c22b6a098639acf5e7af7356fe78d7cba1b84c8e5acdf28ab81838c23ca58` |
+| `data/sh_sf_values.csv`                     |   4261 | `459aa47860df6ebd2894c9c34c1ade559282beb64862b5e1bf3abf0556d8194b` |
+| `data/sh_hg_potential.csv`                  |  67028 | `c0c5c8c486733c0648f9725ad31d9d6699fbff505eb21eca27aa62d1cd76ee3d` |
+| `data/sh_hg_potential_second_branch.csv`    |   5261 | `b52e10f856228a5fc687f97c1bec1ca4099245a147d9f1c412b0f20f88a70a07` |
+| `data/sh_hg_minimum.csv`                    |   2551 | `f3570a068826989026bd14ef8be37e9c61f554b4550d562e897c43e7167edec2` |
+| `data/sh_hg_susceptibility.csv`             |   9156 | `2dbb7b2e694a450c803d813dc391dd7784028a3e724ac6b48e97a775aa66c9b2` |
+| `data/sh_hg_masses.csv`                     |   4524 | `1d51d6f03f652ecba01a798371661429ff0857ed42ecb3a941459c165044a75b` |
+| `data/sh_hg_scan.csv`                       |  11985 | `fc698fed2af5d9c10ecd0d3802e977aa0c53bb4a0082cf922cc0cb5ae176e733` |
+| `data/sh_hg_values.csv`                     |   2423 | `7aa5c4612814669fcd79621f421c17ac9ecd6f61731df8cf529995ca2fc1d2cb` |
+| `data/sh_dyn_runs.csv`                      |  10272 | `e68a0cac39cb4cfd52183662bfd472ba6cc64fd7881b9aaf8d995351a455a446` |
+| `data/sh_dyn_spectra.csv`                   | 551665 | `18f53f0b5d7aee22e08cd663a60401b919ed01b1848629c093ea60d77bbd70bd` |
+| `data/sh_dyn_values.csv`                    |   1057 | `57be78260cea5291b4a85a03211da8daad5ff324acf068f631bed3f78d1d977d` |
+| `data/hck_sh_dynamics_checks.txt`           |   4702 | `034f7b903210e846265ee0725c112d331dc5749400225c063fb92b0fb4e9be15` |
+| `data/hck_sh_dynamics_checks_python.txt`    |   3030 | `01fccb052ff3fe0450316fc542ab91517ae027f7a0aeb8ba3d6158be30405760` |
+| `data/hck_sh_dynamics_checks_wolfram.txt`   |   2435 | `6b06cab824331802c591b0d50fc33e8133b96795150c1407a870ae8802df1c99` |
+| `data/hck_sh_higgs_checks.txt`              |  13233 | `59f6bbda01b4c2722926eac4bfbd55183ad12591663f586b851581b92ccac01f` |
+| `data/hck_sh_higgs_checks_python.txt`       |   7479 | `2b732bc7d515e8778b5ee2447e16adc9797f2b37bf6b94de8213db0da19cda85` |
+| `data/hck_sh_higgs_checks_wolfram.txt`      |   2789 | `9e85dce219cfc0086d3b2dc133f67e13ca3355db393f7e59564ec95da3f84f2a` |
+| `data/hck_sh_quantum_checks.txt`            |  15994 | `af289d0d8995850ef468c4ab3850c3f8637310836a8b0448ea24ccea73c9fec5` |
+| `data/hck_sh_quantum_checks_python.txt`     |   4421 | `599087a103eb47f7c8054ee8cbe1b6b060e38245440bc60e6d2821d2b2feb5f0` |
+| `data/hck_sh_quantum_checks_wolfram.txt`    |   4112 | `05b053badecbb4e54fb6698d85a58a0db1a58c08dd595d926a755f35ba752de2` |
+| `data/hck_sh_superfluid_checks.txt`         |  15613 | `dfdb311ae79ebdcd2bedb8f09ea94e8acd21d3ccd978d03183e438afd8dd7caa` |
+| `data/hck_sh_superfluid_checks_python.txt`  |   2946 | `17120e3ec8170b5c2d81ecc9fc945d815eed1697c0b411d9fd57eb8d86f5a1c2` |
+| `data/hck_sh_superfluid_checks_wolfram.txt` |   2305 | `946f6f5f657ef2489e647e4611d8bf3fa29d09a9e90e02deac145ce1b08d7c7c` |
+| `data/hck_notebook_log.txt`                 | 131433 | `8599108efc70155d07a6c7d93cdbdc9729b2803640afdc558247dc60e1f9b29e` |
 
-| file                                               | SHA-256                                                            |
-|:---------------------------------------------------|:-------------------------------------------------------------------|
-| file                                               | SHA-256                                                            |
-| `data/part2_values.csv`                            | `0b75b5e83506ca26fa80f1b26be7a36da6e61c4e955b1fe9797be2c516b3f94a` |
-| `data/part2_effective_couplings.csv`               | `23076ace01f0f57bae6acb1599e05574fbb54789fdbea4db2522252c0e6ec4d0` |
-| `data/part2_states.csv`                            | `67ca395e508bdbea0af515666f6a6a5ea74871ff7357bfbec97a88f8e1450d47` |
-| `data/part3_values.csv`                            | `ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752` |
-| `data/part3_sfbsv.csv`                             | `7553ebd5ec2cd946f5b3e634d1bcf5d68eb8426474dfb02c123669fa6aad4214` |
-| `data/part3_thermal.csv`                           | `c5fee32769ca52cea89527613b67cdd854ce91c1ee113805aab3d2ff02d0450f` |
-| `data/part3_thermal_landau.csv`                    | `ff63593fd7adfb0540f2141cad93438d810e0c00d44612df93889d17a1b577f0` |
-| `data/part3_thermal_curves.csv`                    | `519b410f803a762dcdb4d503197344d25079c751b45388421a0d79cc80e69e9b` |
-| `data/part3_ginzburg.csv`                          | `792891d8f448384be6b4220806b9db339f60ea76d47db109de0b002f0f93b98c` |
-| `data/part3_ginzburg_regions.csv`                  | `8838a87b0a15124b283f32962b18148fbf6b08b0e4101a355689e2abeaf63b0c` |
-| `data/part3_higgs.csv`                             | `fc2b3fb56517fb1557ca9c355371472e761ab852189deff8fcb4860feba9ed7b` |
-| `data/part4_massmatrix.csv`                        | `3ea98ff1b722e2f15ac95985a38820a8cfba90dcf0e14a10e0437e76450d51f5` |
-| `data/hck_part1_checks.txt`                        | `5843c6b9e58dc8b5dd03c980d4a47c6d1672da1b564f86b6fc093e973513bb44` |
-| `data/hck_part1_checks_python.txt`                 | `d8328c8c945436fde4e689661d08e23df95cd36b346a51a62577140ee167777c` |
-| `data/hck_part2_checks.txt`                        | `0af252aca8349d4fcad4a29a50c56d9fab1dbbb46f586bf5ae8d899a070db855` |
-| `data/hck_part2_checks_python.txt`                 | `762edbe64fb56153be102cbe89af467630ccf876686f96a65042dac09d48b7ac` |
-| `data/hck_part3_checks.txt`                        | `5b46688b9e601c0afd52fb609c6157754b29def63464de6742e0d0742f03b606` |
-| `data/hck_part3_checks_python.txt`                 | `344367a0a0fbfa332a3dbe83e888713f55d619bdf7506a43008c60dbd116e8b8` |
-| `data/hck_part4_checks.txt`                        | `6cc8ba37d8787ea1cb0a31438079f8348d2a2273fa847b446524f9ca8f36443a` |
-| `data/hck_part4_checks_python.txt`                 | `0f0fb9a12812008f66200f6a14f2fc633f4c70e7f06be29651d55e3645d4d487` |
-| `data/hck_notebook_log.txt`                        | `81751603dad3553440e2726d316f004212cca0e1c4eea0ee88bbb1529f2f7eae` |
-| `rust/sfpart3/src/main.rs`                         | `c065a69896b38d3c33ef9053fd3f6d712bd90b092ce2771e56e670bb2857d84a` |
-| `rust/sfpart3/src/ginzburg.rs`                     | `55fe360697251a1cdeba86429126a97e07e87228218853537156b6ab5840b5c6` |
-| `rust/sfpart3/src/higgs.rs`                        | `31f093abb797ee358e661a97cc6e3134625d00518e1c43dd9a9caa230d40c2ca` |
-| `rust/sfpart3/src/thermal.rs`                      | `72e2542f433fc2660133fac25642cf583bcc3654c0a60f998cd4d526667374c6` |
-| `rust/sfpart3/src/kinetic.rs`                      | `bd1512357d966bd4ae95efe99cc8c728c7ed5c7e2d13e8301704405088d0f019` |
-| `python/sf_part2.py`                               | `f95e9a26d8e531be6c227f84a7110e2985ec6909f102d8db3c525351b28d3fc4` |
-| `python/sf_part3.py`                               | `facb6fb6288b333384f59cd8605f3d14a3ea615fe297722ca03c47d5b159b677` |
-| `python/sf_part3_figures.py`                       | `fa06c6a34825baea16b390ffeef190a8890414adde38b3caa33a42ee3d2ea067` |
-| `wolfram/source/part3_ginzburg.source.wl`          | `ce3d808ecca2c26e66901435fd14df314dd1c6c308288810e925b627e34b0ad8` |
-| `superfluid.nb`                                    | `b0e1def3bdf55f3762fb33f3b879c24bc4dbe4991727250bda44353e226ecc35` |
-| `figures/fig_part3_q1_potential.pdf`               | `d76e0840c72af9ee73ca97111560d3800af8f0b1760a0539b3ccd9b194d0cbb0` |
-| `figures/fig_part3_q4_thermal.pdf`                 | `c7bac6536492b220f77d5c0652b13a4a6fc65f2c63b2f3a77adfc5c2e371080d` |
-| `figures/fig_part4_r1_massmatrix.pdf`              | `caa47847ba676acb6b11a824be1101413d542f7d5fdaa76b76f9ef12b91385c6` |
-| `figures/fig_prd_ginzburg.pdf`                     | `1e79446ef1c9c36e4fbe4619b5aec0da2f5a411d0c738a72fc15ff85a868e00a` |
-| `figures/fig_prd_higgs.pdf`                        | `aaed0cb24621a7222f943b74e22ac243e61b5c827b18dee2c0da48d97be125ba` |
-| `paper_prd/src/higgs_composite_qg.template.tex`    | `d7e42f13b65121f4c6b9edbd47fb6789cee86a2dfe88120391630bcba874db99` |
-| `paper_prd/src/higgs_composite_qg_SM.template.tex` | `4fd15b1e7ed260a94f23e0744e8ef63a28de55d4d0f63a0c7840360201c26afd` |
-| `paper_prd/src/references.bib`                     | `3197563f0734ae4cfde3374586d56f4b783bac025ff09e1248c7936cb6c1b1fe` |
-| `paper_prd/scripts/build_paper.py`                 | `2d493a0239d7ee629a136db0a271b2fdf067b2864962c422019ee289e23aa57b` |
+The data files and the reports that this article reads, with their sizes
+and SHA-256 checksums.
 
-The files and their SHA-256 checksums.
+</div>
 
 <div id="refs" class="references csl-bib-body hanging-indent">
-
-<div id="ref-Agashe2005" class="csl-entry">
-
-Agashe, Kaustubh, Roberto Contino, and Alex Pomarol. 2005. “The Minimal
-Composite Higgs Model.” *Nucl. Phys. B* 719: 165.
-<https://doi.org/10.1016/j.nuclphysb.2005.04.035>.
-
-</div>
-
-<div id="ref-AmelinoCamelia1993" class="csl-entry">
-
-Amelino-Camelia, G., and S.-Y. Pi. 1993. “Self-Consistent Improvement of
-the Finite-Temperature Effective Potential.” *Phys. Rev. D* 47: 2356.
-<https://doi.org/10.1103/PhysRevD.47.2356>.
-
-</div>
-
-<div id="ref-ATLAS2022" class="csl-entry">
-
-ATLAS Collaboration. 2022. “A Detailed Map of Higgs Boson Interactions
-by the ATLAS Experiment Ten Years After the Discovery.” *Nature* 607:
-52. <https://doi.org/10.1038/s41586-022-04893-w>.
-
-</div>
 
 <div id="ref-BCS1957" class="csl-entry">
 
@@ -1926,50 +1424,11 @@ Superconductivity.” *Phys. Rev.* 108: 1175.
 
 </div>
 
-<div id="ref-BHL1990" class="csl-entry">
-
-Bardeen, William A., Christopher T. Hill, and Manfred Lindner. 1990.
-“Minimal Dynamical Symmetry Breaking of the Standard Model.” *Phys. Rev.
-D* 41: 1647. <https://doi.org/10.1103/PhysRevD.41.1647>.
-
-</div>
-
-<div id="ref-BucherLoPreskill1992" class="csl-entry">
-
-Bucher, Martin, Hoi-Kwong Lo, and John Preskill. 1992. “Topological
-Approach to Alice Electrodynamics.” *Nucl. Phys. B* 386: 3.
-
-</div>
-
-<div id="ref-ChanowitzGaillard1985" class="csl-entry">
-
-Chanowitz, Michael S., and Mary K. Gaillard. 1985. “The TeV Physics of
-Strongly Interacting W’s and Z’s.” *Nucl. Phys. B* 261: 379.
-
-</div>
-
-<div id="ref-CMS2022" class="csl-entry">
-
-CMS Collaboration. 2022. “A Portrait of the Higgs Boson by the CMS
-Experiment Ten Years After the Discovery.” *Nature* 607: 60.
-<https://doi.org/10.1038/s41586-022-04892-x>.
-
-</div>
-
 <div id="ref-CJT1974" class="csl-entry">
 
 Cornwall, John M., R. Jackiw, and E. Tomboulis. 1974. “Effective Action
 for Composite Operators.” *Phys. Rev. D* 10: 2428.
 <https://doi.org/10.1103/PhysRevD.10.2428>.
-
-</div>
-
-<div id="ref-CLT1974" class="csl-entry">
-
-Cornwall, John M., David N. Levin, and George Tiktopoulos. 1974.
-“Derivation of Gauge Invariance from High-Energy Unitarity Bounds on the
-S Matrix.” *Phys. Rev. D* 10: 1145.
-<https://doi.org/10.1103/PhysRevD.10.1145>.
 
 </div>
 
@@ -1982,28 +1441,12 @@ Math. Softw.* 48: 31.
 
 </div>
 
-<div id="ref-Ginzburg1960" class="csl-entry">
-
-Ginzburg, V. L. 1961. “Some Remarks on Phase Transitions of the Second
-Kind and the Microscopic Theory of Ferroelectric Materials.” *Sov. Phys.
-Solid State* 2: 1824.
-
-</div>
-
 <div id="ref-Hehl1976" class="csl-entry">
 
 Hehl, Friedrich W., Paul von der Heyde, G. David Kerlick, and James M.
 Nester. 1976. “General Relativity with Spin and Torsion: Foundations and
 Prospects.” *Rev. Mod. Phys.* 48: 393.
 <https://doi.org/10.1103/RevModPhys.48.393>.
-
-</div>
-
-<div id="ref-HillSimmons2003" class="csl-entry">
-
-Hill, Christopher T., and Elizabeth H. Simmons. 2003. “Strong Dynamics
-and Electroweak Symmetry Breaking.” *Phys. Rep.* 381: 235.
-<https://doi.org/10.1016/S0370-1573(03)00140-6>.
 
 </div>
 
@@ -2030,25 +1473,10 @@ Lett.* 3: 77. <https://doi.org/10.1103/PhysRevLett.3.77>.
 
 </div>
 
-<div id="ref-KaplanGeorgi1984" class="csl-entry">
-
-Kaplan, David B., and Howard Georgi. 1984. “SU(2) $\times$ U(1) Breaking
-by Vacuum Misalignment.” *Phys. Lett. B* 136: 183.
-
-</div>
-
 <div id="ref-Kibble1961" class="csl-entry">
 
 Kibble, T. W. B. 1961. “Lorentz Invariance and the Gravitational Field.”
 *J. Math. Phys.* 2: 212. <https://doi.org/10.1063/1.1703702>.
-
-</div>
-
-<div id="ref-Kiskis1978" class="csl-entry">
-
-Kiskis, J. 1978. “Disconnected Gauge Groups and the Global Violation of
-Charge Conservation.” *Phys. Rev. D* 17: 3196.
-<https://doi.org/10.1103/PhysRevD.17.3196>.
 
 </div>
 
@@ -2060,27 +1488,12 @@ Exchange and Correlation Effects.” *Phys. Rev.* 140: A1133.
 
 </div>
 
-<div id="ref-LQT1977" class="csl-entry">
+<div id="ref-LittlewoodVarma1981" class="csl-entry">
 
-Lee, Benjamin W., C. Quigg, and H. B. Thacker. 1977. “Weak Interactions
-at Very High Energies: The Role of the Higgs-Boson Mass.” *Phys. Rev. D*
-16: 1519. <https://doi.org/10.1103/PhysRevD.16.1519>.
-
-</div>
-
-<div id="ref-LeonhardtVolovik2000" class="csl-entry">
-
-Leonhardt, U., and G. E. Volovik. 2000. “How to Create an Alice String
-(Half-Quantum Vortex) in a Vector Bose-Einstein Condensate.” *JETP
-Lett.* 72: 46.
-
-</div>
-
-<div id="ref-Levanyuk1959" class="csl-entry">
-
-Levanyuk, A. P. 1959. “Contribution to the Theory of Light Scattering
-Near the Second-Order Phase-Transition Points.” *Sov. Phys. JETP* 9:
-571.
+Littlewood, P. B., and C. M. Varma. 1981. “Gauge-Invariant Theory of the
+Dynamical Interaction of Charge Density Waves and Superconductivity.”
+*Phys. Rev. Lett.* 47: 811.
+<https://doi.org/10.1103/PhysRevLett.47.811>.
 
 </div>
 
@@ -2089,22 +1502,6 @@ Near the Second-Order Phase-Transition Points.” *Sov. Phys. JETP* 9:
 Lord, Eric A. 1971. “General Relativity from Gauge Invariance.” *Proc.
 Cambridge Philos. Soc.* 69: 423.
 <https://doi.org/10.1017/S0305004100046879>.
-
-</div>
-
-<div id="ref-Mermin1965" class="csl-entry">
-
-Mermin, N. David. 1965. “Thermal Properties of the Inhomogeneous
-Electron Gas.” *Phys. Rev.* 137: A1441.
-<https://doi.org/10.1103/PhysRev.137.A1441>.
-
-</div>
-
-<div id="ref-NJL1961" class="csl-entry">
-
-Nambu, Y., and G. Jona-Lasinio. 1961. “Dynamical Model of Elementary
-Particles Based on an Analogy with Superconductivity. I.” *Phys. Rev.*
-122: 345. <https://doi.org/10.1103/PhysRev.122.345>.
 
 </div>
 
@@ -2123,24 +1520,11 @@ Superfluid.”
 
 </div>
 
-<div id="ref-PDG2024" class="csl-entry">
+<div id="ref-PekkerVarma2015" class="csl-entry">
 
-Navas, S. et al. 2024. “Review of Particle Physics.” *Phys. Rev. D* 110:
-030001. <https://doi.org/10.1103/PhysRevD.110.030001>.
-
-</div>
-
-<div id="ref-Sakharov1967" class="csl-entry">
-
-Sakharov, A. D. 1968. “Vacuum Quantum Fluctuations in Curved Space and
-the Theory of Gravitation.” *Sov. Phys. Dokl.* 12: 1040.
-
-</div>
-
-<div id="ref-Schwarz1982" class="csl-entry">
-
-Schwarz, A. S. 1982. “Field Theories with No Local Conservation of the
-Electric Charge.” *Nucl. Phys. B* 208: 141.
+Pekker, D., and C. M. Varma. 2015. “Amplitude/Higgs Modes in Condensed
+Matter Physics.” *Annu. Rev. Condens. Matter Phys.* 6: 269.
+<https://doi.org/10.1146/annurev-conmatphys-031214-014350>.
 
 </div>
 
@@ -2151,26 +1535,18 @@ Distribution Functions.” *Sov. Phys. Dokl.* 2: 416.
 
 </div>
 
+<div id="ref-PDG2026" class="csl-entry">
+
+Takahashi, F. et al. 2026. “Review of Particle Physics.” *Int. J. Mod.
+Phys. A* 41: 2630011. <https://doi.org/10.1142/S0217751X26300115>.
+
+</div>
+
 <div id="ref-Utiyama1956" class="csl-entry">
 
 Utiyama, Ryoyu. 1956. “Invariant Theoretical Interpretation of
 Interaction.” *Phys. Rev.* 101: 1597.
 <https://doi.org/10.1103/PhysRev.101.1597>.
-
-</div>
-
-<div id="ref-Visser2002" class="csl-entry">
-
-Visser, Matt. 2002. “Sakharov’s Induced Gravity: A Modern Perspective.”
-*Mod. Phys. Lett. A* 17: 977.
-<https://doi.org/10.1142/S0217732302006886>.
-
-</div>
-
-<div id="ref-Weinberg1989" class="csl-entry">
-
-Weinberg, Steven. 1989. “The Cosmological Constant Problem.” *Rev. Mod.
-Phys.* 61: 1. <https://doi.org/10.1103/RevModPhys.61.1>.
 
 </div>
 
