@@ -1,0 +1,14 @@
+# lgcurved: the program lg_curved of the folder Revision_Lord_Gravity (PROJECT spacetimes): the checks of Part III of
+# lord_gravity.md, the gravitational coupling of the brochon by Lord's covariant derivative.
+[package]
+name = "lgcurved"
+version = "0.1.0"
+edition = "2021"
+description = "Checks of the tetrad geometry, the Dirac operator, currents and energy-momentum tensor of the brochon in a curved space-time"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+
+[[bin]]
+name = "lg_curved"
+path = "src/main.rs"

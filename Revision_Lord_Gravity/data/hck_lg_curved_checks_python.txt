@@ -1,0 +1,28 @@
+PROJECT spacetimes, Revision_Lord_Gravity: lg_curved.py -- the independent check (Python, finite differences) of Part III of lord_gravity.md, the gravitational coupling of the brochon
+Each line: PASS or FAIL, the identifier of the check (YG and a number; the counterparts of the Rust program lg_curved in brackets),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YG-1a   deviation 4.441e-16 (tolerance 1.0e-12): [G-2] 1/2 {gamma^mu, gamma^nu} = g^{mu nu} for the curved Dirac matrices gamma^mu = e_a^mu gamma^a
+PASS YG-1b   deviation 1.110e-15 (tolerance 1.0e-12): [G-3b] N_LG(sigma^mu, sigma^nu) = g^{mu nu}, sigma^mu = e_a^mu sigma_a
+PASS YG-2a   deviation 3.549e-14 (tolerance 1.0e-09): [G-5] the spin connection from the anholonomy of the tetrad (no Christoffel symbols) equals that of the tetrad postulate with the Christoffel symbols
+PASS YG-2b   deviation 6.861e-14 (tolerance 1.0e-09): [G-6] d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0
+PASS YG-3a   deviation 4.662e-12 (tolerance 1.0e-09): [G-8a] d_mu Omega_nu - d_nu Omega_mu + [Omega_mu, Omega_nu] = 1/4 R_{ab mu nu} gamma^{ab} with the Riemann tensor of the metric (nested differences; relative)
+PASS YG-3b   [G-8b] Lord's printed 1/2 R gamma is twice the spinor curvature [smallest relative deviation 1.0000 (1 for a factor 2)]
+PASS YG-4    deviation 3.978e-13 (tolerance 1.0e-09): [G-10a] Dslash Dslash Psi = Box Psi - R/4 Psi + i/2 gamma^{mu nu} (g^v W_{mu nu} + g^F B_{mu nu}) Psi in a curved space-time with non-abelian gauge fields (nested differences; relative)
+PASS YG-5    deviation 4.121e-13 (tolerance 1.0e-09): [G-12c] nabla_mu j^{F,mu} = i (E-bar Psi - Psi-bar E) for random Psi (relative)
+PASS YG-6a   deviation 5.975e-12 (tolerance 1.0e-09): [G-13a] local solutions of the Dirac equation (all 40 unknown Taylor coefficients solved at once; residual relative to the field)
+PASS YG-6b   deviation 1.265e-12 (tolerance 1.0e-09): [G-13b] nabla_mu T^{mu nu} = g^v W^iota nu_la j^{iota la} + g^F B^nu_la j^{F la} (relative)
+PASS YG-6c   deviation 9.899e-14 (tolerance 1.0e-09): [G-13c] g^{mu nu} T_{mu nu} = m_LL Psi-bar Psi (relative)
+PASS YG-7a   deviation 2.251e-13 (tolerance 1.0e-09): [G-15a] in g = Omega^2 eta with a random local frame, Omega^{-3/2} S Psi_flat (Volkov, massless) solves the massless Dirac equation with the zeugon wave (relative residual)
+PASS YG-7b   deviation 4.649e-12 (tolerance 1.0e-09): [G-15c] nabla_mu T^{mu nu} = the force of the zeugon (relative)
+PASS YG-7c   deviation 1.586e-13 (tolerance 1.0e-09): [G-15d] T is traceless (relative)
+PASS YG-8a   deviation 2.802e-16 (tolerance 1.0e-09): [G-17a] C Psi = (gamma^0 (x) 1_2)(K^3)^dag Psi^* anticommutes with i Dslash in a curved space-time with the zeugon (relative)
+PASS YG-8b   deviation 0.000e+00 (tolerance 1.0e-14): [G-17c] C^2 = -1
+PASS YG-8c   deviation 1.111e-11 (tolerance 1.0e-09): [G-17e] local solutions of i Dslash Psi = M Psi + D C Psi (the antilinear equations solved for the real and imaginary parts; residual relative to the field)
+PASS YG-8d   deviation 4.740e-11 (tolerance 1.0e-08): [G-17f] (i Dslash)^2 Psi = (M^2 + |D|^2) Psi for them, E_gap = 0.3663906649 (relative)
+PASS YG-9    deviation 1.405e-13 (tolerance 1.0e-09): [G-11d] the spin connection of the rotated tetrad Lambda e equals S4 Omega S4^{-1} - (d S4) S4^{-1} (the law of GEE, Lord's corrected (5.5))
+
+Notes:
+  4 random points per check; finite differences of eighth order with the step 1e-2 (nested for second derivatives), so that identities hold to about 1e-12 relative; tolerances 1e-9
+
+VERDICT: ALL PASS (19 of 19)

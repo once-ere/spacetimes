@@ -271,8 +271,33 @@ earlier hypotheses, and his auxiliary fields are minus its spin
 connection. What the gauging adds is the dynamics of that connection,
 which the earlier hypotheses, on their flat space-time, leave out.
 
-The next stage is Part III: the gravitational coupling of the brochon by
-Lord's covariant derivative.
+\textbf{Stage 4} (22 November 2026): Part III of the manuscript: the
+gravitational coupling of the brochon. Lord's reference vectors are the
+tetrad of a curved space-time (in the project's language, four Hermitian
+bi-quaternions at every point whose Minkowski products are the inverse
+metric); his compatibility condition is solved by the spin connection of
+the tetrad, whose spinor image is the spin connection of GEE; the
+curvature of the spinor connection is the Riemann tensor of the metric.
+The brochon's field equation in a curved space-time follows, with its
+conserved currents, the square of its Dirac operator (the coupling
+\(-\tfrac14R\) to the scalar curvature), the conformal invariance of the
+massless brochon, and Volkov's solution in a plane wave of the zeugon.
+In the condensed vacuum, where the zeugon exists, the quasi-particle of
+the brochon is a particle of spin \(\tfrac12\) and mass
+\(E^{\rm CJT,gap}_{\rm SF}=0.3664\,\Lambda_{\rm LL}\) in every
+gravitational field (Theorem L2). The energy-momentum tensor of the
+brochon follows from the variation of the tetrad, and with that of the
+gauge fields (the zeugon's among them) it is the conserved source of
+Einstein's equations. Three programs check Part III: the Rust program
+\texttt{lg\_curved} (ALL PASS (57 of 57)), the Python program
+\texttt{python/lg\_curved.py} (ALL PASS (19 of 19)) and the Wolfram
+script \texttt{wolfram/source/lg\_curved.wls} (ALL PASS (6 of 6), exact
+arithmetic, including the Schwarzschild, Painlevé-Gullstrand and Vaidya
+space-times that Parts IV and V use).
+
+The next stages: the provenance of the remarks and the registry of the
+symbols of Parts I to III; then Part IV, the brochon in the
+Schwarzschild field on both sides of the horizon.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -315,25 +340,33 @@ written \\
 \texttt{lord\_gravity.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript
 of the task: Part I (Lord's paper read and checked), Part II (the
 association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
-group) & Parts I and II written \\
+group), Part III (the gravitational coupling of the brochon) & Parts I
+to III written \\
 \texttt{provenance/generated/} & the fragments that the programs write
-for the documents (\texttt{lg\_lord.md}, written by
-\texttt{code/scripts/write\_lg\_lord\_fragments.py}) & written for Part
-I \\
+for the documents (\texttt{lg\_lord.md} and \texttt{lg\_curved.md},
+written by \texttt{code/scripts/write\_lg\_lord\_fragments.py} and
+\texttt{code/scripts/write\_lg\_curved\_fragments.py}) & written for
+Parts I to III \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
-differentiation, and \texttt{lord.rs}, Lord's matrices from his
-definitions) and the program \texttt{lg\_lord} (the checks of Parts I
-and II) & written for Parts I and II \\
+differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
+and \texttt{curved.rs}, the geometry of a tetrad and the brochon in it),
+the program \texttt{lg\_lord} (the checks of Parts I and II) and the
+program \texttt{lg\_curved} (the checks of Part III) & written for Parts
+I to III \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
-differences, the report) and \texttt{lg\_lord.py} (the independent check
-of \texttt{lg\_lord}) & written for Parts I and II \\
+differences, the report), \texttt{lg\_lord.py} and
+\texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
+\texttt{lg\_curved}) & written for Parts I to III \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
-Lord's identities, signs and factors & written \\
+Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
+checks of Part III & written \\
 \texttt{data/} & the reports of the checks
-(\texttt{hck\_lg\_lord\_checks.txt}, \texttt{\_python.txt},
-\texttt{\_wolfram.txt}), the numbers of the findings
-(\texttt{lg\_lord\_findings.csv}), and the report of the check that no
+(\texttt{hck\_lg\_lord\_checks.txt},
+\texttt{hck\_lg\_curved\_checks.txt}, each with \texttt{\_python.txt}
+and \texttt{\_wolfram.txt}), the numbers of the findings
+(\texttt{lg\_lord\_findings.csv}) and of Part III
+(\texttt{lg\_curved\_values.csv}), and the report of the check that no
 document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
@@ -347,10 +380,13 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Lord\_Gravity"}
-\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_lord}\KeywordTok{)}   \CommentTok{\# the checks of Parts I and II}
-\ExtensionTok{python3}\NormalTok{ python/lg\_lord.py                      }\CommentTok{\# their independent check}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_lord} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_curved}\KeywordTok{)}   \CommentTok{\# Parts I to III}
+\ExtensionTok{python3}\NormalTok{ python/lg\_lord.py                      }\CommentTok{\# the independent checks}
+\ExtensionTok{python3}\NormalTok{ python/lg\_curved.py}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# no document sends its reader elsewhere}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}

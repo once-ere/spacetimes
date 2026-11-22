@@ -13,10 +13,16 @@
 //!
 //! New in this folder:
 //! * `lord` -- the matrices and operations of Lord (1971) built from his own definitions, with helpers for matrices of
-//!   dual numbers (fields of the four coordinates).
+//!   dual numbers (fields of the four coordinates);
+//! * `curved` -- the geometry of a curved space-time in the tetrad form of Lord's reference vectors (metric,
+//!   Christoffel symbols, spin connection, curvature), the brochon and the gauge fields in it (covariant derivative,
+//!   Dirac operator, currents, energy-momentum tensors), local Lorentz transformations, the pairing term of the polar
+//!   superfluid, local solutions of first-order field equations, and the Volkov solution of the brochon in a plane wave
+//!   of the zeugon (Part III of lord_gravity.md).
 pub mod algebra;
 pub mod c64;
 pub mod cmat;
+pub mod curved;
 pub mod dirac;
 pub mod dual;
 pub mod linalg;

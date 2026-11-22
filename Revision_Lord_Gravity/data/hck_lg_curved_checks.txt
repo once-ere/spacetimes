@@ -1,0 +1,68 @@
+PROJECT spacetimes, Revision_Lord_Gravity: lg_curved -- the checks of Part III of lord_gravity.md, the gravitational coupling of the brochon by Lord's covariant derivative (tetrad, spin connection, curvature, the Dirac operator of the brochon, its currents and energy-momentum tensor, the quasi-particles of the superfluid)
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS G-1a    deviation 4.441e-16 (tolerance 1.0e-13): the coframe e^a_mu and the frame e_a^mu (Lord's reference vectors h_a^mu) are inverse to each other, and the metric g_{mu nu} = eta_ab e^a_mu e^b_nu is symmetric (values and first derivatives)
+PASS G-1b    deviation 8.882e-16 (tolerance 1.0e-13): g^{mu nu} = eta^{ab} e_a^mu e_b^nu is the inverse of g_{mu nu} (values and first derivatives)
+PASS G-1c    deviation 1.147e-15 (tolerance 1.0e-13): e = det(e^a_mu) satisfies e^2 = -det g (relative, values and first derivatives)
+PASS G-1d    the metric has the signature (+,-,-,-) (one positive and three negative eigenvalues) and e > 0 at every point [8 points]
+PASS G-2     deviation 4.441e-16 (tolerance 1.0e-13): the Dirac matrices of the curved space-time gamma^mu_LG = e_a^mu gamma^a_LL satisfy 1/2 {gamma^mu, gamma^nu} = g^{mu nu} 1 (values and first derivatives)
+PASS G-3a    deviation 0.000e0 (tolerance 1.0e-15): their blocks sigma^mu_LG = e_a^mu sigma_a are Hermitian matrices: the matrices M_LL of four Hermitian bi-quaternions, four points of M31 at every point of the curved space-time
+PASS G-3b    deviation 5.829e-16 (tolerance 1.0e-13): N_LG(sigma^mu_LG, sigma^nu_LG) = g^{mu nu}: the Minkowski products of the four points are the inverse metric (the case 'N = g' of Section 2.4)
+PASS G-3c    deviation 0.000e0 (tolerance 1.0e-15): Lord's (5.2), gamma = ((0, sigma), (sigma-bar, 0)) with his bar, builds gamma^mu_LG from sigma^mu_LG (values and first derivatives)
+PASS G-4a    deviation 1.110e-16 (tolerance 1.0e-14): the Christoffel symbols are symmetric, Gamma^rho_{mu nu} = Gamma^rho_{nu mu}
+PASS G-4b    deviation 5.412e-16 (tolerance 1.0e-13): the Christoffel symbols are compatible with the metric, d_la g_{mu nu} - Gamma^ka_{la mu} g_{ka nu} - Gamma^ka_{la nu} g_{mu ka} = 0 (values and first derivatives)
+PASS G-5a    deviation 7.216e-16 (tolerance 1.0e-13): the spin connection of the tetrad postulate is antisymmetric, omega_{mu ab} = -omega_{mu ba} (values and first derivatives)
+PASS G-5b    deviation 3.678e-16 (tolerance 1.0e-13): the tetrad postulate holds for the coframe as well: d_mu e^a_nu - Gamma^la_{mu nu} e^a_la + omega_mu^a_b e^b_nu = 0
+PASS G-5c    deviation 4.857e-16 (tolerance 1.0e-13): no torsion: d_mu e^a_nu - d_nu e^a_mu + omega_mu^a_b e^b_nu - omega_nu^a_b e^b_mu = 0
+PASS G-6     deviation 7.216e-16 (tolerance 1.0e-13): the Dirac matrices are covariantly constant, d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0 with Omega_mu = 1/4 omega_{mu ab} gamma^{ab} (Lord's (5.7) in coordinates; values and first derivatives)
+PASS G-8a    deviation 4.690e-16 (tolerance 1.0e-12): the spinor curvature d_mu Omega_nu - d_nu Omega_mu + [Omega_mu, Omega_nu] = 1/4 R_{ab mu nu} gamma^{ab}, with R_{ab mu nu} = eta_aa e^a_rho e_b^sigma R^rho_{sigma mu nu} the Riemann tensor of the metric (relative to the largest component of the Riemann tensor)
+PASS G-8b    Lord's printed (4.47), (4.48), 1/2 R gamma, is twice the spinor curvature of the metric [smallest relative deviation of the printed form: 1.0000 (1 for a factor 2)]
+PASS G-9a    deviation 1.518e-15 (tolerance 1.0e-12): R_{rho sigma mu nu} = -R_{sigma rho mu nu} (relative)
+PASS G-9b    deviation 1.412e-15 (tolerance 1.0e-12): R_{rho sigma mu nu} = R_{mu nu rho sigma} (relative)
+PASS G-9c    deviation 5.604e-16 (tolerance 1.0e-12): the first Bianchi identity R_{rho sigma mu nu} + R_{rho mu nu sigma} + R_{rho nu sigma mu} = 0 (relative)
+PASS G-9d    deviation 5.968e-16 (tolerance 1.0e-12): the Ricci tensor R_{sigma nu} = R^rho_{sigma rho nu} is symmetric (relative)
+PASS G-9e    deviation 1.185e-15 (tolerance 1.0e-12): the curvature of the spin connection is the Riemann tensor of the metric in the frame, R^a_{b mu nu} = e^a_rho e_b^sigma R^rho_{sigma mu nu} (relative)
+PASS G-7a    deviation 2.220e-16 (tolerance 1.0e-13): Lord's non-commuting derivatives (4.6) are the frame derivatives of the tetrad, d_a = e_a^mu d_mu: [d_a, d_b] f = X_ab^c d_c f with X_ab^c = e^c_nu (d_a e_b^nu - d_b e_a^nu) (a random test function f)
+PASS G-7b    deviation 3.192e-16 (tolerance 1.0e-13): Lord's compatibility (5.7) in his special gauge (constant gamma^a): with Gamma^Lord_a = -e_a^mu Omega_mu and C_ba^e = e_a^mu omega_mu^e_b, -[Gamma^Lord_a, gamma_b] - C_ba^e gamma_e = 0
+PASS G-7c    deviation 2.927e-16 (tolerance 1.0e-13): Lord's coefficients a_abc of (5.4), a_abc = -(1/(4 g)) tr(gamma_bc Gamma^Lord_a), satisfy the corrected (5.8) C_ba^e = 2 g a_ab^e: g a_abc = -1/2 omega_abc with omega_abc = e_a^mu omega_{mu bc}
+PASS G-7d    the printed (4.20), C = g a in the special gauge, is half of the connection of the tetrad [smallest relative deviation |g a - C| / |C|: 0.5000 (0.5 for a factor 1/2)]
+PASS G-7e    deviation 3.331e-16 (tolerance 1.0e-13): Lord's vanishing torsion: the commutator coefficients of the frame derivatives are X_ab^c = C_ba^c - C_ab^c
+PASS G-10a   deviation 5.864e-16 (tolerance 1.0e-12): the square of the Dirac operator of the brochon (Lichnerowicz): Dslash Dslash Psi = Box Psi - R/4 Psi + i/2 gamma^{mu nu} (g^v W_{mu nu} + g^F B_{mu nu}) Psi, with Box = g^{mu nu} nabla_mu nabla_nu, in a curved space-time with non-abelian gauge fields (relative to the largest term)
+PASS G-10b   with Lord's printed spinor curvature 1/2 R gamma, the scalar term would be -R/2 Psi: the form -R/4 is decided [smallest deviation of the form -R/2 relative to |R/4 Psi|: 1.0000 (1 for a factor 2)]
+PASS G-11a   deviation 1.388e-15 (tolerance 1.0e-13): a local Lorentz rotation of the tetrad, e'^a_mu = Lambda^a_b(x) e^b_mu with S4^{-1} gamma^a S4 = Lambda^a_b gamma^b, S4 = diag(S, (S^dag)^{-1}) for a random field S of SL(2,C), leaves the metric unchanged
+PASS G-11b   deviation 3.461e-15 (tolerance 1.0e-12): the Dirac operator of the brochon is covariant: Dslash' (S4 Psi) = S4 Dslash Psi, with the spin connection of the rotated tetrad (relative, values and first derivatives)
+PASS G-11c   deviation 2.665e-15 (tolerance 1.0e-13): Lord's form of the same transformation, gamma^a -> S4 gamma^a S4^{-1} with the tetrad fixed, gives the Dirac matrices of the rotated tetrad: S4 gamma^mu S4^{-1} = e'_a^mu gamma^a (values and first derivatives)
+PASS G-11d   deviation 3.463e-15 (tolerance 1.0e-12): and the law of GEE (= Lord's corrected (5.5) with Gamma^Lord = -Omega), Omega' = S4 Omega S4^{-1} - (d S4) S4^{-1}, gives the spin connection of the rotated tetrad (values and first derivatives)
+PASS G-12a   deviation 0.000e0 (tolerance 1.0e-14): gamma^0_LL (gamma^mu_LG)^dag gamma^0_LL = gamma^mu_LG: the Dirac adjoint is formed with the constant gamma^0 of the frame
+PASS G-12b   deviation 0.000e0 (tolerance 1.0e-14): gamma^0_LL Omega_mu^dag gamma^0_LL = -Omega_mu, so (nabla Psi)-bar = d Psi-bar - Psi-bar Omega
+PASS G-12c   deviation 1.012e-15 (tolerance 1.0e-12): the identity nabla_mu j^{F,mu} = i (E-bar Psi - Psi-bar E), E = i Dslash Psi - m Psi, for random Psi (off shell): every solution of the field equation conserves the fermion-number current in any curved space-time (relative)
+PASS G-12d   deviation 6.815e-16 (tolerance 1.0e-12): the same for the isospin currents with the covariant divergence of SU(2)_v: nabla_mu j^{iota,mu} - g^v eps_{iota i' i''} W^i'_mu j^{i'' mu} = i (E-bar T^iota Psi - Psi-bar T^iota E) (relative)
+PASS G-13a   deviation 5.544e-16 (tolerance 1.0e-13): local solutions of the Dirac equation of the brochon in a curved space-time with non-abelian gauge fields and the mass m_LL (the Taylor data at a point completed so that E and its first derivatives vanish there; residual relative to the field)
+PASS G-13b   deviation 1.158e-15 (tolerance 1.0e-12): for them nabla_mu T^{mu nu} = g^v W^iota nu_la j^{iota la} + g^F B^nu_la j^{F la}: the energy-momentum tensor of the brochon changes only by the work of the gauge fields (relative to the largest component of T and its derivatives)
+PASS G-13c   deviation 1.167e-15 (tolerance 1.0e-12): and the trace g^{mu nu} T_{mu nu} = m_LL Psi-bar Psi: T is traceless exactly for the massless brochon (relative)
+PASS G-13d   deviation 8.698e-16 (tolerance 1.0e-12): and nabla_mu j^{F,mu} = 0 (relative)
+PASS G-14a   deviation 1.003e-15 (tolerance 1.0e-12): the Volkov solution of the brochon in a plane wave of the zeugon, written in random curvilinear coordinates of flat space-time and a random local Lorentz frame, solves the Dirac equation with the mass m_LL and the coupling g^v Q_LL (relative residual, values and first derivatives)
+PASS G-14b   deviation 6.556e-16 (tolerance 1.0e-12): its fermion-number current is conserved (relative)
+PASS G-14c   deviation 1.458e-15 (tolerance 1.0e-12): its energy-momentum tensor changes by the force of the zeugon on the isospin current, nabla_mu T^{mu nu} = g^v A^nu_la j^{3 la} (relative)
+PASS G-14d   deviation 1.775e-15 (tolerance 1.0e-12): the energy-momentum tensor of the free zeugon wave is conserved (relative)
+PASS G-15a   deviation 2.530e-15 (tolerance 1.0e-12): conformal invariance of the massless brochon: in the curved space-time g = Omega^2 eta (Omega = exp(phi(x)) random, R != 0) with a random local frame S, Psi = Omega^{-3/2} S4 Psi_flat solves the massless Dirac equation when Psi_flat is the flat Volkov solution in the zeugon wave (relative residual)
+PASS G-15b   deviation 9.291e-16 (tolerance 1.0e-12): its current is conserved (relative)
+PASS G-15c   deviation 1.631e-15 (tolerance 1.0e-12): nabla_mu T^{mu nu} = the force of the zeugon (relative)
+PASS G-15d   deviation 1.528e-15 (tolerance 1.0e-12): T is traceless (relative)
+PASS G-15e   deviation 1.245e-15 (tolerance 1.0e-12): the zeugon wave, a solution of Maxwell's equations in any conformally flat space-time, has a conserved and traceless energy-momentum tensor (relative)
+PASS G-16    deviation 8.543e-16 (tolerance 1.0e-12): the energy-momentum tensor of the gauge fields in a curved space-time satisfies nabla_mu T^{mu nu}_YM = -g^{nu ka} (W^iota_{ka la} Y^{iota la} + B_{ka la} Y^{F la}), with Y the left sides of the Yang-Mills equations (for random fields, off shell); with Y = g^v j^iota, g^F j^F it cancels the force of G-13b, so the total tensor of the brochon and the gauge fields is conserved, as Einstein's equations require (relative)
+PASS G-17a   deviation 0.000e0 (tolerance 1.0e-13): the antilinear map C Psi = (gamma^0 (x) 1_2)(K^3_LL)^dag Psi^* of the pairing term of the polar superfluid commutes with nabla_mu and anticommutes with i Dslash in a curved space-time with the zeugon (relative, values and first derivatives)
+PASS G-17b   with the massive gauge fields W^1 (or W^2) and B the anticommutation fails: the zeugon is the only gauge field with which the pairing term is covariant [smallest relative deviation with W^1 and B: 2.462e-1]
+PASS G-17c   deviation 0.000e0 (tolerance 1.0e-15): C^2 = -1 (relative)
+PASS G-17d   deviation 7.034e-16 (tolerance 1.0e-13): C is covariant under local Lorentz transformations, C (S4 Psi) = S4 C Psi (relative)
+PASS G-17e   deviation 8.218e-16 (tolerance 1.0e-13): local solutions of the quasi-particle equation i Dslash Psi = M Psi + D C Psi in a curved space-time with the zeugon (M = 0.1622929325, |D| = 0.3284861084, the polar ground state of CJT; residual relative to the field)
+PASS G-17f   deviation 9.370e-15 (tolerance 1.0e-12): for them (i Dslash)^2 Psi = (M^2 + |D|^2) Psi = E_gap^2 Psi, E_gap = 0.3663906649: the quasi-particle of the superfluid is a spin-1/2 particle of mass E_gap in any gravitational field (relative)
+PASS G-17g   deviation 6.860e-15 (tolerance 1.0e-12): and with the square of the Dirac operator (G-10): Box Psi + E_gap^2 Psi - R/4 Psi + i/2 g^v gamma^{mu nu} A_{mu nu} T^3 Psi = 0, A = W^3 the zeugon (relative)
+
+Notes:
+  8 random points per check; random tetrads e^a_mu = delta + 0.25 r(x), gauge fields of size 0.3, g^v = 0.7, g^F = 0.45, m_LL = 0.2; exact first and second derivatives (automatic differentiation); tolerances: identities of matrices 1e-13 to 1e-11 (rounding, relative where stated); a check that a printed form fails passes when it fails by the stated amount
+  the random tetrads are curved: |R| from 1.390e-1 to 2.759e0, largest component of the Riemann tensor 3.944e-1
+  the conformally flat space-times of G-15 are curved: |R| from 1.948e-1 to 1.246e0
+
+VERDICT: ALL PASS (57 of 57)

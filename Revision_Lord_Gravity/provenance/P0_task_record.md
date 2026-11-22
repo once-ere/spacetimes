@@ -126,7 +126,9 @@ The task makes it dynamical by Lord's construction.
 
 # 4. Records of false statements (Rule 2)
 
-None so far.
+None so far. Entry E5 records a clarification that is not a correction of a false statement: equation (11.1) of the
+manuscript wrote the spinor connection with the connection of the vectors in Lord's sign; Part III defines the spin
+connection of the tetrad with the opposite (standard) sign, and (11.1) now states both forms.
 
 # 5. The decisions of interpretation
 
@@ -155,6 +157,36 @@ his other objects carry the suffix Lord. His "tr" in his Section 4 is read as th
 matrix, because only this reading makes his equations (4.15), (4.16), (4.31) and (4.32) consistent with each other.
 *Reason:* Rule 8, and the checks of the manuscript (Part I, Section 5.3).
 
+**D6. The conventions of Part III.** Part III works in Lord's special gauge, in which the Dirac matrices of the frame are
+the constant matrices $\gamma^a_{\rm LL}$ and the tetrad carries the gravitational field (the vierbein form); it keeps the
+signature $(+,-,-,-)$ of the project; it uses the curvature conventions of Landau and Lifshitz, with which Einstein's
+equations read $G^{\rm LG}_{\mu\nu}=8\pi G_{\rm N}T^{\rm LG}_{\mu\nu}$ with a positive energy density; and it defines the spin connection
+$\omega^{\rm LG}_{\mu\,ab}$ of the tetrad by the tetrad postulate, so that the spinor connection $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ is the spin
+connection $\Gamma^{\rm LL}_\mu$ of GEE with its sign
+in the earlier hypotheses and minus Lord's auxiliary field. *Reason:* the project's metric and the sign of the GEE
+derivative are fixed by the earlier hypotheses; Lord's own signs need the corrections of Part I; and the readers know
+these conventions from the textbooks. Every sign is decided by a check (Part III).
+
+**D7. The source of gravitation.** The energy-momentum tensor of the brochon is defined by the variation of the action of
+the earlier hypotheses with respect to the tetrad. *Reason:* Lord identifies the source of his Einstein equation with "a
+multiple of the stress-energy tensor" of matter without defining it, and he abandons the Lagrangian; the earlier
+hypotheses have a Lagrangian, and the variation of the tetrad is the definition that gives a symmetric tensor whose
+conservation the field equations guarantee (checked in Part III).
+
+**D8. The level of description.** Part III states the field equations of the field and of the mean field, and
+Einstein's equations with the expectation value of the energy-momentum tensor as the source; the brochon in Parts IV
+and V is a test particle in a given geometry. *Reason:* the normal order and the momentum cutoff of the earlier
+hypotheses have no unique generalization to a curved space-time without a time-like symmetry; items 5 and 6 of the task
+need the one-particle equations, which need neither. The manuscript explains this in a remark (Section 15.4).
+
+**D9. Which brochon is put into the gravitational fields.** The zeugon exists only in the condensed vacuum of the earlier
+hypotheses, and there the excitations of the brochon are quasi-particles; by Theorem L2 of Part III the quasi-particle is,
+in every gravitational field, a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}$ (the gap). Parts IV to VI therefore
+solve the Dirac equation with this mass, and give the results for the mass $m_{\rm LL}$ of the brochon of the normal vacuum
+alongside, since the solutions in the Schwarzschild field depend on the mass only through its product with the mass of
+the black hole. *Reason:* the author's path (C2) needs the zeugon. If the author prefers the brochon of the normal vacuum,
+the same solutions serve.
+
 # 6. The plan
 
 The task is carried out in stages; each is pushed when it is complete.
@@ -175,6 +207,14 @@ The task is carried out in stages; each is pushed when it is complete.
 7. **Stage 7:** the brochon pair bound by the zeugon, and the predictions involving the zeugon and the brochon that can
    be detected gravitationally: Part VI.
 
+Added on 22 November 2026 (entry E5), because the rules of the project require them of every folder:
+
+* **Stage 4b**, after stage 4: the provenance of the remarks (`P4`), which lists every qualifying remark of the
+  manuscript with what it means, why it holds and why it matters, and the registry of the symbols (`P1`), which relates
+  the symbols of this folder to those of the other folders; both for Parts I to III, and extended with every later part.
+* **Stage 8**, after stage 7: the notebook of the folder (Wolfram Language), with every formula and check of the
+  manuscript, its remarks, and its provenance (`P3`).
+
 The plan is changed only with a record in Section 7.
 
 # 7. Log of the requests, the work, the errors and the changes
@@ -188,6 +228,8 @@ Entries C are the author's messages that concern this folder; entries E are the 
 | E1 | 22 Nov 2026, 04:35 to 04:45 | stage 1: the folder `Revision_Lord_Gravity` with its document pipeline (`code/scripts/`: `assemble_docs.py`, `build_docs.sh`, `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, `check_self_contained.py`, adapted from the folder of the revision of the hypotheses with the folder name and the running head changed), this record, the README, and the checksum of Lord's paper in `provenance/inputs_sha256.txt`. The paper was read completely (all twenty pages, the journal pages 423 to 442) |
 | E2 | 22 Nov 2026, 04:45 to 05:02 | stage 2: Part I of the manuscript `lord_gravity.md` (Lord's five sections restated with the equations that the task uses; Section 7, the equations whose printed form does not follow from his definitions: the sign of the inhomogeneous term of (4.14), (4.31), (4.16), (4.32), the factor 2 of the connection (4.20), (5.2), the coefficient of the curvature (4.47), (4.48), and the reading of "any linearly independent set" of Hermitian matrices). The Rust workspace `rust/` (library `lgcore`, with modules copied from the earlier folder and the new module `lord.rs`; program `lg_lord`), the Python programs `python/lgcommon.py` and `python/lg_lord.py`, the Wolfram script `wolfram/source/lg_lord.wls` (run on the author's computer by the watcher, request 325), and `code/scripts/write_lg_lord_fragments.py`. Results: Rust ALL PASS (46 of 46), Python ALL PASS (17 of 17), Wolfram ALL PASS (7 of 7). The same programs already check the dictionary of Part II (checks P-1 to P-8) |
 | E3 | 22 Nov 2026, 05:02 to 05:10 | stage 3: Part II of `lord_gravity.md` (Sections 9 to 12): the project's objects (bi-quaternions, M31, frames, the two actions of a unit bi-quaternion, the brochon, GEE and the zeugon), the dictionary between Lord's objects and the project's (Table 10.1, every line with its check), Theorem L1 (the continuous changes of representation that keep the Weyl form are exactly the unit bi-quaternions; new checks P-9 in Rust and YL-9 in Python), and the association: Lord's representations of the Clifford algebra are the orthonormal frames of M31, his change of representation is the action of a unit bi-quaternion of the super-loop on frames, his gauge group is the $SL(2,\mathbb C)$ factor of GEE, and his auxiliary fields are minus its spin connection; what the gauging adds is the dynamics of that connection. The provenance of the manuscript became Section 13 and its symbols Section 14 |
+| E4 | 22 Nov 2026, 05:12 to 06:30 | stage 4: Part III of `lord_gravity.md` (Sections 13 to 17): the tetrad as Lord's reference vectors (four Hermitian bi-quaternions at every point whose Minkowski products are the inverse metric); Lord's change of representation and the rotation of the tetrad as one local $SL(2,\mathbb C)$; the Christoffel symbols and the curvature in the conventions of D6; the spin connection by the tetrad postulate and by the anholonomy, the spinor connection $\Gamma^{\rm LL}_\mu=\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$, its curvature $\tfrac14R^{\rm LG}_{ab\mu\nu}\gamma^{ab}_{\rm LL}$, and Lord's objects realized by the tetrad; the spinor connection of the Schwarzschild space-time in the static and in the freely falling (Painlevé-Gullstrand) tetrad, and the Vaidya space-times; the brochon's covariant derivative, Lagrangian, field equation, currents, the square of its Dirac operator with $-\tfrac14R^{\rm LG}$, the conformal invariance of the massless brochon and Volkov's solution in a wave of the zeugon; Theorem L2 (the quasi-particle of the superfluid is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}$ in every gravitational field); the energy-momentum tensor from the variation of the tetrad, the tensors of the gauge fields and of the zeugon, and Einstein's equations (D7, D8, D9). |
+| E5 | 22 Nov 2026, 05:12 to 06:30 | the programs and the records of stage 4 (E4). Programs: the module `rust/lgcore/src/curved.rs` (added; the other modules unchanged), the program `lg_curved` (crate `rust/lgcurved`), `python/lg_curved.py`, `wolfram/source/lg_curved.wls` and `code/scripts/write_lg_curved_fragments.py`. Results: Rust ALL PASS (57 of 57), Python ALL PASS (19 of 19), Wolfram ALL PASS (6 of 6). The Wolfram script reached its form in four runs on the author's computer (watcher requests 326 to 329): the first two failed the checks WG-1 to WG-3 because the iterator `r` of the sums of the Christoffel and Riemann tensors replaced the coordinate `r` inside the sums (the iterator is now `rr`); the first also spent 18 minutes in `Simplify` on the resulting meaningless expressions, and from the second on the identities of the conformally flat metric and of the variation of the tetrad are decided by expansion to the canonical polynomial form, and the statements that something is not zero by its value for explicit functions at a rational point; the third failed only the curvature of the static Schwarzschild tetrad, whose square roots `Simplify` did not remove, and the fourth checks that curvature for every static, spherically symmetric tetrad $\mathrm{diag}(h_{\rm LG}(r),1/h_{\rm LG}(r),r,r\sin\theta)$ with a symbolic function $h_{\rm LG}$, which contains the Schwarzschild tetrad and has no square roots (6 of 6, in 0.7 s; the version in the repository). Equation (11.1) was rewritten with the spin connection $\omega^{\rm LG}$ of Part III; the former $\omega$ was Lord's connection of the vectors $W$, its negative, and both forms are now stated (Section 4). The provenance of the manuscript became Section 18 and its symbols Section 19. The plan was extended by stages 4b and 8 (Section 6) |
 
 # 8. The symbols of this document
 
@@ -205,3 +247,11 @@ Entries C are the author's messages that concern this folder; entries E are the 
 | $T^3_{\rm LL}$, $Q_{\rm LL}$ | the third isospin generator, and the isospin charge $Q_{\rm LL}=T^3_{\rm LL}$ ($\pm\tfrac12$ on the brochon) |
 | $O(2)$ | the group of the rotations about the direction of the condensate and the reflection that reverses it |
 | LG | the suffix of the symbols that this folder introduces |
+| $\gamma^a_{\rm LL}$, $\gamma^{ab}_{\rm LL}$ | the Dirac matrices of the chiral basis of the project, with a frame index, and their antisymmetrized products |
+| $G_{\rm N}$ | Newton's constant |
+| $G^{\rm LG}_{\mu\nu}$, $T^{\rm LG}_{\mu\nu}$ | the Einstein tensor and the energy-momentum tensor of the sources |
+| $\omega^{\rm LG}_{\mu\,ab}$ | the spin connection of a tetrad, defined by the tetrad postulate |
+| $\Gamma^{\rm LL}_\mu$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor |
+| $R^{\rm LG}_{ab\mu\nu}$, $R^{\rm LG}$ | the Riemann tensor (two indices in the frame) and the scalar curvature |
+| $h_{\rm LG}(r)$, $r$, $\theta$ | an arbitrary function in a static, spherically symmetric coframe; the radius and the polar angle |
+| $E^{\rm CJT,gap}_{\rm SF}$ | the gap of the polar superfluid of the earlier hypotheses (method CJT): the mass of its quasi-particle |
