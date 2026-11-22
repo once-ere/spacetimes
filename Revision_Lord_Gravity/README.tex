@@ -1,0 +1,316 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (the documents of the folder Revision_Lord_Gravity).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% A short table is kept on one page.  The build (code/scripts/keep_tables.py) ends the rows of such a table with \\*,
+% which forbids a page break after a row, and sets \sptkeptpenalty to 10000 in front of the table.  This penalty is
+% put here in the place of the breakpoint (penalty 0) that longtable leaves after every table, so that the paragraph
+% that follows a kept table, its caption, begins on the same page; it is set back to 0 after the table.
+\newcount\sptkeptpenalty
+\sptkeptpenalty=0
+\makeatletter
+\patchcmd{\endlongtable}{\endgraf\penalty\z@\addvspace\LTpost}%
+  {\endgraf\penalty\sptkeptpenalty\addvspace\LTpost\global\sptkeptpenalty=\z@}%
+  {}{\PackageError{doc_header}{the end of longtable could not be patched}{The tables can still be typeset, but a short table may be separated from its caption.}}
+\makeatother
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_Lord\_Gravity}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Revision\_Lord\_Gravity: the gravitational coupling of the brochon by E. A. Lord's gauge theory},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Revision\_Lord\_Gravity: the gravitational coupling of the
+brochon by E. A. Lord's gauge theory}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{README of the folder Revision\_Lord\_Gravity of PROJECT
+spacetimes}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 22, 2026}
+
+\begin{document}
+\maketitle
+
+\hypertarget{what-this-folder-is}{%
+\section{1. What this folder is}\label{what-this-folder-is}}
+
+This folder carries out task C23 of PROJECT spacetimes, which the author
+gave on 21 November 2026: to read and understand E. A. Lord's paper
+``General relativity from gauge invariance'' (Proceedings of the
+Cambridge Philosophical Society 69, 423 (1971)); to associate the group
+\(SL(2,\mathbb C)\) of the project with Lord's gauging of the
+representation of a Clifford algebra; to couple the spinor field of the
+project, named the \textbf{brochon}, to gravitation by Lord's covariant
+derivative; to solve its field equations in the Schwarzschild field and
+in the Vaidya metric on both sides of the horizon; and to make
+predictions involving the zeugon and the brochon that can be detected
+gravitationally. The author named the path to investigate: the pair of
+two brochons bound by the exchange of the zeugon.
+
+The work is built on the earlier hypotheses of the project, those under
+which the zeugon, the massless gauge boson of the isospin generator that
+the polar condensate of brochon pairs leaves unbroken, exists. The
+folders of the earlier hypotheses
+(\texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}) and of their revision for
+the Higgs field of the Standard Model (\texttt{Revision\_SM\_Higgs}) are
+not changed.
+
+The task record \texttt{provenance/P0\_task\_record.md} (\texttt{.tex},
+\texttt{.pdf}) states the request, the rules, the decisions and the
+plan, and logs the work.
+
+\hypertarget{the-state-of-the-work}{%
+\section{2. The state of the work}\label{the-state-of-the-work}}
+
+\textbf{Stage 1} (22 November 2026): the folder, its document pipeline,
+the task record and this README. Lord's paper has been read completely.
+The next stage restates it, section by section, in Part I of the
+manuscript \texttt{lord\_gravity.md}, with programs that check its
+conventions and equations.
+
+\hypertarget{contents}{%
+\section{3. Contents}\label{contents}}
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+file or folder
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+what it is
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+state
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{README.md}, \texttt{.tex}, \texttt{.pdf} & this list of contents
+& written \\*
+\texttt{provenance/P0\_task\_record.md}, \texttt{.tex}, \texttt{.pdf} &
+the task (in my words), the rules, the starting point, the decisions,
+the plan, the log & written; grows with the work \\*
+\texttt{provenance/inputs\_sha256.txt} & the SHA-256 checksum of the
+copy of Lord's paper that is read (the paper is not in the repository) &
+written \\*
+\texttt{code/scripts/} & the document pipeline:
+\texttt{assemble\_docs.py} (writes a document from its source in
+\texttt{docs\_src/} and the generated fragments),
+\texttt{build\_docs.sh} (the \texttt{.tex} and the \texttt{.pdf} of
+every document, with a check of the layout of every page),
+\texttt{doc\_header.tex}, \texttt{keep\_tables.py},
+\texttt{check\_layout.py}, \texttt{check\_pages.py}, and
+\texttt{check\_self\_contained.py} (does a document send its reader
+elsewhere?) & written \\*
+\texttt{docs\_src/} & the hand-edited sources of the documents &
+written \\*
+\texttt{provenance/generated/} & the fragments that the programs write
+for the documents & planned \\*
+\texttt{rust/}, \texttt{python/}, \texttt{wolfram/} & the programs: Rust
+computes, Python and the Wolfram Language check & planned \\*
+\texttt{data/} & the data files and the reports of the checks &
+planned \\*
+\texttt{figures/} & the figures & planned \\
+\end{longtable}
+
+\hypertarget{how-to-build-the-documents}{%
+\section{4. How to build the
+documents}\label{how-to-build-the-documents}}
+
+From the folder \texttt{Revision\_Lord\_Gravity}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Lord\_Gravity"}
+\ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# no document sends its reader elsewhere}
+\FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}
+\end{Highlighting}
+\end{Shaded}
+
+The pipeline needs pandoc (2.11 or later), XeLaTeX and latexmk (TeX
+Live), the DejaVu fonts and the Latin Modern Math font, and Python 3.
+
+\end{document}

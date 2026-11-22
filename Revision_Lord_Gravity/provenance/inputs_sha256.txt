@@ -1,0 +1,4 @@
+# PROJECT spacetimes, Revision_Lord_Gravity: the inputs that are not in the repository, with their SHA-256 checksums.
+# E. A. Lord, "General relativity from gauge invariance", Proc. Camb. Phil. Soc. 69, 423 (1971); 20 pages, a scan with
+# recognized text; on the author's computer in the folder Revision_HS_CJT_and_Kohn-Sham of the working directory.
+c928b11e5721bb37093f9b19b19e8e9d4a743fcd3f8f4779e804845fcaff2275  General relativity from gauge invariance.pdf
