@@ -321,12 +321,21 @@ when the product
 of the masses of the black hole and of the brochon is small; the
 greybody factors (the fractions of incoming partial waves that the black
 hole absorbs) are computed for the massless and for the massive brochon.
-The Rust program \texttt{lg\_schw} computes them with CVODE (ALL PASS
-(13 of 13)); the Python program \texttt{python/lg\_schw.py} (ALL PASS (9
-of 9)) and the Wolfram script \texttt{wolfram/source/lg\_schw.wls} (ALL
-PASS (8 of 8), exact algebra and arithmetic of 32 digits) check them.
-The task record gives the results with their numbers (entries E7 to
-E12); the data are in \texttt{data/lg\_schw\_*.csv}.
+At small masses the energies and the decay rates of the quasi-bound
+states agree with the small-mass formulas published by S. R. Dolan and
+D. Dempsey (arXiv:1504.03190): the decay rate of a state with orbital
+angular momentum \(\ell_{\rm LG}\) and spin projection
+\(S_{\rm LG}=\pm\tfrac12\) falls as
+\((\mathcal M_{\rm LG}m_{\rm LL})^{4\ell_{\rm LG}+2S_{\rm LG}+4}\), the
+fifth power for the ground state; it is computed from the conservation
+of the charge of the brochon, which resolves rates as small as
+\(10^{-27}\) of the mass. The Rust program \texttt{lg\_schw} computes
+all this with CVODE (ALL PASS (18 of 18)); the Python program
+\texttt{python/lg\_schw.py} (ALL PASS (12 of 12)) and the Wolfram script
+\texttt{wolfram/source/lg\_schw.wls} (ALL PASS (9 of 9), exact algebra
+and arithmetic of 32 digits) check them. The task record gives the
+results with their numbers (entries E7 to E14); the data are in
+\texttt{data/lg\_schw\_*.csv}.
 
 The next stages, as computations: stage 6, the brochon in the Vaidya
 metric (a black hole whose mass grows by absorbing null dust, or shrinks
@@ -416,8 +425,10 @@ and some of its numbers in arithmetic of 32 digits & written \\
 (\texttt{lg\_schw\_qbs.csv}, the quasi-bound states;
 \texttt{lg\_schw\_grey.csv}, the greybody factors;
 \texttt{lg\_schw\_interior.csv}, a solution on both sides of the
-horizon; \texttt{lg\_schw\_values.csv}, single values), and the report
-of the check whether a document sends its reader elsewhere & written \\
+horizon; \texttt{lg\_schw\_small.csv}, the states at small masses and
+their comparison with the small-mass formulas;
+\texttt{lg\_schw\_values.csv}, single values), and the report of the
+check whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
 

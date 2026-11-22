@@ -35,6 +35,11 @@ Checks (the counterparts in the Rust report data/hck_lg_schw_checks.txt in brack
   YS-8  inside the horizon down to r = 1e-10: r P'/P and r Q'/Q tend to 1/4, and the current keeps its value  [LS-6, LS-7]
   YS-9  for m = 0 the partial waves lambda and -lambda are related by (u, w) -> (w, -u), which keeps the current
         (so they have the same greybody factor)                                                               [LS-9]
+  YS-10 for a complex frequency, dJ/dr = 2 Im(omega) (|P|^2 + |Q|^2) exactly: the identity on which the decay rate
+        from the charge rests                                                                                 [LS-10]
+  YS-11 the decay rate from the charge at the six states and Mm = 0.01 of data/lg_schw_small.csv, recomputed
+        (own start, own integrals)                                                                            [LS-12]
+  YS-12 at two quasi-bound states of data/lg_schw_qbs.csv (Mm = 0.3), Im omega = -1/N                         [LS-10]
 
 Run (from the folder Revision_Lord_Gravity, after rust/target/release/lg_schw):   python3 python/lg_schw.py
 Output: data/hck_lg_schw_checks_python.txt.  Requires: Python 3, numpy, sympy, mpmath, and the library
@@ -203,6 +208,23 @@ def symbolic_checks(rep):
                  "partial waves lambda and -lambda of a massless brochon have the same greybody factor (sympy)",
                  c1 == 0 and c2 == 0 and c3 == 0 and c4 == 0, "residuals %s, %s; change of the current %s; current %s" % (c1, c2, c3, c4))
 
+    # ---- YS-10: the conservation of the charge for a complex frequency omega = a + i b (a, b, m, lambda real): with the
+    # conjugate functions Pb, Qb obeying the conjugate equations, dJ/dr = 2 b (P Pb + Q Qb)
+    a_, b_ = sp.symbols('a b', real=True)
+    omc = a_ + I * b_
+    omb = a_ - I * b_
+    dPc = ((I * omc - W / (4 * r)) * P - (I * lam / r + m) * Q) / (1 - W)
+    dQc = ((I * lam / r - m) * P + (-I * omc + W / (4 * r)) * Q) / (1 + W)
+    dPbc = ((-I * omb - W / (4 * r)) * Pb - (-I * lam / r + m) * Qb) / (1 - W)
+    dQbc = ((-I * lam / r - m) * Pb + (I * omb + W / (4 * r)) * Qb) / (1 + W)
+    dJc = sp.diff(J, r).subs({sp.Derivative(P, r): dPc, sp.Derivative(Q, r): dQc, sp.Derivative(Pb, r): dPbc,
+                              sp.Derivative(Qb, r): dQbc})
+    out10 = sp.simplify(dJc - 2 * b_ * (P * Pb + Q * Qb))
+    rep.add_bool("YS-10", "the conservation of the charge for a complex frequency omega = a + i b: dJ/dr = 2 b (|P|^2 + |Q|^2) "
+                 "identically, J = (1 + W)|Q|^2 - (1 - W)|P|^2 (sympy, with the conjugates as independent functions); for a "
+                 "quasi-bound state, which decays at infinity, it gives Im omega = -J(2)/(2 N) = -1/N with N the integral of "
+                 "|P|^2 + |Q|^2 from the horizon to infinity and q_0 = 1", out10 == 0, "dJ/dr - 2 b (|P|^2 + |Q|^2) = %s" % out10)
+
 
 # ================================================================================================ the numerical part
 ORDER = 6
@@ -292,6 +314,46 @@ def matching(om, m, lam, rmatch, rmax):
     ph, qh = integrate(2.0 + X0, [p0, q0], rmatch, om, m, lam)
     pi_, qi_ = integrate(rmax, decaying_vector(rmax, om, m, lam), rmatch, om, m, lam)
     return (ph * qi_ - qh * pi_) / (math.hypot(abs(ph), abs(qh)) * math.hypot(abs(pi_), abs(qi_)))
+
+
+def integrate_norm(r0, y0, r1, om, m, lam, rtol=1e-12):
+    """(P, Q) at r1 and the integral of |P|^2 + |Q|^2 between r0 and r1, by CVODE in s = r (outward) or s = -r (inward)"""
+    sgn = 1.0 if r1 > r0 else -1.0
+
+    def f(sv, y):
+        p, q = complex(y[0], y[1]), complex(y[2], y[3])
+        dp, dq = rhs_pg(sgn * sv, [p, q], om, m, lam)
+        return np.array([sgn * dp.real, sgn * dp.imag, sgn * dq.real, sgn * dq.imag, abs(p) ** 2 + abs(q) ** 2, 0.0])
+
+    y = np.array([y0[0].real, y0[0].imag, y0[1].real, y0[1].imag, 0.0, 0.0])
+    out, _ = S.cvode(f, y, sgn * r0, [sgn * r1], lmm="adams", complex_weights=True, rtol=rtol, atol=rtol * 1e-14)
+    return complex(out[0][0], out[0][1]), complex(out[0][2], out[0][3]), out[0][4]
+
+
+def decay_rate(om, m, lam, rmatch, rmax, x0=0.002):
+    """-1/N: N the integral of |P|^2 + |Q|^2 from the horizon to infinity of the solution that falls in (q_0 = 1), continued
+    beyond rmatch by the solution that decays at infinity, fitted by least squares at rmatch"""
+    global TAYLOR
+    if TAYLOR is None:
+        TAYLOR = taylor_system(ORDER)
+    fa, fb = TAYLOR
+    z = np.linalg.solve(np.array(fa(om, m, lam), dtype=complex), np.array(fb(om, m, lam), dtype=complex).ravel())
+    pco = z[:ORDER + 1]
+    qco = np.concatenate([[1.0], z[ORDER + 1:]])
+    # the integral over [2, 2 + x0] of the Taylor polynomials, by Gauss-Legendre with 12 nodes (numpy)
+    t, wt = np.polynomial.legendre.leggauss(12)
+    xx = 0.5 * x0 * (t + 1.0)
+    pv = sum(pco[k] * xx ** k for k in range(ORDER + 1))
+    qv = sum(qco[k] * xx ** k for k in range(ORDER + 1))
+    n0 = 0.5 * x0 * float(np.sum(wt * (np.abs(pv) ** 2 + np.abs(qv) ** 2)))
+    p0 = complex(sum(pco[k] * x0 ** k for k in range(ORDER + 1)))
+    q0 = complex(sum(qco[k] * x0 ** k for k in range(ORDER + 1)))
+    ph, qh, n1 = integrate_norm(2.0 + x0, [p0, q0], rmatch, om, m, lam)
+    vd = decaying_vector(rmax, om, m, lam)
+    vd = vd / np.linalg.norm(vd)
+    pd, qd, nd = integrate_norm(rmax, [vd[0], vd[1]], rmatch, om, m, lam)
+    cfit = (np.conj(pd) * ph + np.conj(qd) * qh) / (abs(pd) ** 2 + abs(qd) ** 2)
+    return -1.0 / (n0 + n1 + abs(cfit) ** 2 * nd)
 
 
 def muller(fun, z0, z1, z2, tol=1e-14, nmax=40):
@@ -404,6 +466,38 @@ def main():
                  "at r = 1.998 to 1e-9 (relative)", ep <= bound and eq <= bound and abs(jflux - j0) <= 1e-9 * abs(j0),
                  "r P'/P - 1/4 = %.2e, r Q'/Q - 1/4 = %.2e (bound %.2e); J = %.12f at r = 1e-10, %.12f at r = 1.998"
                  % (ep, eq, bound, jflux, j0))
+
+    # ---- YS-11: the decay rate from the charge at Mm = 0.01 (data/lg_schw_small.csv)
+    dev11 = 0.0
+    det11 = []
+    for g in rows("lg_schw_small.csv"):
+        x = float(g["Mm"])
+        if abs(x - 0.01) > 1e-12:
+            continue
+        lam, n = float(g["lambda"]), int(g["n"])
+        om = float(g["Re_omega_over_m"]) * x
+        kap = math.sqrt(max(x * x - om * om, 1e-300))
+        im_py = decay_rate(om, x, lam, n * n / (x * x), 45.0 / kap)
+        im_rust = float(g["Im_omega_over_m_from_charge"]) * x
+        dev11 = max(dev11, abs(im_py / im_rust - 1.0))
+        det11.append("%s %.6e" % (g["state"], im_py / x))
+    rep.add("YS-11", "the decay rate from the charge at the real frequency Re omega, Im omega/m = -1/(m N), for the six states "
+            "at Mm = 0.01 of data/lg_schw_small.csv, recomputed from the Taylor start at r = 2.002 (the integral over the "
+            "first 0.002 by Gauss-Legendre), CVODE to r_match and from r_max, and the least-squares fit at r_match: the "
+            "largest relative difference from the Rust values", dev11, 1e-6)
+    rep.note("YS-11: Im omega/m at Mm = 0.01: " + "; ".join(det11))
+
+    # ---- YS-12: the exact identity at two complex roots (Mm = 0.3)
+    dev12 = 0.0
+    for q in qrows:
+        if abs(float(q["Mm"]) - 0.3) < 1e-9 and q["state"] in ("1S1/2", "2P1/2"):
+            mm, lam, n = float(q["Mm"]), float(q["lambda"]), int(q["n"])
+            w = complex(float(q["Re_omega_over_m"]), float(q["Im_omega_over_m"])) * mm
+            kap = cmath.sqrt(mm * mm - w * w).real
+            im12 = decay_rate(w, mm, lam, n * n / (mm * mm), 45.0 / kap)
+            dev12 = max(dev12, abs(im12 / w.imag - 1.0))
+    rep.add("YS-12", "at the quasi-bound states 1S1/2 and 2P1/2 at Mm = 0.3 of data/lg_schw_qbs.csv (complex omega), "
+            "Im omega = -1/N exactly (the consequence of YS-10): the largest relative difference", dev12, 1e-6)
 
     rep.note("run time %.0f s" % (time.time() - t_start))
     rep.write("hck_lg_schw_checks_python.txt")

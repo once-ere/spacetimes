@@ -8,6 +8,21 @@ $0.9200$
 <!-- BEGIN lgs_dev_conv -->
 $4.3\times10^{-14}$
 <!-- END lgs_dev_conv -->
+<!-- BEGIN lgs_dev_ls10a -->
+$5.5\times10^{-8}$
+<!-- END lgs_dev_ls10a -->
+<!-- BEGIN lgs_dev_ls10b -->
+$1.0\times10^{-14}$
+<!-- END lgs_dev_ls10b -->
+<!-- BEGIN lgs_dev_ls11 -->
+$3.4\times10^{-4}$
+<!-- END lgs_dev_ls11 -->
+<!-- BEGIN lgs_dev_ls12 -->
+$7.2\times10^{-4}$
+<!-- END lgs_dev_ls12 -->
+<!-- BEGIN lgs_dev_ls13 -->
+$1.3\times10^{-5}$
+<!-- END lgs_dev_ls13 -->
 <!-- BEGIN lgs_dev_py_grey -->
 $1.7\times10^{-9}$
 <!-- END lgs_dev_py_grey -->
@@ -20,6 +35,12 @@ $6.6\times10^{-10}$
 <!-- BEGIN lgs_dev_wl_qbs -->
 $7.3\times10^{-14}$
 <!-- END lgs_dev_wl_qbs -->
+<!-- BEGIN lgs_dev_ys11 -->
+$9.7\times10^{-11}$
+<!-- END lgs_dev_ys11 -->
+<!-- BEGIN lgs_dev_ys12 -->
+$3.5\times10^{-11}$
+<!-- END lgs_dev_ys12 -->
 <!-- BEGIN lgs_grey_m02_l1 -->
 $0.9017$
 <!-- END lgs_grey_m02_l1 -->
@@ -39,13 +60,13 @@ $2.2\times10^{-16}$
 $2.75$
 <!-- END lgs_hyd_dev -->
 <!-- BEGIN lgs_n_python -->
-9
+12
 <!-- END lgs_n_python -->
 <!-- BEGIN lgs_n_rust -->
-13
+18
 <!-- END lgs_n_rust -->
 <!-- BEGIN lgs_n_wolfram -->
-8
+9
 <!-- END lgs_n_wolfram -->
 <!-- BEGIN lgs_powers -->
 $1S_{1/2}$: 6.03 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2S_{1/2}$: 6.03 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2P_{1/2}$: 7.92 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2P_{3/2}$: 10.87 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.1 to 0.15); $3P_{3/2}$: 10.90 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.1 to 0.15); $3D_{3/2}$: 14.79 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.2 to 0.25)
@@ -56,15 +77,39 @@ $1S_{1/2}$: $0.9946882775-2.79\times10^{-5}\,i$; $2S_{1/2}$: $0.9986985113-3.50\
 <!-- BEGIN lgs_qbs_03 -->
 $1S_{1/2}$: $0.9454639375-0.0296\,i$; $2S_{1/2}$: $0.9861973324-4.54\times10^{-3}\,i$; $2P_{1/2}$: $0.9861834925-4.08\times10^{-4}\,i$; $2P_{3/2}$: $0.9877468037-3.30\times10^{-6}\,i$; $3P_{3/2}$: $0.9945885005-1.30\times10^{-6}\,i$; $3D_{3/2}$: $0.9947595601-3.29\times10^{-9}\,i$
 <!-- END lgs_qbs_03 -->
+<!-- BEGIN lgs_small_1s_0005 -->
+$-3.14\times10^{-12}$
+<!-- END lgs_small_1s_0005 -->
+<!-- BEGIN lgs_small_3d_001 -->
+$-3.21\times10^{-27}$
+<!-- END lgs_small_3d_001 -->
+<!-- BEGIN lgs_small_powers -->
+$1S_{1/2}$: 5.017 (limit 5); $2S_{1/2}$: 5.017 (limit 5); $2P_{1/2}$: 7.014 (limit 7); $2P_{3/2}$: 9.012 (limit 9); $3P_{3/2}$: 9.012 (limit 9); $3D_{3/2}$: 11.012 (limit 11)
+<!-- END lgs_small_powers -->
+<!-- BEGIN lgs_small_ratio_1s_0005 -->
+$1.0027$
+<!-- END lgs_small_ratio_1s_0005 -->
+<!-- BEGIN lgs_small_ratio_1s_005 -->
+$1.179$
+<!-- END lgs_small_ratio_1s_005 -->
+<!-- BEGIN lgs_small_ratio_3d_0005 -->
+$1.0010$
+<!-- END lgs_small_ratio_3d_0005 -->
+<!-- BEGIN lgs_small_rf_1s_005 -->
+$1.048$
+<!-- END lgs_small_rf_1s_005 -->
+<!-- BEGIN lgs_small_rf_3d_005 -->
+$1.0025$
+<!-- END lgs_small_rf_3d_005 -->
 <!-- BEGIN lgs_tau_1s_01 -->
 $3.59\times10^{5}$
 <!-- END lgs_tau_1s_01 -->
 <!-- BEGIN lgs_verdict_python -->
-ALL PASS (9 of 9)
+ALL PASS (12 of 12)
 <!-- END lgs_verdict_python -->
 <!-- BEGIN lgs_verdict_rust -->
-ALL PASS (13 of 13)
+ALL PASS (18 of 18)
 <!-- END lgs_verdict_rust -->
 <!-- BEGIN lgs_verdict_wolfram -->
-ALL PASS (8 of 8)
+ALL PASS (9 of 9)
 <!-- END lgs_verdict_wolfram -->

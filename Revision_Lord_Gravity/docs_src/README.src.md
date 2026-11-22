@@ -77,10 +77,14 @@ is singular there; inside the horizon both radial functions behave as $r^{1/4}$ 
 being the rate of absorption) approach the levels of a hydrogen atom when the product
 $\mathcal M_{\rm LG}m_{\rm LL}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$ of the masses of the black hole and of the brochon is small; the
 greybody factors (the fractions of incoming partial waves that the black hole absorbs) are computed for the massless
-and for the massive brochon. The Rust program `lg_schw` computes them with CVODE ({{GEN:lgs_verdict_rust}}); the Python
+and for the massive brochon. At small masses the energies and the decay rates of the quasi-bound states agree with the
+small-mass formulas published by S. R. Dolan and D. Dempsey (arXiv:1504.03190): the decay rate of a state with orbital
+angular momentum $\ell_{\rm LG}$ and spin projection $S_{\rm LG}=\pm\tfrac12$ falls as $(\mathcal M_{\rm LG}m_{\rm LL})^{4\ell_{\rm LG}+2S_{\rm LG}+4}$, the fifth
+power for the ground state; it is computed from the conservation of the charge of the brochon, which resolves rates as
+small as $10^{-27}$ of the mass. The Rust program `lg_schw` computes all this with CVODE ({{GEN:lgs_verdict_rust}}); the Python
 program `python/lg_schw.py` ({{GEN:lgs_verdict_python}}) and the Wolfram script `wolfram/source/lg_schw.wls`
 ({{GEN:lgs_verdict_wolfram}}, exact algebra and arithmetic of 32 digits) check them. The task record gives the results with
-their numbers (entries E7 to E12); the data are in `data/lg_schw_*.csv`.
+their numbers (entries E7 to E14); the data are in `data/lg_schw_*.csv`.
 
 The next stages, as computations: stage 6, the brochon in the Vaidya metric (a black hole whose mass grows by absorbing
 null dust, or shrinks by radiating it), and stage 7, the brochon pair bound by the zeugon and the predictions. The
@@ -101,7 +105,7 @@ manuscript, the provenance of the remarks, the registry of the symbols and the n
 | `rust/` | the Cargo workspace: the library `lgcore` (complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, `lord.rs`, Lord's matrices from his definitions, and `curved.rs`, the geometry of a tetrad and the brochon in it); the program `lg_lord` (the checks of Parts I and II) and the program `lg_curved` (the checks of Part III); the crate `lgsundials` (the integrator CVODE of SUNDIALS 7.8.0 in pure Rust) with its C interface `lgsundials_c` for the Python programs; and the program `lg_schw` (stage 5: the brochon in the Schwarzschild field) | written for Parts I to III and stage 5 |
 | `python/` | `lgcommon.py` (common definitions, finite differences, the report), `lg_lord.py` and `lg_curved.py` (the independent checks of `lg_lord` and `lg_curved`), `lgsundials.py` (CVODE through `lgsundials_c`) and `lg_schw.py` (the independent check of `lg_schw`) | written for Parts I to III and stage 5 |
 | `wolfram/source/` | `lg_lord.wls`: the exact checks of Lord's identities, signs and factors; `lg_curved.wls`: the exact checks of Part III; `lg_schw.wls`: the exact checks of stage 5 and some of its numbers in arithmetic of 32 digits | written |
-| `data/` | the reports of the checks (`hck_lg_lord_checks.txt`, `hck_lg_curved_checks.txt`, `hck_lg_schw_checks.txt`, each with `_python.txt` and `_wolfram.txt`), the numbers of the findings (`lg_lord_findings.csv`), of Part III (`lg_curved_values.csv`) and of stage 5 (`lg_schw_qbs.csv`, the quasi-bound states; `lg_schw_grey.csv`, the greybody factors; `lg_schw_interior.csv`, a solution on both sides of the horizon; `lg_schw_values.csv`, single values), and the report of the check whether a document sends its reader elsewhere | written |
+| `data/` | the reports of the checks (`hck_lg_lord_checks.txt`, `hck_lg_curved_checks.txt`, `hck_lg_schw_checks.txt`, each with `_python.txt` and `_wolfram.txt`), the numbers of the findings (`lg_lord_findings.csv`), of Part III (`lg_curved_values.csv`) and of stage 5 (`lg_schw_qbs.csv`, the quasi-bound states; `lg_schw_grey.csv`, the greybody factors; `lg_schw_interior.csv`, a solution on both sides of the horizon; `lg_schw_small.csv`, the states at small masses and their comparison with the small-mass formulas; `lg_schw_values.csv`, single values), and the report of the check whether a document sends its reader elsewhere | written |
 | `figures/` | the figures | planned |
 
 # 4. How to build the documents

@@ -32,6 +32,9 @@
            FindRoot, compared with data/lg_schw_qbs.csv;
      WS-8  (Rust LS-9; Python YS-7) three greybody factors at r = 4000, computed the same way, compared
            with data/lg_schw_grey.csv.
+     WS-9  (Rust LS-10 to LS-13; Python YS-10) for a complex frequency omega = a + i b the radial current
+           obeys dJ/dr = 2 b (|P|^2 + |Q|^2) exactly: the identity on which the decay rate from the charge,
+           Im omega = -1/N, rests.
 
    THE SYSTEMS (as in the Rust program; m_j, lambda the angular quantum numbers, lambda = +-(j + 1/2))
      (A)   A' = (m_j / sin th) A - lambda B,   B' = -(m_j / sin th) B + lambda A
@@ -177,6 +180,17 @@ check["WS-5", "(Rust LS-7; Python YS-5) the radial current J = (1 + W)|Q|^2 - (1
 constant: dJ/dr = 0 exactly for every r > 0 (the conjugates of P, Q are independent functions that solve the conjugate \
 equations; omega, m, lambda real)", zeroQ[dJ], "dJ/dr = " <> ToString[InputForm[dJ]]];
 
+(* ------------------------------------------------------------------ WS-9: the current for a complex frequency *)
+radPc = {Derivative[1][pP][r] -> ((I (aw + I bw) - wPG/(4 r)) pP[r] - (I lam/r + mB) qQ[r])/(1 - wPG),
+   Derivative[1][qQ][r] -> ((I lam/r - mB) pP[r] + (-I (aw + I bw) + wPG/(4 r)) qQ[r])/(1 + wPG)};
+radPbc = {Derivative[1][pB][r] -> ((-I (aw - I bw) - wPG/(4 r)) pB[r] - (-I lam/r + mB) qB[r])/(1 - wPG),
+   Derivative[1][qB][r] -> ((-I lam/r - mB) pB[r] + (I (aw - I bw) + wPG/(4 r)) qB[r])/(1 + wPG)};
+dJc = Simplify[(D[jJ, r] /. radPc /. radPbc) - 2 bw (pP[r] pB[r] + qQ[r] qB[r]), r > 0];
+check["WS-9", "(Rust LS-10 to LS-13; Python YS-10) for a complex frequency omega = a + i b (a, b, m, lambda real) the radial \
+current obeys dJ/dr = 2 b (|P|^2 + |Q|^2) exactly for every r > 0; for a quasi-bound state, which decays at infinity, with \
+J = 2 at the horizon (q_0 = 1), this gives Im omega = -1/N, N the integral of |P|^2 + |Q|^2 from the horizon to infinity",
+  zeroQ[dJc], "dJ/dr - 2 b (|P|^2 + |Q|^2) = " <> ToString[InputForm[dJc]]];
+
 (* ------------------------------------------------------------------ WS-6: the angular functions of j = 1/2 *)
 (* On 0 < th < Pi both S = sin(th/2) and C = cos(th/2) are positive, so the half-integer powers may be expanded
    (PowerExpand); with dS/dth = C/2, dC/dth = -S/2 and sin(th) = 2 S C, each residual of (A), multiplied by S^(1/2)
@@ -294,7 +308,7 @@ out = StringJoin[
   "lg_schw.wls: the exact checks and a computation in arithmetic of 32 digits of stage 5 of task C23, the brochon in the \
 Schwarzschild field (Revision_Lord_Gravity, PROJECT spacetimes)\n",
   "Each line: PASS or FAIL, the identifier of the check in this script (WS and a number), the statement and, in brackets, the\n",
-  "facts that decide it (or the measured deviation and its tolerance).  WS-1 to WS-6 are exact (symbolic).\n\n",
+  "facts that decide it (or the measured deviation and its tolerance).  WS-1 to WS-6 and WS-9 are exact (symbolic).\n\n",
   StringRiffle[lines, "\n"], "\n\nNotes:\n",
   StringJoin[("  " <> # <> "\n") & /@ notes],
   "  Wolfram Language " <> ToString[IntegerPart[$VersionNumber]] <> "." <> ToString[Round[10 FractionalPart[$VersionNumber]]] <>

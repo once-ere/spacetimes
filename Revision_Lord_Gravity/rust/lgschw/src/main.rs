@@ -419,6 +419,126 @@ fn secant(m: f64, lam: f64, rmatch: f64, rmax: f64, w0: C64, w1: C64) -> (C64, u
     (b, it, fb.abs())
 }
 
+// ================================================================================================ the decay rate from the charge
+
+/// The nodes and weights of the Gauss-Legendre rule with n points on [-1, 1]: Newton's method on the Legendre polynomial
+/// P_n from the starts cos(pi (i + 3/4)/(n + 1/2)); the weight of a node x is 2/((1 - x^2) P_n'(x)^2).
+fn gauss_legendre(n: usize) -> Vec<(f64, f64)> {
+    let mut out = vec![];
+    for i in 0..n {
+        let mut x = (std::f64::consts::PI * (i as f64 + 0.75) / (n as f64 + 0.5)).cos();
+        let mut dp = 1.0;
+        for _ in 0..100 {
+            let (mut p0, mut p1) = (1.0, x);
+            for k in 2..=n {
+                let p2 = ((2 * k - 1) as f64 * x * p1 - (k - 1) as f64 * p0) / k as f64;
+                p0 = p1;
+                p1 = p2;
+            }
+            // now p1 = P_n(x) and p0 = P_{n-1}(x); P_n'(x) = n (x P_n - P_{n-1})/(x^2 - 1)
+            dp = n as f64 * (x * p1 - p0) / (x * x - 1.0);
+            let dx = p1 / dp;
+            x -= dx;
+            if dx.abs() < 1e-16 {
+                break;
+            }
+        }
+        out.push((x, 2.0 / ((1.0 - x * x) * dp * dp)));
+    }
+    out
+}
+
+/// the integral of |P|^2 + |Q|^2 over r from 2 to 2 + x0, from the horizon series (Gauss-Legendre with 24 nodes)
+fn series_norm(pc: &[C64], qc: &[C64], x0: f64) -> f64 {
+    gauss_legendre(24)
+        .iter()
+        .map(|&(t, wt)| {
+            let x = 0.5 * x0 * (t + 1.0);
+            let (p, _) = series_eval(pc, x);
+            let (q, _) = series_eval(qc, x);
+            0.5 * x0 * wt * (p.norm_sqr() + q.norm_sqr())
+        })
+        .sum()
+}
+
+/// integrates (PG) together with N' = |P|^2 + |Q|^2 from r0 to r1, outward in the variable s = r or inward in s = -r
+/// (CVODE needs an increasing variable); returns (P, Q) at r1 and the integral of |P|^2 + |Q|^2 between r0 and r1 (> 0)
+#[allow(clippy::too_many_arguments)]
+fn pg_with_norm(r0: f64, p0: C64, q0: C64, r1: f64, om: C64, m: f64, lam: f64, rtol: f64) -> (C64, C64, f64) {
+    let sg = if r1 > r0 { 1.0 } else { -1.0 };
+    let y0 = vec![p0.re, p0.im, q0.re, q0.im, 0.0, 0.0];
+    let rhs = Box::new(move |s: f64, y: &[f64], dy: &mut [f64]| -> i32 {
+        let (p, q) = (c(y[0], y[1]), c(y[2], y[3]));
+        let (dp, dq) = rhs_pg(sg * s, p, q, om, m, lam);
+        dy[0] = sg * dp.re;
+        dy[1] = sg * dp.im;
+        dy[2] = sg * dq.re;
+        dy[3] = sg * dq.im;
+        dy[4] = p.norm_sqr() + q.norm_sqr(); // dN/ds = rho in both directions (the integral from min to max of r)
+        dy[5] = 0.0; // a partner of N for the complex error weights (the unknowns are taken in pairs)
+        0
+    });
+    let mut out = (cr(0.0), cr(0.0), 0.0);
+    integrate(&y0, sg * r0, &[sg * r1], &settings(rtol), rhs, |_, _, y| {
+        out = (c(y[0], y[1]), c(y[2], y[3]), y[4]);
+        true
+    })
+    .expect("CVODE with the norm");
+    out
+}
+
+/// THE DECAY RATE FROM THE CHARGE.  For any solution of (PG) with a complex frequency omega (m and lambda real),
+///     dJ/dr = 2 Im(omega) (|P|^2 + |Q|^2),        J = (1 + W)|Q|^2 - (1 - W)|P|^2
+/// exactly (the conservation of the charge of the brochon, whose density on a slice of constant tau is proportional to
+/// |P|^2 + |Q|^2 and whose flux into the sphere of radius r is proportional to J; checks YS-10 and WS-9).  A quasi-bound
+/// state decays at infinity, so that J vanishes there, and J = 2 |q_0|^2 = 2 at the horizon (W = 1); hence
+///     Im omega = -1/N,        N = integral of |P|^2 + |Q|^2 from r = 2 to infinity, with q_0 = 1.
+/// This holds exactly at a quasi-bound state (check LS-10).  At small Mm, where |Im omega| is far below the resolution
+/// of the root finder, the same formula evaluated at the real frequency Re omega gives Im omega to the first order in
+/// Im omega divided by the distance to the neighbouring levels (checks LS-12, LS-13).  The solution is the horizon
+/// series to r = 2.5, then CVODE outward to rmatch; beyond rmatch, the solution that decays at infinity (from the decaying
+/// local eigenvector at rmax, integrated inward), scaled to fit the first at rmatch by least squares.
+/// Returns (-1/N, N, the relative misfit of the two solutions at rmatch).
+fn decay_from_norm(om: C64, m: f64, lam: f64, rmatch: f64, rmax: f64) -> (f64, f64, f64) {
+    let (pc, qc) = horizon_series(om, m, lam, 90);
+    let x0 = 0.5;
+    let n0 = series_norm(&pc, &qc, x0);
+    let (p0, _) = series_eval(&pc, x0);
+    let (q0, _) = series_eval(&qc, x0);
+    let (ph, qh, n1) = pg_with_norm(2.0 + x0, p0, q0, rmatch, om, m, lam, 1e-12);
+    let e = eig2(&mat_pg(rmax, om, m, lam));
+    let vd = e[0].1;
+    let sc = 1.0 / (vd[0].norm_sqr() + vd[1].norm_sqr()).sqrt();
+    let (pd, qd, nd) = pg_with_norm(rmax, vd[0] * sc, vd[1] * sc, rmatch, om, m, lam, 1e-12);
+    let dd = pd.norm_sqr() + qd.norm_sqr();
+    let cfit = (pd.conj() * ph + qd.conj() * qh) / cr(dd);
+    let mis = ((ph - cfit * pd).norm_sqr() + (qh - cfit * qd).norm_sqr()).sqrt() / (ph.norm_sqr() + qh.norm_sqr()).sqrt();
+    let ntot = n0 + n1 + cfit.norm_sqr() * nd;
+    (-1.0 / ntot, ntot, mis)
+}
+
+/// The leading small-mass formulas that the analysis tests (the numbers of the hydrogen atom: n principal, l orbital,
+/// j = l + S total angular momentum, x = Mm).  The energy: omega/m = 1 - x^2/(2 n^2) + F x^4 + O(x^6) with
+/// F = (15/8 - 3n/(2j+1) - 3n/(2l+1))/n^4; the decay rate: -Im omega/m = a x^(4l + 2S + 4) (1 + O(x^2)) with
+/// a = (n+l)!/(n^(4+2l) (2l)! (2l+1)! (n-l-1)!) (2l+1)^(-2S) prod_{p=1}^{j+1/2} (1 + 16 x^2/(p - 1/2)^2).  Both are
+/// given, for a Dirac field on a Kerr black hole of which Schwarzschild is the case without rotation, by S. R. Dolan and
+/// D. Dempsey, "Bound states of the Dirac equation on Kerr spacetime", arXiv:1504.03190, equations (94) to (96), the
+/// second after Ternov and co-workers.  Returns (F, a, the exponent 4l + 2S + 4).
+fn small_mass_formulas(x: f64, n: usize, l: usize, two_j: usize) -> (f64, f64, f64) {
+    let fact = |k: usize| -> f64 { (1..=k).map(|i| i as f64).product::<f64>() };
+    let nf = n as f64;
+    let lf = l as f64;
+    let j = two_j as f64 / 2.0;
+    let s = j - lf;
+    let ff = (15.0 / 8.0 - 3.0 * nf / (2.0 * j + 1.0) - 3.0 * nf / (2.0 * lf + 1.0)) / nf.powi(4);
+    let mut a = fact(n + l) / (nf.powi(4 + 2 * l as i32) * fact(2 * l) * fact(2 * l + 1) * fact(n - l - 1)) * (2.0 * lf + 1.0).powf(-2.0 * s);
+    let pmax = (j + 0.5).round() as usize;
+    for p in 1..=pmax {
+        a *= 1.0 + 16.0 * x * x / ((p as f64 - 0.5) * (p as f64 - 0.5));
+    }
+    (ff, a, 4.0 * lf + 2.0 * s + 4.0)
+}
+
 /// the greybody factor of the partial wave (lambda) at the real frequency omega > m: the solution that falls in (the
 /// horizon series, normalized so that q_0 = 1), integrated to rmax, converted to the static functions (a_R, b_R) up to a
 /// common phase, and decomposed into the local outgoing and incoming eigenvectors of (S); returns (Gamma, |R|^2, the
@@ -697,6 +817,8 @@ fn main() {
         [(1.0, 1, "1S1/2"), (1.0, 2, "2S1/2"), (-1.0, 2, "2P1/2"), (2.0, 2, "2P3/2"), (2.0, 3, "3P3/2"), (-2.0, 3, "3D3/2")];
     let mms = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4];
     let mut qbs_rows = vec![];
+    // the roots, for the decay rate from the charge (LS-10): (label, Mm, lambda, n, omega, rmatch, rmax)
+    let mut roots: Vec<(String, f64, f64, usize, C64, f64, f64)> = vec![];
     let mut bad8 = 0usize;
     let mut unresolved = 0usize;
     let mut conv = 0.0f64;
@@ -743,6 +865,7 @@ fn main() {
                 im_at.push((mm, (w.im / mm).abs()));
             }
             qbs_rows.push(vec![label.into(), f(mm), format!("{}", lam), format!("{}", n), f(w.re / mm), f(w.im / mm), f(hyd(mm, n)), format!("{}", it), f(res)]);
+            roots.push((label.to_string(), mm, lam, n, w, rmatch, rmax));
             println!("  QBS {} Mm = {}: omega/m = {:.12} {:+.6e} i (hydrogen-like {:.10}), {} iterations, change with rmax {:.1e}", label, mm, w.re / mm, w.im / mm, hyd(mm, n), it, cv);
             prev = Some((mm, w * (1.0 / mm)));
         }
@@ -822,6 +945,166 @@ fn main() {
         1e-4,
     );
 
+    // ------------------------------------------------------------------ LS-10: the decay rate from the charge
+    // At every quasi-bound state of LS-8, Im omega must equal -1/N (decay_from_norm), an exact consequence of the
+    // conservation of the charge.  Roots with |Im omega| >= 1e-7 m are compared relatively (their imaginary parts are
+    // known to better than 1e-7 relative), the others absolutely, against the resolution 1e-12 m of the root finder.
+    let (mut dev10a, mut dev10b, mut mis10) = (0.0f64, 0.0f64, 0.0f64);
+    let mut n10a = 0usize;
+    for (_label, mm, lam, _n, w, rmatch, rmax) in &roots {
+        let (imf, _nn, mis) = decay_from_norm(*w, *mm, *lam, *rmatch, *rmax);
+        if w.im.abs() >= 1e-7 * mm {
+            dev10a = dev10a.max(((w.im - imf) / w.im).abs());
+            n10a += 1;
+        } else {
+            dev10b = dev10b.max((w.im - imf).abs() / mm);
+        }
+        mis10 = mis10.max(mis);
+    }
+    rep.add(
+        "LS-10a",
+        &format!(
+            "the decay rate from the charge: at the {} quasi-bound states of LS-8 with |Im omega| >= 1e-7 m, Im omega equals -1/N, \
+             N the integral of |P|^2 + |Q|^2 from the horizon to infinity of the state normalized by q_0 = 1 (the exact \
+             consequence of dJ/dr = 2 Im omega (|P|^2 + |Q|^2); largest relative difference; the two solutions fit at r_match to \
+             a relative misfit of at most {:.1e})",
+            n10a, mis10
+        ),
+        dev10a,
+        1e-6,
+    );
+    rep.add(
+        "LS-10b",
+        &format!(
+            "the same at the other {} quasi-bound states of LS-8 (|Im omega| < 1e-7 m): the largest |Im omega + 1/N| / m, against the \
+             resolution 1e-12 m of the root finder",
+            roots.len() - n10a
+        ),
+        dev10b,
+        1e-12,
+    );
+
+    // ------------------------------------------------------------------ LS-11 to LS-13: small masses
+    // Six states at Mm = x = 0.005, 0.01, 0.02, 0.04 and 0.05: Re omega from the complex secant iteration started at the
+    // small-mass formula of the energy (its imaginary part is below the resolution and is not used), and Im omega from
+    // the charge at the real frequency Re omega (decay_from_norm).  At x = 0.05 the result is compared with the roots of
+    // LS-8 where those resolve Im omega (LS-13).  The energies and the decay rates are compared with the small-mass
+    // formulas (small_mass_formulas): the ratios r_F(x) = ((Re omega/m - 1 + x^2/(2 n^2))/x^4)/F and r_a(x) =
+    // (-Im omega/m)/(a x^(4l+2S+4)) are extrapolated to x = 0 in two ways, because the corrections need not be even
+    // powers of x (for the S states they are not: the differences of r between x, 2x and 4x grow by factors near 3.7, not
+    // 4): Richardson's rule for corrections in powers of x^2,
+    //     r(0) = (64 r(x) - 20 r(2x) + r(4x))/45,
+    // which removes the terms of the orders x^2 and x^4, and the fit r = r(0) + b x + c x^2 through the same three points,
+    //     r(0) = r(x) - (5/3) (r(2x) - r(x)) + (1/3) (r(4x) - r(2x))
+    // (r_F from x = 0.01, 0.02, 0.04; r_a from x = 0.005, 0.01, 0.02).  Both limits must be 1.
+    let st6: [(&str, f64, usize, usize, usize); 6] = [
+        ("1S1/2", 1.0, 1, 0, 1),
+        ("2S1/2", 1.0, 2, 0, 1),
+        ("2P1/2", -1.0, 2, 1, 1),
+        ("2P3/2", 2.0, 2, 1, 3),
+        ("3P3/2", 2.0, 3, 1, 3),
+        ("3D3/2", -2.0, 3, 2, 3),
+    ];
+    let xs = [0.005, 0.01, 0.02, 0.04, 0.05];
+    let mut small_rows = vec![];
+    let (mut lim_f, mut lim_a, mut dev13, mut misx) = (0.0f64, 0.0f64, 0.0f64, 0.0f64);
+    let mut lims: Vec<String> = vec![];
+    let mut powers: Vec<String> = vec![];
+    for &(label, lam, n, l, tj) in &st6 {
+        let mut rf = vec![];
+        let mut ra = vec![];
+        let mut ims = vec![];
+        for &x in &xs {
+            let (ff, a, eta) = small_mass_formulas(x, n, l, tj);
+            let hydx = 1.0 - x * x / (2.0 * (n * n) as f64);
+            let w0 = cr(x * (hydx + ff * x.powi(4)));
+            let kap = (x * x - w0.re * w0.re).max(1e-300).sqrt();
+            let rmatch = (n * n) as f64 / (x * x);
+            let rmax = 45.0 / kap;
+            let (w, it, res) = secant(x, lam, rmatch, rmax, w0, w0 * c(1.0 + 1e-9, 0.0));
+            let (imf, _nn, mis) = decay_from_norm(cr(w.re), x, lam, rmatch, rmax);
+            misx = misx.max(mis);
+            let coef = (w.re / x - hydx) / x.powi(4);
+            let rfx = coef / ff;
+            let rax = (-imf / x) / (a * x.powf(eta));
+            rf.push(rfx);
+            ra.push(rax);
+            ims.push((x, -imf / x));
+            small_rows.push(vec![
+                label.into(),
+                format!("{}", n),
+                format!("{}", l),
+                format!("{}", tj),
+                format!("{}", lam),
+                f(x),
+                f(w.re / x),
+                f(imf / x),
+                f(coef),
+                f(ff),
+                f(rfx),
+                f(a * x.powf(eta)),
+                f(rax),
+                format!("{}", it),
+                f(res),
+                f(mis),
+            ]);
+            println!("  small Mm = {} {}: omega/m = {:.15} {:+.6e} i (flux), F ratio {:.6}, decay ratio {:.6}, {} iterations, misfit {:.1e}", x, label, w.re / x, imf / x, rfx, rax, it, mis);
+            if (x - 0.05).abs() < 1e-12 {
+                // LS-13: against the resolved roots of LS-8 at Mm = 0.05
+                for (lb, mm, _lm, _nn2, wr, _rm, _rx) in &roots {
+                    if lb == label && (mm - 0.05).abs() < 1e-12 && wr.im.abs() >= 1e-12 * mm {
+                        dev13 = dev13.max((imf / wr.im - 1.0).abs());
+                    }
+                }
+            }
+        }
+        // Richardson: r_F from x = 0.01, 0.02, 0.04 (indices 1, 2, 3); r_a from x = 0.005, 0.01, 0.02 (indices 0, 1, 2)
+        let rf0 = (64.0 * rf[1] - 20.0 * rf[2] + rf[3]) / 45.0;
+        let ra0 = (64.0 * ra[0] - 20.0 * ra[1] + ra[2]) / 45.0;
+        let rf1 = rf[1] - 5.0 / 3.0 * (rf[2] - rf[1]) + (rf[3] - rf[2]) / 3.0;
+        let ra1 = ra[0] - 5.0 / 3.0 * (ra[1] - ra[0]) + (ra[2] - ra[1]) / 3.0;
+        lim_f = lim_f.max((rf0 - 1.0).abs()).max((rf1 - 1.0).abs());
+        lim_a = lim_a.max((ra0 - 1.0).abs()).max((ra1 - 1.0).abs());
+        lims.push(format!("{} r_F(0) {:.6} or {:.6}, r_a(0) {:.6} or {:.6}", label, rf0, rf1, ra0, ra1));
+        let pw = (ims[1].1 / ims[0].1).ln() / (ims[1].0 / ims[0].0).ln();
+        let (_, _, eta) = small_mass_formulas(0.01, n, l, tj);
+        powers.push(format!("{} {:.3} (limit {})", label, pw, eta));
+    }
+    rep.add(
+        "LS-11",
+        "the energies at small Mm: for each of the six states the ratio of (Re omega/m - 1 + (Mm)^2/(2 n^2))/(Mm)^4 to the \
+         coefficient F = (15/8 - 3n/(2j+1) - 3n/(2l+1))/n^4 of the small-mass formula (Dolan and Dempsey, arXiv:1504.03190, \
+         eq. (94)), extrapolated to Mm = 0 from Mm = 0.01, 0.02, 0.04 (by Richardson's rule for even powers and by the fit \
+         r(0) + b Mm + c (Mm)^2), is 1 (largest deviation of the two extrapolations)",
+        lim_f,
+        1e-3,
+    );
+    rep.add(
+        "LS-12",
+        "the decay rates at small Mm: for each of the six states the ratio of -Im omega/m (from the charge, at the real \
+         frequency Re omega) to a (Mm)^(4l+2S+4) of the small-mass formula (Dolan and Dempsey, eqs. (95), (96), after Ternov and \
+         co-workers), extrapolated to Mm = 0 from Mm = 0.005, 0.01, 0.02 (by Richardson's rule for even powers and by the fit \
+         r(0) + b Mm + c (Mm)^2), is 1 (largest deviation of the two extrapolations)",
+        lim_a,
+        1e-3,
+    );
+    rep.add(
+        "LS-13",
+        &format!(
+            "the decay rate from the charge at the real frequency Re omega agrees with the imaginary part of the root of LS-8 at \
+             Mm = 0.05, where the root resolves it (largest relative difference; it is of the first order in Im omega divided by \
+             the distance to the neighbouring levels); the two solutions fit at r_match to a relative misfit of at most {:.1e} \
+             at the small masses",
+            misx
+        ),
+        dev13,
+        1e-2,
+    );
+    vals.push(vec!["ls11_ls12_limits_F_and_a".into(), lims.join("; ")]);
+    vals.push(vec!["ls12_local_power_0005_001".into(), powers.join("; ")]);
+    println!("  limits: {}", lims.join("; "));
+    println!("  local powers of the decay rate between Mm = 0.005 and 0.01: {}", powers.join("; "));
+
     // ------------------------------------------------------------------ the output
     write_csv(&data.join("lg_schw_values.csv"), &["name", "value"], &vals);
     write_csv(
@@ -831,6 +1114,14 @@ fn main() {
     );
     write_csv(&data.join("lg_schw_grey.csv"), &["Mm", "lambda", "M_omega", "Gamma", "R2", "Gamma_change_rmax"], &grey_rows);
     write_csv(&data.join("lg_schw_interior.csv"), &["r", "abs_P", "abs_Q"], &int_rows);
+    write_csv(
+        &data.join("lg_schw_small.csv"),
+        &[
+            "state", "n", "l", "two_j", "lambda", "Mm", "Re_omega_over_m", "Im_omega_over_m_from_charge", "fine_structure_coefficient",
+            "F_formula", "ratio_F", "decay_formula", "ratio_decay", "iterations", "residual", "misfit",
+        ],
+        &small_rows,
+    );
     rep.write(&data.join("hck_lg_schw_checks.txt"));
     let (np, nt) = rep.counts();
     println!("lg_schw: {} of {} checks pass", np, nt);
