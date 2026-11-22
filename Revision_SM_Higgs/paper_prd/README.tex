@@ -244,10 +244,42 @@ near the critical temperature, was answered for the earlier hypotheses
 only. The revision has no stage at finite temperature, so the article
 does not recompute it and says so (decision D35 of the task record; the
 author can ask for a thermal stage). The gravitational sector of the
-title is not computed: the article outlines, in its Sec. X, how it will
+title is not computed: the article outlines, in its Sec. XI, how it will
 be added through E. A. Lord's gauge theory of the local change of spinor
 representation (Proc. Cambridge Philos. Soc. 69, 423 (1971)), the route
 that the author named, and says that this sector is a program.
+
+On 22 November 2026 the author judged the first version of the article
+nearly useless to its readers: it sent them to his unpublished
+manuscript of 16 November 2026 for the Lorentz super-loop, which almost
+nobody can read, gave no concrete example of the objects that it named,
+and used terms such as ``custodial'' and ``amplitude mode'' without
+defining them (task record C27). At 13:51 PST he asked that the
+manuscripts be written again, less terse and friendlier to a student
+reader (C28). The article was therefore rewritten (object O20, decision
+D38 of the task record). A new Sec. II builds from the beginning, with a
+worked example of each, everything that the article needs of the
+manuscript of 16 November: the octonions and a Moufang loop that is not
+a group, the meaning of the word super-loop and its simplest example,
+the bi-octonions and the Lorentz super-loop, Minkowski space and the
+Lorentz group inside the loop (a rotation, a boost and the parity), the
+eight spinor charges and why they have spin one half, a Dirac spinor, an
+isodoublet, an isovector (isospin triplet), an isodoublet of Dirac
+spinors, why pairs of two spinor charges are isospin triplets, and an
+explicit spin-zero superfluid of the spinor charges with its gaps, its
+gap equation, its critical coupling and the proof that the polar state
+wins. Every term is defined where it is first used (the custodial
+superfluid and the custodial symmetry, the amplitude mode, the phase
+stiffness, the threshold, the linear response, the Goldstone modes, the
+critical region and others), and the other sections say in words what
+each step does before its formulas. The values of the examples are read
+from the data files \texttt{data/sh\_examples.csv} and
+\texttt{data/sh\_examples\_charges.csv} (object O21 of the task record),
+which the Rust program \texttt{rust/shexamples} writes and the Python
+program \texttt{python/sh\_examples.py} and the Wolfram script
+\texttt{wolfram/source/sh\_examples.wls} check. The results of the
+article did not change; the article became about twice as long (Section
+5 gives its number of pages).
 
 \hypertarget{the-answers-in-brief}{%
 \section{2. The answers in brief}\label{the-answers-in-brief}}
@@ -333,7 +365,10 @@ same folder, the Supplemental Material and the cover letter \\
 \texttt{src/} & the templates of the four documents
 (\texttt{*.template.tex}) and the bibliography \texttt{references.bib};
 every number that a program computes is a placeholder
-\texttt{\{\{NAME\}\}} in the templates \\
+\texttt{\{\{NAME\}\}} in the templates, and every value of a worked
+example of Sec. II of the article is a placeholder that names its row of
+\texttt{data/sh\_examples.csv} (written EX, a colon and the name, in
+double braces) \\
 \texttt{scripts/build\_paper.py} & the program that fills the
 placeholders and builds the four documents and the folder
 \texttt{submission/} \\
@@ -369,24 +404,31 @@ of the revision state from the fragments that their fragment programs
 wrote into \texttt{provenance/generated/} (\texttt{sh\_quantum.md},
 \texttt{sh\_superfluid.md}, \texttt{sh\_higgs.md},
 \texttt{sh\_dynamics.md}, \texttt{notebook.md}), so that the article
-states exactly the numbers of the manuscripts; it computes the few
-others from the data files (the cutoff in TeV, the ratio to the Standard
-Model, the bound of \(\lvert\rho_{\rm SH}-1\rvert\), the masses of the
-constituents in GeV). A bound of agreement is the largest deviation of
-the checks it summarizes, rounded \textbf{up}, so that a stated bound is
-never smaller than a measured deviation. The tables of results of the
-Supplemental Material are the tables of the manuscripts, converted from
-Markdown to LaTeX and set as floats, which never break across a page;
-the tables of the checks are read from the reports. Where a statement of
-a check cites the document of the hypotheses or an equation of a
-manuscript of the stages, the build replaces the citation by the place
-of the Supplemental Material that states the same thing (the
-Supplemental Material refers to no other document and says so in its
-Sec. S11), and it stops if a citation of another document remains. Typed
-in the templates are only the parameters of the model and of the
-numerical method, mathematical constants, the quantum numbers that the
-hypotheses assign, and measured values with their references. The values
-inserted by the last build are listed in \texttt{generated/numbers.csv}.
+states exactly the numbers of the manuscripts; it reads the values of
+the worked examples of Sec. II of the article from
+\texttt{data/sh\_examples.csv} and
+\texttt{data/sh\_examples\_charges.csv} (written by the Rust program
+\texttt{rust/shexamples}, recomputed by \texttt{python/sh\_examples.py}
+and derived symbolically by \texttt{wolfram/source/sh\_examples.wls})
+and converts them into LaTeX (exact fractions, complex numbers, octonion
+units, vectors and matrices); it computes the few others from the data
+files (the cutoff in TeV, the ratio to the Standard Model, the bound of
+\(\lvert\rho_{\rm SH}-1\rvert\), the masses of the constituents in GeV).
+A bound of agreement is the largest deviation of the checks it
+summarizes, rounded \textbf{up}, so that a stated bound is never smaller
+than a measured deviation. The tables of results of the Supplemental
+Material are the tables of the manuscripts, converted from Markdown to
+LaTeX and set as floats, which never break across a page; the tables of
+the checks are read from the reports. Where a statement of a check cites
+the document of the hypotheses or an equation of a manuscript of the
+stages, the build replaces the citation by the place of the Supplemental
+Material that states the same thing (the Supplemental Material refers to
+no other document and says so in its Sec. S11), and it stops if a
+citation of another document remains. Typed in the templates are only
+the parameters of the model and of the numerical method, mathematical
+constants, the quantum numbers that the hypotheses assign, and measured
+values with their references. The values inserted by the last build are
+listed in \texttt{generated/numbers.csv}.
 
 The build compiles the article and the Supplemental Material with
 pdfLaTeX, BibTeX and REVTeX 4.2, the cover letter and the submission
@@ -426,11 +468,11 @@ build}\label{the-checks-of-the-last-build}}
 
 \begin{verbatim}
 build_paper.py: the checks of the builds
-higgs_composite_qg: 7 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg: 14 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 higgs_composite_qg_SM: 30 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
-submission/: the flat source compiles alone to 7 pages (the manuscript has 7); undefined: none -> PASS
-submission_info: 5 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+submission/: the flat source compiles alone to 14 pages (the manuscript has 14); undefined: none -> PASS
+submission_info: 6 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 \end{verbatim}
 
 The check of \texttt{submission/} compiles a copy of the folder alone in
@@ -551,6 +593,77 @@ folder, and is corrected in it.
   now writes ``2 pages''.
 \end{enumerate}
 
+The following were found while the article was rewritten on 22 November
+2026 (C28, D38), in the drafts of the new text, before that version was
+kept; none of them changes a result.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{19}
+\tightlist
+\item
+  \textbf{The spin of the spinor charges.} A draft of the new Sec. II
+  said that the commutator of a Lorentz generator with a spinor charge,
+  \([\mathbf u,\mathbf b\,\mathbf e_4]=2(\mathbf b\mathbf u)\,\mathbf e_4\),
+  shows that a rotation by \(2\pi\) multiplies the spinor charges by
+  \(-1\). It does not: the exponential of that commutator returns the
+  spinor charges unchanged after a rotation by \(2\pi\), because the
+  commutator is \(-2\) times the infinitesimal automorphism of the
+  algebra. The article now derives the spin from the automorphism
+  \(\mathbf a+\mathbf b\,\mathbf e_4\mapsto\mathbf g\mathbf a\mathbf g^{-1}+(\mathbf b\mathbf g^{-1})\,\mathbf e_4\),
+  under which the rotation by \(2\pi\), \(\mathbf g=-\mathbf e_0\),
+  multiplies every spinor charge by \(-1\), and it says what the
+  commutator is.
+\item
+  \textbf{The reason why no element of the Lorentz group is the parity.}
+  A draft said that conjugation by a group element cannot be the parity
+  ``because the inversion of \(SL(2,\mathbb C)\) is not a
+  homomorphism''. The correct reason is that conjugation keeps the order
+  of products while the bar of the quaternions reverses it; the article
+  now says so.
+\item
+  \textbf{The handedness of the spinor charges.} A draft said that the
+  columns of the field of the spinor charges are left-handed spinors.
+  The Lorentz group multiplies them by \(M_{\rm LL}(\mathbf g)\), the
+  action on the right-handed spinors (the lower block of the chiral
+  basis); the complex-conjugate loop supplies the left-handed ones. The
+  article says so and derives it.
+\item
+  \textbf{An unproven value.} A draft stated the critical coupling of
+  the superfluid of the spinor charges without its derivation. The
+  article now derives the gap equation and the critical coupling
+  \(\pi^2/I_1(m_{\rm LL})\), which is \(2\pi^2/\Lambda_{\rm LL}^2\) for
+  massless fields, and prints the values of the data.
+\item
+  \textbf{Who showed what.} A draft said that the author had shown that
+  the bi-octonions of norm 1 form a Moufang loop. That the units of an
+  alternative algebra obey the Moufang identities is classical; the
+  article now cites it and credits the author with the name Lorentz
+  super-loop and with finding the Lorentz group and the spinor charges
+  in it.
+\item
+  \textbf{Who checks the examples.} A draft said that three programs
+  compute and compare all the examples. The Wolfram script derives the
+  identities behind them symbolically and recomputes all but the two
+  quasi-particle energies of the superfluid; the article now says what
+  each program does.
+\item
+  \textbf{A caption.} The caption of the table of the spinor charges
+  said that it lists four of them; it lists all eight.
+\item
+  \textbf{An undefined number.} The section on the model called the
+  hypercharge of two fields ``a quarter of the fermion number of Sec.
+  II'', a number that Sec. II no longer defines; it is a quarter of the
+  particle number of the model.
+\item
+  \textbf{Wide formulas and matrices in the text.} The Moufang
+  identities, the Hermitian bi-quaternions, the Hamiltonian and the
+  matrix of the superfluid of the spinor charges and its critical
+  coupling were wider than a column; they are now split over two lines.
+  The matrices of the examples, first set inside the lines of the text,
+  are now displayed.
+\end{enumerate}
+
 \hypertarget{provenance}{%
 \section{7. Provenance}\label{provenance}}
 
@@ -567,37 +680,37 @@ upload, at the time this README was built:
 \tightlist
 \item
   \texttt{paper\_prd/scripts/build\_paper.py}:\\
-  \texttt{cc7aa7a9b49f76ece537f8e8057aae936c8ee113d4bbe1e3bb966af55db65edd}
+  \texttt{c0fe1cadc1c8851a1c6573c4ce2fa6e0d4f11d47a7bff69e6eea21de1333839c}
 \item
   \texttt{paper\_prd/src/higgs\_composite\_qg.template.tex}:\\
-  \texttt{98c3489ef1c8aec2bfb40392bbcbec625b1121c5d3bd86d6d9c264627ff3ba6e}
+  \texttt{8bf65410860cded0c3fc268ca09f4e6a5c37fdf94b30acae39e3065c67a0e426}
 \item
   \texttt{paper\_prd/src/higgs\_composite\_qg\_SM.template.tex}:\\
-  \texttt{9e2415a9c972794b2894ff2bdbd5eb94401332d46aa9b1af965fa78f5b3223a5}
+  \texttt{7829918e8244512bd59f655d01f36d6f809160d3b9c163154cbdfbeb3921e7fb}
 \item
   \texttt{paper\_prd/src/cover\_letter.template.tex}:\\
-  \texttt{def8931ca97b6d6cb7ffb150a4bfd8d311ede639becebf1f71f40f770884de56}
+  \texttt{fb24fd6efacfc6358ebf716a9d5d22bd54d04fd8fed61e7506029650b123fe76}
 \item
   \texttt{paper\_prd/src/submission\_info.template.tex}:\\
-  \texttt{8fbad56cae1684bdc8a64aad5e7f4e6f4cbff37500b78c380191c7dddea7402e}
+  \texttt{647ac7a766f4c2b24a5382cca99af07771dc932ff312f70c0084f42d454bbded}
 \item
   \texttt{paper\_prd/src/references.bib}:\\
-  \texttt{d0a061100956b7b41bf248b59210f9fadc6551aa9489884dd78f34c4d8a5c8fb}
+  \texttt{6ee51161bbbcebca68a142d9a3a1114afc593ab66ab1d1c5e2573e34716c3b31}
 \item
   \texttt{paper\_prd/submission/higgs\_composite\_qg.pdf}:\\
-  \texttt{11f3480b122e922a54db4f6e82be2443ce675f713fbe8b7dc8e1f23fb22ce9e4}
+  \texttt{3a284b42b84eed0b28634383a193ea17edc60ddb195f09a6ab0cc6bfab103590}
 \item
   \texttt{paper\_prd/submission/higgs\_composite\_qg.tex}:\\
-  \texttt{9534b247f0d2f0ffdd48dcdfb4663a0aecfccef9ac818ed5a3dcb01b27758f62}
+  \texttt{2c17de30782ac36be7daed20b9ce3cfd770db10e1ff8bfdb12d89da1a659a04f}
 \item
   \texttt{paper\_prd/submission/higgs\_composite\_qg.bbl}:\\
-  \texttt{68992b5d6923dd5ce72dc2eefc6204ba1c147e35f01cce11889567adc1f1ad82}
+  \texttt{01b06154a457703cbde273d0b7af16df5c3ddceb39888f653a5f03fac9df8457}
 \item
   \texttt{paper\_prd/submission/higgs\_composite\_qg\_SM.pdf}:\\
-  \texttt{8d0864eb25ce443f500dec24708e37cf652ec758bdd4f9b68de64544f2ed401d}
+  \texttt{4ab6551bd04407fa09745b32910a0136ec16e1e9870cb35ca341ce6af0bb5660}
 \item
   \texttt{paper\_prd/submission/cover\_letter.pdf}:\\
-  \texttt{051e02feeb149593b317cc0b78ff916068b714c7e53346da2f53c72b17c81a7c}
+  \texttt{b04bd6724fd309c6a9416b84a407e43573f8ca66139771e9bf6c00d40bbf6db6}
 \end{itemize}
 
 \end{document}

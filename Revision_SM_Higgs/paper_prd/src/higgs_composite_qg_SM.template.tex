@@ -46,8 +46,9 @@
 
 \begin{abstract}
 This Supplemental Material gives the derivations, the numerical methods, the complete tables of results, the checks and
-the data behind every statement of the article. It is written to be read on its own: every symbol is defined here
-(Sec.~\ref{sec:notation}), and every equation that the article uses is derived or stated here. Equations, tables and
+the data behind every statement of the article. It is written to be read on its own: every symbol that it uses is
+defined here (Sec.~\ref{sec:notation}), and every equation of Secs.~III to XI of the article is derived or stated here
+(Sec.~II of the article, on the algebra behind the model, derives its own equations with worked examples). Equations, tables and
 figures of this document carry the prefix S. All numbers are outputs of programs in Rust, checked by independent
 programs in Python (numpy and LAPACK) and, for the group theory and the closed forms, by scripts in the Wolfram Language
 in exact arithmetic; Sec.~\ref{sec:checks} lists the checks with their results, and Sec.~\ref{sec:data} the files with
@@ -64,7 +65,7 @@ their SHA-256 checksums.
 
 Units: $\hbar=c=1$; the momentum cutoff $\Lambda_\LL=1$ is the unit of energy and of momentum, and $1/\Lambda_\LL$ the unit
 of length and of time. The metric is $\eta^\LL={\rm diag}(1,-1,-1,-1)$. The suffix LL marks the objects of the Lorentz
-super-loop (the bi-octonion model of Ref.~\cite{Nash2026}), SF those of the superfluid of the earlier hypotheses that the
+super-loop (the bi-octonion model of Ref.~\cite{Nash2026}, restated in Sec.~II of the article), SF those of the superfluid of the earlier hypotheses that the
 revised ones keep, and SH those of the revised hypotheses; a superscript $X$ names the method (Sec.~\ref{sec:methods}).
 The \emph{second version} of the hypotheses has the two singlets $\chi_\SH$ and $\chi'_\SH$; the \emph{first version},
 computed as the comparison, has the pairing term of $\chi_\SH$ only, and $\chi'_\SH$ is a free field. Table~\ref{tab:symbols}
@@ -72,7 +73,8 @@ lists the symbols.
 
 \begingroup\small
 \begin{longtable}{p{0.30\textwidth}p{0.65\textwidth}}
-\caption{\label{tab:symbols}The symbols of the article and of this Supplemental Material.}\\
+\caption{\label{tab:symbols}The symbols of this Supplemental Material and of Secs.~III to XI of the article (Sec.~II
+of the article defines its own).}\\
 \hline\hline
 symbol & meaning\\ \hline
 \endfirsthead
@@ -592,7 +594,11 @@ program states. The statements of the checks are those that the programs write; 
 equations of the manuscripts of the stages, the tables below cite instead the place of this Supplemental Material that
 states the same thing. The verdicts: the Rust programs {{VERDICTS_RUST}}; the Python programs {{VERDICTS_PYTHON}}; the Wolfram
 scripts {{VERDICTS_WOLFRAM}}; the notebook, which repeats the checks of the Wolfram scripts, {{VERDICT_NOTEBOOK}}. The
-tables list every check of the Rust and the Python programs with its result, deviation, tolerance and statement.
+worked examples of Sec.~II of the article (the octonions, the Lorentz super-loop, the spinor charges, the spinors and
+isodoublets, and the superfluid of the spinor charges) are computed by a further Rust program, \texttt{rust/shexamples},
+recomputed by \texttt{python/sh\_examples.py} and derived symbolically by \texttt{wolfram/source/sh\_examples.wls}; their
+verdicts: {{VERDICTS_EXAMPLES}}. The tables list every check of the Rust and the Python programs of the stages with its
+result, deviation, tolerance and statement.
 
 {{CHECKS_TABLES}}
 

@@ -82,11 +82,14 @@ Cornwall-Jackiw-Tomboulis and Kohn-Sham), with the effective Lagrangian of each 
 symmetry and the masses of the gauge bosons.
 
 Every document of the folder is meant to be complete in itself: every equation, symbol and definition that it uses
-written in it. The article in `paper_prd/` is not: it sends its reader to the author's manuscript of 16 November 2026
-on the Lorentz super-loop in place of that material, and like the manuscripts of the folder it uses terms that it does
-not define and gives no explicit examples (the author's instruction of 22 November 2026, recorded in the task record
-as C27 with its Section 4.5); the check `check_self_contained.py` does not read the LaTeX sources of the article. This
-README is the list of contents of the folder.
+written in it. Until 22 November 2026 the article in `paper_prd/` was not: it sent its reader to the author's manuscript
+of 16 November 2026 on the Lorentz super-loop in place of that material, and like the manuscripts of the folder it used
+terms that it did not define and gave no explicit examples (the author's instruction of 22 November 2026, recorded in
+the task record as C27 with its Section 4.5). The article has since been written again (C28, E73): its new Sec. II
+contains that material with a worked example of every object, and it defines its terms where it first uses them; the
+check `check_self_contained.py` now reads the LaTeX sources of the article and of its Supplemental Material too. The
+manuscripts of the folder have not yet been written again; they come next (decision D38). This README is the list of
+contents of the folder.
 
 # 2. State
 
@@ -156,7 +159,11 @@ article come its Supplemental Material, the cover letter, the information for th
 folder of the files to upload, all built by `paper_prd/scripts/build_paper.py` from the fragments of the manuscripts of
 the revision, the data files and the reports of the checks. The gravitational sector of the title is outlined, not
 computed. The submission itself is the author's. The article of the earlier hypotheses stays unchanged in the folder
-`Revision_HS_CJT_and_Kohn-Sham/paper_prd`.
+`Revision_HS_CJT_and_Kohn-Sham/paper_prd`. On 22 November 2026 (C28) the article was written again for a student reader
+(object O20, entries E73 to E77 of the task record): a new Sec. II builds the octonions, the Lorentz super-loop, the
+spinor charges, the spinors and isodoublets and the superfluid of the spinor charges from the beginning, with worked
+examples whose values come from `data/sh_examples.csv`, and every term is defined at its first use; the results did not
+change.
 
 **Stage 2 of the revision of the hypotheses** (first version 21 November 2026, 17:30 to 18:15 PST; second version, with
 the two singlets, 19:50 to 20:35 PST). The program `sh_quantum` of the crate `rust/shquantum` ({{GEN:sh_verdict_rust}}),

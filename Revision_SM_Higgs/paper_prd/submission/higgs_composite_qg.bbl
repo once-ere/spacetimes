@@ -6,7 +6,7 @@
 %Control: page (0) single
 %Control: year (1) truncated
 %Control: production of eprint (0) enabled
-\begin{thebibliography}{33}%
+\begin{thebibliography}{42}%
 \makeatletter
 \providecommand \@ifxundefined [1]{%
  \@ifx{#1\undefined}
@@ -83,6 +83,28 @@
   {https://doi.org/10.1038/s41586-022-04892-x} {\bibfield  {journal} {\bibinfo
   {journal} {Nature}\ }\textbf {\bibinfo {volume} {607}},\ \bibinfo {pages}
   {60} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bardeen}\ \emph {et~al.}(1957)\citenamefont
+  {Bardeen}, \citenamefont {Cooper},\ and\ \citenamefont
+  {Schrieffer}}]{BCS1957}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Bardeen}}, \bibinfo {author} {\bibfnamefont {L.~N.}\ \bibnamefont
+  {Cooper}},\ and\ \bibinfo {author} {\bibfnamefont {J.~R.}\ \bibnamefont
+  {Schrieffer}},\ }\bibfield  {title} {\bibinfo {title} {Theory of
+  superconductivity},\ }\href {https://doi.org/10.1103/PhysRev.108.1175}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo
+  {volume} {108}},\ \bibinfo {pages} {1175} (\bibinfo {year}
+  {1957})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nambu}\ and\ \citenamefont
+  {Jona-Lasinio}(1961)}]{NJL1961}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Nambu}}\ and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Jona-Lasinio}},\ }\bibfield  {title} {\bibinfo {title} {Dynamical model of
+  elementary particles based on an analogy with superconductivity. {I}},\
+  }\href {https://doi.org/10.1103/PhysRev.122.345} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {122}},\
+  \bibinfo {pages} {345} (\bibinfo {year} {1961})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Weinberg}(1976)}]{Weinberg1976}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
@@ -152,16 +174,6 @@
   {https://doi.org/10.1016/S0370-1573(03)00140-6} {\bibfield  {journal}
   {\bibinfo  {journal} {Phys. Rep.}\ }\textbf {\bibinfo {volume} {381}},\
   \bibinfo {pages} {235} (\bibinfo {year} {2003})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Nambu}\ and\ \citenamefont
-  {Jona-Lasinio}(1961)}]{NJL1961}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
-  {Nambu}}\ and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
-  {Jona-Lasinio}},\ }\bibfield  {title} {\bibinfo {title} {Dynamical model of
-  elementary particles based on an analogy with superconductivity. {I}},\
-  }\href {https://doi.org/10.1103/PhysRev.122.345} {\bibfield  {journal}
-  {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {122}},\
-  \bibinfo {pages} {345} (\bibinfo {year} {1961})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Nash}(2026{\natexlab{a}})}]{Nash2026}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~L.}\ \bibnamefont
@@ -183,6 +195,65 @@
   \href@noop {} {\bibinfo {title} {See {S}upplemental {M}aterial at [url will
   be inserted by publisher] for the derivations, the numerical checks, the data
   files with their checksums, and the notation}}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Moufang}(1935)}]{Moufang1935}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Moufang}},\ }\bibfield  {title} {\bibinfo {title} {Zur {S}truktur von
+  {A}lternativk{\"o}rpern},\ }\href@noop {} {\bibfield  {journal} {\bibinfo
+  {journal} {Math. Ann.}\ }\textbf {\bibinfo {volume} {110}},\ \bibinfo {pages}
+  {416} (\bibinfo {year} {1935})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Schafer}(1966)}]{Schafer1966}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.~D.}\ \bibnamefont
+  {Schafer}},\ }\href@noop {} {\emph {\bibinfo {title} {An Introduction to
+  Nonassociative Algebras}}}\ (\bibinfo  {publisher} {Academic Press},\
+  \bibinfo {address} {New York},\ \bibinfo {year} {1966})\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mal'cev}(1955)}]{Malcev1955}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~I.}\ \bibnamefont
+  {Mal'cev}},\ }\bibfield  {title} {\bibinfo {title} {Analytic loops},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Mat. Sb. (N.S.)}\
+  }\textbf {\bibinfo {volume} {36(78)}},\ \bibinfo {pages} {569} (\bibinfo
+  {year} {1955})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Coleman}\ and\ \citenamefont
+  {Mandula}(1967)}]{ColemanMandula1967}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Coleman}}\ and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Mandula}},\ }\bibfield  {title} {\bibinfo {title} {All possible symmetries
+  of the {S} matrix},\ }\href {https://doi.org/10.1103/PhysRev.159.1251}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo
+  {volume} {159}},\ \bibinfo {pages} {1251} (\bibinfo {year}
+  {1967})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Haag}\ \emph {et~al.}(1975)\citenamefont {Haag},
+  \citenamefont {{\L}opusza{\'n}ski},\ and\ \citenamefont {Sohnius}}]{HLS1975}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Haag}}, \bibinfo {author} {\bibfnamefont {J.~T.}\ \bibnamefont
+  {{\L}opusza{\'n}ski}},\ and\ \bibinfo {author} {\bibfnamefont
+  {M.}~\bibnamefont {Sohnius}},\ }\bibfield  {title} {\bibinfo {title} {All
+  possible generators of supersymmetries of the {S}-matrix},\ }\href
+  {https://doi.org/10.1016/0550-3213(75)90279-5} {\bibfield  {journal}
+  {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {88}},\
+  \bibinfo {pages} {257} (\bibinfo {year} {1975})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Balian}\ and\ \citenamefont
+  {Werthamer}(1963)}]{BalianWerthamer1963}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Balian}}\ and\ \bibinfo {author} {\bibfnamefont {N.~R.}\ \bibnamefont
+  {Werthamer}},\ }\bibfield  {title} {\bibinfo {title} {Superconductivity with
+  pairs in a relative p wave},\ }\href
+  {https://doi.org/10.1103/PhysRev.131.1553} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {131}},\ \bibinfo {pages}
+  {1553} (\bibinfo {year} {1963})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Leggett}(1975)}]{Leggett1975}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~J.}\ \bibnamefont
+  {Leggett}},\ }\bibfield  {title} {\bibinfo {title} {A theoretical description
+  of the new phases of liquid $^3${H}e},\ }\href
+  {https://doi.org/10.1103/RevModPhys.47.331} {\bibfield  {journal} {\bibinfo
+  {journal} {Rev. Mod. Phys.}\ }\textbf {\bibinfo {volume} {47}},\ \bibinfo
+  {pages} {331} (\bibinfo {year} {1975})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Takahashi}\ \emph {et~al.}(2026)\citenamefont
   {Takahashi} \emph {et~al.}}]{PDG2026}%
   \BibitemOpen
@@ -193,18 +264,6 @@
   {journal} {\bibinfo  {journal} {Int. J. Mod. Phys. A}\ }\textbf {\bibinfo
   {volume} {41}},\ \bibinfo {pages} {2630011} (\bibinfo {year}
   {2026})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Sikivie}\ \emph {et~al.}(1980)\citenamefont
-  {Sikivie}, \citenamefont {Susskind}, \citenamefont {Voloshin},\ and\
-  \citenamefont {Zakharov}}]{SSVZ1980}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
-  {Sikivie}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Susskind}},
-  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Voloshin}},\ and\
-  \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Zakharov}},\ }\bibfield
-  {title} {\bibinfo {title} {Isospin breaking in technicolor models},\ }\href
-  {https://doi.org/10.1016/0550-3213(80)90214-X} {\bibfield  {journal}
-  {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {173}},\
-  \bibinfo {pages} {189} (\bibinfo {year} {1980})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Branco}\ \emph {et~al.}(2012)\citenamefont {Branco},
   \citenamefont {Ferreira}, \citenamefont {Lavoura}, \citenamefont {Rebelo},
   \citenamefont {Sher},\ and\ \citenamefont {Silva}}]{Branco2012}%
@@ -219,6 +278,18 @@
   {https://doi.org/10.1016/j.physrep.2012.02.002} {\bibfield  {journal}
   {\bibinfo  {journal} {Phys. Rep.}\ }\textbf {\bibinfo {volume} {516}},\
   \bibinfo {pages} {1} (\bibinfo {year} {2012})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sikivie}\ \emph {et~al.}(1980)\citenamefont
+  {Sikivie}, \citenamefont {Susskind}, \citenamefont {Voloshin},\ and\
+  \citenamefont {Zakharov}}]{SSVZ1980}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Sikivie}}, \bibinfo {author} {\bibfnamefont {L.}~\bibnamefont {Susskind}},
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Voloshin}},\ and\
+  \bibinfo {author} {\bibfnamefont {V.}~\bibnamefont {Zakharov}},\ }\bibfield
+  {title} {\bibinfo {title} {Isospin breaking in technicolor models},\ }\href
+  {https://doi.org/10.1016/0550-3213(80)90214-X} {\bibfield  {journal}
+  {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {173}},\
+  \bibinfo {pages} {189} (\bibinfo {year} {1980})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Hubbard}(1959)}]{Hubbard1959}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
@@ -305,18 +376,6 @@
   {https://doi.org/10.1016/0550-3213(77)90342-X} {\bibfield  {journal}
   {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {123}},\
   \bibinfo {pages} {89} (\bibinfo {year} {1977})}\BibitemShut {NoStop}%
-\bibitem [{\citenamefont {Bardeen}\ \emph {et~al.}(1957)\citenamefont
-  {Bardeen}, \citenamefont {Cooper},\ and\ \citenamefont
-  {Schrieffer}}]{BCS1957}%
-  \BibitemOpen
-  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
-  {Bardeen}}, \bibinfo {author} {\bibfnamefont {L.~N.}\ \bibnamefont
-  {Cooper}},\ and\ \bibinfo {author} {\bibfnamefont {J.~R.}\ \bibnamefont
-  {Schrieffer}},\ }\bibfield  {title} {\bibinfo {title} {Theory of
-  superconductivity},\ }\href {https://doi.org/10.1103/PhysRev.108.1175}
-  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo
-  {volume} {108}},\ \bibinfo {pages} {1175} (\bibinfo {year}
-  {1957})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Littlewood}\ and\ \citenamefont
   {Varma}(1981)}]{LittlewoodVarma1981}%
   \BibitemOpen
@@ -338,6 +397,22 @@
   {journal} {\bibinfo  {journal} {Annu. Rev. Condens. Matter Phys.}\ }\textbf
   {\bibinfo {volume} {6}},\ \bibinfo {pages} {269} (\bibinfo {year}
   {2015})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Levanyuk}(1959)}]{Levanyuk1959}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~P.}\ \bibnamefont
+  {Levanyuk}},\ }\bibfield  {title} {\bibinfo {title} {Contribution to the
+  theory of light scattering near the second-order phase-transition points},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Sov. Phys. JETP}\
+  }\textbf {\bibinfo {volume} {9}},\ \bibinfo {pages} {571} (\bibinfo {year}
+  {1959})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ginzburg}(1961)}]{Ginzburg1960}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.~L.}\ \bibnamefont
+  {Ginzburg}},\ }\bibfield  {title} {\bibinfo {title} {Some remarks on phase
+  transitions of the second kind and the microscopic theory of ferroelectric
+  materials},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Sov.
+  Phys. Solid State}\ }\textbf {\bibinfo {volume} {2}},\ \bibinfo {pages}
+  {1824} (\bibinfo {year} {1961})}\BibitemShut {NoStop}%
 \bibitem [{\citenamefont {Utiyama}(1956)}]{Utiyama1956}%
   \BibitemOpen
   \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont

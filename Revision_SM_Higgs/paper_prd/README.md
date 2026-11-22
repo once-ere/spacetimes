@@ -29,9 +29,28 @@ whether the superfluid can play the role of the Higgs particle in each of the fi
 Higgs is then a composite particle. The first question of that request, the width of the region of the fluctuations
 near the critical temperature, was answered for the earlier hypotheses only. The revision has no stage at finite
 temperature, so the article does not recompute it and says so (decision D35 of the task record; the author can ask for
-a thermal stage). The gravitational sector of the title is not computed: the article outlines, in its Sec. X, how it
+a thermal stage). The gravitational sector of the title is not computed: the article outlines, in its Sec. XI, how it
 will be added through E. A. Lord's gauge theory of the local change of spinor representation (Proc. Cambridge Philos.
 Soc. 69, 423 (1971)), the route that the author named, and says that this sector is a program.
+
+On 22 November 2026 the author judged the first version of the article nearly useless to its readers: it sent them to
+his unpublished manuscript of 16 November 2026 for the Lorentz super-loop, which almost nobody can read, gave no concrete
+example of the objects that it named, and used terms such as "custodial" and "amplitude mode" without defining them
+(task record C27). At 13:51 PST he asked that the manuscripts be written again, less terse and friendlier to a student
+reader (C28). The article was therefore rewritten (object O20, decision D38 of the task record). A new Sec. II builds
+from the beginning, with a worked example of each, everything that the article needs of the manuscript of 16 November:
+the octonions and a Moufang loop that is not a group, the meaning of the word super-loop and its simplest example, the
+bi-octonions and the Lorentz super-loop, Minkowski space and the Lorentz group inside the loop (a rotation, a boost and
+the parity), the eight spinor charges and why they have spin one half, a Dirac spinor, an isodoublet, an isovector
+(isospin triplet), an isodoublet of Dirac spinors, why pairs of two spinor charges are isospin triplets, and an explicit
+spin-zero superfluid of the spinor charges with its gaps, its gap equation, its critical coupling and the proof that the
+polar state wins. Every term is defined where it is first used (the custodial superfluid and the custodial symmetry, the
+amplitude mode, the phase stiffness, the threshold, the linear response, the Goldstone modes, the critical region and
+others), and the other sections say in words what each step does before its formulas. The values of the examples are
+read from the data files `data/sh_examples.csv` and `data/sh_examples_charges.csv` (object O21 of the task record), which
+the Rust program `rust/shexamples` writes and the Python program `python/sh_examples.py` and the Wolfram script
+`wolfram/source/sh_examples.wls` check. The results of the article did not change; the article became about twice as
+long (Section 5 gives its number of pages).
 
 # 2. The answers in brief
 
@@ -63,7 +82,7 @@ the amplitude mode.
 | `cover_letter.pdf`, `.tex`, `.md` | the cover letter to the editors |
 | `submission_info.pdf`, `.tex`, `.md` | what to enter on the submission server: journal and article type, length, title and byline, the abstract (typeset and as LaTeX source), the subject classification (PhySH), the data availability statement, the comments for the editor and the suggested referees, the files to upload, the steps on the server, and the statements that only the author can confirm |
 | `submission/` | exactly the files to upload: the article as PDF and as LaTeX source with its `.bbl` and its three figures in the same folder, the Supplemental Material and the cover letter |
-| `src/` | the templates of the four documents (`*.template.tex`) and the bibliography `references.bib`; every number that a program computes is a placeholder `{{NAME}}` in the templates |
+| `src/` | the templates of the four documents (`*.template.tex`) and the bibliography `references.bib`; every number that a program computes is a placeholder `{{NAME}}` in the templates, and every value of a worked example of Sec. II of the article is a placeholder that names its row of `data/sh_examples.csv` (written EX, a colon and the name, in double braces) |
 | `scripts/build_paper.py` | the program that fills the placeholders and builds the four documents and the folder `submission/` |
 | `figures/` | the four figures of the article and of the Supplemental Material, copied by the build from the folder `figures/` of `Revision_SM_Higgs` |
 | `generated/numbers.csv` | every placeholder with the value that the last build inserted |
@@ -82,8 +101,11 @@ exact arithmetic, and whose checks Part R of the notebook `superfluid.nb` repeat
 
 `scripts/build_paper.py` takes the numbers that the manuscripts of the revision state from the fragments that their
 fragment programs wrote into `provenance/generated/` (`sh_quantum.md`, `sh_superfluid.md`, `sh_higgs.md`, `sh_dynamics.md`,
-`notebook.md`), so that the article states exactly the numbers of the manuscripts; it computes the few others from the
-data files (the cutoff in TeV, the ratio to the Standard Model, the bound of $\lvert\rho_{\rm SH}-1\rvert$, the masses of the
+`notebook.md`), so that the article states exactly the numbers of the manuscripts; it reads the values of the worked
+examples of Sec. II of the article from `data/sh_examples.csv` and `data/sh_examples_charges.csv` (written by the Rust
+program `rust/shexamples`, recomputed by `python/sh_examples.py` and derived symbolically by
+`wolfram/source/sh_examples.wls`) and converts them into LaTeX (exact fractions, complex numbers, octonion units,
+vectors and matrices); it computes the few others from the data files (the cutoff in TeV, the ratio to the Standard Model, the bound of $\lvert\rho_{\rm SH}-1\rvert$, the masses of the
 constituents in GeV). A bound of agreement is the largest deviation of the checks it summarizes, rounded **up**, so that a
 stated bound is never smaller than a measured deviation. The tables of results of the Supplemental Material are the
 tables of the manuscripts, converted from Markdown to LaTeX and set as floats, which never break across a page; the
@@ -121,11 +143,11 @@ not settle, a lost float or an overfull box wider than 1 pt, or if the folder `s
 
 ```
 build_paper.py: the checks of the builds
-higgs_composite_qg: 7 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg: 14 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 higgs_composite_qg_SM: 30 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
-submission/: the flat source compiles alone to 7 pages (the manuscript has 7); undefined: none -> PASS
-submission_info: 5 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+submission/: the flat source compiles alone to 14 pages (the manuscript has 14); undefined: none -> PASS
+submission_info: 6 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 ```
 
 The check of `submission/` compiles a copy of the folder alone in a temporary folder, with the figures beside the source
@@ -187,6 +209,39 @@ commit of this version of the folder, and is corrected in it.
     more passes and fails if they do not settle.
 19. **A plural.** The submission information wrote "2 page(s)"; it now writes "2 pages".
 
+The following were found while the article was rewritten on 22 November 2026 (C28, D38), in the drafts of the new text,
+before that version was kept; none of them changes a result.
+
+20. **The spin of the spinor charges.** A draft of the new Sec. II said that the commutator of a Lorentz generator with a
+    spinor charge, $[\mathbf u,\mathbf b\,\mathbf e_4]=2(\mathbf b\mathbf u)\,\mathbf e_4$, shows that a rotation by $2\pi$
+    multiplies the spinor charges by $-1$. It does not: the exponential of that commutator returns the spinor charges
+    unchanged after a rotation by $2\pi$, because the commutator is $-2$ times the infinitesimal automorphism of the
+    algebra. The article now derives the spin from the automorphism $\mathbf a+\mathbf b\,\mathbf e_4\mapsto\mathbf
+    g\mathbf a\mathbf g^{-1}+(\mathbf b\mathbf g^{-1})\,\mathbf e_4$, under which the rotation by $2\pi$, $\mathbf g=-\mathbf
+    e_0$, multiplies every spinor charge by $-1$, and it says what the commutator is.
+21. **The reason why no element of the Lorentz group is the parity.** A draft said that conjugation by a group element
+    cannot be the parity "because the inversion of $SL(2,\mathbb C)$ is not a homomorphism". The correct reason is that
+    conjugation keeps the order of products while the bar of the quaternions reverses it; the article now says so.
+22. **The handedness of the spinor charges.** A draft said that the columns of the field of the spinor charges are
+    left-handed spinors. The Lorentz group multiplies them by $M_{\rm LL}(\mathbf g)$, the action on the right-handed spinors
+    (the lower block of the chiral basis); the complex-conjugate loop supplies the left-handed ones. The article says so and
+    derives it.
+23. **An unproven value.** A draft stated the critical coupling of the superfluid of the spinor charges without its
+    derivation. The article now derives the gap equation and the critical coupling $\pi^2/I_1(m_{\rm LL})$, which is
+    $2\pi^2/\Lambda_{\rm LL}^2$ for massless fields, and prints the values of the data.
+24. **Who showed what.** A draft said that the author had shown that the bi-octonions of norm 1 form a Moufang loop. That
+    the units of an alternative algebra obey the Moufang identities is classical; the article now cites it and credits
+    the author with the name Lorentz super-loop and with finding the Lorentz group and the spinor charges in it.
+25. **Who checks the examples.** A draft said that three programs compute and compare all the examples. The Wolfram script
+    derives the identities behind them symbolically and recomputes all but the two quasi-particle energies of the
+    superfluid; the article now says what each program does.
+26. **A caption.** The caption of the table of the spinor charges said that it lists four of them; it lists all eight.
+27. **An undefined number.** The section on the model called the hypercharge of two fields "a quarter of the fermion
+    number of Sec. II", a number that Sec. II no longer defines; it is a quarter of the particle number of the model.
+28. **Wide formulas and matrices in the text.** The Moufang identities, the Hermitian bi-quaternions, the Hamiltonian
+    and the matrix of the superfluid of the spinor charges and its critical coupling were wider than a column; they are
+    now split over two lines. The matrices of the examples, first set inside the lines of the text, are now displayed.
+
 # 7. Provenance
 
 The four documents, the folder `submission/`, `generated/numbers.csv` and `generated/build_report.txt` are written by
@@ -195,24 +250,24 @@ reports of `data/`; the Supplemental Material lists the data files and reports w
 checksums of the templates, of the build program and of the files to upload, at the time this README was built:
 
 * `paper_prd/scripts/build_paper.py`:\
-  `cc7aa7a9b49f76ece537f8e8057aae936c8ee113d4bbe1e3bb966af55db65edd`
+  `c0fe1cadc1c8851a1c6573c4ce2fa6e0d4f11d47a7bff69e6eea21de1333839c`
 * `paper_prd/src/higgs_composite_qg.template.tex`:\
-  `98c3489ef1c8aec2bfb40392bbcbec625b1121c5d3bd86d6d9c264627ff3ba6e`
+  `8bf65410860cded0c3fc268ca09f4e6a5c37fdf94b30acae39e3065c67a0e426`
 * `paper_prd/src/higgs_composite_qg_SM.template.tex`:\
-  `9e2415a9c972794b2894ff2bdbd5eb94401332d46aa9b1af965fa78f5b3223a5`
+  `7829918e8244512bd59f655d01f36d6f809160d3b9c163154cbdfbeb3921e7fb`
 * `paper_prd/src/cover_letter.template.tex`:\
-  `def8931ca97b6d6cb7ffb150a4bfd8d311ede639becebf1f71f40f770884de56`
+  `fb24fd6efacfc6358ebf716a9d5d22bd54d04fd8fed61e7506029650b123fe76`
 * `paper_prd/src/submission_info.template.tex`:\
-  `8fbad56cae1684bdc8a64aad5e7f4e6f4cbff37500b78c380191c7dddea7402e`
+  `647ac7a766f4c2b24a5382cca99af07771dc932ff312f70c0084f42d454bbded`
 * `paper_prd/src/references.bib`:\
-  `d0a061100956b7b41bf248b59210f9fadc6551aa9489884dd78f34c4d8a5c8fb`
+  `6ee51161bbbcebca68a142d9a3a1114afc593ab66ab1d1c5e2573e34716c3b31`
 * `paper_prd/submission/higgs_composite_qg.pdf`:\
-  `11f3480b122e922a54db4f6e82be2443ce675f713fbe8b7dc8e1f23fb22ce9e4`
+  `3a284b42b84eed0b28634383a193ea17edc60ddb195f09a6ab0cc6bfab103590`
 * `paper_prd/submission/higgs_composite_qg.tex`:\
-  `9534b247f0d2f0ffdd48dcdfb4663a0aecfccef9ac818ed5a3dcb01b27758f62`
+  `2c17de30782ac36be7daed20b9ce3cfd770db10e1ff8bfdb12d89da1a659a04f`
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
-  `68992b5d6923dd5ce72dc2eefc6204ba1c147e35f01cce11889567adc1f1ad82`
+  `01b06154a457703cbde273d0b7af16df5c3ddceb39888f653a5f03fac9df8457`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\
-  `8d0864eb25ce443f500dec24708e37cf652ec758bdd4f9b68de64544f2ed401d`
+  `4ab6551bd04407fa09745b32910a0136ec16e1e9870cb35ca341ce6af0bb5660`
 * `paper_prd/submission/cover_letter.pdf`:\
-  `051e02feeb149593b317cc0b78ff916068b714c7e53346da2f53c72b17c81a7c`
+  `b04bd6724fd309c6a9416b84a407e43573f8ca66139771e9bf6c00d40bbf6db6`

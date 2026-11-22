@@ -1,6 +1,6 @@
 build_paper.py: the checks of the builds
-higgs_composite_qg: 7 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg: 14 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 higgs_composite_qg_SM: 30 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
-submission/: the flat source compiles alone to 7 pages (the manuscript has 7); undefined: none -> PASS
-submission_info: 5 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+submission/: the flat source compiles alone to 14 pages (the manuscript has 14); undefined: none -> PASS
+submission_info: 6 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS

@@ -46,8 +46,9 @@
 
 \begin{abstract}
 This Supplemental Material gives the derivations, the numerical methods, the complete tables of results, the checks and
-the data behind every statement of the article. It is written to be read on its own: every symbol is defined here
-(Sec.~\ref{sec:notation}), and every equation that the article uses is derived or stated here. Equations, tables and
+the data behind every statement of the article. It is written to be read on its own: every symbol that it uses is
+defined here (Sec.~\ref{sec:notation}), and every equation of Secs.~III to XI of the article is derived or stated here
+(Sec.~II of the article, on the algebra behind the model, derives its own equations with worked examples). Equations, tables and
 figures of this document carry the prefix S. All numbers are outputs of programs in Rust, checked by independent
 programs in Python (numpy and LAPACK) and, for the group theory and the closed forms, by scripts in the Wolfram Language
 in exact arithmetic; Sec.~\ref{sec:checks} lists the checks with their results, and Sec.~\ref{sec:data} the files with
@@ -64,7 +65,7 @@ their SHA-256 checksums.
 
 Units: $\hbar=c=1$; the momentum cutoff $\Lambda_\LL=1$ is the unit of energy and of momentum, and $1/\Lambda_\LL$ the unit
 of length and of time. The metric is $\eta^\LL={\rm diag}(1,-1,-1,-1)$. The suffix LL marks the objects of the Lorentz
-super-loop (the bi-octonion model of Ref.~\cite{Nash2026}), SF those of the superfluid of the earlier hypotheses that the
+super-loop (the bi-octonion model of Ref.~\cite{Nash2026}, restated in Sec.~II of the article), SF those of the superfluid of the earlier hypotheses that the
 revised ones keep, and SH those of the revised hypotheses; a superscript $X$ names the method (Sec.~\ref{sec:methods}).
 The \emph{second version} of the hypotheses has the two singlets $\chi_\SH$ and $\chi'_\SH$; the \emph{first version},
 computed as the comparison, has the pairing term of $\chi_\SH$ only, and $\chi'_\SH$ is a free field. Table~\ref{tab:symbols}
@@ -72,7 +73,8 @@ lists the symbols.
 
 \begingroup\small
 \begin{longtable}{p{0.30\textwidth}p{0.65\textwidth}}
-\caption{\label{tab:symbols}The symbols of the article and of this Supplemental Material.}\\
+\caption{\label{tab:symbols}The symbols of this Supplemental Material and of Secs.~III to XI of the article (Sec.~II
+of the article defines its own).}\\
 \hline\hline
 symbol & meaning\\ \hline
 \endfirsthead
@@ -961,7 +963,11 @@ program states. The statements of the checks are those that the programs write; 
 equations of the manuscripts of the stages, the tables below cite instead the place of this Supplemental Material that
 states the same thing. The verdicts: the Rust programs stage 2 (\texttt{sh\_quantum}) ALL PASS (55 of 55); stage 3 (\texttt{sh\_superfluid}) ALL PASS (25 of 25); stage 4 (\texttt{sh\_higgs}) ALL PASS (30 of 30); stage 6 (\texttt{sh\_dynamics}) ALL PASS (12 of 12); the Python programs stage 2 ALL PASS (14 of 14); stage 3 ALL PASS (8 of 8); stage 4 ALL PASS (10 of 10); stage 6 ALL PASS (7 of 7); the Wolfram
 scripts stage 2 ALL PASS (13 of 13); stage 3 ALL PASS (5 of 5); stage 4 ALL PASS (5 of 5); stage 6 ALL PASS (5 of 5); the notebook, which repeats the checks of the Wolfram scripts, ALL PASS (181 of 181), 0 messages; its Part R repeats the 28 checks of the Wolfram scripts of the revision, and 28 of them pass. The
-tables list every check of the Rust and the Python programs with its result, deviation, tolerance and statement.
+worked examples of Sec.~II of the article (the octonions, the Lorentz super-loop, the spinor charges, the spinors and
+isodoublets, and the superfluid of the spinor charges) are computed by a further Rust program, \texttt{rust/shexamples},
+recomputed by \texttt{python/sh\_examples.py} and derived symbolically by \texttt{wolfram/source/sh\_examples.wls}; their
+verdicts: Rust ALL PASS (27 of 27); Python ALL PASS (9 of 9); Wolfram ALL PASS (6 of 6). The tables list every check of the Rust and the Python programs of the stages with its
+result, deviation, tolerance and statement.
 
 \begingroup\fontsize{7}{8.5}\selectfont\setlength{\tabcolsep}{3pt}
 \begin{longtable}{p{0.09\textwidth}p{0.05\textwidth}p{0.085\textwidth}p{0.075\textwidth}p{0.64\textwidth}}
@@ -1268,9 +1274,17 @@ with their SHA-256 checksums.
 \texttt{data/sh\_dyn\_runs.csv} & 10272 & \texttt{\scriptsize e68a0cac39cb4cfd52183662bfd472ba6cc64fd7881b9aaf8d995351a455a446} \\
 \texttt{data/sh\_dyn\_spectra.csv} & 551665 & \texttt{\scriptsize 18f53f0b5d7aee22e08cd663a60401b919ed01b1848629c093ea60d77bbd70bd} \\
 \texttt{data/sh\_dyn\_values.csv} & 1057 & \texttt{\scriptsize 57be78260cea5291b4a85a03211da8daad5ff324acf068f631bed3f78d1d977d} \\
+\texttt{data/sh\_examples.csv} & 2876 & \texttt{\scriptsize 6a713150001dc13b57374c8555855122d3191b4b4b75f35f83e293b50bf2ea86} \\
+\texttt{data/sh\_examples\_charges.csv} & 563 & \texttt{\scriptsize 69fa48b8d706d087fd8a4d1f794885f97e8ee627b1c41ad8a8ab4e82072c9ea4} \\
+\texttt{data/hck\_sh\_det\_checks.txt} & 16129 & \texttt{\scriptsize d31e137a58d8b5453a0d6cbbd324461c638e0031e7b60dbdff11b51a6f4346dd} \\
+\texttt{data/hck\_sh\_det\_checks\_python.txt} & 4706 & \texttt{\scriptsize e712974016d40d5b31ea3bf42011179a56e6a22b362235ea27a329b8ec784898} \\
+\texttt{data/hck\_sh\_det\_checks\_wolfram.txt} & 4462 & \texttt{\scriptsize e02bc33b5012700e367d03c302060e789b0342448d0de0bc340fbe0b1a89c03c} \\
 \texttt{data/hck\_sh\_dynamics\_checks.txt} & 4702 & \texttt{\scriptsize 034f7b903210e846265ee0725c112d331dc5749400225c063fb92b0fb4e9be15} \\
 \texttt{data/hck\_sh\_dynamics\_checks\_python.txt} & 3030 & \texttt{\scriptsize 01fccb052ff3fe0450316fc542ab91517ae027f7a0aeb8ba3d6158be30405760} \\
 \texttt{data/hck\_sh\_dynamics\_checks\_wolfram.txt} & 2435 & \texttt{\scriptsize 6b06cab824331802c591b0d50fc33e8133b96795150c1407a870ae8802df1c99} \\
+\texttt{data/hck\_sh\_examples\_checks.txt} & 10091 & \texttt{\scriptsize 03e2bc8b45c46b508e38e3b6b9e355da378d665c16f98875fc49824cbfbdcb43} \\
+\texttt{data/hck\_sh\_examples\_checks\_python.txt} & 3293 & \texttt{\scriptsize 9572211588324a19281605a32f98a9acefb44b6ff3ce44000e900319b280e4af} \\
+\texttt{data/hck\_sh\_examples\_checks\_wolfram.txt} & 3569 & \texttt{\scriptsize f7fa840b064667bcec586182404d08d7b59c57609c0df8636abb15a1b0348250} \\
 \texttt{data/hck\_sh\_higgs\_checks.txt} & 13233 & \texttt{\scriptsize 59f6bbda01b4c2722926eac4bfbd55183ad12591663f586b851581b92ccac01f} \\
 \texttt{data/hck\_sh\_higgs\_checks\_python.txt} & 7479 & \texttt{\scriptsize 2b732bc7d515e8778b5ee2447e16adc9797f2b37bf6b94de8213db0da19cda85} \\
 \texttt{data/hck\_sh\_higgs\_checks\_wolfram.txt} & 2789 & \texttt{\scriptsize 9e85dce219cfc0086d3b2dc133f67e13ca3355db393f7e59564ec95da3f84f2a} \\

@@ -5,8 +5,9 @@ Patrick Lee Nash, Ph.D., PROJECT spacetimes. November 22, 2026
 ## Abstract
 
 This Supplemental Material gives the derivations, the numerical methods, the complete tables of results, the checks and
-the data behind every statement of the article. It is written to be read on its own: every symbol is defined here
-(Sec. <a href="#sec:notation" data-reference-type="ref" data-reference="sec:notation">[sec:notation]</a>), and every equation that the article uses is derived or stated here. Equations, tables and
+the data behind every statement of the article. It is written to be read on its own: every symbol that it uses is
+defined here (Sec. <a href="#sec:notation" data-reference-type="ref" data-reference="sec:notation">[sec:notation]</a>), and every equation of Secs. III to XI of the article is derived or stated here
+(Sec. II of the article, on the algebra behind the model, derives its own equations with worked examples). Equations, tables and
 figures of this document carry the prefix S. All numbers are outputs of programs in Rust, checked by independent
 programs in Python (numpy and LAPACK) and, for the group theory and the closed forms, by scripts in the Wolfram Language
 in exact arithmetic; Sec. <a href="#sec:checks" data-reference-type="ref" data-reference="sec:checks">[sec:checks]</a> lists the checks with their results, and Sec. <a href="#sec:data" data-reference-type="ref" data-reference="sec:data">[sec:data]</a> the files with
@@ -18,10 +19,10 @@ Units: $\hbar=c=1$; the momentum cutoff $\Lambda_{\rm LL}=1$ is the unit
 of energy and of momentum, and $1/\Lambda_{\rm LL}$ the unit of length
 and of time. The metric is $\eta^{\rm LL}={\rm diag}(1,-1,-1,-1)$. The
 suffix LL marks the objects of the Lorentz super-loop (the bi-octonion
-model of Ref. (Nash 2026b)), SF those of the superfluid of the earlier
-hypotheses that the revised ones keep, and SH those of the revised
-hypotheses; a superscript $X$ names the method
-(Sec. <a href="#sec:methods" data-reference-type="ref"
+model of Ref. (Nash 2026b), restated in Sec. II of the article), SF
+those of the superfluid of the earlier hypotheses that the revised ones
+keep, and SH those of the revised hypotheses; a superscript $X$ names
+the method (Sec. <a href="#sec:methods" data-reference-type="ref"
 data-reference="sec:methods">3</a>). The *second version* of the
 hypotheses has the two singlets $\chi_{\rm SH}$ and $\chi'_{\rm SH}$;
 the *first version*, computed as the comparison, has the pairing term of
@@ -88,7 +89,8 @@ data-reference="tab:symbols">1</a> lists the symbols.
 | $\mathsf O^\dagger\mathsf O-\mathsf 1$                                                                                   | the departure of the quasi-particle vectors of a run from orthonormality                                                                                                                                    |
 | $q$, $\vec q$, $M$, $E$                                                                                                  | a momentum, its vector, a mass and an energy (integration variables)                                                                                                                                        |
 
-The symbols of the article and of this Supplemental Material.
+The symbols of this Supplemental Material and of Secs. III to XI of the
+article (Sec. II of the article defines its own).
 
 </div>
 
@@ -1094,9 +1096,15 @@ the Wolfram scripts stage 2 ALL PASS (13 of 13); stage 3 ALL PASS (5 of
 5); stage 4 ALL PASS (5 of 5); stage 6 ALL PASS (5 of 5); the notebook,
 which repeats the checks of the Wolfram scripts, ALL PASS (181 of 181),
 0 messages; its Part R repeats the 28 checks of the Wolfram scripts of
-the revision, and 28 of them pass. The tables list every check of the
-Rust and the Python programs with its result, deviation, tolerance and
-statement.
+the revision, and 28 of them pass. The worked examples of Sec. II of the
+article (the octonions, the Lorentz super-loop, the spinor charges, the
+spinors and isodoublets, and the superfluid of the spinor charges) are
+computed by a further Rust program, `rust/shexamples`, recomputed by
+`python/sh_examples.py` and derived symbolically by
+`wolfram/source/sh_examples.wls`; their verdicts: Rust ALL PASS (27 of
+27); Python ALL PASS (9 of 9); Wolfram ALL PASS (6 of 6). The tables
+list every check of the Rust and the Python programs of the stages with
+its result, deviation, tolerance and statement.
 
 <div id="tab:checks_quantum_rust">
 
@@ -1395,9 +1403,17 @@ this article reads, with their SHA-256 checksums.
 | `data/sh_dyn_runs.csv`                      |  10272 | `e68a0cac39cb4cfd52183662bfd472ba6cc64fd7881b9aaf8d995351a455a446` |
 | `data/sh_dyn_spectra.csv`                   | 551665 | `18f53f0b5d7aee22e08cd663a60401b919ed01b1848629c093ea60d77bbd70bd` |
 | `data/sh_dyn_values.csv`                    |   1057 | `57be78260cea5291b4a85a03211da8daad5ff324acf068f631bed3f78d1d977d` |
+| `data/sh_examples.csv`                      |   2876 | `6a713150001dc13b57374c8555855122d3191b4b4b75f35f83e293b50bf2ea86` |
+| `data/sh_examples_charges.csv`              |    563 | `69fa48b8d706d087fd8a4d1f794885f97e8ee627b1c41ad8a8ab4e82072c9ea4` |
+| `data/hck_sh_det_checks.txt`                |  16129 | `d31e137a58d8b5453a0d6cbbd324461c638e0031e7b60dbdff11b51a6f4346dd` |
+| `data/hck_sh_det_checks_python.txt`         |   4706 | `e712974016d40d5b31ea3bf42011179a56e6a22b362235ea27a329b8ec784898` |
+| `data/hck_sh_det_checks_wolfram.txt`        |   4462 | `e02bc33b5012700e367d03c302060e789b0342448d0de0bc340fbe0b1a89c03c` |
 | `data/hck_sh_dynamics_checks.txt`           |   4702 | `034f7b903210e846265ee0725c112d331dc5749400225c063fb92b0fb4e9be15` |
 | `data/hck_sh_dynamics_checks_python.txt`    |   3030 | `01fccb052ff3fe0450316fc542ab91517ae027f7a0aeb8ba3d6158be30405760` |
 | `data/hck_sh_dynamics_checks_wolfram.txt`   |   2435 | `6b06cab824331802c591b0d50fc33e8133b96795150c1407a870ae8802df1c99` |
+| `data/hck_sh_examples_checks.txt`           |  10091 | `03e2bc8b45c46b508e38e3b6b9e355da378d665c16f98875fc49824cbfbdcb43` |
+| `data/hck_sh_examples_checks_python.txt`    |   3293 | `9572211588324a19281605a32f98a9acefb44b6ff3ce44000e900319b280e4af` |
+| `data/hck_sh_examples_checks_wolfram.txt`   |   3569 | `f7fa840b064667bcec586182404d08d7b59c57609c0df8636abb15a1b0348250` |
 | `data/hck_sh_higgs_checks.txt`              |  13233 | `59f6bbda01b4c2722926eac4bfbd55183ad12591663f586b851581b92ccac01f` |
 | `data/hck_sh_higgs_checks_python.txt`       |   7479 | `2b732bc7d515e8778b5ee2447e16adc9797f2b37bf6b94de8213db0da19cda85` |
 | `data/hck_sh_higgs_checks_wolfram.txt`      |   2789 | `9e85dce219cfc0086d3b2dc133f67e13ca3355db393f7e59564ec95da3f84f2a` |

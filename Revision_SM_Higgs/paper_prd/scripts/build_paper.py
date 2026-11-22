@@ -14,6 +14,10 @@ What it does:
        data/sh_hg_minimum.csv, sh_hg_masses.csv          the minimum of the effective potential, the scale, the masses
                                                          (stage 4)
        data/hck_sh_*_checks*.txt, hck_notebook_log.txt   the reports of the checks of the programs and of the notebook
+       data/sh_examples.csv, sh_examples_charges.csv     the worked examples of Sec. II of the article (the octonions, the
+                                                         Lorentz super-loop, the spinor charges, spinors and isospin, the
+                                                         superfluid of the spinor charges), placeholders {{EX:<name>}} and
+                                                         {{EX_TABLE_CHARGES}} (functions ex_value, ex_table_charges)
   2. computes the remaining numbers (the cutoff in TeV, the ratio to the Standard Model, the bound of rho - 1, the
      masses of the constituents in GeV), every bound of agreement rounded UP (function sci_up), builds the tables (the
      tables of results of the Supplemental Material are the tables of the manuscripts, converted from Markdown to
@@ -132,6 +136,118 @@ def tex_text(t):
     rep = {"\\": "\\textbackslash{}", "&": "\\&", "%": "\\%", "$": "\\$", "#": "\\#", "_": "\\_", "{": "\\{", "}": "\\}",
            "~": "\\textasciitilde{}", "^": "\\textasciicircum{}", "<": "\\textless{}", ">": "\\textgreater{}", "|": "\\textbar{}"}
     return "".join(rep.get(ch, ch) for ch in t)
+
+
+# ---- the worked examples of Sec. II of the article.  Their values are the rows of data/sh_examples.csv and
+# data/sh_examples_charges.csv, written by the Rust program rust/shexamples and recomputed by python/sh_examples.py and
+# wolfram/source/sh_examples.wls (reports data/hck_sh_examples_checks*.txt).  A value is an exact rational (a/b), a complex
+# number (with the imaginary unit i), a bi-octonion (the units e0..e7), a Lorentz generator (J1..J3, K1..K3), a decimal
+# number (possibly with an exponent), "n of N" (counts, used in text mode), or a tuple or matrix of such values (nested
+# parentheses).  The template writes {{EX:<name>}} for the row <name>; ex_tex converts a value into LaTeX for math mode
+# (without dollar signs), ex_value applies the two exceptions (a total that the data state only inside another row, and the
+# list of the entries of a matrix, both for text mode).
+
+def ex_atom(tok):
+    """one token of a value of the examples as LaTeX (math mode)"""
+    m = re.fullmatch(r"(-?)(\d+)/(\d+)", tok)
+    if m:
+        return "%s\\tfrac{%s}{%s}" % (m.group(1), m.group(2), m.group(3))
+    m = re.fullmatch(r"(-?)e([0-7])", tok)
+    if m:
+        return "%s\\e{%s}" % (m.group(1), m.group(2))
+    m = re.fullmatch(r"(-?)([JK])([1-3])", tok)
+    if m:
+        return "%s%s^%s_\\LL" % (m.group(1), m.group(2), m.group(3))
+    if tok in ("i", "-i", "+", "-", "="):
+        return tok
+    m = re.fullmatch(r"(-?\d+(?:\.\d+)?)(?:e([-+]?\d+))?", tok)
+    if m:
+        return m.group(1) + ("\\times10^{%d}" % int(m.group(2)) if m.group(2) else "")
+    sys.exit("ex_atom: a token of a worked example that the converter does not know: %r" % tok)
+
+
+def ex_scalar(s):
+    """a scalar value of the examples (a sum of terms separated by blanks) as LaTeX"""
+    return "".join(ex_atom(t) for t in s.split())
+
+
+def ex_split(s):
+    """the top-level items of a parenthesized list "(a, b, ...)" of the examples"""
+    if not (s.startswith("(") and s.endswith(")")):
+        sys.exit("ex_split: not a parenthesized list: %r" % s)
+    items, depth, cur = [], 0, ""
+    for ch in s[1:-1]:
+        if ch == "," and depth == 0:
+            items.append(cur.strip())
+            cur = ""
+            continue
+        depth += (ch == "(") - (ch == ")")
+        cur += ch
+    items.append(cur.strip())
+    return items
+
+
+def ex_tex(v, column=False):
+    """a value of the examples as LaTeX for math mode: a matrix (a list of lists) as a pmatrix (the template sets every
+    matrix in a displayed equation or a table); a list as a row (a1,a2,...) or, with column=True, as a column vector;
+    anything else by ex_scalar"""
+    v = v.strip()
+    if v.startswith("("):
+        items = ex_split(v)
+        if all(x.startswith("(") for x in items):
+            body = "\\\\".join("&".join(ex_scalar(y) for y in ex_split(x)) for x in items)
+            return "\\begin{pmatrix}%s\\end{pmatrix}" % body
+        if column:
+            return "\\begin{pmatrix}%s\\end{pmatrix}" % "\\\\".join(ex_scalar(x) for x in items)
+        return "(" + ",".join(ex_scalar(x) for x in items) + ")"
+    return ex_scalar(v)
+
+
+def ex_rows():
+    """the rows of data/sh_examples.csv: name -> value"""
+    return {r["name"]: r["value"] for r in read_csv("sh_examples.csv")}
+
+
+def ex_value(name, ex):
+    """the LaTeX of the placeholder {{EX:<name>}}:
+      ex1_moufang_total        the number of ordered triples of the loop of the 16 elements +-e_p, (ex1_order)^3; the data
+                               state it as the denominator of ex1_nonassoc_triples ("1344 of 4096"), which is checked here;
+      ex10_K3_nonzero_entries  the eight non-zero entries "(row,column) value; ..." of the pair matrix K^3 (rows and columns
+                               0..7), written as two chains of equal entries in inline math, for text mode;
+      a count "n of N"         unchanged, for text mode;
+      every other row          ex_tex of its value, for math mode."""
+    if name == "ex1_moufang_total":
+        n = int(ex["ex1_order"]) ** 3
+        if not ex["ex1_nonassoc_triples"].endswith(" of %d" % n):
+            sys.exit("ex_value: the number of triples of the loop of 16 elements is not (ex1_order)^3")
+        return str(n)
+    if name not in ex:
+        sys.exit("ex_value: the worked example %r is not a row of data/sh_examples.csv" % name)
+    v = ex[name]
+    if name == "ex10_K3_nonzero_entries":
+        groups = {}
+        for item in v.split(";"):
+            m = re.fullmatch(r"\s*\(([0-7]),([0-7])\)\s+(-?\d+)\s*", item)
+            if not m:
+                sys.exit("ex_value: an entry of K^3 that the converter does not know: %r" % item)
+            groups.setdefault(int(m.group(3)), []).append("\\mathsf K^3_{%s%s}" % (m.group(1), m.group(2)))
+        return " and ".join("$%s=%d$" % ("=".join(g), val) for val, g in sorted(groups.items(), reverse=True))
+    if re.fullmatch(r"\d+ of \d+", v):
+        return v
+    return ex_tex(v)
+
+
+def ex_table_charges():
+    """the table of the spinor charges b e4 (b = e0..e3) of Sec. II D: the charge, the matrix M_LL(b), the matrix psi' and
+    its two columns, from data/sh_examples_charges.csv"""
+    rows = ["\\begin{tabular}{ccccc}",
+            "charge & $M_\\LL(\\mathbf b)$ & $\\psi'_\\LL$ & up & down\\\\", "\\hline"]
+    for r in read_csv("sh_examples_charges.csv"):
+        rows.append("$%s$ & $%s$ & $%s$ & $%s$ & $%s$\\\\[3pt]" % (
+            ex_tex(r["charge"]), ex_tex(r["M_LL_of_b"]), ex_tex(r["psi_prime"]),
+            ex_tex(r["isospin_up_column"], column=True), ex_tex(r["isospin_down_column"], column=True)))
+    rows.append("\\end{tabular}")
+    return "\n".join(rows)
 
 
 # the notation of the manuscripts of the revision -> the notation of the article and its Supplemental Material, which
@@ -359,6 +475,9 @@ def main():
     num["YH7_DEV"] = f("hg_yh7_dev")
     num["H8D_DEV"] = f("hg_h8d_dev")
     num["GRID_DEV"] = sci_up(report_dev("hck_sh_higgs_checks.txt", "H-9"))
+    # ---- the worked examples of Sec. II: the table of the spinor charges (the other examples are the placeholders
+    # {{EX:<name>}}, replaced in build)
+    num["EX_TABLE_CHARGES"] = ex_table_charges()
     # ---- the dynamics
     num["DY_DEV_AMP"] = f("dy_dev_amp")
     num["DY_RATIO_HS11"] = fr["dy_ratio_hs11_2"]
@@ -400,6 +519,15 @@ def main():
     num["VERDICTS_RUST"] = "; ".join("%s (\\texttt{sh\\_%s}) %s" % (st, p, fr[k + "_verdict_rust"]) for st, p, k in stages)
     num["VERDICTS_PYTHON"] = "; ".join("%s %s" % (st, fr[k + "_verdict_python"]) for st, p, k in stages)
     num["VERDICTS_WOLFRAM"] = "; ".join("%s %s" % (st, fr[k + "_verdict_wolfram"]) for st, p, k in stages)
+    # the verdicts of the three programs of the worked examples of Sec. II of the article (the last line of each report)
+    ex_verdicts = []
+    for who, suffix in (("Rust", ""), ("Python", "_python"), ("Wolfram", "_wolfram")):
+        rep = open(os.path.join(DATA, "hck_sh_examples_checks%s.txt" % suffix), encoding="utf-8").read()
+        m = re.search(r"^VERDICT: (.*)$", rep, re.M)
+        if not m:
+            sys.exit("no verdict in data/hck_sh_examples_checks%s.txt" % suffix)
+        ex_verdicts.append("%s %s" % (who, tex_text(m.group(1))))
+    num["VERDICTS_EXAMPLES"] = "; ".join(ex_verdicts)
     nbl = open(os.path.join(DATA, "hck_notebook_log.txt"), encoding="utf-8").read()
     ids = re.findall(r'"id" -> "([^"]+)"', nbl)
     passes = re.findall(r'"pass" -> (True|False)', nbl)
@@ -419,7 +547,8 @@ def main():
     files = ["sh_inputs.csv", "sh_couplings.csv", "sh_quantum_values.csv", "sh_channels.csv", "sh_custodial_channels.csv",
              "sh_sf_normal_vacuum.csv", "sh_sf_states.csv", "sh_sf_ground.csv", "sh_sf_values.csv", "sh_hg_potential.csv",
              "sh_hg_potential_second_branch.csv", "sh_hg_minimum.csv", "sh_hg_susceptibility.csv", "sh_hg_masses.csv",
-             "sh_hg_scan.csv", "sh_hg_values.csv", "sh_dyn_runs.csv", "sh_dyn_spectra.csv", "sh_dyn_values.csv"]
+             "sh_hg_scan.csv", "sh_hg_values.csv", "sh_dyn_runs.csv", "sh_dyn_spectra.csv", "sh_dyn_values.csv",
+             "sh_examples.csv", "sh_examples_charges.csv"]
     files += sorted(os.path.basename(x) for x in __import__("glob").glob(os.path.join(DATA, "hck_sh_*_checks*.txt")))
     files += ["hck_notebook_log.txt"]
     rows = ["\\begingroup\\footnotesize\\setlength{\\tabcolsep}{4pt}", "\\begin{longtable}{lrl}",
@@ -535,6 +664,13 @@ def build(name, num, report, bib=True):
     bib=False for the cover letter and the submission information (no bibliography, no figures);
     returns 1 if a reference is undefined or a box is more than 1 pt too wide, else 0"""
     src = open(os.path.join(PAPER, "src", name + ".template.tex"), encoding="utf-8").read()
+    # the worked examples of Sec. II ({{EX:<name>}}); their values are also listed in generated/numbers.csv as EX:<name>
+    ex = ex_rows()
+
+    def ex_put(m):
+        num["EX:" + m.group(1)] = ex_value(m.group(1), ex)
+        return num["EX:" + m.group(1)]
+    src = re.sub(r"\{\{EX:([^{}]+)\}\}", ex_put, src)
     missing = sorted(set(re.findall(r"\{\{([A-Z0-9_]+)\}\}", src)) - set(num))
     if missing:
         sys.exit("placeholders without a value: " + ", ".join(missing))

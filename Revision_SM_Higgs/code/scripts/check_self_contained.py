@@ -7,7 +7,8 @@ symbol file?
 Hard Rules 4 and 10 of the author: every equation, symbol and definition that a document creates
 or uses stands in that very document; the reader is never referred to another one.  This script
 reads the sources of all documents of the folder (docs_src/*.src.md) and the documents built from
-them (superfluid.md and README.md in the folder itself, and provenance/*.md), and searches them for
+them (superfluid.md and README.md in the folder itself, and provenance/*.md), the LaTeX templates of the article of
+paper_prd and of its Supplemental Material with their Markdown versions, and searches them for
 the wordings by which a text sends its reader elsewhere.  It reports every hit with its file and
 line.
 
@@ -54,7 +55,11 @@ ALLOWED_IN = [
 def documents():
     srcs = sorted(glob.glob(os.path.join(ROOT, "docs_src", "*.src.md")))
     built = sorted(glob.glob(os.path.join(ROOT, "*.md"))) + sorted(glob.glob(os.path.join(ROOT, "provenance", "*.md")))
-    return srcs + built
+    # the article of paper_prd and its Supplemental Material: their LaTeX templates and the Markdown versions built from
+    # them (object O20 of the task record: the check reads the LaTeX sources of the article too)
+    paper = [os.path.join(ROOT, "paper_prd", "src", n + ".template.tex") for n in ("higgs_composite_qg", "higgs_composite_qg_SM")]
+    paper += [os.path.join(ROOT, "paper_prd", n + ".md") for n in ("higgs_composite_qg", "higgs_composite_qg_SM")]
+    return srcs + built + paper
 
 
 def body_of(path):
