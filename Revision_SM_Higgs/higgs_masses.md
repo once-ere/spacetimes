@@ -487,8 +487,9 @@ singlet and a triplet. The modes are:
 The second version therefore has the scalar content of two Higgs doublets, not of one. In the first version, with one
 doublet, the same count gives three Goldstone modes and one amplitude mode, as in the Standard Model (check YH-8). The
 multiplicity of the amplitude mode in the Rust program, 4 in the second version and 1 in the first, is the same count. The degeneracy of the triplet
-with the singlet is a property of the pairing-only methods; whether the scalar and the vector terms lift it is not
-computed here.
+with the singlet is a property of the pairing-only methods. The dynamics in time of stage 6, which follows the
+time-dependent mean field of every method, finds that the scalar and the vector terms split it: in HS (1, 1) of the
+second version the triplet oscillates at 0.828525, 2.2 per cent above the singlet at 0.810871.
 
 ## 5.4 The results
 
@@ -603,8 +604,8 @@ with the condensate, and their ratio does not approach the value $0.508$ of the 
   for the Higgs boson, a custodial triplet of massive scalars (one neutral, one charged with its antiparticle), degenerate
   with it in the pairing-only methods, and the extra Goldstone boson of the particle number (Section 5.3).
 * **What remains open.** The mean field leaves out the fluctuations of the pair fields, which shift both the stiffness and
-  the amplitude mode; the masses of the triplet in the methods with the scalar and the vector terms; the extra Goldstone
-  boson (decision D32 of the author); and the fermions with fractional charges at about $848$ to $1.09\times10^{3}$ GeV.
+  the amplitude mode; the extra Goldstone boson (decision D32 of the author); and the fermions with fractional charges at
+  about $848$ to $1.09\times10^{3}$ GeV.
 
 # 8. The programs and the checks
 

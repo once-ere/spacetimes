@@ -5,35 +5,36 @@ hypotheses, second version (with the first version as the comparison): the effec
 and the amplitude mode of the Higgs superfluid, computed with the engine of python/sh_superfluid.py (numpy, vectorized
 over the momenta) by other methods than the Rust program sh_higgs, and compared with its data files.
 
-The checks (report data/hck_sh_higgs_checks_python.txt):
-  YH-1  HS (0, 0) and HS (0, 1), both versions: the pair self-energy d_0 of the ground state from the closed-form gap
+The checks (report data/hck_sh_higgs_checks_python.txt; the identifier of a check is YH and a number, and in parentheses
+are the checks of the Rust program sh_higgs that test the same statements):
+  YH-1  (H-8a, H-8c) HS (0, 0) and HS (0, 1), both versions: the pair self-energy d_0 of the ground state from the closed-form gap
         equation (G_SH / 4 pi^2) I1((m^2 + d_0^2/4)^(1/2)) = 1 against data/sh_hg_minimum.csv;
-  YH-2  the susceptibilities by a second method: the second derivative -d^2 E / d mu^2 of the energy of the ground state
+  YH-2  (H-4a, H-4b, H-4c) the susceptibilities by a second method: the second derivative -d^2 E / d mu^2 of the energy of the ground state
         of H - mu Q (central differences, steps 0.005 and 0.01, Richardson), for Q = T^1, T^3, Y and the mixed element of
         T^3 and Y by polarization, against the susceptibilities that the Rust program obtains from the response of the
         charge densities (data/sh_hg_susceptibility.csv), for HS (0, 0) and CJT in both versions;
-  YH-3  HS (0, 0): V''(phi_0) from the energy and the pair amplitude of the states with the fixed pair self-energy
+  YH-3  (H-2b, H-2c) HS (0, 0): V''(phi_0) from the energy and the pair amplitude of the states with the fixed pair self-energy
         d P_dir (no normal self-energy in this method), by central differences, against data/sh_hg_minimum.csv;
-  YH-4  HS (0, 0), the amplitude mode by a second computation of the linear response, reduced to the amplitudes of the
+  YH-4  (H-7a, H-7b, H-7d) HS (0, 0), the amplitude mode by a second computation of the linear response, reduced to the amplitudes of the
         pair self-energy along the pair matrices of the vacuum: at omega = 0 the phase mode is a zero (the Goldstone
         mode; a check of the normalization), the amplitude and the phase decouple, and the amplitude mode is the zero of
         lambda_amp(omega) - 1 below the threshold 2 M_eff, against data/sh_hg_values.csv; the same frequency in both
         versions (in HS (0, 0) the two pairs of the second version do not share a field);
-  YH-5  the masses written by the Rust program follow from its own data: M_EFT = (V'' phi_0^2 / (4 chi^{33}))^(1/2),
+  YH-5  (the columns of data/sh_hg_masses.csv; H-5b, H-6a) the masses written by the Rust program follow from its own data: M_EFT = (V'' phi_0^2 / (4 chi^{33}))^(1/2),
         v_SH = 2 (chi^{11})^(1/2), rho = chi^{11} / chi^{33}, the conversion to GeV with v = 246.22 GeV, M_W = g v / 2;
-  YH-6  the scan: d_0 of the closed form and the amplitude mode of the reduced linear response at three points of the
+  YH-6  (H-8a, H-8b, H-8d) the scan: d_0 of the closed form and the amplitude mode of the reduced linear response at three points of the
         scan, against data/sh_hg_scan.csv;
-  YH-7  HS (0, 0), both versions: the amplitude and phase eigenvalues of the reduced linear response equal the closed
+  YH-7  (H-7d, H-8d) HS (0, 0), both versions: the amplitude and phase eigenvalues of the reduced linear response equal the closed
         forms of the theory of Bardeen, Cooper and Schrieffer, lambda_amp(omega) = (G/2) sum_n w_n (k_n^2 + m^2) /
         (E_n (E_n^2 - omega^2/4)) and lambda_phase(omega) = (G/2) sum_n w_n E_n / (E_n^2 - omega^2/4) with
         E_n^2 = k_n^2 + m^2 + d_0^2/4, at five frequencies, and the identity lambda_amp(omega) - lambda_phase(0) =
         ((omega^2 - d_0^2)/4) S(omega), S(omega) > 0 below 2 M_eff; with the gap equation lambda_phase(0) = 1 the
         amplitude mode lies at omega = d_0 exactly, on every grid;
-  YH-8  HS (0, 0): the modes on all the pair fields (four complex fields in the second version, the doublet of chi in
+  YH-8  (H-7a; the custodial content has no Rust check) HS (0, 0): the modes on all the pair fields (four complex fields in the second version, the doublet of chi in
         the first): the number of eigenvalues equal to 1 at omega = 0 (the Goldstone modes) and at omega = d_0; in the
         second version the custodial generators T^a + T^a_R commute with the response and split the four modes at either
         frequency into a singlet and a triplet (the Casimir has the eigenvalues 0, 2, 2, 2);
-  YH-9  the normal vacuum of HS (0, 0) and CJT, both versions, does not respond to the chemical potentials of the eight
+  YH-9  (no Rust check) the normal vacuum of HS (0, 0) and CJT, both versions, does not respond to the chemical potentials of the eight
         generators (zero charge densities and no pairs at mu = +-0.005, +-0.01): without the condensate the gauge
         bosons get no mass, which is why the program uses the time components of the gauge fields.
 
@@ -320,7 +321,8 @@ def custodial_content(sols, gq, gsh=100.8):
 
 def main():
     rep = Report("sh_higgs.py: the second computation of stage 4 of the revision, second version with the first as the "
-                 "comparison (Revision_SM_Higgs, PROJECT spacetimes)")
+                 "comparison (Revision_SM_Higgs, PROJECT spacetimes)",
+                 ident="the identifier of the check in this program (YH and a number)")
     mins = {(r["version"], r["method"]): r for r in read_csv("sh_hg_minimum.csv")}
     sus = {(r["version"], r["method"]): r for r in read_csv("sh_hg_susceptibility.csv")}
     mas = {(r["version"], r["method"]): r for r in read_csv("sh_hg_masses.csv")}

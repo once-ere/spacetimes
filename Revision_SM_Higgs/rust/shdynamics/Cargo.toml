@@ -1,0 +1,13 @@
+[package]
+name = "shdynamics"
+version = "0.1.0"
+edition = "2021"
+description = "Stage 6 of the revision of the hypotheses (part one): the dynamics in time of the Higgs superfluid by the time-dependent mean field of the five methods, integrated with CVODE"
+
+[[bin]]
+name = "sh_dynamics"
+path = "src/main.rs"
+
+[dependencies]
+sfcore = { path = "../sfcore" }
+sfsundials = { path = "../sfsundials" }

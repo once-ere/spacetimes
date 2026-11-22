@@ -1,0 +1,14 @@
+sh_dynamics.wls: the exact part of stage 6, part one: the dynamics in time of the Higgs superfluid (Revision_SM_Higgs, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WD and a number), the statement and, in brackets, the
+facts that decide it.  Symbolic algebra, and exact arithmetic on the numbers of the files.
+
+PASS WD-1     the time-dependent mean field i dR/dt = [H, R] conserves tr(H R) when H is the derivative of the energy (d tr(H R)/dt = -i tr(H [H, R]) = 0), keeps R Hermitian, and keeps a projector a projector (symbolic, 3 x 3 Hermitian matrices with symbolic entries; the projector of rank 1 along the first axis) [energy True, hermiticity True, projector True]
+PASS WD-2     the Josephson relation: exp(i mu F t) R_0 exp(-i mu F t) solves i dR/dt = [H - mu F, R] for a stationary R_0 and multiplies the pair block by exp(2 i mu t) (symbolic); the phases of d(t) of the Josephson runs of the Rust program grow at the rate 2 mu = 0.02 (straight-line fit in exact arithmetic on the numbers of the file; relative) [rates josephson_second_HS0_0 0.0199999999791, josephson_second_CJT 0.0200000000125; deviation 1.0453166110480083e-9]
+PASS WD-3     the peaks of the amplitude runs of HS (0, 1) and HS (0, 0) of the Rust program (both versions) lie at d_0 = 0.81284554632043386736 of the gap equation (relative) [deviation 1.2e-6]
+PASS WD-4     the Hann window: its normalized transform has the modulus |sin(x pi) / (x pi (1 - x^2))| at the offset x 2 pi / T (the squared modulus of the exact integral equals that of the closed form at nine rational offsets, exactly) and the value 1/2 at x = 1 (limit), so that the half width at half maximum of a pure cosine is 2 pi / T = 0.020943951 for the runs of length 300; the widths of the sampled cosines of the Rust program against it (relative) [form True, half True, deviation 5.e-7]
+PASS WD-5     HS (0, 0): the reduced model of 48 Anderson pseudospins (one at +eps_k and one at -eps_k for each of the 24 radial nodes, eps_k = (k^2 + m^2)^(1/2)), integrated here by NDSolve with the method IDA, gives d_0 = 2 Delta_0 = 0.812845546320434 from its gap equation and, after the kick 1e-3, the d(t) of the Rust program for 0 <= t <= 50 (largest |difference| / d_0, at the 51 stored times) [d_0 against the gap equation of WD-3 6.e-22; deviation 1.7485437131808761e-9]
+
+Notes:
+  Wolfram Language 15.0.1; run time 1.9 s
+
+VERDICT: ALL PASS (5 of 5)

@@ -105,7 +105,7 @@ The files of the notebook, each with its SHA-256 checksum:
   first lines name the data files and their SHA-256 checksums);\
   `8aabc404d7c5ef67f5670eb73da39446c8289e240d299706d9b409fc6344089c`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
-  `d246de97812551e44e4768475504edeb6e72a9415d9048a8a81250d610eb0f04`
+  `89584b3fb5c1bd6d576f076695be37ec716b88aa0157b6d5acf497354738fcbb`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
   `ff661ed5051e22e8d14487cb80f91fb9cbedb2243bd550d6e6c688afb83fd94a`
 * `wolfram/tools/sf_formula.wl`: the reader of formulas: turns the TeX of the formulas of the texts into two-dimensional boxes;\

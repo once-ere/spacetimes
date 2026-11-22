@@ -1,5 +1,5 @@
 sh_superfluid.wls: the exact formulas of stage 3, second version (Revision_SM_Higgs, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the
+Each line: PASS or FAIL, the identifier of the check in this script (WSF and a number), the statement and, in brackets, the
 facts that decide it.  Exact arithmetic, and numbers with 30 digits where a value of the Rust program is compared.
 
 PASS WSF-2a   the triplet matrix K^3 couples the up and down components of Psi_LL by -C gamma^ch in both blocks (Psi^T K^3 Psi = -2 Psi_u^T C gamma^ch Psi_d); K_d couples the down components and chi_SH, K'_u the up components and chi'_SH, by C gamma^ch / 2 in both blocks: the same channel with half the coefficient, so the pairing term -(G/4) |Psi^T K Psi|^2 has the critical coupling G^crit_SH = 4 G^crit_LL [identities of exact matrices]

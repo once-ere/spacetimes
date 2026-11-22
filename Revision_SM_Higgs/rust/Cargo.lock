@@ -65,6 +65,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "shdynamics"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+ "sfsundials",
+]
+
+[[package]]
 name = "shhiggs"
 version = "0.1.0"
 dependencies = [

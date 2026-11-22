@@ -1,5 +1,5 @@
 sh_higgs.py: the second computation of stage 4 of the revision, second version with the first as the comparison (Revision_SM_Higgs, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+Each line: PASS or FAIL, the identifier of the check in this program (YH and a number),
 the measured deviation and its tolerance (or the facts that decide it), and the statement.
 
 PASS YH-1    deviation 6.455e-13 (tolerance 1.0e-09): HS (0, 1) and HS (0, 0), both versions: d_0 = 0.812845546320 of the closed-form gap equation (G_SH / 4 pi^2) I1((m^2 + d_0^2/4)^(1/2)) = 1 against the Rust value (relative)

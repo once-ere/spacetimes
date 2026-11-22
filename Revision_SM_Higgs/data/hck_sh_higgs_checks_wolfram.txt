@@ -1,5 +1,5 @@
 sh_higgs.wls: the exact formulas of stage 4, second version with the first as the comparison (Revision_SM_Higgs, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the
+Each line: PASS or FAIL, the identifier of the check in this script (WH and a number), the statement and, in brackets, the
 facts that decide it.  Exact arithmetic, and numbers with 30 or 40 digits where a value of the Rust program is compared.
 
 PASS WH-1     the effective Lagrangian Z tr((dM)^dag dM) of the bidoublet at M = phi i tau^2: chi(T^a, T^b) = chi(T^a_R, T^b_R) = -chi(T^a, T^b_R) = Z phi^2 delta_ab; with Y = T^3_R + R/4 the charge Q = T^3 + Y does not respond; the mass matrix of (W^1, W^2, W^3, B) has the eigenvalues 0, g^2 Z phi^2 (twice), (g^2 + g'^2) Z phi^2, so M_W = g v/2 and M_Z = (g^2 + g'^2)^(1/2) v/2 with v^2 = 4 Z phi^2, and rho = 1 (symbolic) [eigenvalues {0, g^2*phi^2*zz, g^2*phi^2*zz, (g^2 + gp^2)*phi^2*zz}]
@@ -9,6 +9,6 @@ PASS WH-4     m_H / v = 125.13 / v = 0.5082047224 (the inputs of stage 2); for e
 PASS WH-5     HS (0, 0): the identity (k^2 + m^2) / (E (E^2 - w^2/4)) - 1/E = (w^2 - d^2) / (4 E (E^2 - w^2/4)) with E^2 = k^2 + m^2 + d^2/4 holds for every momentum (symbolic) and E^2 - w^2/4 > 0 for w < 2 M_eff (symbolic), so that lambda_amp(w) = 1 only at w = d_0; the continuum integrals give |lambda_amp(d_0) - 1| = 0.e-30 and |lambda_phase(0) - 1| = 0.e-30 (the gap equation), the root of lambda_amp = 1 is 0.81284554632043386736 against d_0 = 0.81284554632043386736, below 2 M_eff = 0.9059348112159973 (binding 0.0930893); the amplitude modes of the Rust program (HS (0, 1) and HS (0, 0), both versions) equal d_0 (relative) [identity True, positivity True; Rust deviation 8.4e-13]
 
 Notes:
-  Wolfram Language 15.0.1; run time 1.3 s
+  Wolfram Language 15.0.1; run time 1.2 s
 
 VERDICT: ALL PASS (5 of 5)

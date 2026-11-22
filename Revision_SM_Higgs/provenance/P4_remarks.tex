@@ -232,8 +232,9 @@ of stage 3 of the revision of the hypotheses
 (\texttt{higgs\_superfluid.md}), about the superfluid of the revised
 hypotheses. Section 7 keeps the remarks R11 and R12, made in the
 manuscript of stage 4 (\texttt{higgs\_masses.md}), about the amplitude
-mode and the scalar modes of that superfluid, and says how stage 4 meets
-remark R10.
+mode and the scalar modes of that superfluid, with what the dynamics in
+time of stage 6 (\texttt{higgs\_dynamics.md}) adds to them, and says how
+stage 4 meets remark R10.
 
 \hypertarget{remark-r1-the-landau-form-is-a-fit-its-largest-residual-is-0.270.7-of-the-depth}{%
 \section{2. Remark R1: ``The Landau form is a fit; its largest residual
@@ -4165,15 +4166,28 @@ coupling and the mass to \(2\times10^{-12}\) (check H-8d).
   An expansion in the frequency cannot hold for a mode so close to the
   threshold.
 \item
+  \textbf{It holds in the time domain, and only in the pairing-only
+  methods.} Stage 6 follows the superfluid in time by the time-dependent
+  mean field of each method. A small displacement of the length of the
+  pair fields oscillates at \(d^0_{\rm SH}\) to \(2\times10^{-6}\) in HS
+  (0, 1) and HS (0, 0), without damping. In HS (1, 1), where the scalar
+  and the vector terms act, the mode lies at 0.810871, 0.9736 times its
+  \(d^0_{\rm SH}\) and still below the energy that breaks a pair; in KS
+  and CJT the spectrum peaks at 0.873546, above that energy (0.768402),
+  and the mode decays (second version; units of the cutoff).
+\item
   \textbf{It is a mean-field result.} The fluctuations of the pair
   fields beyond the mean field shift both the mode and the scale; they
   are not computed.
 \end{enumerate}
 
-\textbf{Provenance.} The Rust program \texttt{sh\_higgs} (crate
-\texttt{rust/shhiggs}, report \texttt{data/hck\_sh\_higgs\_checks.txt},
-checks H-7a to H-7e and H-8d; data \texttt{data/sh\_hg\_masses.csv},
-SHA-256
+\textbf{Provenance.} For item 4 of the list above, the Rust program
+\texttt{sh\_dynamics} (crate \texttt{rust/shdynamics}, report
+\texttt{data/hck\_sh\_dynamics\_checks.txt}, checks D-4a and D-8; data
+\texttt{data/sh\_dyn\_runs.csv}). Otherwise the Rust program
+\texttt{sh\_higgs} (crate \texttt{rust/shhiggs}, report
+\texttt{data/hck\_sh\_higgs\_checks.txt}, checks H-7a to H-7e and H-8d;
+data \texttt{data/sh\_hg\_masses.csv}, SHA-256
 \texttt{1d51d6f03f652ecba01a798371661429ff0857ed42ecb3a941459c165044a75b},
 and \texttt{data/sh\_hg\_scan.csv}, SHA-256
 \texttt{fc698fed2af5d9c10ecd0d3802e977aa0c53bb4a0082cf922cc0cb5ae176e733}),
@@ -4248,10 +4262,14 @@ in the second version and 1 in the first (check H-7b).
   content: three more massive scalars and one massless Goldstone boson.
 \item
   \textbf{The triplet is a prediction.} In the pairing-only methods it
-  is degenerate with the candidate for the Higgs boson. Whether the
-  scalar and the vector terms of the methods HS (1, 1), KS and CJT, or
-  the fluctuations beyond the mean field, split it from the singlet is
-  not computed.
+  is degenerate with the candidate for the Higgs boson. The dynamics in
+  time of stage 6 shows that the scalar and the vector terms split it
+  from the singlet: a small displacement of the pair fields along the
+  neutral member of the triplet oscillates at 0.828525 in HS (1, 1), 2.2
+  per cent above the singlet at 0.810871, and its spectrum peaks at
+  0.868711 in KS and CJT, -0.55 per cent from the singlet at 0.873546
+  (second version; frequencies in units of the cutoff). Whether the
+  fluctuations beyond the mean field split it further is not computed.
 \item
   \textbf{It is the structure of a model with two Higgs doublets.} There
   the custodial symmetry of the scalar potential likewise groups the
@@ -4263,6 +4281,10 @@ in the second version and 1 in the first (check H-7b).
 \textbf{Provenance.} The report
 \texttt{data/hck\_sh\_higgs\_checks\_python.txt} (check YH-8) and the
 report \texttt{data/hck\_sh\_higgs\_checks.txt} (checks H-7a and H-7b)
-of the programs named in Section 7.1.
+of the programs named in Section 7.1; for the splitting of the triplet,
+the Rust program \texttt{sh\_dynamics} (crate \texttt{rust/shdynamics},
+report \texttt{data/hck\_sh\_dynamics\_checks.txt}, check D-8; data
+\texttt{data/sh\_dyn\_runs.csv}, SHA-256
+\texttt{e68a0cac39cb4cfd52183662bfd472ba6cc64fd7881b9aaf8d995351a455a446}).
 
 \end{document}

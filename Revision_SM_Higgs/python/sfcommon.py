@@ -194,8 +194,11 @@ def fock_ops(n):
 
 # ----------------------------------------------------------------------------------------------- report
 class Report:
-    def __init__(self, title):
+    def __init__(self, title, ident="the identifier of the check (the same identifier as in the Rust program)"):
+        # ident: the description of the identifiers in the second line of the report; the programs of Parts I to IV
+        # (sf_part1.py to sf_part4.py) keep the default, the programs of the revision (sh_*.py) state their own
         self.title = title
+        self.ident = ident
         self.lines = []
         self.notes = []
         self.npass = 0
@@ -226,7 +229,7 @@ class Report:
         os.makedirs(DATA, exist_ok=True)
         with open(os.path.join(DATA, name), "w") as f:
             f.write(self.title + "\n")
-            f.write("Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),\n")
+            f.write("Each line: PASS or FAIL, " + self.ident + ",\n")
             f.write("the measured deviation and its tolerance (or the facts that decide it), and the statement.\n\n")
             for line in self.lines:
                 f.write(line + "\n")

@@ -36,7 +36,8 @@ method can play the role of the Higgs particle, and whether the Higgs is a compo
 made in its answers. Section 6 keeps the remarks R8 to R10, made in the manuscript of stage 3 of the revision of the
 hypotheses (`higgs_superfluid.md`), about the superfluid of the revised hypotheses. Section 7 keeps the remarks R11 and
 R12, made in the manuscript of stage 4 (`higgs_masses.md`), about the amplitude mode and the scalar modes of that
-superfluid, and says how stage 4 meets remark R10.
+superfluid, with what the dynamics in time of stage 6 (`higgs_dynamics.md`) adds to them, and says how stage 4 meets
+remark R10.
 
 # 2. Remark R1: "The Landau form is a fit; its largest residual is 0.27–0.7 % of the depth"
 
@@ -1743,10 +1744,18 @@ $2\times10^{-13}$ (check H-7d) and in all 32 points of a scan of the coupling an
    vacuum direction, $\varphi^0_{\rm SH}$ the pair amplitude of the ground state and $\chi^{33}_{\rm SH}$ the susceptibility of the
    charge $T^{3,{\rm SM}}$. In HS (0, 1) and HS (0, 0) of the second version this is $1.164$ times the exact
    frequency, and above the threshold. An expansion in the frequency cannot hold for a mode so close to the threshold.
-4. **It is a mean-field result.** The fluctuations of the pair fields beyond the mean field shift both the mode and the
+4. **It holds in the time domain, and only in the pairing-only methods.** Stage 6 follows the superfluid in time by the
+   time-dependent mean field of each method. A small displacement of the length of the pair fields oscillates at
+   $d^0_{\rm SH}$ to $2\times10^{-6}$ in HS (0, 1) and HS (0, 0), without damping. In HS (1, 1), where the scalar and the vector
+   terms act, the mode lies at 0.810871, 0.9736 times its $d^0_{\rm SH}$ and still below the energy that breaks a
+   pair; in KS and CJT the spectrum peaks at 0.873546, above that energy (0.768402), and the mode decays
+   (second version; units of the cutoff).
+5. **It is a mean-field result.** The fluctuations of the pair fields beyond the mean field shift both the mode and the
    scale; they are not computed.
 
-**Provenance.** The Rust program `sh_higgs` (crate `rust/shhiggs`, report `data/hck_sh_higgs_checks.txt`, checks H-7a to
+**Provenance.** For item 4 of the list above, the Rust program `sh_dynamics` (crate `rust/shdynamics`, report
+`data/hck_sh_dynamics_checks.txt`, checks D-4a and D-8; data `data/sh_dyn_runs.csv`). Otherwise the Rust program
+`sh_higgs` (crate `rust/shhiggs`, report `data/hck_sh_higgs_checks.txt`, checks H-7a to
 H-7e and H-8d; data `data/sh_hg_masses.csv`, SHA-256 `1d51d6f03f652ecba01a798371661429ff0857ed42ecb3a941459c165044a75b`, and `data/sh_hg_scan.csv`, SHA-256
 `fc698fed2af5d9c10ecd0d3802e977aa0c53bb4a0082cf922cc0cb5ae176e733`), the Python program `python/sh_higgs.py` (report `data/hck_sh_higgs_checks_python.txt`,
 checks YH-4 and YH-7) and the Wolfram script `wolfram/source/sh_higgs.wls` (report `data/hck_sh_higgs_checks_wolfram.txt`,
@@ -1784,11 +1793,16 @@ second version and three in the first (check H-7a), and, for the amplitude mode,
    $\rho_{\rm SH}$ from $1.202$ to $1.247$, which the measured $\rho$ excludes. The second version has $\rho_{\rm SH}=1$ exactly but twice the
    scalar content: three more massive scalars and one massless Goldstone boson.
 2. **The triplet is a prediction.** In the pairing-only methods it is degenerate with the candidate for the Higgs boson.
-   Whether the scalar and the vector terms of the methods HS (1, 1), KS and CJT, or the fluctuations beyond the mean
-   field, split it from the singlet is not computed.
+   The dynamics in time of stage 6 shows that the scalar and the vector terms split it from the singlet: a small
+   displacement of the pair fields along the neutral member of the triplet oscillates at 0.828525 in HS (1, 1),
+   2.2 per cent above the singlet at 0.810871, and its spectrum peaks at 0.868711 in KS and CJT,
+   -0.55 per cent from the singlet at 0.873546 (second version; frequencies in units of the cutoff).
+   Whether the fluctuations beyond the mean field split it further is not computed.
 3. **It is the structure of a model with two Higgs doublets.** There the custodial symmetry of the scalar potential
    likewise groups the extra scalars into multiplets of $SU(2)_{\rm V}$. Here the pairing-only methods make all four massive
    modes degenerate, because the pairing terms act on the four complex pair fields alike.
 
 **Provenance.** The report `data/hck_sh_higgs_checks_python.txt` (check YH-8) and the report `data/hck_sh_higgs_checks.txt`
-(checks H-7a and H-7b) of the programs named in Section 7.1.
+(checks H-7a and H-7b) of the programs named in Section 7.1; for the splitting of the triplet, the Rust program
+`sh_dynamics` (crate `rust/shdynamics`, report `data/hck_sh_dynamics_checks.txt`, check D-8; data `data/sh_dyn_runs.csv`,
+SHA-256 `e68a0cac39cb4cfd52183662bfd472ba6cc64fd7881b9aaf8d995351a455a446`).

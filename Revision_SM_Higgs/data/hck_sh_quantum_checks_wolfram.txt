@@ -1,5 +1,5 @@
 sh_quantum.wls: the exact computation of the checks of sh_quantum, second version (Revision_SM_Higgs, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the
+Each line: PASS or FAIL, the identifier (W and the family of checks of the Rust program that test the same statements), the statement and, in brackets, the
 facts that decide it.  Exact arithmetic: no tolerance.
 
 PASS WQN-1    the algebra of SU(2)_L x SU(2)_R x U(1)_R x U(1)_F_tot, Hermitian generators, Y = T^3_R + R/4 (4.3), Q = T^3 + T^3_R + R/4, and [Y, T^1_R] != 0 [identities of exact matrices]

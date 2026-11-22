@@ -9,29 +9,31 @@
    formulas with which the Rust program sh_higgs computes the masses of the gauge bosons, rho and
    the amplitude mode, derived here in exact arithmetic from the effective Lagrangian of the pair
    fields, and the closed forms of the method HS (0, 0), in which only the pairing terms act,
-   compared with the data of the Rust program.  The identifiers are those of the Rust program with
-   the prefix W.
+   compared with the data of the Rust program.  The identifier of a check is WH and its number in this
+   script; each entry names, in parentheses, the checks of the Rust program sh_higgs and of the
+   Python program python/sh_higgs.py that test the same statements in floating point.
 
-     WH-1  the custodial algebra of the effective Lagrangian Z tr((d M)^dag d M) of the bidoublet
+     WH-1  (Rust H-4f, H-4g, H-5a, H-5b, H-6b; Python YH-2) the custodial algebra of the effective Lagrangian Z tr((d M)^dag d M) of the bidoublet
            M_SH -> L M_SH R^T at the vacuum M_SH = phi i tau^2, with chemical potentials of the six
            generators T^a (on L) and T^a_R (on R): the susceptibilities are chi(T^a, T^b) =
            chi(T^a_R, T^b_R) = -chi(T^a, T^b_R) = Z phi^2 delta_ab; with Y = T^3_R + R/4 (R unbroken)
            the electric charge Q = T^3 + Y does not respond, the mass matrix g_a g_b chi^{ab} of
            (W^1, W^2, W^3, B) has the eigenvalues 0, g^2 Z phi^2 (twice), (g^2 + g'^2) Z phi^2, and
            rho = 1 (symbolic g, g', Z, phi);
-     WH-2  the mass of the amplitude mode from the effective Lagrangian: for the two pair fields of the
+     WH-2  (the column M_EFT of the Rust program; Python YH-5) the mass of the amplitude mode from the
+           effective Lagrangian: for the two pair fields of the
            second version (Phi^d with T^3 = -1/2, Phi'^u with +1/2, moving together) and for the one of
            the first version, M^2 = V'' phi_0^2 / (4 chi^{33}) (symbolic);
-     WH-3  the closed forms of HS (0, 0): the gap equation (G_SH / 4 pi^2) I1(M_eff) = 1 with
+     WH-3  (Rust H-2b, H-2c, H-8a; Python YH-1, YH-3) the closed forms of HS (0, 0): the gap equation (G_SH / 4 pi^2) I1(M_eff) = 1 with
            M_eff = (m^2 + d_0^2/4)^(1/2), phi_0 = d_0 I1(M_eff) / (4 pi^2) = d_0 / G_SH, and the
            curvature of the effective potential of one pair, V''(phi_0) = 2 pi^2 d_0^2 J / (I1 (I1 -
            d_0^2 J / 4)) with J = int_0^1 q^2 (q^2 + M_eff^2)^(-3/2) dq (twice that in the second
            version, where both pairs move together), solved and evaluated to 30 digits, against the
            Rust values of both versions;
-     WH-4  the conversion to GeV and the comparison with the Standard Model: Lambda_LL = v / v_SH,
+     WH-4  (the columns in GeV of the Rust program; Python YH-5) the conversion to GeV and the comparison with the Standard Model: Lambda_LL = v / v_SH,
            M_H = omega_H Lambda_LL, the ratio M_H / v against m_H / v = 125.13 / v, from the data of the
            Rust program (exact rational arithmetic on the numbers of the files);
-     WH-5  the amplitude mode of HS (0, 0) lies at omega = d_0 exactly: with E_k^2 = k^2 + m^2 + d_0^2/4
+     WH-5  (Rust H-7d, H-8d; Python YH-7) the amplitude mode of HS (0, 0) lies at omega = d_0 exactly: with E_k^2 = k^2 + m^2 + d_0^2/4
            the amplitude and phase eigenvalues of the linear response (the closed forms of the theory of
            Bardeen, Cooper and Schrieffer, which the Python program checks against its response)
              lambda_amp(omega)   = (G_SH / 4 pi^2) int_0^1 dk k^2 (k^2 + m^2) / (E_k (E_k^2 - omega^2/4)),
@@ -180,11 +182,11 @@ lambda_amp(w) = 1 only at w = d_0; the continuum integrals give |lambda_amp(d_0)
 
 out = StringJoin[
   "sh_higgs.wls: the exact formulas of stage 4, second version with the first as the comparison (Revision_SM_Higgs, PROJECT spacetimes)\n",
-  "Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the\n",
+  "Each line: PASS or FAIL, the identifier of the check in this script (WH and a number), the statement and, in brackets, the\n",
   "facts that decide it.  Exact arithmetic, and numbers with 30 or 40 digits where a value of the Rust program is compared.\n\n",
   StringRiffle[lines, "\n"], "\n\nNotes:\n",
   "  Wolfram Language " <> ToString[IntegerPart[$VersionNumber]] <> "." <> ToString[Round[10 FractionalPart[$VersionNumber]]] <>
-   "." <> ToString[$ReleaseNumber] <> "; run time " <> ToString[Round[AbsoluteTime[] - t0, 0.1]] <> " s\n",
+   "." <> ToString[$ReleaseNumber] <> "; run time " <> ToString[NumberForm[Round[AbsoluteTime[] - t0, 0.1], {Infinity, 1}]] <> " s\n",
   If[npass == ntot, "\nVERDICT: ALL PASS (" <> ToString[npass] <> " of " <> ToString[ntot] <> ")\n",
    "\nVERDICT: FAIL (" <> ToString[npass] <> " of " <> ToString[ntot] <> " passed)\n"]];
 Export[reportFile, out, "Text"];

@@ -15,7 +15,7 @@ the folder `Revision_HS_CJT_and_Kohn-Sham` at the commit `19db425` (entry E34 of
 17:09 PST, to make backups and then to modify the hypotheses so that the superfluid can be the Higgs field of the
 Standard Model; "the superfluid must have the same quantum numbers as the Higgs" (entry C21). Sections 1 to 8 below
 describe the task as it stood under the earlier hypotheses, in the folder where that work was done; the decisions
-D19 to D33 of Section 6, the objects O10 to O18 of Section 7 and the entries from C20 on in Section 9 belong to the
+D19 to D34 of Section 6, the objects O10 to O18 of Section 7 and the entries from C20 on in Section 9 belong to the
 revision. Under the revised hypotheses $SU(2)_{\rm v}$ is $SU(2)_L$. In their first version the fermion number is the
 hypercharge ($Y^{\rm SM}=F_{\rm LL}/4$), the singlet field $\chi_{\rm SH}$ is added to $\Psi_{\rm LL}$, and the superfluid is the
 condensate of the doublet-singlet pairs, whose pair field $\Phi_{\rm SH}$ has the quantum numbers of $\Phi^{\rm SM}$. In their
@@ -253,6 +253,43 @@ group and the photon.
 
 **The pause.** The author's instruction of 21 November 2026, 06:35 (do not stop, but pause to push and to document)
 applies: the work continues after each corrected part has been documented and pushed.
+
+## 4.3 The identifiers of the checks of the revision (22 November 2026)
+
+**What I stated.** Since stage 2 of the first version of the revision (21 November 2026), the programs that check the
+Rust programs of the revision stated that their checks carry the identifiers of the Rust checks of the same statements:
+the Wolfram scripts `wolfram/source/sh_superfluid.wls` and `sh_higgs.wls` in their headers ("the identifiers are those
+of the Rust program with the prefix W") and in the second line of their reports, and the Python programs
+`python/sh_quantum.py`, `sh_superfluid.py` and `sh_higgs.py` in the second line of their reports ("the same identifier
+as in the Rust program", with the prefix Y), `sh_superfluid.py` also in its header. The programs of stage 6,
+`python/sh_dynamics.py` and `wolfram/source/sh_dynamics.wls`, made the same statements before they were committed.
+
+**What was true.** The rule of the identifiers of the earlier work (E13, E18) holds for the families of checks of
+stage 2: WQN-$n$ and YQN-$n$ test the statements of the Rust checks QN-$n$a, QN-$n$b, and so on, with the exceptions that the
+programs now name. In the other stages it does not hold. WSF-2b and WSF-5 test statements of SF-2a and of SF-6a, SF-6b.
+YSF-12 and YSF-13 test the closed forms of the ground states of SF-6a, SF-6b and the eigenvalue of the normal
+self-energies of SF-4b, while SF-12 and SF-13 are other statements. WH-1 to WH-5 and YH-1 to YH-9 are numbered in the
+order of their programs: WH-1, for example, tests the statements of H-4f to H-6b, not that of H-1. So are WD-1 to WD-5
+and YD-1 to YD-6, and WD-5 and YD-6, the reduction to pseudospins, have no Rust counterpart. For these stages the
+statements were false.
+
+**Why I made it.** The second line of the Python reports is written by the report class of `python/sfcommon.py` of the
+earlier work, where the rule holds after E18, and I used the class without changing the line. The headers of the
+Wolfram scripts repeated the sentence of `sh_quantum.wls`, for which it holds, while their checks were numbered in the
+order in which each program makes them. I did not compare the identifiers with the reports of the Rust programs.
+
+**The correction.** The report class takes the description of the identifiers as an argument, and the programs of the
+earlier work keep their line. The programs of the revision state their own: Y or W, the letters of the stage and a
+number, and in stage 2 the family of the Rust checks. The header of every checking program of the revision names, for
+each check, the checks of the other programs that test the same statements, and the notebook does the same (D34). The
+Python programs and the Wolfram scripts of stages 2, 3 and 4 were run again: their lines of checks are unchanged, and
+only the second line of the reports (and the run time of one Wolfram report) changed, so that no table of the
+documents changed (E57).
+
+**What changes.** The identifiers of a new checking program are compared with the report of the Rust program before
+its first commit (D34).
+
+**The pause.** As in Section 4.2: the work continues after the corrected part has been documented and pushed.
 
 # 5. The state of the work when this record was written
 
@@ -652,6 +689,18 @@ itself by its rotations, so the projection commutes with $SU(2)_L\times SU(2)_{\
 symmetry instead of breaking it by itself. In the first version the densities of $\chi'_{\rm SH}$ and of the mixing of the two
 singlets vanish in every state, and the projection is that of D28.
 
+**D34. The identifiers of the checks of the revision (my decision of interpretation, 22 November 2026).** The rule of
+the earlier work, that a Python or Wolfram check carries the identifier of the Rust check of the same statement with
+the prefix Y or W (E13, E18), is kept in stage 2, whose checks follow the families of the Rust checks. In stages 3, 4
+and 6 the checks of the three programs do not correspond one to one: one Wolfram check derives exactly what several
+Rust checks test in floating point, and some checks have no counterpart (the reduction to pseudospins of stage 6 is
+checked only in Python and in the Wolfram Language). Their identifiers are Y or W, the letters of the stage (SF, H, D)
+and a number in the order of the program, and each check names its counterparts in the header of its program and in
+the notebook (Section 4.3).
+
+*Reason.* Renumbering by the rule would give identifiers that name no Rust check, or one identifier to several
+checks; naming the counterparts keeps every correspondence visible.
+
 **D11. Documents.** The manuscript `superfluid.md` (with `.tex` and `.pdf`); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the checks; a provenance of the notebook; and the
 README of the folder. Each document is complete in itself (Rules 4 and 10).
@@ -683,7 +732,8 @@ The work is done as a sequence of objects; each is committed and pushed as soon 
 
 The objects O13 and O14 are carried out for the second version, with the first version as the comparison, and as one
 stage. The susceptibilities that give the scale $v_{\rm SH}$ also give $M_Z$ and $\rho$ (decided on 21 November 2026, at the start of the
-second version). They were completed on 21 November 2026 (entries E50 to E53 of Section 9).
+second version). They were completed on 21 November 2026 (entries E50 to E53 of Section 9). Object O15 is carried out in three parts: the dynamics in time (entries E54 to E56), the notebook, and the
+article.
 
 The plan is changed only with a record in Section 9.
 
@@ -844,3 +894,7 @@ introduced by the revision of the hypotheses.
 | E51 | 21 Nov 2026, 21:50 to 23:50 | the results of stage 4 (E50). Along the direction of the vacuum the effective potential is a Mexican hat with its minimum at the ground state of stage 3, in every method and both versions. The susceptibilities to the chemical potentials of the eight generators are symmetric; the electric charge has none, so the photon is massless; their rank is four in the second version (three gauged generators and the particle number) and three in the first. In the second version $\rho_{\rm SH}=1$ in every method ({{GEN:hg_rho2_range}}); in the first $\rho_{\rm SH}$ is {{GEN:hg_rho1_range}}. With $v_{\rm SH}=246.22$ GeV the cutoff is {{GEN:hg_lam2_range}} GeV in the second version. In the pairing-only methods the response of the pair amplitudes has the closed forms of the theory of Bardeen, Cooper and Schrieffer, which I found by comparing them with the numerical response (check YH-7), not by derivation; with the gap equation they put the amplitude mode exactly at $\omega^{\rm H}_{\rm SH}=d^0_{\rm SH}$, below the threshold $2M^{\rm eff}_{\rm SH}$, for every coupling and mass (checks WH-5, H-7d, H-8d). The amplitude mode is {{GEN:hg_factor_range}} times too heavy relative to the scale; the effective Lagrangian of the pair fields puts it above the energy that breaks a pair. In the second version the modes of the four complex pair fields are a singlet and a triplet of $SU(2)_{\rm V}$ at $\omega=0$ and again at $\omega=d^0_{\rm SH}$ (check YH-8): the second version has the scalars of two Higgs doublets, with a custodial triplet of massive scalars degenerate with the candidate for the Higgs boson in these methods |
 | E52 | 21 Nov 2026, 21:50 to 23:50 | the corrections of stage 4, first part, each found before the commit: (1) the first complete run (2182 s) failed three checks. Check H-7b compared the amplitude mode with the lowest transition energy of the whole sector, which in the first version is that of the unpaired fields ($2m_{\rm LL}$, below the mode); the program now takes the lowest transition energy whose terms act on the null space of the mode (check H-7e: it is $2M^{\rm eff}_{\rm SH}$) and reports the other as well. Check H-7c (HS (0, 1) against HS (0, 0), $2.6\times10^{-8}$ against the tolerance $10^{-8}$) failed because the singular values from the eigenvalues of $(1-\boldsymbol\chi\mathsf F)^\dagger(1-\boldsymbol\chi\mathsf F)$ are resolved only to about $10^{-8}$; the program now takes the singular values restricted to the near-null eigenvectors of that product, resolved to about $10^{-11}$. Check H-8b failed in the two points of the scan with $m_{\rm LL}=0.1$ and $G_{\rm SH}=3G^{\rm crit}_{\rm SH}$, where the mode lies only 0.005 below the threshold: the equal steps of the scan were 0.006 apart, and the frequencies within $2\times10^{-4}$ of a transition energy were skipped, so that no step lay above the mode; the scan now adds 25 frequencies that approach the threshold geometrically and skips only those within $10^{-7}$ of a transition. The program was run again after these changes, with the new checks H-7d, H-7e and H-8d; (2) in the Python program the response at $\omega=0$ divided zero by zero for degenerate levels of equal occupation, and the sums over the momenta were slow; the quotient is now taken only where the occupations differ, and the sums are ordered by the library; the mass of the fields in the scan, first set through a global variable of the module, is now an argument |
 | E53 | 21 Nov 2026, 21:50 to 23:50 | the corrections of stage 4, second part, each found before the commit: (3) the first form of check YH-7 compared $\lambda^{\rm amp}_{\rm SH}-1$ with the factorized form, so that the tolerance of the self-consistent solution, $1.6\times10^{-12}$ in $\lambda^{\rm ph}_{\rm SH}(0)-1$, entered a comparison of exact identities; it now compares $\lambda^{\rm amp}_{\rm SH}-\lambda^{\rm ph}_{\rm SH}(0)$, and reports the gap equation separately; (4) in the Wolfram script the eigenvalues of the symbolic mass matrix were first sorted, which fails for symbols, and real symbols were not declared; the script now compares characteristic polynomials and uses `ComplexExpand`, and it detects the rows of the methods without a linear response, which carry NaN; (5) the drafts of the manuscript wrote $M^{\rm eff}_{\rm SH}$ squared with a double superscript, which TeX refuses; put machine-written ranges inside formulas; wrote the unregistered symbols $M_{\rm eff}$ and $m$ in the text and in the header of the table of the scan; and gave the threshold of the first version as twice the gap of stage 3, which is that of the unpaired fields; all are corrected, and the amplitude mode now has two tables, one for the effective Lagrangian and one for the linear response; (6) the draft said that the effective Lagrangian puts the mode "at or above" the threshold; it is above it in every method of the second version, which the writer of the fragments now checks; (7) the second run (2008 s) failed only check H-7e: the first rule for the transitions that act on the mode compared each residue with the largest residue of all, and the small weights of the smallest momenta of the grid hid the lowest transition, which does act; each residue is now compared with the size of its own term, and the program was run a third time |
+| E54 | 22 Nov 2026, 00:00 to 01:40 | object O15, stage 6 of the second version, part one: the dynamics in time. The program `sh_dynamics` (crate `rust/shdynamics`), the time-dependent mean field of the five methods integrated with CVODE through the crate `sfsundials` ({{GEN:dy_verdict_rust}}, {{GEN:dy_nruns}} runs in {{GEN:dy_run_s}} s on two threads); the Python program `python/sh_dynamics.py` ({{GEN:dy_verdict_python}}), with its own right side of the equations and the same CVODE through the C interface of the folder, and the figures by `python/sh_dynamics_figures.py`; the Wolfram script `wolfram/source/sh_dynamics.wls` ({{GEN:dy_verdict_wolfram}}, on the author's computer through the watcher). The new manuscript `higgs_dynamics.md`; the remarks R11 and R12 of `provenance/P4_remarks.md` and Sections 5.3 and 7 of `higgs_masses.md` gain what the dynamics shows. The data files `data/sh_dyn_runs.csv`, `sh_dyn_signals.csv`, `sh_dyn_spectra.csv`, `sh_dyn_values.csv`. The registry gains 8 entries (263 entries): $\mathsf N^0_{\rm SH}$, $\mathsf P^0_{\rm SH}$; $\mathsf O_{\rm SH}$; $\mathcal R_{\rm SH}$; $\mathsf P^{\rm trip}_{\rm SH}$, $d^{\rm trip}_{\rm SH}$; $t^{\rm end}_{\rm SH}$, $\epsilon^{\rm kick}_{\rm SH}$; $y_{\rm SH}$, $\tilde y_{\rm SH}$, $h^{\rm Hann}_{\rm SH}$; $\omega^{\rm pk}_{\rm SH}$, $\Gamma^{\rm pk}_{\rm SH}$, $\Gamma^{\rm win}_{\rm SH}$; the pseudospins $\mathbf n^\pm_{\rm SH}$, their fields $\mathbf b^\pm_{\rm SH}$ and the gap parameter $\Delta_{\rm SH}$ |
+| E55 | 22 Nov 2026, 00:00 to 01:40 | the results of stage 6, part one (E54). The equations conserve the energy, the charges of the symmetries and the orthonormality of the vectors to the accuracy of the integration; the ground states stay at rest; the phase of the pair fields turns at the rate $2\mu$ under a chemical potential $\mu$ of the particle number (the Josephson relation). In HS (0, 1) and HS (0, 0) a small displacement along the vacuum direction oscillates at $d^0_{\rm SH}$, undamped, and one along the custodial triplet at the same frequency: the linear response of stage 4 holds in the time domain. In HS (1, 1) the amplitude mode is bound below the energy that breaks a pair, at {{GEN:dy_ratio_hs11_2}} times its $d^0_{\rm SH}$ (second version), and the triplet lies {{GEN:dy_split_hs11}} per cent above it; in KS and CJT the amplitude mode lies above the energy that breaks a pair and decays. KS and CJT give the same dynamics. A large displacement softens the oscillation. In HS (0, 0) the whole dynamics is that of Anderson pseudospins, one for the particles and one for the antiparticles at every radial node; I found this reduction by comparing it with the full computation (checks YD-6, WD-5), not by derivation |
+| E56 | 22 Nov 2026, 00:00 to 01:40 | the corrections of stage 6, part one, each found before the commit: (1) the first tolerances of CVODE, $10^{-10}$ and $10^{-12}$, let the energy per volume drift by about $4\times10^{-10}$ per unit of time; the energy is the difference of its kinetic and interaction parts, each about ten times larger, and the drift followed the loss of orthonormality from the integration error, not the equations (their rate of change of the energy vanishes at a state to $10^{-14}$); with $10^{-12}$ and $10^{-14}$ the drift fell by more than a hundred and CVODE took the order 7 and fewer steps; (2) the first runs of $t^{\rm end}_{\rm SH}=600$ took 266 s each; the runs were shortened to 300, which resolves the peaks well (the window has the half width $2\pi/300$); (3) check D-3a first required the energy to $10^{-7}$ of its size; over 300 units of time the integration error gives about $10^{-6}$; the tolerance is now $10^{-5}$, with the cause stated in the check, and the Python check of the energy was likewise split from that of the orthonormality (YD-2a, YD-2b); the program was run a second time; (4) in the Wolfram script the Josephson identity was first written with the commutator of the stationary state subtracted instead of added, and the imaginary parts of the two symbolic Hermitian matrices shared one symbol; both were corrected before its first run; the comparison of the transform of the Hann window was first numerical at 40 digits, which an exact zero cannot reach, and is now exact; (5) the figures first drew the signals, stored every 1.0, as straight segments between the samples; they are now drawn by band-limited interpolation |
+| E57 | 22 Nov 2026, 01:15 to 01:40 | the correction of Section 4.3: the report class of `python/sfcommon.py` takes the description of the identifiers as an argument (the programs of the earlier work keep the old line); the headers and the report lines of `python/sh_quantum.py`, `sh_superfluid.py`, `sh_higgs.py`, `sh_dynamics.py` and of `wolfram/source/sh_quantum.wls`, `sh_superfluid.wls`, `sh_higgs.wls`, `sh_dynamics.wls` state the identifiers as they are and name the counterparts of each check; the Python programs of stages 2 to 4 run again (lines of checks unchanged), and the four Wolfram scripts run again on the author's computer (lines of checks unchanged, except that WD-4 now writes the length of the runs as 300 instead of 300.00000000000000); the decision D34 |

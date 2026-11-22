@@ -8,23 +8,25 @@
    Psi_LL and the two singlets chi_SH, chi'_SH; sixteen components): the formulas with which the
    Rust program sh_superfluid compares its static response of the normal vacuum and its ground
    states, derived here in exact arithmetic, and their values compared with the data of the Rust
-   program.  The identifiers are those of the Rust program with the prefix W.
+   program.  The identifier of a check is WSF and its number in this script; each entry names, in
+   parentheses, the checks of the Rust program sh_superfluid and of the Python program
+   python/sh_superfluid.py that test the same statements in floating point.
 
-     WSF-2a  the pair matrices: the old triplet matrix K^3 = C gamma^ch (x) E tau_3 couples the up and
+     WSF-2a  (Rust SF-2a; Python YSF-2) the pair matrices: the old triplet matrix K^3 = C gamma^ch (x) E tau_3 couples the up and
              the down components of Psi_LL through the blocks -C gamma^ch; the new matrices couple the
              down components with chi_SH (K_d) and the up components with chi'_SH (K'_u) through the
              blocks C gamma^ch / 2: the same Lorentz channel between two Dirac fields of equal mass,
              with the coefficient 2 in place of 1, hence G^crit_SH = 4 G^crit_LL;
-     WSF-2b  I1(m) = int_0^1 q^2/sqrt(q^2+m^2) dq in closed form, G^crit_SH = 4 pi^2 / I1(1/5) and
+     WSF-2b  (Rust SF-2a; Python YSF-2) I1(m) = int_0^1 q^2/sqrt(q^2+m^2) dq in closed form, G^crit_SH = 4 pi^2 / I1(1/5) and
              G_SH / G^crit_SH, against the Rust values of both versions;
-     WSF-3   the exchange contraction of the pairing terms in the scalar channel: a scalar density n
+     WSF-3   (Rust SF-3a, SF-3b; Python YSF-3) the exchange contraction of the pairing terms in the scalar channel: a scalar density n
              of Psi_LL gives each paired singlet the self-energy -(G_SH/16) n beta, and a scalar
              density of a paired singlet gives Psi_LL -(G_SH/16) n beta (x) 1_2; the scalar
              susceptibility in closed form; the largest eigenvalue of the 3 x 3 response of CJT for
              V^(1)_SH in both versions against the Rust values;
-     WSF-4   the triplet pair coupling -(1/4) G^S - G^V = 6/5 of KS and CJT and its eigenvalue
+     WSF-4   (Rust SF-4a; no Python check) the triplet pair coupling -(1/4) G^S - G^V = 6/5 of KS and CJT and its eigenvalue
              (6/5) / G^crit_LL against the Rust value;
-     WSF-5   the ground states of HS (0, 1) and HS (0, 0), where only the pairing terms act: the gap
+     WSF-5   (Rust SF-6a, SF-6b; Python YSF-6, YSF-12) the ground states of HS (0, 1) and HS (0, 0), where only the pairing terms act: the gap
              equation G_SH I1(M_eff) / (4 pi^2) = 1, M_eff = (m^2 + |D|^2/4)^(1/2), solved to 30 digits;
              |D| against the singular values of the Rust program (both equal to |D| in the second
              version; |D| and 0 in the first).
@@ -151,11 +153,11 @@ and |D| in the second version and |D| and 0 in the first", dev5 < 10^-9, "deviat
 
 out = StringJoin[
   "sh_superfluid.wls: the exact formulas of stage 3, second version (Revision_SM_Higgs, PROJECT spacetimes)\n",
-  "Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the\n",
+  "Each line: PASS or FAIL, the identifier of the check in this script (WSF and a number), the statement and, in brackets, the\n",
   "facts that decide it.  Exact arithmetic, and numbers with 30 digits where a value of the Rust program is compared.\n\n",
   StringRiffle[lines, "\n"], "\n\nNotes:\n",
   "  Wolfram Language " <> ToString[IntegerPart[$VersionNumber]] <> "." <> ToString[Round[10 FractionalPart[$VersionNumber]]] <>
-   "." <> ToString[$ReleaseNumber] <> "; run time " <> ToString[Round[AbsoluteTime[] - t0, 0.1]] <> " s\n",
+   "." <> ToString[$ReleaseNumber] <> "; run time " <> ToString[NumberForm[Round[AbsoluteTime[] - t0, 0.1], {Infinity, 1}]] <> " s\n",
   If[npass == ntot, "\nVERDICT: ALL PASS (" <> ToString[npass] <> " of " <> ToString[ntot] <> ")\n",
    "\nVERDICT: FAIL (" <> ToString[npass] <> " of " <> ToString[ntot] <> " passed)\n"]];
 Export[reportFile, out, "Text"];

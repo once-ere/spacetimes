@@ -12,17 +12,19 @@ in the first version without the primed terms) or 0 (V^(0)_SH); the methods HS (
 exchange projected onto the number and scalar densities, those of Psi_LL as matrices in the isospin space and those of
 the singlets as matrices in the space of the two singlets) and CJT.
 
-What it checks (the identifiers of the Rust program with the prefix Y):
-  YSF-2  the response of the normal vacuum of the second version in each of the four doublet-singlet pairs,
+What it checks (the identifier of a check is YSF and a number; in parentheses the checks of the Rust program
+sh_superfluid that test the same statements):
+  YSF-2  (SF-2a, SF-2b) the response of the normal vacuum of the second version in each of the four doublet-singlet pairs,
          G_SH / G^crit_SH with G^crit_SH = 4 pi^2 / I1(m);
-  YSF-3  the 3 x 3 response of the Dirac masses of the three fields in the normal vacuum;
-  YSF-5  V^(0)_SH: the normal start and the custodial start end in the normal vacuum;
-  YSF-6  V^(1)_SH: the ground states of both versions in the five methods (second version from the start along
+  YSF-3  (SF-3a) the 3 x 3 response of the Dirac masses of the three fields in the normal vacuum;
+  YSF-5  (SF-5) V^(0)_SH: the normal start and the custodial start end in the normal vacuum;
+  YSF-6  (SF-6a, SF-6b) V^(1)_SH: the ground states of both versions in the five methods (second version from the start along
          i tau^2, first version from the start along Phi^d): the energy, the singular values of the bidoublet, the masses
          of the four species and the differences of the scalar densities, against data/sh_sf_ground.csv;
-  YSF-7  the start along a rotated unitary bidoublet gives the same energy and singular values (KS and CJT);
-  YSF-11 the gaps: in the first version |M_u| at zero momentum; in the second version the value of the Rust program;
-  YSF-12 HS (0, 1) and HS (0, 0), whose ground states have no normal self-energy, so that only the pairing terms act: the
+  YSF-7  (SF-7a) the start along a rotated unitary bidoublet gives the same energy and singular values (KS and CJT);
+  YSF-11 (SF-11a, SF-11b, SF-11c) the gaps: in the first version |M_u| at zero momentum; in the second version the value of the Rust program;
+  YSF-12 (the ground states of SF-6a and SF-6b against the closed forms; the Rust check SF-12 tests another
+         statement) HS (0, 1) and HS (0, 0), whose ground states have no normal self-energy, so that only the pairing terms act: the
          closed forms.  In the first version the pair self-energy is D_d K_d^dag alone, and in the second D_d K_d^dag +
          D'_u K'_u^dag with |D'_u| = |D_d|: the two channels (the down particles with chi_SH, the up particles with chi'_SH)
          are decoupled and equal.  |D_d| satisfies the gap equation G_SH I1(M_eff) / (4 pi^2) = 1 with
@@ -30,7 +32,8 @@ What it checks (the identifiers of the Rust program with the prefix Y):
          eigenvalues of the BdG matrices are (eps(q)^2 + |D_d|^2/4)^(1/2) sixteenfold in the second version, and eps(q)
          fourfold for the unpaired up components, eps(q) fourfold for the free chi'_SH and (eps(q)^2 + |D_d|^2/4)^(1/2)
          eightfold in the first;
-  YSF-13 the current channel of the normal vacuum: a uniform self-energy a alpha^3 (x) 1_2 of Psi_LL (a uniform vector
+  YSF-13 (the eigenvalue of the normal self-energies of SF-4b, which it explains; the Rust check SF-13 tests
+         another statement) the current channel of the normal vacuum: a uniform self-energy a alpha^3 (x) 1_2 of Psi_LL (a uniform vector
          potential) changes the current tr((alpha^3 (x) 1_2) rho) by -chi_J a with chi_J = 2 Lambda^3 / (3 pi^2 (Lambda^2 +
          m^2)^(1/2)), a surface term of the sharp cutoff; the largest eigenvalue of the static response of the normal
          self-energies in HS (0, 1), where only the vector term acts in them, is G^V chi_J (against the Rust program).
@@ -308,7 +311,8 @@ P_ROT = bidoublet([[0.18, 0.24j], [0.24j, 0.18]])   # a rotated unitary bidouble
 
 def main():
     rep = Report("sh_superfluid.py: the Python computation of the checks of sh_superfluid, second version (stage 3, "
-                 "Revision_SM_Higgs, PROJECT spacetimes)")
+                 "Revision_SM_Higgs, PROJECT spacetimes)",
+                 ident="the identifier of the check in this program (YSF and a number)")
     z = np.zeros((N, N), complex)
     gcrit = 4 * np.pi ** 2 / i1(M_LL)
     rust_nv = {(r["potential"], r["method"]): r for r in read_csv("sh_sf_normal_vacuum.csv")}

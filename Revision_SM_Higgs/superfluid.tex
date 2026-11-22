@@ -11547,6 +11547,59 @@ pair amplitudes at the frequency \(\omega\) in the pairing-only method
 HS (0, 0), along the amplitude and along the phase of the vacuum
 direction: a mode lies where one of them equals 1 & new in the revision
 of the hypotheses \\
+\(\mathsf N^0_{\rm SH}\), \(\mathsf P^0_{\rm SH}\) & \texttt{n0}
+\texttt{p0} & the normal and the pair self-energies of the ground state
+of a method, from which the runs of the dynamics in time start & new in
+the revision of the hypotheses \\
+\(\mathsf O_{\rm SH}(\vec q_{\rm LL},t)\) & \texttt{O\_occ} & the
+\(32\times16\) matrix whose columns are the sixteen occupied
+quasi-particle vectors of a uniform state of the sixteen components at
+the momentum \(\vec q_{\rm LL}\) and the time \(t\) (at \(t=0\) the
+eigenvectors of negative energy of a BdG matrix) & new in the revision
+of the hypotheses \\
+\(\mathcal R_{\rm SH}(\vec q_{\rm LL},t)\) & \texttt{R\_gen\_SH} & the
+generalized density of a uniform state of the sixteen components at the
+momentum \(\vec q_{\rm LL}\) and the time \(t\): the \(32\times32\)
+projector \(\mathsf O_{\rm SH}\mathsf O_{\rm SH}^\dagger\), whose upper
+left block is the normal correlation matrix and whose upper right block
+is minus the pair correlation matrix & new in the revision of the
+hypotheses \\
+\(\mathsf P^{\rm trip}_{\rm SH}\), \(d^{\rm trip}_{\rm SH}\) &
+\texttt{p\_trip} \texttt{dtrip} & the direction
+\((\mathsf K'^{\rm u}_{\rm SH})^\dagger+(\mathsf K^{\rm d}_{\rm SH})^\dagger\)
+of the neutral member of the custodial triplet in the pair self-energy
+(the two pair fields displaced oppositely), and the coefficient of a
+pair self-energy along it & new in the revision of the hypotheses \\
+\(\mathbf n^\pm_{\rm SH}(q_i,t)\), \(n^{\pm,x}_{{\rm SH},i}\),
+\(n^{\pm,y}_{{\rm SH},i}\), \(\mathbf b^\pm_{\rm SH}\),
+\(\Delta_{\rm SH}(t)\) & \texttt{n\_ps} \texttt{b\_ps}
+\texttt{Delta\_SH} & the reduced model of the pairing-only method HS (0,
+0): the Anderson pseudospins of the particles (upper sign) and of the
+antiparticles (lower sign) at the radial node \(q_i\) of the grid, unit
+vectors that precess in the fields \(\mathbf b^\pm_{\rm SH}\) with the
+components \(-\mathrm{Re}\,\Delta_{\rm SH}\),
+\(\mathrm{Im}\,\Delta_{\rm SH}\) and \(\pm\varepsilon_{\rm LL}(q_i)\),
+their components, and the gap parameter
+\(\Delta_{\rm SH}(t)=d_{\rm SH}(t)/2\) & new in the revision of the
+hypotheses \\
+\(t^{\rm end}_{\rm SH}\), \(\epsilon^{\rm kick}_{\rm SH}\) &
+\texttt{t\_end} \texttt{eps\_kick} & the length of a run of the dynamics
+in time, and the displacement of the pair self-energy with which it
+starts, relative to \(d^0_{\rm SH}\) & new in the revision of the
+hypotheses \\
+\(y_{\rm SH}(t)\), \(\tilde y_{\rm SH}(\omega)\),
+\(h^{\rm Hann}_{\rm SH}(t)\) & \texttt{signal} \texttt{spectrum}
+\texttt{hann} & the signal of a run of the dynamics in time (the length
+or a component of the coefficient of the pair self-energy, its mean
+removed), its Fourier transform with the Hann window, and the Hann
+window \(\sin^2(\pi t/t^{\rm end}_{\rm SH})\) & new in the revision of
+the hypotheses \\
+\(\omega^{\rm pk}_{\rm SH}\), \(\Gamma^{\rm pk}_{\rm SH}\),
+\(\Gamma^{\rm win}_{\rm SH}\) & \texttt{omega\_peak} \texttt{hwhm}
+\texttt{hwhm\_window} & the frequency and the half width at half maximum
+of the largest peak of the spectrum of a run, and the half width
+\(2\pi/t^{\rm end}_{\rm SH}\) that the Hann window alone gives & new in
+the revision of the hypotheses \\
 \(v_{\rm SH}\) & \texttt{v\_SH} & the scale of the breaking of
 \(SU(2)_L\times U(1)_Y\) by the superfluid, defined by the mass
 \(M_W=g\,v_{\rm SH}/2\) that the superfluid gives the \(W\) boson (the
