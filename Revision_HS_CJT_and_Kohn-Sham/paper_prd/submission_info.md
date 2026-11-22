@@ -214,7 +214,7 @@ submitting.
 | `fig_part3_q4_thermal.pdf`    | Figure 3                                                        |  43 | `c7bac6536492b220`        |
 | `fig_prd_ginzburg.pdf`        | Figure 4                                                        |  26 | `1e79446ef1c9c36e`        |
 | `fig_prd_higgs.pdf`           | Figure 5                                                        |  23 | `aaed0cb24621a722`        |
-| `higgs_composite_qg_SM.pdf`   | the Supplemental Material (PDF)                                 | 635 | `68580df864e4b763`        |
+| `higgs_composite_qg_SM.pdf`   | the Supplemental Material (PDF)                                 | 635 | `d1b11e4b83a81f02`        |
 | `cover_letter.pdf`            | the cover letter (PDF)                                          |  86 | `7a7af727c5d82a82`        |
 
 # The steps on the submission server

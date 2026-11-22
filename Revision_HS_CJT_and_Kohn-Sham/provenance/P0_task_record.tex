@@ -1460,7 +1460,7 @@ accepts the Krylov solver
 dense Jacobian matrix \\
 C9 & 21 Nov 2026 & object O8, first version: the notebook
 \texttt{superfluid.nb} with the introduction, the register of the checks
-and Part I (154 checks; ALL PASS (154 of 154), 0 messages in the front
+and Part I (153 checks; ALL PASS (153 of 153), 0 messages in the front
 end of Wolfram 15.0.1), its sources in \texttt{wolfram/source/}, its
 tools in \texttt{wolfram/tools/}, its printed copy
 \texttt{superfluid\_notebook.pdf}, its log
@@ -1532,7 +1532,7 @@ ground states of 15 cases, the Goldstone and the collective modes, the
 susceptibilities, the exchange of the gauge bosons with the Thouless
 eigenvalues and the CJT state with the exchange; 23 checks, each with
 its counterparts in \texttt{sf\_part2} and \texttt{python/sf\_part2.py}
-(154 checks in all; ALL PASS (154 of 154), 0 messages);
+(153 checks in all; ALL PASS (153 of 153), 0 messages);
 \texttt{code/scripts/write\_notebook\_fragments.py} now accepts several
 counterparts of one check (``P2-6b, P2-6c''); one warning of
 \texttt{NIntegrate} in the first dry run removed (error E8 of
@@ -1588,7 +1588,7 @@ temperatures and their uniqueness, the superfluid of CJT at \(0.5\) and
 theory, the residuals of the Landau forms, the answer, and the remark on
 the mean-field free energies with its importance; 26 checks, each with
 its counterparts in \texttt{sf\_part3} and \texttt{python/sf\_part3.py}
-(154 checks in all; ALL PASS (154 of 154), 0 messages); the new Rust
+(153 checks in all; ALL PASS (153 of 153), 0 messages); the new Rust
 check P3-T9 and the new Python checks YP3-T5 to YP3-T8, so that every
 check of the section has counterparts in both programs (VERDICT: ALL
 PASS (155 of 155); VERDICT: ALL PASS (112 of 112)); the corrections E9
@@ -1661,8 +1661,8 @@ of the amplitude field by exact symbolic differentiation, the numbers of
 the Higgs sector and the row of the Standard Model, with the answers and
 the three remarks (the factors of the Ginzburg number, the
 regularization, the width); every check with its counterparts in
-\texttt{sf\_part3} and \texttt{python/sf\_part3.py} (154 checks in all;
-ALL PASS (154 of 154), 0 messages); the new Rust checks P3-G10 to
+\texttt{sf\_part3} and \texttt{python/sf\_part3.py} (153 checks in all;
+ALL PASS (153 of 153), 0 messages); the new Rust checks P3-G10 to
 P3-G12, P3-H3, P3-H4 and the Python counterparts of every Rust check of
 C14 (E18; VERDICT: ALL PASS (155 of 155); VERDICT: ALL PASS (112 of
 112)); in Section III.T of the notebook the answer qualified as in E14
@@ -1797,7 +1797,7 @@ computes for every method the larger ratio of the masses of \(W\) and
 the masses of the effective Lagrangian exceed those of the linear
 response; dry run (request 273 of the watcher, no message) and build
 (261 cells, 0 warnings) on the author's computer, evaluation in the
-front end of Wolfram (ALL PASS (154 of 154), 0 messages); the
+front end of Wolfram (ALL PASS (153 of 153), 0 messages); the
 Supplemental Material of the article lists the new checksums of the
 notebook and its source \\
 C18 & 21 Nov 2026, 14:57 and 15:11 & the author's statement and request:
@@ -1946,6 +1946,20 @@ manuscript now gives the earlier numbers of checks of Part III in the
 past tense. The docstring of \texttt{python/sf\_part4.py} gave its run
 time as about ten minutes; it is about one minute. The notebook itself
 is evaluated again in the next part of C18 \\
+E30 & 21 Nov 2026, 16:35 to 16:47 & fifth part of C18: the notebook
+\texttt{superfluid.nb} built and evaluated again on the author's
+computer (Wolfram 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)), from
+the sources corrected in E29 and the data cells written from the
+programs run again in E28: ALL PASS (153 of 153), 0 messages (263 s).
+The check WP3-H4 of the row of the Standard Model is gone, and the texts
+of the checks of Part II and the remark at its end name the zeugon.
+Before the build, a dry run of the input cells in a plain kernel found
+no error and no failed check. \texttt{provenance/P3\_notebook.md} now
+gives the counts of the builder from its report, kept in
+\texttt{data/hck\_notebook\_build.txt} and written by
+\texttt{code/scripts/write\_notebook\_fragments.py} (no longer typed),
+lists that report among its files, and records the new evaluation in
+item 16 of its Section 9 \\
 \end{longtable}
 
 \end{document}

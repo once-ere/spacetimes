@@ -1478,7 +1478,7 @@ data-reference="sec:higgs">8</a> (a check of a fact has no deviation).
 | Python `sf_part3.py`                                       |    112 |    112 |
 | Rust `sf_part4` (Part IV)                                  |    120 |    120 |
 | Python `sf_part4.py`                                       |     20 |     20 |
-| Wolfram Language notebook `superfluid.nb` (Parts I to III) |    154 |    154 |
+| Wolfram Language notebook `superfluid.nb` (Parts I to III) |    153 |    153 |
 
 The checks of the programs of the folder (all pass).
 
@@ -1824,7 +1824,6 @@ counterparts of the Rust checks of the same identifier without the Y).
 | WP3-H3 KS PASS      | 2.253e-13 | 1.000e-09 | KS: the numbers of the Higgs sector (v_SF = 0.13140786, M_H/v_SF = 4.59239, lambda = 10.545, Gamma/M_H = 2.1349) = Rust (largest relative difference) \[Rust: P3-H3 KS; Python: YP3-H3 KS\]                                                                                                                                                                                                                                                |
 | WP3-H1 CJT PASS     | –         | –         | CJT: the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.603476 \< 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) \[M_H / 2 E_gap = 0.82354\] \[Rust: P3-H1 CJT; Python: YP3-H1 CJT\]                                                                                                                                                                                                  |
 | WP3-H3 CJT PASS     | 3.085e-13 | 1.000e-09 | CJT: the numbers of the Higgs sector (v_SF = 0.13531998, M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest relative difference) \[Rust: P3-H3 CJT; Python: YP3-H3 CJT\]                                                                                                                                                                                                                                            |
-| WP3-H4 PASS         | 2.183e-16 | 1.000e-10 | the Standard Model row: M_H/v = 0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference) \[Rust: P3-H4; Python: YP3-H4\]                                                                                                                                                                                                                        |
 
 The checks of the notebook `superfluid.nb` (WP3-T, WP3-G, WP3-H), with
 their counterparts in the two programs.
@@ -1870,7 +1869,7 @@ SHA-256 checksums at the time this document was built:
 | `data/hck_part3_checks_python.txt`                 | `344367a0a0fbfa332a3dbe83e888713f55d619bdf7506a43008c60dbd116e8b8` |
 | `data/hck_part4_checks.txt`                        | `6cc8ba37d8787ea1cb0a31438079f8348d2a2273fa847b446524f9ca8f36443a` |
 | `data/hck_part4_checks_python.txt`                 | `0f0fb9a12812008f66200f6a14f2fc633f4c70e7f06be29651d55e3645d4d487` |
-| `data/hck_notebook_log.txt`                        | `73097acaae5ad3b3462e6b7f0f642842931531efa0b166c29b0cfe24fdd49c9c` |
+| `data/hck_notebook_log.txt`                        | `81751603dad3553440e2726d316f004212cca0e1c4eea0ee88bbb1529f2f7eae` |
 | `rust/sfpart3/src/main.rs`                         | `c065a69896b38d3c33ef9053fd3f6d712bd90b092ce2771e56e670bb2857d84a` |
 | `rust/sfpart3/src/ginzburg.rs`                     | `55fe360697251a1cdeba86429126a97e07e87228218853537156b6ab5840b5c6` |
 | `rust/sfpart3/src/higgs.rs`                        | `31f093abb797ee358e661a97cc6e3134625d00518e1c43dd9a9caa230d40c2ca` |
@@ -1880,7 +1879,7 @@ SHA-256 checksums at the time this document was built:
 | `python/sf_part3.py`                               | `facb6fb6288b333384f59cd8605f3d14a3ea615fe297722ca03c47d5b159b677` |
 | `python/sf_part3_figures.py`                       | `fa06c6a34825baea16b390ffeef190a8890414adde38b3caa33a42ee3d2ea067` |
 | `wolfram/source/part3_ginzburg.source.wl`          | `ce3d808ecca2c26e66901435fd14df314dd1c6c308288810e925b627e34b0ad8` |
-| `superfluid.nb`                                    | `85f097b94f4a8fdb7ffaca6a7042ce395c6950bab34168b202be3e3c0f07c52d` |
+| `superfluid.nb`                                    | `b0e1def3bdf55f3762fb33f3b879c24bc4dbe4991727250bda44353e226ecc35` |
 | `figures/fig_part3_q1_potential.pdf`               | `d76e0840c72af9ee73ca97111560d3800af8f0b1760a0539b3ccd9b194d0cbb0` |
 | `figures/fig_part3_q4_thermal.pdf`                 | `c7bac6536492b220f77d5c0652b13a4a6fc65f2c63b2f3a77adfc5c2e371080d` |
 | `figures/fig_part4_r1_massmatrix.pdf`              | `caa47847ba676acb6b11a824be1101413d542f7d5fdaa76b76f9ef12b91385c6` |

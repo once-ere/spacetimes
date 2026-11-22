@@ -196,6 +196,6 @@ templates, of the build program and of the files to upload, at the time this REA
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
   `05cf62568724668752e04505b94c9e766ab1a7046849dbc65adaec0223f1b79d`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\
-  `68580df864e4b76359fd0b3f8f0dc61f412021663494ae6a3422932d147c0b8b`
+  `d1b11e4b83a81f026f8a783b7567e3043d309330e0c390a61d8869afddff6566`
 * `paper_prd/submission/cover_letter.pdf`:\
   `7a7af727c5d82a82015bdb7a00294e8c9ee5624b352655cc63467232286693e9`

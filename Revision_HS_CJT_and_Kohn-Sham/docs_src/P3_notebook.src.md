@@ -117,6 +117,9 @@ The files of the notebook, each with its SHA-256 checksum:
   `{{SHA256:data/hck_notebook_log.txt}}`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
   `{{SHA256:data/hck_notebook_results.wl}}`
+* `data/hck_notebook_build.txt`: the report of the builder when it built the notebook that was evaluated (the
+  counts of the cells, of the closed cells of data, of the formulas in the texts and of the warnings);\
+  `{{SHA256:data/hck_notebook_build.txt}}`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
   `{{SHA256:code/scripts/write_notebook_fragments.py}}`
 
@@ -144,8 +147,8 @@ by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 261 cells (four of them closed cells of data), 967 formulas in the
-texts, 0 warnings (the builder's own count, printed when it ran).
+reader cannot read as a warning. This version: {{GEN:nb_build}} (the builder's own count, printed when it ran
+and kept in `data/hck_notebook_build.txt`).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
 the menu command Evaluate Notebook, but in a fresh kernel named `SFNBRun`, in three calls (each returns at once):
@@ -410,7 +413,11 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     counterparts P3-H4 and YP3-H4. Section I.1 states that the conventions of the Standard Model give names only; the
     texts of Part II name the massless gauge boson the zeugon, and a remark at the end of Part II states what the
     computation establishes about it, including that its charge conjugation is a gauge symmetry (Alice
-    electrodynamics); the spinor field is called the DiracLike field.
+    electrodynamics); the spinor field is called the DiracLike field. The data cells were written again from the
+    data of the programs run again after the correction (their kept numbers are unchanged; the cell of Section
+    III.G no longer holds the columns in GeV and the row of the Standard Model), and the notebook was built and
+    evaluated again on 21 November 2026: {{GEN:nb_verdict}}. Since this evaluation the counts of the builder are
+    no longer typed in Section 4 but written from its report.
 
 # 10. What follows
 

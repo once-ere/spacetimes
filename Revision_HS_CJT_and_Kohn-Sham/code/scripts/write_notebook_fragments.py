@@ -7,11 +7,14 @@ Reads
     data/hck_notebook_log.txt      the log of the evaluation of the notebook in the front end of Wolfram (written by
                                    wolfram/tools/guirun.wl): the version, the counts of the cells, the messages, the
                                    printed lines and one line per check (an association of the Wolfram Language)
+    data/hck_notebook_build.txt    the report of the builder (wolfram/tools/build_notebook.wls) of the notebook that
+                                   was evaluated: the counts of its cells and of the formulas in its texts
     data/hck_part1_checks.txt, data/hck_part1_checks_python.txt (and the reports of the later parts, when the notebook
                                    has checks of them): the deviations of the same checks in the Rust and the Python
                                    programs
 and writes provenance/generated/notebook.md with the fragments
     nb_version, nb_seconds, nb_counts, nb_messages, nb_ntests, nb_npass      facts of the evaluation
+    nb_build                                                                 the counts of the builder
     nb_verdict                                                               the verdict line
     nb_table_checks                                                          one row per check of the notebook, with the
                                                                              deviations of its counterparts
@@ -93,6 +96,11 @@ def main():
     frags["nb_counts"] = ("%s input cells, %s of them evaluated; %s output cells; %s printed lines" %
                           (cdict["inputs"], cdict["evaluated"], cdict["outputs"], cdict["prints"]))
     frags["nb_messages"] = cdict["messages"]
+    # the counts of the builder (data/hck_notebook_build.txt, the report that build_notebook.wls printed when it built
+    # the notebook that was evaluated): cells, closed cells of data, formulas in the texts, unread formulas
+    build = dict(re.findall(r"^([a-z ]+): (\d+)$", open(os.path.join(D, "hck_notebook_build.txt"), encoding="utf-8").read(), re.M))
+    frags["nb_build"] = ("%s cells (%s of them closed cells of data), %s formulas in the texts, %s warnings" %
+                         (build["cells"], build["closed input cells"], build["formulas in text cells"], build["warnings"]))
     tests = [l for l in log.split("--- tests ---", 1)[1].splitlines() if l.startswith("<|")]
     rust, py = {}, {}
     for name in ("hck_part1_checks.txt", "hck_part2_checks.txt", "hck_part3_checks.txt", "hck_part4_checks.txt"):

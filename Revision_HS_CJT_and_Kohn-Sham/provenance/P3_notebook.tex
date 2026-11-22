@@ -234,7 +234,7 @@ numbers), the couplings of the amplitude field by exact differentiation,
 and whether the Higgs is a composite particle; the second addendum asked
 for by the author on 21 November 2026, with its three remarks; and, at
 the end of Part II, the remark on the zeugon, the massless gauge boson
-of the superfluid), with 154 checks. The rest of Part III and Part IV
+of the superfluid), with 153 checks. The rest of Part III and Part IV
 (the effective Lagrangians and the Mexican hat, the masses of the gauge
 bosons in every vacuum, the surviving symmetry and the dynamics with
 IDA) follow in the next versions. The first section of Part III takes
@@ -262,11 +262,11 @@ The files of the notebook, each with its SHA-256 checksum:
 \item
   \texttt{superfluid.nb}: the notebook, evaluated in the front end of
   Wolfram (inputs, printed checks, the table of all checks);\\
-  \texttt{85f097b94f4a8fdb7ffaca6a7042ce395c6950bab34168b202be3e3c0f07c52d}
+  \texttt{b0e1def3bdf55f3762fb33f3b879c24bc4dbe4991727250bda44353e226ecc35}
 \item
   \texttt{superfluid\_notebook.pdf}: the evaluated notebook printed by
   the front end, for readers without Wolfram;\\
-  \texttt{bfb903f3a1ce6e29ca0376add51a3d91c7eb07d55fb462268cfd85e5c6b12327}
+  \texttt{a327324e13741d2a42a67497eb2303fa3e75f8445ad2ad85748a01749b69b962}
 \item
   \texttt{wolfram/source/superfluid.source.wl}: the source of the
   notebook: the title, the introduction, chapter 0 (the register of the
@@ -361,15 +361,21 @@ The files of the notebook, each with its SHA-256 checksum:
   \texttt{data/hck\_notebook\_log.txt}: the log of the evaluation: the
   version of Wolfram, the counts of the cells, every message and printed
   line, one line per check;\\
-  \texttt{73097acaae5ad3b3462e6b7f0f642842931531efa0b166c29b0cfe24fdd49c9c}
+  \texttt{81751603dad3553440e2726d316f004212cca0e1c4eea0ee88bbb1529f2f7eae}
 \item
   \texttt{data/hck\_notebook\_results.wl}: the register of the checks,
   written by the kernel at the end of the evaluation;\\
-  \texttt{ec64def2ddd9341369637d7d2c7c86c1910bf27301f96d325a8fd3a39626f711}
+  \texttt{34428f32d6b820e829144ffa83a4f55aecabf6353eaa8f0e9b719cf25abf08d8}
+\item
+  \texttt{data/hck\_notebook\_build.txt}: the report of the builder when
+  it built the notebook that was evaluated (the counts of the cells, of
+  the closed cells of data, of the formulas in the texts and of the
+  warnings);\\
+  \texttt{f5a6a8e402fdb1953635f31f819913f112746102af95d514070c462da066be8e}
 \item
   \texttt{code/scripts/write\_notebook\_fragments.py}: writes the tables
   and numbers of this document from the log and the reports;\\
-  \texttt{5f526c1531834298dc5e900f4c81d404d192f02eb15a030b99baba4533b1aa93}
+  \texttt{58d4aaa1b49454b91f47fd8d15a673f9ac65e440c5092b3f29adf5ba24a77f9d}
 \end{itemize}
 
 The builder, the reader of formulas and the evaluation script were first
@@ -412,8 +418,9 @@ that file, turns every formula of a text (TeX between dollar signs) into
 boxes with the reader of formulas, lets the front end parse every input
 cell (so that comments, line breaks and indentation stay as written),
 and reports every formula that the reader cannot read as a warning. This
-version: 261 cells (four of them closed cells of data), 967 formulas in
-the texts, 0 warnings (the builder's own count, printed when it ran).
+version: 262 cells (4 of them closed cells of data), 995 formulas in the
+texts, 0 warnings (the builder's own count, printed when it ran and kept
+in \texttt{data/hck\_notebook\_build.txt}).
 
 \textbf{How it is evaluated.} The notebook is evaluated in the front end
 of the running Wolfram application, exactly as by the menu command
@@ -465,10 +472,10 @@ in the front end stays the only evidence for the results reported here.
 \section{5. The evaluation of this
 version}\label{the-evaluation-of-this-version}}
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 264 seconds; 56 input
-cells, 56 of them evaluated; 16 output cells; 172 printed lines;
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 263 seconds; 56 input
+cells, 56 of them evaluated; 16 output cells; 171 printed lines;
 \textbf{0 messages} (no error and no warning of the Wolfram language);
-verdict: \textbf{ALL PASS (154 of 154), 0 messages}.
+verdict: \textbf{ALL PASS (153 of 153), 0 messages}.
 
 \hypertarget{the-checks-and-their-counterparts}{%
 \section{6. The checks and their
@@ -701,18 +708,18 @@ WP2-8a HS\_1\_1 & PASS & \(8.289\times10^{-14}\) &
 \(1.000\times10^{-8}\) & P2-8a HS\_1\_1 (PASS), \(2.278\times10^{-15}\);
 P2-8b HS\_1\_1 (PASS), \(8.820\times10^{-9}\) & YP2-8a HS\_1\_1 (PASS),
 \(3.744\times10^{-15}\) & HS\_1\_1: chi\_11 = 0.005118624664, chi\_FF =
-0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless photon), no
+0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless zeugon), no
 mixing \\
 WP2-8a KS & PASS & \(5.794\times10^{-14}\) & \(1.000\times10^{-8}\) &
 P2-8a KS (PASS), \(2.159\times10^{-15}\); P2-8b KS (PASS),
 \(4.283\times10^{-9}\) & YP2-8a KS (PASS), \(5.405\times10^{-15}\) & KS:
 chi\_11 = 0.004317006163, chi\_FF = 0.02036224303 = Rust; chi\_33 =
-4.201e-16 (massless photon), no mixing \\
+4.201e-16 (massless zeugon), no mixing \\
 WP2-8a CJT & PASS & \(3.145\times10^{-14}\) & \(1.000\times10^{-8}\) &
 P2-8a CJT (PASS), \(1.879\times10^{-15}\); P2-8b CJT (PASS),
 \(3.584\times10^{-9}\) & YP2-8a CJT (PASS), \(3.879\times10^{-15}\) &
 CJT: chi\_11 = 0.004577873934, chi\_FF = 0.02036224303 = Rust; chi\_33 =
-3.067e-16 (massless photon), no mixing \\
+3.067e-16 (massless zeugon), no mixing \\
 WP2-8b & PASS & \(9.437\times10^{-16}\) & \(1.000\times10^{-12}\) &
 P2-3a (PASS), \(1.475\times10^{-17}\); P2-3b (PASS),
 \(5.309\times10^{-15}\) & YP2-8b (PASS), \(1.443\times10^{-14}\) & the
@@ -721,7 +728,7 @@ integration over the angle \\
 WP2-8c & PASS & \(5.919\times10^{-12}\) & \(1.000\times10^{-9}\) & P2-8c
 (PASS), \(5.102\times10^{-12}\); P2-8d (PASS), \(2.041\times10^{-11}\) &
 YP2-8c (PASS), \(5.918\times10^{-12}\) & the Thouless eigenvalues of the
-exchange per unit coupling squared: photon W\^{}3 0.03573178317, B
+exchange per unit coupling squared: zeugon W\^{}3 0.03573178317, B
 -0.1429271327 = Rust \\
 WP2-8d & PASS & \(1.492\times10^{-8}\) & \(1.000\times10^{-7}\) & P2-8f
 (PASS), \(0\) & YP2-8d (PASS), \(1.492\times10^{-8}\) & CJT with the
@@ -1235,11 +1242,10 @@ threshold of two quasi-particles: M\_H = 0.8136931 \textless{} 2 E\_gap
 = 0.9059348 (the gap of the ground state computed by the notebook)
 {[}M\_H / 2 E\_gap = 0.89818{]} \\
 WP3-H3 HS\_1\_1 & PASS & \(3.168\times10^{-13}\) &
-\(1.000\times10^{-9}\) & P3-H3 HS\_1\_1 (PASS), \(1.624\times10^{-16}\)
-& YP3-H3 HS\_1\_1 (PASS), \(3.168\times10^{-13}\) & HS (1, 1): the
-numbers of the Higgs sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662,
-lambda = 16.1688, Gamma/M\_H = 3.9232) = Rust (largest relative
-difference) \\
+\(1.000\times10^{-9}\) & P3-H3 HS\_1\_1 (PASS), \(0\) & YP3-H3 HS\_1\_1
+(PASS), \(3.168\times10^{-13}\) & HS (1, 1): the numbers of the Higgs
+sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662, lambda = 16.1688,
+Gamma/M\_H = 3.9232) = Rust (largest relative difference) \\
 WP3-H1 HS\_0\_1 & PASS & -- & -- & P3-H1 HS\_0\_1 (PASS), \(0\) & YP3-H1
 HS\_0\_1 (PASS), -- & HS (0, 1): the amplitude mode lies below the
 threshold of two quasi-particles: M\_H = 0.7250834 \textless{} 2 E\_gap
@@ -1280,11 +1286,6 @@ P3-H3 CJT (PASS), \(3.573\times10^{-16}\) & YP3-H3 CJT (PASS),
 \(3.085\times10^{-13}\) & CJT: the numbers of the Higgs sector (v\_SF =
 0.13531998, M\_H/v\_SF = 4.45962, lambda = 9.94412, Gamma/M\_H = 2.1349)
 = Rust (largest relative difference) \\
-WP3-H4 & PASS & \(2.183\times10^{-16}\) & \(1.000\times10^{-10}\) &
-P3-H4 (PASS), \(1.531\times10^{-4}\) & YP3-H4 (PASS), \(0\) & the
-Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W =
-1.5578, M\_W/M\_Z = 0.88136 from the values of the Particle Data Group
-2024 = Rust (largest relative difference) \\
 \end{longtable}
 
 \textbf{Table 1.} The checks of the notebook. Data:
@@ -1852,7 +1853,14 @@ written}\label{errors-and-corrections-found-while-this-version-was-written}}
   massless gauge boson the zeugon, and a remark at the end of Part II
   states what the computation establishes about it, including that its
   charge conjugation is a gauge symmetry (Alice electrodynamics); the
-  spinor field is called the DiracLike field.
+  spinor field is called the DiracLike field. The data cells were
+  written again from the data of the programs run again after the
+  correction (their kept numbers are unchanged; the cell of Section
+  III.G no longer holds the columns in GeV and the row of the Standard
+  Model), and the notebook was built and evaluated again on 21 November
+  2026: ALL PASS (153 of 153), 0 messages. Since this evaluation the
+  counts of the builder are no longer typed in Section 4 but written
+  from its report.
 \end{enumerate}
 
 \hypertarget{what-follows}{%

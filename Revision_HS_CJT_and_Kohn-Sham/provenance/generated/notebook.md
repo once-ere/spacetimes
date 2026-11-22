@@ -3,22 +3,25 @@
 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 <!-- END nb_version -->
 <!-- BEGIN nb_seconds -->
-264
+263
 <!-- END nb_seconds -->
 <!-- BEGIN nb_counts -->
-56 input cells, 56 of them evaluated; 16 output cells; 172 printed lines
+56 input cells, 56 of them evaluated; 16 output cells; 171 printed lines
 <!-- END nb_counts -->
 <!-- BEGIN nb_messages -->
 0
 <!-- END nb_messages -->
+<!-- BEGIN nb_build -->
+262 cells (4 of them closed cells of data), 995 formulas in the texts, 0 warnings
+<!-- END nb_build -->
 <!-- BEGIN nb_ntests -->
-154
+153
 <!-- END nb_ntests -->
 <!-- BEGIN nb_npass -->
-154
+153
 <!-- END nb_npass -->
 <!-- BEGIN nb_verdict -->
-ALL PASS (154 of 154), 0 messages
+ALL PASS (153 of 153), 0 messages
 <!-- END nb_verdict -->
 <!-- BEGIN nb_table_checks -->
 | check | result | deviation in the notebook | tolerance | Rust: check, deviation | Python: check, deviation | statement |
@@ -74,11 +77,11 @@ ALL PASS (154 of 154), 0 messages
 | WP2-7b KS | PASS | $1.482\times10^{-13}$ | $1.000\times10^{-7}$ | P2-7a KS (PASS), $2.502\times10^{-13}$ | YP2-7b KS (PASS), $1.333\times10^{-13}$ | KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727} |
 | WP2-7a CJT | PASS | $2.338\times10^{-13}$ | $1.000\times10^{-9}$ | P2-7a CJT (PASS), $2.485\times10^{-13}$ | YP2-7a CJT (PASS), $2.329\times10^{-13}$ | CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15) |
 | WP2-7b CJT | PASS | $1.361\times10^{-13}$ | $1.000\times10^{-7}$ | P2-7a CJT (PASS), $2.485\times10^{-13}$ | YP2-7b CJT (PASS), $1.180\times10^{-13}$ | CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155} |
-| WP2-8a HS_1_1 | PASS | $8.289\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a HS_1_1 (PASS), $2.278\times10^{-15}$; P2-8b HS_1_1 (PASS), $8.820\times10^{-9}$ | YP2-8a HS_1_1 (PASS), $3.744\times10^{-15}$ | HS\_1\_1: chi\_11 = 0.005118624664, chi\_FF = 0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless photon), no mixing |
-| WP2-8a KS | PASS | $5.794\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a KS (PASS), $2.159\times10^{-15}$; P2-8b KS (PASS), $4.283\times10^{-9}$ | YP2-8a KS (PASS), $5.405\times10^{-15}$ | KS: chi\_11 = 0.004317006163, chi\_FF = 0.02036224303 = Rust; chi\_33 = 4.201e-16 (massless photon), no mixing |
-| WP2-8a CJT | PASS | $3.145\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a CJT (PASS), $1.879\times10^{-15}$; P2-8b CJT (PASS), $3.584\times10^{-9}$ | YP2-8a CJT (PASS), $3.879\times10^{-15}$ | CJT: chi\_11 = 0.004577873934, chi\_FF = 0.02036224303 = Rust; chi\_33 = 3.067e-16 (massless photon), no mixing |
+| WP2-8a HS_1_1 | PASS | $8.289\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a HS_1_1 (PASS), $2.278\times10^{-15}$; P2-8b HS_1_1 (PASS), $8.820\times10^{-9}$ | YP2-8a HS_1_1 (PASS), $3.744\times10^{-15}$ | HS\_1\_1: chi\_11 = 0.005118624664, chi\_FF = 0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless zeugon), no mixing |
+| WP2-8a KS | PASS | $5.794\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a KS (PASS), $2.159\times10^{-15}$; P2-8b KS (PASS), $4.283\times10^{-9}$ | YP2-8a KS (PASS), $5.405\times10^{-15}$ | KS: chi\_11 = 0.004317006163, chi\_FF = 0.02036224303 = Rust; chi\_33 = 4.201e-16 (massless zeugon), no mixing |
+| WP2-8a CJT | PASS | $3.145\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a CJT (PASS), $1.879\times10^{-15}$; P2-8b CJT (PASS), $3.584\times10^{-9}$ | YP2-8a CJT (PASS), $3.879\times10^{-15}$ | CJT: chi\_11 = 0.004577873934, chi\_FF = 0.02036224303 = Rust; chi\_33 = 3.067e-16 (massless zeugon), no mixing |
 | WP2-8b | PASS | $9.437\times10^{-16}$ | $1.000\times10^{-12}$ | P2-3a (PASS), $1.475\times10^{-17}$; P2-3b (PASS), $5.309\times10^{-15}$ | YP2-8b (PASS), $1.443\times10^{-14}$ | the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle |
-| WP2-8c | PASS | $5.919\times10^{-12}$ | $1.000\times10^{-9}$ | P2-8c (PASS), $5.102\times10^{-12}$; P2-8d (PASS), $2.041\times10^{-11}$ | YP2-8c (PASS), $5.918\times10^{-12}$ | the Thouless eigenvalues of the exchange per unit coupling squared: photon W\^3 0.03573178317, B -0.1429271327 = Rust |
+| WP2-8c | PASS | $5.919\times10^{-12}$ | $1.000\times10^{-9}$ | P2-8c (PASS), $5.102\times10^{-12}$; P2-8d (PASS), $2.041\times10^{-11}$ | YP2-8c (PASS), $5.918\times10^{-12}$ | the Thouless eigenvalues of the exchange per unit coupling squared: zeugon W\^3 0.03573178317, B -0.1429271327 = Rust |
 | WP2-8d | PASS | $1.492\times10^{-8}$ | $1.000\times10^{-7}$ | P2-8f (PASS), $0$ | YP2-8d (PASS), $1.492\times10^{-8}$ | CJT with the exchange at g\_v = 0.7, g\_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5) |
 | WP3-11 HS_1_1 | PASS | $2.492\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_1_1 (PASS), $1.103\times10^{-14}$ | YP3-11 HS_1_1 (PASS), $9.618\times10^{-12}$ | HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
 | WP3-11 HS_0_1 | PASS | $4.409\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_0_1 (PASS), $5.616\times10^{-13}$ | YP3-11 HS_0_1 (PASS), $1.478\times10^{-11}$ | HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
@@ -167,7 +170,7 @@ ALL PASS (154 of 154), 0 messages
 | WP3-H2 KS | PASS | $1.357\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 KS (PASS), $4.763\times10^{-14}$ | YP3-H2 KS (PASS), $3.334\times10^{-11}$ | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.071348166 and 0.060506197, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
 | WP3-H2 CJT | PASS | $1.352\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 CJT (PASS), $7.683\times10^{-14}$ | YP3-H2 CJT (PASS), $3.334\times10^{-11}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.071348166 and 0.064162461, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
 | WP3-H1 HS_1_1 | PASS | -- | -- | P3-H1 HS_1_1 (PASS), $0$ | YP3-H1 HS_1_1 (PASS), -- | HS (1, 1): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.8136931 &lt; 2 E\_gap = 0.9059348 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.89818] |
-| WP3-H3 HS_1_1 | PASS | $3.168\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_1_1 (PASS), $1.624\times10^{-16}$ | YP3-H3 HS_1_1 (PASS), $3.168\times10^{-13}$ | HS (1, 1): the numbers of the Higgs sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662, lambda = 16.1688, Gamma/M\_H = 3.9232) = Rust (largest relative difference) |
+| WP3-H3 HS_1_1 | PASS | $3.168\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_1_1 (PASS), $0$ | YP3-H3 HS_1_1 (PASS), $3.168\times10^{-13}$ | HS (1, 1): the numbers of the Higgs sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662, lambda = 16.1688, Gamma/M\_H = 3.9232) = Rust (largest relative difference) |
 | WP3-H1 HS_0_1 | PASS | -- | -- | P3-H1 HS_0_1 (PASS), $0$ | YP3-H1 HS_0_1 (PASS), -- | HS (0, 1): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.7250834 &lt; 2 E\_gap = 0.8271651 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.87659] |
 | WP3-H3 HS_0_1 | PASS | $1.208\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_0_1 (PASS), $0$ | YP3-H3 HS_0_1 (PASS), $1.460\times10^{-13}$ | HS (0, 1): the numbers of the Higgs sector (v\_SF = 0.1354499, M\_H/v\_SF = 5.35315, lambda = 14.3281, Gamma/M\_H = 3.4708) = Rust (largest relative difference) |
 | WP3-H1 HS_0_0 | PASS | -- | -- | P3-H1 HS_0_0 (PASS), $0$ | YP3-H1 HS_0_0 (PASS), -- | HS (0, 0): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.6143874 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.83843] |
@@ -176,5 +179,4 @@ ALL PASS (154 of 154), 0 messages
 | WP3-H3 KS | PASS | $2.253\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 KS (PASS), $3.369\times10^{-16}$ | YP3-H3 KS (PASS), $2.514\times10^{-13}$ | KS: the numbers of the Higgs sector (v\_SF = 0.13140786, M\_H/v\_SF = 4.59239, lambda = 10.545, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
 | WP3-H1 CJT | PASS | -- | -- | P3-H1 CJT (PASS), $0$ | YP3-H1 CJT (PASS), -- | CJT: the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.603476 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.82354] |
 | WP3-H3 CJT | PASS | $3.085\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 CJT (PASS), $3.573\times10^{-16}$ | YP3-H3 CJT (PASS), $3.085\times10^{-13}$ | CJT: the numbers of the Higgs sector (v\_SF = 0.13531998, M\_H/v\_SF = 4.45962, lambda = 9.94412, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
-| WP3-H4 | PASS | $2.183\times10^{-16}$ | $1.000\times10^{-10}$ | P3-H4 (PASS), $1.531\times10^{-4}$ | YP3-H4 (PASS), $0$ | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.5578, M\_W/M\_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference) |
 <!-- END nb_table_checks -->

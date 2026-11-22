@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 14:50:24", "kernel" -> {0, 16383}, 
+<|"finished" -> "Sat 21 Nov 2026 16:45:13", "kernel" -> {0, 17043}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -189,17 +189,17 @@ to 1); the spectrum of every node is +-E (spread 1.998e-15)",
     "python" -> "YP2-7b CJT"|>, <|"id" -> "WP2-8a HS_1_1", "pass" -> True, 
     "deviation" -> 8.28896163085313*^-14, "tolerance" -> 1.*^-8, 
     "text" -> "HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = \
-Rust; chi_33 = 8.759e-16 (massless photon), no mixing", 
+Rust; chi_33 = 8.759e-16 (massless zeugon), no mixing", 
     "rust" -> "P2-8a HS_1_1, P2-8b HS_1_1", "python" -> "YP2-8a HS_1_1"|>, 
    <|"id" -> "WP2-8a KS", "pass" -> True, "deviation" -> 
      5.793994320980066*^-14, "tolerance" -> 1.*^-8, 
     "text" -> "KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; \
-chi_33 = 4.201e-16 (massless photon), no mixing", 
+chi_33 = 4.201e-16 (massless zeugon), no mixing", 
     "rust" -> "P2-8a KS, P2-8b KS", "python" -> "YP2-8a KS"|>, 
    <|"id" -> "WP2-8a CJT", "pass" -> True, "deviation" -> 
      3.14518597555092*^-14, "tolerance" -> 1.*^-8, 
     "text" -> "CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; \
-chi_33 = 3.067e-16 (massless photon), no mixing", 
+chi_33 = 3.067e-16 (massless zeugon), no mixing", 
     "rust" -> "P2-8a CJT, P2-8b CJT", "python" -> "YP2-8a CJT"|>, 
    <|"id" -> "WP2-8b", "pass" -> True, "deviation" -> 9.43689570931383*^-16, 
     "tolerance" -> 1.*^-12, "text" -> "the angular averages D0, D1 of the \
@@ -207,7 +207,7 @@ Yukawa kernel in closed form = numerical integration over the angle",
     "rust" -> "P2-3a, P2-3b", "python" -> "YP2-8b"|>, 
    <|"id" -> "WP2-8c", "pass" -> True, "deviation" -> 5.919147116895118*^-12, 
     "tolerance" -> 1.*^-9, "text" -> "the Thouless eigenvalues of the \
-exchange per unit coupling squared: photon W^3 0.03573178317, B -0.1429271327 \
+exchange per unit coupling squared: zeugon W^3 0.03573178317, B -0.1429271327 \
 = Rust", "rust" -> "P2-8c, P2-8d", "python" -> "YP2-8c"|>, 
    <|"id" -> "WP2-8d", "pass" -> True, "deviation" -> 1.491562614044437*^-8, 
     "tolerance" -> 1.*^-7, "text" -> "CJT with the exchange at g_v = 0.7, g_F \
@@ -759,10 +759,5 @@ state computed by the notebook) [M_H / 2 E_gap = 0.82354]",
      3.0848612500944125*^-13, "tolerance" -> 1.*^-9, 
     "text" -> "CJT: the numbers of the Higgs sector (v_SF = 0.13531998, \
 M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest \
-relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>, 
-   <|"id" -> "WP3-H4", "pass" -> True, "deviation" -> 2.183379497789186*^-16, 
-    "tolerance" -> 1.*^-10, "text" -> "the Standard Model row: M_H/v = \
-0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the \
-values of the Particle Data Group 2024 = Rust (largest relative difference)", 
-    "rust" -> "P3-H4", "python" -> "YP3-H4"|>}, "line" -> 410, 
- "seconds" -> 3956.464692`10.04885228787696|>
+relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>}, 
+ "line" -> 409, "seconds" -> 6881.335753`10.289217741884121|>

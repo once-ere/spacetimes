@@ -1,11 +1,11 @@
 evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/in/superfluid.nb
 saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/out/superfluid.nb
-seconds:  264
-kernel:   {0, 16383}   last In line: 410
-counts:   <|"inputs" -> 56, "evaluated" -> 56, "outputs" -> 16, "prints" -> 172, "messages" -> 0|>
+seconds:  263
+kernel:   {0, 17043}   last In line: 409
+counts:   <|"inputs" -> 56, "evaluated" -> 56, "outputs" -> 16, "prints" -> 171, "messages" -> 0|>
 --- messages (0) ---
---- printed lines (172) ---
+--- printed lines (171) ---
 during In[6]:=  the common objects are defined; m_LL = 1/5
 during In[42]:=  the mass matrix of (W1, W2, W3, B): ((gSM^2 vSM^2)/4	0	0	0
 0	(gSM^2 vSM^2)/4	0	0
@@ -67,14 +67,14 @@ during In[253]:=  PASS WP2-7a KS  deviation 2.300e-13 (tolerance 1.000e-9): KS: 
 during In[253]:=  PASS WP2-7b KS  deviation 1.482e-13 (tolerance 1.000e-7): KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727}   [the same check: Rust P2-7a KS, Python YP2-7b KS]
 during In[253]:=  PASS WP2-7a CJT  deviation 2.338e-13 (tolerance 1.000e-9): CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15)   [the same check: Rust P2-7a CJT, Python YP2-7a CJT]
 during In[253]:=  PASS WP2-7b CJT  deviation 1.361e-13 (tolerance 1.000e-7): CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155}   [the same check: Rust P2-7a CJT, Python YP2-7b CJT]
-during In[256]:=  PASS WP2-8a HS_1_1  deviation 8.289e-14 (tolerance 1.000e-8): HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = Rust; chi_33 = 8.759e-16 (massless photon), no mixing   [the same check: Rust P2-8a HS_1_1, P2-8b HS_1_1, Python YP2-8a HS_1_1]
-during In[256]:=  PASS WP2-8a KS  deviation 5.794e-14 (tolerance 1.000e-8): KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; chi_33 = 4.201e-16 (massless photon), no mixing   [the same check: Rust P2-8a KS, P2-8b KS, Python YP2-8a KS]
-during In[256]:=  PASS WP2-8a CJT  deviation 3.145e-14 (tolerance 1.000e-8): CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; chi_33 = 3.067e-16 (massless photon), no mixing   [the same check: Rust P2-8a CJT, P2-8b CJT, Python YP2-8a CJT]
+during In[256]:=  PASS WP2-8a HS_1_1  deviation 8.289e-14 (tolerance 1.000e-8): HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = Rust; chi_33 = 8.759e-16 (massless zeugon), no mixing   [the same check: Rust P2-8a HS_1_1, P2-8b HS_1_1, Python YP2-8a HS_1_1]
+during In[256]:=  PASS WP2-8a KS  deviation 5.794e-14 (tolerance 1.000e-8): KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; chi_33 = 4.201e-16 (massless zeugon), no mixing   [the same check: Rust P2-8a KS, P2-8b KS, Python YP2-8a KS]
+during In[256]:=  PASS WP2-8a CJT  deviation 3.145e-14 (tolerance 1.000e-8): CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; chi_33 = 3.067e-16 (massless zeugon), no mixing   [the same check: Rust P2-8a CJT, P2-8b CJT, Python YP2-8a CJT]
 during In[266]:=  PASS WP2-8b  deviation 9.437e-16 (tolerance 1.000e-12): the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle   [the same check: Rust P2-3a, P2-3b, Python YP2-8b]
-during In[267]:=  PASS WP2-8c  deviation 5.919e-12 (tolerance 1.000e-9): the Thouless eigenvalues of the exchange per unit coupling squared: photon W^3 0.03573178317, B -0.1429271327 = Rust   [the same check: Rust P2-8c, P2-8d, Python YP2-8c]
+during In[267]:=  PASS WP2-8c  deviation 5.919e-12 (tolerance 1.000e-9): the Thouless eigenvalues of the exchange per unit coupling squared: zeugon W^3 0.03573178317, B -0.1429271327 = Rust   [the same check: Rust P2-8c, P2-8d, Python YP2-8c]
 during In[269]:=  PASS WP2-8d  deviation 1.492e-8 (tolerance 1.000e-7): CJT with the exchange at g_v = 0.7, g_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5)   [the same check: Rust P2-8f, Python YP2-8d]
 during In[270]:=  |Phi|^4 - |Phi.Phi|^2 - |Phi x Phi*|^2 = 0;  on a polar field |Phi|^4 - |Phi.Phi|^2 = 0
-during In[275]:=  values of the Rust program sf_part3: 410; points of the five polar curves: {61,61,61,61,61}
+during In[275]:=  values of the Rust program sf_part3: 390; points of the five polar curves: {61,61,61,61,61}
 during In[289]:=  PASS WP3-11 HS_1_1  deviation 2.492e-11 (tolerance 1.000e-7): HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_1_1, Python YP3-11 HS_1_1]
 during In[289]:=  PASS WP3-11 HS_0_1  deviation 4.409e-11 (tolerance 1.000e-7): HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_1, Python YP3-11 HS_0_1]
 during In[289]:=  PASS WP3-11 HS_0_0  deviation 4.051e-11 (tolerance 1.000e-7): HS (0, 0): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)   [the same check: Rust P3-11 HS_0_0, Python YP3-11 HS_0_0]
@@ -116,7 +116,7 @@ during In[349]:=  PASS WP3-T7 KS  deviation 4.070e-11 (tolerance 1.000e-8): KS: 
 during In[349]:=  PASS WP3-T6 CJT  deviation 8.948e-12 (tolerance 1.000e-7): CJT: the largest residuals of the Landau form and of the quartic form at T/T_c = 0, 0.5, 0.8, 0.9, 0.95, 0.98, recomputed by LeastSquares from the curves of the Rust program = Rust (largest relative difference); the quartic residual falls towards T_c (1.579e-2, 7.470e-3, 3.134e-3 of the depth at 0.9, 0.95, 0.98 T_c) and that of the Landau form is 9.969e-6 at 0.98 T_c: yes   [the same check: Rust P3-T6 CJT, Python YP3-T6 CJT]
 during In[349]:=  PASS WP3-T7 CJT  deviation 4.876e-11 (tolerance 1.000e-8): CJT: at T = 0 the free energy is the effective potential: the residual of the Landau form of the curve at T = 0 is that of Section III.L (relative difference)   [the same check: Rust P3-T7 CJT, Python YP3-T7 CJT]
 during In[361]:=  the static pair response is defined (28 basis matrices)
-during In[374]:=  rows: 5 (Ginzburg), 20 (regions), 6 (Higgs, with the Standard Model)
+during In[374]:=  rows: 5 (Ginzburg), 20 (regions), 5 (Higgs)
 during In[378]:=  the critical temperatures of the Rust program: {0.260467,0.240465,0.213799,0.222119,0.222119}
 during In[383]:=  PASS WP3-G1 HS_1_1  deviation 7.975e-10 (tolerance 1.000e-7): HS (1, 1): at 0.9 T_c the coefficient a(0) of |Phi|^2 from the static pair response (-1.343e-3) equals the Taylor coefficient a^Tay of the nonlinear free energy of Section III.T (-1.343e-3) (relative difference)   [the same check: Rust P3-G1 HS_1_1, Python YP3-G1 HS_1_1]
 during In[383]:=  PASS WP3-G2 HS_1_1  deviation 1.099e-12 (tolerance 1.000e-9): HS (1, 1): a(0, T) = (1 - lambda^P(T))/(lambda^P(T) g^P) at T/T_c = 0.9, 0.998, 1.002, with lambda^P(T) of Section III.T.4 (largest relative difference)   [the same check: Rust P3-G2 HS_1_1, Python YP3-G2 HS_1_1]
@@ -181,8 +181,7 @@ during In[402]:=  PASS WP3-H1 KS  KS: the amplitude mode lies below the threshol
 during In[402]:=  PASS WP3-H3 KS  deviation 2.253e-13 (tolerance 1.000e-9): KS: the numbers of the Higgs sector (v_SF = 0.13140786, M_H/v_SF = 4.59239, lambda = 10.545, Gamma/M_H = 2.1349) = Rust (largest relative difference)   [the same check: Rust P3-H3 KS, Python YP3-H3 KS]
 during In[402]:=  PASS WP3-H1 CJT  CJT: the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.603476 < 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M_H / 2 E_gap = 0.82354]   [the same check: Rust P3-H1 CJT, Python YP3-H1 CJT]
 during In[402]:=  PASS WP3-H3 CJT  deviation 3.085e-13 (tolerance 1.000e-9): CJT: the numbers of the Higgs sector (v_SF = 0.13531998, M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest relative difference)   [the same check: Rust P3-H3 CJT, Python YP3-H3 CJT]
-during In[402]:=  PASS WP3-H4  deviation 2.183e-16 (tolerance 1.000e-10): the Standard Model row: M_H/v = 0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference)   [the same check: Rust P3-H4, Python YP3-H4]
-during In[409]:=  checks of this notebook: 154; passed: 154; failed: {}
+during In[408]:=  checks of this notebook: 153; passed: 153; failed: {}
 --- input cells (label, beginning) ---
 In[1]:=  (* the register of the checks of this notebook: one association per check, in the order of
 In[6]:=  (* the mass of the spinor field, m_LL, in units of the cutoff Lambda_LL = 1 *) mLL = 1/5; 
@@ -228,7 +227,7 @@ In[356]:=  (* the figure, first cell: top, the order parameter Phi0(T) of the Ru
 In[360]:=  (* the figure, second cell: the residuals of the Landau form (solid) and of the quartic fo
 In[361]:=  (* ---- the static pair response and the quadratic free energy of a field (Section III.G.2
 In[374]:=  (* The values of the Rust programs that Section III.G of Part III of the notebook uses or 
-In[378]:=  (* gzRust[t, key]: an entry of rustGinzburg; hgRust[t, key]: an entry of rustHiggs (t = "S
+In[378]:=  (* gzRust[t, key]: an entry of rustGinzburg; hgRust[t, key]: an entry of rustHiggs (one ro
 In[383]:=  (* gzI1D[mo, m, temp]: {I1, dI1/dT, dI1/dM} on the radial nodes of the grid of the model m
 In[387]:=  (* gzGrad[t, t2, s, relax, nodes]: {c, c(0.01), c(0.02)} at T_c from the twist of the isos
 In[389]:=  (* gzRegion[nr, nt, nphi, radius]: the nodes {qs, ws} of a region of relative momenta with
@@ -237,9 +236,9 @@ In[393]:=  Module[{mo = thModel["CJT"], tc = thTc["CJT"], nn, n0, xs = {}, ys = 
 In[394]:=  gzGi[t_] := Module[{r = gzResults[t], b = If[t === "CJT", gzResults["CJT"]["b"], gzRust[t,
 In[397]:=  (* the couplings of the amplitude field to the Goldstone fields by exact differentiation o
 In[402]:=  (* the numbers of the Higgs sector of every method from the values of Parts II and III (th
-In[406]:=  (* the decay into a pair of W or Z bosons: the larger of the ratios M_W/M_H and M_Z/M_H (g
-In[408]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
-In[409]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
+In[405]:=  (* the decay into a pair of W or Z bosons: the larger of the ratios M_W/M_H and M_Z/M_H (g
+In[407]:=  (* the table of all checks: identifier, result, deviation, tolerance, counterparts *) Grid
+In[408]:=  (* the count of the checks that passed *) Print["checks of this notebook: ", Length[SFNB`T
 --- tests ---
 <|"id" -> "WSM-1", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "Standard Model with +i g: the eigenvalues of the mass matrix are 0, M_W^2 (twice), M_Z^2, and the photon sin(thetaW) W^3 + cos(thetaW) B is massless [exact, with symbolic g, g', v]", "rust" -> "SM-1", "python" -> "SM-1"|>
 <|"id" -> "WA-2", "pass" -> True, "deviation" -> 0., "tolerance" -> 0., "text" -> "bi-octonion units: e_p^2 = -1, e_p e_q = -e_q e_p, e_j e_4 = e_(4+j) (exact)", "rust" -> "A-2", "python" -> "A-2"|>
@@ -292,11 +291,11 @@ In[409]:=  (* the count of the checks that passed *) Print["checks of this noteb
 <|"id" -> "WP2-7b KS", "pass" -> True, "deviation" -> 1.482147737874584*^-13, "tolerance" -> 1.*^-7, "text" -> "KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727}", "rust" -> "P2-7a KS", "python" -> "YP2-7b KS"|>
 <|"id" -> "WP2-7a CJT", "pass" -> True, "deviation" -> 2.3381296898605797*^-13, "tolerance" -> 1.*^-9, "text" -> "CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15)", "rust" -> "P2-7a CJT", "python" -> "YP2-7a CJT"|>
 <|"id" -> "WP2-7b CJT", "pass" -> True, "deviation" -> 1.361133428190442*^-13, "tolerance" -> 1.*^-7, "text" -> "CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155}", "rust" -> "P2-7a CJT", "python" -> "YP2-7b CJT"|>
-<|"id" -> "WP2-8a HS_1_1", "pass" -> True, "deviation" -> 8.28896163085313*^-14, "tolerance" -> 1.*^-8, "text" -> "HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = Rust; chi_33 = 8.759e-16 (massless photon), no mixing", "rust" -> "P2-8a HS_1_1, P2-8b HS_1_1", "python" -> "YP2-8a HS_1_1"|>
-<|"id" -> "WP2-8a KS", "pass" -> True, "deviation" -> 5.793994320980066*^-14, "tolerance" -> 1.*^-8, "text" -> "KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; chi_33 = 4.201e-16 (massless photon), no mixing", "rust" -> "P2-8a KS, P2-8b KS", "python" -> "YP2-8a KS"|>
-<|"id" -> "WP2-8a CJT", "pass" -> True, "deviation" -> 3.14518597555092*^-14, "tolerance" -> 1.*^-8, "text" -> "CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; chi_33 = 3.067e-16 (massless photon), no mixing", "rust" -> "P2-8a CJT, P2-8b CJT", "python" -> "YP2-8a CJT"|>
+<|"id" -> "WP2-8a HS_1_1", "pass" -> True, "deviation" -> 8.28896163085313*^-14, "tolerance" -> 1.*^-8, "text" -> "HS_1_1: chi_11 = 0.005118624664, chi_FF = 0.02014453922 = Rust; chi_33 = 8.759e-16 (massless zeugon), no mixing", "rust" -> "P2-8a HS_1_1, P2-8b HS_1_1", "python" -> "YP2-8a HS_1_1"|>
+<|"id" -> "WP2-8a KS", "pass" -> True, "deviation" -> 5.793994320980066*^-14, "tolerance" -> 1.*^-8, "text" -> "KS: chi_11 = 0.004317006163, chi_FF = 0.02036224303 = Rust; chi_33 = 4.201e-16 (massless zeugon), no mixing", "rust" -> "P2-8a KS, P2-8b KS", "python" -> "YP2-8a KS"|>
+<|"id" -> "WP2-8a CJT", "pass" -> True, "deviation" -> 3.14518597555092*^-14, "tolerance" -> 1.*^-8, "text" -> "CJT: chi_11 = 0.004577873934, chi_FF = 0.02036224303 = Rust; chi_33 = 3.067e-16 (massless zeugon), no mixing", "rust" -> "P2-8a CJT, P2-8b CJT", "python" -> "YP2-8a CJT"|>
 <|"id" -> "WP2-8b", "pass" -> True, "deviation" -> 9.43689570931383*^-16, "tolerance" -> 1.*^-12, "text" -> "the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle", "rust" -> "P2-3a, P2-3b", "python" -> "YP2-8b"|>
-<|"id" -> "WP2-8c", "pass" -> True, "deviation" -> 5.919147116895118*^-12, "tolerance" -> 1.*^-9, "text" -> "the Thouless eigenvalues of the exchange per unit coupling squared: photon W^3 0.03573178317, B -0.1429271327 = Rust", "rust" -> "P2-8c, P2-8d", "python" -> "YP2-8c"|>
+<|"id" -> "WP2-8c", "pass" -> True, "deviation" -> 5.919147116895118*^-12, "tolerance" -> 1.*^-9, "text" -> "the Thouless eigenvalues of the exchange per unit coupling squared: zeugon W^3 0.03573178317, B -0.1429271327 = Rust", "rust" -> "P2-8c, P2-8d", "python" -> "YP2-8c"|>
 <|"id" -> "WP2-8d", "pass" -> True, "deviation" -> 1.491562614044437*^-8, "tolerance" -> 1.*^-7, "text" -> "CJT with the exchange at g_v = 0.7, g_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5)", "rust" -> "P2-8f", "python" -> "YP2-8d"|>
 <|"id" -> "WP3-11 HS_1_1", "pass" -> True, "deviation" -> 2.492097276316496*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_1_1", "python" -> "YP3-11 HS_1_1"|>
 <|"id" -> "WP3-11 HS_0_1", "pass" -> True, "deviation" -> 4.408719629389778*^-11, "tolerance" -> 1.*^-7, "text" -> "HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi^2 .. Phi^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference)", "rust" -> "P3-11 HS_0_1", "python" -> "YP3-11 HS_0_1"|>
@@ -394,4 +393,3 @@ In[409]:=  (* the count of the checks that passed *) Print["checks of this noteb
 <|"id" -> "WP3-H3 KS", "pass" -> True, "deviation" -> 2.2528015737373747*^-13, "tolerance" -> 1.*^-9, "text" -> "KS: the numbers of the Higgs sector (v_SF = 0.13140786, M_H/v_SF = 4.59239, lambda = 10.545, Gamma/M_H = 2.1349) = Rust (largest relative difference)", "rust" -> "P3-H3 KS", "python" -> "YP3-H3 KS"|>
 <|"id" -> "WP3-H1 CJT", "pass" -> True, "deviation" -> Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], "text" -> "CJT: the amplitude mode lies below the threshold of two quasi-particles: M_H = 0.603476 < 2 E_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M_H / 2 E_gap = 0.82354]", "rust" -> "P3-H1 CJT", "python" -> "YP3-H1 CJT"|>
 <|"id" -> "WP3-H3 CJT", "pass" -> True, "deviation" -> 3.0848612500944125*^-13, "tolerance" -> 1.*^-9, "text" -> "CJT: the numbers of the Higgs sector (v_SF = 0.13531998, M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>
-<|"id" -> "WP3-H4", "pass" -> True, "deviation" -> 2.183379497789186*^-16, "tolerance" -> 1.*^-10, "text" -> "the Standard Model row: M_H/v = 0.50849, lambda = 0.12928, M_H/M_W = 1.5578, M_W/M_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference)", "rust" -> "P3-H4", "python" -> "YP3-H4"|>

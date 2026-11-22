@@ -65,9 +65,9 @@ definition, examples, accuracy, the cause of its error and why the error matters
 (Section III.T: the free energy of the five methods at finite temperature, the critical temperatures, the size of the
 order parameter, and the remark that the free energies are mean-field free energies), and the third section of
 Part III (Section III.G: the gradient coefficient at the critical temperature, the Ginzburg number and the width of the
-critical region, and the superfluid as the Higgs sector of its own gauge group): 154 checks, each
+critical region, and the superfluid as the Higgs sector of its own gauge group): 153 checks, each
 repeated by the Rust and the Python programs (verdict of the evaluation in the front end of Wolfram:
-ALL PASS (154 of 154), 0 messages). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
+ALL PASS (153 of 153), 0 messages). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
 follow.
 
 **The article for Physical Review D** (folder `paper_prd/`), asked for by the author on 21 November 2026 at 11:29 PST:

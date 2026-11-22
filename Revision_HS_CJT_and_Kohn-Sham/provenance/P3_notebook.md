@@ -45,7 +45,7 @@ width of the critical region; the superfluid as the Higgs sector of its own gaug
 Higgs field of the Standard Model (the DiracLike spinor has electric charge 0 and no electroweak quantum numbers), the
 couplings of the amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second
 addendum asked for by the author on 21 November 2026, with its three remarks; and, at the end of Part II, the remark on
-the zeugon, the massless gauge boson of the superfluid), with 154 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+the zeugon, the massless gauge boson of the superfluid), with 153 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
 in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
 Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
 cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
@@ -61,9 +61,9 @@ integration.
 The files of the notebook, each with its SHA-256 checksum:
 
 * `superfluid.nb`: the notebook, evaluated in the front end of Wolfram (inputs, printed checks, the table of all checks);\
-  `85f097b94f4a8fdb7ffaca6a7042ce395c6950bab34168b202be3e3c0f07c52d`
+  `b0e1def3bdf55f3762fb33f3b879c24bc4dbe4991727250bda44353e226ecc35`
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
-  `bfb903f3a1ce6e29ca0376add51a3d91c7eb07d55fb462268cfd85e5c6b12327`
+  `a327324e13741d2a42a67497eb2303fa3e75f8445ad2ad85748a01749b69b962`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
   `1887f605bd9c13fe5794c878c2fd2142d90d0de0a012ad7392559585e662a26d`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
@@ -113,11 +113,14 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/tools/make_dryrun.py`: writes the code of all input cells into one file for a test run by `wolframscript` without the front end;\
   `f3ac70882c2c356d331bc5808683b7b56e535e9694ee39868c2b7cf3c2357f2f`
 * `data/hck_notebook_log.txt`: the log of the evaluation: the version of Wolfram, the counts of the cells, every message and printed line, one line per check;\
-  `73097acaae5ad3b3462e6b7f0f642842931531efa0b166c29b0cfe24fdd49c9c`
+  `81751603dad3553440e2726d316f004212cca0e1c4eea0ee88bbb1529f2f7eae`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
-  `ec64def2ddd9341369637d7d2c7c86c1910bf27301f96d325a8fd3a39626f711`
+  `34428f32d6b820e829144ffa83a4f55aecabf6353eaa8f0e9b719cf25abf08d8`
+* `data/hck_notebook_build.txt`: the report of the builder when it built the notebook that was evaluated (the
+  counts of the cells, of the closed cells of data, of the formulas in the texts and of the warnings);\
+  `f5a6a8e402fdb1953635f31f819913f112746102af95d514070c462da066be8e`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
-  `5f526c1531834298dc5e900f4c81d404d192f02eb15a030b99baba4533b1aa93`
+  `58d4aaa1b49454b91f47fd8d15a673f9ac65e440c5092b3f29adf5ba24a77f9d`
 
 The builder, the reader of formulas and the evaluation script were first written for the notebook `3+1super-loop.nb` of
 the project; they are copied into this folder with their contexts renamed (from `SL31` to `SFNB`), so that this folder
@@ -143,8 +146,8 @@ by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 261 cells (four of them closed cells of data), 967 formulas in the
-texts, 0 warnings (the builder's own count, printed when it ran).
+reader cannot read as a warning. This version: 262 cells (4 of them closed cells of data), 995 formulas in the texts, 0 warnings (the builder's own count, printed when it ran
+and kept in `data/hck_notebook_build.txt`).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
 the menu command Evaluate Notebook, but in a fresh kernel named `SFNBRun`, in three calls (each returns at once):
@@ -170,8 +173,8 @@ results reported here.
 
 # 5. The evaluation of this version
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 264 seconds; 56 input cells, 56 of them evaluated; 16 output cells; 172 printed lines; **0 messages** (no error and no
-warning of the Wolfram language); verdict: **ALL PASS (154 of 154), 0 messages**.
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 263 seconds; 56 input cells, 56 of them evaluated; 16 output cells; 171 printed lines; **0 messages** (no error and no
+warning of the Wolfram language); verdict: **ALL PASS (153 of 153), 0 messages**.
 
 # 6. The checks and their counterparts
 
@@ -238,11 +241,11 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WP2-7b KS | PASS | $1.482\times10^{-13}$ | $1.000\times10^{-7}$ | P2-7a KS (PASS), $2.502\times10^{-13}$ | YP2-7b KS (PASS), $1.333\times10^{-13}$ | KS: the collective modes below the threshold {0.603475967, 0.657284727} = Rust {0.603475967, 0.657284727} |
 | WP2-7a CJT | PASS | $2.338\times10^{-13}$ | $1.000\times10^{-9}$ | P2-7a CJT (PASS), $2.485\times10^{-13}$ | YP2-7a CJT (PASS), $2.329\times10^{-13}$ | CJT: three Goldstone modes (the eigenvalues of M(0) equal to 1); the spectrum of every node is +-E (spread 2.442e-15) |
 | WP2-7b CJT | PASS | $1.361\times10^{-13}$ | $1.000\times10^{-7}$ | P2-7a CJT (PASS), $2.485\times10^{-13}$ | YP2-7b CJT (PASS), $1.180\times10^{-13}$ | CJT: the collective modes below the threshold {0.603475967, 0.644007155} = Rust {0.603475967, 0.644007155} |
-| WP2-8a HS_1_1 | PASS | $8.289\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a HS_1_1 (PASS), $2.278\times10^{-15}$; P2-8b HS_1_1 (PASS), $8.820\times10^{-9}$ | YP2-8a HS_1_1 (PASS), $3.744\times10^{-15}$ | HS\_1\_1: chi\_11 = 0.005118624664, chi\_FF = 0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless photon), no mixing |
-| WP2-8a KS | PASS | $5.794\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a KS (PASS), $2.159\times10^{-15}$; P2-8b KS (PASS), $4.283\times10^{-9}$ | YP2-8a KS (PASS), $5.405\times10^{-15}$ | KS: chi\_11 = 0.004317006163, chi\_FF = 0.02036224303 = Rust; chi\_33 = 4.201e-16 (massless photon), no mixing |
-| WP2-8a CJT | PASS | $3.145\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a CJT (PASS), $1.879\times10^{-15}$; P2-8b CJT (PASS), $3.584\times10^{-9}$ | YP2-8a CJT (PASS), $3.879\times10^{-15}$ | CJT: chi\_11 = 0.004577873934, chi\_FF = 0.02036224303 = Rust; chi\_33 = 3.067e-16 (massless photon), no mixing |
+| WP2-8a HS_1_1 | PASS | $8.289\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a HS_1_1 (PASS), $2.278\times10^{-15}$; P2-8b HS_1_1 (PASS), $8.820\times10^{-9}$ | YP2-8a HS_1_1 (PASS), $3.744\times10^{-15}$ | HS\_1\_1: chi\_11 = 0.005118624664, chi\_FF = 0.02014453922 = Rust; chi\_33 = 8.759e-16 (massless zeugon), no mixing |
+| WP2-8a KS | PASS | $5.794\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a KS (PASS), $2.159\times10^{-15}$; P2-8b KS (PASS), $4.283\times10^{-9}$ | YP2-8a KS (PASS), $5.405\times10^{-15}$ | KS: chi\_11 = 0.004317006163, chi\_FF = 0.02036224303 = Rust; chi\_33 = 4.201e-16 (massless zeugon), no mixing |
+| WP2-8a CJT | PASS | $3.145\times10^{-14}$ | $1.000\times10^{-8}$ | P2-8a CJT (PASS), $1.879\times10^{-15}$; P2-8b CJT (PASS), $3.584\times10^{-9}$ | YP2-8a CJT (PASS), $3.879\times10^{-15}$ | CJT: chi\_11 = 0.004577873934, chi\_FF = 0.02036224303 = Rust; chi\_33 = 3.067e-16 (massless zeugon), no mixing |
 | WP2-8b | PASS | $9.437\times10^{-16}$ | $1.000\times10^{-12}$ | P2-3a (PASS), $1.475\times10^{-17}$; P2-3b (PASS), $5.309\times10^{-15}$ | YP2-8b (PASS), $1.443\times10^{-14}$ | the angular averages D0, D1 of the Yukawa kernel in closed form = numerical integration over the angle |
-| WP2-8c | PASS | $5.919\times10^{-12}$ | $1.000\times10^{-9}$ | P2-8c (PASS), $5.102\times10^{-12}$; P2-8d (PASS), $2.041\times10^{-11}$ | YP2-8c (PASS), $5.918\times10^{-12}$ | the Thouless eigenvalues of the exchange per unit coupling squared: photon W\^3 0.03573178317, B -0.1429271327 = Rust |
+| WP2-8c | PASS | $5.919\times10^{-12}$ | $1.000\times10^{-9}$ | P2-8c (PASS), $5.102\times10^{-12}$; P2-8d (PASS), $2.041\times10^{-11}$ | YP2-8c (PASS), $5.918\times10^{-12}$ | the Thouless eigenvalues of the exchange per unit coupling squared: zeugon W\^3 0.03573178317, B -0.1429271327 = Rust |
 | WP2-8d | PASS | $1.492\times10^{-8}$ | $1.000\times10^{-7}$ | P2-8f (PASS), $0$ | YP2-8d (PASS), $1.492\times10^{-8}$ | CJT with the exchange at g\_v = 0.7, g\_F = 0.45: energy -1.324e-4 = Rust (relative; 294 iterations; exchange energy 9.647e-5) |
 | WP3-11 HS_1_1 | PASS | $2.492\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_1_1 (PASS), $1.103\times10^{-14}$ | YP3-11 HS_1_1 (PASS), $9.618\times10^{-12}$ | HS (1, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
 | WP3-11 HS_0_1 | PASS | $4.409\times10^{-11}$ | $1.000\times10^{-7}$ | P3-11 HS_0_1 (PASS), $5.616\times10^{-13}$ | YP3-11 HS_0_1 (PASS), $1.478\times10^{-11}$ | HS (0, 1): the accuracy of the Landau form recomputed by LeastSquares (the coefficients, the minimum, depth and curvature of the polynomial, the residuals of the fits with Phi\^2 .. Phi\^(2K), K = 2 .. 6, the fits on three intervals, the sign changes) = Rust (largest relative difference) |
@@ -331,7 +334,7 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WP3-H2 KS | PASS | $1.357\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 KS (PASS), $4.763\times10^{-14}$ | YP3-H2 KS (PASS), $3.334\times10^{-11}$ | KS: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.071348166 and 0.060506197, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
 | WP3-H2 CJT | PASS | $1.352\times10^{-13}$ | $1.000\times10^{-10}$ | P3-H2 CJT (PASS), $7.683\times10^{-14}$ | YP3-H2 CJT (PASS), $3.334\times10^{-11}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 by exact differentiation of the kinetic part, 0.071348166 and 0.064162461, = f\_F and f\_I\^2/f\_F and = Rust (largest relative difference) |
 | WP3-H1 HS_1_1 | PASS | -- | -- | P3-H1 HS_1_1 (PASS), $0$ | YP3-H1 HS_1_1 (PASS), -- | HS (1, 1): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.8136931 &lt; 2 E\_gap = 0.9059348 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.89818] |
-| WP3-H3 HS_1_1 | PASS | $3.168\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_1_1 (PASS), $1.624\times10^{-16}$ | YP3-H3 HS_1_1 (PASS), $3.168\times10^{-13}$ | HS (1, 1): the numbers of the Higgs sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662, lambda = 16.1688, Gamma/M\_H = 3.9232) = Rust (largest relative difference) |
+| WP3-H3 HS_1_1 | PASS | $3.168\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_1_1 (PASS), $0$ | YP3-H3 HS_1_1 (PASS), $3.168\times10^{-13}$ | HS (1, 1): the numbers of the Higgs sector (v\_SF = 0.14308913, M\_H/v\_SF = 5.68662, lambda = 16.1688, Gamma/M\_H = 3.9232) = Rust (largest relative difference) |
 | WP3-H1 HS_0_1 | PASS | -- | -- | P3-H1 HS_0_1 (PASS), $0$ | YP3-H1 HS_0_1 (PASS), -- | HS (0, 1): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.7250834 &lt; 2 E\_gap = 0.8271651 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.87659] |
 | WP3-H3 HS_0_1 | PASS | $1.208\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 HS_0_1 (PASS), $0$ | YP3-H3 HS_0_1 (PASS), $1.460\times10^{-13}$ | HS (0, 1): the numbers of the Higgs sector (v\_SF = 0.1354499, M\_H/v\_SF = 5.35315, lambda = 14.3281, Gamma/M\_H = 3.4708) = Rust (largest relative difference) |
 | WP3-H1 HS_0_0 | PASS | -- | -- | P3-H1 HS_0_0 (PASS), $0$ | YP3-H1 HS_0_0 (PASS), -- | HS (0, 0): the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.6143874 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.83843] |
@@ -340,7 +343,6 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WP3-H3 KS | PASS | $2.253\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 KS (PASS), $3.369\times10^{-16}$ | YP3-H3 KS (PASS), $2.514\times10^{-13}$ | KS: the numbers of the Higgs sector (v\_SF = 0.13140786, M\_H/v\_SF = 4.59239, lambda = 10.545, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
 | WP3-H1 CJT | PASS | -- | -- | P3-H1 CJT (PASS), $0$ | YP3-H1 CJT (PASS), -- | CJT: the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.603476 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.82354] |
 | WP3-H3 CJT | PASS | $3.085\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 CJT (PASS), $3.573\times10^{-16}$ | YP3-H3 CJT (PASS), $3.085\times10^{-13}$ | CJT: the numbers of the Higgs sector (v\_SF = 0.13531998, M\_H/v\_SF = 4.45962, lambda = 9.94412, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
-| WP3-H4 | PASS | $2.183\times10^{-16}$ | $1.000\times10^{-10}$ | P3-H4 (PASS), $1.531\times10^{-4}$ | YP3-H4 (PASS), $0$ | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.5578, M\_W/M\_Z = 0.88136 from the values of the Particle Data Group 2024 = Rust (largest relative difference) |
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
 `data/hck_part1_checks_python.txt`, `data/hck_part2_checks.txt`, `data/hck_part2_checks_python.txt`,
@@ -564,7 +566,11 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     counterparts P3-H4 and YP3-H4. Section I.1 states that the conventions of the Standard Model give names only; the
     texts of Part II name the massless gauge boson the zeugon, and a remark at the end of Part II states what the
     computation establishes about it, including that its charge conjugation is a gauge symmetry (Alice
-    electrodynamics); the spinor field is called the DiracLike field.
+    electrodynamics); the spinor field is called the DiracLike field. The data cells were written again from the
+    data of the programs run again after the correction (their kept numbers are unchanged; the cell of Section
+    III.G no longer holds the columns in GeV and the row of the Standard Model), and the notebook was built and
+    evaluated again on 21 November 2026: ALL PASS (153 of 153), 0 messages. Since this evaluation the counts of the builder are
+    no longer typed in Section 4 but written from its report.
 
 # 10. What follows
 
