@@ -1,4 +1,4 @@
-<|"finished" -> "Sat 21 Nov 2026 16:45:13", "kernel" -> {0, 17043}, 
+<|"finished" -> "Sun 22 Nov 2026 02:09:01", "kernel" -> {0, 18148}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -759,5 +759,213 @@ state computed by the notebook) [M_H / 2 E_gap = 0.82354]",
      3.0848612500944125*^-13, "tolerance" -> 1.*^-9, 
     "text" -> "CJT: the numbers of the Higgs sector (v_SF = 0.13531998, \
 M_H/v_SF = 4.45962, lambda = 9.94412, Gamma/M_H = 2.1349) = Rust (largest \
-relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>}, 
- "line" -> 409, "seconds" -> 6881.335753`10.289217741884121|>
+relative difference)", "rust" -> "P3-H3 CJT", "python" -> "YP3-H3 CJT"|>, 
+   <|"id" -> "WQN-1", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the algebra of SU(2)_L \
+x SU(2)_R x U(1)_R x U(1)_F_tot, Hermitian generators, Y = T^3_R + R/4 (4.3), \
+Q = T^3 + T^3_R + R/4, and [Y, T^1_R] != 0 [identities of exact matrices]", 
+    "rust" -> "QN-1a to QN-1e", "python" -> "YQN-1"|>, 
+   <|"id" -> "WQN-2", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the six real Lorentz \
+generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting \
+with the ten internal generators [identities of exact matrices; real rank 6]"\
+, "rust" -> "QN-2a, QN-2b", "python" -> "YQN-2"|>, 
+   <|"id" -> "WQN-4", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "Q = 3/4 (up), -1/4 \
+(down) on Psi_LL, 1/4 on chi_SH, -3/4 on chi'_SH; 4 Y = F_tot on Psi_LL and \
+chi_SH, -3 F_tot on chi'_SH; the Casimir operators 3/4 of SU(2)_L on Psi_LL \
+and of SU(2)_R on the singlets [Q on the components 0..15: {3/4, -1/4, 3/4, \
+-1/4, 3/4, -1/4, 3/4, -1/4, 1/4, 1/4, 1/4, 1/4, -3/4, -3/4, -3/4, -3/4}]", 
+    "rust" -> "QN-4a to QN-4c", "python" -> "YQN-4"|>, 
+   <|"id" -> "WQN-5", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "no anomaly (47 traces \
+exactly 0), vector-like fields, an even number of Weyl doublets [2 Weyl \
+doublets]", "rust" -> "QN-5a to QN-5c", "python" -> "YQN-5"|>, 
+   <|"id" -> "WQN-6", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the dimensions 6, 4, \
+4, 2, 2, 2 (pairs Psi Psi, Psi chi, Psi chi', chi chi, chi chi', chi' chi'), \
+8, 4, 4, 2, 2, 2 (particle-antiparticle), 2, 0, 0 (symmetric Psi Psi, chi \
+chi, chi' chi'), 8, 6, 8, 8 (the pair of singlets as one field); C gamma^ch \
+(x) e_s, C (x) e_s are invariant and span the pairs Psi chi and Psi chi' \
+[dimensions {6, 4, 4, 2, 2, 2, 8, 4, 4, 2, 2, 2}, symmetric {2, 0, 0}, \
+custodial {8, 6, 8, 8}]", "rust" -> "QN-6a to QN-6e", "python" -> "YQN-6"|>, 
+   <|"id" -> "WQN-7", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "parity: +1 for C \
+gamma^ch (x) e_s, -1 for C (x) e_s, with either singlet [identities of exact \
+matrices]", "rust" -> "QN-7", "python" -> "YQN-7"|>, 
+   <|"id" -> "WQN-8", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "on Phi_SH: tau^a/2, Y \
+= 1/2, Q = diag(1, 0); on Phi'_SH: tau^a/2, Y = -1/2, Q = diag(0, -1); F_tot \
+= 2, R = 0, T^3_R = +-1/2, Casimir 3/4, closure; i tau^2 Phi'^* has tau^a/2 \
+and Y = 1/2; the bidoublet has (tau^a/2) (x) 1 and 1 (x) (tau^a/2): M_SH -> L \
+M_SH R^T [G_Y = {{1/2, 0}, {0, 1/2}} and {{-1/2, 0}, {0, -1/2}}]", 
+    "rust" -> "QN-8a to QN-8g", "python" -> "YQN-8"|>, 
+   <|"id" -> "WQN-9", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the generators on \
+Phi_SH, Phi'_SH and M_SH are Hermitian, so the pairing term (4.2) is \
+invariant; det M_SH has the charges 0 under T^a, T^a_R, R and Y and 4 under \
+F_tot (the determinant term breaks only U(1)_F_tot) [charges of det M_SH {0, \
+0, 0, 0, 0, 0, 0, 0, 4}]", "rust" -> "QN-9a to QN-9d", 
+    "python" -> "YQN-9a, YQN-9b"|>, <|"id" -> "WQN-10", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the 24 channels (parity split, \
+closure, SU(2) multiplets, Y, Q, F_tot, R, T^3_R) and the 8 custodial \
+channels (SU(2)_L x SU(2)_R multiplets) agree with the tables of the Rust \
+program [all 24 and all 8 agree; custodial: Psi (chi, chi') (2,2); (chi, \
+chi') (chi, chi') (1,3); Psi^dag (chi, chi') (2,2); (chi, chi')^dag (chi, \
+chi') (1,1) + (1,3)]", "rust" -> "QN-10a to QN-10c, QN-10g", 
+    "python" -> "YQN-10"|>, <|"id" -> "WQN-10e", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "no pair of two particles of one \
+field and no chi chi' pair is neutral; the pair channels have exactly one \
+neutral component each in Psi chi and Psi chi' and none elsewhere [smallest \
+absolute value of Q 1/2; neutral components of the 12 pair channels {0, 0, 1, \
+1, 1, 1, 0, 0, 0, 0, 0, 0}]", "rust" -> "QN-10e, QN-10f", 
+    "python" -> "YQN-10"|>, <|"id" -> "WQN-11", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the stabilizer of (0, phi) and of \
+the neutral vacuum of H5 in SU(2)_L x U(1)_Y is spanned by Q; that of i tau^2 \
+among the eight generators is spanned by T^a + T^a_R and R, three gauged \
+generators and F_tot are broken; other phases with equal lengths keep four \
+generators, unequal lengths only T^3 + T^3_R and R [stabilizer of i tau^2 \
+{{0, 0, 0, 0, 0, 0, 1, 0}, {0, 0, 1, 0, 0, 1, 0, 0}, {0, 1, 0, 0, 1, 0, 0, \
+0}, {1, 0, 0, 1, 0, 0, 0, 0}}]", "rust" -> "QN-11b, QN-11d, QN-11e", 
+    "python" -> "YQN-11"|>, <|"id" -> "WQN-11f", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "a generic second condensate with a \
+charged component, added to the neutral vacuum of H5, breaks Q; one in the \
+neutral part of a channel keeps exactly Q [24 of 24 channels as expected]", 
+    "rust" -> "QN-11f, QN-11g", "python" -> "YQN-11"|>, 
+   <|"id" -> "WQN-12", "pass" -> True, "deviation" -> 
+     Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], 
+    "text" -> "the mass matrix of (W^1, W^2, W^3, B) from Phi_SH = (0, phi) \
+and Phi'_SH = (phi', 0): eigenvalues 0, g^2 v_SH^2/4 (twice), (g^2 + g'^2) \
+v_SH^2/4 with v_SH^2 = 2 (phi^2 + phi'^2) for any phi, phi', the massless \
+vector along (0, 0, g', g), and rho = 1 (symbolic couplings and lengths) \
+[eigenvalues {0, (g^2*(ph^2 + php^2))/2, (g^2*(ph^2 + php^2))/2, ((g^2 + \
+gp^2)*(ph^2 + php^2))/2}]", "rust" -> "QN-12b, QN-12d, QN-12f", 
+    "python" -> "YQN-12"|>, <|"id" -> "WSF-2a", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the triplet matrix K^3 couples the \
+up and down components of Psi_LL by -C gamma^ch in both blocks (Psi^T K^3 Psi \
+= -2 Psi_u^T C gamma^ch Psi_d); K_d couples the down components and chi_SH, \
+K'_u the up components and chi'_SH, by C gamma^ch / 2 in both blocks: the \
+same channel with half the coefficient, so the pairing term -(G/4) |Psi^T K \
+Psi|^2 has the critical coupling G^crit_SH = 4 G^crit_LL [identities of exact \
+matrices]", "rust" -> "SF-2a", "python" -> "YSF-2"|>, 
+   <|"id" -> "WSF-2b", "pass" -> True, "deviation" -> 
+     Missing["NotNumerical"], "tolerance" -> Missing["NotNumerical"], 
+    "text" -> "I1(m) = int_0^1 q^2 / sqrt(q^2 + m^2) dq = (sqrt(1 + m^2) - \
+m^2 arsinh(1/m)) / 2 (the exact integral equals it at ten masses, to 40 \
+digits); G^crit_SH = 4 pi^2 / I1(1/5) = 85.146439022198692144 and G_SH / \
+G^crit_SH = 1.183842814303957 (G_SH = 504/5), against the Rust values of both \
+versions [deviation 3.508e-11]", "rust" -> "SF-2a", "python" -> "YSF-2"|>, 
+   <|"id" -> "WSF-3", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the exchange \
+contraction of the pairing terms: a scalar density n of Psi_LL gives each \
+paired singlet the self-energy -(G_SH/16) n beta and a scalar density of a \
+paired singlet gives Psi_LL -(G_SH/16) n beta (x) 1_2 (exact); the \
+susceptibility chi_S = (2/pi^2) int_0^1 q^4/(q^2 + m^2)^(3/2) dq = \
+0.08316014730342272 (Psi_LL; half for a singlet); the largest eigenvalue of \
+the 3 x 3 scalar response of CJT for V^(1)_SH = 0.915274035123 (second \
+version) and 0.789268068370 (first), against the Rust values [deviation \
+1.063e-11]", "rust" -> "SF-3a, SF-3b", "python" -> "YSF-3"|>, 
+   <|"id" -> "WSF-4", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the scalar triplet \
+pair coupling of KS and CJT, -(1/4) G^S - G^V = 6/5, and its eigenvalue in \
+the normal vacuum, (6/5) I1(1/5) / pi^2 = 0.05637346734780750, against the \
+Rust value [deviation 8.097e-12]", "rust" -> "SF-4a", "python" -> "none"|>, 
+   <|"id" -> "WSF-5", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "HS (0, 1) and HS (0, \
+0), where only the pairing terms act: the gap equation G_SH I1(M_eff) / (4 \
+pi^2) = 1 gives M_eff = 0.4529674056079986 and |D| = 2 (M_eff^2 - m^2)^(1/2) \
+= 0.8128455463204339 (30 digits); the singular values of the bidoublet of the \
+Rust program are |D| and |D| in the second version and |D| and 0 in the first \
+[deviation 4.841e-12]", "rust" -> "SF-6a, SF-6b", 
+    "python" -> "YSF-6, YSF-12"|>, <|"id" -> "WH-1", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the effective Lagrangian Z \
+tr((dM)^dag dM) of the bidoublet at M = phi i tau^2: chi(T^a, T^b) = \
+chi(T^a_R, T^b_R) = -chi(T^a, T^b_R) = Z phi^2 delta_ab; with Y = T^3_R + R/4 \
+the charge Q = T^3 + Y does not respond; the mass matrix of (W^1, W^2, W^3, \
+B) has the eigenvalues 0, g^2 Z phi^2 (twice), (g^2 + g'^2) Z phi^2, so M_W = \
+g v/2 and M_Z = (g^2 + g'^2)^(1/2) v/2 with v^2 = 4 Z phi^2, and rho = 1 \
+(symbolic) [eigenvalues {0, g^2*phi^2*zz, g^2*phi^2*zz, (g^2 + \
+gp^2)*phi^2*zz}]", "rust" -> "H-4f, H-4g, H-5a, H-5b, H-6b", 
+    "python" -> "YH-2"|>, <|"id" -> "WH-2", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the effective Lagrangian of the pair \
+fields gives the mass of the amplitude mode M^2 = V'' phi_0^2 / (4 chi^{33}) \
+in both versions: second version chi^{33} = phi0^2*zz, M^2 = V''/(4 Z); first \
+version chi^{33} = (phi0^2*zz)/2, M^2 = V''/(2 Z) (symbolic) [identities]", 
+    "rust" -> "none (the column M_EFT)", "python" -> "YH-5"|>, 
+   <|"id" -> "WH-3", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "HS (0, 0): the gap \
+equation (G_SH / 4 pi^2) I1(M_eff) = 1 gives M_eff = 0.4529674056079986, d_0 \
+= 0.8128455463204339, phi_0 = d_0 I1 / (4 pi^2) = d_0 / G_SH = \
+0.008063943911909066; dI1/dM = -M J with J = arsinh(1/M) - (1 + M^2)^(-1/2) \
+(exact; J equals its integral to 40 digits); V''(phi_0) = 2 pi^2 d_0^2 J / \
+(I1 (I1 - d_0^2 J/4)) = 71.68031758679552 for one pair (first version) and \
+twice that, 143.3606351735910, for the two pairs of the second version; \
+against the Rust values (relative) [deviation 1.260e-8]", 
+    "rust" -> "H-2b, H-2c, H-8a", "python" -> "YH-1, YH-3"|>, 
+   <|"id" -> "WH-4", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "m_H / v = 125.13 / v = \
+0.5082047224 (the inputs of stage 2); for every row of the masses, Lambda_LL \
+= v / v_SH, M_H = omega_H Lambda_LL and M_H / v = omega_H / v_SH (relative); \
+the amplitude modes of the linear response give M_H / v from 7.96732 to \
+10.1624, 15.68 to 20.00 times the value of the Standard Model [deviation \
+8.766e-17]", "rust" -> "none (the columns in GeV)", "python" -> "YH-5"|>, 
+   <|"id" -> "WH-5", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "HS (0, 0): the \
+identity (k^2 + m^2) / (E (E^2 - w^2/4)) - 1/E = (w^2 - d^2) / (4 E (E^2 - \
+w^2/4)) with E^2 = k^2 + m^2 + d^2/4 holds for every momentum (symbolic) and \
+E^2 - w^2/4 > 0 for w < 2 M_eff (symbolic), so that lambda_amp(w) = 1 only at \
+w = d_0; the continuum integrals give |lambda_amp(d_0) - 1| = 0 and \
+|lambda_phase(0) - 1| = 0 (the gap equation), the root of lambda_amp = 1 is \
+0.81284554632043386736 against d_0 = 0.81284554632043386736, below 2 M_eff = \
+0.9059348112159973 (binding 0.0930893); the amplitude modes of the Rust \
+program (HS (0, 1) and HS (0, 0), both versions) equal d_0 (relative) \
+[identity True, positivity True; Rust deviation 8.442e-13]", 
+    "rust" -> "H-7d, H-8d", "python" -> "YH-7"|>, 
+   <|"id" -> "WD-1", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "the time-dependent \
+mean field i dR/dt = [H, R] conserves tr(H R) when H is the derivative of the \
+energy (d tr(H R)/dt = -i tr(H [H, R]) = 0), keeps R Hermitian, and keeps a \
+projector a projector (symbolic, 3 x 3 Hermitian matrices with symbolic \
+entries; the projector of rank 1 along the first axis) [energy True, \
+hermiticity True, projector True]", "rust" -> "D-3a, D-3b, D-3c", 
+    "python" -> "YD-2a, YD-2b"|>, <|"id" -> "WD-2", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the Josephson relation: exp(i mu F \
+t) R_0 exp(-i mu F t) solves i dR/dt = [H - mu F, R] for a stationary R_0 and \
+multiplies the pair block by exp(2 i mu t) (symbolic); the phases of d(t) of \
+the Josephson runs of the Rust program grow at the rate 2 mu = 0.02 \
+(straight-line fit in exact arithmetic on the numbers of the file; relative) \
+[rates josephson_second_HS0_0 0.0199999999791, josephson_second_CJT \
+0.0200000000125; deviation 1.045e-9]", "rust" -> "D-6a, D-6b", 
+    "python" -> "YD-5"|>, <|"id" -> "WD-3", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the peaks of the amplitude runs of \
+HS (0, 1) and HS (0, 0) of the Rust program (both versions) lie at d_0 = \
+0.81284554632043386736 of the gap equation (relative) [deviation 1.239e-6]", 
+    "rust" -> "D-4a", "python" -> "YD-3"|>, <|"id" -> "WD-4", "pass" -> True, 
+    "deviation" -> Missing["NotNumerical"], "tolerance" -> 
+     Missing["NotNumerical"], "text" -> "the Hann window: its normalized \
+transform has the modulus |sin(x pi) / (x pi (1 - x^2))| at the offset x 2 pi \
+/ T (the squared modulus of the exact integral equals that of the closed form \
+at nine rational offsets, exactly) and the value 1/2 at x = 1 (limit), so \
+that the half width at half maximum of a pure cosine is 2 pi / T = \
+0.020943951 for the runs of length 300; the widths of the sampled cosines of \
+the Rust program against it (relative) [form True, half True, deviation \
+5.037e-7]", "rust" -> "D-4b", "python" -> "none"|>, 
+   <|"id" -> "WD-5", "pass" -> True, "deviation" -> Missing["NotNumerical"], 
+    "tolerance" -> Missing["NotNumerical"], "text" -> "HS (0, 0): the reduced \
+model of 48 Anderson pseudospins (one at +eps_k and one at -eps_k for each of \
+the 24 radial nodes, eps_k = (k^2 + m^2)^(1/2)), integrated here by NDSolve \
+with the method IDA, gives d_0 = 2 Delta_0 = 0.812845546320434 from its gap \
+equation and, after the kick 1e-3, the d(t) of the Rust program for 0 <= t <= \
+50 (largest |difference| / d_0, at the 51 stored times) [d_0 against the gap \
+equation of WD-3 6.032e-22; deviation 1.749e-9]", "rust" -> "none", 
+    "python" -> "YD-6"|>}, "line" -> 776, 
+ "seconds" -> 33819.390679`10.980710772182535|>

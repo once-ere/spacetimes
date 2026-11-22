@@ -1,10 +1,10 @@
 # the report of the builder of the notebook superfluid.nb (wolfram/tools/build_notebook.wls), printed when it built
-# the notebook from wolfram/source/superfluid.source.wl on 21 November 2026 (wolframscript 15.0.1 on the author's
-# computer; run time 4.6 s): the number of the families of components typed in the source, of the cells, of the
+# the notebook from wolfram/source/superfluid.source.wl on 22 November 2026 (wolframscript 15.0.1 on the author's
+# computer; run time 5.1 s): the number of the families of components typed in the source, of the cells, of the
 # closed input cells (the cells of data), of the formulas in the text cells and of the formulas that the reader of
 # formulas could not read (warnings)
 components: 0
-cells: 262
-closed input cells: 4
-formulas in text cells: 995
+cells: 400
+closed input cells: 5
+formulas in text cells: 1571
 warnings: 0
